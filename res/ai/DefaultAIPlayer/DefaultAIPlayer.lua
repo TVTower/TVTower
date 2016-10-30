@@ -2,9 +2,9 @@
 -- ============================
 -- Autoren: Manuel Vögele (STARS_crazy@gmx.de)
 --          Ronny Otto
--- Version: 14.10.2016
+-- Version: 30.10.2016
 
-_G["APP_VERSION"] = "1.6"
+_G["APP_VERSION"] = "1.7"
 
 -- ##### INCLUDES #####
 -- use slash for directories - windows accepts it, linux needs it
@@ -117,14 +117,13 @@ function DefaultAIPlayer:initializeTasks()
 	self.TaskList[TASK_STATIONMAP]			= TaskStationMap()
 	self.TaskList[TASK_BOSS]				= TaskBoss()
 	self.TaskList[TASK_ROOMBOARD]			= TaskRoomBoard()
+	self.TaskList[TASK_ARCHIVE]				= TaskArchive()
 	
 	
 	--self.TaskList[TASK_STATIONMAP].InvestmentPriority = 12
 	--self.TaskList[TASK_STATIONMAP].NeededInvestmentBudget = 10000
 	
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask()
-	--self.TaskList[TASK_ARCHIVE]			= TVTArchive()
-	self.TaskList[TASK_ARCHIVE]			= TaskArchive() --new archive task added
 
 	--TODO: WarteTask erstellen. Gehört aber in AIEngine
 end
@@ -137,6 +136,14 @@ end
 
 function DefaultAIPlayer:OnGameBegins()
 	self.Strategy:Start(self)
+end
+
+
+function DefaultAIPlayer:OnInit()
+	self.Strategy:Start(self)
+
+	--on start, schedule should be high priority
+	playerAI.TaskList[TASK_SCHEDULE].SituationPriority = 25
 end
 
 
@@ -194,7 +201,6 @@ end
 
 function DefaultAIPlayer:GetRequisitionPriority(taskId)
 	local prio = 0
-
 	for k,v in pairs(self.Requisitions) do
 		if (v:CheckActuality() and v.TaskId == taskId) then
 			prio = prio + v.Priority
@@ -204,11 +210,11 @@ function DefaultAIPlayer:GetRequisitionPriority(taskId)
 	return prio
 end
 
-function DefaultAIPlayer:GetRequisitionsByTaskId(taskId)
+function DefaultAIPlayer:GetRequisitionsByTaskId(taskId, ignoreActuality)
 	local result = {}
 
 	for k,v in pairs(self.Requisitions) do
-		if (v:CheckActuality() and v.TaskId == taskId) then
+		if ((v:CheckActuality() or ignoreActuality == true) and v.TaskId == taskId) then
 			table.insert(result, v)
 		end
 	end
@@ -216,11 +222,11 @@ function DefaultAIPlayer:GetRequisitionsByTaskId(taskId)
 	return result
 end
 
-function DefaultAIPlayer:GetRequisitionsByOwner(taskId)
+function DefaultAIPlayer:GetRequisitionsByOwner(TaskOwnerId, ignoreActuality)
 	local result = {}
 
 	for k,v in pairs(self.Requisitions) do
-		if (v:CheckActuality() and v.TaskOwnerId == taskId) then
+		if ((v:CheckActuality() or ignoreActuality == true) and v.TaskOwnerId == TaskOwnerId) then
 			table.insert(result, v)
 		end
 	end
@@ -469,6 +475,13 @@ function OnDayBegins()
 end
 
 
+function OnInit()
+	if (aiIsActive) then
+		getAIPlayer():OnInit()
+	end
+end
+
+
 function OnProgrammeLicenceAuctionGetOutbid(licence, bid, bidderID)
 	--todo
 	debugMsg("TODO: you have been outbid on auction: " .. licence.GetTitle())
@@ -505,7 +518,6 @@ end
 
 -- figure is now in this room
 function OnEnterRoom(roomId)
-	devMsg("OnEnterRoom: roomId="..roomId)
 	--debugMsg("OnEnterRoom " .. roomId)
 	if (aiIsActive) then
 		getAIPlayer():OnEnterRoom(roomId)
@@ -574,6 +586,7 @@ function OnTick(timeGone, ticksGone)
 	if getAIPlayer().CurrentTask ~= nil then
 		MY.SetAIStringData("currentTask",  getAIPlayer().CurrentTask.typename() )
 		MY.SetAIStringData("currentTaskStatus",  getAIPlayer().CurrentTask.Status )
+		MY.SetAIStringData("currentTaskAssignmentType", getAIPlayer().CurrentTask.assignmentType )
 		if getAIPlayer().CurrentTask.CurrentJob ~= nil then
 			MY.SetAIStringData("currentTaskJob",  getAIPlayer().CurrentTask.CurrentJob.typename() )
 			MY.SetAIStringData("currentTaskJobStatus",  getAIPlayer().CurrentTask.CurrentJob.Status )
@@ -582,6 +595,7 @@ function OnTick(timeGone, ticksGone)
 	else
 		MY.SetAIStringData("currentTask",  "NONE" )
 		MY.SetAIStringData("currentTaskStatus",  "0" )
+		MY.SetAIStringData("currentTaskAssignmentType", 0)
 		MY.SetAIStringData("currentTaskJob",  "NONE" )
 		MY.SetAIStringData("currentTaskJobStatus",  "0" )
 	end
@@ -705,10 +719,9 @@ function OnMinute(number)
 end
 
 function OnMalfunction()
-	infoMsg("OnMalfunction1")
+	infoMsg("OnMalfunction")
 	local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
 	task.SituationPriority = 10
-	infoMsg("OnMalfunction2")
 end
 
 --TVTMoviePurchase

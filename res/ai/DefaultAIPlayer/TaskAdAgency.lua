@@ -2,9 +2,13 @@
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["TaskAdAgency"] = class(AITask, function(c)
 	AITask.init(c)	-- must init base!
-	c.TargetRoom = TVT.ROOM_ADAGENCY;
+	c.Id = _G["TASK_ADAGENCY"]
+	c.TargetRoom = TVT.ROOM_ADAGENCY
 	c.SpotsInAgency = nil;
-	c.BasePriority = 8;
+	-- keep adagency task a bit lower priority: when adcontracts get
+	-- requested by the schedule task, this already adds to end priority
+	-- via "requisition priority"
+	c.BasePriority = 3
 	c.BudgetWeight = 0
 	-- zu Senden
 	-- Strafe

@@ -77,6 +77,8 @@ function AIPlayer:ForceNextTask()
 		local nextTaskName = ""
 		if (nextTask ~= nil) then
 			nextTaskName = nextTask:typename()
+			-- inform task about being a forced one
+			nextTask.assignmentType = 1
 
 			local cancelTask = true
 		
@@ -121,11 +123,36 @@ function AIPlayer:Tick()
 end
 
 function AIPlayer:TickProcessTask()
+	-- inform game about our priorities
+	-- do it here, to have a "live priority view"
+	local tasksPrioOrdered = SortTasksByPrio(self.TaskList)
+	local taskNumber = 0
+	local player = _G["globalPlayer"]
+
+	for k,v in pairs(tasksPrioOrdered) do
+		taskNumber = taskNumber + 1
+		MY.SetAIStringData("tasklist_name" .. taskNumber, v:typename())
+		MY.SetAIStringData("tasklist_priority" .. taskNumber, math.round(v.CurrentPriority,1))
+		MY.SetAIStringData("tasklist_basepriority" .. taskNumber, math.round(v.BasePriority,1))
+		MY.SetAIStringData("tasklist_situationpriority" .. taskNumber, math.round(v.SituationPriority,1))
+		MY.SetAIStringData("tasklist_requisitionpriority" .. taskNumber, math.round(player:GetRequisitionPriority(v.Id),1))
+	end
+	MY.SetAIStringData("tasklist_count", taskNumber)
+
+
+	-- start new tasks or continue the current
 	if (self.CurrentTask == nil)  then
 		self:BeginNewTask()
 	else
 		if self.CurrentTask.Status == TASK_STATUS_DONE or self.CurrentTask.Status == TASK_STATUS_CANCEL then
-			self:BeginNewTask()
+			-- wait until the NEXT task has a priority > 35 (idle a bit)
+			local tasksPrioOrdered = SortTasksByPrio(self.TaskList)
+			local nextTask = tasksPrioOrdered[1] -- 0 = current, 1 = next
+			if nextTask ~= nil and nextTask.CurrentPriority > 35 then
+				self:BeginNewTask()
+			--else
+			--	devMsg("IDLING a bit ...")
+			end
 		else
 			self.CurrentTask:Tick()
 		end
@@ -151,6 +178,7 @@ function AIPlayer:SelectTask()
 	local BestPrio = -1
 	local BestTask = nil
 
+	--[[
 	for k,v in pairs(self.TaskList) do
 		v:RecalcPriority()
 		if (BestPrio < v.CurrentPriority) then
@@ -158,6 +186,10 @@ function AIPlayer:SelectTask()
 			BestTask = v
 		end
 	end
+	]]
+
+	local tasksPrioOrdered = SortTasksByPrio(self.TaskList)
+	BestTask = table.first(tasksPrioOrdered)
 
 	return BestTask
 end
@@ -188,7 +220,8 @@ end
 -- Ein Task repräsentiert eine zu erledigende KI-Aufgabe die sich üblicherweise wiederholt. Diese kann wiederum aus verschiedenen Jobs bestehen
 _G["AITask"] = class(KIDataObjekt, function(c)
 	KIDataObjekt.init(c)	-- must init base!
-	c.Id = nil -- Der eindeutige Name des Tasks
+	-- Ronny: Id seems unused for now
+	c.Id = c:typename() --nil -- Der eindeutige Name des Tasks
 	c.Status = TASK_STATUS_OPEN -- Der Status der Aufgabe
 	c.CurrentJob = nil -- Welcher Job wird aktuell bearbeitet und bei jedem Tick benachrichtigt
 	c.BasePriority = 0 -- Grundlegende Priorität der Aufgabe (zwischen 1 und 10)
@@ -210,6 +243,10 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.CurrentInvestmentPriority = 0 -- Wie ist die Prio aktuell? InvestmentPriority wird jede Runde aufaddiert.
 	c.NeededInvestmentBudget = -1 -- Wie viel Geld benötigt die KI für eine Großinvestition
 	c.UseInvestment = false
+
+	-- 1 = added via ForceNextTask?
+	-- 2 = added via another task (forcefully)?
+	c.assignmentType = 0
 	
 	c.FixedCosts = 0
 end)
@@ -390,12 +427,18 @@ function AITask:SetDone()
 	self.SituationPriority = 0
 	self.LastDone = WorldTime.GetTimeGoneAsMinute()
 	self.LastDoneWorldTicks = self:getWorldTicks()
+
+	-- reset back
+	self.assignmentType = 0
 end
 
 --no priority modification
 function AITask:SetAbort()
 	debugMsg("<<< Task aborted!")
 	self.Status = TASK_STATUS_CANCEL
+
+	-- reset back
+	self.assignmentType = 0
 end
 
 --with priority modification
@@ -403,6 +446,9 @@ function AITask:SetCancel()
 	debugMsg("<<< Task canceled!")
 	self.Status = TASK_STATUS_CANCEL
 	self.SituationPriority = self.SituationPriority / 2
+
+	-- reset back
+	self.assignmentType = 0
 end
 
 function AITask:OnEnterRoom(roomId)
@@ -787,6 +833,7 @@ _G["Requisition"] = class(SLFDataObject, function(c)
 	SLFDataObject.init(c)	-- must init base!
 	c.TaskId = nil
 	c.TaskOwnerId = nil
+	c.RequisitionId = nil
 	c.Priority = 0 -- 10 = hoch 1 = gering
 	c.Done = false
 end)

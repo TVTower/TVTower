@@ -1,5 +1,6 @@
 _G["TaskArchive"] = class(AITask, function(c)
 	AITask.init(c)	-- must init base!
+	c.Id = _G["TASK_ARCHIVE"]
 	c.TargetRoom = TVT.ROOM_ARCHIVE_PLAYER_ME
 	c.BudgetWeight = 0
 	c.BasePriority = 2

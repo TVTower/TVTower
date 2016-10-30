@@ -317,6 +317,13 @@ Type TAi extends TAiBase
 
 		CallLuaFunction("OnGameBegins", Null)
 	End Method
+
+
+	Method CallOnInit()
+		if not AiRunning then return
+
+		CallLuaFunction("OnInit", Null)
+	End Method
 		
 
 	Method CallOnMoneyChanged(value:int, reason:int, reference:object)

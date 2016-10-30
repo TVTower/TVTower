@@ -125,7 +125,7 @@ Include "game.escapemenu.bmx"
 
 '===== Globals =====
 VersionDate = LoadText("incbin::source/version.txt").Trim()
-VersionString = "v0.3.4.4-dev Build ~q" + VersionDate+"~q"
+VersionString = "v0.3.5-dev Build ~q" + VersionDate+"~q"
 CopyrightString = "by Ronny Otto & Team"
 
 Global APP_NAME:string = "TVTower"
@@ -171,7 +171,6 @@ Type TApp
 	'store listener for music loaded in "startup"
 	Field OnLoadMusicListener:TLink
 
-	Field openEscapeMenu:int = False
 	'bitmask defining what elements set the game to paused (eg. escape
 	'menu, ingame help ...)
 	Field pausedBy:int = 0
@@ -1137,8 +1136,10 @@ endrem
 
 		ScreenCollection.UpdateCurrent(GetDeltaTimer().GetDelta())
 
-		local openEscapeMenu:int = App.openEscapeMenu or openEscapeMenuViaInterface
-		If openEscapeMenu or (Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE))
+		local openEscapeMenu:int = openEscapeMenuViaInterface or (Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE))
+		If openEscapeMenu
+			print "should open escape menu. gamestate="+GetGame().gamestate
+
 			'ask to exit to main menu
 			'TApp.CreateConfirmExitAppDialogue(True)
 			If GetGame().gamestate = TGame.STATE_RUNNING
@@ -1156,7 +1157,6 @@ endrem
 				'ask to exit the app - from main menu?
 				'TApp.CreateConfirmExitAppDialogue(False)
 			endif
-			App.openEscapeMenu = False
 			openEscapeMenuViaInterface = False
 		EndIf
 		'Force-quit with CTRL+C
@@ -1373,12 +1373,60 @@ endrem
 			debugPlayerControls.Draw(playerID, 15, 365)
 
 			local player:TPlayer = GetPlayer(playerID)
+			rem
 			if player.playerAI
 				SetColor 50,40,0
 				DrawRect(235, 313, 150, 36)
 				SetColor 255,255,255
-				GetBitmapFont("default", 10).Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", 238,315)
+				local assignmentType:int = player.aiData.GetInt("currentTaskAssignmentType", 0)
+				if assignmentType = 1
+					GetBitmapFont("default", 10).Draw("Task: [F] " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", 238,315)
+				elseif assignmentType = 2
+					GetBitmapFont("default", 10).Draw("Task: [R]" + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", 238,315)
+				else
+					GetBitmapFont("default", 10).Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", 238,315)
+				endif
 				GetBitmapFont("default", 10).Draw("Job:   " + player.aiData.GetString("currentTaskJob") + " ["+player.aiData.GetString("currentTaskJobStatus")+"]", 238,325)
+			endif
+			endrem
+
+			if player.playerAI
+				SetColor 40,40,40
+				DrawRect(605, 200, 185, 155)
+				SetColor 50,50,40
+				DrawRect(606, 201, 183, 26)
+				SetColor 255,255,255
+
+				local textX:int = 605 + 3
+				local textY:int = 200 + 3
+
+				local assignmentType:int = player.aiData.GetInt("currentTaskAssignmentType", 0)
+				if assignmentType = 1
+					GetBitmapFont("default", 10).Draw("Task: [F] " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
+				elseif assignmentType = 2
+					GetBitmapFont("default", 10).Draw("Task: [R]" + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
+				else
+					GetBitmapFont("default", 10).Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
+				endif
+				textY :+ 13
+				GetBitmapFont("default", 10).Draw("Job:   " + player.aiData.GetString("currentTaskJob") + " ["+player.aiData.GetString("currentTaskJobStatus")+"]", textX, textY)
+				textY :+ 20
+
+				GetBitmapFont("default", 10, BOLDFONT).Draw("Task List: ", textX, textY)
+				GetBitmapFont("default", 10, BOLDFONT).Draw("Prio ", textX + 90 + 22*0, textY)
+				GetBitmapFont("default", 10, BOLDFONT).Draw("Bas", textX + 90 + 22*1, textY)
+				GetBitmapFont("default", 10, BOLDFONT).Draw("Sit", textX + 90 + 22*2, textY)
+				GetBitmapFont("default", 10, BOLDFONT).Draw("Req", textX + 90 + 22*3, textY)
+				textY :+ 13 + 2
+
+				for local taskNumber:int = 1 to player.aiData.GetInt("tasklist_count", 1)
+					GetBitmapFont("default", 10).Draw(player.aiData.GetString("tasklist_name"+taskNumber).Replace("Task", ""), textX, textY)
+					GetBitmapFont("default", 10).Draw(player.aiData.GetInt("tasklist_priority"+taskNumber), textX + 90 + 22*0, textY)
+					GetBitmapFont("default", 10).Draw(player.aiData.GetInt("tasklist_basepriority"+taskNumber), textX + 90 + 22*1, textY)
+					GetBitmapFont("default", 10).Draw(player.aiData.GetInt("tasklist_situationpriority"+taskNumber), textX + 90 + 22*2, textY)
+					GetBitmapFont("default", 10).Draw(player.aiData.GetInt("tasklist_requisitionpriority"+taskNumber), textX + 90 + 22*3, textY)
+					textY :+ 13
+				next
 			endif
 		
 '				debugProgrammePlanInfos.Draw((playerID + 1) mod 4, 415, 15)
@@ -3812,6 +3860,7 @@ Type GameEvents
 						player.SetLocalAIControlled()
 						if not player.playerAI
 							player.InitAI( new TAI.Create(player.playerID, GetGame().GetPlayerAIFileURI(player.playerID)) )
+							player.playerAI.CallOnInit()
 						endif
 						GetGame().SendSystemMessage("[DEV] Enabled AI for player "+player.playerID)
 					else

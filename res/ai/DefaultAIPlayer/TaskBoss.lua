@@ -2,9 +2,10 @@
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["TaskBoss"] = class(AITask, function(c)
 	AITask.init(c)	-- must init base!
+	c.Id = _G["TASK_BOSS"]
 	c.TargetRoom = TVT.ROOM_BOSS_PLAYER_ME
 	c.BudgetWeight = 0
-	c.BasePriority = 2
+	c.BasePriority = 1
 	c.NeededInvestmentBudget = 0
 	c.InvestmentPriority = 0
 	

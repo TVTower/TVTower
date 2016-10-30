@@ -2,6 +2,7 @@
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["TaskStationMap"] = class(AITask, function(c)
 	AITask.init(c)	-- must init base!
+	c.Id = _G["TASK_STATIONMAP"]
 	c.TargetRoom = TVT.ROOM_OFFICE_PLAYER_ME
 	c:ResetDefaults()
 end)

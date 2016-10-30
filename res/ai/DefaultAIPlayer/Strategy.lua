@@ -49,18 +49,7 @@ function DefaultStrategy:initialize()
 		self.startProgrammeAmount = 7
 	end 
 	self.startProgrammeBudget = self.startProgrammeAmount * self.startProgrammePriceMax + 8000 * (5 - playerAI.Ventruesome)
-
 	TVT.PrintOut(TVT.ME .. ": startProgramme=" .. self.startProgrammeAmount .. "  priceMax=" .. self.startProgrammePriceMax .. "  totalBudget=" .. self.startProgrammeBudget)
-
-	local mdTask = playerAI.TaskList[TASK_MOVIEDISTRIBUTOR]
-	local moviesNeeded = self.startProgrammeAmount - (TVT.Rules.startProgrammeAmount + mdTask.ProgrammesPossessed)
-	if moviesNeeded > 0 then
-		mdTask.SituationPriority = 10 + moviesNeeded * 5 
-		debugMsg("Startprogramm fehlt: erhoehe Prio fuer Filmhaendler! " .. mdTask.SituationPriority)			
-	end
-
-	--on gamestart, schedule should be high priority
-	playerAI.TaskList[TASK_SCHEDULE].SituationPriority = mdTask.SituationPriority + 25
 
 	self.initDone = true
 end

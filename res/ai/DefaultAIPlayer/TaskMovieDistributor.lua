@@ -2,14 +2,16 @@
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["TaskMovieDistributor"] = class(AITask, function(c)
 	AITask.init(c)	-- must init base!
+	c.Id = _G["TASK_MOVIEDISTRIBUTOR"]
+	c.TargetRoom = TVT.ROOM_MOVIEAGENCY
 	c.MoviesAtDistributor = nil
 	c.MoviesAtAuctioneer = nil
 	c.NiveauChecked = false
 	c.MovieCount = 0
 	c.CheckMode = 0
 	c.MovieList = nil
-	c.TargetRoom = TVT.ROOM_MOVIEAGENCY
 	c.BuyStartProgrammeJob = nil
+	c.BuyRequisitedLicencesJob = nil
 	c.CheckMoviesJob = nil
 	c.AppraiseMovies = nil
 	c.ProgrammesPossessed = 0
@@ -23,8 +25,8 @@ end
 
 function TaskMovieDistributor:ResetDefaults()
 	self.BudgetWeight = 10
-	self.BasePriority = 8	
-	self.NeededInvestmentBudget = 130000
+	self.BasePriority = 3
+	self.NeededInvestmentBudget = 75000
 	self.InvestmentPriority = 6
 end
 
@@ -32,6 +34,9 @@ function TaskMovieDistributor:Activate()
 	-- Was getan werden soll:
 	self.BuyStartProgrammeJob = JobBuyStartProgramme()
 	self.BuyStartProgrammeJob.MovieDistributorTask = self
+
+	self.BuyRequisitedLicencesJob = JobBuyRequisitedLicences()
+	self.BuyRequisitedLicencesJob.MovieDistributorTask = self
 
 	self.CheckMoviesJob = JobCheckMovies()
 	self.CheckMoviesJob.MovieDistributorTask = self
@@ -66,6 +71,11 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 		return self.SellSuitcaseLicences
 	elseif (self.BuyStartProgrammeJob.Status ~= JOB_STATUS_DONE) then
 		return self.BuyStartProgrammeJob
+
+	elseif (self.BuyRequisitedLicencesJob.Status ~= JOB_STATUS_DONE) then
+		return self.BuyRequisitedLicencesJob
+
+	-- Check for "nice to have" licences
 	elseif (self.CheckMoviesJob.Status ~= JOB_STATUS_DONE) then
 		return self.CheckMoviesJob
 	elseif (self.AppraiseMovies.Status ~= JOB_STATUS_DONE) then
@@ -157,7 +167,7 @@ function JobBuyStartProgramme:Tick()
 	local goodMovies = {}
 	-- sort lowest first
 	local sortByPrice = function(a, b)
-		return a.GetPrice(TVT.ME) < b.GetPrice(TVT.ME)
+		return a:GetPrice(TVT.ME) < b:GetPrice(TVT.ME)
 	end
 
 	-- add "okay" movies to the list of candidates
@@ -201,6 +211,94 @@ function JobBuyStartProgramme:Tick()
 	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+_G["JobBuyRequisitedLicences"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.Id = c.typename()
+	c.MovieDistributorTask = nil
+end)
+
+function JobBuyRequisitedLicences:typename()
+	return "JobBuyStartProgramme"
+end
+
+function JobBuyRequisitedLicences:Prepare(pParams)
+	self.Player = _G["globalPlayer"]
+end
+
+function JobBuyRequisitedLicences:Tick()
+	local player = _G["globalPlayer"]
+
+devMsg("JobBuyRequisitedLicences:Tick()")
+	-- try to fulfill the requisitions
+
+	-- fetch all (also outdated) requisitions
+	local MDRequisitions = self.Player:GetRequisitionsByTaskId(_G["TASK_MOVIEDISTRIBUTOR"], true)
+	-- fetch all available licences
+	local licencesResponse = TVT.md_getProgrammeLicences()
+	if ((licencesResponse.result == TVT.RESULT_WRONGROOM) or (licencesResponse.result == TVT.RESULT_NOTFOUND)) then
+		self.Status = JOB_STATUS_DONE
+		return True
+	end
+	local availableLicences = TVT.convertToProgrammeLicences(licencesResponse.data)	
+
+
+	for k,requisition in pairs(MDRequisitions) do
+		-- loop over all buy-licence-requisitions
+		if requisition.requisitionId ~= nil and requisition.requisitionId == "BuyLicenceRequisition" then
+			-- delete old ones
+			if not requisition.CheckActuality() then
+devMsg("JobBuyRequisitedLicences:Tick() - requisition outdated")
+				player.RemoveRequisition(requisition)
+
+			-- process others
+			else
+				-- collect fitting licences
+				local relevantLicences = {}
+				for licenceKey, licence in pairs(availableLicences) do
+					local valid = true
+					local price = licence.GetPrice(TVT.ME)
+					if licence.GetPrice(TVT.ME) < requisition.minPrice then valid = false; end
+					if licence.GetPrice(TVT.ME) > requisition.maxPrice and requisition.maxPrice > 0 then valid = false; end
+
+					if valid then
+						table.insert(relevantLicences, licence)
+					end
+				end
+
+
+				-- sort by attractivity/price
+				local sortByAttractivity = function(a, b)
+					return a.GetQuality() * a.GetPrice(TVT.ME) < b.GetQuality() * b.GetPrice(TVT.ME)
+				end
+				table.sort(relevantLicences, sortByAttractivity)
+
+
+				-- buy best one
+				local licence = table.first(relevantLicences)
+				if licence ~= nil then
+devMsg("Buying requisition programme licence: " .. licence.GetTitle() .. " (" .. licence.GetId() .. ") - Price: " .. licence:GetPrice(TVT.ME))
+					if TVT.md_doBuyProgrammeLicence(licence.GetId()) == TVT.RESULT_OK then
+devMsg("       OK")
+devMsg("JobBuyRequisitedLicences:Tick() - requisition completed")
+						requisition.Complete()
+					end
+				end
+			end
+		end
+	end
+
+
+	self.Status = JOB_STATUS_DONE
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["JobCheckMovies"] = class(AIJob, function(c)

@@ -163,6 +163,7 @@ Type TAiBase
 	Method CallOnEnterRoom(roomId:int) abstract
 	Method CallOnDayBegins() abstract
 	Method CallOnGameBegins() abstract
+	Method CallOnInit() abstract
 	Method CallOnMoneyChanged(value:int, reason:int, reference:object) abstract
 	Method CallOnMalfunction() abstract
 

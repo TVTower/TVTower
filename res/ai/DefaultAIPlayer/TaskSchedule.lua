@@ -2,6 +2,7 @@
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["TaskSchedule"] = class(AITask, function(c)
 	AITask.init(c)	-- must init base!
+	c.Id = _G["TASK_SCHEDULE"]
 	c.TargetRoom = TVT.ROOM_OFFICE_PLAYER_ME
 	c.BudgetWeight = 0
 	c.BasePriority = 10
@@ -35,6 +36,9 @@ end
 
 function TaskSchedule:Activate()
 	-- Was getan werden soll:
+	self.AnalyzeEnvironmentJob = JobAnalyzeEnvironment()
+	self.AnalyzeEnvironmentJob.ScheduleTask = self
+
 	self.AnalyzeScheduleJob = JobAnalyzeSchedule()
 	self.AnalyzeScheduleJob.ScheduleTask = self
 
@@ -53,7 +57,9 @@ end
 
 
 function TaskSchedule:GetNextJobInTargetRoom()
-	if (self.AnalyzeScheduleJob.Status ~= JOB_STATUS_DONE) then
+	if (self.AnalyzeEnvironmentJob.Status ~= JOB_STATUS_DONE) then
+		return self.AnalyzeEnvironmentJob
+	elseif (self.AnalyzeScheduleJob.Status ~= JOB_STATUS_DONE) then
 		return self.AnalyzeScheduleJob
 	elseif (self.FulfillRequisitionJob.Status ~= JOB_STATUS_DONE) then
 		return self.FulfillRequisitionJob
@@ -279,7 +285,7 @@ function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessC
 	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()
 	local sharedMaxAudience = MY.GetMaxAudience() - exclusiveMaxAudience
 	self.log["GuessedAudienceForHour"] = "Hour=" .. hour .. "  Lvl=" .. level .. "  %  guessedAudience=" .. math.round(guessedAudience.GetTotalSum()) .. "  aud=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*globalPercentageByHour) .."% of max="..MY.GetMaxAudience()..")  avgQuality="..avgQuality .. "  statQuality="..statQuality1.."/"..statQuality2.."/"..statQuality3.."/"..statQuality4
-	debugMsg( self.log["GuessedAudienceForHour"] )
+	--debugMsg( self.log["GuessedAudienceForHour"] )
 
 	return guessedAudience
 end
@@ -502,6 +508,37 @@ end
 
 --function TaskSchedule:GetMovieByLevel
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+_G["JobAnalyzeEnvironment"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.ScheduleTask = nil;
+end)
+
+function JobAnalyzeEnvironment:typename()
+	return "JobAnalyzeEnvironment"
+end
+
+function JobAnalyzeEnvironment:Prepare(pParams)
+end
+
+function JobAnalyzeEnvironment:Tick()
+	-- not enough programmes ?
+	-- Raise interest for movie distributor to buy start programme
+
+	local Player = _G["globalPlayer"]
+	local moviesNeeded = Player.Strategy.startProgrammeAmount - (TVT.Rules.startProgrammeAmount + TVT.of_getProgrammeLicenceCount())
+	if moviesNeeded > 0 then
+		local mdTask = Player.TaskList[TASK_MOVIEDISTRIBUTOR]
+		mdTask.SituationPriority = 10 + moviesNeeded * 4 
+		debugMsg("Startprogramme missing: Raising priority for movie distributor! " .. mdTask.SituationPriority)			
+	end
+
+	self.Status = JOB_STATUS_DONE
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["JobAnalyzeSchedule"] = class(AIJob, function(c)
