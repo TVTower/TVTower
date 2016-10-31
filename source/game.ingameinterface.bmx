@@ -378,7 +378,7 @@ Type TInGameInterface
 			If THelper.MouseIn(309,538,178,32)
 				CurrentTimeToolTip.SetTitle(getLocale("GAME_TIME")+": " + GetWorldTime().getFormattedTime())
 				local content:string = ""
-				content :+ "|b|"+GetLocale("GAMEDAY")+":|/b| "+(GetWorldTime().GetDaysRun()+1)
+				content :+ "|b|"+GetLocale("GAMEDAY")+":|/b| "+(GetWorldTime().GetDaysRun()+1) + " (" + GetLocale("WEEK_LONG_"+GetWorldTime().GetDayName(GetWorldTime().GetWeekday())) + ")"
 				content :+ "~n"
 				content :+ "|b|"+GetLocale("DAY_OF_YEAR")+":|/b| "+GetWorldTime().getDayOfYear()+"/"+GetWorldTime().GetDaysPerYear()
 				content :+ "~n"
@@ -541,8 +541,8 @@ Type TInGameInterface
 			debugstop
 			return result
 		endif
-
 		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Children) > 0)
+		
 			'maybe sent to bed ? :D
 			'If GetWorldTime().GetDayHour() >= 5 and GetWorldTime().GetDayHour() < 22 then 'manuel: muss im Feedback-Code geprüft werden.
 			result :+ ["girl"]
@@ -596,7 +596,7 @@ Type TInGameInterface
 
 				'slots if 3 members watch
 				local figureSlots:int[]
-				if familyMembersUsed = 3 then figureSlots = [550, 610, 670]
+				if familyMembersUsed > 3 then figureSlots = [550, 610, 670]
 				if familyMembersUsed = 2 then figureSlots = [580, 640]
 				if familyMembersUsed = 1 then figureSlots = [610]
 
@@ -619,6 +619,8 @@ Type TInGameInterface
 					For local member:string = eachin members
 						'unemployed already handled
 						if member = "unemployed" or member = "unemployed.bored" then continue
+						'only X slots available
+						if currentSlot >= figureSlots.length then continue
 						
 						GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-176)
 						currentslot:+1 'occupy a slot
