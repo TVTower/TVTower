@@ -1738,7 +1738,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<!-- time type = 3, special weekday, day 6 = saturday -->
+				<!-- time type = 3, special weekday, day 6 = saturday, so bring the next on day 5-->
 				<effect trigger="happen" type="triggernews" news="cee19a85-bbf4-4d2b-9239-cca90d8d76ad" time="3,5,9,15"  />
 			</effects>
 			<data genre="0" price="1.0" quality="58" />
@@ -1778,7 +1778,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Offizielle Zählungen bezeugen: Die Wahlbeteiligung lag bei katastrophalen 28%. Nur eine Koalition aus PDS und NPD erreicht die erforderliche Mehrheit.</de>
+				<de>Offizielle Zählungen bezeugen: Die Wahlbeteiligung lag bei katastrophalen 28%. Nur eine Koalition aus SPDS und NPDU erreicht die erforderliche Mehrheit.</de>
 				<en></en>
 			</description>
 			<effects>
@@ -1793,7 +1793,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Alt-Kanzler Helmut Kohl merkte angesichts des unmöglichen Wahlergebnisses an, er fühle sich an die Zeiten der Weimarer Republik erinnert.</de>
+				<de>Alt-Kanzler Herbert Kuhl merkte angesichts des unmöglichen Wahlergebnisses an, er fühle sich an die Zeiten der Weimarer Republik erinnert.</de>
 				<en></en>
 			</description>
 			<effects>
