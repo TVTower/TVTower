@@ -934,7 +934,7 @@ endrem
 		Next
 
 		'now all filters contain "valid ranges"
-		TLogger.log("AdAgency.RefillBlocks", "    Cheap filter: "+cheapListFilter.ToString() +"   "+cheapListFilter.minAudienceMin, LOG_DEBUG)
+		TLogger.log("AdAgency.RefillBlocks", "    Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
 
 		for local i:int = 0 until 6
 			if i mod 2 = 0

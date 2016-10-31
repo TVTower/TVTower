@@ -687,6 +687,22 @@ Type TProductionConcept Extends TOwnedGameObject
 
 	Method GetBaseProductionTime:int()
 		local base:int = 9 * 60
+
+		local typeTimeMod:Float = 1.0
+		local speedPointTimeMod:Float = 1.0
+		local teamPointTimeMod:Float = 1.0
+		local blockMinimumMod:Float = 1.0
+
+		'live productions are done a bit faster
+		if script.IsLive() then typeTimeMod :* 0.9
+		'trash makes production way easier
+		if script.IsTrash() then typeTimeMod :* 0.8
+		'bmovies are done cheaper too
+		if script.IsBMovie() then typeTimeMod :* 0.9
+		'non-fiction-stuff (documentaries, sport shows...) are less advanced
+		if not script.IsFictional() then typeTimeMod :* 0.9
+
+
 		if productionFocus
 			local speedPoints:int = productionFocus.GetFocus(TVTProductionFocus.PRODUCTION_SPEED)
 			' 0 points = 1.0
@@ -694,6 +710,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			' 2 points = 87% ...
 			'10 points = 50%
 			local speedPointTimeMod:Float = 0.933 ^ speedPoints 
+
 
 			'TEAM (good teams work a bit more efficient)
 			local teamPoints:int = productionFocus.GetFocus(TVTProductionFocus.TEAM)
@@ -704,25 +721,41 @@ Type TProductionConcept Extends TOwnedGameObject
 			local teamPointTimeMod:Float = 0.5 + 0.5 * 0.933 ^ teamPoints 
 
 
+			'with a good team, you can record multiple scenes simultaneously
+			'exception for live, no shortcut possible there
+			if not script.IsLive()
+				blockMinimumMod :* (0.97 ^ teamPoints)
+			else
+				blockMinimumMod = 1.0
+			endif
+
+
 			'POINTS ADD TO TIME !
 			local focusPoints:int = productionFocus.GetFocusPointsSet()
 			'ignore points without penalty
 			focusPoints :- (teamPoints + speedPoints)
 			if focusPoints > 0
 				For local i:int = 0 until focusPoints
-					base :+ (10 + i*5)
+					if script.IsFictional()
+						base :+ (15 + i*7)
+					else
+						base :+ (10 + i*5)
+					endif
 				Next
 			endif
-
-			base :* speedPointTimeMod
-			base :* teamPointTimeMod
 		endif
 
-		'live productions are done a bit faster
-		if script.IsLive() then base :* 0.5
-		
+
+
+
+		base :* typeTimeMod
+		base :* speedPointTimeMod
+		base :* teamPointTimeMod
+
+
+		base = Max(base, ceil(script.GetBlocks()*blockMinimumMod)*60)
+
 		'round minutes to hours
-		'and need at least 1h/60 minutes to produce
 		return floor(Max(1, base/60))
 	End Method
 

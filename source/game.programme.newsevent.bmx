@@ -633,6 +633,11 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		topicality = 1.0
 		'reset helper so it can "premiere" again
 		setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME, False)
+
+		'TODO: reset broadcast times ? What happens to achievements etc.
+		'      they need to skip status changes if done so. so check that
+		'      first
+		'timesBroadcasted = [0]
 	End Method
 
 
