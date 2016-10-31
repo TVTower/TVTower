@@ -199,10 +199,26 @@ function DefaultAIPlayer:RemoveRequisition(requisition)
 	end
 end
 
+function DefaultAIPlayer:RemoveRequisitionByReason(reason)
+	if self.Requisitions == nil then return; end
+	
+	local removeList = {}
+	for k,v in pairs(self.Requisitions) do
+		if v.reason and v.reason == reason then
+			table.insert(removeList, v)
+		end
+	end
+
+	for k,v in pairs(removeList) do
+		self.RemoveRequisition(v)
+	end
+end
+
+
 function DefaultAIPlayer:GetRequisitionPriority(taskId)
 	local prio = 0
 	for k,v in pairs(self.Requisitions) do
-		if (v:CheckActuality() and v.TaskId == taskId) then
+		if (v.TaskId == taskId and v:CheckActuality()) then
 			prio = prio + v.Priority
 		end
 	end
@@ -214,7 +230,7 @@ function DefaultAIPlayer:GetRequisitionsByTaskId(taskId, ignoreActuality)
 	local result = {}
 
 	for k,v in pairs(self.Requisitions) do
-		if ((v:CheckActuality() or ignoreActuality == true) and v.TaskId == taskId) then
+		if (v.TaskId == taskId and (v:CheckActuality() or ignoreActuality == true)) then
 			table.insert(result, v)
 		end
 	end
@@ -226,7 +242,7 @@ function DefaultAIPlayer:GetRequisitionsByOwner(TaskOwnerId, ignoreActuality)
 	local result = {}
 
 	for k,v in pairs(self.Requisitions) do
-		if ((v:CheckActuality() or ignoreActuality == true) and v.TaskOwnerId == TaskOwnerId) then
+		if (v.TaskOwnerId == TaskOwnerId and (v:CheckActuality() or ignoreActuality == true)) then
 			table.insert(result, v)
 		end
 	end

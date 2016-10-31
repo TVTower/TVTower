@@ -535,6 +535,61 @@ function JobAnalyzeEnvironment:Tick()
 		debugMsg("Startprogramme missing: Raising priority for movie distributor! " .. mdTask.SituationPriority)			
 	end
 
+
+	-- only order new programmes if the start programmes are fulfilled already
+	if moviesNeeded <= 0 then 
+		-- not enough "useful" programmes?
+		local okTopicalityCount = 0
+		local okTopicality = 0.25
+		for i=0,TVT.of_getProgrammeLicenceCount()-1 do
+			local licence = TVT.of_getProgrammeLicenceAtIndex(i)
+			if (licence ~= nil) then
+				if licence.GetTopicality() > okTopicality then
+					okTopicalityCount = okTopicalityCount + 1
+				end
+			end
+		end
+
+		if okTopicalityCount < 3 then
+			devMsg("LOW on good topicality licences ... ordering new ones")
+			
+			-- we need money - if needed, use all we have (only keep some money
+			-- for news
+			local budget = math.min(math.max(0, TVT.getMoney() - 5000), 300000)
+
+			if budget > 0 then
+				-- remove old "topicality count" requisition
+				Player.RemoveRequisitionByReason("programmelicences_low_oktopicalitycount")
+
+				-- amount of "good" licences needed
+				local neededLicences = 6 - okTopicalityCount
+
+				local requisition = BuyProgrammeLicencesRequisition()
+				requisition.TaskId = _G["TASK_MOVIEDISTRIBUTOR"]
+				requisition.TaskOwnerId = _G["TASK_SCHEDULE"]
+				requisition.Priority = 3 --5
+				requisition.reason = "programmelicences_low_oktopicalitycount"
+
+				for i=0, neededLicences-1 do
+					local licenceBudget = math.min(budget, 100000)
+					if licenceBudget > 0 then
+						local licenceReq = BuySingleProgrammeLicenceRequisition()
+						licenceReq.minPrice = 0
+						licenceReq.maxPrice = licenceBudget
+						licenceReq.lifeTime = WorldTime.GetTimeGone() + 12 * 3600 --8 hours from now
+						requisition:AddLicenceReq(licenceReq)
+
+						budget = budget - licenceBudget
+					end
+				end
+
+				--store this to avoid duplicates?
+				--table.insert(self.MoviedistributorRequisitions, requisition)
+				Player:AddRequisition(requisition)
+			end
+		end
+	end
+
 	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

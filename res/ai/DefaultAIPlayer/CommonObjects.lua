@@ -133,7 +133,7 @@ end
 _G["SpotSlotRequisition"] = class(Requisition, function(c)
 	Requisition.init(c)	-- must init base!
 	c.TaskId = nil
-	c.RequisitionId = c.typename()
+	c.requisitionID = c.typename()
 	c.Priority = 3
 	c.Day = -1
 	c.Hour = -1
@@ -181,36 +181,52 @@ end
 
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-_G["MoviedistributorRequisition"] = class(Requisition, function(c)
+_G["BuyProgrammeLicencesRequisition"] = class(Requisition, function(c)
 	Requisition.init(c)	-- must init base!
 	c.TaskId = nil
 	c.TaskOwnerId = nil
-	c.RequisitionId = c.typename()
+	c.requisitionID = c.typename()
 	c.Priority = 5
 	-- amount of licence requisitions
 	c.Count = 0
-	-- specific information about requested licences
-	c.LicenceReqs = nil
+	-- individual licence requisitions
+	c.licenceReqs = nil
 end)
 
-function MoviedistributorRequisition:typename()
-	return "MoviedistributorRequisition"
+function BuyProgrammeLicencesRequisition:typename()
+	return "BuyProgrammeLicencesRequisition"
 end
 
-function MoviedistributorRequisition:CheckActuality()
-	if (self.Done) then return false end
+
+function BuyProgrammeLicencesRequisition:AddLicenceReq(req)
+	if req == nil then return; end
+	
+	if self.licenceReqs == nil then self.licenceReqs = {}; end
+	table.insert(self.licenceReqs, req)
+
+	self.Count = table.count(self.licenceReqs)
+end
+
+
+function BuyProgrammeLicencesRequisition:CheckActuality()
+	if (self.Done) then return false; end
+	if self.licenceReqs == nil then return false; end
 
 	local removeList = {}
-	for k,v in pairs(self.LicenceReqs) do
+	for k,v in pairs(self.licenceReqs) do
 		if (v:CheckActuality() == false) then
 			table.insert(removeList, v)
 		end
 	end
 
+	local oldCount = table.count(self.licenceReqs)
 	for k,v in pairs(removeList) do
-		table.removeElement(self.LicenceReqs, v)
+		table.removeElement(self.licenceReqs, v)
 	end
-	self.Count = table.count(self.LicenceReqs)
+	self.Count = table.count(self.licenceReqs)
+	if oldCount == self.Count and table.count(removeList) > 0 then
+		devMsg("!!!! FAILED to remove from self.licenceReqs")
+	end
 
 	if (self.Count > 0) then
 		return true
@@ -220,7 +236,7 @@ function MoviedistributorRequisition:CheckActuality()
 	end
 end
 
-function MoviedistributorRequisition:Complete()
+function BuyProgrammeLicencesRequisition:Complete()
 	self.Done = true
 	local player = _G["globalPlayer"]
 	player:RemoveRequisition(self)
@@ -228,18 +244,18 @@ end
 
 
 -- remove all requisitions for a given reason (eg. "STARTPROGRAMME")
-function MoviedistributorRequisition:RemoveLicenceRequisitionByReason(reason)
+function BuyProgrammeLicencesRequisition:RemoveLicenceRequisitionByReason(reason)
 	local removeList = {}
 	local oldCount = self.Count
 
-	for k,v in pairs(self.LicenceReqs) do
+	for k,v in pairs(self.licenceReqs) do
 		if v.reason == reason then
 			table.insert(removeList, v)
 		end
 	end
 
 	for k,v in pairs(removeList) do
-		table.removeElement(self.LicenceReqs, v)
+		table.removeElement(self.licenceReqs, v)
 		self.Count = self.Count - 1
 		--reduce priority but stay at least at 5 (see default initialization) 
 		self.Priority = math.max(5, self.Priority - 1)
@@ -251,9 +267,9 @@ end
 
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-_G["BuyLicenceRequisition"] = class(Requisition, function(c)
+_G["BuySingleProgrammeLicenceRequisition"] = class(Requisition, function(c)
 	Requisition.init(c)	-- must init base!
-	c.RequisitionId = c.typename()
+	c.requisitionID = c.typename()
 	c.Priority = 3
 	c.categories = nil
 	c.minPrice = 0
@@ -261,18 +277,14 @@ _G["BuyLicenceRequisition"] = class(Requisition, function(c)
 	c.minQuality = 0
 	c.maxQuality = -1
 	c.lifeTime = -1
-
-	-- might be "STARTPROGRAMME"
-	c.reason = nil 
 end)
 
-function BuyLicenceRequisition:typename()
-	return "BuyLicenceRequisition"
+function BuySingleProgrammeLicenceRequisition:typename()
+	return "BuySingleProgrammeLicenceRequisition"
 end
 
-function BuyLicenceRequisition:CheckActuality()
+function BuySingleProgrammeLicenceRequisition:CheckActuality()
 	if (self.Done) then return false end
-
 	-- requisitions get outdated after their lifetime ends
 	if (self.lifeTime < 0 or self.lifeTime >= WorldTime.GetTimeGone()) then
 		return true
@@ -282,7 +294,7 @@ function BuyLicenceRequisition:CheckActuality()
 	end
 end
 
-function BuyLicenceRequisition:Complete()
+function BuySingleProgrammeLicenceRequisition:Complete()
 	self.Done = true
 	local player = _G["globalPlayer"]
 	player:RemoveRequisition(self)

@@ -118,28 +118,30 @@ function AIPlayer:ForceNextTask()
 end
 
 function AIPlayer:Tick()
+	-- update every 5 ticks
+	if self.WorldTicks % 5 == 0 then
+		-- inform game about our priorities
+		-- do it here, to have a "live priority view"
+		local tasksPrioOrdered = SortTasksByPrio(self.TaskList)
+		local taskNumber = 0
+		local player = _G["globalPlayer"]
+
+		for k,v in pairs(tasksPrioOrdered) do
+			taskNumber = taskNumber + 1
+			MY.SetAIStringData("tasklist_name" .. taskNumber, v:typename())
+			MY.SetAIStringData("tasklist_priority" .. taskNumber, math.round(v.CurrentPriority,1))
+			MY.SetAIStringData("tasklist_basepriority" .. taskNumber, math.round(v.BasePriority,1))
+			MY.SetAIStringData("tasklist_situationpriority" .. taskNumber, math.round(v.SituationPriority,1))
+			MY.SetAIStringData("tasklist_requisitionpriority" .. taskNumber, math.round(player:GetRequisitionPriority(v.Id),1))
+		end
+		MY.SetAIStringData("tasklist_count", taskNumber)
+	end
+
 	self:TickAnalyse()
 	self:TickProcessTask()
 end
 
 function AIPlayer:TickProcessTask()
-	-- inform game about our priorities
-	-- do it here, to have a "live priority view"
-	local tasksPrioOrdered = SortTasksByPrio(self.TaskList)
-	local taskNumber = 0
-	local player = _G["globalPlayer"]
-
-	for k,v in pairs(tasksPrioOrdered) do
-		taskNumber = taskNumber + 1
-		MY.SetAIStringData("tasklist_name" .. taskNumber, v:typename())
-		MY.SetAIStringData("tasklist_priority" .. taskNumber, math.round(v.CurrentPriority,1))
-		MY.SetAIStringData("tasklist_basepriority" .. taskNumber, math.round(v.BasePriority,1))
-		MY.SetAIStringData("tasklist_situationpriority" .. taskNumber, math.round(v.SituationPriority,1))
-		MY.SetAIStringData("tasklist_requisitionpriority" .. taskNumber, math.round(player:GetRequisitionPriority(v.Id),1))
-	end
-	MY.SetAIStringData("tasklist_count", taskNumber)
-
-
 	-- start new tasks or continue the current
 	if (self.CurrentTask == nil)  then
 		self:BeginNewTask()
@@ -836,6 +838,7 @@ _G["Requisition"] = class(SLFDataObject, function(c)
 	c.RequisitionId = nil
 	c.Priority = 0 -- 10 = hoch 1 = gering
 	c.Done = false
+	c.reason = nil
 end)
 
 function Requisition:typename()

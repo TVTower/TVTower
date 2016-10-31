@@ -71,7 +71,6 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 		return self.SellSuitcaseLicences
 	elseif (self.BuyStartProgrammeJob.Status ~= JOB_STATUS_DONE) then
 		return self.BuyStartProgrammeJob
-
 	elseif (self.BuyRequisitedLicencesJob.Status ~= JOB_STATUS_DONE) then
 		return self.BuyRequisitedLicencesJob
 
@@ -233,11 +232,10 @@ end
 function JobBuyRequisitedLicences:Tick()
 	local player = _G["globalPlayer"]
 
-devMsg("JobBuyRequisitedLicences:Tick()")
 	-- try to fulfill the requisitions
 
 	-- fetch all (also outdated) requisitions
-	local MDRequisitions = self.Player:GetRequisitionsByTaskId(_G["TASK_MOVIEDISTRIBUTOR"], true)
+	local buyLicencesRequisitions = self.Player:GetRequisitionsByTaskId(_G["TASK_MOVIEDISTRIBUTOR"], true)
 	-- fetch all available licences
 	local licencesResponse = TVT.md_getProgrammeLicences()
 	if ((licencesResponse.result == TVT.RESULT_WRONGROOM) or (licencesResponse.result == TVT.RESULT_NOTFOUND)) then
@@ -247,45 +245,49 @@ devMsg("JobBuyRequisitedLicences:Tick()")
 	local availableLicences = TVT.convertToProgrammeLicences(licencesResponse.data)	
 
 
-	for k,requisition in pairs(MDRequisitions) do
-		-- loop over all buy-licence-requisitions
-		if requisition.requisitionId ~= nil and requisition.requisitionId == "BuyLicenceRequisition" then
-			-- delete old ones
-			if not requisition.CheckActuality() then
-devMsg("JobBuyRequisitedLicences:Tick() - requisition outdated")
-				player.RemoveRequisition(requisition)
+	-- sort by attractivity/price
+	local sortByAttractivity = function(a, b)
+		return a.GetQuality() * a.GetPrice(TVT.ME) < b.GetQuality() * b.GetPrice(TVT.ME)
+	end
+
+
+	for k,buyLicencesReq in pairs(buyLicencesRequisitions) do
+		-- loop over all buy-licences-requisitions (which each could
+		-- contain multiple entries)
+		if buyLicencesReq.requisitionID ~= nil and buyLicencesReq.requisitionID == "BuyProgrammeLicencesRequisition" then
+			-- delete old ones (also removes in-actual singleLicenceReqs)
+			if not buyLicencesReq:CheckActuality() then
+debugMsg("JobBuyRequisitedLicences:Tick() - buyLicencesReq outdated")
+				player:RemoveRequisition(buyLicencesReq)
 
 			-- process others
 			else
-				-- collect fitting licences
-				local relevantLicences = {}
-				for licenceKey, licence in pairs(availableLicences) do
-					local valid = true
-					local price = licence.GetPrice(TVT.ME)
-					if licence.GetPrice(TVT.ME) < requisition.minPrice then valid = false; end
-					if licence.GetPrice(TVT.ME) > requisition.maxPrice and requisition.maxPrice > 0 then valid = false; end
+				--- loop over all single licence requisitions in the group
+				for buySingleLicenceReqKey, buySingleLicenceReq in pairs(buyLicencesReq.licenceReqs) do
+					-- collect fitting licences
+					local relevantLicences = {}
+					for licenceKey, licence in pairs(availableLicences) do
+						local valid = true
+						local price = licence.GetPrice(TVT.ME)
+						if licence:GetPrice(TVT.ME) < buySingleLicenceReq.minPrice then valid = false; end
+						if licence:GetPrice(TVT.ME) > buySingleLicenceReq.maxPrice and buySingleLicenceReq.maxPrice > 0 then valid = false; end
 
-					if valid then
-						table.insert(relevantLicences, licence)
+						if valid then
+							table.insert(relevantLicences, licence)
+						end
 					end
-				end
+					-- sort by quality/price
+					table.sort(relevantLicences, sortByAttractivity)
 
-
-				-- sort by attractivity/price
-				local sortByAttractivity = function(a, b)
-					return a.GetQuality() * a.GetPrice(TVT.ME) < b.GetQuality() * b.GetPrice(TVT.ME)
-				end
-				table.sort(relevantLicences, sortByAttractivity)
-
-
-				-- buy best one
-				local licence = table.first(relevantLicences)
-				if licence ~= nil then
-devMsg("Buying requisition programme licence: " .. licence.GetTitle() .. " (" .. licence.GetId() .. ") - Price: " .. licence:GetPrice(TVT.ME))
-					if TVT.md_doBuyProgrammeLicence(licence.GetId()) == TVT.RESULT_OK then
-devMsg("       OK")
-devMsg("JobBuyRequisitedLicences:Tick() - requisition completed")
-						requisition.Complete()
+					-- buy best one
+					local licence = table.first(relevantLicences)
+					if licence ~= nil then
+						if TVT.md_doBuyProgrammeLicence(licence.GetId()) == TVT.RESULT_OK then
+							debugMsg("Bought requisition programme licence: " .. licence.GetTitle() .. " (" .. licence.GetId() .. ") - Price: " .. licence:GetPrice(TVT.ME))
+							buySingleLicenceReq:Complete()
+						else
+							debugMsg("Buying requisition programme licence FAILED: " .. licence.GetTitle() .. " (" .. licence.GetId() .. ") - Price: " .. licence:GetPrice(TVT.ME))
+						end
 					end
 				end
 			end

@@ -243,10 +243,10 @@ table.getKey = function(pTable, item)
 end
 
 
--- return the ZERO based index of an item in a table 
+-- return the ONE based index of an item in a table 
 table.getIndex = function(pTable, item)
 	if pTable == nil then return -1 end
-	local index = 0
+	local index = 1
     for key, value in pairs(pTable) do
         if value == item then
 			return index
