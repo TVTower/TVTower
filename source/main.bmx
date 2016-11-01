@@ -711,15 +711,26 @@ Type TApp
 					
 
 					If KEYMANAGER.IsHit(KEY_Y)
-						print "Force Next Task:"
-						GetPlayer(2).PlayerAI.CallLuaFunction("OnForceNextTask", null)
+'						print "Force Next Task:"
+'						GetPlayer(2).PlayerAI.CallLuaFunction("OnForceNextTask", null)
 
 						local addLicences:string[]
 						local addContracts:string[]
+						local addNews:string[]
 
+						'addNews :+ ["34977b2a-b976-48f8-8254-001ebe2263f1"]
 						'addLicences :+ ["TheRob-Mon-TvTower-EinmonumentalerVersuch"]
 						'addContracts :+ ["ronny-ad-allhits-02"]
 
+
+						for local l:string = EachIn addNews
+							local news:TNewsEvent = GetNewsEventCollection().GetByGUID(l)
+							if news
+								GetNewsAgency().announceNewsEvent(news, 0, False)
+								print "happen: "+ news.GetTitle() + "  at: "+GetWorldTime().GetformattedTime(news.happenedTime)
+							endif
+						next
+						
 						for local l:string = EachIn addContracts
 							local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID("ronny-ad-allhits-02")
 							if adContractBase
@@ -743,7 +754,15 @@ Type TApp
 								print "already had movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
 							endif
 						next
-						
+
+						for local l:string = EachIn addContracts
+							local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID("ronny-ad-allhits-02")
+							if adContractBase
+								'forcefully add to the collection (skips requirements checks)
+								GetPlayerProgrammeCollection(1).AddAdContract(New TAdContract.Create(adContractBase), True)
+							endif
+						next
+												
 						rem
 						local fCheap:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap
 						local fGood:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesGood
@@ -1392,13 +1411,13 @@ endrem
 
 			if player.playerAI
 				SetColor 40,40,40
-				DrawRect(605, 200, 185, 155)
+				DrawRect(605, 220, 185, 155)
 				SetColor 50,50,40
-				DrawRect(606, 201, 183, 26)
+				DrawRect(606, 221, 183, 26)
 				SetColor 255,255,255
 
 				local textX:int = 605 + 3
-				local textY:int = 200 + 3
+				local textY:int = 220 + 3
 
 				local assignmentType:int = player.aiData.GetInt("currentTaskAssignmentType", 0)
 				if assignmentType = 1
@@ -1428,7 +1447,8 @@ endrem
 					textY :+ 13
 				next
 			endif
-		
+
+			debugFinancialInfos.Draw(-1, 235, 305)
 '				debugProgrammePlanInfos.Draw((playerID + 1) mod 4, 415, 15)
 		endif
 	End Function

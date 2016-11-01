@@ -284,8 +284,8 @@ function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessC
 	local globalPercentageByHour = self:GetMaxAudiencePercentage(fixedDay, fixedHour)
 	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()
 	local sharedMaxAudience = MY.GetMaxAudience() - exclusiveMaxAudience
-	self.log["GuessedAudienceForHour"] = "Hour=" .. hour .. "  Lvl=" .. level .. "  %  guessedAudience=" .. math.round(guessedAudience.GetTotalSum()) .. "  aud=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*globalPercentageByHour) .."% of max="..MY.GetMaxAudience()..")  avgQuality="..avgQuality .. "  statQuality="..statQuality1.."/"..statQuality2.."/"..statQuality3.."/"..statQuality4
-	--debugMsg( self.log["GuessedAudienceForHour"] )
+	self.log["GuessedAudienceForHour"] = "GUESSED: Hour=" .. hour .. "  Lvl=" .. level .. "  Audience: guess=" .. math.round(guessedAudience.GetTotalSum()) .. "  real=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*guessedAudience.GetTotalSum()/MY.GetMaxAudience()*globalPercentageByHour) .."%)  avgQ="..avgQuality .. "  statQ="..statQuality1.."/"..statQuality2.."/"..statQuality3.."/"..statQuality4
+	debugMsg( self.log["GuessedAudienceForHour"] )
 
 	return guessedAudience
 end
@@ -1005,8 +1005,8 @@ function JobEmergencySchedule:FilterSpotList(spotList, day, hour)
 	for k,v in pairs(spotList) do
 		if v.SendMinimalBlocksToday() > 0 then
 			-- only add, if there is another spot left
-			local count = MY.GetProgrammePlan().GetAdvertisementsPlanned(contract, day, hour, 1)
-			if (count < contract.GetSpotCount()) then
+			local count = MY.GetProgrammePlan().GetAdvertisementsPlanned(v, day, hour, 1)
+			if (count < v.GetSpotCount()) then
 				table.insert(currentSpotList, v)
 			end
 		end

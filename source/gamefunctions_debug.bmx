@@ -3,6 +3,7 @@ Global debugAudienceInfos:TDebugAudienceInfos = New TDebugAudienceInfos
 Global debugProgrammePlanInfos :TDebugProgrammePlanInfos = new TDebugProgrammePlanInfos
 Global debugProgrammeCollectionInfos :TDebugProgrammeCollectionInfos = new TDebugProgrammeCollectionInfos
 Global debugPlayerControls :TDebugPlayerControls = new TDebugPlayerControls
+Global debugFinancialInfos :TDebugFinancialInfos = new TDebugFinancialInfos
 
 
 Type TDebugAudienceInfos
@@ -552,17 +553,18 @@ Type TDebugProgrammeCollectionInfos
 			SetColor 255,255,255
 
 			local adString1a:string = a.GetTitle()
-			local adString1b:string = "R: "+(a.GetDaysLeft()+1)+"D"
+			local adString1b:string = "R: "+(a.GetDaysLeft())+"D"
 			local adString2a:string = "Min: " +TFunctions.DottedValue(a.GetMinAudience())
 			if a.GetLimitedToTargetGroup() > 0 or a.GetLimitedToGenre() > 0  or a.GetLimitedToProgrammeFlag() > 0
 				adString2a = "**" + adString2a
 				'adString1a :+ a.GetLimitedToTargetGroup()+","+a.GetLimitedToGenre()+","+a.GetLimitedToProgrammeFlag()
 			endif
+			adString1b :+ " Bl/D: "+a.SendMinimalBlocksToday()
 
 			local adString2b:string = "Acu: " +MathHelper.NumberToString(a.GetAcuteness()*100.0)
 			local adString2c:string = a.GetSpotsSent() + "/" + a.GetSpotCount()
 			GetBitmapFont("default", 10).DrawBlock( adString1a, x+192, y+1 + entryPos*lineHeight*2 + lineHeight*0, 130, lineHeight, ALIGN_LEFT_CENTER,,,,,False)
-			GetBitmapFont("default", 10).DrawBlock( adString1b, x+192 + 133, y+1 + entryPos*lineHeight*2 + lineHeight*0, 35, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
+			GetBitmapFont("default", 10).DrawBlock( adString1b, x+192 + 103, y+1 + entryPos*lineHeight*2 + lineHeight*0, 35+30, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
 
 			GetBitmapFont("default", 10).DrawBlock( adString2a, x+192, y+1 + entryPos*lineHeight*2 + lineHeight*1, 60, lineHeight, ALIGN_LEFT_CENTER, secondLineCol,,,,False)
 			GetBitmapFont("default", 10).DrawBlock( adString2b, x+192 + 65, y+1 + entryPos*lineHeight*2 + lineHeight*1, 55, lineHeight, ALIGN_CENTER_CENTER, secondLineCol)
@@ -914,5 +916,40 @@ Type TDebugPlayerControls
 			endif
 		endif
 		return False
+	End Method
+End Type
+
+
+
+Type TDebugFinancialInfos
+	Method Update(playerID:int, x:int, y:int)
+	End Method
+
+	Method Draw(playerID:int, x:int, y:int)
+		if playerID = -1
+			Draw(1, x, y + 30*0)
+			Draw(2, x, y + 30*1)
+			Draw(3, x + 125, y + 30*0)
+			Draw(4, x + 125, y + 30*1)
+			return
+		endif
+		
+		SetColor 0,0,0
+		DrawRect(x, y, 123, 30)
+
+		SetColor 255,255,255
+
+		local textX:int = x+1
+		local textY:int = y+1
+
+		local finance:TPlayerFinance = GetPlayerFinance(playerID, GetWorldTime().GetDay(), True)
+		local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(playerID)
+
+		local font:TBitmapfont = GetBitmapFont("default", 10)
+		font.Draw("Money #"+playerID+": "+TFunctions.dottedValue(finance.money), textX, textY)
+		textY :+ 9+1
+		font.Draw("~tLic:~t~t|color=120,255,120|"+TFunctions.dottedValue(finance.income_programmeLicences)+"|/color| / |color=255,120,120|"+TFunctions.dottedValue(finance.expense_programmeLicences), textX, textY)
+		textY :+ 9
+		font.Draw("~tAd:~t~t|color=120,255,120|"+TFunctions.dottedValue(finance.income_ads)+"|/color| / |color=255,120,120|"+TFunctions.dottedValue(finance.expense_penalty), textX, textY)
 	End Method
 End Type

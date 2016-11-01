@@ -1066,8 +1066,44 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 	'days left for sending all contracts from today
 	Method GetDaysLeft:Int(currentDay:int = -1) {_exposeToLua}
-		if currentDay < 0 then currentDay = GetWorldTime().GetDay()
-		Return ( base.daysToFinish - (currentDay - daySigned) )
+		if daySigned < 0
+			return base.daysToFinish
+		else
+			if currentDay < 0 then currentDay = GetWorldTime().GetDay()
+			Return ( base.daysToFinish - (currentDay - daySigned) )
+		endif
+	End Method
+
+
+	Method GetEndTime:Long() {_exposeToLua}
+		if daySigned < 0
+			return GetWorldTime().MakeTime(0, GetWorldTime().GetDay() + base.daysToFinish + 1, 0,0)
+		else
+			return GetWorldTime().MakeTime(0, daySigned + base.daysToFinish + 1, 0,0)
+		endif
+	End Method
+
+
+	Method GetStartTime:Long() {_exposeToLua}
+		if daySigned < 0
+			return GetWorldTime().GetTimeGone()
+		else
+			return GetWorldTime().MakeTime(0, daySigned, 0,0)
+		endif
+	End Method
+
+
+	'time left for sending all contract-spots from now
+	Method GetTimeLeft:Long(now:Long = -1) {_exposeToLua}
+		if now < 0 then now = GetWorldTime().GetTimeGone()
+
+		Return GetEndTime() - now
+	End Method
+
+
+	Method GetTimeGonePercentage:Float(now:Long = -1) {_exposeToLua}
+		if daySigned < 0 then return 0.0
+		return 1.0 - GetTimeLeft(now) / float(GetEndTime() - GetStartTime())
 	End Method
 
 
@@ -1080,6 +1116,11 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'returns whether the contract was fulfilled
 	Method isSuccessful:int() {_exposeToLua}
 		Return (base.spotCount <= spotsSent)
+	End Method
+
+
+	Method GetSpotsToSendPercentage:Float() {_exposeToLua}
+		return GetSpotsToSend() / float(GetSpotCount())
 	End Method
 
 
@@ -1520,7 +1561,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 			skin.fontNormal.draw("Verfuegbarkeitszeitraum: --- noch nicht integriert ---", contentX + 5, contentY)
 			contentY :+ 12
 			if owner > 0
-				skin.fontNormal.draw("Tage bis Vertragsende: "+GetDaysLeft(), contentX + 5, contentY)
+				skin.fontNormal.draw("Tage bis Vertragsende: "+GetDaysLeft() + " (Sekunden: "+ GetTimeLeft()+")", contentX + 5, contentY)
 				contentY :+ 12
 				skin.fontNormal.draw("Unterschrieben: "+owner, contentX + 5, contentY)
 				contentY :+ 12
@@ -1636,26 +1677,25 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'Wird bisher nur in der LUA-KI verwendet
 	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (Gesamt)
 	Method GetPressure:float() {_exposeToLua}
-		local _daysToFinish:int = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
-		Return self.GetSpotCount() / _daysToFinish * _daysToFinish
+		Return GetTimeLeft() / GetSpotCount()
 	End Method
 
 
 	'Wird bisher nur in der LUA-KI verwendet
 	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (tatsächlich / aktuell)
 	Method GetCurrentPressure:float() {_exposeToLua}
-		local _daysToFinish:int = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
-		Return self.GetSpotsToSend() / _daysToFinish * _daysToFinish
+		Return GetTimeLeft() / GetSpotsToSend()
 	End Method
 
 
 	'Wird bisher nur in der LUA-KI verwendet
 	'Wie dringend ist es diese Spots zu senden
 	Method GetAcuteness:float() {_exposeToLua}
-		Local spotsToBroadcast:int = self.GetSpotsToSend()
-		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
-		If daysLeft <= 0 then return 0 'no "acuteness" for obsolete contracts
-		Return spotsToBroadcast  / Float(daysLeft * daysLeft  * 100)
+		'no "acuteness" for obsolete contracts
+		If self.getDaysLeft() < 0 then return 0
+
+		'multiply by spot count (the more to send in total, the more acute)
+		Return self.GetSpotsToSend() * GetSpotsToSendPercentage() * GetTimeGonePercentage()
 	End Method
 
 
@@ -1663,36 +1703,18 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'Wie viele Spots sollten heute mindestens gesendet werden
 	Method SendMinimalBlocksToday:int() {_exposeToLua}
 		Local spotsToBroadcast:int = self.GetSpotsToSend()
-		Local acuteness:int = self.GetAcuteness()
-		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
-		If daysLeft <= 0 then return 0 'no "blocks" for obsolete contracts
+		local daysLeft:int = self.GetDaysLeft() + 1
+		'no "blocks" for obsolete contracts
+		If daysLeft <= 0 or spotsToBroadcast <= 0 then return 0
 
-		If (acuteness >= 100)
-			Return ceil(spotsToBroadcast / float(daysLeft)) 'int rundet
-		Elseif (acuteness >= 70)
+		'Local acuteness:Float = self.GetAcuteness() / self.GetSpotsToSend() 'reduce to time-acuteness
+		'print GetTitle()+"   spotsToBroadcast: " + spotsToBroadcast+"  acuteness:" + acuteness +"  daysLeft: " + daysLeft
+
+		' send at least 1 spot per day except you have really much time
+		If (daysLeft >= 3)
 			Return 1
 		Else
-			Return 0
-		Endif
-	End Method
-
-
-	'Wird bisher nur in der LUA-KI verwendet
-	'Wie viele Spots sollten heute optimalerweise gesendet werden
-	Method SendOptimalBlocksToday:int() {_exposeToLua}
-		Local spotsToBroadcast:int = self.GetSpotsToSend()
-		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
-		If daysLeft <= 0 then return 0 'no "blocks" for obsolete contracts
-
-		Local acuteness:int = self.GetAcuteness()
-		Local optimumCount:int = Int(spotsToBroadcast / daysLeft) 'int rundet
-
-		If (acuteness >= 100) and (spotsToBroadcast > optimumCount)
-			optimumCount = optimumCount + 1
-		Endif
-
-		If (acuteness >= 100)
-			return Int(spotsToBroadcast / daysLeft)  'int rundet
+			Return ceil(spotsToBroadcast / float(daysLeft))
 		Endif
 	End Method
 	'===== END AI-LUA HELPER FUNCTIONS =====
