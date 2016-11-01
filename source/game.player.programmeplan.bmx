@@ -565,7 +565,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 'materials might differ from each other
 'instead of comparing objects we compare their content
-		If startAtLatestTime
+		If not startAtLatestTime
 			For Local i:Int = minIndex To maxIndex
 				Local obj:TBroadcastMaterial = TBroadcastMaterial(GetObjectAtIndex(slotType, i))
 				If Not obj Then Continue
@@ -582,6 +582,16 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Return Null
 	End Method
 
+
+	Method GetObjectLatestStartHour:Int(material:TBroadcastMaterial, slotType:int, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourend:int=-1) {_exposeToLua}
+		FixDayHour(dayStart, hourStart)
+		FixDayHour(dayEnd, hourEnd)
+
+		'check ad usage - but only for ads!
+		local latestInstance:TBroadcastMaterial = ObjectPlannedInTimeSpan(material, slotType, dayStart, hourStart, dayEnd, hourEnd, True)
+		If latestInstance Then return latestInstance.programmedDay*24 + latestInstance.programmedHour
+		return -1
+	End Method
 
 
 	'returns the amount of source-users in the time span
@@ -1259,6 +1269,30 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetAdContractLatestStartHour:Int(contract:TAdContract, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:int=-1) {_exposeToLua}
+		if not contract then return -1
+
+		Local minIndex:Int = 0
+		Local maxIndex:Int = advertisements.length
+		
+		FixDayHour(dayStart, hourStart)
+		minIndex = GetArrayIndex(dayStart*24 + hourStart)
+
+		if dayEnd <> -1 and hourEnd <> -1
+			FixDayHour(dayEnd, hourEnd)
+			maxIndex = GetArrayIndex(dayEnd*24 + hourEnd)
+		endif
+
+		'loop through the given range
+		For Local i:Int = maxIndex To minIndex Step -1
+			Local obj:TAdvertisement = TAdvertisement(GetObjectAtIndex(TVTBroadcastMaterialType.ADVERTISEMENT, i))
+			If Not obj Then Continue
+			If obj.contract = contract Then Return obj.programmedDay*24 + obj.programmedHour
+		Next
+		return -1
+	End Method
+
+
 	Method GetAdvertisementBlock:Int(day:Int=-1, hour:Int=-1) {_exposeToLua}
 		Return GetObjectBlock(TVTBroadcastMaterialType.ADVERTISEMENT, day, hour)
 	End Method
@@ -1273,13 +1307,14 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	Method GetAdvertisementsPlanned:Int(contract:TAdContract, startHour:int=-1, endHour:int=-1, includeSuccessful:Int=True) {_exposeToLua}
+		Local endIndex:Int = advertisements.length-1
+
 		'default: start with time of the sign
 		if startHour = -1 then startHour = 24 * (contract.daySigned - 1)
 		'default: end with latest planned element
-		if endHour = -1 then endHour = advertisements.length-1
+		if endHour > -1 then endIndex = GetArrayIndex(endHour)
 
 		Local startIndex:Int= Max(0, GetArrayIndex(startHour))
-		Local endIndex:Int = Min(endHour, advertisements.length-1)
 
 		Local count:Int	= 0
 		For Local i:Int = startIndex To endIndex
@@ -1362,6 +1397,12 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
+	'Returns the ad for the given day/time
+	Method GetRealAdvertisement:TAdvertisement(day:Int=-1, hour:Int=-1) {_exposeToLua}
+		Return TAdvertisement(GetObject(TVTBroadcastMaterialType.ADVERTISEMENT, day, hour))
+	End Method
+
+	
 	'returns an array of real advertisements within the given time frame
 	'in the advertisement list
 	Method GetRealAdvertisementsInTimeSpan:TAdvertisement[](dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, includeStartingEarlierObject:Int=True) {_exposeToLua}
