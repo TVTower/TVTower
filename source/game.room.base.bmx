@@ -37,9 +37,6 @@ Type TRoomBaseCollection
 		list.Clear()
 		_idMap = null
 		_guidMap = null
-
-		'also set back the ids
-		TRoomBase.LastID = 0
 	End Method
 	
 

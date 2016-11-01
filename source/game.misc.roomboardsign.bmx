@@ -424,6 +424,11 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	Global imageDraggedBaseName:string = "gfx_roomboard_sign_dragged_"
 
 
+	Method GenerateGUID:string()
+		return "roomboardsign-"+id
+	End Method
+
+
 	Method Init:TRoomBoardSign(roomDoor:TRoomDoorBase)
 		if not roomDoor then return Null
 

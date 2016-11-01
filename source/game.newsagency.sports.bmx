@@ -84,9 +84,8 @@ Type TNewsEventSport extends TGameObject
 	Field name:string = "unknown"
 
 
-	Method SetGUID:Int(GUID:String)
-		if GUID="" then GUID = "NewsEventSport-"+id
-		self.GUID = GUID
+	Method GenerateGUID:string()
+		return "NewsEventSport-"+id
 	End Method
 
 

@@ -200,6 +200,10 @@ Type TAchievementBaseType Extends TGameObject
 '		return new TAchievementBaseType
 	End Function
 
+	Method GenerateGUID:string()
+		return "achievementbasetype-"+id
+	End Method
+
 
 	Method Init:TAchievementBaseType(data:object)
 		'stub

@@ -2235,6 +2235,7 @@ Type TSaveGame Extends TGameState
 		'this avoids duplicate GUIDs
 		TEntityBase.lastID = savegameSummary.GetInt("entitybase_lastID", 3000000)
 		TGameObject.LastID = savegameSummary.GetInt("gameobject_lastID", 3000000)
+		TLogger.Log("Savegame.Load()", "Restored TEntityBase.lastID="+TEntityBase.lastID+", TGameObject.LastID="+TGameObject.LastID+".", LOG_SAVELOAD | LOG_DEBUG)
 
 
 		'try to repair older savegames
@@ -2245,6 +2246,7 @@ Type TSaveGame Extends TGameState
 		endif
 
 
+		'this creates new TGameObjects - and therefore increases ID count!
 		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename))
 		If Not saveGame
 			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)
@@ -2255,6 +2257,7 @@ Type TSaveGame Extends TGameState
 			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is in bad state.", LOG_SAVELOAD | LOG_ERROR)
 			Return False
 		EndIf
+
 
 		'=== RESET CURRENT GAME ===
 		'reset game data before loading savegame data

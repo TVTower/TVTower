@@ -90,4 +90,8 @@ Type TPlayerDifficulty extends TGameObject
 	Field creditMaximum:int
 	Field programmePriceMod:Float = 1.0
 	Field advertisementProfitMod:Float = 1.0
+
+	Method GenerateGUID:string()
+		return "playerdifficulty-"+id
+	End Method
 End Type

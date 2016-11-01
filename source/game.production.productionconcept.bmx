@@ -108,6 +108,11 @@ Type TProductionConcept Extends TOwnedGameObject
 	Field totalCost:int = -1
 
 
+	Method GenerateGUID:string()
+		return "productionconcept-"+id
+	End Method
+
+
 	Method Initialize:TProductionConcept(owner:int, script:TScript)
 		SetOwner(owner)
 

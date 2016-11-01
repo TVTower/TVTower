@@ -120,8 +120,9 @@ Type TGameObject {_exposeToLua="selected"}
 		'assign a new id
 		id = LastID
 
-		'create a new guid
-		SetGUID("")
+		'do NOT generate the GUID here already - as this would
+		'call the "TGameObject.GenerateGUID" also for extended types
+		'-> defer it to the GetGUID()-getter
 	End Method
 
 
@@ -142,6 +143,7 @@ Type TGameObject {_exposeToLua="selected"}
 
 
 	Method GetGUID:String() {_exposeToLua}
+		if GUID="" then SetGUID()
 		Return GUID
 	End Method
 

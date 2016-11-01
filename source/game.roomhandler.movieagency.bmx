@@ -1070,6 +1070,10 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	'todo/idea: we could add a "started" and a "endTime"-field so
 	'           auctions do not end at midnight but individually
 
+	Method GenerateGUID:string()
+		return "auctionprogrammeblocks-"+id
+	End Method
+
 
 	Method Create:TAuctionProgrammeBlocks(slot:Int=0, licence:TProgrammeLicence)
 		Self.area.position.SetXY(140 + (slot Mod 2) * 260, 80 + int(Ceil(slot / 2)) * 60)

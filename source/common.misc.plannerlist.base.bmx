@@ -23,6 +23,10 @@ Type TPlannerList extends TOwnedGameObject
 	'whether the player can click / create elements? 
 	Field clicksAllowed:int = True
 
+	Method GenerateGUID:string()
+		return "plannerlist-"+id
+	End Method
+
 
 	Method Initialize:int()
 		ListSortDirection = 0

@@ -1001,6 +1001,10 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		Return obj
 	End Function
 
+	Method GenerateGUID:string()
+		return "station-"+id
+	End Method
+
 
 	'refresh the station data
 	Method refreshData() {_exposeToLua}

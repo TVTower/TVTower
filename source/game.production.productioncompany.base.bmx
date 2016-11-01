@@ -54,6 +54,11 @@ Type TProductionCompanyBase extends TGameObject
 	Const MAX_FOCUSPOINTS:int = 60
 
 
+	Method GenerateGUID:string()
+		return "productioncompanybase-"+id
+	End Method
+
+
 	Method GetLevel:int()
 		return 1 + (MAX_LEVEL-1) * GetExperiencePercentage()
 	End Method

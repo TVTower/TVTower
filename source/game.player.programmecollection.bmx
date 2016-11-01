@@ -118,6 +118,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
+	Method GenerateGUID:string()
+		return "playerprogrammecollection-"+id
+	End Method
+
+
 	Method Initialize:Int()
 		'invalidate
 		_programmeLicences = null
