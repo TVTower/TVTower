@@ -191,6 +191,7 @@ Type TBitmapFont
 	Field lineHeightModifier:float = 1.2
 	'value the width of " " (space) is multiplied with
 	Field spaceWidthModifier:float = 1.0
+	Field tabWidth:int = 15
 	'whether to use ints or floats for coords
 	Field drawAtFixedPoints:int = true
 	Field _charsEffectFunc:TBitmapFontChar(font:TBitmapFont, charKey:int, char:TBitmapFontChar, config:TData)[]
@@ -1000,10 +1001,14 @@ Type TBitmapFont
 					else
 						if text[i] = 32 'space
 							lineWidth :+ bm.charWidth * gfx.tform_ix * spaceWidthModifier
+						elseif text[i] = KEY_TAB
+							lineWidth =  (int(lineWidth / tabWidth)+1) * tabWidth
 						else
 							lineWidth :+ bm.charWidth * gfx.tform_ix
 						endif
 					endif
+				elseif text[i] = KEY_TAB
+					lineWidth =  (int(lineWidth / tabWidth)+1) * tabWidth
 				EndIf
 
 				charBefore = charCode
