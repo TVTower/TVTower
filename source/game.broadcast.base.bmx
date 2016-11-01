@@ -339,6 +339,13 @@ Type TBroadcastManager
 		If Not audienceResult Then Return 0
 		Return audienceResult.Audience.GetTotalSum()
 	End Method
+
+
+	Method GetCurrentAudienceObject:TAudience(owner:Int)
+		Local audienceResult:TAudienceResult = GetAudienceResult(owner)
+		If Not audienceResult Then Return new TAudience.InitValue(0,0)
+		Return audienceResult.Audience
+	End Method
 End Type
 
 '===== CONVENIENCE ACCESSOR =====

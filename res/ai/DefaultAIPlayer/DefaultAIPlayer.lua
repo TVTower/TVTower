@@ -351,13 +351,13 @@ function BusinessStats:ReadStats()
 		-- read in new audience stats
 		if WorldTime.GetDayMinute() == 0 then
 			local currentBroadcast = TVT.GetCurrentNewsShow()
-			local currentAudience = TVT.GetCurrentNewsAudience()
+			local currentAudience = TVT.GetCurrentNewsAudience().GetTotalSum()
 			local currentAttraction = TVT.GetCurrentNewsAudienceAttraction()
 			self.BroadcastStatistics:AddBroadcast(WorldTime.GetDay(), WorldTime.GetDayHour(), TVT.Constants.BroadcastMaterialType.NEWSSHOW, currentAttraction, currentAudience)
 		end
 		if WorldTime.GetDayMinute() == 5 then
 			local currentBroadcast = TVT.GetCurrentProgramme()
-			local currentAudience = TVT.GetCurrentProgrammeAudience()
+			local currentAudience = TVT.GetCurrentProgrammeAudience().GetTotalSum()
 			local currentAttraction = TVT.GetCurrentProgrammeAudienceAttraction()
 			self.BroadcastStatistics:AddBroadcast(WorldTime.GetDay(), WorldTime.GetDayHour(), TVT.Constants.BroadcastMaterialType.PROGRAMME, currentAttraction, currentAudience)
 
@@ -645,7 +645,7 @@ function OnMinute(number)
 				-- only for ads
 				if broadcast.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) then
 					local audience = TVT.GetCurrentProgrammeAudience()
-					if audience < TVT.GetCurrentAdvertisementMinAudience() then
+					if audience.GetTotalSum() < TVT.GetCurrentAdvertisementMinAudience() then
 						-- we can only fix if we have licences for trailers
 						-- or adcontracts for ad spots (and this means 1
 						-- contract MORE than just the unsatisfying one)
@@ -695,9 +695,10 @@ function OnMinute(number)
 
 
 	--Zum Test
+	--[[
 	if (number == 6) then
 
-		local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
+		local task = getAIPlayer().TaskList[ _G["TASK_SCHEDULE"] ]
 		local fixedDay, fixedHour = FixDayAndHour(WorldTime.GetDay(), WorldTime.GetDayHour())
 
 		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
@@ -727,11 +728,12 @@ function OnMinute(number)
 		if (programme ~= nil) then title = programme.GetTitle(); end
 
 		debugMsg("GUESSING AUDIENCE: " .. fixedHour .. ":05 \"" .. title .. "\"")
-		debugMsg("  realAudience= " .. audience .. "  guessedAudience=" .. guessedAudience .. "  guessRealFactor=" .. math.round(100 * audience/guessedAudience) .."%" )
+		debugMsg("  realAudience= " .. audience.GetTotalSum() .. "  guessedAudience=" .. guessedAudience .. "  guessRealFactor=" .. math.round(100 * audience.GetTotalSum()/guessedAudience) .."%" )
 
 		table.insert(globalPlayer.logs, "GUESSING AUDIENCE: " .. fixedHour .. ":05 \"" .. title .. "\"")
-		table.insert(globalPlayer.logs, "  realAudience= " .. audience .. "  guessedAudience=" .. guessedAudience .. "  guessRealFactor=" .. math.round(100 * audience/guessedAudience) .."%" )
+		table.insert(globalPlayer.logs, "  realAudience= " .. audience.GetTotalSum() .. "  guessedAudience=" .. guessedAudience .. "  guessRealFactor=" .. math.round(100 * audience.GetTotalSum()/guessedAudience) .."%" )
 	end
+	]]--
 end
 
 function OnMalfunction()

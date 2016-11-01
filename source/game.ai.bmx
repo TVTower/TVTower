@@ -773,14 +773,18 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method GetCurrentProgrammeAudience:Int()
-		return GetBroadcastManager().GetCurrentAudience(Self.ME)
+	Method GetCurrentProgrammeAudience:TAudience()
+		return GetBroadcastManager().GetCurrentAudienceObject(Self.ME)
 rem
 		local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(GetWorldTime().GetDay(), GetWorldTime.GetDayHour())
-		if not stat then return 0
-		local audienceResult:TAudienceResultBase = stat.GetAudienceResult(Self.ME, GetWorldTime().GetDayHour(), false)
-		If Not audienceResult Then Return 0
-		Return audienceResult.Audience.GetTotalSum()
+		If stat
+			local audienceResult:TAudienceResultBase = stat.GetAudienceResult(Self.ME, GetWorldTime().GetDayHour(), false)
+			if audienceResult
+				return audienceResult.Audience
+			endif
+		endif
+
+		Return new TAudience.InitValue(0)
 endrem
 	End Method
 
@@ -795,12 +799,15 @@ endrem
 	End Method
 
 
-	Method GetCurrentNewsAudience:Int()
+	Method GetCurrentNewsAudience:TAudience()
 		local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(GetWorldTime().GetDay(), GetWorldTime().GetDayHour())
-		if not stat then return 0
-		local audienceResult:TAudienceResultBase = stat.GetNewsAudienceResult(Self.ME, GetWorldTime().GetDayHour(), false)
-		If Not audienceResult Then Return 0
-		Return audienceResult.Audience.GetTotalSum()
+		if stat
+			local audienceResult:TAudienceResultBase = stat.GetNewsAudienceResult(Self.ME, GetWorldTime().GetDayHour(), false)
+			If audienceResult
+				return audienceResult.Audience
+			endif
+		endif
+		return new TAudience.InitValue(0, 0)
 	End Method
 
 

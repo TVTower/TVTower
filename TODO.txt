@@ -29,16 +29,9 @@ TODO
 	- Eigenproduktion
 	- Raumanmietung
 	- Filmauktionen
-	- Filme verkaufen
+	- Filme verkaufen (Basis durch mcs geschaffen)
 	- Sendemasten verkaufen
 	- Raeume kuendigen falls zu teuer
-
-* Tooltip am Mauscursor - "Programm vom Plan entfernen", "Hier fallen lassen um zu löschen" ..
-
-* Fensterverschiebung in Windows stoppt Programmablauf bis loslassen
-	- DirectX -> eigene WindowDeco - stylen
-	- OpenGL ... - WindowDeco nicht stylebar
-
 
 
 rem
@@ -76,3 +69,19 @@ http://www.gamezworld.de/phpforum/viewtopic.php?pid=84756#p84756
 
 Imagenichterreichen = Textmeldung/Warnsymbol bei Werbung und reduzierter Gewinn
 http://www.gamezworld.de/phpforum/viewtopic.php?pid=84774#p84774
+
+Debugausgaben fuer Werbemakler (Quotenanforderungen, angebotene Werbung)
+http://www.gamezworld.de/phpforum/viewtopic.php?pid=84923#p84923
+
+Nicht alle News in der eigenen Liste - nach Einladen dann schon
+http://www.gamezworld.de/phpforum/viewtopic.php?pid=84922#p84922
+
+Nicht alle Familienmitglieder im TV zu sehen (Rentner Kinder ... Programmattraktivitaet ueberarbeiten)
+https://www.gamezworld.de/phpforum/viewtopic.php?pid=84965#p84965
+
+Quoten-Statistik erweitern (Orwin)
+
+Fernsehfamilie-Sprechblasen mit Feedback ("Super!")
+
+KI: Schauen ob SpotRequisitions verfallen. Verfallsdatum hinzufuegen und "CheckActive" ueberschreiben
+https://www.gamezworld.de/phpforum/viewtopic.php?pid=84977#p84977

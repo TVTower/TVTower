@@ -266,7 +266,7 @@ function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessC
 	
 	--requesting audience for the current broadcast?
 	if (guessCurrentHour == false) and (WorldTime.GetDay() == fixedDay and WorldTime.GetDayHour() == fixedHour and WorldTime.GetDayMinute() >= 5) then
-		return TVT.GetCurrentAudience()
+		return TVT.GetCurrentProgrammeAudience()
 	end
 	
 	-- predicted level of the news show for the given time
@@ -284,8 +284,8 @@ function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessC
 	local globalPercentageByHour = self:GetMaxAudiencePercentage(fixedDay, fixedHour)
 	local exclusiveMaxAudience = TVT.getExclusiveMaxAudience()
 	local sharedMaxAudience = MY.GetMaxAudience() - exclusiveMaxAudience
-	self.log["GuessedAudienceForHour"] = "GUESSED: Hour=" .. hour .. "  Lvl=" .. level .. "  Audience: guess=" .. math.round(guessedAudience.GetTotalSum()) .. "  real=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. " (".. math.floor(100*guessedAudience.GetTotalSum()/MY.GetMaxAudience()*globalPercentageByHour) .."%)  avgQ="..avgQuality .. "  statQ="..statQuality1.."/"..statQuality2.."/"..statQuality3.."/"..statQuality4
-	debugMsg( self.log["GuessedAudienceForHour"] )
+	self.log["GuessedAudienceForHour"] = "GUESSED: Hour=" .. hour .. "  Lvl=" .. level .. "  Audience: guess=" .. math.round(guessedAudience.GetTotalSum()) .. "  atTV=".. math.round(MY.GetMaxAudience()*globalPercentageByHour) .. "  avgQ="..avgQuality .. "  statQ="..statQuality1.."/"..statQuality2.."/"..statQuality3.."/"..statQuality4
+	--debugMsg( self.log["GuessedAudienceForHour"] )
 
 	return guessedAudience
 end
@@ -963,7 +963,14 @@ function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRes
 	return currentSpotList;
 end
 
-function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor, noAudienceRestrictions, noBroadcastRestrictions)
+function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor, noAudienceRestrictions, noBroadcastRestrictions, earliestHour, latestHour)
+	if latestHour == nil or type(latestHour) ~= "number" then
+		latestHour = -1
+	end
+	if earliestHour == nil or type(earliestHour) ~= "number" then
+		earliestHour = -1
+	end
+
 	-- convert number to audience-object
 	if type(guessedAudience) == "number" or guessedAudience == nil then
 		if guessedAudience == nil then 
@@ -986,8 +993,11 @@ function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor, no
 			local guessedAudienceValue = guessedAudience.GetTotalSum()
 			--debugMsg("GetMatchingSpotList - minAud("..minAudience..") <= guessedAud(".. guessedAudienceValue .. ") and minAud >= guessedAudMin(" .. (guessedAudienceValue*minFactor) .. ")")
 			if ((minAudience <= guessedAudienceValue) and (minAudience >= guessedAudienceValue * minFactor)) or noAudienceRestrictions then
-				local count = MY.GetProgrammePlan().GetAdvertisementsPlanned(contract, -1, -1, 1)
-				--debugMsg("GetMatchingSpotList: " .. contract.GetTitle() .. ". SpotsPlanned: " .. count)
+				-- skip ads with all their spots being planned already
+				local feD,feH = FixDayAndHour(0, earliestHour)
+				local flD,flH = FixDayAndHour(0, latestHour)
+				local count = MY.GetProgrammePlan().GetAdvertisementsPlanned(contract, earliestHour, latestHour, 1)
+				--debugMsg("GetMatchingSpotList: " .. contract.GetTitle() .. ". SpotsPlanned: " .. count .. "    begin:"..feD.."/"..feH.."  end:" .. flD.."/"..flH)
 	
 				if (count < contract.GetSpotCount() or noBroadcastRestrictions) then
 					table.insert(currentSpotList, contract)
@@ -1206,9 +1216,16 @@ function JobSchedule:OptimizeAdSchedule()
 
 		local previousProgramme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
 		local previousProgrammeBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour))
-		local guessedAudience = self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme, block)
-		guessedAudience.MultiplyFloat(self.ScheduleTask.guessedAudienceRiskyness)
+		-- do not guess when current hour -> "false"
+		local guessedAudience = self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme, block, false)
+		if WorldTime:GetDay() == fixedDay and WorldTime:GetDayHour() == fixedHour then
+			-- we know the audience FOR SURE!
+		else
+			guessedAudience.MultiplyFloat(self.ScheduleTask.guessedAudienceRiskyness)
+		end
 		local guessedAudienceSum = guessedAudience.GetTotalSum()
+
+--debugMsg("optimizing: " .. fixedDay .. "/"..fixedHour .. "  guessedaud=" .. guessedAudienceSum  .. "  real="..TVT.GetCurrentProgrammeAudience().GetTotalSum())
 
 		-- add to debug data of the 
 		MY.SetAIData("guessedaudience_" .. fixedDay .."_".. fixedHour, guessedAudience)
@@ -1267,19 +1284,23 @@ function JobSchedule:OptimizeAdSchedule()
 
 		-- find better suiting ad
 		-- ======================
-		local minAudienceFactor = 0.6
+		-- factor defines when to show an ad or an trailer
+		local minAudienceFactor = 0.4
 		-- during afternoon/evening prefer ads (lower ad requirements)
-		if fixedHour >= 14 and fixedHour < 24 then minAudienceFactor = 0.3 end
+		if fixedHour >= 14 and fixedHour < 24 then minAudienceFactor = 0.2 end
 		-- during primetime, send ad at up to all cost?
 		if fixedHour >= 19 and fixedHour <= 23 then minAudienceFactor = 0.05 end
 		-- if we do not have any programme, allow every audience factor...
 		if TVT.of_getProgrammeLicenceCount() <= 1 then minAudienceFactor = 0 end
 
-		local betterAdContractList = self.ScheduleTask.EmergencyScheduleJob:GetMatchingSpotList(guessedAudience, minAudienceFactor, false, false)
+		-- limit searching to "< current hour" so this allows to use a
+		-- contract with spots planned in LATER hours
+		local betterAdContractList = self.ScheduleTask.EmergencyScheduleJob:GetMatchingSpotList(guessedAudience, minAudienceFactor, false, false, -1, fixedDay*24 + fixedHour)
 		if (table.count(betterAdContractList) > 0) then
 			local oldAdContract
 			local oldMinAudience = 0
 			local oldMinAudienceTargetGroup = -1
+			-- sending an ad on the current slot?
 			if (currentBroadcastMaterial ~= nil and currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1) then
 				oldAdContract = TVT.of_getAdContractByID( currentBroadcastMaterial.GetReferenceID() )
 				if (oldAdContract ~= nil) then
@@ -1287,7 +1308,6 @@ function JobSchedule:OptimizeAdSchedule()
 					oldMinAudienceTargetGroup = oldAdContract.GetLimitedToTargetGroup()
 				end
 			end
-
 			-- fetch best fitting spot (most emerging one)
 			local newAdContract = self.ScheduleTask.EmergencyScheduleJob:GetBestMatchingSpot(betterAdContractList)
 			local oldAudienceCoverage = 1.0
@@ -1405,6 +1425,24 @@ function JobSchedule:OptimizeAdSchedule()
 			local result = TVT.of_setAdvertisementSlot(choosenBroadcastSource, fixedDay, fixedHour)
 			if (result > 0) then
 				debugMsg(choosenBroadcastLog)
+
+				-- if we now have more spots of a contract (because we ignored
+				-- later-planned spots: remove the last one)
+				if sendAd == true then 
+					local latestHour = MY.GetProgrammePlan().GetAdContractLatestStartHour(choosenBroadcastSource, fixedDay-1, fixedHour+1, -1, -1)
+					if latestHour >= 0 then
+						local lDay, lHour = self.ScheduleTask:FixDayAndHour(0, latestHour)
+					
+						local latestAd = MY.GetProgrammePlan().GetRealAdvertisement(lDay, lHour)
+						if latestAd ~= nil and latestAd.GetReferenceID() == choosenBroadcastSource.GetID() then
+							if choosenBroadcastSource.GetSpotsPlanned() > choosenBroadcastSource.GetSpotCount() then 
+								if MY.GetProgrammePlan().RemoveAdvertisement(latestAd, tonumber(lDay), tonumber(lHour)) == 1 then
+									debugMsg("Moved later advertisement to earlier time slot: " ..lDay.."/"..lHour.." -> " .. fixedDay.."/"..fixedHour)
+								end
+							end
+						end
+					end
+				end
 			end
 		end
 
