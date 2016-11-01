@@ -976,25 +976,31 @@ Type TAudience {_exposeToLua="selected"}
 	
 
 	Method ModifyGenderValue(targetID:Int, addValue:Float, gender:int)
-		Select targetID
-			Case TVTTargetGroup.Women
-				if gender = TVTPersonGender.MALE then return
-				For local i:int = 1 to TVTTargetGroup.baseGroupCount
-					ModifyGenderValue( TVTTargetGroup.GetAtIndex(i), addValue, TVTPersonGender.FEMALE )
-				Next
-			Case TVTTargetGroup.Men
-				if gender = TVTPersonGender.FEMALE then return
-				For local i:int = 1 to TVTTargetGroup.baseGroupCount
-					ModifyGenderValue( TVTTargetGroup.GetAtIndex(i), addValue, TVTPersonGender.MALE  )
-				Next
+		local targetIndexes:int[] = TVTTargetGroup.GetIndexes(targetID)
 
-			Default
-				if gender = TVTPersonGender.MALE
-					GetAudienceMale().SetValue(targetID, GetAudienceMale().GetValue(targetID) + addValue)
-				elseif gender = TVTPersonGender.FEMALE
-					GetAudienceFemale().SetValue(targetID, GetAudienceFemale().GetValue(targetID) + addValue)
-				endif
-		End Select
+		for local targetIndex:int = EachIn targetIndexes
+			targetID = TVTTargetGroup.GetAtIndex(targetIndex)
+			 
+			Select targetID
+				Case TVTTargetGroup.Women
+					if gender = TVTPersonGender.MALE then return
+					For local i:int = 1 to TVTTargetGroup.baseGroupCount
+						ModifyGenderValue( TVTTargetGroup.GetAtIndex(i), addValue, TVTPersonGender.FEMALE )
+					Next
+				Case TVTTargetGroup.Men
+					if gender = TVTPersonGender.FEMALE then return
+					For local i:int = 1 to TVTTargetGroup.baseGroupCount
+						ModifyGenderValue( TVTTargetGroup.GetAtIndex(i), addValue, TVTPersonGender.MALE  )
+					Next
+
+				Default
+					if gender = TVTPersonGender.MALE
+						GetAudienceMale().SetValue(targetID, GetAudienceMale().GetValue(targetID) + addValue)
+					elseif gender = TVTPersonGender.FEMALE
+						GetAudienceFemale().SetValue(targetID, GetAudienceFemale().GetValue(targetID) + addValue)
+					endif
+			End Select
+		Next
 	End Method
 	
 	

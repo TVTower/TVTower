@@ -1058,9 +1058,11 @@ Type TVTTargetGroup {_exposeToLua}
 				'loop through all targetGroup-entries and add them if contained
 				local result:int[]
 				local index:int = 0
+				local subID:int
 				'do NOT start with 0 ("all")
 				For local i:int = 1 to count
-					if key & index then result :+ [index]
+					 subID = GetAtIndex(i)
+					if key & subID then result :+ [i]
 				Next
 				if result.length = 0 then result = [0]
 				return result
