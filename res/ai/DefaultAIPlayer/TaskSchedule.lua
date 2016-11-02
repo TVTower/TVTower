@@ -1213,6 +1213,8 @@ function JobSchedule:OptimizeAdSchedule()
 		local sendTrailer = false
 		local sendTrailerReason = ""
 		local sendAd = true
+		-- the new ad contract to send (if chosen to do so)
+		local newAdContract = nil
 
 		local previousProgramme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
 		local previousProgrammeBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour))
@@ -1309,11 +1311,11 @@ function JobSchedule:OptimizeAdSchedule()
 				end
 			end
 			-- fetch best fitting spot (most emerging one)
-			local newAdContract = self.ScheduleTask.EmergencyScheduleJob:GetBestMatchingSpot(betterAdContractList)
+			newAdContract = self.ScheduleTask.EmergencyScheduleJob:GetBestMatchingSpot(betterAdContractList)
 			local oldAudienceCoverage = 1.0
 			local newAudienceCoverage = 1.0 --a 0-guessedAudience is always covered by 100%
 			if oldAdContract == nil then oldAudienceCoverage = 0 end
-			if guessedAudienceSum > 0 then
+			if guessedAudienceSum > 0 and newAdContract ~= nil then
 				newAudienceCoverage = newAdContract.GetMinAudience() / guessedAudience.GetTotalValue(newAdContract.GetLimitedToTargetGroup())
 				oldAudienceCoverage = oldMinAudience / guessedAudience.GetTotalValue(oldMinAudienceTargetGroup)
 				--if the old ad would not get satisfied, it does not cover anything 
@@ -1428,15 +1430,15 @@ function JobSchedule:OptimizeAdSchedule()
 
 				-- if we now have more spots of a contract (because we ignored
 				-- later-planned spots: remove the last one)
-				if sendAd == true then 
-					local latestHour = MY.GetProgrammePlan().GetAdContractLatestStartHour(choosenBroadcastSource, fixedDay-1, fixedHour+1, -1, -1)
+				if sendAd == true and newAdContract ~= nil then
+					local latestHour = MY.GetProgrammePlan().GetAdContractLatestStartHour(newAdContract, fixedDay-1, fixedHour+1, -1, -1)
 					if latestHour >= 0 then
 						local lDay, lHour = self.ScheduleTask:FixDayAndHour(0, latestHour)
 					
 						local latestAd = MY.GetProgrammePlan().GetRealAdvertisement(lDay, lHour)
-						if latestAd ~= nil and latestAd.GetReferenceID() == choosenBroadcastSource.GetID() then
-							if choosenBroadcastSource.GetSpotsPlanned() > choosenBroadcastSource.GetSpotCount() then 
-								if MY.GetProgrammePlan().RemoveAdvertisement(latestAd, tonumber(lDay), tonumber(lHour)) == 1 then
+						if latestAd ~= nil and latestAd.GetReferenceID() == newAdContract.GetID() then
+							if newAdContract.GetSpotsPlanned() > newAdContract.GetSpotCount() then 
+								if MY.GetProgrammePlan().RemoveAdvertisement(latestAd, lDay, lHour) == 1 then
 									debugMsg("Moved later advertisement to earlier time slot: " ..lDay.."/"..lHour.." -> " .. fixedDay.."/"..fixedHour)
 								end
 							end

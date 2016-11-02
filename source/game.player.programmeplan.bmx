@@ -1269,8 +1269,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetAdContractLatestStartHour:Int(contract:TAdContract, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:int=-1) {_exposeToLua}
-		if not contract then return -1
+	Method GetAdContractLatestStartHour:Int(contract:object, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:int=-1) {_exposeToLua}
+		if not TAdContract(contract) then return -1
 
 		Local minIndex:Int = 0
 		Local maxIndex:Int = advertisements.length
