@@ -1312,7 +1312,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'default: start with time of the sign
 		if startHour = -1 then startHour = 24 * (contract.daySigned - 1)
 		'default: end with latest planned element
-		if endHour > -1 then endIndex = GetArrayIndex(endHour)
+		if endHour > -1 then endIndex = Min(endIndex, GetArrayIndex(endHour))
 
 		Local startIndex:Int= Max(0, GetArrayIndex(startHour))
 

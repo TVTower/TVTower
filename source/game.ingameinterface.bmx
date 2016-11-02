@@ -596,7 +596,7 @@ Type TInGameInterface
 
 				'slots if 3 members watch
 				local figureSlots:int[]
-				if familyMembersUsed > 3 then figureSlots = [550, 610, 670]
+				if familyMembersUsed >= 3 then figureSlots = [550, 610, 670]
 				if familyMembersUsed = 2 then figureSlots = [580, 640]
 				if familyMembersUsed = 1 then figureSlots = [610]
 
