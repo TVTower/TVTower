@@ -327,9 +327,19 @@ function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, pr
 		-- todo: refresh markets when "office is visited" (stationmap)
 		TVT.audiencePredictor.RefreshMarkets()
 		for i=1,4 do
-			-- assume they all send at least as good programme/news as we do
-			local q = math.max(qualities[i], broadcast.GetQuality()) -- Lua-arrays are 1 based
+			-- assume they all send at least a bit as good programme/news as we do
+			local q = math.max(qualities[i], 0.6*qualities[i] + 0.4 * broadcast.GetQuality()) -- Lua-arrays are 1 based
+			--local q = qualities[i]
+
+			-- for now we cheat and mix in the REAL quality even if
+			-- we are not knowing them (no generic room key)
+			local realQ = TVT.getBroadcastedProgrammeQuality(day,hour,i)
+			if realQ > 0.001 then
+				q = 0.7 * q + 0.3 * realQ
+devMsg(TVT.ME..":  player #"..i.."  "..day.."/"..hour..":  q="..q.."  realQ="..realQ)
+			end
 			TVT.audiencePredictor.SetAverageValueAttraction(i, q)
+	
 		end
 		local previousDay, previousHour = self:FixDayAndHour(day, hour-1)
 		if previousBroadcastAttraction == nil then
@@ -344,7 +354,7 @@ function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, pr
 					local lastNewsDay, lastNewsHour = self:FixDayAndHour(previousDay, previousHour - i)
 					previousNewsBroadcastAttraction = self.Player.Stats.BroadcastStatistics:GetAttraction(lastNewsDay, lastNewsHour, TVT.Constants.BroadcastMaterialType.NEWSSHOW)
 					if previousNewsBroadcastAttraction ~= nil then
-						previousNewsBroadcastAttraction = TVT.CopyBasicAudienceAttraction(previousNewsBroadcastAttraction, 1.0 - i*0.15)
+						previousNewsBroadcastAttraction = TVT.CopyBasicAudienceAttraction(previousNewsBroadcastAttraction, 1.0 - i*0.1)
 						break
 					end
 				end
@@ -353,7 +363,8 @@ function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, pr
 
 		-- assign our well known basic attraction (this already includes
 		-- audience flow assumptions)
-		local broadcastAttraction = broadcast.GetStaticAudienceAttraction(hour, block, previousBroadcastAttraction, previousNewsBroadcastAttraction)
+--		local broadcastAttraction = broadcast.GetStaticAudienceAttraction(hour, block, previousBroadcastAttraction, previousNewsBroadcastAttraction)
+		local broadcastAttraction = broadcast.GetAudienceAttraction(hour, block, previousBroadcastAttraction, previousNewsBroadcastAttraction)
 		TVT.audiencePredictor.SetAttraction(TVT.ME, broadcastAttraction)
 		-- do the real prediction work
 		TVT.audiencePredictor.RunPrediction(day, hour)

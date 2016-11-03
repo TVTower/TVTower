@@ -12,9 +12,9 @@ function TaskStationMap:typename()
 end
 
 function TaskStationMap:ResetDefaults()
-	self.BudgetWeight = 0
+	self.BudgetWeight = 2
 	self.BasePriority = 1
-	self.NeededInvestmentBudget = 250000
+	self.NeededInvestmentBudget = 200000
 	self.InvestmentPriority = 7
 end
 
@@ -107,12 +107,17 @@ function JobBuyStation:typename()
 end
 
 function JobBuyStation:Prepare(pParams)
+	debugMsg("Prüfe Stationenkauf! Verfügbares Budget: " .. self.Task.CurrentBudget)
 	--debugMsg("Prüfe Stationenkauf")
 	if (self.Task.CurrentBudget < self.Task.NeededInvestmentBudget) then self:SetCancel() end
 end
 
+function JobBuyStation:SetCancel()
+	--
+end
+
 function JobBuyStation:Tick()
-	debugMsg("Prüfe Stationenkauf! Verfügbares Budget: " .. self.Task.CurrentBudget)
+	--debugMsg("Prüfe Stationenkauf! Verfügbares Budget: " .. self.Task.CurrentBudget)
 	
 	local bestOffer = nil
 	local bestAttraction = 0
@@ -138,7 +143,7 @@ function JobBuyStation:Tick()
 		--	tempStation = nil
 
 		--4)  reach to low (at least 40.000 required)
-		elseif tempStation.getReach() < 40000 then
+		elseif tempStation.getReach() < 50000 then
 			tempStation = nil
 		end
 

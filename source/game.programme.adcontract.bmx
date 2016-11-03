@@ -1695,7 +1695,7 @@ Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		If self.getDaysLeft() < 0 then return 0
 
 		'multiply by spot count (the more to send in total, the more acute)
-		Return self.GetSpotsToSend() * GetSpotsToSendPercentage() * GetTimeGonePercentage()
+		Return self.GetSpotsToSend() * GetSpotsToSendPercentage()  * GetTimeGonePercentage()^3
 	End Method
 
 

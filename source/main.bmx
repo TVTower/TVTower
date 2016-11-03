@@ -1409,47 +1409,61 @@ endrem
 			endif
 			endrem
 
+			local font:TBitmapFont = GetBitmapFont("default", 10)
+			local fontB:TBitmapFont = GetBitmapFont("default", 10, BOLDFONT)
 			if player.playerAI
 				SetColor 40,40,40
-				DrawRect(605, 220, 185, 155)
+				DrawRect(605, 240, 185, 135)
 				SetColor 50,50,40
-				DrawRect(606, 221, 183, 26)
+				DrawRect(606, 241, 183, 23)
 				SetColor 255,255,255
 
 				local textX:int = 605 + 3
-				local textY:int = 220 + 3
+				local textY:int = 240 + 3
 
 				local assignmentType:int = player.aiData.GetInt("currentTaskAssignmentType", 0)
 				if assignmentType = 1
-					GetBitmapFont("default", 10).Draw("Task: [F] " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
+					font.Draw("Task: [F] " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
 				elseif assignmentType = 2
-					GetBitmapFont("default", 10).Draw("Task: [R]" + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
+					font.Draw("Task: [R]" + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
 				else
-					GetBitmapFont("default", 10).Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
+					font.Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
 				endif
+				textY :+ 10
+				font.Draw("Job:   " + player.aiData.GetString("currentTaskJob") + " ["+player.aiData.GetString("currentTaskJobStatus")+"]", textX, textY)
 				textY :+ 13
-				GetBitmapFont("default", 10).Draw("Job:   " + player.aiData.GetString("currentTaskJob") + " ["+player.aiData.GetString("currentTaskJobStatus")+"]", textX, textY)
-				textY :+ 20
 
-				GetBitmapFont("default", 10, BOLDFONT).Draw("Task List: ", textX, textY)
-				GetBitmapFont("default", 10, BOLDFONT).Draw("Prio ", textX + 90 + 22*0, textY)
-				GetBitmapFont("default", 10, BOLDFONT).Draw("Bas", textX + 90 + 22*1, textY)
-				GetBitmapFont("default", 10, BOLDFONT).Draw("Sit", textX + 90 + 22*2, textY)
-				GetBitmapFont("default", 10, BOLDFONT).Draw("Req", textX + 90 + 22*3, textY)
-				textY :+ 13 + 2
+				fontB.Draw("Task List: ", textX, textY)
+				fontB.Draw("Prio ", textX + 90 + 22*0, textY)
+				fontB.Draw("Bas", textX + 90 + 22*1, textY)
+				fontB.Draw("Sit", textX + 90 + 22*2, textY)
+				fontB.Draw("Req", textX + 90 + 22*3, textY)
+				textY :+ 10 + 2
 
 				for local taskNumber:int = 1 to player.aiData.GetInt("tasklist_count", 1)
-					GetBitmapFont("default", 10).Draw(player.aiData.GetString("tasklist_name"+taskNumber).Replace("Task", ""), textX, textY)
-					GetBitmapFont("default", 10).Draw(player.aiData.GetInt("tasklist_priority"+taskNumber), textX + 90 + 22*0, textY)
-					GetBitmapFont("default", 10).Draw(player.aiData.GetInt("tasklist_basepriority"+taskNumber), textX + 90 + 22*1, textY)
-					GetBitmapFont("default", 10).Draw(player.aiData.GetInt("tasklist_situationpriority"+taskNumber), textX + 90 + 22*2, textY)
-					GetBitmapFont("default", 10).Draw(player.aiData.GetInt("tasklist_requisitionpriority"+taskNumber), textX + 90 + 22*3, textY)
-					textY :+ 13
+					font.Draw(player.aiData.GetString("tasklist_name"+taskNumber).Replace("Task", ""), textX, textY)
+					font.Draw(player.aiData.GetInt("tasklist_priority"+taskNumber), textX + 90 + 22*0, textY)
+					font.Draw(player.aiData.GetInt("tasklist_basepriority"+taskNumber), textX + 90 + 22*1, textY)
+					font.Draw(player.aiData.GetInt("tasklist_situationpriority"+taskNumber), textX + 90 + 22*2, textY)
+					font.Draw(player.aiData.GetInt("tasklist_requisitionpriority"+taskNumber), textX + 90 + 22*3, textY)
+					textY :+ 10
 				next
 			endif
 
 			debugFinancialInfos.Draw(-1, 235, 305)
 '				debugProgrammePlanInfos.Draw((playerID + 1) mod 4, 415, 15)
+
+rem
+			local textX:int = 10
+			local textY:int = 350
+			SetColor 0,0,0
+			DrawRect(textX, textY, 200, 150)
+			SetColor 255,255,255
+			For local playerID:int = 1 to 4
+				font.Draw("Player "+playerID, textX, textY)
+				textY :+ 10
+			Next
+endrem
 		endif
 	End Function
 
@@ -1793,6 +1807,9 @@ Type TGameState
 	Field _programmeDataIgnoreUnreleasedProgrammes:int = False
 	Field _programmeDataFilterReleaseDateStart:int = False
 	Field _programmeDataFilterReleaseDateEnd:int = False
+	Field _interface_ShowChannel:int = 0
+	Field _interface_ChatShow:int = 0
+	Field _interface_ChatShowHideLocked:int = 0
 	Const MODE_LOAD:Int = 0
 	Const MODE_SAVE:Int = 1
 
@@ -1938,6 +1955,10 @@ Type TGameState
 		TProgrammeData.ignoreUnreleasedProgrammes = _programmeDataIgnoreUnreleasedProgrammes
 		TProgrammeData._filterReleaseDateStart = _programmeDataFilterReleaseDateStart
 		TProgrammeData._filterReleaseDateEnd = _programmeDataFilterReleaseDateEnd
+
+		GetInGameInterface().ShowChannel = _interface_ShowChannel
+		GetInGameInterface().ChatShow = _interface_ChatShow
+		GetInGameInterface().ChatShowHideLocked = _interface_ChatShowHideLocked
 	End Method
 
 
@@ -1959,6 +1980,10 @@ Type TGameState
 		_programmeDataIgnoreUnreleasedProgrammes = TProgrammeData.ignoreUnreleasedProgrammes
 		_programmeDataFilterReleaseDateStart = TProgrammeData._filterReleaseDateStart
 		_programmeDataFilterReleaseDateEnd = TProgrammeData._filterReleaseDateEnd
+
+		_interface_ShowChannel = GetInGameInterface().ShowChannel
+		_interface_ChatShow = GetInGameInterface().ChatShow
+		_interface_ChatShowHideLocked = GetInGameInterface().ChatShowHideLocked
 
 
 		_Assign(GameRules, _GameRules, "GameRules", MODE_SAVE)

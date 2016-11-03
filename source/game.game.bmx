@@ -1349,7 +1349,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'switch to screen
 		Select gamestate
 			Case TGame.STATE_MAINMENU
-				ScreenCollection.GoToScreen(Null,"MainMenu")
+				ScreenCollection.GoToScreen(Null,"MainMenu", True)
 			Case TGame.STATE_SETTINGSMENU
 				ScreenCollection.GoToScreen(Null,"GameSettings")
 			Case TGame.STATE_NETWORKLOBBY

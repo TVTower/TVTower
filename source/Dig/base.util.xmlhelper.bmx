@@ -184,38 +184,13 @@ end rem
 	End Function
 	
 
-?debug
-global depth:int = 0
-?
 	'loads values of a node into a tdata object
 	Function LoadAllValuesToData:TData(node:TXmlNode, data:TData, ignoreNames:String[] = Null)
 		If Not node Then Return data
-?debug
-		local childElements:TList = node.GetChildren()
-print Rset("", depth) + " node: " + node.GetName()
-local ch:string = ""
-if childElements
-For Local x:TxmlBase = EachIn childElements
-	ch :+ x.GetName() +" "
-next
-endif
-print Rset("", depth) + "  children: "+ ch
 
-		local attList:TList = node.GetAttributeList()
-if attList
-local attr:string
-For Local x:TxmlBase = EachIn attList
-	attr :+ x.GetName() +" "
-next
-print Rset("", depth) + "  attributes: " + attr
-endif
-?
 		'=== ATTRIBUTES ===
 		For Local attribute:TxmlAttribute = EachIn node.GetAttributeList()
 			If StringHelper.InArray(attribute.GetName(), ignoreNames, False) Then Continue
-?debug
-print Rset("", depth) + "  add attribute: " + attribute.GetName() +" = " + node.GetAttribute(attribute.GetName())
-?
 			data.Add(attribute.GetName(), node.GetAttribute(attribute.GetName()))
 		Next
 
@@ -231,10 +206,6 @@ print Rset("", depth) + "  add attribute: " + attribute.GetName() +" = " + node.
 			If StringHelper.InArray(subNode.GetName(), ignoreNames, False) Then Continue
 
 			If dataLS.EqualsLower(subNode.getName()) or children > 0
-?debug
-print Rset("", depth) + "  subnode: " + subNode.GetName() + "  loading subdata"
-depth :+ 2
-?
 				Local subData:TData = New TData
 				LoadAllValuesToData(subNode, subData, ignoreNames)
 				if dataLS.EqualsLower(subNode.getName())
@@ -242,13 +213,7 @@ depth :+ 2
 				else
 					data.Add(subNode.getName(), subData)
 				endif
-?debug
-depth :- 2
-?
 			else
-?debug
-print Rset("", depth) + "  subnode: " + subNode.GetName() + " value: " + subNode.getContent()
-?
 				data.Add(subNode.getName(), subNode.getContent())
 			endif
 		Next

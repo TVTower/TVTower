@@ -471,13 +471,12 @@ print "Trash Strafe: " + penalty.ToString()
 	
 	Method GetAudienceFlowBonus:TAudience(block:Int, result:TAudienceAttraction, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction) {_exposeToLua}
 		'calculate the audienceflow from one programme to another one
+
 		If block = 1 And lastMovieBlockAttraction and lastNewsBlockAttraction
 			Return GetAudienceFlowBonusIntern(lastMovieBlockAttraction, result, lastNewsBlockAttraction)
-		ElseIf lastMovieBlockAttraction And lastMovieBlockAttraction.AudienceFlowBonus
-			Return lastMovieBlockAttraction.AudienceFlowBonus.Copy().MultiplyFloat(0.25)
-		Else
-			Return Null
-		EndIf		
+		endif
+
+		Return Super.GetAudienceFlowBonus(block, result, lastMovieBlockAttraction, lastNewsBlockAttraction)
 	End Method
 	
 

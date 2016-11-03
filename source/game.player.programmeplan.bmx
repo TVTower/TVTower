@@ -130,7 +130,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'returns the index of an array to use for a given hour
 	Method GetArrayIndex:Int(hour:Int)
-		Return hour - getSkipHoursFromIndex()
+		Return Max(0, hour - getSkipHoursFromIndex())
 	End Method
 
 
@@ -1606,7 +1606,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-	Method ProduceNewsShow:TBroadcastMaterial(allowAddToPast:Int=False)
+	Method ProduceNewsShow:TBroadcastMaterial()
 		Local show:TNewsShow = TNewsShow.Create("News show " + GetWorldTime().GetFormattedTime(), owner, GetNewsAtIndex(0),GetNewsAtIndex(1),GetNewsAtIndex(2))
 		'if
 		AddObject(show, TVTBroadcastMaterialType.NEWSSHOW,-1,-1, False)
@@ -1619,7 +1619,14 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method GetNewsShow:TBroadcastMaterial(day:Int=-1, hour:Int=-1) {_exposeToLua}
 		'if no news placed there already, just produce one live
 		Local show:TBroadcastMaterial = GetObject(TVTBroadcastMaterialType.NEWSSHOW, day, hour)
-		If Not show Then show = ProduceNewsShow()
+		If Not show
+			'only produce NOW
+			if day = -1 or day = GetWorldTime().GetDay()
+				if hour = -1 or hour = GetWorldTime().GetDayHour()
+					show = ProduceNewsShow()
+				endif
+			endif
+		endif
 		Return show
 	End Method
 

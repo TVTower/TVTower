@@ -72,7 +72,7 @@ Type TScreenCollection
 	End Method
 	
 
-	Method GoToScreen:int(screen:TScreen=null, screenName:string="")
+	Method GoToScreen:int(screen:TScreen=null, screenName:string="", force:int = False)
 		'skip if current screen has same name
 		if currentScreen and currentScreen.name = lower(screenName) then return TRUE
 		'fetch screen object if missing
@@ -85,14 +85,18 @@ Type TScreenCollection
 
 		'if on a screen, try to leave first
 		if currentScreen and not currentScreen.TryLeave(screen)
-			return False
+			print "currentScreen.TryLeave failed"
+			if not force then return False
 		endif
 
 		'if entering a screen, try to enter
 		if screen
 			local event:TEventSimple = TEventSimple.Create("screen.onTryEnter", new TData.Add("fromScreen", currentScreen), screen)
 			EventManager.triggerEvent(event)
-			if event.isVeto() then return False
+			if event.isVeto()
+				print "screen.onTryEnter forbidden"
+				if not force then return False
+			endif
 		endif
 
 		EventManager.triggerEvent( TEventSimple.Create("screen.onBeginLeave", new TData.Add("toScreen", screen), currentScreen) )
