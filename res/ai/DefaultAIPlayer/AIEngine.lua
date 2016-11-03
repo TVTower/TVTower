@@ -797,10 +797,18 @@ function StatisticEvaluator:Adjust()
 	self.MinValueTemp = 100000000000000
 	self.AverageValueTemp = -1
 	self.MaxValueTemp = -1
-	self.Values = 0
+	-- if used "before Adjust()" already, set Values to 1, so it
+	-- takes the old value into account when calculating the average
+	-- (1*old + x*new) / (1+x)
+	if self.Values > 0 then
+		self.Values = 1
+	end
 	-- do not reset "CurrentValue"!
 	--self.CurrentValue = -1
+
+	self.adjustTimes = self.adjustTimes + 1
 end
+
 
 function StatisticEvaluator:AddValue(value)
 if value == nil then
