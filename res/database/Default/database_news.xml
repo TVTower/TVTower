@@ -15,7 +15,7 @@
 				<effect trigger="happen" type="triggernews" news="7c2911a9-c9b4-40d1-b4f6-02fb0025358a" />
 			</effects>
 			<data genre="0" price="1.0" quality="58" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="2001" year_range_to="2009" />
 		</news>
 		<news id="0b597995-f993-4124-aa24-950e2e8aa68a" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
 			<title>
@@ -29,7 +29,7 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" news="e60afa58-04ad-437d-9da7-460d149d3fee" />
 			</effects>
-			<data genre="0" price="1.0" quality="78" />
+			<data genre="0" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="52a3c289-8be8-4410-9dda-b9cff4eb6f34" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
@@ -74,7 +74,7 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" news="4649173b-2c51-417e-b661-509f21d0112c" />
 			</effects>
-			<data genre="0" price="1.0" quality="39" />
+			<data genre="0" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="2b808db1-96cf-46ab-b912-f172fdf60b69" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
@@ -102,7 +102,7 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" news="f822fef6-ae57-4831-9c81-cc7001a19ba8" />
 			</effects>
-			<data genre="0" price="1.0" quality="39" />
+			<data genre="0" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="689218a0-412c-4afb-9901-fd77f62c484f" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
@@ -147,7 +147,7 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" news="0b597995-f993-4124-aa24-950e2e8aa68a" />
 			</effects>
-			<data genre="0" price="1.0" quality="78" />
+			<data genre="0" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="4649173b-2c51-417e-b661-509f21d0112c" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
@@ -162,7 +162,7 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" news="59077885-90a6-4827-84ce-68ac57aaa622" />
 			</effects>
-			<data genre="0" price="1.0" quality="88" />
+			<data genre="0" price="1.0" quality="68" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="7c2911a9-c9b4-40d1-b4f6-02fb0025358a" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
@@ -192,7 +192,7 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" news="073fb966-3ac6-42e2-9fda-e86740008573" />
 			</effects>
-			<data genre="0" price="1.0" quality="78" />
+			<data genre="0" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="073fb966-3ac6-42e2-9fda-e86740008573" thread_id="0328d075-c155-43c9-b0c1-e130eb972f38" type="2" creator="">
@@ -222,7 +222,7 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" news="44ec3ab6-aaef-4b52-a441-a192481f3b74" />
 			</effects>
-			<data genre="4" price="1.0" quality="58" />
+			<data genre="4" price="1.0" quality="38" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="b5a5d23a-aa80-4505-ad9d-a71ea63247c9" thread_id="05662ace-7867-418c-a9c3-10fa8c1face8" type="2" creator="">
@@ -237,7 +237,7 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" news="8661ce67-edd4-4d30-885b-5374d39f37c3" />
 			</effects>
-			<data genre="4" price="1.0" quality="68" />
+			<data genre="4" price="1.0" quality="43" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="8661ce67-edd4-4d30-885b-5374d39f37c3" thread_id="05662ace-7867-418c-a9c3-10fa8c1face8" type="2" creator="">
@@ -252,7 +252,7 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" news="3a75a2f5-c859-40df-ad2a-be5e6fd4567b" />
 			</effects>
-			<data genre="4" price="1.0" quality="58" />
+			<data genre="4" price="1.0" quality="41" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="44ec3ab6-aaef-4b52-a441-a192481f3b74" thread_id="05662ace-7867-418c-a9c3-10fa8c1face8" type="2" creator="">
@@ -295,7 +295,7 @@
 				<en>The recently heard on remand employee Forrest Timberley confessed both cases.</en>
 			</description>
 			<effects />
-			<data genre="4" price="1.0" quality="78" />
+			<data genre="4" price="1.0" quality="48" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="7859dc7a-a913-459e-bddc-4f963ac70868" thread_id="08b4660d-4f7f-4aca-b03d-edfe271fb7e4" type="0" creator="">
@@ -355,7 +355,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="a3bbd916-2520-4a31-8f3e-3380950230da" />
 			</effects>
-			<data genre="4" price="1.2" quality="67" />
+			<data genre="4" price="0.7" quality="67" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="64f1f8ab-d036-428a-b9fd-1543dbf319f1" thread_id="08b4660d-4f7f-4aca-b03d-edfe271fb7e4" type="2" creator="">
@@ -398,7 +398,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="7d63161c-7937-4cce-95c6-2c82529c06ac" />
 			</effects>
-			<data genre="1" price="1.0" quality="13" />
+			<data genre="1" price="0.8" quality="23" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="7d63161c-7937-4cce-95c6-2c82529c06ac" thread_id="0acccc29-1ef7-4613-8f78-1c0ad3b601e5" type="2" creator="">
@@ -413,7 +413,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="296f6aca-a031-4f2f-b6a5-2317abadbb40" />
 			</effects>
-			<data genre="1" price="1.0" quality="13" />
+			<data genre="1" price="0.8" quality="13" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="296f6aca-a031-4f2f-b6a5-2317abadbb40" thread_id="0acccc29-1ef7-4613-8f78-1c0ad3b601e5" type="2" creator="">
@@ -428,7 +428,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="ec53534e-da72-4cbe-ab00-f2f4e3005ed1" />
 			</effects>
-			<data genre="1" price="1.0" quality="15" />
+			<data genre="1" price="0.8" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="ec53534e-da72-4cbe-ab00-f2f4e3005ed1" thread_id="0acccc29-1ef7-4613-8f78-1c0ad3b601e5" type="2" creator="">
@@ -441,7 +441,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Kidd was buried today in the southern city of Cologne. The burial in the car cemetery attracted tens of thousands of mourners. They had to embrace David Hasseldorf.</en>
 			</description>
 			<effects />
-			<data genre="1" price="1.0" quality="11" />
+			<data genre="1" price="0.8" quality="21" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="6bba8dff-b5da-40b1-9db8-0e3cc655c14b" thread_id="0f4bf47b-dd51-4c3e-8d44-47ed0908ae37" type="0" creator="">
@@ -456,7 +456,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="24c635b8-7a9c-4faf-9b72-b24f7b193afa" />
 			</effects>
-			<data genre="0" price="1.0" quality="49" />
+			<data genre="0" price="0.7" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="85e5385e-eb33-4bee-8697-0e1b145e1ce3" thread_id="0f4bf47b-dd51-4c3e-8d44-47ed0908ae37" type="2" creator="">
@@ -465,11 +465,11 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Eco-Sim tax abolished</en>
 			</title>
 			<description>
-				<de>Nach Debatten, WiSims zu spielen sei das natürlichste eines Menschen, hat die Regierung ein einsehen und erlässt die Sondersteuer. Das Volk feiert ausgelassen.</de>
+				<de>Nach Debatten, WiSims zu spielen sei das Natürlichste eines Menschen, hat die Regierung ein Einsehen und erlässt die Sondersteuer. Das Volk feiert ausgelassen.</de>
 				<en>After debates with consense that playing eco-sim games is the most natural people could do, the government relented and abolished the special tax. The nation wildly celebrated.</en>
 			</description>
 			<effects />
-			<data genre="0" price="1.0" quality="29" />
+			<data genre="0" price="0.5" quality="51" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="22925a92-8d65-4515-9f99-676d56c1d74b" thread_id="0f4bf47b-dd51-4c3e-8d44-47ed0908ae37" type="2" creator="">
@@ -531,7 +531,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<effect trigger="happen" type="triggernews" news="777c94c2-49a6-4e72-ad02-06c33f7350bc" time="2,1,2,5,15" />
 				<effect trigger="happen" type="triggernews" news="8906094a-6ee5-4054-9e8c-9eea78ea8950" time="2,2,2,16,23"/>
 			</effects>
-			<data genre="4" price="1.0" quality="29" />
+			<data genre="4" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="777c94c2-49a6-4e72-ad02-06c33f7350bc" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
@@ -558,7 +558,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<de>Laut einem Bekennerschreiben sind die Tierschützer von der Gruppe "ZORRO" für das Entlaufen des Nashorns verantwortlich.</de>
 				<en>According to a letter claiming responsibility, the animal rights activists of the group "ZORRO" are responsible for the elopement of the rhinoceros.</en>
 			</description>
-			<data genre="4" price="1.0" quality="39" />
+			<data genre="4" price="1.0" quality="25" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
@@ -573,7 +573,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485" time="2,1,1,4,12" />
 			</effects>
-			<data genre="4" price="1.05" quality="39" />
+			<data genre="4" price="1.0" quality="35" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
@@ -618,7 +618,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="5af0af95-84b8-4018-96e6-9e25e93a2687" time="2,1,2,9,16" />
 			</effects>
-			<data genre="0" price="1.0" quality="78" />
+			<data genre="0" price="0.5" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="5af0af95-84b8-4018-96e6-9e25e93a2687" thread_id="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="2" creator="">
@@ -633,7 +633,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d39a88bf-fa64-40f9-936e-0d15d355f26b" time="2,1,1,8,17" />
 			</effects>
-			<data genre="0" price="1.05" quality="74" />
+			<data genre="0" price="0.7" quality="64" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d39a88bf-fa64-40f9-936e-0d15d355f26b" thread_id="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="2" creator="">
@@ -646,7 +646,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>After the controversial plan to introduce a complete oxygen fee, the population will now only pay for the exhalation. Hold your breath!</en>
 			</description>
 			<effects />
-			<data genre="0" price="1.05" quality="61" />
+			<data genre="0" price="0.7" quality="61" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 
@@ -662,7 +662,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
 			</effects>
-			<data genre="3" price="1.0" quality="27" />
+			<data genre="3" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="1135edbe-daf4-4ed7-8817-b352b9ee7442" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
@@ -752,7 +752,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-5" time="1,6,11" />
 			</effects>
-			<data genre="0" price="1.0" quality="38" />
+			<data genre="0" price="1.0" quality="28" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-5" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
@@ -765,7 +765,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The Management Board and employee representatives of the American car giant agreed to 2,500 layoffs. Both sides are satisfied.</en>
 			</description>
 			<effects />
-			<data genre="0" price="1.05" quality="51" />
+			<data genre="0" price="1.0" quality="51" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		
@@ -807,7 +807,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d4b58f67-56ed-4c7b-a524-3c641187c348" />
 			</effects>
-			<data genre="0" price="1.0" quality="58" />
+			<data genre="0" price="1.0" quality="28" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="bf0ee1be-3dc3-4581-8614-fff5253d6330" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
@@ -850,7 +850,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="23fc5b0e-d3d8-4049-970b-236966ec8da5" />
 			</effects>
-			<data genre="0" price="1.0" quality="39" />
+			<data genre="0" price="0.5" quality="42" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="79b75334-0bec-4061-a029-890601f10b5e" thread_id="3af0567a-bc40-43f0-94c1-f2e1cefb2238" type="2" creator="">
@@ -880,7 +880,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="79b75334-0bec-4061-a029-890601f10b5e" />
 			</effects>
-			<data genre="0" price="1.0" quality="58" />
+			<data genre="0" price="1.0" quality="28" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="53d11d51-473e-499d-91dc-5cd59fb7cf34" thread_id="4234e2b1-3938-40df-8855-8f730cdd1d01" type="0" creator="">
@@ -906,7 +906,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>According to insider information bottles and deposit collectors will have to pay income tax for their activities immediately. The Association of German bottle collectors lodges an appeal.</en>
 			</description>
 			<effects />
-			<data genre="4" price="1.0" quality="11" />
+			<data genre="4" price="1.0" quality="15" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="b6b215f8-17de-44f0-b3f5-a23e06794705" thread_id="4ea94528-27be-4366-9f5b-80e6893a3e9b" type="0" creator="">
@@ -919,7 +919,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>By purchasing eight silicon syringes at the hardware store an unemployed person wants to leverage his daughter a breast surgery.</en>
 			</description>
 			<effects />
-			<data genre="4" price="1.05" quality="11" />
+			<data genre="4" price="1.0" quality="9" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="6b9c5dc4-d2ca-4f09-9eb7-794765ccd584" thread_id="4edc7a2f-4387-43f8-be1c-5119d4a4fa29" type="0" creator="">
@@ -934,7 +934,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="8bc34c83-4fc3-4aab-afa6-f67fa479902c" />
 			</effects>
-			<data genre="3" price="1.0" quality="29" />
+			<data genre="3" price="0.7" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="8bc34c83-4fc3-4aab-afa6-f67fa479902c" thread_id="4edc7a2f-4387-43f8-be1c-5119d4a4fa29" type="2" creator="">
@@ -964,7 +964,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="b06abbd3-94a3-4ebc-8635-9c4beb24195f" />
 			</effects>
-			<data genre="3" price="1.0" quality="29" />
+			<data genre="3" price="0.7" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="b06abbd3-94a3-4ebc-8635-9c4beb24195f" thread_id="4edc7a2f-4387-43f8-be1c-5119d4a4fa29" type="2" creator="">
@@ -990,7 +990,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="2" price="1.15" quality="25" />
+			<data genre="2" price="0.7" quality="25" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="9d57694b-1419-4bb8-bac9-bb092c383e83" thread_id="5bbbce34-01a6-43f9-b882-eceb5ffd7884" type="0" creator="">
@@ -1034,7 +1034,7 @@ Her normal body size is expected to be reached in a week.</en>
 					news2="e250f180-310d-4639-bdd4-229b818f3a92-b" probability2="60"
 				/>
 			</effects>
-			<data genre="2" price="1.0" quality="23" />
+			<data genre="2" price="0.7" quality="23" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="e250f180-310d-4639-bdd4-229b818f3a92-a" thread_id="5d832597-6cdc-4bfe-9213-0a82cd45b130" type="2" creator="">
@@ -1060,7 +1060,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="2" price="1.05" quality="19" />
+			<data genre="2" price="1.05" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d28c5997-c17c-4b68-9289-773617b62e58" thread_id="60185c09-38ec-4c44-a884-ed76b8bca258" type="0" creator="">
@@ -1103,7 +1103,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="2195e517-be06-4729-8508-824119e5d4aa" />
 			</effects>
-			<data genre="3" price="1.0" quality="29" />
+			<data genre="3" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="44977907-8f02-4023-a42b-c109b8837a86" thread_id="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="2" creator="">
@@ -1118,7 +1118,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="7c626ce4-5ae7-45d7-9909-6c2b42ce18e3" />
 			</effects>
-			<data genre="3" price="1.0" quality="29" />
+			<data genre="3" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="2195e517-be06-4729-8508-824119e5d4aa" thread_id="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="2" creator="">
@@ -1172,7 +1172,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="3" price="1.0" quality="19" />
+			<data genre="3" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="df3f342a-6bb2-4445-9f77-2765d51a8187" thread_id="769c4c90-9ddc-4c72-8ad7-1850f0c95109" type="0" creator="">
@@ -1198,7 +1198,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="1" price="1.0" quality="29" />
+			<data genre="1" price="0.7" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d5835942-1658-4140-9272-2450165344de" thread_id="81ef8cbc-3208-4786-aa0d-6d6f824e79ca" type="0" creator="">
@@ -1211,7 +1211,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="3" price="1.0" quality="19" />
+			<data genre="3" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="68923a81-fdf8-4416-a85b-c943850b9b9a" thread_id="8539de3d-c301-4376-9763-2e0f1f2a6d9f" type="0" creator="">
@@ -1224,7 +1224,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="0" price="1.0" quality="19" />
+			<data genre="0" price="0.7" quality="25" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="c465e880-20cb-4c42-bdb0-76950380eb02" thread_id="89d538a2-9f45-4d55-b672-49de6ebaaebd" type="0" creator="">
@@ -1237,7 +1237,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="1" price="1.0" quality="58" />
+			<data genre="5" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="27a9048d-2066-404a-8a8e-aceb1ad6d84a" thread_id="8e1eca41-5270-4fc1-99a6-c2404809e276" type="0" creator="">
@@ -1250,7 +1250,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="1" price="1.0" quality="29" />
+			<data genre="1" price="0.7" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="bd674ac6-d8be-4b53-8023-185adfeaf90c" thread_id="8e65fd80-587e-4c17-a12f-09e368dca29e" type="0" creator="">
@@ -1264,7 +1264,7 @@ Verlost wird dabei noch ein NASA-Topfset.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="1" price="1.15" quality="14" />
+			<data genre="1" price="1.0" quality="14" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="22e00cc1-288d-4405-815b-51da1e25f6e5" thread_id="902e3964-abe0-41cd-8f80-18a09e7e4aea" type="0" creator="">
@@ -1277,7 +1277,7 @@ Verlost wird dabei noch ein NASA-Topfset.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="0" price="1.15" quality="62" />
+			<data genre="0" price="0.7" quality="62" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="f82cdc27-72a8-4007-94ce-8b94c15eeb7d" thread_id="903482a4-19ea-41d4-9c1c-08edd2b35961" type="0" creator="">
@@ -1286,11 +1286,11 @@ Verlost wird dabei noch ein NASA-Topfset.</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Skandal! Rico Grüner scheibt trotz hohem und heiligem Versprechen keine neuen News.</de>
+				<de>Skandal! Keiner schreibt trotz hoher und heiliger Versprechen neue News. Dabei fehlen vor allem Showbizz-, Kultur- und Technik/Wissenschaft-Nachrichten.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="4" price="1.3" quality="25" />
+			<data genre="4" price="1.0" quality="45" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="1a4d7fd8-855a-47e4-871a-dc72eb4680ba" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="0" creator="">
@@ -1306,7 +1306,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="441f0aa3-0412-4236-991c-ddae48f2b62a" time="2,1,1,9,17" />
 			</effects>
-			<data genre="0" price="1.0" quality="19" />
+			<data genre="0" price="0.7" quality="23" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="441f0aa3-0412-4236-991c-ddae48f2b62a" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="2" creator="">
@@ -1336,7 +1336,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="7949493e-c6e0-4b59-a06c-044ddbf66dd0" time="2,1,1,0,13" />
 			</effects>
-			<data genre="0" price="1.0" quality="29" />
+			<data genre="0" price="0.7" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="7949493e-c6e0-4b59-a06c-044ddbf66dd0" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="2" creator="">
@@ -1351,7 +1351,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d86c9008-6752-4358-b545-2d09e23bf24a" time="1,2,6" />
 			</effects>
-			<data genre="0" price="1.0" quality="19" />
+			<data genre="0" price="1.0" quality="23" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d86c9008-6752-4358-b545-2d09e23bf24a" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="2" creator="">
@@ -1385,11 +1385,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		</news>
 		<news id="2899a642-b0dc-4285-98e0-10835eb911fc" thread_id="9707f767-9129-46ea-84d2-a4870897fdfb" type="2" creator="">
 			<title>
-				<de>Kleingärtner erschießt Polizisten</de>
+				<de>Kleingärtner schießt Polizisten an</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Der Kleingärtner Rico Milke erschoss auf der Wildschweinjagd in seinem Garten einen Polizisten. "Ich hielt ihn für ein Wildschwein", beteuerte der Schütze.</de>
+				<de>Der Kleingärtner Rico Milke schoss auf der Wildschweinjagd in seinem Garten einen Polizisten an. "Ich hielt ihn für ein Wildschwein", beteuerte der Schütze.</de>
 				<en></en>
 			</description>
 			<effects>
@@ -1408,7 +1408,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="4" price="1.0" quality="49" />
+			<data genre="4" price="0.7" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 
@@ -1424,8 +1424,8 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep2" time="2,1,2,6,18" />
 			</effects>
-			<data genre="2" price="1.0" quality="40" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<data genre="2" price="1.0" quality="30" />
+			<conditions year_range_from="2004" year_range_to="2005" />
 		</news>
 		<news id="newsevent-unknown-preyts-ep2" thread_id="newsevent-unknown-preyts" type="2" creator="">
 			<title>
@@ -1439,7 +1439,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep3" time="1,6,12" />
 			</effects>
-			<data genre="2" price="1.0" quality="35" />
+			<data genre="2" price="1.0" quality="25" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="newsevent-unknown-preyts-ep3" thread_id="newsevent-unknown-preyts" type="2" creator="">
@@ -1469,7 +1469,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep2" time="2,1,1,7,11" />
 			</effects>
-			<data genre="2" price="1.0" quality="45" />
+			<data genre="2" price="1.0" quality="25" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="newsevent-unknown-preyts-ep5" thread_id="newsevent-unknown-preyts" type="2" creator="">
@@ -1482,7 +1482,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="2" price="1.0" quality="50" />
+			<data genre="2" price="1.0" quality="30" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 			
@@ -1496,7 +1496,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="4" price="1.0" quality="58" />
+			<data genre="4" price="0.7" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="db23af24-bf5c-42d3-8567-fa7b2c1a4e3f" thread_id="a5ba32a7-cedc-463d-9cf9-fb628c7a7fb1" type="0" creator="">
@@ -1508,7 +1508,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<de>In der letzten Nacht wurde die Mona Lisa aus dem Louvre in Paris gestohlen. Ein Nachtwächter bemerkte dies, als er den Rahmen säubern wollte.</de>
 				<en></en>
 			</description>
-			<data genre="4" price="1.0" quality="49" />
+			<data genre="5" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="3756602f-ddcc-4e7c-9ebc-4c1a3259d8c2" thread_id="a6ec2fd9-ff73-4f4b-829b-01f331dc6f92" type="0" creator="">
@@ -1521,7 +1521,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="3" price="1.05" quality="9" />
+			<data genre="4" price="1.0" quality="9" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="ba7b3713-d66c-4777-b0d4-1195bcef9850" thread_id="a8c65186-08a7-4099-b303-994272ffc9c6" type="0" creator="">
@@ -1558,11 +1558,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Der amerikanische Computerhersteller EppelWoi staunte nicht schlecht, als ihr Computer für die beste Nebenrolle Oskar-nominiert wurde. </de>
+				<de>Der amerikanische Computerhersteller EppelWoi staunte nicht schlecht, als ihr Computer für den besten Nebenrollen-Oskar nominiert wurde. </de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="3" price="1.05" quality="33" />
+			<data genre="3" price="1.0" quality="33" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="ab0b9817-e9af-41f1-a5f1-5c83a4c974ea" thread_id="b22b0ecb-78f4-4bfa-a3dd-19cf475d994c" type="0" creator="">
@@ -1575,7 +1575,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="4" price="1.10" quality="39" />
+			<data genre="4" price="0.7" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="053b3454-01b7-4e55-9aaa-06e03dd67e12" thread_id="b2b0eae0-e095-4d99-ac01-cb1ff6c98f5c" type="0" creator="">
@@ -1588,7 +1588,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="2" price="1.10" quality="50" />
+			<data genre="2" price="0.7" quality="40" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d824c05e-00fc-4d4f-a1cd-40a8e7a42085" thread_id="b504e69a-721b-4c1c-838c-fdbd8684dd45" type="0" creator="">
@@ -1601,7 +1601,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="4" price="0.9" quality="58" />
+			<data genre="0" price="0.5" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="6898a824-d53c-483b-a9c1-80a22129893b" thread_id="b54104bd-758d-4b1b-88e5-77a4816c6754" type="0" creator="">
@@ -1614,7 +1614,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="0" price="0.9" quality="39" />
+			<data genre="0" price="0.5" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="9e4efc53-e374-4260-9bf6-e3265f6df566" thread_id="b7c32373-4781-4523-97ec-8398933fc8c3" type="0" creator="">
@@ -1670,7 +1670,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="4" price="1.0" quality="72" />
+			<data genre="3" price="0.7" quality="72" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="d2b527a3-3181-4cbc-baa2-7bd4c7503a74" thread_id="baadc4ea-796b-44a2-b4cb-d333f01516ea" type="0" creator="">
@@ -1711,7 +1711,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="0" price="1.0" quality="19" />
+			<data genre="0" price="0.7" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="2420ee19-a1a3-41fc-97a0-60c77715324a" thread_id="bb84934b-e89e-45ca-88ad-565ad8151996" type="0" creator="">
@@ -1724,7 +1724,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="4" price="1.20" quality="14" />
+			<data genre="4" price="1.0" quality="14" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		
@@ -1741,7 +1741,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<!-- time type = 3, special weekday, day 6 = saturday, so bring the next on day 5-->
 				<effect trigger="happen" type="triggernews" news="cee19a85-bbf4-4d2b-9239-cca90d8d76ad" time="3,5,9,15"  />
 			</effects>
-			<data genre="0" price="1.0" quality="58" />
+			<data genre="0" price="1.0" quality="38" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="cee19a85-bbf4-4d2b-9239-cca90d8d76ad" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
@@ -1757,7 +1757,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<effect trigger="happen" type="triggernews" news="661a9905-912e-4801-ad63-73b9ead7fd78" time="2,1,1,14,17" />
 				<effect trigger="happen" type="triggernews" news="34edc95f-49f3-4131-bc39-8ed5cfc293b1" time="2,1,1,19,21" />
 			</effects>
-			<data genre="0" price="1.0" quality="49" />
+			<data genre="0" price="0.5" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="661a9905-912e-4801-ad63-73b9ead7fd78" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
@@ -1769,7 +1769,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<de>Erste Hochrechnungen ergaben, die Wahlbeteiligung sei so gering wie noch nie. Die Wahllokale wollen sich auch gegen Nachmittag nicht füllen.</de>
 				<en></en>
 			</description>
-			<data genre="0" price="1.0" quality="68" />
+			<data genre="0" price="0.5" quality="68" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="34edc95f-49f3-4131-bc39-8ed5cfc293b1" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
@@ -1784,7 +1784,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="9c5ec87d-9056-46ca-a38b-58ce5dddf2eb" time="2,1,1,8,17" />
 			</effects>
-			<data genre="0" price="1.0" quality="78" />
+			<data genre="0" price="0.5" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="9c5ec87d-9056-46ca-a38b-58ce5dddf2eb" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
@@ -1814,7 +1814,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="1b87d798-85de-486d-a683-25c11db8c929" time="2,1,1,8,17"  />
 			</effects>
-			<data genre="0" price="1.0" quality="78" />
+			<data genre="0" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="1b87d798-85de-486d-a683-25c11db8c929" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
@@ -1823,11 +1823,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Nach einem nächtlichen Gipfeltreffen der Parteispitzen von NPD und PDS wird es wohl eine Koalition der beiden stärksten deutschen Parteien geben.</de>
+				<de>Nach einem nächtlichen Gipfeltreffen der Parteispitzen von NPDU und SPDS wird es wohl eine Koalition der beiden stärksten deutschen Parteien geben.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="0" price="1.0" quality="88" />
+			<data genre="0" price="0.5" quality="88" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 
@@ -1873,7 +1873,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="3b01bf6c-1551-4fc7-b196-d129cce1f7a5" />
 			</effects>
-			<data genre="0" price="1.0" quality="58" />
+			<data genre="4" price="1.0" quality="58" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="3b01bf6c-1551-4fc7-b196-d129cce1f7a5" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
@@ -2004,7 +2004,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="4" price="1.10" quality="29" />
+			<data genre="4" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="dfd40ed6-dbae-4c7a-9128-8d2befb589f0" thread_id="d259cc83-9c13-438c-a990-1076d6892e60" type="0" creator="">
@@ -2019,7 +2019,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="0e8af79d-2b80-4802-884e-bcaa3b70ed22" />
 			</effects>
-			<data genre="3" price="1.0" quality="19" />
+			<data genre="3" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="0e8af79d-2b80-4802-884e-bcaa3b70ed22" thread_id="d259cc83-9c13-438c-a990-1076d6892e60" type="2" creator="">
@@ -2043,7 +2043,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Wie Elektromerz mitteilte, habe man die Hersteller von Computerkomponenten zwingen wollen, optische Rechner an zu bieten.</de>
+				<de>Wie Elektromerz mitteilte, habe man die Hersteller von Computerkomponenten zwingen wollen, optische Rechner anzubieten.</de>
 				<en></en>
 			</description>
 			<effects />
@@ -2090,7 +2090,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="0" price="1.1" quality="12" />
+			<data genre="4" price="1.1" quality="12" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="a6ac4b6c-83a0-433a-9336-c7256b6e3165" thread_id="d4c54bd0-cecf-4f40-bb10-7cda64543f3d" type="0" creator="">
@@ -2295,7 +2295,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="1" price="1.0" quality="49" />
+			<data genre="1" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 
@@ -2323,7 +2323,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="94c8810c-b24b-44f2-a88a-3fb3d49fac22" />
 			</effects>
-			<data genre="0" price="1.15" quality="58" />
+			<data genre="0" price="0.7" quality="38" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="94c8810c-b24b-44f2-a88a-3fb3d49fac22" thread_id="de6fcb92-7b35-4a6a-9daf-7d5904d622fa" type="2" creator="">
@@ -2336,7 +2336,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="0" price="1.10" quality="58" />
+			<data genre="0" price="0.7" quality="48" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		
@@ -2367,7 +2367,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="0edca939-dbee-41f9-a1bf-8bec9b7718fb" />
 			</effects>
-			<data genre="4" price="1.0" quality="58" />
+			<data genre="4" price="1.0" quality="48" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="0edca939-dbee-41f9-a1bf-8bec9b7718fb" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b" type="2" creator="">
@@ -2382,7 +2382,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="ff1f0a05-040c-4930-a314-12784ce12177" />
 			</effects>
-			<data genre="4" price="1.0" quality="19" />
+			<data genre="4" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="ff1f0a05-040c-4930-a314-12784ce12177" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b" type="2" creator="">
@@ -2395,7 +2395,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="4" price="1.0" quality="58" />
+			<data genre="4" price="0.7" quality="48" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 
@@ -2409,7 +2409,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="4" price="0.9" quality="21" />
+			<data genre="3" price="1.0" quality="21" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="bc7adf97-1b60-4745-99b3-f18604837103" thread_id="f0228a97-bf9b-4d35-9723-9dcbbbc99b1b" type="0" creator="">
@@ -2418,7 +2418,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Der Stunthund von TV-Hundestar Bello Miez verletzte sich an der linken Vorderpfote. Sein Trainer: `Er wird nie wieder der alte sein´.</de>
+				<de>Der Stunthund von TV-Hundestar Bello Miez verletzte sich an der linken Vorderpfote. Sein Trainer: `Er wird nie wieder der Alte sein´.</de>
 				<en></en>
 			</description>
 			<effects>
@@ -2477,13 +2477,13 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Die Flamen wollen ein unabhängiges Flandern. Dies hat nun die flämische Regierung unter Proteste der brüsseler und wallonischen Regierung durchgesetzt.</de>
+				<de>Die Flamen wollen ein unabhängiges Flandern. Dies hat nun die flämische Regierung unter Protesten der brüsseler und wallonischen Regierung durchgesetzt.</de>
 				<en></en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="fb74b1bd-a603-4eaa-ae64-9b549dd96903" />
 			</effects>
-			<data genre="0" price="1.0" quality="78" />
+			<data genre="0" price="0.7" quality="78" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="fb74b1bd-a603-4eaa-ae64-9b549dd96903" thread_id="f23be612-26ee-48f8-ad1e-17e310af7997" type="2" creator="">
@@ -2513,7 +2513,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="896c6fc0-4eb8-4363-ba30-c9742b91713c" />
 			</effects>
-			<data genre="0" price="1.05" quality="71" />
+			<data genre="0" price="0.7" quality="71" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="896c6fc0-4eb8-4363-ba30-c9742b91713c" thread_id="f23be612-26ee-48f8-ad1e-17e310af7997" type="2" creator="">
@@ -2552,7 +2552,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects />
-			<data genre="1" price="1.0" quality="12" />
+			<data genre="1" price="1.0" quality="32" />
 			<conditions year_range_from="1998" year_range_to="2005" />
 		</news>
 		<news id="f9188a93-fa5d-4062-badb-6dba0d25f2ec" thread_id="fc0cbc46-ddf2-470a-95f7-b4329fc7004b" type="0" creator="">
