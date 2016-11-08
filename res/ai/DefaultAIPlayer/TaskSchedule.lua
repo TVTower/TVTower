@@ -331,12 +331,13 @@ function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, pr
 			local q = math.max(qualities[i], 0.6*qualities[i] + 0.4 * broadcast.GetQuality()) -- Lua-arrays are 1 based
 			--local q = qualities[i]
 
+-- ATTENTION:
 			-- for now we cheat and mix in the REAL quality even if
 			-- we are not knowing them (no generic room key)
 			local realQ = TVT.getBroadcastedProgrammeQuality(day,hour,i)
 			if realQ > 0.001 then
 				q = 0.7 * q + 0.3 * realQ
-devMsg(TVT.ME..":  player #"..i.."  "..day.."/"..hour..":  q="..q.."  realQ="..realQ)
+--devMsg(TVT.ME..":  player #"..i.."  "..day.."/"..hour..":  q="..q.."  realQ="..realQ)
 			end
 			TVT.audiencePredictor.SetAverageValueAttraction(i, q)
 	

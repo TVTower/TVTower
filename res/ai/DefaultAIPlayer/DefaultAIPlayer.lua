@@ -90,6 +90,10 @@ function DefaultAIPlayer:initializePlayer()
 end
 
 function DefaultAIPlayer:resume()
+	-- during loading in of a savegame, this might be used by other
+	-- elements, so better set it already
+	_G["globalPlayer"] = self
+
 	if (self.Strategy == nil) then
 		infoMsg(self:typename() .. ": Resume Strategy")
 		self.Strategy = DefaultStrategy()
