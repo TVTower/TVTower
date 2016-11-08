@@ -2238,6 +2238,103 @@ Type TSaveGame Extends TGameState
 
 		return res
 	End Function
+
+
+	global _nilNode:TNode = new TNode._parent
+	Function RepairData()
+		local repairedNewsEventTemplates:int = 0
+		'if old savegame misses templates, add them back from news
+		if GetNewsEventTemplateCollection().GetCount() = 0
+			local availableNewsEvents:int = 0
+			Local node:TNode = GetNewsEventCollection().allNewsEvents._FirstNode()
+			While node And node <> _nilNode
+				local ne:TNewsEvent = TNewsEvent(node._value)
+				if not ne
+					node = node.NextNode()
+					continue
+				endif
+
+				availableNewsEvents :+ 1
+
+				'skip happened one time events
+				if ne.HasHappened() and not ne.IsReuseable()
+					node = node.NextNode()
+					continue
+				endif
+				
+				local neT:TNewsEventTemplate = new TNewsEventTemplate
+				neT.CopyBaseFrom(ne)
+				neT.SetGUID( ne.GetGUID()+"-template" )
+				neT.SetOwner(neT.OWNER_NOBODY)
+				GetNewsEventTemplateCollection().Add(neT)
+
+				repairedNewsEventTemplates :+ 1
+
+				'move on to next node
+				node = node.NextNode()
+			Wend
+			TLogger.Log("Savegame.RepairData()", "Savegame missed news event templates. Recreated "+repairedNewsEventTemplates+" news templates from " + availableNewsEvents + " news events.", LOG_SAVELOAD)
+		endif
+
+
+		rem
+			would "break" unfinished series productions with re-ordered
+			production orders (1,3,2) and missing episodes ([1,null,3])
+			
+		'repair broken custom productions
+		For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().series
+			if not licence.subLicences or licence.subLicences.length = 0 then continue 
+
+			local hasToFix:int = 0
+			For local subIndex:int = 0 until licence.subLicences.length
+				if not licence.subLicences[subIndex] then hasToFix :+ 1
+			Next
+
+			if hasToFix > 0
+				print "Repairing series ~q"+licence.GetTitle()+"~q"
+				local newSubLicences:TProgrammeLicence[]
+				For local subIndex:int = 0 until licence.subLicences.length
+					if licence.subLicences[subIndex] then newSubLicences :+ [ licence.subLicences[subIndex] ]
+				Next
+				licence.subLicences = newSubLicences
+			endif
+		Next
+		endrem
+	End Function
+
+
+	Function CleanUpData()
+		'=== CLEANUP ===
+		'only needed until all "old savegames" run the current one
+		'or our savegames once get incompatible to older versions...
+		'(which happens a lot during dev)
+		local unused:int
+		local used:int = GetAdContractCollection().list.count()
+		local adagencyContracts:TList = RoomHandler_AdAgency.GetInstance().GetContractsInStock()
+		if not adagencyContracts then adagencyContracts = CreateList()
+		local availableContracts:TAdContract[] = TAdContract[](GetAdContractCollection().list.ToArray())
+		For local a:TAdContract = EachIn availableContracts
+			if a.owner = a.OWNER_NOBODY OR (a.daySigned = -1 and a.profit = -1 and not adagencyContracts.Contains(a))
+				unused :+1
+				GetAdContractCollection().Remove(a)
+			endif
+		Next
+		'print "Cleanup: removed "+unused+" unused AdContracts."
+
+
+		TLogger.Log("Savegame.CleanUpData().", "Scriptcollection:", LOG_SAVELOAD | LOG_DEBUG)
+		'used = GetScriptCollection().GetAvailableScriptList().Count()
+		'local scriptList:TList = RoomHandler_ScriptAgency.GetInstance().GetScriptsInStock()
+		'if not scriptList then scriptList = CreateList()
+		local availableScripts:TScript[] = TScript[](GetScriptCollection().GetAvailableScriptList().ToArray())
+		unused = 0
+		For local s:TScript = EachIn availableScripts
+			unused :+1
+			GetScriptCollection().Remove(s)
+			TLogger.Log("Savegame.CleanUpData().", "- removing script: "+s.GetTitle()+"  ["+s.GetGUID()+"]", LOG_SAVELOAD | LOG_DEBUG)
+		Next
+		TLogger.Log("Savegame.CleanUpData().", "Removed "+unused+" generated but unused scripts from collection.", LOG_SAVELOAD | LOG_DEBUG)
+	End Function
 	
 
 	Function Load:Int(saveName:String="savegame.xml")
@@ -2333,62 +2430,12 @@ rem
 endrem
 		endif
 
-		'=== CLEANUP ===
-		'only needed until all "old savegames" run the current one
-		'or our savegames once get incompatible to older versions...
-		'(which happens a lot during dev)
-		local unused:int
-		local used:int = GetAdContractCollection().list.count()
-		local adagencyContracts:TList = RoomHandler_AdAgency.GetInstance().GetContractsInStock()
-		if not adagencyContracts then adagencyContracts = CreateList()
-		local availableContracts:TAdContract[] = TAdContract[](GetAdContractCollection().list.ToArray())
-		For local a:TAdContract = EachIn availableContracts
-			if a.owner = a.OWNER_NOBODY OR (a.daySigned = -1 and a.profit = -1 and not adagencyContracts.Contains(a))
-				unused :+1
-				GetAdContractCollection().Remove(a)
-			endif
-		Next
-		'print "Cleanup: removed "+unused+" unused AdContracts."
 
+		CleanUpData()
 
-		print "Cleanup Scriptcollection"
-		'used = GetScriptCollection().GetAvailableScriptList().Count()
-		'local scriptList:TList = RoomHandler_ScriptAgency.GetInstance().GetScriptsInStock()
-		'if not scriptList then scriptList = CreateList()
-		local availableScripts:TScript[] = TScript[](GetScriptCollection().GetAvailableScriptList().ToArray())
-		unused = 0
-		For local s:TScript = EachIn availableScripts
-			unused :+1
-			GetScriptCollection().Remove(s)
-			print " - removing script: "+s.GetTitle()+"  ["+s.GetGUID()+"]"
-		Next
-		print "Cleanup: removed "+unused+" generated but unused scripts from collection."
+		
+		RepairData()
 
-
-		rem
-			would "break" unfinished series productions with re-ordered
-			production orders (1,3,2) and missing episodes ([1,null,3])
-			
-		'repair broken custom productions
-		For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().series
-			if not licence.subLicences or licence.subLicences.length = 0 then continue 
-
-			local hasToFix:int = 0
-			For local subIndex:int = 0 until licence.subLicences.length
-				if not licence.subLicences[subIndex] then hasToFix :+ 1
-			Next
-
-			if hasToFix > 0
-				print "Repairing series ~q"+licence.GetTitle()+"~q"
-				local newSubLicences:TProgrammeLicence[]
-				For local subIndex:int = 0 until licence.subLicences.length
-					if licence.subLicences[subIndex] then newSubLicences :+ [ licence.subLicences[subIndex] ]
-				Next
-				licence.subLicences = newSubLicences
-			endif
-		Next
-		endrem
-			
 
 		'call game that game continues/starts now
 		GetGame().StartLoadedSaveGame()

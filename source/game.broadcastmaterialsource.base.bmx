@@ -23,6 +23,18 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	End Method
 
 
+	Method CopyBaseFrom:TBroadcastMaterialSourceBase(base:TBroadcastMaterialSourceBase)
+		title = base.title.copy()
+		description = base.description.copy()
+		modifiers = base.CopyModifiers()
+		effects = base.CopyEffects()
+		topicality = base.topicality
+		flags = base.flags
+		broadcastFlags = base.broadcastFlags
+
+		return self
+	End Method
+
 
 	'returns the stored value for a modifier - defaults to "100%"
 	Method GetModifier:Float(modifierKey:string, defaultValue:Float = 1.0)

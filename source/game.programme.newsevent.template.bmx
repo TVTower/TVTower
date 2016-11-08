@@ -23,6 +23,7 @@ Type TNewsEventTemplateCollection
 	Field unusedTemplates:TMap = new TMap
 
 	'CACHES (eg. for random accesses)
+	Field _allCount:int = -1 {nosave}
 	Field _unusedInitialTemplates:TList[] {nosave}
 	Field _unusedAvailableInitialTemplates:TList[] {nosave}
 	Global _instance:TNewsEventTemplateCollection
@@ -52,6 +53,8 @@ Type TNewsEventTemplateCollection
 	Method _InvalidateCaches()
 		_InvalidateUnusedAvailableInitialTemplates()
 		_InvalidateUnusedInitialTemplates()
+
+		_allCount = -1
 	End Method
 
 
@@ -95,6 +98,17 @@ Type TNewsEventTemplateCollection
 		endif
 
 		_InvalidateCaches()
+	End Method
+
+
+	Method GetCount:int()
+		if _allCount < 0
+			_allCount = 0
+			For local k:string = EachIn allTemplates.Keys()
+				_allCount :+ 1
+			Next
+		endif
+		return _allCount
 	End Method
 
 
