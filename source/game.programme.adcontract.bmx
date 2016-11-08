@@ -227,7 +227,7 @@ End Function
 
 'contracts bases for advertisement - straight from the DB
 'they just contain data to base new contracts of
-Type TAdContractBase extends TBroadcastMaterialSourceBase {_exposeToLua}
+Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 	'days to fullfill a (signed) contract
 	Field daysToFinish:Int = 0
 	'spots to send
@@ -548,7 +548,7 @@ End Type
 
 
 'the useable contract for advertisements used in the playercollections
-Type TAdContract extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
+Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'holds raw contract data
 	Field base:TAdContractBase = Null
 	'how many spots were successfully sent up to now

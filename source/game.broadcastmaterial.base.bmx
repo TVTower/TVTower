@@ -204,7 +204,7 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetSource:TBroadcastMaterialSourceBase() {_exposeToLua}
+	Method GetSource:TBroadcastMaterialSource() {_exposeToLua}
 		return null
 	End Method
 

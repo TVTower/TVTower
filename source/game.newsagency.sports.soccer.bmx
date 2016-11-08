@@ -153,7 +153,7 @@ Type TNewsEventSport_Soccer extends TNewsEventSport
 				                  predefinedTeamData.GetString("nameInitials", "") ..
 				                 )
 				teams :+ [team]
-print "league="+(leagueIndex+1)+"  team="+(i+1)+"  name=" + team.name+"  city="+team.city+"  nameInitials="+team.nameInitials+"  clubName="+team.clubName+"  clubNameInitials="+team.clubNameInitials
+'print "league="+(leagueIndex+1)+"  team="+(i+1)+"  name=" + team.name+"  city="+team.city+"  nameInitials="+team.nameInitials+"  clubName="+team.clubName+"  clubNameInitials="+team.clubNameInitials
 
 				For local j:int = 0 to 12 '0 is trainer
 					local cCode:string = "de"
@@ -241,17 +241,17 @@ Type TNewsEventSportLeague_Soccer extends TNewsEventSportLeague
 		'time = GetNextMatchStartTime(time)
 
 		if not season then season = GetCurrentSeason()
-if isPlayoffSeason
-	print "AssignMatchTimes PLAYOFFS: " + GetWorldTime().GetFormattedDate(time)
-else
-	print "AssignMatchTimes: " + GetWorldTime().GetFormattedDate(time)
-endif
+'if isPlayoffSeason
+'	print "AssignMatchTimes PLAYOFFS: " + GetWorldTime().GetFormattedDate(time)
+'else
+'	print "AssignMatchTimes: " + GetWorldTime().GetFormattedDate(time)
+'endif
 		local matches:int = 1
 		For local m:TNewsEventSportMatch = EachIn season.data.matchPlan
 			m.SetMatchTime(time)
-			if GetWorldTime().GetTimeGone() < time
-				print "   "+ name+ "  match: "+GetWorldTime().GetFormattedDate(m.matchTime) + "  gameday="+ (GetWorldTime().GetDaysRun(m.matchTime)+1) + "  " + m.GetNameShort()
-			endif
+'			if GetWorldTime().GetTimeGone() < time
+'				print "   "+ name+ "  match: "+GetWorldTime().GetFormattedDate(m.matchTime) + "  gameday="+ (GetWorldTime().GetDaysRun(m.matchTime)+1) + "  " + m.GetNameShort()
+'			endif
 
 			'every x-th match we increase time - so matches get "grouped"
 			if isPlayoffSeason or (matches > 1 and matches mod matchesPerTimeSlot = 0)
@@ -388,9 +388,9 @@ Type TNewsEventSportMatch_Soccer extends TNewsEventSportMatch
 			halfTimePoints[i] = BiasedRandRange(0, points[i], 0.5)
 		Next
 
-		if GetWorldTime().GetTimeGone() <= matchTime
-			print "RUN MATCH:  now="+GetWorldTime().GetFormattedDate()+"  time="+GetWorldTime().GetFormattedDate(matchTime) + "  gameday="+ (GetWorldTime().GetDaysRun(matchTime)+1) + "  " + GetNameShort()
-		endif
+'		if GetWorldTime().GetTimeGone() <= matchTime
+'			print "RUN MATCH:  now="+GetWorldTime().GetFormattedDate()+"  time="+GetWorldTime().GetFormattedDate(matchTime) + "  gameday="+ (GetWorldTime().GetDaysRun(matchTime)+1) + "  " + GetNameShort()
+'		endif
 	End Method
 
 

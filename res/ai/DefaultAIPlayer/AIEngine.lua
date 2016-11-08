@@ -787,6 +787,7 @@ _G["StatisticEvaluator"] = class(SLFDataObject, function(c)
 
 	c.TotalSum = 0
 	c.Values = 0
+	c.adjustTimes = 0
 end)
 
 function StatisticEvaluator:typename()

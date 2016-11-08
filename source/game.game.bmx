@@ -626,6 +626,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		For local ne:TNewsEvent = EachIn GetNewsEventCollection().GetNewsHistory(3)
 			if GetPlayerProgrammeCollection(playerID).HasNewsEvent(ne) then continue
 			GetNewsAgency().AddNewsEventToPlayer(ne, playerID, True)
+			'avoid having that news again (same is done during add, so this
+			'step is not strictly needed here)
+			GetNewsAgency().RemoveFromDelayedListsByNewsEvent(playerID, ne)
 		Next
 		
 
@@ -650,7 +653,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'set planned
 			GetPlayerProgrammePlan(playerID).SetNews(newsToPlace, i)
 		Next
-
 
 
 		'=== FETCH START CONTRACTS ===
@@ -1523,10 +1525,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				'year
 				If worldTime.GetDayOfYear() = 1
 					EventManager.triggerEvent(TEventSimple.Create("Game.OnYear", New TData.addNumber("time", worldTime.GetTimeGone()) ))
-
-					'reset availableNewsEventList - maybe this is a year
-					'with some more news
-					GetNewsEventCollection().RefreshAvailable()
 				EndIf
 
 			 	'automatically change current-plan-day on day change
@@ -1538,6 +1536,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'hour
 			If worldTime.GetDayMinute() = 0
 				EventManager.triggerEvent(TEventSimple.Create("Game.OnHour", New TData.addNumber("time", worldTime.GetTimeGone()) ))
+
+				'reset availableNewsEventList - maybe this hour made some
+				'more news available
+				GetNewsEventTemplateCollection()._InvalidateUnusedAvailableInitialTemplates()
 			EndIf
 
 			'minute

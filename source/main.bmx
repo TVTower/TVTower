@@ -1771,6 +1771,7 @@ Type TGameState
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
 	Field _ProgrammeLicenceCollection:TProgrammeLicenceCollection = Null
 
+	Field _NewsEventTemplateCollection:TNewsEventTemplateCollection = Null
 	Field _NewsEventCollection:TNewsEventCollection = Null
 	Field _AchievementCollection:TAchievementCollection = Null
 	Field _FigureCollection:TFigureCollection = Null
@@ -1845,6 +1846,7 @@ Type TGameState
 		GetProgrammeDataCollection().Initialize()
 		GetProgrammeLicenceCollection().Initialize()
 		TAuctionProgrammeBlocks.Initialize()
+		GetNewsEventTemplateCollection().Initialize()
 		GetNewsEventCollection().Initialize()
 
 		GetDailyBroadcastStatisticCollection().Initialize()
@@ -1920,6 +1922,7 @@ Type TGameState
 		_Assign(_PlayerBossCollection, TPlayerBossCollection._instance, "PlayerBossCollection", MODE_LOAD)
 		_Assign(_PublicImageCollection, TPublicImageCollection._instance, "PublicImageCollection", MODE_LOAD)
 
+		_Assign(_NewsEventTemplateCollection, TNewsEventTemplateCollection._instance, "NewsEventTemplateCollection", MODE_LOAD)
 		_Assign(_NewsEventCollection, TNewsEventCollection._instance, "NewsEventCollection", MODE_LOAD)
 		_Assign(_NewsAgency, TNewsAgency._instance, "NewsAgency", MODE_LOAD)
 		_Assign(_AchievementCollection, TAchievementCollection._instance, "AchievementCollection", MODE_LOAD)
@@ -2032,6 +2035,7 @@ Type TGameState
 		_Assign(TGame._instance, _Game, "Game", MODE_SAVE)
 
 
+		_Assign(TNewsEventTemplateCollection._instance, _NewsEventTemplateCollection, "NewsEventTemplateCollection", MODE_SAVE)
 		_Assign(TNewsEventCollection._instance, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
 		_Assign(TNewsAgency._instance, _NewsAgency, "NewsAgency", MODE_SAVE)
 		_Assign(TAchievementCollection._instance, _AchievementCollection, "AchievementCollection", MODE_SAVE)

@@ -107,6 +107,7 @@ Type TNewsAgency
 		'react to confiscations
 		_eventListeners :+ [ EventManager.registerListenerFunction( "publicAuthorities.onConfiscateProgrammeLicence", onPublicAuthoritiesConfiscateProgrammeLicence) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onBombExplosion", onRoomBombExplosion) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.addNews", onPlayerProgrammeCollectionAddNews) ]
 
 		'resize news genres when loading an older savegame
 		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSavegameLoad) ]
@@ -122,6 +123,17 @@ Type TNewsAgency
 			NA.NextEventTimes = NA.NextEventTimes[.. TVTNewsGenre.count]
 			NA.NextEventTimeIntervals = NA.NextEventTimeIntervals[.. TVTNewsGenre.count]
 		endif
+	End Function
+
+
+	Function onPlayerProgrammeCollectionAddNews:int(triggerEvent:TEventBase)
+		'remove news events from delayed list IF still there
+		'(happens with 3 start news - added to delayed and then added
+		' directly to collection)
+
+		local news:TNews = TNews(triggerEvent.GetData().get("news"))
+		if not news then return False
+		_instance.RemoveFromDelayedListsByNewsEvent(news.owner, news.newsEvent)
 	End Function
 
 
@@ -554,7 +566,6 @@ Type TNewsAgency
 		For local newsEvent:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
 			'skip news events not happening yet
 			If Not newsEvent.HasHappened() then continue
-
 			announceNewsEvent(newsEvent)
 			announced:+1
 		Next
@@ -620,7 +631,7 @@ Type TNewsAgency
 				'subscribed to it NOW
 				'(including "not satisfying minimum subscription level")
 				'alternatively also check: "or subscriptionDelay < 0"
-				If (player.GetNewsabonnement(news.newsEvent.genre) <= news.newsEvent.minSubscriptionLevel and not news.newsEvent.HasFlag(TVTNewsFlag.SEND_TO_ALL)) ..
+				If (player.GetNewsabonnement(news.newsEvent.genre) <= news.newsEvent.GetMinSubscriptionLevel() and not news.newsEvent.HasFlag(TVTNewsFlag.SEND_TO_ALL)) ..
 				   or Not news.IsReadyToPublish(subscriptionDelay)
 					'if playerID=1 then print "ProcessDelayedNews #"+playerID+": NOT subscribed or not ready yet: " + news.GetTitle() + "   announceToPlayer="+ GetWorldTime().GetFormattedDate( news.GetPublishTime() + subscriptionDelay )
 					continue
@@ -633,7 +644,8 @@ Type TNewsAgency
 				else
 					news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(news.newsEvent.genre, player.GetNewsAbonnement(news.newsEvent.genre))
 				endif
-				'if playerID=1 then print "ProcessDelayedNews #"+playerID+": announce: " + news.GetTitle() + "   announceToPlayer="+ GetWorldTime().GetFormattedDate( news.GetPublishTime() + subscriptionDelay )
+
+if playerID=1 then print "ProcessDelayedNews #"+playerID+": announce: " + news.GetTitle() + "  genre="+news.newsevent.genre+"  announceToPlayer="+ GetWorldTime().GetFormattedDate( news.GetPublishTime() + subscriptionDelay )
 				announceNews(news, playerID)
 
 				'remove the news
@@ -647,13 +659,35 @@ Type TNewsAgency
 	End Method
 
 
+	Method RemoveFromDelayedListsByNewsEvent(playerID:int=0, newsEvent:TNewsEvent)
+		if playerID<=0
+			For local i:int = 1 to delayedLists.Length
+				RemoveFromDelayedListsByNewsEvent(playerID, newsEvent)
+			Next
+		else
+			if delayedLists.length >= playerID and delayedLists[playerID-1]
+				local remove:TNews[]
+				for local n:TNews = EachIn delayedLists[playerID-1]
+					if n.newsEvent = newsEvent then remove :+ [n]
+				next
+				for local n:TNews = EachIn remove
+					delayedLists[playerID-1].Remove(n)
+				next
+				for local n:TNews = EachIn delayedLists[playerID-1]
+					if n.newsEvent = newsEvent then remove :+ [n]
+				next
+			endif
+		endif
+	End Method
+
+
 	Method ResetDelayedList(playerID:int=0)
 		if playerID<=0
 			For local i:int = 1 to delayedLists.Length
 				if delayedLists[i-1] then delayedLists[i-1].Clear()
 			Next
 		else
-			if delayedLists.length <= playerID and delayedLists[playerID-1]
+			if delayedLists.length >= playerID and delayedLists[playerID-1]
 				delayedLists[playerID-1].Clear()
 			endif
 		endif
@@ -693,7 +727,7 @@ Type TNewsAgency
 	Method AddNewsEventToPlayer:Int(newsEvent:TNewsEvent, forPlayer:Int=-1, sendNow:Int=False, fromNetwork:Int=False)
 		local player:TPlayerBase = GetPlayerBase(forPlayer)
 		if not player then return False
-		
+
 		local news:TNews = TNews.Create("", 0, newsEvent)
 
 		sendNow = sendNow or newsEvent.HasFlag(TVTNewsFlag.SEND_IMMEDIATELY)
@@ -744,7 +778,7 @@ Type TNewsAgency
 		'=== TYPE RANDOM NEWS ===
 		'if no "special case" triggered, just use a random news
 		If Not newsEvent
-			newsEvent = GetNewsEventCollection().GetRandomAvailable(genre)
+			newsEvent = GetNewsEventCollection().CreateRandomAvailable(genre)
 		EndIf
 
 		return newsEvent

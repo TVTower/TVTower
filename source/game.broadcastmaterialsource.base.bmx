@@ -13,12 +13,131 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	'contains "numeric" modifiers (simple key:num-pairs)
 	Field modifiers:TData = new TData
 	Field effects:TGameModifierGroup = New TGameModifierGroup
-	'how many times that source was broadcasted
-	'(per player, 0 = unknown - allows to adjust "before game start" value)
-	Field timesBroadcasted:int[] = [0]
+
 	Field topicality:Float = 1.0
 	Field flags:int = 0
 	Field broadcastFlags:int = 0
+
+	Method GenerateGUID:string()
+		return "broadcastmaterialsource-base-"+id
+	End Method
+
+
+
+	'returns the stored value for a modifier - defaults to "100%"
+	Method GetModifier:Float(modifierKey:string, defaultValue:Float = 1.0)
+		Return modifiers.GetFloat(modifierKey, defaultValue)
+	End Method
+
+
+	'stores a modifier value
+	Method SetModifier:int(modifierKey:string, value:Float)
+		'skip adding the modifier if it is the same - or a default value
+		'-> keeps datasets smaller
+		if GetModifier(modifierKey) = value then Return False
+		
+		modifiers.AddNumber(modifierKey, value)
+		Return True
+	End Method
+
+
+	Global _nilNode:TNode = New TNode._parent
+	Method CopyModifiers:TData()
+		if not modifiers then return null
+
+		local clone:TData = new TData
+
+		'find first hit
+		Local node:TNode = modifiers.data._FirstNode()
+		While node And node <> _nilNode
+			if TGameModifierBase(node._value)
+				clone.Add(node._key, TGameModifierBase(node._value).Copy())
+			else
+				clone.Add(node._key, node._value)
+			endif
+
+			'move on to next node
+			node = node.NextNode()
+		Wend
+
+		return clone
+	End Method
+
+
+	Method CopyEffects:TGameModifierGroup()
+		if not effects then return null
+
+		return effects.Copy()
+	End Method
+	
+
+	Method GetTitle:string() {_exposeToLua}
+		if title then return title.Get()
+		return ""
+	End Method
+
+
+	Method GetDescription:string() {_exposeToLua}
+		if description then return description.Get()
+		return ""
+	End Method
+
+
+
+	Method hasFlag:Int(flag:Int) {_exposeToLua}
+		Return flags & flag
+	End Method
+
+
+	Method setFlag(flag:Int, enable:Int=True)
+		If enable
+			flags :| flag
+		Else
+			flags :& ~flag
+		EndIf
+	End Method
+
+
+	Method hasBroadcastFlag:Int(flag:Int) {_exposeToLua}
+		Return broadcastFlags & flag
+	End Method
+
+
+	Method SetBroadcastFlag(flag:Int, enable:Int=True)
+		If enable
+			broadcastFlags :| flag
+		Else
+			broadcastFlags :& ~flag
+		EndIf
+	End Method
+
+
+	'add an effect defined in a data container
+	'effectData should be consisting of:
+	'trigger = "broadcast", "firstbroadcast", "happen"...
+	'type = "triggernews" (the key under which the desired effect was registered)
+	'news-5
+	Method AddEffectByData:int(effectData:TData)
+		if not effectData then return False
+
+		local effectName:string = effectData.GetString("type").ToLower()
+		local effectTrigger:string = effectData.GetString("trigger").ToLower()
+		if not effectName or not effectTrigger then return False
+
+		local effect:TGameModifierBase = GameModifierCreator.CreateModifier(effectName, effectData)
+		if not effect then return False
+
+		effects.AddEntry(effectTrigger, effect)
+		return True
+	End Method
+End Type
+
+
+'could be done as "interface"
+Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
+	'how many times that source was broadcasted
+	'(per player, 0 = unknown - allows to adjust "before game start" value)
+	Field timesBroadcasted:int[] = [0]
 	'the maximum _current_ amount of broadcasts possible for this licence
 	Field broadcastLimit:int = 0
 	'the maximum amount of broadcasts possible for this licence after reset
@@ -30,7 +149,7 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	
 
 	Method GenerateGUID:string()
-		return "broadcastmaterialsource-base-"+id
+		return "broadcastmaterialsource-"+id
 	End Method
 
 
@@ -107,35 +226,6 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	End Method
 	
 
-	'returns the stored value for a modifier - defaults to "100%"
-	Method GetModifier:Float(modifierKey:string, defaultValue:Float = 1.0)
-		Return modifiers.GetFloat(modifierKey, defaultValue)
-	End Method
-
-
-	'stores a modifier value
-	Method SetModifier:int(modifierKey:string, value:Float)
-		'skip adding the modifier if it is the same - or a default value
-		'-> keeps datasets smaller
-		if GetModifier(modifierKey) = value then Return False
-		
-		modifiers.AddNumber(modifierKey, value)
-		Return True
-	End Method
-
-
-	Method GetTitle:string() {_exposeToLua}
-		if title then return title.Get()
-		return ""
-	End Method
-
-
-	Method GetDescription:string() {_exposeToLua}
-		if description then return description.Get()
-		return ""
-	End Method
-
-
 	Method GetMaxTopicality:Float()
 		Return 1.0
 	End Method
@@ -172,39 +262,16 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	End Method
 
 
+	Method SetTopicality:int(topicality:FLoat)
+		self.topicality = MathHelper.Clamp(topicality, 0, GetMaxTopicality())
+	End Method
+
+
 	'by default (mod = 1.0) this does not refresh at all
 	Method RefreshTopicality:Float(refreshModifier:Float = 1.0) {_private}
 		topicality = MathHelper.Clamp(topicality * refreshModifier, 0, GetMaxTopicality())
 
 		Return topicality
-	End Method
-
-
-	Method hasFlag:Int(flag:Int) {_exposeToLua}
-		Return flags & flag
-	End Method
-
-
-	Method setFlag(flag:Int, enable:Int=True)
-		If enable
-			flags :| flag
-		Else
-			flags :& ~flag
-		EndIf
-	End Method
-
-
-	Method hasBroadcastFlag:Int(flag:Int) {_exposeToLua}
-		Return broadcastFlags & flag
-	End Method
-
-
-	Method SetBroadcastFlag(flag:Int, enable:Int=True)
-		If enable
-			broadcastFlags :| flag
-		Else
-			broadcastFlags :& ~flag
-		EndIf
 	End Method
 
 
@@ -232,27 +299,6 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	Method SetControllable(bool:int = True)
 		SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE, not bool)
 	End Method
-
-
-	'add an effect defined in a data container
-	'effectData should be consisting of:
-	'trigger = "broadcast", "firstbroadcast", "happen"...
-	'type = "triggernews" (the key under which the desired effect was registered)
-	'news-5
-	Method AddEffectByData:int(effectData:TData)
-		if not effectData then return False
-
-		local effectName:string = effectData.GetString("type").ToLower()
-		local effectTrigger:string = effectData.GetString("trigger").ToLower()
-		if not effectName or not effectTrigger then return False
-
-		local effect:TGameModifierBase = GameModifierCreator.CreateModifier(effectName, effectData)
-		if not effect then return False
-
-		effects.AddEntry(effectTrigger, effect)
-		return True
-	End Method
-
 
 
 	'=== LISTENERS ===

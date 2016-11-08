@@ -258,7 +258,7 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 	Function Create:TNews(text:String="unknown", publishdelay:Int=0, useNewsEvent:TNewsEvent=Null)
 		If not useNewsEvent
-			useNewsEvent = GetNewsEventCollection().GetRandomAvailable()
+			useNewsEvent = GetNewsEventCollection().CreateRandomAvailable()
 			useNewsEvent.doHappen()
 		endif
 
@@ -277,7 +277,7 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Function
 
 
-	Method GetSource:TBroadcastMaterialSourceBase() {_exposeToLua}
+	Method GetSource:TBroadcastMaterialSource() {_exposeToLua}
 		return newsEvent
 	End Method
 

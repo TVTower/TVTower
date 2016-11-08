@@ -274,6 +274,17 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 	End Function	
 
 
+	Method Copy:TGameModifierPopularity_ModifyPopularity()
+		local clone:TGameModifierPopularity_ModifyPopularity = new TGameModifierPopularity_ModifyPopularity
+		clone.CopyBaseFrom(self)
+		clone.popularityGUID = self.popularityGUID
+		clone.valueMin = self.valueMin
+		clone.valueMax = self.valueMax
+		clone.modifyProbability = self.modifyProbability
+		return clone
+	End Method
+
+
 	Method Init:TGameModifierPopularity_ModifyPopularity(data:TData, index:string="")
 		if not data then return null
 

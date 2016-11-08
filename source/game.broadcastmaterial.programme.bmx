@@ -573,7 +573,7 @@ print "Trash Strafe: " + penalty.ToString()
 	End Method
 
 
-	Method GetSource:TBroadcastMaterialSourceBase() {_exposeToLua}
+	Method GetSource:TBroadcastMaterialSource() {_exposeToLua}
 		return self.licence
 	End Method
 	

@@ -104,6 +104,21 @@ Type TGameModifierBase
 	End Function
 
 
+	Method Copy:TGameModifierBase()
+		local clone:TGameModifierBase = new TGameModifierBase
+		clone.CopyBasefrom(self)
+		return clone
+	End Method
+
+
+	Method CopyBaseFrom:TGameModifierBase(base:TGameModifierBase)
+		'only works for numeric/strings!
+		data = base.data.copy()
+		modifierTypes = base.modifierTypes
+	End Method
+
+
+
 	Method Init:TGameModifierBase(data:TData, index:string="")	
 		'by default ignore indexes <> "" (aka "children")
 		if index <> "" and index <> "0" then return null
@@ -216,11 +231,24 @@ End Type
 
 Type TGameModifierGroup
 	Field entries:TMap
-
+	Global _nilNode:TNode = New TNode._parent
 
 	Method Copy:TGameModifierGroup()
 		local c:TGameModifierGroup = new TGameModifierGroup
-		if entries then c.entries = entries.Copy()
+		if entries
+			Local node:TNode = entries._FirstNode()
+			While node And node <> _nilNode
+				local l:TList = TList(node._value)
+				if not l then continue
+
+				for local m:TGameModifierBase = eachIn l
+					c.AddEntry(string(node._key), m)
+				next
+
+				'move on to next node
+				node = node.NextNode()
+			Wend
+		endif
 
 		return c
 	End Method
@@ -364,6 +392,27 @@ Type TGameModifierChoice extends TGameModifierBase
 	End Function
 
 
+	Method Copy:TGameModifierChoice()
+		local clone:TGameModifierChoice = new TGameModifierChoice
+		clone.CopyBaseFrom(self)
+
+		return clone
+	End Method
+
+
+	Method CopyFromChoice:TGameModifierChoice(choice:TGameModifierChoice)
+		self.CopyBaseFrom(choice)
+		self.chooseType = choice.chooseType
+		For local p:int = EachIn choice.modifiersProbability
+			self.modifiersProbability :+ [p]
+		Next
+		For local m:TGameModifierBase = EachIn choice.modifiers
+			self.modifiers :+ [m.Copy()]
+		Next
+		return self
+	End Method 
+
+
 	Method Init:TGameModifierChoice(data:TData, index:string)
 		if data.GetString("choose").ToLower() = "or"
 			chooseType = CHOOSETYPE_OR
@@ -434,6 +483,15 @@ Type TGameModifier_TimeLimited extends TGameModifierBase
 	End Function
 
 
+	Method Copy:TGameModifier_TimeLimited()
+		local clone:TGameModifier_TimeLimited = new TGameModifier_TimeLimited
+		clone.CopyBaseFrom(self)
+		clone.timeFrame = self.timeFrame.Copy()
+		clone.expired = self.expired
+		return clone
+	End Method 
+
+
 	Method HasExpired:int()
 		if not timeFrame or expired then return True
 
@@ -481,6 +539,15 @@ Type TGameModifierTimeFrame
 	Field timeBegin:Long = -1
 	Field timeEnd:Long = -1
 	Field timeDuration:int = -1
+
+
+	Method Copy:TGameModifierTimeFrame()
+		local clone:TGameModifierTimeFrame = new TGameModifierTimeFrame
+		clone.timeBegin = self.timeBegin
+		clone.timeEnd = self.timeEnd
+		clone.timeDuration = self.timeDuration
+		return clone
+	End Method 
 
 
 	Method SetTimeEnd(time:Long)

@@ -223,6 +223,19 @@ Type TGameModifierPublicImage_Modify extends TGameModifierBase
 	End Function
 
 
+	Method Copy:TGameModifierPublicImage_Modify()
+		local clone:TGameModifierPublicImage_Modify = new TGameModifierPublicImage_Modify
+		clone.CopyBaseFrom(self)
+		clone.playerID = self.playerID
+		clone.value = new TAudience.SetValuesFrom(value)
+		clone.valueIsRelative = self.valueIsRelative
+		if self.conditions
+			clone.conditions = self.conditions.copy()
+		endif
+		return clone
+	End Method
+
+
 	Method Init:TGameModifierPublicImage_Modify(data:TData, index:string="")
 		if not data then return null
 

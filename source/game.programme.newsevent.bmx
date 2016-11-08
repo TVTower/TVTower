@@ -14,6 +14,7 @@ Import "game.gameconstants.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.player.base.bmx"
 
+Import "game.programme.newsevent.template.bmx"
 
 
 
@@ -21,8 +22,7 @@ Type TNewsEventCollection
 	'contains news just happened
 	Field newsEventsHistory:TNewsEvent[]
 	Field newsEventsHistoryIndex:int=0
-	'holding all existent news events (also triggered news, but not
-	'non-reuseable ones or happened one-time-events)
+	'holding all currently happening/upcoming news events
 	Field managedNewsEvents:TMap = CreateMap()
 	'holding all news event ever created (including non-reuseable ones)
 	Field allNewsEvents:TMap = CreateMap()
@@ -39,13 +39,10 @@ Type TNewsEventCollection
 	'=== CACHE ===
 	'cache for faster access
 
-	'holding already announced news
-	Field _usedNewsEvents:TList[] {nosave}
 	'holding news coming in a defined future
 	Field _upcomingNewsEvents:TList[] {nosave}
 	'holding all (initial) news events available to "happen"
 	Field _availableNewsEvents:TList[] {nosave}
-	Field _initialNewsEvents:TList[] {nosave}
 	Field _followingNewsEvents:TList[] {nosave}
 	Global _instance:TNewsEventCollection
 
@@ -75,26 +72,14 @@ Type TNewsEventCollection
 	
 
 	Method _InvalidateCaches()
-		_InvalidateUsedNewsEvents()
 		_InvalidateUpcomingNewsEvents()
 		_InvalidateAvailableNewsEvents()
-		_InvalidateInitialNewsEvents()
 		_InvalidateFollowingNewsEvents()
-	End Method
-
-
-	Method _InvalidateUsedNewsEvents()
-		_usedNewsEvents = New TList[TVTNewsGenre.count + 1]
 	End Method
 
 
 	Method _InvalidateAvailableNewsEvents()
 		_availableNewsEvents = New TList[TVTNewsGenre.count + 1]
-	End Method
-
-
-	Method _InvalidateInitialNewsEvents()
-		_initialNewsEvents = New TList[TVTNewsGenre.count + 1]
 	End Method
 
 
@@ -163,15 +148,6 @@ Type TNewsEventCollection
 	End Method
 
 
-	'helper for external callers so they do not need to know
-	'the internal structure of the collection
-	Method RefreshAvailable:int()
-		_InvalidateAvailableNewsEvents()
-
-		GetAvailableNewsList()
-	End Method
-	
-
 	Method GetByGUID:TNewsEvent(GUID:String)
 		GUID = GUID.ToLower()
 		Return TNewsEvent(allNewsEvents.ValueForKey(GUID))
@@ -203,7 +179,6 @@ Type TNewsEventCollection
 	Method RemoveOutdatedNewsEvents(minAgeInDays:int=5, genre:int=-1)
 		local somethingDeleted:int = False
 		local toRemove:TNewsEvent[]
-		local toReuse:TNewsEvent[]
 		
 		For local newsEvent:TNewsEvent = eachin managedNewsEvents.Values()
 			'not happened yet - should not happen
@@ -212,13 +187,7 @@ Type TNewsEventCollection
 			if genre <> -1 and newsEvent.genre <> genre then continue 
 
 			if abs(GetWorldTime().GetDay(newsEvent.happenedTime) - GetWorldTime().GetDay()) >= minAgeInDays
-				'if the news event cannot get used again remove them
-				'from all lists
-				if not newsEvent.IsReuseable()
-					toRemove :+ [newsEvent]
-				else
-					toReuse :+ [newsEvent]
-				endif
+				toRemove :+ [newsEvent]
 
 				somethingDeleted = true
 			endif
@@ -228,9 +197,6 @@ Type TNewsEventCollection
 		'of a map-copy just to avoid concurrent modification
 		For local n:TNewsEvent = Eachin toRemove
 			RemoveManaged(n)
-		Next
-		For local n:TNewsEvent = Eachin toReuse
-			n.Reuse()
 		Next
 		
 		'reset caches, so lists get filled correctly
@@ -242,20 +208,13 @@ Type TNewsEventCollection
 	Method RemoveEndedNewsEvents(genre:int=-1)
 		local somethingDeleted:int = False
 		local toRemove:TNewsEvent[]
-		local toReuse:TNewsEvent[]
 
 		For local newsEvent:TNewsEvent = eachin managedNewsEvents.Values()
 			'only interested in a specific genre?
 			if genre <> -1 and newsEvent.genre <> genre then continue 
 
 			if newsEvent.HasHappened() and newsEvent.HasEnded()
-				'if the news event cannot get used again remove them
-				'from all lists
-				if not newsEvent.IsReuseable()
-					toRemove :+ [newsEvent]
-				else
-					toReuse :+ [newsEvent]
-				endif
+				toRemove :+ [newsEvent]
 				
 				somethingDeleted = true
 			endif
@@ -266,92 +225,23 @@ Type TNewsEventCollection
 		For local n:TNewsEvent = Eachin toRemove
 			RemoveManaged(n)
 		Next
-		For local n:TNewsEvent = Eachin toReuse
-			n.Reuse()
-		Next
-		
+	
 
 		'reset caches, so lists get filled correctly
 		if somethingDeleted then _InvalidateCaches()
 	End Method
 
 
-	'resets already used news events of the past so they can get used again
-	Method ResetReuseableNewsEvents(minAgeInDays:int=5, genre:int=-1)
-		local somethingReset:int = False
-		local toReuse:TNewsEvent[]
+	Method CreateRandomAvailable:TNewsEvent(genre:int=-1)
+		local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetRandomUnusedAvailableInitial(genre)
+		if not template then return Null
 
-		For local newsEvent:TNewsEvent = eachin managedNewsEvents.Values()
-			'not happened yet
-			if newsEvent.HasHappened() then continue
-			'only interested in a specific genre?
-			if genre <> -1 and newsEvent.genre <> genre then continue 
-
-			if abs(GetWorldTime().GetDay(newsEvent.happenedTime) - GetWorldTime().GetDay()) >= minAgeInDays
-				'not reuseable
-				If not newsEvent.IsReuseable() then continue
-
-				toReuse :+ [newsEvent]
-
-				somethingReset = True
-			endif
-		Next
-
-		For local n:TNewsEvent = Eachin toReuse
-			n.Reuse()
-		Next
-
-		'reset caches, so lists get filled correctly
-		if somethingReset then _InvalidateCaches()
-	End Method
-
-
-	Method GetRandomAvailable:TNewsEvent(genre:int=-1)
-
-		'loaded old savegame?
-		'-> managedNewsEvents not yet used?!
-		if GetAvailableNewsList(genre).Count() = 0
-			local c:int = 0
-			for local e:TNewsEvent = EachIn managedNewsEvents.Values()
-				if e.IsReuseable() or not e.HasHappened() then c :+ 1
-			Next
-			if c = 0
-				for local e:TNewsEvent = EachIn allNewsEvents.Values()
-					if e.IsReuseable() or not e.HasHappened()
-						managedNewsEvents.insert(e.GetGUID().ToLower(), e)
-					endif
-				Next
-				_InvalidateAvailableNewsEvents()
-			endif
-		endif
-
-
-		'if no news is available, make older ones available again
-		'start with 4 days ago and lower until we got a news
-		local days:int = 4
-		While GetAvailableNewsList(genre).Count() = 0 and days >= 0
-			RemoveOutdatedNewsEvents(days, genre)
-			days :- 1
-		Wend
-
-		'maybe we could auto-reuse some news ?
-		if GetAvailableNewsList(genre).Count() = 0
-			GetNewsEventCollection().RemoveEndedNewsEvents(genre)
-		endif
+		'mark the template
+		GetNewsEventTemplateCollection().Use(template)
 		
-		if GetAvailableNewsList(genre).Count() = 0
-			'This should only happen if no news events were found in the database
-			if genre = 1
-				TLogger.Log("TNewsEventCollection.GetRandom("+genre+")", "no unused news events found.", LOG_ERROR)
-				Throw "TNewsEventCollection.GetRandom("+genre+"): no unused news events found."
-			else
-				TLogger.Log("TNewsEventCollection.GetRandom("+genre+")", "no unused news events found. Falling back to CURRENT AFFAIR news", LOG_ERROR)
-				return GetRandomAvailable(TVTNewsGenre.CURRENTAFFAIRS)
-			endif
-		endif
-		
-		'fetch a random news
-		return TNewsEvent(GetAvailableNewsList(genre).ValueAtIndex(randRange(0, GetAvailableNewsList(genre).Count() - 1)))
+		local newsEvent:TNewsEvent = new TNewsEvent.InitFromTemplate(template)
+
+		return newsEvent
 	End Method
 
 
@@ -361,70 +251,6 @@ Type TNewsEventCollection
 		else
 			return newsEventsHistory[Max(0,newsEventsHistoryIndex-limit) .. newsEventsHistoryIndex]
 		endif
-	End Method
-	
-
-	'returns (and creates if needed) a list containing only available news
-	Method GetAvailableNewsList:TList(genre:int=-1)
-		'create if missing
-		if not _availableNewsEvents then _InvalidateAvailableNewsEvents()
-
-		if not _availableNewsEvents[genre+1]
-			_availableNewsEvents[genre+1] = CreateList()
-			'GetInitialNewsList() does NOT contain "initialInGameNews",
-			'use "managedNewsEvents.Values()" to have them included too.
-			'But skip "followingNews" then!
-			For local event:TNewsEvent = EachIn GetInitialNewsList(genre)
-				'skip news happened somewhen (past or future)
-				if event.happenedTime <> -1 then continue
-				'skip news not available to "happen" (eg. wrong year)
-				if not event.CanHappen() then continue
-				
-				'skip news which cannot happen now
-				_availableNewsEvents[genre+1].AddLast(event)
-			Next
-		endif
-		return _availableNewsEvents[genre+1]
-	End Method
-
-
-	'returns (and creates if needed) a list containing only already used
-	'news (which are reuseable!)
-	Method GetUsedNewsList:TList(genre:int=-1)
-		'create if missing
-		if not _usedNewsEvents then _InvalidateUsedNewsEvents()
-
-		if not _usedNewsEvents[genre+1]
-			_usedNewsEvents[genre+1] = CreateList()
-			For local event:TNewsEvent = EachIn managedNewsEvents.Values()
-				'skip not happened events - or upcoming events
-				if not event.HasHappened() then continue
-				'only interested in a specific genre?
-				if genre <> -1 and event.genre <> genre then continue 
-
-				_usedNewsEvents[genre+1].AddLast(event)
-			Next
-		endif
-		return _usedNewsEvents[genre+1]
-	End Method	
-
-
-	'returns (and creates if needed) a list containing only initial news
-	Method GetInitialNewsList:TList(genre:int=-1)
-		'create if missing
-		if not _initialNewsEvents then _InvalidateInitialNewsEvents()
-
-		if not _initialNewsEvents[genre+1]
-			_initialNewsEvents[genre+1] = CreateList()
-			For local event:TNewsEvent = EachIn managedNewsEvents.Values()
-				if event.newsType <> TVTNewsType.InitialNews then continue
-				'only interested in a specific genre?
-				if genre <> -1 and event.genre <> genre then continue 
-
-				_initialNewsEvents[genre+1].AddLast(event)
-			Next
-		endif
-		return _initialNewsEvents[genre+1]
 	End Method
 
 
@@ -481,27 +307,15 @@ Type TNewsEventCollection
 			if news.HasHappened()
 				AddHappenedEvent(news)
 
-				'remove one time events from the managed list
-				if not news.IsReuseable() then RemoveManaged(news)
+				'remove from managed ones
+				RemoveManaged(news)
 			endif
 		endif
 
 		'reset only specific caches, so news gets in the correct list
 		'- no need to invalidate newstype-specific caches
-		_InvalidateUsedNewsEvents()
 		_InvalidateUpcomingNewsEvents()
 		_InvalidateAvailableNewsEvents()
-
-
-		'RONNY 2016/06/19:
-		'do not remove from managed as it could contain ingame-news too
-		'(these are often not reuseable)
-		'they might just have been got triggered and would never get
-		'added to the upcoming list then
-		'-> we now remove only when "happened" already
-
-		'remove the news if it cannot happen again
-		'if not news.IsReuseable() then RemoveManaged(news)
 	End Method
 
 
@@ -562,30 +376,33 @@ End Function
 
 
 
-Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
-	Field genre:Int = 0
-	Field keywords:string = ""
-	Field qualityRaw:Float = -1.0 'none
+Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
+	Field template:TNewsEventTemplate
+	
 	'time when something happened or will happen. "-1" = not happened
 	Field happenedTime:Long = -1
 	'number of the news since begin of game (for potential ordering)
 	Field newsNumber:Long = 0
 	'time when a news gets invalid (eg. thunderstorm warning)
 	Field eventDuration:Int = -1
+
+	'used when not -1 or no template is used
 	'type of the news event according to TVTNewsType
-	Field newsType:int = 0 'initialNews
-	'minimum level to receive a news based on this
-	'(eg. filter out soccer news for amateur leagues if only subscribed
-	' to level 1 of 3)
-	Field minSubscriptionLevel:int = 0
+	Field genre:int = -1
+	Field quality:Float = -1
+	Field qualityRaw:Float = -1
+	Field newsType:int = -1
+	Field minSubscriptionLevel:int = -1
+	Field keywords:string = ""
 	Field availableYearRangeFrom:int = -1
 	Field availableYearRangeTo:int = -1
 	'special expression defining whether a contract is available for
 	'ad vendor or not (eg. "YEAR > 2000" or "YEARSPLAYED > 2")
 	Field availableScript:string = ""
 
-	Field _genreDefinitionCache:TNewsGenreDefinition = Null {nosave}
 
+	Field _genreDefinitionCache:TNewsGenreDefinition {nosave}
+	
 
 	Method GenerateGUID:string()
 		return "broadcastmaterialsource-newsevent-"+id
@@ -607,6 +424,30 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method InitFromTemplate:TNewsEvent(template:TNewsEventTemplate)
+		template.timesUsed :+ 1
+		self.template = template
+		self.SetGUID( template.GetGUID()+"-instance"+template.timesUsed)
+		'TODO: with RANDOM - copy title
+		'if ...
+		'	self.title = template.title.copy()
+		'	self.description = template.description.copy()
+		'else
+			self.title = template.title
+			self.description = template.description
+		'endif
+		self.genre = template.genre
+		self.topicality = template.topicality
+		self.SetQualityRaw( template.quality )
+		self.newsType = template.newsType
+
+		self.modifiers = template.CopyModifiers()
+		self.effects = template.CopyEffects()
+
+		return self
+	End Method
+
+
 	Method SetTitle(title:TLocalizedString)
 		self.title = title
 	End Method
@@ -617,36 +458,41 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetGenre(genre:int)
-		self.genre = genre
-	End Method
-
-
-	Method SetQuality(quality:Float)
-		if quality >= 0 then SetQualityRaw(quality)
-	End Method
-
-
-	Method Reuse()
-		'reset happenedTime so it is available again
-		happenedTime = -1
-		topicality = 1.0
-		'reset helper so it can "premiere" again
-		setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME, False)
-
-		'TODO: reset broadcast times ? What happens to achievements etc.
-		'      they need to skip status changes if done so. so check that
-		'      first
-		'timesBroadcasted = [0]
-	End Method
-
-
 	Method ToString:String()
 		return "newsEvent: title=" + GetTitle() + "  quality=" + GetQualityRaw() + "  priceMod=" + GetModifier("price")
 	End Method
+
+
+	Method GetMinSubscriptionLevel:int()
+		if minSubscriptionLevel = -1 and template then return template.minSubscriptionLevel
+		return Max(0, minSubscriptionLevel)
+	End Method
+
+
+	Method AddKeyword:int(keyword:string)
+		if HasKeyword(keyword, True) then return False
+
+		if keywords then keywords :+ ","
+		keywords :+ keyword.ToLower()
+		Return True
+	End Method
+
+
+	Method HasKeyword:int(keyword:string, exactMode:int = False)
+		if not keyword or keyword="," then return False
+		
+		if exactMode
+			return (keywords+",").Find(( keyword+",").ToLower() ) >= 0
+		else
+			return keywords.Find(keyword.ToLower()) >= 0
+		endif
+	End Method
+
 	
 
 	Method IsAvailable:int()
+		if template and not template.IsAvailable() then return False
+
 		'field "available" = false ?
 		if not super.IsAvailable() then return False
 		
@@ -662,6 +508,7 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 
 		return True
 	End Method
+	
 
 	Method SetQualityRaw:Int(quality:Float)
 		'clamp between 0-1.0
@@ -701,26 +548,6 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method AddKeyword:int(keyword:string)
-		if HasKeyword(keyword, True) then return False
-
-		if keywords then keywords :+ ","
-		keywords :+ keyword.ToLower()
-		Return True
-	End Method
-
-
-	Method HasKeyword:int(keyword:string, exactMode:int = False)
-		if not keyword or keyword="," then return False
-		
-		if exactMode
-			return (keywords+",").Find(( keyword+",").ToLower() ) >= 0
-		else
-			return keywords.Find(keyword.ToLower()) >= 0
-		endif
-	End Method
-
-
 	Method HasHappened:Int()
 		'avoid that "-1" (the default for "unset") is fetched in the
 		'next check ("time gone?")
@@ -729,18 +556,6 @@ Type TNewsEvent extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 		If happenedTime > GetWorldTime().GetTimeGone() Then Return False
 
 		return True
-	End Method
-
-
-	Method CanHappen:int()
-		local result:int = True
-		if availableYearRangeFrom >= 0 and availableYearRangeTo >= 0
-			if GetWorldTime().GetYear() < availableYearRangeFrom or GetWorldTime().GetYear() > availableYearRangeTo
-				result = False
-			endif
-		endif
-
-		return result
 	End Method
 
 	
@@ -943,6 +758,20 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 	Function CreateNewInstance:TGameModifierNews_TriggerNews()
 		return new TGameModifierNews_TriggerNews
 	End Function
+
+
+	Method Copy:TGameModifierNews_TriggerNews()
+		local clone:TGameModifierNews_TriggerNews = new TGameModifierNews_TriggerNews
+		clone.CopyBaseFrom(self)
+		clone.triggerNewsGUID = self.triggerNewsGUID
+		clone.happenTimeType = self.happenTimeType
+		for local i:int = 0 until happenTimeData.length
+			clone.happenTimedata[i] = self.happenTimeData[i]
+		Next
+		clone.triggerProbability = self.triggerProbability
+
+		return clone
+	End Method
 	
 
 	Method Init:TGameModifierNews_TriggerNews(data:TData, index:string="")
@@ -992,8 +821,16 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 		'skip if probability is missed
 		if triggerProbability <> 100 and RandRange(0, 100) > triggerProbability then return False
 
-		'set the happenedTime of the defined news to somewhere in the future
-		local news:TNewsEvent = GetNewsEventCollection().GetByGUID(triggerNewsGUID)
+		local news:TNewsEvent
+		'instead of triggering the news DIRECTLY, we check first we talked
+		'about a template...
+		local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(triggerNewsGUID)
+		if template
+			news = new TNewsEvent.InitFromTemplate(template)
+		else
+			news = GetNewsEventCollection().GetByGUID(triggerNewsGUID)
+		endif
+		
 		if not news
 			TLogger.Log("TGameModifierNews_TriggerNews", "cannot find news to trigger: "+triggerNewsGUID, LOG_ERROR)
 			return false
@@ -1013,6 +850,16 @@ End Type
 Type TGameModifierNews_TriggerNewsChoice extends TGameModifierChoice
 	'% chance to trigger the news when "RunFunc()" is called
 	Field triggerProbability:Int = 100
+
+
+	Method Copy:TGameModifierNews_TriggerNewsChoice()
+		local clone:TGameModifierNews_TriggerNewsChoice = new TGameModifierNews_TriggerNewsChoice
+		clone.CopyFromChoice(self)
+		
+		clone.triggerProbability = self.triggerProbability
+
+		return clone
+	End Method
 
 
 	'override
@@ -1084,6 +931,16 @@ Type TGameModifierNews_ModifyAvailability extends TGameModifierBase
 	End Function
 
 
+	Method Copy:TGameModifierNews_ModifyAvailability()
+		local clone:TGameModifierNews_ModifyAvailability = new TGameModifierNews_ModifyAvailability
+		clone.CopyBaseFrom(self)
+		clone.newsGUID = self.newsGUID
+		clone.enableBackup = self.enableBackup
+		clone.enable = self.enable
+		return clone
+	End Method
+
+
 	Method Init:TGameModifierNews_ModifyAvailability(data:TData, index:string="")
 		if not data then return null
 
@@ -1118,7 +975,109 @@ Type TGameModifierNews_ModifyAvailability extends TGameModifierBase
 		newsEvent.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not enable)
 	End Method
 End Type
+
+
+
+Type TGameModifierNews_Attribute extends TGameModifierBase
+	Field newsGUID:string
+	Field attribute:string
+	Field value:string
+	Field valueBackup:string = ""
+
+
+	Function CreateNewInstance:TGameModifierNews_Attribute()
+		return new TGameModifierNews_Attribute
+	End Function
+
+
+	Method Copy:TGameModifierNews_Attribute()
+		local clone:TGameModifierNews_Attribute = new TGameModifierNews_Attribute
+		clone.CopyBaseFrom(self)
+		clone.newsGUID = self.newsGUID
+		clone.attribute = self.attribute
+		clone.value = self.value
+		clone.valueBackup = self.valueBackup
+		return clone
+	End Method
+
+
+	Method Init:TGameModifierNews_Attribute(data:TData, index:string="")
+		if not data then return null
+
+		newsGUID = data.GetString("news", "")
+		attribute = data.GetString("attribute").ToLower()
+		value = data.GetString("value")
+
+		return self
+	End Method
+
+
+	Method ReadNewsEventValue:string()
+		local newsEvent:TNewsEvent = GetNewsEvent()
+		if not newsEvent then return False
+
+		Select attribute
+			case "topicality"
+				return string( newsEvent.GetTopicality() )
+			case "quality"
+				return string( newsEvent.GetQualityRaw() )
+			default
+				print "TGameModifierNews_Attribute: Trying to read unhandled property ~q"+attribute+"~q."
+				return ""
+		End Select
+	End Method
+
+
+	Method WriteNewsEventValue:int(v:string)
+		local newsEvent:TNewsEvent = GetNewsEvent()
+		if not newsEvent then return False
 	
+		Select attribute
+			case "topicality"
+				newsEvent.SetTopicality( float(v) )
+			case "quality"
+				newsEvent.SetQualityRaw( float(v) )
+			default
+				print "TGameModifierNews_Attribute: Trying to set unhandled property ~q"+attribute+"~q."
+				return False
+		End Select
+
+		return True
+	End Method
+
+
+	Method GetNewsEvent:TNewsEvent()
+		local newsEvent:TNewsEvent = TNewsEvent(GetNewsEventCollection().GetByGUID( newsGUID ))
+		if not newsEvent
+			print "TGameModifierNews_Attribute: Failed to find newsEvent ~q"+newsGUID+"~q."
+		endif
+		return newsEvent
+	End Method
+
+
+	'override
+	Method UndoFunc:int()
+		local newsEvent:TNewsEvent = GetNewsEvent()
+		if not newsEvent then return False
+
+		WriteNewsEventValue(valueBackup)
+
+		return True
+	End Method
+
+
+	'override to trigger a specific news
+	Method RunFunc:int(params:TData)
+		local newsEvent:TNewsEvent = GetNewsEvent()
+		if not newsEvent then return False
+
+		valueBackup = ReadNewsEventValue()
+		WriteNewsEventValue(value)
+
+		return True
+	End Method
+End Type
+		
 
 GameModifierCreator.RegisterModifier("TriggerNews", new TGameModifierNews_TriggerNews)
 GameModifierCreator.RegisterModifier("TriggerNewsChoice", new TGameModifierNews_TriggerNewsChoice)

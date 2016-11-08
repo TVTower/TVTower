@@ -917,7 +917,7 @@ endrem
 	End Method
 
 
-	Method of_GetBroadcastMaterialProgrammedCountInTimeSpan:int(materialSource:TBroadcastMaterialSourceBase, slotType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1)
+	Method of_GetBroadcastMaterialProgrammedCountInTimeSpan:int(materialSource:TBroadcastMaterialSource, slotType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 		
 		Return GetPlayerProgrammePlan(self.ME).GetBroadcastMaterialSourceProgrammedCountInTimeSpan(materialSource, slotType, dayStart, hourStart, dayEnd, hourEnd)

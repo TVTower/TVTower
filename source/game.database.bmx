@@ -35,6 +35,8 @@ Type TDatabaseLoader
 	Field allowedProgrammeCreators:string
 	Field skipProgrammeCreators:string
 	Field config:TData = New TData
+	Global metaData:TData = new TData
+
 
 	Method New()
 		allowedAdCreators = ""
@@ -214,7 +216,7 @@ Type TDatabaseLoader
 			For local nodeNews:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllNews)
 				If nodeNews.getName() <> "news" then continue
 
-				LoadV3NewsEventFromNode(nodeNews, xml)
+				LoadV3NewsEventTemplateFromNode(nodeNews, xml)
 			Next
 		endif
 
@@ -304,7 +306,7 @@ Type TDatabaseLoader
 		local GUID:String = xml.FindValue(node,"id", "")
 
 		'fetch potential meta data
-		LoadV3ProgrammePersonBaseMetaDataFromNode(GUID, node, xml, isCelebrity)
+		metaData.Add(GUID, LoadV3ProgrammePersonBaseMetaDataFromNode(GUID, node, xml, isCelebrity) )
 
 		'try to fetch an existing one
 		local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(GUID)
@@ -448,32 +450,32 @@ Type TDatabaseLoader
 	End Method
 
 
-	Method LoadV3NewsEventFromNode:TNewsEvent(node:TxmlNode, xml:TXmlHelper)
+	Method LoadV3NewsEventTemplateFromNode:TNewsEventTemplate(node:TxmlNode, xml:TXmlHelper)
 		local GUID:String = xml.FindValue(node,"id", "")
 		local doAdd:int = True
 
 		'fetch potential meta data
-		LoadV3NewsEventMetaDataFromNode(GUID, node, xml)
+		metaData.Add(GUID, LoadV3NewsEventMetaDataFromNode(GUID, node, xml) )
 
 		'try to fetch an existing one
-		local newsEvent:TNewsEvent = GetNewsEventCollection().GetByGUID(GUID)
-		if not newsEvent
-			newsEvent = new TNewsEvent
-			newsEvent.title = new TLocalizedString
-			newsEvent.description = new TLocalizedString
-			newsEvent.GUID = GUID
+		local newsEventTemplate:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(GUID)
+		if not newsEventTemplate
+			newsEventTemplate = new TNewsEventTemplate
+			newsEventTemplate.title = new TLocalizedString
+			newsEventTemplate.description = new TLocalizedString
+			newsEventTemplate.GUID = GUID
 		else
 			doAdd = False
 
-			TLogger.Log("LoadV3NewsEventFromNode()", "Extending newsEvent ~q"+newsEvent.GetTitle()+"~q. GUID="+newsEvent.GetGUID(), LOG_XML)
+			TLogger.Log("LoadV3NewsEventTemplateFromNodeFromNode()", "Extending newsEventTemplate ~q"+newsEventTemplate.GetTitle()+"~q. GUID="+newsEventTemplate.GetGUID(), LOG_XML)
 		endif
 		
 		'=== LOCALIZATION DATA ===
-		newsEvent.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
-		newsEvent.description.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
+		newsEventTemplate.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
+		newsEventTemplate.description.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
 
 		'news type according to TVTNewsType - InitialNews, FollowingNews...
-		newsEvent.newsType = xml.FindValueInt(node,"type", 0)
+		newsEventTemplate.newsType = xml.FindValueInt(node,"type", 0)
 
 
 		'=== DATA ===
@@ -484,19 +486,19 @@ Type TDatabaseLoader
 			"genre", "price", "quality", "available", "keywords" ..
 		])
 
-		newsEvent.flags = data.GetInt("flags", newsEvent.flags)
-		newsEvent.genre = data.GetInt("genre", newsEvent.genre)
-		newsEvent.keywords = data.GetString("keywords", newsEvent.keywords).ToLower()
+		newsEventTemplate.flags = data.GetInt("flags", newsEventTemplate.flags)
+		newsEventTemplate.genre = data.GetInt("genre", newsEventTemplate.genre)
+		newsEventTemplate.keywords = data.GetString("keywords", newsEventTemplate.keywords).ToLower()
 
-		local available:int = data.GetBool("available", not newsEvent.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
-		newsEvent.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not available)		
+		local available:int = data.GetBool("available", not newsEventTemplate.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
+		newsEventTemplate.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not available)		
 
 		'topicality is "quality" here
-		newsEvent.qualityRaw = 0.01 * data.GetFloat("quality", 100 * newsEvent.qualityRaw)
+		newsEventTemplate.quality = 0.01 * data.GetFloat("quality", 100 * newsEventTemplate.quality)
 		'price is "priceModifier" here (so add 1.0 until that is done in DB)
 		local priceMod:Float = data.GetFloat("price", 0)
 		if priceMod = 0 then priceMod = 1.0 'invalid data given
-		newsEvent.SetModifier("price", data.GetFloat("price", newsEvent.GetModifier("price")))
+		newsEventTemplate.SetModifier("price", data.GetFloat("price", newsEventTemplate.GetModifier("price")))
 
 
 
@@ -506,45 +508,45 @@ Type TDatabaseLoader
 		xml.LoadValuesToData(nodeConditions, data, [..
 			"year_range_from", "year_range_to" ..
 		])
-		newsEvent.availableYearRangeFrom = data.GetInt("year_range_from", newsEvent.availableYearRangeFrom)
-		newsEvent.availableYearRangeTo = data.GetInt("year_range_to", newsEvent.availableYearRangeTo)
+		newsEventTemplate.availableYearRangeFrom = data.GetInt("year_range_from", newsEventTemplate.availableYearRangeFrom)
+		newsEventTemplate.availableYearRangeTo = data.GetInt("year_range_to", newsEventTemplate.availableYearRangeTo)
 
 		'=== AVAILABILITY ===
 		xml.LoadValuesToData(xml.FindChild(node, "availability"), data, [..
 			"script", "year_range_from", "year_range_to" ..
 		])
-		newsEvent.availableScript = data.GetString("script", newsEvent.availableScript)
-		newsEvent.availableYearRangeFrom = data.GetInt("year_range_from", newsEvent.availableYearRangeFrom)
-		newsEvent.availableYearRangeTo = data.GetInt("year_range_to", newsEvent.availableYearRangeTo)
+		newsEventTemplate.availableScript = data.GetString("script", newsEventTemplate.availableScript)
+		newsEventTemplate.availableYearRangeFrom = data.GetInt("year_range_from", newsEventTemplate.availableYearRangeFrom)
+		newsEventTemplate.availableYearRangeTo = data.GetInt("year_range_to", newsEventTemplate.availableYearRangeTo)
 
-		if newsEvent.availableScript
-			if not GetScriptExpression().IsValid(newsEvent.availableScript)
-				TLogger.Log("DB", "Script of NewsEvent ~q" + newsEvent.GetGUID() + "~q contains errors:", LOG_WARNING)
+		if newsEventTemplate.availableScript
+			if not GetScriptExpression().IsValid(newsEventTemplate.availableScript)
+				TLogger.Log("DB", "Script of NewsEventTemplate ~q" + newsEventTemplate.GetGUID() + "~q contains errors:", LOG_WARNING)
 				TLogger.Log("DB", GetScriptExpression()._error, LOG_WARNING)
 			endif
 		endif
 
 
 		'=== EFFECTS ===
-		LoadV3EffectsFromNode(newsEvent, node, xml)
+		LoadV3EffectsFromNode(newsEventTemplate, node, xml)
 
 
 
 		'=== MODIFIERS ===
-		LoadV3ModifiersFromNode(newsEvent, node, xml)
+		LoadV3ModifiersFromNode(newsEventTemplate, node, xml)
 
 	
 
 		'=== ADD TO COLLECTION ===
 		if doAdd
-			GetNewsEventCollection().Add(newsEvent)
-			if newsEvent.newsType <> TVTNewsType.FollowingNews
+			GetNewsEventTemplateCollection().Add(newsEventTemplate)
+			if newsEventTemplate.newsType <> TVTNewsType.FollowingNews
 				newsCount :+ 1
 			endif
 			totalNewsCount :+ 1
 		endif
 
-		return newsEvent
+		return newsEventTemplate
 	End Method	
 
 
@@ -553,7 +555,7 @@ Type TDatabaseLoader
 		local doAdd:int = True
 
 		'fetch potential meta data
-		LoadV3AchievementElementsMetaDataFromNode(GUID, node, xml)
+		metaData.Add( GUID, LoadV3AchievementElementsMetaDataFromNode(GUID, node, xml) )
 
 		'try to fetch an existing one
 		local achievement:TAchievement = GetAchievementCollection().GetAchievement(GUID)
@@ -631,12 +633,13 @@ Type TDatabaseLoader
 		local GUID:String = xml.FindValue(node,"id", "")
 
 		'fetch potential meta data
-		local metaData:TData = LoadV3AchievementElementsMetaDataFromNode(GUID, node, xml)
+		local mData:TData = LoadV3AchievementElementsMetaDataFromNode(GUID, node, xml)
+		metaData.Add(GUID, mData)
 
 		Local reuseExisting:int = False
 
 		'skip forbidden users (DEV)
-		'if not IsAllowedUser(metaData.GetString("createdBy"), "achievement") then return Null
+		'if not IsAllowedUser(mData.GetString("createdBy"), "achievement") then return Null
 
 
 		'try to fetch an existing one
@@ -706,10 +709,11 @@ Type TDatabaseLoader
 		local doAdd:int = True
 
 		'fetch potential meta data
-		local metaData:TData = LoadV3AdContractBaseMetaDataFromNode(GUID, node, xml)
-
+		local mData:TData = LoadV3AdContractBaseMetaDataFromNode(GUID, node, xml)
+		metaData.Add(GUID, mData)
+		
 		'skip forbidden users (DEV)
-		if not IsAllowedUser(metaData.GetString("createdBy"), "adcontract") then return Null
+		if not IsAllowedUser(mData.GetString("createdBy"), "adcontract") then return Null
 
 		'try to fetch an existing one
 		local adContract:TAdContractBase = GetAdContractBaseCollection().GetByGUID(GUID)
@@ -847,7 +851,8 @@ Type TDatabaseLoader
 		if dataGUID.Find("data-") <> 0 then dataGUID = "data-"+dataGUID
 
 		'fetch potential meta data
-		local metaData:TData = LoadV3ProgrammeLicenceMetaDataFromNode(GUID, node, xml, parentLicence)
+		local mData:TData = LoadV3ProgrammeLicenceMetaDataFromNode(GUID, node, xml, parentLicence)
+		metaData.Add( GUID, mData )
 	
 		local productType:int = TXmlHelper.FindValueInt(node,"product", TVTProgrammeProductType.MOVIE)
 		'old type - stay compatible with old v3-db
@@ -871,7 +876,7 @@ Type TDatabaseLoader
 		local programmeLicence:TProgrammeLicence
 
 		'skip if not "all" are allowed (no creator data available)
-		if not IsAllowedUser(metaData.GetString("createdBy"), "programmelicence") then return Null
+		if not IsAllowedUser(mData.GetString("createdBy"), "programmelicence") then return Null
 
 
 		'=== PROGRAMME DATA ===
@@ -1263,7 +1268,7 @@ Type TDatabaseLoader
 		local scriptTemplate:TScriptTemplate
 
 		'fetch potential meta data
-		LoadV3ScriptTemplateMetaDataFromNode(GUID, node, xml, parentScriptTemplate)
+		metaData.Add( GUID, LoadV3ScriptTemplateMetaDataFromNode(GUID, node, xml, parentScriptTemplate) )
 
 		'=== SCRIPTTEMPLATE DATA ===
 		'try to fetch an existing template with the entries GUID
@@ -1523,7 +1528,7 @@ Type TDatabaseLoader
 		local role:TProgrammeRole
 
 		'fetch potential meta data
-		LoadV3ProgrammeRoleMetaDataFromNode(GUID, node, xml)
+		metaData.Add( GUID, LoadV3ProgrammeRoleMetaDataFromNode(GUID, node, xml) )
 
 		'try to fetch an existing template with the entries GUID
 		role = GetProgrammeRoleCollection().GetByGUID(GUID)
@@ -1642,6 +1647,14 @@ Type TDatabaseLoader
 		if not GetProgrammePersonBaseCollection().GetByGUID(GUID)
 			data = LoadV3CreatorMetaDataFromNode(GUID, data, node, xml)
 		endif
+
+		'also load the original name if possible
+		xml.LoadValuesToData(node, data, [..
+			"first_name_original", "last_name_original", "nick_name_original", ..
+			"imdb", "tmdb" ..
+		])
+
+		
 		return data
 	End Method
 

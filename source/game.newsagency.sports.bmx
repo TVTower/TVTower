@@ -375,7 +375,7 @@ Type TNewsEventSport extends TGameObject
 		leagues :+ [league]
 		league._sportGUID = self.GetGUID()
 		league._leaguesIndex = leagues.length-1
-print "adding league: " + league._leaguesIndex
+'print "adding league: " + league._leaguesIndex
 		EventManager.triggerEvent(TEventSimple.Create("Sport.AddLeague", New TData.add("league", league), Self))
 	End Method
 

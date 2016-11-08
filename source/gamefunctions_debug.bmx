@@ -354,7 +354,7 @@ Type TDebugProgrammeCollectionInfos
 	Function onChangeProgrammeCollection:Int(triggerEvent:TEventBase)
 		local prog:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("programmelicence"))
 		local contract:TAdContract = TAdContract(triggerEvent.GetData().Get("adcontract"))
-		local broadcastSource:TBroadcastMaterialSourceBase = prog
+		local broadcastSource:TBroadcastMaterialSource = prog
 		if not broadcastSource then broadcastSource = contract
 
 		if not broadcastSource then print "TDebugProgrammeCollectionInfos.onChangeProgrammeCollection: invalid broadcastSourceMaterial."

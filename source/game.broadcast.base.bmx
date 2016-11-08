@@ -1386,6 +1386,19 @@ Type TGameModifierAudience Extends TGameModifier_TimeLimited
 	Field audienceMod:Float = 0.5
 	Global className:String = "ModifierAudience"
 
+
+	Function CreateNewInstance:TGameModifierAudience()
+		return new TGameModifierAudience
+	End Function
+
+
+	Method Copy:TGameModifierAudience()
+		local clone:TGameModifierAudience = new TGameModifierAudience
+		clone.CopyBaseFrom(self)
+		clone.audienceMod = self.audienceMod
+		return clone
+	End Method
+	
 	
 	Method ToString:String()
 		If timeFrame
@@ -1410,6 +1423,18 @@ End Type
 'common weather modifier (_not_ used for special weather phenomens!)
 Type TGameModifierAudience_Weather Extends TGameModifierAudience
 	Global className:String = "ModifierAudience:Weather"
+
+
+	Function CreateNewInstance:TGameModifierAudience_Weather()
+		return new TGameModifierAudience_Weather
+	End Function
+
+
+	Method Copy:TGameModifierAudience_Weather()
+		local clone:TGameModifierAudience_Weather = new TGameModifierAudience_Weather
+		clone.CopyBaseFrom(self)
+		return clone
+	End Method
 
 	
 	Method ToString:String()

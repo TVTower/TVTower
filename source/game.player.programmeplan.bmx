@@ -595,7 +595,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	'returns the amount of source-users in the time span
-	Method GetBroadcastMaterialSourceProgrammedCountInTimeSpan:int(materialSource:TBroadcastMaterialSourceBase, slotType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1) {_exposeToLua}
+	Method GetBroadcastMaterialSourceProgrammedCountInTimeSpan:int(materialSource:TBroadcastMaterialSource, slotType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1) {_exposeToLua}
 		FixDayHour(dayStart, hourStart)
 		FixDayHour(dayEnd, hourEnd)
 
@@ -1566,6 +1566,21 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.RemoveNews", New TData.Add("news", deletedNews).AddNumber("slot", newsSlot), self))
 			Return True
 		EndIf
+		Return False
+	End Method
+
+
+	Method HasNewsEvent:Int(newsEventObjectOrGUID:object) {_exposeToLua}
+		local guid:string = ""
+		if TBroadcastMaterialSource(newsEventObjectOrGUID)
+			guid = TBroadcastMaterialSource(newsEventObjectOrGUID).GetGUID()
+		else
+			guid = string(newsEventObjectOrGUID)
+		endif
+
+		For local newsEntry:TNews = EachIn news
+			if newsEntry.newsEvent.GetGUID() = guid then Return True
+		Next
 		Return False
 	End Method
 

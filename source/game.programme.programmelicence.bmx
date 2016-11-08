@@ -355,7 +355,7 @@ End Function
 
 
 'licence of for movies, series and so on
-Type TProgrammeLicence Extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
+Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'wird nur in der Lua-KI verwendet um die Lizenzen zu bewerten
 	Field attractiveness:Float = -1
 	Field data:TProgrammeData				{_exposeToLua}

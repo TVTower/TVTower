@@ -398,7 +398,7 @@ End Function
 
 'raw data for movies, episodes (series)
 'but also series-headers, collection-headers,...
-Type TProgrammeData extends TBroadcastMaterialSourceBase {_exposeToLua}
+Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	Field originalTitle:TLocalizedString
 	'contains the title with placeholders replaced
 	Field titleProcessed:TLocalizedString {nosave}
