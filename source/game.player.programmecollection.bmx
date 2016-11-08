@@ -325,9 +325,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	'readd programmes from suitcase to player's list of available programmes
 	Method ReaddProgrammeLicencesFromSuitcase:int()
-		While Not suitcaseProgrammeLicences.IsEmpty()
-			RemoveProgrammeLicenceFromSuitcase( TProgrammeLicence(suitcaseProgrammeLicences.First()) )
-		Wend
+		For local l:TProgrammeLicence = EachIn suitcaseProgrammeLicences.Copy()
+			if not RemoveProgrammeLicenceFromSuitcase( l )
+				TLogger.Log("ReaddProgrammeLicencesFromSuitcase", "Failed to Remove licence ~q"+ l.GetTitle()+"~q ["+l.GetGUID()+"] from suitcase.", LOG_ERROR | LOG_DEBUG)
+			endif
+		Next	
 		return TRUE
 	End Method
 
@@ -426,7 +428,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		If not licence then return FALSE
 		'do not allow adding of episodes / collection-elements
 		'(should get added via header)
-		If licence.parentLicenceGUID then return False
+		If licence.parentLicenceGUID
+			TLogger.Log("AddProgrammeLicence", "Cannot add licence ~q"+licence.GetTitle()+"~q ["+licence.GetGUID()+"] to programme collection. Licence has parentLicenceGUID set.", LOG_ERROR | LOG_DEBUG)
+			return False
+		endif
+
 		'already added (to archive, not suitcase)
 		if HasProgrammeLicence(licence) then return False
 
