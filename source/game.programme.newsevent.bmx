@@ -832,6 +832,9 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 		local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(triggerNewsGUID)
 		if template
 			news = new TNewsEvent.InitFromTemplate(template)
+			if news
+				GetNewsEventCollection().Add(news)
+			endif
 		else
 			news = GetNewsEventCollection().GetByGUID(triggerNewsGUID)
 		endif

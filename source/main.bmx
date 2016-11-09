@@ -723,6 +723,7 @@ Type TApp
 						'addLicences :+ ["TheRob-Mon-TvTower-EinmonumentalerVersuch"]
 						'addContracts :+ ["ronny-ad-allhits-02"]
 
+						rem
 						for local i:int = 0 to 9
 							print "i) unused: " + GetNewsEventTemplateCollection().GetUnusedAvailableInitialTemplateList(TVTNewsGenre.CULTURE).Count()
 							local newsEvent:TNewsEvent = GetNewsEventCollection().CreateRandomAvailable(TVTNewsGenre.CULTURE)
@@ -731,12 +732,14 @@ Type TApp
 								print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"~q  at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
 							endif
 						next
+						endrem
 
 						for local l:string = EachIn addNewsEventTemplates
-							local newsEvent:TNewsEvent = GetNewsEventCollection().CreateRandomAvailable(TVTNewsGenre.CULTURE)
-							if newsEvent
+							local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(l)
+							if template
+								local newsEvent:TNewsEvent = new TNewsEvent.InitFromTemplate(template)
 								GetNewsAgency().announceNewsEvent(newsEvent, 0, False)
-								print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"~q  at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
+								print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"] at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
 							endif
 						next
 						
