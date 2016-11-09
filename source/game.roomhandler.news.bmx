@@ -229,14 +229,39 @@ Type RoomHandler_News extends TRoomHandler
 
 		if TVTDebugInfos
 			SetColor 0,0,0
-			SetAlpha 0.5
-			DrawRect(15,35, 180, 140)
+			SetAlpha 0.6
+			DrawRect(15,35, 380, 180)
 			SetAlpha 1.0
 			SetColor 255,255,255
-			GetBitmapFont("default", 12).Draw("Newstimer:", 20, 40)
-			For local i:int = 0 until TVTNewsGenre.count
-				GetBitmapFont("default", 10).Draw(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(i))+":  "+GetWorldTime().GetFormattedtime(GetNewsAgency().NextEventTimes[i]), 20, 60 + 12*i)
+			GetBitmapFont("default", 12).Draw("Neue Startnews:", 20, 40)
+			GetBitmapFont("default", 12).Draw("Neue Folgenews (in Liste):", 20+130, 40)
+
+			local upcomingCount:int[TVTNewsGenre.count+1]
+			local upcomingEvent:TNewsEvent[TVTNewsGenre.count+1]
+			local upcomingCountTotal:int = 0
+			For local n:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
+				upcomingCountTotal :+ 1
+				upcomingCount[n.GetGenre()] :+ 1
+				local g:int = n.GetGenre()
+				if not upcomingEvent[g]
+					upcomingEvent[g] = n
+				elseif upcomingEvent[g].happenedTime > n.happenedTime 'new one is earlier
+					upcomingEvent[g] = n
+				endif
 			Next
+				
+			For local i:int = 0 until TVTNewsGenre.count
+				GetBitmapFont("default", 10).Draw(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(i))+":  "+GetWorldTime().GetFormattedTime(GetNewsAgency().NextEventTimes[i]), 20, 60 + 24*i)
+
+				if upcomingEvent[i]
+					GetBitmapFont("default", 10).Draw(GetWorldTime().GetFormattedDate(upcomingEvent[i].happenedTime)+" ( "+upcomingCount[i]+"x )", 20+130, 60 + 24*i)
+					GetBitmapFont("default", 10).DrawBlock(upcomingEvent[i].GetTitle(), 20+130, 60 + 24*i + 12, 200, 15)
+				else
+					GetBitmapFont("default", 10).Draw("-- ( "+upcomingCount[i]+"x )", 20+130, 60 + 24*i)
+					GetBitmapFont("default", 10).Draw("--", 20+130, 60 + 24*i +12)
+				endif
+			Next
+
 		endif
 	End Function
 
