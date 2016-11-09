@@ -301,7 +301,7 @@ Type TNewsAgency
 		'send out delayed news to players
 		ProcessDelayedNews()
 
-'		If NextEventTime < GetWorldTime().GetTimeGone() Then AnnounceNewNewsEvent()
+
 		for local i:int = 0 until TVTNewsGenre.count
 			if NextEventTimes[i] = -1
 				TLogger.Log("NewsAgency", "Initialize NextEventTime for genre "+i, LOG_DEBUG)
@@ -455,6 +455,8 @@ Type TNewsAgency
 
 		'send without delay!
 		NewsEvent.SetFlag(TVTNewsFlag.SEND_IMMEDIATELY, True)
+		'do not delay other news
+		NewsEvent.SetFlag(TVTNewsFlag.KEEP_TICKER_TIME, True)
 
 		NewsEvent.AddKeyword("TERRORIST")
 
@@ -567,6 +569,11 @@ Type TNewsAgency
 			'skip news events not happening yet
 			If Not newsEvent.HasHappened() then continue
 			announceNewsEvent(newsEvent)
+			'attention: RESET_TICKER_TIME is only "useful" for followup news
+			if newsEvent.HasFlag(TVTNewsFlag.RESET_TICKER_TIME)
+				ResetNextEventTime(newsEvent.GetGenre())
+			endif
+
 			announced:+1
 		Next
 		'invalidate upcoming list 
@@ -589,6 +596,12 @@ Type TNewsAgency
 				endif
 
 				announceNewsEvent(newsEvent)
+				
+				'attention: KEEP_TICKER_TIME is only "useful" for initial/single news
+				if not newsEvent.HasFlag(TVTNewsFlag.KEEP_TICKER_TIME)
+					ResetNextEventTime(newsEvent.GetGenre())
+				endif
+
 				announced :+ 1
 			Next
 			
@@ -612,8 +625,9 @@ Type TNewsAgency
 
 			'iterate over copy
 			For local news:TNews = EachIn delayedLists[playerID-1].Copy()
-				local subscriptionDelay:int = GetNewsAbonnementDelay(news.newsEvent.genre, player.GetNewsAbonnement(news.newsEvent.genre) )
-				local maxSubscriptionDelay:int = GetNewsAbonnementDelay(news.newsEvent.genre, 1)
+				local genre:int = news.newsEvent.GetGenre()
+				local subscriptionDelay:int = GetNewsAbonnementDelay(genre, player.GetNewsAbonnement(genre) )
+				local maxSubscriptionDelay:int = GetNewsAbonnementDelay(genre, 1)
 
 				'if playerID=1 then print "ProcessDelayedNews: " + news.GetTitle() + "  happened="+GetWorldTime().GetFormattedDate( news.GetHappenedTime())+"  announceToPlayer="+ GetWorldTime().GetFormattedDate( news.GetPublishTime() + subscriptionDelay )+ "  autoRemove=" + GetWorldTime().GetFormattedDate( news.GetPublishTime() + maxSubscriptionDelay + 1000 )
 
@@ -631,7 +645,7 @@ Type TNewsAgency
 				'subscribed to it NOW
 				'(including "not satisfying minimum subscription level")
 				'alternatively also check: "or subscriptionDelay < 0"
-				If (player.GetNewsabonnement(news.newsEvent.genre) <= news.newsEvent.GetMinSubscriptionLevel() and not news.newsEvent.HasFlag(TVTNewsFlag.SEND_TO_ALL)) ..
+				If (player.GetNewsabonnement(genre) <= news.newsEvent.GetMinSubscriptionLevel() and not news.newsEvent.HasFlag(TVTNewsFlag.SEND_TO_ALL)) ..
 				   or Not news.IsReadyToPublish(subscriptionDelay)
 					'if playerID=1 then print "ProcessDelayedNews #"+playerID+": NOT subscribed or not ready yet: " + news.GetTitle() + "   announceToPlayer="+ GetWorldTime().GetFormattedDate( news.GetPublishTime() + subscriptionDelay )
 					continue
@@ -642,10 +656,9 @@ Type TNewsAgency
 				if news.newsEvent.HasFlag(TVTNewsFlag.SEND_IMMEDIATELY)
 					news.priceModRelativeNewsAgency = 0.0
 				else
-					news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(news.newsEvent.genre, player.GetNewsAbonnement(news.newsEvent.genre))
+					news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(genre, player.GetNewsAbonnement(genre))
 				endif
 
-if playerID=1 then print "ProcessDelayedNews #"+playerID+": announce: " + news.GetTitle() + "  genre="+news.newsevent.genre+"  announceToPlayer="+ GetWorldTime().GetFormattedDate( news.GetPublishTime() + subscriptionDelay )
 				announceNews(news, playerID)
 
 				'remove the news
@@ -787,7 +800,7 @@ if playerID=1 then print "ProcessDelayedNews #"+playerID+": announce: " + news.G
 	'forceAdd: add regardless of abonnement levels?
 	'sendNow: ignore delay of abonnement levels?
 	'skipIfUnsubscribed: happen regardless of nobody subscribed to the news genre?
-	Method AnnounceNewNewsEvent:TNewsEvent(genre:int=-1, adjustHappenedTime:Int=0, forceAdd:Int=False, sendNow:int=False, skipIfUnsubscribed:Int=True, resetGenreTime:int=True)
+	Method AnnounceNewNewsEvent:TNewsEvent(genre:int=-1, adjustHappenedTime:Int=0, forceAdd:Int=False, sendNow:int=False, skipIfUnsubscribed:Int=True)
 		'=== CREATE A NEW NEWS ===
 		Local newsEvent:TNewsEvent = GenerateNewNewsEvent(genre)
 
@@ -803,18 +816,18 @@ if playerID=1 then print "ProcessDelayedNews #"+playerID+": announce: " + news.G
 			If skipNews
 				For Local player:TPlayerBase = eachin GetPlayerBaseCollection().players
 					'a player listens to this genre, disallow skipping
-					If player.GetNewsabonnement(newsEvent.genre) > 0 Then skipNews = False
+					If player.GetNewsabonnement(newsEvent.GetGenre()) > 0 Then skipNews = False
 				Next
 				if not forceAdd and not skipIfUnsubscribed
 					?debug
-					if skipNews then print "[NEWSAGENCY] Nobody listens to genre "+newsEvent.genre+". Skip news: ~q"+newsEvent.GetTitle()+"~q."
+					if skipNews then print "[NEWSAGENCY] Nobody listens to genre "+newsEvent.GetGenre()+". Skip news: ~q"+newsEvent.GetTitle()+"~q."
 					?
-					if skipNews then TLogger.Log("NewsAgency", "Nobody listens to genre "+newsEvent.genre+". Skip news: ~q"+newsEvent.GetTitle()+"~q.", LOG_DEBUG)
+					if skipNews then TLogger.Log("NewsAgency", "Nobody listens to genre "+newsEvent.GetGenre()+". Skip news: ~q"+newsEvent.GetTitle()+"~q.", LOG_DEBUG)
 				else
 					?debug
-					if skipNews then print "[NEWSAGENCY] Nobody listens to genre "+newsEvent.genre+". Would skip news, but am forced to add: ~q"+newsEvent.GetTitle()+"~q."
+					if skipNews then print "[NEWSAGENCY] Nobody listens to genre "+newsEvent.GetGenre()+". Would skip news, but am forced to add: ~q"+newsEvent.GetTitle()+"~q."
 					?
-					if skipNews then TLogger.Log("NewsAgency", "Nobody listens to genre "+newsEvent.genre+". Would skip news, but am forced to add: ~q"+newsEvent.GetTitle()+"~q.", LOG_DEBUG)
+					if skipNews then TLogger.Log("NewsAgency", "Nobody listens to genre "+newsEvent.GetGenre()+". Would skip news, but am forced to add: ~q"+newsEvent.GetTitle()+"~q.", LOG_DEBUG)
 				endif
 			EndIf
 
@@ -827,7 +840,12 @@ if playerID=1 then print "ProcessDelayedNews #"+playerID+": announce: " + news.G
 
 
 		'=== ADJUST TIME FOR NEXT NEWS ANNOUNCEMENT ===
-		if resetGenreTime then ResetNextEventTime(genre)
+		'reset even if no news was found - or if news allows so
+		'attention: KEEP_TICKER_TIME is for initial news
+		'           RESET_TICKER_TIME for follow up news 
+		if not newsEvent or not newsEvent.HasFlag(TVTNewsFlag.KEEP_TICKER_TIME)
+			ResetNextEventTime(genre)
+		endif
 
 		if announced then return newsEvent
 		return Null

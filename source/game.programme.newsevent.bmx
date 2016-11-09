@@ -236,12 +236,7 @@ Type TNewsEventCollection
 		local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetRandomUnusedAvailableInitial(genre)
 		if not template then return Null
 
-		'mark the template
-		GetNewsEventTemplateCollection().Use(template)
-		
-		local newsEvent:TNewsEvent = new TNewsEvent.InitFromTemplate(template)
-
-		return newsEvent
+		return new TNewsEvent.InitFromTemplate(template)
 	End Method
 
 
@@ -425,9 +420,12 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 	Method InitFromTemplate:TNewsEvent(template:TNewsEventTemplate)
-		template.timesUsed :+ 1
 		self.template = template
-		self.SetGUID( template.GetGUID()+"-instance"+template.timesUsed)
+		self.SetGUID( template.GetGUID()+"-instance"+(template.timesUsed+1))
+
+		'mark the template (and increase usage count)
+		template.SetUsed(self.GetGUID())
+
 		'TODO: with RANDOM - copy title
 		'if ...
 		'	self.title = template.title.copy()
@@ -678,6 +676,13 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	Method IsReuseable:int()
 		return not HasFlag(TVTNewsFlag.UNIQUE_EVENT)
+	End Method
+
+
+	Method GetGenre:int()
+		'return default it not overridden
+		if template and genre = -1 then return template.genre
+		return genre
 	End Method
 
 

@@ -885,16 +885,18 @@ Type TGUINews Extends TGUIGameListItem
 			Local fontNormal:TBitmapFont = GetBitmapFont("",11)
 			
 			fontBold.draw("News: " + news.newsEvent.GetTitle(), screenX + 5, textY)
-			textY :+ 14	
+			textY :+ 12	
+			fontNormal.draw("GUID: " + news.newsEvent.GetGUID(), screenX + 5, textY)
+			textY :+ 11
 			fontNormal.draw("Preis: " + news.GetPrice(GetPlayerBaseCollection().playerID)+"  (PreisMod: "+MathHelper.NumberToString(news.newsEvent.GetModifier("price"),4)+")", screenX + 5, textY)
 			textY :+ 11	
 			fontNormal.draw("Qualitaet: " + MathHelper.NumberToString(news.GetQuality(), 4) + " (Event:" + MathHelper.NumberToString(news.newsEvent.GetQuality(),4) + ", roh=" + MathHelper.NumberToString(news.newsEvent.GetQualityRaw(), 4) + ")", screenX + 5, textY)
 			textY :+ 11	
-			fontNormal.draw("(KI-)Attraktivitaet: "+MathHelper.NumberToString(news.newsEvent.GetAttractiveness(),4)+"    Aktualitaet: " + MathHelper.NumberToString(news.newsEvent.GetTopicality(),4), screenX + 5, textY)
+			fontNormal.draw("(KI-)Attraktivitaet: "+MathHelper.NumberToString(news.newsEvent.GetAttractiveness(),4), screenX + 5, textY)
+			fontNormal.draw("Aktualitaet: " + MathHelper.NumberToString(news.newsEvent.GetTopicality(),4), screenX + 5 + 200, textY)
 			textY :+ 11	
 			fontNormal.draw("Ausstrahlungen: " + news.newsEvent.GetTimesBroadcasted(news.owner)+"x  (" + news.newsEvent.GetTimesBroadcasted()+"x gesamt)", screenX + 5, textY)
-			textY :+ 11	
-			fontNormal.draw("Alter: " + Long(GetWorldTime().GetTimeGone() - news.GetHappenedtime()) + " Sekunden  (" + (GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())) + " Tage)", screenX + 5, textY)
+			fontNormal.draw("Alter: " + Long(GetWorldTime().GetTimeGone() - news.GetHappenedtime()) + " Sekunden  (" + (GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())) + " Tage)", screenX + 5 + 200, textY)
 			textY :+ 11	
 			Rem
 			local eventCan:string = ""
@@ -911,14 +913,14 @@ Type TGUINews Extends TGUIGameListItem
 			endif
 			
 			fontNormal.draw("Ist: " + eventCan, screenX + 5, textY)
-			textY :+ 12	
+			textY :+ 11	
 			endrem
 			local happenEffects:int = 0
 			local broadcastEffects:int = 0
 			if news.newsEvent.effects.GetList("happen") then happenEffects = news.newsEvent.effects.GetList("happen").Count()
 			if news.newsEvent.effects.GetList("broadcast") then broadcastEffects = news.newsEvent.effects.GetList("broadcast").Count()
 			fontNormal.draw("Effekte: " + happenEffects + "x onHappen, "+ broadcastEffects + "x onBroadcast    Newstyp: " + news.newsEvent.newsType + "   Genre: "+news.newsEvent.genre, screenX + 5, textY)
-			textY :+ 12	
+			textY :+ 11	
 
 			SetAlpha oldAlpha
 		EndIf

@@ -12,6 +12,7 @@ Import "game.modifier.base.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.player.base.bmx"
 
+Import "common.misc.templatevariables.bmx"
 Import "game.broadcast.genredefinition.news.bmx"
 
 
@@ -91,6 +92,8 @@ Type TNewsEventTemplateCollection
 
 
 	Method Use:int(obj:TNewsEventTemplate)
+		obj.timesUsed :+ 1
+
 		obj.SetLastUsedTime( GetWorldTime().GetTimeGone() )
 		unusedTemplates.Remove(obj.GetLowerStringGUID())
 		if obj.IsReuseable()
@@ -177,6 +180,7 @@ Type TNewsEventTemplateCollection
 		'start with 4 days ago and lower until we got a news
 		local days:int = 4
 		While GetUnusedAvailableInitialTemplateList(genre).Count() = 0 and days >= 0
+			TLogger.Log("TNewsEventTemplateCollection.GetRandomUnusedAvailableInitial("+genre+")", "ResetUsedTemplates("+days+", "+genre+").", LOG_DEBUG)
 			ResetUsedTemplates(days, genre)
 			days :- 1
 		Wend
@@ -184,11 +188,11 @@ Type TNewsEventTemplateCollection
 		local list:TList = GetUnusedAvailableInitialTemplateList(genre)
 		if list.Count() = 0
 			'This should only happen if no news events were found in the database
-			if genre = 1
+			if genre = TVTNewsGenre.CURRENTAFFAIRS
 				TLogger.Log("TNewsEventTemplateCollection.GetRandomUnusedAvailableInitial("+genre+")", "no unused news event template found.", LOG_ERROR)
-				Throw "TNewsEventTemplateCollection.GetRandomUnusedAvailableInitial("+genre+"): no unused news event template found."
+				return null
 			else
-				TLogger.Log("TNewsEventTemplateCollection.GetRandomUnusedAvailableInitial("+genre+")", "no unused news event template found. Falling back to CURRENT AFFAIR news", LOG_ERROR)
+				TLogger.Log("TNewsEventTemplateCollection.GetRandomUnusedAvailableInitial("+genre+")", "no unused news event template found. Falling back to CURRENT AFFAIR (genre "+ TVTNewsGenre.CURRENTAFFAIRS+").", LOG_ERROR)
 				return GetRandomUnusedAvailableInitial(TVTNewsGenre.CURRENTAFFAIRS)
 			endif
 		endif
@@ -258,6 +262,7 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 	Field quality:Float = 1.0
 	Field keywords:string = ""
 	Field available:int = True
+	Field templateVariables:TTemplateVariables = null
 	'type of the news event according to TVTNewsType
 	Field newsType:int = 0 'initialNews
 	Field topicality:Float = 1.0
@@ -300,6 +305,24 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 		return LS_guid
 	End Method
 
+
+	Method CreateTemplateVariables:TTemplateVariables()
+		'the parent of a template is not known in this moment
+		'as the newsEvent gets a potential parent then
+	
+		if not templateVariables then templateVariables = new TTemplateVariables
+
+		return templateVariables
+	End Method
+
+
+	Method SetUsed(userObjectGUID:string)
+		'TODO: store userObjectGUID somewhere? How to use such kind of
+		'      user information - statistics?
+		'mark the template (and increase usage count)
+		GetNewsEventTemplateCollection().Use(self)
+	End Method
+	
 
 	Method SetTitle(title:TLocalizedString)
 		self.title = title

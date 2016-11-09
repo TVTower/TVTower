@@ -29,9 +29,14 @@ Type TGameInformationCollection
 
 
 	Method Get:object(providerKey:string, key:string, params:TData=null)
+		if key="" and providerKey.Find(":") >= 0
+			local p:string[] = providerKey.split(":")
+			providerKey = p[0]
+			key = p[1]
+		endif
 		local provider:TGameInformationProvider = GetProvider(providerKey)
 		if provider then return provider.Get(key, params)
-		return null
+		return "UNKNOWN_INFORMATION"
 	End Method
 
 

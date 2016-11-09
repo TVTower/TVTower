@@ -493,7 +493,10 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 
 		NewsEvent.eventDuration = 8*3600 'only for 8 hours
 		NewsEvent.SetFlag(TVTNewsFlag.SEND_IMMEDIATELY, True)
-		NewsEvent.SetFlag(TVTNewsFlag.UNIQUE_EVENT, True) 'one time event
+		'one time event
+		NewsEvent.SetFlag(TVTNewsFlag.UNIQUE_EVENT, True)
+		'do not delay other current affair news
+		NewsEvent.SetFlag(TVTNewsFlag.KEEP_TICKER_TIME, True)
 
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 

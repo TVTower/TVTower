@@ -316,10 +316,18 @@ Type TWorldTimeInformationProviderBase extends TGameInformationProvider
 
 	Method Get:object(key:string, params:object)
 		Select key.ToLower()
-			Case "gameyear"
+			Case "year"
 				return string( GetWorldTime().GetYear() )
+			Case "day"
+				return string( GetWorldTime().GetOnDay() )
+			Case "weekday"
+				return string( GetWorldTime().GetWeekDay() )
+			Case "hour"
+				return string( GetWorldTime().GetDayHour() )
+			Case "season"
+				return string( GetWorldTime().GetSeason() )
 			Default
-				return ""
+				return "UNHANDLED_KEY"
 		End Select
 	End Method
 End Type

@@ -671,6 +671,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'delete some random movies/series
 		if replaceOffer
 			for local j:int = 0 to lists.length-1
+				if lists[j] = listMoviesCheap
+					continue
+				endif
+
 				for local i:int = 0 to lists[j].length-1
 					if not lists[j][i] then continue
 					'delete an old movie by a chance of 50%
@@ -690,6 +694,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			for local i:int = 0 to lists[j].length-1
 				'if exists...skip it
 				if lists[j][i] then continue
+
+				if lists[j] = listMoviesCheap
+					continue
+				endif
 
 				if lists[j] = listMoviesGood then licence = GetProgrammeLicenceCollection().GetRandomByFilter(filterMoviesGood)
 				if lists[j] = listMoviesCheap then licence = GetProgrammeLicenceCollection().GetRandomByFilter(filterMoviesCheap)

@@ -527,6 +527,7 @@ Type TDatabaseLoader
 		endif
 
 
+
 		'=== EFFECTS ===
 		LoadV3EffectsFromNode(newsEventTemplate, node, xml)
 
@@ -535,7 +536,24 @@ Type TDatabaseLoader
 		'=== MODIFIERS ===
 		LoadV3ModifiersFromNode(newsEventTemplate, node, xml)
 
-	
+
+
+		'=== VARIABLES ===
+		local nodeVariables:TxmlNode = xml.FindChild(node, "variables")
+		For local nodeVariable:TxmlNode = EachIn xml.GetNodeChildElements(nodeVariables)
+			'each variable is stored as a localizedstring
+			local varName:string = nodeVariable.getName()
+			local varString:TLocalizedString = GetLocalizedStringFromNode(nodeVariable)
+
+			'skip invalid
+			if not varName or not varString then continue
+
+			'create if missing
+			newsEventTemplate.CreateTemplateVariables()
+			newsEventTemplate.templateVariables.AddVariable("%"+varName+"%", varString)
+		Next
+
+
 
 		'=== ADD TO COLLECTION ===
 		if doAdd
@@ -1285,8 +1303,7 @@ Type TDatabaseLoader
 			scriptTemplate.description = new TLocalizedString
 			'DO NOT reuse certain parts of the parent (getters take
 			'care of this already)
-			scriptTemplate.variables = null
-			scriptTemplate.placeHolderVariables = null
+			scriptTemplate.templateVariables = null
 			scriptTemplate.subScripts = new TScriptTemplate[0]
 			scriptTemplate.parentScriptGUID = ""
 		endif
@@ -1449,7 +1466,9 @@ Type TDatabaseLoader
 			'skip invalid
 			if not varName or not varString then continue
 
-			scriptTemplate.AddVariable("%"+varName+"%", varString)
+			'create if missing
+			scriptTemplate.CreateTemplateVariables()
+			scriptTemplate.templateVariables.AddVariable("%"+varName+"%", varString)
 		Next
 		
 		

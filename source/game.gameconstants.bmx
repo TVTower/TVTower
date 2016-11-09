@@ -984,8 +984,14 @@ Type TVTNewsFlag {_exposeToLua}
 	'send the news event to all players, regardless of their abonnement
 	'level
 	Const SEND_TO_ALL:Int = 8
+	'keep time for next initial/start news of the very same genre (genre
+	'ticker). By default an added news delays next one of a genre
+	Const KEEP_TICKER_TIME:Int = 16
+	'forcefully reset to the next ticker time - useful for follow up news
+	'which would else not reset that time
+	Const RESET_TICKER_TIME:Int = 32
 
-	Const count:int = 4
+	Const count:int = 6
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -1000,6 +1006,8 @@ Type TVTNewsFlag {_exposeToLua}
 			case UNIQUE_EVENT      return "unique_event"
 			case UNSKIPPABLE       return "unskippable"
 			case SEND_TO_ALL       return "send_to_all"
+			case KEEP_TICKER_TIME  return "keep_ticker_time"
+			case RESET_TICKER_TIME return "reset_ticker_time"
 
 
 			default
