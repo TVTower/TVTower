@@ -256,14 +256,27 @@ Type TScriptExpression
 			local openBracket:int = false
 			local variable:string = ""
 			local char:string
-			while GetCurrentChar() <> "" and (openBracket or not IsSpace( GetCurrentCharcode() ))
+			local charCode:int
+			local validChar:int = True
+			while validChar
 				char = GetCurrentChar()
+				if char = "" then exit
+
+				charCode = GetCurrentCharcode()
+
+				'outside of a function() only "a-z0-9_(" are allowed
+				if not openBracket
+					if not (IsDigit(charCode) or IsAlpha(charCode) or char="_" or char="(")
+						exit
+					endif
+				endif
+					 
 				if char = "("
 					openBracket = true
 				elseif char = ")"
 					openBracket = false
 				'ignore spaces within the function bracket
-				elseif openBracket and IsSpace(Asc(char))
+				elseif openBracket and IsSpace(charCode)
 					_expressionIndex :+ 1
 					continue
 				endif

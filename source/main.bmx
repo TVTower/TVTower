@@ -97,6 +97,7 @@ Import "game.roomhandler.studio.bmx"
 Import "game.roomhandler.supermarket.bmx"
 
 Import "game.misc.ingamehelp.bmx"
+Import "game.gamescriptexpression.bmx"
 
 'needed by gamefunctions
 Import "game.broadcastmaterial.programme.bmx"
@@ -716,18 +717,26 @@ Type TApp
 
 						local addLicences:string[]
 						local addContracts:string[]
-						local addNews:string[]
+						local addNewsEventTemplates:string[]
 
-						'addNews :+ ["34977b2a-b976-48f8-8254-001ebe2263f1"]
+						'addNewsEventTemplates :+ ["34977b2a-b976-48f8-8254-001ebe2263f1"]
 						'addLicences :+ ["TheRob-Mon-TvTower-EinmonumentalerVersuch"]
 						'addContracts :+ ["ronny-ad-allhits-02"]
 
+						for local i:int = 0 to 9
+							print "i) unused: " + GetNewsEventTemplateCollection().GetUnusedAvailableInitialTemplateList(TVTNewsGenre.CULTURE).Count()
+							local newsEvent:TNewsEvent = GetNewsEventCollection().CreateRandomAvailable(TVTNewsGenre.CULTURE)
+							if newsEvent
+								GetNewsAgency().announceNewsEvent(newsEvent, 0, False)
+								print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"~q  at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
+							endif
+						next
 
-						for local l:string = EachIn addNews
-							local news:TNewsEvent = GetNewsEventCollection().GetByGUID(l)
-							if news
-								GetNewsAgency().announceNewsEvent(news, 0, False)
-								print "happen: "+ news.GetTitle() + "  at: "+GetWorldTime().GetformattedTime(news.happenedTime)
+						for local l:string = EachIn addNewsEventTemplates
+							local newsEvent:TNewsEvent = GetNewsEventCollection().CreateRandomAvailable(TVTNewsGenre.CULTURE)
+							if newsEvent
+								GetNewsAgency().announceNewsEvent(newsEvent, 0, False)
+								print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"~q  at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
 							endif
 						next
 						
