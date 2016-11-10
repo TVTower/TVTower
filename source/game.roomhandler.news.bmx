@@ -401,6 +401,8 @@ Type RoomHandler_News extends TRoomHandler
 		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
+		'store current room for later access (in guiobjects)
+		currentRoom = room
 
 		'create sign text image
 		if not newsPlannerTextImage
@@ -547,6 +549,9 @@ Type RoomHandler_News extends TRoomHandler
 	Function onUpdateNewsPlanner:int( triggerEvent:TEventBase )
 		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
+
+		'store current room for later access (in guiobjects)
+		currentRoom = room
 
 		GetGameBase().cursorstate = 0
 
@@ -737,7 +742,7 @@ Type TGUINews Extends TGUIGameListItem
 		Self.news = news
 		If news
 			'now we can calculate the item width
-			Self.Resize( GetSpriteFromRegistry(Self.imageBaseName+news.newsEvent.genre).area.GetW(), GetSpriteFromRegistry(Self.imageBaseName+news.newsEvent.genre).area.GetH() )
+			Self.Resize( GetSpriteFromRegistry(Self.imageBaseName+news.GetGenre()).area.GetW(), GetSpriteFromRegistry(Self.imageBaseName+news.GetGenre()).area.GetH() )
 		EndIf
 		'self.SetLimitToState("Newsplanner")
 
@@ -944,7 +949,7 @@ Type TGUINews Extends TGUIGameListItem
 			local broadcastEffects:int = 0
 			if news.newsEvent.effects.GetList("happen") then happenEffects = news.newsEvent.effects.GetList("happen").Count()
 			if news.newsEvent.effects.GetList("broadcast") then broadcastEffects = news.newsEvent.effects.GetList("broadcast").Count()
-			fontNormal.draw("Effekte: " + happenEffects + "x onHappen, "+ broadcastEffects + "x onBroadcast    Newstyp: " + news.newsEvent.newsType + "   Genre: "+news.newsEvent.genre, screenX + 5, textY)
+			fontNormal.draw("Effekte: " + happenEffects + "x onHappen, "+ broadcastEffects + "x onBroadcast    Newstyp: " + news.newsEvent.newsType + "   Genre: "+news.GetGenre(), screenX + 5, textY)
 			textY :+ 11	
 
 			SetAlpha oldAlpha
