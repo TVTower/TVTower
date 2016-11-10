@@ -6277,7 +6277,7 @@ Tragische Liebesgeschichte</de>
 			</description>
 			<staff>
 				<member index="0" function="1">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
-				<member index="1" function="2">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
+				<member index="1" function="128">bc0c3538-0186-48de-a074-9851c00d4cdd</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1981" distribution="2" maingenre="6" subgenre="0" flags="4" blocks="1" price_mod="1.0" />
