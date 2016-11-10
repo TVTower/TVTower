@@ -370,9 +370,8 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 		'field "available" = false ?
 		if not available then return False
 		
-		if availableYearRangeFrom >= 0 and availableYearRangeTo >= 0
-			if GetWorldTime().GetYear() < availableYearRangeFrom or GetWorldTime().GetYear() > availableYearRangeTo then return False
-		endif
+		if availableYearRangeFrom >= 0 and GetWorldTime().GetYear() < availableYearRangeFrom then return False
+		if availableYearRangeTo >= 0 and GetWorldTime().GetYear() > availableYearRangeTo then return False
 
 		'a special script expression defines custom rules for adcontracts
 		'to be available or not
