@@ -87,6 +87,10 @@ Type TRenderConfig
 	'Sets the viewport of all configurations overlayed 	(passepartout)
 	Function SetStackedViewPort:TRectangle()
 		local result:TRectangle = GetStackedViewPort()
-		if result then GetGraphicsManager().SetViewPort(int(result.position.x), int(result.position.y), int(result.dimension.x), int(result.dimension.y))
+		if result
+			GetGraphicsManager().SetViewPort(int(result.position.x), int(result.position.y), int(result.dimension.x), int(result.dimension.y))
+		else
+			GetGraphicsManager().SetViewPort(0, 0, GetGraphicsManager().realWidth, GetGraphicsManager().realHeight)
+		endif
 	End Function
 End Type

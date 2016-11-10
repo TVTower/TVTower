@@ -755,8 +755,8 @@ endrem
 		guiEntriesPanel.scrollBy(dx,dy)
 
 		'refresh scroller values (for "progress bar" on the scroller)
-		guiScrollerH.SetRelativeValue( GetScrollPercentageX() )
-		guiScrollerV.SetRelativeValue( GetScrollPercentageY() )
+		if dx <> 0 then guiScrollerH.SetRelativeValue( GetScrollPercentageX() )
+		if dy <> 0 then guiScrollerV.SetRelativeValue( GetScrollPercentageY() )
 	End Method
 
 

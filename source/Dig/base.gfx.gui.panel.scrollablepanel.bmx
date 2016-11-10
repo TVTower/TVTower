@@ -70,36 +70,36 @@ Type TGUIScrollablePanel Extends TGUIPanel
 
 
 
-	Method SetLimits:Int(lx:Float,ly:Float)
+	Method SetLimits(lx:Float,ly:Float)
 		scrollLimit.setXY(lx,ly)
 	End Method
 
 
 	Method ScrollToX:Int(x:Float)
-		scrollPosition.SetX(x)
-
 		'check limits
-		scrollPosition.SetX(Max(Min(0, scrollPosition.GetX()), scrollLimit.GetX()))
+		scrollPosition.SetX(Max(Min(0, x), scrollLimit.GetX()))
+
+		return scrollPosition.GetY()
 	End Method
 
 
 	Method ScrollToY:Int(y:Float)
-		scrollPosition.SetY(Y)
-
 		'check limits
-		scrollPosition.SetY(Max(Min(0, scrollPosition.GetY()), scrollLimit.GetY()))
+		scrollPosition.SetY(Max(Min(0, y), scrollLimit.GetY()))
+
+		return scrollPosition.GetY()
 	End Method
 
 
-	Method ScrollTo:Int(x:Float,y:Float)
+	Method ScrollTo(x:Float,y:Float)
 		ScrollToX(x)
 		ScrollToY(y)
 	End Method
 
 
-	Method ScrollBy:Int(dx:Float,dy:Float)
-		ScrollToX(scrollPosition.GetX() + dx)
-		ScrollToY(scrollPosition.GetY() + dy)
+	Method ScrollBy(dx:Float,dy:Float)
+		if dx <> 0 then ScrollToX(scrollPosition.GetX() + dx)
+		if dy <> 0 then ScrollToY(scrollPosition.GetY() + dy)
 	End Method
 
 
