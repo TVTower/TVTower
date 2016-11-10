@@ -561,6 +561,28 @@ Type TNewsAgency
 	End Method
 
 
+	'creates new news events out of templates containing happenedTime-configs
+	'-> call this method on start of a game
+	Method CreateTimedNewsEvents:int()
+		local now:long = GetWorldTime().GetTimeGone()
+		'unusedInitialTemplateList does not check for "available", so have
+		'to do that too!
+		For local template:TNewsEventTemplate = EachIn GetNewsEventTemplateCollection().GetUnusedInitialTemplateList()
+			if not template.IsAvailable() then continue
+
+			if template.happenTime = -1 then continue
+			if template.happenTime <= now
+				'TODO: Wenn happened in der Vergangenheit liegt (und temp noch nicht "used")
+				'dann "onHappen" ausloesen damit Folgenachrichten kommen koennen
+			endif
+
+			'create fixed future news
+			local newsEvent:TNewsEvent = new TNewsEvent.InitFromTemplate(template)
+			GetNewsEventCollection().Add(newsEvent)
+		Next
+	End Method
+
+
 	'announces planned news events (triggered by news some time before)
 	Method ProcessUpcomingNewsEvents:Int()
 		Local announced:Int = 0
@@ -852,6 +874,13 @@ Type TNewsAgency
 	End Method
 
 
+	Method SetNextEventTime:int(genre:int, time:Long)
+		if genre >= TVTNewsGenre.count or genre < 0 then return False
+
+		NextEventTimes[genre] = time
+	End Method
+	
+
 	Method ResetNextEventTime:int(genre:int, addMinutes:int = 0)
 		if genre >= TVTNewsGenre.count or genre < 0 then return False
 
@@ -873,9 +902,9 @@ Type TNewsAgency
 		'25% chance to have an even longer time (up to 2x)
 		If RandRange(0,100) < 25
 			NextEventTimes[genre] :+ randRange(NextEventTimeIntervals[genre][0], NextEventTimeIntervals[genre][1])
-			TLogger.Log("NewsAgency", "Reset NextEventTime for genre "+genre+" to "+ GetWorldTime().GetFormattedTime(NextEventTimes[genre])+" ("+Long(NextEventTimes[genre])+"). DOUBLE TIME.", LOG_DEBUG)
+			TLogger.Log("NewsAgency", "Reset NextEventTime for genre "+genre+" to "+ GetWorldTime().GetFormattedDate(NextEventTimes[genre])+" ("+Long(NextEventTimes[genre])+"). DOUBLE TIME.", LOG_DEBUG)
 		else
-			TLogger.Log("NewsAgency", "Reset NextEventTime for genre "+genre+" to "+ GetWorldTime().GetFormattedTime(NextEventTimes[genre])+" ("+Long(NextEventTimes[genre])+")", LOG_DEBUG)
+			TLogger.Log("NewsAgency", "Reset NextEventTime for genre "+genre+" to "+ GetWorldTime().GetFormattedDate(NextEventTimes[genre])+" ("+Long(NextEventTimes[genre])+")", LOG_DEBUG)
 		EndIf
 	End Method
 End Type

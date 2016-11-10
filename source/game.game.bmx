@@ -887,7 +887,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(60,120) - 3600*1, True, False, False)
 		'this is added to the "left side" (> 2,5h)
 		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(31,60) - 3600*2, True, False, False)
-
+		'create a random for each news
+		'for local i:int = 0 until TVTNewsGenre.count
+		'	GetNewsAgency().AnnounceNewNewsEvent(i, - 2 * 60 * RandRange(31,60), True, False, False)
+		'Next
 
 		'create 3 starting news with random genre (for starting news show)
 		for local i:int = 0 until 3
@@ -906,6 +909,12 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'resets next event times
 		'GetNewsAgency().ResetNextEventTime(-1)
 
+		'adjust next ticker times to something right after game start
+		'(or a bit before)
+		For local i:int = 0 until TVTNewsGenre.count
+			GetNewsAgency().SetNextEventTime(i, GetWorldTime().GetTimeGone() + RandRange(5, 90)*60)
+		Next
+
 
 		'first create basics (player, finances, stationmap)
 		For local playerID:int = 1 to 4
@@ -918,6 +927,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			PreparePlayerStep2(playerID)
 		Next
 
+
+		'=== CREATE TIMED NEWSEVENTS ===
+		'Creates all newsevents with fixed times in the future
+		GetNewsAgency().CreateTimedNewsEvents()
+		
 		
 		'=== SETUP INTERFACE ===
 		
