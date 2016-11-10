@@ -687,7 +687,7 @@
 			<effects>
 				<effect trigger="happen" type="triggernews" news="SpeedMinister-news-Nessi-02" />
 			</effects>
-            <data genre="2" price="1.0" quality="50" />
+            <data genre="2" price="1.0" quality="40" />
         </news>
         <news id="SpeedMinister-news-Nessi-02" type="2" creator="8605" created_by="SpeedMinister">
             <title>
@@ -701,7 +701,7 @@
             <effects>
                 <effect trigger="happen" type="triggernews" news="SpeedMinister-news-Nessi-03" />
             </effects>
-            <data genre="2" price="1.05" quality="50" />
+            <data genre="2" price="1.0" quality="30" />
         </news>
         <news id="SpeedMinister-news-Nessi-03" type="2" creator="8605" created_by="SpeedMinister">
             <title>
@@ -712,7 +712,7 @@
                 <de>Der Bürgermeister von Inverness äußert sich erfreut über Nessis Rückkehr: "Vielleicht zieht Nessi sogar ein paar Touristen an."</de>
                 <en></en>
             </description>
-            <data genre="2" price="1.05" quality="52" />
+            <data genre="2" price="1.0" quality="32" />
         </news>
     </allnews>	
 </tvgdb>
