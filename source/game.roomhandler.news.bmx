@@ -831,14 +831,17 @@ Type TGUINews Extends TGUIGameListItem
 		State = 0
 		SetColor 255,255,255
 
-		If Self.RestrictViewPort()
+		'Ronny: this flickers for the item moving "from the top" into the
+		'       list while scrolling
+		'local sR:TRectangle = GetScreenRect()
+		'if sr.GetW() > 0 and sr.GetH() > 0
 			Local screenX:Float = Int(GetScreenX())
 			Local screenY:Float = Int(GetScreenY())
 
 			Local oldAlpha:Float = GetAlpha()
 			Local itemAlpha:Float = 1.0
 			'fade out dragged
-			If isDragged() Then itemAlpha = 0.25 + 0.5^GuiManager.GetDraggedNumber(Self)
+			If isDragged() Then itemAlpha = Min(1.0, 0.25 + 0.5^GuiManager.GetDraggedNumber(Self))
 
 			SetAlpha oldAlpha*itemAlpha
 			'background - no "_dragged" to add to name
@@ -892,9 +895,7 @@ Type TGUINews Extends TGUIGameListItem
 
 			SetColor 255, 255, 255
 			SetAlpha oldAlpha
-	
-			Self.resetViewport()
-		EndIf
+		'EndIf
 
 		If TVTDebugInfos
 			Local oldAlpha:Float = GetAlpha()
