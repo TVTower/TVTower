@@ -9847,7 +9847,406 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1955" distribution="1" maingenre="12" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="18" speed="32" outcome="14" />
-		</programme> 		
+		</programme>
+
+
+
+		<!-- some programmes from ronny.xml -->
+		<programme id="ronny-programme-family-papierflieger" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Papierflieger</de>
+				<en>Paper Planes</en>
+			</title>
+			<description>
+				<de>Bastelstunde mit [1|First]. In jeder Folge baut er einen neuen Flieger - aus chlorfrei gebleichtem Papier und Knochenleim.
+Pädagogisch wertvoll und absolut ökologisch.</de>
+				<en>Tinker time with [1|First]. In every episode he will build a new paper plane - made out of chlorine-free bleached paper and bone glue.
+Educational precious and absolutly ecological.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">ronny-programmeperson-freddyjbush</member>
+				<member index="1" function="128">ronny-programmeperson-bennyjameson</member>
+			</staff>
+			<groups target_groups="256" />
+			<data country="USA" year="0" year_relative="-5" year_relative_min="1978" year_relative_max="1984" distribution="2" maingenre="0" subgenre="9" flags="0" blocks="1" price_mod="0.95" />
+			<ratings critics="20" speed="30" outcome="0" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-family-papierflieger-ep1" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Tahiti Fly</de>
+					</title>
+					<description>
+						<de>Ganz schön tricky. Erst einmal in der Mitte falten, dann umknicken und dann nochmal falten, jetzt...</de>
+						<en>Really tricky, First fold in the middle, then bend it and there is another fold, now just...</en>
+					</description>
+					<ratings critics="25" speed="35" />
+				</programme>
+				<programme id="ronny-programme-family-papierflieger-ep2" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Bosporus Bomber</de>
+					</title>
+					<description>
+						<de>Diesmal im Bau: Der Bosporus Bomber, ein weitfliegender Papierflieger auch Scheich des Schwarzen Meeres genannt.</de>
+						<en>This time to construct: The Bosporus Bomber - a paper plane with a long range. Sometimes it is even called Sheik of the Black Sea.</en>
+					</description>
+					<ratings critics="28" speed="19" />
+				</programme>
+				<programme id="ronny-programme-family-papierflieger-ep3" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Schneegans</de>
+						<en>Snow goose</en>
+					</title>
+					<description>
+						<de>Ein weißer Flieger, perfekt um ihn im Winter zu verstecken. Aufpassen, Verletzungsgefahr.</de>
+						<en>A white paper plane, perfect to hide it in the winter. Attention risk of injury.</en>
+					</description>
+					<ratings critics="23" speed="32" />
+				</programme>
+				<programme id="ronny-programme-family-papierflieger-ep4" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Die eiserne Lady</de>
+						<en>The Iron Lady</en>
+					</title>
+					<description>
+						<de>Zügig zusammengebaut aber extrem kurze Reichweite - der 30-Sekunden Papierflieger „Die Eiserne Lady“. Lässt sich nicht pink anmalen.</de>
+						<en>Rapidly built but with extraordinary short range - the 30-second paper plane "The Iron Lady". Cannot be painted in pink.</en>
+					</description>
+					<ratings critics="20" speed="27" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="ronny-programme-kochenmitpatty-01" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Kochen mit [1|Full]</de>
+				<en>Cooking with [1|Full]</en>
+			</title>
+			<description>
+				<de>[1|Full] zeigt in heimeliger Atmosphäre wie die Hausfrau von Heute ihrem Mann und den Liebsten leckere Speisen auf den Tisch zaubern kann. Eine Weinverkostung gehört zu jeder Folge.</de>
+				<en>[1|Full] shows the audience how to cook for their husbands and her dearest. Each episode also contains a wine tasting.</en>
+			</description>
+			<staff>
+				<!-- klaus grobe -->
+				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<!-- Patty Glansen -->
+				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<!-- random:
+				     generator = "countrycodes, gender, levelup"
+				     countrycodes = "countrycode1 countrycode2 ..."
+				     gender = 0 [random]  1 [male]  2 [female]
+				     levelup = 0 [no levelup]  1 [levelup]
+				-->
+				<member index="1" function="64" generator="es,0"></member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="0" year_relative="-2" year_relative_min="1984" year_relative_max="1989" distribution="2" maingenre="0" blocks="1" tags="cooking,80s" />
+			<modifiers>
+				<!-- the programme ages faster than average -->
+				<modifier name="topicality::age" value="1.5" />
+				<!-- the programme is cheaper than average -->
+				<modifier name="price" value="0.7" />
+			</modifiers>
+			<ratings critics="70" speed="25" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-kochenmitpatty-01-ep-01" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Toast Hawaii</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Ganz neu und schon im Trend. Das Geheimnis der süßen Ananas wird bei einem Glas Silvaner aufgedeckt.</de>
+						<en>Brand new and already in vogue. The secret of the sweet pineapple is revealed with a glass of Silvaner.</en>
+					</description>
+					<ratings critics="75" speed="35" />
+				</programme>
+				<programme id="ronny-programme-kochenmitpatty-01-ep-02" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Gefüllte Eier</de>
+						<en>Filled eggs</en>
+					</title>
+					<description>
+						<de>Einfach, aber schlicht der Hingucker auf den Dinnerparties des Jahres 1984. Das Ei ist schnell gekocht und so hat Frau [1|Last] mehr Zeit für den Traminer der Saison.</de>
+						<en>Easy to create, but simply an eye on the dinner parties of the year 1984. The egg is boiled quickly and therefore Mrs. [1|Last] has more time for the Traminer of the season.</en>
+					</description>
+					<ratings critics="50" speed="40" />
+				</programme>
+				<programme id="ronny-programme-kochenmitpatty-01-ep-03" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Pumpernickel mal anders</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Roggenmischbrot war gestern. Angesagt und lecker ist Pumpernickel. Schnell geschmiert und angerichtet - dazu passt ein würziger rubinroter Pinot Noir.</de>
+						<en>Rye bread was yesterday. Hip and delicious is pumpernickel. Quickly lubricated and already done - fits perfectly to a spicy ruby red Pinot Noir.</en>
+					</description>
+					<ratings critics="73" speed="19" />
+				</programme>
+				<programme id="ronny-programme-kochenmitpatty-01-ep-04" product="7" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Shrimps-Cocktail</de>
+						<en></en>
+					</title>
+					<description>
+						<de>[1|First] pult heute Shrimps. Dazu gibt es hausgemachte Mayonnaise. Ein trockener Riesling passt nicht perfekt, aber erhält trotzdem seine halbe Stunde Sendezeit.</de>
+						<en>[1|First] shells shrimps today. They are served with homemade mayonnaise. A dry Riesling does not fit perfectly, but still receives his half hour of broadcasting.</en>
+					</description>
+					<ratings critics="67" speed="22" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="ronny-programme-brisanteufer-01" product="4" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Brisante Ufer</de>
+				<en>Explosive Coasts</en>
+			</title>
+			<description>
+				<de>Ein Kamerateam begleitet Rettungsschwimmer und andere Helden unserer heimischen Gewässer.</de>
+				<en>A camera team accompanies lifeguards and other heroes of our domestic waters.</en>
+			</description>
+			<staff>
+				<!-- klaus grobe -->
+				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<!-- Laiendarsteller -->
+				<member index="1" function="2">common-amateur-actors</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="0" year_relative="-3" year_relative_min="1977" year_relative_max="1988" distribution="2" maingenre="0" blocks="1" />
+			<ratings critics="44" speed="20" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-brisanteufer-01-ep-01" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Die Wasserwacht</de>
+						<en>Water Rescue</en>
+					</title>
+					<description>
+						<de>Männer mit wettergegerbter Haut, viel Spritzwasser und eine launische See sind die Helden dieser Folge.</de>
+						<en>Men with weathered skin, much splash and a fickle lake are the heroes of this episode.</en>
+					</description>
+					<data price_mod="0.95" />
+					<ratings critics="48"  />
+				</programme>
+				<programme id="ronny-programme-brisanteufer-01-ep-02" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Das Elb-Wehr</de>
+						<en>The Elbe-Weir</en>
+					</title>
+					<description>
+						<de>Scheinbar langweilig aber doch enorm wichtig: die Instandhaltung eines Wehrs der Elbe. Zeigt einmalige, aber langweilige, Unterwasseraufnahmen.</de>
+						<en>Apparently boring but very important: the maintenance of a weir of the Elbe. Shows unique but boring underwater footage.</en>
+					</description>
+					<data price_mod="1.0" />
+					<ratings critics="34" speed="12"  />
+				</programme>
+				<programme id="ronny-programme-brisanteufer-01-ep-03" product="4" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>SOS im Freibad Gammelau</de>
+						<en>SOS at Pool Gammelau</en>
+					</title>
+					<description>
+						<de>Dramatische Szenen, eingefangen im Freibad Gammelau: Ist es ein Schokoriegel?</de>
+						<en>Dramatic scenes captured in the outdoor pool Gammelau: Is it a chocolate bar?</en>
+					</description>
+					<ratings critics="26" speed="56"  />
+				</programme>
+			</children>
+		</programme>
+		<programme id="ronny-programme-familiefuchs-01" product="2" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Familie Fuchs</de>
+				<en>The Fox Family</en>
+			</title>
+			<description>
+				<de>Kindgerechte Abenteuer mit Felix Fuchs und seiner Familie.
+Lehrreiche Geschichten übermitteln aktuelle Erkenntnisse anerkannter Kinder- und Jugendpsychologen.</de>
+				<en>Adventure with Felix Fox and his family (suitable for children).
+Instructive stories convey current findings of recognized child and youth psychologists.</en>
+			</description>
+			<staff>
+				<!-- klaus grobe -->
+				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<!-- Laiendarsteller -->
+				<member index="1" function="2">common-amateur-actors</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D" year="1979" distribution="2" maingenre="3" blocks="1" flags="8" />
+			<ratings critics="51" speed="25" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-familiefuchs-01-ep-01" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Neue Nachbarn</de>
+						<en>New neighbours</en>
+					</title>
+					<description>
+						<de>Familie Igel zieht in den benachbarten Laubhaufen. Beim Spielen mit Ingo Igel verletzt sich Felix Fuchs an den Stacheln. Das Ende einer aufkeimenden Freundschaft?</de>
+						<en>Hedgehog Family goes to neighbouring piles of leaves. While playing with Henry Hedgehog, Felix Fox hurts himself at the thorns. The end of a burgeoning friendship?</en>
+					</description>
+					<data price_mod="0.68" />
+					<ratings critics="55"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-02" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Maus in der Falle</de>
+						<en>Mouse in the trap</en>
+					</title>
+					<description>
+						<de>Markus Mäuserich fällt in den Weiher des Waldes. Felix Fuchs muss sich entscheiden zwischen Mittagessen und Rettung.</de>
+						<en>Marcus Mousewicz falls into the pond of the forest. Felix Fuchs has to choose between lunch and rescue.</en>
+					</description>
+					<data price_mod="0.75" />
+					<ratings critics="50" speed="30" />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-03" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Frieda Fuchs</de>
+						<en>Frieda Fox</en>
+					</title>
+					<description>
+						<de>Ranzzeit. Ein süßer Duft zieht durch den Wald. Als Felix ihm folgt, trifft er Frieda. Wie umgehen mit den neuen und aufregenden Gefühlen?</de>
+						<en>Breeding season. A sweet smell wafts through the forest. As Felix trails the scent, he meets Frieda. How to deal with the new and exciting feelings?</en>
+					</description>
+					<data price_mod="0.58" />
+					<ratings critics="62" speed="22"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-04" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Guten Morgen meine Kinder</de>
+						<en>Good morning beloved children</en>
+					</title>
+					<description>
+						<de>Weniger als zwei Monate sind vergangen und die Fähe Frieda wirft drei Kinder - Felix' Kinder. Aufregende Zeiten für die neue Familie.</de>
+						<en>Less than two months have passed and the vixen Frieda raises three children - Felix' children. Exciting times for the new family.</en>
+					</description>
+					<data price_mod="0.65" />
+					<ratings critics="69" speed="20"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-05" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Besuch bei Ingo</de>
+						<en>Visiting Henry</en>
+					</title>
+					<description>
+						<de>Felix nimmt seine Kinder mit auf einen Besuch zu Ingo Igel. Schmetterlingsschmaus für alle.</de>
+						<en>Felix takes his children on a visit to Henry Hedgehog. Butterfly feast for all.</en>
+					</description>
+					<data price_mod="0.61" />
+					<ratings critics="59" speed="23"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-06" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Randale im Fuchsbau</de>
+						<en>Rampage at the burrow</en>
+					</title>
+					<description>
+						<de>Als Die Kinder von Familie Fuchs es eines Nachts zu bunt treiben, kommt es zum Streit im Fuchsbau. Die jungen Füchse ziehen aus.</de>
+						<en>As the children of the Fox family went too far some night, there is a dispute at the burrow. The young foxes move out.</en>
+					</description>
+					<data price_mod="0.53" />
+					<ratings critics="58" speed="27"  />
+				</programme>
+				<programme id="ronny-programme-familiefuchs-01-ep-07" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Der Grünrock</de>
+						<en>The Huntsman</en>
+					</title>
+					<description>
+						<de>Felix streift alleine durch den Wald als er den Jäger Joachim kennenlernt ...
+						Trauriges Finale der beliebten Kinderserie, ließ Millionen Kinderherzen erbeben.</de>
+						<en>Felix clips alone through the forest when he meets the hunter Joachim ...
+						Sad final of the popular childrens' series. Trembled a million children hearts.</en>
+					</description>
+					<data price_mod="0.70" />
+					<ratings critics="77" speed="20"  />
+				</programme>
+			</children>
+		</programme>
+		<programme id="ronny-programme-komtess-01" product="2" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Die Komtess</de>
+				<en>The Countess</en>
+			</title>
+			<description>
+				<de>Amouröse Verwicklungen, Intrigen unter &quot;Freundinnen&quot; ... Taschenbuchromantik in der Bretagne. Mini-TV-Serie.</de>
+				<en>Amorous entanglements, intrigues between &quot;girlfriends&quot; ... Paperback Romance in Brittany. Mini-TV series.</en>
+			</description>
+			<staff>
+				<!-- klaus grobe -->
+				<member index="0" function="1">8f93af7f-ac58-4573-bfae-ddf4698059bb</member>
+				<!-- Patty -->
+				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="2" function="2">ronny-programmeperson-gertkalischke</member>
+			</staff>
+			<groups target_groups="0" />
+			<data country="D/F" year="0" year_relative="-2" year_relative_min="1980" year_relative_max="1990" distribution="2" maingenre="15" blocks="2" />
+			<ratings critics="31" speed="30" />
+			<!-- Episodes -->
+			<children>
+				<programme id="ronny-programme-komtess-01-ep-01" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Jaqueline Montegrieux</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Jaqueline, Tochter des Grafen Montegrieux erblüht und entdeckt bisher unerkannte Gefühle für den Stallburschen Henri.</de>
+						<en>Jacqueline, daughter of Count Montegrieux blossoms and discovers previously unknown feelings for the stable-lad Henri.</en>
+					</description>
+					<data price_mod="0.98" />
+					<ratings critics="32" speed="28"  />
+				</programme>
+				<programme id="ronny-programme-komtess-01-ep-02" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Francine du Pomeranc</de>
+						<en></en>
+					</title>
+					<description>
+						<de>Der umtriebige Graf Pomeranc besucht den Landsitz Montegrieux. Er versucht Jaqueline nachzustellen während seine Tochter Francine Henri schöne Augen macht...</de>
+						<en>The busy Earl Pomeranc visits Manor Montegrieux. He tries to be after Jaqueline while his daughter Francine makes eyes at Henri ...</en>
+					</description>
+					<data price_mod="0.98" />
+					<ratings critics="30" speed="29"  />
+				</programme>
+				<programme id="ronny-programme-komtess-01-ep-03" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Eine Leiche im Keller?</de>
+						<en>Skeletons in the closet?</en>
+					</title>
+					<description>
+						<de>Große Aufregung, Graf Pomeranc ist verschwunden. Was hat Jaqueline und ihr zerissenes Nachthemd damit zu tun?</de>
+						<en>Flurries of excitement: Earl Pomeranc has disappeared. What have Jacqueline and her tattered nightgown to do with it?</en>
+					</description>
+					<data price_mod="0.98" />
+					<ratings critics="34" speed="25"  />
+				</programme>
+				<programme id="ronny-programme-komtess-01-ep-04" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Die Waldhütte</de>
+						<en>The forest cabin</en>
+					</title>
+					<description>
+						<de>Alle suchen Graf Pomeranc. Jaqueline und Henri suchen im nahen Wald und landen in einer einsamen Hütte. Als ein Unwetter aufzieht, verbringen beide eine sinnliche Nacht bei knackendem Kaminfeuer.</de>
+						<en>Everybody is searching Earl Pomeranc. Jacqueline and Henri are searching in a nearby forest and stop in a secluded cabin. When a storm comes up, both spend a sensual night in front of a crackling fire.</en>
+					</description>
+					<data price_mod="0.93" />
+					<ratings critics="30" speed="30"  />
+				</programme>
+				<programme id="ronny-programme-komtess-01-ep-05" product="2" licence_type="2" creator="5578" created_by="Ronny">
+					<title>
+						<de>Sie war es...</de>
+						<en>It was ... her</en>
+					</title>
+					<description>
+						<de>Jaqueline erfährt, dass Francine Ihren Vater umbrachte und Jaquelines Nachthemd zeriss. Das warum erschüttert: sie wollte Jaqueline aus dem Weg haben.
+Grandioses Finale.</de>
+						<en>Jaqueline finds out that Francine killed her father and also tore Jaqueline's nightgown. The reason shocks: she wanted to get Jaqueline out of the way.
+Terrific final.</en>
+					</description>
+					<data price_mod="0.95" />
+					<ratings critics="25" speed="35"  />
+				</programme>
+			</children>
+		</programme>
 	</allprogrammes>
 	<exportOptions onlyFakes="true" onlyCustom="false" dataStructure="FakeData" />
 </tvgdb>
