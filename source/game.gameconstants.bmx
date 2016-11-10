@@ -990,8 +990,10 @@ Type TVTNewsFlag {_exposeToLua}
 	'forcefully reset to the next ticker time - useful for follow up news
 	'which would else not reset that time
 	Const RESET_TICKER_TIME:Int = 32
+	'reset a "initial" happen time once it was used the first time
+	Const RESET_HAPPEN_TIME:Int = 64
 
-	Const count:int = 6
+	Const count:int = 7
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -1008,6 +1010,7 @@ Type TVTNewsFlag {_exposeToLua}
 			case SEND_TO_ALL       return "send_to_all"
 			case KEEP_TICKER_TIME  return "keep_ticker_time"
 			case RESET_TICKER_TIME return "reset_ticker_time"
+			case RESET_HAPPEN_TIME return "reset_happen_time"
 
 
 			default

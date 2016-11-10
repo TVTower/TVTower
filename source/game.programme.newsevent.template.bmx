@@ -93,8 +93,13 @@ Type TNewsEventTemplateCollection
 
 	Method Use:int(obj:TNewsEventTemplate)
 		obj.timesUsed :+ 1
+		obj.SetLastUsedTime( Long(GetWorldTime().GetTimeGone()) )
 
-		obj.SetLastUsedTime( GetWorldTime().GetTimeGone() )
+		'this allows a previously "fixed" template to happen again later
+		if obj.HasFlag(TVTNewsFlag.RESET_HAPPEN_TIME)
+			obj.happenTime = -1
+		endif
+
 		unusedTemplates.Remove(obj.GetLowerStringGUID())
 		if obj.IsReuseable()
 			reuseableTemplates.insert(obj.GetLowerStringGUID(), obj)
@@ -205,7 +210,8 @@ Type TNewsEventTemplateCollection
 	'returns (and creates if needed) a list containing only available
 	'and initial news
 	Method GetUnusedInitialTemplateList:TList(genre:int=-1)
-		if genre < 0 or genre >= TVTNewsGenre.count + 1 then return null
+		if genre >= TVTNewsGenre.count + 1 then return null
+		if genre < -1 then genre = -1
 
 		'create if missing
 		if not _unusedInitialTemplates then _InvalidateUnusedInitialTemplates()
@@ -227,12 +233,13 @@ Type TNewsEventTemplateCollection
 	'returns (and creates if needed) a list containing only available
 	'and initial news
 	Method GetUnusedAvailableInitialTemplateList:TList(genre:int=-1)
-		if genre < 0 or genre >= TVTNewsGenre.count + 1 then return null
+		if genre >= TVTNewsGenre.count + 1 then return null
+		if genre < -1 then genre = -1
 
 		'create if missing
 		if not _unusedAvailableInitialTemplates then _InvalidateUnusedAvailableInitialTemplates()
 
-		if not _unusedAvailableInitialTemplates[genre+1]
+		if not _unusedAvailableInitialTemplates[genre+1] 'with -1 this leads to [0]
 			_unusedAvailableInitialTemplates[genre+1] = CreateList()
 			For local t:TNewsEventTemplate = EachIn unusedTemplates.Values()
 				if t.newsType <> TVTNewsType.InitialNews then continue
@@ -240,6 +247,9 @@ Type TNewsEventTemplateCollection
 				if genre <> -1 and t.genre <> genre then continue
 
 				if not t.IsAvailable() then continue
+
+				'ignore also if template has a "dated happen time"
+				if t.happenTime <> - 1 then continue
 
 				_unusedAvailableInitialTemplates[genre+1].AddLast(t)
 			Next
@@ -268,6 +278,8 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 	Field topicality:Float = 1.0
 	Field lastUsedTime:Long = 0
 	Field timesUsed:int = 0
+	'time when a newly created newsevent is SET to happen (fixed time!)
+	Field happenTime:Long = -1
 
 	'minimum level to receive a news based on this
 	'(eg. filter out soccer news for amateur leagues if only subscribed

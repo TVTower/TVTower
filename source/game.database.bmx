@@ -483,7 +483,8 @@ Type TDatabaseLoader
 		local data:TData = new TData
 		'price and topicality are outdated
 		xml.LoadValuesToData(nodeData, data, [..
-			"genre", "price", "quality", "available", "keywords" ..
+			"genre", "price", "quality", "available", "flags", ..
+			"keywords", "happen_time" ..
 		])
 
 		newsEventTemplate.flags = data.GetInt("flags", newsEventTemplate.flags)
@@ -500,6 +501,18 @@ Type TDatabaseLoader
 		if priceMod = 0 then priceMod = 1.0 'invalid data given
 		newsEventTemplate.SetModifier("price", data.GetFloat("price", newsEventTemplate.GetModifier("price")))
 
+		local happenTimeString:string = data.GetString("happen_time", "")
+		if happenTimeString
+			local happenTimeParams:int[] = StringHelper.StringToIntArray(happenTimeString, ",")
+			if happenTimeParams.length > 0 and happenTimeParams[0] <> -1
+				'GetWorldTime().CalcTime_Auto( happenTimeParams[0], happenTimeParams[1 ..] )
+				local useParams:int[] = [-1,-1,-1,-1,-1,-1,-1,-1]
+				for local i:int = 1 until happenTimeParams.length
+					useParams[i-1] = happenTimeParams[i]
+				Next
+				newsEventTemplate.happenTime = GetWorldTime().CalcTime_Auto( happenTimeParams[0], useParams )
+			endif
+		endif
 
 
 		'=== CONDITIONS ===

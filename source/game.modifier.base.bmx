@@ -561,93 +561,9 @@ Type TGameModifierTimeFrame
 
 
 	Method SetTimeBegin_Auto(timeType:int, timeValues:int[])
-		SetTimeBegin( CalcTime_Auto(timeType, timeValues) )
+		SetTimeBegin( GetWorldTime().CalcTime_Auto(timeType, timeValues) )
 	End Method	
 
-
-	Function CalcTime_HoursFromNow:Long(hoursMin:int, hoursMax:int = -1)
-		if hoursMax = -1
-			return GetWorldTime().getTimeGone() + hoursMin * TWorldTime.HOURLENGTH
-		else
-			return GetWorldTime().getTimeGone() + RandRange(hoursMin, hoursMax) * TWorldTime.HOURLENGTH
-		endif
-	End Function
-
-
-	Function CalcTime_DaysFromNowAtHour:Long(daysBegin:int, daysEnd:int = -1, atHourMin:int, atHourMax:int = -1)
-		local result:Long
-		if daysEnd = -1
-			result = GetWorldTime().MakeTime(0, GetWorldTime().GetDay() + daysBegin, 0, 0)
-		else
-			result = GetWorldTime().MakeTime(0, GetWorldTime().GetDay() + RandRange(daysBegin, daysEnd), 0, 0)
-		endif
-
-		if atHourMax = -1
-			result :+ atHourMin * TWorldTime.HOURLENGTH
-		else
-			'convert into minutes:
-			'for 7-9 this is 7:00, 7:01 ... 8:59, 9:00
-			result :+ RandRange(atHourMin*60, atHourMax*60) * 60
-		endif
-		
-		return result
-	End Function
-
-
-	Function CalcTime_WeekdayAtHour:Long(weekday:int, atHourMin:int, atHourMax:int = -1)
-		local daysTillWeekday:int = (7 - GetWorldTime().GetWeekDay() + weekday) mod 7
-		if GetWorldTime().GetWeekDay() = weekday then daysTillWeekday = 7
-
-		local result:Long = GetWorldTime().MakeTime(0, GetWorldTime().GetDay() + daysTillWeekday, 0, 0)
-
-		if atHourMax = -1
-			result :+ atHourMin * TWorldTime.HOURLENGTH
-		else
-			'convert into minutes:
-			'for 7-9 this is 7:00, 7:01 ... 8:59, 9:00
-			result :+ RandRange(atHourMin*60, atHourMax*60) * 60
-		endif
-		
-		return result
-	End Function
-
-
-	Function CalcTime_Auto:long(timeType:int, timeValues:int[])
-		if not timeValues or timeValues.length < 1 then return -1
-		
-		'what kind of happen time data do we have?
-		Select timeType
-			'1 = "A"-"B" hours from now
-			case 1
-				if timeValues.length > 1
-					return CalcTime_HoursFromNow(timeValues[0], timeValues[1])
-				else
-					return CalcTime_HoursFromNow(timeValues[0], -1)
-				endif
-			'2 = "A"-"B" days from now at "C":00 - "D":00 o'clock
-			case 2
-				if timeValues.length <= 1 then return -1
-				
-				if timeValues.length = 2
-					return CalcTime_DaysFromNowAtHour(timeValues[0], -1, timeValues[1])
-				elseif timeValues.length = 3
-					return CalcTime_DaysFromNowAtHour(timeValues[0], timeValues[1], timeValues[2])
-				else
-					return CalcTime_DaysFromNowAtHour(timeValues[0], timeValues[1], timeValues[2], timeValues[3])
-				endif
-			'3 = next "weekday A" from "B":00 - "C":00 o'clock
-			case 3
-				if timeValues.length <= 1 then return -1
-				
-				if timeValues.length = 2
-					return CalcTime_WeekdayAtHour(timeValues[0], -1, timeValues[1])
-				elseif timeValues.length >= 3
-					return CalcTime_WeekdayAtHour(timeValues[0], timeValues[1], timeValues[2])
-				endif
-		End Select
-		return -1
-	End Function
-	
 
 	Method HasExpired:int()
 		if timeEnd >= 0

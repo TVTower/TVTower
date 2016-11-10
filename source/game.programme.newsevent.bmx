@@ -184,7 +184,7 @@ Type TNewsEventCollection
 			'not happened yet - should not happen
 			if not newsEvent.HasHappened() then continue
 			'only interested in a specific genre?
-			if genre <> -1 and newsEvent.genre <> genre then continue 
+			if genre <> -1 and newsEvent.GetGenre() <> genre then continue 
 
 			if abs(GetWorldTime().GetDay(newsEvent.happenedTime) - GetWorldTime().GetDay()) >= minAgeInDays
 				toRemove :+ [newsEvent]
@@ -211,7 +211,7 @@ Type TNewsEventCollection
 
 		For local newsEvent:TNewsEvent = eachin managedNewsEvents.Values()
 			'only interested in a specific genre?
-			if genre <> -1 and newsEvent.genre <> genre then continue 
+			if genre <> -1 and newsEvent.GetGenre() <> genre then continue 
 
 			if newsEvent.HasHappened() and newsEvent.HasEnded()
 				toRemove :+ [newsEvent]
@@ -259,7 +259,7 @@ Type TNewsEventCollection
 			For local event:TNewsEvent = EachIn managedNewsEvents.Values()
 				if event.newsType <> TVTNewsType.FollowingNews then continue
 				'only interested in a specific genre?
-				if genre <> -1 and event.genre <> genre then continue 
+				if genre <> -1 and event.GetGenre() <> genre then continue 
 
 				_followingNewsEvents[genre+1].AddLast(event)
 			Next
@@ -279,7 +279,7 @@ Type TNewsEventCollection
 				'skip events already happened or not happened at all (-> "-1")
 				if event.HasHappened() or event.happenedTime = -1 then continue
 				'only interested in a specific genre?
-				if genre <> -1 and event.genre <> genre then continue 
+				if genre <> -1 and event.GetGenre() <> genre then continue 
 
 				_upcomingNewsEvents[genre+1].AddLast(event)
 			Next
@@ -434,7 +434,9 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			self.title = template.title
 			self.description = template.description
 		'endif
-		self.genre = template.genre
+
+		self.happenedTime = template.happenTime
+
 		self.topicality = template.topicality
 		self.SetQualityRaw( template.quality )
 		self.newsType = template.newsType
@@ -658,7 +660,7 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 	Method GetGenreWearoffModifier:float(genre:int=-1)
-		if genre = -1 then genre = self.genre
+		if genre = -1 then genre = self.GetGenre()
 		return GetNewsEventCollection().GetGenreWearoffModifier(genre)
 	End Method
 
@@ -698,11 +700,12 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	Method GetGenreDefinition:TNewsGenreDefinition()
 		If Not _genreDefinitionCache
-			_genreDefinitionCache = GetNewsGenreDefinitionCollection().Get(Genre)
+			local g:int = GetGenre()
+			_genreDefinitionCache = GetNewsGenreDefinitionCollection().Get( g )
 
 			If Not _genreDefinitionCache
-				TLogger.Log("GetGenreDefinition()", "NewsEvent ~q"+GetTitle()+"~q: Genre #"+Genre+" misses a genreDefinition. Creating BASIC definition-", LOG_ERROR)
-				_genreDefinitionCache = new TNewsGenreDefinition.InitBasic(Genre, null)
+				TLogger.Log("GetGenreDefinition()", "NewsEvent ~q"+GetTitle()+"~q: Genre #"+g+" misses a genreDefinition. Creating BASIC definition-", LOG_ERROR)
+				_genreDefinitionCache = new TNewsGenreDefinition.InitBasic(g, null)
 			EndIf
 		EndIf
 		Return _genreDefinitionCache
@@ -843,7 +846,7 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 			TLogger.Log("TGameModifierNews_TriggerNews", "cannot find news to trigger: "+triggerNewsGUID, LOG_ERROR)
 			return false
 		endif
-		local triggerTime:Long = TGameModifierTimeFrame.CalcTime_Auto(happenTimeType, happenTimeData)
+		local triggerTime:Long = GetWorldTime().CalcTime_Auto(happenTimeType, happenTimeData)
 		GetNewsEventCollection().setNewsHappened(news, triggerTime)
 
 		return True

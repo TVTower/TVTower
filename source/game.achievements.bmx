@@ -317,7 +317,7 @@ Type TAchievementTask_BroadcastNewsShow extends TAchievementTask
 
 			'check genres
 			if genre[i] >= 0 and ok
-				if not news or news.newsEvent.genre <> genre[i] then ok = False
+				if not news or news.GetGenre() <> genre[i] then ok = False
 			endif
 
 

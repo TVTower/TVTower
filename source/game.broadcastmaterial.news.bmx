@@ -413,12 +413,12 @@ endrem
 
 
 	Method GetGenre:int() {_exposeToLua}
-		return newsEvent.genre
+		return newsEvent.GetGenre()
 	End Method
 
 
 	Method GetGenreString:string() {_exposeToLua}
-		return TNewsEvent.GetGenreString(newsEvent.genre)
+		return TNewsEvent.GetGenreString(newsEvent.GetGenre())
 	End Method
 
 
