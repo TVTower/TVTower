@@ -49,6 +49,8 @@ Type TGUIWindowBase Extends TGUIPanel
 		'create background, setup text etc.
 		InitWindow(dimension)
 
+		guiTextBoxAlignment = ALIGN_LEFT_TOP
+
 		GUIManager.Add(Self)
 		Return Self
 	End Method
@@ -105,7 +107,7 @@ Type TGUIWindowBase Extends TGUIPanel
 
 		'resize content (if exists) to use all available content space
 		If guiContent
-			guiContent.rect.position.SetXY(0,0)
+			guiContent.SetPosition(0,0)
 			guiContent.resize(GetContentScreenWidth(),GetContentScreenHeight())
 		EndIf
 	End Method
@@ -153,13 +155,6 @@ Type TGUIWindowBase Extends TGUIPanel
 	End Method
 
 
-	'override for different alignment
-	Method SetValue(value:String="")
-		Super.SetValue(value)
-		If guiTextBox Then guiTextBox.SetValueAlignment("LEFT", "TOP")
-	End Method
-
-
 	Method SetCaption:Int(caption:String="")
 		If caption=""
 			If guiCaptionTextBox
@@ -176,7 +171,7 @@ Type TGUIWindowBase Extends TGUIPanel
 				Else
 					guiCaptionTextBox.SetValueColor(TColor.clWhite)
 				EndIf
-				guiCaptionTextBox.SetValueAlignment("CENTER", "CENTER")
+				guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_CENTER )
 				guiCaptionTextBox.SetAutoAdjustHeight(False)
 				guiCaptionTextBox.SetZIndex(1)
 				'set to ignore parental padding (so it starts at 0,0)
@@ -196,14 +191,18 @@ Type TGUIWindowBase Extends TGUIPanel
 
 
 	Method SetCaptionAndValue:Int(caption:String="", value:String="")
+		Local oldTextboxHeight:Float = GetContentScreenHeight()
+
 		SetCaption(caption)
 		SetValue(value)
 
 		'resize window
 		if guiTextBox
-			Local oldTextboxHeight:Float = guiTextBox.rect.GetH()
-			Local newTextboxHeight:Float = guiTextBox.getHeight()
-			Self.resize(0, rect.getH() + newTextboxHeight - oldTextboxHeight)
+			if guiTextBox.getHeight() - GetContentScreenHeight() > 0
+				Self.resize(0, GetScreenHeight() + Max(guiTextBox.GetScreenHeight(), guiTextBox.getHeight()) - GetContentScreenHeight())
+			else
+				Self.resize(0, GetScreenHeight() + guiTextBox.getHeight() - GetContentScreenHeight() + 4)
+			endif
 		else
 			Self.resize(0, rect.getH())
 		endif

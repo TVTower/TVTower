@@ -170,7 +170,7 @@ Type TGUIGameWindow Extends TGUIWindowBase
 		GetPadding().SetTop(35)
 
 		SetCaptionArea(New TRectangle.Init(20, 10, GetContentScreenWidth() - 2*20, 25))
-		guiCaptionTextBox.SetValueAlignment("LEFT", "TOP")
+		guiCaptionTextBox.SetValueAlignment( ALIGN_LEFT_TOP )
 
 		Return Self
 	End Method
@@ -236,7 +236,7 @@ Type TGUIGameModalWindow Extends TGUIModalWindow
 		Super.Create(pos, dimension, limitState)
 
 		SetCaptionArea(New TRectangle.Init(-1,10,-1,25))
-		guiCaptionTextBox.SetValueAlignment("CENTER", "TOP")
+		guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP )
 
 
 		Return Self

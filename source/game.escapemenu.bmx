@@ -518,7 +518,7 @@ global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 		_confirmOverwriteDialogue._defaultValueColor = TColor.clBlack.copy()
 		_confirmOverwriteDialogue.defaultCaptionColor = TColor.clWhite.copy()
 		_confirmOverwriteDialogue.SetCaptionArea(New TRectangle.Init(-1,10,-1,25))
-		_confirmOverwriteDialogue.guiCaptionTextBox.SetValueAlignment("CENTER", "TOP")
+		_confirmOverwriteDialogue.guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP )
 		
 		_confirmOverwriteDialogue.SetDialogueType(2)
 		_confirmOverwriteDialogue.SetZIndex(100001)

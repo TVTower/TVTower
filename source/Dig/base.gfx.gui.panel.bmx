@@ -13,6 +13,7 @@ Import "base.gfx.gui.textbox.bmx"
 Type TGUIPanel Extends TGUIObject
 	Field guiBackground:TGUIBackgroundBox = Null
 	Field guiTextBox:TGUITextBox
+	Field guiTextBoxAlignment:TVec2D
 	Field _defaultValueColor:TColor
 
 
@@ -124,6 +125,8 @@ Type TGUIPanel Extends TGUIObject
 				guiTextBox = New TGUITextBox.Create(new TVec2D.Init(0,0), new TVec2D.Init(50,50), value, "")
 				'we take care of the text box
 				AddChild(guiTextBox)
+
+				if not guiTextBoxAlignment then guiTextBoxAlignment = ALIGN_CENTER_CENTER
 			else
 				guiTextBox.SetValue(value)
 			endif
@@ -133,7 +136,7 @@ Type TGUIPanel Extends TGUIObject
 			Else
 				guiTextBox.SetValueColor(TColor.clWhite)
 			EndIf
-			guiTextBox.SetValueAlignment("CENTER", "CENTER")
+			guiTextBox.SetValueAlignment( guiTextBoxAlignment )
 			guiTextBox.SetAutoAdjustHeight(True)
 		EndIf
 

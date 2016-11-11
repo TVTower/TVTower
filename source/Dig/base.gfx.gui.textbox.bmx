@@ -33,7 +33,7 @@ Type TGUITextBox Extends TGUIobject
 
 	Method GetHeight:Int(maxHeight:Int=800)
 		If _autoAdjustHeight
-			Return Min(maxHeight, GetFont().drawBlock(value, GetScreenX(), GetScreenY(), rect.GetW(), maxHeight, valueAlignment, Null, 1, 0).getY())
+			Return Min(maxHeight, GetFont().getBlockHeight(value, rect.GetW(), maxHeight))
 		Else
 			Return rect.GetH()
 		EndIf
@@ -55,22 +55,8 @@ Type TGUITextBox Extends TGUIobject
 	End Method
 
 
-	Method SetValueAlignment(align:String="", valign:String="")
-		Select align.ToUpper()
-			Case "LEFT" 	valueAlignment.SetX(ALIGN_LEFT)
-			Case "CENTER" 	valueAlignment.SetX(ALIGN_CENTER)
-			Case "RIGHT" 	valueAlignment.SetX(ALIGN_RIGHT)
-
-			Default	 		valueAlignment.SetX(ALIGN_LEFT)
-		End Select
-
-		Select valign.ToUpper()
-			Case "TOP" 		valueAlignment.SetY(ALIGN_TOP)
-			Case "CENTER" 	valueAlignment.SetY(ALIGN_CENTER)
-			Case "BOTTOM" 	valueAlignment.SetY(ALIGN_BOTTOM)
-
-			Default	 		valueAlignment.SetY(ALIGN_TOP)
-		End Select
+	Method SetValueAlignment(alignment:TVec2D)
+		valueAlignment = alignment
 	End Method
 
 
@@ -78,8 +64,7 @@ Type TGUITextBox Extends TGUIobject
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha()
 
-		Local drawPos:TVec2D = new TVec2D.Init(GetScreenX(), GetScreenY())
-		GetFont().drawBlock(value, drawPos.GetIntX(), drawPos.GetIntY(), rect.GetW(), rect.GetH(), valueAlignment, valueColor, 1, 1, 0.25)
+		GetFont().drawBlock(value, int(GetScreenX()), int(GetScreenY()), rect.GetW(), rect.GetH(), valueAlignment, valueColor, 1, 1, 0.25)
 
 		oldCol.SetRGBA()
 	End Method

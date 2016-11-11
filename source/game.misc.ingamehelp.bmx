@@ -182,7 +182,7 @@ Type TIngameHelpWindow
 		modalDialogue.defaultCaptionColor = TColor.clWhite.copy()
 
 		modalDialogue.SetCaptionArea(New TRectangle.Init(-1,10,-1,25))
-		modalDialogue.guiCaptionTextBox.SetValueAlignment("CENTER", "TOP")
+		modalDialogue.guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP)
 
 		modalDialogue.SetDialogueType(1)
 		modalDialogue.buttons[0].SetCaption(GetLocale("OK"))
