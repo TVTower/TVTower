@@ -912,7 +912,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'adjust next ticker times to something right after game start
 		'(or a bit before)
 		For local i:int = 0 until TVTNewsGenre.count
-			GetNewsAgency().SetNextEventTime(i, GetWorldTime().GetTimeGone() + RandRange(5, 90)*60)
+			GetNewsAgency().SetNextEventTime(i, Long(GetWorldTime().GetTimeGone() + RandRange(5, 90)*60))
 		Next
 
 

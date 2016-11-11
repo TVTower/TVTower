@@ -277,9 +277,5 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		endif
 
 		Super.DrawContent()
-
-		SetAlpha 0.5
-		DrawRect(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
-		SetAlpha 1.0
 	End Method
 End Type

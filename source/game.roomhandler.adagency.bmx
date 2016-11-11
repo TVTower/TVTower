@@ -681,8 +681,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		local averageChannelReach:Int = GetStationMapCollection().GetAverageReach()
 		local averageChannelQuoteDayTime:Float = 0.0
 		local averageChannelQuotePrimeTime:Float = 0.0
-		local dayWithoutPrimeTime:int[] = [6,7,8,9,10,11,12,13,14,15,16,17 ] 'without primetime 18-23 and night time 0-5
-		local dayOnlyPrimeTime:int[] = [18,19,20,21,22,23]
+		local dayWithoutPrimeTime:int[] = [6,7,8,9,10,11,12,13,14,15,16,17,23 ] 'without primetime 18-22 and night time 0-5
+		local dayOnlyPrimeTime:int[] = [18,19,20,21,22]
 		if averageChannelReach > 0
 			'GetAverageAudienceForHours expects "hours to skip" !
 			averageChannelQuoteDayTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayWithoutPrimeTime).GetTotalSum() / averageChannelReach
@@ -704,11 +704,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			lowestChannelQuoteDayTime = 0.005
 			lowestChannelQuotePrimeTime = 0.01
 
-			averageChannelQuoteDayTime = 0.02
+			averageChannelQuoteDayTime = 0.015 '0.02
 			averageChannelQuotePrimeTime = 0.04
 
-			highestChannelQuoteDayTime = 0.05
-			highestChannelQuotePrimeTime = 0.1
+			highestChannelQuoteDayTime = 0.045
+			highestChannelQuotePrimeTime = 0.075 '0.1
 		else
 			For local i:int = 1 to 4
 				local image:Float = GetPublicImageCollection().Get(i).GetAverageImage()
@@ -820,14 +820,14 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 rem
 print "REFILL:"
-print "level0:  audienceDay "+"0.0%"+" - "+MathHelper.NumberToString(100*lowestChannelQuotePrimeTime, 4)+"%"
-print "level0:  audiencePrime "+"0.0%"+" - "+MathHelper.NumberToString(100*lowestChannelQuoteDayTime, 4)+"%"
+print "level0:  audienceDay "+"0.0%"+" - "+MathHelper.NumberToString(100*lowestChannelQuoteDayTime, 2)+"%"
+print "level0:  audiencePrime "+"0.0%"+" - "+MathHelper.NumberToString(100*lowestChannelQuotePrimeTime, 2)+"%"
 print "level0:  image    "+"0.0"+" - "+lowestChannelImage
-print "level1:  audienceDay "+MathHelper.NumberToString(100 * (0.5 * averageChannelQuoteDayTime),4)+"% - "+MathHelper.NumberToString(100 * Max(0.01, 1.5 * averageChannelQuoteDayTime),4)+"%"
-print "level1:  audiencePrime "+MathHelper.NumberToString(100 * (0.5 * averageChannelQuotePrimeTime),4)+"% - "+MathHelper.NumberToString(100 * Max(0.01, 1.5 * averageChannelQuotePrimeTime),4)+"%"
+print "level1:  audienceDay "+MathHelper.NumberToString(100 * (0.5 * averageChannelQuoteDayTime),2)+"% - "+MathHelper.NumberToString(100 * Max(0.01, 1.5 * averageChannelQuoteDayTime),2)+"%"
+print "level1:  audiencePrime "+MathHelper.NumberToString(100 * (0.5 * averageChannelQuotePrimeTime),2)+"% - "+MathHelper.NumberToString(100 * Max(0.01, 1.5 * averageChannelQuotePrimeTime),2)+"%"
 print "level1:  image     0.00 - "+averageChannelImage
-print "level2:  audienceDay "+MathHelper.NumberToString(100*(Max(0.01, 0.5 * highestChannelQuoteDayTime)),4)+"% - "+MathHelper.NumberToString(100 * Max(0.03, 1.5 * highestChannelQuoteDayTime),4)+"%"
-print "level2:  audiencePrime "+MathHelper.NumberToString(100*(Max(0.01, 0.5 * highestChannelQuotePrimeTime)),4)+"% - "+MathHelper.NumberToString(100 * Max(0.03, 1.5 * highestChannelQuotePrimeTime),4)+"%"
+print "level2:  audienceDay "+MathHelper.NumberToString(100*(Max(0.01, 0.5 * highestChannelQuoteDayTime)),2)+"% - "+MathHelper.NumberToString(100 * Max(0.03, 1.5 * highestChannelQuoteDayTime),2)+"%"
+print "level2:  audiencePrime "+MathHelper.NumberToString(100*(Max(0.01, 0.5 * highestChannelQuotePrimeTime)),2)+"% - "+MathHelper.NumberToString(100 * Max(0.03, 1.5 * highestChannelQuotePrimeTime),2)+"%"
 print "level2:  image     0.00 - "+highestChannelImage
 print "------------------"
 endrem
