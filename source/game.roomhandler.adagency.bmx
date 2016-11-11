@@ -853,8 +853,8 @@ endrem
 						case 1
 							'levelFilters[2 + 3]
 							if i mod 4 <= 1
-								filterNum = 3
-								classification = 3
+								filterNum = 2
+								classification = 2
 							else
 								filterNum = 3
 								classification = 3
