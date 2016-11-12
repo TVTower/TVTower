@@ -112,7 +112,7 @@ Type TNewsEventTemplateCollection
 	Method GetCount:int()
 		if _allCount < 0
 			_allCount = 0
-			For local k:string = EachIn allTemplates.Keys()
+			For local k:object = EachIn allTemplates.Keys()
 				_allCount :+ 1
 			Next
 		endif
