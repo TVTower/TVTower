@@ -641,13 +641,24 @@ Type TPersist
 
 			' Is this an array "Object" ?
 			If nodeName = "_array_" Then
-				Local objType:TTypeId = TTypeId.ForName(node.getAttribute("type") + "[]")
+				local attributeName:string = node.getAttribute("type")
+				Local size:Int = 0
+				Local objType:TTypeId
 
-				Local size:Int = node.getAttribute("size").toInt()
+				'Grable's reflectionExtended identifies null arrays as "Null[]"
+				'but BlitzMaxNG's and BRL-Vanilla reflection code cannot
+				'handle that. So set it to "object" (as done in serialization
+				'for unhandled typeids) 
+				if attributeName = "Null" then attributeName = "Object"
+
+				size = node.getAttribute("size").toInt()
+				objType = TTypeId.ForName(attributeName + "[]")
 				obj = objType.NewArray(size)
+
 				objectMap.Insert(node.getAttribute("ref"), obj)
 
 				If size > 0 Then
+
 					Local arrayElementType:TTypeId = objType.ElementType()
 
 					Select arrayElementType
