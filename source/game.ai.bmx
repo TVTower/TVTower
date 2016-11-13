@@ -618,8 +618,8 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method getMillisecs:Int()
-		Return MilliSecs()
+	Method GetMillisecs:Long()
+		Return Time.MilliSecsLong()
 	End Method
 
 

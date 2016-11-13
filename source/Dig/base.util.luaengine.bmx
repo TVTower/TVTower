@@ -684,11 +684,7 @@ endrem
 		If func Then t = func.Invoke(args)
 		?
 		If mth Then t = mth.Invoke(obj, args)
-		?not bmxng
 		Local typeId:TTypeId = funcOrMeth.TypeID().ReturnType()
-		?bmxng
-		Local typeId:TTypeId = funcOrMeth.TypeId()
-		?
 
 		If Object[](t).length > 0 Then typeId = ArrayTypeId
 
