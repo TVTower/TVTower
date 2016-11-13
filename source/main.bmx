@@ -719,7 +719,7 @@ Type TApp
 						local addContracts:string[]
 						local addNewsEventTemplates:string[]
 
-						'addNewsEventTemplates :+ ["34977b2a-b976-48f8-8254-001ebe2263f1"]
+						'addNewsEventTemplates :+ ["ronny-news-drucktaste-02b"]
 						'addLicences :+ ["TheRob-Mon-TvTower-EinmonumentalerVersuch"]
 						'addContracts :+ ["ronny-ad-allhits-02"]
 
@@ -2276,6 +2276,8 @@ Type TSaveGame Extends TGameState
 				
 				local neT:TNewsEventTemplate = new TNewsEventTemplate
 				neT.CopyBaseFrom(ne)
+				neT.genre = ne.GetGenre()
+				neT.newsType = ne.newsType
 				neT.SetGUID( ne.GetGUID()+"-template" )
 				neT.SetOwner(neT.OWNER_NOBODY)
 				GetNewsEventTemplateCollection().Add(neT)

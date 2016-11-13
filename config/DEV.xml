@@ -3,7 +3,7 @@
 	<resources>
 		<data name="DEV_CONFIG">
 			<DEV_KEYS value="TRUE" />
-			<DEV_OSD value="TRUE" />
+			<DEV_OSD value="FALSE" />
 			<DEV_LOG value="TRUE" />
 			<!-- a modifier cutting the used factor to calculate the
 			     revenue of a infomercial: 0.5 would cut the result to 50%
