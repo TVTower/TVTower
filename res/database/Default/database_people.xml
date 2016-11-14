@@ -31,7 +31,7 @@
 			<last_name>Klein</last_name>
 			<nick_name></nick_name>
 			<images />
-			<details job="1" gender="1" birthday="" deathday="" country="D" fictional="1" />
+			<details job="1" gender="1" birthday="1933-05-01" deathday="2015-07-03" country="D" fictional="1" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="3fcd8263-9bf4-4c23-9323-0e4105d75dbb" tmdb_id="0" imdb_id="nm0000719" creator="">
@@ -1893,6 +1893,14 @@
 
 
 		<!-- from ronny.xml -->
+		<person id="ronny-programmeperson-heinzharaldfehm" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+			<first_name>Heinz-Harald</first_name>
+			<last_name>Fehm</last_name>
+			<nick_name></nick_name>
+			<images />
+			<details job="128" gender="2" birthday="1962-01-15" deathday="" country="D" fictional="1" />
+			<data prominence="4" skill="2" fame="1" scandalizing="1" price_mod="1.1" power="2" humor="1" charisma="4" appearance="6" topgenre1="300" topgenre2="103" />
+		</person>
 		<person id="ronny-programmeperson-gertkalischke" fictional="1" creator="5578" created_by="Ronny">
 			<first_name>Gert</first_name>
 			<last_name>Kalischke</last_name>
@@ -1908,7 +1916,7 @@
 		<person id="ronny-programmeperson-achimvonklaven" fictional="1" creator="5578" created_by="Ronny">
 			<first_name>Achim</first_name>
 			<last_name>von Klaven</last_name>
-			<details job="129" gender="1"  birthday="1931" deathday="2010" country="D" />
+			<details job="129" gender="1"  birthday="1931-02-14" deathday="2010-09-27" country="D" />
 			<data prominence="1" skill="4" fame="2" scandalizing="2" price_mod="1" power="3" humor="0" charisma="4" appearance="2" topgenre1="300" topgenre2="103" />
 		</person>
 		<person id="ronny-programmeperson-holgerpelz" fictional="1" creator="5578" created_by="Ronny">
@@ -1940,6 +1948,13 @@
 			<last_name>Bush</last_name>
 			<details job="1" gender="1"  birthday="1942" deathday="2030" country="USA" />
 			<data prominence="1" skill="3" fame="0" scandalizing="0" price_mod="1" power="3" humor="2" charisma="2" appearance="1" topgenre1="9" topgenre2="0" />
+		</person>
+		<person id="ronny-programmeperson-pipelaho" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
+			<first_name>Pipé-Laho</first_name>
+			<last_name>Rashin</last_name>
+			<nick_name>Pipé-Laho</nick_name>
+			<details job="16" gender="2" birthday="" deathday="" country="CAN/RI" fictional="1" />
+			<data prominence="6" skill="4" fame="4" scandalizing="4" price_mod="1.1" power="1" humor="1" charisma="1" appearance="8" topgenre1="102" topgenre2="202" />
 		</person>
 	</celebritypeople>
 

@@ -310,6 +310,136 @@ The report accompanies two families for a summer in West Berlin.</en>
 			<data country="D" year="1974" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="24" speed="15" />
 		</programme>
+
+		<programme id="ronny-programme-westberlinwehrdienst-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Westberlin - Nein zum Wehrdienst</de>
+				<en>West Berlin - No to military service</en>
+			</title>
+			<description>
+				<de>Ein Kamerateam begleitet Punk „Fizzy“ auf seinem Umzug nach Westberlin. Dank alliierter Vorbehaltsrechte kann er sich dort der Wehrpflicht entziehen.</de>
+				<en>A camera crew accompanies punk "Fizzy" on his move to West Berlin. Thanks to allied reserving rights, he can withdraw military service there.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+				<member index="1" function="128">ronny-programmeperson-heinzharaldfehm</member>
+			</staff>
+			<!-- men / male teenagers -->
+			<targetgroupattractivity men="1.05" teenagers_male="1.2" /> 
+			<data country="D" year="0" year_relative="-1" year_relative_min="1985" year_relative_max="1988" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="0.9" />
+			<ratings critics="25" speed="20" />
+		</programme>
+
+		<programme id="ronny-programme-reeperbahnfreudenhaeusertest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Reeperbahn - Freudenhäuser im Test</de>
+				<en>Reeperbahn - The big brothels test</en>
+			</title>
+			<description>
+				<de>Mit versteckter Kamera durchstreift Reporter [1|Full] verschiedene Etablissements in Deutschlands bekanntestem Rotlichtviertel.
+Testsieger: Das „Fummeldidumm“.</de>
+				<en>With hidden camera reporter [1|Full] visits different establishments in Germany's most famous red light district.
+Test winner: The "Little Twiddle".</en>
+			</description>
+			<staff>
+				<member index="0" function="1">1cac5a80-97dc-46f6-8c34-761c4fe43db5</member>
+				<member index="1" function="128">ronny-programmeperson-achimvonklaven</member>
+			</staff>
+			<!-- men / male teenagers -->
+			<targetgroupattractivity men="1.2" teenagers_male="1.4" /> 
+			<data country="D" year="0" year_relative="+2" year_relative_min="1993" year_relative_max="2000" distribution="2" maingenre="300" subgenre="8" flags="64" blocks="1" />
+			<ratings critics="15" speed="30" />
+		</programme>
+
+		<programme id="ronny-programme-unterderhaube-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Unter der Haube</de>
+				<en>Hitched Hairdressers</en>
+			</title>
+			<description>
+				<de>Begleiten Sie 2 Friseusen auf ihrem Weg zum Traualtar. So unterschiedlich die Frisuren, so verschieden auch die Hochzeiten.
+Taschentücher bereithalten.</de>
+				<en>Accompany 2 hairdressers on their way to the altar. As different the hairstyles, so different the weddings.
+Hold ready some handkerchiefs.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">ronny-people-generated-02</member>
+				<member index="1" function="128">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
+			</staff>
+			<!-- women / female teenagers -->
+			<targetgroupattractivity women="1.20" teenagers_female="1.25" /> 
+			<data country="D" year="0" year_relative="+2" year_relative_min="1995" year_relative_max="2005" distribution="2" maingenre="300" subgenre="6" blocks="1" />
+			<ratings critics="10" speed="30" />
+		</programme>
+
+		<programme id="ronny-programme-konfettitest-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Konfetti: Betrug am Kunde?</de>
+				<en>Confetti: Fraud on the customer?</en>
+			</title>
+			<description>
+				<de>Die große Reportage deckt auf: statt versprochener 2500 Konfettiflocken sind in einer handelsüblichen Kleinpackung nur 2350-2400 Stück enthalten.
+Der erhoffte Skandal blieb aus.</de>
+				<en>The big reportage reveals: instead of the promised 2500 confetti flakes, a commercially available small pack only contains about 2350-2400 pieces.
+The hoped-for scandal helf off.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc</member>
+				<member index="1" function="128">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
+			</staff>
+			<!-- pensioners -->
+			<targetgroupattractivity pensioners="1.10" /> 
+			<data country="D" year="0" year_relative="+2" year_relative_min="1985" year_relative_max="2010" distribution="2" maingenre="300" subgenre="6" blocks="1" />
+			<ratings critics="11" speed="18" />
+		</programme>
+
+		<programme id="ronny-programme-zumbleistift-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Zum Bleistift?</de>
+				<en>Pun intended?</en>
+			</title>
+			<description>
+				<de>[1|Full] zeigt woher Wortzoten kommen und in welchen Jahren sie ihren Höhepunkt hatten.
+Illustre Gäste und Musik von [3|Nick].</de>
+				<en>[1|Full] reveals where word bawdies come from and in which years they had their climax.
+Illustrious guests and music by [3|Nick].</en>
+			</description>
+			<staff>
+				<member index="0" function="8">ronny-programmeperson-holgerpelz</member>
+				<member index="1" function="64">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
+				<member index="2" function="64">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
+				<member index="3" function="16">ronny-programmeperson-pipelaho</member>
+			</staff>
+			<modifiers>
+				<!-- the programme ages faster than average -->
+				<modifier name="topicality::age" value="1.2" />
+			</modifiers>
+			<data country="D" year="0" year_relative="-1" year_relative_min="1986" year_relative_max="1992" distribution="2" maingenre="100" subgenre="5" blocks="3" />
+			<ratings critics="18" speed="35" />
+		</programme>
+
+		<programme id="ronny-programme-betonfuerdenclan-01" product="4" licence_type="1" fictional="1" creator="5578" created_by="Ronny">
+			<title>
+				<de>Beton für den Clan</de>
+				<en>Concrete for the Clans</en>
+			</title>
+			<description>
+				<de>Gibt es wichtige Unterschiede zwischen Bau-Beton und Mafia-Beton?
+5 Betonsorten im großen Hafenbecken-Test.</de>
+				<en>Are there any significant differences between construction concrete and mafia concrete?
+5 concrete types in the large port basin test.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">ronny-programmeperson-gertkalischke</member>
+				<member index="1" function="128">ronny-programmeperson-samuelloew</member>
+			</staff>
+			<modifiers>
+				<!-- the programme ages slower than average -->
+				<modifier name="topicality::age" value="0.75" />
+			</modifiers>
+			<data country="D" year="0" year_relative="-5" year_relative_min="1980" year_relative_max="1995" distribution="2" maingenre="300" subgenre="6" blocks="1" />
+			<ratings critics="25" speed="20" />
+		</programme>
 	</allprogrammes>
 
 	<allnews>

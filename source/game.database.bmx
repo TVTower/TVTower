@@ -598,7 +598,9 @@ Type TDatabaseLoader
 		else
 			doAdd = False
 
-			TLogger.Log("LoadV3AchievementFromNode()", "Extending achievement ~q"+achievement.GetTitle()+"~q. GUID="+achievement.GetGUID(), LOG_XML)
+			if xml.GetNodeChildElements(node).Count() > 0
+				TLogger.Log("LoadV3AchievementFromNode()", "Extending achievement ~q"+achievement.GetTitle()+"~q. GUID="+achievement.GetGUID(), LOG_XML)
+			endif
 		endif
 		
 		'=== LOCALIZATION DATA ===
@@ -682,7 +684,10 @@ Type TDatabaseLoader
 		endif
 		if element
 			reuseExisting = True
-			TLogger.Log("LoadV3AchievementElementFromNode()", "Extending achievement "+elementName+" ~q"+element.GetTitle()+"~q. GUID="+element.GetGUID(), LOG_XML)
+
+			if xml.GetNodeChildElements(node).Count() > 0
+				TLogger.Log("LoadV3AchievementElementFromNode()", "Extending achievement "+elementName+" ~q"+element.GetTitle()+"~q. GUID="+element.GetGUID(), LOG_XML)
+			endif
 		endif
 
 

@@ -1,4 +1,4 @@
-SuperStrict
+﻿SuperStrict
 Import Brl.Map
 Import Brl.Retro
 Import "base.util.mersenne.bmx"
