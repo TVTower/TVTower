@@ -17,6 +17,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	'we use arrays to find "free slots" and set to a specific slot
 	Field listNormal:TAdContract[]
 	Field listCheap:TAdContract[]
+	Field levelFilters:TAdContractBaseFilter[6]
 
 	'graphical lists for interaction with blocks
 	Global haveToRefreshGuiElements:int = TRUE
@@ -764,7 +765,9 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'4x fitting the lowest requirements (2x day, 2x prime)
 		'4x fitting the average requirements -> 8x planned but slots limited (2x day, 2x prime)
 		'4x fitting the highest requirements (2x day, 2x prime)
-		local levelFilters:TAdContractBaseFilter[6]
+		for local i:int = 0 until levelFilters.length
+			if not levelFilters[i] then levelFilters[i] = new TAdContractBaseFilter
+		Next
 		'=== LOWEST ===
 		levelFilters[0] = new TAdContractbaseFilter
 		'from 80-120% of lowest (Minimum of 0.01%)
@@ -1168,6 +1171,32 @@ endrem
 			endif
 		endif
 
+
+		if TVTDebugInfos
+			SetColor 0,0,0
+			SetAlpha 0.6
+			DrawRect(15,35, 380, 180)
+			SetAlpha 1.0
+			SetColor 255,255,255
+			GetBitmapFont("default", 12).Draw("Durchschnittsquoten:", 20, 40)
+			local y:int = 60
+			local filterNum:int = 0
+			for local filter:TAdContractBaseFilter = eachIn levelFilters
+				filterNum :+ 1
+				local title:string = "#"+filterNum
+				select filterNum
+					case 1	title = "Schlechtester (Tag):~t"
+					case 2	title = "Schlechtester (Prime):"
+					case 3	title = "Durchschnitt (Tag):~t"
+					case 4	title = "Durchschnitt (Prime):"
+					case 5	title = "Bester Spieler (Tag):~t"
+					case 6	title = "Bester Spieler (Prime):"
+				End Select
+				GetBitmapFont("default", 12).Draw(title+"~tMinAudience = " + MathHelper.NumberToString(100 * filter.minAudienceMin,3)+"% - "+ MathHelper.NumberToString(100 * filter.minAudienceMax,3)+"%", 20, y)
+				if filterNum mod 2 = 0 then y :+ 4
+				y:+ 13
+			Next
+		endif
 
 	End Method
 
