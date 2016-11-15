@@ -281,6 +281,9 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 	'time when a newly created newsevent is SET to happen (fixed time!)
 	Field happenTime:Long = -1
 
+	'fine grained attractivity for target groups (splitted gender)
+	Field targetGroupAttractivityMod:TAudience = null
+
 	'minimum level to receive a news based on this
 	'(eg. filter out soccer news for amateur leagues if only subscribed
 	' to level 1 of 3)

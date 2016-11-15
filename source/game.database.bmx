@@ -541,6 +541,11 @@ Type TDatabaseLoader
 
 
 
+		'=== TARGETGROUP ATTRACTIVITY MOD ===
+		newsEventTemplate.targetGroupAttractivityMod = GetV3TargetgroupAttractivityModFromNode(newsEventTemplate.targetGroupAttractivityMod, node, xml)
+
+
+
 		'=== EFFECTS ===
 		LoadV3EffectsFromNode(newsEventTemplate, node, xml)
 
@@ -1136,44 +1141,7 @@ Type TDatabaseLoader
 
 
 		'=== TARGETGROUP ATTRACTIVITY MOD ===
-		local tgAttractivityNode:TxmlNode = xml.FindChild(node, "targetgroupattractivity")
-		if tgAttractivityNode
-			data = new TData
-			local searchData:string[TVTTargetGroup.baseGroupCount*3] '2 genders + "both"
-			local searchIndex:int = 0
-			for local tgIndex:int = 1 to TVTTargetGroup.baseGroupCount '1-7
-				searchData[searchIndex+0] = TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(tgIndex) )
-				searchData[searchIndex+1] = TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(tgIndex) ) +"_male"
-				searchData[searchIndex+2] = TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(tgIndex) ) +"_female"
-				searchIndex :+ 3
-			Next
-			xml.LoadValuesToData(tgAttractivityNode, data, searchData)
-
-			'loop over all genders (all, male, female) and assign found numbers
-			'- making sure to start with "all" allows assign "base", then
-			'  specific (if desired)
-			if not programmeData.targetGroupAttractivityMod
-				programmeData.targetGroupAttractivityMod = new TAudience.InitValue(1.0, 1.0)
-			endif
-			For local genderIndex:int = 0 to TVTPersonGender.count
-				local genderID:int = TVTPersonGender.GetAtIndex(genderIndex)
-				local genderString:string = TVTpersonGender.GetAsString( genderID )
-
-				for local tgIndex:int = 1 to TVTTargetGroup.baseGroupCount '1-7
-					local tgID:int = TVTTargetGroup.GetAtIndex(tgIndex)
-					local tgName:string = TVTTargetGroup.GetAsString(tgID)
-					local key:string = tgName+"_"+genderString
-					if genderIndex = 0 then key = tgName
-					'to avoid falling back to "1.0" on "female|male" while
-					'generic was set correctly before, we check if the key
-					'was found in the XML
-					if data.Has(key)
-						programmeData.targetGroupAttractivityMod.SetGenderValue(tgID, data.GetFloat(key, 1.0), genderID)
-					endif
-				Next
-			Next
-		endif
-
+		programmeData.targetGroupAttractivityMod = GetV3TargetgroupAttractivityModFromNode(programmeData.targetGroupAttractivityMod, node, xml)
 
 
 		'=== EFFECTS ===
@@ -1590,6 +1558,46 @@ Type TDatabaseLoader
 		totalProgrammeRolesCount :+ 1
 
 		return role
+	End Method
+
+
+	Method GetV3TargetgroupAttractivityModFromNode:TAudience(audience:TAudience, node:TxmlNode,xml:TXmlHelper)
+		local tgAttractivityNode:TxmlNode = xml.FindChild(node, "targetgroupattractivity")
+		if not tgAttractivityNode then return audience
+
+		local data:TData = new TData
+		local searchData:string[TVTTargetGroup.baseGroupCount*3] '2 genders + "both"
+		local searchIndex:int = 0
+		for local tgIndex:int = 1 to TVTTargetGroup.baseGroupCount '1-7
+			searchData[searchIndex+0] = TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(tgIndex) )
+			searchData[searchIndex+1] = TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(tgIndex) ) +"_male"
+			searchData[searchIndex+2] = TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(tgIndex) ) +"_female"
+			searchIndex :+ 3
+		Next
+		xml.LoadValuesToData(tgAttractivityNode, data, searchData)
+
+		'loop over all genders (all, male, female) and assign found numbers
+		'- making sure to start with "all" allows assign "base", then
+		'  specific (if desired)
+		if not audience then audience = new TAudience.InitValue(1.0, 1.0)
+		For local genderIndex:int = 0 to TVTPersonGender.count
+			local genderID:int = TVTPersonGender.GetAtIndex(genderIndex)
+			local genderString:string = TVTpersonGender.GetAsString( genderID )
+
+			for local tgIndex:int = 1 to TVTTargetGroup.baseGroupCount '1-7
+				local tgID:int = TVTTargetGroup.GetAtIndex(tgIndex)
+				local tgName:string = TVTTargetGroup.GetAsString(tgID)
+				local key:string = tgName+"_"+genderString
+				if genderIndex = 0 then key = tgName
+				'to avoid falling back to "1.0" on "female|male" while
+				'generic was set correctly before, we check if the key
+				'was found in the XML
+				if data.Has(key)
+					audience.SetGenderValue(tgID, data.GetFloat(key, 1.0), genderID)
+				endif
+			Next
+		Next
+		return audience
 	End Method
 
 

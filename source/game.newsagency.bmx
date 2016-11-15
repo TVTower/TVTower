@@ -185,7 +185,7 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 	Function onRunMatch:Int(event:TEventBase)
 		Local match:TNewsEventSportMatch = TNewsEventSportMatch(event.GetData().Get("match"))
 		Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
-		Local sport:TNewsEventSport = GetNewsEventSportCollection().GetByGUID( league._sportGUID )
+		Local sport:TNewsEventSport = GetNewsEventSportCollection().GetByGUID( league.sportGUID )
 		Local season:TNewsEventSportSeason = TNewsEventSportSeason(event.GetData().Get("season"))
 		If Not match Or not season or not sport Then Return False
 
@@ -473,7 +473,7 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TVTNewsGenre.CURRENTAFFAIRS, quality, null, TVTNewsType.InitialNewsByInGameEvent)
 		NewsEvent.SetModifier("price", price)
 		'after 20 hours a news topicality is 0 - so accelerating it by
-		'2.0 means it reaches topicality of 0 at 8 hours after creation.
+		'2.0 means it reaches topicality of 0 at 10 hours after creation.
 		'This is 2 hours after the next forecast (a bit overlapping)
 		NewsEvent.SetModifier("topicality::age", 2.0)
 

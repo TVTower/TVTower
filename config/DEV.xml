@@ -70,6 +70,13 @@
 			<!-- general balancing factor -->
 			<DEV_AD_BALANCING_FACTOR value="1.0" />
 
+			<!-- Balancing Qualitaet auf Alterseinfluss -->
+			<DEV_NEWS_QUALITYAGE_INFLUENCE value="1.0" />
+			<!-- Balancing Altereinfluss auf Maximale Aktualitaet-->
+			<DEV_NEWS_AGE_INFLUENCE value="1.0" />
+			<!-- Balancing AnzahlAusstrahlungen auf Maximale Aktualitaet -->
+			<DEV_NEWS_BROADCAST_INFLUENCE value="1.0" />
+
 			<!-- TRUE/1   FALSE/0 -->
 			<DEV_ROUND_TO_BEAUTIFUL_VALUES value="TRUE" />
 

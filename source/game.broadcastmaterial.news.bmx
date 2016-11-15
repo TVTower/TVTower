@@ -431,6 +431,20 @@ endrem
 	Method GetGenreDefinition:TGenreDefinitionBase()
 		Return newsEvent.GetGenreDefinition()
 	End Method
+
+
+	'override
+	'add individual targetgroup attractivity
+	Method GetTargetGroupAttractivityMod:TAudience()
+		Local result:TAudience = Super.GetTargetGroupAttractivityMod()
+
+		'modify with a complete fine grained target group setup
+		If newsEvent.GetTargetGroupAttractivityMod()
+			result.Multiply( newsEvent.GetTargetGroupAttractivityMod() )
+		EndIf
+
+		Return result
+	End Method
 	
 
 	'===== AI-LUA HELPER FUNCTIONS =====

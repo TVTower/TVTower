@@ -381,6 +381,9 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'time when a news gets invalid (eg. thunderstorm warning)
 	Field eventDuration:Int = -1
 
+	'fine grained attractivity for target groups (splitted gender)
+	Field targetGroupAttractivityMod:TAudience = null
+
 	'used when not -1 or no template is used
 	'type of the news event according to TVTNewsType
 	Field genre:int = -1
@@ -436,6 +439,9 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'endif
 
 		self.happenedTime = template.happenTime
+		if template.targetGroupAttractivityMod
+			self.targetGroupAttractivityMod = template.targetGroupAttractivityMod.copy()
+		endif
 
 		self.topicality = template.topicality
 		self.SetQualityRaw( template.quality )
@@ -524,7 +530,13 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Method GetMaxTopicality:Float()
 		local maxTopicality:Float = 1.0
 
+		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG", new TData))
+		Local devAgeMod:float = devConfig.GetFloat("DEV_NEWS_AGE_INFLUENCE", 1.0)
+		Local devQualityAgeMod:float = devConfig.GetFloat("DEV_NEWS_QUALITYAGE_INFLUENCE", 1.0)
+		Local devBroadcastedMod:float = devConfig.GetFloat("DEV_NEWS_BROADCAST_INFLUENCE", 1.0)
+
 		'age influence
+		local qualityAgeMod:Float = 0.8 * devQualityAgeMod
 
 		'the older the less ppl want to watch - 1hr = 0.95%, 2hr = 0.90%...
 		'means: after 20 hrs, the topicality is 0
@@ -533,19 +545,24 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		ageInfluence :* GetModifier("topicality::age")
 		'the lower the quality of an newsevent, the higher the age influences
 		'the max topicality, up to 80% is possible
-		ageInfluence :* 1 + 0.8 * (1 - GetQualityRaw() )
+		ageInfluence = (1.0-qualityAgeMod) * ageInfluence + qualityAgeMod * (1 - GetQualityRaw() )
 
 		'the first 12 broadcasts do decrease maxTopicality
 		Local timesBroadcastedInfluence:Float = 0.01 * Min(12, GetTimesBroadcasted() )
 		timesBroadcastedInfluence :* GetModifier("topicality::timesBroadcasted")
 
 		'subtract various influences (with individual weights)
-		maxTopicality :- 1.0 * ageInfluence
-		maxTopicality :- 0.5 * timesBroadcastedInfluence
+		maxTopicality :- ageInfluence * devAgeMod
+		maxTopicality :- timesBroadcastedInfluence * devBroadcastedMod
 
 		return MathHelper.Clamp(maxTopicality, 0.0, 1.0)
 	End Method
 
+
+	Method GetTargetGroupAttractivityMod:TAudience()
+		return targetGroupAttractivityMod
+	End Method
+	
 
 	Method HasHappened:Int()
 		'avoid that "-1" (the default for "unset") is fetched in the

@@ -265,7 +265,7 @@ Type TNewsEventSport extends TGameObject
 		playoffSeasons = new TNewsEventSportSeason[ leagues.length - 1 ]
 		playOffStartTime = GetWorldTime().GetTimeGone()
 		For local i:int = 0 to playoffSeasons.length -1
-			playoffSeasons[i] = new TNewsEventSportSeason.Init()
+			playoffSeasons[i] = new TNewsEventSportSeason.Init("", self.GetGUID())
 			'mark as playoff season
 			playoffSeasons[i].seasonType = TNewsEventSportSeason.SEASONTYPE_PLAYOFF
 
@@ -373,7 +373,7 @@ Type TNewsEventSport extends TGameObject
 
 	Method AddLeague:TNewsEventSport(league:TNewsEventSportLeague)
 		leagues :+ [league]
-		league._sportGUID = self.GetGUID()
+		league.sportGUID = self.GetGUID()
 		league._leaguesIndex = leagues.length-1
 'print "adding league: " + league._leaguesIndex
 		EventManager.triggerEvent(TEventSimple.Create("Sport.AddLeague", New TData.add("league", league), Self))
@@ -599,6 +599,10 @@ Type TNewsEventSport extends TGameObject
 	End Function
 
 
+	Method GetMatchByGUID:TNewsEventSportMatch(guid:string)
+	End Method
+
+
 	Function CreateMatch:TNewsEventSportMatch()
 		return new TNewsEventSportMatch
 	End Function
@@ -732,15 +736,22 @@ Type TNewsEventSportSeason
 	'contains matches already run
 	Field doneMatches:TList
 
+	'for playoffs, this is empty
+	Field leagueGUID:string
+	Field sportGUID:string
+
 	Field seasonType:int = 1
 	Const SEASONTYPE_NORMAL:int = 1
 	Const SEASONTYPE_PLAYOFF:int = 2
 	
 
 
-	Method Init:TNewsEventSportSeason()
+	Method Init:TNewsEventSportSeason(leagueGUID:string, sportGUID:string)
 		doneMatches = CreateList()
 		upcomingMatches = CreateList()
+
+		self.leagueGUID = leagueGUID
+		self.sportGUID = sportGUID
 
 		return self
 	End Method
@@ -768,7 +779,14 @@ Type TNewsEventSportSeason
 
 
 	Method SetTeams:int(teams:TNewsEventSportTeam[])
-		return data.SetTeams(teams)
+		local result:int = data.SetTeams(teams)
+
+		'inform teams about the league
+		For local team:TNewsEventSportTeam = EachIn data.teams
+			team.AssignLeague(leagueGUID)
+		Next
+
+		return result
 	End Method
 
 
@@ -811,7 +829,7 @@ End Type
 
 	
 
-Type TNewsEventSportLeague
+Type TNewsEventSportLeague extends TGameObject
 	Field name:string
 	Field nameShort:string
 
@@ -822,7 +840,7 @@ Type TNewsEventSportLeague
 	Field nextSeasonTeams:TNewsEventSportTeam[]
 
 	'guid of the parental sport
-	Field _sportGUID:string = ""
+	Field sportGUID:string = ""
 	'index of this league in the parental sport
 	Field _leaguesIndex:int = 0
 	
@@ -838,7 +856,7 @@ Type TNewsEventSportLeague
 		self.name = name
 		self.nameShort = nameShort
 		self.nextSeasonTeams = initialSeasonTeams
-		
+	
 		return self
 	End Method
 
@@ -972,7 +990,7 @@ endrem
 		if currentSeason then pastSeasons :+ [currentSeason.data]
 
 		'create and start new season
-		currentSeason = new TNewsEventSportSeason.Init()
+		currentSeason = new TNewsEventSportSeason.Init(self.GetGUID(), sportGUID)
 		currentSeason.Start(time)
 
 		'set teams
@@ -987,7 +1005,7 @@ endrem
 		CreateUpcomingMatches()
 		'print "Assign Match Times"
 		local seasonStart:Long = GetFirstMatchTime(time)
-print "SeasonStart: "  + GetworldTime().GetFormattedDate(seasonStart) +"  now=" +GetworldTime().GetFormattedDate(time)
+'print "SeasonStart: "  + GetworldTime().GetFormattedDate(seasonStart) +"  now=" +GetworldTime().GetFormattedDate(time)
 		AssignMatchTimes(currentSeason, GetNextMatchStartTime(seasonStart))
 		'sort the upcoming matches by match time (ascending)
 		currentSeason.upcomingMatches.Sort(true, SortMatchesByTime)
@@ -1174,7 +1192,7 @@ End Type
 
 
 
-Type TNewsEventSportMatch
+Type TNewsEventSportMatch extends TGameObject
 	Field teams:TNewsEventSportTeam[]
 	Field points:int[]
 	Field duration:int = 90*60 'in seconds
@@ -1347,6 +1365,8 @@ Type TNewsEventSportTeam
 	Field members:TNewsEventSportTeamMember[]
 	Field trainer:TNewsEventSportTeamMember
 
+	Field leagueGUID:string
+
 
 	Method SetTrainer:TNewsEventSportTeam(trainer:TNewsEventSportTeamMember)
 		self.trainer = trainer
@@ -1382,12 +1402,18 @@ Type TNewsEventSportTeam
 	Method GetTeamInitials:string()
 		return clubNameInitials + nameInitials
 	End Method
+
+
+	Method AssignLeague(leagueGUID:string)
+		self.leagueGUID = leagueGUID
+	End Method
 End Type
 
 
 
 
 Type TNewsEventSportTeamMember Extends TProgrammePersonBase
+	Field teamGUID:string
 
 	Method Init:TNewsEventSportTeamMember(firstName:string, lastName:string, countryCode:string, gender:int = 0, fictional:int = False)
 		self.firstName = firstName
@@ -1397,5 +1423,10 @@ Type TNewsEventSportTeamMember Extends TProgrammePersonBase
 		self.gender = gender
 		self.fictional = fictional
 		return self
+	End Method
+
+
+	Method AssignTeam(teamGUID:string)
+		self.teamGUID = teamGUID
 	End Method
 End Type
