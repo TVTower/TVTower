@@ -417,20 +417,20 @@ Type TNewsEventSport extends TGameObject
 	End Method
 
 
-	Method GetUpcomingMatches:TNewsEventSportMatch[](minTime:Long, maxTime:Long)
+	Method GetUpcomingMatches:TNewsEventSportMatch[](minTime:Long, maxTime:Long = -1)
 		local result:TNewsEventSportMatch[]
 		For local l:TNewsEventSportLeague = EachIn leagues
-			result :+ l.GetUpcomingMatches(minTime, MaxTime)
+			result :+ l.GetUpcomingMatches(minTime, maxTime)
 		Next
 
 		return result
 	End Method
 
 
-	Method GetUpcomingPlayoffMatches:TNewsEventSportMatch[](minTime:Long, maxTime:Long)
+	Method GetUpcomingPlayoffMatches:TNewsEventSportMatch[](minTime:Long, maxTime:Long = -1)
 		local result:TNewsEventSportMatch[]
 		For local l:TNewsEventSportSeason = EachIn playoffSeasons
-			result :+ l.GetUpcomingMatches(minTime, MaxTime)
+			result :+ l.GetUpcomingMatches(minTime, maxTime)
 		Next
 
 		return result
@@ -815,14 +815,15 @@ Type TNewsEventSportSeason
 	End Method
 
 
-	Method GetUpcomingMatches:TNewsEventSportMatch[](minTime:Long, maxTime:Long)
+	Method GetUpcomingMatches:TNewsEventSportMatch[](minTime:Long, maxTime:Long = -1)
 		local result:TNewsEventSportMatch[]
 		For local match:TNewsEventSportMatch = EachIn upcomingMatches
 			if match.GetMatchTime() < minTime then continue
-			if match.GetMatchTime() > maxTime then continue
+			if maxTime <> -1 and match.GetMatchTime() > maxTime then continue
 
 			result :+ [match]
 		Next
+		return result
 	End Method
 End Type
 
@@ -897,10 +898,37 @@ Type TNewsEventSportLeague extends TGameObject
 	End Method
 	
 
+	Method GetNextMatchTime:Long()
+		local lowestTime:long = -1
+		For local nextMatch:TNewsEventSportMatch = EachIn GetCurrentSeason().upcomingMatches
+			if lowestTime = -1 or nextMatch.GetMatchTime() < lowestTime
+				lowestTime = nextMatch.GetMatchTime()
+			endif
+		Next
+		return lowestTime
+	End Method
+
+	
 	'playoffs should ignore season breaks (season end / winter break)
 	Method GetNextMatchStartTime:Long(time:Long = 0, ignoreSeasonBreaks:int = False)
 		if time = 0 then time = Long(GetWorldTime().GetTimeGone())
 		return time + 3600
+	End Method
+
+
+	Method GetDoneMatchesCount:int()
+		if GetCurrentSeason() and GetCurrentSeason().doneMatches
+			return GetCurrentSeason().doneMatches.Count()
+		endif
+		return 0
+	End Method
+
+
+	Method GetUpcomingMatchesCount:int()
+		if GetCurrentSeason() and GetCurrentSeason().upcomingMatches
+			return GetCurrentSeason().upcomingMatches.Count()
+		endif
+		return 0
 	End Method
 
 
@@ -1079,7 +1107,7 @@ endrem
 	End Method
 
 
-	Method GetUpcomingMatches:TNewsEventSportMatch[](minTime:Long, maxTime:Long)
+	Method GetUpcomingMatches:TNewsEventSportMatch[](minTime:Long, maxTime:Long = -1)
 		return GetCurrentSeason().GetUpcomingMatches(minTime, maxTime)
 	End Method
 
