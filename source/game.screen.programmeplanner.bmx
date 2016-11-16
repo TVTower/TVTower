@@ -1237,12 +1237,40 @@ endrem
 						EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.ADVERTISEMENT, 1)
 					Else
 						'mark all forbidden slots
-						Local start:Int = GetWorldTime().GetDayHour()+1
-						If GetWorldTime().GetDayMinute() < 5 Then start :-1
-						If GetWorldTime().GetDay() < planningDay Then start = 0
-						For Local i:Int = 0 Until GetWorldTime().GetDayHour(blockTime)
-							hourSlots :+ [ i ]
-						Next
+						Local startDay:Int = GetWorldtime().GetDay(blockTime)
+						Local endDay:Int = GetWorldTime().GetDay(blockTime + programme.GetBlocks() * 3600)
+
+						'future day - mark ALL blocks of today
+						if startDay > planningDay and endDay > planningDay
+							if GetWorldTime().GetDay() = planningDay
+								For Local i:Int = GetWorldTime().GetDayHour() Until 24
+									hourSlots :+ [ i ]
+								Next
+							else
+								hourSlots = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+							endif
+
+						'past day - mark NO block of today
+						elseif startDay < planningDay and endDay < planningDay
+							'
+						'starts or ends today
+						else
+							Local nowHour:Int = GetWorldtime().GetDayHour()
+							Local startHour:Int = GetWorldtime().GetDayHour(blockTime)
+							Local endHour:Int = GetWorldTime().GetDayHour(blockTime) + programme.GetBlocks()
+
+							If GetWorldTime().GetDayMinute() < 5 Then nowHour :- 1
+
+							'only mark till midnight
+							if startDay <> planningDay then startHour = 0
+							if endDay <> planningDay then endHour = 23 
+							if startHour > nowHour
+								For Local i:Int = 0 Until startHour
+									hourSlots :+ [ i ]
+								Next
+							endif
+						endif
+
 						EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 2)
 					EndIf
 				EndIf

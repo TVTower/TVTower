@@ -43,7 +43,7 @@ Type TGameRules {_exposeToLua}
 
 	'if disabled, player is allowed to place a live programme
 	'also at later times (eg. 2 hours later)
-	Field onlyExactLiveProgrammeTimeAllowedInProgrammePlan:int = True
+	Field onlyExactLiveProgrammeTimeAllowedInProgrammePlan:int = False
 
 	'percentage of the gametime when in a room (default = 100%)
 	'use a lower value, to slow down the game then (movement + time)

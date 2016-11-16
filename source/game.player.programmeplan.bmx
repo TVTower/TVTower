@@ -882,7 +882,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		'check live programme
 		if not obj.GetSource().CanBroadcastAtTime(slotType, day, hour)
-			return False
+			return -1
 		endif
 	
 		'check all slots the obj will occupy...
