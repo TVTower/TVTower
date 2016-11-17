@@ -401,8 +401,10 @@ Type TVTProgrammeLicenceFlag {_exposeToLua}
 	Const LICENCEPOOL_REFILLS_BROADCASTLIMITS:int = 8
 	'when given to pool/vendor, the topicality is refreshed to max
 	Const LICENCEPOOL_REFILLS_TOPICALITY:int = 16
+	'when given to pool/vendor, the licence will not be buyable again
+	Const LICENCEPOOL_REMOVES_TRADEABILITY:int = 32
 	
-	Const count:int = 5
+	Const count:int = 6
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -418,6 +420,7 @@ Type TVTProgrammeLicenceFlag {_exposeToLua}
 			case   4	return 3
 			case   8	return 4
 			case  16	return 5
+			case  32	return 6
 		End Select
 		return 0
 	End Function
@@ -430,6 +433,7 @@ Type TVTProgrammeLicenceFlag {_exposeToLua}
 			case REMOVE_ON_REACHING_BROADCASTLIMIT    return "remove_on_reaching_broadcastlimit"
 			case LICENCEPOOL_REFILLS_BROADCASTLIMITS  return "licencepool_refills_broadcastlimits"
 			case LICENCEPOOL_REFILLS_TOPICALITY       return "licencepool_refills_topicality"
+			case LICENCEPOOL_REMOVES_TRADEABILITY     return "licencepool_removes_tradeability"
 
 			default
 				'loop through all entries and add them if contained

@@ -564,6 +564,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	Method GiveBackToLicencePool:int()
 		SetOwner( TOwnedGameObject.OWNER_NOBODY )
 
+		'remove tradeability?
+		if HasLicenceFlag(TVTProgrammeLicenceFlag.LICENCEPOOL_REMOVES_TRADEABILITY)
+			setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, False)
+		endif
+
 		'refill broadcast limits - or disable tradeability
 		if broadcastLimitMax > 0 and isExceedingBroadcastLimit()
 			if HasLicenceFlag(TVTProgrammeLicenceFlag.LICENCEPOOL_REFILLS_BROADCASTLIMITS)
@@ -1628,10 +1633,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'price
 		local showPrice:int = not data.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.HIDE_PRICE)
 		'- hide for custom productions until aired
-		if showPrice and data.IsTVDistribution() and data.GetOutcomeTV() < 0 then showPrice = False
+		if showPrice and data.IsTVDistribution() and data.GetOutcomeTV() < 0 and data.IsCustomProduction() then showPrice = False
 		'- hide unowned and not tradeable ones
 		'-> disabled because of "Opener show"
 		'if showPrice not IsOwned() and not IsTradeable() then showPrice = False
+
+		'show price if forced to. ATTENTION: licence flag, not data/broadcast flag!
+		'showPrice = showPrice or hasLicenceFlag(TVTProgrammeLicenceFlag.SHOW_PRICE)
 		
 		if showPrice
 			if canAfford
