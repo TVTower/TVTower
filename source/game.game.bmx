@@ -683,7 +683,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		programmeData.review = 0.1
 		programmeData.speed = 0.4
 		programmeData.outcome = 0.5
-		programmeData.country = "D" 'make depending on station map?
+		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK")
 		'time is adjusted during adding (as we know the time then)
 		'programmeData.releaseTime = GetWorldTime().MakeTime(GetWorldTime().GetYear(), 0, 0, 5)
 		programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)

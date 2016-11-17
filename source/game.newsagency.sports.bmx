@@ -723,7 +723,7 @@ End Type
 
 
 
-Type TNewsEventSportSeason
+Type TNewsEventSportSeason extends TGameObject
 	Field data:TNewsEventSportSeasonData = new TNewsEventSportSeasonData
 	Field started:int = False
 	Field finished:int = True
@@ -743,7 +743,11 @@ Type TNewsEventSportSeason
 	Field seasonType:int = 1
 	Const SEASONTYPE_NORMAL:int = 1
 	Const SEASONTYPE_PLAYOFF:int = 2
-	
+
+
+	Method GenerateGUID:string()
+		return "NewsEventSportSeason-"+id
+	End Method
 
 
 	Method Init:TNewsEventSportSeason(leagueGUID:string, sportGUID:string)
