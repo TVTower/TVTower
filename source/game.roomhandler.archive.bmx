@@ -377,7 +377,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 
 	Function onMouseOverProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckObservedFigureInRoom("adagency") then return FALSE
+		if not CheckObservedFigureInRoom("archive") then return FALSE
 
 		local item:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent.GetSender())
 		if item = Null then return FALSE
