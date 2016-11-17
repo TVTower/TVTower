@@ -549,8 +549,8 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Method Update:Int()
 		'emit event so custom updaters can handle
 		EventManager.triggerEvent( TEventSimple.Create("room.onUpdate", null, self) )
-		'emit event limited to a specific room name
-		EventManager.triggerEvent( TEventSimple.Create("room."+self.name+".onUpdate", null, self) )
+		'emit event after updating
+		EventManager.triggerEvent( TEventSimple.Create("room.onUpdateDone", null, self) )
 
 		return 0
 	End Method

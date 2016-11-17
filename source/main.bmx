@@ -80,6 +80,7 @@ Import "game.betty.bmx"
 Import "game.building.bmx"
 Import "game.ingameinterface.bmx"
 Import "game.newsagency.bmx"
+Import "game.programmeproducer.bmx"
 Import "game.stationmap.bmx"
 
 'Import "game.roomhandler.base.bmx"
@@ -3818,7 +3819,7 @@ Type GameEvents
 
 	Function RegisterEventListeners:Int()
 		'react on right clicks during a rooms update (leave room)
-		_eventListeners :+ [ EventManager.registerListenerFunction("room.onUpdate", RoomOnUpdate) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("room.onUpdateDone", RoomOnUpdate) ]
 
 		'forcefully set current screen (eg. after loading a "currently
 		'leaving a screen" savegame, or with a faulty timing between
