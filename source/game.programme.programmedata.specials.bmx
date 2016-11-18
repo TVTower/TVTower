@@ -10,6 +10,8 @@ Import "game.newsagency.sports.soccer.bmx"
 
 Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 	Field matchGUID:string
+	Field leagueGUID:string
+
 
 	Method GenerateGUID:string()
 		return "broadcastmaterialsource-sportsprogrammedata-"+id
@@ -41,6 +43,115 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 		return ""
 	End Method
 
+
+	Function _replaceSportInformation:string(text:string, sport:TNewsEventSport, locale:string="")
+		if not sport then return text
+
+		local result:string = text
+		result = result.replace("%SPORTNAME%", GetLocalizedString("SPORT_"+sport.name).get(locale))
+		return result
+	End Function
+
+
+	Function _replaceLeagueInformation:string(text:string, league:TNewsEventSportLeague, locale:string="")
+		if not league then return text
+
+		local result:string = text
+		result = result.replace("%SEASONYEARSTART%", GetWorldTime().GetYear(league.GetNextMatchTime()))
+		result = result.replace("%LEAGUENAME%", league.name)
+
+		if result.Find("%MATCHCOUNT%") >= 0
+			result = result.replace("%MATCHCOUNT%", league.GetUpcomingMatches(GetWorldTime().GetTimeGone(), -1).length)
+		endif
+
+		if result.Find("%MATCHTIMES%") >= 0
+			local matchTimes:string
+			local lastWeekdayIndex:int = -1
+			local thisWeekdayCount:int = 0
+			for local slot:string = eachIn league.timeSlots
+				local information:string[] = slot.Split("_")
+				local weekdayIndex:int = int(information[0])
+				local hour:int = 0
+				if information.length > 1 then hour = int(information[1])
+
+				if lastWeekdayIndex <> weekdayIndex
+					if matchTimes <> "" then matchTimes :+ " / "
+					matchTimes :+ "|b|"+GetLocalizedString("WEEK_SHORT_" + GetWorldTime().GetDayName(weekdayIndex)).get(locale)+"|/b| "
+					lastWeekdayIndex = weekdayIndex
+					thisWeekdayCount = 0
+				else
+					thisWeekdayCount :+ 1
+				endif
+
+				if thisWeekdayCount >= 1 then matchTimes :+ ", "
+
+				matchTimes :+ hour+":00"
+			Next
+			result = result.replace("%MATCHTIMES%", matchTimes)
+		endif
+
+		return result
+	End Function
+
+
+	Function _replaceMatchInformation:string(text:string, match:TNewsEventSportMatch, locale:string="")
+		if not match then return text
+
+		local result:string = text
+		result = result.replace("%MATCHNAMESHORT%", match.GetNameShort() )
+
+		if result.Find("%MATCHREPORT") >= 0
+			result = result.replace("%MATCHREPORT%", match.GetReport() )
+			result = result.replace("%MATCHREPORTSHORT%", match.GetReportShort() )
+		endif
+		
+		return result
+	End Function
+
+
+	Function _replaceTeamInformation:string(text:string, team:TNewsEventSportTeam, teamNumber:int=1, locale:string="")
+		if not team then return text
+
+		local result:string = text
+
+		local league:TNewsEventSportLeague = team.GetLeague()
+		if league
+			result = result.replace("%TEAM"+teamNumber+"RANK%", league.GetCurrentSeason().GetTeamRank(team))
+			result = result.replace("%TEAM"+teamNumber+"NAME%", team.GetTeamName())
+			result = result.replace("%TEAM"+teamNumber+"NAMESHORT%", team.GetTeamNameShort())
+			result = result.replace("%TEAM"+teamNumber+"INITIALS%", team.GetTeamInitials())
+			result = result.replace("%TEAM"+teamNumber+"TRAINERNAME%", team.GetTrainer().GetFullName())
+		endif
+
+		return result
+	End Function
+	
+
+	Method _LocalizeContent:string(content:string)
+		local result:string = Super._LocalizeContent(content)
+
+		local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
+		if league
+			result = _replaceLeagueInformation(result, league, TLocalization.GetCurrentLanguageCode())
+
+			local sport:TNewsEventSport = league.GetSport()
+			if sport then result = _replaceSportInformation(result, sport, TLocalization.GetCurrentLanguageCode())
+		endif
+print "Matchguid: " + matchGUID
+		local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(matchGUID)
+		if match
+			result = _replaceMatchInformation(result, match, TLocalization.GetCurrentLanguageCode())
+
+			if result.Find("%TEAM") >= 0
+				for local teamIndex:int = 0 until match.teams.length
+					result = _replaceTeamInformation(result, match.teams[teamIndex], teamIndex+1, TLocalization.GetCurrentLanguageCode())
+				next
+			endif
+		endif
+
+		return result
+	End Method
+	
 
 	Method AssignSportMatch(match:TNewsEventSportMatch)
 		matchGUID = match.GetGUID()

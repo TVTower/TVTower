@@ -4,6 +4,8 @@ Import "Dig/base.util.mersenne.bmx"
 Import "game.programme.programmeperson.base.bmx"
 
 Type TNewsEventSportCollection extends TGameObjectCollection
+	Field leagues:TMap = new TMap
+	Field matches:TMap = new TMap
 	Global _instance:TNewsEventSportCollection
 
 
@@ -21,6 +23,26 @@ Type TNewsEventSportCollection extends TGameObjectCollection
 
 	Method GetByGUID:TNewsEventSport(GUID:String)
 		Return TNewsEventSport( Super.GetByGUID(GUID) )
+	End Method
+
+
+	Method AddLeague(league:TNewsEventSportLeague)
+		leagues.Insert(league.GetGUID(), league)
+	End Method
+
+
+	Method GetLeagueByGUID:TNewsEventSportLeague(guid:string)
+		return TNewsEventSportLeague( leagues.ValueForKey(guid) )
+	End Method
+
+
+	Method AddMatch(match:TNewsEventSportMatch)
+		matches.Insert(match.GetGUID(), match)
+	End Method
+
+
+	Method GetMatchByGUID:TNewsEventSportMatch(guid:string)
+		return TNewsEventSportMatch( matches.ValueForKey(guid) )
 	End Method
 
 
@@ -283,6 +305,8 @@ Type TNewsEventSport extends TGameObject
 			for local match:TNewsEventSportMatch = EachIn playoffSeasons[i].data.matchPlan
 'print "playoff #"+i+"  match: " + match.teams[0].name + " - " + match.teams[1].name 
 				playoffSeasons[i].upcomingMatches.addLast(match)
+
+				GetNewsEventSportCollection().AddMatch(match)
 			next
 		Next
 	End Method
@@ -375,7 +399,9 @@ Type TNewsEventSport extends TGameObject
 		leagues :+ [league]
 		league.sportGUID = self.GetGUID()
 		league._leaguesIndex = leagues.length-1
-'print "adding league: " + league._leaguesIndex
+
+		GetNewsEventSportCollection().AddLeague(league)
+
 		EventManager.triggerEvent(TEventSimple.Create("Sport.AddLeague", New TData.add("league", league), Self))
 	End Method
 
@@ -391,6 +417,14 @@ Type TNewsEventSport extends TGameObject
 	Method GetLeagueAtIndex:TNewsEventSportLeague(index:int)
 		if index < 0 or index >= leagues.length then return Null
 		return leagues[index]
+	End Method
+
+
+	Method GetLeagueByGUID:TNewsEventSportLeague(leagueGUID:string)
+		for local l:TNewsEventSportLeague = EachIn leagues
+			if l.GetGUID() = leagueGUID then return l
+		next
+		return null
 	End Method
 
 
@@ -665,6 +699,15 @@ Type TNewsEventSportSeasonData
 	End Method
 
 
+	Method GetTeamRank:int(team:TNewsEventSportTeam, upToMatchTime:Long = 0)
+		local board:TNewsEventSportLeagueRank[] = GetLeaderboard(upToMatchTime)
+		for local rankIndex:int = 0 until board.length
+			if board[rankIndex].team = team then return rankIndex + 1
+		Next
+		return -1
+	End Method
+	
+
 	Method GetTeamAtRank:TNewsEventSportTeam(rank:int, upToMatchTime:Long = 0)
 		local board:TNewsEventSportLeagueRank[] = GetLeaderboard(upToMatchTime)
 		if rank < 0
@@ -807,7 +850,12 @@ Type TNewsEventSportSeason extends TGameObject
 	Method GetTeamAtRank:TNewsEventSportTeam(rank:int)
 		return data.GetTeamAtRank(rank)
 	End Method
-	
+
+
+	Method GetTeamRank:int(team:TNewsEventSportTeam)
+		return data.GetTeamRank(team)
+	End Method
+		
 
 	Method GetMatchCount:int(teamSize:int = -1)
 		if teamSize = -1 then teamSize = GetTeams().length
@@ -837,6 +885,15 @@ End Type
 Type TNewsEventSportLeague extends TGameObject
 	Field name:string
 	Field nameShort:string
+
+	'defines when matches take places
+	'0 = monday, 2 = wednesday ...
+	Field timeSlots:string[] = [ ..
+	                            "0_14", "0_20", ..
+	                            "2_14", "2_20", ..
+	                            "4_14", "4_20", ..
+	                            "5_14", "5_20" ..
+	                           ]
 
 	'store all seasons of that league
 	Field pastSeasons:TNewsEventSportSeasonData[]
@@ -938,6 +995,12 @@ Type TNewsEventSportLeague extends TGameObject
 
 	Method GetCurrentSeason:TNewsEventSportSeason()
 		return currentSeason
+	End Method
+
+
+	Method GetSport:TNewsEventSport()
+		if sportGUID then return GetNewsEventSportCollection().GetByGUID(sportGUID)
+		return null
 	End Method
 
 
@@ -1128,6 +1191,8 @@ endrem
 
 		for local match:TNewsEventSportMatch = EachIn GetCurrentSeason().data.matchPlan
 			GetCurrentSeason().upcomingMatches.addLast(match)
+
+			GetNewsEventSportCollection().AddMatch(match)
 		next		
 	End Method
 
@@ -1398,6 +1463,7 @@ Type TNewsEventSportTeam
 	Field trainer:TNewsEventSportTeamMember
 
 	Field leagueGUID:string
+	Field sportGUID:string
 
 
 	Method SetTrainer:TNewsEventSportTeam(trainer:TNewsEventSportTeamMember)
@@ -1438,6 +1504,28 @@ Type TNewsEventSportTeam
 
 	Method AssignLeague(leagueGUID:string)
 		self.leagueGUID = leagueGUID
+	End Method
+
+
+	Method AssignSport(sportGUID:string)
+		self.sportGUID = sportGUID
+	End Method
+
+
+	Method GetLeague:TNewsEventSportLeague()
+		if not leagueGUID then return null
+
+		'try to find league the easy way
+		local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
+		if league then return league
+
+		'try it the indirect way
+		if not sportGUID then return null
+
+		local sport:TNewsEventSport = GetNewsEventSportCollection().GetByGUID(sportGUID)
+		if sport then return sport.GetLeagueByGUID(leagueGUID)
+
+		return null
 	End Method
 End Type
 

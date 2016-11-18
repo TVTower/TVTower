@@ -202,13 +202,6 @@ End Type
 
 Type TNewsEventSportLeague_Soccer extends TNewsEventSportLeague
 	Field seasonJustBegun:int = False
-	'0 = monday, 2 = wednesday ...
-	Field timeSlots:string[] = [ ..
-	                            "0_14", "0_20", ..
-	                            "2_14", "2_20", ..
-	                            "4_14", "4_20", ..
-	                            "5_14", "5_20" ..
-	                           ]
     Field seasonStartMonth:int = 8
     Field seasonStartDay:int = 14
 	Field matchesPerTimeSlot:int = 2

@@ -911,9 +911,6 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 					endif
 				Next
 			endif
-			'replace left "|" entries with newlines
-			'TODO: remove when fixed in DB
-			result = result.replace("|", chr(13))
 		endif
 		
 		return result

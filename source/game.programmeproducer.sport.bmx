@@ -87,9 +87,28 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		programmeLicence.SetData(programmeData)
 		programmeLicence.licenceType = TVTProgrammeLicenceType.COLLECTION
 
+		programmeData.title = new TLocalizedString
+		programmeData.description = new TLocalizedString
+		'only store for current/fallback to save savegame space
+		'For local locale:string = EachIn TLocalization.languages.Keys()
+		local locales:string[] = [TLocalization.currentLanguage.languageCode, TLocalization.fallbackLanguage.languageCode]
+		For local locale:string = EachIn locales
+			
+			local title:string = GetRandomLocalizedString("SPORT_PROGRAMME_TITLE").Get(locale)
+			local description:string = GetRandomLocalizedString("SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X").Get(locale)+"~n~n"+GetRandomLocalizedString("SPORT_PROGRAMME_MATCH_TIMES").Get(locale)+": %MATCHTIMES%"
+
+			'as the collection header is of "TProgrammeData" we have to
+			'replace placeholders manually
+			title = TSportsProgrammeData._replaceSportInformation(title, league.GetSport(), locale)
+			title = TSportsProgrammeData._replaceLeagueInformation(title, league, locale)
+			description = TSportsProgrammeData._replaceSportInformation(description, league.GetSport(), locale)
+			description = TSportsProgrammeData._replaceLeagueInformation(description, league, locale)
+
+			programmeData.title.Set(title, locale)
+			programmeData.description.Set(description, locale)
+		Next
+
 		programmeData.GUID = "programmedata-sportleaguecollection-"+league.GetGUID() +"-season-"+league.GetCurrentSeason().GetGUID()
-		programmeData.title = new TLocalizedString.Set( league.name + " " + GetWorldTime().GetYear(league.GetNextMatchTime()), null )
-		programmeData.description = new TLocalizedString.Set( "Alle Spiele der x. Liga", null )
 		programmeData.titleProcessed = Null
 		programmeData.descriptionProcessed = Null
 		programmeData.productType = TVTProgrammeProductType.EVENT 'or MISC?
@@ -100,8 +119,8 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 
 		programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
 
-		programmeData.review = 0.2
-		programmeData.speed = 0.5
+		'programmeData.review = 0.2
+		'programmeData.speed = 0.5
 
 		programmeData.genre = TVTProgrammeGenre.Event_Sport
 
@@ -139,13 +158,21 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		if parentLicence then programmeData = TProgrammeData(THelper.CloneObject(parentLicence.data, "id"))
 		if not programmeData then programmeData = new TSportsProgrammeData
 
+		'needed so title/description can fetch the right information
+		if TSportsProgrammeData(programmeData)
+			TSportsProgrammeData(programmeData).AssignSportMatch(match)
+		endif
+
 		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
 		programmeLicence.SetData(programmeData)
 		programmeLicence.licenceType = TVTProgrammeLicenceType.SINGLE
 
 		programmeData.GUID = "programmedata-sportmatch-"+match.GetGUID()
-		programmeData.title = new TLocalizedString.Set( match.GetReportShort(), null )
-		programmeData.description = new TLocalizedString.Set( "Match der x. Liga", null )
+
+		programmeData.title = new TLocalizedString.Set("%MATCHNAMESHORT%", null )
+		programmeData.description = new TLocalizedString.Set( GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , null )
+'		programmeData.title = new TLocalizedString.Set(match.GetNameShort(), null )
+'		programmeData.description = new TLocalizedString.Set( "Match der x. Liga", null )
 		programmeData.titleProcessed = Null
 		programmeData.descriptionProcessed = Null
 		programmeData.productType = TVTProgrammeProductType.EVENT 'or MISC?
