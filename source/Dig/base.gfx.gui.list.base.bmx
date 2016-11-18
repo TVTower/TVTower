@@ -783,16 +783,25 @@ endrem
 
 
 	Method ScrollToFirstItem()
-		ScrollEntries(0, 0 )
+		Select _orientation
+			Case GUI_OBJECT_ORIENTATION_VERTICAL
+				guiEntriesPanel.SetScrollPercentageY(0)
+				if guiScrollerV then guiScrollerV.SetRelativeValue(0)
+			Case GUI_OBJECT_ORIENTATION_HORIZONTAL
+				guiEntriesPanel.SetScrollPercentageX(0)
+				if guiScrollerH then guiScrollerH.SetRelativeValue(0)
+		End Select
 	End Method
 
 
 	Method ScrollToLastItem()
 		Select _orientation
 			Case GUI_OBJECT_ORIENTATION_VERTICAL
-				ScrollEntries(0, guiEntriesPanel.scrollLimit.GetY() )
+				guiEntriesPanel.SetScrollPercentageY(100)
+				if guiScrollerV then guiScrollerV.SetRelativeValue(100)
 			Case GUI_OBJECT_ORIENTATION_HORIZONTAL
-				ScrollEntries(guiEntriesPanel.scrollLimit.GetX(), 0 )
+				guiEntriesPanel.SetScrollPercentageX(100)
+				if guiScrollerH then guiScrollerH.SetRelativeValue(100)
 		End Select
 	End Method
 

@@ -146,6 +146,7 @@ Type TGUIScrollerBase extends TGUIobject
 
 
 	Method GetRelativeValue:Float()
+		if maxValue = minValue then return 0
 		return Min(1.0, Max(0.0, currentValue / (maxValue - minValue)))
 	End Method
 
@@ -321,6 +322,18 @@ Type TGUIScroller Extends TGUIScrollerBase
 		Super.SetCurrentValue(currentValue)
 		'move handle accordingly
 		if scrollHandle then scrollHandle.SetRelativeValue( GetRelativeValue() )
+	End Method
+
+
+	'overridden
+	'set scroll handle too
+	Method SetRelativeValue:Double(percentage:Float)
+		Super.SetRelativeValue(percentage)
+
+		'move handle accordingly
+		if scrollHandle then scrollHandle.SetRelativeValue( GetRelativeValue() )
+
+		return currentValue
 	End Method
 
 
