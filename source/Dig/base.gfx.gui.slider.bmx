@@ -318,6 +318,9 @@ Type TGUISlider extends TGUIObject
 
 
 	Method onClick:Int(triggerEvent:TEventBase)
+		'only if left button was used
+		if triggerEvent.GetData().GetInt("button",0) <> 1 then return False
+		
 		'only if not already handling the same situation with mouseDown
 		if not MouseIsDown Then SetValueByMouse
 

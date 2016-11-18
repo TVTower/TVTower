@@ -1728,11 +1728,12 @@ Type TGUIobject
 		'   moment the "click" begun
 		Local mousePos:TVec2D = New TVec2D.Init(MouseManager.x, MouseManager.y)
 		If MouseManager.IsClicked(1) Or MouseManager.GetClicks(1) > 0
-			mousePos = MouseManager.GetClickPosition(1)
+			if MouseManager.GetClickPosition(1)
+				mousePos = MouseManager.GetClickPosition(1)
+			endif
 		EndIf
 
 		Local containsMouse:Int = containsXY(mousePos.x, mousePos.y)
-
 
 		'=== HANDLE MOUSE OVER ===
 
