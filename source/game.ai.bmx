@@ -99,7 +99,8 @@ Type TAi extends TAiBase
 
 
 	Method CallOnLoadState()
-		if not AiRunning then return
+		'load/save regardless of running-state
+		'if not AiRunning then return
 
 		Local args:Object[1]
 		args[0] = self.scriptSaveState
@@ -109,7 +110,8 @@ Type TAi extends TAiBase
 
 
 	Method CallOnSaveState()
-		if not AiRunning then return
+		'load/save regardless of running-state
+		'if not AiRunning then return
 
 		'reset
 		ResetObjectsUsedInLua()
@@ -125,7 +127,8 @@ Type TAi extends TAiBase
 
 	'for now OnLoad and OnSave are equal to OnLoadState and OnSaveState
 	Method CallOnLoad()
-		if not AiRunning then return
+		'load/save regardless of running-state
+		'if not AiRunning then return
 
 		Local args:Object[1]
 		args[0] = self.scriptSaveState
@@ -135,7 +138,8 @@ Type TAi extends TAiBase
 
 
 	Method CallOnSave()
-		if not AiRunning then return
+		'load/save regardless of running-state
+		'if not AiRunning then return
 
 		'reset
 		ResetObjectsUsedInLua()

@@ -7,6 +7,7 @@ Import "game.player.difficulty.bmx"
 Import "game.figure.base.bmx"
 Import "game.gamerules.bmx"
 Import "game.ai.base.bmx"
+Import "game.gameconfig.bmx"
 
 
 Type TPlayerBaseCollection
@@ -50,6 +51,16 @@ Type TPlayerBaseCollection
 	End Method
 
 
+	Method GetObservedPlayerID:int()
+		for local player:TPlayerBase = EachIn players
+			if GameConfig.IsObserved( player.GetFigure() )
+				return player.playerID
+			endif
+		Next
+		return playerID
+	End Method
+
+
 	Method IsPlayer:Int(number:Int)
 		Return (number > 0 And number <= players.length And players[number-1] <> Null)
 	End Method
@@ -75,6 +86,10 @@ End Function
 'return specific playerBase
 Function GetPlayerBase:TPlayerBase(playerID:int=-1)
 	Return TPlayerBaseCollection.GetInstance().Get(playerID)
+End Function
+
+Function GetObservedPlayerID:int()
+	Return TPlayerBaseCollection.GetInstance().GetObservedPlayerID()
 End Function
 
 

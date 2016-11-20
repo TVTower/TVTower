@@ -1824,6 +1824,7 @@ Type TGameState
 	Field _interface_ShowChannel:int = 0
 	Field _interface_ChatShow:int = 0
 	Field _interface_ChatShowHideLocked:int = 0
+	Field _aiBase_AiRunning:int = False
 	Const MODE_LOAD:Int = 0
 	Const MODE_SAVE:Int = 1
 
@@ -1975,6 +1976,8 @@ Type TGameState
 		GetInGameInterface().ShowChannel = _interface_ShowChannel
 		GetInGameInterface().ChatShow = _interface_ChatShow
 		GetInGameInterface().ChatShowHideLocked = _interface_ChatShowHideLocked
+
+		TAiBase.AiRunning = _aiBase_AiRunning
 	End Method
 
 
@@ -2000,6 +2003,8 @@ Type TGameState
 		_interface_ShowChannel = GetInGameInterface().ShowChannel
 		_interface_ChatShow = GetInGameInterface().ChatShow
 		_interface_ChatShowHideLocked = GetInGameInterface().ChatShowHideLocked
+
+		_aiBase_AiRunning = TAiBase.AiRunning
 
 
 		_Assign(GameRules, _GameRules, "GameRules", MODE_SAVE)
@@ -2093,7 +2098,7 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0 
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0 
-	Const SAVEGAME_VERSION:string = "1.0"
+	Const SAVEGAME_VERSION:string = "1.1"
 
 	'override to do nothing
 	Method Initialize:Int()
@@ -5844,14 +5849,4 @@ TProfiler.Leave("GameLoop")
 
 	'take care of network
 	If GetGame().networkgame Then Network.DisconnectFromServer()
-End Function
-
-
-Function GetObservedPlayerID:int()
-	for local i:int = 1 to 4
-		if GameConfig.IsObserved( GetPlayer(i).GetFigure() )
-			return i
-		endif
-	Next
-	return -1
 End Function
