@@ -1206,7 +1206,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 			constructionTime :+ 1
 
 			'next hour (+construction hours) at xx:00
-			If GetWorldTime().GetDayMinute() >= 5
+			If GetWorldTime().GetDayMinute(built + constructionTime*3600) >= 5
 				SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour(built + constructionTime*3600), 0))
 			'this hour (+construction hours) at xx:05
 			Else

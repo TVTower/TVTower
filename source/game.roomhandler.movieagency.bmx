@@ -775,7 +775,7 @@ endrem
 		'check whether a player could afford the licence
 		'if not - just veto the event so it does not get dragged
 		if owner <= 0
-			if not GetPlayerBase().getFinance().canAfford(item.licence.getPrice(GetPlayerBase().playerID))
+			if not GetPlayerBase().getFinance().canAfford(item.licence.getPriceForPlayer( GetObservedPlayerID() ))
 				triggerEvent.setVeto()
 				return FALSE
 			endif
@@ -825,7 +825,7 @@ endrem
 				'no problem when dropping own programme to suitcase..
 				if guiLicence.licence.owner = GetPlayerBaseCollection().playerID then return TRUE
 
-				if not GetPlayerBase().getFinance().canAfford(guiLicence.licence.getPrice(GetPlayerBase().playerID))
+				if not GetPlayerBase().getFinance().canAfford(guiLicence.licence.getPriceForPlayer( GetObservedPlayerID() ))
 					triggerEvent.setVeto()
 				endif
 		End select
@@ -1253,7 +1253,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		If bestBidder and GetPlayerBaseCollection().IsPlayer(bestBidder)
 			'modify licences new price until a new auction of this licence
 			'might reset it
-			licence.SetModifier("auctionPrice", Float(bestBid) / licence.GetPrice(0))
+			licence.SetModifier("auctionPrice", Float(bestBid) / licence.GetPriceForPlayer(0))
 			
 			Local player:TPlayerBase = GetPlayerBase(bestBidder)
 			GetPlayerProgrammeCollection(player.playerID).AddProgrammeLicence(licence)
@@ -1357,7 +1357,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		Local nextBid:Int = 0
 		'no bid done yet, next bid is the licences price cut by 25%
 		If bestBid = 0
-			nextBid = licence.getPrice(0) * 0.75
+			nextBid = licence.getPriceForPlayer(0) * 0.75
 			nextBid = TFunctions.RoundToBeautifulValue(nextBid)
 		Else
 			nextBid = bestBid

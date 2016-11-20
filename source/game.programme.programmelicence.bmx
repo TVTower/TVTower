@@ -748,7 +748,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local finance:TPlayerFinance = GetPlayerFinance(owner)
 		if not finance then return False
 
-		finance.SellProgrammeLicence(getPrice(owner), self)
+		finance.SellProgrammeLicence(getPriceForPlayer(owner), self)
 
 		'set unused again
 		SetOwner( TOwnedGameObject.OWNER_NOBODY )
@@ -762,7 +762,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local finance:TPlayerFinance = GetPlayerFinance(playerID, -1)
 		if not finance then return False
 
-		If finance.PayProgrammeLicence(getPrice(playerID), self)
+		If finance.PayProgrammeLicence(getPriceForPlayer(playerID), self)
 			SetOwner(playerID)
 			Return TRUE
 		EndIf
@@ -1204,10 +1204,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
-	Method GetPrice:Int(playerID:int) {_exposeToLua}
-		if playerID = 0 and owner > 0 then playerID = owner 
-		if playerID = 0 then playerID = GetPlayerBaseCollection().playerID
-
+	Method GetPriceForPlayer:int(playerID:int)
 		Local value:Float
 
 		'single-licence
@@ -1216,7 +1213,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		else
 			'licence for a package or series
 			For local licence:TProgrammeLicence = eachin subLicences
-				value :+ licence.GetPrice(playerID)
+				value :+ licence.GetPriceForPlayer(playerID)
 			Next
 			value :* 0.90
 		endif
@@ -1244,6 +1241,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 
 		Return value
+	End Method
+
+
+	'param needed as AI requests price using this method, and this also
+	'for not-yet-owned licences
+	Method GetPrice:Int(playerID:int) {_exposeToLua}
+		Return GetPriceForPlayer(playerID)
 	End Method
 
 
@@ -1336,7 +1340,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		elseif useOwner > 0
 			canAfford = True
 		'not our licence but enough money to buy
-		elseif finance and finance.canAfford(GetPrice(currentPlayerID))
+		elseif finance and finance.canAfford( GetPriceForPlayer(currentPlayerID) )
 			canAfford = True
 		endif
 		
@@ -1643,9 +1647,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		
 		if showPrice
 			if canAfford
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice(useOwner)), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue( GetPriceForPlayer(useOwner) ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 			else
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(GetPrice(useOwner)), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue( GetPriceForPlayer(useOwner) ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
 			endif
 		else
 			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, "- ?? -", "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
@@ -1699,7 +1703,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			contentY :+ 12	
 			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (alle)", contentX + 5, contentY)
 			contentY :+ 12	
-			skin.fontNormal.draw("Preis: "+GetPrice(useOwner), contentX + 5, contentY)
+			skin.fontNormal.draw("Preis: "+GetPriceForPlayer(useOwner), contentX + 5, contentY)
 			contentY :+ 12	
 			skin.fontNormal.draw("Trailerakt.-modifikator: "+MathHelper.NumberToString(data.GetTrailerMod().GetTotalAverage(), 4), contentX + 5, contentY)
 		endif
@@ -1837,7 +1841,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	'Wird bisher nur in der LUA-KI verwendet
 	Method GetPricePerBlock:Int(broadcastType:int) {_exposeToLua}
 		if broadcastType = 0 then broadcastType = TVTBroadcastMaterialType.PROGRAMME
-		return GetPrice(owner) / GetBlocksTotal(broadcastType)
+		return GetPriceForPlayer(owner) / GetBlocksTotal(broadcastType)
 	End Method
 
 
@@ -2251,8 +2255,8 @@ Type TProgrammeLicenceFilter
 		if maxTopicalityMax >= 0 and licence.GetMaxTopicality() > maxTopicalityMax then return False
 
 		'check price
-		if priceMin >= 0 and licence.GetPrice(playerID) < priceMin then return False
-		if priceMax >= 0 and licence.GetPrice(playerID) > priceMax then return False
+		if priceMin >= 0 and licence.GetPriceForPlayer(playerID) < priceMin then return False
+		if priceMax >= 0 and licence.GetPriceForPlayer(playerID) > priceMax then return False
 
 		'check release time (absolute value)
 		if releaseTimeMin >= 0 and licence.data.GetReleaseTime() < releaseTimeMin then return False

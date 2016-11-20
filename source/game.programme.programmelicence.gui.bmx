@@ -129,7 +129,7 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 
 
 	Method IsAffordable:Int()
-		Return GetPlayerBase().getFinance().canAfford(licence.getPrice( GetPlayerBase().playerID ))
+		Return GetPlayerBase().getFinance().canAfford(licence.getPriceForPlayer( GetObservedPlayerID() ))
 	End Method
 
 
@@ -152,7 +152,9 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 		SetColor 255,255,255
 		SetAlpha 1.0
 
-		Self.licence.ShowSheet(sheetX,sheetY, sheetAlign, TVTBroadcastMaterialType.PROGRAMME, self.licence.owner)
+		local forPlayerID:int = licence.owner
+		if forPlayerID <= 0 then forPlayerID = GetObservedPlayerID()
+		Self.licence.ShowSheet(sheetX,sheetY, sheetAlign, TVTBroadcastMaterialType.PROGRAMME, forPlayerID)
 	End Method
 
 

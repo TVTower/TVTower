@@ -1175,11 +1175,11 @@ endrem
 		if TVTDebugInfos
 			SetColor 0,0,0
 			SetAlpha 0.6
-			DrawRect(15,35, 380, 180)
+			DrawRect(15,235, 380, 180)
 			SetAlpha 1.0
 			SetColor 255,255,255
-			GetBitmapFont("default", 12).Draw("Durchschnittsquoten:", 20, 40)
-			local y:int = 60
+			GetBitmapFont("default", 12).Draw("Durchschnittsquoten:", 20, 240)
+			local y:int = 260
 			local filterNum:int = 0
 			for local filter:TAdContractBaseFilter = eachIn levelFilters
 				filterNum :+ 1
@@ -1359,7 +1359,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 		'make faded as soon as not "dragable" for us
 		If Not isDragable()
 			'in our collection
-			If contract.owner = GetPlayerBase().playerID
+			If contract.owner = GetObservedPlayerID()
 				SetAlpha 0.80*oldCol.a
 				SetColor 200,200,200
 			Else
@@ -1369,7 +1369,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 		EndIf
 
 		'mark special vendor-contracts
-		If contract.owner <> GetPlayerBase().playerID
+		If contract.owner <> GetObservedPlayerID()
 			if contract.GetDaysToFinish() <= 1
 				SetColor 255,230,215
 			endif
