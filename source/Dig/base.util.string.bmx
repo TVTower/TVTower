@@ -159,6 +159,16 @@ Type StringHelper
 	End Function
 
 
+	Function JoinIntArray:string(glue:string, intArray:int[])
+		local result:string = ""
+		for local i:int = 0 until intArray.length
+			if result <> "" then result :+ glue
+			result :+ intArray[i]
+		next
+		return result
+	End Function
+
+
 	Function RemoveArrayIndex:int(index:int, arr:string[] var)
 		if not arr or arr.length = 0
 			return False
@@ -490,6 +500,9 @@ Type StringHelper
 			Local ch:Int = s[start]
 			If (ch>=Asc("a") And ch<=Asc("z")) Or (Not skipNumeric And (ch>=Asc("0") And ch<=Asc("9")))
 				Return Left(s, start) + Upper( Mid(s, start+1, length) ) + Right(s, s.length - length - start)
+			else
+				'already uppercase, so skip one
+				length :- 1
 			EndIf
 		Next
 		
