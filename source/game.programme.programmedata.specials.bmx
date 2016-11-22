@@ -11,6 +11,7 @@ Import "game.newsagency.sports.soccer.bmx"
 Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 	Field matchGUID:string
 	Field leagueGUID:string
+	Field dynamicTexts:int = False
 
 
 	Method GenerateGUID:string()
@@ -22,6 +23,27 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 		if title
 			'replace placeholders and and cache the result
 			if not titleProcessed
+				if dynamicTexts
+					local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(matchGUID)
+					local foundTitle:int = False 
+
+					'show score in title once it is or was running
+					if match and match.GetMatchTime() <= GetWorldTime().GetTimeGone()
+						'still running?
+						if match.GetMatchEndTime() >= GetWorldTime().GetTimeGone()
+							title.Set("%MATCHLIVEREPORTSHORT%", null )
+							foundTitle = True
+						else
+							title.Set("%MATCHREPORTSHORT%", null )
+							foundTitle = True
+						endif
+					endif
+
+					if not foundtitle
+						title.Set("%MATCHNAMESHORT%", null )
+					endif
+				endif
+
 				titleProcessed = new TLocalizedString
 				titleProcessed.Set( _LocalizeContent(title.Get()) )
 			endif
@@ -35,6 +57,10 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 		if description
 			'replace placeholders and and cache the result
 			if not descriptionProcessed
+				if dynamicTexts
+					description.Set( GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , null )
+				endif
+
 				descriptionProcessed = new TLocalizedString
 				descriptionProcessed.Set( _LocalizeContent(description.Get()) )
 			endif
@@ -104,6 +130,9 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 			result = result.replace("%MATCHREPORT%", match.GetReport() )
 			result = result.replace("%MATCHREPORTSHORT%", match.GetReportShort() )
 		endif
+		if result.Find("%MATCHLIVEREPORT") >= 0
+			result = result.replace("%MATCHLIVEREPORTSHORT%", match.GetLiveReportShort("", -1) )
+		endif
 		
 		return result
 	End Function
@@ -117,10 +146,8 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 		local league:TNewsEventSportLeague = team.GetLeague()
 		if league
 			result = result.replace("%TEAM"+teamNumber+"RANK%", league.GetCurrentSeason().GetTeamRank(team))
-			result = result.replace("%TEAM"+teamNumber+"NAME%", team.GetTeamName())
-			result = result.replace("%TEAM"+teamNumber+"NAMESHORT%", team.GetTeamNameShort())
-			result = result.replace("%TEAM"+teamNumber+"INITIALS%", team.GetTeamInitials())
-			result = result.replace("%TEAM"+teamNumber+"TRAINERNAME%", team.GetTrainer().GetFullName())
+			'handled by "match.ReplacePlaceholders" too
+			team.FillPlaceholders(result, string(teamNumber))
 		endif
 
 		return result
@@ -137,7 +164,7 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 			local sport:TNewsEventSport = league.GetSport()
 			if sport then result = _replaceSportInformation(result, sport, TLocalization.GetCurrentLanguageCode())
 		endif
-print "Matchguid: " + matchGUID
+
 		local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(matchGUID)
 		if match
 			result = _replaceMatchInformation(result, match, TLocalization.GetCurrentLanguageCode())
@@ -222,13 +249,12 @@ rem
 endrem
 
 
+	Method UpdateLive:int()
+		Super.UpdateLive()
 
-
-	Method Update:int()
-		Super.Update()
-
-		'change title/text when match finishes
-		print "Tore / ... hinzufuegen"
+		'refresh processedTitle (recreated on request)
+		titleProcessed = null
+		descriptionProcessed = null
 	End Method
 
 
@@ -236,7 +262,5 @@ endrem
 	'called as soon as the last block of a programme ends
 	Method doFinishBroadcast(playerID:int = -1, broadcastType:int = 0)
 		Super.doFinishBroadcast(playerID, broadcastType)
-
-		print "finish broadcast"
 	End Method
 End Type

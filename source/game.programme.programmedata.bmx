@@ -356,11 +356,15 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		local invalidate:int = False
 		
 		For local pd:TProgrammeData = EachIn live
-			'only check up to the current year
+			'skip not yet started ones
 			if pd.GetReleaseTime() > GetWorldTime().GetTimeGone() then exit
 
-			if pd.IsLive() and pd.UpdateLiveState()
-				invalidate = True
+			if pd.IsLive()
+				'update eg. title/description
+				pd.UpdateLive()
+
+				'invalidate cache if live-status was changed
+				if pd.UpdateLiveStates() then invalidate = True
 			endif
 		Next
 		if invalidate then _liveProgrammeData = null
@@ -1009,8 +1013,21 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	End Method	
 
 
-	'returns whether the state was updated
-	Method UpdateLiveState:int()
+	'Informs casts about the finish of the production regardless
+	'whether it got broadcasted or not 
+	Method UpdateLive:int()
+		if not IsLive() then return False
+
+		if GetWorldTime().GetTimeGone() >= double(GetWorldTime().GetHour(releaseTime))*3600 + blocks*3600 - 5*60
+			if GetTimesBroadcasted() <= 1
+				onFinishProductionForCast()
+			endif
+		endif
+	End Method
+
+
+	'returns whether the live-state was updated
+	Method UpdateLiveStates:int()
 		'cannot update as long somebody is broadcasting that programme
 		if playersLiveBroadcasting > 0 then return False
 
@@ -1018,16 +1035,16 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		if hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.ALWAYS_LIVE)
 			return False
 		endif
-		
-		' xx:05 - movies begin then
-		if IsLive() and GetWorldTime().GetTimeGone() > releaseTime + 5*60
+
+		'programmes begin at xx:05 - but their live events will end xx:55
+		'releaseTime is not guaranteed to be "xx:00" so, we use GetHours()
+		if IsLive() and GetWorldTime().GetTimeGone() >= double(GetWorldTime().GetHour(releaseTime))*3600 + blocks*3600 - 5*60
 			SetFlag(TVTProgrammeDataFlag.LIVE, False)
 			SetFlag(TVTProgrammeDataFlag.LIVEONTAPE, True)
 			return True
 		endif
 		return False
 	End Method
-
 
 
 	Method IsLiveOnTape:int()
@@ -1824,18 +1841,6 @@ endrem
 				'if broadcasting right at live time - mark it
 				if isLive() and GetWorldTime().GetDayHour() = GetWorldTime().GetDayHour( releaseTime )
 					SetPlayerIsLiveBroadcasting(playerID, True)
-				endif
-			endif
-		endif
-
-
-		'send as programme
-		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
-			if GetTimesBroadcasted() = 0
-				'inform each person in the cast that the production finished
-				'(albeit this is NOT strictly the truth)
-				if IsLive()
-					onFinishProductionForCast()
 				endif
 			endif
 		endif

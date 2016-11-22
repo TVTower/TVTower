@@ -1370,7 +1370,7 @@ endrem
 		If GetGame().gamestate <> TGame.STATE_RUNNING then return
 
 		if TVTDebugProgrammePlan
-			local playerID:int = GetObservedPlayerID()
+			local playerID:int = GetPlayerBaseCollection().GetObservedPlayerID()
 			if GetInGameInterface().ShowChannel > 0
 				playerID = GetInGameInterface().ShowChannel
 			endif
@@ -1394,7 +1394,7 @@ endrem
 			debugAudienceInfos.Draw()
 
 		elseif TVTDebugProgrammePlan
-			local playerID:int = GetObservedPlayerID()
+			local playerID:int = GetPlayerBaseCollection().GetObservedPlayerID()
 			if GetInGameInterface().ShowChannel > 0
 				playerID = GetInGameInterface().ShowChannel
 			endif
@@ -4866,12 +4866,14 @@ Type GameEvents
 		EndIf
 
 
-		'=== UPDATE LIVE PROGRAMME STATES ===
+		'=== UPDATE LIVE PROGRAMME ===
 		'(do that AFTER setting the broadcasts, so the programme data
 		' knows whether it is broadcasted currently or not)
-		'remove LIVE-status from programmes once they started
-		GetProgrammeDataCollection().UpdateLive()
-
+		'1) call data.update() 
+		'2) remove LIVE-status from programmes once they finished airing
+		If minute mod 5 = 0
+			GetProgrammeDataCollection().UpdateLive()
+		endif
 
 		'=== UPDATE ACHIEVEMENTS ===
 		'(do that AFTER setting the broadcasts and calculating the

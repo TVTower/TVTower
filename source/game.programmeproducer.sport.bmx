@@ -104,8 +104,8 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 			description = TSportsProgrammeData._replaceSportInformation(description, league.GetSport(), locale)
 			description = TSportsProgrammeData._replaceLeagueInformation(description, league, locale)
 
-			programmeData.title.Set(title, locale)
-			programmeData.description.Set(description, locale)
+			programmeData.title.Set(StringHelper.UCFirst(title), locale)
+			programmeData.description.Set(StringHelper.UCFirst(description), locale)
 		Next
 
 		programmeData.GUID = "programmedata-sportleaguecollection-"+league.GetGUID() +"-season-"+league.GetCurrentSeason().GetGUID()
@@ -124,7 +124,8 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 
 		programmeData.genre = TVTProgrammeGenre.Event_Sport
 
-		programmeData.releaseTime = league.GetNextMatchTime()
+		'set to "last match", so it stays "live" until then
+		programmeData.releaseTime = league.GetLastMatchTime()
 
 		'so the licence datasheet does expose that information
 		programmeData.SetBroadcastLimit(3)
@@ -169,10 +170,11 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 
 		programmeData.GUID = "programmedata-sportmatch-"+match.GetGUID()
 
+		'this gets overridden in "GetTitle()/GetDescription()"
 		programmeData.title = new TLocalizedString.Set("%MATCHNAMESHORT%", null )
 		programmeData.description = new TLocalizedString.Set( GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , null )
-'		programmeData.title = new TLocalizedString.Set(match.GetNameShort(), null )
-'		programmeData.description = new TLocalizedString.Set( "Match der x. Liga", null )
+		TSportsProgrammeData(programmeData).dynamicTexts = true
+
 		programmeData.titleProcessed = Null
 		programmeData.descriptionProcessed = Null
 		programmeData.productType = TVTProgrammeProductType.EVENT 'or MISC?
@@ -188,7 +190,7 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		programmeData.genre = TVTProgrammeGenre.Event_Sport
 		programmeData.outcome = 0.8
 
-		programmeData.releaseTime = match.matchTime - 2*24*3600 - 24*3600
+		programmeData.releaseTime = match.matchTime '- 2*24*3600 - 24*3600
 
 		'remove after broadcasting 3 times
 		programmeLicence.setLicenceFlag(TVTProgrammeLicenceFlag.REMOVE_ON_REACHING_BROADCASTLIMIT, True)

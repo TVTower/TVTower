@@ -326,7 +326,8 @@ Type TNewsEventSportLeague_Soccer extends TNewsEventSportLeague
 		endif
 
 
-		matchTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(time) + matchDay, matchHour, 0)
+		'always start at xx:05 (eases the pain for programmes)
+		matchTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(time) + matchDay, matchHour, 5)
 
 		'check if we are in winter now
 		if not ignoreSeasonBreaks
@@ -367,80 +368,16 @@ End Type
 
 
 Type TNewsEventSportMatch_Soccer extends TNewsEventSportMatch
-	Field halfTimePoints:int[2]
-
 	Function CreateMatch:TNewsEventSportMatch_Soccer()
 		return new TNewsEventSportMatch_Soccer
 	End Function
 
 
-	Method Run:int()
-		Super.Run()
-
-		For local i:int = 0 until points.length
-			halfTimePoints[i] = BiasedRandRange(0, points[i], 0.5)
-		Next
-
-'		if GetWorldTime().GetTimeGone() <= matchTime
-'			print "RUN MATCH:  now="+GetWorldTime().GetFormattedDate()+"  time="+GetWorldTime().GetFormattedDate(matchTime) + "  gameday="+ (GetWorldTime().GetDaysRun(matchTime)+1) + "  " + GetNameShort()
-'		endif
-	End Method
-
-
 	Method GetReport:string()
-		local singularPlural:string = "P"
-		if teams[0].clubNameSingular then singularPlural = "S"
-			
-		local matchResultText:string = ""
-		if points[0] > points[1]
-			matchResultText = GetRandomLocale("SPORT_TEAMREPORT_MATCHWIN_" + singularPlural)
-		elseif points[0] < points[1]
-			matchResultText = GetRandomLocale("SPORT_TEAMREPORT_MATCHLOOSE_" + singularPlural)
-		else
-			matchResultText = GetRandomLocale("SPORT_TEAMREPORT_MATCHDRAW_" + singularPlural)
-		endif
-		
-			
 		local matchText:string = GetLocale("SPORT_TEAMREPORT_MATCHRESULT")
-		matchText = matchText.Replace("%MATCHRESULT%", matchResultText)
-		if RandRange(0,10) < 7
-			matchText = matchText.Replace("%MATCHKIND%", GetRandomLocale("SPORT_TEAMREPORT_MATCHKIND"))
-		else
-			matchText = matchText.Replace("%MATCHKIND%", "")
-		endif
-		if RandRange(0,100) < 75
-			matchText = matchText.Replace("%TEAM1%", teams[0].GetTeamName())
-		else
-			matchText = matchText.Replace("%TEAM1%", teams[0].clubNameInitials +" "+ teams[0].name)
-		endif
-		matchText = matchText.Replace("%TEAM1SHORT%", teams[0].GetTeamNameShort())
-		matchText = matchText.Replace("%TEAM1LONG%", teams[0].GetTeamName())
 
-		if RandRange(0,100) < 75
-			matchText = matchText.Replace("%TEAM2%", teams[1].GetTeamName())
-		else
-			matchText = matchText.Replace("%TEAM2%", teams[1].clubNameInitials +" "+ teams[1].name)
-		endif
-		matchText = matchText.Replace("%TEAM2SHORT%", teams[1].GetTeamNameShort())
-		matchText = matchText.Replace("%TEAM2LONG%", teams[1].GetTeamName())
-		if points[0] <> 0 or points[1] <> 0
-			matchText = matchText.Replace("%FINALSCORE%", points[0]+":"+points[1]+" ("+halfTimePoints[0]+":"+halfTimePoints[1]+")")
-		else
-			matchText = matchText.Replace("%FINALSCORE%", points[0]+":"+points[1])
-		endif
-		matchText = matchText.Replace("%TEAMARTICLE1%", GetLocale("SPORT_TEAMNAME_"+singularPlural+"_VARIANT_A") )
-		matchText = matchText.Replace("%TEAMARTICLE2%", GetLocale("SPORT_TEAMNAME_"+singularPlural+"_VARIANT_B") )
-		matchText = matchText.Replace("%TEAM1STAR%", teams[0].GetMemberAtIndex(-1).GetFullName() )
-		matchText = matchText.Replace("%TEAM2STAR%", teams[1].GetMemberAtIndex(-1).GetFullName() )
-		matchText = matchText.Replace("%TEAM1STARSHORT%", teams[0].GetMemberAtIndex(-1).GetLastName() )
-		matchText = matchText.Replace("%TEAM2STARSHORT%", teams[1].GetMemberAtIndex(-1).GetLastName() )
-		matchText = matchText.Replace("%TEAM1KEEPER%", teams[0].GetMemberAtIndex(0).GetFullName() )
-		matchText = matchText.Replace("%TEAM2KEEPER%", teams[1].GetMemberAtIndex(0).GetFullName() )
-		matchText = matchText.Replace("%TEAM1KEEPERSHORT%", teams[0].GetMemberAtIndex(0).GetLastName() )
-		matchText = matchText.Replace("%TEAM2KEEPERSHORT%", teams[1].GetMemberAtIndex(0).GetLastName() )
-		matchText = matchText.Replace("%PLAYTIMEMINUTES%", int(duration / 60) )
-		matchText = matchText.Trim().Replace("  ", " ") 'remove space if no team article...
-		matchText = StringHelper.UCFirst(matchText) 'make first char uppercase
+		'make first char uppercase
+		matchText = StringHelper.UCFirst( ReplacePlaceholders(matchText) )
 		return matchText
 	End Method
 
@@ -455,28 +392,79 @@ Type TNewsEventSportMatch_Soccer extends TNewsEventSportMatch
 	End Method
 
 
+	Method GetLiveReportShort:string(mode:string="", time:Long=-1)
+		if time = -1 then time = GetWorldTime().GetTimeGone()
+		local timeGone:Int = Max(0, time - GetMatchTime())
+		local matchTime:Int = timeGone
+		if timeGone >= breakTime
+			'currently within a break?
+			if timeGone <= breakTime + breakDuration
+				matchTime = breakTime
+			else
+				matchTime :- breakDuration
+			endif
+		endif
+		
+		local usePoints:int[] = GetMatchScore(matchTime)
+		local result:string
+
+		for local i:int = 0 until usePoints.length
+			if result <> ""
+				result :+ " : "
+				if mode = "INITIALS"
+					result :+ usePoints[i] + "] " + teams[i].GetTeamInitials()
+				else
+					result :+ usePoints[i] + "] " + teams[i].GetTeamNameShort()
+				endif
+			else
+				if mode = "INITIALS"
+					result :+ teams[i].GetTeamInitials() + " [" + usePoints[i]
+				else
+					result :+ teams[i].GetTeamNameShort() + " [" + usePoints[i]
+				endif
+			endif
+		Next
+		return result
+	End Method
+	
 
 	Method GetReportShort:string(mode:string="")
 		local result:string
+
 		for local i:int = 0 until points.length
 			if result <> ""
 				result :+ " : "
 				if mode = "INITIALS"
-					result :+ points[i] + " " + teams[i].GetTeamInitials()
+					result :+ points[i] + "] " + teams[i].GetTeamInitials()
 				else
-					result :+ points[i] + " " + teams[i].GetTeamNameShort()
+					result :+ points[i] + "] " + teams[i].GetTeamNameShort()
 				endif
 			else
 				if mode = "INITIALS"
-					result :+ teams[i].GetTeamInitials() + " " + points[i]
+					result :+ teams[i].GetTeamInitials() + " [" + points[i]
 				else
-					result :+ teams[i].GetTeamNameShort() + " " + points[i]
+					result :+ teams[i].GetTeamNameShort() + " [" + points[i]
 				endif
 			endif
 		Next
 		return result
 
 		'return teams[0].nameInitials + " " + points[0]+" : " + points[1] + " " + teams[1].nameInitials
+	End Method
+
+
+	Method GetFinalScoreText:string()
+		'only show halftime points if someone scored something
+		local showHalfTimePoints:int = False
+		for local i:int = 0 until points.length
+			if points[i] <> 0 then showHalfTimePoints = true
+		Next
+
+		if showHalfTimePoints
+			return Super.GetFinalScoreText()+" (" + StringHelper.JoinIntArray(":", GetMatchScore(duration/2)) + ")"
+		else
+			return Super.GetFinalScoreText()
+		endif
 	End Method
 	
 End Type

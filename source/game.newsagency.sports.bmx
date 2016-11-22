@@ -441,13 +441,24 @@ Type TNewsEventSport extends TGameObject
 	Method GetNextMatchTime:Long()
 		local lowestTime:long = -1
 		For local league:TNewsEventSportLeague = EachIn leagues
-			For local nextMatch:TNewsEventSportMatch = EachIn league.GetCurrentSeason().upcomingMatches
-				if lowestTime = -1 or nextMatch.GetMatchTime() < lowestTime
-					lowestTime = nextMatch.GetMatchTime()
-				endif
-			Next
+			local lowestLeagueMatchTime:Long = league.GetNextMatchTime()
+			if lowestTime = -1 or lowestLeagueMatchTime < lowestTime
+				lowestTime = lowestLeagueMatchTime
+			endif
 		Next
 		return lowestTime
+	End Method
+
+
+	Method GetLastMatchTime:Long()
+		local latestTime:long = -1
+		For local league:TNewsEventSportLeague = EachIn leagues
+			local latestLeagueMatchTime:Long = league.GetLastMatchTime()
+			if latestTime = -1 or latestLeagueMatchTime < latestTime
+				latestTime = latestLeagueMatchTime
+			endif
+		Next
+		return latestTime
 	End Method
 
 
@@ -969,6 +980,17 @@ Type TNewsEventSportLeague extends TGameObject
 		return lowestTime
 	End Method
 
+
+	Method GetLastMatchTime:Long()
+		local latestTime:long = -1
+		For local nextMatch:TNewsEventSportMatch = EachIn GetCurrentSeason().upcomingMatches
+			if latestTime = -1 or nextMatch.GetMatchTime() > latestTime
+				latestTime = nextMatch.GetMatchTime()
+			endif
+		Next
+		return latestTime
+	End Method
+
 	
 	'playoffs should ignore season breaks (season end / winter break)
 	Method GetNextMatchStartTime:Long(time:Long = 0, ignoreSeasonBreaks:int = False)
@@ -1292,9 +1314,17 @@ End Type
 Type TNewsEventSportMatch extends TGameObject
 	Field teams:TNewsEventSportTeam[]
 	Field points:int[]
+	'csv-like score entries: "time,teamIndex,score|time,teamIndex,score..."
+	'custom sports might also do: "time,teamIndex,score,memberIndex|..."
+	Field scores:string
+	Field scoresArray:string[] {nosave}
 	Field duration:int = 90*60 'in seconds
 	'when the match takes place
 	Field matchTime:Long
+	'when a potential break takes place
+	Field breakTime:int = 45*60
+	Field breakDuration:int = 15*60
+
 	Field matchNumber:int
 	Field matchState:int = STATE_NORMAL
 	Const STATE_NORMAL:int = 0
@@ -1302,11 +1332,41 @@ Type TNewsEventSportMatch extends TGameObject
 
 
 	Method Run:int()
-		duration = duration + 60 * BiasedRandRange(0,8, 0.3)
+		local overtime:int = 60 * BiasedRandRange(0,8, 0.3)
+		duration :+ overtime
+		breakTime :+ floor(overtime/2)
+
+		'calculate total scores
 		For local i:int = 0 until points.length
 			points[i] = BiasedRandRange(0, 8, 0.18)
 		Next
+		'distribute scores along the match time
+		FillScores()
+		
 		matchState = STATE_RUN
+	End Method
+
+
+	Method FillScores()
+		scoresArray = new String[0]
+		local scoresArrayIndex:int = 0
+
+		For local teamIndex:int = 0 until points.length
+			if points[teamIndex] <= 0 then continue
+
+			'resize so that all scores fit
+			scoresArray = scoresArray[ .. scoresArray.length + points[teamIndex] ]
+
+			For local point:int = 0 until points[teamIndex]
+				'store time as "000123" so it string-sorts correctly
+				scoresArray[ scoresArrayIndex ] = RSet(RandRange(0, duration),6).Replace(" ", "0") + "," + teamIndex + ",1"
+				scoresArrayIndex :+ 1
+			Next
+		Next
+		scores = "|".Join(scoresArray)
+
+		scoresArray.Sort(True)
+		scores = "|".Join(scoresArray)
 	End Method
 
 
@@ -1334,6 +1394,11 @@ Type TNewsEventSportMatch extends TGameObject
 
 	Method GetMatchTime:Long()
 		return matchTime
+	End Method
+
+
+	Method GetMatchEndTime:Long()
+		return matchTime + duration + breakTime
 	End Method
 	
 
@@ -1436,8 +1501,86 @@ Type TNewsEventSportMatch extends TGameObject
 		return "override GetReport()"
 	End Method
 
+	Method GetLiveReportShort:string(mode:string="", time:Long=-1)
+		return "override GetLiveReportShort()"
+	End Method
+
 	Method GetReportShort:string(mode:string="")
 		return "override GetReportShort()"
+	End Method
+
+
+	Method GetMatchResultText:string()
+		local singularPlural:string = "P"
+		if teams[0].clubNameSingular then singularPlural = "S"
+
+		local result:string = ""
+
+		if points[0] > points[1]
+			result = GetRandomLocale("SPORT_TEAMREPORT_MATCHWIN_" + singularPlural)
+		elseif points[0] < points[1]
+			result = GetRandomLocale("SPORT_TEAMREPORT_MATCHLOOSE_" + singularPlural)
+		else
+			result = GetRandomLocale("SPORT_TEAMREPORT_MATCHDRAW_" + singularPlural)
+		endif
+
+		return result
+	End Method
+
+
+	Method GetMatchScore:int[](matchTime:int)
+		if not scoresArray then scoresArray = scores.split("|")
+
+		local matchScore:int[] = new Int[points.length]
+		For local scoreEntry:string = EachIn scoresArray
+			local scoreParts:string[] = scoreEntry.split(",")
+			'invalid or not yet happened
+			if scoreParts.length < 3 or int(scoreParts[0]) > matchTime then continue
+
+			local teamIndex:int = int(scoreParts[1])
+			if teamIndex < 0 or teamIndex >= matchScore.length then continue
+
+			matchScore[teamIndex] :+ int(scoreParts[2])
+		Next
+
+		return matchScore
+	End Method
+
+
+	Method GetFinalScoreText:string()
+		return StringHelper.JoinIntArray(":", points)
+	End Method
+
+
+	Method ReplacePlaceholders:string(value:string)
+		local result:string = value
+		if result.Find("%MATCHRESULT%") >= 0
+			result = result.Replace("%MATCHRESULT%", GetMatchResultText() )
+		endif
+
+		if result.Find("%MATCHKIND%") >= 0
+			if RandRange(0,10) < 7
+				result = result.Replace("%MATCHKIND%", GetRandomLocale("SPORT_TEAMREPORT_MATCHKIND"))
+			else
+				result = result.Replace("%MATCHKIND%", "")
+			endif
+		endif
+
+		for local i:int = 0 until teams.length
+			if result.Find("%TEAM"+i) < 0 then continue
+
+			 teams[i].FillPlaceholders(result, string(i))
+		Next
+
+		if result.Find("%FINALSCORE%") >= 0
+			result = result.Replace("%FINALSCORE%", GetFinalScoreText())
+		endif
+
+		result = result.Replace("%PLAYTIMEMINUTES%", int(duration / 60) )
+
+		result = result.Trim().Replace("  ", " ") 'remove space if no team article...
+		
+		return result
 	End Method
 End Type
 
@@ -1487,6 +1630,11 @@ Type TNewsEventSportTeam
 	End Method
 
 
+	Method GetCity:string()
+		return city
+	End Method
+
+
 	Method GetTeamName:string()
 		return clubName + " " + name
 	End Method
@@ -1526,6 +1674,39 @@ Type TNewsEventSportTeam
 		if sport then return sport.GetLeagueByGUID(leagueGUID)
 
 		return null
+	End Method
+
+
+	Method FillPlaceholders(value:string var, teamIndex:string="")
+		if value.Find("%TEAM"+teamIndex+"%") >= 0
+			if RandRange(0,100) < 75
+				value = value.Replace("%TEAM"+teamIndex+"%", GetTeamName())
+			else
+				value = value.Replace("%TEAM"+teamIndex+"%", clubNameInitials +" "+ name)
+			endif
+		endif
+		value = value.Replace("%TEAM"+teamIndex+"NAMEINITIALS%", GetTeamInitials())
+		value = value.Replace("%TEAM"+teamIndex+"NAMESHORT%", GetTeamNameShort())
+		value = value.Replace("%TEAM"+teamIndex+"NAME%", GetTeamName())
+		value = value.Replace("%TEAM"+teamIndex+"CITY%", GetCity())
+
+		value = value.Replace("%TEAM"+teamIndex+"STAR%", GetMemberAtIndex(-1).GetFullName() )
+		value = value.Replace("%TEAM"+teamIndex+"STARSHORT%", GetMemberAtIndex(-1).GetLastName() )
+		value = value.Replace("%TEAM"+teamIndex+"KEEPER%", GetMemberAtIndex(0).GetFullName() )
+		value = value.Replace("%TEAM"+teamIndex+"KEEPERSHORT%", GetMemberAtIndex(0).GetLastName() )
+		value = value.Replace("%TEAM"+teamIndex+"TRAINER%", GetTrainer().GetFullName() )
+		value = value.Replace("%TEAM"+teamIndex+"TRAINERSHORT%", GetTrainer().GetLastName() )
+
+		if value.Find("%TEAM"+teamIndex+"ARTICLE") >= 0
+			if clubNameSingular
+				value = value.Replace("%TEAM"+teamIndex+"ARTICLE1%", GetLocale("SPORT_TEAMNAME_S_VARIANT_A") )
+				value = value.Replace("%TEAM"+teamIndex+"ARTICLE2%", GetLocale("SPORT_TEAMNAME_S_VARIANT_B") )
+			else
+				value = value.Replace("%TEAM"+teamIndex+"ARTICLE1%", GetLocale("SPORT_TEAMNAME_P_VARIANT_A") )
+				value = value.Replace("%TEAM"+teamIndex+"ARTICLE2%", GetLocale("SPORT_TEAMNAME_P_VARIANT_B") )
+			endif
+		endif
+
 	End Method
 End Type
 
