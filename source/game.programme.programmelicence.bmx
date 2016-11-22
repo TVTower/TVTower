@@ -1149,6 +1149,96 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
+	Method GetSpeed:Float() {_exposeToLua}
+		'single-licence
+		if GetSubLicenceCount() = 0
+			if GetData() then return GetData().GetSpeed()
+			return 0.0
+		endif
+
+		'licence for a package or series
+		Local value:Float
+		For local licence:TProgrammeLicence = eachin subLicences
+			value :+ licence.GetSpeed()
+		Next
+		return value / subLicences.length
+	End Method
+
+
+	Method GetReview:Float() {_exposeToLua}
+		'single-licence
+		if GetSubLicenceCount() = 0
+			if GetData() then return GetData().GetReview()
+			return 0.0
+		endif
+
+		'licence for a package or series
+		Local value:Float
+		For local licence:TProgrammeLicence = eachin subLicences
+			value :+ licence.GetReview()
+		Next
+		return value / subLicences.length
+	End Method
+
+
+	'returns outcome - or average of children with outcome
+	Method GetOutcome:Float() {_exposeToLua}
+		'single-licence
+		if GetSubLicenceCount() = 0
+			if GetData() then return GetData().GetOutcome()
+			return 0.0
+		endif
+
+		'licence for a package or series
+		'ATTENTION: if one of the licences contains no outcome, it gets
+		'           ignored in the calculation!
+		Local value:Float
+		local ignored:int = 0
+		For local licence:TProgrammeLicence = eachin subLicences
+			local licenceValue:Float = licence.GetOutcome()
+			if licenceValue > 0
+				value :+ licence.GetOutcome()
+			else
+				ignored :+ 1
+			endif
+		Next
+		if subLicences.length > ignored
+			return value / (subLicences.length - ignored)
+		else
+			return 0.0
+		endif
+	End Method
+
+
+	'returns outcomeTV - or average of children with outcome
+	Method GetOutcomeTV:Float() {_exposeToLua}
+		'single-licence
+		if GetSubLicenceCount() = 0
+			if GetData() then return GetData().GetOutcomeTV()
+			return 0.0
+		endif
+
+		'licence for a package or series
+		'ATTENTION: if one of the licences contains no outcome, it gets
+		'           ignored in the calculation!
+		Local value:Float
+		local ignored:int = 0
+		For local licence:TProgrammeLicence = eachin subLicences
+			local licenceValue:Float = licence.GetOutcomeTV()
+			if licenceValue > 0
+				value :+ licence.GetOutcomeTV()
+			else
+				ignored :+ 1
+			endif
+		Next
+		if subLicences.length > ignored
+			return value / (subLicences.length - ignored)
+		else
+			return 0.0
+		endif
+	End Method
+	
+
 	Method GetDescription:string() {_exposeToLua}
 		if not description and GetData() then return GetData().GetDescription()
 
@@ -1522,25 +1612,25 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'bars have a top-padding
 		contentY :+ barAreaPaddingY
 		'speed
-		skin.RenderBar(contentX + 5, contentY, 200, 12, data.GetSpeed())
+		skin.RenderBar(contentX + 5, contentY, 200, 12, GetSpeed())
 		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
 		contentY :+ barH + 2
 		'critic/review
-		skin.RenderBar(contentX + 5, contentY, 200, 12, data.GetReview())
+		skin.RenderBar(contentX + 5, contentY, 200, 12, GetReview())
 		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
 		contentY :+ barH + 2
 		'boxoffice/outcome
 		if data.IsTVDistribution()
-			skin.RenderBar(contentX + 5, contentY, 200, 12, data.GetOutcomeTV())
+			skin.RenderBar(contentX + 5, contentY, 200, 12, GetOutcomeTV())
 			'use a different text color if tv-outcome is not calculated
 			'yet
-			if data.GetOutcomeTV() < 0
+			if GetOutcomeTV() < 0
 				skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY, 75, 15, null, new TColor.Create(180,50,50))
 			else
 				skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
 			endif
 		else
-			skin.RenderBar(contentX + 5, contentY, 200, 12, data.GetOutcome())
+			skin.RenderBar(contentX + 5, contentY, 200, 12, GetOutcome())
 			skin.fontSemiBold.drawBlock(GetLocale("MOVIE_BOXOFFICE"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
 		endif
 		contentY :+ barH + 2

@@ -198,19 +198,64 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 
 	'returns a value from 0.0 - 1.0 (0-100%)
 	Method GetOutcomeTV:Float()
-		return self.outcomeTV
+		if not matchGUID then return self.outcomeTV
+		local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(matchGUID)
+		if not match then return self.outcomeTV
+
+		'modify by "attractivity" of a match
+		local attractivityMod:Float = 0.0
+		for local team:TNewsEventSportTeam = EachIn match.teams
+			attractivityMod :+ team.GetAttractivity()
+		next
+		if match.teams.length > 0
+			attractivityMod :/ match.teams.length
+		else
+			attractivityMod = 1.0
+		endif
+
+		return MathHelper.Clamp(self.outcomeTV * attractivityMod, 0.0, 1.0)
 	End Method
 
 
 	'returns a value from 0.0 - 1.0 (0-100%)
 	Method GetSpeed:Float()
-		return self.speed
+		if not matchGUID then return self.speed
+		local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(matchGUID)
+		if not match then return self.speed
+
+		'modify by "power" of the teams
+		local powerMod:Float = 0.0
+		for local team:TNewsEventSportTeam = EachIn match.teams
+			powerMod :+ team.GetPower()
+		next
+		if match.teams.length > 0
+			powerMod :/ match.teams.length
+		else
+			powerMod = 1.0
+		endif
+
+		return MathHelper.Clamp(self.speed * powerMod, 0.0, 1.0)
 	End Method
 
 
 	'returns a value from 0.0 - 1.0 (0-100%)
 	Method GetReview:Float()
-		return self.review
+		if not matchGUID then return self.review
+		local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(matchGUID)
+		if not match then return self.review
+
+		'modify by "skill" of the teams ("good soccer technics")
+		local skillMod:Float = 0.0
+		for local team:TNewsEventSportTeam = EachIn match.teams
+			skillMod :+ team.GetSkill()
+		next
+		if match.teams.length > 0
+			skillMod :/ match.teams.length
+		else
+			skillMod = 1.0
+		endif
+
+		return MathHelper.Clamp(self.review * skillMod, 0.0, 1.0)
 	End Method
 
 

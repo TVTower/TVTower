@@ -185,10 +185,10 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 
 		programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
 
-		programmeData.review = 0.2
-		programmeData.speed = 0.5
+		programmeData.review = 0.5 'maximum possible
+		programmeData.speed = 0.75 'maximum possible
 		programmeData.genre = TVTProgrammeGenre.Event_Sport
-		programmeData.outcome = 0.8
+		programmeData.outcome = 0.8 'maximum possible
 
 		programmeData.releaseTime = match.matchTime '- 2*24*3600 - 24*3600
 

@@ -666,6 +666,7 @@ Type TNewsEventSportSeasonData
 
 	'cache
 	Field _leaderboard:TNewsEventSportLeagueRank[] {nosave}
+	Field _leaderboardMatchTime:Long = -1 {nosave}
 
 	'=== playoffs data ===
 	'store who moved up a league, and who moved down
@@ -732,10 +733,13 @@ Type TNewsEventSportSeasonData
 	Method GetLeaderboard:TNewsEventSportLeagueRank[](upToMatchTime:Long = 0)
 		'return cache if possible
 		if _leaderboard and _leaderboard.length = teams.length
-			return _leaderboard
+			if upToMatchTime <> 0 or upToMatchTime = _leaderboardMatchTime
+				return _leaderboard
+			endif
 		endif
 		
 		_leaderboard = new TNewsEventSportLeagueRank[teams.length]
+		_leaderboardMatchTime = upToMatchTime
 
 		'sum up the scores of each team in the matches
 		For local match:TNewsEventSportMatch = EachIn matchPlan
@@ -819,6 +823,13 @@ Type TNewsEventSportSeason extends TGameObject
 		data.startTime = time
 		finished = False
 		started = True
+
+		'set all ranks to 0
+		For local team:TNewsEventSportTeam = EachIn data.teams
+			team.currentRank = 0
+			team.UpdateStats()
+		Next
+
 		part = 1
 	End Method
 
@@ -863,10 +874,27 @@ Type TNewsEventSportSeason extends TGameObject
 	End Method
 
 
-	Method GetTeamRank:int(team:TNewsEventSportTeam)
-		return data.GetTeamRank(team)
+	Method GetTeamRank:int(team:TNewsEventSportTeam, upToMatchTime:Long=0)
+		return data.GetTeamRank(team, upToMatchTime)
 	End Method
-		
+
+
+	Method RefreshTeamStats(upToMatchTime:Long=0)
+		RefreshRanks(upToMatchTime)
+		For local t:TNewsEventSportTeam = EachIn data.teams
+			t.UpdateStats()
+		Next
+	End Method
+	
+
+	'assign the ranks of the given time as "current ranks" to the teams
+	Method RefreshRanks(upToMatchTime:Long=0)
+		local board:TNewsEventSportLeagueRank[] = data.GetLeaderboard(upToMatchTime)
+		For local rankIndex:int = 0 until board.length
+			board[rankIndex].team.currentRank = rankIndex+1
+		Next
+	End Method
+
 
 	Method GetMatchCount:int(teamSize:int = -1)
 		if teamSize = -1 then teamSize = GetTeams().length
@@ -1082,6 +1110,9 @@ endrem
 			Next
 
 			if runMatches.length > 0
+				'refresh team stats for easier retrieval
+				GetCurrentSeason().RefreshTeamStats(endingMatchTime)
+			
 				if endingMatchTime = 0 then endingMatchTime = GetWorldTime().GetTimeGone()
 				EventManager.triggerEvent(TEventSimple.Create("SportLeague.FinishMatchGroup", New TData.add("matches", runMatches).AddNumber("time", endingMatchTime).Add("season", GetCurrentSeason()), Self))
 			endif
@@ -1605,6 +1636,15 @@ Type TNewsEventSportTeam
 	Field members:TNewsEventSportTeamMember[]
 	Field trainer:TNewsEventSportTeamMember
 
+	Field statsPower:Float = -1
+	Field statsAttractivity:Float = -1
+	Field statsSkill:Float = -1
+	'start values
+	Field statsAttractivityBase:Float = 0.4
+	Field statsPowerBase:Float = 0.4
+	Field statsSkillBase:Float = 0.3
+
+	Field currentRank:int = 0
 	Field leagueGUID:string
 	Field sportGUID:string
 
@@ -1649,6 +1689,97 @@ Type TNewsEventSportTeam
 		return clubNameInitials + nameInitials
 	End Method
 
+
+	Method UpdateStats()
+		statsAttractivity = -1
+		statsPower = -1
+		statsSkill = -1
+	End Method
+
+
+	Method GetAttractivity:Float()
+		if statsAttractivity = -1
+			'basic attractivity
+			statsAttractivity = statsAttractivityBase
+
+			local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
+			if league
+				Select league._leaguesIndex
+					case 1   statsAttractivity :+ 0.20
+					case 2   statsAttractivity :+ 0.05
+					case 3   statsAttractivity :- 0.10
+					default  statsAttractivity :- 0.20
+				End Select
+
+				if currentRank <> 0
+					'+0.4 for first, 0 for "middle" -0.4 for last rank
+					statsAttractivity :+ 0.4 * (1.0 - (currentRank-1)/((league.GetTeamCount()-1)/2.0))
+
+					'first and last get extra bonus/penalty
+					if currentRank = 1 then statsAttractivity :+ 0.1
+					if currentRank = league.GetTeamCount() then statsAttractivity :- 0.1
+				endif
+			endif
+print Lset(GetTeamName(), 15)+": statsAttractivity="+ statsAttractivity
+			statsAttractivity = MathHelper.Clamp(statsAttractivity, 0.0, 1.0)
+		endif
+
+		return statsAttractivity
+	End Method
+
+
+	Method GetPower:Float()
+		if statsPower = -1
+			statsPower = statsPowerBase
+			local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
+			if league
+				Select league._leaguesIndex
+					case 1   statsPower :+ 0.20
+					case 2   statsPower :+ 0.05
+					case 3   statsPower :- 0.10
+					default  statsPower :- 0.20
+				End Select
+print Lset(GetTeamName(), 15)+": statsPower = "+statsPower+" (leaguesIndex="+league._leaguesIndex+")"
+				if currentRank <> 0
+					'+0.3 for first, 0 for "middle" -0.3 for last rank
+					statsPower :+ 0.3 * (1.0 - (currentRank-1)/((league.GetTeamCount()-1)/2.0))
+print Lset(GetTeamName(), 15)+": statsPower = "+statsPower+" + " +(0.3 * (1.0 - (currentRank-1)/((league.GetTeamCount()-1)/2.0)))
+				endif
+			endif
+
+print Lset(GetTeamName(), 15)+": statsPower="+ statsPower
+			statsPower = MathHelper.Clamp(statsPower, 0.0, 1.0)
+		endif
+
+		return statsPower
+	End Method
+
+
+	Method GetSkill:Float()
+		if statsSkill = -1
+			statsSkill = statsSkillBase
+			local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
+			if league
+				Select league._leaguesIndex
+					case 1   statsSkill :+ 0.20
+					case 2   statsSkill :+ 0.10
+					case 3   statsSkill :+ 0.05
+				'	default  statsSkill :+ 0.0
+				End Select
+
+				if currentRank <> 0
+					'+0.2 for first, 0 for "place at 33%" -0.2 for last rank
+					statsSkill :+ 0.2 * (1.0 - (currentRank-1)/((league.GetTeamCount()-1)/3.0))
+				endif
+			endif
+
+print Lset(GetTeamName(), 15)+": statsSkill="+ statsSkill
+			statsSkill = MathHelper.Clamp(statsSkill, 0.0, 1.0)
+		endif
+
+		return statsSkill
+	End Method
+	
 
 	Method AssignLeague(leagueGUID:string)
 		self.leagueGUID = leagueGUID
