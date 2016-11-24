@@ -303,7 +303,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		-- TODO: get breakdown of audience and compare this then
 		if (adContract.GetLimitedToTargetGroup() > 0 or adContract.GetLimitedToGenre() > 0) then
 			contractDoable = false
-debugMsg("contract NOT DOABLE: " .. adContract.GetTitle() .. "  targetgroup="..adContract.GetLimitedToTargetGroup() .."  genre="..adContract.GetLimitedToGenre())
+			--debugMsg("contract NOT DOABLE: " .. adContract.GetTitle() .. "  targetgroup="..adContract.GetLimitedToTargetGroup() .."  genre="..adContract.GetLimitedToGenre())
 		end
 
 		if (contractDoable) then
@@ -325,7 +325,7 @@ debugMsg("contract NOT DOABLE: " .. adContract.GetTitle() .. "  targetgroup="..a
 			
 			-- skip if contract requires too many spots for the given level
 			if adContract.GetSpotCount() > requisition.Count + maxSurplusSpots then 
-				debugMsg("   Skipping a \"necessary\" contract (too many spots: " .. adContract.GetSpotCount() .. " > ".. requisition.Count .." + "..maxSurplusSpots .. "): " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudienceValue .. "  GuessedAudience: " .. math.floor(minGuessedAudience.GetTotalSum()) .. " - " .. math.floor(guessedAudience.GetTotalSum()))
+				--debugMsg("   Skipping a \"necessary\" contract (too many spots: " .. adContract.GetSpotCount() .. " > ".. requisition.Count .." + "..maxSurplusSpots .. "): " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudienceValue .. "  GuessedAudience: " .. math.floor(minGuessedAudience.GetTotalSum()) .. " - " .. math.floor(guessedAudience.GetTotalSum()))
 			-- sign if audience requirements are OK
 			elseif ((minAudienceValue < guessedAudienceValue) and (minAudienceValue > minGuessedAudienceValue)) then
 				--Passender Spot... also kaufen

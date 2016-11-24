@@ -1,7 +1,11 @@
 SuperStrict
 Import "game.world.worldtime.bmx"
 Import "Dig/base.util.mersenne.bmx"
+Import "Dig/base.util.helper.bmx"
 Import "game.programme.programmeperson.base.bmx"
+
+
+
 
 Type TNewsEventSportCollection extends TGameObjectCollection
 	Field leagues:TMap = new TMap
@@ -1640,9 +1644,9 @@ Type TNewsEventSportTeam
 	Field statsAttractivity:Float = -1
 	Field statsSkill:Float = -1
 	'start values
-	Field statsAttractivityBase:Float = 0.4
-	Field statsPowerBase:Float = 0.4
-	Field statsSkillBase:Float = 0.3
+	Field statsAttractivityBase:Float = 0.5
+	Field statsPowerBase:Float = 0.5
+	Field statsSkillBase:Float = 0.4
 
 	Field currentRank:int = 0
 	Field leagueGUID:string
@@ -1657,6 +1661,7 @@ Type TNewsEventSportTeam
 	Method GetTrainer:TNewsEventSportTeamMember()
 		return trainer
 	End Method
+
 
 	Method AddMember:TNewsEventSportTeam(member:TNewsEventSportTeamMember)
 		members :+ [member]
@@ -1690,11 +1695,27 @@ Type TNewsEventSportTeam
 	End Method
 
 
+	Method RandomizeBasicStats(leagueIndex:int = 0)
+		local leagueMod:int = (leagueIndex = 0)*10 + (leagueIndex = 1)*6 + (leagueIndex = 2)*4 - (leagueIndex = 3)*4
+		statsAttractivityBase = RandRange(40, 50 + leagueMod)/100.0
+		statsPowerBase = RandRange(35, 50 + leagueMod)/100.0
+		statsSkillBase = RandRange(35, 50 + leagueMod)/100.0
+	End Method
+
+
 	Method UpdateStats()
 		statsAttractivity = -1
 		statsPower = -1
 		statsSkill = -1
 	End Method
+
+
+	Function GetDistributionCurveValue:Float(percentage:Float, zeroPercentage:Float)
+		return (THelper.logisticFunction(1.0 - percentage/zeroPercentage, 1.0, 4 ) - 0.5) * 2
+
+		'-0.00001 to avoid "-0.00000000" for percentage=zeroPercentage
+	'	return -sgn(percentage-0.5 - 0.00001) * 5*(1 - 1.0/((percentage - 0.5)^2+1))
+	End Function
 
 
 	Method GetAttractivity:Float()
@@ -1705,22 +1726,20 @@ Type TNewsEventSportTeam
 			local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
 			if league
 				Select league._leaguesIndex
-					case 1   statsAttractivity :+ 0.20
-					case 2   statsAttractivity :+ 0.05
-					case 3   statsAttractivity :- 0.10
+					case 0   statsAttractivity :+ 0.40
+					case 1   statsAttractivity :+ 0.15
+					case 2   statsAttractivity :- 0.05
 					default  statsAttractivity :- 0.20
 				End Select
 
 				if currentRank <> 0
-					'+0.4 for first, 0 for "middle" -0.4 for last rank
-					statsAttractivity :+ 0.4 * (1.0 - (currentRank-1)/((league.GetTeamCount()-1)/2.0))
+					statsAttractivity :+ 0.2 * GetDistributionCurveValue(float(currentRank) / league.GetTeamCount(), 0.6)
 
 					'first and last get extra bonus/penalty
 					if currentRank = 1 then statsAttractivity :+ 0.1
-					if currentRank = league.GetTeamCount() then statsAttractivity :- 0.1
+					if currentRank = league.GetTeamCount() then statsAttractivity :- 0.05
 				endif
 			endif
-print Lset(GetTeamName(), 15)+": statsAttractivity="+ statsAttractivity
 			statsAttractivity = MathHelper.Clamp(statsAttractivity, 0.0, 1.0)
 		endif
 
@@ -1734,20 +1753,16 @@ print Lset(GetTeamName(), 15)+": statsAttractivity="+ statsAttractivity
 			local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
 			if league
 				Select league._leaguesIndex
-					case 1   statsPower :+ 0.20
-					case 2   statsPower :+ 0.05
-					case 3   statsPower :- 0.10
-					default  statsPower :- 0.20
+					case 0   statsPower :+ 0.40
+					case 1   statsPower :+ 0.15
+					case 2   statsPower :- 0.05
+					default  statsPower :- 0.15
 				End Select
-print Lset(GetTeamName(), 15)+": statsPower = "+statsPower+" (leaguesIndex="+league._leaguesIndex+")"
 				if currentRank <> 0
-					'+0.3 for first, 0 for "middle" -0.3 for last rank
-					statsPower :+ 0.3 * (1.0 - (currentRank-1)/((league.GetTeamCount()-1)/2.0))
-print Lset(GetTeamName(), 15)+": statsPower = "+statsPower+" + " +(0.3 * (1.0 - (currentRank-1)/((league.GetTeamCount()-1)/2.0)))
+					statsPower :+ 0.2 * GetDistributionCurveValue(float(currentRank) / league.GetTeamCount(), 0.7)
 				endif
 			endif
 
-print Lset(GetTeamName(), 15)+": statsPower="+ statsPower
 			statsPower = MathHelper.Clamp(statsPower, 0.0, 1.0)
 		endif
 
@@ -1761,19 +1776,23 @@ print Lset(GetTeamName(), 15)+": statsPower="+ statsPower
 			local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
 			if league
 				Select league._leaguesIndex
-					case 1   statsSkill :+ 0.20
-					case 2   statsSkill :+ 0.10
-					case 3   statsSkill :+ 0.05
-				'	default  statsSkill :+ 0.0
+					case 0   statsSkill :+ 0.40
+					case 1   statsSkill :+ 0.15
+					case 2   statsSkill :- 0.05
+					default  statsSkill :- 0.15
 				End Select
 
 				if currentRank <> 0
-					'+0.2 for first, 0 for "place at 33%" -0.2 for last rank
-					statsSkill :+ 0.2 * (1.0 - (currentRank-1)/((league.GetTeamCount()-1)/3.0))
+					'adjusted and negated formula of f(x) = 1/((x+a)^2+1)
+					'a=displacement, adjustment:  to have "after displacement" become negative
+					'adjusted is f(x) = -sgn(x+a) * 1/((x+a)^2+1)
+					'statsSkill :+ 0.2 * -sgn((currentRank - league.GetTeamCount()/3.0)) + (1 - 1/((currentRank - league.GetTeamCount()/3.0)^2 + 1))
+
+					statsSkill :+ 0.2 * GetDistributionCurveValue(float(currentRank) / league.GetTeamCount(), 0.6)
 				endif
 			endif
 
-print Lset(GetTeamName(), 15)+": statsSkill="+ statsSkill
+			'print Lset(GetTeamName(), 15)+": statsSkill="+ statsSkill
 			statsSkill = MathHelper.Clamp(statsSkill, 0.0, 1.0)
 		endif
 

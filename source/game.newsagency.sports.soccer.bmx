@@ -153,6 +153,9 @@ Type TNewsEventSport_Soccer extends TNewsEventSport
 				                  predefinedTeamData.GetString("nameInitials", "") ..
 				                 )
 				teams :+ [team]
+				'give them some basic attributes
+				team.RandomizeBasicStats(leagueIndex)
+
 'print "league="+(leagueIndex+1)+"  team="+(i+1)+"  name=" + team.name+"  city="+team.city+"  nameInitials="+team.nameInitials+"  clubName="+team.clubName+"  clubNameInitials="+team.clubNameInitials
 
 				For local j:int = 0 to 12 '0 is trainer

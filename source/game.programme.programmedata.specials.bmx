@@ -26,21 +26,32 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 				if dynamicTexts
 					local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(matchGUID)
 					local foundTitle:int = False 
-
+					local leagueText:string
+					for local t:TNewsEventSportTeam = EachIn match.teams
+						if not leagueGUID
+							leagueGUID =  t.leagueGUID
+							leagueText = "%LEAGUENAMESHORT%: "
+						else if leagueGUID <> t.leagueGUID
+							leagueGUID = ""
+							leagueText = GetLocale("SPORT_PLAYOFFS_SHORT")+": "
+							exit
+						endif
+					next
+						
 					'show score in title once it is or was running
 					if match and match.GetMatchTime() <= GetWorldTime().GetTimeGone()
 						'still running?
 						if match.GetMatchEndTime() >= GetWorldTime().GetTimeGone()
-							title.Set("%MATCHLIVEREPORTSHORT%", null )
+							title.Set(leagueText + "%MATCHLIVEREPORTSHORT%", null )
 							foundTitle = True
 						else
-							title.Set("%MATCHREPORTSHORT%", null )
+							title.Set(leagueText + "%MATCHREPORTSHORT%", null )
 							foundTitle = True
 						endif
 					endif
 
 					if not foundtitle
-						title.Set("%MATCHNAMESHORT%", null )
+						title.Set(leagueText + "%MATCHNAMESHORT%", null )
 					endif
 				endif
 
@@ -58,7 +69,11 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 			'replace placeholders and and cache the result
 			if not descriptionProcessed
 				if dynamicTexts
-					description.Set( GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , null )
+					if leagueGUID
+						description.Set( GetLocale("SPORT_PROGRAMME_MATCH_OF_LEAGUEX")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , null )
+					else
+						description.Set( GetLocale("SPORT_PROGRAMME_PLAYOFF_MATCH")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , null )
+					endif
 				endif
 
 				descriptionProcessed = new TLocalizedString
@@ -85,6 +100,7 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 		local result:string = text
 		result = result.replace("%SEASONYEARSTART%", GetWorldTime().GetYear(league.GetNextMatchTime()))
 		result = result.replace("%LEAGUENAME%", league.name)
+		result = result.replace("%LEAGUENAMESHORT%", league.nameShort)
 
 		if result.Find("%MATCHCOUNT%") >= 0
 			result = result.replace("%MATCHCOUNT%", league.GetUpcomingMatches(GetWorldTime().GetTimeGone(), -1).length)
@@ -204,14 +220,30 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 
 		'modify by "attractivity" of a match
 		local attractivityMod:Float = 0.0
-		for local team:TNewsEventSportTeam = EachIn match.teams
-			attractivityMod :+ team.GetAttractivity()
+		local highestScore:int = 0
+		local lowestScore:int = -1
+		for local teamIndex:int = 0 until match.teams.length
+			attractivityMod :+ match.teams[teamIndex].GetAttractivity()
+			highestScore = max(highestScore, match.points[teamIndex])
+			if lowestScore = -1 then lowestScore = match.points[teamIndex]
+			lowestScore = min(lowestScore, match.points[teamIndex])
 		next
 		if match.teams.length > 0
 			attractivityMod :/ match.teams.length
 		else
 			attractivityMod = 1.0
 		endif
+
+		'game got more exciting ?
+		if lowestScore <> highestScore and highestScore > 0
+			'eg. 0 : 1
+			if lowestScore = 0 and highestScore = 1 then attractivityMod :+ 0.05
+			'eg. 1 : 2
+			if lowestScore/highestScore > 0.5 then attractivityMod :+ 0.05
+			'eg. 3 : 4
+			if lowestScore/highestScore > 0.75 then attractivityMod :+ 0.05
+		endif
+		
 
 		return MathHelper.Clamp(self.outcomeTV * attractivityMod, 0.0, 1.0)
 	End Method

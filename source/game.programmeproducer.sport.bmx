@@ -52,29 +52,35 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		local league:TNewsEventSportLeague = TNewsEventSportLeague(triggerEvent.GetSender())
 		if not league then return False
 		
-		print "TODO: neue Lizenzen anlegen"
 		'ignore seasons if the first match already happened ?
 		if league.GetDoneMatchesCount() = 0 and league.GetNextMatchTime() > GetWorldTime().GetTimeGone()
-			print "neue Ligaseason gestartet"
-		else
-			print "neue Ligaseason gestartet aber schon angespielt"
-		endif
+			print "==========================="
+			print "==========================="
+			print "==========================="
+			print "==========================="
+			print "==========================="
+			print "neue Ligaseason gestartet: " + league.name + "  " + GetWorldTime().GetFormattedDate()
+			print "==========================="
+			print "==========================="
+			print "==========================="
+			print "==========================="
+			print "==========================="
 
-		local licence:TProgrammeLicence = GetInstance().CreateLeagueMatchesCollectionProgrammeLicence(league)
-		if licence
-			'add children
-			For local sub:TProgrammeLicence = EachIn licence.subLicences
-				GetProgrammeDataCollection().Add(sub.GetData())
-				GetProgrammeLicenceCollection().AddAutomatic(sub)
-			Next
+			local licence:TProgrammeLicence = GetInstance().CreateLeagueMatchesCollectionProgrammeLicence(league)
+			if licence
+				'add children
+				For local sub:TProgrammeLicence = EachIn licence.subLicences
+					GetProgrammeDataCollection().Add(sub.GetData())
+					GetProgrammeLicenceCollection().AddAutomatic(sub)
+				Next
 
-			GetProgrammeDataCollection().Add(licence.GetData())
-			GetProgrammeLicenceCollection().AddAutomatic(licence)
+				GetProgrammeDataCollection().Add(licence.GetData())
+				GetProgrammeLicenceCollection().AddAutomatic(licence)
 
 
-			print "added licence: " + licence.GetTitle()
-
-			GetPlayerProgrammeCollection(1).AddProgrammeLicence(licence)
+				'print "added licence: " + licence.GetTitle()
+				'GetPlayerProgrammeCollection(1).AddProgrammeLicence(licence)
+			endif
 		endif
 	End Function
 
@@ -171,7 +177,7 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		programmeData.GUID = "programmedata-sportmatch-"+match.GetGUID()
 
 		'this gets overridden in "GetTitle()/GetDescription()"
-		programmeData.title = new TLocalizedString.Set("%MATCHNAMESHORT%", null )
+		programmeData.title = new TLocalizedString.Set("%LEAGENAMESHORT%: %MATCHNAMESHORT%", null )
 		programmeData.description = new TLocalizedString.Set( GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , null )
 		TSportsProgrammeData(programmeData).dynamicTexts = true
 
@@ -185,10 +191,10 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 
 		programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
 
-		programmeData.review = 0.5 'maximum possible
+		programmeData.review = 0.6 'maximum possible
 		programmeData.speed = 0.75 'maximum possible
 		programmeData.genre = TVTProgrammeGenre.Event_Sport
-		programmeData.outcome = 0.8 'maximum possible
+		programmeData.outcome = 0.75 'maximum possible
 
 		programmeData.releaseTime = match.matchTime '- 2*24*3600 - 24*3600
 
