@@ -63,24 +63,9 @@ Type TNewsAgency
 		For local i:int = 0 until TVTNewsGenre.count
 			'NextEventTimes[i] = GetWorldTime().GetTimeGone() - 60 * RandRange(60,180) 
 			NextEventTimes[i] = -1
-			NextEventTimeIntervals[i] = [180, 300]
-
-			Select i
-				case TVTNewsGenre.POLITICS_ECONOMY
-					NextEventTimeIntervals[i] = [210, 330]
-				case TVTNewsGenre.SHOWBIZ
-					NextEventTimeIntervals[i] = [180, 290]
-				case TVTNewsGenre.SPORT
-					NextEventTimeIntervals[i] = [200, 300]
-				case TVTNewsGenre.TECHNICS_MEDIA
-					NextEventTimeIntervals[i] = [220, 350]
-				case TVTNewsGenre.CULTURE
-					NextEventTimeIntervals[i] = [240, 380]
-				'default
-			'	case TVTNewsGenre.CURRENT_AFFAIRS
-			'		NextEventTimeIntervals[i] = [180, 300]
-			End Select
 		Next
+		'setup the intervals of all genres
+		InitializeNextEventTimeIntervals()
 
 
 		terroristUpdateTime = [Double(0),Double(0)]
@@ -117,12 +102,42 @@ Type TNewsAgency
 	End Method
 
 
+	Method InitializeNextEventTimeIntervals()
+		For local i:int = 0 until TVTNewsGenre.count
+			Select i
+				case TVTNewsGenre.POLITICS_ECONOMY
+					NextEventTimeIntervals[i] = [210, 330]
+				case TVTNewsGenre.SHOWBIZ
+					NextEventTimeIntervals[i] = [180, 290]
+				case TVTNewsGenre.SPORT
+					NextEventTimeIntervals[i] = [200, 300]
+				case TVTNewsGenre.TECHNICS_MEDIA
+					NextEventTimeIntervals[i] = [220, 350]
+				case TVTNewsGenre.CULTURE
+					NextEventTimeIntervals[i] = [240, 380]
+				'default
+			'	case TVTNewsGenre.CURRENT_AFFAIRS
+			'		NextEventTimeIntervals[i] = [180, 300]
+				default
+					NextEventTimeIntervals[i] = [180, 300]
+			End Select
+		Next
+	End Method
+
+
 	Function onSavegameLoad:int(triggerEvent:TEventBase)
 		local NA:TNewsAgency = GetInstance()
 		if NA.NextEventTimes.length < TVTNewsGenre.count
 			NA.NextEventTimes = NA.NextEventTimes[.. TVTNewsGenre.count]
 			NA.NextEventTimeIntervals = NA.NextEventTimeIntervals[.. TVTNewsGenre.count]
 		endif
+		
+		'=== SETUP ALL INTERVALS ===
+		'this sets to the most current values (might differ from older
+		'savegames)
+		'and it also initializes times in savegames NOT having that time
+		'defined yet
+		NA.InitializeNextEventTimeIntervals()
 	End Function
 
 

@@ -412,6 +412,10 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetFormattedGameDate:String(time:Double = -1, format:string="h:i d.m.y") {_exposeToLua}
+		return GetFormattedDate(time, "g/h:i (d.m.y)")
+	End Method
+
 	Method GetFormattedDate:String(time:Double = -1, format:string="h:i d.m.y") {_exposeToLua}
 		Local strYear:String = GetYear(time)
 		Local strMonth:String = GetMonth(time)
@@ -420,8 +424,9 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		
 		If Int(strMonth) < 10 Then strMonth = "0"+strMonth
 		If Int(strDay) < 10 Then strDay = "0"+strDay
-		Return GetFormattedTime(time, format).replace("d", strDay).replace("m", strMonth).replace("y", strYear)
+		Return GetFormattedTime(time, format).replace("d", strDay).replace("m", strMonth).replace("y", strYear).replace("g", strGameDay)
 	End Method
+
 
 	'returns sunrise that day - in seconds
 	Method GetSunrise:int(useTime:Double = -1.0) {_exposeToLua}
