@@ -938,6 +938,11 @@ Type TNewsEventSportLeague extends TGameObject
 	                            "5_14", "5_20" ..
 	                           ]
 
+	Field seasonJustBegun:int = False
+    Field seasonStartMonth:int = 8
+    Field seasonStartDay:int = 14
+	Field matchesPerTimeSlot:int = 2
+
 	'store all seasons of that league
 	Field pastSeasons:TNewsEventSportSeasonData[]
 	Field currentSeason:TNewsEventSportSeason
@@ -1025,9 +1030,108 @@ Type TNewsEventSportLeague extends TGameObject
 
 	
 	'playoffs should ignore season breaks (season end / winter break)
+
+
 	Method GetNextMatchStartTime:Long(time:Long = 0, ignoreSeasonBreaks:int = False)
-		if time = 0 then time = Long(GetWorldTime().GetTimeGone())
-		return time + 3600
+		if time = 0 then time = GetWorldTime().GetTimeGone()
+		local weekday:int = GetWorldTime().GetWeekday( time )
+		'playtimes:
+		'0 monday:    x
+		'1 tuesday:   -
+		'2 wednesday: x
+		'3 thursday:  -
+		'4 friday:    x
+		'5 saturday:  x
+		'6 sunday:    -
+		local matchDay:int = 0
+		local matchHour:int = -1
+
+		'search the next possible time slot
+		For local t:string = EachIn timeSlots
+			local information:string[] = t.Split("_")
+			local weekdayIndex:int = int(information[0])
+			local hour:int = 0
+			if information.length > 1 then hour = int(information[1])
+
+			'the same day => next possible hour
+			if GetWorldTime().GetWeekday(time) = weekdayIndex
+				'earlier or at least before xx:05
+				if GetWorldTime().GetDayHour(time) < hour or (GetWorldTime().GetDayHour(time) = hour and GetWorldTime().GetDayMinute(time) < 5)
+					matchDay = 0
+					matchHour = hour
+					exit
+				endif
+			endif
+
+			'future day => earliest hour that day
+			if GetWorldTime().GetWeekday(time) < weekdayIndex
+				matchDay = weekdayIndex - GetWorldTime().GetWeekday(time)
+				matchHour = hour
+'if name = "Regionalliga" then print "  future day "+matchDay+" at " + matchHour+":00"+ "   " + t +"  weekdayIndex="+weekdayIndex +"  weekday="+GetWorldTime().GetWeekday(time)
+				exit
+			endif
+				
+			if matchHour <> -1 then exit
+		Next
+		'if nothing was found yet, we might have had a time after the
+		'last time slot -- so use the first one
+		if matchHour = -1 and timeSlots.length > 0
+			local information:string[] = timeSlots[0].Split("_")
+			matchDay = GetWorldTime().GetDaysPerWeek() + int(information[0]) - GetWorldTime().GetWeekday(time)
+			matchHour = 0
+			if information.length > 1 then matchHour = int(information[1])
+'if name = "Regionalliga" then print "  next week at day "+matchDay+" at " + matchHour+":00"
+		endif
+
+
+
+		local matchTime:Long = 0
+		'match time: 14. 8. - 14.5.
+		'winter break: 21.12. - 21.1.
+
+
+		local firstDayStartHour:int = 0
+		if timeSlots.length > 0
+			local firstTime:string[] = timeSlots[0].Split("_")
+			if firstTime.length > 1 then firstDayStartHour = int(firstTime[1])
+		endif
+
+
+		'always start at xx:05 (eases the pain for programmes)
+		matchTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(time) + matchDay, matchHour, 5)
+
+		'check if we are in winter now
+		if not ignoreSeasonBreaks
+			local winterBreak:int = False
+			local monthCode:int = int((RSet(GetWorldTime().GetMonth(matchTime),2) + RSet(GetWorldTime().GetDayOfMonth(matchTime),2)).Replace(" ", 0))
+			'from 5th of december
+			if 1220 < monthCode then winterBreak = True
+			'disabled - else we start maybe in april because 22th of january
+			'might be right after the latest hour of the game day
+			'till 22th of january
+			'if  122 > monthCode then winterBreak = True
+
+			if winterBreak and not seasonJustBegun
+				local t:Long
+				'next match starts in february
+				'take time of 2 months later (either february or march - so
+				'guaranteed to be the "next" year - when still in december)
+				t = matchTime + GetWorldTime().MakeRealTime(0, 2, 0, 0, 0)
+				'set time to "next year" begin of february - use "MakeRealTime"
+				'to get the time of the ingame "5th february" (or the next
+				'possible day)
+				t = GetWorldTime().MakeRealTime(GetWorldTime().GetYear(t), 2, 5, 0, 0)
+				'calculate next possible match time (after winter break)
+				matchTime = GetNextMatchStartTime(t)
+'if name = "Regionalliga" then print "   -> winterbreak delay"
+			endif
+		endif
+		
+		seasonJustBegun = False
+
+'if name = "Regionalliga" then print "   -> day="+GetWorldTime().GetDay(matchTime) +"  " +GetWorldTime().GetDayName(GetWorldTime().GetWeekday(matchTime))+" ["+GetWorldTime().GetWeekday(matchTime)+"]  at "+GetWorldTime().GetFormattedTime(matchTime)
+
+		return matchTime
 	End Method
 
 
@@ -1136,6 +1240,8 @@ endrem
 
 
 	Method StartSeason:int(time:Long = 0)
+		seasonJustBegun = True
+
 		if time = 0 then time = Long(GetWorldTime().GetTimeGone())
 
 		'archive old season
@@ -1357,7 +1463,7 @@ Type TNewsEventSportMatch extends TGameObject
 	'when the match takes place
 	Field matchTime:Long
 	'when a potential break takes place
-	Field breakTime:int = 45*60
+	Field breakTimes:int[] = [45*60]
 	Field breakDuration:int = 15*60
 
 	Field matchNumber:int
@@ -1367,18 +1473,41 @@ Type TNewsEventSportMatch extends TGameObject
 
 
 	Method Run:int()
-		local overtime:int = 60 * BiasedRandRange(0,8, 0.3)
-		duration :+ overtime
-		breakTime :+ floor(overtime/2)
+		AdjustDurationAndBreakTimes()
 
-		'calculate total scores
-		For local i:int = 0 until points.length
-			points[i] = BiasedRandRange(0, 8, 0.18)
-		Next
+		CalculateTotalScore()
+
 		'distribute scores along the match time
 		FillScores()
 		
 		matchState = STATE_RUN
+	End Method
+
+
+	Method AdjustDurationAndBreakTimes()
+		local overtime:int = 60 * BiasedRandRange(0,8, 0.3)
+		duration :+ overtime
+
+		if breakTimes.length > 0
+			local breakTime:int = duration / breakTimes.length
+			local overtimePart:int = overtime / breakTimes.length
+			for local i:int = 0 until breakTimes.length
+				breakTimes[i] = breakTime + overtimePart
+				'prepend previous breaktime
+				'ex. [0] = 30+2  [1] = 30+3 + 32   [2] = 30+2 + 65 ... 
+				if i > 0 then breakTimes[i] :+ breakTimes[i-1]
+			Next
+			'add rest of overtime to last break
+			breakTimes[breakTimes.length-1] :+ (overtime - overtimePart*breakTimes.length)
+		endif
+	End Method
+
+
+	Method CalculateTotalScore()
+		'calculate total scores
+		For local i:int = 0 until points.length
+			points[i] = BiasedRandRange(0, 8, 0.18)
+		Next
 	End Method
 
 
@@ -1433,7 +1562,16 @@ Type TNewsEventSportMatch extends TGameObject
 
 
 	Method GetMatchEndTime:Long()
-		return matchTime + duration + breakTime
+		return matchTime + duration + GetTotalBreakTime()
+	End Method
+
+
+	Method GetTotalBreakTime:int()
+		local res:int
+		For local i:int = 0 until breakTimes.length
+			res :+ breakTimes[i]
+		Next
+		return res
 	End Method
 	
 
@@ -1441,6 +1579,7 @@ Type TNewsEventSportMatch extends TGameObject
 		if not IsRun() then return 0
 
 		if GetRank(team) = 1 then return GetWinnerScore()
+		return GetLooserScore()
 	End Method
 
 
@@ -1528,7 +1667,12 @@ Type TNewsEventSportMatch extends TGameObject
 	
 
 	Method GetNameShort:string()
-		return "override GetReport()"
+		local result:string
+		for local i:int = 0 until points.length
+			if result <> "" then result :+ " - "
+			result :+ teams[i].GetTeamNameShort()
+		Next
+		return result
 	End Method
 
 
@@ -1631,8 +1775,12 @@ Type TNewsEventSportTeam
 	Field nameInitials:string
 	'eg. "Football club"
 	Field clubName:string
+	'eg. "Goalies"
+	Field clubNameSuffix:string
 	'eg. "FC"
 	Field clubNameInitials:string
+	'eg. "G"
+	Field clubNameSuffixInitials:string
 	'if singular, in German the "Der" is used, else "Die"
 	'-> "Der Klub" (the club), "Die Kicker" (the kickers)
 	Field clubNameSingular:int
@@ -1681,17 +1829,28 @@ Type TNewsEventSportTeam
 
 
 	Method GetTeamName:string()
-		return clubName + " " + name
+		if clubNameSuffix and clubName
+			return clubName + " " + name + " " + clubNameSuffix
+		elseif clubNameSuffix and not clubName
+			return name + " " + clubNameSuffix
+		else
+			return clubName + " " + name
+		endif
 	End Method
 
 
 	Method GetTeamNameShort:string()
-		return clubNameInitials + " " + name
+		'no short name possible for "Cityname Sharks"
+		if clubNameSuffix
+			return GetTeamName()
+		else
+			return clubNameInitials + " " + name
+		endif
 	End Method
 
 
 	Method GetTeamInitials:string()
-		return clubNameInitials + nameInitials
+		return clubNameInitials + nameInitials + clubNameSuffixInitials
 	End Method
 
 

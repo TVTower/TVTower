@@ -53,6 +53,15 @@
 					<league3 name="3. Liga" nameShort="3. L" />
 					<league4 name="Regionalliga" nameShort="RL" />
 				</soccer>
+				<icehockey leagueCount="3">
+					<league1 name="1. Bunte Eishockeyliga" nameShort="1. BEHL">
+						<team1 prefix="Crazy Hoggars|CH|s" name="Ronnsen" city="Chemnitz" nameInitials="R" /> 
+						<team2 prefix="Goal Snappers|GS|p" name="Själen" city="Själingen" nameInitials="S" /> 
+					</league1>
+					<league2 name="2. Eishockeyliga" nameShort="2. EHL" />
+					<league3 name="Eishockeyoberliga" nameShort="EHOL" />
+					<league4 name="Eishockeyregionalliga" nameShort="ERL" />
+				</icehockey>
 			</sports>
 
 			<!-- map with graytone values of population density,

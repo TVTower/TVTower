@@ -1,6 +1,7 @@
 ﻿SuperStrict
 Import "game.newsagency.base.bmx"
 Import "game.newsagency.sports.soccer.bmx"
+Import "game.newsagency.sports.icehockey.bmx"
 
 GetNewsAgency().AddNewsProvider( new TNewsAgencyNewsProvider_Weather )
 GetNewsAgency().AddNewsProvider( TNewsAgencyNewsProvider_Sport.GetInstance() )
@@ -33,9 +34,8 @@ End Function
 
 
 '=== CREATE SPORTS ===
-'SOCCER
-Global sportSoccer:TNewsEventSport_Soccer = New TNewsEventSport_Soccer
-GetNewsEventSportCollection().Add(sportSoccer)
+GetNewsEventSportCollection().Add( New TNewsEventSport_Soccer )
+GetNewsEventSportCollection().Add( New TNewsEventSport_IceHockey )
 
 
 'EventManager.registerListenerFunction( "Sport.StartPlayoffs", onStartPlayoffs )

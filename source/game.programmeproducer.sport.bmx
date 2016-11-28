@@ -140,7 +140,7 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 
 		'fuer jetzt: alle noch kommenden Spiele "verlizenzen"
 		local matchNumber:int = 0
-		For local match:TNewsEventSportMatch = EachIn league.GetUpcomingMatches(GetWorldTime().GetTimeGone(), -1)
+		For local match:TNewsEventSportMatch = EachIn league.GetUpcomingMatches(Long(GetWorldTime().GetTimeGone()), -1)
 			local matchLicence:TProgrammeLicence = GetInstance().CreateMatchProgrammelicence(match, programmeLicence)
 			'add to collections
 

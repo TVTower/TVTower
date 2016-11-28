@@ -103,7 +103,7 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 		result = result.replace("%LEAGUENAMESHORT%", league.nameShort)
 
 		if result.Find("%MATCHCOUNT%") >= 0
-			result = result.replace("%MATCHCOUNT%", league.GetUpcomingMatches(GetWorldTime().GetTimeGone(), -1).length)
+			result = result.replace("%MATCHCOUNT%", league.GetUpcomingMatches(long(GetWorldTime().GetTimeGone()), -1).length)
 		endif
 
 		if result.Find("%MATCHTIMES%") >= 0
