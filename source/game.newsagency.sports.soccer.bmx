@@ -7,7 +7,7 @@ Import "Dig/base.util.mersenne.bmx"
 
 '=== SOCCER ===
 Type TNewsEventSport_Soccer extends TNewsEventSport
-	Global teamsPerLeague:int = 4
+	Global teamsPerLeague:int = 6
 	'name | abbreviation | singular/plural 
 	Global teamPrefixes:string[] = ["Fussballverein|FV|s",..
 	                                "Fussballfreunde|FF|p", ..

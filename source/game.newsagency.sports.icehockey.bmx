@@ -58,6 +58,7 @@ Type TNewsEventSport_IceHockey extends TNewsEventSport
 
 	Method CreateDefaultLeagues:int()
 		local mapConfig:TData = GetStationMapCollection().GetSportData("icehockey", new TData)
+
 		'create 4 leagues (if not overridden)
 		local leagueCount:Int = mapConfig.GetInt("leagueCount", 4)
 
@@ -148,7 +149,7 @@ Type TNewsEventSport_IceHockey extends TNewsEventSport
 		local allUsedCityNames:string[]
 		local countryCodes:string[] = GetPersonGenerator().GetCountryCodes()
 		local emptyData:TData = new TData
-		local predefinedSportData:TData = GetStationMapCollection().GetSportData("soccer", emptyData)
+		local predefinedSportData:TData = GetStationMapCollection().GetSportData("icehockey", emptyData)
 'print predefinedSportData.ToString()
 		
 		For local leagueIndex:int = 0 until leagueCount
@@ -179,9 +180,9 @@ Type TNewsEventSport_IceHockey extends TNewsEventSport
 			For local i:int = 0 until cityNames.length
 				'use predefined data if possible
 				local predefinedTeamData:TData = predefinedLeagueData.GetData("team"+(i+1), emptyData)
-
 				local team:TNewsEventSportTeam
 				team = CreateTeam(predefinedTeamData.GetString("prefix", ""), ..
+				                  predefinedTeamData.GetString("suffix", ""), ..
 				                  predefinedTeamData.GetString("city", cityNames[i]), ..
 				                  predefinedTeamData.GetString("name", ""), ..
 				                  predefinedTeamData.GetString("nameInitials", "") ..
@@ -205,7 +206,6 @@ Type TNewsEventSport_IceHockey extends TNewsEventSport
 					endif
 				Next
 			Next
-			
 
 			local league:TNewsEventSportLeague_IceHockey = new TNewsEventSportLeague_IceHockey
 			league.Init((leagueIndex+1) + ". " + GetLocale("ICEHOCKEY_LEAGUE"), leagueIndex+".", teams)
