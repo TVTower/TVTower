@@ -999,8 +999,7 @@ Type TPersist
 												if not serializedFieldTypeID
 													'if it does not contain additional information
 													'it is "null" - which is what we could handle
-													if fieldNode.getChildren().Count() = 0 and ..
-													   fieldNode.GetContent() = ""
+													if not fieldNode.getChildren() or fieldNode.getChildren().Count() = 0 and fieldNode.GetContent() = ""
 
 														fieldObj.Set(obj, null)
 													else
