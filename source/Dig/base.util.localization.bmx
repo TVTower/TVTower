@@ -86,6 +86,29 @@ Type TLocalization
 	End Function
 
 
+	Function GetRandomString2:String(Keys:String[], limit:int=-1)
+		'skip "has"-check without a fallback
+		if not fallbackLanguage
+			if not currentLanguage
+				if Keys.length > 0 then Return Keys[0]
+				Return ""
+			endif
+		elseif fallbackLanguage <> currentLanguage
+			local hasOne:int = False
+			for local k:string = EachIn Keys
+				if currentLanguage.Has(k) then hasOne = true;exit
+			next
+			if hasOne
+				Return _GetRandomString2(currentLanguage, Keys)
+			else
+				Return _GetRandomString2(fallbackLanguage, Keys)
+			endif
+		endif
+
+		Return _GetRandomString2(currentLanguage, Keys)
+	End Function
+	
+
 	Function GetRandomString:String(Key:String, limit:int=-1)
 		'skip "has"-check without a fallback
 		if not fallbackLanguage
@@ -134,6 +157,48 @@ Type TLocalization
 				return currentLanguage.Get(Key + Rand(1, availableStrings-1)).replace("\n", Chr(13))
 			endif
 		Forever
+	End Function
+
+
+	Function _GetRandomString2:string(language:TLocalizationLanguage, keys:string[], limit:int=-1)
+		if not language
+			if keys.length > 0 then return keys[0]
+			return ""
+		endif
+		
+		local availableStrings:string[]
+		local subKey:string
+		for local k:string = EachIn keys
+			local availableSubKeys:int = 0
+			local foundEntry:int =  False
+			Repeat
+				subKey = k
+				'append a number except for first
+				if availableSubKeys > 0 then subKey :+ availableSubKeys
+				if currentLanguage.Get(subKey) <> subKey
+					availableSubKeys :+1
+					availableStrings :+ [subKey]
+					continue
+				else
+					'stop searching if nothing was found for this "key+number"
+					if availablesubKeys > 0 then exit
+				endif
+
+
+				availableSubKeys :+ 1
+			Forever
+		Next
+
+		'found no more entries
+		if availableStrings.length > 0
+			if availableStrings.length = 1
+				return currentLanguage.Get(availableStrings[0]).replace("\n", Chr(13))
+			else
+				return currentLanguage.Get(availableStrings[Rand(0, availableStrings.length-1)]).replace("\n", Chr(13))
+			endif
+		endif
+
+		return ""
 	End Function
 
 
@@ -306,6 +371,10 @@ End Function
 
 Function GetRandomLocale:string(baseKey:string)
 	return TLocalization.GetRandomString(baseKey)
+End Function
+
+Function GetRandomLocale2:string(baseKeys:string[])
+	return TLocalization.GetRandomString2(baseKeys)
 End Function
 
 
