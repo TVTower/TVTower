@@ -77,39 +77,38 @@ End Function
 
 Function onStartSeasonPart:Int(event:TEventBase)
 	Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
-	If sportSoccer.ContainsLeague(league)
-		Local time:Double = event.GetData().GetDouble("time")
 
-		if GetWorldTime().getDay(time) < GetWorldTime().GetStartDay() then return False
 
-		print "onStartSeasonPart: "+league.GetCurrentSeason().part+"/"+league.GetCurrentSeason().partMax+"  "+league.name
-	EndIf
+	Local time:Double = event.GetData().GetDouble("time")
+
+	if GetWorldTime().getDay(time) < GetWorldTime().GetStartDay() then return False
+
+	print "onStartSeasonPart: "+league.GetCurrentSeason().part+"/"+league.GetCurrentSeason().partMax+"  "+league.name
 End Function
 
 Function onFinishSeasonPart:Int(event:TEventBase)
 	Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
 
-	If sportSoccer.ContainsLeague(league)
-		Local time:Double = event.GetData().GetDouble("time")
 
-		if GetWorldTime().getDay(time) < GetWorldTime().GetStartDay() then return False
+	Local time:Double = event.GetData().GetDouble("time")
 
-		If league.GetCurrentSeason().part = league.GetCurrentSeason().partMax
-			Print "FINISH SEASON: "+league.name +"   day:"+GetWorldTime().GetDay(time)
-		Else
+	if GetWorldTime().getDay(time) < GetWorldTime().GetStartDay() then return False
+
+	If league.GetCurrentSeason().part = league.GetCurrentSeason().partMax
+		Print "FINISH SEASON: "+league.name +"   day:"+GetWorldTime().GetDay(time)
+	Else
 '			print "FINISH SEASON PART: "+league.seasonPart+"/"+league.seasonPartMax+"  "+league.name
-		EndIf
+	EndIf
 
-		'only final leaderboard
-		If league.GetCurrentSeason().part = league.GetCurrentSeason().partMax
-			Print "  " + "-------------------------"
-			Print "  Leaderboard "+league.name+":"
-			Print "  " + LSet("Score", 8) + LSet("Team", 40)
-			For Local rank:TNewsEventSportLeagueRank = EachIn league.GetLeaderboard()
-				Print "  " + LSet(rank.score, 8) + LSet(rank.team.nameInitials, 5)+" "+LSet(rank.team.name, 40)
-			Next
-			Print "  " + "-------------------------"
-		EndIf
+	'only final leaderboard
+	If league.GetCurrentSeason().part = league.GetCurrentSeason().partMax
+		Print "  " + "-------------------------"
+		Print "  Leaderboard "+league.name+":"
+		Print "  " + LSet("Score", 8) + LSet("Team", 40)
+		For Local rank:TNewsEventSportLeagueRank = EachIn league.GetLeaderboard()
+			Print "  " + LSet(rank.score, 8) + LSet(rank.team.nameInitials, 5)+" "+LSet(rank.team.name, 40)
+		Next
+		Print "  " + "-------------------------"
 	EndIf
 End Function
 
@@ -232,7 +231,7 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 			if nextLeague
 				localizeTitle.Set(Getlocale("SPORT_"+sport.name) +" [REL]: " +match.GetReportShort())
 			endif
-			localizeDescription.Set("Relegationsspiel:  " + league.nameShort+" -> "+nextLeague.nameShort+"~n"+match.GetReport())
+			localizeDescription.Set(GetRandomLocale2(["SPORT_PLAYOFFS_LONG", "SPORT_"+sport.name+"_PLAYOFFS_LONG"])+":  " + league.nameShort+" -> "+nextLeague.nameShort+"~n"+match.GetReport())
 		elseif not season
 			localizeDescription.Set("unbekannt:~n"+match.GetReport())
 		else

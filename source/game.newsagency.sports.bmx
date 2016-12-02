@@ -1689,6 +1689,28 @@ Type TNewsEventSportMatch extends TGameObject
 	End Method
 
 
+	Method GetMatchTimeGone:int(time:Long=-1)
+		if time = -1 then time = GetWorldTime().GetTimeGone()
+		local timeGone:Int = Max(0, time - GetMatchTime())
+		local matchTime:Int = timeGone
+
+		For local i:int = 0 until breakTimes.length
+			if timeGone >= breakTimes[i]
+				'currently within a break?
+				if timeGone <= breakTimes[i] + breakDuration
+					matchTime = breakTimes[i]
+				else
+					matchTime :- breakDuration
+				endif
+			else
+				'did not reach that breaktime yet
+				exit
+			endif
+		Next
+		return matchTime
+	End Method
+
+	
 	Method GetMatchResultText:string()
 		local singularPlural:string = "P"
 		if teams[0].clubNameSingular then singularPlural = "S"
@@ -1696,7 +1718,7 @@ Type TNewsEventSportMatch extends TGameObject
 		local result:string = ""
 
 		if points[0] > points[1]
-			result = GetRandomLocale("SPORT_TEAMREPORT_MATCHWIN_" + singularPlural)
+			result = GetRandomLocale2(["SPORT_SOCCER_TEAMREPORT_MATCHWIN_" + singularPlural, "SPORT_TEAMREPORT_MATCHWIN_" + singularPlural])
 		elseif points[0] < points[1]
 			result = GetRandomLocale("SPORT_TEAMREPORT_MATCHLOOSE_" + singularPlural)
 		else
@@ -1735,6 +1757,41 @@ Type TNewsEventSportMatch extends TGameObject
 		local result:string = value
 		if result.Find("%MATCHRESULT%") >= 0
 			result = result.Replace("%MATCHRESULT%", GetMatchResultText() )
+		endif
+
+		if result.Find("%MATCHSCORE") >= 0
+			for local i:int = 1 to teams.length
+				if result.Find("%MATCHSCORE"+i)
+					local points:int = GetScore( teams[i-1] )
+					if points = 1
+						result = result.Replace("%MATCHSCORE"+i+"TEXT%", points + GetLocale("SCORE_POINT") )
+					else
+						result = result.Replace("%MATCHSCORE"+i+"TEXT%", points + GetLocale("SCORE_POINTS") )
+					endif
+
+					result = result.Replace("%MATCHSCORE"+i+"%", points)
+				endif
+			Next
+		endif
+
+		if result.Find("%MATCHSCOREMAX")
+			local points:int = GetWinnerScore()
+			result = result.Replace("%MATCHSCOREMAX%", points)
+			if points = 1
+				result = result.Replace("%MATCHSCOREMAXTEXT%", points + GetLocale("SCORE_POINT"))
+			else
+				result = result.Replace("%MATCHSCOREMAXTEXT%", points + GetLocale("SCORE_POINTS"))
+			endif
+		endif
+
+		if result.Find("%MATCHSCOREDRAWGAME")
+			local points:int = GetDrawGameScore()
+			result = result.Replace("%MATCHSCOREDRAWGAME%", points)
+			if points = 1
+				result = result.Replace("%MATCHSCOREDRAWGAMETEXT%", points + GetLocale("SCORE_POINT"))
+			else
+				result = result.Replace("%MATCHSCOREDRAWGAMETEXT%", points + GetLocale("SCORE_POINTS"))
+			endif
 		endif
 
 		if result.Find("%MATCHKIND%") >= 0

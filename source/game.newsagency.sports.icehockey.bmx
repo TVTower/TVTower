@@ -209,18 +209,20 @@ Type TNewsEventSport_IceHockey extends TNewsEventSport
 
 			local league:TNewsEventSportLeague_IceHockey = new TNewsEventSportLeague_IceHockey
 			league.Init((leagueIndex+1) + ". " + GetLocale("ICEHOCKEY_LEAGUE"), leagueIndex+".", teams)
-			league.matchesPerTimeSlot = 3
+			league.matchesPerTimeSlot = 2
 			if leagueIndex = 0
 				league.timeSlots = [ ..
 				                    "1_15", "1_19", ..
+				                    "3_15", "3_19", ..
 				                    "6_15", "6_19" ..
 				                   ]
 				league.seasonStartDay = 16
 				league.seasonStartMonth = 9
 			elseif leagueIndex > 0
 				league.timeSlots = [ ..
-				                    "2_15", "1_19", ..
-				                    "7_15", "6_19" ..
+				                    "2_15", "2_19", ..
+				                    "4_15", "4_19", ..
+				                    "7_15", "7_19" ..
 				                   ]
 				league.seasonStartDay = 16
 				league.seasonStartMonth = 9
@@ -325,7 +327,7 @@ Type TNewsEventSportMatch_IceHockey extends TNewsEventSportMatch
 	Method CalculateTotalScore()
 		'calculate total scores
 		For local i:int = 0 until points.length
-			points[i] = BiasedRandRange(0, 8, 0.18)
+			points[i] = BiasedRandRange(0, 8, 0.30)
 		Next
 
 		local equal:int = False
@@ -356,22 +358,7 @@ Type TNewsEventSportMatch_IceHockey extends TNewsEventSportMatch
 
 
 	Method GetLiveReportShort:string(mode:string="", time:Long=-1)
-		if time = -1 then time = GetWorldTime().GetTimeGone()
-		local timeGone:Int = Max(0, time - GetMatchTime())
-		local matchTime:Int = timeGone
-		For local i:int = 0 until breakTimes.length
-			if timeGone >= breakTimes[i]
-				'currently within a break?
-				if timeGone <= breakTimes[i] + breakDuration
-					matchTime = breakTimes[i]
-				else
-					matchTime :- breakDuration
-				endif
-			else
-				'did not reach that breaktime yet
-				exit
-			endif
-		Next
+		local matchTime:Int = GetMatchTimeGone(time)
 		
 		local usePoints:int[] = GetMatchScore(matchTime)
 		local result:string

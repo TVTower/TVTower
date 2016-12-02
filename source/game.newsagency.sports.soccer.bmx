@@ -275,17 +275,7 @@ Type TNewsEventSportMatch_Soccer extends TNewsEventSportMatch
 
 
 	Method GetLiveReportShort:string(mode:string="", time:Long=-1)
-		if time = -1 then time = GetWorldTime().GetTimeGone()
-		local timeGone:Int = Max(0, time - GetMatchTime())
-		local matchTime:Int = timeGone
-		if timeGone >= breakTime
-			'currently within a break?
-			if timeGone <= breakTime + breakDuration
-				matchTime = breakTime
-			else
-				matchTime :- breakDuration
-			endif
-		endif
+		local matchTime:Int = GetMatchTimeGone(time)
 		
 		local usePoints:int[] = GetMatchScore(matchTime)
 		local result:string
