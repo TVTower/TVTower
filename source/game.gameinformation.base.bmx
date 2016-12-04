@@ -19,7 +19,7 @@ Type TGameInformationCollection
 
 
 	Method AddProvider(providerKey:string, provider:TGameInformationProvider)
-		providers.Insert(providerKey, provider)
+		providers.Insert(providerKey.ToUpper(), provider)
 	End Method
 	
 
@@ -32,7 +32,11 @@ Type TGameInformationCollection
 		if key="" and providerKey.Find(":") >= 0
 			local p:string[] = providerKey.split(":")
 			providerKey = p[0]
-			key = p[1]
+			if p.length > 1
+				key = p[1]
+			else
+				return "UNKNOWN_INFORMATION"
+			endif
 		endif
 		local provider:TGameInformationProvider = GetProvider(providerKey)
 		if provider then return provider.Get(key, params)

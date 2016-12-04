@@ -296,7 +296,7 @@
 				</group>
 				<date>
 					<!-- either add the game year (with space!), or nothing -->
-					<de> %GAMEYEAR%|</de>
+					<de> %WORLDTIME:YEAR%</de>
 				</date>
 			</variables>
 

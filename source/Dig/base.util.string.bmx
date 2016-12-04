@@ -105,11 +105,13 @@ Import "external/string_comp.bmx"
 Type StringHelper
 	'extracts and returns all placeholders in a text
 	'ex.: Hi my name is %NAME%
-	Function ExtractPlaceholders:string[](text:string, placeHolderChar:string="%")
+	Function ExtractPlaceholders:string[](text:string, placeHolderChar:string="%", stripPlaceHolderChar:int = False)
 		local result:string[]
 		local readingPlaceHolder:int = False
 		local currentPlaceHolder:string = ""
 		local char:string
+		'char for grouping placeholders: "%person:name%"
+		local splitterChar:int = Asc(":")
 		For local i:int = 0 until text.length
 			char = chr(text[i])
 			'found a potential placeholder start 
@@ -122,6 +124,9 @@ Type StringHelper
 				If char = placeHolderChar and currentPlaceHolder.find(placeHolderChar) >= 0
 					readingPlaceHolder = False
 					result :+ [currentPlaceHolder+char]
+					if stripPlaceHolderChar
+						result[result.length-1] = result[result.length-1][1 .. result[result.length-1].length-1]
+					endif
 					currentPlaceHolder = ""
 					'go on with next char
 					continue
@@ -129,7 +134,7 @@ Type StringHelper
 
 				'add the placeHolderChar and alphanumeric characters to
 				'the placeholder value
-				If IsAlphaNum(Asc(char)) or char = placeHolderChar
+				If IsAlphaNum(Asc(char)) or char = placeHolderChar or text[i] = splitterChar
 					currentPlaceHolder :+ char
 				'found something different
 				'ex.: a single placeholderChar ("The % of %ALL% is %X%")

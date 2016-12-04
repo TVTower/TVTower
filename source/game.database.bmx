@@ -1941,7 +1941,8 @@ Type TDatabaseLoader
 		local localized:TLocalizedString = new TLocalizedString
 		For local nodeLangEntry:TxmlNode = EachIn TxmlHelper.GetNodeChildElements(node)
 			local language:String = nodeLangEntry.GetName().ToLower()
-			local value:String = nodeLangEntry.getContent().Trim()
+			'do not trim, as this corrupts variables like "<de> %WORLDTIME:YEAR%</de>" (with space!)
+			local value:String = nodeLangEntry.getContent() '.Trim()
 
 			if value <> ""
 				localized.Set(value, language)

@@ -316,7 +316,7 @@ Type TWorldTimeInformationProviderBase extends TGameInformationProvider
 
 	Method Get:object(key:string, params:object)
 		Select key.ToLower()
-			Case "year"
+			Case "year", "gameyear"
 				return string( GetWorldTime().GetYear() )
 			Case "day"
 				return string( GetWorldTime().GetOnDay() )

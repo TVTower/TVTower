@@ -6,6 +6,12 @@ Import "Dig/base.util.string.bmx"
 Import "game.gameinformation.base.bmx" 'to access worldtime
 
 
+
+'By default templatevariables use the registered variables and placeholders
+'but also default ones via GetGameInformation(placeHolder.toLower(), "")
+'to fill in the corresponding data.
+'so when adding new placeholder-handlers, also check the gameinformation
+'system if it is containing them already
 Type TTemplateVariables
 	'Variables are used to replace certain %KEYWORDS% in title or
 	'description. They are stored as "%KEYWORD%"=>TLocalizedString
@@ -116,45 +122,60 @@ Type TTemplateVariables
 
 	Method ReplacePlaceholders:TLocalizedString(text:TLocalizedString)
 		local result:TLocalizedString = text.copy()
-
-		'do it 3 times, this allows for placeholder definitions within
-		'placeholders (at least some of them)!
-		for local i:int = 0 to 2
-			'for each defined language we check for existent placeholders
-			'which then get replaced by a random string stored in the
-			'variable with the same name
-			For local lang:string = EachIn text.GetLanguageKeys()
+'print "ReplacePlaceholders: "+ text.Get()
+		'for each defined language we check for existent placeholders
+		'which then get replaced by a random string stored in the
+		'variable with the same name
+		For local lang:string = EachIn text.GetLanguageKeys()
+			'do it 4 times, this allows for placeholder definitions within
+			'placeholders (at least some of them)!
+			local replacedPlaceholders:int = 0
+			for local i:int = 0 to 3
 				'use result already (to allow recursive-replacement)
 				local value:string = result.Get(lang)
 				local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%")
 
-				local replacement:TLocalizedString
-				for local placeHolder:string = EachIn placeHolders
-					'check if there is already a placeholder variable stored
-					replacement = GetPlaceholderVariableString(placeHolder, "", False)
-					'check if the variable is defined (this leaves global
-					'placeholders like %ACTOR% intact even without further
-					'variable definition)
-					if not replacement then replacement = GetVariableString(placeHolder, "", False)
-					'only use ONE option out of the group ("option1|option2|option3")
-					if replacement
-						replacement = GetRandomFromLocalizedString( replacement )
-						'if the parent stores this variable (too) then save
-						'the placeholder there instead of the children
-						'so other children could use the same placeholders
-						'(if there is no parent then "self" is returned)
-						local parent:TTemplateVariables = GetParentTemplateVariables()
-						if parent and parent.GetVariableString(placeHolder, "", False)
-							parent.AddPlaceHolderVariable(placeHolder, replacement)
-						else
-							AddPlaceHolderVariable(placeHolder, replacement)
+				if placeHolders.length > 0
+'if lang="de" then print "  "+lang+"  run "+i
+'if lang="de" then print "   -> value = " + value
+					local replacement:TLocalizedString
+					for local placeHolder:string = EachIn placeHolders
+						'check if there is already a placeholder variable stored
+						replacement = GetPlaceholderVariableString(placeHolder, "", False)
+						'check if the variable is defined (this leaves global
+						'placeholders like %ACTOR% intact even without further
+						'variable definition)
+						if not replacement then replacement = GetVariableString(placeHolder, "", False)
+						'only use ONE option out of the group ("option1|option2|option3")
+						if replacement
+							replacement = GetRandomFromLocalizedString( replacement )
+
+							'if the parent stores this variable (too) then save
+							'the placeholder there instead of the children
+							'so other children could use the same placeholders
+							'(if there is no parent then "self" is returned)
+							local parent:TTemplateVariables = GetParentTemplateVariables()
+							if parent and parent.GetVariableString(placeHolder, "", False)
+								parent.AddPlaceHolderVariable(placeHolder, replacement)
+							else
+								AddPlaceHolderVariable(placeHolder, replacement)
+							endif
+							'store the replacement in the value
+							value = value.replace(placeHolder, replacement.Get(lang))
+'if lang="de" then print "        replace: "+placeHolder+" => " + replacement.Get(lang)
+							replacedPlaceHolders :+ 1
 						endif
-						'store the replacement in the value
-						value = value.replace(placeHolder, replacement.Get(lang))
-					endif
-				Next
+					Next
+				endif
 				
 				result.Set(value, lang)
+'if placeHolders.length > 0
+'	if lang="de" then print "   <- value = " + value
+'endif
+				'skip further checks (0 placeholders or all possible replaced)
+				if placeHolders.length = 0 or (placeHolders.length > 0 and replacedPlaceHolders = 0)
+					exit
+				endif
 			Next
 		Next
 
@@ -163,14 +184,14 @@ Type TTemplateVariables
 		'loop over "text", but replace in "result"
 		For local lang:string = EachIn text.GetLanguageKeys()
 			local value:string = result.Get(lang)
-			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%")
+			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%", True)
 			for local placeHolder:string = EachIn placeHolders
-				local replacement:string = string(GetGameInformation(placeHolder.toLower(), ""))
+				local replacement:string = string(GetGameInformation(placeHolder.toLower().replace("%", ""), ""))
 				if replacement = "UNKNOWN_INFORMATION"
 					replacement = placeHolder
 				endif
 
-				value = value.replace(placeHolder, replacement)
+				value = value.replace("%"+placeHolder+"%", replacement)
 			Next
 
 			result.Set(value, lang)
