@@ -1294,6 +1294,10 @@ Type TDatabaseLoader
 			scriptTemplate.parentScriptGUID = ""
 		endif
 
+		if parentScriptTemplate
+			scriptTemplate.parentScriptGUID = parentScriptTemplate.GetGUID()
+		endif
+
 
 		'=== LOCALIZATION DATA ===
 		scriptTemplate.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
@@ -1443,6 +1447,10 @@ Type TDatabaseLoader
 
 
 		'=== VARIABLES ===
+		'create if missing, create even without "<variables>" as the script
+		'might reference parental variables
+		scriptTemplate.CreateTemplateVariables()
+
 		local nodeVariables:TxmlNode = xml.FindChild(node, "variables")
 		For local nodeVariable:TxmlNode = EachIn xml.GetNodeChildElements(nodeVariables)
 			'each variable is stored as a localizedstring
@@ -1452,8 +1460,6 @@ Type TDatabaseLoader
 			'skip invalid
 			if not varName or not varString then continue
 
-			'create if missing
-			scriptTemplate.CreateTemplateVariables()
 			scriptTemplate.templateVariables.AddVariable("%"+varName+"%", varString)
 		Next
 		

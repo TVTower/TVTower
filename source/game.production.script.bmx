@@ -75,6 +75,17 @@ Type TScriptCollection Extends TGameObjectCollection
 	End Method
 
 
+	Method GenerateFromTemplate:TScript(templateGUID:string)
+		local template:TScriptTemplate = GetScriptTemplateCollection().GetByGUID(templateGUID)
+		if not template then return Null
+		
+		local script:TScript = TScript.CreateFromTemplate(template)
+		script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
+		Add(script)
+		return script
+	End Method
+
+
 	Method GenerateRandom:TScript(avoidTemplateGUIDs:string[])
 		local template:TScriptTemplate
 		if not avoidTemplateGUIDs or avoidTemplateGUIDs.length = 0
