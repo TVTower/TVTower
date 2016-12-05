@@ -27,7 +27,7 @@ Type TStationMapCollection
 	Field stationRadius:Int = 18
 	Field population:Int = 0 {nosave}
 	Field populationmap:Int[,] {nosave}
-	Field populationImage:TImage
+	Field populationImage:TImage {nosave}
 	Field populationMapSize:TVec2D = New TVec2D.Init() {nosave}
 	Field config:TData = New TData
 	Field cityNames:TData = New TData

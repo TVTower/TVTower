@@ -269,6 +269,10 @@ function AITask:getStrategicPriority()
 	return 1.0
 end
 
+function AITask:getSituationPriority()
+	return self.SituationPriority
+end
+
 function AITask:getWorldTicks()
 	local player = _G["globalPlayer"]
 	if player == nil then
@@ -400,12 +404,12 @@ function AITask:RecalcPriority()
 	local TicksDiff = math.round(self:getWorldTicks() - self.LastDoneWorldTicks)
 	local requisitionPriority = player:GetRequisitionPriority(self.Id)
 
-	local calcPriority = (self.BasePriority + self.SituationPriority) * Ran1 + requisitionPriority
+	local calcPriority = (self.BasePriority + self:getSituationPriority()) * Ran1 + requisitionPriority
 	local timeFactor = (20 + TimeDiff) / 20
 	local ticksFactor = (20 + TicksDiff) / 20
 
-	local timePriority = self.getStrategicPriority()  * calcPriority * timeFactor
-	local ticksPriority = self.getStrategicPriority()  * calcPriority * ticksFactor
+	local timePriority = self:getStrategicPriority()  * calcPriority * timeFactor
+	local ticksPriority = self:getStrategicPriority()  * calcPriority * ticksFactor
 
 	self.CurrentPriority = math.max(timePriority, ticksPriority)
 

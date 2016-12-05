@@ -31,6 +31,16 @@ function TaskRoomBoard:GetNextJobInTargetRoom()
 --	self:SetWait()
 	self:SetDone()
 end
+
+function TaskRoomBoard:getSituationPriority()
+	local maxTerrorLevel = math.max(self.FRDubanTerrorLevel, self.VRDubanTerrorLevel)
+	if maxTerrorLevel >= 3 then
+		self.SituationPriority = math.max(self.SituationPriority, maxTerrorLevel * 8)
+	end
+
+	return self.SituationPriority
+end
+
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -49,40 +59,41 @@ end
 
 function JobChangeRoomSigns:Tick()	
     for index = 0, TVT.rb_GetSignCount() - 1, 1 do
-		local respo = TVT.rb_GetSignAtIndex(index)		
-		local sign = TVT.rb_GetSignAtIndex(index).data		
-		if (sign.GetOwner() == TVT.ME) then
-			--Noch am richtigen Platz?
-			if not sign.IsAtOriginalPosition() then
-				--wieder alles in Ordnung bringen
-				TVT.rb_SwitchSignPositions(sign.GetSlot(), sign.GetFloor(), sign.GetOriginalSlot(), sign.GetOriginalFloor())
-				kiMsg("Eigenes Raumschild (" .. sign .. ") wieder an den richtigen Platz gehängt")
+		local response = TVT.rb_GetSignAtIndex(index)
+		if response.result == TVT.RESULT_OK then
+			local sign = response.data
+			if (sign ~= nil and sign.GetOwner() == TVT.ME) then
+				--Noch am richtigen Platz?
+				if sign.IsAtOriginalPosition() == 0 then
+					kiMsg("Haenge Raumschild (" .. sign.GetOwnerName() .. ") wieder an den richtigen Platz: " .. sign.GetSlot() .. "/" .. sign.GetFloor() .. " -> " .. sign.GetOriginalSlot() .. "/" .. sign.GetOriginalFloor())
+					--wieder alles in Ordnung bringen
+					TVT.rb_SwitchSignPositions(sign.GetSlot(), sign.GetFloor(), sign.GetOriginalSlot(), sign.GetOriginalFloor())
+				end
 			end
 		end
     end
 		
 	--TODO: Gerichtsvollzieher auf den Gegner hetzen
 	--TODO: Schilder absichtlich durcheinander bringen
+
+	local player = _G["globalPlayer"]
 	
-	if self.Task.FRDubanTerrorLevel >= 3 then
+	if self.Task.FRDubanTerrorLevel >= 2 then
 		local sign = TVT.rb_GetFirstSignOfRoom(TVT.ROOM_FRDUBAN).data
-		local player = _G["globalPlayer"]
 		local enemyId = player.GetNextEnemyId()
 		local roomId = self:GetEnemyRoomId(enemyId)
 		local roomSign = TVT.rb_GetFirstSignOfRoom(roomId).data
 		TVT.rb_SwitchSigns(sign, roomSign)
-		--TVT.rb_SwitchSignsByID(sign:GetID(), roomSign:GetID())
-		kiMsg("Verschiebe FRDuban-Schild auf Raum " .. roomId .. " des Spielers " .. enemyId )
+		kiMsg("Verschiebe FRDuban-Schild auf Raum " .. roomId .. " (" .. roomSign.GetOwnerName() ..") des Spielers " .. enemyId )
 	end
-	
-	if self.Task.VRDubanTerrorLevel >= 3 then
+
+	if self.Task.VRDubanTerrorLevel >= 2 then
 		local sign = TVT.rb_GetFirstSignOfRoom(TVT.ROOM_VRDUBAN).data
-		local player = _G["globalPlayer"]
 		local enemyId = player.GetNextEnemyId()
 		local roomId = self:GetEnemyRoomId(enemyId)
 		local roomSign = TVT.rb_GetFirstSignOfRoom(roomId).data
 		TVT.rb_SwitchSigns(sign, roomSign)
-		kiMsg("Verschiebe  VRDuban-Schild auf Raum " .. roomId .. " des Spielers " .. enemyId )
+		kiMsg("Verschiebe  VRDuban-Schild auf Raum " .. roomId .. " (" .. roomSign.GetOwnerName() ..") des Spielers " .. enemyId )
 	end
 	
 	self.Status = JOB_STATUS_DONE

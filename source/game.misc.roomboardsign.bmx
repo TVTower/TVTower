@@ -452,10 +452,8 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 
 
 	Method IsAtOriginalPosition:int() {_exposeToLua}
-		'startPos is the position of the undragged sign,
-		'"originalPos" contains the position before potential switches
-		if door.doorSlot <> GetRoomBoard().GetSlot(int(StartPos.GetX())) then return False
-		if door.onFloor <> GetRoomBoard().GetFloor(int(StartPos.GetY())) then return False
+		if GetSlot() <> GetOriginalSlot() then return False
+		if GetFloor() <> GetOriginalFloor() then return False
 
 		return True
 	End Method
@@ -463,6 +461,11 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 
 	Method GetOwner:int() {_exposeToLua}
 		return door.GetOwner()
+	End Method
+
+
+	Method GetOwnerName:string() {_exposeToLua}
+		return door.GetOwnerName()
 	End Method
 
 
