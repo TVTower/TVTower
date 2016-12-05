@@ -297,6 +297,14 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 
 		'draw map
 		GetSpriteFromRegistry("map_Surface").Draw(0,0)
+
+		'when selecting a station position with the mouse
+		if stationMapMode = 1
+			SetAlpha 0.8 + 0.2 * Sin(Millisecs()/6)
+			DrawImage(GetStationMapCollection().populationImage, 0,0)
+			SetAlpha 1.0
+		endif
+
 		'overlay with alpha channel screen
 		GetSpriteFromRegistry(stationMapBackgroundSpriteName).Draw(0,0)
 

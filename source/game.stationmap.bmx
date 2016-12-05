@@ -27,6 +27,7 @@ Type TStationMapCollection
 	Field stationRadius:Int = 18
 	Field population:Int = 0 {nosave}
 	Field populationmap:Int[,] {nosave}
+	Field populationImage:TImage
 	Field populationMapSize:TVec2D = New TVec2D.Init() {nosave}
 	Field config:TData = New TData
 	Field cityNames:TData = New TData
@@ -181,6 +182,10 @@ Type TStationMapCollection
 		populationMap = New Int[pix.width, pix.height]
 		populationMapSize.SetXY(pix.width, pix.height)
 
+
+		local maxBrightnessPop:int = getPopulationForBrightness(0)
+		local minBrightnessPop:int = getPopulationForBrightness(255)
+
 		'read all inhabitants of the map
 		Local i:Int, j:Int, c:Int, s:Int = 0
 		population = 0
@@ -188,10 +193,33 @@ Type TStationMapCollection
 			For i = 0 To pix.width-1
 				c = pix.ReadPixel(i, j)
 				If ARGB_ALPHA(pix.ReadPixel(i, j)) = 0 Then Continue
-				populationmap[i, j] = getPopulationForBrightness( ARGB_RED(c) )
+				local brightness:int = ARGB_RED(c)
+				populationmap[i, j] = getPopulationForBrightness( brightness )
+
+				'store pixel with lower alpha for lower population
+				'-20 is the base level to avoid colorization of "nothing"
+				local brightnessRate:Float = Min(1.0, 2 * populationmap[i, j] / float(maxBrightnessPop))
+				if brightnessRate < 0.1
+					brightnessRate = 0
+				else
+					brightnessRate :* (1.0 - brightness/255.0)
+					brightnessRate = brightnessRate^0.25
+
+'					if brightnessRate < 0.15
+'						brightnessRate :* 0.5*brightnessRate
+'					endif
+				endif
+
+'				pix.WritePixel(i,j, ARGB_Color(brightnessRate*255, (1.0-brightnessRate)*255, 0, 0))
+				pix.WritePixel(i,j, ARGB_Color(brightnessRate*255, brightnessRate*255, 0.2 * brightnessRate*255, 0))
+
 				population:+ populationmap[i, j]
 			Next
 		Next
+
+		'load the manipulated population image
+		populationImage = LoadImage(pix)
+
 		TLogger.Log("TGetStationMapCollection().CreatePopulationMap", "calculated a population of:" + population + " in "+stopWatch.GetTime()+"ms", LOG_DEBUG | LOG_LOADING)
 	End Method
 
