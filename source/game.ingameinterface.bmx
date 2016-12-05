@@ -58,7 +58,7 @@ Type TInGameInterface
 	Method Init:TInGameInterface()
 		if not chat
 			'TLogger.Log("TGame", "Creating ingame GUIelements", LOG_DEBUG)
-			chat = New TGUIGameChat.Create(New TVec2D.Init(518, 404), New TVec2D.Init(275,180), "InGame")
+			chat = New TGUIGameChat.Create(New TVec2D.Init(515, 404), New TVec2D.Init(278,180), "InGame")
 			'keep the chat entries visible
 			'chat.setDefaultHideEntryTime(10000)
 			chat.setOption(GUI_OBJECT_CLICKABLE, False)

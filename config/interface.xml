@@ -58,7 +58,7 @@
 		<spritepack name="gfx_interface_ingamechat_elements">
  			<url>res/gfx/interface/interface_ingamechat.png</url>
  			<children>
-				<child name="gfx_interface_ingamechat_bg"					x="0"	y="0" w="290" h="215" />
+				<child name="gfx_interface_ingamechat_bg"					x="0"	y="0" w="293" h="215" />
 				<child name="gfx_interface_ingamechat_input"				x="378"	y="21" w="77" h="32" ninepatch="true" />
 				<child name="gfx_interface_ingamechat_input.active"			x="300"	y="21" w="77" h="32" ninepatch="true" />
 				<child name="gfx_interface_ingamechat_input.hover"			x="300"	y="21" w="77" h="32" ninepatch="true" />
