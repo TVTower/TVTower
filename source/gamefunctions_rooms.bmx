@@ -26,7 +26,6 @@ End Function
 Include "game.screen.stationmap.bmx"
 Include "game.screen.programmeplanner.bmx"
 Include "game.screen.financials.bmx"
-Include "game.screen.statistics.bmx"
 
 'Office: handling the players room
 Type RoomHandler_Office extends TRoomHandler
@@ -55,7 +54,7 @@ Type RoomHandler_Office extends TRoomHandler
 		TScreenHandler_Financials.Initialize()
 		TScreenHandler_ProgrammePlanner.Initialize()
 		TScreenHandler_StationMap.Initialize()
-		TScreenHandler_Statistics.Initialize()		
+		TScreenHandler_OfficeStatistics.GetInstance().Initialize()		
 		TScreenHandler_OfficeAchievements.GetInstance().Initialize()		
 
 
@@ -106,7 +105,7 @@ Type RoomHandler_Office extends TRoomHandler
 		TScreenHandler_Financials.SetLanguage()
 		TScreenHandler_ProgrammePlanner.SetLanguage()
 		TScreenHandler_StationMap.SetLanguage()
-		TScreenHandler_Statistics.SetLanguage()
+		TScreenHandler_OfficeStatistics.GetInstance().SetLanguage()
 		TScreenHandler_OfficeAchievements.GetInstance().SetLanguage()
 	End Method
 

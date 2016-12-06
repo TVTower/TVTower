@@ -23,6 +23,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 	Global hoveredGuiAchievement:TGUIAchievementListItem
 
+	Global LS_office_achievements:TLowerString = TLowerString.Create("office_achievements")	
 	Global _eventListeners:TLink[]
 	Global _instance:TScreenHandler_OfficeAchievements
 
@@ -194,7 +195,6 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 		achievementList.Resize(-1, -1)
 	End Method
 
-global LS_office_achievements:TLowerString = TLowerString.Create("office_achievements")	
 
 	Method Update()
 		'gets refilled in gui-updates

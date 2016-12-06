@@ -1,8 +1,17 @@
-Type TScreenHandler_Statistics
-	Global previousDayButton:TGUIArrowButton
-	Global nextDayButton:TGUIArrowButton
-	Global showDay:int = 0
-	Global hoveredHour:int = -1
+SuperStrict
+Import "Dig/base.gfx.gui.arrowbutton.bmx"
+Import "game.screen.base.bmx"
+
+
+Type TScreenHandler_OfficeStatistics extends TScreenHandler
+	Field roomOwner:int = 0
+
+	Field previousDayButton:TGUIArrowButton
+	Field nextDayButton:TGUIArrowButton
+	Field showDay:int = 0
+	Field hoveredHour:int = -1
+
+	Global LS_officeStatisticsScreen:TLowerString = TLowerString.Create("officeStatisticsScreen")
 
 	Global programmeColor:TColor = new TColor.Create(110,180,100)
 	Global newsColor:TColor = new TColor.Create(110,100,180)
@@ -21,9 +30,16 @@ Type TScreenHandler_Statistics
 	Global valueBG2:TSprite
 
 	Global _eventListeners:TLink[]
+	Global _instance:TScreenHandler_OfficeStatistics
 
 
-	Function Initialize:int()
+	Function GetInstance:TScreenHandler_OfficeStatistics()
+		if not _instance then _instance = new TScreenHandler_OfficeStatistics
+		return _instance
+	End Function
+
+
+	Method Initialize:int()
 		local screen:TScreen = ScreenCollection.GetScreen("screen_office_statistics")
 		if not screen then return False
 
@@ -46,24 +62,30 @@ Type TScreenHandler_Statistics
 		'reset show day when entering a screen
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterScreen, screen) ]
 
+
 		'to update/draw the screen
-		_eventListeners :+ TRoomHandler._RegisterScreenHandler( onUpdate, onDraw, screen )
+		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )
 
 		'(re-)localize content
 		SetLanguage()
-	End Function
+	End Method
 
 
-	Function SetLanguage()
+	Method SetLanguage()
 		'nothing up to now
-	End Function
+	End Method
+
+
+	Method AbortScreenActions:Int()
+		'nothing yet
+	End Method
 
 
 	'=== EVENTS ===
 
 	'reset statistics show day to current when entering the screen
 	Function onEnterScreen:int( triggerEvent:TEventBase )
-		showDay = GetWorldTime().GetDay()
+		GetInstance().showDay = GetWorldTime().GetDay()
 	End function
 
 	
@@ -71,17 +93,52 @@ Type TScreenHandler_Statistics
 		local arrowButton:TGUIArrowButton = TGUIArrowButton(triggerEvent.GetSender())
 		if not arrowButton then return False
 
-		if arrowButton = nextDayButton then showDay :+ 1
-		if arrowButton = previousDayButton then showDay :- 1
+		if arrowButton = GetInstance().nextDayButton then GetInstance().showDay :+ 1
+		if arrowButton = GetInstance().previousDayButton then GetInstance().showDay :- 1
 	End Function
 
 
-global LS_officeStatisticsScreen:TLowerString = TLowerString.Create("officeStatisticsScreen")
 	Function onDraw:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
+		local room:TOwnedGameObject = TOwnedGameObject( triggerEvent.GetData().get("room") )
 		if not room then return 0
-		'=== CONFIG ===
+
+		GetInstance().roomOwner = room.owner
+
+		GetInstance().Render()
+	End Function
 	
+
+	Function onUpdate:int( triggerEvent:TEventBase )
+		local room:TOwnedGameObject = TOwnedGameObject( triggerEvent.GetData().get("room") )
+		if not room then return 0
+
+		GetInstance().roomOwner = room.owner
+
+		GetInstance().Update()
+	End Function
+
+
+	Method Update()
+		'disable "previou" or "newxt" button of finance display
+		if showDay = 0 or showDay = GetWorldTime().GetStartDay()
+			previousDayButton.Disable()
+		else
+			previousDayButton.Enable()
+		endif
+
+		if showDay = GetWorldTime().GetDay()
+			nextDayButton.Disable()
+		else
+			nextDayButton.Enable()
+		endif
+
+		GetGameBase().cursorstate = 0
+		GuiManager.Update( LS_officeStatisticsScreen)
+	End Method
+	
+
+	Method Render()
+		'=== CONFIG ===
 		'to center it to table header according "font Baseline"
 		local captionHeight:int = 20
 		local startY:int
@@ -159,11 +216,11 @@ global LS_officeStatisticsScreen:TLowerString = TLowerString.Create("officeStati
 				local audienceRanks:int[]
 				if hoveredHour >= 0
 					if progNewsIterator = 1
-						audienceResult = dailyBroadcastStatistic.GetAudienceResult(room.owner, hoveredHour)
-						audienceRanks = dailyBroadcastStatistic.GetAudienceRanking(room.owner, hoveredHour)
+						audienceResult = dailyBroadcastStatistic.GetAudienceResult(roomOwner, hoveredHour)
+						audienceRanks = dailyBroadcastStatistic.GetAudienceRanking(roomOwner, hoveredHour)
 					else
-						audienceResult = dailyBroadcastStatistic.GetNewsAudienceResult(room.owner, hoveredHour)
-						audienceRanks = dailyBroadcastStatistic.GetNewsAudienceRanking(room.owner, hoveredHour)
+						audienceResult = dailyBroadcastStatistic.GetNewsAudienceResult(roomOwner, hoveredHour)
+						audienceRanks = dailyBroadcastStatistic.GetNewsAudienceRanking(roomOwner, hoveredHour)
 					endif
 				endif
 
@@ -183,7 +240,7 @@ global LS_officeStatisticsScreen:TLowerString = TLowerString.Create("officeStati
 				else
 					local title:string = audienceResult.GetTitle()
 					if audienceResult.broadcastMaterial
-						local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan(room.owner)
+						local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan(roomOwner)
 						'real programme
 						If TProgramme(audienceResult.broadcastMaterial)
 							Local programme:TProgramme = TProgramme(audienceResult.broadcastMaterial)
@@ -279,8 +336,8 @@ global LS_officeStatisticsScreen:TLowerString = TLowerString.Create("officeStati
 
 
 			'first get the maximum value so we know how to scale the rest
-			maxValue = dailyBroadcastStatistic.GetBestAudience(room.owner).GetTotalSum()
-			maxValue = max(maxValue, dailyBroadcastStatistic.GetBestNewsAudience(room.owner).GetTotalSum())
+			maxValue = dailyBroadcastStatistic.GetBestAudience(roomOwner).GetTotalSum()
+			maxValue = max(maxValue, dailyBroadcastStatistic.GetBestNewsAudience(roomOwner).GetTotalSum())
 
 
 			local slot:int				= 0
@@ -354,9 +411,9 @@ global LS_officeStatisticsScreen:TLowerString = TLowerString.Create("officeStati
 				
 				For local i:Int = 0 To maxHour
 					if broadcastType = TVTBroadcastMaterialType.PROGRAMME
-						audienceResult = dailyBroadcastStatistic.GetAudienceResult(room.owner, i)
+						audienceResult = dailyBroadcastStatistic.GetAudienceResult(roomOwner, i)
 					else
-						audienceResult = dailyBroadcastStatistic.GetNewsAudienceResult(room.owner, i)
+						audienceResult = dailyBroadcastStatistic.GetNewsAudienceResult(roomOwner, i)
 					endif
 					'skip not yet broadcasted programme
 					if broadcastType = TVTBroadcastMaterialType.PROGRAMME
@@ -395,27 +452,7 @@ global LS_officeStatisticsScreen:TLowerString = TLowerString.Create("officeStati
 		endif
 
 		GuiManager.Draw( LS_officeStatisticsScreen )
-	End Function
+	End Method
+
 	
-
-	Function onUpdate:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
-		if not room then return 0
-
-		'disable "previou" or "newxt" button of finance display
-		if showDay = 0 or showDay = GetWorldTime().GetStartDay()
-			previousDayButton.Disable()
-		else
-			previousDayButton.Enable()
-		endif
-
-		if showDay = GetWorldTime().GetDay()
-			nextDayButton.Disable()
-		else
-			nextDayButton.Enable()
-		endif
-
-		GetGameBase().cursorstate = 0
-		GuiManager.Update( LS_officeStatisticsScreen)
-	End Function
 End Type
