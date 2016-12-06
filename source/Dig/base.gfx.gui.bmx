@@ -66,6 +66,8 @@ Type TGUIManager
 	Field List:TList = CreateList()
 	'contains dragged objects (above normal)
 	Field ListDragged:TList = CreateList()
+	'contains objects which need to get informed because of changed appearance 
+	Field elementsWithChangedAppearance:TList = CreateList()
 
 	'=== UPDATE STATE PROPERTIES ===
 
@@ -482,11 +484,29 @@ endrem
 	End Method
 
 
+	Method UpdateElementswithChangedAppearance()
+		If elementsWithChangedAppearance.Count() > 0 
+			For local obj:TGUIObject = EachIn elementsWithChangedAppearance.Copy()
+				If obj.isAppearanceChanged()
+					obj.onStatusAppearanceChange()
+					obj.SetAppearanceChanged(False)
+				EndIf
+			Next
+		EndIf
+	End Method
+
+
 	Method Update(State:TLowerString = Null, fromZ:Int=-1000, toZ:Int=-1000, updateTypes:Int=GUIMANAGER_TYPES_ALL)
 		'_lastUpdateTick :+1
 		'if _lastUpdateTick >= 100000 then _lastUpdateTick = 0
 
 		currentState = State
+
+		'this needs to get run in Draw() and Update() as you might else
+		'run into discrepancies (drawn without updates according to new
+		'visuals)
+		UpdateElementswithChangedAppearance()
+
 
 		'store a list of special elements - maybe the list gets changed
 		'during update... some elements will get added/destroyed...
@@ -549,6 +569,12 @@ endrem
 		'if _lastDrawTick >= 100000 then _lastDrawTick = 0
 
 		currentState = State
+
+		'this needs to get run in Draw() and Update() as you might else
+		'run into discrepancies (drawn without updates according to new
+		'visuals)
+		UpdateElementswithChangedAppearance()
+
 
 		If GUIMANAGER_TYPES_NONDRAGGED & drawTypes
 			For Local obj:TGUIobject = EachIn List
@@ -1132,6 +1158,9 @@ Type TGUIobject
 	Method SetAppearanceChanged:Int(bool:Int)
 		SetStatus(GUI_OBJECT_STATUS_APPEARANCE_CHANGED, bool)
 
+		'remove from the list (if added previously)
+		GuiManager.elementsWithChangedAppearance.Remove( self ) 
+
 		If bool = True
 			'inform parent (and its grandparent and...)
 			If _parent And Not _parent.IsAppearanceChanged()
@@ -1144,6 +1173,9 @@ Type TGUIobject
 					child.SetAppearanceChanged(bool)
 				Next
 			EndIf
+
+			'append to the "to inform" list
+			GuiManager.elementsWithChangedAppearance.AddLast( self ) 
 		EndIf
 	End Method
 
@@ -1605,13 +1637,6 @@ Type TGUIobject
 
 
 	Method Draw()
-		'if appearance changed since last update tick: inform widget
-		'(this is done in update() _and_ draw() to avoid visual discrepancies)
-		If isAppearanceChanged()
-			onStatusAppearanceChange()
-			SetAppearanceChanged(False)
-		EndIf
-
 		If _customDraw
 			_customDraw(Self)
 		Else
@@ -1708,16 +1733,20 @@ Type TGUIobject
 		screenRect = Null
 
 
+		'to recognize clicks/hovers/actions on child elements:
+		'ask them first!
+		UpdateChildren()
+
+
 		'if appearance changed since last update tick: inform widget
+		'Attention: this is also called via GUIManager.Update()/Draw()
+		'           but we just do it here too, in case you manually update
+		'           the widget (important: this does not resolve the issue
+		'           if child elements have changed appearance too) 
 		If isAppearanceChanged()
 			onStatusAppearanceChange()
 			SetAppearanceChanged(False)
 		EndIf
-
-	
-		'to recognize clicks/hovers/actions on child elements:
-		'ask them first!
-		UpdateChildren()
 
 
 		If GUIManager._ignoreMouse Then Return False

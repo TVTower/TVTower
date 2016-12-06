@@ -42,7 +42,7 @@ Type TProductionManager
 
 	Function onSavegameLoad:int(triggerEvent:TEventBase)
 		if GetProductionCompanyBaseCollection().GetCount() = 0
-			CreateProductionCompanies
+			CreateProductionCompanies()
 		endif
 	End Function
 	
