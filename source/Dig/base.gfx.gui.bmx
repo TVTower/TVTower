@@ -1605,6 +1605,13 @@ Type TGUIobject
 
 
 	Method Draw()
+		'if appearance changed since last update tick: inform widget
+		'(this is done in update() _and_ draw() to avoid visual discrepancies)
+		If isAppearanceChanged()
+			onStatusAppearanceChange()
+			SetAppearanceChanged(False)
+		EndIf
+
 		If _customDraw
 			_customDraw(Self)
 		Else
@@ -1699,10 +1706,6 @@ Type TGUIobject
 
 	Method Update:Int()
 		screenRect = Null
-	
-		'to recognize clicks/hovers/actions on child elements:
-		'ask them first!
-		UpdateChildren()
 
 
 		'if appearance changed since last update tick: inform widget
@@ -1710,6 +1713,11 @@ Type TGUIobject
 			onStatusAppearanceChange()
 			SetAppearanceChanged(False)
 		EndIf
+
+	
+		'to recognize clicks/hovers/actions on child elements:
+		'ask them first!
+		UpdateChildren()
 
 
 		If GUIManager._ignoreMouse Then Return False

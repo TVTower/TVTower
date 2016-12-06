@@ -1761,12 +1761,12 @@ Type TNewsEventSportMatch extends TGameObject
 
 		if result.Find("%MATCHSCORE") >= 0
 			for local i:int = 1 to teams.length
-				if result.Find("%MATCHSCORE"+i)
+				if result.Find("%MATCHSCORE"+i) >= 0
 					local points:int = GetScore( teams[i-1] )
 					if points = 1
-						result = result.Replace("%MATCHSCORE"+i+"TEXT%", points + GetLocale("SCORE_POINT") )
+						result = result.Replace("%MATCHSCORE"+i+"TEXT%", points + " " + GetLocale("SCORE_POINT") )
 					else
-						result = result.Replace("%MATCHSCORE"+i+"TEXT%", points + GetLocale("SCORE_POINTS") )
+						result = result.Replace("%MATCHSCORE"+i+"TEXT%", points + " " + GetLocale("SCORE_POINTS") )
 					endif
 
 					result = result.Replace("%MATCHSCORE"+i+"%", points)
@@ -1774,23 +1774,23 @@ Type TNewsEventSportMatch extends TGameObject
 			Next
 		endif
 
-		if result.Find("%MATCHSCOREMAX")
+		if result.Find("%MATCHSCOREMAX") >= 0
 			local points:int = GetWinnerScore()
 			result = result.Replace("%MATCHSCOREMAX%", points)
 			if points = 1
-				result = result.Replace("%MATCHSCOREMAXTEXT%", points + GetLocale("SCORE_POINT"))
+				result = result.Replace("%MATCHSCOREMAXTEXT%", points + " " + GetLocale("SCORE_POINT"))
 			else
-				result = result.Replace("%MATCHSCOREMAXTEXT%", points + GetLocale("SCORE_POINTS"))
+				result = result.Replace("%MATCHSCOREMAXTEXT%", points + " " + GetLocale("SCORE_POINTS"))
 			endif
 		endif
 
-		if result.Find("%MATCHSCOREDRAWGAME")
+		if result.Find("%MATCHSCOREDRAWGAME") >= 0
 			local points:int = GetDrawGameScore()
 			result = result.Replace("%MATCHSCOREDRAWGAME%", points)
 			if points = 1
-				result = result.Replace("%MATCHSCOREDRAWGAMETEXT%", points + GetLocale("SCORE_POINT"))
+				result = result.Replace("%MATCHSCOREDRAWGAMETEXT%", points + " " + GetLocale("SCORE_POINT"))
 			else
-				result = result.Replace("%MATCHSCOREDRAWGAMETEXT%", points + GetLocale("SCORE_POINTS"))
+				result = result.Replace("%MATCHSCOREDRAWGAMETEXT%", points + " " + GetLocale("SCORE_POINTS"))
 			endif
 		endif
 
@@ -1802,10 +1802,10 @@ Type TNewsEventSportMatch extends TGameObject
 			endif
 		endif
 
-		for local i:int = 0 until teams.length
+		for local i:int = 1 to teams.length
 			if result.Find("%TEAM"+i) < 0 then continue
 
-			 teams[i].FillPlaceholders(result, string(i))
+			 teams[i-1].FillPlaceholders(result, string(i))
 		Next
 
 		if result.Find("%FINALSCORE%") >= 0
