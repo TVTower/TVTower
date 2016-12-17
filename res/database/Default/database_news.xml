@@ -657,7 +657,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Der amerikanische Autokonzern schreibt tiefrote Zahlen. Ein Grund dafür ist der schlechte Absatz des neuen Modells Montana.</de>
-				<en>The American auto giant is bleeding red ink. One reason is the poor sales of the new model Montana.</en>
+				<en>The American car manufacturer is bleeding red ink. One reason: Poor sales of the new model Montana.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
@@ -683,11 +683,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="5345cee0-138e-4531-a239-71015a8ca909" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
 			<title>
 				<de>Fort: Mitarbeiter streiken</de>
-				<en>Fort: workers are on strike</en>
+				<en>Fort: workers on strike</en>
 			</title>
 			<description>
 				<de>In mehreren Fort Werken legten die Angestellten die Arbeit nieder und protestieren nun gegen die geplanten 5.000 Entlassungen.</de>
-				<en>In several Fort factories employees stopped their work and protest now against the planned 5,000 layoffs.</en>
+				<en>In several Fort factories employees stopped their work. They now protest against the planned 5,000 layoffs.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045a06" time="2,2,3,8,18" />
@@ -702,7 +702,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Der amerikanische Autokonzern will mit Arbeitnehmervertretern verhandeln, um die Streiks abzuwenden.</de>
-				<en>The American auto giant wants to negotiate with employee representatives in order to avert the strikes.</en>
+				<en>The American car manufacturer wants to negotiate with employee representatives in order to avert strikes.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d3ca7812-9b3e-41e5-852c-e4f4ef045aff-2" time="2,1,1,9,17" />
@@ -817,7 +817,7 @@ Her normal body size is expected to be reached in a week.</en>
 			</title>
 			<description>
 				<de>Der Finanzminister hat seine heimliche Liebe zu Koalas zugegeben obwohl sich heraus gestellt hat, dass Koalas schmerzhaft hart krallen.</de>
-				<en>The finance minister admitted his secret love for koalas though it turned out that koalas have painful hard Nails.</en>
+				<en>The finance minister admitted his secret love for koalas though it turned out that koalas have painful hard nails.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="17528858-a7e0-4b6d-a515-d245e40ce87c" />
@@ -1517,7 +1517,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Ein angetrunkner Mann übersah eine Glastür und musste mit einer Kopfwunde ins Krankenhaus. Sein Kommentar: mir geht’s gut!</de>
+				<de>Ein angetrunkener Mann übersah eine Glastür und musste mit einer Kopfwunde ins Krankenhaus. Sein Kommentar: „Hab es nicht kommen sehen.“</de>
 				<en></en>
 			</description>
 			<effects />
@@ -2507,7 +2507,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Der belgischer König ist zusammen mit der königlichen Familie in die frühere belgische Kolonie Kongo geflüchtet, wo sie herzlich aufgenommen wurden.</de>
+				<de>Der belgische König ist zusammen mit der königlichen Familie in die frühere belgische Kolonie Kongo geflüchtet, wo sie herzlich aufgenommen wurden.</de>
 				<en></en>
 			</description>
 			<effects>
