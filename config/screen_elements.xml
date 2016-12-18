@@ -50,7 +50,8 @@
 		<spritepack name="gfx_screen_adagency_pack">
  			<url>res/gfx/adagency/screen_adagency_elements.png</url>
 			<children>
-				<child name="gfx_screen_adagency_vendor"	x="212"	y="1"	w="125"	h="125"/>
+				<child name="gfx_adagency_vendor"      x="212" y="1" w="125" h="125" />
+				<child name="gfx_adagency_vendor_eyes" x="339" y="1" w="52" h="3" f="2" />
 
 				<child name="gfx_contracts_base"			x="1"	y="62"	w="21"	h="68" />
 				<child name="gfx_contracts_base_dragged"	x="1"	y="1"	w="21"	h="60" />
@@ -80,6 +81,18 @@
 				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_9_dragged"	x="190"		r="90"		g="90"		b="150" />
 			</scripts>
 		</spritepack>
+
+		<!-- ADAGENCY: Vendor entity - including blinking/moving eyes -->
+		<spriteentity name="entity_adagency_vendor" sprite="gfx_adagency_vendor" x="241" y="110">
+			<children>
+				<!-- add some blinking eyes to the vendor -->
+				<spriteentity name="entity_adagency_vendor_eyes" sprite="gfx_adagency_vendor_eyes" offsetLeft="73" offsetTop="23">
+					<spriteframeanimations currentAnimationName="blink">
+						<spriteframeanimation name="blink" frames="-1::0::-1::1::-1::0::-1::0::-1::0::-1::1::-1::0" framesTime="8.0::0.45::1.0::4.0::2.0::0.35::7.0::0.40::6.0::0.35::4.0::3.0::2.0::0.35" randomness="0.1" />
+					</spriteframeanimations>
+				</spriteentity>
+			</children>
+		</spriteentity>
 
 
 		<!-- SCRIPT AGENCY -->

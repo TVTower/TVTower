@@ -282,6 +282,7 @@ Type TStationMapCollection
 			reach :+ map.GetReach()
 			mapCount :+ 1
 		Next
+		if mapCount = 0 then return 0
 		Return reach/mapCount
 	End Method
 

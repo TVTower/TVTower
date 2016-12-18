@@ -233,10 +233,10 @@ Type TDailyBroadcastStatistic
 
 
 	'returns the best audience result of a specific channelNumber/player
-	Method _GetBestAudience:TAudience(channelNumber:Int, broadcastedAsType:int = 0, skipHours:int[])
+	Method _GetBestAudience:TAudience(channelNumber:Int, broadcastedAsType:int = 0, hours:int[], hoursMode:int = 1)
 		if channelNumber <= 0 then return New TAudience
 	
-		local result:TAudienceResultBase = _GetBestAudienceResult(channelNumber, broadcastedAsType, skipHours)
+		local result:TAudienceResultBase = _GetBestAudienceResult(channelNumber, broadcastedAsType, hours, hoursMode)
 		if result then return result.audience
 
 		return new TAudience
@@ -244,16 +244,22 @@ Type TDailyBroadcastStatistic
 
 
 	'returns the best audience result of a specific channelNumber/player
-	Method _GetBestAudienceResult:TAudienceResultBase(channelNumber:Int, broadcastedAsType:int = 0, skipHours:int[])
+	Method _GetBestAudienceResult:TAudienceResultBase(channelNumber:Int, broadcastedAsType:int = 0, hours:int[], hoursMode:int = 1)
 		if channelNumber <= 0 then return New TAudienceResultBase
 		
 		local result:TAudienceResultBase
 		local useAllAudiences:TAudienceResultBase[][] = GetAudienceArrayToUse(broadcastedAsType)
 		local hour:int = 0
 		For local bestAudienceResult:TAudienceResultBase = EachIn useAllAudiences[channelNumber-1]
-			if InIntArray(hour, skipHours)
-				hour :+ 1
-				continue
+			if hoursMode = 0
+				if InIntArray(hour, hours)
+					continue
+				endif
+			'skip if hour is NOT given in the array
+			elseif hoursMode = 1
+				if not InIntArray(hour, hours)
+					continue
+				endif
 			endif
 
 			if not result
@@ -403,47 +409,47 @@ Type TDailyBroadcastStatistic
 
 
 	Method GetBestAudience:TAudience(channelNumber:Int)
-		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.PROGRAMME, null)
+		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.PROGRAMME, null, 0)
 	End Method
 
 
 	Method GetBestAudienceForHours:TAudience(channelNumber:Int, skipHours:int[])
-		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.PROGRAMME, skipHours)
+		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.PROGRAMME, skipHours, 0)
 	End Method
 
 
 	Method GetBestAudienceResult:TAudienceResultBase(channelNumber:Int)
-		return _GetBestAudienceResult(channelNumber, TVTBroadcastMaterialType.PROGRAMME, null)
+		return _GetBestAudienceResult(channelNumber, TVTBroadcastMaterialType.PROGRAMME, null, 0)
 	End Method
 
 
 	Method GetBestNewsAudience:TAudience(channelNumber:Int)
-		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, null)
+		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, null, 0)
 	End Method
 
 
 	Method GetBestNewsAudienceForHours:TAudience(channelNumber:Int, skipHours:int[])
-		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, skipHours)
+		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, skipHours, 0)
 	End Method
 
 
 	Method GetBestNewsAudienceResult:TAudienceResultBase(channelNumber:Int)
-		return _GetBestAudienceResult(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, null)
+		return _GetBestAudienceResult(channelNumber, TVTBroadcastMaterialType.NEWSSHOW, null, 0)
 	End Method
 
 
 	Method GetBestAdAudience:TAudience(channelNumber:Int)
-		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, null)
+		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, null, 0)
 	End Method
 
 
 	Method GetBestAdAudienceForHours:TAudience(channelNumber:Int, skipHours:int[])
-		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, skipHours)
+		return _GetBestAudience(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, skipHours, 0)
 	End Method
 
 
 	Method GetBestAdAudienceResult:TAudienceResultBase(channelNumber:Int)
-		return _GetBestAudienceResult(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, null)
+		return _GetBestAudienceResult(channelNumber, TVTBroadcastMaterialType.ADVERTISEMENT, null, 0)
 	End Method
 
 

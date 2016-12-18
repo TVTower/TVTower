@@ -107,6 +107,7 @@ import "common.misc.plannerlist.contractlist.bmx"
 
 Import "game.screen.menu.bmx"
 Import "game.screen.achievements.bmx"
+Import "game.screen.statistics.bmx"
 
 Import "game.network.networkhelper.bmx"
 
@@ -150,7 +151,7 @@ TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
 '===== SETUP LOGGER FILTER =====
 TLogger.setLogMode(LOG_ALL )
 TLogger.setPrintMode(LOG_ALL ) '(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
-'TLogger.SetPrintMode(0) 'all messages off
+TLogger.SetPrintMode(0) 'all messages off
 'TLogger.SetPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
 'TLogger.changePrintMode(LOG_DEV, FALSE)

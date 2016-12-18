@@ -824,7 +824,9 @@ Type TTooltipAudience Extends TTooltip
 	'override to add lineheight
 	Method Initialize:Int(title:String="", content:String="unknown", x:Int=0, y:Int=0, w:Int=-1, h:Int=-1, lifetime:Int=300)
 		Super.Initialize(title, content, x, y, w, h, lifetime)
-		Self.lineHeight = Self.useFont.getMaxCharHeight()+1
+		if self.usefont
+			Self.lineHeight = Self.useFont.getMaxCharHeight()+1
+		endif
 		'text line with icon
 		Self.lineIconHeight = 1 + Max(lineHeight, GetSpriteFromRegistry("gfx_targetGroup_men").area.GetH())
 	End Method

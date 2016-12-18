@@ -1872,9 +1872,9 @@ Type TAdContractBaseFilter
 
 	Method ToString:String()
 		local result:string = ""
-		result :+ "Audience: " + MathHelper.NumberToString(100*minAudienceMin,4)+" - "+MathHelper.NumberToString(100 * minAudienceMax, 4)+"%"
+		result :+ "Audience: " + MathHelper.NumberToString(100*minAudienceMin,2)+" - "+MathHelper.NumberToString(100 * minAudienceMax, 2)+"%"
 		result :+ "  "
-		result :+ "Image: " + MathHelper.NumberToString(minImageMin,4)+" - "+MathHelper.NumberToString(minImageMax, 4)
+		result :+ "Image: " + MathHelper.NumberToString(minImageMin,2)+" - "+MathHelper.NumberToString(minImageMax, 2)
 		return result
 	End Method
 

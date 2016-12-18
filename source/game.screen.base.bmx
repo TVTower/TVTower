@@ -511,8 +511,11 @@ Type TInGameScreen_Room Extends TInGameScreen
 
 		'the room of this screen MUST be the room the active player
 		'figure is in ...
-		Local roomID:int = GetPlayerBase().GetFigure().GetInRoomID()
+		Local roomID:int = 0
+		if GetPlayerBase() and GetPlayerBase().GetFigure() then roomID = GetPlayerBase().GetFigure().GetInRoomID()
 		If roomID > 0 then currentRoomID = roomID
+
+		if roomID = 0 then Throw "TInGameScreen_Room.GetCurrentRoom() failed, roomID invalid."
 
 		return GetRoomBaseCollection().Get(currentRoomID)
 	End Method

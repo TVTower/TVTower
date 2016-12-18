@@ -53,15 +53,15 @@ Type TColor
 	Function FromName:TColor(name:String, alpha:float=1.0)
 		Select name.ToLower()
 				Case "red"
-						Return clRed.copy().AdjustAlpha(alpha)
+						Return clRed.copy().AdjustAlpha(alpha, true)
 				Case "green"
-						Return clGreen.copy().AdjustAlpha(alpha)
+						Return clGreen.copy().AdjustAlpha(alpha, true)
 				Case "blue"
-						Return clBlue.copy().AdjustAlpha(alpha)
+						Return clBlue.copy().AdjustAlpha(alpha, true)
 				Case "black"
-						Return clBlack.copy().AdjustAlpha(alpha)
+						Return clBlack.copy().AdjustAlpha(alpha, true)
 				Case "white"
-						Return clWhite.copy().AdjustAlpha(alpha)
+						Return clWhite.copy().AdjustAlpha(alpha, true)
 		End Select
 		Return clWhite.copy()
 	End Function
@@ -70,6 +70,17 @@ Type TColor
 	Method Copy:TColor()
 		return TColor.Create(r,g,b,a)
 	end Method
+
+
+	Method CopyFrom:TColor(color:TColor)
+		if color
+			self.r = color.r
+			self.g = color.g
+			self.b = color.b
+			self.a = color.a
+		endif
+		return self
+	End Method
 
 
 	Method AddToList:TColor()
@@ -160,8 +171,12 @@ Type TColor
 	End Method
 
 
-	Method AdjustAlpha:TColor(a:float)
-		self.a = a
+	Method AdjustAlpha:TColor(a:float, overwrite:int=0)
+		if overwrite
+			self.a = a
+		else
+			self.a :+ a
+		endif
 		return self
 	End Method
 

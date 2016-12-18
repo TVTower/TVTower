@@ -249,6 +249,11 @@ Type TElevator Extends TEntity
 	End Method
 
 
+	Method GetInnerHeight:int()
+		if not spriteInner then return 0
+		Return spriteInner.area.GetH()
+	End Method
+
 	'===== Hilfsmethoden =====
 
 	Method AddPassenger:Int(figure:TFigureBase)
@@ -587,9 +592,9 @@ Type TElevator Extends TEntity
 		'it has to reach the first pixel of the floor until the
 		'function returns the new one, instead of positioning it
 		'directly on the floorground
-		Local tmpCurrentFloor:Int = GetBuildingBase().GetFloor(int(area.GetY() + spriteInner.area.GetH() - 1))
+		Local tmpCurrentFloor:Int = GetBuildingBase().GetFloor(int(area.GetY() + GetInnerHeight() - 1))
 		Local tmpFloorY:Int = TBuildingBase.GetFloorY2(tmpCurrentFloor)
-		Local tmpElevatorBottomY:Int = area.GetY() + spriteInner.area.GetH()
+		Local tmpElevatorBottomY:Int = area.GetY() + GetInnerHeight()
 
 		'direction = -1 => downwards
 		'direction = +1 => upwards
@@ -682,7 +687,7 @@ Type TElevator Extends TEntity
 
 
 				'do not move further than the target floor
-				Local tmpTargetFloorY:Int = TBuildingBase.GetFloorY2(TargetFloor) - spriteInner.area.GetH()
+				Local tmpTargetFloorY:Int = TBuildingBase.GetFloorY2(TargetFloor) - GetInnerHeight()
 				
 				If (direction < 0 And area.GetY() > tmpTargetFloorY) Or ..
 				   (direction > 0 And area.GetY() < tmpTargetFloorY)
@@ -691,12 +696,12 @@ Type TElevator Extends TEntity
 
 				'move figures in elevator together with the inner part
 				For Local figure:TFigureBase = EachIn Passengers.Values()
-					figure.area.position.setY( area.GetY() + spriteInner.area.GetH())
+					figure.area.position.setY( area.GetY() + GetInnerHeight())
 				Next
 			EndIf
 
 			'reaching target soon - begin deboarding movement
-			if 5 > Abs(area.GetY() - (TBuildingBase.GetFloorY2(TargetFloor) + spriteInner.area.GetH()))
+			if 5 > Abs(area.GetY() - (TBuildingBase.GetFloorY2(TargetFloor) + GetInnerHeight()))
 				',1 = move each passenger one after another, not simultaneously
 				MoveDeboardingPassengersToCenter(TargetFloor, 1)
 			endif
@@ -787,7 +792,7 @@ Type TElevator Extends TEntity
 
 		'draw call state next to the doors
 		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
-			Local locy:Int = parentY + TBuildingBase.GetFloorY2(floorroute.floornumber) - spriteInner.area.GetH() + 26
+			Local locy:Int = parentY + TBuildingBase.GetFloorY2(floorroute.floornumber) - GetInnerHeight() + 26
 			If floorroute.call
 				'elevator is called to this floor
 				SetColor 220,240,40
