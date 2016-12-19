@@ -22,11 +22,6 @@
 				<child name="Woman5"				x="256"	y="176"	w="253"	h="44"	f="11"	id="11" />
 				<child name="Woman6"				x="256"	y="220"	w="253"	h="44"	f="11"	id="12" />
 				<child name="Woman7"				x="256"	y="264"	w="253"	h="44"	f="11"	id="13" />
-				<child name="Terrorist1"			x="0"	y="264"	w="253"	h="44"	f="11"	id="14" />
-				<child name="Terrorist2"			x="0"	y="308"	w="253"	h="44"	f="11"	id="15" />
-				<child name="JanitorWithoutTools"	x="256"	y="308"	w="253"	h="44"	f="11"	id="16" />
-				<child name="BoteLeer"				x="0"	y="352"	w="253"	h="44"	f="11"	id="17" />
-				<child name="BotePost"				x="256"	y="352"	w="253"	h="44"	f="11"	id="18" />
 				<!-- these spots MUST exist... they contain the actual player figures during game -->
 				<child name="Player1"				x="0"	y="396"	w="253"	h="44"	f="11"	id="19" />
 				<child name="Player2"				x="256"	y="396"	w="253"	h="44"	f="11"	id="20" />
@@ -35,8 +30,8 @@
 			</children>
 		</spritepack>
 
-		<spritepack name="gfx_figuresMarshalsPack">
- 			<url>res/gfx/building/figures_marshals.png</url>
+		<spritepack name="gfx_figuresSpecialPack">
+ 			<url>res/gfx/building/figures_special.png</url>
  			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
 			<children>
 				<child name="Marshal1"				x="0"	y="0"	w="253"	h="44"	f="11" />
@@ -45,6 +40,13 @@
 				<child name="Marshal2"				x="256"	y="0"	w="253"	h="44"	f="11" />
 				<child name="Marshal2.letter"		x="256"	y="44"	w="253"	h="44"	f="11" />
 				<child name="Marshal2.box"			x="256"	y="88"	w="253"	h="44"	f="11" />
+				<child name="Santa1"				x="0"	y="132"	w="253"	h="44"	f="11" />
+				<child name="Santa2"				x="0"	y="176"	w="253"	h="44"	f="11" />
+				<child name="Terrorist1"			x="0"	y="220"	w="253"	h="44"	f="11" />
+				<child name="Terrorist2"			x="0"	y="264"	w="253"	h="44"	f="11" />
+				<child name="JanitorWithoutTools"	x="256"	y="132"	w="253"	h="44"	f="11" />
+				<child name="BoteLeer"				x="256"	y="176"	w="253"	h="44"	f="11" />
+				<child name="BotePost"				x="256"	y="220"	w="253"	h="44"	f="11" />
 			</children>
 		</spritepack>
 	
