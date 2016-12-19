@@ -4072,7 +4072,42 @@ Type GameEvents
 				'announce that news
 				GetNewsAgency().announceNewsEvent(news, 0, announceNow)
 				GetGame().SendSystemMessage("News with GUID ~q"+newsGUID+"~q announced.")
-					
+
+			Case "givelicence"			
+				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
+
+				local licenceGUID:string = paramS
+				
+				if licenceGUID.trim() = ""
+					GetGame().SendSystemMessage("Wrong syntax (/dev help)!")
+					return False
+				endif
+
+				if licenceGUID.Find("devlicence") = 0
+					'num 1-xxx
+					local num:int = Max(1, int(licenceGUID.replace("devlicence", "")))
+					licenceGUID = GameRules.devConfig.GetString("DEV_PROGRAMMELICENCE_GUID"+num, "")
+					if not licenceGUID
+						GetGame().SendSystemMessage("Incorrect devlicence-syntax (/dev help)!")
+						return False
+					endif
+				endif
+
+				local licence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(licenceGUID)
+				if not licence then licence = GetProgrammeLicenceCollection().SearchByPartialGUID(licenceGUID)
+				if not licence
+					GetGame().SendSystemMessage("No licence with GUID ~q"+licenceGUID+"~q found.")
+					return False
+				endif
+
+				'hand the licence to the player
+				if licence.owner <> player.playerID
+					licence.SetOwner(0)
+					RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(licence, player.playerID)
+					print "added movie: "+licence.GetTitle()+" ["+licence.GetGUID()+"]"
+				else
+					print "already had movie: "+licence.GetTitle()+" ["+licence.GetGUID()+"]"
+				endif
 				
 			Case "help"
 				SendHelp()
