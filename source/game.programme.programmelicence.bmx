@@ -276,6 +276,22 @@ Type TProgrammeLicenceCollection
 	End Method
 
 
+	Method SearchByPartialGUID:TProgrammeLicence(GUID:String)
+		'skip searching if there is nothing to search
+		if GUID.trim() = "" then return Null
+		
+		GUID = GUID.ToLower()
+
+		'find first hit
+		For local licence:TProgrammeLicence = EachIn licences
+			if licence.GetGUID().ToLower().Find(GUID) >= 0
+				return licence
+			endif
+		Next
+
+		return Null
+	End Method
+
 
 	Method GetRandom:TProgrammeLicence(programmeLicenceType:int=0, includeEpisodes:int=FALSE)
 		'filter to entries we need
@@ -1775,7 +1791,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			contentY :+ 12	
 			skin.fontNormal.draw("TV-Kasse: "+MathHelper.NumberToString(data.GetOutcomeTV(), 4), contentX + 5, contentY)
 			contentY :+ 12	
-			skin.fontNormal.draw("Preismodifikator: "+MathHelper.NumberToString(data.GetModifier("price"), 4), contentX + 5, contentY)
+			skin.fontNormal.draw("Preismodifikator:  Lizenz="+MathHelper.NumberToString(GetModifier("price"), 4)+"  Data="+MathHelper.NumberToString(data.GetModifier("price"), 4), contentX + 5, contentY)
 			contentY :+ 12	
 			skin.fontNormal.draw("Qualitaet roh: "+MathHelper.NumberToString(GetQualityRaw(), 4)+"  (ohne Alter, Wdh.)", contentX + 5, contentY)
 			contentY :+ 12	

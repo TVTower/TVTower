@@ -1219,6 +1219,12 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		value :* GetBlocks() * 0.92^(GetBlocks()-1)
 
 
+		'=== INDIVIDUAL PRICE ===
+		'general data price mod
+		value :* GetModifier("price")
+		
+
+
 		'print GetTitle()+"  value1: "+value + "  outcome:"+GetOutcome()+"  review:"+GetReview() + " maxTop:"+GetMaxTopicality()+" year:"+GetYear()
 rem
 if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0
