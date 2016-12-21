@@ -99,6 +99,29 @@
 			</children>
 		</spritepack>
 
+
+		<spritepack name="gfx_building_specials_pack">
+			<url>res/gfx/building/building_specials.png</url>
+			<children>
+				<child name="gfx_building_christmastree1"	x="0"	y="0"	w="120"	h="58" cw="40" ch="58" f="3" />
+				<child name="gfx_building_christmastree2"	x="0"	y="59"	w="120"	h="58" cw="40" ch="58" f="3" />
+			</children>
+		</spritepack>
+
+
+		<!-- It's christmas time.... -->
+		<spriteentity name="entity_building_christmastree1" sprite="gfx_building_christmastree1" x="0" y="0">
+			<spriteframeanimations currentAnimationName="lights">
+				<spriteframeanimation name="lights" frames="0::1::2::0::1::0::2::1" framesTime="0.4::0.3::0.5::0.4::0.3::0.4::0.4::0.3" randomness="0.1" />
+			</spriteframeanimations>
+		</spriteentity>
+		<spriteentity name="entity_building_christmastree2" sprite="gfx_building_christmastree2" x="0" y="0">
+			<spriteframeanimations currentAnimationName="lights">
+				<spriteframeanimation name="lights" frames="0::1::2::0::1::0::2::1" framesTime="0.4::0.3::0.5::0.4::0.3::0.4::0.4::0.3" randomness="0.1" />
+			</spriteframeanimations>
+		</spriteentity>
+
+		
 		<!-- WORLD -->
 
 		<!-- rain sprites ... 1-x -->

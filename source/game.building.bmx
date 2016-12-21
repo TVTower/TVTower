@@ -2,6 +2,7 @@ SuperStrict
 Import "basefunctions.bmx" 'catmullromspline
 Import "Dig/base.framework.tooltip.bmx"
 Import "Dig/base.util.profiler.bmx"
+Import "Dig/base.util.registry.spriteentityloader.bmx"
 Import "common.misc.hotspot.bmx"
 Import "game.building.base.bmx"
 Import "game.building.elevator.bmx"
@@ -11,6 +12,7 @@ Import "game.room.roomdoor.bmx"
 Import "game.world.bmx"
 Import "game.gameconfig.bmx"
 Import "game.figure.bmx" 'TFigureTarget with hotspot support
+
 
 'TODO: split TBuilding into TBuilding + TBuildingArea
 '      TBuildingArea then contains background buildings, ufo ...
@@ -29,6 +31,9 @@ Type TBuilding Extends TBuildingBase
 	Field UFO_MovementBaseSpeed:Float = 0.0
 	Field UFO_DoBeamAnimation:Int = False
 	Field UFO_BeamAnimationDone:Int	= False
+
+	Field christmasTree1:TSpriteEntity			{nosave}
+	Field christmasTree2:TSpriteEntity			{nosave}
 
 	Field gfx_bgBuildings:TSprite[6]			{nosave}
 	Field gfx_building:TSprite					{nosave}
@@ -228,6 +233,12 @@ Type TBuilding Extends TBuildingBase
 		UFO_path.addXY( 400 +displaceX, -700 +displaceY)
 		UFO_path.addXY( 410 +displaceX, -710 +displaceY)
 
+
+		'==== CHRISTMAS TREES ====
+		christmasTree1 = GetSpriteEntityFromRegistry("entity_building_christmastree1")
+		christmasTree2 = GetSpriteEntityFromRegistry("entity_building_christmastree2")
+
+
 		'==== BACKGROUND BUILDINGS ====
 		gfx_bgBuildings[0] = GetSpriteFromRegistry("gfx_building_BG_Ebene3L")
 		gfx_bgBuildings[1] = GetSpriteFromRegistry("gfx_building_BG_Ebene3R")
@@ -387,6 +398,11 @@ Type TBuilding Extends TBuildingBase
 	Method Update:Int()
 		'update softdrinkmachine
 		softDrinkMachine.Update()
+
+		if GameConfig.isChristmasTime
+			christmasTree1.Update()
+			christmasTree2.Update()
+		endif
 	
 		'center player
 		If not GetPlayerBase().GetFigure().IsInRoom() or GetPlayerBase().GetFigure().IsChangingRoom() or GameConfig.observerMode
@@ -462,6 +478,13 @@ Type TBuilding Extends TBuildingBase
 		GetElevator().Render()
 		'draw softdrinkmachine
 		softDrinkMachine.Render(buildingInner.GetScreenX() + innerX2 - 90, buildingInner.GetScreenY() + GetFloorY2(6), ALIGN_LEFT_BOTTOM)
+
+		'draw christmas trees
+		if GameConfig.isChristmasTime
+			christmasTree1.Render(buildingInner.GetScreenX() + innerX2 - 180, buildingInner.GetScreenY() + GetFloorY2(0), ALIGN_LEFT_BOTTOM)
+			christmasTree1.Render(buildingInner.GetScreenX() + 45, buildingInner.GetScreenY() + GetFloorY2(4), ALIGN_LEFT_BOTTOM)
+			christmasTree2.Render(buildingInner.GetScreenX() + 30, buildingInner.GetScreenY() + GetFloorY2(9), ALIGN_LEFT_BOTTOM)
+		endif
 
 		If Not softDrinkMachineActive
 			softDrinkMachine.GetFrameAnimations().SetCurrent("use")

@@ -4124,6 +4124,7 @@ Type GameEvents
 			GetGame().SendSystemMessage("  |b|bossmood|/b| [player#] [+- mood %]")
 			GetGame().SendSystemMessage("  |b|image|/b| [player#] [+- image %]")
 			GetGame().SendSystemMessage("  |b|terrorlvl|/b| [terrorgroup# 0 or 1] [level#]")
+			GetGame().SendSystemMessage("  |b|givelicence|/b| [player#] [GUID / GUID portion / devlicence#]")
 			GetGame().SendSystemMessage("  |b|sendnews|/b| [GUID / GUID portion / devnews#] [now=1, normal=0]")
 		End Function
 		

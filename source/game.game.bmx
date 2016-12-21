@@ -144,6 +144,20 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		TSoundManager.GetInstance().PlayMusicPlaylist("default")
 
 
+		local currDate:int = int(Time.GetSystemTime("%m%d"))
+		if currDate > 1210 or currDate < 115
+			GameConfig.isChristmasTime = true
+		else
+			GameConfig.isChristmasTime = true
+		endif
+		'christmas: change terrorist figures
+		if GameConfig.isChristmasTime
+			TLogger.Log("TGame", "Dress terrorists as Santa Claus.", LOG_DEBUG)
+			terrorists[0].sprite = GetSpriteFromRegistry("Santa1")
+			terrorists[1].sprite = GetSpriteFromRegistry("Santa2")
+		endif
+
+
 		If startNewGame
 			'=== CREATE / INIT SPORTS ("life outside")===
 			TLogger.Log("TGame", "Starting all sports (and their leagues) -1 year before now.", LOG_DEBUG)

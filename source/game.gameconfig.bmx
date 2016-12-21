@@ -9,6 +9,7 @@ Type TGameConfig {_exposeToLua}
 	Field observedObject:object = null
 	Field interfaceRect:TRectangle = new TRectangle.Init(0,385, 800,215)
 	Field nonInterfaceRect:TRectangle = new TRectangle.Init(0,0, 800,385)
+	Field isChristmasTime:int = False
 
 	Method IsObserved:int(obj:object)
 		if not observerMode then return False
