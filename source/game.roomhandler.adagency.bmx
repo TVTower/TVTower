@@ -20,7 +20,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Field listNormal:TAdContract[]
 	Field listCheap:TAdContract[]
 	Field listAll:TList {nosave}
-	Field refillMode:int = 0
+	Field refillMode:int = 1
 	Field levelFilters:TAdContractBaseFilter[6]
 
 	'graphical lists for interaction with blocks
@@ -32,6 +32,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	'sorting
 	Global ListSortMode:int = 0
 	Global ListSortVisible:int = False
+	Global contractsSortKeys:int[] = [0,1,2]
+	Global contractsSortSymbols:string[] = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money", "gfx_datasheet_icon_maxAudience"]
 
 	global LS_adagency:TLowerString = TLowerString.Create("adagency")
 
@@ -78,6 +80,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		End Select 
 
 		VendorEntity = GetSpriteEntityFromRegistry("entity_adagency_vendor")
+
+
+		'set to new refill mode
+		SetRefillMode(1)
 
 
 		'=== REGISTER HANDLER ===
@@ -462,6 +468,18 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Function isCheapContract:int(contract:TAdContract)
 		return contract.adAgencyClassification < 0
 	End Function
+
+
+	Method SetRefillMode(mode:int)
+		refillMode = mode
+		if refillMode = 1
+			contractsSortSymbols = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money"]
+			contractsSortKeys = [0, 1]
+		else
+			contractsSortSymbols = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money", "gfx_datasheet_icon_maxAudience"]
+			contractsSortKeys = [0, 1, 2]
+		endif
+	End Method
 
 
 	Method SortContracts(list:TList, mode:int = -1)
@@ -1057,6 +1075,10 @@ endrem
 					if highestChannelQuote < quote then highestChannelQuote = quote
 				endif
 			Next
+
+			'highestQuote to use is AT LEAST 17.5% (like default) to avoid
+			'a too low maximum if all channels fail for one day
+			highestChannelQuote = Max(highestChannelQuote, 0.175)
 		endif
 		'convert to percentage
 		highestChannelImage :* 0.01
@@ -1324,26 +1346,19 @@ endrem
 		endif
 
 
-		local skin:TDatasheetSkin = GetDatasheetSkin("default")
-		local boxWidth:int = 28
-		if not ListSortVisible
-			boxWidth :+ 1 * 38
-		else
-			boxWidth :+ 3 * 38
-		endif
-		local boxHeight:int = 35 + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
-		local contentX:int = 5 + skin.GetContentX()
-		skin.RenderContent(contentX, 325 +skin.GetContentY(), skin.GetContentW(boxWidth), 42, "1_top")
-
-		'draw sort symbols
-		local sortSymbols:string[] = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money", "gfx_datasheet_icon_maxAudience"]
-		local sortKeys:int[] = [0, 1, 2]
 		local availableSortKeys:int[]
 		if not ListSortVisible
 			availableSortKeys :+ [ListSortMode]
 		else
-			availableSortKeys :+ sortKeys
+			availableSortKeys :+ contractsSortKeys
 		endif
+
+		local skin:TDatasheetSkin = GetDatasheetSkin("default")
+		local boxWidth:int = 28 + availableSortKeys.length * 38
+		local boxHeight:int = 35 + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+		local contentX:int = 5 + skin.GetContentX()
+		skin.RenderContent(contentX, 325 +skin.GetContentY(), skin.GetContentW(boxWidth), 42, "1_top")
+
 		
 		For local i:int = 0 until availableSortKeys.length
 			local spriteName:string = "gfx_gui_button.datasheet"
@@ -1355,7 +1370,7 @@ endrem
 				spriteName :+ ".hover"
 			endif
 			GetSpriteFromRegistry(spriteName).DrawArea(contentX + 5 + i*38, 342, 35,27)
-			GetSpriteFromRegistry(sortSymbols[ availableSortKeys[i] ]).Draw(contentX + 10 + i*38, 344)
+			GetSpriteFromRegistry(contractsSortSymbols[ availableSortKeys[i] ]).Draw(contentX + 10 + i*38, 344)
 		Next
 
 		GUIManager.Draw( LS_adagency )
@@ -1426,19 +1441,19 @@ endrem
 			'show and react to mouse-over-sort-buttons
 			'HINT: does not work for touch displays
 			local skin:TDatasheetSkin = GetDatasheetSkin("default")
-			local boxWidth:int = 28 + 3 * 38
+			local boxWidth:int = 28 + contractsSortKeys.Length * 38
 			local boxHeight:int = 35 + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
 			if THelper.MouseIn(5, 335, boxWidth, boxHeight)
 				ListSortVisible = True
 
 				if MouseManager.isShortClicked(1)
 					local contentX:int = 5 + skin.GetContentX()
-					local sortKeys:int[] = [0, 1, 2]
-					For local i:int = 0 to 2
+
+					For local i:int = 0 to contractsSortKeys.length-1
 						If THelper.MouseIn(contentX + i*38, 342, 35, 27)
 							'sort now
-							if ListSortMode <> sortKeys[i]
-								ListSortMode = sortKeys[i]
+							if ListSortMode <> contractsSortKeys[i]
+								ListSortMode = contractsSortKeys[i]
 								'this sorts the contract list and recreates
 								'the gui
 								ResetContractOrder()
