@@ -128,7 +128,7 @@ Include "game.escapemenu.bmx"
 
 '===== Globals =====
 VersionDate = LoadText("incbin::source/version.txt").Trim()
-VersionString = "v0.3.5.1 Build ~q" + VersionDate+"~q"
+VersionString = "v0.3.6 Build ~q" + VersionDate+"~q"
 CopyrightString = "by Ronny Otto & Team"
 
 Global APP_NAME:string = "TVTower"
@@ -1072,10 +1072,12 @@ endrem
 
 				'Save game only when in a game
 				If GetGame().gamestate = TGame.STATE_RUNNING
-					If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegames/quicksave.xml")
+					If KEYMANAGER.IsHit(KEY_F5) Then TSaveGame.Save("savegames/quicksave.xml")
+					'If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegames/quicksave.xml")
 				EndIf
 
-				If KEYMANAGER.IsHit(KEY_L)
+				'If KEYMANAGER.IsHit(KEY_L)
+				If KEYMANAGER.IsHit(KEY_F8)
 					TSaveGame.Load("savegames/quicksave.xml")
 				endif
 
@@ -1130,13 +1132,9 @@ endrem
 					IngameHelpWindowCollection.LockCurrent()
 				EndIf
 				
-				'only announce news in single player mode - as announces
-				'are done on all clients on their own.
-				If KEYMANAGER.Ishit(Key_F5) And Not GetGame().networkGame Then GetNewsAgency().AnnounceNewNewsEvent()
-
 				If KEYMANAGER.Ishit(Key_F6) Then GetSoundManager().PlayMusicPlaylist("default")
 
-				If KEYMANAGER.Ishit(Key_F9)
+				If KEYMANAGER.Ishit(Key_F11)
 					If (TAiBase.AiRunning)
 						TLogger.Log("CORE", "AI deactivated", LOG_INFO | LOG_DEV )
 						TAiBase.AiRunning = False
@@ -1145,7 +1143,7 @@ endrem
 						TAiBase.AiRunning = True
 					EndIf
 				EndIf
-				If KEYMANAGER.Ishit(Key_F10)
+				If KEYMANAGER.Ishit(Key_F12)
 					If (TAiBase.AiRunning)
 						For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
 							If GetPlayerBase().GetFigure() <> fig Then fig.moveable = False
