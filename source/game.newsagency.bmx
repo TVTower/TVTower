@@ -496,6 +496,8 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 		NewsEvent.SetFlag(TVTNewsFlag.UNIQUE_EVENT, True)
 		'do not delay other current affair news
 		NewsEvent.SetFlag(TVTNewsFlag.KEEP_TICKER_TIME, True)
+		'happened right now
+		NewsEvent.happenedTime = GetWorldTime().GetTimeGone()
 
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 

@@ -628,8 +628,10 @@ Type TNewsAgency
 			nP.Update()
 			For local newsEvent:TNewsEvent = EachIn nP.GetNewNewsEvents()
 				'skip news events not happening yet
+				'-> they will get processed once they happen (upcoming list)
 				If not newsEvent.HasHappened()
 					delayed:+1
+					continue
 				endif
 
 				announceNewsEvent(newsEvent)
@@ -660,8 +662,8 @@ Type TNewsAgency
 			local player:TPlayerBase = GetPlayerBase(playerID)
 			if not delayedLists[playerID-1] or not player then continue
 
-			'iterate over copy
-			For local news:TNews = EachIn delayedLists[playerID-1].Copy()
+			local toRemove:TNews[]
+			For local news:TNews = EachIn delayedLists[playerID-1]
 				local genre:int = news.newsEvent.GetGenre()
 				local subscriptionDelay:int = GetNewsAbonnementDelay(genre, player.GetNewsAbonnement(genre) )
 				local maxSubscriptionDelay:int = GetNewsAbonnementDelay(genre, 1)
@@ -672,8 +674,8 @@ Type TNewsAgency
 				'possible subscription-delay-time"
 				'3600 - to also allow a bit "older" ones - like start news
 				if news.GetPublishTime() + maxSubscriptionDelay + 3600 <  GetWorldTime().GetTimeGone()
-					'remove the news
-					delayedLists[playerID-1].Remove(news)
+					'mark the news for removal
+					toRemove :+ [news]
 					'print "ProcessDelayedNews #"+playerID+": Removed OLD/unsubscribed: " + news.GetTitle()
 					continue
 				endif
@@ -698,10 +700,15 @@ Type TNewsAgency
 
 				announceNews(news, playerID)
 
-				'remove the news
-				delayedLists[playerID-1].Remove(news)
+				'mark the news for removal
+				toRemove :+ [news]
 				delayed:+1
 			Next
+
+			For local news:TNews = EachIn toRemove
+				delayedLists[playerID-1].Remove(news)
+			Next
+
 '			if playerID=1 then end
 		Next
 	

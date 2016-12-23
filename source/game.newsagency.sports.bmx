@@ -1466,6 +1466,8 @@ Type TNewsEventSportMatch extends TGameObject
 	Field breakTimes:int[] = [45*60]
 	Field breakDuration:int = 15*60
 
+	Field sportName:string
+
 	Field matchNumber:int
 	Field matchState:int = STATE_NORMAL
 	Const STATE_NORMAL:int = 0
@@ -1718,11 +1720,23 @@ Type TNewsEventSportMatch extends TGameObject
 		local result:string = ""
 
 		if points[0] > points[1]
-			result = GetRandomLocale2(["SPORT_SOCCER_TEAMREPORT_MATCHWIN_" + singularPlural, "SPORT_TEAMREPORT_MATCHWIN_" + singularPlural])
+			if sportName <> ""
+				result = GetRandomLocale2(["SPORT_"+sportName+"_TEAMREPORT_MATCHWIN_" + singularPlural, "SPORT_TEAMREPORT_MATCHWIN_" + singularPlural])
+			else
+				result = GetRandomLocale("SPORT_TEAMREPORT_MATCHWIN_" + singularPlural)
+			endif
 		elseif points[0] < points[1]
-			result = GetRandomLocale("SPORT_TEAMREPORT_MATCHLOOSE_" + singularPlural)
+			if sportName <> ""
+				result = GetRandomLocale2(["SPORT_"+sportName+"_TEAMREPORT_MATCHLOOSE_" + singularPlural, "SPORT_TEAMREPORT_MATCHLOOSE_" + singularPlural])
+			else
+				result = GetRandomLocale("SPORT_TEAMREPORT_MATCHLOOSE_" + singularPlural)
+			endif
 		else
-			result = GetRandomLocale("SPORT_TEAMREPORT_MATCHDRAW_" + singularPlural)
+			if sportName <> ""
+				result = GetRandomLocale2(["SPORT_"+sportName+"_TEAMREPORT_MATCHDRAW_" + singularPlural, "SPORT_TEAMREPORT_MATCHDRAW_" + singularPlural])
+			else
+				result = GetRandomLocale("SPORT_TEAMREPORT_MATCHDRAW_" + singularPlural)
+			endif
 		endif
 
 		return result

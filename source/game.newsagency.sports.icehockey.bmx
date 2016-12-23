@@ -306,6 +306,8 @@ Type TNewsEventSportMatch_IceHockey extends TNewsEventSportMatch
 		duration = 60*20
 		breakTimes = [1*20*60, 2*20*60]
 		breakDuration = 15*60
+
+		sportName = "ICEHOCKEY"
 	End Method
 	
 

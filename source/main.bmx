@@ -714,6 +714,10 @@ Type TApp
 					
 
 					If KEYMANAGER.IsHit(KEY_Y)
+for local i:int = 0 to 10
+	print GetRandomLocale("SPORT_TEAMREPORT_MATCHLOOSE_P")
+	print GetRandomLocale("SPORT_TEAMREPORT_MATCHLOOSE_S")
+Next
 '						print "Force Next Task:"
 '						GetPlayer(2).PlayerAI.CallLuaFunction("OnForceNextTask", null)
 
@@ -1005,10 +1009,18 @@ rem
 							print "-----------------"
 						EndIf
 endrem						
+						If KEYMANAGER.isHit(KEY_L)
+							DEV_switchRoom(GetRoomCollection().GetFirstByDetails("supermarket"))
+						endif
+						If KEYMANAGER.isHit(KEY_S)
+							If not KEYMANAGER.IsDown(KEY_LCONTROL)
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", GetPlayerCollection().playerID))
+							else
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("supermarket"))
+							endif
+						endif
 						If KEYMANAGER.isHit(KEY_D)
-							If KEYMANAGER.IsDown(KEY_RSHIFT)
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", 2))
-							Else If KEYMANAGER.IsDown(KEY_LSHIFT)
+							If KEYMANAGER.IsDown(KEY_LSHIFT)
 								'go to first studio of the player
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", GetPlayerCollection().playerID))
 							Else If KEYMANAGER.IsDown(KEY_LCONTROL)

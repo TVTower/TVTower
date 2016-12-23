@@ -260,6 +260,11 @@ End Type
 
 
 Type TNewsEventSportMatch_Soccer extends TNewsEventSportMatch
+	Method New()
+		sportName = "SOCCER"
+	End Method
+	
+
 	Function CreateMatch:TNewsEventSportMatch_Soccer()
 		return new TNewsEventSportMatch_Soccer
 	End Function

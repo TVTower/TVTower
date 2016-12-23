@@ -6,6 +6,7 @@ Import "game.programme.programmedata.specials.bmx"
 Import "game.programme.programmelicence.bmx"
 
 'nach test wieder entfernen
+Import "game.game.base.bmx"
 Import "game.player.programmecollection.bmx"
 'to know the short country name of the used map
 Import "game.stationmap.bmx"
@@ -54,6 +55,7 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		
 		'ignore seasons if the first match already happened ?
 		if league.GetDoneMatchesCount() = 0 and league.GetNextMatchTime() > GetWorldTime().GetTimeGone()
+			GetGameBase().SendSystemMessage("neue Ligaseason gestartet: " + league.name + "  " + GetWorldTime().GetFormattedDate())
 			print "==========================="
 			print "==========================="
 			print "==========================="
@@ -177,7 +179,7 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		programmeData.GUID = "programmedata-sportmatch-"+match.GetGUID()
 
 		'this gets overridden in "GetTitle()/GetDescription()"
-		programmeData.title = new TLocalizedString.Set("%LEAGENAMESHORT%: %MATCHNAMESHORT%", null )
+		programmeData.title = new TLocalizedString.Set("%LEAGUENAMESHORT%: %MATCHNAMESHORT%", null )
 		programmeData.description = new TLocalizedString.Set( GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , null )
 		TSportsProgrammeData(programmeData).dynamicTexts = true
 
@@ -194,7 +196,17 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		programmeData.review = 0.6 'maximum possible
 		programmeData.speed = 0.75 'maximum possible
 		programmeData.genre = TVTProgrammeGenre.Event_Sport
-		programmeData.outcome = 0.75 'maximum possible
+		programmeData.outcome = 0.5 'maximum possible
+
+		Select match.sportName
+			case "ICEHOCKEY"
+				'in germany not so successful
+				programmeData.outcome = 0.4
+			case "SOCCER"
+				'really popular
+				programmeData.outcome = 0.75
+		End Select
+		
 
 		programmeData.releaseTime = match.matchTime '- 2*24*3600 - 24*3600
 
