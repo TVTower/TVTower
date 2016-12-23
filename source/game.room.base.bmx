@@ -208,8 +208,6 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Field originalName:string
 	'description, eg. "Bettys bureau" (+ "name of the owner" for "adagency ... owned by X")
 	Field description:String[] = ["", ""]
-	'playerID or -1 for system/artificial person
-	Field owner:Int	= -1
 	'can this room be rented or still occupied?
 	Field availableForRent:Int = False
 	'can this room be used as a studio?
