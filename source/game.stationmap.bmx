@@ -211,7 +211,7 @@ Type TStationMapCollection
 				endif
 
 '				pix.WritePixel(i,j, ARGB_Color(brightnessRate*255, (1.0-brightnessRate)*255, 0, 0))
-				pix.WritePixel(i,j, ARGB_Color(brightnessRate*255, brightnessRate*255, 0.2 * brightnessRate*255, 0))
+				pix.WritePixel(i,j, ARGB_Color(int(brightnessRate*255), int(brightnessRate*255), int(0.2 * brightnessRate*255), 0))
 
 				population:+ populationmap[i, j]
 			Next

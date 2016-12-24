@@ -300,7 +300,7 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 
 		'when selecting a station position with the mouse
 		if stationMapMode = 1
-			SetAlpha 0.8 + 0.2 * Sin(Millisecs()/6)
+			SetAlpha float(0.8 + 0.2 * Sin(Millisecs()/6))
 			DrawImage(GetStationMapCollection().populationImage, 0,0)
 			SetAlpha 1.0
 		endif
