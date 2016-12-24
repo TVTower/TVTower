@@ -714,10 +714,6 @@ Type TApp
 					
 
 					If KEYMANAGER.IsHit(KEY_Y)
-for local i:int = 0 to 10
-	print GetRandomLocale("SPORT_TEAMREPORT_MATCHLOOSE_P")
-	print GetRandomLocale("SPORT_TEAMREPORT_MATCHLOOSE_S")
-Next
 '						print "Force Next Task:"
 '						GetPlayer(2).PlayerAI.CallLuaFunction("OnForceNextTask", null)
 

@@ -146,6 +146,10 @@ Type TNewsEventSport extends TGameObject
 			AssignPlayoffTimes( Long(GetWorldTime().GetTimeGone() + GetWorldTime().DAYLENGTH))
 
 			StartPlayoffs()
+
+			For local season:TNewsEventSportSeason = EachIn playoffSeasons
+				print name+":  playoff matches: " + GetWorldTime().GetFormattedGameDate(season.GetNextMatchTime()) + "   -   " + GetWorldTime().GetFormattedGameDate(season.GetLastMatchTime())
+			Next
 		endif
 
 		'=== playoff matches ===
@@ -350,6 +354,7 @@ Type TNewsEventSport extends TGameObject
 
 		for local l:TNewsEventSportLeague = Eachin leagues
 			l.StartSeason(time)
+print name+":  season matches: " + GetWorldTime().GetFormattedGameDate(l.GetNextMatchTime()) + "   -   " + GetWorldTime().GetFormattedGameDate(l.GetLastMatchTime())
 		Next
 
 		EventManager.triggerEvent(TEventSimple.Create("Sport.StartSeason", new TData.AddNumber("time", time), Self))
@@ -900,6 +905,28 @@ Type TNewsEventSportSeason extends TGameObject
 	End Method
 
 
+	Method GetNextMatchTime:Long()
+		local lowestTime:long = -1
+		For local nextMatch:TNewsEventSportMatch = EachIn upcomingMatches
+			if lowestTime = -1 or nextMatch.GetMatchTime() < lowestTime
+				lowestTime = nextMatch.GetMatchTime()
+			endif
+		Next
+		return lowestTime
+	End Method
+
+
+	Method GetLastMatchTime:Long()
+		local latestTime:long = -1
+		For local nextMatch:TNewsEventSportMatch = EachIn upcomingMatches
+			if latestTime = -1 or nextMatch.GetMatchTime() > latestTime
+				latestTime = nextMatch.GetMatchTime()
+			endif
+		Next
+		return latestTime
+	End Method
+
+
 	Method GetMatchCount:int(teamSize:int = -1)
 		if teamSize = -1 then teamSize = GetTeams().length
 		'each team fights all other teams - this means we need
@@ -1008,24 +1035,12 @@ Type TNewsEventSportLeague extends TGameObject
 	
 
 	Method GetNextMatchTime:Long()
-		local lowestTime:long = -1
-		For local nextMatch:TNewsEventSportMatch = EachIn GetCurrentSeason().upcomingMatches
-			if lowestTime = -1 or nextMatch.GetMatchTime() < lowestTime
-				lowestTime = nextMatch.GetMatchTime()
-			endif
-		Next
-		return lowestTime
+		return GetCurrentSeason().GetNextMatchTime()
 	End Method
 
 
 	Method GetLastMatchTime:Long()
-		local latestTime:long = -1
-		For local nextMatch:TNewsEventSportMatch = EachIn GetCurrentSeason().upcomingMatches
-			if latestTime = -1 or nextMatch.GetMatchTime() > latestTime
-				latestTime = nextMatch.GetMatchTime()
-			endif
-		Next
-		return latestTime
+		return GetCurrentSeason().GetLastMatchTime()
 	End Method
 
 	
