@@ -248,7 +248,7 @@ Type TNewsEventSportLeague_IceHockey extends TNewsEventSportLeague
 	End Method
 	
 
-	Method GetFirstMatchTime:Long(time:Long)
+	Method GetSeasonStartTime:Long(time:Long)
 		'take year of the given time and use the defined months for a
 		'hockey season
 		'match time: 16. 9. - 26.2. (1. Liga)

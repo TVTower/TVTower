@@ -5,9 +5,6 @@ Import "game.newsagency.sports.bmx"
 Import "game.programme.programmedata.specials.bmx"
 Import "game.programme.programmelicence.bmx"
 
-'nach test wieder entfernen
-Import "game.game.base.bmx"
-Import "game.player.programmecollection.bmx"
 'to know the short country name of the used map
 Import "game.stationmap.bmx"
 
@@ -55,21 +52,13 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		
 		'ignore seasons if the first match already happened ?
 		if league.GetDoneMatchesCount() = 0 and league.GetNextMatchTime() > GetWorldTime().GetTimeGone()
-			GetGameBase().SendSystemMessage("neue Ligaseason gestartet: " + league.name + "  " + GetWorldTime().GetFormattedDate())
-			print "==========================="
-			print "==========================="
-			print "==========================="
-			print "==========================="
-			print "==========================="
-			print "neue Ligaseason gestartet: " + league.name + "  " + GetWorldTime().GetFormattedDate()
-			print "==========================="
-			print "==========================="
-			print "==========================="
-			print "==========================="
-			print "==========================="
+'			print "==========================="
+			print "New league season started: " + league.name + "  " + GetWorldTime().GetFormattedDate()
 
 			local licence:TProgrammeLicence = GetInstance().CreateLeagueMatchesCollectionProgrammeLicence(league)
 			if licence
+'print "  -> licence: "+ licence.GetGUID() +"  release: " + GetWorldTime().GetFormattedGameDate( licence.data.GetReleaseTime() )
+'GameConfig.devGUID = licence.GetGUID()
 				'add children
 				For local sub:TProgrammeLicence = EachIn licence.subLicences
 					GetProgrammeDataCollection().Add(sub.GetData())
@@ -78,10 +67,6 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 
 				GetProgrammeDataCollection().Add(licence.GetData())
 				GetProgrammeLicenceCollection().AddAutomatic(licence)
-
-
-				'print "added licence: " + licence.GetTitle()
-				'GetPlayerProgrammeCollection(1).AddProgrammeLicence(licence)
 			endif
 		endif
 	End Function
@@ -94,6 +79,7 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
 		programmeLicence.SetData(programmeData)
 		programmeLicence.licenceType = TVTProgrammeLicenceType.COLLECTION
+		programmeLicence.owner = TOwnedGameObject.OWNER_NOBODY
 
 		programmeData.title = new TLocalizedString
 		programmeData.description = new TLocalizedString
@@ -132,8 +118,7 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 
 		programmeData.genre = TVTProgrammeGenre.Event_Sport
 
-		'set to "last match", so it stays "live" until then
-		programmeData.releaseTime = league.GetLastMatchTime()
+		programmeData.releaseTime = league.GetFirstMatchTime()
 
 		'so the licence datasheet does expose that information
 		programmeData.SetBroadcastLimit(3)
@@ -174,7 +159,10 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 
 		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
 		programmeLicence.SetData(programmeData)
-		programmeLicence.licenceType = TVTProgrammeLicenceType.SINGLE
+		'when setting to "SINGLE" they might be sold independently
+		programmeLicence.licenceType = TVTProgrammeLicenceType.EPISODE
+		programmeLicence.owner = TOwnedGameObject.OWNER_NOBODY
+
 
 		programmeData.GUID = "programmedata-sportmatch-"+match.GetGUID()
 
@@ -216,8 +204,10 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		programmeLicence.setLicenceFlag(TVTProgrammeLicenceFlag.LICENCEPOOL_REMOVES_TRADEABILITY, True)
 		programmeLicence.SetBroadcastLimit(3) 'needed?
 		programmeData.SetBroadcastLimit(3)
+		'while limiting the broadcasts, we should also lower the price
+		'do this for the licences, as the data should be still "expensive"
+		programmeLicence.SetModifier("price", 0.4)
 
-		'programmeData.AddKeyword("SOCCER")
 
 
 		return programmeLicence

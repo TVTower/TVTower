@@ -216,7 +216,7 @@ Type TNewsEventSportLeague_Soccer extends TNewsEventSportLeague
 	End Method
 
 
-	Method GetFirstMatchTime:Long(time:Long)
+	Method GetSeasonStartTime:Long(time:Long)
 		'take year of the given time and use the defined months for a
 		'soccer season
 		'match time: 14. 8. - 14.5. (1. Liga)

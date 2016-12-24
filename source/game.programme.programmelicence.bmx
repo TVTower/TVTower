@@ -509,6 +509,22 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
+	Method GetNextReleaseTime:Long() {_exposeToLua}
+		if not subLicences then return data.GetReleaseTime()
+
+		local result:Long = -1
+		For local i:int = 0 until subLicences.length
+			local subReleaseTime:Long = subLicences[i].GetNextReleaseTime()
+			'fetch earliest "still to come" release time
+			if subReleaseTime > GetWorldTime().GetTimeGone()
+				if result = -1 then result = subReleaseTime
+				result = min(subReleaseTime, result)
+			endif
+		Next
+		return result
+	End Method
+	
+
 	Method GetSubLicences:TProgrammeLicence[]() {_exposeToLua}
 		local result:TProgrammeLicence[]
 		For local i:int = 0 until subLicences.length
@@ -606,6 +622,19 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	Method isProgrammeType:int(programmeDataType:int) {_exposeToLua}
 		return GetData() and GetData().isType(programmeDataType)
 	End Method
+
+
+	Method isLive:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 and GetData()
+			return data.IsLive()
+		endif
+		'is live as soon as one licence is still live
+		For local licence:TProgrammeLicence = eachin subLicences
+			if licence.isLive() then return True
+		Next
+		return False
+	End Method
+		
 
 
 	Method isSeries:int() {_exposeToLua}
@@ -1463,7 +1492,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'if licence is for a specific programme it might contain a flag...
 		'TODO: do this for "all" via licence.HasFlag() doing recursive checks?
 		If data.IsPaid() then showMsgEarnInfo = True
-		If data.IsLive() or data.IsLiveOnTape()
+		If IsLive() or data.IsLiveOnTape()
 			local programmedDay:int = -1
 			local programmedHour:int = -1
 			if extraData
@@ -1472,23 +1501,34 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 				'not programmed = freshly created or dragged, so it is
 				'live, if the live-time is not passed yet
 				if programmedDay = -1 or programmedHour = -1
-					if GetWorldTime().GetTimeGone() < data.releaseTime + 5*60 ' xx:05
+					if GetWorldTime().GetTimeGone() < data.GetReleaseTime() + 5*60 ' xx:05
 						showMsgLiveInfo = true
 					endif
 				'if programmed, check if this the time of the live broadcast
 				'if so - also display the "live"-information for something
 				'which is only "live on tape" (was live at that time)
 				else
-					if GetWorldTime().GetDay(data.releaseTime) = programmedDay and GetWorldTime().GetDayHour(data.releaseTime) = programmedHour
+					if GetWorldTime().GetDay(data.GetReleaseTime()) = programmedDay and GetWorldTime().GetDayHour(data.GetReleaseTime()) = programmedHour
 						showMsgLiveInfo = true
 					endif
 				endif
-			elseif data.IsLive()
+			elseif IsLive()
 				'it is only live until it happens
 				if GetWorldTime().GetTimeGone() < data.releaseTime + 5*60 ' xx:05
 					showMsgLiveInfo = True
 				endif
 			endif
+			
+			if GetSubLicenceCount() > 0
+				if IsLive()
+					local nextT:Long = GetNextReleaseTime()
+					local nowT:Long = GetWorldTime().GetTimeGone()
+					if GetWorldTime().GetTimeGone() < GetNextReleaseTime() + 5*60
+						showMsgLiveInfo = True
+					endif
+				endif
+			endif
+
 		endif
 		If HasBroadcastLimit() then showMsgBroadcastLimit= True
 		If HasBroadcastTimeSlot() then showMsgBroadcastTimeSlot= True
@@ -1662,7 +1702,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		If showMsgLiveInfo
 			local time:string = ""
-			local days:int = GetWorldTime().GetDay( data.releaseTime ) - GetWorldTime().GetDay()
+			local nextReleaseTime:Long = GetNextReleaseTime()
+			if nextReleaseTime = -1 then nextReleaseTime = data.GetReleaseTime()
+			local days:int = GetWorldTime().GetDay( nextReleaseTime ) - GetWorldTime().GetDay()
 
 			if days = 0
 				time = GetLocale("TODAY")
@@ -1671,12 +1713,12 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			elseif days =-1
 				time = GetLocale("YESTERDAY")
 			elseif days > 0
-				time = GetLocale("IN_X_DAYS").Replace("%DAYS%", GetWorldTime().GetDaysRun( data.releaseTime ) - GetWorldTime().GetDaysRun())
+				time = GetLocale("IN_X_DAYS").Replace("%DAYS%", GetWorldTime().GetDaysRun( nextReleaseTime ) - GetWorldTime().GetDaysRun())
 			else
-				time = GetLocale("X_DAYS_AGO").Replace("%DAYS%", Abs(GetWorldTime().GetDaysRun( data.releaseTime ) - GetWorldTime().GetDaysRun()))
+				time = GetLocale("X_DAYS_AGO").Replace("%DAYS%", Abs(GetWorldTime().GetDaysRun( nextReleaseTime ) - GetWorldTime().GetDaysRun()))
 			endif
 			'programme start time
-			time :+ ", "+ GetWorldTime().GetDayHour( data.releaseTime )+":05"
+			time :+ ", "+ GetWorldTime().GetDayHour( nextReleaseTime )+":05"
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_LIVESHOW")+": "+time, "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf

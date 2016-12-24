@@ -459,11 +459,23 @@ print name+":  season matches: " + GetWorldTime().GetFormattedGameDate(l.GetNext
 	End Method
 
 
+	Method GetFirstMatchTime:Long()
+		local lowestTime:long = -1
+		For local league:TNewsEventSportLeague = EachIn leagues
+			local lowestLeagueMatchTime:Long = league.GetFirstMatchTime()
+			if lowestTime = -1 or lowestLeagueMatchTime < lowestTime
+				lowestTime = lowestLeagueMatchTime
+			endif
+		Next
+		return lowestTime
+	End Method
+	
+
 	Method GetLastMatchTime:Long()
 		local latestTime:long = -1
 		For local league:TNewsEventSportLeague = EachIn leagues
 			local latestLeagueMatchTime:Long = league.GetLastMatchTime()
-			if latestTime = -1 or latestLeagueMatchTime < latestTime
+			if latestTime = -1 or latestLeagueMatchTime > latestTime
 				latestTime = latestLeagueMatchTime
 			endif
 		Next
@@ -916,6 +928,20 @@ Type TNewsEventSportSeason extends TGameObject
 	End Method
 
 
+	Method GetFirstMatchTime:Long()
+		local list:TList = doneMatches
+		if list.Count() = 0 then list = upcomingMatches
+
+		local lowestTime:long = -1
+		For local nextMatch:TNewsEventSportMatch = EachIn list
+			if lowestTime = -1 or nextMatch.GetMatchTime() < lowestTime
+				lowestTime = nextMatch.GetMatchTime()
+			endif
+		Next
+		return lowestTime
+	End Method
+
+
 	Method GetLastMatchTime:Long()
 		local latestTime:long = -1
 		For local nextMatch:TNewsEventSportMatch = EachIn upcomingMatches
@@ -1036,6 +1062,11 @@ Type TNewsEventSportLeague extends TGameObject
 
 	Method GetNextMatchTime:Long()
 		return GetCurrentSeason().GetNextMatchTime()
+	End Method
+
+
+	Method GetFirstMatchTime:Long()
+		return GetCurrentSeason().GetFirstMatchTime()
 	End Method
 
 
@@ -1277,7 +1308,7 @@ endrem
 		'print "Create Upcoming Matches"
 		CreateUpcomingMatches()
 		'print "Assign Match Times"
-		local seasonStart:Long = GetFirstMatchTime(time)
+		local seasonStart:Long = GetSeasonStartTime(time)
 'print "SeasonStart: "  + GetworldTime().GetFormattedDate(seasonStart) +"  now=" +GetworldTime().GetFormattedDate(time)
 		AssignMatchTimes(currentSeason, GetNextMatchStartTime(seasonStart))
 		'sort the upcoming matches by match time (ascending)
@@ -1380,7 +1411,7 @@ endrem
 
 	'adjust the given time if the first match of a season cannot start
 	'before a given time
-	Method GetFirstMatchTime:Long(time:Long)
+	Method GetSeasonStartTime:Long(time:Long)
 		return time
 	End Method
 	

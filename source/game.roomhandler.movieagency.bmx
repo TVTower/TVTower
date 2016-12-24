@@ -27,7 +27,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Field filterMoviesGood:TProgrammeLicenceFilterGroup {nosave}
 	Field filterMoviesCheap:TProgrammeLicenceFilterGroup {nosave}
 	Field filterSeries:TProgrammeLicenceFilter {nosave}
-	Field filterAuction:TProgrammeLicenceFilterGroup
+	Field filterAuction:TProgrammeLicenceFilterGroup {nosave}
 
 	'graphical lists for interaction with blocks
 	Global haveToRefreshGuiElements:int = TRUE
@@ -171,7 +171,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			'maximum of 1 year since release
 			filterAuction.filters[1].priceMin = 100000
 			filterAuction.filters[1].priceMax = -1
-			filterAuction.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE]
+			filterAuction.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION, TVTProgrammeLicenceType.SERIES]
 			filterAuction.filters[1].SetDataFlag(TVTProgrammeDataFlag.LIVE)
 			filterAuction.filters[1].checkTradeability = True
 			filterAuction.filters[1].timeToReleaseMin = 5 * TWorldTime.DAYLENGTH
@@ -1058,6 +1058,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	Field bestBidder:Int = 0			'what was bidden for that licence
 	Field slot:Int = 0					'for ordering (and displaying sheets without overlapping)
 	Field bidSavings:Float = 0.75		'how much to shape of the original price
+	Field maxAuctionTime:Long = -1
 	Field _bidSavingsMinimum:Float = -1
 	Field _bidSavingsMaximum:Float = -1
 	Field _bidSavingsDecreaseBy:Float = -1
@@ -1121,11 +1122,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	Function GetCurrentLiveOffers:int()
 		local res:int = 0
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
-			if obj.licence
-				if obj.licence.GetData()
-					if obj.licence.GetData().IsLive() then res :+1
-				endif
-			endif
+			if obj.licence and obj.licence.IsLive() then res :+1
 		Next
 		return res
 	End Function
@@ -1166,6 +1163,18 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		endif
 		return _bidSavingsDecreaseBy
 	End Method
+
+
+	Method GetMaxAuctionTime:Long(useLicence:TProgrammeLicence = null)
+		if not useLicence then useLicence = licence
+		
+		'limit live programme by their airTime - 1 day
+		if useLicence and useLicence.IsLive()
+			return useLicence.data.GetReleaseTime() - 1 * TWorldTime.DAYLENGTH
+		endif
+
+		return maxAuctionTime
+	End Method
 	 
 
 	'sets another licence into the slot
@@ -1176,24 +1185,35 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			'no longer ignore player difficulty
 			licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY, False)
 		endif
-	
-		licence = programmeLicence
 
+		'backup old licence if a new is to find - but eg. fails (no live)
+		local oldLicence:TProgrammeLicence
+		if not programmeLicence then oldLicence = licence
+		licence = programmeLicence
 
 		'try to find a "live" programme first
 		if GetCurrentLiveOffers() < 3
-			local filter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction.filters[1].Copy()
-			'only take live-programme starting not earlier than 3 days
-			'from now
-			'this is needed to avoid a "live"-programme being no longer
-			'live
-			filter.timeToReleaseMin = 3 * TWorldTime.DAYLENGTH
-			
-			While Not licence And filter.priceMin >= 0
-				licence = GetProgrammeLicenceCollection().GetRandomByFilter(filter)
-				'lower the requirements
-				If Not licence then filter.priceMin :- 25000
-			End While
+			local keepOld:int = False
+			'keep an old live programme if it airs _after_ the next day
+			if not bestBidder and GetMaxAuctionTime() > GetWorldTime().GetTimeGone()
+				keepOld = true
+				licence = oldLicence
+			endif
+				
+
+			if not keepOld
+				local filter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction.filters[1].Copy()
+				'only take live-programme starting not earlier than 3 days
+				'from now
+				'this is needed to avoid a "live"-programme being no longer
+				'live
+				filter.timeToReleaseMin = 2 * TWorldTime.DAYLENGTH
+				While Not licence And filter.priceMin >= 0
+					licence = GetProgrammeLicenceCollection().GetRandomByFilter(filter)
+					'lower the requirements
+					If Not licence then filter.priceMin :- 25000
+				End While
+			endif
 		endif
 
 
@@ -1227,7 +1247,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			licence.SetModifier("auctionPrice", 1.0)
 			licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY, True)
 		endif
-		
+	
 		'reset cache
 		_imageWithText = Null
 		'reset bids
@@ -1292,7 +1312,18 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		'we add another licence to this block and reset everything
 		If bestBidder Or Self.bidSavings < Self.GetBidSavingsMinimum() or not licence
 			Refill()
+			return True
 		EndIf
+		
+		'is time for this auction gone (eg. live-programme has limits)?
+		If licence
+			local maxTime:Long = GetMaxAuctionTime(licence)
+			if maxTime <> -1 and maxTime < GetWorldTime().GetTimeGone()
+print "maxAuctionTime reached: " + licence.Gettitle()
+				Refill()
+				return true
+			endif
+		endif
 	End Method
 
 
