@@ -904,20 +904,23 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	'if targetgroup is set, the price is doubled
 	Method GetProfitForPlayer:Int(playerID:Int)
+		'already calculated and data for owner requested
+		If owner > 0 and owner = playerID and profit >= 0 Then Return profit
+
 		Return CalculatePricesForPlayer(base.profitBase, playerID, PRICETYPE_PROFIT) * GetSpotCount()
 	End Method
 
 
 	'if targetgroup is set, the price is doubled
 	Method GetProfit:Int() {_exposeToLua}
-		'already calculated and data for owner requested
-		If owner > 0 and profit >= 0 Then Return profit
-
 		return GetProfitForPlayer(owner)
 	End Method
 
 
 	Method GetInfomercialProfitForPlayer:Int(playerID:Int)
+		'already calculated and data for owner requested
+		If owner > 0 and owner = playerID and infomercialProfit >= 0 Then Return infomercialProfit
+
 		local result:float
 		'return fixed or calculated profit
 		if base.fixedInfomercialProfit
@@ -936,24 +939,21 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 	Method GetInfomercialProfit:Int() {_exposeToLua}
-		'already calculated and data for owner requested
-		If owner > 0 and infomercialProfit >= 0 Then Return infomercialProfit
-
 		return GetInfomercialProfitForPlayer(owner)
 	End Method
 
 
 	'returns the penalty for this contract
 	Method GetPenaltyForPlayer:Int(playerID:Int=-1)
+		'already calculated and data for owner requested
+		If owner > 0 and owner = playerID and penalty >= 0 Then Return penalty
+
 		Return CalculatePricesForPlayer(base.penaltyBase, playerID, PRICETYPE_PENALTY) * GetSpotCount()
 	End Method
 
 
 	'returns the penalty for this contract
 	Method GetPenalty:Int() {_exposeToLua}
-		'already calculated and data for owner requested
-		If owner > 0 and penalty >= 0 Then Return penalty
-
 		Return GetPenaltyForPlayer(owner)
 	End Method
 
@@ -1068,14 +1068,14 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	'Gets minimum needed audience in absolute numbers
 	Method GetMinAudienceForPlayer:Int(playerID:int)
+		'skip calculation if already calculated
+		If owner > 0 and playerId = owner and minAudience >=0 Then Return minAudience
+
 		Return TFunctions.RoundToBeautifulValue( GetRawMinAudienceForPlayer(playerID) )
 	End Method
 	
 
 	Method GetMinAudience:Int() {_exposeToLua}
-		'skip calculation if already calculated
-		If owner > 0 and minAudience >=0 Then Return minAudience
-
 		return GetMinAudienceForPlayer(owner)
 	End Method
 
@@ -1094,14 +1094,14 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'Gets minimum needed audience in absolute numbers (ignoring
 	'targetgroup limits)
 	Method GetTotalMinAudienceForPlayer:Int(playerID:int)
+		'skip calculation if already calculated
+		If owner > 0 and owner = playerID and totalMinAudience >=0 Then Return totalMinAudience
+
 		Return TFunctions.RoundToBeautifulValue( GetTotalRawMinAudienceForPlayer(playerID) )
 	End Method
 
 
 	Method GetTotalMinAudience:Int(playerID:int=-1) {_exposeToLua}
-		'skip calculation if already calculated
-		If owner > 0 and totalMinAudience >=0 Then Return totalMinAudience
-
 		return GetTotalMinAudienceForPlayer(owner)
 	End Method
 
@@ -1429,7 +1429,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		if owner <= 0 then daysLeft = GetDaysToFinish()
 
 		local imageText:String
-		local daysLeftText:String
+		local daysLeftText:String 
 		If daysLeft = 1
 			daysLeftText = getLocale("AD_SEND_TILL_TOMORROW")
 		ElseIf daysLeft = 0

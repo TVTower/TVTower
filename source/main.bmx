@@ -151,8 +151,8 @@ TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
 '===== SETUP LOGGER FILTER =====
 TLogger.setLogMode(LOG_ALL )
 TLogger.setPrintMode(LOG_ALL ) '(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
-TLogger.SetPrintMode(0) 'all messages off
-'TLogger.SetPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
+'TLogger.SetPrintMode(0) 'all messages off
+TLogger.SetPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
 'TLogger.changePrintMode(LOG_DEV, FALSE)
 
