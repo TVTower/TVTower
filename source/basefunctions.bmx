@@ -186,7 +186,50 @@ Type TFunctions
 	End Function
 
 
+	'formats a given value from "123000,12" to "123.000,12" 
+	'optimized variant
 	Function dottedValue:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:int = -1)
+		'is there a "minus" in front ?
+		Local addSign:Int = value < 0
+		Local result:String
+		Local decimalValue:string
+
+		'only process decimals when requested
+		if digitsAfterDecimalPoint > 0
+			Local stringValues:String[] = String(Abs(value)).Split(".")
+			Local decimalValue:string = stringValues[0]
+			Local fractionalValue:String = ""
+			if stringValues.length > 1 then fractionalValue = stringValues[1]
+
+			'do we even have a fractionalValue <> ".000" ?
+			if Long(fractionalValue) > 0
+				'not rounded, just truncated
+				fractionalValue = Left(fractionalValue, digitsAfterDecimalPoint)
+				result :+ decimalDelimiter + fractionalValue
+			endif
+		else
+			decimalValue = String(Abs(Long(value)))
+		endif
+
+
+		For Local i:Int = decimalValue.length-1 To 0 Step -1
+			result = Chr(decimalValue[i]) + result
+
+			'every 3rd char, but not if the last one (avoid 100 -> .100)
+			If (decimalValue.length-i) Mod 3 = 0 And i > 0 
+				result = thousandsDelimiter + result 
+			EndIf
+		Next
+
+		if addSign
+			Return "-" + result
+		else
+			Return result
+		endif
+	End Function
+
+
+	Function dottedValue_OLD:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:int = -1)
 		'is there a "minus" in front ?
 		Local addSign:String = ""
 		If value < 0 Then addSign="-"

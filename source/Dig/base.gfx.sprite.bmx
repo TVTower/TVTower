@@ -305,7 +305,6 @@ Type TSprite
 			tmppix.Window(int(area.GetX()), int(area.GetY()), int(area.GetW()), int(area.GetH())).ClearPixels(0)
 			DrawImageOnImage(ColorizeImageCopy(img, color), tmppix, int(area.GetX()), int(area.GetY()))
 		UnlockImage(parent.image, 0)
-		GCCollect() '<- FIX!
 	End Method
 	
 
@@ -439,7 +438,6 @@ Type TSprite
 		endif
 
 		UnlockImage(parent.image)
-		GCCollect() '<- FIX!
 
 		Return TImage.Load(DestPixmap, 0, 255, 0, 255)
 	End Method
@@ -449,7 +447,7 @@ Type TSprite
 		'give back whole image if no frames are configured
 		if frames <= 0 then frame = 0
 		Local DestPixmap:TPixmap = LockImage(parent.image, 0, False, True).Window(int(area.GetX() + frame * framew), int(area.GetY()), framew, int(area.GetH()))
-		GCCollect() '<- FIX!
+
 		Return TImage.Load(DestPixmap, 0, 255, 0, 255)
 	End Method
 
@@ -467,7 +465,7 @@ Type TSprite
 		Else
 			DestPixmap = LockImage(parent.image, 0, False, True).Window(int(area.GetX()), int(area.GetY()), int(area.GetW()), int(area.GetH()))
 		EndIf
-		'GCCollect() '<- FIX!
+
 		return DestPixmap
 	End Method
 
@@ -489,10 +487,9 @@ Type TSprite
 
 
 	'removes the part of the sprite packs image occupied by the sprite
-	Method ClearImageData:int()
+	Method ClearImageData()
 		Local tmppix:TPixmap = LockImage(parent.image, 0)
 		tmppix.Window(int(area.GetX()), int(area.GetY()), int(area.GetW()), int(area.GetH())).ClearPixels(0)
-		GCCollect() '<- FIX!
 	End Method
 
 
