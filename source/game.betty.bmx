@@ -4,19 +4,14 @@ Import "Dig/base.util.logger.bmx"
 Import "game.world.worldtime.bmx"
 
 
-
+	
 
 Type TBetty
-	Field InLove:Long[4]
-	Field LoveSum:Long
-	Field AwardWinner:Long[4]
-	Field AwardSum:Float = 0.0
-	Field CurrentAwardType:Int = 0
-	Field AwardEndingAtDay:Int = 0
-	Field MaxAwardTypes:Int = 3
-	Field AwardDuration:Int = 3
-	Field LastAwardWinner:Int = 0
-	Field LastAwardType:Int = 0
+	Field inLove:Int[4]
+	Field presentHistory:TList[]
+	'cached values
+	Field _inLoveSum:Int
+
 	Global _instance:TBetty
 	Const LOVE_MAXIMUM:int = 10000
 
@@ -28,131 +23,131 @@ Type TBetty
 
 
 	Method Initialize:int()
-		InLove = new Long[4]
-		LoveSum = 0
-		AwardWinner = new Long[4]
-		AwardSum = 0.0
-		CurrentAwardType = 0
-		AwardEndingAtDay = 0
-		MaxAwardTypes = 3
-		AwardDuration = 3
-		LastAwardWinner = 0
-		LastAwardType = 0
+		inLove = new Int[4]
+
+		_inLoveSum = -1
 	End Method
 
 
-	Method GivePresent:int(playerID:int, present:TBettyPresent)
+	Method ResetLove(playerID:int)
+		inLove[playerID-1] = 0
+
+		_inLoveSum = -1
+	End Method
+
+
+	Method GivePresent:int(playerID:int, present:TBettyPresent, time:Long = -1)
 		if not present then return False
 		'TODO: collect times betty got this present
 		'      each time decreases "effect" ...
+
+		local action:TBettyPresentGivingAction = new TBettyPresentGivingAction.Init(playerID, present, time)
+		GetPresentHistory(playerID).AddLast(action)
 		
-		AdjustLove(playerId, present.bettyValue)
+		AdjustLove(playerID, present.bettyValue)
 
 		TLogger.Log("Betty", "Player "+playerID+" gave Betty a present ~q"+present.GetName()+"~q.", LOG_DEBUG)
 		return True
 	End Method
 
+
+	'returns (and creates if needed) the present history list of a given playerID
+	Method GetPresentHistory:TList(playerID:int)
+		if playerID <= 0 then return null
+		if presentHistory.length < playerID then presentHistory = presentHistory[.. playerID]
+
+		if not presentHistory[playerID-1] then presentHistory[playerID-1] = CreateList()
+
+		return presentHistory[playerID-1]
+	End Method
+
 	
 	Method GetLoveSummary:string()
 		local res:string
-		res :+ RSet(GetInLove(1),5)+" ("+RSet(LSet(GetInLoveShare(1),4)+"%",7)+")~t"
-		res :+ RSet(GetInLove(2),5)+" ("+RSet(LSet(GetInLoveShare(2),4)+"%",7)+")~t"
-		res :+ RSet(GetInLove(3),5)+" ("+RSet(LSet(GetInLoveShare(3),4)+"%",7)+")~t"
-		res :+ RSet(GetInLove(4),5)+" ("+RSet(LSet(GetInLoveShare(4),4)+"%",7)+")~t"
+		for local i:int = 1 to 4
+			res :+ RSet(GetInLove(i),5)+" (Pr: "+RSet(MathHelper.NumberToString(GetInLovePercentage(i)*100,2)+"%",7)+"     Sh: "+RSet(MathHelper.NumberToString(GetInLoveShare(i)*100,2)+"%",7)+")~t"
+		Next
 		return res
 	End Method
 	
 
-	Method AdjustLove(PlayerID:Int, Amount:Int)
-		'modify each players love amount (eg. subtract) 
-		For Local i:Int = 0 until 4
-			Self.InLove[i] :- Amount / 4
-		Next
+	Method AdjustLove(PlayerID:Int, amount:Int)
+		'you cannot subtract more than what is there
+		if amount < 0 then amount = - Min(abs(amount), abs(Self.InLove[PlayerID-1]))
 
-		'add back the "lost" sum to the player + 25%
-		Self.InLove[PlayerID-1] :+ Amount * 5 / 4
+		Self.InLove[PlayerID-1] = Max(0, Self.InLove[PlayerID-1] + amount)
 
-		Self.LoveSum = 0
+		'if love to a player _increases_ love to others will decrease
+		'but if love _decreases_ it wont increase love to others!
+		If amount > 0
+			local decrease:int = (0.75 * amount) / (Self.InLove.length-1)
+			For Local i:Int = 0 until Self.InLove.length
+				if i = PlayerID then continue
+				Self.InLove[i] = Max(0, Self.InLove[i] - decrease)
+			Next
+		EndIf
 
-		For Local i:Int = 0 Until 4
-			'only add positive ones
-			Self.LoveSum :+ Max(0, Self.InLove[i])
-		Next
-	End Method
-
-
-	Method AdjustAward(PlayerID:Int, Amount:Float)
-		For Local i:Int = 0 Until 4
-			Self.AwardWinner[i] :-Amount / 4
-		Next
-		Self.AwardWinner[PlayerID-1] :+ Amount * 5 / 4
-		Self.AwardSum = 0
-		For Local i:Int = 0 Until 4
-			Self.AwardSum :+ Self.AwardWinner[i]
-		Next
-	End Method
-
-
-	Method GetAwardTypeString:String(AwardType:Int = 0)
-		If AwardType = 0 Then AwardType = CurrentAwardType
-		Select AwardType
-			Case 0 Return "NONE"
-			Case 1 Return "News"
-			Case 2 Return "Kultur"
-			Case 3 Return "Quoten"
-		End Select
-	End Method
-
-
-	Method SetAwardType(AwardType:Int = 0, SetEndingDay:Int = 0, Duration:Int = 0)
-		If Duration = 0 Then Duration = Self.AwardDuration
-		CurrentAwardType = AwardType
-		If SetEndingDay = True Then AwardEndingAtDay = GetWorldTime().GetDay() + Duration
-	End Method
-
-
-	Method GetAwardEnding:Int()
-		Return AwardEndingAtDay
+		'reset cache
+		Self._inLoveSum = -1
 	End Method
 
 
 	Method GetInLove:Int(PlayerID:Int)
-		Return Self.InLove[PlayerID -1]
+		Return InLove[PlayerID -1]
 	End Method
 
 
+	Method GetInLoveSum:Int()
+		If Self._inLoveSum = -1
+			Self._inLoveSum = 0
+			For local s:int = EachIn inLove
+				Self._inLoveSum :+ s
+			Next
+		EndIf
+		Return Self._inLoveSum
+	End Method
+
+
+	'returns "love progress"
 	Method GetInLovePercentage:Float(PlayerID:Int)
-		Return Self.InLove[PlayerID -1] / Float(LOVE_MAXIMUM)
+		Return InLove[PlayerID -1] / Float(LOVE_MAXIMUM)
 	End Method
 
 
 	'returns a value how love is shared between players
 	Method GetInLoveShare:Float(PlayerID:Int)
-		If Self.LoveSum <= 0 then return 0
-		Return Max(0.0, Min(1.0, Self.InLove[PlayerID -1] / Float(self.LoveSum)))
-	End Method
-
-
-	Method GetLastAwardWinner:Int()
-		Local HighestAmount:Float = 0.0
-		Local HighestPlayer:Int = 0
-		For Local i:Int = 1 To 4
-			If Self.GetRealAward(i) > HighestAmount Then HighestAmount = Self.GetRealAward(i) ;HighestPlayer = i
-		Next
-		LastAwardWinner = HighestPlayer
-		Return HighestPlayer
-	End Method
-
-
-	Method GetRealAward:Int(PlayerID:Int)
-		If Self.AwardSum < 100 Then Return Ceil(100 * Self.AwardWinner[PlayerID-1] / 100)
-		Return Ceil(100 * Self.AwardWinner[PlayerID-1] / Self.AwardSum)
+		If GetInLoveSum() > 0 
+			Return Max(0.0, Min(1.0, Self.InLove[PlayerID -1] / Float( GetInLoveSum() )))
+		Else
+			Return 1.0 / Self.inLove.length
+		EndIf
 	End Method
 End Type
 
 Function GetBetty:TBetty()
 	Return TBetty.GetInstance()
 End Function
+
+
+
+
+Type TBettyPresentGivingAction
+	Field playerID:int = 0
+	Field present:TBettyPresent
+	Field time:Long
+
+
+	Method Init:TBettyPresentGivingAction(playerID:int, present:TBettyPresent, time:Long = -1)
+		if time = -1 then time = GetWorldTime().GetTimeGone()
+
+		self.time = time
+		self.present = present
+		self.playerID = playerID
+
+		return self
+	End Method
+End Type
+
 
 
 
