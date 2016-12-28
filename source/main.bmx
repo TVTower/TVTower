@@ -77,6 +77,7 @@ Import "game.production.productionmanager.bmx"
 Import "game.achievements.bmx"
 
 Import "game.betty.bmx"
+Import "game.award.base.bmx"
 Import "game.building.bmx"
 Import "game.ingameinterface.bmx"
 Import "game.newsagency.bmx"
@@ -1772,6 +1773,7 @@ Type TGameState
 	Field _GameRules:TGamerules = Null
 	Field _GameConfig:TGameConfig = Null
 	Field _Betty:TBetty = Null
+	Field _AwardBaseCollection:TAwardBaseCollection = Null
 	Field _NewsEventSportCollection:TNewsEventSportCollection = Null
 
 	Field _GameInformationCollection:TGameInformationCollection = Null
@@ -1895,6 +1897,8 @@ Type TGameState
 
 		GetBetty().Initialize()
 
+		GetAwardBaseCollection().Initialize()
+
 		'initialize known room handlers + event registration
 		RegisterRoomHandlers()
 		GetRoomHandlerCollection().Initialize()
@@ -1957,6 +1961,7 @@ Type TGameState
 		_Assign(_StationMapCollection, TStationMapCollection._instance, "StationMapCollection", MODE_LOAD)
 		_Assign(_NewsEventSportCollection, TNewsEventSportCollection._instance, "NewsEventSportCollection", MODE_LOAD)
 		_Assign(_Betty, TBetty._instance, "Betty", MODE_LOAD)
+		_Assign(_AwardBaseCollection, TAwardBaseCollection._instance, "AwardBaseCollection", MODE_LOAD)
 		_Assign(_World, TWorld._instance, "World", MODE_LOAD)
 		_Assign(_WorldTime, TWorldTime._instance, "WorldTime", MODE_LOAD)
 		_Assign(_BuildingTime, TBuildingTime._instance, "BuildingTime", MODE_LOAD)
@@ -2071,6 +2076,7 @@ Type TGameState
 		_Assign(TStationMapCollection._instance, _StationMapCollection, "StationMapCollection", MODE_SAVE)
 		_Assign(TNewsEventSportCollection._instance, _NewsEventSportCollection, "NewsEventSportCollection", MODE_SAVE)
 		_Assign(TBetty._instance, _Betty, "Betty", MODE_SAVE)
+		_Assign(TAwardBaseCollection._instance, _AwardBaseCollection, "AwardBaseCollection", MODE_SAVE)
 		_Assign(TWorld._instance, _World, "World", MODE_SAVE)
 		_Assign(TAuctionProgrammeBlocks.list, _AuctionProgrammeBlocksList, "AuctionProgrammeBlocks", MODE_Save)
 		'special room data
@@ -5032,10 +5038,16 @@ Type GameEvents
 
 		'if new day, not start day
 		If GetWorldTime().GetDaysRun(time) >= 1
-			'Neuer Award faellig?
-			If GetBetty().GetAwardEnding() < GetWorldTime().GetDay(time) - 1
-				GetBetty().GetLastAwardWinner()
-				GetBetty().SetAwardType(RandRange(0, GetBetty().MaxAwardTypes), True)
+			'need to create a new award?
+			local currentAward:TAwardBase = GetAwardBaseCollection().GetCurrentAward()
+			If not currentAward or currentAward.GetEndTime() < GetWorldTime().GetTimeGone()
+				'announce the winner
+				if currentAward then currentAward.Finish()
+				'create a new award
+				local awardType:int = RandRange(1, TVTAwardType.count)
+				'end in ~3 days (2 days + 23h59m)
+				local awardEndTime:Long = GetWorldTime().MakeTime( 0, GetWorldTime().GetOnDay() + 2, 23, 59)
+				GetAwardBaseCollection().CreateAward(awardType, awardEndTime)
 			End If
 
 			GetProgrammeDataCollection().RefreshTopicalities()

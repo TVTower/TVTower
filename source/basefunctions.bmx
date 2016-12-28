@@ -195,10 +195,10 @@ Type TFunctions
 		Local decimalValue:string
 
 		'only process decimals when requested
-		if digitsAfterDecimalPoint > 0
+		if digitsAfterDecimalPoint > 0 and 1=2
 			Local stringValues:String[] = String(Abs(value)).Split(".")
-			Local decimalValue:string = stringValues[0]
 			Local fractionalValue:String = ""
+			decimalValue = stringValues[0]
 			if stringValues.length > 1 then fractionalValue = stringValues[1]
 
 			'do we even have a fractionalValue <> ".000" ?

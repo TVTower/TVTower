@@ -55,6 +55,8 @@ Type TVTGameConstants {_exposeToLua}
 	Field ProgrammePersonAttribute:TVTProgrammePersonAttribute = new TVTProgrammePersonAttribute
 
 	Field ProductionFocus:TVTProductionFocus = new TVTProductionFocus
+
+	Field AwardType:TVTAwardType = new TVTAwardType
 End Type
 Global GameConstants:TVTGameConstants = New TVTGameConstants
 
@@ -1280,4 +1282,30 @@ Type TVTProgrammePersonJob {_exposeToLua}
 			default                return UNKNOWN
 		End Select
 	End Function	
+End Type
+
+
+
+
+Type TVTAwardType {_exposeToLua}
+	Const UNDEFINED:int = 0
+	Const NEWS:int = 1
+	Const CULTURE:int = 2
+	Const AUDIENCE:int = 2
+	Const count:int = 3
+
+
+	Function GetAtIndex:int(index:int = 0)
+		return index
+	End Function
+
+	
+	Function GetAsString:String(key:int = 0)
+		Select key
+			case NEWS      return "news"
+			case CULTURE   return "culture"
+			case AUDIENCE  return "audience"
+			default        return "undefined"
+		End Select
+	End Function
 End Type

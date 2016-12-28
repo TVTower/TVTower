@@ -459,16 +459,18 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'=== STOP ROOM RENT CONTRACTS ===
 		TLogger.Log("ResetPlayer()", "TODO - stop rented rooms", LOG_DEBUG)
 
+
+
 		'=== RESET ROOM BOARD IMAGES ===
 		GetRoomBoard().ResetImageCaches(PlayerID)
 
 
-		'=== RESET BETTY FEELINGS ===
-		GetBetty().InLove[PlayerID-1] = 0
-		GetBetty().AdjustLove(playerID, 0) 'recalc other things
 
-		GetBetty().AwardWinner[PlayerID-1] = 0
-		GetBetty().AdjustAward(playerID, 0) 'recalc other things
+		'=== RESET BETTY FEELINGS / AWARDS ===
+		GetBetty().ResetLove(PlayerID)
+		if GetAwardBaseCollection().GetCurrentAward()
+			GetAwardBaseCollection().GetCurrentAward().ResetScore(playerID)
+		endif
 		TLogger.Log("ResetPlayer()", "Adjusted Betty love and awards", LOG_DEBUG)
 
 
