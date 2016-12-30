@@ -241,7 +241,7 @@
 			</description>
 			<staff>
 				<member index="0" function="1">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
-				<member index="1" function="2">TheRob-TowerTV-Gast</member>
+				<member index="1" function="2">TheRob-TowerTV-Gast2</member>
 				<member index="2" function="2">TheRob-TowerTV-Sushi</member>
 				<member index="3" function="2">TheRob-TowerTV-rumpel</member>
 				<member index="4" function="2">TheRob-TowerTV-speed</member>
@@ -2308,7 +2308,7 @@
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_149</member>
-				<member index="1" function="8">TowerTV-VeraZottova</member>
+				<member index="1" function="8">TheRob-TowerTV-VeraZottova</member>
 				<member index="2" function="64">TheRob-TowerTV-DonaldMcWegan</member>
 			</staff>
 			<groups target_groups="8" pro_pressure_groups="0" contra_pressure_groups="0" />
