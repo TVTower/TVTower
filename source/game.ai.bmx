@@ -43,7 +43,9 @@ Type TAi extends TAiBase
 	Method Start()
 		Super.Start()
 		
-		'==== LINK SPECIAL OBJECTS
+		'=== LINK SPECIAL OBJECTS ===
+		local LuaEngine:TLuaEngine = GetLuaEngine()
+		
 		'own functions for player
 		LuaEngine.RegisterBlitzmaxObject("TVT", TLuaFunctions.Create(PlayerID))
 		'the player

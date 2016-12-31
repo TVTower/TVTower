@@ -6,7 +6,6 @@ Import "Dig/base.util.luaengine.bmx"
 
 Type TAiBase
 	Field playerID:int
-	Field LuaEngine:TLuaEngine {nosave}
 	Field scriptFileName:String
 	'contains the code used to reinitialize the AI
 	Field scriptSaveState:string
@@ -20,6 +19,8 @@ Type TAiBase
 	Field objectsUsedInLua:object[]
 	Field objectsUsedInLuaCount:int
 
+	Field _luaEngine:TLuaEngine {nosave}
+
 	Global AiRunning:Int = true
 
 
@@ -30,17 +31,25 @@ Type TAiBase
 	End Method
 
 
+	Method GetLuaEngine:TLuaEngine()
+		'register engine
+		if not _luaEngine then _luaEngine = TLuaEngine.Create("")
+		return _luaEngine
+	End Method
+
+
+rem
+	'currently unused
+
 	Method OnCreate()
 		Local args:Object[1]
 		args[0] = String(playerID)
 		if (AiRunning) then LuaEngine.CallLuaFunction("OnCreate", args)
 	End Method
+endrem
 
 
 	Method Start()
-		'register engine and functions
-		if not LuaEngine then LuaEngine = TLuaEngine.Create("")
-
 		'stay compatible for some versions...
 		if scriptFileName = "res/ai/DefaultAIPlayer.lua"
 			scriptFileName = "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua"
@@ -50,7 +59,7 @@ Type TAiBase
 		LoadScript(scriptFileName)
 
 		'register source and available objects
-		LuaEngine.RegisterToLua()
+		GetLuaEngine().RegisterToLua()
 	End Method
 	
 
@@ -67,10 +76,10 @@ Type TAiBase
 
 		Local loadingStopWatch:TStopWatch = new TStopWatch.Init()
 		'load content
-		LuaEngine.SetSource(LoadText(scriptFileName))
+		GetLuaEngine().SetSource(LoadText(scriptFileName))
 
 		'if there is content set, print it
-		If LuaEngine.GetSource() <> ""
+		If GetLuaEngine().GetSource() <> ""
 			AddLog("KI.LoadScript", "ReLoaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
 		else
 			AddLog("KI.LoadScript", "Loaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
@@ -124,13 +133,8 @@ Type TAiBase
 
 
 	Method CallLuaFunction:object(name:string, args:object[])
-		if not LuaEngine
-			TLogger.Log("TAiBase.CallLuaFunction", "No LuaEngine assigned. Cannot call lua function ~q"+name+"~q.", LOG_ERROR)
-			return Null
-		endif
-		
 '	    Try
-			return LuaEngine.CallLuaFunction(name, args)
+			return GetLuaEngine().CallLuaFunction(name, args)
 '		Catch ex:Object
 '			print "ex: "+ex.ToString()
 '			TLogger.log("Ai.CallLuaFunction", "Script "+scriptFileName+" does not contain function ~q"+name+"~q. Or the function resulted in an error.", LOG_ERROR | LOG_AI)

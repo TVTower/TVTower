@@ -3990,18 +3990,18 @@ Type GameEvents
 				If Int(params) = 1
 					if not player.IsLocalAI()
 						player.SetLocalAIControlled()
-						if not player.playerAI
-							player.InitAI( new TAI.Create(player.playerID, GetGame().GetPlayerAIFileURI(player.playerID)) )
-							player.playerAI.CallOnInit()
-						endif
+						'reload ai - to avoid using "outdated" information
+						player.InitAI( new TAI.Create(player.playerID, GetGame().GetPlayerAIFileURI(player.playerID)) )
+						player.playerAI.CallOnInit()
+						'player.PlayerAI.CallLuaFunction("OnForceNextTask", null)
 						GetGame().SendSystemMessage("[DEV] Enabled AI for player "+player.playerID)
 					else
 						GetGame().SendSystemMessage("[DEV] Already enabled AI for player "+player.playerID)
 					endif
 				else
 					if player.IsLocalAI()
-						'do not call "SetLocalHumanControlled()" as it deletes AI too
-						player.SetPlayerType(TPlayerBase.PLAYERTYPE_LOCAL_HUMAN)
+						'calling "SetLocalHumanControlled()" deletes AI too
+						player.SetLocalHumanControlled()
 						GetGame().SendSystemMessage("[DEV] Disabled AI for player "+player.playerID)
 					else
 						GetGame().SendSystemMessage("[DEV] Already disabled AI for player "+player.playerID)
@@ -4939,6 +4939,13 @@ Type GameEvents
 		Local day:Int = GetWorldTime().GetDay(time)
 		Local hour:Int = GetWorldTime().GetHour(time)
 
+
+
+		'=== UPDATE AWARDS / SAMMYS ===
+		GetAwardBaseCollection().UpdateAwards()
+
+
+
 		'=== REMOVE ENDED NEWSEVENTS  ===
 		'newsevents might have a "happenedEndTime" indicating that
 		'the event is only a temporary one (eg. storm warning)
@@ -5038,18 +5045,6 @@ Type GameEvents
 
 		'if new day, not start day
 		If GetWorldTime().GetDaysRun(time) >= 1
-			'need to create a new award?
-			local currentAward:TAwardBase = GetAwardBaseCollection().GetCurrentAward()
-			If not currentAward or currentAward.GetEndTime() < GetWorldTime().GetTimeGone()
-				'announce the winner
-				if currentAward then currentAward.Finish()
-				'create a new award
-				local awardType:int = RandRange(1, TVTAwardType.count)
-				'end in ~3 days (2 days + 23h59m)
-				local awardEndTime:Long = GetWorldTime().MakeTime( 0, GetWorldTime().GetOnDay() + 2, 23, 59)
-				GetAwardBaseCollection().CreateAward(awardType, awardEndTime)
-			End If
-
 			GetProgrammeDataCollection().RefreshTopicalities()
 			GetAdContractBaseCollection().RefreshInfomercialTopicalities()
 			GetGame().ComputeContractPenalties(day)

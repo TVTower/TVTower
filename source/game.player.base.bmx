@@ -415,13 +415,14 @@ Type TPlayerBase {_exposeToLua="selected"}
 
 
 	Method IsLocalHuman:Int()
-		Return playerID = GetPlayerBaseCollection().playerID and not playerAI
+		'playerAI might be existing because of a temporary AI control (/dev playerai 1 1)
+		Return playerID = GetPlayerBaseCollection().playerID and playerType = TPlayerBase.PLAYERTYPE_LOCAL_HUMAN ' and not playerAI
 		'Return playerType = PLAYERTYPE_LOCAL_HUMAN
 	End Method
 
 
 	Method IsRemoteHuman:Int()
-		Return playerType = TPlayerBase.PLAYERTYPE_REMOTE_HUMAN and not playerAI
+		Return playerType = TPlayerBase.PLAYERTYPE_REMOTE_HUMAN 'and not playerAI
 	End Method
 
 
