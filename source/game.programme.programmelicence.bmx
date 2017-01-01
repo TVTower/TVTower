@@ -2181,7 +2181,7 @@ Type TProgrammeLicenceFilter
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([4, 17])		'crime & thriller
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([5])			'comedy
 		'documentation & reportage
-		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([6, 300, 301]).SetCaption("PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES")
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([6, 300]).SetCaption("PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES")
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([7])			'drama
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([8])			'erotic
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([9, 3])			'family & cartoons
