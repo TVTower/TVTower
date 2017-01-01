@@ -356,6 +356,7 @@ Type TgfxProgrammelist Extends TPlannerList
 		Local currY:Int = GetEntriesRect().GetY()
 		Local currX:Int = GetEntriesRect().GetX()
 		Local font:TBitmapFont = GetBitmapFont("Default", 10)
+		Local oldColor:TColor = new TColor.Get()
 
 
 		'draw slots, even if empty
@@ -414,11 +415,22 @@ Type TgfxProgrammelist Extends TPlannerList
 				'do that afterwards because now "new" and "planned" are
 				'already handled
 
+				local licenceAvailable:int = licence.IsAvailable()
+				'mark not available licences (eg. broadcast limits exceeded or not yet released)
+				if not licenceAvailable
+					setAlpha 0.5 * oldColor.a
+					SetColor 255,200,200
+				endif
+
+
 				'active - if tape is the currently used
 				If i = currentEntry Then tapeDrawType = "hovered"
 				'hovered - draw hover effect if hovering
 				'we add 1 pixel to height - to hover between tapes too
 				If THelper.MouseIn(currX, currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
+					'mouse-over-hand
+					if clicksAllowed and licenceAvailable then GetGameBase().cursorstate = 1
+
 					tapeDrawType="hovered"
 				endif
 
@@ -430,6 +442,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				EndIf
 				font.drawBlock(licence.GetTitle(), currX + 22, currY + 3, 145,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
 
+				oldColor.SetRGBA()
 			EndIf
 
 
@@ -640,7 +653,6 @@ Type TgfxProgrammelist Extends TPlannerList
 
 			'we add 1 pixel to height (aka not subtracting -1) - to hover between tapes too
 			If THelper.MouseIn(int(GetEntriesRect().GetX()), currY+1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
-				GetGameBase().cursorstate = 1
 				Local doneSomething:Int = False
 				'store for sheet-display
 				hoveredLicence = licence
@@ -706,7 +718,7 @@ Type TgfxProgrammelist Extends TPlannerList
 		Local currY:Int = GetSubEntriesRect().GetY()
 		Local currX:Int = GetSubEntriesRect().GetX()
 		Local font:TBitmapFont = GetBitmapFont("Default", 10)
-
+		Local oldColor:TColor = new TColor.Get()
 
 		local startIndex:int = (subEntriesPage-1)*MAX_LICENCES_PER_PAGE
 		local endIndex:int = subEntriesPage*MAX_LICENCES_PER_PAGE -1
@@ -749,11 +761,23 @@ Type TgfxProgrammelist Extends TPlannerList
 
 			'=== DRAW TAPE===
 			If licence
+				local licenceAvailable:int = licence.IsAvailable()
+				'mark not available licences (eg. broadcast limits exceeded or not yet released)
+				if not licenceAvailable
+					setAlpha 0.5 * oldColor.a
+					SetColor 255,200,200
+				endif
+				
 				'== ADJUST TAPE TYPE ==
 				'active - if tape is the currently used
 				If i = currentSubEntry Then tapeDrawType = "hovered"
-				'hovered - draw hover effect if hovering
-				If THelper.MouseIn(currX, currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY())) Then tapeDrawType="hovered"
+				'hovered? - draw hover effect, adjust shown mouse cursor
+				If THelper.MouseIn(currX, currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
+					'mouse-over-hand
+					if clicksAllowed and licenceAvailable then GetGameBase().cursorstate = 1
+
+					tapeDrawType="hovered"
+				endif
 
 				If licence.isSingle()
 					GetSpriteFromRegistry("gfx_programmetape_movie."+tapeDrawType).draw(currX + 8, currY+1)
@@ -761,6 +785,8 @@ Type TgfxProgrammelist Extends TPlannerList
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
 				EndIf
 				font.drawBlock("(" + (i+1) + "/" + parentLicence.GetEpisodeCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 145,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+
+				oldColor.SetRGBA()
 			EndIf
 
 
@@ -918,20 +944,20 @@ Type TgfxProgrammelist Extends TPlannerList
 			
 			If licence
 				If THelper.MouseIn(int(GetSubEntriesRect().GetX()), currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
-					GetGameBase().cursorstate = 1 'mouse-over-hand
-
 					'store for sheet-display
 					hoveredLicence = licence
-					
-					'only interact if allowed
-					If clicksAllowed
-						If MOUSEMANAGER.IsShortClicked(1)
-							'create and drag new block
-							New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TProgramme.Create(licence), "programmePlanner" ).drag()
-							SetOpen(0)
-							MOUSEMANAGER.resetKey(1)
-							Return True
-						EndIf
+
+					if licence.isAvailable()
+						'only interact if allowed
+						If clicksAllowed
+							If MOUSEMANAGER.IsShortClicked(1)
+								'create and drag new block
+								New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TProgramme.Create(licence), "programmePlanner" ).drag()
+								SetOpen(0)
+								MOUSEMANAGER.resetKey(1)
+								Return True
+							EndIf
+						endif
 					endif
 				EndIf
 			EndIf

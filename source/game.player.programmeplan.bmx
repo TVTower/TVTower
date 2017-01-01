@@ -670,6 +670,12 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'do not allow adding objects we cannot control
 		If not obj.IsControllable() then Return False
 
+		'do not allow adding objects which are not available now
+		'(eg. exceeded broadcast limit)
+		If obj.GetSource()
+			if not obj.GetSource().IsAvailable() then Return False
+		EndIf
+
 		'the same object is at the exact same slot - skip actions/events
 		If obj = GetObjectAtIndex(slotType, arrayIndex) Then Return True
 

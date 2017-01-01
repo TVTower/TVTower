@@ -602,7 +602,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		endif
 
 		'refill broadcast limits - or disable tradeability
-		if broadcastLimitMax > 0 and isExceedingBroadcastLimit()
+		if GetBroadcastLimitMax() > 0 and (isExceedingBroadcastLimit() or GetSublicenceExceedingBroadcastLimitCount() > 0 )
 			if HasLicenceFlag(TVTProgrammeLicenceFlag.LICENCEPOOL_REFILLS_BROADCASTLIMITS)
 				SetBroadcastLimit(broadcastLimitMax)
 			else
@@ -734,18 +734,85 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 
 	'override
+	'returns maximum maxLimit found in licence or sublicences
+	Method GetBroadcastLimitMax:int() {_exposeToLua}
+		local result:int = Super.GetBroadcastLimitMax()
+		For local licence:TProgrammeLicence = eachin subLicences
+			result = max(result, licence.GetBroadcastLimitMax())
+		Next
+		return result
+	End Method
+
+
+	Method GetSublicenceBroadcastLimitMin:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 then Return GetBroadcastLimit()
+
+		local result:int = -1
+		For local licence:TProgrammeLicence = eachin subLicences
+			if result = -1
+				result = licence.GetSublicenceBroadcastLimitMin()
+			else
+				result = min(result, licence.GetSublicenceBroadcastLimitMin())
+			endif
+		Next
+		return result
+	End Method
+
+
+	Method GetSublicenceBroadcastLimitMax:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 then Return GetBroadcastLimit()
+
+		local result:int = -1
+		For local licence:TProgrammeLicence = eachin subLicences
+			if result = -1
+				result = licence.GetSublicenceBroadcastLimitMax()
+			else
+				result = max(result, licence.GetSublicenceBroadcastLimitMax())
+			endif
+		Next
+		return result
+	End Method
+
+
+	'override
+	Method HasBroadcastLimit:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 then Return Super.HasBroadcastLimit()
+
+		For local licence:TProgrammeLicence = eachin subLicences
+			if licence.HasBroadcastLimit() then return True
+		Next
+		return False
+	End Method
+
+
+	'returns amount of sublicences exceeding their broadcast limit
+	Method GetSublicenceExceedingBroadcastLimitCount:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 then return 0
+
+		local result:int = 0
+		For local licence:TProgrammeLicence = eachin subLicences
+			if licence.IsExceedingBroadcastLimit() then result :+ 1
+		Next
+		return result
+	End Method
+
+
+	'override
+	'return true if all (sub-)licences are exceeding its limits
 	Method IsExceedingBroadcastLimit:int() {_exposeToLua}
 		if GetSubLicenceCount() = 0 and GetData()
 			if data.IsExceedingBroadcastLimit() then return True
 
 			return Super.IsExceedingBroadcastLimit()
 		else
-			'it is enough if one licence is exceeding
+			'all licences need to exceed the limit
+			'return GetSublicenceExceedingBroadcastLimitCount() = GetSubLicenceCount()
+
 			For local licence:TProgrammeLicence = eachin subLicences
-				if licence.IsExceedingBroadcastLimit() then return True
+				if not licence.IsExceedingBroadcastLimit() then return False
 			Next
 
-			return False
+			return True
 		endif
 	End Method
 
@@ -839,6 +906,29 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if nextArrayIndex >= GetParentLicence().GetSubLicenceCount() then nextArrayIndex = 0
 
 		return GetParentLicence().GetSubLicenceAtIndex(nextArrayIndex)
+	End Method
+
+
+	'returns the next _available_ licence of a licences parent sublicences
+	Method GetNextAvailableSubLicence:TProgrammeLicence() {_exposeToLua}
+		if not parentLicenceGUID then return Null
+
+		'find my position and add 1
+		local myArrayIndex:int = GetParentLicence().GetSubLicencePosition(self)
+		local subLicenceCount:int = GetParentLicence().GetSubLicenceCount()
+		local choosenLicence:TProgrammeLicence
+		For local i:int = 1 until subLicenceCount
+			local nextArrayIndex:int = myArrayIndex + i
+			if nextArrayIndex >= subLicenceCount then nextArrayIndex = 0
+
+			'nothing found
+			if nextArrayIndex = myArrayIndex then return Null
+
+			choosenLicence = GetParentLicence().GetSubLicenceAtIndex(nextArrayIndex)
+			if choosenLicence and choosenLicence.isAvailable() then return choosenLicence
+		Next
+
+		return null
 	End Method
 
 
@@ -1724,13 +1814,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		EndIf
 
 		if showMsgBroadcastLimit
-			local broadcastsLeft:int =  GetBroadcastLimit()
-			if broadcastsLeft <= 0
+			local broadcastsLeftMin:int = GetSublicenceBroadcastLimitMin()
+			local broadcastsLeftMax:int = GetSublicenceBroadcastLimitMax()
+			if broadcastsLeftMax <= 0
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("NO_MORE_BROADCASTS_ALLOWED"), "spotsPlanned", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
-			elseif broadcastsLeft = 1
+			elseif broadcastsLeftMin = 1 and broadcastsLeftMax = 1
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			elseif broadcastsLeftMin <> broadcastsLeftMax
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", broadcastsLeftMin+"-"+broadcastsLeftMax), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			else
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", GetBroadcastLimit()), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", broadcastsLeftMin), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			endif
 			contentY :+ msgH
 		endif

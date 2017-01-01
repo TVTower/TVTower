@@ -1492,14 +1492,23 @@ endrem
 				'skip if you do no longer own the licence
 				If Not pCollection.HasProgrammeLicence(TProgramme(item.broadcastMaterial).licence) Then Return False
 
+				local createFromLicence:TProgrammeLicence
 				If CreateCopy
-					newMaterial = New TProgramme.Create(TProgramme(item.broadcastMaterial).licence)
+					createFromLicence = TProgramme(item.broadcastMaterial).licence
 				Else
-					Local licence:TProgrammeLicence = TProgramme(item.broadcastMaterial).licence.GetNextSubLicence()
-					'if no licence was given, the licence is for a normal movie...
-					If Not licence Then licence = TProgramme(item.broadcastMaterial).licence
-					newMaterial = New TProgramme.Create(licence)
+					if TProgramme(item.broadcastMaterial).licence.GetSubLicenceCount() > 0
+						createFromLicence = TProgramme(item.broadcastMaterial).licence.GetNextAvailableSubLicence()
+					'for "single licences" we cannot fetch a "next sublicence"
+					else
+						createFromLicence = TProgramme(item.broadcastMaterial).licence
+					endif
 				EndIf
+
+				'only create a new broadcastmaterial if the licence is
+				'available now (this avoids "broadcast limit exceeding" licences)
+				if createFromLicence.IsAvailable()
+					newMaterial = New TProgramme.Create(createFromLicence)
+				endif
 		End Select
 
 		'create and drag

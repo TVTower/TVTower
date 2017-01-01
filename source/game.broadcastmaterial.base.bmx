@@ -46,6 +46,11 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method IsAvailable:int()
+		return True
+	End Method
+
+
 	Method hasFlag:Int(flag:Int) {_exposeToLua}
 		Return flags & flag
 	End Method

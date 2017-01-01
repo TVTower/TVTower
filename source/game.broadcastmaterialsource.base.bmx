@@ -208,6 +208,11 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 	End Method
 
 
+	Method GetBroadcastLimitMax:int() {_exposeToLua}
+		return self.broadcastLimitMax
+	End Method
+
+
 	Method GetBroadcastLimit:int() {_exposeToLua}
 		return self.broadcastLimit
 	End Method
@@ -219,7 +224,7 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 
 
 	Method isExceedingBroadcastLimit:int() {_exposeToLua}
-		return broadcastLimit <= 0 and HasBroadcastLimit()
+		return GetBroadcastLimit() <= 0 and HasBroadcastLimit()
 	End Method
 
 
