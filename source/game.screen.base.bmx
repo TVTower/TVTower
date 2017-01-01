@@ -515,7 +515,9 @@ Type TInGameScreen_Room Extends TInGameScreen
 		if GetPlayerBase() and GetPlayerBase().GetFigure() then roomID = GetPlayerBase().GetFigure().GetInRoomID()
 		If roomID > 0 then currentRoomID = roomID
 
-		if roomID = 0 then Throw "TInGameScreen_Room.GetCurrentRoom() failed, roomID invalid."
+		'when loading a savegame with "player in room" and then a savegame
+		'with "player in building" this would "throw"
+		'if roomID = 0 then Throw "TInGameScreen_Room.GetCurrentRoom() failed, roomID invalid."
 
 		return GetRoomBaseCollection().Get(currentRoomID)
 	End Method
