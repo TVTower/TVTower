@@ -1557,17 +1557,6 @@ endrem
 		'draw system things at last (-> on top)
 		GUIManager.Draw(systemState)
 
-		'instead of using mousemanager.x and mousemanager.y (read
-		'on last Update() - which might have been some millisecs ago)
-		'we use the direct system values MouseX() and MouseY()
-		'default pointer
-		'ATTENTION: this is only done for DISPLAY. For handling the
-		'clicks, we still use the information from the last update call
-		'as the next update is then also handling the clicks we do now
-		'(and then, the coordinates are correct again)
-		'if MouseManager.x <> MouseX() or MouseManager.y <> MouseY()
-		'	print MouseManager.x+" <> "+MouseX()+" or "+MouseManager.y+" <> "+MouseY()
-		'endif
 		If GetGameBase().cursorstate = 0 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-9,  MouseManager.y-2,  0)
 		'open hand
 		If GetGameBase().cursorstate = 1 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, MouseManager.y-8,  1)

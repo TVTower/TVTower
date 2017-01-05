@@ -1134,7 +1134,7 @@ global LS_programmeplanner_and_programmeplanner_buttons:TLowerString = TLowerStr
 
 		'if not hoveredGuiProgrammePlanElement then RefreshHoveredProgrammePlanElement()
 		'only draw, if not over the right side button
-		If hoveredGuiProgrammePlanElement and MouseX() < 680
+		If hoveredGuiProgrammePlanElement and MouseManager.x < 680
 			'draw the current sheet
 			hoveredGuiProgrammePlanElement.DrawSheet(15-3, 15-3, 680) ' +/-3 for dropshadow
 		EndIf
