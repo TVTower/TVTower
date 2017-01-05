@@ -151,6 +151,62 @@ Type StringHelper
 	End Function
 
 
+	Function RSetChar:string(str:string, n:int, char:string=" ")
+		if str.length > n then return str[n+1 ..]
+
+		local paddedStr:string = ""
+		For local i:int = n until str.length step -1
+			paddedStr :+ char
+		Next
+		'maybe "char" is a sequence like "-=-=-"
+		if paddedStr.length + str.length > n
+			paddedStr = paddedStr[.. n-str.length]
+		endif
+
+		return paddedStr + str
+	End Function
+
+
+	Function LSetChar:string(str:string, n:int, char:string=" ")
+		if str.length > n then return str[.. n]
+
+		local paddedStr:string = ""
+		For local i:int = n until str.length step -1
+			paddedStr :+ char
+		Next
+		'maybe "char" is a sequence like "-=-=-"
+		if paddedStr.length + str.length > n
+			paddedStr = paddedStr[.. n-str.length]
+		endif
+
+		return str + paddedStr
+	End Function
+
+
+	Function MSetChar:string(str:string, n:int, char:string=" ")
+		local leftOffset:int = (n - str.length)/2
+		local rightOffset:int = (n+1 - str.length)/2
+		if str.length > n then return str[leftOffset .. (n - rightOffset - leftOffset)]
+
+		local paddedStrL:string = ""
+		For local i:int = 0 until leftOffset
+			paddedStrL :+ char
+		Next
+		'maybe "char" is a sequence like "-=-=-"
+		if paddedStrL.length > leftOffset then paddedStrL = paddedStrL[.. leftOffset]
+
+		local paddedStrR:string = ""
+		For local i:int = 0 until rightOffset
+			paddedStrR :+ char
+		Next
+		'maybe "char" is a sequence like "-=-=-"
+		if paddedStrR.length > rightOffset then paddedStrR = paddedStrR[.. rightOffset]
+
+
+		return paddedStrL + str + paddedStrR
+	End Function
+
+
 	Function NumericFromString:Long(str:string)
 		local resultString:string = ""
 		'take over numbers

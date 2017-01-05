@@ -21,12 +21,16 @@ Type TProductionManager
 
 
 	Method Initialize()
+		productionsToProduce.Clear()
+
+		'create on initialization rather than in "new()" as new is only
+		'called once per "application run" (compared to "every game")
+		CreateProductionCompanies()
 	End Method
 
 
 	Method New()
 		if not createdEnvironment
-			CreateProductionCompanies()
 
 			'=== REGISTER EVENTS ===
 			EventManager.unregisterListenersByLinks(_eventListeners)
@@ -52,7 +56,7 @@ Type TProductionManager
 		GetProductionCompanyBaseCollection().Initialize()
 
 		'create some companies
-		local cnames:string[] = ["Movie World", "Picture Fantasy", "UniPics", "Motion Gems", "Screen Jewel"]
+		local cnames:string[] = ["Digidea", "Berlin Film", "Movie World", "Los Krawallos", "Motion Gems", "Screen Jewel"]
 		For local i:int = 0 until cnames.length
 			local c:TProductionCompany = new TProductionCompany
 			c.name = cnames[i]
