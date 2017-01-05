@@ -269,6 +269,7 @@ JOB_MUSICIAN        = Musician
 JOB_MUSICIANS       = Musicians
 
 JOB_AMATEUR = Amateur
+JOB_AMATEURS = Amateurs
 JOB_AMATEUR_DIRECTOR         = Amateur director
 JOB_AMATEUR_DIRECTORS        = Amateur directors
 JOB_AMATEUR_ACTOR            = Amateur actor

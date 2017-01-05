@@ -265,6 +265,7 @@ JOB_MUSICIAN        = Musiker
 JOB_MUSICIANS       = Musiker
 
 JOB_AMATEUR = Amateur
+JOB_AMATEURS = Amateure
 JOB_AMATEUR_DIRECTOR         = Regiepraktikant
 JOB_AMATEUR_DIRECTORS        = Regiepraktikanten
 JOB_AMATEUR_ACTOR            = Laiendarsteller
