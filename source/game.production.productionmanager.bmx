@@ -55,6 +55,14 @@ Type TProductionManager
 		'remove old ones
 		GetProductionCompanyBaseCollection().Initialize()
 
+		'create a basic companie existing "forever on level 1"
+		local c:TProductionCompany = new TProductionCompany
+		c.name = GetLocale("JOB_AMATEURS")
+		c.SetExperience( 0 )
+		c.SetMaxExperience( 0 )
+		GetProductionCompanyBaseCollection().Add(c)
+		
+
 		'create some companies
 		local cnames:string[] = ["Digidea", "Berlin Film", "Movie World", "Los Krawallos", "Motion Gems", "Screen Jewel"]
 		For local i:int = 0 until cnames.length

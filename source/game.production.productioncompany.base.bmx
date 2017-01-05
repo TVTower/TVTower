@@ -46,6 +46,7 @@ Type TProductionCompanyBase extends TGameObject
 	Field qualityModifier:Float = 1.0
 	Field channelSympathy:Float[4]
 	Field xp:int = 0
+	Field maxXP:int = -1
 
 	Const MAX_XP:int = 10000
 	Const MAX_LEVEL:int = 20
@@ -84,8 +85,17 @@ Type TProductionCompanyBase extends TGameObject
 	End Function
 
 
+	Method SetMaxExperience(value:int)
+		maxXP = value
+	End Method
+	
+
 	Method SetExperience(value:int)
-		xp = value
+		if maxXP >= 0
+			xp = min(maxXP, value)
+		else
+			xp = value
+		endif
 	End Method
 	
 
