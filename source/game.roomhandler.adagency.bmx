@@ -83,7 +83,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 		'set to new refill mode
-		SetRefillMode(1)
+		SetRefillMode(2)
 
 
 		'=== REGISTER HANDLER ===
