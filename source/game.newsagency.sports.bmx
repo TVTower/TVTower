@@ -147,9 +147,11 @@ Type TNewsEventSport extends TGameObject
 
 			StartPlayoffs()
 
+			?debug
 			For local season:TNewsEventSportSeason = EachIn playoffSeasons
 				print name+":  playoff matches: " + GetWorldTime().GetFormattedGameDate(season.GetNextMatchTime()) + "   -   " + GetWorldTime().GetFormattedGameDate(season.GetLastMatchTime())
 			Next
+			?
 		endif
 
 		'=== playoff matches ===
@@ -354,7 +356,9 @@ Type TNewsEventSport extends TGameObject
 
 		for local l:TNewsEventSportLeague = Eachin leagues
 			l.StartSeason(time)
-print name+":  season matches: " + GetWorldTime().GetFormattedGameDate(l.GetNextMatchTime()) + "   -   " + GetWorldTime().GetFormattedGameDate(l.GetLastMatchTime())
+			?debug
+				print name+":  season matches: " + GetWorldTime().GetFormattedGameDate(l.GetNextMatchTime()) + "   -   " + GetWorldTime().GetFormattedGameDate(l.GetLastMatchTime())
+			?
 		Next
 
 		EventManager.triggerEvent(TEventSimple.Create("Sport.StartSeason", new TData.AddNumber("time", time), Self))

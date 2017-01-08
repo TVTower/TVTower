@@ -53,7 +53,7 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		'ignore seasons if the first match already happened ?
 		if league.GetDoneMatchesCount() = 0 and league.GetNextMatchTime() > GetWorldTime().GetTimeGone()
 '			print "==========================="
-			print "New league season started: " + league.name + "  " + GetWorldTime().GetFormattedDate()
+			print "New league season started: " + league.name + "  " + GetWorldTime().GetFormattedGameDate()
 
 			local licence:TProgrammeLicence = GetInstance().CreateLeagueMatchesCollectionProgrammeLicence(league)
 			if licence

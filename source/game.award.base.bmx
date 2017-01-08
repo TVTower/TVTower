@@ -8,6 +8,7 @@ Import "game.gameconstants.bmx"
 
 Type TAwardBaseCollection Extends TGameObjectCollection
 	Field currentAward:TAwardBase
+	Field upcomingAwards:TList = CreateList()
 	Field lastAwardWinner:Int = 0
 	Field lastAwardType:Int = 0
 
@@ -38,7 +39,9 @@ Type TAwardBaseCollection Extends TGameObjectCollection
 		local a:TAwardBase = new TAwardBase
 		a.awardType = awardType
 		a.SetEndTime(endTime)
-		print "AWARD ends at: "+ GetWorldTime().GetFormattedGameDate(endTime)
+		print "CreateAward:  type="+awardType+"  ends="+ GetWorldTime().GetFormattedGameDate(endTime) +"  now="+GetWorldTime().GetFormattedGameDate()
+
+		return a
 	End Method
 
 
@@ -52,6 +55,73 @@ Type TAwardBaseCollection Extends TGameObjectCollection
 
 	Method GetCurrentAward:TAwardBase()
 		return Self.currentAward
+	End Method
+
+
+	Method AddUpcoming(award:TAwardBase)
+		upcomingAwards.AddLast(award)
+	End Method
+
+
+	Method RemoveUpcoming(award:TAwardBase)
+		upcomingAwards.Remove(award)
+	End Method
+
+
+	Function SortAwardsByBeginDate:int(o1:object, o2:object)
+		local a1:TAwardBase = TAwardBase(o1)
+		local a2:TAwardBase = TAwardBase(o2)
+		if not a2 then return 1
+		if not a1 then return -1
+
+		if a1.startTime > a2.startTime then return 1
+		if a1.startTime < a2.startTime then return -1
+
+		return 0
+	End Function
+
+
+	Method GetNextAward:TAwardBase(sortUpcoming:int = False)
+		if not upcomingAwards then return Null
+		
+		'sort upcoming awards so topmost is the next one
+		'(do it here so it takes account of potentially adjusted
+		' begin times of the contained awards)
+		if sortUpcoming
+			upcomingAwards.Sort(true, SortAwardsByBeginDate)
+		endif
+		
+		return TAwardBase(upcomingAwards.First())
+	End Method
+
+
+	Method UpdateAwards()
+		'if new day, not start day
+		If GetWorldTime().GetDaysRun() >= 1
+			'need to create a new award?
+			If not currentAward or currentAward.GetEndTime() < GetWorldTime().GetTimeGone()
+				'announce the winner
+				if currentAward then currentAward.Finish()
+
+				'fetch the next award (and sort upcoming list before)
+				local nextAward:TAwardBase = GetNextAward(true)
+
+				if nextAward
+					RemoveUpcoming(nextAward)
+
+				'create a new award if there is nothingplanned - or the
+				'next one is later than X days
+				else
+					local awardType:int = RandRange(1, TVTAwardType.count)
+					'end in ~3 days (2 days + 23h59m)
+					local awardEndTime:Long = GetWorldTime().MakeTime( 0, GetWorldTime().GetOnDay() + 2, 23, 59)
+
+					nextAward = CreateAward(awardType, awardEndTime)
+				endif
+
+				SetCurrentAward(nextAward)
+			End If
+		endif
 	End Method
 End Type
 
@@ -67,6 +137,7 @@ End Function
 Type TAwardBase extends TGameObject
 	Field scores:Int[4]
 	Field awardType:Int = 0
+	Field startTime:Long = -1
 	Field endTime:Long = -1
 	'cached values
 	Field _scoreSum:int = -1 {nosave}
@@ -80,6 +151,7 @@ Type TAwardBase extends TGameObject
 	Method Reset()
 		scores = new Int[4]
 		awardType = 0
+		startTime = -1
 		endTime = -1
 
 		_scoreSum = -1
@@ -96,8 +168,13 @@ Type TAwardBase extends TGameObject
 	End Method
 
 
-	Method SetEndTime(endTime:Long)
-		Self.endTime = endTime
+	Method SetStartTime(time:Long)
+		Self.startTime = time
+	End Method
+
+
+	Method SetEndTime(time:Long)
+		Self.endTime = time
 	End Method
 
 
@@ -163,12 +240,17 @@ Type TAwardBase extends TGameObject
 	End Method
 
 
+	Method GetStartTime:Long()
+		return endTime
+	End Method
+
+
 	Method GetEndTime:Long()
 		return endTime
 	End Method
 	
 
-	Method GetEndingDay:Int()
+	Method GetDaysLeft:Int()
 		Return GetWorldTime().GetDay() - GetWorldTime().GetDay(endTime)
 	End Method
 
