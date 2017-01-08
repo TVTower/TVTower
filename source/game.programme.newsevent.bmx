@@ -538,17 +538,18 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'age influence
 		local qualityAgeMod:Float = 0.8 * devQualityAgeMod
 
-		'the older the less ppl want to watch - 1hr = 0.95%, 2hr = 0.90%...
-		'means: after 20 hrs, the topicality is 0
+		'the older the less ppl want to watch - 1hr = 0.98%, 2hr = 0.96%...
+		'means: after ~50 hrs, the topicality is 0
 		local ageHours:int = floor( float(GetWorldTime().GetTimeGone() - self.happenedTime)/3600.0 )
-		Local ageInfluence:Float = 1.0 - 0.01 * Max(0, 100 - 5 * Max(0, ageHours) )
+		Local ageInfluence:Float = 1.0 - 0.01 * Max(0, 100 - 2 * Max(0, ageHours) )
 		ageInfluence :* GetModifier("topicality::age")
 		'the lower the quality of an newsevent, the higher the age influences
 		'the max topicality, up to 80% is possible
-		ageInfluence = (1.0-qualityAgeMod) * ageInfluence + qualityAgeMod * (1 - GetQualityRaw() )
+		ageInfluence = (1.0-qualityAgeMod) * ageInfluence + ageInfluence*qualityAgeMod * (1 - GetQualityRaw())
+		'print GetTitle() + "  " +agehours +"  influence="+ageInfluence +"   devAgeMod="+devageMod +"   qualityAgeMod="+qualityAgeMod +"  qualityRaw="+GetQualityRaw()
 
 		'the first 12 broadcasts do decrease maxTopicality
-		Local timesBroadcastedInfluence:Float = 0.01 * Min(12, GetTimesBroadcasted() )
+		Local timesBroadcastedInfluence:Float = 0.02 * Min(12, GetTimesBroadcasted() )
 		timesBroadcastedInfluence :* GetModifier("topicality::timesBroadcasted")
 
 		'subtract various influences (with individual weights)
