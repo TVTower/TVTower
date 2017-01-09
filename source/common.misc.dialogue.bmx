@@ -61,7 +61,8 @@ Type TDialogue
 			local adjBalloonH:int = int(_balloonRect.getH())
 	
 			if _balloonGrow <> 0
-				local usedHeight:int = text.textUsedHeight + _contentPadding.GetY() + _contentPadding.GetH()
+				local usedHeight:int = text.GetUsedHeight(_balloonRect) + _contentPadding.GetY() + _contentPadding.GetH()
+
 				if _balloonRect.getH() < usedHeight
 					'down - nothing to do
 					'if _balloonGrow = 1 then ...
@@ -323,13 +324,14 @@ Type TDialogueTexts
 	Field _text:String = ""
 	Field _answers:TList = CreateList() 'of TDialogueAnswer
 	Field _goTo:Int = -1
-	Field textUsedHeight:Int = -1
 	Field contentChanged:int = False
-	Global font:TBitmapFont
+	'cache
+	Field _textUsedHeight:Int = -1
+	Global _font:TBitmapFont
 
 	Function Create:TDialogueTexts(text:String)
 		Local obj:TDialogueTexts = New TDialogueTexts
-		obj._text = Text
+		obj.SetText(text)
 		Return obj
 	End Function
 
@@ -374,9 +376,26 @@ Type TDialogueTexts
 	End Method
 
 
+	Method SetText:int(text:string)
+		_text = Text
+		_textUsedHeight = -1
+	End Method
+
+
+	Method GetUsedHeight:int(textRect:TRectangle)
+		if not _font then _font = GetBitmapFont("Default", 14)
+
+		if _textUsedHeight = -1 and _font
+			_textUsedHeight = _font.GetBlockHeight(Self._text, textRect.GetW(), textRect.GetH())
+		endif
+		return _textUsedHeight
+	End Method
+
+
 	Method Draw(textRect:TRectangle, answerRect:TRectangle)
-		if not font then font = GetBitmapFont("Default", 14)
-		textUsedHeight = font.DrawBlock(Self._text, textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), null, TColor.clBlack).GetY()
+		if not _font then _font = GetBitmapFont("Default", 14)
+		'draw text and also calculate used height
+		_textUsedHeight = _font.DrawBlock(Self._text, textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), null, TColor.clBlack).GetY()
 
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
 			answer.Draw(answerRect)

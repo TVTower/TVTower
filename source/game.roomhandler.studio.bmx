@@ -41,6 +41,8 @@ Type RoomHandler_Studio extends TRoomHandler
 	Global hoveredGuiProductionConcept:TGuiProductionConceptListItem
 	Global draggedGuiProductionConcept:TGuiProductionConceptListItem
 
+	global LS_studio:TLowerString = TLowerString.Create("studio")	
+
 	Global _instance:RoomHandler_Studio
 	Global _eventListeners:TLink[]
 
@@ -974,7 +976,6 @@ Type RoomHandler_Studio extends TRoomHandler
 		SetAlpha 1.0
 	End Function	
 
-global LS_studio:TLowerString = TLowerString.Create("studio")	
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		local roomGUID:string = TRoom(triggerEvent.GetSender()).GetGUID()

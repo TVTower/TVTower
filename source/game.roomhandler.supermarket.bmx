@@ -100,7 +100,6 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 		text = text.replace("%PLAYERNAME%", GetPlayerBase().name)
 
 		Local dialogueText:TDialogueTexts = TDialogueTexts.Create(text)
-		'local acceptEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCreditAvailable()))
 		'null = event when click
 		dialogueText.AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_SUPERMARKET_PLAN_A_PRODUCTION"), 0, Null, onClickPlanAProduction))
 		dialogueText.AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_SUPERMARKET_BUY_A_PRESENT"), 0, Null, onClickBuySomePresents))
@@ -111,7 +110,7 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 
 
 		dialogue.SetArea(new TRectangle.Init(140, 40, 350, 90))
-		dialogue.SetAnswerArea(new TRectangle.Init(200, 170, 350, 120))
+		dialogue.SetAnswerArea(new TRectangle.Init(200, 170, 350, 90))
 		'dialogue.answerStartType = "StartDownRight"
 		'dialogue.moveAnswerDialogueBalloonStart = 100
 		dialogue.SetGrow(1,1)
