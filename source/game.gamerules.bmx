@@ -10,6 +10,10 @@ Type TGameRules {_exposeToLua}
 	'how many contracts a player gets on a new game
 	Field startAdAmount:Int = 3
 
+	'how much love with betty is needed so she would give you the master
+	'key for all the rooms in the building
+	Field bettyLoveToGetMasterKey:Float = 0.75
+
 	'maximum level a news genre abonnement can have
 	Field maxAbonnementLevel:Int = 3
 	'how many movies can be carried in suitcase

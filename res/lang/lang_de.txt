@@ -521,8 +521,49 @@ DIALOGUE_SUPERMARKET_GOODBYE2 = Bis später. Tschüss
 DIALOGUE_SUPERMARKET_GOODBYE3 = Ich mach mich mal auf die Socken. Bis später.
 
 
+DIALOGUE_BETTY_WELCOME_TEXT = Hallo,\n\nkann ich etwas für Sie tun?
+DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT1 = Guten Tag,\n\nwas treibt Sie denn in die letzte Etage?
+DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT2 = Ja?\n\nSie sind sicherlich hier, um Informationen zum Sammy einzuholen.
+DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT1 = Hallo %PLAYERNAME%,\n\nwas treibt Dich denn heute zu mir?
+DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT2 = Na?\n\nDu willst sicher Aktuelles zum Sammy erfahren.
+DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT1 = Hi %PLAYERNAME%,\n\nschön, dass Du mal wieder vorbeischnaust. Setz Dich ruhig - warum bist Du hier?
+DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT2 = %PLAYERNAME%!?\n\nIch glaube Du Schlingel bist doch nur für neue Infos zum Sammy hier, oder?
+DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT1 = Hi %PLAYERNAME%,\n\nunser letztes Treffen war schön. Ich hoffe wir wiederholen noch einige Male.
+DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT2 = Na Du?\n\nich hol uns mal eine Tasse Tee, ich hoffe Du hast Zeit zum plaudern.
 
-DIALOGUE_BETTY_WELCOME = Na Du?\nDu könntest ruhig mal öfters bei mir vorbeischauen.
+DIALOGUE_BETTY_SAMMYINFORMATION_TEXT = Der Sammy?\n\ndazu kann ich Dir erst etwas sagen, wenn Ronny die Funktionen im Quellcode eingebaut hat.
+
+DIALOGUE_BETTY_ASK_FOR_SAMMYINFORMATION = Wie sieht es mit dem aktuellen Sammy aus?
+DIALOGUE_BETTY_ASK_FOR_MASTERKEY = Du könntest mir nicht zufälligerweise den Generalschlüssel ausleihen?
+DIALOGUE_BETTY_CHANGETOPIC = Lass uns über etwas anderes reden
+DIALOGUE_BETTY_LEVEL0_CHANGETOPIC1 = Lassen Sie uns über etwas anderes reden
+DIALOGUE_BETTY_GOODBYE = Ähh, Tschüss
+DIALOGUE_BETTY_LEVEL0_GOODBYE = Ähh, Auf Wiedersehen
+DIALOGUE_BETTY_LEVEL1_GOODBYE = Bis bald
+DIALOGUE_BETTY_LEVEL2_GOODBYE = Du, ich muss los. Bis später.
+DIALOGUE_BETTY_LEVEL3_GOODBYE = Betty, hör mal, die Arbeit ruft. Ich muss kurz weg.
+
+
+DIALOGUE_STUDIO_BRING_SOME_SCRIPT = Hi %PLAYERNAME%,\n\nBring doch einfach mal ein Drehbuch vorbei. Dann können wir sicher was feines produzieren.
+DIALOGUE_STUDIO_SCRIPT_HINT = Hmmm, Ich kann Dir zu dem Drehbuch keine weiteren Details nennen. Vielleicht darf ich ja spaeter einmal Details zum Drehbuch einbringen: wie zum Beispiel das Geschlecht oder Alter einer Rolle. Das kommt aber alles auf die Entwickler an.
+DIALOGUE_STUDIO_PRODUCTIONCONCEPT_HINT = (TODO) Informationen ueber Produktionsplan (erwartete Qualität) anbieten
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION = Du willst also |b|%SCRIPTTITLE%|/b| produzieren?
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED = Bisher ist |b|1 Produktion|/b| mit diesem Drehbuch geplant.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED = Bisher sind |b|%X% Produktion|/b| mit diesem Drehbuch geplant.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE = Bisher wurde bereits |b|1 Produktion|/b| mit diesem Drehbuch durchgeführt.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE = Bisher wurden bereits |b|%X% Produktionen|/b| mit diesem Drehbuch durchgeführt.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE = Bisher sind |b|%X% Produktionen|/b| mit diesem Drehbuch geplant und |b|%Y%|/b| bereits durchgeführt.
+DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED = Im übrigen ist Dein Platz für Einkaufslisten erschöpft. Bitte entferne erst eine Einkaufsliste bevor Ich eine neue ausgeben kann (Liste aufheben und per Rechtsklick löschen).
+DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING = Um die Produktion starten zu können, musst Du im Supermarkt die Produktionsplanung abschließen.
+
+DIALOGUE_STUDIO_START_PRODUCTION = Produktion starten
+DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS = Alle möglichen Produktionen (%X%) durchführen.
+DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST = Ich brauche noch eine weitere Einkaufsliste für dieses Drehbuch.
+DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST = Ich brauche eine Einkaufsliste für dieses Drehbuch.
+DIALOGUE_STUDIO_GOODBYE1 = Tschüss.
+DIALOGUE_STUDIO_GOODBYE2 = Bis später.
+
+
 
 SHOW_PLAYERS = zeige Spieler
 PURCHASE = Einkauf

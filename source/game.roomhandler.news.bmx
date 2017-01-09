@@ -924,10 +924,10 @@ Type TGUINews Extends TGUIGameListItem
 			fontNormal.draw("Qualitaet: " + MathHelper.NumberToString(news.GetQuality(), 4) + " (Event:" + MathHelper.NumberToString(news.newsEvent.GetQuality(),4) + ", roh=" + MathHelper.NumberToString(news.newsEvent.GetQualityRaw(), 4) + ")", screenX + 5, textY)
 			textY :+ 11	
 			fontNormal.draw("(KI-)Attraktivitaet: "+MathHelper.NumberToString(news.newsEvent.GetAttractiveness(),4), screenX + 5, textY)
-			fontNormal.draw("Aktualitaet: " + MathHelper.NumberToString(news.newsEvent.GetTopicality(),4), screenX + 5 + 200, textY)
+			fontNormal.draw("Aktualitaet: " + MathHelper.NumberToString(news.newsEvent.GetTopicality(),3) + "/" + MathHelper.NumberToString(news.newsEvent.GetMaxTopicality(),3)+" ("+MathHelper.NumberToString(100 * news.newsEvent.GetTopicality()/news.newsEvent.GetMaxTopicality(),1)+"%)", screenX + 5 + 190, textY)
 			textY :+ 11	
 			fontNormal.draw("Ausstrahlungen: " + news.newsEvent.GetTimesBroadcasted(news.owner)+"x  (" + news.newsEvent.GetTimesBroadcasted()+"x gesamt)", screenX + 5, textY)
-			fontNormal.draw("Alter: " + Long(GetWorldTime().GetTimeGone() - news.GetHappenedtime()) + " Sekunden  (" + (GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())) + " Tage)", screenX + 5 + 200, textY)
+			fontNormal.draw("Alter: " + Long(GetWorldTime().GetTimeGone() - news.GetHappenedtime()) + " Sekunden  (" + (GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())) + " Tage)", screenX + 5 + 190, textY)
 			textY :+ 11	
 			Rem
 			local eventCan:string = ""

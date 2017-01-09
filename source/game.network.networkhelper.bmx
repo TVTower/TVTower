@@ -205,6 +205,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 		EventManager.registerListenerFunction("figure.onSetInRoom", onFigurePositionChanged)
 		'as soon as a figure changes its target (add it to the "route")
 		EventManager.registerListenerFunction("figure.onChangeTarget", onFigureChangeTarget)
+		EventManager.registerListenerFunction("figure.onSetHasMasterKey", onFigureSetHasMasterkey)
 
 		'changes in movieagency
 		EventManager.registerListenerFunction("ProgrammeLicenceAuction.setBid", onChangeMovieAgency)
@@ -279,6 +280,15 @@ Type TNetworkHelper extends TNetworkHelperBase
 		GetNetworkHelper().SendFigurePosition(figure.GetGUID())
 	End Function
 
+
+	Function onFigureSetHasMasterkey:int( triggerEvent:TEventBase )
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
+		if not figure then return FALSE
+
+		'send position contains masterkey information too
+		GetNetworkHelper().SendFigurePosition(figure.GetGUID())
+	End Function
+		
 
 	Function onFigureChangeTarget:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
@@ -492,6 +502,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 		obj.SetFloat( 3, figure.area.GetY() )	'...
 		obj.setInt( 4, figure.GetInRoomID())
 		obj.setInt( 5, figure.GetUsedDoorID())
+		obj.setInt( 6, figure.hasMasterKey)
 		Network.BroadcastNetworkObject( obj )
 	End Method
 	
@@ -505,6 +516,8 @@ Type TNetworkHelper extends TNetworkHelperBase
 		local posY:Float = obj.getFloat(3)
 		local inRoomID:int = obj.getInt( 4, -1, TRUE )
 		local usedDoorID:int = obj.getInt( 5, -1, TRUE )
+
+		figure.hasMasterKey = obj.getInt( 6, false )
 
 		If inRoomID <= 0 Then figure.inRoom = Null
 		If figure.inRoom

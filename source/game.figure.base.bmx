@@ -393,6 +393,18 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	Method SetHasMasterKey:int(bool:int)
+		if bool = hasMasterKey then return False
+
+		hasMasterKey = bool
+
+		'emit an event
+		EventManager.triggerEvent( TEventSimple.Create("figure.onSetHasMasterkey", null, self ) )
+
+		TLogger.Log("TFigureBase.SetHasMasterKey()", "Figure ~q"+name+"~q received the building's master key.", LOG_DEBUG)
+	End Method
+
+
 	'change the target of the figure
 	'@forceChange   defines wether the target could change target
 	'               even when not controllable

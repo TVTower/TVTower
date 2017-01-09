@@ -823,14 +823,14 @@ Type RoomHandler_Studio extends TRoomHandler
 		local text:string
 		'=== SCRIPT HINT ===
 		if dialogueType = 2
-			text = "Hmmm, Ich kann Dir zu dem Drehbuch keine weiteren Details nennen. Vielleicht darf ich ja spaeter einmal Details zum Drehbuch einbringen: wie zum Beispiel das Geschlecht oder Alter einer Rolle. Das kommt aber alles auf die Entwickler an."
+			text = GetRandomLocale("DIALOGUE_STUDIO_SCRIPT_HINT")
 		'=== PRODUCTION CONCEPT HINT ===
 		elseif dialogueType = 1
-			text = "Informationen ueber Produktionsplan (erwartete Qualitaet) anbieten"
+			text = GetRandomLocale("DIALOGUE_STUDIO_PRODUCTIONCONCEPT_HINT")
 		'=== INFORMATION ABOUT CURRENT PRODUCTION ===
 		else
 			if script
-				text = "Du willst also |b|"+script.GetTitle()+"|/b| produzieren?"
+				text = GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION")
 				text :+"~n~n"
 
 				local countText:string = conceptCount
@@ -838,34 +838,34 @@ Type RoomHandler_Studio extends TRoomHandler
 
 				if conceptCount = 1 and conceptCountMax = 1
 					if producedConceptCount = 0
-						text :+"Bisher ist |b|1 Produktion|/b| mit diesem Drehbuch geplant."
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED")
 					else
-						text :+"Bisher wurde bereits |b|1 Produktion|/b| mit diesem Drehbuch durchgeführt."
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE")
 					endif
 				else
 					if producedConceptCount = 0
-						text :+"Bisher sind |b|"+countText+" Produktionen|/b| mit diesem Drehbuch geplant."
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE").replace("%X%", countText)
 					else
 						local producedCountText:string = producedConceptCount
 						if conceptCountMax > 0 then producedCountText = producedConceptCount + "/" + conceptCountMax 
 						if script.GetSubScriptCount() > 0 then producedCountText = producedConceptCount + "/"+script.GetSubScriptCount()
 
-						text :+"Bisher sind |b|"+countText+" Produktionen|/b| mit diesem Drehbuch geplant und |b|"+ producedCountText + "|/b| bereits durchgeführt."
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE").replace("%X%", countText).replace("%Y%", producedCountText)
 					endif
 				endif
 				if not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).CanCreateProductionConcept(script)
 					text :+"~n~n"
-					text :+"Im übrigen ist Dein Platz für Einkaufslisten erschöpft. Bitte entferne erst eine Einkaufsliste bevor Ich eine neue ausgeben kann (Liste aufheben und per Rechtsklick löschen)."
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED")
 				endif
 
 				if produceableConceptCount = 0 and conceptCount > 0
 					text :+ "~n"
-					text :+ "Um die Produktion starten zu können, musst Du im Supermarkt die Produktionsplanung abschließen."
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING")
 				endif
+
+				text = text.replace("%SCRIPTTITLE%", script.GetTitle())
 			else
-				text = "Hi %PLAYERNAME%"
-				text :+"~n"
-				text :+"Bring doch einfach mal ein Drehbuch vorbei. Dann können wir sicher was feines produzieren."
+				text = GetRandomLocale("DIALOGUE_STUDIO_BRING_SOME_SCRIPT")
 			endif
 		endif
 
@@ -879,9 +879,9 @@ Type RoomHandler_Studio extends TRoomHandler
 			if dialogueType = 0 and produceableConceptCount > 0
 				local answerText:string
 				if produceableConceptCount = 1
-					answerText = "Produktion starten."
+					answerText = GetRandomLocale("DIALOGUE_STUDIO_START_PRODUCTION")
 				else
-					answerText = "Alle möglichen Produktionen ("+produceableConcepts+") durchführen."
+					answerText = GetRandomLocale("DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS").Replace("%X%", produceableConcepts)
 				endif
 				texts[0].AddAnswer(TDialogueAnswer.Create( answerText, -2, null, onClickStartProduction, new TData.Add("script", script)))
 			endif
@@ -898,14 +898,14 @@ Type RoomHandler_Studio extends TRoomHandler
 			If conceptCount < conceptCountMax 
 				local answerText:string
 				if conceptCount > 0
-					answerText = "Ich brauche noch eine Einkaufsliste für dieses Drehbuch."
+					answerText = GetRandomLocale("DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST")
 				else
-					answerText = "Ich brauche eine Einkaufsliste für dieses Drehbuch."
+					answerText = GetRandomLocale("DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST")
 				endif
 				texts[0].AddAnswer(TDialogueAnswer.Create( answerText, -1, null, onClickCreateProductionConcept, new TData.Add("script", script)))
 			endif
 		endif
-		texts[0].AddAnswer(TDialogueAnswer.Create( "Tschüss", -2, Null))
+		texts[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_STUDIO_GOODBYE"), -2, Null))
 
 
 		studioManagerDialogue = new TDialogue

@@ -522,7 +522,49 @@ DIALOGUE_SUPERMARKET_GOODBYE2 = See you. Bye.
 DIALOGUE_SUPERMARKET_GOODBYE3 = Making tracks now. See you.
 
 
-DIALOGUE_BETTY_WELCOME = Oh Hi?\nYou absolutely could come along more often.
+DIALOGUE_BETTY_WELCOME_TEXT = Hello,\n\nhow can I help you?
+DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT1 = Good Day!\n\nWhat drives you to the topmost floor?
+DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT2 = Yes?\n\\nFor sure you here to fetch latest Information about the Sammy.
+DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT1 = Hello %PLAYERNAME%,\n\nwhat is driving you to me this day?
+DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT2 = Hmm?\n\nYou surely want to hear some news about the Sammy.
+DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT1 = Hi %PLAYERNAME%,\n\nnice to see you again. Sit down please - so why are you here?
+DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT2 = %PLAYERNAME%!?\n\nI think you rascal are just here for the Sammy news, aren't you?
+DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT1 = Hi %PLAYERNAME%,\n\nour latest meeting was really nice. I hope we see us again some more times.
+DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT2 = Hey there!\n\nI fetch us some cups of tea - hope you have some time to chat.
+
+DIALOGUE_BETTY_SAMMYINFORMATION_TEXT = The Sammy?\n\nI cannot say something until Ronny implemented the needed functions to the sourcecode.
+
+DIALOGUE_BETTY_ASK_FOR_SAMMYINFORMATION = How is it with the current Sammy?
+DIALOGUE_BETTY_ASK_FOR_MASTERKEY = By chance - you cannot lend me the master key?
+DIALOGUE_BETTY_CHANGETOPIC = Let's talk about something different
+DIALOGUE_BETTY_LEVEL0_CHANGETOPIC1 = Hope you do not mind if we talked about something different.
+DIALOGUE_BETTY_GOODBYE = Hmm, see you.
+DIALOGUE_BETTY_LEVEL0_GOODBYE = Uhmm, goodbye
+DIALOGUE_BETTY_LEVEL1_GOODBYE = See you again
+DIALOGUE_BETTY_LEVEL2_GOODBYE = Hey, I have to go. See you later.
+DIALOGUE_BETTY_LEVEL3_GOODBYE = Listen Betty, work is calling. Just away for a second.
+
+
+DIALOGUE_STUDIO_BRING_SOME_SCRIPT = Hi %PLAYERNAME%,\n\nBring a script and we might be able to produce something nice.
+DIALOGUE_STUDIO_SCRIPT_HINT = Hmmm, I cannot tell you details about this script. Maybe I am allowed to tell more in a later version of the game. This depends on the developers *shrug*.
+DIALOGUE_STUDIO_PRODUCTIONCONCEPT_HINT = (TODO) Offer information about the production concept.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION = So you want to produce |b|%SCRIPTTITLE%|/b|?
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED = So far |b|1 production|/b| of this script is planned.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED = So far |b|%X% productions|/b| of this script are planned.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE = Up to now |b|1 production|/b| of this script was done.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE = Up to now |b|%X% productions|/b| of this script were done.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE = To date |b|%X% productions|/b| of this script are planned and |b|%Y%|/b| are done.
+DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED = By the way: There is no more space left for further shopping lists. I cannot give you another one until you removed one first (pick up a shopping list and deletet it with right button click).
+DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING = To be able to start the production you first of all have to finish the production planning in the supermarket.
+
+DIALOGUE_STUDIO_START_PRODUCTION = Start production
+DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS = Start all possible productions (%X%).
+DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST = I need another shopping list for this script.
+DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST = I need a shopping list for this script.
+DIALOGUE_STUDIO_GOODBYE1 = Bye.
+DIALOGUE_STUDIO_GOODBYE2 = Goodbye.
+
+
 
 SHOW_PLAYERS = Show players
 PURCHASE = Purchase
