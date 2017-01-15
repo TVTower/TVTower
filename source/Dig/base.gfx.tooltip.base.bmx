@@ -48,7 +48,7 @@ Type TTooltipBase
 
 	'left (2) and right (4) is for all elements
 	'top (1) and bottom (3) padding for content
-	Field padding:TRectangle = new TRectangle.Init(2,3,2,3)
+	Field padding:TRectangle = new TRectangle.Init(3,4,3,4)
 
 	Field _options:int = 0
 	Field _step:int = 0
@@ -345,9 +345,9 @@ Type TTooltipBase
 		if _minTitleDim then minTitleW = _minTitleDim.GetIntX()
 
 		if _maxTitleDim and _maxTitleDim.GetIntX() > 0
-			return Min(Max(minTitleW, GetFontBold().GetBlockWidth(title, _maxTitleDim.GetIntX(), -1)), _maxTitleDim.GetIntX())
+			return Min(Max(minTitleW, 1 + GetFontBold().GetBlockWidth(title, _maxTitleDim.GetIntX(), -1)), _maxTitleDim.GetIntX())
 		else
-			return Max(minTitleW, GetFontBold().GetBlockWidth(title, -1, -1))
+			return Max(minTitleW, 1 + GetFontBold().GetBlockWidth(title, -1, -1))
 		endif
 	End Method
 
@@ -369,9 +369,9 @@ Type TTooltipBase
 		if maxWidth > 0 then minWidth = Min(minWidth, maxWidth)
 
 		if _maxContentDim and _maxContentDim.GetX() > 0
-			return Min(Max(minWidth, GetFont().GetBlockWidth(content, Min(maxWidth, _maxContentDim.GetX()), -1)), _maxContentDim.GetX())
+			return Min(Max(minWidth, 1 + GetFont().GetBlockWidth(content, Min(maxWidth, _maxContentDim.GetX()), -1)), _maxContentDim.GetX())
 		else
-			return Max(minWidth, GetFont().GetBlockWidth(content, 240, -1))
+			return Max(minWidth, 1 + GetFont().GetBlockWidth(content, 240, -1))
 		endif
 	End Method
 

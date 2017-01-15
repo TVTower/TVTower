@@ -490,7 +490,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 	Method SetRefillMode(mode:int)
 		refillMode = mode
-		if refillMode = 1
+		if refillMode = 2
 			contractsSortSymbols = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money"]
 			contractsSortKeys = [0, 1]
 		else
