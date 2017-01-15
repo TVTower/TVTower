@@ -14,6 +14,7 @@ Import "base.util.localization.bmx"
 Import "base.util.registry.bmx"
 Import "base.util.event.bmx"
 Import "base.util.time.bmx"
+Import "base.gfx.tooltip.base.bmx"
 
 Import "base.gfx.renderconfig.bmx"
 
@@ -557,6 +558,13 @@ endrem
 				'if obj._lastUpdateTick = _lastUpdateTick then continue
 				'obj._lastUpdateTick = _lastUpdateTick
 				obj.Update()
+				'if there is a tooltip, update it.
+				'We handle it that way to be able to "group/order" tooltip updates
+				if obj._tooltip
+					'update hovered state
+					obj._tooltip.SetOption(TTooltipBase.OPTION_MANUALLY_HOVERED, obj.IsHovered())
+					obj._tooltip.Update()
+				endif
 				'fire event
 				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onUpdate", Null, obj ) )
 			Wend
@@ -577,6 +585,7 @@ endrem
 
 
 		If GUIMANAGER_TYPES_NONDRAGGED & drawTypes
+			local activeTooltips:TList = CreateList()
 			For Local obj:TGUIobject = EachIn List
 				'all special objects get drawn separately
 				If ListDragged.contains(obj) Then Continue
@@ -596,8 +605,17 @@ endrem
 
 				If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 2.0*GetAlpha()
 
+				If obj._tooltip and (obj._flags & GUI_OBJECT_ENABLED)
+					activeTooltips.AddLast(obj._tooltip)
+				EndIf
+
 				'fire event
 				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", Null, obj ) )
+			Next
+
+			'TODO: sort by lastActive state?
+			For local t:TTooltipBase = EachIn activeTooltips
+				t.Render()
 			Next
 		EndIf
 
@@ -648,6 +666,7 @@ Type TGUIobject
 	Field mouseIsClicked:TVec2D	= Null			'null = not clicked
 	Field mouseIsDown:TVec2D = New TVec2D.Init(-1,-1)
 	Field screenRect:TRectangle
+	Field _tooltip:TTooltipBase = Null
 	Field _children:TList = Null
 	Field _childrenReversed:TList = Null
 	Field _id:Int
@@ -768,6 +787,26 @@ Type TGUIobject
 		EndIf
 
 		Return newFont
+	End Method
+
+
+	Method SetTooltip(t:TTooltipBase, setTooltipParent:int = True)
+		self._tooltip = t
+
+		if self._tooltip
+			'ATTENTION: reference, not copy!
+			if setTooltipParent then self._tooltip.parentArea = self.rect
+
+			'the gui object updates hovered state to only hover if the
+			'widget is hovered (avoids drawing tooltips for window _and_
+			'a child button) 
+			self._tooltip.SetOption(TTooltipBase.OPTION_MANUAL_HOVER_CHECK, true)
+		endif
+	End Method
+
+
+	Method GetTooltip:TTooltipBase()
+		return self._tooltip
 	End Method
 
 
@@ -1664,6 +1703,12 @@ Type TGUIobject
 				DrawOverlay()
 			EndIf
 		EndIf
+
+
+		'=== HANDLE TOOLTIP ===
+		if _tooltip and not hasOption(GUI_OBJECT_MANAGED) and not hasOption(GUI_OBJECT_DRAGGED)
+			_tooltip.Render()
+		endif
 	End Method
 
 
@@ -1960,6 +2005,15 @@ Type TGUIobject
 				EndIf
 			EndIf
 		EndIf
+
+
+		'=== HANDLE TOOLTIP ===
+		if _tooltip and not hasOption(GUI_OBJECT_MANAGED) and not hasOption(GUI_OBJECT_DRAGGED)
+			'update hovered state
+			_tooltip.SetOption(TTooltipBase.OPTION_MANUALLY_HOVERED, IsHovered())
+
+			_tooltip.Update()
+		endif
 	End Method
 
 
@@ -2057,5 +2111,25 @@ Type TGUISimpleRect Extends TGUIobject
 		SetAlpha 0.5
 		DrawRect(Self.GetScreenX(), Self.GetScreenY(), Self.GetScreenWidth(), Self.GetScreenHeight())
 		SetAlpha 1.0
+	End Method
+End Type
+
+
+
+Type TGUITooltipBase Extends TTooltipBase
+	Global _defaultOffset:TVec2D = new TVec2D.Init(0,-5)
+
+
+	Method Initialize:TGUITooltipBase(title:String="", content:String="unknown", area:TRectangle)
+		super.Initialize(title, content, area)
+		return self
+	End Method
+
+	
+	'override
+	Method GetOffset:TVec2D()
+		if offset then return offset
+
+		return _defaultOffset
 	End Method
 End Type

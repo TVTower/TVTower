@@ -33,6 +33,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Global ListSortMode:int = 0
 	Global ListSortVisible:int = False
 	Global contractsSortKeys:int[] = [0,1,2]
+	Global contractsSortKeysTooltips:TTooltipBase[3]
 	Global contractsSortSymbols:string[] = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money", "gfx_datasheet_icon_maxAudience"]
 
 	global LS_adagency:TLowerString = TLowerString.Create("adagency")
@@ -80,6 +81,23 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		End Select 
 
 		VendorEntity = GetSpriteEntityFromRegistry("entity_adagency_vendor")
+
+
+		For local i:int = 0 until contractsSortKeysTooltips.length
+			Select i
+				case SORT_BY_CLASSIFICATION
+					contractsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("CLASSIFICATION")), new TRectangle.Init(0,0,-1,-1))
+				case SORT_BY_PROFIT
+					contractsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("AD_PROFIT")), new TRectangle.Init(0,0,-1,-1))
+				case SORT_BY_MINAUDIENCE
+					contractsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("MIN_AUDIENCE")), new TRectangle.Init(0,0,-1,-1))
+				Default
+					contractsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", "UNKNOWN SORT MODE: " + i, new TRectangle.Init(0,0,-1,-1))
+			End Select
+			contractsSortKeysTooltips[i].parentArea = new TRectangle.Init(0,0,30,30)
+			contractsSortKeysTooltips[i]._minTitleDim = null
+			contractsSortKeysTooltips[i]._minContentDim = null
+		Next
 
 
 		'set to new refill mode
@@ -1377,6 +1395,14 @@ endrem
 
 		skin.RenderBorder(5, 330, boxWidth, boxHeight)
 
+		'tooltips
+		For local i:int = 0 until availableSortKeys.length
+			if contractsSortKeysTooltips[availableSortKeys[i]]
+				contractsSortKeysTooltips[availableSortKeys[i]].Render()
+			endif
+		Next
+
+
 		if hoveredGuiAdContract
 			'draw the current sheet
 			if hoveredGuiAdContract.IsDragged()
@@ -1462,8 +1488,20 @@ endrem
 					Next
 				endif
 			endif
+
+			'move tooltips
+			local contentX:int = 5 + skin.GetContentX()
+			For local i:int = 0 to contractsSortKeys.length-1
+				if contractsSortKeysTooltips[contractsSortKeys[i]]
+					contractsSortKeysTooltips[contractsSortKeys[i]].parentArea.SetXYWH(contentX + 5 + i*38, 342, 35,27)
+				endif
+			Next
 		endif
 
+		'update tooltips
+		For local i:int = 0 to contractsSortKeys.length-1
+			contractsSortKeysTooltips[contractsSortKeys[i]].Update()
+		Next
 
 		'delete unused and create new gui elements
 		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()

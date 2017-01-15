@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2014 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -440,7 +440,7 @@ Type TBitmapFont
 	End Method
 
 
-	Method getMaxCharHeight:int(includeBelowBaseLine:int=True)
+	Method GetMaxCharHeight:int(includeBelowBaseLine:int=True)
 		if includeBelowBaseLine
 			if _maxCharHeight = 0 then _maxCharHeight = getHeight("gQ'_")
 			return _maxCharHeight
@@ -451,28 +451,33 @@ Type TBitmapFont
 	End Method
 
 
-	Method getWidth:Float(text:String)
+	Method GetWidth:Float(text:String)
 		return draw(text,0,0,null,0).getX()
 	End Method
 
 
-	Method getHeight:Float(text:String)
+	Method GetHeight:Float(text:String)
 		return draw(text,0,0,null,0).getY()
 	End Method
 
 
-	Method getBlockHeight:Float(text:String, w:Float, h:Float, fixedLineHeight:int = -1)
-		return drawBlock(text, 0,0,w,h, null, null, 0, 0).getY()
+	Method GetBlockHeight:Float(text:String, w:Float, h:Float, fixedLineHeight:int = -1)
+		return drawBlock(text, 0,0,w,h, null, null, 0, 0).GetY()
 	End Method
 
 
-	Method getBlockDimension:TVec2D(text:String, w:Float, h:Float, fixedLineHeight:int = -1)
+	Method GetBlockWidth:Float(text:String, w:Float, h:Float, fixedLineHeight:int = -1)
+		return drawBlock(text, 0,0,w,h, null, null, 0, 0).GetX()
+	End Method
+
+
+	Method GetBlockDimension:TVec2D(text:String, w:Float, h:Float, fixedLineHeight:int = -1)
 		return drawBlock(text, 0,0,w,h, null, null, 0, 0, 1.0, True, False, fixedLineHeight)
 	End Method
 
 
 	'render to target pixmap/image/screen
-	Function setRenderTarget:int(target:object=null)
+	Function SetRenderTarget:int(target:object=null)
 		'render to screen
 		if not target
 			drawToPixmap = null
