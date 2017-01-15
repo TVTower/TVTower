@@ -38,7 +38,7 @@ GAME_SPEED_IN_ROOMS = Game speed in rooms
 STARTHINT_TITLE1 = Programme plan
 STARTHINT_TEXT1 = The CTRL-key allows you to place a programme multiple times on your plan. While the SHIFT-key tries to place the next episode of a series.
 STARTHINT_TITLE2 = Programme plan
-STARTHINT_TEXT2 = The success of a broadcast is heavily based on the quality/rating of the programme. Also important is the air time of the programme, the popularity of the genre, the audience flow to (hopefully similar) follow up programmes and the amount of broadcasted trailers. The quality of news shows and other factors are playing an important role too.\n\nProgrammes of certain genres like comedy can be broadcasted in more often than other genres while keeping most of their topicality.
+STARTHINT_TEXT2 = The success of a broadcast is heavily based on the quality/rating of the programme. Also important is the air time of the programme, the popularity of the genre, the audience flow to (hopefully similar) follow up programmes and the amount of broadcasted trailers. The quality of news shows and other factors play an important role too.\n\nProgrammes of certain genres like comedy can be broadcast more often than other genres while keeping most of their topicality.
 STARTHINT_TITLE3 = Ad contracts
 STARTHINT_TEXT3 = Ad contracts have defined requirements to the minimum audience. This and of course profits/penalties are directly attached to the maximum audience a channel can reach currently.\n\nTherefore it is sometimes better to sign new contracts right before buying new stations.
 
@@ -377,7 +377,7 @@ CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID= Click on movie or series to place a bid.
 ERROR_NOT_POSSIBLE					= Not possible!
 ERROR_NOT_ABLE_TO_SELL_LAST_STATION = It is not possible to sell the last station.
 ERROR_NOT_ENOUGH_MONEY		      	= Not enough money!
-ERROR_NOT_ENOUGH_MONEY_TEXT 		= You do not own enough money to finish this action.
+ERROR_NOT_ENOUGH_MONEY_TEXT 		= You do not have enough money to finish this action.
 
 FINANCES_EXPENSES     = Expenses
 FINANCES_INCOME       = Income
@@ -468,11 +468,11 @@ NEWS_ANNOUNCE_MOVIE_TITLE2	= %DIRECTORNAME1% directs new movie
 
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION1	= Director %DIRECTORNAME1% and actor %ACTORNAME1% deliver «%MOVIETITLE%» to the screen.
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION2	= Soon in the movies: %ACTORNAME1% in «%MOVIETITLE%». Actor %ACTORNAME2% is full of praise for the movie.
-NEWS_ANNOUNCE_MOVIE_DESCRIPTION3	= Latest works for movie «%MOVIETITLE%». %ACTORNAME1% is proud starring the movie.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION3	= Latest works for movie «%MOVIETITLE%». %ACTORNAME1% is proud to star in the movie.
 NEWS_ANNOUNCE_MOVIE_DESCRIPTION4	= First trailers for «%MOVIETITLE%» available. %DIRECTORNAME1%: "Best movie of the year".
 
 
-DIALOGUE_BOSS_MAIN_TITLE_DEFAULT1             = What's up %PLAYERNAME%
+DIALOGUE_BOSS_MAIN_TITLE_DEFAULT1             = What's up %PLAYERNAME%?
 DIALOGUE_BOSS_MAIN_TITLE_DEFAULT2             = %PLAYERNAME%, you again ?!
 DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY1          = You ... you dare to ask?!
 DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY2          = Are you off your head?
@@ -480,7 +480,7 @@ DIALOGUE_BOSS_MAIN_TEXT_DEFAULT1              = Is there nothing for you to do t
 DIALOGUE_BOSS_MAIN_TEXT_PROGRAMMEMALFUNCTION1 = This incompetence is incredible. You had |b|%PROGRAMMEMALFUNCTION%x|/b| programme malfunctions.
 DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION1      = Instead of sending no news shows |b|%NEWSMALFUNCTION%x|/b| times, you'd better broadcast the last years weather report!
 DIALOGUE_BOSS_MAIN_ENDING_DEFAULT1            = Back to work or someone else will get your Job...!
-DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY1         = The hamster of my son could do your job better than you!
+DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY1         = My son's hamster could do your job better than you!
 DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY2         = Drop another brick and next best knocking on this door will get your job.
 DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER1          = Out of my way - and pass on worst greetings to your boss. Harr harr harr...
 DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER2          = Go away! I can't stand you and your channel any longer!
@@ -512,8 +512,8 @@ DIALOGUE_SUPERMARKET_TITLE2 = Hi %PLAYERNAME% !
 DIALOGUE_SUPERMARKET_TITLE3 = Howdy, %PLAYERNAME% !
 DIALOGUE_SUPERMARKET_TEXT1 = What do you want to do today?
 DIALOGUE_SUPERMARKET_TEXT2 = What can I do for you today??
-DIALOGUE_SUPERMARKET_TEXT3 = You are able to make a good job on your own? I am going to have a joi... I am going to get some fresh air.
-DIALOGUE_SUPERMARKET_TEXT4 = Just do it, I am still having a throbbing head ... that ...party yesterday...
+DIALOGUE_SUPERMARKET_TEXT3 = Are you able to do a good job on your own? I am going to have a joi... I am going to get some fresh air.
+DIALOGUE_SUPERMARKET_TEXT4 = Just do it, I still have a throbbing head ... that ...party yesterday...
 
 DIALOGUE_SUPERMARKET_PLAN_A_PRODUCTION = I want to plan a TV-production and to buy everything needed for it
 DIALOGUE_SUPERMARKET_BUY_A_PRESENT = I want to buy a present
@@ -524,20 +524,20 @@ DIALOGUE_SUPERMARKET_GOODBYE3 = Making tracks now. See you.
 
 DIALOGUE_BETTY_WELCOME_TEXT = Hello,\n\nhow can I help you?
 DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT1 = Good Day!\n\nWhat drives you to the topmost floor?
-DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT2 = Yes?\n\\nFor sure you here to fetch latest Information about the Sammy.
-DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT1 = Hello %PLAYERNAME%,\n\nwhat is driving you to me this day?
+DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT2 = Yes?\n\\nFor sure you are here to fetch latest Information about the Sammy.
+DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT1 = Hello %PLAYERNAME%,\n\nwhat brings you to me this day?
 DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT2 = Hmm?\n\nYou surely want to hear some news about the Sammy.
 DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT1 = Hi %PLAYERNAME%,\n\nnice to see you again. Sit down please - so why are you here?
 DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT2 = %PLAYERNAME%!?\n\nI think you rascal are just here for the Sammy news, aren't you?
-DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT1 = Hi %PLAYERNAME%,\n\nour latest meeting was really nice. I hope we see us again some more times.
-DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT2 = Hey there!\n\nI fetch us some cups of tea - hope you have some time to chat.
+DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT1 = Hi %PLAYERNAME%,\n\nour latest meeting was really nice. I hope we catch up again some more times.
+DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT2 = Hey there!\n\nI'll make us some tea - hope you have some time to chat.
 
 DIALOGUE_BETTY_SAMMYINFORMATION_TEXT = The Sammy?\n\nI cannot say something until Ronny implemented the needed functions to the sourcecode.
 
 DIALOGUE_BETTY_ASK_FOR_SAMMYINFORMATION = How is it with the current Sammy?
-DIALOGUE_BETTY_ASK_FOR_MASTERKEY = By chance - you cannot lend me the master key?
-DIALOGUE_BETTY_CHANGETOPIC = Let's talk about something different
-DIALOGUE_BETTY_LEVEL0_CHANGETOPIC1 = Hope you do not mind if we talked about something different.
+DIALOGUE_BETTY_ASK_FOR_MASTERKEY = By chance - can't you lend me the master key?
+DIALOGUE_BETTY_CHANGETOPIC = Let's talk about something else
+DIALOGUE_BETTY_LEVEL0_CHANGETOPIC1 = Hope you do not mind if we talk about something else.
 DIALOGUE_BETTY_GOODBYE = Hmm, see you.
 DIALOGUE_BETTY_LEVEL0_GOODBYE = Uhmm, goodbye
 DIALOGUE_BETTY_LEVEL1_GOODBYE = See you again
@@ -554,7 +554,7 @@ DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED = So far |b|
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE = Up to now |b|1 production|/b| of this script was done.
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE = Up to now |b|%X% productions|/b| of this script were done.
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE = To date |b|%X% productions|/b| of this script are planned and |b|%Y%|/b| are done.
-DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED = By the way: There is no more space left for further shopping lists. I cannot give you another one until you removed one first (pick up a shopping list and deletet it with right button click).
+DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED = By the way: There is no more space left for further shopping lists. I cannot give you another one until you remove one first (pick up a shopping list and deletet it with right button click).
 DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING = To be able to start the production you first of all have to finish the production planning in the supermarket.
 
 DIALOGUE_STUDIO_START_PRODUCTION = Start production
@@ -671,7 +671,7 @@ STARTING_SINGLEPLAYERGAME = Starting singleplayer game
 WEATHER_FORECAST_FOR_X_TILL_Y = Weather forecast for %BEGINHOUR% till %ENDHOUR% o'clock
 SKY_IS_PARTIALLY_CLOUDY = Sky is partially cloudy.
 SKY_IS_OVERCAST1 = Sky is full of clouds.
-SKY_IS_WITHOUT_CLOUDS = Sky keeps free of clouds.
+SKY_IS_WITHOUT_CLOUDS = Sky stays free of clouds.
 SUN_SHINES_WHOLE_TIME = Sun will shine the whole time.
 SUN_WINS_AGAINST_CLOUDS1 = Sun wins against existing clouds.
 SUN_IS_SHINING_SOMETIMES = Sun will shine from time to time.
@@ -689,10 +689,10 @@ IN_THE_LATER_HOURS3 = Later
 STORMY_WINDS_OF_UP_TO_X1 = Squalls of up to %MAXWINDVELOCITY% km/h drag over the land.
 STORMY_WINDS_OF_UP_TO_X2 = Strong breezes up to squalls of %MAXWINDVELOCITY% km/h.
 NEARLY_NO_WIND1 = There is almost no wind.
-NEARLY_NO_WIND2 = It blows hardly Wind.
+NEARLY_NO_WIND2 = The wind hardly blows.
 SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Light breeze from %MINWINDVELOCITY% km/h and isolated gusts of up to %MAXWINDVELOCITY% km/h.
 WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1 = The wind speeds are between %MINWINDVELOCITY% and %MAXWINDVELOCITY% km/h.
-WIND_VELOCITY_IS_CONSTANT_AT_X1 = The wind speed is constant %WINDVELOCITY% km/h.
+WIND_VELOCITY_IS_CONSTANT_AT_X1 = The wind speed is a constant %WINDVELOCITY% km/h.
 
 
 NEWS_TERROR_GROUP1_LEVEL1_TITLE1 = Ambassador of the PR Duban offends his counterpart
@@ -710,10 +710,10 @@ NEWS_TERROR_GROUP1_LEVEL3_TEXT1 = The VR Duban openly threatens with revenge. Th
 NEWS_TERROR_GROUP2_LEVEL3_TITLE1 = FR Duban warns of consequences
 NEWS_TERROR_GROUP2_LEVEL3_TEXT1 = Enough. So the concise text of the message. The FR Kuban takes countermeasures.
 
-NEWS_TERROR_GROUP1_LEVEL4_TITLE1 = The police warns of terrorists
-NEWS_TERROR_GROUP1_LEVEL4_TEXT1 = The police lost track of an recently sighted terrorist. He is claimed to be of Dubanian origin.
-NEWS_TERROR_GROUP2_LEVEL4_TITLE1 = The police warns of terrorists
-NEWS_TERROR_GROUP2_LEVEL4_TEXT1 = The police lost track of an recently sighted terrorist. He is claimed to be of Dubanian origin.
+NEWS_TERROR_GROUP1_LEVEL4_TITLE1 = The police warn of terrorists
+NEWS_TERROR_GROUP1_LEVEL4_TEXT1 = The police lost track of a recently sighted terrorist. He is claimed to be of Dubanian origin.
+NEWS_TERROR_GROUP2_LEVEL4_TITLE1 = The police warn of terrorists
+NEWS_TERROR_GROUP2_LEVEL4_TEXT1 = The police lost track of a recently sighted terrorist. He is claimed to be of Dubanian origin.
 
 
 LOCKED = Locked
@@ -756,7 +756,7 @@ TOUCH_TO_SELECT_PERSON = Touch to select Person
 
 POINTSSET_OF_POINTSMAX_POINTS_SET = %POINTSSET%/%POINTSMAX% points set
 PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY = Production focus points not set completely
-NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS = At least one point has to get spent on focus points
+NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS = At least one point has to be spent on focus points
 NO_PRODUCTION_COMPANY_SELECTED = No production company selected
 PRODUCTION_SETUP_NOT_DONE = Production setup not done
 PRODUCTION_SETUP_INCOMPLETE = Production setup incomplete
@@ -795,10 +795,10 @@ RIGHT_CLICK_TO_DELETE = Right click to delete
 
 YOUR_BALANCE_IS_POSITIVE_AGAIN = Your balance is positive again.
 YOUR_BALANCE_IS_NEGATIVE = Your balance is negative.
-YOU_ARE_NO_LONGER_IN_DANGER_TO_GET_FIRED = You are no longer in danger to get fired.
+YOU_ARE_NO_LONGER_IN_DANGER_TO_GET_FIRED = You are no longer in danger of being fired.
 YOU_HAVE_X_DAYS_TO_GET_INTO_THE_BLACK = You have %DAYS% to get into the black.
 YOU_HAVE_ONLY_TODAY_TO_GET_INTO_THE_BLACK = You have only today to get into the black.
-YOU_ARE_IN_DANGER_TO_GET_FIRED = You are in danger to get fired!
+YOU_ARE_IN_DANGER_TO_GET_FIRED = You are in danger of being fired!
 
 PRODUCTION = Production
 TOTAL_COSTS = Total costs
@@ -815,10 +815,10 @@ BOMB_DETONATION_IN_TVTOWER = Bomb detonation in TVTower
 BOMB_DETONATION_IN_TVTOWER_TEXT = A bomb detonation unsettled the people of the famous TVTower. The bomb damaged the room "%ROOM%". Investigations are in full swing.
 
 BOMB_DETONATION_IN_TVTOWER_NO_CLUES = Attack on TVTower: No clues found
-BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT = After the attack in the famous TVTower the public authorities investigated. Unfortunately they weren't able to find some useful clues.
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT = Public authorities investigated after the attack in the famous TVTower. Unfortunately they weren't able to find any useful clues.
 
 BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES = Attack on TVTower: Clues found
-BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT = After the attack in the famous TVTower the public authorities investigated - with success! Apparently resident TV channels (%CHANNELS%) assisted unwillently with their roomsign-switch-games.
+BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT = Public authorities investigated after the attack in the famous TVTower - with success! Apparently resident TV channels (%CHANNELS%) assisted unwillingly with their roomsign-switch-games.
 
 INGAME_HELP_TEXT_SCREEN_EMPTYROOM = Sorry\n\nThis room is still without function. We are working on it!
 INGAME_HELP_TITLE_SCREEN_EMPTYROOM = OUT OF ORDER
@@ -863,17 +863,17 @@ SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = and forward %TEAM1STAR% win %MATCHKIND% ag
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = and forward %TEAM1STAR% win %MATCHKIND% against 
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = defeats thanks to a converted corner kick by %TEAM1STARSHORT% %MATCHKIND%
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = defeat thanks to a converted corner kick by %TEAM1STARSHORT% %MATCHKIND%
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = defeats thanks to kept penalty by keeper %TEAM1KEEPERSHORT% %MATCHKIND%
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = defeat thanks to kept penalty by keeper %TEAM1KEEPERSHORT% %MATCHKIND%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = defeats thanks to saved penalty by keeper %TEAM1KEEPERSHORT% %MATCHKIND%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = defeat thanks to saved penalty by keeper %TEAM1KEEPERSHORT% %MATCHKIND%
 
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = goes under by an oversight of keeper %TEAM1KEEPERSHORT% and %MATCHKIND% against
 SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = go under by an oversight of keeper %TEAM1KEEPERSHORT% and %MATCHKIND% against
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = looses with disappointed keeper %TEAM1KEEPER% %MATCHKIND% against
-SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = loose with disappointed keeper %TEAM1KEEPER% %MATCHKIND% against
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = loses with disappointed keeper %TEAM1KEEPER% %MATCHKIND% against
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = lose with disappointed keeper %TEAM1KEEPER% %MATCHKIND% against
 
 SPORT_SOCCER_TEAMREPORT_MATCHKIND1 = after %PLAYTIMEMINUTES% minutes of doubtful soccer
 SPORT_SOCCER_TEAMREPORT_MATCHKIND2 = after %PLAYTIMEMINUTES% minutes of tactical duels
-SPORT_SOCCER_TEAMREPORT_MATCHKIND3 = after exciting %PLAYTIMEMINUTES% minutes lawn sport
+SPORT_SOCCER_TEAMREPORT_MATCHKIND3 = after exciting %PLAYTIMEMINUTES% minutes of lawn sport
 
 
 SPORT_TEAMREPORT_MATCHWIN_S1 = wins thanks to %TEAM1STAR%
@@ -885,10 +885,10 @@ SPORT_TEAMREPORT_MATCHWIN_P3 = win %MATCHSCORE1TEXT% against
 SPORT_TEAMREPORT_MATCHWIN_S4 = overcomes
 SPORT_TEAMREPORT_MATCHWIN_P4 = overcome
 
-SPORT_TEAMREPORT_MATCHDRAW_S1 = games away the chance of %MATCHSCOREMAXTEXT% against
-SPORT_TEAMREPORT_MATCHDRAW_P1 = game away the chance of %MATCHSCOREMAXTEXT% against
-SPORT_TEAMREPORT_MATCHDRAW_S2 = only reaches a draw game against
-SPORT_TEAMREPORT_MATCHDRAW_P2 = only reach a draw game against
+SPORT_TEAMREPORT_MATCHDRAW_S1 = gives away the chance of %MATCHSCOREMAXTEXT% against
+SPORT_TEAMREPORT_MATCHDRAW_P1 = gave away the chance of %MATCHSCOREMAXTEXT% against
+SPORT_TEAMREPORT_MATCHDRAW_S2 = only reaches a draw against
+SPORT_TEAMREPORT_MATCHDRAW_P2 = only reach a draw against
 SPORT_TEAMREPORT_MATCHDRAW_S3 = brings home %MATCHSCORE1TEXT% against
 SPORT_TEAMREPORT_MATCHDRAW_P3 = bring home %MATCHSCORE1TEXT% against
 
@@ -899,9 +899,9 @@ SPORT_TEAMREPORT_MATCHLOOSE_P2 = disgrace itself %MATCHKIND% against
 SPORT_TEAMREPORT_MATCHLOOSE_S3 = gifts %MATCHKIND% %MATCHSCORE2TEXT% to
 SPORT_TEAMREPORT_MATCHLOOSE_P3 = gift %MATCHKIND% %MATCHSCORE2TEXT% to
 
-SPORT_TEAMREPORT_MATCHKIND1 = deservedy
+SPORT_TEAMREPORT_MATCHKIND1 = deservedly
 SPORT_TEAMREPORT_MATCHKIND2 = flukey
-SPORT_TEAMREPORT_MATCHKIND3 = after long %PLAYTIMEMINUTES% minutes match time
+SPORT_TEAMREPORT_MATCHKIND3 = after a long %PLAYTIMEMINUTES% minutes of match time
 SPORT_TEAMREPORT_MATCHKIND4 = in a racket of a game
 SPORT_TEAMREPORT_MATCHKIND5 = in a nail-biter
 SPORT_TEAMREPORT_MATCHKIND6 = in a sold out stadium
