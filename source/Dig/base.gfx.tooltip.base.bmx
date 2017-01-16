@@ -48,7 +48,7 @@ Type TTooltipBase
 
 	'left (2) and right (4) is for all elements
 	'top (1) and bottom (3) padding for content
-	Field padding:TRectangle = new TRectangle.Init(3,4,3,4)
+	Field _contentPadding:TRectangle = new TRectangle.Init(2,3,2,3)
 
 	Field _options:int = 0
 	Field _step:int = 0
@@ -80,7 +80,7 @@ Type TTooltipBase
 	'if the tooltip has to be moved to stay on screen - this sets if it
 	'may be rendered over the parent area
 	Const OPTION_PARENT_OVERLAY_ALLOWED:int = 128
-	
+	Const OPTION_MIRRORED_RENDER_POSITION:int = 256
 
 
 	Method Initialize:TTooltipBase(title:String="", content:String="unknown", area:TRectangle)
@@ -112,6 +112,29 @@ Type TTooltipBase
 		endif
 
 		Return Super.Compare(other)
+	End Method
+
+
+	Method SetOrientationPreset(direction:string="TOP", distance:int = 0)
+		offset = null
+		Select direction.ToUpper()
+			case "LEFT"
+				parentAlignment = ALIGN_LEFT_CENTER
+				alignment = ALIGN_RIGHT_CENTER
+				if distance then offset = new TVec2D.Init(-1 * abs(distance), 0)
+			case "RIGHT"
+				parentAlignment = ALIGN_RIGHT_CENTER
+				alignment = ALIGN_LEFT_CENTER
+				if distance then offset = new TVec2D.Init(+1 * abs(distance), 0)
+			case "BOTTOM"
+				parentAlignment = ALIGN_CENTER_BOTTOM
+				alignment = ALIGN_CENTER_TOP
+				if distance then offset = new TVec2D.Init(0, +1 * abs(distance))
+			default
+				parentAlignment = ALIGN_CENTER_TOP
+				alignment = ALIGN_CENTER_BOTTOM
+				if distance then offset = new TVec2D.Init(distance, -1 * abs(distance))
+		End Select
 	End Method
 
 
@@ -176,6 +199,11 @@ Type TTooltipBase
 	End Method
 
 
+	Method GetContentPadding:TRectangle()
+		return _contentPadding
+	End Method
+
+
 	Method GetScreenRect:TRectangle()
 		return new TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
 	End Method
@@ -220,6 +248,7 @@ Type TTooltipBase
 	Method MoveToVisibleScreenArea(checkParentArea:int = True)
 		if not _renderPosition then _renderPosition = new TVec2D
 		_renderPosition.SetXY(0,0)
+		SetOption(OPTION_MIRRORED_RENDER_POSITION, False)
 		
 		'limit to visible areas
 		'-> moves tooltip  so that everything is visible on screen
@@ -247,8 +276,10 @@ Type TTooltipBase
 
 					if intersectRect.GetY() = parentArea.GetY()
 						_renderPosition.SetY( parentArea.GetY2() - screenRect.GetY() + intersectRect.GetH() - 2 * offsetY )
+						SetOption(OPTION_MIRRORED_RENDER_POSITION, True)
 					else
 						_renderPosition.SetY( -outOfScreenBottom + parentArea.GetY() - screenRect.GetY2() + offsetY )
+						SetOption(OPTION_MIRRORED_RENDER_POSITION, True)
 					endif
 				elseif intersectRect.GetW() > 5
 					local offsetX:int = 0
@@ -256,8 +287,10 @@ Type TTooltipBase
 
 					if outOfScreenLeft<>0
 						_renderPosition.SetX( -outOfScreenLeft + parentArea.GetX2() - offsetX )
+						SetOption(OPTION_MIRRORED_RENDER_POSITION, True)
 					else
 						_renderPosition.SetX( - screenRect.GetW() - parentArea.GetW()  - 2 * offsetX )
+						SetOption(OPTION_MIRRORED_RENDER_POSITION, True)
 					endif
 				endif
 			endif
@@ -300,7 +333,7 @@ Type TTooltipBase
 
 		'auto width calculation
 		If area.GetW() <= 0
-			return Max(GetTitleWidth(), GetContentWidth()) + padding.GetLeft() + padding.GetRight()
+			return Max(GetTitleWidth(), GetContentWidth()) + GetContentPadding().GetLeft() + GetContentPadding().GetRight()
 		EndIf
 	End Method
 
@@ -315,7 +348,7 @@ Type TTooltipBase
 			'height from title + content + spacing
 			result:+ GetTitleHeight()
 			result:+ GetContentHeight()
-			result:+ padding.GetTop() + padding.GetBottom() 
+			result:+ GetContentPadding().GetTop() + GetContentPadding().GetBottom() 
 			Return result
 		EndIf
 	End Method
@@ -361,7 +394,7 @@ Type TTooltipBase
 		local maxWidth:int = 0
 		local minWidth:int = 0
 		if area.GetW() > 0
-			maxWidth = area.GetW() - padding.GetLeft() - padding.GetRight()
+			maxWidth = area.GetW() - GetContentPadding().GetLeft() - GetContentPadding().GetRight()
 		else if _maxContentDim
 			maxWidth = _maxContentDim.GetIntX()
 		endif
@@ -394,7 +427,7 @@ Type TTooltipBase
 
 
 	Method GetInnerWidth:int()
-		return GetWidth() - padding.GetLeft() - padding.GetRight()
+		return GetWidth() - GetContentPadding().GetLeft() - GetContentPadding().GetRight()
 	End Method
 
 
@@ -537,6 +570,7 @@ Type TTooltipBase
 		Local boxY:Int	= GetScreenY() + yOffset
 		Local boxWidth:int = GetWidth()
 		Local boxHeight:Int	= GetHeight()
+		Local padding:TRectangle = GetContentPadding()
 
 		local oldCol:TColor = new TColor.Get()
 		if IsFadingOut()

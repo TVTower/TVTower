@@ -68,6 +68,13 @@
 				<child name="gfx_gui_overlay_tvchannel"	x="325"	y="1" 	w="24" 	h="23" />
 				<child name="gfx_gui_overlay_player"	x="349"	y="1" 	w="24" 	h="23" />
 				<child name="gfx_gui_overlay_disc"		x="377"	y="1" 	w="24" 	h="23" />
+
+				<!-- tooltips -->
+				<child name="gfx_gui_tooltip.bg"          x="360" y="25"  w="27"  h="28" ninepatch="true" />
+				<child name="gfx_gui_tooltip.arrow.up"    x="335" y="25"  w="13"  h="7"  offsetTop="-2" />
+				<child name="gfx_gui_tooltip.arrow.down"  x="335" y="51"  w="13"  h="10" offsetTop="5" />
+				<child name="gfx_gui_tooltip.arrow.left"  x="325" y="35"  w="7"   h="14" offsetLeft="-3" />
+				<child name="gfx_gui_tooltip.arrow.right" x="351" y="35"  w="8"   h="14" offsetLeft="3" />
 			</children>
 		</resource>
 	</resources>
