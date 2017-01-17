@@ -932,3 +932,6 @@ SPORT_AFTER_OVERTIME_SHORT = "a.o."
 
 
 CLASSIFICATION = classification
+REMAINING_TERM = remaining term
+SPOTS_TO_SEND = spots to send
+NAME = name

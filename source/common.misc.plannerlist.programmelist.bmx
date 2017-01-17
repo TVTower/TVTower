@@ -468,31 +468,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 		'draw sort symbols
 		if ListSortVisible
-			local buttonX:int = GetEntriesRect().GetX() + 2
-			local buttonY:int = GetEntriesRect().GetY() + 4
-			local buttonWidth:int = 32
-			local buttonPadding:int = 2
-
-			For local i:int = 0 until sortKeys.length
-				local spriteName:string = "gfx_gui_button.datasheet"
-				if ListSortMode = sortKeys[i]
-					spriteName = "gfx_gui_button.datasheet.positive"
-				endif
-
-				if THelper.MouseIn(buttonX + 5 + i*(buttonWidth + buttonPadding), buttonY, buttonWidth, 27)
-					spriteName :+ ".hover"
-				endif
-				GetSpriteFromRegistry(spriteName).DrawArea(buttonX + 5 + i*(buttonWidth + buttonPadding), buttonY, buttonWidth,27)
-				GetSpriteFromRegistry(sortSymbols[ sortKeys[i] ]).Draw(buttonX + 9 + i*(buttonWidth + buttonPadding), buttonY+2)
-				'sort
-				if ListSortMode = sortKeys[i]
-					if ListSortDirection = 0
-						GetSpriteFromRegistry("gfx_datasheet_icon_arrow_down").Draw(buttonX + 10 + i*(buttonWidth + buttonPadding), buttonY+2)
-					else
-						GetSpriteFromRegistry("gfx_datasheet_icon_arrow_up").Draw(buttonX + 10 + i*(buttonWidth + buttonPadding), buttonY+2)
-					endif
-				endif
-			Next
+			DrawSortArea(GetEntriesRect().GetX(), GetEntriesRect().GetY())
 		endif
 
 		
@@ -701,7 +677,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 		'handle sort buttons (if still open)
 		If Self.openState >= 1
-			UpdateSortButtons()
+			UpdateSortArea(GetEntriesRect().GetX(), GetEntriesRect().GetY())
 		endif
 
 		Return False

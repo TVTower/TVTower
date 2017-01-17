@@ -955,3 +955,6 @@ SPORT_AFTER_OVERTIME_SHORT = "n.V."
 
 
 CLASSIFICATION = Klassifikation
+REMAINING_TERM = restl. Laufzeit
+SPOTS_TO_SEND = offene Werbespots
+NAME = Name

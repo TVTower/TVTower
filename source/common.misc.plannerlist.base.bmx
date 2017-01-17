@@ -1,5 +1,6 @@
 SuperStrict
-Import "Dig/base.util.rectangle.bmx"
+Import "Dig/base.gfx.gui.bmx"
+'Import "Dig/base.util.rectangle.bmx"
 Import "basefunctions.bmx"
 Import "game.gameobject.bmx"
 
@@ -19,7 +20,8 @@ Type TPlannerList extends TOwnedGameObject
 	Field ListSortDirection:int = 0
 	Field sortSymbols:string[]
 	Field sortKeys:int[]
-
+	Field sortTooltips:TTooltipBase[]
+	
 	'whether the player can click / create elements? 
 	Field clicksAllowed:int = True
 
@@ -58,9 +60,9 @@ Type TPlannerList extends TOwnedGameObject
 	Method UnRegisterEvents:Int() abstract
 
 
-	Method UpdateSortButtons()
-		local buttonX:int = GetEntriesRect().GetX() + 2
-		local buttonY:int = GetEntriesRect().GetY() + 4
+	Method UpdateSortArea(x:int, y:int)
+		local buttonX:int = x + 2
+		local buttonY:int = y + 4
 		local buttonWidth:int = 32
 		local buttonPadding:int = 2
 
@@ -77,6 +79,55 @@ Type TPlannerList extends TOwnedGameObject
 					endif
 				Next
 			endif
+		endif
+
+
+		if sortTooltips
+			'move tooltip hotspots to their positions and then update
+			For local i:int = 0 until sortTooltips.length
+				if not sortTooltips[i].parentArea then sortTooltips[i].parentArea = new TRectangle
+				sortTooltips[i].parentArea.Init(buttonX + i * (buttonWidth + buttonPadding), buttonY, 35, 27)
+
+				sortTooltips[i].Update()
+			Next
+		endif
+	End Method
+
+
+
+	Method DrawSortArea(x:int, y:int)
+		local buttonX:int = x + 2
+		local buttonY:int = y + 4
+		local buttonWidth:int = 32
+		local buttonPadding:int = 2
+
+		For local i:int = 0 until sortKeys.length
+			local spriteName:string = "gfx_gui_button.datasheet"
+			if ListSortMode = sortKeys[i]
+				spriteName = "gfx_gui_button.datasheet.positive"
+			endif
+
+			if THelper.MouseIn(buttonX + 5 + i*(buttonWidth + buttonPadding), buttonY, buttonWidth, 27)
+				spriteName :+ ".hover"
+			endif
+			GetSpriteFromRegistry(spriteName).DrawArea(buttonX + 5 + i*(buttonWidth + buttonPadding), buttonY, buttonWidth,27)
+			GetSpriteFromRegistry(sortSymbols[ sortKeys[i] ]).Draw(buttonX + 9 + i*(buttonWidth + buttonPadding), buttonY+2)
+			'sort
+			if ListSortMode = sortKeys[i]
+				if ListSortDirection = 0
+					GetSpriteFromRegistry("gfx_datasheet_icon_arrow_down").Draw(buttonX + 10 + i*(buttonWidth + buttonPadding), buttonY+2)
+				else
+					GetSpriteFromRegistry("gfx_datasheet_icon_arrow_up").Draw(buttonX + 10 + i*(buttonWidth + buttonPadding), buttonY+2)
+				endif
+			endif
+		Next
+
+
+		if sortTooltips
+			'move tooltip hotspots to their positions and then update
+			For local i:int = 0 until sortTooltips.length
+				sortTooltips[i].Render()
+			Next
 		endif
 	End Method
 

@@ -95,8 +95,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 					contractsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", "UNKNOWN SORT MODE: " + i, new TRectangle.Init(0,0,-1,-1))
 			End Select
 			contractsSortKeysTooltips[i].parentArea = new TRectangle.Init(0,0,30,30)
-			contractsSortKeysTooltips[i]._minTitleDim = null
-			contractsSortKeysTooltips[i]._minContentDim = null
+			'contractsSortKeysTooltips[i]._minTitleDim = null
+			'contractsSortKeysTooltips[i]._minContentDim = null
 		Next
 
 
