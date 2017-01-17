@@ -894,11 +894,41 @@ Type TDatabaseLoader
 		'fetch potential meta data
 		local mData:TData = LoadV3ProgrammeLicenceMetaDataFromNode(GUID, node, xml, parentLicence)
 		metaData.Add( GUID, mData )
-	
-		local productType:int = TXmlHelper.FindValueInt(node,"product", TVTProgrammeProductType.MOVIE)
-		'old type - stay compatible with old v3-db
-		local oldType:int = TXmlHelper.FindValueInt(node,"type", -1)
-		local licenceType:int = TXmlHelper.FindValueInt(node,"licence_type", oldType)
+
+		'skip if not "all" are allowed (no creator data available)
+		if not IsAllowedUser(mData.GetString("createdBy"), "programmelicence") then return Null
+
+
+
+		local programmeData:TProgrammeData
+		local programmeLicence:TProgrammeLicence
+
+		'=== PROGRAMME DATA ===
+		'try to fetch an existing licence with the entries GUID
+		programmeLicence = GetProgrammeLicenceCollection().GetByGUID(GUID)
+
+		'check if we reuse an existing programmedata (for series
+		'episodes we cannot rely on existence of licences, as they
+		'all get added at the end, not on load of an episode)
+		programmeData = GetProgrammeDataCollection().GetByGUID(dataGUID)
+		if programmeData
+			TLogger.Log("LoadV3ProgrammeLicenceFromNode()", "Extending programmeLicence's data ~q"+programmeData.GetTitle()+"~q. dataGUID="+dataGUID+"  GUID="+GUID, LOG_XML)
+			'unset cached title again
+'			programmeData.titleProcessed = null
+		endif
+
+
+		'try to reuse existing configurations or use default ones if no
+		'licence/data existed
+		local productType:int = TVTProgrammeProductType.MOVIE
+		if programmeData then productType = programmeData.productType
+		productType = TXmlHelper.FindValueInt(node,"product", productType)
+
+		local licenceType:int = -1
+		if programmeLicence then licenceType = programmeLicence.licenceType
+		licenceType = TXmlHelper.FindValueInt(node,"licence_type", licenceType)
+
+
 		'episode or single element of a collection?
 		'(single movies without parent are converted later on)
 		if licenceType = -1
@@ -912,25 +942,8 @@ Type TDatabaseLoader
 				endif
 			endif
 		endif
-			
-		local programmeData:TProgrammeData
-		local programmeLicence:TProgrammeLicence
-
-		'skip if not "all" are allowed (no creator data available)
-		if not IsAllowedUser(mData.GetString("createdBy"), "programmelicence") then return Null
 
 
-		'=== PROGRAMME DATA ===
-		'try to fetch an existing licence with the entries GUID
-		programmeLicence = GetProgrammeLicenceCollection().GetByGUID(GUID)
-
-		'check if we reuse an existing programmedata (for series
-		'episodes we cannot rely on existence of licences, as they
-		'all get added at the end, not on load of an episode)
-		programmeData = GetProgrammeDataCollection().GetByGUID(dataGUID)
-		if programmeData
-			TLogger.Log("LoadV3ProgrammeLicenceFromNode()", "Extending programmeLicence's data ~q"+programmeData.GetTitle()+"~q. dataGUID="+dataGUID+"  GUID="+GUID, LOG_XML)
-		endif
 
 
 		if not programmeLicence
@@ -958,6 +971,8 @@ Type TDatabaseLoader
 			programmeData = programmeLicence.GetData()
 			if not programmeData then Throw "Loading V3 Programme from XML: Existing programmeLicence without data found."
 			TLogger.Log("LoadV3ProgrammeLicenceFromNode()", "Extending programmeLicence ~q"+programmeLicence.GetTitle()+"~q. GUID="+programmeLicence.GetGUID(), LOG_XML)
+			'unset cached title again
+'			programmeData.titleProcessed = null
 		endif
 
 
