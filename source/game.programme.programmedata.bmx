@@ -37,6 +37,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	Field _finishedProductionProgrammeData:TList {nosave}
 
 	Global _instance:TProgrammeDataCollection
+	Global _eventListeners:TLink[]
 
 
 	Function GetInstance:TProgrammeDataCollection()
@@ -49,6 +50,15 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		Super.Initialize()
 
 		_InvalidateCaches()
+
+		rem
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		'=== register event listeners
+		_eventListeners :+ [ EventManager.registerListenerFunction( "Language.onSetLanguage", onSetLanguage ) ]
+		endrem
 
 		return self
 	End Method
@@ -382,12 +392,29 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	End Method
 
 
+	Method RemoveReplacedPlaceholderCaches()
+		For local data:TProgrammeData = EachIn entries.Values()
+			data.titleProcessed = null
+			data.descriptionProcessed = null
+		Next
+	End Method
+	
+
+
 	Function _SortByReleaseTime:Int(o1:Object, o2:Object)
 		Local p1:TProgrammeData = TProgrammeData(o1)
 		Local p2:TProgrammeData = TProgrammeData(o2)
 		If Not p2 Then Return 1
         Return p1.releaseTime - p2.releaseTime
-	End Function	
+	End Function
+
+
+	'=== EVENT HANDLERS ===
+	rem
+	Function onSetLanguage:int( triggerEvent:TEventBase )
+		GetInstance().RemoveReplacedPlaceholderCaches()
+	End Function
+	endrem
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -870,7 +897,16 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
-	Method _LocalizeContent:string(content:string)
+	Method _ReplacePlaceholdersInLocalizedString:TLocalizedString(localizedString:TLocalizedString)
+		local result:TLocalizedString = new TLocalizedString
+		For local languageKey:string = EachIn localizedString.GetLanguageKeys()
+			result.Set(_ReplacePlaceholdersInString(localizedString.Get(languageKey)), languageKey)
+		Next
+		return result
+	End Method
+
+
+	Method _ReplacePlaceholdersInString:string(content:string)
 		local result:string = content
 
 		'placeholders are: "%object|guid|whatinformation%"
@@ -925,8 +961,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		if title
 			'replace placeholders and and cache the result
 			if not titleProcessed
-				titleProcessed = new TLocalizedString
-				titleProcessed.Set( _LocalizeContent(title.Get()) )
+				titleProcessed = _ReplacePlaceholdersInLocalizedString(title)
 			endif
 			return titleProcessed.Get()
 		endif
@@ -938,8 +973,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		if description
 			'replace placeholders and and cache the result
 			if not descriptionProcessed
-				descriptionProcessed = new TLocalizedString
-				descriptionProcessed.Set( _LocalizeContent(description.Get()) )
+				descriptionProcessed = _ReplacePlaceholdersInLocalizedString(description)
 			endif
 			return descriptionProcessed.Get()
 		endif

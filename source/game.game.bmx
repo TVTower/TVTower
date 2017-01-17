@@ -824,6 +824,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'load map specific databases
 		LoadDatabase("res/maps/germany/database", False)
 
+		'maybe something cached processed-title/description by calling
+		'GetTitle() (eg. in a logfile)
+		GetProgrammeDataCollection().RemoveReplacedPlaceholderCaches()
 
 		'=== FIGURES ===
 		'create/move other figures of the building

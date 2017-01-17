@@ -1686,7 +1686,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		elseif isEpisode()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
 			'episode num/max + episode title
-			skin.fontNormal.drawBlock(GetEpisodeNumber() + "/" + GetParentLicence().GetEpisodeCount() + ": " + data.GetTitle(), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontNormal.drawBlock(GetEpisodeNumber() + "/" + GetParentLicence().GetEpisodeCount() + ": " + GetTitle(), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			contentY :+ subtitleH
 		endif
 		

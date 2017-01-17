@@ -55,8 +55,7 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 					endif
 				endif
 
-				titleProcessed = new TLocalizedString
-				titleProcessed.Set( _LocalizeContent(title.Get()) )
+				titleProcessed = _ReplacePlaceholdersInLocalizedString(title)
 			endif
 			return titleProcessed.Get()
 		endif
@@ -76,8 +75,7 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 					endif
 				endif
 
-				descriptionProcessed = new TLocalizedString
-				descriptionProcessed.Set( _LocalizeContent(description.Get()) )
+				descriptionProcessed = _ReplacePlaceholdersInLocalizedString(description)
 			endif
 			return descriptionProcessed.Get()
 		endif
@@ -170,8 +168,8 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 	End Function
 	
 
-	Method _LocalizeContent:string(content:string)
-		local result:string = Super._LocalizeContent(content)
+	Method _ReplacePlaceholdersInString:string(content:string)
+		local result:string = Super._ReplacePlaceholdersInString(content)
 
 		local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
 		if league
