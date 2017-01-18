@@ -1116,11 +1116,7 @@ endrem
 					Repeat
 						targetRoom = GetRoomCollection().GetRandom()
 					Until targetRoom.name <> "building"
-					if targetRoom.owner
-						print "deliver to : "+targetRoom.name + " #"+targetRoom.owner
-					else
-						print "deliver to : "+targetRoom.name
-					endif
+					print TFigureTerrorist(GetGame().terrorists[whichTerrorist]).name +" - deliver to : "+targetRoom.name + " [id="+targetRoom.id+", owner="+targetRoom.owner+"]"
 					TFigureTerrorist(GetGame().terrorists[whichTerrorist]).SetDeliverToRoom( targetRoom )
 				EndIf
 
@@ -4438,6 +4434,38 @@ Type GameEvents
 
 		'TODO: send out janitor to the roomboard and when arrived, he
 		'      will reset the sign positions
+
+
+		'=== SEND TOASTMESSAGE ===
+		local roomGUID:string = triggerEvent.GetData().GetString("roomGUID")
+		local room:TRoomBase = GetRoomCollection().GetByGUID( TLowerString.Create(roomGUID) )
+		if room
+			'only interested in active player?
+			'If room.owner <> GetPlayerCollection().playerID Then Return False
+
+			Local caption:string = GetRandomLocale("BOMB_DETONATION_IN_TVTOWER")
+			Local text:string = GetRandomLocale("TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT")
+
+			'replace placeholders
+			if room.owner > 0
+				Local player:TPlayer = GetPlayer(room.owner)
+				Local col:TColor = player.color
+				text = text.Replace("%ROOM%", "|b||color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color|"+room.GetDescription()+"|/b||color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color|")
+			else
+				text = text.Replace("%ROOM%", "|b|"+room.GetDescription()+"|/b|")
+			endif
+
+
+			Local toast:TGameToastMessage = New TGameToastMessage
+			'show it for some seconds
+			toast.SetLifeTime(15)
+			toast.SetMessageType(1) 'attention
+
+			toast.SetCaption( caption )
+			toast.SetText( text )
+		
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		endif
 	End Function
 	
 

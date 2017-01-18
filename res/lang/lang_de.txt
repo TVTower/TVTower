@@ -816,6 +816,7 @@ SHOW_INTRODUCTORY_GUIDES = Einführungs-Hilfetexte anzeigen
 
 BOMB_DETONATION_IN_TVTOWER = Anschlag im TVTower
 BOMB_DETONATION_IN_TVTOWER_TEXT = Eine Detonation erschütterte die Menschen im bekannten TVTower. Die Bombe beschädigte den Raum "%ROOM%". Die Ermittlungen laufen.
+TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT = Ein Bombenanschlag beschädigte den Raum %ROOM%.
 
 BOMB_DETONATION_IN_TVTOWER_NO_CLUES = Anschlag auf TVTower: Keine Spuren
 BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT = Nach dem Anschlag im bekannten TVTower ermittelten die Behörden. Leider konnten keine verwertbaren Spuren gesichert werden

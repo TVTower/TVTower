@@ -813,6 +813,7 @@ SHOW_INTRODUCTORY_GUIDES = Show introductory guides
 
 BOMB_DETONATION_IN_TVTOWER = Bomb detonation in TVTower 
 BOMB_DETONATION_IN_TVTOWER_TEXT = A bomb detonation unsettled the people of the famous TVTower. The bomb damaged the room "%ROOM%". Investigations are in full swing.
+TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT = A bomb detonation damaged the room %ROOM%.
 
 BOMB_DETONATION_IN_TVTOWER_NO_CLUES = Attack on TVTower: No clues found
 BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT = Public authorities investigated after the attack in the famous TVTower. Unfortunately they weren't able to find any useful clues.
