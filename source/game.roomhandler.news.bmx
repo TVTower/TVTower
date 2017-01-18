@@ -230,7 +230,7 @@ Type RoomHandler_News extends TRoomHandler
 		if TVTDebugInfos
 			SetColor 0,0,0
 			SetAlpha 0.6
-			DrawRect(15,35, 380, 180)
+			DrawRect(15,35, 380, 220)
 			SetAlpha 1.0
 			SetColor 255,255,255
 			GetBitmapFont("default", 12).Draw("Neue Startnews:", 20, 40)
@@ -261,6 +261,12 @@ Type RoomHandler_News extends TRoomHandler
 					GetBitmapFont("default", 10).Draw("--", 20+130, 60 + 24*i +12)
 				endif
 			Next
+
+
+			local agency:TNewsAgency = GetNewsAgency()
+			GetBitmapFont("default", 12).Draw("Terrorlevel:", 20, 220)
+			GetBitmapFont("default", 10).Draw("a) " + MathHelper.NumberToString(100*agency.terroristAggressionLevelProgress[0],2)+"%  " + agency.terroristAggressionLevel[0]+"/"+agency.terroristAggressionLevelMax, 20, 235)
+			GetBitmapFont("default", 10).Draw("b) " + MathHelper.NumberToString(100*agency.terroristAggressionLevelProgress[1],2)+"%  " + agency.terroristAggressionLevel[1]+"/"+agency.terroristAggressionLevelMax, 20+130, 235)
 
 		endif
 	End Function

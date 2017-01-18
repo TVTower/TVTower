@@ -29,15 +29,15 @@ Type TNewsAgency
 	'when to update aggression the next time
 	Field terroristUpdateTime:Double[] = [Double(0),Double(0)]
 	'update terrorists aggression every x-y minutes
-	Field terroristUpdateTimeInterval:int[] = [30, 45]
+	Field terroristUpdateTimeInterval:int[] = [80, 100]
 	'level of terrorists aggression (each level = new news)
 	'party 2 starts later
 	Field terroristAggressionLevel:Int[] = [0, -1]
-	Field terroristAggressionLevelMax:Int = 5
+	Field terroristAggressionLevelMax:Int = 4
 	'progress in the given aggression level (0 - 1.0)
 	Field terroristAggressionLevelProgress:Float[] = [0.0, 0.0]
 	'rate the aggression level progresses each game hour
-	Field terroristAggressionLevelProgressRate:Float[][] = [ [0.05,0.09], [0.05,0.09] ]	
+	Field terroristAggressionLevelProgressRate:Float[][] = [ [0.06,0.08], [0.06,0.08] ]	
 
 	Global _eventListeners:TLink[]
 	Global _instance:TNewsAgency
@@ -69,11 +69,11 @@ Type TNewsAgency
 
 
 		terroristUpdateTime = [Double(0),Double(0)]
-		terroristUpdateTimeInterval = [30, 45]
+		terroristUpdateTimeInterval = [80, 100]
 		terroristAggressionLevel = [0, -1]
-		terroristAggressionLevelMax = 5
+		terroristAggressionLevelMax = 4
 		terroristAggressionLevelProgress = [0.0, 0.0]
-		terroristAggressionLevelProgressRate = [ [0.05,0.09], [0.05,0.09] ]
+		terroristAggressionLevelProgressRate = [ [0.06,0.08], [0.06,0.08] ]
 
 
 		'initialize all news providers too
@@ -357,13 +357,13 @@ Type TNewsAgency
 		'so responses come faster and faster
 		Select terroristAggressionLevel[terroristNumber]
 			case 1
-				terroristAggressionLevelProgress[terroristNumber] :+ 1.1 * increase
+				terroristAggressionLevelProgress[terroristNumber] :+ 1.05 * increase
 			case 2
-				terroristAggressionLevelProgress[terroristNumber] :+ 1.2 * increase
+				terroristAggressionLevelProgress[terroristNumber] :+ 1.11 * increase
 			case 3
-				terroristAggressionLevelProgress[terroristNumber] :+ 1.3 * increase
+				terroristAggressionLevelProgress[terroristNumber] :+ 1.20 * increase
 			case 4
-				terroristAggressionLevelProgress[terroristNumber] :+ 1.5 * increase
+				terroristAggressionLevelProgress[terroristNumber] :+ 1.35 * increase
 			default
 				terroristAggressionLevelProgress[terroristNumber] :+ increase
 		End Select
@@ -381,14 +381,14 @@ Type TNewsAgency
 		terroristAggressionLevelProgress[terroristNumber] :- 1.0
 
 		'announce news for levels 1-4
-		if terroristAggressionLevel[terroristNumber] < terroristAggressionLevelMax
+		if terroristAggressionLevel[terroristNumber] <= terroristAggressionLevelMax
 			local newsEvent:TNewsEvent = GetTerroristNewsEvent(terroristNumber)
 			If newsEvent then announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + 0)
 		endif
 
 		'reset level if limit reached, also delay next Update so things
 		'do not happen one after another
-		if terroristAggressionLevel[terroristNumber] >= terroristAggressionLevelMax -1
+		if terroristAggressionLevel[terroristNumber] >= terroristAggressionLevelMax
 			'reset to level 0
 			terroristAggressionLevel[terroristNumber] = 0
 			'5 * normal random "interval"
@@ -448,7 +448,7 @@ Type TNewsAgency
 		NewsEvent.SetModifier("price", price)
 
 		'send out terrorist
-		if aggressionLevel = 4
+		if aggressionLevel = terroristAggressionLevelMax
 			local effect:TGameModifierBase = new TGameModifierBase
 
 			effect.GetData().Add("figure", GetGameBase().terrorists[terroristGroup])
