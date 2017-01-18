@@ -331,6 +331,10 @@ Type TBitmapFont
 			extraChars :+ chr(8222) '„
 			extraChars :+ chr(171) '«
 			extraChars :+ chr(187) '»
+			'extraChars :+ chr(8227) '‣
+			extraChars :+ chr(9664) '◀
+			extraChars :+ chr(9654) '▶
+			extraChars :+ chr(9632) '■
 		endif
 
 		self.glyphCount = glyphCount

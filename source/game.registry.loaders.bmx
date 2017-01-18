@@ -200,15 +200,13 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 
 		'4. load door settings
 		subNode = TXmlHelper.FindChild(node, "door")
-		local doorData:TData = new TData
-		'this is the default value for rooms without doors
-		doorData.Add("floor", "0")
 		If subNode
+			local doorData:TData = new TData
 			local doorFields:string[] = ["x", "floor", "doorslot", "doortype", "doorwidth", "doortooltip"]
 			TXmlHelper.LoadValuesToData(subNode, doorData, doorFields)
+			'add door configuration
+			data.Add("door", doorData)
 		EndIf
-		'add door configuration
-		data.Add("door", doorData)
 
 
 		return data
@@ -240,14 +238,19 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 		'load hotspots
 		roomData.Add("hotspots", TList(data.Get("hotspots", CreateList())))
 
-		local doorData:TData = TData(data.Get("door", new TData))
-		'load door settings
-		roomData.AddNumber("x", doorData.GetInt("x", -1000))
-		roomData.AddNumber("floor",	 doorData.GetInt("floor", -1))
-		roomData.AddNumber("doorslot", doorData.GetInt("doorslot", -1))
-		roomData.AddNumber("doortype", doorData.GetInt("doortype", -1))
-		roomData.AddNumber("doorwidth", doorData.GetInt("doorwidth", -1))
-		roomData.AddBoolString("doortooltip", doorData.GetBool("doortooltip", True))
+		local doorData:TData = TData(data.Get("door"))
+		if doorData
+			roomData.AddNumber("hasDoorData", True)
+			'load door settings
+			roomData.AddNumber("x", doorData.GetInt("x", -1000))
+			roomData.AddNumber("floor",	 doorData.GetInt("floor", -1))
+			roomData.AddNumber("doorslot", doorData.GetInt("doorslot", -1))
+			roomData.AddNumber("doortype", doorData.GetInt("doortype", -1))
+			roomData.AddNumber("doorwidth", doorData.GetInt("doorwidth", -1))
+			roomData.AddBoolString("doortooltip", doorData.GetBool("doortooltip", True))
+		else
+			roomData.AddNumber("hasDoorData", False)
+		endif
 
 		'fetch/create the rooms config container
 		local roomsMap:TMap = TMap(GetRegistry().Get("rooms"))

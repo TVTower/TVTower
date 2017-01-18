@@ -1030,22 +1030,27 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			endif
 
 			'==== DOOR ====
-			local door:TRoomDoor = new TRoomDoor
-			door.Init(..
-				room.id,..
-				vars.GetInt("doorslot"), ..
-				vars.GetInt("floor"), ..
-				vars.GetInt("doortype") ..
-			)
-			GetRoomDoorBaseCollection().Add( door )
-			'add the door to the building (sets parent etc)
-			GetBuilding().AddDoor(door)
+			'no door for the artificial room "building"
+			'if vars.GetString("roomname") <> "building"
+			if vars.GetInt("hasDoorData",-1) = 1
+				local door:TRoomDoor = new TRoomDoor
+				door.Init(..
+					room.id,..
+					vars.GetInt("doorslot"), ..
+					vars.GetInt("floor"), ..
+					vars.GetInt("doortype") ..
+				)
+				GetRoomDoorBaseCollection().Add( door )
+				'add the door to the building (sets parent etc)
+				GetBuilding().AddDoor(door)
 
-			'override defaults
-			if not vars.GetBool("doortooltip") then door.showTooltip = False
-			if vars.GetInt("doorwidth") > 0 then door.area.dimension.setX( vars.GetInt("doorwidth") )
-			if vars.GetInt("x",-1000) <> -1000 then door.area.position.SetX(vars.GetInt("x"))
-
+				'override defaults
+				if not vars.GetBool("doortooltip") then door.showTooltip = False
+				if vars.GetInt("doorwidth") > 0 then door.area.dimension.setX( vars.GetInt("doorwidth") )
+				if vars.GetInt("x",-1000) <> -1000 then door.area.position.SetX(vars.GetInt("x"))
+				'move these doors outside so they do not overlap with the "porter"
+				if vars.GetInt("doortype") = -1 then door.area.position.SetX(-1000 - room.id*door.area.GetW())
+			endif
 
 
 			'==== HOTSPOTS ====
