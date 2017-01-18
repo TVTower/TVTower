@@ -33,7 +33,7 @@ Type TAwardBaseCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method CreateAward:TAwardBase(awardType:int, endTime:int)
+	Method CreateAward:TAwardBase(awardType:int, endTime:Long)
 		'for now only basic award support
 
 		local a:TAwardBase = new TAwardBase

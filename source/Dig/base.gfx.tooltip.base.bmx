@@ -610,11 +610,11 @@ Type TTooltipBase
 		local oldCol:TColor = new TColor.Get()
 		if IsFadingOut()
 			'fade out a bit faster ... ^3
-			SetAlpha oldCol.a * (1.0-GetStepProgress())^2
+			SetAlpha oldCol.a * float((1.0-GetStepProgress())^2)
 		endif
 
 		_DrawBackground(boxX, boxY, boxWidth, boxHeight)
-		_DrawForeground(boxX + padding.GetLeft(), boxY + padding.GetTop(), boxWidth - padding.GetLeft() - padding.GetRight(), boxHeight - padding.GetTop() - padding.GetBottom())
+		_DrawForeground(boxX + int(padding.GetLeft()), boxY + int(padding.GetTop()), boxWidth - int(padding.GetLeft() - padding.GetRight()), boxHeight - int(padding.GetTop() - padding.GetBottom()))
 
 		SetAlpha oldCol.a
 

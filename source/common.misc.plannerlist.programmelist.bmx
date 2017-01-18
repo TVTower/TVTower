@@ -468,7 +468,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 		'draw sort symbols
 		if ListSortVisible
-			DrawSortArea(GetEntriesRect().GetX(), GetEntriesRect().GetY())
+			DrawSortArea(int(GetEntriesRect().GetX()), int(GetEntriesRect().GetY()))
 		endif
 
 		
@@ -677,7 +677,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 		'handle sort buttons (if still open)
 		If Self.openState >= 1
-			UpdateSortArea(GetEntriesRect().GetX(), GetEntriesRect().GetY())
+			UpdateSortArea(int(GetEntriesRect().GetX()), int(GetEntriesRect().GetY()))
 		endif
 
 		Return False
