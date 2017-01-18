@@ -225,9 +225,9 @@ Type TAwardBase extends TGameObject
 		'if score of a player _increases_ score of others will decrease
 		'if score _decreases_, it increases score of others!
 		local change:int = (0.5 * amount) / (Self.scores.length-1)
-		For Local i:Int = 0 until Self.scores.length
+		For Local i:Int = 1 to Self.scores.length
 			if i = PlayerID then continue
-			Self.scores[i] = Max(0, Self.scores[i] - change)
+			Self.scores[i-1] = Max(0, Self.scores[i-1] - change)
 		Next
 
 		'reset cache

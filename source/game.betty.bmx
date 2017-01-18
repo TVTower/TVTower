@@ -2,6 +2,7 @@ SuperStrict
 Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.logger.bmx"
 Import "game.world.worldtime.bmx"
+Import "game.publicimage.bmx"
 
 
 	
@@ -71,19 +72,37 @@ Type TBetty
 	End Method
 	
 
-	Method AdjustLove(PlayerID:Int, amount:Int)
+	Method AdjustLove(PlayerID:Int, amount:Int, ignorePublicImage:int = False)
 		'you cannot subtract more than what is there
 		if amount < 0 then amount = - Min(abs(amount), abs(Self.InLove[PlayerID-1]))
+		'you cannot add more than what is left to the maximum
+		amount = Min(LOVE_MAXIMUM - Self.InLove[PlayerID-1], amount)
 
+		'according to the Mad TV manual, love can never be bigger than the
+		'channel image!
+		'It will not be possible to achieve 100% that easily, so we allow
+		'love to be 150% of the image)
+		'a once "gained love" is subtracted if meanwhile image is lower!
+		if not ignorePublicImage
+			local playerImage:TPublicImage = GetPublicImage(PlayerID)
+			if playerImage
+				local maxAmountImageLimit:int = int(ceil(0.01*playerImage.GetAverageImage()  * LOVE_MAXIMUM))
+				If Self.InLove[PlayerID-1] + amount > maxAmountImageLimit
+					amount = Min(amount, maxAmountImageLimit - Self.InLove[PlayerID-1])
+				Endif
+			endif
+		endif
+
+		'add love
 		Self.InLove[PlayerID-1] = Max(0, Self.InLove[PlayerID-1] + amount)
 
 		'if love to a player _increases_ love to others will decrease
 		'but if love _decreases_ it wont increase love to others!
 		If amount > 0
 			local decrease:int = (0.75 * amount) / (Self.InLove.length-1)
-			For Local i:Int = 0 until Self.InLove.length
+			For Local i:Int = 1 to Self.InLove.length
 				if i = PlayerID then continue
-				Self.InLove[i] = Max(0, Self.InLove[i] - decrease)
+				Self.InLove[i-1] = Max(0, Self.InLove[i-1] - decrease)
 			Next
 		EndIf
 
