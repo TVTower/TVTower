@@ -3,7 +3,7 @@
 
 
 ###Deutsch
-Du bist Manager eines Fernsehsenders in diesem __kostenlosen Spiel__ . Lenke was gesendet wird und wann. Verdiene Geld durch Werbeeinnahmen und treibe die Konkurrenz in den Bankrott. Hole Zuschauer vor die Flimmerkiste in dem Du branntheisse Nachrichtenstories sendest und mit spannenden Livesendungen Millionen von Mitmenschen am Einschlafen hinterst. Fertigprodukte aus Hollywood sind nicht so dein Ding? Tja, Eigenproduktionen koennten Quotenhits werden - oder aber teure Millionengraeber.
+Du bist Manager eines Fernsehsenders in diesem __kostenlosen Spiel__ . Lenke was gesendet wird und wann. Verdiene Geld durch Werbeeinnahmen und treibe die Konkurrenz in den Bankrott. Hole Zuschauer vor die Flimmerkiste in dem Du brandheiße Nachrichtenstories sendest und mit spannenden Livesendungen Millionen von Mitmenschen am Einschlafen hinderst. Fertigprodukte aus Hollywood sind nicht so dein Ding? Tja, Eigenproduktionen könnten Quotenhits werden - oder aber teure Millionengräber.
 
 ###English
 In this __free game__ you are the manager of a television channel. Control what gets broadcasted and when. Earn Money with commercial breakups and drive your opponents into bankruptcy. Broadcast top stories in your news block or live shows keeping your audience from falling asleep. You dislike convenience products made in Hollywood - no problem - running your own products might lead to new stars of the ratings - or a costly white elephant.

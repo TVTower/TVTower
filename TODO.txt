@@ -8,12 +8,27 @@ TODO
 	- Imageverlust moeglich
 	- Zeitrahmen
 	- FSK18
+	- Imagenichterreichen = Textmeldung/Warnsymbol bei Werbung und
+	  reduzierter Gewinn
 
 * Live-Events:
-	- Fussball, Formel1, Konzerte, ... fehlen noch
+	- Formel1, Konzerte, ... fehlen noch
 
 * Eigenproduktion:
 	- Raumvermietung
+	- Personenauswahl in Eigenproduktionen um "Geschlecht"-Limitierung
+	  erweitern (IceaTea per EMail)
+	- TODO: CustomProduction(script, qualityMin, qualityMax, slope)
+	  -> eigentliche Qualitaet des Drehbuchs egal, innerhalb der Funktion
+	     werden so lange die Werte abgeaendert, bis die Qualitaet
+	     "erreicht"wird.
+	     Dran denken: Cast auf Produktion hinweisen
+
+	     oder man kann Produktionen eine Zielvorgabe mitgeben und es passt
+	     sie automatisch an?
+
+	     Option, ob automatisch gewaehlte Schauspieler "upgradefaehig"
+	     sein muessen.
 
 * Preisverleihung
 	- Auf-Abwertungen fuer Filme/News/Kultur
@@ -33,46 +48,30 @@ TODO
 	- Sendemasten verkaufen
 	- Raeume kuendigen falls zu teuer
 
+* Sondersendungen
+	- Fruehstueckssendungen: Personen generieren (nicht upgradefaehig) ?
+	  Was aber, wenn keiner die Sendung nutzt - Person dann "umsonst".
+	  Oder einfach die Sendungsattribute bei Tageswechsel anpassen (alte
+	  Sendung aber neue "Werte/Livezeiten")?
+	  -> ungenutzte Personen fuer neue Sendungen, und nur wenn keine
+	     vorhanden sind, neue generieren
 
-rem
-TODO: CustomProduction(script, qualityMin, qualityMax, slope)
--> eigentliche Qualitaet des Drehbuchs egal, innerhalb der Funktion werden so lange die
-Werte abgeaendert, bis die Qualitaet "erreicht"wird.
-dran denken: Cast auf Produktion hinweisen
+	- Live-Sendungen: Flag "LIVE_WHEN_IN_TIMEFRAME" einfuehren,
+	  Programm ist live, sobald es innerhalb des Zeitfensters gesendet
+	  wird (erlaubt "Luecken", statt taeglicher Ausstrahlung) 
 
-oder man kann Produktionen eine Zielvorgabe mitgeben und es passt sie automatisch an?
+	- Optional: "internal"-Drehbuecher - die nur fuer kuenstliche
+	  Produktionen zur Verfuegung stehen. Flag "internal".
 
-Option, ob automatisch gewaehlte Schauspieler "upgradefaehig" sein muessen.
+	- Sendungsformate:
+		- Fruehstuecksfernsehen
+		- Boerse am Morgen / am Mittag
+		- Sport am Morgen / Mittag / Abend
+		- Mittagsmagazin
+		- Nachtmagazin
+		- 18-Uhr-Hauptnachrichten
 
-Fruehstueckssendungen: Personen generieren (nicht upgradefaehig) ? Was aber, wenn keiner
-die Sendung nutzt - Person dann "umsonst". Oder einfach die Sendungsattribute bei
-Tageswechsel anpassen?
-
-
-Optional: "internal"-Drehbuecher - die nur fuer kuenstliche Produktionen zur Verfuegung
-stehen. Flag "internal".
-
-
-Sendungen:
-- Fruehstuecksfernsehen
-- Boerse am Morgen / am Mittag
-- Sport am Morgen / Mittag / Abend
-- Mittagsmagazin
-- Nachtmagazin
-- 18-Uhr-Hauptnachrichten
-
-
-
-
-Tooltips fuer GUI-Buttons (damit man weiss, was sie machen - bspweise Sortierbuttons)
-http://www.gamezworld.de/phpforum/viewtopic.php?pid=84756#p84756
-
-Imagenichterreichen = Textmeldung/Warnsymbol bei Werbung und reduzierter Gewinn
-http://www.gamezworld.de/phpforum/viewtopic.php?pid=84774#p84774
-
-Debugausgaben fuer Werbemakler (Quotenanforderungen, angebotene Werbung)
-http://www.gamezworld.de/phpforum/viewtopic.php?pid=84923#p84923
-
-Quoten-Statistik erweitern (Orwin)
-
-Fernsehfamilie-Sprechblasen mit Feedback ("Super!")
+* Sonstiges
+	  http://www.gamezworld.de/phpforum/viewtopic.php?pid=84774#p84774
+	- Quoten-Statistik erweitern (Orwin)
+	- Fernsehfamilie-Sprechblasen mit Feedback ("Super!")
