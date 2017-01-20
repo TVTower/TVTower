@@ -11,6 +11,6 @@
 		<sprite name="flag_ru"	url="res/gfx/gui/flags/ru.png" />
 		<sprite name="flag_cz"	url="res/gfx/gui/flags/cz.png" />
 -->
-		<sprite name="flag_pt"	url="res/gfx/gui/flags/pt.png" />
+		<sprite name="flag_pt-br"	url="res/gfx/gui/flags/pt.png" />
 	</resources>
 </tvt>

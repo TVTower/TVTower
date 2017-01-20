@@ -1,0 +1,938 @@
+﻿LANGUAGE_NAME_INTERNATIONAL = Portuguese (BR)
+LANGUAGE_NAME_LOCALE = Português (BR)
+
+CHAT = Chat
+SAVE_AND_APPLY = Salvar e aplicar
+CANCEL = Cancelar
+
+MALE = homem
+FEMALE = mulher
+UNDEFINED = indefinido
+
+PLAYERNAME = Nome do jogador
+CHANNELNAME = Nome da emissora
+STATIONMAP = Mapa da estação
+DATABASE = Banco de dados
+SOUND_OUTPUT = Saída de som
+GRAPHICS = Gráficos
+MUSIC = Música
+SFX = Efeitos sonoros
+FULLSCREEN = Tela cheia
+VSYNC = VSync
+LONGCLICK_MODE = Modo de clique longo
+LONGCLICK_MODE_EXPLANATION = Simula um clique com o botão direito como um clique longo do botão esquerdo do mouse ou toque
+WINDOW_MODE_RESOLUTION = Resolução do modo janela
+INPUT = Entrada
+USE_TOUCH_INPUT = Usar modo de toque
+USE_TOUCH_INPUT_EXPLANATION = O primeiro clique posiciona o cursor do mouse, enquanto os próximos são contados como cliques. Reposicione o cursor se a distância if distance between click positions is too great.
+MOVE_INSTEAD_CLICK_RADIUS = Move instead click radius
+MULTIPLAYER = Multiplayer
+SINGLEPLAYER = Singleplayer
+RENDERER = Renderizador
+SOUND_ENGINE = Soundengine
+DEFAULTS_FOR_NEW_GAME= Padrões para "Novo Jogo"
+PORT_ONLINEGAME = Porta para jogos online
+IN_ROOMS_SLOWDOWN_TIME_TO = Dentro das salas, diminua o tempo para 
+GAME_SPEED_IN_ROOMS = Velocidade do jogo dentro das salas
+
+STARTHINT_TITLE1 = Programação
+STARTHINT_TEXT1 = A tecla CTRL permite que você coloque um programa diversas vezes na sua grade de programação. Já a tecla SHIFT tenta colocar o próximo episódio de uma série.
+STARTHINT_TITLE2 = Grade de Programação
+STARTHINT_TEXT2 = O sucesso da transmissão é altamente influenciado pela qualidade/avaliação do programa. Também é importante o horário em que o programa vai ao ar, a popularidade do seu gênero, o fluxo de audiência para (por sorte) seguir os programas e o número de trailers passados na programação. A qualidade das notícias e outros fatores têm um papel importante também.\n\nProgramas de certos gêneros, como comédia, por exemplo, podem ser transmitidos mais frequentemente que outros gêneros, mantendo a sua atualidade.
+STARTHINT_TITLE3 = Comerciais
+STARTHINT_TEXT3 = Contratos de comerciais têm requisitos definitos para a audiência mínima. Isso e, claro, lucros/penalidades estão diretamente atrelados à audiência máxima que um canal consegue atingir no momento.\n\Portanto, é de certa forma melhor assinar novos contratos antes de comprar novas estações.
+
+MESSAGE_CLOSES_AT_TIME = Mensagem fecha às %TIME%
+MESSAGE_CLOSES_AT_DAY = Mensagem termina em %TIME%
+
+GAME_TITLE = Título do jogo
+START_YEAR = Ano inicial
+DAY_OF_YEAR = Dia do ano
+
+GAME_TIME = Tempo de jogo
+GAMEDAY = Dia do jogo
+BETTY_FEELINGS = O sentimento de Betty por você
+THERE_IS_NO_LOVE_IN_THE_AIR_YET = O amor ainda não está no ar... ;D
+BETTY_KNOWS_WHO_YOU_ARE = Betty sabe quem é você
+BETTY_SEEMS_TO_LIKE_YOU = Betty parece gostar de você
+BETTY_SEEMS_TO_LIKE_YOU_A_BIT_MORE = Betty parece gostar de você um pouco mais
+BETTY_LOVES_YOU = Betty ama você
+BETTY_REALLY_LOVES_YOU = Betty realmente te ama
+MENU = Menu
+OPEN_MENU = Abrir Menu
+
+PLEASE_BE_PATIENT = Por favor, aguarde
+SAVEGAME_GETS_CREATED = Savegame foi criado
+SAVEGAME_GETS_LOADED = Savegame foi carregado
+
+PROGRAMMELICENCES = Licenças de programas
+SELECT_LICENCES_FOR_SALE = Selecione lienças à venda
+
+YES = Sim
+NO = Não
+MONEY = Dinheiro
+DEBT = Empréstimo
+REACH = Alcance
+INCREASE = Aumento
+PRICE = Preço
+VALUE = Valor
+BROADCASTING_AREA = Aréa de transmissão
+OF_THE_MAP = no mapa
+
+CURRENCY = R$
+OCLOCK = h
+DAY = dia
+DAYS = dias
+DATE = Data
+WEEK_SHORT_MONDAY	= seg
+WEEK_SHORT_TUESDAY	= ter
+WEEK_SHORT_WEDNESDAY	= qua
+WEEK_SHORT_THURSDAY	= qui
+WEEK_SHORT_FRIDAY	= sex
+WEEK_SHORT_SATURDAY	= sab
+WEEK_SHORT_SUNDAY	= dom
+WEEK_LONG_MONDAY	= segunda
+WEEK_LONG_TUESDAY	= terça
+WEEK_LONG_WEDNESDAY	= quarta
+WEEK_LONG_THURSDAY	= quinta
+WEEK_LONG_FRIDAY	= sexta
+WEEK_LONG_SATURDAY	= sábado
+WEEK_LONG_SUNDAY	= domingo
+SEASON_SPRING = primavera
+SEASON_SUMMER = verão
+SEASON_AUTUMN = outono
+SEASON_WINTER = inverno
+
+
+MENU_SOLO_GAME	= Jogo Solo
+MENU_START_GAME	= Iniciar jogo
+MENU_NETWORKGAME	= Jogo em LAN
+MENU_ONLINEGAME	= Jogo Online
+MENU_JOIN	= Entrar
+MENU_CREATE_GAME	= Criar jogo
+MENU_BACK	= Voltar
+MENU_SETTINGS	= Configurações
+MENU_QUIT	= Sair do jogo
+
+MENU_AVAILABLE_GAMES	= Jogos disponíveis
+
+NEWS_TECHNICS_MEDIA	= Mídia / Tecnologia
+NEWS_POLITICS_ECONOMY	= Política / Economia
+NEWS_SHOWBIZ	= Entretenimento
+NEWS_SPORT	= Esportes
+NEWS_CURRENTAFFAIRS	= Atualidades
+NEWS_CULTURE = Cultura
+
+PLANNER_UNKNOWN	= em breve
+PLANNER_PROGRAMME	= Programas
+PLANNER_ADS	= Comerciais
+PLANNER_FINANCES	= Finanças
+PLANNER_STATISTICS = Estatísticas
+PLANNER_MESSAGES	= Mensagens
+PLANNER_ACHIEVEMENTS	= Conquistas
+
+ROOM_IS_BLOCKED = Sala bloqueada!
+ROOM_IS_OCCUPIED = Sala ocupada!
+SHOOTING_IN_PROGRESS = Gravação em progresso
+SHOOTING_FINISHED = Gravação finalizada
+BLOCKED_UNTIL_TIME = Bloqueada até %TIME%
+ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = Já há alguém nessa sala.
+
+ROOM_ELEVATORPLAN	= Elevador e guia de salas
+ROOM_NEWSPLANER	= Pauta de notícias
+ROOM_FINANCES	= Finanças
+ROOM_SAFE	= Cofre
+ROOM_PROGRAMMEPLANNER	= Grade de programação
+ROOM_STATIONMAP	= Mapa de estações
+ROOM_ROOMMAP	= Mapa de salas
+ROOM_MOVIEAGENCY	= Agência de filmes
+ROOM_MOVIEAGENCY_OWNER	= J. Steward Jabble
+ROOM_ADAGENCY	= Agência de propaganda
+ROOM_ADAGENCY_OWNER	= proprietário: P.P. Purningham
+ROOM_BUREAU_OF	= Escritório de %PLAYERNAME%
+ROOM_BOSS_OF	= Chefe de %CHANNELNAME%
+ROOM_NEWSSTUDIO_OF	= Estúdio de notícias de %CHANNELNAME%
+ROOM_ARCHIVE_OF	= Arquivo de %CHANNELNAME%
+ROOM_ROOMBOARD	= Guia de salas
+ROOM_CREDITS	= Créditos / Sobre
+ROOM_BETTY	= Betty
+ROOM_SUPERMARKET	= Supermercado
+ROOM_SUPERMARKET_SUB	= Coisas pra todo mundo
+ROOM_ROOMAGENCY	= Corretor de Salas
+ROOM_ROOMAGENCY_OWNER	= H.G. Higwig
+ROOM_PEACEBROTHERS	= Irmãos-da-Paz
+ROOM_PEACEBROTHERS_SUB	= Agência Internacional da Paz
+ROOM_GUNSAGENCY	= Agência de Armas
+ROOM_FREE_STUDIO	= Sala livre
+ROOM_STUDIO_OF	= Estúdio de %CHANNELNAME%
+ROOM_SCRIPT_OFFICE	= Escritório de roteiros
+ROOM_SCRIPT_OFFICE_OWNER= John S. Jibble
+ROOM_NOTOBACCO	= Sociedade Sem Tabaco
+ROOM_NOTOBACCO_OWNER	= Sociedade Americana Contra o Tabaco
+ROOM_TOBACCOLOBBY	= Lobby do Tabaco
+ROOM_TOBACCOLOBBY_OWNER	= União Americana dos Produtores de Tabaco
+ROOM_VRDUBAN	= Consulado da República Popular do Duban
+ROOM_FRDUBAN	= Embaixada da República Livre do Duban
+ROOM_PORTER	= Porteiro
+ROOM_LAUNDRY	= Lavanderia
+ROOM_BIOCONTROL	= Controle Biológico
+ROOM_PSYCHIATRIST	= Psiquiatra "Harry Dippl"
+ROOM_COMPUTERSHOP	= Loja de Computadores "SpySoft"
+ROOM_AUCTION	= Leilão
+ROOM_AUCTION_SUB	= Leilão de filmes e séries
+ROOM_SIZE	= Tamanho da sala: %SIZE%
+
+ABBREVIATION_THOUSAND = K
+ABBREVIATION_MILLION = M
+ABBREVIATION_BILLION = Bi
+
+BROADCASTING_OUTAGE	= Falha de transmissão !!
+ADVERTISMENT	= Comercial
+BLOCK	= bloco
+BLOCKS	= blocos
+NEWS	= Notícias
+PROGRAMME	= Programa
+TV_OFF	= A TV está desligada!
+TV_TURN_IT_ON	= Você deveria ligá-la de novo ;D
+AUDIENCE_RATING	= Avaliação da audiência
+AUDIENCE_RATINGS	= Avaliações da audiência
+POTENTIAL_AUDIENCE_NUMBER	= Audiência potencial
+AUDIENCE_NUMBER	= Audiência
+MIN_AUDIENCE	= Audiência mínima
+INVALID_BY_BROADCAST_OUTAGE = Inválido por falha de transmissão
+NEXT_ADBLOCK	= Próximo bloco comercial
+NEXT_PROGRAMME	= Próximo programa
+NEXT_NOTHINGSET	= não configurado!
+
+PROGRAMME_IN_PROGRAMME_PLAN = Programa na grade de programação!
+TRAILER_IN_PROGRAMME_PLAN = Trailer na grade de programação!
+PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN = Programa e trailer na grade de programação!
+ONLY_1_BROADCAST_POSSIBLE = Apenas 1 transmissão possível!
+ONLY_X_BROADCASTS_POSSIBLE = Apenas %X% transmissões são possíveis!
+NO_MORE_BROADCASTS_ALLOWED = Sem mais transmissões permitidas!
+BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y = Transmissão permitida apenas das %X%:00 às %Y%:00!
+
+
+AD_PROFIT	= Lucro
+AD_PLANNED	= programado
+AD_TOSEND	= a transmitir
+AD_PENALTY	= Penalidade
+AD_MIN_AUDIENCE	= Audiência mínima
+AD_TARGETGROUP	= Grupo alvo
+AD_SEND_TILL_TOLATE = muito tarde!!!
+AD_SEND_TILL_MIDNIGHT = Transmitir até a meia-noite!!
+AD_SEND_TILL_TOMORROW = Transmitir até amanhã!
+
+AD_TILL_TOLATE	= muito atrasado!!!
+AD_TILL_TODAY	= até hoje!!
+AD_TILL_TOMORROW	= até amanhã!
+AD_STILL_X_DAYS	= até %1 dias
+AD_TIME	= tempo
+
+AD_CHANNEL_IMAGE_TO_LOW = Imagem do canal muito baixa. %CHANNELIMAGE%% < %IMAGE%%.
+AD_PLEASE_GENRE_X = Por favor, gênero %GENRE%
+AD_PLEASE_FLAG = Por favor, %FLAG%
+
+TARGETGROUP_ALL = Todos
+TARGETGROUP_CHILDREN	= Crianças
+TARGETGROUP_TEENAGERS = Jovens
+TARGETGROUP_HOUSEWIVES = Donas de casa
+TARGETGROUP_EMPLOYEES = Trabalhadores
+TARGETGROUP_UNEMPLOYED = Desempregados
+TARGETGROUP_MANAGER = Empresários
+TARGETGROUP_PENSIONERS = Aposentados
+TARGETGROUP_WOMEN = Mulheres
+TARGETGROUP_MEN = Homens
+
+AD_INFOMERCIAL	= Você é pago por transmitir infomerciais. A renda depende da audiência.
+AD_INFOMERCIAL_NOT_AVAILABLE = Não há infomercial possível para esse comercial.
+AD_INFOMERCIAL_PROFIT	= Renda: %PROFIT% por 1000 pessoas assistindo
+
+JOB_ALL = Todos as ocupações
+JOB_DIRECTOR = Diretor
+JOB_DIRECTORS = Direores
+JOB_ACTOR = Ator
+JOB_ACTORS = Atores
+JOB_SUPPORTINGACTOR = Ator Coadjuvante
+JOB_SUPPORTINGACTORS= Atores Coadjuvantes
+JOB_REPORTER = Repórter
+JOB_REPORTERS = Repórteres
+JOB_GUEST = Convidado
+JOB_GUESTS = Convidados
+JOB_HOST = Anfitrião
+JOB_HOSTS = Anfitriões
+JOB_SCRIPT = Roteiro
+JOB_SCRIPTWRITER = Roteirista
+JOB_SCRIPTWRITERS = Roteiristas
+JOB_MUSIC = Música
+JOB_MUSICIAN = Músico
+JOB_MUSICIANS = Músicos
+
+JOB_AMATEUR = Amador
+JOB_AMATEURS = Amadores
+JOB_AMATEUR_DIRECTOR = Diretor amador
+JOB_AMATEUR_DIRECTORS = Diretores amadores
+JOB_AMATEUR_ACTOR = Ator amador
+JOB_AMATEUR_ACTORS = Atores amadores
+JOB_AMATEUR_SUPPORTINGACTOR = Ator coadjuvante amador
+JOB_AMATEUR_SUPPORTINGACTORS = Atores coadjuvantes amadores
+JOB_AMATEUR_REPORTER = Repórter amador
+JOB_AMATEUR_REPORTERS = Repórteres amador
+JOB_AMATEUR_GUEST = Convidado amador
+JOB_AMATEUR_GUESTS = Convidados amadores
+JOB_AMATEUR_HOST = Anfitrião amador
+JOB_AMATEUR_HOSTS = Anfitriões amadores
+JOB_AMATEUR_SCRIPTWRITER = Roteirista amador
+JOB_AMATEUR_SCRIPTWRITERS = Roteiristas amadores
+JOB_AMATEUR_MUSICIAN = Músico amador
+JOB_AMATEUR_MUSICIANS = Músicos amadores
+
+JOB_POSITION_UNASSIGNED = Não atribuído
+
+
+MOVIE_SPEED	= Velocidaade
+MOVIE_CRITIC	= Crítica
+MOVIE_BOXOFFICE	= Bilheteria
+MOVIE_TVAUDIENCE = Audiência TV
+MOVIE_TOPICALITY	= Atualidade
+MOVIE_BLOCKS	= bloco
+MOVIE_XRATED	= Pornô
+MOVIE_EPISODES	= episódios
+MOVIE_CAST = Elenco
+MOVIE_LEADINGACTOR = ator principal
+MOVIE_SUPPORTINGACTOR = ator coadjuvante
+
+AD_QUALITY = Qualidade
+
+LICENCETYPE_SINGLE = Único
+LICENCETYPE_EPISODE = Episódio
+LICENCETYPE_COLLECTION = Coleção
+LICENCETYPE_SERIES = Série
+LICENCETYPE_FRANCHISE = Franquia
+
+SERIES_WITH_X_EPISODES = Série com %EPISODESCOUNT% episódios
+SCRIPT_POTENTIAL = Potencial
+
+PROGRAMME_GENRE_UNDEFINED = Variado
+PROGRAMME_GENRE_ADVENTURE = Aventura
+PROGRAMME_GENRE_ACTION = Ação
+PROGRAMME_GENRE_ANIMATION = Animação
+PROGRAMME_GENRE_CRIME = Policial
+PROGRAMME_GENRE_COMEDY = Comédia
+PROGRAMME_GENRE_DOCUMENTARY = Documentário
+PROGRAMME_GENRE_DRAMA = Drama
+PROGRAMME_GENRE_EROTIC = Erótico
+PROGRAMME_GENRE_FAMILY = Família
+PROGRAMME_GENRE_FANTASY = Fantasia
+PROGRAMME_GENRE_HISTORY = História
+PROGRAMME_GENRE_HORROR = Terror
+PROGRAMME_GENRE_MONUMENTAL = Épico
+PROGRAMME_GENRE_MYSTERY = Mistério
+PROGRAMME_GENRE_ROMANCE = Romance
+PROGRAMME_GENRE_SCIFI = Ficção Científica
+PROGRAMME_GENRE_THRILLER = Suspense
+PROGRAMME_GENRE_WESTERN = Western
+PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES= Documentários & Longas
+PROGRAMME_GENRE_SHOW_AND_EVENTS= Shows & Eventos
+PROGRAMME_GENRE_SHOW= Show
+PROGRAMME_GENRE_SHOW_MUSIC= Show Musical
+PROGRAMME_GENRE_SHOW_POLITICS= Discussão Política
+PROGRAMME_GENRE_EVENT= Evento
+PROGRAMME_GENRE_EVENT_POLITICS= Política
+PROGRAMME_GENRE_EVENT_SPORT= Esporte
+PROGRAMME_GENRE_EVENT_SHOWBIZ= Entretenimento
+PROGRAMME_GENRE_EVENT_MUSIC = Musical
+PROGRAMME_GENRE_FEATURE= Longa-metragem
+PROGRAMME_GENRE_FEATURE_YELLOWPRESS= Sensacionalista
+
+PROGRAMME_FLAG_LIVE = Ao Vivo
+PROGRAMME_FLAG_ANIMATION = Animação
+PROGRAMME_FLAG_CULTURE = Cultural
+PROGRAMME_FLAG_CULT = Cult
+PROGRAMME_FLAG_TRASH = Lixo
+PROGRAMME_FLAG_BMOVIE = Filme B
+PROGRAMME_FLAG_XRATED = Pornô
+PROGRAMME_FLAG_PAID = Programação paga
+PROGRAMME_FLAG_SERIES = Série
+PROGRAMME_FLAG_SCRIPTED = Produzido
+
+PROGRAMME_PRODUCT_UNDEFINED = Indefinido
+PROGRAMME_PRODUCT_MOVIE = Filme
+PROGRAMME_PRODUCT_SERIES = Série
+PROGRAMME_PRODUCT_SHOW = Show
+PROGRAMME_PRODUCT_FEATURE = Longa-metragem
+PROGRAMME_PRODUCT_INFOMERCIAL = Infomercial
+PROGRAMME_PRODUCT_EVENT = Evento
+PROGRAMME_PRODUCT_MISC = Diversos
+
+MOVIE_LIVESHOW= Programa ao vivo
+MOVIE_CALLINSHOW = Você ganha %PROFIT% por cada 1.000 espectadores.
+MOVIE_TRAILER = Transmitir um trailer pode aumentar o interesse nas futuras transmissões do programa promovido.
+
+AUCTION_MAKE_BID = Dar lance
+AUCTION_WITHOUT_BID = Sem lance
+
+CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID= Clique no filme ou série para dar um lance.
+
+ERROR_NOT_POSSIBLE	= Não é possível!
+ERROR_NOT_ABLE_TO_SELL_LAST_STATION = Não é possível vender sua última estação.
+ERROR_NOT_ENOUGH_MONEY	= Dinheiro insuficiente!
+ERROR_NOT_ENOUGH_MONEY_TEXT = Você não possui dinheiro suficiente para terminar essa ação.
+
+FINANCES_EXPENSES = Despesas
+FINANCES_INCOME = Renda
+
+FINANCES_LAST_FINANCIAL_ACTIVITIES = Últimas atividades financeiras
+FINANCES_FINANCIAL_CURVES = Curvas financeiras
+FINANCES_TRADING_PROGRAMMELICENCES = Aquisição de licença de programas
+FINANCES_AD_INCOME__CONTRACT_PENALTY = Comerciais: Renda / Multas
+FINANCES_CALL_IN_SHOW_INCOME = Renda de ligações de shows
+FINANCES_SPONSORSHIP_INCOME__PENALTY = Patrocínio: Renda / Multas
+FINANCES_STATIONS = Estações
+FINANCES_STATIONS_FEES = Estações: Manutenção
+FINANCES_STATIONS_BUY_SELL = Estações: Vendidas / Compradas
+FINANCES_CREDIT_TAKEN__REPAYED = Empréstimos: Novos / Quitados
+FINANCES_SCRIPTS = Roteiros
+FINANCES_ACTORS_AND_PRODUCTIONSTUFF = Atores e custos de produção
+FINANCES_STUDIO_RENT = Aluguel de estúdio
+FINANCES_NEWS = Notícias
+FINANCES_NEWSAGENCIES = Agências de notícias
+FINANCES_INTEREST_BALANCE__CREDIT = Juros: Balanço / Empréstimo
+FINANCES_MISC = Diversos
+FINANCES_GRANTED_BENEFITS = Benefícios recebidos
+FINANCES_TOTAL = Total
+
+FINANCES_HISTORY_FOR_CREDITREPAID = quitando empréstimos
+FINANCES_HISTORY_FOR_CREDITTAKEN = empréstimo
+FINANCES_HISTORY_FOR_STATIONBOUGHT = compra de estação
+FINANCES_HISTORY_FOR_STATIONSOLD = venda de estação
+FINANCES_HISTORY_OF_STATIONFEES = taxas das estações
+FINANCES_HISTORY_FOR_MISC = de diversos
+FINANCES_HISTORY_OF_GRANTED_BENEFITS = de benefícios recebidos
+FINANCES_HISTORY_FOR_PROGRAMMELICENCE = do programa: %TITLE%
+FINANCES_HISTORY_FOR_AUCTIONBID = do leilão: %TITLE%
+FINANCES_HISTORY_FOR_AUCTIONBIDREPAYED = do pagamento do leilão: %TITLE%
+FINANCES_HISTORY_OF_CALLERREVENUE = Renda de chamadas
+FINANCES_HISTORY_OF_INFOMERCIALREVENUE = de infomerciais
+FINANCES_HISTORY_OF_ADPROFIT = do lucro do comercial: %TITLE%
+FINANCES_HISTORY_OF_SPONSORSHIPREVENUE = de patrocínios
+FINANCES_HISTORY_OF_PENALTY = de multa contratual
+FINANCES_HISTORY_FOR_SCRIPT = do roteiro: %TITLE%
+FINANCES_HISTORY_FOR_PRODUCTIONSTUFF = da custos de produção
+FINANCES_HISTORY_FOR_RENT = de aluguel
+FINANCES_HISTORY_FOR_NEWS = da notícia: %TITLE%
+FINANCES_HISTORY_FOR_NEWSAGENCY = de agências de notícias
+FINANCES_HISTORY_OF_CREDITINTEREST = juros de empréstimo
+FINANCES_HISTORY_OF_DRAWINGCREDITINTEREST = juros
+FINANCES_HISTORY_OF_BALANCEINTEREST = balanço dos juros
+FINANCES_HISTORY_FOR_SOMETHING = de algo
+FINANCES_HISTORY_BY_CHEAT = por trapaça
+
+IMAGE_REACH = Alcance
+IMAGE_SHARETOTAL = Porcentagem total
+IMAGE_SHAREWITHPLAYER = Porcetagem com %PLAYERNAME%
+
+NEWSSTUDIO_NOT_SUBSCRIBED	= não inscrito
+NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL	= inscrever-se no gênero nível
+NEWSSTUDIO_SUBSCRIPTION_LEVEL	= nível da inscrição
+NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER	= não se inscrever mais no gênero
+NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL	= próximo nível de inscrição
+NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY = Hoje você usou um nível máximo de inscrição %MAXLEVEL%. Então, hoje você pagará %TOPAY%.
+
+MAP_COUNTRY_BREMEN	=	Bremen
+MAP_COUNTRY_BERLIN	=	Berlin
+MAP_COUNTRY_HAMBURG	=	Hamburg
+MAP_COUNTRY_BAWUE	=	Baden-Wuerttemberg
+MAP_COUNTRY_BAYERN	=	Bavaria
+MAP_COUNTRY_SAARLAND	=	Saarland
+MAP_COUNTRY_RHEINLANDPFALZ	=	Rhineland-Palatinate
+MAP_COUNTRY_HESSEN	=	Hesse
+MAP_COUNTRY_THUERINGEN	=	Thuringia
+MAP_COUNTRY_SACHSEN	=	Saxony
+MAP_COUNTRY_SACHSENANHALT	=	Saxony-Anhalt
+MAP_COUNTRY_NIEDERSACHSEN	=	Lower Saxony
+MAP_COUNTRY_SCHLESWIGHOLSTEIN	=	Schleswig-Holstein
+MAP_COUNTRY_BRANDENBURG	=	Brandenburg
+MAP_COUNTRY_NRW	=	North Rhine-Westphalia
+MAP_COUNTRY_MECKPOM	=	Mecklenburg-Hither Pomerania
+
+
+NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE	= Novo filme dirigido e estrelado por %DIRECTORNAME1%
+NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION	= Diretor e ator principal %DIRECTORNAME1% tem um novo filme «%MOVIETITLE%» na produção.
+
+NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE	= Em breve nos cinemas «%MOVIETITLE%»
+NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION	= O diretor %DIRECTORNAME1% lança «%MOVIETITLE%» em um cinema perto de você.
+
+NEWS_ANNOUNCE_MOVIE_TITLE1	= Novo filme com %ACTORNAME1%
+NEWS_ANNOUNCE_MOVIE_TITLE2	= %DIRECTORNAME1% dirige novo filme
+
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION1	= O diretor %DIRECTORNAME1% e o ator %ACTORNAME1% entregam o filme «%MOVIETITLE%» às telas.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION2	= Em breve nos cinemas: %ACTORNAME1% em «%MOVIETITLE%». Ator %ACTORNAME2% está todo orgulhoso com o filme.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION3	= Últimos acabamentos para o filme «%MOVIETITLE%». %ACTORNAME1% está orgulhoso de estrelar o filme.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION4	= Primeiros trailers de «%MOVIETITLE%» disponíveis. %DIRECTORNAME1%: "Melhor filme do ano".
+
+
+DIALOGUE_BOSS_MAIN_TITLE_DEFAULT1 = O que foi, %PLAYERNAME%?
+DIALOGUE_BOSS_MAIN_TITLE_DEFAULT2 = %PLAYERNAME%, você de novo?!
+DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY1 = Você ... você se atreve a perguntar?!
+DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY2 = Você está louco?
+DIALOGUE_BOSS_MAIN_TEXT_DEFAULT1 = Você não tem nada mais pra fazer além de torrar o meu tempo?
+DIALOGUE_BOSS_MAIN_TEXT_PROGRAMMEMALFUNCTION1 = Essa incompetência é incrível. Você teve |b|%PROGRAMMEMALFUNCTION%x|/b| problemas na programação.
+DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION1 = Ao invés de você não transmitir nenhuma notícia |b|%NEWSMALFUNCTION%x|/b| vezes, é melhor você passar a previsão do tempo do ano passado!
+DIALOGUE_BOSS_MAIN_ENDING_DEFAULT1 = Volte ao seu trabalho ou alguém vai pegar o seu emprego...!
+DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY1 = O hamster do meu filho poderia fazer seu trabalho melhor que você!
+DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY2 = Dê outro escorregão e o próximo a bater nessa porta vai pegar o seu emprego.
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER1 = Saia do meu caminho - e mande meus piores cumprimentos ao seu chefe. Ha haa haa...
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER2 = Cai fora! Eu não consigo aguentar você ou o seu canal na minha frente mais!
+
+DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER =	Tudo bem, uhmmm, eu não irei mais atrapalhar você!
+DIALOGUE_BOSS_WILLNOTDISTURB	=	Ah tá certo, Chefe. Eu não irei mais perturbá-lo!
+DIALOGUE_BOSS_ASKFORCREDIT	=	Eu apenas *glup* queria um empréstimo.
+DIALOGUE_BOSS_REPAYCREDIT	=	Eu quero pagar minha dívida...
+DIALOGUE_BOSS_CREDIT_OK1	=	De novo. Dinheiro. De nooovo?\nHmm, você é melhor no seu serviço que os outros candidatos. Mais que |b|R$%CREDIT%|/b| não é possível, entendeu?!
+DIALOGUE_BOSS_CREDIT_OK2	=	Você acaba com o meu dinheirinho!\nEspero que alguma coisa sensata venha dessa transação.\n|b|R$%CREDIT%|/b| é tudo que eu posso oferecer. Você aceita?
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT1	=	Sim, eu vou pegar esse empréstimo.
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF1	=	Obrigado, chefe, eu só vou precisar de 50% disso, ou seja, |b|R$%CREDITHALF%|/b|.
+DIALOGUE_BOSS_DECLINE1	=	Hmm, obrigado, chefe, mas eu mudei de ideia.
+DIALOGUE_BOSS_DECLINE2	=	Mudei de ideia, até mais, chefe.
+DIALOGUE_BOSS_DECLINE3	=	Uhum, eu volto depois.
+DIALOGUE_BOSS_CREDIT_REPAY	=	Você não acabou de quitar o empréstimo passado?\nE você ainda me deve |b|R$%CREDIT%|/b| - pague isso primeiro!\nCaia fora agora ou eu vou chutar o seu traseiro!!
+DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT	=	Okay, eu vou quitar um pouco.
+DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE	=	Não diga! Até que enfim uma notícia boa hoje.\n \nQuanto você quer pagar?
+DIALOGUE_BOSS_CREDIT_REPAY_100K	=	Ah certo, eu posso pagar |b|R$100.000|/b|.
+DIALOGUE_BOSS_CREDIT_REPAY_500K	=	Uuhm, eu consigo quitar |b|R$500.000|/b|.
+DIALOGUE_BOSS_CREDIT_REPAY_ALL	=	Hmm, o empréstimo todo, que dá |b|R$%$CREDIT%|/b|.
+
+DIALOGUE_BOSS_CHANGETOPIC1	=	A gente não pode falar de outra coisa?
+DIALOGUE_BOSS_BACKTOWORK	=	Okay, %PLAYERNAME%, agora volte ao trabalho!
+DIALOGUE_BOSS_BACKTOWORK_OK	=	Sim, senhor, estou indo.
+
+DIALOGUE_SUPERMARKET_TITLE1 = E ai, cara!
+DIALOGUE_SUPERMARKET_TITLE2 = Oi, %PLAYERNAME%!
+DIALOGUE_SUPERMARKET_TITLE3 = Como vai, %PLAYERNAME% !
+DIALOGUE_SUPERMARKET_TEXT1 = O que você quer hoje?
+DIALOGUE_SUPERMARKET_TEXT2 = O que posso fazer por você hoje??
+DIALOGUE_SUPERMARKET_TEXT3 = Você consegue pegar o que precisa sozinho? Eu vou dar uma pit... tomar um ar fresco.
+DIALOGUE_SUPERMARKET_TEXT4 = Faça isso, minha cabeça ainda tá latejando ... aquela ...festa de ontem...
+
+DIALOGUE_SUPERMARKET_PLAN_A_PRODUCTION = Eu quero planejar uma produção de TV e comprar tudo o que for necessário pra isso
+DIALOGUE_SUPERMARKET_BUY_A_PRESENT = Eu quero comprar um presente
+DIALOGUE_SUPERMARKET_GOODBYE1 = Eu tô indo nessa. Tchau tchau.
+DIALOGUE_SUPERMARKET_GOODBYE2 = Até mais. Tchau.
+DIALOGUE_SUPERMARKET_GOODBYE3 = Hora de bater perna. Até mais.
+
+
+DIALOGUE_BETTY_WELCOME_TEXT = Olá,\n\ncomo eu posso ajudá-lo?
+DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT1 = Bom dia!\n\nO que te traz ao último andar?
+DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT2 = Pois não?\n\\nCom certeza você está aqui para buscar as últimas informações sobre o Sammy.
+DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT1 = Olá, %PLAYERNAME%,\n\no que te traz a mim hoje?
+DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT2 = Hmm?\n\nVocê certamente quer ouvir algumas notícias sobre o Sammy.
+DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT1 = Oi, %PLAYERNAME%,\n\nbom ver você novamente. Sente-se, por favor - então, por que você veio aqui?
+DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT2 = %PLAYERNAME%!?\n\nAcho que você está aqui para as notícias do  Sammy news, não é?
+DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT1 = Oi, %PLAYERNAME%,\n\nnossa última reunião foi realmente boa. Espero que nos encontremos mais vezes.
+DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT2 = Oie!\n\nVou fazer um chá para a gente - espero que você tenha um tempinho para conversarmos.
+
+DIALOGUE_BETTY_SAMMYINFORMATION_TEXT = O Sammy?\n\nIEu não posso dizer nada até o Ronny implementar as funções necessárias no código fonte.
+
+DIALOGUE_BETTY_ASK_FOR_SAMMYINFORMATION = Como estão as coisas com o prêmio Sammy atual?
+DIALOGUE_BETTY_ASK_FOR_MASTERKEY = Por acaso, você não poderia me emprestar a chave mestra?
+DIALOGUE_BETTY_CHANGETOPIC = Vamos falar de outra coisa
+DIALOGUE_BETTY_LEVEL0_CHANGETOPIC1 = Espero que você não se importe se nós falarmos sobre outra coisa
+DIALOGUE_BETTY_GOODBYE = Hmm, até mais.
+DIALOGUE_BETTY_LEVEL0_GOODBYE = Uhmm, adeus
+DIALOGUE_BETTY_LEVEL1_GOODBYE = Te vejo mais tarde
+DIALOGUE_BETTY_LEVEL2_GOODBYE = Hey, tenho que ir. Te vejo depois.
+DIALOGUE_BETTY_LEVEL3_GOODBYE = Escute, Betty, o trabalho me chama. Preciso sair um minuto.
+
+
+DIALOGUE_STUDIO_BRING_SOME_SCRIPT = Oi, %PLAYERNAME%,\n\nTraga um roteiro e nós poderemos produzir algo legal.
+DIALOGUE_STUDIO_SCRIPT_HINT = Hmmm, não posso te dizer os detalhes do roteiro. Talvez eu poderei dizer mais em uma versão futura do jogo. Isso depende dos desenvolvedores. *suspiro*.
+DIALOGUE_STUDIO_PRODUCTIONCONCEPT_HINT = (A fazer) Oferece informação sobre o conceito da produção.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION = Então você quer produzir |b|%SCRIPTTITLE%|/b|?
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED = Até então, |b|1 produção|/b| desse roteiro está planejada.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED = Aé agora, |b|%X% produções|/b| desse roteiro estão planejada.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE = Até agora, |b|1 produção|/b| desse roteiro foi feita.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE = Até agora, |b|%X% produções|/b| desse roteiro foram feitas.
+DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE = Até então, |b|%X% produções|/b| desse roteiro estão planejada e |b|%Y%|/b| foram feitas.
+DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED = Por falar nisso: Não há mais espaço sobrando para outras listas de compras. Eu não posso te dar outra até que você remova uma primeiro (selecione uma lista de compras e delete ela apertando o botão direito do mouse).
+DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING = Para começar a produção, você primeiro precisa terminar o planejamento da produção no supermercado.
+
+DIALOGUE_STUDIO_START_PRODUCTION = Começar produção
+DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS = Começar todas as produções possíveis (%X%).
+DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST = Preciso de outra lista de compras para esse roteiro.
+DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST = Preciso de uma lista de compras para esse roteiro.
+DIALOGUE_STUDIO_GOODBYE1 = Tchau.
+DIALOGUE_STUDIO_GOODBYE2 = Adeus.
+
+
+
+SHOW_PLAYERS = Mostrar jogadores
+PURCHASE = Comprar
+STATION = Estação
+PURCHASE_STATION = Comprar estação
+ACQUIRED_PROPERTY = Propriedade adquirida
+NEW_STATION = Nova estação
+SELECT_LOCATION = Selecione o local
+SELECT_STATION = Selecione a estação
+BUY_STATION = Comprar estação
+TOO_EXPENSIVE = Muito caro
+SELL_STATION = Vender estação
+UNSELLABLE = Impossível vender
+
+UNDER_CONSTRUCTION = Em Construção
+READY_AT_TIME_X = Pronto às %ACTIVATIONTIME%
+READY_AT_DAY_X = Pronto em %ACTIVATIONTIME%
+STATION_UNDER_CONSTRUCTION = Estação em construção
+NEW_STATION_WILL_BE_READY_AT_TIME_X = A nova estação ficará pronta às %TIME%.
+NEW_STATION_WILL_BE_READY_AT_DAY_X = A nova estação ficará pronta em %TIME%.
+
+BUY_AND_SELL = Comprar e vender
+AND_STATISTICS = e estatísticas
+FOR_PRIVATE_AFFAIRS = para seus assuntos mais particulares
+
+STATISTICS_NOT_AVAILABLE = Estatísticas indisponíveis
+
+MOVIES = Filmes
+SERIES = Séries
+SERIES_SINGULAR = Série
+SPECIAL_BIN = Especiais
+AUCTION = Leilão
+TRAILER = Trailer
+X_RATED = Pornô
+MOVIES_AND_SERIES_AUCTION = Leilão de filmes e séries
+
+OLD = Velho
+TOMORROW = Amanhã
+TODAY = Hoje
+YESTERDAY = Ontem
+TWO_DAYS_AGO = Há dois dias
+IN_X_DAYS = Em %DAYS% dias
+X_DAYS_AGO = %DAYS% atrás
+
+INFOMERCIAL = Infomercial
+SPECIAL_NEWS_BROADCAST = Notícias especiais
+
+24_HOURS_GAMEDAY = Jogo de 24 horas
+ALLOW_TRAILERS_AND_INFOMERCIALS = Permitir trailers/infomerciais
+ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR = Permitir filmes com o ano de produção > ano do jogo
+OPTION_ON = Opção ligada
+OPTION_OFF = Opção desligada
+AVAILABLE_GAMES = Jogos disponíveis
+ALREADY_OVER = Já acabou...?
+DO_YOU_REALLY_WANT_TO_QUIT = Quer realmente sair?
+DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Quer realmente sair do jogo e voltar à tela inicial?
+
+CONTINUE_GAME = Continuar Jogo
+LOAD_GAME = Carregar Jogo
+SAVE_GAME = Salvar Jogo
+EXIT_GAME = Sair do Jogo
+EXIT_TO_MAINMENU = Sair para tela inicial
+NAME_OF_SAVEGAME = Nome do savegame 
+OVERWRITE_SAVEGAME = Sobrescrever savegame?
+DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = Quer realmente sobrescrever o savegame %SAVEGAME%?
+
+CREDIT_REPAID = empréstimo pago
+CREDIT_TAKEN = empréstimo feito
+ACCOUNT_BALANCE_VALUE = saldo da conta
+
+ADCONTRACT_FINISHED = Contrato de comercial concluído
+ADCONTRACT_FAILED = Contrato de comercial fracassado
+ADCONTRACT_X_SUCCESSFULLY_FINISHED = Contrato do comercial "%TITLE%" concluído com sucesso.
+PROFIT_OF_X_GOT_CREDITED = Lucro de %MONEY%  foi depositado.
+ADCONTRACT_X_FAILED = Contrato do comercial "%TITLE%" fracassado.
+PENALTY_OF_X_WAS_PAID = Multa contratual de %MONEY% foi paga.
+BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Transmissão do programa pornô "%TITLE%" não é permitida durante o dia.
+AUTHORITIES_STOPPED_BROADCAST = As autoridades interromperam a transmissão
+AUTHORITIES_CONFISCATED_LICENCE = As autoridades confiscaram a licença
+PROGRAMMELICENCE_X_GOT_CONFISCATED = Licença do programa "%TITLE%" foi confiscada.
+SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM = Parece que as autoridades foram à sala errada.
+BETTER_WATCH_OUT_NEXT_TIME = Melhor ter cuidado da próxima vez.
+
+YOU_HAVE_BEEN_OUTBID = Seu lance foi superado
+SOMEONE_BID_MORE_THAN_YOU_FOR_X = Alguém deu um lance maior que o seu para "%TITLE%"
+YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Seu lance anterior de %MONEY% foi reembolsado. 
+
+YOU_HAVE_WON_AN_AUCTION = Você ganhou o leilão
+THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = A licença de "%TITLE%" agora se encontra à sua disposição. 
+
+YOUR_BOSS_WANTS_TO_SEE_YOU = Seu chefe quer te ver
+YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM = Você tem %HOURS% horas para ir vê-lo.
+CLICK_HERE_TO_START_YOUR_VISIT_AHEAD_OF_TIME = Clique aqui para começar a visita antes do tempo.
+
+HINT_PRESSING_ALT_WILL_SHOW_DETAILS = Pressione "ALT" para detalhes.
+HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: troca a grade | CTRL+Clique: copia o programa | SHIFT+Clique: próximo episódio
+HINT = Dica
+
+PREPARING_START_DATA = Preparando dados de inicialização
+SYNCHRONIZING_START_CONDITIONS = Sincronizando condições de inicialização
+STARTING_MULTIPLAYERGAME = Iniciando jogo multiplayer
+STARTING_SINGLEPLAYERGAME = Iniciando jogo solo
+
+WEATHER_FORECAST_FOR_X_TILL_Y = Previsão do tempo das %BEGINHOUR% às %ENDHOUR% horas
+SKY_IS_PARTIALLY_CLOUDY = Céu parcialmente nublado
+SKY_IS_OVERCAST1 = Nublado.
+SKY_IS_WITHOUT_CLOUDS = Tempo aberto.
+SUN_SHINES_WHOLE_TIME = Ensolarado o dia todo.
+SUN_WINS_AGAINST_CLOUDS1 = Sol com poucas nuvens.
+SUN_IS_SHINING_SOMETIMES = Nublado, com o tempo aberto algumas vezes.
+SUN_IS_NOT_SHINING = Céu nublado, sem o sol aparecer.
+RAIN_AND_SNOW_ALTERNATE = Chuva e neve alternadas.
+RAIN_IS_POSSIBLE = Probabilidade de chuva.
+SNOW_IS_FALLING = Atenção nas ruas. Neve caindo e probabilidade de formação de camada de gelo.
+TEMPERATURES_ARE_BETWEEN_X_AND_Y = A mínima será de %MINTEMPERATURE% °C e a máxima %MAXTEMPERATURE%°C
+TEMPERATURE_IS_CONSTANT_AT_X = Temperature constante de %TEMPERATURE%°C
+
+
+IN_THE_LATER_HOURS1 = Nas últimas horas
+IN_THE_LATER_HOURS2 = Depois do amanhecer
+IN_THE_LATER_HOURS3 = Mais tarde
+STORMY_WINDS_OF_UP_TO_X1 = Rajadas de até %MAXWINDVELOCITY% km/h pela superfície.
+STORMY_WINDS_OF_UP_TO_X2 = Brisas fortes com rajadas de até %MAXWINDVELOCITY% km/h.
+NEARLY_NO_WIND1 = Quase sem ventos.
+NEARLY_NO_WIND2 = Tempo seco, sem ventos.
+SLOW_WIND_WITH_X_AND_GUST_OF_WIND_WITH_Y1 = Brisa leve de %MINWINDVELOCITY% km/h e rajadas isoladas de até %MAXWINDVELOCITY% km/h.
+WIND_VELOCITIES_ARE_BETWEEN_X_AND_Y1 = A velocidade do vento ficará entre %MINWINDVELOCITY% e %MAXWINDVELOCITY% km/h.
+WIND_VELOCITY_IS_CONSTANT_AT_X1 = A velocidade do vento ficará constante em %WINDVELOCITY% km/h.
+
+
+NEWS_TERROR_GROUP1_LEVEL1_TITLE1 = Embaixador da RP do Duban ofende colega diplomata.
+NEWS_TERROR_GROUP1_LEVEL1_TEXT1 = Escândalo: um embaixador da RP do Duban insultou o embaixador da RL do Duban.
+NEWS_TERROR_GROUP2_LEVEL1_TITLE1 = Embaixador da RP do Duban insulta vizinhos.
+NEWS_TERROR_GROUP2_LEVEL1_TEXT1 = Não pode ser verdade: embaixador da RL do Duban insulta diplomata da RP do Duban.
+
+NEWS_TERROR_GROUP1_LEVEL2_TITLE1 = Embaixador é agredido
+NEWS_TERROR_GROUP1_LEVEL2_TEXT1 = Indo para residência, o Embaixador da RP do Duban foi agredido na garagem no subsolo. Testemunhas relatam ter visto carro da RL do Duban saindo do local.
+NEWS_TERROR_GROUP2_LEVEL2_TITLE1 = Apartamento de embaixador é vandalizado 
+NEWS_TERROR_GROUP2_LEVEL2_TEXT1 = O apartamento do Embaixador da RL do Duban é devastado. Pistas apontam para círculos da RP do Duban ...
+
+NEWS_TERROR_GROUP1_LEVEL3_TITLE1 = RP do Duban ameaça retaliar
+NEWS_TERROR_GROUP1_LEVEL3_TEXT1 = RP do Duban faz ameaças abertas de vingança. Os culpas aparentemente foram encontrados. A situação é delicada.
+NEWS_TERROR_GROUP2_LEVEL3_TITLE1 = RL do Duban alerta sobre consequências
+NEWS_TERROR_GROUP2_LEVEL3_TEXT1 = "Basta". O texto seco da mensagem. A RL do Duban realiza contramedidas.
+
+NEWS_TERROR_GROUP1_LEVEL4_TITLE1 = Polícia alerta sobre terroristas
+NEWS_TERROR_GROUP1_LEVEL4_TEXT1 = Polícia perde o rastro de terrorista recentemente avistado. Ele alega não ser de origem Dubaniana.
+NEWS_TERROR_GROUP2_LEVEL4_TITLE1 = Polícia alerta sobre terroristas
+NEWS_TERROR_GROUP2_LEVEL4_TEXT1 = Polícia perde o rastro de terrorista recentemente avistado. Afirma-se que ele é de origem Dubaniana
+
+
+LOCKED = Fechado
+ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = O acesso a essa sala somente é possível com a chave correta.
+BLOCKED = Bloqueado
+ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = O acesso a essa sala não é possível no momento.
+
+OPENINGSHOW_TITLE = Grande lançamento de "%CHANNELNAME%
+OPENINGSHOW_DESCRIPTION = Vamos estourar a champanhe. %CHANNELNAME% está sendo lançado hoje.
+
+CONSTRUCTION_TIME = Tempo de construção
+
+PRIMETIME = Horário nobre
+NIGHTPROGRAMME = Madrugada
+LOW_AUDIENCE = Baixa audiência
+HIGH_AUDIENCE = Audiência elevada
+
+COULISSE = Bastidores
+OUTFIT_AND_MASK = Roupas / máscaras
+STUNTS = Dublês
+VFX_AND_SFX = VFX / SFX
+TEAM = Equipe (Técnicos, etc.)
+PRODUCTION_SPEED = Velocidade da produção
+
+PRODUCTION_POTENTIAL = Potencial
+
+CAST_EXPERIENCE = Experiência
+CAST_FAME = Fama
+CAST_SKILL = Habilidade
+CAST_POWER = Força
+CAST_HUMOR = Humor
+CAST_CHARISMA = Carisma
+CAST_APPEARANCE = Aparência
+
+TITLE = Título
+DESCRIPTION = Descrição
+EPISODE = Episódio
+CLICK_TO_SELECT_PERSON = Clique para selecionar a Pessoa
+TOUCH_TO_SELECT_PERSON = Toque para selecionar a Pessoa
+
+POINTSSET_OF_POINTSMAX_POINTS_SET = %POINTSSET%/%POINTSMAX% pontos atribuídos
+PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY = Pontos de foco de produção ainda não atribuídos por completo
+NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS = Ao menos um ponto deve ser gasto com pontos de foco
+NO_PRODUCTION_COMPANY_SELECTED = Nenhuma companhia de produção selecionada
+PRODUCTION_SETUP_NOT_DONE = Configuração de produção ainda não finalizada
+PRODUCTION_SETUP_INCOMPLETE = Configuração de produção incompleta
+EPISODES_NOT_IN_ORDER = Episódios não estão em ordem
+PRODUCTION_CONCEPTS = Listas de compra
+
+NO_PRESENT_SELECTED = Nenhum presente selecionado
+BUY_PRESENTTITLE_FOR_PRICE = Comprar %PRESENTTITLE%  por %PRICE%
+BETTY_PRESENT_1 = Spray de pé
+BETTY_PRESENT_2 = Jantar para dois
+BETTY_PRESENT_3 = Plástica do nariz
+BETTY_PRESENT_4 = Romance escrito personalizado
+BETTY_PRESENT_5 = Colar de pérolas
+BETTY_PRESENT_6 = Casado de hamster da China
+BETTY_PRESENT_7 = Colar de diamantes de sangue
+BETTY_PRESENT_8 = Carro esportivo
+BETTY_PRESENT_9 = Anel
+BETTY_PRESENT_10= Iate
+
+SELECT_PERSON = Selecione a pessoa
+FINISHED_PLANNING = Planejamento finalizado
+FINISH_PLANNING = Finalizar planejamento
+AND_PAY_DOWN_MONEY = e pagar %money%
+PLANNING = Programando ...
+MONEY_TO_PAY_DOWN = %money% a pagar
+TAKE_OVER_SETTINGS = Aceitar configurações
+PRODUCTION_COMPANY = Companhia de produção
+EDIT_TEXTS = Editar textos
+
+STUDIO_MANAGER = Gerente de estúdio
+STUDIO_MANAGER_TOOLTIP = Fornece informações sobre a produção e entrega novas listas de compras
+
+MANAGE_BROADCASTED_NEWS = Gerenciar transmissão de notícias
+
+RIGHT_CLICK_TO_DELETE = Clique com o botão direito para apagar
+
+YOUR_BALANCE_IS_POSITIVE_AGAIN = Seu saldo está positivo novamente.
+YOUR_BALANCE_IS_NEGATIVE = Seu saldo está negativo.
+YOU_ARE_NO_LONGER_IN_DANGER_TO_GET_FIRED = Você não está mais ameaçado de ser demitido.
+YOU_HAVE_X_DAYS_TO_GET_INTO_THE_BLACK = Você tem %DAYS% dias para sair do vermelho.
+YOU_HAVE_ONLY_TODAY_TO_GET_INTO_THE_BLACK = Você tem até hoje para sair do vermelho.
+YOU_ARE_IN_DANGER_TO_GET_FIRED = Você corre o risco de ser demitido!
+
+PRODUCTION = Produção
+TOTAL_COSTS = Custos totais
+DURATION = Duração
+SUBHEADING = Subtítulo
+PRODUCTION_DETAILS = Detalhes da produção
+PRODUCTION_FOCUS = Foco da produção
+
+DO_NOT_SHOW_AGAIN = Não mostrar novamente
+DO_NOT_SHOW_ANY_TIPS = Não mostrar nenhuma dica
+SHOW_INTRODUCTORY_GUIDES = Mostrar guias introdutórios
+
+BOMB_DETONATION_IN_TVTOWER = Explosão de bomba na TVTower 
+BOMB_DETONATION_IN_TVTOWER_TEXT = A explosão de uma bomba abalou os funcionários da famosa TVTower. A bomba danificou a sala "%ROOM%". As investigações estão a todo vapor.
+TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT = A bomb detonation damaged the room %ROOM%.
+
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES = Atentado na TVTower: Nenhuma pista encontrada
+BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT = Autoridades investigam o atentado na famosa TVTower. Infelizmente,  eles não encontraram nenhuma pista relevante.
+
+BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES = Atentado na TVTower: Pistas são encontradas
+BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT = Autoridades investigaram o atentado na famosa TVTower - com sucesso! Aparentemente, resident TV channels (%CHANNELS%) ajudaram sem querer com a brincadeira de trocar as indicações das salas.
+
+INGAME_HELP_TEXT_SCREEN_EMPTYROOM = Desculpe\n\nEssa sala ainda não está funcionando. Estamos trabalhando nisso!
+INGAME_HELP_TITLE_SCREEN_EMPTYROOM = SEM FUNCIONAMENTO
+
+YOU_JUST_COMPLETED_ACHIEVEMENTTITLE = Você completou a conquista "%ACHIEVEMENTTITLE%".
+ACHIEVEMENT_COMPLETED = Conquista completa
+REWARD = Recompensa
+TASK = Tarefa
+
+ACHIEVEMENTS = Conquistas
+ACHIEVEMENTCATEGORY_CATEGORIES = Categorias
+ACHIEVEMENTCATEGORY_ALL = Todas as Categorias
+ACHIEVEMENTCATEGORY_NEWS = Notícias
+ACHIEVEMENTCATEGORY_PROGRAMMES = Programas
+ACHIEVEMENTCATEGORY_STATIONMAP = Mapa de Estações
+ACHIEVEMENTCATEGORY_MISC = Diversos
+
+DIFFICULTY_EASY = Fácil
+DIFFICULTY_NORMAL = Normal
+DIFFICULTY_HARD = Difícil
+DIFFICULTY_CUSTOM = Personalizado
+
+GAMETIME = Tempo
+PLAYER = Jogador
+
+GAME = Jogo
+
+GAMESPEED = Velocidade do jogo
+SET_SPEED_TO_X = Velocidade %SPEED%
+MANUAL = Manual
+HELP = Ajuda
+SHOW_HELP = Mostrar ajuda
+
+NEWSPLANSIGN_TO_THE_TEAM = Para a equipe
+NEWSPLANSIGN_SEND_THE_FOLLOWING_NEWS = transmitir as seguintes notícias:
+
+
+SPORT_ICEHOCKEY = Hóquei no gelo
+
+SPORT_SOCCER = Futebol
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = e o atacante %TEAM1STAR% vence %MATCHKIND% contra 
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = e o atacante %TEAM1STAR% vence %MATCHKIND% contra 
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = vence graças a um escanteio convertido por %TEAM1STARSHORT% %MATCHKIND%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = vence graças a um escanteio convertido por %TEAM1STARSHORT% %MATCHKIND%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = vence graças a um pênalti defendido pelo goleiro  %TEAM1KEEPERSHORT% %MATCHKIND%
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P3 = vence graças a um pênalti defendido pelo goleiro  %TEAM1KEEPERSHORT% %MATCHKIND%
+
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S1 = goes under by an oversight of keeper %TEAM1KEEPERSHORT% and %MATCHKIND% against
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P1 = go under by an oversight of keeper %TEAM1KEEPERSHORT% and %MATCHKIND% against
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_S2 = loses with disappointed keeper %TEAM1KEEPER% %MATCHKIND% against
+SPORT_SOCCER_TEAMREPORT_MATCHLOOSE_P2 = lose with disappointed keeper %TEAM1KEEPER% %MATCHKIND% against
+
+SPORT_SOCCER_TEAMREPORT_MATCHKIND1 = after %PLAYTIMEMINUTES% minutes of doubtful soccer
+SPORT_SOCCER_TEAMREPORT_MATCHKIND2 = after %PLAYTIMEMINUTES% minutes of tactical duels
+SPORT_SOCCER_TEAMREPORT_MATCHKIND3 = after exciting %PLAYTIMEMINUTES% minutes of lawn sport
+
+
+SPORT_TEAMREPORT_MATCHWIN_S1 = wins thanks to %TEAM1STAR%
+SPORT_TEAMREPORT_MATCHWIN_P1 = win thanks to %TEAM1STAR%
+SPORT_TEAMREPORT_MATCHWIN_S2 = defeats %MATCHKIND%
+SPORT_TEAMREPORT_MATCHWIN_P2 = defeat %MATCHKIND%
+SPORT_TEAMREPORT_MATCHWIN_S3 = wins %MATCHSCORE1TEXT% against
+SPORT_TEAMREPORT_MATCHWIN_P3 = win %MATCHSCORE1TEXT% against
+SPORT_TEAMREPORT_MATCHWIN_S4 = overcomes
+SPORT_TEAMREPORT_MATCHWIN_P4 = overcome
+
+SPORT_TEAMREPORT_MATCHDRAW_S1 = gives away the chance of %MATCHSCOREMAXTEXT% against
+SPORT_TEAMREPORT_MATCHDRAW_P1 = gave away the chance of %MATCHSCOREMAXTEXT% against
+SPORT_TEAMREPORT_MATCHDRAW_S2 = only reaches a draw against
+SPORT_TEAMREPORT_MATCHDRAW_P2 = only reach a draw against
+SPORT_TEAMREPORT_MATCHDRAW_S3 = brings home %MATCHSCORE1TEXT% against
+SPORT_TEAMREPORT_MATCHDRAW_P3 = bring home %MATCHSCORE1TEXT% against
+
+SPORT_TEAMREPORT_MATCHLOOSE_S1 = gifts %MATCHKIND% 3 precious points to
+SPORT_TEAMREPORT_MATCHLOOSE_P1 = gift %MATCHKIND% 3 precious points to
+SPORT_TEAMREPORT_MATCHLOOSE_S2 = disgraces itself %MATCHKIND% against
+SPORT_TEAMREPORT_MATCHLOOSE_P2 = disgrace itself %MATCHKIND% against
+SPORT_TEAMREPORT_MATCHLOOSE_S3 = gifts %MATCHKIND% %MATCHSCORE2TEXT% to
+SPORT_TEAMREPORT_MATCHLOOSE_P3 = gift %MATCHKIND% %MATCHSCORE2TEXT% to
+
+SPORT_TEAMREPORT_MATCHKIND1 = deservedly
+SPORT_TEAMREPORT_MATCHKIND2 = flukey
+SPORT_TEAMREPORT_MATCHKIND3 = after a long %PLAYTIMEMINUTES% minutes of match time
+SPORT_TEAMREPORT_MATCHKIND4 = in a racket of a game
+SPORT_TEAMREPORT_MATCHKIND5 = in a nail-biter
+SPORT_TEAMREPORT_MATCHKIND6 = in a sold out stadium
+SPORT_TEAMREPORT_MATCHKIND7 = in front of fully occupied coulisses
+SPORT_TEAMREPORT_MATCHKIND8 = in front of a chanting audience
+SPORT_TEAMREPORT_MATCHKIND9 = in front of a frenetic audience
+SPORT_TEAMREPORT_MATCHKIND10 = with almost empty fanblock
+SPORT_TEAMREPORT_MATCHKIND11 = in front of filled stadiums
+SPORT_TEAMREPORT_MATCHRESULT = %TEAMARTICLE1% %TEAM1% %MATCHRESULT% %TEAMARTICLE2% %TEAM2% with %FINALSCORE%.
+#Variant A = "_der_ FC gewinnt"
+#Variant B = "besiegt _den_ FC"
+SPORT_TEAMNAME_S_VARIANT_A = the
+SPORT_TEAMNAME_S_VARIANT_B = the
+SPORT_TEAMNAME_P_VARIANT_A = the
+SPORT_TEAMNAME_P_VARIANT_B = the
+
+SPORT_PROGRAMME_TITLE = %SPORTNAME%: %LEAGUENAME% %SEASONYEARSTART%
+SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = All %MATCHCOUNT% upcoming matches of %LEAGUENAME% in season %SEASONYEARSTART%.
+SPORT_PROGRAMME_MATCH_TIMES = Match times
+
+SPORT_PROGRAMME_PLAYOFF_MATCH = Playoff match.
+SPORT_PROGRAMME_MATCH_OF_LEAGUEX = Match of %LEAGUENAME%.
+SPORT_PLAYOFFS_LONG = "Playoffs"
+SPORT_PLAYOFFS_SHORT = "PO"
+
+SPORT_AFTER_PENALTY_SHORT = "a.p."
+SPORT_AFTER_OVERTIME_SHORT = "a.o."
+
+
+CLASSIFICATION = classification
+REMAINING_TERM = remaining term
+SPOTS_TO_SEND = spots to send
+NAME = name
