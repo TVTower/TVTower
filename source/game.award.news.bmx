@@ -80,10 +80,10 @@ Type TAwardNews extends TAwardBase
 			Select news.GetGenre()
 				case TVTNewsGenre.SHOWBIZ
 					'jury dislikes SHOWBIZ - except good stories!
-					if news.GetQuality() < 0.8 then newsPoints :* 0.9
+					if news.newsEvent.GetQualityRaw() < 0.8 then newsPoints :* 0.9
 				case TVTNewsGenre.CULTURE
 					'jury likes CULTURE - except the really bad ones
-					if news.GetQuality() >= 0.2
+					if news.newsEvent.GetQualityRaw() >= 0.2
 						newsPoints :* 1.1
 					else
 						newsPoints :* 0.9
