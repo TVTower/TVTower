@@ -77,7 +77,7 @@ Import "game.production.productionmanager.bmx"
 Import "game.achievements.bmx"
 
 Import "game.betty.bmx"
-Import "game.award.base.bmx"
+Import "game.award.bmx"
 Import "game.building.bmx"
 Import "game.ingameinterface.bmx"
 Import "game.newsagency.bmx"
@@ -1148,7 +1148,7 @@ endrem
 						TAiBase.AiRunning = True
 					EndIf
 				EndIf
-				If KEYMANAGER.Ishit(Key_F12)
+				If KEYMANAGER.Ishit(Key_F10)
 					If (TAiBase.AiRunning)
 						For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
 							If GetPlayerBase().GetFigure() <> fig Then fig.moveable = False
@@ -4914,6 +4914,36 @@ Type GameEvents
 		If (minute = 5 Or minute = 55 Or minute = 0) Or ..
 		   (minute = 4 Or minute = 54 Or minute = 59)
 
+			'send out an event for "block types" to begin/finish now
+			'this enables to run things before manipulation like
+			'topicality decrease takes place
+			local evKey:string = ""
+			local evData:TData
+			Select minute
+				Case 0
+					evKey = "broadcasting.BeforeStartAllNewsShowBroadcasts"
+					evData = new TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.NEWSSHOW) )
+				Case 4
+					evKey = "broadcasting.BeforeFinishAllNewsShowBroadcasts"
+					evData = new TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.NEWSSHOW) )
+				Case 5
+					evKey = "broadcasting.BeforeStartAllProgrammeBlockBroadcasts"
+					evData = new TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) )
+				Case 54
+					evKey = "broadcasting.BeforeFinishAllProgrammeBlockBroadcasts"
+					evData = new TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) )
+				Case 55
+					evKey = "broadcasting.BeforeStartAllAdBlockBroadcasts"
+					evData = new TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.ADVERTISEMENT) )
+				Case 59
+					evKey = "broadcasting.BeforeFinishAllAdBlockBroadcasts"
+					evData = new TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.ADVERTISEMENT) )
+			End Select
+			if evKey and evData
+				EventManager.triggerEvent(TEventSimple.Create(evKey, evData))
+			endif
+
+
 			'shuffle players, so each time another plan is informed the
 			'first (and their "doBegin" is called earlier than others)
 			'this is useful for "who broadcasted a news as first channel?"
@@ -4926,9 +4956,30 @@ Type GameEvents
 				players[b] = p
 			Next
 
+
 			For Local player:TPlayer = EachIn players
 				player.GetProgrammePlan().InformCurrentBroadcast(day, hour, minute)
 			Next
+
+
+			evKey = ""
+			Select minute
+				Case 0
+					evKey = "broadcasting.AfterStartAllNewsShowBroadcasts"
+				Case 4
+					evKey = "broadcasting.AfterFinishAllNewsShowBroadcasts"
+				Case 5
+					evKey = "broadcasting.AfterStartAllProgrammeBlockBroadcasts"
+				Case 54
+					evKey = "broadcasting.AfterFinishAllProgrammeBlockBroadcasts"
+				Case 55
+					evKey = "broadcasting.AfterStartAllAdBlockBroadcasts"
+				Case 59
+					evKey = "broadcasting.AfterFinishAllAdBlockBroadcasts"
+			End Select
+			if evKey and evData
+				EventManager.triggerEvent(TEventSimple.Create(evKey, evData))
+			endif
 		EndIf
 
 

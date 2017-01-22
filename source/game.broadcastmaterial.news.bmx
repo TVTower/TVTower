@@ -14,11 +14,6 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 	Field news:TBroadcastMaterial[3]
 	Field title:string = ""
 
-	'weight of the news slots
-	CONST NEWS_WEIGHT_1:float = 0.45
-	CONST NEWS_WEIGHT_2:float = 0.35
-	CONST NEWS_WEIGHT_3:float = 0.2
-
 
 	Method GenerateGUID:string()
 		return "broadcastmaterial-newsshow-"+id
@@ -60,6 +55,9 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 	'override to inform contained news too
 	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
+		'inform others
+		EventManager.triggerEvent(TEventSimple.Create("broadcast.newsshow.BeforeBeginBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+
 		Super.BeginBroadcasting(day, hour, minute, audienceData)
 
 		For local newsEntry:TBroadcastMaterial = EachIn news
@@ -72,12 +70,18 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
+		'inform others _before_ newsentries get adjusted!
+		EventManager.triggerEvent(TEventSimple.Create("broadcast.newsshow.BeforeFinishBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+
 		Super.FinishBroadcasting(day, hour, minute, audienceData)
 
 		'adjust topicality relative to possible audience 
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
-		local newsSlot:int 
+		local newsSlot:int
+		local topAudience:int = GetBroadcastManager().GetCurrentBroadcast().GetTopAudience()
+		local audienceSum:int = audienceResult.Audience.GetTotalSum()
+
 		for local i:int = 0 to 2
 			local newsEntry:TBroadcastMaterial = news[i]
 			if not newsEntry then continue
@@ -89,8 +93,8 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 				'adjust trend/popularity
 				local popData:TData = new TData
 				popData.AddNumber("attractionQuality", audienceResult.AudienceAttraction.Quality)
-				popData.AddNumber("audienceSum", audienceResult.Audience.GetTotalSum())
-				popData.AddNumber("broadcastTopAudience", GetBroadcastManager().GetCurrentBroadcast().GetTopAudience())
+				popData.AddNumber("audienceSum", audienceSum)
+				popData.AddNumber("broadcastTopAudience", topAudience)
 
 				Local popularity:TGenrePopularity = news.newsEvent.GetGenreDefinition().GetPopularity()
 if popularity
@@ -131,7 +135,7 @@ endif
 		local genreCount:int[ TVTNewsGenre.count ]
 		local slotsUsed:int = 0
 		
-		for local i:int = 0 to 2
+		for local i:int = 0 until news.length
 			'RONNY @Manuel: Todo - "Filme" usw. vorbereiten/einplanen
 			'               es koennte ja jemand "Trailer" in die News
 			'               verpacken - siehe RTL2 und Co.
@@ -152,9 +156,7 @@ endif
 			tempAudienceAttr.CutBordersFloat(0, 1.0)
 
 			'different weight for news slots
-			If i = 0 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(NEWS_WEIGHT_1))
-			If i = 1 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(NEWS_WEIGHT_2))
-			If i = 2 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(NEWS_WEIGHT_3))
+			resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(GetNewsSlotWeight(i)))
 
 			local title:string = "--"
 			if currentNews then title = currentNews.GetTitle() 
@@ -220,13 +222,23 @@ endif
 	Method GetQuality:Float() {_exposeToLua}
 		Local quality:Float = 0.0
 
-		If TNews(news[0]) Then quality :+ TNews(news[0]).GetQuality() * NEWS_WEIGHT_1
-		If TNews(news[1]) Then quality :+ TNews(news[1]).GetQuality() * NEWS_WEIGHT_2
-		If TNews(news[2]) Then quality :+ TNews(news[2]).GetQuality() * NEWS_WEIGHT_3
+		For local i:int = 0 until news.length
+			If TNews(news[i]) Then quality :+ TNews(news[i]).GetQuality() * GetNewsSlotWeight(i)
+		Next
 
 		'no minus quote
 		Return Max(0, quality)
 	End Method
+
+
+	Function GetNewsSlotWeight:Float(slotIndex:int) {_exposeToLua}
+		Select slotIndex
+			case 0	return 0.45
+			case 1	return 0.35
+			case 2	return 0.2
+			Default	return 0.1
+		End Select
+	End Function
 End Type
 
 
