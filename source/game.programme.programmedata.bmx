@@ -862,6 +862,14 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
+	Method HasSubGenre:int(genre:int)
+		For local i:int = EachIn subGenres
+			if genre = i then return True
+		Next
+		return False
+	End Method
+
+
 	Method GetGenreRefreshModifier:float(genre:int=-1)
 		if genre = -1 then genre = self.genre
 		return GetProgrammeDataCollection().GetGenreRefreshModifier(genre)

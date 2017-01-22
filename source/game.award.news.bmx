@@ -48,6 +48,7 @@ Type TAwardNews extends TAwardBase
 		local broadcasts:TBroadcastMaterial[] = TBroadcastMaterial[](triggerEvent.GetData().Get("broadcasts"))
 		For local newsShow:TNewsShow = Eachin broadcasts
 			local score:int = CalculateNewsShowScore(newsShow)
+			if score = 0 then continue
 
 			currentAward.AdjustScore(newsShow.owner, score)
 		Next
@@ -63,10 +64,10 @@ Type TAwardNews extends TAwardBase
 
 
 		'calculate score:
-		'a perfect news would give 100.0 points (plus personal taste points)
+		'a perfect news would give 1000 points (plus personal taste points)
 		'- topicality<1.0 and rawQuality<1.0 reduce points -> GetQuality()
 		'- genres like "yellow press" (or movies/showbizz) reduce points
-		'  (jury things they are better than others)
+		'  (jury thinks they are better than others)
 		'- there are 3 news slots, so sum them all up and divide by 3
 		'  this also takes care of empty slots (1.0 + 0.0 + 0.0 becomes 0.3)
 
@@ -75,22 +76,23 @@ Type TAwardNews extends TAwardBase
 			local news:TNews = TNews(newsShow.news[i])
 			if not news then continue
 
-			local newsPoints:Float = 100.0 * news.GetQuality() * TNewsShow.GetNewsSlotWeight(i)
+			local newsPoints:Float = 1000 * news.GetQuality() * TNewsShow.GetNewsSlotWeight(i)
+			local newsPointsMod:Float = 1.0
 
 			Select news.GetGenre()
 				case TVTNewsGenre.SHOWBIZ
 					'jury dislikes SHOWBIZ - except good stories!
-					if news.newsEvent.GetQualityRaw() < 0.8 then newsPoints :* 0.9
+					if news.newsEvent.GetQualityRaw() < 0.8 then newsPointsMod :- 0.1
 				case TVTNewsGenre.CULTURE
 					'jury likes CULTURE - except the really bad ones
 					if news.newsEvent.GetQualityRaw() >= 0.2
-						newsPoints :* 1.1
+						newsPointsMod :+ 0.1
 					else
-						newsPoints :* 0.9
+						newsPointsMod :- 0.1
 					endif
 			End Select
 
-			allPoints :+ newsPoints
+			allPoints :+ Max(0, newsPoints * newsPointsMod)
 		Next
 
 		'calculate final score
