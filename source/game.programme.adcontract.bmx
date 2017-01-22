@@ -757,11 +757,11 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		endif
 
 		self.owner = owner
-		self.profit	= GetProfitForPlayer(owner)
-		self.penalty = GetPenaltyForPlayer(owner)
-		self.infomercialProfit = GetInfomercialProfitForPlayer(owner)
-		self.minAudience = GetMinAudienceForPlayer(owner)
-		self.totalMinAudience = GetTotalMinAudienceForPlayer(owner)
+		self.profit	= GetProfitForPlayer(owner, True)
+		self.penalty = GetPenaltyForPlayer(owner, True)
+		self.infomercialProfit = GetInfomercialProfitForPlayer(owner, True)
+		self.minAudience = GetMinAudienceForPlayer(owner, True)
+		self.totalMinAudience = GetTotalMinAudienceForPlayer(owner, True)
 
 		If day < 0 Then day = GetWorldTime().GetDay()
 		self.daySigned = day
@@ -807,10 +807,10 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	'the quality is higher for "better paid" advertisements with
 	'higher audience requirements... no cheap "car seller" ad :D
-	Method GetQualityRawForPlayer:Float(playerID:int)
+	Method GetQualityRawForPlayer:Float(playerID:int) {_exposeToLua}
 		Local quality:Float = 0.05
 
-		local minA:int = GetMinAudienceForPlayer(playerID)
+		local minA:int = GetMinAudienceForPlayer(playerID, False)
 		'TODO: switch to Percentages + modifiers for TargetGroup-Limits
 		if minA >   1000 then quality :+ 0.01		'+0.06
 		if minA >   5000 then quality :+ 0.025		'+0.085
@@ -903,23 +903,28 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	
 
 	'if targetgroup is set, the price is doubled
-	Method GetProfitForPlayer:Int(playerID:Int)
+	Method GetProfitForPlayer:Int(playerID:Int, invalidateCache:int = False)
 		'already calculated and data for owner requested
-		If owner > 0 and owner = playerID and profit >= 0 Then Return profit
+		If not invalidateCache
+			if owner > 0 and owner = playerID and profit >= 0 Then Return profit
+		EndIf
 
 		Return CalculatePricesForPlayer(base.profitBase, playerID, PRICETYPE_PROFIT) * GetSpotCount()
 	End Method
 
 
 	'if targetgroup is set, the price is doubled
-	Method GetProfit:Int() {_exposeToLua}
-		return GetProfitForPlayer(owner)
+	Method GetProfit:Int(playerID:Int=-1) {_exposeToLua}
+		if playerID < 0 then playerID = owner 
+		return GetProfitForPlayer(playerID, False)
 	End Method
 
 
-	Method GetInfomercialProfitForPlayer:Int(playerID:Int)
+	Method GetInfomercialProfitForPlayer:Int(playerID:Int, invalidateCache:int = False)
 		'already calculated and data for owner requested
-		If owner > 0 and owner = playerID and infomercialProfit >= 0 Then Return infomercialProfit
+		If not invalidateCache
+			If owner > 0 and owner = playerID and infomercialProfit >= 0 Then Return infomercialProfit
+		EndIf
 
 		local result:float
 		'return fixed or calculated profit
@@ -938,23 +943,27 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetInfomercialProfit:Int() {_exposeToLua}
-		return GetInfomercialProfitForPlayer(owner)
+	Method GetInfomercialProfit:Int(playerID:Int=-1) {_exposeToLua}
+		if playerID < 0 then playerID = owner
+		return GetInfomercialProfitForPlayer(playerID, False)
 	End Method
 
 
 	'returns the penalty for this contract
-	Method GetPenaltyForPlayer:Int(playerID:Int=-1)
+	Method GetPenaltyForPlayer:Int(playerID:Int, invalidateCache:int = False)
 		'already calculated and data for owner requested
-		If owner > 0 and owner = playerID and penalty >= 0 Then Return penalty
+		If not invalidateCache
+			If owner > 0 and owner = playerID and penalty >= 0 Then Return penalty
+		EndIf
 
 		Return CalculatePricesForPlayer(base.penaltyBase, playerID, PRICETYPE_PENALTY) * GetSpotCount()
 	End Method
 
 
 	'returns the penalty for this contract
-	Method GetPenalty:Int() {_exposeToLua}
-		Return GetPenaltyForPlayer(owner)
+	Method GetPenalty:Int(playerID:Int=-1) {_exposeToLua}
+		if playerID < 0 then playerID = owner
+		Return GetPenaltyForPlayer(playerID, False)
 	End Method
 
 
@@ -1061,22 +1070,26 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 	
-	Method GetRawMinAudience:Int(getTotalAudience:int = False) {_exposeToLua}
-		Return GetRawMinAudienceForPlayer(owner)
+	Method GetRawMinAudience:Int(playerID:int=-1, getTotalAudience:int = False) {_exposeToLua}
+		if playerID < 0 then playerID = owner
+		Return GetRawMinAudienceForPlayer(playerID, getTotalAudience)
 	End Method
 
 
 	'Gets minimum needed audience in absolute numbers
-	Method GetMinAudienceForPlayer:Int(playerID:int)
+	Method GetMinAudienceForPlayer:Int(playerID:int, invalidateCache:int = False)
 		'skip calculation if already calculated
-		If owner > 0 and playerId = owner and minAudience >=0 Then Return minAudience
+		If not invalidateCache
+			If owner > 0 and playerId = owner and minAudience >=0 Then Return minAudience
+		EndIf
 
 		Return TFunctions.RoundToBeautifulValue( GetRawMinAudienceForPlayer(playerID) )
 	End Method
 	
 
-	Method GetMinAudience:Int() {_exposeToLua}
-		return GetMinAudienceForPlayer(owner)
+	Method GetMinAudience:Int(playerID:Int=-1) {_exposeToLua}
+		if playerID < 0 then playerID = owner
+		return GetMinAudienceForPlayer(playerID)
 	End Method
 
 
@@ -1086,23 +1099,26 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetTotalRawMinAudience:Int() {_exposeToLua}
-		return GetTotalRawMinAudienceForPlayer(owner)
+	Method GetTotalRawMinAudience:Int(playerID:Int=-1) {_exposeToLua}
+		if playerID < 0 then playerID = owner
+		return GetTotalRawMinAudienceForPlayer(playerID)
 	End Method
 
 
 	'Gets minimum needed audience in absolute numbers (ignoring
 	'targetgroup limits)
-	Method GetTotalMinAudienceForPlayer:Int(playerID:int)
+	Method GetTotalMinAudienceForPlayer:Int(playerID:int, invalidateCache:int = False)
 		'skip calculation if already calculated
-		If owner > 0 and owner = playerID and totalMinAudience >=0 Then Return totalMinAudience
+		If not invalidateCache
+			If owner > 0 and owner = playerID and totalMinAudience >=0 Then Return totalMinAudience
+		EndIf
 
 		Return TFunctions.RoundToBeautifulValue( GetTotalRawMinAudienceForPlayer(playerID) )
 	End Method
 
 
 	Method GetTotalMinAudience:Int(playerID:int=-1) {_exposeToLua}
-		return GetTotalMinAudienceForPlayer(owner)
+		return GetTotalMinAudienceForPlayer(owner, False)
 	End Method
 
 
