@@ -1618,7 +1618,10 @@ Type TGuiAdContract Extends TGUIGameListItem
 		SetColor 255,255,255
 		SetAlpha 1.0
 
-		Self.contract.ShowSheet(sheetX,sheetY, sheetAlign, TVTBroadcastMaterialType.ADVERTISEMENT)
+		local forPlayerID:int = GetObservedPlayerID()
+		if self.contract.IsSigned() then forPlayerID = self.contract.owner
+	
+		Self.contract.ShowSheet(sheetX,sheetY, sheetAlign, TVTBroadcastMaterialType.ADVERTISEMENT, forPlayerID)
 	End Method
 
 
