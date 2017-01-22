@@ -35,6 +35,7 @@ TODO
 	- Chef-Dialog
 	- Preisgeld?
 	- Auswirkungen (Senderimage?)
+	- KI sollte auf aktuellen Sammy reagieren
 
 * Mehrspielermodus:
 	- Lockstep
