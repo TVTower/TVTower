@@ -1331,7 +1331,8 @@ Type TDatabaseLoader
 		xml.LoadValuesToData(nodeData, data, ["mainGenre", "subGenres"])
 		scriptTemplate.mainGenre = data.GetInt("mainGenre", 0)
 		For local sg:string = EachIn data.GetString("subGenres", "").split(",")
-			if sg = "" then continue
+			'skip empty or "undefined" genres
+			if int(sg) = 0 then continue
 			if not MathHelper.InIntArray(int(sg), scriptTemplate.subGenres)
 				scriptTemplate.subGenres :+ [int(sg)]
 			endif

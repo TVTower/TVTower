@@ -186,12 +186,10 @@ Type TTemplateVariables
 			local value:string = result.Get(lang)
 			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%", True)
 			for local placeHolder:string = EachIn placeHolders
-				local replacement:string = string(GetGameInformation(placeHolder.toLower().replace("%", ""), ""))
-				if replacement = "UNKNOWN_INFORMATION"
-					replacement = placeHolder
+				local replacement:string = string(GetGameInformation(placeHolder.toLower(), ""))
+				if replacement <> "UNKNOWN_INFORMATION"
+					value = value.replace("%"+placeHolder+"%", replacement)
 				endif
-
-				value = value.replace("%"+placeHolder+"%", replacement)
 			Next
 
 			result.Set(value, lang)

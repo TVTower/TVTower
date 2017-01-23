@@ -376,7 +376,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'variable with the same name
 		For local lang:string = EachIn text.GetLanguageKeys()
 			local value:string = text.Get(lang)
-			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%")
+
+			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%", True)
 			if placeHolders.length = 0 then continue
 
 			local actors:TProgrammePersonJob[] = GetSpecificCast(TVTProgrammePersonJob.ACTOR | TVTProgrammePersonJob.SUPPORTINGACTOR)
@@ -384,8 +385,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			for local placeHolder:string = EachIn placeHolders
 				replacement = ""
 				Select placeHolder.toUpper()
-					case "%ROLENAME1%", "%ROLENAME2%", "%ROLENAME3%", "%ROLENAME4%", "%ROLENAME5%", "%ROLENAME6%", "%ROLENAME7%"
-						local actorNum:int = int(placeHolder.toUpper().Replace("%ROLENAME", "").Replace("%",""))
+					case "ROLENAME1", "ROLENAME2", "ROLENAME3", "ROLENAME4", "ROLENAME5", "ROLENAME6", "ROLENAME7"
+						'local actorNum:int = int(placeHolder.toUpper().Replace("%ROLENAME", "").Replace("%",""))
+						local actorNum:int = int(chr(placeHolder[8]))
 						if actorNum > 0
 							if actors.length > actorNum and actors[actorNum].roleGUID <> ""
 								local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[actorNum].roleGUID)
@@ -400,8 +402,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 								End Select
 							endif
 						endif
-					case "%ROLE1%", "%ROLE2%", "%ROLE3%", "%ROLE4%", "%ROLE5%", "%ROLE6%", "%ROLE7%"
-						local actorNum:int = int(placeHolder.toUpper().Replace("%ROLE", "").Replace("%",""))
+					case "ROLE1", "ROLE2", "ROLE3", "ROLE4", "ROLE5", "ROLE6", "ROLE7"
+						'local actorNum:int = int(placeHolder.toUpper().Replace("%ROLE", "").Replace("%",""))
+						local actorNum:int = int(chr(placeHolder[4]))
 						if actorNum > 0
 							if actors.length > actorNum and actors[actorNum].roleGUID <> ""
 								local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[actorNum].roleGUID)
@@ -417,14 +420,14 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 							endif
 						endif
 
-					case "%GENRE%"
+					case "GENRE"
 						replacement = GetMainGenreString()
-					case "%EPISODES%"
+					case "EPISODES"
 						replacement = GetMainGenreString()
 				End Select
 
 				'replace if some content was filled in
-				if replacement <> "" then value = value.replace(placeHolder, replacement)
+				if replacement <> "" then value = value.replace("%"+placeHolder+"%", replacement)
 			Next
 			
 			result.Set(value, lang)
@@ -819,7 +822,12 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		'=== COUNTRY / YEAR / GENRE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
-		skin.fontNormal.drawBlock(GetMainGenreString()+"-"+GetProductionTypeString(), contentX + 5, contentY, contentW - 10, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		local genreString:string = GetMainGenreString()
+		'avoid "Action-Undefined" and "Show-Show"
+		if scriptProductType <> TVTProgrammeProductType.UNDEFINED and (TVTProgrammeProductType.GetAsString(scriptProductType) <> TVTProgrammeGenre.GetAsString(mainGenre))
+			genreString :+ "-"+scriptProductType + " " +GetProductionTypeString()
+		endif
+		skin.fontNormal.drawBlock(genreString, contentX + 5, contentY, contentW - 10, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ genreH
 
 	
