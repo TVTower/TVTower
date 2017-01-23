@@ -2533,7 +2533,7 @@
 			<review min="15" max="50" slope="20" />
 			<speed min="20" max="50" slope="20" />
 		</scripttemplate>
-		<scripttemplate product="16" licence_type="1" guid="TheRob-Script-Rep-AusmeinemGebiet">
+		<scripttemplate product="4" licence_type="1" guid="TheRob-Script-Rep-AusmeinemGebiet">
 			<title>
 				<de>Reportagen aus dem Sendegebiet</de>
 				<en>Local report</en>

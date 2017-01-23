@@ -790,7 +790,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		'total height
 		sheetHeight = titleH + genreH + descriptionH + castH + barAreaH + boxAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
-		if isSeries() or isEpisode() then sheetHeight :+ subtitleH
+		if isEpisode() then sheetHeight :+ subtitleH
 		'there is a splitter between description and cast...
 		sheetHeight :+ splitterHorizontalH
 
@@ -808,11 +808,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		
 		'=== SUBTITLE AREA ===
-		if isSeries()
-			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
-			skin.fontNormal.drawBlock(GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetSubScriptCount()), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			contentY :+ subtitleH
-		elseif isEpisode()
+		if isEpisode()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
 			'episode num/max + episode title
 			skin.fontNormal.drawBlock((GetParentScript().GetSubScriptPosition(self)+1) + "/" + GetParentScript().GetSubScriptCount() + ": " + GetTitle(), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
@@ -824,9 +820,17 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
 		local genreString:string = GetMainGenreString()
 		'avoid "Action-Undefined" and "Show-Show"
-		if scriptProductType <> TVTProgrammeProductType.UNDEFINED and (TVTProgrammeProductType.GetAsString(scriptProductType) <> TVTProgrammeGenre.GetAsString(mainGenre))
-			genreString :+ "-"+scriptProductType + " " +GetProductionTypeString()
+		if scriptProductType <> TVTProgrammeProductType.UNDEFINED and scriptProductType <> TVTProgrammeProductType.SERIES
+			if (TVTProgrammeProductType.GetAsString(scriptProductType) <> TVTProgrammeGenre.GetAsString(mainGenre))
+				if not(TVTProgrammeProductType.GetAsString(scriptProductType) = "feature" and TVTProgrammeGenre.GetAsString(mainGenre).Find("feature")>=0)
+					genreString :+ " / " +GetProductionTypeString()
+				endif
+			endif
 		endif
+		if IsSeries()
+			genreString :+ " / " + GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetSubScriptCount())
+		endif
+
 		skin.fontNormal.drawBlock(genreString, contentX + 5, contentY, contentW - 10, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ genreH
 
