@@ -1,6 +1,10 @@
 SuperStrict
 Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.logger.bmx"
+Import "Dig/base.util.event.bmx"
+Import "game.broadcastmaterial.programme.bmx"
+Import "game.broadcastmaterial.advertisement.bmx"
+Import "game.broadcastmaterial.news.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.publicimage.bmx"
 
@@ -13,9 +17,22 @@ Type TBetty
 	'cached values
 	Field _inLoveSum:Int
 
+	Global _eventListeners:TLink[]
 	Global _instance:TBetty
 	Const LOVE_MAXIMUM:int = 10000
 
+
+	Method New()
+		'=== REGISTER EVENTS ===
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		'scan news shows for culture news
+		_eventListeners :+ [ EventManager.registerListenerFunction( "broadcasting.BeforeFinishAllNewsShowBroadcasts", onBeforeFinishAllNewsShowBroadcasts) ]
+		'scan programmes for culture-flag
+		_eventListeners :+ [ EventManager.registerListenerFunction( "broadcasting.BeforeFinishAllProgrammeBlockBroadcasts", onBeforeFinishAllProgrammeBlockBroadcasts) ]
+	End Method
+	
 
 	Function GetInstance:TBetty()
 		if not _instance then _instance = new TBetty
@@ -72,7 +89,7 @@ Type TBetty
 	End Method
 	
 
-	Method AdjustLove(PlayerID:Int, amount:Int, ignorePublicImage:int = False)
+	Method AdjustLove(PlayerID:Int, amount:Int, ignorePublicImage:int = False, adjustOthersLove:int = True)
 		'you cannot subtract more than what is there
 		if amount < 0 then amount = - Min(abs(amount), abs(Self.InLove[PlayerID-1]))
 		'you cannot add more than what is left to the maximum
@@ -96,15 +113,18 @@ Type TBetty
 		'add love
 		Self.InLove[PlayerID-1] = Max(0, Self.InLove[PlayerID-1] + amount)
 
-		'if love to a player _increases_ love to others will decrease
-		'but if love _decreases_ it wont increase love to others!
-		If amount > 0
-			local decrease:int = (0.75 * amount) / (Self.InLove.length-1)
-			For Local i:Int = 1 to Self.InLove.length
-				if i = PlayerID then continue
-				Self.InLove[i-1] = Max(0, Self.InLove[i-1] - decrease)
-			Next
-		EndIf
+		'presents modify the love to others while broadcasts do not
+		if adjustOthersLove
+			'if love to a player _increases_ love to others will decrease
+			'but if love _decreases_ it wont increase love to others!
+			If amount > 0
+				local decrease:int = (0.75 * amount) / (Self.InLove.length-1)
+				For Local i:Int = 1 to Self.InLove.length
+					if i = PlayerID then continue
+					Self.InLove[i-1] = Max(0, Self.InLove[i-1] - decrease)
+				Next
+			EndIf
+		endif
 
 		'reset cache
 		Self._inLoveSum = -1
@@ -141,6 +161,103 @@ Type TBetty
 			Return 1.0 / Self.inLove.length
 		EndIf
 	End Method
+
+
+	Function onBeforeFinishAllNewsShowBroadcasts:int(triggerEvent:TEventBase)
+		local broadcasts:TBroadcastMaterial[] = TBroadcastMaterial[](triggerEvent.GetData().Get("broadcasts"))
+		For local newsShow:TNewsShow = Eachin broadcasts
+			local score:int = CalculateNewsShowScore(newsShow)
+			if score = 0 then continue
+
+			'do not adjust love to other players
+			GetInstance().AdjustLove(newsShow.owner, score, False, False)
+		Next
+	End Function
+
+
+	'betty reacts to broadcasted programmes
+	Function onBeforeFinishAllProgrammeBlockBroadcasts:int(triggerEvent:TEventBase)
+		local broadcasts:TBroadcastMaterial[] = TBroadcastMaterial[](triggerEvent.GetData().Get("broadcasts"))
+
+		For local broadcastMaterial:TBroadcastMaterial = Eachin broadcasts
+			'only material which ends now ? So a 5block culture would get
+			'ignored if ending _after_ award time 
+			'if broadcastMaterial.currentBlockBroadcasting <> broadcastMaterial.GetBlocks()
+
+			local score:int = CalculateProgrammeScore(broadcastMaterial)
+			if score = 0 then continue
+
+			'do not adjust love to other players
+			GetInstance().AdjustLove(broadcastMaterial.owner, score, False, False)
+		Next
+	End Function
+
+
+	Function CalculateNewsShowScore:int(newsShow:TNewsShow)
+		if not newsShow or newsShow.owner < 0 then return 0
+
+
+		'calculate score:
+		'a perfect culture news would give 25 points
+		'taste points)
+		'- topicality<1.0 and rawQuality<1.0 reduce points -> GetQuality()
+		'- no need to handle multiple slots - each culture news brings
+		'  score, no average building needed
+
+		local allPoints:Float = 0.0
+		For local i:int = 0 until newsShow.news.length
+			local news:TNews = TNews(newsShow.news[i])
+			if not news or news.GetGenre() <> TVTNewsGenre.CULTURE then continue
+			'not of interest for Betty?
+			if news.SourceHasBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORED_BY_BETTY) then continue
+
+			local newsPoints:Float = 25 * news.GetQuality() * TNewsShow.GetNewsSlotWeight(i)
+			local newsPointsMod:Float = 1.0
+
+			'jury likes good news - and dislikes the really bad ones
+			if news.newsEvent.GetQualityRaw() >= 0.2
+				newsPointsMod :+ 0.2
+			else
+				newsPointsMod :- 0.2
+			endif
+
+			allPoints :+ Max(0, newsPoints * newsPointsMod)
+		Next
+
+		'calculate final score
+		'news have only a small influence
+		return int(ceil(allPoints))
+	End Function
+	
+
+	Function CalculateProgrammeScore:int(broadcastMaterial:TBroadcastMaterial)
+		if not broadcastMaterial or broadcastMaterial.owner < 0 then return 0
+		'not of interest for Betty?
+		if broadcastMaterial.SourceHasBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORED_BY_BETTY) then return 0
+
+		'calculate score:
+		'a perfect Betty programme would give 100 points
+		'- topicality<1.0 and rawQuality<1.0 reduce points -> GetQuality()
+		'- "CallIn/Trash/Infomercials" is someting Betty absolutely dislikes
+
+		if TAdvertisement(broadcastMaterial) then return -5
+		local programme:TProgramme = TProgramme(broadcastMaterial)
+		if programme.data.HasFlag(TVTProgrammeDataFlag.PAID) then return -5
+		if programme.data.HasFlag(TVTProgrammeDataFlag.TRASH) then return -3
+
+		'in all other cases: only interested in culture-programmes
+		if not programme.data.HasFlag(TVTProgrammeDataFlag.CULTURE) then return 0
+
+		local points:Float = 100 * programme.GetQuality()
+		local pointsMod:Float = 1.0
+		if programme.data.HasFlag(TVTProgrammeDataFlag.LIVE) then pointsMod :+ 0.1
+
+		'divide by block count so each block adds some points
+		points :/ programme.GetBlocks()
+
+		'calculate final score
+		return int(ceil(Max(0, points * pointsMod)))
+	End Function
 End Type
 
 Function GetBetty:TBetty()
