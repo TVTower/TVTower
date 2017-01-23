@@ -1295,8 +1295,9 @@ Type TVTAwardType {_exposeToLua}
 	Const UNDEFINED:int = 0
 	Const NEWS:int = 1
 	Const CULTURE:int = 2
-	Const AUDIENCE:int = 2
-	Const count:int = 3
+	Const AUDIENCE:int = 3
+	Const CUSTOMPRODUCTION:int = 4
+	Const count:int = 4
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -1306,10 +1307,11 @@ Type TVTAwardType {_exposeToLua}
 	
 	Function GetAsString:String(key:int = 0)
 		Select key
-			case NEWS      return "news"
-			case CULTURE   return "culture"
-			case AUDIENCE  return "audience"
-			default        return "undefined"
+			case NEWS              return "news"
+			case CULTURE           return "culture"
+			case AUDIENCE          return "audience"
+			case CUSTOMPRODUCTION  return "customproduction"
+			default                return "undefined"
 		End Select
 	End Function
 End Type

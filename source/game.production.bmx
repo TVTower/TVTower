@@ -73,8 +73,6 @@ Type TProduction Extends TOwnedGameObject
 	Field castSympathyMod:Float = 1.0
 	Field productionValueMod:Float = 1.0
 	Field effectiveFocusPointsMod:Float = 1.0
-	'FALSE to avoid recursive handling (network)
-	Global fireEvents:int = TRUE
 	
 
 	Method GenerateGUID:string()
@@ -219,7 +217,7 @@ Type TProduction Extends TOwnedGameObject
 
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("production.start", null, self))
+		EventManager.triggerEvent(TEventSimple.Create("production.start", null, self))
 
 		return self
 	End Method
@@ -231,7 +229,7 @@ Type TProduction Extends TOwnedGameObject
 		TLogger.Log("TProduction.Abort()", "Aborted shooting.", LOG_DEBUG)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("production.abort", null, self))
+		EventManager.triggerEvent(TEventSimple.Create("production.abort", null, self))
 
 		return self
 	End Method
@@ -497,7 +495,7 @@ endif
 
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("production.finalize", null, self))
+		EventManager.triggerEvent(TEventSimple.Create("production.finalize", new TData.Add("programmelicence", programmeLicence), self))
 
 		return self
 	End Method
