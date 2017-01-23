@@ -2508,7 +2508,7 @@
 	</celebritypeople>
 
 	<scripttemplates>
-		<scripttemplate product="16" licence_type="1" guid="TheRob-Script-Rep-Drehbuecher">
+		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Rep-Drehbuecher">
 			<title>
 				<de>Drehbücher für Anfänger</de>
 				<en>Moviescripts fo beginners</en>
@@ -2517,12 +2517,6 @@
 				<de>Wie schreibe ich Drehbücher für TowerTV? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tips entlockt. </de>
 				<en></en>
 			</description>
-			<variables>
-				<genre>
-					<de>Reportage</de>
-					<en></en>
-				</genre>
-			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="128" required="1" gender="2" />
@@ -2548,12 +2542,6 @@
 				<de>Reporter durchreisen das Sendegebiet um ausführlich über lokale Sendegebietsereignisse zu berichten. Die neueste Ausstellung, ein Jubiläum? Alles wird entdeckt.</de>
 				<en></en>
 			</description>
-			<variables>
-				<genre>
-					<de>Reportage</de>
-					<en></en>
-				</genre>
-			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="8" required="1" gender="2" />
@@ -2569,7 +2557,7 @@
 			<review min="25" max="52" slope="30" />
 			<speed min="20" max="40" slope="20" />
 		</scripttemplate>
-		<scripttemplate product="16" licence_type="1" guid="TheRob-Script-Talk-DieNeuestenFilme">
+		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-DieNeuestenFilme">
 			<title>
 				<de>Die neusten Filme</de>
 				<en>Upcoming movies</en>
@@ -2578,12 +2566,6 @@
 				<de>Talkrunde in der die Filme des nächsten Jahres besprochen werden. Was muss man sehen, was kann man sich sparen?</de>
 				<en>A Review about the upcoming movies with guests. What should you see, what could you miss?</en>
 			</description>
-			<variables>
-				<genre>
-					<de>Talk</de>
-					<en></en>
-				</genre>
-			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="8" required="1" gender="1" />
@@ -2599,9 +2581,9 @@
 			<review min="20" max="50" slope="30" />
 			<speed min="20" max="42" slope="25" />
 		</scripttemplate>
-		<scripttemplate product="16" licence_type="1" guid="TheRob-Script-Talk-KalaueramlaufendenBand">
+		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Talk-KalaueramlaufendenBand">
 			<title>
-				<de>%GROANERS% am laufenden Band</de>
+				<de>%GROANERS% %TYPE%</de>
 				<en>%TYPE% %GROANERS%</en>
 			</title>
 			<description>
@@ -2633,7 +2615,7 @@
 			<review min="20" max="50" slope="30" />
 			<speed min="28" max="49" slope="25" />
 		</scripttemplate>
-		<scripttemplate product="16" licence_type="1" guid="TheRob-Script-Show-GeburtdesSenders">
+		<scripttemplate product="3" licence_type="1" guid="TheRob-Script-Show-GeburtdesSenders">
 			<title>
 				<de>Geburt des Senders</de>
 				<en>Birth of the channel</en>
