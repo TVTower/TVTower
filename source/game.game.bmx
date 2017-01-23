@@ -768,6 +768,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			if broadcast.isControllable() then Throw "controllable!"
 			'disable availability
 			broadcast.data.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, True)
+			'does not affect betty (if set to be trash/paid somewhen)
+			broadcast.data.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORED_BY_BETTY, True)
 
 			currentHour:+ currentLicence.getData().getBlocks()
 

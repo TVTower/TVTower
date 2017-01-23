@@ -16,7 +16,6 @@ Type TAwardCulture extends TAwardBase
 	'how important are news for the award
 	Global newsWeight:float = 0.25
 	
-	Global _registeredListeners:TLink[]
 	Global _eventListeners:TLink[]
 	
 
@@ -82,6 +81,8 @@ Type TAwardCulture extends TAwardBase
 		'for now only handle "programmes", not "infomercials"
 		local programme:TProgramme = TProgramme(broadcastMaterial)
 		if not programme or programme.owner < 0 then return 0
+		'not of interest for us?
+		if programme.SourceHasBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORED_BY_AWARDS) then return 0
 
 
 		'calculate score:
@@ -129,6 +130,8 @@ Type TAwardCulture extends TAwardBase
 		For local i:int = 0 until newsShow.news.length
 			local news:TNews = TNews(newsShow.news[i])
 			if not news or news.GetGenre() <> TVTNewsGenre.CULTURE then continue
+			'not of interest for us?
+			if news.SourceHasBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORED_BY_AWARDS) then continue
 
 			local newsPoints:Float = 1000 * news.GetQuality() * TNewsShow.GetNewsSlotWeight(i)
 			local newsPointsMod:Float = 1.0

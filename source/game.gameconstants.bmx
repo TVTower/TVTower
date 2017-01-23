@@ -290,8 +290,10 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	Const ALWAYS_LIVE:int = 512
 
 	Const IGNORE_PLAYERDIFFICULTY:int = 1024
+	Const IGNORED_BY_BETTY:int = 2048
+	Const IGNORED_BY_AWARDS:int = 4096
 
-	Const count:int = 11
+	Const count:int = 13
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -313,6 +315,8 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 			case  256	return 9
 			case  512	return 10
 			case 1024	return 11
+			case 2048	return 12
+			case 4096	return 13
 		End Select
 		return 0
 	End Function

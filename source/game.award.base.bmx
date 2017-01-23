@@ -20,9 +20,11 @@ Type TAwardBaseCollection Extends TGameObjectCollection
 	Method New()
 		'create the basic award creator ("UNDEFINED")
 		if awardCreatorFunctionCount = 0
+			print "Creating ~qundefined~q-award!"
 			AddAwardCreatorFunction("undefined", TAwardBase.CreateAwardBase )
 		endif
 	End Method
+	
 	
 	'override
 	Function GetInstance:TAwardBaseCollection()

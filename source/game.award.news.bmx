@@ -8,7 +8,6 @@ TAwardBaseCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardTy
 
 
 Type TAwardNews extends TAwardBase
-	Global _registeredListeners:TLink[]
 	Global _eventListeners:TLink[]
 	
 
@@ -75,6 +74,9 @@ Type TAwardNews extends TAwardBase
 		For local i:int = 0 until newsShow.news.length
 			local news:TNews = TNews(newsShow.news[i])
 			if not news then continue
+			'not of interest for us?
+			if news.SourceHasBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORED_BY_AWARDS) then continue
+
 
 			local newsPoints:Float = 1000 * news.GetQuality() * TNewsShow.GetNewsSlotWeight(i)
 			local newsPointsMod:Float = 1.0
