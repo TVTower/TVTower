@@ -68,6 +68,8 @@ Type TAwardNews extends TAwardBase
 		'- genres like "yellow press" (or movies/showbizz) reduce points
 		'  (jury thinks they are better than others)
 		'- there are 3 news slots, so sum them all up and divide by 3
+		'- bonus for premiering/first-broadcast news
+		'- exclusive stories get a bonus
 		'  this also takes care of empty slots (1.0 + 0.0 + 0.0 becomes 0.3)
 
 		local allPoints:Float = 0.0
@@ -93,6 +95,10 @@ Type TAwardNews extends TAwardBase
 						newsPointsMod :- 0.1
 					endif
 			End Select
+
+			'not aired before? (this is also considered in news.GetQuality() !)
+			if news.newsEvent.GetTimesBroadcasted() = 0 then newsPointsMod :+ 0.1
+			if news.SourceHasBroadcastFlag(TVTBroadcastMaterialSourceFlag.EXCLUSIVE_TO_ONE_OWNER) then newsPointsMod :+ 0.1
 
 			allPoints :+ Max(0, newsPoints * newsPointsMod)
 		Next

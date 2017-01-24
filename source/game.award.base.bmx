@@ -129,7 +129,7 @@ print "RONNY: UpdateAwards() GerDaysRun zurueckstellen!!"
 					local awardEndTime:Long = GetWorldTime().MakeTime( 0, GetWorldTime().GetOnDay() + 2, 23, 59)
 
 print "RONNY: UpdateAwards() TYP-Limitierung entfernen!"
-awardType = TVTAwardType.CUSTOMPRODUCTION
+awardType = TVTAwardType.AUDIENCE
 					nextAward = CreateAward(awardType, awardEndTime)
 				endif
 
