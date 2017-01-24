@@ -909,10 +909,8 @@
 					<host attribute="humor" value="0.1" />
 					<host attribute="charisma" value="0.15" />
 					<host attribute="appearance" value="0.1" />
-					<actor attribute="humor" value="0.1" />
-					<actor attribute="appearance" value="0.1" />
-					<supportingactor attribute="humor" value="0.1" />
-					<supportingactor attribute="appearance" value="0.1" />
+					<guest attribute="humor" value="0.1" />
+					<guest attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="101" name="show_politics" outcome-mod="0.2" review-mod="0.6" speed-mod="0.2">
@@ -957,10 +955,8 @@
 					<host attribute="humor" value="0.1" />
 					<host attribute="charisma" value="0.15" />
 					<host attribute="appearance" value="0.1" />
-					<actor attribute="charisma" value="0.1" />
-					<actor attribute="appearance" value="0.1" />
-					<supportingactor attribute="charisma" value="0.1" />
-					<supportingactor attribute="appearance" value="0.1" />
+					<guest attribute="charisma" value="0.1" />
+					<guest attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="102" name="show_music" outcome-mod="0.3" review-mod="0.4" speed-mod="0.3">
@@ -1005,12 +1001,9 @@
 					<host attribute="humor" value="0.1" />
 					<host attribute="charisma" value="0.15" />
 					<host attribute="appearance" value="0.3" />
-					<actor attribute="humor" value="0.1" />
-					<actor attribute="charisma" value="0.1" />
-					<actor attribute="appearance" value="0.3" />
-					<supportingactor attribute="charisma" value="0.1" />
-					<supportingactor attribute="humor" value="0.1" />
-					<supportingactor attribute="appearance" value="0.3" />
+					<guest attribute="humor" value="0.1" />
+					<guest attribute="charisma" value="0.1" />
+					<guest attribute="appearance" value="0.3" />
 				</castAttributes>
 			</genre>
 			<genre id="103" name="show_talk" outcome-mod="0.2" review-mod="0.30" speed-mod="0.50">
@@ -1055,15 +1048,59 @@
 					<host attribute="humor" value="0.1" />
 					<host attribute="charisma" value="0.15" />
 					<host attribute="appearance" value="0.1" />
-					<actor attribute="humor" value="0.1" />
-					<actor attribute="charisma" value="0.1" />
-					<actor attribute="appearance" value="0.1" />
-					<supportingactor attribute="charisma" value="0.1" />
-					<supportingactor attribute="humor" value="0.1" />
-					<supportingactor attribute="appearance" value="0.1" />
+					<guest attribute="humor" value="0.1" />
+					<guest attribute="charisma" value="0.1" />
+					<guest attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
-
+			<genre id="102" name="show_music" outcome-mod="0.3" review-mod="0.2" speed-mod="0.5">
+				<goodFollower>5,9,100,102</goodFollower>
+				<badFollower>6,101,201</badFollower>
+				<timeMods>
+					<timeMod time="0" value="0.05"/>
+					<timeMod time="1" value="0"/>
+					<timeMod time="2" value="0"/>
+					<timeMod time="3" value="0"/>
+					<timeMod time="4" value="0"/>
+					<timeMod time="5" value="0"/>
+					<timeMod time="6" value="0"/>
+					<timeMod time="7" value="0"/>
+					<timeMod time="8" value="0"/>
+					<timeMod time="9" value="0"/>
+					<timeMod time="10" value="0"/>
+					<timeMod time="11" value="0"/>
+					<timeMod time="12" value="0"/>
+					<timeMod time="13" value="0"/>
+					<timeMod time="14" value="0"/>
+					<timeMod time="15" value="0"/>
+					<timeMod time="16" value="0"/>
+					<timeMod time="17" value="0.05"/>
+					<timeMod time="18" value="0.1"/>
+					<timeMod time="19" value="0.15"/>
+					<timeMod time="20" value="0.2"/>
+					<timeMod time="21" value="0.2"/>
+					<timeMod time="22" value="0.2"/>
+					<timeMod time="23" value="0.1"/>
+				</timeMods>
+				<audienceAttractions>
+					<audienceAttraction id="Children" value="0" />
+					<audienceAttraction id="Teenagers" value="0.4" />
+					<audienceAttraction id="HouseWives" men="0.4" women="0.5" />
+					<audienceAttraction id="Employees" men="0.1" women="0.2" />
+					<audienceAttraction id="Unemployed" men="0.4" women="0.5" />
+					<audienceAttraction id="Manager" men="-0.1" women="0" />
+					<audienceAttraction id="Pensioners" men="0.2" women="0.3" />
+				</audienceAttractions>
+				<castAttributes>
+					<host attribute="humor" value="0.2" />
+					<host attribute="charisma" value="0.15" />
+					<host attribute="appearance" value="0.3" />
+					<guest attribute="humor" value="0.15" />
+					<guest attribute="charisma" value="0.1" />
+					<guest attribute="appearance" value="0.5" />
+				</castAttributes>
+			</genre>
+			
 			<genre id="200" name="event" outcome-mod="0" review-mod="0.5" speed-mod="0.5">
 				<goodFollower>5,9,11</goodFollower>
 				<badFollower>8,12</badFollower>
@@ -1144,8 +1181,7 @@
 					<audienceAttraction id="Pensioners" value="0.5" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="charisma" value="0.1" />
-					<supportingactor attribute="charisma" value="0.1" />
+					<guest attribute="charisma" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="202" name="event_music" outcome-mod="0.15" review-mod="0.35" speed-mod="0.5">
@@ -1187,10 +1223,8 @@
 					<audienceAttraction id="Pensioners" value="0.4" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="humor" value="0.1" />
-					<actor attribute="appearance" value="0.1" />
-					<supportingactor attribute="humor" value="0.1" />
-					<supportingactor attribute="appearance" value="0.1" />
+					<guest attribute="humor" value="0.1" />
+					<guest attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="203" name="event_sport" outcome-mod="0.15" review-mod="0.3" speed-mod="0.55">
@@ -1270,10 +1304,8 @@
 					<audienceAttraction id="Pensioners" men="0" women="0.2" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="humor" value="0.1" />
-					<actor attribute="appearance" value="0.1" />
-					<supportingactor attribute="humor" value="0.1" />
-					<supportingactor attribute="appearance" value="0.1" />
+					<guest attribute="humor" value="0.1" />
+					<guest attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="300" name="feature" outcome-mod="0.1" review-mod="0.4" speed-mod="0.5">

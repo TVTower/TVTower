@@ -2194,7 +2194,7 @@ Type TProgrammeLicenceFilter
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([18])			'western
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([0])			'undefined
 		'show/event -> all categories
-		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([100, 101, 102, 103, 200, 201, 202, 203, 204]).SetCaption("PROGRAMME_GENRE_SHOW_AND_EVENTS")
+		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([100, 101, 102, 103, 104, 200, 201, 202, 203, 204]).SetCaption("PROGRAMME_GENRE_SHOW_AND_EVENTS")
 		CreateVisible().SetDataFlag(TVTProgrammeDataFlag.LIVE)						'live
 '		CreateVisible().SetDataFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])	'Trash + Yellow Press
 

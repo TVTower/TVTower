@@ -26,7 +26,6 @@ Type TVTGameConstants {_exposeToLua}
 	Field AchievementCategory:TVTAchievementCategory = new TVTAchievementCategory 
 
 	Field NewsType:TVTNewsType = new TVTNewsType
-	Field NewsHandling:TVTNewsHandling = new TVTNewsHandling
 	Field NewsGenre:TVTNewsGenre = new TVTNewsGenre
 	Field GameObjectEffect:TVTGameModifierBase = new TVTGameModifierBase
 
@@ -123,13 +122,6 @@ Type TVTNewsType {_exposeToLua}
 	Const FollowingNews:int = 2
 End Type
 
-
-
-
-Type TVTNewsHandling {_exposeToLua}
-	Const FixMessage:Int = 1
-	Const DynamicMessage:Int = 2
-End Type
 
 
 
@@ -293,7 +285,10 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	Const IGNORED_BY_BETTY:int = 2048
 	Const IGNORED_BY_AWARDS:int = 4096
 
-	Const count:int = 13
+	'news could be exclusive (investigation done by one tv channel)
+	Const EXCLUSIVE_TO_ONE_OWNER:Int = 8192
+
+	Const count:int = 14
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -317,6 +312,7 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 			case 1024	return 11
 			case 2048	return 12
 			case 4096	return 13
+			case 8192	return 14
 		End Select
 		return 0
 	End Function
@@ -695,6 +691,7 @@ Type TVTProgrammeGenre {_exposeToLua}
 	Const Show_Politics:int = 101	'Polit-Talks
 	Const Show_Music:int = 102		'Music shows ("Best of the 50s")
 	Const Show_Talk:int = 103		'Generic talks ("smalltalk")
+	Const Show_Game:int = 104		'Game shows (Quizzes, Wheel of Luck, Guess the Price)
 
 	'Event-Genre 200+
 	Const Event:int	= 200			'generic events
@@ -712,7 +709,7 @@ Type TVTProgrammeGenre {_exposeToLua}
 
 	Function GetAtIndex:int(index:int)
 		if index >= 0 and index <= 18 then return index
-		if index >= 100 and index <= 102 then return index
+		if index >= 100 and index <= 104 then return index
 		if index >= 200 and index <= 204 then return index
 		if index >= 300 and index <= 301 then return index
 		return -1
@@ -743,6 +740,7 @@ Type TVTProgrammeGenre {_exposeToLua}
 			case "show"                 return SHOW
 			case "show_music"		    return SHOW_MUSIC
 			case "show_politics"	    return SHOW_POLITICS
+			case "show_game"	        return SHOW_GAME
 			'event-genre 200+
 			case "event"                return EVENT
 			case "event_politics"       return EVENT_POLITICS
