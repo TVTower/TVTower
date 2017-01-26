@@ -31,18 +31,14 @@ Type TScreenHandler_ProgrammePlanner
 
 	Global _eventListeners:TLink[]
 	Global screenName:string = "screen_office_programmeplanner"
+	Global programmePlannerBackgroundOriginal:TImage
 
 
 	Function Initialize:Int()
 		Local screen:TScreen = ScreenCollection.GetScreen(screenName)
 		If Not screen Then Return False
 		
-		'add gfx to background image
-		If Not DrawnOnProgrammePlannerBG
-			InitProgrammePlannerBackground()
-			DrawnOnProgrammePlannerBG = True
-		EndIf
-		
+
 
 		'=== create gui elements if not done yet
 		If GuiListProgrammes
@@ -203,6 +199,12 @@ Type TScreenHandler_ProgrammePlanner
 			ProgrammePlannerButtons[4].SetCaption(GetLocale("PLANNER_ACHIEVEMENTS"))
 			ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_UNKNOWN"))
 		EndIf
+
+		'add gfx to background image
+'		If Not DrawnOnProgrammePlannerBG
+			InitProgrammePlannerBackground()
+'			DrawnOnProgrammePlannerBG = True
+'		EndIf
 	End Function
 
 
@@ -377,22 +379,7 @@ Type TScreenHandler_ProgrammePlanner
 
 
 	Function DrawSlotHints()
-		Local hintColor:TColor = New TColor.CreateGrey(100)
-		Local f:TBitmapFont = GetBitmapFont("default", 10)
-		Local oldA:Float = GetAlpha()
-		Local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
-
-		SetAlpha 0.5 * oldA
-		For Local i:Int = 0 To 23
-			'skip drawing the hint, if something is on this slot (on that day)
-			If plan.GetObject(TVTBroadcastMaterialType.PROGRAMME, planningDay, i) Then Continue
-			If i > 0 and i <= 6
-				f.DrawBlock(GetLocale("NIGHTTIME")+Chr(13)+"|color=120,100,100|("+GetLocale("LOW_AUDIENCE")+")|/color|", 45 + 10, 5 + i*30 + 3, 205 - 2*10, 30, ALIGN_LEFT_TOP, hintColor)
-			ElseIf i >= 19 And i <= 23
-				f.DrawBlock(GetLocale("PRIMETIME")+Chr(13)+"|color=100,120,100|("+GetLocale("HIGH_AUDIENCE")+")|/color|", 380 + 10, 5 + (i-12)*30 + 3, 205 - 2*10, 30, ALIGN_LEFT_TOP, hintColor)
-			EndIf
-		Next
-		SetAlpha oldA
+		'nothing for noe
 	End Function
 	
 
@@ -1796,10 +1783,29 @@ endrem
 
 	'add gfx to background
 	Function InitProgrammePlannerBackground:Int()
-		Local roomImg:TImage             = GetSpriteFromRegistry("screen_bg_programmeplanner").parent.image
-		Local Pix:TPixmap                = LockImage(roomImg)
+		Local roomImg:TImage = GetSpriteFromRegistry("screen_bg_programmeplanner").parent.image
+		'create backup if not existing
+		if not programmePlannerBackgroundOriginal
+			'either use our CopyImage() command - or a simpler one for
+			'static background images:
+			programmePlannerBackgroundOriginal = LoadImage(LockImage(roomImg).Copy())
+		else
+			'restore backup before
+			roomImg = programmePlannerBackgroundOriginal
+			GetSpriteFromRegistry("screen_bg_programmeplanner").parent.image = roomImg
+		endif
+		Local Pix:TPixmap = LockImage(roomImg)
+		if Pix.format <> PF_RGB888
+			TLogger.Log("TScreenHandler_ProgrammePlanner.InitProgrammePlannerBackground()", "Converted ~qscreen_bg_programmeplanner~q color space to RGB.", LOG_DEBUG)
+			'convert it (attention: adjusts pix pointer)
+			Pix = Pix.convert(PF_RGB888)
+			'and store it in the image again (we just changed reference)
+			roomImg.SetPixmap(0, Pix)
+		endif
+
 		Local gfx_ProgrammeBlock1:TImage = GetSpriteFromRegistry("pp_programmeblock1").GetImage()
-		Local gfx_AdBlock1:TImage        = GetSpriteFromRegistry("pp_adblock1").GetImage()
+		Local gfx_AdBlock1:TImage = GetSpriteFromRegistry("pp_adblock1").GetImage()
+
 
 		'block"shade" on bg
 		Local shadeColor:TColor = TColor.CreateGrey(200, 0.3)
@@ -1817,7 +1823,6 @@ endrem
 		Local fontColor:TColor = TColor.CreateGrey(240)
 
 		SetAlpha 0.75
-
 		'only hour, not hour:00
 		For Local i:Int = 0 To 11
 			'right side
@@ -1828,6 +1833,33 @@ endrem
 			GetBitmapFontManager().baseFontBold.DrawBlock( text, 6, 5 + i * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
 		Next
 		SetAlpha 1.0
+
+
+
+		'=== DRAW HINTS FOR PRIMETIME/NIGHTTIME ===
+		Local hintColor:TColor = New TColor.CreateGrey(75)
+		Local hintColorGood:TColor = New TColor.Create(60,110,60)
+		Local hintColorBad:TColor = New TColor.Create(110,60,60)
+		Local f:TBitmapFont = GetBitmapFont("default", 10)
+		Local fB:TBitmapFont = GetBitmapFont("default", 10, BOLDFONT)
+		Local oldA:Float = GetAlpha()
+
+		For Local i:Int = 0 To 23
+			If i > 0 and i <= 6
+				SetAlpha 0.8 * oldA
+				fB.DrawBlock(GetLocale("NIGHTTIME"), 48, 5 + i*30, 205 - 2*10, 15, ALIGN_LEFT_CENTER, hintColor)
+				SetAlpha 0.7 * oldA
+				f.DrawBlock(GetLocale("LOW_AUDIENCE"), 48, 5 + i*30 + 15, 205 - 2*10, 15, ALIGN_LEFT_CENTER, hintColorBad)
+			ElseIf i >= 19 And i <= 23
+				SetAlpha 0.8 * oldA
+				fB.DrawBlock(GetLocale("PRIMETIME"), 383, 5 + (i-12)*30, 205 - 2*10, 15, ALIGN_LEFT_CENTER, hintColor)
+				SetAlpha 0.7 * oldA
+				f.DrawBlock(GetLocale("HIGH_AUDIENCE"), 383, 5 + (i-12)*30 + 15, 205 - 2*10, 15, ALIGN_LEFT_CENTER, hintColorGood)
+			EndIf
+		Next
+
+		SetAlpha oldA
+
 
 		'reset target for font
 		TBitmapFont.setRenderTarget(Null)
