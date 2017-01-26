@@ -9,6 +9,8 @@ Import "game.gameconstants.bmx"
 Type TAwardBaseCollection Extends TGameObjectCollection
 	Field currentAward:TAwardBase
 	Field upcomingAwards:TList = CreateList()
+	Field nextAwardTime:Long = -1
+	Field timeBetweenAwards:Int = 0
 	Field lastAwardWinner:Int = 0
 	Field lastAwardType:Int = 0
 
@@ -44,14 +46,8 @@ Type TAwardBaseCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method CreateAward:TAwardBase(awardType:int, endTime:Long)
-		local awardTypeString:string = TVTAwardType.GetAsString(awardType)
-		local award:TAwardBase = RunAwardCreatorFunction(awardTypeString)
-		if award
-			award.SetEndTime(endTime)
-			print "CreateAward:  type="+awardTypeString+" ["+awardType+"] "+"  ends="+ GetWorldTime().GetFormattedGameDate(endTime) +"  now="+GetWorldTime().GetFormattedGameDate()
-		endif
-		return award
+	Method CreateAward:TAwardBase(awardType:int)
+		return RunAwardCreatorFunction( TVTAwardType.GetAsString(awardType) )
 	End Method
 
 
@@ -78,28 +74,8 @@ Type TAwardBaseCollection Extends TGameObjectCollection
 	End Method
 
 
-	Function SortAwardsByBeginDate:int(o1:object, o2:object)
-		local a1:TAwardBase = TAwardBase(o1)
-		local a2:TAwardBase = TAwardBase(o2)
-		if not a2 then return 1
-		if not a1 then return -1
-
-		if a1.startTime > a2.startTime then return 1
-		if a1.startTime < a2.startTime then return -1
-
-		return 0
-	End Function
-
-
-	Method GetNextAward:TAwardBase(sortUpcoming:int = False)
+	Method GetNextAward:TAwardBase()
 		if not upcomingAwards then return Null
-		
-		'sort upcoming awards so topmost is the next one
-		'(do it here so it takes account of potentially adjusted
-		' begin times of the contained awards)
-		if sortUpcoming
-			upcomingAwards.Sort(true, SortAwardsByBeginDate)
-		endif
 		
 		return TAwardBase(upcomingAwards.First())
 	End Method
@@ -109,31 +85,75 @@ Type TAwardBaseCollection Extends TGameObjectCollection
 		'if new day, not start day
 '		If GetWorldTime().GetDaysRun() >= 1
 		If GetWorldTime().GetDaysRun() >= 0
-			'need to create a new award?
-			If not currentAward or currentAward.GetEndTime() < GetWorldTime().GetTimeGone()
 print "RONNY: UpdateAwards() GerDaysRun zurueckstellen!!"
-				'announce the winner
-				if currentAward then currentAward.Finish()
 
-				'fetch the next award (and sort upcoming list before)
-				local nextAward:TAwardBase = GetNextAward(true)
+			'=== FINISH CURRENT AWARD ===
+			If currentAward and currentAward.GetEndTime() < GetWorldTime().GetTimeGone()
+				'announce the winner and set time for next start
+				if currentAward
+					currentAward.Finish()
+					currentAward = null
+				endif
+			EndIf
 
+
+			'=== CREATE NEW AWARD ===
+			If not currentAward and nextAwardTime <= GetWorldTime().GetTimeGone()
+				local nextAward:TAwardBase = GetNextAward()
+
+				'create or fetch next award
 				if nextAward
 					RemoveUpcoming(nextAward)
-
-				'create a new award if there is nothingplanned - or the
-				'next one is later than X days
 				else
-					local awardType:int = RandRange(1, TVTAwardType.count)
-					'end in ~3 days (2 days + 23h59m)
-					local awardEndTime:Long = GetWorldTime().MakeTime( 0, GetWorldTime().GetOnDay() + 2, 23, 59)
+					local awardType:int
+					'avoid AwardCustomProduction as first award in a game
+					if GetCount() = 0
+						Repeat
+							awardType = RandRange(1, TVTAwardType.count)
+						Until awardType <> TVTAwardType.CUSTOMPRODUCTION
+					else
+						awardType = RandRange(1, TVTAwardType.count)
+					endif
 
-print "RONNY: UpdateAwards() TYP-Limitierung entfernen!"
-awardType = TVTAwardType.AUDIENCE
-					nextAward = CreateAward(awardType, awardEndTime)
+					'local awardType:int = TVTAwardType.AUDIENCE
+					nextAward = CreateAward(awardType)
 				endif
 
+				'adjust next award config
+				nextAward.SetStartTime( nextAwardTime )
+				nextAward.SetEndTime( nextAward.CalculateEndTime(nextAwardTime) )
+
+				'set current award
 				SetCurrentAward(nextAward)
+
+				'pre-create the next award if needed
+				if not GetNextAward()
+					local awardType:int = RandRange(1, TVTAwardType.count)
+					
+					AddUpcoming( CreateAward(awardType) )
+				endif
+
+
+				'calculate next award time
+
+				'set random waiting time for next award 
+				timeBetweenAwards = TWorldTime.HOURLENGTH * RandRange(12,36)
+
+				'set time to the next 0:00 coming _after the waiting
+				'time is gone (or use that midnight if exactly 0:00)
+				local nextTimeExact:Long = nextAward.GetEndTime() + timeBetweenAwards
+				if GetWorldTime().GetDayHour(nextTimeExact) = 0 and GetWorldTime().GetDayMinute(nextTimeExact) = 0
+					nextAwardTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(nextTimeExact), 0, 0)
+				else
+					nextAwardTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(nextTimeExact)+1, 0, 0)
+				endif
+
+
+				if nextAward
+					local awardTypeString:string = TVTAwardType.GetAsString(nextAward.awardType)
+					print "SetCurrentAward: type="+awardTypeString+" ["+nextAward.awardType+"] "+"  ends="+ GetWorldTime().GetFormattedGameDate(nextAward.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate()
+					print "                 next="+GetWorldTime().GetFormattedGameDate(nextAwardTime)
+				endif
 			End If
 		endif
 	End Method
@@ -191,6 +211,7 @@ Type TAwardBase extends TGameObject
 	Field awardType:Int = 0
 	Field startTime:Long = -1
 	Field endTime:Long = -1
+	Field duration:Int = -1
 	'cached values
 	Field _scoreSum:int = -1 {nosave}
 	Field scoringMode:int = 1
@@ -243,6 +264,32 @@ Type TAwardBase extends TGameObject
 
 	Method SetEndTime(time:Long)
 		Self.endTime = time
+	End Method
+
+
+	Method CalculateEndTime:Long(nowTime:Long = -1)
+		local wt:TWorldTime = GetWorldTime()
+		local durationHours:int = wt.GetHour(GetDuration())
+
+		'round now to full hour
+		local now:Long = GetWorldTime().MakeTime( 0, 0, wt.GetHour(nowTime) + (wt.GetDayMinute(nowTime)>0), 0, 0)
+
+		'end time is minute before next full hour
+		return GetWorldtime().ModifyTime(now, 0, 0, Max(0, durationHours-1), 59)
+	End Method
+
+
+	Method SetDuration(duration:Int)
+		Self.duration = duration
+	End Method
+
+
+	Method GetDuration:int()
+		if duration = -1
+			'1 day
+			duration = GetWorldTime().MakeTime(0, 1, 0, 0) 
+		endif
+		return duration
 	End Method
 
 

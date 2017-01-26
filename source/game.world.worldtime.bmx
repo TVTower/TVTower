@@ -269,7 +269,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	Method GetHour:int(useTime:Double = -1.0) {_exposeToLua}
 		if Long(useTime) <= 0 then useTime = _timeGone
 
-		return floor(useTime / (DAYLENGTH/24))
+		return floor(useTime / HOURLENGTH)
 	End Method
 
 

@@ -39,6 +39,15 @@ Type TAwardCustomProduction extends TAwardBase
 	End Method
 
 
+	Method GetDuration:int()
+		if duration = -1
+			'2days
+			duration = GetWorldTime().MakeTime(0, 2, 0, 0) 
+		endif
+		return duration
+	End Method
+	
+
 	Method Finish()
 		Super.Finish()
 
