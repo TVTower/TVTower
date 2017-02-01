@@ -11,6 +11,8 @@ Type TGameConfig {_exposeToLua}
 	Field nonInterfaceRect:TRectangle = new TRectangle.Init(0,0, 800,385)
 	Field isChristmasTime:int = False
 	Field devGUID:string
+	Field _values:TData
+	Field _modifiers:TData
 
 	Method IsObserved:int(obj:object)
 		if not observerMode then return False
@@ -29,6 +31,24 @@ Type TGameConfig {_exposeToLua}
 		observedObject = obj
 
 		return True
+	End Method
+
+
+	Method GetValues:TData()
+		if not _values then _values = new TData
+		return _values
+	End Method
+
+
+	Method GetModifier:Float(key:string, defaultValue:Float=1.0)
+		if not _modifiers then return defaultValue
+		return _modifiers.GetFloat(key, defaultValue)
+	End Method
+
+
+	Method SetModifier(key:string, value:Float)
+		if not _modifiers then _modifiers = new TData
+		_modifiers.AddNumber(key, value)
 	End Method
 End Type
 
