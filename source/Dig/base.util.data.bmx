@@ -226,6 +226,16 @@ Type TData
 	End Method
 
 
+	Method AddBool:TData(key:string, bool:int)
+		if bool
+			Add( key, "TRUE")
+		else
+			Add( key, "FALSE")
+		endif
+		return self
+	End Method
+
+
 	Method Remove:object(key:object)
 		local removed:object = Get(key)
 		data.Remove(key)
