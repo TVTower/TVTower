@@ -3,8 +3,10 @@ Import "Dig/base.util.event.bmx"
 Import "game.award.base.bmx"
 Import "game.broadcast.base.bmx"
 Import "game.broadcastmaterial.base.bmx"
+Import "game.player.finance.bmx"
 
-TAwardBaseCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardType.AUDIENCE), TAwardAudience.CreateAwardAudience )
+
+TAwardCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardType.AUDIENCE), TAwardAudience.CreateAwardAudience )
 
 
 'AwardAudience:
@@ -14,7 +16,9 @@ TAwardBaseCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardTy
 '  broadcasting area" instead of the absolute "AudienceQuote" (people/map)
 '  (so during nighttimes lower scores are reached)
 '- news audiences are taken into account too
-Type TAwardAudience extends TAwardBase
+Type TAwardAudience extends TAward
+	Field rewardMoney:int = 100000
+	
 	'how important are news for the award
 	Global newsWeight:float = 0.25
 	
@@ -46,8 +50,22 @@ Type TAwardAudience extends TAwardBase
 	End Method
 
 
+	'override
+	Method Finish:int()
+		if not Super.Finish() then return False
+
+		local winningPlayerID:int = GetCurrentWinner()
+		if winningPlayerID <= 0 then return False
+		
+		local finance:TPlayerFinance = GetPlayerFinance( winningPlayerID )
+		if not finance then return False
+			
+		finance.EarnGrantedBenefits(rewardMoney)
+	End Method
+	
+
 	Function onBeforeFinishAllNewsShowBroadcasts:int(triggerEvent:TEventBase)
-		local currentAward:TAwardAudience = TAwardAudience(GetAwardBaseCollection().GetCurrentAward())
+		local currentAward:TAwardAudience = TAwardAudience(GetAwardCollection().GetCurrentAward())
 		if not currentAward then return False
 
 		local broadcasts:TBroadcastMaterial[] = TBroadcastMaterial[](triggerEvent.GetData().Get("broadcasts"))
@@ -66,7 +84,7 @@ Type TAwardAudience extends TAwardBase
 
 
 	Function onBeforeFinishAllProgrammeBlockBroadcasts:int(triggerEvent:TEventBase)
-		local currentAward:TAwardAudience = TAwardAudience(GetAwardBaseCollection().GetCurrentAward())
+		local currentAward:TAwardAudience = TAwardAudience(GetAwardCollection().GetCurrentAward())
 		if not currentAward then return False
 
 		local broadcasts:TBroadcastMaterial[] = TBroadcastMaterial[](triggerEvent.GetData().Get("broadcasts"))

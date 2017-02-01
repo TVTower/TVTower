@@ -799,10 +799,12 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 	End Method
 	
 
-	Method Init:TGameModifierNews_TriggerNews(data:TData, index:string="")
+	Method Init:TGameModifierNews_TriggerNews(data:TData, extra:TData=null)
 		if not data then return null
 
 		'local source:TNewsEvent = TNewsEvent(data.get("source"))
+		local index:string = ""
+		if extra and extra.GetInt("childIndex") > 0 then index = extra.GetInt("childIndex")
 		local triggerNewsGUID:string = data.GetString("news"+index, data.GetString("news", ""))
 		if triggerNewsGUID = "" then return Null
 
@@ -912,12 +914,12 @@ Type TGameModifierNews_TriggerNewsChoice extends TGameModifierChoice
 	
 
 	'override to care for triggerProbability
-	Method Init:TGameModifierNews_TriggerNewsChoice(data:TData, index:string)
-		Super.Init(data, index)
+	Method Init:TGameModifierNews_TriggerNewsChoice(data:TData, extra:TData=null)
+		Super.Init(data, extra)
 
 
 		'load defaults
-		local template:TGameModifierNews_TriggerNews = new TGameModifierNews_TriggerNews.Init(data, "")
+		local template:TGameModifierNews_TriggerNews = new TGameModifierNews_TriggerNews.Init(data, null)
 		if not template then template = new TGameModifierNews_TriggerNews
 
 		triggerProbability = template.triggerProbability
@@ -969,7 +971,7 @@ Type TGameModifierNews_ModifyAvailability extends TGameModifierBase
 	End Method
 
 
-	Method Init:TGameModifierNews_ModifyAvailability(data:TData, index:string="")
+	Method Init:TGameModifierNews_ModifyAvailability(data:TData, extra:TData=null)
 		if not data then return null
 
 		newsGUID = data.GetString("news", "")
@@ -980,7 +982,7 @@ Type TGameModifierNews_ModifyAvailability extends TGameModifierBase
 
 
 	'override
-	Method UndoFunc:int()
+	Method UndoFunc:int(params:TData)
 		local newsEvent:TNewsEvent = TNewsEvent(GetNewsEventCollection().GetByGUID( newsGUID ))
 		if not newsEvent
 			print "TGameModifierNews_ModifyAvailability: Undo failed, newsEvent ~q"+newsGUID+"~q not found."
@@ -1029,7 +1031,7 @@ Type TGameModifierNews_Attribute extends TGameModifierBase
 	End Method
 
 
-	Method Init:TGameModifierNews_Attribute(data:TData, index:string="")
+	Method Init:TGameModifierNews_Attribute(data:TData, extra:TData=null)
 		if not data then return null
 
 		newsGUID = data.GetString("news", "")
@@ -1084,7 +1086,7 @@ Type TGameModifierNews_Attribute extends TGameModifierBase
 
 
 	'override
-	Method UndoFunc:int()
+	Method UndoFunc:int(params:TData)
 		local newsEvent:TNewsEvent = GetNewsEvent()
 		if not newsEvent then return False
 
@@ -1107,6 +1109,6 @@ Type TGameModifierNews_Attribute extends TGameModifierBase
 End Type
 		
 
-GameModifierCreator.RegisterModifier("TriggerNews", new TGameModifierNews_TriggerNews)
-GameModifierCreator.RegisterModifier("TriggerNewsChoice", new TGameModifierNews_TriggerNewsChoice)
-GameModifierCreator.RegisterModifier("ModifyNewsAvailability", new TGameModifierNews_ModifyAvailability)
+GetGameModifierManager().RegisterCreateFunction("TriggerNews", TGameModifierNews_TriggerNews.CreateNewInstance)
+GetGameModifierManager().RegisterCreateFunction("TriggerNewsChoice", TGameModifierNews_TriggerNewsChoice.CreateNewInstance)
+GetGameModifierManager().RegisterCreateFunction("ModifyNewsAvailability", TGameModifierNews_ModifyAvailability.CreateNewInstance)

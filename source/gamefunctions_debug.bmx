@@ -1,5 +1,6 @@
 ﻿
 Global debugAudienceInfos:TDebugAudienceInfos = New TDebugAudienceInfos
+Global debugModifierInfos:TDebugModifierInfos = New TDebugModifierInfos
 Global debugProgrammePlanInfos :TDebugProgrammePlanInfos = new TDebugProgrammePlanInfos
 Global debugProgrammeCollectionInfos :TDebugProgrammeCollectionInfos = new TDebugProgrammeCollectionInfos
 Global debugPlayerControls :TDebugPlayerControls = new TDebugPlayerControls
@@ -1046,5 +1047,36 @@ Type TDebugFinancialInfos
 		font.Draw("~tLic:~t~t|color=120,255,120|"+TFunctions.dottedValue(finance.income_programmeLicences)+"|/color| / |color=255,120,120|"+TFunctions.dottedValue(finance.expense_programmeLicences), textX, textY)
 		textY :+ 9
 		font.Draw("~tAd:~t~t|color=120,255,120|"+TFunctions.dottedValue(finance.income_ads)+"|/color| / |color=255,120,120|"+TFunctions.dottedValue(finance.expense_penalty), textX, textY)
+	End Method
+End Type
+
+
+
+Type TDebugModifierInfos
+	Method Update(x:int, y:int)
+	End Method
+
+	Method Draw(x:int=0, y:int=0)
+		SetColor 0,0,0
+		DrawRect(x, y, 200, 350)
+
+		SetColor 255,255,255
+
+		local textX:int = x+1
+		local textY:int = y+1
+
+		local font:TBitmapfont = GetBitmapFont("default", 10)
+		font.Draw("Modifiers", textX, textY)
+		textY :+ 12
+
+		local data:TData = GameConfig._modifiers
+		if data
+			for local k:TLowerString = eachIn data.data.Keys()
+				font.Draw(k.ToString(), textX, textY)
+				textY :+ 10
+				font.Draw("    =    "+ data.GetString(k.ToString()), textX, textY)
+				textY :+ 10
+			next
+		endif
 	End Method
 End Type

@@ -66,6 +66,7 @@ Type TAchievementCollection
 		
 
 	'=== TASKS ===
+	
 	Method GetTask:TAchievementTask(guid:string)
 		return TAchievementTask(tasks.GetByGUID(guid))
 	End Method

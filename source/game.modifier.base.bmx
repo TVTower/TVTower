@@ -1,87 +1,187 @@
 Rem
 	Contains:
 		TGameModifierBase
-		TGameModifierGroup
-		TGameModifier_TimeLimited extends TGameModifierBase
-		TGameModifierTimeFrame
 		TGameModifierBaseCreator
+		TGameModifierGroup
+		TGameModifierCondition
+		TGameModifierCondition_TimeLimited extends TGameModifierCondition
 EndRem	
 SuperStrict
 Import "Dig/base.util.data.bmx"
 Import "Dig/base.util.mersenne.bmx"
 Import "game.world.worldtime.bmx"
-
-'as game modifiers are stored in savegames, we need a way to decouple
-'function pointers from saved objects
-'We store all theses functions in a collection and retrieve them via
-'individual keys/identifiers
-
-Type TGameModifierFunctionsCollection
-	Field functions:TMap = CreateMap()
-	Global _instance:TGameModifierFunctionsCollection
+Import "game.gameconfig.bmx"
 
 
-	Function GetInstance:TGameModifierFunctionsCollection()
-		if not _instance then _instance = new TGameModifierFunctionsCollection
+TGameModifierManager.RegisterCreateFunction("Modifier.Base", TGameModifierBase.CreateNewInstance)
+TGameModifierManager.RegisterCreateFunction("Modifier.GameConfig", TGameModifier_GameConfig.CreateNewInstance)
+
+
+'handles managed game modifiers (eg. time constrained ones)
+Type TGameModifierManager
+	Field modifiers:TList = new TList
+	'functions cannot get serialized, so they need to be created in
+	'advance - and cross all old and coming instances
+	Global functions:TMap = CreateMap() {nosave}
+	Global _instance:TGameModifierManager
+
+
+	Function GetInstance:TGameModifierManager()
+		if not _instance then _instance = new TGameModifierManager
 		return _instance
 	End Function
 
 
-	Method RegisterRunFunction(key:string, func:int(source:TGameModifierBase, params:TData))
-		key = "run_"+key.ToLower()
-		if functions.Contains(key) then return
-
-		functions.Insert(key, new TGameModifierRunFunction.Init(key, func))
+	Method Initialize:int()
+		modifiers.Clear()
 	End Method
 
 
-	Method RegisterUndoFunction(key:string, func:int(source:TGameModifierBase))
-		key = "undo_"+key.ToLower()
-		if functions.Contains(key) then return
+	Method Add:int(modifier:TGameModifierBase)
+		if modifiers.Contains(modifier) then return False
 
-		functions.Insert(key, new TGameModifierUndoFunction.Init(key, func))
+		modifiers.AddLast(modifier)
+		return True
 	End Method
 
 
-	Method GetRunFunction:TGameModifierRunFunction(key:string)
-		return TGameModifierRunFunction(functions.ValueForKey("run_"+key.ToLower()))
+	Method Remove:Int(modifier:TGameModifierBase)
+		return modifiers.Remove(modifier)
 	End Method
 
 
-	Method GetUndoFunction:TGameModifierUndoFunction(key:string)
-		return TGameModifierUndoFunction(functions.ValueForKey("undo_"+key.ToLower()))
+	Method GetCount:int()
+		return modifiers.count()
+	End Method
+
+
+
+	'=== CREATORS ===
+	'anonymous creator of effects
+	'approach allows easy creation of effect-type-instances the caller
+	'does not need to know - allows sharing of effects between various
+	'classes
+
+	'register an effect by passing the name + creator function
+	Function RegisterCreateFunction(modifierName:string, func:TGameModifierBase())
+		functions.Insert("create_"+modifierName.ToLower(), new TGameModifierCreatorFunctionWrapper.Init(func))
+	End Function
+
+
+	Function Create:TGameModifierBase(modifierName:string)
+		local wrapper:TGameModifierCreatorFunctionWrapper = TGameModifierCreatorFunctionWrapper(functions.ValueForKey("create_"+modifierName.Tolower() ))
+		if wrapper
+			return wrapper.func()
+		endif
+		return null
+	End Function
+
+
+	Function CreateAndInit:TGameModifierBase(modifierName:string, params:TData, extra:TData=null)
+		local wrapper:TGameModifierCreatorFunctionWrapper = TGameModifierCreatorFunctionWrapper(functions.ValueForKey("create_"+modifierName.Tolower() ))
+		if wrapper
+			return wrapper.func().Init(params, extra)
+		endif
+		return null
+	End Function
+
+
+	'=== FUNCTION-WRAPPER ===
+
+	Function RegisterFunction(key:string, func:int(source:TGameModifierBase, params:TData))
+		'override a potentially existing one!
+		functions.Insert(key.ToLower(), new TGameModifierFunctionWrapper.Init(func))
+	End Function
+
+
+	Function RegisterRunFunction(key:string, func:int(source:TGameModifierBase, params:TData))
+		functions.Insert("run_"+key.ToLower(), new TGameModifierFunctionWrapper.Init(func))
+	End Function
+
+
+	Function RegisterUndoFunction(key:string, func:int(source:TGameModifierBase, params:TData))
+		functions.Insert("undo_"+key.ToLower(), new TGameModifierFunctionWrapper.Init(func))
+	End Function
+
+
+	Function GetFunction:TGameModifierFunctionWrapper(key:string)
+		return TGameModifierFunctionWrapper(functions.ValueForKey(key.ToLower()))
+	End Function
+	
+
+	Function GetRunFunction:TGameModifierFunctionWrapper(key:string)
+		return TGameModifierFunctionWrapper(functions.ValueForKey("run_"+key.ToLower()))
+	End Function
+
+
+	Function GetUndoFunction:TGameModifierFunctionWrapper(key:string)
+		return TGameModifierFunctionWrapper(functions.ValueForKey("undo_"+key.ToLower()))
+	End Function
+
+
+	Function RunFunction:int(key:string, source:TGameModifierBase, params:TData)
+		local wrapper:TGameModifierFunctionWrapper = TGameModifierFunctionWrapper(functions.ValueForKey(key.ToLower()))
+		if wrapper then return wrapper.func(source, params)
+		return False
+	End Function
+
+
+	Function RunRunFunction:int(key:string, source:TGameModifierBase, params:TData)
+		local wrapper:TGameModifierFunctionWrapper = TGameModifierFunctionWrapper(functions.ValueForKey("run_"+key.ToLower()))
+		if wrapper then return wrapper.func(source, params)
+		return False
+	End Function
+
+
+	Function RunUndoFunction:int(key:string, source:TGameModifierBase, params:TData)
+		local wrapper:TGameModifierFunctionWrapper = TGameModifierFunctionWrapper(functions.ValueForKey("undo_"+key.ToLower()))
+		if wrapper then return wrapper.func(source, params)
+		return False
+	End Function
+
+
+	'=== MODIFIER FUNCTIONS ===
+
+	Method Update()
+		local toRemove:TGameModifierBase[]
+		For local modifier:TGameModifierBase = EachIn modifiers
+			'execute run(), undo() and so on
+			modifier.Update()
+
+			if modifier.HasExpired() then toRemove :+ [modifier]
+		Next
+		For local modifier:TGameModifierBase = EachIn toRemove
+			modifiers.remove(modifier)
+		Next
 	End Method
 End Type
 
-'===== CONVENIENCE ACCESSOR =====
+
 'return collection instance
-Function GetGameModifierFunctionsCollection:TGameModifierFunctionsCollection()
-	Return TGameModifierFunctionsCollection.GetInstance()
+Function GetGameModifierManager:TGameModifierManager()
+	Return TGameModifierManager.GetInstance()
 End Function
 
 
 
 
-Type TGameModifierRunFunction
-	Field key:string
+'as game modifiers are stored in savegames, we need a way to decouple
+'function pointers from saved objects
+'We store all theses functions in a collection and retrieve them via
+'individual keys/identifiers
+Type TGameModifierFunctionWrapper
 	Field func:int(source:TGameModifierBase, params:TData)
 
-	Method Init:TGameModifierRunFunction(key:string, func:int(source:TGameModifierBase, params:TData))
-		self.key = key.ToLower()
+	Method Init:TGameModifierFunctionWrapper(func:int(source:TGameModifierBase, params:TData))
 		self.func = func
 		return self
 	End Method
-End Type	
+End Type
 
+Type TGameModifierCreatorFunctionWrapper
+	Field func:TGameModifierBase()
 
-
-
-Type TGameModifierUndoFunction
-	Field key:string
-	Field func:int(source:TGameModifierBase)
-
-	Method Init:TGameModifierUndoFunction(key:string, func:int(source:TGameModifierBase))
-		self.key = key.ToLower()
+	Method Init:TGameModifierCreatorFunctionWrapper(func:TGameModifierBase())
 		self.func = func
 		return self
 	End Method
@@ -93,10 +193,15 @@ End Type
 'base effect class (eg. for newsevents, programmedata, adcontractbases)
 Type TGameModifierBase
 	Field data:TData
+	Field conditions:TGameModifierCondition[]
 	'constant value of TVTGameModifierBase (CHANGETREND, TERRORISTATTACK, ...)
 	Field modifierTypes:int = 0
-	Field _customRunFuncKey:string
-	Field _customUndoFuncKey:string
+	Field _flags:int = 0
+
+	Const FLAG_PERMANENT:int = 1
+	Const FLAG_ACTIVATED:int = 2
+	Const FLAG_EXPIRED:int = 4
+	Const FLAG_EXPIRATION_DISABLED:int = 8
 
 
 	Function CreateNewInstance:TGameModifierBase()
@@ -104,8 +209,16 @@ Type TGameModifierBase
 	End Function
 
 
+	Method Init:TGameModifierBase(data:TData, extra:TData=null)	
+		'by default ignore "children"
+		if extra and extra.GetInt("childIndex") > 0 then return null
+		
+		return self
+	End Method
+
+
 	Method Copy:TGameModifierBase()
-		local clone:TGameModifierBase = new TGameModifierBase
+		local clone:TGameModifierBase = new self
 		clone.CopyBasefrom(self)
 		return clone
 	End Method
@@ -113,17 +226,69 @@ Type TGameModifierBase
 
 	Method CopyBaseFrom:TGameModifierBase(base:TGameModifierBase)
 		'only works for numeric/strings!
-		data = base.data.copy()
+		if base.data
+			data = base.data.copy()
+		else
+			data = null
+		endif
 		modifierTypes = base.modifierTypes
+
+		if not base.conditions or base.conditions.length = 0
+			conditions = null
+		else
+			conditions = new TGameModifierCondition[base.conditions.length]
+			For local i:int = 0 until base.conditions.length
+				conditions[i] = base.conditions[i].Copy()
+			Next
+		endif
 	End Method
 
 
+	Method HasFlag:Int(flag:Int)
+		Return (_flags & flag) <> 0
+	End Method
 
-	Method Init:TGameModifierBase(data:TData, index:string="")	
-		'by default ignore indexes <> "" (aka "children")
-		if index <> "" and index <> "0" then return null
-		
-		return self
+
+	Method SetFlag(flag:Int, enable:Int=True)
+		If enable
+			_flags :| flag
+		Else
+			_flags :& ~flag
+		EndIf
+	End Method
+
+
+	Method GetConditionIndex:int(condition:TGameModifierCondition)
+		if not conditions or conditions.length = 0 then return -1
+		For local i:int = 0 until conditions.length
+			if conditions[i] = condition then return i
+		Next
+		return -1
+	End Method
+
+
+	Method HasCondition:int(condition:TGameModifierCondition)
+		if not conditions or conditions.length = 0 then return False
+		For local i:int = 0 until conditions.length
+			if conditions[i] = condition then return True
+		Next
+		return False
+	End Method
+
+
+	Method AddCondition:int(condition:TGameModifierCondition)
+		if HasCondition(condition) then return False
+		conditions :+ [condition]
+		return True
+	End Method
+
+
+	Method ConditionsFulfilled:int()
+		if not conditions then return True
+		For local c:TGameModifierCondition = EachIn conditions
+			if not c.IsFulfilled() then return False
+		Next
+		return True
 	End Method
 
 
@@ -156,20 +321,10 @@ Type TGameModifierBase
 
 
 	Method HasExpired:int()
-		return False
+		return HasFlag(FLAG_EXPIRED)
 	End Method
 
 
-	Method HasBegun:int()
-		return True
-	End Method
-
-
-	Method Expire:int()
-		'eg. undo things here
-	End Method
-
-	
 	Method SetData(data:TData)
 		local oldName:string = GetName()
 		self.data = data
@@ -185,47 +340,165 @@ Type TGameModifierBase
 	End Method
 
 
-	Method SatisfiesConditions:int(params:TData)
+	Method Update:int()
+		local conditionsOK:int = ConditionsFulfilled()
+		'run if not done yet and needed
+		if not HasFlag(FLAG_ACTIVATED)
+			if conditionsOK
+				Run(null)
+			endif
+		endif
+
+		'undo/expire if needed (might happen in same Update()-call as the
+		'run() above
+		if HasFlag(Flag_ACTIVATED)
+			if not HasFlag(FLAG_EXPIRATION_DISABLED) and (not conditions or not conditionsOK)
+				if not HasFlag(FLAG_PERMANENT)
+					Undo(null)
+				endif
+
+				if HasFlag(FLAG_EXPIRATION_DISABLED)
+					return True
+				else
+					SetFlag(FLAG_EXPIRED, True)
+					return False
+				endif
+			endif
+		endif
+
 		return True
 	End Method
 
 
 	'call to undo the changes - if possible
-	Method Undo:int()
-		if _customUndoFuncKey
-			local wrapper:TGameModifierUndoFunction = GetGameModifierFunctionsCollection().GetUndoFunction(_customUndoFuncKey)
-			if wrapper then return wrapper.func(self)
+	Method Undo:int(params:TData)
+		'skip if not run before
+		if not HasFlag(FLAG_ACTIVATED) then return False
+
+		local result:int
+		if data and data.GetString("customUndoFuncKey")
+			result = GetGameModifierManager().RunUndoFunction(data.GetString("customUndoFuncKey"), self, params)
+		else
+			result = UndoFunc(params)
 		endif
 
-		return UndoFunc()
+		'mark as not-run
+		SetFlag(FLAG_ACTIVATED, False)
+
+		return result
 	End Method
 
 
 	'call to handle/emit the modifier/effect
 	Method Run:int(params:TData)
-		if not SatisfiesConditions(params) then return False
+		'skip if already running
+		If HasFlag(FLAG_ACTIVATED) then return False
 
-		if _customRunFuncKey
-			local wrapper:TGameModifierRunFunction = GetGameModifierFunctionsCollection().GetRunFunction(_customRunFuncKey)
-			if wrapper then return wrapper.func(self, params)
+		local result:int
+		if data and data.GetString("customRunFuncKey")
+			result = GetGameModifierManager().RunRunFunction(data.GetString("customRunFuncKey"), self, params)
+		else
+			result = RunFunc(params)
 		endif
 
-		return RunFunc(params)
+		'mark as run
+		SetFlag(FLAG_ACTIVATED, True)
+		
+		return result
 	End Method
 
 
-	Method UndoFunc:int()
+	Method UndoFunc:int(params:TData)
+		print "UndoFunc: " + ToString()
+
+		return True
 	End Method
+	
 
 	'override this function in custom types
 	Method RunFunc:int(params:TData)
-		print ToString()
-		print "data: "+GetData().ToString()
-		print "params: "+params.ToString()
+		print "RunFunc: " +ToString()
+		print "   data: "+GetData().ToString()
+		if params
+			print " params: "+params.ToString()
+		endif
 	
 		return True
 	End Method
 End Type
+
+
+
+
+Type TGameModifier_GameConfig extends TGameModifierBase
+	Function CreateNewInstance:TGameModifier_GameConfig()
+		return new TGameModifier_GameConfig
+	End Function
+
+
+	Method Init:TGameModifier_GameConfig(data:TData, extra:TData=null)
+		if not super.Init(data, extra) then return null
+		
+		if data then self.data = data.copy()
+		
+		return self
+	End Method
+
+
+	Method ToString:string()
+		return "TGameModifier_GameConfig ("+GetName()+")"
+	End Method
+
+
+	Method UndoFunc:int(params:TData)
+		local modKey:string = GetData().GetString("modifierKey")
+		if not modKey then return False
+
+		local valueChange:Float = GetData().GetFloat("value.change", 0.0)
+		if valueChange = 0.0 then return False
+
+		local valueBackup:Float = GetData().GetFloat("value.backup")
+		local value:Float = GameConfig.GetModifier(modKey)
+		local relative:Float = GetData().GetBool("relative")
+
+		'restore
+		GameConfig.SetModifier(modKey, value - valueChange)
+
+		print "TGameModifier_GameConfig: restored ~q"+modKey+"~q. value "+value+" => "+GameConfig.GetModifier(modKey)
+	
+		return True
+	End Method
+	
+
+	'override this function in custom types
+	Method RunFunc:int(params:TData)
+		local modKey:string = GetData().GetString("modifierKey")
+		if not modKey then return False
+
+		local value:Float = GetData().GetFloat("value", 0.0)
+		if value = 0.0 then return False
+
+		local valueBackup:Float = GameConfig.GetModifier(modKey)
+		local relative:Float = GetData().GetBool("relative")
+
+		'backup
+		GetData().AddNumber("value.backup", valueBackup)
+
+		'adjust
+		if relative
+			GetData().AddNumber("value.change", valueBackup * value)
+			GameConfig.SetModifier(modKey, valueBackup * (1+value))
+		else
+			GetData().AddNumber("value.change", value)
+			GameConfig.SetModifier(modKey, valueBackup + value)
+		endif
+
+		print "TGameModifier_GameConfig: modified ~q"+modKey+"~q. value "+valueBackup+" => "+GameConfig.GetModifier(modKey)
+	
+		return True
+	End Method
+End Type
+
 
 
 
@@ -413,7 +686,7 @@ Type TGameModifierChoice extends TGameModifierBase
 	End Method 
 
 
-	Method Init:TGameModifierChoice(data:TData, index:string)
+	Method Init:TGameModifierChoice(data:TData, extra:TData=null)
 		if data.GetString("choose").ToLower() = "or"
 			chooseType = CHOOSETYPE_OR
 		else
@@ -421,7 +694,7 @@ Type TGameModifierChoice extends TGameModifierBase
 		endif
 
 		'only load child-options for the parental one
-		if index = "" then LoadChoices(data)
+		if not extra or extra.GetInt("childIndex") = 0 then LoadChoices(data)
 
 		return self
 	End Method
@@ -431,10 +704,12 @@ Type TGameModifierChoice extends TGameModifierBase
 		'load children
 		local childIndex:int = 0 
 		local child:TGameModifierBase
+		local extra:TData = new TData
 		Repeat
 			childIndex :+1
+			extra.AddNumber("childIndex", childIndex)
 			'create the choice based on the defined type for the children
-			child = CreateNewChoiceInstance().Init(data, childIndex)
+			child = CreateNewChoiceInstance().Init(data, extra)
 			if child
 				self.modifiers :+ [child]
 				self.modifiersProbability :+ [1]
@@ -472,80 +747,52 @@ End Type
 
 
 
-'base modifier class (eg. for newsevents, programmedata, adcontractbases)
-Type TGameModifier_TimeLimited extends TGameModifierBase
-	Field timeFrame:TGameModifierTimeFrame = new TGameModifierTimeFrame
-	Field expired:int = False
 
+Type TGameModifierCondition
+	Field enabled:int = True
 
-	Function CreateNewInstance:TGameModifier_TimeLimited()
-		return new TGameModifier_TimeLimited
-	End Function
+	Method Copy:TGameModifierCondition()
+		local clone:TGameModifierCondition = new TGameModifierCondition
+		clone.enabled = enabled
 
-
-	Method Copy:TGameModifier_TimeLimited()
-		local clone:TGameModifier_TimeLimited = new TGameModifier_TimeLimited
-		clone.CopyBaseFrom(self)
-		clone.timeFrame = self.timeFrame.Copy()
-		clone.expired = self.expired
 		return clone
-	End Method 
-
-
-	Method HasExpired:int()
-		if not timeFrame or expired then return True
-
-		return timeFrame.HasExpired()
 	End Method
 
 
-	Method HasBegun:int()
-		if not timeFrame or expired then return True
-
-		return timeFrame.HasBegun()
-	End Method
-	
-
-	Method Run:int(params:TData)
-		if expired then return False
-		
-		if timeFrame and timeFrame.HasExpired()
-			Undo()
-			expired = True
+	Method CopyBaseFrom:TGameModifierCondition(origin:TGameModifierCondition)
+		if origin
+			self.enabled = origin.enabled
 		endif
 
-		return Super.Run(params)
+		return self
 	End Method
 
 
-	'override this function in custom types
-	Method RunFunc:int(params:TData)
-		if timeFrame and timeFrame.HasExpired() 
-			Throw "Try to run an expired modifier"
-			return False
-		endif
-		
-		print ToString()
-		print "params: "+params.ToString()
-	
-		return True
+	Method Disable:int()
+		enabled = False
+	End Method
+
+
+	Method IsFulfilled:int()
+		return enabled = True
 	End Method
 End Type
 
 
 
 
-Type TGameModifierTimeFrame
+Type TGameModifierCondition_TimeLimit extends TGameModifierCondition
 	Field timeBegin:Long = -1
 	Field timeEnd:Long = -1
 	Field timeDuration:int = -1
 
-
-	Method Copy:TGameModifierTimeFrame()
-		local clone:TGameModifierTimeFrame = new TGameModifierTimeFrame
+	Method Copy:TGameModifierCondition_TimeLimit()
+		local clone:TGameModifierCondition_TimeLimit = new TGameModifierCondition_TimeLimit
+		clone.CopyBaseFrom(self)
 		clone.timeBegin = self.timeBegin
 		clone.timeEnd = self.timeEnd
 		clone.timeDuration = self.timeDuration
+
 		return clone
 	End Method 
 
@@ -562,47 +809,15 @@ Type TGameModifierTimeFrame
 
 	Method SetTimeBegin_Auto(timeType:int, timeValues:int[])
 		SetTimeBegin( GetWorldTime().CalcTime_Auto(timeType, timeValues) )
-	End Method	
-
-
-	Method HasExpired:int()
-		if timeEnd >= 0
-			if timeEnd < GetWorldTime().GetTimeGone() then return True
-		endif
-		return False
 	End Method
 
 
-	Method HasBegun:int()
-		if timeBegin >= 0 then return timeBegin < GetWorldTime().GetTimeGone()
+	Method IsFulfilled:int()
+		if not Super.IsFulfilled() then return False
+		'started running?
+		if timeBegin >= 0 and timeBegin > GetWorldTime().GetTimeGone() then return False
+		'still running
+		if timeEnd >= 0 and timeEnd < GetWorldTime().GetTimeGone() then return False
 		return True
 	End Method
 End Type
-
-
-
-'anonymous creator of effects
-'approach allows easy creation of effect-type-instances the caller
-'does not need to know - allows sharing of effects between various
-'classes
-Type TGameModifierBaseCreator
-	Field registeredModifiers:TMap = CreateMap()
-
-	'register an effect by passing the name + creator function
-	Method RegisterModifier(modifierName:string, modifier:TGameModifierBase)
-		registeredModifiers.insert(modifierName.ToLower(), modifier)
-	End Method
-
-
-	Method CreateModifier:TGameModifierBase(modifierName:string, data:TData)
-		local modifier:TGameModifierBase = TGameModifierBase(registeredModifiers.ValueForKey( modifierName.Tolower() ))
-		if modifier
-			'create/return a specific instance (of the same type)
-			return modifier.CreateNewInstance().Init(data, "")
-		endif
-		return null
-	End Method
-End Type
-
-Global GameModifierCreator:TGameModifierBaseCreator = New TGameModifierBaseCreator
-

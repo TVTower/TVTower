@@ -4,7 +4,7 @@ Import "game.award.base.bmx"
 Import "game.broadcastmaterial.news.bmx"
 Import "game.broadcastmaterial.programme.bmx"
 
-TAwardBaseCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardType.CULTURE), TAwardCulture.CreateAwardCulture )
+TAwardCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardType.CULTURE), TAwardCulture.CreateAwardCulture )
 
 
 'AwardCulture:
@@ -12,7 +12,7 @@ TAwardBaseCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardTy
 'Score is given for:
 '- broadcasting culture programmes
 '- broadcasting culture news
-Type TAwardCulture extends TAwardBase
+Type TAwardCulture extends TAward
 	'how important are news for the award
 	Global newsWeight:float = 0.25
 	
@@ -44,8 +44,37 @@ Type TAwardCulture extends TAwardBase
 	End Method
 
 
+	'override
+	'add temporary culture-boost
+	Method Finish:int()
+		if not Super.Finish() then return False
+
+
+		local winningPlayerID:int = GetCurrentWinner()
+		if winningPlayerID > 0
+			local modifier:TGameModifierBase = GetGameModifierManager().Create("Modifier.GameConfig")
+			local mConfig:TData = new TData
+			mConfig.AddString("name", "CultureBoost")
+			mConfig.AddString("modifierKey", "player"+winningPlayerID+".TVTProgrammeDataFlag."+TVTProgrammeDataFlag.CULTURE)
+			mConfig.AddNumber("value", 0.1)
+			mConfig.AddBool("relative", True)
+
+			'activate for 1 day
+			local mTimeCondition:TGameModifierCondition_TimeLimit = new TGameModifierCondition_TimeLimit
+			mTimeCondition.SetTimeBegin( GetWorldTime().GetTimeGone() )
+			mTimeCondition.SetTimeEnd( GetWorldTime().GetTimeGone() + 1 * TWorldTime.DAYLENGTH )
+
+			modifier.Init(mConfig)
+			modifier.AddCondition(mTimeCondition)
+			GetGameModifierManager().Add( modifier )
+		endif
+		
+		return True
+	End Method
+
+
 	Function onBeforeFinishAllNewsShowBroadcasts:int(triggerEvent:TEventBase)
-		local currentAward:TAwardCulture = TAwardCulture(GetAwardBaseCollection().GetCurrentAward())
+		local currentAward:TAwardCulture = TAwardCulture(GetAwardCollection().GetCurrentAward())
 		if not currentAward then return False
 
 		local broadcasts:TBroadcastMaterial[] = TBroadcastMaterial[](triggerEvent.GetData().Get("broadcasts"))
@@ -59,7 +88,7 @@ Type TAwardCulture extends TAwardBase
 
 
 	Function onBeforeFinishAllProgrammeBlockBroadcasts:int(triggerEvent:TEventBase)
-		local currentAward:TAwardCulture = TAwardCulture(GetAwardBaseCollection().GetCurrentAward())
+		local currentAward:TAwardCulture = TAwardCulture(GetAwardCollection().GetCurrentAward())
 		if not currentAward then return False
 
 		local broadcasts:TBroadcastMaterial[] = TBroadcastMaterial[](triggerEvent.GetData().Get("broadcasts"))

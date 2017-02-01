@@ -3,11 +3,11 @@ Import "Dig/base.util.event.bmx"
 Import "game.award.base.bmx"
 Import "game.broadcastmaterial.news.bmx"
 
-TAwardBaseCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardType.NEWS), TAwardNews.CreateAwardNews )
+TAwardCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardType.NEWS), TAwardNews.CreateAwardNews )
 
 
 
-Type TAwardNews extends TAwardBase
+Type TAwardNews extends TAward
 	Global _eventListeners:TLink[]
 	
 
@@ -41,7 +41,7 @@ Type TAwardNews extends TAwardBase
 	'Method Finish()
 
 	Function onBeforeFinishAllNewsShowBroadcasts:int(triggerEvent:TEventBase)
-		local currentAward:TAwardNews = TAwardNews(GetAwardBaseCollection().GetCurrentAward())
+		local currentAward:TAwardNews = TAwardNews(GetAwardCollection().GetCurrentAward())
 		if not currentAward then return False
 
 		local broadcasts:TBroadcastMaterial[] = TBroadcastMaterial[](triggerEvent.GetData().Get("broadcasts"))

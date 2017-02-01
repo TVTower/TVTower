@@ -4,14 +4,14 @@ Import "game.award.base.bmx"
 Import "game.broadcastmaterial.news.bmx"
 Import "game.broadcastmaterial.programme.bmx"
 
-TAwardBaseCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardType.CUSTOMPRODUCTION), TAwardCustomProduction.CreateAwardCustomProduction )
+TAwardCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardType.CUSTOMPRODUCTION), TAwardCustomProduction.CreateAwardCustomProduction )
 
 
 'AwardCustomProduction:
 'Produce the best programmes of all channels.
 'Score is given for:
 '- the best of the productions done within the time
-Type TAwardCustomProduction extends TAwardBase
+Type TAwardCustomProduction extends TAward
 	Field bestLicences:TProgrammeLicence[]
 	Global _eventListeners:TLink[]
 	
@@ -74,7 +74,7 @@ Type TAwardCustomProduction extends TAwardBase
 
 
 	Function onProductionFinalize:int(triggerEvent:TEventBase)
-		local currentAward:TAwardCustomProduction = TAwardCustomProduction(GetAwardBaseCollection().GetCurrentAward())
+		local currentAward:TAwardCustomProduction = TAwardCustomProduction(GetAwardCollection().GetCurrentAward())
 		if not currentAward then return False
 
 		local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("programmelicence"))

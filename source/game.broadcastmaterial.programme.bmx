@@ -392,6 +392,36 @@ print "Trash Strafe: " + penalty.ToString()
 	End Method	
 
 
+	'override
+	'add game modifier support
+	Method GetFlagsMod:Float()
+		local valueMod:Float = Super.GetFlagsMod()
+
+		for local i:int = 0 until TVTProgrammeDataFlag.count
+			if data.HasFlag(TVTProgrammeDataFlag.GetAtIndex(i))
+				valueMod :* GameConfig.GetModifier("TVTProgrammeDataFlag."+TVTProgrammeDataFlag.GetAtIndex(i))
+				valueMod :* GameConfig.GetModifier("player"+GetOwner()+".TVTProgrammeDataFlag."+TVTProgrammeDataFlag.GetAtIndex(i))
+				print "GetFlagsMod: #"+TVTProgrammeDataFlag.GetAtIndex(i)+" -> " + valueMod
+			endif
+		next
+
+		return valueMod
+	End Method
+
+
+	'override
+	'add game modifier support
+	Method GetGenreMod:Float()
+		local valueMod:Float = Super.GetGenreMod()
+
+		valueMod :* GameConfig.GetModifier("TVTProgrammeGenre."+data.GetGenre())
+		valueMod :* GameConfig.GetModifier("player"+GetOwner()+".TVTProgrammeGenre."+data.GetGenre())
+		print "GetGenreMod: #"+data.GetGenre()+" -> " + valueMod
+
+		return valueMod
+	End Method
+
+
 	'helper
 	Method _GetFlagDefinitions:TGenreDefinitionBase[]()
 		local definitions:TMovieFlagDefinition[]

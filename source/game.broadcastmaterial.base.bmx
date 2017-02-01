@@ -282,6 +282,19 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		'add 1 to get a value between 0 - 2
 		Return 1.0 + MathHelper.Clamp(definition.GetPopularity().Popularity / 100.0, -1.0, 1.0 )
 	End Method
+	
+
+	'default implementation
+	'return a value between 0 - 2.0, 1.0 means "no change"
+	Method GetGenreMod:Float()
+		Return 1.0
+	End Method
+
+
+	'default implementation
+	Method GetGenreTimeMod:Float(definition:TGenreDefinitionBase, hour:Int)
+		Return MathHelper.Clamp(definition.TimeMods[hour], 0, 2)
+	End Method
 
 	
 	'default implementation
@@ -363,12 +376,6 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 			Return MathHelper.Clamp( ((quality - 0.5)/6) * (block - 1), -0.2, 0.1)
 		EndIf	
 	End Method
-	
-
-	'default implementation
-	Method GetGenreTimeMod:Float(definition:TGenreDefinitionBase, hour:Int)
-		Return MathHelper.Clamp(definition.TimeMods[hour], 0, 2)
-	End Method
 
 	
 	'default implementation
@@ -402,6 +409,12 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	'default implementation
 	'return a value between 0 - 2.0, 1.0 means "no change"
 	Method GetFlagsPopularityMod:Float()
+		Return 1.0
+	End Method
+
+	'default implementation
+	'return a value between 0 - 2.0, 1.0 means "no change"
+	Method GetFlagsMod:Float()
 		Return 1.0
 	End Method
 	
@@ -550,6 +563,10 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		'good movies increase "perceived" quality on subsequent blocks
 		'bad movies loose on block 2,3...
 		audienceAttraction.QualityOverTimeEffectMod = GetQualityOverTimeEffectMod(audienceAttraction.Quality, block)
+
+		'dynamic (modified by gamemodifiers)
+		audienceAttraction.GenreMod = GetGenreMod()
+		audienceAttraction.FlagsMod = GetFlagsMod()
 
 		'10 - Luck/Random adjustments
 		If withLuckEffect Then audienceAttraction.LuckMod = GetLuckMod()

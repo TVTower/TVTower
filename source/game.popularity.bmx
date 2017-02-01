@@ -285,10 +285,12 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 	End Method
 
 
-	Method Init:TGameModifierPopularity_ModifyPopularity(data:TData, index:string="")
+	Method Init:TGameModifierPopularity_ModifyPopularity(data:TData, extra:TData=null)
 		if not data then return null
 
 		'local source:TNewsEvent = TNewsEvent(data.get("source"))
+		local index:string = ""
+		if extra and extra.GetInt("childIndex") > 0 then index = extra.GetInt("childIndex")
 		local popularityGUID:string = data.GetString("guid"+index, data.GetString("guid", ""))
 		if popularityGUID = "" then return Null
 

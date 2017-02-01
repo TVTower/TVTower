@@ -468,8 +468,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'=== RESET BETTY FEELINGS / AWARDS ===
 		GetBetty().ResetLove(PlayerID)
-		if GetAwardBaseCollection().GetCurrentAward()
-			GetAwardBaseCollection().GetCurrentAward().ResetScore(playerID)
+		if GetAwardCollection().GetCurrentAward()
+			GetAwardCollection().GetCurrentAward().ResetScore(playerID)
 		endif
 		TLogger.Log("ResetPlayer()", "Adjusted Betty love and awards", LOG_DEBUG)
 

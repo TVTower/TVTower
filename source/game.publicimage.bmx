@@ -214,7 +214,7 @@ Type TGameModifierPublicImage_Modify extends TGameModifierBase
 	Field playerID:Int = 0
 	Field value:TAudience
 	Field valueIsRelative:int = False
-	Field conditions:TData
+	Field paramConditions:TData
 	Field logText:string
 
 
@@ -229,14 +229,14 @@ Type TGameModifierPublicImage_Modify extends TGameModifierBase
 		clone.playerID = self.playerID
 		clone.value = new TAudience.SetValuesFrom(value)
 		clone.valueIsRelative = self.valueIsRelative
-		if self.conditions
-			clone.conditions = self.conditions.copy()
+		if self.paramConditions
+			clone.paramConditions = self.paramConditions.copy()
 		endif
 		return clone
 	End Method
 
 
-	Method Init:TGameModifierPublicImage_Modify(data:TData, index:string="")
+	Method Init:TGameModifierPublicImage_Modify(data:TData, extra:TData=null)
 		if not data then return null
 
 		local valueSimple:Float = data.GetFloat("value", 0)
@@ -261,28 +261,28 @@ Type TGameModifierPublicImage_Modify extends TGameModifierBase
 
 		valueIsRelative = data.GetBool("valueIsRelative", False)
 		playerID = data.GetInt("playerID", 0)
-		conditions = data.GetData("conditions", null)
+		paramConditions = data.GetData("conditions", null)
 		logText = data.GetString("log", "")
 
 		return self
 	End Method
 
 
-	Method SatisfiesConditions:int(params:TData)
-		if not conditions then return True
+	Method ParamConditionsFulfilled:int(params:TData)
+		if not paramConditions then return True
 
 		local broadcastingPlayerID:int = params.GetInt("playerID", 0)
 
 		'broadcaster specific conditions
 		if broadcastingPlayerID > 0
-			local playerIDs:string = conditions.GetString("broadcaster_inPlayerIDs", "")
+			local playerIDs:string = paramConditions.GetString("broadcaster_inPlayerIDs", "")
 			if playerIDs <> ""
 				if not StringHelper.InArray(string(broadcastingPlayerID), playerIDs.Replace(" ", "").split(","))
 					return False
 				endif
 			endif 
 
-			local notPlayerIDs:string = conditions.GetString("broadcaster_notInPlayerIDs", "")
+			local notPlayerIDs:string = paramConditions.GetString("broadcaster_notInPlayerIDs", "")
 			if notPlayerIDs <> ""
 				if StringHelper.InArray(string(broadcastingPlayerID), notPlayerIDs.Replace(" ", "").split(","))
 					return False
@@ -291,6 +291,13 @@ Type TGameModifierPublicImage_Modify extends TGameModifierBase
 		endif
 
 		return True
+	End Method
+
+
+	Method Run:int(params:TData)
+		if not ParamConditionsFulfilled(params) then return False
+
+		return Super.Run(params)
 	End Method
 
 
@@ -321,4 +328,4 @@ Type TGameModifierPublicImage_Modify extends TGameModifierBase
 End Type
 	
 
-GameModifierCreator.RegisterModifier("ModifyChannelPublicImage", new TGameModifierPublicImage_Modify)
+GetGameModifierManager().RegisterCreateFunction("ModifyChannelPublicImage", TGameModifierPublicImage_Modify.CreateNewInstance)

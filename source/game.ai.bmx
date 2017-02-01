@@ -21,6 +21,7 @@ Import "game.misc.roomboardsign.bmx"
 Import "game.game.base.bmx"
 
 Import "game.achievements.base.bmx"
+Import "game.award.base.bmx"
 
 Import "game.roomhandler.movieagency.bmx"
 Import "game.roomhandler.adagency.bmx"
@@ -252,6 +253,16 @@ Type TAi extends TAiBase
 		args[0] = TAchievement(achievement)
 
 		CallLuaFunction("CallOnAchievementCompleted", args)
+	End Method
+
+
+	Method CallOnWonAward(award:object)
+		if not AiRunning then return
+
+		Local args:Object[1]
+		args[0] = TAward(award)
+
+		CallLuaFunction("CallOnWonAward", args)
 	End Method
 
 

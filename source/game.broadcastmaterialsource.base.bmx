@@ -136,7 +136,7 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 		local effectTrigger:string = effectData.GetString("trigger").ToLower()
 		if not effectName or not effectTrigger then return False
 
-		local effect:TGameModifierBase = GameModifierCreator.CreateModifier(effectName, effectData)
+		local effect:TGameModifierBase = GetGameModifierManager().CreateAndInit(effectName, effectData)
 		if not effect then return False
 
 		effects.AddEntry(effectTrigger, effect)

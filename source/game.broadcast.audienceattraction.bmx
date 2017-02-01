@@ -23,9 +23,11 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 	Field GenreTimeMod:Float
 
 	'=== DYNAMIC mods ==
-	'(based on broadcast time / popularity )
+	'(based on broadcast time / popularity / modifiers )
+	Field GenreMod:Float = 1.0
 	Field GenrePopularityMod:Float = 1.0
 	Field CastMod:Float = 1.0
+	Field FlagsMod:Float = 1.0
 	Field FlagsPopularityMod:Float = 1.0
 	Field PublicImageMod:TAudience
 	Field MiscMod:TAudience
@@ -96,8 +98,11 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		Quality	:+ audienceAttr.Quality
 		CastMod :+ audienceAttr.CastMod
 		If GenreTargetGroupMod Then GenreTargetGroupMod.Add(audienceAttr.GenreTargetGroupMod)
+		GenreMod :+ audienceAttr.GenreMod
 		GenrePopularityMod :+ audienceAttr.GenrePopularityMod
+		GenreTimeMod :+ audienceAttr.GenreTimeMod
 		If FlagsTargetGroupMod Then FlagsTargetGroupMod.Add(audienceAttr.FlagsTargetGroupMod)
+		FlagsMod :+ audienceAttr.FlagsMod
 		FlagsPopularityMod :+ audienceAttr.FlagsPopularityMod
 		If targetGroupAttractivityMod Then targetGroupAttractivityMod.Add(audienceAttr.targetGroupAttractivityMod)
 		If PublicImageMod Then PublicImageMod.Add(audienceAttr.PublicImageMod)
@@ -105,7 +110,6 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		If MiscMod Then MiscMod.Add(audienceAttr.MiscMod)
 		If AudienceFlowBonus Then AudienceFlowBonus.Add(audienceAttr.AudienceFlowBonus)
 		QualityOverTimeEffectMod :+ audienceAttr.QualityOverTimeEffectMod
-		GenreTimeMod :+ audienceAttr.GenreTimeMod
 		If LuckMod Then MiscMod.Add(audienceAttr.LuckMod)
 		If AudienceFlowBonus Then AudienceFlowBonus.Add(audienceAttr.AudienceFlowBonus)
 
@@ -125,7 +129,9 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		Quality	:* factor
 		CastMod :* factor
 		If GenreTargetGroupMod Then GenreTargetGroupMod.MultiplyFloat(factor)
+		GenreMod :* factor
 		GenrePopularityMod :* factor
+		GenreTimeMod :* factor
 		If FlagsTargetGroupMod Then FlagsTargetGroupMod.MultiplyFloat(factor)
 		FlagsPopularityMod :* factor
 		If targetGroupAttractivityMod Then targetGroupAttractivityMod.MultiplyFloat(factor)
@@ -134,7 +140,6 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		If MiscMod Then MiscMod.MultiplyFloat(factor)
 		If AudienceFlowBonus Then AudienceFlowBonus.MultiplyFloat(factor)
 		QualityOverTimeEffectMod :* factor
-		GenreTimeMod :* factor
 		If LuckMod Then LuckMod.MultiplyFloat(factor)
 		'If NewsShowBonus Then NewsShowBonus.MultiplyFloat(factor)
 		If SequenceEffect Then SequenceEffect.MultiplyFloat(factor)
@@ -153,6 +158,8 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		local result:TAudience = new TAudience.InitValue(1,1)
 		'adjust by genre-time-attractivity: 0.0 - 2.0
 		result.MultiplyFloat(GenreTimeMod)
+		'adjust by
+
 		'limit to 0-x
 		result.CutMinimumFloat(0)
 		return result
@@ -169,12 +176,12 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		'  ex. erotic for male teenagers
 		'  ex. cartoons for children
 		Local _effectiveGenreTargetGroupMod:TAudience = GenreTargetGroupMod.Copy()
-		_effectiveGenreTargetGroupMod.MultiplyFloat(GenrePopularityMod)
+		_effectiveGenreTargetGroupMod.MultiplyFloat(GenrePopularityMod * GenreMod)
 		_effectiveGenreTargetGroupMod.SubtractFloat(1)
 		_effectiveGenreTargetGroupMod.MultiplyFloat(MODINFLUENCE_GENRETARGETGROUP)
 		_effectiveGenreTargetGroupMod.AddFloat(1)
 		Local _effectiveFlagsTargetGroupMod:TAudience = FlagsTargetGroupMod.Copy()
-		_effectiveFlagsTargetGroupMod.MultiplyFloat(FlagsPopularityMod)
+		_effectiveFlagsTargetGroupMod.MultiplyFloat(FlagsPopularityMod * FlagsMod)
 		_effectiveFlagsTargetGroupMod.SubtractFloat(1)
 		_effectiveFlagsTargetGroupMod.MultiplyFloat(MODINFLUENCE_FLAGTARGETGROUP)
 		_effectiveFlagsTargetGroupMod.AddFloat(1)

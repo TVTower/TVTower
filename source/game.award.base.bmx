@@ -1,13 +1,15 @@
 SuperStrict
 Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.logger.bmx"
+Import "Dig/base.util.event.bmx"
 Import "game.world.worldtime.bmx"
-Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx"
+Import "game.gameobject.bmx"
+Import "game.modifier.base.bmx"
 
 
-Type TAwardBaseCollection Extends TGameObjectCollection
-	Field currentAward:TAwardBase
+Type TAwardCollection Extends TGameObjectCollection
+	Field currentAward:TAward
 	Field upcomingAwards:TList = CreateList()
 	Field nextAwardTime:Long = -1
 	Field timeBetweenAwards:Int = 0
@@ -16,42 +18,43 @@ Type TAwardBaseCollection Extends TGameObjectCollection
 
 	Global awardCreatorFunctions:TMap = new TMap
 	Global awardCreatorFunctionCount:int = 0
-	Global _instance:TAwardBaseCollection
+	Global _instance:TAwardCollection
 
 
 	Method New()
 		'create the basic award creator ("UNDEFINED")
 		if awardCreatorFunctionCount = 0
 			print "Creating ~qundefined~q-award!"
-			AddAwardCreatorFunction("undefined", TAwardBase.CreateAwardBase )
+			AddAwardCreatorFunction("undefined", TAward.CreateAward )
 		endif
 	End Method
 	
 	
 	'override
-	Function GetInstance:TAwardBaseCollection()
-		if not _instance then _instance = new TAwardBaseCollection
+	Function GetInstance:TAwardCollection()
+		if not _instance then _instance = new TAwardCollection
 		return _instance
 	End Function
 
 
-	Method Initialize:TAwardBaseCollection()
+	Method Initialize:TAwardCollection()
 		Super.Initialize()
+
 		return self
 	End Method
 
 
-	Method GetByGUID:TAwardBase(GUID:String)
-		Return TAwardBase( Super.GetByGUID(GUID) )
+	Method GetByGUID:TAward(GUID:String)
+		Return TAward( Super.GetByGUID(GUID) )
 	End Method
 
 
-	Method CreateAward:TAwardBase(awardType:int)
+	Method CreateAward:TAward(awardType:int)
 		return RunAwardCreatorFunction( TVTAwardType.GetAsString(awardType) )
 	End Method
 
 
-	Method SetCurrentAward(award:TAwardBase)
+	Method SetCurrentAward(award:TAward)
 		'add if not done yet
 		Add(award)
 
@@ -59,25 +62,25 @@ Type TAwardBaseCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetCurrentAward:TAwardBase()
+	Method GetCurrentAward:TAward()
 		return Self.currentAward
 	End Method
 
 
-	Method AddUpcoming(award:TAwardBase)
+	Method AddUpcoming(award:TAward)
 		upcomingAwards.AddLast(award)
 	End Method
 
 
-	Method RemoveUpcoming(award:TAwardBase)
+	Method RemoveUpcoming(award:TAward)
 		upcomingAwards.Remove(award)
 	End Method
 
 
-	Method GetNextAward:TAwardBase()
+	Method GetNextAward:TAward()
 		if not upcomingAwards then return Null
 		
-		return TAwardBase(upcomingAwards.First())
+		return TAward(upcomingAwards.First())
 	End Method
 
 
@@ -99,7 +102,7 @@ print "RONNY: UpdateAwards() GerDaysRun zurueckstellen!!"
 
 			'=== CREATE NEW AWARD ===
 			If not currentAward and nextAwardTime <= GetWorldTime().GetTimeGone()
-				local nextAward:TAwardBase = GetNextAward()
+				local nextAward:TAward = GetNextAward()
 
 				'create or fetch next award
 				if nextAward
@@ -115,7 +118,7 @@ print "RONNY: UpdateAwards() GerDaysRun zurueckstellen!!"
 						awardType = RandRange(1, TVTAwardType.count)
 					endif
 
-					'local awardType:int = TVTAwardType.AUDIENCE
+					awardType = TVTAwardType.CULTURE
 					nextAward = CreateAward(awardType)
 				endif
 
@@ -159,7 +162,7 @@ print "RONNY: UpdateAwards() GerDaysRun zurueckstellen!!"
 	End Method
 
 
-	Function AddAwardCreatorFunction(awardKey:string, func:TAwardBase())
+	Function AddAwardCreatorFunction(awardKey:string, func:TAward())
 		awardKey = awardKey.ToLower()
 
 		if not awardCreatorFunctions.Contains(awardKey)
@@ -175,7 +178,7 @@ print "RONNY: UpdateAwards() GerDaysRun zurueckstellen!!"
 	End Function
 
 
-	Function RunAwardCreatorFunction:TAwardBase(awardKey:string)
+	Function RunAwardCreatorFunction:TAward(awardKey:string)
 		local wrapper:TAwardCreatorFunctionWrapper = TAwardCreatorFunctionWrapper(awardCreatorFunctions.ValueForKey(awardKey.ToLower()))
 		if wrapper and wrapper.func then return wrapper.func()
 
@@ -186,17 +189,17 @@ End Type
 
 '===== CONVENIENCE ACCESSOR =====
 'return collection instance
-Function GetAwardBaseCollection:TAwardBaseCollection()
-	Return TAwardBaseCollection.GetInstance()
+Function GetAwardCollection:TAwardCollection()
+	Return TAwardCollection.GetInstance()
 End Function
 
 
 
 
 Type TAwardCreatorFunctionWrapper
-	Field func:TAwardBase()
+	Field func:TAward()
 
-	Function Create:TAwardCreatorFunctionWrapper(func:TAwardBase())
+	Function Create:TAwardCreatorFunctionWrapper(func:TAward())
 		local obj:TAwardCreatorFunctionWrapper = new TAwardCreatorFunctionWrapper
 		obj.func = func
 		return obj
@@ -206,13 +209,13 @@ End Type
 
 
 
-Type TAwardBase extends TGameObject
+Type TAward extends TGameObject
 	Field scores:Int[4]
 	Field awardType:Int = 0
 	Field startTime:Long = -1
 	Field endTime:Long = -1
 	Field duration:Int = -1
-	'cached values
+
 	Field _scoreSum:int = -1 {nosave}
 	Field scoringMode:int = 1
 
@@ -228,13 +231,28 @@ Type TAwardBase extends TGameObject
 	End Method
 
 
-	Function CreateAwardBase:TAwardBase()
-		return new TAwardBase
+	Function CreateAward:TAward()
+		return new TAward
 	End Function
 
 
 	Method GenerateGUID:string()
-		return "awardbase-"+id
+		return "award-"+id
+	End Method
+
+
+	Method GetTitle:string()
+		return ""
+	End Method
+
+
+	Method GetText:string()
+		return ""
+	End Method
+
+
+	Method GetRewardText:string()
+		return ""
 	End Method
 
 
@@ -247,8 +265,21 @@ Type TAwardBase extends TGameObject
 	End Method
 
 
-	Method Finish()
+	Method Finish:int()
 		print "finish award"
+
+		local winningPlayerID:int = GetCurrentWinner()
+		EventManager.triggerEvent(TEventSimple.Create("Award.OnFinish", New TData.addNumber("winningPlayerID", winningPlayerID), Self))
+
+		if winningPlayerID > 0
+			'increase image
+			GetGameModifierManager().CreateAndInit("ModifyChannelPublicImage", new TData.AddNumber("value", 2.5)).Run(new TData.AddNumber("playerID", winningPlayerID) )
+
+			'alternatively:
+			'GetPublicImage(winnerID).Modify(0.5)
+		endif
+	
+		return True
 	End Method
 
 

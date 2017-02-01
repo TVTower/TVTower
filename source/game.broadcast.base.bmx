@@ -1382,7 +1382,7 @@ End Type
 
 
 
-Type TGameModifierAudience Extends TGameModifier_TimeLimited
+Type TGameModifierAudience Extends TGameModifierBase
 	Field audienceMod:Float = 0.5
 	Global className:String = "ModifierAudience"
 
@@ -1401,11 +1401,7 @@ Type TGameModifierAudience Extends TGameModifier_TimeLimited
 	
 	
 	Method ToString:String()
-		If timeFrame
-			Return className + ": "+timeFrame.timeBegin +" - " +timeFrame.timeEnd
-		Else
-			Return className + ": expired"
-		EndIf
+		Return className
 	End Method
 
 
@@ -1459,4 +1455,4 @@ Type TGameModifierAudience_Weather Extends TGameModifierAudience
 End Type
 
 
-GameModifierCreator.RegisterModifier("ModifyAudience", New TGameModifierAudience)
+GetGameModifierManager().RegisterCreateFunction("ModifyAudience", TGameModifierAudience.CreateNewInstance)

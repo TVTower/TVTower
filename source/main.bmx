@@ -1,5 +1,5 @@
 ﻿'Application: TVGigant/TVTower
-'Author: Ronny Otto & Manuel Vögele
+'Author: Ronny Otto & Team
 
 SuperStrict
 
@@ -777,6 +777,14 @@ Type TApp
 								GetPlayerProgrammeCollection(1).AddAdContract(New TAdContract.Create(adContractBase), True)
 							endif
 						next
+
+
+						if GetAwardCollection().currentAward
+							print "finish award now"
+							GetAwardCollection().currentAward.AdjustScore(1, 1000)
+							GetAwardCollection().currentAward.SetEndTime( GetWorldTime().GetTimeGone()-1 )
+							GetAwardCollection().UpdateAwards()
+						endif
 												
 						rem
 						local fCheap:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap
@@ -1040,6 +1048,7 @@ endrem
 				If KEYMANAGER.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240*15 ) '240 minute per second
 				If KEYMANAGER.IsHit(KEY_9) Then GetGame().SetGameSpeed( 1*15 )   '1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
+				if KEYMANAGER.IsDown(KEY_LCONTROL) and KEYMANAGER.IsHit(KEY_M) then TVTDebugModifierInfos = 1 - TVTDebugModifierInfos
 
 				If KEYMANAGER.IsHit(KEY_P)
 					if KEYMANAGER.IsDown(KEY_LSHIFT)
@@ -1396,6 +1405,8 @@ endrem
 		'show quotes even without "DEV_OSD = true"
 		elseIf TVTDebugQuoteInfos
 			debugAudienceInfos.Draw()
+		elseIf TVTDebugModifierInfos
+			debugModifierInfos.Draw()
 
 		elseif TVTDebugProgrammePlan
 			local playerID:int = GetPlayerBaseCollection().GetObservedPlayerID()
@@ -1758,7 +1769,7 @@ Type TGameState
 	Field _GameRules:TGamerules = Null
 	Field _GameConfig:TGameConfig = Null
 	Field _Betty:TBetty = Null
-	Field _AwardBaseCollection:TAwardBaseCollection = Null
+	Field _AwardCollection:TAwardCollection = Null
 	Field _NewsEventSportCollection:TNewsEventSportCollection = Null
 
 	Field _GameInformationCollection:TGameInformationCollection = Null
@@ -1882,7 +1893,7 @@ Type TGameState
 
 		GetBetty().Initialize()
 
-		GetAwardBaseCollection().Initialize()
+		GetAwardCollection().Initialize()
 
 		'initialize known room handlers + event registration
 		RegisterRoomHandlers()
@@ -1946,7 +1957,7 @@ Type TGameState
 		_Assign(_StationMapCollection, TStationMapCollection._instance, "StationMapCollection", MODE_LOAD)
 		_Assign(_NewsEventSportCollection, TNewsEventSportCollection._instance, "NewsEventSportCollection", MODE_LOAD)
 		_Assign(_Betty, TBetty._instance, "Betty", MODE_LOAD)
-		_Assign(_AwardBaseCollection, TAwardBaseCollection._instance, "AwardBaseCollection", MODE_LOAD)
+		_Assign(_AwardCollection, TAwardCollection._instance, "AwardCollection", MODE_LOAD)
 		_Assign(_World, TWorld._instance, "World", MODE_LOAD)
 		_Assign(_WorldTime, TWorldTime._instance, "WorldTime", MODE_LOAD)
 		_Assign(_BuildingTime, TBuildingTime._instance, "BuildingTime", MODE_LOAD)
@@ -2061,7 +2072,7 @@ Type TGameState
 		_Assign(TStationMapCollection._instance, _StationMapCollection, "StationMapCollection", MODE_SAVE)
 		_Assign(TNewsEventSportCollection._instance, _NewsEventSportCollection, "NewsEventSportCollection", MODE_SAVE)
 		_Assign(TBetty._instance, _Betty, "Betty", MODE_SAVE)
-		_Assign(TAwardBaseCollection._instance, _AwardBaseCollection, "AwardBaseCollection", MODE_SAVE)
+		_Assign(TAwardCollection._instance, _AwardCollection, "AwardCollection", MODE_SAVE)
 		_Assign(TWorld._instance, _World, "World", MODE_SAVE)
 		_Assign(TAuctionProgrammeBlocks.list, _AuctionProgrammeBlocksList, "AuctionProgrammeBlocks", MODE_Save)
 		'special room data
@@ -3864,6 +3875,7 @@ Type GameEvents
 		_eventListeners :+ [ EventManager.registerListenerFunction("publicAuthorities.onStopXRatedBroadcast", publicAuthorities_onStopXRatedBroadcast) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("publicAuthorities.onConfiscateProgrammeLicence", publicAuthorities_onConfiscateProgrammeLicence) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("Achievement.OnComplete", Achievement_OnComplete) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("Award.OnComplete", Award_OnComplete) ]
 
 		'visually inform that selling the last station is impossible
 		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.onTrySellLastStation", StationMap_OnTrySellLastStation) ]
@@ -3962,6 +3974,7 @@ Type GameEvents
 					case "programmeplan"
 						TVTDebugProgrammePlan = True
 						TVTDebugQuoteInfos = False
+						TVTDebugModifierInfos = False
 				End Select
 				
 			Case "playerai"
@@ -4427,7 +4440,49 @@ Type GameEvents
 		toast.SetText( text )
 		GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
 	End Function
-	
+
+
+	Function Award_OnComplete:Int(triggerEvent:TEventBase)
+		Local award:TAward = TAward(triggerEvent.GetSender())
+		if not award then return False
+
+		Local playerID:Int = triggerEvent.GetData().GetInt("winningPlayerID", 0)
+		if not GetPlayerCollection().IsPlayer(playerID) then return False
+
+		local player:TPlayer = GetPlayer(playerID)
+		if not player then return False
+
+
+		'inform ai
+		If player.isLocalAI() Then player.playerAI.CallOnWonAward(award)
+
+		'only interest in active player's awards
+		If player <> GetPlayer() Then Return False
+
+
+		rem
+			TODO: Bilder fuer toastmessages (+ Preis)
+			 _________
+			|[ ] text |
+			|    text |
+			'---------'
+		endrem
+		local text:string = GetLocale("YOU_WON_AN_AWARD").Replace("%AWARD%", "|b|"+award.GetTitle()+"|/b|")
+		local rewardText:string = award.GetRewardText()
+		if rewardText
+			text :+ "~n|b|" + GetLocale("REWARD") + ":|/b|" + rewardText
+		endif
+
+
+		Local toast:TGameToastMessage = New TGameToastMessage
+		'show it for some seconds
+		toast.SetLifeTime(15)
+		toast.SetMessageType(2) 'positive
+		toast.SetCaption(GetLocale("AWARD_WON"))
+		toast.SetText( text )
+		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+	End Function
+		
 
 	Function Room_OnBombExplosion:Int(triggerEvent:TEventBase)
 		GetRoomBoard().ResetPositions()
@@ -4764,10 +4819,15 @@ Type GameEvents
 		Local day:Int = GetWorldTime().GetDay(time)
 		If hour = -1 Then Return False
 
+		'=== UPDATE GAME MODIFIERS ===
+		GetGameModifierManager().Update()
+
+
 		'=== UPDATE POPULARITY MANAGER ===
 		'the popularity manager takes care itself whether to do something
 		'or not (update intervals)
 		GetPopularityManager().Update(triggerEvent)
+
 
 		'=== UPDATE SPORTS ===
 		'this collection contains sports emitting news events to
@@ -4779,11 +4839,13 @@ Type GameEvents
 		'check if it is time for new news
 		GetNewsAgency().Update()
 
+
 		'=== UPDATE STUDIOS ===
 		'check if new productions finished (0:00, 0:05, ...)
 		if (minute + 5) mod 5 = 0
 			GetProductionManager().Update()
 		endif
+
 
 		'=== CHANGE OFFER OF MOVIEAGENCY AND ADAGENCY ===
 		'countdown for the refillers
@@ -5010,7 +5072,7 @@ Type GameEvents
 
 
 		'=== UPDATE AWARDS / SAMMYS ===
-		GetAwardBaseCollection().UpdateAwards()
+		GetAwardCollection().UpdateAwards()
 
 
 

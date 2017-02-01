@@ -82,7 +82,7 @@ Type TNewsAgency
 		Next
 
 		'register custom game modifier functions
-		GetGameModifierFunctionsCollection().RegisterRunFunction("TFigureTerrorist.SendFigureToRoom", TFigureTerrorist.SendFigureToRoom)
+		GetGameModifierManager().RegisterFunction("TFigureTerrorist.SendFigureToRoom", TFigureTerrorist.SendFigureToRoom)
 
 
 		'=== REGISTER EVENTS ===
@@ -461,7 +461,7 @@ Type TNewsAgency
 			else
 				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("vrduban"))
 			endif
-			effect._customRunFuncKey = "TFigureTerrorist.SendFigureToRoom"
+			effect.GetData().AddString("customRunFuncKey", "TFigureTerrorist.SendFigureToRoom")
 			'mark as a special effect so AI can categorize it accordingly
 			effect.setModifierType(TVTGameModifierBase.TERRORIST_ATTACK)
 
