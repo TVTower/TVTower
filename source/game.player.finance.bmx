@@ -3,6 +3,8 @@ Import "Dig/base.util.event.bmx"
 Import "game.gameobject.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.player.financehistory.bmx"
+Import "game.modifier.base.bmx"
+
 
 Type TPlayerFinanceCollection
 	Field finances:TPlayerFinance[][]
@@ -342,6 +344,62 @@ Type TPlayerFinance {_exposeToLua="selected"}
 	End Method
 
 
+	Method Earn:int(entryType:int, value:long, extra:object=null)
+		Select entryType
+			case TVTPlayerFinanceEntryType.EARN_SPONSORSHIPREVENUE
+				return EarnSponsorshipRevenue(value, extra)
+			case TVTPlayerFinanceEntryType.EARN_CALLERREVENUE
+				return EarnCallerRevenue(value, extra)
+			case TVTPlayerFinanceEntryType.EARN_INFOMERCIALREVENUE
+				return EarnInfomercialRevenue(value, extra)
+			case TVTPlayerFinanceEntryType.EARN_ADPROFIT
+				return EarnAdProfit(value, extra)
+			case TVTPlayerFinanceEntryType.EARN_BALANCEINTEREST
+				return EarnBalanceInterest(value)
+			case TVTPlayerFinanceEntryType.GRANTED_BENEFITS
+				return EarnGrantedBenefits(value)
+			case TVTPlayerFinanceEntryType.SELL_MISC
+				return SellMisc(value)
+			default
+				TLogger.Log("TFinancial.Earn()", "Unknown entry type used: "+entryType, LOG_DEBUG)
+				return False
+		End Select
+	End Method
+
+
+	Method Pay:Int(entryType:int, value:long, extra:object=null, forcedPayment:int = False)
+		Select entryType
+			case TVTPlayerFinanceEntryType.PAY_DRAWINGCREDITINTEREST
+				return PayDrawingCreditInterest(value)
+			case TVTPlayerFinanceEntryType.PAY_CREDITINTEREST
+				return PayCreditInterest(value)
+			case TVTPlayerFinanceEntryType.PAY_PROGRAMMELICENCE
+				return PayProgrammeLicence(value, extra)
+			case TVTPlayerFinanceEntryType.PAY_STATION
+				return PayStation(value)
+			case TVTPlayerFinanceEntryType.PAY_SCRIPT
+				return PayScript(value, extra)
+			case TVTPlayerFinanceEntryType.PAY_PRODUCTIONSTUFF
+				return PayProductionStuff(value, forcedPayment)
+			case TVTPlayerFinanceEntryType.PAY_PENALTY
+				return PayPenalty(value, extra)
+			case TVTPlayerFinanceEntryType.PAY_RENT
+				return PayRent(value, extra)
+			case TVTPlayerFinanceEntryType.PAY_NEWS
+				return PayNews(value, extra)
+			case TVTPlayerFinanceEntryType.PAY_NEWSAGENCIES
+				return PayNewsAgencies(value)
+			case TVTPlayerFinanceEntryType.PAY_STATIONFEES
+				return PayStationFees(value)
+			case TVTPlayerFinanceEntryType.PAY_MISC
+				return PayMisc(value)
+			default
+				TLogger.Log("TFinancial.Pay()", "Unknown entry type used: "+entryType, LOG_DEBUG)
+				return False
+		End Select
+	End Method
+
+
 	Method RepayCredit:Int(value:Long)
 		TLogger.Log("TFinancial.RepayCredit()", "Player "+playerID+" repays (a part of his) credit of "+value, LOG_DEBUG)
 		'add this to our history
@@ -676,7 +734,7 @@ Type TPlayerFinance {_exposeToLua="selected"}
 	End Method
 
 
-	'refreshs stats about paid money from paying misc things
+	'refreshs stats about money got from 3rd parties
 	Method EarnGrantedBenefits:Int(price:Long)
 		TLogger.Log("TFinancial.EarnGrantedBenefits()", "Player "+playerID+" earned "+price+" of granted benefits", LOG_DEBUG)
 		'add this to our history
@@ -708,3 +766,93 @@ Type TPlayerFinance {_exposeToLua="selected"}
 	End Method
 End Type
 
+
+
+
+Type TGameModifier_Money extends TGameModifierBase
+	Function CreateNewInstance:TGameModifier_Money()
+		return new TGameModifier_Money
+	End Function
+
+
+	Method Init:TGameModifier_Money(data:TData, extra:TData=null)
+		if not super.Init(data, extra) then return null
+		
+		if data then self.data = data.copy()
+		
+		return self
+	End Method
+
+
+	Method ToString:string()
+		return "TGameModifier_Money ("+GetName()+")"
+	End Method
+
+
+
+	Method UndoFunc:int(params:TData)
+		local playerID:int = GetData().GetInt("playerID", 0)
+		if not playerID then return False
+		
+		local valueChange:Long = GetData().GetInt("value.change", 0)
+		if valueChange = 0 then return False
+
+		local finance:TPlayerFinance = GetPlayerFinance(playerID)
+		if not finance then return False
+
+
+		'local valueBackup:Long = GetData().GetInt("value.backup")
+		'local value:Long = GetPlayerFinance(playerID).GetMoney()
+		'local relative:int = GetData().GetBool("relative")
+
+		'restore
+		finance.Pay(TVTPlayerFinanceEntryType.PAY_MISC, valueChange)
+
+		print "TGameModifier_Money: paid back "+valueChange+" => "+finance.GetMoney()
+	
+		return True
+	End Method
+	
+
+	'override
+	Method RunFunc:int(params:TData)
+		local playerID:int
+		if params
+			playerID = params.GetInt("playerID", GetData().GetInt("playerID", 0))
+		else
+			playerID = GetData().GetInt("playerID", 0)
+		endif
+		if not playerID then return False
+
+		local value:Double = GetData().GetDouble("value", 0.0)
+		if value = 0.0 then return False
+
+		local finance:TPlayerFinance = GetPlayerFinance(playerID)
+		if not finance then return False
+
+
+		local valueBackup:Int = finance.GetMoney()
+		local relative:Int = GetData().GetBool("relative")
+
+		'backup
+		GetData().AddNumber("value.backup", valueBackup)
+		GetData().AddNumber("playerID", playerID)
+
+		'adjust
+		local valueChange:Long
+		if relative
+			valueChange = Ceil(valueBackup * value)
+		else
+			valueChange = value
+		endif
+		GetData().AddNumber("value.change", valueChange)
+		finance.Earn(TVTPlayerFinanceEntryType.SELL_MISC, valueChange)
+
+		print "TGameModifier_Money: earned "+valueChange+" => "+finance.GetMoney()
+	
+		return True
+	End Method
+End Type
+	
+
+GetGameModifierManager().RegisterCreateFunction("ModifyChannelMoney", TGameModifier_Money.CreateNewInstance)

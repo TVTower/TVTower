@@ -1657,7 +1657,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'bar area starts with padding, ends with padding and contains
 		'also contains 4 bars
-		barAreaH = 2 * barAreaPaddingY + 4 * (barH + 2)
+		barAreaH = 2 * barAreaPaddingY + 4 * (barH + 1)
 
 		'total height
 		sheetHeight = titleH + genreH + descriptionH + castH + barAreaH + msgAreaH + boxAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
@@ -1760,11 +1760,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'speed
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetSpeed())
 		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
-		contentY :+ barH + 2
+		contentY :+ barH + 1
 		'critic/review
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetReview())
 		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
-		contentY :+ barH + 2
+		contentY :+ barH + 1
 		'boxoffice/outcome
 		if data.IsTVDistribution()
 			skin.RenderBar(contentX + 5, contentY, 200, 12, GetOutcomeTV())
@@ -1779,11 +1779,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			skin.RenderBar(contentX + 5, contentY, 200, 12, GetOutcome())
 			skin.fontSemiBold.drawBlock(GetLocale("MOVIE_BOXOFFICE"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
 		endif
-		contentY :+ barH + 2
+		contentY :+ barH + 1
 		'topicality/maxtopicality
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetTopicality(), GetMaxTopicality())
 		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
-		contentY :+ barH + 2
+		contentY :+ barH + 1
 	
 
 		'=== MESSAGES ===

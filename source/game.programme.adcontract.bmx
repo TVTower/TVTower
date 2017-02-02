@@ -1331,7 +1331,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'bar area
 		'bar area starts with padding, ends with padding and contains 2
 		'bars
-		barAreaH = 2 * barAreaPaddingY + 2 * barH
+		barAreaH = 2 * barAreaPaddingY + 2 * (barH+1)
 
 		'message area
 		'show earn message
@@ -1366,9 +1366,26 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		contentY :+ descriptionH
 		
 
-		'=== MESSAGES ===
+		'=== BARS + MESSAGES ===
 		'background for messages + boxes
 		skin.RenderContent(contentX, contentY, contentW, msgAreaH + barAreaH , "1_bottom")
+
+		'=== BARS ===
+		'bars have a top-padding
+		contentY :+ barAreaPaddingY
+
+		'quality
+		skin.RenderBar(contentX + 5, contentY, 200, 12, GetQualityRawForPlayer(forPlayerID))
+		skin.fontSemiBold.drawBlock(GetLocale("AD_QUALITY"), contentX + 5 + 200 + 5, contentY, 85, 15, null, skin.textColorLabel)
+		contentY :+ barH + 1
+
+		'topicality
+		skin.RenderBar(contentX + 5, contentY, 200, 12, base.GetInfomercialTopicality(), 1.0)
+		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY, 85, 15, null, skin.textColorLabel)
+		contentY :+ barH + 1
+
+
+		'=== MESSAGES ===
 		'if there is a message then add padding to the begin
 		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
 
@@ -1382,20 +1399,6 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		'if there is a message then add padding to the bottom
 		'if msgAreaH > 0 then contentY :+ msgAreaPaddingY
-
-
-		'=== BARS ===
-		'bars have a top-padding
-		contentY :+ barAreaPaddingY
-
-		'quality
-		skin.RenderBar(contentX + 5, contentY, 200, 12, GetQualityRawForPlayer(forPlayerID))
-		skin.fontSemiBold.drawBlock(GetLocale("AD_QUALITY"), contentX + 5 + 200 + 5, contentY, 85, 15, null, skin.textColorLabel)
-		contentY :+ barH
-
-		'topicality
-		skin.RenderBar(contentX + 5, contentY, 200, 12, base.GetInfomercialTopicality(), 1.0)
-		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY, 85, 15, null, skin.textColorLabel)
 
 
 		If TVTDebugInfos

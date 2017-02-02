@@ -457,9 +457,9 @@ Type TGameModifier_GameConfig extends TGameModifierBase
 		local valueChange:Float = GetData().GetFloat("value.change", 0.0)
 		if valueChange = 0.0 then return False
 
-		local valueBackup:Float = GetData().GetFloat("value.backup")
+		'local valueBackup:Float = GetData().GetFloat("value.backup")
 		local value:Float = GameConfig.GetModifier(modKey)
-		local relative:Float = GetData().GetBool("relative")
+		'local relative:Int = GetData().GetBool("relative")
 
 		'restore
 		GameConfig.SetModifier(modKey, value - valueChange)
@@ -479,7 +479,7 @@ Type TGameModifier_GameConfig extends TGameModifierBase
 		if value = 0.0 then return False
 
 		local valueBackup:Float = GameConfig.GetModifier(modKey)
-		local relative:Float = GetData().GetBool("relative")
+		local relative:Int = GetData().GetBool("relative")
 
 		'backup
 		GetData().AddNumber("value.backup", valueBackup)
