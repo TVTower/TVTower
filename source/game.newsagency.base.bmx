@@ -243,7 +243,7 @@ Type TNewsAgency
 				'decrease image for all caught channels
 				data.AddString("trigger", "broadcastFirstTime")
 				data.AddString("type", "ModifyChannelPublicImage")
-				data.AddNumber("value", -0.04)
+				data.AddNumber("value", -3)
 				data.AddNumber("valueIsRelative", True)
 				data.AddNumber("playerID", pID)
 				data.AddString("log", "decrease image for all caught channels")
@@ -254,7 +254,7 @@ Type TNewsAgency
 			data = new TData
 			data.AddString("trigger", "broadcastFirstTime")
 			data.AddString("type", "ModifyChannelPublicImage")
-			data.AddNumber("value", 0.08)
+			data.AddNumber("value", 5)
 			data.AddNumber("valueIsRelative", True)
 			'use playerID of broadcasting player
 			data.AddNumber("playerID", 0)
@@ -268,7 +268,7 @@ Type TNewsAgency
 			data = new TData
 			data.AddString("trigger", "broadcastFirstTime")
 			data.AddString("type", "ModifyChannelPublicImage")
-			data.AddNumber("value", 0.04)
+			data.AddNumber("value", 2)
 			data.AddNumber("valueIsRelative", True)
 			'use playerID of broadcasting player
 			data.AddNumber("playerID", 0)

@@ -252,7 +252,7 @@ Type TGameModifierPublicImage_Modify extends TGameModifierBase
 		elseif valueMale <> 0 or valueFemale <> 0
 			value = new TAudience.InitValue(valueMale, valueFemale)
 		elseif valueSimple <> 0.0
-			value = new TAudience.InitValue(valueSimple, valueSimple)
+			value = new TAudience.InitValue(valueSimple*0.5, valueSimple*0.5)
 		endif
 		if not value
 			TLogger.Log("TGameModifierPublicImage_Modify.Init()", "No valid ~qvalue~q-value provided. Modifier not created.", LOG_DEBUG)
