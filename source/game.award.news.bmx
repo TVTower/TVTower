@@ -14,6 +14,9 @@ Type TAwardNews extends TAward
 	Method New()
 		awardType = TVTAwardType.NEWS
 
+		priceMoney = 25000
+		priceImage = 2.0
+
 		'=== REGISTER EVENTS ===
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]

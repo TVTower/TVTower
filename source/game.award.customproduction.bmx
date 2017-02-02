@@ -19,6 +19,9 @@ Type TAwardCustomProduction extends TAward
 	Method New()
 		awardType = TVTAwardType.CUSTOMPRODUCTION
 
+		priceMoney = 50000
+		priceImage = 1.5
+		
 		'=== REGISTER EVENTS ===
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]

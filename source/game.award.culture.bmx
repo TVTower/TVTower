@@ -24,6 +24,9 @@ Type TAwardCulture extends TAward
 	Method New()
 		awardType = TVTAwardType.CULTURE
 
+		priceMoney = 40000
+		priceImage = 2.5
+
 		'=== REGISTER EVENTS ===
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
@@ -97,7 +100,6 @@ Type TAwardCulture extends TAward
 			modifier.Init(mConfig)
 			modifier.AddCondition(mTimeCondition)
 			GetGameModifierManager().Add( modifier )
-
 		endif
 		
 		return True

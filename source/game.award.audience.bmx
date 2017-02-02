@@ -17,8 +17,6 @@ TAwardCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardType.A
 '  (so during nighttimes lower scores are reached)
 '- news audiences are taken into account too
 Type TAwardAudience extends TAward
-	Field rewardMoney:int = 100000
-	
 	'how important are news for the award
 	Global newsWeight:float = 0.25
 	
@@ -28,6 +26,9 @@ Type TAwardAudience extends TAward
 	Method New()
 		awardType = TVTAwardType.AUDIENCE
 
+		priceMoney = 25000
+		priceImage = 0.5
+		
 		'=== REGISTER EVENTS ===
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
@@ -49,20 +50,6 @@ Type TAwardAudience extends TAward
 		return "awardaudience-"+id
 	End Method
 
-
-	'override
-	Method Finish:int()
-		if not Super.Finish() then return False
-
-		local winningPlayerID:int = GetCurrentWinner()
-		if winningPlayerID <= 0 then return False
-		
-		local finance:TPlayerFinance = GetPlayerFinance( winningPlayerID )
-		if not finance then return False
-			
-		finance.EarnGrantedBenefits(rewardMoney)
-	End Method
-	
 
 	Function onBeforeFinishAllNewsShowBroadcasts:int(triggerEvent:TEventBase)
 		local currentAward:TAwardAudience = TAwardAudience(GetAwardCollection().GetCurrentAward())
