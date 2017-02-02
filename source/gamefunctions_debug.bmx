@@ -567,7 +567,7 @@ Type TDebugProgrammeCollectionInfos
 			elseif a.GetDaysLeft() = 0
 				adString1b = "|color=220,80,80|"+adString1b+"|/color|"
 			endif
-			local adString2a:string = "Min: " +TFunctions.DottedValue(a.GetMinAudience())
+			local adString2a:string = "Min: " +MathHelper.DottedValue(a.GetMinAudience())
 			if a.GetLimitedToTargetGroup() > 0 or a.GetLimitedToGenre() > 0  or a.GetLimitedToProgrammeFlag() > 0
 				adString2a = "**" + adString2a
 				'adString1a :+ a.GetLimitedToTargetGroup()+","+a.GetLimitedToGenre()+","+a.GetLimitedToProgrammeFlag()
@@ -1042,11 +1042,11 @@ Type TDebugFinancialInfos
 		local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(playerID)
 
 		local font:TBitmapfont = GetBitmapFont("default", 10)
-		font.Draw("Money #"+playerID+": "+TFunctions.dottedValue(finance.money), textX, textY)
+		font.Draw("Money #"+playerID+": "+MathHelper.DottedValue(finance.money), textX, textY)
 		textY :+ 9+1
-		font.Draw("~tLic:~t~t|color=120,255,120|"+TFunctions.dottedValue(finance.income_programmeLicences)+"|/color| / |color=255,120,120|"+TFunctions.dottedValue(finance.expense_programmeLicences), textX, textY)
+		font.Draw("~tLic:~t~t|color=120,255,120|"+MathHelper.DottedValue(finance.income_programmeLicences)+"|/color| / |color=255,120,120|"+MathHelper.DottedValue(finance.expense_programmeLicences), textX, textY)
 		textY :+ 9
-		font.Draw("~tAd:~t~t|color=120,255,120|"+TFunctions.dottedValue(finance.income_ads)+"|/color| / |color=255,120,120|"+TFunctions.dottedValue(finance.expense_penalty), textX, textY)
+		font.Draw("~tAd:~t~t|color=120,255,120|"+MathHelper.DottedValue(finance.income_ads)+"|/color| / |color=255,120,120|"+MathHelper.DottedValue(finance.expense_penalty), textX, textY)
 	End Method
 End Type
 
@@ -1058,7 +1058,7 @@ Type TDebugModifierInfos
 
 	Method Draw(x:int=0, y:int=0)
 		SetColor 0,0,0
-		DrawRect(x, y, 200, 350)
+		DrawRect(x, y, 250, 380)
 
 		SetColor 255,255,255
 
@@ -1072,10 +1072,11 @@ Type TDebugModifierInfos
 		local data:TData = GameConfig._modifiers
 		if data
 			for local k:TLowerString = eachIn data.data.Keys()
-				font.Draw(k.ToString(), textX, textY)
-				textY :+ 10
-				font.Draw("    =    "+ data.GetString(k.ToString()), textX, textY)
-				textY :+ 10
+				if textY > 370 then continue
+				
+				font.DrawBlock(k.ToString(), textX, textY, 210, 15, ALIGN_LEFT_TOP)
+				font.DrawBlock(MathHelper.NumberToString(data.GetFloat(k.ToString()), 3), textX, textY, 245, 15, ALIGN_RIGHT_TOP)
+				textY :+ 12
 			next
 		endif
 	End Method

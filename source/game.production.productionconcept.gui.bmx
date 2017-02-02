@@ -301,9 +301,9 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			skin.RenderBox(contentX + 5, contentY, 47, -1, 2, "duration", "neutral", skin.fontBold)
 			'price
 			if canAfford
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(productionConcept.GetTotalCost()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(productionConcept.GetTotalCost()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 			else
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue(productionConcept.GetTotalCost()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(productionConcept.GetTotalCost()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
 			endif
 			'=== BOX LINE 2 ===
 			contentY :+ boxH

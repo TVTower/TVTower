@@ -1442,7 +1442,7 @@ print "maxAuctionTime reached: " + licence.Gettitle()
 			EndIf
 			titleFont.drawBlock(licence.GetTitle(), 31,5, 215,30, ALIGN_LEFT_TOP, TColor.clBlack, 1, 1, 0.50)
 
-			font.drawBlock(GetLocale("AUCTION_MAKE_BID")+": "+TFunctions.DottedValue(GetNextBid())+CURRENCYSIGN, 31,33, 212,20, ALIGN_RIGHT_TOP, TColor.clBlack, 1)
+			font.drawBlock(GetLocale("AUCTION_MAKE_BID")+": "+MathHelper.DottedValue(GetNextBid())+CURRENCYSIGN, 31,33, 212,20, ALIGN_RIGHT_TOP, TColor.clBlack, 1)
 
 			'reset target for fonts
 			TBitmapFont.setRenderTarget(Null)

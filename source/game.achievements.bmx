@@ -115,7 +115,7 @@ Type TAchievementTask_ReachAudience extends TAchievementTask
 	Method GetTitle:string()
 		local t:string = Super.GetTitle()
 		if minAudienceAbsolute >= 0
-			t = t.Replace("%VALUE%", TFunctions.dottedValue(minAudienceAbsolute))
+			t = t.Replace("%VALUE%", MathHelper.DottedValue(minAudienceAbsolute))
 		elseif minAudienceQuote >= 0
 			t = t.Replace("%VALUE%", MathHelper.NumberToString(minAudienceQuote*100.0,2, True)+"%")
 		endif
@@ -200,7 +200,7 @@ Type TAchievementTask_ReachBroadcastArea extends TAchievementTask
 	Method GetTitle:string()
 		local t:string = Super.GetTitle()
 		if minReachAbsolute >= 0
-			t = t.Replace("%VALUE%", TFunctions.dottedValue(minReachAbsolute))
+			t = t.Replace("%VALUE%", MathHelper.DottedValue(minReachAbsolute))
 		elseif minReachPercentage >= 0
 			t = t.Replace("%VALUE%", MathHelper.NumberToString(minReachPercentage*100.0,2, True)+"%")
 		endif
@@ -355,7 +355,7 @@ Type TAchievementReward_Money extends TAchievementReward
 	'override
 	Method GetTitle:string()
 		local t:string = Super.GetTitle()
-		if not t then t = TFunctions.dottedValue(money) +" "+ CURRENCYSIGN
+		if not t then t = MathHelper.DottedValue(money) +" "+ CURRENCYSIGN
 		return t
 	End Method
 

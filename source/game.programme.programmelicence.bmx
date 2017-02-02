@@ -1836,7 +1836,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		If showMsgEarnInfo
 			'convert back cents to euros and round it
 			'value is "per 1000" - so multiply with that too
-			local revenue:string = TFunctions.DottedValue(int(1000 * data.GetPerViewerRevenue()))+CURRENCYSIGN
+			local revenue:string = MathHelper.DottedValue(int(1000 * data.GetPerViewerRevenue()))+CURRENCYSIGN
 
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), "money", "good", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
@@ -1888,9 +1888,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		
 		if showPrice
 			if canAfford
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue( GetPriceForPlayer(useOwner) ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue( GetPriceForPlayer(useOwner) ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 			else
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, TFunctions.DottedValue( GetPriceForPlayer(useOwner) ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue( GetPriceForPlayer(useOwner) ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
 			endif
 		else
 			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, "- ?? -", "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)

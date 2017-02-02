@@ -13,6 +13,8 @@ TAwardCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardType.C
 '- broadcasting culture programmes
 '- broadcasting culture news
 Type TAwardCulture extends TAward
+	Field cultureBoost:Float = 0.1
+	
 	'how important are news for the award
 	Global newsWeight:float = 0.25
 	
@@ -44,6 +46,18 @@ Type TAwardCulture extends TAward
 	End Method
 
 
+	'override to add boost-information
+	Method GetRewardText:string()
+		local result:string = Super.GetRewardText()
+		if result then result :+ "~n"
+
+		local valueStr:string = "|color=0,125,0|+" + MathHelper.NumberToString(cultureBoost*100, 2, True)+"%|/color|"
+		local timeStr:string = " (" + GetLocale("FOR_X_HOURS").Replace("%X%", 24) + ")"
+		result :+ chr(9654) + " " +StringHelper.UCFirst(GetLocale("ATTRACTIVITY"))+": "+GetLocale("PROGRAMME_FLAG_CULTURE")+" " + valueStr + timeStr
+		return result
+	End Method
+	
+
 	'override
 	'add temporary culture-boost
 	Method Finish:int()
@@ -52,10 +66,11 @@ Type TAwardCulture extends TAward
 
 		local winningPlayerID:int = GetCurrentWinner()
 		if winningPlayerID > 0
+			'add modifier for programmes with flag "culture"
 			local modifier:TGameModifierBase = GetGameModifierManager().Create("Modifier.GameConfig")
 			local mConfig:TData = new TData
-			mConfig.AddString("name", "CultureBoost")
-			mConfig.AddString("modifierKey", "player"+winningPlayerID+".TVTProgrammeDataFlag."+TVTProgrammeDataFlag.CULTURE)
+			mConfig.AddString("name", "CultureBoost.Programme")
+			mConfig.AddString("modifierKey", "Attractivity.ProgrammeDataFlag.player"+winningPlayerID+"."+TVTProgrammeDataFlag.CULTURE)
 			mConfig.AddNumber("value", 0.1)
 			mConfig.AddBool("relative", True)
 
@@ -67,6 +82,22 @@ Type TAwardCulture extends TAward
 			modifier.Init(mConfig)
 			modifier.AddCondition(mTimeCondition)
 			GetGameModifierManager().Add( modifier )
+
+
+			'same for culture-news
+			modifier = GetGameModifierManager().Create("Modifier.GameConfig")
+			mConfig = new TData
+			mConfig.AddString("name", "CultureBoost.News")
+			mConfig.AddString("modifierKey", "Attractivity.NewsGenre.player"+winningPlayerID+"."+TVTNewsGenre.CULTURE)
+			mConfig.AddNumber("value", 0.1)
+			mConfig.AddBool("relative", True)
+
+			'simple reuse time condition of programmes (shared condition)
+
+			modifier.Init(mConfig)
+			modifier.AddCondition(mTimeCondition)
+			GetGameModifierManager().Add( modifier )
+
 		endif
 		
 		return True

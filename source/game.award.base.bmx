@@ -2,6 +2,7 @@ SuperStrict
 Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.logger.bmx"
 Import "Dig/base.util.event.bmx"
+Import "Dig/base.util.math.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.gameconstants.bmx"
 Import "game.gameobject.bmx"
@@ -215,6 +216,9 @@ Type TAward extends TGameObject
 	Field startTime:Long = -1
 	Field endTime:Long = -1
 	Field duration:Int = -1
+	'basic prices all awards offer
+	Field priceMoney:int = 50000
+	Field priceImage:Float = 2.5
 
 	Field _scoreSum:int = -1 {nosave}
 	Field scoringMode:int = 1
@@ -242,7 +246,7 @@ Type TAward extends TGameObject
 
 
 	Method GetTitle:string()
-		return ""
+		return GetLocale("AWARDNAME_"+TVTAwardType.GetAsString(awardType))
 	End Method
 
 
@@ -252,7 +256,18 @@ Type TAward extends TGameObject
 
 
 	Method GetRewardText:string()
-		return ""
+		local result:string =""
+		if priceImage <> 0
+			if priceImage > 0 then result :+ chr(9654) + " " +GetLocale("CHANNEL_IMAGE")+": |color=0,125,0|+" + MathHelper.NumberToString(priceImage, 2)+"%|/color|"
+			if priceImage < 0 then result :+ chr(9654) + " " +GetLocale("CHANNEL_IMAGE")+": |color=125,0,0|" + MathHelper.NumberToString(priceImage, 2)+"%|/color|"
+		endif
+
+		if priceMoney <> 0
+			if result <> "" then result :+ "~n"
+			if priceMoney > 0 then result :+ chr(9654) + " " +GetLocale("MONEY")+": |color=0,125,0|+" + MathHelper.DottedValue(priceMoney)+getLocale("CURRENCY")+"|/color|"
+			if priceMoney < 0 then result :+ chr(9654) + " " +GetLocale("MONEY")+": |color=125,0,0|" + MathHelper.DottedValue(priceMoney)+getLocale("CURRENCY")+"|/color|"
+		endif
+		return result
 	End Method
 
 
@@ -272,11 +287,18 @@ Type TAward extends TGameObject
 		EventManager.triggerEvent(TEventSimple.Create("Award.OnFinish", New TData.addNumber("winningPlayerID", winningPlayerID), Self))
 
 		if winningPlayerID > 0
+			local modifier:TGameModifierBase
 			'increase image
-			GetGameModifierManager().CreateAndInit("ModifyChannelPublicImage", new TData.AddNumber("value", 2.5)).Run(new TData.AddNumber("playerID", winningPlayerID) )
+			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelPublicImage", new TData.AddNumber("value", priceImage))
+			if modifier then modifier.Run(new TData.AddNumber("playerID", winningPlayerID) )
+
+			'increase money
+			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelMoney", new TData.AddNumber("value", priceMoney))
+			if modifier then modifier.Run(new TData.AddNumber("playerID", winningPlayerID) )
 
 			'alternatively:
 			'GetPublicImage(winnerID).Modify(0.5)
+			'GetPlayerFinance(winnerID).EarnGrantedBenefits( priceMoney )
 		endif
 	
 		return True
@@ -372,7 +394,7 @@ Type TAward extends TGameObject
 		if amount < 0 then amount = - Min(abs(amount), abs(Self.scores[PlayerID-1]))
 
 		Self.scores[PlayerID-1] = Max(0, Self.scores[PlayerID-1] + amount)
-print "AdjustScore("+PlayerID+", "+amount+")"
+		'print "AdjustScore("+PlayerID+", "+amount+")"
 
 		if scoringMode = SCORINGMODE_AFFECT_OTHERS
 			'if score of a player _increases_ score of others will decrease

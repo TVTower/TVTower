@@ -156,71 +156,49 @@ Type MathHelper
 		return s
 	End Function
 
-	rem
-		OLD - and contains bugs for certain numbers, and slower too ;-)
-		
-	'convert a double to a string
-	'double is rounded to the requested amount of digits after comma
-	Function NumberToString:String(value:Double, digitsAfterDecimalPoint:int = 2, truncateZeros:int = False)
-		'RoundNumber() rounds, but does not handle "floating point", so
-		'1.5999 gets rounded to 1.6, but then it is stored again as
-		'floating point, which recreates "1.5999", that is why we do
-		'a similar approach, but do not divide already, instead we move
-		'the dot accordingly
-		'Local s:String = RoundNumber(value, digitsAfterDecimalPoint + 1)
 
-		if digitsAfterDecimalPoint <= 0 then return RoundLong(value)
+	'formats a given value from "123000,12" to "123.000,12" 
+	'optimized variant
+	Function DottedValue:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:int = -1)
+		'is there a "minus" in front ?
+		Local addSign:Int = value < 0
+		Local result:String
+		Local decimalValue:string
 
-		Local t:Long = 10 ^ digitsAfterDecimalPoint
-		local valueBig:Double = value * t
-		local valueRounded:Long = RoundLong(valueBig)
-		local s:string = Abs(valueRounded)
-		'instead of comparing "value" we use the rounded one - a value
-		'of "0.000" is sometimes represented using "-2xxxxxxx.xxxx"
-		local minus:int = (valueRounded < 0)
+		'only process decimals when requested
+		if digitsAfterDecimalPoint > 0 and 1=2
+			Local stringValues:String[] = String(Abs(value)).Split(".")
+			Local fractionalValue:String = ""
+			decimalValue = stringValues[0]
+			if stringValues.length > 1 then fractionalValue = stringValues[1]
 
-		'after rounding, fill the front of the number with zeros,
-		'this avoids "0.001 * 1000" to get "1" (wrong length) but "0001"
-		if s.length < digitsAfterDecimalPoint
-			s = RSet(s, digitsAfterDecimalPoint).Replace(" ", "0")
-		endif
-		
-		'calculate amount of digits before "."
-		'instead of just string(int(value))).length we use the "Abs"-value
-		'and compare the original value if it is negative
-		'- this is needed because "-0.1" would be "0" as int (one char less)
-		local lengthBeforeDecimalPoint:int = string(abs(Long(value))).length
-		'compare if truncated parts differ (9.99 becomes 10.00 during rounding)
-		if string(valueRounded).length <> string(Long(ValueBig)).length then lengthBeforeDecimalPoint :+ 1
-
-		'remove unneeded digits (length = BEFORE + . + AFTER)
-		if s = "0"
-			s = "00"
+			'do we even have a fractionalValue <> ".000" ?
+			if Long(fractionalValue) > 0
+				'not rounded, just truncated
+				fractionalValue = Left(fractionalValue, digitsAfterDecimalPoint)
+				result :+ decimalDelimiter + fractionalValue
+			endif
 		else
-			s = Left(s, lengthBeforeDecimalPoint + 1 + digitsAfterDecimalPoint)
+			decimalValue = String(Abs(Long(value)))
 		endif
-		'for numbers below 1.0 we add a zero... 
-		if Long(s) < t then s = "0"+s
 
-		'move the dot accordingly
-		s = s[.. lengthBeforeDecimalPoint] + "." + s[lengthBeforeDecimalPoint .. lengthBeforeDecimalPoint + digitsAfterDecimalPoint]
 
-		'append minus if needed
-		if minus then s = "-"+s
+		For Local i:Int = decimalValue.length-1 To 0 Step -1
+			result = Chr(decimalValue[i]) + result
 
-		'remove 0s? 1.23000 => 1.23, 1.00 = 1
-		if truncateZeros
-			while s<>"" and Right(s, 1) = "0"
-				s = s[.. s.length-1]
-			Wend
-			'only "xx." left?
-			if Right(s, 1) = "." then s = s[.. s.length-1]
+			'every 3rd char, but not if the last one (avoid 100 -> .100)
+			If (decimalValue.length-i) Mod 3 = 0 And i > 0 
+				result = thousandsDelimiter + result 
+			EndIf
+		Next
+
+		if addSign
+			Return "-" + result
+		else
+			Return result
 		endif
-		
-
-		Return s
 	End Function
-	endrem
+	
 
 	'round to an integer value
 	Function RoundInt:Int(f:Float)

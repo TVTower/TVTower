@@ -278,11 +278,11 @@ Type TPlayerBoss
 			If GetPlayerBase().GetCreditAvailable() > 0
 				local acceptEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCreditAvailable()))
 				local acceptHalfEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", 0.5 * GetPlayerBase().GetCreditAvailable()))
-				ChefDialoge[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%CREDIT%", TFunctions.DottedValue(GetPlayerBase().GetCreditAvailable())))
-				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT").replace("%CREDIT%",TFunctions.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())), 2, acceptEvent))
+				ChefDialoge[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%CREDIT%", MathHelper.DottedValue(GetPlayerBase().GetCreditAvailable())))
+				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT").replace("%CREDIT%",MathHelper.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())), 2, acceptEvent))
 				'avoid micro credits
 				if GetPlayerBase().GetCreditAvailable() > 50000
-					ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF").replace("%CREDITHALF%", TFunctions.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())),2, acceptHalfEvent))
+					ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF").replace("%CREDITHALF%", MathHelper.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())),2, acceptHalfEvent))
 				endif
 				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
 			Else

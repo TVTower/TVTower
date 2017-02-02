@@ -457,6 +457,18 @@ endrem
 
 		Return result
 	End Method
+
+
+	'override
+	'add game modifier support
+	Method GetGenreMod:Float()
+		local valueMod:Float = Super.GetGenreMod()
+
+		valueMod :* GameConfig.GetModifier("Attractivity.NewsGenre."+GetGenre())
+		valueMod :* GameConfig.GetModifier("Attractivity.NewsGenre.player"+GetOwner()+"."+GetGenre())
+
+		return valueMod
+	End Method
 	
 
 	'===== AI-LUA HELPER FUNCTIONS =====

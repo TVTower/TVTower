@@ -334,9 +334,9 @@ Type TInGameInterface
 			If THelper.MouseIn(309,412,178,32)
 				MoneyToolTip.title = getLocale("MONEY")
 				local content:String = ""
-				content	= "|b|"+getLocale("MONEY")+":|/b| "+TFunctions.DottedValue(GetPlayerBase().GetMoney()) + getLocale("CURRENCY")
+				content	= "|b|"+getLocale("MONEY")+":|/b| "+MathHelper.DottedValue(GetPlayerBase().GetMoney()) + getLocale("CURRENCY")
 				content	:+ "~n"
-				content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ TFunctions.DottedValue(GetPlayerBase().GetCredit()) + getLocale("CURRENCY")+"|/color|"
+				content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ MathHelper.DottedValue(GetPlayerBase().GetCredit()) + getLocale("CURRENCY")+"|/color|"
 				MoneyTooltip.SetContent(content)
 				MoneyToolTip.enabled 	= 1
 				MoneyToolTip.Hover()
@@ -676,11 +676,11 @@ Type TInGameInterface
 			'current days financial win/loss
 			local profit:int = GetPlayerFinance(playerID).GetCurrentProfit()
 			if profit > 0
-				GetBitmapFont("Default", 12, BOLDFONT).drawBlock("+"+TFunctions.DottedValue(profit), 357, 412, 130, 32 - 2, ALIGN_CENTER_BOTTOM, TColor.Create(170,200,170), 2, 1, 0.5)
+				GetBitmapFont("Default", 12, BOLDFONT).drawBlock("+"+MathHelper.DottedValue(profit), 357, 412, 130, 32 - 2, ALIGN_CENTER_BOTTOM, TColor.Create(170,200,170), 2, 1, 0.5)
 			elseif profit = 0
 				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(0, 357, 412, 130, 32 - 2, ALIGN_CENTER_BOTTOM, TColor.Create(170,170,170), 2, 1, 0.5)
 			else
-				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(TFunctions.DottedValue(profit), 357, 412, 130, 32 - 2, ALIGN_CENTER_BOTTOM, TColor.Create(200,170,170), 2, 1, 0.5)
+				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(MathHelper.DottedValue(profit), 357, 412, 130, 32 - 2, ALIGN_CENTER_BOTTOM, TColor.Create(200,170,170), 2, 1, 0.5)
 			endif
 
 			'market share

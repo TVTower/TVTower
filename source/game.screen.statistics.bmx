@@ -264,7 +264,7 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 					textFont.DrawBlock(GetLocale("POTENTIAL_AUDIENCE_NUMBER")+":", labelArea.GetX(), labelArea.GetY() + 1*labelArea.GetH(), labelArea.GetW(), labelArea.GetH(), ALIGN_LEFT_CENTER, fontColor)
 					textFont.DrawBlock(GetLocale("BROADCASTING_AREA")+":", labelArea.GetX(), labelArea.GetY() + 2*labelArea.GetH(), labelArea.GetW(), labelArea.GetH(), ALIGN_LEFT_CENTER, fontColor)
 
-					boldTextFont.drawBlock(TFunctions.dottedValue(audienceResult.audience.GetTotalSum()), valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.drawBlock(MathHelper.DottedValue(audienceResult.audience.GetTotalSum()), valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
 					boldTextFont.drawBlock(MathHelper.NumberToString(100.0 * audienceResult.GetAudienceQuotePercentage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
 					TextFont.drawBlock("#"+audienceRanks[0], valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW(), valueArea.GetH(), ALIGN_RIGHT_CENTER, rankFontColor)
 

@@ -960,3 +960,16 @@ CLASSIFICATION = Klassifikation
 REMAINING_TERM = restl. Laufzeit
 SPOTS_TO_SEND = offene Werbespots
 NAME = Name
+
+
+AWARDNAME_CULTURE = Kultur-Sammy
+AWARDNAME_NEWS = News-Sammy
+AWARDNAME_AUDIENCE = Zuschauer-Sammy
+AWARDNAME_CUSTOMPRODUCTION = Eigenproduktions-Sammy
+AWARD_WON = Preis gewonnen
+YOU_WON_THE_AWARDNAME = Du hast den %AWARDNAME% gewonnen.
+CHANNEL_IMAGE = Senderimage
+FOR_X_HOURS = für %X% Stunden
+FOR_X_HOUR = für %X% Stunde
+ATTRACTIVITY = Attraktivität
+

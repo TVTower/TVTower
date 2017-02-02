@@ -146,9 +146,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		local currDate:int = int(Time.GetSystemTime("%m%d"))
 		if currDate > 1210 or currDate < 115
-			GameConfig.isChristmasTime = true
+			GameConfig.isChristmasTime = True
 		else
-			GameConfig.isChristmasTime = true
+			GameConfig.isChristmasTime = False
 		endif
 		'christmas: change terrorist figures
 		if GameConfig.isChristmasTime

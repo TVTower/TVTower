@@ -148,7 +148,7 @@ Type TScreenHandler_StationMap
 			local price:string = "", reach:string = "", reachIncrease:string = ""
 			if stationMapSelectedStation
 				reach = TFunctions.convertValue(stationMapSelectedStation.getReach(), 2)
-				reachIncrease = TFunctions.DottedValue(stationMapSelectedStation.getReachIncrease())
+				reachIncrease = MathHelper.DottedValue(stationMapSelectedStation.getReachIncrease())
 				price = TFunctions.convertValue(stationMapSelectedStation.getPrice(), 2, 0)
 
 				local finance:TPlayerFinance = GetPlayerFinance(room.owner)
@@ -253,7 +253,7 @@ Type TScreenHandler_StationMap
 			local price:string = "", reach:string = "", reachDecrease:string = ""
 			if stationMapSelectedStation
 				reach = TFunctions.convertValue(stationMapSelectedStation.getReach(), 2)
-				reachDecrease = TFunctions.DottedValue(stationMapSelectedStation.getReachDecrease())
+				reachDecrease = MathHelper.DottedValue(stationMapSelectedStation.getReachDecrease())
 				price = TFunctions.convertValue(stationMapSelectedStation.getSellPrice(), 2, 0)
 			endif
 

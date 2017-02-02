@@ -48,7 +48,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 				presentButtons[i].caption.SetFont( GetBitmapFont("Default", 11, BOLDFONT) )
 				presentButtons[i].SetCaptionOffset(0,92)
 
-				presentButtons[i].SetValue( TFunctions.DottedValue(TBettyPresent.GetPresent(i).price) + getLocale("CURRENCY"))
+				presentButtons[i].SetValue( MathHelper.DottedValue(TBettyPresent.GetPresent(i).price) + getLocale("CURRENCY"))
 
 			Next
 		endif
@@ -155,7 +155,7 @@ global LS_supermarket_presents:TLowerString = TLowerString.Create("supermarket_p
 				buyButton.disable()
 			else
 				local presentTitle:string = present.GetName()
-				local presentPrice:string = TFunctions.DottedValue(present.price) + GetLocale("CURRENCY")
+				local presentPrice:string = MathHelper.DottedValue(present.price) + GetLocale("CURRENCY")
 				if not GetPlayerBase().GetFinance().CanAfford(present.price)
 					presentPrice = "|color=255,0,0|"+presentPrice+"|/color|"
 				endif

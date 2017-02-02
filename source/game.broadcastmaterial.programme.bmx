@@ -399,9 +399,8 @@ print "Trash Strafe: " + penalty.ToString()
 
 		for local i:int = 0 until TVTProgrammeDataFlag.count
 			if data.HasFlag(TVTProgrammeDataFlag.GetAtIndex(i))
-				valueMod :* GameConfig.GetModifier("TVTProgrammeDataFlag."+TVTProgrammeDataFlag.GetAtIndex(i))
-				valueMod :* GameConfig.GetModifier("player"+GetOwner()+".TVTProgrammeDataFlag."+TVTProgrammeDataFlag.GetAtIndex(i))
-				print "GetFlagsMod: #"+TVTProgrammeDataFlag.GetAtIndex(i)+" -> " + valueMod
+				valueMod :* GameConfig.GetModifier("Attractivity.ProgrammeDataFlag."+TVTProgrammeDataFlag.GetAtIndex(i))
+				valueMod :* GameConfig.GetModifier("Attractivity.ProgrammeDataFlag.player"+GetOwner()+"."+TVTProgrammeDataFlag.GetAtIndex(i))
 			endif
 		next
 
@@ -414,9 +413,8 @@ print "Trash Strafe: " + penalty.ToString()
 	Method GetGenreMod:Float()
 		local valueMod:Float = Super.GetGenreMod()
 
-		valueMod :* GameConfig.GetModifier("TVTProgrammeGenre."+data.GetGenre())
-		valueMod :* GameConfig.GetModifier("player"+GetOwner()+".TVTProgrammeGenre."+data.GetGenre())
-		print "GetGenreMod: #"+data.GetGenre()+" -> " + valueMod
+		valueMod :* GameConfig.GetModifier("Attractivity.ProgrammeGenre."+data.GetGenre())
+		valueMod :* GameConfig.GetModifier("Attractivity.ProgrammeGenre.player"+GetOwner()+"."+data.GetGenre())
 
 		return valueMod
 	End Method
