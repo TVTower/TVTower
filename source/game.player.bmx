@@ -9,19 +9,8 @@ Import "game.player.boss.bmx"
 
 
 Type TPlayerCollection extends TPlayerBaseCollection
+	Global _eventListeners:TLink[]
 	Global _registeredEvents:int = False
-
-
-	Method New()
-		if not _registeredEvents
-			EventManager.registerListenerFunction("figure.onFailEnterRoom", OnFigureFailEnterRoom)
-			EventManager.registerListenerFunction("figure.onBeginEnterRoom", OnFigureBeginEnterRoom)
-			EventManager.registerListenerFunction("figure.onFinishEnterRoom", OnFigureFinishEnterRoom)
-			EventManager.registerListenerFunction("figure.onFinishLeaveRoom", OnFigureFinishLeaveRoom)
-			EventManager.registerListenerFunction("figure.onReachTarget", OnFigureReachTarget)
-			_registeredEvents = True
-		endif
-	End Method
 
 
 	'override - create a PlayerCollection instead of PlayerBaseCollection
@@ -42,6 +31,26 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		endif
 		return TPlayerCollection(_instance)
 	End Function
+	
+
+	'override
+	Method Initialize:int()
+		local result:int = Super.Initialize()
+
+		'=== EVENTS ===
+		'remove old listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+
+		'register new listeners
+		_eventListeners = new TLink[0]
+		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onFailEnterRoom", OnFigureFailEnterRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onBeginEnterRoom", OnFigureBeginEnterRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onFinishEnterRoom", OnFigureFinishEnterRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onFinishLeaveRoom", OnFigureFinishLeaveRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onReachTarget", OnFigureReachTarget) ]
+
+		return result
+	End Method
 
 
 	Method Get:TPlayer(id:Int=-1)

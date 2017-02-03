@@ -22,6 +22,8 @@ Type TPlayerBossCollection
 	'playerID of player who sits in front of the screen
 	'adjust this TOO when switching players
 	Field playerID:Int = 1
+
+	Global _eventListeners:TLink[]
 	Global _instance:TPlayerBossCollection
 
 
@@ -29,6 +31,33 @@ Type TPlayerBossCollection
 		if not _instance then _instance = new TPlayerBossCollection
 		return _instance
 	End Function
+
+
+	Method Initialize:int()
+
+		'=== EVENTS ===
+		'remove old listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+
+		'register new listeners
+		_eventListeners = new TLink[0]
+		_eventListeners :+ [ EventManager.registerListenerFunction("broadcast.common.FinishBroadcasting", onFinishBroadcasting) ]
+		'instead of updating the boss way to often, we update bosses
+		'once a ingame minute
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnMinute", onGameMinute) ]
+
+		_eventListeners :+ [ EventManager.registerListenerFunction("AdContract.onFinish", onFinishOrFailAdContract) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("AdContract.onFail", onFinishOrFailAdContract) ]
+
+		_eventListeners :+ [ EventManager.registerListenerFunction("player.onEnterRoom", onPlayerEnterRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("player.onLeaveRoom", onPlayerLeaveRoom) ]
+
+		'register dialogue handlers
+		_eventListeners :+ [ EventManager.registerListenerFunction("dialogue.onTakeBossCredit", onDialogueTakeCredit) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("dialogue.onRepayBossCredit", onDialogueRepayCredit) ]
+
+'		_eventListeners :+ [ _eventListeners :+ [ EventManager.registerListenerFunction("Award.OnFinish", onFinishAward) ]
+	End Method
 
 
 	Method Set:int(id:int=-1, boss:TPlayerBoss)
@@ -64,7 +93,87 @@ Type TPlayerBossCollection
 	Method IsBoss:Int(number:Int)
 		Return (number > 0 And number <= bosses.length And bosses[number-1] <> Null)
 	End Method
+
+
+
+	Function onGameMinute:Int(triggerEvent:TEventBase)
+		local time:Long = triggerEvent.GetData().GetLong("time",-1)
+		For local boss:TPlayerBoss = Eachin GetInstance().bosses
+			boss.onGameMinute(time)
+		Next
+	End Function
+
+
+	Function onFinishOrFailAdContract:Int(triggerEvent:TEventBase)
+		local contract:TNamedGameObject = TNamedGameObject(triggerEvent.GetSender())
+		if not contract then return False
+		local boss:TPlayerBoss = GetPlayerBoss(contract.owner)
+		if not boss then return False
+
+		if triggerEvent.isTrigger("AdContract.onFinish")
+			boss.onFinishAdContract(contract)
+		elseif triggerEvent.isTrigger("AdContract.onFail")
+			boss.onFailAdContract(contract)
+		endif
+	End Function
+
+
+	Function onFinishBroadcasting:Int(triggerEvent:TEventBase)
+		local programmePlan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
+		if not programmePlan then return False
+
+		local boss:TPlayerBoss = GetPlayerBoss(programmePlan.owner)
+		if not boss then return False
+
+		local broadcastMaterial:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetData().Get("broadcastMaterial"))
+		local broadcastedAsType:Int = triggerEvent.GetData().GetInt("broadcastedAsType",-1)
+
+		boss.onFinishBroadcasting(broadcastMaterial, broadcastedAsType)
+	End Function
+
+
+	'called as soon as a player leaves the boss' room
+	Function onPlayerLeaveRoom:Int(triggerEvent:TEventBase)
+		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
+		if not room or room.name <> "boss" then return False
+
+		'only interested in the visit of the player linked to this room
+		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())
+		if not player or room.owner <> player.playerID then return False
+
+		local boss:TPlayerBoss = GetPlayerBoss(room.owner)
+		if not boss then return False
+
+		boss.onPlayerLeaveRoom(player)
+	End Function
+
 	
+	'called as soon as a player enters the boss' room
+	Function onPlayerEnterRoom:Int(triggerEvent:TEventBase)
+		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
+		if not room or room.name <> "boss" then return False
+
+		'only interested in the visit of the player linked to this room
+		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())
+		if not player or room.owner <> player.playerID then return False
+
+		local boss:TPlayerBoss = GetPlayerBoss(room.owner)
+		if not boss then return False
+
+		boss.onPlayerEnterRoom(player)
+	End Function
+
+
+	Function onDialogueTakeCredit:int(triggerEvent:TEventBase)
+		local value:int = triggerEvent.GetData().GetInt("value", 0)
+		GetPlayerBoss().onDialogueTakeCredit(value)
+	End Function
+
+
+	Function onDialogueRepayCredit:int(triggerEvent:TEventBase)
+		local value:int = triggerEvent.GetData().GetInt("value", 0)
+		GetPlayerBoss().onDialogueRepayCredit(value)
+	End Function
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -109,10 +218,6 @@ Type TPlayerBoss
 	Field registeredNewsMalfunctions:int = 0
 	Field playerID:int = -1
 
-	'event listeners - so we can remove them at the end
-	Field _registeredListeners:TList = CreateList() {nosave}
-	Global registeredEvents:int = False
-
 	Const MOODADJUSTMENT_BROADCAST_POS1:Float             = 0.075
 	Const MOODADJUSTMENT_BROADCAST_POS2:Float             = 0.04
 	Const MOODADJUSTMENT_FINISH_CONTRACT:Float            = 0.05
@@ -121,6 +226,7 @@ Type TPlayerBoss
 	Const MOODADJUSTMENT_MALFUNCTION_PROGRAMME_EACH:Float = -0.5
 	Const MOODADJUSTMENT_MALFUNCTION_NEWS:Float           = -1.0
 	Const MOODADJUSTMENT_MALFUNCTION_NEWS_EACH:Float      = -0.25
+	Const MOODADJUSTMENT_WON_AWARD:Float                  = 0.25
 	Const MOOD_EXCITED:Float    =100.0
 	Const MOOD_HAPPY:Float      = 90.0
 	Const MOOD_FRIENDLY:Float   = 70.0
@@ -130,19 +236,8 @@ Type TPlayerBoss
 	Const MOOD_ANGRY:Float      =  0.0
 
 
-	Method New()
-		RegisterEvents()
-
+	Method Initialize:int()
 		mood = MOOD_NEUTRAL
-	End Method
-
-	Method Delete()
-		UnRegisterEvents()
-	End Method
-
-
-	Method Initialize()
-		mood = 50.0
 		awaitingPlayerVisit = False
 		awaitingPlayerVisitTillTime = 0
 		awaitingPlayerAccepted = False
@@ -155,41 +250,6 @@ Type TPlayerBoss
 		registeredProgrammeMalfunctions = 0
 		registeredNewsMalfunctions = 0
 		playerID = -1
-	End Method
-
-
-	Method RegisterEvents:Int()
-		'register events for all bosses
-		if not registeredEvents
-			EventManager.registerListenerFunction("broadcast.common.FinishBroadcasting", onFinishBroadcasting)
-			'instead of updating the boss way to often, we update bosses
-			'once a ingame minute
-			EventManager.registerListenerFunction("Game.OnMinute", onGameMinute)
-
-			EventManager.registerListenerFunction("AdContract.onFinish", onFinishOrFailAdContract)
-			EventManager.registerListenerFunction("AdContract.onFail", onFinishOrFailAdContract)
-
-			EventManager.registerListenerFunction("player.onEnterRoom", onPlayerEnterRoom)
-			EventManager.registerListenerFunction("player.onLeaveRoom", onPlayerLeaveRoom)
-
-			'register dialogue handlers
-			EventManager.registerListenerFunction("dialogue.onTakeBossCredit", onDialogueTakeCredit)
-			EventManager.registerListenerFunction("dialogue.onRepayBossCredit", onDialogueRepayCredit)
-
-			registeredEvents = True
-		endif
-
-		'boss specific events
-		' - none for now -
-	End Method
-
-
-	Method UnRegisterEvents:Int()
-		For local link:TLink = EachIn _registeredListeners
-			'variant a: link.Remove()
-			'variant b: we never know if there happens something else
-			EventManager.unregisterListenerByLink(link)
-		Next
 	End Method
 
 
@@ -410,99 +470,83 @@ Type TPlayerBoss
 	End Method
 
 
-	'=== EVENTS THE BOSSES LISTEN TO ===
-	Function onGameMinute:Int(triggerEvent:TEventBase)
-		local time:Long = triggerEvent.GetData().GetLong("time",-1)
+	Method onGameMinute:Int(time:Long = -1)
+		if time = -1 then time = GetWorldTime().GetTimeGone()
 		Local minute:Int = GetWorldTime().GetDayMinute(time)
 		Local hour:Int = GetWorldTime().GetDayHour(time)
 		Local day:Int = GetWorldTime().GetDay(time)
 
-		For local boss:TPlayerBoss = Eachin GetPlayerBossCollection().bosses
-			'=== RESET REGISTERED MALFUNCTIONS ===
-			'reset them at a given time?
-			If minute = 0 and hour = 3 
-				boss.registeredNewsMalfunctions = 0
-				boss.registeredProgrammeMalfunctions = 0
-			EndIf
+		'=== RESET REGISTERED MALFUNCTIONS ===
+		'reset them at a given time?
+		If minute = 0 and hour = 3 
+			registeredNewsMalfunctions = 0
+			registeredProgrammeMalfunctions = 0
+		EndIf
 		
-			'=== CHECK IF BOSS WANTS TO SEE PLAYER ===
-			'await the player each day at 16:00 (except player is already there)
-			if GameRules.dailyBossVisit and not boss.playerVisitsMe
-				If minute = 0 and hour = 16 and not boss.awaitingPlayerVisit
+		'=== CHECK IF BOSS WANTS TO SEE PLAYER ===
+		'await the player each day at 16:00 (except player is already there)
+		if GameRules.dailyBossVisit and not playerVisitsMe
+			If minute = 0 and hour = 16 and not awaitingPlayerVisit
 
-					'only await if malfunctions are registered
-					'TODO: change this with awards/other subjects the
-					'      boss wants to talk about
-					if boss.registeredNewsMalfunctions or boss.registeredProgrammeMalfunctions
-						boss.awaitingPlayerVisit = True
-					endif
-				EndIf
-			endif
-
-			'call the player if needed
-			If boss.awaitingPlayerVisit and not boss.awaitingPlayerCalled
-				boss.CallPlayer()
+				'only await if malfunctions are registered
+				'TODO: change this with awards/other subjects the
+				'      boss wants to talk about
+				if registeredNewsMalfunctions or registeredProgrammeMalfunctions
+					awaitingPlayerVisit = True
+				endif
 			EndIf
-
-			'check if the player knows he has to visit but did not visit
-			'the boss yet - force him to visit NOW
-			if boss.awaitingPlayerCalled and not boss.awaitingPlayerAccepted and (boss.awaitingPlayerVisitTillTime > 0 and boss.awaitingPlayerVisitTillTime < GetWorldTime().GetTimeGone())
-				boss.CallPlayerForced()
-			endif
-		Next
-	End Function
-
-
-	Function onFinishOrFailAdContract:Int(triggerEvent:TEventBase)
-		local contract:TNamedGameObject = TNamedGameObject(triggerEvent.GetSender())
-		if not contract then return False
-		local boss:TPlayerBoss = GetPlayerBoss(contract.owner)
-		if not boss then return False
-
-		if triggerEvent.isTrigger("AdContract.onFinish")
-			boss.ChangeMood(MOODADJUSTMENT_FINISH_CONTRACT)
-		elseif triggerEvent.isTrigger("AdContract.onFail")
-			boss.ChangeMood(MOODADJUSTMENT_FAIL_CONTRACT)
 		endif
-	End Function
+
+		'call the player if needed
+		If awaitingPlayerVisit and not awaitingPlayerCalled
+			CallPlayer()
+		EndIf
+
+		'check if the player knows he has to visit but did not visit
+		'the boss yet - force him to visit NOW
+		if awaitingPlayerCalled and not awaitingPlayerAccepted and (awaitingPlayerVisitTillTime > 0 and awaitingPlayerVisitTillTime < time)
+			CallPlayerForced()
+		endif
+	End Method
+
+
+	Method onFinishAdContract:Int(contract:object)
+		ChangeMood(MOODADJUSTMENT_FINISH_CONTRACT)
+	End Method
+
+
+	Method onFailAdContract:Int(contract:object)
+		ChangeMood(MOODADJUSTMENT_FAIL_CONTRACT)
+	End Method
 
 	
-	Function onFinishBroadcasting:Int(triggerEvent:TEventBase)
-		local programmePlan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
-		if not programmePlan then return False
-
-		local boss:TPlayerBoss = GetPlayerBoss(programmePlan.owner)
-		if not boss then return False
-
-		local broadcastMaterial:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetData().Get("broadcastMaterial"))
-		local broadcastedAsType:Int = triggerEvent.GetData().GetInt("broadcastedAsType",-1)
-
+	Method onFinishBroadcasting:Int(broadcastMaterial:TBroadcastMaterial, broadcastedAsType:int = -1)
 		'register malfunctions
-		If not broadcastMaterial
+		if not broadcastMaterial
 			if broadcastedAsType = TVTBroadcastMaterialType.NEWSSHOW
-				boss.talkSubjects :+ [new TPlayerBossTalkSubjects.InitNewsMalfunctionSubject(broadcastMaterial)]
-				boss.registeredNewsMalfunctions :+1
+				talkSubjects :+ [new TPlayerBossTalkSubjects.InitNewsMalfunctionSubject(broadcastMaterial)]
+				registeredNewsMalfunctions :+1
 				
-				if boss.registeredNewsMalfunctions = 1
-					boss.ChangeMood(MOODADJUSTMENT_MALFUNCTION_NEWS)
+				if registeredNewsMalfunctions = 1
+					ChangeMood(MOODADJUSTMENT_MALFUNCTION_NEWS)
 				else
-					boss.ChangeMood(MOODADJUSTMENT_MALFUNCTION_NEWS_EACH)
+					ChangeMood(MOODADJUSTMENT_MALFUNCTION_NEWS_EACH)
 				endif
 			elseif broadcastedAsType = TVTBroadcastMaterialType.PROGRAMME
-				boss.talkSubjects :+ [new TPlayerBossTalkSubjects.InitProgrammeMalfunctionSubject(broadcastMaterial)]
-				boss.registeredProgrammeMalfunctions :+1
+				talkSubjects :+ [new TPlayerBossTalkSubjects.InitProgrammeMalfunctionSubject(broadcastMaterial)]
+				registeredProgrammeMalfunctions :+1
 
-				if boss.registeredProgrammeMalfunctions = 1
-					boss.ChangeMood(MOODADJUSTMENT_MALFUNCTION_PROGRAMME)
+				if registeredProgrammeMalfunctions = 1
+					ChangeMood(MOODADJUSTMENT_MALFUNCTION_PROGRAMME)
 				else
-					boss.ChangeMood(MOODADJUSTMENT_MALFUNCTION_PROGRAMME_EACH)
+					ChangeMood(MOODADJUSTMENT_MALFUNCTION_PROGRAMME_EACH)
 				endif
 			endif
 		endif
 
 		'TODO - or unneeded?
 		rem
-		'register top 1 or top 2 audience quote
+		'register top 1 or top 2 audience quote (bonus if reached #1 or #2)
 		'we check on "finish" - because now the blocks of all players
 		'are running
 		if broadcastMaterial
@@ -510,76 +554,52 @@ Type TPlayerBoss
 			endif
 		endif
 		endrem
-	End Function
+	End Method
 
 
 	'called as soon as a player leaves the boss' room
-	Function onPlayerLeaveRoom:Int(triggerEvent:TEventBase)
-		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
-		if not room or room.name <> "boss" then return False
-
-		'only interested in the visit of the player linked to this room
-		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())
-		if not player or room.owner <> player.playerID then return False
-
-		local boss:TPlayerBoss = GetPlayerBoss(room.owner)
-		if not boss then return False
-
+	Method onPlayerLeaveRoom:Int(player:TPlayerBase)
 		'reset boss call state so boss can call player again
-		boss.awaitingPlayerCalled = False
+		awaitingPlayerCalled = False
 
-		boss.playerVisitsMe = False
-	End Function
+		playerVisitsMe = False
+	End Method
 
 	
 	'called as soon as a player enters the boss' room
-	Function onPlayerEnterRoom:Int(triggerEvent:TEventBase)
-		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
-		if not room or room.name <> "boss" then return False
-
-		'only interested in the visit of the player linked to this room
-		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())
-		if not player or room.owner <> player.playerID then return False
-
-		local boss:TPlayerBoss = GetPlayerBoss(room.owner)
-		if not boss then return False
-
-
+	Method onPlayerEnterRoom:Int(player:TPlayerBase)
 		'no longer await the visit of this player
-		boss.awaitingPlayerVisit = False
-		boss.awaitingPlayerVisitTillTime = 0
+		awaitingPlayerVisit = False
+		awaitingPlayerVisitTillTime = 0
 
-		boss.playerVisitsMe = True
+		playerVisitsMe = True
 
 
 		'remove an old (maybe obsolete) dialogue
-		boss.ResetDialogues()
-		boss.GenerateDialogues(GetPlayerBase().playerID)
+		ResetDialogues()
+		GenerateDialogues(player.playerID)
 
 		'send out event that the player enters the bosses room
-		EventManager.triggerEvent(TEventSimple.Create("playerboss.onPlayerEnterBossRoom", null, boss, player))
-	End Function
+		EventManager.triggerEvent(TEventSimple.Create("playerboss.onPlayerEnterBossRoom", null, self, player))
+	End Method
 
 
-	Function onDialogueTakeCredit:int(triggerEvent:TEventBase)
-		local value:int = triggerEvent.GetData().GetInt("value", 0)
-		GetPlayerBoss().PlayerTakesCredit(value)
-
-		'remove an old dialogue (containing old credit information)
-		GetPlayerBoss().ResetDialogues()
-		GetPlayerBoss().GenerateDialogues(GetPlayerBase().playerID)
-	End Function
-
-
-	Function onDialogueRepayCredit:int(triggerEvent:TEventBase)
-		local value:int = triggerEvent.GetData().GetInt("value", 0)
-		GetPlayerBoss().PlayerRepaysCredit(value)
+	Method onDialogueTakeCredit:int(value:int)
+		PlayerTakesCredit(value)
 
 		'remove an old dialogue (containing old credit information)
-		GetPlayerBoss().ResetDialogues()
-		GetPlayerBoss().GenerateDialogues(GetPlayerBase().playerID)
-	End Function
+		ResetDialogues()
+		GenerateDialogues(GetPlayerBase().playerID)
+	End Method
 
+
+	Method onDialogueRepayCredit:int(value:int)
+		PlayerRepaysCredit(value)
+
+		'remove an old dialogue (containing old credit information)
+		ResetDialogues()
+		GenerateDialogues(GetPlayerBase().playerID)
+	End Method
 End Type
 
 

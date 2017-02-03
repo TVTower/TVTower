@@ -1885,6 +1885,7 @@ Type TGameState
 
 		GetPlayerProgrammeCollectionCollection().Initialize()
 		GetPlayerProgrammePlanCollection().InitializeAll()
+		GetPlayerBossCollection().Initialize()
 		GetPlayerCollection().Initialize()
 		GetPlayerFinanceCollection().Initialize()
 		GetPlayerFinanceHistoryListCollection().Initialize()
