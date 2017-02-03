@@ -15,6 +15,8 @@ Import "game.gamerules.bmx"
 Import "common.misc.dialogue.bmx"
 'to access parent of adcontract
 Import "game.gameobject.bmx"
+'to access awards
+Import "game.award.base.bmx"
 
 
 Type TPlayerBossCollection
@@ -49,14 +51,14 @@ Type TPlayerBossCollection
 		_eventListeners :+ [ EventManager.registerListenerFunction("AdContract.onFinish", onFinishOrFailAdContract) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("AdContract.onFail", onFinishOrFailAdContract) ]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction("player.onEnterRoom", onPlayerEnterRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("player.onBeginEnterRoom", onPlayerBeginEnterRoom) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("player.onLeaveRoom", onPlayerLeaveRoom) ]
 
 		'register dialogue handlers
 		_eventListeners :+ [ EventManager.registerListenerFunction("dialogue.onTakeBossCredit", onDialogueTakeCredit) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("dialogue.onRepayBossCredit", onDialogueRepayCredit) ]
 
-'		_eventListeners :+ [ _eventListeners :+ [ EventManager.registerListenerFunction("Award.OnFinish", onFinishAward) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("Award.OnFinish", onFinishAward) ]
 	End Method
 
 
@@ -95,6 +97,7 @@ Type TPlayerBossCollection
 	End Method
 
 
+	'=== EVENTS FOR THE BOSSES ===
 
 	Function onGameMinute:Int(triggerEvent:TEventBase)
 		local time:Long = triggerEvent.GetData().GetLong("time",-1)
@@ -149,7 +152,7 @@ Type TPlayerBossCollection
 
 	
 	'called as soon as a player enters the boss' room
-	Function onPlayerEnterRoom:Int(triggerEvent:TEventBase)
+	Function onPlayerBeginEnterRoom:Int(triggerEvent:TEventBase)
 		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
 		if not room or room.name <> "boss" then return False
 
@@ -160,7 +163,19 @@ Type TPlayerBossCollection
 		local boss:TPlayerBoss = GetPlayerBoss(room.owner)
 		if not boss then return False
 
-		boss.onPlayerEnterRoom(player)
+		boss.onPlayerBeginEnterRoom(player)
+	End Function
+
+
+	'called as soon as a player enters the boss' room
+	Function onFinishAward:Int(triggerEvent:TEventBase)
+		Local award:TAward = TAward(triggerEvent.GetSender())
+		if not award or award.winningPlayerID < 0 then return False
+
+		local boss:TPlayerBoss = GetPlayerBoss(award.winningPlayerID)
+		if not boss then return False
+
+		boss.onWonAward(award)
 	End Function
 
 
@@ -209,13 +224,13 @@ Type TPlayerBoss
 	'in the case of the player sends a favorite movie, this might
 	'brighten the mood of the boss
 	Field favoriteMovieGUID:String = ""
-	'things the boss wants to talk about
-	Field talkSubjects:TPlayerBossTalkSubjects[]
 	'dialogues for the things the boss can talk about
 	Field Dialogues:TList = CreateList() {nosave}
 
 	Field registeredProgrammeMalfunctions:int = 0
 	Field registeredNewsMalfunctions:int = 0
+	Field registeredWonAward:int = 0
+	Field registeredWonAwardType:int = 0
 	Field playerID:int = -1
 
 	Const MOODADJUSTMENT_BROADCAST_POS1:Float             = 0.075
@@ -226,7 +241,8 @@ Type TPlayerBoss
 	Const MOODADJUSTMENT_MALFUNCTION_PROGRAMME_EACH:Float = -0.5
 	Const MOODADJUSTMENT_MALFUNCTION_NEWS:Float           = -1.0
 	Const MOODADJUSTMENT_MALFUNCTION_NEWS_EACH:Float      = -0.25
-	Const MOODADJUSTMENT_WON_AWARD:Float                  = 0.25
+	Const MOODADJUSTMENT_WON_AWARD:Float                  = 2.5
+	Const MOOD_MAX:Float        =100.0
 	Const MOOD_EXCITED:Float    =100.0
 	Const MOOD_HAPPY:Float      = 90.0
 	Const MOOD_FRIENDLY:Float   = 70.0
@@ -234,6 +250,7 @@ Type TPlayerBoss
 	Const MOOD_UNHAPPY:Float    = 30.0
 	Const MOOD_UNFRIENDLY:Float = 10.0
 	Const MOOD_ANGRY:Float      =  0.0
+	Const MOOD_MIN:Float        =  0.0
 
 
 	Method Initialize:int()
@@ -245,22 +262,28 @@ Type TPlayerBoss
 		playerVisitsMe = False
 		creditMaximum = 600000
 		favoriteMovieGUID = ""
-		talkSubjects = new TPlayerBossTalkSubjects[0]
 		Dialogues.Clear()
 		registeredProgrammeMalfunctions = 0
 		registeredNewsMalfunctions = 0
+		registeredWonAward = 0
+		registeredWonAwardType = 0
 		playerID = -1
 	End Method
 
 
-	Method GetMood:int()
+	Method GetMood:Float()
 		return mood
+	End Method
+
+
+	Method GetMoodPercentage:Float()
+		return Float(mood) / MOOD_MAX
 	End Method
 
 
 	Method ChangeMood:int(value:Float)
 		mood :+ value
-		mood = Min(100.0, Max(0.0, mood))
+		mood = Min(MOOD_MAX, Max(MOOD_MIN, mood))
 		return mood
 	End Method
 
@@ -299,22 +322,61 @@ Type TPlayerBoss
 
 		if visitingPlayerID = playerID
 			local isUnfriendly:int = isInMoodOrWorse(MOOD_UNFRIENDLY) or registeredNewsMalfunctions > 0 or registeredProgrammeMalfunctions > 0
+			local showDefaultText:int = True
+			
 			if isUnfriendly
 				text = GetRandomLocale("DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY")
 			else
 				text = GetRandomLocale("DIALOGUE_BOSS_MAIN_TITLE_DEFAULT")
 			endif
 
+			'inform about won award
+			if registeredWonAward > 0
+				local awardName:string = GetLocale("AWARDNAME_" + TVTAwardType.GetAsString(registeredWonAwardType))
+				text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_WON_AWARDNAME").Replace("%AWARDNAME%", "|b|"+awardName+"|/b|")
+				showDefaultText = False
+			endif
+
+			'inform about ending award
+			local currentAward:TAward = GetAwardCollection().GetCurrentAward()
+			if currentAward and currentAward.GetStartTime() < GetWorldTime().GetTimeGone()
+				local awardName:string = GetLocale("AWARDNAME_" + TVTAwardType.GetAsString(currentAward.awardType))
+				local awardTimeLeft:int = currentAward.GetEndTime() - GetWorldTime().GetTimeGone()
+				if awardTimeLeft >= TWorldTime.DAYLENGTH and awardTimeLeft < 2*TWorldTime.DAYLENGTH
+					text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_AWARDNAME_ENDS_TOMORROW").Replace("%AWARDNAME%", "|b|"+awardName+"|/b|")
+					showDefaultText = False
+				elseif awardTimeLeft >= 0 and awardTimeLeft < 1*TWorldTime.DAYLENGTH
+					text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_AWARDNAME_ENDS_TODAY").Replace("%AWARDNAME%", "|b|"+awardName+"|/b|")
+					showDefaultText = False
+				endif
+			endif
+
+			'inform about upcoming award
+			local nextAward:TAward = GetAwardCollection().GetNextAward()
+			if nextAward
+				local awardName:string = GetLocale("AWARDNAME_" + TVTAwardType.GetAsString(currentAward.awardType))
+				'starting next day (might be in 2 minutes or 23 hrs), and ending next day
+				if nextAward.GetStartTime() > GetWorldTime().GetNextMidnight() and GetWorldTime().GetDay(nextAward.GetStartTime()) - GetWorldTime().GetDay() = 1
+					text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_NEW_AWARDNAME_TOMORROW").Replace("%AWARDNAME%", "|b|"+awardName+"|/b|")
+					showDefaultText = False
+				endif
+			endif
+
 			if registeredNewsMalfunctions > 0 or registeredProgrammeMalfunctions > 0
+				text :+ "~n"
+				showDefaultText = False
 				if registeredProgrammeMalfunctions > 0
 					text :+ "~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_PROGRAMMEMALFUNCTION")
 				endif
 				if registeredNewsMalfunctions > 0
 					text :+ "~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION")
 				endif
-			else
-				text :+ "~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_DEFAULT")
 			endif
+
+			if showDefaultText
+				text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_DEFAULT")
+			endif
+
 			if isUnfriendly
 				text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY")
 			else
@@ -324,6 +386,14 @@ Type TPlayerBoss
 			text = text.replace("%PROGRAMMEMALFUNCTION%", registeredProgrammeMalfunctions)
 			text = text.replace("%NEWSMALFUNCTION%", registeredNewsMalfunctions)
 			text = text.replace("%PLAYERNAME%", GetPlayerBase().name)
+
+
+			'clear the talk subjects - boss talked about them
+			registeredWonAward = 0
+			registeredWonAwardType = 0
+			registeredNewsMalfunctions = 0
+			registeredProgrammeMalfunctions = 0
+
 
 			ChefDialoge[0] = TDialogueTexts.Create(text)
 			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_WILLNOTDISTURB"), -2, Null))
@@ -371,11 +441,6 @@ Type TPlayerBoss
 			EndIf
 			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), -2))
 			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
-
-			'clear the talk subjects - boss talked about them
-			'TODO: make sure that "questions" are not skipped by
-			'saving/loading the game
-			talkSubjects = new TPlayerBossTalkSubjects[0]
 
 		'other players
 		else
@@ -524,7 +589,6 @@ Type TPlayerBoss
 		'register malfunctions
 		if not broadcastMaterial
 			if broadcastedAsType = TVTBroadcastMaterialType.NEWSSHOW
-				talkSubjects :+ [new TPlayerBossTalkSubjects.InitNewsMalfunctionSubject(broadcastMaterial)]
 				registeredNewsMalfunctions :+1
 				
 				if registeredNewsMalfunctions = 1
@@ -533,7 +597,6 @@ Type TPlayerBoss
 					ChangeMood(MOODADJUSTMENT_MALFUNCTION_NEWS_EACH)
 				endif
 			elseif broadcastedAsType = TVTBroadcastMaterialType.PROGRAMME
-				talkSubjects :+ [new TPlayerBossTalkSubjects.InitProgrammeMalfunctionSubject(broadcastMaterial)]
 				registeredProgrammeMalfunctions :+1
 
 				if registeredProgrammeMalfunctions = 1
@@ -557,6 +620,14 @@ Type TPlayerBoss
 	End Method
 
 
+	Method onWonAward:Int(award:TAward)
+		registeredWonAward :+ 1
+		registeredWonAwardType = award.awardType
+
+		ChangeMood(MOODADJUSTMENT_WON_AWARD)
+	End Method
+
+
 	'called as soon as a player leaves the boss' room
 	Method onPlayerLeaveRoom:Int(player:TPlayerBase)
 		'reset boss call state so boss can call player again
@@ -567,7 +638,7 @@ Type TPlayerBoss
 
 	
 	'called as soon as a player enters the boss' room
-	Method onPlayerEnterRoom:Int(player:TPlayerBase)
+	Method onPlayerBeginEnterRoom:Int(player:TPlayerBase)
 		'no longer await the visit of this player
 		awaitingPlayerVisit = False
 		awaitingPlayerVisitTillTime = 0
@@ -599,40 +670,5 @@ Type TPlayerBoss
 		'remove an old dialogue (containing old credit information)
 		ResetDialogues()
 		GenerateDialogues(GetPlayerBase().playerID)
-	End Method
-End Type
-
-
-
-
-Type TPlayerBossTalkSubjects
-	Field subjectType:Int = 0
-	'store specific objects in it
-	'- broadcastmaterial
-	'- audienceresults ...
-	Field subjectObject:object
-	Field changeMoodAmount:Int = 0
-
-	'did the boss recognize that the player sent a malfunction?
-	Const TYPE_PROGRAMME_MALFUNCTION:Int = 1
-	Const TYPE_NEWS_MALFUNCTION:Int = 2
-	'boss wants you to payback some credit
-	Const TYPE_NEED_TO_PAYBACK_CREDIT:Int = 3
-	Const TYPE_SENT_FAVORITE_PROGRAMME:Int = 4
-	Const TYPE_WON_PRICE:Int = 5
-
-
-	Method InitProgrammeMalfunctionSubject:TPlayerBossTalkSubjects(broadcastMaterial:TBroadcastMaterial)
-		subjectType = TYPE_PROGRAMME_MALFUNCTION
-		subjectObject = broadcastMaterial
-		changeMoodAmount :- 5
-		return self
-	End Method
-
-	Method InitNewsMalfunctionSubject:TPlayerBossTalkSubjects(broadcastMaterial:TBroadcastMaterial)
-		subjectType = TYPE_NEWS_MALFUNCTION
-		subjectObject = broadcastMaterial
-		changeMoodAmount :- 2
-		return self
 	End Method
 End Type

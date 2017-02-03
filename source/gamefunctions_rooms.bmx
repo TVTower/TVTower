@@ -299,6 +299,37 @@ Type RoomHandler_Boss extends TRoomHandler
 		For Local dialog:TDialogue = EachIn boss.Dialogues
 			dialog.Draw()
 		Next
+
+
+		If TVTDebugInfos
+			local screenX:int = 10
+			local screenY:int = 20
+			Local oldAlpha:Float = GetAlpha()
+
+			SetAlpha oldAlpha * 0.75
+			SetColor 0,0,0
+			DrawRect(screenX, screenY, 160, 50)
+		
+			SetColor 255,255,255
+			SetAlpha oldAlpha
+
+			Local textY:Int = screenY + 2
+			Local fontBold:TBitmapFont = GetBitmapFontManager().basefontBold
+			Local fontNormal:TBitmapFont = GetBitmapFont("",11)
+			
+			fontBold.draw("Boss #" +room.owner, screenX + 5, textY)
+			textY :+ 12	
+			fontNormal.draw("Mood: " + MathHelper.NumberToString(boss.GetMood(), 2), screenX + 5, textY)
+			SetColor 150,150,150
+			DrawRect(screenX + 70, textY, 70, 10 )
+			SetColor 0,0,0
+			DrawRect(screenX + 70+1, textY+1, 70-2, 10-2)
+			SetColor 190,150,150
+			local handleX:int = MathHelper.Clamp(boss.GetMoodPercentage()*68 -2, 0, 68-4)
+			DrawRect(screenX + 70+1 + handleX , textY+1, 4, 10-2 )
+			SetColor 255,255,255
+			textY :+ 11
+		EndIf
 	End Method
 
 

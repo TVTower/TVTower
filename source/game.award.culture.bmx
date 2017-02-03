@@ -67,7 +67,6 @@ Type TAwardCulture extends TAward
 		if not Super.Finish() then return False
 
 
-		local winningPlayerID:int = GetCurrentWinner()
 		if winningPlayerID > 0
 			'add modifier for programmes with flag "culture"
 			local modifier:TGameModifierBase = GetGameModifierManager().Create("Modifier.GameConfig")

@@ -318,6 +318,13 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetNextMidnight:Long(useTime:Double = -1.0) {_exposeToLua}
+		if Long(useTime) <= 0 then useTime = _timeGone
+
+		Return (useTime + DAYLENGTH) - (useTime mod DAYLENGTH)
+	End Method
+
+
 	Method GetWeekday:Int(useTime:Double = -1.0) {_exposeToLua}
 		Return Max(0, GetDay(useTime)) Mod _daysPerWeek
 	End Method

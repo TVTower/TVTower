@@ -222,6 +222,7 @@ Type TAward extends TGameObject
 
 	Field _scoreSum:int = -1 {nosave}
 	Field scoringMode:int = 1
+	Field winningPlayerID:int = -1
 
 	'adding/subtracting scores does not change other scores
 	Const SCORINGMODE_ABSOLUTE:int = 1
@@ -283,7 +284,8 @@ Type TAward extends TGameObject
 	Method Finish:int()
 		print "finish award"
 
-		local winningPlayerID:int = GetCurrentWinner()
+		'store winner
+		winningPlayerID = GetCurrentWinner()
 		EventManager.triggerEvent(TEventSimple.Create("Award.OnFinish", New TData.addNumber("winningPlayerID", winningPlayerID), Self))
 
 		if winningPlayerID > 0
