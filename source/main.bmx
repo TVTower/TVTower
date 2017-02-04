@@ -781,9 +781,13 @@ Type TApp
 
 						
 						if GetAwardCollection().currentAward
-							print "finish award now"
+							TLogger.Log("DEV", "Awards: finish current award.", LOG_DEV)
 							GetAwardCollection().currentAward.AdjustScore(1, 1000)
 							GetAwardCollection().currentAward.SetEndTime( GetWorldTime().GetTimeGone()-1 )
+							GetAwardCollection().UpdateAwards()
+						else
+							TLogger.Log("DEV", "Awards: force start of next award.", LOG_DEV)
+							GetAwardCollection().nextAwardTime = GetWorldTime().GetTimeGone()
 							GetAwardCollection().UpdateAwards()
 						endif
 												

@@ -354,9 +354,12 @@ Type TPlayerBoss
 			'inform about upcoming award
 			local nextAward:TAward = GetAwardCollection().GetNextAward()
 			if nextAward
-				local awardName:string = GetLocale("AWARDNAME_" + TVTAwardType.GetAsString(currentAward.awardType))
+				'print "next Midnight: " + GetWorldTime().GetFormattedGameDate( GetWorldTime().GetNextMidnight() )
+				'print nextAward.GetStartTime()+" > "+GetWorldTime().GetNextMidnight()
+				'print GetWorldTime().GetDay(nextAward.GetStartTime()) - GetWorldTime().GetDay()
 				'starting next day (might be in 2 minutes or 23 hrs), and ending next day
-				if nextAward.GetStartTime() > GetWorldTime().GetNextMidnight() and GetWorldTime().GetDay(nextAward.GetStartTime()) - GetWorldTime().GetDay() = 1
+				if GetAwardCollection().GetNextAwardTime() > GetWorldTime().GetNextMidnight() and GetWorldTime().GetDay(nextAward.GetStartTime()) - GetWorldTime().GetDay() = 1
+					local awardName:string = GetLocale("AWARDNAME_" + TVTAwardType.GetAsString(currentAward.awardType))
 					text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_NEW_AWARDNAME_TOMORROW").Replace("%AWARDNAME%", "|b|"+awardName+"|/b|")
 					showDefaultText = False
 				endif

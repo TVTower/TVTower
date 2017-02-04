@@ -2,6 +2,7 @@ SuperStrict
 Import "game.roomhandler.base.bmx"
 Import "game.player.base.bmx"
 Import "game.betty.bmx"
+Import "game.award.base.bmx"
 Import "common.misc.dialogue.bmx"
 
 
@@ -86,9 +87,36 @@ Type RoomHandler_Betty extends TRoomHandler
 
 
 		'=== SAMMY TOPIC ===
-		text = GetRandomLocale("DIALOGUE_BETTY_SAMMYINFORMATION_TEXT")
-		text = text.replace("%SAMMYNAME%", "TODO")
-		text = text.replace("%SAMMYDAYSLEFT%", "TODO")
+		'only two level supported
+		local lvl:int = bettyLoveLevel > 0
+		local key:string
+		local awardName:string
+		local rank:int = 0
+		local currentAward:TAward = GetAwardCollection().GetCurrentAward()
+		if currentAward
+			awardName = GetLocale("AWARDNAME_" + TVTAwardType.GetAsString(currentAward.awardType))
+			rank = currentAward.GetCurrentRank( player.playerID )
+			local hasWinner:int = currentAward.GetCurrentWinner()<>0
+			'local awardTimeLeft:int = currentAward.GetEndTime() - GetWorldTime().GetTimeGone()
+
+			if not hasWinner
+				key = "DIALOGUE_BETTY_AWARDINFORMATION_NO_FAVORITE"
+			else
+				if rank = 1
+					key = "DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE"
+				elseif rank = currentAward.GetRanks()
+					key = "DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE"
+				else
+					key = "DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE"
+				endif
+			endif
+		else
+			key = "DIALOGUE_BETTY_NO_AWARD_"
+		endif
+		text = GetRandomLocale2([key+"_LEVEL"+lvl+"_TEXT", key+"_LEVEL0_TEXT"])
+		text = text.replace("%AWARDNAME%", awardName)
+		text = text.replace("%AWARDRANK%", rank)
+
 		dialogueTexts[1] = TDialogueTexts.Create(text)
 		dialogueTexts[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale2(["DIALOGUE_BETTY_LEVEL"+bettyLoveLevel+"_CHANGETOPIC", "DIALOGUE_BETTY_CHANGETOPIC"]), 0))
 		dialogueTexts[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale2(["DIALOGUE_BETTY_LEVEL"+bettyLoveLevel+"_GOODBYE", "DIALOGUE_BETTY_GOODBYE"]), -2, Null))
@@ -97,8 +125,8 @@ Type RoomHandler_Betty extends TRoomHandler
 		dialogue = new TDialogue
 		dialogue.AddTexts(dialogueTexts)
 
-		TDialogue.DrawDialog("default", 440, 100, 300, 100, "StartLeftDown", 15, text, 0, GetBitmapFont("Default",14))
-		dialogue.SetArea(new TRectangle.Init(440, 100, 300, 75))
+		TDialogue.DrawDialog("default", 440, 80, 300, 120, "StartLeftDown", 35, text, 0, GetBitmapFont("Default",14))
+		dialogue.SetArea(new TRectangle.Init(440, 80, 300, 95))
 		dialogue.SetAnswerArea(new TRectangle.Init(380, 325, 360, 50))
 		'dialogue.answerStartType = "StartDownRight"
 		'dialogue.moveAnswerDialogueBalloonStart = 100

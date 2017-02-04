@@ -541,7 +541,15 @@ DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT2 = %PLAYERNAME%!?\n\nIch glaube Du Schlingel 
 DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT1 = Hi %PLAYERNAME%,\n\nunser letztes Treffen war schön. Ich hoffe wir wiederholen noch einige Male.
 DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT2 = Na Du?\n\nich hol uns mal eine Tasse Tee, ich hoffe Du hast Zeit zum plaudern.
 
-DIALOGUE_BETTY_SAMMYINFORMATION_TEXT = Der Sammy?\n\ndazu kann ich Dir erst etwas sagen, wenn Ronny die Funktionen im Quellcode eingebaut hat.
+DIALOGUE_BETTY_NO_AWARD_LEVEL0_TEXT1 = Derzeit wird kein Sammy vergeben. Ich denke in ein paar Tagen geht das Rennen um den begehrten Preis wieder los.
+DIALOGUE_BETTY_NO_AWARD_LEVEL1_TEXT1 = Derzeit wird kein Sammy vergeben. Eventuell kann ich Dir morgen schon mehr sagen.
+DIALOGUE_BETTY_AWARDINFORMATION_NO_FAVORITE_LEVEL0_TEXT1 = Der %AWARDNAME%?\n\nEs gibt noch keinen klaren Favoriten.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE_LEVEL0_TEXT1 = Der %AWARDNAME%?\n\nMomentan schaut es ganz gut für Sie aus.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE_LEVEL1_TEXT1 = Der %AWARDNAME%?\n\nMomentan schaut es ganz gut für Dich aus.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE_LEVEL0_TEXT1 = Der %AWARDNAME%?\n\nSoviel kann ich Ihnen verraten: Sie befinden sich im Mittelfeld.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE_LEVEL1_TEXT1 = Der %AWARDNAME%?\n\nSoviel kann ich Dir verraten: Du befindest Dich im Mittelfeld.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL0_TEXT1 = Der %AWARDNAME%?\n\nUm zu gewinnen, musst Du Dich noch ganz schön anstrengen.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL1_TEXT1 = Der %AWARDNAME%?\n\nUm zu gewinnen, müssen Sie sich noch ganz schön anstrengen.
 
 DIALOGUE_BETTY_ASK_FOR_SAMMYINFORMATION = Wie sieht es mit dem aktuellen Sammy aus?
 DIALOGUE_BETTY_ASK_FOR_MASTERKEY = Du könntest mir nicht zufälligerweise den Generalschlüssel ausleihen?

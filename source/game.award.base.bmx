@@ -85,6 +85,11 @@ Type TAwardCollection Extends TGameObjectCollection
 	End Method
 
 
+	Method GetNextAwardTime:Long()
+		return nextAwardTime
+	End Method
+
+
 	Method UpdateAwards()
 		'if new day, not start day
 '		If GetWorldTime().GetDaysRun() >= 1
@@ -102,7 +107,7 @@ print "RONNY: UpdateAwards() GerDaysRun zurueckstellen!!"
 
 
 			'=== CREATE NEW AWARD ===
-			If not currentAward and nextAwardTime <= GetWorldTime().GetTimeGone()
+			If not currentAward and GetNextAwardTime() <= GetWorldTime().GetTimeGone()
 				local nextAward:TAward = GetNextAward()
 
 				'create or fetch next award
@@ -129,12 +134,14 @@ print "RONNY: UpdateAwards() GerDaysRun zurueckstellen!!"
 
 				'set current award
 				SetCurrentAward(nextAward)
+				nextAward = null
 
 				'pre-create the next award if needed
 				if not GetNextAward()
 					local awardType:int = RandRange(1, TVTAwardType.count)
-					
-					AddUpcoming( CreateAward(awardType) )
+					nextAward = CreateAward(awardType)
+
+					AddUpcoming( nextAward )
 				endif
 
 
@@ -145,18 +152,20 @@ print "RONNY: UpdateAwards() GerDaysRun zurueckstellen!!"
 
 				'set time to the next 0:00 coming _after the waiting
 				'time is gone (or use that midnight if exactly 0:00)
-				local nextTimeExact:Long = nextAward.GetEndTime() + timeBetweenAwards
+				local nextTimeExact:Long = currentAward.GetEndTime() + timeBetweenAwards
 				if GetWorldTime().GetDayHour(nextTimeExact) = 0 and GetWorldTime().GetDayMinute(nextTimeExact) = 0
 					nextAwardTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(nextTimeExact), 0, 0)
 				else
 					nextAwardTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(nextTimeExact)+1, 0, 0)
 				endif
-
-
 				if nextAward
-					local awardTypeString:string = TVTAwardType.GetAsString(nextAward.awardType)
-					print "SetCurrentAward: type="+awardTypeString+" ["+nextAward.awardType+"] "+"  ends="+ GetWorldTime().GetFormattedGameDate(nextAward.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate()
-					print "                 next="+GetWorldTime().GetFormattedGameDate(nextAwardTime)
+					nextAward.SetStartTime( nextAwardTime )
+				endif
+
+
+				print "SetCurrentAward: type="+TVTAwardType.GetAsString(currentAward.awardType)+" ["+currentAward.awardType+"] "+"  ends="+ GetWorldTime().GetFormattedGameDate(currentAward.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate()
+				if nextAward
+					print "      NextAward: type="+TVTAwardType.GetAsString(nextAward.awardType)+" ["+nextAward.awardType+"] "+"  starts="+ GetWorldTime().GetFormattedGameDate(GetNextAwardTime())
 				endif
 			End If
 		endif
@@ -433,6 +442,26 @@ Type TAward extends TGameObject
 		Return GetWorldTime().GetDay() - GetWorldTime().GetDay(endTime)
 	End Method
 
+
+	Method GetCurrentRank:Int(playerID:int)
+		if playerID < 1 or playerID > self.scores.length then return 0
+
+		local rank:int = 1
+		local myScore:int = self.scores[playerID-1]
+		For Local i:Int = 1 To scores.length
+			if i = playerID then continue
+			if Self.scores[i-1] > myScore
+				rank :+ 1
+			EndIf
+		Next
+		Return rank
+	End Method
+
+
+	Method GetRanks:int()
+		return self.scores.length
+	End Method
+	
 
 	Method GetCurrentWinner:Int()
 		Local bestScore:Int = 0

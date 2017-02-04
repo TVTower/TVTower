@@ -532,6 +532,7 @@ DIALOGUE_SUPERMARKET_GOODBYE2 = See you. Bye.
 DIALOGUE_SUPERMARKET_GOODBYE3 = Making tracks now. See you.
 
 
+#level 0 = formal, level>0 = informal
 DIALOGUE_BETTY_WELCOME_TEXT = Hello,\n\nhow can I help you?
 DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT1 = Good Day!\n\nWhat drives you to the topmost floor?
 DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT2 = Yes?\n\\nFor sure you are here to fetch latest Information about the Sammy.
@@ -542,7 +543,15 @@ DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT2 = %PLAYERNAME%!?\n\nI think you rascal are j
 DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT1 = Hi %PLAYERNAME%,\n\nour latest meeting was really nice. I hope we catch up again some more times.
 DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT2 = Hey there!\n\nI'll make us some tea - hope you have some time to chat.
 
-DIALOGUE_BETTY_SAMMYINFORMATION_TEXT = The Sammy?\n\nI cannot say something until Ronny implemented the needed functions to the sourcecode.
+DIALOGUE_BETTY_NO_AWARD_LEVEL0_TEXT1 = Currently no Sammy is awarded. I think in some days the race for points will start again.
+DIALOGUE_BETTY_NO_AWARD_LEVEL1_TEXT1 = Currently no Sammy is awarded. Maybe I can tell you more tomorrow.
+DIALOGUE_BETTY_AWARDINFORMATION_NO_FAVORITE_LEVEL0_TEXT1 = The %AWARDNAME%?\n\nThere is no favorite yet.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE_LEVEL0_TEXT1 = The %AWARDNAME%?\n\nCurrently it looks good for you.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE_LEVEL1_TEXT1 = The %AWARDNAME%?\n\nCurrently it looks good for you.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE_LEVEL0_TEXT1 = The %AWARDNAME%?\n\nThis I can tell: You are ranking amongst the others.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE_LEVEL1_TEXT1 = The %AWARDNAME%?\n\nThis I can tell: You are ranking amongst the others.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL0_TEXT1 = The %AWARDNAME%?\n\nTo win you will have to try harder.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL1_TEXT1 = The %AWARDNAME%?\n\nTo win you will have to try harder.
 
 DIALOGUE_BETTY_ASK_FOR_SAMMYINFORMATION = How is it with the current Sammy?
 DIALOGUE_BETTY_ASK_FOR_MASTERKEY = By chance - can't you lend me the master key?
