@@ -433,9 +433,9 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 		skin.fontNormal.drawBlock( ..
 			text, ..
 			x + textOffsetX + border.GetLeft(), ..
-			y + titleOffsetY + border.GetTop(), .. '-1 to align it more properly
+			y + textOffsetY + border.GetTop(), .. '-1 to align it more properly
 			w - textOffsetX - (border.GetRight() + border.GetLeft()),  ..
-			Max(15, sprite.GetHeight() - (border.GetTop() + border.GetBottom())), ..
+			Max(15, sprite.GetHeight() - (border.GetTop() + border.GetBottom() + 15)), ..
 			ALIGN_LEFT_CENTER, skin.textColorNeutral)
 
 		SetAlpha (oldCol.a)
