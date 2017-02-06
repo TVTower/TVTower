@@ -25,6 +25,7 @@ Global TVTGhostBuildingScrollMode:int = False
 'to LUA in one step)
 Type TVTGameConstants {_exposeToLua}
 	Field AchievementCategory:TVTAchievementCategory = new TVTAchievementCategory 
+	Field ArchivedMessageCategory:TVTArchivedMessageCategory = new TVTArchivedMessageCategory 
 
 	Field NewsType:TVTNewsType = new TVTNewsType
 	Field NewsGenre:TVTNewsGenre = new TVTNewsGenre
@@ -114,6 +115,62 @@ Type TVTAchievementCategory {_exposeToLua}
 		End Select
 	End Function
 End Type
+
+
+
+
+Type TVTArchivedMessageCategory {_exposeToLua}
+	Const ALL:int = 0
+	Const MONEY:int = 1
+	Const AWARDS:int = 2
+	Const ACHIEVEMENTS:int = 4
+	Const MISC:int = 8
+
+	Const count:int = 4
+
+
+	Function GetAtIndex:int(index:int = 0)
+		if index <= 0 then return 0
+		return 2^(index-1)
+	End Function	
+
+
+	Function GetIndex:int(key:int)
+		Select key
+			case   1	return 1
+			case   2	return 2
+			case   4	return 3
+			case   8	return 4
+		End Select
+		return 0
+	End Function
+
+
+	Function GetAsString:String(key:int = 0)
+		Select key
+			case ALL           return "all"
+
+			case MONEY         return "money"
+			case AWARDS        return "awards"
+			case ACHIEVEMENTS  return "achievements"
+			case MISC          return "misc"
+
+			default
+				'loop through all entries and add them if contained
+				local result:string
+				local index:int = 0
+				'do NOT start with 0 ("all")
+				For local i:int = 1 to count
+					index = GetAtIndex(i)
+					if key & index then result :+ GetAsString(index) + ","
+				Next
+				if result = "" then return "none"
+				'remove last comma
+				return result[.. result.length-1]
+		End Select
+	End Function
+End Type
+
 
 
 

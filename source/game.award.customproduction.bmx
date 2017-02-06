@@ -51,11 +51,13 @@ Type TAwardCustomProduction extends TAward
 	End Method
 	
 
-	Method Finish()
-		Super.Finish()
+	Method Finish:int()
+		local result:int = Super.Finish()
 
 		'remove links to best productions
 		bestLicences = null
+
+		return result
 	End Method
 
 

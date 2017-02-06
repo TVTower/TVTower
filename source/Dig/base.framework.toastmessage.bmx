@@ -128,6 +128,10 @@ Type TToastMessageCollection extends TRenderableEntity
 		if not spawnPoint then return False
 
 		spawnPoint.AddMessage(message)
+
+		'send out event - eg for sounds
+		EventManager.triggerEvent(TEventSimple.Create("ToastMessageCollection.onAddMessage", new TData.Add("spawnPoint", spawnPoint), null, message ))
+
 		return True
 	End Method
 
@@ -141,6 +145,10 @@ Type TToastMessageCollection extends TRenderableEntity
 		if not spawnPoint then return False
 
 		spawnPoint.AddMessageFirst(message)
+
+		'send out event - eg for sounds
+		EventManager.triggerEvent(TEventSimple.Create("ToastMessageCollection.onAddMessage", new TData.Add("spawnPoint", spawnPoint), null, message ))
+
 		return True
 	End Method
 
@@ -228,9 +236,6 @@ Type TToastMessageSpawnPoint extends TEntity
 		message.SetParent(self)
 
 		messages.AddLast(message)
-
-		'send out event - eg for sounds
-		EventManager.triggerEvent(TEventSimple.Create("ToastMessageCollection.onAddMessage", new TData.Add("spawnPoint", self), null, message ))
 		return True
 	End Method
 
