@@ -96,7 +96,7 @@ Type TScreenHandler_ProgrammePlanner
 			ProgrammePlannerButtons[4] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 4*54), Null, GetLocale("PLANNER_ACHIEVEMENTS"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[4].spriteName = "gfx_programmeplanner_btn_achievements"
 
-			ProgrammePlannerButtons[5] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 5*54), Null, GetLocale("PLANNER_UNKNOWN"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[5] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 5*54), Null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
 			ProgrammePlannerButtons[5].spriteName = "gfx_programmeplanner_btn_unknown"
 
 			For Local i:Int = 0 To 5
@@ -197,7 +197,7 @@ Type TScreenHandler_ProgrammePlanner
 			ProgrammePlannerButtons[2].SetCaption(GetLocale("PLANNER_FINANCES"))
 			ProgrammePlannerButtons[3].SetCaption(GetLocale("PLANNER_STATISTICS"))
 			ProgrammePlannerButtons[4].SetCaption(GetLocale("PLANNER_ACHIEVEMENTS"))
-			ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_UNKNOWN"))
+			ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_MESSAGES"))
 		EndIf
 
 		'add gfx to background image
@@ -1424,7 +1424,7 @@ endrem
 		If button = ProgrammePlannerButtons[2] Then Return ScreenCollection.GoToSubScreen("screen_office_financials")
 		If button = ProgrammePlannerButtons[3] Then Return ScreenCollection.GoToSubScreen("screen_office_statistics")
 		If button = ProgrammePlannerButtons[4] then return ScreenCollection.GoToSubScreen("screen_office_achievements")
-		'If button = ProgrammePlannerButtons[5] then return ScreenCollection.GoToSubScreen("screen_office_messages")
+		If button = ProgrammePlannerButtons[5] then return ScreenCollection.GoToSubScreen("screen_office_archivedmessages")
 	End Function
 
 
@@ -1783,17 +1783,20 @@ endrem
 
 	'add gfx to background
 	Function InitProgrammePlannerBackground:Int()
+		'restore backup before
+		if programmePlannerBackgroundOriginal
+			GetSpriteFromRegistry("screen_bg_programmeplanner").parent.image = LoadImage(LockImage(programmePlannerBackgroundOriginal).Copy())
+		endif
+
 		Local roomImg:TImage = GetSpriteFromRegistry("screen_bg_programmeplanner").parent.image
+
 		'create backup if not existing
 		if not programmePlannerBackgroundOriginal
 			'either use our CopyImage() command - or a simpler one for
 			'static background images:
 			programmePlannerBackgroundOriginal = LoadImage(LockImage(roomImg).Copy())
-		else
-			'restore backup before
-			roomImg = programmePlannerBackgroundOriginal
-			GetSpriteFromRegistry("screen_bg_programmeplanner").parent.image = roomImg
 		endif
+		
 		Local Pix:TPixmap = LockImage(roomImg)
 		if Pix.format <> PF_RGB888
 			TLogger.Log("TScreenHandler_ProgrammePlanner.InitProgrammePlannerBackground()", "Converted ~qscreen_bg_programmeplanner~q color space to RGB.", LOG_DEBUG)
@@ -1801,6 +1804,8 @@ endrem
 			Pix = Pix.convert(PF_RGB888)
 			'and store it in the image again (we just changed reference)
 			roomImg.SetPixmap(0, Pix)
+
+			Pix = LockImage(roomImg)
 		endif
 
 		Local gfx_ProgrammeBlock1:TImage = GetSpriteFromRegistry("pp_programmeblock1").GetImage()
