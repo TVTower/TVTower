@@ -4299,10 +4299,8 @@ Type GameEvents
 			toast.SetPriority(10)
 
 			toast.SetCaption(GetLocale("YOUR_BOSS_WANTS_TO_SEE_YOU"))
-			toast.SetText(..
-				GetLocale("YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM").Replace("%HOURS%", 2) + " " +..
-				"|i|"+GetLocale("CLICK_HERE_TO_START_YOUR_VISIT_AHEAD_OF_TIME") + "|/i|" ..
-			)
+			toast.SetText(GetLocale("YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM").Replace("%HOURS%", 2))
+			toast.SetClickText("|i|"+GetLocale("CLICK_HERE_TO_START_YOUR_VISIT_AHEAD_OF_TIME") + "|/i|")
 			toast.SetOnCloseFunction(PlayerBoss_onClosePlayerCallMessage)
 			toast.GetData().Add("boss", boss)
 			toast.GetData().Add("player", player)

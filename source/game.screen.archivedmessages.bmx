@@ -440,7 +440,7 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 		local timeW:int = 0
 
 		timeW = skin.fontNormal.drawBlock( ..
-			GetLocale("DAY") + " " + GetWorldTime().GetDaysRun(message.time)+1) + " " + GetWorldTime().GetFormattedTime(message.time), ..
+			GetLocale("DAY") + " " + (GetWorldTime().GetDaysRun(message.time)+1) + " " + GetWorldTime().GetFormattedTime(message.time), ..
 			x + (w - border.GetRight() - 100), ..
 			y + border.GetTop(), .. '-1 to align it more properly
 			100, ..

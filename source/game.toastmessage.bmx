@@ -20,6 +20,7 @@ Type TGameToastMessage extends TToastMessage
 	Field messageCategory:int = TVTMessageCategory.MISC
 	Field caption:string = ""
 	Field text:string = ""
+	Field clickText:string = ""
 	'the higher the more important the message is
 	Field priority:int = 0
 	Field showBackgroundSprite:int = True
@@ -81,28 +82,48 @@ Type TGameToastMessage extends TToastMessage
 	End Method
 
 
-	Method SetCaption:Int(caption:String)
+	Method SetCaption:Int(caption:String, skipRecalculation:int=False)
+		if self.caption = caption then return False
+
 		self.caption = caption
-		RecalculateHeight()
+		if not skipRecalculation then RecalculateHeight()
+		return True
 	End Method
 
 
-	Method SetText:Int(text:String)
+	Method SetText:Int(text:String, skipRecalculation:int=False)
+		if self.text = text then return False
+
 		self.text = text
-		RecalculateHeight()
+		if not skipRecalculation then RecalculateHeight()
+		return True
+	End Method
+
+
+	Method SetClickText:Int(clickText:String, skipRecalculation:int=False)
+		if self.clickText = clickText then return False
+
+		self.clickText = clickText
+		if not skipRecalculation then RecalculateHeight()
+		return True
 	End Method
 
 
 	'override to add height recalculation (as a bar is drawn then)
 	Method SetLifeTime:Int(lifeTime:Float = -1)
 		Super.SetLifeTime(lifeTime)
-		RecalculateHeight()
+
+		if lifeTime > 0
+			RecalculateHeight()
+		endif
 	End Method
 
 
 	Method SetCloseAtWorldTime:Int(worldTime:Double = -1)
 		_closeAtWorldTime = worldTime
-		RecalculateHeight()
+		if _closeAtWorldTime > 0 and _closeAtWorldTimeText <> ""
+			RecalculateHeight()
+		endif
 	End Method
 
 
@@ -114,12 +135,16 @@ Type TGameToastMessage extends TToastMessage
 	Method RecalculateHeight:Int()
 		local height:int = 0
 		'caption singleline
-		height :+ GetBitmapFontManager().baseFontBold.GetMaxCharHeight()
+		'height :+ GetBitmapFontManager().baseFontBold.GetMaxCharHeight()
+		height :+ GetBitmapFontManager().baseFontBold.GetBlockDimension(caption, GetContentWidth(), -1).GetY()
 		'text
 		'attention: subtract some pixels from width (to avoid texts fitting
 		'because of rounding errors - but then when drawing they do not
 		'fit)
 		height :+ GetBitmapFontManager().baseFont.GetBlockDimension(text, GetContentWidth(), -1).GetY()
+		if clickText
+			height :+ GetBitmapFontManager().baseFont.GetBlockDimension(clickText, GetContentWidth(), -1).GetY()
+		endif
 		'gfx padding
 		if showBackgroundSprite and backgroundSprite
 			height :+ backgroundSprite.GetNinePatchContentBorder().GetTop()
@@ -186,9 +211,10 @@ Type TGameToastMessage extends TToastMessage
 			contentY2 :- backgroundSprite.GetNinePatchContentBorder().GetBottom()
 		endif
 
-		local captionHeight:int = GetBitmapFontManager().baseFontBold.GetMaxCharHeight()
-		GetBitmapFontManager().baseFontBold.DrawBlock(caption, contentX, contentY, GetContentWidth(), captionHeight, null, TColor.clBlack)
-		GetBitmapFontManager().baseFont.DrawBlock(text, contentX, contentY + captionHeight, GetContentWidth(), -1, null, TColor.CreateGrey(50))
+		local captionH:int ' = GetBitmapFontManager().baseFontBold.GetMaxCharHeight()
+		local textH:int ' = GetBitmapFontManager().baseFontBold.GetMaxCharHeight()
+		captionH = GetBitmapFontManager().baseFontBold.DrawBlock(caption, contentX, contentY, GetContentWidth(), -1, null, TColor.clBlack).GetY()
+		GetBitmapFontManager().baseFont.DrawBlock(text+clickText, contentX, contentY + captionH, GetContentWidth(), -1, null, TColor.CreateGrey(50))
 
 
 		'worldtime close hint
