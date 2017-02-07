@@ -4334,6 +4334,10 @@ Type GameEvents
 
 		local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
 		if not boss then return False
+
+		'only interest in active player's boss-credit-actions
+		If boss.playerID <> GetPlayerCollection().playerID Then Return False
+
 		
 		local value:int = triggerEvent.GetData().GetInt("value", 0)
 		'send out a toast message
