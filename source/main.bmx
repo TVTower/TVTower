@@ -108,6 +108,7 @@ import "common.misc.plannerlist.contractlist.bmx"
 
 Import "game.screen.menu.bmx"
 Import "game.screen.achievements.bmx"
+Import "game.screen.archivedmessages.bmx"
 Import "game.screen.statistics.bmx"
 
 Import "game.network.networkhelper.bmx"
@@ -783,11 +784,11 @@ Type TApp
 						if GetAwardCollection().currentAward
 							TLogger.Log("DEV", "Awards: finish current award.", LOG_DEV)
 							GetAwardCollection().currentAward.AdjustScore(1, 1000)
-							GetAwardCollection().currentAward.SetEndTime( GetWorldTime().GetTimeGone()-1 )
+							GetAwardCollection().currentAward.SetEndTime( Long(GetWorldTime().GetTimeGone()-1) )
 							GetAwardCollection().UpdateAwards()
 						else
 							TLogger.Log("DEV", "Awards: force start of next award.", LOG_DEV)
-							GetAwardCollection().nextAwardTime = GetWorldTime().GetTimeGone()
+							GetAwardCollection().nextAwardTime = Long(GetWorldTime().GetTimeGone())
 							GetAwardCollection().UpdateAwards()
 						endif
 												
@@ -1797,6 +1798,7 @@ Type TGameState
 	Field _NewsEventTemplateCollection:TNewsEventTemplateCollection = Null
 	Field _NewsEventCollection:TNewsEventCollection = Null
 	Field _AchievementCollection:TAchievementCollection = Null
+	Field _ArchivedMessageCollection:TArchivedMessageCollection = Null
 	Field _FigureCollection:TFigureCollection = Null
 	Field _PlayerCollection:TPlayerCollection = Null
 	Field _PlayerFinanceCollection:TPlayerFinanceCollection = Null
@@ -1876,6 +1878,7 @@ Type TGameState
 		GetDailyBroadcastStatisticCollection().Initialize()
 		GetFigureCollection().Initialize()
 		GetAchievementCollection().Initialize()
+		GetArchivedMessageCollection().Initialize()
 		GetNewsAgency().Initialize()
 		GetNewsEventSportCollection().InitializeAll()
 		GetPublicImageCollection().Initialize()
@@ -1953,6 +1956,7 @@ Type TGameState
 		_Assign(_NewsEventCollection, TNewsEventCollection._instance, "NewsEventCollection", MODE_LOAD)
 		_Assign(_NewsAgency, TNewsAgency._instance, "NewsAgency", MODE_LOAD)
 		_Assign(_AchievementCollection, TAchievementCollection._instance, "AchievementCollection", MODE_LOAD)
+		_Assign(_ArchivedMessageCollection, TArchivedMessageCollection._instance, "ArchivedMessageCollection", MODE_LOAD)
 		_Assign(_Building, TBuilding._instance, "Building", MODE_LOAD)
 		_Assign(_Elevator, TElevator._instance, "Elevator", MODE_LOAD)
 		_Assign(_RoomBoard, TRoomBoard._instance, "RoomBoard", MODE_LOAD)
@@ -2071,6 +2075,7 @@ Type TGameState
 		_Assign(TNewsEventCollection._instance, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
 		_Assign(TNewsAgency._instance, _NewsAgency, "NewsAgency", MODE_SAVE)
 		_Assign(TAchievementCollection._instance, _AchievementCollection, "AchievementCollection", MODE_SAVE)
+		_Assign(TArchivedMessageCollection._instance, _ArchivedMessageCollection, "ArchivedMessageCollection", MODE_SAVE)
 		_Assign(EventManager._events, _EventManagerEvents, "Events", MODE_SAVE)
 		_Assign(TPopularityManager._instance, _PopularityManager, "PopularityManager", MODE_SAVE)
 		_Assign(TBroadcastManager._instance, _BroadcastManager, "BroadcastManager", MODE_SAVE)
@@ -4300,6 +4305,7 @@ Type GameEvents
 			toast.SetOnCloseFunction(PlayerBoss_onClosePlayerCallMessage)
 			toast.GetData().Add("boss", boss)
 			toast.GetData().Add("player", player)
+			toast.GetData().AddNumber("playerID", player.playerID)
 
 			'if this was a new message, the guid will differ
 			If toast.GetGUID() <> toastGUID
@@ -4326,6 +4332,9 @@ Type GameEvents
 		'only show toast message on success
 		local success:int = triggerEvent.GetData().GetBool("result", False)
 		if not success then return false
+
+		local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
+		if not boss then return False
 		
 		local value:int = triggerEvent.GetData().GetInt("value", 0)
 		'send out a toast message
@@ -4346,6 +4355,7 @@ Type GameEvents
 
 		'play a special sound instead of the default one
 		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
+		toast.GetData().AddNumber("playerID", boss.playerID)
 
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
@@ -4370,6 +4380,8 @@ Type GameEvents
 			GetLocale("BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME").Replace("%TITLE%", "|b|"+programme.GetTitle()+"|/b|") + " " + ..
 			GetLocale("PENALTY_OF_X_WAS_PAID").Replace("%MONEY%", "|b|"+MathHelper.DottedValue(GameRules.sentXRatedPenalty)+getLocale("CURRENCY")+"|/b|") ..
 		)
+		toast.GetData().AddNumber("playerID", programme.owner)
+
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
 
@@ -4398,6 +4410,8 @@ Type GameEvents
 		EndIf
 		
 		toast.SetText(text)
+		toast.GetData().AddNumber("playerID", player.playerID)
+
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
 
@@ -4445,6 +4459,9 @@ Type GameEvents
 		toast.SetMessageType(2) 'positive
 		toast.SetCaption(GetLocale("ACHIEVEMENT_COMPLETED"))
 		toast.SetText( text )
+
+		toast.GetData().AddNumber("playerID", player.playerID)
+
 		GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
 	End Function
 
@@ -4487,6 +4504,9 @@ Type GameEvents
 		toast.SetMessageType(2) 'positive
 		toast.SetCaption(GetLocale("AWARD_WON"))
 		toast.SetText( text )
+
+		toast.GetData().AddNumber("playerID", player.playerID)
+
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
 		
@@ -4525,7 +4545,9 @@ Type GameEvents
 
 			toast.SetCaption( caption )
 			toast.SetText( text )
-		
+
+			toast.GetData().AddNumber("playerID", GetPlayerBase().playerID)
+
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 		endif
 	End Function
@@ -4557,6 +4579,8 @@ Type GameEvents
 		'play a special sound instead of the default one
 		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
 
+		toast.GetData().AddNumber("playerID", GetPlayer().playerID)
+
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 
 	End Function
@@ -4580,6 +4604,9 @@ Type GameEvents
 		toast.SetMessageType(2) 'positive
 		toast.SetCaption(GetLocale("YOU_HAVE_WON_AN_AUCTION"))
 		toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+licence.GetTitle()+"|/b|"))
+
+		toast.GetData().AddNumber("playerID", GetPlayer().playerID)
+
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function	
 
@@ -4603,6 +4630,9 @@ Type GameEvents
 		toast.SetMessageType(2) 'positive
 		toast.SetCaption(GetLocale("SHOOTING_FINISHED"))
 		toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+title+"|/b|"))
+
+		toast.GetData().AddNumber("playerID", GetPlayer().playerID)
+
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function	
 
@@ -4656,6 +4686,8 @@ Type GameEvents
 		
 		toast.SetCaption(GetLocale("ACCOUNT_BALANCE"))
 
+		toast.GetData().AddNumber("playerID", playerID)
+
 		if not GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 			print "failed to add toast message"
 		endif
@@ -4683,6 +4715,8 @@ Type GameEvents
 		'play a special sound instead of the default one
 		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
 
+		toast.GetData().AddNumber("playerID", GetPlayer().playerID)
+
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
 
@@ -4705,6 +4739,9 @@ Type GameEvents
 			GetLocale("ADCONTRACT_X_FAILED").Replace("%TITLE%", contract.GetTitle()) + " " + ..
 			GetLocale("PENALTY_OF_X_WAS_PAID").Replace("%MONEY%", "|b|"+MathHelper.DottedValue(contract.GetPenalty())+getLocale("CURRENCY")+"|/b|") ..
 		)
+
+		toast.GetData().AddNumber("playerID", GetPlayer().playerID)
+
 		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 	End Function
 
@@ -4792,6 +4829,8 @@ Type GameEvents
 
 		toast.SetCaption(GetLocale("STATION_UNDER_CONSTRUCTION"))
 		toast.SetText( GetLocale(readyText).Replace("%TIME%", readyTime) )
+
+		toast.GetData().AddNumber("playerID", player.playerID)
 
 		rem - if only 1 instance allowed
 		'if this was a new message, the guid will differ

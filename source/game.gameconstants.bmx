@@ -25,7 +25,7 @@ Global TVTGhostBuildingScrollMode:int = False
 'to LUA in one step)
 Type TVTGameConstants {_exposeToLua}
 	Field AchievementCategory:TVTAchievementCategory = new TVTAchievementCategory 
-	Field ArchivedMessageCategory:TVTArchivedMessageCategory = new TVTArchivedMessageCategory 
+	Field MessageCategory:TVTMessageCategory = new TVTMessageCategory 
 
 	Field NewsType:TVTNewsType = new TVTNewsType
 	Field NewsGenre:TVTNewsGenre = new TVTNewsGenre
@@ -119,7 +119,7 @@ End Type
 
 
 
-Type TVTArchivedMessageCategory {_exposeToLua}
+Type TVTMessageCategory {_exposeToLua}
 	Const ALL:int = 0
 	Const MONEY:int = 1
 	Const AWARDS:int = 2
