@@ -4295,6 +4295,7 @@ Type GameEvents
 			toast.SetCloseAtWorldTime(latestTime)
 			toast.SetCloseAtWorldTimeText("MESSAGE_CLOSES_AT_TIME")
 			toast.SetMessageType(1)
+			toast.SetMessageCategory(TVTMessageCategory.MISC)
 			toast.SetPriority(10)
 
 			toast.SetCaption(GetLocale("YOUR_BOSS_WANTS_TO_SEE_YOU"))
@@ -4342,6 +4343,7 @@ Type GameEvents
 	
 		'show it for some seconds
 		toast.SetLifeTime(3)
+		toast.SetMessageCategory(TVTMessageCategory.MONEY)
 
 		if triggerEvent.IsTrigger("PlayerBoss.onPlayerTakesCredit")
 			toast.SetMessageType(2) 'positive
@@ -4375,6 +4377,7 @@ Type GameEvents
 		'show it for some seconds
 		toast.SetLifeTime(15)
 		toast.SetMessageType(1) 'attention
+		toast.SetMessageCategory(TVTMessageCategory.MISC)
 		toast.SetCaption(GetLocale("AUTHORITIES_STOPPED_BROADCAST"))
 		toast.SetText( ..
 			GetLocale("BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME").Replace("%TITLE%", "|b|"+programme.GetTitle()+"|/b|") + " " + ..
@@ -4401,6 +4404,7 @@ Type GameEvents
 		'show it for some seconds
 		toast.SetLifeTime(15)
 		toast.SetMessageType(1) 'attention
+		toast.SetMessageCategory(TVTMessageCategory.MISC)
 		toast.SetCaption(GetLocale("AUTHORITIES_CONFISCATED_LICENCE"))
 		Local text:String = GetLocale("PROGRAMMELICENCE_X_GOT_CONFISCATED").Replace("%TITLE%", "|b|"+confiscatedProgrammeLicence.GetTitle()+"|/b|") + " "
 		If confiscatedProgrammeLicence <> targetProgrammeLicence
@@ -4457,6 +4461,7 @@ Type GameEvents
 		'show it for some seconds
 		toast.SetLifeTime(15)
 		toast.SetMessageType(2) 'positive
+		toast.SetMessageCategory(TVTMessageCategory.ACHIEVEMENTS)
 		toast.SetCaption(GetLocale("ACHIEVEMENT_COMPLETED"))
 		toast.SetText( text )
 
@@ -4503,6 +4508,7 @@ Type GameEvents
 		toast.SetLifeTime(15)
 		toast.SetMessageType(2) 'positive
 		toast.SetCaption(GetLocale("AWARD_WON"))
+		toast.SetMessageCategory(TVTMessageCategory.AWARDS)
 		toast.SetText( text )
 
 		toast.GetData().AddNumber("playerID", player.playerID)
@@ -4542,6 +4548,7 @@ Type GameEvents
 			'show it for some seconds
 			toast.SetLifeTime(15)
 			toast.SetMessageType(1) 'attention
+			toast.SetMessageCategory(TVTMessageCategory.MISC)
 
 			toast.SetCaption( caption )
 			toast.SetText( text )
@@ -4572,6 +4579,8 @@ Type GameEvents
 		toast.SetLifeTime(6)
 		toast.SetMessageType(1) 'attention
 		toast.SetCaption(GetLocale("YOU_HAVE_BEEN_OUTBID"))
+		toast.SetMessageCategory(TVTMessageCategory.MONEY)
+
 		toast.SetText( ..
 			GetLocale("SOMEONE_BID_MORE_THAN_YOU_FOR_X").Replace("%TITLE%", licence.GetTitle()) + " " + ..
 			GetLocale("YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED").Replace("%MONEY%", "|b|"+MathHelper.DottedValue(previousBestBid)+getLocale("CURRENCY")+"|/b|") ..
@@ -4602,6 +4611,7 @@ Type GameEvents
 		'show it for some seconds
 		toast.SetLifeTime(8)
 		toast.SetMessageType(2) 'positive
+		toast.SetMessageCategory(TVTMessageCategory.MONEY)
 		toast.SetCaption(GetLocale("YOU_HAVE_WON_AN_AUCTION"))
 		toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+licence.GetTitle()+"|/b|"))
 
@@ -4628,6 +4638,7 @@ Type GameEvents
 		'show it for some seconds
 		toast.SetLifeTime(8)
 		toast.SetMessageType(2) 'positive
+		toast.SetMessageCategory(TVTMessageCategory.MISC)
 		toast.SetCaption(GetLocale("SHOOTING_FINISHED"))
 		toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+title+"|/b|"))
 
@@ -4686,6 +4697,8 @@ Type GameEvents
 		
 		toast.SetCaption(GetLocale("ACCOUNT_BALANCE"))
 
+		toast.SetMessageCategory(TVTMessageCategory.MONEY)
+
 		toast.GetData().AddNumber("playerID", playerID)
 
 		if not GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
@@ -4707,6 +4720,7 @@ Type GameEvents
 		'show it for some seconds
 		toast.SetLifeTime(8)
 		toast.SetMessageType(2) 'positive
+		toast.SetMessageCategory(TVTMessageCategory.MONEY)
 		toast.SetCaption(GetLocale("ADCONTRACT_FINISHED"))
 		toast.SetText( ..
 			GetLocale("ADCONTRACT_X_SUCCESSFULLY_FINISHED").Replace("%TITLE%", contract.GetTitle()) + " " + ..
@@ -4734,6 +4748,7 @@ Type GameEvents
 		'show it for some more seconds
 		toast.SetLifeTime(12)
 		toast.SetMessageType(3) 'negative
+		toast.SetMessageCategory(TVTMessageCategory.MONEY)
 		toast.SetCaption(GetLocale("ADCONTRACT_FAILED"))
 		toast.SetText( ..
 			GetLocale("ADCONTRACT_X_FAILED").Replace("%TITLE%", contract.GetTitle()) + " " + ..
@@ -4825,6 +4840,7 @@ Type GameEvents
 		toast.SetCloseAtWorldTimeText(closeText)
 		toast.SetLifeTime(6)
 		toast.SetMessageType(0)
+		toast.SetMessageCategory(TVTMessageCategory.MISC)
 		toast.SetPriority(2)
 
 		toast.SetCaption(GetLocale("STATION_UNDER_CONSTRUCTION"))

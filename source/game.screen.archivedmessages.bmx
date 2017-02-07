@@ -155,17 +155,17 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		local messages:TList = CreateList()
 		For local message:TArchivedMessage = EachIn GetArchivedMessageCollection().entries.values()
 			categoryCountTotal[0] :+ 1
-			if message.category > 0
-				categoryCountTotal[TVTMessageCategory.GetIndex(message.category)] :+ 1
+			if message.messageCategory > 0
+				categoryCountTotal[TVTMessageCategory.GetIndex(message.messageCategory)] :+ 1
 			endif
 			if message.IsRead(roomOwner)
 				categoryCountRead[0] :+ 1
-				if message.category > 0
-					categoryCountRead[TVTMessageCategory.GetIndex(message.category)] :+ 1
+				if message.messageCategory > 0
+					categoryCountRead[TVTMessageCategory.GetIndex(message.messageCategory)] :+ 1
 				endif
 			endif
 
-			if showCategory > 0 and message.category <> showCategory then continue
+			if showCategory > 0 and message.messageCategory <> showCategory then continue
 			if showMode > 0
 				if showMode & SHOW_READ > 0 and not message.IsRead(roomOwner) then continue
 			endif
@@ -434,22 +434,30 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 
 		local border:TRectangle = sprite.GetNinePatchContentBorder()
 
-		local oldCol:TColor = new TColor.Get()
+		'local oldCol:TColor = new TColor.Get()
 		local contentH:int = GetScreenHeight() - (border.GetTop() + border.GetBottom())
 		local titleH:int = 0
+		local timeW:int = 0
 
-		SetAlpha( Max(0.6, oldCol.a) )
+		timeW = skin.fontNormal.drawBlock( ..
+			GetLocale("DAY") + " " + GetWorldTime().GetDaysRun(message.time)+1) + " " + GetWorldTime().GetFormattedTime(message.time), ..
+			x + (w - border.GetRight() - 100), ..
+			y + border.GetTop(), .. '-1 to align it more properly
+			100, ..
+			contentH, ..
+			ALIGN_RIGHT_TOP, skin.textColorNeutral, 0,1,1.0,True, True).GetX()
+		timeW :+ 10
+			
 		titleH = skin.fontSemiBold.drawBlock( ..
 			title, ..
 			x + border.GetLeft(), ..
 			y + border.GetTop(), .. '-1 to align it more properly
-			w - (border.GetRight() + border.GetLeft()),  ..
+			w - (border.GetRight() + border.GetLeft() - timeW),  ..
 			contentH, ..
 			ALIGN_LEFT_TOP, skin.textColorNeutral, 0,1,1.0,True, True).GetY()
 
 		titleH :+ 3
 
-		SetAlpha( Max(0.6, oldCol.a) )
 		skin.fontNormal.drawBlock( ..
 			text, ..
 			x + border.GetLeft(), ..
@@ -457,8 +465,6 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 			w - (border.GetRight() + border.GetLeft()),  ..
 			contentH - titleH, ..
 			ALIGN_LEFT_TOP, skin.textColorNeutral)
-
-		SetAlpha (oldCol.a)
 	End Method
 
 

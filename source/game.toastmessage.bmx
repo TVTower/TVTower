@@ -10,12 +10,14 @@ SuperStrict
 Import "Dig/base.framework.toastmessage.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 Import "game.world.worldtime.bmx"
+Import "game.gameconstants.bmx"
 
 
 
 Type TGameToastMessage extends TToastMessage
 	Field backgroundSprite:TSprite
 	Field messageType:int = 0
+	Field messageCategory:int = TVTMessageCategory.MISC
 	Field caption:string = ""
 	Field text:string = ""
 	'the higher the more important the message is
@@ -37,6 +39,11 @@ Type TGameToastMessage extends TToastMessage
 			link.Remove()
 		Next
 		return Super.Remove()
+	End Method
+
+
+	Method SetMessageCategory:Int(messageCategory:int)
+		self.messageCategory = messageCategory
 	End Method
 	
 

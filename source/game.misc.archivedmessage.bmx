@@ -51,6 +51,29 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 		EventManager.triggerEvent(TEventSimple.Create("ArchivedMessageCollection.onRemove", null, Self, obj))
 		return result
 	End Method
+
+
+	Method LimitArchive:int(limitToAmount:int)
+		if GetCount() < limitToAmount then return False
+
+		local list:TList = new TList
+		'create a full array containing all elements
+		For local a:TArchivedMessage = EachIn entries.Values()
+			list.AddLast(a)
+		Next
+		list.Sort(False, TArchivedMessage.SortByTime)
+
+		'instead of replacing the tmap with a new one, we remove
+		'each entry on its own to keep potential tmap-references intact
+		local index:int = 0
+		For local a:TArchivedMessage = EachIn list
+			index :+ 1
+			if index <= limitToAmount then continue
+
+			Remove(a)
+		Next
+		return index > limitToAmount
+	End Method
 	
 
 	Function onAddToastMessage:int(triggerEvent:TEventBase)
@@ -63,15 +86,18 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 		local archivedMessage:TArchivedMessage = new TArchivedMessage
 		archivedMessage.SetTitle(toastMessage.caption)
 		archivedMessage.SetText(toastMessage.text)
-		archivedMessage.category = 0 'todo
+		archivedMessage.messageCategory = toastMessage.messageCategory
 		archivedMessage.group = toastMessage.messageType 'positive, negative, information ...
 		archivedMessage.time = GetWorldTime().GetTimeGone()
 		archivedMessage.sourceGUID = toastMessage.GetGUID()
 		archivedMessage.SetOwner( toastMessage.GetData().GetInt("playerID", -1) )
 
-		GetInstance().Add(archivedMessage)
-print "added  archive"
+		'keep count below 100 for each owner
+		if GetInstance().GetCount() > 110
+			GetInstance().LimitArchive(100)
+		endif
 
+		GetInstance().Add(archivedMessage)
 	End Function
 End Type
 
@@ -93,7 +119,8 @@ Type TArchivedMessage extends TOwnedGameObject
 	'bitmask containing "read"-state for the players
 	Field read:int
 	'corresponds to TVTMessageCategory
-	Field category:int
+	Field messageCategory:int
+	'positive, information, negative, warning ...
 	Field group:int
 	Field time:Long
 	Field sourceGUID:string
@@ -203,9 +230,9 @@ Type TArchivedMessage extends TOwnedGameObject
 		Local a1:TArchivedMessage = TArchivedMessage(o1)
 		Local a2:TArchivedMessage = TArchivedMessage(o2)
 		If a2 and a1
-			if a1.category < a2.category
+			if a1.messageCategory < a2.messageCategory
 				return -1
-			elseif a1.category > a2.category
+			elseif a1.messageCategory > a2.messageCategory
 				return 1
 			endif
 		Endif
