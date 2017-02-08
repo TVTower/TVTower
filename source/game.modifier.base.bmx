@@ -464,7 +464,7 @@ Type TGameModifier_GameConfig extends TGameModifierBase
 		'restore
 		GameConfig.SetModifier(modKey, value - valueChange)
 
-		print "TGameModifier_GameConfig: restored ~q"+modKey+"~q. value "+value+" => "+GameConfig.GetModifier(modKey)
+		'print "TGameModifier_GameConfig: restored ~q"+modKey+"~q. value "+value+" => "+GameConfig.GetModifier(modKey)
 	
 		return True
 	End Method
@@ -493,7 +493,7 @@ Type TGameModifier_GameConfig extends TGameModifierBase
 			GameConfig.SetModifier(modKey, valueBackup + value)
 		endif
 
-		print "TGameModifier_GameConfig: modified ~q"+modKey+"~q. value "+valueBackup+" => "+GameConfig.GetModifier(modKey)
+		'print "TGameModifier_GameConfig: modified ~q"+modKey+"~q. value "+valueBackup+" => "+GameConfig.GetModifier(modKey)
 	
 		return True
 	End Method

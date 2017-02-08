@@ -198,7 +198,11 @@ Type TLocalization
 			endif
 		endif
 
-		return ""
+		if keys.length > 0
+			return keys[0]
+		else
+			return ""
+		endif
 	End Function
 
 

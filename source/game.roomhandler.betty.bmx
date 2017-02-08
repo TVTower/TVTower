@@ -111,7 +111,7 @@ Type RoomHandler_Betty extends TRoomHandler
 				endif
 			endif
 		else
-			key = "DIALOGUE_BETTY_NO_AWARD_"
+			key = "DIALOGUE_BETTY_NO_AWARD"
 		endif
 		text = GetRandomLocale2([key+"_LEVEL"+lvl+"_TEXT", key+"_LEVEL0_TEXT"])
 		text = text.replace("%AWARDNAME%", awardName)

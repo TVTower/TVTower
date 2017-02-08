@@ -808,7 +808,7 @@ Type TGameModifier_Money extends TGameModifierBase
 		'restore
 		finance.Pay(TVTPlayerFinanceEntryType.PAY_MISC, valueChange)
 
-		print "TGameModifier_Money: paid back "+valueChange+" => "+finance.GetMoney()
+		'print "TGameModifier_Money: paid back "+valueChange+" => "+finance.GetMoney()
 	
 		return True
 	End Method
@@ -848,7 +848,7 @@ Type TGameModifier_Money extends TGameModifierBase
 		GetData().AddNumber("value.change", valueChange)
 		finance.Earn(TVTPlayerFinanceEntryType.SELL_MISC, valueChange)
 
-		print "TGameModifier_Money: earned "+valueChange+" => "+finance.GetMoney()
+		'print "TGameModifier_Money: earned "+valueChange+" => "+finance.GetMoney()
 	
 		return True
 	End Method
