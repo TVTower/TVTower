@@ -500,6 +500,8 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	Field cachedDirectors:TProgrammePersonBase[] {nosave}
 	Field genreDefinitionCache:TMovieGenreDefinition = Null {nosave}
 
+	Field extra:TData
+	
 	'hide movies of 2012 when in 1985?
 	Global ignoreUnreleasedProgrammes:int = TRUE
 	Global _filterReleaseDateStart:int = 1900

@@ -55,10 +55,5 @@ Type TProgrammeProducerBase extends TGameObject
 	End Method
 
 
-	Method CreateProgrammeLicence:object()
-	End Method
-
-
-	Method CreateProgrammeData:object()
-	End Method
+	Method CreateProgrammeLicence:object(params:TData) abstract
 End Type

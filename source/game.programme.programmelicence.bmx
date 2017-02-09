@@ -394,6 +394,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	'use this eg. for opening programme
 	Field licenceFlags:int = TVTProgrammeLicenceFlag.TRADEABLE
 
+	Field extra:TData
+
 '	Field cacheTextOverlay:TImage 			{nosave}
 '	Field cacheTextOverlayMode:string = ""	{nosave}	'for which mode the text was cached
 
@@ -614,6 +616,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if HasLicenceFlag(TVTProgrammeLicenceFlag.LICENCEPOOL_REFILLS_TOPICALITY)
 			GetData().topicality = GetData().GetMaxTopicality()
 		endif
+
+		'inform others about a now unused licence
+		EventManager.triggerEvent( TEventSimple.Create("ProgrammeLicence.onGiveBackToLicencePool", null, self))
 
 		return True
 	End Method

@@ -15,6 +15,7 @@ GetProgrammeProducerCollection().Add( TProgrammeProducerSport.GetInstance() )
 
 
 Type TProgrammeProducerSport extends TProgrammeProducerBase
+	Global _producerName:string = "PP_Sport"
 	Global _eventsRegistered:int= FALSE
 	Global _eventListeners:TLink[]
 	Global _instance:TProgrammeProducerSport
@@ -72,6 +73,20 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 	End Function
 
 
+	Method CreateProgrammeLicence:object(params:TData)
+		if not params
+			print "TProgrammeProducerSport: CreateProgrammeLicence() called with empty param."
+			return null
+		endif
+		if not TNewsEventSportLeague(params.get("league"))
+			print "TProgrammeProducerSport: CreateProgrammeLicence() called without league."
+			return null
+		endif
+
+		return CreateLeagueMatchesCollectionProgrammeLicence( TNewsEventSportLeague(params.get("league")) )
+	End Method
+
+
 	Method CreateLeagueMatchesCollectionProgrammeLicence:TProgrammeLicence(league:TNewsEventSportLeague)
 		if not league then return null
 
@@ -80,6 +95,8 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		programmeLicence.SetData(programmeData)
 		programmeLicence.licenceType = TVTProgrammeLicenceType.COLLECTION
 		programmeLicence.owner = TOwnedGameObject.OWNER_NOBODY
+		programmeLicence.extra = New TData
+		programmeLicence.extra.AddString("producerName", _producerName)
 
 		programmeData.title = new TLocalizedString
 		programmeData.description = new TLocalizedString
@@ -162,6 +179,8 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		'when setting to "SINGLE" they might be sold independently
 		programmeLicence.licenceType = TVTProgrammeLicenceType.EPISODE
 		programmeLicence.owner = TOwnedGameObject.OWNER_NOBODY
+		programmeLicence.extra = New TData
+		programmeLicence.extra.AddString("producerName", _producerName)
 
 
 		programmeData.GUID = "programmedata-sportmatch-"+match.GetGUID()
@@ -212,6 +231,4 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 
 		return programmeLicence
 	End Method
-
-	'TODO: CreateProgrammeData -> "Eine Geschichte des Sports/Fussballs/Handballs..."
 End Type
