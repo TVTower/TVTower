@@ -112,6 +112,7 @@ Type StringHelper
 		local char:string
 		'char for grouping placeholders: "%person:name%"
 		local splitterChar:int = Asc(":")
+		local underscoreChar:int = Asc("_")
 		For local i:int = 0 until text.length
 			char = chr(text[i])
 			'found a potential placeholder start 
@@ -134,7 +135,7 @@ Type StringHelper
 
 				'add the placeHolderChar and alphanumeric characters to
 				'the placeholder value
-				If IsAlphaNum(Asc(char)) or char = placeHolderChar or text[i] = splitterChar
+				If IsAlphaNum(Asc(char)) or char = placeHolderChar or text[i] = splitterChar or text[i] = underscoreChar 
 					currentPlaceHolder :+ char
 				'found something different
 				'ex.: a single placeholderChar ("The % of %ALL% is %X%")

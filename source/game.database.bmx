@@ -1513,10 +1513,13 @@ Type TDatabaseLoader
 		nodeData = xml.FindChild(node, "data")
 		data = new TData
 		xml.LoadValuesToData(nodeData, data, [..
-			"flags", "flags_optional", "productionBroadcastFlags", "productionLicenceFlags", "productionBroadcastLimit" ..
+			"flags", "flags_optional", "keywords", ..
+			"productionBroadcastFlags", "productionLicenceFlags", "productionBroadcastLimit" ..
 		])
 		scriptTemplate.flags = data.GetInt("flags", 0)
 		scriptTemplate.flagsOptional = data.GetInt("flags_optional", 0)
+
+		scriptTemplate.keywords = data.GetString("keywords", "").Trim()
 
 		scriptTemplate.productionBroadcastFlags = data.GetInt("productionBroadcastFlags", 0)
 		scriptTemplate.productionLicenceFlags = data.GetInt("productionLicenceFlags", 0)

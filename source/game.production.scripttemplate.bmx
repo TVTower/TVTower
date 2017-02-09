@@ -36,7 +36,7 @@ Type TScriptTemplateCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetRandomByFilter:TScriptTemplate(skipNotAvailable:int = True, skipEpisodes:int = True)
+	Method GetRandomByFilter:TScriptTemplate(skipNotAvailable:int = True, skipEpisodes:int = True, containsKeywords:string="")
 		'instead of using "super.GetRandom" we use a custom variant
 		'to NOT return episodes...
 		local array:TScriptTemplate[]
@@ -46,6 +46,18 @@ Type TScriptTemplateCollection Extends TGameObjectCollection
 			if skipEpisodes and obj.scriptLicenceType = TVTProgrammeLicenceType.EPISODE then continue
 			'skip not available ones (eg. limit of productions reached)
 			if skipNotAvailable and not obj.IsAvailable() then continue
+
+			'skip if not containing given keywords
+			if containsKeywords
+				local allKeywordsFound:int = True
+				For local k:string = EachIn containsKeywords.split(",")
+					if obj.keywords.Find(k.Trim()) < 0
+						allKeywordsFound = False
+						exit
+					endif
+				Next
+				if not allKeywordsFound then continue
+			endif
 
 			array :+ [obj]
 		Next
@@ -112,6 +124,8 @@ Type TScriptTemplate Extends TScriptBase
 
 	Field productionLimit:int = -1
 	Field productionTimes:int = 0
+
+	Field keywords:string
 
 
 	Method GenerateGUID:string()
