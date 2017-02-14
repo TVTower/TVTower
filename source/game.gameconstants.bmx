@@ -12,6 +12,8 @@ Global VersionDate:String = "unknown"
 Global VersionString:String = ""
 Global CopyrightString:String = ""
 
+Global TVTPlayerCount:int = 4
+
 
 
 Global TVTDebugInfos:int = False

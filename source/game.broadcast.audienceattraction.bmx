@@ -49,7 +49,7 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 
 	Const MODINFLUENCE_GENREPOPULARITY:Float = 0.25
 	Const MODINFLUENCE_FLAGPOPULARITY:Float = 0.25
-	Const MODINFLUENCE_TRAILER:Float = 0.25
+	Const MODINFLUENCE_TRAILER:Float = 0.50
 	Const MODINFLUENCE_GENRETARGETGROUP:Float = 0.95
 	Const MODINFLUENCE_FLAGTARGETGROUP:Float = 0.95
 	Const MODINFLUENCE_MISC:Float = 1.0
@@ -213,7 +213,7 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		If targetGroupAttractivity Then result.Multiply( targetGroupAttractivity )
 
 
-		'trailer bonus: 0 - 1.0, influence: 25%
+		'trailer bonus: 0 - 1.0, influence: 50%
 		'add +1 so it gets a multiplier
 		'"multiply" because it "increases" existing interest
 		'(people more likely watch this programme)

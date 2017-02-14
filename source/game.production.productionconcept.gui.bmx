@@ -349,7 +349,7 @@ rem
 			contentY :+ 12	
 			skin.fontNormal.draw("Preis: "+GetPrice(), contentX + 5, contentY)
 			contentY :+ 12	
-			skin.fontNormal.draw("Trailerakt.-modifikator: "+MathHelper.NumberToString(data.GetTrailerMod().GetTotalAverage(), 4), contentX + 5, contentY)
+			skin.fontNormal.draw("Trailerakt.-modifikator: "+MathHelper.NumberToString(GetTrailerMod().GetTotalAverage(), 4), contentX + 5, contentY)
 		endif
 endrem
 		'=== OVERLAY / BORDER ===

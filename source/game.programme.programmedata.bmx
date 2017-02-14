@@ -46,19 +46,20 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	End Function
 
 
-	Method Initialize:TProgrammeDataCollection()
-		Super.Initialize()
-
-		_InvalidateCaches()
-
-		rem
+	Method New()
 		'=== remove all registered event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
 
 		'=== register event listeners
-		_eventListeners :+ [ EventManager.registerListenerFunction( "Language.onSetLanguage", onSetLanguage ) ]
-		endrem
+		'_eventListeners :+ [ EventManager.registerListenerFunction( "Language.onSetLanguage", onSetLanguage ) ]
+	End Method
+
+
+	Method Initialize:TProgrammeDataCollection()
+		Super.Initialize()
+
+		_InvalidateCaches()
 
 		return self
 	End Method
@@ -489,12 +490,17 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	Field playersLiveBroadcasting:int
 
 	'=== trailer data ===
+	'=== shared
+	'this data is shared along multiple licences (so maybe players)!
 	Field trailerTopicality:float = 1.0
 	Field trailerMaxTopicality:float = 1.0
-	'times the trailer aired
+	'times the trailer aired in total
 	Field trailerAired:int = 0
+	'=== individual
 	'times the trailer aired since the programme was shown "normal"
-	Field trailerAiredSinceShown:int = 0
+	Field trailerAiredSinceLastBroadcast:int[]
+	Field trailerMods:TAudience[]
+
 
 	Field cachedActors:TProgrammePersonBase[] {nosave}
 	Field cachedDirectors:TProgrammePersonBase[] {nosave}
@@ -1586,31 +1592,49 @@ endrem
 
 	'returns amount of trailers aired since last normal programme broadcast
 	'or "in total"
-	Method GetTimesTrailerAired:Int(total:int=TRUE)
-		if total then return self.trailerAired
-		return self.trailerAiredSinceShown
+	Method GetTimesTrailerAired:Int()
+		return self.trailerAired
 	End Method
 
 
+	Method SetTimesTrailerAiredSinceLastBroadcast:int(amount:int, playerID:int=-1)
+		if playerID = -1 then playerID = owner
+		if playerID <= 0 or playerID > TVTPlayerCount then return False
+		if playerID > self.trailerAiredSinceLastBroadcast.length then self.trailerAiredSinceLastBroadcast = self.trailerAiredSinceLastBroadcast[.. playerID] 
+
+		self.trailerAiredSinceLastBroadcast[playerID-1] = amount
+		return True
+	End Method
+	
+
+	Method GetTimesTrailerAiredSinceLastBroadcast:int(playerID:int)
+		if playerID <= 0 or playerID > self.trailerAiredSinceLastBroadcast.length then return 0
+		
+		return self.trailerAiredSinceLastBroadcast[playerID-1]
+	End Method
+	
+
 	'return a value between 0 - 1.0
 	'describes how much of a potential trailer-bonus of 100% was reached
-	Method GetTrailerMod:TAudience()
-		'TODO: include "reached audience"-portion, means we
-		'      have to store amount of audience/reach having
-		'      watched the broadcasted trailers 
-		Local timesTrailerAired:Int = GetTimesTrailerAired(False)
-		Local trailerMod:Float = 0
+	Method GetTrailerMod:TAudience(playerID:int, createIfMissing:int = True)
+		if playerID <= 0 or playerID > TVTPlayerCount then return null
+		if playerID > self.trailerMods.length
+			if not createIfMissing then return null
+			'resize
+			self.trailerMods = self.trailerMods[.. playerID]
+		endif
 
-		Select timesTrailerAired
-			Case 0 	trailerMod = 0		'+0.3
-			Case 1 	trailerMod = 0.3	'+0.25
-			Case 2 	trailerMod = 0.55	'+0.20
-			Case 3 	trailerMod = 0.75	'+0.15
-			Case 4 	trailerMod = 0.9	'+0.1
-			Default	trailerMod = 1.0
-		EndSelect
+		if not self.trailerMods[playerID-1] and createIfMissing
+			self.trailerMods[playerID-1] = new TAudience
+		endif
 
-		Return new TAudience.InitValue(trailerMod, trailerMod)
+		return self.trailerMods[playerID-1]
+	End Method
+
+
+	Method RemoveTrailerMod:int(playerID:int)
+		if playerID <= 0 or playerID > self.trailerMods.length then return False
+		self.trailerMods[playerID-1] = null
 	End Method
 
 

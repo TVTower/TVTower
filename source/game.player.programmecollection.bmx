@@ -27,6 +27,18 @@ Type TPlayerProgrammeCollectionCollection
 	End Function
 
 
+	Method New()
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		'=== register event listeners
+		'informing _old_ instances of the various roomhandlers
+		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSaveGameLoad ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "StationMap.onRecalculateAudienceSum", onRecalculateStationMapAudienceSum ) ]
+	End Method
+	
+
 	Method Set:int(playerID:int, plan:TPlayerProgrammeCollection)
 		if playerID <= 0 then return False
 		if playerID > plans.length then plans = plans[.. playerID]
@@ -49,15 +61,6 @@ Type TPlayerProgrammeCollectionCollection
 
 	Method Initialize:int()
 		InitializeAll()
-
-
-		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
-
-		'=== register event listeners
-		'informing _old_ instances of the various roomhandlers
-		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSaveGameLoad ) ]
 	End Method
 
 
@@ -66,6 +69,44 @@ Type TPlayerProgrammeCollectionCollection
 		For local obj:TPlayerProgrammeCollection = eachin GetInstance().plans
 			obj._programmeLicences = null
 		Next
+	End Function
+
+
+	'scale down trailer mods according to an increased reach
+	Function onRecalculateStationMapAudienceSum:int( triggerEvent:TEventBase )
+		local owner:int = TOwnedGameObject(triggerEvent.GetSender()).GetOwner()
+		local collection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
+		if not collection then return False
+
+		'only interested in an audience increase!
+		local reach:int = triggerEvent.GetData().GetInt("reach", 0)
+		local reachBefore:int = triggerEvent.GetData().GetInt("reachBefore", 0)
+		if reach <= reachBefore then return False
+
+
+		local trailerEffectivenessScale:Float = 1.0
+		if reach = 0
+			'it is no longer worth a bit
+			trailerEffectivenessScale = 0
+		else
+			trailerEffectivenessScale = reachBefore/float(reach)
+		endif
+		print "trailerEffectivenessScale: "+ trailerEffectivenessScale
+
+		'loop over all licences: series, episodes, collection entries..
+		For local licence:TProgrammeLicence = EachIn collection.GetProgrammeLicences()
+			print "scaling down: " + licence.GetTitle()
+			'only scale if there was a trailerMod existing before
+			'(save some memory and savegame space)
+			if licence.data.GetTrailerMod(owner, False)
+				print "  before: " + licence.data.GetTrailerMod(owner, True).ToStringPercentage(2)
+
+				licence.data.GetTrailerMod(owner).MultiplyFloat(trailerEffectivenessScale)
+
+				print "   after: " + licence.data.GetTrailerMod(owner, True).ToStringPercentage(2)
+			endif
+		Next
+			
 	End Function
 End Type
 
@@ -399,6 +440,13 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if not HasProgrammeLicence(licence) and not HasProgrammeLicenceInSuitcase(licence) then return False
 
 		if sell and not licence.sell() then return FALSE
+
+
+		'avoid others benefit from our trailers and remove bonus for
+		'this and sublicences
+		'-> is automatically done on "SetOwner" (so when giving back to licence pool)
+		'licence.RemoveTrailerMod()
+
 
 		'Print "RON: PlayerCollection.RemoveProgrammeLicence: sell="+sell+" title="+licence.GetTitle()
 		singleLicences.remove(licence)

@@ -600,38 +600,37 @@ Type TAudienceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method ToStringMinimal:String()
-		Local dec:Int = 0
-		Return "C:" + MathHelper.NumberToString(Children,dec, True) + " / T:" + MathHelper.NumberToString(Teenagers,dec, True) + " / H:" + MathHelper.NumberToString(HouseWives,dec, True) + " / E:" + MathHelper.NumberToString(Employees,dec, True) + " / U:" + MathHelper.NumberToString(Unemployed,dec, True) + " / M:" + MathHelper.NumberToString(Manager,dec, True) + " /P:" + MathHelper.NumberToString(Pensioners,dec, True)
+	Method ToStringPercentage:String(dec:int = 0)
+		Return "C:" + MathHelper.NumberToString(Children*100,dec, True) + "% / " + ..
+		       "T:" + MathHelper.NumberToString(Teenagers*100,dec, True) + "% / " + ..
+		       "H:" + MathHelper.NumberToString(HouseWives*100,dec, True) + "% / " + ..
+		       "E:" + MathHelper.NumberToString(Employees*100,dec, True) + "% / " + ..
+		       "U:" + MathHelper.NumberToString(Unemployed*100,dec, True) + "% / " + ..
+		       "M:" + MathHelper.NumberToString(Manager*100,dec, True) + "% / " + ..
+		       "P:" + MathHelper.NumberToString(Pensioners*100,dec, True) +"%"
+	End Method
+
+
+	Method ToStringMinimal:String(dec:int = 0)
+		Return "C:" + MathHelper.NumberToString(Children,dec, True) + " / " + ..
+		       "T:" + MathHelper.NumberToString(Teenagers,dec, True) + " / " + ..
+		       "H:" + MathHelper.NumberToString(HouseWives,dec, True) + " / " + ..
+		       "E:" + MathHelper.NumberToString(Employees,dec, True) + " / " + ..
+		       "U:" + MathHelper.NumberToString(Unemployed,dec, True) + " / " + ..
+		       "M:" + MathHelper.NumberToString(Manager,dec, True) + " / " + ..
+		       "P:" + MathHelper.NumberToString(Pensioners,dec, True)
 	End Method
 
 
 	Method ToString:String()
 		Local dec:Int = 4
-		Return "Sum = " + MathHelper.NumberToString(GetSum(), dec, True) + "  ( " + ..
-		       "C:" + MathHelper.NumberToString(Children, dec, True) + " / " + ..
-		       "T:" + MathHelper.NumberToString(Teenagers, dec, True) + " / " + ..
-		       "H:" + MathHelper.NumberToString(HouseWives, dec, True) + " / " + ..
-		       "E:" + MathHelper.NumberToString(Employees, dec, True) + " / " + ..
-		       "U:" + MathHelper.NumberToString(Unemployed, dec, True) + " / " + ..
-		       "M:" + MathHelper.NumberToString(Manager, dec, True) + " / " + ..
-		       "P:" + MathHelper.NumberToString(Pensioners, dec, True) + ..
-		       " )"
+		Return "Sum = " + MathHelper.NumberToString(GetSum(), dec, True) + "  ( " + ToStringMinimal(0) +" )"
 		'Return "Sum =" + Int(Ceil(GetSum())) + "  ( 0=" + MathHelper.NumberToString(Children,dec, True) + "  1=" + MathHelper.NumberToString(Teenagers,dec, True) + "  2=" + MathHelper.NumberToString(HouseWives,dec, True) + "  3=" + MathHelper.NumberToString(Employees,dec, True) + "  4=" + MathHelper.NumberToString(Unemployed,dec, True) + "  5=" + MathHelper.NumberToString(Manager,dec, True) + "  6=" + MathHelper.NumberToString(Pensioners,dec, True) + " )"
 	End Method
 
 
-	Method ToStringAverage:String()
-		local dec:Int = 4
-		Return "Avg = " + MathHelper.NumberToString(GetAverage(),3, True) + "  ( " + ..
-		       "C:" + MathHelper.NumberToString(Children, dec, True) + " / " + ..
-		       "T:" + MathHelper.NumberToString(Teenagers, dec, True) + " / " + ..
-		       "H:" + MathHelper.NumberToString(HouseWives, dec, True) + " / " + ..
-		       "E:" + MathHelper.NumberToString(Employees, dec, True) + " / " + ..
-		       "U:" + MathHelper.NumberToString(Unemployed, dec, True) + " / " + ..
-		       "M:" + MathHelper.NumberToString(Manager, dec, True) + " / " + ..
-		       "P:" + MathHelper.NumberToString(Pensioners, dec, True) + ..
-		       " )"
+	Method ToStringAverage:String(dec:int = 4)
+		Return "Avg = " + MathHelper.NumberToString(GetAverage(),3, True) + "  ( " + ToStringMinimal(dec) +" )"
 		'Return "Avg = " + MathHelper.NumberToString(GetAverage(),3, True) + "  ( 0=" + MathHelper.NumberToString(Children,3, True) + "  1=" + MathHelper.NumberToString(Teenagers,3, True) + "  2=" + MathHelper.NumberToString(HouseWives,3, True) + "  3=" + MathHelper.NumberToString(Employees,3, True) + "  4=" + MathHelper.NumberToString(Unemployed,3, True) + "  5=" + MathHelper.NumberToString(Manager,3, True) + "  6=" + MathHelper.NumberToString(Pensioners,3, True) + " )"
 	End Method
 
@@ -1122,8 +1121,18 @@ Type TAudience {_exposeToLua="selected"}
 
 	'=== TO STRING ===
 
-	Method ToStringMinimal:String()
-		Local dec:Int = 0
+	Method ToStringPercentage:String(dec:int = 0)
+		Return "C:" + MathHelper.NumberToString(GetAudienceMale().Children*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Children*100, dec, True) + "% / " + ..
+		       "T:" + MathHelper.NumberToString(GetAudienceMale().Teenagers*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Teenagers*100, dec, True) + "% / " + ..
+		       "H:" + MathHelper.NumberToString(GetAudienceMale().HouseWives*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().HouseWives*100, dec, True) + "% / " + ..
+		       "E:" + MathHelper.NumberToString(GetAudienceMale().Employees*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Employees*100, dec, True) + "% / " + ..
+		       "U:" + MathHelper.NumberToString(GetAudienceMale().Unemployed*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Unemployed*100, dec, True) + "% / " + ..
+		       "M:" + MathHelper.NumberToString(GetAudienceMale().Manager*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Manager*100, dec, True) + "% / " + ..
+		       "P:" + MathHelper.NumberToString(GetAudienceMale().Pensioners*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Pensioners*100, dec, True) +"%"
+	End Method
+
+
+	Method ToStringMinimal:String(dec:int=0)
 		Return "C:" + MathHelper.NumberToString(GetAudienceMale().Children, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Children, dec, True) + " / " + ..
 		       "T:" + MathHelper.NumberToString(GetAudienceMale().Teenagers, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Teenagers, dec, True) + " / " + ..
 		       "H:" + MathHelper.NumberToString(GetAudienceMale().HouseWives, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().HouseWives, dec, True) + " / " + ..
@@ -1136,30 +1145,14 @@ Type TAudience {_exposeToLua="selected"}
 
 	Method ToString:String()
 		Local dec:Int = 3
-		Return "Sum = " + MathHelper.NumberToString(GetTotalSum(), dec, True) + "  ( " + ..
-		       "C:" + MathHelper.NumberToString(GetAudienceMale().Children, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Children, dec, True) + " / " + ..
-		       "T:" + MathHelper.NumberToString(GetAudienceMale().Teenagers, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Teenagers, dec, True) + " / " + ..
-		       "H:" + MathHelper.NumberToString(GetAudienceMale().HouseWives, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().HouseWives, dec, True) + " / " + ..
-		       "E:" + MathHelper.NumberToString(GetAudienceMale().Employees, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Employees, dec, True) + " / " + ..
-		       "U:" + MathHelper.NumberToString(GetAudienceMale().Unemployed, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Unemployed, dec, True) + " / " + ..
-		       "M:" + MathHelper.NumberToString(GetAudienceMale().Manager, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Manager, dec, True) + " / " + ..
-		       "P:" + MathHelper.NumberToString(GetAudienceMale().Pensioners, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Pensioners, dec, True) + ..
-		       " )"
+		Return "Sum = " + MathHelper.NumberToString(GetTotalSum(), dec, True) + "  ( " + ToStringMinimal(dec) +" )"
 		'Return "Sum = " + Int(Ceil(GetSum())) + "  ( 0=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Children),dec, True) + "  1=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Teenagers),dec, True) + "  2=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.HouseWives),dec, True) + "  3=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Employees),dec, True) + "  4=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Unemployed),dec, True) + "  5=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Manager),dec, True) + "  6=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Pensioners),dec, True) + " )  [[ W=" + MathHelper.NumberToString(GetSum(TVTPersonGender.FEMALE),dec, True) + "  M=" + MathHelper.NumberToString(GetSum(TVTPersonGender.FEMALE) ,dec, True) + " ]]"
 	End Method
 
 
 	Method ToStringAverage:String()
 		Local dec:Int = 3
-		Return "Avg = " + MathHelper.NumberToString(GetTotalAverage(), dec, True) + "  ( " + ..
-		       "C:" + MathHelper.NumberToString(GetAudienceMale().Children, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Children, dec, True) + " / " + ..
-		       "T:" + MathHelper.NumberToString(GetAudienceMale().Teenagers, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Teenagers, dec, True) + " / " + ..
-		       "H:" + MathHelper.NumberToString(GetAudienceMale().HouseWives, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().HouseWives, dec, True) + " / " + ..
-		       "E:" + MathHelper.NumberToString(GetAudienceMale().Employees, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Employees, dec, True) + " / " + ..
-		       "U:" + MathHelper.NumberToString(GetAudienceMale().Unemployed, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Unemployed, dec, True) + " / " + ..
-		       "M:" + MathHelper.NumberToString(GetAudienceMale().Manager, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Manager, dec, True) + " / " + ..
-		       "P:" + MathHelper.NumberToString(GetAudienceMale().Pensioners, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Pensioners, dec, True) + ..
-		       " )"
+		Return "Avg = " + MathHelper.NumberToString(GetTotalAverage(), dec, True) + "  ( " + ToStringMinimal(dec) +" )"
 		'Return "Avg = " + MathHelper.NumberToString(GetAverage(),3, True) + "  ( 0=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Children),3, True) + "  1=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Teenagers),3, True) + "  2=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.HouseWives),3, True) + "  3=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Employees),3, True) + "  4=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Unemployed),3, True) + "  5=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Manager),3, True) + "  6=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Pensioners),3, True) + " )"
 	End Method
 

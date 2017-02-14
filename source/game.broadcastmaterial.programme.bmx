@@ -216,12 +216,24 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		self.SetState(self.STATE_OK)
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
+		'=== ADJUST TRAILER EFFECT ===
 		'adjust topicality relative to possible audience
 		'do not use "maxWholeMarketAudiencePercentage" here, as a trailer
 		'is only send during one block
 		data.CutTrailerTopicality(GetTrailerTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuotePercentage() ))
 		data.trailerAired:+1
-		data.trailerAiredSinceShown:+1
+		data.SetTimesTrailerAiredSinceLastBroadcast( data.GetTimesTrailerAiredSinceLastBroadcast(owner) + 1 )
+
+		'the more often a trailer got aired for an upcoming programme,
+		'the less effective it gets (eg. people who see it again get
+		'annoyed and loose interest in the programme)
+		'regardless of this, a trailer can never be more effective than
+		'90% (some people just do ignore trailers)
+		local trailerEffectiveness:Float = 0.90 * Float(0.98^Min(8, data.GetTimesTrailerAiredSinceLastBroadcast(owner)))
+		local effectiveAudience:TAudience = audienceResult.GetWholeMarketAudienceQuote().Copy().MultiplyFloat(trailerEffectiveness)
+		data.GetTrailerMod(owner, True).Add( effectiveAudience )
+		'avoid the mod to become bigger than 1.0
+		data.GetTrailerMod(owner, True).CutBordersFloat(0.0, 1.0)
 	End Method
 
 
@@ -236,10 +248,13 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
+
+		'=== PAY REVENUES ===
 		'check if revenues have to get paid (call-in-shows, sponsorships)
 		CheckHourlyBroadcastingRevenue(audienceResult.audience)
 
-		'adjust trend/popularity
+
+		'=== ADJUST TRENDS / POPULARITY ===
 		Local popularity:TGenrePopularity = data.GetGenreDefinition().GetPopularity()
 		local popData:TData = new TData
 		popData.AddNumber("attractionQuality", audienceResult.AudienceAttraction.Quality)
@@ -256,22 +271,24 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			TPersonPopularity(p.GetPopularity()).FinishBroadcastingProgramme(popData)
 		Next
 		
-		
+
+		'=== ADJUST CHANNEL IMAGE ===
 		'Image-Penalty
 		If data.IsPaid()
 			'-1 = for both genders
 			Local penalty:TAudience = new TAudience.Init(-1,  -0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15)
 			penalty.MultiplyFloat(data.blocks)
 			GetPublicImage(owner).ChangeImage(penalty)
-print "DW Strafe: " + penalty.ToString()
+'print "DW Strafe: " + penalty.ToString()
 		ElseIf data.IsTrash()
 			Local penalty:TAudience = new TAudience.Init(-1,  0, 0, +0.2, -0.2, +0.2, -0.5, -0.1)
 			penalty.MultiplyFloat(data.blocks)			
 			GetPublicImage(owner).ChangeImage(penalty)						
-print "Trash Strafe: " + penalty.ToString()
+'print "Trash Strafe: " + penalty.ToString()
 		End If
 
 
+		'=== MISC ===
 		'adjust topicality relative to possible audience
 		'using the maximum of all blocks here (as this is the maximum
 		'audience knowing about that movie)
@@ -285,7 +302,10 @@ print "Trash Strafe: " + penalty.ToString()
 
 
 		'reset trailer count
-		data.trailerAiredSinceShown = 0
+		data.SetTimesTrailerAiredSinceLastBroadcast(0, owner)
+		'reset trailerMod
+		data.RemoveTrailerMod(owner)
+		
 		'now the trailer is for the next broadcast...
 		'instead of just setting back topicality, just refresh it "once"
 		'data.trailerTopicality = 1.0
@@ -352,7 +372,10 @@ print "Trash Strafe: " + penalty.ToString()
 
 	'override
 	Method GetTrailerMod:TAudience()
-		Return data.GetTrailerMod()
+		'return an existing trailerMod or create a new one
+		if data then return data.GetTrailerMod(owner, True)
+
+		return Super.GetTrailerMod()
 	End Method
 
 

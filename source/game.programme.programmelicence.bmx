@@ -617,6 +617,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			GetData().topicality = GetData().GetMaxTopicality()
 		endif
 
+		'do the same for all children
+		For local subLicence:TProgrammeLicence = EachIn subLicences
+			subLicence.GiveBackToLicencePool()
+		Next
+
 		'inform others about a now unused licence
 		EventManager.triggerEvent( TEventSimple.Create("ProgrammeLicence.onGiveBackToLicencePool", null, self))
 
@@ -669,11 +674,17 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 	'override default method to add sublicences
 	Method SetOwner:int(owner:int=0)
+		if owner <> self.owner
+			'remove old trailer data
+			data.RemoveTrailerMod(self.owner)
+		endif
+
 		self.owner = owner
 		'do the same for all children
 		For local licence:TProgrammeLicence = eachin subLicences
 			licence.SetOwner(owner)
 		Next
+
 		return TRUE
 	End Method
 
@@ -1950,8 +1961,14 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (alle)", contentX + 5, contentY)
 			contentY :+ 12	
 			skin.fontNormal.draw("Preis: "+GetPriceForPlayer(useOwner), contentX + 5, contentY)
-			contentY :+ 12	
-			skin.fontNormal.draw("Trailerakt.-modifikator: "+MathHelper.NumberToString(data.GetTrailerMod().GetTotalAverage(), 4), contentX + 5, contentY)
+			contentY :+ 12
+			skin.fontNormal.draw("Trailer: " + data.GetTimesTrailerAiredSinceLastBroadcast(useOwner) +" (total: "+ data.GetTimesTrailerAired()+")", contentX + 5, contentY)
+			if data.GetTrailerMod(useOwner, False)
+				contentY :+ 12
+				local titleW:int = skin.fontNormal.draw("TrailerMod:", contentX + 5, contentY).GetX()
+				skin.fontNormal.drawBlock(data.GetTrailerMod(useOwner).ToStringPercentage(2), contentX + 5 + titleW + 5, contentY, contentW - titleW - 5 - 5, 60)
+			endif
+			
 		endif
 
 		'=== OVERLAY / BORDER ===
@@ -2062,7 +2079,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			contentY :+ 12	
 			skin.fontNormal.draw("Ausstrahlungen: "+data.trailerAired, contentX + 5, contentY)
 			contentY :+ 12	
-			skin.fontNormal.draw("Ausstrahlungen seit letzter Sendung: "+data.trailerAiredSinceShown, contentX + 5, contentY)
+			skin.fontNormal.draw("Ausstrahlungen seit letzter Sendung: "+data.GetTimesTrailerAiredSinceLastBroadcast(useOwner), contentX + 5, contentY)
 		Endif
 
 		'=== OVERLAY / BORDER ===

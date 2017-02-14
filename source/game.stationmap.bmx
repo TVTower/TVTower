@@ -714,12 +714,11 @@ End Function
 
 
 
-Type TStationMap {_exposeToLua="selected"}
+Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	'select whose players stations we want to see
 	Field showStations:Int[4]
 	'maximum audience possible
 	Field reach:Int	= 0
-	Field owner:Int	= 0
 	'all stations of the map owner
 	Field stations:TList = CreateList()
 	Field changed:Int = False
@@ -730,7 +729,7 @@ Type TStationMap {_exposeToLua="selected"}
 
 	Function Create:TStationMap(playerID:Int)
 		Local obj:TStationMap = New TStationMap
-		obj.owner = playerID
+		obj.SetOwner(playerID)
 
 		obj.Initialize()
 
@@ -803,10 +802,11 @@ Type TStationMap {_exposeToLua="selected"}
 
 	'returns maximum audience a player's stations cover
 	Method RecalculateAudienceSum:Int() {_exposeToLua}
+		local reachBefore:int = reach
 		reach = GetStationMapCollection().RecalculateAudienceSum(stations)
 
 		'inform others
-		EventManager.triggerEvent( TEventSimple.Create( "StationMap.onRecalculateAudienceSum", New TData.addNumber("reach", reach), Self ) )
+		EventManager.triggerEvent( TEventSimple.Create( "StationMap.onRecalculateAudienceSum", New TData.addNumber("reach", reach).AddNumber("reachBefore", reachBefore), Self ) )
 
 		Return reach
 	End Method
@@ -984,7 +984,7 @@ End Type
 'Stationmap
 'provides the option to buy new stations
 'functions are calculation of audiencesums and drawing of stations
-Type TStation Extends TGameObject {_exposeToLua="selected"}
+Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 	Field pos:TVec2D {_exposeToLua}
 	Field reach:Int	= -1
 	'increase of reach at when bought
