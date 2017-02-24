@@ -219,10 +219,12 @@ Type TProductionConcept Extends TOwnedGameObject
 	Method PayDeposit:int()
 		'already paid ?
 		if IsDepositPaid() then return False
+		'cannot pay because not planned completely?
+		if not IsPlanned() then return False
 
 		'if invalid owner or finance not existing, skip payment and
 		'just set the deposit as paid
-		if GetPlayerFinance(owner)
+		if owner > 0 and GetPlayerFinance(owner)
 			if not GetPlayerFinance(owner).PayProductionStuff(GetDepositCost())
 				return False
 			endif
@@ -237,6 +239,11 @@ Type TProductionConcept Extends TOwnedGameObject
 		SetFlag(TVTProductionConceptFlag.BALANCE_PAID, True)
 
 		return True
+	End Method
+
+
+	Method GetCastCount:int()
+		return cast.length
 	End Method
 
 
@@ -475,7 +482,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 			'=== JOB FIT ===
-			local jobsDone:int = 0.10 * person.GetJobsDone(0) + 0.9 * person.GetJobsDone( script.cast[castIndex].job )
+			local jobsDone:int = 1.0 * person.HasJob(script.cast[castIndex].job) + 0.10 * person.GetJobsDone(0) + 0.90 * person.GetJobsDone( script.cast[castIndex].job )
 			'euler strength: 2.5, so for done jobs: 22%, 39%, 52%, ...
 			local jobFit:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
 			'by 5% chance "switch" effect
@@ -504,7 +511,6 @@ Type TProductionConcept Extends TOwnedGameObject
 				if attributeCount > 1
 					attributeMod :/ attributeCount
 				endif
-				print person.GetFullname() +" : mod="+attributeMod
 			endif
 			
 
