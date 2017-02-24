@@ -1,6 +1,7 @@
 SuperStrict
 Import "game.gamescriptexpression.base.bmx"
 Import "game.world.worldtime.bmx"
+Import "game.gameinformation.base.bmx"
 
 
 GetGameScriptExpression().RegisterHandler("TIME_YEAR", GameScriptExpression_Handle_Time)
@@ -17,6 +18,9 @@ GetGameScriptExpression().RegisterHandler("TIME_ISNIGHT", GameScriptExpression_H
 GetGameScriptExpression().RegisterHandler("TIME_ISDAWN", GameScriptExpression_Handle_Time)
 GetGameScriptExpression().RegisterHandler("TIME_ISDAY", GameScriptExpression_Handle_Time)
 GetGameScriptExpression().RegisterHandler("TIME_ISDUSK", GameScriptExpression_Handle_Time)
+
+GetGameScriptExpression().RegisterHandler("STATIONMAP_MAPNAME", GameScriptExpression_Handle_StationMap)
+GetGameScriptExpression().RegisterHandler("STATIONMAP_MAPNAMESHORT", GameScriptExpression_Handle_StationMap)
 
 
 
@@ -55,6 +59,27 @@ Function GameScriptExpression_Handle_Time:string(variable:string, params:string[
 			return string( GetWorldTime().IsDusk() )
 		default
 			GetGameScriptExpression()._error :+ "GameScriptExpression_Handle_Time: unknown variable ~q"+variable+"~q.~n"
+	End Select
+
+	return ""
+End Function
+
+
+
+Function GameScriptExpression_Handle_StationMap:string(variable:string, params:string[], resultElementType:int var)
+	resultElementType = TScriptExpression.ELEMENTTYPE_STRING
+
+	Select variable.ToLower()
+
+		case "stationmap_mapname"
+			return string(GetGameInformation("stationmap", "mapname"))
+		Case "stationmap_mapnameshort"
+			return string(GetGameInformation("stationmap", "mapnameshort"))
+		Case "population"
+			resultElementType = TScriptExpression.ELEMENTTYPE_NUMERIC
+			return string(GetGameInformation("stationmap", "population"))
+		default
+			GetGameScriptExpression()._error :+ "GameScriptExpression_Handle_StationMap: unknown variable ~q"+variable+"~q.~n"
 	End Select
 
 	return ""

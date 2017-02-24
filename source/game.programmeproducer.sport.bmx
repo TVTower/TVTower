@@ -179,8 +179,6 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		'when setting to "SINGLE" they might be sold independently
 		programmeLicence.licenceType = TVTProgrammeLicenceType.EPISODE
 		programmeLicence.owner = TOwnedGameObject.OWNER_NOBODY
-		programmeLicence.extra = New TData
-		programmeLicence.extra.AddString("producerName", _producerName)
 
 
 		programmeData.GUID = "programmedata-sportmatch-"+match.GetGUID()
@@ -199,6 +197,9 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		programmeData.blocks = ceil(match.duration/3600.0)
 
 		programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
+
+		if not programmeData.extra then programmeData.extra = New TData
+		programmeData.extra.AddString("producerName", _producerName)
 
 		programmeData.review = 0.6 'maximum possible
 		programmeData.speed = 0.75 'maximum possible

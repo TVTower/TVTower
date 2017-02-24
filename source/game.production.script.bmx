@@ -8,6 +8,7 @@ Import "game.player.base.bmx"
 Import "basefunctions.bmx" 'dottedValue
 Import "game.production.scripttemplate.bmx"
 Import "game.broadcast.genredefinition.movie.bmx"
+Import "game.gamescriptexpression.base.bmx"
 'to access datasheet-functions
 Import "common.misc.datasheet.bmx"
 
@@ -376,16 +377,21 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'variable with the same name
 		For local lang:string = EachIn text.GetLanguageKeys()
 			local value:string = text.Get(lang)
-
 			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%", True)
 			if placeHolders.length = 0 then continue
 
-			local actors:TProgrammePersonJob[] = GetSpecificCast(TVTProgrammePersonJob.ACTOR | TVTProgrammePersonJob.SUPPORTINGACTOR)
+			local actorsFetched:int = False
+			local actors:TProgrammePersonJob[]
 			local replacement:string = ""
 			for local placeHolder:string = EachIn placeHolders
 				replacement = ""
 				Select placeHolder.toUpper()
 					case "ROLENAME1", "ROLENAME2", "ROLENAME3", "ROLENAME4", "ROLENAME5", "ROLENAME6", "ROLENAME7"
+						if not actorsFetched
+							actors = GetSpecificCast(TVTProgrammePersonJob.ACTOR | TVTProgrammePersonJob.SUPPORTINGACTOR)
+							actorsFetched = True
+						endif
+						
 						'local actorNum:int = int(placeHolder.toUpper().Replace("%ROLENAME", "").Replace("%",""))
 						local actorNum:int = int(chr(placeHolder[8]))
 						if actorNum > 0
@@ -403,6 +409,11 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 							endif
 						endif
 					case "ROLE1", "ROLE2", "ROLE3", "ROLE4", "ROLE5", "ROLE6", "ROLE7"
+						if not actorsFetched
+							actors = GetSpecificCast(TVTProgrammePersonJob.ACTOR | TVTProgrammePersonJob.SUPPORTINGACTOR)
+							actorsFetched = True
+						endif
+
 						'local actorNum:int = int(placeHolder.toUpper().Replace("%ROLE", "").Replace("%",""))
 						local actorNum:int = int(chr(placeHolder[4]))
 						if actorNum > 0
@@ -424,6 +435,13 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 						replacement = GetMainGenreString()
 					case "EPISODES"
 						replacement = GetMainGenreString()
+
+					default
+						local expressionResultType:int
+						local expressionResult:string = string(GetScriptExpression().HandleVariable(placeHolder, expressionResultType))
+						if expressionResult
+							replacement = expressionResult
+						endif
 				End Select
 
 				'replace if some content was filled in
@@ -488,6 +506,11 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		return result
 	End Method
 
+
+	Method GetCast:TProgrammePersonJob[]()
+		return cast
+	End Method
+	
 
 	Method GetSpecificCast:TProgrammePersonJob[](job:int, limitPersonGender:int=-1, limitRoleGender:int=-1)
 		local result:TProgrammePersonJob[]

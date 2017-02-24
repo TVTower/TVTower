@@ -1,6 +1,14 @@
 SuperStrict
 Import "game.gameinformation.base.bmx"
 Import "game.world.worldtime.bmx"
+Import "game.stationmap.bmx"
+
+'===== REGISTER PROVIDERS ====
+TProgrammePlanInformationProviderBase.GetInstance()
+TWorldTimeInformationProviderBase.GetInstance()
+TStationMapInformationProviderBase.GetInstance()
+
+
 
 
 'contains general information of all broadcasts in the programmeplans
@@ -275,7 +283,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
-'return collection instance
+'return instance
 Function GetProgrammePlanInformationProviderBase:TProgrammePlanInformationProviderBase()
 	Return TProgrammePlanInformationProviderBase.GetInstance()
 End Function
@@ -333,13 +341,64 @@ Type TWorldTimeInformationProviderBase extends TGameInformationProvider
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
-'return collection instance
+'return instance
 Function GetWorldTimeProviderBase:TWorldTimeInformationProviderBase()
 	Return TWorldTimeInformationProviderBase.GetInstance()
 End Function
 
 
-'===== REGISTER PROVIDERS ====
-TProgrammePlanInformationProviderBase.GetInstance()
-TWorldTimeInformationProviderBase.GetInstance()
+
+
+Type TStationMapInformationProviderBase extends TGameInformationProvider
+	Global _instance:TStationMapInformationProviderBase
+
+	Function GetInstance:TStationMapInformationProviderBase()
+		if not _instance then _instance = new TStationMapInformationProviderBase
+		return _instance
+	End Function
+
+
+	Method New()
+		Reset()
+
+		'register provider to provider collection
+		GetGameInformationCollection().AddProvider("stationmap", self)
+	End Method
+
+
+	Method Reset()
+		'nothing cached
+	End Method
+
+	
+	Method Set(key:string, obj:object)
+		Select int(key)
+			Default
+				print "Set is not allowed for TStationMapInformationProviderBase"
+		End Select
+	End Method
+
+
+	Method Get:object(key:string, params:object)
+		Select key.ToLower()
+			Case "countryname"
+				return GetLocale("COUNTRYNAME_" + GetStationMapCollection().config.GetString("name", "Unknownia"))
+			Case "mapname"
+				return GetStationMapCollection().config.GetString("name", "Unknownia")
+			Case "mapnameshort", "countrycode"
+				return GetStationMapCollection().config.GetString("nameShort", "Unk")
+			Case "population"
+				return string( GetStationMapCollection().population )
+			Default
+				return "UNHANDLED_KEY"
+		End Select
+	End Method
+End Type
+
+'===== CONVENIENCE ACCESSOR =====
+'return instance
+Function GetStationMapInformationProviderBase:TStationMapInformationProviderBase()
+	Return TStationMapInformationProviderBase.GetInstance()
+End Function
+
 
