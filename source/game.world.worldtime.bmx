@@ -37,6 +37,11 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		if not _instance then _instance = new TWorldTime
 		return _instance
 	End Function
+
+
+	Method New()
+		SetStartYear(1900)
+	End Method
 	
 
 	Method Init:TWorldTime(timeGone:Double = 0.0)

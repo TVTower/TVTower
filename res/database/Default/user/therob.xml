@@ -2454,9 +2454,9 @@
 		<person id="TheRob-TowerTV-Thomas" first_name="Thomas" last_name="Weierunter" nick_name="" levelup="0"  />
 
 		<!-- Vera Zottova -->
-		<person id="TheRob-TowerTV-VeraZottova" first_name="Vera" last_name="Zottova" nick_name="" fictional="1" />
+		<person id="TheRob-TowerTV-VeraZottova" first_name="Vera" last_name="Zottova" nick_name="" gender="2" fictional="1" />
 		<!-- Bastl Rütli -->
-		<person id="TheRob-TowerTV-BastlRuetli" first_name="Bastl" last_name="Rütli" nick_name="" fictional="1" creator="8751" created_by="TheRob" />
+		<person id="TheRob-TowerTV-BastlRuetli" first_name="Bastl" last_name="Rütli" nick_name="" gender="1" fictional="1" creator="8751" created_by="TheRob" />
 		<!-- Moris Wewerkov -->
 		<person id="TheRob-TowerTV-MorisWeverkov" first_name="Moris" last_name="Weverkov" nick_name="" fictional="1" creator="8751" created_by="TheRob" /> 
 		<!-- Norman Jewison -->

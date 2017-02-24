@@ -211,6 +211,12 @@ Type TRegistryLoader
 	End Function
 
 
+	Method SetBaseURI:TRegistryLoader(baseURI:string)
+		self.baseURI = baseURI
+		return self
+	End Method
+
+
 	'appends a given uri to the current base uri
 	Method GetUri:String(uri:string="")
 		?android

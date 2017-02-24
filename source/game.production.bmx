@@ -57,6 +57,7 @@ End Function
 
 Type TProduction Extends TOwnedGameObject
 	Field productionConcept:TProductionConcept
+	Field producerName:string
 	'in which room was/is this production recorded (might no longer
 	'be a studio!)
 	Field studioRoomGUID:string
@@ -73,6 +74,9 @@ Type TProduction Extends TOwnedGameObject
 	Field castSympathyMod:Float = 1.0
 	Field productionValueMod:Float = 1.0
 	Field effectiveFocusPointsMod:Float = 1.0
+	Field productionTimeMod:Float = 1.0
+
+	Field producedLicenceGUID:string
 	
 
 	Method GenerateGUID:string()
@@ -89,6 +93,14 @@ Type TProduction Extends TOwnedGameObject
 			owner = 0
 		endif
 	End Method
+
+
+	Method GetProductionTimeMod:Float()
+		'non player owned productions use "Player0"
+		return productionTimeMod ..
+		       * GameConfig.GetModifier("Production.ProductionTimeMod") ..
+		       * GameConfig.GetModifier("Production.ProductionTimeMod.player"+Max(0, owner))
+	End Method 
 
 
 	Method IsInProduction:int()
@@ -132,11 +144,14 @@ Type TProduction Extends TOwnedGameObject
 
 	Method PayProduction:int()
 		'already paid rest?
-		if productionConcept.IsBalancePaid() then return False
+		if productionConcept.IsBalancePaid() then return True
+		'something missing?
+		if not productionConcept.IsProduceable() then return False
+		
 
 		'if invalid owner or finance not existing, skip payment and
 		'just set the prodcuction as paid
-		if GetPlayerFinance(productionConcept.owner)
+		if productionConcept.owner > 0 and GetPlayerFinance(productionConcept.owner)
 			'for now: forced payment
 			GetPlayerFinance(productionConcept.owner).PayProductionStuff(productionConcept.GetTotalCost() - productionConcept.GetDepositCost(), True)
 
@@ -206,11 +221,12 @@ Type TProduction Extends TOwnedGameObject
 
 		'=== 3. BLOCK STUDIO ===
 		'set studio blocked
-		if GetRoomBaseByGUID(studioRoomGUID)
+		if studioRoomGUID and GetRoomBaseByGUID(studioRoomGUID)
 			'time in seconds
 			'also add 5 minutes to avoid people coming into the studio
 			'in the break between two productions
 			local productionTime:int = (endDate - startDate) + 600
+			productionTime :* GetProductionTimeMod()
 			GetRoomBaseByGUID(studioRoomGUID).SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_SHOOTING)
 			GetRoomBaseByGUID(studioRoomGUID).blockedText = productionConcept.GetTitle()
 		endif
@@ -301,6 +317,10 @@ Type TProduction Extends TOwnedGameObject
 		Local programmeGUID:string = "customProduction-"+productionConcept.script.GetGUID()
 		local programmeData:TProgrammeData = new TProgrammeData
 		programmeData.SetGUID("data-"+programmeGUID)
+		if producerName
+			if not programmeData.extra then programmeData.extra = new TData
+			programmeData.extra.AddString("producerName", producerName)
+		endif
 
 		'=== 2.1 PROGRAMME BASE PROPERTIES ===
 		FillProgrammeDataByScript(programmeData, productionConcept.script)
@@ -367,6 +387,11 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.outcome = productionValueMod * productionConcept.script.outcome
 		'modify outcome by castFameMod ("attractors/startpower")
 		programmeData.outcome = Min(1.0, programmeData.outcome * castFameMod)
+
+		if producerName
+			if not programmeData.extra then programmeData.extra = new TData
+			programmeData.extra.AddString("producerName", producerName)
+		endif
 
 
 		'=== 2.3 PROGRAMME CAST ===
@@ -442,19 +467,22 @@ Type TProduction Extends TOwnedGameObject
 			addLicence.SetOwner(owner)
 		endif
 
-'rem
+		'update programme data so it informs cast, releases to cinema etc
+		programmeData.Update()
+
 print "produziert: " + programmeLicence.GetTitle() + "  (Preis: "+programmeLicence.GetPrice(1)+")"
+rem
 if programmeLicence.IsEpisode()
 	print "Serie besteht nun aus den Folgen:"
 	For local epIndex:int = 0 until addLicence.subLicences.length
 		if addLicence.subLicences[epIndex]
-			print "subLicences["+epIndex+"] = " + addLicence.subLicences[epIndex].episodeNumber+" | " + addLicence.subLicences[epIndex].GetTitle()
+			print "- subLicences["+epIndex+"] = " + addLicence.subLicences[epIndex].episodeNumber+" | " + addLicence.subLicences[epIndex].GetTitle()
 		else
-			print "subLicences["+epIndex+"] = /"
+			print "- subLicences["+epIndex+"] = /"
 		endif
 	Next
 endif
-'endrem
+endrem
 
 		'=== 3. INFORM / REMOVE SCRIPT ===
 		'inform production company
@@ -493,6 +521,8 @@ endif
 		endif
 		GetProductionConceptCollection().Remove(productionConcept)
 
+		'store resulting licence
+		producedLicenceGUID = programmeLicence.GetGUID()
 
 		'emit an event so eg. network can recognize the change
 		EventManager.triggerEvent(TEventSimple.Create("production.finalize", new TData.Add("programmelicence", programmeLicence), self))

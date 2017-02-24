@@ -214,10 +214,10 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 
 
 		'trailer bonus: 0 - 1.0, influence: 50%
-		'add +1 so it gets a multiplier
+		'add +1 so it becomes a multiplier
 		'"multiply" because it "increases" existing interest
 		'(people more likely watch this programme)
-		If TrailerMod Then result.Multiply( TrailerMod.Copy().MultiplyFloat(MODINFLUENCE_TRAILER).AddFloat(1) )
+		If TrailerMod Then result.Multiply( TrailerMod.Copy().MultiplyFloat(MODINFLUENCE_TRAILER).AddFloat(1.0) )
 
 
 		If MiscMod Then result.Multiply( MiscMod.Copy().MultiplyFloat(MODINFLUENCE_MISC) )
@@ -225,7 +225,7 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 
 		result.MultiplyFloat(1.0 + (CastMod-1.0) * MODINFLUENCE_CAST)
 
-
+	
 		'store the current attraction for the publicImage-calculation
 		Self.PublicImageAttraction = result.Copy()
 		Self.PublicImageAttraction.AddFloat(1).MultiplyFloat(Quality)
