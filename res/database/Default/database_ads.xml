@@ -8,6 +8,7 @@
 			</title>
 			<description>
 				<de>Der neue Fort ist da. Mehr Sicherheit und ein ansprechendes Design zu einem unschlagbaren Preis.</de>
+				<en>The new Fort is there. Increased safety and an appealing design at an unbeatable price.</en>
 			</description>
 			<conditions min_audience="7.29" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="20" repetitions="3" duration="2" profit="392" penalty="490" infomercial_profit="39" fix_infomercial_profit="1"/>
@@ -18,6 +19,7 @@
 			</title>
 			<description>
 				<de>Ein Wischtuch für Küche UND WC. Jetzt mit lustigen Tiermotiven.</de>
+				<en>A wiper for kitchen AND bathrooms. Now with funny animal patterns.</en>
 			</description>
 			<conditions min_audience="2.86" min_image="7" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="15" repetitions="5" duration="4" profit="727" penalty="1000" infomercial_profit="68" fix_infomercial_profit="1"/>
@@ -25,10 +27,13 @@
 		<ad id="1199be32-4985-4697-a5c8-c0da0ef09fc1">
 			<title>
 				<de>Möbler</de>
+				<en>Barry Buffet</en>
 			</title>
 			<description>
 				<de>Regale, Tische, Stühle, Schränke etc. - das haben wir zu bieten.
 Habt Ihr das zu bieten? Alter Schwede!</de>
+				<en>Shelves, tables, chairs, cabinets, etc. - that's what we have to offer.
+Do you have that to offer? Gosh, my Swedish friend!</en>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="18" repetitions="2" duration="3" profit="270" penalty="470" fix_infomercial_profit="1"/>
@@ -36,9 +41,11 @@ Habt Ihr das zu bieten? Alter Schwede!</de>
 		<ad id="Rahmah-Ron1">
 			<title>
 				<de>Rahmah</de>
+				<en>Rowmow</en>
 			</title>
 			<description>
 				<de>Streichzarte Butter aus Yetimilch.</de>
+				<en>Tender butter made of yeti's milk.</en>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="25" repetitions="1" duration="2" profit="275" penalty="400" fix_infomercial_profit="1"/>
@@ -46,9 +53,11 @@ Habt Ihr das zu bieten? Alter Schwede!</de>
 		<ad id="14340286-55d9-408f-b0b5-9cd4208054dc">
 			<title>
 				<de>Tischlerei Nagler</de>
+				<en>Woodwork J. Nailer</en>
 			</title>
 			<description>
 				<de>Qualität die überzeugt. Nur wir ziehen Sie über den Echtholztisch.</de>
+				<en>Our quality is convincing. Only we pull you over the real-wood barrel.</en>
 			</description>
 			<conditions min_audience="0.1032" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="18" repetitions="3" duration="3" profit="2500" penalty="3800" fix_infomercial_profit="1"/>
@@ -59,6 +68,7 @@ Habt Ihr das zu bieten? Alter Schwede!</de>
 			</title>
 			<description>
 				<de>Unsere Windeln haben einen hohen Tragekomfort und sind geeignet für Jung und Alt.</de>
+				<en>Our diapers have a high wearing comfort and are suitable for young and old.</en>
 			</description>
 			<conditions min_audience="6.77" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="20" repetitions="2" duration="3" profit="453" penalty="670" infomercial_profit="41" fix_infomercial_profit="1"/>
@@ -70,6 +80,8 @@ Habt Ihr das zu bieten? Alter Schwede!</de>
 			<description>
 				<de>Der leckere Riegel mit dem hohen Erdnußanteil.
 Daran hat man zu kauen.</de>
+				<en>The delicious bar with the high peanut content.
+You will really have to chew.</en>
 			</description>
 			<conditions min_audience="2.34" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="25" repetitions="5" duration="4" profit="804" penalty="1150" infomercial_profit="75" fix_infomercial_profit="1"/>
@@ -79,17 +91,20 @@ Daran hat man zu kauen.</de>
 				<de>Dubantours</de>
 			</title>
 			<description>
-				<de>Reisen sie an die größten Strände der Welt, ob Gobi oder Sahara. Dubantours bringt sie hin.</de>
+				<de>Reisen Sie an die größten Strände der Welt, ob Gobi oder Sahara. Dubantours bringt Sie hin.</de>
+				<en>Travel to the world's largest beaches, whether Gobi or Sahara. Dubantours will take you there.</en>
 			</description>
 			<conditions min_audience="10.4192" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="12" repetitions="3" duration="3" profit="315" penalty="400" infomercial_profit="41" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="1fa08a9f-5658-46a1-b634-43bbacd1a7bb">
 			<title>
-				<de>Wodka Jelzin</de>
+				<de>Wodka Jutschin</de>
+				<en>Vodka Juczyn</en>
 			</title>
 			<description>
 				<de>Für des Kunden reinste Kehle.</de>
+				<en>For the customer's purest throat.</en>
 			</description>
 			<conditions min_audience="6.77" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="23" repetitions="1" duration="2" profit="384" penalty="450" infomercial_profit="40" fix_infomercial_profit="1"/>
@@ -100,6 +115,7 @@ Daran hat man zu kauen.</de>
 			</title>
 			<description>
 				<de>Populärster Konkurrent von Koka Cola - doch geschmacklich auch so rein?</de>
+				<en>Most popular competitor of Koka Cola - but also tasting that pure?</en>
 			</description>
 			<conditions min_audience="15.63" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="25" repetitions="1" duration="3" profit="230" penalty="380" fix_infomercial_profit="1"/>
@@ -110,6 +126,7 @@ Daran hat man zu kauen.</de>
 			</title>
 			<description>
 				<de>Bestellen Sie jetzt und sichern sie sich den Duft der Frauen betört und ihre WC-Gäste bezaubert. Neu: Zitrone!</de>
+				<en>Order now and secure yourself the fragrance which betweitches the women and your toilet users. New: Lemon!</en>
 			</description>
 			<conditions min_audience="4.17" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="15" repetitions="4" duration="3" profit="537" penalty="900" infomercial_profit="53" fix_infomercial_profit="1"/>
@@ -120,6 +137,7 @@ Daran hat man zu kauen.</de>
 			</title>
 			<description>
 				<de>Räm Bäm Bäääm - Bestell Dir jetzt Deinen Klingelton im Sparabo.</de>
+				<en>Ramm Bam Baaam - Order your ringtone now in this limited discount subscription.</en>
 			</description>
 			<conditions min_audience="0.39" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="10" repetitions="2" duration="3" profit="2240" penalty="3220" fix_infomercial_profit="1"/>
@@ -129,7 +147,8 @@ Daran hat man zu kauen.</de>
 				<de>Mr. Ploper</de>
 			</title>
 			<description>
-				<de>Neun Jahre zuvor in den USA eingeführt, kommt Mr. Ploper 1967 nach Deutschland und etabliert sich als der beliebteste Haushaltsreiniger</de>
+				<de>Neun Jahre zuvor in den USA eingeführt, kommt Mr. Ploper 1967 nach Deutschland und etabliert sich als der beliebteste Haushaltsreiniger.</de>
+				<en>Nine years ago in the US, Mr. Ploper came to Germany in 1967 and established himself as the most popular household cleaner.</en>
 			</description>
 			<conditions min_audience="11.46" min_image="18" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="12" repetitions="2" duration="3" profit="359" penalty="550" infomercial_profit="29" fix_infomercial_profit="1"/>
@@ -140,6 +159,7 @@ Daran hat man zu kauen.</de>
 			</title>
 			<description>
 				<de>The fourth place. Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</de>
+				<en>The fourth place. The GS2 is the successor of the GS made by Sunny.</en>
 			</description>
 			<conditions min_audience="9.38" min_image="18" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="15" repetitions="3" duration="3" profit="386" penalty="600" infomercial_profit="33" fix_infomercial_profit="1"/>
@@ -147,9 +167,11 @@ Daran hat man zu kauen.</de>
 		<ad id="3bf32cbc-3322-4f3b-851b-88b964cb990d">
 			<title>
 				<de>Mödie-Markt</de>
+				<en>Burst-Buy</en>
 			</title>
 			<description>
 				<de>Wir sind Blöd. Wir schmeissen unsere Ware zu Spottpreisen raus. Also ab in den nächsten Mödie-Markt</de>
+				<en>We're stupid. We throw out our goods at mocking prices. So off into the next Burst-Buy market.</en>
 			</description>
 			<conditions min_audience="4.17" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="20" repetitions="4" duration="4" profit="600" penalty="920" infomercial_profit="56" fix_infomercial_profit="1"/>
@@ -157,9 +179,11 @@ Daran hat man zu kauen.</de>
 		<ad id="41f0778e-f2fd-4b34-be1a-1d67f2ff3ce4">
 			<title>
 				<de>Frau Müller</de>
+				<en>Mrs. Miller</en>
 			</title>
 			<description>
 				<de>Höre reifen Frauen beim Stricken zu.</de>
+				<en>Listen to mature women while they knit.</en>
 			</description>
 			<conditions min_audience="1.3" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="5" repetitions="4" duration="3" profit="1100" penalty="1700" fix_infomercial_profit="1"/>
@@ -170,6 +194,7 @@ Daran hat man zu kauen.</de>
 			</title>
 			<description>
 				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit Birne und Genschman zum Preis von einem.</de>
+				<en>Action game figures of your favorite politicians. For a short time Birne and Genschman for the price of one.</en>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" year_range_from="1982" year_range_to="1989"/>
@@ -180,6 +205,7 @@ Daran hat man zu kauen.</de>
 			</title>
 			<description>
 				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit "Blühende Landschaften"-Helmut und "Rote Socken"-Gregor zum Preis von einem.</de>
+				<en>Action game figures of your favorite politicians. For a short time "Blooming landscapes"-Helmut and "Red Socks"-Gregor for the price of one.</en>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" year_range_from="1990" year_range_to="1997"/>
@@ -190,6 +216,7 @@ Daran hat man zu kauen.</de>
 			</title>
 			<description>
 				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit "Hol mir ma ne Flasche Bier"-Gerhard und Putzgruppen-Joschka zum Preis von einem.</de>
+				<en>Action game figures of your favorite politicians. For a short time "Get me a bottle of beer" -Gerhard and "Cleaning Squad"-Joschka for the price of one.</en>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" year_range_from="1998" year_range_to="2004"/>
@@ -200,6 +227,7 @@ Daran hat man zu kauen.</de>
 			</title>
 			<description>
 				<de>Action-Spielfiguren Deiner Lieblingspolitiker. Für kurze Zeit Action-Märkel und Chaoz-Rözler zum Preis von einem.</de>
+				<en>Action game figures of your favorite politician. For short time Action-Murkel and Chaoz-Ruszler for the price of one.</en>
 			</description>
 			<conditions min_audience="28.6564" min_image="12" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="18" repetitions="1" duration="3" profit="165" penalty="260" infomercial_profit="25" fix_infomercial_profit="1" year_range_from="2005" year_range_to="2017"/>
@@ -210,6 +238,7 @@ Daran hat man zu kauen.</de>
 			</title>
 			<description>
 				<de>Kirsch-Sirup aus Bio-Anbau. Von Tante Lizzy selbst abgefüllt.</de>
+				<en>Cherry syrup from organic cultivation. Bottled by Aunt Lizzy herself.</en>
 			</description>
 			<conditions min_audience="0.1553" min_image="7" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="11" repetitions="4" duration="3" fix_price="0" profit="2600" penalty="3400" fix_infomercial_profit="1"/>
@@ -220,6 +249,7 @@ Daran hat man zu kauen.</de>
 			</title>
 			<description>
 				<de>Mmmmhmmm - das IST ein leckerer Burger. Wenn Du auf Burger stehst, mußt Du die probieren!</de>
+				<en>Mmmmhmmm - this is a delicious burger. If you are on burgers, you have to try them!</en>
 			</description>
 			<conditions min_audience="15.6293" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="15" repetitions="2" duration="3" profit="275" penalty="350" infomercial_profit="37" fix_infomercial_profit="1"/>
@@ -230,6 +260,7 @@ Daran hat man zu kauen.</de>
 			</title>
 			<description>
 				<de>Von Katzen für Katzen. Nahrhaftes Dosenfutter für ihren Stubentiger.</de>
+				<en>By cats for cats. Nutritious canned food for your house cat.</en>
 			</description>
 			<conditions min_audience="4.69" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="10" repetitions="3" duration="1" profit="577" penalty="850" fix_infomercial_profit="1"/>
@@ -237,10 +268,13 @@ Daran hat man zu kauen.</de>
 		<ad id="496e9783-2d9c-44aa-b71f-845533dc907e">
 			<title>
 				<de>Fahrschule Fürst</de>
+				<en>Driving school Prince</en>
 			</title>
 			<description>
 				<de>Sicher und souverän zum Führerschein.
-In Tempelhof und Steglitz</de>
+In Tempelhof and Steglitz</de>
+				<en>Safe and sovereign to your driving license.
+In Berlin Tempelhof and Steglitz</en>
 			</description>
 			<conditions min_audience="3.1251" min_image="12" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="5" repetitions="4" duration="3" profit="700" penalty="1200" infomercial_profit="67" fix_infomercial_profit="1"/>
@@ -248,9 +282,11 @@ In Tempelhof und Steglitz</de>
 		<ad id="4cc7ea59-a0dd-4dda-90b8-ec217635d631">
 			<title>
 				<de>Lutschfix</de>
+				<en>SpeedSweet</en>
 			</title>
 			<description>
 				<de>Der schnelle Bonbon gegen Husten. Jetzt auch als Nikotinersatz.</de>
+				<en>The rapid sweet against cough. Now also as a nicotine substitute.</en>
 			</description>
 			<conditions min_audience="3.65" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="5" repetitions="5" duration="3" profit="585" penalty="1050" infomercial_profit="58" fix_infomercial_profit="1"/>
@@ -258,9 +294,11 @@ In Tempelhof und Steglitz</de>
 		<ad id="5078e947-ea8f-47bc-9f20-0e611bf2ad28">
 			<title>
 				<de>wasch das</de>
+				<en>Wash-It</en>
 			</title>
 			<description>
 				<de>Deo, Duschmittel, Badezusatz: Körperpflege in vielen Variationen.</de>
+				<en>Deodorant, shower gel, bath additive: Body care in many variations.</en>
 			</description>
 			<conditions min_audience="1.3" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="10" repetitions="4" duration="3" profit="1000" penalty="1500" infomercial_profit="100" fix_infomercial_profit="1"/>
@@ -268,9 +306,11 @@ In Tempelhof und Steglitz</de>
 		<ad id="527e41eb-a641-49b9-a521-e921ec652e23">
 			<title>
 				<de>Plöpp-Bier</de>
+				<en>Pop'Beer</en>
 			</title>
 			<description>
 				<de>Prickelndes Hopfengold. Für die kritischen Tage im Monat sollte Mann immer Plöpp-Bier im Haus haben.</de>
+				<en>Tingling hop gold. For the critical days of the month you should always have Pop'Beer in your fridge.</en>
 			</description>
 			<conditions min_audience="1.56" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="15" repetitions="3" duration="3" profit="976" penalty="1550" finfomercial_profit="97" ix_infomercial_profit="1"/>
@@ -278,10 +318,13 @@ In Tempelhof und Steglitz</de>
 		<ad id="589d51a5-52ab-463f-90f9-ddf48abef355">
 			<title>
 				<de>Ulbricht Umzüge</de>
+				<en>Relocation Rudolph</en>
 			</title>
 			<description>
 				<de>Ausziehen! Ausziehen! Ausziehen!!!
 Aber nur mit Ulbricht Umzüge!</de>
+				<en>Move out! Move out! Move out!!!
+But only with Relocation Rudolph!</en>
 			</description>
 			<conditions min_audience="0.1553" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="7" repetitions="3" duration="2" profit="2333" penalty="3500" infomercial_profit="133" fix_infomercial_profit="1"/>
@@ -292,6 +335,7 @@ Aber nur mit Ulbricht Umzüge!</de>
 			</title>
 			<description>
 				<de>Mit Mach 4 oder NOCH schneller fliegt der Rasierer über die Gesichtshaut eines echten Kerls - für das Beste im Mann.</de>
+				<en>With Mach 4 or EVEN FASTER the razor flies over the face skin of a real guy - for the best in the man.</en>
 			</description>
 			<conditions min_audience="6.25" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="18" repetitions="2" duration="3" profit="500" penalty="950" infomercial_profit="42" fix_infomercial_profit="1"/>
@@ -301,7 +345,8 @@ Aber nur mit Ulbricht Umzüge!</de>
 				<de>FasterCard</de>
 			</title>
 			<description>
-				<de>MacGreifer als Werbeträger für die FasterCard: R. D. Handerson noch einmal in seiner Paraderolle - unbezahlbar</de>
+				<de>MacGreifer als Werbeträger für die FasterCard: R. D. Handerson noch einmal in seiner Paraderolle - unbezahlbar.</de>
+				<en>MacGrabber as an advertising medium for the FasterCard: R. D. Handerson once again in his most famous role - invaluable.</en>
 			</description>
 			<conditions min_audience="12.5" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="21" repetitions="2" duration="3" profit="320" penalty="510" infomercial_profit="27" fix_infomercial_profit="1"/>
@@ -309,9 +354,11 @@ Aber nur mit Ulbricht Umzüge!</de>
 		<ad id="66303d6e-e116-4dcb-8984-f216a70c21fd">
 			<title>
 				<de>Schwarzmalerei AG</de>
+				<en>Pessimism LLC</en>
 			</title>
 			<description>
 				<de>Freundliche Frauen aus Osteuropa erstellen Ihr Horoskop „live“ am Telefon.</de>
+				<en>Friendly women from Eastern Europe create your horoscope "live" on phone.</en>
 			</description>
 			<conditions min_audience="0.39" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="10" repetitions="4" duration="3" profit="2120" penalty="2700" infomercial_profit="110" fix_infomercial_profit="1"/>
@@ -319,9 +366,11 @@ Aber nur mit Ulbricht Umzüge!</de>
 		<ad id="6c93f77e-8180-4811-a5e1-57b375eef68f">
 			<title>
 				<de>Spruzzi Plöpp</de>
+				<en>Fizzy Plop</en>
 			</title>
 			<description>
 				<de>Unsere Limonade beinhaltet nur natürliche Aromastoffe. Hmm lecker Käferflügel...</de>
+				<en>Our lemonade contains just natural aromas. Hmm tasty beetle wings...</en>
 			</description>
 			<conditions min_audience="2.08" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="17" repetitions="4" duration="2" profit="775" penalty="1000" infomercial_profit="77" fix_infomercial_profit="1"/>
@@ -329,9 +378,11 @@ Aber nur mit Ulbricht Umzüge!</de>
 		<ad id="6db2fb7a-fa30-4de3-9035-e02c37486d09">
 			<title>
 				<de>Tussishop</de>
+				<en>Broadshop</en>
 			</title>
 			<description>
 				<de>Nette Frauen aus aus dem Katalog. Dank Fernabsatz Rückgabe ohne Probleme möglich.</de>
+				<en>Nice women from the catalog. Thanks to remote sales return possible without problems.</en>
 			</description>
 			<conditions min_audience="0.62" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="12" repetitions="3" duration="3" profit="1766" penalty="2800" infomercial_profit="124" fix_infomercial_profit="1"/>
@@ -339,9 +390,11 @@ Aber nur mit Ulbricht Umzüge!</de>
 		<ad id="7408e6f0-0505-42d9-96e0-bf6dc4869039">
 			<title>
 				<de>Raus Hier</de>
+				<en>Get Out</en>
 			</title>
 			<description>
 				<de>Dein freundliches Reisebüro... Wohin Du willst - solang die Kohle stimmt.</de>
+				<de>Your friendly travel agency ... Wherever you want - as long as money is not an issue.</de>
 			</description>
 			<conditions min_audience="0.0511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="18" repetitions="3" duration="2" fix_price="0" profit="3000" penalty="3800" infomercial_profit="90" fix_infomercial_profit="1"/>
