@@ -91,19 +91,19 @@ Type TPlayerProgrammeCollectionCollection
 		else
 			trailerEffectivenessScale = reachBefore/float(reach)
 		endif
-		print "trailerEffectivenessScale: "+ trailerEffectivenessScale
+'		print "trailerEffectivenessScale: "+ trailerEffectivenessScale
 
 		'loop over all licences: series, episodes, collection entries..
 		For local licence:TProgrammeLicence = EachIn collection.GetProgrammeLicences()
-			print "scaling down: " + licence.GetTitle()
+'			print "scaling down: " + licence.GetTitle()
 			'only scale if there was a trailerMod existing before
 			'(save some memory and savegame space)
 			if licence.data.GetTrailerMod(owner, False)
-				print "  before: " + licence.data.GetTrailerMod(owner, True).ToStringPercentage(2)
+'				print "  before: " + licence.data.GetTrailerMod(owner, True).ToStringPercentage(2)
 
 				licence.data.GetTrailerMod(owner).MultiplyFloat(trailerEffectivenessScale)
 
-				print "   after: " + licence.data.GetTrailerMod(owner, True).ToStringPercentage(2)
+'				print "   after: " + licence.data.GetTrailerMod(owner, True).ToStringPercentage(2)
 			endif
 		Next
 			

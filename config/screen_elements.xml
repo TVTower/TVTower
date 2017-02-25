@@ -305,6 +305,19 @@
 		</spritepack>
 
 
+		<!-- OFFICE: ROOM -->
+		<spritepack name="screen_office_elements">
+			<url>res/gfx/office/screen_office_elements.png</url>
+			<children>
+				<child name="screen_office_messages1"       x="0"   y="0"  w="120" h="40" offsetTop="-220" offsetLeft="-430" />
+				<child name="screen_office_messages2"       x="120" y="0"  w="120" h="40" offsetTop="-220" offsetLeft="-430" />
+				<child name="screen_office_messages3"       x="240" y="0"  w="120" h="40" offsetTop="-220" offsetLeft="-430" />
+				<child name="screen_office_messages4"       x="360" y="0"  w="120" h="40" offsetTop="-220" offsetLeft="-430" />
+				<child name="screen_office_messages_unread" x="0"   y="40" w="20"  h="20" offsetTop="-235" offsetLeft="-485" />
+			</children>
+		</spritepack>
+
+
 		<!-- OFFICE: PROGRAMMEPLANNER -->
 		<spritepack name="screen_programmeplanner_blocks">
 			<url>res/gfx/office/screen_programmeplanner_blocks.png</url>

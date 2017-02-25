@@ -71,8 +71,8 @@ Type TProgrammePersonBaseCollection
 
 
 	'useful to fetch a random "amateur" (aka "layman")
-	Method GetRandomInsignificant:TProgrammePersonBase(array:TProgrammePersonBase[] = null, onlyFictional:int = False, onlyBookable:int = False)
-		if array = Null or array.length = 0 then array = GetAllInsignificantAsArray(onlyFictional, onlyBookable)
+	Method GetRandomInsignificant:TProgrammePersonBase(array:TProgrammePersonBase[] = null, onlyFictional:int = False, onlyBookable:int = False, job:int=0, gender:int=-1)
+		if array = Null or array.length = 0 then array = GetAllInsignificantAsArray(onlyFictional, onlyBookable, job)
 		If array.length = 0 Then Return Null
 
 		'randRange - so it is the same over network
@@ -80,8 +80,8 @@ Type TProgrammePersonBaseCollection
 	End Method
 	
 
-	Method GetRandomCelebrity:TProgrammePersonBase(array:TProgrammePersonBase[] = null, onlyFictional:int = False, onlyBookable:int = False)
-		if array = Null or array.length = 0 then array = GetAllCelebritiesAsArray(onlyFictional, onlyBookable)
+	Method GetRandomCelebrity:TProgrammePersonBase(array:TProgrammePersonBase[] = null, onlyFictional:int = False, onlyBookable:int = False, job:int=0, gender:int=-1)
+		if array = Null or array.length = 0 then array = GetAllCelebritiesAsArray(onlyFictional, onlyBookable, job)
 		If array.length = 0 Then Return Null
 
 		'randRange - so it is the same over network
@@ -89,24 +89,28 @@ Type TProgrammePersonBaseCollection
 	End Method
 
 
-	Method GetAllInsignificantAsArray:TProgrammePersonBase[](onlyFictional:int = False, onlyBookable:int = False)
+	Method GetAllInsignificantAsArray:TProgrammePersonBase[](onlyFictional:int = False, onlyBookable:int = False, job:int=0, gender:int=-1)
 		local array:TProgrammePersonBase[]
 		'create a full array containing all elements
 		For local obj:TProgrammePersonBase = EachIn insignificant.Values()
 			if onlyFictional and not obj.fictional then continue
 			if onlyBookable and not obj.bookable then continue
+			if job>0 and obj.job & job = 0 then continue
+			if gender>=0 and obj.gender <> gender then continue
 			array :+ [obj]
 		Next
 		return array
 	End Method
 
 
-	Method GetAllCelebritiesAsArray:TProgrammePersonBase[](onlyFictional:int = False, onlyBookable:int = False)
+	Method GetAllCelebritiesAsArray:TProgrammePersonBase[](onlyFictional:int = False, onlyBookable:int = False, job:int=0, gender:int=-1)
 		local array:TProgrammePersonBase[]
 		'create a full array containing all elements
 		For local obj:TProgrammePersonBase = EachIn celebrities.Values()
 			if onlyFictional and not obj.fictional then continue
 			if onlyBookable and not obj.bookable then continue
+			if job>0 and obj.job & job = 0 then continue
+			if gender>=0 and obj.gender <> gender then continue
 			array :+ [obj]
 		Next
 		return array

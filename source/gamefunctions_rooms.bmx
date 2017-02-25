@@ -29,10 +29,16 @@ Include "game.screen.financials.bmx"
 
 'Office: handling the players room
 Type RoomHandler_Office extends TRoomHandler
+	Field archivedMessageTotalCount:int
+	Field archivedMessageUnreadCount:int
+	
 	'=== OFFICE ROOM ===
+	Global roomOwner:int
+	
 	Global StationsToolTip:TTooltip
 	Global PlannerToolTip:TTooltip
 	Global SafeToolTip:TTooltip
+	Global MessagesToolTip:TTooltip
 
 	Global _instance:RoomHandler_Office
 	Global _initDone:int = False
@@ -62,6 +68,9 @@ Type RoomHandler_Office extends TRoomHandler
 		'=== REGISTER HANDLER ===
 		RegisterHandler()
 
+		ReloadMessageCount()
+
+		local screen:TScreen = ScreenCollection.GetScreen("screen_office")
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
@@ -71,7 +80,10 @@ Type RoomHandler_Office extends TRoomHandler
 		'=== register event listeners
 		'handle the "office" itself (not computer etc)
 		'using this approach avoids "tooltips" to be visible in subscreens
-		_eventListeners :+ _RegisterScreenHandler( onUpdateOffice, onDrawOffice, ScreenCollection.GetScreen("screen_office") )
+		_eventListeners :+ _RegisterScreenHandler( onUpdateOffice, onDrawOffice, screen )
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("ArchivedMessageCollection.onAdd", onAddOrRemoveArchivedMessage) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("ArchivedMessageCollection.onRemove", onAddOrRemoveArchivedMessage) ]
 
 		'(re-)localize content
 		'disabled as the screens are setting their language during "initialize()"
@@ -86,6 +98,7 @@ Type RoomHandler_Office extends TRoomHandler
 		StationsToolTip = null
 		PlannerToolTip = null
 		SafeToolTip = null
+		MessagesToolTip = null
 
 		'=== remove obsolete gui elements ===
 		'
@@ -121,6 +134,32 @@ Type RoomHandler_Office extends TRoomHandler
 	End Method
 
 
+	Method ReloadMessageCount:int()
+		archivedMessageTotalCount = 0
+		archivedMessageUnreadCount = 0
+		
+		For local message:TArchivedMessage = EachIn GetArchivedMessageCollection().entries.values()
+			archivedMessageTotalCount :+ 1
+			if not message.IsRead(roomOwner) then archivedMessageUnreadCount :+ 1
+		Next
+	End Method
+
+
+	Function onAddOrRemoveArchivedMessage:int( triggerEvent:TEventBase )
+		local archivedMessage:TArchivedMessage = TArchivedMessage(triggerEvent.GetReceiver())
+		if not archivedMessage then return False
+
+		if GetInstance().roomOwner = archivedMessage.owner or archivedMessage.owner <= 0
+			GetInstance().ReloadMessageCount()
+		endif
+	End Function
+
+
+	Function onEnterScreen:int( triggerEvent:TEventBase )
+		GetInstance().ReloadMessageCount()
+	End Function
+
+
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		'
 	End Method
@@ -136,13 +175,28 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
+		roomOwner = room.owner
+
+		local spriteLevel:int = 0
+		if GetInstance().archivedMessageTotalCount >  0 then spriteLevel = 1
+		if GetInstance().archivedMessageTotalCount > 10 then spriteLevel = 2
+		if GetInstance().archivedMessageTotalCount > 25 then spriteLevel = 3
+		if GetInstance().archivedMessageTotalCount > 50 then spriteLevel = 4
+		if spriteLevel > 0 
+			GetSpriteFromRegistry("screen_office_messages"+spriteLevel).Draw(0,0)
+		endif	
+		if GetInstance().archivedMessageUnreadCount > 0
+			GetSpriteFromRegistry("screen_office_messages_unread").Draw(0,0)
+		endif
+		
 		'allowed for owner only - or with key
 		If GetPlayer().HasMasterKey() OR IsPlayersRoom(room)
-			If StationsToolTip Then StationsToolTip.Render()
 			'allowed for all - if having keys
+			If StationsToolTip Then StationsToolTip.Render()
 			If PlannerToolTip Then PlannerToolTip.Render()
-
 			If SafeToolTip Then SafeToolTip.Render()
+
+			If MessagesToolTip Then MessagesToolTip.Render()
 		EndIf
 	End Function
 
@@ -150,6 +204,8 @@ Type RoomHandler_Office extends TRoomHandler
 	Function onUpdateOffice:int( triggerEvent:TEventBase )
 		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
+
+		roomOwner = room.owner
 
 		GetGameBase().cursorstate = 0
 
@@ -198,6 +254,22 @@ Type RoomHandler_Office extends TRoomHandler
 					endif
 				EndIf
 
+				'archived messages
+				If THelper.MouseIn(395,210,195,65)
+					If not MessagesToolTip
+						MessagesToolTip = TTooltip.Create(GetLocale("ARCHIVED_MESSAGES"), GetLocale("READ_MESSAGES_YOU_MIGHT_HAVE_MISSED"), 390, 160)
+						MessagesToolTip._minContentWidth = 180
+					endif
+					MessagesToolTip.enabled = 1
+					MessagesToolTip.Hover()
+					GetGameBase().cursorstate = 1
+					If MOUSEMANAGER.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
+						MOUSEMANAGER.resetKey(1)
+						GetGameBase().cursorstate = 0
+						ScreenCollection.GoToSubScreen("screen_office_archivedmessages")
+					endif
+				EndIf
+				
 				If THelper.MouseIn(732,45,160,170)
 					If not StationsToolTip
 						StationsToolTip = TTooltip.Create(GetLocale("ROOM_STATIONMAP"), GetLocale("BUY_AND_SELL"), 650, 80, 0, 0)
@@ -218,6 +290,7 @@ Type RoomHandler_Office extends TRoomHandler
 			If StationsToolTip Then StationsToolTip.Update()
 			If PlannerToolTip Then PlannerToolTip.Update()
 			If SafeToolTip Then SafeToolTip.Update()
+			If MessagesToolTip Then MessagesToolTip.Update()
 		EndIf
 	End Function
 End Type

@@ -197,7 +197,7 @@ Type TScreenHandler_ProgrammePlanner
 			ProgrammePlannerButtons[2].SetCaption(GetLocale("PLANNER_FINANCES"))
 			ProgrammePlannerButtons[3].SetCaption(GetLocale("PLANNER_STATISTICS"))
 			ProgrammePlannerButtons[4].SetCaption(GetLocale("PLANNER_ACHIEVEMENTS"))
-			ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_MESSAGES"))
+			ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_UNKNOWN"))
 		EndIf
 
 		'add gfx to background image

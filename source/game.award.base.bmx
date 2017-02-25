@@ -92,9 +92,9 @@ Type TAwardCollection Extends TGameObjectCollection
 
 	Method UpdateAwards()
 		'if new day, not start day
-'		If GetWorldTime().GetDaysRun() >= 1
-		If GetWorldTime().GetDaysRun() >= 0
-print "RONNY: UpdateAwards() GerDaysRun zurueckstellen!!"
+		If GetWorldTime().GetDaysRun() >= 1
+'for dev this is useful:
+'		If GetWorldTime().GetDaysRun() >= 0
 
 			'=== FINISH CURRENT AWARD ===
 			If currentAward and currentAward.GetEndTime() < GetWorldTime().GetTimeGone()
@@ -163,9 +163,9 @@ print "RONNY: UpdateAwards() GerDaysRun zurueckstellen!!"
 				endif
 
 
-				print "SetCurrentAward: type="+TVTAwardType.GetAsString(currentAward.awardType)+" ["+currentAward.awardType+"] "+"  ends="+ GetWorldTime().GetFormattedGameDate(currentAward.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate()
+				TLogger.Log("TAwardCollection.UpdateAwards()", "SetCurrentAward: type="+TVTAwardType.GetAsString(currentAward.awardType)+" ["+currentAward.awardType+"] "+"  ends="+ GetWorldTime().GetFormattedGameDate(currentAward.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate(), LOG_DEBUG)
 				if nextAward
-					print "      NextAward: type="+TVTAwardType.GetAsString(nextAward.awardType)+" ["+nextAward.awardType+"] "+"  starts="+ GetWorldTime().GetFormattedGameDate(GetNextAwardTime())
+					TLogger.Log("TAwardCollection.UpdateAwards()", "      NextAward: type="+TVTAwardType.GetAsString(nextAward.awardType)+" ["+nextAward.awardType+"] "+"  starts="+ GetWorldTime().GetFormattedGameDate(GetNextAwardTime()), LOG_DEBUG)
 				endif
 			End If
 		endif

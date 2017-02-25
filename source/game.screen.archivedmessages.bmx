@@ -15,6 +15,10 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 	Field roomOwner:int = 0
 	Field categoryCountRead:int[]
 	Field categoryCountTotal:int[]
+	Field markReadTime:Long = 0
+	Field colorCategoryHighlight:TColor = TColor.CreateGrey(20)
+	Field colorCategoryActive:TColor = TColor.Create(30,110,150)
+	Field colorCategoryDefault:TColor = TColor.CreateGrey(90)
 
 	Field highlightNavigationEntry:int = -1
 
@@ -102,6 +106,8 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 	Function onEnterScreen:int( triggerEvent:TEventBase )
 		GetInstance().ReloadMessages()
+
+		GetInstance().markReadTime = Time.MillisecsLong()
 	End Function
 	
 
@@ -195,10 +201,15 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		hoveredGuiMessage = null
 
 		highlightNavigationEntry = -1
-		if THelper.MouseIn(50,50,100,300)
+		if THelper.MouseIn(50,40,100,300)
+			local skin:TDatasheetSkin = GetDatasheetSkin("archivedmessages")
+			local contentX:int = skin.GetContentX(50)
+			'add titleHeight + titleHeight of "padding" (right window)
+			local contentY:int = skin.GetContentY(25) + 18 + 18
+
 			'0 to ... because we include "all" (which is 0)
 			For local i:int = 0 to TVTMessageCategory.count
-				if THelper.MouseIn(50, 65 + i*20 -5, 100, 20)
+				if THelper.MouseIn(contentX, contentY + i*20, 100, 20)
 					highlightNavigationEntry = i
 
 					if MouseManager.IsClicked(1)
@@ -206,11 +217,21 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 						showCategoryIndex = i
 						ReloadMessages()
 						MouseManager.ResetKey(1)
+
+						'reset
+						markReadTime = Time.MillisecsLong()
 					endif
 				endif
 			Next
 		endif
-		
+
+		'mark displayed/drawn as read
+		if markReadTime > 0 and Time.MillisecsLong() - markReadTime > 5000 
+			For local item:TGUIArchivedMessageListItem = EachIn messageList.entries
+				item.message.SetRead(roomOwner, True)
+			Next
+			markReadTime = 0
+		endif
 
 		GuiManager.Update( LS_office_archivedmessages )
 
@@ -224,26 +245,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 	Method Render()
 		SetColor(255,255,255)
 
-
-		'=== CATEGORY SELECTION ===
-
-		GetBitmapFont("default", 13, BOLDFONT).DrawStyled(GetLocale("MESSAGECATEGORY_CATEGORIES"), 40, 35, TColor.CreateGrey(140), TBitmapFont.STYLE_EMBOSS, 1, 0.5)
-
-		For local i:int = 0 to TVTMessageCategory.count
-			local title:string = GetLocale( "MESSAGECATEGORY_" + TVTMessageCategory.GetAsString(TVTMessageCategory.GetAtIndex(i)) )
-			if highlightNavigationEntry = i
-				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, 40, 65 + i*20, TColor.CreateGrey(50), TBitmapFont.STYLE_EMBOSS, 1, 0.5)
-			elseif i = showCategoryIndex
-				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, 40, 65 + i*20, TColor.Create(90,180,220), TBitmapFont.STYLE_EMBOSS, 1, 0.5)
-			else
-				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, 40, 65 + i*20, TColor.CreateGrey(120), TBitmapFont.STYLE_EMBOSS, 1, 0.5)
-			endif
-		Next
-
-
-
-		'=== MESSAGE LIST ===
-
+		'=== PANEL ===
 		local skin:TDatasheetSkin = GetDatasheetSkin("archivedmessages")
 
 		'where to draw
@@ -255,18 +257,50 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		local contentH:int = 0
 		local outerSizeH:int = skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
 		local outerH:int = 0 'size of the "border"
-		
 		local titleH:int = 18
+		local listH:int
 
 
-		'=== ACHIEVEMENT LIST ===
+
+		'=== CATEGORY SELECTION ===
+		listH = (TVTMessageCategory.count+1) * 20 + 5
+		outer.Init(50, 25 + titleH, 180, 50)
+		contentX = skin.GetContentX(outer.GetX())
+		contentY = skin.GetContentY(outer.GetY())
+		contentW = skin.GetContentW(outer.GetW())
+		contentH = skin.GetContentH(outer.GetH())
+
+		'resize outer to fit to the list
+		outer.dimension.SetY(50-contentH + listH + titleH)
+		contentH = listH
+
+		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
+		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(GetLocale("MESSAGECATEGORY_CATEGORIES"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		contentY :+ titleH
+		skin.RenderContent(contentX, contentY, contentW, contentH , "2")
+
+		For local i:int = 0 to TVTMessageCategory.count
+			local title:string = GetLocale( "MESSAGECATEGORY_" + TVTMessageCategory.GetAsString(TVTMessageCategory.GetAtIndex(i)) )
+			if highlightNavigationEntry = i
+				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, contentX + 5, contentY + 5 + i*20, colorCategoryHighlight, TBitmapFont.STYLE_EMBOSS, 1, 0.5)
+			elseif i = showCategoryIndex
+				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, contentX + 5, contentY + 5 + i*20, colorCategoryActive, TBitmapFont.STYLE_EMBOSS, 1, 0.5)
+			else
+				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, contentX + 5, contentY + 5 + i*20, colorCategoryDefault, TBitmapFont.STYLE_EMBOSS, 1, 0.5)
+			endif
+		Next
+		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
+
+
+
+		'=== MESSAGE LIST ===
 		outer.Init(200, 25, 550, 325)
 		contentX = skin.GetContentX(outer.GetX())
 		contentY = skin.GetContentY(outer.GetY())
 		contentW = skin.GetContentW(outer.GetW())
 		contentH = skin.GetContentH(outer.GetH())
 
-		local listH:int = contentH - titleH
+		listH = contentH - titleH
 
 		local caption:string = GetLocale("ARCHIVED_MESSAGES")
 		caption :+ " ~q" + GetLocale( "MESSAGECATEGORY_" + TVTMessageCategory.GetAsString(showCategory) ) + "~q"

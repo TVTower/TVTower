@@ -865,6 +865,7 @@ ACHIEVEMENTCATEGORY_STATIONMAP = Senderkarte
 ACHIEVEMENTCATEGORY_MISC = Sonstiges
 
 ARCHIVED_MESSAGES = Archivierte Nachrichten
+READ_MESSAGES_YOU_MIGHT_HAVE_MISSED = Lese Nachrichten die Du vielleicht verpasst hast.
 MESSAGECATEGORY_CATEGORIES = Kategorien
 MESSAGECATEGORY_ALL = Alle Kategorien
 MESSAGECATEGORY_MONEY = Geld / Finanzen
@@ -998,3 +999,4 @@ FOR_X_HOURS = für %X% Stunden
 FOR_X_HOUR = für %X% Stunde
 ATTRACTIVITY = Attraktivität
 
+COUNTRYNAME_ISO3166_DE = Deutschland
