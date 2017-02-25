@@ -1233,7 +1233,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	'run when financial balance of a player changes
 	Function onPlayerChangeMoney:int(triggerEvent:TEventBase)
 		local finance:TPlayerFinance = TPlayerFinance(triggerEvent.GetSender())
-		if not finance then return
+		if not finance then return False
 
 		local playerID:int = finance.playerID
 		if finance.GetMoney() < 0 and GetGame().GetPlayerBankruptLevel(playerID) = 0

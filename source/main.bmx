@@ -130,7 +130,7 @@ Include "game.escapemenu.bmx"
 
 '===== Globals =====
 VersionDate = LoadText("incbin::source/version.txt").Trim()
-VersionString = "v0.3.7-dev Build ~q" + VersionDate+"~q"
+VersionString = "v0.4.0 Build ~q" + VersionDate+"~q"
 CopyrightString = "by Ronny Otto & Team"
 
 Global APP_NAME:string = "TVTower"
