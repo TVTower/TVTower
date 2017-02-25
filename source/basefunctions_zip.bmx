@@ -127,12 +127,19 @@ Type TBufferedStream Extends TStream
 	Field bias1%
 	Field bias2%
 	
-		
+	?bmxng
+	Method Pos:Long()
+	?not bmxng
 	Method Pos:Int()
+	?
 		Return pos_
 	End Method
 
+	?bmxng
+	Method Size:Long()
+	?not bmxng
 	Method Size:Int()
+	?
 		Return innerStream.Size()
 	End Method
 
@@ -447,7 +454,11 @@ Type TZipStream Extends TStream
 		Return 0
 	End Function
 		
+	?bmxng
+	Method Pos:Long()
+	?not bmxng
 	Method Pos:Int()
+	?
 		'DebugLog "Pos " + unztell(unzfile)
 		'Return unztell(unzfile)
 		Return pos_
