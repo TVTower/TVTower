@@ -77,7 +77,7 @@ Type TStationMapCollection
 
 	'as soon as a station gets active (again), the sharemap has to get
 	'regenerated (for a correct audience calculation)
-	Function onSetStationActiveState(triggerEvent:TEventBase)
+	Function onSetStationActiveState:int(triggerEvent:TEventBase)
 		GetInstance()._regenerateMap = True
 		'also set the owning stationmap to "changed" so only this single
 		'audience sum only gets recalculated (saves cpu time)
@@ -87,7 +87,7 @@ Type TStationMapCollection
 
 
 	'run when loading finished
-	Function onSaveGameLoad(triggerEvent:TEventBase)
+	Function onSaveGameLoad:int(triggerEvent:TEventBase)
 		TLogger.Log("TStationMapCollection", "Savegame loaded - reloading map data", LOG_DEBUG | LOG_SAVELOAD)
 
 		_instance.LoadMapFromXML()

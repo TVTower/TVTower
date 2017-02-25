@@ -167,7 +167,7 @@ Type TAchievementCollection
 
 
 	'run when loading finished
-	Function onSaveGameLoad(triggerEvent:TEventBase)
+	Function onSaveGameLoad:int(triggerEvent:TEventBase)
 		TLogger.Log("TFigureBaseCollection", "Savegame loaded - reassigning achievement event listeners", LOG_DEBUG | LOG_SAVELOAD)
 		For local a:TAchievement = eachin _instance.achievements
 			a.onLoad()

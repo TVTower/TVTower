@@ -120,7 +120,7 @@ Type TEventManager
 
 
 	'register a function getting called as soon as a trigger is fired
-	Method registerListenerFunction:TLink( trigger:String, _function(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
+	Method registerListenerFunction:TLink( trigger:String, _function:int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
 		Return registerListener( trigger, TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
 	End Method
 
@@ -392,7 +392,7 @@ Type TEventListenerRunFunction Extends TEventListenerBase
 	Field _function:Int(triggeredByEvent:TEventBase)
 
 
-	Function Create:TEventListenerRunFunction(_function(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
+	Function Create:TEventListenerRunFunction(_function:int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
 		Local obj:TEventListenerRunFunction = New TEventListenerRunFunction
 		obj._function			= _function
 		obj._limitToSender		= limitToSender

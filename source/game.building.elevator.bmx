@@ -177,7 +177,7 @@ Type TElevator Extends TEntity
 
 
 	'run when loading finished
-	Function onSaveGameLoad(triggerEvent:TEventBase)
+	Function onSaveGameLoad:int(triggerEvent:TEventBase)
 		TLogger.Log("TElevator", "Savegame loaded - reassigning sprites and soundsource", LOG_DEBUG | LOG_SAVELOAD)
 		'instance holds the object created when loading
 		GetInstance().InitSprites()

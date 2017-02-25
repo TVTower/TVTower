@@ -1192,7 +1192,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 	'run when loading starts
-	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
+	Function onSaveGameBeginLoad:int(triggerEvent:TEventBase)
 		'if not done yet: run preparation for first game
 		'(eg. if loading is done from mainmenu)
 		PrepareFirstGameStart(False)
@@ -1203,7 +1203,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 	'run when loading finished
-	Function onSaveGameLoad(triggerEvent:TEventBase)
+	Function onSaveGameLoad:int(triggerEvent:TEventBase)
 		TLogger.Log("TGame", "Savegame loaded - colorize players.", LOG_DEBUG | LOG_SAVELOAD)
 		'reconnect AI and other things
 		For Local player:TPlayer = EachIn GetPlayerCollection().players
@@ -1221,7 +1221,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 	'run when starting saving a savegame
-	Function onSaveGameBeginSave(triggerEvent:TEventBase)
+	Function onSaveGameBeginSave:int(triggerEvent:TEventBase)
 		TLogger.Log("TGame", "Start saving - inform AI.", LOG_DEBUG | LOG_SAVELOAD)
 		'inform player AI that we are saving now
 		For Local player:TPlayer = EachIn GetPlayerCollection().players
@@ -1231,7 +1231,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 	'run when financial balance of a player changes
-	Function onPlayerChangeMoney(triggerEvent:TEventBase)
+	Function onPlayerChangeMoney:int(triggerEvent:TEventBase)
 		local finance:TPlayerFinance = TPlayerFinance(triggerEvent.GetSender())
 		if not finance then return
 

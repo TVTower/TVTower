@@ -174,7 +174,7 @@ Type TRoomBaseCollection
 	'=== EVENTS ===
 
 	'run when loading starts
-	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
+	Function onSaveGameBeginLoad:int(triggerEvent:TEventBase)
 		TLogger.Log("TRoomCollection", "Savegame started loading - clean occupants list", LOG_DEBUG | LOG_SAVELOAD)
 		For local room:TRoomBase = eachin GetInstance().list
 			room.occupants.Clear()

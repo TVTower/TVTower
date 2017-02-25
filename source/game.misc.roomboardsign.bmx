@@ -60,13 +60,13 @@ Type TRoomBoard
 
 	'as soon as a language changes, remove the cached images
 	'to get them regenerated
-	Function onSetLanguage(triggerEvent:TEventBase)
+	Function onSetLanguage:int(triggerEvent:TEventBase)
 		GetRoomBoard().ResetImageCaches()
 	End Function
 
 
 	'as soon as a savegame gets loaded, we remove the cached images
-	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
+	Function onSaveGameBeginLoad:int(triggerEvent:TEventBase)
 		GetRoomBoard().ResetImageCaches()
 	End Function
 

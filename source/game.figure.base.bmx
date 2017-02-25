@@ -74,7 +74,7 @@ Type TFigureBaseCollection extends TEntityCollection
 
 
 	'run when loading finished
-	Function onSaveGameLoad(triggerEvent:TEventBase)
+	Function onSaveGameLoad:int(triggerEvent:TEventBase)
 		TLogger.Log("TFigureBaseCollection", "Savegame loaded - reassigning sprites", LOG_DEBUG | LOG_SAVELOAD)
 		For local figure:TFigureBase = eachin _instance.entries.Values()
 			figure.onLoad()
@@ -83,7 +83,7 @@ Type TFigureBaseCollection extends TEntityCollection
 
 
 	'run when a game starts
-	Function onGameStart(triggerEvent:TEventBase)
+	Function onGameStart:int(triggerEvent:TEventBase)
 		For local figure:TFigureBase = eachin _instance.entries.Values()
 			figure.onGameStart()
 		Next
