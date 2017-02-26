@@ -27,6 +27,7 @@ Type TInGameInterface
 	Field CurrentAudienceToolTip:TTooltipAudience
 	Field MoneyToolTip:TTooltip
 	Field BettyToolTip:TTooltip
+	Field ChannelImageTooltip:TTooltip
 	Field MenuToolTip:TTooltip
 	Field CurrentTimeToolTip:TTooltip
 	Field tooltips:TList = CreateList()
@@ -91,6 +92,7 @@ Type TInGameInterface
 		CurrentTimeTooltip._minContentWidth = 190
 		MoneyToolTip = TTooltip.Create("", "", 490, 408)
 		BettyToolTip = TTooltip.Create("", "", 490, 485)
+		ChannelImageTooltip = TTooltip.Create("", "", 490, 510)
 		MenuToolTip = TTooltip.Create("", "", 470, 560)
 
 		'collect them in one list (to sort them correctly)
@@ -101,6 +103,7 @@ Type TInGameInterface
 		tooltips.AddLast(MoneyTooltip)
 		tooltips.AddLast(BettyToolTip)
 		tooltips.AddLast(MenuToolTip)
+		tooltips.AddLast(ChannelImageTooltip)
 
 		noiseSprite = GetSpriteFromRegistry("gfx_interface_tv_noise")
 		'set space "left" when subtracting the genre image
@@ -371,8 +374,23 @@ Type TInGameInterface
 				BettyToolTip.enabled = 1
 				BettyToolTip.Hover()
 			EndIf
-			'todo
+			'channel image
 			If THelper.MouseIn(309,510,178,25)
+				ChannelImageTooltip.SetTitle(getLocale("CHANNEL_IMAGE"))
+				local content:string = ""
+				for local i:int = 1 to 4
+					if content then content :+ "~n"
+
+					local channelImage:Float = Min(Max(GetPublicImage(i).GetAverageImage()/100.0, 0.0),1.0)
+					if i = GetPlayerBase().playerID
+						content :+ "|b|"+GetPlayerBase(i).channelname+": " + MathHelper.NumberToString(channelImage*100, 2)+"%|/b|"
+					else
+						content :+ GetPlayerBase(i).channelname+": " + MathHelper.NumberToString(channelImage*100, 2)+"%"
+					endif
+				Next
+				ChannelImageToolTip.SetContent(content)
+				ChannelImageToolTip.enabled = 1
+				ChannelImageToolTip.Hover()
 			endif
 
 			If THelper.MouseIn(309,538,178,32)
