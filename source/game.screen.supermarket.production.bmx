@@ -1396,8 +1396,8 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 			'also the person must be bookable for productions (maybe retired?)
 			if not p.bookable then continue
 			if not p.IsAlive() then continue
-			'we also want to avoid "children" (only available for celebs)
-			if TProgrammePerson(p) and p.GetAge() < 10 then continue
+			'we also want to avoid "children"
+			if TProgrammePerson(p) and p.GetAge() < 10 and p.GetAge() <> -1 then continue
 			
 			'base items do not have a size - so we have to give a manual one
 			local item:TGUICastListItem = new TGUICastListItem.CreateSimple( p, selectJobID )
@@ -2265,8 +2265,12 @@ Type TGUICastListItem Extends TGUISelectListItem
 			GetSpriteFromRegistry("gfx_datasheet_content_splitterV").DrawArea(contentX + 5 + 165, contentY, 2, jobDescriptionH)
 			local latinCross:string = Chr(10013) '† = &#10013 ---NOT--- &#8224; (the dagger-cross)
 			if celebrity
-				local dob:String = GetWorldTime().GetFormattedDate( GetWorldTime().GetTimeGoneFromString(celebrity.dayOfBirth), "d.m.y")
-				skin.fontNormal.drawBlock(dob +" ("+celebrity.GetAge()+" J.)", contentX + 5, contentY, 165 - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				local dob:String = GetWorldTime().GetFormattedDate( GetWorldTime().GetTimeGoneFromString(celebrity.dayOfBirth), GameConfig.dateFormat)
+				if celebrity.GetAge() >= 0
+					skin.fontNormal.drawBlock(dob +" ("+celebrity.GetAge()+" "+GetLocale("ABBREVIATION_YEARS")+")", contentX + 5, contentY, 165 - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				else
+					skin.fontNormal.drawBlock("**.**.****", contentX + 5, contentY, 165 - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				endif
 				skin.fontNormal.drawBlock(celebrity.countryCode, contentX + 170 + 5, contentY, contentW - 170 - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			endif
 			contentY :+ lifeDataH

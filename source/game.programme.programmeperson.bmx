@@ -480,8 +480,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 		'skip gaining if already done
 		'this is checked as "GetProducedProgramme()" also contains
 		'new entries already - so an "not inArray" would fail
+		'if programmeData.HasLifecycleStep(TVTProgrammeLifecycleStep.PRODUCTION_FINISHED) then return False
 		if programmeData.finishedProductionForCast then return False
-
 	
 
 		Super.FinishProduction(programmeDataGUID, job:int)
@@ -701,6 +701,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 	'override
 	Method GetAge:int()
+		if dayOfBirth = "0000-00-00" then return Super.GetAge()
+			
 		local dob:Long = GetWorldTime().GetTimeGoneFromString(dayOfBirth)
 		'no dob was given
 		if dob = 0 then return Super.GetAge()

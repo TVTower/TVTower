@@ -400,7 +400,7 @@ Type TInGameInterface
 				content :+ "~n"
 				content :+ "|b|"+GetLocale("DAY_OF_YEAR")+":|/b| "+GetWorldTime().getDayOfYear()+"/"+GetWorldTime().GetDaysPerYear()
 				content :+ "~n"
-				content :+ "|b|"+GetLocale("DATE")+":|/b| "+GetWorldTime().GetFormattedDate(-1,"d.m.y")+" ("+GetLocale("SEASON_"+GetWorldTime().GetSeasonName())+")"
+				content :+ "|b|"+GetLocale("DATE")+":|/b| "+GetWorldTime().GetFormattedDate(-1, GameConfig.dateFormat)+" ("+GetLocale("SEASON_"+GetWorldTime().GetSeasonName())+")"
 				CurrentTimeToolTip.SetContent(content)
 				CurrentTimeToolTip.enabled = 1
 				CurrentTimeToolTip.Hover()

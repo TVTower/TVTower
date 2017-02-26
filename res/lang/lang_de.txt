@@ -1000,3 +1000,5 @@ FOR_X_HOUR = für %X% Stunde
 ATTRACTIVITY = Attraktivität
 
 COUNTRYNAME_ISO3166_DE = Deutschland
+
+ABBREVIATION_YEARS = J.
