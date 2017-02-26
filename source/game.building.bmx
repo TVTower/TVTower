@@ -123,7 +123,7 @@ Type TBuilding Extends TBuildingBase
 
 
 	'run when loading finished
-	Function onSaveGameLoad(triggerEvent:TEventBase)
+	Function onSaveGameLoad:int(triggerEvent:TEventBase)
 		TLogger.Log("TBuilding", "Savegame loaded - reassign sprites, recreate movement paths for gfx.", LOG_DEBUG | LOG_SAVELOAD)
 		GetInstance().InitGraphics()
 
@@ -135,6 +135,8 @@ Type TBuilding Extends TBuildingBase
 
 		'reposition hotspots, prepare building sprite...
 		GetInstance().Init()
+
+		return True
 	End Function
 
 
@@ -338,6 +340,8 @@ Type TBuilding Extends TBuildingBase
 		EndIf
 		
 		MOUSEMANAGER.ResetKey(1)
+
+		return True
 	End Function
 
 

@@ -62,11 +62,19 @@ Import "base.util.logger.bmx"
 Import "base.util.luaengine.c"
 
 Extern
+?not bmxng
 	Function lua_boxobject( L:Byte Ptr,obj:Object )
 	Function lua_unboxobject:Object( L:Byte Ptr,index:Int)
 	Function lua_pushlightobject( L:Byte Ptr,obj:Object )
 	Function lua_tolightobject:Object( L:Byte Ptr,index:Int )
-	Function lua_gcobject( L:Byte Ptr )
+	Function lua_gcobject:int( L:Byte Ptr )
+?bmxng
+	Function lua_boxobject( L:Byte Ptr,obj:Object )="BBINT lua_boxobject(BBBYTE*,BBOBJECT)"
+	Function lua_unboxobject:Object( L:Byte Ptr,index:Int)
+	Function lua_pushlightobject( L:Byte Ptr,obj:Object )="BBINT lua_pushlightobject(BBBYTE*,BBOBJECT)"
+	Function lua_tolightobject:Object( L:Byte Ptr,index:Int )
+	Function lua_gcobject:int( L:Byte Ptr )="BBINT lua_gcobject(BBBYTE*)"
+?
 End Extern
 'end from maxlua
 
@@ -587,7 +595,7 @@ Type TLuaEngine
 
 	Function NewIndexObject:Int(fromLuaState:Byte Ptr)
 		Local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
-		If engine And engine.NewIndex() Then Return True
+		If engine And engine.NewIndex() Then Return 1
 		Throw "newindexobject ERROR"
 	End Function
 
@@ -608,9 +616,10 @@ Type TLuaEngine
 		Return 1
 	End Function
 
-	Function NewIndexSelf(fromLuaState:Byte Ptr)
+	Function NewIndexSelf:int(fromLuaState:Byte Ptr)
 		'local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
 		lua_rawset(fromLuaState, 1)
+		return 1
 	End Function
 
 	Function CompareObjectsSelf:Int(fromLuaState:Byte Ptr)

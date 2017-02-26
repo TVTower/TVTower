@@ -31,7 +31,7 @@ Type TScreenHandler
 	'special events for screens used in rooms - only this event has the room as sender
 	'screen.onScreenUpdate/Draw is more general purpose
 	'returns the event listener links
-	Function _RegisterScreenHandler:TLink[](updateFunc(triggerEvent:TEventBase), drawFunc(triggerEvent:TEventBase), screen:TScreen)
+	Function _RegisterScreenHandler:TLink[](updateFunc:int(triggerEvent:TEventBase), drawFunc:int(triggerEvent:TEventBase), screen:TScreen)
 		local links:TLink[]
 		if screen
 			links :+ [ EventManager.registerListenerFunction( "room.onScreenUpdate", updateFunc, screen ) ]

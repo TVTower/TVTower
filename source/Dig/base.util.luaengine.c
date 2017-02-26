@@ -36,7 +36,8 @@ BBObject *lua_tolightobject( lua_State *L,int index ){
 	return (BBObject*)( lua_touserdata( L,index ) );
 }
 
-void lua_gcobject( lua_State *L ){
+int lua_gcobject( lua_State *L ){
 	BBObject *obj=lua_unboxobject( L,1 );
 	BBRELEASE( obj );
+	return 1;
 }
