@@ -427,6 +427,8 @@ Type TApp
 		MouseManager._ignoreFirstClick = config.GetBool("touchInput", False)
 		MouseManager._longClickModeEnabled = config.GetBool("longClickMode", True)
 
+		IngameHelpWindowCollection.showHelp = config.GetBool("showIngameHelp", True)
+
 		if TGame._instance Then GetGame().LoadConfig(config)
 	End Method
 
