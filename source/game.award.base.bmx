@@ -91,84 +91,88 @@ Type TAwardCollection Extends TGameObjectCollection
 
 
 	Method UpdateAwards()
-		'if new day, not start day
-		If GetWorldTime().GetDaysRun() >= 1
-'for dev this is useful:
-'		If GetWorldTime().GetDaysRun() >= 0
+		'=== CREATE INITIAL AWARD ===
+		If GetWorldTime().GetDaysRun() = 0 and GetCount() = 0
+			'avoid AwardCustomProduction as first award in a game
+			local awardType:int = 0
+			Repeat
+				awardType = RandRange(1, TVTAwardType.count)
+			Until awardType <> TVTAwardType.CUSTOMPRODUCTION
+			'awardType = TVTAwardType.CULTURE
 
-			'=== FINISH CURRENT AWARD ===
-			If currentAward and currentAward.GetEndTime() < GetWorldTime().GetTimeGone()
-				'announce the winner and set time for next start
-				if currentAward
-					currentAward.Finish()
-					currentAward = null
-				endif
-			EndIf
-
-
-			'=== CREATE NEW AWARD ===
-			If not currentAward and GetNextAwardTime() <= GetWorldTime().GetTimeGone()
-				local nextAward:TAward = GetNextAward()
-
-				'create or fetch next award
-				if nextAward
-					RemoveUpcoming(nextAward)
-				else
-					local awardType:int
-					'avoid AwardCustomProduction as first award in a game
-					if GetCount() = 0
-						Repeat
-							awardType = RandRange(1, TVTAwardType.count)
-						Until awardType <> TVTAwardType.CUSTOMPRODUCTION
-					else
-						awardType = RandRange(1, TVTAwardType.count)
-					endif
-
-					awardType = TVTAwardType.CULTURE
-					nextAward = CreateAward(awardType)
-				endif
-
-				'adjust next award config
-				nextAward.SetStartTime( nextAwardTime )
-				nextAward.SetEndTime( nextAward.CalculateEndTime(nextAwardTime) )
-
-				'set current award
-				SetCurrentAward(nextAward)
-				nextAward = null
-
-				'pre-create the next award if needed
-				if not GetNextAward()
-					local awardType:int = RandRange(1, TVTAwardType.count)
-					nextAward = CreateAward(awardType)
-
-					AddUpcoming( nextAward )
-				endif
-
-
-				'calculate next award time
-
-				'set random waiting time for next award 
-				timeBetweenAwards = TWorldTime.HOURLENGTH * RandRange(12,36)
-
-				'set time to the next 0:00 coming _after the waiting
-				'time is gone (or use that midnight if exactly 0:00)
-				local nextTimeExact:Long = currentAward.GetEndTime() + timeBetweenAwards
-				if GetWorldTime().GetDayHour(nextTimeExact) = 0 and GetWorldTime().GetDayMinute(nextTimeExact) = 0
-					nextAwardTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(nextTimeExact), 0, 0)
-				else
-					nextAwardTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(nextTimeExact)+1, 0, 0)
-				endif
-				if nextAward
-					nextAward.SetStartTime( nextAwardTime )
-				endif
-
-
-				TLogger.Log("TAwardCollection.UpdateAwards()", "SetCurrentAward: type="+TVTAwardType.GetAsString(currentAward.awardType)+" ["+currentAward.awardType+"] "+"  ends="+ GetWorldTime().GetFormattedGameDate(currentAward.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate(), LOG_DEBUG)
-				if nextAward
-					TLogger.Log("TAwardCollection.UpdateAwards()", "      NextAward: type="+TVTAwardType.GetAsString(nextAward.awardType)+" ["+nextAward.awardType+"] "+"  starts="+ GetWorldTime().GetFormattedGameDate(GetNextAwardTime()), LOG_DEBUG)
-				endif
-			End If
+			'set to start next day
+			nextAwardTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay()+1, 0, 0)
+			local award:TAward = CreateAward(awardType)
+			award.SetStartTime( nextAwardTime )
+			award.SetEndTime( award.CalculateEndTime(nextAwardTime) )
+			AddUpcoming( award )
+			TLogger.Log("TAwardCollection.UpdateAwards()", "Set initial ~qnext~q award: type="+TVTAwardType.GetAsString(award.awardType)+" ["+award.awardType+"] "+"  timeframe="+GetWorldTime().GetFormattedGameDate(award.GetStartTime()) +"  -  " + GetWorldTime().GetFormattedGameDate(award.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate(), LOG_DEBUG)
 		endif
+		
+
+		'=== FINISH CURRENT AWARD ===
+		If currentAward and currentAward.GetEndTime() < GetWorldTime().GetTimeGone()
+			'announce the winner and set time for next start
+			if currentAward
+				TLogger.Log("TAwardCollection.UpdateAwards()", "Finish current award award: type="+TVTAwardType.GetAsString(currentAward.awardType)+" ["+currentAward.awardType+"] "+"  timeframe="+GetWorldTime().GetFormattedGameDate(currentAward.GetStartTime()) +"  -  " + GetWorldTime().GetFormattedGameDate(currentAward.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate(), LOG_DEBUG)
+				currentAward.Finish()
+				currentAward = null
+			endif
+		EndIf
+
+
+		'=== CREATE NEW AWARD ===
+		If not currentAward and GetNextAwardTime() <= GetWorldTime().GetTimeGone()
+			local nextAward:TAward = GetNextAward()
+
+			'create or fetch next award
+			if nextAward
+				RemoveUpcoming(nextAward)
+			else
+				local awardType:int = RandRange(1, TVTAwardType.count)
+				nextAward = CreateAward(awardType)
+			endif
+
+			'adjust next award config
+			nextAward.SetStartTime( nextAwardTime )
+			nextAward.SetEndTime( nextAward.CalculateEndTime(nextAwardTime) )
+
+			'set current award
+			SetCurrentAward(nextAward)
+			nextAward = null
+
+
+			'pre-create the next award if needed
+			if not GetNextAward()
+				local awardType:int = RandRange(1, TVTAwardType.count)
+				nextAward = CreateAward(awardType)
+
+				AddUpcoming( nextAward )
+			endif
+
+			'calculate next award time
+
+			'set random waiting time for next award 
+			timeBetweenAwards = TWorldTime.HOURLENGTH * RandRange(12,36)
+
+			'set time to the next 0:00 coming _after the waiting
+			'time is gone (or use that midnight if exactly 0:00)
+			local nextTimeExact:Long = currentAward.GetEndTime() + timeBetweenAwards
+			if GetWorldTime().GetDayHour(nextTimeExact) = 0 and GetWorldTime().GetDayMinute(nextTimeExact) = 0
+				nextAwardTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(nextTimeExact), 0, 0)
+			else
+				nextAwardTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(nextTimeExact)+1, 0, 0)
+			endif
+			if nextAward
+				nextAward.SetStartTime( nextAwardTime )
+			endif
+
+
+			TLogger.Log("TAwardCollection.UpdateAwards()", "Set current award: type="+TVTAwardType.GetAsString(currentAward.awardType)+" ["+currentAward.awardType+"] "+"  timeframe="+GetWorldTime().GetFormattedGameDate(currentAward.GetStartTime()) +"  -  " + GetWorldTime().GetFormattedGameDate(currentAward.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate(), LOG_DEBUG)
+			if nextAward
+				TLogger.Log("TAwardCollection.UpdateAwards()", "Set next award: type="+TVTAwardType.GetAsString(nextAward.awardType)+" ["+nextAward.awardType+"] "+"  timeframe="+GetWorldTime().GetFormattedGameDate(nextAward.GetStartTime()) +"  -  " + GetWorldTime().GetFormattedGameDate(nextAward.GetEndTime()), LOG_DEBUG)
+			endif
+		EndIf
 	End Method
 
 
@@ -429,7 +433,7 @@ Type TAward extends TGameObject
 
 
 	Method GetStartTime:Long()
-		return endTime
+		return startTime
 	End Method
 
 

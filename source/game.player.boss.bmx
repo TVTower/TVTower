@@ -317,7 +317,7 @@ Type TPlayerBoss
 
 	Method GenerateDialogues(visitingPlayerID:int)
 		'each array entry is a "topic" the chef could talk about
-		Local ChefDialoge:TDialogueTexts[5]
+		Local ChefDialogues:TDialogueTexts[5]
 		local text:string
 
 		if visitingPlayerID = playerID
@@ -358,8 +358,8 @@ Type TPlayerBoss
 				'print nextAward.GetStartTime()+" > "+GetWorldTime().GetNextMidnight()
 				'print GetWorldTime().GetDay(nextAward.GetStartTime()) - GetWorldTime().GetDay()
 				'starting next day (might be in 2 minutes or 23 hrs), and ending next day
-				if GetAwardCollection().GetNextAwardTime() > GetWorldTime().GetNextMidnight() and GetWorldTime().GetDay(nextAward.GetStartTime()) - GetWorldTime().GetDay() = 1
-					local awardName:string = GetLocale("AWARDNAME_" + TVTAwardType.GetAsString(currentAward.awardType))
+				if GetAwardCollection().GetNextAwardTime() >= GetWorldTime().GetNextMidnight() and GetWorldTime().GetDay(nextAward.GetStartTime()) - GetWorldTime().GetDay() = 1
+					local awardName:string = GetLocale("AWARDNAME_" + TVTAwardType.GetAsString(nextAward.awardType))
 					text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_NEW_AWARDNAME_TOMORROW").Replace("%AWARDNAME%", "|b|"+awardName+"|/b|")
 					showDefaultText = False
 				endif
@@ -398,71 +398,76 @@ Type TPlayerBoss
 			registeredProgrammeMalfunctions = 0
 
 
-			ChefDialoge[0] = TDialogueTexts.Create(text)
-			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_WILLNOTDISTURB"), -2, Null))
-			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_ASKFORCREDIT"), 1, Null))
+			ChefDialogues[0] = TDialogueTexts.Create(text)
+			ChefDialogues[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_WILLNOTDISTURB"), -2, Null))
+			ChefDialogues[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_ASKFORCREDIT"), 1, Null))
 
 
 			'add repay option if having a credit
 			If GetPlayerBase().GetCredit() > 0
-				ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_REPAYCREDIT"), 3, Null))
+				ChefDialogues[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_REPAYCREDIT"), 3, Null))
 			endif
 			'creditMax - credit taken
 			If GetPlayerBase().GetCreditAvailable() > 0
 				local acceptEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCreditAvailable()))
 				local acceptHalfEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", 0.5 * GetPlayerBase().GetCreditAvailable()))
-				ChefDialoge[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%CREDIT%", MathHelper.DottedValue(GetPlayerBase().GetCreditAvailable())))
-				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT").replace("%CREDIT%",MathHelper.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())), 2, acceptEvent))
+				ChefDialogues[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%CREDIT%", MathHelper.DottedValue(GetPlayerBase().GetCreditAvailable())))
+				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT").replace("%CREDIT%",MathHelper.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())), 2, acceptEvent))
 				'avoid micro credits
 				if GetPlayerBase().GetCreditAvailable() > 50000
-					ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF").replace("%CREDITHALF%", MathHelper.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())),2, acceptHalfEvent))
+					ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF").replace("%CREDITHALF%", MathHelper.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())),2, acceptHalfEvent))
 				endif
-				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
+				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
 			Else
-				ChefDialoge[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY").replace("%CREDIT%", GetPlayerBase().GetCredit()))
-				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT"), 3))
-				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
+				ChefDialogues[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY").replace("%CREDIT%", GetPlayerBase().GetCredit()))
+				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT"), 3))
+				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
 			EndIf
-			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
+			ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
 
-			ChefDialoge[2] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_BACKTOWORK").replace("%PLAYERNAME%", GetPlayerBase().name) )
-			ChefDialoge[2].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_BACKTOWORK_OK"), - 2))
+			ChefDialogues[2] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_BACKTOWORK").replace("%PLAYERNAME%", GetPlayerBase().name) )
+			ChefDialogues[2].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_BACKTOWORK_OK"), - 2))
 
 			'repay credit + options
-			ChefDialoge[3] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE") )
+			ChefDialogues[3] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE") )
 			If GetPlayerBase().GetCredit() >= 100000 And GetPlayerBase().GetMoney() >= 100000
 				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", 100000))
-				ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_100K"), 0, payBackEvent))
+				ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_100K"), 0, payBackEvent))
 			EndIf
 			If GetPlayerBase().GetCredit() >= 500000 And GetPlayerBase().GetMoney() >= 500000
 				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", 500000))
-				ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_500K"), 0, payBackEvent))
+				ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_500K"), 0, payBackEvent))
 			EndIf
 			If GetPlayerBase().GetCredit() < GetPlayerBase().GetMoney()
 				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCredit()))
-				ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%CREDIT%", GetPlayerBase().GetCredit()), 0, payBackEvent))
+				ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%CREDIT%", GetPlayerBase().GetCredit()), 0, payBackEvent))
 			EndIf
-			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), -2))
-			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
+			ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), -2))
+			ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
 
 		'other players
 		else
 			text = GetRandomLocale("DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY")
 			text :+ "~n~n" + GetRandomLocale("DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER")
 
-			ChefDialoge[0] = TDialogueTexts.Create(text)
-			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER"), - 2, Null))
+			ChefDialogues[0] = TDialogueTexts.Create(text)
+			ChefDialogues[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER"), - 2, Null))
 		endif
 		
-		Local ChefDialog:TDialogue = new TDialogue
-		ChefDialog.AddTexts(Chefdialoge)
+		Local ChefDialogue:TDialogue = new TDialogue
+		ChefDialogue.AddTexts(ChefDialogues)
 
+		if text.length > 100 or text.split("~n").length > 3
+			ChefDialogue.SetArea(new TRectangle.Init(300, 15, 400, 110))
+			ChefDialogue.moveDialogueBalloonStart = 50
+		else
+			ChefDialogue.SetArea(new TRectangle.Init(300, 60, 400, 110))
+			ChefDialogue.moveDialogueBalloonStart = 0
+		endif
+		ChefDialogue.SetAnswerArea(new TRectangle.Init(400, 220, 380, 90))
+		ChefDialogue.SetGrow(1,-1)
 
-		ChefDialog.SetArea(new TRectangle.Init(300, 60, 400, 110))
-		ChefDialog.SetAnswerArea(new TRectangle.Init(400, 220, 380, 90))
-		ChefDialog.SetGrow(1,-1)
-
-		Dialogues.AddLast(ChefDialog)
+		Dialogues.AddLast(ChefDialogue)
 	End Method
 
 
