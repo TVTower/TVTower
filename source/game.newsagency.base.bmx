@@ -82,7 +82,7 @@ Type TNewsAgency
 		Next
 
 		'register custom game modifier functions
-		GetGameModifierManager().RegisterFunction("TFigureTerrorist.SendFigureToRoom", TFigureTerrorist.SendFigureToRoom)
+		GetGameModifierManager().RegisterRunFunction("TFigureTerrorist.SendFigureToRoom", TFigureTerrorist.SendFigureToRoom)
 
 
 		'=== REGISTER EVENTS ===
