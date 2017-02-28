@@ -500,7 +500,7 @@ Type TInGameScreen_Room Extends TInGameScreen
 
 
 	Method IsConnectedToRoom:Int(room:TRoomBase)
-		Return (room.screenName = name)
+		Return (room.GetScreenName() = name)
 	End Method
 
 
@@ -559,7 +559,7 @@ Type TInGameScreen_Room Extends TInGameScreen
 		if not IsObservedOrPlayerFigure(figure) Then Return False
 
 		'Set the players current screen when changing rooms
-		ScreenCollection.GoToScreen( ScreenCollection.GetScreen(room.screenName) )
+		ScreenCollection.GoToScreen( ScreenCollection.GetScreen(room.GetScreenName()) )
 		'reset potentially disabled screenChangeEffectsEnabled
 		temporaryDisableScreenChangeEffects = False
 
