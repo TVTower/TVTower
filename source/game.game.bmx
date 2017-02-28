@@ -1021,7 +1021,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				vars.GetInt("size", 1)  ..
 			)
 			room.fakeRoom = vars.GetBool("fake", FALSE)
-			room.screenName = vars.GetString("screen")
+			room.SetScreenName( vars.GetString("screen") )
 
 
 			'only add if not already there
@@ -1443,7 +1443,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'get currently shown screen of that player
 		If GetPlayer().GetFigure().inRoom
-			ScreenCollection.GoToScreen(ScreenCollection.GetScreen(GetPlayer().GetFigure().inRoom.screenName))
+			ScreenCollection.GoToScreen(ScreenCollection.GetScreen(GetPlayer().GetFigure().inRoom.GetScreenName()))
 		'go to building
 		Else
 			ScreenCollection.GoToScreen(GameScreen_World)

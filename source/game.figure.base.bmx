@@ -310,6 +310,15 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	Method KickOutOfRoom:Int(kickingFigure:TFigureBase=null)
+		If not GetInRoom() Then Return False
+
+		LeaveRoom(True)
+
+		Return True
+	End Method
+
+
 	Method GetTarget:TFigureTargetBase()
 		if figureTargets.length = 0 then return Null
 		return figureTargets[0]

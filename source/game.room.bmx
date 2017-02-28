@@ -3,6 +3,7 @@ Import "Dig/base.util.helper.bmx"
 Import "common.misc.screen.bmx" 'screencollection
 Import "game.room.base.bmx"
 Import "game.player.base.bmx"
+Import "game.figure.base.bmx"
 
 
 
@@ -108,6 +109,14 @@ Type TRoom extends TRoomBase {_exposeToLua="selected"}
 		EventManager.triggerEvent( TEventSimple.Create("room.onScreenUpdate", new TData.Add("room", self).AddNumber("owner", self.owner) , ScreenCollection.GetCurrentScreen() ) )
 
 		return Super.Update()
+	End Method
+
+
+	'override to actually kick figures
+	Method KickOccupants:int(kickingEntity:TEntity = null)
+		For local occupant:TFigureBase = EachIn occupants
+			occupant.KickOutOfRoom(TFigureBase(kickingEntity))
+		Next
 	End Method
 
 

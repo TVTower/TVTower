@@ -208,10 +208,11 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Field originalName:string
 	'description, eg. "Bettys bureau" (+ "name of the owner" for "adagency ... owned by X")
 	Field description:String[] = ["", ""]
-	'can this room be rented or still occupied?
+	'can this room be rented or is it still occupied?
 	Field availableForRent:Int = False
 	'can this room be used as a studio?
 	Field usableAsStudio:Int = False
+	Field originalOwner:int = -1000
 	'does something block that room (eg. previous bomb attack)
 	Field blockedState:Int = BLOCKEDSTATE_NONE 
 	'time until this seconds in the game are gone
@@ -227,6 +228,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Field roomSignMovedByPlayers:int = 0
 	'playerID of the player who switched last
 	Field roomSignLastMoveByPlayerID:int = 0
+	'name of the screen to use when in this room
 	Field screenName:string = ""
 
 	'== ENTER / LEAVE VARIABLES ==
@@ -269,6 +271,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		self.name = name
 		self.originalName = name
 		self.owner = owner
+		self.originalOwner = owner
 		self.description = description
 		self.size = Max(0, Min(3, size))
 
@@ -300,6 +303,18 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Method addHotspot:int( hotspot:THotspot )
 		if hotspot then hotspots.addLast(hotspot);return TRUE
 		return FALSE
+	End Method
+
+
+	'sets the screen name to use when in this room
+	Method SetScreenname:int(screenname:string)
+		self.screenname = screenname
+	End Method
+	
+
+	'returns the screen name to use when in this room
+	Method GetScreenname:string()
+		return screenname
 	End Method
 
 
@@ -360,6 +375,10 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		if blockTimeInSeconds = 0
 			blockedState = BLOCKEDSTATE_NONE
 			blockedUntilShownInTooltip = False
+		endif
+
+		if blockedState <> BLOCKEDSTATE_NONE
+			KickOccupants(null)
 		endif
 
 		'inform others
@@ -433,6 +452,11 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetOriginalOwner:int() {_exposeToLua}
+		return originalOwner
+	End Method
+
+
 	Method GetSize:int() {_exposeToLua}
 		return size
 	End Method
@@ -444,6 +468,9 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		EventManager.triggerEvent(event)
 
 		if not event.IsVeto()
+			'to auto-repair old savegames:
+			if self.originalOwner = -1000 then self.originalOwner = owner
+			
 			self.owner = newOwner
 			return True
 		else
@@ -471,6 +498,13 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 		occupants.remove(entity)
 		return TRUE
+	End Method
+
+
+	Method KickOccupants:int(kickingEntity:TEntity = null)
+		For local occupant:TEntity = EachIn occupants
+			removeOccupant(occupant)
+		Next
 	End Method
 	
 

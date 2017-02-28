@@ -563,15 +563,21 @@ Type TFigure extends TFigureBase
 	End Method
 
 
-	Method KickFigureFromRoom:Int(kickFigure:TFigure, room:TRoomBase)
-		If Not kickFigure Or Not room Then Return False
-		If kickFigure = self then return FALSE
+	'override
+	Method KickOutOfRoom:Int(kickingFigure:TFigureBase=null)
+		If not GetInRoom() Then Return False
+		'self kick?
+		If self = kickingFigure then return FALSE
 
 		'fetch at least the main door if none is provided
-		local door:TRoomDoorBase = kickFigure.usedDoor
-		if not door and room then door = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
+		local door:TRoomDoorBase = usedDoor
+		if not door and inRoom then door = GetRoomDoorCollection().GetMainDoorToRoom(inRoom.id)
 
-		TLogger.log("TFigure.KickFigureFromRoom()", name+" kicks "+ kickFigure.name + " out of room: "+room.name, LOG_DEBUG)
+		if kickingFigure
+			TLogger.log("TFigure.KickFigureOutOfRoom()", kickingFigure.name+" kicks "+ name + " out of room: "+inRoom.name, LOG_DEBUG)
+		else
+			TLogger.log("TFigure.KickFigureOutOfRoom()", name + " gets kicked out of room: "+inRoom.name, LOG_DEBUG)
+		endif
 		'instead of SimpleSoundSource we use the rooms sound source
 		'so we are able to have positioned sound
 		if TRoomDoor(door)
@@ -579,9 +585,9 @@ Type TFigure extends TFigureBase
 		endif
 
 		'maybe someone is interested in this information
-		EventManager.triggerEvent( TEventSimple.Create("room.kickFigure", new TData.Add("figure", kickFigure).Add("door", door), room ) )
+		EventManager.triggerEvent( TEventSimple.Create("room.kickFigure", new TData.Add("figure", self).Add("door", door), GetInRoom() ) )
 
-		kickFigure.LeaveRoom(True)
+		LeaveRoom(True)
 		Return True
 	End Method
 
@@ -693,12 +699,12 @@ Type TFigure extends TFigureBase
 	
 		'kick other figures from the room if figure is the owner 
 		'only player-figures need such handling (events etc.)
-		If playerID and playerID = room.owner
-			for local occupant:TFigure = eachin room.occupants
+		If playerID and playerID = room.owner and room.occupants.Count() > 0
+			for local occupant:TFigure = eachin room.occupants.Copy()
 				'only kick other players ?!
 				if not occupant.playerID then continue
 				if occupant <> self
-					KickFigureFromRoom(occupant, room)
+					occupant.KickOutOfRoom(self)
 					'Debug
 					'print self.name+" KICKING " + occupant.name +" FROM "+ room.GetName() +" ["+room.id+"]"
 				endif

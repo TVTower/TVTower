@@ -1047,7 +1047,13 @@ endrem
 						'e wie "employees" :D
 						If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("credits"))
 						If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("news", GetPlayerCollection().playerID))
-						If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("roomboard"))
+						If KEYMANAGER.IsHit(KEY_R)
+							If KEYMANAGER.IsDown(KEY_LCONTROL)
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("roomboard"))
+							else
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("roomagency"))
+							endif
+						endif
 					EndIf
 				EndIf
 				If KEYMANAGER.IsHit(KEY_5) Then GetGame().SetGameSpeed( 60*15 )  '60 virtual minutes per realtime second
@@ -1120,7 +1126,11 @@ endrem
 				If KEYMANAGER.Ishit(KEY_K)
 					TLogger.Log("KickAllFromRooms", "Player kicks all figures out of the rooms.", LOG_DEBUG)
 					For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
-						If fig.inRoom Then GetPlayer().GetFigure().KickFigureFromRoom(fig, fig.inroom)
+						If fig.GetInRoom()
+							fig.KickOutOfRoom(GetPlayer().GetFigure())
+						else
+							print "fig: "+fig.name+" not in room."
+						endif
 					Next
 				EndIf
 
@@ -2448,7 +2458,7 @@ Type TSaveGame Extends TGameState
 			'allows modifying the player in the savegame
 			If GetPlayer().GetFigure().inRoom
 				Local playerScreen:TScreen = ScreenCollection.GetScreen(saveGame._CurrentScreenName)
-				If playerScreen.name = GetPlayer().GetFigure().inRoom.screenName or playerScreen.HasParentScreen(GetPlayer().GetFigure().inRoom.screenName)
+				If playerScreen.name = GetPlayer().GetFigure().inRoom.GetScreenName() or playerScreen.HasParentScreen(GetPlayer().GetFigure().inRoom.GetScreenName())
 					'ScreenCollection.GoToScreen(playerScreen)
 					'just set the current screen... no animation
 					ScreenCollection._SetCurrentScreen(playerScreen)
