@@ -29,6 +29,10 @@ Type TScreenHandler_ProgrammePlanner
 	Global GuiListProgrammes:TGUIProgrammePlanSlotList
 	Global GuiListAdvertisements:TGUIProgrammePlanSlotList
 
+	Global LS_programmeplanner:TLowerString = TLowerString.Create("programmeplanner")
+	Global LS_programmeplanner_buttons:TLowerString = TLowerString.Create("programmeplanner_buttons")
+	Global LS_programmeplanner_and_programmeplanner_buttons:TLowerString = TLowerString.Create("programmeplanner|programmeplanner_buttons")
+
 	Global _eventListeners:TLink[]
 	Global screenName:string = "screen_office_programmeplanner"
 	Global programmePlannerBackgroundOriginal:TImage
@@ -1053,9 +1057,6 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
-global LS_programmeplanner:TLowerString = TLowerString.Create("programmeplanner")
-global LS_programmeplanner_buttons:TLowerString = TLowerString.Create("programmeplanner_buttons")
-global LS_programmeplanner_and_programmeplanner_buttons:TLowerString = TLowerString.Create("programmeplanner|programmeplanner_buttons")
 	Function onDrawProgrammePlanner:Int( triggerEvent:TEventBase )
 		Local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		If Not room Then Return 0
@@ -1085,9 +1086,8 @@ global LS_programmeplanner_and_programmeplanner_buttons:TLowerString = TLowerStr
 		If planningDay < GetWorldTime().GetDay() Then SetColor 100,100,0
 		If planningDay > GetWorldTime().GetDay() Then SetColor 0,0,0
 		Local day:Int = 1+ planningDay - GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
-		'GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY")+"~n"+GetWorldTime().GetFormattedDayLong(day),712, 6, 56, 30, ALIGN_CENTER_CENTER)
 		GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY"),712, 7, 56, 26, ALIGN_CENTER_TOP)
-		GetBitmapFont("default", 10).drawBlock(GetWorldTime().GetFormattedDayLong(day),712, 7, 56, 26, ALIGN_CENTER_BOTTOM)
+		GetBitmapFont("default", 10).drawBlock(GetWorldTime().GetFormattedDayLong(planningDay),712, 7, 56, 26, ALIGN_CENTER_BOTTOM)
 		SetColor 255,255,255
 
 		GUIManager.Draw(LS_programmeplanner_buttons,,, GUIMANAGER_TYPES_NONDRAGGED)
