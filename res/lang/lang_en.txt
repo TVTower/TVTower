@@ -163,6 +163,7 @@ ROOM_ROOMAGENCY_OWNER	= H.G. Higwig
 ROOM_PEACEBROTHERS		= Peace-Brothers
 ROOM_PEACEBROTHERS_SUB	= International Peace Agency
 ROOM_GUNSAGENCY			= Guns Agency
+ROOM_FREE_ROOM          = Free room
 ROOM_FREE_STUDIO		= Free studio
 ROOM_STUDIO_OF			= Studio of %CHANNELNAME%
 ROOM_SCRIPT_OFFICE		= Script office

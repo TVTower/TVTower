@@ -164,6 +164,7 @@ ROOM_ROOMAGENCY_OWNER = H.G. Higwig
 ROOM_PEACEBROTHERS    = Peace-Brothers
 ROOM_PEACEBROTHERS_SUB= Internationale Friedensliga
 ROOM_GUNSAGENCY       = Knarren-Agentur
+ROOM_FREE_ROOM        = Freier Raum
 ROOM_FREE_STUDIO      = Freies Studio
 ROOM_STUDIO_OF        = Studio von %CHANNELNAME%
 ROOM_SCRIPT_OFFICE    = Drehbuchagentur

@@ -953,6 +953,83 @@ Type TVTProgrammeDataFlag {_exposeToLua}
 End Type
 
 
+Type TVTProgrammeLifecycleStep
+	Const NONE:int = 0
+
+	Const PREPRODUCTION_STARTED:int = 1
+	Const PREPRODUCTION_FINISHED:int = 2
+	Const PRODUCTION_STARTED:int = 4
+	Const PRODUCTION_FINISHED:int = 8
+
+	'for live-programme even preproduction is done then
+	Const RELEASE_STARTED:int = 16
+	'if a programme is no longer sold, broadcastable on TV, ...
+	Const RELEASE_FINISHED:int = 32
+	'for now cinema cannot be live (ignore "experiments")
+	Const RELEASE_TO_CINEMA_STARTED:int = 64
+	Const RELEASE_TO_CINEMA_FINISHED:int = 128
+	Const RELEASE_TO_RETAIL_STARTED:int = 256
+	Const RELEASE_TO_RETAIL_FINISHED:int = 512
+	'might be live, so PRODUCTION_FINISHED is not set here
+	Const RELEASE_TO_TV_STARTED:int = 1024
+	Const RELEASE_TO_TV_FINISHED:int = 2048
+
+
+	'returns a textual version of the id
+	Function GetAsString:string(key:int)
+		Select key
+			case NONE                        return "none"
+			case PREPRODUCTION_STARTED       return "preproduction_started"
+			case PREPRODUCTION_FINISHED      return "preproduction_finished"
+			case PRODUCTION_STARTED          return "production_started"
+			case PRODUCTION_FINISHED         return "production_finished"
+			case RELEASE_STARTED             return "release_started"
+			case RELEASE_FINISHED            return "release_finished"
+			case RELEASE_TO_CINEMA_STARTED   return "release_to_cinema_started"
+			case RELEASE_TO_CINEMA_FINISHED  return "release_to_cinema_finished"
+			case RELEASE_TO_RETAIL_STARTED   return "release_to_retail_started"
+			case RELEASE_TO_RETAIL_FINISHED  return "release_to_retail_finished"
+			case RELEASE_TO_TV_STARTED       return "release_to_tv_started"
+			case RELEASE_TO_TV_FINISHED      return "release_to_tv_finished"
+			default                          return "none"
+		End Select
+	End Function
+End Type
+
+
+Type TVTRoomFlag
+	Const NONE:int = 0
+
+	'can this room be used as a studio?
+	Const USABLE_AS_STUDIO:int = 1
+	'is it used as studio now?
+	Const USED_AS_STUDIO:int = 2
+	'can this room be rented or is it still occupied?
+	Const IS_RENTED:int = 4
+	'can this room be rented at all or is it in possession of the owner?
+	'use this for office, news room, boss, archive, movieagency, adagency...
+	Const FREEHOLD:int = 8
+	'allow more occupants than one?
+	Const ALLOW_MULTIPLE_OCCUPANTS:int = 16
+	'is this a room or just a "plan" or "view"
+	Const FAKE_ROOM:int = 32
+End Type
+
+
+
+Type TVTProgrammeLifecycleFlag
+	Const NONE:int = 0
+
+	Const RELEASES_TO_CINEMA:int = 1
+	Const RELEASES_TO_VIDEOSTORE:int = 2
+	Const RELEASES_TO_RETAIL:int = 4
+	Const RELEASES_TO_TV:int = 8
+
+	Const ALL:int = 1 | 2 | 4 | 8
+End Type
+
+
+
 
 Type TVTProgrammeState {_exposeToLua}
 	Const NONE:int = 0

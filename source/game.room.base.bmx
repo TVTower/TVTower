@@ -7,6 +7,7 @@ Import "game.room.roomdoor.base.bmx"
 Import "game.building.buildingtime.bmx"
 Import "common.misc.hotspot.bmx"
 Import "game.gameobject.bmx"
+Import "game.gameconstants.bmx"
 
 
 Type TRoomBaseCollection
@@ -22,6 +23,8 @@ Type TRoomBaseCollection
 		if not _eventsRegistered
 			'handle savegame loading (clear room occupants)
 			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
+			'repair old savegames to set new flags
+			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
 			_eventsRegistered = TRUE
 		Endif
 	End Method
@@ -180,6 +183,11 @@ Type TRoomBaseCollection
 			room.occupants.Clear()
 		Next
 	End Function
+
+
+	Function onSaveGameLoad:int(triggerEvent:TEventBase)
+'		TLogger.Log("TRoomCollection", "Savegame finished loading - set flags for old savegames", LOG_DEBUG | LOG_SAVELOAD)
+	End Function
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -208,11 +216,9 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Field originalName:string
 	'description, eg. "Bettys bureau" (+ "name of the owner" for "adagency ... owned by X")
 	Field description:String[] = ["", ""]
-	'can this room be rented or is it still occupied?
-	Field availableForRent:Int = False
-	'can this room be used as a studio?
-	Field usableAsStudio:Int = False
 	Field originalOwner:int = -1000
+	Field flags:int = 0
+	Field rentalChangeTime:Long = 0
 	'does something block that room (eg. previous bomb attack)
 	Field blockedState:Int = BLOCKEDSTATE_NONE 
 	'time until this seconds in the game are gone
@@ -241,14 +247,12 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Field backgroundSpriteName:string
 	'figures currently in this room
 	Field occupants:TList = CreateList()
-	'allow more occupants than one?
-	Field allowMultipleOccupants:int = FALSE
-	'is this a room or just a "plan" or "view"
-	Field fakeRoom:int = FALSE
 	'size of this room (eg. for studios)
 	Field size:int = 1
 	'list of special areas in the room
 	Field hotspots:TList = CreateList()
+	'is this a room or just a "plan" or "view"
+	Field fakeRoom:int = FALSE {nosave}
 
 	Global _initDone:int = FALSE
 
@@ -295,6 +299,20 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method HasFlag:Int(flag:Int) {_exposeToLua}
+		Return flags & flag > 0
+	End Method
+
+
+	Method SetFlag:int(flag:int, enable:int=True)
+		If enable
+			flags :| flag
+		Else
+			flags :& ~flag
+		EndIf
+	End Method
+	
+
 	Method PlaceBomb:int()
 		bombPlacedTime = GetWorldTime().GetTimeGone()
 	End Method
@@ -315,6 +333,20 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	'returns the screen name to use when in this room
 	Method GetScreenname:string()
 		return screenname
+	End Method
+
+
+	Method BeginRental:int(owner:int)
+		ChangeOwner(owner)
+		SetRented(True)
+		rentalChangeTime = GetWorldTime().GetTimeGone()
+	End Method
+
+
+	Method CancelRental:int()
+		ChangeOwner(0)
+		SetRented(False)
+		rentalChangeTime = GetWorldTime().GetTimeGone()
 	End Method
 
 
@@ -389,7 +421,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Method SetUnblocked:int()
 		'when it was got bombed, free the room now
 		if blockedState & BLOCKEDSTATE_BOMB > 0
-			if IsUsableAsStudio() then SetAvailableForRent(True)
+			if IsUsableAsStudio() then SetRented(False)
 		EndIf
 				
 		blockedState = BLOCKEDSTATE_NONE
@@ -405,22 +437,44 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method SetUsableAsStudio:int(bool:int = True)
-		usableAsStudio = bool
+		SetFlag(TVTRoomFlag.USABLE_AS_STUDIO, bool)
 	End Method
 
 
 	Method IsUsableAsStudio:int()
-		return usableAsStudio
+		return HasFlag(TVTRoomFlag.USABLE_AS_STUDIO)
 	End Method
 
 
-	Method SetAvailableForRent:int(bool:int = True)
-		availableForRent = bool
+	Method SetUsedAsStudio:int(bool:int = True)
+		SetFlag(TVTRoomFlag.USED_AS_STUDIO, bool)
 	End Method
 
 
-	Method IsAvailableForRent:int()
-		return fakeRoom = 0 and not HasOwner() and availableForRent
+	Method IsUsedAsStudio:int()
+		return HasFlag(TVTRoomFlag.USED_AS_STUDIO)
+	End Method
+
+
+	Method SetRented:int(bool:int = True)
+		SetFlag(TVTRoomFlag.IS_RENTED, bool)
+	End Method
+
+
+	Method IsRented:int()
+		return HasFlag(TVTRoomFlag.IS_RENTED)
+	End Method
+
+
+	'for flats which are not "rented" but in possess of the owner
+	'(like newsroom, archive - or some important rooms like movie agency)
+	Method SetFreehold:int(bool:int = True)
+		SetFlag(TVTRoomFlag.FREEHOLD, bool)
+	End Method
+
+
+	Method IsFreehold:int()
+		return HasFlag(TVTRoomFlag.FREEHOLD)
 	End Method
 
 
@@ -443,7 +497,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method GetName:string() {_exposeToLua}
-		return GetLocale(name)
+		return name
 	End Method
 
 
@@ -459,6 +513,13 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method GetSize:int() {_exposeToLua}
 		return size
+	End Method
+
+
+	'returns the rent you have to pay for this roo
+	'(pay attention to _not_ pay the rent if it is a freehold)
+	Method GetRent:int() {_exposeToLua}
+		return GetSize() * 5000
 	End Method
 
 
@@ -528,7 +589,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		'no entity is in the room
 		if not HasOccupant() then return True
 		'all can enter if there is no limit...
-		if allowMultipleOccupants then return True
+		if HasFlag(TVTRoomFlag.ALLOW_MULTIPLE_OCCUPANTS) then return True
 		'entity is already in the room
 		if IsOccupant(entity) then return True
 		
@@ -594,16 +655,26 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'returns desc-field with placeholders replaced
+	'line 1: "Movie Agency"
+	'line 2: "Owner: Mr. Y"
 	Method GetDescription:string(lineNumber:int=1) {_exposeToLua}
 		if description = null then return ""
 		lineNumber = Max(0, Min(description.length, lineNumber))
 
-		local res:string = GetLocale(description[lineNumber-1])
+		local res:string
 
-		'free rooms get a second line added
-		'containing size information
-		if lineNumber = 2 and IsUsableAsStudio()
+		if lineNumber = 1 and not IsRented()
+			if IsUsableAsStudio()
+				res = GetLocale("ROOM_FREE_STUDIO")
+			else
+				res = GetLocale("ROOM_FREE_ROOM")
+			endif
+		elseif lineNumber = 1 and IsUsedAsStudio()
+			res = GetLocale("ROOM_STUDIO_OF")
+		elseif lineNumber = 2 and (IsUsableAsStudio() or IsUsedAsStudio())
 			res = GetLocale("ROOM_SIZE").replace("%SIZE%", size)
+		else
+			res = GetLocale(description[lineNumber-1])
 		endif
 
 		return res

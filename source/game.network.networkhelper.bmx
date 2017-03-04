@@ -722,13 +722,13 @@ Type TNetworkHelper extends TNetworkHelperBase
 
 		select action
 			case NET_BUY
-					RoomHandler_RoomAgency.rentRoom(room, newOwner)
+					RoomHandler_RoomAgency.GetInstance().BeginRoomRental(room, newOwner)
 					print "[NET] RoomAgency: player "+newOwner+" rents room "+ room.GetName()
 
 					return TRUE
 			case NET_SELL
 					local oldOwner:int = room.owner
-					RoomHandler_RoomAgency.cancelRoom(room)
+					RoomHandler_RoomAgency.GetInstance().CancelRoomRental(room)
 					print "[NET] RoomAgencY: player "+oldOwner+" stopped renting room "+room.GetName()
 					return TRUE
 		EndSelect
