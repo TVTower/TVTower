@@ -1,8 +1,24 @@
+SuperStrict
+Import "Dig/base.gfx.gui.window.modal.bmx"
+Import "game.game.base.bmx"
+Import "game.room.base.bmx"
+Import "game.player.bmx"
+Import "game.production.bmx"
+Import "game.production.productionmanager.bmx"
+Import "game.screen.base.bmx"
+Import "game.database.bmx"
+Import "game.roomhandler.elevatorplan.bmx"
+Import "game.ai.bmx"
+Import "basefunctions_network.bmx"
+Import "game.network.networkhelper.bmx"
+
 
 'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
 Type TGame Extends TGameBase {_exposeToLua="selected"}
 	Field startAdContractBaseGUIDs:string[3]
 	Field startProgrammeGUIDs:string[]
+
+	Global GameScreen_World:TInGameScreen_World
 	
 	Global _initDone:Int = False
 	Global _eventListeners:TLink[]
@@ -71,11 +87,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
 
-		GameEvents.UnRegisterEventListeners()
-
-
 		'=== register event listeners
-		GameEvents.RegisterEventListeners()
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnStart", onStart) ]
 		'handle begin of savegameloading (prepare first game if needed)
 		_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad) ]
@@ -220,6 +232,37 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			LoadDB(["database_achievements.xml"])
 		endif
 
+		
+		TLogger.Log("Game.PrepareStart()", "Reassuring correct room flags (freeholds, fake rooms)", LOG_DEBUG)
+		For local room:TRoomBase = eachin GetRoomBaseCollection().list
+			'mark porter, elevatorplan, ... as fake rooms
+			if room.GetOwner() <= 0
+				Select room.name.ToLower()
+					case "porter", "building", "elevatorplan", "credits", "roomboard"
+						room.SetFlag(TVTRoomFlag.FAKE_ROOM, True)
+				End Select
+			endif
+
+			'mark office, news, boss and archive as freeholds so they
+			'cannot get cancelled in the room agency - nor do they cost
+			'rent
+			Select room.name.ToLower()
+				case "office", "news", "boss", "archive"
+					room.SetFlag(TVTRoomFlag.FREEHOLD, True)
+				'some important rooms should also never be configured
+				'to become "free studios"
+				case "movieagency", "adagency", "scriptagency", "supermarket", "betty"
+					room.SetFlag(TVTRoomFlag.FREEHOLD, True)
+			End Select
+		Next
+
+
+		'take over player/channel names (from savegame or new games)
+		For local i:int = 1 to 4
+			playerNames[i-1] = GetPlayer(i).name
+			channelNames[i-1] = GetPlayer(i).channelName
+		Next
+		
 
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)
 		Local gray:TColor = TColor.Create(200, 200, 200)
@@ -555,9 +598,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			player = GetPlayer(playerID)
 		endif
 
-		'get names from settings
-		GetPlayer(playerID).Name = ScreenGameSettings.guiPlayerNames[playerID-1].Value
-		GetPlayer(playerID).channelname = ScreenGameSettings.guiChannelNames[playerID-1].Value
+		'get names from base config (might differ on other clients/savegames)
+		GetPlayer(playerID).Name = playerNames[playerID-1]
+		GetPlayer(playerID).channelname = channelNames[playerID-1]
 
 		local difficulty:TPlayerDifficulty = player.GetDifficulty()
 
@@ -1020,9 +1063,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				vars.GetInt("owner",-1),  ..
 				vars.GetInt("size", 1)  ..
 			)
-			room.fakeRoom = vars.GetBool("fake", FALSE)
+			room.flags = vars.GetInt("flags", 0)
 			room.SetScreenName( vars.GetString("screen") )
-
 
 			'only add if not already there
 			if not GetRoomCollection().Get(room.id)
@@ -1280,6 +1322,14 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			finance.PayCreditInterest( finance.GetCreditInterest() )
 			'newsagencyfees			
 			finance.PayNewsAgencies(Player.GetTotalNewsAbonnementFees())
+			'room rental costs
+			For local r:TRoomBase = EachIn GetRoomBaseCollection().list
+				if r.GetOwner() <> Player.playerID then continue
+				'ignore freeholds
+				if not r.IsFreehold() then continue
+				local rent:int = r.GetRent()
+				if rent > 0 then finance.PayRent(rent, r)
+			Next
 		Next
 	End Method
 
@@ -1343,9 +1393,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'TColor.GetByOwner -> get first unused color,
 		'TPlayer.Create sets owner of the color
 		GetPlayerCollection().Set(1, TPlayer.Create(1, userName, userChannelName, GetSpriteFromRegistry("Player1"),	150,  2, 90, TPlayerColor.getByOwner(0), "Player 1"))
-		GetPlayerCollection().Set(2, TPlayer.Create(2, "Sandra", "SunTV", GetSpriteFromRegistry("Player2"),	180,  5, 90, TPlayerColor.getByOwner(0), "Player 2"))
-		GetPlayerCollection().Set(3, TPlayer.Create(3, "Seidi", "FunTV", GetSpriteFromRegistry("Player3"),	140,  8, 90, TPlayerColor.getByOwner(0), "Player 3"))
-		GetPlayerCollection().Set(4, TPlayer.Create(4, "Alfi", "RatTV", GetSpriteFromRegistry("Player4"),	190, 13, 90, TPlayerColor.getByOwner(0), "Player 4"))
+		GetPlayerCollection().Set(2, TPlayer.Create(2, playerNames[1], channelNames[1], GetSpriteFromRegistry("Player2"),	180,  5, 90, TPlayerColor.getByOwner(0), "Player 2"))
+		GetPlayerCollection().Set(3, TPlayer.Create(3, playerNames[2], channelNames[2], GetSpriteFromRegistry("Player3"),	140,  8, 90, TPlayerColor.getByOwner(0), "Player 3"))
+		GetPlayerCollection().Set(4, TPlayer.Create(4, playerNames[3], channelNames[3], GetSpriteFromRegistry("Player4"),	190, 13, 90, TPlayerColor.getByOwner(0), "Player 4"))
 
 		'set different figures for other players
 		GetPlayer(2).UpdateFigureBase(9)
@@ -1566,9 +1616,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				If worldTime.GetDayOfYear() = 1
 					EventManager.triggerEvent(TEventSimple.Create("Game.OnYear", New TData.addNumber("time", worldTime.GetTimeGone()) ))
 				EndIf
-
-			 	'automatically change current-plan-day on day change
-			 	TScreenHandler_ProgrammePlanner.ChangePlanningDay(worldTime.GetDay())
 
 				EventManager.triggerEvent(TEventSimple.Create("Game.OnDay", New TData.addNumber("time", worldTime.GetTimeGone()) ))
 			EndIf

@@ -1,3 +1,15 @@
+SuperStrict
+Import "Dig/base.gfx.gui.checkbox.bmx"
+Import "Dig/base.gfx.gui.button.bmx"
+Import "Dig/base.gfx.gui.list.selectlist.bmx"
+Import "game.screen.base.bmx"
+Import "game.stationmap.bmx"
+Import "game.player.bmx"
+Import "game.room.base.bmx"
+Import "game.roomhandler.base.bmx"
+
+
+
 Type TScreenHandler_StationMap
 	global stationList:TGUISelectList
 	'1=searchBuy, 2=buy, 3=sell
@@ -10,14 +22,14 @@ Type TScreenHandler_StationMap
 	global stationMapSellButton:TGUIButton
 	global stationMapBackgroundSpriteName:String = ""
 
-	global currentSubRoom:TRoom = null
-	global lastSubRoom:TRoom = null
+	global currentSubRoom:TRoomBase = null
+	global lastSubRoom:TRoomBase = null
 
 	Global _eventListeners:TLink[]
 
 
 	Function Initialize:int()
-		local screen:TInGameScreen = TInGameScreen(ScreenCollection.GetScreen("screen_office_stationmap"))
+		local screen:TIngameScreen = TIngameScreen(ScreenCollection.GetScreen("screen_office_stationmap"))
 		if not screen then return False
 
 		'remove background from stationmap screen
@@ -95,7 +107,7 @@ Type TScreenHandler_StationMap
 	End Function
 
 
-	Function _DrawStationMapBuyPanel:Int(x:Int,y:Int, room:TRoom)
+	Function _DrawStationMapBuyPanel:Int(x:Int,y:Int, room:TRoomBase)
 		'=== PREPARE VARIABLES ===
 		local sheetWidth:int = 205
 		local sheetHeight:int = 0 'calculated later
@@ -193,7 +205,7 @@ Type TScreenHandler_StationMap
 	End Function
 
 
-	Function _DrawStationMapSellPanel:Int(x:Int,y:Int, room:TRoom)
+	Function _DrawStationMapSellPanel:Int(x:Int,y:Int, room:TRoomBase)
 		'=== PREPARE VARIABLES ===
 		local sheetWidth:int = 205
 		local sheetHeight:int = 0 'calculated later
@@ -292,7 +304,7 @@ Type TScreenHandler_StationMap
 global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
  	Function onDrawStationMap:int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
-		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
+		local room:TRoomBase = TRoomBase( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
 		'draw map
@@ -315,7 +327,7 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		'TStationMapSection.DrawAll()
 		
 		'draw stations and tooltips
-		GetPlayerCollection().Get(room.owner).GetStationMap().Draw()
+		GetStationMap(room.owner).Draw()
 
 		'also draw the station used for buying/searching
 		If stationMapMouseoverStation then stationMapMouseoverStation.Draw()
@@ -328,7 +340,7 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		For Local i:Int = 0 To 3
 			SetColor 100, 100, 100
 			DrawRect(544, 32 + i * 25, 15, 18)
-			GetPlayerCollection().Get(i+1).color.SetRGB()
+			GetPlayerBase(i+1).color.SetRGB()
 			DrawRect(545, 33 + i * 25, 13, 16)
 		Next
 		SetColor 255, 255, 255
@@ -340,7 +352,7 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		'draw activation tooltip for all other stations
 		'- only draw them while NOT placing a new one (to ease spot finding)
 		if stationMapMode <> 1
-			For Local station:TStation = EachIn GetPlayer(room.owner).GetStationMap().Stations
+			For Local station:TStation = EachIn GetStationMap(room.owner).Stations
 				if stationMapMouseoverStation = station then continue
 				if station.IsActive() then continue
 
@@ -352,7 +364,7 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 
 	Function onUpdateStationMap:int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
-		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
+		local room:TRoomBase = TRoomBase( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
 		'backup room if it changed
@@ -364,7 +376,7 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 
 		currentSubRoom = room
 
-		GetPlayerCollection().Get(room.owner).GetStationMap().Update()
+		GetStationMap(room.owner).Update()
 
 		'process right click
 		if MOUSEMANAGER.isClicked(2) or MouseManager.IsLongClicked(1)
@@ -444,14 +456,14 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		If not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if GetPlayerCollection().Get().GetFigure().inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
+		if not currentSubRoom or currentSubRoom.owner <> GetPlayerBase().playerID then return FALSE
 
 		if stationMapMode = 1
 			if not stationMapSelectedStation
 				button.SetValue(GetLocale("SELECT_LOCATION")+" ...")
 				button.disable()
 			else
-				local finance:TPlayerFinance = GetPlayerFinance(GetPlayerCollection().Get().playerID)
+				local finance:TPlayerFinance = GetPlayerFinance(GetPlayerBase().playerID)
 				if finance and finance.canAfford(stationMapSelectedStation.GetPrice())
 					button.SetValue(GetLocale("BUY_STATION"))
 					button.enable()
@@ -471,14 +483,14 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		If not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if GetPlayerCollection().Get().GetFigure().inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
+		if not currentSubRoom or currentSubRoom.owner <> GetPlayerBase().playerID then return FALSE
 
 		'coming from somewhere else... reset first
 		if stationMapMode<>1 then ResetStationMapAction(1)
 
 		If stationMapSelectedStation and stationMapSelectedStation.getReach() > 0
 			'add the station (and buy it)
-			if GetPlayerCollection().Get().GetStationMap().AddStation(stationMapSelectedStation, TRUE)
+			if GetStationMap( GetPlayerBase().playerID ).AddStation(stationMapSelectedStation, TRUE)
 				ResetStationMapAction(0)
 			endif
 		EndIf
@@ -490,14 +502,14 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		If not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if GetPlayerCollection().Get().GetFigure().inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
+		if not currentSubRoom or currentSubRoom.owner <> GetPlayerBase().playerID then return FALSE
 
 		'coming from somewhere else... reset first
 		if stationMapMode<>2 then ResetStationMapAction(2)
 
 		If stationMapSelectedStation and stationMapSelectedStation.getReach() > 0
 			'remove the station (and sell it)
-			if GetPlayerCollection().Get().GetStationMap().RemoveStation(stationMapSelectedStation, TRUE)
+			if GetStationMap( GetPlayerBase().playerID ).RemoveStation(stationMapSelectedStation, TRUE)
 				ResetStationMapAction(0)
 			endif
 		EndIf
@@ -510,12 +522,12 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		If not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if GetPlayerCollection().Get().GetFigure().inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
+		if not currentSubRoom or currentSubRoom.owner <> GetPlayerBase().playerID then return FALSE
 
 		if stationMapMode=2
 			'different owner or not paid or not sellable
 			if stationMapSelectedStation
-				if stationMapSelectedStation.owner <> GetPlayerCollection().playerID
+				if stationMapSelectedStation.owner <> GetPlayerBase().playerID
 					button.disable()
 					button.SetValue(GetLocale("WRONG_PLAYER"))
 				elseif not stationMapSelectedStation.HasFlag(TStation.FLAG_SELLABLE)
@@ -541,14 +553,14 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 
 	'rebuild the stationList - eg. when changed the room (other office)
 	Function RefreshStationMapStationList(playerID:int=-1)
-		If playerID <= 0 Then playerID = GetPlayerCollection().playerID
+		If playerID <= 0 Then playerID = GetPlayerBase().playerID
 
 		'first fill of stationlist
 		stationList.EmptyList()
 		'remove potential highlighted item
 		stationList.deselectEntry()
 
-		For Local station:TStation = EachIn GetPlayerCollection().Get(playerID).GetStationMap().Stations
+		For Local station:TStation = EachIn GetStationMap(playerID).Stations
 			local item:TGUISelectListItem = new TGUISelectListItem.Create(new TVec2D, new TVec2D.Init(100,20), GetLocale("STATION")+" (" + TFunctions.convertValue(station.reach, 2, 0) + ")")
 			'link the station to the item
 			item.data.Add("station", station)
@@ -604,7 +616,7 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		Local senderList:TGUISelectList = TGUISelectList(triggerEvent._sender)
 		If not senderList then return FALSE
 
-		if not currentSubRoom or not GetPlayerCollection().IsPlayer(currentSubRoom.owner) then return FALSE
+		if not currentSubRoom or not GetPlayerBaseCollection().IsPlayer(currentSubRoom.owner) then return FALSE
 
 		'set the linked station as selected station
 		'also set the stationmap's userAction so the map knows we want to sell
@@ -625,10 +637,10 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		'only players can "enter screens" - so just use "inRoom"
 		local owner:int = 0
 		if GetPlayer().GetFigure().inRoom then owner = GetPlayer().GetFigure().inRoom.owner
-		if owner = 0 then owner = GetPlayer().playerID
+		if owner = 0 then owner = GetPlayerBase().playerID
 		
 		For local i:int = 0 to 3
-			local show:int = GetStationMap(GetPlayer().GetFigure().inRoom.owner).GetShowStation(i+1)
+			local show:int = GetStationMap(owner).GetShowStation(i+1)
 			stationMapShowStations[i].SetChecked(show)
 		Next
 	End Function
@@ -639,7 +651,7 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		if not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if GetPlayer().GetFigure().inRoom.owner <> GetPlayer().playerID then return FALSE
+		if not currentSubRoom or currentSubRoom.owner <> GetPlayerBase().playerID then return FALSE
 
 		local player:int = button.data.GetInt("playerNumber", -1)
 		if not GetPlayerCollection().IsPlayer(player) then return FALSE

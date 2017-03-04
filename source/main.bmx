@@ -68,7 +68,8 @@ Import "game.player.finance.bmx"
 Import "game.ai.bmx"
 
 Import "game.database.bmx"
-Import "game.game.base.bmx"
+'Import "game.game.base.bmx"
+Import "game.game.bmx"
 Import "game.production.bmx"
 Import "game.production.script.gui.bmx"
 Import "game.production.productionconcept.gui.bmx"
@@ -92,6 +93,7 @@ Import "game.roomhandler.credits.bmx"
 Import "game.roomhandler.elevatorplan.bmx"
 Import "game.roomhandler.movieagency.bmx"
 Import "game.roomhandler.news.bmx"
+Import "game.roomhandler.office.bmx"
 Import "game.roomhandler.roomagency.bmx"
 Import "game.roomhandler.roomboard.bmx"
 Import "game.roomhandler.scriptagency.bmx"
@@ -107,9 +109,6 @@ Import "game.broadcastmaterial.programme.bmx"
 import "common.misc.plannerlist.contractlist.bmx"
 
 Import "game.screen.menu.bmx"
-Import "game.screen.achievements.bmx"
-Import "game.screen.archivedmessages.bmx"
-Import "game.screen.statistics.bmx"
 
 Import "game.network.networkhelper.bmx"
 
@@ -122,8 +121,6 @@ Include "gamefunctions.bmx"
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
 Include "gamefunctions_debug.bmx"
-
-Include "game.game.bmx"
 
 Include "game.escapemenu.bmx"
 
@@ -140,7 +137,6 @@ Global App:TApp = Null
 Global MainMenuJanitor:TFigureJanitor
 Global ScreenGameSettings:TScreen_GameSettings = Null
 Global ScreenMainMenu:TScreen_MainMenu = Null
-Global GameScreen_World:TInGameScreen_World = Null
 Global Init_Complete:Int = 0
 
 Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceCollection.GetInstance()
@@ -1901,6 +1897,8 @@ Type TGameState
 		GetRoomBoard().Initialize()
 		GetWorld().Initialize()
 		GetGame().Initialize()
+		're-register event listeners
+		GameEvents.Initialize()
 
 		GetPlayerProgrammeCollectionCollection().Initialize()
 		GetPlayerProgrammePlanCollection().InitializeAll()
@@ -3847,6 +3845,15 @@ End Type
 
 Type GameEvents
 	Global _eventListeners:TLink[]
+
+
+	Function Initialize:int()
+		UnRegisterEventListeners()
+		RegisterEventListeners()
+
+		return True
+	End Function
+	
 	
 	Function UnRegisterEventListeners:Int()
 		EventManager.unregisterListenersByLinks(_eventListeners)
@@ -3956,7 +3963,7 @@ Type GameEvents
 			If fig.GetInRoom()
 				ScreenCollection._SetCurrentScreen(ScreenCollection.GetCurrentScreen())
 			Else
-				ScreenCollection._SetCurrentScreen(GameScreen_world)
+				ScreenCollection._SetCurrentScreen(GetGame().GameScreen_world)
 			EndIf
 		endif
 	End Function

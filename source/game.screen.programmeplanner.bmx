@@ -1,4 +1,14 @@
-'import "common.misc.plannerlist.contractlist.bmx"
+SuperStrict
+Import "Dig/base.gfx.gui.button.bmx"
+import "common.misc.plannerlist.contractlist.bmx"
+import "common.misc.plannerlist.programmelist.bmx"
+import "common.misc.screen.bmx"
+import "game.room.base.bmx"
+import "game.roomhandler.base.bmx"
+import "game.player.bmx"
+
+
+
 
 Type TScreenHandler_ProgrammePlanner
 	Global showPlannerShortCutHintTime:Int = 0
@@ -148,6 +158,8 @@ Type TScreenHandler_ProgrammePlanner
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeAdContract", onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", onChangeProgrammeCollection) ]
 
+	 	'automatically change current-plan-day on day change
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnDay", onChangeGameDay) ]
 
 
 		'1) begin drop - to intercept if dropping ad to programme which does not allow Ad-Show
@@ -560,8 +572,12 @@ Type TScreenHandler_ProgrammePlanner
 		'next update call would fetch the hovered item again
 		FindHoveredPlanElement()
 	End Function
-	
 
+
+	'change to new day
+	Function onChangeGameDay:Int( triggerEvent:TEventBase )
+		ChangePlanningDay(GetWorldTime().GetDay())
+	End Function
 
 
 	'if players are in the office during changes
@@ -1058,7 +1074,7 @@ Type TScreenHandler_ProgrammePlanner
 
 
 	Function onDrawProgrammePlanner:Int( triggerEvent:TEventBase )
-		Local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
+		Local room:TRoomBase = TRoomBase( triggerEvent.GetData().get("room") )
 		If Not room Then Return 0
 
 		currentRoom = room
@@ -1142,7 +1158,7 @@ Type TScreenHandler_ProgrammePlanner
 
 
 	Function onUpdateProgrammePlanner:Int( triggerEvent:TEventBase )
-		Local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
+		Local room:TRoomBase = TRoomBase( triggerEvent.GetData().get("room") )
 		If Not room Then Return 0
 
 		currentRoom = room

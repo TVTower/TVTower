@@ -54,6 +54,8 @@ Type TGameBase {_exposeToLua="selected"}
 	Field refillAdAgencyPercentage:Float = 0.5
 	Field refillAdAgencyOverridePercentage:Float = 0.5
 
+	Field playerNames:string[] = ["Ronny", "Sandra", "Seidi", "Alfi"]
+	Field channelNames:string[] = ["TowerTV", "SunTV", "FunTV", "RatTV"]
 
 	'--networkgame auf "isNetworkGame()" umbauen
 	'are we playing a network game? 0=false, 1=true, 2
