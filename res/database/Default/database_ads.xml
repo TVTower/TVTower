@@ -742,9 +742,11 @@ It's a sunny</en>
 		<ad id="beff6512-fd07-4e1d-aaf8-ce8da3ebd876">
 			<title>
 				<de>Kau-Tschuk</de>
+				<en>Chew-Chew gum</en>
 			</title>
 			<description>
 				<de>Der lecker Knabberspass für Jung und Alt. Aus recycelten Altreifen, in 5 bunten Geschmacksrichtungen.</de>
+				<en>The tasty nibble fun for young and old. Made out of recycled wheels from toy trains. Available in 5 varied tastes.</en>
 			</description>
 			<conditions min_audience="4.6881" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="11" repetitions="3" duration="3" profit="500" penalty="850" fix_infomercial_profit="1"/>
@@ -755,6 +757,7 @@ It's a sunny</en>
 			</title>
 			<description>
 				<de>Puzzeln, spielen, Spaß haben. Rabensburger empfiehlt Neuheiten und Klassiker aus seinem Sortiment.</de>
+				<en>Do a jigsaw, playing around, having fun. Rabensburger recommends novelties and classics from its assortment.</en>
 			</description>
 			<conditions min_audience="8.34" min_image="12" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="14" repetitions="3" duration="2" profit="421" penalty="684" infomercial_profit="37" fix_infomercial_profit="1"/>
@@ -765,16 +768,19 @@ It's a sunny</en>
 			</title>
 			<description>
 				<de>Ihre Baguettes in 1, 2 oder 3 Meter Länge!</de>
+				<en>Your baguettes in lengths of 1, 2 or 3 metres!</en>
 			</description>
 			<conditions min_audience="5.73" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="15" repetitions="1" duration="1" profit="445" penalty="730" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="cd0362d7-5317-41d2-8287-64c0c7810f02">
 			<title>
-				<de>Dr. Papper</de>
+				<de>Dr. Plapper</de>
+				<en>Dr. Blather</en>
 			</title>
 			<description>
-				<de>Nicht nur Furrest Gomp trinkt leidenschaftlich Dr. Papper.</de>
+				<de>Nicht nur Furrest Gomp trinkt leidenschaftlich Dr. Plapper.</de>
+				<en>It is not just Furrest Gomp who passionately drinks Dr. Blather.</en>
 			</description>
 			<conditions min_audience="11.46" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="18" repetitions="2" duration="4" profit="340" penalty="425" infomercial_profit="28" fix_infomercial_profit="1"/>
@@ -785,6 +791,7 @@ It's a sunny</en>
 			</title>
 			<description>
 				<de>Reiz macht geil, so die Botschaft dieser Werbung.</de>
+				<en>Greed in need - so at least the message of this advertisement.</en>
 			</description>
 			<conditions min_audience="1.04" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="17" repetitions="2" duration="3" profit="1100" penalty="1200" fix_infomercial_profit="1"/>
@@ -795,6 +802,7 @@ It's a sunny</en>
 			</title>
 			<description>
 				<de>Hier gibt's Schnäppchen en masse. Der sympathische Krempelmarkt um die Ecke.</de>
+				<en>Here is bargain en mass. The friendly mumbo jumbo market around the corner</en>
 			</description>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="9" repetitions="2" duration="3" fix_price="0" profit="1500" penalty="2118" infomercial_profit="118" fix_infomercial_profit="1"/>
@@ -802,10 +810,13 @@ It's a sunny</en>
 		<ad id="d0ebcef4-284b-462e-917b-73ed27be5cec">
 			<title>
 				<de>Hartz Bier</de>
+				<en>Hartz Beer</en>
 			</title>
 			<description>
 				<de>Unser Bier ist nicht nur günstig, es ist auch billig.
 Aktionswoche: Pfandfrei.</de>
+				<en>Our beer is not only reasonable priced, it also is cheap.
+Special week: no bottle deposit.</en>
 			</description>
 			<conditions min_audience="2.34" min_image="7" target_group="16" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="11" repetitions="4" duration="4" profit="784" penalty="1085" infomercial_profit="74" fix_infomercial_profit="1"/>
@@ -813,9 +824,11 @@ Aktionswoche: Pfandfrei.</de>
 		<ad id="d2de2875-249c-4b10-8ba2-0dda65ae5674">
 			<title>
 				<de>Polstermöbel Dobrawa</de>
+				<en>Upholstery Dobrawa</en>
 			</title>
 			<description>
-				<de>Polsterwerkstatt Dobrawa seit 1933</de>
+				<de>Polsterwerkstatt Dobrawa seit 1933.</de>
+				<en>Upholstery workshop Dobrawa since 1933.</en>
 			</description>
 			<conditions min_audience="1.04" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="6" repetitions="4" duration="3" profit="1300" penalty="1400" fix_infomercial_profit="1"/>
@@ -823,9 +836,11 @@ Aktionswoche: Pfandfrei.</de>
 		<ad id="d319be4e-e9fe-42d9-9e43-351ddde2fbe5">
 			<title>
 				<de>Schlimm-Schnell</de>
+				<en>Trim-Fast</en>
 			</title>
 			<description>
 				<de>Verlieren Sie 50 Kilo innerhalb eines Monats!</de>
+				<en>Loose 50 kilograms within one month!</en>
 			</description>
 			<conditions min_audience="0.31" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="10" repetitions="3" duration="4" profit="2433" penalty="2675" infomercial_profit="116" fix_infomercial_profit="1"/>
@@ -836,6 +851,7 @@ Aktionswoche: Pfandfrei.</de>
 			</title>
 			<description>
 				<de>Schon längst zum Schulkameraden geworden: Die Patronen, die den Füller füllen.</de>
+				<en>Already become a schoolmate: The ink cartridges charging the pen.</en>
 			</description>
 			<conditions min_audience="4.17" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="12" repetitions="3" duration="2" profit="612" penalty="840" infomercial_profit="55" fix_infomercial_profit="1"/>
@@ -843,9 +859,11 @@ Aktionswoche: Pfandfrei.</de>
 		<ad id="d4e84634-b122-4cca-90c6-c44707d8a79e">
 			<title>
 				<de>Capri-Mond</de>
+				<en>Capri-Moon</en>
 			</title>
 			<description>
 				<de>Der Schlummertrunk aus der Alutüte.</de>
+				<en>The nightcap in the tin foil bag.</en>
 			</description>
 			<conditions min_audience="7.29" min_image="7" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="13" repetitions="3" duration="3" profit="461" penalty="672" infomercial_profit="39" fix_infomercial_profit="1"/>
@@ -856,6 +874,7 @@ Aktionswoche: Pfandfrei.</de>
 			</title>
 			<description>
 				<de>Das Fruchtsaftgetränk in der weltberühmten bauchigen Flasche. Teuer, aber so gut wie immer richtig.</de>
+				<en>The fruit juice drink in the world famous bulgy bottle. Expensive but as good as always right.</en>
 			</description>
 			<conditions min_audience="10.42" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="13" repetitions="2" duration="2" profit="365" penalty="500" infomercial_profit="31" fix_infomercial_profit="1"/>
@@ -866,6 +885,7 @@ Aktionswoche: Pfandfrei.</de>
 			</title>
 			<description>
 				<de>Wurth Paris liefert den Duft ausgewählter Essenzen für ein edles Parfüm.</de>
+				<en>Wurth Paris delivers the scent of selected essences for a noble perfume.</en>
 			</description>
 			<conditions min_audience="5.21" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="14" repetitions="3" duration="3" profit="530" penalty="750" fix_infomercial_profit="1"/>
@@ -876,16 +896,18 @@ Aktionswoche: Pfandfrei.</de>
 			</title>
 			<description>
 				<de>Computerschrott ab 50 Pfennig das Kilo. Jetzt auch moderne S/W-Monitore im Angebot.</de>
+				<en>Computer scrap beginning at 50 pfennig per kilo. Now also offering modern B/W monitors.</en>
 			</description>
 			<conditions min_audience="4.1671" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="12" repetitions="7" duration="3" profit="581" penalty="746" year_range_from="0" year_range_to="2002" infomercial_profit="40" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="d8ee3597-56e1-4117-909a-bde9da3f9f9e">
 			<title>
-				<de>ESCAL.de</de>
+				<de>ESCAL.deu</de>
 			</title>
 			<description>
 				<de>Computerschrott ab 50 Eurocent das Kilo. Jetzt auch moderne Farb-Röhren-Monitore im Angebot.</de>
+				<en>Computer scrap beginning at 50 eurocent per kilo. Now also offering modern CRT screens.</en>
 			</description>
 			<conditions min_audience="4.1671" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="14" repetitions="7" duration="3" profit="581" penalty="746" year_range_from="2003" year_range_to="0" infomercial_profit="40" fix_infomercial_profit="1"/>
@@ -896,6 +918,7 @@ Aktionswoche: Pfandfrei.</de>
 			</title>
 			<description>
 				<de>Raumschiffe, Phaserwaffen, Marsschürfrechte. Bei Aeroswift diese Woche mit knallhart kalkulierten Preisen im Angebot.</de>
+				<en>Spaceships, phaser weapons, prospecting rights for Mars. Really tough prices - only this week - only at Aeroswift.</en>
 			</description>
 			<conditions min_audience="8.3352" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="19" repetitions="3" duration="4" profit="400" penalty="650" infomercial_profit="24" fix_infomercial_profit="1"/>
@@ -903,9 +926,11 @@ Aktionswoche: Pfandfrei.</de>
 		<ad id="dd4e46bc-3dae-4738-af7a-f2665bf53435">
 			<title>
 				<de>Fleischerei Fettmit</de>
+				<en>Fad's Meat Market</en>
 			</title>
 			<description>
 				<de>Das Auge isst man mit!</de>
+				<en>A feast with the eyes!</en>
 			</description>
 			<conditions min_audience="0.78" min_image="7" target_group="4" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="9" repetitions="4" duration="3" profit="1533" penalty="2094" fix_infomercial_profit="1"/>
@@ -916,6 +941,7 @@ Aktionswoche: Pfandfrei.</de>
 			</title>
 			<description>
 				<de>Gestalten Sie ihre Möbel selber!</de>
+				<en>Design your own furniture!</en>
 			</description>
 			<conditions min_audience="0.4679" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="12" repetitions="4" duration="2" profit="1911" penalty="2031" fix_infomercial_profit="1"/>
@@ -934,10 +960,13 @@ Aktionswoche: Pfandfrei.</de>
 		</ad>
 		<ad id="e096e5ef-34d6-41a4-a98e-cb690673f074">
 			<title>
-				<de>Novea</de>
+				<de>Norwea</de>
 			</title>
 			<description>
-				<de>Pflegeprodukte rund um die Haut. Salben/Crèmes, Badezusatz, Deodorants uvm.</de>
+				<de>Pflegeprodukte rund um die Haut. Salben/Crèmes, Badezusatz, Deodorants uvm.
+Nur echt mit Elch!</de>
+				<en>Care products around the skin. Ointments/creams, bath additives, deodorants and much more.
+Only genuine with elk!</en>
 			</description>
 			<conditions min_audience="14.07" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="15" repetitions="2" duration="2" profit="248" penalty="401" infomercial_profit="24" fix_infomercial_profit="1"/>
@@ -948,6 +977,7 @@ Aktionswoche: Pfandfrei.</de>
 			</title>
 			<description>
 				<de>Aus den Tiefen Sylts kommt dieses herrlich prickelnde Mineralwasser.</de>
+				<en>From the depths of Sylt comes this wonderfully sparkling mineral water.</en>
 			</description>
 			<conditions min_audience="1.56" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="15" repetitions="4" duration="2" profit="900" penalty="1300" fix_infomercial_profit="1"/>
@@ -955,9 +985,11 @@ Aktionswoche: Pfandfrei.</de>
 		<ad id="e22453eb-7008-4af8-a3a5-7c2f4fd18667">
 			<title>
 				<de>Reisebüro Teurl</de>
+				<en>Travel agency Kostli</en>
 			</title>
 			<description>
 				<de>Schnäppchenpreise für exklusive Rucksack-Touren. Proviant und Pflaster nicht im Preis enthalten.</de>
+				<en>Bargain rates for well-heeled backpackers. Provisions and patches are not included in the price.</en>
 			</description>
 			<conditions min_audience="0.2074" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="12" repetitions="3" duration="2" profit="2250" penalty="3250" fix_infomercial_profit="1"/>
@@ -965,9 +997,11 @@ Aktionswoche: Pfandfrei.</de>
 		<ad id="e77d26ae-895d-448f-b6ac-7171b785d21f">
 			<title>
 				<de>Guld Körn</de>
+				<en>Gulden Cörn</en>
 			</title>
 			<description>
-				<de>Das Honigmonster präsentiert sein Leibgericht</de>
+				<de>Das Honigmonster präsentiert sein Leibgericht.</de>
+				<en>The honey monster presents his favourite dish.</en>
 			</description>
 			<conditions min_audience="6.7721" min_image="18" target_group="1" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="14" repetitions="2" duration="4" profit="476" penalty="788" infomercial_profit="45" fix_infomercial_profit="1"/>
@@ -975,9 +1009,11 @@ Aktionswoche: Pfandfrei.</de>
 		<ad id="e9a3aed8-00b1-494f-998a-3f3f08a983cd">
 			<title>
 				<de>Gold per Post</de>
+				<en>Gold by Mail</en>
 			</title>
 			<description>
 				<de>Schwatz dem Opa die Zähne raus, ab heute gibt es Geld gegen Gold. Achtung: Gelb ist nicht gleich Gold!</de>
+				<en>Wheedle grandpa's teeth out. Beginning with today there is money for gold. Note: Yellow does not necessarily equal to gold!</en>
 			</description>
 			<conditions min_audience="2.08" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="6" repetitions="2" duration="3" profit="740" penalty="1164" infomercial_profit="77" fix_infomercial_profit="1"/>
@@ -988,17 +1024,20 @@ Aktionswoche: Pfandfrei.</de>
 			</title>
 			<description>
 				<de>Knusprig knackiger Knabberspass mit feurig scharfer Chilinote. Nur für kurze Zeit mit Tiermotiven.</de>
+				<en>Crispy crunchy nibbles with fiery chillies. Only for a short time with animal patterns.</en>
 			</description>
 			<conditions min_audience="10.42" min_image="7" target_group="2" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="12" repetitions="2" duration="4" profit="345" penalty="581" infomercial_profit="31" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="f006c0bb-89cc-4924-b17e-151658c15618">
 			<title>
-				<de>Lemor</de>
+				<de>Lemur</de>
 			</title>
 			<description>
 				<de>Die eingängige Musik kündet von der kuschelweichen Wäsche und Frische.
-Ich fühl mich wohl mit Lemor</de>
+Ich fühl mich wohl mit Lemur</de>
+				<en>The catchy music reveals the cuddly soft laundry and freshness.
+I feel good with Lemur</en>
 			</description>
 			<conditions min_audience="7.29" min_image="12" target_group="8" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="13" repetitions="4" duration="4" profit="484" penalty="645" fix_infomercial_profit="1"/>
@@ -1009,6 +1048,7 @@ Ich fühl mich wohl mit Lemor</de>
 			</title>
 			<description>
 				<de>Hoher Tragekomfort und nahezu unsichtbar - die neuen Maike-Hygieneeinlagen.</de>
+				<en>High wearing comfort and almost invisible - the new Maike hygiene pads.</en>
 			</description>
 			<conditions min_audience="9.38" min_image="4" target_group="128" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="9" repetitions="3" duration="4" profit="366" penalty="558" infomercial_profit="34" fix_infomercial_profit="1"/>
@@ -1018,7 +1058,8 @@ Ich fühl mich wohl mit Lemor</de>
 				<de>Bonze</de>
 			</title>
 			<description>
-				<de>Der neueste Luxus-Schlitten aus dem Hause Bonze: Ästethisch einwandfreies Design, robust, klassisch.</de>
+				<de>Der neueste Luxusschlitten aus dem Hause Bonze: Ästethisch einwandfreies Design, robust, klassisch.</de>
+				<en>The latest classy car from Bonze: aesthetically flawless design, robust, classic.</en>
 			</description>
 			<conditions min_audience="31.26" min_image="7" target_group="32" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="19" repetitions="1" duration="4" profit="146" penalty="220" infomercial_profit="14" fix_infomercial_profit="1"/>
@@ -1061,9 +1102,11 @@ Ich fühl mich wohl mit Lemor</de>
 		<ad id="ronny-ad-Handy-Dandy" creator="5578" created_by="Ronny">
 			<title>
 				<de>Handy-Dandy</de>
+				<en>Puny Phones</en>
 			</title>
 			<description>
 				<de>Hol Dir die knalligen Cover für Dein Handy. Vorbei mit drögem Graublau. Jetzt auch für alle Sumens-Modelle verfügbar.</de>
+				<en>Get our  jazzy covers for your mobile phone. Well and truly over for drunken grayish blue. Now also available for all models of Sumens.</en>
 			</description>
 			<conditions min_audience="1.8225" min_image="18" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="20" repetitions="4" duration="4" profit="900" penalty="1274" year_range_from="1998" year_range_to="2003" infomercial_profit="50" fix_infomercial_profit="1"/>
@@ -1074,6 +1117,7 @@ Ich fühl mich wohl mit Lemor</de>
 			</title>
 			<description>
 				<de>Deine Stammkneipe mit dem Hauch des Prätentiösen. Bierdeckel an den Wänden zeugen von weitreichender Bierkenntnis des Wirtes.</de>
+				<en>Your favourite pub with the touch of the pretentious. Beermats on the walls bear witness to the innkeepers knowledge of beer.</en>
 			</description>
 			<conditions min_audience="0.7805" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="15" repetitions="1" duration="3" profit="1333" penalty="1716" infomercial_profit="90" fix_infomercial_profit="1"/>
@@ -1081,9 +1125,11 @@ Ich fühl mich wohl mit Lemor</de>
 		<ad id="ronny-ad-Lammpion" creator="5578" created_by="Ronny">
 			<title>
 				<de>Lammpion</de>
+				<en>Lambion</en>
 			</title>
 			<description>
 				<de>Lustige Laternen in zahlreichen Tierformen. Jetzt neu: Kuh und Marienkäfer. Der Knaller für jeden Kindergeburtstag.</de>
+				<en>Funny lanterns in numerous animal forms. New: Cow and Ladybug. The bang for every child's birthday.</en>
 			</description>
 			<conditions min_audience="0.0511" min_image="25" target_group="1" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="15" repetitions="5" duration="3" profit="875" penalty="1174" infomercial_profit="75" fix_infomercial_profit="1"/>
@@ -1091,9 +1137,11 @@ Ich fühl mich wohl mit Lemor</de>
 		<ad id="ronny-ad-Meschmucke" creator="5578" created_by="Ronny">
 			<title>
 				<de>Meschmucke</de>
+				<en>DJ Meshugge</en>
 			</title>
 			<description>
 				<de>Crazy Beats vom israelischen Star-DJ 4Locke. Jetzt alle 3 Hits auf einem Album.</de>
+				<en>Crazy beats by Israelic superstar DJ Meshugge. All 3 hits on one Album.</en>
 			</description>
 			<conditions min_audience="1.8225" min_image="18" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="18" repetitions="4" duration="4" profit="900" penalty="1474" year_range_from="1992" year_range_to="1995" infomercial_profit="50" fix_infomercial_profit="1"/>
@@ -1101,9 +1149,11 @@ Ich fühl mich wohl mit Lemor</de>
 		<ad id="ronny-ad-Senner-Kaes" creator="5578" created_by="Ronny">
 			<title>
 				<de>Senner-Käs</de>
+				<en>Herdsman Cheese</en>
 			</title>
 			<description>
 				<de>Handgemachter Käse von hoch in den Alpen. Bärtige Senner, Sonne, saftige Wiesen und glückliche Kühe liefern den Gaumenschmaus für einen jeden Stadtmenschen.</de>
+				<en>Handmade cheese from high in the Alps. Bearded dairy farmers, the sun, lush meadows and happy cows provide the palate for every city dweller.</en>
 			</description>
 			<conditions min_audience="1.041" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="21" repetitions="7" duration="6" profit="1225" penalty="2024" infomercial_profit="85" fix_infomercial_profit="1"/>
