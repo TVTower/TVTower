@@ -138,7 +138,7 @@ Type TPlayerBossCollection
 	'called as soon as a player leaves the boss' room
 	Function onPlayerLeaveRoom:Int(triggerEvent:TEventBase)
 		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
-		if not room or room.name <> "boss" then return False
+		if not room or room.GetName() <> "boss" then return False
 
 		'only interested in the visit of the player linked to this room
 		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())
@@ -154,7 +154,7 @@ Type TPlayerBossCollection
 	'called as soon as a player enters the boss' room
 	Function onPlayerBeginEnterRoom:Int(triggerEvent:TEventBase)
 		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
-		if not room or room.name <> "boss" then return False
+		if not room or room.GetName() <> "boss" then return False
 
 		'only interested in the visit of the player linked to this room
 		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())

@@ -45,6 +45,10 @@ Type TGameRules {_exposeToLua}
 	'how long in MS to wait until closing the door
 	Field elevatorWaitAtFloorTime:int = 1500
 
+	'how many time an original room owner waits until he re-rents a room
+	'which got free again (no longer used as additional studio)
+	Field roomReRentTime:int = 12*3600
+
 	'if disabled, player is allowed to place a live programme
 	'also at later times (eg. 2 hours later)
 	Field onlyExactLiveProgrammeTimeAllowedInProgrammePlan:int = False

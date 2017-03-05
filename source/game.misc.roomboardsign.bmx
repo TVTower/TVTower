@@ -29,6 +29,8 @@ Type TRoomBoard
 			'handle savegame loading (remove old gui elements)
 			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
 			EventManager.registerListenerFunction("Language.onSetLanguage", onSetLanguage)
+			EventManager.registerListenerFunction("room.onBeginRental", onChangeRoomOwner)
+			EventManager.registerListenerFunction("room.onCancelRental", onChangeRoomOwner)
 
 			_eventsRegistered = TRUE
 		EndIf
@@ -68,6 +70,14 @@ Type TRoomBoard
 	'as soon as a savegame gets loaded, we remove the cached images
 	Function onSaveGameBeginLoad:int(triggerEvent:TEventBase)
 		GetRoomBoard().ResetImageCaches()
+	End Function
+
+
+	'recreate image cache if a room owner changes
+	Function onChangeRoomOwner:int(triggerEvent:TEventBase)
+		'reset caches of the affected signs
+		local roomOwner:int = triggerEvent.GetData().GetInt("owner")
+		GetRoomBoard().ResetImageCaches(roomOwner)
 	End Function
 
 

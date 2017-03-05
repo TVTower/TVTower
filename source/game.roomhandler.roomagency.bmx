@@ -4,6 +4,12 @@ Import "game.roomhandler.base.bmx"
 
 'RoomAgency
 Type RoomHandler_RoomAgency extends TRoomHandler
+	rem
+	'unused for now
+	'contains contracts for rented rooms
+	Field rentalContracts:TList = CreateList()
+	endrem
+
 	Global _instance:RoomHandler_RoomAgency
 
 
@@ -83,17 +89,46 @@ rem
 endrem
 	End Method
 
+	rem
+	'unused for now
 
-	Method UpdateEmptyRooms()
+	Method AddRentalContract:int(rentalContract:TRoomRentalContract)
+		if rentalContract.Contains(rentalContract) then return False
+		rentalContracts.AddLast(rentalContract)
+	End Method
+
+
+	Method GetRentalContract:TRoomRentalContract(contractGUID:string)
+		For local c:TRoomRentalContract = Eachin rentalContracts
+			if c.IsGUID(contractGUID) then return c
+		Next
+		return null
+	End Method
+
+
+	Method GetRentalContractByDetails:TRoomRentalContract(roomGUID:string, owner:int)
+		For local c:TRoomRentalContract = Eachin rentalContracts
+			if c.roomGUID = roomGUID and c.owner = owner then return c
+		Next
+		return null
+	End Method
+	endrem
+
+
+ 	Method UpdateEmptyRooms()
 		For local r:TRoomBase = EachIn GetRoomBaseCollection().list
 			'ignore non-rentable rooms
-			if r.IsFreehold() or r.IsRented() then continue
+			if not r.IsRentable() then continue
+			'we cannot give back empty rooms to players ... so only
+			're-rent if it is originally owned by a non-player
+			if r.originalOwner > 0 then continue
+	
 
 			'room empty for a long time?
-			if r.rentalChangeTime + 12*3600 < GetWorldTime().GetTimeGone()
+			if r.rentalChangeTime + GameRules.roomReRentTime < GetWorldTime().GetTimeGone()
 				'let original owner rent it
-				r.BeginRental(0)
-				print "RoomHandler_RoomAgency.UpdateEmptyRooms(): re-rented. " + r.GetDescription(1) 
+				r.BeginRental(0, r.GetRent())
+				print "RoomHandler_RoomAgency.UpdateEmptyRooms(): re-rented. " + r.GetName() + "  " + r.GetDescription(1) 
 			endif
 		Next
 	End Method
@@ -112,20 +147,87 @@ endrem
 	Function BeginRoomRental:int(room:TRoomBase, owner:int=0)
 		if room.IsRented() then return False
 
-		print "RoomHandler_RoomAgency.BeginRoomRental()"
-		room.BeginRental(owner)
-		
-		return True
+		local rent:int = room.GetRent()
+
+		'=== PAY COURTAGE ===
+		if GetPlayerBaseCollection().IsPlayer(owner)
+			local courtage:int = TFunctions.RoundToBeautifulValue(rent * 0.5) 
+			if not GetPlayerFinance(owner).CanAfford(courtage)
+				TLogger.Log("RoomHandler_RoomAgency.BeginRoomRental()", "Failed to rent room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner+". Not enough money to pay courtage.", LOG_DEBUG)
+			else
+				'pay a courtage
+				GetPlayerFinance(owner).PayRent(courtage, room)
+			endif
+		endif
+
+		'TODO: modify rent by sympathy
+		'rent :* sympathyMod(owner)
+
+		'=== RENT THE ROOM ===
+		if room.BeginRental(owner, rent)
+			rem
+			'unused for now
+			local contract:TRoomRentalContract = new TRoomRentalContract.Init(room.GetGUID(), owner, room.GetRent())
+			AddRentalContract(contract)
+			endrem
+			
+			TLogger.Log("RoomHandler_RoomAgency.BeginRoomRental()", "Rented room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner, LOG_DEBUG)
+			return True
+		else
+			TLogger.Log("RoomHandler_RoomAgency.BeginRoomRental()", "Failed to rent room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner, LOG_DEBUG)
+			return False
+		endif
 	End Function
 
 
-	Function CancelRoomRental:int(room:TRoomBase)
+	Function CancelRoomRental:int(room:TRoomBase, owner:int=0)
 		if not room.IsRented() then return False
-		
-		print "RoomHandler_RoomAgency.CancelRoomRental()"
-		room.CancelRental()
 
-		return True
+		local roomOwner:int = room.owner
+		'fetch rent before cancelling!
+		local roomRent:int = room.GetRent()
+
+		if room.CancelRental()
+			'have to pay a bit of rent for the already begun day?
+			'1:  0- 6hrs = 25%
+			'2:  7-12hrs = 50%
+			'3: 13-18hrs = 75%
+			'4: 19-24hrs = 100%
+			local hourStep:int = floor(GetWorldTime().GetDayHour() / 6)+1
+			local toPay:int = TFunctions.RoundToBeautifulValue(hourStep*0.25 * roomRent)
+
+			if GetPlayerBaseCollection().IsPlayer(roomOwner)
+				GetPlayerFinance(roomOwner).PayRent(toPay, room)
+			Endif
+			
+			rem
+			'unused for now (done already - see above)
+			local contract:TRoomRentalContract = GetRentalContractByDetails(room.GetGUID(), roomOwner)
+			if contract
+				RemoveRentalContract(contract)
+				print "removed contract"
+			endif
+			endrem
+
+			TLogger.Log("RoomHandler_RoomAgency.BeginRoomRental()", "Cancelled rental of room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner+". Room owner "+roomOwner+" paid an outstanding rent of "+TFunctions.DottedValue(toPay)+".", LOG_DEBUG)
+			return True
+		else
+			TLogger.Log("RoomHandler_RoomAgency.BeginRoomRental()", "Failed to cancel rental of room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner+" [roomOwner="+roomOwner+"]", LOG_DEBUG)
+			return False
+		endif
 	End Function
 End Type
 
+
+
+rem
+Type TRoomRentalContract extends TGameObject
+	'which room
+	Field roomGUID:string
+	'what was agreed to as rent?
+	Field rent:int
+	'rented by?
+	Field owner:int
+	Field timeOfSign:Long
+End Type
+endrem

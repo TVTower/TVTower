@@ -491,7 +491,7 @@ Type TInGameScreen_Room Extends TInGameScreen
 			If Not IsConnectedToRoom(room) Then Continue
 
 			If rooms <> "" Then rooms :+ ","
-			rooms :+ room.name
+			rooms :+ room.GetName()
 		Next
 
 		Return "TInGameScreen_Room: group="+group+" name="+ name +" rooms="+rooms
@@ -546,7 +546,7 @@ Type TInGameScreen_Room Extends TInGameScreen
 		if not IsObservedOrPlayerFigure(figure) Then Return False
 
 		'try to change played music when entering a room
-		TSoundManager.GetInstance().PlayMusicPlaylist(room.name)
+		TSoundManager.GetInstance().PlayMusicPlaylist(room.GetName())
 	End Function
 
 

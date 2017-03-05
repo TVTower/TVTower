@@ -195,7 +195,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		if room
 			local doEmpty:int = False
 			'coming from the movieagency and entering another room
-			if player.emptyProgrammeSuitcaseFromRoom = "movieagency" and room.name <> "movieagency" then doEmpty = True
+			if player.emptyProgrammeSuitcaseFromRoom = "movieagency" and room.GetName() <> "movieagency" then doEmpty = True
 			'coming from archive - for now nothing!
 			'if player.emptyProgrammeSuitcaseFromRoom = "archive" and room.name <> "archive" and room.name <> "movieagency" then doEmpty = True
 			
@@ -329,7 +329,7 @@ endrem
 	Method isComingFromRoom:Int(roomName:String="") {_exposeToLua}
 		'check for specified room
 		If roomName <> ""
-			Return GetFigure().fromRoom And GetFigure().fromRoom.Name.toLower() = roomname.toLower()
+			Return GetFigure().fromRoom And GetFigure().fromRoom.GetName().toLower() = roomname.toLower()
 			'just check if we are in a unspecified room
 		Else
 			Return GetFigure().fromRoom <> null

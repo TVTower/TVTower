@@ -56,13 +56,13 @@ Import "game.gameinformation.bmx"
 Import "game.registry.loaders.bmx"
 Import "game.exceptions.bmx"
 
-Import "game.gamerules.bmx"
+'Import "game.gamerules.bmx"
 
-Import "game.room.base.bmx"
+'Import "game.room.base.bmx"
 Import "game.misc.roomboardsign.bmx"
 Import "game.figure.bmx"
 Import "game.figure.customfigures.bmx"
-Import "game.player.finance.bmx"
+'Import "game.player.finance.bmx"
 'Import "game.player.boss.bmx"
 'Import "game.player.bmx"
 Import "game.ai.bmx"
@@ -71,9 +71,6 @@ Import "game.database.bmx"
 'Import "game.game.base.bmx"
 Import "game.game.bmx"
 Import "game.production.bmx"
-Import "game.production.script.gui.bmx"
-Import "game.production.productionconcept.gui.bmx"
-Import "game.production.productionmanager.bmx"
 
 Import "game.achievements.bmx"
 
@@ -83,7 +80,6 @@ Import "game.building.bmx"
 Import "game.ingameinterface.bmx"
 Import "game.newsagency.bmx"
 Import "game.programmeproducer.bmx"
-Import "game.stationmap.bmx"
 
 'Import "game.roomhandler.base.bmx"
 Import "game.roomhandler.adagency.bmx"
@@ -102,11 +98,6 @@ Import "game.roomhandler.supermarket.bmx"
 
 Import "game.misc.ingamehelp.bmx"
 Import "game.gamescriptexpression.bmx"
-
-'needed by gamefunctions
-Import "game.broadcastmaterial.programme.bmx"
-'remove when planner screen is importable
-import "common.misc.plannerlist.contractlist.bmx"
 
 Import "game.screen.menu.bmx"
 
@@ -127,7 +118,7 @@ Include "game.escapemenu.bmx"
 
 '===== Globals =====
 VersionDate = LoadText("incbin::source/version.txt").Trim()
-VersionString = "v0.4.0 Build ~q" + VersionDate+"~q"
+VersionString = "v0.4.1 Build ~q" + VersionDate+"~q"
 CopyrightString = "by Ronny Otto & Team"
 
 Global APP_NAME:string = "TVTower"
@@ -778,7 +769,7 @@ Type TApp
 						next
 
 
-						
+						rem
 						if GetAwardCollection().currentAward
 							TLogger.Log("DEV", "Awards: finish current award.", LOG_DEV)
 							GetAwardCollection().currentAward.AdjustScore(1, 1000)
@@ -789,6 +780,18 @@ Type TApp
 							GetAwardCollection().nextAwardTime = Long(GetWorldTime().GetTimeGone())
 							GetAwardCollection().UpdateAwards()
 						endif
+						endrem
+
+						local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("laundry")
+						if room
+							print "renting room: " + room.GetName()
+							RoomHandler_RoomAgency.GetInstance().CancelRoomRental(room, GetPlayerBase().playerID)
+							RoomHandler_RoomAgency.GetInstance().BeginRoomRental(room, GetPlayerBase().playerID)
+							room.SetUsedAsStudio(True)
+						else
+							print "room not found"
+						endif
+						
 												
 						rem
 						local fCheap:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap
@@ -1138,8 +1141,8 @@ endrem
 					Local targetRoom:TRoom
 					Repeat
 						targetRoom = GetRoomCollection().GetRandom()
-					Until targetRoom.name <> "building"
-					print TFigureTerrorist(GetGame().terrorists[whichTerrorist]).name +" - deliver to : "+targetRoom.name + " [id="+targetRoom.id+", owner="+targetRoom.owner+"]"
+					Until targetRoom.GetName() <> "building"
+					print TFigureTerrorist(GetGame().terrorists[whichTerrorist]).name +" - deliver to : "+targetRoom.GetName() + " [id="+targetRoom.id+", owner="+targetRoom.owner+"]"
 					TFigureTerrorist(GetGame().terrorists[whichTerrorist]).SetDeliverToRoom( targetRoom )
 				EndIf
 
@@ -1332,7 +1335,7 @@ endrem
 
 			roomName = "Building"
 			If fig.inRoom
-				roomName = fig.inRoom.Name
+				roomName = fig.inRoom.GetName()
 			ElseIf fig.IsInElevator()
 				roomName = "InElevator"
 			ElseIf fig.IsAtElevator()
@@ -5158,6 +5161,11 @@ Type GameEvents
 		GetAwardCollection().UpdateAwards()
 
 
+		'=== HANDLE EMPTY ROOMS ===
+		'let previous renter take back their rooms (if nobody wanted the
+		'studio after a specific waiting time)
+		RoomHandler_RoomAgency.GetInstance().UpdateEmptyRooms()
+
 
 		'=== REMOVE ENDED NEWSEVENTS  ===
 		'newsevents might have a "happenedEndTime" indicating that
@@ -5757,7 +5765,7 @@ Function DEV_switchRoom:Int(room:TRoom)
 	'skip if already there
 	If playerFigure.inRoom = room Then Return False
 
-	TLogger.Log("DEV_switchRoom", "Player #"+GetPlayer().playerID+" switching to room ~q"+room.name+"~q.", LOG_DEBUG)
+	TLogger.Log("DEV_switchRoom", "Player #"+GetPlayer().playerID+" switching to room ~q"+room.GetName()+"~q.", LOG_DEBUG)
 
 	'to avoid seeing too much animation
 	TInGameScreen_Room.temporaryDisableScreenChangeEffects = True
@@ -5765,10 +5773,10 @@ Function DEV_switchRoom:Int(room:TRoom)
 
 	If playerFigure.inRoom
 		'abort current screen actions (drop back dragged items etc.)
-		local roomHandler:TRoomHandler = GetRoomHandlerCollection().GetHandler(playerFigure.inRoom.name)
+		local roomHandler:TRoomHandler = GetRoomHandlerCollection().GetHandler(playerFigure.inRoom.GetName())
 		if roomHandler then roomHandler.AbortScreenActions()
 
-		TLogger.Log("DEV_switchRoom", "Leaving room ~q"+playerFigure.inRoom.name+"~q first.", LOG_DEBUG)
+		TLogger.Log("DEV_switchRoom", "Leaving room ~q"+playerFigure.inRoom.GetName()+"~q first.", LOG_DEBUG)
 		'force leave?
 		'playerFigure.LeaveRoom(True)
 		'not forcing a leave is similar to "right-click"-leaving

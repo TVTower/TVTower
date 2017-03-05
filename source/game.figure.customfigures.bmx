@@ -282,8 +282,8 @@ Type TFigureDeliveryBoy Extends TFigure
 				If sign And sign.door
 					intentedDeliverToRoom = deliverToRoom
 					deliverToRoom = TRoomDoor(sign.door).GetRoom()
-					local deliverText:string = deliverToRoom.name
-					local intendedText:string = intentedDeliverToRoom.name
+					local deliverText:string = deliverToRoom.GetName()
+					local intendedText:string = intentedDeliverToRoom.GetName()
 					if deliverToRoom.owner then deliverText :+ " #"+deliverToRoom.owner
 					if intentedDeliverToRoom.owner then intendedText :+ " #"+intentedDeliverToRoom.owner
 
@@ -291,7 +291,7 @@ Type TFigureDeliveryBoy Extends TFigure
 
 					SendToDoor(sign.door)
 				Else
-					TLogger.Log("TFigureDeliveryBoy", Self.name+" cannot send to a room, sign of target over empty room slot (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
+					TLogger.Log("TFigureDeliveryBoy", Self.name+" cannot send to a room, sign of target over empty room slot (intended room: "+deliverToRoom.GetName()+")", LOG_DEBUG | LOG_AI, True)
 					'send home again
 					deliveryDone = True
 					SendToOffscreen()

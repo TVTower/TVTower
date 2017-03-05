@@ -983,7 +983,7 @@ Type TDebugPlayerControls
 
 		buttonX :+ 140+5
 		if TRoomBase(player.GetFigure().GetInRoom())
-			DrawButton("in Raum: "+ TRoomBase(player.GetFigure().GetInRoom()).name, buttonX, y, 120, 20)
+			DrawButton("in Raum: "+ TRoomBase(player.GetFigure().GetInRoom()).GetName(), buttonX, y, 120, 20)
 		else
 			DrawButton("im Hochhaus", buttonX, y, 120, 20)
 		endif

@@ -141,7 +141,7 @@ Type TRoomBaseCollection
 			'skip wrong owners
 			if owner <> -1000 and room.owner <> owner then continue
 
-			If room.name = name Then rooms :+ [room]
+			If room.GetName() = name Then rooms :+ [room]
 
 			if limit > 0 and rooms.length = limit then return rooms
 		Next
@@ -218,7 +218,6 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Field description:String[] = ["", ""]
 	Field originalOwner:int = -1000
 	Field flags:int = 0
-	Field rentalChangeTime:Long = 0
 	'does something block that room (eg. previous bomb attack)
 	Field blockedState:Int = BLOCKEDSTATE_NONE 
 	'time until this seconds in the game are gone
@@ -236,6 +235,11 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Field roomSignLastMoveByPlayerID:int = 0
 	'name of the screen to use when in this room
 	Field screenName:string = ""
+	'the rent _agreed_ to (so GetRent() might return something different!)
+	Field rent:int
+	'when rented or rental got cancelled
+	Field rentalChangeTime:Long = 0
+	
 
 	'== ENTER / LEAVE VARIABLES ==
 	'currently entering/leaving entities
@@ -332,21 +336,33 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 	'returns the screen name to use when in this room
 	Method GetScreenname:string()
+		if IsUsedAsStudio() then return "screen_studio"
 		return screenname
 	End Method
 
 
-	Method BeginRental:int(owner:int)
-		ChangeOwner(owner)
+	Method BeginRental:int(newOwner:int, rent:int)
+		local oldOwner:int = owner
+		ChangeOwner(newOwner)
 		SetRented(True)
 		rentalChangeTime = GetWorldTime().GetTimeGone()
+		self.rent = rent 
+
+		EventManager.triggerEvent( TEventSimple.Create("room.onBeginRental", New TData.AddString("roomGUID", GetGUID() ).AddNumber("owner", newOwner).AddNumber("oldOwner", oldOwner), self) )
+
+		return True
 	End Method
 
 
 	Method CancelRental:int()
+		local oldOwner:int = owner
 		ChangeOwner(0)
 		SetRented(False)
 		rentalChangeTime = GetWorldTime().GetTimeGone()
+
+		EventManager.triggerEvent( TEventSimple.Create("room.onCancelRental", New TData.AddString("roomGUID", GetGUID() ).AddNumber("owner", owner).AddNumber("oldOwner", oldOwner), self) )
+
+		return True
 	End Method
 
 
@@ -447,6 +463,9 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method SetUsedAsStudio:int(bool:int = True)
+		if IsUsedAsStudio() = bool then return False
+
+		_background = null
 		SetFlag(TVTRoomFlag.USED_AS_STUDIO, bool)
 	End Method
 
@@ -466,6 +485,15 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method IsRentable:int()
+		'you cannot rent:
+		'- already rented rooms
+		'- freehold rooms (like boss rooms, player offices...)
+		'- fake rooms (porter, room plan, ...)
+		return not IsRented() and not IsFreehold() and not IsFake()
+	End Method
+
+
 	'for flats which are not "rented" but in possess of the owner
 	'(like newsroom, archive - or some important rooms like movie agency)
 	Method SetFreehold:int(bool:int = True)
@@ -475,6 +503,18 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method IsFreehold:int()
 		return HasFlag(TVTRoomFlag.FREEHOLD)
+	End Method
+
+
+	'rooms which are no real "rooms" so a figure stays standing in
+	'front of it (porter, room plans, ...)
+	Method SetFake:int(bool:int = True)
+		SetFlag(TVTRoomFlag.FAKE_ROOM, bool)
+	End Method
+
+
+	Method IsFake:int()
+		return HasFlag(TVTRoomFlag.FAKE_ROOM)
 	End Method
 
 
@@ -497,6 +537,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method GetName:string() {_exposeToLua}
+		if IsUsedAsStudio() then return "studio"
 		return name
 	End Method
 
@@ -519,6 +560,8 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	'returns the rent you have to pay for this roo
 	'(pay attention to _not_ pay the rent if it is a freehold)
 	Method GetRent:int() {_exposeToLua}
+		if IsRented() then return rent
+		
 		return GetSize() * 5000
 	End Method
 
@@ -609,7 +652,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		'emit event so custom draw functions can run
 		EventManager.triggerEvent( TEventSimple.Create("room.onDraw", null, self) )
 		'emit event limited to a specific room name
-		EventManager.triggerEvent( TEventSimple.Create("room."+self.name+".onDraw", null, self) )
+		EventManager.triggerEvent( TEventSimple.Create("room."+self.GetName()+".onDraw", null, self) )
 
 		return 0
 	End Method
@@ -663,7 +706,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 		local res:string
 
-		if lineNumber = 1 and not IsRented()
+		if lineNumber = 1 and IsRentable()
 			if IsUsableAsStudio()
 				res = GetLocale("ROOM_FREE_STUDIO")
 			else

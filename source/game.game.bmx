@@ -237,7 +237,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		For local room:TRoomBase = eachin GetRoomBaseCollection().list
 			'mark porter, elevatorplan, ... as fake rooms
 			if room.GetOwner() <= 0
-				Select room.name.ToLower()
+				Select room.GetName().ToLower()
 					case "porter", "building", "elevatorplan", "credits", "roomboard"
 						room.SetFlag(TVTRoomFlag.FAKE_ROOM, True)
 				End Select
@@ -246,7 +246,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'mark office, news, boss and archive as freeholds so they
 			'cannot get cancelled in the room agency - nor do they cost
 			'rent
-			Select room.name.ToLower()
+			Select room.GetName().ToLower()
 				case "office", "news", "boss", "archive"
 					room.SetFlag(TVTRoomFlag.FREEHOLD, True)
 				'some important rooms should also never be configured

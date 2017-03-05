@@ -143,7 +143,10 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		'      signs (if visible in elevator)
 		local room:TRoomBase = GetRoom()
 		If room = null then Return FALSE
-		If room.name = "roomboard" OR room.name = "credits" OR room.name = "porter" then Return FALSE
+		if room.IsFake() then Return False
+		'above is equivalent to:
+		'local roomName:string = room.GetName()
+		'If roomName = "roomboard" OR roomName = "credits" OR roomName = "porter" then Return FALSE
 
 		return True
 	End Method
@@ -265,7 +268,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 			'skip wrong owners
 			if room.owner <> owner then continue
 
-			If room.name = name Then Return door
+			If room.GetName() = name Then Return door
 		Next
 		Return Null
 	End Function

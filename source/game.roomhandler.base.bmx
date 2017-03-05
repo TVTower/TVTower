@@ -136,7 +136,7 @@ Type TRoomHandlerCollection
 		if not room then print "onHandleFigureInRoom: room stored elsewhere: "+triggerEvent._trigger.toLower()
 		if not room then return 0
 
-		currentHandler = GetInstance().GetHandler(room.name)
+		currentHandler = GetInstance().GetHandler(room.GetName())
 		if not currentHandler then return False
 
 		Select triggerEvent._trigger.toLower()
@@ -153,7 +153,7 @@ Type TRoomHandlerCollection
 		if not room then print "onHandleRoom: room stored elsewhere: "+triggerEvent._trigger.toLower()
 		if not room then return 0
 
-		currentHandler = GetInstance().GetHandler(room.name)
+		currentHandler = GetInstance().GetHandler(room.GetName())
 		if not currentHandler then return False
 		
 		Select triggerEvent._trigger.toLower()
@@ -252,7 +252,7 @@ Type TRoomHandler
 		'check if we are in the correct room
 		If not allowChangingRoom and figure.isChangingRoom() Then Return False
 		If not figure.inRoom Then Return False
-		if figure.inRoom.name <> roomName then return FALSE
+		if figure.inRoom.GetName() <> roomName then return FALSE
 		return TRUE
 	End Function
 	
@@ -266,7 +266,7 @@ Type TRoomHandler
 		'check if we are in the correct room
 		If not allowChangingRoom and figure.isChangingRoom() Then Return False
 		If not figure.inRoom Then Return False
-		if figure.inRoom.name <> roomName then return FALSE
+		if figure.inRoom.GetName() <> roomName then return FALSE
 		return TRUE
 	End Function
 

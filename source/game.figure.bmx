@@ -462,7 +462,7 @@ Type TFigure extends TFigureBase
 		if not playerID then return True
 
 		'players can visit bosses of other channels
-		if room.name = "boss" then return True
+		if room.GetName() = "boss" then return True
 
 		'players can visit non-player-rooms
 		if not room.owner then return True
@@ -508,7 +508,7 @@ Type TFigure extends TFigureBase
 	'override to add support for rooms
 	Method IsInRoom:Int(roomName:String="")
 		If roomName <> ""
-			Return (inRoom And inRoom.Name.toLower() = roomname.toLower())
+			Return (inRoom And inRoom.GetName().toLower() = roomname.toLower())
 		Else
 			Return inRoom <> null
 		EndIf
@@ -574,9 +574,9 @@ Type TFigure extends TFigureBase
 		if not door and inRoom then door = GetRoomDoorCollection().GetMainDoorToRoom(inRoom.id)
 
 		if kickingFigure
-			TLogger.log("TFigure.KickFigureOutOfRoom()", kickingFigure.name+" kicks "+ name + " out of room: "+inRoom.name, LOG_DEBUG)
+			TLogger.log("TFigure.KickFigureOutOfRoom()", kickingFigure.name+" kicks "+ name + " out of room: "+inRoom.GetDescription(), LOG_DEBUG)
 		else
-			TLogger.log("TFigure.KickFigureOutOfRoom()", name + " gets kicked out of room: "+inRoom.name, LOG_DEBUG)
+			TLogger.log("TFigure.KickFigureOutOfRoom()", name + " gets kicked out of room: "+inRoom.GetDescription(), LOG_DEBUG)
 		endif
 		'instead of SimpleSoundSource we use the rooms sound source
 		'so we are able to have positioned sound

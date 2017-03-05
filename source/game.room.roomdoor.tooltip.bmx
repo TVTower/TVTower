@@ -53,11 +53,12 @@ Type TRoomDoorTooltip extends TTooltip
 		if not room then return False
 
 		'adjust image used in tooltip
-		If room.name = "archive" Then tooltipimage = 0
-		If room.name = "office" Then tooltipimage = 1
-		If room.name = "boss" Then tooltipimage = 2
-		If room.name = "news" Then tooltipimage = 4
-		If room.name.Find("studio",0) = 0 Then tooltipimage = 5
+		local roomName:string = room.GetName()
+		If roomName = "archive" Then tooltipimage = 0
+		If roomName = "office" Then tooltipimage = 1
+		If roomName = "boss" Then tooltipimage = 2
+		If roomName = "news" Then tooltipimage = 4
+		If roomName.Find("studio",0) = 0 Then tooltipimage = 5
 		'adjust header bg color
 		If room.owner >= 1 then
 			TitleBGtype = room.owner + 10
