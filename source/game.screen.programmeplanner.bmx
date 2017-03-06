@@ -1183,14 +1183,6 @@ Type TScreenHandler_ProgrammePlanner
 			Local programme:TProgramme = TProgramme(draggedGuiProgrammePlanElement.broadcastMaterial)
 
 			If programme
-				'RONNY
-				If KEYMANAGER.IsHit(KEY_SPACE)
-					'set live time to 11:00
-					programme.data.releaseTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 11, 0,0)
-					programme.data.SetFlag(TVTProgrammeDataFlag.LIVE, True)
-					programme.data.distributionChannel = TVTProgrammeDistributionChannel.TV
-				EndIf
-
 				'if it has a given time slot, mark these
 				If programme.data.HasBroadcastTimeSlot()
 					Local hourSlots:Int[]
@@ -1499,7 +1491,8 @@ endrem
 				If CreateCopy
 					createFromLicence = TProgramme(item.broadcastMaterial).licence
 				Else
-					if TProgramme(item.broadcastMaterial).licence.GetSubLicenceCount() > 0
+					'attention: ask parent licence (which might be the same ...)
+					if TProgramme(item.broadcastMaterial).licence.GetParentLicence().GetSubLicenceCount() > 0
 						createFromLicence = TProgramme(item.broadcastMaterial).licence.GetNextAvailableSubLicence()
 					'for "single licences" we cannot fetch a "next sublicence"
 					else
