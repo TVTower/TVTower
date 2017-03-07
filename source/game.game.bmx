@@ -503,6 +503,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		TLogger.Log("ResetPlayer()", "TODO - stop rented rooms", LOG_DEBUG)
 
 
+		'=== RESET ARCHIVED MESSAGES ===
+		GetArchivedMessageCollection().RemoveAll(PlayerID)
+		TLogger.Log("ResetPlayer()", "Removed archived messages", LOG_DEBUG)
+
 
 		'=== RESET ROOM BOARD IMAGES ===
 		GetRoomBoard().ResetImageCaches(PlayerID)

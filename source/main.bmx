@@ -3937,6 +3937,23 @@ Type GameEvents
 	End Function
 
 
+	'helper
+	Function CreateArchiveMessageFromToastMessage:TArchivedMessage(toastMessage:TGameToastMessage)
+		if not toastMessage then return null
+		
+		local archivedMessage:TArchivedMessage = new TArchivedMessage
+		archivedMessage.SetTitle(toastMessage.caption)
+		archivedMessage.SetText(toastMessage.text)
+		archivedMessage.messageCategory = toastMessage.messageCategory
+		archivedMessage.group = toastMessage.messageType 'positive, negative, information ...
+		archivedMessage.time = GetWorldTime().GetTimeGone()
+		archivedMessage.sourceGUID = toastMessage.GetGUID()
+		archivedMessage.SetOwner( toastMessage.GetData().GetInt("playerID", -1) )
+
+		return archivedMessage
+	End Function
+
+
 	Function OnOpenIngameHelp:int(triggerEvent:TEventBase)
 		App.SetPausedBy(TApp.PAUSED_BY_INGAMEHELP, True)
 	End Function
@@ -4357,10 +4374,7 @@ Type GameEvents
 		local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
 		if not boss then return False
 
-		'only interest in active player's boss-credit-actions
-		If boss.playerID <> GetPlayerCollection().playerID Then Return False
 
-		
 		local value:int = triggerEvent.GetData().GetInt("value", 0)
 		'send out a toast message
 		Local toast:TGameToastMessage = New TGameToastMessage
@@ -4383,7 +4397,15 @@ Type GameEvents
 		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
 		toast.GetData().AddNumber("playerID", boss.playerID)
 
-		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+		'only interest in active player's boss-credit-actions
+		If boss.playerID = GetPlayerCollection().playerID 
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		endif
 	End Function
 
 
@@ -4394,8 +4416,6 @@ Type GameEvents
 		'inform ai before
 		If player.isLocalAI() Then player.playerAI.CallOnPublicAuthoritiesStopXRatedBroadcast()
 
-		'only interest in active players contracts
-		If programme.owner <> GetPlayerCollection().playerID Then Return False
 
 		Local toast:TGameToastMessage = New TGameToastMessage
 		'show it for some seconds
@@ -4409,7 +4429,15 @@ Type GameEvents
 		)
 		toast.GetData().AddNumber("playerID", programme.owner)
 
-		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+		'only interest in active player's licences
+		If programme.owner = GetPlayerCollection().playerID
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		endif
 	End Function
 
 
@@ -4421,8 +4449,6 @@ Type GameEvents
 		'inform ai before
 		If player.isLocalAI() Then player.playerAI.CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedProgrammeLicence, targetProgrammeLicence)
 
-		'only interest in active players licences
-		If confiscatedProgrammeLicence.owner <> GetPlayerCollection().playerID Then Return False
 
 		Local toast:TGameToastMessage = New TGameToastMessage
 		'show it for some seconds
@@ -4440,7 +4466,15 @@ Type GameEvents
 		toast.SetText(text)
 		toast.GetData().AddNumber("playerID", player.playerID)
 
-		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+		'only interest in active player's licences
+		If confiscatedProgrammeLicence.owner = GetPlayerCollection().playerID
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		endif
 	End Function
 
 
@@ -4457,9 +4491,6 @@ Type GameEvents
 
 		'inform ai
 		If player.isLocalAI() Then player.playerAI.CallOnAchievementCompleted(achievement)
-
-		'only interest in active players achievements
-		If player <> GetPlayer() Then Return False
 
 
 		local rewardText:string
@@ -4491,7 +4522,15 @@ Type GameEvents
 
 		toast.GetData().AddNumber("playerID", player.playerID)
 
-		GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+		'only interest in active player
+		If player = GetPlayer()
+			GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
+		endif
 	End Function
 
 
@@ -4508,9 +4547,6 @@ Type GameEvents
 
 		'inform ai
 		If player.isLocalAI() Then player.playerAI.CallOnWonAward(award)
-
-		'only interest in active player's awards
-		If player <> GetPlayer() Then Return False
 
 
 		rem
@@ -4537,7 +4573,15 @@ Type GameEvents
 
 		toast.GetData().AddNumber("playerID", player.playerID)
 
-		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+		'only interest in active players contracts
+		If player = GetPlayer()
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		endif
 	End Function
 		
 
@@ -4552,9 +4596,6 @@ Type GameEvents
 		local roomGUID:string = triggerEvent.GetData().GetString("roomGUID")
 		local room:TRoomBase = GetRoomCollection().GetByGUID( TLowerString.Create(roomGUID) )
 		if room
-			'only interested in active player?
-			'If room.owner <> GetPlayerCollection().playerID Then Return False
-
 			Local caption:string = GetRandomLocale("BOMB_DETONATION_IN_TVTOWER")
 			Local text:string = GetRandomLocale("TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT")
 
@@ -4568,18 +4609,27 @@ Type GameEvents
 			endif
 
 
-			Local toast:TGameToastMessage = New TGameToastMessage
-			'show it for some seconds
-			toast.SetLifeTime(15)
-			toast.SetMessageType(1) 'attention
-			toast.SetMessageCategory(TVTMessageCategory.MISC)
+			for local i:int = 1 to 4
+				Local toast:TGameToastMessage = New TGameToastMessage
+				'show it for some seconds
+				toast.SetLifeTime(15)
+				toast.SetMessageType(1) 'attention
+				toast.SetMessageCategory(TVTMessageCategory.MISC)
 
-			toast.SetCaption( caption )
-			toast.SetText( text )
+				toast.SetCaption( caption )
+				toast.SetText( text )
 
-			toast.GetData().AddNumber("playerID", GetPlayerBase().playerID)
+				toast.GetData().AddNumber("playerID", GetPlayerBase().playerID)
 
-			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+
+				GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+				'only add if it is the active player
+				if i = GetPlayerBase().playerID
+					GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+				endif
+			Next
 		endif
 	End Function
 	
@@ -4587,7 +4637,6 @@ Type GameEvents
 	Function ProgrammeLicenceAuction_OnGetOutbid:Int(triggerEvent:TEventBase)
 		'only interested in auctions in which the player got overbid
 		Local previousBestBidder:Int = triggerEvent.GetData().GetInt("previousBestBidder")
-		If GetPlayer().playerID <> previousBestBidder Then Return False
 
 		Local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("licence"))
 		Local bestBidder:Int = triggerEvent.GetData().GetInt("bestBidder")
@@ -4612,17 +4661,23 @@ Type GameEvents
 		'play a special sound instead of the default one
 		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
 
-		toast.GetData().AddNumber("playerID", GetPlayer().playerID)
+		toast.GetData().AddNumber("playerID", previousBestBidder)
 
-		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+		'only interested in active player
+		If previousBestBidder = GetPlayerCollection().playerID
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		endif
 	End Function
 
 
 	Function ProgrammeLicenceAuction_OnWin:Int(triggerEvent:TEventBase)
 		'only interested in auctions the player won
 		Local bestBidder:Int = triggerEvent.GetData().GetInt("bestBidder")
-		If GetPlayer().playerID <> bestBidder Then Return False
 
 		Local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("licence"))
 		Local bestBid:Int = triggerEvent.GetData().GetInt("bestBidder")
@@ -4639,16 +4694,25 @@ Type GameEvents
 		toast.SetCaption(GetLocale("YOU_HAVE_WON_AN_AUCTION"))
 		toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+licence.GetTitle()+"|/b|"))
 
-		toast.GetData().AddNumber("playerID", GetPlayer().playerID)
+		toast.GetData().AddNumber("playerID", bestBidder)
 
-		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+		'only interested in active player
+		If bestBidder = GetPlayerCollection().playerID
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		endif
 	End Function	
 
 
 	Function Production_OnFinalize:Int(triggerEvent:TEventBase)
 		'only interested in auctions the player won
 		Local production:TProduction = TProduction(triggerEvent.GetSender())
-		If not production or production.owner <> GetPlayerBase().playerID Then Return False
+		If not production Then Return False
+
 
 		'send out a toast message
 		Local toast:TGameToastMessage = New TGameToastMessage
@@ -4666,16 +4730,23 @@ Type GameEvents
 		toast.SetCaption(GetLocale("SHOOTING_FINISHED"))
 		toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+title+"|/b|"))
 
-		toast.GetData().AddNumber("playerID", GetPlayer().playerID)
+		toast.GetData().AddNumber("playerID", production.owner)
 
-		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+		'only interested in active player
+		If production.owner = GetPlayerCollection().playerID
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		endif
 	End Function	
 
 
 	Function Game_OnSetPlayerBankruptLevel:Int(triggerEvent:TEventBase)
 		'only interested in levels of the player
 		local playerID:int = triggerEvent.GetData().GetInt("playerID", -1)
-		if playerID <> GetPlayerBaseCollection().playerID then return False
 
 		'only interested in the first two days (afterwards player is
 		'already gameover)
@@ -4725,8 +4796,14 @@ Type GameEvents
 
 		toast.GetData().AddNumber("playerID", playerID)
 
-		if not GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-			print "failed to add toast message"
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+		'only interested in active player
+		If playerID = GetPlayerCollection().playerID
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
 		endif
 	End Function
 	
@@ -4735,8 +4812,6 @@ Type GameEvents
 		Local contract:TAdContract = TAdContract(triggerEvent.GetSender())
 		If Not contract Then Return False
 
-		'only interest in active players contracts
-		If contract.owner <> GetPlayer().playerID Then Return False
 
 		'send out a toast message
 		Local toast:TGameToastMessage = New TGameToastMessage
@@ -4753,9 +4828,17 @@ Type GameEvents
 		'play a special sound instead of the default one
 		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
 
-		toast.GetData().AddNumber("playerID", GetPlayer().playerID)
+		toast.GetData().AddNumber("playerID", contract.owner)
 
-		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+		'only interested in active player
+		If contract.owner = GetPlayerCollection().playerID
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		endif
 	End Function
 
 	
@@ -4763,8 +4846,6 @@ Type GameEvents
 		Local contract:TAdContract = TAdContract(triggerEvent.GetSender())
 		If Not contract Then Return False
 
-		'only interest in active players contracts
-		 If contract.owner <> GetPlayerCollection().playerID Then Return False
 
 		'send out a toast message
 		Local toast:TGameToastMessage = New TGameToastMessage
@@ -4779,9 +4860,17 @@ Type GameEvents
 			GetLocale("PENALTY_OF_X_WAS_PAID").Replace("%MONEY%", "|b|"+MathHelper.DottedValue(contract.GetPenalty())+getLocale("CURRENCY")+"|/b|") ..
 		)
 
-		toast.GetData().AddNumber("playerID", GetPlayer().playerID)
+		toast.GetData().AddNumber("playerID", contract.owner)
 
-		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+		'only interested in active player
+		If contract.owner = GetPlayerCollection().playerID
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		endif
 	End Function
 
 
@@ -4833,7 +4922,7 @@ Type GameEvents
 
 		'only interested in the players stations
 		Local player:TPlayer = GetPlayer(stationMap.owner)
-		If Not player or not GetPlayerCollection().IsLocalHuman(player.playerID) Then Return False
+		If Not player Then Return False
 
 		'in the past?
 		if station.GetActivationTime() < GetWorldTime().GetTimeGone() then return False
@@ -4881,7 +4970,16 @@ Type GameEvents
 		EndIf
 		endrem
 
-		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+		'only interested in active player
+		If player = GetPlayer()
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		endif
 	End Function
 
 

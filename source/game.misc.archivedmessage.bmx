@@ -2,7 +2,7 @@ SuperStrict
 Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.event.bmx"
 Import "game.gameobject.bmx"
-Import "game.toastmessage.bmx"
+'Import "game.toastmessage.bmx"
 
 
 
@@ -16,8 +16,9 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
 
+		'disabled: now done manually
 		'scan for newly added toast messages
-		_eventListeners :+ [ EventManager.registerListenerFunction( "ToastMessageCollection.onAddMessage", onAddToastMessage) ]
+		'_eventListeners :+ [ EventManager.registerListenerFunction( "ToastMessageCollection.onAddMessage", onAddToastMessage) ]
 	End Method
 
 
@@ -39,7 +40,27 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 	End Method
 
 
+	Method GetCountByOwner:int(owner:int)
+		if owner = -1 then return GetCount()
+
+		local count:int = 0
+		For local a:TArchivedMessage = EachIn entries.Values()
+			if a.GetOwner() = owner then count :+ 1
+		Next
+		return count
+	End Method
+
+
 	Method Add:int(obj:TGameObject)
+		local message:TArchivedMessage = TArchivedMessage(obj)
+		if not message then return False
+		
+		'keep count below 100 for each owner
+		if message
+			if GetCountByOwner(message.GetOwner()) > 110 then LimitArchive(100, message.GetOwner())
+		endif
+
+
 		local result:int = Super.Add(obj)
 		EventManager.triggerEvent(TEventSimple.Create("ArchivedMessageCollection.onAdd", null, Self, obj))
 		return result
@@ -53,13 +74,28 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method LimitArchive:int(limitToAmount:int)
-		if GetCount() < limitToAmount then return False
+	Method RemoveAll:int(owner:int = -1)
+		local toRemove:TArchivedMessage[]
+
+		'create a full array containing all elements
+		For local a:TArchivedMessage = EachIn entries.Values()
+			if owner = -1 or a.GetOwner() = owner then toRemove :+ [a]
+		Next
+
+	
+		For local a:TArchivedMessage = EachIn toRemove
+			Remove(a)
+		Next
+	End Method
+
+
+	Method LimitArchive:int(limitToAmount:int, owner:int = -1)
+		if GetCountByOwner(owner) < limitToAmount then return False
 
 		local list:TList = new TList
 		'create a full array containing all elements
 		For local a:TArchivedMessage = EachIn entries.Values()
-			list.AddLast(a)
+			if owner = -1 or a.GetOwner() = owner then list.AddLast(a)
 		Next
 		list.Sort(False, TArchivedMessage.SortByTime)
 
@@ -76,6 +112,7 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 	End Method
 	
 
+	rem
 	Function onAddToastMessage:int(triggerEvent:TEventBase)
 		local toastMessage:TGameToastMessage = TGameToastMessage(triggerEvent.GetReceiver())
 		if not toastMessage
@@ -92,13 +129,9 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 		archivedMessage.sourceGUID = toastMessage.GetGUID()
 		archivedMessage.SetOwner( toastMessage.GetData().GetInt("playerID", -1) )
 
-		'keep count below 100 for each owner
-		if GetInstance().GetCount() > 110
-			GetInstance().LimitArchive(100)
-		endif
-
 		GetInstance().Add(archivedMessage)
 	End Function
+	endrem
 End Type
 
 '===== CONVENIENCE ACCESSOR =====

@@ -105,6 +105,11 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 
 	Function onEnterScreen:int( triggerEvent:TEventBase )
+		'only an "active player" can enter a screen
+		if GetPlayerBase().IsInRoom()
+			GetInstance().roomOwner = TRoomBase(GetPlayerBase().GetFigure().GetInRoom()).owner
+		endif
+
 		GetInstance().ReloadMessages()
 
 		GetInstance().markReadTime = Time.MillisecsLong()
@@ -145,7 +150,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		messageList.SetOrientation(GUI_OBJECT_ORIENTATION_Vertical)
 
 
-		ReloadMessages()
+'		ReloadMessages()
 	End Method
 
 
@@ -160,6 +165,9 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 		local messages:TList = CreateList()
 		For local message:TArchivedMessage = EachIn GetArchivedMessageCollection().entries.values()
+			'ignore messages of other players
+			if message.GetOwner() <> roomOwner then continue
+
 			categoryCountTotal[0] :+ 1
 			if message.messageCategory > 0
 				categoryCountTotal[TVTMessageCategory.GetIndex(message.messageCategory)] :+ 1
