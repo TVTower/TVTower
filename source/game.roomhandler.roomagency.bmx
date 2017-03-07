@@ -180,6 +180,16 @@ endrem
 	End Function
 
 
+	Method CancelRoomRentalsOfPlayer:int(owner:int)
+		For local r:TRoomBase = EachIn GetRoomBaseCollection().list
+			if r.GetOwner() <> owner then continue
+			if r.IsFreehold() then continue
+
+			CancelRoomRental(r, owner)
+		Next
+	End Method
+
+
 	Function CancelRoomRental:int(room:TRoomBase, owner:int=0)
 		if not room.IsRented() then return False
 
