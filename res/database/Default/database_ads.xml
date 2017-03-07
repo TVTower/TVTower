@@ -1161,9 +1161,11 @@ I feel good with Lemur</en>
 		<ad id="ronny-ad-Veggismecki" creator="5578" created_by="Ronny">
 			<title>
 				<de>Veggismecki</de>
+				<en>Veggismacky</en>
 			</title>
 			<description>
 				<de>Leckere Tofutörtchen für den Vegetarier von heute. Alle Tofutiere werden artgerecht gehalten und mit Biofutter aufgezogen.</de>
+				<en>Delicious tofu tarts for the contemporary vegetarian. All tofu grazer are kept in proper condition and reared with organic feed.</en>
 			</description>
 			<conditions min_audience="2.6041" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="27" repetitions="6" duration="5" profit="736" penalty="1314" infomercial_profit="80" fix_infomercial_profit="1"/>
@@ -1171,9 +1173,11 @@ I feel good with Lemur</en>
 		<ad id="ronny-ad-Wackeldackel02">
 			<title>
 				<de>Wackeldackel</de>
+				<en>Nodding Dog</en>
 			</title>
 			<description>
 				<de>Wir verkaufen nichts außer Wackeldackel. Dafür aber zu konkurrenzlos günstigen Preisen. Jetzt neu, der Zwergdackel im Format 1:1.</de>
+				<en>We sell nothing but nodding dogs. But this at competitive prices. New in the stores: the dwarf dachshund in the scale 1:1.</en>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="19" repetitions="4" duration="3" profit="475" penalty="669" year_range_from="1973" year_range_to="1988" infomercial_profit="55" fix_infomercial_profit="1"/>
@@ -1181,9 +1185,11 @@ I feel good with Lemur</en>
 		<ad id="ronny-ad-Wackeldackel">
 			<title>
 				<de>Wackeldackel</de>
+				<en>Nodding Dog</en>
 			</title>
 			<description>
 				<de>Wir verkaufen wieder nichts außer Wackeldackel. Dafür aber zu konkurrenzlos günstigen Preisen. Jetzt neu, der Zwergdackel im Format 1:1.</de>
+				<en>We, again, sell nothing but nodding dogs. But this at competitive prices. New in the stores: the dwarf dachshund in the scale 1:1.</en>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="17" repetitions="4" duration="3" profit="475" penalty="669" year_range_from="1997" year_range_to="2008" infomercial_profit="50" fix_infomercial_profit="1"/>
@@ -1326,6 +1332,7 @@ Brucey - harsh fragrance for male experts.</en>
 			</title>
 			<description>
 				<de>Lecker Kompott wie von Omi. Der einzig wahre Nachtisch - mit Kernbeiss-Garantie.</de>
+				<en>Delicious compote as if it was granny's. The only true dessert - with pip-bite guarantee.</en>
 			</description>
 			<conditions min_audience="0.62" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="5" repetitions="6" duration="4" profit="1675" penalty="1957" infomercial_profit="138" fix_infomercial_profit="1"/>
@@ -1452,9 +1459,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="sjaele-ad-Abschiedsgruss" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Abschiedsgruß</de>
+				<en>Farewell</en>
 			</title>
 			<description>
 				<de>Wir suchen uns eine neue Erde. Macht's gut und danke für den Fisch. Eure Delphine.</de>
+				<en>We are looking for a new earth. Take care and thanks for the fish. Your dolphins.</en>
 			</description>
 			<conditions min_audience="46.89" min_image="0" target_group="0" allowed_programme_type="0" prohibited_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="15" repetitions="1" duration="7" profit="170" penalty="453" year_range_from="1999" year_range_to="2000" infomercial_profit="50" fix_infomercial_profit="1"/>
@@ -1465,6 +1474,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Die vollwertige Bio-Mahlzeit aus der Tube. Schmeckt wie bei Muttern, krümelt nicht und sooo gesund! Ideal für lange Zockerpartien.</de>
+				<en>A tube full to the brim with organic whool-food. Tastes like mom's food, does not crumble and is sooo healthy! Ideal for long gaming sessions.</en>
 			</description>
 			<conditions min_audience="1.3015" min_image="12" target_group="2" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="25" repetitions="3" duration="2" profit="1132" penalty="1900" year_range_from="0" year_range_to="0" infomercial_profit="50" fix_infomercial_profit="1"/>
@@ -1472,19 +1482,23 @@ Available in any well-stocked drugstore.</en>
 		<ad id="sjaele-ad-Macht-nischt" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Macht nischt</de>
+				<en>Not a prob</en>
 			</title>
 			<description>
 				<de>Das dicke Ausredenbuch. Ausreden für jeden Anlass vom Kindergarten bis zur eigenen Beerdigung. Nie wieder doof dastehn.</de>
+				<en>The big excuse book. Excuses for every occasion from kindergarten to your own funeral. Never be at a complete loss again.</en>
 			</description>
 			<conditions min_audience="2.86" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="20" repetitions="7" duration="4" profit="718" penalty="1277" year_range_from="0" year_range_to="1998" infomercial_profit="105" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="sjaele-ad-Macht-nischt2" creator="7430" created_by="Sjaele">
 			<title>
-				<de>Macht nischt.de</de>
+				<de>Macht nischt.deu</de>
+				<en>Not a prob.deu</en>
 			</title>
 			<description>
 				<de>Der Online-Shop. Ausreden für jeden Anlass vom Kindergarten bis zur eigenen Beerdigung. Nie wieder doof dastehn.</de>
+				<en>The online shop. Excuses for every occasion from kindergarten to your own funeral. Never be at a complete loss again.</en>
 			</description>
 			<conditions min_audience="2.86" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="25" repetitions="7" duration="4" profit="718" penalty="1277" year_range_from="1999" year_range_to="0" infomercial_profit="100" fix_infomercial_profit="1"/>
@@ -1492,9 +1506,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="sjaele-ad-Ratz-Fatz" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Ratz-Fatz</de>
+				<en>Hassle Frazzle</en>
 			</title>
 			<description>
 				<de>Kein Bock mehr auf den Alten? Ratz-Fatz-Scheidungshotline. Wir liefern Gründe, Anlässe, Anwälte und Schuldfreigarantie!</de>
+				<en>Your missus is no longer worth a straw? Call the Hassle Frazzle divorce hotline. We provide reasons, occasions, attorneys and guarantee for not-guilty verdicts!</en>
 			</description>
 			<conditions min_audience="11.4612" min_image="4" target_group="128" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="15" repetitions="3" duration="3" profit="322" penalty="504" year_range_from="0" year_range_to="0" infomercial_profit="50" fix_infomercial_profit="1"/>
@@ -1502,19 +1518,23 @@ Available in any well-stocked drugstore.</en>
 		<ad id="sjaele-ad-Umrechner02" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Der große Umrechner</de>
+				<en>The bulky converter</en>
 			</title>
 			<description>
 				<de>Das Handbuch zum Umrechnen von Mark der DDR in D-Mark! Für alle, die's genau wissen wollen. Weil früher alles besser war. Und billiger?</de>
+				<en>The manual for converting East German mark (DDM) to Deutsche Mark (DEM)! For those who want to know exactly. Because everything used to be better. And cheaper?</en>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="400" penalty="697" year_range_from="1990" year_range_to="2002" infomercial_profit="50" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="sjaele-ad-Umrechner" creator="7430" created_by="Sjaele">
 			<title>
-				<de>Umrechner.de</de>
+				<de>Umrechner.deu</de>
+				<en>BulkyConverter.deu</en>
 			</title>
 			<description>
 				<de>Die Webseite zum Umrechnen von Euro in D-Mark! Für alle, die's genau wissen wollen. Weil früher alles besser war.</de>
+				<en>The website for converting Euro (EUR) to Deutsche Mark (DEM). For those who want tok know exactly. Because everything used to be better.</en>
 			</description>
 			<conditions min_audience="6.2511" min_image="0" target_group="0" allowed_programme_type="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="400" penalty="697" year_range_from="2003" year_range_to="0" infomercial_profit="50" fix_infomercial_profit="1"/>
@@ -1522,9 +1542,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Beisele" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Unternehmensberatung Beiselen</de>
+				<en>Business consultancy Beiselen</en>
 			</title>
 			<description>
 				<de>Mir schwätzed Iha'ne nai und kriagat ah'no was dafiar! Guat, is net guat g'nuag! S'muss scho Beisele sai!</de>
+				<en>We do not meddle with your business but you still benefit of commissioning us. Good is not good enough!</en>
 			</description>
 			<conditions min_audience="18.76" min_image="7" target_group="32"/>
 			<data infomercial="1" quality="15" repetitions="3" duration="6" profit="227" penalty="339" infomercial_profit="20" fix_infomercial_profit="1"/>
@@ -1532,9 +1554,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Bobo" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Bobo Wattebällchen</de>
+				<en>Bobo Cotton Balls</en>
 			</title>
 			<description>
 				<de>Wattebällchen für jeden Anlass. Bobo Wattebällchen für die Frau, für das Kind und für den Soldat.</de>
+				<en>Cotton balls for every occasion. Bobo Cotton Balls for the woman, for the child and for the soldier.</en>
 			</description>
 			<conditions min_audience="3.65" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="10" repetitions="2" duration="2" profit="550" penalty="872" fix_infomercial_profit="1"/>
