@@ -50,6 +50,9 @@ function TaskMovieDistributor:Activate()
 	self.BidAuctions = JobBidAuctions()
 	self.BidAuctions.MovieDistributorTask = self
 
+	self.IdleJob = AIIdleJob()
+	self.IdleJob:SetIdleTicks( math.random(5,15) )
+
 	self.MoviesAtDistributor = {}
 	self.MoviesAtAuctioneer = {}
 
@@ -82,7 +85,10 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 	elseif (self.BuyMovies.Status ~= JOB_STATUS_DONE) then
 		return self.BuyMovies
 	elseif (self.BidAuctions.Status ~= JOB_STATUS_DONE) then
-		return self.BidAuctions		
+		return self.BidAuctions
+		
+	elseif (self.IdleJob.Status ~= JOB_STATUS_DONE) then
+		return self.IdleJob
 	end
 
 	--self:SetWait()

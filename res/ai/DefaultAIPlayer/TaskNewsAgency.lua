@@ -31,6 +31,9 @@ function TaskNewsAgency:Activate()
 
 	self.NewsAgencyJob = JobNewsAgency()
 	self.NewsAgencyJob.Task = self
+
+	self.IdleJob = AIIdleJob()
+	self.IdleJob:SetIdleTicks( math.random(5,15) )
 end
 
 function TaskNewsAgency:GetNextJobInTargetRoom()
@@ -42,6 +45,8 @@ function TaskNewsAgency:GetNextJobInTargetRoom()
 	end
 	if (self.NewsAgencyJob.Status ~= JOB_STATUS_DONE) then
 		return self.NewsAgencyJob
+	elseif (self.IdleJob.Status ~= JOB_STATUS_DONE) then
+		return self.IdleJob
 	end
 
 --	self:SetWait()

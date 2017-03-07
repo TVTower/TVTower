@@ -19,6 +19,7 @@ TASK_STATUS_OPEN	= "T_open"
 TASK_STATUS_PREPARE	= "T_prepare"
 TASK_STATUS_RUN		= "T_run"
 TASK_STATUS_WAIT	= "T_wait"
+TASK_STATUS_IDLE	= "T_idle"
 TASK_STATUS_DONE	= "T_done"
 TASK_STATUS_CANCEL	= "T_cancel"
 
@@ -235,6 +236,7 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.StartTask = 0 -- Zeit, wann der Task zuletzt gestartet wurde
 	c.TickCounter = 0 -- Gibt die Anzahl der Ticks an seit dem der Task läuft
 	c.MaxTicks = 30 --Wie viele Ticks darf der Task maximal laufen?
+	c.IdleTicks = 10 --Wie viele Ticks soll nichts gemacht werden?
 	c.TargetRoom = -1 -- Wie lautet die ID des Standard-Zielraumes? !!! Muss überschrieben werden !!!
 	
 	c.CurrentBudget = 0 -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.	
@@ -353,6 +355,16 @@ function AITask:Tick()
 		self:SetDone()
 	end
 
+	-- have to idle?
+	if (self.Status == TASK_STATUS_IDLE) then
+		self.idleTicks = self.idleTicks - 1
+		debugMsg("idling ... " .. self.idleTicks)
+		if (self.idleTicks < 0) then
+			self.idleTicks = 0
+			self.Status = TASK_STATUS_RUN
+		end
+	end
+
 	if ((self.Status == TASK_STATUS_RUN) or (self.Status == TASK_STATUS_WAIT)) then
 		self.TickCounter = self.TickCounter + 1
 		--debugMsg("MaxTickCount: " .. self.TickCounter .. " > " .. self.MaxTicks)
@@ -424,6 +436,12 @@ end
 function AITask:SetWait()
 	debugMsg("Waiting...")
 	self.Status = TASK_STATUS_WAIT
+end
+
+function AITask:SetIdle(idleTicks)
+	idleTicks = idleTicks or 10 --default is 10 ticks
+	debugMsg("idling for " .. idleTicks .. " ticks")
+	self.Status = TASK_STATUS_IDLE
 end
 
 function AITask:SetDone()
@@ -579,6 +597,71 @@ end
 
 function AIJob:SetCancel()
 	debugMsg("SetCancel(): Implementiere mich: " .. type(self))
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+_G["AIIdleJob"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.Task = nil
+	c.IdleTime = 0
+	c.IdleTicks = 0
+	c.IdleTill = -1
+	c.IdleTillWorldTicks = -1
+end)
+
+function AIIdleJob:typename()
+	return "AIIdleJob"
+end
+
+function AIIdleJob:SetIdleTime(t)
+	self.IdleTime = t
+end
+
+function AIIdleJob:SetIdleTicks(ticks)
+	self.IdleTicks = ticks
+end
+
+--override
+function AIIdleJob:Start(pParams)
+	if (self.IdleTime ~= 0) then
+		self.IdleTill = WorldTime.GetTimeGoneAsMinute() + self.IdleTime
+		--debugMsg("Set self.IdleTill = " .. self.IdleTill)
+	end
+	if (self.IdleTicks ~= 0) then
+		self.IdleTillWorldTicks = self:getWorldTicks() + self.IdleTicks
+		--debugMsg("Set self.IdleTillWorldTicks = " .. self.IdleTillWorldTicks)
+	end
+end
+
+function AIIdleJob:getWorldTicks()
+	local player = _G["globalPlayer"]
+	return player.WorldTicks
+end
+
+function AIIdleJob:Prepare(pParams)
+	if ((self.Status == JOB_STATUS_NEW) or (self.Status == TASK_STATUS_PREPARE) or (self.Status == JOB_STATUS_REDO)) then
+		self.Status = JOB_STATUS_RUN
+	end
+end
+
+function AIIdleJob:Tick()
+	local finishedIdling = false
+	if (self.IdleTill == -1) and (self.IdleTillWorldTicks == -1) then
+		finishedIdling = true
+	elseif (self.IdleTill ~= -1) and ((self.IdleTill - WorldTime.GetTimeGoneAsMinute()) <= 0) then
+		finishedIdling = true
+	elseif (self.IdleTillWorldTicks ~= -1) and ((self.IdleTillWorldTicks - self:getWorldTicks()) <= 0) then
+		finishedIdling = true
+	end
+
+	if finishedIdling == true then
+		--debugMsg("Finished idling ...")
+		self.Status = JOB_STATUS_DONE
+		return
+	else
+		--debugMsg("Idling ...")
+	end
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

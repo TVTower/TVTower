@@ -51,6 +51,9 @@ function TaskSchedule:Activate()
 	self.ScheduleJob = JobSchedule()
 	self.ScheduleJob.ScheduleTask = self
 
+	self.IdleJob = AIIdleJob()
+	self.IdleJob:SetIdleTicks( math.random(5,15) )
+
 	self.Player = _G["globalPlayer"]
 	self.SpotRequisition = self.Player:GetRequisitionsByOwner(_G["TASK_SCHEDULE"])
 end
@@ -67,6 +70,8 @@ function TaskSchedule:GetNextJobInTargetRoom()
 		return self.EmergencyScheduleJob
 	elseif (self.ScheduleJob.Status ~= JOB_STATUS_DONE) then
 		return self.ScheduleJob
+	elseif (self.IdleJob.Status ~= JOB_STATUS_DONE) then
+		return self.IdleJob
 	end
 
 	--self:SetWait()

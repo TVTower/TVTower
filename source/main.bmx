@@ -4148,6 +4148,16 @@ Type GameEvents
 					GetGame().SendSystemMessage("[DEV] Cannot rent room '" + roomGUID + "'. Not found!")
 				endif
 
+			Case "setmasterkey"
+				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
+				local bool:int = int(paramS)
+				player.GetFigure().SetHasMasterkey(bool)
+				if bool
+					GetGame().SendSystemMessage("[DEV] Added masterkey to player '" + player.name +"' ["+player.playerID + "]!")
+				else
+					GetGame().SendSystemMessage("[DEV] Removed masterkey from player '" + player.name +"' ["+player.playerID + "]!")
+				endif
+
 			Case "sendnews"			
 				local newsGUID:string = playerS '(first payload-param)
 				local announceNow:int = int(paramS)
