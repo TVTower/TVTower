@@ -7,6 +7,7 @@ Import "game.production.bmx"
 Import "game.production.productionmanager.bmx"
 Import "game.screen.base.bmx"
 Import "game.database.bmx"
+Import "game.misc.archivedmessage.bmx"
 Import "game.roomhandler.elevatorplan.bmx"
 Import "game.ai.bmx"
 Import "basefunctions_network.bmx"
@@ -338,7 +339,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			p.PlayerAI.CallOnPlayerGoesBankrupt( playerID )
 		next
 
-
 		local figure:TFigure = player.GetFigure()
 		if figure
 			'remove figure from game once it reaches its target
@@ -382,6 +382,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'only start a new player if it is a local ai player
 		if player.IsLocalAI()
+		print "reset"
 			'store time of game over
 			player.bankruptcyTimes :+ [ Long(GetWorldTime().GetTimeGone()) ]
 
@@ -500,6 +501,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		'=== STOP ROOM RENT CONTRACTS ===
+		RoomHandler_RoomAgency.GetInstance().CancelRoomRentalsOfPlayer(PlayerID)
 		TLogger.Log("ResetPlayer()", "TODO - stop rented rooms", LOG_DEBUG)
 
 

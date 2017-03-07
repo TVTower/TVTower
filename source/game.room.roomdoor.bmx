@@ -228,16 +228,19 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 
 		'==== DRAW DEBUG TEXT ====
+		local f:TBitmapFont = GetBitmapFont("default", 10)
 		if TVTDebugInfos
 			local textY:int = GetScreenY() - area.GetH() - 10
 			if room.hasOccupant()
 				for local figure:TFigureBase = eachin room.occupants
-					GetBitmapFontManager().basefont.Draw(figure.name, xOffset + GetScreenX(), yOffset + textY)
-					textY:-10
+					f.Draw(figure.name, xOffset + GetScreenX(), yOffset + textY)
+					textY :- 8
 				next
 			else
-				GetBitmapFontManager().basefont.Draw("empty", xOffset + GetScreenX(), yOffset + textY)
+				f.Draw("empty", xOffset + GetScreenX(), yOffset + textY)
+				textY :- 8
 			endif
+			f.Draw("room: "+roomID, xOffset + GetScreenX(), yOffset + textY)
 		endif
 	End Method
 

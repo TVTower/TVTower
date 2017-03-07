@@ -4103,6 +4103,51 @@ Type GameEvents
 					GetGame().SendSystemMessage("Wrong syntax (/dev help)!")
 				EndIf				
 
+			Case "setbankrupt"
+				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
+
+				GetGame().SetPlayerBankrupt(player.playerID)
+				GetGame().SendSystemMessage("[DEV] Set player '" + player.name +"' ["+player.playerID + "] bankrupt!")
+
+			Case "gotoroom"
+				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
+				local roomGUID:string = paramS
+				local room:TRoomBase
+				if string(int(roomGUID)) = roomGUID
+					room = GetRoomBaseCollection().Get( int(roomGUID) )
+				endif
+				if not room
+					room = GetRoomBaseCollection().GetByGUID( TLowerString.Create(roomGUID) )
+				endif
+				if not room
+					room = GetRoomBaseCollection().GetFirstByDetails(roomGUID, player.playerID)
+				endif
+				if room
+					DEV_switchRoom(room, player.GetFigure())
+				endif
+				
+			Case "rentroom"
+				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
+				local roomGUID:string = paramS
+				local room:TRoomBase
+				if string(int(roomGUID)) = roomGUID
+					room = GetRoomBaseCollection().Get( int(roomGUID) )
+				endif
+				if not room
+					room = GetRoomBaseCollection().GetByGUID( TLowerString.Create(roomGUID) )
+				endif
+				if not room
+					room = GetRoomBaseCollection().GetFirstByDetails(roomGUID, player.playerID)
+				endif
+				if room
+					RoomHandler_RoomAgency.GetInstance().CancelRoomRental(room, player.playerID)
+					RoomHandler_RoomAgency.GetInstance().BeginRoomRental(room, player.playerID)
+					room.SetUsedAsStudio(True)
+					GetGame().SendSystemMessage("[DEV] Rented room '" + room.GetDescription() +"' ["+room.GetName() + "] for player '" + player.name +"' ["+player.playerID + "]!")
+				else
+					GetGame().SendSystemMessage("[DEV] Cannot rent room '" + roomGUID + "'. Not found!")
+				endif
+
 			Case "sendnews"			
 				local newsGUID:string = playerS '(first payload-param)
 				local announceNow:int = int(paramS)
@@ -5853,35 +5898,39 @@ End Function
 ?
 
 
-Function DEV_switchRoom:Int(room:TRoom)
+Function DEV_switchRoom:Int(room:TRoomBase, figure:TFigure = null)
 	If Not room Then Return False
 
-	local playerFigure:TFigure = GetPlayer().GetFigure()
+	if not figure then figure = GetPlayer().GetFigure()
 	'do not react if already switching
-	if playerFigure.IsChangingRoom() then return False
+	if figure.IsChangingRoom() then Return False
 	
 	'skip if already there
-	If playerFigure.inRoom = room Then Return False
+	If figure.inRoom = room Then Return False
 
-	TLogger.Log("DEV_switchRoom", "Player #"+GetPlayer().playerID+" switching to room ~q"+room.GetName()+"~q.", LOG_DEBUG)
-
+	if figure.playerID
+		TLogger.Log("DEV_switchRoom", "Player #"+figure.playerID+" switching to room ~q"+room.GetName()+"~q.", LOG_DEBUG)
+	else
+		TLogger.Log("DEV_switchRoom", "Figure '"+figure.GetGUID()+"' switching to room ~q"+room.GetName()+"~q.", LOG_DEBUG)
+	endif
+	
 	'to avoid seeing too much animation
 	TInGameScreen_Room.temporaryDisableScreenChangeEffects = True
 
 
-	If playerFigure.inRoom
+	If figure.inRoom
 		'abort current screen actions (drop back dragged items etc.)
-		local roomHandler:TRoomHandler = GetRoomHandlerCollection().GetHandler(playerFigure.inRoom.GetName())
+		local roomHandler:TRoomHandler = GetRoomHandlerCollection().GetHandler(figure.inRoom.GetName())
 		if roomHandler then roomHandler.AbortScreenActions()
 
-		TLogger.Log("DEV_switchRoom", "Leaving room ~q"+playerFigure.inRoom.GetName()+"~q first.", LOG_DEBUG)
+		TLogger.Log("DEV_switchRoom", "Leaving room ~q"+figure.inRoom.GetName()+"~q first.", LOG_DEBUG)
 		'force leave?
-		'playerFigure.LeaveRoom(True)
+		'figure.LeaveRoom(True)
 		'not forcing a leave is similar to "right-click"-leaving
 		'which means it signs contracts, buys programme etc
-		if playerFigure.LeaveRoom(False)
+		if figure.LeaveRoom(False)
 			'finish leaving room in the same moment
-			playerFigure.FinishLeaveRoom()
+			figure.FinishLeaveRoom()
 		else
 			GetGame().SendSystemMessage("[DEV] cannot switch rooms: Leaving old room failed")
 			return False
@@ -5890,19 +5939,19 @@ Function DEV_switchRoom:Int(room:TRoom)
 
 
 	'remove potential elevator passenger 
-	GetElevator().LeaveTheElevator(playerFigure)
+	GetElevator().LeaveTheElevator(figure)
 
 	'a) add the room as new target before all others
 	'GetPlayer().GetFigure().PrependTarget(TRoomDoor.GetMainDoorToRoom(room))
 	'b) set it as the only route
-	playerFigure.SetTarget( new TFigureTarget.Init( GetRoomDoorCollection().GetMainDoorToRoom(room.id) ) )
-	playerFigure.MoveToCurrentTarget()
+	figure.SetTarget( new TFigureTarget.Init( GetRoomDoorCollection().GetMainDoorToRoom(room.id) ) )
+	figure.MoveToCurrentTarget()
 
 	'call reach step 1 - so it actually reaches the target in this turn
 	'already (instead of next turn - which might have another "dev_key"
 	'pressed)
-	playerFigure.ReachTargetStep1()
-	playerFigure.EnterTarget()
+	figure.ReachTargetStep1()
+	figure.EnterTarget()
 
 	Return True
 End Function
