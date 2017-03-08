@@ -103,6 +103,19 @@ Import "game.screen.menu.bmx"
 
 Import "game.network.networkhelper.bmx"
 
+
+'notify users when there are XML-errors
+Function TVTXmlErrorCallback(data:Object, error:TxmlError)
+	local result:string = "XML-Error~n"
+	result :+ "Error: "+ error.getErrorMessage()+"~n"
+	result :+ "File:  "+ error.getFileName()+":"+error.getLine()+"@"+error.getColumn()+"~n"
+	Notify result
+
+	TLogger.Log("XML-Error", error.getErrorMessage(), LOG_ERROR)
+	TLogger.Log("XML-Error", "File:  "+ error.getFileName()+". Line:"+error.getLine()+" Column:"+error.getColumn(), LOG_ERROR)
+End Function
+xmlSetErrorFunction(TVTXmlErrorCallback, null)
+
 '===== Includes =====
 
 'Types: - TError - Errorwindows with handling
