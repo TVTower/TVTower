@@ -151,7 +151,7 @@ endrem
 
 		'=== PAY COURTAGE ===
 		if GetPlayerBaseCollection().IsPlayer(owner)
-			local courtage:int = TFunctions.RoundToBeautifulValue(rent * 0.5) 
+			local courtage:int = TFunctions.RoundToBeautifulValue(rent * 3) 
 			if not GetPlayerFinance(owner).CanAfford(courtage)
 				TLogger.Log("RoomHandler_RoomAgency.BeginRoomRental()", "Failed to rent room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner+". Not enough money to pay courtage.", LOG_DEBUG)
 			else

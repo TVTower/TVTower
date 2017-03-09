@@ -239,6 +239,8 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Field rent:int
 	'when rented or rental got cancelled
 	Field rentalChangeTime:Long = 0
+	'how many times was the room rented yet?
+	Field rentalTimes:int = 0
 	
 
 	'== ENTER / LEAVE VARIABLES ==
@@ -346,7 +348,8 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		ChangeOwner(newOwner)
 		SetRented(True)
 		rentalChangeTime = GetWorldTime().GetTimeGone()
-		self.rent = rent 
+		self.rent = rent
+		rentalTimes :+ 1
 
 		EventManager.triggerEvent( TEventSimple.Create("room.onBeginRental", New TData.AddString("roomGUID", GetGUID() ).AddNumber("owner", newOwner).AddNumber("oldOwner", oldOwner), self) )
 
@@ -561,8 +564,15 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	'(pay attention to _not_ pay the rent if it is a freehold)
 	Method GetRent:int() {_exposeToLua}
 		if IsRented() then return rent
-		
-		return GetSize() * 5000
+
+		'add 1000 for <10 times, 500 for 11-20 rental times
+		'and additional 100 for each time above 20
+		local addRentalPenalty:int = 0
+		if rentalTimes >= 20 then  addRentalPenalty :+ rentalTimes * 100
+		if rentalTimes < 20 then  addRentalPenalty :+ rentalTimes * 500
+		if rentalTimes < 10 then  addRentalPenalty :+ rentalTimes * 500
+
+		return GetSize() * (5000 + addRentalPenalty)
 	End Method
 
 
