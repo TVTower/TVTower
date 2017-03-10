@@ -624,8 +624,10 @@ Type TFigure extends TFigureBase
 
 		'Debug
 		'print "--------------------------------------------"
-		'print self.name+" ENTERING " + room.GetName() +" ["+room.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
-
+		'if playerID = 1
+		'		print self.name+" ENTERING " + room.GetName() +" ["+room.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
+		'endif
+		
 		'try to enter the room 
 		if not TryEnterRoom(door, room, forceEnter)
 			return False
@@ -691,8 +693,9 @@ Type TFigure extends TFigureBase
 		WaitEnterTimer = -1
 
 		'Debug
-		'print self.name+" START ENTERING " + room.GetName() +" ["+room.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
-	
+		'if playerID = 1
+		'	print self.name+" START ENTERING " + room.GetName() +" ["+room.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
+		'endif
 		'do not fade when it is a fake room
 		fadeOnChangingRoom = True
 		if room.ShowsOccupants() then fadeOnChangingRoom = False
@@ -740,14 +743,16 @@ Type TFigure extends TFigureBase
 
 		'Debug
 		rem
-		local roomName:string = "UNKNOWN"
-		if room
-			roomName = room.name + " ["+room.id+"]"
-		else
-			if inRoom then roomName = inRoom.name+" [inRoom] ["+inRoom.id+"]"
+		if playerID = 1
+			local roomName:string = "UNKNOWN"
+			if room
+				roomName = room.name + " ["+room.id+"]"
+			else
+				if inRoom then roomName = inRoom.name+" [inRoom] ["+inRoom.id+"]"
+			endif
+			print self.name+" FINISH ENTERING " + roomName +"  (" + Time.GetSystemTime("%H:%I:%S") +")"
+			'print "--------------------------------------------"
 		endif
-		print self.name+" FINISH ENTERING " + roomName +"  (" + Time.GetSystemTime("%H:%I:%S") +")"
-		'print "--------------------------------------------"
 		endrem
 
 		if not room then room = inRoom
@@ -843,9 +848,22 @@ endrem
 		'(eg. for players informing the ai)
 		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", null, self, inRoom ) )
 
-		'Debug
-		'print self.name+" LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
 
+		local target:object = GetTargetObject()
+		if TRoomDoorBase(target)
+			local door:TRoomDoorBase = TRoomDoorBase(target)
+			if inRoom and inRoom.id = door.roomID
+				TLogger.Log("TFigure.LeaveRoom", "Removing current target of ~q"+name+"~q as we are already leaving that room (eg. got kicked?).", LOG_DEBUG)
+				FinishCurrentTarget()
+			endif
+		endif
+
+		'Debug
+		'if playerID = 1
+			'print self.name+" LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
+			'if GetTarget() then print " ... has target"
+		'endif
+		
 		'=== CHECK IF LEAVING IS ALLOWED ===
 		'skip leaving if not allowed to do so
 		if not forceLeave and not CanLeaveroom(inroom) then return False
@@ -889,8 +907,10 @@ endrem
 		currentAction = ACTION_LEAVING
 
 		'Debug
-		'print self.name+" START LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
-
+		'if playerID = 1
+		'	print self.name+" START LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
+		'endif
+		
 		'do not fade when it is a fake room
 		fadeOnChangingRoom = True
 		if inRoom.ShowsOccupants() then fadeOnChangingRoom = False
@@ -910,8 +930,10 @@ endrem
 	Method FinishLeaveRoom()
 		local inRoomBackup:TRoomBase = inRoom
 		'Debug
-		'print self.name+" FINISHED LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
-
+		'if playerID = 1
+		'	print self.name+" FINISHED LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
+		'endif
+		
 		'enter target -> null = building
 		SetInRoom( null )
 
