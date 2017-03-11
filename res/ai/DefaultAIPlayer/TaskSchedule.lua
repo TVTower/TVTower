@@ -70,7 +70,7 @@ function TaskSchedule:GetNextJobInTargetRoom()
 		return self.EmergencyScheduleJob
 	elseif (self.ScheduleJob.Status ~= JOB_STATUS_DONE) then
 		return self.ScheduleJob
-	elseif (self.IdleJob.Status ~= JOB_STATUS_DONE) then
+	elseif (self.IdleJob ~= nil and self.IdleJob.Status ~= JOB_STATUS_DONE) then
 		return self.IdleJob
 	end
 

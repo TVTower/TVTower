@@ -87,7 +87,7 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 	elseif (self.BidAuctions.Status ~= JOB_STATUS_DONE) then
 		return self.BidAuctions
 		
-	elseif (self.IdleJob.Status ~= JOB_STATUS_DONE) then
+	elseif (self.IdleJob ~= nil and self.IdleJob.Status ~= JOB_STATUS_DONE) then
 		return self.IdleJob
 	end
 

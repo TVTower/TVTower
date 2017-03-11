@@ -854,7 +854,7 @@ endrem
 			local door:TRoomDoorBase = TRoomDoorBase(target)
 			if inRoom and inRoom.id = door.roomID
 				TLogger.Log("TFigure.LeaveRoom", "Removing current target of ~q"+name+"~q as we are already leaving that room (eg. got kicked?).", LOG_DEBUG)
-				FinishCurrentTarget()
+				RemoveCurrentTarget()
 			endif
 		endif
 
