@@ -560,9 +560,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		'=== RESET FINANCES ===
-		'disabled: we keep the finances of older players for easier
+		'if disabled: keep the finances of older players for easier
 		'AI improvement because of financial log files
-		'GetPlayerFinanceCollection().ResetFinances(playerID)
+		if not GameConfig.KeepBankruptPlayerFinances
+			GetPlayerFinanceCollection().ResetFinances(playerID)
+		endif
 
 		'set current day's finance to zero
 		GetPlayerFinance(playerID, GetWorldTime().GetDay()).Reset()
@@ -663,10 +665,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		GetStationMapCollection().Update()
 
 
-
 		'=== FINANCE ===
-		'adjust start day (days after game start)
-		GetPlayerFinanceCollection().SetPlayerStartDay(playerID, GetWorldTime().GetDaysRun() )
+		'inform finance about new startday
+		GetPlayerFinanceCollection().SetPlayerStartDay(playerID, GetWorldTime().GetDay())
 		if not GetPlayerFinance(playerID) then print "finance "+playerID+" failed."
 		if difficulty.startMoney > 0 
 			GetPlayerFinance(playerID).EarnGrantedBenefits( difficulty.startMoney )
@@ -1332,7 +1333,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			For local r:TRoomBase = EachIn GetRoomBaseCollection().list
 				if r.GetOwner() <> Player.playerID then continue
 				'ignore freeholds
-				if not r.IsFreehold() then continue
+				if r.IsFreehold() then continue
 				local rent:int = r.GetRent()
 				if rent > 0 then finance.PayRent(rent, r)
 			Next

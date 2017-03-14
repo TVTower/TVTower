@@ -38,36 +38,61 @@ Type TPlayerFinanceCollection
 			finances[playerIndex] = new TPlayerFinance[0]
 		endif
 
-		SetPlayerStartDay(playerID, 0)
+		if not GameConfig.KeepBankruptPlayerFinances
+			SetPlayerStartIndex(playerID, 0)
+			'reset old finances
+			finances[playerIndex] = new TPlayerFinance[0]
+		endif
 	End Method
 
 
+	'Get player start day
+	Method GetPlayerStartDay:int(playerID:int)
+		return GetWorldTime().GetStartDay() + (GetPlayerStartIndex(playerID)-1)
+	End Method
+
+
+	'set player start index by a given day
 	Method SetPlayerStartDay:int(playerID:int, day:int)
+		if day = -1 then day = GetWorldTime().GetDay()
+		return SetPlayerStartIndex(playerID, day - GetWorldTime().GetStartDay() + 1)
+	End Method
+
+
+	'set player start index by a given index
+	Method SetPlayerStartIndex:int(playerID:int, index:int)
 		if playerID > 0 and playerStartIndex.length >= playerID
-			playerStartIndex[playerID -1] = Max(0, day)
+			'you cannot set index to "0"
+			'(this is limited to "day before start")
+			playerStartIndex[playerID -1] = Max(1, index)
 			return True
 		endif
 		return False
 	End Method
 
 
-	'returns how many days later than "day zero" a player started
-	Method GetPlayerStartDay:int(playerID:int)
-		Local playerStartDay:Int = 0
+	'returns offset to a "day zero" started player
+	Method GetPlayerStartIndex:int(playerID:int)
+		Local index:Int = 1
 		if playerID > 0 and playerStartIndex.length >= playerID
-			playerStartDay = playerStartIndex[playerID -1]
+			'you cannot use index to "0"
+			'(this is limited to "day before start")
+			index = MaX(1, playerStartIndex[playerID -1])
 		endif
-		return playerStartDay
+		return index
 	End Method
 
 
-	Method GetTotal:TPlayerFinance(playerID:int)
+	Method GetTotal:TPlayerFinance(playerID:int, tillDay:int = -1)
+		if tillDay = -1 then tillDay = GetWorldTime().GetDay()
 		local totalFinance:TPlayerFinance = New TPlayerFinance
 		local finance:TPlayerFinance
-		local playerStartDay:int = GetPlayerStartDay(playerID)
-
-		For local day:int = GetWorldTime().GetStartDay() to GetWorldTime().GetDay()
-			finance = Get(playerID, day + playerStartDay)
+		'save some processing  by only adding the days a player incarnation
+		'played yet
+		local playerStartDay:int = GetWorldTime().GetStartDay() + (GetPlayerStartIndex(playerID)-1)
+		
+		For local day:int = playerStartDay to tillDay
+			finance = Get(playerID, day)
 			if not finance then continue
 
 			totalFinance.expense_programmeLicences :+ finance.expense_programmeLicences
@@ -101,16 +126,40 @@ Type TPlayerFinanceCollection
 	End Method
 
 
-	Method Get:TPlayerFinance(playerID:int, day:int=-1, ignorePlayerStartDay:int = False)
+	Method Get:TPlayerFinance(playerID:int, day:int=-1)
 		If day <= 0 Then day = GetWorldTime().GetDay()
-		return _Get(playerID, day, ignorePlayerStartDay)
+		return _Get(playerID, GetArrayIndex(playerID, day, False), day)
 	End Method
 
 
-	'ignoring the player's start day allows to read finances of older
-	'incarnations of the player (before bankruptcies)
-	Method _Get:TPlayerFinance(playerID:int, day:int, ignorePlayerStartDay:int = False)
+	Method GetIgnoringStartDay:TPlayerFinance(playerID:int, day:int=-1)
+		If day <= 0 Then day = GetWorldTime().GetDay()
+		return _Get(playerID, GetArrayIndex(playerID, day, True), day)
+	End Method
+
+
+
+	Method GetArrayIndex:int(playerID:int, day:int, ignorePlayerStartDay:int = False)
+		'create entry if missing entry for player
+		if playerStartIndex.length < playerID
+			playerStartIndex = playerStartIndex[..playerID]
+		endif
+		
+		local index:int = day - GetWorldTime().GetStartDay() + 1
+		local minIndex:int = (not ignorePlayerStartDay) * GetPlayerStartIndex(playerID) 
+
+		'return financials for the day before game start
+		if index < minIndex then return 0
+		'arr[1] = day0, so add 1
+		return index
+	End Method
+
+
+	'day is only used for debug logs
+	Method _Get:TPlayerFinance(playerID:int, arrayIndex:int, day:int=-1)
 		if playerID <= 0 then return Null
+
+		arrayIndex = Max(0, arrayIndex)
 
 		local playerIndex:int = playerID -1
 
@@ -123,15 +172,7 @@ Type TPlayerFinanceCollection
 			playerStartIndex = playerStartIndex[..playerID]
 		endif
 
-		'subtract start day to get a index starting at 0, add 1 as
-		'we also have financials for the day before game start
-		Local arrayIndex:Int = day - GetWorldTime().GetStartDay() + 1 - (not ignorePlayerStartDay)*playerStartIndex[playerIndex]
-
-		'if the array is less than allowed: return finance from day 0
-		'which is the day before "start"
-		If arrayIndex < 0 Then Return _Get(playerID, GetWorldTime().GetStartDay() - 1 + (not ignorePlayerStartDay)*playerStartIndex[playerIndex])
-
-
+		'if requesting "before start"-finance (index=0)
 		If (arrayIndex = 0 And Not finances[playerIndex][0]) Or arrayIndex >= finances[playerIndex].length
 			TLogger.Log("TPlayer.GetFinance()", "Adding a new finance to player "+playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
 			If arrayIndex >= finances[playerIndex].length
@@ -146,9 +187,12 @@ Type TPlayerFinanceCollection
 			'calling GetFinance(day-1) instead of accessing the array
 			'assures that the object is created if needed (recursion)
 			If arrayIndex > 0
-				'print "take over finances: from day " + (day-1) + " to day "+day+"  target arrayIndex: "+arrayIndex+"/" + (finances[playerIndex].length-1)
-				'print "take over finances: " + (day-1) +" old:" + _Get(playerID, day-1).money
-				TPlayerFinance.TakeOverFinances(_Get(playerID, day-1), finances[playerIndex][arrayIndex])
+				if day = -1 then day = GetWorldTime().GetDay()
+				local takeOverFromDay:int = day - 1
+			
+				print "take over finances: from day " + takeOverFromDay + " to day "+day+"  target arrayIndex: "+arrayIndex+"/" + (finances[playerIndex].length-1)
+				finances[playerIndex][arrayIndex].TakeOverFrom( _Get(playerID, arrayIndex-1, takeOverFromDay))
+				finances[playerIndex][arrayIndex].day = day
 			endif
 		EndIf
 		Return finances[playerIndex][arrayIndex]
@@ -160,8 +204,8 @@ Function GetPlayerFinanceCollection:TPlayerFinanceCollection()
 	Return TPlayerFinanceCollection.GetInstance()
 End Function
 
-Function GetPlayerFinance:TPlayerFinance(playerID:int, day:int=-1, ignorePlayerStartDay:int = False)
-	Return TPlayerFinanceCollection.GetInstance().Get(playerID, day, ignorePlayerStartDay)
+Function GetPlayerFinance:TPlayerFinance(playerID:int, day:int=-1)
+	Return TPlayerFinanceCollection.GetInstance().Get(playerID, day)
 End Function
 
 
@@ -203,6 +247,7 @@ Type TPlayerFinance {_exposeToLua="selected"}
 	Field creditMaxYesterday:Long        = 0
 	Field creditDaysMax:Long             = 0
 	Field playerID:int                   = 0
+	Field day:int                        = 0
 
 	Global creditInterestRate:float      = 0.05 '5% a day
 	Global balanceInterestRate:float     = 0.01 '1% a day
@@ -253,25 +298,20 @@ Type TPlayerFinance {_exposeToLua="selected"}
 
 
 	'take the current balance (money and credit) to the next day
-	Function TakeOverFinances:Int(fromFinance:TPlayerFinance, toFinance:TPlayerFinance Var)
-		If Not toFinance Then Return False
-		'if the "fromFinance" does not exist yet just assume the same
-		'value than of "toFinance" - so no modification would be needed
-		'in all other cases:
+	Method TakeOverFrom:Int(fromFinance:TPlayerFinance)
+		If Not fromFinance Then Return False
 		If fromFinance
-			toFinance = Null
-			'create the new financial but give the yesterdays money/credit
-			toFinance = New TPlayerFinance.Create(fromFinance.playerID)
-			toFinance.money = fromFinance.money
-			toFinance.revenue_before = fromFinance.money
-			toFinance.revenue_after = fromFinance.money
-			toFinance.credit = fromFinance.credit
+			Reset()
+			money = fromFinance.money
+			revenue_before = fromFinance.money
+			revenue_after = fromFinance.money
+			credit = fromFinance.credit
 
-			'yesterdays credit is the current maximum of today
-			toFinance.creditMaxToday = fromFinance.credit
-			toFinance.creditMaxYesterday = fromFinance.creditMaxToday
+			'previous credit is the current maximum of today
+			creditMaxToday = fromFinance.credit
+			creditMaxYesterday = fromFinance.creditMaxToday
 		EndIf
-	End Function
+	End Method
 
 
 	'returns whether the finances allow the given transaction
@@ -522,6 +562,8 @@ Type TPlayerFinance {_exposeToLua="selected"}
 
 	'refreshs stats about earned money from interest on the current balance
 	Method EarnBalanceInterest:Int(value:Long)
+		if value = 0 then return False
+		
 		TLogger.Log("TFinancial.EarnBalanceInterest()", "Player "+playerID+" earned "+value+" on interest of their current balance", LOG_DEBUG)
 		'add this to our history
 		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.EARN_BALANCEINTEREST, +value).AddTo(playerID)
@@ -534,6 +576,8 @@ Type TPlayerFinance {_exposeToLua="selected"}
 
 	'refreshs stats about paid money from drawing credit interest (negative current balance)
 	Method PayDrawingCreditInterest:Int(value:Long)
+		if value = 0 then return False
+
 		TLogger.Log("TFinancial.PayDrawingCreditInterest()", "Player "+playerID+" paid "+value+" on interest of having a negative current balance", LOG_DEBUG)
 		'add this to our history
 		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_DRAWINGCREDITINTEREST, -value).AddTo(playerID)
@@ -700,6 +744,8 @@ Type TPlayerFinance {_exposeToLua="selected"}
 
 	'refreshs stats about paid money from paying the fees for the owned stations
 	Method PayStationFees:Int(price:Long)
+		if price = 0 then return False
+
 		TLogger.Log("TFinancial.PayStationFees()", "Player "+playerID+" paid "+price+" for station fees", LOG_DEBUG)
 		'add this to our history
 		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_STATIONFEES, -price).AddTo(playerID)
@@ -712,6 +758,8 @@ Type TPlayerFinance {_exposeToLua="selected"}
 
 	'refreshs stats about paid money from paying interest on the current credit
 	Method PayCreditInterest:Int(price:Long)
+		if price = 0 then return False
+
 		TLogger.Log("TFinancial.PayCreditInterest()", "Player "+playerID+" paid "+price+" on interest of their credit", LOG_DEBUG)
 		'add this to our history
 		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_CREDITINTEREST, -price).AddTo(playerID)
@@ -736,6 +784,8 @@ Type TPlayerFinance {_exposeToLua="selected"}
 
 	'refreshs stats about money got from 3rd parties
 	Method EarnGrantedBenefits:Int(price:Long)
+		if price = 0 then return False
+
 		TLogger.Log("TFinancial.EarnGrantedBenefits()", "Player "+playerID+" earned "+price+" of granted benefits", LOG_DEBUG)
 		'add this to our history
 		new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.GRANTED_BENEFITS, price).AddTo(playerID)
