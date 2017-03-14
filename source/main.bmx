@@ -297,14 +297,14 @@ Type TApp
 	End Method
 
 
-	Function onBeginLoadResource( triggerEvent:TEventBase )
+	Function onBeginLoadResource:int( triggerEvent:TEventBase )
 		Local resourceName:String = triggerEvent.GetData().GetString("resourceName")
 		Local name:String = triggerEvent.GetData().GetString("name")
 		TLogger.Log("App.onLoadResource", "Loading ~q"+name+"~q ["+resourceName+"]", LOG_LOADING)
 	End Function
 
 
-	Function onLoadResource( triggerEvent:TEventBase )
+	Function onLoadResource:int( triggerEvent:TEventBase )
 		Local resourceName:String = triggerEvent.GetData().GetString("resourceName")
 		Local name:String = triggerEvent.GetData().GetString("name")
 		TLogger.Log("App.onLoadResource", "Loaded ~q"+name+"~q ["+resourceName+"]", LOG_LOADING)
@@ -314,7 +314,7 @@ Type TApp
 
 	'if no startup-music was defined, try to play menu music if some
 	'is loaded
-	Function onLoadMusicResource( triggerEvent:TEventBase )
+	Function onLoadMusicResource:int( triggerEvent:TEventBase )
 		Local resourceName:String = triggerEvent.GetData().GetString("resourceName")
 		If resourceName = "MUSIC"
 			'if no music is played yet, try to get one from the "menu"-playlist
@@ -323,7 +323,7 @@ Type TApp
 	End Function
 
 
-	Function onLoadXmlFromFinished( triggerEvent:TEventBase )
+	Function onLoadXmlFromFinished:int( triggerEvent:TEventBase )
 		If triggerEvent.getData().getString("uri") = TApp.baseResourceXmlUrl
 			TApp.baseResourcesLoaded = 1
 		EndIf
@@ -795,15 +795,17 @@ Type TApp
 						endif
 						endrem
 
+						rem
 						local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("laundry")
 						if room
 							print "renting room: " + room.GetName()
-							RoomHandler_RoomAgency.GetInstance().CancelRoomRental(room, GetPlayerBase().playerID)
-							RoomHandler_RoomAgency.GetInstance().BeginRoomRental(room, GetPlayerBase().playerID)
+							GetRoomAgency().CancelRoomRental(room, GetPlayerBase().playerID)
+							GetRoomAgency().BeginRoomRental(room, GetPlayerBase().playerID)
 							room.SetUsedAsStudio(True)
 						else
 							print "room not found"
 						endif
+						endrem
 						
 												
 						rem
@@ -1139,7 +1141,8 @@ endrem
 					TLogger.Log("KickAllFromRooms", "Player kicks all figures out of the rooms.", LOG_DEBUG)
 					For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
 						If fig.GetInRoom()
-							fig.KickOutOfRoom(GetPlayer().GetFigure())
+							fig.KickOutOfRoom()
+							'fig.KickOutOfRoom(GetPlayer().GetFigure())
 						else
 							print "fig: "+fig.name+" not in room."
 						endif
@@ -1841,6 +1844,7 @@ Type TGameState
 	Field _Building:TBuilding 'includes, sky, moon, ufo
 	Field _RoomBoard:TRoomBoard 'signs	
 	Field _NewsAgency:TNewsAgency
+	Field _RoomAgency:TRoomAgency
 	Field _AuctionProgrammeBlocksList:TList
 	Field _RoomHandler_Studio:RoomHandler_Studio
 	Field _RoomHandler_MovieAgency:RoomHandler_MovieAgency
@@ -1981,6 +1985,7 @@ Type TGameState
 		_Assign(_NewsEventTemplateCollection, TNewsEventTemplateCollection._instance, "NewsEventTemplateCollection", MODE_LOAD)
 		_Assign(_NewsEventCollection, TNewsEventCollection._instance, "NewsEventCollection", MODE_LOAD)
 		_Assign(_NewsAgency, TNewsAgency._instance, "NewsAgency", MODE_LOAD)
+		_Assign(_RoomAgency, TRoomAgency._instance, "RoomAgency", MODE_LOAD)
 		_Assign(_AchievementCollection, TAchievementCollection._instance, "AchievementCollection", MODE_LOAD)
 		_Assign(_ArchivedMessageCollection, TArchivedMessageCollection._instance, "ArchivedMessageCollection", MODE_LOAD)
 		_Assign(_Building, TBuilding._instance, "Building", MODE_LOAD)
@@ -2100,6 +2105,7 @@ Type TGameState
 		_Assign(TNewsEventTemplateCollection._instance, _NewsEventTemplateCollection, "NewsEventTemplateCollection", MODE_SAVE)
 		_Assign(TNewsEventCollection._instance, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
 		_Assign(TNewsAgency._instance, _NewsAgency, "NewsAgency", MODE_SAVE)
+		_Assign(TRoomAgency._instance, _RoomAgency, "RoomAgency", MODE_SAVE)
 		_Assign(TAchievementCollection._instance, _AchievementCollection, "AchievementCollection", MODE_SAVE)
 		_Assign(TArchivedMessageCollection._instance, _ArchivedMessageCollection, "ArchivedMessageCollection", MODE_SAVE)
 		_Assign(EventManager._events, _EventManagerEvents, "Events", MODE_SAVE)
@@ -5434,15 +5440,37 @@ Type GameEvents
 		If GetWorldTime().GetDaysRun(time) >= 1
 			GetProgrammeDataCollection().RefreshTopicalities()
 			GetAdContractBaseCollection().RefreshInfomercialTopicalities()
-			GetGame().ComputeContractPenalties(day)
-			'first pay everything ...
-			GetGame().ComputeDailyCosts(day)
-			'then earn...
-			GetGame().ComputeDailyIncome(day)
+
 			TAuctionProgrammeBlocks.EndAllAuctions() 'won auctions moved to programmecollection of player
 			if GetWorldTime().GetDayOfYear(time) = 1
 				TAuctionProgrammeBlocks.RefillAuctionsWithoutBid()
 			endif
+
+
+			rem
+			'Ronny: should not be needed 
+
+			'fix old savegames with broken finances (existing finances of
+			'bankrupt players at incorrect array indices)
+			'attention:: make sure that GetDaysRun() is >= 1
+			For Local Player:TPlayer = EachIn GetPlayerCollection().players
+				local oldFinance:TPlayerFinance = GetPlayerFinance(player.playerID, day-1)
+				local oldMoney:Long = oldFinance.GetMoney()
+				local finance:TPlayerFinance = GetPlayerFinance(player.playerID, day)
+				'take over money, credit ... and reset rest
+				finance.TakeOverFrom(oldFinance)
+				print Player.playerID+") TakeOverMoney:  money "+ oldMoney +" -> "+finance.GetMoney() +"  now: " + GetPlayerFinance(player.playerID, day).GetMoney()
+			Next
+			print "---------------------"
+			endrem
+				
+
+			'pay for contracts we did not fulfill
+			GetGame().ComputeContractPenalties(day)
+			'first pay everything ...
+			GetGame().ComputeDailyCosts(day)
+			'then earn... (avoid wrong balance interest)
+			GetGame().ComputeDailyIncome(day)
 
 			'Check if a player goes bankrupt now
 			GetGame().UpdatePlayerBankruptLevel()
@@ -5756,62 +5784,69 @@ Function GetPlayerFinanceOverviewText:string[](playerID:int, day:int)
 
 	'ignore player start day and fetch information about "older incarnations"
 	'of that player too (bankruptcies)
-	local finance:TPlayerFinance = GetPlayerFinance(playerID, day, True)
+	local finance:TPlayerFinance = GetPlayerFinanceCollection().GetIgnoringStartDay(playerID, day)
 	local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(playerID)
 	
-	local title:string = LSet("Finance Stats for player #" + playerID + " on day " + GetWorldTime().GetDaysRun(midnight) + ". Time: 00:00 - " + latestTime, 79)
+	local title:string = LSet("Finance Stats for player #" + playerID + " on day " + GetWorldTime().GetDaysRun(midnight) +" ("+GetWorldTime().GetDay(midnight)+")"+ ". Time: 00:00 - " + latestTime, 85)
 	local text:string[]
 	
-	text :+ [".--------------------------------------------------------------------------------."]
+	text :+ [".--------------------------------------------------------------------------------------."]
 	text :+ ["| " + title                                          + "|"]
 	if not finance
-		text :+ ["| " + LSet("No Financial overview available for the requested day.", 79) + "|"]
+		text :+ ["| " + LSet("No Financial overview available for the requested day.", 85) + "|"]
 	endif
 
-	local bankruptcyCount:int = GetPlayer(playerID).GetBankruptcyAmount(midnight)
-	local bankruptcyTime:long = GetPlayer(playerID).GetBankruptcyTime(bankruptcyCount)
+	local bankruptcyCountAtMidnight:int = GetPlayer(playerID).GetBankruptcyAmount(midnight)
 	'bankruptcy happened today?
-	if bankruptcyCount > 0
-		local restartTime:Long = bankruptcyTime 'GetWorldTime().ModifyTime(bankruptcyTime, 0, 1, 0, 0, 0)
+	if bankruptcyCountAtMidnight > 0
+		local bankruptcyCountAtDayBegin:int = GetPlayer(playerID).GetBankruptcyAmount(midnight - TWorldTime.DAYLENGTH)
+		'print "player #"+playerID+": bankruptcyCountAtDayBegin=" + bankruptcyCountAtDayBegin+ "  ..AtMidnight=" + bankruptcyCountAtMidnight+"  midnight="+GetWorldTime().GetFormattedGameDate(midnight)
 
-		'bankruptcy on that day (or more detailed: right on midnight the
-		'next day)
-		if GetWorldTime().GetDay(bankruptcyTime) = GetWorldTime().GetDay(midnight)
-			text :+ ["| " + LSet("* Player #"+playerID+" went into bankruptcy that day !", 79) + "|"]
-		endif
+		For local bankruptcyCount:int = bankruptcyCountAtDayBegin to bankruptcyCountAtMidnight
+			if bankruptcyCount = 0 then continue
+			local bankruptcyTime:long = GetPlayer(playerID).GetBankruptcyTime(bankruptcyCount)
 
-		'restarted later on?
-		if GetWorldTime().GetDay(restartTime) = GetWorldTime().GetDay(midnight)
-			text :+ ["| " + LSet("* Player #"+playerID+" (re)started at "+GetWorldTime().GetFormattedTime(restartTime) +" on day " + (GetWorldTime().getDaysRun(restartTime)+1)+" !", 79) + "|"]
-		endif
+			rem
+			'disabled: use this if restarts of players happen the next day
+			local restartTime:Long = GetWorldTime().ModifyTime(bankruptcyTime, 0, 1, 0, 0, 0)
+
+			'bankruptcy on that day (or more detailed: right on midnight the
+			'next day)
+			if GetWorldTime().GetDay(bankruptcyTime) = day
+				text :+ ["| " + LSet("* Player #"+playerID+" went into bankruptcy that day !", 85) + "|"]
+			endif
+			endrem
+
+			text :+ ["| " + LSet("* Player #"+playerID+" (re)started at "+GetWorldTime().GetFormattedTime(bankruptcyTime) + " that day!", 85) + "|"]
+		Next
 	endif
 
 
 	if finance and financeTotal
 		local titleLength:int = 30
 
-		text :+ ["|---------------------------------------------------------.----------------------|"]
-		text :+ ["| Money:              "+Rset(finance.GetMoney(), 9)+"  |                       |         TOTAL         |"]
-		text :+ ["|--------------------------------|-----------.-----------|-----------.-----------|"]
-		text :+ ["|                                |   INCOME  |  EXPENSE  |   INCOME  |  EXPENSE  |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_programmeLicences), 9) + " | " + Rset(MathHelper.DottedValue(finance.expense_programmeLicences),9) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_programmeLicences), 9) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_programmeLicences),9)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_ads), 9) + " | " + Rset(MathHelper.DottedValue(finance.expense_penalty),9) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_ads), 9) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_penalty),9)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CALL_IN_SHOW_INCOME")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_callerRevenue), 9) + " | " + Rset("-",9) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_callerRevenue), 9) + " | " + Rset("-",9)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_sponsorshipRevenue), 9) + " | " + Rset("-",9) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_sponsorshipRevenue), 9) + " | " + Rset("-",9)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_NEWS")), titleLength) + " | " + RSet("-", 9) + " | " + Rset(MathHelper.DottedValue(finance.expense_news),9) + " | " + RSet("-", 9) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_news),9)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_NEWSAGENCIES")), titleLength) + " | " + RSet("-", 9) + " | " + Rset(MathHelper.DottedValue(finance.expense_newsAgencies),9)+ " | " + RSet("-", 9) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_newsAgencies),9)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STATIONS")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_stations), 9) + " | " + Rset(MathHelper.DottedValue(finance.expense_stationFees),9) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_stations), 9) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_stationFees),9)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SCRIPTS")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_scripts), 9) + " | " + Rset(MathHelper.DottedValue(finance.expense_scripts),9) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_scripts), 9) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_scripts),9)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF")), titleLength) + " | " + RSet("-", 9) + " | " + Rset(MathHelper.DottedValue(finance.expense_productionStuff),9) + " | " + RSet("-", 9) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_productionStuff),9)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STUDIO_RENT")), titleLength) + " | " + RSet("-", 9) + " | " + Rset(MathHelper.DottedValue(finance.expense_rent),9) + " | " + RSet("-", 9) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_rent),9)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_balanceInterest), 9) + " | " + Rset(MathHelper.DottedValue(finance.expense_drawingCreditInterest),9) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_balanceInterest), 9) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_drawingCreditInterest),9)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_creditTaken), 9) + " | " + Rset(MathHelper.DottedValue(finance.expense_creditRepayed),9) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_creditTaken), 9) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_creditRepayed),9)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_MISC")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_misc), 9) + " | " + Rset(MathHelper.DottedValue(finance.expense_misc),9) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_misc), 9) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_misc),9)+ " |"]
-		text :+ ["|--------------------------------|-----------|-----------|-----------|-----------|"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TOTAL")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_total), 9) + " | " + Rset(MathHelper.DottedValue(finance.expense_total),9) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_total), 9) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_total),9)+ " |"]
-		text :+ ["'--------------------------------'-----------'-----------'-----------'-----------'"]
+		text :+ ["|-------------------------------------------------------------.------------------------|"]
+		text :+ ["| Money:        "+Rset(MathHelper.DottedValue(finance.GetMoney()), 15)+"  |                         |           TOTAL           |"]
+		text :+ ["|--------------------------------|------------.------------|-------------.-------------|"]
+		text :+ ["|                                |   INCOME   |  EXPENSE   |   INCOME    |   EXPENSE   |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_programmeLicences), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_programmeLicences), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_programmeLicences), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_programmeLicences), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_ads), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_penalty), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_ads), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_penalty), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CALL_IN_SHOW_INCOME")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_callerRevenue), 10) + " | " + Rset("-", 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_callerRevenue), 11) + " | " + Rset("-", 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_sponsorshipRevenue), 10) + " | " + Rset("-", 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_sponsorshipRevenue), 11) + " | " + Rset("-", 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_NEWS")), titleLength) + " | " + RSet("-", 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_news), 10) + " | " + RSet("-", 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_news), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_NEWSAGENCIES")), titleLength) + " | " + RSet("-", 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_newsAgencies), 10)+ " | " + RSet("-", 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_newsAgencies), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STATIONS")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_stations), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_stationFees), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_stations), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_stationFees), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SCRIPTS")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_scripts), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_scripts), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_scripts), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_scripts), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF")), titleLength) + " | " + RSet("-", 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_productionStuff), 10) + " | " + RSet("-", 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_productionStuff), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STUDIO_RENT")), titleLength) + " | " + RSet("-", 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_rent), 10) + " | " + RSet("-", 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_rent), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_balanceInterest), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_drawingCreditInterest), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_balanceInterest), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_drawingCreditInterest), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_creditTaken), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_creditRepayed), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_creditTaken), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_creditRepayed), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_MISC")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_misc), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_misc), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_misc), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_misc), 11)+ " |"]
+		text :+ ["|--------------------------------|------------|------------|-------------|-------------|"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TOTAL")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_total), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_total), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_total), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_total), 11)+ " |"]
+		text :+ ["'--------------------------------'------------'------------'-------------'-------------'"]
 	else
-		text :+ ["'--------------------------------------------------------------------------------'"]
+		text :+ ["'--------------------------------------------------------------------------------------'"]
 	endif
 	return text
 End Function

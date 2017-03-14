@@ -86,7 +86,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		local screenOffsetX:int = 20
 		local screenOffsetY:int = 10
 
-		local finance:TPlayerFinance = GetPlayer(room.owner).GetFinance(financeShowDay)
+		local finance:TPlayerFinance = GetPlayerFinanceCollection().GetIgnoringStartDay(room.owner, financeShowDay)
 
 		local captionColor:TColor = new TColor.CreateGrey(70)
 		local captionFont:TBitmapFont = GetBitmapFont("Default", 14, BOLDFONT)
@@ -102,6 +102,24 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		local clPositive:TColor = new TColor.Create(90, 110, 90)
 		local clNegative:TColor = new TColor.Create(110, 90, 90)
 
+		local clOriginal:TColor = new TColor.Get()
+
+
+		'=== BANKRUPTCY HINT ===
+		'showing something before that player started
+		if GetPlayerFinanceCollection().GetPlayerStartDay(room.owner) > financeShowDay
+			local midnight:Long = GetWorldTime().MakeTime(0, financeShowDay+1, 0, 0, 0)
+			local bankruptcyCountAtMidnight:int = GetPlayer(room.owner).GetBankruptcyAmount(midnight)
+			local bankruptcyCountAtDayBegin:int = GetPlayer(room.owner).GetBankruptcyAmount(midnight - TWorldTime.DAYLENGTH)
+			local bankruptcyCount:int = 4
+		'bankruptcy happened today?
+'		if bankruptcyCountAtMidnight > 0
+
+			textFont.DrawBlock(GetLocale("BEFORE_XTH_PLAYER_RESTART").Replace("%X%", (bankruptcyCountAtMidnight+1)), 250 + screenOffsetX, screenOffsetY - 10, 200, 20, ALIGN_CENTER_CENTER, TColor.Create(120,80,80), 2, 1, 0.2)
+			'tint color
+			SetColor 255,240,240
+		endif
+
 
 
 		'=== DAY CHANGER ===
@@ -109,7 +127,6 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		local today:Double = GetWorldTime().MakeTime(0, financeShowDay, 0, 0)
 		local todayText:string = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().GetYear(today)
 		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 30 + screenOffsetX, 15 +  screenOffsetY, 160, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(90), 2, 1, 0.2)
-
 
 
 		'=== NEWS LOG ===
@@ -402,6 +419,8 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 
 
 		GuiManager.Draw( LS_officeFinancialScreen )
+
+		clOriginal.SetRGB()
 	End Function
 
 
