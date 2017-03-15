@@ -1038,7 +1038,7 @@ Type TDebugFinancialInfos
 		local textX:int = x+1
 		local textY:int = y+1
 
-		local finance:TPlayerFinance = GetPlayerFinance(playerID, GetWorldTime().GetDay(), True)
+		local finance:TPlayerFinance = GetPlayerFinanceCollection().GetIgnoringStartDay(playerID, GetWorldTime().GetDay())
 		local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(playerID)
 
 		local font:TBitmapfont = GetBitmapFont("default", 10)

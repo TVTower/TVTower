@@ -1,16 +1,24 @@
 SuperStrict
+Import "Dig/base.gfx.gui.bmx"
+Import "common.misc.datasheet.bmx"
 Import "game.roomhandler.base.bmx"
+Import "game.misc.roomboardsign.bmx"
 
 
 'RoomAgency
 Type RoomHandler_RoomAgency extends TRoomHandler
-	rem
-	'unused for now
-	'contains contracts for rented rooms
-	Field rentalContracts:TList = CreateList()
-	endrem
+	'rental or cancel rental?
+	Field mode:int = 0
+	Field selectedRoom:TRoomBase
+	Field hoveredRoom:TRoomBase
 
+	Global LS_roomagency_board:TLowerString = TLowerString.Create("roomagency")	
+	Global _eventListeners:TLink[]
 	Global _instance:RoomHandler_RoomAgency
+
+	Const MODE_NONE:int = 0
+	Const MODE_RENT:int = 1
+	Const MODE_CANCELRENT:int = 2
 
 
 	Function GetInstance:RoomHandler_RoomAgency()
@@ -33,8 +41,17 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 
 
 		'=== EVENTS ===
-		'nothing up to now
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
 
+		'react to changes (eg. cancel a buy/sell-selection if the selected
+		'room changes owner)
+		_eventListeners :+ [ EventManager.registerListenerFunction("room.onBeginRental", onBeginOrCancelRoomRental) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("room.onCancelRental", onBeginOrCancelRoomRental) ]
+
+		'local screen:TScreen = ScreenCollection.GetScreen("screen_roomagency")
+		'_eventListeners :+ _RegisterScreenHandler( onUpdateRoomAgency, onDrawRoomAgency, screen )
 
 		'(re-)localize content
 		SetLanguage()
@@ -60,6 +77,11 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 	End Method
 
 
+	Method RemoveAllGuiElements:int()
+		'
+	End Method
+
+
 	Method onEnterRoom:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		'only interested in player figures (they cannot be in one room
@@ -69,6 +91,16 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 
 		GetInstance().FigureEntersRoom(figure)
 	End Method
+
+
+	Function onBeginOrCancelRoomRental:int( triggerEvent:TEventBase )
+		local room:TRoomBase = TRoomBase(triggerEvent.GetSender())
+		if not room then return False
+
+		local i:RoomHandler_RoomAgency = GetInstance()
+		if i.selectedRoom and i.mode = MODE_RENT and not i.selectedRoom.IsRentable() then i.selectedRoom = null
+		if i.selectedRoom and i.mode = MODE_CANCELRENT and i.selectedRoom.IsRentable() then i.selectedRoom = null
+	End Function
 
 
 
@@ -89,155 +121,122 @@ rem
 endrem
 	End Method
 
-	rem
-	'unused for now
 
-	Method AddRentalContract:int(rentalContract:TRoomRentalContract)
-		if rentalContract.Contains(rentalContract) then return False
-		rentalContracts.AddLast(rentalContract)
+	Method onDrawRoom:int( triggerEvent:TEventBase )
+		Render()
 	End Method
 
 
-	Method GetRentalContract:TRoomRentalContract(contractGUID:string)
-		For local c:TRoomRentalContract = Eachin rentalContracts
-			if c.IsGUID(contractGUID) then return c
-		Next
-		return null
+	Method onUpdateRoom:int( triggerEvent:TEventBase )
+		Update()
 	End Method
 
 
-	Method GetRentalContractByDetails:TRoomRentalContract(roomGUID:string, owner:int)
-		For local c:TRoomRentalContract = Eachin rentalContracts
-			if c.roomGUID = roomGUID and c.owner = owner then return c
-		Next
-		return null
-	End Method
-	endrem
-
-
- 	Method UpdateEmptyRooms()
-		For local r:TRoomBase = EachIn GetRoomBaseCollection().list
-			'ignore non-rentable rooms
-			if not r.IsRentable() then continue
-			'we cannot give back empty rooms to players ... so only
-			're-rent if it is originally owned by a non-player
-			if r.originalOwner > 0 then continue
-	
-
-			'room empty for a long time?
-			if r.rentalChangeTime + GameRules.roomReRentTime < GetWorldTime().GetTimeGone()
-				'let original owner rent it
-				r.BeginRental(0, r.GetRent())
-				print "RoomHandler_RoomAgency.UpdateEmptyRooms(): re-rented. " + r.GetName() + "  " + r.GetDescription(1) 
-			endif
-		Next
-	End Method
-
-
-	Method GetTotalRent:int(playerID:int)
-		local result:int = 0
-		For local r:TRoomBase = EachIn GetRoomBaseCollection().list
-			if r.GetOwner() <> playerID then continue
-
-		'	r.GetRent()
-		Next
-	End Method
-	
-
-	Function BeginRoomRental:int(room:TRoomBase, owner:int=0)
-		if room.IsRented() then return False
-
-		local rent:int = room.GetRent()
-
-		'=== PAY COURTAGE ===
-		if GetPlayerBaseCollection().IsPlayer(owner)
-			local courtage:int = TFunctions.RoundToBeautifulValue(rent * 3) 
-			if not GetPlayerFinance(owner).CanAfford(courtage)
-				TLogger.Log("RoomHandler_RoomAgency.BeginRoomRental()", "Failed to rent room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner+". Not enough money to pay courtage.", LOG_DEBUG)
+	Method Update()
+		if Keymanager.IsHit(KEY_TAB)
+			if mode = MODE_NONE
+				mode = MODE_RENT
 			else
-				'pay a courtage
-				GetPlayerFinance(owner).PayRent(courtage, room)
+				mode = MODE_NONE
 			endif
 		endif
-
-		'TODO: modify rent by sympathy
-		'rent :* sympathyMod(owner)
-
-		'=== RENT THE ROOM ===
-		if room.BeginRental(owner, rent)
-			rem
-			'unused for now
-			local contract:TRoomRentalContract = new TRoomRentalContract.Init(room.GetGUID(), owner, room.GetRent())
-			AddRentalContract(contract)
-			endrem
-			
-			TLogger.Log("RoomHandler_RoomAgency.BeginRoomRental()", "Rented room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner, LOG_DEBUG)
-			return True
+	
+		if mode = MODE_RENT or mode = MODE_CANCELRENT
+			UpdateRoomBoard()
 		else
-			TLogger.Log("RoomHandler_RoomAgency.BeginRoomRental()", "Failed to rent room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner, LOG_DEBUG)
-			return False
+			'Update dialogue
 		endif
-	End Function
 
-
-	Method CancelRoomRentalsOfPlayer:int(owner:int)
-		For local r:TRoomBase = EachIn GetRoomBaseCollection().list
-			if r.GetOwner() <> owner then continue
-			if r.IsFreehold() then continue
-
-			CancelRoomRental(r, owner)
-		Next
+		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
+			'leaving room now
+			RemoveAllGuiElements()
+		endif
 	End Method
 
 
-	Function CancelRoomRental:int(room:TRoomBase, owner:int=0)
-		if not room.IsRented() then return False
+	Method Render()
+		SetColor(255,255,255)
 
-		local roomOwner:int = room.owner
-		'fetch rent before cancelling!
-		local roomRent:int = room.GetRent()
-
-		if room.CancelRental()
-			'have to pay a bit of rent for the already begun day?
-			'1:  0- 6hrs = 25%
-			'2:  7-12hrs = 50%
-			'3: 13-18hrs = 75%
-			'4: 19-24hrs = 100%
-			local hourStep:int = floor(GetWorldTime().GetDayHour() / 6)+1
-			local toPay:int = TFunctions.RoundToBeautifulValue(hourStep*0.25 * roomRent)
-
-			if GetPlayerBaseCollection().IsPlayer(roomOwner)
-				GetPlayerFinance(roomOwner).PayRent(toPay, room)
-			Endif
-			
-			rem
-			'unused for now (done already - see above)
-			local contract:TRoomRentalContract = GetRentalContractByDetails(room.GetGUID(), roomOwner)
-			if contract
-				RemoveRentalContract(contract)
-				print "removed contract"
-			endif
-			endrem
-
-			TLogger.Log("RoomHandler_RoomAgency.BeginRoomRental()", "Cancelled rental of room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner+". Room owner "+roomOwner+" paid an outstanding rent of "+TFunctions.DottedValue(toPay)+".", LOG_DEBUG)
-			return True
+		if mode = MODE_RENT or mode = MODE_CANCELRENT
+			RenderRoomBoard()
 		else
-			TLogger.Log("RoomHandler_RoomAgency.BeginRoomRental()", "Failed to cancel rental of room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner+" [roomOwner="+roomOwner+"]", LOG_DEBUG)
-			return False
+			'Dialogue
 		endif
-	End Function
+
+		'draw achievement-sheet
+		'if hoveredGuiProductionConcept then hoveredGuiProductionConcept.DrawSupermarketSheet()
+ 	End Method
+
+
+ 	'=== ROOMBOARD ===
+
+
+ 	Method UpdateRoomBoard()
+		hoveredRoom = null
+
+		If selectedRoom and (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
+			selectedRoom = null
+			MouseManager.ResetKey(2)
+			MouseManager.ResetKey(1)
+		EndIf
+
+
+		GuiManager.Update( LS_roomagency_board )
+
+		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
+			'leaving room now
+			RemoveAllRoomboardGuiElements()
+
+			mode = MODE_NONE
+		endif
+ 	End Method
+
+
+ 	Method RenderRoomBoard()
+		'=== PANEL ===
+		local skin:TDatasheetSkin = GetDatasheetSkin("RoomAgencyBoard")
+
+		'where to draw
+		local outer:TRectangle = new TRectangle.Init(25,25, 750, 350)
+		'calculate position/size of content elements
+		local contentX:int = 0
+		local contentY:int = 0
+		local contentW:int = 0
+		local contentH:int = 0
+		local outerSizeH:int = skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+		local outerH:int = 0 'size of the "border"
+		local titleH:int = 18
+
+		contentX = skin.GetContentX(outer.GetX())
+		contentY = skin.GetContentY(outer.GetY())
+		contentW = skin.GetContentW(outer.GetW())
+		contentH = skin.GetContentH(outer.GetH())
+
+		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
+		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(GetLocale("ROOM_OVERVIEW"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		contentY :+ titleH
+		skin.RenderContent(contentX, contentY, contentW, contentH - titleH , "2")
+
+		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
+
+
+		For local sign:TRoomBoardSign = EachIn GetRoomBoard().list
+			if not sign.imageCache
+				sign.imageCache = sign.GenerateCacheImage( GetSpriteFromRegistry(sign.imageBaseName + Max(0, sign.door.GetOwner())) )
+			endif
+
+			local x:int = 45 + (sign.door.doorSlot-1) * 180 
+			local y:int = 50 + (13 - sign.door.onFloor) * 23 
+			sign.imageCache.Draw(x,y)
+		Next
+
+
+
+		GuiManager.Draw( LS_roomagency_board )
+ 	End Method
+
+
+	Method RemoveAllRoomboardGuiElements:int()
+		'
+	End Method
 End Type
-
-
-
-rem
-Type TRoomRentalContract extends TGameObject
-	'which room
-	Field roomGUID:string
-	'what was agreed to as rent?
-	Field rent:int
-	'rented by?
-	Field owner:int
-	Field timeOfSign:Long
-End Type
-endrem

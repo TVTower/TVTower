@@ -174,6 +174,31 @@ Type TRoomBaseCollection
 	End Method
 
 
+ 	Method UpdateEmptyRooms()
+		'stub
+	End Method
+
+
+	Method GetTotalRent:int(playerID:int)
+		return 0
+	End Method
+	
+
+	Method BeginRoomRental:int(room:TRoomBase, owner:int=0)
+		return False
+	End Method
+
+
+	Method CancelRoomRentalsOfPlayer:int(owner:int)
+		return False
+	End Method
+
+
+	Method CancelRoomRental:int(room:TRoomBase, owner:int=0)
+		return False
+	End Method
+	
+
 	'=== EVENTS ===
 
 	'run when loading starts

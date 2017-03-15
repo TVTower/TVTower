@@ -61,6 +61,28 @@ TODO
 	  Programm ist live, sobald es innerhalb des Zeitfensters gesendet
 	  wird (erlaubt "Luecken", statt taeglicher Ausstrahlung) 
 
+		BroadcastMaterialSource (Lizenzen)
+			-> GetBroadcastTimeSlotStart()
+			-> GetBroadcastTimeSlotEnd()
+		ProgrammeData:
+			hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.ALWAYS_LIVE)
+
+		-> Programmdata fuer Fruehstuecksfernsehen anlegen
+			-> Erstmal ohne Cast
+			-> mit BroadcastFlag ALWAYS_LIVE
+			-> jede Ausstrahlung waere "Live"
+		-> Programmlizenz anlegen
+			-> Zeitfenster eingrenzen
+			-> Ausstrahlungslimits einstellen
+		-> jede Ausstrahlung waere "Live-Sendung"
+		-> jede Ausstrahlung senkt aber Aktualitaet!
+			-> Abnutzungs-Mod anpassen
+
+		Eventuell also alle nur "1x ausstrahlbar" (dann lizenz so einstellen,
+		dass nach Abnutzung nicht mehr handelbar/verkaufbar) dafuer aber
+		10 Episoden anlegen (copy() der Programmedata?)
+		
+
 	- Optional: "internal"-Drehbuecher - die nur fuer kuenstliche
 	  Produktionen zur Verfuegung stehen. Flag "internal".
 
@@ -76,3 +98,14 @@ TODO
 	  http://www.gamezworld.de/phpforum/viewtopic.php?pid=84774#p84774
 	- Quoten-Statistik erweitern (Orwin)
 	- Fernsehfamilie-Sprechblasen mit Feedback ("Super!")
+
+https://www.gamezworld.de/phpforum/viewtopic.php?pid=86005#p86005
+-> Drehbuchtitel auf Einzigartigkeit ueberpruefen
+
+Statistikbildschirme fuer "Top 10 Zuschauer" etc.
+
+Serien-Staffeln/Kollektionen:
+https://www.gamezworld.de/phpforum/viewtopic.php?pid=86043#p86043
+
+Hinweis auf deaktivierte KI im Spiel anzeigen @ Darius
+https://www.gamezworld.de/phpforum/viewtopic.php?pid=86065#p86065

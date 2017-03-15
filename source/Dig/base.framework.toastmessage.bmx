@@ -367,7 +367,7 @@ Type TToastMessage extends TEntity
 	Field _lifeTimeStartValue:Float = -1
 	'additional data
 	Field _data:TData
-	Field _onCloseFunction(sender:TToastMessage)
+	Field _onCloseFunction:int(sender:TToastMessage)
 
 
 	Method New()
@@ -382,7 +382,7 @@ Type TToastMessage extends TEntity
 	
 
 	'sets a function to call when the message gets closed
-	Method SetOnCloseFunction(onCloseFunction(sender:TToastMessage))
+	Method SetOnCloseFunction(onCloseFunction:int(sender:TToastMessage))
 		_onCloseFunction = onCloseFunction
 	End Method
 

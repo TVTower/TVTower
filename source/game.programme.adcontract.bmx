@@ -887,15 +887,18 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	'call this to set the contract successful and finished (and earn profit)
 	Method Finish:int(time:Double=0)
-		'send out event for potential listeners (eg. ingame notification)
-		EventManager.triggerEvent(TEventSimple.Create("adContract.onFinish", New TData.addNumber("time", time), Self))
+		'if state = STATE_OK then Throw "Double Finish !!"
+		if not state = STATE_OK
+			'send out event for potential listeners (eg. ingame notification)
+			EventManager.triggerEvent(TEventSimple.Create("adContract.onFinish", New TData.addNumber("time", time), Self))
 
-		'give money
-		GetPlayerFinance(owner, GetWorldTime().GetDay(time)).EarnAdProfit(GetProfit(), self)
+			'give money
+			GetPlayerFinance(owner, GetWorldTime().GetDay(time)).EarnAdProfit(GetProfit(), self)
 
-		'store for statistics
-		stateTime = time
-		state = STATE_OK
+			'store for statistics
+			stateTime = time
+			state = STATE_OK
+		endif
 
 		'clean up (eg. decrease usage counter)
 		Remove()

@@ -6,7 +6,7 @@ Import "game.broadcastmaterial.news.bmx"
 Import "game.player.programmecollection.bmx"
 Import "game.player.bmx"
 Import "game.roomhandler.movieagency.bmx"
-Import "game.roomhandler.roomagency.bmx"
+Import "game.roomagency.bmx"
 Import "game.screen.menu.bmx"
 
 'handles network events
@@ -722,14 +722,14 @@ Type TNetworkHelper extends TNetworkHelperBase
 
 		select action
 			case NET_BUY
-					RoomHandler_RoomAgency.GetInstance().BeginRoomRental(room, newOwner)
+					GetRoomAgency().BeginRoomRental(room, newOwner)
 					print "[NET] RoomAgency: player "+newOwner+" rents room "+ room.GetName()
 
 					return TRUE
 			case NET_SELL
 					local oldOwner:int = room.owner
-					RoomHandler_RoomAgency.GetInstance().CancelRoomRental(room)
-					print "[NET] RoomAgencY: player "+oldOwner+" stopped renting room "+room.GetName()
+					GetRoomAgency().CancelRoomRental(room)
+					print "[NET] RoomAgency: player "+oldOwner+" stopped renting room "+room.GetName()
 					return TRUE
 		EndSelect
 

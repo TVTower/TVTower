@@ -13,6 +13,8 @@ Type TRoomBoard
 	Field AdditionallyDragged:Int = 0
 	Field slotMax:int = 4
 	Field floorMax:int = 13
+	Field clickedSign:TRoomBoardSign = null
+	Field hoveredSign:TRoomBoardSign = null
 	Global _eventsRegistered:Int = FALSE
 	Global _instance:TRoomBoard
 
@@ -41,6 +43,9 @@ Type TRoomBoard
 		List.Clear()
 		AdditionallyDragged = 0
 		DragAndDropList.Clear()
+
+		hoveredSign = null
+		clickedSign = null
 	End Method
 
 
@@ -288,6 +293,9 @@ Type TRoomBoard
 		'reorder: first are dragged obj then not dragged
 		ReverseList(list)
 
+		hoveredSign = null
+		clickedSign = null
+
 		For Local sign:TRoomBoardSign = EachIn List
 			If not sign then continue
 
@@ -302,6 +310,7 @@ Type TRoomBoard
 				If (MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)) And sign.dragged
 					sign.SetCoords(int(sign.StartPos.x), int(sign.StartPos.y))
 					sign.dragged = False
+					clickedSign = null
 					MOUSEMANAGER.resetKey(2)
 					MOUSEMANAGER.resetKey(1) 'also first button
 
@@ -313,14 +322,18 @@ Type TRoomBoard
 					If MouseManager.IsClicked(1)
 						'search for underlaying block (we have a block dragged already)
 						If sign.dragged
+							clickedSign = sign
+						
 							'obj over old position - drop ?
 							If THelper.MouseIn(int(sign.StartPosBackup.x), int(sign.StartPosBackup.y), int(sign.rect.GetW()), int(sign.rect.GetH()))
 								sign.dragged = False
+								clickedSign = null
 							EndIf
 
 							'want to drop in origin-position
 							If sign.containsCoord(MouseManager.x, MouseManager.y)
 								sign.dragged = False
+								clickedSign = null
 								MouseManager.resetKey(1)
 							'not dropping on origin: search for other underlaying obj
 							Else
@@ -364,6 +377,14 @@ Type TRoomBoard
 			Else
 				sign.SetCoords(int(sign.StartPos.x), int(sign.StartPos.y))
 			EndIf
+
+
+			If not hoveredSign and not sign.dragged and sign.containsCoord(MouseManager.x, MouseManager.y)
+				hoveredSign = sign
+			EndIf
+
+			sign.isHovered = (hoveredSign = sign)
+			sign.isClicked = (clickedSign = sign)
 		Next
 		ReverseList list 'reorder: first are not dragged obj
 	End Method
@@ -372,8 +393,9 @@ Type TRoomBoard
 	Method DrawSigns()
 		SortList List
 		'draw background sprites
+		local bgSprite:TSprite = GetSpriteFromRegistry("gfx_roomboard_sign_bg")
 		For Local sign:TRoomBoardSign = EachIn List
-			GetSpriteFromRegistry("gfx_roomboard_sign_bg").Draw(sign.OrigPos.x + 20, sign.OrigPos.y + 6)
+			bgSprite.Draw(sign.OrigPos.x + 20, sign.OrigPos.y + 6)
 		Next
 		'draw actual sign
 		For Local sign:TRoomBoardSign = EachIn List
@@ -420,12 +442,12 @@ End Function
 'signs used in elevator-plan /room-plan
 Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	Field door:TRoomDoorBase
-	Field signSlot:int = 0
-	Field signFloor:int = 0
 	'bitmask describing which player numbers moved the sign since reset
 	Field movedByPlayers:int = 0
 	'playerID of the one who moved last
 	Field lastMoveByPlayerID:int = 0
+	Field isHovered:int = False
+	Field isClicked:int = False
 	Field imageCache:TSprite = null {nosave}
 	Field imageDraggedCache:TSprite	= null {nosave}
 
@@ -550,7 +572,9 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	'draw the Block inclusive text
 	'zeichnet den Block inklusive Text
 	Method Draw()
-		SetColor 255,255,255;dragable=1  'normal
+		local oldColor:TColor = new TColor.Get()
+		SetColor 255,255,255
+		dragable=1  'normal
 
 		If dragged = 1
 			If GetRoomBoard().AdditionallyDragged > 0 Then SetAlpha 1.0 - 1.0/GetRoomBoard().AdditionallyDragged * 0.25
@@ -569,12 +593,21 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 			if not IsAtOriginalPosition()
 				SetColor 255,245,230
 				imageCache.Draw(rect.GetX(),rect.GetY())
-				SetColor 255,255,255
+				oldColor.SetRGB()
 			Else
 				imageCache.Draw(rect.GetX(),rect.GetY())
 			EndIf
+
+			if isHovered
+				SetBlend LightBlend
+				SetAlpha oldColor.a * 0.20
+				SetColor 255, 240, 180
+				imageCache.Draw(rect.GetX(),rect.GetY())
+				SetBlend AlphaBlend
+				oldColor.SetRGB()
+			endif
 		EndIf
-		SetAlpha 1
+		SetAlpha oldColor.a
 	End Method
 
 

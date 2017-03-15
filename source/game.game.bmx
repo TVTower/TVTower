@@ -501,7 +501,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		'=== STOP ROOM RENT CONTRACTS ===
-		RoomHandler_RoomAgency.GetInstance().CancelRoomRentalsOfPlayer(PlayerID)
+		GetRoomAgency().CancelRoomRentalsOfPlayer(PlayerID)
 		TLogger.Log("ResetPlayer()", "TODO - stop rented rooms", LOG_DEBUG)
 
 

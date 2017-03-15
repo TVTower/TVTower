@@ -79,6 +79,7 @@ Import "game.award.bmx"
 Import "game.building.bmx"
 Import "game.ingameinterface.bmx"
 Import "game.newsagency.bmx"
+Import "game.roomagency.bmx"
 Import "game.programmeproducer.bmx"
 
 'Import "game.roomhandler.base.bmx"
@@ -4175,8 +4176,8 @@ Type GameEvents
 					room = GetRoomBaseCollection().GetFirstByDetails(roomGUID, player.playerID)
 				endif
 				if room
-					RoomHandler_RoomAgency.GetInstance().CancelRoomRental(room, player.playerID)
-					RoomHandler_RoomAgency.GetInstance().BeginRoomRental(room, player.playerID)
+					GetRoomAgency().CancelRoomRental(room, player.playerID)
+					GetRoomAgency().BeginRoomRental(room, player.playerID)
 					room.SetUsedAsStudio(True)
 					GetGame().SendSystemMessage("[DEV] Rented room '" + room.GetDescription() +"' ["+room.GetName() + "] for player '" + player.name +"' ["+player.playerID + "]!")
 				else
@@ -5352,7 +5353,7 @@ Type GameEvents
 		'=== HANDLE EMPTY ROOMS ===
 		'let previous renter take back their rooms (if nobody wanted the
 		'studio after a specific waiting time)
-		RoomHandler_RoomAgency.GetInstance().UpdateEmptyRooms()
+		GetRoomAgency().UpdateEmptyRooms()
 
 
 		'=== REMOVE ENDED NEWSEVENTS  ===
