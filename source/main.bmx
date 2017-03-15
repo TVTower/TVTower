@@ -1556,6 +1556,16 @@ endrem
 
 
 		If GetGame().gamestate = TGame.STATE_RUNNING
+			if not TAiBase.AiRunning
+				local oldCol:TColor = new TColor.Get()
+				SetColor 100,40,40
+				SetAlpha 0.65
+				DrawRect(275,0,250,35)
+				oldCol.SetRGBA()
+				GetBitmapFont("default", 16).DrawBlock("PLAYER AI DEACTIVATED", 0, 5, GetGraphicsManager().GetWidth(), 355, ALIGN_CENTER_TOP, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+				GetBitmapFont("default", 12).DrawBlock("(~qF11~q to reactivate AI)", 0, 20, GetGraphicsManager().GetWidth(), 355, ALIGN_CENTER_TOP, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+			endif
+
 			if GameConfig.observerMode
 				local playerNum:int = 0
 				For local i:int = 1 to 4
@@ -1568,20 +1578,26 @@ endrem
 				GetBitmapFont("default", 14).DrawBlock("(~qL-Ctrl + O~q to deactivate)", 0, 0, GetGraphicsManager().GetWidth(), 375, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
 			else
 				if not GetPlayerCollection().IsHuman( GetPlayerCollection().playerID )
-					GetBitmapFont("default", 20).DrawBlock("SWITCHED TO AI PLAYER #" +GetPlayerCollection().playerID, 0, 0, GetGraphicsManager().GetWidth(), 355, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+					local oldCol:TColor = new TColor.Get()
+					SetColor 60,60,40
+					SetAlpha 0.65
+					DrawRect(275,345,250,35)
+					oldCol.SetRGBA()
+
+					GetBitmapFont("default", 16).DrawBlock("SWITCHED TO AI PLAYER #" +GetPlayerCollection().playerID, 0, 0, GetGraphicsManager().GetWidth(), 365, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
 
 					local localHumanNum:int = 0
 					For local i:int = 1 to 4
-						if GetPlayerCollection().IsLocalHuman( 1 )
+						if GetPlayer(i).playerType = TPlayerBase.PLAYERTYPE_LOCAL_HUMAN
 							localHumanNum = i
 							exit
 						endif
 					Next
 
 					if localHumanNum > 0
-						GetBitmapFont("default", 14).DrawBlock("(~q"+localHumanNum+"~q to switch back)", 0, 0, GetGraphicsManager().GetWidth(), 375, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+						GetBitmapFont("default", 12).DrawBlock("(~q"+localHumanNum+"~q to switch back)", 0, 0, GetGraphicsManager().GetWidth(), 380, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
 					else
-						GetBitmapFont("default", 14).DrawBlock("(all players are AI controlled)", 0, 0, GetGraphicsManager().GetWidth(), 375, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+						GetBitmapFont("default", 12).DrawBlock("(all players are AI controlled)", 0, 0, GetGraphicsManager().GetWidth(), 380, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
 					endif
 				endif
 			endif
