@@ -1114,6 +1114,7 @@ I feel good with Lemur</en>
 		<ad id="ronny-ad-Kaschaemm" creator="5578" created_by="Ronny">
 			<title>
 				<de>Kaschämm</de>
+				<en>Gin Palace</en>
 			</title>
 			<description>
 				<de>Deine Stammkneipe mit dem Hauch des Prätentiösen. Bierdeckel an den Wänden zeugen von weitreichender Bierkenntnis des Wirtes.</de>
@@ -1566,9 +1567,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Bruch" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Spedition und Lagerei Bruch</de>
+				<en>Transport and Warehousing B. Reach</en>
 			</title>
 			<description>
 				<de>Wir fahren Ihre Waren zu Bruch. Dann verteilen wir sie über die ganze Welt.</de>
+				<en>First we drive your goods to B. Reach. Then we distribute them worldwide.</en>
 			</description>
 			<conditions min_audience="1.82" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="8" repetitions="5" duration="2" profit="874" penalty="1251" infomercial_profit="90" fix_infomercial_profit="1"/>
@@ -1579,6 +1582,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Traum-Renditen ohne den Finger krumm zu machen. Ganze Bevölkerungen in die Hungersnot schicken? - Egal? - Bullseye mit Bullshit Bingo Brokers!</de>
+				<en>Dream returns without lifting a finger. Sending whole populations into famine? - No matter? - Bullseye with Bullshit Bingo Brokers!</en>
 			</description>
 			<conditions min_audience="17.19" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="15" repetitions="3" duration="4" profit="228" penalty="320" infomercial_profit="15" fix_infomercial_profit="1"/>
@@ -1589,16 +1593,19 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>3D Scanner und 3D Drucker in einem. Denken Sie an die Möglichkeiten! Verwandeln Sie eine Metallvorlage in ein Plastik-Original. Doublie-Kate von "Life is Groats"!</de>
+				<en>3D scanner and 3D printer in one. Think about the possibilities! Transform a metal template into a plastic original. Doublie-Kate of "Life is Groats"!</en>
 			</description>
 			<conditions min_audience="28.65" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="20" repetitions="2" duration="4" profit="156" penalty="309" infomercial_profit="35" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Doerrobst" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Dörrobst Toni</de>
+				<de>>Dörrobst Toni</de>
+				<en>Desiccation Dave</en>
 			</title>
 			<description>
 				<de>Ganz neu Dörrgemüse bei uns im Spezialitäten-Regal. In den Sorten Dörr-Kürbis, Dörr-Gurke und Dörr-Wassermelone!</de>
+				<en>Brand new at our speciality shelf: dried vegetables. In the varieties dried pumpkin, dried cucumber and dried water melon!</en>
 			</description>
 			<conditions min_audience="1.3015" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="15" repetitions="6" duration="4" profit="1060" penalty="1571" fix_infomercial_profit="1"/>
@@ -1609,6 +1616,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Suchen Sie jemanden zum Dissen oder Haten? Fehlt Ihnen bisher ein Erzfeind? Nutzen Sie "Enemy24"! Wir finden Ihren persönlichen Gegenspieler!</de>
+				<en>Looking for someone to diss and hate? Do you still lack an archenemy? Use "Enemy24"! We find your personal opponent!</en>
 			</description>
 			<conditions min_audience="11.46" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="18" repetitions="3" duration="3" profit="304" penalty="558" infomercial_profit="28" fix_infomercial_profit="1"/>
@@ -1616,9 +1624,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Enzyklopedie1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Die halbe Enzyklopedie von Allem</de>
+				<en>Half the Encyclopedia of Everything</en>
 			</title>
 			<description>
 				<de>Nehmen wir an, dass die Zeitrechnung unendlich in die Vergangenheit reicht und dass sie unendlich in die Zukunft reicht. So ist das Jetzt genau die Hälfte der Zeit, die Hälfte von Allem. Singularity Verlag.</de>
+				<en>Let us assume that the time-based calculus is infinite in the past and that it reaches infinitely into the future. So the now is exactly half the time, half of everything. Singularity Publishing.</en>
 			</description>
 			<conditions min_audience="20.84" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="28" repetitions="3" duration="5" profit="198" penalty="303" infomercial_profit="25" fix_infomercial_profit="1"/>
@@ -1626,9 +1636,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Enzyklopedie2" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Die ganze Enzyklopedie von Allem</de>
+				<en>The complete Encyclopedia of Everything</en>
 			</title>
 			<description>
 				<de>Herausgegeben in 2 Bänden. Band 1 bereits heute erhältlich. Jedoch können wir vorraussagen, dass Band 2 nie erscheinen wird, da wir nicht in die Zukunft sehen können. Ein Paradox? Singularity Verlag.</de>
+				<en>Published in 2 volumes. Volume 1 already available today. However, we can predict that Band 2 will never appear, as we can not see into the future. A paradox? Singularity Publishing.</en>
 			</description>
 			<conditions min_audience="20.84" min_image="37" target_group="0"/>
 			<data infomercial="1" quality="31" repetitions="2" duration="2" profit="200" penalty="315" fix_infomercial_profit="1"/>
@@ -1636,9 +1648,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Fluchomat" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Fluchomat von Karkasonic</de>
+				<en>Cursomat by Karkasonic</en>
 			</title>
 			<description>
 				<de>Stört sie der zensierende Piepston anstelle eines saftigen Fluches? Karkasonic hat die Lösung: Der Fluchomat. Mit Fluchneuheiten und Übertreibungsgarantie!!!</de>
+				<en>Annoyed by censoring beeps instead of a ribald curse? Karkasonic has the solution: The Cursomat. With innovative curses and exaggeration guarantee !!!</en>
 			</description>
 			<conditions min_audience="12.5" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="22" repetitions="3" duration="4" profit="287" penalty="422" fix_infomercial_profit="1"/>
@@ -1646,9 +1660,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Hopfengurgler1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Brauerei Hopfengurgler</de>
+				<en>Brewery Hopgurgler</en>
 			</title>
 			<description>
 				<de>Echt genial: Unser Doppelbock gibt's jetzt auch alkoholfrei! Oans, zwoa, droa, g'suffa!</de>
+				<en>A touch of genious: our double bock beer is now also free of alcohol! Oans, zwoa, droa, g'suffa!</en>
 			</description>
 			<conditions min_audience="4.1617" min_image="40" target_group="0"/>
 			<data infomercial="1" quality="22" repetitions="5" duration="2" profit="580" penalty="932" infomercial_profit="76" fix_infomercial_profit="1" year_range_from="2006"/>
@@ -1656,9 +1672,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Hopfengurgler2" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Brauerei Hopfengurgler</de>
+				<en>Brewery Hopgurgler</en>
 			</title>
 			<description>
 				<de>Echt genial: Pilsner, Export und Weizen jetzt auch als Zäpfchen erhältlich! Praktisch im 40er Party-Pack! Das zieht! Oans, zwoa, droa, ziags!</de>
+				<en>Genuine: Pilsner, export and wheat bear now also available as suppository! Handy in a 40s party pack! That drags! Oans, zwoa, droa, ziags!</en>
 			</description>
 			<conditions min_audience="4.17" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="568" penalty="450" fix_infomercial_profit="1" year_range_to="2005"/>
@@ -1666,9 +1684,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Hummeldoof" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Imkerei Hummeldoof</de>
+				<en>Apiary Dumblebee</en>
 			</title>
 			<description>
 				<de>Premium Honigprodukte von Ihrer Lieblings-Imkerei Hummeldoof. Wir gewähren unseren Bienen ein gutes, motivierendes Arbeitsumfeld. Feierabendbier inklusive!</de>
+				<en>Premium honey products from your favorite apiary Dumblebee. We offer our bees a good, motivating work environment. Including after-work pints!</en>
 			</description>
 			<conditions min_audience="0.0511" min_image="7" target_group="4"/>
 			<data infomercial="1" quality="12" repetitions="3" duration="3" profit="3500" penalty="5094" fix_infomercial_profit="1"/>
@@ -1676,9 +1696,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Immobilien-Haino" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Immobilien-Haino</de>
+				<en>Real Estate Sharky</en>
 			</title>
 			<description>
 				<de>Von der Altbau-Baracke bis zur Luxusvilla. Wir haben alles im Programm! Zuerst: Selbstauskunft an uns schicken. Mit etwas Glück melden wir uns bei Ihnen.</de>
+				<en>From shacks to luxury villas. We list every kind of real estates! First: send self-report to us. With some luck, we will get back to you.</en>
 			</description>
 			<conditions min_audience="1.56" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="11" repetitions="1" duration="1" profit="843" penalty="1129" fix_infomercial_profit="1"/>
@@ -1689,6 +1711,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Unsere doppelstöckigen Luftbusse sind großzügig eingerichtet. Für Kinder gibt es eine Wasserrutsche, ein Bällebad und Elefantenreiten im Heck.</de>
+				<en>Our double-storey air-buses are generously furnished. For the young ones there is a water slide, a bathing pool and elephant rides in the stern.</en>
 			</description>
 			<conditions min_audience="2.86" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="23" repetitions="3" duration="2" profit="630" penalty="1001" infomercial_profit="67" fix_infomercial_profit="1"/>
@@ -1696,9 +1719,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Landwirtschafts-Discount" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Siggis Landwirtschafts-Discount</de>
+				<en>Old Joe's Farming-Discount</en>
 			</title>
 			<description>
 				<de>Egal ob Strohhäcksel, Heusilage, Maissilage, Bioabfall, Getreideschlempe, Rinder- oder Schweinegülle, wir haben alles! Kauf bei Siggi mit dem braunen Daumen!</de>
+				<en>Whether it's chopped straw, heusilage, hay silage, organic waste, cereal loin, cattle or pig slurry, we have everything! Buy from Old Joe with the brown thumb!</en>
 			</description>
 			<conditions min_audience="0.78" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="11" repetitions="6" duration="4" profit="1466" penalty="2009" fix_infomercial_profit="1"/>
