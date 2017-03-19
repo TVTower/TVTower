@@ -21,6 +21,7 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 		easy.startCredit = 250000
 		easy.creditMaximum = 600000
 		easy.programmePriceMod = 0.75
+		easy.roomRentMod = 0.80
 		easy.advertisementProfitMod = 1.25
 
 
@@ -30,6 +31,7 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 		normal.startCredit = 500000
 		normal.creditMaximum = 600000
 		normal.programmePriceMod = 1.0
+		normal.roomRentMod = 1.0
 		normal.advertisementProfitMod = 1.0
 
 
@@ -39,6 +41,7 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 		hard.startCredit = 500000
 		hard.creditMaximum = 500000
 		hard.programmePriceMod = 1.1
+		hard.roomRentMod = 1.15
 		hard.advertisementProfitMod = 0.9
 
 
@@ -89,6 +92,7 @@ Type TPlayerDifficulty extends TGameObject
 	Field startCredit:int
 	Field creditMaximum:int
 	Field programmePriceMod:Float = 1.0
+	Field roomRentmod:Float = 1.0
 	Field advertisementProfitMod:Float = 1.0
 
 	Method GenerateGUID:string()

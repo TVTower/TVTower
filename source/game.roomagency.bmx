@@ -45,7 +45,7 @@ Type TRoomAgency
 	
 
 			'room empty for a long time?
-			if r.rentalChangeTime + GameRules.roomReRentTime < GetWorldTime().GetTimeGone()
+			if r.GetRerentalTime() < GetWorldTime().GetTimeGone()
 				'let original owner rent it
 				r.BeginRental(0, r.GetRent())
 				print "RoomAgency.UpdateEmptyRooms(): re-rented. " + r.GetName() + "  " + r.GetDescription(1) 
@@ -59,8 +59,29 @@ Type TRoomAgency
 		For local r:TRoomBase = EachIn GetRoomBaseCollection().list
 			if r.GetOwner() <> playerID then continue
 
-		'	r.GetRent()
+			result :+ r.GetRent()
 		Next
+	End Method
+
+
+	Method GetCourtage:int(room:TRoomBase)
+		if not room then return 0
+		
+		local rent:int = room.GetRent()
+		'TODO: add owner-sympathy / mood
+		return TFunctions.RoundToBeautifulValue(rent * 3)
+	End Method
+	
+
+	'get the owner-specific courtage
+	Method GetCourtageForOwner:int(room:TRoomBase, forOwner:int=0)
+		local courtage:int = GetCourtage(room)
+		'incorporate difficulty
+		 courtage :* GetPlayerDifficulty(string(forOwner)).roomRentMod
+
+		'TODO: add owner-sympathy / mood
+
+		return courtage
 	End Method
 	
 
@@ -71,7 +92,7 @@ Type TRoomAgency
 
 		'=== PAY COURTAGE ===
 		if GetPlayerBaseCollection().IsPlayer(owner)
-			local courtage:int = TFunctions.RoundToBeautifulValue(rent * 3) 
+			local courtage:int = GetCourtageForOwner(room, owner)
 			if not GetPlayerFinance(owner).CanAfford(courtage)
 				TLogger.Log("RoomAgency.BeginRoomRental()", "Failed to rent room ~q"+room.GetDescription()+" ["+room.GetName()+"] by owner="+owner+". Not enough money to pay courtage.", LOG_DEBUG)
 				return False

@@ -1005,3 +1005,18 @@ COUNTRYNAME_ISO3166_DE = Deutschland
 ABBREVIATION_YEARS = J.
 
 BEFORE_XTH_PLAYER_RESTART = Vor %X%. Spielerneustart
+
+ROOM_OVERVIEW = Raumübersicht
+SELECT_ROOM_TO_RENT = Wähle einen anzumietenden Raum aus
+SELECT_ROOM_TO_CANCEL = Wähle einen zu kündigenden Raum aus
+PREVIOUS_TENANT = Vorheriger Mieter
+ORIGINAL_TENANT = Ursprünglicher Mieter
+RERENT = Wiedervermietung
+
+IN_XTIME_AFTER_CANCELLATION = In %X% nach Kündigung
+IN_XTIME = In %X%
+
+HOUR = Stunde
+HOURS = Stunden
+MINUTE = Minute
+MINUTES = Minuten

@@ -147,8 +147,8 @@ Type TRoom extends TRoomBase {_exposeToLua="selected"}
 	
 
 	'override to add playername/channelname replacement
-	Method GetDescription:string(lineNumber:int=1) {_exposeToLua}
-		local res:String = Super.GetDescription(lineNumber)
+	Method GetDescription:string(lineNumber:int=1, raw:int=False) {_exposeToLua}
+		local res:String = Super.GetDescription(lineNumber, raw)
 		if res.Find("%") = -1 then return res
 
 		res = res.Replace("%PLAYERNAME%", GetOwnerPlayerName())

@@ -987,3 +987,18 @@ COUNTRYNAME_ISO3166_DE_SHORT = D
 ABBREVIATION_YEARS = Y.
 
 BEFORE_XTH_PLAYER_RESTART = Before %X%. player restart
+
+ROOM_OVERVIEW = Room overview
+SELECT_ROOM_TO_RENT = Select room to rent
+SELECT_ROOM_TO_CANCEL = Select room to cancel
+PREVIOUS_TENANT = Previous tenant
+ORIGINAL_TENANT = Original tenant
+RERENT = Rerent
+
+IN_XTIME_AFTER_CANCELLATION = In %X% after cancellation
+IN_XTIME = In %X%
+
+HOUR = hour
+HOURS = hours
+MINUTE = minute
+MINUTES = minutes

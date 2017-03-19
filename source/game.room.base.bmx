@@ -2,12 +2,14 @@ SuperStrict
 Import "Dig/base.gfx.sprite.bmx"
 Import "Dig/base.util.mersenne.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
+Import "common.misc.hotspot.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.room.roomdoor.base.bmx"
 Import "game.building.buildingtime.bmx"
-Import "common.misc.hotspot.bmx"
+Import "game.gamerules.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx"
+Import "game.player.difficulty.bmx"
 
 
 Type TRoomBaseCollection
@@ -368,6 +370,16 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetRerentalWaitingTime:int()
+		return GameRules.roomReRentTime
+	End Method
+	
+
+	Method GetRerentalTime:Long()
+		return rentalChangeTime + GetRerentalWaitingTime()
+	End Method
+
+
 	Method BeginRental:int(newOwner:int, rent:int)
 		local oldOwner:int = owner
 		ChangeOwner(newOwner)
@@ -585,7 +597,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	'returns the rent you have to pay for this roo
+	'returns the rent you have to pay for this room
 	'(pay attention to _not_ pay the rent if it is a freehold)
 	Method GetRent:int() {_exposeToLua}
 		if IsRented() then return rent
@@ -593,11 +605,19 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		'add 1000 for <10 times, 500 for 11-20 rental times
 		'and additional 100 for each time above 20
 		local addRentalPenalty:int = 0
-		if rentalTimes >= 20 then  addRentalPenalty :+ rentalTimes * 100
-		if rentalTimes < 20 then  addRentalPenalty :+ rentalTimes * 500
-		if rentalTimes < 10 then  addRentalPenalty :+ rentalTimes * 500
+		if rentalTimes >= 20 then addRentalPenalty :+ rentalTimes * 100
+		if rentalTimes < 20 then addRentalPenalty :+ rentalTimes * 500
+		if rentalTimes < 10 then addRentalPenalty :+ rentalTimes * 500
 
 		return GetSize() * (5000 + addRentalPenalty)
+	End Method
+
+
+	'return rent adjusted by player difficulty
+	Method GetRentForPlayer:int(playerID:int)
+		if IsRented() then return rent
+
+		return GetRent() * GetPlayerDifficulty(string(playerID)).roomRentMod
 	End Method
 
 
@@ -735,22 +755,26 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	'returns desc-field with placeholders replaced
 	'line 1: "Movie Agency"
 	'line 2: "Owner: Mr. Y"
-	Method GetDescription:string(lineNumber:int=1) {_exposeToLua}
+	Method GetDescription:string(lineNumber:int=1, raw:int=False) {_exposeToLua}
 		if description = null then return ""
-		lineNumber = Max(0, Min(description.length, lineNumber))
+		if lineNumber <= 0 or lineNumber > description.length then return ""
 
 		local res:string
 
-		if lineNumber = 1 and IsRentable()
-			if IsUsableAsStudio()
-				res = GetLocale("ROOM_FREE_STUDIO")
+		if not raw
+			if lineNumber = 1 and IsRentable()
+				if IsUsableAsStudio()
+					res = GetLocale("ROOM_FREE_STUDIO")
+				else
+					res = GetLocale("ROOM_FREE_ROOM")
+				endif
+			elseif lineNumber = 1 and IsUsedAsStudio()
+				res = GetLocale("ROOM_STUDIO_OF")
+			elseif lineNumber = 2 and (IsUsableAsStudio() or IsUsedAsStudio())
+				res = GetLocale("ROOM_SIZE").replace("%SIZE%", size)
 			else
-				res = GetLocale("ROOM_FREE_ROOM")
+				res = GetLocale(description[lineNumber-1])
 			endif
-		elseif lineNumber = 1 and IsUsedAsStudio()
-			res = GetLocale("ROOM_STUDIO_OF")
-		elseif lineNumber = 2 and (IsUsableAsStudio() or IsUsedAsStudio())
-			res = GetLocale("ROOM_SIZE").replace("%SIZE%", size)
 		else
 			res = GetLocale(description[lineNumber-1])
 		endif

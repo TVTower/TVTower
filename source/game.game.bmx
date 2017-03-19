@@ -1334,6 +1334,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				if r.GetOwner() <> Player.playerID then continue
 				'ignore freeholds
 				if r.IsFreehold() then continue
+				'we use GetRent() here as a rented room returns the
+				'"agreed rent" already (which includes difficulty)
 				local rent:int = r.GetRent()
 				if rent > 0 then finance.PayRent(rent, r)
 			Next
