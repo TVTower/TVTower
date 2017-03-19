@@ -94,6 +94,8 @@ Type TVTAchievementCategory {_exposeToLua}
 
 
 	Function GetAsString:String(key:int = 0)
+		if key < 0 then return "none"
+		 
 		Select key
 			case ALL           return "all"
 
@@ -149,6 +151,8 @@ Type TVTMessageCategory {_exposeToLua}
 
 
 	Function GetAsString:String(key:int = 0)
+		if key < 0 then return "none"
+		
 		Select key
 			case ALL           return "all"
 
@@ -489,6 +493,8 @@ Type TVTProgrammeLicenceFlag {_exposeToLua}
 
 
 	Function GetAsString:String(key:int = 0)
+		if key < 0 then return "none"
+		
 		Select key
 			case TRADEABLE                            return "tradeable"
 			case SELL_ON_REACHING_BROADCASTLIMIT      return "sell_on_reaching_broadcastlimit"
@@ -923,6 +929,8 @@ Type TVTProgrammeDataFlag {_exposeToLua}
 
 
 	Function GetAsString:String(key:int = 0)
+		if key < 0 then return "none"
+		
 		Select key
 			case LIVE       return "live"
 			case ANIMATION  return "animation"
@@ -1148,6 +1156,8 @@ Type TVTNewsFlag {_exposeToLua}
 
 
 	Function GetAsString:String(key:int = 0)
+		if key < 0 then return "none"
+		
 		Select key
 			case SEND_IMMEDIATELY  return "send_immediately"
 			case UNIQUE_EVENT      return "unique_event"
@@ -1200,6 +1210,8 @@ Type TVTTargetGroup {_exposeToLua}
 
 	'returns an array of all hit indexes
 	Function GetIndexes:int[](key:int = 0)
+		if key < 0 then return [0]
+		
 		Select key
 			case CHILDREN    return [1]
 			case TEENAGERS   return [2]
@@ -1243,6 +1255,8 @@ Type TVTTargetGroup {_exposeToLua}
 	
 
 	Function GetAsString:String(key:int = 0)
+		if key < 0 then return "all"
+		
 		Select key
 			case CHILDREN    return "children"
 			case TEENAGERS   return "teenagers"
@@ -1369,6 +1383,8 @@ Type TVTProgrammePersonJob {_exposeToLua}
 
 	Function GetAll:int[](key:int)
 		local all:int[]
+		if key < 0 then return all
+
 		for local i:int = 1 to count
 			if key & GetAtIndex(i) then all :+ [GetAtIndex(i)]
 		next

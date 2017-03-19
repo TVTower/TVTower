@@ -1237,7 +1237,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	Method GetLimitedToTargetGroupString:String(group:Int=-1) {_exposeToLua}
 		'if no group given, use the one of the object
-		if group < 0 then group = base.limitedToTargetGroup
+		if group < 0 then group = GetLimitedToTargetGroup()
 
 		If group > 0 ' And group <= TVTTargetGroup.GetAtIndex(TVTTargetGroup.count)
 			local targetGroups:string[] = TVTTargetGroup.GetAsString(group).split(",")
