@@ -12,6 +12,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 	Field mode:int = 0
 	Field selectedRoom:TRoomBase
 	Field hoveredRoom:TRoomBase
+	Field hoveredSign:TRoomBoardSign
 
 	Global LS_roomagency_board:TLowerString = TLowerString.Create("roomagency")	
 	Global _eventListeners:TLink[]
@@ -174,6 +175,7 @@ endrem
 
  	Method UpdateRoomBoard()
 		hoveredRoom = null
+		hoveredSign = null
 
 		For local sign:TRoomBoardSign = EachIn GetRoomBoard().list
 			local room:TRoomBase = TRoomDoor(sign.door).GetRoom()
@@ -190,6 +192,7 @@ endrem
 
 			if THelper.MouseIn(x,y, sign.imageCache.GetWidth(), sign.imageCache.GetHeight())
 				hoveredRoom =  TRoomDoor(sign.door).GetRoom()
+				hoveredSign = sign
 
 				if MouseManager.IsClicked(1)
 					selectedRoom = null
@@ -307,8 +310,22 @@ endrem
 
 		GuiManager.Draw( LS_roomagency_board )
 
-		if hoveredRoom
-			DrawRoomSheet(hoveredRoom, 400,50)
+		if hoveredSign
+			local signX:int = 42 + (hoveredSign.door.doorSlot-1) * 179 
+			local signY:int = 40 + (13 - hoveredSign.door.onFloor) * 23
+			local sheetW:int = 340
+			local sheetX:int, sheetY:int
+			if signX + hoveredSign.imageCache.GetWidth() + sheetW < GetGraphicsManager().GetWidth()
+				sheetX = signX + hoveredSign.imageCache.GetWidth()
+			else
+				sheetX = signX - sheetW
+			endif
+			'-80 and -215 are arbitrary offsets as we do not know the
+			'height of a sheet in advance
+			'10 and 366 are limits of the outer "panel"
+			sheetY = Max(10, Min(366+10 -215, signY -80))
+
+			DrawRoomSheet(hoveredRoom, sheetX, sheetY)
 		endif
  	End Method
 
