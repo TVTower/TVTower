@@ -576,6 +576,11 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetNameRaw:string() {_exposeToLua}
+		return name
+	End Method
+	
+
 	Method GetName:string() {_exposeToLua}
 		if IsUsedAsStudio() then return "studio"
 		return name

@@ -238,7 +238,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		For local room:TRoomBase = eachin GetRoomBaseCollection().list
 			'mark porter, elevatorplan, ... as fake rooms
 			if room.GetOwner() <= 0
-				Select room.GetName().ToLower()
+				Select room.GetNameRaw().ToLower()
 					case "porter", "building", "elevatorplan", "credits", "roomboard"
 						room.SetFlag(TVTRoomFlag.FAKE_ROOM, True)
 				End Select
@@ -247,8 +247,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'mark office, news, boss and archive as freeholds so they
 			'cannot get cancelled in the room agency - nor do they cost
 			'rent
-			Select room.GetName().ToLower()
-				case "office", "news", "boss", "archive"
+			'mark owned studios as used (needed for older savegames!
+			Select room.GetNameRaw().ToLower()
+				'"studio" is only set for studios of a game start
+				case "office", "news", "boss", "archive", "studio"
 					room.SetFlag(TVTRoomFlag.FREEHOLD, True)
 				'some important rooms should also never be configured
 				'to become "free studios"
