@@ -69,6 +69,12 @@ Type TTooltip Extends TEntity
 	Global imgCacheEnabled:Int	= True
 
 
+	Method New()
+		if useFontBold = null then useFontBold = GetBitmapFont("default", 12)
+		if useFont = null then useFont = GetBitmapFont("default", 12)
+	End Method
+
+
 	Function Create:TTooltip(title:String = "", content:String = "unknown", x:Int = 0, y:Int = 0, w:Int = -1, h:Int = -1, lifetime:Int = 300)
 		Local obj:TTooltip = New TTooltip
 		obj.Initialize(title, content, x, y, w, h, lifetime)
@@ -207,7 +213,8 @@ Type TTooltip Extends TEntity
 
 
 	Method GetTitleHeight:Int()
-		Local result:Int = TooltipHeader.area.GetH()
+		Local result:Int = 12
+		if TooltipHeader then result = TooltipHeader.area.GetH()
 		'add icon to height of caption
 		'If tooltipimage >= 0 Then result :+ 2
 		Return result
@@ -283,13 +290,13 @@ Type TTooltip Extends TEntity
 
 	Method DrawHeader:Int(x:Float, y:Float, width:Int, height:Int)
 		SetHeaderColor()
-		TooltipHeader.TileDraw(x, y, width, height)
+		if TooltipHeader then TooltipHeader.TileDraw(x, y, width, height)
 
 		SetColor 255,255,255
 		Local displaceX:Float = 0.0
-		If tooltipimage >=0
-			TTooltip.ToolTipIcons.Draw(x, y, tooltipimage)
-			displaceX = TTooltip.ToolTipIcons.framew
+		If tooltipimage >=0 and TooltipIcons
+			TooltipIcons.Draw(x, y, tooltipimage)
+			displaceX = ToolTipIcons.framew
 		EndIf
 '		SetAlpha getFadeAmount()
 		'caption

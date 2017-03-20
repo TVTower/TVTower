@@ -1007,8 +1007,7 @@ ABBREVIATION_YEARS = J.
 BEFORE_XTH_PLAYER_RESTART = Vor %X%. Spielerneustart
 
 ROOM_OVERVIEW = Raumübersicht
-SELECT_ROOM_TO_RENT = Wähle einen anzumietenden Raum aus
-SELECT_ROOM_TO_CANCEL = Wähle einen zu kündigenden Raum aus
+CANCEL_OR_RENT_ROOMS = Räume anmieten oder kündigen
 PREVIOUS_TENANT = Vorheriger Mieter
 ORIGINAL_TENANT = Ursprünglicher Mieter
 RERENT = Wiedervermietung
@@ -1020,3 +1019,7 @@ HOUR = Stunde
 HOURS = Stunden
 MINUTE = Minute
 MINUTES = Minuten
+
+CONFIRM = Bestätigen
+CLICK_AGAIN_TO_RENT = Zum Mieten erneut anklicken
+CLICK_AGAIN_TO_CANCEL_RENT = Zum Kündigen erneut anklicken

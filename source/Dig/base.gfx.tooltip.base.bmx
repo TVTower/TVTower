@@ -168,7 +168,7 @@ Type TTooltipBase
 			default
 				parentAlignment = ALIGN_CENTER_TOP
 				alignment = ALIGN_CENTER_BOTTOM
-				if distance then offset = new TVec2D.Init(distance, -1 * abs(distance))
+				if distance then offset = new TVec2D.Init(0, -1 * abs(distance))
 		End Select
 	End Method
 

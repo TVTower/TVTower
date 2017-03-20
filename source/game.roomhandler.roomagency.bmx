@@ -1,26 +1,31 @@
 ﻿SuperStrict
 Import "Dig/base.gfx.gui.bmx"
+Import "Dig/base.gfx.tooltip.base.bmx"
 Import "common.misc.datasheet.bmx"
 Import "game.roomhandler.base.bmx"
 Import "game.misc.roomboardsign.bmx"
 Import "game.roomagency.bmx"
+Import "game.player.bmx"
 
 
 'RoomAgency
 Type RoomHandler_RoomAgency extends TRoomHandler
-	'rental or cancel rental?
+	'show room board?
 	Field mode:int = 0
 	Field selectedRoom:TRoomBase
 	Field hoveredRoom:TRoomBase
 	Field hoveredSign:TRoomBoardSign
+
+	Global roomboardTooltip:TTooltip
+
+	Global _confirmActionTooltip:TTooltipBase
 
 	Global LS_roomagency_board:TLowerString = TLowerString.Create("roomagency")	
 	Global _eventListeners:TLink[]
 	Global _instance:RoomHandler_RoomAgency
 
 	Const MODE_NONE:int = 0
-	Const MODE_RENT:int = 1
-	Const MODE_CANCELRENT:int = 2
+	Const MODE_SELECTROOM:int = 1
 
 
 	Function GetInstance:RoomHandler_RoomAgency()
@@ -62,7 +67,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 
 	Method CleanUp()
 		'=== unset cross referenced objects ===
-		'
+		roomboardTooltip = null
 		
 		'=== remove obsolete gui elements ===
 		'
@@ -100,8 +105,15 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 		if not room then return False
 
 		local i:RoomHandler_RoomAgency = GetInstance()
-		if i.selectedRoom and i.mode = MODE_RENT and not i.selectedRoom.IsRentable() then i.selectedRoom = null
-		if i.selectedRoom and i.mode = MODE_CANCELRENT and i.selectedRoom.IsRentable() then i.selectedRoom = null
+		if i.selectedRoom
+			'selected the room of another player
+			if i.selectedRoom.GetOwner() > 0 and i.selectedRoom.GetOwner() <> GetPlayerBase().playerID
+				i.selectedRoom = null
+			'selected unrented one which cannot get rented
+			elseif not i.selectedRoom.IsRented() and not i.selectedRoom.IsRentable()
+				i.selectedRoom = null
+			endif
+		endif
 	End Function
 
 
@@ -135,15 +147,26 @@ endrem
 
 
 	Method Update()
-		if Keymanager.IsHit(KEY_TAB)
-			if mode = MODE_NONE
-				mode = MODE_RENT
-			else
-				mode = MODE_NONE
+		If THelper.MouseIn(0,0,230,325)
+			If not roomboardTooltip
+				roomboardTooltip = TTooltip.Create(GetLocale("ROOM_OVERVIEW"), GetLocale("CANCEL_OR_RENT_ROOMS"), 70, 120, 0, 0)
+				roomboardTooltip._minContentWidth = 150
 			endif
-		endif
-	
-		if mode = MODE_RENT or mode = MODE_CANCELRENT
+				
+			roomboardTooltip.enabled = 1
+			roomboardTooltip.Hover()
+			GetGameBase().cursorstate = 1
+			If MOUSEMANAGER.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
+				MOUSEMANAGER.resetKey(1)
+				GetGameBase().cursorstate = 0
+
+				mode = MODE_SELECTROOM
+			endif
+		EndIf
+		If roomboardTooltip Then roomboardTooltip.Update()
+
+
+		if mode = MODE_SELECTROOM
 			UpdateRoomBoard()
 		else
 			'Update dialogue
@@ -159,14 +182,13 @@ endrem
 	Method Render()
 		SetColor(255,255,255)
 
-		if mode = MODE_RENT or mode = MODE_CANCELRENT
+		If roomboardTooltip Then roomboardTooltip.Render()
+
+		if mode = MODE_SELECTROOM
 			RenderRoomBoard()
 		else
 			'Dialogue
 		endif
-
-		'draw achievement-sheet
-		'if hoveredGuiProductionConcept then hoveredGuiProductionConcept.DrawSupermarketSheet()
  	End Method
 
 
@@ -177,11 +199,17 @@ endrem
 		hoveredRoom = null
 		hoveredSign = null
 
+		local playerID:int = GetPlayerBase().playerID
+
 		For local sign:TRoomBoardSign = EachIn GetRoomBoard().list
 			local room:TRoomBase = TRoomDoor(sign.door).GetRoom()
 			if not room then continue
 			'ignore never-rentable rooms
 			if room.IsFake() or room.IsFreeHold() then continue
+
+			'other players rooms
+			if room.GetOwner() > 0 and room.GetOwner() <> playerID and not room.IsRentable() then continue
+			if room.GetOwner() <= 0 and not room.IsRentable() then continue
 
 			if not sign.imageCache
 				sign.imageCache = sign.GenerateCacheImage( GetSpriteFromRegistry(sign.imageBaseName + Max(0, sign.door.GetOwner())) )
@@ -191,15 +219,70 @@ endrem
 			local y:int = 40 + (13 - sign.door.onFloor) * 23
 
 			if THelper.MouseIn(x,y, sign.imageCache.GetWidth(), sign.imageCache.GetHeight())
-				hoveredRoom =  TRoomDoor(sign.door).GetRoom()
+				hoveredRoom = TRoomDoor(sign.door).GetRoom()
 				hoveredSign = sign
 
 				if MouseManager.IsClicked(1)
-					selectedRoom = null
-					'only select the room if it is allowed
-					if (mode = MODE_RENT and hoveredRoom.IsRentable()) or ..
-					   (mode = MODE_CANCELRENT and hoveredRoom.GetOwner() = GetPlayerBase().playerID)
-						selectedRoom = hoveredRoom
+			
+					'only select/confirm the room if it is allowed
+					if (hoveredRoom.GetOwner() <= 0 and hoveredRoom.IsRentable()) or ..
+					   (hoveredRoom.GetOwner() = playerID)
+						'confirmation click
+						if selectedRoom = hoveredRoom
+							'BeginRoomRent/CancelRoomRental will set
+							'selectedRoom to null (to avoid having things
+							'selected which are no longer selectable)
+							'-> use a custom variable
+							local useRoom:TRoomBase = selectedroom
+							local doneSomething:int = False
+							'rent the room
+							if useRoom.GetOwner() <> playerID
+								if GetRoomAgency().BeginRoomRental(useRoom, GetPlayerBase().playerID)
+									useRoom.SetUsedAsStudio(True)
+									doneSomething = True
+								endif
+							else
+								'cancel the rent
+								if GetRoomAgency().CancelRoomRental(useRoom, GetPlayerBase().playerID)
+									useRoom.SetUsedAsStudio(False)
+									doneSomething = True
+								endif
+							endif
+
+							'handled it (might be "False" if player had
+							'not enough money)
+							if doneSomething = True
+								selectedRoom = null
+								'hoveredRoom = null
+								'hoveredSign = null
+								_confirmActionTooltip = null
+							endif
+
+						'select click
+						else
+							selectedRoom = hoveredRoom
+
+							if not _confirmActionTooltip and selectedRoom
+								_confirmActionTooltip = new TGUITooltipBase.Initialize("Unknown mode", "", new TRectangle.Init(0,0,-1,-1))
+								_confirmActionTooltip.SetOption(TTooltipBase.OPTION_MANUAL_HOVER_CHECK, true)
+								if not _confirmActionTooltip.parentArea then _confirmActionTooltip.parentArea = new TRectangle
+								_confirmActionTooltip.parentArea.Init(x, y, sign.imageCache.GetWidth()-3, sign.imageCache.GetHeight()-3)
+								_confirmActionTooltip.offset = new TVec2D.Init(0, 0)
+								'avoid dwelling, just show it
+								_confirmActionTooltip.SetStep(TTooltipBase.STEP_ACTIVE)
+
+								if selectedRoom.GetOwner() <> playerID
+									_confirmActionTooltip.SetTitle(StringHelper.UCFirst(GetLocale("CONFIRM")))
+									_confirmActionTooltip.SetContent(StringHelper.UCFirst(GetLocale("CLICK_AGAIN_TO_RENT")))
+								else
+									_confirmActionTooltip.SetTitle(StringHelper.UCFirst(GetLocale("CONFIRM")))
+									_confirmActionTooltip.SetContent(StringHelper.UCFirst(GetLocale("CLICK_AGAIN_TO_CANCEL_RENT")))
+								endif
+							endif
+						endif
+					else
+						selectedRoom = null
+						_confirmActionTooltip = null
 					endif
 
 					'handled button hit
@@ -213,9 +296,19 @@ endrem
 
 		If selectedRoom and (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
 			selectedRoom = null
+			_confirmActionTooltip = null
+			
 			MouseManager.ResetKey(2)
 			MouseManager.ResetKey(1)
 		EndIf
+
+
+
+		if _confirmActionTooltip
+			'update hovered state
+			_confirmActionTooltip.SetOption(TTooltipBase.OPTION_MANUALLY_HOVERED, selectedRoom <> null)
+			_confirmActionTooltip.Update()
+		endif
 
 
 		GuiManager.Update( LS_roomagency_board )
@@ -250,11 +343,7 @@ endrem
 		contentH = skin.GetContentH(outer.GetH())
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		if mode = MODE_RENT
-			GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(GetLocale("ROOM_OVERVIEW")+": " + GetLocale("SELECT_ROOM_TO_RENT"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		else
-			GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(GetLocale("ROOM_OVERVIEW")+": " + GetLocale("SELECT_ROOM_TO_CANCEL"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		endif
+		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(GetLocale("ROOM_OVERVIEW")+": " + GetLocale("CANCEL_OR_RENT_ROOMS"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, contentH - titleH , "2")
 
@@ -272,18 +361,16 @@ endrem
 			local x:int = 42 + (sign.door.doorSlot-1) * 179 
 			local y:int = 40 + (13 - sign.door.onFloor) * 23
 
-			if mode = MODE_RENT
-				if room and not room.IsRentable()
-					SetAlpha oldCol.a * 0.75
-				endif
-			elseif mode = MODE_CANCELRENT
-				if room and room.GetOwner() <> GetPlayerBase().playerID
-					SetAlpha oldCol.a * 0.75
+			if room
+				if room.GetOwner() <= 0 and not room.IsRentable()
+					SetAlpha oldCol.a * 0.60
+				elseif room.GetOwner() = GetPlayerBase().playerID and room.IsFreehold()
+					SetAlpha oldCol.a * 0.60
 				endif
 			endif
 
 			'ignore never-rentable rooms
-			if room.IsFake() or room.IsFreeHold() then SetAlpha oldCol.a * 0.3
+			if room.IsFake() or room.IsFreeHold() then SetAlpha oldCol.a * 0.25
 
 
 			sign.imageCache.Draw(x,y)
@@ -307,6 +394,10 @@ endrem
 
 			oldCol.SetRGBA()
 		Next
+
+		if _confirmActionTooltip
+			_confirmActionTooltip.Render()
+		endif
 
 		GuiManager.Draw( LS_roomagency_board )
 

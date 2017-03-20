@@ -989,8 +989,7 @@ ABBREVIATION_YEARS = Y.
 BEFORE_XTH_PLAYER_RESTART = Before %X%. player restart
 
 ROOM_OVERVIEW = Room overview
-SELECT_ROOM_TO_RENT = Select room to rent
-SELECT_ROOM_TO_CANCEL = Select room to cancel
+CANCEL_OR_RENT_ROOMS = Cancel or rent rooms
 PREVIOUS_TENANT = Previous tenant
 ORIGINAL_TENANT = Original tenant
 RERENT = Rerent
@@ -1002,3 +1001,7 @@ HOUR = hour
 HOURS = hours
 MINUTE = minute
 MINUTES = minutes
+
+CONFIRM = confirm
+CLICK_AGAIN_TO_RENT = Click again to rent
+CLICK_AGAIN_TO_CANCEL_RENT = Click again to cancel rent
