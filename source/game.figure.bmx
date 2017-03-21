@@ -663,7 +663,7 @@ Type TFigure extends TFigureBase
 			If room.hasOccupant() and not room.isOccupant(self)
 				'only player-figures need such handling (events etc.)
 				'all others just enter
-				If playerID and not playerID = room.owner
+				If playerID and playerID <> room.owner
 					FailEnterRoom(room, door, "inuse")
 					return FALSE
 				EndIf
