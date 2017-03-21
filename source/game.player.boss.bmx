@@ -224,8 +224,9 @@ Type TPlayerBoss
 	'in the case of the player sends a favorite movie, this might
 	'brighten the mood of the boss
 	Field favoriteMovieGUID:String = ""
-	'dialogues for the things the boss can talk about
-	Field Dialogues:TList = CreateList() {nosave}
+	'dialogues for each player, each dialogue contains all subjects a
+	'boss can talk about
+	Field dialogues:TDialogue[4] {nosave}
 
 	Field registeredProgrammeMalfunctions:int = 0
 	Field registeredNewsMalfunctions:int = 0
@@ -262,7 +263,7 @@ Type TPlayerBoss
 		playerVisitsMe = False
 		creditMaximum = 600000
 		favoriteMovieGUID = ""
-		Dialogues.Clear()
+		Dialogues = new TDialogue[4]
 		registeredProgrammeMalfunctions = 0
 		registeredNewsMalfunctions = 0
 		registeredWonAward = 0
@@ -310,8 +311,17 @@ Type TPlayerBoss
 	End Method
 
 
-	Method ResetDialogues()
-		Dialogues.Clear()
+	Method GetDialogue:TDialogue(playerID:int)
+		if not dialogues or playerID < 0 or dialogues.length < playerID then return null
+		return dialogues[playerID-1]
+	End Method
+	
+
+	Method ResetDialogues:int(playerID:int)
+		if not GetDialogue(playerID) then return False
+
+		dialogues[playerID-1] = null
+		return True
 	End Method
 
 
@@ -461,13 +471,14 @@ Type TPlayerBoss
 			ChefDialogue.SetArea(new TRectangle.Init(300, 15, 400, 110))
 			ChefDialogue.moveDialogueBalloonStart = 50
 		else
-			ChefDialogue.SetArea(new TRectangle.Init(300, 60, 400, 110))
-			ChefDialogue.moveDialogueBalloonStart = 0
+			ChefDialogue.SetArea(new TRectangle.Init(300, 25, 400, 110))
+			ChefDialogue.moveDialogueBalloonStart = 40
 		endif
 		ChefDialogue.SetAnswerArea(new TRectangle.Init(400, 220, 380, 90))
 		ChefDialogue.SetGrow(1,-1)
 
-		Dialogues.AddLast(ChefDialogue)
+		if Dialogues.length < visitingPlayerID then Dialogues = Dialogues[.. visitingPlayerID]
+		Dialogues[visitingPlayerID-1] = ChefDialogue
 	End Method
 
 
@@ -655,7 +666,7 @@ Type TPlayerBoss
 
 
 		'remove an old (maybe obsolete) dialogue
-		ResetDialogues()
+		ResetDialogues(player.playerID)
 		GenerateDialogues(player.playerID)
 
 		'send out event that the player enters the bosses room
@@ -667,7 +678,7 @@ Type TPlayerBoss
 		PlayerTakesCredit(value)
 
 		'remove an old dialogue (containing old credit information)
-		ResetDialogues()
+		ResetDialogues(GetPlayerBase().playerID)
 		GenerateDialogues(GetPlayerBase().playerID)
 	End Method
 
@@ -676,7 +687,7 @@ Type TPlayerBoss
 		PlayerRepaysCredit(value)
 
 		'remove an old dialogue (containing old credit information)
-		ResetDialogues()
+		ResetDialogues(GetPlayerBase().playerID)
 		GenerateDialogues(GetPlayerBase().playerID)
 	End Method
 End Type

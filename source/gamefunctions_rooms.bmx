@@ -99,9 +99,14 @@ Type RoomHandler_Boss extends TRoomHandler
 
 		local boss:TPlayerBoss = GetPlayerBoss(room.owner)
 		if not boss then return False
-		For Local dialog:TDialogue = EachIn boss.Dialogues
-			dialog.Draw()
-		Next
+
+		local figure:TFigureBase = GetObservedFigure()
+		if not figure then return False
+
+
+		if boss.GetDialogue(figure.playerID)
+			boss.GetDialogue(figure.playerID).Draw()
+		endif
 
 
 		If TVTDebugInfos
@@ -151,18 +156,17 @@ Type RoomHandler_Boss extends TRoomHandler
 		if not figure then return False
 
 		'generate the dialogue if not done yet (and not just leaving)
-		if boss.Dialogues.Count() <= 0 and ..
+		if not boss.GetDialogue(figure.playerID) and ..
 		   not figure.isLeavingRoom() and figure.GetInRoomID() > 0
-
 			'generate for the visiting one
 			boss.GenerateDialogues(figure.playerID)
 		endif
 
-		For Local dialog:TDialogue = EachIn boss.Dialogues
-			If dialog.Update() = 0
+		if boss.GetDialogue(figure.playerID)
+			If boss.GetDialogue(figure.playerID).Update() = 0
 				figure.LeaveRoom()
-				boss.Dialogues.Remove(dialog)
+				boss.ResetDialogues(figure.playerID)
 			endif
-		Next
+		endif
 	End Method
 End Type
