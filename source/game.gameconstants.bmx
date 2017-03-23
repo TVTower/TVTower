@@ -1145,8 +1145,10 @@ Type TVTNewsFlag {_exposeToLua}
 	Const RESET_TICKER_TIME:Int = 32
 	'reset a "initial" happen time once it was used the first time
 	Const RESET_HAPPEN_TIME:Int = 64
+	'mark news as something special (eg. to emphasize it graphically)
+	Const SPECIAL_EVENT:Int = 128
 
-	Const count:int = 7
+	Const count:int = 8
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -1166,6 +1168,7 @@ Type TVTNewsFlag {_exposeToLua}
 			case KEEP_TICKER_TIME  return "keep_ticker_time"
 			case RESET_TICKER_TIME return "reset_ticker_time"
 			case RESET_HAPPEN_TIME return "reset_happen_time"
+			case SPECIAL_EVENT     return "special_event"
 
 
 			default

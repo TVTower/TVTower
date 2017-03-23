@@ -25,16 +25,21 @@
 				<child name="gfx_news_btn4.active"		x="164"	y="42"	w="41"	h="42"	/>
 			</children>
 		</spritepack>
-		<sprite name="gfx_newssheet_base" url="res/gfx/newsstudio/screen_newsplanner_elements.png">
+
+		<spritepack name="gfx_newsplanner_elements" url="res/gfx/newsstudio/screen_newsplanner_elements.png">
+			<children>
+				<child name="gfx_newssheet_base"  x="0" y="0" w="366" h="88" />
+				<child name="gfx_newssheet_genreoverlay"  x="366" y="0" w="12" h="88" />
+			</children>
 			<scripts>
-				<script	do="ColorizeCopy"	dest="gfx_news_sheet0"	r="205"	g="170"	b="50" />
-				<script	do="ColorizeCopy"	dest="gfx_news_sheet1"	r="50"	g="140"	b="205" />
-				<script do="ColorizeCopy"	dest="gfx_news_sheet2"	r="220"	g="30"	b="30" />
-				<script do="ColorizeCopy"	dest="gfx_news_sheet3"	r="170"	g="30"	b="220" />
-				<script do="ColorizeCopy"	dest="gfx_news_sheet4"	r="60"	g="160"	b="60" />
-				<script do="ColorizeCopy"	dest="gfx_news_sheet5"	r="255"	g="100"	b="0" />
+				<script	do="ColorizeCopy"	src="gfx_newssheet_base"	dest="gfx_news_sheet0"	r="205"	g="170"	b="50" />
+				<script	do="ColorizeCopy"	src="gfx_newssheet_base"	dest="gfx_news_sheet1"	r="50"	g="140"	b="205" />
+				<script do="ColorizeCopy"	src="gfx_newssheet_base"	dest="gfx_news_sheet2"	r="220"	g="30"	b="30" />
+				<script do="ColorizeCopy"	src="gfx_newssheet_base"	dest="gfx_news_sheet3"	r="170"	g="30"	b="220" />
+				<script do="ColorizeCopy"	src="gfx_newssheet_base"	dest="gfx_news_sheet4"	r="60"	g="160"	b="60" />
+				<script do="ColorizeCopy"	src="gfx_newssheet_base"	dest="gfx_news_sheet5"	r="255"	g="100"	b="0" />
 			</scripts>
-		</sprite>
+		</spritepack>
 
 		<!-- ROOMBOARD -->
 		<spritepack name="screen_roomboard_elements" url="res/gfx/roomboard/screen_roomboard_elements.png">

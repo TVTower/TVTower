@@ -853,6 +853,11 @@ Type TGUINews Extends TGUIGameListItem
 			'background - no "_dragged" to add to name
 			GetSpriteFromRegistry(Self.imageBaseName+news.GetGenre()).Draw(screenX, screenY)
 
+			'mark special news
+			if news.newsEvent.HasFlag(TVTNewsFlag.SPECIAL_EVENT)
+				GetSpriteFromRegistry("gfx_newssheet_genreoverlay").Draw(screenX, screenY)
+			endif
+
 			'highlight hovered news (except already dragged)
 			If Not isDragged() And Self = RoomHandler_News.hoveredGuiNews
 				Local oldAlpha:Float = GetAlpha()
