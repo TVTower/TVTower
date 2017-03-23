@@ -1731,9 +1731,13 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Mietmaul1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Mietmaul - das Magazin</de>
+				<en>Hired Parrot - the magazine</en>
 			</title>
 			<description>
-				<de>Wir schleimen uns beim Pöbel ein, für die Auflage. Aber: wes Brot ich ess, des Lied ich sing. Mietmaul - Wir sind gleicher als Andere.</de>
+				<de>Wir schleimen uns beim Pöbel ein, für die Auflage. Aber: wes Brot ich ess, des Lied ich sing.
+				Mietmaul - Wir sind gleicher als Andere.</de>
+				<en>We cozy up to the mob - for the circulation. But who pays the piper, calls the tune.
+				Hired Parrot - We are more equal than others.</en>
 			</description>
 			<conditions min_audience="14.0663" min_image="7" target_group="32"/>
 			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="277" penalty="452" infomercial_profit="14" fix_infomercial_profit="1"/>
@@ -1741,9 +1745,13 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Mietmaul2" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Mietmaul - das Magazin</de>
+				<en>Hired Parrot - the magazine</en>
 			</title>
 			<description>
-				<de>Werbung als Dokumentation getarnt. Senden Sie uns Ihr Werbematerial. Copy- und Paste-Praktikanten, 24/7 verfügbar. Mietmaul - Wir sind gleicher als Andere.</de>
+				<de>Werbung als Dokumentation getarnt. Senden Sie uns Ihr Werbematerial. Copy- und Paste-Praktikanten, 24/7 verfügbar.
+				Mietmaul - Wir sind gleicher als Andere.</de>
+				<en>Advertising disguised as documentation. Please send us your advertising material. Copy and paste interns available 24/7.
+				Hired Parrot - We are more equal than others.</en>
 			</description>
 			<conditions min_audience="14.0663" min_image="18" target_group="32"/>
 			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="307" penalty="543" fix_infomercial_profit="1"/>
@@ -1751,9 +1759,13 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Mietmaul3" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Mietmaul - das Magazin</de>
+				<en>Hired Parrot - the magazine</en>
 			</title>
 			<description>
-				<de>Diskriminierung oder Hetzschrift. Gerne. - Ehre? Menschenwürde oder Mitgefühl? Das kennen wir nicht! - Mietmaul - Wir sind gleicher als Andere.</de>
+				<de>Diskriminierung oder Hetzschrift. Gerne. - Ehre? Menschenwürde oder Mitgefühl? Das kennen wir nicht!
+				Mietmaul - Wir sind gleicher als Andere.</de>
+				<en>Discrimination or prosecution. With pleasure. - Honor? Human dignity or compassion? Are not known to us! 
+				Hired Parrot - We are more equal than others.</en>
 			</description>
 			<conditions min_audience="14.0663" min_image="30" target_group="32"/>
 			<data infomercial="1" quality="17" repetitions="2" duration="3" profit="337" penalty="532" infomercial_profit="14" fix_infomercial_profit="1"/>
@@ -1761,9 +1773,12 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Mietmaul4" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Mietmaul - das Magazin</de>
+				<en>Hired Parrot - the magazine</en>
 			</title>
 			<description>
 				<de>Mietmaul - Dein bester Froooind. Wir sind ja so suuuper investigativ. Mietmaul - Wir sind besser als Andere.</de>
+				<en>Hired Parrot - your beeeest friend. We are soo suuuper investigative.
+				Hired Parrot - We are more equal than others.</en>
 			</description>
 			<conditions min_audience="28.65" min_image="52" target_group="8"/>
 			<data infomercial="1" quality="18" repetitions="5" duration="4" profit="156" penalty="290" infomercial_profit="15" fix_infomercial_profit="1"/>
@@ -1771,9 +1786,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Moporatret" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Moporatret</de>
+				<en>Mobikepedal</en>
 			</title>
 			<description>
 				<de>Ihr Zwei- und Dreiradhändler ganz in Ihrer Nähe. Für jung und alt, wir haben für jeden etwas. Wir machen auch Umbauten, solange es nicht 4 Räder hat.</de>
+				<en>Your two- and three-wheeler dealer in your area. For young and old, we have something for everyone. We also make conversions as long as it does not have 4 wheels.</en>
 			</description>
 			<conditions min_audience="6.77" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="19" repetitions="4" duration="4" profit="430" penalty="988" infomercial_profit="40" fix_infomercial_profit="1"/>
@@ -1781,9 +1798,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Musikscheune" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Musikscheune Konzelmann</de>
+				<en>Music Shack Konzelmann</en>
 			</title>
 			<description>
-				<de>Tonbänder, Schallplatten, Kasseten, Compact Discs. Wir haben alle physisch anwesend. Zum tasten, fühlen, schnuppern, schmecken und hören!</de>
+				<de>Tonbänder, Schallplatten, Kassetten, Compact Discs. Wir haben alle physisch anwesend. Zum tasten, fühlen, schnuppern, schmecken und hören!</de>
+				<en>Tapes, records, cassettes, compact discs. We have all of them physically present. To sense, feel, taste and listen!</en>
 			</description>
 			<conditions min_audience="1.3" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="13" repetitions="3" duration="5" profit="1000" penalty="1450" fix_infomercial_profit="1"/>
@@ -1791,9 +1810,13 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Ohrostopf" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Ohrostopf Lärmschutz</de>
+				<en>Ear-O-Plug noise control</en>
 			</title>
 			<description>
-				<de>Nölt Ihr Chef? Die Alte sowieso? Die Kinder sind nicht auszuhalten? - RUHE !!! - Jetzt: Ohrostopf!</de>
+				<de>Nölt Ihr Chef? Die Alte sowieso? Die Kinder sind nicht auszuhalten? - RUHE !!! 
+				Jetzt im Handel: Ohrostopf!</de>
+				<en>Is your boss always nagging at you? Your hag anyway? The children are unbearable? - SILENCE !!!
+				Now available: Ear-O-Plug</en>
 			</description>
 			<conditions min_audience="5.21" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="21" repetitions="5" duration="4" profit="500" penalty="1056" fix_infomercial_profit="1"/>
@@ -1825,9 +1848,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Pillreis" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Antiquitäten Pillreis</de>
+				<en>Antiques Pillreis</en>
 			</title>
 			<description>
 				<de>Wir sind nicht gegen Quitäten! Das Wort kommt nicht von Anti-, sondern von Antique. Ankauf und Verkauf von historischem Mobiliar also.</de>
+				<en>We are not against Ques! The word does not come from Anti-, but from Antique. Means purchase and sale of historical furniture.</en>
 			</description>
 			<conditions min_audience="2.6" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="11" repetitions="1" duration="4" profit="660" penalty="948" fix_infomercial_profit="1"/>
@@ -1835,9 +1860,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Ploerre" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Plörre Bier</de>
+				<en>Muck Beer</en>
 			</title>
 			<description>
-				<de>Schon ein Kanzler sang einst: "Plörre Bier - Plörre Bier - das hol' ich mir."</de>
+				<de>Schon ein Kanzler einst sang: "Plörre Bier - Plörre Bier - das hol' ich mir."</de>
+				<en>As a Chancellor once sang: "Muck Beer - Muck Beer - I'll get it."</en>
 			</description>
 			<conditions min_audience="3.13" min_image="4" target_group="256"/>
 			<data infomercial="1" quality="15" repetitions="5" duration="4" profit="683" penalty="879" fix_infomercial_profit="1"/>
@@ -1845,9 +1872,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Rapunzel" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Rapunzel Haarteile</de>
+				<en>Rapunzel's Hairpieces</en>
 			</title>
 			<description>
-				<de>Toupets und Perrücken. Wenn man nicht darauf angewiesen ist - gut so. Sonst komm zu Rapunzel. Ab 5 Meter Länge, gibt es einen Meter gratis dazu!</de>
+				<de>Toupets und Perücken. Wenn man nicht darauf angewiesen ist - gut so. Sonst komm zu Rapunzel. Ab 5 Meter Länge, gibt es einen Meter gratis dazu!</de>
+				<en>Toupets and wigs. Good for you if you do not have to rely on it. Otherwise come to Rapunzel's. Buy 5 meters or more and get a meter for free!</en>
 			</description>
 			<conditions min_audience="18.76" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="15" repetitions="4" duration="6" profit="215" penalty="372" infomercial_profit="20" fix_infomercial_profit="1"/>
@@ -1855,9 +1884,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Rhinozerosfarm" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Rhinozerosfarm Aschenbühl</de>
+				<en>Rhinoceros farm Aschenbuehl</en>
 			</title>
 			<description>
 				<de>Urlaub auf dem Bauernhof. Ebenfalls sehenswert: Unsere Babyrhinozerosse. Besuchen Sie unsere Kleinen und ihre schnaubenden Mütter. Kleiner Tipp: Testament ablegen.</de>
+				<en>Vacation on the farm. Also worth seeing: our baby rhinoceroses. Visit our little ones and their snorting mothers. Small tip: Make your will.</en>
 			</description>
 			<conditions min_audience="7.29" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="13" repetitions="5" duration="3" profit="438" penalty="682" infomercial_profit="39" fix_infomercial_profit="1"/>
@@ -1865,9 +1896,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-RoZZona" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>RoZZona</de>
+				<en>SnotZZy</en>
 			</title>
 			<description>
 				<de>Sniffmaster 2000, der unendlich nützliche Geruchstransmitter. Das ist wie telefonieren für die Nase. Komm schon und riech mit, egal wo Du bist! Sniffmaster 2000!</de>
+				<en>Sniffmaster 2000, the infinitely useful smell transmitter. This is like phone calls for the nose. Come on and smell, no matter where you are! Sniffmaster 2000!</en>
 			</description>
 			<conditions min_audience="23.44" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="182" penalty="327" infomercial_profit="17" fix_infomercial_profit="1"/>
@@ -1875,9 +1908,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Roll-Shop" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Der Roll-Shop</de>
+				<en>The Roll-Shop</en>
 			</title>
 			<description>
 				<de>Wir haben alles mit einem "Roll" im Namen: Rollmops - Rollkragenpullover - Rollwagen. Tritt ein und roll raus. Der Roll-Shop.</de>
+				<en>We have everything with a "roll" in its name: Rollmop - Roll-neck sweaters - Roll cars. Step in and roll out. The Roll Shop.</en>
 			</description>
 			<conditions min_audience="9.38" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="23" repetitions="4" duration="4" profit="347" penalty="537" infomercial_profit="32" fix_infomercial_profit="1"/>
@@ -1885,29 +1920,35 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Schmierlapp" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Autohaus Schmierlapp</de>
+				<en>Greasy's Cars</en>
 			</title>
 			<description>
 				<de>Von uns bekommt jeder einen Satz Bremsbeläge verordnet. Der SICHERHEIT wegen. Was dachten Sie? Ich, Franz Schmierlapp, stehe mit meinem Namen für Authentizität!</de>
+				<en>Everyone gets a set of brake pads from us. For the sake of SECURITY. What did you think? I, Franz Greasy, stand with my name for authenticity!</en>
 			</description>
 			<conditions min_audience="0.26" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="10" repetitions="5" duration="3" profit="2320" penalty="3105" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Schniggo1" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Schniggo Schoko Kubus</de>
+				<de>Schniggo Schokokubus</de>
+				<en>Schniggo Choco Cube</en>
 			</title>
 			<description>
 				<de>Schokolade hoch drei. Alle Kanten gleich lang! Die Beste Idee aller Zeiten! Wir haben Kanten von 10cm, 20cm und 30cm!</de>
+				<en>Chocolate cubed. All edges equally long! The best idea ever! We have edges of 10cm, 20cm and 30cm!</en>
 			</description>
 			<conditions min_audience="3.1251" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="15" repetitions="6" duration="3" profit="618" penalty="900" infomercial_profit="11" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="speedminister-ad-Schniggo2" creator="8605" created_by="SpeedMinister">
 			<title>
-				<de>Schniggo Lakritz Kugel</de>
+				<de>Schniggo Lakritzkugel</de>
+				<en>Schniggo Licorice Ball</en>
 			</title>
 			<description>
 				<de>Lakritz hoch drei. Alle Durchmesser gleich lang! Die Beste Idee aller Zeiten! Wir haben Durchmesser von 10cm, 20cm und 30cm!</de>
+				<en>Licorice cubed. All diameters of the same length! The best idea ever! We offer in diameters of 10cm, 20cm and 30cm!</en>
 			</description>
 			<conditions min_audience="39.07" min_image="30" target_group="0"/>
 			<data infomercial="1" quality="13" repetitions="3" duration="4" profit="121" penalty="190" infomercial_profit="12" fix_infomercial_profit="1"/>
@@ -1915,9 +1956,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Schaedlingsbekaempfung" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Stefanjek Schädlingsbekämpfung</de>
+				<en>Stefanjek Pest Control</en>
 			</title>
 			<description>
 				<de>Die Kakerlake, die uns entkommt wurde noch nicht geboren. Vermutlich schlüpft sie gerade bei Ihnen unter dem Herd! Wir vernichten oder schlagen sie in die Flucht. Zurück bleibt jedenfalls keine.</de>
+				<en>The cockroach that escapes us was not born yet. Probably they just hatch under your stove! We destroy or but them to rout. There will be none left.</en>
 			</description>
 			<conditions min_audience="0.62" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="8" repetitions="4" duration="2" profit="1583" penalty="2020" infomercial_profit="158" fix_infomercial_profit="1"/>
@@ -1925,9 +1968,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Steiss" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Steiß Teddybären</de>
+				<en>Rump Teddy Bears</en>
 			</title>
 			<description>
 				<de>Stahlbeton und Messing sind die Materialien der Wahl. Kindersicher. Unkaputtbar. Steiß Teddybären.</de>
+				<en>Steel concrete and brass are the materials of choice. Childproof. Unbreakable. Teddy Bears by Rump.</en>
 			</description>
 			<conditions min_audience="1.041" min_image="18" target_group="1"/>
 			<data infomercial="1" quality="11" repetitions="3" duration="4" profit="1340" penalty="2000" fix_infomercial_profit="1"/>
@@ -1938,6 +1983,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Fox Enterprises präsentiert "Stop Hound". Das Spray auf den Körper auftragen. 20h Wirkung! Stoppt Hunde auch gegen den Wind. Das Anti-Biss-Spray "Stop Hound".</de>
+				<en>Fox Enterprises presents "Stop Hound". Apply the spray to the body. 20h effect! Also stops dogs against the wind. The anti-bite spray "Stop Hound".</en>
 			</description>
 			<conditions min_audience="8.34" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="24" repetitions="1" duration="2" profit="337" penalty="581" infomercial_profit="35" fix_infomercial_profit="1"/>
@@ -1945,9 +1991,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-TVBunker" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>TVBunker PC-Spiel</de>
+				<en>TVBunker PC-Game</en>
 			</title>
 			<description>
-				<de>TVBunker ein Spass für die ganze Familie. Ein Sad -TV Remake! Aus markenschutzrechtlichen Gründen dürfen keine Originalnamen verwendet werden.</de>
+				<de>TVBunker ein Spass für die ganze Familie. Ein Sad TV Remake! Aus markenschutzrechtlichen Gründen dürfen keine Originalnamen verwendet werden.</de>
+				<en>TVBunker - fun for the whole family. A Sad TV remake! No original names may be used to avoid trademark infringement.</en>
 			</description>
 			<conditions min_audience="3.6461" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="28" repetitions="7" duration="4" profit="621" penalty="845" infomercial_profit="95" fix_infomercial_profit="1"/>
@@ -1955,9 +2003,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-TVBunker2" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>TVTower PC-Spiel</de>
+				<en>TVTower PC-Spiel</en>
 			</title>
 			<description>
-				<de>Brandneue Engine! Neue Filme! NEU: Trash TV und Call-In. TVTower, ein Mad-TV Remake! Ein Riesenspaß. Honigkuchenpferde, der Papst und die Queen empfehlen: TVTower.</de>
+				<de>Brandneue Engine! Neue Filme! NEU: Trash TV und Call-In. TVTower, ein Mad TV-aeskes Computerspiel! Ein Riesenspaß. Honigkuchenpferde, der Papst und die Queen empfehlen: TVTower.</de>
+				<en>Brand new engine! New Movies! NEW: Trash TV and call-in. TVTower, a Mad TV-esque computer game! Endless fun. Cheshire Cat, the Pope and the Queen recommend: TVTower.</en>
 			</description>
 			<conditions min_audience="41.6799" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="30" repetitions="1" duration="8" profit="113" penalty="196" infomercial_profit="65" fix_infomercial_profit="1"/>
@@ -1965,9 +2015,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Tarnschiff1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Tarnschiff Kreuzfahrten</de>
+				<en>Cloaked Cruises</en>
 			</title>
 			<description>
 				<de>Erleben Sie die original U96 Replika auf Ihrer Traumroute. Die Malediven in 200m Tiefe. Hören Sie Traumstrände. Vorgewärmte Kojen gehören hier zur Grundausstattung.</de>
+				<en>Experience the original U96 Replica on your dream route. The Maldives in 200m depth. Listen to dream beaches. Preheated berths are included in every basic equipment.</en>
 			</description>
 			<conditions min_audience="33.86" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="25" repetitions="2" duration="4" profit="138" penalty="207" fix_infomercial_profit="1"/>
@@ -1975,9 +2027,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Tarnschiff2" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Tarnschiff Kreuzfahrten</de>
+				<en>Cloaked Cruises</en>
 			</title>
 			<description>
 				<de>Erleben Sie die original U96 Replika auf Ihrer Traumroute. Der Marianengraben - legendär! Aber doch etwas zu tief. Oder etwa nicht? Finden Sie es heraus!</de>
+				<en>Experience the original U96 Replica on your dream route. The Mariana Trench - legendary! But a bit too deep. Or maybe not? Find it out!</en>
 			</description>
 			<conditions min_audience="33.86" min_image="18" target_group="0"/>
 			<data infomercial="1" quality="22" repetitions="2" duration="4" profit="146" penalty="194" infomercial_profit="33" fix_infomercial_profit="1"/>
@@ -1985,9 +2039,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Tarnschiff3" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Tarnschiff Kreuzfahrten</de>
+				<en>Cloaked Cruises</en>
 			</title>
 			<description>
 				<de>Erleben Sie die original U96 Replika auf Ihrer Traumroute. Durchbrechen Sie Blockaden. Landgang von 3 bis 5. Pünklich sein. Parole: „Tauch tiefer!“ Sonst kein Einlass.</de>
+				<en>Experience the original U96 Replica on your dream route. Break through blockades. Shore leave from 3 to 5. Be punctual. Parole: "dive deeper" Otherwise no admittance.</en>
 			</description>
 			<conditions min_audience="33.86" min_image="32" target_group="0"/>
 			<data infomercial="1" quality="23" repetitions="3" duration="2" profit="153" penalty="218" infomercial_profit="13" fix_infomercial_profit="1"/>
