@@ -194,22 +194,31 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 		Select data.GetString("do").toUpper()
 			'Create a colorized copy of the given image
 			case "COLORIZECOPY"
-				local parentImage:TImage
-				If TImage(parent) then parentImage = TImage(parent)
-				If TSpritePack(parent) then parentImage = TSpritePack(parent).image
-				If TSprite(parent) then parentImage = TSprite(parent).GetImage()
+				local useParent:object = parent
+				'sprite instead of spritepack as source requested?
+				if src
+					Local srcSprite:TSprite = TSpritepack(useParent).GetSprite(src)
+					if srcSprite
+						useParent = srcSprite
+					endif
+				endif
 
+				local parentImage:TImage
+				If TImage(useParent) then parentImage = TImage(useParent)
+				If TSpritePack(useParent) then parentImage = TSpritePack(useParent).image
+				If TSprite(useParent) then parentImage = TSprite(useParent).GetImage()
+				
 				'check prerequisites
 				If dest = "" or not parentImage then return FALSE
 
 				local img:Timage = ColorizeImageCopy(parentImage, color)
 				if not img then return FALSE
 				'add to registry
-				if TImage(parent)
+				if TImage(useParent)
 					GetRegistry().Set(dest, img)
-				elseif TSpritePack(parent)
+				elseif TSpritePack(useParent)
 					GetRegistry().Set(dest, new TSpritePack.Init(img, dest))
-				elseif TSprite(parent)
+				elseif TSprite(useParent)
 					GetRegistry().Set(dest, new TSprite.InitFromImage(img, dest))
 				endif
 
