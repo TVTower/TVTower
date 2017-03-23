@@ -28,8 +28,8 @@
 
 		<spritepack name="gfx_newsplanner_elements" url="res/gfx/newsstudio/screen_newsplanner_elements.png">
 			<children>
-				<child name="gfx_newssheet_base"  x="0" y="0" w="366" h="88" />
-				<child name="gfx_newssheet_genreoverlay"  x="366" y="0" w="12" h="88" />
+				<child name="gfx_newssheet_base"  x="0" y="0" w="368" h="90" />
+				<child name="gfx_newssheet_genreoverlay"  x="368" y="0" w="12" h="90" />
 			</children>
 			<scripts>
 				<script	do="ColorizeCopy"	src="gfx_newssheet_base"	dest="gfx_news_sheet0"	r="205"	g="170"	b="50" />

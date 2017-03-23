@@ -78,12 +78,12 @@ Type RoomHandler_News extends TRoomHandler
 
 			'create the lists in the news planner
 			'we add 2 pixel to the height to make "auto scrollbar" work better
-			guiNewsListAvailable = new TGUINewsList.Create(new TVec2D.Init(15,16), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 4*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
+			guiNewsListAvailable = new TGUINewsList.Create(new TVec2D.Init(14,13), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 4*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
 			guiNewsListAvailable.SetAcceptDrop("TGUINews")
 			guiNewsListAvailable.Resize(guiNewsListAvailable.rect.GetW() + guiNewsListAvailable.guiScrollerV.rect.GetW() + 8,guiNewsListAvailable.rect.GetH())
 			guiNewsListAvailable.guiEntriesPanel.minSize.SetXY(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(),356)
 
-			guiNewsListUsed = new TGUINewsSlotList.Create(new TVec2D.Init(420,106), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
+			guiNewsListUsed = new TGUINewsSlotList.Create(new TVec2D.Init(419,104), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
 			guiNewsListUsed.SetItemLimit(3)
 			guiNewsListUsed.SetAcceptDrop("TGUINews")
 			guiNewsListUsed.SetSlotMinDimension(0,GetSpriteFromRegistry("gfx_news_sheet0").area.GetH())
@@ -817,11 +817,11 @@ Type TGUINews Extends TGUIGameListItem
 
 			'default texts (title, text,...)
 			GetBitmapFontManager().basefontBold.drawBlock(news.GetTitle(), 15, 2, 330, 15, Null, TColor.CreateGrey(20))
-			GetBitmapFontManager().baseFont.drawBlock(news.GetDescription(), 15, 17, 340, 50 + 8, Null, TColor.CreateGrey(100))
+			GetBitmapFontManager().baseFont.drawBlock(news.GetDescription(), 15, 17, 342, 50 + 8, Null, TColor.CreateGrey(100))
 
 			Local oldAlpha:Float = GetAlpha()
 			SetAlpha 0.3*oldAlpha
-			GetBitmapFont("Default", 9).drawBlock(news.GetGenreString(), 15, 73, 120, 15, Null, TColor.clBlack)
+			GetBitmapFont("Default", 9).drawBlock(news.GetGenreString(), 15, 75, 120, 15, Null, TColor.clBlack)
 			SetAlpha 1.0*oldAlpha
 
 			'set back to screen Rendering
@@ -875,34 +875,34 @@ Type TGUINews Extends TGUIGameListItem
 
 			'===== DRAW NON-CACHED TEXTS =====
 			If Not news.paid
-				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice(GetPlayerBaseCollection().playerID) + ",-", screenX + 262, screenY + 70, 90, -1, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice(GetPlayerBaseCollection().playerID) + ",-", screenX + 262, screenY + 71, 90, 16, ALIGN_RIGHT_CENTER, TColor.clBlack)
 			Else
 				SetAlpha GetAlpha()*0.75
-				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice(GetPlayerBaseCollection().playerID) + ",-", screenX + 262, screenY + 70, 90, -1, New TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(100))
+				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice(GetPlayerBaseCollection().playerID) + ",-", screenX + 262, screenY + 71, 90, 16, ALIGN_RIGHT_CENTER, TColor.CreateGrey(100))
 				SetAlpha GetAlpha()*2.0
 			EndIf
 
 			Select GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())
-				Case 0	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TODAY")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack )
+				Case 0	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TODAY")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 74, 140, 15, ALIGN_RIGHT_CENTER, TColor.clBlack )
 				'Case 1	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 				'Case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-				Case 1	GetBitmapFontManager().baseFont.drawBlock(GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-				Case 2	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				Case 1	GetBitmapFontManager().baseFont.drawBlock(GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 74, 140, 15, ALIGN_RIGHT_CENTER, TColor.clBlack)
+				Case 2	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 74, 140, 15, ALIGN_RIGHT_CENTER, TColor.clBlack)
 			End Select
 
 			SetAlpha oldAlpha * 0.5
 			SetColor 140,110,110
-			DrawRect(screenX + 15, screenY + 67, 152, 3)
+			DrawRect(screenX + 15, screenY + 67, 152, 5)
 			SetAlpha oldAlpha
 			SetColor 255,255,255
-			DrawRect(screenX + 16, screenY + 68, 150, 1)
+			DrawRect(screenX + 16, screenY + 68, 150, 3)
 			SetColor 230,150,100
 			SetAlpha oldAlpha * 0.4
-			DrawRect(screenX + 16, screenY + 68, news.newsEvent.GetMaxTopicality()*150, 1)
+			DrawRect(screenX + 16, screenY + 68, news.newsEvent.GetMaxTopicality()*150, 3)
 			SetAlpha oldAlpha
-			DrawRect(screenX + 16 + news.newsEvent.GetMaxTopicality()*150 - 1, screenY + 68, 2, 1)
+			DrawRect(screenX + 16 + news.newsEvent.GetMaxTopicality()*150 - 1, screenY + 68, 2, 3)
 			SetAlpha oldAlpha
-			DrawRect(screenX + 16, screenY + 68, news.newsEvent.GetTopicality()*150, 1)
+			DrawRect(screenX + 16, screenY + 68, news.newsEvent.GetTopicality()*150, 3)
 
 			SetColor 255, 255, 255
 			SetAlpha oldAlpha
