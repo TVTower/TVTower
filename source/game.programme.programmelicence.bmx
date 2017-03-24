@@ -511,6 +511,20 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
+	'returns how many sub licences EXIST IN TOTAL
+	'(includes sublicences of sublicences)
+	Method GetSubLicenceCountTotal:int() {_exposeToLua}
+		if not subLicences then return 0
+
+		local result:int = 0
+		For local i:int = 0 until subLicences.length
+			'add 1 for single licences or add the sublicence count
+			if subLicences[i] then result :+ Max(1, subLicences[i].GetSublicenceCountTotal())
+		Next
+		return result
+	End Method
+
+
 	Method GetNextReleaseTime:Long() {_exposeToLua}
 		if not subLicences then return data.GetReleaseTime()
 
@@ -1274,7 +1288,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 				Return 1
 			'programme?
 			Default
-				Return GetData().GetBlocks()
+				if GetSubLicenceCount() = 0
+					Return GetData().GetBlocks()
+				else
+					Return floor(GetBlocksTotal(broadcastType) / float(GetSublicenceCountTotal()) + 0.5)
+				endif
 		End Select
 	End Method
 
@@ -1881,7 +1899,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'=== BOX LINE 1 ===
 		'blocks
-		skin.RenderBox(contentX + 5, contentY, 47, -1, data.GetBlocks(), "duration", "neutral", skin.fontBold)
+		skin.RenderBox(contentX + 5, contentY, 47, -1, GetBlocks(), "duration", "neutral", skin.fontBold)
 		'repetitions
 		if useOwner <= 0
 			skin.RenderBox(contentX + 5 + 51, contentY, 52, -1, GetTimesBroadcasted(-1), "repetitions", "neutral", skin.fontBold)
@@ -1950,7 +1968,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			contentY :+ 12	
 			skin.fontNormal.draw("Aktualitaet: "+MathHelper.NumberToString(GetTopicality(), 4)+" von " + MathHelper.NumberToString(data.GetMaxTopicality(), 4), contentX + 5, contentY)
 			contentY :+ 12	
-			skin.fontNormal.draw("Bloecke: "+data.GetBlocks(), contentX + 5, contentY)
+			skin.fontNormal.draw("Bloecke: "+GetBlocks(), contentX + 5, contentY)
 			contentY :+ 12
 			if useOwner <= 0
 				skin.fontNormal.draw("Ausgestrahlt: "+GetTimesBroadcasted(0)+"x unbekannt, "+GetTimesBroadcasted()+"x alle  Limit:"+broadcastLimit, contentX + 5, contentY)
