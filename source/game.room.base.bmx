@@ -284,8 +284,6 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Field size:int = 1
 	'list of special areas in the room
 	Field hotspots:TList = CreateList()
-	'is this a room or just a "plan" or "view"
-	Field fakeRoom:int = FALSE {nosave}
 
 	Global _initDone:int = FALSE
 
@@ -676,7 +674,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	'building (eg. for plan room)
 	Method ShowsOccupants:int()
 		'maybe offload it to xml and a room-property
-		if fakeRoom then return True
+		if IsFake() then return True
 
 		return False
 	End Method
