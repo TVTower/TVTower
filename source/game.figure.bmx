@@ -257,7 +257,9 @@ Type TFigure extends TFigureBase
 
 		'we have a target to move to and are not yet entering it
 		'check if we reach it now
-		if GetTarget() and currentReachTargetStep = 0
+		'skip if in elevator (avoids starting to move while doors are not
+		'opened yet)
+		if GetTarget() and currentReachTargetStep = 0 and not IsInElevator()
 			'does the center of the figure will reach the target during update?
 			'can happen even when not able to move (manual position set
 			'or target acquired without moving)
