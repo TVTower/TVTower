@@ -1865,7 +1865,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 						RemoveAdvertisementInstances(obj, False)
 						'removes them also from programmes (shopping show)
 						RemoveProgrammeInstances(obj, False)
-print "Finish advertisement " + day+"/" +hour+":"+minute
+'print "Finish advertisement " + day+"/" +hour+":"+minute
 						'inform contract and earn money
 						TAdvertisement(obj).contract.Finish( GetWorldTime().MakeTime(0, day, hour, minute) )
 

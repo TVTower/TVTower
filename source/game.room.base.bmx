@@ -379,6 +379,8 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method BeginRental:int(newOwner:int, rent:int)
+		if IsRented() and newOwner = owner and self.rent = rent then return False
+		
 		local oldOwner:int = owner
 		ChangeOwner(newOwner)
 		SetRented(True)
@@ -393,6 +395,8 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method CancelRental:int()
+		if not IsRented() then throw "skip cancel rental";return False
+		
 		local oldOwner:int = owner
 		ChangeOwner(0)
 		SetRented(False)
@@ -411,14 +415,14 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		'=== BOMB ===
 		if blockedState & BLOCKEDSTATE_BOMB > 0
 			'"placerholder rooms" (might get rent later)
-			if owner = 0 and IsUsableAsStudio() 
-				time = 60 * 60 * 24
+			if owner = 0 and IsUsableAsStudio()
+				time = 60 * 60 * 4
 			'rooms like movie agency
 			elseIf owner = 0
-				time = 60 * 60 * 2
+				time = 60 * 60 * 1
 			'player rooms
 			elseIf owner > 0
-				time = 60 * 30 
+				time = 60 * 60 * 0.5 
 			endif
 
 		'=== MARSHAL ===
@@ -432,7 +436,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		elseif blockedState & BLOCKEDSTATE_RENOVATION > 0
 			if owner = 0 and IsUsableAsStudio() 
 				'ATTENTION: "randRange" to get the same in multiplayer games
-				time = 60 * 60 * randRange(5,10)
+				time = 60 * 60 * randRange(3,6)
 			elseIf owner = 0
 				time = 60 * 30 * randRange(1,3)
 			elseIf owner > 0
@@ -441,6 +445,16 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		endif
 			
 		SetBlocked(time, blockedState) 
+
+
+		'inform others
+		if blockedState & BLOCKEDSTATE_BOMB > 0
+			EventManager.triggerEvent( TEventSimple.Create("room.onBombExplosion", New TData.AddString("roomGUID", GetGUID()).AddNumber("roomSignMovedByPlayers", roomSignMovedByPlayers).AddNumber("roomSignLastMoveByPlayerID", roomSignLastMoveByPlayerID), self) )
+		elseif blockedState & BLOCKEDSTATE_MARSHAL > 0
+			EventManager.triggerEvent( TEventSimple.Create("room.onMarshalVisit", New TData.AddString("roomGUID", GetGUID()), self) )
+		elseif blockedState & BLOCKEDSTATE_RENOVATION > 0
+			EventManager.triggerEvent( TEventSimple.Create("room.onRenovation", New TData.AddString("roomGUID", GetGUID()), self) )
+		endif
 	End Method
 
 
@@ -721,7 +735,6 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		'was a bomb placed? check fuse and detonation time
 		if bombPlacedTime >= 0 and not (blockedState & BLOCKEDSTATE_BOMB > 0)
 			if bombPlacedTime + bombFuseTime < GetWorldTime().GetTimeGone()
-				SetBlockedState(BLOCKEDSTATE_BOMB)
 				'time is NOT a gametime but a real time!
 				'so the explosion is visible for a given time independent
 				'from game speed
@@ -730,9 +743,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 				'reset placed time
 				bombPlacedTime = -1
 
-				'inform others
-				EventManager.triggerEvent( TEventSimple.Create("room.onBombExplosion", New TData.AddString("roomGUID", GetGUID()).AddNumber("roomSignMovedByPlayers", roomSignMovedByPlayers).AddNumber("roomSignLastMoveByPlayerID", roomSignLastMoveByPlayerID), Null, self) )
-				'EventManager.triggerEvent( TEventSimple.Create("room.onBombExplosion", New TData.AddString("roomGUID", GetGUID()).AddNumber("bombRedirectedByPlayers", bombRedirectedByPlayers).AddNumber("bombLastRedirectedByPlayerID", bombLastRedirectedByPlayerID), Null, self) )
+				SetBlockedState(BLOCKEDSTATE_BOMB)
 			endif
 		endif
 	End Method

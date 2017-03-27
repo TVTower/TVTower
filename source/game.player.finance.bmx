@@ -190,7 +190,7 @@ Type TPlayerFinanceCollection
 				if day = -1 then day = GetWorldTime().GetDay()
 				local takeOverFromDay:int = day - 1
 			
-				print "take over finances: from day " + takeOverFromDay + " to day "+day+"  target arrayIndex: "+arrayIndex+"/" + (finances[playerIndex].length-1)
+				'print "take over finances: from day " + takeOverFromDay + " to day "+day+"  target arrayIndex: "+arrayIndex+"/" + (finances[playerIndex].length-1)
 				finances[playerIndex][arrayIndex].TakeOverFrom( _Get(playerID, arrayIndex-1, takeOverFromDay))
 				finances[playerIndex][arrayIndex].day = day
 			endif

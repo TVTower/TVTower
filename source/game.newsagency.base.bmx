@@ -165,9 +165,9 @@ Type TNewsAgency
 		local bombRedirectedByPlayers:int = triggerEvent.GetData().GetInt("roomSignMovedByPlayers")
 		local bombLastRedirectedByPlayerID:int = triggerEvent.GetData().GetInt("roomSignLastMoveByPlayerID")
 
-		local room:TRoomBase = GetRoomCollection().GetByGUID( TLowerString.Create(roomGUID) )
+		local room:TRoomBase = TRoomBase( triggerEvent.GetSender() )
 		if not room
-			TLogger.Log("NewsAgency", "Failed to create news for bomb explosion: no room found for roomGUID ~q"+roomGUID+"~q", LOG_ERROR)
+			TLogger.Log("NewsAgency", "Failed to create news for bomb explosion: invalid room passed for roomGUID ~q"+roomGUID+"~q", LOG_ERROR)
 			return False
 		endif
 

@@ -1924,6 +1924,7 @@ Type TGameState
 		GetFigureCollection().Initialize()
 		GetAchievementCollection().Initialize()
 		GetArchivedMessageCollection().Initialize()
+		GetRoomAgency().Initialize()
 		GetNewsAgency().Initialize()
 		GetNewsEventSportCollection().InitializeAll()
 		GetPublicImageCollection().Initialize()
@@ -4684,8 +4685,9 @@ Type GameEvents
 
 
 		'=== SEND TOASTMESSAGE ===
-		local roomGUID:string = triggerEvent.GetData().GetString("roomGUID")
-		local room:TRoomBase = GetRoomCollection().GetByGUID( TLowerString.Create(roomGUID) )
+		'local roomGUID:string = triggerEvent.GetData().GetString("roomGUID")
+		'local room:TRoomBase = GetRoomCollection().GetByGUID( TLowerString.Create(roomGUID) )
+		local room:TRoomBase = TRoomBase( triggerEvent.GetSender() )
 		if room
 			Local caption:string = GetRandomLocale("BOMB_DETONATION_IN_TVTOWER")
 			Local text:string = GetRandomLocale("TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT")
@@ -4694,9 +4696,9 @@ Type GameEvents
 			if room.owner > 0
 				Local player:TPlayer = GetPlayer(room.owner)
 				Local col:TColor = player.color
-				text = text.Replace("%ROOM%", "|b||color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color|"+room.GetDescription()+"|/b||color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color|")
+				text = text.Replace("%ROOM%", "|b||color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color|"+room.GetDescription(1, True)+"|/b||color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color|")
 			else
-				text = text.Replace("%ROOM%", "|b|"+room.GetDescription()+"|/b|")
+				text = text.Replace("%ROOM%", "|b|"+room.GetDescription(1, True)+"|/b|")
 			endif
 
 

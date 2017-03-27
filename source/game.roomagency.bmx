@@ -32,7 +32,20 @@ Type TRoomAgency
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
 
+		'react to bombs, marshals, ...
+		_eventListeners :+ [ EventManager.registerListenerFunction("room.onBombExplosion", onRoomBombExplosion) ]
+
 	End Method
+
+
+	Function onRoomBombExplosion:int( triggerEvent:TEventBase )
+		local room:TRoomBase = TRoomBase(triggerEvent.GetSender())
+
+		if room.IsRented() and room.IsUsableAsStudio() and room.GetOwner() <= 0
+			GetInstance().CancelRoomRental(room)
+			room.SetUsedAsStudio(False)
+		endif
+	End Function
 	
 
  	Method UpdateEmptyRooms()
