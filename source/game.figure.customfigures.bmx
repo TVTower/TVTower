@@ -8,7 +8,8 @@ Import "game.player.programmeplan.bmx"
 
 
 Type TFigurePostman Extends TFigure
-	Field nextActionTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(1500, 0, 0, 5000)
+	Field nextActionInterval:int = 7500
+	Field nextActionTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(5000, 0, 0, 5000)
 
 	'we need to overwrite it to have a custom type - with custom update routine
 	Method Create:TFigurePostman(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int)
@@ -23,6 +24,13 @@ Type TFigurePostman Extends TFigure
 	Method BeginEnterRoom:int(door:TRoomDoorBase, room:TRoomBase)
 		Super.BeginEnterRoom(door, room)
 
+		if room and room.GetOwner() <= 0 'and not room.IsFreehold()
+			'wait a bit longer in "studio rooms"
+			nextActionTimer.SetInterval(nextActionInterval + RandRange(2500, 7500))
+		else
+			nextActionTimer.SetInterval(nextActionInterval)
+		endif
+		
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
 	End Method
@@ -59,7 +67,7 @@ End Type
 
 Type TFigureJanitor Extends TFigure
 	Field currentJanitorAction:Int = 0		'0=nothing,1=cleaning,...
-	Field nextActionTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(2500,0, -500, 500) '500ms randomness
+	Field nextActionTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(7500,0, -1000, 1500)
 	Field nextActionTime:Int = 2500
 	Field nextActionRandomTime:Int = 500
 	Field useElevator:Int = True
@@ -199,7 +207,7 @@ Type TFigureDeliveryBoy Extends TFigure
 	'was the "package" delivered already?
 	Field deliveryDone:Int = True
 	'time to wait between doing something
-	Field nextActionTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(1500, 0, 0, 5000)
+	Field nextActionTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(7500, 0, 0, 5000)
 
 
 	'we need to overwrite it to have a custom type - with custom update routine
@@ -324,6 +332,11 @@ End Type
 
 
 Type TFigureTerrorist Extends TFigureDeliveryBoy
+
+	Method New()
+		nextActionTimer.Init(1500, 0, 0, 5000)
+	End Method
+
 
 	'override to place a bomb when delivered
 	Method FinishDelivery:Int()
