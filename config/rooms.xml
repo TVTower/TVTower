@@ -194,7 +194,7 @@
 			<tooltip text="ROOM_COMPUTERSHOP" />
 			<door doorslot="4" floor="7" doortype="4" />
 		</room>
-		<room name="pychiatrist" owner="0" screen="screen_emptyroom" size="1" flags="1">
+		<room name="psychiatrist" owner="0" screen="screen_emptyroom" size="1" flags="1">
 			<tooltip text="ROOM_PSYCHIATRIST" />
 			<door doorslot="2" floor="3" doortype="4" />
 		</room>

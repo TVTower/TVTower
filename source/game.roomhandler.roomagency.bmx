@@ -15,6 +15,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 	Field selectedRoom:TRoomBase
 	Field hoveredRoom:TRoomBase
 	Field hoveredSign:TRoomBoardSign
+	Field roomContractTexts:TMap = new TMap
 
 	Global roomboardTooltip:TTooltip
 
@@ -297,7 +298,6 @@ endrem
 		If selectedRoom and (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
 			selectedRoom = null
 			_confirmActionTooltip = null
-			
 			MouseManager.ResetKey(2)
 			MouseManager.ResetKey(1)
 		EndIf
@@ -318,6 +318,9 @@ endrem
 			RemoveAllRoomboardGuiElements()
 
 			mode = MODE_NONE
+
+			MouseManager.ResetKey(2)
+			MouseManager.ResetKey(1)
 		endif
  	End Method
 
@@ -373,7 +376,14 @@ endrem
 			if room.IsFake() or room.IsFreeHold() then SetAlpha oldCol.a * 0.25
 
 
-			sign.imageCache.Draw(x,y)
+			if room.IsBlocked()
+				SetColor 255,240,220
+				sign.imageCache.Draw(x,y)
+				oldCol.SetRGB()
+			else
+				sign.imageCache.Draw(x,y)
+			endif
+			
 
 			if room = selectedRoom
 				SetBlend LIGHTBLEND
@@ -482,11 +492,50 @@ endrem
 		
 		'== description area
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
-		'hier abhaengig von floor/doorslot/... Zufallstexte verteilen
-		'bzw. "cachen"
-		'der Text sollte "x.000 Miete pro Spieltag und eine einmalige Provision von y.000"
-		'enthalten, um die unteren Zahlen zu erklaeren
-		skin.fontNormal.drawBlock("Wohl dimensionierter Raum der Größe "+ room.GetSize()+". Günstig nahe dem Supermarkt gelegen und für nur " + MathHelper.DottedValue(room.GetRentForPlayer(currentPlayerID)) +" Miete/Spieltag verfügbar.~nBei Unterzeichnung wird eine einmalige Zahlung von "+ MathHelper.DottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ) +" Euro fällig.", contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
+		local t:string = ""
+
+		local adText:string = string(roomContractTexts.ValueForKey(room.GetGUID()))
+		'create advertisement text and cache it
+		if not adText
+			'search for an interesting room near this one
+			local door:TRoomDoorBase = GetRoomDoorBaseCollection().GetMainDoorToRoom(room.id)
+			local neighbourRoom:TRoomBase
+			if door
+				local interestingRooms:TRoomBase[] = [  GetRoomBaseCollection().GetFirstByDetails("supermarket") ..
+				                                      , GetRoomBaseCollection().GetFirstByDetails("scriptagency") ..
+				                                      , GetRoomBaseCollection().GetFirstByDetails("office", GetPlayerBaseCollection().playerID) ..
+				                                     ]
+				for local interestingRoom:TRoomBase = EachIn interestingRooms
+					local interestingDoor:TRoomDoorBase = GetRoomDoorBaseCollection().GetMainDoorToRoom(interestingRoom.id)
+					if not interestingDoor then continue
+
+					'same floor or one floor above/below
+					if Abs(door.onFloor - interestingDoor.onFloor) <= 1
+						neighbourRoom = interestingRoom
+					endif
+
+					'found one to advertise with
+					if neighbourRoom then exit
+				next
+			endif
+		
+			adText = GetRandomLocale2(["ROOMAGENCY_SIZE"+room.GetSize()+"_TEXT", "ROOMAGENCY_SIZE_TEXT"]).REPLACE("%SIZE%", room.GetSize())
+			if adText then adText :+ " "
+			if neighbourRoom
+				adText :+ GetRandomLocale2(["ROOMAGENCY_ROOM_"+neighbourRoom.name+"_IN_RANGE_TEXT", "ROOMAGENCY_ROOM_X_IN_RANGE_TEXT"]).REPLACE("%X%", neighbourRoom.GetDescription())
+				if adText then adText :+ " "
+			endif
+			adText :+ GetLocale("ROOMAGENCY_AVAILABLE_FOR_RENT_OF_X_PER_DAY").Replace("%X%", MathHelper.DottedValue(room.GetRentForPlayer(currentPlayerID)) +" "+GetLocale("CURRENCY"))
+
+			roomContractTexts.Insert(room.GetGUID(), adText)
+		endif
+		t :+ adText
+		if adText then t :+ "~n"
+		
+		if room.GetOwner() <> currentPlayerID
+			t :+ GetLocale("ROOMAGENCY_SIGNING_WILL_COST_A_SINGLE_PAYMENT_OF_X").Replace("%X%", MathHelper.DottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ) +" "+GetLocale("CURRENCY"))
+		endif
+		skin.fontNormal.drawBlock(t, contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
 		contentY :+ descriptionH
 
 		if ownerInfo
@@ -551,11 +600,15 @@ Vorbesitzer: XYZ
 
 		'== draw boxes
 		skin.RenderBox(contentX + 5, contentY, 50, -1, room.GetSize(), "roomSize", "neutral", skin.fontBold)
-		skin.RenderBox(contentX + 5 + 54 +52, contentY, 110, -1, MathHelper.DottedValue( room.GetRentForPlayer(currentPlayerID) ) +" |color=90,90,90|/ Tag|/color|", "moneyRepetitions", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
-		if canAfford
-			skin.RenderBox(contentX + 5 + 168 +52, contentY, 90, -1, MathHelper.DottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+		if room.GetOwner() = currentPlayerID
+			skin.RenderBox(contentX + 5 + 148 +52, contentY, 110, -1, MathHelper.DottedValue( room.GetRentForPlayer(currentPlayerID) ) +" |color=90,90,90|/ Tag|/color|", "moneyRepetitions", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 		else
-			skin.RenderBox(contentX + 5 + 168 +52, contentY, 90, -1, MathHelper.DottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
+			skin.RenderBox(contentX + 5 + 54 +52, contentY, 110, -1, MathHelper.DottedValue( room.GetRentForPlayer(currentPlayerID) ) +" |color=90,90,90|/ Tag|/color|", "moneyRepetitions", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+			if canAfford
+				skin.RenderBox(contentX + 5 + 168 +52, contentY, 90, -1, MathHelper.DottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+			else
+				skin.RenderBox(contentX + 5 + 168 +52, contentY, 90, -1, MathHelper.DottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
+			endif
 		endif
 
 

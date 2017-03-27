@@ -1023,3 +1023,14 @@ MINUTES = Minuten
 CONFIRM = Bestätigen
 CLICK_AGAIN_TO_RENT = Zum Mieten erneut anklicken
 CLICK_AGAIN_TO_CANCEL_RENT = Zum Kündigen erneut anklicken
+
+ROOMAGENCY_SIZE_TEXT1 = Wohl dimensionierter Raum der Größe %SIZE%.
+ROOMAGENCY_SIZE_TEXT2 = Raum in der praktischen %SIZE%er Größe.
+
+ROOMAGENCY_ROOM_X_IN_RANGE_TEXT1 = Günstig nahe %X% gelegen.
+ROOMAGENCY_ROOM_SUPERMARKET_IN_RANGE_TEXT1 = Praktisch, gleich um die Ecke ist der %X%.
+ROOMAGENCY_ROOM_SCRIPTAGENCY_IN_RANGE_TEXT1 = Nur einen Katzensprung von der Drehbuchagentur entfernt.
+ROOMAGENCY_ROOM_OFFICE_IN_RANGE_TEXT1 = Nicht weit von Deinem Büro gelegen.
+
+ROOMAGENCY_AVAILABLE_FOR_RENT_OF_X_PER_DAY = Für nur |b|%X%/Spieltag|/b| verfügbar.
+ROOMAGENCY_SIGNING_WILL_COST_A_SINGLE_PAYMENT_OF_X = Bei Unterzeichnung wird eine einmalige Zahlung von |b|%X%|/b| fällig.
