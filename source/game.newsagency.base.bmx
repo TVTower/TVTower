@@ -391,8 +391,8 @@ Type TNewsAgency
 		if terroristAggressionLevel[terroristNumber] >= terroristAggressionLevelMax
 			'reset to level 0
 			terroristAggressionLevel[terroristNumber] = 0
-			'5 * normal random "interval"
-			terroristUpdateTime[terroristNumber] :+ + 5 * 60*randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
+			'8 * normal random "interval"
+			terroristUpdateTime[terroristNumber] :+ 8 * 60*randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
 		endif
 	End Method
 
