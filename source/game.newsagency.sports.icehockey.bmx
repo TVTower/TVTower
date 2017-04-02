@@ -222,7 +222,7 @@ Type TNewsEventSport_IceHockey extends TNewsEventSport
 				league.timeSlots = [ ..
 				                    "2_14", "2_18", ..
 				                    "4_14", "4_18", ..
-				                    "7_14", "7_18" ..
+				                    "0_14", "0_18" ..
 				                   ]
 				league.seasonStartDay = 16
 				league.seasonStartMonth = 9

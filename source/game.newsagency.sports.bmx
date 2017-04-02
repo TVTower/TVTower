@@ -1099,7 +1099,7 @@ Type TNewsEventSportLeague extends TGameObject
 		'search the next possible time slot
 		For local t:string = EachIn timeSlots
 			local information:string[] = t.Split("_")
-			local weekdayIndex:int = int(information[0])
+			local weekdayIndex:int = int(information[0]) mod 7
 			local hour:int = 0
 			if information.length > 1 then hour = int(information[1])
 
