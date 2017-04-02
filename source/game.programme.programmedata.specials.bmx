@@ -12,6 +12,7 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 	Field matchGUID:string
 	Field leagueGUID:string
 	Field dynamicTexts:int = False
+	Field matchFinished:int = False
 
 
 	Method GenerateGUID:string()
@@ -200,7 +201,13 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 
 
 	Method IsMatchFinished:int()
-		return False
+		if not matchFinished
+			local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(matchGUID)
+			if match and match.GetMatchEndTime() <= GetWorldTime().GetTimeGone()
+				matchFinished = True
+			endif
+		endif
+		return matchFinished
 	End Method
 
 
@@ -330,6 +337,16 @@ endrem
 		'refresh processedTitle (recreated on request)
 		titleProcessed = null
 		descriptionProcessed = null
+	End Method
+
+
+	'override to reduce topicality if the game is finished now
+	Method GetMaxTopicality:Float()
+		'not yet aired?
+		if IsLive() or not IsMatchFinished() then Super.GetMaxTopicality()
+
+		'people know the match result now - uncool
+		return 0.5 * Super.GetMaxTopicality()
 	End Method
 
 

@@ -1317,6 +1317,12 @@ endrem
 		'modifiers could increase or decrease influences of age/aired/...
 		local ageInfluence:Float = age * GetModifier("topicality::age")
 		local timesBroadcastedInfluence:Float = timesBroadcasted * GetModifier("topicality::timesBroadcasted")
+		'by default thes habe no influence but programmes like sport matches
+		'should loose a big bit of max topicality after the first time
+		'on TV. Also they should loose topicality as soon as they are
+		'no longer "live" (eg. send 1 hour later)
+		local firstBroadcastInfluence:Float = 10 * (timesBroadcasted>0) * GetModifier("topicality::firstBroadcastDone", 0.0)
+		local notLiveInfluence:Float = 10 * timesBroadcasted * GetModifier("topicality::notLive", 0.0)
 
 		'cult-movies are less affected by aging or broadcast amounts
 		If Self.IsCult()
@@ -1324,7 +1330,7 @@ endrem
 			timesBroadcastedInfluence :* 0.50
 		EndIf
 
-		local influencePercentage:Float = 0.01 * MathHelper.Clamp(weightAge * ageInfluence + weightTimesBroadcasted * timesBroadcastedInfluence, 0, 100)
+		local influencePercentage:Float = 0.01 * MathHelper.Clamp(weightAge * ageInfluence + notLiveInfluence + firstBroadcastInfluence + weightTimesBroadcasted * timesBroadcastedInfluence, 0, 100)
 		return 1.0 - THelper.ATanFunction(influencePercentage, 2)
 	End Method
 
