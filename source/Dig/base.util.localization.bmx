@@ -131,7 +131,12 @@ Type TLocalization
 	Function GetRandomLocalizedString:TLocalizedString(Key:String, group:String = Null)
 		local ls:TLocalizedString = new TLocalizedString
 		For local lang:TLocalizationLanguage = EachIn languages.Values()
-			ls.Set(_GetRandomString(lang, Key).replace("\n", Chr(13)), lang.languageCode)
+			'skip default ones
+			local res:string = _GetRandomString(lang, Key)
+			if res = key then continue
+			ls.Set(res.replace("\n", Chr(13)), lang.languageCode)
+
+			'ls.Set(_GetRandomString(lang, Key).replace("\n", Chr(13)), lang.languageCode)
 		Next
 
 		return ls
@@ -146,15 +151,15 @@ Type TLocalization
 		Repeat
 			subKey = Key
 			if availableStrings > 0 then subKey :+ availableStrings
-			if currentLanguage.Get(subKey) <> subKey
+			if language.Get(subKey) <> subKey
 				availableStrings :+1
 				continue
 			endif
 
 			if availableStrings = 1
-				return currentLanguage.Get(Key).replace("\n", Chr(13))
+				return language.Get(Key).replace("\n", Chr(13))
 			else
-				return currentLanguage.Get(Key + Rand(1, availableStrings-1)).replace("\n", Chr(13))
+				return language.Get(Key + Rand(1, availableStrings-1)).replace("\n", Chr(13))
 			endif
 		Forever
 	End Function
@@ -175,7 +180,7 @@ Type TLocalization
 				subKey = k
 				'append a number except for first
 				if availableSubKeys > 0 then subKey :+ availableSubKeys
-				if currentLanguage.Get(subKey) <> subKey
+				if language.Get(subKey) <> subKey
 					availableSubKeys :+1
 					availableStrings :+ [subKey]
 					continue
@@ -192,9 +197,9 @@ Type TLocalization
 		'found no more entries
 		if availableStrings.length > 0
 			if availableStrings.length = 1
-				return currentLanguage.Get(availableStrings[0]).replace("\n", Chr(13))
+				return language.Get(availableStrings[0]).replace("\n", Chr(13))
 			else
-				return currentLanguage.Get(availableStrings[Rand(0, availableStrings.length-1)]).replace("\n", Chr(13))
+				return language.Get(availableStrings[Rand(0, availableStrings.length-1)]).replace("\n", Chr(13))
 			endif
 		endif
 
@@ -500,6 +505,15 @@ Type TLocalizedString
 
 		return c
 	End Method
+
+
+	Method ToString:string()
+		local r:string = ""
+		For local key:string = EachIn values.Keys()
+			r :+ key+": " + string(values.ValueForKey(key))+"~n"
+		Next
+		return r
+	End Method
 	
 
 	Function SetCurrentLanguage(language:String)
@@ -556,7 +570,7 @@ Type TLocalizedString
 	Method ReplaceLocalized:TLocalizedString(source:string, replacement:TLocalizedString)
 		Local node:TNode = values._FirstNode()
 		While node And node <> _nilNode
-			node._value = string(node._value).replace(source, replacement.Get(node._value))
+			node._value = string(node._value).replace(source, replacement.Get(node._key))
 			node = node.NextNode()
 		Wend
 		return self
