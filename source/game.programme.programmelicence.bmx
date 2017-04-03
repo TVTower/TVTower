@@ -1182,7 +1182,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 	'override
 	'checks flags of all data-objects contained in self and sublicences
-	Method hasDataFlag:Int(flag:Int) {_exposeToLua}
+	Method HasDataFlag:Int(flag:Int) {_exposeToLua}
 		return GetDataFlags() & flag
 	End Method
 

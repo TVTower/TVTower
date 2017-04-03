@@ -166,9 +166,8 @@ function AppraiseSpots:AppraiseSpot(spot)
 	local stats = player.Stats
 	local score = -1
 
---hier genre ... und playerstats mit zielgruppen breakdown
+	-- for now we do not modify our stats if they are special spots
 	if (spot.GetLimitedToTargetGroup() > 0) or (spot.GetLimitedToGenre() > 0) or (spot.GetLimitedToProgrammeFlag() > 0) then
-debugMsg("AppraiseSpots:AppraiseSpot() - ignoriere " .. spot.GetTitle())
 		return
 	end
 
@@ -311,11 +310,11 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.maxContracts then break end
 
 		local contractDoable = true
-		-- skip limited target groups / programme genres
+		-- skip limited programme genres
 		-- TODO: get breakdown of audience and compare this then
-		if (adContract.GetLimitedToTargetGroup() > 0 or adContract.GetLimitedToGenre() > 0) then
+		if (adContract.GetLimitedToGenre() > 0 or adContract.GetLimitedToProgrammeFlag() > 0 ) then
 			contractDoable = false
-			--debugMsg("contract NOT DOABLE: " .. adContract.GetTitle() .. "  targetgroup="..adContract.GetLimitedToTargetGroup() .."  genre="..adContract.GetLimitedToGenre())
+debugMsg("contract NOT DOABLE: " .. adContract.GetTitle() .. "  targetgroup="..adContract.GetLimitedToTargetGroup() .."  genre="..adContract.GetLimitedToGenre() .. "  flags=" .. adContract.GetLimitedToProgrammeFlag())
 		end
 
 		if (contractDoable) then
