@@ -60,7 +60,24 @@ Type TAdContractBaseCollection
 	Method GetByGUID:TAdContractBase(GUID:String)
 		Return TAdContractBase(entries.ValueForKey(GUID))
 	End Method
-	
+
+
+	Method SearchByPartialGUID:TAdContractBase(GUID:String)
+		'skip searching if there is nothing to search
+		if GUID.trim() = "" then return Null
+		
+		GUID = GUID.ToLower()
+
+		'find first hit
+		For local ad:TAdContractBase = EachIn entries.Values()
+			if ad.GetGUID().ToLower().Find(GUID) >= 0
+				return ad
+			endif
+		Next
+
+		return Null
+	End Method
+		
 
 	'this is not guaranteed to be unique!
 	Method GetByTitle:TAdContractBase(title:String, language:String="")

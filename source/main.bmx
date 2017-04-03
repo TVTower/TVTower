@@ -155,7 +155,7 @@ TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
 TLogger.setLogMode(LOG_ALL )
 TLogger.setPrintMode(LOG_ALL ) '(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
 'TLogger.SetPrintMode(0) 'all messages off
-TLogger.SetPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
+'TLogger.SetPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
 'TLogger.changePrintMode(LOG_DEV, FALSE)
 
@@ -751,7 +751,7 @@ Type TApp
 						next
 						
 						for local l:string = EachIn addContracts
-							local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID("ronny-ad-allhits-02")
+							local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID(l)
 							if adContractBase
 								'forcefully add to the collection (skips requirements checks)
 								GetPlayerProgrammeCollection(1).AddAdContract(New TAdContract.Create(adContractBase), True)
@@ -771,14 +771,6 @@ Type TApp
 								print "added movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
 							else
 								print "already had movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
-							endif
-						next
-
-						for local l:string = EachIn addContracts
-							local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID("ronny-ad-allhits-02")
-							if adContractBase
-								'forcefully add to the collection (skips requirements checks)
-								GetPlayerProgrammeCollection(1).AddAdContract(New TAdContract.Create(adContractBase), True)
 							endif
 						next
 
@@ -4261,6 +4253,28 @@ Type GameEvents
 					print "already had movie: "+licence.GetTitle()+" ["+licence.GetGUID()+"]"
 				endif
 				
+			Case "givead"			
+				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
+
+				local adGUID:string = paramS
+				
+				if adGUID.trim() = ""
+					GetGame().SendSystemMessage("Wrong syntax (/dev help)!")
+					return False
+				endif
+
+				local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID(adGUID)
+				if not adContractBase then adContractBase = GetAdContractBaseCollection().SearchByPartialGUID(adGUID)
+				if not adContractBase
+					GetGame().SendSystemMessage("No adcontract with GUID ~q"+adGUID+"~q found.")
+					return False
+				endif
+
+				'forcefully add to the collection (skips requirements checks)
+				local adContract:TAdContract = New TAdContract.Create(adContractBase)
+				GetPlayerProgrammeCollection(player.playerID).AddAdContract(adContract, True)
+				print "added adcontract: "+adContract.GetTitle()+" ["+adContract.GetGUID()+"]"
+
 			Case "help"
 				SendHelp()
 

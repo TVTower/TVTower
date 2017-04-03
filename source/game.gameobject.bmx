@@ -20,6 +20,23 @@ Type TGameObjectCollection
 	End Method
 
 
+	Method SearchByPartialGUID:TGameObject(GUID:String)
+		'skip searching if there is nothing to search
+		if GUID.trim() = "" then return Null
+		
+		GUID = GUID.ToLower()
+
+		'find first hit
+		For local obj:TGameObject = EachIn entries.Values()
+			if obj.GetGUID().ToLower().Find(GUID) >= 0
+				return obj
+			endif
+		Next
+
+		return Null
+	End Method
+
+
 	Method GetRandom:TGameObject()
 		local array:TGameObject[]
 		'create a full array containing all elements

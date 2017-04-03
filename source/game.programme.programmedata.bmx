@@ -89,6 +89,11 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	End Method
 
 
+	Method SearchByPartialGUID:TProgrammeData(GUID:String)
+		Return TProgrammeData( Super.SearchByPartialGUID(GUID) )
+	End Method
+
+
 	'returns (and creates if needed) a list containing only upcoming
 	'programmeData
 	Method GetUnreleasedProgrammeDataList:TList()
