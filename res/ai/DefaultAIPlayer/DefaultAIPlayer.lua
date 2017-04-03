@@ -390,8 +390,11 @@ end
 function BusinessStats:AddSpot(spot)
 	self.SpotProfit:AddValue(spot.GetProfit())
 	self.SpotProfitPerSpot:AddValue(spot.GetProfit() / spot.GetSpotCount())
-	if (spot.GetMinAudience() < globalPlayer.Stats.Audience.MaxValue) then
-		self.SpotProfitPerSpotAcceptable:AddValue(spot.GetProfit() / spot.GetSpotCount())
+	-- only add simple spots for now (without target groups / limits)
+	if (spot.GetLimitedToTargetGroup() <= 0) and (spot.GetLimitedToGenre() <= 0) and (spot.GetLimitedToProgrammeFlag() <= 0) then
+		if (spot.GetMinAudience() < globalPlayer.Stats.Audience.MaxValue) then
+			self.SpotProfitPerSpotAcceptable:AddValue(spot.GetProfit() / spot.GetSpotCount())
+		end
 	end
 	self.SpotPenalty:AddValue(spot.GetPenalty())
 end

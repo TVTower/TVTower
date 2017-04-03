@@ -166,6 +166,12 @@ function AppraiseSpots:AppraiseSpot(spot)
 	local stats = player.Stats
 	local score = -1
 
+--hier genre ... und playerstats mit zielgruppen breakdown
+	if (spot.GetLimitedToTargetGroup() > 0) or (spot.GetLimitedToGenre() > 0) or (spot.GetLimitedToProgrammeFlag() > 0) then
+debugMsg("AppraiseSpots:AppraiseSpot() - ignoriere " .. spot.GetTitle())
+		return
+	end
+
 	if (spot.GetMinAudience(TVT.ME) > stats.Audience.MaxValue) then
 		--spot.Appraisal = -2
 		--debugMsg("zu viele Zuschauer verlangt! " .. spot.Audience .. " / " .. stats.Audience.MaxValue)

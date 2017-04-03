@@ -802,7 +802,7 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 		-- only add requisition if we broadcast something
 		-- TODO: what happens with "Kultur Heute" (which might have 0 audience)
 		--if guessedAudienceSum >= 0 then
-			currentSpotList = self:GetFittingSpotList(guessedAudience, false, true, level, fixedDay, fixedHour)
+			currentSpotList = self:GetFittingSpotList(guessedAudience, previousProgramme, false, true, level, fixedDay, fixedHour)
 		--end
 	end
 
@@ -819,11 +819,11 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 			]]--
 
 			-- this time ignore broadcast limits (spot 5 of 3)
-			--currentSpotList = self:GetFittingSpotList(guessedAudience, s, true, false)
+			--currentSpotList = self:GetFittingSpotList(guessedAudience, nil, s, true, false)
 
-			currentSpotList = self:GetFittingSpotList(guessedAudience.Copy().MultiplyFloat(0.5), true, false)
+			currentSpotList = self:GetFittingSpotList(guessedAudience.Copy().MultiplyFloat(0.5), previousProgramme, true, false)
 			if (table.count(currentSpotList) == 0) then
-				currentSpotList = self:GetFittingSpotList(guessedAudience.Copy().MultiplyFloat(0.1), true, false)
+				currentSpotList = self:GetFittingSpotList(guessedAudience.Copy().MultiplyFloat(0.1), previousProgramme, true, false)
 			end
 		end
 
@@ -836,7 +836,7 @@ function JobEmergencySchedule:SetContractOrTrailerToEmptyBlock(choosenSpot, day,
 		local result = TVT.of_setAdvertisementSlot(choosenSpot, fixedDay, fixedHour)
 	else
 		--choose spot without any audience requirements
-		local currentSpotList = self:GetFittingSpotList(0, false, false, 0, fixedDay, fixedHour)
+		local currentSpotList = self:GetFittingSpotList(0, nil, false, false, 0, fixedDay, fixedHour)
 		--remove ads without left spots 
 		local filteredCurrentSpotList = self:FilterSpotList(currentSpotList, fixedDay, fixedHour)
 
@@ -935,7 +935,7 @@ end
 -- get a list of spots fitting the given requirements
 -- - if there is no spot available, the requirements are lowered and
 --   and a request for new spot contracts is created
-function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRestrictions, lookForRequisition, requisitionLevel, day, hour)
+function JobEmergencySchedule:GetFittingSpotList(guessedAudience, forBroadcastMaterial, noBroadcastRestrictions, lookForRequisition, requisitionLevel, day, hour)
 	-- convert number to audience-object
 	if type(guessedAudience) == "number" or guessedAudience == nil then
 		guessedAudience = TVT.audiencePredictor.GetEmptyAudience().InitWithBreakdown(guessedAudience)
@@ -943,15 +943,15 @@ function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRes
 
 	-- 0.8, 0.6 ... lowers how "near" the minAudience should be at
 	-- the guessed audience
-	local currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.8, false, noBroadcastRestrictions)
+	local currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.8, forBroadcastMaterial, false, noBroadcastRestrictions)
 	if (table.count(currentSpotList) == 0) then
-		currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.6, false, noBroadcastRestrictions)
+		currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.6, forBroadcastMaterial, false, noBroadcastRestrictions)
 		if (table.count(currentSpotList) == 0) then
 			--Bedarf an passenden Spots anmelden.
 			if (lookForRequisition) then
 				-- only do this, if we do not have some older but "lower"
 				-- ads available
-				local allSpotsBelow = self:GetMatchingSpotList(guessedAudience, 0, false, false)
+				local allSpotsBelow = self:GetMatchingSpotList(guessedAudience, 0, forBroadcastMaterial, false, false)
 				local allSpotsBelowCount = 0
 				if allSpotsBelow ~= nil then
 					allSpotsBelowCount = table.count(allSpotsBelow)
@@ -967,12 +967,12 @@ function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRes
 					end
 				end
 			end
-			currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.4, false, noBroadcastRestrictions)
+			currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.4, forBroadcastMaterial, false, noBroadcastRestrictions)
 			if (table.count(currentSpotList) == 0) then
-				currentSpotList = self:GetMatchingSpotList(guessedAudience, 0, false, noBroadcastRestrictions)
+				currentSpotList = self:GetMatchingSpotList(guessedAudience, 0, forBroadcastMaterial, false, noBroadcastRestrictions)
 -- Helmut: AI performs better without. TESTING NOW
 --				if (table.count(currentSpotList) == 0) then
---					currentSpotList = self:GetMatchingSpotList(guessedAudienceMod, 0, true, noBroadcastRestrictions)
+--					currentSpotList = self:GetMatchingSpotList(guessedAudienceMod, 0, forBroadcastMaterial, true, noBroadcastRestrictions)
 --				end
 			end
 		end
@@ -980,7 +980,7 @@ function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRes
 	return currentSpotList;
 end
 
-function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor, noAudienceRestrictions, noBroadcastRestrictions, earliestHour, latestHour)
+function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor, forBroadcastMaterial, noAudienceRestrictions, noBroadcastRestrictions, earliestHour, latestHour)
 	if latestHour == nil or type(latestHour) ~= "number" then
 		latestHour = -1
 	end
@@ -1000,16 +1000,48 @@ function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor, no
 
 	local currentSpotList = {}
 	local currentDay = WorldTime.GetDay()
+	local forProgrammeLicence = nil
+	--try to convert it to a TProgrammeLicence - so we could check
+	--genres, flags and so on
+	if forBroadcastMaterial and forBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.Programme) == 1 then
+		forProgrammeLicence = forBroadcastMaterial.licence
+	end
+	
 	for i = 0, TVT.of_getAdContractCount() - 1 do
 		local contract = TVT.of_getAdContractAtIndex(i)
 
 		--only add contracts
 		if (contract ~= nil) then
 			local minAudience = contract.GetMinAudience()
-			-- TODO RONNY: Targetgroup limits
 			local guessedAudienceValue = guessedAudience.GetTotalSum()
-			--debugMsg("GetMatchingSpotList - minAud("..minAudience..") <= guessedAud(".. guessedAudienceValue .. ") and minAud >= guessedAudMin(" .. (guessedAudienceValue*minFactor) .. ")")
+			-- adjust guessed audience if only specific target groups count
+			if (contract.GetLimitedToTargetGroup() > 0) then
+				guessedAudienceValue = guessedAudience.GetTotalValue( contract.GetLimitedToTargetGroup() )
+			end
+
+			local isMatching = false
+			--check minaudience
 			if ((minAudience <= guessedAudienceValue) and (minAudience >= guessedAudienceValue * minFactor)) or noAudienceRestrictions then
+				isMatching = true
+			end
+
+			--check flags / genres
+			if forProgrammeLicence ~= nil then
+				if isMatching and contract.GetLimitedToGenre() > 0 then
+					if forProgrammeLicence.GetGenre() ~= contract.GetLimitedToGenre() then
+						isMatching = false
+					end
+				end
+
+				if isMatching and contract.GetLimitedToProgrammeFlag() > 0 then
+					if forProgrammeLicence.HasFlag( contract.GetLimitedToProgrammeFlag() ) ~= 1 then
+						isMatching = false
+					end
+				end
+			end
+			
+			--debugMsg("GetMatchingSpotList - minAud("..minAudience..") <= guessedAud(".. guessedAudienceValue .. ") and minAud >= guessedAudMin(" .. (guessedAudienceValue*minFactor) .. ")")
+			if isMatching then
 				-- skip ads with all their spots being planned already
 				local feD,feH = FixDayAndHour(0, earliestHour)
 				local flD,flH = FixDayAndHour(0, latestHour)
@@ -1314,7 +1346,7 @@ function JobSchedule:OptimizeAdSchedule()
 
 		-- limit searching to "< current hour" so this allows to use a
 		-- contract with spots planned in LATER hours
-		local betterAdContractList = self.ScheduleTask.EmergencyScheduleJob:GetMatchingSpotList(guessedAudience, minAudienceFactor, false, false, -1, fixedDay*24 + fixedHour)
+		local betterAdContractList = self.ScheduleTask.EmergencyScheduleJob:GetMatchingSpotList(guessedAudience, minAudienceFactor, previousProgramme, false, false, -1, fixedDay*24 + fixedHour)
 		if (table.count(betterAdContractList) > 0) then
 			local oldAdContract
 			local oldMinAudience = 0
