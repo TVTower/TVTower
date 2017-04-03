@@ -12,7 +12,7 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 	Field matchGUID:string
 	Field leagueGUID:string
 	Field dynamicTexts:int = False
-	Field matchFinished:int = False
+	Field matchEndTime:Long = -1
 
 
 	Method GenerateGUID:string()
@@ -200,14 +200,23 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 	End Method
 
 
-	Method IsMatchFinished:int()
-		if not matchFinished
+	Method GetMatchEndTime:Long()
+		if matchEndTime = -1
 			local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(matchGUID)
-			if match and match.GetMatchEndTime() <= GetWorldTime().GetTimeGone()
-				matchFinished = True
-			endif
+			if match then matchEndTime = match.GetMatchEndTime()
 		endif
-		return matchFinished
+		return matchEndTime
+	End Method
+
+
+	Method IsMatchFinished:int()
+		if matchEndTime = -1 then GetMatchEndTime()
+
+		if matchEndTime <> -1
+			return matchEndTime <= GetWorldTime().GetTimeGone()
+		endif
+		
+		return False
 	End Method
 
 
@@ -345,8 +354,23 @@ endrem
 		'not yet aired?
 		if IsLive() or not IsMatchFinished() then Super.GetMaxTopicality()
 
-		'people know the match result now - uncool
-		return 0.5 * Super.GetMaxTopicality()
+		local endTime:Long = GetMatchEndTime()
+		if endTime = -1 then return Super.GetMaxTopicality()
+
+		'hours would be more suiting ("after 24hrs") but harder to remember
+		'so a "after midnight" decrease sounds more suiting
+		local daysSinceMatch:int = Max(0, GetWorldTime().GetDay() - GetWorldTime().GetDay(endTime))
+		'day 0 => 1  |  day 1 => 0.5  |  day 2 => 0.33  |  day 3 => 0.25
+		'return 1.0/(daysSinceMatch+1) * Super.GetMaxTopicality()
+		'Allows a more fine grained setup for this small amount of days
+		'-> reduction until day 4
+		Select daysSinceMatch
+			Case 0	return 1.00 * Super.GetMaxTopicality()
+			Case 1	return 0.80 * Super.GetMaxTopicality()
+			Case 2	return 0.65 * Super.GetMaxTopicality()
+			Case 3	return 0.55 * Super.GetMaxTopicality()
+			Default	return 0.50 * Super.GetMaxTopicality()
+		EndSelect
 	End Method
 
 
