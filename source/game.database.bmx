@@ -1048,7 +1048,9 @@ Type TDatabaseLoader
 
 		programmeData.genre = data.GetInt("maingenre", programmeData.genre)
 		For local sg:string = EachIn data.GetString("subgenre", "").split(",")
-			if sg = "" then continue
+			if Trim(sg) = "" then continue
+			if int(sg) < 0 then continue
+			
 			if not MathHelper.InIntArray(int(sg), programmeData.subGenres)
 				programmeData.subGenres :+ [int(sg)]
 			endif

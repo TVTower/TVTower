@@ -881,7 +881,7 @@
 				<member index="1" function="2">Freddy-realperson-wilfredelster</member>
             </staff>
             <groups target_groups="0" />
-            <data country="D" year="2005" distribution="0" maingenre="5" subgenre="0" flags="4" blocks="1" price_mod="1.0" />
+            <data country="D" year="2005" distribution="0" maingenre="5" subgenre="" flags="4" blocks="1" price_mod="1.0" />
             <ratings critics="62" speed="24" outcome="12" />
         </programme>
 		
@@ -899,7 +899,7 @@
                 <member index="0" function="1">Freddy-realperson-ThomasUnterlisl</member>
             </staff>
             <groups target_groups="0" />
-            <data country="D" year="2001" distribution="0" maingenre="5" subgenre="0" flags="4" blocks="2" price_mod="1.0" />
+            <data country="D" year="2001" distribution="0" maingenre="5" subgenre="" flags="4" blocks="2" price_mod="1.0" />
             <ratings critics="70" speed="18" outcome="22" />
         </programme>
 		
@@ -1019,7 +1019,7 @@
                 <member index="4" function="2">Per_custom_Freddy_361</member>
             </staff>
             <groups target_groups="0" />
-            <data country="CAN" year="1988" distribution="0" maingenre="1" subgenre="0" flags="32" blocks="2" price_mod="1.0" />
+            <data country="CAN" year="1988" distribution="0" maingenre="1" subgenre="" flags="32" blocks="2" price_mod="1.0" />
             <ratings critics="11" speed="43" outcome="14" />
         </programme>
         
@@ -1040,7 +1040,7 @@
                 <member index="4" function="2">Per_custom_Freddy_362</member>
             </staff>
             <groups target_groups="0" />
-            <data country="CAN" year="1991" distribution="0" maingenre="1" subgenre="0" flags="32" blocks="2" price_mod="1.0" />
+            <data country="CAN" year="1991" distribution="0" maingenre="1" subgenre="" flags="32" blocks="2" price_mod="1.0" />
             <ratings critics="10" speed="38" outcome="15" />
         </programme>
         
@@ -1118,7 +1118,7 @@
                 <member index="3" function="2">Per_custom_Freddy_6</member>
             </staff>
             <groups target_groups="0" />
-            <data country="D" year="2004" distribution="0" maingenre="2" subgenre="0" flags="96" blocks="2" price_mod="1.0" />
+            <data country="D" year="2004" distribution="0" maingenre="2" subgenre="" flags="96" blocks="2" price_mod="1.0" />
             <ratings critics="4" speed="48" outcome="9" />
         </programme>
         
@@ -1138,7 +1138,7 @@
                 <member index="3" function="2">Per_custom_Freddy_12</member>
             </staff>
             <groups target_groups="0" />
-            <data country="D" year="1995" distribution="0" maingenre="2" subgenre="0" flags="32" blocks="2" price_mod="1.0" />
+            <data country="D" year="1995" distribution="0" maingenre="2" subgenre="" flags="32" blocks="2" price_mod="1.0" />
             <ratings critics="7" speed="51" outcome="19" />
         </programme>
         
@@ -1217,7 +1217,7 @@
                 <member index="3" function="2">Per_custom_Freddy_588</member>
             </staff>
             <groups target_groups="0" />
-            <data country="U" year="1989" distribution="0" maingenre="2" subgenre="0" flags="32" blocks="2" price_mod="1.0" />
+            <data country="U" year="1989" distribution="0" maingenre="2" subgenre="" flags="32" blocks="2" price_mod="1.0" />
             <ratings critics="13" speed="42" outcome="16" />
         </programme>
         

@@ -61,7 +61,7 @@ Am Schluss zeigt Fischer Matjes noch wie man richtig Granat pult.</de>
 				<member index="0" function="1">nichtdiebetty-celebritypeople-hainerbecherflechter</member>
 			</staff>
 			<groups target_groups="0" />
-			<data country="D" year="1988" distribution="0" maingenre="300" subgenre="0" flags="20" blocks="2" price_mod="1.0" />
+			<data country="D" year="1988" distribution="0" maingenre="300" subgenre="" flags="20" blocks="2" price_mod="1.0" />
 			<ratings critics="14" speed="15" outcome="0" />
 		</programme>
 	</allprogrammes>

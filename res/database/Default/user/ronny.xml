@@ -173,7 +173,7 @@ Contains an exclusive interview with investor Mark Mikikulla.</en>
 				<member index="1" function="2">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
 			</staff>
 			<groups target_groups="0" />
-			<data country="D" year="1985" distribution="2" maingenre="15" subgenre="0" flags="16" blocks="2" price_mod="0.95" />
+			<data country="D" year="1985" distribution="2" maingenre="15" subgenre="" flags="16" blocks="2" price_mod="0.95" />
 			<ratings critics="32" speed="28" outcome="42" />
 		</programme>
 

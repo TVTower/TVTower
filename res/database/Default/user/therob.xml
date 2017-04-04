@@ -18,7 +18,7 @@
 				<member index="2" function="2">TheRob-celebritypeople-DarleenSchluessel</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1951" distribution="2" maingenre="4" subgenre="0" flags="0" blocks="1" price_mod="1.00" />
+			<data country="D" year="1951" distribution="2" maingenre="4" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="30" speed="49" outcome="" />
 			<children>
 				<programme id="TheRob-serie-KommissarWirsch-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
@@ -168,7 +168,7 @@
 				<member index="2" function="2">Per_custom_Freddy_530</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1962" distribution="2" maingenre="11" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="D" year="1962" distribution="2" maingenre="11" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="65" speed="36" outcome="0" />
 		</programme>
 
@@ -188,7 +188,7 @@
 				<member index="3" function="2">Per_custom_Freddy_638</member>
 			</staff>
 			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1967" distribution="2" maingenre="8" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="USA" year="1967" distribution="2" maingenre="8" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="12" speed="49" outcome="69" />
 		</programme>
 
@@ -208,7 +208,7 @@
 				<member index="3" function="2">e1ed748b-647d-47b6-98b7-fe9c88579b12</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1964" distribution="1" maingenre="10" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="D" year="1964" distribution="1" maingenre="10" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="33" speed="27" outcome="56" />
 		</programme>
 
@@ -226,7 +226,7 @@
 				<member index="1" function="2">Per_custom_Freddy_632</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1979" distribution="2" maingenre="0" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="D" year="1979" distribution="2" maingenre="0" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="29" speed="27" outcome="10" />
 		</programme>
 
@@ -247,7 +247,7 @@
 				<member index="4" function="2">TheRob-TowerTV-speed</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2014" distribution="2" maingenre="0" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="D" year="2014" distribution="2" maingenre="0" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="99" speed="47" outcome="0" />
 		</programme>
 
@@ -265,7 +265,7 @@
 				<member index="1" function="2">TheRob-TowerTV-STARS</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2013" distribution="2" maingenre="0" subgenre="0" flags="0" blocks="6" price_mod="1.00" />
+			<data country="D" year="2013" distribution="2" maingenre="0" subgenre="" flags="0" blocks="6" price_mod="1.00" />
 			<ratings critics="92" speed="27" outcome="0" />
 		</programme>
 
@@ -284,7 +284,7 @@
 				<member index="2" function="2">TheRob-TowerTV-Daniel</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="2003" distribution="2" maingenre="0" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="D" year="2003" distribution="2" maingenre="0" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="92" speed="27" outcome="0" />
 		</programme>
 
@@ -305,7 +305,7 @@
 				<member index="3" function="2">9104f9c1-7a0f-4bc0-a34c-389ce282eebf</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1991" distribution="2" maingenre="0" subgenre="0" flags="0" blocks="1" price_mod="1.00" />
+			<data country="D" year="1991" distribution="2" maingenre="0" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="88" speed="51" outcome="0" />
 		</programme>
 
@@ -325,7 +325,7 @@
 				<member index="3" function="2">Per_custom_Freddy_355</member>
 			</staff>
 			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1981" distribution="2" maingenre="203" subgenre="0" flags="0" blocks="1" price_mod="1.00" />
+			<data country="D" year="1981" distribution="2" maingenre="203" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="22" speed="95" outcome="0" />
 		</programme>
 
@@ -344,7 +344,7 @@
 				<member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
 			</staff>
 			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1972" distribution="1" maingenre="8" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="D" year="1972" distribution="1" maingenre="8" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="9" speed="19" outcome="29" />
 		</programme>
 
@@ -365,7 +365,7 @@
 				<member index="4" function="2">a84c23cc-8e0a-4849-aca7-5193c2482af9</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1977" distribution="1" maingenre="202" subgenre="0" flags="0" blocks="3" price_mod="1.00" />
+			<data country="D" year="1977" distribution="1" maingenre="202" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="32" speed="49" outcome="47" />
 		</programme>
 
@@ -387,7 +387,7 @@
 				<member index="3" function="2">TheRob-celebritypeople-LarryMoldman</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1985" distribution="1" maingenre="14" subgenre="0" flags="0" blocks="3" price_mod="1.5" />
+			<data country="D" year="1985" distribution="1" maingenre="14" subgenre="" flags="0" blocks="3" price_mod="1.5" />
 			<ratings critics="100" speed="100" outcome="100" />
 			<modifiers>
 				<!-- Programmalter hat hoeheren Einfluss auf Preis -->
@@ -414,7 +414,7 @@
 				<member index="4" function="2">Per_custom_Freddy_636</member>
 			</staff>
 			<groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1977" distribution="2" maingenre="202" subgenre="0" flags="0" blocks="1" price_mod="1.00" />
+			<data country="D" year="1977" distribution="2" maingenre="202" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="32" speed="9" outcome="0" />
 		</programme>
 
@@ -435,7 +435,7 @@
 				<member index="4" function="2">12208886-43f2-4b3c-b421-6c19e3f8a2cf</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="I" year="1961" distribution="1" maingenre="18" subgenre="0" flags="64" blocks="2" price_mod="1.00" />
+			<data country="I" year="1961" distribution="1" maingenre="18" subgenre="" flags="64" blocks="2" price_mod="1.00" />
 			<ratings critics="67" speed="66" outcome="65" />
 		</programme>
 
@@ -453,7 +453,7 @@
 				<member index="1" function="8">TheRob-celebritypeople-WalterMuge</member>
 			</staff>
 			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1975" distribution="2" maingenre="9" subgenre="0" flags="0" blocks="1" price_mod="1.00" />
+			<data country="D" year="1975" distribution="2" maingenre="9" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="67" speed="25" outcome="0" />
 			<children>
 				<programme id="therob-programme-elefantengedaechtnis-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
@@ -530,7 +530,7 @@
 				<member index="3" function="2">Per_custom_Freddy_149</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1967" distribution="2" maingenre="11" subgenre="0" flags="0" blocks="4" price_mod="1.00" />
+			<data country="D" year="1967" distribution="2" maingenre="11" subgenre="" flags="0" blocks="4" price_mod="1.00" />
 			<ratings critics="75" speed="31" outcome="0" />
 		</programme>
 
@@ -551,7 +551,7 @@
 				<member index="3" function="2">e1ed748b-647d-47b6-98b7-fe9c88579b12</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="DDR" year="1972" distribution="1" maingenre="1" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="DDR" year="1972" distribution="1" maingenre="1" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="27" speed="34" outcome="46" />
 		</programme>
 
@@ -572,7 +572,7 @@
 				<member index="3" function="2">Per_custom_Freddy_655</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="SUI" year="1961" distribution="1" maingenre="1" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="SUI" year="1961" distribution="1" maingenre="1" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="36" speed="32" outcome="31" />
 		</programme>
 
@@ -593,7 +593,7 @@
 				<member index="3" function="2">Per_custom_Freddy_567</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="CSSR" year="1984" distribution="1" maingenre="1" subgenre="0" flags="0" blocks="3" price_mod="1.00" />
+			<data country="CSSR" year="1984" distribution="1" maingenre="1" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="56" speed="42" outcome="41" />
 		</programme>
 
@@ -818,7 +818,7 @@
 				<member index="1" function="2">22274e45-da7e-4fb2-8698-3a2364973e1a</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1980" distribution="2" maingenre="0" subgenre="0" flags="128" blocks="1" price_mod="1.00" />
+			<data country="D" year="1980" distribution="2" maingenre="0" subgenre="" flags="128" blocks="1" price_mod="1.00" />
 			<ratings critics="29" speed="5" outcome="0" />
 			<modifiers>
 				<modifier name="price::age" value="1.2" />
@@ -887,7 +887,7 @@
 				<member index="1" function="2">Per_custom_Freddy_111</member>
 			</staff>
 			<groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1964" distribution="2" maingenre="11" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="USA" year="1964" distribution="2" maingenre="11" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="25" speed="40" outcome="0" />
 		</programme>
 
@@ -906,7 +906,7 @@
 				<member index="1" function="2">Per_custom_Freddy_429</member>
 			</staff>
 			<groups target_groups="64" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="UDSSR" year="1964" distribution="2" maingenre="11" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="UDSSR" year="1964" distribution="2" maingenre="11" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="25" speed="40" outcome="0" />
 		</programme>
 
@@ -924,7 +924,7 @@
 				<member index="0" function="2">Per_custom_Freddy_45</member>
 			</staff>
 			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="SWE" year="2006" distribution="2" maingenre="8" subgenre="0" flags="192" blocks="2" price_mod="1.00" />
+			<data country="SWE" year="2006" distribution="2" maingenre="8" subgenre="" flags="192" blocks="2" price_mod="1.00" />
 			<ratings critics="24" speed="42" outcome="0" />
 			<modifiers>
 				<!-- Programmalter hat hoeheren Einfluss auf Preis -->
@@ -998,7 +998,7 @@
 				<member index="2" function="128">TheRob-TowerTV-RednackRoot</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1939" distribution="2" maingenre="300" subgenre="0" flags="12" blocks="2" price_mod="1" />
+			<data country="USA" year="1939" distribution="2" maingenre="300" subgenre="" flags="12" blocks="2" price_mod="1" />
 			<ratings critics="79" speed="45" outcome="0" />
 		</programme>
 
@@ -1017,7 +1017,7 @@
 				<member index="1" function="128">Per_custom_Freddy_624</member>
 			</staff>
 			<groups target_groups="4" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="Aut" year="1951" distribution="2" maingenre="9" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="Aut" year="1951" distribution="2" maingenre="9" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="35" speed="9" outcome="0" />
 			<children>
 				<programme id="therob-programme-HaFr-Marmeladenselbermachen-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
@@ -1072,7 +1072,7 @@
 				<member index="2" function="2">Per_custom_Freddy_618</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="IND" year="1981" distribution="1" maingenre="14" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="IND" year="1981" distribution="1" maingenre="14" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="49" speed="37" outcome="12" />
 		</programme>
 
@@ -1092,7 +1092,7 @@
 				<member index="2" function="2">ea76aa3d-2541-481a-b08a-e6905da0cb30</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1949" distribution="1" maingenre="4" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="D" year="1949" distribution="1" maingenre="4" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="46" speed="43" outcome="21" />
 		</programme>
 
@@ -1112,7 +1112,7 @@
 				<member index="2" function="2">TheRob-celebritypeople-ElliSallyTastarino</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="IRL" year="1973" distribution="1" maingenre="4" subgenre="0" flags="0" blocks="3" price_mod="1.00" />
+			<data country="IRL" year="1973" distribution="1" maingenre="4" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="6" speed="32" outcome="7" />
 		</programme>
 
@@ -1572,7 +1572,7 @@
 				<member index="3" function="16">Per_custom_Freddy_675</member>
 			</staff>
 			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1971" distribution="2" maingenre="102" subgenre="0" flags="0" blocks="1" price_mod="1.00" />
+			<data country="D" year="1971" distribution="2" maingenre="102" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="25" speed="12" outcome="0" />
 		</programme>
 
@@ -1592,7 +1592,7 @@
 				<member index="2" function="64">Per_custom_Freddy_76</member>
 			</staff>
 			<groups target_groups="8" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="DK" year="1975" distribution="2" maingenre="101" subgenre="0" flags="0" blocks="1" price_mod="1.00" />
+			<data country="DK" year="1975" distribution="2" maingenre="101" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="35" speed="21" outcome="0" />
 		</programme>
 
@@ -1612,7 +1612,7 @@
 				<member index="2" function="2">283bdb7a-ea1f-4d33-8e72-a618515f4e40</member>
 			</staff>
 			<groups target_groups="128" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="FR" year="1983" distribution="2" maingenre="301" subgenre="0" flags="0" blocks="4" price_mod="1.00" />
+			<data country="FR" year="1983" distribution="2" maingenre="301" subgenre="" flags="0" blocks="4" price_mod="1.00" />
 			<ratings critics="35" speed="31" outcome="0" />
 		</programme>
 
@@ -1633,7 +1633,7 @@
 				<member index="3" function="2">TheRob-TowerTV-NikitaSergejewitschChruschtschow</member>
 			</staff>
 			<groups target_groups="32" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="SUI" year="1964" distribution="2" maingenre="201" subgenre="0" flags="0" blocks="3" price_mod="1.00" />
+			<data country="SUI" year="1964" distribution="2" maingenre="201" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="65" speed="21" outcome="0" />
 		</programme>
 
@@ -1652,7 +1652,7 @@
 				<member index="1" function="8">Per_custom_Freddy_677</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1952" distribution="2" maingenre="0" subgenre="0" flags="0" blocks="1" price_mod="1.00" />
+			<data country="D" year="1952" distribution="2" maingenre="0" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="28" speed="44" outcome="" />
 			<children>
 				<programme id="TheRob-serie-TrendfuerMaenner-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
@@ -1718,7 +1718,7 @@
 				<member index="2" function="2">Per_custom_Freddy_28</member>
 			</staff>
 			<groups target_groups="1" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="SCO" year="1979" distribution="2" maingenre="12" subgenre="0" flags="64" blocks="2" price_mod="1.00" />
+			<data country="SCO" year="1979" distribution="2" maingenre="12" subgenre="" flags="64" blocks="2" price_mod="1.00" />
 			<ratings critics="17" speed="55" outcome="0" />
 			<children>
 				<programme id="therob-programme-ser-RonnyunddasBytekehrenzurueck-ep01" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
@@ -1794,7 +1794,7 @@
 				<member index="1" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1980" distribution="2" maingenre="204" subgenre="0" flags="8" blocks="4" price_mod="1.00" />
+			<data country="D" year="1980" distribution="2" maingenre="204" subgenre="" flags="8" blocks="4" price_mod="1.00" />
 			<ratings critics="89" speed="38" outcome="" />
 			<children>
 				<programme id="TheRob-serie-BestofTVTower-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
@@ -1813,7 +1813,7 @@
 		  			<member index="3" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>            
 					</staff>
 					<groups target_groups="0" />
-					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="0" flags="8" blocks="4" price_mod="1.0" />
+					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="" flags="8" blocks="4" price_mod="1.0" />
 				</programme>
 				<programme id="TheRob-serie-BestofTVTower-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
@@ -1831,7 +1831,7 @@
 						<member index="3" function="2">Per_custom_Freddy_429</member>
 		  			<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>                    
 					</staff>
-					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="0" flags="8" blocks="4" price_mod="1.00" />
+					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="" flags="8" blocks="4" price_mod="1.00" />
 				</programme>
 				<programme id="TheRob-serie-BestofTVTower-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
@@ -1849,7 +1849,7 @@
 			  		<member index="3" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
 			  		<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>                        
 					</staff>
-					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="0" flags="8" blocks="4" price_mod="1.00" />
+					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="" flags="8" blocks="4" price_mod="1.00" />
 				</programme>
 				<programme id="TheRob-serie-BestofTVTower-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="tt0072443" rt_id="0" creator="Sjaele/TheRob">
 					<title>
@@ -1872,7 +1872,7 @@
 						<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>                      
 					</staff>
 					<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-					<data country="UdSSR" year="1980" distribution="0" maingenre="204" subgenre="0" flags="0" blocks="3" price_mod="1.00" />
+					<data country="UdSSR" year="1980" distribution="0" maingenre="204" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 				</programme>
 	  		</children>
 		</programme>
@@ -1892,7 +1892,7 @@
 				<member index="2" function="2">TheRob-TowerTV-IrisLeger</member>
 			</staff>
 			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1979" distribution="1" maingenre="8" subgenre="0" flags="64" blocks="3" price_mod="1.00" />
+			<data country="D" year="1979" distribution="1" maingenre="8" subgenre="" flags="64" blocks="3" price_mod="1.00" />
 			<ratings critics="29" speed="49" outcome="89" />
 		</programme> 
 	
@@ -1992,7 +1992,7 @@
 				<member index="1" function="8">Per_custom_Freddy_259</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="I" year="1959" distribution="2" maingenre="102" subgenre="0" flags="0" blocks="1" price_mod="1.00" />
+			<data country="I" year="1959" distribution="2" maingenre="102" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="30" speed="59" outcome="" />
 			<children>
 				<programme id="TheRob-serie-Wirstellenvor-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
@@ -2097,7 +2097,7 @@
 				<member index="4" function="2">TheRob-TowerTV-CharlieWalden</member>        
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1965" distribution="1" maingenre="7" subgenre="0" flags="0" blocks="2" price_mod="1.00" />
+			<data country="USA" year="1965" distribution="1" maingenre="7" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="74" speed="56" outcome="68" />
 		</programme>  
 	
@@ -2122,7 +2122,7 @@
 				<member index="3" function="2">c287f169-6814-45ea-a8a3-01efbb6a21c3</member>       
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1966" distribution="1" maingenre="18" subgenre="0" flags="0" blocks="3" price_mod="1.00" />
+			<data country="USA" year="1966" distribution="1" maingenre="18" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="57" speed="59" outcome="62" />
 		</programme> 
 
@@ -2245,7 +2245,7 @@
 				<member index="3" function="2">Per_custom_Freddy_149</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1971" distribution="1" maingenre="11" subgenre="0" flags="0" blocks="3" price_mod="1.00" />
+			<data country="D" year="1971" distribution="1" maingenre="11" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="71" speed="37" outcome="0" />
 		</programme>
 
@@ -2312,7 +2312,7 @@
 				<member index="2" function="64">TheRob-TowerTV-DonaldMcWegan</member>
 			</staff>
 			<groups target_groups="8" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1978" distribution="2" maingenre="101" subgenre="0" flags="0" blocks="3" price_mod="1.00" />
+			<data country="USA" year="1978" distribution="2" maingenre="101" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="55" speed="41" outcome="0" />
 		</programme>    
 	
@@ -2335,7 +2335,7 @@
 				<member index="1" function="2">TheRob-TowerTV-FlavioCavello</member>        
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D/F" year="1964" distribution="2" maingenre="1" subgenre="0" flags="8" blocks="2" price_mod="1.00" />
+			<data country="D/F" year="1964" distribution="2" maingenre="1" subgenre="" flags="8" blocks="2" price_mod="1.00" />
 			<ratings critics="67" speed="44" outcome="" />
 			<children>
 				<programme id="TheRob-serie-RobinWusoe-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
@@ -2402,7 +2402,7 @@
 				<member index="1" function="2">TheRob-TowerTV-DaveMcWarum</member>                
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="USA" year="1953" distribution="2" maingenre="10" subgenre="0" flags="8" blocks="1" price_mod="1.00" />
+			<data country="USA" year="1953" distribution="2" maingenre="10" subgenre="" flags="8" blocks="1" price_mod="1.00" />
 			<ratings critics="47" speed="38" outcome="30" />
 			<children>
 				<programme id="TheRob-serie-RingeundRosen-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
