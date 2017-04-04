@@ -889,6 +889,11 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
+	Function _GetGenreString:String(_genre:Int=-1)
+		Return GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(_genre))
+	End Function
+
+
 	Method GetGenreString:String(_genre:Int=-1)
 		If _genre < 0 Then _genre = self.genre
 		'eg. PROGRAMME_GENRE_ACTION
