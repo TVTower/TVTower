@@ -94,9 +94,11 @@ Type TLocalization
 				Return ""
 			endif
 		elseif fallbackLanguage <> currentLanguage
+			'check if current language offers something, if not
+			'fall back to fallbackLanguage
 			local hasOne:int = False
 			for local k:string = EachIn Keys
-				if currentLanguage.Has(k) then hasOne = true;exit
+				if currentLanguage.HasSub(k) then hasOne = true;exit
 			next
 			if hasOne
 				Return _GetRandomString2(currentLanguage, Keys)
@@ -104,7 +106,6 @@ Type TLocalization
 				Return _GetRandomString2(fallbackLanguage, Keys)
 			endif
 		endif
-
 		Return _GetRandomString2(currentLanguage, Keys)
 	End Function
 	
@@ -114,7 +115,7 @@ Type TLocalization
 		if not fallbackLanguage
 			if not currentLanguage then Return Key
 		elseif fallbackLanguage <> currentLanguage
-			if currentLanguage.Has(Key)
+			if currentLanguage.HasSub(Key)
 				Return _GetRandomString(currentLanguage, Key)
 			else
 				Return _GetRandomString(fallbackLanguage, Key)
@@ -477,6 +478,29 @@ Type TLocalizationLanguage
 		If group Then key = group + "::" + Key
 
 		return map.Contains(lower(key))
+	End Method
+
+
+	'return amount of sub keys ("key" => "key1", "key2","key3")
+	Method HasSub:int(key:string, group:string = Null)
+		If group Then key = group + "::" + key
+		key = lower(key)
+		
+		local availableStrings:int = 1
+		local found:int = 0
+		local subKey:string = ""
+		repeat
+			subKey = Key
+			if availableStrings > 0 then subKey :+ availableStrings
+			if map.Contains(subKey)
+				availableStrings :+ 1
+				found :+ 1
+			elseif availableStrings <> 0
+				exit
+			endif
+		until found > 10
+
+		return availableStrings
 	End Method
 End Type
 
