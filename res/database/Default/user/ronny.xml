@@ -754,20 +754,75 @@ Illustrious guests and music by [3|Nick].</en>
 			</description>
 			<effects>
 				<!-- "morgen/uebermorgen 11-17 Uhr" -->
-				<effect trigger="happen" type="triggernews" time="2,1,2,11,17" news="ronny-news-frauenbart-02" />
+				<effect trigger="happen" type="triggernews" time="2,1,2,11,17" news="ronny-news-frauenbart-02a" />
+				<!-- "in 3-4 Tagen 9-15 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,3,4,9,15" news="ronny-news-frauenbart-02b" />
+				<!-- "in 6-7 Tagen 12-18 Uhr" -->
+				<effect trigger="happen" type="triggernews" time="2,6,7,12,18" news="ronny-news-frauenbart-02c" />
 			</effects>
 			<data genre="5" price="1.0" quality="15" />
 		</news>
-		<news id="ronny-news-frauenbart-02" type="2" creator="5578" created_by="Ronny">
+		<news id="ronny-news-frauenbart-02a" type="2" creator="5578" created_by="Ronny">
 			<title>
-				<de>Ausstellung "Frauenbärte" lockt Betrüger</de>
-				<en>Exhibition "Women's Beards" lures cheats</en>
+				<de>Ausstellung "Frauenbärte %WORLDTIME:YEAR%" lockt Betrüger</de>
+				<en>Exhibition "Women's Beards %WORLDTIME:YEAR%" lures cheats</en>
 			</title>
 			<description>
 				<de>Heute versuchten zwei mit Bärten getarnte Männer sich kostenlosen Zugang zur Ausstellung "Frauenbärte" zu erschleichen. Beim Handgemenge wurde einer Wachfrau der Schnurrbart gezupft.</de>
 				<en>Today two men, masked with beards, tried to sneak free access to the exhibition "Women's Beards". In the brawl a security woman's mustache was plucked.</en>
 			</description>
 			<data genre="5" price="1.0" quality="17" />
+		</news>
+		<news id="ronny-news-frauenbart-02b" type="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>Frauenbärte: Frauen schwören auf Koteletten</de>
+				<en>Women's Beards: Women now like sideburns</en>
+			</title>
+			<description>
+				<de>Wohl auch aus Diätgründen trägt die Frau von heute Koteletten. Gezupft und in Form gebracht - natürlich!</de>
+				<en>Maybe it helps shaping off some fat - so modern women wear sideburns now. Plucked and shaped - naturally!</en>
+			</description>
+			<data genre="5" price="1.0" quality="18" />
+		</news>
+		<news id="ronny-news-frauenbart-02c" type="2" creator="5578" created_by="Ronny">
+			<title>
+				<de>Frauenbärte: Aus und Vorbei</de>
+				<en>Women's Beards: It's all over</en>
+			</title>
+			<description>
+				<de>Die millionenschweren Gegenkampagne der Rouge-Produzenten zeigt Wirkung: Absatz für Damenrasierer steigt wieder!</de>
+				<en>The multi-million Euro counter-campaign of rouge producers shows effect: sales for women's razors are rising again!</en>
+			</description>
+			<data genre="5" price="1.1" quality="21" />
+		</news>
+		<news id="ronny-news-tarotimwandel-01" type="0" creator="5578" created_by="Ronny">
+			<title>
+				<de>"Tarot im Wandel der Zeit" auf Tour</de>
+				<en>"Tarot in the course of time" on tour</en>
+			</title>
+			<description>
+				<de>Die Ausstellung der "Zunft" reist quer durchs Land. Ausgestellt wird alles, vom alten Taschenschlitzwerkzeug bis zur ersten verdienten Mark mit 0190er Nummern.</de>
+				<en>The exhibition of the "guild" travels across the country. Everything is shown, from the old bag slitting tool to the first Deutschmark earned with phone calls.</en>
+			</description>
+			<data genre="5" price="1.2" quality="23" />
+		</news>
+		<news id="ronny-news-steinzeit-01" type="0" creator="5578" created_by="Ronny">
+			<title>
+				<de>"Das war die Steinzeit" gastiert in %CITYNAME%</de>
+				<en>"That was the Stone Age" exhibits in %CITYNAME%</en>
+			</title>
+			<description>
+				<de>Die erfolgreiche Wanderausstellung schlägt Ihre Zelte in %CITYNAME% auf. Dutzende Einwohner ließen ihre Keulen stehen und liegen Tickets zu erjagen.</de>
+				<en>The successful traveling exhibition pitches their camp in %CITYNAME%. Dozens of residents left their clubs behind to catch some tickets.</en>
+			</description>
+			<!-- usage of %STATIONMAP:RANDOMCITY% in the text directly, will lead to a different random city
+			     in title than in the description - so we use variables as this caches the output of the first city -->
+			<variables>
+				<cityname>
+					<de>%STATIONMAP:RANDOMCITY%</de>
+				</cityname>
+			</variables>
+			<data genre="5" price="0.9" quality="28" />
 		</news>
 	</allnews>
 </tvgdb>
