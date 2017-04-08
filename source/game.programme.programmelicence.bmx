@@ -1762,7 +1762,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		endif
 		local genreLine:string = GetGenreString()
 		'only for non-collection/series
-		if GetSubLicenceCount() = 0
+		'if GetSubLicenceCount() = 0
 			local addGenre:string[]
 			'add first, so it is "visible" also for long entries
 			if HasDataFlag(TVTProgrammeDataFlag.CULTURE)
@@ -1776,7 +1776,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			if addGenre and addGenre.length > 0
 				genreLine = "|b|"+genreLine+"|/b|, " + ", ".Join(addGenre)
 			endif
-		endif
+		'endif
 					
 		skin.fontNormal.drawBlock(genreLine, contentX + 5 + 65 + 2, contentY, contentW - 10 - 65 - 2, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ genreH

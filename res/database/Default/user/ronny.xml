@@ -812,7 +812,7 @@ Illustrious guests and music by [3|Nick].</en>
 				<en>"That was the Stone Age" exhibits in %CITYNAME%</en>
 			</title>
 			<description>
-				<de>Die erfolgreiche Wanderausstellung schlägt Ihre Zelte in %CITYNAME% auf. Dutzende Einwohner ließen ihre Keulen stehen und liegen Tickets zu erjagen.</de>
+				<de>Die erfolgreiche Wanderausstellung schlägt Ihre Zelte in %CITYNAME% auf. Dutzende Einwohner ließen ihre Keulen stehen und liegen um Tickets zu erjagen.</de>
 				<en>The successful traveling exhibition pitches their camp in %CITYNAME%. Dozens of residents left their clubs behind to catch some tickets.</en>
 			</description>
 			<!-- usage of %STATIONMAP:RANDOMCITY% in the text directly, will lead to a different random city
