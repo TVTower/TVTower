@@ -1034,3 +1034,6 @@ ROOMAGENCY_ROOM_OFFICE_IN_RANGE_TEXT1 = Nicht weit von Deinem Büro gelegen.
 
 ROOMAGENCY_AVAILABLE_FOR_RENT_OF_X_PER_DAY = Für nur |b|%X%/Spieltag|/b| verfügbar.
 ROOMAGENCY_SIGNING_WILL_COST_A_SINGLE_PAYMENT_OF_X = Bei Unterzeichnung wird eine einmalige Zahlung von |b|%X%|/b| fällig.
+
+ROOMAGENCY_ROOM_CURRENTLY_NOT_AVAILABLE_BUT_THIS_MIGHT_CHANGE1 = Noch ist dieser Raum vermietet, aber mit einem nettgemeintem Ratschlag könnte der Mieter den Raum freigeben.
+ROOMAGENCY_ROOM_CURRENTLY_NOT_AVAILABLE_BUT_THIS_MIGHT_CHANGE2 = Noch ist dieser Raum vermietet, mit ein wenig Überzeugungsarbeit könnte der Mieter aber durchaus gewillt sein, den Raum freizugeben.

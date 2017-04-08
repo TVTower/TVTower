@@ -106,6 +106,10 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 		if not room then return False
 
 		local i:RoomHandler_RoomAgency = GetInstance()
+		'invalidate cached texts
+		if i.selectedRoom = room then i.roomContractTexts.Remove(room.GetGUID())
+		if i.hoveredRoom = room then i.roomContractTexts.Remove(room.GetGUID())
+
 		if i.selectedRoom
 			'selected the room of another player
 			if i.selectedRoom.GetOwner() > 0 and i.selectedRoom.GetOwner() <> GetPlayerBase().playerID
@@ -210,7 +214,8 @@ endrem
 
 			'other players rooms
 			if room.GetOwner() > 0 and room.GetOwner() <> playerID and not room.IsRentable() then continue
-			if room.GetOwner() <= 0 and not room.IsRentable() then continue
+			'disabled: make "not yet free"-rooms hoverable
+			'if room.GetOwner() <= 0 and not room.IsRentable() then continue
 
 			if not sign.imageCache
 				sign.imageCache = sign.GenerateCacheImage( GetSpriteFromRegistry(sign.imageBaseName + Max(0, sign.door.GetOwner())) )
@@ -223,7 +228,7 @@ endrem
 				hoveredRoom = TRoomDoor(sign.door).GetRoom()
 				hoveredSign = sign
 
-				if MouseManager.IsClicked(1)
+				if room.IsRentable() and MouseManager.IsClicked(1)
 			
 					'only select/confirm the room if it is allowed
 					if (hoveredRoom.GetOwner() <= 0 and hoveredRoom.IsRentable()) or ..
@@ -462,6 +467,10 @@ endrem
 		local boxAreaPaddingY:int = 4
 		local ownerInfo:int = True
 
+		if not room.IsFreeHold() and room.IsRented()
+			ownerInfo = False
+		endif
+
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(title, contentW - 10, 100))
 
 		'== box area
@@ -525,14 +534,20 @@ endrem
 				adText :+ GetRandomLocale2(["ROOMAGENCY_ROOM_"+neighbourRoom.name+"_IN_RANGE_TEXT", "ROOMAGENCY_ROOM_X_IN_RANGE_TEXT"]).REPLACE("%X%", neighbourRoom.GetDescription())
 				if adText then adText :+ " "
 			endif
-			adText :+ GetLocale("ROOMAGENCY_AVAILABLE_FOR_RENT_OF_X_PER_DAY").Replace("%X%", MathHelper.DottedValue(room.GetRentForPlayer(currentPlayerID)) +" "+GetLocale("CURRENCY"))
 
+			if room.GetOwner() <= 0
+				if not room.IsRented() ' and room.IsRentable()
+					adText :+ GetLocale("ROOMAGENCY_AVAILABLE_FOR_RENT_OF_X_PER_DAY").Replace("%X%", MathHelper.DottedValue(room.GetRentForPlayer(currentPlayerID)) +" "+GetLocale("CURRENCY"))
+				else
+					adText :+ "~n~n" + GetRandomLocale("ROOMAGENCY_ROOM_CURRENTLY_NOT_AVAILABLE_BUT_THIS_MIGHT_CHANGE")
+				endif
+			endif
 			roomContractTexts.Insert(room.GetGUID(), adText)
 		endif
 		t :+ adText
 		if adText then t :+ "~n"
 		
-		if room.GetOwner() <> currentPlayerID
+		if room.IsRentable() and room.GetOwner() <> currentPlayerID
 			t :+ GetLocale("ROOMAGENCY_SIGNING_WILL_COST_A_SINGLE_PAYMENT_OF_X").Replace("%X%", MathHelper.DottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ) +" "+GetLocale("CURRENCY"))
 		endif
 		skin.fontNormal.drawBlock(t, contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
@@ -602,7 +617,8 @@ Vorbesitzer: XYZ
 		skin.RenderBox(contentX + 5, contentY, 50, -1, room.GetSize(), "roomSize", "neutral", skin.fontBold)
 		if room.GetOwner() = currentPlayerID
 			skin.RenderBox(contentX + 5 + 148 +52, contentY, 110, -1, MathHelper.DottedValue( room.GetRentForPlayer(currentPlayerID) ) +" |color=90,90,90|/ Tag|/color|", "moneyRepetitions", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
-		else
+		'only show prices for rentable rooms
+		elseif room.IsRentable()
 			skin.RenderBox(contentX + 5 + 54 +52, contentY, 110, -1, MathHelper.DottedValue( room.GetRentForPlayer(currentPlayerID) ) +" |color=90,90,90|/ Tag|/color|", "moneyRepetitions", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 			if canAfford
 				skin.RenderBox(contentX + 5 + 168 +52, contentY, 90, -1, MathHelper.DottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)

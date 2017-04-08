@@ -1016,3 +1016,6 @@ ROOMAGENCY_ROOM_OFFICE_IN_RANGE_TEXT1 = Nearby your own office!
 
 ROOMAGENCY_AVAILABLE_FOR_RENT_OF_X_PER_DAY = Available for just |b|%X%/gameday|/b|.
 ROOMAGENCY_SIGNING_WILL_COST_A_SINGLE_PAYMENT_OF_X = Signing will cost a single payment of |b|%X%|/b|.
+
+ROOMAGENCY_ROOM_CURRENTLY_NOT_AVAILABLE_BUT_THIS_MIGHT_CHANGE1 = This room is still rented, but with a nice advice the tenant could release the room.
+ROOMAGENCY_ROOM_CURRENTLY_NOT_AVAILABLE_BUT_THIS_MIGHT_CHANGE2 = This room is still rented, but with a little persuasion, the tenant might well be willed to cancel this room rental.
