@@ -473,6 +473,7 @@ Type TStationMapCollection
 		Local part1:String[] = cityNames.GetString("part1").Split(", ")
 		Local part2:String[] = cityNames.GetString("part2").Split(", ")
 		Local part3:String[] = cityNames.GetString("part3").Split(", ")
+		if part1.length = 0 then return "part1Missing-Town"
 		if part2.length = 0 then return "part2Missing-Town"
 		if part3.length = 0 then return "part3Missing-Town"
 
@@ -495,6 +496,8 @@ Type TStationMapCollection
 			result :+ glue
 			result :+ part3[RandRange(0, part3.length-1)]
 		EndIf
+
+		if result.trim() = "" then return "partsMissing-Town"
 
 		Return result
 	End Method

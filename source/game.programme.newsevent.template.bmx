@@ -168,6 +168,7 @@ Type TNewsEventTemplateCollection
 			unusedTemplates.Insert(t.GetLowerStringGUID(), t)
 
 			t.SetLastUsedTime(0)
+			t.Reset()
 		Next
 
 		'reset cache if needed
@@ -328,6 +329,19 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 		if not templateVariables then templateVariables = new TTemplateVariables
 
 		return templateVariables
+	End Method
+
+
+	'reset things used for random data
+	'like placeholders (which are stored there so that children could
+	'reuse it)
+	Method Reset:int()
+		ResetRandomData()
+	End Method
+
+
+	Method ResetRandomData:int()
+		if templateVariables then templateVariables.Reset()
 	End Method
 
 

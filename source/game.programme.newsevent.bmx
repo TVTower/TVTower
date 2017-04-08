@@ -423,20 +423,36 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 	Method InitFromTemplate:TNewsEvent(template:TNewsEventTemplate)
+		'reset template (random data like template variables)
+		if template then template.ResetRandomData()
+
 		self.template = template
 		self.SetGUID( template.GetGUID()+"-instance"+(template.timesUsed+1))
 
 		'mark the template (and increase usage count)
 		template.SetUsed(self.GetGUID())
 
-		'TODO: with RANDOM - copy title
-		'if ...
-		'	self.title = template.title.copy()
-		'	self.description = template.description.copy()
-		'else
+
+		'copy text if we intend to replace content
+		'(for now only check main language)
+		if template.title.Get().Find("%") >= 0
+			if template.templateVariables
+				self.title = _ReplacePlaceholders( template.templateVariables.ReplacePlaceholders(template.title) )
+			else
+				self.title = _ReplacePlaceholders(template.title)
+			endif
+		else
 			self.title = template.title
+		endif
+		if template.description.Get().Find("%") >= 0
+			if template.templateVariables
+				self.description = _ReplacePlaceholders( template.templateVariables.ReplacePlaceholders(template.description) )
+			else
+				self.description = _ReplacePlaceholders(template.description)
+			endif
+		else
 			self.description = template.description
-		'endif
+		endif
 
 		self.happenedTime = template.happenTime
 		if template.targetGroupAttractivityMod
@@ -453,6 +469,41 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		return self
 	End Method
 
+
+	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString)
+		local result:TLocalizedString = text.copy()
+
+		'for each defined language we check for existent placeholders
+		'which then get replaced by a random string stored in the
+		'variable with the same name
+		For local lang:string = EachIn text.GetLanguageKeys()
+			local value:string = text.Get(lang)
+			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%", True)
+			if placeHolders.length = 0 then continue
+
+			local replacement:string = ""
+			for local placeHolder:string = EachIn placeHolders
+				'check for gameinformation first
+				local gameinformationResult:string = string(GetGameInformation(placeHolder, ""))
+				'fall back to expression result (maybe it is handled there)
+				if not gameinformationResult
+					local expressionResultType:int
+					local expressionResult:string = string(GetScriptExpression().HandleVariable(placeHolder, expressionResultType))
+					if expressionResult
+						replacement = expressionResult
+					endif
+				else
+					replacement = gameinformationResult
+				endif
+
+				'replace if some content was filled in
+				if replacement <> "" then value = value.replace("%"+placeHolder+"%", replacement)
+			Next
+			
+			result.Set(value, lang)
+		Next
+		return result
+	End Method
 
 	Method SetTitle(title:TLocalizedString)
 		self.title = title

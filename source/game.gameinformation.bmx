@@ -389,6 +389,8 @@ Type TStationMapInformationProviderBase extends TGameInformationProvider
 				return GetStationMapCollection().config.GetString("nameShort", "Unk")
 			Case "population"
 				return string( GetStationMapCollection().population )
+			Case "randomcity"
+				return GetStationMapCollection().GenerateCity()
 			Default
 				return "UNHANDLED_KEY"
 		End Select

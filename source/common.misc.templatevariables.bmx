@@ -73,10 +73,40 @@ Type TTemplateVariables
 		local result:TLocalizedString
 		if variables then result = TLocalizedString(variables.ValueForKey(key))
 
+		'check parent
 		if not result
 			local parent:TTemplateVariables = GetParentTemplateVariables()
 			if parent then result = parent.GetVariableString(key, defaultValue, createDefault)
 		endif
+
+		rem
+		'WOULD CACHE EVERY REQUEST, not just variables requesting game
+		'information. So "The city %STATIONMAP:RANDOMCITY%" would cache
+		'for every followup "randomcity"-request in the text, not just
+		'for variables referencing it
+
+		'check gameinformation
+		if not result and key.Find("%") >= 0
+			local gameinformationResult:string = string(GetGameInformation(key.Replace("%", ""), ""))
+			if gameinformationResult <> "UNKNOWN_INFORMATION"
+				result = new TLocalizedString
+				result.Set(gameinformationResult)
+			endif
+		endif
+		endrem
+
+		'only check if there was a variable set for the game information
+		'cityname => %STATIONMAP:RANDOMCITY%, so only "cityname" contains
+		'a random city then
+
+		'check gameinformation
+		if result and result.Get().Find("%") >= 0
+			local gameinformationResult:string = string(GetGameInformation(result.Get().Replace("%", ""), ""))
+			result = new TLocalizedString
+			result.Set(gameinformationResult)
+		endif
+
+
 
 		if not result and createDefault
 			result = new TLocalizedString
@@ -134,7 +164,6 @@ Type TTemplateVariables
 				'use result already (to allow recursive-replacement)
 				local value:string = result.Get(lang)
 				local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%")
-
 				if placeHolders.length > 0
 'if lang="de" then print "  "+lang+"  run "+i
 'if lang="de" then print "   -> value = " + value
@@ -158,6 +187,7 @@ Type TTemplateVariables
 							if parent and parent.GetVariableString(placeHolder, "", False)
 								parent.AddPlaceHolderVariable(placeHolder, replacement)
 							else
+'print "added variable: " + placeHolder + " => " + replacement.Get()
 								AddPlaceHolderVariable(placeHolder, replacement)
 							endif
 							'store the replacement in the value

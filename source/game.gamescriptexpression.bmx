@@ -21,6 +21,7 @@ GetGameScriptExpression().RegisterHandler("TIME_ISDUSK", GameScriptExpression_Ha
 
 GetGameScriptExpression().RegisterHandler("STATIONMAP_MAPNAME", GameScriptExpression_Handle_StationMap)
 GetGameScriptExpression().RegisterHandler("STATIONMAP_MAPNAMESHORT", GameScriptExpression_Handle_StationMap)
+GetGameScriptExpression().RegisterHandler("STATIONMAP_POPULATION", GameScriptExpression_Handle_StationMap)
 
 
 
