@@ -1268,6 +1268,24 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		For Local player:TPlayer = EachIn GetPlayerCollection().players
 			GetInstance().SetPlayerBankruptLevel(player.playerID, GetInstance().GetPlayerBankruptLevel(player.playerID))
 		Next
+
+		're-rent "free rooms" (of old savegames, so might get removed
+		'later on)
+'		GetRoomAgency().UpdateEmptyRooms()
+		For local r:TRoomBase = EachIn GetRoomBaseCollection().list
+			'ignore non-rentable rooms
+			if not r.IsRentable() then continue
+			if r.IsRented() then continue
+			if r.IsFreehold() then continue
+
+			'never rented before (old savegames)
+			if r.rentalTimes = 0 and r.rent = 0 and r.rentalChangeTime = 0
+				'let original owner rent it
+				r.BeginRental(r.GetOwner(), r.GetRent())
+				TLogger.Log("TGame", "Savegame loaded - re-rented room ~q"+r.GetName()+"~q.", LOG_DEBUG | LOG_SAVELOAD)
+			endif
+		Next
+
 	End Function
 
 
