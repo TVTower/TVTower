@@ -160,7 +160,7 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 		Local subNode:TxmlNode = Null
 
 		'1. room configuration
-		local fieldNames:String[] = ["owner", "name", "id", "flags", "screen", "list"]
+		local fieldNames:String[] = ["owner", "name", "id", "flags", "size", "screen"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
 
@@ -228,6 +228,7 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 		roomData.AddString("owner",	owner)
 		roomData.AddString("roomname", name)
 		roomData.AddNumber("flags", data.GetInt("flags", 0))
+		roomData.AddNumber("size", data.GetInt("size", 1))
 		roomData.AddString("screen", data.GetString("screen", "screen_credits"))
 
 		'load tooltips
