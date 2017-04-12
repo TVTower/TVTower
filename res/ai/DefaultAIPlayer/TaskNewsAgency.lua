@@ -152,7 +152,12 @@ function JobCheckEventNews:Tick()
 	if player.TaskList[TASK_ROOMBOARD] ~= nil then
 		local roomBoardTask = player.TaskList[TASK_ROOMBOARD]	
 		if terrorLevel >= 2 then	
-			roomBoardTask.SituationPriority = terrorLevel * terrorLevel						
+			roomBoardTask.SituationPriority = terrorLevel * terrorLevel
+		end
+
+		-- mark the situation of a soon happening attack
+		if terrorLevel >= 1 then
+			roomBoardTask.RecognizedTerrorLevel = true
 		end
 	
 		roomBoardTask.FRDubanTerrorLevel = TVT.ne_getTerroristAggressionLevel(0) --FR Duban Terroristen

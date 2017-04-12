@@ -8,7 +8,8 @@ _G["TaskRoomBoard"] = class(AITask, function(c)
 	c.BasePriority = 0
 	c.NeededInvestmentBudget = 0
 	c.InvestmentPriority = 0
-	
+
+	c.RecognizedTerrorLevel = false
 	c.FRDubanTerrorLevel = 0 --FR Duban Terroristen
 	c.VRDubanTerrorLevel = 0 --VR Duban Terroristen
 end)
@@ -33,6 +34,17 @@ function TaskRoomBoard:GetNextJobInTargetRoom()
 end
 
 function TaskRoomBoard:getSituationPriority()
+	-- situation is normal if we do not know about terror (needs
+	-- visit of the news agency and a higher level)
+	if (not self.RecognizedTerrorLevel) then
+		return 0
+	end
+
+	-- fix broken savegames (got one with values of 40.000.000)
+	-- which therefor get unbelievable high priorities
+	self.FRDubanTerrorLevel = math.clamp(self.FRDubanTerrorLevel, -10, 10)
+	self.VRDubanTerrorLevel = math.clamp(self.VRDubanTerrorLevel, -10, 10)
+
 	local maxTerrorLevel = math.max(self.FRDubanTerrorLevel, self.VRDubanTerrorLevel)
 	if maxTerrorLevel >= 3 then
 		self.SituationPriority = math.max(self.SituationPriority, maxTerrorLevel * 8)
@@ -95,6 +107,10 @@ function JobChangeRoomSigns:Tick()
 		TVT.rb_SwitchSigns(sign, roomSign)
 		kiMsg("Verschiebe  VRDuban-Schild auf Raum " .. roomId .. " (" .. roomSign.GetOwnerName() ..") des Spielers " .. enemyId )
 	end
+
+	-- handled the situation "for now"
+	self.Task.SituationPriority = 0
+	self.Task.RecognizedTerrorLevel = false
 	
 	self.Status = JOB_STATUS_DONE
 end

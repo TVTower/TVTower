@@ -425,7 +425,8 @@ function AITask:RecalcPriority()
 
 	self.CurrentPriority = math.max(timePriority, ticksPriority)
 
---	debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. " - TimeDiff:" .. TimeDiff .. "  TicksDiff:" .. TicksDiff.." (c: " .. calcPriority .. ")")
+	--debugMsg("Task: " .. self:typename() .. " - BasePriority: " .. self.BasePriority .." - SituationPriority: " .. self:getSituationPriority() .. " - Ran1 : " .. Ran1 .. "  RequisitionPriority: " .. requisitionPriority)
+	--debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. "  (time: " .. timePriority .." | ticks: " .. ticksPriority ..") - TimeDiff:" .. TimeDiff .. "  TicksDiff:" .. TicksDiff.." (tF: " ..timeFactor .." | cP: " .. calcPriority .. ")")
 end
 
 function AITask:TooMuchTicks()
