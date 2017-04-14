@@ -431,6 +431,7 @@ Type TDatabaseLoader
 			celebrity.appearance = 0.01 * data.GetFloat("appearance", 100*celebrity.appearance)
 			celebrity.topGenre1 = data.GetInt("topgenre1", celebrity.topGenre1)
 			celebrity.topGenre2 = data.GetInt("topgenre2", celebrity.topGenre2)
+			'TODO: prominence - manual popularity indicator?
 
 			'fill not given attributes with random data
 			if celebrity.fictional then celebrity.SetRandomAttributes()
