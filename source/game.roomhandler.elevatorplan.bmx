@@ -8,6 +8,7 @@ Import "game.player.base.bmx"
 
 'Dies hier ist die Raumauswahl im Fahrstuhl.
 Type RoomHandler_ElevatorPlan extends TRoomHandler
+	Global _eventListeners:TLink[]
 	Global _instance:RoomHandler_ElevatorPlan
 
 
@@ -24,12 +25,6 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 		'=== REGISTER HANDLER ===
 		RegisterHandler()
-
-
-		'=== CREATE ELEMENTS ===
-		'create an intial plan (might be empty if no doors are loaded yet)
-		'so pay attention to run it once AFTER room creation/loading
-		ReCreatePlan()
 
 		'(re-)localize content
 		SetLanguage()
@@ -55,18 +50,8 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 	End Method
 	
 
-
-	Function ReCreatePlan()
-		GetRoomBoard().Initialize()
-		For local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
-			'create the sign in the roomplan (if not "invisible door")
-			If door.doorType >= 0 then new TRoomBoardSign.Init(door)
-		Next
-	End Function
-
-
 	Method onDrawRoom:int( triggerEvent:TEventBase )
-		GetRoomBoard().DrawSigns()
+		GetElevatorRoomBoard().DrawSigns()
 	End Method
 
 
@@ -75,13 +60,89 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 		'if possible, change the target to the clicked door
 		if mouseClicked
-			local sign:TRoomBoardSign = GetRoomBoard().GetSignByOriginalXY(MouseManager.GetPosition().GetIntX(),MouseManager.GetPosition().GetIntY())
+			local sign:TRoomBoardSign = GetElevatorRoomBoard().GetSignByOriginalXY(MouseManager.GetPosition().GetIntX(),MouseManager.GetPosition().GetIntY())
 			if sign and sign.door
 				TFigure(GetPlayerBase().GetFigure()).SendToDoor(sign.door)
 			endif
 			MouseManager.ResetKey(1)
 		endif
 
-		GetRoomBoard().UpdateSigns(False)
+		GetElevatorRoomBoard().UpdateSigns(False)
 	End Method
 End Type
+
+
+Type TElevatorRoomBoard extends TRoomBoardBase
+	Global _eventListeners:TLink[]
+	Global _instance:TElevatorRoomBoard
+
+
+	Function GetInstance:TElevatorRoomBoard()
+		if not _instance then _instance = new TElevatorRoomBoard
+		return _instance
+	End Function
+
+
+	Method AddBoardSigns:int()
+		'instead of adding new signs for each door, we copy the signs of the
+		'current room  plan
+		rem
+		For local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
+			'create the sign in the roomplan (if not "invisible door")
+			If door.doorType >= 0
+				local sign:TRoomBoardSign = new TRoomBoardSign.Init(door)
+				AddSign(sign)
+			endif
+		Next
+		endrem
+
+		For local sign:TRoomBoardSign = EachIn GetRoomBoard().list
+			AddSign( sign.Copy() )
+		Next
+	End Method
+
+
+	Method Initialize:int()
+		Reset()
+		AddBoardSigns()
+	
+		'=== EVENTS ===
+		'=== remove all registered event listeners
+		'disabled: no methods 
+		'EventManager.unregisterListenersByLinks(_eventListeners)
+		'_eventListeners = new TLink[0]
+
+		if not _eventListeners or _eventListeners.length = 0
+			'invalidate caches of signs - so they get redone
+			_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnLoad", onSavegameLoad) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction("Language.onSetLanguage", onSetLanguage) ]
+
+			'figure enters screen - reset the guilists, limit listening to the 4 rooms
+			Local screen:TScreen = ScreenCollection.GetScreen("screen_elevatorplan")
+			_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterElevatorPlanScreen, screen) ]
+		endif
+	End Method
+
+
+	Function onEnterElevatorPlanScreen:Int(triggerEvent:TEventBase)
+		print "REFRESHING ELEVATOR"
+		GetInstance().Reset()
+		GetInstance().AddBoardSigns()
+
+		print "REFRESHED ELEVATOR"
+	End Function
+
+
+	Function onSavegameLoad:Int(triggerEvent:TEventBase)
+		GetInstance().ResetImageCaches()
+	End Function
+
+	Function onSetLanguage:Int(triggerEvent:TEventBase)
+		GetInstance().ResetImageCaches()
+	End Function
+End Type
+
+
+Function GetElevatorRoomBoard:TElevatorRoomBoard()
+	return TElevatorRoomBoard.GetInstance()
+End Function

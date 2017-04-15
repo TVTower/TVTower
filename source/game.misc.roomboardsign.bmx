@@ -7,7 +7,7 @@ Import "game.player.base.bmx"
 Import "Dig/base.gfx.bitmapfont.bmx"
 
 
-Type TRoomBoard
+Type TRoomBoardBase
 	Field DragAndDropList:TList = CreateList()
 	Field List:TList = CreateList()
 	Field AdditionallyDragged:Int = 0
@@ -15,31 +15,16 @@ Type TRoomBoard
 	Field floorMax:int = 13
 	Field clickedSign:TRoomBoardSign = null
 	Field hoveredSign:TRoomBoardSign = null
-	Global _eventsRegistered:Int = FALSE
-	Global _instance:TRoomBoard
-
-
-	Function GetInstance:TRoomBoard()
-		if not _instance then _instance = new TRoomBoard
-		return _instance
-	End Function
-
-
-	Method New()
-		'===== REGISTER EVENTS =====
-		If Not _eventsRegistered
-			'handle savegame loading (remove old gui elements)
-			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
-			EventManager.registerListenerFunction("Language.onSetLanguage", onSetLanguage)
-			EventManager.registerListenerFunction("room.onBeginRental", onChangeRoomOwner)
-			EventManager.registerListenerFunction("room.onCancelRental", onChangeRoomOwner)
-
-			_eventsRegistered = TRUE
-		EndIf
-	End Method
 
 
 	Method Initialize:int()
+		Reset()
+
+		AddBoardSigns()
+	End Method
+
+
+	Method Reset:int()
 		List.Clear()
 		AdditionallyDragged = 0
 		DragAndDropList.Clear()
@@ -48,6 +33,17 @@ Type TRoomBoard
 		clickedSign = null
 	End Method
 
+
+	Method AddBoardSigns:int()
+		For local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
+			'create the sign in the roomplan (if not "invisible door")
+			If door.doorType >= 0
+				local sign:TRoomBoardSign = new TRoomBoardSign.Init(door)
+				AddSign(sign)
+			endif
+		Next
+	End Method
+	
 
 	Method AddSign:int(sign:TRoomBoardSign)
 		List.AddLast(sign)
@@ -62,28 +58,6 @@ Type TRoomBoard
 		DragAndDropList.AddLast(DragAndDrop)
  		DragAndDropList.Sort()
 	End Method
-
-
-
-	'as soon as a language changes, remove the cached images
-	'to get them regenerated
-	Function onSetLanguage:int(triggerEvent:TEventBase)
-		GetRoomBoard().ResetImageCaches()
-	End Function
-
-
-	'as soon as a savegame gets loaded, we remove the cached images
-	Function onSaveGameBeginLoad:int(triggerEvent:TEventBase)
-		GetRoomBoard().ResetImageCaches()
-	End Function
-
-
-	'recreate image cache if a room owner changes
-	Function onChangeRoomOwner:int(triggerEvent:TEventBase)
-		'reset caches of the affected signs
-		local roomOwner:int = triggerEvent.GetData().GetInt("owner")
-		GetRoomBoard().ResetImageCaches(roomOwner)
-	End Function
 
 
 	Method ResetImageCaches:int(owner:int = -2)
@@ -432,6 +406,57 @@ Type TRoomBoard
 	End Method
 End Type
 
+
+
+
+Type TRoomBoard extends TRoomBoardBase
+	Global _eventsRegistered:Int = FALSE
+	Global _instance:TRoomBoard
+
+
+	Function GetInstance:TRoomBoard()
+		if not _instance then _instance = new TRoomBoard
+		return _instance
+	End Function
+
+
+	Method New()
+		'===== REGISTER EVENTS =====
+		If Not _eventsRegistered
+			'handle savegame loading (remove old gui elements)
+			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
+			EventManager.registerListenerFunction("Language.onSetLanguage", onSetLanguage)
+			EventManager.registerListenerFunction("room.onBeginRental", onChangeRoomOwner)
+			EventManager.registerListenerFunction("room.onCancelRental", onChangeRoomOwner)
+
+			_eventsRegistered = TRUE
+		EndIf
+	End Method
+
+
+
+
+	'as soon as a language changes, remove the cached images
+	'to get them regenerated
+	Function onSetLanguage:int(triggerEvent:TEventBase)
+		GetInstance().ResetImageCaches()
+	End Function
+
+
+	'as soon as a savegame gets loaded, we remove the cached images
+	Function onSaveGameBeginLoad:int(triggerEvent:TEventBase)
+		GetInstance().ResetImageCaches()
+	End Function
+
+
+	'recreate image cache if a room owner changes
+	Function onChangeRoomOwner:int(triggerEvent:TEventBase)
+		'reset caches of the affected signs
+		local roomOwner:int = triggerEvent.GetData().GetInt("owner")
+		GetInstance().ResetImageCaches(roomOwner)
+	End Function
+End Type
+
 Function GetRoomBoard:TRoomBoard()
 	return TRoomBoard.GetInstance()
 End Function
@@ -477,9 +502,32 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 		StartPos = new TVec2D.Init(x, y)
 		rect = new TRectangle.Init(x, y, tmpImage.area.GetW(), tmpImage.area.GetH() - 1)
 
-		GetRoomBoard().AddSign(self)
-
 		Return self
+	End Method
+
+
+	Method CopyFrom:TRoomBoardSign(other:TRoomBoardSign)
+		if not other then return self
+
+		dragable = other.dragable
+		OrigPos = other.OrigPos.Copy()
+		StartPos = other.StartPos.Copy()
+		rect = other.rect.Copy()
+		
+		door = other.door
+		movedByPlayers = other.movedByPlayers
+		lastMoveByPlayerID = other.lastMoveByPlayerID
+		isHovered = other.isHovered
+		isClicked = other.isClicked
+		imageCache = other.imageCache
+		imageDraggedCache = other.imageDraggedCache
+
+		return self
+	End Method
+
+
+	Method Copy:TRoomBoardSign()
+		return new TRoomBoardSign.CopyFrom(self)
 	End Method
 
 

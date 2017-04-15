@@ -297,8 +297,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'refreshcreate the elevator roomboard
 		if startNewGame
-			TLogger.Log("Game.PrepareStart()", "Creating elevator plan", LOG_DEBUG)
-			RoomHandler_ElevatorPlan.ReCreatePlan()
+			TLogger.Log("Game.PrepareStart()", "Creating room board", LOG_DEBUG)
+			GetRoomBoard().Initialize()
+			GetElevatorRoomBoard().Initialize()
 		endif
 
 		'=== NEW GAMES ===

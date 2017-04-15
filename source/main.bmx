@@ -1070,7 +1070,7 @@ endrem
 						If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("credits"))
 						If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("news", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_R)
-							If KEYMANAGER.IsDown(KEY_LCONTROL)
+							If KEYMANAGER.IsDown(KEY_LCONTROL) or KEYMANAGER.IsDown(KEY_RCONTROL)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("roomboard"))
 							else
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("roomagency"))
