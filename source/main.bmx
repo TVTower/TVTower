@@ -387,23 +387,38 @@ Type TApp
 		local adjusted:int = False
 		if GetGraphicsManager().SetFullscreen(config.GetBool("fullscreen", False), False)
 			TLogger.Log("ApplySettings()", "SetFullscreen = "+config.GetBool("fullscreen", False), LOG_DEBUG)
+			'until GLSDL works as intended:
+			?not bmxng
 			adjusted = True
+			?
 		endif
 		if GetGraphicsManager().SetRenderer(config.GetInt("renderer", GetGraphicsManager().GetRenderer()))
 			TLogger.Log("ApplySettings()", "SetRenderer = "+config.GetInt("renderer", GetGraphicsManager().GetRenderer()), LOG_DEBUG)
+			'until GLSDL works as intended:
+			?not bmxng
 			adjusted = True
+			?
 		endif
 		if GetGraphicsManager().SetColordepth(config.GetInt("colordepth", 16))
 			TLogger.Log("ApplySettings()", "SetColordepth = "+config.GetInt("colordepth", -1), LOG_DEBUG)
+			'until GLSDL works as intended:
+			?not bmxng
 			adjusted = True
+			?
 		endif
 		if GetGraphicsManager().SetVSync(config.GetBool("vsync", True))
 			TLogger.Log("ApplySettings()", "SetVSync = "+config.GetBool("vsync", False), LOG_DEBUG)
+			'until GLSDL works as intended:
+			?not bmxng
 			adjusted = True
+			?
 		endif
 		if GetGraphicsManager().SetResolution(config.GetInt("screenW", 800), config.GetInt("screenH", 600))
 			TLogger.Log("ApplySettings()", "SetResolution = "+config.GetInt("screenW", 800)+"x"+config.GetInt("screenH", 600), LOG_DEBUG)
+			'until GLSDL works as intended:
+			?not bmxng
 			adjusted = True
+			?
 		endif
 		if adjusted and doInitGraphics then GetGraphicsManager().InitGraphics()
 
@@ -1925,6 +1940,7 @@ Type TGameState
 		GetElevator().Initialize()
 		GetBuilding().Initialize()
 		GetRoomBoard().Initialize()
+		GetElevatorRoomBoard().Initialize()
 		GetWorld().Initialize()
 		GetGame().Initialize()
 		're-register event listeners
@@ -3688,8 +3704,16 @@ Type TSettingsWindow
 		dropdownRenderer = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(inputWidth,-1), "", 128)
 		'Local rendererValues:String[] = ["0", "4"]
 		'Local rendererTexts:String[] = ["OpenGL", "Buffered OpenGL"]
-		Local rendererValues:String[] = ["0"]
-		Local rendererTexts:String[] = ["OpenGL"]
+		Local rendererValues:String[]
+		Local rendererTexts:String[]
+
+		?not bmxng
+			rendererValues = ["0"]
+			rendererTexts = ["OpenGL"]
+		?bmxng
+			rendererValues = ["5"]
+			rendererTexts = ["GL2SDL"]
+		?
 		
 		?Win32
 			'rendererValues :+ ["1","2","3"]
