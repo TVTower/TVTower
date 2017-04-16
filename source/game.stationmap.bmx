@@ -915,7 +915,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	Method CalculateStationCosts:Int() {_exposeToLua}
 		Local costs:Int = 0
 		For Local Station:TStation = EachIn stations
-			costs:+1000 * Ceil(station.price / 50000) ' price / 50 = cost
+			costs :+ station.GetRunningCosts()
 		Next
 		If costs = 0 Then Throw "CalculateStationCosts: Player without stations (or station costs) was found."
 		Return costs
@@ -995,6 +995,8 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 	'decrease of reach when bought (= increase in that state)
 	Field reachDecrease:Int = -1
 	Field price:Int	= -1
+	'daily costs for "running" the station
+	Field runningCosts:int = -1
 	Field owner:Int = 0
 	'time at which the station was bought
 	Field built:Double = 0
@@ -1155,6 +1157,31 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 		price = Max( 25000, Int(Ceil(getReach() / 10000)) * 25000 )
 
 		Return price
+	End Method
+
+
+	Method GetRunningCosts:int() {_exposeToLua}
+		if runningCosts = -1
+			rem
+				price         costs
+				  100000       2000        2^1.2 =   2.30 =   2
+				  250000       6000        5^1.2 =   6.90 =   6
+				  500000      15000       10^1.2 =  15.85 =  15
+				 1000000      36000       20^1.2 =  36.41 =  36
+				 2500000     109000       50^1.2 = 109.34 = 109
+				 5000000     251000      100^1.2 = 251.19 = 251
+				10000000     577000      200^1.2 = 577.08 = 577
+				25000000     732000      500^1.2 = 732.86 = 732
+			endrem
+			runningCosts = 1000 * Floor(Ceil(price / 50000.0)^1.2)
+
+			'costs:+1000 * Ceil(station.price / 50000.0) ' price / 50 = cost
+		endif
+
+		'the older a station gets, the more the running costs will be
+		'(more little repairs and so on)
+		'2% per day
+		return 1000*int( (runningCosts * (1 + 0.02*GetAge()))/1000 )
 	End Method
 
 
