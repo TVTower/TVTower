@@ -80,6 +80,8 @@ Type TProgrammeLicenceCollection
 		if skipDuplicates and licences.contains(licence) then return False
 
 		licences.AddLast(licence)
+
+		EventManager.triggerEvent( TEventSimple.Create("ProgrammeLicenceCollection.onAddLicence", null, self, licence) )
 		return True
 	End Method
 
@@ -728,6 +730,53 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
+	'returns whether the licence - or AT LEAST ONE sublicence is
+	'distributed via TV
+	Method IsTVDistribution:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 and GetData()
+			return data.IsTVDistribution()
+		else
+			local foundValue:int = False
+			For local licence:TProgrammeLicence = eachin subLicences
+				if not licence.IsTVDistribution() then return False
+				foundValue = True
+			Next
+			return foundValue
+		endif
+	end Method
+	
+
+	'returns whether the licence - or AT LEAST ONE sublicence is a
+	'custom production
+	Method IsCustomProduction:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 and GetData()
+			return data.IsCustomProduction()
+		else
+			local foundValue:int = False
+			For local licence:TProgrammeLicence = eachin subLicences
+				if not licence.IsCustomProduction() then return False
+				foundValue = True
+			Next
+			return foundValue
+		endif
+	End Method
+
+
+	'returns whether a single licences tv outcome or AT LEAST ONE
+	'sublicences contains unknown TV outcome (eg. was not aired yet)
+	Method ContainsUnknownTVOutcome:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 and GetData()
+			return data.GetOutcomeTV() = -1
+		else
+			For local licence:TProgrammeLicence = eachin subLicences
+				if licence.ContainsUnknownTVOutcome() then return True
+			Next
+
+			return False
+		endif
+	End Method
+
+
 	'override
 	Method GetBroadcastTimeSlotStart:int()
 		local result:int = Super.GetBroadcastTimeSlotStart()
@@ -868,7 +917,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			'broadcasted at least once
 			if GetData().GetTimesBroadcasted() <= 0 and GetData().IsCustomProduction()
 			'using this would also disable selling live programme
-			'if GetData().IsTVDistribution() and GetData().GetOutcomeTV() < 0
+			'if IsTVDistribution() and ContainsUnknownTVOutcome()
 				return False
 			endif
 
@@ -1410,6 +1459,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if GetSubLicenceCount() = 0
 			if GetData() then return GetData().GetOutcomeTV()
 			return 0.0
+		endif
+
+		'return a manual assigned value (instead of calculated by sublicences)
+		if GetData() and data.GetOutcomeTV() >= 0
+			return data.GetOutcomeTV()
 		endif
 
 		'licence for a package or series
@@ -1954,8 +2008,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'price
 		local showPrice:int = not data.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.HIDE_PRICE)
-		'- hide for custom productions until aired
-		if showPrice and data.IsTVDistribution() and data.GetOutcomeTV() < 0 and data.IsCustomProduction() then showPrice = False
+		'- hide for custom productions until aired (series: if all episoded aired)
+		if showPrice and IsTVDistribution() and ContainsUnknownTVOutcome() and IsCustomProduction() then showPrice = False
 		'- hide unowned and not tradeable ones
 		'-> disabled because of "Opener show"
 		'if showPrice not IsOwned() and not IsTradeable() then showPrice = False
