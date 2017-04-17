@@ -4750,7 +4750,7 @@ Type GameEvents
 				toast.SetCaption( caption )
 				toast.SetText( text )
 
-				toast.GetData().AddNumber("playerID", GetPlayerBase().playerID)
+				toast.GetData().AddNumber("playerID", i)
 
 
 				GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
