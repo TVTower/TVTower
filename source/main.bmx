@@ -6208,6 +6208,10 @@ Function StartApp:Int()
 		TLogger.SetPrintMode(0)
 	EndIf
 
+	if GameRules.devConfig.GetInt("DEV_MAXADCONTRACTPRICEPERSPOT", 0) > 0
+		GameRules.maxAdContractPricePerSpot = GameRules.devConfig.GetInt("DEV_MAXADCONTRACTPRICEPERSPOT")
+	endif
+
 	TFunctions.roundToBeautifulEnabled = GameRules.devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", True)
 	If TFunctions.roundToBeautifulEnabled
 		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)

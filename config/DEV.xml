@@ -80,6 +80,11 @@
 			<!-- TRUE/1   FALSE/0 -->
 			<DEV_ROUND_TO_BEAUTIFUL_VALUES value="TRUE" />
 
+			<!-- limit of profit/penalty for a single spot of an advertisement -->
+			<!--
+			<DEV_MAXADCONTRACTPRICEPERSPOT value="1000000" />
+			-->
+
 			<!-- example:
 				"LOAD"-values:
 				"*" -> load all
