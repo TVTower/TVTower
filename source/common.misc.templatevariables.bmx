@@ -102,8 +102,11 @@ Type TTemplateVariables
 		'check gameinformation
 		if result and result.Get().Find("%") >= 0
 			local gameinformationResult:string = string(GetGameInformation(result.Get().Replace("%", ""), ""))
-			result = new TLocalizedString
-			result.Set(gameinformationResult)
+			'only replace if there was a valid gameinformation returned
+			if gameinformationResult <> "UNKNOWN_INFORMATION"
+				result = new TLocalizedString
+				result.Set(gameinformationResult)
+			endif
 		endif
 
 
