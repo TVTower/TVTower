@@ -624,7 +624,7 @@ Type TSprite
 			DrawResized(new TRectangle.Init(x, y, width, height), null, frame)
 		else
 			Local middleW:int = area.GetW() - ninePatch_borderDimensionScale*(ninePatch_borderDimension.GetLeft()+ninePatch_borderDimension.GetRight())
-			Local middleH:int = area.GetW() - ninePatch_borderDimensionScale*(ninePatch_borderDimension.GetLeft()+ninePatch_borderDimension.GetRight())
+			Local middleH:int = area.GetH() - ninePatch_borderDimensionScale*(ninePatch_borderDimension.GetTop()+ninePatch_borderDimension.GetBottom())
 
 			'minimal dimension has to be same or bigger than all 4 borders + 0.1* the stretch portion
 			'if borders are disabled, ignore them in minWidth-calculation
