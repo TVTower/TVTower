@@ -399,7 +399,7 @@ Type TDatabaseLoader
 			'=== DETAILS ===
 			local nodeDetails:TxmlNode = xml.FindChild(node, "details")
 			data = new TData
-			'contains custom fictional overriding the base one
+			'contains custom "fictional" overriding the base one
 			xml.LoadValuesToData(nodeDetails, data, [..
 				"gender", "birthday", "deathday", "country", "fictional", ..
 				"job" ..
