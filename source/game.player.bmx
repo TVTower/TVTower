@@ -176,7 +176,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 			If player.isLocalHuman() then GetBuilding().CreateRoomBlockedTooltip(door, room)
 		elseif reason = "locked"
 			'inform player AI
-			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_NOTALLOWED)
+			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_NOKEY)
 			'tooltip only for active user
 			If player.isLocalHuman() then GetBuilding().CreateRoomLockedTooltip(door, room)
 		endif

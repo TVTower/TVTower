@@ -504,6 +504,12 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetBlockedTime:Long()
+		if not IsBlocked() then return -1
+		return Max(-1, blockedUntil - GetWorldTime().GetTimeGone())
+	End Method
+	
+
 	Method SetUsableAsStudio:int(bool:int = True)
 		SetFlag(TVTRoomFlag.USABLE_AS_STUDIO, bool)
 	End Method

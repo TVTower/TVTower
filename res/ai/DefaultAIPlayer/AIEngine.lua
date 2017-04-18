@@ -132,7 +132,7 @@ function AIPlayer:Tick()
 			MY.SetAIStringData("tasklist_name" .. taskNumber, v:typename())
 			MY.SetAIStringData("tasklist_priority" .. taskNumber, math.round(v.CurrentPriority,1))
 			MY.SetAIStringData("tasklist_basepriority" .. taskNumber, math.round(v.BasePriority,1))
-			MY.SetAIStringData("tasklist_situationpriority" .. taskNumber, math.round(v.SituationPriority,1))
+			MY.SetAIStringData("tasklist_situationpriority" .. taskNumber, math.round(v:getSituationPriority(),1))
 			MY.SetAIStringData("tasklist_requisitionpriority" .. taskNumber, math.round(player:GetRequisitionPriority(v.Id),1))
 		end
 		MY.SetAIStringData("tasklist_count", taskNumber)
@@ -425,6 +425,20 @@ function AITask:RecalcPriority()
 
 	self.CurrentPriority = math.max(timePriority, ticksPriority)
 
+	-- if the target room is blocked then reduce priority
+	-- reduction of up to 80% is possible
+	--   0 minutes or less being  0%
+	--  10 minutes or less being 20%
+	--  40 minutes or more being 80%
+	if self.TargetRoom > 0 then
+		local blockedMinutes = TVT.GetRoomBlockedTime(self.TargetRoom) / 60
+		--debugMsg("PRIO: Target room ".. self.TargetRoom ..". blockedMinutes " .. blockedMinutes))
+		if blockedMinutes >= 1 then
+			--debugMsg("PRIO: Target room is blocked too long, reducing priority. " .. math.max(0.2, 1.0 - 0.02*blockedMinutes))
+			self.CurrentPriority = math.max(0.2, 1.0 - 0.02*blockedMinutes)
+		end
+	end
+
 	--debugMsg("Task: " .. self:typename() .. " - BasePriority: " .. self.BasePriority .." - SituationPriority: " .. self:getSituationPriority() .. " - Ran1 : " .. Ran1 .. "  RequisitionPriority: " .. requisitionPriority)
 	--debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. "  (time: " .. timePriority .." | ticks: " .. ticksPriority ..") - TimeDiff:" .. TimeDiff .. "  TicksDiff:" .. TicksDiff.." (tF: " ..timeFactor .." | cP: " .. calcPriority .. ")")
 end
@@ -468,7 +482,7 @@ end
 
 --with priority modification
 function AITask:SetCancel()
-	debugMsg("<<< Task canceled!")
+	debugMsg("<<< Task cancelled!")
 	self.Status = TASK_STATUS_CANCEL
 	self.SituationPriority = self.SituationPriority / 2
 
@@ -705,7 +719,22 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 		else
 			debugMsg("BeginEnterRoom: Room occupied! Won't wait this time.")
 			self.Status = JOB_STATUS_CANCEL
+			self.Task:SetCancel()
 		end
+	elseif(resultId == TVT.RESULT_NOTALLOWED) then
+		local blockedTime = TVT.GetRoomBlockedTime(roomId)
+		--if blocked shorter than 10 minutes, we will wait
+		if blockedTime == -1 or blockedTime <= 60*10 then
+			debugMsg("BeginEnterRoom: Room blocked short enough! ... waiting a bit." .. blockedTime)
+		else
+			debugMsg("BeginEnterRoom: Room blocked! Waiting time too long: " .. math.floor(blockedTime/60).. " minute(s).")
+			self.Status = JOB_STATUS_CANCEL
+			self.Task:SetCancel()
+		end
+	elseif(resultId == TVT.RESULT_NOKEY) then
+		debugMsg("BeginEnterRoom: Room locked! Need a key to enter. Cancelled task.")
+		self.Status = JOB_STATUS_CANCEL
+		self.Task:SetCancel()
 	elseif(resultId == TVT.RESULT_OK) then
 		--debugMsg("BeginEnterRoom: Entering allowed. roomId: " .. roomId)
 	end
@@ -770,6 +799,20 @@ function AIJobGoToRoom:Tick()
 		end
 	-- while walking / going by elevator
 	elseif (self.Status ~= JOB_STATUS_DONE) then
+		-- check if room is blocked - if so, abort task
+		if (self.TargetRoom >= 0) then
+			local blockedTime = TVT.GetRoomBlockedTime(self.TargetRoom)
+			if blockedTime >= 0 then
+				if blockedTime <=  60*10 then
+					debugMsg("Target room is blocked but soon reopening.")
+				else
+					debugMsg("Target room is blocked ... cancelling task.")
+					self.Status = JOB_STATUS_CANCEL
+					self.Task:SetCancel()
+				end
+			end
+		end
+
 		self:ReDoCheck(10, 10)
 	end
 end

@@ -732,6 +732,14 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 
 	'=== GENERIC INFORMATION RETRIEVERS ===
 	'player could eg. see in interface / tooltips
+
+	Method GetRoomBlockedTime:Long(roomID:int)
+		local room:TRoomBase = GetRoomBase(roomID)
+		if not room then return -1
+		return room.GetBlockedTime()
+	End Method
+
+
 	Method GetCurrentProgramme:TBroadcastMaterial()
 		return GetPlayerProgrammePlan(self.ME).GetProgramme()
 	End Method
