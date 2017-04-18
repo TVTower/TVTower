@@ -350,8 +350,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	End Method
 
 
-	Method SellScriptToPlayer:int(script:TScript, playerID:int)
-		if script.owner = playerID then return FALSE
+	Method SellScriptToPlayer:int(script:TScript, playerID:int, skipOwnerCheck:int = False)
+		if script.owner = playerID and not skipOwnerCheck then return FALSE
 
 		if not GetPlayerBaseCollection().IsPlayer(playerID) then return FALSE
 

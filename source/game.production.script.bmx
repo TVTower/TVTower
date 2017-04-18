@@ -76,9 +76,14 @@ Type TScriptCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GenerateFromTemplate:TScript(templateGUID:string)
-		local template:TScriptTemplate = GetScriptTemplateCollection().GetByGUID(templateGUID)
-		if not template then return Null
+	Method GenerateFromTemplate:TScript(templateOrTemplateGUID:object)
+		local template:TScriptTemplate
+		if TScriptTemplate(templateOrTemplateGUID)
+			template = TScriptTemplate(templateOrTemplateGUID)
+		else
+			template = GetScriptTemplateCollection().GetByGUID( string(templateOrTemplateGUID) )
+			if not template then return Null
+		endif
 		
 		local script:TScript = TScript.CreateFromTemplate(template)
 		script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
@@ -463,6 +468,13 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			local template:TScriptTemplate = GetScriptTemplateCollection().GetByGUID(basedOnScriptTemplateGUID)
 			if template then template.FinishProduction(programmeLicenceGUID)
 		endif
+	End Method
+
+
+	Method GetScriptTemplate:TScriptTemplate()
+		if not basedOnScriptTemplateGUID then return Null
+
+		return GetScriptTemplateCollection().GetByGUID(basedOnScriptTemplateGUID)
 	End Method
 
 

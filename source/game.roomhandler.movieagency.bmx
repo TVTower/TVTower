@@ -495,8 +495,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	End Method
 
 
-	Method SellProgrammeLicenceToPlayer:int(licence:TProgrammeLicence, playerID:int)
-		if licence.owner = playerID then return FALSE
+	Method SellProgrammeLicenceToPlayer:int(licence:TProgrammeLicence, playerID:int, skipOwnerCheck:int=False)
+		if licence.owner = playerID and not skipOwnerCheck then return FALSE
 
 		if not GetPlayerBaseCollection().IsPlayer(playerID) then return FALSE
 

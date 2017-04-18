@@ -29,6 +29,11 @@ Type TScriptTemplateCollection Extends TGameObjectCollection
 	Method GetByGUID:TScriptTemplate(GUID:String)
 		Return TScriptTemplate( Super.GetByGUID(GUID) )
 	End Method
+	
+
+	Method SearchByPartialGUID:TScriptTemplate(GUID:String)
+		Return TScriptTemplate( Super.SearchByPartialGUID(GUID) )
+	End Method
 
 	
 	Method GetRandom:TScriptTemplate()

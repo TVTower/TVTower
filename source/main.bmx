@@ -4244,8 +4244,9 @@ Type GameEvents
 			Case "givelicence"			
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
 
-				local licenceGUID:string = paramS
-				
+				Local licenceGUID:String, hasToPay:String
+				FillCommandPayload(paramS, licenceGUID, hasToPay)
+
 				if licenceGUID.trim() = ""
 					GetGame().SendSystemMessage("Wrong syntax (/dev help)!")
 					return False
@@ -4270,11 +4271,16 @@ Type GameEvents
 
 				'hand the licence to the player
 				if licence.owner <> player.playerID
-					licence.SetOwner(0)
-					RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(licence, player.playerID)
-					print "added movie: "+licence.GetTitle()+" ["+licence.GetGUID()+"]"
+					if hasToPay = "0" or hasToPay.ToLower() = "false"
+						licence.SetOwner(player.playerID)
+					else
+						licence.SetOwner(0)
+					endif
+					'true = skip owner check (needed to be able to skip payment
+					RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(licence, player.playerID, True)
+					GetGame().SendSystemMessage("added movie: "+licence.GetTitle()+" ["+licence.GetGUID()+"]")
 				else
-					print "already had movie: "+licence.GetTitle()+" ["+licence.GetGUID()+"]"
+					GetGame().SendSystemMessage("already had movie: "+licence.GetTitle()+" ["+licence.GetGUID()+"]")
 				endif
 				
 			Case "givead"			
@@ -4297,7 +4303,36 @@ Type GameEvents
 				'forcefully add to the collection (skips requirements checks)
 				local adContract:TAdContract = New TAdContract.Create(adContractBase)
 				GetPlayerProgrammeCollection(player.playerID).AddAdContract(adContract, True)
-				print "added adcontract: "+adContract.GetTitle()+" ["+adContract.GetGUID()+"]"
+				GetGame().SendSystemMessage("added adcontract: "+adContract.GetTitle()+" ["+adContract.GetGUID()+"]")
+
+			Case "givescript"			
+				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
+
+				Local scriptGUID:String, hasToPay:String
+				FillCommandPayload(paramS, scriptGUID, hasToPay)
+				
+				if scriptGUID.trim() = ""
+					GetGame().SendSystemMessage("Wrong syntax (/dev help)!")
+					return False
+				endif
+
+				local scriptTemplate:TScriptTemplate = GetScriptTemplateCollection().GetByGUID(scriptGUID)
+				if not scriptTemplate then scriptTemplate = GetScriptTemplateCollection().SearchByPartialGUID(scriptGUID)
+				if not scriptTemplate
+					GetGame().SendSystemMessage("No script template with GUID ~q"+scriptGUID+"~q found.")
+					return False
+				endif
+
+				'hand the script to the player
+				local script:TScript = GetScriptCollection().GenerateFromTemplate(scriptTemplate)
+				if hasToPay = "0" or hasToPay.ToLower() = "false"
+					script.SetOwner(player.playerID)
+				else
+					script.SetOwner(0)
+				endif
+				'true = skip owner check (needed to be able to skip payment
+				RoomHandler_ScriptAgency.GetInstance().SellScriptToPlayer(script, player.playerID, True)
+				GetGame().SendSystemMessage("added script: "+script.GetTitle()+" ["+script.GetScriptTemplate().GetGUID()+"]")
 
 			Case "help"
 				SendHelp()
