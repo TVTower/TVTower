@@ -2330,6 +2330,7 @@ Type TSaveGame Extends TGameState
 		local res:TData = TData(p.DeserializeObject(content))
 		if not res then res = new TData
 		res.Add("fileURI", fileURI)
+		res.Add("fileName", GetSavegameName(fileURI) )
 		res.AddNumber("fileTime", FileTime(fileURI))
 
 		return res
@@ -2590,7 +2591,20 @@ endrem
 
 
 	Function GetSavegameName:string(fileURI:string)
-		return stripDir(StripExt(fileURI))
+		local p:string = GetSavegamePath()
+		local r:string
+		if p.length > 0 and fileURI.Find( p ) = 0
+			r = StripExt( fileURI[ p.length .. ] )
+		else
+			r = StripDir(StripExt(fileURI))
+		endif
+
+		if r.length = 0 then return ""
+		if chr(r[0]) = "/" or chr(r[0]) = "\"
+			r = r[1 ..]
+		endif
+
+		return r
 	End Function
 
 
@@ -2886,12 +2900,12 @@ Type TScreen_MainMenu Extends TGameScreen
 		'remove a previously created one
 		if loadGameMenuWindow then loadGameMenuWindow.Remove()
 		
-		loadGameMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
+		loadGameMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(500,150), "SYSTEM")
 		loadGameMenuWindow.SetZIndex(99000)
 		loadGameMenuWindow.SetCenterLimit(new TRectangle.setTLBR(30,0,0,0))
 
 		'append menu after creation of screen area, so it recenters properly
-		local loadMenu:TGUIModalLoadSavegameMenu = new TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(450,350), "SYSTEM")
+		local loadMenu:TGUIModalLoadSavegameMenu = new TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,350), "SYSTEM")
 		loadMenu._defaultValueColor = TColor.clBlack.copy()
 		loadMenu.defaultCaptionColor = TColor.clWhite.copy()
 

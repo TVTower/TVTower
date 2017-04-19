@@ -119,7 +119,7 @@ endrem
 
 			case buttons[1]
 				if not chainLoadMenu
-					chainLoadMenu = new TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(450,350), "SYSTEM")
+					chainLoadMenu = new TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,350), "SYSTEM")
 					chainLoadMenu._defaultValueColor = TColor.clBlack.copy()
 					chainLoadMenu.defaultCaptionColor = TColor.clWhite.copy()
 					'set self as previous one
@@ -130,7 +130,7 @@ endrem
 
 			case buttons[2]
 				if not chainSaveMenu
-					chainSaveMenu = new TGUIModalSaveSavegameMenu.Create(New TVec2D, New TVec2D.Init(450,350), "SYSTEM")
+					chainSaveMenu = new TGUIModalSaveSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,350), "SYSTEM")
 					chainSaveMenu._defaultValueColor = TColor.clBlack.copy()
 					chainSaveMenu.defaultCaptionColor = TColor.clWhite.copy()
 					'set self as previous one
@@ -702,7 +702,7 @@ Type TGUISavegameListItem extends TGUISelectListItem
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
 
-		Local maxWidth:Int = 150
+		Local maxWidth:Int = 170
 		If parentPanel Then maxWidth = parentPanel.getContentScreenWidth()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
@@ -727,20 +727,20 @@ Type TGUISavegameListItem extends TGUISelectListItem
 	Method DrawContent()
 		local time:Double = GetFileInformation().GetDouble("game_timegone", 0)
 		local gameTime:string = GetWorldTime().getFormattedTime(time)+" "+getLocale("DAY")+" "+GetWorldTime().getDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
-		local col:TColor = TColor.Create(120,125,160)
-		local playerCol:TColor = TColor.Create(80, 85, 120)
+		local col:TColor = TColor.Create(100,105,140)
+		local playerCol:TColor = TColor.Create(70, 75, 110)
 		local headCol:TColor = TColor.clWhite 'TColor.Create(150,90,0)
 		local width:int = GetContentScreenWidth()
 
 		local leftX:int = GetContentScreenX()
 
-		GetBitmapFont("",-1, BOLDFONT).DrawBlock(StripDir(GetFileInformation().GetString("fileURI")), leftX, GetScreenY() + self.paddingTop, 0.55*width, 15, null, headCol, TBitmapFont.STYLE_SHADOW, 1, 0.5, TRUE)
-		GetFont().DrawBlock("|b|"+GetLocale("PLAYER")+":|/b| " + GetFileInformation().GetString("player_name", "unknown player"), leftX, GetScreenY() + 15 + self.paddingTop, 0.25 * width, 15, null, playerCol, TBitmapFont.STYLE_SHADOW, 1, 0.2, TRUE)
-		GetFont().DrawBlock("|b|"+GetLocale("GAMETIME")+":|/b| "+gameTime, leftX + 0.55 * width, GetScreenY() + self.paddingTop, 0.45 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.5, TRUE)
-		GetFont().DrawBlock("|b|"+GetLocale("MONEY")+":|/b| "+GetFileInformation().GetInt("player_money", 0), leftX + 0.55 * width, GetScreenY() + 15 + self.paddingTop, 0.45 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.5, TRUE)
+		GetBitmapFont("",-1, BOLDFONT).DrawBlock(GetFileInformation().GetString("fileName"), leftX, GetScreenY() + self.paddingTop, 0.60*width, 15, null, headCol, TBitmapFont.STYLE_SHADOW, 1, 0.6, TRUE)
+		GetFont().DrawBlock("|b|"+GetLocale("PLAYER")+":|/b| " + GetFileInformation().GetString("player_name", "unknown player"), leftX, GetScreenY() + 15 + self.paddingTop, 0.25 * width, 15, null, playerCol, TBitmapFont.STYLE_SHADOW, 1, 0.25, TRUE)
+		GetFont().DrawBlock("|b|"+GetLocale("GAMETIME")+":|/b| "+gameTime, leftX + 0.60 * width, GetScreenY() + self.paddingTop, 0.40 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.6, TRUE)
+		GetFont().DrawBlock("|b|"+GetLocale("MONEY")+":|/b| "+MathHelper.DottedValue(GetFileInformation().GetInt("player_money", 0)), leftX + 0.60 * width, GetScreenY() + 15 + self.paddingTop, 0.40 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.6, TRUE)
 
 		local oldAlpha:Float = GetAlpha()
-		SetAlpha oldAlpha * 0.25
+		SetAlpha oldAlpha * 0.30
 		DrawRect(leftX, GetScreenY() + GetScreenHeight() - 1, width, 1)
 		SetAlpha oldAlpha
 	End Method
