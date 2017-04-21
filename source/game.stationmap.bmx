@@ -917,7 +917,6 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		For Local Station:TStation = EachIn stations
 			costs :+ station.GetRunningCosts()
 		Next
-		If costs = 0 Then Throw "CalculateStationCosts: Player without stations (or station costs) was found."
 		Return costs
 	End Method
 
@@ -1161,20 +1160,22 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 		'== ADD STATIC RUNNING COSTS ==
 		if runningCosts = -1
 			rem
-			                  daily costs
-				   price    static   dynamic
-				  100000      2000      2000        2^1.2 =   2.30 =   2
-				  250000      5000      6000        5^1.2 =   6.90 =   6
-				  500000     10000     15000       10^1.2 =  15.85 =  15
-				 1000000     20000     36000       20^1.2 =  36.41 =  36
-				 2500000     50000    109000       50^1.2 = 109.34 = 109
-				 5000000    100000    251000      100^1.2 = 251.19 = 251
-				10000000    200000    577000      200^1.2 = 577.08 = 577
-				25000000    500000    732000      500^1.2 = 732.86 = 732
+			                       daily costs
+				   price       old    static   dynamic
+				  100000      2000      3000      2000        2^1.2 =   2.30 =   2
+				  250000      5000      7500      6000        5^1.2 =   6.90 =   6
+				  500000     10000     15000     15000       10^1.2 =  15.85 =  15
+				 1000000     20000     30000     36000       20^1.2 =  36.41 =  36
+				 2500000     50000     75000    109000       50^1.2 = 109.34 = 109
+				 5000000    100000    150000    251000      100^1.2 = 251.19 = 251
+				10000000    200000    300000    577000      200^1.2 = 577.08 = 577
+				25000000    500000    750000   1732000      500^1.2 =1732.86 =1732
 			endrem
-			runningCosts = 1000 * Floor(Ceil(price / 50000.0)^1.2)
+			'dynamic
+			'runningCosts = 1000 * Floor(Ceil(price / 50000.0)^1.2)
 
-			'costs:+1000 * Ceil(station.price / 50000.0) ' price / 50 = cost
+			'static
+			runningCosts = 1500 * ceil(price / 50000.0)
 		endif
 		result :+ runningCosts
 
