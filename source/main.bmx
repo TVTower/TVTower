@@ -6257,9 +6257,10 @@ Function StartApp:Int()
 		TLogger.SetPrintMode(0)
 	EndIf
 
-	if GameRules.devConfig.GetInt("DEV_MAXADCONTRACTPRICEPERSPOT", 0) > 0
-		GameRules.maxAdContractPricePerSpot = GameRules.devConfig.GetInt("DEV_MAXADCONTRACTPRICEPERSPOT")
-	endif
+
+	'modify game rules by DEV.xml-Values
+	GameRules.AssignFromData( Gamerules.devConfig )
+		
 
 	TFunctions.roundToBeautifulEnabled = GameRules.devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", True)
 	If TFunctions.roundToBeautifulEnabled

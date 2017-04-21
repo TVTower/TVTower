@@ -41,7 +41,7 @@
 			       0 - disable any limit
 			       x - allow up to x contract instances 
 			     Default: 1
-				<DEV_ADAGENCY_LIMIT_CONTRACT_INSTANCES value="1" />
+				<DEV_ADCONTRACT_INSTANCES_MAX value="1" />
 			-->
 
 			<!-- (base) construction time of a new bought station
@@ -80,10 +80,21 @@
 			<!-- TRUE/1   FALSE/0 -->
 			<DEV_ROUND_TO_BEAUTIFUL_VALUES value="TRUE" />
 
+			<!-- define basic sort for adcontracts -->
+			<!-- <DEV_ADAGENCY_SORT_CONTRACTS_BY value="minaudience" /> -->
+
 			<!-- limit of profit/penalty for a single spot of an advertisement -->
-			<!--
-			<DEV_MAXADCONTRACTPRICEPERSPOT value="1000000" />
-			-->
+			<!-- <DEV_ADCONTRACT_PRICE_PER_SPOT_MAX value="1000000" /> -->
+
+			<!-- enable/disable station map daily running cost increase -->
+			<!-- <DEV_STATION_INCREASE_DAILY_MAINTENANCE_COSTS value="FALSE" /> -->
+
+			<!-- percentage of fixed running costs added each day -->
+			<!-- <DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE value="0.02" /> -->
+
+			<!-- maximum total percentage of fixed running costs added -->
+			<!-- <DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE_TOTAL_MAX value="0.30" /> -->
+
 
 			<!-- example:
 				"LOAD"-values:
@@ -112,9 +123,7 @@
 
 
 			<!-- use another AI script for player #2 -->
-			<!--
-			<PLAYERAISCRIPT2 value="res/ai/Sample/Sample.lua" />
-			-->
+			<!-- <PLAYERAISCRIPT2 value="res/ai/Sample/Sample.lua" /> -->
 		</data>
 	</resources>
 </tvt>

@@ -29,15 +29,6 @@ Type TGameRules {_exposeToLua}
 	'(per script - for series and shows ...)
 	Field maxProductionConceptsPerScript:int = 8
 
-
-	'how many contracts can a player collection store
-	Field adContractsPerPlayerMax:int = 10
-	'how many contracts of the same contractBase can exist at the
-	'same time? (0 disables any limit)
-	Field adContractInstancesMax:int = 1
-	'maximum price (profit/penalty) for a single adspot
-	Field adContractPricePerSpotMax:int = 1000000
-
 	'speed of the world (1.0 means "normal", 2.0 = double as fast)
 	'speed is used for figures, elevator, ...
 	Field worldSpeed:float = 1.0
@@ -73,6 +64,16 @@ Type TGameRules {_exposeToLua}
 	Field dailyBossVisit:int = True
 
 
+	'=== ADCONTRACTS ===
+	'how many contracts can a player collection store
+	Field adContractsPerPlayerMax:int = 10
+	'how many contracts of the same contractBase can exist at the
+	'same time? (0 disables any limit)
+	Field adContractInstancesMax:int = 1
+	'maximum price (profit/penalty) for a single adspot
+	Field adContractPricePerSpotMax:int = 1000000
+
+
 	'=== ADAGENCY ===
 	Field adagencySortContractyBy:string = "minaudience"
 	
@@ -81,8 +82,7 @@ Type TGameRules {_exposeToLua}
 	'time a station needs to get constructed
 	'value in hours
 	'set to default (0) on start (game.game.bmx prepareNewGame())
-	Field stationConstructionTime:int = -1
-	Field stationConstructionTimeDefault:int = 0
+	Field stationConstructionTime:int = 0
 	'increase costs by X percent each day after construction of a station? 
 	Field stationIncreaseDailyMaintenanceCosts:int = False
 	Field stationDailyMaintenanceCostsPercentage:Float = 0.02
@@ -100,6 +100,8 @@ Type TGameRules {_exposeToLua}
 		elevatorSpeed = 160
 		elevatorWaitAtFloorTime = 1500
 
+		stationConstructionTime = 0
+		
 		adagencySortContractyBy = "minaudience"
 
 		adContractInstancesMax = 1
@@ -138,7 +140,7 @@ Type TGameRules {_exposeToLua}
 		stationConstructionTime = data.GetInt("DEV_STATION_CONSTRUCTION_TIME", 0)		
 		stationIncreaseDailyMaintenanceCosts = data.GetBool("DEV_STATION_INCREASE_DAILY_MAINTENANCE_COSTS", stationIncreaseDailyMaintenanceCosts)
 		stationDailyMaintenanceCostsPercentage = data.GetFloat("DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE", stationDailyMaintenanceCostsPercentage)
-		stationDailyMaintenanceCostsPercentageTotalMax = data.GetFloat("DEV_STATION_DAILY_MAINTENANCE_COSTSPERCENTAGE_TOTAL_MAX", stationDailyMaintenanceCostsPercentageTotalMax)
+		stationDailyMaintenanceCostsPercentageTotalMax = data.GetFloat("DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE_TOTAL_MAX", stationDailyMaintenanceCostsPercentageTotalMax)
 
 		return True
 	End Method
