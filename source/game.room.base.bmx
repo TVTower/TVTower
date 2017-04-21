@@ -487,10 +487,17 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method SetUnblocked:int()
+		'disabled: it is already freed on "block start"
+		'          it also does not inform the roomagency as it should
+		rem
 		'when it was got bombed, free the room now
 		if blockedState & BLOCKEDSTATE_BOMB > 0
-			if IsUsableAsStudio() then SetRented(False)
+			if IsUsableAsStudio()
+				SetRented(False)
+				SetOwner(0)
+			endif
 		EndIf
+		endrem
 				
 		blockedState = BLOCKEDSTATE_NONE
 	End Method
