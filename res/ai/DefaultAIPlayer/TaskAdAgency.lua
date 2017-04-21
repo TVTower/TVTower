@@ -68,7 +68,7 @@ function TaskAdAgency:getStrategicPriority()
 
 	-- we cannot sign new contracts at the ad agency - make the task
 	-- not important for now
-	if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.maxContracts then
+	if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.adContractsPerPlayerMax then
 		return 0.0
 	end
 	return 1.0
@@ -307,7 +307,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 	
 	for key, adContract in pairs(self.AdAgencyTask.SpotsInAgency) do
 		-- do not try to get more contracts than allowed
-		if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.maxContracts then break end
+		if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.adContractsPerPlayerMax then break end
 
 		local contractDoable = true
 		-- skip limited programme genres
@@ -417,7 +417,7 @@ function SignContracts:Tick()
 	--if (openSpots > 0) then
 	if (openSpots < 8) then
 		for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
-			if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.maxContracts then break end
+			if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.adContractsPerPlayerMax then break end
 			if (openSpots > 0) then
 				openSpots = openSpots - value.GetSpotCount()
 				TVT.addToLog("Signing a \"good\" contract: " .. value.GetTitle() .. " (" .. value.GetID() .. "). MinAudience: " .. value.GetMinAudience())

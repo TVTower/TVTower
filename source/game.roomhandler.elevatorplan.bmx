@@ -125,11 +125,8 @@ Type TElevatorRoomBoard extends TRoomBoardBase
 
 
 	Function onEnterElevatorPlanScreen:Int(triggerEvent:TEventBase)
-		print "REFRESHING ELEVATOR"
 		GetInstance().Reset()
 		GetInstance().AddBoardSigns()
-
-		print "REFRESHED ELEVATOR"
 	End Function
 
 

@@ -20,11 +20,7 @@ Type TGameRules {_exposeToLua}
 	Field maxProgrammeLicencesInSuitcase:Int = 12
 	'how many movies can a player have per filter ("genre")
 	Field maxProgrammeLicencesPerFilter:Int = 60
-	'how many contracts can a player collection store
-	Field maxContracts:int = 10
-	'how many contracts of the same contractBase can exist at the
-	'same time? (0 disables any limit)
-	Field maxContractInstances:int = 1
+
 	'how many scripts can be carried in suitcase
 	Field maxScriptsInSuitcase:int = 10
 	'is the amount of user owned scripts limited?
@@ -32,6 +28,16 @@ Type TGameRules {_exposeToLua}
 	'how many production concepts could be "planned" at the same time
 	'(per script - for series and shows ...)
 	Field maxProductionConceptsPerScript:int = 8
+
+
+	'how many contracts can a player collection store
+	Field adContractsPerPlayerMax:int = 10
+	'how many contracts of the same contractBase can exist at the
+	'same time? (0 disables any limit)
+	Field adContractInstancesMax:int = 1
+	'maximum price (profit/penalty) for a single adspot
+	Field adContractPricePerSpotMax:int = 1000000
+
 	'speed of the world (1.0 means "normal", 2.0 = double as fast)
 	'speed is used for figures, elevator, ...
 	Field worldSpeed:float = 1.0
@@ -40,10 +46,11 @@ Type TGameRules {_exposeToLua}
 
 	Field globalEntityWorldSpeedFactor:Float = 1.0
 
-	'pixelsp er "second"
+	'pixels per "second"
 	Field elevatorSpeed:int = 160
 	'how long in MS to wait until closing the door
 	Field elevatorWaitAtFloorTime:int = 1500
+	Field elevatorAnimSpeed:int = 60
 
 	'how many time an original room owner waits until he re-rents a room
 	'which got free again (no longer used as additional studio)
@@ -57,9 +64,6 @@ Type TGameRules {_exposeToLua}
 	'use a lower value, to slow down the game then (movement + time)
 	Field InRoomTimeSlowDownMod:Float = 1.0
 
-	'maximum price (profit/penalty) for a single adspot
-	Field maxAdContractPricePerSpot:int = 1000000
-
 	Field startProgrammeAmount:int = 0
 
 	'penalty to pay if a player sends an xrated movie at the wrong time
@@ -68,13 +72,77 @@ Type TGameRules {_exposeToLua}
 	'does the boss has to get visited daily?
 	Field dailyBossVisit:int = True
 
+
+	'=== ADAGENCY ===
+	Field adagencySortContractyBy:string = "minaudience"
+	
+
+	'=== STATIONMAP ===
 	'time a station needs to get constructed
 	'value in hours
-	'set to default on start (game.game.bmx prepareNewGame())
+	'set to default (0) on start (game.game.bmx prepareNewGame())
 	Field stationConstructionTime:int = -1
 	Field stationConstructionTimeDefault:int = 0
+	'increase costs by X percent each day after construction of a station? 
+	Field stationIncreaseDailyMaintenanceCosts:int = False
+	Field stationDailyMaintenanceCostsPercentage:Float = 0.02
+	Field stationDailyMaintenanceCostsPercentageTotalMax:Float = 0.30
 
+
+	'=== DEV.xml ===
 	Field devConfig:TData = new TData
+
+
+	Method Reset()
+		dailyBossVisit = True
+		sentXRatedPenalty = 25000
+
+		elevatorSpeed = 160
+		elevatorWaitAtFloorTime = 1500
+
+		adagencySortContractyBy = "minaudience"
+
+		adContractInstancesMax = 1
+		adContractsPerPlayerMax = 10
+		adContractPricePerSpotMax = 1000000
+
+		AssignFromData(devConfig)
+	End Method
+	
+
+	Method AssignFromData:int(data:TData)
+		if not data then return False
+		
+		dailyBossVisit = data.GetInt("DEV_DAILY_BOSS_VISIT", dailyBossVisit)
+
+		sentXRatedPenalty = data.GetInt("DEV_SENT_XRATED_PENALTY", sentXRatedPenalty)
+
+		adContractInstancesMax = data.GetInt("DEV_ADCONTRACT_INSTANCES_MAX", adContractInstancesMax)
+		adContractsPerPlayerMax = data.GetInt("DEV_ADCONTRACTS_PER_PLAYER_MAX", adContractsPerPlayerMax)
+		'adContractPricePerSpotMax = data.GetInt("DEV_ADCONTRACT_PRICE_PER_SPOT_MAX", adContractPricePerSpotMax)
+		if data.GetInt("DEV_ADCONTRACT_PRICE_PER_SPOT_MAX", 0) > 0
+			adContractPricePerSpotMax = data.GetInt("DEV_ADCONTRACT_PRICE_PER_SPOT_MAX")
+		endif
+
+		'=== ADAGENCY ===
+		adagencySortContractyBy = data.GetString("DEV_ADAGENCY_SORT_CONTRACTS_BY", adagencySortContractyBy).Trim().ToLower()
+
+
+		'=== ELEVATOR ===
+		elevatorWaitAtFloorTime = Max(1000, Min(2000, data.GetInt("DEV_ELEVATOR_WAITTIME", elevatorWaitAtFloorTime)))
+		elevatorSpeed = Max(50, Min(240, data.GetInt("DEV_ELEVATOR_SPEED", elevatorSpeed)))
+		elevatorAnimSpeed = Max(30, Min(100, data.GetInt("DEV_ELEVATOR_ANIMSPEED", elevatorAnimSpeed)))
+
+
+		'=== STATION(MAP) ===
+		stationConstructionTime = data.GetInt("DEV_STATION_CONSTRUCTION_TIME", 0)		
+		stationIncreaseDailyMaintenanceCosts = data.GetBool("DEV_STATION_INCREASE_DAILY_MAINTENANCE_COSTS", stationIncreaseDailyMaintenanceCosts)
+		stationDailyMaintenanceCostsPercentage = data.GetFloat("DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE", stationDailyMaintenanceCostsPercentage)
+		stationDailyMaintenanceCostsPercentageTotalMax = data.GetFloat("DEV_STATION_DAILY_MAINTENANCE_COSTSPERCENTAGE_TOTAL_MAX", stationDailyMaintenanceCostsPercentageTotalMax)
+
+		return True
+	End Method
+		
 End Type
 
 Global GameRules:TGameRules = new TGameRules

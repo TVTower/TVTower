@@ -69,7 +69,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		listNormal = new TAdContract[contractsNormalAmount]
 		listCheap = new TAdContract[contractsCheapAmount]
 
-		Select GameRules.devConfig.GetString("DEV_ADAGENCY_SORT_CONTRACTS_BY", "minaudience").Trim().ToLower()
+		Select GameRules.adagencySortContractyBy
 			case "minaudience"
 				ListSortMode = SORT_BY_MINAUDIENCE 
 			case "classification"
@@ -145,7 +145,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 
 			GuiListCheap.SetItemLimit(listCheap.length)
-			GuiListSuitcase.SetItemLimit(GameRules.maxContracts)
+			GuiListSuitcase.SetItemLimit(GameRules.adContractsPerPlayerMax)
 
 			GuiListCheap.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
 			GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
@@ -849,7 +849,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'=== SETUP FILTERS ===
 		local spotMin:Float = 0.0001 '0.01% to avoid 0.0-spots
 		local rangeStep:Float = 0.005 '0.5%
-		local limitInstances:int = GameRules.devConfig.GetInt("DEV_ADAGENCY_LIMIT_CONTRACT_INSTANCES", GameRules.maxContractInstances)
+		local limitInstances:int = GameRules.adContractInstancesMax
 
 		'the cheap list contains really low contracts
 		local cheapListFilter:TAdContractBaseFilter = new TAdContractbaseFilter
@@ -1105,7 +1105,7 @@ endrem
 
 
 		'=== OTHER BASIC INFORMATION ===
-		local limitInstances:int = GameRules.devConfig.GetInt("DEV_ADAGENCY_LIMIT_CONTRACT_INSTANCES", GameRules.maxContractInstances)
+		local limitInstances:int = GameRules.adContractInstancesMax
 		local rangeStep:Float = 0.005 '0.5%
 
 

@@ -1026,7 +1026,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Local limitedToProgrammeFlagMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_PROGRAMME_FLAG_MULTIPLIER", 1.25)
 		Local limitedToTargetGroupMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER", 1.0)
 
-		local maxCPM:float = GameRules.maxAdContractPricePerSpot / Max(1, (population/1000))
+		local maxCPM:float = GameRules.adContractPricePerSpotMax / Max(1, (population/1000))
 		Local price:Float
 
 		local minAudience:int = GetTotalMinAudienceForPlayer(playerID)
@@ -1044,7 +1044,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'multiply by amount of "1000 viewers"-blocks (_not_ ignoring targetGroups)
 		'price :* Max(1, getMinAudience(playerID)/1000)
 		'value cannot be higher than "maxAdContractPricePerSpot"
-		price = Min(GameRules.maxAdContractPricePerSpot, price )
+		price = Min(GameRules.adContractPricePerSpotMax, price )
 		'adjust by a balancing factor
 		price :* balancingFactor
 
@@ -1070,12 +1070,14 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'returns the non rounded minimum audience
 	'@playerID          playerID = -1 to use the avg audience maximum
 	'@getTotalAudience  avoid breaking down audience if a target group limit is set up
-	Method GetRawMinAudienceForPlayer:Int(playerID:int, getTotalAudience:int = False)
-		local useAudience:int = 0
-		if playerID <= 0
-			useAudience = GetStationMapCollection().GetAverageReach()
-		else
-			useAudience = GetStationMap(playerID).GetReach()
+	Method GetRawMinAudienceForPlayer:Int(playerID:int, getTotalAudience:int = False, audience:int=-1)
+		local useAudience:int = audience
+		if audience < 0
+			if playerID <= 0
+				useAudience = GetStationMapCollection().GetAverageReach()
+			else
+				useAudience = GetStationMap(playerID).GetReach()
+			endif
 		endif
 
 		if not getTotalAudience 

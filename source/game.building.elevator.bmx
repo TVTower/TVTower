@@ -127,13 +127,8 @@ Type TElevator Extends TEntity
 		Speed = GameRules.elevatorSpeed
 		WaitAtFloorTime = GameRules.elevatorWaitAtFloorTime
 
-		'limit speed between 50 - 240 pixels per second, default 120
-		Speed = Max(50, Min(240, GameRules.devConfig.GetInt("DEV_ELEVATOR_SPEED", int(Self.speed))))
-		'adjust wait at floor time : 1000 - 2000 ms, default 1700
-		WaitAtFloorTime = Max(1000, Min(2000, GameRules.devConfig.GetInt("DEV_ELEVATOR_WAITTIME", Self.WaitAtFloorTime)))
-
 		'adjust animation speed (per frame) 30-100, default 70
-		Local animSpeed:Int = Max(30, Min(100, GameRules.devConfig.GetInt("DEV_ELEVATOR_ANIMSPEED", 60)))
+		Local animSpeed:Int = GameRules.elevatorAnimSpeed
 
 		'create timer
 		WaitAtFloorTimer = new TBuildingIntervalTimer.Init(WaitAtFloorTime)

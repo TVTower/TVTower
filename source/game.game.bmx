@@ -217,6 +217,18 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			InitRoomsAndDoors()
 		endif
 
+
+		'=== ADJUST GAME RULES ===
+		if startNewGame
+			'initialize variables too
+			TLogger.Log("Game.PrepareStart()", "GameRules initialization + override with DEV values.", LOG_DEBUG)
+			GameRules.Reset()
+		else
+			'just load the dev-values into the game rules
+			TLogger.Log("Game.PrepareStart()", "GameRules override with DEV values.", LOG_DEBUG)
+			GameRules.AssignFromData( GameRules.devConfig )
+		endif
+
 		
 		'Game screens
 		GameScreen_World.Initialize()
@@ -933,12 +945,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Next
 
 
-
-		'=== ADJUST GAME RULES ===
-		GameRules.dailyBossVisit = GameRules.devConfig.GetInt("DEV_DAILY_BOSS_VISIT", True)
-		GameRules.stationConstructionTime = GameRules.devConfig.GetInt("DEV_STATION_CONSTRUCTION_TIME", GameRules.stationConstructionTimeDefault)
-
-
 		'=== STATION MAP ===
 		'load the used map
 		GetStationMapCollection().LoadMapFromXML("res/maps/germany/germany.xml")
@@ -1191,10 +1197,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'do not allow limited ones
 		cheapFilter.SetSkipLimitedToProgrammeGenre()
 		cheapFilter.SetSkipLimitedToTargetGroup()
-		'the dev value is defining how many simultaneously are allowed
+		'the game rules value is defining how many simultaneously are allowed
 		'while the filter filters contracts already having that much (or
 		'more) contracts, that's why we subtract 1
-		local limitInstances:int = GameRules.devConfig.GetInt("DEV_ADAGENCY_LIMIT_CONTRACT_INSTANCES", GameRules.maxContractInstances)
+		local limitInstances:int = GameRules.adContractInstancesMax
 		if limitInstances > 0 then cheapFilter.SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		local addContract:TAdContractBase

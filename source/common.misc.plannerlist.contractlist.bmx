@@ -105,7 +105,7 @@ Type TgfxContractlist Extends TPlannerList
 			else
 				entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 			endif
-			entriesRect.dimension.y :+ GameRules.maxContracts * GetEntrySize().GetY()
+			entriesRect.dimension.y :+ GameRules.adContractsPerPlayerMax * GetEntrySize().GetY()
 			entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
 		endif
 
@@ -157,13 +157,13 @@ Type TgfxContractlist Extends TPlannerList
 
 		Local contracts:TList = GetContracts(owner)
 		'draw slots, even if empty
-		For Local i:Int = 0 Until 10 'GameRules.maxContracts
+		For Local i:Int = 0 Until 10 'GameRules.adContractsPerPlayerMax
 			Local contract:TAdContract
 			if i < contracts.Count() then contract = TAdContract( contracts.ValueAtIndex(i) )
 
 			Local entryPositionType:String = "entry"
 			If i = 0 Then entryPositionType = "first"
-			If i = GameRules.maxContracts-1 Then entryPositionType = "last"
+			If i = GameRules.adContractsPerPlayerMax-1 Then entryPositionType = "last"
 
 		
 			'=== BACKGROUND ===
@@ -217,7 +217,7 @@ Type TgfxContractlist Extends TPlannerList
 			'add "bottom" portion when drawing last item
 			'do this in the for loop, so the entrydrawType is known
 			'(top-portion could contain color code of the drawType)
-			If i = GameRules.maxContracts-1
+			If i = GameRules.adContractsPerPlayerMax-1
 				currSprite = GetSpriteFromRegistry("gfx_programmeentries_bottom.default")
 				currSprite.draw(currX, currY)
 				currY :+ currSprite.area.GetH()
@@ -251,7 +251,7 @@ Type TgfxContractlist Extends TPlannerList
 
 			local contracts:TList = GetContracts(owner)
 			'sort
-			For Local i:Int = 0 Until Min(contracts.Count(), GameRules.maxContracts)
+			For Local i:Int = 0 Until Min(contracts.Count(), GameRules.adContractsPerPlayerMax	)
 				Local contract:TAdContract = TAdContract(contracts.ValueAtIndex(i))
 
 				'we add 1 pixel to height (aka not subtracting -1) - to hover between tapes too
