@@ -228,7 +228,8 @@ endrem
 				hoveredRoom = TRoomDoor(sign.door).GetRoom()
 				hoveredSign = sign
 
-				if room.IsRentable() and MouseManager.IsClicked(1)
+				'if room.IsRentable() or (room.IsRented() and room.GetOwner() = playerID) and MouseManager.IsClicked(1)
+				if MouseManager.IsClicked(1)
 			
 					'only select/confirm the room if it is allowed
 					if (hoveredRoom.GetOwner() <= 0 and hoveredRoom.IsRentable()) or ..
@@ -616,10 +617,10 @@ Vorbesitzer: XYZ
 		'== draw boxes
 		skin.RenderBox(contentX + 5, contentY, 50, -1, room.GetSize(), "roomSize", "neutral", skin.fontBold)
 		if room.GetOwner() = currentPlayerID
-			skin.RenderBox(contentX + 5 + 148 +52, contentY, 110, -1, MathHelper.DottedValue( room.GetRentForPlayer(currentPlayerID) ) +" |color=90,90,90|/ Tag|/color|", "moneyRepetitions", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 148 +52, contentY, 110, -1, MathHelper.DottedValue( room.GetRentForPlayer(currentPlayerID) ) +" |color=90,90,90|/ "+ GetLocale("DAY") +"|/color|", "moneyRepetitions", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 		'only show prices for rentable rooms
 		elseif room.IsRentable()
-			skin.RenderBox(contentX + 5 + 54 +52, contentY, 110, -1, MathHelper.DottedValue( room.GetRentForPlayer(currentPlayerID) ) +" |color=90,90,90|/ Tag|/color|", "moneyRepetitions", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 54 +52, contentY, 110, -1, MathHelper.DottedValue( room.GetRentForPlayer(currentPlayerID) ) +" |color=90,90,90|/ "+ GetLocale("DAY") +"|/color|", "moneyRepetitions", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 			if canAfford
 				skin.RenderBox(contentX + 5 + 168 +52, contentY, 90, -1, MathHelper.DottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 			else
@@ -645,6 +646,16 @@ Vorbesitzer: XYZ
 			skin.fontNormal.draw("Name: "+room.GetName(), contentX + 5, contentY)
 			contentY :+ 12	
 			skin.fontNormal.draw("Besitzer: "+room.GetOwner(), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("IsRentable: "+room.IsRentable(), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("IsRented: "+room.IsRented(), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("IsUsedAsStudio: "+room.IsUsedAsStudio(), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("RerentalTime: "+room.GetRerentalTime(), contentX + 5, contentY)
+			contentY :+ 12	
+			skin.fontNormal.draw("Rerental in: "+(GetWorldTime().GetTimegone()-room.GetRerentalTime())+" s", contentX + 5, contentY)
 			contentY :+ 12	
 		endif
 
