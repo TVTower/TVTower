@@ -38,20 +38,19 @@ Type TScreenHandler_StationMap
 			stationMapBackgroundSpriteName = screen.backgroundSpriteName
 			screen.backgroundSpriteName = ""
 		endif
-
 		
 		'=== create gui elements if not done yet
 		if not stationMapBuyButton
 			'StationMap-GUIcomponents
 			'position gets recalculated during drawing (so it can move with the panel)
 			'also add 2 pixels to width because of "inset effect"
-			stationMapBuyButton = new TGUIButton.Create(new TVec2D.Init(610, 110), new TVec2D.Init(170, 28), "", "STATIONMAP")
+			stationMapBuyButton = new TGUIButton.Create(new TVec2D.Init(610, 275), new TVec2D.Init(170, 28), "", "STATIONMAP")
 			stationMapBuyButton.spriteName = "gfx_gui_button.datasheet"
 
-			stationMapSellButton = new TGUIButton.Create(new TVec2D.Init(610, 345), new TVec2D.Init(170, 28), "", "STATIONMAP")
+			stationMapSellButton = new TGUIButton.Create(new TVec2D.Init(610, 245), new TVec2D.Init(170, 28), "", "STATIONMAP")
 			stationMapSellButton.spriteName = "gfx_gui_button.datasheet"
 
-			stationList = new TGUISelectList.Create(new TVec2D.Init(610,233), new TVec2D.Init(174, 105), "STATIONMAP")
+			stationList = new TGUISelectList.Create(new TVec2D.Init(610,133), new TVec2D.Init(174, 105), "STATIONMAP")
 
 			For Local i:Int = 0 To 3
 				stationMapShowStations[i] = new TGUICheckBox.Create(new TVec2D.Init(520, 30 + i*25), new TVec2D.Init(20, 20), String(i + 1), "STATIONMAP")
@@ -128,6 +127,9 @@ Type TScreenHandler_StationMap
 		if stationMapMode = 1
 			boxH = skin.GetBoxSize(100, -1, "").GetY()
 			boxAreaH = 2 * boxAreaPaddingY + 2* boxH
+			if GameRules.stationConstructionTime > 0
+				boxAreaH :+ 1*boxH
+			endif
 		endif
 		if boxAreaH > 0 then bottomAreaH :+ boxAreaH
 		if boxAreaH > 0
@@ -157,11 +159,16 @@ Type TScreenHandler_StationMap
 		'=== BOXES ===
 		If stationMapMode = 1
 			local canAfford:int = True
-			local price:string = "", reach:string = "", reachIncrease:string = ""
+			local price:string = "", reach:string = "", reachIncrease:string = "", runningCost:string=""
 			if stationMapSelectedStation
 				reach = TFunctions.convertValue(stationMapSelectedStation.getReach(), 2)
 				reachIncrease = MathHelper.DottedValue(stationMapSelectedStation.getReachIncrease())
 				price = TFunctions.convertValue(stationMapSelectedStation.getPrice(), 2, 0)
+				if stationMapSelectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
+					runningCost = "-/-"
+				else
+					runningCost = TFunctions.convertValue(stationMapSelectedStation.GetRunningCosts(), 2, 0)
+				endif
 
 				local finance:TPlayerFinance = GetPlayerFinance(room.owner)
 				canAfford = (not finance or finance.canAfford(stationMapSelectedStation.GetPrice()))
@@ -178,8 +185,11 @@ Type TScreenHandler_StationMap
 			contentY :+ boxH
 			'TODO: Build time for stations?
 			if GameRules.stationConstructionTime > 0
-				skin.RenderBox(contentX + 5, contentY, 80, -1, GameRules.stationConstructionTime + "h", "runningTime", "neutral", skin.fontNormal)
+				skin.RenderBox(contentX + 5, contentY, halfW-5, -1, GameRules.stationConstructionTime + "h", "runningTime", "neutral", skin.fontNormal)
+				contentY :+ boxH
 			endif
+
+			skin.RenderBox(contentX + 5, contentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 
 			'fetch financial state of room owner (not player - so take care
 			'if the player is allowed to do this)
@@ -262,11 +272,16 @@ Type TScreenHandler_StationMap
 			if not stationMapSelectedStation
 				SetAlpha GetAlpha() * 0.5
 			endif
-			local price:string = "", reach:string = "", reachDecrease:string = ""
+			local price:string = "", reach:string = "", reachDecrease:string = "", runningCost:string =""
 			if stationMapSelectedStation
 				reach = TFunctions.convertValue(stationMapSelectedStation.getReach(), 2)
 				reachDecrease = MathHelper.DottedValue(stationMapSelectedStation.getReachDecrease())
 				price = TFunctions.convertValue(stationMapSelectedStation.getSellPrice(), 2, 0)
+				if stationMapSelectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
+					runningCost = "-/-"
+				else
+					runningCost = TFunctions.convertValue(stationMapSelectedStation.GetRunningCosts(), 2, 0)
+				endif
 			endif
 
 			local halfW:int = (contentW - 10)/2 - 2
@@ -278,6 +293,7 @@ Type TScreenHandler_StationMap
 
 			'=== BOX LINE 2 ===
 			contentY :+ boxH
+			skin.RenderBox(contentX + 5, contentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 			contentY :+ boxH
 
@@ -299,7 +315,6 @@ Type TScreenHandler_StationMap
 		'=== OVERLAY / BORDER ===
 		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
 	End Function
-
 
 global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
  	Function onDrawStationMap:int( triggerEvent:TEventBase )
