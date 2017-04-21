@@ -48,6 +48,8 @@ Type TVTGameConstants {_exposeToLua}
 
 	Field ProductionConceptFlag:TVTProductionConceptFlag = new TVTProductionConceptFlag 
 
+	Field StationFlag:TVTStationFlag = new TVTStationFlag 
+
 	Field NewsFlag:TVTNewsFlag = new TVTNewsFlag 
 
 	Field TargetGroup:TVTTargetGroup = new TVTTargetGroup 
@@ -160,6 +162,83 @@ Type TVTMessageCategory {_exposeToLua}
 			case AWARDS        return "awards"
 			case ACHIEVEMENTS  return "achievements"
 			case MISC          return "misc"
+
+			default
+				'loop through all entries and add them if contained
+				local result:string
+				local index:int = 0
+				'do NOT start with 0 ("all")
+				For local i:int = 1 to count
+					index = GetAtIndex(i)
+					if key & index then result :+ GetAsString(index) + ","
+				Next
+				if result = "" then return "none"
+				'remove last comma
+				return result[.. result.length-1]
+		End Select
+	End Function
+End Type
+
+
+
+
+Type TVTStationFlag {_exposeToLua}
+	Const NONE:int = 0
+	Const PAID:Int = 1
+	'fixed prices are kept during refresh
+	Const FIXED_PRICE:Int = 2
+	Const SELLABLE:Int = 4
+	Const ACTIVE:Int = 8
+	'someone gifted it
+	Const GRANTED:int = 16
+	Const NO_RUNNING_COSTS:int = 32
+	Const NO_AGING:int = 64
+	Const UPDATE1:int = 128
+	Const UPDATE2:int = 256
+	Const UPDATE3:int = 512
+
+	Const count:int = 10
+
+
+	Function GetAtIndex:int(index:int = 0)
+		if index <= 0 then return 0
+		return 2^(index-1)
+	End Function	
+
+
+	Function GetIndex:int(key:int)
+		Select key
+			case   1	return 1
+			case   2	return 2
+			case   4	return 3
+			case   8	return 4
+			case  16	return 5
+			case  32	return 6
+			case  64	return 7
+			case 128	return 8
+			case 256	return 9
+			case 512	return 10
+		End Select
+		return 0
+	End Function
+
+
+	Function GetAsString:String(key:int = 0)
+		if key < 0 then return "none"
+		
+		Select key
+			case NONE             return "none"
+
+			case PAID             return "paid"
+			case FIXED_PRICE      return "fixed_price"
+			case SELLABLE         return "sellable"
+			case ACTIVE           return "active"
+			case GRANTED          return "granted"
+			case NO_AGING         return "no_aging"
+			case NO_RUNNING_COSTS return "no_running_costs"
+			case UPDATE1          return "update1"
+			case UPDATE2          return "update2"
+			case UPDATE3          return "update3"
 
 			default
 				'loop through all entries and add them if contained

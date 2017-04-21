@@ -673,7 +673,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'add new station
 		local s:TStation = TStation.Create( New TVec2D.Init(310, 260),-1, GetStationMapCollection().stationRadius, playerID )
 		'first station is not sellable (this enforces competition)
-		s.SetFlag(TStation.FLAG_SELLABLE, False)
+		s.SetFlag(TVTStationFlag.SELLABLE, False)
+		'mark it as being gifted (by your boss or so)
+		s.SetFlag(TVTStationFlag.GRANTED, True)
+		'do not pay for it each day
+		s.SetFlag(TVTStationFlag.NO_RUNNING_COSTS, True)
 
 		map.AddStation( s, False )
 

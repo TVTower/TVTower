@@ -530,10 +530,10 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 				if stationMapSelectedStation.owner <> GetPlayerBase().playerID
 					button.disable()
 					button.SetValue(GetLocale("WRONG_PLAYER"))
-				elseif not stationMapSelectedStation.HasFlag(TStation.FLAG_SELLABLE)
+				elseif not stationMapSelectedStation.HasFlag(TVTStationFlag.SELLABLE)
 					button.SetValue(GetLocale("UNSELLABLE"))
 					button.disable()
-				elseif not stationMapSelectedStation.HasFlag(TStation.FLAG_PAID)
+				elseif not stationMapSelectedStation.HasFlag(TVTStationFlag.PAID)
 					button.SetValue(GetLocale("SELL_STATION"))
 					button.disable()
 				else
@@ -589,7 +589,7 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		'draw with different color according status
 		if station.IsActive()
 			'colorize antenna for "not sellable ones
-			if not station.HasFlag(TStation.FLAG_SELLABLE)
+			if not station.HasFlag(TVTStationFlag.SELLABLE)
 				SetColor 120,90,60
 				'draw antenna
 				sprite.Draw(Int(item.GetScreenX() + 5), item.GetScreenY() + 0.5*(item.rect.getH() - sprite.GetHeight()))

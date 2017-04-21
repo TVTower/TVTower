@@ -848,7 +848,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		'try to buy it (does nothing if already done)
 		If buy And Not station.Buy(owner) Then Return False
 		'set to paid in all cases
-		station.SetFlag(TStation.FLAG_PAID, True)
+		station.SetFlag(TVTStationFlag.PAID, True)
 
 
 		stations.AddLast(station)
@@ -875,7 +875,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 		If Not forcedRemoval
 			'not allowed to sell this station
-			If Not station.HasFlag(TStation.FLAG_SELLABLE) Then Return False
+			If Not station.HasFlag(TVTStationFlag.SELLABLE) Then Return False
 
 			'check if we try to sell our last station...
 			If stations.count() = 1
@@ -1008,13 +1008,6 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 	'various settings (paid, fixed price, sellable, active...)
 	Field _flags:Int = 0
 
-	'=== FLAGS ===
-	Const FLAG_PAID:Int         = 1
-	'fixed prices are kept during refresh
-	Const FLAG_FIXED_PRICE:Int  = 2
-	Const FLAG_SELLABLE:Int     = 4
-	Const FLAG_ACTIVE:Int       = 8
-	
 
 	Function Create:TStation( pos:TVec2D, price:Int=-1, radius:Int, owner:Int)
 		Local obj:TStation = New TStation
@@ -1025,9 +1018,9 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 		obj.built = GetWorldTime().getTimeGone()
 		obj.activationTime = -1
 
-		obj.SetFlag(FLAG_FIXED_PRICE, (price <> -1))
+		obj.SetFlag(TVTStationFlag.FIXED_PRICE, (price <> -1))
 		'by default each station could get sold
-		obj.SetFlag(FLAG_SELLABLE, True)
+		obj.SetFlag(TVTStationFlag.SELLABLE, True)
 
 		obj.refreshData()
 		'save on compution for "initial states"
@@ -1046,7 +1039,7 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 		getReachIncrease(True)
 		'save on compution for "initial states" - do it on "create"
 		'getReachDecrease(True)
-		getPrice( Not HasFlag(FLAG_FIXED_PRICE) )
+		getPrice( Not HasFlag(TVTStationFlag.FIXED_PRICE) )
 	End Method
 
 
@@ -1161,32 +1154,52 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method GetRunningCosts:int() {_exposeToLua}
+		if HasFlag(TVTStationFlag.NO_RUNNING_COSTS) then return 0
+		
+		local result:int = 0
+
+		'== ADD STATIC RUNNING COSTS ==
 		if runningCosts = -1
 			rem
-				price         costs
-				  100000       2000        2^1.2 =   2.30 =   2
-				  250000       6000        5^1.2 =   6.90 =   6
-				  500000      15000       10^1.2 =  15.85 =  15
-				 1000000      36000       20^1.2 =  36.41 =  36
-				 2500000     109000       50^1.2 = 109.34 = 109
-				 5000000     251000      100^1.2 = 251.19 = 251
-				10000000     577000      200^1.2 = 577.08 = 577
-				25000000     732000      500^1.2 = 732.86 = 732
+			                  daily costs
+				   price    static   dynamic
+				  100000      2000      2000        2^1.2 =   2.30 =   2
+				  250000      5000      6000        5^1.2 =   6.90 =   6
+				  500000     10000     15000       10^1.2 =  15.85 =  15
+				 1000000     20000     36000       20^1.2 =  36.41 =  36
+				 2500000     50000    109000       50^1.2 = 109.34 = 109
+				 5000000    100000    251000      100^1.2 = 251.19 = 251
+				10000000    200000    577000      200^1.2 = 577.08 = 577
+				25000000    500000    732000      500^1.2 = 732.86 = 732
 			endrem
 			runningCosts = 1000 * Floor(Ceil(price / 50000.0)^1.2)
 
 			'costs:+1000 * Ceil(station.price / 50000.0) ' price / 50 = cost
 		endif
+		result :+ runningCosts
 
-		'the older a station gets, the more the running costs will be
-		'(more little repairs and so on)
-		'2% per day
-		return 1000*int( (runningCosts * (1 + 0.02*GetAge()))/1000 )
+
+		'== ADD RELATIVE MAINTENANCE COSTS ==
+		if GameRules.stationIncreaseDailyMaintenanceCosts
+			'the older a station gets, the more the running costs will be
+			'(more little repairs and so on)
+			'2% per day
+			local maintenanceCostsPercentage:int = GameRules.stationDailyMaintenanceCostsPercentage * GetAge()
+			'negative values deactivate the limit, positive once limit it
+			if GameRules.stationDailyMaintenanceCostsPercentageTotalMax >= 0
+				maintenanceCostsPercentage = Min(maintenanceCostsPercentage, GameRules.stationDailyMaintenanceCostsPercentageTotalMax)
+			endif
+
+			'1000 is "block size"
+			result = 1000*int( (result * (1.0 + maintenanceCostsPercentage))/1000 )
+		endif
+
+		return result
 	End Method
 
 
 	Method IsActive:Int()
-		Return HasFlag(FLAG_ACTIVE)
+		Return HasFlag(TVTStationFlag.ACTIVE)
 	End Method
 
 
@@ -1204,7 +1217,7 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 		If IsActive() Then Return False
 
 		Self.activationTime = GetWorldTime().GetTimeGone()
-		SetFlag(FLAG_ACTIVE, True)
+		SetFlag(TVTStationFlag.ACTIVE, True)
 
 		'inform others (eg. to recalculate audience)
 		EventManager.triggerEvent(TEventSimple.Create("station.onSetActive", Null, Self))
@@ -1214,7 +1227,7 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 	Method SetInactive:Int()
 		If Not IsActive() Then Return False
 
-		SetFlag(FLAG_ACTIVE, False)
+		SetFlag(TVTStationFlag.ACTIVE, False)
 
 		'inform others (eg. to recalculate audience)
 		EventManager.triggerEvent(TEventSimple.Create("station.onSetInactive", Null, Self))
@@ -1274,12 +1287,12 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 		'endif
 
 
-		If HasFlag(FLAG_PAID) Then Return True
+		If HasFlag(TVTStationFlag.PAID) Then Return True
 		If Not GetPlayerFinance(playerID) Then Return False
 
 		If GetPlayerFinance(playerID).PayStation( getPrice() )
 			owner = playerID
-			SetFlag(FLAG_PAID, True)
+			SetFlag(TVTStationFlag.PAID, True)
 
 			Return True
 		EndIf
