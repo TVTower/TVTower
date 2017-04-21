@@ -2029,14 +2029,83 @@ Type TGUIobject
 
 
 	'returns true if the conversion was successful
-	Function ConvertKeystrokesToText:Int(value:String Var, skipEnterKey:Int = False)
-		'remove with backspace
-		If KEYWRAPPER.pressedKey(KEY_BACKSPACE)
-			value = value[..value.length -1]
-			Return True
-		EndIf
-		'abort with ESCAPE
-		If KEYWRAPPER.pressedKey(KEY_ESCAPE) Then Return False
+	Function ConvertKeystrokesToText:Int(value:String Var, valuePosition:Int Var, ignoreEnterKey:Int = False)
+		if valuePosition = -1
+			valuePosition = value.length
+		else
+			valuePosition = Min(valuePosition, value.length)
+		endif
+
+		local specialCommandKeys:int[] = [KEY_BACKSPACE, KEY_DELETE, 127, KEY_HOME, KEY_END, KEY_LEFT, KEY_RIGHT, KEY_ESCAPE]
+
+		'=== SPECIAL COMMAND KEYS ===
+		local handledSpecialCommandKeys:int = False
+		For local key:int = EachIn specialCommandKeys
+			If not KEYWRAPPER.pressedKey(key) then continue
+
+			Select key
+				case KEY_BACKSPACE
+					If valuePosition > 0 
+						value = value[.. valuePosition-1] + value[valuePosition ..]
+						valuePosition :- 1
+					EndIf
+
+				'on my linux box "127" is the delete-key and not KEY_DELETE (46)
+				case KEY_DELETE, 127
+					If valuePosition < value.length
+						value = value[.. valuePosition] + value[valuePosition+1 ..]
+					EndIf
+
+				case KEY_END
+					valuePosition = value.length
+
+				case KEY_HOME
+					valuePosition = 0
+
+				case KEY_LEFT
+					Local ctrlPressed:Int = KEYMANAGER.IsDown(KEY_LCONTROL) Or KEYMANAGER.IsDown(KEY_RCONTROL)
+					local stoppers:int[] = [KEY_SPACE, KEY_PERIOD, KEY_COMMA, KEY_SEMICOLON, KEY_OPENBRACKET, KEY_CLOSEBRACKET]
+
+					If ctrlPressed
+						For local i:int = valuePosition-1 to 0 step -1
+							if MathHelper.InIntArray(value[i], stoppers)
+								valuePosition = Max(0, i)
+								exit
+							EndIf
+						Next
+					Else
+						'stop at the 0 position
+						valuePosition = Max(0, valuePosition - 1)
+						'wrap around and continue at end of the text
+						'valuePosition :- 1
+					EndIf
+
+				case KEY_RIGHT
+					Local ctrlPressed:Int = KEYMANAGER.IsDown(KEY_LCONTROL) Or KEYMANAGER.IsDown(KEY_RCONTROL)
+					local stoppers:int[] = [KEY_SPACE, KEY_PERIOD, KEY_COMMA, KEY_SEMICOLON, KEY_OPENBRACKET, KEY_CLOSEBRACKET]
+
+					If ctrlPressed
+						'ignore next char (will be a stopper...)
+						For local i:int = valuePosition+1 to value.length-1
+							if MathHelper.InIntArray(value[i], stoppers)
+								valuePosition = i+1
+								exit
+							EndIf
+						Next
+					Else
+						valuePosition = Min(value.length, valuePosition +1)
+					EndIf
+
+				'abort with ESCAPE
+				case KEY_ESCAPE
+					Return False
+			End Select
+
+			handledSpecialCommandKeys = true
+		Next
+		if handledSpecialCommandKeys then Return True
+
+
 
 		'read special keys (shift + altgr) to enable special key handling
 		Local shiftPressed:Int = KEYMANAGER.IsDown(160) Or KEYMANAGER.IsDown(161)
@@ -2052,7 +2121,13 @@ Type TGUIobject
 		Local charCode:Int = Int(GetChar())
 
 		'loop through all chars of the getchar-queue
-		While charCode <>0
+		While charCode <> 0
+			'ignore special keys
+			If MathHelper.InIntArray(charCode, specialCommandKeys)
+				charCode = Int(GetChar())
+				continue
+			EndIf
+
 			'charCode is < 0 for me when umlauts are pressed
 			If charCode < 0
 				?Win32
@@ -2070,17 +2145,17 @@ Type TGUIobject
 				?
 			'handle normal "keys" (excluding umlauts)
 			ElseIf charCode > 0
-				Local addChar:Int = True
-				'skip "backspace"
-				If Chr(KEY_BACKSPACE) = Chr(charCode) Then addChar = False
 				'skip enter if whished so
-				If skipEnterKey And Chr(KEY_ENTER) = Chr(charCode) Then addChar = False
+				If ignoreEnterKey And KEY_ENTER = charCode
+					'addChar = False
+				Else
+					value = value[.. valuePosition] + Chr(charCode) + value[valuePosition ..]
+					valuePosition :+ 1
+				EndIf
 
-				If addChar Then value :+ Chr(charCode)
 			EndIf
 			charCode = Int(GetChar())
 		Wend
-
 		'special chars - recognized on Mac, but not Linux
 		'euro sign
 		?Linux

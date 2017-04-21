@@ -16,7 +16,7 @@ Type TGUIinput Extends TGUIobject
     Field maxTextWidthBase:Int
     Field maxTextWidthCurrent:Int
     Field spriteName:String = "gfx_gui_input.default"
-    Field cursorPos:int
+   
 
 	'=== OVERLAY ===
 	'containing text or an icon (displayed separate from input widget)
@@ -35,9 +35,12 @@ Type TGUIinput Extends TGUIobject
 	Field placeholder:string = ""
     Field placeholderColor:TColor
 	Field valueDisplacement:TVec2D
+	Field _textPos:TVec2D
+	Field _cursorPosition:int = -1
 	Field _valueChanged:Int	= False '1 if changed
 	Field _valueBeforeEdit:String = ""
 	Field _valueAtLastUpdate:String = ""
+	Field _valueOffset:int = 0
 	Field _editable:Int = True
 
 	Global minDimension:TVec2D = new TVec2D.Init(40,28)
@@ -152,11 +155,44 @@ Type TGUIinput Extends TGUIobject
 					If Self = GuiManager.GetKeystrokeReceiver() Then GuiManager.SetKeystrokeReceiver(Null)
 				EndIf
 
+
+				'active input fields react to mouse clicks on the input-area
+				'to move the cursor position
+				If Self = GuiManager.GetKeystrokeReceiver()
+					if MouseManager.IsHit(1) and _textPos
+						local screenRect:TRectangle = new TRectangle
+						'shrink screenrect to "text area"
+						screenRect.position.SetXY(_textPos.GetX(), _textPos.GetY())
+						screenRect.dimension.SetXY(self.maxTextWidthCurrent, GetScreenHeight() - (_textPos.GetY() - GetScreenY()))
+'print "input area: " + screenRect.ToString()
+
+						if THelper.MouseInRect(screenRect)
+							local valueOffsetPixels:int = 0
+							if _valueOffset > 0 then valueOffsetPixels = GetFont().GetWidth( value[.. _valueOffset] )
+'local old:int = _cursorPosition
+							local valueClickedPixel:int = MouseManager.x - screenRect.GetX() + valueOffsetPixels
+							local newCursorPosition:int = -1
+							For local i:int = 0 to value.length-1
+								if GetFont().GetWidth(value[.. i]) > valueClickedPixel
+									newCursorPosition = Max(0, i-1)
+									exit
+								endif
+							Next
+							if newCursorPosition <> -1 then _cursorPosition = newCursorPosition
+'print " ... Mouse "+int(MouseManager.x)+", "+int(MouseManager.y)+" is in. Position: " + old +" => " + _cursorPosition + "  valueClickedPixel="+valueClickedPixel+"  valueOffsetPixels="+valueOffsetPixels
+						endif
+					EndIf
+				EndIf
+
+				
+
 				'as soon as an input field is marked as active input
 				'all key strokes could change the input
 				If Self = GuiManager.GetKeystrokeReceiver()
+					if _cursorPosition = -1 then _cursorPosition = value.length
+				
 					'ignore enter keys => TRUE
-					If Not ConvertKeystrokesToText(value, True)
+					If Not ConvertKeystrokesToText(value, _cursorPosition, True)
 						value = _valueBeforeEdit
 
 						'do not allow another ESC-press for 150ms
@@ -182,6 +218,8 @@ Type TGUIinput Extends TGUIobject
 			If Self <> GuiManager.GetKeystrokeReceiver() And _valueChanged
 				'reset changed indicator
 				_valueChanged = False
+				'reset cursor position
+				_cursorPosition = -1
 
 				'only send this once
 				if not onChangeValueSent
@@ -196,7 +234,10 @@ Type TGUIinput Extends TGUIobject
 		If _editable and Self = GuiManager.GetKeystrokeReceiver() Then setState("active")
 
 		'limit input length
-        If value.length > maxlength Then value = value[..maxlength]
+        If value.length > maxlength
+			value = value[..maxlength]
+			_cursorPosition = -1
+		EndIf
 	End Method
 
 
@@ -302,16 +343,54 @@ Type TGUIinput Extends TGUIobject
 		'else just draw it like a normal gui object
 		If _editable AND Self = GuiManager.GetKeystrokeReceiver()
 			color.copy().AdjustFactor(-80).SetRGB()
-			While printValue.length > 1 And GetFont().getWidth(printValue + "_") > maxTextWidthCurrent
-				printValue = printValue[1..]
+
+			if _cursorPosition = -1 then _cursorPosition = printValue.length
+
+			'calculate values left and right sided of the cursor 
+			_valueOffset = 0
+			local leftValue:string, rightValue:string
+			local leftValueW:int, rightValueW:int
+			local cursorW:int = 0
+			if _cursorPosition = printValue.length
+				leftValue = printValue
+				rightValue = ""
+			elseif _cursorPosition = 0
+				leftValue = ""
+				rightValue = printValue
+			else
+				leftValue = printValue[.. _cursorPosition]
+				rightValue = printValue[_cursorPosition ..]
+			endif
+			
+			'make sure we see the cursor
+			While leftValue.length > 1 And GetFont().getWidth(leftValue) + cursorW > maxTextWidthCurrent
+				leftValue = leftValue[1..]
+				_valueOffset :+ 1
 			Wend
-			GetFont().draw(printValue, position.GetIntX(), position.GetIntY())
+			'beautify: if there is much on the right side left, move it even further to the left
+			'if value.length - leftValue.length > 0 and leftValue.length >= 3 
+			'	leftValue = leftValue[3 ..]
+			'endif
+
+			leftValueW = int(GetFont().getWidth(leftValue))
+
+			'limit rightValue to fit into the left space
+			if rightValue <> ""
+				While rightValue.length > 0 And GetFont().getWidth(rightValue) > maxTextWidthCurrent - leftValueW - cursorW
+					rightValue = rightValue[.. rightValue.length -1]
+				Wend
+			endif
+
+				
+			GetFont().draw(leftValue, position.GetIntX(), position.GetIntY())
 
 			local oldAlpha:float = GetAlpha()
 			SetAlpha Float(Ceil(Sin(Time.GetTimeGone() / 4)) * oldAlpha)
-			GetFont().draw("_", Int(position.GetIntX() + GetFont().getWidth(printValue)), Int(position.GetY()) )
-
+			DrawLine(Int(position.GetIntX() + leftValueW), Int(position.GetY()), Int(position.GetIntX() + leftValueW), Int(position.GetY()) + GetFont().GetMaxCharHeight() )
 			SetAlpha oldAlpha
+
+			'ignore cursor-offset (to avoid "letter-jiggling")
+			GetFont().draw(rightValue, position.GetIntX() + leftValueW, position.GetIntY())
 	    Else
 			if printValue.length = 0
 				printValue = placeholder
@@ -336,18 +415,20 @@ Type TGUIinput Extends TGUIobject
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha()
 
-		Local textPos:TVec2D
 		Local widgetWidth:Int = rect.GetW()
+
+		if not _textPos then _textPos = new TVec2D
 
 		If Not valueDisplacement
 			'add "false" to GetMaxCharHeight so it ignores parts of
 			'characters with parts below baseline.
 			'avoids "above center"-look if value does not contain such
 			'characters
-			textPos = new TVec2D.Init(2, (rect.GetH() - GetFont().GetMaxCharHeight(False)) /2)
+			_textPos.Init(2, (rect.GetH() - GetFont().GetMaxCharHeight(False)) /2)
 		Else
-			textPos = valueDisplacement.copy()
+			_textPos.copyFrom(valueDisplacement)
 		EndIf
+		_textPos.AddXY(atPoint.GetX(), atPoint.GetY())
 
 
 		'=== DRAW BACKGROUND SPRITE ===
@@ -360,25 +441,28 @@ Type TGUIinput Extends TGUIobject
 			local overlayDim:TVec2D = DrawButtonOverlay(atPoint)
 
 			'move sprite by Icon-Area (and decrease width)
-			If overlayPosition = "iconLeft" Then atPoint.AddXY(overlayDim.GetX(), overlayDim.GetY())
+			If overlayPosition = "iconLeft"
+				atPoint.AddXY(overlayDim.GetX(), overlayDim.GetY())
+				_textPos.AddX(overlayDim.GetX())
+			endif
 			widgetWidth :- overlayDim.GetX()
 
 			sprite.DrawArea(atPoint.GetX(), atPoint.getY(), widgetWidth, rect.GetH())
 			'move text according to content borders
-			textPos.AddX(sprite.GetNinePatchContentBorder().GetLeft())
-			'textPos.SetX(Max(textPos.GetX(), sprite.GetNinePatchContentBorder().GetLeft()))
+			_textPos.AddX(sprite.GetNinePatchContentBorder().GetLeft())
+			'_textPos.SetX(Max(_textPos.GetX(), sprite.GetNinePatchContentBorder().GetLeft()))
 		EndIf
 
 
 		'=== DRAW TEXT/CONTENT ===
 		'limit maximal text width
 		if maxTextWidthBase > 0
-			Self.maxTextWidthCurrent = Min(maxTextWidthBase, widgetWidth - textPos.GetX()*2)
+			Self.maxTextWidthCurrent = Min(maxTextWidthBase, widgetWidth - (_textPos.GetX() - atPoint.GetX())*2)
 		else
-			Self.maxTextWidthCurrent = widgetWidth - textPos.GetX()*2
+			Self.maxTextWidthCurrent = widgetWidth - (_textPos.GetX() - atPoint.GetX())*2
 		endif
 		'actually draw
-		DrawInputContent(atPoint.Copy().AddXY(textPos.GetX(), textPos.GetY()))
+		DrawInputContent(_textPos)
 
 		oldCol.SetRGBA()
 	End Method
