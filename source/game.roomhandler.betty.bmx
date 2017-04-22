@@ -9,8 +9,8 @@ Import "common.misc.dialogue.bmx"
 
 'Betty
 Type RoomHandler_Betty extends TRoomHandler
-	Global dialogue:TDialogue
-
+	Field dialogue:TDialogue
+	Global _eventListeners:TLink[]
 	Global _instance:RoomHandler_Betty
 
 
@@ -34,7 +34,13 @@ Type RoomHandler_Betty extends TRoomHandler
 
 
 		'=== EVENTS ===
-		'nothing up to now
+		'remove old listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+
+		'register new listeners
+		_eventListeners = new TLink[0]
+		'handle players visiting betty
+		_eventListeners :+ [ EventManager.registerListenerFunction("player.onBeginEnterRoom", onPlayerBeginEnterRoom) ]
 
 
 		'(re-)localize content
@@ -60,6 +66,22 @@ Type RoomHandler_Betty extends TRoomHandler
 		GetRoomHandlerCollection().SetHandler("betty", GetInstance())
 	End Method
 
+
+	'called as soon as a player enters bettys room
+	Function onPlayerBeginEnterRoom:Int(triggerEvent:TEventBase)
+		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
+		if not room or room.GetName() <> "betty" then return False
+
+		'remove an old (maybe obsolete) dialogue
+		'ResetDialogue()
+		'generate already overrides an existing dialogue
+		GenerateDialogue()
+	End Function
+
+
+	Function ResetDialogue()
+		GetInstance().dialogue = null
+	End Function
 
 
 	Function GenerateDialogue()
@@ -122,15 +144,14 @@ Type RoomHandler_Betty extends TRoomHandler
 		dialogueTexts[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale2(["DIALOGUE_BETTY_LEVEL"+bettyLoveLevel+"_GOODBYE", "DIALOGUE_BETTY_GOODBYE"]), -2, Null))
 
 	
-		dialogue = new TDialogue
-		dialogue.AddTexts(dialogueTexts)
+		GetInstance().dialogue = new TDialogue
+		GetInstance().dialogue.AddTexts(dialogueTexts)
 
-		TDialogue.DrawDialog("default", 440, 80, 300, 120, "StartLeftDown", 35, text, 0, GetBitmapFont("Default",14))
-		dialogue.SetArea(new TRectangle.Init(440, 80, 300, 95))
-		dialogue.SetAnswerArea(new TRectangle.Init(380, 325, 360, 50))
+		GetInstance().dialogue.SetArea(new TRectangle.Init(440, 80, 300, 95))
+		GetInstance().dialogue.SetAnswerArea(new TRectangle.Init(380, 325, 360, 50))
 		'dialogue.answerStartType = "StartDownRight"
 		'dialogue.moveAnswerDialogueBalloonStart = 100
-		dialogue.SetGrow(-1,-1)
+		GetInstance().dialogue.SetGrow(-1,-1)
 	End Function
 
 
@@ -140,7 +161,7 @@ Type RoomHandler_Betty extends TRoomHandler
 		'                 -> inform others in a multiplayer game!
 		GetPlayerBase().GetFigure().SetHasMasterKey(true)
 
-		dialogue = null
+		ResetDialogue()
 	End Function		
 
 
