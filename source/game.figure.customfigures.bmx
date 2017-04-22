@@ -365,7 +365,7 @@ Type TFigureTerrorist Extends TFigureDeliveryBoy
 	Method IsAcceptingEntityInSameRoom:int(entity:TEntity)
 		if not GetInRoom() then return Super.IsAcceptingEntityInSameRoom(entity)
 
-		'when in a room, we do no longer accept others to join (we.
+		'when in a room, we do no longer accept others to join (we
 		'want to place a bomb...) 
 		return False
 	End Method
@@ -517,4 +517,18 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 
 		Super.UpdateCustom()
 	End Method
+
+
+	'override
+	'do not accept others, once the marshal is in a room
+	'so behave "normal" if asked from outside of a room regarding
+	'persons in the room 
+	Method IsAcceptingEntityInSameRoom:int(entity:TEntity)
+		if not GetInRoom() then return Super.IsAcceptingEntityInSameRoom(entity)
+
+		'when in a room, we do no longer accept others to join (eg. we
+		'are confiscating something and do not want to have that put into
+		'a suitcase before ...)
+		return False
+	End Method	
 End Type
