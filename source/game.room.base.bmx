@@ -718,6 +718,8 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		if not HasOccupant() then return True
 		'all can enter if there is no limit...
 		if HasFlag(TVTRoomFlag.ALLOW_MULTIPLE_OCCUPANTS) then return True
+		'other entities in the room allow it (eg. janitor or delivery guys)
+		if not HasOccupantDisallowingEnteringEntity(entity) then return True
 		'entity is already in the room
 		if IsOccupant(entity) then return True
 		
@@ -810,8 +812,16 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method hasOccupant:int()
+	Method HasOccupant:int()
 		return occupants.count() > 0
+	End Method
+
+
+	Method HasOccupantDisallowingEnteringEntity:int(entity:TEntity)
+		'by default assume everyone accepts other players
+		'-> in TRoom we override this function to wether the figures
+		'   accept another entity or not
+		return False
 	End Method
 
 

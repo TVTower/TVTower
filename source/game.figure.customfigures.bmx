@@ -356,6 +356,19 @@ Type TFigureTerrorist Extends TFigureDeliveryBoy
 		'depending on floor use "grr" or "?!"
 		Return 0 + 2*((1 + GetBuildingBase().GetFloor(area.GetY()) Mod 2)-1)
 	End Method	
+
+
+	'override
+	'do not accept others, once the terrorist is in a room
+	'so behave "normal" if asked from outside of a room regarding
+	'persons in the room 
+	Method IsAcceptingEntityInSameRoom:int(entity:TEntity)
+		if not GetInRoom() then return Super.IsAcceptingEntityInSameRoom(entity)
+
+		'when in a room, we do no longer accept others to join (we.
+		'want to place a bomb...) 
+		return False
+	End Method
 End Type
 
 

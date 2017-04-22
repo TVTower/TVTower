@@ -219,6 +219,17 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	Method IsAcceptingEntityInSameRoom:int(entity:TEntity)
+		'accept everything "non-figure" (suc things do not exist yet)
+		if not TFigureBase(entity) then return True
+		
+		'players do not accept others in same room
+		if self.playerID > 0 and TFigureBase(entity).playerID > 0 then return False
+
+		return True
+	End Method
+
+
 	Method IsVisible:int()
 		return True
 	End Method

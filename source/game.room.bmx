@@ -90,6 +90,19 @@ Type TRoom extends TRoomBase {_exposeToLua="selected"}
 	End Method
 
 
+	'override
+	'ask figures whether they allow other figures to enter
+	Method HasOccupantDisallowingEnteringEntity:int(entity:TEntity)
+		'ask all the occupying players whether they are not ok with
+		'the entity
+		for local f:TFigureBase = eachIn occupants
+			if not f.IsAcceptingEntityInSameRoom(entity) then return True
+		Next
+
+		return False
+	End Method
+
+
 	'override to add screen draw
 	Method Draw:int()
 		'if not self.screen then Throw "ERROR: room.draw() - screen missing";return 0

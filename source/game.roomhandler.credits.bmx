@@ -53,11 +53,12 @@ Type RoomHandler_Credits extends TRoomHandler
 
 		role = CreateRole("Datenbank-Team", TColor.Create(210,120,250))
 		role.addCast("Martin Rackow~n(bis 2007)")
-		role.addCast("Ronny Otto")
-		role.addCast("Själe")
-		role.addCast("SpeedMinister")
-		role.addCast("TheRob")
-		role.addCast("Rumpelfreddy")
+		role.addCast("Ronny Otto") 'begin - since ever
+		role.addCast("Själe") 'begin 2013
+		role.addCast("SpeedMinister~n(2014 - 2015)")
+		role.addCast("TheRob") 'begin 2015
+		role.addCast("Rumpelfreddy~n(2014)")
+		role.addCast("DerFronck") 'begin 2017
 		role.addCast("u.a. Freiwillige")
 
 		role = CreateRole("Tester", TColor.Create(160,180,250))
@@ -68,6 +69,8 @@ Type RoomHandler_Credits extends TRoomHandler
 		'role.addCast("djmetzger")
 
 		role.addCast("Basti")
+		role.addCast("DannyF")
+		role.addCast("DerFronck")
 		role.addCast("domi")
 		role.addCast("Helmut")
 		role.addCast("Kurt TV")
