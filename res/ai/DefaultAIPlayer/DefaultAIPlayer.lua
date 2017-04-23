@@ -79,12 +79,13 @@ function DefaultAIPlayer:initializePlayer()
 	self.Ventruesome = math.random(3,8)
 	--Interesse an News/Geldausgabe fuer News
 	self.NewsPriority = math.random(3,8)
+	self.ExpansionPriority = math.random(3,8)
 	--Handlungsgeschwindigkeit 2-4
 	self.BrainSpeed = math.random(2,4)
 	self.Strategy = DefaultStrategy()
 
 	-- budget saving from 10-30%
-	self.Budget.SavingParts = 0.1 + 0.05 * math.random(0,4)
+	self.Budget.SavingParts = 0.2 + 0.05 * math.random(0,4)
 	-- extra safety add-to-fixed-costs from 40-70%
 	self.Budget.ExtraFixedCostsSavingsPercentage = 0.4 + 0.10 * math.random(0,3)
 end
@@ -108,7 +109,10 @@ function DefaultAIPlayer:resume()
 	if (self.NewsPriority == 0) then
 		self.NewsPriority = 5
 	end
-	
+	if (self.ExpansionPriority == 0 or self.ExpansionPriority == nil) then
+		self.ExpansionPriority = math.random(3,8)
+	end
+
 	self:CleanUp()
 end
 

@@ -12,10 +12,10 @@ function TaskStationMap:typename()
 end
 
 function TaskStationMap:ResetDefaults()
-	self.BudgetWeight = 2
+	self.BudgetWeight = 3
 	self.BasePriority = 1
-	self.NeededInvestmentBudget = 200000
-	self.InvestmentPriority = 7
+	self.NeededInvestmentBudget = 350000
+	self.InvestmentPriority = 8
 end
 
 function TaskStationMap:Activate()
@@ -86,13 +86,13 @@ function JobAdjustStationInvestment:Prepare(pParams)
 end
 
 function JobAdjustStationInvestment:Tick()
+	debugMsg("JobAdjustStationInvestment: currentBudget=" .. self.Task.CurrentBudget .. "  neededInvestmentBudget"..NeededInvestmentBudget)
 	if (self.Task.CurrentBudget < NeededInvestmentBudget) then
 		self.Task.NeededInvestmentBudget = math.round(self.Task.NeededInvestmentBudget * 0.85 ) -- Nach jeder Überprüfung immer ein kleines bisschen günstiger.
 	end
-	
-	if (self.Task.NeededInvestmentBudget < 350000) then
-		self.Task.NeededInvestmentBudget = 350000
-	end
+
+	-- require a minimum investment
+	self.Task.NeededInvestmentBudget = math.max(400000, self.Task.NeededInvestmentBudget)
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -107,17 +107,31 @@ function JobBuyStation:typename()
 end
 
 function JobBuyStation:Prepare(pParams)
-	debugMsg("Prüfe Stationenkauf! Verfügbares Budget: " .. self.Task.CurrentBudget)
-	--debugMsg("Prüfe Stationenkauf")
-	if (self.Task.CurrentBudget < self.Task.NeededInvestmentBudget) then self:SetCancel() end
+	debugMsg("JobBuyStation: Prepare checking stations! current budget:" .. self.Task.CurrentBudget)
+	-- ignore budgets and just buy a station if there is some need
+	-- the more stations we have, the less likely this is called
+	local player = _G["globalPlayer"]
+	local ignoreBudgetChance = 100 - (8-player.ExpansionPriority)*math.min(TVT.of_getStationCount(TVT.ME)-1,10)
+	debugMsg("  ignoreBudgetChance: " ..ignoreBudgetChance)
+	if MY.GetMoney() > 1000000 and math.random(0,100) < ignoreBudgetChance then
+		self.Task.CurrentBudget = (0.35 + 0.06*player.ExpansionPriority) * MY.GetMoney()
+		debugMsg("  raised current budget to " .. self.Task.CurrentBudget .." to buy a station because 'we want it'.")
+	end
+
+	if (self.Task.CurrentBudget < self.Task.NeededInvestmentBudget) then
+		debugMsg(" Cancel ... budget lower than needed investment budget")
+		self:SetCancel()
+	end
 end
 
 function JobBuyStation:SetCancel()
-	--
+	self.Status = JOB_STATUS_DONE
+	--call parent
+	--AIJob.SetCancel(self)
 end
 
 function JobBuyStation:Tick()
-	--debugMsg("Prüfe Stationenkauf! Verfügbares Budget: " .. self.Task.CurrentBudget)
+	debugMsg("JobBuyStation: Checking stations! current budget:" .. self.Task.CurrentBudget)
 	
 	local bestOffer = nil
 	local bestAttraction = 0
@@ -125,7 +139,7 @@ function JobBuyStation:Tick()
 	for i = 1, 30 do
 		local tempStation = MY.GetStationMap().getTemporaryStation(math.random(35, 560), math.random(1, 375))
 				
-		--debugMsg("Prüfe Station " .. i .. "  " .. tempStation.pos.GetIntX() .. "/" .. tempStation.pos.GetIntY() .. " - R: " .. tempStation.getReach() .. " - Inc: " .. tempStation.getReachIncrease() .. " - Price: " .. tempStation.getPrice() .. " F: " .. (tempStation.getReachIncrease() / tempStation.getPrice()))
+		debugMsg(" - Station " .. i .. "  at " .. tempStation.pos.GetIntX() .. "," .. tempStation.pos.GetIntY() .. ".  reach: " .. tempStation.getReach() .. "  increase: " .. tempStation.getReachIncrease() .. "  price: " .. tempStation.getPrice() .. "  F: " .. (tempStation.getReachIncrease() / tempStation.getPrice()))
 
 		--filter criterias
 		--0) skip checks if there is no tempstation
@@ -142,8 +156,8 @@ function JobBuyStation:Tick()
 		--elseif tempStation.getReachIncrease() < 1500 then
 		--	tempStation = nil
 
-		--4)  reach to low (at least 40.000 required)
-		elseif tempStation.getReach() < 50000 then
+		--4)  reach to low (at least 75.000 required)
+		elseif tempStation.getReach() < 75000 then
 			tempStation = nil
 		end
 
@@ -154,7 +168,7 @@ function JobBuyStation:Tick()
 			local pricePerViewer = tempStation.getReachIncrease() / price
 			local priceDiff = self.Task.CurrentBudget - price
 			local attraction = pricePerViewer - (priceDiff / self.Task.CurrentBudget / 10)
-			--debugMsg("Attraction: " .. attraction .. "     -> " .. pricePerViewer .. " - (" .. priceDiff .. " / " .. self.Task.CurrentBudget .. " / 10)")
+			debugMsg("   attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget)
 		
 			if bestOffer == nil then
 				bestOffer = tempStation
@@ -168,19 +182,18 @@ function JobBuyStation:Tick()
 	
 	if bestOffer ~= nil then
 		local price = bestOffer.getPrice()
-		debugMsg("Kaufe Station " .. bestOffer.pos.GetIntX() .. "/" .. bestOffer.pos.GetIntY() .. " Inc: " .. bestOffer.getReachIncrease() .. " => Price: " .. price)
-		TVT.addToLog("Kaufe Station " .. bestOffer.pos.GetIntX() .. "/" .. bestOffer.pos.GetIntY() .. " Inc: " .. bestOffer.getReachIncrease() .. " => Price: " .. price)
+		debugMsg(" Buying Station at " .. bestOffer.pos.GetIntX() .. "," .. bestOffer.pos.GetIntY() .. ".  increase: " .. bestOffer.getReachIncrease() .. "  price: " .. price)
 		TVT.of_buyStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
 		self.Task:PayFromBudget(price)
 		
-		--Nächste Investitionssumme sollte etwas höher sein (Später irgendwie vom Budget abhängig machen)
-		local newBuget = math.round(((self.Task.NeededInvestmentBudget * 1.5) + (price * 2))/2)
-		if (newBuget < self.Task.NeededInvestmentBudget * 1.15) then
+		--next investment sum should be a bit bigger (TODO: make dependend from budget)
+		local newBudget = math.round(((self.Task.NeededInvestmentBudget * 1.5) + (price * 2))/2)
+		if (newBudget < self.Task.NeededInvestmentBudget * 1.15) then
 			self.Task.NeededInvestmentBudget = self.Task.NeededInvestmentBudget * 1.15
 		else
-			self.Task.NeededInvestmentBudget = newBuget
-		end		
-		debugMsg("Nächster Senderkauf bei Investitionssumme von " .. self.Task.NeededInvestmentBudget)
+			self.Task.NeededInvestmentBudget = newBudget
+		end
+		debugMsg(" Next channel buy when reaching investment budget of " .. self.Task.NeededInvestmentBudget)
 	end
 
 	self.Status = JOB_STATUS_DONE

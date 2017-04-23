@@ -27,9 +27,9 @@ function BudgetManager:ResetDefaults()
 	-- Maximum value of the budget 
 	self.BudgetMaximum = 0
 	-- Percentage of the budget to save for investments
-	self.SavingParts = 0.2
+	self.SavingParts = 0.3
 	-- Percentage to add on fixed costs "to make sure it is enough"
-	self.ExtraFixedCostsSavingsPercentage = 0.6
+	self.ExtraFixedCostsSavingsPercentage = 0.5
 end
 
 function BudgetManager:Initialize()
