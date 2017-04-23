@@ -1031,16 +1031,16 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		local minAudience:int = GetTotalMinAudienceForPlayer(playerID)
 
-		'calculate a price/CPM using the "getCPM"-function
-		'use the already rounded minAudience to avoid a raw audience of
-		'"15100" which rounds later to 16000 but calculating the cpm-blocks
-		'leads to 15 instead of 16...
-		'ATTENTION: use getTotalMinAudience() to base CPM on the rounded
-		'           value IGNORING potential targetgroup limits. This
-		'           leads to some kind of "beautified" percentage value.
-		price = GetCPM(baseValue, maxCPM, minAudience / population)
-		'multiply by amount of "1000 viewers"-blocks (ignoring targetGroups)
-		price :* Max(1, minAudience/1000)
+'calculate a price/CPM using the "getCPM"-function
+'use the already rounded minAudience to avoid a raw audience of
+'"15100" which rounds later to 16000 but calculating the cpm-blocks
+'leads to 15 instead of 16...
+'ATTENTION: use getTotalMinAudience() to base CPM on the rounded
+'           value IGNORING potential targetgroup limits. This
+'           leads to some kind of "beautified" percentage value.
+price = GetCPM(baseValue, maxCPM, minAudience / population)
+'multiply by amount of "1000 viewers"-blocks (ignoring targetGroups)
+price :* Max(1, minAudience/1000)
 		'multiply by amount of "1000 viewers"-blocks (_not_ ignoring targetGroups)
 		'price :* Max(1, getMinAudience(playerID)/1000)
 		'value cannot be higher than "maxAdContractPricePerSpot"

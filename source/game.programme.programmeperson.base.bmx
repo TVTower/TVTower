@@ -403,21 +403,21 @@ Type TProgrammePersonBase extends TGameObject
 	Method GetBaseFee:Int(jobID:int, blocks:int, channel:int=-1)
 		Select jobID
 			case TVTProgrammePersonJob.ACTOR
-				return 4000
-			case TVTProgrammePersonJob.SUPPORTINGACTOR
-				return 2000
-			case TVTProgrammePersonJob.HOST
-			    return 1000
-			case TVTProgrammePersonJob.DIRECTOR
 				return 5000
-			case TVTProgrammePersonJob.SCRIPTWRITER 
-				return 2000
-			case TVTProgrammePersonJob.MUSICIAN 
+			case TVTProgrammePersonJob.SUPPORTINGACTOR
 				return 2500
+			case TVTProgrammePersonJob.HOST
+			    return 2000
+			case TVTProgrammePersonJob.DIRECTOR
+				return 6000
+			case TVTProgrammePersonJob.SCRIPTWRITER 
+				return 3000
+			case TVTProgrammePersonJob.MUSICIAN 
+				return 3500
 			case TVTProgrammePersonJob.REPORTER 
-				return 1000
+				return 2000
 			case TVTProgrammePersonJob.GUEST 
-				return 500
+				return 1000
 			default
 				return 1000
 		End Select

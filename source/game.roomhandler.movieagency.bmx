@@ -42,9 +42,9 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Global suitcasePos:TVec2D = new TVec2D.Init(350,130)
 	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(14,25)
 	Field programmesPerLine:int	= 13
-	Field movieGoodMoneyMinimum:int = 125000
+	Field movieGoodMoneyMinimum:int = 170000
 	Field movieGoodQualityMinimum:Float = 0.15
-	Field movieCheapMoneyMaximum:int = 135000
+	Field movieCheapMoneyMaximum:int = 145000
 	Field movieCheapQualityMaximum:Float = 0.50
 
 	Global _instance:RoomHandler_MovieAgency
@@ -163,7 +163,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			'avoid "too used" licences
 			filterAuction.filters[0].relativeTopicalityMin = 0.85
 			filterAuction.filters[0].relativeTopicalityMax = -1.0
-			filterAuction.filters[0].maxTopicalityMin = 0.50
+			filterAuction.filters[0].maxTopicalityMin = 0.85
 			filterAuction.filters[0].maxTopicalityMax = -1.0
 			filterAuction.filters[0].checkTradeability = True
 			filterAuction.filters[0].requiredOwners = [TOwnedGameObject.OWNER_NOBODY]

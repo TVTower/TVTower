@@ -775,8 +775,8 @@ Type TNewsAgency
 		if newsGenreID = TVTNewsGenre.CULTURE then return 0
 
 		if level = 1 then return 10000
-		if level = 2 then return 20000
-		if level = 3 then return 35000
+		if level = 2 then return 25000
+		if level = 3 then return 50000
 		return 0
 	End Function
 

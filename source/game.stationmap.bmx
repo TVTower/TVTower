@@ -1146,7 +1146,7 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method getPrice:Int(refresh:Int=False) {_exposeToLua}
 		If price >= 0 And Not refresh Then Return price
-		price = Max( 25000, Int(Ceil(getReach() / 10000)) * 25000 )
+		price = Max( 30000, Int(Ceil(getReach() / 10000)) * 30000 )
 
 		Return price
 	End Method

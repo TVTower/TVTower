@@ -1222,6 +1222,71 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 
 		'=== FRESHNESS ===
 		'this is ~1 yrs
+		If (GetMaxTopicality() >= 0.98) Then priceMod :* 1.35
+		'this is ~2 yrs
+		If (GetMaxTopicality() >= 0.96) Then priceMod :* 1.30
+		'this is ~3 yrs
+		If (GetMaxTopicality() >= 0.93) Then priceMod :* 1.25
+
+
+		'=== QUALITY FRESHNESS ===
+		'A high quality programme is more expensive if very young.
+		'The older the programme gets, the less important is a high
+		'quality, they then all are relatively "equal"
+		local highQualityIndex:Float = 0.40 * GetQualityRaw() + 0.60 * GetQualityRaw() ^ 4
+		local highTopicalityIndex:Float = 0.30 * GetMaxTopicality() + 0.70 * GetMaxTopicality() ^ 4
+
+		priceMod :* highTopicalityIndex * highQualityIndex
+
+		'=== FLAGS ===
+		'BMovies lower the price
+		If Self.IsBMovie() then priceMod :* 0.95
+		'Cult movies increase price
+		If Self.IsCult() then priceMod :* 1.05
+		'Income generating programmes (infomercials) increase the price
+		If Self.IsPaid() then priceMod :* 1.30
+		'Live is something more expensive as it is "exclusive"
+		If Self.IsLive() then priceMod :* 1.20
+
+
+		If isType(TVTProgrammeProductType.MOVIE)
+			value = 25000 + 3000000 * priceMod
+		 'shows, productions, series...
+		Else
+			value = 15000 + 2000000 * priceMod
+		EndIf
+
+
+		'@ 0.9:
+		'variant 1: blocks-1 + x^(blocks-1)
+		'variant 2: blocks * x^(blocks-1)
+		'           variant 1                variant 2
+		'1 Block  = 0.0 + 0.9^0 = 1.00       1 * 0.9^0 = 1
+		'2 Blocks = 1.0 + 0.9^1 = 1.90       2 * 0.9^1 = 1.8
+		'3 Blocks = 2.0 + 0.9^2 = 2.81       3 * 0.9^2 = 2.43
+		'4 Blocks = 3.0 + 0.9^3 = 3.73       4 * 0.9^3 = 2.92
+		'5 Blocks = 4.0 + 0.9^4 = 4.66       5 * 0.9^4 = 3.28
+		'9 Blocks = 8.0 + 0.9^8 = 8.43       9 * 0.9^8 = 3.87
+		'value :* (GetBlocks()-1 + (0.90^(GetBlocks()-1)))
+		value :* GetBlocks() * 0.92^(GetBlocks()-1)
+
+
+		'=== INDIVIDUAL PRICE ===
+		'general data price mod
+		value :* GetModifier("price")
+
+		return value		
+	End Method
+
+
+
+	Method GetPriceOld:int(playerID:int)
+		Local value:int = 0
+		local priceMod:Float = GetQuality() 'this includes age-adjustments
+
+
+		'=== FRESHNESS ===
+		'this is ~1 yrs
 		If (GetMaxTopicality() >= 0.98) Then priceMod :* 1.30
 		'this is ~2 yrs
 		If (GetMaxTopicality() >= 0.96) Then priceMod :* 1.25
@@ -1235,15 +1300,6 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		'quality, they then all are relatively "equal"
 		local highQualityIndex:Float = 0.38 * GetQualityRaw() + 0.62 * GetQualityRaw() ^ 4
 		local highTopicalityIndex:Float = 0.25 * GetMaxTopicality() + 0.75 * GetMaxTopicality() ^ 4
-	rem
-	local found:int = 0
-	if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0
-		print GetTitle()
-		print "priceMod           : "+priceMod
-		print "highTopicalityIndex: "+GetMaxTopicality()+"  ->  " + highTopicalityIndex
-		print "highQualityIndex   : "+GetQualityRaw()+"  ->  " + highQualityIndex
-	endif
-	endrem
 
 		priceMod :* highTopicalityIndex * highQualityIndex
 
@@ -1254,7 +1310,6 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		If Self.IsCult() then priceMod :* 1.05
 		'Income generating programmes (infomercials) increase the price
 		If Self.IsPaid() then priceMod :* 1.30
-
 
 
 		If isType(TVTProgrammeProductType.MOVIE)
@@ -1282,23 +1337,9 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		'=== INDIVIDUAL PRICE ===
 		'general data price mod
 		value :* GetModifier("price")
-		
 
-
-		'print GetTitle()+"  value1: "+value + "  outcome:"+GetOutcome()+"  review:"+GetReview() + " maxTop:"+GetMaxTopicality()+" year:"+GetYear()
-rem
-if GetTitle().Find("Brenz") >= 0 or GetTitle().Find("Dschungel") >= 0
-	found :+1
-	print "block mod          : "+(GetBlocks() * 0.90^(GetBlocks()-1))
-	print "end price          : "+value
-	print "------------------------------------"
-
-	if found=2 then end
-endif
-endrem
 		return value		
 	End Method
-
 
 	'override
 	Method GetMaxTopicality:Float()
@@ -1325,7 +1366,7 @@ endrem
 		endif
 
 		'modifiers could increase or decrease influences of age/aired/...
-		local ageInfluence:Float = age * GetModifier("topicality::age")
+		local ageInfluence:Float = 1.5 * age * GetModifier("topicality::age")
 		local timesBroadcastedInfluence:Float = timesBroadcasted * GetModifier("topicality::timesBroadcasted")
 		'by default thes habe no influence but programmes like sport matches
 		'should loose a big bit of max topicality after the first time
@@ -1410,8 +1451,8 @@ endrem
 	Method GetQuality:Float() {_exposeToLua}
 		Local quality:Float = 1.0
 
-		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
-		Local age:Float = 0.01 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - GetYear()) )
+		'the older the less ppl want to watch - 1 year = 0.985%, 2 years = 0.97%...
+		Local age:Float = 0.015 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - GetYear()) )
 		quality :* Max(0.20, age)
 
 
@@ -1423,8 +1464,7 @@ endrem
 		'   quality no matter how many times it got aired
 		'-> a movie with 0% base quality will cut to up to 75% of that
 		'   resulting in <= 25% quality
-		quality :* 0.25 * GetQualityRaw() + 0.75 * GetQualityRaw() * GetTopicality() ^ 2
-
+		quality :* GetQualityRaw() * (0.30 + 0.70 * GetTopicality()^2)
 
 		Return MathHelper.Clamp(quality, 0.01, 1.0)
 	End Method

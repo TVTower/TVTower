@@ -813,8 +813,8 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	'returns price based on a "per 5 million" approach
 	Method GetPrice:Int() {_exposeToLua}
-		'price ranges from 0 to ~2000
-		Return Max(0, 4000 * GetQuality() * GetModifier("price") )
+		'price ranges from 0 to ~7500
+		Return Max(0, 7500 * GetQuality() * GetModifier("price") )
 	End Method
 End Type
 

@@ -1589,6 +1589,54 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
+
+	Method GetPriceForPlayerOld:int(playerID:int)
+		Local value:Float
+
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData()
+			value = GetData().GetPriceOld(playerID)
+		else
+			'licence for a package or series
+			For local licence:TProgrammeLicence = eachin subLicences
+				value :+ licence.GetPriceForPlayerOld(playerID)
+			Next
+			value :* 0.90
+		endif
+
+
+		'=== INDIVIDUAL PRICE ===
+		'individual licence price mod (eg. "special collection discount")
+		value :* GetModifier("price")
+
+		'=== AUCTION PRICE ===
+		'if this licence was won in an auction, this price is modifying
+		'the real one
+		value :* GetModifier("auctionPrice")
+
+		'=== DIFFICULTY ===
+		'eg. "auctions" set this flag
+		if not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY)
+			value :* GetPlayerDifficulty(string(playerID)).programmePriceMod
+		endif
+
+		'=== BEAUTIFY ===
+		'round to next "1000" block
+		'value = Int(Floor(value / 1000) * 1000)
+		value = TFunctions.RoundToBeautifulValue(value)
+
+
+		Return value
+	End Method
+
+
+	'param needed as AI requests price using this method, and this also
+	'for not-yet-owned licences
+	Method GetPriceOld:Int(playerID:int) {_exposeToLua}
+		Return GetPriceForPlayerOld(playerID)
+	End Method
+
+
 	Method GetTimesBroadcasted:int(owner:int = -1)
 		if GetSubLicenceCount() = 0 then return data.GetTimesBroadcasted(owner)
 
@@ -2075,7 +2123,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			contentY :+ 12	
 			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (alle)", contentX + 5, contentY)
 			contentY :+ 12	
-			skin.fontNormal.draw("Preis: "+GetPriceForPlayer(useOwner), contentX + 5, contentY)
+			skin.fontNormal.draw("Preis: "+MathHelper.DottedValue(GetPriceForPlayer(useOwner))+" (old:"+MathHelper.DottedValue(GetPriceForPlayerOld(useOwner))+")", contentX + 5, contentY)
 			contentY :+ 12
 			skin.fontNormal.draw("Trailer: " + data.GetTimesTrailerAiredSinceLastBroadcast(useOwner) +" (total: "+ data.GetTimesTrailerAired()+")", contentX + 5, contentY)
 			if data.GetTrailerMod(useOwner, False)

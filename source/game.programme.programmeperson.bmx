@@ -365,14 +365,14 @@ Type TProgrammePerson extends TProgrammePersonBase
 				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
 
 				if jobID = TVTProgrammePersonJob.ACTOR
-					baseFee = 7500
-					dynamicFee = 35000 * attributeMod
+					baseFee = 9000
+					dynamicFee = 38000 * attributeMod
 				elseif jobID = TVTProgrammePersonJob.SUPPORTINGACTOR
-					baseFee = 5000
-					dynamicFee = 12500 * attributeMod
+					baseFee = 6000
+					dynamicFee = 14000 * attributeMod
 				elseif jobID = TVTProgrammePersonJob.HOST
-					baseFee = 2500
-					dynamicFee = 17500 * attributeMod
+					baseFee = 3000
+					dynamicFee = 18500 * attributeMod
 				endif
 
 			case TVTProgrammePersonJob.DIRECTOR,..
@@ -390,11 +390,11 @@ Type TProgrammePerson extends TProgrammePersonBase
 				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
 
 				if jobID = TVTProgrammePersonJob.DIRECTOR
-					baseFee = 12500
-					dynamicFee = 20000 * attributeMod
+					baseFee = 14500
+					dynamicFee = 22500 * attributeMod
 				elseif jobID = TVTProgrammePersonJob.SCRIPTWRITER
 					baseFee = 5000
-					dynamicFee = 5000 * attributeMod
+					dynamicFee = 7500 * attributeMod
 				endif
 
 			case TVTProgrammePersonJob.MUSICIAN
@@ -409,8 +409,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'xp: up to "100% of XP"
 				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
 
-				baseFee = 7500
-				dynamicFee = 22500 * attributeMod
+				baseFee = 9000
+				dynamicFee = 24500 * attributeMod
 
 			case TVTProgrammePersonJob.REPORTER
 				'attributes: 0 - 6.0
@@ -424,8 +424,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'xp: up to "100% of XP"
 				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
 
-				baseFee = 3000
-				dynamicFee = 5000 * attributeMod
+				baseFee = 3500
+				dynamicFee = 6500 * attributeMod
 								
 			case TVTProgrammePersonJob.GUEST
 				'attributes: 0 - 1.9
@@ -440,7 +440,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 				xpMod :+ 0.5 * GetExperiencePercentage(jobID)
 
 				baseFee = 1500
-				dynamicFee = 4500 * attributeMod
+				dynamicFee = 5500 * attributeMod
 			default
 				'print "FEE for jobID="+jobID+" not defined."
 				'dynamic fee: 0 - 380
@@ -455,8 +455,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'xp: up to "25% of XP"
 				xpMod :+ 0.25 * GetExperiencePercentage(jobID)
 
-				baseFee = 2000
-				dynamicFee = 6000 * attributeMod
+				baseFee = 2500
+				dynamicFee = 7000 * attributeMod
 		End Select
 
 		local fee:float = baseFee
