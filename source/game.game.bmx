@@ -772,7 +772,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				local licenceValue:int = 0
 				For Local list:TList = EachIn [pc.GetSingleLicences(), pc.GetSeriesLicences(), pc.GetCollectionLicences() ]
 					For local l:TProgrammeLicence = EachIn list
-						licenceValue :+ l.GetPrice()
+						licenceValue :+ l.GetPrice(l.owner)
 					Next
 				Next
 				'convert that value into cash (adjusted by the ratio)
@@ -927,11 +927,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 					startHour :- 24
 					startDay :+ 1
 				endif
-			endif			
-
+			endif
 			'adjust opener live-time
-			programmeData.releaseTime = GetWorldTime().MakeTime(GetWorldTime().GetYear(), startDay - GetWorldTime().GetStartDay(), startHour, 5)
-			
+			programmeData.releaseTime = GetWorldTime().MakeTime(0, startDay, startHour, 5)
 			Local broadcast:TProgramme = TProgramme.Create(currentLicence)
 			playerPlan.SetProgrammeSlot(broadcast, startDay, startHour )
 			'disable control of that programme
