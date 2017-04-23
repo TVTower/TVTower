@@ -347,6 +347,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		local player:TPlayer = GetPlayer(playerID)
 		if not player then return
 
+		'emit an event before player data gets reset (money, name ...)
+		EventManager.triggerEvent( TEventSimple.Create("Game.SetPlayerBankruptBegin", new TData.AddNumber("playerID", playerID), self, player) )
+
 		'inform all AI players about the bankruptcy (eg. to clear their stats)
 		for local p:TPlayer = EachIn GetPlayerCollection().players
 			if not p.IsLocalAI() or not p.PlayerAI then continue
@@ -413,6 +416,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'disable figure control (disable changetarget)
 			player.GetFigure()._controllable = False
 		endif
+
+		'now names might differ
+		EventManager.triggerEvent( TEventSimple.Create("Game.SetPlayerBankruptFinish", new TData.AddNumber("playerID", playerID), self, player) )
 	End Method
 
 

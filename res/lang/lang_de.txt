@@ -1037,3 +1037,10 @@ ROOMAGENCY_SIGNING_WILL_COST_A_SINGLE_PAYMENT_OF_X = Bei Unterzeichnung wird ein
 
 ROOMAGENCY_ROOM_CURRENTLY_NOT_AVAILABLE_BUT_THIS_MIGHT_CHANGE1 = Noch ist dieser Raum vermietet, aber mit einem nettgemeintem Ratschlag könnte der Mieter den Raum freigeben.
 ROOMAGENCY_ROOM_CURRENTLY_NOT_AVAILABLE_BUT_THIS_MIGHT_CHANGE2 = Noch ist dieser Raum vermietet, mit ein wenig Überzeugungsarbeit könnte der Mieter aber durchaus gewillt sein, den Raum freizugeben.
+
+PLAYER_WENT_BANKRUPT = Spielerbankrott
+PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT1 = Spieler %X% vom Sender %Y% wirtschaftete wohl nicht gut genug und ging bankrott.
+PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT2 = Spieler %X% vom Sender %Y% ist bankrott und hat hoffentlich einen Notfallplan.
+PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT3 = Sender %Y% ging bankrott. Sendermanager %X% wurde wegen Inkompetenz gefeuert.
+PLAYER_WILL_START_AGAIN = Spieler wird erneut starten.
+AI_WILL_TAKE_OVER_THIS_PLAYER = KI wird diesen Spieler übernehmen.

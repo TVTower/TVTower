@@ -1019,3 +1019,10 @@ ROOMAGENCY_SIGNING_WILL_COST_A_SINGLE_PAYMENT_OF_X = Signing will cost a single 
 
 ROOMAGENCY_ROOM_CURRENTLY_NOT_AVAILABLE_BUT_THIS_MIGHT_CHANGE1 = This room is still rented, but with a nice advice the tenant could release the room.
 ROOMAGENCY_ROOM_CURRENTLY_NOT_AVAILABLE_BUT_THIS_MIGHT_CHANGE2 = This room is still rented, but with a little persuasion, the tenant might well be willed to cancel this room rental.
+
+PLAYER_WENT_BANKRUPT = Player went bankrupt.
+PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT1 = Player %X% of channel %Y% did not play well enough and went bankrupt.
+PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT2 = Player %X% of channel %Y% hopefully has a contingency plan as they just went bankrupt.
+PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT3 = Channel %Y% went bankrupt. Old manager %X% got fired for incompetence.
+PLAYER_WILL_START_AGAIN = Player will start again.
+AI_WILL_TAKE_OVER_THIS_PLAYER = AI will take over this player.

@@ -3962,6 +3962,7 @@ Type GameEvents
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnBegin", PlayersOnBeginGame) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("Time.OnSecond", Time_OnSecond) ]
 
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.SetPlayerBankruptBegin", PlayerOnSetBankrupt) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", PlayerFinanceOnChangeMoney) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerFinance.onTransactionFailed", PlayerFinanceOnTransactionFailed) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerBoss.onCallPlayer", PlayerBoss_OnCallPlayer) ]
@@ -4363,7 +4364,8 @@ Type GameEvents
 			GetGame().SendSystemMessage("  |b|bossmood|/b| [player#] [+- mood %]")
 			GetGame().SendSystemMessage("  |b|image|/b| [player#] [+- image %]")
 			GetGame().SendSystemMessage("  |b|terrorlvl|/b| [terrorgroup# 0 or 1] [level#]")
-			GetGame().SendSystemMessage("  |b|givelicence|/b| [player#] [GUID / GUID portion / devlicence#]")
+			GetGame().SendSystemMessage("  |b|givelicence|/b| [player#] [GUID / GUID portion / devlicence#] [oay=1, free=0]")
+			GetGame().SendSystemMessage("  |b|givescript|/b| [player#] [GUID / GUID portion / devscript#] [pay=1, free=0]")
 			GetGame().SendSystemMessage("  |b|sendnews|/b| [GUID / GUID portion / devnews#] [now=1, normal=0]")
 		End Function
 		
@@ -4432,6 +4434,42 @@ Type GameEvents
 			If player.isLocalAI() Then player.PlayerAI.CallOnGameBegins()
 		Next
 		Return True
+	End Function
+
+
+
+	Function PlayerOnSetBankrupt:Int(triggerEvent:TEventBase)
+		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
+
+	
+		Local toast:TGameToastMessage = New TGameToastMessage
+		'show it for some seconds
+		toast.SetLifeTime(10)
+		toast.SetMessageType(1) 'attention
+		toast.SetMessageCategory(TVTMessageCategory.MISC)
+		toast.SetCaption(GetLocale("PLAYER_WENT_BANKRUPT"))
+
+		local t:string
+		t :+ GetRandomLocale("PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT").Replace("%X%", "|b|"+player.name+"|/b|").Replace("%Y%", "|b|"+player.channelName+"|/b|")
+		t :+ " "
+		if not player.isHuman()
+			t :+ GetLocale("PLAYER_WILL_START_AGAIN")
+		else
+			t :+ GetLocale("AI_WILL_TAKE_OVER_THIS_PLAYER")
+		endif
+		toast.SetText(t)
+
+		toast.GetData().AddNumber("playerID", player.playerID)
+
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+
+		'only interest in other players
+		if not player.IsLocalHuman()
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		endif
 	End Function
 
 
