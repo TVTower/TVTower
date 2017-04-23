@@ -23,6 +23,7 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 		easy.programmePriceMod = 0.75
 		easy.roomRentMod = 0.80
 		easy.advertisementProfitMod = 1.25
+		easy.adjustRestartingPlayersToOtherPlayersMod = 1.25
 
 
 		local normal:TPlayerDifficulty = new TPlayerDifficulty
@@ -33,6 +34,7 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 		normal.programmePriceMod = 1.0
 		normal.roomRentMod = 1.0
 		normal.advertisementProfitMod = 1.0
+		normal.adjustRestartingPlayersToOtherPlayersMod = 1.0
 
 
 		local hard:TPlayerDifficulty = new TPlayerDifficulty
@@ -43,6 +45,7 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 		hard.programmePriceMod = 1.1
 		hard.roomRentMod = 1.15
 		hard.advertisementProfitMod = 0.9
+		hard.adjustRestartingPlayersToOtherPlayersMod = 0.85
 
 
 		Add(easy)
@@ -94,6 +97,7 @@ Type TPlayerDifficulty extends TGameObject
 	Field programmePriceMod:Float = 1.0
 	Field roomRentmod:Float = 1.0
 	Field advertisementProfitMod:Float = 1.0
+	Field adjustRestartingPlayersToOtherPlayersMod:Float = 1.0
 
 	Method GenerateGUID:string()
 		return "playerdifficulty-"+id

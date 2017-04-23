@@ -46,6 +46,7 @@ Import BRL.Reflection
 Import BRL.Retro
 Import "base.util.input.bmx" 		'Mousemanager
 Import "base.util.rectangle.bmx"	'TRectangle
+Import "base.util.mersenne.bmx"
 Import "base.util.math.bmx"
 
 'collection of useful functions
@@ -104,6 +105,30 @@ Type THelper
 	End Function
 
 
+	Function CountMap:int(map:TMap)
+		local c:int = 0
+		for local o:object = EachIn map.values()
+			c :+ 1
+		next
+		return c
+	End Function
+
+
+	Function ShuffleList:TList(list:TList)
+		Local objArr:Object[] = list.ToArray()
+		Local j:Int
+		Local o:Object
+		'loop over all indexes and switch each of them with a random
+		'target position
+		For Local i:Int = objArr.length-1 To 0 Step -1
+			j = RandRange(0, objArr.length-1)
+			o = objArr[i]
+			objArr[i] = objArr[j]
+			objArr[j] = o
+		Next
+		return new TList.FromArray(objArr)
+	End Function
+	 
 
 	'returns whether the mouse is within the given rectangle coords
 	Function MouseIn:int(x:Int,y:Int, w:Int,h:Int)

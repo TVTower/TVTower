@@ -397,14 +397,13 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'only start a new player if it is a local ai player
 		if player.IsLocalAI()
-		print "reset"
 			'store time of game over
 			player.bankruptcyTimes :+ [ Long(GetWorldTime().GetTimeGone()) ]
 
 			'reset everything of that player
 			ResetPlayer(playerID)
 			'prepare new player data (take credit, give starting programme...)
-			PreparePlayerStep1(playerID)
+			PreparePlayerStep1(playerID, True)
 			PreparePlayerStep2(playerID)
 		endif
 
@@ -613,7 +612,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 	'prepare player basics
-	Method PreparePlayerStep1(playerID:int)
+	Method PreparePlayerStep1(playerID:int, isRestartingPlayer:int = False)
 		local player:TPlayer = GetPlayer(playerID)
 		'create player if not done yet
 		if not player
@@ -681,6 +680,78 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		map.AddStation( s, False )
 
+
+		'add some more stations at positions of other players stations
+		if isRestartingPlayer and GameRules.adjustRestartingPlayersToOtherPlayers
+			'- fetch average broadcast area
+			'- add all stations to a list and merge "similar ones"
+			'- shuffle them so there is a "random list" to traverse through
+			'- select stations from that list to a new one
+			'  - if there is no station "near it" in the new list already
+			'  - until "average broadcast area" is reached
+			'  - if list end is reached before: add some random stations
+			'    until avg is reached
+
+			local broadcastAreaToDo:Int = GetStationMapCollection().GetAverageReach()
+			'adjust by quote (and difficulty)
+			broadcastAreaToDo :* GameRules.adjustRestartingPlayersToOtherPlayersQuote * difficulty.adjustRestartingPlayersToOtherPlayersMod
+
+			'subtract our newly added station
+			broadcastAreaToDo :- s.GetReach()
+
+			'1000: avoid adding a new station for a handful of people
+			if broadcastAreaToDo > 1000
+				'- add all stations
+				local allStations:TMap = new TMap
+				For local i:int = 1 to 4
+					if i = playerID then continue
+					
+					local m:TStationMap = GetStationMap(i)
+					For local s:TStation = EachIn m.stations
+						'decrease details by 10 to avoid "nearly identical"
+						allStations.Insert(int(s.pos.x/10)*10+","+int(s.pos.y/10)*10, s)
+					Next
+				Next
+				
+				'- shuffle them
+				local randomStationList:TList = new TList
+				For local s:TStation = EachIn allStations.Values()
+					randomStationList.AddLast(s)
+				Next
+				randomStationList = THelper.ShuffleList(randomStationList)
+
+				'add stations until broadcast area is reached
+				For local s:TStation = EachIn randomStationList
+					'finished if there is nothing more to do
+					if broadcastAreaToDo < 1000 then exit
+					
+					local newPos:TVec2D = s.pos.Copy()
+					local increase:int = map.CalculateAudienceIncrease(Int(newPos.x), Int(newPos.y))
+
+					'ignore stations with too low reachincrease
+					if increase < 10000 then continue
+
+					'print "add station at: "+ int(newPos.x)+","+int(newPos.y)+ "  increase: "+ increase
+					'add it at the same spot (or random offset?)
+					map.AddStation( TStation.Create( newPos,-1, GetStationMapCollection().stationRadius, playerID ), False)
+
+					broadcastAreaToDo :- increase
+				Next
+				'print "broadcastAreaToDo left: " + broadcastAreaToDo
+
+				'did not find enough stations?
+				'add more random ones
+				'TODO
+				rem
+				While broadcastAreaToDo > 1000
+					For local i:int = 0 to 10
+						
+					Next
+				Wend
+				endrem
+			endif
+		endif
+
 		GetStationMapCollection().Update()
 
 
@@ -688,9 +759,40 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'inform finance about new startday
 		GetPlayerFinanceCollection().SetPlayerStartDay(playerID, GetWorldTime().GetDay())
 		if not GetPlayerFinance(playerID) then print "finance "+playerID+" failed."
-		if difficulty.startMoney > 0 
-			GetPlayerFinance(playerID).EarnGrantedBenefits( difficulty.startMoney )
+
+		local addMoney:int = difficulty.startMoney
+		if isRestartingPlayer and GameRules.adjustRestartingPlayersToOtherPlayers
+			local avgMoney:int = 0
+			For local i:int = 1 to 4
+				if i = playerID then continue
+				avgMoney :+ GetPlayerFinance(i).GetMoney()
+
+				'add monetary value of programme licences
+				local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
+				local licenceValue:int = 0
+				For Local list:TList = EachIn [pc.GetSingleLicences(), pc.GetSeriesLicences(), pc.GetCollectionLicences() ]
+					For local l:TProgrammeLicence = EachIn list
+						licenceValue :+ l.GetPrice()
+					Next
+				Next
+				'convert that value into cash (adjusted by the ratio)
+				avgMoney :+ licenceValue * GameRules.adjustRestartingPlayersToOtherPlayersPropertyCashRatio
+			Next
+			avgMoney :/ 3 '3 to ignore our player
+
+			'only add if avg is not lower than start money (avoids
+			'bankrupt players at game start to have more than "startmoney"
+			'because of Quote*Mod > 1.0
+			if avgMoney > addMoney
+				'adjust by quote (and difficulty)
+				avgMoney :* GameRules.adjustRestartingPlayersToOtherPlayersQuote * difficulty.adjustRestartingPlayersToOtherPlayersMod
+				if avgMoney > addMoney then addMoney = avgMoney
+			endif
+			'print "avgMoney = " + avgMoney
 		endif
+
+		
+		if addMoney > 0 then GetPlayerFinance(playerID).EarnGrantedBenefits( addMoney )
 		if difficulty.startCredit > 0 
 			GetPlayerFinance(playerID).TakeCredit( difficulty.startCredit )
 		endif
@@ -1002,7 +1104,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'first create basics (player, finances, stationmap)
 		For local playerID:int = 1 to 4
-			PreparePlayerStep1(playerID)
+			PreparePlayerStep1(playerID, False)
 		Next
 		'then prepare plan, news abonnements, ...
 		'this is needed because adcontracts use average reach of

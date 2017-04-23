@@ -10,6 +10,14 @@ Type TGameRules {_exposeToLua}
 	'how many contracts a player gets on a new game
 	Field startAdAmount:Int = 3
 
+	'if a player goes bankrupt does the restarting one get stations
+	'and money according to the average of other players?
+	Field adjustRestartingPlayersToOtherPlayers:int = True
+	Field adjustRestartingPlayersToOtherPlayersQuote:Float = 1.0
+	'percentage of a players properties (programme licences, scripts ..) value
+	'which is converted into money
+	Field adjustRestartingPlayersToOtherPlayersPropertyCashRatio:Float = 0.25
+
 	'how much love with betty is needed so she would give you the master
 	'key for all the rooms in the building
 	Field bettyLoveToGetMasterKey:Float = 0.75
