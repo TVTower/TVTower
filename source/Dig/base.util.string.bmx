@@ -109,6 +109,56 @@ Type StringHelper
 		local result:string[]
 		local readingPlaceHolder:int = False
 		local currentPlaceHolder:string = ""
+		local escapeCharCode:string = Asc("\")
+		local escapeCharFound:int = False
+		local placeHolderCharCode:int = Asc(placeHolderChar)
+		local charCode:int
+		For local i:int = 0 until text.length
+			charCode = text[i]
+
+			'found the start of an escape char
+			if charCode = escapeCharCode and not escapeCharFound
+				escapeCharFound = True
+				continue
+			endif
+
+			'found a placeholder start or end
+			If charCode = placeHolderCharCode and not escapeCharFound
+				'start
+				if not readingPlaceHolder
+					readingPlaceHolder = True
+					if stripPlaceHolderChar then continue
+				'end (and extract it)
+				else
+					if stripPlaceHolderChar
+						result :+ [currentPlaceHolder]
+					else
+						result :+ [currentPlaceHolder+placeholderChar]
+					endif
+					readingPlaceHolder = False
+					currentPlaceHolder = ""
+
+					continue
+				endif
+			EndIf
+
+			if readingPlaceHolder
+				currentPlaceHolder :+ chr(charCode)
+			endif
+
+			escapeCharFound = False
+		Next
+
+		return result
+	End Function
+
+	
+	'extracts and returns all placeholders in a text
+	'ex.: Hi my name is %NAME%
+	Function ExtractPlaceholdersOld:string[](text:string, placeHolderChar:string="%", stripPlaceHolderChar:int = False)
+		local result:string[]
+		local readingPlaceHolder:int = False
+		local currentPlaceHolder:string = ""
 		local char:string
 		'char for grouping placeholders: "%person:name%"
 		local splitterChar:int = Asc(":")

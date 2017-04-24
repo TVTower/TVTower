@@ -2,6 +2,8 @@ SuperStrict
 Import "Dig/base.util.scriptexpression.bmx"
 Import Brl.Map
 
+'initialize on import
+GetGameScriptExpression()
 
 Type TGameScriptExpression extends TScriptExpression
 	Global variableHandlers:TMap = CreateMap()
@@ -36,10 +38,12 @@ endrem
 	Method HandleVariable:string(variable:string, resultElementType:int var)
 		local wrapper:TGameScriptExpressionFunctionWrapper = TGameScriptExpressionFunctionWrapper(variableHandlers.ValueForKey(variable.ToLower()))
 		if wrapper
+			_lastCommandErrored = False
 			return wrapper.func(variable, null, resultElementType)
 		else
 			_errorCount :+1
 			_error :+ "Cannot handle variable ~q"+variable+"~q. Defaulting to 0.~n"
+			_lastCommandErrored = True
 			'print _error
 
 			return "0"
@@ -51,10 +55,12 @@ endrem
 	Method HandleFunction:string(variable:string, params:string[], resultElementType:int var)
 		local wrapper:TGameScriptExpressionFunctionWrapper = TGameScriptExpressionFunctionWrapper(variableHandlers.ValueForKey(variable.ToLower()))
 		if wrapper
+			_lastCommandErrored = False
 			return wrapper.func(variable, params, resultElementType)
 		else
 			_errorCount :+1
 			_error :+ "Cannot handle function ~q"+variable+"~q. Defaulting to 0.~n"
+			_lastCommandErrored = True
 			'print _error
 
 			return "0"

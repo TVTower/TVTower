@@ -75,8 +75,8 @@
 				<en>%FOOD% for %MEALTIME%</en>
 			</title>
 			<description>
-				<de>%ROLE1% ist %JOB1% und %ACTION% %ROLENAME2%, %JOB2%. %FUNNY% Komödie.</de>
-				<en>%ROLE1% is %JOB1% and %ACTION% %ROLENAME2%, %JOB2%. %FUNNY% comedy.</en>
+				<de>%NAMEWOMAN% ist %JOB1% und %ACTION% %NAMEMAN%, %JOB2%. %FUNNY% Komödie.</de>
+				<en>%NAMEWOMAN% is %JOB1% and %ACTION% %NAMEMAN%, %JOB2%. %FUNNY% comedy.</en>
 			</description>
 
 			<variables>
@@ -104,6 +104,12 @@
 					<de>Urwitzige|Liebevolle|Turbulente|Romantische|Traurige|Überraschende</de>
 					<en>Hilarious|Loving|Turbulent|Romantic|Melancholy|Surprising</en>
 				</funny>
+				<namewoman>
+					<de>%PERSONGENERATOR_NAME(unk,2)%</de>
+				</namewoman>
+				<nameman>
+					<de>%PERSONGENERATOR_LASTNAME(unk,1)%</de>
+				</nameman>
 			</variables>
 
 			<jobs>
@@ -118,7 +124,7 @@
 
 			<genres maingenre="15" subgenres="5" />
 			<blocks min="2" max="3" slope="30" />
-			<price min="8000" max="10000" slope="60" />
+			<price min="12000" max="17000" slope="60" />
 			<potential min="50" max="70" slope="45" />
 			<outcome min="25" max="35" slope="40" />
 			<review min="45" max="65" slope="40" />
@@ -138,22 +144,22 @@
 
 			<variables>
 				<object>
-					<de>Cannons|Guns|Ropes|Knifes|Jaws|Dynamite</de>
+					<de>Cannons|Guns|Ropes|Knifes|Jaws|Dynamite|Bones</de>
 				</object>
 				<adjective>
 					<de>Flying|Burning|Bloody|Rusty|Explosive|Violent|Cruel|Cool|Gangster|Red|Guilty</de>
 				</adjective>
 				<job>
-					<de>Ex-Cop|Feuerwehrmann|Chefarzt|Bestatter|Grundschullehrer</de>
-					<en>a landscapist|an AA|a hairdresser for women</en>
+					<de>Ex-Cop|Feuerwehrmann|Chefarzt|Bestatter|Grundschullehrer|Klimaforscher|Paläontologe</de>
+					<en>a landscapist|an AA|a hairdresser for women|climate researcher|paleontologist</en>
 				</job>
 				<action>
-					<de>kämpft gegen|bekämpft|rebelliert gegen|unterstützt widerwillig</de>
-					<en>fights|battles|assists|reluctantly supports</en>
+					<de>kämpft gegen|bekämpft|rebelliert gegen|unterstützt widerwillig|unterstützt gutgläubig</de>
+					<en>fights|battles|assists|reluctantly supports|supports trustfully</en>
 				</action>
 				<action2>
-					<de>entführen|essen|zum Mond schießen|als Geisel nehmen</de>
-					<en>kidnap|eat|sky rocket|hostage</en>
+					<de>entführen|essen|zum Mond schießen|als Geisel nehmen|mit einem Klon ersetzen</de>
+					<en>kidnap|eat|sky rocket|hostage|clone</en>
 				</action2>
 				<enemy>
 					<de>ein mexikanisches Drogenkartell|eine geheime CIA-Gruppierung|Außerirdische|eine verwirrte Sekte|die eigene Familie|Piraten</de>
@@ -200,12 +206,12 @@
 					<de>2|3|4|5</de>
 				</number>
 				<object>
-					<de>Idioten|Trottel|Deppen|Gangster|Schwerenöter|Polizisten</de>
-					<en>Idiots|Fools|Dorks|Gangster|Charmer|Policemen</en>
+					<de>Idioten|Trottel|Deppen|Gangster|Schwerenöter|Polizisten|Feuerwehrmänner|Politiker</de>
+					<en>Idiots|Fools|Dorks|Gangster|Charmer|Policemen|Firefighters|Politicians</en>
 				</object>
 				<action>
-					<de>auf Tour|brechen aus|tanken voll|und die Liebe...|suchen Krawall</de>
-					<en>on tour|breaking out|topping off|and the love...|looking for affray</en>
+					<de>auf Tour|brechen aus|tanken voll|und die Liebe...|suchen Krawall|schenken ein und teilen aus</de>
+					<en>on tour|breaking out|topping off|and the love...|looking for affray|come clean and mete out</en>
 				</action>
 			</variables>
 
@@ -241,15 +247,15 @@
 
 			<variables>
 				<woman>
-					<de>Julie|Anne|Cecille|Verona|Ludmilla|Barbarelle|Susan|Penelope</de>
+					<de>%PERSONGENERATOR_FIRSTNAME(de,2)%|%PERSONGENERATOR_FIRSTNAME(es,2)%|%PERSONGENERATOR_FIRSTNAME(unk,2)%|Julie|Anne|Cecille|Verona|Ludmilla|Barbarelle|Susan|Penelope</de>
 				</woman>
 				<action>
 					<de>verführt den|umgarnt den|turtelt mit dem|bezirzt den</de>
 					<en>ensnares the|enmeshes the|whispers sweet nothings to the|bewitches the</en>
 				</action>
 				<man>
-					<de>Mann ihrer Träume|Abt|Lehrer|Professor|Chef</de>
-					<en>man of her dreams|abbot|teacher|professor|boss</en>
+					<de>Mann ihrer Träume|Abt|Lehrer|Professor|Chef|Untermieter|Tortenbäcker</de>
+					<en>man of her dreams|abbot|teacher|professor|boss|roomer|baker</en>
 				</man>
 			</variables>
 
@@ -356,8 +362,8 @@
 					<en>A bunch of|The hillbillie-|Crazy|The frenzy|Bavarian|Virtuous|Pious|Brawly</en>
 				</attribute>
 				<object>
-					<de>Waschweiber|Drag-Queens|Schwerenöter|Polizisten|Rettungsschwimmer|Clowns|Krankenpfleger|Stripper</de>
-					<en>fishwives|drag-queens|charmer|policemen|lifeguards|clowns|nurses|strippers</en>
+					<de>Waschweiber|Drag-Queens|Schwerenöter|Polizisten|Rettungsschwimmer|Clowns|Krankenpfleger|Stripper|Feuerwehrmänner|Nonnen</de>
+					<en>fishwives|drag-queens|charmer|policemen|lifeguards|clowns|nurses|strippers|firefighters|Nuns</en>
 				</object>
 				<jokes>
 					<de>Gags am laufenden Band.|Treffsichere Pointen.|Unterhaltung pur.||</de>

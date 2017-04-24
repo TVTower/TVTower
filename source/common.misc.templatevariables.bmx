@@ -3,6 +3,7 @@ Import Brl.Map
 Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.mersenne.bmx"
 Import "Dig/base.util.string.bmx"
+Import "Dig/base.util.scriptexpression.bmx"
 Import "game.gameinformation.base.bmx" 'to access worldtime
 
 
@@ -99,16 +100,30 @@ Type TTemplateVariables
 		'cityname => %STATIONMAP:RANDOMCITY%, so only "cityname" contains
 		'a random city then
 
-		'check gameinformation
+		'check gameinformation or script expressions
 		if result and result.Get().Find("%") >= 0
-			local gameinformationResult:string = string(GetGameInformation(result.Get().Replace("%", ""), ""))
-			'only replace if there was a valid gameinformation returned
-			if gameinformationResult <> "UNKNOWN_INFORMATION"
+			local placeHolders:string[] = StringHelper.ExtractPlaceholders(result.Get(), "%", True)
+			local externalResult:string = result.Get()
+			local replaced:int = False
+			local replacedSomething:int = False
+			for local placeHolder:string = EachIn placeHolders
+				local replacement:string = ""
+				local replaced:int = False
+				if not replaced then replaced = ReplaceTextWithGameInformation(placeHolder, replacement)
+				if not replaced then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
+				'replace if some content was filled in
+				'if replaced then print "replacement " + replacement+"   result: "+ externalResult +"  =>  " + externalResult.replace("%"+placeHolder+"%", replacement)
+				if replaced
+					externalResult = externalResult.replace("%"+placeHolder+"%", replacement)
+					replacedSomething = True
+				endif
+			Next
+
+			if replacedSomething
 				result = new TLocalizedString
-				result.Set(gameinformationResult)
+				result.Set(externalResult)
 			endif
 		endif
-
 
 
 		if not result and createDefault

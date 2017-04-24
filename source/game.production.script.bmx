@@ -389,6 +389,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			local actors:TProgrammePersonJob[]
 			local replacement:string = ""
 			for local placeHolder:string = EachIn placeHolders
+				local replaced:int = False
 				replacement = ""
 				Select placeHolder.toUpper()
 					case "ROLENAME1", "ROLENAME2", "ROLENAME3", "ROLENAME4", "ROLENAME5", "ROLENAME6", "ROLENAME7"
@@ -412,6 +413,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 									default	replacement = "Jamie"
 								End Select
 							endif
+							replaced = True
 						endif
 					case "ROLE1", "ROLE2", "ROLE3", "ROLE4", "ROLE5", "ROLE6", "ROLE7"
 						if not actorsFetched
@@ -434,23 +436,23 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 									default	replacement = "Jamie Larsen"
 								End Select
 							endif
+							replaced = True
 						endif
 
 					case "GENRE"
 						replacement = GetMainGenreString()
+						replaced = True
 					case "EPISODES"
 						replacement = GetMainGenreString()
+						replaced = True
 
 					default
-						local expressionResultType:int
-						local expressionResult:string = string(GetScriptExpression().HandleVariable(placeHolder, expressionResultType))
-						if expressionResult
-							replacement = expressionResult
-						endif
+						if not replaced then replaced = ReplaceTextWithGameInformation(placeHolder, replacement)
+						if not replaced then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
 				End Select
 
 				'replace if some content was filled in
-				if replacement <> "" then value = value.replace("%"+placeHolder+"%", replacement)
+				if replaced then value = value.replace("%"+placeHolder+"%", replacement)
 			Next
 			
 			result.Set(value, lang)

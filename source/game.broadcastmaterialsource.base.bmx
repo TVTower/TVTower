@@ -3,6 +3,9 @@ Import "Dig/base.util.math.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx"
 Import "game.modifier.base.bmx"
+Import "game.gameinformation.base.bmx"
+Import "Dig/base.util.scriptexpression.bmx"
+Import "Dig/base.util.string.bmx"
 
 
 'could be done as "interface"
@@ -167,6 +170,33 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 
 	Method Initialize:int()
 		timesBroadcasted = [0]
+	End Method
+
+
+	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString)
+		local result:TLocalizedString = text.copy()
+		'print "_ReplacePlaceholders: " + text.Get()
+		'for each defined language we check for existent placeholders
+		'which then get replaced by a random string stored in the
+		'variable with the same name
+		For local lang:string = EachIn text.GetLanguageKeys()
+			local value:string = text.Get(lang)
+			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%", True)
+			if placeHolders.length = 0 then continue
+
+			for local placeHolder:string = EachIn placeHolders
+				local replacement:string = ""
+				local replaced:int = False
+				if not replaced then replaced = ReplaceTextWithGameInformation(placeHolder, replacement)
+				if not replaced then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
+				'replace if some content was filled in
+				if replaced then value = value.replace("%"+placeHolder+"%", replacement)
+				'print "check placeholder: ~q"+placeholder+"~q => ~q"+replacement+"~q"
+			Next
+			
+			result.Set(value, lang)
+		Next
+		return result
 	End Method
 
 

@@ -32,7 +32,13 @@ Type TGameInformationCollection
 		if key="" and providerKey.Find(":") >= 0
 			local p:string[] = providerKey.split(":")
 			providerKey = p[0]
-			if p.length > 1
+			if p.length > 2
+				key = p[1]
+				for local i:int = 2 to p.length-1
+					if not params then params = new TData
+					params.Add("param"+(i-2 +1), p[i])
+				Next
+			elseif p.length > 1
 				key = p[1]
 			else
 				return "UNKNOWN_INFORMATION"
@@ -63,6 +69,22 @@ End Function
 Function GetGameInformation:object(providerKey:string, key:string, params:TData=null)
 	Return TGameInformationCollection.GetInstance().Get(providerKey, key, params)
 End Function
+
+
+
+
+Function ReplaceTextWithGameInformation:int(text:string, replacement:string var)
+	local gameinformationResult:string = string(GetGameInformation(text, ""))
+
+	'found something valid?
+	if gameinformationResult <> "UNKNOWN_INFORMATION"
+		replacement = gameinformationResult
+		return True
+	else
+		return False
+	endif
+End Function
+
 
 
 

@@ -66,13 +66,7 @@ Type TPersonGenerator
 		local countries:string[] = parts[0].split(" ")
 		local gender:int = GENDER_MALE
 		if parts.length > 1
-			Select parts[1].Trim()
-				case "w", "2"
-					gender = GENDER_FEMALE
-				'case "m", "1"
-				default
-					gender = GENDER_MALE
-			End Select
+			gender = GetGenderFromString(parts[1])
 		endif
 
 		For local countryCode:string = EachIn countries
@@ -86,19 +80,50 @@ Type TPersonGenerator
 		
 		return GetUniqueDataset(fallbackCountryCode, gender)
 	End Method
+
+
+	Function GetRandomGender:int()
+		if RandRange(1,2) = 2
+			return GENDER_FEMALE
+		else
+			return GENDER_MALE
+		endif
+	End Function
+
+
+	Method GetRandomCountryCode:string()
+		local countries:string[] = GetCountryCodes()
+		if countries.length then return ""
+		return countries[ RandRange(0, countries.length) ]
+	End Method
+
+
+	Function GetGenderFromString:int(str:string)
+		Select str.Trim()
+			case "m", "1"
+				return GENDER_MALE
+			case "f", "w", "2"
+				return GENDER_FEMALE
+			default
+				return GetRandomGender()
+		End Select
+	End Function
 		
 
 	Method GetFirstName:string(countryCode:string, gender:int)
+		if gender = 0 then gender = GetRandomGender()
 		return GetProvider(countryCode).GetFirstName(gender)
 	End Method
 
 
 	Method GetLastName:string(countryCode:string, gender:int)
+		if gender = 0 then gender = GetRandomGender()
 		return GetProvider(countryCode).GetLastName(gender)
 	End Method
 
 
 	Method GetTitle:string(countryCode:string, gender:int)
+		if gender = 0 then gender = GetRandomGender()
 		return GetProvider(countryCode).GetTitle(gender)
 	End Method
 

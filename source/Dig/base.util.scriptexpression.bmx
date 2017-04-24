@@ -51,6 +51,7 @@ Type TScriptExpression
 	global _expression:string
 	global _expressionIndex:int = 0
 	global _errorCount:int = 0
+	global _lastCommandErrored:int = False
 	global _error:string = ""
 	global _variableHandler:string(variable:string, params:string[], resultType:int var)
 
@@ -77,6 +78,22 @@ Type TScriptExpression
 		_variableHandler = variableHandler
 
 		return ParseConnectors()
+	End Method
+
+
+	Method EvalString:string(expression:string)
+		local expressionResultType:int
+		local paramsStart:int = expression.Find("(")
+		if paramsStart >= 0
+			local payload:string = expression[paramsStart+1 .. ]
+			payload = payload[.. payload.Find(")")]
+			local params:string[] = payload.Split(",")
+			local functionName:string = expression[.. paramsStart]
+			'print " - found function: "+functionname+"  params: ~q" + ",".join(params)+"~q  payload: ~q"+payload+"~q"
+			return string(GetScriptExpression().HandleFunction(functionName, params, expressionResultType))
+		else
+			return string(GetScriptExpression().HandleVariable(expression, expressionResultType))
+		endif
 	End Method
 
 
@@ -404,10 +421,12 @@ Type TScriptExpression
 
 
 	Method HandleVariable:string(variable:string, resultType:int var)
+		_lastCommandErrored = False
 		if _variableHandler then return _variableHandler(variable, null, resultType)
 
 		_errorCount :+1
 		_error :+ "Cannot handle variable ~q"+variable+"~q. Defaulting to 0.~n"
+		_lastCommandErrored = True
 		'print _error
 
 		return "0"
@@ -415,10 +434,12 @@ Type TScriptExpression
 
 
 	Method HandleFunction:string(variable:string, params:string[], resultType:int var)
+		_lastCommandErrored = False
 		if _variableHandler then return _variableHandler(variable, params, resultType)
 
 		_errorCount :+1
 		_error :+ "Cannot handle function ~q"+variable+"~q with params ~q" + ",".Join(params) +"~q. Defaulting to 0.~n"
+		_lastCommandErrored = True
 		'print _error
 
 		return "0"
@@ -434,4 +455,20 @@ End Type
 
 Function GetScriptExpression:TScriptExpression()
 	return TScriptExpression.GetInstance()
+End Function
+
+
+
+
+Function ReplaceTextWithScriptExpression:int(text:string, replacement:string var)
+	local expressionResult:string = GetScriptExpression().EvalString(text)
+
+	'found something valid?
+	if TScriptExpression._lastCommandErrored
+		replacement = TScriptExpression._error
+		return False
+	else
+		replacement = expressionResult
+		return True
+	endif
 End Function

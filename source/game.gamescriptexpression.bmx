@@ -2,6 +2,7 @@ SuperStrict
 Import "game.gamescriptexpression.base.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.gameinformation.base.bmx"
+Import "Dig/base.util.persongenerator.bmx"
 
 
 GetGameScriptExpression().RegisterHandler("TIME_YEAR", GameScriptExpression_Handle_Time)
@@ -22,6 +23,11 @@ GetGameScriptExpression().RegisterHandler("TIME_ISDUSK", GameScriptExpression_Ha
 GetGameScriptExpression().RegisterHandler("STATIONMAP_MAPNAME", GameScriptExpression_Handle_StationMap)
 GetGameScriptExpression().RegisterHandler("STATIONMAP_MAPNAMESHORT", GameScriptExpression_Handle_StationMap)
 GetGameScriptExpression().RegisterHandler("STATIONMAP_POPULATION", GameScriptExpression_Handle_StationMap)
+
+GetGameScriptExpression().RegisterHandler("PERSONGENERATOR_FIRSTNAME", GameScriptExpression_Handle_PersonGenerator)
+GetGameScriptExpression().RegisterHandler("PERSONGENERATOR_LASTNAME", GameScriptExpression_Handle_PersonGenerator)
+GetGameScriptExpression().RegisterHandler("PERSONGENERATOR_NAME", GameScriptExpression_Handle_PersonGenerator)
+GetGameScriptExpression().RegisterHandler("PERSONGENERATOR_TITLE", GameScriptExpression_Handle_PersonGenerator)
 
 
 
@@ -60,6 +66,7 @@ Function GameScriptExpression_Handle_Time:string(variable:string, params:string[
 			return string( GetWorldTime().IsDusk() )
 		default
 			GetGameScriptExpression()._error :+ "GameScriptExpression_Handle_Time: unknown variable ~q"+variable+"~q.~n"
+			GetGameScriptExpression()._lastCommandErrored = True
 	End Select
 
 	return ""
@@ -81,6 +88,40 @@ Function GameScriptExpression_Handle_StationMap:string(variable:string, params:s
 			return string(GetGameInformation("stationmap", "population"))
 		default
 			GetGameScriptExpression()._error :+ "GameScriptExpression_Handle_StationMap: unknown variable ~q"+variable+"~q.~n"
+			GetGameScriptExpression()._lastCommandErrored = True
+	End Select
+
+	return ""
+End Function
+
+
+
+
+Function GameScriptExpression_Handle_PersonGenerator:string(variable:string, params:string[], resultElementType:int var)
+	resultElementType = TScriptExpression.ELEMENTTYPE_STRING
+
+	local country:string = ""
+	if params.length > 1 then country = params[0].Trim().ToLower()
+	if not GetPersonGenerator().HasProvider(country)
+		country = GetPersonGenerator().GetRandomCountryCode()
+	endif
+
+	local gender:int= 0
+	if params.length > 1 then gender = TPersonGenerator.GetGenderFromString( params[1] )
+
+	Select variable.ToLower()
+		case "persongenerator_firstname"
+			return GetPersonGenerator().GetFirstName(country, gender)
+		case "persongenerator_lastname"
+			return GetPersonGenerator().GetLastName(country, gender)
+		case "persongenerator_name"
+			return GetPersonGenerator().GetFirstName(country, gender) + " " + GetPersonGenerator().GetLastName(country, gender)
+		case "persongenerator_title"
+			return GetPersonGenerator().GetTitle(country, gender)
+		default
+			print "GameScriptExpression_Handle_PersonGenerator: unknown variable ~q"+variable+"~q.~n"
+			GetGameScriptExpression()._error :+ "GameScriptExpression_Handle_PersonGenerator: unknown variable ~q"+variable+"~q.~n"
+			GetGameScriptExpression()._lastCommandErrored = True
 	End Select
 
 	return ""

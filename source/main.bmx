@@ -4284,6 +4284,9 @@ Type GameEvents
 					return False
 				endif
 
+				'add series not episodes
+				if licence.IsEpisode() then licence = licence.GetParentLicence()
+
 				'hand the licence to the player
 				if licence.owner <> player.playerID
 					if hasToPay = "0" or hasToPay.ToLower() = "false"
