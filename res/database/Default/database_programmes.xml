@@ -8867,7 +8867,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="77" speed="29" outcome="72" />
 		</programme>
 	
-		<programme id="TheRob-mov-hist-AndyKopekjow" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="Sjaele/TheRob">
+		<programme id="TheRob-mov-hist-AndyKopekjow" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0060107" rt_id="0" creator="Sjaele/TheRob">
 			<title>
 				<!-- Andrej Rubljow, Hostorie, Sub Drama -->
 				<de>Andy Kopekjow</de>
@@ -8892,7 +8892,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="81" speed="22" outcome="63" />
 		</programme>     
 	
-		<programme id="TheRob-mov-dram-StraßenwalzenpilotundGeiger" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="Sjaele/TheRob">
+		<programme id="TheRob-mov-dram-StraßenwalzenpilotundGeiger" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0053987" rt_id="0" creator="Sjaele/TheRob">
 			<title>
 				<!-- Die Straßenwalze und die Geige, drama -->
 				<de>Straßenwalzenpilot und Geiger</de>
