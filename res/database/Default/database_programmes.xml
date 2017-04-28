@@ -8867,7 +8867,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="77" speed="29" outcome="72" />
 		</programme>
 	
-		<programme id="TheRob-mov-hist-AndyKopekjow" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0060107" rt_id="0" creator="Sjaele/TheRob">
+		<programme id="TheRob-mov-hist-AndyKopekjow" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="Sjaele/TheRob">
 			<title>
 				<!-- Andrej Rubljow, Hostorie, Sub Drama -->
 				<de>Andy Kopekjow</de>
@@ -8892,7 +8892,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="81" speed="22" outcome="63" />
 		</programme>     
 	
-		<programme id="TheRob-mov-dram-StraßenwalzenpilotundGeiger" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0053987" rt_id="0" creator="Sjaele/TheRob">
+		<programme id="TheRob-mov-dram-StraßenwalzenpilotundGeiger" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="Sjaele/TheRob">
 			<title>
 				<!-- Die Straßenwalze und die Geige, drama -->
 				<de>Straßenwalzenpilot und Geiger</de>
@@ -8966,7 +8966,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="73" speed="36" outcome="43" />
 		</programme>
 	
-		<programme id="TheRob-mov-drama-PicknickamWegesrand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0072443" rt_id="0" creator="Sjaele/TheRob">
+		<programme id="TheRob-mov-drama-PicknickamWegesrand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0079944" rt_id="0" creator="Sjaele/TheRob">
 			<title>
 				<!-- Stalker, SciFi sub drama -->
 				<de>Picknick am Wegesrand</de>
@@ -8987,7 +8987,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<member index="3" function="2">TheRob-TowerTV-NikiGringoff</member>               
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="UdSSR" year="1975" distribution="1" maingenre="16" subgenre="7" flags="0" blocks="3" price_mod="1.00" />
+			<data country="DDR" year="1979" distribution="1" maingenre="16" subgenre="7" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="82" speed="56" outcome="81" />
 		</programme>     
 	
