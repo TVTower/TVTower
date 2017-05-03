@@ -2127,22 +2127,52 @@ Type TGUIobject
 				charCode = Int(GetChar())
 				continue
 			EndIf
-
 			'charCode is < 0 for me when umlauts are pressed
 			If charCode < 0
 				?Win32
-				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+				If KEYWRAPPER.pressedKey(186)
+					If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+					valuePosition :+ 1
+				EndIf
+				If KEYWRAPPER.pressedKey(192)
+					If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+					valuePosition :+ 1
+				EndIf
+				If KEYWRAPPER.pressedKey(222)
+					If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+					valuePosition :+ 1
+				EndIf
 				?Mac
-				If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-				If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-				If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+				If KEYWRAPPER.pressedKey(186)
+					If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+					valuePosition :+ 1
+				EndIf
+				If KEYWRAPPER.pressedKey(192)
+					If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+					valuePosition :+ 1
+				EndIf
+				If KEYWRAPPER.pressedKey(222)
+					If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+					valuePosition :+ 1
+				EndIf
 				?Linux
-				If KEYWRAPPER.pressedKey(252) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-				If KEYWRAPPER.pressedKey(246) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-				If KEYWRAPPER.pressedKey(163) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+				If KEYWRAPPER.pressedKey(252)
+					If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+					valuePosition :+ 1
+				EndIf
+				If KEYWRAPPER.pressedKey(246)
+					If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+					valuePosition :+ 1
+				EndIf
+				If KEYWRAPPER.pressedKey(163)
+					If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+					valuePosition :+ 1
+				EndIf
 				?
+				If charCode = -33
+					value:+ "ß"
+					valuePosition :+ 1
+				EndIf
 			'handle normal "keys" (excluding umlauts)
 			ElseIf charCode > 0
 				'skip enter if whished so
