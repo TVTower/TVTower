@@ -10651,6 +10651,282 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="48" speed="62" outcome="34" />
 		</programme>
 
+		<programme id="TheRob-a4d6-dram-OhioKid" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0059037" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Cincinnati Kid -->
+				<de>Ohio Kid</de>
+				<en>Ohio Kid</en>
+			</title>
+			<title_original>
+				<de>Cincinnati Kid</de>
+				<en>Cincinnati Kid</en>
+			</title_original>        
+			<description>
+				<de>Das große Poker Duell zwischen dem aufstrebenden Jungspund und dem Altmeister. [1|Full] und [3|Full] treffen aufeinander.</de>
+				<en>A great Poker game between a young but sucessfull man and the old master. [1|Full] and [3|Full] in a great movie together.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-CoremanJudeson</member>
+				<member index="1" function="2">TheRob-celebritypeople-SteveNeckKing</member>
+				<member index="2" function="2">TheRob-TowerTV-AnneWagrecht</member>
+				<member index="3" function="2">TheRob-TowerTV-EddiePMobison</member>
+				<member index="4" function="2">TheRob-TowerTV-CharlieWalden</member>        
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1965" distribution="1" maingenre="7" subgenre="" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="74" speed="56" outcome="68" />
+		</programme>  
+	
+		<programme id="TheRob-a4d6-west-RenoSmith" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0060748" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Nevada Smith -->
+				<de>Reno Smith</de>
+				<en>Reno Smith</en>
+			</title>
+			<title_original>
+				<de>Nevada Smith</de>
+				<en>Nevada Smith</en>
+			</title_original>        
+			<description>
+				<de>Ein Halbblut will den Tod seiner Eltern rächen.</de>
+				<en>A Half Indian wants to get revenge for his killed parents.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-HerrieHaveaway</member>
+				<member index="1" function="2">TheRob-celebritypeople-SteveNeckKing</member>
+				<member index="2" function="2">TheRob-TowerTV-CharlieWalden</member>
+				<member index="3" function="2">c287f169-6814-45ea-a8a3-01efbb6a21c3</member>       
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1966" distribution="1" maingenre="18" subgenre="" flags="0" blocks="3" price_mod="1.00" />
+			<ratings critics="57" speed="59" outcome="62" />
+		</programme> 
+
+		<programme id="TheRob-a4d6-act-BulltheHit" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0062765" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Bullitt -->
+				<de>Bullthehit</de>
+				<en>Bullthehit</en>
+			</title>
+			<title_original>
+				<de>Bullitt</de>
+				<en>Bullitt</en>
+			</title_original>        
+			<description>
+				<de>Leutnant Bullthehit soll einen Zeugen schützen. Das klappt leider nur bedingt, führt aber zu einer legendären Autojagd.</de>
+				<en>Lieutenant Bullthehit has to protect a witness. This does nnot work out well but leads to an unforgotten carchase.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-PeteRates</member>
+				<member index="1" function="2">TheRob-celebritypeople-SteveNeckKing</member>
+				<member index="2" function="2">ab68fbad-64d8-4328-a131-9c2d0f05e210</member>
+				<member index="3" function="2">c0f0c5a7-60e5-4e52-94e6-1cb7cf66daff</member> 
+				<member index="4" function="2">TheRob-TowerTV-BobSawn</member>               
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1968" distribution="1" maingenre="2" subgenre="4" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="57" speed="79" outcome="72" />
+		</programme>
+	
+		<programme id="TheRob-a4d6-act-24StundenRennen" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0067334" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Le Mans -->
+				<de>24 Stunden Rennen</de>
+				<en>24 hour race </en>
+			</title>
+			<title_original>
+				<de>Le Mans</de>
+				<en>Le Mans</en>
+			</title_original>        
+			<description>
+				<de>Porsche 917 gegen Ferrari 512S. Und etwas Story drum herum.</de>
+				<en>Porsche 917 versus Ferrari 512S. Surrounded with a story.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-LeeVDogin</member>
+				<member index="1" function="2">TheRob-celebritypeople-SteveNeckKing</member>
+				<member index="2" function="2">TheRob-TowerTV-SiggiDampf</member>
+				<member index="3" function="2">TheRob-TowerTV-HelgaSanderson</member>                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1971" distribution="1" maingenre="2" subgenre="1" flags="0" blocks="2" price_mod="1.00" />
+			<ratings critics="48" speed="82" outcome="53" />
+		</programme>
+	
+		<programme id="TheRob-a4d6-act-RunAway" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0068638" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Getaway -->
+				<de>Run Away</de>
+				<en>Run Away</en>
+			</title>
+			<title_original>
+				<de>Getaway</de>
+				<en>The Getaway</en>
+			</title_original>        
+			<description>
+				<de>Nach seinem Ausbruch aus dem Gefägniss gerät [1|Full] schnell in eine Spirale krimineller Machenschaffen. Für seine Flucht nicht gerade förderlich.</de>
+				<en>After his escape from prison [1|Full] gets pretty fast again criminal. This is not very usefull for his flight.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-SamyPickindale</member>
+				<member index="1" function="2">TheRob-celebritypeople-SteveNeckKing</member>
+				<member index="2" function="2">TheRob-TowerTV-ElliMCGrave</member>
+				<member index="3" function="2">41946f51-d770-40f4-807a-fd74b85c97b8</member>                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1972" distribution="1" maingenre="2" subgenre="4" flags="0" blocks="3" price_mod="1.00" />
+			<ratings critics="63" speed="66" outcome="64" />
+		</programme>
+	
+		<programme id="TheRob-a4d6-act-BreaktheChain" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0068638" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Gesprengte Kette -->
+				<de>Break the Chain</de>
+				<en>Break the Chain</en>
+			</title>
+			<title_original>
+				<de>Gesprengte Ketten</de>
+				<en>The Great Escape</en>
+			</title_original>        
+			<description>
+				<de>Basierend auf einer wahren Geschichte wird der Versuch eines Ausbruchs aus einem der sichersten Gefängnisse der Wehrmacht verfilmt.</de>
+				<en>Based on a true Story. The try of a prison escape from one of the most secured prisons of the Wehrmacht.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-RonWurges</member>
+				<member index="1" function="2">TheRob-celebritypeople-SteveNeckKing</member>
+				<member index="2" function="2">TheRob-TowerTV-BanesWarner</member>
+				<member index="3" function="2">ff87975d-c9cc-4204-b7bb-ea8826fe9208</member>
+				<member index="4" function="2">267e028a-d087-4fff-83fd-0ade0806ab8a</member>
+				<member index="5" function="2">TheRob-TowerTV-DaveMcWarum</member>                                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1963" distribution="1" maingenre="1" subgenre="7" flags="0" blocks="3" price_mod="1.00" />
+			<ratings critics="83" speed="69" outcome="84" />
+		</programme>
+
+		<programme id="TheRob-serie-adv-RobinWusoe" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0167516" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Robinson Crusoe, Abenteuer -->
+				<de>Robin Wusoe</de>
+				<en>Robin Wusoe</en>
+			</title>
+			<title_original>
+				<de>Robinson Crusoe</de>
+				<en>Les aventures de Robinson Crusoë</en>
+			</title_original>        
+			<description>
+				<de>Die Geschichte von Robin Wusoe und seinen Abenteuern in spannenden vier Folgen.</de>
+				<en>The story of Robin Wusoe told in wonderfull four parts.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">TheRob-TowerTV-BobMuffman</member>
+				<member index="1" function="2">TheRob-TowerTV-FlavioCavello</member>        
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="D/F" year="1964" distribution="2" maingenre="1" subgenre="" flags="8" blocks="2" price_mod="1.00" />
+			<ratings critics="67" speed="44" outcome="" />
+			<children>
+				<programme id="TheRob-serie-RobinWusoe-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Wie es begann</de>
+						<en>How it began</en>
+					</title>
+					<description>
+						<de>Robin Wusoe erzählt von dem Start seiner Reise und von seinen Wünschen und Träumen.</de>
+						<en>Robin Wusoe describes the beginning of his journey. And his wishes and dreams.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-RobinWusoe-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Freitag?</de>
+						<en>Friday?</en>
+					</title>
+					<description>
+						<de>Auf einer Insel gestranded trifft Robin einen fremden Mann.</de>
+						<en>Stranded on an island Robin meets a stranger.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-RobinWusoe-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Kannibalen!!</de>
+						<en>Canibals!</en>
+					</title>
+					<description>
+						<de>Robin und Friday verstehen langsam, dass sie sich die Insel mit ein paar sehr unfreundlichen Menschen teilen.</de>
+						<en>Robin and Friday are getting aware that they are sharing with some unfriendly humans.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-RobinWusoe-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Endlich Heimat</de>
+						<en>Home! Sweet Home</en>
+					</title>
+					<description>
+						<de>Auf nach Hause. Wie gelingt die Flucht?</de>
+						<en>Up, up and away. How will the escape work?</en>
+					</description>
+					<data country="D/F" year="1964" distribution="0" maingenre="13" subgenre="1" flags="8" blocks="4" price_mod="1.00" />
+					<ratings critics="67" speed="53" />
+				</programme>
+			</children>
+		</programme>
+	
+		<programme id="TheRob-serie-fant-RingeundRosen" product="5" licence_type="3" tmdb_id="0" imdb_id="tt3636830" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- The Rose and the Ring, Fantasy -->
+				<de>Ringe und Rosen</de>
+				<en>Rings and Roses</en>
+			</title>
+			<title_original>
+				<de>The Rose and the Ring</de>
+				<en>The Rose and the Ring</en>
+			</title_original>      
+			<description>
+				<de>Die Geschichte einer königlichen Familie in Paflagonia.</de>
+				<en>The story of a royal family in Paflagonia.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">TheRob-TowerTV-JacquiMountain</member>
+				<member index="1" function="2">TheRob-TowerTV-DaveMcWarum</member>                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1953" distribution="2" maingenre="10" subgenre="" flags="8" blocks="1" price_mod="1.00" />
+			<ratings critics="47" speed="38" outcome="30" />
+			<children>
+				<programme id="TheRob-serie-RingeundRosen-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Das Frühstück</de>
+						<en>Breakfast</en>
+					</title>
+					<description>
+						<de>Als Einleitung wird die Familie beim Frühstück beleuchtet.</de>
+						<en>Indroducing the family. The breakfast of the whole bunch together is the perfect start.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-RingeundRosen-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Der Ring</de>
+						<en>The Ring</en>
+					</title>
+					<description>
+						<de>Endlich Fantasy. Der magische Ring taucht auf.</de>
+						<en>The fantasy part starts. A magic ring appears.</en>
+					</description>
+				</programme>
+				<programme id="TheRob-serie-RingeundRosen-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Die Flucht</de>
+						<en>The Escape</en>
+					</title>
+					<description>
+						<de>Und es Zeit für die Konsequenzen. Die Flucht wird nötig. Wenn man mit einem magischen Ring spielt...</de>
+						<en>Time for consequences. If you play with the magic ring, escape is necessary.</en>
+					</description>
+					<ratings critics="49" speed="42" />
+				</programme>
+			</children>
+		</programme>
 
 		<!-- some programmes from ronny.xml -->
 		<programme id="ronny-programme-family-papierflieger" product="7" licence_type="3" fictional="1" creator="5578" created_by="Ronny">
