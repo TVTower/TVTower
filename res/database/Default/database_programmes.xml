@@ -6806,7 +6806,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<data country="USA" year="1938" distribution="1" maingenre="7" subgenre="15" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="78" speed="52" outcome="67" />
 		</programme>
-	
+
 		<programme id="TheRob-mov-dram-PfadindieBerge" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0028401" rt_id="8751" creator="TheRob">
 			<title>
 				<!-- Kampf in den Bergen, Drama, Sub Romance -->
@@ -7609,7 +7609,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<ratings critics="53" speed="47" outcome="71" />
 		</programme>
 
-		<programme id="TheRob-dda6-4d7e-b90a-DasLebenistschoen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0038650" rt_id="0" creator="">
+		<programme id="TheRob-dda6-4d7e-b90a-DasLebenistschoen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0038650" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
   				<!-- Ist das Leben nicht schön? -->
 				<de>Das Leben ist schön</de>
@@ -7633,8 +7633,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<ratings critics="91" speed="49" outcome="39" />
 		</programme>
 
-
-		<programme id="5c4c567b-dda6-4d7e-b90a-geballteHand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0163624" rt_id="0" creator="">
+		<programme id="5c4c567b-dda6-4d7e-b90a-geballteHand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0163624" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Faust -->
 				<de>Geballte Hand</de>
@@ -7659,7 +7658,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="99" speed="12" outcome="55" />
 		</programme>
 
-		<programme id="TheRob-dda6-4d7e-b90a-derhundaufdempappdach" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0051459" rt_id="0" creator="">
+		<programme id="TheRob-dda6-4d7e-b90a-derhundaufdempappdach" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0051459" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Die Katze auf dem heißen Blechdach -->
 				<de>Der Hund auf dem Pappdach</de>
@@ -7706,7 +7705,6 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<data country="USA" year="1959" distribution="1" maingenre="16" subgenre="" flags="56" blocks="2" price_mod="1" />
 			<ratings critics="8" speed="22" outcome="12" />
 		</programme>
-
 
 		<programme id="TheRob-b0db-myst-DieFaecherderPizza" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0048728" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
@@ -7927,8 +7925,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="26" speed="49" outcome="38" />
 		</programme>
 
-
-		<programme id="therob-programme-famser-AlsoPapa" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0070964" rt_id="0" creator="Sjaele/TheRob">
+		<programme id="therob-programme-famser-AlsoPapa" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0070964" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Aber Vati von Gast2 umgesetzt. Familie und Kult -->
 				<de>Also Papa</de>
@@ -7953,7 +7950,7 @@ Dreh- und Angelpunkt sind die Versuche, Vati Neu zu verheiraten.</de>
 			<data country="DDR" year="1979" distribution="2" maingenre="9" subgenre="5" flags="8" blocks="2" price_mod="1.00" />
 			<ratings critics="77" speed="35" outcome="40" />
 			<children>
-				<programme id="therob-programme-famser-AlsoPapa-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Vati will nicht heiraten</de>
 						<en>Dad does not want to marry</en>
@@ -7966,7 +7963,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					<data country="DDR" year="1974" price_mod="1.00" />
 					<ratings critics="79" speed="36" />
 				</programme>
-				<programme id="therob-programme-famser-AlsoPapa-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Vati will heiraten</de>
 						<en>Dad wants to marry</en>
@@ -7978,7 +7975,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					<data country="DDR" year="1974" />
 					<ratings critics="77" speed="36" />
 				</programme>
-				<programme id="therob-programme-famser-AlsoPapa-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Vati hat geheiratet</de>
 						<en>Dad has married</en>
@@ -7990,7 +7987,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					<data country="DDR" year="1974" />
 					<ratings critics="77" speed="38" />
 				</programme>
-				<programme id="therob-programme-famser-AlsoPapa-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>5 Jahre danach</de>
 						<en>5 years later</en>
@@ -8004,7 +8001,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="therob-programme-KaltkabelindieZukunft" product="5" fictional="1" licence_type="3" tmdb_id="tv_62451" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+		<programme id="therob-programme-KaltkabelindieZukunft" product="5" fictional="1" licence_type="3" tmdb_id="tv_62451" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Kinderserie, Heißer Draht ins Jenseits, keine IMDB ID, von Gast2 -->
 				<de>Kaltkabel in die Zukunft</de>
@@ -8025,7 +8022,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="HUN" year="1969" distribution="2" maingenre="3" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="27" speed="36" outcome="0" />
 			<children>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep201" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep201" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>3D voll echt</de>
 						<en>3D completely real</en>
@@ -8036,7 +8033,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="28" speed="35" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep202" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep202" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Fischersatz</de>
 						<en>Fish substitute</en>
@@ -8047,7 +8044,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="26" speed="37" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep203" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep203" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Sauschnell zur Fete</de>
 						<en>Very fast to the party</en>
@@ -8058,7 +8055,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="27" speed="36" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep204" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep204" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Wettermacher</de>
 						<en>The weather generator</en>
@@ -8069,7 +8066,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="27" speed="39" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep205" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep205" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Hilfe, Androiden</de>
 						<en></en>
@@ -8080,7 +8077,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="30" speed="33" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep206" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep206" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Planetenurlaub</de>
 						<en>Hollidays on an other planet</en>
@@ -8091,7 +8088,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="25" speed="38" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep207" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep207" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Doof und glücklich</de>
 						<en>Stupid but happy</en>
@@ -8102,7 +8099,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="27" speed="36" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep208" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep208" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Zeitreise</de>
 						<en>Timemachine</en>
@@ -8113,7 +8110,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="26" speed="35" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep209" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep209" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Der Manipulator</de>
 						<en>The manipulator</en>
@@ -8124,7 +8121,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="28" speed="34" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep210" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep210" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Treibhauslegende</de>
 						<en>Green house legend</en>
@@ -8135,7 +8132,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="21" speed="42" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep211" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep211" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Die Tarnkappenpille</de>
 						<en>The invisibility pill</en>
@@ -8146,7 +8143,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="26" speed="34" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep212" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep212" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Rhythmus der Kuh</de>
 						<en>The cow rythm</en>
@@ -8157,7 +8154,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="28" speed="30" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep213" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep213" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Das Traumhaus</de>
 						<en>The perfect house</en>
@@ -8189,7 +8186,6 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="F" year="1895" distribution="1" maingenre="6" subgenre="300" flags="8" blocks="1" price_mod="1.00" />
 			<ratings critics="81" speed="2" outcome="5" />
 		</programme>		
-
 
 		<programme id="TheRob-serie-dok-WunderderMeere" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0192937" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
@@ -8225,7 +8221,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="73" speed="53" />
 				</programme>
-				<programme id="TheRob-serie-WunderderMeere-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-WunderderMeere-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="7430" created_by="TheRob">
 					<title>
 						<de>Die Wale</de>
 						<en>The whales</en>
@@ -8840,8 +8836,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<ratings critics="69" speed="61" outcome="96" />
 		</programme> 
 
-
-		<programme id="TheRob-mov-drama-KleinIwan" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="Sjaele/TheRob">
+		<programme id="TheRob-mov-drama-KleinIwan" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Iwans Kindheit, Drama sub Action -->
 				<de>Klein Iwan</de>
@@ -8867,7 +8862,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="77" speed="29" outcome="72" />
 		</programme>
 
-		<programme id="TheRob-mov-hist-AndyKopekjow" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="Sjaele/TheRob">
+		<programme id="TheRob-mov-hist-AndyKopekjow" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Andrej Rubljow, Hostorie, Sub Drama -->
 				<de>Andy Kopekjow</de>
@@ -8892,7 +8887,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="81" speed="22" outcome="63" />
 		</programme>     
 
-		<programme id="TheRob-mov-dram-StraßenwalzenpilotundGeiger" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="Sjaele/TheRob">
+		<programme id="TheRob-mov-dram-StraßenwalzenpilotundGeiger" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Die Straßenwalze und die Geige, drama -->
 				<de>Straßenwalzenpilot und Geiger</de>
@@ -8915,8 +8910,8 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<data country="UdSSR" year="1961" distribution="1" maingenre="7" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="93" speed="26" outcome="22" />
 		</programme>
-	
-		<programme id="TheRob-mov-scifi-Soljaris" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0069293" rt_id="0" creator="Sjaele/TheRob">
+
+		<programme id="TheRob-mov-scifi-Soljaris" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0069293" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Solaris, scifi sub mystery -->
 				<de>Soljaris</de>
@@ -8941,7 +8936,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="84" speed="36" outcome="83" />
 		</programme>          
 	
-		<programme id="TheRob-mov-drama-Serkalo" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0072443" rt_id="0" creator="Sjaele/TheRob">
+		<programme id="TheRob-mov-drama-Serkalo" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0072443" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Der Spiegel, Drama -->
 				<de>Serkalo</de>
@@ -8966,7 +8961,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="73" speed="36" outcome="43" />
 		</programme>
 
-		<programme id="TheRob-mov-drama-PicknickamWegesrand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0079944" rt_id="0" creator="Sjaele/TheRob">
+		<programme id="TheRob-mov-drama-PicknickamWegesrand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0079944" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Stalker, SciFi sub drama -->
 				<de>Picknick am Wegesrand</de>
@@ -8991,7 +8986,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="82" speed="56" outcome="81" />
 		</programme>     
 	
-		<programme id="TheRob-mov-drama-DertoteBaum" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091670" rt_id="0" creator="Sjaele/TheRob">
+		<programme id="TheRob-mov-drama-DertoteBaum" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091670" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Opfer, drama -->
 				<de>Der tote Baum</de>
@@ -9039,7 +9034,6 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<data country="I" year="1971" distribution="1" maingenre="5" subgenre="15" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="41" speed="36" outcome="42" />
 		</programme>       
-
 
 		<programme id="TheRob-mov-drama-DasSchloss" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0051816" creator="8751" created_by="TheRob">
 			<title>
@@ -9113,7 +9107,6 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<data country="D" year="1922" distribution="1" maingenre="4" subgenre="" flags="0" blocks="4" price_mod="1.00" />
 			<ratings critics="87" speed="42" outcome="82" />
 		</programme>                                
-
 
 		<programme id="TheRob-mov-rom-AgentenimNebel" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0019415" creator="8751" created_by="TheRob">
 			<title>
@@ -9797,7 +9790,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<data country="USA" year="1950" distribution="1" maingenre="18" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="73" speed="72" outcome="63" />
 		</programme>
-	
+
 		<programme id="TheRob-mov-com-GlenGlendawasauchimmer" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0045826" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Glen oder Glenda, Drama -->
@@ -9846,6 +9839,817 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="18" speed="32" outcome="14" />
 		</programme>
 
+		<programme id="TheRob-81d9-com-StandOlgestohleneJuwelen" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0022402" rt_id="8751" creator="TheRob">
+			<title>
+				<de>[1|Last] &amp; [2|Last] - Gestohlene Juwelen</de>
+				<en>[1|Last] &amp; [2|Last] - Stolen Gems</en>
+			</title>
+			<title_original>
+				<de>Juwelenraub in Hollywood</de>
+				<en>The Stolen Jools</en>
+			</title_original>      
+			<description>
+				<de>Kurzweilige Komödie über einen Juwelenraub mit Starbesetzung.</de>
+				<en>A short comedy about stolen gems with many stars.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-GilianCMcWann</member>
+				<member index="1" function="2">de494c09-c094-4217-a010-5241833ef53f</member>
+				<member index="2" function="2">91ddb72a-6f14-4378-ba9e-79e7274d5c3c</member>
+				<member index="3" function="2">TheRob-TowerTV-BlasterWeaton</member>
+				<member index="4" function="2">TheRob-TowerTV-EddiePMobison</member>        
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1931" distribution="0" maingenre="5" subgenre="0" flags="0" blocks="1" time="0" price_mod="1" />
+			<ratings critics="37" speed="53" outcome="53" />
+		</programme> 
+	
+		<programme id="TheRob-a4d6-adv-GoldfeverinSanFransisco" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0026097" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- San Francisco im Goldfieber -->
+				<de>Goldrausch in San Fransisco</de>
+				<en>Goldfever in San Fransisco</en>
+			</title>
+			<title_original>
+				<de>San Francisco im Goldfieber</de>
+				<en>Barbary Coast</en>
+			</title_original>        
+			<description>
+				<de>Intrigante Spiele in einem Casino in San Fransisco. Mord und Korruption inklusive.</de>
+				<en>Intrigant games in a Casino in San Fransisco. Including murder an corruption.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-RowardRawk</member>
+				<member index="1" function="2">TheRob-TowerTV-EddiePMobison</member>
+				<member index="2" function="2">TheRob-TowerTV-MiriaSobkins</member>
+				<member index="3" function="2">TheRob-TowerTV-WaltherRunman</member>                             
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1935" distribution="0" maingenre="1" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="48" speed="62" outcome="67" />
+		</programme>
+
+		<programme id="TheRob-a4d6-act-DenTeufelbesiegt" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0046414" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Schach dem Teufel -->
+				<de>Den Teufel besiegt</de>
+				<en>Check Mate for the Devil </en>
+			</title>
+			<title_original>
+				<de>Schach dem Teufel</de>
+				<en>Beat the Devil</en>
+			</title_original>        
+			<description>
+				<de>Ein Gruppe von Menschen möchte sich dabei versuchen Uran aus Ost Afrika heraus zu schmugeln. Das klappt nur bedingt.</de>
+				<en>A group of peoply is visiting East Africa and tries to smuggle uranium. They are pretty unsuccessful.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-LeeVDogin</member>
+				<member index="1" function="2">abcc51f0-1842-40f5-b2f7-dd1e228ea968</member>
+				<member index="2" function="2">faa73ce4-5b83-44ab-93b5-1bfde3c2fcc7</member>
+				<member index="3" function="2">TheRob-TowerTV-PeteWore</member>                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1953" distribution="0" maingenre="2" subgenre="5" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="68" speed="62" outcome="59" />
+		</programme>
+
+		<programme id="TheRob-a4d6-mus-Sichgroßartigfühlen" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0041515" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Ein tolles Gefühl  -->
+				<de>Sich großartig fühlen</de>
+				<en>Fantastic Feeling</en>
+			</title>
+			<title_original>
+				<de>Ein tolles Gefühl</de>
+				<en>It's a Great Feeling</en>
+			</title_original>        
+			<description>
+				<de>Satirisches Musical, dass Hollywood und seine Studios aufs Korn nimmt.</de>
+				<en>Satirical musical. The story is making fun about the way Hollywood and his studios are working.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-RavinKutler</member>
+				<member index="1" function="2">10e270c0-36d8-451d-9193-e14c52381453</member>
+				<member index="2" function="2">TheRob-TowerTV-ZackParsen</member>
+				<member index="3" function="2">fa39d88a-9236-485f-af18-78b6d3c794d1</member>
+				<member index="4" function="2">TheRob-TowerTV-EddiePMobison</member>                         
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1949" distribution="0" maingenre="202" subgenre="5" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="61" speed="46" outcome="53" />
+		</programme>   
+	
+		<programme id="TheRob-a4d6-myst-UeberlebeninNewYork" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0070723" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Jahr 2022... die überleben wollen -->
+				<de>Überleben in New York</de>
+				<en>Surviving in New York</en>
+			</title>
+			<title_original>
+				<de>Jahr 2022... die überleben wollen</de>
+				<en>Soylent Green</en>
+			</title_original>        
+			<description>
+				<de>Basierend auf einemen Bericht über die Zukunft der Ressourcen auf der Erde entsteht ein Film der eine düstere ökologische Zukunft zeichnet.</de>
+				<en>Based on a document about the future of ressources on the earth. One of the first movies, that tells a story in dark future with many ecology problems.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-RichieButcher</member>
+				<member index="1" function="2">b4561de6-215e-46ab-9212-f0868c6fcb33</member>
+				<member index="2" function="2">TheRob-TowerTV-EddiePMobison</member>
+				<member index="3" function="2">c299b440-3684-48fa-bc21-85a76ae2c253</member>                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1973" distribution="0" maingenre="14" subgenre="16" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="81" speed="69" outcome="74" />
+		</programme>
+
+		<programme id="TheRob-a4d6-myst-Gemaelderaub" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0063341" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Wie klaut man ein Gemälde? -->
+				<de>Gemälderaub</de>
+				<en>Theft of a painting</en>
+			</title>
+			<title_original>
+				<de>Wie klaut man ein Gemälde?</de>
+				<en>Never a Dull Moment</en>
+			</title_original>        
+			<description>
+				<de>Ein Mann wird für einen Killer gehalten und gerät so in einen Gemälderaub. Nettes Verwechselspiel für die ganze Familie.</de>
+				<en>A man is mistaken as an killer and joins unwillingly a theft of a painting. A story about a nice confusion for the whole family.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">9e59bf32-67a2-4582-95f6-bce416066224</member>
+				<member index="1" function="2">TheRob-TowerTV-RickvonDeich</member>
+				<member index="2" function="2">TheRob-TowerTV-EddiePMobison</member>
+				<member index="3" function="2">41946f51-d770-40f4-807a-fd74b85c97b8</member>                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1968" distribution="0" maingenre="9" subgenre="5" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="47" speed="62" outcome="51" />
+		</programme>
+
+		<programme id="TheRob-a4d6-com-KardinalBeige" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0061324" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Die Abenteuer des Kardinal Braun -->
+				<de>Kardinal Beige</de>
+				<en>Cardinal Beige</en>
+			</title>
+			<title_original>
+				<de>Die Abenteuer des Kardinal Braun</de>
+				<en>Operazione San Pietro</en>
+			</title_original>        
+			<description>
+				<de>Nach dem Diebstahl der Pieta nimmt sich Kardinal Beige mal wieder des Falles an.</de>
+				<en>After the Pieta is stolen, once again Cardinal Beige leads the investigation.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-FlavioPulco</member>
+				<member index="1" function="2">35ecbb4e-ee36-415d-914a-a78ed8e32d4b</member>
+				<member index="2" function="2">TheRob-TowerTV-RandoBuccaner</member>
+				<member index="3" function="2">TheRob-TowerTV-EddiePMobison</member>                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="IT" year="1967" distribution="0" maingenre="5" subgenre="4" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="47" speed="59" outcome="41" />
+		</programme>
+	 
+		<programme id="TheRob-a4d6-com-DieGeboteGottes" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0049833" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Die zehn Gebote -->
+				<de>Die Gebote Gottes</de>
+				<en>The Commandments of God</en>
+			</title>
+			<title_original>
+				<de>Die zehn Gebote</de>
+				<en>The Ten Commandments</en>
+			</title_original>        
+			<description>
+				<de>Wie Moses die Gebote von Gott erhielt. Die bekannte Verfilmung mit [1|Full].</de>
+				<en>How Moses recieved the Commandments from God. The well known movie with [1|Full].</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-CecilCderMiller</member>
+				<member index="1" function="2">b4561de6-215e-46ab-9212-f0868c6fcb33</member>
+				<member index="2" function="2">TheRob-TowerTV-JulesSinner</member>
+				<member index="3" function="2">TheRob-TowerTV-EddiePMobison</member>                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1956" distribution="0" maingenre="13" subgenre="11" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="87" speed="61" outcome="81" />
+		</programme>
+	   
+		<programme id="TheRob-a4d6-com-DasLiedSkandinaviens" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0066393" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Song of Norway -->
+				<de>Das Lied Skandinaviens</de>
+				<en>Scandinavian Song</en>
+			</title>
+			<title_original>
+				<de>Der Song von Norwegen</de>
+				<en>Song of Norway</en>
+			</title_original>        
+			<description>
+				<de>Die Geschichte des norwegischen Komponisten Eddie Krieg. Untermalt mit seiner Musik und viel Lyrik</de>
+				<en>The story of the norwegian composer Eddie Krieg. With many lyrics and his music.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-AndiLRock</member>
+				<member index="1" function="2">TheRob-TowerTV-FlorineGenderson</member>
+				<member index="2" function="2">f4d3004a-464f-45f9-8dae-1634a6a9bff5</member>
+				<member index="3" function="2">TheRob-TowerTV-EddiePMobison</member>                
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1970" distribution="0" maingenre="11" subgenre="202" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="57" speed="9" outcome="12" />
+		</programme>
+	 
+		<programme id="TheRob-a4d6-hist-DrPaulEhrlich" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0032413" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Paul Ehrlich - Ein Leben für die Forschung -->
+				<de>Dr. Paul Ehrlich</de>
+				<en>Dr. Paul Ehrlich</en>
+			</title>
+			<title_original>
+				<de>Paul Ehrlich - Ein Leben für die Forschung</de>
+				<en>Dr. Ehrlich's Magic Bullet</en>
+			</title_original>        
+			<description>
+				<de>Die Geschichte von Dr. Paul Ehrlich und seinem Weg zum Nobelpreis der Medizin.</de>
+				<en>The story of Dr. Paul Ehrlich and his way to recieve the medical Nobel price.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-BillieRieter</member>
+				<member index="1" function="2">TheRob-TowerTV-EddiePMobison</member>
+				<member index="2" function="2">TheRob-TowerTV-GaryRavenport</member>               
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1940" distribution="0" maingenre="7" subgenre="11" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="91" speed="26" outcome="72" />
+		</programme>
+	  
+		<programme id="TheRob-a4d6-dram-ShakespearesMacbeth" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0040558" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Macbeth -->
+				<de>Shakespeares Macbeth</de>
+				<en>Shakespeares Macbeth</en>
+			</title>
+			<title_original>
+				<de>Macbeth</de>
+				<en>Macbeth</en>
+			</title_original>        
+			<description>
+				<de>Die Verfilmung von Shakespeares Macbeth. [0|Full] drehte seine Version.</de>
+				<en>Shakespeares Macbeth in the version of [0|Full].</en>
+			</description>
+			<staff>
+				<member index="0" function="1">8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2</member>
+				<member index="1" function="2">8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2</member>
+				<member index="2" function="2">TheRob-TowerTV-RonnyMcdawoll</member>               
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1948" distribution="0" maingenre="7" subgenre="11" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="83" speed="27" outcome="71" />
+		</programme>
+	  
+		<programme id="TheRob-a4d6-dram-ShakespearesOthello" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0045251" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Orson Welles' Othello -->
+				<de>Shakespeares Othello</de>
+				<en>Shakespeares Othello</en>
+			</title>
+			<title_original>
+				<de>Orson Welles' Othello</de>
+				<en>Orson Welles' Othello</en>
+			</title_original>        
+			<description>
+				<de>Die Verfilmung von Shakespeares Othello. [0|Full] drehte seine Version.</de>
+				<en>Shakespeares Othello in the version of [0|Full].</en>
+			</description>
+			<staff>
+				<member index="0" function="1">8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2</member>
+				<member index="1" function="2">8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2</member>
+				<member index="2" function="2">TheRob-TowerTV-MikeMcPiamoir</member>               
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1952" distribution="0" maingenre="7" subgenre="15" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="93" speed="29" outcome="76" />
+		</programme>
+	  
+		<programme id="TheRob-a4d6-dram-LeopoldLoeb" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0045251" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Der Zwang zum Bösen -->
+				<de>Der Fall Leopold Loeb</de>
+				<en>The Leopold Loeb case</en>
+			</title>
+			<title_original>
+				<de>Der Zwang zum Bösen</de>
+				<en>Compulsion</en>
+			</title_original>        
+			<description>
+				<de>Die Verfilmung des Leopold Loeb Falles. Mit [1|Full] in der Hauptrolle.</de>
+				<en>Movie about the Leopold Loeb case with [1|Full] as the main actor.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-RichieButcher</member>
+				<member index="1" function="2">8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2</member>
+				<member index="2" function="2">1355577f-9afa-4240-9add-e043b1c03797</member>               
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1959" distribution="0" maingenre="11" subgenre="4" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="81" speed="41" outcome="71" />
+		</programme>
+	  
+		<programme id="TheRob-a4d6-adv-AlbinoWal" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0049513" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Moby Dick -->
+				<de>Albino Wal</de>
+				<en>Albino Whale</en>
+			</title>
+			<title_original>
+				<de>Moby Dick</de>
+				<en>Moby Dick</en>
+			</title_original>        
+			<description>
+				<de>Der Kapitain ([1|Full]) gegen den bösen Albino Wal. Ein Klassiker der Filmkunst.</de>
+				<en>The captain ([1|Full]) and his epic fight against the mean albino whale. A classic prove for film art.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">b99662fc-9503-436a-900c-6c63e9b91fce</member>
+				<member index="1" function="2">TheRob-celebritypeople-WeckoryWeck</member>
+				<member index="2" function="2">TheRob-TowerTV-RichieBaseyard</member>
+				<member index="3" function="2">8fd0eba6-3ac0-41eb-8a86-514fa77dc9a2</member>                 
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1956" distribution="0" maingenre="1" subgenre="7" flags="12" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="71" speed="67" outcome="74" />
+		</programme>
+	  
+		<programme id="TheRob-a4d6-dram-KeyenIndianer" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0057940" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Cheyenne -->
+				<de>Keyen Indianer</de>
+				<en>Keyen Indians</en>
+			</title>
+			<title_original>
+				<de>Cheyenne</de>
+				<en>Cheyenne Autumn</en>
+			</title_original>        
+			<description>
+				<de>Die Keyen Indianer versuchen ihrer Hungersnot zu entkommen. Die Armee möchte das verhindern. Dieser Film hat durchaus Kultcharakter. Vor allem, da die indianischen Dialoge etwas anders waren, als der Zuschauer dachte.</de>
+				<en>The Keyen indians are trying to escape the starving. Tha army has opposite orders. A movie with cult status. Especially due to the indian dialougues. They are saying other things than everybody thaught.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-celebritypeople-RonDort</member>
+				<member index="1" function="2">TheRob-TowerTV-RichardSitdark</member>
+				<member index="2" function="2">TheRob-TowerTV-RonSaradine</member>
+				<member index="3" function="2">TheRob-TowerTV-EddiePMobison</member>
+				<member index="4" function="2">788fa2a0-7908-4e96-b3c0-51ff9386a16e</member>                         
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1964" distribution="0" maingenre="7" subgenre="11" flags="8" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="71" speed="67" outcome="74" />
+		</programme>
+	  
+		<programme id="TheRob-a4d6-act-Fallschirmspringer" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0064397" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Die den Hals riskieren -->
+				<de>Fallschirmspringer</de>
+				<en>Skydivers</en>
+			</title>
+			<title_original>
+				<de>Die den Hals riskieren</de>
+				<en>The Gypsy Moths</en>
+			</title_original>        
+			<description>
+				<de>Drei Männer verdienen ihr Geld mit Show Fallschirmsprüngen. Das geht nicht immer gut.</de>
+				<en>Three men are earning their money with skydiving. But suddenly many thing are not working out any more.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-JohnFrankenwiener</member>
+				<member index="1" function="2">1cb9c80c-6cba-4003-9e72-7982447433ab</member>
+				<member index="2" function="2">TheRob-TowerTV-DebbyKehre</member>
+				<member index="3" function="2">7af27da0-4abf-482c-b8a3-00612c1e4d53</member>                     
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1969" distribution="0" maingenre="2" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="51" speed="71" outcome="66" />
+		</programme>
+	 
+		<programme id="TheRob-a4d6-adv-DerGeisterseemann" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0064397" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- The Extraordinary Seaman -->
+				<de>Der Geisterseemann</de>
+				<en>The ghostlyy Navy man</en>
+			</title>
+			<title_original>
+				<de>The Extraordinary Seaman</de>
+				<en>The Extraordinary Seaman</en>
+			</title_original>        
+			<description>
+				<de>Ein Geist segelt über die Meere um Krieg zu führen und die Welt zu retten. Spazieren gehen ist auch mal schön...</de>
+				<en>A ghost is sailing over the seas to rescue the world. Sometimes talking a walk is the better idea...</en>
+			</description>
+			<staff> 
+				<member index="0" function="1">TheRob-TowerTV-JohnFrankenwiener</member>
+				<member index="1" function="2">2b6c2f08-bc5e-4e78-ad8e-3d70169a8fe7</member>
+				<member index="2" function="2">TheRob-TowerTV-FayRunAWay</member>
+				<member index="3" function="2">TheRob-celebritypeople-WeckoryWeck</member>
+				<member index="4" function="2">TheRob-TowerTV-Bobmailour</member>                      
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1961" distribution="0" maingenre="1" subgenre="5" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="12" speed="31" outcome="14" />
+		</programme>
+	 
+		<programme id="TheRob-a4d6-adv-GoldschatzimWesten" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0064615" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Mackenna's Gold -->
+				<de>Glodschatz im Westen</de>
+				<en>Gold Treasure in the West</en>
+			</title>
+			<title_original>
+				<de>Mackenna's Gold</de>
+				<en>Mackenna's Gold</en>
+			</title_original>        
+			<description>
+				<de>Weil der Sheriff angeblich eine Schatzkarte gesehen hat, wird er entführt. Er soll den Weg zum Gold weisen.</de>
+				<en>Rumours are saying that the Sheriff knows a treasure map. So he his kidnapped and has to show the route to the gold.</en>
+			</description>
+			<staff> 
+				<member index="0" function="1">TheRob-TowerTV-LeeJRombson</member>
+				<member index="1" function="2">TheRob-celebritypeople-WeckoryWeck</member>
+				<member index="2" function="2">5e971716-fbd8-403f-a0df-9aae68c04d85</member>
+				<member index="3" function="2">TheRob-TowerTV-EddiePMobison</member>
+				<member index="4" function="2">fd49c0ab-3619-4f7a-80cf-82488f5256bc</member>                      
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1969" distribution="0" maingenre="1" subgenre="15" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="62" speed="72" outcome="61" />
+		</programme>
+
+		<programme id="TheRob-a4d6-hist-VogelkundeinAlcatraz" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0055798" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Der Gefangene von Alcatraz -->
+				<de>Vogelkunde in Alcatraz</de>
+				<en>Knowing Birds in Alcatraz</en>
+			</title>
+			<title_original>
+				<de>Der Gefangene von Alcatraz</de>
+				<en>Birdman of Alcatraz</en>
+			</title_original>        
+			<description>
+				<de>Ein Gefanger in Alcatraz beschäftigt sich mit Vogelkunde und Haftbedingungen. Der Filme erhielt viel Oscarnominierungen. Unter anderem für [1|Full].</de>
+				<en>A prisoner of Alcatraz is researching in ornithology and life in prison. The movie got many nominations for the Oscar. As an example one for [1|Full].</en>
+			</description>
+			<staff> 
+				<member index="0" function="1">TheRob-TowerTV-JohnFrankenwiener</member>
+				<member index="1" function="2">1cb9c80c-6cba-4003-9e72-7982447433ab</member>
+				<member index="2" function="2">a3fe5298-290e-4818-9523-4788d307286f</member>
+				<member index="3" function="2">TheRob-TowerTV-CharlieWalden</member>                  
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1962" distribution="0" maingenre="11" subgenre="7" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="87" speed="52" outcome="81" />
+		</programme>
+
+		<programme id="TheRob-a4d6-act-WildeKerle" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0055633" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Die jungen Wilden -->
+				<de>Wilde Kerle</de>
+				<en>Wild Guys</en>
+			</title>
+			<title_original>
+				<de>Die jungen Wilden</de>
+				<en>The Young Savages</en>
+			</title_original>        
+			<description>
+				<de>[1|Full] als Ankläger nach einem Mord in Harlem.</de>
+				<en>[1|Full] as district attorney after a murder in Harlem.</en>
+			</description>
+			<staff> 
+				<member index="0" function="1">TheRob-TowerTV-JohnFrankenwiener</member>
+				<member index="1" function="2">1cb9c80c-6cba-4003-9e72-7982447433ab</member>
+				<member index="2" function="2">TheRob-TowerTV-JellyWinter</member>                     
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1961" distribution="0" maingenre="2" subgenre="4" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="47" speed="76" outcome="71" />
+		</programme>
+
+		<programme id="TheRob-a4d6-dram-Mein Kind" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0040087" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Alle meine Söhne -->
+				<de>Mein Kind</de>
+				<en>My Child</en>
+			</title>
+			<title_original>
+				<de>Alle meine Söhne</de>
+				<en>All My Sons</en>
+			</title_original>        
+			<description>
+				<de>Jahre nachdem Keller seinen Partner reingelegt hat, will sein Sohn auf einmal dessen Tochter heiraten.</de>
+				<en>Years after Keller linked his partner his son suddenly wants to marry the daughter of the partner.</en>
+			</description>
+			<staff> 
+				<member index="0" function="1">TheRob-TowerTV-ErwinRice</member>
+				<member index="1" function="2">1cb9c80c-6cba-4003-9e72-7982447433ab</member>
+				<member index="2" function="2">TheRob-TowerTV-EddiePMobison</member>                     
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1948" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="79" speed="48" outcome="71" />
+		</programme>
+
+		<programme id="TheRob-a4d6-rom-Frauensindbewaffnet" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0051579" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Mit den Waffen einer Frau -->
+				<de>Frauen sind bewaffnet</de>
+				<en>Women are armed</en>
+			</title>
+			<title_original>
+				<de>Mit den Waffen einer Frau</de>
+				<en>En cas de malheur</en>
+			</title_original>        
+			<description>
+				<de>Die Diebin Yvette verzaubert ihren Anwalt. Das bleibt nicht folgenlos.</de>
+				<en>Yvette is a thief and her lawyer falls in love for her. This wont stay without consequences.</en>
+			</description>
+			<staff> 
+				<member index="0" function="1">TheRob-TowerTV-KlausAuntLara</member>
+				<member index="1" function="2">TheRob-TowerTV-ReanWarin</member>
+				<member index="2" function="2">TheRob-TowerTV-GoddessBardo</member>                     
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="F" year="1958" distribution="0" maingenre="15" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="69" speed="53" outcome="71" />
+		</programme>
+
+		<programme id="TheRob-a4d6-act-EineNachtinParis" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0046451" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Wenn es Nacht wird in Paris -->
+				<de>Eine Nacht in Paris</de>
+				<en>A Night in Paris</en>
+			</title>
+			<title_original>
+				<de>Wenn es Nacht wird in Paris</de>
+				<en>Touchez pas au grisbi</en>
+			</title_original>        
+			<description>
+				<de>Die klassische Geschichte. Ein Gangster im Ruhestand. Aber durch die Entführung seines Freundes, sorgt das Leben für die Reaktivierung seiner Karriere.</de>
+				<en>The classic story. A gangster is allready retired. But as his friend is kidnapped, life shows him that retirement is not for ever. His career goes on.</en>
+			</description>
+			<staff> 
+				<member index="0" function="1">TheRob-TowerTV-JackBeguer</member>
+				<member index="1" function="2">TheRob-TowerTV-ReanWarin</member>
+				<member index="2" function="2">TheRob-TowerTV-DorisPuppet</member>
+				<member index="3" function="2">TheRob-TowerTV-RennyDiary</member>                      
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="F" year="1954" distribution="0" maingenre="2" subgenre="4" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="79" speed="91" outcome="76" />
+		</programme>                                                    
+	
+		<programme id="TheRob-a4d6-mon-Bonaparte" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0048413" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Napoléon -->
+				<de>Bonaparte</de>
+				<en>Bonaparte</en>
+			</title>
+			<title_original>
+				<de>Napoléon</de>
+				<en>Napoléon</en>
+			</title_original>        
+			<description>
+				<de>Das Leben von Napoléon. Ausführlich erzählt.</de>
+				<en>The life of Napoléon. Shown as an epic tale.</en>
+			</description>
+			<staff> 
+				<member index="0" function="1">TheRob-TowerTV-SaschoGuilty</member>
+				<member index="1" function="2">TheRob-TowerTV-JeanLucAlmond</member>
+				<member index="2" function="2">TheRob-TowerTV-DanielleVarieteux</member>
+				<member index="3" function="2">TheRob-TowerTV-ReanWarin</member>                      
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="F" year="1955" distribution="0" maingenre="13" subgenre="11" flags="0" blocks="4" time="0" price_mod="1.00" />
+			<ratings critics="69" speed="31" outcome="67" />
+		</programme>
+
+		<programme id="TheRob-a4d6-act-Rettungsmission" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0034093" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Der Orkan -->
+				<de>Rettungsmission</de>
+				<en>Rescue Mission</en>
+			</title>
+			<title_original>
+				<de>Der Orkan</de>
+				<en>Remorques</en>
+			</title_original>        
+			<description>
+				<de>Da will man einfach nur ein Schiff retten. Aber wenn man sich dabei in die Frau des Kapitäns verliebt, wird es auf einmal nicklich.</de>
+				<en>A short an easy rescue mission for a ship in a S.O.S situation. But as soon as the rescuer falls in love with the captains wife it starts to get tricky.</en>
+			</description>
+			<staff> 
+				<member index="0" function="1">TheRob-TowerTV-JeanSemilquon</member>
+				<member index="1" function="2">TheRob-TowerTV-ReanWarin</member>
+				<member index="2" function="2">TheRob-TowerTV-MadlaRemault</member>
+				<member index="3" function="2">TheRob-TowerTV-MichelleMorsand</member>                      
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="F" year="1941" distribution="0" maingenre="2" subgenre="7" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="59" speed="67" outcome="76" />
+		</programme>                                                  
+	
+		<programme id="TheRob-serie-crim-DelanoandChefs" product="5" fictional="0" licence_type="3" tmdb_id="0" imdb_id="tt0084997" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Die Polizei-Chiefs von Delano -->
+				<de>Delano und seine Polizeichefs</de>
+				<en>Delano and his Police Bosses</en>
+			</title>
+			<title_original>
+				<de>Die Polizei-Chiefs von Delano</de>
+				<en>Chiefs</en>
+			</title_original>
+			<description>
+				<de>40 Jahre in einer Stadt. Drei Polizeichefs und ein Serientäter. Was braucht man mehr für einen genialen Dreiteiler?</de>
+				<en>40 years in one City. Three police chiefs and one serieal killer. What else do you need for a fantastic mini TV serial?</en>
+			</description>
+			<staff>
+				<member index="0" function="2">b4561de6-215e-46ab-9212-f0868c6fcb33</member>
+				<member index="1" function="2">4771bc79-6115-4ffc-a46a-e2ee1961ca4c</member>
+				<member index="2" function="2">5d267d5d-70a1-4b04-8bd5-bd32ffb87659</member>
+				<member index="3" function="2">ca53b0fc-53cb-443f-aba8-408d8b0bbdd8</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1983" distribution="0" maingenre="4" subgenre="7" flags="8" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="95" speed="80" outcome="85" />
+			<children>
+				<programme id="TheRob-serie-DelanoandChefs-Ep001" product="7" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Die Zwanziger Jaher</de>
+						<en>The Twenties</en>
+					</title>
+					<description>
+						<de>Die zwanziger Jahre. Ein neuer Polizei Chef. Und schon ein Serientäter. Doch auch die Banden machen ihm zu schaffen. Wie soll das bewältigt werden?</de>
+						<en>Starting in 1920. A new police chief. And direct a serial killer. But also there is plenty of gang crimes. What a start and how could it be solved?</en>
+					</description>
+					<ratings critics="99" speed="75" />
+				</programme>
+				<programme id="TheRob-serie-DelanoandChefs-Ep002" product="7" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Die Vierziger Jahre</de>
+						<en>The Fourties</en>
+					</title>
+					<description>
+						<de>In den Vierzigern. Ein neur Polizei Chef ist da. Der Serientäter ist immer noch da. Die Banden sind weg. Aber nun ist der Rassismus da. Es wird nicht leichter.</de>
+						<en>The 1940th. Again a new chief of the police. But the serial killer is still active. But the gang crimes are gone. But now the racism is the problem. It does not get easier.</en>
+					</description>
+					<ratings critics="90" speed="83" />
+				</programme>
+				<programme id="TheRob-serie-DelanoandChefs-Ep003" product="7" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Die Sechziger Jahre</de>
+						<en>The Sixties</en>
+					</title>
+					<description>
+						<de>In den Sechzigern beginnt der Liberalismus durch Kennedy. Vieles wird einfacher. Aber der Serientäter ist immer noch da. Zeit für die endgültige Jagd.</de>
+						<en>In the 1960th the liberlasm starts. Thanks to Kennedy many things are getting easier for the new police chief. But still the serial killer is there. Time for the end game?</en>
+					</description>
+					<ratings critics="94" speed="82" />
+				</programme>
+			</children>
+		</programme>
+
+		<programme id="TheRob-serie-dram-HinterEden" product="5" fictional="0" licence_type="3" tmdb_id="0" imdb_id="tt0083409" rt_id="0" creator="8751" created_by="TheRob">
+			<title>
+				<!-- Jenseits von Eden -->
+				<de>Steinbecks Hinter Eden</de>
+				<en>Steinbecks Behind Eden</en>
+			</title>
+			<title_original>
+				<de>Jenseits von Eden</de>
+				<en>East of Eden</en>
+			</title_original>
+			<description>
+				<de>Steinbecks Geschichte über eine Familie im aufstrebenden Amerika.</de>
+				<en>Steinbecks story about a family in the raising time of America.</en>
+			</description>
+			<staff>
+				<member index="0" function="2">0f4a2996-dcb9-4f65-a3a0-7556eb9919d2</member>
+				<member index="1" function="2">TheRob-TowerTV-BruceAlileader</member>
+				<member index="2" function="2">47d20e57-dff8-4120-8450-49119e6e0aae</member>
+			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1981" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
+			<ratings critics="92" speed="57" outcome="65" />
+			<children>
+				<programme id="TheRob-serie-HinterEden-Ep001" product="7" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Brüder</de>
+						<en>Brothers</en>
+					</title>
+					<description>
+						<de>Die Geschichte der Brüder, die sich komplett unterscheiden. Und Cathy taucht natürlich auf.</de>
+						<en>The story of two brothers, who are completly different. And well. At least Cathy appears.</en>
+					</description>
+					<ratings critics="97" speed="42" />
+				</programme>
+				<programme id="TheRob-serie-HinterEden-Ep002" product="7" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Cathy</de>
+						<en>Cathy</en>
+					</title>
+					<description>
+						<de>Cathy hetzt die Brüder gegeneinander auf. Und entscheidet sich am Ende für den Härteren, mit dem sie Zwillinge bekommt.</de>
+						<en>Cathy is starting her games with both brothers. She marries the tougher one and gets her twins.</en>
+					</description>
+					<ratings critics="83" speed="78" />
+				</programme>
+				<programme id="TheRob-serie-HinterEden-Ep003" product="7" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+					<title>
+						<de>Rivalen</de>
+						<en>Rivals</en>
+					</title>
+					<description>
+						<de>Das Familienleben langweilt Cathy. Sie verlässt die Familie. Der letzte Schritt der Saga beginnt.</de>
+						<en>For Cathy the life gets to dull. She leaves the family. The final step of the family story begins.</en>
+					</description>
+					<ratings critics="91" speed="44" />
+				</programme>
+			</children>
+		</programme>
+		<programme id="TheRob-mov-dram-Hoellewirsindda" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0077416" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Die durch die Hölle gehen, Drama, Sub Action -->
+				<de>Hölle, wir sind da!</de>
+				<en>Hell, we are ready for you!</en>
+			</title>
+			<title_original>
+				<de>Die durch die Hölle gehen</de>
+				<en>The Deer Hunter</en>
+			</title_original>
+			<description>
+				<de>Neun Oscar Nominierungen führten zu 5 Oscars. Drei Patrioten ziehen in den Vietnamkrieg. Aber was wird am Ende aus ihnen und ihren Überzeugungen?</de>
+				<en>Nine Oscar nominations led to five Oscars. Three Patriots are going into the Vietnam war. But how will their believes be at the end of their trip?</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-MikaelCinamon</member>
+				<member index="1" function="2">506bc383-259e-4a36-9278-081aafc8f35c</member>
+				<member index="2" function="2">770dc8b2-a364-4cdf-99a3-6b8157c5cf92</member>
+				<member index="3" function="2">58cb1013-fa4c-42a8-9467-c931925109b6</member>                                                                                             			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1978" distribution="0" maingenre="7" subgenre="2" flags="0" blocks="4" time="0" price_mod="1.00" />
+			<ratings critics="88" speed="82" outcome="94" />
+		</programme>
+		
+		<programme id="TheRob-mov-act-DervonSizilien" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0093966" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Der Sizilianer, Action, Sub Crime -->
+				<de>Der von Sizilien</de>
+				<en>The One from Sicilia</en>
+			</title>
+			<title_original>
+				<de>Der Sizilianer</de>
+				<en>The Sicilian</en>
+			</title_original>
+			<description>
+				<de>Die Geschichte des Sizilianischen Robin Hoods.</de>
+				<en>The story of the sicilian Robin Hood.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-MikaelCinamon</member>
+				<member index="1" function="2">TheRob-TowerTV-ChristianLampnerd</member>
+				<member index="2" function="2">TheRob-TowerTV-LawrenceStempel</member>
+				<member index="3" function="2">e8d8fc33-b2ad-4998-8516-52182ef3911d</member>                                                                                             			</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1987" distribution="0" maingenre="2" subgenre="4" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="53" speed="82" outcome="47" />
+		</programme>
+		
+		<programme id="TheRob-mov-dram-nurEinerbehaeltdenkopf" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091203" rt_id="8751" creator="TheRob">
+			<title>
+				<!-- Highlander, Adventure, Sub Fantasy -->
+				<de>Nur einer behält den Kopf</de>
+				<en>Only One Keeps His Head</en>
+			</title>
+			<title_original>
+				<de>Highlander - Es kann nur einen geben</de>
+				<en>Highlander</en>
+			</title_original>
+			<description>
+				<de>[1|Full] und [2|Full] in dem weltbekannten Abenteuer über das ewige Leben. Eine Reise durch die Zeit.</de>
+				<en>[1|Full] and [2|Full] in the worldwide known adventure about the everlasting life. A journey through time.</en>
+			</description>
+			<staff>
+				<member index="0" function="1">TheRob-TowerTV-PuzzelMuhKanny</member>
+				<member index="1" function="2">TheRob-TowerTV-ChristianLampnerd</member>
+				<member index="2" function="2">e0807a2d-e04d-4abf-9422-afa44b202438</member>
+				</staff>
+			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
+			<data country="USA" year="1986" distribution="0" maingenre="1" subgenre="10" flags="0" blocks="2" time="0" price_mod="1.00" />
+			<ratings critics="48" speed="62" outcome="34" />
+		</programme>
 
 
 		<!-- some programmes from ronny.xml -->
