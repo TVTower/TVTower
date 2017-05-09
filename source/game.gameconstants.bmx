@@ -1096,8 +1096,8 @@ Type TVTRoomFlag
 	'can this room be rented at all or is it in possession of the owner?
 	'use this for office, news room, boss, archive, movieagency, adagency...
 	Const FREEHOLD:int = 8
-	'allow more occupants than one?
-	Const ALLOW_MULTIPLE_OCCUPANTS:int = 16
+	'forbid more occupants than one (eg. room plan)?
+	Const RESTRICT_TO_SINGLE_OCCUPANT:int = 16
 	'is this a room or just a "plan" or "view"
 	Const FAKE_ROOM:int = 32
 End Type

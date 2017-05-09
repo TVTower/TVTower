@@ -206,6 +206,11 @@ Type TFigureDeliveryBoy Extends TFigure
 	Field intentedDeliverToRoom:TRoomBase
 	'was the "package" delivered already?
 	Field deliveryDone:Int = True
+	Field enterRoomTryCount:int = 0
+	'-1 to disable any limit and wait forever
+	Field enterRoomTryCountMax:int = 3
+	'time to wait for another try to visit a room
+	Field enterRoomTryTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(5000, 0, 0, 2500)
 	'time to wait between doing something
 	Field nextActionTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(7500, 0, 0, 5000)
 
@@ -234,14 +239,24 @@ Type TFigureDeliveryBoy Extends TFigure
 	'           to avoid "resets" while Entering
 	Method BeginEnterRoom:int(door:TRoomDoorBase, room:TRoomBase)
 		Super.BeginEnterRoom(door, room)
-
-		'figure now knows where to "deliver"
-		If Not checkedRoomboard Then checkedRoomboard = True
-		'figure entered the intended room -> delivery is finished
-		If inRoom = deliverToRoom Then deliveryDone = True
 			
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
+	End Method
+
+
+	'only set checkedRoomboard/delivery if we succesfully entered a room
+	Method FinishEnterRoom:int()
+		Super.FinishEnterRoom()
+
+		'figure entered the intended room -> delivery is finished
+		If inRoom = deliverToRoom Then deliveryDone = True
+
+		enterRoomTryCount = 0
+		enterRoomTryTimer.Reset()
+
+		'figure now knows where to "deliver"
+		If Not checkedRoomboard Then checkedRoomboard = True
 	End Method
 
 
@@ -254,11 +269,46 @@ Type TFigureDeliveryBoy Extends TFigure
 		deliveryDone = False
 		deliverToRoom = room
 		intentedDeliverToRoom = room
+
+		enterRoomTryCount = 0
+		enterRoomTryTimer.Reset()
 	End Method
 
 
 	Method HasToDeliver:Int() {_exposeToLua}
 		Return Not deliveryDone
+	End Method
+	
+
+	'override to react to it
+	Method FailEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase, reason:String)
+		local result:int = Super.FailEnterRoom(room, door, reason:String)
+
+		if reason = "locked"
+			'send home again
+			TLogger.Log("TFigureDeliveryBoy", "Delivery failed: room locked. " + Self.name+" is returning back home.", LOG_DEBUG | LOG_AI, True)
+			deliveryDone = True
+			SendToOffscreen()
+			return result
+		endif
+
+		if reason = "blocked"
+			'stop waiting if the room is blocked for too long
+			if room.blockedUntil - GetWorldTime().GetTimeGone() > 600
+				TLogger.Log("TFigureDeliveryBoy", "Delivery failed: room blocked for longer than 600s. " + Self.name+" is returning back home.", LOG_DEBUG | LOG_AI, True)
+				deliveryDone = True
+				SendToOffscreen()
+				return result
+			endif
+
+			'else we will wait
+		endif
+
+		'in use? wait a bit
+		enterRoomTryCount :+ 1
+		enterRoomTryTimer.Reset()
+
+		return result
 	End Method
 
 
@@ -270,11 +320,27 @@ Type TFigureDeliveryBoy Extends TFigure
 
 		'figure is in building and without target waiting for orders
 		If Not deliveryDone And IsIdling()
+
+			if enterRoomTryCount > 0 and enterRoomTryCountMax > 0 and enterRoomTryCount > enterRoomTryCountMax
+				TLogger.Log("TFigureDeliveryBoy", Self.name+" cannot enter a room, Aborting the job, going home.", LOG_DEBUG | LOG_AI, True)
+				'send home again
+				deliveryDone = True
+				SendToOffscreen()
+			endif
+
+
 			'before directly going to a room, ask the roomboard where
 			'to go
-			If Not checkedRoomboard
-				TLogger.Log("TFigureDeliveryBoy", Self.name+" is sent to roomboard", LOG_DEBUG | LOG_AI, True)
-				SendToDoor(TRoomDoor.GetByDetails("roomboard", 0))
+			If Not checkedRoomboard 'and IsIdling()
+				if enterRoomTryCount = 0
+					TLogger.Log("TFigureDeliveryBoy", Self.name+" is sent to roomboard", LOG_DEBUG | LOG_AI, True)
+					SendToDoor(TRoomDoor.GetByDetails("roomboard", 0))
+				elseif enterRoomTryTimer.isExpired() and not IsWaitingToEnter()
+					TLogger.Log("TFigureDeliveryBoy", Self.name+" is trying again to enter roomboard", LOG_DEBUG | LOG_AI, True)
+					SendToDoor(TRoomDoor.GetByDetails("roomboard", 0))
+					'enterRoomTryTimer.Reset()
+				endif
+			'checkedRoomboard is set when entering the first room (board)
 			Else
 				'instead of sending the figure to the correct door, we
 				'ask the roomsigns where to go to
@@ -335,6 +401,9 @@ Type TFigureTerrorist Extends TFigureDeliveryBoy
 
 	Method New()
 		nextActionTimer.Init(1500, 0, 0, 5000)
+
+		'really wait a bit longer than normal delivery boys
+		enterRoomTryCountMax:int = 15
 	End Method
 
 
@@ -362,8 +431,13 @@ Type TFigureTerrorist Extends TFigureDeliveryBoy
 	'do not accept others, once the terrorist is in a room
 	'so behave "normal" if asked from outside of a room regarding
 	'persons in the room 
-	Method IsAcceptingEntityInSameRoom:int(entity:TEntity)
-		if not GetInRoom() then return Super.IsAcceptingEntityInSameRoom(entity)
+	Method IsAcceptingEntityInSameRoom:int(entity:TEntity, room:object)
+		if not GetInRoom()
+			local r:TRoomBase = TRoomBase(room)
+			if r and r.HasFlag(TVTRoomFlag.FAKE_ROOM) then return False
+
+			return Super.IsAcceptingEntityInSameRoom(entity, room)
+		endif
 
 		'when in a room, we do no longer accept others to join (we
 		'want to place a bomb...) 
@@ -379,6 +453,13 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 	'owner of the licence in the moment of the task creation)
 	Field confiscateProgammeLicenceGUID:String[]
 	Field confiscateProgammeLicenceFromOwner:Int[]
+
+
+	Method New()
+		'really wait a bit longer than normal delivery boys
+		enterRoomTryCountMax:int = 15
+	End Method
+
 
 	'used in news effect function
 	Function CreateConfiscationJob(data:TData, params:TData)
@@ -523,8 +604,15 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 	'do not accept others, once the marshal is in a room
 	'so behave "normal" if asked from outside of a room regarding
 	'persons in the room 
-	Method IsAcceptingEntityInSameRoom:int(entity:TEntity)
-		if not GetInRoom() then return Super.IsAcceptingEntityInSameRoom(entity)
+	Method IsAcceptingEntityInSameRoom:int(entity:TEntity, room:object)
+		if not GetInRoom()
+			'does not like to use things like the room board while others
+			'are using it too (or talking to the porter)
+			local r:TRoomBase = TRoomBase(room)
+			if r and r.HasFlag(TVTRoomFlag.FAKE_ROOM) then return False
+
+			return Super.IsAcceptingEntityInSameRoom(entity, room)
+		endif
 
 		'when in a room, we do no longer accept others to join (eg. we
 		'are confiscating something and do not want to have that put into

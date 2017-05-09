@@ -660,16 +660,12 @@ Type TFigure extends TFigureBase
 				return FALSE
 			endif
 
-			'no key needed or having one... check if there is someone
-			'in already (who is not kick-able)
-			If room.hasOccupant() and not room.isOccupant(self)
-				'only player-figures need such handling (events etc.)
-				'all others just enter
-				If playerID and playerID <> room.owner
-					FailEnterRoom(room, door, "inuse")
-					return FALSE
-				EndIf
-			EndIf
+			'disabled check if there is someone in already
+			'(CanEnterRoom() already checks if occupant allows us to enter)
+			'If room.hasOccupant() and not room.isOccupant(self)
+			FailEnterRoom(room, door, "inuse")
+			return FALSE
+			'EndIf
 		endif
 
 		'ask if somebody is against going into the room
@@ -825,18 +821,12 @@ endrem
 
 
 	Method CanEnterRoom:Int(room:TRoomBase)
-		'cannot enter if room forbids
-		'(exception are non-players)
-		if not room.CanEntityEnter(self)
-			if not room.IsBlocked() and not playerID
-				return True
-			endif
+		'non-players (also delivery boys and terrorists!) have some
+		'kind of master key
+		'player figures need to gain them (via betty love!)
+		if not HasKeyForRoom(room) then return False
 
-			return False
-		endif
-
-		'players must be owner of the room or needs a masterKey
-		Return HasKeyForRoom(room)
+		return room.CanEntityEnter(self)
 	End Method 
 
 

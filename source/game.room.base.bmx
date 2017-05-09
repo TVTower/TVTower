@@ -714,14 +714,30 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		if IsBlocked() then return False
 
 		'one could enter if:
-		'no entity is in the room
-		if not HasOccupant() then return True
-		'all can enter if there is no limit...
-		if HasFlag(TVTRoomFlag.ALLOW_MULTIPLE_OCCUPANTS) then return True
-		'other entities in the room allow it (eg. janitor or delivery guys)
-		if not HasOccupantDisallowingEnteringEntity(entity) then return True
-		'entity is already in the room
+		'- is already in the room
+		'- nobody in the room
+		'- entity likes the occupants in the room and the occupants
+		'  like the entering entity
+
 		if IsOccupant(entity) then return True
+		if not HasOccupant() then return True
+
+		'if there is a limit we can not enter (checked above if there
+		'is already "nobody" in the room)
+		if HasFlag(TVTRoomFlag.RESTRICT_TO_SINGLE_OCCUPANT)
+			return False
+		'else all can enter as there is no limit...
+		else
+			'except at least one other entity in the room disallows it
+			'(eg. players to players)
+			if HasOccupantDisallowingEnteringEntity(entity) then return False
+			'except the entity itself does not like the occupants
+			'(eg. terrorists others in fake-rooms - aka "standing near each other")
+			if HasEnteringEntityDisallowingOccupants(entity)
+				return False
+			endif
+			return True
+		endif
 		
 		return False
 	End Method
@@ -821,6 +837,14 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		'by default assume everyone accepts other players
 		'-> in TRoom we override this function to wether the figures
 		'   accept another entity or not
+		return False
+	End Method
+
+
+	Method HasEnteringEntityDisallowingOccupants:int(entity:TEntity)
+		'by default assume everyone accepts other players
+		'-> in TRoom we override this function to wether the entity
+		'   accepts another figures or not
 		return False
 	End Method
 

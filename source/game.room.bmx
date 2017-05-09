@@ -96,9 +96,22 @@ Type TRoom extends TRoomBase {_exposeToLua="selected"}
 		'ask all the occupying players whether they are not ok with
 		'the entity
 		for local f:TFigureBase = eachIn occupants
-			if not f.IsAcceptingEntityInSameRoom(entity) then return True
+			if not f.IsAcceptingEntityInSameRoom(entity, self) then return True
 		Next
 
+		return False
+	End Method
+
+
+	'override
+	'ask entities whether they allow other figures in the room
+	Method HasEnteringEntityDisallowingOccupants:int(entity:TEntity)
+		if not TFigureBase(entity) then return True
+
+		'ask the entity/figure if it is not ok with the occupants
+		for local occupant:TEntity = eachIn occupants
+			if not TFigureBase(entity).IsAcceptingEntityInSameRoom(occupant, self) then return True
+		Next
 		return False
 	End Method
 
