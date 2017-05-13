@@ -2472,7 +2472,7 @@ Type TSaveGame Extends TGameState
 
 
 		'this creates new TGameObjects - and therefore increases ID count!
-		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename))
+		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename, XML_PARSE_HUGE))
 		If Not saveGame
 			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)
 			Return False

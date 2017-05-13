@@ -34,11 +34,16 @@ End Rem
 Rem
 Module BaH.Persistence
 
-ModuleInfo "Version: 1.00"
+ModuleInfo "Version: 1.02"
 ModuleInfo "Author: Bruce A Henderson"
 ModuleInfo "License: MIT"
 ModuleInfo "Copyright: 2008-2011 Bruce A Henderson"
 
+ModuleInfo "History: 1.02"
+ModuleInfo "History: Added XML parsing options arg for deserialization."
+ModuleInfo "History: Fixed 64-bit address ref issue."
+ModuleInfo "History: 1.01"
+ModuleInfo "History: Added encoding for String and String Array fields. (Ronny Otto)"
 ModuleInfo "History: 1.00"
 ModuleInfo "History: Initial Release"
 endrem
@@ -452,7 +457,6 @@ Type TPersist
 									If arrSize = 0 Then dims = 1
 									'it also happens to others (Bruceys Linux box)
 									if dims < 0 or dims > 1000000 then dims = 1
-									'if f.name() ="cast" then print "cast arraySize="+arrSize+" dimensions="+dims
 
 									If dims > 1 Then
 										'if arrSize = 0
@@ -520,8 +524,9 @@ Type TPersist
 	Rem
 	bbdoc: De-serializes @text into an Object structure.
 	about: Accepts a TxmlDoc, TStream or a String (of data).
+	@options relate to libxml specific parsing flags that can be applied.
 	End Rem
-	Function DeSerialize:Object(data:Object)
+	Function DeSerialize:Object(data:Object, options:Int = 0)
 		Local ser:TPersist = New TPersist
 
 		xmlParserMaxDepth = maxDepth
@@ -529,9 +534,9 @@ Type TPersist
 		If TxmlDoc(data) Then
 			Return ser.DeSerializeFromDoc(TxmlDoc(data))
 		Else If TStream(data) Then
-			Return ser.DeSerializeFromStream(TStream(data))
+			Return ser.DeSerializeFromStream(TStream(data), options)
 		Else If String(data) Then
-			Return ser.DeSerializeObject(String(data))
+			Return ser.DeSerializeObject(String(data), Null, Null, options)
 		End If
 	End Function
 
@@ -554,12 +559,13 @@ Type TPersist
 
 	Rem
 	bbdoc: De-serializes the file @filename into an Object structure.
+	about: @options relate to libxml specific parsing flags that can be applied.
 	End Rem
-	Method DeSerializeFromFile:Object(filename:String)
+	Method DeSerializeFromFile:Object(filename:String, options:Int = 0)
 
 		xmlParserMaxDepth = maxDepth
 
-		doc = TxmlDoc.parseFile(filename)
+		doc = TxmlDoc.ReadFile(filename, "", options)
 
 		If doc Then
 			Local root:TxmlNode = doc.GetRootElement()
@@ -573,7 +579,7 @@ Type TPersist
 	Rem
 	bbdoc: De-serializes @stream into an Object structure.
 	End Rem
-	Method DeSerializeFromStream:Object(stream:TStream)
+	Method DeSerializeFromStream:Object(stream:TStream, options:Int = 0)
 		Local data:String
 		Local buf:Byte[2048]
 
@@ -584,7 +590,7 @@ Type TPersist
 			data:+ String.FromBytes(buf, count)
 		Wend
 
-		Local obj:Object = DeSerializeObject(data)
+		Local obj:Object = DeSerializeObject(data, Null, Null, options)
 		Free()
 		Return obj
 	End Method
@@ -603,14 +609,14 @@ Type TPersist
 	Rem
 	bbdoc:
 	End Rem
-	Method DeSerializeObject:Object(text:String, parent:TxmlNode = Null, parentObject:object = Null)
+	Method DeSerializeObject:Object(text:String, parent:TxmlNode = Null, parentObject:object = Null, options:int = 0)
 
 		Local node:TxmlNode
 
 		If Not doc Then
 			xmlParserMaxDepth = maxDepth
 
-			doc = TxmlDoc.parseDoc(text)
+			doc = TxmlDoc.readDoc(Text, "", "", options)
 			parent = doc.GetRootElement()
 			fileVersion = parent.GetAttribute("ver").ToInt() ' get the format version
 			node = TxmlNode(parent.GetFirstChild())
@@ -693,7 +699,7 @@ Type TPersist
 													Throw "Reference not mapped yet : " + ref
 												End If
 											Else
-												objType.SetArrayElement(obj, i, DeSerializeObject("", arrayNode, obj))
+												objType.SetArrayElement(obj, i, DeSerializeObject("", arrayNode, obj, options))
 											End If
 
 									End Select
@@ -850,7 +856,7 @@ Type TPersist
 									Print "[WARNING] TPersistence: field ~q"+fieldNode.getAttribute("name")+"~q is no longer available. Created WorkAround-Storage."
 
 									'deserialize it, so that its reference exists
-									DeSerializeObject("", fieldNode, obj)
+									DeSerializeObject("", fieldNode, obj, options)
 								else
 									Print "[WARNING] TPersistence: field ~q"+fieldNode.getAttribute("name")+"~q is no longer available."
 								endif
@@ -935,7 +941,7 @@ Type TPersist
 																			Throw "Reference not mapped yet : " + ref
 																		End If
 																	Else
-																		arrayType.SetArrayElement(arrayObj, i, DeSerializeObject("", arrayNode, obj))
+																		arrayType.SetArrayElement(arrayObj, i, DeSerializeObject("", arrayNode, obj, options))
 																	End If
 															End Select
 
@@ -958,7 +964,7 @@ Type TPersist
 														Case ByteTypeId, ShortTypeId, IntTypeId, LongTypeId, FloatTypeId, DoubleTypeId, StringTypeId
 															arrayType.SetArrayElement(arrayObj, i, arrayNode.GetContent())
 														Default
-															arrayType.SetArrayElement(arrayObj, i, DeSerializeObject("", arrayNode, obj))
+															arrayType.SetArrayElement(arrayObj, i, DeSerializeObject("", arrayNode, obj, options))
 													End Select
 
 													i:+ 1
@@ -988,7 +994,7 @@ Type TPersist
 											endif
 
 
-											local deserializedObj:object = DeSerializeObject("", fieldNode, obj)
+											local deserializedObj:object = DeSerializeObject("", fieldNode, obj, options)
 											'if deserialization failed:
 											'- the object was null
 											'- the object was of an unknown type
@@ -1097,19 +1103,37 @@ Type TPersist
 
 
 	Function GetObjRef:String(obj:Object)
-		Return Base36(Int(Byte Ptr(obj)))
+?ptr64
+		Return Base36(Long(Byte Ptr(obj)))
+?Not ptr64
+ 		Return Base36(Int(Byte Ptr(obj)))
+?
 	End Function
 
+?ptr64
+	Function Base36:String( val:Long )
+		Const size:Int = 13
+?Not ptr64
 	Function Base36:String( val:Int )
-		Local vLong:Long = $FFFFFFFF & Long(Byte Ptr(val))
-		Local buf:Short[6]
-		For Local k:Int=5 To 0 Step -1
+		Const size:Int = 6
+?
+		Local vLong:Long = $FFFFFFFFFFFFFFFF & Long(Byte Ptr(val))
+		Local buf:Short[size]
+		For Local k:Int=(size-1) To 0 Step -1
 			Local n:Int=(vLong Mod 36) + 48
 			If n > 57 n:+ 7
 			buf[k]=n
 			vLong = vLong / 36
 		Next
-		Return String.FromShorts( buf,6 )
+	
+		' strip leading zeros
+		Local offset:Int = 0
+		While offset < size
+			If buf[offset] - Asc("0") Exit
+			offset:+ 1
+		Wend
+
+		Return String.FromShorts( Short Ptr(buf) + offset,size-offset )
 	End Function
 
 End Type
