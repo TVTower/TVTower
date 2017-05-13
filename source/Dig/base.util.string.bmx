@@ -360,12 +360,18 @@ Type StringHelper
 				Continue
 			End If
 			i:+1
+			'avoid out-of-bounds
+			if i >= s.length then continue
+
 			d=s[i]
 			If c<224 
 				b[bc] = (c-192)*64+(d-128)
 				Continue
 			End If
 			i:+1
+			'avoid out-of-bounds
+			if i >= s.length then continue
+
 			e = s[i]
 			If c < 240 
 				b[bc] = (c-224)*4096+(d-128)*64+(e-128)
