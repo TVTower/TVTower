@@ -788,6 +788,15 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		local contentX:int = x + skin.GetContentY()
 		local contentY:int = y + skin.GetContentY()
 
+		Local showMsgEarnInfo:Int = False
+		Local showMsgLiveInfo:Int = False
+		Local showMsgBroadcastLimit:Int = False
+
+		If IsPaid() then showMsgEarnInfo = True
+		If IsLive() then showMsgLiveInfo = True
+		If HasProductionBroadcastLimit() then showMsgBroadcastLimit= True
+
+
 		local title:string
 		if not isEpisode()
 			title = GetTitle()
@@ -815,13 +824,22 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
 		local titleH:int = 18, subtitleH:int = 16, genreH:int = 16, descriptionH:int = 70, castH:int=50
 		local splitterHorizontalH:int = 6
-		local boxH:int = 0, barH:int = 0
-		local boxAreaH:int = 0, barAreaH:int = 0
-		local boxAreaPaddingY:int = 4, barAreaPaddingY:int = 4
+		local boxH:int = 0, msgH:int = 0, barH:int = 0
+		local msgAreaH:int = 0, boxAreaH:int = 0, barAreaH:int = 0
+		local boxAreaPaddingY:int = 4, msgAreaPaddingY:int = 4, barAreaPaddingY:int = 4
 
+		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
 		barH = skin.GetBarSize(100, -1).GetY()
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(title, contentW - 10, 100))
+
+		'message area
+		If showMsgEarnInfo then msgAreaH :+ msgH
+		If showMsgLiveInfo then msgAreaH :+ msgH
+		If showMsgBroadcastLimit then msgAreaH :+ msgH
+		'if there are messages, add padding of messages
+		if msgAreaH > 0 then msgAreaH :+ 2* msgAreaPaddingY
+
 
 		'bar area starts with padding, ends with padding and contains
 		'also contains 3 bars
@@ -829,10 +847,11 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		'box area
 		'contains 1 line of boxes + padding at the top
-		boxAreaH = 1 * boxH + 1 * boxAreaPaddingY
+		boxAreaH = 1 * boxH
+		if msgAreaH = 0 then boxAreaH :+ boxAreaPaddingY
 
 		'total height
-		sheetHeight = titleH + genreH + descriptionH + castH + barAreaH + boxAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+		sheetHeight = titleH + genreH + descriptionH + castH + barAreaH + msgAreaH + boxAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
 		if isEpisode() then sheetHeight :+ subtitleH
 		'there is a splitter between description and cast...
 		sheetHeight :+ splitterHorizontalH
@@ -990,9 +1009,9 @@ endrem
 		endif
 
 
-		'=== BARS / BOXES AREA ===
+		'=== BARS / MESSAGES / BOXES AREA ===
 		'background for bars + boxes
-		skin.RenderContent(contentX, contentY, contentW, barAreaH + boxAreaH, "1_bottom")
+		skin.RenderContent(contentX, contentY, contentW, barAreaH + msgAreaH + boxAreaH, "1_bottom")
 
 
 		'===== DRAW RATINGS / BARS =====
@@ -1012,6 +1031,32 @@ endrem
 		skin.fontSemiBold.drawBlock(GetLocale("SCRIPT_POTENTIAL"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
 		contentY :+ barH + 2
 
+
+		'=== MESSAGES ===
+		'if there is a message then add padding to the begin
+		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
+
+		If showMsgLiveInfo
+			'TODO
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "TODO: " + getLocale("LIVE_BROADCAST"), "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		EndIf
+
+		if showMsgBroadcastLimit
+			'TODO
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "TODO: " + getLocale("BROASCAST_LIMIT"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		endif
+
+		If showMsgEarnInfo
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", "***"), "money", "good", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		EndIf
+
+		'if there is a message then add padding to the bottom
+		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
+
+		
 		'=== BOXES ===
 		'boxes have a top-padding (except with messages)
 		'if msgAreaH = 0 then contentY :+ boxAreaPaddingY
