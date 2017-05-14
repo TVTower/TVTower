@@ -1482,25 +1482,6 @@ Type TDatabaseLoader
 			scriptTemplate.templateVariables.AddVariable("%"+varName+"%", varString)
 		Next
 		
-		
-		'=== EPISODES ===
-		local nodeChildren:TxmlNode = xml.FindChild(node, "children")
-		For local nodeChild:TxmlNode = EachIn xml.GetNodeChildElements(nodeChildren)
-			'skip other elements than scripttemplate
-			If nodeChild.getName() <> "scripttemplate" then continue
-
-			'recursively load the child script - parent is the new scriptTemplate
-			local childScriptTemplate:TScriptTemplate = LoadV3ScriptTemplateFromNode(nodeChild, xml, scriptTemplate)
-
-			'the childIndex is currently not needed, as we autocalculate
-			'it by the position in the xml-episodes-list
-			'local childIndex:int = xml.FindValueInt(nodechild, "index", 1)
-
-			'add the child
-			scriptTemplate.AddSubScript(childScriptTemplate)
-		Next
-
-
 
 		'=== SCRIPT - PRODUCT TYPE ===
 		scriptTemplate.scriptProductType = scriptProductType
@@ -1519,14 +1500,14 @@ Type TDatabaseLoader
 			"flags", "flags_optional", "keywords", ..
 			"productionBroadcastFlags", "productionLicenceFlags", "productionBroadcastLimit" ..
 		])
-		scriptTemplate.flags = data.GetInt("flags", 0)
-		scriptTemplate.flagsOptional = data.GetInt("flags_optional", 0)
+		scriptTemplate.flags = data.GetInt("flags", scriptTemplate.flags)
+		scriptTemplate.flagsOptional = data.GetInt("flags_optional", scriptTemplate.flagsOptional)
 
-		scriptTemplate.keywords = data.GetString("keywords", "").Trim()
+		scriptTemplate.keywords = data.GetString("keywords", scriptTemplate.keywords).Trim()
 
-		scriptTemplate.productionBroadcastFlags = data.GetInt("productionBroadcastFlags", 0)
-		scriptTemplate.productionLicenceFlags = data.GetInt("productionLicenceFlags", 0)
-		scriptTemplate.productionBroadcastLimit = data.GetInt("productionBroadcastLimit", -1)
+		scriptTemplate.productionBroadcastFlags = data.GetInt("productionBroadcastFlags", scriptTemplate.productionBroadcastFlags)
+		scriptTemplate.productionLicenceFlags = data.GetInt("productionLicenceFlags", scriptTemplate.productionLicenceFlags)
+		scriptTemplate.productionBroadcastLimit = data.GetInt("productionBroadcastLimit", scriptTemplate.productionBroadcastLimit)
 
 
 		rem
@@ -1544,6 +1525,26 @@ Type TDatabaseLoader
 			endif
 		endif
 		endrem
+
+
+		'=== EPISODES ===
+		'load children _after_ element is configured
+		local nodeChildren:TxmlNode = xml.FindChild(node, "children")
+		For local nodeChild:TxmlNode = EachIn xml.GetNodeChildElements(nodeChildren)
+			'skip other elements than scripttemplate
+			If nodeChild.getName() <> "scripttemplate" then continue
+
+			'recursively load the child script - parent is the new scriptTemplate
+			local childScriptTemplate:TScriptTemplate = LoadV3ScriptTemplateFromNode(nodeChild, xml, scriptTemplate)
+
+			'the childIndex is currently not needed, as we autocalculate
+			'it by the position in the xml-episodes-list
+			'local childIndex:int = xml.FindValueInt(nodechild, "index", 1)
+
+			'add the child
+			scriptTemplate.AddSubScript(childScriptTemplate)
+		Next
+
 
 		'=== ADD TO COLLECTION ===
 		GetScriptTemplateCollection().Add(scriptTemplate)

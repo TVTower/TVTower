@@ -368,6 +368,12 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 
 	'override
+	Method HasParentScript:int()
+		return parentScriptGUID<>""
+	End Method
+
+
+	'override
 	Method GetParentScript:TScript()
 		if not parentScriptGUID then return self
 		return GetScriptCollection().GetByGUID(parentScriptGUID)
@@ -705,7 +711,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		outcome = 0.16
 		endrem
 
-		'scale to bigges property
+		'scale to biggest property
 		local maxPropertyScript:Float, maxPropertyGenre:Float
 		if outcomeGenre > 0 
 			maxPropertyScript = Max(review, Max(speed, outcome))
