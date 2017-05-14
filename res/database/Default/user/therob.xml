@@ -2198,7 +2198,7 @@
 			<blocks min="1" max="3" slope="20" />
 			<price min="1000" max="5000" slope="20" />
 			<potential min="10" max="50" slope="20" />
-			<outcome min="0" max="9" slope="40" />
+			<outcome min="10" max="39" slope="40" />
 			<review min="15" max="50" slope="20" />
 			<speed min="20" max="50" slope="20" />
 		</scripttemplate>
@@ -2222,7 +2222,7 @@
 			<blocks min="1" max="2" slope="25" />
 			<price min="2000" max="8000" slope="20" />
 			<potential min="18" max="48" slope="20" />
-			<outcome min="0" max="40" slope="40" />
+			<outcome min="10" max="40" slope="40" />
 			<review min="25" max="52" slope="30" />
 			<speed min="20" max="40" slope="20" />
 		</scripttemplate>
@@ -2246,7 +2246,7 @@
 			<blocks min="1" max="2" slope="25" />
 			<price min="3000" max="7000" slope="20" />
 			<potential min="18" max="46" slope="20" />
-			<outcome min="0" max="40" slope="40" />
+			<outcome min="10" max="40" slope="40" />
 			<review min="20" max="50" slope="30" />
 			<speed min="20" max="42" slope="25" />
 		</scripttemplate>
@@ -2280,7 +2280,7 @@
 			<blocks min="1" max="2" slope="25" />
 			<price min="3000" max="7500" slope="20" />
 			<potential min="18" max="46" slope="20" />
-			<outcome min="0" max="40" slope="40" />
+			<outcome min="10" max="40" slope="40" />
 			<review min="20" max="50" slope="30" />
 			<speed min="28" max="49" slope="25" />
 		</scripttemplate>
@@ -2301,19 +2301,29 @@
 			<blocks min="1" max="2" slope="25" />
 			<price min="5000" max="9500" slope="20" />
 			<potential min="28" max="66" slope="20" />
-			<outcome min="0" max="0" slope="40" />
+			<outcome min="10" max="60" slope="40" />
 			<review min="30" max="70" slope="30" />
 			<speed min="40" max="62" slope="25" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Hor-DieGruselUniversität">
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Hor-DieGruselUniversitaet">
 			<title>
-				<de>Die Grusel Universität</de>
-				<en>Scary University</en>
+				<de>Die %WAS% %ART%</de>
+				<en>%WAS% %ART%</en>
 			</title>
 			<description>
 				<de>Studenten der Filmwissenschaften stellen ihre Horrodrehbücher für die Abschlussarbeit des Semester allen Studios zur Verfügung. Was da wohl rauskommt?</de>
-				<en>Students of the movie university are offering their horror scripts to every studio who makes a movie. Lut us suprise about the quality.</en>
+				<en>Students of the movie university are offering their horror scripts to every studio who makes a movie. Let us suprise about the quality.</en>
 			</description>
+			<variables>
+				<was>
+					<de>Grusel|Horror|Angst|Schauder|Zitter</de>
+					<en>Scary|Horror|Fear|Spooky</en>
+				</was>
+				<art>
+					<de>Universität|Schule|Akademie|Fachhochschule</de>
+					<en>University|School|Academy|College</en>
+				</art>
+			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" gender="1" />
@@ -2354,15 +2364,25 @@
 			<review min="55" max="100" slope="40" />
 			<speed min="55" max="100" slope="10" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-TV-Haimatlichberggeschichten">
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-TV-Heimatlichberggeschichten">
 			<title>
-				<de>Heimatliche Berggeschichten</de>
-				<en>Stories From the Mountainlife</en>
+				<de>%NAME1%%NAME2%</de>
+				<en>%NAME1% From the %NAME2%</en>
 			</title>
 			<description>
 				<de>Jodelnde Liebeserklärungen und epische Bergaufnahmen.</de>
 				<en>Yodeling in love and epical views of the mountains.</en>
 			</description>
+			<variables>
+				<name1>
+					<de>Heimatliche|Romantische|Süße|Schmachtende</de>
+					<en>Stories|Tales|Porkies</en>
+				</name1>
+				<name2>
+					<de>Berggeschichten|Dorfgeschichten|Waldgeschichten|O'zapft is-Geschichten</de>
+					<en>Mountainview|Villageview|Forrestview|O'zapft is-Time</en>
+				</name2>
+			</variables>
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" gender="1" />
@@ -2420,7 +2440,7 @@
 			</title>
 			<description>
 				<de>Ein UFO mit Ausserirdischen landet auf der Welt. Doch statt die Queen zu schrumpfen, sind es Weltraum Groupies der Queen.</de>
-				<en>A UFO full of aliens is visiting the earth. But instead of shrinking the Queen, they groupies of her.</en>
+				<en>A UFO full of aliens is visiting the earth. But instead of shrinking the Queen, they are groupies of her.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -2437,7 +2457,7 @@
 			<review min="55" max="90" slope="55" />
 			<speed min="40" max="70" slope="40" />
 		</scripttemplate>
-		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Dok-KalaueramlaufendenBand">
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Dok-issoftvt">
 			<title>
 				<de>ISS - auf der Suche nach %NAME%</de>
 				<en>ISS - Searching for %NAME%</en>
@@ -2588,10 +2608,10 @@
 			<genres maingenre="7" subgenres="9" />
 			<episodes min="9" max="12" />
 			<blocks value="1" />
-			<price min="95000" max="196000" />
+			<price min="95000" max="99000" />
 			<potential min="50" max="90" slope="45" />
 			<outcome min="75" max="95" slope="40" />
-			<review min="45" max="85" slope="40" />
+			<review min="45" max="85" slope="55" />
 			<speed min="35" max="85" slope="50" />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-trash-karprachd">
@@ -2704,5 +2724,362 @@
 			<review min="15" max="25" slope="40" />
 			<speed min="35" max="65" slope="50" />
 		</scripttemplate>
-	 </scripttemplates>
+		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-act-DerFahnder">
+			<title>
+				<de>Der %TITLE1% %TITLE2%</de>
+				<en>The %TITLE1% %TITLE2%</en>
+			</title>
+			<description>
+				<de>%NAME1% löst rasante Fälle in seinem beschaulichen Revier. Verfolgungsjagten garantiert.</de>
+				<en>%NAME1% closes his files in a peacefull territory. Chases guaranteed.</en>
+			</description>
+			
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep1">
+					<title>
+						<de>TVTs Pilot</de>
+						<en>TVTs Pilot</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep2">
+					<title>
+						<de>Die Jagd</de>
+						<en>The Hunt</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep3">
+					<title>
+						<de>Entführt</de>
+						<en>Kidnapped</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep4">
+					<title>
+						<de>Fall gelöst</de>
+						<en>Case Closed</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep5">
+					<title>
+						<de>Die Wahrheit</de>
+						<en>The Truth</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep6">
+					<title>
+						<de>Falschgeld</de>
+						<en>Fake Money</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep7">
+					<title>
+						<de>Alternative Fakten</de>
+						<en>Alternative Facts</en>
+					</title>
+				</scripttemplate>
+			</children>
+			<variables>
+				<title1>
+					<de>Feldweg|Dorf|Berg|Wald</de>
+					<en>Lane|Village|Mountain|Forrest</en>
+				</title1>
+				<title2>
+					<de>Jäger|Polizist|Dedektiv|Fahnder|Hüter|Wächter</de>
+					<en>Hunter|Policeman|Dedectiv|Investigator|Guardian|Keeper</en>
+				</title2>
+				<name1>
+					<de>Harry|Horst|Jim|Bob|Herr Müller|Herr Schmidt|Dagobert</de>
+					<en>Harry|Horst|Jim|Bob|Mr. Miller|Mr. Smith|Dagobert</en>
+				</name1>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="32" required="1" gender="2" />
+			</jobs>
+			<data optional_flags="18" />
+			<genres maingenre="4" subgenres="2" />
+			<episodes min="4" max="7" />
+			<blocks min="1" max="2" slope="25" />
+			<price min="10000" max="29999" />
+			<potential min="12" max="49" slope="45" />
+			<outcome min="25" max="52" slope="45" />
+			<review min="29" max="55" slope="45" />
+			<speed min="35" max="55" slope="63" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Mon-EpischeGeschichte">
+			<title>
+				<de>Don Rons: %WAS%</de>
+				<en>Don Rons: %WAS%</en>
+			</title>
+			<description>
+				<de>Don Rons monumentale Geschichte über eine royale Familie. Erfolg wie immer garantiert.</de>
+				<en>Don Rons monumental story about a royal family. Like everytime: Success is guaranteed.</en>
+			</description>
+			<variables>
+				<was>
+					<de>Der König|Die Königin|Der Prinz|Die Prinzessin|Der Abenteuerer Prinz|Die Abenteurer Prinzessin|Der Piraten König|Die Piraten Königin</de>
+					<en>The King|The Queen|The Prince|The Princess|The Adventurer Prince|The Adventurer Princess|The Pirate King|The Pirate Queen</en>
+				</was>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="2" required="1" gender="2" />
+			</jobs>
+			<data flags="8" optional_flags="66" />
+			<groups target_groups="68" />
+			<genres maingenre="13" subgenre="15" />
+			<blocks min="3" max="5" slope="45" />
+			<price min="67000" max="99500" slope="90" />
+			<potential min="71" max="100" slope="50" />
+			<outcome min="71" max="100" slope="50" />
+			<review min="71" max="100" slope="55" />
+			<speed min="55" max="100" slope="65" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Fant-Wesen">
+			<title>
+				<de>%WESEN%</de>
+				<en>The %WESEN%</en>
+			</title>
+			<description>
+				<de>%NAME% trifft ein seltsames Wesen. Sie erkunden zusammen die Welt und erleben wundervolle Abenteuer.</de>
+				<en>%NAME% meets a strange Creature. Together they are exploring the world and witness wonderfull adventures.</en>
+			</description>
+			<variables>
+				<wesen>
+					<de>Der Drache|Der Nacktmull|Die Fee|Die Zahnfee|Der Zauberer|Der Troll|Der Zwerg|Das Erdmännchen|Das Ding aus dem Sumpf|Der Engel|Der Succubus|Das Monster|Der Riese|Der Oger</de>
+					<en>Dragon|Naked Mole-Rat|Fairy|Tooth-Fairy|Wizard|Troll|Dwarf|Meerkat|Thing from the Swamp|Angel|Succubus|Monster|Giant|Ocre</en>
+				</wesen>
+				<name>
+					<de>Phillip|John|Martin|Mauritius|Arthur|Sunny Bunny|Emil</de>
+					<en>Phillip|John|Martin|Mauritius|Arthur|Sunny Bunny|Emil</en>
+				</name>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="2" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="32" required="1" gender="2" />
+			</jobs>
+			<data optional_flags="34" />
+			<groups target_groups="3" />
+			<genres maingenre="10" subgenres="1" />
+			<blocks min="1" max="2" slope="75" />
+			<price min="10000" max="29500" slope="40" />
+			<potential min="20" max="60" slope="40" />
+			<outcome min="20" max="60" slope="40" />
+			<review min="20" max="60" slope="45" />
+			<speed min="20" max="60" slope="45" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-trick-SprechenderGegenstand">
+			<title>
+				<de>%GEGENSTAND%</de>
+				<en>The Talking %GEGENSTAND%</en>
+			</title>
+			<description>
+				<de>Ein sprechender Gegenstand freundet sich mit einem Kind an und das lustige Abenteuer beginnt.</de>
+				<en>A talking thing becomes a friend of a child and the funny adventure begins.</en>
+			</description>
+			<variables>
+				<gegenstand>
+					<de>Die sprechende Lokomotive|Das sprechende Auto|Das sprechende Haus|Der sprechende Baum|Die sprechende Wolke|Die sprechende Spatzenschleuder|Das sprechende Gänseblümchen|Die sprechende Trompete|Die sprechende Kartoffelkanone</de>
+					<en>Locomotive|Car|House|Tree|Cloud|Sparrow Spin|Potato Gun|Daisy|Trumpet</en>
+				</gegenstand>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="2" required="0" gender="1" />
+			</jobs>
+			<data flags="2" optional_flags="16" />
+			<groups target_groups="3" optional_target_groups="4" />
+			<genres maingenre="3" subgenres="5" />
+			<blocks min="1" max="2" slope="55" />
+			<price min="15000" max="39500" slope="50" />
+			<potential min="30" max="70" slope="35" />
+			<outcome min="30" max="70" slope="35" />
+			<review min="30" max="70" slope="35" />
+			<speed min="30" max="70" slope="35" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Hist-Voelker">
+			<title>
+				<de>Die %Volk%</de>
+				<en>The %Volk%</en>
+			</title>
+			<description>
+				<de>Der Moderator erzählt die Geschichte über den Aufstieg und Fall dieses Volkes. Laiendarsteller stellen wichtige Szenen nach.</de>
+				<en>Students of the movie university are offering their horror scripts to every studio who makes a movie. Lut us suprise about the quality.</en>
+			</description>
+			<variables>
+				<volk>
+					<de>Kelten|Römer|Sachsen|Mongolen|Ägypter|Franken|Ostgoten|Westgoten|Etrusker|Perser|Angelsachsen|Osmanen|Japaner|Zulus|Burgunder|Mauren|Vandalen|Marsianer|Azteken|Comanchen|Apachen|Hohenzollern</de>
+					<en>Celts|Romans|Saxons|Mongolians|Egypts|Franconians|Ostrogoths|Visigoths|Etruscans|Persians|Anglo-Saxons|Osmanians|Japans|Zulu People|Burgundian|Moors|Vandals|Marsians|Aztecs|Comanches|Apaches|Hohenzollerns</en>
+				</volk>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1" gender="1" />
+				<job index="2" function="32" required="1" gender="2" />
+				<job index="3" function="32" required="1" gender="1" />
+				<job index="4" function="32" required="1" gender="1" />
+			</jobs>
+			<data flags="4" optional_flags="10" />
+			<genres maingenre="11" subgenres="6" />
+			<blocks min="1" max="2" slope="65" />
+			<price min="20000" max="49500" slope="40" />
+			<potential min="40" max="80" slope="40" />
+			<outcome min="40" max="80" slope="40" />
+			<review min="60" max="80" slope="35" />
+			<speed min="20" max="60" slope="35" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Adv-DieGruselUniversität">
+			<title>
+				<de>%ORT%</de>
+				<en>The %ORT%</en>
+			</title>
+			<description>
+				<de>Ein Schatzsucher erlebt viele Abenteuer auf seiner Jagd nach seimen Reichtum.</de>
+				<en>A treasure hunter experience many adventure on his chace for wealth.</en>
+			</description>
+			<variables>
+				<ort>
+					<de>Der Vulkan|Die Schatzinsel|Das Piratenschiff|Die Geisterhöhle|Der Zauberberg|Das Geisterschiff|Das Spukschloß</de>
+					<en>Volcano|Treasure Island|Pirate Ship|Ghost Cave|Wizard Mountain|Ghost Ship|Spooky Castle</en>
+				</ort>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+			</jobs>
+			<data optional_flags="64" />
+			<genres maingenre="1" subgenres="13" />
+			<blocks min="2" max="4" slope="30" />
+			<price min="15000" max="49500" slope="20" />
+			<potential min="10" max="100" slope="20" />
+			<outcome min="10" max="100" slope="20" />
+			<review min="10" max="100" slope="25" />
+			<speed min="01" max="100" slope="35" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-West-mitdemhelden">
+			<title>
+				<de>Don Rons: Der %WAS% aus %WOHER%</de>
+				<en>Don Rons: The %WAS% from %WOHER%</en>
+			</title>
+			<description>
+				<de>Vom Stardrehbuchschreiber Don Ron geschriebener Western. Wie immer kultig und genial.</de>
+				<en>A Western written by the star script writer Don Ron. Like everytime it is cult and ingenios.</en>
+			</description>
+			<variables>
+				<was>
+					<de>Revolverheld|Sheriff|Offizier|Halunke|Farmer|Kopfgeldjäger</de>
+					<en>Gunslinger|Sheriff|Seargent|Farmer|Scoundrel|Bounty Hunter</en>
+				</was>
+				<Woher>
+					<de>Maine|Michigan|Nevada|South Carolina|Ohio|Texas|New Orleans</de>
+					<en>Maine|Michigan|Nevada|South Carolina|Ohio|Texas|New Orleans</en>
+				</Woher>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="1" />
+				<job index="3" function="2" required="1" gender="2" />
+				<job index="4" function="32" required="1" gender="2" />
+			</jobs>
+			<data flags="8" optional_flags="66" />
+			<groups target_groups="256" />
+			<genres maingenre="18" subgenres="7" />
+			<blocks min="2" max="3" slope="25" />
+			<price min="61000" max="99500" slope="50" />
+			<potential min="61" max="100" slope="50" />
+			<outcome min="75" max="100" slope="50" />
+			<review min="55" max="100" slope="50" />
+			<speed min="65" max="100" slope="50" />
+		</scripttemplate>
+		<scripttemplate product="7" licence_type="3" guid="TheRob-script-ser-CallIn-Abgezockt">
+			<title>
+				<de>TVTs: %TITLE1%</de>
+				<en>TVTs: %TITLE1%</en>
+			</title>
+			<description>
+				<de>%NAME1% zockt Anrufer ab, die Wörter finden müssen. Im Hintergrund tanzen zwei halbnackte Damen.</de>
+				<en>%NAME1% screws the caller, who has to find words. Two nearly nacked women are dancing in the background.</en>
+			</description>
+			
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep1">
+					<title>
+						<de>Orte</de>
+						<en>Places</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="1" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep2">
+					<title>
+						<de>Länder</de>
+						<en>Countries</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="2" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep3">
+					<title>
+						<de>Unterwäsche</de>
+						<en>Underwear</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="3" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep4">
+					<title>
+						<de>Parfum</de>
+						<en>Parfume</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="4" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep5">
+					<title>
+						<de>Filme</de>
+						<en>Movies</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="5" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep6">
+					<title>
+						<de>Keine Wörter diesmal</de>
+						<en>No Words This Time</en>
+					</title>
+				</scripttemplate>
+				<scripttemplate index="6" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep7">
+					<title>
+						<de>Künstler</de>
+						<en>Artists</en>
+					</title>
+				</scripttemplate>
+			</children>
+			<variables>
+				<title1>
+					<de>Dancing Queen|Wortsuche|Garantierte Gewinne|Abgezockt|Traumhafte Ansichten</de>
+					<en>Dancing Queen|Searching Wors|Winning Guaranteed|Screwed Up|Wunderfull Views</en>
+				</title1>
+				<name1>
+					<de>Jimmy|Bobby|Danny|Manni||Donny|Johny</de>
+					<en>Jimmy|Bobby|Danny|Manni||Donny|Johny</en>
+				</name1>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="32" required="1" gender="2" />
+				<job index="3" function="32" required="1" gender="2" />
+			</jobs>
+			<data flags="144" optional_flags="67" />
+			<groups target_groups="16" />
+			<genres maingenre="0" />
+			<episodes min="2" max="7" />
+			<blocks min="1" max="2" slope="5" />
+			<price min="80000" max="99999" slope="85" />
+			<potential min="2" max="9" slope="30" />
+			<outcome min="2" max="9" slope="30" />
+			<review min="2" max="5" slope="30" />
+			<speed min="5" max="20" slope="12" />
+		</scripttemplate>
+	</scripttemplates>
 </tvgdb>
