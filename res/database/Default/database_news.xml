@@ -619,7 +619,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<effect trigger="happen" type="triggernews" news="5af0af95-84b8-4018-96e6-9e25e93a2687" time="2,1,2,9,16" />
 			</effects>
 			<data genre="0" price="0.5" quality="58" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="2003" year_range_to="-1" />
 		</news>
 		<news id="5af0af95-84b8-4018-96e6-9e25e93a2687" thread_id="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="2" creator="">
 			<title>
@@ -664,6 +664,51 @@ Her normal body size is expected to be reached in a week.</en>
 			</effects>
 			<data genre="3" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="2f64517a-f2d6-4720-a195-6a35cc6e72c6_1" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
+			<title>
+				<de>Fort schreibt Verluste</de>
+				<en>Fort makes a loss</en>
+			</title>
+			<description>
+				<de>Der amerikanische Autokonzern schreibt tiefrote Zahlen. Ein Grund dafür ist der schlechte Absatz des neuen Modells Esquart.</de>
+				<en>The American car manufacturer is bleeding red ink. One reason: Poor sales of the new model Esquart.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
+			</effects>
+			<data genre="3" price="1.0" quality="19" />
+			<conditions year_range_from="-1" year_range_to="1981" />
+		</news>
+		<news id="2f64517a-f2d6-4720-a195-6a35cc6e72c6_2" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
+			<title>
+				<de>Fort schreibt Verluste</de>
+				<en>Fort makes a loss</en>
+			</title>
+			<description>
+				<de>Der amerikanische Autokonzern schreibt tiefrote Zahlen. Ein Grund dafür ist der schlechte Absatz des neuen Modells Suerrah.</de>
+				<en>The American car manufacturer is bleeding red ink. One reason: Poor sales of the new model Suerrah.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
+			</effects>
+			<data genre="3" price="1.0" quality="19" />
+			<conditions year_range_from="1982" year_range_to="1991" />
+		</news>
+		<news id="2f64517a-f2d6-4720-a195-6a35cc6e72c6_2" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
+			<title>
+				<de>Fort schreibt Verluste</de>
+				<en>Fort makes a loss</en>
+			</title>
+			<description>
+				<de>Der amerikanische Autokonzern schreibt tiefrote Zahlen. Ein Grund dafür ist der schlechte Absatz des neuen Modells Mardeo.</de>
+				<en>The American car manufacturer is bleeding red ink. One reason: Poor sales of the new model Mardeo.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="1135edbe-daf4-4ed7-8817-b352b9ee7442" time="1,8,12" />
+			</effects>
+			<data genre="3" price="1.0" quality="19" />
+			<conditions year_range_from="1992" year_range_to="2002" />
 		</news>
 		<news id="1135edbe-daf4-4ed7-8817-b352b9ee7442" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="2" creator="">
 			<title>
@@ -1089,7 +1134,22 @@ Her normal body size is expected to be reached in a week.</en>
 				<effect trigger="happen" type="triggernews" news="0dd305ab-89ef-4961-8a6b-5e67e809d309" />
 			</effects>
 			<data genre="3" price="1.0" quality="49" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="1992" year_range_to="-1" />
+		</news>
+		<news id="b2719e00-bd4c-42dd-8398-35cf359009b0_2" thread_id="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="0" creator="">
+			<title>
+				<de>Computerviren überfallen Mailboxen</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Eine ganze Armee teuflischer Viren befindet sich im Ansturm auf Rechner in aller Welt. Als besonders gefährlich gilt Virus π (Pi).</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="0dd305ab-89ef-4961-8a6b-5e67e809d309" />
+			</effects>
+			<data genre="3" price="1.0" quality="49" />
+			<conditions year_range_from="-1" year_range_to="1991" />
 		</news>
 		<news id="7c626ce4-5ae7-45d7-9909-6c2b42ce18e3" thread_id="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="2" creator="">
 			<title>
@@ -1181,12 +1241,25 @@ Her normal body size is expected to be reached in a week.</en>
 				<en></en>
 			</title>
 			<description>
-				<de>Die deutsche Tele-Komm schafft die analoge Technik ab. Sie sei nicht mehr rentabel, da sie nicht mehr genutzt wird, so ein Sprecher. </de>
+				<de>Die deutsche Tele-Komm schafft die analoge Technik ab. Sie sei nicht mehr rentabel, da sie nicht mehr genutzt wird, so ein Sprecher.</de>
 				<en></en>
 			</description>
 			<effects />
 			<data genre="3" price="1.0" quality="39" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="1995" year_range_to="-1" />
+		</news>
+		<news id="df3f342a-6bb2-4445-9f77-2765d51a8187_2" thread_id="769c4c90-9ddc-4c72-8ad7-1850f0c95109" type="0" creator="">
+			<title>
+				<de>Tele-Komm schafft Wählscheibe ab</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Die deutsche Tele-Komm schafft die klassische Wählscheibe ab. Inoffizieller Grund: Zu geringe Effizienz der Callcenter.</de>
+				<en></en>
+			</description>
+			<effects />
+			<data genre="3" price="1.0" quality="39" />
+			<conditions year_range_from="-1" year_range_to="1994" />
 		</news>
 		<news id="bc2475d4-e45d-484d-9095-16e2c06bea72" thread_id="7c62ccae-017a-4db9-872f-dfc75ddd4b4c" type="0" creator="">
 			<title>
@@ -1662,18 +1735,59 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		</news>
 		<news id="83ba96bc-4560-4ac0-9929-329eb7f68751" thread_id="b900820c-cc68-4ef8-a021-58b56c7414be" type="0" creator="">
 			<title>
-				<de>ISS empfängt fremde Signale</de>
+				<de>MIR empfängt fremde Signale</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Die internationals Raumstation hat Signale empfangen, die nicht aus unserem Sonnensystem stammen. Ob es sich um Außerirdische handelt ist noch unklar.</de>
+				<de>Die sowjetische Raumstation hat Signale empfangen, die nicht aus unserem Sonnensystem stammen. Ob es sich um Außerirdische handelt ist noch unklar.</de>
 				<en></en>
 			</description>
 			<effects />
 			<data genre="3" price="0.7" quality="72" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="1986" year_range_to="1998" />
 		</news>
-		<news id="d2b527a3-3181-4cbc-baa2-7bd4c7503a74" thread_id="baadc4ea-796b-44a2-b4cb-d333f01516ea" type="0" creator="">
+		<news id="83ba96bc-4560-4ac0-9929-329eb7f68751" thread_id="b900820c-cc68-4ef8-a021-58b56c7414be" type="0" creator="">
+			<title>
+				<de>ISS empfängt fremde Signale</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Die internationale Raumstation hat Signale empfangen, die nicht aus unserem Sonnensystem stammen. Ob es sich um Außerirdische handelt ist noch unklar.</de>
+				<en></en>
+			</description>
+			<effects />
+			<data genre="3" price="0.7" quality="72" />
+			<conditions year_range_from="1999" year_range_to="-1" />
+		</news>
+		<news id="d2b527a3-3181-4cbc-baa2-7bd4c7503a74_1" thread_id="baadc4ea-796b-44a2-b4cb-d333f01516ea_1" type="0" creator="">
+			<title>
+				<de>Straßenfeger findet 1.000 Mark</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Besser hätte der Morgen nicht anfangen können: Beim Arbeiten fand ein Straßenfeger in Hamburg 1.000 Mark. "Die wer'n sofort versofff'n", so der Finder.</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="9c1f0f27-72d6-4bbd-b271-939ab31c3010_1" />
+			</effects>
+			<data genre="4" price="1.0" quality="19" />
+			<conditions year_range_from="-1" year_range_to="2001" />
+		</news>
+		<news id="9c1f0f27-72d6-4bbd-b271-939ab31c3010_1" thread_id="baadc4ea-796b-44a2-b4cb-d333f01516ea_1" type="2" creator="">
+			<title>
+				<de>Straßenfeger tot</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Der Finder des 1.000-Mark-Scheins starb an einer Alkoholvergiftung. Auf seinem Grabstein steht: "...und er kehrt nie wieder!"</de>
+				<en></en>
+			</description>
+			<effects />
+			<data genre="4" price="1.0" quality="19" />
+			<conditions year_range_from="-1" year_range_to="2001" />
+		</news>
+		<news id="d2b527a3-3181-4cbc-baa2-7bd4c7503a74_2" thread_id="baadc4ea-796b-44a2-b4cb-d333f01516ea_2" type="0" creator="">
 			<title>
 				<de>Straßenfeger findet 500 Euro</de>
 				<en></en>
@@ -1683,12 +1797,12 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<en></en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="9c1f0f27-72d6-4bbd-b271-939ab31c3010" />
+				<effect trigger="happen" type="triggernews" news="9c1f0f27-72d6-4bbd-b271-939ab31c3010_2" />
 			</effects>
 			<data genre="4" price="1.0" quality="19" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="2002" year_range_to="-1" />
 		</news>
-		<news id="9c1f0f27-72d6-4bbd-b271-939ab31c3010" thread_id="baadc4ea-796b-44a2-b4cb-d333f01516ea" type="2" creator="">
+		<news id="9c1f0f27-72d6-4bbd-b271-939ab31c3010_2" thread_id="baadc4ea-796b-44a2-b4cb-d333f01516ea_2" type="2" creator="">
 			<title>
 				<de>Straßenfeger tot</de>
 				<en></en>
@@ -1699,7 +1813,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="19" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="2002" year_range_to="-1" />
 		</news>
 		<news id="4177ebd7-888e-4df0-97bd-c74109e81616" thread_id="bae6336f-1755-4619-96b8-9b66f9ff6c7a" type="0" creator="">
 			<title>
@@ -2104,7 +2218,20 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			</description>
 			<effects />
 			<data genre="3" price="1.0" quality="39" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="1993" year_range_to="-1" />
+		</news>
+		<news id="a6ac4b6c-83a0-433a-9336-c7256b6e3165_2" thread_id="d4c54bd0-cecf-4f40-bb10-7cda64543f3d" type="0" creator="">
+			<title>
+				<de>Tageszeitungen werden abgeschafft</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Ein toller Schritt Richtung Umweltschutz, kommentierte der deutsche Umweltminister. Tageszeitungen gibt es ab sofort nur noch per Bildschirmtext.</de>
+				<en></en>
+			</description>
+			<effects />
+			<data genre="3" price="1.0" quality="39" />
+			<conditions year_range_from="1982" year_range_to="1992" />
 		</news>
 		<news id="a008bb9e-8e06-4b59-84ff-5bd46f3bc1d2" thread_id="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="0" creator="">
 			<title>
@@ -2353,7 +2480,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<effect trigger="happen" type="triggernews" news="b368f82c-392c-47d5-b494-f8bfe9029c25" />
 			</effects>
 			<data genre="4" price="1.0" quality="58" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="1996" year_range_to="-1" />
 		</news>
 		<news id="b368f82c-392c-47d5-b494-f8bfe9029c25" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b" type="2" creator="">
 			<title>
@@ -2368,7 +2495,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<effect trigger="happen" type="triggernews" news="0edca939-dbee-41f9-a1bf-8bec9b7718fb" />
 			</effects>
 			<data genre="4" price="1.0" quality="48" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="1996" year_range_to="-1" />
 		</news>
 		<news id="0edca939-dbee-41f9-a1bf-8bec9b7718fb" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b" type="2" creator="">
 			<title>
@@ -2383,7 +2510,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 				<effect trigger="happen" type="triggernews" news="ff1f0a05-040c-4930-a314-12784ce12177" />
 			</effects>
 			<data genre="4" price="1.0" quality="29" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="1996" year_range_to="-1" />
 		</news>
 		<news id="ff1f0a05-040c-4930-a314-12784ce12177" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b" type="2" creator="">
 			<title>
@@ -2396,7 +2523,66 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			</description>
 			<effects />
 			<data genre="4" price="0.7" quality="48" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="1996" year_range_to="-1" />
+		</news>
+
+		<news id="e730d750-5b8f-4f10-a7c5-86936521de82_2" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b_2" type="0" creator="">
+			<title>
+				<de>Programmierer klaut bei Beate Ohse</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Der TVTower-Entwickler R. hat beim norddeutschen Erotikhaus eine Gummipuppe mit RS-232-Anschluss geklaut. Seine Fans sind schockiert.</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="b368f82c-392c-47d5-b494-f8bfe9029c25_2" />
+			</effects>
+			<data genre="4" price="1.0" quality="58" />
+			<conditions year_range_from="1996" year_range_to="-1" />
+		</news>
+		<news id="b368f82c-392c-47d5-b494-f8bfe9029c25_2" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b_2" type="2" creator="">
+			<title>
+				<de>Anzeige gegen Entwickler Ron</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Der Erotikkonzern Ohse erstattet Anzeige gegen den TVTower-Programmierer. Nach dem Diebstahl der Com-Port-Gummipuppe drohen Ron bis zu 2 Jahre Haft.</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="0edca939-dbee-41f9-a1bf-8bec9b7718fb_2" />
+			</effects>
+			<data genre="4" price="1.0" quality="48" />
+			<conditions year_range_from="-1" year_range_to="1995" />
+		</news>
+		<news id="0edca939-dbee-41f9-a1bf-8bec9b7718fb_2" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b_2" type="2" creator="">
+			<title>
+				<de>Fans sammeln für Ron</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Nach dem Com-Port-Gummipuppenskandal sammeln die TVTower-Fans Geld für die Gerichtskosten: "Wir können doch unseren Ron nicht im Stich lassen."</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="ff1f0a05-040c-4930-a314-12784ce12177_2" />
+			</effects>
+			<data genre="4" price="1.0" quality="29" />
+			<conditions year_range_from="-1" year_range_to="1995" />
+		</news>
+		<news id="ff1f0a05-040c-4930-a314-12784ce12177_2" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b_2" type="2" creator="">
+			<title>
+				<de>Freispruch für Programmierer</de>
+				<en></en>
+			</title>
+			<description>
+				<de>Entwickler Ron wurde im Gummipuppenfall freigesprochen. Richter Peterson outete sich als TVTower-Fan und forderte Gummipuppen mit RS-232-Port für Alle.</de>
+				<en></en>
+			</description>
+			<effects />
+			<data genre="4" price="0.7" quality="48" />
+			<conditions year_range_from="-1" year_range_to="1995" />
 		</news>
 
 		<news id="d9aa67c1-5aa3-4519-9cc2-ef8e1a769ae5" thread_id="e7afb16c-023e-47d8-a23c-8f45efa02854" type="0" creator="">

@@ -2396,11 +2396,22 @@ Available in any well-stocked drugstore.</en>
 				<de>Valvoa</de>
 			</title>
 			<description>
-				<de>Valvoa der Truck fuer die Frau. 460PS nur 350kEuro, auf Wunsch auch in rosa.</de>
-				<en>Valvoa the truck for the woman. 460PS only 350kEuro, on request also in pink.</en>
+				<de>Valvoa der Truck fuer die Frau. 460 PS nur 350.000 Euro, auf Wunsch auch in rosa.</de>
+				<en>Valvoa the truck for the woman. 460 PS only 350.000 Euro, on request also in pink.</en>
 			</description>
 			<conditions min_audience="20.84" min_image="4" target_group="128"/>
-			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="210" penalty="359" infomercial_profit="47" fix_infomercial_profit="1"/>
+			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="210" penalty="359" infomercial_profit="47" fix_infomercial_profit="1" year_range_from="2002" year_range_to="-1"/>
+		</ad>
+		<ad id="speedminister-ad-valvoa-02" creator="8605" created_by="SpeedMinister">
+			<title>
+				<de>Valvoa</de>
+			</title>
+			<description>
+				<de>Valvoa der Truck fuer die Frau. 460 PS nur 700.000 DM, auf Wunsch auch in rosa.</de>
+				<en>Valvoa the truck for the woman. 460 PS only 700.000 DEM, on request also in pink.</en>
+			</description>
+			<conditions min_audience="20.84" min_image="4" target_group="128"/>
+			<data infomercial="1" quality="15" repetitions="2" duration="5" profit="210" penalty="359" infomercial_profit="47" fix_infomercial_profit="1" year_range_from="-1" year_range_to="2001"/>
 		</ad>
 
 
