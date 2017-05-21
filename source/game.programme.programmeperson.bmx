@@ -4,6 +4,7 @@ Import "game.programme.programmedata.bmx"
 Import "game.popularity.person.bmx"
 Import "basefunctions.bmx"
 Import "Dig/base.util.figuregenerator.bmx"
+Import "Dig/base.util.persongenerator.bmx"
 
 rem
 Type TProgrammePersonCollection extends TProgrammePersonBaseCollection
@@ -106,6 +107,27 @@ End Function
 
 
 
+Function CreateRandomInsignificantPerson:TProgrammePersonBase(countryCode:string, gender:int=0)
+	local p:TPersonGeneratorEntry = GetPersonGenerator().GetUniqueDataset(countryCode, gender)
+	if not p then return null
+
+	local person:TProgrammePersonBase = new TProgrammePersonBase
+
+	person.firstName = p.firstName
+	person.lastName = p.lastName
+	person.countryCode = p.countryCode
+	person.fictional = true
+	person.bookable = true
+	person.canLevelUp = true
+
+	'avoid others of same name
+	GetPersonGenerator().ProtectDataset(p)
+
+	GetProgrammePersonBaseCollection().AddInsignificant(person)
+	
+	return person
+End Function
+
 
 Function ConvertInsignificantToCelebrity:TProgrammePersonBase(insignifant:TProgrammePersonBase)
 	'already done
@@ -207,6 +229,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 	'each job has its own xp, xp[0] is used for "general xp"
 	Field xp:int[] = [0]
 	Const MAX_XP:int = 10000
+
+	Global PersonsGainExperienceForProgrammes:int = True
 
 
 	Method GenerateGUID:string()
@@ -684,6 +708,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 	Method GainExperienceForProgramme(programmeDataGUID:string)
 		local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeDataGUID)
 		if not programmeData then return
+		if not PersonsGainExperienceForProgrammes then return
 		
 		'gain experience for each done job
 		local creditedJobs:int[]

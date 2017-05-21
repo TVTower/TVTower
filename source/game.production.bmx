@@ -72,11 +72,18 @@ Type TProduction Extends TOwnedGameObject
 	Field productionCompanyQuality:Float = 0.0
 	Field castFit:Float = -1.0
 	Field castSympathyMod:Float = 1.0
-	Field productionValueMod:Float = 1.0
+	Field castFameMod:Float = 1.0
 	Field effectiveFocusPointsMod:Float = 1.0
+	Field effectiveFocusPoints:Float = 1.0
+	Field scriptPotentialMod:Float = 1.0
+	Field productionValueMod:Float = 1.0
 	Field productionTimeMod:Float = 1.0
+	Field productionPriceMod:Float = 1.0
 
 	Field producedLicenceGUID:string
+
+	Global DEV_luckEnabled:int = True
+	Global DEV_InformPerson:int = True
 	
 
 	Method GenerateGUID:string()
@@ -123,19 +130,34 @@ Type TProduction Extends TOwnedGameObject
 	Method GetProductionValueMod:Float()
 		local value:Float
 		'=== BASE ===
-		value = 0.4 * scriptGenreFit + 0.6 * castFit
+		'if perfectly matching "expectations", we would have a mod of 1.0
 
+		'subtract non perfect script genre fits (up to 30%)
+		value :+ 0.2 * sqr(scriptGenreFit)
+
+		'subtract non perfect cast fits (up to 50%)
+		value :+ 0.4 * sqr(castFit)
+
+		'production company quality decides about result too
+		'quality:  0.0 to 1.0 (fully experienced)
+		'          but might be a bit higher (qualityMod)
+		'we assume an average of "40" to result in "no modification"
+		value :+ 0.3 * (sqr(productionCompanyQuality) - 0.4)
+
+		value = Max(0, value)
+
+		'value now: about 0 - 1.24
 
 		'=== MODIFIERS ===
 		'sympathy of the cast influences result a bit
-		value :* (1.0 + 0.1 * (castSympathyMod - 1.0))
+		value :* (0.8 + 0.2 * castSympathyMod)
+
 		
 		'it is important to set the production priority according
 		'to the genre
-		value :* 1.00 * effectiveFocusPointsMod
+		value :* 1.0 + 0.4 * (effectiveFocusPointsMod-0.4)
 
-		'production company quality decides about result too
-		value :* (1.0 + 0.25 * productionCompanyQuality)
+		value :+ 0.01 * productionConcept.GetEffectiveFocusPoints()
 
 
 		return value
@@ -204,12 +226,13 @@ Type TProduction Extends TOwnedGameObject
 		castSympathyMod = 1.0 + productionConcept.CalculateCastSympathy()
 
 		'=== 1.2.2 MODIFY PRODUCTION VALUE ===
+		effectiveFocusPoints = productionConcept.CalculateEffectiveFocusPoints()
 		effectiveFocusPointsMod = 1.0 + productionConcept.GetEffectiveFocusPointsRatio()
-
  
 		TLogger.Log("TProduction.Start()", "scriptGenreFit:           " + scriptGenreFit, LOG_DEBUG)
 		TLogger.Log("TProduction.Start()", "castFit:                  " + castFit, LOG_DEBUG)
 		TLogger.Log("TProduction.Start()", "castSympathyMod:          " + castSympathyMod, LOG_DEBUG)
+		TLogger.Log("TProduction.Start()", "effectiveFocusPoints:     " + effectiveFocusPoints, LOG_DEBUG)
 		TLogger.Log("TProduction.Start()", "effectiveFocusPointsMod:  " + effectiveFocusPointsMod, LOG_DEBUG)
 		TLogger.Log("TProduction.Start()", "productionCompanyQuality: " + productionCompanyQuality, LOG_DEBUG)
 
@@ -271,24 +294,27 @@ Type TProduction Extends TOwnedGameObject
 		'    specialized for this kind of production somewhen
 
 		'=== 1.1 PRODUCTION VALUES ===
-		local productionValueMod:Float = GetProductionValueMod()
-		'by 5% chance increase value and 5% chance to decrease
-		'- so bad productions create a superior programme (or even worse)
-		'- or blockbusters fail for unknown reasons (or get even better)
-		local luck:int = RandRange(0,100)
-		if luck < 5
-			productionValueMod :* RandRange(120,135)/100.0
-		elseif luck > 95
-			productionValueMod :* RandRange(65,75)/100.0
-		endif
+		productionValueMod = GetProductionValueMod()
+		productionPriceMod = 1.0
 
-		'by 5% chance increase or lower price regardless of value
-		local productionPriceMod:Float = 1.0
-		luck = RandRange(0,100)
-		if luck < 5
-			productionPriceMod :+ RandRange(5,20)/100.0
-		elseif luck > 95
-			productionPriceMod :- RandRange(5,20)/100.0
+		if DEV_luckEnabled
+			'by 5% chance increase value and 5% chance to decrease
+			'- so bad productions create a superior programme (or even worse)
+			'- or blockbusters fail for unknown reasons (or get even better)
+			local luck:int = RandRange(0,100)
+			if luck < 5
+				productionValueMod :* RandRange(120,135)/100.0
+			elseif luck > 95
+				productionValueMod :* RandRange(65,75)/100.0
+			endif
+
+			'by 5% chance increase or lower price regardless of value
+			luck = RandRange(0,100)
+			if luck < 5
+				productionPriceMod :+ RandRange(5,20)/100.0
+			elseif luck > 95
+				productionPriceMod :- RandRange(5,20)/100.0
+			endif
 		endif
 
 		'custom productions are sellable right after production, and
@@ -299,12 +325,17 @@ Type TProduction Extends TOwnedGameObject
 		'star power bonus
 		'this is calculated at the end, as this is some kind of
 		'"advertising bonus" for the outcome-portion
-		local castFameMod:Float = productionConcept.CalculateCastFameMod()
+		'local castFameMod:Float = productionConcept.CalculateCastFameMod()
+		castFameMod = productionConcept.CalculateCastFameMod()
+
+
+		'script improvements by the director or experienced actors
+		scriptPotentialMod = productionConcept.CalculateScriptPotentialMod()
 
 
 		TLogger.Log("TProduction.Finalize()", "ProductionValueMod    : "+GetProductionValueMod(), LOG_DEBUG)
 		TLogger.Log("TProduction.Finalize()", "ProductionValueMod end: "+productionValueMod, LOG_DEBUG)
-		TLogger.Log("TProduction.Finalize()", "ProductionPriceMod    : "+ProductionPriceMod, LOG_DEBUG)
+		TLogger.Log("TProduction.Finalize()", "ProductionPriceMod    : "+productionPriceMod, LOG_DEBUG)
 		TLogger.Log("TProduction.Finalize()", "CastFameMod           : "+castFameMod, LOG_DEBUG)
 
 
@@ -314,9 +345,10 @@ Type TProduction Extends TOwnedGameObject
 
 
 		'=== 2. PROGRAMME CREATION ===
-		Local programmeGUID:string = "customProduction-"+productionConcept.script.GetGUID()
 		local programmeData:TProgrammeData = new TProgrammeData
+		Local programmeGUID:string = "customProduction-"+"-"+productionConcept.script.GetGUID()+GetGUID()
 		programmeData.SetGUID("data-"+programmeGUID)
+
 		if producerName
 			if not programmeData.extra then programmeData.extra = new TData
 			programmeData.extra.AddString("producerName", producerName)
@@ -334,6 +366,8 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
 		'enable mandatory flags
 		programmeData.SetFlag(productionConcept.script.flags, True)
+print "set programmedata flags: " + programmeData.flags +"   script.flags="+productionConcept.script.flags
+print "    isPaid = " + programmeData.IsPaid()
 		'randomly enable optional flags
 		if productionConcept.script.flagsOptional > 0
 			For local i:int = 1 until TVTProgrammeDataFlag.count
@@ -382,9 +416,9 @@ Type TProduction Extends TOwnedGameObject
 
 
 		'=== 2.2 PROGRAMME PRODUCTION PROPERTIES ===
-		programmeData.review = productionValueMod * productionConcept.script.review
-		programmeData.speed = productionValueMod * productionConcept.script.speed
-		programmeData.outcome = productionValueMod * productionConcept.script.outcome
+		programmeData.review = productionValueMod * productionConcept.script.review *scriptPotentialMod
+		programmeData.speed = productionValueMod * productionConcept.script.speed *scriptPotentialMod
+		programmeData.outcome = productionValueMod * productionConcept.script.outcome *scriptPotentialMod
 		'modify outcome by castFameMod ("attractors/startpower")
 		programmeData.outcome = Min(1.0, programmeData.outcome * castFameMod)
 
@@ -400,20 +434,25 @@ Type TProduction Extends TOwnedGameObject
 			local job:TProgrammePersonJob = productionConcept.script.cast[castIndex]
 			if not p or not job then continue
 
-			'person is now capable of doing this job
-			p.SetJob(job.job)
+
+			if DEV_InformPerson
+				'person is now capable of doing this job
+				p.SetJob(job.job)
+			endif
 			programmeData.AddCast(new TProgrammePersonJob.Init(p.GetGUID(), job.job))
 
-			'inform person and adjust its popularity
-			if TProgrammePerson(p)
-				local popularity:TPersonPopularity = TPersonPopularity(TProgrammePerson(p).GetPopularity())
-				if popularity
-					local params:TData = new TData
-					params.AddNumber("time", GetWorldTime().GetTimeGone())
-					params.AddNumber("quality", programmeData.GetQualityRaw())
-					params.AddNumber("job", job.job)
+			if DEV_InformPerson
+				'inform person and adjust its popularity
+				if TProgrammePerson(p)
+					local popularity:TPersonPopularity = TPersonPopularity(TProgrammePerson(p).GetPopularity())
+					if popularity
+						local params:TData = new TData
+						params.AddNumber("time", GetWorldTime().GetTimeGone())
+						params.AddNumber("quality", programmeData.GetQualityRaw())
+						params.AddNumber("job", job.job)
 
-					popularity.FinishProgrammeProduction(params)
+						popularity.FinishProgrammeProduction(params)
+					endif
 				endif
 			endif
 		Next
@@ -495,7 +534,7 @@ endrem
 		if owner
 			'if the script does not allow further productions, it is finished
 			'and should be removed from the player
-			if productionConcept.script.GetParentScript().IsProduced()
+			if productionConcept.script.HasParentScript() and productionConcept.script.GetParentScript().IsProduced()
 				local parentScript:TScript = productionConcept.script.GetParentScript()
 				local ppc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
 				if ppc then ppc.RemoveScript(parentscript, False)
@@ -536,7 +575,7 @@ endrem
 		if productionConcept.script = productionConcept.script.GetParentScript() then Throw "script and parent same : IsEpisode() failed."
 
 		'check if there is already a licence
-		local parentProgrammeGUID:string = "customProduction-header-"+productionConcept.script.GetParentScript().GetGUID() 
+		local parentProgrammeGUID:string = "customProduction-header-"+GetGUID()+"-"+productionConcept.script.GetParentScript().GetGUID() 
 		local parentLicence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(parentProgrammeGUID)
 
 
@@ -552,8 +591,6 @@ endrem
 			parentLicence.GetData().distributionChannel = TVTProgrammeDistributionChannel.TV
 			parentLicence.GetData().setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
 			parentLicence.GetData().producedByPlayerID = programmeLicence.GetData().producedByPlayerID
-'RONNY
-print "parentLicence.GetData().producedByPlayerID:" + parentLicence.GetData().producedByPlayerID
 			parentLicence.GetData().SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
 
 			'fill with basic data (title, description, ...)

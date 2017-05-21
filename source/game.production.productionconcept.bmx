@@ -96,6 +96,10 @@ Type TProductionConcept Extends TOwnedGameObject
 	Field castFameMod:Float = -1.0
 	Field castSympathy:Float = 0.0
 	Field castSympathyCached:int = False
+
+	Field scriptPotentialMod:Float = 1.0
+	Field scriptPotentialModCached:int = False
+
 	'cache calculated vars (values which could get recalculated every-
 	'time with the same output regardless of time)
 	Field _scriptGenreFit:Float = -1.0 {nosave}
@@ -337,6 +341,18 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
+	Method GetEffectiveFocusPoints:Float()
+		if _effectiveFocusPoints < 0 then CalculateEffectiveFocusPoints()
+		return _effectiveFocusPoints
+	End Method
+
+
+	Method GetEffectiveFocusPointsMax:Float()
+		if _effectiveFocusPointsMax < 0 then CalculateEffectiveFocusPoints()
+		return _effectiveFocusPointsMax
+	End Method
+
+
 	'returns the percentage of used to maximum focus points
 	Method GetEffectiveFocusPointsRatio:Float()
 		'a "drama" production might have VFX-priority of 0.5, each point
@@ -383,6 +399,46 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
+	'calculate script value modificator
+	'good casts could improve a script a bit
+	Method CalculateScriptPotentialMod:Float(recalculate:int = False)
+		if scriptPotentialModCached and not recalculate then return scriptPotentialMod
+
+		local castXPSum:Float, personCount:int
+		For local castIndex:int = 0 until cast.length
+			local person:TProgrammePersonBase = cast[castIndex]
+			if not person then continue
+
+			'castXP to improve a script depends on
+			'- work done (for the given job) and
+			'- experience gained
+			local jobsDone:int = 1.0 * person.HasJob(script.cast[castIndex].job) + 0.10 * person.GetJobsDone(0) + 0.90 * person.GetJobsDone( script.cast[castIndex].job )
+			'euler strength: 2.5, so for done jobs: 22%, 39%, 52%, ...
+			local castXP:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
+
+			if TProgrammePerson(person)
+				castXP :* 1.0 + 0.15 * TProgrammePerson(person).GetExperiencePercentage(script.cast[castIndex].job)
+			endif
+
+			castXPSum :+ castXP
+			personCount :+ 1
+		Next
+		scriptPotentialModCached = True
+
+		if personCount > 0
+			scriptPotentialMod = 1.0 + (castXPSum / personCount) * script.GetPotential()
+		else
+			scriptPotentialMod = 1.0
+		endif
+
+'hier weiter
+print scriptPotentialMod
+
+		return scriptPotentialMod
+	End Method
+
+
+
 	Method CalculateCastSympathy:Float(recalculate:int = False)
 		if castSympathyCached and not recalculate then return castSympathy
 
@@ -401,7 +457,7 @@ Type TProductionConcept Extends TOwnedGameObject
 		if personCount > 0
 			castSympathy = personSympathy / personCount
 		else
-			personSympathy = 0.0
+			castSympathy = 0.0
 		endif
 
 		castSympathyCached = True
@@ -515,7 +571,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			
 
 			'if the cast defines a specific gender for this position,
-			'then we reduce the personFit by up to 20%.
+			'then we reduce the personFit by 10-20%.
 			'This happens for 80% of all "wrong-gender"-assignments.
 			'The other 12% have luck - they perfectly seem to fit into
 			'that role.
@@ -526,9 +582,9 @@ Type TProductionConcept Extends TOwnedGameObject
 				if person.gender <> script.cast[castIndex].gender
 					local luck:int = RandRange(0,100)
 					if luck <= 80 '80%
-						genderFit = RandRange(1,20)/100.0
+						genderFit = RandRange(10,20)/100.0
 					elseif luck <= 88 '8%
-						genderFit = RandRange(100,120)/100.0
+						genderFit = RandRange(110,120)/100.0
 					else
 						'no change
 					endif
@@ -542,8 +598,8 @@ Type TProductionConcept Extends TOwnedGameObject
 			personFit = (0.3 * genreFit + 0.7 * jobFit) * genderFit
 			'if the person does not know anything about the done job
 			'chances are high for the person not fitting at all
-			if not jobFit < 0.1 and RandRange(0,100) < 90
-				personFit :* 0.20
+			if jobFit < 0.1 and RandRange(0,100) < 85
+				personFit :* 0.25
 			endif
 			'a persons maximum fit is 0.75 (without attributes)
 			personFit :* 0.75
@@ -551,7 +607,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			personFit :* attributeMod
 
 			'a persons fit depends on its XP
-			'so make 50% of the fit dependend from XP
+			'so make 25% of the fit dependend from XP
 			local xpMod:Float = 0.75
 			if TProgrammePerson(person) then xpMod :+ 0.25 * TProgrammePerson(person).GetExperiencePercentage(script.cast[castIndex].job)
 			personFit :* xpMod

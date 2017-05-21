@@ -71,6 +71,30 @@ Type TScriptBase Extends TNamedGameObject
 	End Method
 
 
+	Method HasProductionBroadcastFlag:Int(flag:Int) {_exposeToLua}
+		Return productionBroadcastFlags & flag
+	End Method
+
+
+	Method SetProductionBroadcastFlag(flag:Int, enable:Int=True)
+		If enable
+			productionBroadcastFlags :| flag
+		Else
+			productionBroadcastFlags :& ~flag
+		EndIf
+	End Method
+
+
+	Method HasProductionBroadcastLimit:int() {_exposeToLua}
+		return HasProductionBroadcastFlag(TVTBroadcastMaterialSourceFlag.HAS_BROADCAST_LIMIT)
+	End Method
+
+
+	Method GetProductionBroadcastLimit:int() {_exposeToLua}
+		return self.productionBroadcastLimit
+	End Method
+
+
 	Method GetTitle:string()
 		if customTitle then return customTitle
 		if title then return title.Get()
@@ -299,6 +323,11 @@ Type TScriptBase Extends TNamedGameObject
 	Method GetSubScriptAtIndex:TScriptBase(arrayIndex:int=1)
 		if arrayIndex >= subScripts.length or arrayIndex < 0 then return null
 		return subScripts[arrayIndex]
+	End Method
+
+
+	Method HasParentScript:int()
+		return False
 	End Method
 
 

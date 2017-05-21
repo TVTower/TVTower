@@ -39,7 +39,7 @@ Type TProductionCompanyBase extends TGameObject
 	Field name:string
 	'guids of all done productions
 	Field producedProgrammes:String[]
-	Field baseQuality:Float = 0.25
+	Field baseQuality:Float = 0.50
 	'price manipulation. varying price but constant "quality" 
 	Field priceModifier:Float = 1.0
 	'quality manipulation. varying quality but constant "price"

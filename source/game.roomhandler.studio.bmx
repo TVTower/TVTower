@@ -978,9 +978,15 @@ Type RoomHandler_Studio extends TRoomHandler
 
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
-		local roomGUID:string = TRoom(triggerEvent.GetSender()).GetGUID()
+		local room:TRoom = TRoom(triggerEvent.GetSender())
+		if not room then return False
+		local roomGUID:string = room.GetGUID()
 
-		if studioManagerEntity Then studioManagerEntity.Render()
+		'skip drawing the manager or other things for "empty studios"
+		if room.GetOwner() <= 0 then return False
+
+		if studioManagerEntity then studioManagerEntity.Render()
+
 		GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		'=== HIGHLIGHT INTERACTIONS ===
