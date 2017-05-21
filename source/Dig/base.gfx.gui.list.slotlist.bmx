@@ -164,8 +164,11 @@ Type TGUISlotList Extends TGUIListBase
 
 		'set startpos at point of block displacement
 		Local currentPos:TVec3D = _entriesBlockDisplacement.ToVec3D()
+		'take scrolling into consideration
+		currentPos.AddXY(+ guiEntriesPanel.scrollposition.x, + guiEntriesPanel.scrollPosition.y)
+
+
 		currentPos.z = -1 'set to invalid slot position
-		Local currentRect:TRectangle 'used to check if a given coord is within
 		Local slotW:Int
 		Local slotH:Int
 		For Local i:Int = 0 To _slots.length-1
@@ -188,14 +191,17 @@ Type TGUISlotList Extends TGUIListBase
 			'2. GIVEN COORD
 			If coord
 				If _slots[i] And Not _fixedSlotDimension
-					currentRect = _slots[i].rect
+					'rects are "local", so remove the previously
+					'added scroll positions
+					If _slots[i].rect.containsXY(coord.getX() - guiEntriesPanel.scrollposition.x,coord.getY() - guiEntriesPanel.scrollPosition.y)
+						currentPos.z = i
+						Return currentPos
+					EndIf
 				Else
-					currentRect = baseRect
-				EndIf
-				If currentRect.containsXY(coord.getX(),coord.getY())
-					'print "currentRect: "+currentRect.position.getIntX()+","+currentRect.position.getIntY()+" "+currentRect.dimension.getIntX()+","+currentRect.dimension.getIntY() + " minW:"+_slotMinDimension.getX()+" minH:"+_slotMinDimension.getY() +" slot:"+i
-					currentPos.z = i
-					Return currentPos
+					If baseRect.containsXY(coord.getX(), coord.getY())
+						currentPos.z = i
+						Return currentPos
+					EndIf
 				EndIf
 			EndIf
 
@@ -229,6 +235,7 @@ Type TGUISlotList Extends TGUIListBase
 
 		'convert global/screen to local coords
 		If isScreenCoord Then useCoord.AddXY(-Self.GetScreenX(),-Self.GetScreenY())
+
 		Return GetSlotOrCoord(-1, useCoord).z
 	End Method
 
@@ -354,13 +361,15 @@ Type TGUISlotList Extends TGUIListBase
 
 		'the drop-coordinate is the same one as the original slot, so we
 		'handled that situation
-		If dropCoord And GetSlotByCoord(dropCoord) = GetSlot(item)
-			Return True
+		If dropCoord
+			local dropToSlot:int = GetSlotByCoord(dropCoord)
+			if dropToSlot >= 0 and dropToSlot = GetSlot(item)
+				Return True
+			endif
 		EndIf
 
 		Return False
 	End Method
-
 
 
 	'overrideable AddItem-Handler
@@ -388,8 +397,9 @@ Type TGUISlotList Extends TGUIListBase
 
 			'set slot to land
 			addToSlot = Self.GetSlotByCoord(dropCoord)
+
 			'no slot was hit
-			If addToSlot < 0 Then Return False
+			If addToSlot < 0 then Return False
 		EndIf
 
 		'ask if an add to this slot is ok
@@ -400,6 +410,9 @@ Type TGUISlotList Extends TGUIListBase
 		'return if there is an underlying item which cannot get dragged
 		Local dragItem:TGUIobject = TGUIobject(Self.getItemBySlot(addToSlot))
 		If dragItem And Not dragItem.isDragable() Then Return False
+
+		'set parent of the item - so item is able to calculate position
+		guiEntriesPanel.addChild(item )
 
 		Return Self.SetItemToSlot(item, addToSlot)
 	End Method
@@ -419,6 +432,9 @@ Type TGUISlotList Extends TGUIListBase
 			'do not call Remove() as Remove() could call RemoveItem() again
 			'item.Remove()
 
+			'remove from panel and item gets managed by guimanager
+			guiEntriesPanel.removeChild(item)
+
 			'remove it
 			Self._SetSlot(slot, Null)
 
@@ -434,18 +450,31 @@ Type TGUISlotList Extends TGUIListBase
 
 	Method DrawDebug()
 		If _debugMode
+			Setalpha 0.25
+			SetColor 255,0,0
+			Setalpha 0.25
+			DrawRect(guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY(), guiEntriesPanel.GetScreenWidth(), guiEntriesPanel.GetScreenHeight())
+			SetColor 255,255,255
+			Setalpha 1.0
+			DrawText("Slot: " + GetSlotByCoord(MouseManager.currentPos), guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY() - 65)
+			DrawText("ID:"+_id, guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY() - 50)
+			DrawText("scr:"+int(guiEntriesPanel.scrollPosition.GetY())+"/"+int(guiEntriesPanel.scrollLimit.GetY()), guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY() - 35)
+			DrawText("entrDim:"+int(entriesDimension.GetY()), guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY() - 20)
+
+
 			Local atPoint:TVec2D = GetScreenPos()
 			'restrict by scrollable panel - if not possible, there is no "space left"
-			If guiEntriesPanel.RestrictViewPort()
+			If RestrictViewport()
 				Local pos:TVec3D = Null
-				SetAlpha 0.4
 				For Local i:Int = 0 To Self._slots.length-1
+				SetAlpha 0.3
 					pos = GetSlotOrCoord(i)
 					'print "slot "+i+": "+pos.GetX()+","+pos.GetY() +" result: "+(atPoint.GetX()+pos.getX())+","+(atPoint.GetY()+pos.getY()) +" h:"+self._slotMinDimension.getY()
 					SetColor 0,0,0
 					DrawRect(atPoint.GetX()+pos.getX(), atPoint.GetY()+pos.getY(), _slotMinDimension.getX(), _slotMinDimension.getY())
 					SetColor 255,255,255
 					DrawRect(atPoint.GetX()+pos.getX()+1, atPoint.GetY()+pos.getY()+1, _slotMinDimension.getX()-2, _slotMinDimension.getY()-2)
+				SetAlpha 0.8
 					SetColor 0,0,0
 					DrawText("slot "+i+"|"+GetSlotByCoord(pos.ToVec2D()), atPoint.GetX()+pos.getX()+1, atPoint.GetY()+pos.getY()+1)
 					SetColor 255,255,255
@@ -459,6 +488,9 @@ Type TGUISlotList Extends TGUIListBase
 
 
 	Method RecalculateElements:Int()
+		'reset current entriesDimension ...
+		entriesDimension.CopyFrom(_entriesBlockDisplacement)
+
 		'set startpos at point of block displacement
 		Local currentPos:TVec2D = _entriesBlockDisplacement.copy()
 		Local coveredArea:TRectangle = new TRectangle.Init(0,0,_entriesBlockDisplacement.x,_entriesBlockDisplacement.y)
@@ -481,34 +513,60 @@ Type TGUISlotList Extends TGUIListBase
 
 			If _orientation = GUI_OBJECT_ORIENTATION_VERTICAL
 				currentPos.AddXY(0, slotH )
+				entriesDimension.AddXY(0, slotH)
 			ElseIf Self._orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
 				currentPos.AddXY(slotW, 0)
+				entriesDimension.AddXY(slotW, 0)
 			EndIf
 
 			'add the displacement, z-value is stepping, not for LAST element
 			If (i+1) Mod Self._entryDisplacement.z = 0 And i < _slots.length-1
 				currentPos.AddXY(_entryDisplacement.x, _entryDisplacement.y)
+				entriesDimension.AddXY(_entryDisplacement.x, _entryDisplacement.y)
 			EndIf
 		Next
 
-		'resize container panel
-		Local dimension:TVec2D = new TVec2D.Init(coveredArea.getW() - coveredArea.getX(), coveredArea.getH() - coveredArea.getY())
-		guiEntriesPanel.minSize.setXY(dimension.getX(), dimension.getY() )
-		guiEntriesPanel.resize(dimension.getX(), dimension.getY() )
 
-		If _orientation = GUI_OBJECT_ORIENTATION_VERTICAL
-			'set scroll limits:
-			'maximum is at the bottom of the area, not top - so subtract height
-			guiEntriesPanel.SetLimits(0, -(dimension.getY() - guiEntriesPanel.rect.GetH()) )
-		ElseIf _orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
-			'set scroll limits:
-			'maximum is at the bottom of the area, not top - so subtract height
-			guiEntriesPanel.SetLimits(-(dimension.getX() - guiEntriesPanel.rect.GetW()), 0 )
-		EndIf
+		'resize container panel
+		guiEntriesPanel.resize(entriesDimension.getX(), entriesDimension.getY())
+
+		'refresh scrolling limits
+		RefreshListLimits()
 
 		'if not all entries fit on the panel, enable scroller
-		SetScrollerState(dimension.getX() > guiEntriesPanel.rect.GetW(), ..
-		                 dimension.getY() > guiEntriesPanel.rect.GetH() ..
-		                )
+		SetScrollerState(..
+			entriesDimension.getX() > guiEntriesPanel.GetScreenWidth(), ..
+			entriesDimension.getY() > guiEntriesPanel.GetScreenHeight() ..
+		)
+	End Method
+
+
+	'override
+	Method GetFirstItem:TGUIListItem()
+		for local i:int = 0 to _slots.length
+			if _slots[i] then return TGUIListItem(_slots[i])
+		next
+		return null
+	End Method
+
+
+	'override
+	Method GetLastItem:TGUIListItem()
+		for local i:int = _slots.length-1 to 0 step -1
+			if _slots[i] then return TGUIListItem(_slots[i])
+		next
+		return null
+	End Method
+
+
+	'override
+	Method GetLastItemY:int()
+		if not _fixedSlotDimension
+			local i:TGUIListItem = GetLastItem()
+			if i then return i.GetScreenY()
+			return 0
+		else
+			return (_slots.length-1) * int(_slotMinDimension.GetY())
+		endif
 	End Method
 End Type

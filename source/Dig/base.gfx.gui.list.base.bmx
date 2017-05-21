@@ -387,13 +387,30 @@ Type TGUIListBase Extends TGUIobject
 			'panel
 			If guiEntriesPanel.scrollPosition.getY() = 0
 				result = 1
-				Local lastItem:TGUIListItem = TGUIListItem(entries.Last())
+				Local lastItem:TGUIListItem = GetLastItem()
 				If lastItem And lastItem.GetScreenY() > guiEntriesPanel.getScreenY() + guiEntriesPanel.getScreenheight()
 					result = 0
 				EndIf
 			EndIf
 		EndIf
 		Return result
+	End Method
+
+
+	Method GetFirstItem:TGUIListItem()
+		return TGUIListItem(entries.First())
+	End Method
+
+
+	Method GetLastItem:TGUIListItem()
+		return TGUIListItem(entries.Last())
+	End Method
+
+
+	Method GetLastItemY:int()
+		local i:TGUIListItem = GetLastItem()
+		if i then return i.GetScreenY()
+		return 0
 	End Method
 
 
@@ -461,7 +478,7 @@ Type TGUIListBase Extends TGUIobject
 
 			'==== ADD POTENTIAL DISPLACEMENT ====
 			'add the displacement afterwards - so the first one is not displaced
-			If entryNumber Mod _entryDisplacement.z = 0 And entry <> entries.last()
+			If entryNumber Mod _entryDisplacement.z = 0 And entry <> GetLastItem()
 				currentPos.AddXY(_entryDisplacement.x, _entryDisplacement.y)
 				'increase dimension if positive displacement
 				entriesDimension.AddXY( Max(0,_entryDisplacement.x), Max(0, _entryDisplacement.y))
@@ -509,8 +526,8 @@ Type TGUIListBase Extends TGUIobject
 					'maximum is at the bottom of the area, not top - so
 					'subtract height
 					'old: guiEntriesPanel.SetLimits(0, -(dimension.getY() - guiEntriesPanel.getScreenheight()) )
-					Local lastItem:TGUIListItem = TGUIListItem(entries.Last())
-					If Not lastItem
+					Local lastItem:TGUIListItem = GetLastItem()
+					If Not lastItem and GetLastItemY() = 0
 						guiEntriesPanel.SetLimits(0, 0)
 					Else
 '						if not autoScroll
@@ -540,7 +557,7 @@ Type TGUIListBase Extends TGUIobject
 					'maximum is at the bottom of the area, not top - so
 					'subtract height
 					'old: guiEntriesPanel.SetLimits(-(dimension.getX() - guiEntriesPanel.getScreenWidth()), 0)
-					Local lastItem:TGUIListItem = TGUIListItem(entries.Last())
+					Local lastItem:TGUIListItem = GetLastItem()
 					If Not lastItem
 						guiEntriesPanel.SetLimits(0, 0)
 					Else
@@ -642,20 +659,20 @@ Type TGUIListBase Extends TGUIobject
 				EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropBack", Null , item, toList))
 				Return True
 			EndIf
+			'no drop back?
+			'we might have dropped it on another slot/position
 		EndIf
 'method A
 		'move item if possible
 		If fromList Then fromList.removeItem(item)
 		'try to add the item, if not able, readd
 		If Not toList.addItem(item, data)
-			If fromList
-				If fromList.addItem(item) Then Return True
+			If fromList and fromList.addItem(item) Then Return True
 
-				'not able to add to "toList" but also not to "fromList"
-				'so set veto and keep the item dragged
-				triggerEvent.setVeto()
-				Return False
-			EndIf
+			'not able to add to "toList" but also not to "fromList"
+			'so set veto and keep the item dragged
+			triggerEvent.setVeto()
+			Return False
 		EndIf
 
 

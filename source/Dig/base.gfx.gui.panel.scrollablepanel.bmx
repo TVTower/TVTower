@@ -134,7 +134,11 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	Method RestrictViewport:Int()
 		Local screenRect:TRectangle = Self.GetScreenRect()
 		If screenRect
-			GUIManager.RestrictViewport(int(screenRect.getX() - scrollPosition.getX()), int(screenRect.getY() - scrollPosition.getY()), int(screenRect.getW()), int(screenRect.getH()))
+			'disabled by Ronny, 2017/05/16:
+			'do IGNORE scrollPosition and just view the original position
+			'move viewport by scrolled amount ("virtual displace")
+			'GUIManager.RestrictViewport(int(screenRect.getX() - scrollPosition.getX()), int(screenRect.getY() + scrollPosition.getY()), int(screenRect.getW()), int(screenRect.getH()))
+			GUIManager.RestrictViewport(int(screenRect.getX()), int(screenRect.getY()), int(screenRect.getW()), int(screenRect.getH()))
 			Return True
 		Else
 			Return False
