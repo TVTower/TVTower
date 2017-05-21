@@ -176,6 +176,8 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			'also create gui
 			castSlotList.SetSlotCast(i, currentProductionConcept.cast[i])
 		Next
+		'enable/disable scrollbars
+		castSlotList.RecalculateElements()
 		
 
 		'=== PRODUCTION COMPANY ===
@@ -678,6 +680,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		endif
 
 		castSlotList.SetSlotMinDimension(230, 42)
+		castSlotList._fixedSlotDimension = true
 		'occupy the first free slot?
 		'castSlotList.SetAutofillSlots(true)
 
@@ -1033,7 +1036,9 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			'reposition cast list
 			if castSlotList.rect.getX() <> contentX + 5
 				castSlotList.rect.SetXY(contentX +5, contentY + 3)
-				castSlotList.resize(contentW - 10, castAreaH - 6 )
+				'-5 => 210 height, each slot 42px, so 5 slots fit 
+				castSlotList.resize(contentW - 10, castAreaH - 5 )
+				castSlotList.SetSlotMinDimension(contentW - 10, 42)
 			endif
 
 			contentY :+ castAreaH
@@ -1379,6 +1384,17 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		Repeat
 			'only bookable amateurs
 			amateur = GetProgrammePersonBaseCollection().GetRandomInsignificant(null, True, True)
+
+			if not amateur
+				local countryCode:string = GetStationMapCollection().config.GetString("nameShort", "Unk")
+				'try to use "map specific names"
+				if RandRange(0,100) < 25 or not GetPersonGenerator().HasProvider(countryCode)
+					countryCode = GetPersonGenerator().GetRandomCountryCode()
+				endif
+
+				amateur = CreateRandomInsignificantPerson(countryCode, 0)
+			endif
+			
 			'print "check " + amateur.GetFullName() + "  " + amateur.GetAge() +"  fictional:"+amateur.fictional
 			'if not amateur.IsAlive() then print "skip: dead "+amateur.GetFullName()
 			'if not (amateur.GetAge() >= 10) then print "skip: too young "+amateur.GetFullName()
@@ -1758,7 +1774,7 @@ Type TGUICastSlotList Extends TGUISlotList
 		if not coord then return False
 
 		selectCastSlot = GetSlotByCoord(coord, True)
-		
+print "click " +selectCastSlot		
 		if selectCastSlot >= 0 and TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept
 			local jobID:int = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.cast[selectCastSlot].job
 			OpenSelectCastWindow(jobID)
@@ -1790,37 +1806,54 @@ endrem
 	End Method
 
 
+'	Method DrawOverlay()
+'		RecalculateElements()
+'	End Method
+
 	'override to draw unused slots
 	Method DrawContent()
 		Super.DrawContent()
 
-		SetAlpha 0.5 * GetAlpha()
-		For local slot:int = 0 until _slots.length
-			if _slots[slot] then continue
-			if slotJob.length < slot then continue
-			
-			local coord:TVec3D = GetSlotCoord(slot)
 
-			local job:TProgrammePersonJob = GetSlotJob(slot)
 
-			local genderHint:string
-			if job
-'				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
+		if RestrictViewport()
+			SetAlpha 0.5 * GetAlpha()
 
-				if job.gender = TVTPersonGender.MALE
-					genderHint = " ("+GetLocale("MALE")+")"
-				elseif job.gender = TVTPersonGender.FEMALE
-					genderHint = " ("+GetLocale("FEMALE")+")"
+			Local atPoint:TVec2D = GetScreenPos()
+
+			For local slot:int = 0 until _slots.length
+			'	local pos:TVec3D = GetSlotOrCoord(slot)
+				if _slots[slot] then continue
+				if slotJob.length < slot then continue
+				
+				local coord:TVec3D = GetSlotCoord(slot)
+
+				local job:TProgrammePersonJob = GetSlotJob(slot)
+
+				local genderHint:string
+				if job
+	'				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
+
+					if job.gender = TVTPersonGender.MALE
+						genderHint = " ("+GetLocale("MALE")+")"
+					elseif job.gender = TVTPersonGender.FEMALE
+						genderHint = " ("+GetLocale("FEMALE")+")"
+					endif
 				endif
-			endif
 
-			if MouseManager._ignoreFirstClick 'touch mode
-				TGUICastListItem.DrawCast(GetScreenX() + coord.GetX(), GetScreenY() + coord.GetY(), GetContentScreenWidth(), GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), null, 0,0,0)
-			else
-				TGUICastListItem.DrawCast(GetScreenX() + coord.GetX(), GetScreenY() + coord.GetY(), GetContentScreenWidth(), GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("CLICK_TO_SELECT_PERSON"), null, 0,0,0)
-			endif
-		Next
-		SetAlpha 2.0 * GetAlpha()
+	'TODO: nur zeichnen, wenn innerhalb "panel rect"
+				if MouseManager._ignoreFirstClick 'touch mode
+'					TGUICastListItem.DrawCast(atPoint.GetX() + pos.getX(), atPoint.GetY() + pos.getY(), _slotMinDimension.getX(), GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), null, 0,0,0)
+					TGUICastListItem.DrawCast(GetScreenX() + coord.GetX(), GetScreenY() + coord.GetY(), guiEntriesPanel.GetContentScreenWidth()-2, GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), null, 0,0,0)
+				else
+					TGUICastListItem.DrawCast(GetScreenX() + coord.GetX(), GetScreenY() + coord.GetY(), guiEntriesPanel.GetContentScreenWidth()-2, GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("CLICK_TO_SELECT_PERSON"), null, 0,0,0)
+				endif
+			Next
+			SetAlpha 2.0 * GetAlpha()
+
+			ResetViewPort()
+		endif
+		
 
 '		if selectCastWindow then selectCastWindow.Draw()
 	End Method
@@ -1974,7 +2007,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 	Method getDimension:TVec2D()
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
-		Local maxWidth:Int = 300
+		Local maxWidth:Int = 295
 		If parentPanel Then maxWidth = parentPanel.getContentScreenWidth() '- GetScreenWidth()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 

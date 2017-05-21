@@ -695,7 +695,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<data genre="3" price="1.0" quality="19" />
 			<conditions year_range_from="1982" year_range_to="1991" />
 		</news>
-		<news id="2f64517a-f2d6-4720-a195-6a35cc6e72c6_2" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
+		<news id="2f64517a-f2d6-4720-a195-6a35cc6e72c6_3" thread_id="1f721fc7-32d1-4c82-8f05-6a20393dba8e" type="0" creator="">
 			<title>
 				<de>Fort schreibt Verluste</de>
 				<en>Fort makes a loss</en>
@@ -1746,7 +1746,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="3" price="0.7" quality="72" />
 			<conditions year_range_from="1986" year_range_to="1998" />
 		</news>
-		<news id="83ba96bc-4560-4ac0-9929-329eb7f68751" thread_id="b900820c-cc68-4ef8-a021-58b56c7414be" type="0" creator="">
+		<news id="83ba96bc-4560-4ac0-9929-329eb7f68751_2" thread_id="b900820c-cc68-4ef8-a021-58b56c7414be" type="0" creator="">
 			<title>
 				<de>ISS empfängt fremde Signale</de>
 				<en></en>
