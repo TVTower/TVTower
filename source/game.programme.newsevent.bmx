@@ -865,13 +865,19 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 		if triggerProbability <> 100 and RandRange(0, 100) > triggerProbability then return False
 
 		local news:TNewsEvent
-		'instead of triggering the news DIRECTLY, we check first we talked
-		'about a template...
+
+		'instead of triggering the news DIRECTLY, we check first if we
+		'are talking about a template...
 		local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(triggerNewsGUID)
 		if template
-			news = new TNewsEvent.InitFromTemplate(template)
-			if news
-				GetNewsEventCollection().Add(news)
+			if template.IsAvailable()
+				news = new TNewsEvent.InitFromTemplate(template)
+				if news
+					GetNewsEventCollection().Add(news)
+				endif
+			else
+				TLogger.Log("TGameModifierNews_TriggerNews", "news template to trigger not available (yet): "+triggerNewsGUID, LOG_DEBUG)
+				return false
 			endif
 		else
 			news = GetNewsEventCollection().GetByGUID(triggerNewsGUID)
@@ -879,6 +885,10 @@ Type TGameModifierNews_TriggerNews extends TGameModifierBase
 		
 		if not news
 			TLogger.Log("TGameModifierNews_TriggerNews", "cannot find news to trigger: "+triggerNewsGUID, LOG_ERROR)
+			return false
+		endif
+		if not news.IsAvailable()
+			TLogger.Log("TGameModifierNews_TriggerNews", "news to trigger not available (yet): "+triggerNewsGUID, LOG_ERROR)
 			return false
 		endif
 		local triggerTime:Long = GetWorldTime().CalcTime_Auto(happenTimeType, happenTimeData)
