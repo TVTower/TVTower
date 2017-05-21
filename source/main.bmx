@@ -2579,9 +2579,12 @@ endrem
 		'TPersist.format=False
 		local p:TPersist = New TPersist
 		p.serializer = new TSavegameSerializer
-		p.SerializeToFile(saveGame, saveName)
-		'TPersistJSON.format=False
-		'New TPersistJSON.SerializeToFile(saveGame, saveName+".json")
+		if TPersist.compressed
+			p.SerializeToFile(saveGame, saveName+".zip")
+		else
+			p.SerializeToFile(saveGame, saveName)
+		endif
+
 		'tell everybody we finished saving
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnSave", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
@@ -4245,8 +4248,26 @@ Type GameEvents
 					endif
 				endif
 
-				local news:TNewsEvent = GetNewsEventCollection().GetByGUID(newsGUID)
-				if not news then news = GetNewsEventCollection().SearchByPartialGUID(newsGUID)
+				'check template first
+				local news:TNewsEvent
+				local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(newsGUID)
+				if not template then template = GetNewsEventTemplateCollection().SearchByPartialGUID(newsGUID)
+
+				if template
+					if template.IsAvailable()
+						news = new TNewsEvent.InitFromTemplate(template)
+						if news
+							GetNewsEventCollection().Add(news)
+						endif
+					else
+						TLogger.Log("DevCheat", "SendNews: news template not available (yet): "+newsGUID, LOG_DEBUG)
+						return false
+					endif
+				else
+					news = GetNewsEventCollection().GetByGUID(newsGUID)
+					if not news then news = GetNewsEventCollection().SearchByPartialGUID(newsGUID)
+				endif
+
 				if not news
 					GetGame().SendSystemMessage("No news with GUID ~q"+newsGUID+"~q found.")
 					return False
@@ -4304,7 +4325,8 @@ Type GameEvents
 			Case "givead"			
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
 
-				local adGUID:string = paramS
+				Local adGUID:String, checkAvailability:String
+				FillCommandPayload(paramS, adGUID, checkAvailability)
 				
 				if adGUID.trim() = ""
 					GetGame().SendSystemMessage("Wrong syntax (/dev help)!")
@@ -4315,6 +4337,13 @@ Type GameEvents
 				if not adContractBase then adContractBase = GetAdContractBaseCollection().SearchByPartialGUID(adGUID)
 				if not adContractBase
 					GetGame().SendSystemMessage("No adcontract with GUID ~q"+adGUID+"~q found.")
+					return False
+				endif
+
+				if checkAvailability = "0" or checkAvailability.ToLower() = "false"
+					'
+				elseif not adContractBase.IsAvailable()
+					GetGame().SendSystemMessage("Adcontract with GUID ~q"+adGUID+"~q not available (yet).")
 					return False
 				endif
 
@@ -4369,6 +4398,7 @@ Type GameEvents
 			GetGame().SendSystemMessage("  |b|terrorlvl|/b| [terrorgroup# 0 or 1] [level#]")
 			GetGame().SendSystemMessage("  |b|givelicence|/b| [player#] [GUID / GUID portion / devlicence#] [oay=1, free=0]")
 			GetGame().SendSystemMessage("  |b|givescript|/b| [player#] [GUID / GUID portion / devscript#] [pay=1, free=0]")
+			GetGame().SendSystemMessage("  |b|givead|/b| [player#] [GUID / GUID portion] [checkAvailability=1]")
 			GetGame().SendSystemMessage("  |b|sendnews|/b| [GUID / GUID portion / devnews#] [now=1, normal=0]")
 		End Function
 		
