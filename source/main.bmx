@@ -3077,7 +3077,11 @@ Type TScreen_NetworkLobby Extends TGameScreen
 			Case guiButtonCreate
 					'guiButtonStart.enable()
 					GetGame().SetGamestate(TGame.STATE_SETTINGSMENU)
-					Network.localFallbackIP = HostIp(GetGame().userFallbackIP)
+					?bmxng
+						Network.localFallbackIP = DottedIPToInt(HostIp(GetGame().userFallbackIP))
+					?not bmxng
+						Network.localFallbackIP = HostIp(GetGame().userFallbackIP)
+					?
 					Network.StartServer()
 					Network.ConnectToLocalServer()
 					Network.client.playerID	= 1
@@ -3113,8 +3117,11 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		Local _hostPort:Int = entry.data.getInt("hostPort",0)
 		Local gameTitle:String = entry.data.getString("gameTitle","#unknowngametitle#")
 
-
+		?bmxng
+		If Network.ConnectToServer( DottedIPToInt(HostIp(_hostIP)), _hostPort )
+		?not bmxng
 		If Network.ConnectToServer( HostIp(_hostIP), _hostPort )
+		?
 			Network.isServer = False
 			GetGame().SetGameState(TGame.STATE_SETTINGSMENU)
 			ScreenGameSettings.guiGameTitle.Value = gameTitle
@@ -3146,7 +3153,11 @@ Type TScreen_NetworkLobby Extends TGameScreen
 			Local responseArray:String[] = responsestring.split("|")
 			If responseArray <> Null
 				Network.OnlineIP = responseArray[0]
-				Network.intOnlineIP = HostIp(Network.OnlineIP)
+				?bmxng
+					Network.intOnlineIP = DottedIPToInt(HostIp(Network.OnlineIP))
+				?not bmxng
+					Network.intOnlineIP = HostIp(Network.OnlineIP)
+				?
 				Print "[NET] set your onlineIP: "+responseArray[0]
 			EndIf
 		Wend

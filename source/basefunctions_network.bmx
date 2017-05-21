@@ -890,20 +890,24 @@ Type TDigNetwork
 
 
 	Function GetHostIP:Int(HostName:String)
-		Local Addresses:Byte Ptr Ptr, AddressType:Int, AddressLength:Int
-		Local PAddress:Byte Ptr, Address:Int
+		?bmxng
+			return DottedIPToInt(HostIps("localhost")[0])
+		?not bmxng
+			Local Addresses:Byte Ptr Ptr, AddressType:Int, AddressLength:Int
+			Local PAddress:Byte Ptr, Address:Int
 
-		Addresses = gethostbyname_(HostName, AddressType, AddressLength)
-		If (Not Addresses) Or AddressType <> AF_INET_ Or AddressLength <> 4 Then Return 0
+			Addresses = gethostbyname_(HostName, AddressType, AddressLength)
+			If (Not Addresses) Or AddressType <> AF_INET_ Or AddressLength <> 4 Then Return 0
 
-		If Addresses[0] Then
-			PAddress = Addresses[0]
-			Address = (PAddress[0] Shl 24) | (PAddress[1] Shl 16) | ..
-			          (PAddress[2] Shl 8) | PAddress[3]
-			Return  Address
-		Else
-			Return 0
-		EndIf
+			If Addresses[0] Then
+				PAddress = Addresses[0]
+				Address = (PAddress[0] Shl 24) | (PAddress[1] Shl 16) | ..
+						  (PAddress[2] Shl 8) | PAddress[3]
+				Return  Address
+			Else
+				Return 0
+			EndIf
+		?
 	End Function
 	
 
@@ -1013,7 +1017,11 @@ endrem
 		if packet and packet._bank.size()
 			Local length:int	= packet._bank.size()
 			if length > 0 and not infoStream.write(packet._bank.buf(), length) then throw "Net: Error writing to Networkmessage buffer " + length
-			if not infoStream.SendUDPMsg( HostIP(ip), port ) then throw "Net: Error sending udp message to " + ip+ " :" + port
+			?bmxng
+				if not infoStream.SendUDPMsg( DottedIPToInt(HostIP(ip)), port ) then throw "Net: Error sending udp message to " + ip+ " :" + port
+			?not bmxng
+				if not infoStream.SendUDPMsg( HostIP(ip), port ) then throw "Net: Error sending udp message to " + ip+ " :" + port
+			?
 		endif
 		return true
 
