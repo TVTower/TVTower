@@ -401,6 +401,139 @@
 			<review min="45" max="65" slope="40" />
 			<speed min="35" max="65" slope="50" />
 		</scripttemplate>
+
+		<!-- === SERIES === -->
+		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-animalseries01">
+			<title>
+				<de>%TITLE%</de>
+				<en>%TITLE%</en>
+			</title>
+			<description>
+				<de>Dokumentation über %ANIMALS%.
+%EXTRA%</de>
+				<en>Documentary about %ANIMALS%.
+%EXTRA%</en>
+			</description>
+			
+			<children>
+				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_01">
+					<title>
+						<de>%TITLEEPISODE1%</de>
+					</title>
+					<blocks min="1" max="1" />
+				</scripttemplate>
+				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_02">
+					<title>
+						<de>%TITLEEPISODE2%</de>
+					</title>
+					<blocks min="1" max="1" />
+				</scripttemplate>
+				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_03">
+					<title>
+						<de>%TITLEEPISODE3%</de>
+					</title>
+					<blocks min="1" max="1" />
+				</scripttemplate>
+				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_04">
+					<title>
+						<de>%TITLEEPISODE4%</de>
+					</title>
+					<blocks min="1" max="1" />
+				</scripttemplate>
+				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_05">
+					<title>
+						<de>%TITLEEPISODE5%</de>
+					</title>
+					<blocks min="1" max="1" />
+				</scripttemplate>
+				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_06">
+					<title>
+						<de>%TITLEEPISODE6%</de>
+					</title>
+					<blocks min="1" max="1" />
+				</scripttemplate>
+			</children>
+
+			<variables>
+				<title>
+					<de>%ANIMAL1%%CONNECTOR1%|Party mit %ANIMAL1%%CONNECTOR1%|Zu Besuch bei %ANIMAL1%%CONNECTOR2%|Auf der Spur von %ANIMAL1%%CONNECTOR2%|Im Zoo bei %ANIMAL1% und %ANIMAL2%</de>
+				</title>
+				<animals>
+					<de>%ANIMAL1%, %ANIMAL2% und viele weitere Tiere|Tiere im Zoo.|Pfleger, Gäste und natürlich Tiere im Gehege.</de>
+				</animals>
+				<extra>
+					<de>%EXTRA1%%EXTRA2%.||Tierpfleger geben Tipps für die Aufzucht zuhause.|Inklusive Tipps für den Umgang mit Haustieren.</de>
+				</extra>
+				<extra1>
+					<de>Niedliche Tierbabies |Knuddelige Wildkatzen |Bio-Dung</de>
+				</extra1>
+				<extra2>
+					<de>zu hauf.|sowie ab und zu eine finale Spritze| und ab und zu eine Tierfütterung aus Eigenanbau</de>
+				</extra2>
+				<animal1>
+					<de>Affe|Frosch|Kamel|Waran|Ziege|Elefant|Maus|Nashorn</de>
+					<en>Ape|Frog|Camel|Waran|Goat|Elephant|Mouse|Rhino</en>
+				</animal1>
+				<animal2>
+					<de>Biber|Chamäleon|Dachs|Esel|Giraffe|Hirsch|Iltis</de>
+					<en>Beaver|Chameleon|Badger|Donkey|Giraffe|Deer|Iltis</en>
+				</animal2>
+				<animalep1>
+					<de>Affe|Frosch|Kamel|Waran</de>
+					<en>Ape|Frog|Camel|Waran</en>
+				</animalep1>
+				<animalep2>
+					<de>Biber|Chamäleon|Dachs</de>
+					<en>Beaver|Chameleon|Badger</en>
+				</animalep2>
+				<animalep3>
+					<de>Ziege|Elefant|Maus|Nashorn</de>
+					<en>Goat|Elephant|Mouse|Rhino</en>
+				</animalep3>
+				<animalep4>
+					<de>Esel|Giraffe|Hirsch|Iltis</de>
+					<en>Donkey|Giraffe|Deer|Iltis</en>
+				</animalep4>
+				<connector1>
+					<de>, %ANIMAL2% und Co.| und %ANIMAL2%| und %ANIMAL2% ganz wild| und %ANIMAL2% im Zoo|</de>
+				</connector1>
+				<connector2>
+					<de>, %ANIMAL2% und Co.| und %ANIMAL2%| und Pfleger</de>
+				</connector2>
+				<titleepisode1>
+					<de>%ANIMALEP1%|%ANIMALEP1% auf Abwegen|%ANIMALEP1% in Gefahr</de>
+				</titleepisode1>
+				<titleepisode2>
+					<de>%ANIMALEP2%|%ANIMALEP2% adoptiert|%ANIMALEP2% vermisst</de>
+				</titleepisode2>
+				<titleepisode3>
+					<de>%ANIMALEP3%|%ANIMALEP3% hautnah|%ANIMALEP3% im OP</de>
+				</titleepisode3>
+				<titleepisode4>
+					<de>%ANIMALEP4%|%ANIMALEP4% geboren!|%ANIMALEP4% gefunden</de>
+				</titleepisode4>
+				<titleepisode5>
+					<de>%ANIMALEP2% trifft auf %ANIMALEP3%|%ANIMALEP2% bemuttert %ANIMALEP3%</de>
+				</titleepisode5>
+				<titleepisode6>
+					<de>%ANIMALEP4% und Pfleger|%ANIMALEP4% frisst %ANIMALEP1%</de>
+				</titleepisode6>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="128" required="1" />
+			</jobs>
+
+			<genres maingenre="6" />
+			<episodes min="4" max="6" />
+			<blocks value="1" />
+			<price min="15000" max="26000" />
+			<potential min="35" max="65" slope="45" />
+			<outcome min="20" max="30" slope="40" />
+			<review min="30" max="45" slope="40" />
+			<speed min="20" max="40" slope="50" />
+		</scripttemplate>
 	</scripttemplates>
 
 	<programmeroles>
