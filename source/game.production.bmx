@@ -531,17 +531,19 @@ endrem
 		'(parental script is already informed on creation of its licence)
 		productionConcept.script.FinishProduction(programmeLicence.GetGUID())
 
-		if owner
+		if owner and GetPlayerProgrammeCollection(owner)
 			'if the script does not allow further productions, it is finished
 			'and should be removed from the player
-			if productionConcept.script.HasParentScript() and productionConcept.script.GetParentScript().IsProduced()
+
+			'series: remove parent if it is finished now
+			if productionConcept.script.HasParentScript()
 				local parentScript:TScript = productionConcept.script.GetParentScript()
-				if GetPlayerProgrammeCollection(owner)
+				if parentScript.IsProduced()
 					GetPlayerProgrammeCollection(owner).RemoveScript(parentscript, False)
 				endif
-			else
-				'remove finished concepts
 			endif
+			'single scripts
+			GetPlayerProgrammeCollection(owner).RemoveScript(productionConcept.script, False)
 		endif
 		
 		'=== 4. ADD TO PLAYER ===
