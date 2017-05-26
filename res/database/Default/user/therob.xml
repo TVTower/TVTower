@@ -2307,7 +2307,7 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Hor-DieGruselUniversitaet">
 			<title>
-				<de>Die %WAS% %ART%</de>
+				<de>Die %WAS%%ART%</de>
 				<en>%WAS% %ART%</en>
 			</title>
 			<description>
@@ -2316,11 +2316,11 @@
 			</description>
 			<variables>
 				<was>
-					<de>Grusel|Horror|Angst|Schauder|Zitter</de>
+					<de>Grusel-|Horror-|Angst-|Schauder-|Zitter-</de>
 					<en>Scary|Horror|Fear|Spooky</en>
 				</was>
 				<art>
-					<de>Universität|Schule|Akademie|Fachhochschule</de>
+					<de>universität|schule|akademie|fachhochschule</de>
 					<en>University|School|Academy|College</en>
 				</art>
 			</variables>
@@ -2366,7 +2366,7 @@
 		</scripttemplate>
 		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-TV-Heimatlichberggeschichten">
 			<title>
-				<de>%NAME1%%NAME2%</de>
+				<de>%NAME1% %NAME2%</de>
 				<en>%NAME1% From the %NAME2%</en>
 			</title>
 			<description>
@@ -2463,7 +2463,7 @@
 				<en>ISS - Searching for %NAME%</en>
 			</title>
 			<description>
-				<de>Die Geschichte der ISS. Ausführlich dargestellt und mit viel Wissenwertes ausgeschmückt.</de>
+				<de>Die Geschichte der ISS. Ausführlich dargestellt und mit viel Wissenwertem ausgeschmückt.</de>
 				<en>The history of the ISS. Everything you need to know. Even more than that.</en>
 			</description>
 			<variables>
@@ -2726,7 +2726,7 @@
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-act-DerFahnder">
 			<title>
-				<de>Der %TITLE1% %TITLE2%</de>
+				<de>Der %TITLE1%%TITLE2%</de>
 				<en>The %TITLE1% %TITLE2%</en>
 			</title>
 			<description>
@@ -2784,8 +2784,8 @@
 					<en>Lane|Village|Mountain|Forrest</en>
 				</title1>
 				<title2>
-					<de>Jäger|Polizist|Dedektiv|Fahnder|Hüter|Wächter</de>
-					<en>Hunter|Policeman|Dedectiv|Investigator|Guardian|Keeper</en>
+					<de>jäger|polizist|detektiv|fahnder|hüter|wächter</de>
+					<en>Hunter|Policeman|Detective|Investigator|Guardian|Keeper</en>
 				</title2>
 				<name1>
 					<de>Harry|Horst|Jim|Bob|Herr Müller|Herr Schmidt|Dagobert</de>
