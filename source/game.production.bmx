@@ -346,7 +346,7 @@ Type TProduction Extends TOwnedGameObject
 
 		'=== 2. PROGRAMME CREATION ===
 		local programmeData:TProgrammeData = new TProgrammeData
-		Local programmeGUID:string = "customProduction-"+"-"+productionConcept.script.GetGUID()+GetGUID()
+		Local programmeGUID:string = "customProduction-"+"-"+productionConcept.script.GetGUID()+"-"+GetGUID()
 		programmeData.SetGUID("data-"+programmeGUID)
 
 		if producerName
@@ -510,7 +510,7 @@ print "    isPaid = " + programmeData.IsPaid()
 		programmeData.Update()
 
 print "produziert: " + programmeLicence.GetTitle() + "  (Preis: "+programmeLicence.GetPrice(1)+")"
-rem
+'rem
 if programmeLicence.IsEpisode()
 	print "Serie besteht nun aus den Folgen:"
 	For local epIndex:int = 0 until addLicence.subLicences.length
@@ -521,7 +521,7 @@ if programmeLicence.IsEpisode()
 		endif
 	Next
 endif
-endrem
+'endrem
 
 		'=== 3. INFORM / REMOVE SCRIPT ===
 		'inform production company
@@ -575,7 +575,10 @@ endrem
 		if productionConcept.script = productionConcept.script.GetParentScript() then Throw "script and parent same : IsEpisode() failed."
 
 		'check if there is already a licence
-		local parentProgrammeGUID:string = "customProduction-header-"+GetGUID()+"-"+productionConcept.script.GetParentScript().GetGUID() 
+		'attention: for series this should NOT contain the productionGUID
+		'           as this differs for each episode and would lead to a
+		'           individual series header for each produced episode
+		local parentProgrammeGUID:string = "customProduction-header-"+productionConcept.script.GetParentScript().GetGUID() 
 		local parentLicence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(parentProgrammeGUID)
 
 
