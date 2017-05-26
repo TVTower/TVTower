@@ -996,12 +996,22 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local myArrayIndex:int = GetParentLicence().GetSubLicencePosition(self)
 		local subLicenceCount:int = GetParentLicence().GetSubLicenceCount()
 		local choosenLicence:TProgrammeLicence
-		For local i:int = 1 until subLicenceCount
+
+		'using "to" also checks the given licence at the end so it
+		'will at least return "self" if this licence is available
+		For local i:int = 1 to subLicenceCount
+		'For local i:int = 1 until subLicenceCount
 			local nextArrayIndex:int = myArrayIndex + i
 			if nextArrayIndex >= subLicenceCount then nextArrayIndex = 0
 
+			'Ronny 2017/05/26: disabled to "wrap around" to the first
+			'episode if there is no other available episode available for
+			'now (only 1 episode in the series produced)
+			'-> shift-clicking on a single-episode-series in the programme
+			'   planner will return "self" then
+
 			'nothing found
-			if nextArrayIndex = myArrayIndex then return Null
+			'if nextArrayIndex = myArrayIndex then return Null
 
 			choosenLicence = GetParentLicence().GetSubLicenceAtIndex(nextArrayIndex)
 			if choosenLicence and choosenLicence.isAvailable() then return choosenLicence

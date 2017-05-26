@@ -1502,7 +1502,7 @@ endrem
 
 				'only create a new broadcastmaterial if the licence is
 				'available now (this avoids "broadcast limit exceeding" licences)
-				if createFromLicence.IsAvailable()
+				if createFromLicence and createFromLicence.IsAvailable()
 					newMaterial = New TProgramme.Create(createFromLicence)
 				endif
 		End Select
