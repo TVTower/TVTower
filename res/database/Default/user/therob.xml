@@ -2316,7 +2316,7 @@
 			</description>
 			<variables>
 				<was>
-					<de>Grusel-|Horror-|Angst-|Schauder-|Zitter-</de>
+					<de>Grusel|Horror|Angst|Schauder|Zitter</de>
 					<en>Scary|Horror|Fear|Spooky</en>
 				</was>
 				<art>
@@ -2485,6 +2485,37 @@
 			<outcome min="0" max="40" slope="40" />
 			<review min="40" max="90" slope="50" />
 			<speed min="18" max="49" slope="25" />
+			<availability year_range_from="1999" year_range_to="-1" />
+		</scripttemplate>
+		<scripttemplate product="1" licence_type="1" guid="TheRob-Script-Dok-miroftvt">
+			<title>
+				<de>MIR - auf der Suche nach %NAME%</de>
+				<en>MIR - Searching for %NAME%</en>
+			</title>
+			<description>
+				<de>Die Geschichte der MIR. Ausführlich dargestellt und mit viel Wissenwertem ausgeschmückt.</de>
+				<en>The history of the MIR. Everything you need to know. Even more than that.</en>
+			</description>
+			<variables>
+				<name>
+					<de>Leben|Signalen|Wundern|fremden Wesen|neuen Galaxien|dem UFO aus TVT|dem Mann auf dem Mond</de>
+					<en>Life|Signals|Wonderworld|Aliens|New Galaxys|The UFO From TVT|The Man On The Moon</en>
+				</name>
+			</variables>
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="0" gender="1" />
+				<job index="2" function="8" required="1" gender="2" />
+			</jobs>
+			<data flags="4" optional_flags="2" />
+			<genres maingenre="6" subgenres="0" />
+			<blocks min="2" max="4" slope="70" />
+			<price min="7000" max="17500" slope="20" />
+			<potential min="18" max="46" slope="40" />
+			<outcome min="0" max="40" slope="40" />
+			<review min="40" max="90" slope="50" />
+			<speed min="18" max="49" slope="25" />
+			<availability year_range_from="1986" year_range_to="1998" />
 		</scripttemplate>
 		<scripttemplate product="2" licence_type="3" guid="TheRob-script-ser-dram-TVTintern">
 			<title>

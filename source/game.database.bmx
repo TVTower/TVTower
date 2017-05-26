@@ -1510,6 +1510,15 @@ Type TDatabaseLoader
 		scriptTemplate.productionBroadcastLimit = data.GetInt("productionBroadcastLimit", scriptTemplate.productionBroadcastLimit)
 
 
+		'=== AVAILABILITY ===
+		xml.LoadValuesToData(xml.FindChild(node, "availability"), data, [..
+			"script", "year_range_from", "year_range_to" ..
+		])
+		scriptTemplate.availableScript = data.GetString("script", scriptTemplate.availableScript)
+		scriptTemplate.availableYearRangeFrom = data.GetInt("year_range_from", scriptTemplate.availableYearRangeFrom)
+		scriptTemplate.availableYearRangeTo = data.GetInt("year_range_to", scriptTemplate.availableYearRangeTo)
+
+
 		rem
 			auto correction cannot be done this way, as a show could
 			be also defined having multiple episodes or a reportage

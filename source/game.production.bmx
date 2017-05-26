@@ -509,8 +509,8 @@ print "    isPaid = " + programmeData.IsPaid()
 		'update programme data so it informs cast, releases to cinema etc
 		programmeData.Update()
 
+rem
 print "produziert: " + programmeLicence.GetTitle() + "  (Preis: "+programmeLicence.GetPrice(1)+")"
-'rem
 if programmeLicence.IsEpisode()
 	print "Serie besteht nun aus den Folgen:"
 	For local epIndex:int = 0 until addLicence.subLicences.length
@@ -521,7 +521,7 @@ if programmeLicence.IsEpisode()
 		endif
 	Next
 endif
-'endrem
+endrem
 
 		'=== 3. INFORM / REMOVE SCRIPT ===
 		'inform production company
@@ -536,9 +536,9 @@ endif
 			'and should be removed from the player
 			if productionConcept.script.HasParentScript() and productionConcept.script.GetParentScript().IsProduced()
 				local parentScript:TScript = productionConcept.script.GetParentScript()
-				local ppc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
-				if ppc then ppc.RemoveScript(parentscript, False)
-				if not ppc then print "collection fehlt"
+				if GetPlayerProgrammeCollection(owner)
+					GetPlayerProgrammeCollection(owner).RemoveScript(parentscript, False)
+				endif
 			else
 				'remove finished concepts
 			endif

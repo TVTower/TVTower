@@ -7,6 +7,7 @@ Import "Dig/base.util.math.bmx"
 Import "common.misc.templatevariables.bmx"
 Import "game.production.script.base.bmx"
 Import "game.gameconstants.bmx" 'to access type-constants
+Import "game.world.worldtime.bmx" 'to access world time
 Import "game.programme.programmeperson.base.bmx" 'to access TProgrammePersonJob
 
 
@@ -97,6 +98,8 @@ Type TScriptTemplate Extends TScriptBase
 	Field episodesMin:int, episodesMax:int, episodesSlope:Float
 
 	'defines if the script is only available from/to/in a specific date
+	Field available:int = True
+	Field availableScript:string = ""
 	Field availableYearRangeFrom:int = -1
 	Field availableYearRangeTo:int = -1
 
@@ -188,7 +191,24 @@ Type TScriptTemplate Extends TScriptBase
 
 
 	Method IsAvailable:int()
+		'=== generic availability ===
+
+		'field "available" = false ?
+		if not available then return False
+		
+		if availableYearRangeFrom >= 0 and GetWorldTime().GetYear() < availableYearRangeFrom then return False
+		if availableYearRangeTo >= 0 and GetWorldTime().GetYear() > availableYearRangeTo then return False
+
+		'a special script expression defines custom rules for adcontracts
+		'to be available or not
+		if availableScript and not GetScriptExpression().Eval(availableScript)
+			return False
+		endif
+
+
+		'=== specific availability ===
 		if GetProductionLimit() > 0 and GetProductionTimes() >= GetProductionLimit() then return False
+
 		return True
 	End Method
 
