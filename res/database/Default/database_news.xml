@@ -518,7 +518,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		
-		<news id="1b15ca2e-e303-4863-9173-137eff033d7c" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="0" creator="">
+		<news id="1b15ca2e-e303-4863-9173-137eff033d7c_chemnitz" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="0" creator="">
 			<title>
 				<de>Nashorn aus Zoo entlaufen</de>
 				<en>Rhino escaped from the zoo</en>
@@ -528,13 +528,13 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>During todays census at the zoo of Chemnitz they lacked a rhinoceros. The population is requested not to leave the house.</en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="777c94c2-49a6-4e72-ad02-06c33f7350bc" time="2,1,2,5,15" />
+				<effect trigger="happen" type="triggernews" news="777c94c2-49a6-4e72-ad02-06c33f7350bc_chemnitz" time="2,1,2,5,15" />
 				<effect trigger="happen" type="triggernews" news="8906094a-6ee5-4054-9e8c-9eea78ea8950" time="2,2,2,16,23"/>
 			</effects>
 			<data genre="4" price="1.0" quality="39" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="1990" year_range_to="-1" />
 		</news>
-		<news id="777c94c2-49a6-4e72-ad02-06c33f7350bc" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
+		<news id="777c94c2-49a6-4e72-ad02-06c33f7350bc_chemnitz" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
 			<title>
 				<de>Nashorn im Wald untergetaucht</de>
 				<en>Rhino went underground in forest</en>
@@ -544,10 +544,11 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>The missing rhino from the Chemnitz Zoo has been seen in a nearby forest by witnesses.</en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03" time="1,8,20" />
+				<effect trigger="happen" type="triggernews" news="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_chemnitz" time="1,8,20" />
+				<effect trigger="happen" type="triggernews" news="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_chemnitz_euro" time="1,8,20" />
 			</effects>
 			<data genre="4" price="1.0" quality="29" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="1990" year_range_to="-1" />
 		</news>
 		<news id="8906094a-6ee5-4054-9e8c-9eea78ea8950" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
 			<title>
@@ -561,7 +562,22 @@ Her normal body size is expected to be reached in a week.</en>
 			<data genre="4" price="1.0" quality="25" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
+		<news id="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_chemnitz" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
+			<title>
+				<de>Touristen vom Nashorn angegriffen</de>
+				<en>Tourists attacked by Rhino</en>
+			</title>
+			<description>
+				<de>Touristen sind im Chemnitzer Wald vom entlaufenen Nashorn in ihrem Wohnmobil angegriffen worden. Der Schaden beläuft sich auf etwa 100.000 MARK.</de>
+				<en>Tourists have been attacked in their motor home in Chemnitz forest by the runaway rhinoceros. The damage amounts to about 100,000 DEM.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_chemnitz" time="2,1,1,4,12" />
+			</effects>
+			<data genre="4" price="1.0" quality="35" />
+			<conditions year_range_from="1990" year_range_to="2001" />
+		</news>
+		<news id="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_chemnitz_euro" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
 			<title>
 				<de>Touristen vom Nashorn angegriffen</de>
 				<en>Tourists attacked by Rhino</en>
@@ -571,12 +587,12 @@ Her normal body size is expected to be reached in a week.</en>
 				<en>Tourists have been attacked in their motor home in Chemnitz forest by the runaway rhinoceros. The damage amounts to about € 50,000.</en>
 			</description>
 			<effects>
-				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485" time="2,1,1,4,12" />
+				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_chemnitz" time="2,1,1,4,12" />
 			</effects>
 			<data genre="4" price="1.0" quality="35" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="2002" year_range_to="-1" />
 		</news>
-		<news id="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
+		<news id="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_chemnitz" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
 			<title>
 				<de>Chemnitzer Nashorn umzingelt</de>
 				<en>Rhino of Chemnitz surrounded</en>
@@ -589,7 +605,7 @@ Her normal body size is expected to be reached in a week.</en>
 				<effect trigger="happen" type="triggernews" news="a4f30290-dc9f-49e0-ad44-727e00e44693" time="2,1,1,16,23" />
 			</effects>
 			<data genre="4" price="1.0" quality="26" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="1990" year_range_to="-1" />
 		</news>
 		<news id="a4f30290-dc9f-49e0-ad44-727e00e44693" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
 			<title>
@@ -604,7 +620,71 @@ Her normal body size is expected to be reached in a week.</en>
 			<data genre="4" price="1.0" quality="23" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-
+		<!-- karl-marx-stadt-variant -->
+		<news id="1b15ca2e-e303-4863-9173-137eff033d7c_karlmarxstadt" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="0" creator="">
+			<title>
+				<de>Nashorn aus Zoo entlaufen</de>
+				<en>Rhino escaped from the zoo</en>
+			</title>
+			<description>
+				<de>Im Karl-Marx-Städter Zoo fehlte heute morgen bei der Zählung ein Nashorn. Die Bevölkerung wird gebeten das Haus nicht zu verlassen.</de>
+				<en>During todays census at the zoo of Karl-Marx-Stadt they lacked a rhinoceros. The population is requested not to leave the house.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="777c94c2-49a6-4e72-ad02-06c33f7350bc_karlmarxstadt" time="2,1,2,5,15" />
+				<effect trigger="happen" type="triggernews" news="777c94c2-49a6-4e72-ad02-06c33f7350bc_chemnitz" time="2,1,2,5,15" />
+				<effect trigger="happen" type="triggernews" news="8906094a-6ee5-4054-9e8c-9eea78ea8950" time="2,2,2,16,23"/>
+			</effects>
+			<data genre="4" price="1.0" quality="39" />
+			<conditions year_range_from="-1" year_range_to="1989" />
+		</news>
+		<news id="777c94c2-49a6-4e72-ad02-06c33f7350bc_karlmarxstadt" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
+			<title>
+				<de>Nashorn im Wald untergetaucht</de>
+				<en>Rhino went underground in forest</en>
+			</title>
+			<description>
+				<de>Das vermisste Nashorn aus dem Karl-Marx-Städter Zoo ist von Zeugen in einem nahe gelegenen Wald gesehen worden.</de>
+				<en>The missing rhino from the Karl-Marx-Stadt Zoo has been seen in a nearby forest by witnesses.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_chemnitz" time="1,8,20" />
+				<effect trigger="happen" type="triggernews" news="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_karlmarxstadt" time="1,8,20" />
+			</effects>
+			<data genre="4" price="1.0" quality="29" />
+			<conditions year_range_from="-1" year_range_to="1989" />
+		</news>
+		<news id="f0ff4741-d46a-4cb9-97f7-4dca6b21ad03_karlmarxstadt" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
+			<title>
+				<de>Touristen vom Nashorn angegriffen</de>
+				<en>Tourists attacked by Rhino</en>
+			</title>
+			<description>
+				<de>Touristen sind im Karl-Marx-Städter Wald vom entlaufenen Nashorn in ihrem Wohnmobil angegriffen worden. Der Schaden beläuft sich auf etwa 100.000 Mark.</de>
+				<en>Tourists have been attacked in their motor home in Karl-Marx-Stadt forest by the runaway rhinoceros. The damage amounts to about 100,000 Ostmark.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_karlmarxstadt" time="2,1,1,4,12" />
+				<effect trigger="happen" type="triggernews" news="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_chemnitz" time="2,1,1,4,12" />
+			</effects>
+			<data genre="4" price="1.0" quality="35" />
+			<conditions year_range_from="-1" year_range_to="1989" />
+		</news>
+		<news id="7f17bb0b-b424-4177-8d3e-0ef9ec0f5485_karlmarxstadt" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="2" creator="">
+			<title>
+				<de>Karl-Marx-Städter Nashorn umzingelt</de>
+				<en>Rhino of Karl-Marx-Stadt surrounded</en>
+			</title>
+			<description>
+				<de>Das entlaufene Nashorn ist auf einer Lichtung gestellt worden. Mehrere Veterinäre mit Betäubungsgewehren stehen bereit es einzufangen.</de>
+				<en>The runaway rhinoceros has been found in a clearing. Several veterinarians with stun guns are ready to catch it.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="a4f30290-dc9f-49e0-ad44-727e00e44693" time="2,1,1,16,23" />
+			</effects>
+			<data genre="4" price="1.0" quality="26" />
+			<conditions year_range_from="-1" year_range_to="1989" />
+		</news>
 
 		<news id="b8a64acb-74e0-4786-9810-2c6531b3bcd3" thread_id="1f0fcab5-6a25-435b-912e-8f95d2b63c15" type="0" creator="">
 			<title>
