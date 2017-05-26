@@ -535,6 +535,73 @@ End Type
 
 
 
+
+Type TVTScriptFlag {_exposeToLua}
+	Const NONE:int = 0
+	Const TRADEABLE:int = 1
+	'give back to vendor AND SELL it
+	Const SELL_ON_REACHING_PRODUCTIONLIMIT:int = 2
+	'give back to vendor WITHOUT SELLING it
+	Const REMOVE_ON_REACHING_PRODUCTIONLIMIT:int = 4
+	'when given to pool/vendor, the limits are refreshed to max
+	Const POOL_REFILLS_PRODUCTIONLIMITS:int = 8
+	'when given to pool/vendor, the speed/critics are randomized a bit
+	Const POOL_RANDOMIZES_ATTRIBUTES:int = 16
+	'when given to pool/vendor, the licence will not be buyable again
+	Const POOL_REMOVES_TRADEABILITY:int = 32
+	
+	Const count:int = 6
+
+
+	Function GetAtIndex:int(index:int = 0)
+		if index <= 0 then return 0
+		return 2^(index-1)
+	End Function	
+
+
+	Function GetIndex:int(key:int)
+		Select key
+			case   1	return 1
+			case   2	return 2
+			case   4	return 3
+			case   8	return 4
+			case  16	return 5
+			case  32	return 6
+		End Select
+		return 0
+	End Function
+
+
+	Function GetAsString:String(key:int = 0)
+		if key < 0 then return "none"
+		
+		Select key
+			case TRADEABLE                            return "tradeable"
+			case SELL_ON_REACHING_PRODUCTIONLIMIT     return "sell_on_reaching_productionlimit"
+			case REMOVE_ON_REACHING_PRODUCTIONLIMIT   return "remove_on_reaching_productionlimit"
+			case POOL_REFILLS_PRODUCTIONLIMITS        return "pool_refills_productionlimits"
+			case POOL_RANDOMIZES_ATTRIBUTES           return "pool_randomizes_attributes"
+			case POOL_REMOVES_TRADEABILITY            return "pool_removes_tradeability"
+
+			default
+				'loop through all entries and add them if contained
+				local result:string
+				local index:int = 0
+				'do NOT start with 0 ("none")
+				For local i:int = 1 to count
+					index = GetAtIndex(i)
+					if key & index then result :+ GetAsString(index) + ","
+				Next
+				if result = "" then return "none"
+				'remove last comma
+				return result[.. result.length-1]
+		End Select
+	End Function
+End Type
+
+
+
+
 Type TVTProgrammeLicenceFlag {_exposeToLua}
 	Const NONE:int = 0
 	Const TRADEABLE:int = 1

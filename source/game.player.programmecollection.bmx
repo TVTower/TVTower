@@ -687,6 +687,14 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		'remove from suitcase too!
 		suitcaseScripts.remove(script)
 
+
+		'set unused again (give back to pool), do this regardless of
+		'"sell" result
+		'refills production limits, optionally makes it no longer
+		'tradeable etc.
+		script.GiveBackToScriptPool()
+
+
 		'emit an event so eg. network can recognize the change
 		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmecollection.removeScript", new TData.add("script", script).addNumber("sell", sell), self))
 	End Method

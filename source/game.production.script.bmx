@@ -154,7 +154,8 @@ Type TScriptCollection Extends TGameObjectCollection
 				if script.IsOwned() then continue
 				'skip scripts not available yet (or anymore)
 				'(eg. they are obsolete now, or not yet possible)
-				'if not script.IsAvailable() then continue
+				if not script.IsAvailable() then continue
+				if not script.IsTradeable() then continue
 
 				_availableScripts.AddLast(script)
 			Next
@@ -270,6 +271,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		script.flags = template.flags
 		script.flagsOptional = template.flagsOptional
+
+		script.scriptFlags = template.scriptFlags
 
 		script.scriptLicenceType = template.scriptLicenceType
 		script.scriptProductType = template.scriptProductType
@@ -757,6 +760,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		finance.SellScript(GetPrice(), self)
 
 		'set unused again
+	
 		SetOwner( TOwnedGameObject.OWNER_NOBODY )
 
 		return TRUE
@@ -773,6 +777,63 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			Return TRUE
 		EndIf
 		Return FALSE
+	End Method
+
+
+	Method GiveBackToScriptPool:int()
+		SetOwner( TOwnedGameObject.OWNER_NOBODY )
+
+		'remove tradeability?
+		'(eg. for "exclusively written for player X scripts")
+		if HasScriptFlag(TVTScriptFlag.POOL_REMOVES_TRADEABILITY)
+			SetScriptFlag(TVTScriptFlag.TRADEABLE, False)
+		endif
+
+
+		'remove tradeability for partially produced series
+		if GetSubScriptCount() > 0 and GetProductionsCount() > 0
+			SetScriptFlag(TVTScriptFlag.TRADEABLE, False)
+		endif
+
+
+		'refill production limits - or disable tradeability
+		'TODO
+		rem
+		if GetProductionBroadcastLimit() > 0 and (isExceedingBroadcastLimit() or GetSublicenceExceedingBroadcastLimitCount() > 0 )
+			if HasScriptFlag(TVTScriptFlag.POOL_REFILLS_PRODUCTIONLIMITS)
+				SetProductionLimit(broadcastLimitMax)
+			else
+				setScriptFlag(TVTProgrammeLicenceFlag.TRADEABLE, False)
+			endif
+		endif
+		endrem
+		
+
+		'randomize attributes?
+		if HasScriptFlag(TVTScriptFlag.POOL_RANDOMIZES_ATTRIBUTES)
+			if basedOnScriptTemplateGUID
+				local template:TScriptTemplate = GetScriptTemplateCollection().GetByGUID(basedOnScriptTemplateGUID)
+				if template
+					outcome = template.GetOutcome()
+					review = template.GetReview()
+					speed = template.GetSpeed()
+					potential = template.GetPotential()
+					blocks = template.GetBlocks()
+					price = template.GetPrice()
+				endif
+			endif
+		endif
+
+
+		'do the same for all children
+		For local subScript:TScript = EachIn subScripts
+			subScript.GiveBackToScriptPool()
+		Next
+
+		'inform others about a now unused licence
+		EventManager.triggerEvent( TEventSimple.Create("Script.onGiveBackToScriptPool", null, self))
+
+		return True
 	End Method
 
 

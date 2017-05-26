@@ -18,6 +18,8 @@ Type TScriptBase Extends TNamedGameObject
 	Field flags:Int = 0
 	'flags which _might_ be enabled during production
 	Field flagsOptional:int = 0
+	'remove tradeability on sell, refill limits, ...
+	Field scriptFlags:Int = 0
 	'is the live time fixed?
 	Field liveTime:int =  -1
 	'is the script title/description editable?
@@ -70,6 +72,40 @@ Type TScriptBase Extends TNamedGameObject
 		EndIf
 	End Method
 
+
+	Method hasScriptFlag:Int(flag:Int)
+		Return scriptFlags & flag
+	End Method
+
+
+	Method setScriptFlag(flag:Int, enable:Int=True)
+		If enable
+			scriptFlags :| flag
+		Else
+			scriptFlags :& ~flag
+		EndIf
+	End Method
+
+
+	Method isAvailable:int() {_exposeToLua}
+		return True
+	End Method
+
+
+	Method IsTradeable:int()
+		if GetSubScriptCount() = 0
+			if not HasScriptFlag(TVTScriptFlag.TRADEABLE) then return False
+
+		else
+			'if script is a series-script: ask subs
+			For local script:TScriptBase = eachin subScripts
+				if not script.IsTradeable() then return FALSE
+			Next
+		endif
+
+		return True
+	End Method
+	
 
 	Method HasProductionBroadcastFlag:Int(flag:Int) {_exposeToLua}
 		Return productionBroadcastFlags & flag

@@ -1497,9 +1497,11 @@ Type TDatabaseLoader
 		nodeData = xml.FindChild(node, "data")
 		data = new TData
 		xml.LoadValuesToData(nodeData, data, [..
-			"flags", "flags_optional", "keywords", ..
+			"scriptflags", "flags", "flags_optional", "keywords", ..
 			"productionBroadcastFlags", "productionLicenceFlags", "productionBroadcastLimit" ..
 		])
+		scriptTemplate.scriptFlags = data.GetInt("scriptflags", scriptTemplate.scriptFlags)
+
 		scriptTemplate.flags = data.GetInt("flags", scriptTemplate.flags)
 		scriptTemplate.flagsOptional = data.GetInt("flags_optional", scriptTemplate.flagsOptional)
 
