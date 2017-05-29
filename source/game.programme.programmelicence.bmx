@@ -2390,7 +2390,7 @@ Type TProgrammeLicenceFilter
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([0])			'undefined
 		'show/event -> all categories
 		CreateVisible().SetNotDataFlag(categoryFlags).AddGenres([100, 101, 102, 103, 104, 200, 201, 202, 203, 204]).SetCaption("PROGRAMME_GENRE_SHOW_AND_EVENTS")
-		CreateVisible().SetDataFlag(TVTProgrammeDataFlag.LIVE)						'live
+		CreateVisible().SetNotDataFlag(TVTProgrammeDataFlag.PAID).SetDataFlag(TVTProgrammeDataFlag.LIVE)						'live
 '		CreateVisible().SetDataFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])	'Trash + Yellow Press
 
 		'either trash - or genre 301 (yellow press)
@@ -2398,8 +2398,10 @@ Type TProgrammeLicenceFilter
 		trash.SetConnectionType(TProgrammeLicenceFilterGroup.CONNECTION_TYPE_OR)
 		'store config in group for proper caption
 		trash.SetDataFlag(TVTProgrammeDataFlag.TRASH).AddGenres([301])
-		trash.AddFilter( new TProgrammeLicenceFilter.SetDataFlag(TVTProgrammeDataFlag.TRASH).ForbidChildren())
-		trash.AddFilter( new TProgrammeLicenceFilter.AddGenres([301]).ForbidChildren() )
+		'disallow paid
+		trash.SetNotDataFlag(TVTProgrammeDataFlag.PAID)
+		trash.AddFilter( new TProgrammeLicenceFilter.SetNotDataFlag(TVTProgrammeDataFlag.PAID).SetDataFlag(TVTProgrammeDataFlag.TRASH).ForbidChildren())
+		trash.AddFilter( new TProgrammeLicenceFilter.SetNotDataFlag(TVTProgrammeDataFlag.PAID).AddGenres([301]).ForbidChildren() )
 
 		CreateVisible().SetDataFlag(TVTProgrammeDataFlag.PAID)						'Call-In
 	End Function
