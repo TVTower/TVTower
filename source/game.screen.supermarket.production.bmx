@@ -268,8 +268,6 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 					'SetCast() fails if the index is > than allowed, so
 					'we should not need to do additional checks...
 					currentCastIndex :+ 1
-					'stop filling if there is no space left
-					if currentCastIndex > castGroup.length then exit
 				Next
 			Next			
 
