@@ -1250,7 +1250,8 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		Super.Create(pos, dimension, limitState)
 
 		jobFilterSelect = new TGUIDropDown.Create(new TVec2D.Init(15,12), new TVec2D.Init(180,-1), "Hauptberuf", 128, "")
-		jobFilterSelect.SetZIndex( GetZIndex() + 1)
+		jobFilterSelect.SetZIndex( GetZIndex() + 10)
+		jobFilterSelect.list.SetZIndex( GetZIndex() + 11)
 		'add some items to that list
 		for local i:int = 0 to TVTProgrammePersonJob.count
 			local item:TGUIDropDownItem = new TGUIDropDownItem.Create(null, null, "") 
@@ -1277,6 +1278,17 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.OnDoubleClick", self, "onDoubleClickCastListItem", "TGUICastListItem" ) ]
 
 		Return self
+	End Method
+
+
+	'override to also set zIndex of list element
+	Method SetZIndex(zindex:Int)
+		if jobFilterSelect
+			jobFilterSelect.SetZIndex( zindex + 1)
+			jobFilterSelect.list.SetZIndex( zindex + 2)
+		endif
+
+		Super.SetZIndex(zindex)
 	End Method
 
 
