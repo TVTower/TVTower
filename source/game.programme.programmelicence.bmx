@@ -1232,6 +1232,32 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
+	Method GetGenres:int[]() {_exposeToLua}
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData() then return [getGenre()]
+
+		'return genre if one was defined (overriding episodes)
+		if GetData() and GetData().GetGenre() >= 0 then return [GetData().GetGenre()]
+
+
+		local genres:int[] = new Int[0]
+		local subGenres:int[] = new Int[0]
+		For local licence:TProgrammeLicence = eachin subLicences
+			For local genre:int = Eachin licence.GetGenres()
+				if genre > genres.length-1 then genres = genres[..genre+1]
+				genres[genre]:+1
+			Next
+		Next
+		For local i:int = 0 to genres.length-1
+			if genres[i] = 0 then continue
+
+			subGenres :+ [ i ]
+		Next
+
+		return subGenres
+	End Method
+
+
 	Method GetSubGenres:int[]() {_exposeToLua}
 		'single-licence
 		if GetSubLicenceCount() = 0 and GetData() then return GetData().subGenres
@@ -1872,23 +1898,38 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		else
 			skin.fontNormal.drawBlock(data.country + " " + data.GetYear(), contentX + 5, contentY, 65, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		endif
-		local genreLine:string = GetGenreString()
-		'only for non-collection/series
-		'if GetSubLicenceCount() = 0
-			local addGenre:string[]
-			'add first, so it is "visible" also for long entries
-			if HasDataFlag(TVTProgrammeDataFlag.CULTURE)
-				addGenre :+ [ "|i|" + GetLocale("PROGRAMME_FLAG_CULTURE") +"|/i|" ]
-			endif
 
-			For local i:int = eachin GetSubGenres()
-				addGenre :+ [ TProgrammeData._GetGenreString(i) ]
-			Next
 
-			if addGenre and addGenre.length > 0
-				genreLine = "|b|"+genreLine+"|/b|, " + ", ".Join(addGenre)
-			endif
-		'endif
+		local genres:int[] = GetGenres()
+		local subGenres:int[] = GetSubGenres()
+
+		'add all subgenres not existing in genres
+		if subGenres.length > genres.length then genres = genres[.. subGenres.length]
+		For local i:int = 0 until subGenres.length
+			if MathHelper.InIntArray(subGenres[i], genres) then continue
+			
+			genres[i] :+ subGenres[i]
+		Next
+
+		local genreLine:string
+		local genreStrings:string[]
+		'add maingenre
+		genreLine = GetGenreString()
+		'add culture first, so it is "visible" also for long entries
+		if HasDataFlag(TVTProgrammeDataFlag.CULTURE)
+			genreStrings :+ [ "|i|" + GetLocale("PROGRAMME_FLAG_CULTURE") +"|/i|" ]
+		endif
+
+		local mainGenre:int = GetGenre()
+		For local i:int = 0 until genres.length
+			if genres[i] = mainGenre then continue
+			genreStrings :+ [TProgrammeData._GetGenreString(genres[i])]
+		Next
+
+		if genreStrings and genreStrings.length > 0
+			genreLine = "|b|"+genreLine+"|/b|, " + ", ".Join(genreStrings)
+		endif
+
 					
 		skin.fontNormal.drawBlock(genreLine, contentX + 5 + 65 + 2, contentY, contentW - 10 - 65 - 2, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ genreH
