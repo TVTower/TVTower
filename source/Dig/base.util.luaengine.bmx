@@ -62,6 +62,12 @@ Import "base.util.logger.bmx"
 Import "base.util.luaengine.c"
 
 Extern
+	Function lua_boxobject( L:Byte Ptr,obj:Object )
+	Function lua_unboxobject:Object( L:Byte Ptr,index:Int)
+	Function lua_pushlightobject( L:Byte Ptr,obj:Object )
+	Function lua_tolightobject:Object( L:Byte Ptr,index:Int )
+	Function lua_gcobject:int( L:Byte Ptr )
+rem
 ?not bmxng
 	Function lua_boxobject( L:Byte Ptr,obj:Object )
 	Function lua_unboxobject:Object( L:Byte Ptr,index:Int)
@@ -75,6 +81,7 @@ Extern
 	Function lua_tolightobject:Object( L:Byte Ptr,index:Int )
 	Function lua_gcobject:int( L:Byte Ptr )="BBINT lua_gcobject(BBBYTE*)"
 ?
+endrem
 End Extern
 'end from maxlua
 
