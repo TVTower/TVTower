@@ -65,10 +65,23 @@ Type TProductionManager
 
 		'create some companies
 		local cnames:string[] = ["Digidea", "Berlin Film", "Movie World", "Los Krawallos", "Motion Gems", "Screen Jewel"]
+		local levelXP:int = TProductionCompanyBase.MAX_XP / TProductionCompanyBase.MAX_LEVEL
+		local cxp:int[] = [1*levelXP, 1*levelXP, 1*levelXP, 2*levelXP, 2*levelXP, 3*levelXP, 4*levelXP]
+		'shuffle XP's so they shuffle levels each start
+		Local shuffleIndex:Int
+		Local shuffleTmp:Int
+		For Local i:Int = cxp.length-1 To 0 Step -1
+			shuffleIndex = RandRange(0, cxp.length-1)
+			shuffleTmp = cxp[i]
+			cxp[i] = cxp[shuffleIndex]
+			cxp[shuffleIndex] = shuffleTmp
+		Next
+		
 		For local i:int = 0 until cnames.length
 			local c:TProductionCompany = new TProductionCompany
 			c.name = cnames[i]
-			c.SetExperience( BiasedRandRange(0, int(0.35 * TProductionCompanyBase.MAX_XP), 0.25) )
+			'c.SetExperience( BiasedRandRange(0, int(0.35 * TProductionCompanyBase.MAX_XP), 0.25) )
+			c.SetExperience( cxp[i] + BiasedRandRange(0, int(0.5 * levelXP), 0.25) )
 			GetProductionCompanyBaseCollection().Add(c)
 		Next
 	End Function
