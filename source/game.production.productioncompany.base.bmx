@@ -65,6 +65,11 @@ Type TProductionCompanyBase extends TGameObject
 	End Method
 
 
+	Method GetLevelExperiencePercentage:Float()
+		return (MAX_LEVEL-1) * GetExperiencePercentage() - floor((MAX_LEVEL-1) * GetExperiencePercentage())
+	End Method
+
+
 	Method GetFocusPoints:int()
 		return GetFocusPointsAtLevel( GetLevel() )
 	End Method

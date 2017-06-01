@@ -689,6 +689,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		'=== PRODUCTION COMPANY SELECT ===
 		if not productionCompanySelect
 			productionCompanySelect = new TGUIDropDown.Create(new TVec2D.Init(600,200), new TVec2D.Init(150,-1), GetLocale("PRODUCTION_COMPANY"), 128, "supermarket_customproduction_productionbox")
+			productionCompanySelect.SetListContentHeight(90)
 		endif
 		'entries added during ReloadProductionConceptContent()
 
@@ -756,8 +757,9 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		'add some items to that list
 		For local p:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.values()
 			'base items do not have a size - so we have to give a manual one
-			local item:TGUIDropDownItem = new TGUIDropDownItem.Create(null, null, p.name+" [Lvl: "+p.GetLevel()+"]")
-			item.data = new TData.Add("productionCompany", p)
+'			local item:TGUIDropDownItem = new TGUIDropDownItem.Create(null, null, p.name+" [Lvl: "+p.GetLevel()+"]")
+'			item.data = new TData.Add("productionCompany", p)
+			local item:TGUIProductionCompanyDropDownItem = new TGUIProductionCompanyDropDownItem.CreateSimple(p)
 			productionCompanySelect.AddItem( item )
 		Next
 
@@ -2049,6 +2051,8 @@ Type TGUICastListItem Extends TGUISelectListItem
 	Method DrawValue()
 		local xpPercentage:float = 0.0
 		if TProgrammePerson(person) then xpPercentage = TProgrammePerson(person).GetExperiencePercentage( GetDisplayJobID() )
+		local sympathyPercentage:float = 0.0
+		if TProgrammePerson(person) then sympathyPercentage = TProgrammePerson(person).GetChannelSympathy( GetPlayerBase().playerID )
 
 		local name:string = displayName
 		if isAmateur and not isDragged()
@@ -2062,7 +2066,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 		
 		local face:TImage
 		if TProgrammePerson(person) then face = TProgrammePerson(person).GetFigureImage()
-		DrawCast(GetScreenX(), GetScreenY(), GetScreenWidth(), name, "", face, xpPercentage, 0, 1)
+		DrawCast(GetScreenX(), GetScreenY(), GetScreenWidth(), name, "", face, xpPercentage, sympathyPercentage, 1)
 
 		If isHovered()
 			SetBlend LightBlend
@@ -2467,4 +2471,55 @@ Type TGUICastListItem Extends TGUISelectListItem
 		skin.RenderBorder(int(x), int(y), sheetWidth, sheetHeight)
 	End Function
 
+End Type
+
+
+
+
+Type TGUIProductionCompanyDropDownItem Extends TGUIDropDownItem
+	'company is stored in data->"ProductionCompany"
+
+	Const paddingBottom:Int	= 6
+	Const paddingTop:Int = 0
+	Global xpColor:TColor = new TColor.Create(70,85,160)
+	Global sympathyColor:TColor = new TColor.Create(70,160,90)
+
+
+	Method CreateSimple:TGUIProductionCompanyDropDownItem(company:TProductionCompanyBase)
+		'make it "unique" enough
+		Self.Create(Null, new TVec2D.Init(100, 30), company.name+" [Lvl: "+company.GetLevel()+"]")
+
+		data = new TData.Add("productionCompany", company)
+
+		'resize it
+		GetDimension()
+
+		Return Self
+	End Method
+
+
+	'override
+	Method DrawValue()
+		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
+		local company:TProductionCompanyBase = TProductionCompanyBase(data.Get("productionCompany"))
+
+		'Super.DrawValue()
+		skin.fontSemiBold.DrawBlock(company.name, getScreenX()+2, GetScreenY(), GetScreenWidth()-4 - 20, GetScreenHeight(), ALIGN_LEFT_TOP, skin.textColorNeutral, 0,1,1.0, True, True)
+		skin.fontNormal.DrawBlock("Lvl: "+company.GetLevel(), getScreenX()+2, GetScreenY(), GetScreenWidth()-4, GetScreenHeight(), ALIGN_RIGHT_TOP, skin.textColorNeutral)
+
+
+		local barH:int = skin.GetBarSize(100,-1, "cast_bar_xp").GetY()
+		local bottomY:int = GetScreenY() + rect.GetH()
+
+		skin.RenderBar(GetScreenX() + 1, bottomY - 2*barH - paddingBottom, 80, -1, company.GetLevelExperiencePercentage(), -1, "cast_bar_xp")
+		skin.RenderBar(GetScreenX() + 1, bottomY - 1*barH - paddingBottom, 80, -1, company.GetChannelSympathy( GetPlayerBase().playerID ), -1, "cast_bar_sympathy")
+
+		if IsHovered() and (Time.MillisecsLong() / 1500) mod 3 = 0 'every 3s for 1.5s
+			skin.fontNormal.drawBlock("XP", GetScreenX() + 76, bottomY - 2*barH - paddingBottom -2, 30, 2*barH+4, ALIGN_RIGHT_CENTER, xpColor)
+			skin.fontNormal.drawBlock("SYMP", GetScreenX() + 2, bottomY - 2*barH - paddingBottom -2, GetScreenWidth()-4, 2*barH+4, ALIGN_RIGHT_CENTER, sympathyColor)
+		else
+			skin.fontNormal.drawBlock(int(company.GetLevelExperiencePercentage()*100)+"%", GetScreenX() + 76, bottomY - 2*barH - paddingBottom -2, 30, 2*barH+4, ALIGN_RIGHT_CENTER, xpColor)
+			skin.fontNormal.drawBlock(int(company.GetChannelSympathy( GetPlayerBase().playerID )*100)+"%", GetScreenX() + 2, bottomY - 2*barH - paddingBottom -2, GetScreenWidth()-4, 2*barH+4, ALIGN_RIGHT_CENTER, sympathyColor)
+		endif
+	End Method
 End Type

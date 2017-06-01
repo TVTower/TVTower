@@ -12,6 +12,7 @@ Type TDatasheetSkin
 	Field textColorWarning:TColor
 	Field textColorLabel:TColor
 	Field spriteBaseKey:string = "gfx_datasheet"
+	Field fontSmall:TBitmapFont
 	Field fontNormal:TBitmapFont
 	Field fontBold:TBitmapFont
 	Field fontSemiBold:TBitmapFont
@@ -33,6 +34,7 @@ Type TDatasheetSkin
 
 		skin.fontNormal = GetBitmapFontManager().baseFont
 		skin.fontBold = GetBitmapFontManager().baseFontBold
+		skin.fontSmall = GetBitmapFontManager().Get("default", skin.fontNormal.FSize-1)
 		skin.fontSemiBold = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
 		skin.fontCaption = GetBitmapFontManager().Get("default", 13, BOLDFONT)
 		
