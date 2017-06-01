@@ -15,7 +15,6 @@ TODO
 	- Formel1, Konzerte, ... fehlen noch
 
 * Eigenproduktion:
-	- Raumvermietung
 	- Personenauswahl in Eigenproduktionen um "Geschlecht"-Limitierung
 	  erweitern (IceaTea per EMail)
 	- TODO: CustomProduction(script, qualityMin, qualityMax, slope)
@@ -31,10 +30,6 @@ TODO
 	     sein muessen.
 
 * Preisverleihung
-	- Auf-Abwertungen fuer Filme/News/Kultur
-	- Chef-Dialog
-	- Preisgeld?
-	- Auswirkungen (Senderimage?)
 	- KI sollte auf aktuellen Sammy reagieren
 
 * Mehrspielermodus:
@@ -107,5 +102,14 @@ Statistikbildschirme fuer "Top 10 Zuschauer" etc.
 Serien-Staffeln/Kollektionen:
 https://www.gamezworld.de/phpforum/viewtopic.php?pid=86043#p86043
 
-Hinweis auf deaktivierte KI im Spiel anzeigen @ Darius
-https://www.gamezworld.de/phpforum/viewtopic.php?pid=86065#p86065
+Tooltip mit "i"-Symbol oben links in Senderkarte fuer Details zu Reichweiten
+der Sender + Anteile gemeinsamer Sendegbiete etc. (Basisidee: Cherry)
+https://www.gamezworld.de/phpforum/viewtopic.php?pid=86096#p86096
+
+
+Statistikbildschirm: Bevoelkerungszusammensetzung zeigen. Idee: Cherry
+https://www.gamezworld.de/phpforum/viewtopic.php?pid=86100#p86100
+
+
+- Studios durchnummerieren (Studio #2 von Spieler 1)
+- Raummakler Tooltips/Datenblaetter fuer belegte Raeume als Hilfestellung fuer Neuanfaenger
