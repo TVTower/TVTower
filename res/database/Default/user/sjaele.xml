@@ -210,10 +210,25 @@
 			
 			</effects>
 			<data genre="1" price="1.0" quality="23" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="1990" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Kindergarten-Trophy" type="0" creator="7430" created_by="Sjaele">
+			<title>
+				<de>Sieg bei “Kindergarten-Trophy”</de>
+				
+			</title>
+			<description>
+				<de>Die 32-jährige  Melanie L. hat zusammen mit ihrer Tochter Anna (3) den 12. Kinderwagen-Mehrkampf “Kindergarten-Trophy” in Karl-Marx-Stadt gewonnen.</de>
+
+			</description>
+			<effects>
+			
+			</effects>
+			<data genre="2" price="1.0" quality="22" />
+			<conditions year_range_from="-1" year_range_to="1989" />
+		</news>
+		<news id="Sjaele-news-Kindergarten-Trophy_Chemnitz" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Sieg bei “Kindergarten-Trophy”</de>
 				
@@ -226,9 +241,9 @@
 			
 			</effects>
 			<data genre="2" price="1.0" quality="22" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<conditions year_range_from="1990" year_range_to="-1" />
 		</news>
-
+		
 		<news id="Sjaele-news-Witze-Rundweg" type="0" creator="7430" created_by="Sjaele">
 <!-- deutschbezogen -->	
 			<title>
@@ -1056,6 +1071,22 @@
 				
 			</title>
 			<description>
+				<de>Die Karl-Marx-Städter Kaffee-Ausstellung mit über 400 Kaffeesorten aus 4 Kontinenten begann mit einer Novität: Erstmals wurden arktische Bohnen angeboten.</de>
+
+			</description>
+			<effects>
+			
+			</effects>
+			<data genre="5" price="0.7" quality="31" />
+			<conditions year_range_from="-1" year_range_to="1989" />
+		</news>
+
+		<news id="Sjaele-news-Kaffee-Ausstellung-beendet_Chemnitz" type="0" creator="7430" created_by="Sjaele">
+			<title>
+				<de>Kaffee-Ausstellung beendet</de>
+				
+			</title>
+			<description>
 				<de>Die Chemnitzer Kaffee-Ausstellung mit über 400 Kaffeesorten aus 4 Kontinenten begann mit einer Novität: Erstmals wurden arktische Bohnen angeboten.</de>
 
 			</description>
@@ -1063,7 +1094,7 @@
 			
 			</effects>
 			<data genre="5" price="0.7" quality="31" />
-			<availability script="" year_range_from="" year_range_to="" />
+			<conditions year_range_from="1990" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Winzer-Klimawandel" type="0" creator="7430" created_by="Sjaele">
