@@ -431,9 +431,6 @@ Type TProductionConcept Extends TOwnedGameObject
 			scriptPotentialMod = 1.0
 		endif
 
-'hier weiter
-print scriptPotentialMod
-
 		return scriptPotentialMod
 	End Method
 

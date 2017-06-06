@@ -142,7 +142,7 @@ Type TProduction Extends TOwnedGameObject
 		'quality:  0.0 to 1.0 (fully experienced)
 		'          but might be a bit higher (qualityMod)
 		'we assume an average of "40" to result in "no modification"
-		value :+ 0.3 * (sqr(productionCompanyQuality) - 0.4)
+		value :+ 0.3 * (sqr(productionCompanyQuality) - sqr(0.4))
 
 		value = Max(0, value)
 
