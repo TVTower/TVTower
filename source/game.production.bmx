@@ -132,10 +132,10 @@ Type TProduction Extends TOwnedGameObject
 		'=== BASE ===
 		'if perfectly matching "expectations", we would have a mod of 1.0
 
-		'subtract non perfect script genre fits (up to 30%)
+		'add script genre fits (up to 20%)
 		value :+ 0.2 * sqr(scriptGenreFit)
 
-		'subtract non perfect cast fits (up to 50%)
+		'add  cast fits (up to 40%)
 		value :+ 0.4 * sqr(castFit)
 
 		'production company quality decides about result too
@@ -155,7 +155,7 @@ Type TProduction Extends TOwnedGameObject
 		
 		'it is important to set the production priority according
 		'to the genre
-		value :* 1.0 + 0.4 * (effectiveFocusPointsMod-0.4)
+		value :* 1.0 + 0.4 * (effectiveFocusPointsMod - 0.4)
 
 		value :+ 0.01 * productionConcept.GetEffectiveFocusPoints()
 

@@ -196,6 +196,11 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	End Method
 
 
+	Method IsClosing:int()
+		return closeActionStarted
+	End Method
+
+
 	'handle clicks on the various close buttons
 	Method onButtonClick:Int( triggerEvent:TEventBase )
 		Local sender:TGUIButton = TGUIButton(triggerEvent.GetSender())

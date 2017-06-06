@@ -1,93 +1,129 @@
 SuperStrict
 
-Import "Dig/base.gfx.sprite.bmx"
-Import "Dig/base.gfx.bitmapfont.bmx"
-Import "Dig/base.util.vector.bmx"
+'Import "Dig/base.gfx.sprite.bmx"
+'Import "Dig/base.gfx.bitmapfont.bmx"
+'Import "Dig/base.util.vector.bmx"
 Import "Dig/base.util.localization.bmx"
-Import "Dig/base.util.registry.spriteloader.bmx"
+'Import "Dig/base.util.registry.spriteloader.bmx"
 Import "Dig/base.util.input.bmx"
 Import "Dig/base.util.helper.bmx"
 Import "game.game.base.bmx"
 
+Import "common.misc.gamegui.bmx"
+
 
 
 Type TError
+	Field window:TGUIModalWindow
 	Field title:String
 	Field message:String
+
 	Field id:Int
 	Field link:TLink
-	Field pos:TVec2D
+	Field linkReversed:TLink
 
 	Global List:TList = CreateList()
+	Global ListReversed:TList = CreateList()
 	Global LastID:Int=0
-	Global sprite:TSprite
 
 
-	Function Create:TError(title:String, message:String)
+	Function Create:TError(title:String, message:String, fullscreen:int = True)
 		Local obj:TError =  New TError
-		obj.title	= title
+		obj.title = title
 		obj.message	= message
-		obj.id		= LastID
+		obj.id = LastID
 		LastID :+1
-		If obj.sprite = Null Then obj.sprite = GetSpriteFromRegistry("gfx_errorbox")
-		obj.pos		= New TVec2D.Init(400-obj.sprite.area.GetW()/2 +6, 200-obj.sprite.area.GetH()/2 +6)
-		obj.link	= List.AddLast(obj)
+		obj.link = List.AddLast(obj)
+		obj.linkReversed = ListReversed.AddFirst(obj)
+
+		'create a new one
+		obj.window = new TGUIGameModalWindow.Create(null, New TVec2D.Init(400,120), "SYSTEM")
+		obj.window.guiCaptionTextBox.SetFont(headerFont)
+		obj.window._defaultValueColor = TColor.clBlack.copy()
+		obj.window.defaultCaptionColor = TColor.clWhite.copy()
+		obj.window.SetCaptionArea(New TRectangle.Init(-1,10,-1,25))
+		obj.window.guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP )
+		'no buttons
+		obj.window.SetDialogueType(0)
+		'use a non-button-background
+		obj.window.guiBackground.spriteBaseName = "gfx_gui_window"
+
+		if not fullscreen
+			obj.window.darkenedArea = New TRectangle.Init(0,0,800,385)
+			obj.window.screenArea = New TRectangle.Init(0,0,800,385)
+		endif
+
+		obj.window.SetCaption( title )
+		obj.window.SetValue( message )
+
+		obj.window.SetManaged(False)
+
 		Return obj
 	End Function
+
+
+	Function onClick:Int( triggerEvent:TEventBase )
+		print "clicked gui"
+	End Function
+	
+	
+	Function CreateNotEnoughMoneyError()
+		Create(getLocale("ERROR_NOT_ENOUGH_MONEY"),getLocale("ERROR_NOT_ENOUGH_MONEY_TEXT"), False)
+	End Function
+
 
 	Function hasActiveError:Int()
 		Return (List.count() > 0)
 	End Function
 
 
-	Function CreateNotEnoughMoneyError()
-		TError.Create(getLocale("ERROR_NOT_ENOUGH_MONEY"),getLocale("ERROR_NOT_ENOUGH_MONEY_TEXT"))
-	End Function
-
-
 	Function DrawErrors()
-		Local error:TError = TError(List.Last())
-		If error Then error.draw()
+		'draw last added as last!
+		For local error:TError = EachIn List
+			error.Draw()
+		Next
 	End Function
 
 
 	Function UpdateErrors()
-		Local error:TError = TError(List.Last())
-		If error Then error.Update()
+		'handle last added as first!
+		For local error:TError = EachIn ListReversed
+			error.Update()
+		Next
 	End Function
 
 
-	Method Update()
-		'no right clicking allowed as long as "error notice is active"
-		MouseManager.ResetKey(2)
-		'also avoid long-clicking (touch)
-		MouseManager.ResetLongClicked(1)
-		
-		If Mousemanager.IsClicked(1)
-			If THelper.MouseIn(Int(pos.x),Int(pos.y), Int(sprite.area.GetW()), Int(sprite.area.GetH()))
-				link.Remove()
+	Method Update:int()
+		If not window.IsClosing() and Mousemanager.IsClicked(1)
+			local rect:TRectangle = window.GetScreenRect()
+			If THelper.MouseInRect(rect)
+				window.Close()
 				MouseManager.resetKey(1) 'clicked to remove error
+				return True
 			EndIf
 		EndIf
+
+		window.Update()
+		
+		if not window.IsClosed()
+			'no right clicking allowed as long as "error notice is active"
+			MouseManager.ResetKey(2)
+			'also avoid long-clicking (touch)
+			MouseManager.ResetLongClicked(1)
+		else
+			window.Remove()
+			link.Remove()
+			linkReversed.Remove()
+			return True
+		endif
+
+		return False
 	End Method
 
 
-	Function DrawNewError(str:String="unknown error")
-		TError(TError.List.Last()).message = str
-		TError.DrawErrors()
-		Flip 0
-	End Function
-
-
 	Method Draw()
-		SetAlpha 0.5
-		SetColor 0,0,0
-		DrawRect(0,0,800, 385)
-		SetAlpha 1.0
+		window.Draw()
+
 		GetGameBase().cursorstate = 0
-		SetColor 255,255,255
-		sprite.Draw(pos.x,pos.y)
-		GetBitmapFont("Default", 15, BOLDFONT).drawBlock(title, pos.x + 12 + 6, pos.y + 15, sprite.area.GetW() - 60, 40, Null, TColor.Create(150, 50, 50))
-		GetBitmapFont("Default", 12).drawBlock(message, pos.x+12+6,pos.y+50,sprite.area.GetW()-40, sprite.area.GetH()-60, Null, TColor.Create(50, 50, 50))
-  End Method
+	End Method
 End Type

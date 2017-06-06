@@ -127,6 +127,11 @@ Type TGameScreen Extends TScreen
 	End Method
 
 
+	Method DrawOverlay:Int(tweenValue:Float)
+		TError.DrawErrors()
+	End Method
+
+
 	Method Draw:Int(tweenValue:Float)
 		DrawBackground()
 	End Method

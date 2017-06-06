@@ -1240,6 +1240,7 @@ endrem
 				'create escape-menu
 				TApp.CreateEscapeMenuwindow()
 			else
+				TLogger.Log("Dialogues", "Open Escape menu from a gamestate<>STATE_RUNNING!", LOG_DEBUG)
 				'ask to exit the app - from main menu?
 				'TApp.CreateConfirmExitAppDialogue(False)
 			endif
@@ -2149,8 +2150,8 @@ Type TGameState
 		_Assign(RoomHandler_MovieAgency._instance, _RoomHandler_MovieAgency, "MovieAgency", MODE_Save)
 		_Assign(RoomHandler_AdAgency._instance, _RoomHandler_AdAgency, "AdAgency", MODE_Save)
 	End Method
-
 	
+
 	Method _Assign(objSource:Object Var, objTarget:Object Var, name:String="DATA", mode:Int=0)
 		If objSource
 			objTarget = objSource
@@ -2177,6 +2178,10 @@ Type TSaveGame Extends TGameState
 	Field _Entity_globalWorldSpeedFactor:Float =  0 
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0 
 	Const SAVEGAME_VERSION:string = "1.1"
+	Global messageWindow:TGUIModalWindow
+	Global messageWindowBackground:TPixmap
+	Global messageWindowLastUpdate:Long
+	Global messageWindowUpdatesSkipped:int = 0
 
 	'override to do nothing
 	Method Initialize:Int()
@@ -2241,10 +2246,16 @@ Type TSaveGame Extends TGameState
 	Method _Assign(objSource:Object Var, objTarget:Object Var, name:String="DATA", mode:Int=0)
 		If objSource
 			objTarget = objSource
+
+			'uncommented log and update message as the real work is
+			'done in the serialization and not in variable=otherVariable
+			'assignments
 			If mode = MODE_LOAD
-				TLogger.Log("TSaveGame.RestoreGameData()", "Loaded object "+name, LOG_DEBUG | LOG_SAVELOAD)
+				'TLogger.Log("TSaveGame.RestoreGameData()", "Loaded object "+name, LOG_DEBUG | LOG_SAVELOAD)
+				'UpdateMessage(True, "Loading: " + name)
 			Else
-				TLogger.Log("TSaveGame.BackupGameData()", "Saved object "+name, LOG_DEBUG | LOG_SAVELOAD)
+				'TLogger.Log("TSaveGame.BackupGameData()", "Saved object "+name, LOG_DEBUG | LOG_SAVELOAD)
+				'UpdateMessage(False, "Saving: " + name)
 			EndIf
 		Else
 			TLogger.Log("TSaveGame", "object "+name+" was NULL - ignored", LOG_DEBUG | LOG_SAVELOAD)
@@ -2258,37 +2269,80 @@ Type TSaveGame Extends TGameState
 	End Method
 
 
-	Function ShowMessage:Int(Load:Int=False)
-		Local title:String = getLocale("PLEASE_BE_PATIENT")
-		Local text:String = getLocale("SAVEGAME_GETS_LOADED")
-		If Not Load Then text = getLocale("SAVEGAME_GETS_CREATED")
-
-		Local col:TColor = New TColor.Get()
-		Local pix:TPixmap = VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() )
-
+	Function UpdateMessage:Int(Load:Int=False, text:string="", progress:Float=0.0, forceUpdate:int=False)
+		'skip update if called too often (as it is still FPS limited ... !)
+		if not forceUpdate and Time.GetAppTimeGone() - messageWindowLastUpdate < 25 and messageWindowUpdatesSkipped < 5
+			messageWindowUpdatesSkipped :+ 1
+			return False
+		else
+			messageWindowUpdatesSkipped = 0
+			messageWindowLastUpdate = Time.GetAppTimeGone()
+		endif
+		
+		if not messageWindowBackground
+			messageWindowBackground = VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() )
+		endif
+		
 		SetClsColor 0,0,0
-		'use graphicsmanager's cls as it resets virtual resolution
-		'first
-		'Cls()
+		'use graphicsmanager's cls as it resets virtual resolution first
 		GetGraphicsManager().Cls()
+		DrawPixmap(messageWindowBackground, 0,0)
 
-		DrawPixmap(pix, 0,0)
-		SetAlpha 0.5
-		SetColor 0,0,0
-		DrawRect(0,0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
-		SetAlpha 1.0
-		SetColor 255,255,255
+		if load
+			messageWindow.SetValue( getLocale("SAVEGAME_GETS_LOADED") + "~n" + text)
+		else
+			messageWindow.SetValue( getLocale("SAVEGAME_GETS_CREATED") + "~n" + text )
+		endif
 
-		GetSpriteFromRegistry("gfx_errorbox").Draw(GetGraphicsManager().GetWidth()/2, GetGraphicsManager().GetHeight()/2, -1, New TVec2D.Init(0.5, 0.5))
-		Local w:Int = GetSpriteFromRegistry("gfx_errorbox").GetWidth()
-		Local h:Int = GetSpriteFromRegistry("gfx_errorbox").GetHeight()
-		Local x:Int = GetGraphicsManager().GetWidth()/2 - w/2
-		Local y:Int = GetGraphicsManager().GetHeight()/2 - h/2
-		GetBitmapFont("Default", 15, BOLDFONT).drawBlock(title, x + 18, y + 15, w - 60, 40, Null, TColor.Create(150, 50, 50))
-		GetBitmapFont("Default", 12).drawBlock(text, x + 18, y + 50, w - 40, h - 60, Null, TColor.Create(50, 50, 50))
-
+		messageWindow.Update()
+		messageWindow.Draw()
+	
 		Flip 0
-		col.SetRGBA()
+	End Function
+	
+
+	Function ShowMessage:Int(Load:Int=False, text:string="", progress:Float=0.0)
+		'grab a fresh copy
+		messageWindowBackground = VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() )
+
+		if messageWindow then messageWindow.Remove()
+		
+		'create a new one
+		messageWindow = new TGUIGameModalWindow.Create(null, New TVec2D.Init(400, 100), "SYSTEM")
+		messageWindow.guiCaptionTextBox.SetFont(headerFont)
+		messageWindow._defaultValueColor = TColor.clBlack.copy()
+		messageWindow.defaultCaptionColor = TColor.clWhite.copy()
+		messageWindow.SetCaptionArea(New TRectangle.Init(-1,10,-1,25))
+		messageWindow.guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP )
+		'no buttons
+		messageWindow.SetDialogueType(0)
+		'use a non-button-background
+		messageWindow.guiBackground.spriteBaseName = "gfx_gui_window"
+
+
+
+		if GetGame().gamestate = TGame.STATE_RUNNING
+			messageWindow.darkenedArea = New TRectangle.Init(0,0,800,385)
+			messageWindow.screenArea = New TRectangle.Init(0,0,800,385)
+		else
+			messageWindow.darkenedArea = null
+			messageWindow.screenArea = null
+		endif
+
+		messageWindow.SetCaption( getLocale("PLEASE_BE_PATIENT") )
+
+		if load
+			messageWindow.SetValue( getLocale("SAVEGAME_GETS_LOADED") + "~n" + text)
+		else
+			messageWindow.SetValue( getLocale("SAVEGAME_GETS_CREATED") + "~n" + text )
+		endif
+
+		messageWindow.Open()
+
+		messageWindow.Update()
+		messageWindow.Draw()
+	
+		Flip 0
 	End Function
 
 
@@ -2535,6 +2589,8 @@ endrem
 		
 		RepairData()
 
+		'close message window
+		if messageWindow then messageWindow.Close()
 
 		'call game that game continues/starts now
 		GetGame().StartLoadedSaveGame()
@@ -2574,6 +2630,7 @@ endrem
 'during development...(also savegame.XML should be savegame.ZIP then)
 '		TPersist.compressed = True
 
+		saveGame.UpdateMessage(False, "Saving: Serializing data to savegame file.")
 		TPersist.maxDepth = 4096
 		'save the savegame data as xml
 		'TPersist.format=False
@@ -2588,6 +2645,9 @@ endrem
 		'tell everybody we finished saving
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnSave", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
+
+		'close message window
+		if messageWindow then messageWindow.Close()
 
 		Return True
 	End Function
