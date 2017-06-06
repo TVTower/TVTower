@@ -3175,7 +3175,11 @@
 		<person id="TheRob-TowerTV-MikeMcPiamoir" first_name="Lawrence" last_name="Stempel" nick_name="" imdb_id="nm0533943" creator="8751" created_by="TheRob" />
 		<!-- Harry Davenport -->
 		<person id="TheRob-TowerTV-GaryRavenport" first_name="Gary" last_name="Ravenport" nick_name="" imdb_id="nm0003193" creator="8751" created_by="TheRob" />
-
+		<!-- William Dieterle -->
+        <person id="TheRob-TowerTV-BillieRieter" first_name="Billie" last_name="Rieter" nick_name="" imdb_id="nm0226189" creator="8751" created_by="TheRob" />
+		<!-- Roddy McDowall -->
+        <person id="TheRob-TowerTV-RonnyMcdawoll" first_name="Ronny" last_name="Mc Dawoll" nick_name="" imdb_id="nm0003193" creator="8751" created_by="TheRob" />
+        
 		<!-- von RumpelFreddy -->
 		<!-- Wilfried Elste -->
 		<person id="Freddy-realperson-wilfredelster" first_name="Wilfred" last_name="Elster" nick_name="Herr Janson" fictional="0" imdb_id="nm0255720" creator="8667" created_by="Rumpelfreddy" />
