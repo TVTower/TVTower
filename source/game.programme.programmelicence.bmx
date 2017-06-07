@@ -1290,6 +1290,40 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
+	Method GetGenresLine:String()
+		local genres:int[] = GetGenres()
+		local subGenres:int[] = GetSubGenres()
+
+		'add all subgenres not existing in genres
+		if subGenres.length > genres.length then genres = genres[.. subGenres.length]
+		For local i:int = 0 until subGenres.length
+			if MathHelper.InIntArray(subGenres[i], genres) then continue
+			
+			genres[i] :+ subGenres[i]
+		Next
+
+		local genreLine:string
+		local genreStrings:string[]
+		'add maingenre
+		genreLine = GetGenreString()
+		'add culture first, so it is "visible" also for long entries
+		if HasDataFlag(TVTProgrammeDataFlag.CULTURE)
+			genreStrings :+ [ "|i|" + GetLocale("PROGRAMME_FLAG_CULTURE") +"|/i|" ]
+		endif
+
+		local mainGenre:int = GetGenre()
+		For local i:int = 0 until subgenres.length
+			if subgenres[i] = mainGenre then continue
+			genreStrings :+ [TProgrammeData._GetGenreString(subgenres[i])]
+		Next
+
+		if genreStrings and genreStrings.length > 0
+			genreLine = "|b|"+genreLine+"|/b|, " + ", ".Join(genreStrings)
+		endif
+
+		return genreLine
+	End Method
+
 	'override
 	'checks flags of all data-objects contained in self and sublicences
 	Method HasDataFlag:Int(flag:Int) {_exposeToLua}
@@ -1899,37 +1933,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			skin.fontNormal.drawBlock(data.country + " " + data.GetYear(), contentX + 5, contentY, 65, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		endif
 
-
-		local genres:int[] = GetGenres()
-		local subGenres:int[] = GetSubGenres()
-
-		'add all subgenres not existing in genres
-		if subGenres.length > genres.length then genres = genres[.. subGenres.length]
-		For local i:int = 0 until subGenres.length
-			if MathHelper.InIntArray(subGenres[i], genres) then continue
-			
-			genres[i] :+ subGenres[i]
-		Next
-
-		local genreLine:string
-		local genreStrings:string[]
-		'add maingenre
-		genreLine = GetGenreString()
-		'add culture first, so it is "visible" also for long entries
-		if HasDataFlag(TVTProgrammeDataFlag.CULTURE)
-			genreStrings :+ [ "|i|" + GetLocale("PROGRAMME_FLAG_CULTURE") +"|/i|" ]
-		endif
-
-		local mainGenre:int = GetGenre()
-		For local i:int = 0 until genres.length
-			if genres[i] = mainGenre then continue
-			genreStrings :+ [TProgrammeData._GetGenreString(genres[i])]
-		Next
-
-		if genreStrings and genreStrings.length > 0
-			genreLine = "|b|"+genreLine+"|/b|, " + ", ".Join(genreStrings)
-		endif
-
+		local genreLine:String = GetGenresLine()
 					
 		skin.fontNormal.drawBlock(genreLine, contentX + 5 + 65 + 2, contentY, contentW - 10 - 65 - 2, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ genreH
