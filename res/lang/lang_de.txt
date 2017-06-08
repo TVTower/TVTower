@@ -1044,3 +1044,7 @@ PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT2 = Spieler %X% vom Sender %Y% ist bankrott
 PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT3 = Sender %Y% ging bankrott. Sendermanager %X% wurde wegen Inkompetenz gefeuert.
 PLAYER_WILL_START_AGAIN = Spieler wird erneut starten.
 AI_WILL_TAKE_OVER_THIS_PLAYER = KI wird diesen Spieler übernehmen.
+
+GENDER_MEN = Männer
+GENDER_WOMEN = Frauen
+GENDER_ALL = Alle

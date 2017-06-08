@@ -1026,3 +1026,7 @@ PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT2 = Player %X% of channel %Y% hopefully has
 PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT3 = Channel %Y% went bankrupt. Old manager %X% got fired for incompetence.
 PLAYER_WILL_START_AGAIN = Player will start again.
 AI_WILL_TAKE_OVER_THIS_PLAYER = AI will take over this player.
+
+GENDER_MEN = Men
+GENDER_WOMEN = Women
+GENDER_ALL = All

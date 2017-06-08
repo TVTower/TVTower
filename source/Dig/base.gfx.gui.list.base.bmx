@@ -305,7 +305,7 @@ Type TGUIListBase Extends TGUIobject
 '		if self.ReachedItemLimit() then return FALSE
 
 		'set parent of the item - so item is able to calculate position
-		guiEntriesPanel.addChild(item )
+		guiEntriesPanel.addChild( item )
 
 		'recalculate dimensions as the item now knows its parent
 		'so a normal AddItem-handler can work with calculated dimensions from now on

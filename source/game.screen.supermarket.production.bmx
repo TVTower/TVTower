@@ -1240,10 +1240,13 @@ End Type
 
 Type TGUISelectCastWindow extends TGUIProductionModalWindow
 	Field jobFilterSelect:TGUIDropDown
+	Field genderFilterSelect:TGUIDropDown
 	'only list persons with the following job?
 	Field listOnlyJobID:int = -1
+	Field listOnlyGenderID:int = -1
 	'select a person for the following job (for correct fee display)
 	Field selectJobID:int = 0
+	Field selectGenderID:int = 0
 	Field castSelectList:TGUICastSelectList
 	
 
@@ -1251,9 +1254,10 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 	Method Create:TGUISelectCastWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
-		jobFilterSelect = new TGUIDropDown.Create(new TVec2D.Init(15,12), new TVec2D.Init(180,-1), "Hauptberuf", 128, "")
+		jobFilterSelect = new TGUIDropDown.Create(new TVec2D.Init(15,12), new TVec2D.Init(170,-1), "Hauptberuf", 128, "")
 		jobFilterSelect.SetZIndex( GetZIndex() + 10)
 		jobFilterSelect.list.SetZIndex( GetZIndex() + 11)
+
 		'add some items to that list
 		for local i:int = 0 to TVTProgrammePersonJob.count
 			local item:TGUIDropDownItem = new TGUIDropDownItem.Create(null, null, "") 
@@ -1264,19 +1268,45 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 				item.SetValue(GETLOCALE("JOB_" + TVTProgrammePersonJob.GetAsString( TVTProgrammePersonJob.GetAtIndex(i) )))
 				item.data.AddNumber("jobIndex", i)
 			endif
+
 			jobFilterSelect.AddItem(item)
 		Next
+
+
+		genderFilterSelect = new TGUIDropDown.Create(new TVec2D.Init(192,12), new TVec2D.Init(90,-1), "Alle", 128, "")
+		genderFilterSelect.SetZIndex( GetZIndex() + 10)
+		genderFilterSelect.list.SetZIndex( GetZIndex() + 11)
+		genderFilterSelect.SetListContentHeight(60)
+
+		'add some items to that list
+		for local i:int = 0 to TVTPersonGender.count
+			local item:TGUIDropDownItem = new TGUIDropDownItem.Create(null, null, "")
+			
+			if i = 0
+				item.SetValue(GetLocale("GENDER_ALL"))
+			else
+				if i = 1
+					item.SetValue(GetLocale("GENDER_MEN"))
+				else
+					item.SetValue(GetLocale("GENDER_WOMEN"))
+				endif
+			endif
+			item.data.AddNumber("genderIndex", i)
+			genderFilterSelect.AddItem(item)
+		Next
+
 
 		castSelectList = new TGUICastSelectList.Create(new TVec2D.Init(15,50), new TVec2D.Init(270, dimension.y - 103), "")
 
 
 		AddChild(jobFilterSelect)
+		AddChild(genderFilterSelect)
 		AddChild(castSelectList)
 
 		buttonOK.SetValue(GetLocale("SELECT_PERSON"))
 		buttonCancel.SetValue(GetLocale("CANCEL"))
 
-		_eventListeners :+ [ EventManager.registerListenerMethod("GUIDropDown.onSelectEntry", self, "onCastChangeJobFilterDropdown", "TGUIDropDown" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod("GUIDropDown.onSelectEntry", self, "onCastChangeFilterDropdown", "TGUIDropDown" ) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.OnDoubleClick", self, "onDoubleClickCastListItem", "TGUICastListItem" ) ]
 
 		Return self
@@ -1288,6 +1318,10 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		if jobFilterSelect
 			jobFilterSelect.SetZIndex( zindex + 1)
 			jobFilterSelect.list.SetZIndex( zindex + 2)
+		endif
+		if genderFilterSelect
+			genderFilterSelect.SetZIndex( zindex + 1)
+			genderFilterSelect.list.SetZIndex( zindex + 2)
 		endif
 
 		Super.SetZIndex(zindex)
@@ -1311,18 +1345,28 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 
 	'GUI -> GUI
 	'set cast filter according to selection
-	Method onCastChangeJobFilterDropdown:int(triggerEvent:TeventBase)
+	Method onCastChangeFilterDropdown:int(triggerEvent:TeventBase)
 		local dropdown:TGUIDropDown = TGUIDropDown(triggerEvent.GetSender())
-		if dropdown <> jobFilterSelect then return False
-
+		if not dropdown then return False
+		if dropdown <> jobFilterSelect and dropdown <> genderFilterSelect then return False
+		
 		local entry:TGUIDropDownItem = TGUIDropDownItem(dropdown.GetSelectedEntry())
 		if not entry or not entry.data then return False
 
-		local jobIndex:int = entry.data.GetInt("jobIndex")
+		'select*** contains what is supposed to get selected when opening
+		'the whole cast-select window
+		local jobID:int = selectJobID
+		local genderID:int = selectGenderID
 
-		LoadPersons(TVTProgrammePersonJob.GetAtIndex(jobIndex))
+		'override that values with the ones from the dropdowns
+		if jobFilterSelect.GetSelectedEntry()
+			jobID = TVTProgrammePersonJob.GetAtIndex( jobFilterSelect.GetSelectedEntry().data.GetInt("jobIndex") )
+		endif
+		if genderFilterSelect.GetSelectedEntry()
+			genderID = TVTPersonGender.GetAtIndex( genderFilterSelect.GetSelectedEntry().data.GetInt("genderIndex") )
+		endif
+		LoadPersons(jobID, genderID)
 	End Method
-
 
 
 	Method GetSelectedPerson:TProgrammePersonBase()
@@ -1348,7 +1392,24 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		jobFilterSelect.SetSelectedEntry(newItem)
 		return True
 	End Method
-	
+
+
+	Method SetGenderFilterSelectEntry:int(genderIndex:int)
+		'adjust dropdown to use the correct entry
+		'skip without changes
+		local newItem:TGUIDropDownItem
+		For local i:TGUIDropDownItem = EachIn genderFilterSelect.GetEntries()
+			if not i.data or i.data.GetInt("genderIndex", -2) <> genderIndex then continue
+
+			newItem = i
+			exit
+		Next
+		if newItem = genderFilterSelect.GetSelectedEntry() then return False
+
+		genderFilterSelect.SetSelectedEntry(newItem)
+		return True
+	End Method
+
 
 	'override to fill with content on open
 	Method Open:Int()
@@ -1360,17 +1421,21 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		if listOnlyJobID = -1 then jobIndex = -1
 		SetJobFilterSelectEntry(jobIndex)
 
+		local genderIndex:int = listOnlyGenderID
+		if listOnlyGenderID = -1 then genderIndex = 0
+		SetGenderFilterSelectEntry(genderIndex)
+
 	
-		LoadPersons(listOnlyJobID)
+		LoadPersons(listOnlyJobID, listOnlyGenderID)
 		
 		'refresh scrolling state
 '		castSelectList.Resize(-1, 150)
 	End Method
 
 
-	Method LoadPersons(filterToJobID:int)
+	Method LoadPersons(filterToJobID:int, filterToGenderID:int = 0)
 		'skip if no change is needed
-		if castSelectList.filteredJobID = filterToJobID then return
+		if castSelectList.filteredJobID = filterToJobID and castSelectList.filteredGenderID = filterToGenderID then return
 		'print "LoadPersons: filter=" + filterToJobID
 
 		castSelectList.EmptyList()
@@ -1380,6 +1445,8 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		if filterToJobID > 0
 			local filteredPersons:TProgrammePersonBase[]
 			For local person:TProgrammePersonBase = EachIn persons
+				if filterToGenderID > 0 and person.gender <> filterToGenderID then continue
+				
 				if person.HasJob(filterToJobID)
 					filteredPersons :+ [person]
 				endif	
@@ -1395,7 +1462,7 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		local amateur:TProgrammePersonBase
 		Repeat
 			'only bookable amateurs
-			amateur = GetProgrammePersonBaseCollection().GetRandomInsignificant(null, True, True)
+			amateur = GetProgrammePersonBaseCollection().GetRandomInsignificant(null, True, True, 0, filterToGenderID)
 
 			if not amateur
 				local countryCode:string = GetStationMapCollection().config.GetString("nameShort", "Unk")
@@ -1404,7 +1471,7 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 					countryCode = GetPersonGenerator().GetRandomCountryCode()
 				endif
 
-				amateur = CreateRandomInsignificantPerson(countryCode, 0)
+				amateur = CreateRandomInsignificantPerson(countryCode, Max(0, filterToGenderID))
 			endif
 			
 			'print "check " + amateur.GetFullName() + "  " + amateur.GetAge() +"  fictional:"+amateur.fictional
@@ -1443,8 +1510,10 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 
 		'adjust which desired job the list is selecting
 		castSelectList.selectJobID = selectJobID
+		castSelectList.selectGenderID = selectGenderID
 		'adjust which filter we are using
 		castSelectList.filteredJobID = filterToJobID
+		castSelectList.filteredGenderID = filterToGenderID
 	End Method
 	
 
@@ -1619,11 +1688,14 @@ End Type
 
 
 Type TGUICastSelectList extends TGUISelectList
-	'the job the selection list is used for 
+	'the job/gender the selection list is used for 
 	Field selectJobID:int = -1
-	'the job the selection is currently filtered for
+	Field selectGenderID:int = -1
+	'the job/gender the selection is currently filtered for
 	Field filteredJobID:int = -1
+	Field filteredGenderID:int = -1
 	Field _eventListeners:TLink[]
+
 	
     Method Create:TGUICastSelectList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
@@ -1755,13 +1827,14 @@ Type TGUICastSlotList Extends TGUISlotList
 	End Method
 
 
-	Method OpenSelectCastWindow(job:int)
+	Method OpenSelectCastWindow(job:int, gender:int=-1)
 		if selectCastWindow then selectCastWindow.Remove()
 		
 		selectCastWindow = New TGUISelectCastWindow.Create(New TVec2D.Init(250,60), New TVec2D.Init(300,270), _limitToState+"_modal")
 		selectCastWindow.SetZIndex(100000)
 		selectCastWindow.selectJobID = job
 		selectCastWindow.listOnlyJobID = job
+		selectCastWindow.listOnlyGenderID = gender
 		selectCastWindow.Open() 'loads the cast
 		GuiManager.Add(selectCastWindow)
 	End Method
@@ -1786,10 +1859,10 @@ Type TGUICastSlotList Extends TGUISlotList
 		if not coord then return False
 
 		selectCastSlot = GetSlotByCoord(coord, True)
-print "click " +selectCastSlot		
 		if selectCastSlot >= 0 and TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept
 			local jobID:int = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.cast[selectCastSlot].job
-			OpenSelectCastWindow(jobID)
+			local genderID:int = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.cast[selectCastSlot].gender
+			OpenSelectCastWindow(jobID, genderID)
 		endif
 	End Method
 	

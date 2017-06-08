@@ -77,7 +77,9 @@ Type TGUIDropDown Extends TGUIInput
 		'set the list to ignore focus requests (avoids onRemoveFocus-events)
 		list.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
 		'list ignores screen limits of parents ("overflow")
-		list.setOption(GUI_OBJECT_IGNORE_PARENTLIMITS, TRUE)
+		list.setOption(GUI_OBJECT_IGNORE_PARENTLIMITS, True)
+		'avoid auto-sorting dropdown elements by default
+		list.SetAutosortItems(False)
 
 		'draw the open list on top of nearly everything
 		list.SetZIndex(20000)
