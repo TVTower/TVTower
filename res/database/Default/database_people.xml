@@ -565,14 +565,6 @@
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
 		</person>
-		<person id="0e1cbb3d-5a32-4505-96e3-c3e7b86d91fa" tmdb_id="0" imdb_id="" creator="">
-			<first_name>Ricardo Dream</first_name>
-			<last_name>Handerson</last_name>
-			<nick_name></nick_name>
-			<images />
-			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
-		</person>
 		<person id="8d551838-62d6-4ec3-a1f7-6b477206e235" tmdb_id="0" imdb_id="nm0000760" creator="">
 			<first_name>Ricardo Dream</first_name>
 			<last_name>Handerson</last_name>
@@ -687,22 +679,6 @@
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
 			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
-		</person>
-		<person id="894d9223-fc65-4c78-af57-7d5d58b12a57" tmdb_id="0" imdb_id="" creator="">
-			<first_name>Kalle</first_name>
-			<last_name>Knall</last_name>
-			<nick_name></nick_name>
-			<images />
-			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
-		</person>
-		<person id="d524af01-4cdf-4e4a-9d93-2995695d147b" tmdb_id="0" imdb_id="" creator="">
-			<first_name>Kalle</first_name>
-			<last_name>Knall</last_name>
-			<nick_name></nick_name>
-			<images />
-			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
 		</person>
 		<person id="e0807a2d-e04d-4abf-9422-afa44b202438" tmdb_id="0" imdb_id="nm0000125" creator="">
 			<first_name>Jan</first_name>
