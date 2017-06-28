@@ -1028,6 +1028,71 @@ extern int ZEXPORT zipWriteInFileInZip (file, buf, len)
     return err;
 }
 
+extern int ZEXPORT zipWriteInFileInZipUTF8 (file, buf, len)
+    zipFile file;
+    const void* buf;
+    unsigned len;
+{
+    zip_internal* zi;
+    int err=ZIP_OK;
+
+    if (file == NULL)
+        return ZIP_PARAMERROR;
+    zi = (zip_internal*)file;
+
+    if (zi->in_opened_file_inzip == 0)
+        return ZIP_PARAMERROR;
+
+    zi->ci.stream.next_in = (void*)buf;
+    zi->ci.stream.avail_in = len;
+    zi->ci.crc32 = crc32(zi->ci.crc32,buf,len);
+
+    while ((err==ZIP_OK) && (zi->ci.stream.avail_in>0))
+    {
+        if (zi->ci.stream.avail_out == 0)
+        {
+            if (zipFlushWriteBuffer(zi) == ZIP_ERRNO)
+                err = ZIP_ERRNO;
+            zi->ci.stream.avail_out = (uInt)Z_BUFSIZE;
+            zi->ci.stream.next_out = zi->ci.buffered_data;
+        }
+
+
+        if(err != ZIP_OK)
+            break;
+
+        if ((zi->ci.method == Z_DEFLATED) && (!zi->ci.raw))
+        {
+            uLong uTotalOutBefore = zi->ci.stream.total_out;
+            err=deflate(&zi->ci.stream,  Z_NO_FLUSH);
+            zi->ci.pos_in_buffered_data += (uInt)(zi->ci.stream.total_out - uTotalOutBefore) ;
+
+        }
+        else
+        {
+            uInt copy_this,i;
+            if (zi->ci.stream.avail_in < zi->ci.stream.avail_out)
+                copy_this = zi->ci.stream.avail_in;
+            else
+                copy_this = zi->ci.stream.avail_out;
+            for (i=0;i<copy_this;i++)
+                *(((wchar_t*)zi->ci.stream.next_out)+i) =
+                    *(((const wchar_t*)zi->ci.stream.next_in)+i);
+            {
+                zi->ci.stream.avail_in -= copy_this;
+                zi->ci.stream.avail_out-= copy_this;
+                zi->ci.stream.next_in+= copy_this;
+                zi->ci.stream.next_out+= copy_this;
+                zi->ci.stream.total_in+= copy_this;
+                zi->ci.stream.total_out+= copy_this;
+                zi->ci.pos_in_buffered_data += copy_this;
+            }
+        }
+    }
+
+    return err;
+}
+
 extern int ZEXPORT zipCloseFileInZipRaw (file, uncompressed_size, crc32)
     zipFile file;
     uLong uncompressed_size;

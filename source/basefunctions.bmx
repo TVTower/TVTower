@@ -12,7 +12,7 @@ Import "Dig/base.util.string.bmx"
 'Import "external/libxml/libxml.bmx"
 'Import "Dig/external/libxml/libxml.bmx"
 
-Import "basefunctions_zip.bmx"
+Import "external/zipengine.mod/zipengine.bmx"
 Import brl.reflection
 ?Threaded
 Import Brl.threads
