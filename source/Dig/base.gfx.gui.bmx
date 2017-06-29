@@ -1313,6 +1313,11 @@ Type TGUIobject
 	End Method
 
 
+	Method onParentResize:int()
+		return False
+	End Method
+
+
 	Method SetPosition(x:Float, y:Float)
 		rect.position.SetXY(x, y)
 	End Method

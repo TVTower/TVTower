@@ -25,6 +25,9 @@ Const GUILIST_SCROLLER_USED:Int     = 2^4
 Const GUILIST_SCROLLING_ENABLED:Int = 2^5
 'scroll to the very first element as soon as the scrollbars get hidden ?
 Const GUILIST_SCROLL_TO_BEGIN_WITHOUT_SCROLLBARS:Int = 2^6
+Const GUILIST_SCROLL_TO_NEXT_ITEM:Int = 2^7
+
+Const GUILISTITEM_AUTOSIZE_WIDTH:Int = 2^0
 
 
 
@@ -261,7 +264,7 @@ Type TGUIListBase Extends TGUIobject
 		'let the children properly refresh their size
 		'(eg. because the scrollbars are visible now)
 		For Local entry:TGUIobject = EachIn entries
-			entry.GetDimension()
+			entry.onParentResize()
 		Next
 	End Method
 
@@ -300,12 +303,65 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 
+	Method GetItemByListPosition:TGUIobject(pos:TVec2D)
+		For Local entry:TGUIobject = EachIn entries
+			'our entries are sorted and replaced, so we could
+			'quit as soon as the entry is out of range...
+			If entry.rect.GetY() > pos.y Then Return Null
+			If entry.rect.GetX() > pos.x Then Return Null
+
+			If entry.rect.containsVec(pos) Then Return entry
+		Next
+		return null
+	End Method
+
+
+	Method GetItemIndex:int(item:object)
+		'using "object" to avoid filtering and therefor invalid indices
+		'also it should be faster than loops with "ValueAtIndex"-calls in
+		'it
+
+		local index:int = 0
+		For Local obj:object = eachin entries
+			if item = obj then return index
+			index :+ 1
+		Next
+
+		return -1
+	End Method
+
+
+	Method GetItemAtIndex:TGUIObject(index:int)
+		return TGUIObject(entries.ValueAtIndex(index))
+	End Method
+
+
+	Method GetItemNextToItem:TGUIobject(item:object, distance:int, allowDistanceReductionOnBorders:int = True)
+		local currentIndex:int = GetItemIndex(item)
+		if currentIndex = -1 then return null
+		local nextIndex:int = 0
+
+		'when reaching below "0" or more than "max" should we return the
+		'very first/last or nothing?
+		if currentIndex + distance < 0
+			if not allowDistanceReductionOnBorders then return null
+			nextIndex = 0
+		else if currentIndex + distance >= entries.Count()
+			if not allowDistanceReductionOnBorders then return null
+			nextIndex = entries.Count() - 1
+		endif
+
+		return GetItemAtIndex(nextIndex)
+	End Method
+
+
 	'base handling of add item
 	Method _AddItem:Int(item:TGUIobject, extra:Object=Null)
 '		if self.ReachedItemLimit() then return FALSE
 
 		'set parent of the item - so item is able to calculate position
 		guiEntriesPanel.addChild( item )
+
 
 		'recalculate dimensions as the item now knows its parent
 		'so a normal AddItem-handler can work with calculated dimensions from now on
@@ -314,6 +370,9 @@ Type TGUIListBase Extends TGUIobject
 		EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", New TData.Add("item", item) , Self))
 
 		entries.addLast(item)
+
+		'resize item
+		if item then item.onParentResize()
 
 		'run the custom compare method
 		If hasListOption(GUILIST_AUTOSORT_ITEMS)
@@ -599,7 +658,7 @@ Type TGUIListBase Extends TGUIobject
 		guiScrollerV.setOption(GUI_OBJECT_VISIBLE, boolV)
 
 		'resize everything
-		Resize()
+		if changed then Resize()
 	End Method
 
 
@@ -711,7 +770,7 @@ endrem
 		End Select
 		If direction <> ""
 			Local scrollAmount:Int = 25
-			'try to scroll by 0.5 of an item height
+			'try to scroll by X percent of an item height
 			Local item:TGUIObject
 			If list.entries.Count() > 0 Then item = TGUIObject(list.entries.First())
 			If item Then scrollAmount = item.rect.GetH() * list.scrollItemHeightPercentage
@@ -740,10 +799,21 @@ endrem
 
 
 		'by default scroll by 2 pixels
-		Local baseScrollSpeed:Int = 2
 		'the longer you pressed the mouse button, the "speedier" we get
 		'1px per 100ms. Start speeding up after 500ms, limit to 20px per scroll
-		baseScrollSpeed :+ Min(20, Max(0, MOUSEMANAGER.GetDownTime(1) - 500)/100.0)
+		Local baseScrollSpeed:Int = Min(20, 2 + Max(0, MOUSEMANAGER.GetDownTime(1) - 500)/100.0)
+
+
+		if guiList.HasListOption(GUILIST_SCROLL_TO_NEXT_ITEM)
+			'for now assume same height for all (as we do not know what
+			'item to use as "current item")
+			local currentItem:TGUIListItem = guiList.GetFirstItem()
+			if currentItem
+				local itemHeight:int = Max(currentItem.rect.GetH(), currentItem.GetScreenHeight())
+				if itemHeight = 0 then itemHeight = 20
+				baseScrollSpeed = itemHeight * ceil(baseScrollSpeed / float(itemHeight))
+			endif
+		endif
 		
 		Local scrollAmount:Int = data.GetInt("scrollAmount", baseScrollSpeed)
 		'this should be "calculate height and change amount"
@@ -937,6 +1007,7 @@ Type TGUIListItem Extends TGUIobject
 	Field valueColor:TColor	= New TColor
 
 	Field positionNumber:Int = 0
+	Field _listItemFlags:Int = 0
 
 
     Method Create:TGUIListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
@@ -1053,6 +1124,30 @@ endrem
 		EndIf
 	End Method
 
+
+	Method HasListItemOption:Int(option:Int)
+		Return (_listItemFlags & option) <> 0
+	End Method
+
+
+	Method SetListItemOption(option:Int, enable:Int=True)
+		If enable
+			_listItemFlags :| option
+		Else
+			_listItemFlags :& ~option
+		EndIf
+	End Method
+
+
+	Method onParentResize:int()
+		if HasListItemOption(GUILISTITEM_AUTOSIZE_WIDTH)
+			self.Resize(GetParent().GetContentScreenWidth(), -1)
+			return True
+		endif
+
+		return Super.onParentResize()
+	End Method
+	
 
 	'override default update-method
 	Method Update:Int()

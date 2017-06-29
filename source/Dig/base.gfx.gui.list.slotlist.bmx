@@ -294,6 +294,9 @@ Type TGUISlotList Extends TGUIListBase
 		
 		Self._slots[slot] = item
 
+		'resize item
+		if item then item.onParentResize()
+
 		if item
 			EventManager.triggerEvent(TEventSimple.Create("guiList.AddedItem", new TData.Add("item", item).AddNumber("slot",slot) , Self))
 		elseif slotItem

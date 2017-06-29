@@ -127,7 +127,8 @@ Type TGUISelectListItem Extends TGUIListItem
 		local oldCol:TColor = new TColor.Get()
 
 		'available width is parentsDimension minus startingpoint
-		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
+		'Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
+		Local maxWidth:Int = GetScreenWidth()
 		If isHovered()
 			SetColor 250,210,100
 			DrawRect(getScreenX(), getScreenY(), maxWidth, getScreenHeight())

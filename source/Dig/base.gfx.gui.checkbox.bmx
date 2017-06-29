@@ -199,7 +199,7 @@ Type TGUICheckBox Extends TGUIButton
 		Local atPoint:TVec2D = GetScreenPos()
 		Local oldCol:TColor = new TColor.Get()
 
-		SetColor 255, 255, 255
+		'SetColor 255, 255, 255
 		SetAlpha oldCol.a * GetScreenAlpha()
 
 		Local sprite:TSprite = GetSprite()
