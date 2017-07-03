@@ -37,7 +37,13 @@ ModuleInfo "History: Initial Release"
 endrem
 
 Import BaH.jansson
+?Not bmxng
+'using custom to have support for const/function reflection
+Import "../reflectionExtended/reflection.bmx"
+?bmxng
+'ng has it built-in!
 Import BRL.Reflection
+?
 Import BRL.Map
 Import BRL.TextStream
 
@@ -79,6 +85,19 @@ Type TPersistJSON
 	
 	Field fileVersion:Int
 
+	'Added by Ronny:
+	'a special connected type handling conversions of stored field contents
+	'no longer matching up the definitions of a field (= types differing)
+	Field converterTypeID:TTypeID
+	Field converterType:object
+	'a connected type overriding serialization/deserialization of elements
+	'by containing Methods:
+	'- SerializeTTypeNameToString() and
+	'- DeSerializeTTypeNameFromString()
+	Field serializer:object
+	Field serializerTypeID:TTypeID
+
+	
 	Rem
 	bbdoc: Serializes the specified Object into a String.
 	End Rem
@@ -373,7 +392,10 @@ Type TPersistJSON
 				tidName = tid.Name()[..tid.Name().length - 2]
 				
 				Local size:Int
-				
+if tidName.ToLower() = "null"
+	throw "ups"
+	tidName = "object"
+endif
 				' it's possible that the array is zero-length, in which case the object type
 				' is undefined. Therefore we default it to type "Object".
 				' This doesn't matter, since it's essentially a Null Object which has no
@@ -398,7 +420,52 @@ Type TPersistJSON
 				If tid = StringTypeId Then
 					fields.Append(New TJSONString.Create(String(obj)))
 				End If
-		
+
+rem ronny
+				'Ronny: added "Serialize[classname]ToString"-support
+				'check if there is a special "Serialize[classname]ToString" Method
+				'defined for the object
+				'only do serialization, if the way back is defined too
+				local serialized:int = False
+				Local serializedString:String
+				Local mth:TMethod, mth2:TMethod
+				'check if a common serializer wants to handle it
+				If serializer
+					if not serializerTypeID then serializerTypeID = TTypeID.ForObject(serializer)
+					mth = serializerTypeID.FindMethod("Serialize"+tid.name()+"ToString")
+					mth2 = serializerTypeID.FindMethod("DeSerialize"+tid.name()+"FromString")
+					If mth And mth2
+						'append the to-serialize-obj as param
+						serializedString = String( mth.Invoke(serializer, [obj]) )
+					endif
+				endif
+
+				'check if the type itself wants to handle it
+				if not serializedString
+					mth = tid.FindMethod("Serialize"+tid.name()+"ToString")
+					mth2 = tid.FindMethod("DeSerialize"+tid.name()+"FromString")
+					If mth And mth2
+						serializedString = String( mth.Invoke(obj) )
+					endif
+				endif
+				'no need to check wether "serialized" is <> "" (might be
+				'empty on purpose!) - if mth/mth2 exist, then we trust
+				'that methods to serialize properly
+				If mth and mth2 'and serializedString
+					'attributes are already encoded, so encoding it now
+					'would lead to double-encoding
+					'serializedString = doc.encodeEntities(serializedString)
+
+					fields.Append(New TJSONString.Create(s))
+					node.setAttribute("serialized" ,serializedString)
+					serialized = True
+				endif
+
+
+				'if the method is not existing - parse each field
+				if not serialized
+endrem
+						
 				For Local f:TField = EachIn tid.EnumFields()
 				
 					If f.MetaData("nopersist") or f.MetaData("nosave") Then
@@ -418,7 +485,15 @@ Type TPersistJSON
 						Case LongTypeId
 							fields.Append(New TJSONInteger.Create(f.GetLong(obj)))
 						Case FloatTypeId
-							fields.Append(New TJSONReal.Create(f.GetFloat(obj)))
+							'Ronny: save some space
+							'if the float is xx.0000, write it without
+							'the ".0000" part (-> as int)
+							Local v:Float = f.GetFloat(obj)
+							If Float(Int(v)) = v
+								fields.Append(New TJSONInteger.Create(int(f.GetFloat(obj))))
+							Else
+								fields.Append(New TJSONReal.Create(f.GetFloat(obj)))
+							EndIf
 						Case DoubleTypeId
 							fields.Append(New TJSONReal.Create(f.GetDouble(obj)))
 						Case StringTypeId
@@ -432,23 +507,33 @@ Type TPersistJSON
 								Local dims:Int = t.split("[").length
 								
 								dims = fieldType.ArrayDimensions(f.Get(obj))
-								Local scales:String
-								If dims > 1 Then
-									For Local i:Int = 0 Until dims - 1
-										scales :+ (fieldType.ArrayLength(f.Get(obj), i) / fieldType.ArrayLength(f.Get(obj), i + 1))
-										scales :+ ","
-									Next
-									
-								End If
-								scales:+ fieldType.ArrayLength(f.Get(obj), dims - 1)
-								
-								
-								Local arr:TJSONArray = New TJSONArray.Create()
-								arr.Append(New TJSONString.Create(scales))
-								
-								fields.Append(arr)
 
-								ProcessArray(f.Get(obj), fieldType.ArrayLength(f.Get(obj)), arr, fieldType)
+								'Ronny: skip handling 0 sized arrays
+								Local arrSize:Int = fieldType.ArrayLength(f.Get(obj))
+								'on mac os x "0 sized"-arrays sometimes return dims to be veeeery big 
+								If arrSize = 0 Then dims = 1
+								'it also happens to others (Bruceys Linux box)
+								if dims < 0 or dims > 1000000 then dims = 1
+
+								If dims > 1 Then
+									Local scales:String
+									If dims > 1 Then
+										For Local i:Int = 0 Until dims - 1
+											scales :+ (fieldType.ArrayLength(f.Get(obj), i) / fieldType.ArrayLength(f.Get(obj), i + 1))
+											scales :+ ","
+										Next
+										
+									End If
+									scales:+ fieldType.ArrayLength(f.Get(obj), dims - 1)
+									
+									
+									Local arr:TJSONArray = New TJSONArray.Create()
+									arr.Append(New TJSONString.Create(scales))
+									
+									fields.Append(arr)
+
+									ProcessArray(f.Get(obj), fieldType.ArrayLength(f.Get(obj)), arr, fieldType)
+								EndIf
 
 							Else
 

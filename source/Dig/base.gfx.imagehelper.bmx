@@ -321,7 +321,11 @@ Function CopyImage:TImage(src:TImage)
 	If src = Null Then Return Null
 
 	Local dst:TImage = New TImage
+	?bmxng
+	MemCopy(dst, src, Size_T(SizeOf(dst)))
+	?not bmxng
 	MemCopy(dst, src, SizeOf(dst))
+	?
 
 	dst.pixmaps = New TPixmap[src.pixmaps.length]
 	dst.frames = New TImageFrame[src.frames.length]
@@ -335,7 +339,11 @@ Function CopyImage:TImage(src:TImage)
 	  dst.Frame(i)
 	Next
 
-   MemCopy(dst.seqs, src.seqs, SizeOf(dst.seqs))
+	?bmxng
+	MemCopy(dst.seqs, src.seqs, Size_T(SizeOf(dst.seqs)))
+	?not bmxng
+	MemCopy(dst.seqs, src.seqs, SizeOf(dst.seqs))
+	?
 
 	Return dst
 End Function

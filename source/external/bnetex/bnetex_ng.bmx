@@ -18,7 +18,7 @@ Type TICMP
 	Field Checksum : Short
 	Field ID       : Short
 	Field Sequence : Short
-
+rem
 	Function BuildChecksum:Short(Buffer:Short Ptr, Size:Int)
 		Local Checksum:Long
 
@@ -33,6 +33,7 @@ Type TICMP
 		Checksum :+ Checksum Shr 16
 		Return htons_(~Checksum)
 	End Function
+endrem
 End Type
 
 

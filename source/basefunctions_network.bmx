@@ -191,8 +191,13 @@ Type TNetworkClient extends TNetworkConnection
 								Local data:Byte[size]
 								If size
 									packet=New TNetworkPacket
+									?bmxng
+									packet._bank.resize(Size_T(size))
+									MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),Size_T(size))
+									?not bmxng
 									packet._bank.resize(size)
 									MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),size)
+									?
 								EndIf
 								local obj:TNetworkObject = TNetworkObject.FromPacket(packet)
 
@@ -998,8 +1003,13 @@ endrem
 			If size
 				Local data:Byte[size]
 				local packet:TNetworkPacket = New TNetworkPacket
+				?bmxng
+				packet._bank.resize(Size_T(size))
+				MemCopy(packet._bank.buf(),infoStream.RecvBuffer,Size_T(size))
+				?not bmxng
 				packet._bank.resize(size)
 				MemCopy(packet._bank.buf(),infoStream.RecvBuffer,size)
+				?
 				infoStream.Flush()
 				packet.ip = infoStream.MessageIP
 				packet.port	= infoStream.MessagePort
@@ -1206,10 +1216,18 @@ Type TNetworkObject
 			if obj.senderPort = 0 then obj.senderPort = packet.port
 
 			if packet.Size() > 20
+				?bmxng
+				local rawdata:byte ptr = MemAlloc( Size_T(packet.Size()-20) )
+				?not bmxng
 				local rawdata:byte ptr = MemAlloc( packet.Size()-20 )
+				?
 				local packdata:byte[] = New Byte[ packet.Size()-20 ]
 				packet.readbytes(rawdata, packet.Size()-20 )
+				?bmxng
+				MemCopy packdata,rawdata, Size_T(packet.Size()-20)
+				?not bmxng
 				MemCopy packdata,rawdata, packet.Size()-20
+				?
 				MemFree rawdata
 				obj.UnpackSlots(packdata)
 				packdata = null
@@ -1320,7 +1338,11 @@ Type TNetworkObject
 					p[1] = n Shr 8
 					p[2] = n Shr 0
 					Local t:Byte Ptr=dataStr.ToCString()
+					?bmxng
+					MemCopy(p + 3, t, Size_T(n))
+					?not bmxng
 					MemCopy(p + 3, t, n)
+					?
 					MemFree(t)
 					p:+ 3 + n
 				Case NET_TYPE_DOUBLE
@@ -1330,7 +1352,11 @@ Type TNetworkObject
 					p[1] = n Shr 8
 					p[2] = n Shr 0
 					Local t:Byte Ptr = dataStr.ToCString()
+					?bmxng
+					MemCopy(p + 3, t, Size_T(n))
+					?not bmxng
 					MemCopy(p + 3, t, n)
+					?
 					MemFree(t)
 					p:+ 3 + n
 				Case NET_TYPE_LONG
@@ -1340,7 +1366,11 @@ Type TNetworkObject
 					p[1] = n Shr 8
 					p[2] = n Shr 0
 					Local t:Byte Ptr = dataStr.ToCString()
-					MemCopy(p+3, t, n)
+					?bmxng
+					MemCopy(p + 3, t, Size_T(n))
+					?not bmxng
+					MemCopy(p + 3, t, n)
+					?
 					MemFree(t)
 					p:+ 3 + n
 				Default
@@ -1704,8 +1734,13 @@ Type TNetworkConnection
 					Local data:Byte[size]
 					If size
 						packet=New TNetworkPacket
+						?bmxng
+						packet._bank.resize(Size_T(size))
+						MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),Size_T(size))
+						?not bmxng
 						packet._bank.resize(size)
 						MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),size)
+						?
 
 						obj = TNetworkObject.FromPacket(packet)
 						id = obj.evType
@@ -1734,8 +1769,13 @@ Type TNetworkConnection
 				If ev.packet
 					Local size:Int=enet_packet_size(ev.packet)
 					If size
+						?bmxng
+						packet._bank.resize(Size_T(size))
+						MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),Size_T(size))
+						?no bmxng
 						packet._bank.resize(size)
 						MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),size)
+						?
 					EndIf
 					enet_packet_destroy(ev.packet)
 					local obj:TNetworkObject = TNetworkObject.FromPacket(packet)
