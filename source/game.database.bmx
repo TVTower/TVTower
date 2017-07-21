@@ -434,7 +434,7 @@ Type TDatabaseLoader
 			'TODO: prominence - manual popularity indicator?
 
 			'fill not given attributes with random data
-			if celebrity.fictional then celebrity.SetRandomAttributes()
+			if celebrity.fictional then celebrity.SetRandomAttributes(True)
 		endif
 
 
