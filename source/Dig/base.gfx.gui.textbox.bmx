@@ -31,7 +31,7 @@ Type TGUITextBox Extends TGUIobject
 	End Method
 
 
-	Method GetHeight:Int(maxHeight:Int=800)
+	Method GetHeightWithMax:Int(maxHeight:Int=800)
 		If _autoAdjustHeight
 			Return Min(maxHeight, GetFont().getBlockHeight(value, rect.GetW(), maxHeight))
 		Else

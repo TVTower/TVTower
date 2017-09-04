@@ -70,6 +70,9 @@ Type TGUISelectList Extends TGUIListBase
 		Local entry:TGUIListItem = TGUIListItem( triggerEvent.getSender() )
 		If Not entry Then Return False
 
+		'ignore entries of other lists
+		if entry._parent <> self.guiEntriesPanel then Return False
+
 		'default to left button if nothing was sent
 		local button:int = triggerEvent.GetData().GetInt("button", 1)
 		if button = 1

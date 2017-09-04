@@ -239,10 +239,13 @@ Type TTooltipBase
 	End Method
 
 
+	'Returns the visible rectangle on screen
 	Method GetScreenRect:TRectangle()
 		return new TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
 	End Method
 
+
+	'Returns the x coordinate on the screen
 	Method GetScreenX:int()
 		local moveX:int = 0
 		if alignment then moveX :- alignment.GetX() * GetWidth()
@@ -257,6 +260,8 @@ Type TTooltipBase
 		return area.GetX() - moveX
 	End Method
 
+
+	'Returns the y coordinate on the screen
 	Method GetScreenY:int()
 		local moveY:int = 0
 		if alignment then moveY :- alignment.GetY() * GetHeight()
@@ -271,14 +276,99 @@ Type TTooltipBase
 		return area.GetY() + moveY
 	End Method
 
+
+	'Returns the visible width on the screen
 	Method GetScreenWidth:int()
 		return GetWidth()
 	End Method
 
+
+	'Returns the visible height on the screen
 	Method GetScreenHeight:int()
 		return GetHeight()
 	End Method
 
+
+	Method GetOffset:TVec2D()
+		return offset
+	End Method
+
+
+	'Returns the width (not screen limited)  
+	Method GetWidth:Int()
+		'manual config
+		If area.GetW() > 0 Then Return area.GetW()
+
+		'auto width calculation
+		If area.GetW() <= 0
+			return Max(GetTitleWidth(), GetContentWidth()) + GetContentPadding().GetLeft() + GetContentPadding().GetRight()
+		EndIf
+	End Method
+
+
+	'Returns the height (not screen limited)  
+	Method GetHeight:Int()
+		'manual config
+		If area.GetH() > 0 Then Return area.GetH()
+
+		'auto height calculation
+		If area.GetH() <= 0
+			Local result:Int = 0
+			'height from title + content + spacing
+			result:+ GetTitleHeight()
+			result:+ GetContentHeight()
+			result:+ GetContentPadding().GetTop() + GetContentPadding().GetBottom() 
+			Return result
+		EndIf
+	End Method
+
+
+
+	Method GetContentWidth:Int()
+		if content = ""
+			if _minContentDim then return _minContentDim.GetIntY()
+			return 0
+		endif
+
+		local maxWidth:int = 0
+		local minWidth:int = 0
+		if area.GetW() > 0
+			maxWidth = area.GetW() - GetContentPadding().GetLeft() - GetContentPadding().GetRight()
+		else if _maxContentDim
+			maxWidth = _maxContentDim.GetIntX()
+		endif
+		if _minContentDim then minWidth = _minContentDim.GetIntX()
+		if maxWidth > 0 then minWidth = Min(minWidth, maxWidth)
+
+		if _maxContentDim and _maxContentDim.GetX() > 0
+			return Min(Max(minWidth, 1 + GetFont().GetBlockWidth(content, Min(maxWidth, _maxContentDim.GetX()), -1)), _maxContentDim.GetX())
+		else
+			return Max(minWidth, 1 + GetFont().GetBlockWidth(content, 240, -1))
+		endif
+	End Method
+
+
+	Method GetContentHeight:Int()
+		if content=""
+			if _minContentDim then return _minContentDim.GetIntY()
+			return 0
+		endif
+
+		local minContentHeight:int = -1
+		if _minContentDim then minContentHeight = _minContentDim.GetIntY()
+		
+		if _maxContentDim and _maxContentDim.GetY() > 0
+			return Min(Max(GetFont().getBlockHeight(content, GetInnerWidth(), -1), minContentHeight), _maxContentDim.GetY())
+		else
+			return Max(GetFont().getBlockHeight(content, GetInnerWidth(), -1), minContentHeight)
+		endif
+	End Method
+
+
+	Method GetInnerWidth:int()
+		return GetWidth() - GetContentPadding().GetLeft() - GetContentPadding().GetRight()
+	End Method
+	
 
 	Method MoveToVisibleScreenArea(checkParentArea:int = True)
 		if not _renderPosition then _renderPosition = new TVec2D
@@ -357,38 +447,6 @@ Type TTooltipBase
 	End Method
 
 
-	Method GetOffset:TVec2D()
-		return offset
-	End Method
-
-
-	Method GetWidth:Int()
-		'manual config
-		If area.GetW() > 0 Then Return area.GetW()
-
-		'auto width calculation
-		If area.GetW() <= 0
-			return Max(GetTitleWidth(), GetContentWidth()) + GetContentPadding().GetLeft() + GetContentPadding().GetRight()
-		EndIf
-	End Method
-
-
-	Method GetHeight:Int()
-		'manual config
-		If area.GetH() > 0 Then Return area.GetH()
-
-		'auto height calculation
-		If area.GetH() <= 0
-			Local result:Int = 0
-			'height from title + content + spacing
-			result:+ GetTitleHeight()
-			result:+ GetContentHeight()
-			result:+ GetContentPadding().GetTop() + GetContentPadding().GetBottom() 
-			Return result
-		EndIf
-	End Method
-
-
 	Method GetTitleHeight:Int()
 		if title = ""
 			if _minTitleDim then return _minTitleDim.GetIntY()
@@ -417,52 +475,6 @@ Type TTooltipBase
 		else
 			return Max(minTitleW, 1 + GetFontBold().GetBlockWidth(title, -1, -1))
 		endif
-	End Method
-
-
-	Method GetContentWidth:Int()
-		if content = ""
-			if _minContentDim then return _minContentDim.GetIntY()
-			return 0
-		endif
-
-		local maxWidth:int = 0
-		local minWidth:int = 0
-		if area.GetW() > 0
-			maxWidth = area.GetW() - GetContentPadding().GetLeft() - GetContentPadding().GetRight()
-		else if _maxContentDim
-			maxWidth = _maxContentDim.GetIntX()
-		endif
-		if _minContentDim then minWidth = _minContentDim.GetIntX()
-		if maxWidth > 0 then minWidth = Min(minWidth, maxWidth)
-
-		if _maxContentDim and _maxContentDim.GetX() > 0
-			return Min(Max(minWidth, 1 + GetFont().GetBlockWidth(content, Min(maxWidth, _maxContentDim.GetX()), -1)), _maxContentDim.GetX())
-		else
-			return Max(minWidth, 1 + GetFont().GetBlockWidth(content, 240, -1))
-		endif
-	End Method
-
-
-	Method GetContentHeight:Int()
-		if content=""
-			if _minContentDim then return _minContentDim.GetIntY()
-			return 0
-		endif
-
-		local minContentHeight:int = -1
-		if _minContentDim then minContentHeight = _minContentDim.GetIntY()
-		
-		if _maxContentDim and _maxContentDim.GetY() > 0
-			return Min(Max(GetFont().getBlockHeight(content, GetInnerWidth(), -1), minContentHeight), _maxContentDim.GetY())
-		else
-			return Max(GetFont().getBlockHeight(content, GetInnerWidth(), -1), minContentHeight)
-		endif
-	End Method
-
-
-	Method GetInnerWidth:int()
-		return GetWidth() - GetContentPadding().GetLeft() - GetContentPadding().GetRight()
 	End Method
 
 

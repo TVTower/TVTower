@@ -215,6 +215,16 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetXCenter:float()
+		return position.GetX() + 0.5 * dimension.GetX()
+	End Method
+
+
+	Method GetYCenter:float()
+		return position.GetY() + 0.5 * dimension.GetY()
+	End Method
+
+
 	Method GetX2:float()
 		return position.GetX() + dimension.GetX()
 	End Method

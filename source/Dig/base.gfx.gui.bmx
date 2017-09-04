@@ -386,7 +386,7 @@ endrem
 			'if obj is required to accept drops, but does not so  - continue
 			If (requiredFlags & GUI_OBJECT_ACCEPTS_DROP) And Not(obj._flags & GUI_OBJECT_ACCEPTS_DROP) Then Continue
 
-			If obj.getScreenRect().containsXY( coord.getX(), coord.getY() )
+			If obj.GetScreenRect().containsXY( coord.getX(), coord.getY() )
 				'add to array
 				guiObjects = guiObjects[..guiObjects.length+1]
 				guiObjects[guiObjects.length-1] = obj
@@ -601,11 +601,7 @@ endrem
 				'if obj._lastDrawTick = _lastDrawTick then continue
 				'obj._lastDrawTick = _lastDrawTick
 
-				'tint image if object is disabled
-				If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 0.5*GetAlpha()
 				obj.Draw()
-
-				If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 2.0*GetAlpha()
 
 				If obj._tooltip and (obj._flags & GUI_OBJECT_ENABLED)
 					activeTooltips.AddLast(obj._tooltip)
@@ -667,7 +663,6 @@ Type TGUIobject
 	Field value:String = ""
 	Field mouseIsClicked:TVec2D	= Null			'null = not clicked
 	Field mouseIsDown:TVec2D = New TVec2D.Init(-1,-1)
-	Field screenRect:TRectangle
 	Field _tooltip:TTooltipBase = Null
 	Field _children:TList = Null
 	Field _childrenReversed:TList = Null
@@ -689,9 +684,9 @@ Type TGUIobject
 	Field _registeredEventListener:TLink[]
 	'displacement of object when dragged (null = centered)
 	Field handle:TVec2D	= Null
-	Field className:String			= ""
-	'Field _lastDrawTick:int			= 0
-	'Field _lastUpdateTick:int		= 0
+	Field className:String = ""
+	'Field _lastDrawTick:int = 0
+	'Field _lastUpdateTick:int = 0
 
 	'=== HOOKS ===
 	'allow custom functions to get hooked in
@@ -702,16 +697,10 @@ Type TGUIobject
 	Field _customDrawOverlay:Int(obj:TGUIObject)
 
 
-	Global ghostAlpha:Float			= 0.5
-	Global _focusedObject:TGUIObject= Null
+	Global ghostAlpha:Float	= 0.5
+	Global _focusedObject:TGUIObject = Null
 	Global _lastID:Int
-	Global _debugMode:Int			= False
-
-	Const ALIGN_LEFT:Float		= 0
-	Const ALIGN_CENTER:Float	= 0.5
-	Const ALIGN_RIGHT:Float		= 1.0
-	Const ALIGN_TOP:Float		= 0
-	Const ALIGN_BOTTOM:Float	= 1.0
+	Global _debugMode:Int = False
 
 
 	Method New()
@@ -1015,6 +1004,12 @@ Type TGUIobject
 	End Method
 
 
+	Method GetChildAtIndex:TGUIobject(index:int)
+		if not _children or _children.count() >= index then return Null
+		return TGUIobject( _children.ValueAtIndex(index) )
+	End Method
+
+
 	Method UpdateChildren:Int()
 		If Not _children Or _children.Count() = 0 Then Return False
 		If HasOption(GUI_OBJECT_STATIC_CHILDREN) Then Return False
@@ -1045,23 +1040,29 @@ Type TGUIobject
 		
 
 	Method RestrictContentViewport:Int()
-		GUIManager.RestrictViewport(..
-			Int(GetContentScreenX()), ..
-			Int(GetContentScreenY()), ..
-			Int(GetContentScreenWidth()), ..
-			Int(GetContentScreenHeight()) ..
-		)
+		Local rect:TRectangle = GetContentScreenRect()
+		If rect and rect.GetW() > 0 and rect.GetH() > 0
+			GUIManager.RestrictViewport(..
+				Int(rect.getX()), ..
+				Int(rect.getY()), ..
+				Int(rect.getW()), ..
+				Int(rect.getH()) ..
+			)
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 	
 
 	Method RestrictViewport:Int()
-		Local screenRect:TRectangle = GetScreenRect()
-		If screenRect and screenRect.GetW() > 0 and screenRect.GetH() > 0
+		Local rect:TRectangle = GetScreenRect()
+		If rect and rect.GetW() > 0 and rect.GetH() > 0
 			GUIManager.RestrictViewport(..
-				Int(screenRect.getX()), ..
-				Int(screenRect.getY()), ..
-				Int(screenRect.getW()), ..
-				Int(screenRect.getH()) ..
+				Int(rect.getX()), ..
+				Int(rect.getY()), ..
+				Int(rect.getW()), ..
+				Int(rect.getH()) ..
 			)
 			Return True
 		Else
@@ -1494,11 +1495,6 @@ Type TGUIobject
 	End Method
 
 
-	Method GetScreenWidth:Float()
-		Return rect.GetW()
-	End Method
-
-
 	'takes parent alpha into consideration
 	Method GetScreenAlpha:Float()
 		If _parent Then Return alpha * _parent.GetScreenAlpha()
@@ -1506,17 +1502,25 @@ Type TGUIobject
 	End Method
 
 
+	'Returns the visible width on the screen
+	Method GetScreenWidth:Float()
+		Return rect.GetW()
+	End Method
+
+
+	'Returns the visible height on the screen
 	Method GetScreenHeight:Float()
 		Return rect.GetH()
 	End Method
 
 
+	'Returns the x,y coordinates on the screen
 	Method GetScreenPos:TVec2D()
 		Return New TVec2D.Init(GetScreenX(), GetScreenY())
 	End Method
 
 
-	'adds parent position
+	'Returns the x coordinate on the screen
 	Method GetScreenX:Float()
 		If (_flags & GUI_OBJECT_DRAGGED) And Not(_flags & GUI_OBJECT_IGNORE_POSITIONMODIFIERS)
 			'no manual setup of handle exists -> center the spot
@@ -1542,6 +1546,7 @@ Type TGUIobject
 	End Method
 
 
+	'Returns the y coordinate on the screen
 	Method GetScreenY:Float()
 		If (_flags & GUI_OBJECT_DRAGGED) And Not(_flags & GUI_OBJECT_IGNORE_POSITIONMODIFIERS)
 			'no manual setup of handle exists -> center the spot
@@ -1566,34 +1571,89 @@ Type TGUIobject
 	End Method
 
 
+	'Returns the x2 (right side) coordinate on the screen
 	Method GetScreenX2:Float()
 		Return GetScreenX() + GetScreenWidth()
 	End Method
 
 
+	'Returns the y2 (bottom side) coordinate on the screen
 	Method GetScreenY2:Float()
 		Return GetScreenY() + GetScreenHeight()
 	End Method
 
 
+	'Returns the local x coordinate
+	Method GetX:Int()
+		return rect.GetX()
+	End Method
+
+
+	'Returns the local y coordinate
+	Method GetY:Int()
+		return rect.GetY()
+	End Method
+
+
+	'Returns the local width
+	Method GetWidth:Int()
+		return rect.GetW()
+	End Method
+
+
+	'Returns the local height
+	Method GetHeight:Int()
+		return rect.GetH()
+	End Method
+
+
 	'override this methods if the object something like
 	'virtual size or "addtional padding"
+	'at which x-coordinate content/children is located within the parent
+	Method GetContentX:Float()
+		Return GetPadding().GetLeft()
+	End Method
+
+
+	'at which y-coordinate content/children located within the parent
+	Method GetContentY:Float()
+		Return GetPadding().GetTop()
+	End Method
+
+
+	'available width for content/children
+	Method GetContentWidth:Float()
+		Return GetWidth() - (GetPadding().GetLeft() + GetPadding().GetRight())
+	End Method
+
+
+	'available height for content/children
+	Method GetContentHeight:Float(width:int)
+		Return GetHeight() - (GetPadding().GetTop() + GetPadding().GetBottom())
+	End Method
+
 
 	'at which x-coordinate has content/children to be drawn
 	Method GetContentScreenX:Float()
-		Return GetScreenX() + GetPadding().getLeft()
+		Return GetScreenX() + GetContentX()
 	End Method
+	
+
 	'at which y-coordinate has content/children to be drawn
 	Method GetContentScreenY:Float()
-		Return GetScreenY() + GetPadding().getTop()
+		Return GetScreenY() + GetContentY()
 	End Method
-	'available width for content/children
+
+	
+	'available width for content/children on screen
 	Method GetContentScreenWidth:Float()
-		Return GetScreenWidth() - (GetPadding().getLeft() + GetPadding().getRight())
+		Return GetScreenWidth() - (GetPadding().GetLeft() + GetPadding().GetRight())
 	End Method
-	'available height for content/children
+
+
+	'available height for content/children on screen
 	Method GetContentScreenHeight:Float()
-		Return GetScreenHeight() - (GetPadding().getTop() + GetPadding().getBottom())
+		Return GetScreenHeight() - (GetPadding().GetTop() + GetPadding().GetBottom())
 	End Method
 
 
@@ -1612,45 +1672,33 @@ Type TGUIobject
 	End Method
 
 
-	Method getDimension:TVec2D()
+	Method GetDimension:TVec2D()
 		Return rect.dimension
 	End Method
 
 
 	Method GetContentScreenRect:TRectangle()
-		Return New TRectangle.Init(..
-			GetContentScreenX(), ..
-			GetContentScreenY(), ..
-			GetContentScreenWidth(), ..
-			GetContentScreenHeight()..
-		)
+		return New TRectangle.Init(GetContentScreenX(), GetContentScreenY(), GetContentScreenWidth(), GetContentScreenHeight())
 	End Method
 
 
 	'get a rectangle describing the objects area on the screen
 	Method GetScreenRect:TRectangle()
-		If screenRect Then Return screenRect
-
-		screenRect = New TRectangle
-
 		'dragged items ignore parents but take care of mouse position...
 		If isDragged()
-			screenRect.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
-			Return screenRect.Copy()
+			Return new TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
 		EndIf
 
 		'if the item ignores parental limits, just return its very own screen rect
 		If HasOption(GUI_OBJECT_IGNORE_PARENTLIMITS)
-			screenRect.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
-			Return screenRect.Copy()
+			Return new TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
 		EndIf
 
 		'no other limiting object - just return the object's area
 		'(no move needed as it is already oriented to screen 0,0)
 		If Not _parent
 			If Not rect Then Print "NO SELF RECT"
-			screenRect.CopyFrom(rect)
-			Return screenRect.Copy()
+			Return rect.Copy()
 		EndIf
 
 
@@ -1658,11 +1706,7 @@ Type TGUIobject
 		'only try to intersect if the parent gaves back an intersection (or self if no parent)
 		If resultRect
 			'create a sourceRect which is a screen-rect (=visual!)
-			Local sourceRect:TRectangle = New TRectangle.Init( ..
-										    GetScreenX(),..
-										    GetScreenY(),..
-										    GetScreenWidth(),..
-										    GetScreenHeight() )
+			Local sourceRect:TRectangle = New TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
 
 			'get the intersecting rectangle
 			'the x,y-values are local coordinates!
@@ -1673,16 +1717,23 @@ Type TGUIobject
 					Max(resultRect.position.getX(),getScreenX()),..
 					Max(resultRect.position.getY(),GetScreeny())..
 				)
-				screenRect.CopyFrom(resultRect)
-				Return screenRect.Copy()
+				return resultRect
 			EndIf
+
+			return sourceRect
 		EndIf
-		screenRect.Init(0,0,-1,-1)
-		Return screenRect.Copy()
+
+		Return new TRectangle.Init(0,0,-1,-1)
 	End Method
 
 
 	Method Draw()
+		If Not IsVisible() Then return
+
+		local oldCol:TColor = new TColor.Get()
+		'tint image if object is disabled
+		If Not(_flags & GUI_OBJECT_ENABLED) Then SetAlpha 0.5 * oldCol.a
+
 		If _customDraw
 			_customDraw(Self)
 		Else
@@ -1698,7 +1749,7 @@ Type TGUIobject
 				DrawContent()
 			EndIf
 			
-			If _customDrawOverlay
+			If _customDrawChildren
 				_customDrawChildren(Self)
 			Else
 				DrawChildren()
@@ -1711,6 +1762,7 @@ Type TGUIobject
 			EndIf
 		EndIf
 
+		If Not(_flags & GUI_OBJECT_ENABLED) Then SetAlpha oldCol.a
 
 		'=== HANDLE TOOLTIP ===
 		if _tooltip and not hasOption(GUI_OBJECT_MANAGED) and not hasOption(GUI_OBJECT_DRAGGED)
@@ -1782,7 +1834,10 @@ Type TGUIobject
 
 
 	Method Update:Int()
-		screenRect = Null
+		'skip handling disabled entries
+		'(eg. deactivated scrollbars which else would "hover" before
+		' list items on the same spot) 
+		if not IsEnabled() then return False
 
 
 		'to recognize clicks/hovers/actions on child elements:

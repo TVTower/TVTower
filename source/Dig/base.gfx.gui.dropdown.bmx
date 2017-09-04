@@ -14,7 +14,7 @@ Rem
 	====================================================================
 	LICENCE
 
-	Copyright (C) 2002-2014 Ronny Otto, digidea.de
+	Copyright (C) 2002-2017 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -42,6 +42,7 @@ Import "base.gfx.gui.list.selectlist.bmx"
 
 
 Type TGUIDropDown Extends TGUIInput
+	Field lastPosition:TVec2D
 	'height of the opened drop down
 	Field open:int = FALSE
 	'close dropdown as soon as an item gets selected
@@ -90,6 +91,7 @@ Type TGUIDropDown Extends TGUIInput
 		list.SetBackground(bg)
 		'use padding from background
 		list.SetPadding(bg.GetPadding().getTop(), bg.GetPadding().getLeft(),  bg.GetPadding().getBottom(), bg.GetPadding().getRight())
+
 
 		'=== REGISTER EVENTS ===
 		'to close the list automatically if the object looses focus
@@ -288,6 +290,25 @@ Type TGUIDropDown Extends TGUIInput
 	End Method
 
 
+	Method onStatusAppearanceChange:Int()
+		'update list position
+		MoveListIntoPosition()
+	End Method
+	
+
+	Method MoveListIntoPosition()
+		'move list to our position
+		local listPosY:int = GetScreenY() + GetScreenHeight()
+		'if list ends below screen end we might move it above the button
+		if listPosY + list.GetScreenHeight() > GetGraphicsManager().GetHeight()
+			if list.GetScreenHeight() < GetScreenY()
+				listPosY = GetScreenY() - list.GetScreenHeight()
+			endif
+		endif
+		list.SetPosition( GetScreenX(), listPosY )
+	End Method
+
+
 	'override default update-method
 	Method Update:Int()
 		Super.Update()
@@ -311,17 +332,15 @@ Type TGUIDropDown Extends TGUIInput
 
 			MouseManager.ResetKey(2)
 		endif
-		
 
-		'move list to our position
-		local listPosY:int = GetScreenY() + GetScreenHeight()
-		'if list ends below screen end we might move it above the button
-		if listPosY + list.GetScreenHeight() > GetGraphicsManager().GetHeight()
-			if list.GetScreenHeight() < GetScreenY()
-				listPosY = GetScreenY() - list.GetScreenHeight()
-			endif
+
+		local screenPos:TVec2D = GetScreenPos()
+		if not lastPosition or not lastPosition.IsSame(screenPos)
+			lastPosition = screenPos
+
+			'update list position (as it is not maintained as "child")
+			MoveListIntoPosition()
 		endif
-		list.rect.position.SetXY( GetScreenX(), listPosY )
 	End Method
 End Type
 

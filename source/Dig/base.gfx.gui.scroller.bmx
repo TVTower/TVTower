@@ -46,8 +46,10 @@ Type TGUIScrollerBase extends TGUIobject
 
 
 		'set the parent of the buttons so they inherit visible state etc.
-		guiButtonMinus.setParent(Self)
-		guiButtonPlus.setParent(Self)
+'		guiButtonMinus.setParent(Self)
+'		guiButtonPlus.setParent(Self)
+		AddChild(guiButtonMinus)
+		AddChild(guiButtonPlus)
 
 		'scroller is interested in hits (not clicks) on its buttons
 		AddEventListener(EventManager.registerListenerFunction( "guiobject.onClick",	TGUIScrollerBase.onButtonClick, guiButtonMinus ))
@@ -274,6 +276,9 @@ Type TGUIScroller Extends TGUIScrollerBase
 		scrollHandle.SetDirection(TGUISlider.DIRECTION_DOWN)
 		scrollHandle._showFilledGauge = False
 		scrollHandle._gaugeAlpha = 0.5
+
+		'manage (update/draw) the handle on our own
+		AddChild(scrollHandle)
 		
 		'listen to interaction with scrollHandle elements (dragging it)
 		'attention: do not listen to "guiobject.onchangevalue" as this is

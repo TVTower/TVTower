@@ -82,7 +82,10 @@ Type TGUIListBase Extends TGUIobject
 
 		guiEntriesPanel = New TGUIScrollablePanel.Create(Null, New TVec2D.Init(rect.GetW() - guiScrollerV.rect.getW(), rect.GetH() - guiScrollerH.rect.getH()), Self.state)
 
-		AddChild(guiEntriesPanel) 'manage by our own
+		'manage by our own
+		AddChild(guiEntriesPanel)
+		AddChild(guiScrollerH)
+		AddChild(guiScrollerV)
 
 
 		'by default all lists do not have scrollers
@@ -201,6 +204,12 @@ Type TGUIListBase Extends TGUIobject
 		EndIf
 	End Method
 
+
+	'when reskinned, resize to move scrollbars accordingly
+	Method onStatusAppearanceChange:Int()
+		Resize(-1,-1)
+	End Method
+	
 
 	'override resize and add minSize-support
 	'size 0, 0 is not possible (leads to autosize)
@@ -576,7 +585,7 @@ Type TGUIListBase Extends TGUIobject
 				Local atListBottom:Int = IsAtListBottom()
 
 				'set scroll limits:
-				If entriesDimension.getY() < guiEntriesPanel.getScreenheight()
+				If entriesDimension.getY() <= guiEntriesPanel.getScreenheight()
 					'if there are only some elements, they might be
 					'"less high" than the available area - no need to
 					'align them at the bottom
@@ -911,7 +920,7 @@ endrem
 		EndIf
 				
 
-		_mouseOverArea = THelper.MouseIn(Int(GetScreenX()), Int(GetScreenY()), Int(rect.GetW()), Int(rect.GetH()))
+		_mouseOverArea = THelper.MouseInRect(GetScreenRect())
 
 		If hasListOption(GUILIST_AUTOHIDE_SCROLLER)
 			If _mouseOverArea
