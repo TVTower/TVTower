@@ -194,7 +194,8 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 			'base items do not have a size - so we have to give a manual one
 			local item:TGUIArchivedMessageListItem = new TGUIArchivedMessageListItem.Create(null, null, message.GetTitle())
 			item.message = message
-			item.Resize(400, 60)
+			item.displayName = message.GetTitle()
+			item.Resize(400, 70)
 			messageList.AddItem( item )
 		Next
 
@@ -398,7 +399,7 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 	End Method
 'endrem
 
-	Method GetContentHeight:int(width:int)
+	Method GetContentHeight:Float(width:int)
 		local skin:TDatasheetSkin = GetDatasheetSkin("archivedmessage")
 
 		local height:int

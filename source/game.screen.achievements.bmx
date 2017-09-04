@@ -186,7 +186,8 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 			'base items do not have a size - so we have to give a manual one
 			local item:TGUIAchievementListItem = new TGUIAchievementListItem.Create(null, null, achievement.GetTitle())
 			item.data = new TData.Add("achievement", achievement)
-			item.Resize(400, 60)
+			item.displayName = achievement.GetTitle()
+			item.Resize(400, 70)
 			achievementList.AddItem( item )
 		Next
 
@@ -340,8 +341,9 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 	Method getDimension:TVec2D()
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
-		Local maxWidth:Int = 300
+		Local maxWidth:Int = 400
 		If parentPanel Then maxWidth = parentPanel.getContentScreenWidth() '- GetScreenWidth()
+print "maxWidth: " + maxWidth
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local dimension:TVec2D = New TVec2D.Init(maxWidth, GetSpriteFromRegistry("gfx_datasheet_achievement_bg").GetHeight())

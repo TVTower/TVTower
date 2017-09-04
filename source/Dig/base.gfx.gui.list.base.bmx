@@ -1019,6 +1019,12 @@ Type TGUIListItem Extends TGUIobject
 	Field _listItemFlags:Int = 0
 
 
+	Method New()
+		'by default maximize width
+		SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
+	End Method
+	
+
     Method Create:TGUIListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		'have a basic size (specify a dimension in your custom type)
 		If Not dimension Then dimension = New TVec2D.Init(80,20)
