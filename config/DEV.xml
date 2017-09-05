@@ -5,11 +5,6 @@
 			<DEV_KEYS value="TRUE" />
 			<DEV_OSD value="FALSE" />
 			<DEV_LOG value="TRUE" />
-			<!-- a modifier cutting the used factor to calculate the
-			     revenue of a infomercial: 0.5 would cut the result to 50%
-			     Default: 1.0
-				<DEV_INFOMERCIALCUTFACTOR value="1.0" />
-			-->
 
 			<!-- milliseconds waiting on a floor (incl. animation).
 			     Default: 1500
@@ -35,6 +30,19 @@
 				<DEV_ADAGENCY_SORT_CONTRACTS_BY value="minaudience" />
 			-->
 
+			<!-- (base) construction time of a new bought station
+			     time in hours
+			     Default: 0 (ready on next broadcast)
+
+				<DEV_STATION_CONSTRUCTION_TIME value="0" />
+			-->
+
+
+
+
+			<!-- AD CONTRACTS -->
+			<!-- ============ -->
+
 			<!-- How many contracts could use the same contract base
 			     (the same "original contract") at the same time
 			     Options:
@@ -44,31 +52,68 @@
 				<DEV_ADCONTRACT_INSTANCES_MAX value="1" />
 			-->
 
-			<!-- (base) construction time of a new bought station
-			     time in hours
-			     Default: 0 (ready on next broadcast)
+			<!-- a modifier cutting the used factor to calculate the
+			     revenue of a infomercial: 0.5 would cut the result to 50%
+			     Default: 1.0
+				<DEV_ADCONTRACT_INFOMERCIAL_PROFIT_MOD value="1.0" />
+			-->
 
-				<DEV_STATION_CONSTRUCTION_TIME value="0" />
+			<!-- a modifier to adjust the resulting profit (0.5 = 50%)
+			     Default: 1.0
+				<DEV_ADCONTRACT_PROFIT_MOD value="1.0" />
+			-->
+
+			<!-- a modifier to adjust the resulting penalty (0.5 = 50%)
+			     Default: 1.0
+				<DEV_ADCONTRACT_PENALTY_MOD value="1.0" />
+			-->
+
+			<!-- a modifier to adjust the raw quality which ignores the
+			     topicality of an infomcerial (0.5 = 50%)
+			     Default: 1.0
+				<DEV_ADCONTRACT_QUALITYRAW_MOD value="1.0" />
+			-->
+
+			<!-- a modifier to adjust the raw mininimum audience before
+			     getting rounded to "beautiful values" (0.5 = 50%)
+			     Default: 1.0
+				<DEV_ADCONTRACT_RAWMINAUDIENCE_MOD value="1.0" />
+			-->
+
+			<!-- a modifier to adjust the raw mininimum audience
+			     percentage (0.5 = 50%)
+			     Default: 1.0
+				<DEV_ADCONTRACT_MINAUDIENCEPERCENTAGE_MOD value="1.0" />
 			-->
 
 			<!-- profit/penalty get multiplied with this value if there
 			     is a limiting targetgroup.
 			     Default: 1.0
-				<DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER value="1.0" />
+				<DEV_ADCONTRACT_LIMITED_TARGETGROUP_MULTIPLIER value="1.0" />
 			-->
+
 			<!-- profit/penalty get multiplied with this value if there
 			     is a limiting genre defined.
 			     Default: 1.5
-				<DEV_AD_LIMITED_GENRE_MULTIPLIER value="1.5" />
+				<DEV_ADCONTRACT_LIMITED_GENRE_MULTIPLIER value="1.5" />
 			-->
+
 			<!-- profit/penalty get multiplied with this value if there
 			     is a limiting flag defined (just xrated, bmovies...).
 			     Default: 1.25
-				<DEV_AD_LIMITED_PROGRAMME_FLAG_MULTIPLIER value="1.25" />
+				<DEV_ADCONTRACT_LIMITED_PROGRAMME_FLAG_MULTIPLIER value="1.25" />
 			-->
 
-			<!-- general balancing factor -->
-			<DEV_AD_BALANCING_FACTOR value="1.0" />
+			<!-- limit of profit/penalty for a single spot of an advertisement -->
+			<!-- <DEV_ADCONTRACT_PRICE_PER_SPOT_MAX value="1000000" /> -->
+
+			<!-- general balancing factor for profit/penalty values -->
+			<DEV_ADCONTRACT_PRICE_MOD value="1.0" />
+
+
+
+			<!-- AD CONTRACTS -->
+			<!-- ============ -->
 
 			<!-- Balancing Qualitaet auf Alterseinfluss -->
 			<DEV_NEWS_QUALITYAGE_INFLUENCE value="1.0" />
@@ -82,9 +127,6 @@
 
 			<!-- define basic sort for adcontracts -->
 			<!-- <DEV_ADAGENCY_SORT_CONTRACTS_BY value="minaudience" /> -->
-
-			<!-- limit of profit/penalty for a single spot of an advertisement -->
-			<!-- <DEV_ADCONTRACT_PRICE_PER_SPOT_MAX value="1000000" /> -->
 
 			<!-- enable/disable station map daily running cost increase -->
 			<!-- <DEV_STATION_INCREASE_DAILY_MAINTENANCE_COSTS value="FALSE" /> -->

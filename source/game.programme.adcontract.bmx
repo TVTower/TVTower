@@ -818,13 +818,20 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'percents = 0.0 - 1.0 (0-100%)
 	Method GetMinAudiencePercentage:Float(dbvalue:Float = -1) {_exposeToLua}
 		If dbvalue < 0 Then dbvalue = Self.base.minAudienceBase
+
+		'modify according to dev-balancing
+		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG"))
+		if devConfig
+			dbValue :* devConfig.GetFloat("DEV_ADCONTRACT_MINAUDIENCEPERCENTAGE_MOD", 1.0)
+		endif
+
 		Return MathHelper.Clamp(dbValue, 0.0, 1.0)
 	End Method
 
 
 	'the quality is higher for "better paid" advertisements with
 	'higher audience requirements... no cheap "car seller" ad :D
-	Method GetQualityRawForPlayer:Float(playerID:int) {_exposeToLua}
+	Method GetRawQualityForPlayer:Float(playerID:int) {_exposeToLua}
 		Local quality:Float = 0.05
 
 		local minA:int = GetMinAudienceForPlayer(playerID, False)
@@ -842,17 +849,23 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'advertisements (minAudience and minImage)
 		quality = 0.70 * base.GetQuality() + 0.15 * quality + 0.15 * GetMinImage()
 
+		'modify according to dev-balancing
+		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG"))
+		if devConfig
+			quality :* devConfig.GetFloat("DEV_ADCONTRACT_RAWQUALITY_MOD", 1.0)
+		endif
+
 		Return MathHelper.Clamp(quality, 0.01, 1.0)
 	End Method
 
 
-	Method GetQualityRaw:Float() {_exposeToLua}
-		Return GetQualityRawForPlayer(owner)
+	Method GetRawQuality:Float() {_exposeToLua}
+		Return GetRawQualityForPlayer(owner)
 	End Method
 
 
 	Method GetQualityForPlayer:Float(playerID:int)
-		local quality:Float = GetQualityRawForPlayer(playerID)
+		local quality:Float = GetRawQualityForPlayer(playerID)
 
 		'the more the infomercial got repeated, the lower the quality in
 		'that moment (^2 increases loss per air)
@@ -929,7 +942,15 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			if owner > 0 and owner = playerID and profit >= 0 Then Return profit
 		EndIf
 
-		Return CalculatePricesForPlayer(base.profitBase, playerID, PRICETYPE_PROFIT) * GetSpotCount()
+		local result:int = CalculatePricesForPlayer(base.profitBase, playerID, PRICETYPE_PROFIT) * GetSpotCount()
+
+		'DEV: adjust by a balancing factor
+		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG"))
+		if devConfig
+			result :* GameRules.devConfig.GetFloat("DEV_ADCONTRACT_PROFIT_MOD", 1.0)
+		endif
+
+		return result
 	End Method
 
 
@@ -957,7 +978,10 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'DEV:
 		'by which factor do we cut the profit when send as infomercial
 		'compared to the profit a single ad would generate
-		result :* GameRules.devConfig.GetFloat("DEV_INFOMERCIALCUTFACTOR", 1.0)
+		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG"))
+		if devConfig
+			result :* GameRules.devConfig.GetFloat("DEV_ADCONTRACT_INFOMERCIAL_PROFIT_MOD", 1.0)
+		endif
 
 		return result
 	End Method
@@ -976,7 +1000,15 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			If owner > 0 and owner = playerID and penalty >= 0 Then Return penalty
 		EndIf
 
-		Return CalculatePricesForPlayer(base.penaltyBase, playerID, PRICETYPE_PENALTY) * GetSpotCount()
+		local result:int = CalculatePricesForPlayer(base.penaltyBase, playerID, PRICETYPE_PENALTY) * GetSpotCount()
+
+		'DEV: adjust by a balancing factor
+		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG"))
+		if devConfig
+			result :* GameRules.devConfig.GetFloat("DEV_ADCONTRACT_PENALTY_MOD", 1.0)
+		endif
+
+		return result
 	End Method
 
 
@@ -1021,10 +1053,10 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		'=== DYNAMIC PRICE ===
 		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG", new TData))
-		Local balancingFactor:float = devConfig.GetFloat("DEV_AD_BALANCING_FACTOR", 1.0)
-		Local limitedToGenreMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_GENRE_MULTIPLIER", 1.5)
-		Local limitedToProgrammeFlagMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_PROGRAMME_FLAG_MULTIPLIER", 1.25)
-		Local limitedToTargetGroupMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER", 1.0)
+		Local devPriceMod:float = devConfig.GetFloat("DEV_ADCONTRACT_PRICE_MOD", 1.0)
+		Local limitedToGenreMultiplier:float = devConfig.GetFloat("DEV_ADCONTRACT_LIMITED_GENRE_MULTIPLIER", 1.5)
+		Local limitedToProgrammeFlagMultiplier:float = devConfig.GetFloat("DEV_ADCONTRACT_LIMITED_PROGRAMME_FLAG_MULTIPLIER", 1.25)
+		Local limitedToTargetGroupMultiplier:float = devConfig.GetFloat("DEV_ADCONTRACT_LIMITED_TARGETGROUP_MULTIPLIER", 1.0)
 
 		local maxCPM:float = GameRules.adContractPricePerSpotMax / Max(1, (population/1000))
 		Local price:Float
@@ -1046,7 +1078,7 @@ price :* Max(1, minAudience/1000)
 		'value cannot be higher than "maxAdContractPricePerSpot"
 		price = Min(GameRules.adContractPricePerSpotMax, price )
 		'adjust by a balancing factor
-		price :* balancingFactor
+		price :* devPriceMod
 
 		'specific targetgroups change price
 		If GetLimitedToTargetGroup() > 0 Then price :* limitedToTargetGroupMultiplier
@@ -1088,7 +1120,12 @@ price :* Max(1, minAudience/1000)
 			endif
 		endif
 
-		Return GetMinAudiencePercentage() * useAudience
+		local result:int = GetMinAudiencePercentage() * useAudience
+
+		'DEV: adjust by a balancing factor
+		result :* GameRules.devConfig.GetFloat("DEV_ADCONTRACT_RAWMINAUDIENCE_MOD", 1.0)
+
+		Return result
 	End Method
 
 	
@@ -1397,7 +1434,7 @@ price :* Max(1, minAudience/1000)
 		contentY :+ barAreaPaddingY
 
 		'quality
-		skin.RenderBar(contentX + 5, contentY, 200, 12, GetQualityRawForPlayer(forPlayerID))
+		skin.RenderBar(contentX + 5, contentY, 200, 12, GetRawQualityForPlayer(forPlayerID))
 		skin.fontSemiBold.drawBlock(GetLocale("AD_QUALITY"), contentX + 5 + 200 + 5, contentY, 85, 15, null, skin.textColorLabel)
 		contentY :+ barH + 1
 
@@ -1440,7 +1477,7 @@ price :* Max(1, minAudience/1000)
 			contentY :+ 12	
 			skin.fontNormal.draw("Aktualitaet: "+MathHelper.NumberToString(base.GetInfomercialTopicality()*100,2)+"%", contentX + 5, contentY)
 			contentY :+ 12	
-			skin.fontNormal.draw("Qualitaet roh: "+MathHelper.NumberToString(GetQualityRawForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
+			skin.fontNormal.draw("Qualitaet roh: "+MathHelper.NumberToString(GetRawQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
 			contentY :+ 12	
 		skin.fontNormal.draw("Qualitaet wahrgenommen: "+MathHelper.NumberToString(GetQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
 		Endif
