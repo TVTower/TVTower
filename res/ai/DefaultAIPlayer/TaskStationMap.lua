@@ -137,35 +137,35 @@ function JobBuyStation:Tick()
 	local bestAttraction = 0
 	
 	for i = 1, 30 do
-		local tempStation = MY.GetStationMap().getTemporaryStation(math.random(35, 560), math.random(1, 375))
+		local tempStation = MY.GetStationMap().GetTemporaryAntennaStation(math.random(35, 560), math.random(1, 375))
 				
-		debugMsg(" - Station " .. i .. "  at " .. tempStation.pos.GetIntX() .. "," .. tempStation.pos.GetIntY() .. ".  reach: " .. tempStation.getReach() .. "  increase: " .. tempStation.getReachIncrease() .. "  price: " .. tempStation.getPrice() .. "  F: " .. (tempStation.getReachIncrease() / tempStation.getPrice()))
+		debugMsg(" - Station " .. i .. "  at " .. tempStation.pos.GetIntX() .. "," .. tempStation.pos.GetIntY() .. ".  reach: " .. tempStation.GetReach() .. "  increase: " .. tempStation.GetReachIncrease() .. "  price: " .. tempStation.GetPrice() .. "  F: " .. (tempStation.GetReachIncrease() / tempStation.GetPrice()))
 
 		--filter criterias
 		--0) skip checks if there is no tempstation
 		if tempStation == nil then
 			-- debugMsg("tempStation is nil!")
 		--1) price to high
-		elseif tempStation.getPrice() > self.Task.CurrentBudget then
+		elseif tempStation.GetPrice() > self.Task.CurrentBudget then
 			tempStation = nil
 		--2) relative increase to low (at least 20% required)
-		elseif tempStation.getRelativeReachIncrease() < 0.25 then
+		elseif tempStation.GetRelativeReachIncrease() < 0.25 then
 			tempStation = nil
 
 		--3) absolute increase too low
-		--elseif tempStation.getReachIncrease() < 1500 then
+		--elseif tempStation.GetReachIncrease() < 1500 then
 		--	tempStation = nil
 
 		--4)  reach to low (at least 75.000 required)
-		elseif tempStation.getReach() < 75000 then
+		elseif tempStation.GetReach() < 75000 then
 			tempStation = nil
 		end
 
 		
 		-- Liegt im Budget und lohnt sich minimal -> erfuellt Kriterien
 		if tempStation ~= nil then
-			local price = tempStation.getPrice()
-			local pricePerViewer = tempStation.getReachIncrease() / price
+			local price = tempStation.GetPrice()
+			local pricePerViewer = tempStation.GetReachIncrease() / price
 			local priceDiff = self.Task.CurrentBudget - price
 			local attraction = pricePerViewer - (priceDiff / self.Task.CurrentBudget / 10)
 			debugMsg("   attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget)
@@ -181,9 +181,9 @@ function JobBuyStation:Tick()
 	end
 	
 	if bestOffer ~= nil then
-		local price = bestOffer.getPrice()
-		debugMsg(" Buying Station at " .. bestOffer.pos.GetIntX() .. "," .. bestOffer.pos.GetIntY() .. ".  increase: " .. bestOffer.getReachIncrease() .. "  price: " .. price)
-		TVT.of_buyStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
+		local price = bestOffer.GetPrice()
+		debugMsg(" Buying Station at " .. bestOffer.pos.GetIntX() .. "," .. bestOffer.pos.GetIntY() .. ".  increase: " .. bestOffer.GetReachIncrease() .. "  price: " .. price)
+		TVT.of_buyAntennaStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
 		self.Task:PayFromBudget(price)
 		
 		--next investment sum should be a bit bigger (TODO: make dependend from budget)

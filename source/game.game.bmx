@@ -676,7 +676,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		local map:TStationMap = GetStationMap(playerID, True)
 
 		'add new station
-		local s:TStation = TStation.Create( New TVec2D.Init(310, 260),-1, GetStationMapCollection().stationRadius, playerID )
+		local s:TStationBase = new TStationAntenna.Init( New TVec2D.Init(310, 260),-1, playerID )
+		TStationAntenna(s).radius = GetStationMapCollection().antennaStationRadius
 		'first station is not sellable (this enforces competition)
 		s.SetFlag(TVTStationFlag.SELLABLE, False)
 		'mark it as being gifted (by your boss or so)
@@ -739,7 +740,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 					'print "add station at: "+ int(newPos.x)+","+int(newPos.y)+ "  increase: "+ increase
 					'add it at the same spot (or random offset?)
-					map.AddStation( TStation.Create( newPos,-1, GetStationMapCollection().stationRadius, playerID ), False)
+					local antennaStation:TStationAntenna = new TStationAntenna.Init( newPos,-1, playerID )
+					antennaStation.radius = GetStationMapCollection().antennaStationRadius
+					map.AddStation(antennaStation, False)
 
 					broadcastAreaToDo :- increase
 				Next

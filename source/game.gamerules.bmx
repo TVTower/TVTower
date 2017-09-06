@@ -91,6 +91,7 @@ Type TGameRules {_exposeToLua}
 	'value in hours
 	'set to default (0) on start (game.game.bmx prepareNewGame())
 	Field stationConstructionTime:int = 0
+	Field cableNetworkConstructionTime:int = 0
 	'increase costs by X percent each day after construction of a station? 
 	Field stationIncreaseDailyMaintenanceCosts:int = False
 	Field stationDailyMaintenanceCostsPercentage:Float = 0.02

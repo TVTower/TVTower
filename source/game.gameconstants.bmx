@@ -62,6 +62,8 @@ Type TVTGameConstants {_exposeToLua}
 	Field ProductionFocus:TVTProductionFocus = new TVTProductionFocus
 
 	Field AwardType:TVTAwardType = new TVTAwardType
+
+	Field StationType:TVTStationType = new TVTStationType 
 End Type
 Global GameConstants:TVTGameConstants = New TVTGameConstants
 
@@ -116,6 +118,60 @@ Type TVTAchievementCategory {_exposeToLua}
 					if key & index then result :+ GetAsString(index) + ","
 				Next
 				if result = "" then return "none"
+				'remove last comma
+				return result[.. result.length-1]
+		End Select
+	End Function
+End Type
+
+
+
+
+Type TVTStationType {_exposeToLua}
+	Const UNKNOWN:int = 0
+	Const ANTENNA:int = 1
+	Const CABLE_NETWORK:int = 2
+	Const SATELLITE:int = 3
+
+	Const count:int = 3
+
+
+	Function GetAtIndex:int(index:int = 0)
+		if index <= 0 then return 0
+		return index
+	End Function	
+
+
+	Function GetIndex:int(key:int)
+		Select key
+			case   1	return 1
+			case   2	return 2
+			case   3	return 3
+		End Select
+		return 0
+	End Function
+
+
+	Function GetAsString:String(key:int = 0)
+		if key < 0 then return "unknown"
+		 
+		Select key
+			case UNKNOWN       return "unknown"
+
+			case ANTENNA       return "antenna"
+			case CABLE_NETWORK return "cable_network"
+			case SATELLITE     return "satellite"
+
+			default
+				'loop through all entries and add them if contained
+				local result:string
+				local index:int = 0
+				'do NOT start with 0 ("all")
+				For local i:int = 1 to count
+					index = GetAtIndex(i)
+					if key & index then result :+ GetAsString(index) + ","
+				Next
+				if result = "" then return "unknown"
 				'remove last comma
 				return result[.. result.length-1]
 		End Select

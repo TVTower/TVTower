@@ -4160,6 +4160,11 @@ Type GameEvents
 		Local PLAYER_NOT_FOUND:String = "[DEV] player not found."
 
 		Select command.Trim().toLower()
+			Case "maxaudience"
+				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
+				GetStationMap(player.playerID).CheatMaxAudience()
+				GetGame().SendSystemMessage("[DEV] Set Player #"+player.playerID+"'s maximum audience to "+GetStationMap(player.playerID).reach)
+
 			Case "debug"
 				local what:string = payload
 				Select what.Trim().ToLower()

@@ -24,7 +24,7 @@ Type TStationMapCollection
 	'map containing bitmask-coded information for "used" pixels
 	Field shareMap:TMap = Null {nosave}
 	Field shareCache:TMap = Null {nosave}
-	Field stationRadius:Int = 18
+	Field antennaStationRadius:Int = 18
 	Field population:Int = 0 {nosave}
 	Field populationmap:Int[,] {nosave}
 	Field populationImage:TImage {nosave}
@@ -81,7 +81,7 @@ Type TStationMapCollection
 		GetInstance()._regenerateMap = True
 		'also set the owning stationmap to "changed" so only this single
 		'audience sum only gets recalculated (saves cpu time)
-		Local station:TStation = TStation(triggerEvent.GetSender())
+		Local station:TStationBase = TStationBase(triggerEvent.GetSender())
 		If station Then GetInstance().GetMap(station.owner).changed = True
 	End Function
 
@@ -302,25 +302,11 @@ Type TStationMapCollection
 		Local mapValue:TVec3D = Null
 		Local rect:TRectangle = New TRectangle.Init(0,0,0,0)
 		For Local stationmap:TStationMap = EachIn stationMaps
-			For Local station:TStation = EachIn stationmap.stations
-				'skip inactive stations
-				If Not station.IsActive() Then Continue
-
-				'mark the area within the stations circle
-				posX = 0
-				posY = 0
-				stationX = Max(0, station.pos.x)
-				stationY = Max(0, station.pos.y)
-				Rect.position.SetXY( Max(stationX - stationRadius,stationRadius), Max(stationY - stationRadius,stationRadius) )
-				Rect.dimension.SetXY( Min(stationX + stationRadius, Self.populationMapSize.x-stationRadius), Min(stationY + stationRadius, Self.populationMapSize.y-stationRadius) )
-
-				For posX = Rect.getX() To Rect.getW()
-					For posY = Rect.getY() To Rect.getH()
-						' left the circle?
-						If Self.calculateDistance( posX - stationX, posY - stationY ) > stationRadius Then Continue
-
-						'insert the players bitmask-number into the field
-						'and if there is already one ... add the number
+			if stationmap.cheatedMaxReach
+				'insert the players bitmask-number into the field
+				'and if there is already one ... add the number
+				For posX = 0 To populationImage.height-1
+					For posY = 0 To populationImage.width-1
 						mapKey = posX+","+posY
 						mapValue = New TVec3D.Init(posX,posY, getMaskIndex(stationmap.owner) )
 						If shareMap.Contains(mapKey)
@@ -329,7 +315,36 @@ Type TStationMapCollection
 						shareMap.Insert(mapKey, mapValue)
 					Next
 				Next
-			Next
+			else
+				For Local station:TStationBase = EachIn stationmap.stations
+					'skip inactive stations
+					If Not station.IsActive() Then Continue
+
+					'mark the area within the stations circle
+					posX = 0
+					posY = 0
+					stationX = Max(0, station.pos.x)
+					stationY = Max(0, station.pos.y)
+					Rect.position.SetXY( Max(stationX - antennaStationRadius,antennaStationRadius), Max(stationY - antennaStationRadius,antennaStationRadius) )
+					Rect.dimension.SetXY( Min(stationX + antennaStationRadius, Self.populationMapSize.x-antennaStationRadius), Min(stationY + antennaStationRadius, Self.populationMapSize.y-antennaStationRadius) )
+
+					For posX = Rect.getX() To Rect.getW()
+						For posY = Rect.getY() To Rect.getH()
+							' left the circle?
+							If Self.calculateDistance( posX - stationX, posY - stationY ) > antennaStationRadius Then Continue
+
+							'insert the players bitmask-number into the field
+							'and if there is already one ... add the number
+							mapKey = posX+","+posY
+							mapValue = New TVec3D.Init(posX,posY, getMaskIndex(stationmap.owner) )
+							If shareMap.Contains(mapKey)
+								mapValue.z = Int(mapValue.z) | Int(TVec3D(shareMap.ValueForKey(mapKey)).z)
+							EndIf
+							shareMap.Insert(mapKey, mapValue)
+						Next
+					Next
+				Next
+			endif
 		Next
 	End Method
 
@@ -548,10 +563,10 @@ Type TStationMapCollection
 		x = Max(0, x)
 		y = Max(0, y)
 		' innerhalb des Bildes?
-		For posX = Max(x - stationRadius,stationRadius) To Min(x + stationRadius, populationMapSize.x-stationRadius)
-			For posY = Max(y - stationRadius,stationRadius) To Min(y + stationRadius, populationMapSize.y-stationRadius)
+		For posX = Max(x - antennaStationRadius,antennaStationRadius) To Min(x + antennaStationRadius, populationMapSize.x-antennaStationRadius)
+			For posY = Max(y - antennaStationRadius,antennaStationRadius) To Min(y + antennaStationRadius, populationMapSize.y-antennaStationRadius)
 				' noch innerhalb des Kreises?
-				If Self.calculateDistance( posX - x, posY - y ) <= stationRadius
+				If Self.calculateDistance( posX - x, posY - y ) <= antennaStationRadius
 					map.Insert(String((posX) + "," + (posY)), New TVec3D.Init((posX) , (posY), color ))
 				EndIf
 			Next
@@ -559,7 +574,7 @@ Type TStationMapCollection
 	End Method
 
 
-	Method CalculateAudienceDecrease:Int(stations:TList, removeStation:TStation)
+	Method CalculateAudienceDecrease:Int(stations:TList, removeStation:TStationBase)
 		If Not removeStation Then Return 0
 
 		Local Points:TMap = New TMap
@@ -573,7 +588,7 @@ Type TStationMapCollection
 
 		'overwrite with stations owner already has - red pixels get overwritten with white,
 		'count red at the end for increase amount
-		For Local _Station:TStation = EachIn stations
+		For Local _Station:TStationBase = EachIn stations
 			'DO NOT SKIP INACTIVE STATIONS !!
 			'decreases are for estimations - so they should include
 			'non-finished stations too
@@ -581,7 +596,7 @@ Type TStationMapCollection
 			'exclude the station to remove...
 			If _Station = removeStation Then Continue
 		
-			If THelper.IsIn(Int(removeStation.pos.x), Int(removeStation.pos.y), Int(_station.pos.x - 2*stationRadius), Int(_station.pos.y - 2 * stationRadius), Int(4*stationRadius), Int(4*stationRadius))
+			If THelper.IsIn(Int(removeStation.pos.x), Int(removeStation.pos.y), Int(_station.pos.x - 2*antennaStationRadius), Int(_station.pos.y - 2 * antennaStationRadius), Int(4*antennaStationRadius), Int(4*antennaStationRadius))
 				Self._FillPoints(Points, Int(_Station.pos.x), Int(_Station.pos.y), ARGB_Color(255, 255, 255, 255))
 			EndIf
 		Next
@@ -606,12 +621,12 @@ Type TStationMapCollection
 
 		'overwrite with stations owner already has - red pixels get overwritten with white,
 		'count red at the end for increase amount
-		For Local _Station:TStation = EachIn stations
+		For Local _Station:TStationBase = EachIn stations
 			'DO NOT SKIP INACTIVE STATIONS !!
 			'increases are for estimations - so they should include
 			'non-finished stations too
 		
-			If THelper.IsIn(Int(_x), Int(_y), Int(_station.pos.x - 2*stationRadius), Int(_station.pos.y - 2 * stationRadius), Int(4*stationRadius), Int(4*stationRadius))
+			If THelper.IsIn(Int(_x), Int(_y), Int(_station.pos.x - 2*antennaStationRadius), Int(_station.pos.y - 2 * antennaStationRadius), Int(4*antennaStationRadius), Int(4*antennaStationRadius))
 				Self._FillPoints(Points, Int(_Station.pos.x), Int(_Station.pos.y), ARGB_Color(255, 255, 255, 255))
 			EndIf
 		Next
@@ -628,7 +643,7 @@ Type TStationMapCollection
 	'summary: returns maximum audience a player has
 	Method RecalculateAudienceSum:Int(stations:TList)
 		Local Points:TMap = New TMap
-		For Local station:TStation = EachIn stations
+		For Local station:TStationBase = EachIn stations
 			'skip inactive stations
 			If Not station.IsActive() Then Continue
 
@@ -657,10 +672,10 @@ Type TStationMapCollection
 		Local returnValue:Int = 0
 		' calc sum for current coord
 		' min/max = everytime within boundaries
-		For posX = Max(x - stationRadius,stationRadius) To Min(x + stationRadius, populationMapSize.x - stationRadius)
-			For posY = Max(y - stationRadius,stationRadius) To Min(y + stationRadius, populationMapSize.y - stationRadius)
+		For posX = Max(x - antennaStationRadius,antennaStationRadius) To Min(x + antennaStationRadius, populationMapSize.x - antennaStationRadius)
+			For posY = Max(y - antennaStationRadius,antennaStationRadius) To Min(y + antennaStationRadius, populationMapSize.y - antennaStationRadius)
 				' still within the circle?
-				If calculateDistance( posX - x, posY - y ) <= stationRadius
+				If calculateDistance( posX - x, posY - y ) <= antennaStationRadius
 					returnvalue:+ populationmap[posX, posY]
 				EndIf
 			Next
@@ -722,8 +737,10 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	Field showStations:Int[4]
 	'maximum audience possible
 	Field reach:Int	= 0
+	Field cheatedMaxReach:int = False
 	'all stations of the map owner
 	Field stations:TList = CreateList()
+	Field stationsAdded:int[4]
 	Field changed:Int = False
 
 	'FALSE to avoid recursive handling (network)
@@ -751,28 +768,53 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'returns the maximum reach of the stations on that map
-	Method getReach:Int() {_exposeToLua}
+	Method GetReach:Int() {_exposeToLua}
 		Return Self.reach
 	End Method
 
 
-	Method getCoverage:Float() {_exposeToLua}
+	Method GetCoverage:Float() {_exposeToLua}
 		Return Float(getReach()) / Float(GetStationMapCollection().getPopulation())
 	End Method
 
 
 	'returns a station-object wich can be used for further
 	'information getting (share etc)
-	Method getTemporaryStation:TStation(x:Int,y:Int)  {_exposeToLua}
-		Return TStation.Create(New TVec2D.Init(x,y),-1, GetStationMapCollection().stationRadius, owner)
+	Method GetTemporaryAntennaStation:TStationBase(x:Int,y:Int)  {_exposeToLua}
+		local station:TStation = new TStation
+		station.radius = GetStationMapCollection().antennaStationRadius
+
+		Return station.Init(New TVec2D.Init(x,y),-1, owner)
+	End Method
+
+
+	'returns a station-object wich can be used for further
+	'information getting (share etc)
+	Method GetTemporaryCableNetworkStation:TStationBase(stateName:string)  {_exposeToLua}
+		local mapSection:TStationMapSection = TStationMapSection.GetByName(stateName)
+		if not mapSection then return null
+		
+		local station:TStationBase = new TStationCableNetwork
+		Return station.Init(New TVec2D.Init(mapSection.rect.GetXCenter(), mapSection.rect.GetYCenter()),-1, owner)
+	End Method
+
+
+	'returns a station-object wich can be used for further
+	'information getting (share etc)
+	Method GetTemporarySatelliteStation:TStationBase(satelliteNumber:int)  {_exposeToLua}
+		local station:TStationBase = new TStationSatellite
+
+		'TODO: satellite positions
+
+		Return station.Init(New TVec2D.Init(10,10),-1, owner)
 	End Method
 
 
 	'return a station at the given coordinates (eg. used by network)
-	Method getStationsByXY:TStation[](x:Int=0,y:Int=0) {_exposeToLua}
-		Local res:TStation[]
+	Method GetStationsByXY:TStationBase[](x:Int=0,y:Int=0) {_exposeToLua}
+		Local res:TStationBase[]
 		Local pos:TVec2D = New TVec2D.Init(x, y)
-		For Local station:TStation = EachIn stations
+		For Local station:TStationBase = EachIn stations
 			If Not station.pos.isSame(pos) Then Continue
 			res :+ [station]
 		Next
@@ -780,8 +822,8 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method getStation:TStation(stationGUID:String) {_exposeToLua}
-		For Local station:TStation = EachIn stations
+	Method GetStation:TStationBase(stationGUID:String) {_exposeToLua}
+		For Local station:TStationBase = EachIn stations
 			If station.GetGUID() = stationGUID Then Return station
 		Next
 		Return Null
@@ -789,24 +831,37 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'returns a station of a player at a given position in the list
-	Method getStationAtIndex:TStation(arrayIndex:Int=-1) {_exposeToLua}
+	Method GetStationAtIndex:TStationBase(arrayIndex:Int=-1) {_exposeToLua}
 		'out of bounds?
 		If arrayIndex < 0 Or arrayIndex >= stations.count() Then Return Null
 
-		Return TStation( stations.ValueAtIndex(arrayIndex) )
+		Return TStationBase( stations.ValueAtIndex(arrayIndex) )
 	End Method
 
 
 	'returns the amount of stations a player has
-	Method getStationCount:Int() {_exposeToLua}
+	Method GetStationCount:Int() {_exposeToLua}
 		Return stations.count()
+	End Method
+
+
+	Method CheatMaxAudience:int()
+		cheatedMaxReach = true
+		reach = GetStationMapCollection().population
+		GetStationMapCollection().GenerateShareMap()
+		return True
 	End Method
 
 
 	'returns maximum audience a player's stations cover
 	Method RecalculateAudienceSum:Int() {_exposeToLua}
 		local reachBefore:int = reach
-		reach = GetStationMapCollection().RecalculateAudienceSum(stations)
+
+		if cheatedMaxReach
+			reach = GetStationMapCollection().population
+		else
+			reach = GetStationMapCollection().RecalculateAudienceSum(stations)
+		endif
 
 		'inform others
 		EventManager.triggerEvent( TEventSimple.Create( "StationMap.onRecalculateAudienceSum", New TData.addNumber("reach", reach).AddNumber("reachBefore", reachBefore), Self ) )
@@ -823,26 +878,46 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	'returns audience loss when selling a station at the given coord
 	'param is station (not coords) to avoid ambiguity of multiple
 	'stations at the same spot
-	Method CalculateAudienceDecrease:Int(station:TStation) {_exposeToLua}
+	Method CalculateAudienceDecrease:Int(station:TStationBase) {_exposeToLua}
 		Return GetStationMapCollection().CalculateAudienceDecrease(stations, station)
 	End Method
 
 
-	'buy a new station at the given coordinates
-	Method BuyStation:Int(x:Int,y:Int)
-		Return AddStation( getTemporaryStation( x, y ), True )
+	'buy a new antenna station at the given coordinates
+	Method BuyAntennaStation:Int(x:Int,y:Int)
+		Return AddStation( GetTemporaryAntennaStation( x, y ), True )
+	End Method
+
+
+	'buy a new cable network station at the given coordinates
+	Method BuyCableNetworkStationByMapSection:Int(mapSection:TStationMapSection)
+		if not mapSection then return False
+		
+		Return AddStation( GetTemporaryCableNetworkStation( mapSection.name ), True )
+	End Method
+
+
+	'buy a new cable network station at the given coordinates
+	Method BuyCableNetworkStation:Int(stateName:string)
+		Return AddStation( GetTemporaryCableNetworkStation( stateName ), True )
+	End Method
+
+
+	'buy a new satellite station at the given coordinates
+	Method BuySatelliteStation:Int(satelliteNumber:int)
+		Return AddStation( GetTemporarySatelliteStation( satelliteNumber ), True )
 	End Method
 
 
 	'sell a station at the given position in the list
 	Method SellStation:Int(position:Int)
-		Local station:TStation = getStationAtIndex(position)
+		Local station:TStationBase = getStationAtIndex(position)
 		If station Then Return RemoveStation(station, True)
 		Return False
 	End Method
 
 
-	Method AddStation:Int(station:TStation, buy:Int=False)
+	Method AddStation:Int(station:TStationBase, buy:Int=False)
 		If Not station Then Return False
 
 		'try to buy it (does nothing if already done)
@@ -850,6 +925,11 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		'set to paid in all cases
 		station.SetFlag(TVTStationFlag.PAID, True)
 
+		'so station names "grow"
+		stationsAdded[station.stationType] :+ 1
+
+		'give it a name
+		if station.name = "" then station.name = "#"+stationsAdded[station.stationType]
 
 		stations.AddLast(station)
 
@@ -861,7 +941,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		'ALSO DO NOT recalculate audience of channel
 		'RecalculateAudienceSum()
 
-		TLogger.Log("TStationMap.AddStation", "Player"+owner+" buys broadcasting station for " + station.price + " Euro (increases reach by " + station.reach + ")", LOG_DEBUG)
+		TLogger.Log("TStationMap.AddStation", "Player"+owner+" buys broadcasting station ["+station.GetTypeName()+"] for " + station.price + " Euro (reach +" + station.reach + ")", LOG_DEBUG)
 
 		'emit an event so eg. network can recognize the change
 		If fireEvents Then EventManager.triggerEvent( TEventSimple.Create( "stationmap.addStation", New TData.add("station", station), Self ) )
@@ -870,7 +950,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method RemoveStation:Int(station:TStation, sell:Int=False, forcedRemoval:Int=False)
+	Method RemoveStation:Int(station:TStationBase, sell:Int=False, forcedRemoval:Int=False)
 		If Not station Then Return False
 
 		If Not forcedRemoval
@@ -914,7 +994,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method CalculateStationCosts:Int() {_exposeToLua}
 		Local costs:Int = 0
-		For Local Station:TStation = EachIn stations
+		For Local Station:TStationBase = EachIn stations
 			costs :+ station.GetRunningCosts()
 		Next
 		Return costs
@@ -934,7 +1014,6 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		showStations[channelNumber-1] = enable
 	End Method
 	
-
 
 	Method Update()
 		'delete unused
@@ -956,14 +1035,14 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method UpdateStations()
-		For Local station:TStation = EachIn stations
+		For Local station:TStationBase = EachIn stations
 			station.Update()
 		Next
 	End Method
 
 
 	Method DrawStations()
-		For Local station:TStation = EachIn stations
+		For Local station:TStationBase = EachIn stations
 			station.Draw()
 		Next
 	End Method
@@ -983,11 +1062,13 @@ End Type
 
 
 
-'Stationmap
-'provides the option to buy new stations
-'functions are calculation of audiencesums and drawing of stations
-Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
+
+Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
+	'location at the station map
+	'for satellites it is the "starting point", for cable networks and
+	'antenna stations a point in the federal state
 	Field pos:TVec2D {_exposeToLua}
+
 	Field reach:Int	= -1
 	'increase of reach at when bought
 	Field reachIncrease:Int = -1
@@ -1001,34 +1082,38 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 	Field built:Double = 0
 	'time at which the station gets active (again)
 	Field activationTime:Double = -1
-	'is the station already working?
-	Field radius:Int = 0
-	Field federalState:String = ""
+	Field federalState:String = "" {nosave}
+	Field name:string = ""
+	Field stationType:int = 0
 	'various settings (paid, fixed price, sellable, active...)
 	Field _flags:Int = 0
 
+	Field listSpriteNameOn:string = "gfx_datasheet_icon_antenna.on"
+	Field listSpriteNameOff:string = "gfx_datasheet_icon_antenna.off"
 
-	Function Create:TStation( pos:TVec2D, price:Int=-1, radius:Int, owner:Int)
-		Local obj:TStation = New TStation
-		obj.owner = owner
-		obj.pos	= pos
-		obj.price = price
-		obj.radius = radius
-		obj.built = GetWorldTime().getTimeGone()
-		obj.activationTime = -1
 
-		obj.SetFlag(TVTStationFlag.FIXED_PRICE, (price <> -1))
+	Method Init:TStationBase( pos:TVec2D, price:Int=-1, owner:Int)
+		self.owner = owner
+		self.pos = pos
+		self.price = price
+		self.built = GetWorldTime().getTimeGone()
+		self.activationTime = -1
+
+		self.SetFlag(TVTStationFlag.FIXED_PRICE, (price <> -1))
 		'by default each station could get sold
-		obj.SetFlag(TVTStationFlag.SELLABLE, True)
+		self.SetFlag(TVTStationFlag.SELLABLE, True)
 
-		obj.refreshData()
+		self.RefreshData()
+
 		'save on compution for "initial states"
-		obj.reachDecrease = obj.reachIncrease
-		Return obj
-	End Function
+		self.reachDecrease = self.reachIncrease
+
+		Return self
+	End Method
+
 
 	Method GenerateGUID:string()
-		return "station-"+id
+		return "stationbase-"+id
 	End Method
 
 
@@ -1057,13 +1142,13 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'returns the age in days
-	Method getAge:Int()
+	Method GetAge:Int()
 		Return GetWorldTime().GetDay() - GetWorldTime().GetDay(Self.built)
 	End Method
 
 
 	'returns the age in minutes
-	Method getAgeInMinutes:Int()
+	Method GetAgeInMinutes:Int()
 		Return (GetWorldTime().GetTimeGone() - Self.built) / 60
 	End Method
 
@@ -1074,7 +1159,7 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'get the reach of that station
-	Method getReach:Int(refresh:Int=False) {_exposeToLua}
+	Method GetReach:Int(refresh:Int=False) {_exposeToLua}
 		If reach >= 0 And Not refresh Then Return reach
 		reach = GetStationMapCollection().CalculateStationReach(Int(pos.x), Int(pos.y))
 
@@ -1083,7 +1168,7 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'get the relative reach increase of that station
-	Method getRelativeReachIncrease:Int(refresh:Int=False) {_exposeToLua}
+	Method GetRelativeReachIncrease:Int(refresh:Int=False) {_exposeToLua}
 		Local r:Float = getReach(refresh)
 		If r = 0 Then Return 0
 
@@ -1091,7 +1176,7 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method getReachIncrease:Int(refresh:Int=False) {_exposeToLua}
+	Method GetReachIncrease:Int(refresh:Int=False) {_exposeToLua}
 		If reachIncrease >= 0 And Not refresh Then Return reachIncrease
 
 		If owner <= 0
@@ -1105,7 +1190,7 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method getReachDecrease:Int(refresh:Int=False) {_exposeToLua}
+	Method GetReachDecrease:Int(refresh:Int=False) {_exposeToLua}
 		If reachDecrease >= 0 And Not refresh Then Return reachDecrease
 
 		If owner <= 0
@@ -1119,13 +1204,7 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	'if nobody needs that info , remove the method
-	Method GetHoveredMapSection:TStationMapSection()
-		Return TStationMapSection.get(Int(pos.x), Int(pos.y))
-	End Method
-
-
-	Method getFederalState:String(refresh:Int=False) {_exposeToLua}
+	Method GetFederalState:String(refresh:Int=False) {_exposeToLua}
 		If federalState <> "" And Not refresh Then Return federalState
 
 		Local hoveredSection:TStationMapSection = TStationMapSection.get(Int(pos.x), Int(pos.y))
@@ -1135,7 +1214,7 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method getSellPrice:Int(refresh:Int=False) {_exposeToLua}
+	Method GetSellPrice:Int(refresh:Int=False) {_exposeToLua}
 		'price is multiplied by an age factor of 0.75-0.95
 		Local factor:Float = Max(0.75, 0.95 - Float(getAge())/1.0)
 		If price >= 0 And Not refresh Then Return Int(price * factor / 10000) * 10000
@@ -1144,7 +1223,7 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method getPrice:Int(refresh:Int=False) {_exposeToLua}
+	Method GetPrice:Int(refresh:Int=False) {_exposeToLua}
 		If price >= 0 And Not refresh Then Return price
 		price = Max( 30000, Int(Ceil(getReach() / 10000)) * 30000 )
 
@@ -1152,50 +1231,19 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetRunningCosts:int() {_exposeToLua}
-		if HasFlag(TVTStationFlag.NO_RUNNING_COSTS) then return 0
-		
-		local result:int = 0
-
-		'== ADD STATIC RUNNING COSTS ==
-		if runningCosts = -1
-			rem
-			                       daily costs
-				   price       old    static   dynamic
-				  100000      2000      3000      2000        2^1.2 =   2.30 =   2
-				  250000      5000      7500      6000        5^1.2 =   6.90 =   6
-				  500000     10000     15000     15000       10^1.2 =  15.85 =  15
-				 1000000     20000     30000     36000       20^1.2 =  36.41 =  36
-				 2500000     50000     75000    109000       50^1.2 = 109.34 = 109
-				 5000000    100000    150000    251000      100^1.2 = 251.19 = 251
-				10000000    200000    300000    577000      200^1.2 = 577.08 = 577
-				25000000    500000    750000   1732000      500^1.2 =1732.86 =1732
-			endrem
-			'dynamic
-			'runningCosts = 1000 * Floor(Ceil(price / 50000.0)^1.2)
-
-			'static
-			runningCosts = 1500 * ceil(price / 50000.0)
-		endif
-		result :+ runningCosts
+	Method GetName:string()
+		return name
+	End Method
 
 
-		'== ADD RELATIVE MAINTENANCE COSTS ==
-		if GameRules.stationIncreaseDailyMaintenanceCosts
-			'the older a station gets, the more the running costs will be
-			'(more little repairs and so on)
-			'2% per day
-			local maintenanceCostsPercentage:int = GameRules.stationDailyMaintenanceCostsPercentage * GetAge()
-			'negative values deactivate the limit, positive once limit it
-			if GameRules.stationDailyMaintenanceCostsPercentageTotalMax >= 0
-				maintenanceCostsPercentage = Min(maintenanceCostsPercentage, GameRules.stationDailyMaintenanceCostsPercentageTotalMax)
-			endif
+	Method GetTypeName:string()
+		return "stationbase"
+	End Method
 
-			'1000 is "block size"
-			result = 1000*int( (result * (1.0 + maintenanceCostsPercentage))/1000 )
-		endif
 
-		return result
+	Method GetLongName:string()
+		if GetName() then return GetTypeName() + " " + GetName()
+		return GetTypeName()
 	End Method
 
 
@@ -1253,6 +1301,11 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetRunningCosts:int() {_exposeToLua}
+		return 0
+	End Method
+
+
 	Method Sell:Int()
 		If Not GetPlayerFinance(owner) Then Return False
 
@@ -1302,6 +1355,25 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method Update:Int()
+		'check if it becomes ready
+		If Not IsActive()
+			'TODO: if wanted, check for RepairStates or such things
+
+			If GetActivationTime() < GetWorldTime().GetTimeGone()
+				SetActive()
+			EndIf
+		EndIf
+	End Method
+
+
+	'how much a potentially drawn sprite is offset (eg. for a boundary
+	'circle like for antennas)
+	Method GetOverlayOffsetY:int()
+		return 0
+	End Method
+
+
 	Method DrawInfoTooltip()
 		Local textH:Int =  GetBitmapFontManager().baseFontBold.getHeight( "Tg" )
 		Local tooltipW:Int = 180
@@ -1311,10 +1383,10 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 		EndIf
 
 		Local tooltipX:Int = pos.x +20 - tooltipW/2
-		Local tooltipY:Int = pos.y - radius - tooltipH
+		Local tooltipY:Int = pos.y - GetOverlayOffsetY() - tooltipH
 
 		'move below station if at screen top
-		If tooltipY < 20 Then tooltipY = pos.y+radius + 10 +10
+		If tooltipY < 20 Then tooltipY = pos.y + GetOverlayOffsetY() + 10 +10
 		tooltipX = Max(20,tooltipX)
 		tooltipX = Min(585-tooltipW,tooltipX)
 
@@ -1347,7 +1419,6 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		GetBitmapFontManager().baseFont.draw(GetLocale("PRICE")+": ", textX, textY)
 		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getPrice(), 2), textX, textY, textW, 20, New TVec2D.Init(ALIGN_RIGHT), colorWhite)
-
 	End Method
 
 
@@ -1369,10 +1440,10 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 		Local tooltipW:Int = textW + 10
 		Local tooltipH:Int = textH * 2 + 10 + 5
 		Local tooltipX:Int = pos.x - tooltipW/2
-		Local tooltipY:Int = pos.y - radius - tooltipH
+		Local tooltipY:Int = pos.y - GetOverlayOffsetY() - tooltipH
 
 		'move below station if at screen top
-		If tooltipY < 20 Then tooltipY = pos.y+radius + 10 +10
+		If tooltipY < 20 Then tooltipY = pos.y + GetOverlayOffsetY() + 10 +10
 		tooltipX = Max(20,tooltipX)
 		tooltipX = Min(585-tooltipW,tooltipX)
 
@@ -1392,6 +1463,109 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 		textY:+ textH
 	End Method
 
+
+	Method Draw(selected:Int=False)
+		'
+	End Method
+End Type
+
+
+
+
+'compatibility for now
+Type TStation Extends TStationAntenna {_exposeToLua="selected"}
+	'override
+	Method Init:TStation( pos:TVec2D, price:Int=-1, owner:Int)
+		Super.Init(pos, price, owner)
+		return self
+	End Method
+End Type
+
+
+
+
+Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
+	Field radius:Int = 0
+
+
+	Method New()
+		radius = GetStationMapCollection().antennaStationRadius
+	End Method
+
+
+	'override
+	Method Init:TStationAntenna( pos:TVec2D, price:Int=-1, owner:Int)
+		Super.Init(pos, price, owner)
+		stationType = TVTStationType.ANTENNA
+		return self
+	End Method
+
+
+	'override
+	Method GenerateGUID:string()
+		return "station-antenna-"+id
+	End Method
+
+
+	'override
+	Method GetTypeName:string()
+		return GetLocale("STATION")
+	End Method
+
+
+	'override
+	Method GetRunningCosts:int() {_exposeToLua}
+		if HasFlag(TVTStationFlag.NO_RUNNING_COSTS) then return 0
+		
+		local result:int = 0
+
+		'== ADD STATIC RUNNING COSTS ==
+		if runningCosts = -1
+			rem
+			                       daily costs
+				   price       old    static   dynamic
+				  100000      2000      3000      2000        2^1.2 =   2.30 =   2
+				  250000      5000      7500      6000        5^1.2 =   6.90 =   6
+				  500000     10000     15000     15000       10^1.2 =  15.85 =  15
+				 1000000     20000     30000     36000       20^1.2 =  36.41 =  36
+				 2500000     50000     75000    109000       50^1.2 = 109.34 = 109
+				 5000000    100000    150000    251000      100^1.2 = 251.19 = 251
+				10000000    200000    300000    577000      200^1.2 = 577.08 = 577
+				25000000    500000    750000   1732000      500^1.2 =1732.86 =1732
+			endrem
+			'dynamic
+			'runningCosts = 1000 * Floor(Ceil(price / 50000.0)^1.2)
+
+			'static
+			runningCosts = 1500 * ceil(price / 50000.0)
+		endif
+		result :+ runningCosts
+
+
+		'== ADD RELATIVE MAINTENANCE COSTS ==
+		if GameRules.stationIncreaseDailyMaintenanceCosts
+			'the older a station gets, the more the running costs will be
+			'(more little repairs and so on)
+			'2% per day
+			local maintenanceCostsPercentage:int = GameRules.stationDailyMaintenanceCostsPercentage * GetAge()
+			'negative values deactivate the limit, positive once limit it
+			if GameRules.stationDailyMaintenanceCostsPercentageTotalMax >= 0
+				maintenanceCostsPercentage = Min(maintenanceCostsPercentage, GameRules.stationDailyMaintenanceCostsPercentageTotalMax)
+			endif
+
+			'1000 is "block size"
+			result = 1000*int( (result * (1.0 + maintenanceCostsPercentage))/1000 )
+		endif
+
+		return result
+	End Method
+
+
+	'override
+	Method GetOverlayOffsetY:int()
+		return radius
+	End Method
+	
 
 	Method Draw(selected:Int=False)
 		Local sprite:TSprite = Null
@@ -1424,17 +1598,219 @@ Type TStation Extends TOwnedGameObject {_exposeToLua="selected"}
 		SetAlpha OldAlpha
 		sprite.Draw(pos.x, pos.y + 1, -1, ALIGN_CENTER_CENTER)
 	End Method
+End Type
 
 
-	Method Update:Int()
-		'check if it becomes ready
-		If Not IsActive()
-			'TODO: if wanted, check for RepairStates or such things
 
-			If GetActivationTime() < GetWorldTime().GetTimeGone()
-				SetActive()
-			EndIf
+
+Type TStationCableNetwork extends TStationBase
+	'override
+	Method Init:TStationCableNetwork( pos:TVec2D, price:Int=-1, owner:Int)
+		Super.Init(pos, price, owner)
+		stationType = TVTStationType.CABLE_NETWORK
+		return self
+	End Method
+
+
+	'override
+	Method GenerateGUID:string()
+		return "station-cablenetwork-"+id
+	End Method
+
+
+	'override
+	Method GetTypeName:string()
+		return GetLocale("CABLE_NETWORK")
+	End Method
+
+
+	'override
+	Method GetRunningCosts:int() {_exposeToLua}
+		if HasFlag(TVTStationFlag.NO_RUNNING_COSTS) then return 0
+		
+		local result:int = 0
+
+		'== ADD STATIC RUNNING COSTS ==
+		if runningCosts = -1
+			rem
+			                       daily costs
+				   price       old    static   dynamic
+				  100000      2000      3000      2000        2^1.2 =   2.30 =   2
+				  250000      5000      7500      6000        5^1.2 =   6.90 =   6
+				  500000     10000     15000     15000       10^1.2 =  15.85 =  15
+				 1000000     20000     30000     36000       20^1.2 =  36.41 =  36
+				 2500000     50000     75000    109000       50^1.2 = 109.34 = 109
+				 5000000    100000    150000    251000      100^1.2 = 251.19 = 251
+				10000000    200000    300000    577000      200^1.2 = 577.08 = 577
+				25000000    500000    750000   1732000      500^1.2 =1732.86 =1732
+			endrem
+			'dynamic
+			'runningCosts = 1000 * Floor(Ceil(price / 50000.0)^1.2)
+
+			'static
+			runningCosts = 1500 * ceil(price / 50000.0)
+		endif
+		result :+ runningCosts
+
+
+		'== ADD RELATIVE MAINTENANCE COSTS ==
+		if GameRules.stationIncreaseDailyMaintenanceCosts
+			'the older a station gets, the more the running costs will be
+			'(more little repairs and so on)
+			'2% per day
+			local maintenanceCostsPercentage:int = GameRules.stationDailyMaintenanceCostsPercentage * GetAge()
+			'negative values deactivate the limit, positive once limit it
+			if GameRules.stationDailyMaintenanceCostsPercentageTotalMax >= 0
+				maintenanceCostsPercentage = Min(maintenanceCostsPercentage, GameRules.stationDailyMaintenanceCostsPercentageTotalMax)
+			endif
+
+			'1000 is "block size"
+			result = 1000*int( (result * (1.0 + maintenanceCostsPercentage))/1000 )
+		endif
+
+		return result
+	End Method
+
+
+	Method Draw(selected:Int=False)
+		Local sprite:TSprite = Null
+		Local oldAlpha:Float = GetAlpha()
+
+		If selected
+			'white border around the hovered map section
+			SetAlpha 0.25 * oldAlpha
+
+			'TODO
+			DrawText("TODO SELECTED", pos.x, pos.y)
+
+			SetAlpha Float(Min(0.9, Max(0,Sin(Time.GetAppTimeGone()/3)) + 0.5 ) * oldAlpha)
+		Else
+			SetAlpha 0.4 * oldAlpha
 		EndIf
+
+		Local color:TColor
+		Select owner
+			Case 1,2,3,4	color = TPlayerColor.GetByOwner(owner)
+							sprite = GetSpriteFromRegistry("stationmap_antenna"+owner)
+			Default			color = TColor.clWhite
+							sprite = GetSpriteFromRegistry("stationmap_antenna0")
+		End Select
+		color.SetRGB()
+		'TODO: section hervorheben
+		color.Copy().Mix(TColor.clWhite, 0.75).SetRGB()
+		'TODO: section hervorheben
+
+
+		SetColor 255,255,255
+		SetAlpha OldAlpha
+		sprite.Draw(pos.x, pos.y + 1, -1, ALIGN_CENTER_CENTER)
+	End Method
+End Type
+
+
+
+
+Type TStationSatellite extends TStationBase
+	'override
+	Method Init:TStationSatellite( pos:TVec2D, price:Int=-1, owner:Int)
+		Super.Init(pos, price, owner)
+		stationType = TVTStationType.SATELLITE
+		return self
+	End Method
+
+
+	'override
+	Method GenerateGUID:string()
+		return "station-satellite-"+id
+	End Method
+
+
+	'override
+	Method GetTypeName:string()
+		return GetLocale("SATELLITE")
+	End Method
+
+
+	'override
+	Method GetRunningCosts:int() {_exposeToLua}
+		if HasFlag(TVTStationFlag.NO_RUNNING_COSTS) then return 0
+		
+		local result:int = 0
+
+		'== ADD STATIC RUNNING COSTS ==
+		if runningCosts = -1
+			rem
+			                       daily costs
+				   price       old    static   dynamic
+				  100000      2000      3000      2000        2^1.2 =   2.30 =   2
+				  250000      5000      7500      6000        5^1.2 =   6.90 =   6
+				  500000     10000     15000     15000       10^1.2 =  15.85 =  15
+				 1000000     20000     30000     36000       20^1.2 =  36.41 =  36
+				 2500000     50000     75000    109000       50^1.2 = 109.34 = 109
+				 5000000    100000    150000    251000      100^1.2 = 251.19 = 251
+				10000000    200000    300000    577000      200^1.2 = 577.08 = 577
+				25000000    500000    750000   1732000      500^1.2 =1732.86 =1732
+			endrem
+			'dynamic
+			'runningCosts = 1000 * Floor(Ceil(price / 50000.0)^1.2)
+
+			'static
+			runningCosts = 1500 * ceil(price / 50000.0)
+		endif
+		result :+ runningCosts
+
+
+		'== ADD RELATIVE MAINTENANCE COSTS ==
+		if GameRules.stationIncreaseDailyMaintenanceCosts
+			'the older a station gets, the more the running costs will be
+			'(more little repairs and so on)
+			'2% per day
+			local maintenanceCostsPercentage:int = GameRules.stationDailyMaintenanceCostsPercentage * GetAge()
+			'negative values deactivate the limit, positive once limit it
+			if GameRules.stationDailyMaintenanceCostsPercentageTotalMax >= 0
+				maintenanceCostsPercentage = Min(maintenanceCostsPercentage, GameRules.stationDailyMaintenanceCostsPercentageTotalMax)
+			endif
+
+			'1000 is "block size"
+			result = 1000*int( (result * (1.0 + maintenanceCostsPercentage))/1000 )
+		endif
+
+		return result
+	End Method
+
+
+	Method Draw(selected:Int=False)
+		Local sprite:TSprite = Null
+		Local oldAlpha:Float = GetAlpha()
+
+		If selected
+			'white border around the hovered map section
+			SetAlpha 0.25 * oldAlpha
+
+			'TODO
+			DrawText("TODO SELECTED", pos.x, pos.y)
+
+			SetAlpha Float(Min(0.9, Max(0,Sin(Time.GetAppTimeGone()/3)) + 0.5 ) * oldAlpha)
+		Else
+			SetAlpha 0.4 * oldAlpha
+		EndIf
+
+		Local color:TColor
+		Select owner
+			Case 1,2,3,4	color = TPlayerColor.GetByOwner(owner)
+							sprite = GetSpriteFromRegistry("stationmap_antenna"+owner)
+			Default			color = TColor.clWhite
+							sprite = GetSpriteFromRegistry("stationmap_antenna0")
+		End Select
+		color.SetRGB()
+		'TODO: section hervorheben
+		color.Copy().Mix(TColor.clWhite, 0.75).SetRGB()
+		'TODO: section hervorheben
+
+
+		SetColor 255,255,255
+		SetAlpha OldAlpha
+		sprite.Draw(pos.x, pos.y + 1, -1, ALIGN_CENTER_CENTER)
 	End Method
 End Type
 
@@ -1465,7 +1841,7 @@ Type TStationMapSection
 	End Method
 
 
-	Function get:TStationMapSection(x:Int,y:Int)
+	Function Get:TStationMapSection(x:Int,y:Int)
 		For Local section:TStationMapSection = EachIn sections
 			If Not section.sprite Then section.LoadSprite()
 			If Not section.sprite Then Continue
@@ -1477,6 +1853,34 @@ Type TStationMapSection
 			EndIf
 		Next
 		Return Null
+	End Function
+
+
+	Function GetByName:TStationMapSection(name:string)
+		name = name.ToLower()
+		For Local section:TStationMapSection = EachIn sections
+			if section.name.ToLower() = name then return section
+		Next
+		return null
+	End Function
+
+
+	Function GetByListPosition:TStationMapSection(position:int)
+		return TStationMapSection(sections.ValueAtIndex(position))
+	End Function
+
+
+	Function GetCount:int()
+		return sections.Count()
+	End Function
+
+
+	Function GetNames:string[]()
+		local names:string[] = new String[ sections.Count() ]
+		For Local i:int = 0 until sections.Count()
+			names[i] = TStationMapSection(sections.ValueAtIndex(i)).name.ToLower()
+		Next
+		return names
 	End Function
 
 

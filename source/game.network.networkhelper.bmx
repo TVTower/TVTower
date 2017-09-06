@@ -738,28 +738,35 @@ Type TNetworkHelper extends TNetworkHelperBase
 
 
 	Method SendStationmapChange(playerID:int, stationGUID:string, action:int=0)
-		local station:TStation	= GetStationMap(playerID, True).getStation(stationGUID)
+		local station:TStationBase	= GetStationMap(playerID, True).GetStation(stationGUID)
 		if not station then return
 
 		local obj:TNetworkObject = TNetworkObject.Create( NET_STATIONMAPCHANGE )
 		obj.SetInt(1, playerID)
 		obj.SetInt(2, action)
-		obj.SetFloat(3, station.pos.x)
-		obj.SetFloat(4, station.pos.y)
-		obj.SetInt(5, station.radius)
-		obj.SetString(6, station.GetGUID())
+		obj.SetInt(3, station.stationType)
+		obj.SetFloat(4, station.pos.x)
+		obj.SetFloat(5, station.pos.y)
+		if TStationAntenna(station)
+			obj.SetInt(6, TStationAntenna(station).radius)
+		else
+			obj.SetInt(6, 0)
+		endif
+		obj.SetString(7, station.GetGUID())
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 	End Method
 
+	'TODO: overhaul of the whole buy-thing
 	Method ReceiveStationmapChange:int( obj:TNetworkObject)
 		local playerID:int = obj.getInt(1)
 		local action:int = obj.getInt(2)
-		local pos:TVec2D = new TVec2D.Init( obj.getFloat(3), obj.getFloat(4) )
-		local radius:int = obj.getInt(5)
-		local stationGUID:string = obj.getString(6)
+		local stationType:int = obj.getInt(3)
+		local pos:TVec2D = new TVec2D.Init( obj.getFloat(4), obj.getFloat(5) )
+		local radius:int = obj.getInt(6)
+		local stationGUID:string = obj.getString(7)
 		if not GetPlayerCollection().IsPlayer(playerID) then return FALSE
 
-		local station:TStation	= GetStationMap(playerID, True).getStation(stationGUID)
+		local station:TStationBase = GetStationMap(playerID, True).getStation(stationGUID)
 		if not station then return False
 
 		'disable events - ignore it to avoid recursion
@@ -768,7 +775,18 @@ Type TNetworkHelper extends TNetworkHelperBase
 		select action
 			case NET_ADD
 					'create the station if not existing
-					if not station then station = TStation.Create(pos,-1, radius, playerID)
+					if not station
+'						Select stationType
+'							case TVTStationType.ANTENNA
+'								station = new TStation.Init(pos,-1, radius, playerID)
+'							case TVTStationType.ANTENNA
+'								station = new TStation.Init(pos,-1, radius, playerID)
+'							default 'case TVTStationType.ANTENNA
+								station = new TStationAntenna.Init(pos,-1, playerID)
+								TStationAntenna(station).radius = radius
+'						End Select
+					endif
+
 					station.SetGUID(stationGUID)
 
 					GetStationMap(playerID).AddStation( station, FALSE )
@@ -935,7 +953,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 
 
 	Method SendStationChange(playerID:Int, stationGUID:string, newaudience:Int, add:int=1)
-		local station:TStation = GetStationMap(playerID).GetStation(stationGUID)
+		local station:TStationBase = GetStationMap(playerID).GetStation(stationGUID)
 		if not station
 			print "SendStationChange failed, no station given"
 			return
@@ -944,10 +962,15 @@ Type TNetworkHelper extends TNetworkHelperBase
 		local obj:TNetworkObject = TNetworkObject.Create( NET_STATIONMAPCHANGE )
 		obj.setInt(1, playerID)
 		obj.setInt(2, add)
-		obj.setFloat(3, station.Pos.x)
-		obj.setFloat(4, station.Pos.y)
-		obj.setInt(5, station.radius)
-		obj.setString(6, station.GetGUID())
+		obj.setInt(3, station.stationType)
+		obj.setFloat(4, station.Pos.x)
+		obj.setFloat(5, station.Pos.y)
+		if TStationAntenna(station)
+			obj.setInt(6, TStationAntenna(station).radius)
+		else
+			obj.setInt(6, 0)
+		endif
+		obj.setString(7, station.GetGUID())
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 	End Method
 

@@ -880,16 +880,45 @@ endrem
 
 
 	'== STATIONMAP ==
+
+	'compatibility
 	Method of_buyStation:int(x:int, y:int)
+		return of_buyAntennaStation(x, y)
+	End Method
+
+	
+	Method of_buyAntennaStation:int(x:int, y:int)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
-		if GetStationMapCollection().GetMap(ME).BuyStation(x, y)
+		if GetStationMap(ME).BuyAntennaStation(x, y)
 			Return self.RESULT_OK
 		else
 			Return self.RESULT_FAILED
 		endif
 	End Method
 
+
+	Method of_buyCableNetworkStation:int(federalStateName:string)
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+
+		if GetStationMap(ME).BuyCableNetworkStation(federalStateName)
+			Return self.RESULT_OK
+		else
+			Return self.RESULT_FAILED
+		endif
+	End Method
+
+
+	Method of_buySatelliteStation:int(satelliteNumber:int)
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+
+		if GetStationMap(ME).BuySatelliteStation(satelliteNumber)
+			Return self.RESULT_OK
+		else
+			Return self.RESULT_FAILED
+		endif
+	End Method
+	
 
 	Method of_sellStation:int(listPosition:int)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
@@ -911,7 +940,7 @@ endrem
 	End Method
 
 
-	Method of_getStationAtIndex:TStation(playerID:int = -1, arrayIndex:Int = -1)
+	Method of_getStationAtIndex:TStationBase(playerID:int = -1, arrayIndex:Int = -1)
 		If Not _PlayerInRoom("office") Then Return Null
 
 		if playerID = -1 then playerID = self.ME
