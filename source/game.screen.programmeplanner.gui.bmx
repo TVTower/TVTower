@@ -24,6 +24,11 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	Global hoveredElement:TGUIProgrammePlanElement = Null
 
 
+	Method New()
+		SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, False)
+	End Method
+
+
     Method Create:TGUIProgrammePlanElement(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		If Not dimension Then dimension = New TVec2D.Init(120,20)
 		Super.Create(pos, dimension, value)
@@ -576,6 +581,7 @@ Type TGUIProgrammePlanSlotList Extends TGUISlotList
 	Field acceptTypes:Int			= 0
 	Field isType:Int				= 0
 	Global registeredGlobalListeners:Int = False
+
 
     Method Create:TGUIProgrammePlanSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
 		Super.Create(position, dimension, limitState)

@@ -738,6 +738,12 @@ Type TGUINews Extends TGUIGameListItem
 	Field imageBaseName:String = "gfx_news_sheet"
 	Field cacheTextOverlay:TImage
 
+
+	Method New()
+		SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, False)
+	End Method
+
+
     Method Create:TGUINews(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		Super.Create(pos, dimension, value)
 

@@ -1524,6 +1524,11 @@ Type TGuiAdContract Extends TGUIGameListItem
 	Field contract:TAdContract
 
 
+	Method New()
+		SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, False)
+	End Method
+
+
     Method Create:TGuiAdContract(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		Super.Create(pos, dimension, value)
 

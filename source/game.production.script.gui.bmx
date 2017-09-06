@@ -11,6 +11,12 @@ Type TGuiScript Extends TGUIGameListItem
 	Field script:TScript
 	Field studioMode:Int = 0
 
+
+	Method New()
+		SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, False)
+	End Method
+
+
     Method Create:TGUIScript(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		Super.Create(pos, dimension, value)
 
