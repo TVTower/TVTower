@@ -268,7 +268,7 @@ Type TGUIListBase Extends TGUIobject
 		EndIf
 
 		'recalculate scroll limits etc.
-		If guiEntriesPanel Then RefreshListLimits()
+		UpdateLimitsAndScrollerState()
 
 		'let the children properly refresh their size
 		'(eg. because the scrollbars are visible now)
@@ -321,46 +321,46 @@ Type TGUIListBase Extends TGUIobject
 
 			If entry.rect.containsVec(pos) Then Return entry
 		Next
-		return null
+		Return Null
 	End Method
 
 
-	Method GetItemIndex:int(item:object)
+	Method GetItemIndex:Int(item:Object)
 		'using "object" to avoid filtering and therefor invalid indices
 		'also it should be faster than loops with "ValueAtIndex"-calls in
 		'it
 
-		local index:int = 0
-		For Local obj:object = eachin entries
-			if item = obj then return index
+		Local index:Int = 0
+		For Local obj:Object = EachIn entries
+			If item = obj Then Return index
 			index :+ 1
 		Next
 
-		return -1
+		Return -1
 	End Method
 
 
-	Method GetItemAtIndex:TGUIObject(index:int)
-		return TGUIObject(entries.ValueAtIndex(index))
+	Method GetItemAtIndex:TGUIObject(index:Int)
+		Return TGUIObject(entries.ValueAtIndex(index))
 	End Method
 
 
-	Method GetItemNextToItem:TGUIobject(item:object, distance:int, allowDistanceReductionOnBorders:int = True)
-		local currentIndex:int = GetItemIndex(item)
-		if currentIndex = -1 then return null
-		local nextIndex:int = 0
+	Method GetItemNextToItem:TGUIobject(item:Object, distance:Int, allowDistanceReductionOnBorders:Int = True)
+		Local currentIndex:Int = GetItemIndex(item)
+		If currentIndex = -1 Then Return Null
+		Local nextIndex:Int = 0
 
 		'when reaching below "0" or more than "max" should we return the
 		'very first/last or nothing?
-		if currentIndex + distance < 0
-			if not allowDistanceReductionOnBorders then return null
+		If currentIndex + distance < 0
+			If Not allowDistanceReductionOnBorders Then Return Null
 			nextIndex = 0
-		else if currentIndex + distance >= entries.Count()
-			if not allowDistanceReductionOnBorders then return null
+		Else If currentIndex + distance >= entries.Count()
+			If Not allowDistanceReductionOnBorders Then Return Null
 			nextIndex = entries.Count() - 1
-		endif
+		EndIf
 
-		return GetItemAtIndex(nextIndex)
+		Return GetItemAtIndex(nextIndex)
 	End Method
 
 
@@ -381,7 +381,7 @@ Type TGUIListBase Extends TGUIobject
 		entries.addLast(item)
 
 		'resize item
-		if item then item.onParentResize()
+		If item Then item.onParentResize()
 
 		'run the custom compare method
 		If hasListOption(GUILIST_AUTOSORT_ITEMS)
@@ -466,19 +466,19 @@ Type TGUIListBase Extends TGUIobject
 
 
 	Method GetFirstItem:TGUIListItem()
-		return TGUIListItem(entries.First())
+		Return TGUIListItem(entries.First())
 	End Method
 
 
 	Method GetLastItem:TGUIListItem()
-		return TGUIListItem(entries.Last())
+		Return TGUIListItem(entries.Last())
 	End Method
 
 
-	Method GetLastItemY:int()
-		local i:TGUIListItem = GetLastItem()
-		if i then return i.GetScreenY()
-		return 0
+	Method GetLastItemY:Int()
+		Local i:TGUIListItem = GetLastItem()
+		If i Then Return i.GetScreenY()
+		Return 0
 	End Method
 
 
@@ -558,17 +558,25 @@ Type TGUIListBase Extends TGUIobject
 			entryNumber:+1
 		Next
 
-		'resize container panel
-		guiEntriesPanel.resize(entriesDimension.getX(), entriesDimension.getY())
 
-		'refresh scrolling limits
-		RefreshListLimits()
+		UpdateLimitsAndScrollerState()
+	End Method
 
-		'if not all entries fit on the panel, enable scroller
-		SetScrollerState(..
-			entriesDimension.getX() > guiEntriesPanel.GetScreenWidth(), ..
-			entriesDimension.getY() > guiEntriesPanel.GetScreenHeight() ..
-		)
+
+	Method UpdateLimitsAndScrollerState()
+		if guiEntriesPanel
+			'resize container panel
+			guiEntriesPanel.resize(entriesDimension.getX(), entriesDimension.getY())
+
+			'refresh scrolling limits
+			RefreshListLimits()
+
+			'if not all entries fit on the panel, enable scroller
+			SetScrollerState(..
+				entriesDimension.getX() > guiEntriesPanel.GetScreenWidth(), ..
+				entriesDimension.getY() > guiEntriesPanel.GetScreenHeight() ..
+			)
+		endif
 	End Method
 
 
@@ -595,7 +603,7 @@ Type TGUIListBase Extends TGUIobject
 					'subtract height
 					'old: guiEntriesPanel.SetLimits(0, -(dimension.getY() - guiEntriesPanel.getScreenheight()) )
 					Local lastItem:TGUIListItem = GetLastItem()
-					If Not lastItem and GetLastItemY() = 0
+					If Not lastItem And GetLastItemY() = 0
 						guiEntriesPanel.SetLimits(0, 0)
 					Else
 '						if not autoScroll
@@ -667,7 +675,7 @@ Type TGUIListBase Extends TGUIobject
 		guiScrollerV.setOption(GUI_OBJECT_VISIBLE, boolV)
 
 		'resize everything
-		if changed then Resize()
+		If changed Then Resize()
 	End Method
 
 
@@ -735,7 +743,7 @@ Type TGUIListBase Extends TGUIobject
 		If fromList Then fromList.removeItem(item)
 		'try to add the item, if not able, readd
 		If Not toList.addItem(item, data)
-			If fromList and fromList.addItem(item) Then Return True
+			If fromList And fromList.addItem(item) Then Return True
 
 			'not able to add to "toList" but also not to "fromList"
 			'so set veto and keep the item dragged
@@ -813,16 +821,16 @@ endrem
 		Local baseScrollSpeed:Int = Min(20, 2 + Max(0, MOUSEMANAGER.GetDownTime(1) - 500)/100.0)
 
 
-		if guiList.HasListOption(GUILIST_SCROLL_TO_NEXT_ITEM)
+		If guiList.HasListOption(GUILIST_SCROLL_TO_NEXT_ITEM)
 			'for now assume same height for all (as we do not know what
 			'item to use as "current item")
-			local currentItem:TGUIListItem = guiList.GetFirstItem()
-			if currentItem
-				local itemHeight:int = Max(currentItem.rect.GetH(), currentItem.GetScreenHeight())
-				if itemHeight = 0 then itemHeight = 20
-				baseScrollSpeed = itemHeight * ceil(baseScrollSpeed / float(itemHeight))
-			endif
-		endif
+			Local currentItem:TGUIListItem = guiList.GetFirstItem()
+			If currentItem
+				Local itemHeight:Int = Max(currentItem.rect.GetH(), currentItem.GetScreenHeight())
+				If itemHeight = 0 Then itemHeight = 20
+				baseScrollSpeed = itemHeight * Ceil(baseScrollSpeed / Float(itemHeight))
+			EndIf
+		EndIf
 		
 		Local scrollAmount:Int = data.GetInt("scrollAmount", baseScrollSpeed)
 		'this should be "calculate height and change amount"
@@ -851,8 +859,8 @@ endrem
 		guiEntriesPanel.scrollBy(dx,dy)
 
 		'refresh scroller values (for "progress bar" on the scroller)
-		if dx <> 0 then guiScrollerH.SetRelativeValue( GetScrollPercentageX() )
-		if dy <> 0 then guiScrollerV.SetRelativeValue( GetScrollPercentageY() )
+		If dx <> 0 Then guiScrollerH.SetRelativeValue( GetScrollPercentageX() )
+		If dy <> 0 Then guiScrollerV.SetRelativeValue( GetScrollPercentageY() )
 	End Method
 
 
@@ -882,10 +890,10 @@ endrem
 		Select _orientation
 			Case GUI_OBJECT_ORIENTATION_VERTICAL
 				guiEntriesPanel.SetScrollPercentageY(0)
-				if guiScrollerV then guiScrollerV.SetRelativeValue(0)
+				If guiScrollerV Then guiScrollerV.SetRelativeValue(0)
 			Case GUI_OBJECT_ORIENTATION_HORIZONTAL
 				guiEntriesPanel.SetScrollPercentageX(0)
-				if guiScrollerH then guiScrollerH.SetRelativeValue(0)
+				If guiScrollerH Then guiScrollerH.SetRelativeValue(0)
 		End Select
 	End Method
 
@@ -894,10 +902,10 @@ endrem
 		Select _orientation
 			Case GUI_OBJECT_ORIENTATION_VERTICAL
 				guiEntriesPanel.SetScrollPercentageY(100)
-				if guiScrollerV then guiScrollerV.SetRelativeValue(100)
+				If guiScrollerV Then guiScrollerV.SetRelativeValue(100)
 			Case GUI_OBJECT_ORIENTATION_HORIZONTAL
 				guiEntriesPanel.SetScrollPercentageX(100)
-				if guiScrollerH then guiScrollerH.SetRelativeValue(100)
+				If guiScrollerH Then guiScrollerH.SetRelativeValue(100)
 		End Select
 	End Method
 
@@ -1154,13 +1162,13 @@ endrem
 	End Method
 
 
-	Method onParentResize:int()
-		if HasListItemOption(GUILISTITEM_AUTOSIZE_WIDTH)
-			self.Resize(GetParent().GetContentScreenWidth(), -1)
-			return True
-		endif
+	Method onParentResize:Int()
+		If HasListItemOption(GUILISTITEM_AUTOSIZE_WIDTH)
+			Self.Resize(GetParent().GetContentScreenWidth(), -1)
+			Return True
+		EndIf
 
-		return Super.onParentResize()
+		Return Super.onParentResize()
 	End Method
 	
 

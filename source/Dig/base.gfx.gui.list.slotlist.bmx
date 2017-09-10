@@ -530,17 +530,7 @@ Type TGUISlotList Extends TGUIListBase
 		Next
 
 
-		'resize container panel
-		guiEntriesPanel.resize(entriesDimension.getX(), entriesDimension.getY())
-
-		'refresh scrolling limits
-		RefreshListLimits()
-
-		'if not all entries fit on the panel, enable scroller
-		SetScrollerState(..
-			entriesDimension.getX() > guiEntriesPanel.GetScreenWidth(), ..
-			entriesDimension.getY() > guiEntriesPanel.GetScreenHeight() ..
-		)
+		UpdateLimitsAndScrollerState()
 	End Method
 
 

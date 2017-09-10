@@ -60,7 +60,7 @@ Type TGameGUIAccordeon extends TGUIAccordeon
 
 	Method DrawOverlay()
 		'use GetSkin() to fetch the skin when drawing was possible
-		GetSkin().RenderBorder(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
+		GetSkin().RenderBorder(int(GetScreenX()), int(GetScreenY()), int(GetScreenWidth()), int(GetScreenHeight()))
 	End Method
 End Type
 
@@ -121,7 +121,7 @@ Type TGameGUIAccordeonPanel extends TGUIAccordeonPanel
 	Method DrawBody()
 		local skin:TDatasheetSkin = GetSkin()
 		if skin
-			skin.RenderContent(GetScreenX(), GetScreenY() + GetHeaderHeight(), GetScreenWidth(), GetBodyHeight(), "2")
+			skin.RenderContent(int(GetScreenX()), int(GetScreenY() + GetHeaderHeight()), int(GetScreenWidth()), int(GetBodyHeight()), "2")
 		endif
 	End Method
 End Type
@@ -293,7 +293,7 @@ Type TGameGUIBasicStationmapPanel extends TGameGUIAccordeonPanel
 	End Method
 
 
-	Method Update()
+	Method Update:int()
 		if isOpen
 			'move list to here...
 			if list.rect.position.GetX() <> 2
@@ -304,7 +304,10 @@ Type TGameGUIBasicStationmapPanel extends TGameGUIAccordeonPanel
 
 			'adjust list size if needed
 			local listH:int = listBackgroundH - 6
-			if listBackgroundH > 0 and list.GetHeight() <> listH then list.Resize(-1, listH)
+			if listBackgroundH > 0 and list.GetHeight() <> listH
+				list.Resize(-1, listH)
+'				list.RecalculateElements()
+			endif
 
 			
 			actionButton.SetPosition(5, GetHeaderHeight() + GetBodyHeight() - 34 )
