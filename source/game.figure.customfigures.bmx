@@ -434,7 +434,9 @@ Type TFigureTerrorist Extends TFigureDeliveryBoy
 	Method IsAcceptingEntityInSameRoom:int(entity:TEntity, room:object)
 		if not GetInRoom()
 			local r:TRoomBase = TRoomBase(room)
-			if r and r.HasFlag(TVTRoomFlag.FAKE_ROOM) then return False
+			'if going into a fake room (eg. "room board") just accept it
+			'so the terrorist cannot get blocked by others
+			if r and r.HasFlag(TVTRoomFlag.FAKE_ROOM) then return true
 
 			return Super.IsAcceptingEntityInSameRoom(entity, room)
 		endif
