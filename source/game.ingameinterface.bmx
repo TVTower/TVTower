@@ -91,6 +91,7 @@ Type TInGameInterface
 		CurrentTimeToolTip = TTooltip.Create("", "", 490, 535)
 		CurrentTimeTooltip._minContentWidth = 190
 		MoneyToolTip = TTooltip.Create("", "", 490, 408)
+		MoneyToolTip.SetMinTitleAndContentWidth(190)
 		BettyToolTip = TTooltip.Create("", "", 490, 485)
 		ChannelImageTooltip = TTooltip.Create("", "", 490, 510)
 		MenuToolTip = TTooltip.Create("", "", 470, 560)
@@ -338,8 +339,26 @@ Type TInGameInterface
 				MoneyToolTip.title = getLocale("MONEY")
 				local content:String = ""
 				content	= "|b|"+getLocale("MONEY")+":|/b| "+MathHelper.DottedValue(GetPlayerBase().GetMoney()) + getLocale("CURRENCY")
-				content	:+ "~n"
-				content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ MathHelper.DottedValue(GetPlayerBase().GetCredit()) + getLocale("CURRENCY")+"|/color|"
+				if GetPlayerBase().GetCredit() > 0
+					content	:+ "~n"
+					content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ MathHelper.DottedValue(GetPlayerBase().GetCredit()) + getLocale("CURRENCY")+"|/color|"
+				else
+					content	:+ "~n"
+					content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=0,200,100|0" + getLocale("CURRENCY")+"|/color|"
+				endif
+
+				local profit:int = GetPlayerFinance(GetPlayerBase().playerID).GetCurrentProfit()
+				if profit > 0
+					content	:+ "~n"
+					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=100,200,100|+"+ MathHelper.DottedValue(profit) + getLocale("CURRENCY")+"|/color|"
+				elseif profit = 0
+					content	:+ "~n"
+					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=100,100,100|0" + getLocale("CURRENCY")+"|/color|"
+				else
+					content	:+ "~n"
+					content	:+ "|b|"+getLocale("FINANCES_TODAYS_INCOME")+":|/b| |color=200,100,100|"+ MathHelper.DottedValue(profit) + getLocale("CURRENCY")+"|/color|"
+				endif
+
 				MoneyTooltip.SetContent(content)
 				MoneyToolTip.enabled 	= 1
 				MoneyToolTip.Hover()

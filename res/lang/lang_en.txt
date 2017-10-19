@@ -383,6 +383,7 @@ ERROR_NOT_ENOUGH_MONEY_TEXT 		= You do not have enough money to finish this acti
 
 FINANCES_EXPENSES     = Expenses
 FINANCES_INCOME       = Income
+FINANCES_TODAYS_INCOME= Todays Income
 
 FINANCES_LAST_FINANCIAL_ACTIVITIES = Last financial activities
 FINANCES_FINANCIAL_CURVES = Financial curves
