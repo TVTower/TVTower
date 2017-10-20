@@ -9,6 +9,7 @@ Import "Dig/base.util.registry.spriteloader.bmx"
 Import "game.gameobject.bmx"
 Import "game.broadcastmaterial.base.bmx"
 Import "game.programme.programmedata.bmx"
+Import "game.programme.programmedata.specials.bmx"
 Import "game.player.base.bmx"
 Import "game.player.finance.bmx"
 Import "game.broadcast.audience.bmx"
@@ -2186,7 +2187,12 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 				local titleW:int = skin.fontNormal.draw("TrailerMod:", contentX + 5, contentY).GetX()
 				skin.fontNormal.drawBlock(data.GetTrailerMod(useOwner).ToStringPercentage(2), contentX + 5 + titleW + 5, contentY, contentW - titleW - 5 - 5, 60)
 			endif
-			
+
+			if TSportsProgrammeData(data)
+				local sportsData:TSportsProgrammeData = TSportsProgrammeData(data)
+				contentY :+ 12
+				skin.fontNormal.draw("IsMatchFinished: " + sportsData.IsMatchFinished() + "   Matchtime: " + GetWorldTime().GetFormattedGameDate(sportsData.GetMatchEndTime()), contentX + 5, contentY)
+			endif
 		endif
 
 		'=== OVERLAY / BORDER ===

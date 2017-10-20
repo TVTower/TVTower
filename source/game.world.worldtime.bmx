@@ -424,8 +424,8 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetFormattedGameDate:String(time:Double = -1, format:string="h:i d.m.y") {_exposeToLua}
-		return GetFormattedDate(time, "g/h:i (d.m.y)")
+	Method GetFormattedGameDate:String(time:Double = -1, format:string="g/h:i (d.m.y)") {_exposeToLua}
+		return GetFormattedDate(time, format)
 	End Method
 
 	Method GetFormattedDate:String(time:Double = -1, format:string="h:i d.m.y") {_exposeToLua}

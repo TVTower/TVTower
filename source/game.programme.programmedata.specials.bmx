@@ -8,11 +8,35 @@ Import "game.programme.programmedata.bmx"
 Import "game.newsagency.sports.soccer.bmx"
 
 
+Type TSportsHeaderProgrammeData extends TSportsProgrammeData {_exposeToLua}
+	Field descriptionAirTimeHint:TLocalizedString
+	Field descriptionAiredHint:TLocalizedString
+
+	Method GenerateGUID:string()
+		return "broadcastmaterialsource-sportsheaderprogrammedata-"+id
+	End Method
+
+
+	Method GetDescription:string()
+		if descriptionAirTimeHint and IsLive()
+			return Super.GetDescription() + "~n~n" + descriptionAirTimeHint.Get()
+		elseif descriptionAiredHint and not IsLive()
+			return Super.GetDescription() + "~n~n" + descriptionAiredHint.Get()
+		elseif not IsLive()
+			return "|i|("+GetLocale("LIVE_ON_TAPE")+", " + GetLocale("ALL_MATCHES_FINISHED") + "|/i|)~n" + descriptionProcessed.Get()
+		else
+			return Super.GetDescription()
+		endif
+	End Method
+End Type
+
+
 Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 	Field matchGUID:string
 	Field leagueGUID:string
 	Field dynamicTexts:int = False
 	Field matchEndTime:Long = -1
+	Field matchTime:Long = -1
 
 
 	Method GenerateGUID:string()
@@ -78,7 +102,18 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 
 				descriptionProcessed = _ReplacePlaceholdersInLocalizedString(description)
 			endif
-			return descriptionProcessed.Get()
+
+			if not IsLive()
+				'compatibility with old savegames in which "sportheaderprogrammedata"
+				'was not existing and header+matches shared one type
+				if matchGUID
+					return "|i|("+GetRandomLocale("LIVE_ON_TAPE")+": " + GetLocale("GAMEDAY")+" "+ GetWorldTime().GetFormattedGameDate(GetMatchTime(), "g, h:i") + " " + GetLocale("OCLOCK")+")|/i|~n" + descriptionProcessed.Get()
+				else
+					return "|i|("+GetRandomLocale("LIVE_ON_TAPE")+": " + GetLocale("ALL_MATCHES_FINISHED") + "|/i|)~n" + descriptionProcessed.Get()
+				endif
+			else
+				return descriptionProcessed.Get()
+			endif
 		endif
 		return ""
 	End Method
@@ -206,6 +241,15 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 			if match then matchEndTime = match.GetMatchEndTime()
 		endif
 		return matchEndTime
+	End Method
+
+
+	Method GetMatchTime:Long()
+		if matchTime = -1
+			local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(matchGUID)
+			if match then matchTime = match.GetMatchTime()
+		endif
+		return matchTime
 	End Method
 
 
