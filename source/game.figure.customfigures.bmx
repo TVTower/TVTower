@@ -553,8 +553,10 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 		Local roomOwner:Int = -1
 		If inRoom Then roomOwner = inRoom.owner
 
-		If Not GetPlayerBaseCollection().isPlayer(roomOwner)
-			'block room for x hours - like terror attack ?
+		'block other rooms for x hours - like terror attack ?
+		If Not GetPlayerBaseCollection().isPlayer(roomOwner) or not inRoom.name = "archive"
+			'TODO
+		'when entering an archive, confiscate a licence
 		Else
 			local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(roomOwner)
 			'try to get the licence from the player - if that player does
