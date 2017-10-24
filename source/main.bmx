@@ -608,7 +608,7 @@ Type TApp
 						TSoundManager.GetInstance().MuteSfx(Not TSoundManager.GetInstance().HasMutedSfx())
 					ElseIf KEYMANAGER.IsDown(KEY_LCONTROL) Or KEYMANAGER.IsDown(KEY_RCONTROL)
 						TSoundManager.GetInstance().MuteMusic(Not TSoundManager.GetInstance().HasMutedMusic())
-					Else
+					Elseif not KEYMANAGER.IsDown(KEY_LALT)
 						TSoundManager.GetInstance().Mute(Not TSoundManager.GetInstance().IsMuted())
 					EndIf
 				EndIf
@@ -1044,27 +1044,15 @@ rem
 							print "-----------------"
 						EndIf
 endrem						
-						If KEYMANAGER.isHit(KEY_L)
-							DEV_switchRoom(GetRoomCollection().GetFirstByDetails("supermarket"))
-						endif
 						If KEYMANAGER.isHit(KEY_S)
-							If not KEYMANAGER.IsDown(KEY_LCONTROL)
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", GetPlayerCollection().playerID))
-							else
+							If KEYMANAGER.IsDown(KEY_LCONTROL)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("supermarket"))
+							elseIf KEYMANAGER.IsDown(KEY_RCONTROL)
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("scriptagency"))
+							else
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", GetPlayerCollection().playerID))
 							endif
 						endif
-						If KEYMANAGER.isHit(KEY_D)
-							If KEYMANAGER.IsDown(KEY_LSHIFT)
-								'go to first studio of the player
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", GetPlayerCollection().playerID))
-							Else If KEYMANAGER.IsDown(KEY_LCONTROL)
-								'go to first studio of the player
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("supermarket"))
-							Else
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("scriptagency"))
-							EndIf
-						EndIf
 						
 						'e wie "employees" :D
 						If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("credits"))
@@ -1084,7 +1072,7 @@ endrem
 				If KEYMANAGER.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240*15 ) '240 minute per second
 				If KEYMANAGER.IsHit(KEY_9) Then GetGame().SetGameSpeed( 1*15 )   '1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
-				if KEYMANAGER.IsDown(KEY_LCONTROL) and KEYMANAGER.IsHit(KEY_M) then TVTDebugModifierInfos = 1 - TVTDebugModifierInfos
+				if KEYMANAGER.IsDown(KEY_LALT) and KEYMANAGER.IsHit(KEY_M) then TVTDebugModifierInfos = 1 - TVTDebugModifierInfos
 
 				If KEYMANAGER.IsHit(KEY_P)
 					if KEYMANAGER.IsDown(KEY_LSHIFT)
