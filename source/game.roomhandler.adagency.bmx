@@ -511,9 +511,9 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			Case SORT_BY_PROFIT
 				list.sort(True, TAdContract.SortByProfit)
 			Case SORT_BY_MINAUDIENCE
-				list.sort(True, TAdContract.SortByMinAudience)
+				list.sort(True, TAdContract.SortByMinAudienceRelative)
 			default
-				list.sort(True, TAdContract.SortByMinAudience)
+				list.sort(True, TAdContract.SortByMinAudienceRelative)
 		End select
 	End Method
 

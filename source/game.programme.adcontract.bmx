@@ -277,8 +277,8 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 
 	'are there a interest groups liking/hating broadcasts of this?
 	'eg. anti-nicotin
-	Field proPressureGroups:Int = -1
-	Field contraPressureGroups:Int = -1
+	Field proPressureGroups:Int = 0
+	Field contraPressureGroups:Int = 0
 	
 	'minimum audience (real value calculated on sign)
 	Field minAudienceBase:Float
@@ -483,42 +483,57 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 
 		Return infomercialTopicality
 	End Method
-	
+
+
+	Method GetLimitedToProgrammeGenre:int() {_exposeToLua}
+		Return limitedToProgrammeGenre
+	End Method
+
+
+	Method IsLimitedToTargetGroup:int(targetGroup:int) {_exposeToLua}
+		Return (GetLimitedToTargetGroup() & targetGroup) > 0
+	End Method
+
+
+	Method GetLimitedToTargetGroup:int() {_exposeToLua}
+		Return Max(0, limitedToTargetGroup)
+	End Method
+
 
 	Method GetProPressureGroups:int()
-		return proPressureGroups
+		return Max(0, proPressureGroups)
 	End Method
 
 
 	Method HasProPressureGroup:Int(group:Int) {_exposeToLua}
-		Return proPressureGroups & group
+		Return (GetProPressureGroups() & group) > 0
 	End Method
 
 
 	Method SetProPressureGroup:int(group:int, enable:int=True)
 		If enable
-			proPressureGroups :| group
+			proPressureGroups = GetProPressureGroups() | group
 		Else
-			proPressureGroups :& ~group
+			proPressureGroups = GetProPressureGroups() & ~group
 		EndIf
 	End Method
 
 
 	Method GetContraPressureGroups:int()
-		return contraPressureGroups
+		return Max(0, contraPressureGroups)
 	End Method
 
 
 	Method HasContraPressureGroup:Int(group:Int) {_exposeToLua}
-		Return contraPressureGroups & group
+		Return (GetContraPressureGroups() & group) > 0
 	End Method
 
 
 	Method SetContraPressureGroup:int(group:int, enable:int=True)
 		If enable
-			contraPressureGroups :| group
+			contraPressureGroups = GetContraPressureGroups() | group
 		Else
-			contraPressureGroups :& ~group
+			contraPressureGroups = GetContraPressureGroups() & ~group
 		EndIf
 	End Method
 
@@ -665,6 +680,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Function
 
 
+	'sort by _absolute_ minAudience. So 60.000 "men" is < 90.000 "all"
 	Function SortByMinAudience:Int(o1:Object, o2:Object)
 		Local a1:TAdContract = TAdContract(o1)
 		Local a2:TAdContract = TAdContract(o2)
@@ -674,6 +690,23 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			return a1.GetTitle() > a2.GetTitle()
 		endif
         Return a1.GetMinAudience() - a2.GetMinAudience()
+	End Function
+
+
+	'sort by _absolute_ minAudience. So 60.000 "men" is > 90.000 "all" (50% men of 90.000 = 45.000)
+	Function SortByMinAudienceRelative:Int(o1:Object, o2:Object)
+		Local a1:TAdContract = TAdContract(o1)
+		Local a2:TAdContract = TAdContract(o2)
+		If Not a2 Then Return 1
+
+		'calculate the value as if population consists only of the targetgroup 
+		local relativeAudience1:int = a1.GetMinAudience()/AudienceManager.GetTargetGroupPercentage(a1.GetLimitedToTargetGroup())
+		local relativeAudience2:int = a2.GetMinAudience()/AudienceManager.GetTargetGroupPercentage(a2.GetLimitedToTargetGroup())
+
+		if relativeAudience1 = relativeAudience2 
+			return a1.GetTitle() > a2.GetTitle()
+		endif
+        Return relativeAudience1 - relativeAudience2
 	End Function
 
 
@@ -1281,13 +1314,18 @@ price :* Max(1, minAudience/1000)
 	End Method
 
 
+	Method IsLimitedToTargetGroup:int(targetGroup:int) {_exposeToLua}
+		Return (GetLimitedToTargetGroup() & targetGroup) > 0
+	End Method
+
+
 	Method GetLimitedToTargetGroup:Int() {_exposeToLua}
 		'with no required audience, we cannot limit to target groups
 		'except hmm ... we want that at least 1 of the target group
 		'is watching 
 		if GetMinAudiencePercentage() = 0 then return 0
 
-		Return base.limitedToTargetGroup
+		Return base.GetLimitedToTargetGroup()
 	End Method
 
 
@@ -1309,7 +1347,7 @@ price :* Max(1, minAudience/1000)
 
 
 	Method GetLimitedToGenre:Int() {_exposeToLua}
-		Return base.limitedToProgrammeGenre
+		Return base.GetLimitedToProgrammeGenre()
 	End Method
 
 
