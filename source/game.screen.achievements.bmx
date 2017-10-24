@@ -343,7 +343,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
 		Local maxWidth:Int = 400
 		If parentPanel Then maxWidth = parentPanel.getContentScreenWidth() '- GetScreenWidth()
-print "maxWidth: " + maxWidth
+
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local dimension:TVec2D = New TVec2D.Init(maxWidth, GetSpriteFromRegistry("gfx_datasheet_achievement_bg").GetHeight())
@@ -389,6 +389,16 @@ print "maxWidth: " + maxWidth
 	Function DrawAchievement(x:Float, y:Float, w:Float, h:Float, achievement:TAchievement)
 		local title:string = achievement.GetTitle() ' + " [c:"+achievement.category+" > g:"+achievement.group+" > i:"+achievement.index+"   "+achievement.GetGUID()+"]"
 		local text:string = achievement.GetText()
+
+		local rewardText:string
+		For local i:int = 0 until achievement.GetRewards().length
+			if rewardText <> "" then rewardText :+ "~n"
+			rewardText :+ chr(9654) + " " +achievement.GetRewards()[i].GetTitle()
+		Next
+		if rewardText
+			text :+ "~n|b|" + GetLocale("REWARD") + ":|/b|~n" + rewardText
+		endif
+
 
 		local skin:TDatasheetSkin = GetDatasheetSkin("achievement")
 
