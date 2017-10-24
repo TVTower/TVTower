@@ -188,6 +188,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 			item.data = new TData.Add("achievement", achievement)
 			item.displayName = achievement.GetTitle()
 			item.Resize(400, 70)
+			item.GetDimension()
 			achievementList.AddItem( item )
 		Next
 
@@ -306,7 +307,6 @@ End Type
 
 
 Type TGUIAchievementListItem Extends TGUISelectListItem
-	Field achievement:TAchievement
 	Field displayName:string = ""
 
 	Const paddingBottom:Int	= 2
@@ -344,9 +344,25 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 		Local maxWidth:Int = 400
 		If parentPanel Then maxWidth = parentPanel.getContentScreenWidth() '- GetScreenWidth()
 
-		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local dimension:TVec2D = New TVec2D.Init(maxWidth, GetSpriteFromRegistry("gfx_datasheet_achievement_bg").GetHeight())
+		local titleOffsetX:int = 3, titleOffsetY:int = 3
+		local textOffsetX:int = 3, textOffsetY:int = 18
+		local skin:TDatasheetSkin = GetDatasheetSkin("achievement")
+		local sprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_achievement_bg")
+		local border:TRectangle = sprite.GetNinePatchContentBorder()
+		local halfTextWidth:int = 0.5 * (GetScreenWidth() - textOffsetX - (border.GetRight() + border.GetLeft()))
+		local leftWidth:int = 1.25 * halfTextWidth
+		local rightWidth:int = 0.75 * halfTextWidth
+
+		'Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
+		local maxTextHeight:int = Max(skin.fontNormal.GetBlockHeight(GetAchievementText(), leftWidth, 2000), ..
+		                              skin.fontNormal.GetBlockHeight(GetAchievementRewardText(), rightWidth, 2000))
+		Local maxHeight:Int = Max( sprite.GetHeight(), ..
+		                           textOffsetY + border.GetTop() + border.GetBottom() + maxTextHeight ..
+		                      )
+print "maxHeight: "+sprite.GetHeight()+"  " + maxTextHeight
+
+		Local dimension:TVec2D = New TVec2D.Init(maxWidth, maxHeight)
 		
 		'add padding
 		dimension.addXY(0, Self.paddingTop)
@@ -372,13 +388,13 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 
 	'override
 	Method DrawValue()
-		DrawAchievement(GetScreenX(), GetScreenY() + Self.paddingTop, GetScreenWidth(), GetScreenHeight() - Self.paddingBottom - Self.paddingTop, TAchievement(data.Get("achievement")))
+		DrawAchievement(GetScreenX(), GetScreenY() + Self.paddingTop, GetScreenWidth(), GetScreenHeight() - Self.paddingBottom - Self.paddingTop)
 
 		If isHovered()
 			SetBlend LightBlend
 			SetAlpha 0.10 * GetAlpha()
 
-			DrawAchievement(GetScreenX(), GetScreenY() + Self.paddingTop, GetScreenWidth(), GetScreenHeight() - Self.paddingBottom - Self.paddingTop, TAchievement(data.Get("achievement")))
+			DrawAchievement(GetScreenX(), GetScreenY() + Self.paddingTop, GetScreenWidth(), GetScreenHeight() - Self.paddingBottom - Self.paddingTop)
 
 			SetBlend AlphaBlend
 			SetAlpha 10.0 * GetAlpha()
@@ -386,29 +402,65 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 	End Method
 
 
-	Function DrawAchievement(x:Float, y:Float, w:Float, h:Float, achievement:TAchievement)
-		local title:string = achievement.GetTitle() ' + " [c:"+achievement.category+" > g:"+achievement.group+" > i:"+achievement.index+"   "+achievement.GetGUID()+"]"
-		local text:string = achievement.GetText()
+	Method GetAchievementTitle:string()
+		local achievement:TAchievement = TAchievement(data.Get("achievement"))
+		if not achievement then return ""
+
+		return achievement.GetTitle()
+	End Method
+
+	
+	Method GetAchievementText:string()
+		local achievement:TAchievement = TAchievement(data.Get("achievement"))
+		if not achievement then return ""
+
+		return achievement.GetText()
+	End Method
+
+
+	Method GetAchievementRewardText:string()
+		local achievement:TAchievement = TAchievement(data.Get("achievement"))
+		if not achievement then return "123"
 
 		local rewardText:string
 		For local i:int = 0 until achievement.GetRewards().length
 			if rewardText <> "" then rewardText :+ "~n"
 			rewardText :+ chr(9654) + " " +achievement.GetRewards()[i].GetTitle()
 		Next
-		if rewardText
-			text :+ "~n|b|" + GetLocale("REWARD") + ":|/b|~n" + rewardText
+		if rewardText <> ""
+			rewardText = "" + GetLocale("REWARD") + ":~n" + rewardText
 		endif
+		
+		return rewardText
+	End Method
 
+
+	Method GetAchievementLongText:string()
+		local rewardText:string = GetAchievementRewardText()
+		if rewardText
+			return GetAchievementText()
+		else
+			return GetAchievementText()
+		endif
+	End Method
+	
+
+
+	Method DrawAchievement(x:Float, y:Float, w:Float, h:Float)
+		local title:string = GetAchievementTitle()
+		local textLeft:string, textRight:string
+		local achievement:TAchievement = TAchievement(data.get("achievement"))
+		if not achievement then return
 
 		local skin:TDatasheetSkin = GetDatasheetSkin("achievement")
 
 		local titleOffsetX:int = 3, titleOffsetY:int = 3
-		local textOffsetX:int = 3, textOffsetY:int = 15
+		local textOffsetX:int = 3, textOffsetY:int = 18
 
 		local sprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_achievement_bg")
 		sprite.DrawArea(x,y,w,h)
 		local achievementSprite:TSprite
-		if achievement.IsCompleted( GetPlayerBaseCollection().playerID )
+		if 1=1 or achievement.IsCompleted( GetPlayerBaseCollection().playerID )
 			if achievement.spriteFinished
 				achievementSprite = GetSpriteFromRegistry( achievement.spriteFinished )
 			endif
@@ -416,6 +468,9 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 			if not achievementSprite
 				achievementSprite = GetSpriteFromRegistry( "gfx_datasheet_achievement_img_ok" )
 			endif
+
+			textLeft = GetAchievementText()
+			textRight = GetAchievementRewardText()
 		else
 			if achievement.spriteUnfinished
 				achievementSprite = GetSpriteFromRegistry( achievement.spriteUnfinished )
@@ -423,9 +478,12 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 
 			'reset title / text
 			title = "? ? ? ? ? ?"
-			text = ""
+			textLeft = ""
+			textRight = ""
 		endif
 
+		'draw background-icon (question mark)
+		GetSpriteFromRegistry( "gfx_datasheet_achievement_img" ).Draw(x+4,y+3)
 		if achievementSprite then achievementsprite.Draw(x+6, y+5)
 
 		local border:TRectangle = sprite.GetNinePatchContentBorder()
@@ -441,17 +499,42 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 			15, ..
 			ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 
-		SetAlpha( Max(0.6, oldCol.a) )
-		skin.fontNormal.drawBlock( ..
-			text, ..
-			x + textOffsetX + border.GetLeft(), ..
-			y + textOffsetY + border.GetTop(), .. '-1 to align it more properly
-			w - textOffsetX - (border.GetRight() + border.GetLeft()),  ..
-			Max(15, sprite.GetHeight() - (border.GetTop() + border.GetBottom() + 15)), ..
-			ALIGN_LEFT_CENTER, skin.textColorNeutral)
 
-		SetAlpha (oldCol.a)
-	End Function
+		if textRight <> "" 
+			local halfTextWidth:int = 0.5 * (w - textOffsetX - (border.GetRight() + border.GetLeft()))
+			local leftWidth:int = 1.25 * halfTextWidth
+			local rightWidth:int = 0.75 * halfTextWidth
+
+			SetAlpha( Max(0.6, oldCol.a) )
+			skin.fontNormal.drawBlock( ..
+				textLeft, ..
+				x + textOffsetX + border.GetLeft(), ..
+				y + textOffsetY + border.GetTop(), ..
+				leftWidth - 10,  ..
+				Max(15, GetScreenHeight() - (border.GetTop() + border.GetBottom() + 15)), ..
+				ALIGN_LEFT_TOP, skin.textColorNeutral)
+
+			skin.fontNormal.drawBlock( ..
+				textRight, ..
+				x + textOffsetX + border.GetLeft() + leftWidth + 10, ..
+				y + textOffsetY + border.GetTop(), .. 
+				rightWidth - 10,  ..
+				Max(15, GetScreenHeight() - (border.GetTop() + border.GetBottom() + 15)), ..
+				ALIGN_LEFT_TOP, skin.textColorNeutral)
+			SetAlpha (oldCol.a)
+		else
+			SetAlpha( Max(0.6, oldCol.a) )
+			skin.fontNormal.drawBlock( ..
+				textLeft, ..
+				x + textOffsetX + border.GetLeft(), ..
+				y + textOffsetY + border.GetTop(), .. '-1 to align it more properly
+				w - textOffsetX - (border.GetRight() + border.GetLeft()),  ..
+				Max(15, sprite.GetHeight() - (border.GetTop() + border.GetBottom() + 15)), ..
+				ALIGN_LEFT_CENTER, skin.textColorNeutral)
+			SetAlpha (oldCol.a)
+		endif
+
+	End Method
 
 
 	Method DrawContent()
@@ -472,7 +555,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 		endif
 	End Method
 
-
+rem
 	Method DrawDatasheet(leftX:Float=30, rightX:Float=30)
 		Local sheetY:Float 	= 20
 		Local sheetX:Float 	= int(leftX)
@@ -514,5 +597,5 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 		'=== OVERLAY / BORDER ===
 		skin.RenderBorder(int(x), int(y), sheetWidth, sheetHeight)
 	End Function
-
+endrem
 End Type

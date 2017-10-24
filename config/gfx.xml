@@ -64,6 +64,7 @@
 
 				<!-- achievement stuff -->
 				<child name="gfx_datasheet_achievement_bg"              x="242" y="97" w="106"  h="67"  ninepatch="true" />
+				<child name="gfx_datasheet_achievement_img"             x="242" y="165" w="85"  h="56" />
 				<child name="gfx_datasheet_achievement_img_ok"          x="349" y="202" w="81"  h="52" />
 				<child name="gfx_datasheet_achievement_img_level0"      x="349" y="149" w="81"  h="52" />
 				<child name="gfx_datasheet_achievement_img_level1"      x="431" y="149" w="81"  h="52" />
