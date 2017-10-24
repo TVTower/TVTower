@@ -125,7 +125,6 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 
 		'inform contract that it got broadcasted by a player
 		contract.doFinishBroadcast(owner, usedAsType)
-
 		if usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			FinishBroadcastingAsProgramme(day, hour, minute, audienceData)
 '			GetBroadcastInformationProvider().SetInfomercialAired(licence.owner, GetBroadcastInformationProvider().GetInfomercialAired(licence.owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
@@ -165,8 +164,14 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		'adjust topicality relative to possible audience 
 		contract.base.CutInfomercialTopicality(GetInfomercialTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuotePercentage()))
 
-
 		contract.base.SetTimesBroadcastedAsInfomercial( contract.base.GetTimesBroadcastedAsInfomercial(owner) + 1, owner )
+
+		'=== ADJUST CHANNEL IMAGE ===
+		'Image-Penalty
+		'-1 = for both genders
+		TLogger.Log("ChangePublicImage()", "Player #"+owner+": image change for infomercial.", LOG_DEBUG)
+		Local penalty:TAudience = new TAudience.Init(-1,  -0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15)
+		GetPublicImage(owner).ChangeImage(penalty)
 	End Method
 
 

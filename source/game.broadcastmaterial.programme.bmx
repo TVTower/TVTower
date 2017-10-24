@@ -275,16 +275,18 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'=== ADJUST CHANNEL IMAGE ===
 		'Image-Penalty
 		If data.IsPaid()
+			TLogger.Log("ChangePublicImage()", "Player #"+owner+": image change for paid programme.", LOG_DEBUG)
 			'-1 = for both genders
 			Local penalty:TAudience = new TAudience.Init(-1,  -0.25, -0.25, -0.15, -0.35, -0.15, -0.55, -0.15)
 			penalty.MultiplyFloat(data.blocks)
 			GetPublicImage(owner).ChangeImage(penalty)
-'print "DW Strafe: " + penalty.ToString()
-		ElseIf data.IsTrash()
+			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Player #"+owner+": image change for paid programme: " + penalty.ToString(), LOG_DEBUG)
+		endif
+		If data.IsTrash()
+			TLogger.Log("ChangePublicImage()", "Player #"+owner+": image change for trash programme.", LOG_DEBUG)
 			Local penalty:TAudience = new TAudience.Init(-1,  0, 0, +0.2, -0.2, +0.2, -0.5, -0.1)
 			penalty.MultiplyFloat(data.blocks)			
 			GetPublicImage(owner).ChangeImage(penalty)						
-'print "Trash Strafe: " + penalty.ToString()
 		End If
 
 
