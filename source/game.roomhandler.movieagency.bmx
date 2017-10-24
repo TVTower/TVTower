@@ -1092,6 +1092,14 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	Function Initialize:int()
 		list.Clear()
 	End Function
+
+
+	Function GetByIndex:TAuctionProgrammeBlocks(index:int)
+		if index < 0 then index = 0
+		if index >= list.Count() then return null
+		
+		return TAuctionProgrammeBlocks( list.ValueAtIndex(index) )
+	End Function
 	
 
 	Function GetByLicence:TAuctionProgrammeBlocks(licence:TProgrammeLicence, licenceGUID:string="")
@@ -1324,6 +1332,10 @@ print "maxAuctionTime reached: " + licence.Gettitle()
 				return true
 			endif
 		endif
+
+
+		'reset cache
+		_imageWithText = Null
 	End Method
 
 
@@ -1388,7 +1400,7 @@ print "maxAuctionTime reached: " + licence.Gettitle()
 		Local nextBid:Int = 0
 		'no bid done yet, next bid is the licences price cut by 25%
 		If bestBid = 0
-			nextBid = licence.getPriceForPlayer(0) * 0.75
+			nextBid = licence.getPriceForPlayer(0) * bidSavings
 			nextBid = TFunctions.RoundToBeautifulValue(nextBid)
 		Else
 			nextBid = bestBid
