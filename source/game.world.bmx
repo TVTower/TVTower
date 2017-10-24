@@ -500,7 +500,7 @@ Type TWorld
 	End Method
 	
 
-	Method RenderDebug:Int(x:Float = 0, y:Float = 0, width:Int=200, height:Int=160)
+	Method RenderDebug:Int(x:Float = 0, y:Float = 0, width:Int=200, height:Int=180)
 		SetColor 0,0,0
 		SetAlpha GetAlpha()*0.5
 		DrawRect(x,y,width,height)
@@ -529,7 +529,7 @@ Type TWorld
 		dy :+ 12
 		DrawText("speed: "+Int(GetWorldTime().GetTimeFactor()), x + 10, y + dy)
 		dy :+ 12
-
+rem
 		Local sunrise:Int = GetWorldTime().GetSunRise()
 		Local sunset:Int = GetWorldTime().GetSunSet()
 		Local sunRiseString:String = ""
@@ -545,8 +545,17 @@ Type TWorld
 		sunSetString:+":"
 		If (sunset Mod 3600)/60 < 10 Then sunSetString :+ "0"
 		sunSetString:+(sunset Mod 3600)/60
+endrem
+		Local sunRiseString:String = GetWorldTime().GetFormattedDate(GetWorldTime().GetSunRise(), "h:i")
+		Local sunSetString:String = GetWorldTime().GetFormattedDate(GetWorldTime().GetsunSet(), "h:i")
 		
 		DrawText("rise: "+sunRiseString+"  set: "+sunSetString, x + 10, y+ dy)
+
+		dy :+ 12
+
+		Local dawnString:String = GetWorldTime().GetFormattedDate(GetWorldTime().GetDawnPhaseBegin(), "h:i")
+		Local duskString:String = GetWorldTime().GetFormattedDate(GetWorldTime().GetDuskPhaseBegin(), "h:i")
+		DrawText("dawn: "+dawnString+"  dusk: "+duskString, x + 10, y+ dy)
 	End Method
 End Type
 

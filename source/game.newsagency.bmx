@@ -351,6 +351,7 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 		local isPartiallyCloudy:int = 0
 		local isNight:int = 0
 		local isDay:int = 0
+		local isNotDay:int = 0
 		local becameNight:int = False
 		local becameDay:int = False
 		local sunHours:int = 0
@@ -367,6 +368,8 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 
 		'check for specific states
 		For weather = eachin upcomingWeather
+			rem
+				old variant - leading to "sun wins" news during dusk times
 			if GetWorldTime().IsNight(weather._time)
 				if isDay then becameNight = True
 				isNight = True
@@ -374,6 +377,24 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 				if isNight then becameDay = True
 				isDay = True
 			endif
+			endrem
+
+			if not GetWorldTime().IsDay(weather._time)
+				isNotDay = true
+			endif
+			
+			if GetWorldTime().IsNight(weather._time)
+				if isDay then becameNight = True
+				isNight = True
+				isDay = False
+			'ignore DUSK/DAWN times! so check for IsDay() too
+			elseif GetWorldTime().IsDay(weather._time)
+				if isNotDay then becameDay = True
+				isDay = True
+				isNotDay = False
+				isNight = False
+			endif
+
 
 			tempMin = Min(tempMin, weather.GetTemperature())
 			tempMax = Max(tempMax, weather.GetTemperature())
