@@ -132,7 +132,7 @@ Include "game.escapemenu.bmx"
 
 '===== Globals =====
 VersionDate = LoadText("incbin::source/version.txt").Trim()
-VersionString = "v0.5.1 Build ~q" + VersionDate+"~q"
+VersionString = "v0.5.2-DEV Build ~q" + VersionDate+"~q"
 CopyrightString = "by Ronny Otto & Team"
 
 Global APP_NAME:string = "TVTower"
@@ -501,7 +501,7 @@ Type TApp
 		AppEvents.Init()
 
 		'systemupdate is called from within "update" (lower priority updates)
-		EventManager.registerListenerFunction("App.onSystemUpdate", AppEvents.onAppSystemUpdate )
+		EventManager.registerListenerFunction("App.onLowPriorityUpdate", AppEvents.onLowPriorityUpdate )
 		'so we could create special fonts and other things
 		EventManager.triggerEvent( TEventSimple.Create("App.onStart") )
 
@@ -543,9 +543,9 @@ Type TApp
 
 	Function Update:Int()
 		TProfiler.Enter("Update")
-		'every 3rd update do a system update
+		'every 3rd update do a low priority update
 		If GetDeltaTimer().timesUpdated Mod 3 = 0
-			EventManager.triggerEvent( TEventSimple.Create("App.onSystemUpdate",Null) )
+			EventManager.triggerEvent( TEventSimple.Create("App.onLowPriorityUpdate",Null) )
 		EndIf
 
 		TProfiler.Enter("RessourceLoader")
@@ -4305,6 +4305,30 @@ Type GameEvents
 					GetGame().SendSystemMessage("[DEV] Removed masterkey from player '" + player.name +"' ["+player.playerID + "]!")
 				endif
 
+
+			Case "endauctions"
+				local paramArray:String[]								
+				If paramS <> "" then paramArray = playerS.Split(" ")
+				if paramArray.length = 0 or paramArray[0] = "-1" then paramArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
+				For local indexS:string = EachIn paramArray
+					local block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks.GetByIndex( int(indexS)-1 )
+					if not block then continue
+					local oldLicence:TProgrammeLicence = block.licence
+					local oldPrice:int = block.GetNextBid()
+					block.EndAuction()
+
+					if not oldLicence
+						GetGame().SendSystemMessage("[DEV] #"+int(indexS)+". Created new auction '" + block.licence.GetTitle()+"'")
+					elseif oldLicence <> block.licence and block.licence
+						GetGame().SendSystemMessage("[DEV] #"+int(indexS)+". Ended auction for '" + oldLicence.GetTitle()+"', Created new auction '" + block.licence.GetTitle()+"'")
+					elseif oldLicence and not block.licence
+						GetGame().SendSystemMessage("[DEV] #"+int(indexS)+". Ended auction for '" + oldLicence.GetTitle()+"', Created no new auction")
+					elseif oldLicence = block.licence
+						GetGame().SendSystemMessage("[DEV] #"+int(indexS)+". Reduced auction price for '" + oldLicence.GetTitle()+"' from " + MathHelper.DottedValue(oldPrice) + " to " + MathHelper.DottedValue(block.GetNextBid()))
+					endif
+				Next
+				
+
 			Case "sendnews"			
 				local newsGUID:string = playerS '(first payload-param)
 				local announceNow:int = int(paramS)
@@ -5860,7 +5884,7 @@ Type AppEvents
 
 
 	'lower priority updates (currently happening every 2 "appUpdates")
-	Function onAppSystemUpdate:Int(triggerEvent:TEventBase)
+	Function onLowPriorityUpdate:Int(triggerEvent:TEventBase)
 		TProfiler.Enter("SoundUpdate")
 		GetSoundManager().Update()
 		TProfiler.Leave("SoundUpdate")
