@@ -681,6 +681,8 @@ YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM = You've got %HOURS% hours to visit him.
 CLICK_HERE_TO_START_YOUR_VISIT_AHEAD_OF_TIME = Click here to start your visit ahead of time.
 
 HINT_PRESSING_ALT_WILL_SHOW_DETAILS = Pressing "ALT"-key will show details.
+HINT_PRESSING_ALT_WILL_FIX_TOOLTIP = Pressing "ALT"-key will fix tooltip.
+HINT_PRESSING_ALT_WILL_RELEASE_TOOLTIP = Pressing "ALT"-key will release tooltip.
 HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: switch datasheet | CTRL+Click: copy programme | SHIFT+Click: next episode
 HINT = Hint
 

@@ -9,6 +9,7 @@ Import "game.gui.chat.bmx"
 Import "game.betty.bmx"
 
 Import "game.player.base.bmx"
+Import "game.figure.bmx"
 Import "game.player.programmeplan.bmx"
 Import "game.game.base.bmx"
 Import "game.misc.ingamehelp.bmx"
@@ -25,6 +26,7 @@ Type TInGameInterface
 	Field CurrentProgrammeText:String
 	Field CurrentProgrammeToolTip:TTooltip
 	Field CurrentAudienceToolTip:TTooltipAudience
+	Field keepCurrentAudienceToolTipOpen:int = False
 	Field MoneyToolTip:TTooltip
 	Field BettyToolTip:TTooltip
 	Field ChannelImageTooltip:TTooltip
@@ -140,8 +142,8 @@ Type TInGameInterface
 			GetInstance().ChatShow = True
 		EndIf
 	End Function
-	
 
+	
 	Method Update(deltaTime:Float=1.0)
 		local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan(ShowChannel)
 
@@ -363,7 +365,7 @@ Type TInGameInterface
 				MoneyToolTip.enabled 	= 1
 				MoneyToolTip.Hover()
 			EndIf
-			If THelper.MouseIn(309,447,178,32)
+			If THelper.MouseIn(309,447,178,32) or CurrentAudienceToolTip.forceShow
 				local playerProgrammePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan( GetPlayerBaseCollection().playerID )
 				if playerProgrammePlan
 					CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_NUMBER")+": "+playerProgrammePlan.getFormattedAudience()+ " ("+MathHelper.NumberToString(playerProgrammePlan.GetAudiencePercentage() * 100,2)+"%)")
@@ -495,6 +497,28 @@ Type TInGameInterface
 					MouseManager.ResetKey(1)
 				EndIf
 			EndIf
+		endif
+
+
+		if CurrentAudienceToolTip
+			if CheckObservedFigureInRoom("adagency") or CheckObservedFigureInRoom("office")
+				'show longer tooltip by default
+				CurrentAudienceToolTip.showDetailed = True
+
+				'keep showing the tooltip
+				if KeyManager.IsHit(KEY_LALT) or KeyManager.IsHit(KEY_RALT)
+					CurrentAudienceToolTip.forceShow = 1 - CurrentAudienceToolTip.forceShow
+				endif
+			else
+				'disable force show if not in the rooms above
+				CurrentAudienceToolTip.forceShow = false
+
+				'show longer tooltip
+				CurrentAudienceToolTip.showDetailed = False
+				If KeyManager.isDown(KEY_LALT) Or KeyManager.isDown(KEY_RALT)
+					CurrentAudienceToolTip.showDetailed = True
+				endif
+			endif
 		endif
 
 
@@ -846,6 +870,8 @@ End Function
 Type TTooltipAudience Extends TTooltip
 	Field audienceResult:TAudienceResult
 	Field showDetails:Int = False
+	Field showDetailed:Int = False
+	Field forceShow:Int = False
 	Field lineHeight:Int = 0
 	Field lineIconHeight:Int = 0
 	Field originalPos:TVec2D
@@ -888,8 +914,6 @@ Type TTooltipAudience Extends TTooltip
 
 	'override default to add "ALT-Key"-Switcher
 	Method Update:Int()
-		local showDetailed:int = False
-		If KeyManager.isDown(KEY_LALT) Or KeyManager.isDown(KEY_RALT) then showDetailed = True
 		'hovered for more than 1.5 seconds and not fading out
 		If _aliveTime > 1.5 and getFadeAmount() >= 1.0 then showDetailed = True
 
@@ -925,6 +949,9 @@ Type TTooltipAudience Extends TTooltip
 
 		If showDetails
 			result:+ 9*lineIconHeight
+			if CheckObservedFigureInRoom("adagency") or CheckObservedFigureInRoom("office")
+				result :+ 1*lineIconHeight
+			endif
 		Else
 			result:+ 1*lineHeight
 		EndIf
@@ -972,6 +999,17 @@ Type TTooltipAudience Extends TTooltip
 
 		'add 1 line more - as spacing to details
 		lineY :+ lineHeight
+
+		if CheckObservedFigureInRoom("adagency") or CheckObservedFigureInRoom("office")
+			if forceShow
+				Self.Usefont.draw(GetLocale("HINT_PRESSING_ALT_WILL_RELEASE_TOOLTIP") , lineX, lineY, TColor.CreateGrey(150))
+			else
+				Self.Usefont.draw(GetLocale("HINT_PRESSING_ALT_WILL_FIX_TOOLTIP") , lineX, lineY, TColor.CreateGrey(150))
+			endif
+
+			'add 1 line more - as spacing to details
+			lineY :+ lineHeight
+		endif
 
 'print audienceResult.ToString()	
 		If Not showDetails
@@ -1026,3 +1064,19 @@ Type TTooltipAudience Extends TTooltip
 		EndIf
 	End Method
 End Type
+
+
+
+
+Function CheckObservedFigureInRoom:int(roomName:string, allowChangingRoom:int = true)
+	local figure:TFigure = TFigure(GameConfig.GetObservedObject())
+	'when not observing someone, fall back to the players figure
+	if not figure then figure = TFigure(GetPlayerBase().GetFigure())
+	if not figure then return False
+
+	'check if we are in the correct room
+	If not allowChangingRoom and figure.isChangingRoom() Then Return False
+	If not figure.inRoom Then Return False
+	if figure.inRoom.GetName() <> roomName then return FALSE
+	return TRUE
+End Function
