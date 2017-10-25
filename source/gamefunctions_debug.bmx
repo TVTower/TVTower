@@ -112,8 +112,10 @@ Type TDebugAudienceInfos
 		offset :+ 20
 
 		font.Draw("2. * Zielgruppenattraktivität", 25, offset, TColor.clWhite)
-		if attraction.GetTargetGroupAttractivity()
-			DrawAudiencePercent(attraction.GetTargetGroupAttractivity(), 200, offset, true, true)
+		if attraction.targetGroupAttractivity
+			DrawAudiencePercent(attraction.targetGroupAttractivity, 200, offset, true, true)
+		else
+'			print "   dyn: "+  attraction.GetTargetGroupAttractivity().ToString()
 		endif
 		offset :+ 20
 

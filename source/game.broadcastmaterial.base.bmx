@@ -52,7 +52,7 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method hasFlag:Int(flag:Int) {_exposeToLua}
-		Return flags & flag
+		Return (flags & flag) <> 0
 	End Method
 
 
@@ -274,6 +274,30 @@ End Type
 
 
 Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="selected"}
+	'reduce negative attraction values even more
+	Function _DownsizeNegativeAttraction:int(audience:TAudience)
+		local value:Float
+		local targetGroupID:Int
+		
+		For local gender:int = EachIn [TVTPersonGender.MALE, TVTPersonGender.FEMALE]
+			For Local targetGroup:Int = 1 To TVTTargetGroup.count
+				targetGroupID = TVTTargetGroup.GetAtIndex(targetGroup)
+				value = audience.GetGenderValue(targetGroupID, gender)
+
+				'ignore "good enough" values
+				if value > -1 then continue
+
+				'0 to -1 (-2=>0, -1.5=>0.5, -1=>1)
+				local difference:float = 2 + value
+				'(-2=>-2, -1.5=>-1.75, -1=>-1)
+				value = -2 + difference^2
+	
+				audience.SetGenderValue(targetGroupID, value, gender)
+			Next
+		Next
+	End Function
+
+
 	'default implementation	
 	'limited to 0 - 2.0, 1.0 means "no change"
 	Method GetGenrePopularityMod:Float(definition:TGenreDefinitionBase)
@@ -300,7 +324,8 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	'default implementation
 	'limited to 0 - 2.0, 1.0 means "no change"
 	Method GetGenreTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
-
+		if not definition then return New TAudience.InitValue(1, 1)
+		
 		'multiply with 0.5 to scale "-2 to +2" down to "-1 to +1"
 		'add 1 to get a value between 0 - 2
 		Return definition.AudienceAttraction.Copy().MultiplyFloat(0.5).AddFloat(1.0).CutBordersFloat(0, 2.0)
@@ -497,10 +522,9 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		audienceAttraction.Quality = GetQuality()
 
 		If block = 1 Or Not lastProgrammeBlockAttraction Or usedAsType = TVTBroadcastMaterialType.NEWS
-			If audienceAttraction.genreDefinition
-				'Genre-targetgroup-fit
-				audienceAttraction.GenreTargetGroupMod = GetGenreTargetGroupMod(audienceAttraction.genreDefinition)
-			endif
+			'Genre-targetgroup-fit
+			audienceAttraction.GenreTargetGroupMod = GetGenreTargetGroupMod(audienceAttraction.genreDefinition)
+
 			audienceAttraction.FlagsTargetGroupMod = GetFlagsTargetGroupMod()
 
 			'a modifier of the targetgroup attractivity (a special target

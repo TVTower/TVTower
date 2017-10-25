@@ -33,6 +33,7 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 	Field MiscMod:TAudience
 	Field QualityOverTimeEffectMod:Float
 	Field LuckMod:TAudience
+	Field TargetGroupAttractivity:TAudience
 
 	Field AudienceFlowBonus:TAudience
 	Field SequenceEffect:TAudience
@@ -113,6 +114,8 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		If LuckMod Then MiscMod.Add(audienceAttr.LuckMod)
 		If AudienceFlowBonus Then AudienceFlowBonus.Add(audienceAttr.AudienceFlowBonus)
 
+		If targetGroupAttractivity Then targetGroupAttractivity.Add(audienceAttr.targetGroupAttractivity)
+
 		'If NewsShowBonus Then NewsShowBonus.Add(audienceAttr.NewsShowBonus)
 		If SequenceEffect Then SequenceEffect.Add(audienceAttr.SequenceEffect)
 		If BaseAttraction Then BaseAttraction.Add(audienceAttr.BaseAttraction)
@@ -142,6 +145,7 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		QualityOverTimeEffectMod :* factor
 		If LuckMod Then LuckMod.MultiplyFloat(factor)
 		'If NewsShowBonus Then NewsShowBonus.MultiplyFloat(factor)
+		if targetGroupAttractivity then targetGroupAttractivity.MultiplyFloat(factor)
 		If SequenceEffect Then SequenceEffect.MultiplyFloat(factor)
 		If BaseAttraction Then BaseAttraction.MultiplyFloat(factor)
 		If FinalAttraction Then FinalAttraction.MultiplyFloat(factor)
@@ -190,10 +194,10 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		result.Multiply( _effectiveGenreTargetGroupMod )
 		result.Multiply( _effectiveFlagsTargetGroupMod )
 
-
 		result.Multiply( targetGroupAttractivityMod )
 
-		result.CutBordersFloat(0, 1.0)
+		'0 = no attractivity, 1 = no adjustment, 2 = totally like it
+		result.CutBordersFloat(0, 2.0)
 
 		Return result
 	End Method
@@ -209,10 +213,10 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		result.MultiplyFloat( Quality )
 
 
-		Local targetGroupAttractivity:TAudience = GetTargetGroupAttractivity()
+		targetGroupAttractivity = GetTargetGroupAttractivity()
 		If targetGroupAttractivity Then result.Multiply( targetGroupAttractivity )
-
-
+'print "GetTargetGroupAttractivity: " + targetGroupAttractivity.ToString()
+'end
 		'trailer bonus: 0 - 1.0, influence: 50%
 		'add +1 so it becomes a multiplier
 		'"multiply" because it "increases" existing interest
@@ -266,7 +270,7 @@ Type TAudienceAttraction Extends TAudience {_exposeToLua="selected"}
 		print " 0. START:     1 "
 		print " 1. QUALITY:   * " + Quality
 
-		local targetGroupAttractivity:TAudience = GetTargetGroupAttractivity() 
+		targetGroupAttractivity = GetTargetGroupAttractivity() 
 		If targetGroupAttractivity
 			print " 2. TGROUPATT: * " + targetGroupAttractivity.ToStringAverage()
 		Else

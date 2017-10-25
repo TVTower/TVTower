@@ -112,11 +112,33 @@ endif
 	End Method
 
 
+	'override
+	'add mod for all news slots
+	Method GetGenreTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
+		local result:TAudience = new TAudience.InitValue(1,1)
+
+		local newsSlotsUsed:int = 0
+		for local i:int = 0 until news.length
+			Local currentNews:TNews = TNews(news[i])
+			'skip empty slots
+			If not currentNews Then continue
+
+			newsSlotsUsed :+ 1
+			
+			local newsGenreTargetGroupMod:TAudience = currentNews.GetGenreTargetGroupMod( currentNews.GetGenreDefinition() )
+			result.Add( newsGenreTargetGroupMod.Copy().MultiplyFloat(GetNewsSlotWeight(i)) )
+		Next
+		if newsSlotsUsed > 1
+			result.DivideFloat(newsSlotsUsed)
+		endif
+		return result
+	End Method
+
+
 	'returns the audienceAttraction for a newsShow (3 news)
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		Local resultAudienceAttr:TAudienceAttraction = New TAudienceAttraction
 		resultAudienceAttr.BroadcastType = TVTBroadcastMaterialType.NEWSSHOW
-		resultAudienceAttr.GenreTargetGroupMod = New TAudience
 		resultAudienceAttr.FlagsTargetGroupMod = New TAudience
 		resultAudienceAttr.PublicImageMod = New TAudience
 		resultAudienceAttr.TrailerMod = New TAudience
@@ -126,11 +148,18 @@ endif
 		resultAudienceAttr.BaseAttraction = New TAudience
 		resultAudienceAttr.FinalAttraction = New TAudience
 		resultAudienceAttr.PublicImageAttraction = New TAudience
+		resultAudienceAttr.targetGroupAttractivity = New TAudience
 		resultAudienceAttr.LuckMod = New TAudience
 		'attention: set mods to 0 (news mods get _added_)
 		resultAudienceAttr.CastMod = 0
 		resultAudienceAttr.GenrePopularityMod = 0
 		resultAudienceAttr.FlagsPopularityMod = 0
+		'do not to the following as this mod is added already in "GetAudienceAttraction"
+		'of the individual news
+		'resultAudienceAttr.GenreTargetGroupMod = GetGenreTargetGroupMod()
+		'just create an empty audience instead, the function still returns
+		'valid values (for debugging output) 
+		resultAudienceAttr.GenreTargetGroupMod = New TAudience
 
 		local genreCount:int[ TVTNewsGenre.count ]
 		local slotsUsed:int = 0
@@ -155,13 +184,14 @@ endif
 			'limit attraction values to 0-1.0
 			tempAudienceAttr.CutBordersFloat(0, 1.0)
 
+			'if owner=1 then print "owner #"+owner+"   news #"+i+": " + tempAudienceAttr.targetGroupAttractivity.ToString() +"  * " + GetNewsSlotWeight(i)
+
 			'different weight for news slots
 			resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(GetNewsSlotWeight(i)))
-
 			local title:string = "--"
 			if currentNews then title = currentNews.GetTitle() 
-			'print owner+")  news"+i+":  " +tempAudienceAttr.ToString() +"   " + title +"  usedAs:"+usedAsType
 		Next
+		'if owner=1 then print "owner #"+owner+"  newsshow: " + resultaudienceAttr.targetGroupAttractivity.ToString()
 
 		local genresUsed:int = 0
 		For local g:int = EachIn genreCount
@@ -171,17 +201,17 @@ endif
 		'bonus if sending varying genres (a good "mix")
 		'5% bonus if 2+ genres used
 		if genresUsed = 2
-			resultAudienceAttr.MultiplyFloat(1.05)
+'			resultAudienceAttr.MultiplyFloat(1.05)
 		'10% bonus if 3+ genres used
 		elseif genresUsed >= 3
-			resultAudienceAttr.MultiplyFloat(1.10)
+'			resultAudienceAttr.MultiplyFloat(1.10)
 		endif
 
 		'malus for not sending something in each slot
 		if slotsUsed = 1
-			resultAudienceAttr.MultiplyFloat(0.90)
+'			resultAudienceAttr.MultiplyFloat(0.90)
 		elseif slotsUsed = 2
-			resultAudienceAttr.MultiplyFloat(0.96)
+'			resultAudienceAttr.MultiplyFloat(0.96)
 		endif
 
 		'Ronny 2016/06/29: should we mark it as a malfunction?
@@ -191,7 +221,6 @@ endif
 		'already one with "addAttraction"
 		'resultAudienceAttr.Quality = GetQuality()
 
-		'print owner+")  newsA:  " + resultAudienceAttr.ToStringAverage()
 		Return resultAudienceAttr
 	End Method
 

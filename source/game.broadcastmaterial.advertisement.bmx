@@ -95,14 +95,41 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	End Method
 
 
-	'override - return PAID-Flag as genre
+	'override - return INFOMERCIAL genre
 	Method GetGenreDefinition:TGenreDefinitionBase()
-		Return GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.PAID)
+		Return GetMovieGenreDefinitionCollection().Get(TVTProgrammeGenre.INFOMERCIAL)
 	End Method
 
 
 	'override
+	'add PAID-Flag as set flag 
+	Method GetFlagsTargetGroupMod:TAudience()
+		local audienceMod:TAudience = new TAudience.InitValue(1, 1)
+		local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.PAID)
+		if not definition then return audienceMod
+
+		audienceMod.Multiply( GetFlagTargetGroupMod(definition) )
+		audienceMod.CutBordersFloat(0.0, 2.0)
+
+		return audienceMod
+	End Method
+
+	
+
+	'ueberschrieben
+	'default implementation
+	'limited to 0 - 2.0, 1.0 means "no change"
+	Method GetGenreTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
+		'multiply with 0.5 to scale "-2 to +2" down to "-1 to +1"
+		'add 1 to get a value between 0 - 2
+		Return Super.GetGenreTargetGroupMod(definition)
+	End Method
+	
+
+	'override
 	'add targetgroup bonus
+	'so an infomercial based on a contract with "please women" gets a bonus
+	'for women
 	Method GetTargetGroupAttractivityMod:TAudience()
 		Local result:TAudience = Super.GetTargetGroupAttractivityMod()
 

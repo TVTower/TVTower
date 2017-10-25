@@ -392,9 +392,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 				audienceMod.Multiply( GetFlagTargetGroupMod(definition) )
 			Next
 			audienceMod.DivideFloat(definitions.length)
+
+			audienceMod.CutBordersFloat(0.0, 2.0)
 		endif
 
-		audienceMod.CutBordersFloat(0.0, 2.0)
 		return audienceMod
 	End Method
 
@@ -492,7 +493,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'des Filmalters. Bonus bei Jugendlichen. Malus bei allen anderen
 		'Zielgruppen. Bonus in der Nacht!		
 		if data.IsBMovie()
-			definition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.TRASH)
+			definition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.BMOVIE)
 			if definition then definitions :+ [definition]
 		EndIf		
 
