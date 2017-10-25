@@ -375,7 +375,7 @@ Type TGUIAccordeon extends TGUIObject
 
 
 	'override to add panels
-	Method UpdateChildren()
+	Method UpdateChildren:int()
 		if panels
 			For local p:TGUIAccordeonPanel = EachIn panels
 				p.Update()
@@ -384,7 +384,7 @@ Type TGUIAccordeon extends TGUIObject
 	End Method
 
 	'override to add panels
-	Method DrawChildren()
+	Method DrawChildren:int()
 		if panels
 			For local p:TGUIAccordeonPanel = EachIn panels
 				p.Draw()

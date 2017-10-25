@@ -61,11 +61,12 @@ Type TApp
 	End Function
 
 
-	Method Init:TApp(updatesPerSecond:Int=30, framesPerSecond:Int=30)
-		GetDeltaTimer().Init(updatesPerSecond, framesPerSecond)
+	Method Init:TApp(updatesPerSecond:Int=30, framesPerSecond:Int=30, systemUpdatesPerSecond:Int = 60)
+		GetDeltaTimer().Init(updatesPerSecond, framesPerSecond, systemUpdatesPerSecond)
 
 		'connect functions
 		GetDeltaTimer()._funcUpdate = __Update
+		GetDeltaTimer()._funcSystemUpdate = __SystemUpdate
 		GetDeltaTimer()._funcRender = __Render
 	End Method
 
@@ -75,16 +76,26 @@ Type TApp
 	End Method
 
 
-	Function __Update:int()
+	Function __SystemUpdate:int()
 		'refresh mouse/keyboard
 		MouseManager.Update()
 		KeyManager.Update()
 
-		'every second update do a system update
-		if GetDeltaTimer().timesUpdated mod 2 = 0 then EventManager.triggerEvent( TEventSimple.Create("App.onSystemUpdate",null) )
+		'emit event to do update
+		EventManager.triggerEvent(TEventSimple.Create("App.onSystemUpdate"))
+
+		'Run the real update function - which might got overridden
+		GetInstance().SystemUpdate()
+	End Function
+
+
+	Function __Update:int()
+		'refresh mouse/keyboard
+'		MouseManager.Update()
+'		KeyManager.Update()
+
 		'emit event to do update
 		EventManager.triggerEvent(TEventSimple.Create("App.onUpdate"))
-
 
 
 		'Run the real update function - which might got overridden
@@ -99,6 +110,12 @@ Type TApp
 		'Run the real render function - which might got overridden
 		GetInstance().Render()
 	End Function
+
+
+	'override this in the extension of TApp
+	Method SystemUpdate:Int()
+		'
+	End Method
 
 
 	'override this in the extension of TApp

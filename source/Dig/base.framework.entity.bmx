@@ -388,6 +388,18 @@ Type TRenderableEntity extends TEntityBase
 	End Method
 
 
+	'get a rectangle describing the objects area on the screen
+	Method GetScreenRect:TRectangle()
+			Return new TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
+	End Method
+
+
+	'get a vector describing the objects position on the screen
+	Method GetScreenPos:TVec2D()
+			Return new TVec2D.Init(GetScreenX(), GetScreenY())
+	End Method
+	
+
 	'return at which x position a child (or all) start
 	'	returns an offset, not a screen coordinate!
 	Method GetChildX:Float(child:TRenderableEntity = Null)

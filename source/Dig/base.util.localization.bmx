@@ -601,6 +601,21 @@ Type TLocalizedString
 	End Method
 
 
+	Method HasLanguageKey:int(key:string)
+		for local k:string = EachIn values.Keys()
+			if k = key then return True
+		next
+		return False
+	End Method
+
+
+	Method GetFirstLanguageKey:string()
+		for local k:string = EachIn values.Keys()
+			return k
+		next
+	End Method
+		
+
 	Method GetLanguageKeys:string[]()
 		local keys:string[]
 		for local k:string = EachIn values.Keys()

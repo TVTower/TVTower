@@ -14,7 +14,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2014 Ronny Otto, digidea.de
+	Copyright (C) 2002-2017 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -45,6 +45,7 @@ Import "base.util.time.bmx"
 Type TDeltaTimer
 	'1.0/UPS
 	Field _updateRate:float
+	Field _systemUpdateRate:float
 	'1.0/FPS
 	Field _renderRate:float
 	'conversion from realtime->apptime (2.0 = double as fast)
@@ -52,18 +53,23 @@ Type TDeltaTimer
 
 	'time available for updates in this loop
 	Field _updateAccumulator:float
+	Field _systemUpdateAccumulator:float
 	'time available for renders in this loop
 	Field _renderAccumulator:float
 
-	Field timesUpdated:int   = 0
-	Field timesRendered:int  = 0
-	Field currentUPS:int     = 0
-	Field currentFPS:int     = 0
+	Field timesUpdated:int         = 0
+	Field timesSystemUpdated:int   = 0
+	Field timesRendered:int        = 0
+	Field currentUPS:int           = 0
+	Field currentSUPS:int          = 0
+	Field currentFPS:int           = 0
 
 	'milliseconds updates currently needed this second
 	Field _updateTime:Long = 0
+	Field _systemUpdateTime:Long = 0
 	'milliseconds updates needed last second
 	Field _currentUpdateTimePerSecond:Long = 0
+	Field _currentSystemUpdateTimePerSecond:Long = 0
 
 	'milliseconds renders currently needed this second
 	Field _renderTime:Long = 0
@@ -72,6 +78,7 @@ Type TDeltaTimer
 
 	'connect functions with this properties to get called during Loop()
 	Field _funcUpdate:int()
+	Field _funcSystemUpdate:int()
 	Field _funcRender:int()
 
 	'when did the current loop begin
@@ -100,8 +107,9 @@ Type TDeltaTimer
 	End Function
 
 
-	Method Init:TDeltaTimer(updatesPerSecond:int = 60, rendersPerSecond:int = -1)
+	Method Init:TDeltaTimer(updatesPerSecond:int = 60, rendersPerSecond:int = -1, systemUpdatesPerSecond:int = 60)
 		SetUpdateRate(updatesPerSecond) 'UPS
+		SetSystemUpdateRate(systemUpdatesPerSecond) 'SUPS
 		SetRenderRate(rendersPerSecond) 'FPS
 		Reset()
 		return self
@@ -115,6 +123,11 @@ Type TDeltaTimer
 
 	Method SetUpdateRate(updatesPerSecond:int = 60)
 		_updateRate = 1.0 / updatesPerSecond
+	End Method
+
+
+	Method SetSystemUpdateRate(systemUpdatesPerSecond:int = 60)
+		_systemUpdateRate = 1.0 / systemUpdatesPerSecond
 	End Method
 	
 
@@ -168,16 +181,21 @@ Type TDeltaTimer
 		_secondGone	:+ _lastLoopTime
 
 		if _secondGone >= 1000 'in ms
-			_secondGone   = 0
-			currentFPS    = timesRendered
-			currentUPS    = timesUpdated
+			_secondGone = 0
+			currentFPS = timesRendered
+			currentUPS = timesUpdated
+			currentSUPS = timesSystemUpdated
 			timesRendered = 0
-			timesUpdated  = 0
-			_loopTimeSum  = GetLoopTimeAverage()
-			_loopTimeCount= 1
+			timesUpdated = 0
+			timesSystemUpdated = 0
+			_loopTimeSum = GetLoopTimeAverage()
+			_loopTimeCount = 1
 
 			_currentUpdateTimePerSecond = _updateTime
 			_updateTime = 0
+
+			_currentSystemUpdateTimePerSecond = _systemUpdateTime
+			_systemUpdateTime = 0
 
 			_currentRenderTimePerSecond = _renderTime
 			_renderTime = 0
@@ -205,6 +223,29 @@ Type TDeltaTimer
 		wend
 
 		_updateTime :+ (Time.GetTimeGone() - start)
+	End Method
+
+
+	Method RunSystemUpdate()
+		'each loop the looptime is added to an accumulator
+		'as soon as the accumulator is bigger than the time reserved
+		'for an system update ("timeStep"), the loop does as much updates
+		'as the accumulator "fits"
+		_systemUpdateAccumulator:+ Max(0, _lastLoopTime)/1000.0
+
+		local start:Long = Time.GetTimeGone()
+		
+		while(_systemUpdateAccumulator > _systemUpdateRate)
+			'if there is a function connected - run it
+			if _funcSystemUpdate then _funcSystemUpdate()
+
+			'subtract the time reserved for an update from the accumulator
+			_systemUpdateAccumulator = Max(0.0, _systemUpdateAccumulator - _systemUpdateRate)
+			'for stats
+			timesSystemUpdated:+1
+		wend
+
+		_systemUpdateTime :+ (Time.GetTimeGone() - start)
 	End Method
 
 
@@ -249,6 +290,7 @@ Type TDeltaTimer
 		_lastLoopTime  = Min(250, _lastLoopTime)
 
 
+		RunSystemUpdate()
 		RunUpdate()
 		RunRender()
 
@@ -259,7 +301,7 @@ Type TDeltaTimer
 		'if there was time left but no updates need to be done
 		'ALTERNATIV?: hierfuer feststellen wieviel zeit ein loop haette
 		'und wieviel davon benutzt worden ist... den rest dann "delayen"
-		if _renderRate > 0 and (_updateRate*1000 - getCurrentLoopTime() > 0)
+		if _renderRate > 0 and (_systemUpdateRate*1000 + _updateRate*1000 - getCurrentLoopTime() > 0)
 			delay(1)
 		endif
 	End Method

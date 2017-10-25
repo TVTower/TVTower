@@ -113,6 +113,21 @@ Type MathHelper
 	End Function
 
 
+	Function RemoveIntArrayIndex:int(index:int, arr:int[] var)
+		if not arr or arr.length = 0 or index < 0 or index >= arr.length
+			return -1
+		endif
+
+		local result:int = arr[index]
+		if arr.length = 1
+			arr = new Int[0]
+		else
+			arr = arr[0 .. index] + arr[index+1 .. arr.Length]
+		endif
+		return result
+	End Function
+
+
 	'returns whether two values are approximately the same
 	'(1 and 1.00001 are identical, 1 and 1.1 not)
 	Function areApproximatelyEqual:Int(a:Float, b:Float)

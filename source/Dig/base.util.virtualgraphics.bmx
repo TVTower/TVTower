@@ -80,7 +80,7 @@ Type TVirtualGfx
 
 		' Reset of display needed when re-calculating virtual graphics stuff/clearing borders...
 		SetVirtualResolution( GraphicsWidth(), GraphicsHeight() )
-		SetViewport( 0, 0, GraphicsWidth(), GraphicsHeight() )
+		SetViewport( 0, 0, GraphicsWidth(), GraphicsHeight())
 		SetOrigin( 0, 0 )
 
 		' Store current Cls colours...
@@ -128,30 +128,39 @@ Type TVirtualGfx
 			GetInstance().vscale = Float(gheight) / Float(GetInstance().vheight)
 
 			' Now go crazy with trial-and-error... ooh, it works! This tiny bit of code took FOREVER.
-			Local pixels:Float = Float (GetInstance().vwidth) / (1.0 / GetInstance().vscale) ' Width after scaling
-			Local half_scale:Float = (1.0 / GetInstance().vscale) / 2.0
+			'Local pixels:Float = Float (GetInstance().vwidth) / (1.0 / GetInstance().vscale) ' Width after scaling
+			'Local half_scale:Float = (1.0 / GetInstance().vscale) / 2.0
+			'SetVirtualResolution( GetInstance().vwidth * gtovratio, GetInstance().vheight )
+			'GetInstance().vxoff = (gwidth - pixels) * half_scale
+			'GetInstance().vyoff = 0
 
-			SetVirtualResolution( GetInstance().vwidth * gtovratio, GetInstance().vheight )
+			local pixels:int = Int(GetInstance().vwidth * GetInstance().vscale) ' Width after scaling
+			local half_scale:float = 0.5 / GetInstance().vscale
+
+			'print "NEW SetVirtualResolution( "+floor(GetInstance().vwidth * gtovratio)+", "+floor(GetInstance().vheight)+" )"
+			SetVirtualResolution( floor(GetInstance().vwidth * gtovratio), floor(GetInstance().vheight) )
 
 			' Offset into 'real' display area...
-
-			GetInstance().vxoff = (gwidth - pixels) * half_scale
+			'move vxoff accordingly. Add 0.5 to round properly (1.49 to 1.0, 1.5 to 2)
+			GetInstance().vxoff = floor( (gwidth - pixels) * half_scale + 0.5 )
 			GetInstance().vyoff = 0
 
 		Else
 			' Graphics ratio narrower...
 			GetInstance().vscale = Float (gwidth) / Float (GetInstance().vwidth)
 
-			Local pixels:Float = Float (GetInstance().vheight) / (1.0 / GetInstance().vscale) ' Height after scaling
-			Local half_scale:Float = (1.0 / GetInstance().vscale) / 2.0
+			Local pixels:int = int(GetInstance().vheight * GetInstance().vscale) ' Height after scaling
+			Local half_scale:Float = (0.5 / GetInstance().vscale)
 
-			SetVirtualResolution GetInstance().vwidth, GetInstance().vheight * vtogratio
+			SetVirtualResolution( floor(GetInstance().vwidth), floor(GetInstance().vheight * vtogratio) )
 
 			GetInstance().vxoff = 0
-			GetInstance().vyoff = (gheight - pixels) * half_scale
+			GetInstance().vyoff = floor( (gheight - pixels) * half_scale + 0.5 )
 		EndIf
 
 		' Set up virtual graphics area...
+		'print "SetViewport( "+GetInstance().vxoff+", "+GetInstance().vyoff+", "+GetInstance().vwidth+", "+GetInstance().vheight+" )"
+		'print "SetOrigin( "+GetInstance().vxoff+", "+GetInstance().vyoff+" )"
 		SetViewport( GetInstance().vxoff, GetInstance().vyoff, GetInstance().vwidth, GetInstance().vheight )
 		SetOrigin( GetInstance().vxoff, GetInstance().vyoff )
 	End Function

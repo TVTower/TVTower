@@ -179,6 +179,11 @@ Type TIntervalTimer
 	End Function
 
 
+	Function _GetTimeGone:Long()
+		return Time.GetTimeGone()
+	End Function
+
+
 	Method GetInterval:int()
 		return intervalToUse
 	End Method
@@ -205,14 +210,14 @@ Type TIntervalTimer
 	'returns TRUE if interval is gone (ignores action time)
 	'action time could be eg. "show text for actiontime-seconds EVERY interval-seconds"
 	Method doAction:int()
-		local timeLeft:Double = Time.GetTimeGone() - (timer + GetInterval() )
+		local timeLeft:Double = _GetTimeGone() - (timer + GetInterval() )
 		return ( timeLeft > 0 AND timeLeft < actionTime )
 	End Method
 
 
 	'returns TRUE if interval and duration is gone (ignores duration)
 	Method isExpired:int()
-		return ( timer + GetInterval() + actionTime <= Time.GetTimeGone() )
+		return ( timer + GetInterval() + actionTime <= _GetTimeGone() )
 	End Method
 
 
@@ -224,12 +229,12 @@ Type TIntervalTimer
 
 
 	Method getTimeUntilExpire:Double()
-		return timer + GetInterval() + actionTime - Time.GetTimeGone()
+		return timer + GetInterval() + actionTime - _GetTimeGone()
 	End Method
 
 
 	Method reachedHalftime:int()
-		return ( timer + 0.5*(GetInterval() + actionTime) <= Time.GetTimeGone() )
+		return ( timer + 0.5*(GetInterval() + actionTime) <= _GetTimeGone() )
 	End Method
 
 
@@ -241,6 +246,6 @@ Type TIntervalTimer
 	Method reset()
 		intervalToUse = interval + rand(randomnessMin, randomnessMax)
 
-		timer = Time.GetTimeGone()
+		timer = _GetTimeGone()
 	End Method
 End Type
