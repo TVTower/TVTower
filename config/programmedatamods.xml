@@ -62,12 +62,12 @@
 					<timeMod time="23" value="0.1"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="0" />
+					<audienceAttraction id="Children" value="-1" />
 					<audienceAttraction id="Teenagers" value="0" />
 					<audienceAttraction id="HouseWives" value="0" />
 					<audienceAttraction id="Employees" value="0" />
 					<audienceAttraction id="Unemployed" value="0" />
-					<audienceAttraction id="Manager" value="0" />
+					<audienceAttraction id="Manager" value="-1" />
 					<audienceAttraction id="Pensioners" value="0" />
 				</audienceAttractions>
 			</genre>
@@ -101,13 +101,13 @@
 					<timeMod time="23" value="0.05"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" men="-0.1" women="-0.2" />
-					<audienceAttraction id="Teenagers" men="0.4" women="0.3" />
-					<audienceAttraction id="HouseWives" men="0" women="-0.1" />
-					<audienceAttraction id="Employees" men="0.25" women="0.1" />
+					<audienceAttraction id="Children" men="0" women="-0.5" />
+					<audienceAttraction id="Teenagers" men="2" women="0.5" />
+					<audienceAttraction id="HouseWives" men="0" women="-1" />
+					<audienceAttraction id="Employees" men="0.3" women="0.1" />
 					<audienceAttraction id="Unemployed" men="0.4" women="0.3" />
-					<audienceAttraction id="Manager" men="-0.2" women="-0.3" />
-					<audienceAttraction id="Pensioners" men="-0.3" women="-0.3" />
+					<audienceAttraction id="Manager" men="-0.5" women="-1" />
+					<audienceAttraction id="Pensioners" men="-1" women="-1" />
 				</audienceAttractions>
 				<castAttributes>
 					<actor attribute="power" value="0.2" />
@@ -151,13 +151,13 @@
 					<timeMod time="23" value="0.25"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-0.2" />
-					<audienceAttraction id="Teenagers" men="0.6" women="0.4" />
-					<audienceAttraction id="HouseWives" men="-0.1" women="-0.4" />
+					<audienceAttraction id="Children" value="-0.3" />
+					<audienceAttraction id="Teenagers" men="2" women="0.5" />
+					<audienceAttraction id="HouseWives" men="-0.5" women="-1" />
 					<audienceAttraction id="Employees" men="0.5" women="0.2" />
-					<audienceAttraction id="Unemployed" men="0.6" women="0.4" />
-					<audienceAttraction id="Manager" men="-0.2" women="-0.4" />
-					<audienceAttraction id="Pensioners" men="-0.3" women="-0.6" />
+					<audienceAttraction id="Unemployed" men="0.7" women="0.4" />
+					<audienceAttraction id="Manager" men="-0.3" women="-0.7" />
+					<audienceAttraction id="Pensioners" men="-1.2" women="-2" />
 				</audienceAttractions>
 				<castAttributes>
 					<actor attribute="power" value="0.2" />
@@ -185,11 +185,11 @@
 					<timeMod time="9" value="0.25"/>
 					<timeMod time="10" value="0.25"/>
 					<timeMod time="11" value="0.2"/>
-					<timeMod time="12" value="0.1"/>
-					<timeMod time="13" value="0.1"/>
-					<timeMod time="14" value="0.15"/>
-					<timeMod time="15" value="0.2"/>
-					<timeMod time="16" value="0.2"/>
+					<timeMod time="12" value="0.15"/>
+					<timeMod time="13" value="0.2"/>
+					<timeMod time="14" value="0.3"/>
+					<timeMod time="15" value="0.3"/>
+					<timeMod time="16" value="0.3"/>
 					<timeMod time="17" value="0.15"/>
 					<timeMod time="18" value="0.1"/>
 					<timeMod time="19" value="0"/>
@@ -199,13 +199,13 @@
 					<timeMod time="23" value="0"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="0.5" />
-					<audienceAttraction id="Teenagers" men="0.3" women="0.15"  />
-					<audienceAttraction id="HouseWives" men="0" women="0.05" />
-					<audienceAttraction id="Employees" men="-0.1" women="-0.15" />
-					<audienceAttraction id="Unemployed" men="0.1" women="0.05" />
-					<audienceAttraction id="Manager" value="-0.6" />
-					<audienceAttraction id="Pensioners" value="-0.6" />
+					<audienceAttraction id="Children" value="2" />
+					<audienceAttraction id="Teenagers" value="1" />
+					<audienceAttraction id="HouseWives" men="-0.2" women="0.2" />
+					<audienceAttraction id="Employees" value="-0.7" />
+					<audienceAttraction id="Unemployed" men="0" women="0" />
+					<audienceAttraction id="Manager" value="-2" />
+					<audienceAttraction id="Pensioners" value="-2" />
 				</audienceAttractions>
 			</genre>
 			<genre id="4" name="crime" outcome-mod="0.3" review-mod="0.4" speed-mod="0.3">
@@ -238,13 +238,13 @@
 					<timeMod time="23" value="0.05"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-0.7" />
-					<audienceAttraction id="Teenagers" value="0.2" />
-					<audienceAttraction id="HouseWives" men="0.3" women="0.5" />
-					<audienceAttraction id="Employees" men="0.2" women="0.4" />
-					<audienceAttraction id="Unemployed" men="0.4" women="0.6" />
-					<audienceAttraction id="Manager" value="0.4" />
-					<audienceAttraction id="Pensioners" men="0.5" women="0.4" />
+					<audienceAttraction id="Children" value="-1.5" />
+					<audienceAttraction id="Teenagers" value="0" />
+					<audienceAttraction id="HouseWives" men="0.7" women="2" />
+					<audienceAttraction id="Employees" men="0.5" women="1.1" />
+					<audienceAttraction id="Unemployed" men="0.5" women="1.3" />
+					<audienceAttraction id="Manager" value="0.2" />
+					<audienceAttraction id="Pensioners" value="1.2" />
 				</audienceAttractions>
 				<castAttributes>
 					<actor attribute="charisma" value="0.2" />
@@ -281,12 +281,12 @@
 					<timeMod time="23" value="0.05"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="0" />
-					<audienceAttraction id="Teenagers" value="0.3" />
-					<audienceAttraction id="HouseWives" value="0.5" />
-					<audienceAttraction id="Employees" value="0.1" />
-					<audienceAttraction id="Unemployed" value="0.5" />
-					<audienceAttraction id="Manager" value="-0.3" />
+					<audienceAttraction id="Children" value="0.5" />
+					<audienceAttraction id="Teenagers" value="0.5" />
+					<audienceAttraction id="HouseWives" value="1.0" />
+					<audienceAttraction id="Employees" value="0.5" />
+					<audienceAttraction id="Unemployed" value="0.8" />
+					<audienceAttraction id="Manager" value="-0.7" />
 					<audienceAttraction id="Pensioners" value="0" />
 				</audienceAttractions>
 				<castAttributes>
@@ -326,13 +326,13 @@
 					<timeMod time="23" value="0.1"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-0.8" />
+					<audienceAttraction id="Children" value="-1.7" />
 					<audienceAttraction id="Teenagers" value="-0.5" />
-					<audienceAttraction id="HouseWives" men="-0.1" women="-0.3" />
+					<audienceAttraction id="HouseWives" men="0.3" women="-0.3" />
 					<audienceAttraction id="Employees" value="-0.1" />
-					<audienceAttraction id="Unemployed" value="-0.4" />
-					<audienceAttraction id="Manager" value="0.4" />
-					<audienceAttraction id="Pensioners" value="0.6" />
+					<audienceAttraction id="Unemployed" value="-1.5" />
+					<audienceAttraction id="Manager" value="1.5" />
+					<audienceAttraction id="Pensioners" value="1.5" />
 				</audienceAttractions>
 				<castAttributes>
 					<actor attribute="skill" value="0.2" />
@@ -369,13 +369,13 @@
 					<timeMod time="23" value="0"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-0.7" />
-					<audienceAttraction id="Teenagers" men="-0.4" women="-0.1" />
-					<audienceAttraction id="HouseWives" men="0.2" women="0.5" />
-					<audienceAttraction id="Employees" men="0" women="0.2" />
-					<audienceAttraction id="Unemployed" men="0" women="0.2" />
+					<audienceAttraction id="Children" value="-1.7" />
+					<audienceAttraction id="Teenagers" men="-0.5" women="0.5" />
+					<audienceAttraction id="HouseWives" men="0.5" women="1.5" />
+					<audienceAttraction id="Employees" men="0" women="0.7" />
+					<audienceAttraction id="Unemployed" men="0" women="0.7" />
 					<audienceAttraction id="Manager" value="0" />
-					<audienceAttraction id="Pensioners" men="0.25" women="0.5" />
+					<audienceAttraction id="Pensioners" men="0" women="1" />
 				</audienceAttractions>
 				<castAttributes>
 					<actor attribute="skill" value="0.2" />
@@ -417,13 +417,13 @@
 					<timeMod time="23" value="0.3"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-1.5" />
-					<audienceAttraction id="Teenagers" men="0.5" women="-0.1" />
-					<audienceAttraction id="HouseWives" men="0.1" women="-0.5" />
-					<audienceAttraction id="Employees" men="0.3" women="-0.4" />
-					<audienceAttraction id="Unemployed" men="0.5" women="-0.2" />
-					<audienceAttraction id="Manager" men="0" women="-0.5" />
-					<audienceAttraction id="Pensioners" men="-0.2" women="-0.6" />
+					<audienceAttraction id="Children" value="-2" />
+					<audienceAttraction id="Teenagers" men="1.5" women="-0.5" />
+					<audienceAttraction id="HouseWives" men="0.2" women="-0.2" />
+					<audienceAttraction id="Employees" men="0.7" women="-1" />
+					<audienceAttraction id="Unemployed" men="1.0" women="-0.2" />
+					<audienceAttraction id="Manager" men="0" women="-2" />
+					<audienceAttraction id="Pensioners" men="-0.2" women="-2" />
 				</audienceAttractions>	
 				<castAttributes>
 					<actor attribute="charisma" value="0.1" />
@@ -468,13 +468,13 @@
 					<timeMod time="23" value="0"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="0.3" />
+					<audienceAttraction id="Children" value="1" />
 					<audienceAttraction id="Teenagers" value="0.2" />
-					<audienceAttraction id="HouseWives" men="0" women="0.5" />
-					<audienceAttraction id="Employees" men="0" women="0.3" />
-					<audienceAttraction id="Unemployed" men="0" women="0.25" />
-					<audienceAttraction id="Manager" value="-0.5" />
-					<audienceAttraction id="Pensioners" men="0.05" women="0.15" />
+					<audienceAttraction id="HouseWives" men="1" women="1.5" />
+					<audienceAttraction id="Employees" men="0.5" women="1" />
+					<audienceAttraction id="Unemployed" men="0" women="0.3" />
+					<audienceAttraction id="Manager" value="-1" />
+					<audienceAttraction id="Pensioners" men="0" women="0.5" />
 				</audienceAttractions>
 				<castAttributes>
 					<actor attribute="humor" value="0.1" />
@@ -513,13 +513,13 @@
 					<timeMod time="23" value="0.05"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" men="0" women="-0.1" />
-					<audienceAttraction id="Teenagers" men="0.6" women="0.3"/>
-					<audienceAttraction id="HouseWives" men="0" women="-0.1" />
+					<audienceAttraction id="Children" value="0.5" />
+					<audienceAttraction id="Teenagers" men="1.5" women="0.5"/>
+					<audienceAttraction id="HouseWives" men="0" women="-1" />
 					<audienceAttraction id="Employees" men="0.3" women="0" />
-					<audienceAttraction id="Unemployed" men="0.6" women="0.3" />
-					<audienceAttraction id="Manager" value="-0.2" />
-					<audienceAttraction id="Pensioners" men="-0.3" women="-0.5" />
+					<audienceAttraction id="Unemployed" men="0.3" women="0" />
+					<audienceAttraction id="Manager" value="-0.5" />
+					<audienceAttraction id="Pensioners" men="-1.5" women="-2" />
 				</audienceAttractions>
 				<castAttributes>
 					<actor attribute="power" value="0.1" />
@@ -558,13 +558,13 @@
 					<timeMod time="23" value="0.2"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-0.6" />
-					<audienceAttraction id="Teenagers" value="-0.3" />
+					<audienceAttraction id="Children" value="-2" />
+					<audienceAttraction id="Teenagers" value="-0.5" />
 					<audienceAttraction id="HouseWives" value="0" />
-					<audienceAttraction id="Employees" men="0.3" women="0.2" />
-					<audienceAttraction id="Unemployed" men="0.1" women="0" />
-					<audienceAttraction id="Manager" value="0.6" />
-					<audienceAttraction id="Pensioners" men="0.5" women="0.2" />
+					<audienceAttraction id="Employees" men="0.3" women="0" />
+					<audienceAttraction id="Unemployed" men="0.3" women="0" />
+					<audienceAttraction id="Manager" value="1.5" />
+					<audienceAttraction id="Pensioners" men="2" women="1" />
 				</audienceAttractions>
 				<castAttributes>
 					<director attribute="charisma" value="0.1" />
@@ -602,13 +602,13 @@
 					<timeMod time="23" value="0.3"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-1.2" />
-					<audienceAttraction id="Teenagers" men="0.4" women="0.3" />
-					<audienceAttraction id="HouseWives" men="0" women="-0.4" />
-					<audienceAttraction id="Employees" men="0.1" women="-0.3" />
-					<audienceAttraction id="Unemployed" men="0.3" women="0" />
-					<audienceAttraction id="Manager" value="-0.3" />
-					<audienceAttraction id="Pensioners" men="-0.6" women="-0.8" />
+					<audienceAttraction id="Children" value="-2" />
+					<audienceAttraction id="Teenagers" value="1.5" />
+					<audienceAttraction id="HouseWives" men="0" women="-1.5" />
+					<audienceAttraction id="Employees" value="0" />
+					<audienceAttraction id="Unemployed" value="0" />
+					<audienceAttraction id="Manager" value="-0.5" />
+					<audienceAttraction id="Pensioners" men="-1.8" women="-2" />
 				</audienceAttractions>	
 			</genre>
 			<genre id="13" name="monumental" outcome-mod="0.4" review-mod="0.4" speed-mod="0.2">
@@ -641,13 +641,13 @@
 					<timeMod time="23" value="0.1"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-0.3" />
-					<audienceAttraction id="Teenagers" value="-0.2" />
-					<audienceAttraction id="HouseWives" men="0.2" women="-0.1" />
-					<audienceAttraction id="Employees" men="0.2" women="0" />
-					<audienceAttraction id="Unemployed" men="0.2" women="-0.1" />
-					<audienceAttraction id="Manager" value="0" />
-					<audienceAttraction id="Pensioners" men="0.4" women="0.2" />
+					<audienceAttraction id="Children" value="-1.2" />
+					<audienceAttraction id="Teenagers" value="-0.5" />
+					<audienceAttraction id="HouseWives" value="0.3" />
+					<audienceAttraction id="Employees" value="0.3" />
+					<audienceAttraction id="Unemployed" value="-0.5" />
+					<audienceAttraction id="Manager" value="0.8" />
+					<audienceAttraction id="Pensioners" men="1.5" women="0.5" />
 				</audienceAttractions>
 				<castAttributes>
 					<director attribute="charisma" value="0.1" />
@@ -685,13 +685,13 @@
 					<timeMod time="23" value="0.15"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-0.5" />
-					<audienceAttraction id="Teenagers" men="0.6" women="0.5" />
-					<audienceAttraction id="HouseWives" men="0" women="-0.2" />
+					<audienceAttraction id="Children" value="-1.0" />
+					<audienceAttraction id="Teenagers" men="1.5" women="1" />
+					<audienceAttraction id="HouseWives" men="0" women="-0.5" />
 					<audienceAttraction id="Employees" men="0.2" women="0" />
-					<audienceAttraction id="Unemployed" men="0.4" women="0.2" />
-					<audienceAttraction id="Manager" value="-0.5" />
-					<audienceAttraction id="Pensioners" value="-0.6" />
+					<audienceAttraction id="Unemployed" men="0.6" women="0.2" />
+					<audienceAttraction id="Manager" value="-0.7" />
+					<audienceAttraction id="Pensioners" value="-1.7" />
 				</audienceAttractions>
 			</genre>
 			<genre id="15" name="love" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
@@ -724,13 +724,13 @@
 					<timeMod time="23" value="0"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-0.6" />
-					<audienceAttraction id="Teenagers" men="-0.2" women="0.4" />
-					<audienceAttraction id="HouseWives" men="-0.1" women="0.8" />
-					<audienceAttraction id="Employees" men="-0.2" women="0.5" />
-					<audienceAttraction id="Unemployed" men="-0.2" women="0.6" />
-					<audienceAttraction id="Manager" value="-0.3" />
-					<audienceAttraction id="Pensioners" men="-0.2" women="0.3" />
+					<audienceAttraction id="Children" value="-1.0" />
+					<audienceAttraction id="Teenagers" men="-0.5" women="1.5" />
+					<audienceAttraction id="HouseWives" men="0" women="2" />
+					<audienceAttraction id="Employees" men="-0.5" women="1.5" />
+					<audienceAttraction id="Unemployed" men="-1" women="1" />
+					<audienceAttraction id="Manager" value="-0.5" />
+					<audienceAttraction id="Pensioners" men="-0.5" women="1" />
 				</audienceAttractions>
 				<castAttributes>
 					<actor attribute="humor" value="0.1" />
@@ -769,13 +769,13 @@
 					<timeMod time="23" value="0.2"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" men="-0.25" women="-0.5" />
-					<audienceAttraction id="Teenagers" men="0.4" women="0" />
-					<audienceAttraction id="HouseWives" men="-0.1" women="-0.6" />
-					<audienceAttraction id="Employees" men="0.4" women="-0.2" />
-					<audienceAttraction id="Unemployed" men="0.5" women="0" />
+					<audienceAttraction id="Children" men="0" women="-1" />
+					<audienceAttraction id="Teenagers" men="2" women="0" />
+					<audienceAttraction id="HouseWives" men="-1" women="-1.5" />
+					<audienceAttraction id="Employees" men="0.5" women="-1" />
+					<audienceAttraction id="Unemployed" men="0.5" women="-0.5" />
 					<audienceAttraction id="Manager" value="-0.5" />
-					<audienceAttraction id="Pensioners" men="-0.4" women="-0.6" />
+					<audienceAttraction id="Pensioners" men="-1.5" women="-2" />
 				</audienceAttractions>
 			</genre>
 			<genre id="17" name="thriller" outcome-mod="0.3" review-mod="0.4" speed-mod="0.3">
@@ -808,13 +808,13 @@
 					<timeMod time="23" value="0.1"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-0.8" />
-					<audienceAttraction id="Teenagers" men="0.3" women="0.2" />
-					<audienceAttraction id="HouseWives" men="0.1" women="0.15" />
-					<audienceAttraction id="Employees" value="0.15" />
-					<audienceAttraction id="Unemployed" value="0.25" />
-					<audienceAttraction id="Manager" value="0" />
-					<audienceAttraction id="Pensioners" value="-0.3" />
+					<audienceAttraction id="Children" value="-1.5" />
+					<audienceAttraction id="Teenagers" value="0.5" />
+					<audienceAttraction id="HouseWives" men="0" women="0.5" />
+					<audienceAttraction id="Employees" value="0.3" />
+					<audienceAttraction id="Unemployed" value="0.3" />
+					<audienceAttraction id="Manager" value="0.2" />
+					<audienceAttraction id="Pensioners" value="-1.2" />
 				</audienceAttractions>
 				<castAttributes>
 					<actor attribute="charisma" value="0.1" />
@@ -852,13 +852,13 @@
 					<timeMod time="23" value="0.05"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" men="0.2" women="0" />
-					<audienceAttraction id="Teenagers" men="0.2" women="0.0" />
-					<audienceAttraction id="HouseWives" men="0" women="-0.5" />
-					<audienceAttraction id="Employees" men="0.2" women="-0.2" />
-					<audienceAttraction id="Unemployed" men="0.2" women="-0.2" />
-					<audienceAttraction id="Manager" value="0" />
-					<audienceAttraction id="Pensioners" men="0.5" women="0" />
+					<audienceAttraction id="Children" men="0.5" women="-1" />
+					<audienceAttraction id="Teenagers" men="0.2" women="-1" />
+					<audienceAttraction id="HouseWives" men="0" women="-1.5" />
+					<audienceAttraction id="Employees" men="0.5" women="-0.5" />
+					<audienceAttraction id="Unemployed" men="0.5" women="-0.5" />
+					<audienceAttraction id="Manager" value="-0.8" />
+					<audienceAttraction id="Pensioners" men="0.5" women="-0.5" />
 				</audienceAttractions>
 				<castAttributes>
 					<actor attribute="power" value="0.1" />
@@ -897,13 +897,13 @@
 					<timeMod time="23" value="0.1"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="0" />
-					<audienceAttraction id="Teenagers" men="0.2" women="0.3" />
-					<audienceAttraction id="HouseWives" men="0.1" women="0.5" />
-					<audienceAttraction id="Employees" men="0" women="0.4" />
-					<audienceAttraction id="Unemployed" men="0.1" women="0.5" />
-					<audienceAttraction id="Manager" value="-0.2" />
-					<audienceAttraction id="Pensioners" men="0.1" women="0.2" />
+					<audienceAttraction id="Children" value="0.3" />
+					<audienceAttraction id="Teenagers" men="0" women="0.5" />
+					<audienceAttraction id="HouseWives" men="0.3" women="1.5" />
+					<audienceAttraction id="Employees" men="0.2" women="1.2" />
+					<audienceAttraction id="Unemployed" men="0.2" women="1" />
+					<audienceAttraction id="Manager" men="-1" women="-0.5" />
+					<audienceAttraction id="Pensioners" men="0.3" women="1" />
 				</audienceAttractions>
 				<castAttributes>
 					<host attribute="humor" value="0.1" />
@@ -943,13 +943,13 @@
 					<timeMod time="23" value="0.1"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-1" />
-					<audienceAttraction id="Teenagers" value="-0.7" />
-					<audienceAttraction id="HouseWives" men="-0.2" women="-0.35" />
-					<audienceAttraction id="Employees" men="0.2" women="0" />
-					<audienceAttraction id="Unemployed" men="-0.3" women="-0.5" />
-					<audienceAttraction id="Manager" men="0.6" women="0.4" />
-					<audienceAttraction id="Pensioners" men="0.5" women="0.3" />
+					<audienceAttraction id="Children" value="-2" />
+					<audienceAttraction id="Teenagers" value="-1.2" />
+					<audienceAttraction id="HouseWives" value="0.5" />
+					<audienceAttraction id="Employees" value="0.5" />
+					<audienceAttraction id="Unemployed" value="-0.5" />
+					<audienceAttraction id="Manager" value="1.5" />
+					<audienceAttraction id="Pensioners" value="0.7" />
 				</audienceAttractions>
 				<castAttributes>
 					<host attribute="humor" value="0.1" />
@@ -959,9 +959,9 @@
 					<guest attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
-			<genre id="102" name="show_music" outcome-mod="0.3" review-mod="0.4" speed-mod="0.3">
-				<goodFollower>5,9</goodFollower>
-				<badFollower>6</badFollower>
+			<genre id="102" name="show_music" outcome-mod="0.3" review-mod="0.2" speed-mod="0.5">
+				<goodFollower>5,9,100,102</goodFollower>
+				<badFollower>6,101,201</badFollower>
 				<timeMods>
 					<timeMod time="0" value="0.05"/>
 					<timeMod time="1" value="0"/>
@@ -983,27 +983,27 @@
 					<timeMod time="17" value="0.05"/>
 					<timeMod time="18" value="0.1"/>
 					<timeMod time="19" value="0.15"/>
-					<timeMod time="20" value="0.2"/>
-					<timeMod time="21" value="0.2"/>
+					<timeMod time="20" value="0.3"/>
+					<timeMod time="21" value="0.3"/>
 					<timeMod time="22" value="0.2"/>
 					<timeMod time="23" value="0.1"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="0" />
+					<audienceAttraction id="Children" value="-0.5" />
 					<audienceAttraction id="Teenagers" value="0.7" />
-					<audienceAttraction id="HouseWives" men="0.2" women="0.4" />
-					<audienceAttraction id="Employees" men="0.1" women="0.2" />
-					<audienceAttraction id="Unemployed" men="0.3" women="0.5" />
-					<audienceAttraction id="Manager" men="-0.1" women="0" />
-					<audienceAttraction id="Pensioners" men="0.2" women="0.3" />
+					<audienceAttraction id="HouseWives" value="1" />
+					<audienceAttraction id="Employees" value="1.2" />
+					<audienceAttraction id="Unemployed" value="0" />
+					<audienceAttraction id="Manager" value="-0.5" />
+					<audienceAttraction id="Pensioners" value="1.2" />
 				</audienceAttractions>
 				<castAttributes>
-					<host attribute="humor" value="0.1" />
+					<host attribute="humor" value="0.2" />
 					<host attribute="charisma" value="0.15" />
 					<host attribute="appearance" value="0.3" />
-					<guest attribute="humor" value="0.1" />
+					<guest attribute="humor" value="0.15" />
 					<guest attribute="charisma" value="0.1" />
-					<guest attribute="appearance" value="0.3" />
+					<guest attribute="appearance" value="0.5" />
 				</castAttributes>
 			</genre>
 			<genre id="103" name="show_talk" outcome-mod="0.2" review-mod="0.30" speed-mod="0.50">
@@ -1036,13 +1036,13 @@
 					<timeMod time="23" value="0.2"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-1" />
+					<audienceAttraction id="Children" value="-2" />
 					<audienceAttraction id="Teenagers" value="-0.4" />
-					<audienceAttraction id="HouseWives" men="-0.05" women="-0.15" />
-					<audienceAttraction id="Employees" men="0.1" women="0.1" />
-					<audienceAttraction id="Unemployed" men="-0.1" women="-0.1" />
-					<audienceAttraction id="Manager" men="0.2" women="0.2" />
-					<audienceAttraction id="Pensioners" men="0.7" women="0.6" />
+					<audienceAttraction id="HouseWives" men="0" women="0.5" />
+					<audienceAttraction id="Employees" men="0.3" women="0.5" />
+					<audienceAttraction id="Unemployed" men="-0.5" women="0.5" />
+					<audienceAttraction id="Manager" men="0" women="0.5" />
+					<audienceAttraction id="Pensioners" value="0.7" />
 				</audienceAttractions>
 				<castAttributes>
 					<host attribute="humor" value="0.1" />
@@ -1132,14 +1132,12 @@
 				</timeMods>
 				<audienceAttractions>
 					<audienceAttraction id="Children" value="0.2" />
-					<audienceAttraction id="Teenagers" value="0.25" />
-					<audienceAttraction id="HouseWives" value="0.5" />
-					<audienceAttraction id="Employees" value="0.5" />
-					<audienceAttraction id="Unemployed" value="0.7" />
-					<audienceAttraction id="Manager" value="0.1" />
+					<audienceAttraction id="Teenagers" value="0.2" />
+					<audienceAttraction id="HouseWives" value="1" />
+					<audienceAttraction id="Employees" value="1" />
+					<audienceAttraction id="Unemployed" value="1" />
+					<audienceAttraction id="Manager" value="0" />
 					<audienceAttraction id="Pensioners" value="0.5" />
-					<audienceAttraction id="Women" value="0.5" />
-					<audienceAttraction id="Men" value="0.5" />
 				</audienceAttractions>
 			</genre>
 			<genre id="201" name="event_politics" outcome-mod="0.15" review-mod="0.65" speed-mod="0.2">
@@ -1172,13 +1170,13 @@
 					<timeMod time="23" value="0.05"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-0.9" />
-					<audienceAttraction id="Teenagers" value="-0.6" />
+					<audienceAttraction id="Children" value="-2" />
+					<audienceAttraction id="Teenagers" value="-1" />
 					<audienceAttraction id="HouseWives" men="-0.25" women="-0.4" />
 					<audienceAttraction id="Employees" men="0.3" women="0.15" />
 					<audienceAttraction id="Unemployed" men="-0.25" women="-0.5" />
-					<audienceAttraction id="Manager" value="0.5" />
-					<audienceAttraction id="Pensioners" value="0.5" />
+					<audienceAttraction id="Manager" value="2" />
+					<audienceAttraction id="Pensioners" value="1" />
 				</audienceAttractions>
 				<castAttributes>
 					<guest attribute="charisma" value="0.1" />
@@ -1215,12 +1213,12 @@
 				</timeMods>
 				<audienceAttractions>
 					<audienceAttraction id="Children" value="0" />
-					<audienceAttraction id="Teenagers" men="0.2" women="0.6" />
+					<audienceAttraction id="Teenagers" value="1.5" />
 					<audienceAttraction id="HouseWives" men="0.2" women="0.6" />
-					<audienceAttraction id="Employees" men="-0.1" women="0" />
-					<audienceAttraction id="Unemployed" men="0.1" women="0.3" />
+					<audienceAttraction id="Employees" value="0" />
+					<audienceAttraction id="Unemployed" value="0" />
 					<audienceAttraction id="Manager" value="-0.5" />
-					<audienceAttraction id="Pensioners" value="0.4" />
+					<audienceAttraction id="Pensioners" value="0.5" />
 				</audienceAttractions>
 				<castAttributes>
 					<guest attribute="humor" value="0.1" />
@@ -1256,13 +1254,13 @@
 					<timeMod time="23" value="0.2"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" men="0.1" women="-0.2" />
-					<audienceAttraction id="Teenagers" men="0.3" women="-0.1" />
-					<audienceAttraction id="HouseWives" men="-0.2" women="-0.4" />
-					<audienceAttraction id="Employees" men="0.5" women="-0.2" />
-					<audienceAttraction id="Unemployed" men="0.6" women="-0.1" />
-					<audienceAttraction id="Manager" men="0.4" women="0" />
-					<audienceAttraction id="Pensioners" men="0.2" women="0" />
+					<audienceAttraction id="Children" men="0.5" women="-0.5" />
+					<audienceAttraction id="Teenagers" men="0.5" women="-0.5" />
+					<audienceAttraction id="HouseWives" men="-0.2" women="-1" />
+					<audienceAttraction id="Employees" men="1.5" women="-0.5" />
+					<audienceAttraction id="Unemployed" men="1.5" women="-0.5" />
+					<audienceAttraction id="Manager" men="0.5" women="-1" />
+					<audienceAttraction id="Pensioners" men="0.3" women="-0.5" />
 				</audienceAttractions>
 			</genre>
 			<genre id="204" name="event_showbiz" outcome-mod="0.2" review-mod="0.3" speed-mod="0.5">
@@ -1297,10 +1295,10 @@
 				<audienceAttractions>
 					<audienceAttraction id="Children" value="0.2" />
 					<audienceAttraction id="Teenagers" value="0.4" />
-					<audienceAttraction id="HouseWives" men="0.4" women="0.7" />
-					<audienceAttraction id="Employees" men="0" women="0.3" />
-					<audienceAttraction id="Unemployed" men="0.2" women="0.5" />
-					<audienceAttraction id="Manager" value="-0.7" />
+					<audienceAttraction id="HouseWives" men="0.5" women="1.5" />
+					<audienceAttraction id="Employees" men="0" women="1" />
+					<audienceAttraction id="Unemployed" men="0.2" women="0.7" />
+					<audienceAttraction id="Manager" value="-1.2" />
 					<audienceAttraction id="Pensioners" men="0" women="0.2" />
 				</audienceAttractions>
 				<castAttributes>
@@ -1338,13 +1336,13 @@
 					<timeMod time="23" value="0.05"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-0.9" />
-					<audienceAttraction id="Teenagers" value="-0.3" />
-					<audienceAttraction id="HouseWives" value="0.4" />
-					<audienceAttraction id="Employees" value="0.3" />
-					<audienceAttraction id="Unemployed" value="-0.3" />
-					<audienceAttraction id="Manager" value="0.5" />
-					<audienceAttraction id="Pensioners" value="0.6" />
+					<audienceAttraction id="Children" value="-1.8" />
+					<audienceAttraction id="Teenagers" value="-0.5" />
+					<audienceAttraction id="HouseWives" value="1" />
+					<audienceAttraction id="Employees" value="0.5" />
+					<audienceAttraction id="Unemployed" value="-0.5" />
+					<audienceAttraction id="Manager" value="0.7" />
+					<audienceAttraction id="Pensioners" value="0.7" />
 				</audienceAttractions>
 			</genre>
 
@@ -1379,13 +1377,52 @@
 					<timeMod time="23" value="0"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-0.7" />
-					<audienceAttraction id="Teenagers" value="-0.4" />
-					<audienceAttraction id="HouseWives" men="0" women="0.6" />
-					<audienceAttraction id="Employees" men="-0.2" women="0.1" />
-					<audienceAttraction id="Unemployed" men="0" women="0.4" />
-					<audienceAttraction id="Manager" value="-0.1" />
-					<audienceAttraction id="Pensioners" value="0.1" />
+					<audienceAttraction id="Children" value="-1.0" />
+					<audienceAttraction id="Teenagers" value="-0.5" />
+					<audienceAttraction id="HouseWives" men="0" women="2" />
+					<audienceAttraction id="Employees" men="0" women="0.5" />
+					<audienceAttraction id="Unemployed" men="0" women="1" />
+					<audienceAttraction id="Manager" value="-0.5" />
+					<audienceAttraction id="Pensioners" value="0.5" />
+				</audienceAttractions>
+			</genre>
+
+			<!-- advertisements sent as infomercials -->
+			<genre id="400" name="infomercial">
+				<timeMods>
+					<timeMod time="0" value="0.025"/>
+					<timeMod time="1" value="0.05"/>
+					<timeMod time="2" value="0.075"/>
+					<timeMod time="3" value="0.1"/>
+					<timeMod time="4" value="0.1"/>
+					<timeMod time="5" value="0.075"/>
+					<timeMod time="6" value="0.05"/>
+					<timeMod time="7" value="0.025"/>
+					<timeMod time="8" value="0"/>
+					<timeMod time="9" value="0"/>
+					<timeMod time="10" value="0.025"/>
+					<timeMod time="11" value="0.025"/>
+					<timeMod time="12" value="0"/>
+					<timeMod time="13" value="-0.05"/>
+					<timeMod time="14" value="-0.05"/>
+					<timeMod time="15" value="-0.10"/>
+					<timeMod time="16" value="-0.15"/>
+					<timeMod time="17" value="-0.20"/>
+					<timeMod time="18" value="-0.20"/>
+					<timeMod time="19" value="-0.20"/>
+					<timeMod time="20" value="-0.25"/>
+					<timeMod time="21" value="-0.25"/>
+					<timeMod time="22" value="-0.20"/>
+					<timeMod time="23" value="-0.10"/>
+				</timeMods>
+				<audienceAttractions>
+					<audienceAttraction id="Children" value="-1.9" />
+					<audienceAttraction id="Teenagers" value="-1.5" />
+					<audienceAttraction id="HouseWives" men="-0.6" women="-0.5" />
+					<audienceAttraction id="Employees" men="-1.0" women="-0.9" />
+					<audienceAttraction id="Unemployed" men="-0.5" women="-0.4" />
+					<audienceAttraction id="Manager" value="-1.9" />
+					<audienceAttraction id="Pensioners" men="-0.75" women="-0.65" />
 				</audienceAttractions>
 			</genre>
 		</genres>
@@ -1420,10 +1457,10 @@
 				<audienceAttractions>
 					<audienceAttraction id="Children" value="0" />
 					<audienceAttraction id="Teenagers" value="0.2" />
-					<audienceAttraction id="HouseWives" value="0.4" />
-					<audienceAttraction id="Employees" value="0.2" />
+					<audienceAttraction id="HouseWives" value="0.5" />
+					<audienceAttraction id="Employees" value="0.5" />
 					<audienceAttraction id="Unemployed" value="0.3" />
-					<audienceAttraction id="Manager" value="0.2" />
+					<audienceAttraction id="Manager" value="0" />
 					<audienceAttraction id="Pensioners" value="0" />
 				</audienceAttractions>
 			</flag>
@@ -1455,18 +1492,18 @@
 					<timeMod time="23" value="0.15"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-1.2" />
-					<audienceAttraction id="Teenagers" men="0.5" women="0.1" />
-					<audienceAttraction id="HouseWives" men="0" women="-0.1" />
+					<audienceAttraction id="Children" value="-1.5" />
+					<audienceAttraction id="Teenagers" men="1.5" women="0.5" />
+					<audienceAttraction id="HouseWives" men="0" women="-0.5" />
 					<audienceAttraction id="Employees" men="0.3" women="0" />
 					<audienceAttraction id="Unemployed" men="0.5" women="0.1" />
-					<audienceAttraction id="Manager" men="0" women="-0.2" />
+					<audienceAttraction id="Manager" value="0" />
 					<audienceAttraction id="Pensioners" men="-0.3" women="-0.5" />
 				</audienceAttractions>
 			</flag>
-			<flag id="128" name="paidprograming" outcome-mod="0" review-mod="0.2" speed-mod="0.8">
+			<flag id="128" name="paid" outcome-mod="0" review-mod="0.2" speed-mod="0.8">
 				<timeMods>
-					<timeMod time="0" value="0"/>
+					<timeMod time="0" value="0.025"/>
 					<timeMod time="1" value="0.05"/>
 					<timeMod time="2" value="0.1"/>
 					<timeMod time="3" value="0.1"/>
@@ -1482,23 +1519,23 @@
 					<timeMod time="13" value="0"/>
 					<timeMod time="14" value="0"/>
 					<timeMod time="15" value="0"/>
-					<timeMod time="16" value="0"/>
-					<timeMod time="17" value="0"/>
-					<timeMod time="18" value="0"/>
-					<timeMod time="19" value="0"/>
-					<timeMod time="20" value="0"/>
-					<timeMod time="21" value="0"/>
-					<timeMod time="22" value="0"/>
-					<timeMod time="23" value="0"/>
+					<timeMod time="16" value="0.05"/>
+					<timeMod time="17" value="0.075"/>
+					<timeMod time="18" value="0.10"/>
+					<timeMod time="19" value="0.05"/>
+					<timeMod time="20" value="-0.10"/>
+					<timeMod time="21" value="-0.10"/>
+					<timeMod time="22" value="-0.05"/>
+					<timeMod time="23" value="0.025"/>
 				</timeMods>
 				<audienceAttractions>
-					<audienceAttraction id="Children" value="-1" />
-					<audienceAttraction id="Teenagers" value="-0.6" />
-					<audienceAttraction id="HouseWives" men="0" women="0.1" />
-					<audienceAttraction id="Employees" men="-0.5" women="-0.3" />
-					<audienceAttraction id="Unemployed" men="-0.1" women="0.1" />
-					<audienceAttraction id="Manager" value="-0.7" />
-					<audienceAttraction id="Pensioners" value="-0.2" />
+					<audienceAttraction id="Children" value="-1.5" />
+					<audienceAttraction id="Teenagers" value="-0.8" />
+					<audienceAttraction id="HouseWives" men="-0.2" women="-0.15" />
+					<audienceAttraction id="Employees" men="-0.6" women="-0.3" />
+					<audienceAttraction id="Unemployed" men="-0.15" women="-0.05" />
+					<audienceAttraction id="Manager" value="-1.9" />
+					<audienceAttraction id="Pensioners" men="-0.4" women="-0.3" />
 				</audienceAttractions>
 			</flag>
 		</flags>

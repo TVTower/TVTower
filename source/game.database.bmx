@@ -1998,20 +1998,19 @@ End Type
 
 
 
-Function LoadDatabase(dbDirectory:String, required:int = False)
-	local loader:TDatabaseLoader = new TDatabaseLoader
+Function LoadDatabase(dbDirectory:String, required:int = False, loader:TDatabaseLoader = null)
+	if not loader then loader = new TDatabaseLoader
 	loader.LoadDir(dbDirectory, required)
 End Function
 
 
-Function LoadDB(files:string[] = null, baseURI:string="")
-	'load db
-	global dbLoader:TDatabaseLoader = New TDatabaseLoader
+Function LoadDB(files:string[] = null, baseURI:string="", loader:TDatabaseLoader = null)
+	if not loader then loader = new TDatabaseLoader
 	if files = null
-		dbLoader.LoadDir(baseURI + "res/database/Default")
+		loader.LoadDir(baseURI + "res/database/Default")
 	else
 		for local f:string = EachIn files
-			dbLoader.Load(baseURI + "res/database/Default/"+f)
+			loader.Load(baseURI + "res/database/Default/"+f)
 		Next
 	endif
 End Function

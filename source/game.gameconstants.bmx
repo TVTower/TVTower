@@ -972,7 +972,11 @@ Type TVTProgrammeGenre {_exposeToLua}
 	Const Feature:int = 300
 	Const Feature_YellowPress:int = 301
 
-	Const genreMaximum:Int = 301
+	'internal genres
+	Const Infomercial:int = 400		'an advertisement in a programme slot
+	Const NewsSpecial:int = 401		'a news special made out of a news
+
+	Const genreMaximum:Int = 401
 
 
 	Function GetAtIndex:int(index:int)
@@ -980,6 +984,7 @@ Type TVTProgrammeGenre {_exposeToLua}
 		if index >= 100 and index <= 104 then return index
 		if index >= 200 and index <= 204 then return index
 		if index >= 300 and index <= 301 then return index
+		if index >= 400 and index <= 401 then return index
 		return -1
 	End Function
 	
@@ -1018,6 +1023,9 @@ Type TVTProgrammeGenre {_exposeToLua}
 			'reportage-genre 300+
 			case "feature"              return FEATURE
 			case "feature_yellowpress"  return FEATURE_YELLOWPRESS
+			'internal-genre 400+
+			case "infomercial"          return Infomercial
+			case "newsspecial"          return NewsSpecial
 
 			default                     return UNDEFINED
 		End Select
@@ -1054,10 +1062,13 @@ Type TVTProgrammeGenre {_exposeToLua}
 			case Event_Politics			return "event_politics"
 			case Event_Music			return "event_music"
 			case Event_Sport			return "event_sport"
-			case Event_Showbiz			return "event_showbiz"
-			'Reportage-Genre 300+
-			case Feature				return "feature"
-			case Feature_YellowPress	return "feature_yellowpress"
+			case Event_Showbiz          return "event_showbiz"
+			'Feature-Genre 300+
+			case Feature                return "feature"
+			case Feature_YellowPress    return "feature_yellowpress"
+			'Internal-Genre 300+
+			case Infomercial            return "infomercial"
+			case NewsSpecial            return "newsspecial"
 
 			case Undefined				return "undefined"
 			default

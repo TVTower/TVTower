@@ -118,6 +118,10 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 			title = TSportsProgrammeData._replaceLeagueInformation(title, league, locale)
 			description = TSportsProgrammeData._replaceSportInformation(description, league.GetSport(), locale)
 			description = TSportsProgrammeData._replaceLeagueInformation(description, league, locale)
+			descriptionAirtimeHint = TSportsProgrammeData._replaceSportInformation(descriptionAirtimeHint, league.GetSport(), locale)
+			descriptionAirtimeHint = TSportsProgrammeData._replaceLeagueInformation(descriptionAirtimeHint, league, locale)
+			descriptionAiredHint = TSportsProgrammeData._replaceSportInformation(descriptionAiredHint, league.GetSport(), locale)
+			descriptionAiredHint = TSportsProgrammeData._replaceLeagueInformation(descriptionAiredHint, league, locale)
 
 			programmeData.title.Set(StringHelper.UCFirst(title), locale)
 			programmeData.description.Set(StringHelper.UCFirst(description), locale)
@@ -159,6 +163,9 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 				matchNumber :+ 1
 			endif
 		Next
+
+		'print "Sportlizenz: " + programmeLicence.GetGUID()
+		'Notify("Sportlizenz: " + programmeLicence.GetGUID())
 
 		return programmeLicence
 	End Method

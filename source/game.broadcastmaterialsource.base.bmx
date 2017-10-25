@@ -100,7 +100,7 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 
 
 	Method hasFlag:Int(flag:Int) {_exposeToLua}
-		Return flags & flag
+		Return (flags & flag) > 0
 	End Method
 
 
@@ -114,7 +114,7 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 
 
 	Method hasBroadcastFlag:Int(flag:Int) {_exposeToLua}
-		Return broadcastFlags & flag
+		Return (broadcastFlags & flag) > 0
 	End Method
 
 
