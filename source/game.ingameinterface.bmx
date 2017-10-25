@@ -33,6 +33,7 @@ Type TInGameInterface
 	Field MenuToolTip:TTooltip
 	Field CurrentTimeToolTip:TTooltip
 	Field tooltips:TList = CreateList()
+	Field tvOverlaySprite:TSprite
 	Field noiseSprite:TSprite
 	Field noiseAlpha:Float	= 0.95
 	Field noiseDisplace:Trectangle = new TRectangle.Init(0,0,0,0)
@@ -109,10 +110,11 @@ Type TInGameInterface
 		tooltips.AddLast(ChannelImageTooltip)
 
 		noiseSprite = GetSpriteFromRegistry("gfx_interface_tv_noise")
+		tvOverlaySprite = GetSpriteFromRegistry("gfx_interface_tv_overlay")
 		'set space "left" when subtracting the genre image
 		'so we know how many pixels we can move that image to simulate animation
-		noiseDisplace.Dimension.SetX(Max(0, noiseSprite.GetWidth() - CurrentProgramme.GetWidth()))
-		noiseDisplace.Dimension.SetY(Max(0, noiseSprite.GetHeight() - CurrentProgramme.GetHeight()))
+		noiseDisplace.Dimension.SetX(Max(0, noiseSprite.GetWidth() - tvOverlaySprite.GetWidth()))
+		noiseDisplace.Dimension.SetY(Max(0, noiseSprite.GetHeight() - tvOverlaySprite.GetHeight()))
 
 
 		'=== SETUP SPAWNPOINTS FOR TOASTMESSAGES ===
@@ -636,18 +638,85 @@ Type TInGameInterface
 
 		If BottomImgDirty 'unused for now
 			local playerID:int = GetPlayerBase().playerID
-
-			'draw bottom, aligned "bottom"
-			GetSpriteFromRegistry("gfx_interface_bottom").Draw(0, GetGraphicsManager().GetHeight(), 0, ALIGN_LEFT_BOTTOM)
-		
 		    'channel choosen and something aired?
 			local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan( ShowChannel )
 
+
+			'=== INTERFACE ===
+
+			'draw bottom, aligned "bottom"
+			GetSpriteFromRegistry("gfx_interface_bottom").Draw(0, GetGraphicsManager().GetHeight(), 0, ALIGN_LEFT_BOTTOM)
+
+
+			'=== TV on the left ===
+
 			'CurrentProgramme can contain "outage"-image, so draw
 			'even without audience
-			If CurrentProgramme Then CurrentProgramme.Draw(45, 405)
-			If CurrentProgrammeOverlay Then CurrentProgrammeOverlay.Draw(45, 405)
+			If CurrentProgramme
+				if CurrentProgramme.GetWidth() < 200 '220 is normal width
+					local scaleRatio:Float = 220.0 / CurrentProgramme.GetWidth()
+					CurrentProgramme.DrawArea(45, 405, 220, CurrentProgramme.GetHeight()*scaleRatio)
+				else
+					CurrentProgramme.Draw(45, 405)
+				endif
+			endif
+			'draw trailer/infomercial-hint
+			If CurrentProgrammeOverlay
+				if CurrentProgrammeOverlay.GetWidth() < 200 '220 is normal width
+					local scaleRatio:Float = 220.0 / CurrentProgrammeOverlay.GetWidth()
+					CurrentProgrammeOverlay.DrawArea(45, 405, 220, CurrentProgrammeOverlay.GetHeight()*scaleRatio)
+				else
+					CurrentProgrammeOverlay.Draw(45, 405)
+				endif
+			endif
 
+			'draw noise of tv device
+			If ShowChannel <> 0
+				'decrease contrast a bit
+				SetAlpha 0.1 * (Sin(Millisecs()*0.15)+1)
+				SetColor 125,125,125
+				DrawRect(45,405, 220, 170)
+				SetColor 255,255,255
+			
+				SetAlpha NoiseAlpha
+				If noiseSprite Then noiseSprite.DrawClipped(new TRectangle.Init(45, 405, 220,170), new TVec2D.Init(noiseDisplace.GetX(), noiseDisplace.GetY()) )
+				SetAlpha 1.0
+			EndIf
+
+			'draw overlay to hide corners of non-round images
+			if tvOverlaySprite then tvOverlaySprite.Draw(45,405)
+
+			'draw buttons
+		    For Local i:Int = 0 To 4
+				If i = ShowChannel
+					GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
+					'lighten up the channel button
+					SetBlend LightBlend
+					SetAlpha 0.25 * oldAlpha
+					GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
+					SetAlpha oldAlpha
+					SetBlend AlphaBlend
+				Else
+					GetSpriteFromRegistry("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 559)
+				EndIf
+				'hover effect
+				If THelper.MouseIn( 75 + i * 33, 171 + 383 + 16 - i*4, 33, 25)
+					SetBlend LightBlend
+					SetAlpha 0.35 * oldAlpha
+					If i = ShowChannel
+						GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
+					Else
+						GetSpriteFromRegistry("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 559)
+					EndIf
+					SetAlpha oldAlpha
+					SetBlend AlphaBlend
+				EndIf
+		    Next
+
+
+			'=== TV-FAMILY ===
+
+			'draw TV-family
 			If programmePlan and GetBroadcastManager().GetCurrentAudience(showChannel) > 0
 
 				'fetch a list of watching family members
@@ -691,41 +760,9 @@ Type TInGameInterface
 				endif
 			EndIf 'showchannel <>0
 
-			'draw noise of tv device
-			If ShowChannel <> 0
-				SetAlpha NoiseAlpha
-				If noiseSprite Then noiseSprite.DrawClipped(new TRectangle.Init(45, 405, 220,170), new TVec2D.Init(noiseDisplace.GetX(), noiseDisplace.GetY()) )
-				SetAlpha 1.0
-			EndIf
-			'draw overlay to hide corners of non-round images
-			GetSpriteFromRegistry("gfx_interface_tv_overlay").Draw(45,405)
 
-		    For Local i:Int = 0 To 4
-				If i = ShowChannel
-					GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
-					'lighten up the channel button
-					SetBlend LightBlend
-					SetAlpha 0.25 * oldAlpha
-					GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
-					SetAlpha oldAlpha
-					SetBlend AlphaBlend
-				Else
-					GetSpriteFromRegistry("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 559)
-				EndIf
-				'hover effect
-				If THelper.MouseIn( 75 + i * 33, 171 + 383 + 16 - i*4, 33, 25)
-					SetBlend LightBlend
-					SetAlpha 0.35 * oldAlpha
-					If i = ShowChannel
-						GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
-					Else
-						GetSpriteFromRegistry("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 559)
-					EndIf
-					SetAlpha oldAlpha
-					SetBlend AlphaBlend
-				EndIf
-		    Next
-
+			'=== INTERFACE TEXTS ===
+			
 			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerBase().getMoneyFormatted(), 357, 412 +4, 130, 27, ALIGN_CENTER_TOP, TColor.Create(200,230,200), 2, 1, 0.5)
 
 			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerProgrammePlanCollection().Get(playerID).getFormattedAudience(), 357, 447+4, 130, 27, ALIGN_CENTER_TOP, TColor.Create(200,200,230), 2, 1, 0.5)

@@ -1,0 +1,24 @@
+tv_programme_action.png       Dirty Harry (1971)                                                            CC BY-NC-SA 2.0     https://www.flickr.com/photos/brizzlebornandbred/21591159560
+tv_programme_adventure.png    "The Mask of Zorro" (1920)                                                    CC BY 2.0           https://www.flickr.com/photos/ocarchives/6752052115
+tv_programme_cartoon.png      The one eyed sailer Popeye (Fleischer Studios 1933)                           Public Domain       http://www.emol.org/movies/popeye/index.html
+tv_programme_crime.png        Alter Public Domain Film
+tv_programme_documentary.png  Brandenburger Tor (1933) Bundesarchiv, B 145 Bild-P049267 / Weinrother, Car   CC BY-SA 3.0        https://commons.wikimedia.org/wiki/File:Bundesarchiv_B_145_Bild-P049267,_Berlin,_Polizist_vor_dem_Brandenburger_Tor.jpg
+tv_programme_drama.png        Great Expectations (1946)                                                     Public Domain       https://archive.org/details/GreatExpectations1946
+tv_programme_erotic.png                                                                                     CC 0                https://pixabay.com/de/menschen-mann-frau-paar-2589818/
+tv_programme_fantasy.png      The Wizard of Oz (1939)                                                       Public Domain       https://commons.wikimedia.org/wiki/File:The_Wizard_of_Oz_Haley_Bolger_Garland_Lahr_1939.jpg
+tv_programme_family.png       CBS Television (1957) - Lassie cast                                           Public Domain       https://commons.wikimedia.org/wiki/File:Lassie_cast_1957.jpg
+tv_programme_feature.png                                                                                    CC 0                https://pixabay.com/p-2308202/?no_redirect
+tv_programme_history.png      Julius Caesar (1953)                                                          Public Domain       https://www.flickr.com/photos/jumborois/3354472656
+tv_programme_monumental.png   The chariot race from Ben-Hur: a Tale of Christ                               Public Domain       https://commons.wikimedia.org/wiki/File:The_Chariot_Race_from_Ben-Hur_-_The_Movies_Come_From_America.jpg
+tv_programme_music.png        Rock concert                                                                  CC 0                https://pxhere.com/en/photo/663231
+tv_programme_mystery.png      Sherlock Holmes - The Case of the Cunningham Heritage (Jack Gage 1954)        Public Domain       https://archive.org/details/SherlockHolmes-TheCaseoftheCunninghamHeritage
+tv_programme_politics.png     Kennedy and Nixon: The "Great Debates" of 1960 (CBS)                                              https://www.cbsnews.com/pictures/nixon-and-kennedy-debate/17/
+tv_programme_show.png         BBC Juke Box Jury 1959-67                                                     CC BY-SA 2.0        https://www.flickr.com/photos/brizzlebornandbred/4933754453
+tv_programme_various.png      Altes Telefon                                                                 CC 0                https://pixabay.com/de/telefon-alt-baujahr-1955-bakelit-1644317/
+
+
+Julius Caesar (1953)
+
+
+Über:
+http://www.rp-online.de/digitales/internet/kostenloses-kinovergnuegen-im-netz-aid-1.2187619

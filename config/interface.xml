@@ -78,19 +78,50 @@
 
 		<!-- PROGRAMME GENRE PICTURES -->
 		<!-- IDs from source/game.gameconstants.bmx : TVTProgrammeGenre -->
-		<sprite name="gfx_interface_tv_programme_genre_undefined" url="res/gfx/interface/tv_programme_none.png" />
-		<sprite name="gfx_interface_tv_programme_genre_comedy" url="res/gfx/interface/tv_programme_comedy.png" />
-		<sprite name="gfx_interface_tv_programme_genre_horror" url="res/gfx/interface/tv_programme_horror.png" />
-		<sprite name="gfx_interface_tv_programme_genre_romance" url="res/gfx/interface/tv_programme_love.png" />
-		<sprite name="gfx_interface_tv_programme_genre_scifi" url="res/gfx/interface/tv_programme_scifi.png" />
-		<sprite name="gfx_interface_tv_programme_genre_thriller" url="res/gfx/interface/tv_programme_thriller.png" />
-		<sprite name="gfx_interface_tv_programme_genre_western" url="res/gfx/interface/tv_programme_western.png" />
-		<sprite name="gfx_interface_tv_programme_genre_event_sport" url="res/gfx/interface/tv_programme_sports.png" />
-		<sprite name="gfx_interface_tv_programme_none" url="res/gfx/interface/tv_programme_none.png" />
-		<sprite name="gfx_interface_tv_programme_news" url="res/gfx/interface/tv_programme_news.png" />
-		<sprite name="gfx_interface_tv_programme_ads" url="res/gfx/interface/tv_programme_ads.png" />
-		<sprite name="gfx_interface_tv_programme_ads_none" url="res/gfx/interface/tv_programme_ads_none.png" />
-		<sprite name="gfx_interface_tv_programme_traileroverlay" url="res/gfx/interface/tv_programme_traileroverlay.png" />
-		<sprite name="gfx_interface_tv_programme_infomercialoverlay" url="res/gfx/interface/tv_programme_infomercialoverlay.png" />
+
+		<spritepack name="gfx_interface_tv_programme_genres">
+ 			<url>res/gfx/interface/tv_programme.png</url>
+ 			<children>
+				<child name="gfx_interface_tv_programme_genre_horror"         x="0"   y="0"   w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_mystery"        x="128" y="0"   w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_fantasy"        x="256" y="0"   w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_family"         x="384" y="0"   w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_erotic"         x="0"   y="96"  w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_drama"          x="128" y="96"  w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_documentary"    x="256" y="96"  w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_crime"          x="384" y="96"  w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_comedy"         x="0"   y="192" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_animation"      x="128" y="192" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_adventure"      x="256" y="192" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_action"         x="384" y="192" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_western"        x="0"   y="288" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_various"        x="128" y="288" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_undefined"      x="128" y="288" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_thriller"       x="256" y="288" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_event_sport"    x="384" y="288" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_show"           x="0"   y="384" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_scifi"          x="128" y="384" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_event_politics" x="256" y="384" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_event_music"    x="384" y="384" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_monumental"     x="0"   y="480" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_romance"        x="128" y="480" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_history"        x="256" y="480" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_feature"        x="384" y="480" w="110" h="85" />
+
+				<child name="gfx_interface_tv_programme_ads"                  x="0"   y="576" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_news"                 x="128" y="576" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_infomercialoverlay"   x="256" y="576" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_traileroverlay"       x="384" y="576" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_ads_none"             x="0"   y="672" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_none"                 x="128" y="672" w="110" h="85" />
+				<!-- reusing other sprites for now -->
+				<child name="gfx_interface_tv_programme_genre_event"          x="384" y="384" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_event_showbiz"  x="384" y="384" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_show_music"     x="384" y="384" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_show_politics"  x="256" y="384" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_show_game"      x="0"   y="384" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_feature_yellowpress"   x="384" y="480" w="110" h="85" />
+			</children>
+		</spritepack>
 	</resources>
 </tvt>
