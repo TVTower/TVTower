@@ -183,8 +183,9 @@ Type TRenderableEntity extends TEntityBase
 	Field childEntities:TRenderableEntity[]
 	Field childOffsets:TVec2D[]
 
-	Field _options:int = 0
+	Field _entityOptions:int = 0
 	Const OPTION_IGNORE_PARENT_SCREENLIMIT:int = 1
+	Const OPTION_IGNORE_PARENT_SCREENCOORDS:int = 2
 
 
 	Method New()
@@ -197,14 +198,18 @@ Type TRenderableEntity extends TEntityBase
 	End Method
 
 
-	Method setOption(option:Int, enable:Int=True)
-		If enable
-			_options :| option
-		Else
-			_options :& ~option
-		EndIf
+	Method hasEntityOption:Int(option:Int)
+		Return (_entityOptions & option) <> 0
 	End Method
 
+
+	Method setEntityOption(option:Int, enable:Int=True)
+		If enable
+			_entityOptions :| option
+		Else
+			_entityOptions :& ~option
+		EndIf
+	End Method
 
 
 	Method AddChild(child:TRenderableEntity, childOffset:TVec2D = null, index:int = -1)
@@ -321,7 +326,7 @@ Type TRenderableEntity extends TEntityBase
 
 
 	Method GetScreenX:Float()
-		if parent
+		if parent and not (_entityOptions & OPTION_IGNORE_PARENT_SCREENCOORDS)
 			return parent.GetScreenX() + parent.GetChildX(self) + area.GetX()
 		else
 			return area.GetX()
@@ -330,7 +335,7 @@ Type TRenderableEntity extends TEntityBase
 
 
 	Method GetScreenY:Float()
-		if parent
+		if parent and not (_entityOptions & OPTION_IGNORE_PARENT_SCREENCOORDS)
 			return parent.GetScreenY() + parent.GetChildY(self) + area.GetY()
 		else
 			return area.GetY()
@@ -339,7 +344,7 @@ Type TRenderableEntity extends TEntityBase
 
 
 	Method GetScreenWidth:Float()
-		if parent and not _options & OPTION_IGNORE_PARENT_SCREENLIMIT
+		if parent and not (_entityOptions & OPTION_IGNORE_PARENT_SCREENLIMIT)
 			'parent has auto-size wont limit the entity, so use full size
 			if parent.area.GetW() < 0 then return Max(0, area.GetW())
 
@@ -364,7 +369,7 @@ Type TRenderableEntity extends TEntityBase
 
 
 	Method GetScreenHeight:Float()
-		if parent and not _options & OPTION_IGNORE_PARENT_SCREENLIMIT
+		if parent and not (_entityOptions & OPTION_IGNORE_PARENT_SCREENLIMIT)
 			'parent has auto-size wont limit the entity, so use full size
 			if parent.area.GetH() < 0 then return Max(0, area.GetH())
 

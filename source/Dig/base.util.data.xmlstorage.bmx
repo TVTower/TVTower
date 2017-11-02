@@ -132,8 +132,14 @@ Type TDataXmlStorage
 
 		'for data blocks call function recursively to fill in the data
 		if TData(value)
+			'add newline
+			node.addContent("~n")
 			For local childKey:TLowerString = eachin TData(value).data.Keys()
 				_SaveValueToXml(xmlHelper, node, childKey, TData(value).data.ValueForKey(childKey), indentionLevel + 1)
+			Next
+			'add indention
+			For local i:int = 0 until indentionLevel
+				node.addContent("~t")
 			Next
 			Return True
 		endif
@@ -147,7 +153,17 @@ Type TDataXmlStorage
 		if TData(value) then writeAttribute = False
 		
 		if writeAttribute
-			xmlHelper.FindElementNodeLS(node, key).setAttribute("value", string(value))
+			if TDoubleData(value)
+				if TDoubleData(value).value = int(TDoubleData(value).value)
+					xmlHelper.FindElementNodeLS(node, key).setAttribute("value", int(TDoubleData(value).value))
+				elseif TDoubleData(value).value = long(TDoubleData(value).value)
+					xmlHelper.FindElementNodeLS(node, key).setAttribute("value", long(TDoubleData(value).value))
+				else
+					xmlHelper.FindElementNodeLS(node, key).setAttribute("value", TDoubleData(value).value)
+				endif
+			else
+				xmlHelper.FindElementNodeLS(node, key).setAttribute("value", string(value))
+			endif
 		else
 			xmlHelper.FindElementNodeLS(node, key).setContent(string(value))
 		endif

@@ -4,6 +4,7 @@ Import brl.WAVLoader
 Import brl.OGGLoader
 Import "base.util.logger.bmx"
 Import "base.util.vector.bmx"
+Import "base.util.time.bmx"
 
 Import "base.sfx.soundstream.bmx"
 
@@ -26,6 +27,16 @@ Type TSoundManager
 	Field activeMusicStream:TDigAudioStream = Null
 	Field nextMusicStream:TDigAudioStream = Null
 
+	Field currentMusicStream:TDigAudioStream = Null
+
+	'do auto crossfade X milliseconds before song end, 0 disables
+	Field autoCrossFadeTime:Int = 1500
+	'disable to skip fading on next song switch 
+	Field autoCrossFadeNextSong:Int = True
+
+	Field defaultMusicVolume:Float = 1.0
+
+
 	Field forceNextMusic:Int = 0
 	Field fadeProcess:Int = 0 '0 = nicht aktiv  1 = aktiv
 	Field fadeOutVolume:Int = 1000
@@ -37,12 +48,6 @@ Type TSoundManager
 	Field _currentPlaylistName:String = "default"
 	'a named array of playlists, playlists contain available musicStreams
 	Field playlists:TMap = CreateMap()
-
-	'do auto crossfade X seconds before song end
-	'use 0 to disable that feature
-	Field autoCrossFadeTime:int = 2
-	'disable to skip fading on next song switch 
-	Field autoCrossFadeNextSong:int = True
 
 	Global instance:TSoundManager
 
@@ -379,7 +384,7 @@ Type TSoundManager
 
 			'autocrossfade to the next song
 			if autoCrossFadeTime > 0 and autoCrossFadeNextSong and activeMusicStream
-				if activeMusicStream.GetTimeLeft() < autoCrossFadeTime
+				if activeMusicStream.loop=false and activeMusicStream.GetTimeLeft() < autoCrossFadeTime
 					PlayMusicPlaylist(GetCurrentPlaylist())
 				endif
 			endif
@@ -387,6 +392,17 @@ Type TSoundManager
 
 			'if the music didn't stop yet
 			If activeMusicChannel.Playing()
+				'autocrossfade to next song
+				If currentMusicStream and currentMusicStream.IsPlaying() And autoCrossFadeTime > 0 And autoCrossFadeNextSong
+					If currentMusicStream.loop and currentMusicStream.GetLoopedPlaytimeLeft() < autoCrossFadeTime
+						currentMusicStream.SetPlaying(false)
+						forceNextMusic = True
+						PlayMusicPlaylist(GetCurrentPlaylist())
+						'FadeOverToNextTitle()
+					Endif
+				Endif
+
+							
 				If (forceNextMusic And nextMusicStream) Or fadeProcess > 0
 					'TLogger.log("TSoundManager.Update()", "FadeOverToNextTitle", LOG_DEBUG)
 					FadeOverToNextTitle()
@@ -411,6 +427,7 @@ Type TSoundManager
 			fadeProcess = 1
 			inactiveMusicChannel = nextMusicStream.CreateChannel(0)
 			ResumeChannel(inactiveMusicChannel)
+			currentMusicStream = nextMusicStream
 
 			inactiveMusicStream = activeMusicStream
 			activeMusicStream = nextMusicStream
@@ -504,7 +521,8 @@ Type TSoundManager
 
 				inactiveMusicStream = activeMusicStream
 				activeMusicStream = nextMusicStream
-
+				currentMusicStream = nextMusicStream
+				
 				forceNextMusic = False
 			EndIf
 		EndIf
@@ -582,7 +600,7 @@ Type TSoundManager
 
 	'by default all music share the same volume
 	Method GetMusicVolume:Float(music:String)
-		Return 1.0
+		Return defaultMusicVolume
 	End Method
 End Type
 

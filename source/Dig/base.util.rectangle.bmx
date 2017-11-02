@@ -270,6 +270,18 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	Method SetPosition:TRectangle(position:TVec2D)
+		self.position.CopyFrom(position)
+		return self
+	End Method
+
+
+	Method SetDimension:TRectangle(dimension:TVec2D)
+		self.dimension.CopyFrom(dimension)
+		return self
+	End Method
+
+
 	Method SetTop:TRectangle(value:float)
 		position.SetX(value)
 		return self

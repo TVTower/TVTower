@@ -292,6 +292,16 @@ Type TGraphicsManager
 	End Method
 
 
+	Method ResetVirtualGraphicsArea()
+		TVirtualGfx.ResetVirtualGraphicsArea()
+	End Method
+	
+
+	Method SetupVirtualGraphicsArea()
+		TVirtualGfx.SetupVirtualGraphicsArea()
+	End Method
+
+
 	Method Cls()
 		local x:int, y:int, w:int, h:int
 		.GetViewport(x,y,w,h)

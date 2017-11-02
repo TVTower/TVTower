@@ -209,6 +209,10 @@ Type TSprite
 
 
 	Method InitFromImage:TSprite(img:Timage, spriteName:string, frames:int = 1)
+		if not img
+			TLogger.Log("TSprite.InitFromImage()", "Image is null. Cannot create ~q"+spriteName+"~q.", LOG_ERROR)
+			Throw "TSprite.InitFromImage: Image is null. Cannot create ~q"+spriteName+"~q."
+		endif
 		'create new spritepack
 		local spritepack:TSpritePack = new TSpritePack.init(img, spriteName+"_pack")
 		Init(spritepack, spriteName, new TRectangle.Init(0, 0, img.width, img.height), null, frames)
@@ -236,6 +240,10 @@ Type TSprite
 
 			local img:TImage = LoadImage(url, flags)
 			if not img
+				if not img
+					TLogger.Log("TSprite.InitFromConfig()", "Image is null. Cannot create ~q"+name+"~q out of ~q"+url+"~q.", LOG_ERROR)
+					Throw "TSprite.InitFromConfig: Image is null. Cannot create ~q"+name+"~q out of ~q"+url+"~q."
+				endif
 				Throw "image null : "+name + " (url: "+url+" )"
 				Return Null
 			endif

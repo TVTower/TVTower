@@ -4,6 +4,7 @@ Import brl.WAVLoader
 Import brl.OGGLoader
 Import "base.util.logger.bmx"
 Import "base.util.vector.bmx"
+Import "base.util.time.bmx"
 
 'the needed module files are located in "external/maxmod2_lite.mod.zip"
 Import MaxMod2.ogg
@@ -19,6 +20,9 @@ Type TDigAudioStream
 	'Field bank:TBank
 	Field loop:Int
 	Field url:String
+	Field playtime:int = 0
+	Field playing:int = False
+	Field lastChannelTime:Long
 
 
 	Function Create:TDigAudioStream(url:Object, loop:Int=False)
@@ -52,6 +56,37 @@ Type TDigAudioStream
 	End Method
 
 
+	Method IsPlaying:int()
+		return playing
+	End Method
+
+	Method SetPlaying:int(playing:int)
+		self.playing = playing
+	End Method
+
+
+	'for looped sounds...
+	Method SetLoopedPlaytime:int(playtime:int)
+		self.playtime = playtime
+	End Method
+
+
+	Method GetLoopedPlaytime:int()
+		return playtime
+	End Method
+
+
+	Method GetLoopedTimePlayed:int()
+		if lastChannelTime = 0 then return 0
+		return Time.MillisecsLong() - lastChannelTime
+	End Method
+	
+
+	Method GetLoopedPlaytimeLeft:int()
+		return GetLoopedPlaytime() - GetLoopedTimePlayed()
+	End Method
+
+
 	Method GetChannel:TChannel(volume:Float)
 		if not url then Throw "no url to play"
 		'if not bank then Throw "empty bank"
@@ -62,6 +97,8 @@ Type TDigAudioStream
 			if not channel
 				throw "TDigAudioStream.GetChannel() failed to CueMusic"
 			endif
+			lastChannelTime = Time.MillisecsLong()
+			SetPlaying(true)
 		'endif
 		channel.SetVolume(volume)
 
@@ -107,12 +144,20 @@ Type TSoundManager
 	Field sfxOn:Int = 1
 	Field musicOn:Int = 1
 	Field musicVolume:Float = 1
-	Field nextMusicTitleVolume:Float = 1
+	Field nextMusicVolume:Float = 1
 	Field lastTitleNumber:Int = 0
-	Field currenTDigAudioStream:TDigAudioStream = Null
 	Field nextMusicTitleStream:TDigAudioStream = Null
 
-	Field currentMusic:TSound = Null
+	Field currentMusicStream:TDigAudioStream = Null
+
+	'do auto crossfade X milliseconds before song end, 0 disables
+	Field autoCrossFadeTime:Int = 1500
+	'disable to skip fading on next song switch 
+	Field autoCrossFadeNextSong:Int = True
+
+	Field defaultMusicVolume:Float = 1.0
+
+'	Field currentMusic:TSound = Null
 	Field nextMusicTitle:TSound = Null
 	Field forceNextMusicTitle:Int = 0
 	Field fadeProcess:Int = 0 '0 = nicht aktiv  1 = aktiv
@@ -277,6 +322,11 @@ Type TSoundManager
 	'playlists is a comma separated string of playlists this music wants to
 	'be stored in
 	Method AddSound:Int(name:String, sound:Object, playlists:String="default")
+		if not sound
+			TLogger.Log("TSoundManager.AddSound()", "sound object is null. Cannot add sound ~q"+name+"~q.", LOG_ERROR)
+			Throw "TSoundManager.AddSound: sound object is null. Cannot add sound ~q"+name+"~q."
+		endif
+
 		Self.soundFiles.insert(Lower(name), sound)
 
 		Local playlistsArray:String[] = playlists.split(",")
@@ -292,6 +342,9 @@ Type TSoundManager
 			playlist = PREFIX_SFX + Lower(playlist)
 		ElseIf TDigAudioStream(sound)
 			playlist = PREFIX_MUSIC + Lower(playlist)
+		ElseIf not sound
+			TLogger.Log("TSoundManager.AddSoundToPlaylist()", "sound object is null. Cannot add sound ~q"+name+"~q.", LOG_ERROR)
+			Throw "TSoundManager.AddSoundToPlaylist: sound object is null. Cannot add sound ~q"+name+"~q."
 		EndIf
 		name = Lower(name)
 
@@ -472,6 +525,17 @@ Type TSoundManager
 
 			'if the music didn't stop yet
 			If activeMusicChannel.Playing()
+				'autocrossfade to next song
+				If currentMusicStream and currentMusicStream.IsPlaying() And autoCrossFadeTime > 0 And autoCrossFadeNextSong
+					If currentMusicStream.loop and currentMusicStream.GetLoopedPlaytimeLeft() < autoCrossFadeTime
+						currentMusicStream.SetPlaying(false)
+						forceNextMusicTitle = True
+						PlayMusicPlaylist(GetCurrentPlaylist())
+						'FadeOverToNextTitle()
+					Endif
+				Endif
+
+
 				If (forceNextMusicTitle And nextMusicTitleStream) Or fadeProcess > 0
 '					TLogger.log("TSoundManager.Update()", "FadeOverToNextTitle", LOG_DEBUG)
 					FadeOverToNextTitle()
@@ -492,7 +556,9 @@ Type TSoundManager
 			fadeProcess = 1
 			inactiveMusicChannel = nextMusicTitleStream.GetChannel(0)
 			ResumeChannel(inactiveMusicChannel)
+			currentMusicStream = nextMusicTitleStream
 			nextMusicTitleStream = Null
+
 
 			forceNextMusicTitle = False
 			fadeOutVolume = 1000
@@ -504,12 +570,12 @@ Type TSoundManager
 			activeMusicChannel.SetVolume(fadeOutVolume/1000.0 * musicVolume)
 
 			fadeInVolume = fadeInVolume + 15
-			inactiveMusicChannel.SetVolume(fadeInVolume/1000.0 * nextMusicTitleVolume)
+			inactiveMusicChannel.SetVolume(fadeInVolume/1000.0 * nextMusicVolume)
 		EndIf
 
 		If fadeOutVolume <= 0 And fadeInVolume >= 1000 Then
 			fadeProcess = 0 'Prozess beendet
-			musicVolume = nextMusicTitleVolume
+			musicVolume = nextMusicVolume
 			SwitchMusicChannels()
 		EndIf
 	End Method
@@ -547,7 +613,7 @@ Type TSoundManager
 
 		If fromPlaylist
 			nextMusicTitleStream = GetDigAudioStream("", name)
-			nextMusicTitleVolume = GetMusicVolume(name)
+			nextMusicVolume = GetMusicVolume(name)
 			If nextMusicTitleStream
 				SetCurrentPlaylist(name)
 				TLogger.Log("PlayMusicOrPlaylist", "GetDigAudioStream from Playlist ~q"+name+"~q. Also set current playlist to it.", LOG_DEBUG)
@@ -556,7 +622,7 @@ Type TSoundManager
 			EndIf
 		Else
 			nextMusicTitleStream = GetDigAudioStream(name, "")
-			nextMusicTitleVolume = GetMusicVolume(name)
+			nextMusicVolume = GetMusicVolume(name)
 			If nextMusicTitleStream
 				TLogger.Log("PlayMusicOrPlaylist", "GetDigAudioStream by name ~q"+name+"~q", LOG_DEBUG)
 			Else
@@ -573,9 +639,10 @@ Type TSoundManager
 				'TLogger.Log("PlayMusicOrPlaylist", "could not start activeMusicChannel: no next music found", LOG_DEBUG)
 			Else
 				TLogger.Log("PlayMusicOrPlaylist", "start activeMusicChannel", LOG_DEBUG)
-				Local musicVolume:Float = nextMusicTitleVolume
+				Local musicVolume:Float = nextMusicVolume
 				activeMusicChannel = nextMusicTitleStream.GetChannel(musicVolume)
 				ResumeChannel(activeMusicChannel)
+				currentMusicStream = nextMusicTitleStream
 
 				forceNextMusicTitle = False
 			EndIf
@@ -636,7 +703,7 @@ Type TSoundManager
 
 	'by default all music share the same volume
 	Method GetMusicVolume:Float(music:String)
-		Return 1.0
+		Return defaultMusicVolume
 	End Method
 End Type
 

@@ -383,6 +383,17 @@ Type StringHelper
 	End Function
 
 
+	Function RemoveNonAlphaNum:string(text:string)
+		local result:string
+		For local i:int = 0 until text.length
+			if not IsAlphaNum(text[i]) then continue
+			result :+ chr(text[i])
+		Next
+		return result
+	End Function
+			
+	
+
 	Function RemoveUmlauts:string(text:string)
 		local s:string[]
 		local t:string[]

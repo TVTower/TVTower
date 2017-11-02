@@ -78,8 +78,8 @@ Type TApp
 
 	Function __SystemUpdate:int()
 		'refresh mouse/keyboard
-		MouseManager.Update()
-		KeyManager.Update()
+'		MouseManager.Update()
+'		KeyManager.Update()
 
 		'emit event to do update
 		EventManager.triggerEvent(TEventSimple.Create("App.onSystemUpdate"))
@@ -89,10 +89,15 @@ Type TApp
 	End Function
 
 
-	Function __Update:int()
+	Function __UpdateInput:int()
 		'refresh mouse/keyboard
-'		MouseManager.Update()
-'		KeyManager.Update()
+		MouseManager.Update()
+		KeyManager.Update()
+	End Function
+
+	
+	Function __Update:int()
+		__UpdateInput()
 
 		'emit event to do update
 		EventManager.triggerEvent(TEventSimple.Create("App.onUpdate"))

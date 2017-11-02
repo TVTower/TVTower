@@ -31,6 +31,9 @@ Type TVirtualGfx
 
 	Field vwidth:Int
 	Field vheight:Int
+	'the effective values including "letter boxes"
+	Field effectiveVWidth:int
+	Field effectiveVHeight:int
 
 	Field vxoff:Int
 	Field vyoff:Int
@@ -78,10 +81,9 @@ Type TVirtualGfx
 			'End
 		EndIf
 
+
 		' Reset of display needed when re-calculating virtual graphics stuff/clearing borders...
-		SetVirtualResolution( GraphicsWidth(), GraphicsHeight() )
-		SetViewport( 0, 0, GraphicsWidth(), GraphicsHeight())
-		SetOrigin( 0, 0 )
+		ResetVirtualGraphicsArea()
 
 		' Store current Cls colours...
 		Local clsr:Int, clsg:Int, clsb:Int
@@ -137,8 +139,8 @@ Type TVirtualGfx
 			local pixels:int = Int(GetInstance().vwidth * GetInstance().vscale) ' Width after scaling
 			local half_scale:float = 0.5 / GetInstance().vscale
 
-			'print "NEW SetVirtualResolution( "+floor(GetInstance().vwidth * gtovratio)+", "+floor(GetInstance().vheight)+" )"
-			SetVirtualResolution( floor(GetInstance().vwidth * gtovratio), floor(GetInstance().vheight) )
+			GetInstance().effectiveVWidth = floor(GetInstance().vwidth * gtovratio)
+			GetInstance().effectiveVHeight = floor(GetInstance().vheight)
 
 			' Offset into 'real' display area...
 			'move vxoff accordingly. Add 0.5 to round properly (1.49 to 1.0, 1.5 to 2)
@@ -152,18 +154,35 @@ Type TVirtualGfx
 			Local pixels:int = int(GetInstance().vheight * GetInstance().vscale) ' Height after scaling
 			Local half_scale:Float = (0.5 / GetInstance().vscale)
 
-			SetVirtualResolution( floor(GetInstance().vwidth), floor(GetInstance().vheight * vtogratio) )
+			GetInstance().effectiveVWidth = floor(GetInstance().vwidth)
+			GetInstance().effectiveVHeight = floor(GetInstance().vheight * vtogratio)
 
 			GetInstance().vxoff = 0
 			GetInstance().vyoff = floor( (gheight - pixels) * half_scale + 0.5 )
 		EndIf
 
 		' Set up virtual graphics area...
+		SetupVirtualGraphicsArea()
+	End Function
+
+
+	' Reset of display needed when re-calculating virtual graphics stuff/clearing borders...
+	Function ResetVirtualGraphicsArea()
+		SetVirtualResolution( GraphicsWidth(), GraphicsHeight() )
+		SetViewport( 0, 0, GraphicsWidth(), GraphicsHeight())
+		SetOrigin( 0, 0 )
+	End Function
+
+
+	Function SetupVirtualGraphicsArea()
 		'print "SetViewport( "+GetInstance().vxoff+", "+GetInstance().vyoff+", "+GetInstance().vwidth+", "+GetInstance().vheight+" )"
 		'print "SetOrigin( "+GetInstance().vxoff+", "+GetInstance().vyoff+" )"
+		'print "NEW SetVirtualResolution( "+effectiveVWidth+", "+effectiveVHeight+" )"
+		SetVirtualResolution( GetInstance().effectiveVWidth, GetInstance().effectiveVHeight )
 		SetViewport( GetInstance().vxoff, GetInstance().vyoff, GetInstance().vwidth, GetInstance().vheight )
 		SetOrigin( GetInstance().vxoff, GetInstance().vyoff )
 	End Function
+	
 
 	Method VMouseX:Float ()
 		Local mx:Float = VirtualMouseX () - vxoff

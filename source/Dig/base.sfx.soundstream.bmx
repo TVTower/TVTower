@@ -50,6 +50,7 @@ Import Brl.audio
 Import Brl.freeaudioaudio
 Import Brl.standardio
 Import Brl.bank
+Import "base.util.time.bmx"
 
 
 
@@ -97,6 +98,10 @@ Type TDigAudioStream
 
 	'length of the total sound
 	Field samplesCount:Int = 0
+
+	Field playtime:int = 0
+	Field playing:int = False
+	Field lastChannelTime:Long
 
 	Field bits:Int = 16
 	Field freq:Int = 44100
@@ -163,11 +168,46 @@ Type TDigAudioStream
 		sound = TFreeAudioSound.CreateWithSound( fa_sound, audioSample)
 	End Method
 
+	
+	Method IsPlaying:int()
+		return playing
+	End Method
+
+	Method SetPlaying:int(playing:int)
+		self.playing = playing
+	End Method
+
+
+	'for looped sounds...
+	Method SetLoopedPlaytime:int(playtime:int)
+		self.playtime = playtime
+	End Method
+
+
+	Method GetLoopedPlaytime:int()
+		return playtime
+	End Method
+
+
+	Method GetLoopedTimePlayed:int()
+		if lastChannelTime = 0 then return 0
+		return Time.MillisecsLong() - lastChannelTime
+	End Method
+	
+
+	Method GetLoopedPlaytimeLeft:int()
+		return GetLoopedPlaytime() - GetLoopedTimePlayed()
+	End Method
+
 
 	Method CreateChannel:TChannel(volume:Float)
 		Reset()
 		currentChannel = Cue()
 		currentChannel.SetVolume(volume)
+
+		lastChannelTime = Time.MillisecsLong()
+		SetPlaying(true)
+
 		Return currentChannel
 	End Method
 

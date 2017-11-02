@@ -169,14 +169,18 @@ Type TIntervalTimer
 
 
 	Function Create:TIntervalTimer(interval:int, actionTime:int = 0, randomnessMin:int = 0, randomnessMax:int = 0)
-		local obj:TIntervalTimer = new TIntervalTimer
-		obj.interval = interval
-		obj.actionTime = actionTime
-		obj.SetRandomness(randomnessMin, randomnessMax)
-		'set timer
-		obj.reset()
-		return obj
+		return new TIntervalTimer.Init(interval, actionTime, randomnessMin, randomnessMax)
 	End Function
+
+
+	Method Init:TIntervalTimer(interval:int, actionTime:int = 0, randomnessMin:int = 0, randomnessMax:int = 0)
+		self.interval = interval
+		self.actionTime = actionTime
+		self.SetRandomness(randomnessMin, randomnessMax)
+		'set timer
+		self.reset()
+		return self
+	End Method
 
 
 	Function _GetTimeGone:Long()
@@ -228,8 +232,18 @@ Type TIntervalTimer
 	End Method
 
 
+	Method getTimeUntilActionInPercents:Float()
+		return 1.0 - Min(1.0, Max(0.0, getTimeUntilAction() / GetInterval()))
+	End Method
+
+
 	Method getTimeUntilExpire:Double()
 		return timer + GetInterval() + actionTime - _GetTimeGone()
+	End Method
+
+
+	Method getTimeUntilAction:Double()
+		return timer + GetInterval() - _GetTimeGone()
 	End Method
 
 

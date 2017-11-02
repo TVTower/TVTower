@@ -105,7 +105,7 @@ Type TBitmapFontManager
 
 	Method Copy:TBitmapFont(sourceName:string, copyName:string, size:int=-1, style:int=-1)
 		local sourceFont:TBitmapFont = Get(sourceName, size, style)
-		Local newFont:TBitmapFont = TBitmapFont.Create(sourceFont.fName, sourceFont.fFile, sourceFont.fSize, sourceFont.fStyle)
+		Local newFont:TBitmapFont = TBitmapFont.Create(copyName, sourceFont.fFile, sourceFont.fSize, sourceFont.fStyle)
 		List.AddLast(newFont)
 		return newFont
 	End Method
