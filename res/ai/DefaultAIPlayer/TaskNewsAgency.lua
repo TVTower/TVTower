@@ -141,7 +141,7 @@ function JobCheckEventNews:Prepare(pParams)
 end
 
 function JobCheckEventNews:Tick()
-	local terrorLevel = TVT.ne_getTerroristAggressionLevel()
+	local terrorLevel = TVT.ne_getTerroristAggressionLevel(-1)
 	local maxTerrorLevel = TVT.ne_getTerroristAggressionLevelMax()
 
 --	if terrorLevel >= 4 then
