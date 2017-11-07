@@ -1187,11 +1187,17 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 	'sets another licence into the slot
 	Method Refill:Int(programmeLicence:TProgrammeLicence=Null)
+		'if licence
+		'	print "Refill: " + licence.GetTitle()
+		'else
+		'	print "Refill: Initial call"
+		'endif
 		'turn back licence if nobody bought the old one
 		if licence and licence.owner = TOwnedGameObject.OWNER_VENDOR
 			licence.SetOwner( TOwnedGameObject.OWNER_NOBODY )
 			'no longer ignore player difficulty
 			licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY, False)
+			'print "   gave back licence"
 		endif
 
 		'backup old licence if a new is to find - but eg. fails (no live)
@@ -1201,16 +1207,20 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 		'try to find a "live" programme first
 		if GetCurrentLiveOffers() < 3
+			'print "   try to find live one"
 			local keepOld:int = False
 			'keep an old live programme if it airs _after_ the next day
 			if not bestBidder and GetMaxAuctionTime() > GetWorldTime().GetTimeGone()
+				'print "   keep as still in the future"
 				keepOld = true
 				licence = oldLicence
 			endif
 				
 
 			if not keepOld
-				local filter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction.filters[1].Copy()
+				'print "   find new live one"
+				local filterLiveNum:int = 1 '0 = normal programme, 1 = live
+				local filter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction.filters[filterLiveNum].Copy()
 				'only take live-programme starting not earlier than 3 days
 				'from now
 				'this is needed to avoid a "live"-programme being no longer
@@ -1227,6 +1237,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 		'find a normal licence
 		if not licence
+			'print "   find new one"
 			local filterGroup:TProgrammeLicenceFilterGroup = TProgrammeLicenceFilterGroup(RoomHandler_MovieAgency.GetInstance().filterAuction.Copy())
 			While Not licence And filterGroup.filters[0].priceMin >= 0
 				licence = GetProgrammeLicenceCollection().GetRandomByFilter(filterGroup)
@@ -1245,6 +1256,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		EndIf
 
 		if licence
+			'print "   found " + licence.GetTitle()
 			'set licence owner to "-1" so it gets not returned again from Random-Getter
 			licence.SetOwner( TOwnedGameObject.OWNER_VENDOR )
 
@@ -1264,6 +1276,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		_bidSavingsDecreaseBy = -1
 		_bidSavingsMaximum = -1
 		_bidSavingsMinimum = -1
+		bidSavings = 0.75
 
 		'emit event
 		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.Refill", New TData.Add("licence", licence).AddNumber("slot", slot), Self))
@@ -1327,7 +1340,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		If licence
 			local maxTime:Long = GetMaxAuctionTime(licence)
 			if maxTime <> -1 and maxTime < GetWorldTime().GetTimeGone()
-print "maxAuctionTime reached: " + licence.Gettitle()
+				'print "maxAuctionTime reached: " + licence.GetTitle()
 				Refill()
 				return true
 			endif
@@ -1475,6 +1488,17 @@ print "maxAuctionTime reached: " + licence.Gettitle()
 		If licence.data.IsPaid()
 			GetSpriteFromRegistry("pp_paid").Draw(area.GetX() + _imageWithText.width - 8, area.GetY() +3,  -1, ALIGN_RIGHT_TOP)
 		EndIf
+
+		If TVTDebugInfos
+			local oldAlpha:Float = GetAlpha()
+			SetAlpha oldAlpha * 0.75
+			SetColor 0,0,0
+			DrawRect(area.GetX(), area.GetY(), _imageWithText.width, _imageWithText.height)
+			SetColor 255,255,255
+			SetAlpha oldAlpha
+
+			GetBitmapFont("default", 12).Draw("bidSavings="+MathHelper.NumberToString(bidSavings, 4) + "  Min="+MathHelper.NumberToString(GetBidSavingsMinimum(), 4) + "  Decr="+MathHelper.NumberToString(GetBidSavingsDecreaseBy(), 4), area.getX() + 5, area.GetY() + 5)
+		endif
 
     End Method
 
