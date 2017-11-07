@@ -1754,12 +1754,12 @@ price :* Max(1, minAudience/1000)
 			'finishBroadcast - after "onFinishBroadcasting"-call)
 			if base.GetTimesBroadcasted() = 0
 				If not base.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE)
-					base.effects.Run("broadcastFirstTimeDone", effectParams)
+					base.effects.Update("broadcastFirstTimeDone", effectParams)
 					base.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE, True)
 				endif
 			endif
 
-			base.effects.Run("broadcastDone", effectParams)
+			base.effects.Update("broadcastDone", effectParams)
 
 		'send as infomercial
 		elseif broadcastType = TVTBroadcastMaterialType.PROGRAMME
@@ -1767,12 +1767,12 @@ price :* Max(1, minAudience/1000)
 			'finishBroadcast while this is called on beginBroadcast)
 			if base.GetTimesBroadcastedAsInfomercial() = 0
 				If not base.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL_DONE)
-					base.effects.Run("broadcastFirstTimeInfomercialDone", effectParams)
+					base.effects.Update("broadcastFirstTimeInfomercialDone", effectParams)
 					base.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL_DONE, True)
 				endif
 			endif
 
-			base.effects.Run("broadcastInfomercialDone", effectParams)
+			base.effects.Update("broadcastInfomercialDone", effectParams)
 		endif
 	End Method
 	
@@ -1790,24 +1790,24 @@ price :* Max(1, minAudience/1000)
 			'finishBroadcast while this is called on beginBroadcast)
 			if base.GetTimesBroadcasted() = 0
 				If not base.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME)
-					base.effects.Run("broadcastFirstTime", effectParams)
+					base.effects.Update("broadcastFirstTime", effectParams)
 					base.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME, True)
 				endif
 			endif
 
-			base.effects.Run("broadcast", effectParams)
+			base.effects.Update("broadcast", effectParams)
 
 		elseif broadcastType = TVTBroadcastMaterialType.PROGRAMME
 			'if nobody broadcasted till now (times are adjusted on
 			'finishBroadcast while this is called on beginBroadcast)
 			if base.GetTimesBroadcastedAsInfomercial() = 0
 				If not base.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL)
-					base.effects.Run("broadcastFirstTimeInfomercial", effectParams)
+					base.effects.Update("broadcastFirstTimeInfomercial", effectParams)
 					base.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL, True)
 				endif
 			endif
 
-			base.effects.Run("broadcastInfomercial", effectParams)
+			base.effects.Update("broadcastInfomercial", effectParams)
 		endif
 	End Method
 

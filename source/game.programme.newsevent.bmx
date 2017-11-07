@@ -621,7 +621,7 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 			'trigger happenEffects
 			local effectParams:TData = new TData.Add("source", self)
-			effects.Run("happen", effectParams)
+			effects.Update("happen", effectParams)
 		endif
 	End Method
 
@@ -638,12 +638,12 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'finishBroadcast while this is called on beginBroadcast)
 		if GetTimesBroadcasted() = 0
 			If not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME)
-				effects.Run("broadcastFirstTime", effectParams)
+				effects.Update("broadcastFirstTime", effectParams)
 				setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME, True)
 			endif
 		endif
 
-		effects.Run("broadcast", effectParams)
+		effects.Update("broadcast", effectParams)
 	End Method
 
 
@@ -656,12 +656,12 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'finishBroadcast while this is called on beginBroadcast)
 		if GetTimesBroadcasted() = 0
 			If not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE)
-				effects.Run("broadcastFirstTimeDone", effectParams)
+				effects.Update("broadcastFirstTimeDone", effectParams)
 				setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE, True)
 			endif
 		endif
 
-		effects.Run("broadcastDone", effectParams)
+		effects.Update("broadcastDone", effectParams)
 	End Method
 
 

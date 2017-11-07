@@ -461,9 +461,15 @@ Type TNewsAgency
 			else
 				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("vrduban"))
 			endif
-			effect.GetData().AddString("customRunFuncKey", "TFigureTerrorist.SendFigureToRoom")
 			'mark as a special effect so AI can categorize it accordingly
 			effect.setModifierType(TVTGameModifierBase.TERRORIST_ATTACK)
+			'defined function to call when executing
+			effect.GetData().AddString("customRunFuncKey", "TFigureTerrorist.SendFigureToRoom")
+
+			'Variant 1: pass delay to the SendFigureToRoom-function (delay delivery schedule)
+			'effect.GetData().AddNumber("delayTime", 60 * RandRange(45,120))
+			'Variant 2: delay the execution of the effect
+			effect.SetDelayedExecutionTime(60 * RandRange(45,120))
 
 			NewsEvent.effects.AddEntry("happen", effect)
 		endif

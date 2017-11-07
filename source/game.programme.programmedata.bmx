@@ -1816,7 +1816,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	Method onProductionStart:int(time:Long = 0)
 		'trigger effects/modifiers
 		local params:TData = new TData.Add("source", self)
-		effects.Run("productionStart", params)
+		effects.Update("productionStart", params)
 
 		return True
 	End Method
@@ -1910,12 +1910,12 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 			'finishBroadcast - after "onFinishBroadcasting"-call)
 			if GetTimesBroadcasted() = 0
 				If not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE)
-					effects.Run("broadcastFirstTimeDone", effectParams)
+					effects.Update("broadcastFirstTimeDone", effectParams)
 					setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_DONE, True)
 				endif
 			endif
 
-			effects.Run("broadcastDone", effectParams)
+			effects.Update("broadcastDone", effectParams)
 
 		'send as trailer
 		elseif broadcastType = TVTBroadcastMaterialType.ADVERTISEMENT
@@ -1923,12 +1923,12 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 			'finishBroadcast while this is called on beginBroadcast)
 			if GetTimesTrailerAired() = 0
 				If not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL_DONE)
-					effects.Run("broadcastFirstTimeTrailerDone", effectParams)
+					effects.Update("broadcastFirstTimeTrailerDone", effectParams)
 					setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL_DONE, True)
 				endif
 			endif
 
-			effects.Run("broadcastTrailerDone", effectParams)
+			effects.Update("broadcastTrailerDone", effectParams)
 		endif
 	End Method
 
@@ -1952,11 +1952,11 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 
 		'send as programme
 		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
-			effects.Run("broadcastAborted", effectParams)
+			effects.Update("broadcastAborted", effectParams)
 
 		'send as trailer
 		elseif broadcastType = TVTBroadcastMaterialType.ADVERTISEMENT
-			effects.Run("broadcastTrailerAborted", effectParams)
+			effects.Update("broadcastTrailerAborted", effectParams)
 		endif
 	End Method
 
@@ -1986,12 +1986,12 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 			'finishBroadcast - after "onFinishBroadcasting"-call)
 			if GetTimesBroadcasted() = 0
 				If not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME)
-					effects.Run("broadcastFirstTime", effectParams)
+					effects.Update("broadcastFirstTime", effectParams)
 					setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME, True)
 				endif
 			endif
 
-			effects.Run("broadcast", effectParams)
+			effects.Update("broadcast", effectParams)
 
 		'send as trailer
 		elseif broadcastType = TVTBroadcastMaterialType.ADVERTISEMENT
@@ -1999,12 +1999,12 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 			'finishBroadcast while this is called on beginBroadcast)
 			if GetTimesTrailerAired() = 0
 				If not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL)
-					effects.Run("broadcastFirstTimeTrailer", effectParams)
+					effects.Update("broadcastFirstTimeTrailer", effectParams)
 					setBroadcastFlag(TVTBroadcastMaterialSourceFlag.BROADCAST_FIRST_TIME_SPECIAL, True)
 				endif
 			endif
 
-			effects.Run("broadcastTrailer", effectParams)
+			effects.Update("broadcastTrailer", effectParams)
 		endif
 	End Method
 

@@ -45,6 +45,11 @@ Type TGameModifierManager
 	End Method
 
 
+	Method ContainsModifier:int(modifier:TGameModifierBase)
+		return modifiers.Contains(modifier)
+	End Method
+
+
 	Method Remove:Int(modifier:TGameModifierBase)
 		return modifiers.Remove(modifier)
 	End Method
@@ -146,7 +151,8 @@ Type TGameModifierManager
 		local toRemove:TGameModifierBase[]
 		For local modifier:TGameModifierBase = EachIn modifiers
 			'execute run(), undo() and so on
-			modifier.Update()
+			'pass "null" as param so cached params are kept
+			modifier.Update(null)
 
 			if modifier.HasExpired() then toRemove :+ [modifier]
 		Next
@@ -193,6 +199,8 @@ End Type
 'base effect class (eg. for newsevents, programmedata, adcontractbases)
 Type TGameModifierBase
 	Field data:TData
+	'data passed during an update-call
+	Field passedParams:TData
 	Field conditions:TGameModifierCondition[]
 	'constant value of TVTGameModifierBase (CHANGETREND, TERRORISTATTACK, ...)
 	Field modifierTypes:int = 0
@@ -202,6 +210,10 @@ Type TGameModifierBase
 	Const FLAG_ACTIVATED:int = 2
 	Const FLAG_EXPIRED:int = 4
 	Const FLAG_EXPIRATION_DISABLED:int = 8
+	'a delayed modifier is automatically added to the manager when
+	'"run" and not in the the managers list
+	Const FLAG_DELAYED_EXECUTION:int = 16
+	Const FLAG_DELAY_MANAGED_BY_MANAGER:int = 32
 
 
 	Function CreateNewInstance:TGameModifierBase()
@@ -325,6 +337,30 @@ Type TGameModifierBase
 	End Method
 
 
+	Method SetDelayedExecutionTime:int(delayTime:Long)
+		if delayTime > 0 
+			SetFlag(FLAG_DELAYED_EXECUTION, True)
+			GetData().AddNumber("delayExecutionUntilTime", delayTime)
+		else
+			SetFlag(FLAG_DELAYED_EXECUTION, False)
+			GetData().Remove("delayExecutionUntilTime")
+		endif
+		return True
+	End Method
+
+
+	Method HasDelayedExecution:int()
+		return HasFlag(FLAG_DELAYED_EXECUTION)
+	End Method
+
+
+	Method GetDelayedExecutionTime:Long()
+		'return "now" or
+		if not HasDelayedExecution() then return GetWorldTime().GetTimeGone()
+		return GetData().GetLong("delayExecutionUntilTime", 0)
+	End Method
+
+
 	Method SetData(data:TData)
 		local oldName:string = GetName()
 		self.data = data
@@ -340,12 +376,30 @@ Type TGameModifierBase
 	End Method
 
 
-	Method Update:int()
+	Method Update:int(params:TData)
+		if params then passedParams = params
+
+		'if delayed and delay is in the future, set item to be managed
+		'by the modifier manager (so it gets updated regularily until
+		'delay is gone)
+		if HasDelayedExecution() and GetDelayedExecutionTime() > GetWorldTime().GetTimeGone()
+			if not HasFlag(FLAG_DELAY_MANAGED_BY_MANAGER)
+				if not GetGameModifierManager().ContainsModifier(self)
+					GetGameModifierManager().Add(self)
+				endif
+				SetFlag(FLAG_DELAY_MANAGED_BY_MANAGER, True)
+			endif
+			return False
+		endif
+
+		'if HasDelayedExecution() then print "effect running now"
+			
+	
 		local conditionsOK:int = ConditionsFulfilled()
 		'run if not done yet and needed
 		if not HasFlag(FLAG_ACTIVATED)
 			if conditionsOK
-				Run(null)
+				Run(passedParams)
 			endif
 		endif
 
@@ -354,13 +408,15 @@ Type TGameModifierBase
 		if HasFlag(Flag_ACTIVATED)
 			if not HasFlag(FLAG_EXPIRATION_DISABLED) and (not conditions or not conditionsOK)
 				if not HasFlag(FLAG_PERMANENT)
-					Undo(null)
+					Undo(passedParams)
 				endif
 
 				if HasFlag(FLAG_EXPIRATION_DISABLED)
 					return True
 				else
 					SetFlag(FLAG_EXPIRED, True)
+					'reset params?
+					passedParams = null
 					return False
 				endif
 			endif
@@ -409,8 +465,7 @@ Type TGameModifierBase
 
 
 	Method UndoFunc:int(params:TData)
-		print "UndoFunc: " + ToString()
-
+'		print "UndoFunc: " + ToString()
 		return True
 	End Method
 	
@@ -628,6 +683,17 @@ Type TGameModifierGroup
 		endif
 	End Method
 
+
+	Method Update:int(trigger:string, params:TData)
+		local l:TList = GetList(trigger)
+		if not l then return 0
+		
+		For local modifier:TGameModifierBase = eachin l
+			modifier.Update(params)
+		Next
+
+		return l.Count()
+	End Method
 
 
 	Method Run:int(trigger:string, params:TData)
