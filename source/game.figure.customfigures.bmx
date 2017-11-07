@@ -214,6 +214,8 @@ Type TFigureDeliveryBoy Extends TFigure
 	'time to wait between doing something
 	Field nextActionTimer:TBuildingIntervalTimer = new TBuildingIntervalTimer.Init(7500, 0, 0, 5000)
 
+	Field scheduledDeliverRooms:TRoomBase[]
+	Field scheduledDeliverTime:Long[]
 
 	'we need to overwrite it to have a custom type - with custom update routine
 	Method Create:TFigureDeliveryBoy(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int)
@@ -228,10 +230,27 @@ Type TFigureDeliveryBoy Extends TFigure
 		Local room:TRoomBase = TRoomBase(source.GetData().Get("room"))
 		If Not figure Or Not room Then Return False
 
-		figure.SetDeliverToRoom(room)
+
+		'-1 = deliver as soon as possible
+		local scheduledTime:Long = -1
+		if params and params.GetInt("delayTime") > 0
+			scheduledTime = GetWorldTime().GetTimeGone() + params.GetInt("delayTime")
+		endif
+		'print "AddDeliverToRoom "
+		'Var 1) let the figure finish other scheduled deliveries first
+		figure.AddDeliverToRoom(room, scheduledTime)
+		'Var 2) send direct?
+		'figure.SetDeliverToRoom(room)
+
 
 		return True
 	End Function
+
+
+	Method AddDeliverToRoom:int(room:TRoomBase, deliverTime:Long = -1)
+		scheduledDeliverRooms :+ [room]
+		scheduledDeliverTime :+ [deliverTime]
+	End Method
 
 
 	'override to make the figure stay in the room for a random time
@@ -263,7 +282,13 @@ Type TFigureDeliveryBoy Extends TFigure
 	'set the room the figure should go to.
 	'DeliveryBoys do not know where the room will be, so they
 	'go to the roomboard first
-	Method SetDeliverToRoom:Int(room:TRoomBase)
+	Method SetDeliverToRoom:Int(room:TRoomBase, replaceExistingDeliveryTarget:int = False)
+		'delay current delivery target by adding it back to the schedule    
+		if deliverToRoom and not replaceExistingDeliveryTarget
+			scheduledDeliverRooms = [deliverToRoom] + scheduledDeliverRooms
+			scheduledDeliverTime = [-1:Long] + scheduledDeliverTime
+		endif
+	
 		'to go to this room, we have to first visit the roomboard
 		checkedRoomboard = False
 		deliveryDone = False
@@ -314,9 +339,21 @@ Type TFigureDeliveryBoy Extends TFigure
 
 	Method UpdateCustom:Int()
 		'nothing to do - move to offscreen (leave building)
+		'or set next target if already offscreen
 		If Not deliverToRoom And Not GetTarget()
 			If Not IsOffScreen() Then SendToOffscreen()
+
+			'find the next target
+			if scheduledDeliverRooms.length > 0 and scheduledDeliverTime.length > 0
+				if scheduledDeliverTime[0] < GetWorldTime().GetTimeGone()
+					TLogger.Log("TFigureDeliveryBoy", Self.name+" delivers to next scheduled room: " + scheduledDeliverRooms[0].name +".", LOG_DEBUG | LOG_AI, True)
+					SetDeliverToRoom( scheduledDeliverRooms[0] )
+					scheduledDeliverRooms = scheduledDeliverRooms[1..]
+					scheduledDeliverTime = scheduledDeliverTime[1..]
+				endif
+			endif
 		EndIf
+
 
 		'figure is in building and without target waiting for orders
 		If Not deliveryDone And IsIdling()
