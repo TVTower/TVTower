@@ -92,7 +92,7 @@ Type TAwardCollection Extends TGameObjectCollection
 
 	Method UpdateAwards()
 		'=== CREATE INITIAL AWARD ===
-		If GetWorldTime().GetDaysRun() = 0 and GetCount() = 0
+		If GetWorldTime().GetDaysRun() = 0 and not GetNextAward()
 			'avoid AwardCustomProduction as first award in a game
 			local awardType:int = 0
 			Repeat
