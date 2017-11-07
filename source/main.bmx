@@ -597,7 +597,10 @@ Type TApp
 
 		'ignore shortcuts if a gui object listens to keystrokes
 		'eg. the active chat input field
-		If Not GUIManager.GetKeystrokeReceiver()
+		'also ignore if there is a modal window opened
+		If Not GUIManager.GetKeystrokeReceiver() and ..
+		   Not (App.ExitAppDialogue or App.EscapeMenuWindow)
+
 			If GameRules.devConfig.GetBool("DEV_KEYS", False)
 				'(un)mute sound
 				'M: (un)mute all sounds
@@ -1031,6 +1034,19 @@ Type TApp
 						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("boss", GetPlayerCollection().playerID))
 						If KEYMANAGER.isHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
+
+						If KEYMANAGER.Ishit(KEY_X)
+							print "--- ROOM LOG ---"
+							For local entry:string = EachIn GameEvents.roomLog
+								print entry
+							Next
+							print "-- ROOM COUNT --"
+							For local key:string = EachIn GameEvents.roomCount.Keys()
+								print key+" : " + String(GameEvents.roomCount.ValueForKey(key))
+							Next
+							print "----------------"
+						EndIf
+
 rem
 						If KEYMANAGER.isHit(KEY_X)
 							print "Player: #" + GetPlayer().GetFigure().playerID + "   time: " + GetWorldTime().GetFormattedTime()
@@ -4064,6 +4080,11 @@ Type GameEvents
 
 		'we want to handle "/dev bla"-commands via chat
 		_eventListeners :+ [ EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntry ) ]
+
+
+		'dev
+		_eventListeners :+ [ EventManager.registerListenerFunction("player.onEnterRoom", onPlayerEntersRoom ) ]
+	
 	End Function
 
 
@@ -4124,6 +4145,21 @@ Type GameEvents
 		if not screen then return False
 		'try to show the ingame help for that screen (if there is any)
 		IngameHelpWindowCollection.ShowByHelpGUID( screen.GetName() )
+	End Function
+
+
+	global roomLog:TList = CreateList()
+	global roomCount:TMap = CreateMap()
+	Function onPlayerEntersRoom:Int(triggerEvent:TEventBase)
+		local room:TRoom = TRoom(triggerEvent.GetReceiver())
+		local player:TPlayer = TPlayer(triggerEvent.GetSender())
+
+		roomLog.AddLast("Player #"+player.playerID+"  enters " + room.GetName()+ "  [" + GetWorldTime().GetFormattedGameDate()+"]")
+
+		local key:string = player.playerID+"|"+room.GetName()
+		local count:int = int(string(roomCount.ValueForKey(key))) + 1
+		roomCount.insert(key, string(count))
+		
 	End Function
 	
 
