@@ -394,7 +394,7 @@ But only with Relocation Rudolph!</en>
 			</title>
 			<description>
 				<de>Dein freundliches Reisebüro... Wohin Du willst - solang die Kohle stimmt.</de>
-				<de>Your friendly travel agency ... Wherever you want - as long as money is not an issue.</de>
+				<en>Your friendly travel agency ... Wherever you want - as long as money is not an issue.</en>
 			</description>
 			<conditions min_audience="0.0511" min_image="0" target_group="0" pro_pressure_groups="0" contra_pressure_groups="0"/>
 			<data quality="18" repetitions="3" duration="2" fix_price="0" profit="3000" penalty="3800" infomercial_profit="90" fix_infomercial_profit="1"/>
@@ -670,7 +670,7 @@ Solar clocks, quartz clocks, alarm clocks, large clocks, ladies' and men's model
 		<ad id="b422ad7a-ed8a-4c01-a4fa-0496c07e73d5">
 			<title>
 				<de>Buchstehude</de>
-				<de>Pantown</de>
+				<en>Pantown</en>
 			</title>
 			<description>
 				<de>Boxershorts vom Dorf. Garantiert nur einmal getragen - pro Seite.</de>
@@ -1824,7 +1824,7 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Pemto1" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Pemto Taschentücher</de>
-				<de>Pemto Tissues</de>
+				<en>Pemto Tissues</en>
 			</title>
 			<description>
 				<de>Reißfest und kugelsicher. Pemto - stoppt auch 150 km/h-Nieser.</de>
