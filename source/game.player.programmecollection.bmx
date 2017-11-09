@@ -667,6 +667,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			EventManager.triggerEvent(TEventSimple.Create("programmecollection.removeScriptFromSuitcase", new TData.add("script", script), self))
 			EventManager.triggerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
 		endif
+
 		return TRUE
 	End Method
 
@@ -792,11 +793,20 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			if pc.script = script then remove :+ [pc]
 		Next
 
+		'search for episodes
+		local removedSubs:int = 0
+		if script.GetSubScriptCount() > 0
+			for local subScript:TScript = Eachin script.subScripts
+				removedSubs :+ DestroyProductionConceptsByScript(subScript)
+			next
+		endif
+
+		'finally remove a potentially found concept
 		For local pc:TProductionConcept = EachIn remove
 			DestroyProductionConcept(pc)
 		Next
 
-		return remove.length
+		return remove.length + removedsubs
 	End Method
 
 
