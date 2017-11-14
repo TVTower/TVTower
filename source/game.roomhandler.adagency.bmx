@@ -20,8 +20,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Field listNormal:TAdContract[]
 	Field listCheap:TAdContract[]
 	Field listAll:TList {nosave}
-	Field refillMode:int = 1
 	Field levelFilters:TAdContractBaseFilter[6]
+
+	'cache to check if changes are processed yet
+	Field _setRefillMode:int = 0 {nosave}
 
 	'graphical lists for interaction with blocks
 	Global haveToRefreshGuiElements:int = TRUE
@@ -100,8 +102,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		Next
 
 
-		'set to new refill mode
-		SetRefillMode(2)
+		'set to new mode defined in the rules
+		SetRefillMode( GameRules.adagencyRefillMode )
 
 
 		'=== REGISTER HANDLER ===
@@ -489,8 +491,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 	Method SetRefillMode(mode:int)
-		refillMode = mode
-		if refillMode = 2
+		_setRefillMode = mode
+		if _setRefillMode = 2
 			contractsSortSymbols = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money"]
 			contractsSortKeys = [0, 1]
 		else
@@ -554,6 +556,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 				if lists[j][i] = contract
 					lists[j][i] = null
 					listAll.Remove(contract)
+
+					'emit event
+					EventManager.triggerEvent(TEventSimple.Create("adagency.removeAdContract", New TData.add("adcontract", contract), Self))
+
 					foundContract = TRUE
 				endif
 			Next
@@ -588,6 +594,9 @@ Type RoomHandler_AdAgency extends TRoomHandler
 				contract.SetOwner(contract.OWNER_VENDOR)
 				lists[j][i] = contract
 				listAll.Addlast(contract)
+				'emit event
+				EventManager.triggerEvent(TEventSimple.Create("adagency.addAdContract", New TData.add("adcontract", contract), Self))
+
 				return TRUE
 			Next
 		Next
@@ -769,7 +778,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		if replaceOffer then RemoveRandomContracts(replaceChance)
 
 
-		if refillMode <= 1
+		if GameRules.adagencyRefillMode <= 1
 			RefillBlocksMode1()
 		else
 			RefillBlocksMode2()
@@ -1037,10 +1046,15 @@ endrem
 				if contract
 					'set classification so contract knows its "origin"
 					contract.adAgencyClassification = classification
-
 					contract.SetOwner(contract.OWNER_VENDOR)
-					lists[j][i] = contract
+
 					GetContractsInStock().AddLast(contract)
+					'add afterwards as "GetContractsInStock()" might create
+					'a list already containing the lists[][]-content)
+					lists[j][i] = contract
+
+					'emit event
+					EventManager.triggerEvent(TEventSimple.Create("adagency.addAdContract", New TData.add("adcontract", contract), Self))
 				endif
 			Next
 		Next
@@ -1192,8 +1206,13 @@ endrem
 					contract.adAgencyClassification = classification
 
 					contract.SetOwner(contract.OWNER_VENDOR)
-					lists[j][i] = contract
 					GetContractsInStock().AddLast(contract)
+					'add afterwards as "GetContractsInStock()" might create
+					'a list already containing the lists[][]-content)
+					lists[j][i] = contract
+
+					'emit event
+					EventManager.triggerEvent(TEventSimple.Create("adagency.addAdContract", New TData.add("adcontract", contract), Self))
 				endif
 			Next
 		Next
@@ -1462,6 +1481,11 @@ endrem
 
 		GetGameBase().cursorstate = 0
 
+		'update refill mode if needed
+		if GameRules.adagencyRefillMode <> _setRefillMode
+			SetRefillMode(GameRules.adagencyRefillMode)
+		endif
+
 		ListSortVisible = False
 		If not draggedGuiAdContract 
 			'show and react to mouse-over-sort-buttons
@@ -1603,12 +1627,12 @@ Type TGuiAdContract Extends TGUIGameListItem
 		'the object
 		If forceAlign <> -1
 			sheetAlign = forceAlign
-		elseIf MouseManager.x < GetGraphicsManager().GetWidth()/2
+		elseIf MouseManager.x < GameConfig.nonInterfaceRect.GetXCenter()
 			sheetAlign = 1
 		EndIf
 
 		if sheetAlign = 1
-			sheetX = GetGraphicsManager().GetWidth() - rightX
+			sheetX = GameConfig.nonInterfaceRect.GetX2() - rightX
 		endif
 
 		SetColor 0,0,0

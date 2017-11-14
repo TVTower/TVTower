@@ -6,6 +6,14 @@
 			<DEV_OSD value="FALSE" />
 			<DEV_LOG value="TRUE" />
 
+			<!--
+			<DEV_STATION_CONSTRUCTION_TIME value="0" />	
+			<DEV_STATION_INCREASE_DAILY_MAINTENANCE_COSTS value="false" />
+			<DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE value="0.02" />
+			<DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE_TOTAL_MAX value="0.30" />
+			-->
+
+
 			<!-- milliseconds waiting on a floor (incl. animation).
 			     Default: 1500
 				<DEV_ELEVATOR_WAITTIME value="1500" />
@@ -50,6 +58,14 @@
 			       x - allow up to x contract instances 
 			     Default: 1
 				<DEV_ADCONTRACT_INSTANCES_MAX value="1" />
+			-->
+
+			<!-- A potential for profit/penalty values
+			     Options:
+			       0 - disable any limit
+			       x - limit in Euro per spot 
+			     Default: 1000000
+				<DEV_ADCONTRACT_PRICE_PER_SPOT_MAX value="1000000" />
 			-->
 
 			<!-- a modifier cutting the used factor to calculate the
@@ -111,9 +127,19 @@
 			<DEV_ADCONTRACT_PRICE_MOD value="1.0" />
 
 
+			<!-- ROOM: ADAGENCY -->
+			<!-- ============== -->
+			<!-- define basic sort for adcontracts -->
+			<!-- <DEV_ADAGENCY_SORT_CONTRACTS_BY value="minaudience" /> -->
 
-			<!-- AD CONTRACTS -->
-			<!-- ============ -->
+			<!-- define refill mode when choosing new contracts -->
+			<!-- <DEV_ADAGENCY_REFILL_MODE value="2" /> -->
+
+
+
+
+			<!-- NEWS EVENTS -->
+			<!-- =========== -->
 
 			<!-- Balancing Qualitaet auf Alterseinfluss -->
 			<DEV_NEWS_QUALITYAGE_INFLUENCE value="1.0" />
@@ -122,11 +148,9 @@
 			<!-- Balancing AnzahlAusstrahlungen auf Maximale Aktualitaet -->
 			<DEV_NEWS_BROADCAST_INFLUENCE value="1.0" />
 
+
 			<!-- TRUE/1   FALSE/0 -->
 			<DEV_ROUND_TO_BEAUTIFUL_VALUES value="TRUE" />
-
-			<!-- define basic sort for adcontracts -->
-			<!-- <DEV_ADAGENCY_SORT_CONTRACTS_BY value="minaudience" /> -->
 
 			<!-- enable/disable station map daily running cost increase -->
 			<!-- <DEV_STATION_INCREASE_DAILY_MAINTENANCE_COSTS value="FALSE" /> -->

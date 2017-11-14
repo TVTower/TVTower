@@ -833,6 +833,14 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 
+	'override
+	Method IsAvailable:int() {_exposeToLua}
+		if not base.IsAvailable() then return False
+
+		return Super.IsAvailable()
+	End Method
+
+
 	Method IsSigned:int() {_exposeToLua}
 		return (owner > 0 and daySigned >= 0)
 	End Method
@@ -1109,7 +1117,9 @@ price :* Max(1, minAudience/1000)
 		'multiply by amount of "1000 viewers"-blocks (_not_ ignoring targetGroups)
 		'price :* Max(1, getMinAudience(playerID)/1000)
 		'value cannot be higher than "maxAdContractPricePerSpot"
-		price = Min(GameRules.adContractPricePerSpotMax, price )
+		if GameRules.adContractPricePerSpotMax > 0
+			price = Min(GameRules.adContractPricePerSpotMax, price )
+		endif
 		'adjust by a balancing factor
 		price :* devPriceMod
 

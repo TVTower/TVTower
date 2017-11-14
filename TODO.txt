@@ -113,3 +113,7 @@ https://www.gamezworld.de/phpforum/viewtopic.php?pid=86100#p86100
 
 - Studios durchnummerieren (Studio #2 von Spieler 1)
 - Raummakler Tooltips/Datenblaetter fuer belegte Raeume als Hilfestellung fuer Neuanfaenger
+
+
+- Senderimage "relativ" (im Sendegebiet) und "absolut" (Bundesweit)
+- - Szenario: 75% Senderimage erfordert 75% absolut. (erfordert wiederum Satelliten, Kabelnetze...)

@@ -706,9 +706,9 @@ Type TApp
 
 
 							print "==== AD CONTRACT OVERVIEW ===="
-							print ".---------------------------------.------------------.---------.----------.----------.-------."
-							print "| Name                            | Audience       % |  Image  |  Profit  |  Penalty | Spots |"
-							print "|---------------------------------+------------------+---------+----------+----------|-------|"
+							print ".---------------------------------.------------------.---------.----------.----------.-------.-------."
+							print "| Name                            | Audience       % |  Image  |  Profit  |  Penalty | Spots | Avail |"
+							print "|---------------------------------+------------------+---------+----------+----------|-------|-------|"
 
 							'For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
 							For local a:TAdContractBase = EachIn adList
@@ -721,6 +721,7 @@ Type TApp
 								local profit:string =  Rset(ad.GetProfit(), 8)
 								local penalty:string =  Rset(ad.GetPenalty(), 8)
 								local spots:string = RSet(ad.GetSpotCount(), 5)
+								local availability:string = ""
 								local targetGroup:String = ""
 								if ad.GetLimitedToTargetGroup() > 0
 									targetGroup = "* "+ getLocale("AD_TARGETGROUP")+": "+ad.GetLimitedToTargetGroupString()
@@ -728,10 +729,16 @@ Type TApp
 								else
 									title :+ " "
 								endif
-								print "| "+title + " | " + audience + " | " + image + " | " + profit + " | " + penalty + " | " + spots+" |" + targetgroup
+								if ad.IsAvailable()
+									availability = RSet("Yes", 5)
+								else
+									availability = RSet("No", 5)
+								endif
+
+								print "| "+title + " | " + audience + " | " + image + " | " + profit + " | " + penalty + " | " + spots+" | " + availability +" |" + targetgroup
 								
 							Next
-							print "'---------------------------------'------------------'---------'----------'----------'-------'"
+							print "'---------------------------------'------------------'---------'----------'----------'-------'-------'"
 						endif
 					endif
 					
@@ -1910,7 +1917,7 @@ Type TGameState
 		GetBuildingTime().Initialize()
 		GetRoomDoorBaseCollection().Initialize()
 		GetRoomBaseCollection().Initialize()
-		GetStationMapCollection().InitializeAll()
+		GetStationMapCollection().Initialize()
 		GetPopularityManager().Initialize()
 		GetNewsGenreDefinitionCollection().Initialize()
 		GetMovieGenreDefinitionCollection().Initialize()
@@ -2802,7 +2809,9 @@ Type TScreen_MainMenu Extends TGameScreen
 
 		guiButtonStart		= New TGUIButton.Create(New TVec2D.Init(0, 0*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
 		guiButtonNetwork	= New TGUIButton.Create(New TVec2D.Init(0, 1*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonNetwork.Disable()
 		guiButtonOnline		= New TGUIButton.Create(New TVec2D.Init(0, 2*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonOnline.Disable()
 		guiButtonLoadGame	= New TGUIButton.Create(New TVec2D.Init(0, 3*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
 		guiButtonSettings	= New TGUIButton.Create(New TVec2D.Init(0, 4*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
 		guiButtonQuit		= New TGUIButton.Create(New TVec2D.Init(0, 5*38 + 10), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
@@ -3025,8 +3034,8 @@ Type TScreen_MainMenu Extends TGameScreen
 			guiButtonOnline.Disable()
 		Else
 			guiButtonStart.Enable()
-			guiButtonNetwork.Enable()
-			guiButtonOnline.Enable()
+			'guiButtonNetwork.Enable()
+			'guiButtonOnline.Enable()
 		EndIf
 
 
@@ -4167,7 +4176,7 @@ Type GameEvents
 		Local text:String = triggerEvent.GetData().GetString("text")
 		'only interested in system/dev-commands
 		If TGUIChat.GetCommandFromText(text) <> CHAT_COMMAND_SYSTEM Then Return False
-
+print text
 		'skip "/sys " and only return the payload
 		'-> "/sys addmoney 1000" gets "addmoney 1000"
 		text = TGUIChat.GetPayloadFromText(text)
@@ -4327,6 +4336,23 @@ Type GameEvents
 					GetGame().SendSystemMessage("[DEV] Added masterkey to player '" + player.name +"' ["+player.playerID + "]!")
 				else
 					GetGame().SendSystemMessage("[DEV] Removed masterkey from player '" + player.name +"' ["+player.playerID + "]!")
+				endif
+
+			case "reloaddev"
+				if FileType("config/DEV.xml") = 1
+					local dataLoader:TDataXmlStorage = new TDataXmlStorage
+					local data:TData = dataLoader.Load("config/DEV.xml")
+					if data
+						GetRegistry().Set("DEV_CONFIG", data)
+						GameRules.devConfig = data
+						GameRules.AssignFromData( Gamerules.devConfig )
+						
+						GetGame().SendSystemMessage("[DEV] Reloaded ~qconfig/DEV.xml~q.")
+					else
+						GetGame().SendSystemMessage("[DEV] Failed to reload ~qconfig/DEV.xml~q.")
+					endif
+				else
+					GetGame().SendSystemMessage("[DEV] ~qconfig/DEV.xml~q not found.")
 				endif
 
 
@@ -6394,7 +6420,6 @@ Function PrintCurrentTranslationState(compareLang:string="tr")
 		endif
 		if printed then print Chr(8203) 'zero width space, else it skips "~n"
 	Next	
-
 
 
 	print "~t"

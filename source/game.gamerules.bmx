@@ -81,10 +81,9 @@ Type TGameRules {_exposeToLua}
 	'maximum price (profit/penalty) for a single adspot
 	Field adContractPricePerSpotMax:int = 1000000
 
-
 	'=== ADAGENCY ===
 	Field adagencySortContractyBy:string = "minaudience"
-	
+	Field adagencyRefillMode:int = 1
 
 	'=== STATIONMAP ===
 	'time a station needs to get constructed
@@ -112,10 +111,12 @@ Type TGameRules {_exposeToLua}
 		stationConstructionTime = 0
 		
 		adagencySortContractyBy = "minaudience"
+		adagencyRefillMode = 2 'new one
 
 		adContractInstancesMax = 1
 		adContractsPerPlayerMax = 10
 		adContractPricePerSpotMax = 1000000
+
 
 		AssignFromData(devConfig)
 	End Method
@@ -130,13 +131,14 @@ Type TGameRules {_exposeToLua}
 
 		adContractInstancesMax = data.GetInt("DEV_ADCONTRACT_INSTANCES_MAX", adContractInstancesMax)
 		adContractsPerPlayerMax = data.GetInt("DEV_ADCONTRACTS_PER_PLAYER_MAX", adContractsPerPlayerMax)
-		'adContractPricePerSpotMax = data.GetInt("DEV_ADCONTRACT_PRICE_PER_SPOT_MAX", adContractPricePerSpotMax)
+		adContractPricePerSpotMax = data.GetInt("DEV_ADCONTRACT_PRICE_PER_SPOT_MAX", adContractPricePerSpotMax)
 		if data.GetInt("DEV_ADCONTRACT_PRICE_PER_SPOT_MAX", 0) > 0
 			adContractPricePerSpotMax = data.GetInt("DEV_ADCONTRACT_PRICE_PER_SPOT_MAX")
 		endif
 
 		'=== ADAGENCY ===
 		adagencySortContractyBy = data.GetString("DEV_ADAGENCY_SORT_CONTRACTS_BY", adagencySortContractyBy).Trim().ToLower()
+		adagencyRefillMode = data.GetInt("DEV_ADAGENCY_REFILL_MODE", adagencyRefillMode)
 
 
 		'=== ELEVATOR ===
