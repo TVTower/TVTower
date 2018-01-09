@@ -1,4 +1,4 @@
-Diese Spielanleitung umfasst die derzeitig in der Entwicklerversion
+﻿Diese Spielanleitung umfasst die derzeitig in der Entwicklerversion
 aktiven Features und Hilfsfunktionen. Sie wird mit dem jeweiligen
 Entwicklungsstand aktualisiert.
 Sollte etwas fehlen, unklar sein oder gar zuviel, merkt's bitte hier im
