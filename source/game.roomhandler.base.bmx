@@ -238,7 +238,11 @@ Type TRoomHandler
 			return TFigureBase(GetPlayerBase().GetFigure())
 		endif
 	End Function
-	
+
+
+	Method FigureEntersRoom:int(figure:TFigureBase)
+	End Method
+
 
 	'returns wheather we observe a player and the player is in the given
 	'room

@@ -40,6 +40,10 @@
 
 				<child name="gfx_datasheet_icon_moneyRepetitions"   x="79"   y="97"   w="24"  h="23" />
 				<child name="gfx_datasheet_icon_roomSize"           x="105"  y="97"   w="24"  h="23" />
+
+				<child name="gfx_datasheet_icon_marketShare"        x="131"  y="97"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_quality"            x="157"  y="97"   w="24"  h="23" />
+				<child name="gfx_datasheet_icon_image"              x="183"  y="97"   w="24"  h="23" />
 				<!-- sort indicators -->
 				<child name="gfx_datasheet_icon_arrow_up"           x="391"  y="72"   w="24"  h="23" />
 				<child name="gfx_datasheet_icon_arrow_down"         x="417"  y="72"   w="24"  h="23" />
@@ -48,8 +52,12 @@
 				<child name="gfx_datasheet_icon_audience"           x="261"  y="72"   w="24"  h="23" />
 
 				<!-- stationmap datasheet extras -->
-				<child name="gfx_datasheet_icon_antenna.on"			x="31"	y="101"	w="13"	h="14" />
-				<child name="gfx_datasheet_icon_antenna.off"		x="46"	y="101"	w="13"	h="14" />
+				<child name="gfx_datasheet_icon_antenna.on"          x="31"	y="98"	w="13"	h="14" />
+				<child name="gfx_datasheet_icon_antenna.off"         x="31"	y="114"	w="13"	h="14" />
+				<child name="gfx_datasheet_icon_satellite.on"        x="46"	y="98"	w="13"	h="14" />
+				<child name="gfx_datasheet_icon_satellite.off"       x="46"	y="114"	w="13"	h="14" />
+				<child name="gfx_datasheet_icon_cable_network.on"    x="61"	y="98"	w="13"	h="14" />
+				<child name="gfx_datasheet_icon_cable_network.off"   x="61"	y="114"	w="13"	h="14" />
 
 				<child name="gfx_datasheet_overlay_xrated"			x="0"	y="100" w="26"  h="26" offsetLeft="15" offsetTop="-2" />
 

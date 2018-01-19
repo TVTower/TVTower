@@ -319,6 +319,8 @@ Type TVTNewsType {_exposeToLua}
 	Const InitialNews:int = 0
 	Const InitialNewsByInGameEvent:int = 1
 	Const FollowingNews:int = 2
+	'news with a planned/scripted "happenedtime"
+	Const TimedNews:int = 3
 End Type
 
 

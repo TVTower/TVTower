@@ -40,6 +40,8 @@ Type TDatasheetSkin
 		
 		'use content-params from sprite
 		skin.contentPadding.CopyFrom( GetSpriteFromRegistry(skin.spriteBaseKey+"_border").GetNinePatchContentBorder() )
+		'slight overlay
+		skin.contentPadding.SetBottom( skin.contentPadding.GetBottom() - 1 )
 
 		return skin
 	End Function

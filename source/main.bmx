@@ -1234,6 +1234,17 @@ endrem
 		ScreenCollection.UpdateCurrent(GetDeltaTimer().GetDelta())
 
 		local openEscapeMenu:int = openEscapeMenuViaInterface or (Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE))
+		'no escape menu in start screen or settingsscreen
+		if GetGame().gamestate = TGame.STATE_MAINMENU or GetGame().gamestate = TGame.STATE_SETTINGSMENU
+			openEscapeMenu = False
+		endif
+
+		'force open escape menu (if eg. borked)
+		if KEYMANAGER.IsDown(KEY_LCONTROL) and KEYWRAPPER.hitKey(KEY_ESCAPE)
+			openEscapeMenu = True
+			print "force open escape menu. gamestate="+GetGame().gamestate +"   keystrokereceiver: " + (GuiManager.GetKeystrokeReceiver() <> null)
+		endif
+		
 		If openEscapeMenu
 			print "should open escape menu. gamestate="+GetGame().gamestate
 
@@ -4176,7 +4187,7 @@ Type GameEvents
 		Local text:String = triggerEvent.GetData().GetString("text")
 		'only interested in system/dev-commands
 		If TGUIChat.GetCommandFromText(text) <> CHAT_COMMAND_SYSTEM Then Return False
-print text
+
 		'skip "/sys " and only return the payload
 		'-> "/sys addmoney 1000" gets "addmoney 1000"
 		text = TGUIChat.GetPayloadFromText(text)

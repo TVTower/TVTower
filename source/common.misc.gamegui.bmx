@@ -5,6 +5,8 @@ Import "Dig/base.gfx.gui.window.base.bmx"
 Import "Dig/base.gfx.gui.window.modal.bmx"
 Import "Dig/base.gfx.gui.list.selectlist.bmx"
 Import "Dig/base.gfx.gui.list.slotlist.bmx"
+Import "Dig/base.gfx.gui.accordeon.bmx"
+Import "common.misc.datasheet.bmx"
 
 
 Global headerFont:TBitmapFont
@@ -559,5 +561,123 @@ Type TGUIGameListItem Extends TGUIListItem
 			SetBlend AlphaBlend
 			SetAlpha oldAlpha
 		EndIf
+	End Method
+End Type
+
+
+
+
+Type TGameGUIAccordeon extends TGUIAccordeon
+	Field skin:TDatasheetSkin
+	Field skinName:string = "default"
+
+
+	Method GetSkin:TDatasheetSkin()
+		if not skin
+			skin = GetDatasheetSkin(skinName)
+			RefitPanelSizes()
+		endif
+		
+		return skin
+	End Method
+
+
+	Method GetContentScreenWidth:Float()
+		if not skin then return GetScreenWidth()
+		return skin.GetContentW(GetScreenWidth())
+	End Method
+
+
+	Method GetContentWidth:Float()
+		if not skin then return Super.GetContentWidth()
+		return skin.GetContentW(GetWidth())
+	End Method
+
+
+	Method GetContentX:Float()
+		if not skin then return Super.GetContentX()
+		return skin.GetContentX()
+	End Method
+
+
+	Method GetContentY:Float()
+		if not skin then return Super.GetContentY()
+		return skin.GetContentY()
+	End Method
+
+
+	'override
+	Method GetMaxPanelBodyHeight:int()
+		if not skin then return Super.GetMaxPanelBodyHeight()
+		'subtract skin's border padding
+		return skin.GetContentH( super.GetMaxPanelBodyHeight() )
+	End Method
+		
+
+	Method DrawOverlay()
+		'use GetSkin() to fetch the skin when drawing was possible
+		GetSkin().RenderBorder(int(GetScreenX()), int(GetScreenY()), int(GetScreenWidth()), int(GetScreenHeight()))
+	End Method
+End Type
+
+
+
+
+Type TGameGUIAccordeonPanel extends TGUIAccordeonPanel
+	Method GetSkin:TDatasheetSkin()
+		if TGameGUIAccordeon(GetParent()) then return TGameGUIAccordeon(GetParent()).GetSkin()
+		return null
+	End Method
+
+
+	Method IsHeaderHovered:int()
+		'skip further checks
+		if not isHovered() then return False
+
+		local mouseYOffset:int = MouseManager.y - GetScreenY()
+
+		Return mouseYOffset > 0 and mouseYOffset < GetHeaderHeight()
+	End Method
+
+
+	Method GetHeaderValue:string()
+		return GetValue()
+	End Method
+
+
+	Method DrawHeader()
+		local openStr:string = Chr(9654)
+		if isOpen then openStr = Chr(9660)
+
+		local skin:TDatasheetSkin = GetSkin()
+		if skin
+			local contentW:int = GetScreenWidth()
+			local contentX:int = GetScreenX()
+			local contentY:int = GetScreenY()
+			local headerHeight:int = GetHeaderHeight()
+
+			skin.RenderContent(contentX, contentY, contentW, headerHeight, "1_top")
+			if IsHeaderHovered()
+				local oldCol:TColor = new TColor.Get()
+				SetBlend LightBlend
+				SetAlpha 0.25 * oldCol.a
+				skin.RenderContent(contentX, contentY, contentW, headerHeight, "1_top")
+				SetBlend AlphaBlend
+				SetAlpha oldCol.a
+			endif
+			if isOpen
+				skin.fontNormal.drawBlock(openStr + " |b|" +GetHeaderValue()+"|/b|", contentX + 5, contentY, contentW - 10, headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			else
+				skin.fontNormal.drawBlock(openStr + " " +GetHeaderValue(), contentX + 5, contentY, contentW - 10, headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			endif
+		endif
+	End Method
+
+
+	Method DrawBody()
+		local skin:TDatasheetSkin = GetSkin()
+		if skin
+			skin.RenderContent(int(GetScreenX()), int(GetScreenY() + GetHeaderHeight()), int(GetScreenWidth()), int(GetBodyHeight()), "2")
+		endif
 	End Method
 End Type

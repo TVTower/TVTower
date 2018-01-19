@@ -117,3 +117,7 @@ https://www.gamezworld.de/phpforum/viewtopic.php?pid=86100#p86100
 
 - Senderimage "relativ" (im Sendegebiet) und "absolut" (Bundesweit)
 - - Szenario: 75% Senderimage erfordert 75% absolut. (erfordert wiederum Satelliten, Kabelnetze...)
+
+
+- bei automatisch erstellten "Bald im Kino"-News die Schauspieler/Regisseure (je nachdem was erwaehnt wurde) per Effekt einbinden/pushen.
+https://www.gamezworld.de/phpforum/viewtopic.php?pid=87638#p87638

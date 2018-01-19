@@ -12,7 +12,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 
 	Method New()
-		SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, False)
+'		SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, False)
 	End Method
 
 

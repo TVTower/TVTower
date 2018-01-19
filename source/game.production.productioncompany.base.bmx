@@ -59,8 +59,8 @@ Type TProductionCompanyBase extends TGameObject
 	Method GenerateGUID:string()
 		return "productioncompanybase-"+id
 	End Method
-
-
+'ProductionCompany: Finished production. experience before: 999  level: 2  LevelXP%:0.998000026   XP%:0.0998999998
+ '                                          experience now: 1016  level: 2  LevelXP%:0.0320000648   XP%:0.101599999
 	Method GetLevel:int()
 		return 1 + (MAX_LEVEL-1) * GetExperiencePercentage()
 	End Method
@@ -68,7 +68,7 @@ Type TProductionCompanyBase extends TGameObject
 
 	Method SetLevel:int(level:int)
 		'-1 because level 1 is reached with 0 xp
-		SetExperience((level-1) * (MAX_XP / MAX_LEVEL))
+		SetExperience((level-1) * Float(MAX_XP) / MAX_LEVEL)
 	End Method
 
 
@@ -146,10 +146,12 @@ Type TProductionCompanyBase extends TGameObject
 
 		'add programme
 		producedProgrammes :+ [programmeDataGUID]
-
+print "ProductionCompany: Finished production. experience before: "+ GetExperience() + "  level: " + GetLevel() +"  LevelXP%:" + GetLevelExperiencePercentage() +"   XP%:"+GetExperiencePercentage()
 		'gain some xp
 		SetExperience(GetExperience() + GetNextExperienceGain(programmeDataGUID))
-
+print "                                           experience now: "+ GetExperience() + "  level: " + GetLevel() +"  LevelXP%:" + GetLevelExperiencePercentage() +"   XP%:"+GetExperiencePercentage()
+debugstop
+end
 		return True
 	End Method
 	

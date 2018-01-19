@@ -733,7 +733,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 					if broadcastAreaToDo < 1000 then exit
 					
 					local newPos:TVec2D = s.pos.Copy()
-					local increase:int = map.CalculateAudienceIncrease(Int(newPos.x), Int(newPos.y))
+					local increase:int = map.CalculateAntennaAudienceIncrease(Int(newPos.x), Int(newPos.y))
 
 					'ignore stations with too low reachincrease
 					if increase < 10000 then continue

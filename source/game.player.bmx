@@ -294,18 +294,18 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 
 
 	'make public image available for AI/Lua
-	Method GetPublicImage:TPublicImage()	{_exposeToLua}
-		return GetPublicImageCollection().Get(playerID)
+	Method GetPublicImage:TPublicImage() {_exposeToLua}
+		return .GetPublicImage(playerID)
 	End Method
 
 
 	Method GetProgrammeCollection:TPlayerProgrammeCollection() {_exposeToLua}
-		return GetPlayerProgrammeCollectionCollection().Get(playerID)
+		return GetPlayerProgrammeCollection(playerID)
 	End Method
 
 
 	Method GetProgrammePlan:TPlayerProgrammePlan() {_exposeToLua}
-		return GetPlayerProgrammePlanCollection().Get(playerID)
+		return GetPlayerProgrammePlan(playerID)
 	End Method
 
 

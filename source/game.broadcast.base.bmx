@@ -661,7 +661,7 @@ Type TBroadcast
 			withoutPlayerIDs :+ [i]
 		Next
 
-		Local audience:Int = GetStationMapCollection().GetShareAudience(playerIDs, withoutPlayerIDs)
+		Local audience:Int = GetStationMapCollection().GetTotalShareAudience(playerIDs, withoutPlayerIDs)
 		If audience > 0
 			Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
 			market.maxAudience = New TAudience.InitWithBreakdown(audience)

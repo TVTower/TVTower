@@ -2,7 +2,7 @@ SuperStrict
 Import "Dig/base.gfx.gui.checkbox.bmx"
 Import "Dig/base.gfx.gui.button.bmx"
 Import "Dig/base.gfx.gui.list.selectlist.bmx"
-Import "Dig/base.gfx.gui.accordeon.bmx"
+Import "common.misc.gamegui.bmx"
 Import "game.screen.base.bmx"
 Import "game.stationmap.bmx"
 Import "game.player.bmx"
@@ -12,128 +12,13 @@ Import "game.roomhandler.base.bmx"
 
 
 
-Type TGameGUIAccordeon extends TGUIAccordeon
-	Field skin:TDatasheetSkin
-
-
-	Method GetSkin:TDatasheetSkin()
-		if not skin
-			skin = GetDatasheetSkin("stationmapPanel")
-			RefitPanelSizes()
-		endif
-		
-		return skin
-	End Method
-
-
-	Method GetContentScreenWidth:Float()
-		if not skin then return GetScreenWidth()
-		return skin.GetContentW(GetScreenWidth())
-	End Method
-
-
-	Method GetContentWidth:Float()
-		if not skin then return Super.GetContentWidth()
-		return skin.GetContentW(GetWidth())
-	End Method
-
-
-	Method GetContentX:Float()
-		if not skin then return Super.GetContentX()
-		return skin.GetContentX()
-	End Method
-
-
-	Method GetContentY:Float()
-		if not skin then return Super.GetContentY()
-		return skin.GetContentY()
-	End Method
-
-
-	'override
-	Method GetMaxPanelBodyHeight:int()
-		if not skin then return Super.GetMaxPanelBodyHeight()
-		'subtract skin's border padding
-		return skin.GetContentH( super.GetMaxPanelBodyHeight() )
-	End Method
-		
-
-	Method DrawOverlay()
-		'use GetSkin() to fetch the skin when drawing was possible
-		GetSkin().RenderBorder(int(GetScreenX()), int(GetScreenY()), int(GetScreenWidth()), int(GetScreenHeight()))
-	End Method
-End Type
-
-
-
-
-Type TGameGUIAccordeonPanel extends TGUIAccordeonPanel
-	Method GetSkin:TDatasheetSkin()
-		if TGameGUIAccordeon(GetParent()) then return TGameGUIAccordeon(GetParent()).skin
-		return null
-	End Method
-
-
-	Method IsHeaderHovered:int()
-		'skip further checks
-		if not isHovered() then return False
-
-		local mouseYOffset:int = MouseManager.y - GetScreenY()
-
-		Return mouseYOffset > 0 and mouseYOffset < GetHeaderHeight()
-	End Method
-
-
-	Method GetHeaderValue:string()
-		return GetValue()
-	End Method
-
-
-	Method DrawHeader()
-		local openStr:string = Chr(9654)
-		if isOpen then openStr = Chr(9660)
-
-		local skin:TDatasheetSkin = GetSkin()
-		if skin
-			local contentW:int = GetScreenWidth()
-			local contentX:int = GetScreenX()
-			local contentY:int = GetScreenY()
-			local headerHeight:int = GetHeaderHeight()
-
-			skin.RenderContent(contentX, contentY, contentW, headerHeight, "1_top")
-			if IsHeaderHovered()
-				local oldCol:TColor = new TColor.Get()
-				SetBlend LightBlend
-				SetAlpha 0.25 * oldCol.a
-				skin.RenderContent(contentX, contentY, contentW, headerHeight, "1_top")
-				SetBlend AlphaBlend
-				SetAlpha oldCol.a
-			endif
-			if isOpen
-				skin.fontNormal.drawBlock(openStr + " |b|" +GetHeaderValue()+"|/b|", contentX + 5, contentY, contentW - 10, headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			else
-				skin.fontNormal.drawBlock(openStr + " " +GetHeaderValue(), contentX + 5, contentY, contentW - 10, headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			endif
-		endif
-	End Method
-
-
-	Method DrawBody()
-		local skin:TDatasheetSkin = GetSkin()
-		if skin
-			skin.RenderContent(int(GetScreenX()), int(GetScreenY() + GetHeaderHeight()), int(GetScreenWidth()), int(GetBodyHeight()), "2")
-		endif
-	End Method
-End Type
-
-
-
-
 Type TGameGUIBasicStationmapPanel extends TGameGUIAccordeonPanel
 	Field selectedStation:TStationBase
 	Field list:TGUISelectList
 	Field actionButton:TGUIButton
 	Field cancelButton:TGUIButton
+	Field tooltips:TTooltipBase[]
+
 	Field listExtended:int = False
 	Field detailsBackgroundH:int
 	Field listBackgroundH:int
@@ -172,6 +57,17 @@ Type TGameGUIBasicStationmapPanel extends TGameGUIAccordeonPanel
 		GuiManager.Remove(list)
 
 
+		tooltips = New TTooltipBase[5]
+		For local i:int = 0 until tooltips.length
+			tooltips[i] = new TGUITooltipBase.Initialize("", "", new TRectangle.Init(0,0,-1,-1))
+			tooltips[i].parentArea = new TRectangle
+			tooltips[i].SetOrientationPreset("TOP")
+			tooltips[i].offset = new TVec2D.Init(0,+5)
+			tooltips[i].SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
+			'standard icons should need a bit longer for tooltips to show up
+			tooltips[i].dwellTime = 500
+		Next
+
 
 		'=== remove all registered event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
@@ -187,6 +83,16 @@ Type TGameGUIBasicStationmapPanel extends TGameGUIAccordeonPanel
 		_eventListeners :+ [ EventManager.registerListenerMethod( "GUISelectList.onSelectEntry", self, "OnSelectEntryList", list ) ]
 
 		return self
+	End Method
+
+
+	Method SetLanguage()
+		local strings:string[] = [GetLocale("REACH"), GetLocale("Increase"), GetLocale("CONSTRUCTION_TIME"), GetLocale("RUNNING_COSTS"), GetLocale("PRICE")]
+		strings = strings[.. tooltips.length]
+
+		For local i:int = 0 until tooltips.length
+			if tooltips[i] then tooltips[i].SetContent(strings[i])
+		Next
 	End Method
 
 
@@ -206,14 +112,19 @@ Type TGameGUIBasicStationmapPanel extends TGameGUIAccordeonPanel
 			EndIf
 
 		elseif TScreenHandler_StationMap.IsInSellActionMode()
-				If TScreenHandler_StationMap.selectedStation and TScreenHandler_StationMap.selectedStation.getReach() > 0
-					'remove the station (and sell it)
-					if GetStationMap( GetPlayerBase().playerID ).RemoveStation(TScreenHandler_StationMap.selectedStation, TRUE)
-						ResetActionMode(TScreenHandler_StationMap.MODE_NONE)
-					endif
-				EndIf
+			If TScreenHandler_StationMap.selectedStation and TScreenHandler_StationMap.selectedStation.GetReach() > 0
+				'remove the station (and sell it)
+				if GetStationMap( GetPlayerBase().playerID ).RemoveStation(TScreenHandler_StationMap.selectedStation, TRUE)
+					ResetActionMode(TScreenHandler_StationMap.MODE_NONE)
+				endif
+			EndIf
 
 		else
+			'open up satellite selection frame for the satellite link panel
+			if GetBuyActionMode() = TScreenHandler_StationMap.MODE_BUY_SATELLITE
+				TScreenHandler_StationMap.satelliteSelectionFrame.Open()
+			EndIf
+
 			ResetActionMode( GetBuyActionMode() )
 		endif
 
@@ -293,13 +204,24 @@ Type TGameGUIBasicStationmapPanel extends TGameGUIAccordeonPanel
 	End Method
 
 
+	'override to resize list accordingly
+	Method onStatusAppearanceChange:Int()
+		Super.onStatusAppearanceChange()
+
+		list.Resize(GetContentScreenWidth()- 2, -1)
+	End Method
+	
+
 	Method Update:int()
 		if isOpen
 			'move list to here...
 			if list.rect.position.GetX() <> 2
 				list.SetPosition(2, GetHeaderHeight() + 3 )
+'local tt:TTypeID = TTypeId.ForObject(self)
+'print tt.name() + "   " + GetContentScreenWidth()
 				'list.rect.dimension.SetX(GetContentScreenWidth() - 23)
-				list.Resize(GetContentScreenWidth() - 23, -1)
+				'resizing is done when status changes
+'				list.Resize(GetContentScreenWidth() - 23, -1)
 			endif
 
 			'adjust list size if needed
@@ -327,6 +249,11 @@ Type TGameGUIBasicStationmapPanel extends TGameGUIAccordeonPanel
 		endif
 
 
+		For local t:TTooltipBase = EachIn tooltips
+			t.Update()
+		Next
+
+
 		'call update after button updates so mouse events are properly
 		'emitted
 		Super.Update()
@@ -337,10 +264,13 @@ Type TGameGUIBasicStationmapPanel extends TGameGUIAccordeonPanel
 		'ignore clicks if not in the own office
 		if not TScreenHandler_StationMap.currentSubRoom or TScreenHandler_StationMap.currentSubRoom.owner <> GetPlayerBase().playerID then return FALSE
 
-
 		If TScreenHandler_StationMap.IsInBuyActionMode()
 			if not TScreenHandler_StationMap.selectedStation
-				actionButton.SetValue(GetLocale("SELECT_LOCATION")+" ...")
+				if TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_BUY_SATELLITE
+					actionButton.SetValue(GetLocale("SELECT_SATELLITE")+" ...")
+				else
+					actionButton.SetValue(GetLocale("SELECT_LOCATION")+" ...")
+				endif
 				actionButton.disable()
 			else
 				local finance:TPlayerFinance = GetPlayerFinance(GetPlayerBase().playerID)
@@ -410,6 +340,12 @@ Type TGameGUIBasicStationmapPanel extends TGameGUIAccordeonPanel
 		list.Draw()
 		actionButton.Draw()
 		cancelButton.Draw()
+
+
+		For local t:TTooltipBase = EachIn tooltips
+			t.Render()
+		Next
+
 	End Method
 
 
@@ -476,7 +412,7 @@ Type TGameGUIAntennaPanel extends TGameGUIBasicStationmapPanel
 
 
 	Method GetHeaderValue:string()
-		return GetLocale("STATIONS") + ": " + GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetStationCount()
+		return GetLocale( "STATIONS" ) + ": " + GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetStationCount(TVTStationType.ANTENNA)
 	End Method
 
 
@@ -488,8 +424,8 @@ Type TGameGUIAntennaPanel extends TGameGUIBasicStationmapPanel
 		local boxAreaH:int = 0
 		local showDetails:int = False
 		if selectedStation then showDetails = True
-		if TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_STATION then showDetails = True
-		if TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_BUY_STATION then showDetails = True
+		if TScreenHandler_StationMap.actionMode = GetSellActionMode() then showDetails = True
+		if TScreenHandler_StationMap.actionMode = GetBuyActionMode() then showDetails = True
 
 		'update information
 		detailsBackgroundH = actionButton.GetScreenHeight() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2)
@@ -517,7 +453,7 @@ Type TGameGUIAntennaPanel extends TGameGUIBasicStationmapPanel
 						headerText = selectedStation.GetLongName()
 						subHeaderText = GetWorldTime().GetFormattedGameDate(selectedStation.built)
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
-						reachChange = MathHelper.DottedValue(selectedStation.GetReachDecrease())
+						reachChange = MathHelper.DottedValue( -1 * selectedStation.GetReachDecrease() )
 						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
 						if selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
@@ -531,7 +467,7 @@ Type TGameGUIAntennaPanel extends TGameGUIBasicStationmapPanel
 
 					'=== BOXES ===
 					if selectedStation
-						subHeaderText = GetLocale("MAP_COUNTRY_"+selectedStation.getFederalState())
+						subHeaderText = GetLocale("MAP_COUNTRY_"+selectedStation.GetSectionName())
 
 						'stationName = Koordinaten?
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
@@ -560,18 +496,23 @@ Type TGameGUIAntennaPanel extends TGameGUIBasicStationmapPanel
 			local halfW:int = (contentW - 10)/2 - 2
 			'=== BOX LINE 1 ===
 			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, reach, "audience", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
-			if TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_BUY_STATION
+			if TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_BUY
 				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			else
-				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, "-"+reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
+				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
 			endif
+			tooltips[0].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
+			tooltips[1].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
+
 
 			'=== BOX LINE 2 (optional) ===
-			if TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_BUY_STATION
+			tooltips[2].parentArea.SetXY(-1000,0)
+			if TScreenHandler_StationMap.actionMode = GetBuyActionMode()
 				'TODO: individual build time for stations ("GetStationConstructionTime()")?
 				if GameRules.stationConstructionTime > 0
 					currentY :+ boxH
 					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, GameRules.stationConstructionTime + "h", "runningTime", "neutral", skin.fontNormal)
+					tooltips[2].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 				endif
 			endif
 
@@ -589,6 +530,8 @@ Type TGameGUIAntennaPanel extends TGameGUIBasicStationmapPanel
 					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
 				endif
 			endif
+			tooltips[3].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
+			tooltips[4].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
 
 			currentY :+ boxH
 		endif
@@ -644,7 +587,7 @@ Type TGameGUICableNetworkPanel extends TGameGUIBasicStationmapPanel
 		If playerID <= 0 Then playerID = GetPlayerBase().playerID
 
 		local listContentWidth:int = list.GetContentScreenWidth()
-		For Local station:TStationAntenna = EachIn GetStationMap(playerID).Stations
+		For Local station:TStationCableNetwork = EachIn GetStationMap(playerID).Stations
 			local item:TGUISelectListItem = new TGUISelectListItem.Create(new TVec2D, new TVec2D.Init(listContentWidth,20), station.GetLongName())
 			'fill complete width
 			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
@@ -657,7 +600,7 @@ Type TGameGUICableNetworkPanel extends TGameGUIBasicStationmapPanel
 
 
 	Method GetHeaderValue:string()
-		return GetLocale( GetValue() ) + ": " + GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetStationCount()
+		return GetLocale( "CABLE_NETWORKS" ) + ": " + GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetStationCount(TVTStationType.CABLE_NETWORK)
 	End Method
 
 
@@ -669,8 +612,8 @@ Type TGameGUICableNetworkPanel extends TGameGUIBasicStationmapPanel
 		local boxAreaH:int = 0
 		local showDetails:int = False
 		if selectedStation then showDetails = True
-		if TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_STATION then showDetails = True
-		if TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_BUY_STATION then showDetails = True
+		if TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_CABLE_NETWORK then showDetails = True
+		if TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_BUY_CABLE_NETWORK then showDetails = True
 
 		'update information
 		detailsBackgroundH = actionButton.GetScreenHeight() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2)
@@ -693,7 +636,7 @@ Type TGameGUICableNetworkPanel extends TGameGUIBasicStationmapPanel
 			local selectedStation:TStationBase = TScreenHandler_StationMap.selectedStation
 
 			Select TScreenHandler_StationMap.actionMode
-				case TScreenHandler_StationMap.MODE_SELL_STATION
+				case TScreenHandler_StationMap.MODE_SELL_CABLE_NETWORK
 					if selectedStation
 						headerText = selectedStation.GetLongName()
 						subHeaderText = GetWorldTime().GetFormattedGameDate(selectedStation.built)
@@ -707,12 +650,12 @@ Type TGameGUICableNetworkPanel extends TGameGUIBasicStationmapPanel
 						endif
 					endif
 
-				case TScreenHandler_StationMap.MODE_BUY_STATION
+				case TScreenHandler_StationMap.MODE_BUY_CABLE_NETWORK
 					headerText = GetLocale( localeKey_NewItem )
 
 					'=== BOXES ===
 					if selectedStation
-						subHeaderText = GetLocale("MAP_COUNTRY_"+selectedStation.getFederalState())
+						subHeaderText = GetLocale("MAP_COUNTRY_"+selectedStation.GetSectionName())
 
 						'stationName = Koordinaten?
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
@@ -741,18 +684,22 @@ Type TGameGUICableNetworkPanel extends TGameGUIBasicStationmapPanel
 			local halfW:int = (contentW - 10)/2 - 2
 			'=== BOX LINE 1 ===
 			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, reach, "audience", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
-			if TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_BUY_STATION
+			if TScreenHandler_StationMap.actionMode = GetBuyActionMode()
 				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			else
 				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, "-"+reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
 			endif
+			tooltips[0].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
+			tooltips[1].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
 
 			'=== BOX LINE 2 (optional) ===
-			if TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_BUY_STATION
+			tooltips[2].parentArea.SetXY(-1000,0)
+			if TScreenHandler_StationMap.actionMode = GetBuyActionMode()
 				'TODO: individual build time for stations ("GetStationConstructionTime()")?
 				if GameRules.stationConstructionTime > 0
 					currentY :+ boxH
 					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, GameRules.stationConstructionTime + "h", "runningTime", "neutral", skin.fontNormal)
+					tooltips[2].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 				endif
 			endif
 
@@ -770,6 +717,8 @@ Type TGameGUICableNetworkPanel extends TGameGUIBasicStationmapPanel
 					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
 				endif
 			endif
+			tooltips[3].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
+			tooltips[4].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
 
 			currentY :+ boxH
 		endif
@@ -783,38 +732,515 @@ End Type
 
 
 
+Type TGameGUISatellitePanel extends TGameGUIBasicStationmapPanel
+	Field selectedStation:TStationBase
+
+
+	Method Create:TGameGUISatellitePanel(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
+		Super.Create(pos, dimension, value, State)
+
+		localeKey_NewItem = "NEW_SATELLITE_UPLINK"
+		localeKey_BuyItem = "BUY_SATELLITE_UPLINK"
+		localeKey_SellItem = "SELL_SATELLITE_UPLINK"
+
+
+		'=== register custom event listeners
+		'localize the button
+		'we have to refresh the gui station list as soon as we remove or add a station
+'		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.removeStation", OnChangeStationMapStation ) ]
+'		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.addStation", OnChangeStationMapStation ) ]
+
+		return self
+	End Method
+
+
+	'override
+	Method GetBuyActionMode:int()
+		return TScreenHandler_StationMap.MODE_BUY_SATELLITE
+	End Method
+
+
+	'override
+	Method GetSellActionMode:int()
+		return TScreenHandler_StationMap.MODE_SELL_SATELLITE
+	End Method
+
+
+
+	'rebuild the stationList - eg. when changed the room (other office)
+	Method RefreshList(playerID:int=-1)
+		Super.RefreshList(playerID)
+
+		If playerID <= 0 Then playerID = GetPlayerBase().playerID
+
+		local listContentWidth:int = list.GetContentScreenWidth()
+		For Local station:TStationSatelliteLink = EachIn GetStationMap(playerID).Stations
+			local item:TGUISelectListItem = new TGUISelectListItem.Create(new TVec2D, new TVec2D.Init(listContentWidth,20), station.GetLongName())
+			'fill complete width
+			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
+			'link the station to the item
+			item.data.Add("station", station)
+			item._customDrawContent = TScreenHandler_StationMap.DrawMapStationListEntryContent
+			list.AddItem( item )
+		Next
+	End Method
+
+
+	Method GetHeaderValue:string()
+		return GetLocale( "SATELLITE_UPLINKS" ) + ": " + GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetStationCount(TVTStationType.SATELLITE)
+	End Method
+
+
+	Method DrawBodyContent(contentX:int,contentY:int,contentW:int,currentY:int)
+		local skin:TDatasheetSkin = GetSkin()
+		if not skin then return
+		
+		local boxH:int = skin.GetBoxSize(100, -1, "").GetY()
+		local boxAreaH:int = 0
+		local showDetails:int = False
+		if selectedStation then showDetails = True
+		if TScreenHandler_StationMap.actionMode = GetSellActionMode() then showDetails = True
+		if TScreenHandler_StationMap.actionMode = GetBuyActionMode() then showDetails = True
+
+		'update information
+		detailsBackgroundH = actionButton.GetScreenHeight() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2)
+		listBackgroundH = GetBodyHeight() - detailsBackgroundH
+		
+		skin.RenderContent(contentX, currentY, contentW, listBackgroundH, "2")
+		skin.RenderContent(contentX, currentY + listBackgroundH, contentW, detailsBackgroundH, "1_top")
+
+
+		'=== LIST ===
+		currentY :+ listBackgroundH
+	
+
+		'=== BOXES ===
+		if TScreenHandler_StationMap.actionMode <> TScreenHandler_StationMap.MODE_NONE
+			local price:string = "", reach:string = "", reachChange:string = "", runningCost:string =""
+			local headerText:string
+			local subHeaderText:string
+			local canAfford:int = True
+			local selectedStation:TStationBase = TScreenHandler_StationMap.selectedStation
+
+			Select TScreenHandler_StationMap.actionMode
+				case TScreenHandler_StationMap.MODE_SELL_SATELLITE
+					if selectedStation
+						headerText = selectedStation.GetLongName()
+						subHeaderText = GetWorldTime().GetFormattedGameDate(selectedStation.built)
+						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
+						reachChange = MathHelper.DottedValue(selectedStation.GetReachDecrease())
+						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
+						if selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
+							runningCost = "-/-"
+						else
+							runningCost = TFunctions.convertValue(selectedStation.GetRunningCosts(), 2, 0)
+						endif
+					endif
+
+				case TScreenHandler_StationMap.MODE_BUY_SATELLITE
+					headerText = GetLocale( localeKey_NewItem )
+
+					'=== BOXES ===
+					if selectedStation
+						subHeaderText = selectedStation.GetName()
+
+						'stationName = Koordinaten?
+						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
+						reachChange = MathHelper.DottedValue(selectedStation.GetReachIncrease())
+						price = TFunctions.convertValue(selectedStation.getPrice(), 2, 0)
+						if selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
+							runningCost = "-/-"
+						else
+							runningCost = TFunctions.convertValue(selectedStation.GetRunningCosts(), 2, 0)
+						endif
+
+						local finance:TPlayerFinance = GetPlayerFinance(TScreenHandler_StationMap.currentSubRoom.owner)
+						canAfford = (not finance or finance.canAfford(selectedStation.GetPrice()))
+					endif
+			End Select
+
+
+			currentY :+ 2
+			skin.fontNormal.drawBlock("|b|"+headerText+"|/b|", contentX + 5, currentY, contentW - 10,  16, ALIGN_CENTER_CENTER, headerColor, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+			'currentY :+ skin.fontNormal._fSize
+			currentY :+ 14
+			skin.fontNormal.drawBlock(subHeaderText, contentX + 5, currentY, contentW - 10,  16, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+			currentY :+ 15 + 3
+
+
+			local halfW:int = (contentW - 10)/2 - 2
+			'=== BOX LINE 1 ===
+			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, reach, "audience", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			if TScreenHandler_StationMap.actionMode = GetBuyActionMode()
+				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			else
+				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, "-"+reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
+			endif
+			tooltips[0].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
+			tooltips[1].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
+
+			'=== BOX LINE 2 (optional) ===
+			tooltips[2].parentArea.SetXY(-1000,0)
+			if TScreenHandler_StationMap.actionMode = GetBuyActionMode()
+				'TODO: individual build time for stations ("GetStationConstructionTime()")?
+				if GameRules.stationConstructionTime > 0
+					currentY :+ boxH
+					skin.RenderBox(contentX + 5, currentY, halfW-5, -1, GameRules.stationConstructionTime + "h", "runningTime", "neutral", skin.fontNormal)
+					tooltips[2].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
+				endif
+			endif
+
+			'=== BOX LINE 3 ===
+			currentY :+ boxH
+			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			if TScreenHandler_StationMap.actionMode = GetSellActionMode()
+				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+			else
+				'fetch financial state of room owner (not player - so take care
+				'if the player is allowed to do this)
+				if canAfford
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+				else
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
+				endif
+			endif
+			tooltips[3].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
+			tooltips[4].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
+
+			currentY :+ boxH
+		endif
+
+		'=== BUTTONS ===
+		'actionButton.rect.position.SetXY(contentX + 5, currentY + 3)
+		'cancelButton.rect.position.SetXY(contentX + 5 + 150, currentY + 3)
+	End Method
+End Type
+
+
+
+
+Type TSatelliteSelectionFrame
+	Field area:TRectangle
+	Field contentArea:TRectangle
+	Field headerHeight:int
+	Field listHeight:int
+	Field selectedSatellite:TStationMap_Satellite
+	Field satelliteList:TGUISelectList
+	Field tooltips:TTooltipBase[]
+	Field _open:int = True
+
+	Field _eventListeners:TLink[]
+
+
+	Method New()
+		satelliteList = new TGUISelectList.Create(new TVec2D.Init(610,133), new TVec2D.Init(178, 100), "STATIONMAP")
+		'scroll by one entry at a time
+		satelliteList.scrollItemHeightPercentage = 1.0
+		satelliteList.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
+
+		'panel handles them (similar to a child - but with manual draw/update calls)
+		'satelliteList.SetParent(self)
+		GuiManager.Remove(satelliteList)
+
+
+		tooltips = New TTooltipBase[2]
+		For local i:int = 0 until tooltips.length
+			tooltips[i] = new TGUITooltipBase.Initialize("", "", new TRectangle.Init(0,0,-1,-1))
+			tooltips[i].parentArea = new TRectangle
+			tooltips[i].SetOrientationPreset("TOP")
+			tooltips[i].offset = new TVec2D.Init(0,+5)
+			tooltips[i].SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
+			'standard icons should need a bit longer for tooltips to show up
+			tooltips[i].dwellTime = 500
+		Next
+
+		'fill with content
+		RefreshSatellitesList()
+
+
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+
+		'=== register event listeners
+		'we have to refresh the gui station list as soon as we remove or add a station
+		_eventListeners :+ [ EventManager.registerListenerMethod( "stationmapcollection.removeSatellite", self, "OnChangeSatellites" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "stationmapcollection.addSatellite", self, "OnChangeSatellites" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "GUISelectList.onSelectEntry", self, "OnSelectEntryList", satelliteList ) ]
+
+'		return self
+	End Method
+
+	
+	Method SetLanguage()
+		local strings:string[] = [GetLocale("REACH"), GetLocale("Increase"), GetLocale("CONSTRUCTION_TIME"), GetLocale("RUNNING_COSTS"), GetLocale("PRICE")]
+		strings = strings[.. tooltips.length]
+
+		For local i:int = 0 until tooltips.length
+			if tooltips[i] then tooltips[i].SetContent(strings[i])
+		Next
+	End Method
+
+
+	Method OnChangeSatellites:int(triggerEvent:TEventBase)
+		RefreshSatellitesList()
+	End Method
+
+
+	'an entry was selected - make the linked station the currently selected station
+	Method OnSelectEntryList:int(triggerEvent:TEventBase)
+		Local senderList:TGUISelectList = TGUISelectList(triggerEvent._sender)
+		If not senderList then return False
+		If senderList <> satelliteList then return False
+		If not GetPlayerBaseCollection().IsPlayer(TScreenHandler_StationMap.currentSubRoom.owner) then return False
+
+		'set the linked satellite as the selected one
+		local item:TGUISelectListItem = TGUISelectListItem(senderList.getSelectedEntry())
+		if item
+			selectedSatellite = TStationMap_Satellite(item.data.get("satellite"))
+		endif
+	End Method
+
+
+	Method SelectSatellite:int(satellite:TStationMap_Satellite)
+		selectedSatellite = satellite
+		if not selectedSatellite
+			satelliteList.DeselectEntry()
+
+			return True
+		else
+			For local i:TGUIListItem = EachIn satelliteList.entries
+				local itemSatellite:TStationMap_Satellite = TStationMap_Satellite(i.data.get("satellite"))
+				if itemSatellite = satellite
+					satelliteList.SelectEntry(i)
+
+					return True
+				endif
+			Next
+		endif
+
+		return False
+	End Method
+
+
+	Method IsOpen:int()
+		return _open
+	End Method
+
+
+	Method Close:int()
+		SelectSatellite(null)
+		
+		_open = False
+		return True
+	End Method
+
+
+	Method Open:int()
+		_open = True
+		return True
+	End Method
+
+
+	Method RefreshSatellitesList:int()
+		satelliteList.EmptyList()
+		'remove potential highlighted item
+		satelliteList.deselectEntry()
+
+		'keep them sorted the way we added the stations
+		satelliteList.setListOption(GUILIST_AUTOSORT_ITEMS, False)
+
+
+		local listContentWidth:int = satelliteList.GetContentScreenWidth()
+
+		For Local satellite:TStationMap_Satellite = EachIn GetStationMapCollection().satellites
+			if not satellite.IsLaunched() then continue
+			
+			local item:TGUISelectListItem = new TGUISelectListItem.Create(new TVec2D, new TVec2D.Init(listContentWidth,20), satellite.name)
+
+			'fill complete width
+			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
+
+			'link the station to the item
+			item.data.Add("satellite", satellite)
+			'item._customDrawContent = TScreenHandler_StationMap.DrawMapStationListEntryContent
+			satelliteList.AddItem( item )
+		Next
+
+		return True
+	End Method
+
+	
+	Method Update:int()
+		if contentArea
+			if satelliteList.rect.GetX() <> contentArea.GetX()
+				satelliteList.SetPosition(contentArea.GetX(), contentArea.GetY() + 16)
+			endif
+			if satelliteList.GetWidth() <> contentArea.GetW()
+				satelliteList.Resize(contentArea.GetW())
+			endif
+		endif
+
+	
+		satelliteList.update()
+	End Method
+
+
+	Method Draw:int()
+		local skin:TDatasheetSkin = GetDatasheetSkin("stationMapPanel")
+		if not skin then return False
+
+		local owner:int = GetPlayer().playerID
+		if TScreenHandler_StationMap.currentSubRoom then owner = TScreenHandler_StationMap.currentSubRoom.owner
+
+		if not area then area = new TRectangle.Init(408, 90, 190, 200)
+		if not contentArea then contentArea = new TRectangle
+
+		local detailsH:int = 90 * (selectedSatellite<>null)
+		'local boxH:int = skin.GetBoxSize(100, -1, "").GetY()
+		contentArea.SetW( skin.GetContentW( area.GetW() ) )
+		contentArea.SetX( area.GetX() + skin.GetContentX() )
+		contentarea.SetY( area.GetY() + skin.GetContentY() )
+		contentArea.SetH( area.GetH() - (skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()) )
+
+		headerHeight = 16
+		listHeight = contentArea.GetH() - headerHeight - detailsH
+
+		'resize list if needed
+		if listHeight <> satelliteList.GetHeight()
+			satelliteList.Resize(-1, listHeight)
+		endif
+
+
+		local currentY:int = contentArea.GetY()
+
+
+		local headerText:string = GetLocale("SATELLITES")
+		local titleColor:TColor = new TColor.Create(75,75,75)
+		local subTitleColor:TColor = new TColor.Create(115,115,115)
+
+
+
+		'=== HEADER ===
+		skin.RenderContent(contentArea.GetX(), contentArea.GetY(), contentArea.GetW(), headerHeight, "1_top")
+		skin.fontNormal.drawBlock("|b|"+headerText+"|/b|", contentArea.GetX() + 5, currentY, contentArea.GetW() - 10,  headerHeight, ALIGN_CENTER_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+		currentY :+ headerHeight
+
+		'=== LIST ===
+		skin.RenderContent(contentArea.GetX(), currentY, contentArea.GetW(), listHeight, "2")
+		satelliteList.Draw()
+		currentY :+ listHeight
+
+
+		'=== SATELLITE DETAILS ===
+		if selectedSatellite
+			local titleText:string = selectedSatellite.name
+			local subtitleText:string = GetLocale("NOT_LAUNCHED_YET")
+			if selectedSatellite.IsLaunched()
+				subtitleText = GetLocale("LAUNCHED")+": " + GetWorldTime().GetFormattedDate(selectedSatellite.launchTime, GameConfig.dateFormat)
+			endif
+
+			skin.RenderContent(contentArea.GetX(), currentY, contentArea.GetW(), detailsH, "1_top")
+			currentY :+ 2
+			skin.fontNormal.drawBlock("|b|"+titleText+"|/b|", contentArea.GetX() + 5, currentY, contentArea.GetW() - 10,  16, ALIGN_CENTER_CENTER, titleColor, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+			currentY :+ 14
+			skin.fontNormal.drawBlock(subTitleText, contentArea.GetX() + 5, currentY, contentArea.GetW() - 10,  16, ALIGN_CENTER_CENTER, subTitleColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+			currentY :+ 15 + 3
+
+
+			local halfW:int = (contentArea.GetW() - 10)/2 - 2
+			'=== BOX LINE 1 ===
+			local qualityText:string = "-/-"
+			if selectedSatellite.quality <> 100
+				qualityText = MathHelper.NumberToString((selectedSatellite.quality-100), 0, True)+"%"
+			endif
+			local marketShareText:string = MathHelper.NumberToString(100*selectedSatellite.populationShare, 1, True)+"%"
+
+			if selectedSatellite.quality < 100
+				skin.RenderBox(contentArea.GetX() + 5, currentY, halfW-5, -1, qualityText, "quality", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
+			else
+				skin.RenderBox(contentArea.GetX() + 5, currentY, halfW-5, -1, qualityText, "quality", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			endif
+			skin.RenderBox(contentArea.GetX() + 5 + halfW-5 + 4, currentY, halfW+5, -1, marketShareText, "marketShare", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			'tooltips[0].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
+			'tooltips[1].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
+
+			local boxH:int = skin.GetBoxSize(100, -1, "").GetY()
+
+			currentY :+ boxH
+			local minImageText:string = MathHelper.NumberToString(100*selectedSatellite.minImage, 1, True)+"%"
+
+			if not GetPublicImage(owner) or GetPublicImage(owner).GetAverageImage() < selectedSatellite.minImage
+				skin.RenderBox(contentArea.GetX() + 5, currentY, halfW-5, -1, minImageText, "image", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
+			else
+				skin.RenderBox(contentArea.GetX() + 5, currentY, halfW-5, -1, minImageText, "image", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			endif
+
+
+			local channelX:int = contentArea.GetX() + 5 + halfW-5 + 4
+			skin.RenderBox(channelX, currentY, halfW+5, -1, "", "audience", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			channelX :+ 27
+
+			local oldColor:TColor = new TColor.Get()
+			For local i:int = 1 to 4
+				SetColor 50,50,50
+				SetAlpha oldcolor.a * 0.4
+				DrawRect(channelX, currentY + 6, 11,11)
+				if selectedSatellite.IsSubscribedChannel(i)
+					GetPlayerBase(i).color.SetRGB()
+					SetAlpha oldColor.a
+				else
+					SetColor 255,255,255
+					SetAlpha oldColor.a *0.5
+				endif
+				DrawRect(channelX+1, currentY + 7, 9,9)
+				'GetSpriteFromRegistry("gfx_gui_button.datasheet").DrawArea(channelX, currentY + 4, 14, 14)
+				channelX :+ 13
+			Next
+			oldColor.SetRGBA()
+
+		endif
+
+
+		skin.RenderBorder(area.GetX(), area.GetY(), area.GetW(), area.GetH())
+
+		'debug
+		rem
+		DrawRect(contentArea.GetX(), contentArea.GetY(), 20, contentArea.GetH() )
+		Setcolor 255,0,0
+		DrawRect(contentArea.GetX() + 10, contentArea.GetY(), 20, headerHeight )
+		Setcolor 255,255,0
+		DrawRect(contentArea.GetX() + 20, contentArea.GetY() + headerHeight, 20, listHeight )
+		Setcolor 255,0,255
+		DrawRect(contentArea.GetX() + 30, contentArea.GetY() + headerHeight + listHeight, 20, detailsH )
+		endrem
+	End Method
+End Type
+
+
+
 Type TScreenHandler_StationMap
 	global guiAccordeon:TGUIAccordeon
+	global satelliteSelectionFrame:TSatelliteSelectionFrame
 
-
-	global guiAntennaList:TGUISelectList
-	global guiAntennaActionButton:TGUIButton
-	global guiAntennaCancelButton:TGUIButton
-
-	global guiCableNetworkList:TGUISelectList
-	global guiCableNetworkActionButton:TGUIButton
-	global guiCableNetworkCancelButton:TGUIButton
-
-	global guiSatelliteList:TGUISelectList
-
-	'global selectedProduct:int = PRODUCT_CABLE_NETWORK
-	global selectedProduct:int = PRODUCT_STATION
 	global actionMode:int = 0
 	global actionConfirmed:int = FALSE
 
 	global selectedStation:TStationBase
 	global mouseoverStation:TStationBase
+	global mouseoverStationPosition:TVec2D
 
 
-	global mapSelectedCableNetwork:TStationCableNetwork
-	global mapMouseoverCableNetwork:TStationCableNetwork
-
-	global guiShowStations:TGUITintedCheckBox[4]
+	global guiShowStations:TGUICheckBox[4]
+	global guiFilterButtons:TGUICheckBox[3]
 	global guiInfoButton:TGUIButton
 	global mapBackgroundSpriteName:String = ""
 
+
 	global currentSubRoom:TRoomBase = null
 	global lastSubRoom:TRoomBase = null
+
+	global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 
 	Global _eventListeners:TLink[]
 
@@ -853,66 +1279,68 @@ Type TScreenHandler_StationMap
 		endif
 		
 		'=== create gui elements if not done yet
-		if not guiAntennaActionButton
-			guiAccordeon = New TGameGUIAccordeon.Create(new TVec2D.Init(380, 70), new TVec2D.Init(211, 275), "", "STATIONMAP")
+		if not guiInfoButton
+			guiAccordeon = New TGameGUIAccordeon.Create(new TVec2D.Init(586, 70), new TVec2D.Init(211, 275), "", "STATIONMAP")
+			TGameGUIAccordeon(guiAccordeon).skinName = "stationmapPanel"
 
 			local p:TGUIAccordeonPanel
 			p = New TGameGUIAntennaPanel.Create(new TVec2D.Init(-1, -1), new TVec2D.Init(-1, -1), "Stations", "STATIONMAP")
 			p.Open()
 			guiAccordeon.AddPanel(p, 0)
-			p = New TGameGUIAntennaPanel.Create(new TVec2D.Init(-1, -1), new TVec2D.Init(-1, -1), "Cable Networks", "STATIONMAP")
+			p = New TGameGUICableNetworkPanel.Create(new TVec2D.Init(-1, -1), new TVec2D.Init(-1, -1), "Cable Networks", "STATIONMAP")
 			guiAccordeon.AddPanel(p, 1)
-			p = New TGameGUIAntennaPanel.Create(new TVec2D.Init(-1, -1), new TVec2D.Init(-1, -1), "Satellites", "STATIONMAP")
+			p = New TGameGUISatellitePanel.Create(new TVec2D.Init(-1, -1), new TVec2D.Init(-1, -1), "Satellites", "STATIONMAP")
 			guiAccordeon.AddPanel(p, 2)
-
-		
-			'position gets recalculated during drawing (so it can move with the panel)
-
-			'== antennas subpanel
-			guiAntennaActionButton = new TGUIButton.Create(new TVec2D.Init(610, 275), new TVec2D.Init(140, 28), "", "STATIONMAP")
-			guiAntennaActionButton.spriteName = "gfx_gui_button.datasheet"
-
-			guiAntennaCancelButton = new TGUIButton.Create(new TVec2D.Init(610, 245), new TVec2D.Init(30, 28), "X", "STATIONMAP")
-			guiAntennaCancelButton.caption.color = TColor.clRed.copy()
-			guiAntennaCancelButton.spriteName = "gfx_gui_button.datasheet"
-
-			guiAntennaList = new TGUISelectList.Create(new TVec2D.Init(610,133), new TVec2D.Init(178, 100), "STATIONMAP")
-			'scroll by one entry at a time
-			guiAntennaList.scrollItemHeightPercentage = 1.0
-			guiAntennaList.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
-
-
-			'== cable networks subpanel
-			guiCableNetworkActionButton = new TGUIButton.Create(new TVec2D.Init(610, 275), new TVec2D.Init(140, 28), "", "STATIONMAP")
-			guiCableNetworkActionButton.spriteName = "gfx_gui_button.datasheet"
-
-			guiCableNetworkCancelButton = new TGUIButton.Create(new TVec2D.Init(610, 245), new TVec2D.Init(30, 28), "X", "STATIONMAP")
-			guiCableNetworkCancelButton.caption.color = TColor.clRed.copy()
-			guiCableNetworkCancelButton.spriteName = "gfx_gui_button.datasheet"
-
-			guiCableNetworkList = new TGUISelectList.Create(new TVec2D.Init(610,133), new TVec2D.Init(178, 100), "STATIONMAP")
-			'scroll by one entry at a time
-			guiCableNetworkList.scrollItemHeightPercentage = 1.0
-			guiCableNetworkList.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
 
 
 			'== info panel
-			guiInfoButton = new TGUIButton.Create(new TVec2D.Init(610, 215), new TVec2D.Init(70, 28), "", "STATIONMAP")
+			guiInfoButton = new TGUIButton.Create(new TVec2D.Init(610, 215), new TVec2D.Init(20, 28), "", "STATIONMAP")
 			guiInfoButton.spriteName = "gfx_gui_button.datasheet"
+			guiInfoButton.SetTooltip( new TGUITooltipBase.Initialize(GetLocale("SHOW_MAP_DETAILS"), GetLocale("CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION"), new TRectangle.Init(0,0,-1,-1)) )
+			guiInfoButton.GetTooltip()._minContentDim = new TVec2D.Init(120,-1)
+			guiInfoButton.GetTooltip()._maxContentDim = new TVec2D.Init(150,-1)
+			guiInfoButton.GetTooltip().SetOrientationPreset("BOTTOM", 10)
+
+			For Local i:Int = 0 until guiFilterButtons.length
+				guiFilterButtons[i] = new TGUICheckBox.Create(new TVec2D.Init(695 + i*23, 30 ), new TVec2D.Init(20, 20), String(i + 1), "STATIONMAP")
+				guiFilterButtons[i].ShowCaption(False)
+				guiFilterButtons[i].data.AddNumber("stationType", i+1)
+				'guiFilterButtons[i].SetUnCheckedTintColor( TColor.Create(255,255,255) )
+				guiFilterButtons[i].SetUnCheckedTintColor( TColor.Create(210,210,210, 0.75) )
+				guiFilterButtons[i].SetCheckedTintColor( TColor.Create(245,255,240) )
+
+				guiFilterButtons[i].uncheckedSpriteName = "gfx_datasheet_icon_" + TVTStationType.GetAsString(i+1) + ".off"
+				guiFilterButtons[i].checkedSpriteName = "gfx_datasheet_icon_" + TVTStationType.GetAsString(i+1) + ".on"
+
+				guiFilterbuttons[i].SetTooltip( new TGUITooltipBase.Initialize("", GetLocale("TOGGLE_DISPLAY_OF_STATIONTYPE").Replace("%STATIONTYPE%", "|b|"+GetLocale(TVTStationType.GetAsString(i+1)+"S")+"|/b|"), new TRectangle.Init(0,60,-1,-1)) )
+				guiFilterbuttons[i].GetTooltip()._minContentDim = new TVec2D.Init(80,-1)
+				guiFilterbuttons[i].GetTooltip()._maxContentDim = new TVec2D.Init(120,-1)
+				guiFilterbuttons[i].GetTooltip().SetOrientationPreset("BOTTOM", 10)
+			Next
+
 
 			For Local i:Int = 0 To 3
-				guiShowStations[i] = new TGUITintedCheckBox.Create(new TVec2D.Init(680 + i*25, 30 ), new TVec2D.Init(20, 20), String(i + 1), "STATIONMAP")
+				guiShowStations[i] = new TGUICheckBox.Create(new TVec2D.Init(695 + i*23, 30 ), new TVec2D.Init(20, 20), String(i + 1), "STATIONMAP")
 				guiShowStations[i].ShowCaption(False)
 				guiShowStations[i].data.AddNumber("playerNumber", i+1)
+
+				guiShowStations[i].SetTooltip( new TGUITooltipBase.Initialize("", GetLocale("TOGGLE_DISPLAY_OF_PLAYER_X").Replace("%X%", i+1), new TRectangle.Init(0,60,-1,-1)) )
+				guiShowStations[i].GetTooltip()._minContentDim = new TVec2D.Init(80,-1)
+				guiShowStations[i].GetTooltip()._maxContentDim = new TVec2D.Init(120,-1)
+				guiShowStations[i].GetTooltip().SetOrientationPreset("BOTTOM", 10)
 			Next
 		endif
 
 
+		satelliteSelectionFrame = new TSatelliteSelectionFrame
+
+
 		'=== reset gui element options to their defaults
-		guiAntennaActionButton.disable()
-		guiCableNetworkActionButton.disable()
-		For Local i:Int = 0 To 3
-			guiShowStations[i].SetChecked(True, False)
+		For Local i:Int = 0 until guiShowStations.length
+			guiShowStations[i].SetChecked( True, False)
+		Next
+		For Local i:Int = 0 until guiFilterButtons.length
+			guiFilterButtons[i].SetChecked( True, False)
 		Next
 
 
@@ -922,23 +1350,22 @@ Type TScreenHandler_StationMap
 
 
 		'=== register event listeners
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onClick", OnClick_ActionButton, guiAntennaActionButton ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onClick", OnClick_ActionCancel, guiAntennaCancelButton ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_ActionButton, guiAntennaActionButton ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onClick", OnClick_ActionButton, guiCableNetworkActionButton ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onClick", OnClick_ActionCancel, guiCableNetworkCancelButton ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_ActionButton, guiCableNetworkActionButton ) ]
+		'unset "selected station" when other panels get opened 
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiaccordeon.onOpenPanel", OnOpenOrCloseAccordeonPanel, guiAccordeon ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiaccordeon.onClosePanel", OnOpenOrCloseAccordeonPanel, guiAccordeon ) ]
 
 		'we have to refresh the gui station list as soon as we remove or add a station
 		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.removeStation", OnChangeStationMapStation ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.addStation", OnChangeStationMapStation ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "GUISelectList.onSelectEntry", OnSelectEntry_StationList, guiAntennaList ) ]
 		'player enters station map screen - set checkboxes according to station map config
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterStationMapScreen, screen ) ]
 
-		For Local i:Int = 0 To 3
-			'register checkbox changes
+		'register checkbox changes
+		For Local i:Int = 0 until guiShowStations.length
 			_eventListeners :+ [ EventManager.registerListenerFunction("guiCheckBox.onSetChecked", OnSetChecked_StationMapFilters, guiShowStations[i]) ]
+		Next
+		For Local i:Int = 0 until guiFilterButtons.length
+			_eventListeners :+ [ EventManager.registerListenerFunction("guiCheckBox.onSetChecked", OnSetChecked_StationMapFilters, guiFilterButtons[i]) ]
 		Next
 
 		'to update/draw the screen
@@ -950,12 +1377,24 @@ Type TScreenHandler_StationMap
 
 
 	Function SetLanguage()
-		if not guiAntennaActionButton then return
+		if not guiInfoButton then return
 		
-		guiAntennaActionButton.SetCaption(GetLocale("BUY_STATION"))
-		guiCableNetworkActionButton.SetCaption(GetLocale("BUY_CABLE_NETWORK"))
-	
-		guiInfoButton.SetCaption(GetLocale("DETAILS"))
+		guiInfoButton.SetCaption("?")
+
+		guiInfoButton.GetTooltip().SetTitle( GetLocale("SHOW_MAP_DETAILS") )
+		guiInfoButton.GetTooltip().SetContent( GetLocale("CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION") )
+
+		For Local i:Int = 0 until guiFilterButtons.length
+			guiFilterbuttons[i].GetTooltip().SetContent( GetLocale("TOGGLE_DISPLAY_OF_STATIONTYPE").Replace("%STATIONTYPE%", "|b|"+GetLocale(TVTStationType.GetAsString(i+1)+"S")+"|/b|") )
+		Next
+		
+		For Local i:Int = 0 To 3
+			guiShowStations[i].GetTooltip().SetContent( GetLocale("TOGGLE_DISPLAY_OF_PLAYER_X").Replace("%X%", i+1) )
+		Next
+
+		For local p:TGameGUIBasicStationmapPanel = EachIn guiAccordeon.panels
+			p.SetLanguage()
+		Next
 	End Function
 
 
@@ -986,7 +1425,7 @@ Type TScreenHandler_StationMap
 		local skin:TDatasheetSkin = GetDatasheetSkin("stationmapPanel")
 
 		local contentW:int = skin.GetContentW(sheetWidth)
-		local contentX:int = x + skin.GetContentY()
+		local contentX:int = x + skin.GetContentX()
 		local contentY:int = y + skin.GetContentY()
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
@@ -1011,11 +1450,19 @@ Type TScreenHandler_StationMap
 		'=== BUTTON ===
 		'move buy button accordingly
 		contentY :+ buttonAreaPaddingY
-		guiInfoButton.rect.dimension.SetX(70)
+		local buttonX:int = contentX + 5
+		guiInfoButton.rect.dimension.SetX(25)
 		guiInfoButton.rect.position.SetXY(contentX + 5, contentY)
-		for local i:int = 0 to 3
-			guiShowStations[i].rect.position.SetXY(contentX + 5 + 70+15 + 23*i, contentY + ((guiInfoButton.rect.GetH() - guiShowStations[i].rect.GetH())/2) )
-		Next
+		buttonX :+ guiInfoButton.rect.GetW() + 6
+
+		for local i:int = 0 until guiFilterButtons.length
+			guiFilterButtons[i].rect.position.SetXY(buttonX, contentY + ((guiInfoButton.rect.GetH() - guiFilterButtons[i].rect.GetH())/2) )
+			buttonX :+ guiFilterButtons[i].rect.GetW()
+		next
+		
+		for local i:int = 0 until guiShowStations.length
+			guiShowStations[i].rect.position.SetXY(contentX + 8 + 50+15+30 + 21*i, contentY + ((guiInfoButton.rect.GetH() - guiShowStations[i].rect.GetH())/2) )
+		next
 		contentY :+ buttonAreaPaddingY
 
 
@@ -1023,345 +1470,7 @@ Type TScreenHandler_StationMap
 		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
 	End Function
 
-
-	Function _DrawStationMapPropertyListPanel:Int(x:Int,y:Int, room:TRoomBase)
-		'=== PREPARE VARIABLES ===
-		local sheetHeight:int = 0 'calculated later
-
-		local skin:TDatasheetSkin = GetDatasheetSkin("stationmapPanel")
-
-		local contentW:int = skin.GetContentW(sheetWidth)
-		local contentX:int = x + skin.GetContentY()
-		local contentY:int = y + skin.GetContentY()
-
-
-		'=== CALCULATE SPECIAL AREA HEIGHTS ===
-		local contentH:int = 0
-		local boxH:int = skin.GetBoxSize(100, -1, "").GetY()
-		local boxAreaH:int = 0
-		local buttonAreaH:int = guiInfoButton.rect.GetH() + buttonAreaPaddingY*2
-		local listAreaH:int = 0, bottomAreaH:int = 0
-		local stationDataAreaH:int
-		local stationListAreaH:int
-		local stationNameH:int = 16
-
-		local cableNetworkDataAreaH:int
-		local cableNetworkListAreaH:int
-		local cableNetworkNameH:int = 16
-
-		'local cableListAreaH:int = cableList.rect.GetH() + 6
-
-		contentH:int = 3*subtitleH
-
-
-		if selectedProduct = PRODUCT_STATION
-			stationListAreaH = guiAntennaList.rect.GetH() + 6
-
-			'button plus boxes if searching or trying to sell a station
-			if actionMode <> MODE_NONE
-				stationDataAreaH = boxAreaPaddingY + stationNameH + 2 * boxH + buttonAreaH
-				if actionMode  = MODE_BUY_STATION
-					if GameRules.stationConstructionTime > 0
-						stationDataAreaH :+ 1 * boxH
-					endif
-				endif
-			else
-				stationDataAreaH = buttonAreaH
-			endif
-		endif
-		contentH :+ stationListAreaH + stationDataAreaH
-
-		if selectedProduct = PRODUCT_CABLE_NETWORK
-			cableNetworkListAreaH = guiCableNetworkList.rect.GetH() + 6
-
-			'button plus boxes if searching or trying to sell a station
-			if actionMode <> MODE_NONE
-				cableNetworkDataAreaH = boxAreaPaddingY + cableNetworkNameH + 2 * boxH + buttonAreaH
-				if actionMode  = MODE_BUY_CABLE_NETWORK
-					if GameRules.cableNetworkConstructionTime > 0
-						cableNetworkDataAreaH :+ 1 * boxH
-					endif
-				endif
-			else
-				cableNetworkDataAreaH = buttonAreaH
-			endif
-		endif
-		contentH :+ cableNetworkListAreaH + cableNetworkDataAreaH
-
-		
-
-		'total height
-		sheetHeight = contentH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
-
-
-		'=== RENDER ===
-
-		'=== PANEL: stations ===
-		skin.RenderContent(contentX, contentY, contentW, subTitleH, "1_top")
-		'skin.RenderContent(contentX, contentY, contentW, subTitleH, "1")
-		skin.fontNormal.drawBlock(Chr(9660) + " " +GetLocale("STATIONS")+": "+GetStationMap(room.owner).GetStationCount(), contentX + 5, contentY, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		contentY :+ subTitleH
-
-
-		if selectedProduct = PRODUCT_STATION
-			skin.RenderContent(contentX, contentY, contentW, stationListAreaH, "2")
-			'move list to here...
-			if guiAntennaList.rect.position.GetX() <> contentX + 3
-				guiAntennaList.rect.position.SetXY(contentX + 3, contentY + 3)
-				guiAntennaList.rect.dimension.SetX(contentW - 4)
-			endif
-			contentY :+ stationListAreaH
-
-			'=== PANEL: stations - details ===
-			skin.RenderContent(contentX, contentY, contentW, stationDataAreaH, "1")
-
-			'=== BOXES ===
-			if actionMode <> MODE_NONE
-				local price:string = "", reach:string = "", reachChange:string = "", runningCost:string =""
-				local stationName:string = ""
-				local canAfford:int = True
-
-				Select actionMode
-					case MODE_SELL_STATION
-						if selectedStation
-							stationName = selectedStation.GetLongName()
-							reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
-							reachChange = MathHelper.DottedValue(selectedStation.GetReachDecrease())
-							price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
-							if selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
-								runningCost = "-/-"
-							else
-								runningCost = TFunctions.convertValue(selectedStation.GetRunningCosts(), 2, 0)
-							endif
-						endif
-
-					case MODE_BUY_STATION
-						stationName = GetLocale("NEW_STATION")
-
-						'=== BOXES ===
-						if selectedStation
-							'stationName = Koordinaten?
-							reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
-							reachChange = MathHelper.DottedValue(selectedStation.GetReachIncrease())
-							price = TFunctions.convertValue(selectedStation.getPrice(), 2, 0)
-							if selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
-								runningCost = "-/-"
-							else
-								runningCost = TFunctions.convertValue(selectedStation.GetRunningCosts(), 2, 0)
-							endif
-
-							local finance:TPlayerFinance = GetPlayerFinance(room.owner)
-							canAfford = (not finance or finance.canAfford(selectedStation.GetPrice()))
-						endif
-				End Select
-
-				contentY :+ boxAreaPaddingY
-				skin.fontNormal.drawBlock(stationName, contentX + 5, contentY, contentW - 10, stationNameH, ALIGN_CENTER_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-				contentY :+ stationNameH
-
-
-				local halfW:int = (contentW - 10)/2 - 2
-				'=== BOX LINE 1 ===
-				skin.RenderBox(contentX + 5, contentY, halfW-5, -1, reach, "audience", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
-				if actionMode = MODE_BUY_STATION
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
-				else
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, "-"+reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
-				endif
-
-				'=== BOX LINE 2 (optional) ===
-				if actionMode = MODE_BUY_STATION
-					'TODO: individual build time for stations ("GetStationConstructionTime()")?
-					if GameRules.stationConstructionTime > 0
-						contentY :+ boxH
-						skin.RenderBox(contentX + 5, contentY, halfW-5, -1, GameRules.stationConstructionTime + "h", "runningTime", "neutral", skin.fontNormal)
-					endif
-				endif
-
-				'=== BOX LINE 3 ===
-				contentY :+ boxH
-				skin.RenderBox(contentX + 5, contentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
-				if actionMode = MODE_SELL_STATION
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
-				else
-					'fetch financial state of room owner (not player - so take care
-					'if the player is allowed to do this)
-					if canAfford
-						skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
-					else
-						skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
-					endif
-				endif
-
-				contentY :+ boxH
-			endif
-
-			'=== BUTTONS ===
-			guiAntennaActionButton.rect.position.SetXY(contentX + 5, contentY + 3)
-			guiAntennaCancelButton.rect.position.SetXY(contentX + 5 + 150, contentY + 3)
-			contentY :+ buttonAreaH
-
-			if actionMode = MODE_NONE
-				guiAntennaCancelButton.Hide()
-				guiAntennaActionButton.Resize(contentW - 10, -1)
-			else
-				guiAntennaActionButton.Resize(150, -1)
-				guiAntennaCancelButton.Show()
-			endif
-
-			guiAntennaList.Show()
-			guiAntennaActionButton.Show()
-		else
-			guiAntennaList.Hide()
-			guiAntennaActionButton.Hide()
-			guiAntennaCancelButton.Hide()
-		endif
-
-
-
-
-		'=== PANEL: cable ===
-		skin.RenderContent(contentX, contentY, contentW, subTitleH, "1")
-		skin.fontNormal.drawBlock(Chr(9654) + " " +GetLocale("CABLE_NETWORK")+": 1/15", contentX + 5, contentY, contentW - 10, subTitleH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		contentY :+ subTitleH
-
-
-		if selectedProduct = PRODUCT_CABLE_NETWORK
-			skin.RenderContent(contentX, contentY, contentW, cableNetworkListAreaH, "2")
-			'move list to here...
-			if guiCableNetworkList.rect.position.GetX() <> contentX + 3
-				guiCableNetworkList.rect.position.SetXY(contentX + 3, contentY + 3)
-				guiCableNetworkList.rect.dimension.SetX(contentW - 4)
-			endif
-			contentY :+ cableNetworkListAreaH
-
-			'=== PANEL: cable network - details ===
-			skin.RenderContent(contentX, contentY, contentW, cableNetworkDataAreaH, "1")
-
-			'=== BOXES ===
-			if actionMode <> MODE_NONE
-				local price:string = "", reach:string = "", reachChange:string = "", runningCost:string =""
-				local cableNetworkName:string = ""
-				local canAfford:int = True
-
-				Select actionMode
-					case MODE_SELL_CABLE_NETWORK
-						if mapSelectedCableNetwork
-							cableNetworkName = mapSelectedCableNetwork.GetLongName()
-							reach = TFunctions.convertValue(mapSelectedCableNetwork.getReach(), 2)
-							reachChange = MathHelper.DottedValue(mapSelectedCableNetwork.getReachDecrease())
-							price = TFunctions.convertValue(mapSelectedCableNetwork.getSellPrice(), 2, 0)
-							if mapSelectedCableNetwork.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
-								runningCost = "-/-"
-							else
-								runningCost = TFunctions.convertValue(mapSelectedCableNetwork.GetRunningCosts(), 2, 0)
-							endif
-						endif
-
-					case MODE_BUY_CABLE_NETWORK
-						cableNetworkName = GetLocale("NEW_CABLE_NETWORK")
-
-						'=== BOXES ===
-						if mapSelectedCableNetwork
-							reach = TFunctions.convertValue(mapSelectedCableNetwork.getReach(), 2)
-							reachChange = MathHelper.DottedValue(mapSelectedCableNetwork.getReachIncrease())
-							price = TFunctions.convertValue(mapSelectedCableNetwork.getPrice(), 2, 0)
-							if mapSelectedCableNetwork.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
-								runningCost = "-/-"
-							else
-								runningCost = TFunctions.convertValue(mapSelectedCableNetwork.GetRunningCosts(), 2, 0)
-							endif
-
-							local finance:TPlayerFinance = GetPlayerFinance(room.owner)
-							canAfford = (not finance or finance.canAfford(mapSelectedCableNetwork.GetPrice()))
-						endif
-				End Select
-
-				contentY :+ boxAreaPaddingY
-				skin.fontNormal.drawBlock(cableNetworkName, contentX + 5, contentY, contentW - 10, cableNetworkNameH, ALIGN_CENTER_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-				contentY :+ cableNetworkNameH
-
-
-				local halfW:int = (contentW - 10)/2 - 2
-				'=== BOX LINE 1 ===
-				skin.RenderBox(contentX + 5, contentY, halfW-5, -1, reach, "audience", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
-				if actionMode = MODE_BUY_CABLE_NETWORK
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
-				else
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, "-"+reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
-				endif
-
-				'=== BOX LINE 2 (optional) ===
-				if actionMode = MODE_BUY_CABLE_NETWORK
-					'TODO: individual build time for networks ("GetConstructionTime()")?
-					if GameRules.cableNetworkConstructionTime > 0
-						contentY :+ boxH
-						skin.RenderBox(contentX + 5, contentY, halfW-5, -1, GameRules.cableNetworkConstructionTime + "h", "runningTime", "neutral", skin.fontNormal)
-					endif
-				endif
-
-				'=== BOX LINE 3 ===
-				contentY :+ boxH
-				skin.RenderBox(contentX + 5, contentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
-				if actionMode = MODE_SELL_CABLE_NETWORK
-					skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
-				else
-					'fetch financial state of room owner (not player - so take care
-					'if the player is allowed to do this)
-					if canAfford
-						skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
-					else
-						skin.RenderBox(contentX + 5 + halfW-5 + 4, contentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
-					endif
-				endif
-
-				contentY :+ boxH
-			endif
-
-			'=== BUTTONS ===
-			guiCableNetworkActionButton.rect.position.SetXY(contentX + 5, contentY + 3)
-			guiCableNetworkCancelButton.rect.position.SetXY(contentX + 5 + 150, contentY + 3)
-			contentY :+ buttonAreaH
-
-			if actionMode = MODE_NONE
-				guiCableNetworkCancelButton.Hide()
-				guiCableNetworkActionButton.Resize(contentW - 10, -1)
-			else
-				guiCableNetworkActionButton.Resize(150, -1)
-				guiCableNetworkCancelButton.Show()
-			endif
-
-			guiCableNetworkActionButton.Show()
-			guiCableNetworkList.Show()
-		else
-			guiCableNetworkList.Hide()
-			guiCableNetworkActionButton.Hide()
-			guiCableNetworkCancelButton.Hide()
-		endif
-
-
-
-
-		'=== PANEL: statellites ===
-		skin.RenderContent(contentX, contentY, contentW, subTitleH, "1")
-		skin.fontNormal.drawBlock(Chr(9654) + " " +GetLocale("SATELLITES")+": 1/15", contentX + 5, contentY, contentW - 10, subTitleH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-		contentY :+ subTitleH
-
-
-
-		
-		'=== BOTTOM AREA ===
-		'TODO
-		'skin.RenderContent(contentX, contentY, contentW, bottomAreaH, "1")
-
-		'=== OVERLAY / BORDER ===
-		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
-	End Function
-
-
 	
-global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
-
  	Function onDrawStationMap:int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
 		local room:TRoomBase = TRoomBase( triggerEvent.GetData().get("room") )
@@ -1374,18 +1483,30 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		'cable network or a satellite
 		if actionMode = MODE_BUY_SATELLITE or actionMode = MODE_BUY_SATELLITE or actionMode = MODE_BUY_CABLE_NETWORK
 			SetAlpha float(0.8 + 0.2 * Sin(Millisecs()/6))
-			DrawImage(GetStationMapCollection().populationImage, 0,0)
+			DrawImage(GetStationMapCollection().populationImageOverlay, 0,0)
 			SetAlpha 1.0
 		endif
 
 		'overlay with alpha channel screen
 		GetSpriteFromRegistry(mapBackgroundSpriteName).Draw(0,0)
 
+
 		_DrawStationMapInfoPanel(586, 5, room)
-		_DrawStationMapPropertyListPanel(586, 70, room)
 
 		'debug draw station map sections
 		'TStationMapSection.DrawAll()
+
+		'backgrounds
+		If mouseoverStation and mouseoverStation = selectedStation
+			'avoid drawing it two times...
+			mouseoverStation.DrawBackground(True, True)
+		Else
+			'also draw the station used for buying/searching
+			If mouseoverStation Then mouseoverStation.DrawBackground(False, True)
+			'also draw the station used for buying/searching
+			If selectedStation Then selectedStation.DrawBackground(True, False)
+		EndIf
+
 		
 		'draw stations and tooltips
 		GetStationMap(room.owner).Draw()
@@ -1399,11 +1520,9 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		GUIManager.Draw( LS_stationmap )
 
 		For Local i:Int = 0 To 3
-			guiShowStations[i].tintColor = GetPlayerBase(i+1).color '.Copy().AdjustBrightness(0.25)
-'			SetColor 100, 100, 100
-'			DrawRect(544, 32 + i * 25, 15, 18)
-'			GetPlayerBase(i+1).color.SetRGB()
-'			DrawRect(545, 33 + i * 25, 13, 16)
+			guiShowStations[i].SetUncheckedTintColor( GetPlayerBase(i+1).color.Copy().AdjustBrightness(+0.25).AdjustSaturation(-0.35), False)
+			guiShowStations[i].SetCheckedTintColor( GetPlayerBase(i+1).color ) '.Copy().AdjustBrightness(0.25)
+			'guiShowStations[i].tintColor = GetPlayerBase(i+1).color '.Copy().AdjustBrightness(0.25)
 		Next
 
 		'draw a kind of tooltip over a mouseoverStation
@@ -1419,6 +1538,14 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 				station.DrawActivationTooltip()
 			Next
 		endif
+
+
+		'draw satellite selection frame
+'		if actionMode = MODE_BUY_SATELLITE
+			if satelliteSelectionFrame.IsOpen()
+				satelliteSelectionFrame.Draw()
+			endif
+'		endif
 	End Function
 
 
@@ -1430,12 +1557,11 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		'backup room if it changed
 		if currentSubRoom <> lastSubRoom
 			lastSubRoom = currentSubRoom
+
 			'if we changed the room meanwhile - we have to rebuild the stationList
-			RefreshStationAntennaList()
-			RefreshStationCableNetworkList()
-
-
-			TGameGUIAntennaPanel(guiAccordeon.GetPanelAtIndex(0)).RefreshList()
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(0)).RefreshList()
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(1)).RefreshList()
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(2)).RefreshList()
 		endif
 
 		currentSubRoom = room
@@ -1444,9 +1570,13 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 
 		'process right click
 		if MOUSEMANAGER.isClicked(2) or MouseManager.IsLongClicked(1)
-			local reset:int = (selectedStation or mouseoverStation)
+			local reset:int = (selectedStation or mouseoverStation or satelliteSelectionFrame.IsOpen())
 
-			ResetActionMode(0)
+			if satelliteSelectionFrame.IsOpen()
+				satelliteSelectionFrame.Close()
+			else
+				ResetActionMode(0)
+			endif
 
 			if reset
 				MOUSEMANAGER.ResetKey(2)
@@ -1467,43 +1597,176 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 				mouseoverStation.pos.CopyFrom(mousePos)
 				mouseoverStation.refreshData()
 				'refresh state information
-				mouseoverStation.getFederalState(true)
+				mouseoverStation.GetSectionName(true)
 			endif
 
 			local hoveredMapSection:TStationMapSection
-			if mouseoverStation then hoveredMapSection = TStationMapSection.get(Int(mouseoverStation.pos.x), Int(mouseoverStation.pos.y))
+			if mouseoverStation then hoveredMapSection = GetStationMapCollection().GetSection(Int(mouseoverStation.pos.x), Int(mouseoverStation.pos.y))
 
 			'if mouse gets clicked, we store that position in a separate station
 			if MOUSEMANAGER.isClicked(1)
 				'check reach and valid federal state
-				if hoveredMapSection and mouseoverStation.getReach() > 0
+				if hoveredMapSection and mouseoverStation.GetReach() > 0
 					selectedStation = GetStationMap(room.owner).GetTemporaryAntennaStation( mouseoverStation.pos.GetIntX(), mouseoverStation.pos.GetIntY() )
 				endif
 			endif
 
 			'no antennagraphic in foreign countries
 			'-> remove the station so it wont get displayed
-			if not hoveredMapSection or mouseoverStation.getReach() <= 0 then mouseoverStation = null
+			if not hoveredMapSection or mouseoverStation.GetReach() <= 0
+				mouseoverStation = null
+				mouseoverStationPosition = null
+			endif
 
 			if selectedStation
-				local selectedMapSection:TStationMapSection = TStationMapSection.get(Int(selectedStation.pos.x), Int(selectedStation.pos.y))
+				local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSection(Int(selectedStation.pos.x), Int(selectedStation.pos.y))
 
 				if not selectedMapSection or selectedStation.GetReach() <= 0 then selectedStation = null
 			endif
+
+
+		ElseIf actionMode = MODE_BUY_CABLE_NETWORK
+			'if the mouse has moved or nothing was created yet
+			'refresh the station data and move station
+			if not mouseoverStation or not mouseoverStationPosition or not mouseoverStationPosition.isSame( MouseManager.GetPosition() )
+				local mouseOverSection:TStationMapSection = GetStationMapCollection().GetSection( MouseManager.GetPosition().GetIntX(), MouseManager.GetPosition().GetIntY() )
+				if mouseOverSection
+					mouseoverStationPosition = MouseManager.GetPosition().Copy()
+					mouseoverStation = GetStationMap(room.owner).GetTemporaryCableNetworkStation( mouseOverSection.name )
+					mouseoverStation.refreshData()
+					'refresh state information
+					'DO NOT TRUST: Brandenburg's center is berlin - leading
+					'              to sectionname = berlin
+					mouseOverStation.sectionName = mouseOverSection.name
+					'mouseoverStation.GetSectionName(true)
+				'remove cache
+				elseif mouseoverStation
+					mouseoverStation = null
+					mouseoverStationPosition = null
+				endif
+			endif
+
+			local hoveredMapSection:TStationMapSection
+			if mouseoverStation and mouseoverStationPosition
+				hoveredMapSection = GetStationMapCollection().GetSection(Int(mouseoverStationPosition.x), Int(mouseoverStationPosition.y))
+			endif
+
+			'if mouse gets clicked, we store that position in a separate station
+			if MOUSEMANAGER.isClicked(1)
+				'check reach and valid federal state
+				if hoveredMapSection and mouseoverStation.GetReach() > 0
+					selectedStation = GetStationMap(room.owner).GetTemporaryCableNetworkStation( mouseoverStation.sectionName )
+					selectedStation.refreshData()
+					'refresh state information
+					selectedStation.sectionName = hoveredMapSection.name
+					'selectedStation.GetSectionName(true)
+				endif
+			endif
+
+			'no antennagraphic in foreign countries
+			'-> remove the station so it wont get displayed
+			if not hoveredMapSection or mouseoverStation.GetReach() <= 0
+				mouseoverStation = null
+				mouseoverStationPosition = null
+			endif
+
+			if selectedStation
+				local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSection(Int(selectedStation.pos.x), Int(selectedStation.pos.y))
+
+				if not selectedMapSection or selectedStation.GetReach() <= 0 then selectedStation = null
+			endif
+			
+		ElseIf actionMode = MODE_BUY_SATELLITE
+			if satelliteSelectionFrame.selectedSatellite
+				local satLink:TStationSatelliteLink = TStationSatelliteLink(selectedStation)
+
+				if not satLink or satLink.satelliteGUID <> satelliteSelectionFrame.selectedSatellite.GetGUID()
+					selectedStation = GetStationMap(room.owner).GetTemporarySatelliteStationBySatelliteGUID( satelliteSelectionFrame.selectedSatellite.GetGUID() )
+					selectedStation.refreshData()
+				endif
+			endif
+
+rem
+			'if the mouse has moved or nothing was created yet
+			'refresh the station data and move station
+			if not mouseoverStation or not mouseoverStationPosition or not mouseoverStationPosition.isSame( MouseManager.GetPosition() )
+				local mouseOverSection:TStationMapSection = GetStationMapCollection().GetSection( MouseManager.GetPosition().GetIntX(), MouseManager.GetPosition().GetIntY() )
+				if mouseOverSection
+					mouseoverStationPosition = MouseManager.GetPosition().Copy()
+					mouseoverStation = GetStationMap(room.owner).GetTemporarySatelliteStation( mouseOverSection.name )
+					mouseoverStation.refreshData()
+					'refresh state information
+					mouseOverStation.sectionName = mouseOverSection.name
+				'remove cache
+				elseif mouseoverStation
+					mouseoverStation = null
+					mouseoverStationPosition = null
+				endif
+			endif
+
+			local hoveredMapSection:TStationMapSection
+			if mouseoverStation and mouseoverStationPosition
+				hoveredMapSection = GetStationMapCollection().GetSection(Int(mouseoverStationPosition.x), Int(mouseoverStationPosition.y))
+			endif
+
+			'if mouse gets clicked, we store that position in a separate station
+			if MOUSEMANAGER.isClicked(1)
+				'check reach and valid federal state
+				if hoveredMapSection and mouseoverStation.GetReach() > 0
+					selectedStation = GetStationMap(room.owner).GetTemporarySatelliteStation( mouseoverStation.sectionName )
+					selectedStation.refreshData()
+					'refresh state information
+					selectedStation.sectionName = hoveredMapSection.name
+				endif
+			endif
+
+			'no antennagraphic in foreign countries
+			'-> remove the station so it wont get displayed
+			if not hoveredMapSection or mouseoverStation.GetReach() <= 0
+				mouseoverStation = null
+				mouseoverStationPosition = null
+			endif
+
+			if selectedStation
+				local selectedMapSection:TStationMapSection = GetStationMapCollection().GetSection(Int(selectedStation.pos.x), Int(selectedStation.pos.y))
+
+				if not selectedMapSection or selectedStation.GetReach() <= 0 then selectedStation = null
+			endif
+endrem
 		endif
 
+
+		if satelliteSelectionFrame.IsOpen()
+			satelliteSelectionFrame.Update()
+		endif
+
+		
 		GUIManager.Update( LS_stationmap )
 	End Function
 
 
+	Function OnOpenOrCloseAccordeonPanel:int( triggerEvent:TEventBase )
+		local accordeon:TGameGUIAccordeon = TGameGUIAccordeon(triggerEvent.GetSender())
+		if not accordeon or accordeon <> guiAccordeon then return False 
+
+		local panel:TGameGUIAccordeonPanel = TGameGUIAccordeonPanel(triggerEvent.GetData().Get("panel"))
+
+
+		if triggerEvent.IsTrigger("guiaccordeon.onClosePanel".ToLower())
+			'selectedStation = null
+			'print "selected = null"
+			ResetActionMode(TScreenHandler_StationMap.MODE_NONE)
+		endif
+	End Function
+
+
 	Function OnChangeStationMapStation:int( triggerEvent:TEventBase )
-		if not currentSubRoom then return FALSE
 		'do nothing when not in a room
+		if not currentSubRoom then return FALSE
 
-		RefreshStationAntennaList( currentSubRoom.owner )
-		RefreshStationCableNetworkList( currentSubRoom.owner )
-
-		TGameGUIAntennaPanel(guiAccordeon.GetPanelAtIndex(0)).RefreshList( currentSubRoom.owner )
+		TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(0)).RefreshList( currentSubRoom.owner )
+		TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(1)).RefreshList( currentSubRoom.owner )
+		TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(2)).RefreshList( currentSubRoom.owner )
 	End Function
 
 
@@ -1513,10 +1776,7 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		'remove selection
 		selectedStation = null
 		mouseoverStation = Null
-
-		'reset gui list
-		guiAntennaList.deselectEntry()
-		guiCableNetworkList.deselectEntry()
+		mouseoverStationPosition = null
 	End Function
 
 
@@ -1565,102 +1825,44 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 					endif
 				endif
 
+			case MODE_BUY_CABLE_NETWORK
+				if not selectedStation
+					button.SetValue(GetLocale("SELECT_LOCATION")+" ...")
+					button.disable()
+				else
+					local finance:TPlayerFinance = GetPlayerFinance(GetPlayerBase().playerID)
+					if finance and finance.canAfford(selectedStation.GetPrice())
+						button.SetValue(GetLocale("BUY_CABLE_NETWORK"))
+						button.enable()
+					else
+						button.SetValue(GetLocale("TOO_EXPENSIVE"))
+						button.disable()
+					endif
+				endif
+
+			case MODE_SELL_CABLE_NETWORK
+				'different owner or not paid or not sellable
+				if selectedStation
+					if selectedStation.owner <> GetPlayerBase().playerID
+						button.disable()
+						button.SetValue(GetLocale("WRONG_PLAYER"))
+					elseif not selectedStation.HasFlag(TVTStationFlag.SELLABLE)
+						button.SetValue(GetLocale("UNSELLABLE"))
+						button.disable()
+					elseif not selectedStation.HasFlag(TVTStationFlag.PAID)
+						button.SetValue(GetLocale("SELL_CABLE_NETWORK"))
+						button.disable()
+					else
+						button.SetValue(GetLocale("SELL_CABLE_NETWORK"))
+						button.enable()
+					endif
+				endif
+
+
 			default
 				button.SetValue(GetLocale("NEW_STATION"))
 				button.enable()
 		End Select
-	End Function
-
-
-	Function OnClick_ActionButton:int(triggerEvent:TEventBase)
-		local button:TGUIButton = TGUIButton(triggerEvent._sender)
-		If not button then return FALSE
-
-		'ignore clicks if not in the own office
-		if not currentSubRoom or currentSubRoom.owner <> GetPlayerBase().playerID then return FALSE
-
-
-		Select actionMode
-			case MODE_BUY_STATION
-				If selectedStation and selectedStation.GetReach() > 0
-					'add the station (and buy it)
-					if GetStationMap( GetPlayerBase().playerID ).AddStation(selectedStation, TRUE)
-						ResetActionMode(MODE_NONE)
-					endif
-				EndIf
-				
-			case MODE_SELL_STATION
-				If selectedStation and selectedStation.getReach() > 0
-					'remove the station (and sell it)
-					if GetStationMap( GetPlayerBase().playerID ).RemoveStation(selectedStation, TRUE)
-						ResetActionMode(MODE_NONE)
-					endif
-				EndIf
-
-			default
-				ResetActionMode(MODE_BUY_STATION)
-		End Select
-	End Function
-
-
-	Function OnClick_ActionCancel:int(triggerEvent:TEventBase)
-		local button:TGUIButton = TGUIButton(triggerEvent._sender)
-		If not button then return FALSE
-
-		'ignore clicks if not in the own office
-		if not currentSubRoom or currentSubRoom.owner <> GetPlayerBase().playerID then return FALSE
-
-		ResetActionMode(MODE_NONE)
-	End Function
-
-
-	'rebuild the stationList - eg. when changed the room (other office)
-	Function RefreshStationAntennaList(playerID:int=-1)
-		If playerID <= 0 Then playerID = GetPlayerBase().playerID
-
-		'first fill of stationlist
-		guiAntennaList.EmptyList()
-		'remove potential highlighted item
-		guiAntennaList.deselectEntry()
-
-
-		local listContentWidth:int = guiAntennaList.GetContentScreenWidth()
-		'keep them sorted the way we add the stations
-		guiAntennaList.setListOption(GUILIST_AUTOSORT_ITEMS, False)
-		For Local station:TStationAntenna = EachIn GetStationMap(playerID).Stations
-			local item:TGUISelectListItem = new TGUISelectListItem.Create(new TVec2D, new TVec2D.Init(listContentWidth,20), station.GetLongName())
-			'fill complete width
-			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
-			'link the station to the item
-			item.data.Add("station", station)
-			item._customDrawContent = DrawMapStationListEntryContent
-			guiAntennaList.AddItem( item )
-		Next
-	End Function
-
-
-	'rebuild the stationList - eg. when changed the room (other office)
-	Function RefreshStationCableNetworkList(playerID:int=-1)
-		If playerID <= 0 Then playerID = GetPlayerBase().playerID
-
-		'first fill of stationlist
-		guiCableNetworkList.EmptyList()
-		'remove potential highlighted item
-		guiCableNetworkList.deselectEntry()
-
-
-		local listContentWidth:int = guiCableNetworkList.GetContentScreenWidth()
-		'keep them sorted the way we add the stations
-		guiCableNetworkList.setListOption(GUILIST_AUTOSORT_ITEMS, False)
-		For Local station:TStationCableNetwork = EachIn GetStationMap(playerID).Stations
-			local item:TGUISelectListItem = new TGUISelectListItem.Create(new TVec2D, new TVec2D.Init(listContentWidth,20), station.GetLongName())
-			'fill complete width
-			item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
-			'link the station to the item
-			item.data.Add("station", station)
-			item._customDrawContent = DrawMapStationListEntryContent
-			guiCableNetworkList.AddItem( item )
-		Next
 	End Function
 
 
@@ -1679,7 +1881,7 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 			sprite = GetSpriteFromRegistry(station.listSpriteNameOff)
 		endif
 
-		local rightValue:string = TFunctions.convertValue(station.reach, 2, 0)
+		local rightValue:string = TFunctions.convertValue(station.GetReach(), 2, 0)
 		local paddingLR:int = 2
 		local textOffsetX:int = paddingLR + sprite.GetWidth() + 5
 		local textOffsetY:int = 2
@@ -1702,44 +1904,18 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 			entryColor.a = currentColor.a * 0.5
 		endif
 
-		entryColor.SetRGBA()
 
 		'draw antenna
 		sprite.Draw(Int(item.GetScreenX() + paddingLR), item.GetScreenY() + 0.5*item.rect.getH(), -1, ALIGN_LEFT_CENTER)
+		entryColor.SetRGBA()
+		local rightValueWidth:int = item.GetFont().GetWidth(rightValue)
 '		item.GetFont().DrawBlock(int(TGUIScrollablePanel(item._parent).scrollPosition.y)+"/"+int(TGUIScrollablePanel(item._parent).scrollLimit.y)+" "+item.GetValue(), Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), textW, int(item.GetScreenHeight() - textOffsetY), ALIGN_LEFT_CENTER, item.valueColor)
-		item.GetFont().DrawBlock(item.GetValue(), Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), textW, int(item.GetScreenHeight() - textOffsetY), ALIGN_LEFT_CENTER, item.valueColor)
+		item.GetFont().DrawBlock(item.GetValue(), Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), textW - rightValueWidth - 5, int(item.GetScreenHeight() - textOffsetY), ALIGN_LEFT_CENTER, item.valueColor, , , , False)
 		item.GetFont().DrawBlock(rightValue, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), textW, int(item.GetScreenHeight() - textOffsetY), ALIGN_RIGHT_CENTER, item.valueColor)
 
 		currentColor.SetRGBA()
 	End Function
 	
-
-	'an entry was selected - make the linked station the currently selected station
-	Function OnSelectEntry_StationList:int(triggerEvent:TEventBase)
-		Local senderList:TGUISelectList = TGUISelectList(triggerEvent._sender)
-		If not senderList then return FALSE
-
-		if not currentSubRoom or not GetPlayerBaseCollection().IsPlayer(currentSubRoom.owner) then return FALSE
-
-		'set the linked station as selected station
-		'also set the stationmap's userAction so the map knows we want to sell
-		local item:TGUISelectListItem = TGUISelectListItem(senderList.getSelectedEntry())
-		if item
-			selectedStation = TStationBase(item.data.get("station"))
-			if selectedStation
-				'force stat refresh (so we can display decrease properly)!
-				selectedStation.GetReachDecrease(True)
-			endif
-
-
-			if TStationAntenna(selectedStation)
-				SetActionMode(MODE_SELL_STATION)
-			elseif TStationCableNetwork(selectedStation)
-				SetActionMode(MODE_SELL_CABLE_NETWORK)
-			endif
-		endif
-	End Function
-
 
 	'set checkboxes according to stationmap config
 	Function onEnterStationMapScreen:int(triggerEvent:TEventBase)
@@ -1762,49 +1938,26 @@ global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 		'ignore clicks if not in the own office
 		if not currentSubRoom or currentSubRoom.owner <> GetPlayerBase().playerID then return FALSE
 
+		'player filter
 		local player:int = button.data.GetInt("playerNumber", -1)
-		if not GetPlayerCollection().IsPlayer(player) then return FALSE
+		if player >= 0
+			if not GetPlayerCollection().IsPlayer(player) then return FALSE
 
-		'only set if not done already
-		if GetStationMap(player).GetShowStation(player) <> button.isChecked()
-			TLogger.Log("StationMap", "show stations for player "+player+": "+button.isChecked(), LOG_DEBUG)
-			GetStationMap(player).SetShowStation(player, button.isChecked())
+			'only set if not done already
+			if GetStationMap(GetPlayerBase().playerID).GetShowStation(player) <> button.isChecked()
+				TLogger.Log("StationMap", "Stationmap #"+GetPlayerBase().playerID+" show stations for player "+player+": "+button.isChecked(), LOG_DEBUG)
+				GetStationMap(GetPlayerBase().playerID).SetShowStation(player, button.isChecked())
+			endif
+		endif
+
+		'station type filter
+		local stationType:int = button.data.GetInt("stationType", -1)
+		if stationType >= 0
+			'only set if not done already
+			if GetStationMap(GetPlayerBase().playerID).GetShowStationType(stationType) <> button.isChecked()
+				TLogger.Log("StationMap", "Stationmap #"+GetPlayerBase().playerID+" show station type "+stationType+": "+button.isChecked(), LOG_DEBUG)
+				GetStationMap(GetPlayerBase().playerID).SetShowStationType(stationType, button.isChecked())
+			endif
 		endif
 	End Function
-End Type
-
-
-
-
-Type TGUITintedCheckBox extends TGUICheckBox
-	Field tintColor:TColor
-	
-
-	Method Create:TGUITintedCheckbox(pos:TVec2D, dimension:TVec2D, value:String, limitState:String="")
-		Super.Create(pos, dimension, value, limitState)
-		return self
-	End Method
-
-
-	Method SetTintColor(color:TColor)
-		if color
-			self.tintColor = color.Copy()
-		else
-			self.tintColor = null
-		endif
-	End Method
-
-
-	'override to "simple" tint the checkbox
-	Method DrawContent()
-		local oldColor:TColor
-		if tintColor
-			oldColor = new TColor.Get()
-			tintColor.SetRGBA()
-		endif
-
-		Super.DrawContent()
-
-		if tintColor and oldColor then oldColor.SetRGBA()
-	End Method
 End Type

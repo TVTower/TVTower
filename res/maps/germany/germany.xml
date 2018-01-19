@@ -6,6 +6,9 @@
 			<type>SpritePack</type>
  			<url>res/maps/germany/germany_collision.png</url>
 			<children>
+				<child name="map_berlin"				x="799"	y="450"	w="33"	h="20" />
+				<child name="map_hamburg"				x="566"	y="337"	w="38"	h="19" />
+				<child name="map_bremen"				x="521"	y="416"	w="26"	h="17" />
 				<child name="map_sachsen"				x="139"	y="351"	w="179"	h="74" />
 				<child name="map_niedersachsen"			x="423"	y="0"	w="264"	h="128" />
 				<child name="map_schleswigholstein"		x="423"	y="337"	w="143"	h="79" />
@@ -19,9 +22,6 @@
 				<child name="map_saarland"				x="318"	y="464"	w="62"	h="29" />
 				<child name="map_bayern"				x="139"	y="0"	w="284"	h="161" />
 				<child name="map_bawue"					x="423"	y="128"	w="181"	h="111" />
-				<child name="map_berlin"				x="799"	y="450"	w="33"	h="20" />
-				<child name="map_hamburg"				x="566"	y="337"	w="38"	h="19" />
-				<child name="map_bremen"				x="521"	y="416"	w="26"	h="17" />
 			</children>
 		</resource>
 

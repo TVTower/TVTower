@@ -76,6 +76,7 @@ DEBT = Schulden
 REACH = Reichweite
 INCREASE = Zuwachs
 PRICE = Preis
+RUNNING_COSTS = Unterhaltskosten
 VALUE = Wert
 BROADCASTING_AREA = Sendegebiet
 OF_THE_MAP = der Karte
@@ -594,15 +595,32 @@ DIALOGUE_STUDIO_GOODBYE2 = Bis später.
 
 SHOW_PLAYERS = zeige Spieler
 PURCHASE = Einkauf
-STATION = Sendemast
-PURCHASE_STATION = Sendemast erwerben
+
 ACQUIRED_PROPERTY = Im Besitz
+STATION = Sendemast
+STATIONS = Sendemasten
+ANTENNA = Sendemast
+ANTENNAS = Sendemasten
+CABLE_NETWORK = Kabelnetz
+CABLE_NETWORKS = Kabelnetze
+SATELLITE = Satellit
+SATELLITES = Satelliten
+SATELLITE_UPLINK = Satellitenanbindung
+SATELLITE_UPLINKS = Satellitenanbindungen
+
 NEW_STATION = Neuer Sendemast
+BUY_STATION = Sendemast kaufen
+SELL_STATION = Sendemast verkaufen
+NEW_CABLE_NETWORK = Neues Kabelnetz
+BUY_CABLE_NETWORK = Kabelnetz kaufen
+SELL_CABLE_NETWORK = Kabelnetz verkaufen
+NEW_SATELLITE_UPLINK = Neue Satellitenanbindung
+BUY_SATELLITE_UPLINK = Anbindung buchen
+SELL_SATELLITE_UPLINK = Anbindung kündigen
+
 SELECT_LOCATION = Standort auswählen
 SELECT_STATION = Sendemast auswählen
-BUY_STATION = Sendemast kaufen
 TOO_EXPENSIVE = Zu teuer
-SELL_STATION = Sendemast verkaufen
 UNSELLABLE = unverkäuflich
 
 UNDER_CONSTRUCTION = Im Bau
@@ -1061,3 +1079,12 @@ GENDER_ALL = Alle
 
 LIVE_ON_TAPE = Liveaufzeichnung
 ALL_MATCHES_FINISHED = Alle Begegnungen beendet
+
+
+SHOW_MAP_DETAILS = Zeige Kartendetails
+CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION = Klicken um tiefergehende Karteninformationen anzuzeigen.
+
+TOGGLE_DISPLAY_OF_STATIONTYPE = De-/Aktiviere Anzeige von %STATIONTYPE%
+TOGGLE_DISPLAY_OF_PLAYER_X = De-/Aktiviere Anzeige von Spieler %X%
+
+SATLINK_TO_X = SatLink zu %X%

@@ -513,7 +513,10 @@ Type TDatabaseLoader
 				Next
 				newsEventTemplate.happenTime = GetWorldTime().CalcTime_Auto( happenTimeParams[0], useParams )
 			endif
+
+			print "geplante News: " + newsEventTemplate.GetTitle() + "   "  + GetWorldTime().GetFormattedDate(newsEventTemplate.happenTime) 
 		endif
+		
 
 
 		'=== CONDITIONS ===
