@@ -11,13 +11,18 @@ Import "base.util.registry.spriteloader.bmx"
 
 Type TGUICheckBox Extends TGUIButton
     Field checked:Int = False
-    Field checkSprite:TSprite
-	Field checkSpriteName:String = "gfx_gui_icon_check"
+	Field uncheckedSprite:TSprite
+	Field uncheckedSpriteName:String = ""
+	Field checkedSprite:TSprite
+	Field checkedSpriteName:String = "gfx_gui_icon_check"
 	Field checkboxDimension:TVec2D
 	Field checkboxDimensionAutocalculated:int = True
 	Field valueChecked:string = ""
 	Field valueUnchecked:string = ""
 	Field captionDisplacement:TVec2D = new TVec2D.Init(5,0)
+	Field uncheckedTintColor:TColor
+	Field checkedTintColor:TColor
+	Field tintColor:TColor
 	
 	Global _checkboxMinDimension:TVec2D = new TVec2D.Init(20,20)
 	Global _typeDefaultFont:TBitmapFont
@@ -130,14 +135,66 @@ Type TGUICheckBox Extends TGUIButton
 
 	'private getter
 	'acts as cache
-	Method GetCheckSprite:TSprite()
-		if isChecked()
-			'refresh cache if not set or wrong sprite name
-			if not checkSprite or checkSprite.GetName() <> checkSpriteName
-				checksprite = GetSpriteFromRegistry(checkSpriteName)
-			endif
+	Method GetCheckedSprite:TSprite()
+		'refresh cache if not set or wrong sprite name
+		if not checkedSprite or checkedSprite.GetName() <> checkedSpriteName
+			checkedSprite = GetSpriteFromRegistry(checkedSpriteName)
 		endif
-		return checkSprite
+
+		return checkedSprite
+	End Method
+
+
+	'private getter
+	'acts as cache
+	Method GetUncheckedSprite:TSprite()
+		if not uncheckedSpriteName then return Null
+		
+		'refresh cache if not set or wrong sprite name
+		if not uncheckedSprite or uncheckedSprite.GetName() <> uncheckedSpriteName
+			uncheckedSprite = GetSpriteFromRegistry(uncheckedSpriteName)
+		endif
+
+		return uncheckedSprite
+	End Method
+
+
+	Method SetTintColor(color:TColor, copyColor:int = True)
+		if copyColor
+			if color
+				self.tintColor = color.Copy()
+			else
+				self.tintColor = null
+			endif
+		else
+			self.tintColor = color
+		endif
+	End Method
+
+
+	Method SetCheckedTintColor(color:TColor, copyColor:int = True)
+		if copyColor
+			if color
+				self.checkedTintColor = color.Copy()
+			else
+				self.checkedTintColor = null
+			endif
+		else
+			self.checkedTintColor = color
+		endif
+	End Method
+
+
+	Method SetUncheckedTintColor(color:TColor, copyColor:int = True)
+		if copyColor
+			if color
+				self.uncheckedTintColor = color.Copy()
+			else
+				self.uncheckedTintColor = null
+			endif
+		else
+			self.uncheckedTintColor = color
+		endif
 	End Method
 
 
@@ -200,14 +257,39 @@ Type TGUICheckBox Extends TGUIButton
 		Local oldCol:TColor = new TColor.Get()
 
 		'SetColor 255, 255, 255
-		SetAlpha oldCol.a * GetScreenAlpha()
+		if state = ""
+			if IsChecked() and checkedTintColor
+				SetAlpha oldCol.a * GetScreenAlpha() * checkedTintColor.a
+				checkedTintColor.SetRGB()
+			elseif not IsChecked() and uncheckedTintColor
+				SetAlpha oldCol.a * GetScreenAlpha() * uncheckedTintColor.a
+				uncheckedTintColor.SetRGB()
+			elseif tintColor
+				SetAlpha oldCol.a * GetScreenAlpha() * tintcolor.a
+				tintColor.SetRGB()
+			else
+				SetAlpha oldCol.a * GetScreenAlpha()
+			endif
+		else
+			SetAlpha oldCol.a * GetScreenAlpha()
+		endif
 
 		Local sprite:TSprite = GetSprite()
 		if state <> "" then sprite = GetSpriteFromRegistry(GetSpriteName() + state, sprite)
 		if sprite then sprite.DrawArea(atPoint.getX(), atPoint.getY(), GetCheckboxDimension().x, GetCheckboxDimension().y)
 
-		'draw checked mark at center of button
-		if IsChecked() then GetCheckSprite().Draw(atPoint.getX() + int(GetCheckboxDimension().x/2), atPoint.getY() + int(GetCheckboxDimension().y/2), -1, new TVec2D.Init(0.5, 0.5))
+
+		'draw (un)checked mark at center of button
+		local useCheckSprite:TSprite
+		If IsChecked()
+			useCheckSprite = GetCheckedSprite()
+		Else
+			useCheckSprite = GetUncheckedSprite()
+		EndIf
+		If useCheckSprite Then useCheckSprite.Draw(atPoint.getX() + int(GetCheckboxDimension().x/2), atPoint.getY() + int(GetCheckboxDimension().y/2), -1, new TVec2D.Init(0.5, 0.5))
+
+		oldCol.SetRGB()
+
 
 		If caption and caption.IsVisible()
 			caption.SetValue(GetValue())

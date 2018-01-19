@@ -37,6 +37,8 @@ Type TGUIAccordeonPanel extends TGUIObject
 
 		'adjust parental accordeon
 		if TGUIAccordeon(GetParent()) then TGUIAccordeon(GetParent()).onClosePanel(self)
+
+		EventManager.triggerEvent( TEventSimple.Create("guiaccordeonpanel.OnClose", null, Self) )
 		
 		return True
 	End Method
@@ -50,6 +52,8 @@ Type TGUIAccordeonPanel extends TGUIObject
 
 		'adjust parental accordeon
 		if TGUIAccordeon(GetParent()) then TGUIAccordeon(GetParent()).onOpenPanel(self)
+
+		EventManager.triggerEvent( TEventSimple.Create("guiaccordeonpanel.OnOpen", null, Self) )
 
 		return True
 	End Method
@@ -203,6 +207,8 @@ Type TGUIAccordeon extends TGUIObject
 		_disableRefitPanelSizes = disableRefitPanelSizesBackup
 		if not _disableRefitPanelSizes then RefitPanelSizes()
 
+		EventManager.triggerEvent( TEventSimple.Create("guiaccordeon.OnOpenPanel", new TData.Add("panel", panel), Self) )
+
 		return True
 	End Method
 
@@ -216,19 +222,21 @@ Type TGUIAccordeon extends TGUIObject
 		
 		RefitPanelSizes()
 
+		EventManager.triggerEvent( TEventSimple.Create("guiaccordeon.OnClosePanel", new TData.Add("panel", panel), Self) )
+
 		return True
 	End Method
 	
 
 	Method OpenPanel:int(index:int)
-		local child:TGUIAccordeonPanel = TGUIAccordeonPanel( GetChildAtIndex(index) )
+		local child:TGUIAccordeonPanel = TGUIAccordeonPanel( GetPanelAtIndex(index) )
 		if not child then return False
 		return child.Open()
 	End Method 
 		
 
 	Method ClosePanel:int(index:int)
-		local child:TGUIAccordeonPanel = TGUIAccordeonPanel( GetChildAtIndex(index) )
+		local child:TGUIAccordeonPanel = TGUIAccordeonPanel( GetPanelAtIndex(index) )
 		if not child then return False
 		return child.Close()
 	End Method

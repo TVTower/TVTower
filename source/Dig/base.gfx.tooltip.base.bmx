@@ -314,10 +314,14 @@ Type TTooltipBase
 		'auto height calculation
 		If area.GetH() <= 0
 			Local result:Int = 0
+			Local contentHeight:int = GetContentHeight()
 			'height from title + content + spacing
 			result:+ GetTitleHeight()
-			result:+ GetContentHeight()
-			result:+ GetContentPadding().GetTop() + GetContentPadding().GetBottom() 
+			if contentHeight > 0
+				result:+ contentHeight
+'				result:+ GetContentPadding().GetTop() + GetContentPadding().GetBottom()
+			endif
+				result:+ GetContentPadding().GetTop() + GetContentPadding().GetBottom()
 			Return result
 		EndIf
 	End Method
@@ -326,7 +330,7 @@ Type TTooltipBase
 
 	Method GetContentWidth:Int()
 		if content = ""
-			if _minContentDim then return _minContentDim.GetIntY()
+			if _minContentDim then return _minContentDim.GetIntX()
 			return 0
 		endif
 
@@ -343,7 +347,7 @@ Type TTooltipBase
 		if _maxContentDim and _maxContentDim.GetX() > 0
 			return Min(Max(minWidth, 1 + GetFont().GetBlockWidth(content, Min(maxWidth, _maxContentDim.GetX()), -1)), _maxContentDim.GetX())
 		else
-			return Max(minWidth, 1 + GetFont().GetBlockWidth(content, 240, -1))
+			return Max(minWidth, 1 + GetFont().GetBlockWidth(content, maxWidth, -1))
 		endif
 	End Method
 
@@ -374,7 +378,7 @@ Type TTooltipBase
 		if not _renderPosition then _renderPosition = new TVec2D
 		_renderPosition.SetXY(0,0)
 		SetOption(OPTION_MIRRORED_RENDER_POSITION, False)
-		
+
 		'limit to visible areas
 		'-> moves tooltip  so that everything is visible on screen
 		local outOfScreenLeft:int = Min(0, GetScreenX())
@@ -382,7 +386,6 @@ Type TTooltipBase
 		local outOfScreenTop:int = Min(0, GetScreenY())
 		local outOfScreenBottom:int = Max(0, GetScreenY() + GetScreenHeight() - GetGraphicsManager().GetHeight())
 
-'print "out of screen: left=" + outOfScreenLeft+" right="+outOfScreenRight+" top="+outOfScreenTop+" bottom="+outOfScreenBottom
 		if outOfScreenLeft then _renderPosition.AddXY(-outOfScreenLeft, 0)
 		if outOfScreenRight then _renderPosition.AddXY(-outOfScreenRight, 0)
 		if outOfScreenTop then _renderPosition.AddXY(0, -outOfScreenTop)
@@ -395,7 +398,7 @@ Type TTooltipBase
 			local intersectRect:TRectangle = parentArea.IntersectRect(screenRect)
 			if intersectRect
 				'move to _other_ side of the widget if overlapping is too much
-				if (outOfScreenTop<>0 or outOfScreenBottom<>0) and intersectRect.GetH() > 5
+				if (outOfScreenTop<0 or outOfScreenBottom<0) and intersectRect.GetH() > 5
 					local offsetY:int = 0
 					if GetOffset() then offsetY = GetOffset().GetY()
 
@@ -406,7 +409,9 @@ Type TTooltipBase
 						_renderPosition.SetY( -outOfScreenBottom + parentArea.GetY() - screenRect.GetY2() + offsetY )
 						SetOption(OPTION_MIRRORED_RENDER_POSITION, True)
 					endif
-				elseif intersectRect.GetW() > 5
+				endif
+
+				if (outOfScreenLeft<0 or outOfScreenRight<0) and intersectRect.GetW() > 5
 					local offsetX:int = 0
 					if GetOffset() then offsetX = GetOffset().GetX()
 

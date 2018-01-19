@@ -61,7 +61,12 @@ End Function
 'draws a given source pixmap/image onto a destination pixmap/image
 'modifyColor is used to increase (rgb > 255) or decrease brightness
 'modifyColor.alpha is used to adjust the alpha of the src object.
-Function DrawImageOnImage:int(src:object, dest:object, x:Int, y:Int, modifyColor:TColor = null)
+Const DRAWMODE_NORMAL:int = 0
+Const DRAWMODE_MULTIPLY:int = 1
+Const DRAWMODE_DIFFERENCE:int = 2
+
+
+Function DrawImageOnImage:int(src:object, dest:object, x:Int, y:Int, modifyColor:TColor = null, drawMode:int=0)
 	local source:TPixmap, destination:TPixmap
 	if TPixmap(src) then source = TPixmap(src)
 	if TImage(src) then source = LockImage(TImage(src))
@@ -140,45 +145,165 @@ End Function
 
 
 
+Function ConvertToSingleColor:TImage(image:TImage, targetColor:int, backgroundColor:int = 0)
+	'load source
+	Local srcPix:TPixmap = LockImage(image)
+	if not srcPix then return Null
+	'if it is the wrong format to use, create a temporary copy
+	If srcPix.format <> PF_RGBA8888
+		srcPix = srcPix.Copy().Convert(PF_RGBA8888)
+	EndIf
 
-Function blurPixmap:TPixmap(pm:TPixmap, k:Float = 0.5)
+	'create target
+	Local targetPix:TPixmap = CreatePixmap(srcPix.width, srcPix.height, srcPix.format)
+	targetPix.ClearPixels(backgroundColor)
+
+	For Local x:Int = 0 Until srcPix.width
+		For Local y:Int = 0 Until srcPix.height
+			'read alpha
+			WritePixel(targetPix, x,y, ..
+			           Int( ..
+						int(Byte(ReadPixel(srcPix, x,y) Shr 24)) Shl 24 | ..
+						int(Byte(targetColor Shr 16)) Shl 16 | ..
+						int(Byte(targetColor Shr  8)) Shl  8 | ..
+						int(Byte(targetColor)) ..
+                      ))
+		Next
+	Next
+
+	return LoadImage(targetPix)
+End Function
+
+
+
+
+'padding variable is there to avoid creating a target image over and over
+'if you plan to add a "blur" afterwards (which needs some additional
+'pixels on all sides)
+Function ConvertToOutLine:TImage(image:TImage, lineThickness:int=1, alphaTreshold:Float = 0.0, outlineColor:int=-1, targetPadding:int=0)
+	if outlineColor = -1 then outlineColor = -1 '(Int(255 * $1000000) + Int(255 * $10000) + Int(255 * $100) + Int(255))
+	lineThickness = lineThickness / 2
+
+	'convert 0.0-1.0 to 0-255
+	alphaTreshold :* 255
+
+	'load source
+	Local srcPix:TPixmap = LockImage(image)
+	if not srcPix then return Null
+	'if it is the wrong format to use, create a temporary copy
+	If srcPix.format <> PF_RGBA8888
+		srcPix = srcPix.Copy().Convert(PF_RGBA8888)
+	EndIf
+
+	'create target
+	Local targetPix:TPixmap = CreatePixmap(srcPix.width + targetPadding*2, srcPix.height + targetPadding*2, srcPix.format)
+	targetPix.ClearPixels(0)
+
+	'storage for alpha of a pixel's surrounding pixels 
+	Local sum:int
+
+	For Local x:Int = 0 Until srcPix.width
+		For Local y:Int = 0 Until srcPix.height
+			'ignore if above treshold
+			'except for borders
+'			If ARGB_Alpha(col) > alphaTreshold Then continue
+			if (x <> 0 and x <> srcPix.width-1) and (y <> 0 and y <> srcPix.height-1)
+				If ((ReadPixel(srcPix, x, y) Shr 24) & $ff) > alphaTreshold
+					continue
+				endif
+			EndIf
+
+
+			'check pixels left/right/top/bottom of current pixel
+			'add all of their alphas to "sum" so we could check
+			'whether there is something needing a outline
+			sum = 0
+'			If x > 0               Then sum :+ ARGB_Alpha( ReadPixel(srcPix, x-1, y) )
+'			If x < srcPix.width-1  Then sum :+ ARGB_Alpha( ReadPixel(srcPix, x+1, y) )
+'			If y > 0               Then sum :+ ARGB_Alpha( ReadPixel(srcPix, x, y-1) )
+'			If y < srcPix.height-1 Then sum :+ ARGB_Alpha( ReadPixel(srcPix, x, y+1) )
+			If x > 0               Then sum :+ ((ReadPixel(srcPix, x-1, y) Shr 24) & $ff) > alphaTreshold
+			If x < srcPix.width-1  Then sum :+ ((ReadPixel(srcPix, x+1, y) Shr 24) & $ff) > alphaTreshold
+			If y > 0               Then sum :+ ((ReadPixel(srcPix, x, y-1) Shr 24) & $ff) > alphaTreshold
+			If y < srcPix.height-1 Then sum :+ ((ReadPixel(srcPix, x, y+1) Shr 24) & $ff) > alphaTreshold
+				
+			If sum > 0
+				If lineThickness = 0
+					WritePixel(targetPix, x + targetPadding, y + targetPadding, outlineColor )
+				Else
+					For local i:int = 0 to lineThickness
+						If x + targetPadding - i >= 0               Then WritePixel(targetPix, x + targetPadding - i , y + targetPadding, outlineColor )
+						If x + targetPadding + i < targetPix.width  Then WritePixel(targetPix, x + targetPadding + i , y + targetPadding, outlineColor )
+						If y + targetPadding - i >= 0               Then WritePixel(targetPix, x + targetPadding, y + targetPadding - i, outlineColor )
+						If y + targetPadding + i < targetPix.height Then WritePixel(targetPix, x + targetPadding, y + targetPadding + i, outlineColor )
+					Next
+				EndIf
+			EndIf
+		Next
+	Next
+
+	return LoadImage(targetPix)
+End Function
+
+
+
+
+Function blurPixmap:TPixmap(pm:TPixmap, k:Float = 0.5, backgroundColor:int=0)
 	'pm - the pixmap to blur. Format must be PF_RGBA8888
 	'k - blurring amount. Value between 0.0 and 1.0
 	'	 0.1 = Extreme, 0.9 = Minimal
 
 	For Local x:Int = 1 Until pm.Width
     	For Local z:Int = 0 Until pm.Height
-			WritePixel(pm, x, z, blurPixel(ReadPixel(pm, x, z), ReadPixel(pm, x - 1, z), k))
+			WritePixel(pm, x, z, blurPixel(ReadPixel(pm, x, z), ReadPixel(pm, x - 1, z), k, backgroundColor))
     	Next
     Next
 
     For Local x:Int = (pm.Width - 3) To 0 Step -1
     	For Local z:Int = 0 Until pm.Height
-			WritePixel(pm, x, z, blurPixel(ReadPixel(pm, x, z), ReadPixel(pm, x + 1, z), k))
+			WritePixel(pm, x, z, blurPixel(ReadPixel(pm, x, z), ReadPixel(pm, x + 1, z), k, backgroundColor))
     	Next
     Next
 
     For Local x:Int = 0 Until pm.Width
     	For Local z:Int = 1 Until pm.Height
-			WritePixel(pm, x, z, blurPixel(ReadPixel(pm, x, z), ReadPixel(pm, x, z - 1), k))
+			WritePixel(pm, x, z, blurPixel(ReadPixel(pm, x, z), ReadPixel(pm, x, z - 1), k, backgroundColor))
     	Next
     Next
 
     For Local x:Int = 0 Until pm.Width
     	For Local z:Int = (pm.Height - 3) To 0 Step -1
-			WritePixel(pm, x, z, blurPixel(ReadPixel(pm, x, z), ReadPixel(pm, x, z + 1), k))
+			WritePixel(pm, x, z, blurPixel(ReadPixel(pm, x, z), ReadPixel(pm, x, z + 1), k, backgroundColor))
     	Next
     Next
 
 
 	'function in a function - it is just a helper
-	Function blurPixel:Int(px:Int, px2:Int, k:Float)
-		Return Int( ..
-		            int((Byte(px2 Shr 24) * (1 - k)) + (Byte(px Shr 24) * k)) Shl 24 | ..
-		            int((Byte(px2 Shr 16) * (1 - k)) + (Byte(px Shr 16) * k)) Shl 16 | ..
-		            int((Byte(px2 Shr  8) * (1 - k)) + (Byte(px Shr  8) * k)) Shl  8 | ..
-		            int((Byte(px2)        * (1 - k)) + (Byte(px)        * k)) ..
-		          )
+	Function blurPixel:Int(px:Int, px2:Int, k:Float, backgroundColor:int = 0)
+		'if there is no actual "pixel color" (eg a fully transparent black)
+		'then mix colors accordingly
+		if px2 = backgroundColor
+			Return Int( ..
+						int(Byte(px2 Shr 24)) Shl 24 | ..
+						int(Byte(px Shr 16)) Shl 16 | ..
+						int(Byte(px Shr  8)) Shl  8 | ..
+						int(Byte(px)) ..
+					  )
+		elseif px = backgroundColor
+			Return Int( ..
+						int(Byte(px Shr 24)) Shl 24 | ..
+						int(Byte(px2 Shr 16)) Shl 16 | ..
+						int(Byte(px2 Shr  8)) Shl  8 | ..
+						int(Byte(px2)) ..
+					  )
+		else
+			Return Int( ..
+						int((Byte(px2 Shr 24) * (1 - k)) + (Byte(px Shr 24) * k)) Shl 24 | ..
+						int((Byte(px2 Shr 16) * (1 - k)) + (Byte(px Shr 16) * k)) Shl 16 | ..
+						int((Byte(px2 Shr  8) * (1 - k)) + (Byte(px Shr  8) * k)) Shl  8 | ..
+						int((Byte(px2)        * (1 - k)) + (Byte(px)        * k)) ..
+					  )
+		endif
 	End Function
 
 	return pm

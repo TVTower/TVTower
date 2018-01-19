@@ -45,11 +45,13 @@ Type TGraphicalApp extends TApp
 	'should the app do a CLS before rendering?
 	Field autoCls:int = TRUE
 	Field startupFadeInTime:float = 0.5
+	Field resolutionX:int = 800
+	Field resolutionY:int = 600
 
 
 	Method Prepare:int()
-		local gm:TGraphicsManager = TGraphicsManager.GetInstance()
-		gm.SetResolution(800, 600)
+		local gm:TGraphicsManager = GetGraphicsManager()
+		gm.SetResolution(resolutionX, resolutionY)
 		gm.SetVSync(true)
 		gm.SetHertz(0)
 
