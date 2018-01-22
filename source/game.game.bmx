@@ -168,6 +168,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			TLogger.Log("TGame", "Dress terrorists as Santa Claus.", LOG_DEBUG)
 			terrorists[0].sprite = GetSpriteFromRegistry("Santa1")
 			terrorists[1].sprite = GetSpriteFromRegistry("Santa2")
+		else
+			if terrorists[0].sprite.name = "Santa1"
+				terrorists[0].sprite = GetSpriteFromRegistry("Terrorist1")
+				terrorists[1].sprite = GetSpriteFromRegistry("Terrorist2")
+			endif
 		endif
 
 
