@@ -249,11 +249,13 @@ Type TVTStationFlag {_exposeToLua}
 	Const GRANTED:int = 16
 	Const NO_RUNNING_COSTS:int = 32
 	Const NO_AGING:int = 64
-	Const UPDATE1:int = 128
-	Const UPDATE2:int = 256
-	Const UPDATE3:int = 512
+	'paid without governmental allowance
+	Const ILLEGAL:int = 128
+	Const UPDATE1:int = 256
+	Const UPDATE2:int = 512
+	Const UPDATE3:int = 1024
 
-	Const count:int = 10
+	Const count:int = 11
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -264,16 +266,17 @@ Type TVTStationFlag {_exposeToLua}
 
 	Function GetIndex:int(key:int)
 		Select key
-			case   1	return 1
-			case   2	return 2
-			case   4	return 3
-			case   8	return 4
-			case  16	return 5
-			case  32	return 6
-			case  64	return 7
-			case 128	return 8
-			case 256	return 9
-			case 512	return 10
+			case    1	return 1
+			case    2	return 2
+			case    4	return 3
+			case    8	return 4
+			case   16	return 5
+			case   32	return 6
+			case   64	return 7
+			case  128	return 8
+			case  256	return 9
+			case  512	return 10
+			case 1024	return 11
 		End Select
 		return 0
 	End Function
@@ -292,6 +295,7 @@ Type TVTStationFlag {_exposeToLua}
 			case GRANTED          return "granted"
 			case NO_AGING         return "no_aging"
 			case NO_RUNNING_COSTS return "no_running_costs"
+			case ILLEGAL          return "illegal"
 			case UPDATE1          return "update1"
 			case UPDATE2          return "update2"
 			case UPDATE3          return "update3"
@@ -771,38 +775,39 @@ Type TVTPlayerFinanceEntryType {_exposeToLua}
 	Const PAY_STATION:int = 21                  '3
 	Const SELL_STATION:int = 22                 '4
 	Const PAY_STATIONFEES:int = 23              '5
+	Const PAY_BROADCASTPERMISSION:int = 24      '6
 
-	Const SELL_MISC:int = 31                    '6
-	Const PAY_MISC:int = 32                     '7
-	Const GRANTED_BENEFITS:int = 33             '8
+	Const SELL_MISC:int = 31                    '7
+	Const PAY_MISC:int = 32                     '8
+	Const GRANTED_BENEFITS:int = 33             '9
 
-	Const SELL_PROGRAMMELICENCE:int = 41        '9
-	Const PAY_PROGRAMMELICENCE:int = 42         '10
-	Const PAYBACK_AUCTIONBID:int = 43           '11
-	Const PAY_AUCTIONBID:int = 44               '12
+	Const SELL_PROGRAMMELICENCE:int = 41        '10
+	Const PAY_PROGRAMMELICENCE:int = 42         '11
+	Const PAYBACK_AUCTIONBID:int = 43           '12
+	Const PAY_AUCTIONBID:int = 44               '13
 
-	Const EARN_CALLERREVENUE:int = 51           '13
-	Const EARN_INFOMERCIALREVENUE:int = 52      '14
-	Const EARN_ADPROFIT:int = 53                '15
-	Const EARN_SPONSORSHIPREVENUE:int = 54      '16
-	Const PAY_PENALTY:int = 55                  '17
+	Const EARN_CALLERREVENUE:int = 51           '14
+	Const EARN_INFOMERCIALREVENUE:int = 52      '15
+	Const EARN_ADPROFIT:int = 53                '16
+	Const EARN_SPONSORSHIPREVENUE:int = 54      '17
+	Const PAY_PENALTY:int = 55                  '18
 
-	Const PAY_SCRIPT:int = 61                   '18
-	Const SELL_SCRIPT:int = 62                  '19
-	Const PAY_RENT:int = 63                     '20
-	Const PAY_PRODUCTIONSTUFF:int = 64          '21
+	Const PAY_SCRIPT:int = 61                   '19
+	Const SELL_SCRIPT:int = 62                  '20
+	Const PAY_RENT:int = 63                     '21
+	Const PAY_PRODUCTIONSTUFF:int = 64          '22
 
-	Const PAY_NEWS:int = 71                     '22
-	Const PAY_NEWSAGENCIES:int = 72             '23
+	Const PAY_NEWS:int = 71                     '23
+	Const PAY_NEWSAGENCIES:int = 72             '24
 
-	Const PAY_CREDITINTEREST:int = 81           '24
-	Const PAY_DRAWINGCREDITINTEREST:int = 82    '25
-	Const EARN_BALANCEINTEREST:int = 83         '26
+	Const PAY_CREDITINTEREST:int = 81           '25
+	Const PAY_DRAWINGCREDITINTEREST:int = 82    '26
+	Const EARN_BALANCEINTEREST:int = 83         '27
 
 	
-	Const CHEAT:int = 1000                      '27
+	Const CHEAT:int = 1000                      '28
 
-	Const count:int = 28                        'index 0 - 27
+	Const count:int = 29                        'index 0 - 28
 
 	'groups
 	Const GROUP_NEWS:int = 1
@@ -816,7 +821,7 @@ Type TVTPlayerFinanceEntryType {_exposeToLua}
 
 	Function GetAtIndex:int(index:int)
 		if index >= 11 and index <= 12 then return index
-		if index >= 21 and index <= 23 then return index
+		if index >= 21 and index <= 24 then return index
 		if index >= 31 and index <= 32 then return index
 		if index >= 41 and index <= 44 then return index
 		if index >= 51 and index <= 55 then return index
@@ -843,6 +848,7 @@ Type TVTPlayerFinanceEntryType {_exposeToLua}
 			case PAY_STATION                return "pay_station"
 			case SELL_STATION               return "sell_station"
 			case PAY_STATIONFEES            return "pay_stationfees"
+			case PAY_BROADCASTPERMISSION    return "pay_broadcastpermission"
 
 			case SELL_MISC                  return "sell_misc"
 			case PAY_MISC                   return "pay_misc"
@@ -883,7 +889,7 @@ Type TVTPlayerFinanceEntryType {_exposeToLua}
 		Select typeKey
 			Case CREDIT_REPAY, CREDIT_TAKE
 				Return GROUP_DEFAULT
-			Case PAY_STATION, SELL_STATION, PAY_STATIONFEES
+			Case PAY_STATION, SELL_STATION, PAY_STATIONFEES, PAY_BROADCASTPERMISSION
 				Return GROUP_STATION
 			Case SELL_MISC, PAY_MISC
 				Return GROUP_DEFAULT
@@ -1520,7 +1526,47 @@ Type TVTPressureGroup {_exposeToLua}
 		return 2^(index-1)
 	End Function
 
+
+	Function GetIndex:int(key:int)
+		Select key
+			case   1   return 1
+			case   2   return 2
+			case   4   return 3
+			case   8   return 4
+			case  16   return 5
+			case  32   return 6
+		End Select
+		return 0
+	End Function
+
+
+	'returns an array of all hit indexes
+	Function GetIndexes:int[](key:int = 0)
+		if key < 0 then return [0]
+		
+		Select key
+			case SMOKERLOBBY  return [1]
+			case ANTISMOKER   return [2]
+			case ARMSLOBBY    return [3]
+			case PACIFISTS    return [4]
+			case CAPITALISTS  return [5]
+			case COMMUNISTS   return [6]
+			default
+				'loop through all targetGroup-entries and add them if contained
+				local result:int[]
+				local index:int = 0
+				local subID:int
+				'do NOT start with 0 ("all")
+				For local i:int = 1 to count
+					 subID = GetAtIndex(i)
+					if key & subID then result :+ [i]
+				Next
+				if result.length = 0 then result = [0]
+				return result
+		End Select
+	End Function
 	
+
 	Function GetAsString:String(key:int = 0)
 		Select key
 			case SMOKERLOBBY  return "smokerlobby"
@@ -1529,7 +1575,31 @@ Type TVTPressureGroup {_exposeToLua}
 			case PACIFISTS    return "pacifists"
 			case CAPITALISTS  return "capitalists"
 			case COMMUNISTS   return "communists"
-			default           return "none"
+			default
+				'loop through all targetGroup-entries and add them if contained
+				local result:string
+				local index:int = 0
+				'do NOT start with 0 ("all")
+				For local i:int = 1 to count
+					index = GetAtIndex(i)
+					if key & index then result :+ GetAsString(index) + ","
+				Next
+				if result = "" then return "none"
+				'remove last comma
+				return result[.. result.length-1]
+		End Select
+	End Function
+
+
+	Function GetByString:int(keyString:string = "")
+		Select keyString.toLower()
+			case "smokerlobby" return SMOKERLOBBY
+			case "antismoker"  return ANTISMOKER
+			case "armslobby"   return ARMSLOBBY
+			case "pacifists"   return PACIFISTS
+			case "capitalists" return CAPITALISTS
+			case "communists"  return COMMUNISTS
+			default            return NONE
 		End Select
 	End Function
 End Type

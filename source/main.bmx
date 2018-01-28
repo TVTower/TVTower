@@ -1882,6 +1882,7 @@ Type TGameState
 	Field _PlayerBossCollection:TPlayerBossCollection = Null
 	Field _PlayerDifficultyCollection:TPlayerDifficultyCollection = Null
 	Field _PublicImageCollection:TPublicImageCollection = Null
+	Field _PressureGroupCollection:TPressureGroupCollection = Null
 	Field _EventManagerEvents:TList = Null
 	Field _PopularityManager:TPopularityManager = Null
 	Field _BroadcastManager:TBroadcastManager = Null
@@ -1958,6 +1959,7 @@ Type TGameState
 		GetNewsAgency().Initialize()
 		GetNewsEventSportCollection().InitializeAll()
 		GetPublicImageCollection().Initialize()
+		GetPressureGroupCollection().Initialize()
 		GetBroadcastManager().Initialize()
 
 		GetElevator().Initialize()
@@ -2030,6 +2032,7 @@ Type TGameState
 		_Assign(_PlayerProgrammePlanCollection, TPlayerProgrammePlanCollection._instance, "PlayerProgrammePlanCollection", MODE_LOAD)
 		_Assign(_PlayerBossCollection, TPlayerBossCollection._instance, "PlayerBossCollection", MODE_LOAD)
 		_Assign(_PublicImageCollection, TPublicImageCollection._instance, "PublicImageCollection", MODE_LOAD)
+		_Assign(_PressureGroupCollection, TPressureGroupCollection._instance, "PressureGroupCollection", MODE_LOAD)
 
 		_Assign(_NewsEventTemplateCollection, TNewsEventTemplateCollection._instance, "NewsEventTemplateCollection", MODE_LOAD)
 		_Assign(_NewsEventCollection, TNewsEventCollection._instance, "NewsEventCollection", MODE_LOAD)
@@ -2147,6 +2150,7 @@ Type TGameState
 		_Assign(TPlayerProgrammePlanCollection._instance, _PlayerProgrammePlanCollection, "PlayerProgrammePlanCollection", MODE_SAVE)
 		_Assign(TPlayerBossCollection._instance, _PlayerBossCollection, "PlayerBossCollection", MODE_SAVE)
 		_Assign(TPublicImageCollection._instance, _PublicImageCollection, "PublicImageCollection", MODE_SAVE)
+		_Assign(TPressureGroupCollection._instance, _PressureGroupCollection, "PressureGroupCollection", MODE_SAVE)
 
 		_Assign(TGame._instance, _Game, "Game", MODE_SAVE)
 
