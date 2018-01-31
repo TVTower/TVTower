@@ -87,6 +87,9 @@ Type TTooltipBase
 
 	Field _options:int = 0
 	Field _step:int = 0
+	Field _contentChanged:int = False
+	'cache
+	Field _contentDimension:TVec2D()
 
 	Field _customDrawBackground:int(tooltip:TTooltipBase, x:int, y:int, w:int, h:int)
 	Field _customDrawForeground:int(tooltip:TTooltipBase, x:int, y:int, w:int, h:int)
@@ -116,6 +119,8 @@ Type TTooltipBase
 	'may be rendered over the parent area
 	Const OPTION_PARENT_OVERLAY_ALLOWED:int = 128
 	Const OPTION_MIRRORED_RENDER_POSITION:int = 256
+
+	
 
 
 	Method Initialize:TTooltipBase(title:String="", content:String="unknown", area:TRectangle)
@@ -379,12 +384,14 @@ Type TTooltipBase
 		_renderPosition.SetXY(0,0)
 		SetOption(OPTION_MIRRORED_RENDER_POSITION, False)
 
+		local screenRect:TRectangle = GetScreenRect()
+
 		'limit to visible areas
 		'-> moves tooltip  so that everything is visible on screen
-		local outOfScreenLeft:int = Min(0, GetScreenX())
-		local outOfScreenRight:int = Max(0, GetScreenX() + GetScreenWidth() - GetGraphicsManager().GetWidth())
-		local outOfScreenTop:int = Min(0, GetScreenY())
-		local outOfScreenBottom:int = Max(0, GetScreenY() + GetScreenHeight() - GetGraphicsManager().GetHeight())
+		local outOfScreenLeft:int = Min(0, screenRect.GetX())
+		local outOfScreenRight:int = Max(0, screenRect.GetX2() - GetGraphicsManager().GetWidth())
+		local outOfScreenTop:int = Min(0, screenRect.GetY())
+		local outOfScreenBottom:int = Max(0, screenRect.GetY2() - GetGraphicsManager().GetHeight())
 
 		if outOfScreenLeft then _renderPosition.AddXY(-outOfScreenLeft, 0)
 		if outOfScreenRight then _renderPosition.AddXY(-outOfScreenRight, 0)
@@ -393,7 +400,6 @@ Type TTooltipBase
 
 		'check if it overlaps a parental area
 		if checkParentArea and parentArea and not HasOption(OPTION_PARENT_OVERLAY_ALLOWED)
-			local screenRect:TRectangle = GetScreenRect()
 			'store how much it overlaps
 			local intersectRect:TRectangle = parentArea.IntersectRect(screenRect)
 			if intersectRect
@@ -426,7 +432,7 @@ Type TTooltipBase
 			endif
 		endif
 	End Method
-	
+
 
 	Method SetTitle:Int(value:String)
 		if title = value then return FALSE
@@ -439,6 +445,9 @@ Type TTooltipBase
 		if content = value then return FALSE
 
 		content = value
+		_contentChanged = True
+
+		return True
 	End Method
 
 
@@ -618,6 +627,8 @@ Type TTooltipBase
 		If HasOption(OPTION_DISABLED) Then Return False
 		If not IsStep(STEP_ACTIVE) and not IsStep(STEP_FADING_OUT) Then Return False
 
+		MoveToVisibleScreenArea()
+
 		Local boxX:int = GetScreenX() + xOffset
 		Local boxY:Int	= GetScreenY() + yOffset
 		Local boxWidth:int = GetWidth()
@@ -642,8 +653,10 @@ Type TTooltipBase
 	Method Update:Int()
 		If HasOption(OPTION_DISABLED) Then Return False
 
-		MoveToVisibleScreenArea()
-
+		'if _contentChanged
+		'	_contentDimension = new TVec2D.Init(GetContentWidth(), GetContentHeight())
+		'	_contentChanged = False
+		'endif
 
 		'=== ADJUST HOVER STATE ===
 		local isHovering:int = False

@@ -333,6 +333,71 @@ End Function
 
 
 
+'modifies saturation of the given pixmap
+Function AdjustPixmapSaturation:TPixmap(pixmap:TPixmap, saturation:Float = 1.0)
+	'convert format of wrong one -> make sure the pixmaps are 32 bit format
+	If pixmap.format <> PF_RGBA8888 Then pixmap.convert(PF_RGBA8888)
+
+	local pixel:int
+	local color:TColor = new TColor
+	local colorTone:int = 0
+	
+	For Local x:Int = 0 To pixmap.width - 1
+		For Local y:Int = 0 To pixmap.height - 1
+			color.FromInt(ReadPixel(pixmap, x,y))
+			'skip invisible
+			if color.a = 0 then continue
+			'nothing to do for already gray pixels (no color information)
+			if color.isMonochrome(False) >= 0
+				WritePixel(pixmap, x,y, color.ToInt())
+			else
+				WritePixel(pixmap, x,y, color.AdjustSaturationRGB(saturation-1.0).ToInt())
+			endif
+		Next
+	Next
+
+	return pixmap
+End Function
+
+
+
+
+Function ExtractPixmapFromPixmap:TPixmap(pixmap:TPixmap, shape:TPixmap, offsetX:int=0, offsetY:int=0)
+	if not pixmap or not shape then return Null
+	
+	local extractedPixmap:TPixmap = shape.Copy()
+	'convert format of wrong one -> make sure the pixmaps are 32 bit format
+	If extractedPixmap.format <> PF_RGBA8888 Then extractedPixmap.convert(PF_RGBA8888)
+
+	local pixel:int
+	local color:TColor = new TColor
+	local shapeAlpha:Float
+	local xMin:int = Max(0, offsetX)
+	local xMax:int = Min(pixmap.width, offsetX + shape.width)
+	local yMin:int = Max(0, offsetY)
+	local yMax:int = Min(pixmap.height, offsetY + shape.height)
+	
+	For Local x:Int = xMin To xMax - 1
+		For Local y:Int = yMin To yMax - 1
+			color.FromInt(ReadPixel(shape, x-xMin,y-yMin))
+			'skip invisible
+			if color.a = 0 then continue
+
+			shapeAlpha = color.a
+			color.FromInt(ReadPixel(pixmap, x,y))
+
+			'adjust effective color by the alpha components of the shape
+			color.a :* shapeAlpha
+
+			WritePixel(extractedPixmap, x-xMin,y-yMin, color.ToInt())
+		Next
+	Next
+
+	return extractedPixmap
+End Function
+
+
+
 'creates a pixmap copy and colorizes it
 Function ColorizePixmapCopy:TPixmap(sourcePixmap:TPixmap, color:TColor, colorizationMode:int = 0)
 	'create a copy to work on
@@ -571,7 +636,6 @@ Function TrimImage:TImage(src:object, offset:TRectangle var, trimColor:TColor = 
 	local newPix:TPixmap = PixmapWindow(pix, contentLeft, contentTop, contentRight - contentLeft + 1, contentBottom - ContentTop + 1)
 
 	if paddingSize > 0
-	print "padding"
 		local paddedPix:TPixmap = CreatePixmap(newPix.width + 2*paddingSize, newPix.height + 2*paddingSize, newPix.format)
 		paddedPix.ClearPixels(0)
 

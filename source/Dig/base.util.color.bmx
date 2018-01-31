@@ -21,22 +21,12 @@ Type TColor
 
 
 	Function Create:TColor(r:int=0,g:int=0,b:int=0,a:float=1.0)
-		local obj:TColor = new TColor
-		obj.r = r
-		obj.g = g
-		obj.b = b
-		obj.a = a
-		return obj
+		return new TColor.InitRGBA(r, g, b, a)
 	End Function
 
 
 	Function CreateGrey:TColor(grey:int=0,a:float=1.0)
-		local obj:TColor = new TColor
-		obj.r = grey
-		obj.g = grey
-		obj.b = grey
-		obj.a = a
-		return obj
+		return new TColor.InitRGBA(grey, grey, grey, a)
 	End Function
 
 
@@ -45,10 +35,25 @@ Type TColor
 	End Function
 
 
+	Method InitRGBA:TColor(r:int, g:int, b:int, a:float=1.0)
+		self.r = r
+		self.g = g
+		self.b = b
+		self.a = a
+
+		return self
+	End Method
+
+
 	Method ToString:string()
 		return r+", "+g+", "+b+", "+a
 	End Method
 
+
+	Method ToRGBString:string(glue:string=", ")
+		return r+glue+g+glue+b
+	End Method
+	
 
 	Function FromName:TColor(name:String, alpha:float=1.0)
 		Select name.ToLower()
@@ -195,6 +200,178 @@ Type TColor
 	End Method
 
 
+	'returns RGB difference
+	Method GetEuclideanDistance:int(otherColor:TColor)
+		'according to https://en.wikipedia.org/wiki/Color_difference
+		return sqr( (otherColor.r - r)^2 + (otherColor.g - g)^2 + (otherColor.b - b)^2 )
+	End Method
+
+
+	'returns a delta value describing the perceived distance between colors
+	Method GetCIELABDelta_ByLAB:Float(L:float, A:float, B:float)
+		'default to this implementation
+		return GetCIELABDelta_CIE76_ByLAB(L, A, B)
+	End Method
+
+
+	'returns a delta value describing the perceived distance between colors
+	Method GetCIELABDelta:Float(otherColor:TColor)
+		'default to this implementation
+		return GetCIELABDelta_CIE76(otherColor)
+	End Method
+
+
+	Method GetCIELABDelta_CIE76_ByLAB:Float(L:float, A:float, B:float)
+		local myL:float, myA:float, myB:float
+		ToLAB(myL,myA,myB)
+		
+		'if result is ~2.3 then this is "jnd", just notable difference
+		return sqr( (L - myL)^2 + (A - myA)^2 + (B - myB)^2 )
+	End Method
+	
+
+	Method GetCIELABDelta_CIE76:Float(otherColor:TColor)
+		local L:float, A:float, b:float
+		local otherL:float, otherA:float, otherB:float
+		ToLAB(L,A,B)
+		otherColor.ToLAB(otherL, otherA, otherB)
+		
+		'if result is ~2.3 then this is "jnd", just notable difference
+		return sqr( (otherL - L)^2 + (otherA - A)^2 + (otherB - B)^2 )
+	End Method
+
+
+	Method ToXYZ(X:Float var, Y:Float var, Z:Float var)
+		local tmpR:Float = r/255.0
+		local tmpG:Float = g/255.0
+		local tmpB:Float = b/255.0
+
+		If tmpR > 0.04045 
+			tmpR = 100 * ((tmpR + 0.055) / 1.055) ^ 2.4
+		Else
+			tmpR = 100 * tmpR / 12.92
+		EndIf
+		If tmpG > 0.04045
+			tmpG = 100 * ((tmpG + 0.055) / 1.055) ^ 2.4
+		Else
+			tmpG = 100 * tmpG / 12.92
+		EndIf
+		If tmpB > 0.04045
+			tmpB = 100 * ((tmpB + 0.055) / 1.055) ^ 2.4
+		Else
+			tmpB = 100 * tmpB / 12.92
+		EndIf
+
+		X = tmpR * 0.4124 + tmpG * 0.3576 + tmpB * 0.1805
+		Y = tmpR * 0.2126 + tmpG * 0.7152 + tmpB * 0.0722
+		Z = tmpR * 0.0193 + tmpG * 0.1192 + tmpB * 0.9505
+	End Method
+
+
+	Method ToLAB(L:float var, A:float var, B:float var)
+		'based on http://www.easyrgb.com/en/math.php
+		'-> RGB->XYZ and XYZ->L*AB
+
+		'1) convert RGB to XYZ
+		local X:Float, Y:Float, Z:Float
+		ToXYZ(X, Y, Z)
+
+		'adjust values according "XYZ (Tristimulus) Reference values"
+		'using "D65" (Daylight, sRGB, Adobe-RGB) and "2°" (CIE 1931)
+		X :/ 95.047 
+		Y :/ 100.000
+		Z :/ 108.883
+
+		If X > 0.008856
+			X = X ^ (1/3.0)
+		Else
+			X = (7.787 * X) + (16/116.0)
+		EndIf
+		If Y > 0.008856
+			Y = Y ^ (1/3.0)
+		Else
+			Y = (7.787 * Y) + (16/116.0)
+		EndIf
+		If Z > 0.008856
+			Z = Z ^ (1/3.0)
+		Else
+			Z = (7.787 * Z) + (16/116.0)
+		EndIf
+
+		L = 116 * Y - 16
+		A = 500 * (X - Y)
+		B = 200 * (Y - Z)
+	End Method
+
+
+	Function LAB2XYZ(L:Float, A:Float, B:Float, X:Float var, Y:Float var, Z:Float var)
+		'based on http://www.easyrgb.com/en/math.php
+
+		Y = (L + 16) / 116.0
+		X = A/500.0 + Y
+		Z = Y - B/200.0
+
+		If Y^3 > 0.008856
+			Y = Y^3
+		Else
+			Y = (Y - 16/116.0) / 7.787
+		EndIf
+		If X^3 > 0.008856
+			X = X^3
+		Else
+			X = (X - 16/116.0) / 7.787
+		EndIf
+		If Z^3 > 0.008856
+			Z = Z^3
+		Else
+			Z = (Z - 16/116.0) / 7.787
+		EndIf
+
+		'adjust values according "XYZ (Tristimulus) Reference values"
+		'using "D65" (Daylight, sRGB, Adobe-RGB) and "2°" (CIE 1931)
+		X :* 95.047
+		Y :* 100.000
+		Z :* 108.883
+	End Function
+
+
+	Method FromXYZ:TColor(X:Float, Y:Float, Z:Float)
+		X :/ 100.0
+		Y :/ 100.0
+		Z :/ 100.0
+
+		Local tmpR:Float = X *  3.2406 + Y * -1.5372 + Z * -0.4986
+		Local tmpG:Float = X * -0.9689 + Y *  1.8758 + Z *  0.0415
+		Local tmpB:Float = X *  0.0557 + Y * -0.2040 + Z *  1.0570
+
+		If tmpR > 0.0031308
+			r = 255 * (1.055 * tmpR^(1/2.4) - 0.055)
+		Else
+			r = 255 * 12.92 * tmpR
+		EndIf
+		If tmpG > 0.0031308
+			g = 255 * (1.055 * tmpG^(1/2.4) - 0.055)
+		Else
+			g = 255 * 12.92 * tmpG
+		EndIf
+		If tmpB > 0.0031308
+			b = 255 * (1.055 * tmpB^(1/2.4) - 0.055)
+		Else
+			b = 255 * 12.92 * tmpB
+		EndIf
+	End Method
+
+
+	Method FromLab(L:Float, A:Float, B:Float)
+		'based on http://www.easyrgb.com/en/math.php
+		'-> L*AB->XYZ then XYZ->RGB
+		Local X:Float, Y:Float, Z:Float
+		LAB2XYZ(L, A, B, X, Y, Z)
+
+		FromXYZ(X, Y, Z)
+	End Method
+
+
 	'convert rgb to hsl
 	'Formula adapted from http://en.wikipedia.org/wiki/HSL_color_space.
 	'code based on the jscript code at:
@@ -211,6 +388,7 @@ Type TColor
 
 		l = (maxV + minV) / 2.0
 
+		'gray
 		If maxV = minV
 			h = 0
 			s = 0
@@ -331,6 +509,20 @@ Type TColor
 
 		Self.a = a
 		Return Self
+	End Method
+
+
+	'returns true if the given pixel is monochrome (grey)
+	'beTolerant defines if 240,240,241 is still monochrome, this
+	'is useful if you use gradients, as sometimes gradients have this
+	'differing values
+	Method isMonochrome:int(beTolerant:int=False, ignoreAlpha:int=False)
+		if beTolerant
+			If Abs(r - g)<=1 And Abs(r - b)<=1 And (a <> 0 or IgnoreAlpha) then Return r
+		else
+			If r = g And r = b And (a <> 0 or IgnoreAlpha) then Return r
+		endif
+		Return -1
 	End Method
 
 

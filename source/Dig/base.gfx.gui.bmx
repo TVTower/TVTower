@@ -49,6 +49,7 @@ Const GUI_OBJECT_STATIC_CHILDREN:Int            = 2^16
 Const GUI_OBJECT_STATUS_HOVERED:Int	= 2^0
 Const GUI_OBJECT_STATUS_SELECTED:Int = 2^1
 Const GUI_OBJECT_STATUS_APPEARANCE_CHANGED:Int	= 2^2
+Const GUI_OBJECT_STATUS_CONTENT_CHANGED:Int	= 2^2
 
 Const GUI_OBJECT_ORIENTATION_VERTICAL:Int   = 0
 Const GUI_OBJECT_ORIENTATION_HORIZONTAL:Int = 1
@@ -1221,6 +1222,16 @@ Type TGUIobject
 		EndIf
 	End Method
 
+
+	Method IsContentChanged:Int()
+		Return (_status & GUI_OBJECT_STATUS_CONTENT_CHANGED) <> 0
+	End Method
+
+
+	Method SetContentChanged:Int(bool:Int)
+		SetStatus(GUI_OBJECT_STATUS_CONTENT_CHANGED, bool)
+	End Method
+	
 
 	'called when appearance changes - override in widgets to react
 	'to it

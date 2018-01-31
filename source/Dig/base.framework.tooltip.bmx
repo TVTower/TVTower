@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2018 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -182,7 +182,7 @@ Type TTooltip Extends TEntity
 	End Method
 
 
-	Method GetWidth:Int()
+	Method GetWidth:Float()
 		If Not DirtyImage And Image And imgCacheEnabled Then Return image.width
 
 		'manual config
@@ -195,7 +195,7 @@ Type TTooltip Extends TEntity
 	End Method
 
 
-	Method GetHeight:Int()
+	Method GetHeight:Float()
 		If Not DirtyImage And Image And imgCacheEnabled Then Return image.height
 
 		'manual config

@@ -87,7 +87,7 @@ Type MathHelper
 	End Function
 
 
-	'returns whether a value between an exclusive range (&gt; &lt;)
+	'returns whether a value between an exclusive range (> <)
 	Function inExclusiveRange:Int(value:Float, minValue:Float, maxValue:Float )
 		Return value > minValue And value < maxValue
 	End Function

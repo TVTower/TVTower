@@ -57,6 +57,11 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+'	Method ToIntString:String()
+'		return "xy="+position.ToIntString()+"  wh="+dimension.ToIntString()
+'	End Method
+
+
 	Method SerializeTRectangleToString:string()
 		local xS:string = position.x; if float(int(position.x)) = position.x then xS = int(position.x)
 		local yS:string = position.y; if float(int(position.y)) = position.y then yS = int(position.y)
@@ -366,6 +371,24 @@ Type TRectangle {_exposeToLua="selected"}
 
 	Method GetAbsoluteCenterVec:TVec2D()
 		return new TVec2D.Init(GetX() + GetW()/2, GetY() + GetH()/2)
+	End Method
+
+
+	Method Round:TRectangle()
+		position.x = int(position.x + 0.5)
+		position.y = int(position.y + 0.5)
+		dimension.x = int(dimension.x + 0.5)
+		dimension.y = int(dimension.y + 0.5)
+		return self
+	End Method
+
+
+	Method Integerize:TRectangle()
+		position.x = int(position.x)
+		position.y = int(position.y)
+		dimension.x = int(dimension.x)
+		dimension.y = int(dimension.y)
+		return self
 	End Method
 
 

@@ -169,7 +169,8 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 			'add spritepack as parent
 			childData.Add("parent", spritePack)
 
-			Local sprite:TSprite = TSprite.InitFromConfig(childData)
+			Local sprite:TSprite = new TSprite
+			sprite.InitFromConfig(childData)
 
 			GetRegistry().Set(childData.GetString("name"), sprite)
 		Next

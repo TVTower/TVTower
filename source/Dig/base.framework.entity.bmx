@@ -212,6 +212,14 @@ Type TRenderableEntity extends TEntityBase
 	End Method
 
 
+	Method HasChild:int(child:TRenderableEntity)
+		for local c:TRenderableEntity = EachIn childEntities
+			if child = c then return True
+		next
+		return False
+	End Method
+
+
 	Method AddChild(child:TRenderableEntity, childOffset:TVec2D = null, index:int = -1)
 		if not child then return
 		if not childEntities then childEntities = new TRenderableEntity[0]
@@ -309,13 +317,38 @@ Type TRenderableEntity extends TEntityBase
 
 
 	'returns whether two (Render)Entities overlap eachother visually
-	Method Overlaps:int(other:TRenderableEntity)
+	Method OverlapsVisually:int(other:TRenderableEntity)
 		if not other then return False
-		return GetBoundingBox().intersects(other.GetBoundingBox())
+		return GetScreenBoundingBox().intersects(other.GetScreenBoundingBox())
+	End Method
+
+
+	Method GetX:Float()
+		return area.GetX()
+	End Method
+
+
+	Method GetY:Float()
+		return area.GetY()
+	End Method
+
+
+	Method GetWidth:Float()
+		return area.GetW()
+	End Method
+
+
+	Method GetHeight:Float()
+		return area.GetH()
 	End Method
 
 
 	Method GetBoundingBox:TRectangle()
+		return area
+	End Method
+
+
+	Method GetScreenBoundingBox:TRectangle()
 		return GetScreenArea()
 	End Method
 

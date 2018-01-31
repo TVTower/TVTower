@@ -48,7 +48,7 @@ Type TVec2D {_exposeToLua="selected"}
 
 
 	Method ToString:String()
-		if string(int(x)) = string(x) and string(int(y)) = string(y)
+		if string(float(int(x))) = string(x) and string(float(int(y))) = string(y)
 			return int(x)+", "+int(y)
 		else
 			return x+", "+y
