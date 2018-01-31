@@ -130,8 +130,8 @@ End Type
 Type TVTStationType {_exposeToLua}
 	Const UNKNOWN:int = 0
 	Const ANTENNA:int = 1
-	Const CABLE_NETWORK:int = 2
-	Const SATELLITE:int = 3
+	Const CABLE_NETWORK_UPLINK:int = 2
+	Const SATELLITE_UPLINK:int = 3
 
 	Const count:int = 3
 
@@ -156,11 +156,11 @@ Type TVTStationType {_exposeToLua}
 		if key < 0 then return "unknown"
 		 
 		Select key
-			case UNKNOWN       return "unknown"
+			case UNKNOWN              return "unknown"
 
-			case ANTENNA       return "antenna"
-			case CABLE_NETWORK return "cable_network"
-			case SATELLITE     return "satellite"
+			case ANTENNA              return "antenna"
+			case CABLE_NETWORK_UPLINK return "cable_network_uplink"
+			case SATELLITE_UPLINK     return "satellite_uplink"
 
 			default
 				'loop through all entries and add them if contained
@@ -251,11 +251,12 @@ Type TVTStationFlag {_exposeToLua}
 	Const NO_AGING:int = 64
 	'paid without governmental allowance
 	Const ILLEGAL:int = 128
-	Const UPDATE1:int = 256
-	Const UPDATE2:int = 512
-	Const UPDATE3:int = 1024
+	Const SHUTDOWN:int = 256
+	Const UPDATE1:int = 512
+	Const UPDATE2:int = 1024
+	Const UPDATE3:int = 2048
 
-	Const count:int = 11
+	Const count:int = 12
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -277,6 +278,7 @@ Type TVTStationFlag {_exposeToLua}
 			case  256	return 9
 			case  512	return 10
 			case 1024	return 11
+			case 2048	return 12
 		End Select
 		return 0
 	End Function
@@ -296,6 +298,7 @@ Type TVTStationFlag {_exposeToLua}
 			case NO_AGING         return "no_aging"
 			case NO_RUNNING_COSTS return "no_running_costs"
 			case ILLEGAL          return "illegal"
+			case SHUTDOWN         return "shutdown"
 			case UPDATE1          return "update1"
 			case UPDATE2          return "update2"
 			case UPDATE3          return "update3"

@@ -901,7 +901,18 @@ endrem
 	Method of_buyCableNetworkStation:int(federalStateName:string)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
-		if GetStationMap(ME).BuyCableNetworkStation(federalStateName)
+		if GetStationMap(ME).BuyCableNetworkStationBySectionName(federalStateName)
+			Return self.RESULT_OK
+		else
+			Return self.RESULT_FAILED
+		endif
+	End Method
+
+
+	Method of_buyCableNetworkStationByCableNetworkIndex:int(index:int)
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+
+		if GetStationMap(ME).BuyCableNetworkStation(index)
 			Return self.RESULT_OK
 		else
 			Return self.RESULT_FAILED

@@ -5372,7 +5372,7 @@ Type GameEvents
 		toast.SetMessageCategory(TVTMessageCategory.MISC)
 		toast.SetPriority(2)
 
-		toast.SetCaption(GetLocale("STATION_UNDER_CONSTRUCTION"))
+		toast.SetCaption( GetLocale("X_UNDER_CONSTRUCTION").Replace("%X%", station.GetTypeName()) )
 		toast.SetText( GetLocale(readyText).Replace("%TIME%", readyTime) )
 
 		toast.GetData().AddNumber("playerID", player.playerID)
@@ -5882,6 +5882,7 @@ Type AppEvents
 		EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverGUIObject)
 
 	End Function
+
 
 	Function onMouseOverGUIObject:Int(triggerEvent:TEventBase)
 		Local obj:TGUIObject = TGUIObject(triggerEvent.GetSender())

@@ -411,6 +411,7 @@ FINANCES_HISTORY_FOR_CREDITTAKEN = credit taken
 FINANCES_HISTORY_FOR_STATIONBOUGHT = station bought
 FINANCES_HISTORY_FOR_STATIONSOLD = station sold
 FINANCES_HISTORY_OF_STATIONFEES = station fees
+FINANCES_HISTORY_OF_BROADCASTPERMISSIONS = broadcast permissions
 FINANCES_HISTORY_FOR_MISC = for misc
 FINANCES_HISTORY_OF_GRANTED_BENEFITS = of granted benefits
 FINANCES_HISTORY_FOR_PROGRAMMELICENCE = for programme: %TITLE%
@@ -603,6 +604,8 @@ ANTENNA = Antenna
 ANTENNAS = Antennas
 CABLE_NETWORK = Cable Network
 CABLE_NETWORKS = Cable Networks
+CABLE_NETWORK_UPLINK = Cable Network Uplink
+CABLE_NETWORK_UPLINKS = Cable Network Uplinks
 SATELLITE = Satellite
 SATELLITES = Satellites
 SATELLITE_UPLINK = Satellite Uplink
@@ -620,6 +623,7 @@ SELL_SATELLITE_UPLINK = Cancel Uplink
 
 SELECT_LOCATION = Select location
 SELECT_STATION = Select station
+SELECT_SATELLITE = Select satellite
 TOO_EXPENSIVE = Too expensive
 UNSELLABLE = unsellable
 
@@ -1064,7 +1068,17 @@ ALL_MATCHES_FINISHED = All matches finished
 SHOW_MAP_DETAILS = Show Map Details
 CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION = Click to show advanced map information.
 
-TOGGLE_DISPLAY_OF_STATIONTYPE = Toggle display of %STATIONTYPE%
-TOGGLE_DISPLAY_OF_PLAYER_X = Toggle display of player %X%
+TOGGLE_DISPLAY_OF_STATIONTYPE = Toggle display of |b|%STATIONTYPE%|/b|
+TOGGLE_DISPLAY_OF_PLAYER_X = Toggle display of |b|player %X%|/b|
 
 SATLINK_TO_X = SatLink to %X%
+
+BROADCAST_QUALITY = Broadcast Quality
+MARKET_SHARE = Market Share
+REQUIRED_CHANNEL_IMAGE = Required Channel Image
+SUBSCRIBED_CHANNELS = Subscribed Channels
+LAUNCHED = Launched
+
+PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION = Price includes %X% for broadcast permission
+BROADCAST_PERMISSION_EXISTING = Broadcast permission existing
+BROADCAST_PERMISSION = Broadcast permission
