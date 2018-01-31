@@ -571,6 +571,19 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		GetStationMapCollection().Update()
 		TLogger.Log("ResetPlayer()", "Sold stations", LOG_DEBUG)
 
+		For local section:TStationMapSection = EachIn GetStationMapCollection().sections
+			section.SetBroadcastPermission(playerID, False)
+		Next
+		TLogger.Log("ResetPlayer()", "Removed broadcast permissions", LOG_DEBUG)
+
+
+
+		'=== RESET PRESSURE GROUP SYMPATHIES ==
+		For local pg:TPressureGroup = EachIn GetPressureGroupCollection().pressureGroups
+			pg.SetChannelSympathy(playerID, 0)
+		Next
+		TLogger.Log("ResetPlayer()", "Reset pressure group sympathies", LOG_DEBUG)
+
 
 
 		'=== RESET BOSS (OR INIT NEW ONE?) ===
@@ -690,6 +703,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'do not pay for it each day
 		s.SetFlag(TVTStationFlag.NO_RUNNING_COSTS, True)
 
+		'add a broadcast permission for this station (price: 0 euro)
+		local section:TStationMapSection = GetStationMapCollection().GetSectionByName(s.GetSectionName())
+		if section then section.SetBroadcastPermission(playerID, True, 0)
+
 		map.AddStation( s, False )
 
 
@@ -747,6 +764,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 					'add it at the same spot (or random offset?)
 					local antennaStation:TStationAntenna = new TStationAntenna.Init( newPos,-1, playerID )
 					antennaStation.radius = GetStationMapCollection().antennaStationRadius
+
+					'add a broadcast permission for this station section (price: 0 euro)
+					section = GetStationMapCollection().GetSectionByName(antennaStation.GetSectionName())
+					if section then section.SetBroadcastPermission(playerID, True, 0)
+
 					map.AddStation(antennaStation, False)
 
 					broadcastAreaToDo :- increase
