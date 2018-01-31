@@ -1,5 +1,6 @@
 SuperStrict
 Import "game.gameconstants.bmx"
+Import "game.modifier.base.bmx"
 
 
 
@@ -106,3 +107,72 @@ Type TPressureGroup
 		return channelSympathy[channelID -1]
 	End Method
 End Type
+
+
+
+Type TGameModifierPressureGroup_ModifyChannelSympathy extends TGameModifierBase
+	Field pressureGroup:int
+	Field modifyProbability:Int = 100
+	Field modifyValue:int
+
+
+	'override to create this type instead of the generic one
+	Function CreateNewInstance:TGameModifierPressureGroup_ModifyChannelSympathy()
+		return new TGameModifierPressureGroup_ModifyChannelSympathy
+	End Function
+
+
+	Method Copy:TGameModifierPressureGroup_ModifyChannelSympathy()
+		local clone:TGameModifierPressureGroup_ModifyChannelSympathy = new TGameModifierPressureGroup_ModifyChannelSympathy
+		clone.CopyBaseFrom(self)
+		clone.pressureGroup = self.pressureGroup
+		clone.modifyProbability = self.modifyProbability
+		clone.modifyValue = self.modifyValue
+
+		return clone
+	End Method
+	
+
+	Method Init:TGameModifierPressureGroup_ModifyChannelSympathy(data:TData, extra:TData=null)
+		if not data then return null
+
+		pressureGroup = data.GetInt("pressureGroup", 0)
+		modifyProbability = data.GetInt("probability", 100)
+		modifyValue = data.GetInt("value", 0)
+
+		return self
+	End Method
+	
+	
+	Method ToString:string()
+		local name:string = "default"
+		if data then name = data.GetString("name", name)
+
+		return "TGameModifierPressureGroup_ModifyChannelSympathy ("+name+")"
+	End Method
+
+
+
+	'override to trigger a specific news
+	Method RunFunc:int(params:TData)
+		'skip if probability is missed
+		if modifyProbability <> 100 and RandRange(0, 100) > modifyProbability then return False
+
+		local playerID:int = params.GetInt("playerID", 0)
+
+		if playerID = 0
+			For local i:int = 0 until 4
+				GetPressureGroupCollection().AddChannelSympathy(i, pressureGroup, modifyValue)
+			Next
+		else
+			GetPressureGroupCollection().AddChannelSympathy(playerID, pressureGroup, modifyValue)
+		endif
+print "TGameModifierPressureGroup_ModifyChannelSympathy : Adjusted pressuregroup value"
+
+		return True
+	End Method
+End Type
+
+
+
+GetGameModifierManager().RegisterCreateFunction("ModifyPressureGroupChannelSympathy", TGameModifierPressureGroup_ModifyChannelSympathy.CreateNewInstance)
