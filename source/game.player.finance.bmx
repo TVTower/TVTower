@@ -417,6 +417,8 @@ Type TPlayerFinance {_exposeToLua="selected"}
 				return PayProgrammeLicence(value, extra)
 			case TVTPlayerFinanceEntryType.PAY_STATION
 				return PayStation(value)
+			case TVTPlayerFinanceEntryType.PAY_BROADCASTPERMISSION
+				return PayBroadcastPermission(value)
 			case TVTPlayerFinanceEntryType.PAY_SCRIPT
 				return PayScript(value, extra)
 			case TVTPlayerFinanceEntryType.PAY_PRODUCTIONSTUFF
@@ -638,6 +640,23 @@ Type TPlayerFinance {_exposeToLua="selected"}
 	End Method
 
 
+	'refreshs stats about paid money from buying a broadcast permission fee
+	Method PayBroadcastPermission:Int(price:Long)
+		If canAfford(price)
+			TLogger.Log("TFinancial.PayBroadcastPermission()", "Player "+playerID+" paid "+price+" for a broadcasting permission", LOG_DEBUG)
+			'add this to our history
+			new TPlayerFinanceHistoryEntry.Init(TVTPlayerFinanceEntryType.PAY_BROADCASTPERMISSION, -price).AddTo(playerID)
+
+			expense_stations :+ price
+			AddExpense(price, TVTPlayerFinanceEntryType.PAY_BROADCASTPERMISSION)
+			Return True
+		Else
+			TransactionFailed(price, TVTPlayerFinanceEntryType.PAY_BROADCASTPERMISSION)
+			Return False
+		EndIf
+	End Method
+
+
 	'refreshs stats about paid money from buying a station
 	Method PayStation:Int(price:Long)
 		If canAfford(price)
@@ -653,7 +672,6 @@ Type TPlayerFinance {_exposeToLua="selected"}
 			Return False
 		EndIf
 	End Method
-
 
 	'refreshs stats about paid money from buying a script (own production)
 	Method PayScript:Int(price:Long, script:object)

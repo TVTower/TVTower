@@ -109,6 +109,8 @@ Type TPlayerFinanceHistoryEntry
 				return GetLocale("FINANCES_HISTORY_FOR_STATIONSOLD")
 			Case TVTPlayerFinanceEntryType.PAY_STATIONFEES
 				return GetLocale("FINANCES_HISTORY_OF_STATIONFEES")
+			Case TVTPlayerFinanceEntryType.PAY_BROADCASTPERMISSION
+				return GetLocale("FINANCES_HISTORY_OF_BROADCASTPERMISSIONS")
 			Case TVTPlayerFinanceEntryType.SELL_MISC, ..
 			     TVTPlayerFinanceEntryType.PAY_MISC
 				return GetLocale("FINANCES_HISTORY_FOR_MISC")
