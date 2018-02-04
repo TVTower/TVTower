@@ -79,6 +79,7 @@ RUNNING_COSTS = Running Costs
 VALUE = Value
 BROADCASTING_AREA = Broadcasting area
 OF_THE_MAP = of the map
+POPULATION = Population
 
 CURRENCY = €
 OCLOCK =
@@ -602,14 +603,20 @@ STATION = Station
 STATIONS = Stations
 ANTENNA = Antenna
 ANTENNAS = Antennas
+ANTENNA_RECEIVER = Roof Antenna
+ANTENNA_RECEIVERS = Roof Antennas
 CABLE_NETWORK = Cable Network
 CABLE_NETWORKS = Cable Networks
 CABLE_NETWORK_UPLINK = Cable Network Uplink
 CABLE_NETWORK_UPLINKS = Cable Network Uplinks
+CABLE_NETWORK_RECEIVER = Cable connection
+CABLE_NETWORK_RECEIVERS = Cable connections
 SATELLITE = Satellite
 SATELLITES = Satellites
 SATELLITE_UPLINK = Satellite Uplink
 SATELLITE_UPLINKS = Satellite Uplinks
+SATELLITE_RECEIVER = Satellite Dish
+SATELLITE_RECEIVERS = Satellite Dishes
 
 NEW_STATION = New Station
 BUY_STATION = Buy Station
@@ -1011,7 +1018,7 @@ FOR_X_HOURS = for %X% hours
 FOR_X_HOUR = for %X% hour
 ATTRACTIVITY = attractivity
 
-COUNTRYNAME_ISO3166_DE = Deutschland
+COUNTRYNAME_ISO3166_DE = Germany
 COUNTRYNAME_ISO3166_DE_SHORT = D
 
 ABBREVIATION_YEARS = Y.
@@ -1071,7 +1078,7 @@ CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION = Click to show advanced map information.
 TOGGLE_DISPLAY_OF_STATIONTYPE = Toggle display of |b|%STATIONTYPE%|/b|
 TOGGLE_DISPLAY_OF_PLAYER_X = Toggle display of |b|player %X%|/b|
 
-SATLINK_TO_X = SatLink to %X%
+SATUPLINK_TO_X = SatUplink to %X%
 
 BROADCAST_QUALITY = Broadcast Quality
 MARKET_SHARE = Market Share
@@ -1081,4 +1088,21 @@ LAUNCHED = Launched
 
 PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION = Price includes %X% for broadcast permission
 BROADCAST_PERMISSION_EXISTING = Broadcast permission existing
+BROADCAST_PERMISSION_MISSING = Broadcast permission missing
 BROADCAST_PERMISSION = Broadcast permission
+
+STATIONMAP_SECTION_NAME = Federal State
+STATIONMAP_SECTIONS_NAME = Federal States
+RECEIVER_SHARE = Receiver Share
+AS_OF_DATEX = As of %DATEX%
+NEXT_CENSUS_AT_DATEX = Next census at %DATEX%
+MIN_VALUEX = min. %VALUEX%
+
+PRESSURE_GROUP = Pressure Group
+PRESSURE_GROUPS = Pressure Groups
+PRESSURE_GROUPS_SMOKERLOBBY = Smoker Lobby
+PRESSURE_GROUPS_ANTISMOKER = Anti-Smoker
+PRESSURE_GROUPS_ARMSLOBBY = Arms Lobby
+PRESSURE_GROUPS_PACIFISTS = Pacifists
+PRESSURE_GROUPS_CAPITALISTS = Capitalists
+PRESSURE_GROUPS_COMMUNISTS = Communists

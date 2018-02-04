@@ -6,6 +6,7 @@ Import "game.modifier.base.bmx"
 
 Type TPressureGroupCollection
 	Field pressureGroups:TPressureGroup[]
+	Field _initialized:int = false
 	Global _instance:TPressureGroupCollection
 
 
@@ -21,21 +22,29 @@ Type TPressureGroupCollection
 
 
 	Method Initialize:Int()
-		pressureGroups = new TPressureGroup[TVTPressureGroup.count]
-		For local i:int = 0 until pressureGroups.length
+		pressureGroups = new TPressureGroup[TVTPressureGroup.count +1] 'keep "0" empty
+		For local i:int = 1 until pressureGroups.length
 			pressureGroups[i] = new TPressureGroup.Init( TVTPressureGroup.GetAtIndex(i) )
 		Next
+
+		_initialized = True
+
+		return True
 	End Method
 
 
-
 	Method Set:int(id:int=-1, pressureGroup:TPressureGroup)
+		if not _initialized then Initialize()
 		If pressureGroups.length <= id Then pressureGroups = pressureGroups[..id+1]
+
 		pressureGroups[id] = pressureGroup
+
+		return True
 	End Method
 
 
 	Method Get:TPressureGroup(id:int)
+		if not _initialized then Initialize()
 		If id < 0 or id >= pressureGroups.length Then return Null
 
 		Return pressureGroups[id]
@@ -43,6 +52,7 @@ Type TPressureGroupCollection
 
 
 	Method GetChannelSympathy:Float(channelID:int, pressureGroupID:int)
+		if not _initialized then Initialize()
 		local result:Float
 		local indices:int[] = TVTPressureGroup.GetIndexes(pressureGroupID)
 		For local index:int = EachIn indices
@@ -54,6 +64,7 @@ Type TPressureGroupCollection
 
 
 	Method SetChannelSympathy(channelID:int, pressureGroupID:int, value:Float)
+		if not _initialized then Initialize()
 		For local index:int = EachIn TVTPressureGroup.GetIndexes(pressureGroupID)
 			Get(index).SetChannelSympathy(channelID, value)
 		Next
@@ -61,6 +72,7 @@ Type TPressureGroupCollection
 
 
 	Method AddChannelSympathy(channelID:int, pressureGroupID:int, value:Float)
+		if not _initialized then Initialize()
 		For local index:int = EachIn TVTPressureGroup.GetIndexes(pressureGroupID)
 			Get(index).SetChannelSympathy(channelID, Get(index).GetChannelSympathy(channelID) + value)
 		Next

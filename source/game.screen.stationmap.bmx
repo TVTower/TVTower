@@ -27,8 +27,8 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 	Field localeKey_SellItem:String = "SELL_ITEM"
 	
 	Field _eventListeners:TLink[]
-	Field headerColor:TColor = New TColor.Create(75,75,75)
-	Field subHeaderColor:TColor = New TColor.Create(115,115,115)
+	Global headerColor:TColor = New TColor.Create(75,75,75)
+	Global subHeaderColor:TColor = New TColor.Create(115,115,115)
 
 
 	Method Create:TGameGUIBasicStationmapPanel(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
@@ -74,7 +74,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		_eventListeners = New TLink[0]
 
 		'=== register event listeners
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickActionButton", actionButton ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickCancelButton", cancelButton ) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickCancelButton", cancelButton ) ]
 		'localize the button
 		'we have to refresh the gui station list as soon as we remove or add a station
@@ -1285,9 +1285,399 @@ End Type
 
 
 
+
+
+Type TStationMapInformationFrame
+	Field area:TRectangle
+	Field contentArea:TRectangle
+	Field headerHeight:Int
+	Field countryInformationHeight:Int = 90
+	Field sectionListHeight:Int
+	Field sectionListHeaderHeight:Int = 16
+	Field selectedSection:TStationMapSection
+	Field sectionList:TGUISelectList
+	Field tooltips:TTooltipBase[]
+	Field _open:Int = True
+	Global subHeaderColor:TColor = New TColor.Create(115,115,115)
+
+	Field _eventListeners:TLink[]
+
+
+	Method New()
+		sectionList = New TGUISelectList.Create(New TVec2D.Init(410,153), New TVec2D.Init(378, 100), "STATIONMAP")
+		'scroll by one entry at a time
+		sectionList.scrollItemHeightPercentage = 1.0
+		sectionList.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
+
+		'panel handles them (similar to a child - but with manual draw/update calls)
+		GuiManager.Remove(sectionList)
+
+		tooltips = New TTooltipBase[4]
+		For Local i:Int = 0 Until tooltips.length
+			tooltips[i] = New TGUITooltipBase.Initialize("", "", New TRectangle.Init(0,0,-1,-1))
+			tooltips[i].parentArea = New TRectangle
+			tooltips[i].SetOrientationPreset("TOP")
+			tooltips[i].offset = New TVec2D.Init(0,+5)
+			tooltips[i].SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
+			'standard icons should need a bit longer for tooltips to show up
+			tooltips[i].dwellTime = 500
+		Next
+
+		'fill with content
+		RefreshSectionList()
+
+
+		'=== remove all registered event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = New TLink[0]
+
+		'=== register event listeners
+		'we have to refresh the gui station list as soon as we remove or add a station
+		_eventListeners :+ [ EventManager.registerListenerMethod( "stationmapcollection.addSection", Self, "OnChangeSections" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "GUISelectList.onSelectEntry", Self, "OnSelectEntryList", sectionList ) ]
+
+'		return self
+	End Method
+
+	
+	Method SetLanguage()
+		Local strings:String[] = [GetLocale("BROADCAST_QUALITY"), GetLocale("MARKET_SHARE"), GetLocale("REQUIRED_CHANNEL_IMAGE"), GetLocale("SUBSCRIBED_CHANNELS")]
+		strings = strings[.. tooltips.length]
+
+		For Local i:Int = 0 Until tooltips.length
+			If tooltips[i] Then tooltips[i].SetContent(strings[i])
+		Next
+	End Method
+
+
+	Method OnChangeSections:Int(triggerEvent:TEventBase)
+		RefreshSectionList()
+	End Method
+
+
+	'an entry was selected - make the linked section the currently selected one
+	Method OnSelectEntryList:Int(triggerEvent:TEventBase)
+		Local senderList:TGUISelectList = TGUISelectList(triggerEvent._sender)
+		If Not senderList Then Return False
+		If senderList <> sectionList Then Return False
+		If Not TScreenHandler_StationMap.currentSubRoom Then Return False
+		If Not GetPlayerBaseCollection().IsPlayer(TScreenHandler_StationMap.currentSubRoom.owner) Then Return False
+
+		'set the linked satellite as the selected one
+		Local item:TGUISelectListItem = TGUISelectListItem(senderList.getSelectedEntry())
+		If item
+			selectedSection = TStationMapSection(item.data.get("section"))
+		EndIf
+	End Method
+
+
+	Method SelectSection:Int(section:TStationMapSection)
+		selectedSection = section
+		If Not selectedSection
+			sectionList.DeselectEntry()
+
+			Return True
+		Else
+			For Local i:TGUIListItem = EachIn sectionList.entries
+				Local itemSection:TStationMapSection = TStationMapSection(i.data.get("section"))
+				If itemSection = section
+					sectionList.SelectEntry(i)
+
+					Return True
+				EndIf
+			Next
+		EndIf
+
+		Return False
+	End Method
+
+
+	Method IsOpen:Int()
+		Return _open
+	End Method
+
+
+	Method Close:Int()
+		SelectSection(Null)
+		
+		_open = False
+		Return True
+	End Method
+
+
+	Method Open:Int()
+		_open = True
+		Return True
+	End Method
+
+
+	'custom drawing function for list entries
+	Function DrawMapSectionListEntryContent:Int(obj:TGUIObject)
+		Local item:TGUISelectListItem = TGUISelectListItem(obj)
+		If Not item Then Return False
+
+		Local section:TStationMapSection = TStationMapSection(item.data.Get("section"))
+		If Not section Then Return False
+
+		local owner:int = 0
+		if TScreenHandler_StationMap.currentSubRoom then owner = TScreenHandler_StationMap.currentSubRoom.owner
+
+		Local valueA:String = GetLocale("MAP_COUNTRY_"+item.GetValue())
+		Local valueB:String = section.HasBroadcastPermission(owner)
+		Local valueC:String = MathHelper.NumberToString(section.GetPressureGroupsChannelSympathy(owner)*100,2) +"%"
+		Local valueD:String = TFunctions.convertValue(section.GetPopulation(), 2, 0)
+		Local paddingLR:Int = 2
+		Local textOffsetX:Int = paddingLR + 5
+		Local textOffsetY:Int = 2
+		Local textW:Int = item.GetScreenWidth() - textOffsetX - paddingLR
+		Local colY:Int = Int(item.GetScreenY() + textOffsetY)
+		Local colHeight:Int = Int(item.GetScreenHeight() - textOffsetY)
+		Local colWidthA:Int = 0.5 * textW
+		Local colWidthB:Int = 0.1 * textW
+		Local colWidthC:Int = 0.1 * textW
+		Local colWidthD:Int = 0.3 * textW
+
+		Local currentColor:TColor = New TColor.Get()
+		Local entryColor:TColor
+
+		'draw with different color according status
+		entryColor = item.valueColor.copy()
+		entryColor.a = currentColor.a
+
+		'draw antenna
+		entryColor.SetRGBA()
+		item.GetFont().DrawBlock(valueA, Int(item.GetScreenX() + textOffsetX), colY, colWidthA, colHeight, ALIGN_LEFT_CENTER, item.valueColor, , , , False)
+		textOffsetX :+ colWidthA
+		item.GetFont().DrawBlock(valueB, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), colWidthB, colHeight, ALIGN_RIGHT_CENTER, item.valueColor)
+		textOffsetX :+ colWidthB
+		item.GetFont().DrawBlock(valueC, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), colWidthC, colHeight, ALIGN_RIGHT_CENTER, item.valueColor)
+		textOffsetX :+ colWidthB
+		item.GetFont().DrawBlock(valueD, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), colWidthD, colHeight, ALIGN_RIGHT_CENTER, item.valueColor)
+		textOffsetX :+ colWidthB
+
+		currentColor.SetRGBA()
+	End Function
+	
+
+	Method RefreshSectionList:Int()
+		sectionList.EmptyList()
+		'remove potential highlighted item
+		sectionList.deselectEntry()
+
+		'keep them sorted the way we added the stations
+		sectionList.setListOption(GUILIST_AUTOSORT_ITEMS, False)
+
+
+		Local listContentWidth:Int = sectionList.GetContentScreenWidth()
+
+		If GetStationMapCollection().sections
+			For Local section:TStationMapSection = EachIn GetStationMapCollection().sections
+				Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D.Init(listContentWidth,20), section.name)
+	
+				'fill complete width
+				item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
+	
+				'link the station to the item
+				item.data.Add("section", section)
+				item._customDrawContent = DrawMapSectionListEntryContent
+				sectionList.AddItem( item )
+			Next
+		EndIf
+
+		Return True
+	End Method
+
+	
+	Method Update:Int()
+		If contentArea
+			If sectionList.rect.GetX() <> contentArea.GetX()
+				sectionList.SetPosition(contentArea.GetX(), contentArea.GetY() + 16 + countryInformationHeight + sectionListHeaderHeight)
+			EndIf
+			If sectionList.GetWidth() <> contentArea.GetW()
+				sectionList.Resize(contentArea.GetW())
+			EndIf
+		EndIf
+	
+		sectionList.update()
+
+		For Local t:TTooltipBase = EachIn tooltips
+			t.Update()
+		Next
+	End Method
+
+
+	Method Draw:Int()
+		Local skin:TDatasheetSkin = GetDatasheetSkin("stationMapPanel")
+		If Not skin Then Return False
+
+		Local owner:Int = GetPlayer().playerID
+		If TScreenHandler_StationMap.currentSubRoom Then owner = TScreenHandler_StationMap.currentSubRoom.owner
+
+		If Not area Then area = New TRectangle.Init(170, 5, 400, 348)
+		If Not contentArea Then contentArea = New TRectangle
+
+		Local detailsH:Int = 90 * (selectedSection<>Null)
+		'local boxH:int = skin.GetBoxSize(100, -1, "").GetY()
+		contentArea.SetW( skin.GetContentW( area.GetW() ) )
+		contentArea.SetX( area.GetX() + skin.GetContentX() )
+		contentarea.SetY( area.GetY() + skin.GetContentY() )
+		contentArea.SetH( area.GetH() - (skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()) )
+
+		headerHeight = 16
+		sectionListHeight = contentArea.GetH() - headerHeight - countryInformationHeight - detailsH - sectionListHeaderHeight
+
+		'resize list if needed
+		If sectionListHeight <> sectionList.GetHeight()-5
+			sectionList.Resize(-1, sectionListHeight-5)
+		EndIf
+
+
+		Local currentY:Int = contentArea.GetY()
+
+
+		Local headerText:String = GetLocale("COUNTRYNAME_ISO3166_"+GetStationMapCollection().GetMapISO3166Code())
+		Local titleColor:TColor = New TColor.Create(75,75,75)
+		Local subTitleColor:TColor = New TColor.Create(115,115,115)
+
+
+
+		'=== HEADER ===
+		skin.RenderContent(contentArea.GetX(), contentArea.GetY(), contentArea.GetW(), headerHeight, "1_top")
+		skin.fontBold.drawBlock(headerText, contentArea.GetX() + 5, currentY, contentArea.GetW() - 10,  headerHeight, ALIGN_CENTER_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+		currentY :+ headerHeight
+
+		'=== COUNTRY DETAILS ===
+		skin.RenderContent(contentArea.GetX(), currentY, contentArea.GetW(), countryInformationHeight, "1")
+		local lineH:int = 14
+		local col1W:int = 100
+		local col2W:int = 60
+		local col3W:int = 110
+		local col4W:int = 70
+		local col1:int = contentArea.GetX() + 5
+		local col3:int = contentArea.GetX2() - 5 - col3W - col4W
+		local col2:int = col1 + col1W
+		local col4:int = col3 + col3W
+		local textY:int = currentY + 5
+		skin.fontNormal.drawBlock("|b|"+GetLocale("POPULATION")+":|/b|", col1, textY + 0*lineH, col1W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral)
+		skin.fontNormal.drawBlock(TFunctions.DottedValue(GetStationMapCollection().GetPopulation()), col2, textY + 0*lineH, col2W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+		skin.fontNormal.drawBlock("|b|"+GetLocale("STATIONMAP_SECTIONS_NAME")+":|/b|", col1, textY + 1*lineH, col1W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral)
+		skin.fontNormal.drawBlock(GetStationMapCollection().sections.Count(), col2, textY + 1*lineH, col2W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+
+		skin.fontNormal.drawBlock("|b|"+GetLocale("RECEIVER_SHARE")+"|/b|", col3, textY + 0*lineH, col3W + col4W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral)
+		skin.fontNormal.drawBlock(GetLocale("ANTENNA_RECEIVERS")+":", col3, textY + 1*lineH, col3W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.4,True, True)
+		skin.fontNormal.drawBlock(MathHelper.NumberToString(GetStationMapCollection().GetAveragePopulationAntennaShare()*100, 2)+"%", col4, textY + 1*lineH, col4W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+		skin.fontNormal.drawBlock(GetLocale("SATELLITE_RECEIVERS")+":", col3, textY + 2*lineH, col3W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.4,True, True)
+		skin.fontNormal.drawBlock(MathHelper.NumberToString(GetStationMapCollection().GetAveragePopulationSatelliteShare()*100, 2)+"%", col4, textY + 2*lineH, col4W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+		skin.fontNormal.drawBlock(GetLocale("CABLE_NETWORK_RECEIVERS")+":", col3, textY + 3*lineH, col3W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.4,True, True)
+		skin.fontNormal.drawBlock(MathHelper.NumberToString(GetStationMapCollection().GetAveragePopulationCableShare()*100, 2)+"%", col4, textY + 3*lineH, col4W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+
+		local statusText:string = GetLocale("AS_OF_DATEX").Replace("%DATEX%", GetWorldTime().GetFormattedGameDate(GetStationMapCollection().GetLastCensusTime()))
+		statusText :+ ". " + GetLocale("NEXT_CENSUS_AT_DATEX").Replace("%DATEX%", GetWorldTime().GetFormattedGameDate(GetStationMapCollection().GetNextCensusTime()))
+		skin.fontNormal.drawBlock("|i|"+statusText+"|/i|", contentArea.GetX() + 5, textY + 4*lineH, contentArea.GetW()- 10,  30, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+		currentY :+ countryInformationHeight
+
+
+		'=== LIST ===
+		skin.RenderContent(contentArea.GetX(), currentY, contentArea.GetW(), sectionListHeight + sectionListHeaderHeight, "2")
+		skin.fontNormal.drawBlock(GetLocale("STATIONMAP_SECTION_NAME"), contentArea.GetX() + 5, currentY, contentArea.GetW() - 10,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+		skin.fontNormal.drawBlock("Sendegenehm.", contentArea.GetX() + 5 + 0.2*contentArea.GetW(), currentY, contentArea.GetW() - 10,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+		skin.fontNormal.drawBlock("Image", contentArea.GetX() + 5 + 0.4*contentArea.GetW(), currentY, contentArea.GetW() - 10,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+		currentY :+ sectionListHeaderHeight
+
+'		skin.RenderContent(contentArea.GetX(), currentY, contentArea.GetW(), sectionListHeight, "2")
+		sectionList.Draw()
+		currentY :+ sectionListHeight
+
+
+		'=== SECTION DETAILS ===
+		If selectedSection
+			'col1W :- 30
+			'col2  :- 30
+			'col2W :+ 30
+			Local titleText:String = GetLocale("MAP_COUNTRY_"+ selectedSection.name)
+
+			skin.RenderContent(contentArea.GetX(), currentY, contentArea.GetW(), 17, "1_top")
+'			currentY :+ 2
+			skin.fontNormal.drawBlock("|b|"+titleText+"|/b|", contentArea.GetX() + 5, currentY, contentArea.GetW() - 10,  16, ALIGN_CENTER_CENTER, titleColor, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+			currentY :+ 14 + 3
+			skin.RenderContent(contentArea.GetX(), currentY , contentArea.GetW(), detailsH - 17, "1")
+
+			textY = currentY + 2
+
+			local pressureGroups:string 'TVTPressureGroup.GetAsString(pgID).Split(",")
+			local pressureGroupIndexes:int[] = TVTPressureGroup.GetIndexes(selectedSection.pressureGroups)
+			if not pressureGroupIndexes then throw "ups"
+			For local pgIndex:int = eachIn TVTPressureGroup.GetIndexes(selectedSection.pressureGroups)
+				if pressureGroups
+					pressureGroups :+ ", " + GetLocale("PRESSURE_GROUPS_"+ TVTPressureGroup.GetAsString( TVTPressureGroup.GetAtIndex(pgIndex) ))
+				else
+					pressureGroups :+ GetLocale("PRESSURE_GROUPS_"+ TVTPressureGroup.GetAsString( TVTPressureGroup.GetAtIndex(pgIndex) ))
+				endif
+			Next
+			skin.fontNormal.drawBlock("|b|"+GetLocale("POPULATION")+":|/b|", col1, textY + 0*lineH, col1W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral)
+			skin.fontNormal.drawBlock(TFunctions.DottedValue(selectedSection.GetPopulation()), col2, textY + 0*lineH, col2W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+
+			local cableNetworkText:string
+			if GetStationMapCollection().GetCableNetworksInSectionCount(selectedSection.name, True) > 0
+				cableNetworkText:string = GetLocale("YES")
+			else
+				cableNetworkText:string = GetLocale("NO")
+				rem
+				local firstCableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetFirstCableNetworkBySectionName(selectedSection.name)
+				if firstCableNetwork and firstCableNetwork.launchTime >= 0
+					cableNetworkText = GetWorldTime().GetFormattedDate(firstCableNetwork.launchTime)
+				else
+					cableNetworkText = "-/-"
+				endif
+				endrem
+			endif
+			skin.fontNormal.drawBlock("|b|"+GetLocale("CABLE_NETWORK")+":|/b|", col1, textY + 1*lineH, col1W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral)
+			skin.fontNormal.drawBlock(cableNetworkText, col2, textY + 1*lineH, col2W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+
+			skin.fontNormal.drawBlock("|b|"+GetLocale("PRESSURE_GROUPS")+":|/b| " + pressureGroups, col1, textY + 2*lineH, col1W + col2W,  3*14, ALIGN_LEFT_TOP, skin.textColorNeutral)
+
+			skin.fontNormal.drawBlock("|b|"+GetLocale("BROADCAST_PERMISSION")+":|/b|", col3, textY + 0*lineH, col3W+col4W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral)
+			skin.fontNormal.drawBlock(GetLocale("PRICE")+":", col3, textY + 1*lineH, col3W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.4,True, True)
+			skin.fontNormal.drawBlock(TFunctions.DottedValue(selectedSection.GetBroadcastPermissionPrice(owner))+" " + GetLocale("CURRENCY"), col4, textY + 1*lineH, col4W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+			skin.fontNormal.drawBlock(GetLocale("CHANNEL_IMAGE")+":", col3, textY + 2*lineH, col3W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.4,True, True)
+			skin.fontNormal.drawBlock(GetLocale("MIN_VALUEX").Replace("%VALUEX%", MathHelper.NumberToString(100*selectedSection.broadcastPermissionMinimumChannelImage, 1, True)+"%"), col4, textY + 2*lineH, col4W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+			if selectedSection.HasBroadcastPermission(owner)
+				skin.fontNormal.drawBlock(getLocale("BROADCAST_PERMISSION_EXISTING"), col3, textY + 3*lineH, col3W+col4W, 14, ALIGN_LEFT_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+			else
+				skin.fontNormal.drawBlock(getLocale("BROADCAST_PERMISSION_MISSING"), col3, textY + 3*lineH, col3W+col4W, 14, ALIGN_LEFT_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+			endif
+
+'nur , wenn keine Genehmigung vorliegt
+'			If Not GetPublicImage(owner) Or GetPublicImage(owner).GetAverageImage() < selectedSection.broadcastPermissionMinimumChannelImage
+		EndIf
+
+
+		skin.RenderBorder(area.GetX(), area.GetY(), area.GetW(), area.GetH())
+
+		'debug
+		Rem
+		DrawRect(contentArea.GetX(), contentArea.GetY(), 20, contentArea.GetH() )
+		Setcolor 255,0,0
+		DrawRect(contentArea.GetX() + 10, contentArea.GetY(), 20, headerHeight )
+		Setcolor 255,255,0
+		DrawRect(contentArea.GetX() + 20, contentArea.GetY() + headerHeight, 20, sectionListHeight )
+		Setcolor 255,0,255
+		DrawRect(contentArea.GetX() + 30, contentArea.GetY() + headerHeight + listHeight, 20, detailsH )
+		endrem
+
+		For Local t:TTooltipBase = EachIn tooltips
+			t.Render()
+		Next
+	End Method
+End Type
+
+
+
+
 Type TScreenHandler_StationMap
 	Global guiAccordeon:TGUIAccordeon
 	Global satelliteSelectionFrame:TSatelliteSelectionFrame
+	Global mapInformationFrame:TStationMapInformationFrame
 
 	Global actionMode:Int = 0
 	Global actionConfirmed:Int = False
@@ -1400,6 +1790,7 @@ Type TScreenHandler_StationMap
 
 
 		satelliteSelectionFrame = New TSatelliteSelectionFrame
+		mapInformationFrame = New TStationMapInformationFrame
 
 
 		'=== reset gui element options to their defaults
@@ -1435,6 +1826,8 @@ Type TScreenHandler_StationMap
 			_eventListeners :+ [ EventManager.registerListenerFunction("guiCheckBox.onSetChecked", OnSetChecked_StationMapFilters, guiFilterButtons[i]) ]
 		Next
 
+		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onClick", OnClickInfoButton, guiInfoButton ) ]
+	
 		'to update/draw the screen
 		_eventListeners :+ TRoomHandler._RegisterScreenHandler( onUpdateStationMap, onDrawStationMap, screen )
 
@@ -1464,6 +1857,7 @@ Type TScreenHandler_StationMap
 		Next
 
 		If satelliteSelectionFrame Then satelliteSelectionFrame.SetLanguage()
+		If mapInformationFrame Then mapInformationFrame.SetLanguage()
 	End Function
 
 
@@ -1574,9 +1968,12 @@ Type TScreenHandler_StationMap
 			Local foundNoPermissionSections:Int = 0
 			For Local section:TStationMapSection = EachIn GetStationMapCollection().sections
 				If Not section.HasBroadcastPermission(room.owner)
-					SetColor 255,180,180
-					SetAlpha 0.50 * oldCol.a
+					SetColor 225,175,50
+					SetAlpha 0.40 * oldCol.a
 					DrawImage(section.GetDisabledOverlay(), section.rect.GetX(), section.rect.GetY())
+					'SetAlpha 0.25 * oldCol.a
+					'section.GetHighlightBorderSprite().Draw(section.rect.GetX(), section.rect.GetY())
+					
 					foundNoPermissionSections :+ 1
 				EndIf
 			Next
@@ -1585,7 +1982,7 @@ Type TScreenHandler_StationMap
 			'this is done to avoid "available sections" to get hidden
 			If foundNoPermissionSections > 0
 				For Local section:TStationMapSection = EachIn GetStationMapCollection().sections
-					If section.activeCableNetworkCount > 0
+					If section.HasBroadcastPermission(room.owner)
 						DrawImage(section.GetEnabledOverlay(), section.rect.GetX(), section.rect.GetY())
 					EndIf
 				Next
@@ -1632,6 +2029,22 @@ Type TScreenHandler_StationMap
 		If selectedStation Then selectedStation.Draw(True)
 
 
+		'draw activation tooltip for all other stations
+		'- only draw them while NOT placing a new one (to ease spot finding)
+		If actionMode <> MODE_BUY_ANTENNA And actionMode <> MODE_BUY_SATELLITE_UPLINK And actionMode <> MODE_BUY_CABLE_NETWORK_UPLINK
+			For Local station:TStationBase = EachIn GetStationMap(room.owner).Stations
+				If mouseoverStation = station Then Continue
+				If station.IsActive() Then Continue
+
+				station.DrawActivationTooltip()
+			Next
+		EndIf
+		
+		If mapInformationFrame.IsOpen()
+			mapInformationFrame.Draw()
+		EndIf
+		
+
 		GUIManager.Draw( LS_stationmap )
 
 		For Local i:Int = 0 To 3
@@ -1657,18 +2070,6 @@ Type TScreenHandler_StationMap
 					mouseoverSection.DrawChannelStatusTooltip(currentSubRoom.owner, TVTStationType.CABLE_NETWORK_UPLINK )
 				endif
 			EndIf
-		EndIf
-		
-
-		'draw activation tooltip for all other stations
-		'- only draw them while NOT placing a new one (to ease spot finding)
-		If actionMode <> MODE_BUY_ANTENNA And actionMode <> MODE_BUY_SATELLITE_UPLINK And actionMode <> MODE_BUY_CABLE_NETWORK_UPLINK
-			For Local station:TStationBase = EachIn GetStationMap(room.owner).Stations
-				If mouseoverStation = station Then Continue
-				If station.IsActive() Then Continue
-
-				station.DrawActivationTooltip()
-			Next
 		EndIf
 
 
@@ -1702,7 +2103,11 @@ Type TScreenHandler_StationMap
 
 		'process right click
 		If MOUSEMANAGER.isClicked(2) Or MouseManager.IsLongClicked(1)
-			Local reset:Int = (selectedStation Or mouseoverStation Or satelliteSelectionFrame.IsOpen())
+			Local reset:Int = (selectedStation Or mouseoverStation Or satelliteSelectionFrame.IsOpen() or mapInformationFrame.IsOpen())
+
+			If mapInformationFrame.IsOpen()
+				mapInformationFrame.Close()
+			EndIf
 
 '			if satelliteSelectionFrame.IsOpen()
 '				satelliteSelectionFrame.Close()
@@ -1917,16 +2322,13 @@ endrem
 		EndIf
 
 
+		If mapInformationFrame.IsOpen()
+			mapInformationFrame.Update()
+		EndIf
+		
+
 		If satelliteSelectionFrame.IsOpen()
 			satelliteSelectionFrame.Update()
-
-			'check if closing needed or other another satellite needs
-			'to get selected
-'			if actionMode <> TScreenHandler_StationMap.MODE_BUY_SATELLITE_UPLINK
-'				else
-'					satelliteSelectionFrame.Close()
-'				endif
-'			endif
 		EndIf
 
 		
@@ -1972,6 +2374,14 @@ endrem
 	'===================================
 	'Stationmap: Connect GUI elements
 	'===================================
+
+	Function OnClickInfoButton:Int(triggerEvent:TEventBase)
+		Local button:TGUIButton = TGUIButton(triggerEvent._sender)
+		If Not button Then Return False
+
+		mapInformationFrame.Open()
+	End Function
+
 
 	Function OnUpdate_ActionButton:Int(triggerEvent:TEventBase)
 		Local button:TGUIButton = TGUIButton(triggerEvent._sender)

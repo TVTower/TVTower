@@ -29,6 +29,7 @@
 			<config>
 				<name>Germany</name>
 				<nameShort>D</nameShort>
+				<iso3166code>DE</iso3166code>
 			</config>
 
 			<citynames>

@@ -80,6 +80,7 @@ RUNNING_COSTS = Unterhaltskosten
 VALUE = Wert
 BROADCASTING_AREA = Sendegebiet
 OF_THE_MAP = der Karte
+POPULATION = Einwohner
 
 CURRENCY = €
 OCLOCK = Uhr
@@ -448,7 +449,7 @@ MAP_COUNTRY_BAYERN				=	Bayern
 MAP_COUNTRY_SAARLAND			=	Saarland
 MAP_COUNTRY_RHEINLANDPFALZ		=	Rheinland-Pfalz
 MAP_COUNTRY_HESSEN				=	Hessen
-MAP_COUNTRY_THUERINGEN			=	Thueringen
+MAP_COUNTRY_THUERINGEN			=	Thüringen
 MAP_COUNTRY_SACHSEN				=	Sachsen
 MAP_COUNTRY_SACHSENANHALT		=	Sachsen-Anhalt
 MAP_COUNTRY_NIEDERSACHSEN		=	Niedersachsen
@@ -602,14 +603,21 @@ STATION = Sendemast
 STATIONS = Sendemasten
 ANTENNA = Sendemast
 ANTENNAS = Sendemasten
+ANTENNA_RECEIVER = Hausantenne
+ANTENNA_RECEIVERS = Hausantennen
 CABLE_NETWORK = Kabelnetz
 CABLE_NETWORKS = Kabelnetze
 CABLE_NETWORK_UPLINK = Kabelnetzanbindung
 CABLE_NETWORK_UPLINKS = Kabelnetzanbindungen
+CABLE_NETWORK_RECEIVER = Kabelanschluss
+CABLE_NETWORK_RECEIVERS = Kabelanschlüsse
 SATELLITE = Satellit
 SATELLITES = Satelliten
 SATELLITE_UPLINK = Satellitenanbindung
 SATELLITE_UPLINKS = Satellitenanbindungen
+SATELLITE_RECEIVER = Satellitenschüssel
+SATELLITE_RECEIVERS = Satellitenschüsseln
+PEOPLE_WITH_TV = Re
 
 NEW_STATION = Neuer Sendemast
 BUY_STATION = Sendemast kaufen
@@ -1033,6 +1041,7 @@ FOR_X_HOUR = für %X% Stunde
 ATTRACTIVITY = Attraktivität
 
 COUNTRYNAME_ISO3166_DE = Deutschland
+COUNTRYNAME_ISO3166_DE_SHORT = D
 
 ABBREVIATION_YEARS = J.
 
@@ -1091,7 +1100,7 @@ CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION = Klicken um tiefergehende Karteninformat
 TOGGLE_DISPLAY_OF_STATIONTYPE = De-/Aktiviere Anzeige von |b|%STATIONTYPE%|/b|
 TOGGLE_DISPLAY_OF_PLAYER_X = De-/Aktiviere Anzeige von |b|Spieler %X%|/b|
 
-SATLINK_TO_X = SatLink zu %X%
+SATUPLINK_TO_X = SatUplink zu %X%
 
 BROADCAST_QUALITY = Ausstrahlungsqualität
 MARKET_SHARE = Marktanteil
@@ -1101,4 +1110,21 @@ LAUNCHED = Gestartet
 
 PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION = Preis inklusive %X% für Sendegenehmigung
 BROADCAST_PERMISSION_EXISTING = Sendegenehmigung liegt vor
+BROADCAST_PERMISSION_MISSING = Sendegenehmigung fehlt
 BROADCAST_PERMISSION = Sendegenehmigung
+
+STATIONMAP_SECTION_NAME = Bundesland
+STATIONMAP_SECTIONS_NAME = Bundesländer
+RECEIVER_SHARE = Empfängeraufteilung
+AS_OF_DATEX = Stand: %DATEX%
+NEXT_CENSUS_AT_DATEX = Nächste Erhebung: %DATEX%
+MIN_VALUEX = mind. %VALUEX%
+
+PRESSURE_GROUP = Interessensverband
+PRESSURE_GROUPS = Interessensverbände
+PRESSURE_GROUPS_SMOKERLOBBY = Raucherverband
+PRESSURE_GROUPS_ANTISMOKER = Anti-Nikotin
+PRESSURE_GROUPS_ARMSLOBBY = Waffenlobby
+PRESSURE_GROUPS_PACIFISTS = Pazifisten
+PRESSURE_GROUPS_CAPITALISTS = Kapitalisten
+PRESSURE_GROUPS_COMMUNISTS = Kommunisten

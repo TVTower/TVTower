@@ -45,6 +45,10 @@ Type TStationMapCollection
 	Field cityNames:TData = New TData
 	Field sportsData:TData = New TData
 
+	'when were last population/receiver-share-values measurements done?
+	Field lastCensusTime:Long = -1
+	Field nextCensusTime:Long = -1
+
 	Field mapConfigFile:String = ""
 	'does the shareMap has to get regenerated during the next
 	'update cycle?
@@ -164,6 +168,88 @@ Type TStationMapCollection
 	End Method
 
 
+	Method GetMapName:string()
+		Return config.GetString("name", "UNKNOWN")
+	End Method
+
+
+	Method GetMapISO3166Code:string()
+		Return config.GetString("iso3166code", "UNK")
+	End Method
+
+
+	Method GetLastCensusTime:long()
+		return lastCensusTime
+	End Method
+
+
+	Method GetNextCensusTime:long()
+		return nextCensusTime
+	End Method
+
+
+	Method DoCensus()
+		For local section:TStationMapSection = EachIn sections
+			section.DoCensus()
+		Next
+
+		'if no census was done, do as if it was done right on game start
+		if lastCensusTime = -1
+			lastCensusTime = GetWorldTime().GetTimeStart()
+		else
+			lastCensusTime = GetWorldTime().GetTimeGone()
+		endif
+
+		'every day?
+		nextCensusTime = GetWorldTime().GetTimeGone() + GetWorldTime().DAYLENGTH * 1
+	End Method
+
+
+	Method GetAveragePopulationAntennaShare:Float()
+		if not sections or sections.Count() = 0 then return 0
+
+		local result:Float
+		For local section:TStationMapSection = EachIn sections
+			if section.populationAntennaShare < 0
+				result :+ defaultPopulationAntennaShare
+			else
+				result :+ section.populationAntennaShare
+			endif
+		Next
+		return result / sections.Count()
+	End Method
+
+
+	Method GetAveragePopulationCableShare:Float()
+		if not sections or sections.Count() = 0 then return 0
+
+		local result:Float
+		For local section:TStationMapSection = EachIn sections
+			if section.populationCableShare < 0
+				result :+ defaultPopulationCableShare
+			else
+				result :+ section.populationCableShare
+			endif
+		Next
+		return result / sections.Count()
+	End Method
+
+
+	Method GetAveragePopulationSatelliteShare:Float()
+		if not sections or sections.Count() = 0 then return 0
+
+		local result:Float
+		For local section:TStationMapSection = EachIn sections
+			if section.populationSatelliteShare < 0
+				result :+ defaultPopulationSatelliteShare
+			else
+				result :+ section.populationSatelliteShare
+			endif
+		Next
+		return result / sections.Count()
+	End Method
+	
+
 	Method GetSatelliteUplinkSectionName:string()
 		if not satelliteUplinkSectionName
 			local randomSection:TStationMapSection = TStationMapSection(sections.ValueAtIndex(RandRange(0, sections.Count())))
@@ -175,9 +261,9 @@ Type TStationMapCollection
 	End Method 
 
 
-	Method GenerateAntennaShareMaps:Int()
+	Method GenerateShareMaps:Int()
 		for local section:TStationMapSection = EachIn sections
-			section.GenerateAntennaShareMap()
+			section.GenerateShareMap()
 		next
 	End Method
 
@@ -496,9 +582,19 @@ Type TStationMapCollection
 			Local name:String	= TXmlHelper.FindValue(child, "name", "")
 			Local sprite:String	= TXmlHelper.FindValue(child, "sprite", "")
 			Local pos:TVec2D	= New TVec2D.Init( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
+
+			Local pressureGroups:int = TXmlHelper.FindValueInt(child, "pressureGroups", -1)
+			Local sectionConfig:TData = new TData
+			local sectionConfigNode:TxmlNode = TXmlHelper.FindChild(child, "config")
+			if sectionConfigNode
+				TXmlHelper.LoadAllValuesToData(sectionConfigNode, sectionConfig)
+			endif
+			'override config if pressureGroups are defined already
+			if pressureGroups >= 0 then sectionConfig.AddNumber("pressureGroups", pressureGroups)
+
 			'add state section if data is ok
 			If name<>"" And sprite<>""
-				_instance.AddSection( New TStationMapSection.Create(pos,name, sprite) )
+				_instance.AddSection( New TStationMapSection.Create(pos, name, sprite, sectionConfig) )
 			EndIf
 		Next
 
@@ -523,7 +619,8 @@ Type TStationMapCollection
 
 		'=== INIT MAP DATA ===
 		CreatePopulationMaps()
-		GenerateAntennaShareMaps()
+		GenerateShareMaps()
+		AssignPressureGroups()
 
 		Return True
 	End Method
@@ -587,6 +684,22 @@ Type TStationMapCollection
 	End Method
 
 
+	Method AssignPressureGroups()
+		For local section:TStationMapSection = EachIn sections
+			if section.pressureGroups = 0
+				'1-2 pressure groups
+				'it is possible to have two times the same group ...
+				'resulting in only one being used
+				For local i:int = 0 until RandRange(1,2)
+					section.SetPressureGroups(TVTPressureGroup.GetAtIndex(RandRange(1, TVTPressureGroup.count)), True)
+				Next
+			endif
+		Next
+
+		TLogger.Log("TGetStationMapCollection().AssignPressureGroups", "Assigned pressure groups to sections of the map not containing predefined ones.", LOG_DEBUG | LOG_LOADING)
+	End Method
+
+
 	Method Add:Int(map:TStationMap)
 		'check boundaries
 		If map.owner < 1 Then Return False
@@ -606,10 +719,8 @@ Type TStationMapCollection
 		'remove from array - zero based
 		stationMaps[map.owner-1] = Null
 
-		'invalidate caches
-		'shareCache.Clear()
-		'shareMap.Clear()
-		GenerateAntennaShareMaps()
+		'invalidate caches and create sharemaps
+		GenerateShareMaps()
 		
 		Return True
 	End Method
@@ -710,6 +821,11 @@ Type TStationMapCollection
 
 
 	Method Update:Int()
+		'refresh stats ?
+		if nextCensusTime < 0 or nextCensusTime < GetWorldTime().GetTimegone()
+			DoCensus()
+		endif
+	
 		UpdateSatellites()
 		UpdateCableNetworks()
 	
@@ -724,7 +840,7 @@ Type TStationMapCollection
 		'refresh the share map and refresh max audience sum
 		'as soon as one of the stationmap changed
 		If _regenerateMap
-			GenerateAntennaShareMaps()
+			GenerateShareMaps()
 
 			'recalculate the audience sums of all changed maps
 			'maybe generalize it (recalculate ALL as soon as map
@@ -1153,10 +1269,10 @@ endrem
 
 	Method GetSection:TStationMapSection(x:Int,y:Int)
 		For Local section:TStationMapSection = EachIn sections
-			If Not section.GetSprite() Then Continue
+			If Not section.GetShapeSprite() Then Continue
 
 			If section.rect.containsXY(x,y)
-				If section.GetSprite().PixelIsOpaque(Int(x-section.rect.getX()), Int(y-section.rect.getY())) > 0
+				If section.GetShapeSprite().PixelIsOpaque(Int(x-section.rect.getX()), Int(y-section.rect.getY())) > 0
 					Return section
 				EndIf
 			EndIf
@@ -1198,8 +1314,8 @@ endrem
 		Local oldA:Float = GetAlpha()
 		SetAlpha oldA * 0.8
 		For Local section:TStationMapSection = EachIn sections
-			If Not section.sprite Then Continue
-			section.sprite.Draw(section.rect.getx(), section.rect.gety())
+			If Not section.GetShapeSprite() Then Continue
+			section.shapeSprite.Draw(section.rect.getx(), section.rect.gety())
 		Next
 		SetAlpha oldA
 	End Method
@@ -1211,7 +1327,10 @@ endrem
 
 
 	Method AddSection(section:TStationMapSection)
-		sections.addLast(section)
+		If sections.addLast(section)
+			'inform others
+			EventManager.triggerEvent( TEventSimple.Create( "StationMapCollection.addSection", New TData.Add("section", section), Self ) )
+		EndIf
 	End Method
 
 
@@ -1223,13 +1342,17 @@ endrem
 		local pix:TPixmap = LockImage(populationImageSections)
 		local emptyCol:int = ARGB_Color(0, 0,0,0)
 
+		if not section.GetShapeSprite() then return False
+
 		For local x:int = startX until endX
 			For local y:int = startY until endY
-				If section.GetSprite().PixelIsOpaque(Int(x-section.rect.getX()), Int(y-section.rect.getY())) > 0
+				If section.GetShapeSprite().PixelIsOpaque(Int(x-section.rect.getX()), Int(y-section.rect.getY())) > 0
 					pix.WritePixel(x,y, emptyCol)
 				endif
 			Next
 		Next
+
+		return True
 	End Method
 
 
@@ -1493,7 +1616,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	Method CheatMaxAudience:int()
 		cheatedMaxReach = true
 		reach = GetStationMapCollection().population
-		GetStationMapCollection().GenerateAntennaShareMaps()
+		GetStationMapCollection().GenerateShareMaps()
 		return True
 	End Method
 
@@ -1684,7 +1807,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		'DO NOT refresh the share map as ths would increase potential
 		'audience in this moment. Generate it as soon as a station gets
 		'"ready" (before next audience calculation - means xx:04 or xx:59)
-		'GetStationMapCollection().GenerateAntennaShareMaps()
+		'GetStationMapCollection().GenerateShareMaps()
 
 		'ALSO DO NOT recalculate audience of channel
 		'RecalculateAudienceSum()
@@ -1729,7 +1852,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		station.OnRemoveFromMap(owner)
 
 		'refresh the share map (needed for audience calculations)
-		GetStationMapCollection().GenerateAntennaShareMaps()
+		GetStationMapCollection().GenerateShareMaps()
 		'recalculate audience of channel
 		RecalculateAudienceSum()
 
@@ -2068,6 +2191,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		'inform others (eg. to recalculate audience)
 		EventManager.triggerEvent(TEventSimple.Create("station.onSetActive", Null, Self))
+		return True
 	End Method
 
 
@@ -2201,7 +2325,9 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		If Not IsActive()
 			'TODO: if wanted, check for RepairStates or such things
 			If CanActivate() and GetActivationTime() < GetWorldTime().GetTimeGone()
-				SetActive()
+				if not SetActive()
+					print "failed to activate " + GetGUID()
+				endif
 			EndIf
 		EndIf
 	End Method
@@ -2621,14 +2747,10 @@ Type TStationCableNetworkUplink extends TStationBase
 	Field oldCableNetworkGUID:string
 	Field cableNetworkGUID:string
 
-	Field sectionHighlightBorderImage:TImage {nosave}
-	Field sectionHoveredImage:TImage {nosave}
-	Field sectionSelectedImage:TImage {nosave}
-
 
 	Method New()
-		listSpriteNameOn = "gfx_datasheet_icon_cable_network.on"
-		listSpriteNameOff = "gfx_datasheet_icon_cable_network.off"
+		listSpriteNameOn = "gfx_datasheet_icon_cable_network_uplink.on"
+		listSpriteNameOff = "gfx_datasheet_icon_cable_network_uplink.off"
 
 		stationType = TVTStationType.CABLE_NETWORK_UPLINK
 	End Method
@@ -2818,12 +2940,12 @@ Type TStationCableNetworkUplink extends TStationBase
 	'override
 	Method SetSectionName:int(sectionName:string)
 		local mapSection:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
-		if mapSection
+		if mapSection and mapSection.GetShapeSprite()
 			local x:int = mapSection.rect.GetXCenter() - mapSection.rect.GetX()
 			local y:int = mapSection.rect.GetYCenter() - mapSection.rect.GetY()
-			While not mapSection.GetSprite().PixelIsOpaque(x, y)
-				x = RandRange(0, mapSection.GetSprite().GetWidth()-1)
-				y = RandRange(0, mapSection.GetSprite().GetHeight()-1)
+			While not mapSection.GetShapeSprite().PixelIsOpaque(x, y)
+				x = RandRange(0, mapSection.GetShapeSprite().GetWidth()-1)
+				y = RandRange(0, mapSection.GetShapeSprite().GetHeight()-1)
 			Wend
 			self.pos.SetXY(mapSection.rect.GetX() + x, mapSection.rect.GetY() + y)
 		endif
@@ -2909,25 +3031,14 @@ Type TStationCableNetworkUplink extends TStationBase
 
 
 		if selected or hovered
-			if not sectionHighlightBorderImage
-				sectionHighlightBorderImage = ConvertToOutLine( section.GetSprite().GetImage(), 5, 0.5, $FFFFFFFF , 9 )
-				blurPixmap(LockImage( sectionHighlightBorderImage ), 0.5)
-			endif
-			if not sectionHoveredImage
-				sectionHoveredImage = ConvertToSingleColor( section.GetSprite().GetImage(), $FFFFFFFF )
-			endif
-			if not sectionSelectedImage
-				sectionSelectedImage = ConvertToSingleColor( section.GetSprite().GetImage(), $FF000000 )
-			endif
-
 			if selected
 				SetColor 255,255,255
 				SetAlpha 0.3
-				DrawImage(sectionSelectedImage, section.rect.GetX(), section.rect.GetY())
+				DrawImage(section.GetSelectedImage(), section.rect.GetX(), section.rect.GetY())
 
 				SetAlpha Float(0.2 * Sin(Time.GetAppTimeGone()/4) * oldColor.a) + 0.3
 				SetBlend LightBlend
-				DrawImage(sectionHighlightBorderImage, section.rect.GetX()-9, section.rect.GetY()-9)
+				section.GetHighlightBorderSprite().Draw(section.rect.GetX(), section.rect.GetY())
 				oldColor.SetRGBA()
 				SetBlend AlphaBlend
 			endif
@@ -2937,11 +3048,11 @@ Type TStationCableNetworkUplink extends TStationBase
 				SetColor 255,255,255
 				SetAlpha 0.15
 				SetBlend LightBlend
-				DrawImage(sectionHoveredImage, section.rect.GetX(), section.rect.GetY())
+				DrawImage(section.GetHoveredImage(), section.rect.GetX(), section.rect.GetY())
 
 				SetAlpha 0.4
 				SetBlend LightBlend
-				DrawImage(sectionHighlightBorderImage, section.rect.GetX()-9, section.rect.GetY()-9)
+				section.GetHighlightBorderSprite().Draw(section.rect.GetX(), section.rect.GetY())
 				oldColor.SetRGBA()
 				SetBlend AlphaBlend
 			endif
@@ -2949,7 +3060,7 @@ Type TStationCableNetworkUplink extends TStationBase
 			SetAlpha oldColor.a * 0.3
 			color.SetRGB()
 			'color.Copy().Mix(TColor.clWhite, 0.75).SetRGB()
-			section.GetSprite().Draw(section.rect.GetX(), section.rect.GetY())
+			section.GetShapeSprite().Draw(section.rect.GetX(), section.rect.GetY())
 			oldColor.SetRGBA()
 		endif
 	
@@ -2999,8 +3110,8 @@ Type TStationSatelliteUplink extends TStationBase
 
 	 
 	Method New()
-		listSpriteNameOn = "gfx_datasheet_icon_satellite.on"
-		listSpriteNameOff = "gfx_datasheet_icon_satellite.off"
+		listSpriteNameOn = "gfx_datasheet_icon_satellite_uplink.on"
+		listSpriteNameOff = "gfx_datasheet_icon_satellite_uplink.off"
 
 		stationType = TVTStationType.SATELLITE_UPLINK
 	End Method
@@ -3032,7 +3143,7 @@ Type TStationSatelliteUplink extends TStationBase
 	Method GetName:string()
 		if satelliteGUID
 			local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
-			if satellite then return GetLocale("SATLINK_TO_X").Replace("%X%", satellite.name)
+			if satellite then return GetLocale("SATUPLINK_TO_X").Replace("%X%", satellite.name)
 		endif
 		return Super.GetName()
 	End Method
@@ -3294,10 +3405,13 @@ End Type
 
 Type TStationMapSection
 	Field rect:TRectangle
-	Field sprite:TSprite {nosave}
-	Field spriteName:String
+	Field shapeSprite:TSprite {nosave}
+	Field shapeSpriteName:String
 	Field enabledOverlay:TImage {nosave}
 	Field disabledOverlay:TImage {nosave}
+	Field highlightBorderSprite:TSprite {nosave}
+	Field hoveredImage:TImage {nosave}
+	Field selectedImage:TImage {nosave}
 
 	'the government of this section is influenced a bit by
 	'pressure groups / lobbies / parties
@@ -3332,37 +3446,71 @@ Type TStationMapSection
 	End Method
 
 
-	Method Create:TStationMapSection(pos:TVec2D, name:String, spriteName:String)
-		Self.spriteName = spriteName
+	Method Create:TStationMapSection(pos:TVec2D, name:String, shapeSpriteName:String, config:TData = null)
+		Self.shapeSpriteName = shapeSpriteName
 		Self.rect = New TRectangle.Init(pos.x,pos.y, 0, 0)
 		Self.name = name
-		LoadSprite()
+		LoadShapeSprite()
 
-	'	GetDisabledOverlay()
+		if config
+			pressureGroups = config.GetInt("pressureGroups", 0)
+			broadcastPermissionPrice = config.GetInt("broadcastPermissionPrice", -1)
+			broadcastPermissionMinimumChannelImage = 0.01 * config.GetFloat("broadcastPermissionMinimumChannelImage", 0)
+		endif
 
 		Return Self
 	End Method
 
 
-	Method LoadSprite()
-		sprite = GetSpriteFromRegistry(spriteName)
+	Method LoadShapeSprite()
+		shapeSprite = GetSpriteFromRegistry(shapeSpriteName)
 		'resize rect
-		rect.dimension.SetXY(sprite.area.GetW(), sprite.area.GetH())
+		rect.dimension.SetXY(shapeSprite.area.GetW(), shapeSprite.area.GetH())
 	End Method
 
 
-	Method GetSprite:TSprite()
-		if not sprite then LoadSprite()
-		return sprite
+	Method GetShapeSprite:TSprite()
+		if not shapeSprite then LoadShapeSprite()
+		return shapeSprite
+	End Method
+
+
+	Method GetHighlightBorderSprite:TSprite()
+		if not highlightBorderSprite
+			local highlightBorderImage:TImage = ConvertToOutLine( GetShapeSprite().GetImage(), 5, 0.5, $FFFFFFFF , 9 )
+			blurPixmap(LockImage( highlightBorderImage ), 0.5)
+
+			highlightBorderSprite = new TSprite.InitFromImage(highlightBorderImage, "highlightBorderImage")
+			highlightBorderSprite.offset = new TRectangle.Init(9,9,0,0)
+		endif
+		return highlightBorderSprite
+	End Method
+	
+
+	Method GetHoveredImage:TImage()
+		if not hoveredImage
+			'create a pure white variant of the shape
+			hoveredImage = ConvertToSingleColor( GetShapeSprite().GetImage(), $FFFFFFFF )
+		endif
+		return hoveredImage
+	End Method
+
+
+	Method GetSelectedImage:TImage()
+		if not selectedImage
+			selectedImage = ConvertToSingleColor( GetShapeSprite().GetImage(), $FF000000 )
+		endif
+		return selectedImage
 	End Method
 
 
 	Method GetDisabledOverlay:TImage()
 		if not disabledOverlay
-			local shapePix:TPixmap = LockImage(GetSprite().GetImage())
+			local shapePix:TPixmap = LockImage(GetShapeSprite().GetImage())
 			local sourcePix:TPixmap = LockImage(GetSpriteFromRegistry("map_Surface").GetImage())
 			local pix:TPixmap = ExtractPixmapFromPixmap(sourcePix, shapePix, rect.GetIntX(), rect.GetIntY())
-			disabledOverlay = LoadImage( AdjustPixmapSaturation(pix, 0.3) )
+			disabledOverlay = LoadImage( AdjustPixmapSaturation(pix, 0.20) )
+			'disabledOverlay = ConvertToSingleColor( disabledOverlay, $FF999999 )
 		endif
 		return disabledOverlay
 	End Method
@@ -3370,12 +3518,18 @@ Type TStationMapSection
 
 	Method GetEnabledOverlay:TImage()
 		if not enabledOverlay
-			local shapePix:TPixmap = LockImage(GetSprite().GetImage())
+			local shapePix:TPixmap = LockImage(GetShapeSprite().GetImage())
 			local sourcePix:TPixmap = LockImage(GetSpriteFromRegistry("map_Surface").GetImage())
 			local pix:TPixmap = ExtractPixmapFromPixmap(sourcePix, shapePix, rect.GetIntX(), rect.GetIntY())
 			enabledOverlay = LoadImage( pix )
 		endif
 		return enabledOverlay
+	End Method
+
+
+	Method DoCensus()
+		'refresh stats (cable, sat, antenna share, ... maybe target
+		'groups share)
 	End Method
 
 
@@ -3501,14 +3655,18 @@ Type TStationMapSection
 		Local tooltipH:Int = textH * 4 + 10 + 5
 		Local tooltipX:Int = MouseManager.x - tooltipW/2
 		Local tooltipY:Int = MouseManager.y - tooltipH - 5
+'		Local tooltipX:Int = rect.GetXCenter() - tooltipW/2
+'		Local tooltipY:Int = rect.GetYCenter() - tooltipH - 5
+
 
 		Local permissionOK:int = not NeedsBroadcastPermission(channelID, stationType) or HasBroadcastPermission(channelID, stationType)
 		Local imageOK:int = ReachesMinimumChannelImage(channelID)
 		Local providerOK:int = GetStationMapCollection().GetCableNetworksInSectionCount(self.name, True) > 0
 		
 		'move below station if at screen top
-		If tooltipY < 10 Then tooltipY = MouseManager.y + 15
-		tooltipX = MathHelper.Clamp(tooltipX, 20, GetGraphicsManager().GetWidth() - tooltipW)
+		If tooltipY < 10 Then tooltipY = MouseManager.y + 25
+'		If tooltipY < 10 Then tooltipY = 10
+		tooltipX = MathHelper.Clamp(tooltipX, 20, GetGraphicsManager().GetWidth() - tooltipW - 20)
 
 		local oldCol:TColor = new TColor.Get()
 
@@ -3538,7 +3696,7 @@ Type TStationMapSection
 
 		'broadcast permission
 		GetBitmapFontManager().baseFont.draw(GetLocale("BROADCAST_PERMISSION")+": ", textX, textY)
-		if permissionOK
+		if not permissionOK
 			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(GetBroadcastPermissionPrice(channelID, stationType), 2), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
 		else
 			GetBitmapFontManager().baseFontBold.drawBlock(GetLocale("OK"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
@@ -3569,7 +3727,7 @@ Type TStationMapSection
 		'copy whats left on the sections image
 		For local x:int = startX until endX
 			For local y:int = startY until endY
-				If GetSprite().PixelIsOpaque(Int(x-rect.getX()), Int(y-rect.getY())) > 0
+				If GetShapeSprite().PixelIsOpaque(Int(x-rect.getX()), Int(y-rect.getY())) > 0
 					pix.WritePixel(x-rect.getX(), y-rect.getY(), sourcePix.ReadPixel(x, y) )
 				endif
 			Next
@@ -3607,11 +3765,15 @@ Type TStationMapSection
 	End Method
 
 
-	Method GenerateAntennaShareMap:Int()
-		'reset values
-		antennaShareMap = New TMap
+	Method GenerateShareMap:Int()
+		'=== ALL TYPES ===
 		'reset cache here too
 		shareCache = New TMap
+
+
+		'=== ANTENNAS ===
+		'reset values
+		antennaShareMap = New TMap
 
 		'local antennaShareMapPix:TPixmap = CreatePixmap(populationImage.width, populationImage.height, LockImage(populationImage).format)
 		'antennaShareMapPix.ClearPixels(0)
@@ -3622,6 +3784,8 @@ Type TStationMapSection
 		Next
 
 		'antennaShareMapImage = LoadImage(antennaShareMapPix)
+
+
 		return True
 	End Method
 	
@@ -3644,7 +3808,7 @@ Type TStationMapSection
 			For posX = 0 To populationImage.height-1
 				For posY = 0 To populationImage.width-1
 					'left the topographic borders ?
-					If not GetSprite().PixelIsOpaque(posX, posY) > 0 then continue
+					If not GetShapeSprite().PixelIsOpaque(posX, posY) > 0 then continue
 
 					mapKey = posX+","+posY
 					mapValue = New TVec3D.Init(posX,posY, getMaskIndex(stationmap.owner) )
@@ -3679,7 +3843,7 @@ Type TStationMapSection
 						'left the circle?
 						If Self.calculateDistance( posX - stationX, posY - stationY ) > antennaStationRadius Then Continue
 						'left the topographic borders ?
-						If not GetSprite().PixelIsOpaque(posX, posY) > 0 then continue
+						If not GetShapeSprite().PixelIsOpaque(posX, posY) > 0 then continue
 
 
 						'insert the players bitmask-number into the field
@@ -3726,7 +3890,7 @@ Type TStationMapSection
 
 
 	Method GetAntennaShareMap:TMap()
-		If Not antennaShareMap Then GenerateAntennaShareMap()
+		If Not antennaShareMap Then GenerateShareMap()
 		Return antennaShareMap
 	End Method
 	
@@ -3751,7 +3915,89 @@ Type TStationMapSection
 	'returns a share between channels, encoded in a TVec3D containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
 	Method GetCableNetworkShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
-		return new TVec3D.Init(0,0,0)
+'		return new TVec3D.Init(0,0,0)
+		If channelNumbers.length <1 Then Return New TVec3D.Init(0,0,0.0)
+		If Not withoutChannelNumbers Then withoutChannelNumbers = New Int[0]
+
+		Local result:TVec3D
+
+		'=== CHECK CACHE ===
+		'if already cached, save time...
+
+		'== GENERATE KEY ==
+		Local cacheKey:String = "cablenetwork_"
+		For Local i:Int = 0 To channelNumbers.length-1
+			cacheKey:+ "_"+channelNumbers[i]
+		Next
+		If withoutChannelNumbers.length > 0
+			cacheKey:+"_without_"
+			For Local i:Int = 0 To withoutChannelNumbers.length-1
+				cacheKey:+ "_"+withoutChannelNumbers[i]
+			Next
+		EndIf
+
+		'== LOAD CACHE ==
+		If shareCache And shareCache.contains(cacheKey)
+			result = TVec3D(shareCache.ValueForKey(cacheKey))
+		EndIf
+
+		'== GENERATE CACHE ==
+		If Not result
+if channelNumbers
+	print "GetCableNetworkShare: "+ name+ "  " + StringHelper.JoinIntArray(",",channelNumbers)
+else
+	print "GetCableNetworkShare: "+ name+ "   /"
+endif
+
+			Local channelsWithCableNetwork:Int = 0
+			'amount of non-ignored channels
+			Local interestingChannelsCount:Int = 0 
+			Local allHaveCableNetwork:Int = False
+
+			if channelNumbers and channelNumbers.length > 0
+				allHaveCableNetwork = True
+				For local channelID:int = EachIn channelNumbers
+					'ignore unwanted
+					if withoutChannelNumbers and MathHelper.InIntArray(channelID, withoutChannelNumbers) then continue
+
+					interestingChannelsCount :+ 1
+
+					if GetStationMap(channelID).GetCableNetworkUplinksInSectionCount( name ) > 0
+						channelsWithCableNetwork :+ 1
+					else
+						allHaveCableNetwork = False
+					endif
+				Next
+			endif
+				
+			result = new TVec3D
+			if channelsWithCableNetwork > 0
+				'total - if there is at least _one_ channel uses a cable network here
+				result.y = GetCableNetworkAudienceSum()
+
+				'share is only available if we checked some channels
+				if interestingChannelsCount > 0 
+					'share - if _all_ channels use a cable network here
+					if allHaveCableNetwork
+						result.x = GetCableNetworkAudienceSum()
+					endif
+
+					'share percentage
+					result.z = channelsWithCableNetwork / interestingChannelsCount
+				endif
+			endif
+		
+			'store new cached data
+			If shareCache Then shareCache.insert(cacheKey, result )
+
+			'print "CABLE uncached: "+cacheKey
+			'print "CABLE share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
+		else
+'			print "CABLE cached: "+cacheKey
+'			print "CABLE share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
+		EndIf
+
+		Return result
 	End Method
 
 
@@ -3897,7 +4143,7 @@ Type TStationMapSection
 				'left the circle?
 				If CalculateDistance( posX - stationX, posY - stationY ) > radius Then Continue
 				'left the topographic borders ?
-				If not GetSprite().PixelIsOpaque(posX, posY) > 0 then continue
+				If not GetShapeSprite().PixelIsOpaque(posX, posY) > 0 then continue
 
 				map.Insert(String(posX + "," + posY), New TVec3D.Init((posX) , (posY), color ))
 			Next
@@ -3926,7 +4172,7 @@ rem
 print name
 print "  rect: " + rect.ToString()
 print "  stationRect: " + stationRect.ToString()
-print "  sprite: " + GetSprite().GetWidth()+","+GetSprite().GetHeight()
+print "  sprite: " + GetShapeSprite().GetWidth()+","+GetShapeSprite().GetHeight()
 print "  sectionStationIntersectRect: " + sectionStationIntersectRect.ToString()
 endrem		
 
@@ -3937,7 +4183,7 @@ endrem
 				'left the circle?
 				If CalculateDistance( posX - stationX, posY - stationY ) > radius Then Continue
 				'left the topographic borders ?
-				If not GetSprite().PixelIsOpaque(posX, posY) > 0 then continue
+				If not GetShapeSprite().PixelIsOpaque(posX, posY) > 0 then continue
 				result :+ populationmap[posX, posY]
 			Next
 		Next
