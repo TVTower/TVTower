@@ -467,6 +467,8 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 				Case TScreenHandler_StationMap.MODE_SELL_ANTENNA
 					If selectedStation
 						headerText = selectedStation.GetLongName()
+						'fix incorrect built (eg. code-tests with station ads before worldtime is set)
+						if selectedStation.built = 0 then selectedStation.built = GetWorldTime().GetTimeStart()
 						subHeaderText = GetWorldTime().GetFormattedGameDate(selectedStation.built)
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
 						reachChange = MathHelper.DottedValue( -1 * selectedStation.GetReachDecrease() )

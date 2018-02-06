@@ -64,7 +64,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2018 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -96,7 +96,7 @@ Type TInterpolation
 	'=== LINEAR ===
 
 	Function Linear:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
-		return endValue * (time / timeTotal) + startValue;
+		return (endValue - startValue) * (time / timeTotal) + startValue
 	End Function
 
 
@@ -107,16 +107,16 @@ Type TInterpolation
 		time :/ timeTotal
 
 		if time < (1 / 2.75)
-			return endValue * (7.5625 * time * time) + startValue
+			return (endValue - startValue) * (7.5625 * time * time) + startValue
 		ElseIf time < (2/2.75)
 			time :- (1.5 / 2.75)
-			return endValue * (7.5625 * time * time + 0.75) + startValue
+			return (endValue - startValue) * (7.5625 * time * time + 0.75) + startValue
 		ElseIf time < (2.5/2.75)
 			time :- (2.25 / 2.75)
-			return endValue * (7.5625 * time * time + 0.9375) + startValue
+			return (endValue - startValue) * (7.5625 * time * time + 0.9375) + startValue
 		Else
 			time :- (2.625 / 2.75)
-			return endValue * (7.5625 * time * time + 0.984375) + startValue
+			return (endValue - startValue) * (7.5625 * time * time + 0.984375) + startValue
 		Endif
 	End Function
 
@@ -130,7 +130,7 @@ Type TInterpolation
 		If time < 0.5 * timeTotal
 			Return BounceIn(0, endValue, 2 * time, timeTotal) * 0.5 + startValue
 		Else
-			Return BounceOut(0, endValue, 2 * time - timeTotal, timeTotal) * 0.5 + endValue * 0.5 + startValue
+			Return BounceOut(0, endValue, 2 * time - timeTotal, timeTotal) * 0.5 + (endValue - startValue) * 0.5 + startValue
 		EndIf
 	End Function
 
@@ -140,22 +140,22 @@ Type TInterpolation
 
 	Function RegularIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ timeTotal
-		Return endValue * time * time + startValue
+		Return (endValue - startValue) * time * time + startValue
 	End Function
 
 
 	Function RegularOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ timeTotal
-		Return - endValue * time * (time - 2) + startValue
+		Return - (endValue - startValue) * time * (time - 2) + startValue
 	End Function
 
 
 	Function RegularInOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ (0.5 * timeTotal)
 		If time < 1.0
-			Return 0.5 * endValue * time * time + startValue
+			Return 0.5 * (endValue - startValue) * time * time + startValue
 		Else
-			Return - 0.5 * endValue * ((time - 1) * (time - 3) - 1) + startValue
+			Return - 0.5 * (endValue - startValue) * ((time - 1) * (time - 3) - 1) + startValue
 		EndIf
 	End Function
 
@@ -165,23 +165,23 @@ Type TInterpolation
 
 	Function StrongIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ timeTotal
-		Return endValue * time^5 + startValue
+		Return (endValue - startValue) * time^5 + startValue
 	End Function
 
 
 	Function StrongOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time = time / timeTotal - 1
-		Return  endValue * (time^5 + 1) + startValue
+		Return  (endValue - startValue) * (time^5 + 1) + startValue
 	End Function
 
 
 	Function StrongInOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ (0.5 * timeTotal)
 		If time < 1.0
-			Return 0.5 * endValue * time^5 + startValue
+			Return 0.5 * (endValue - startValue) * time^5 + startValue
 		Else
 			time :- 2
-			Return 0.5 * endValue * (time^5 + 2) + startValue
+			Return 0.5 * (endValue - startValue) * (time^5 + 2) + startValue
 		EndIf
 	End Function
 
@@ -192,14 +192,14 @@ Type TInterpolation
 	Function BackIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double, s:Double = -1.0)
 		If s = -1.0 Then s = 1.70158
 		time :/ timeTotal
-		Return endValue * time * time * ((s + 1) * time - s) + startValue
+		Return (endValue - startValue) * time * time * ((s + 1) * time - s) + startValue
 	End Function
 
 
 	Function BackOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double, s:Double = -1.0)
 		If s = -1.0 Then s = 1.70158
 		time = time / timeTotal - 1.0
-		Return endValue * (time * time * ((s + 1) * time + s) + 1) + startValue
+		Return (endValue - startValue) * (time * time * ((s + 1) * time + s) + 1) + startValue
 	End Function
 
 
@@ -208,10 +208,10 @@ Type TInterpolation
 		time :/ (0.5 * timeTotal)
 		s :* 1.525
 		If time < 1.0
-			Return 0.5 * endValue * (time * time * ((s + 1) * time - s)) + startValue
+			Return 0.5 * (endValue - startValue) * (time * time * ((s + 1) * time - s)) + startValue
 		Else
 			time :- 2.0
-			Return 0.5 * endValue * (time * time * ((s + 1) * time + s) + 2) + startValue
+			Return 0.5 * (endValue - startValue) * (time * time * ((s + 1) * time + s) + 2) + startValue
 		EndIf
 	End Function
 
@@ -224,14 +224,14 @@ Type TInterpolation
 
 		If time = 0.0 Then Return startValue
 		time :/ timeTotal
-		If time = 1.0 Then Return startValue + endValue
+		If time = 1.0 Then Return endValue
 
 		If p = 0 Then p = timeTotal * 0.3
-		If a = 0 Or a < Abs(endValue)
-			a = endValue
+		If a = 0 Or a < Abs((endValue - startValue))
+			a = (endValue - startValue)
 			s = p / 4.0
 		Else
-			s = p / (2.0 * PI) * ASin(endValue / a)
+			s = p / (2.0 * PI) * ASin((endValue - startValue) / a)
 		EndIf
 
 		time :- 1.0
@@ -244,18 +244,18 @@ Type TInterpolation
 
 		If time = 0.0 Then Return startValue
 		time :/ timeTotal
-		If time = 1.0 Then Return startValue + endValue
+		If time = 1.0 Then Return endValue
 
 		If not p Then p = timeTotal * 0.3
 
-		If not a Or a < Abs(endValue)
-			a = endValue
+		If not a Or a < Abs((endValue - startValue))
+			a = (endValue - startValue)
 			s = p / 4.0
 		Else
-			s = p / (2.0 * PI) * ASin(endValue / a)
+			s = p / (2.0 * PI) * ASin((endValue - startValue) / a)
 		EndIf
 
-		Return (a * (2.0 ^ (-10 * time)) * Sin((time * timeTotal - s) * (2.0 * PI) / p)) + endValue + startValue
+		Return (a * (2.0 ^ (-10 * time)) * Sin((time * timeTotal - s) * (2.0 * PI) / p)) + endValue
 	End Function
 
 
@@ -264,15 +264,15 @@ Type TInterpolation
 
 		If time = 0.0 Then Return startValue
 		time :/ (0.5 * timeTotal)
-		If time = 2.0 Then Return startValue + endValue
+		If time = 2.0 Then Return endValue
 
 		If p = 0 Then p = timeTotal * (0.3 * 1.5)
 
-		If a = 0 Or a < Abs(endValue)
-			a = endValue
+		If a = 0 Or a < Abs((endValue - startValue))
+			a = (endValue - startValue)
 			s = p / 4.0
 		Else
-			s = p / (2 * PI) * ASin(endValue / a)
+			s = p / (2 * PI) * ASin((endValue - startValue) / a)
 		EndIf
 
 		If time < 1.0
@@ -281,7 +281,7 @@ Type TInterpolation
 		EndIf
 
 		time :- 1.0
-		Return a * (2.0 ^ (-10 * time)) * Sin((time * timeTotal - s) * (2.0 * PI) / p) * 0.5 + endValue + startValue
+		Return a * (2.0 ^ (-10 * time)) * Sin((time * timeTotal - s) * (2.0 * PI) / p) * 0.5 + endValue
 	End Function
 
 
@@ -290,23 +290,23 @@ Type TInterpolation
 
 	Function CircIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ timeTotal
-		Return - endValue * (Sqr(1.0 - time * time) - 1.0) + startValue
+		Return - (endValue - startValue) * (Sqr(1.0 - time * time) - 1.0) + startValue
 	End Function
 
 
 	Function CircOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time = time / timeTotal - 1
-		Return endValue * Sqr(1.0 - time * time) + startValue
+		Return (endValue - startValue) * Sqr(1.0 - time * time) + startValue
 	End Function
 
 
 	Function CircInOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ (0.5 * timeTotal)
 		If time < 1.0
-			Return - 0.5 * endValue * (Sqr(1.0 - time * time) - 1.0) + startValue
+			Return - 0.5 * (endValue - startValue) * (Sqr(1.0 - time * time) - 1.0) + startValue
 		Else
 			time :- 2.0
-			Return 0.5 * endValue * (Sqr(1.0 - time * time) + 1.0) + startValue
+			Return 0.5 * (endValue - startValue) * (Sqr(1.0 - time * time) + 1.0) + startValue
 		EndIf
 	End Function
 
@@ -316,23 +316,23 @@ Type TInterpolation
 
 	Function CubicIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ timeTotal
-		Return endValue * time * time * time + startValue
+		Return (endValue - startValue) * time * time * time + startValue
 	End Function
 
 
 	Function CubicOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time = time / timeTotal - 1
-		Return endValue * (time * time * time + 1.0) + startValue
+		Return (endValue - startValue) * (time * time * time + 1.0) + startValue
 	End Function
 
 
 	Function CubicInOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ (0.5 * timeTotal)
 		If time < 1.0
-			Return 0.5 * endValue * time * time * time + startValue
+			Return 0.5 * (endValue - startValue) * time * time * time + startValue
 		Else
 			time :- 2.0
-			Return 0.5 * endValue * (time * time * time + 2.0) + startValue
+			Return 0.5 * (endValue - startValue) * (time * time * time + 2.0) + startValue
 		EndIf
 	End Function
 
@@ -344,29 +344,29 @@ Type TInterpolation
 		If time = 0.0
 			Return startValue
 		Else
-			Return endValue * (2.0 ^ (10 * (time / timeTotal - 1.0))) + startValue
+			Return (endValue - startValue) * (2.0 ^ (10 * (time / timeTotal - 1.0))) + startValue
 		EndIf
 	End Function
 
 
 	Function ExpoOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		If time = timeTotal
-			Return startValue + EndValue
+			Return endValue
 		Else
-			Return endValue * (-(2.0 ^ (-10 * time / timeTotal)) + 1.0) + startValue
+			Return (endValue - startValue) * (-(2.0 ^ (-10 * time / timeTotal)) + 1.0) + startValue
 		EndIf
 	End Function
 
 
 	Function ExpoInOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		If time = 0.0 Then Return startValue
-		If time = timeTotal Then Return startValue + endValue
+		If time = timeTotal Then Return endValue
 
 		time :/ (0.5 * timeTotal)
 		If time < 1.0
-			Return 0.5 * endValue * (2.0 ^ (10 * (time - 1))) + startValue
+			Return 0.5 * (endValue - startValue) * (2.0 ^ (10 * (time - 1))) + startValue
 		Else
-			Return 0.5 * endValue * (-(2.0 ^ (-10 * (time - 1))) + 2.0) + startValue
+			Return 0.5 * (endValue - startValue) * (-(2.0 ^ (-10 * (time - 1))) + 2.0) + startValue
 		EndIf
 	End Function
 
@@ -376,23 +376,23 @@ Type TInterpolation
 
 	Function QuartIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ timeTotal
-		Return endValue * time * time * time * time + startValue
+		Return (endValue - startValue) * time * time * time * time + startValue
 	End Function
 
 
 	Function QuartOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time = time / timeTotal - 1.0
-		Return - endValue * (time * time * time * time - 1.0) + startValue
+		Return - (endValue - startValue) * (time * time * time * time - 1.0) + startValue
 	End Function
 
 
 	Function QuartInOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ (0.5 * timeTotal)
 		If time < 1.0
-			Return 0.5 * endValue * time * time * time * time + startValue
+			Return 0.5 * (endValue - startValue) * time * time * time * time + startValue
 		Else
 			time :- 2.0
-			Return - 0.5 * endValue * (time * time * time * time - 2.0) + startValue
+			Return - 0.5 * (endValue - startValue) * (time * time * time * time - 2.0) + startValue
 		EndIf
 	End Function
 
@@ -401,16 +401,16 @@ Type TInterpolation
 	'by Robert Penner
 
 	Function SineIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
-		Return - endValue * Cos((time / timeTotal * (PI / 2.0)) * (180.0 / PI)) + endValue + startValue
+		Return - (endValue - startValue) * Cos((time / timeTotal * (PI / 2.0)) * (180.0 / PI)) + endValue
 	End Function
 
 
 	Function SineOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
-		Return endValue * Sin((time / timeTotal * (PI / 2.0)) * (180.0 / PI)) + startValue
+		Return (endValue - startValue) * Sin((time / timeTotal * (PI / 2.0)) * (180.0 / PI)) + startValue
 	End Function
 
 
 	Function SineInOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
-		Return - 0.5 * endValue * (Cos((PI * time / timeTotal) * (180.0 / PI)) - 1.0) + startValue
+		Return - 0.5 * (endValue - startValue) * (Cos((PI * time / timeTotal) * (180.0 / PI)) - 1.0) + startValue
 	End Function
 End Type

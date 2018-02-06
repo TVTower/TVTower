@@ -19,6 +19,9 @@ Import "game.player.finance.bmx"
 Import "game.publicimage.bmx"
 Import "game.pressuregroup.bmx"
 Import "basefunctions.bmx"
+Import "common.misc.numericpairinterpolator.bmx"
+
+
 
 
 'parent of all stationmaps
@@ -53,58 +56,14 @@ Type TStationMapCollection
 	'does the shareMap has to get regenerated during the next
 	'update cycle?
 	Field _regenerateMap:Int = False
+	'caches
+	Field _currentPopulationAntennaShare:Double = -1
+	Field _currentPopulationCableShare:Double = -1
+	Field _currentPopulationSatelliteShare:Double = -1
 
-	Field defaultPopulationAntennaShare:Float = 0.8
-	Field defaultPopulationCableShare:Float = 0.1
-	Field defaultPopulationSatelliteShare:Float = 0.1
-
-
-	REM
-	ANTENNAS:
-	http://www.spiegel.de/spiegel/print/d-13508831.html
-	-> 1984 50% of 22 Mio western households via (collective antenna
-
-	CABLE NETWORK
-	cable network share development
-	https://de.wikipedia.org/wiki/Kabelfernsehnetz
-	-> 1986:     (1,53 Mio households)
-	-> 1994:     (15 Mio households)
-	-> 1995: 65% (15,8 Mio households)
-	             75,1% Mecklenburg-Vorpommern
-	             74,4% Brandenburg
-	             --
-	             56,9% Sachsen-Anhalt
-	             61,4% Schleswig-Holstein
-	-> 2017: 70% (22 Mio households)
-
-	Medienrecht im Kontext standortrechtlicher...
-	-> https://books.google.de/books?id=Lk2PDkNeCtEC&pg=PA126&lpg=PA126&dq=kabel+anschlussdichte+schleswig-holstein&source=bl&ots=wQjD6Yzvny&sig=LzuAyh3Oj4sxJMv4pHQBO43T8fU&hl=de&sa=X&ved=0ahUKEwia0P2KjbnXAhVB2KQKHWKnACkQ6AEIQTAF#v=onepage&q=kabel%20anschlussdichte%20schleswig-holstein&f=false
-	-> 1993:	house-			possible	reached of
-				holds			reach		possible
-				  325.000		99,1%		60,8% 	Bremen        		p.119		(60,8% of 99,1% of 325.000 = 196.000 households )
-				  800.000		99,5%		57,8% 	Hamburg       		p.121
-				2.448.000		62,7%		67,4% 	Hessen        		p.122
-											???   	Niedersachsen 		p.123-124 ??
-				  438.000		59,8%		67,2%	Saarland      		p.125
-				1.128.000		77,3%		57,1%	Schleswig-Holstein	p.126
-				1.098.000		75%			75,6	Brandenburg			p.126		(75% = only connectable households here = 275.000) 
-				  816.000		31,3%		68%		Mecklenburg-Vorpommern	p.127
-				  
-
-	http://www.kabelanschluss.eu/in-deutschland.html
-	-> 1982  2% in Germany
-	-> 1990 31% 
-	-> 2015 70%
-
-	http://www.bpb.de/gesellschaft/medien/deutsche-fernsehgeschichte-in-ost-und-west/245730/einfuehrung-des-kabelfernsehens
-	-> 1990 31% / 8,1 Mio households
-	-> 1995      15,8 Mio (including GDR federal states - "neue Bundeslaender")
-
-	SATELLITES
-	satellites "TV-Sat 1", "TV-Sat 2", "Télécom 1", "Télécom 2" in second half of 80s
-	(GDR: receiving of western satellites forbidden: sat dishes mounted "non-orientable")
-	astra since 1988
-	END REM
+	Field populationAntennaShareData:TNumericPairInterpolator
+	Field populationCableShareData:TNumericPairInterpolator
+	Field populationSatelliteShareData:TNumericPairInterpolator
 
 	
 	'how people can receive your TV broadcast
@@ -178,6 +137,60 @@ Type TStationMapCollection
 	End Method
 
 
+	'return a (cached) value of the current share
+	Method GetCurrentPopulationAntennaShare:Double()
+		if _currentPopulationAntennaShare = -1
+			_currentPopulationAntennaShare = GetPopulationAntennaShare()
+		endif
+		return _currentPopulationAntennaShare
+	End Method
+
+
+	'return a (cached) value of the current share
+	Method GetCurrentPopulationCableShare:Double()
+		if _currentPopulationCableShare = -1
+			_currentPopulationCableShare = GetPopulationCableShare()
+		endif
+		return _currentPopulationCableShare
+	End Method
+
+
+	'return a (cached) value of the current share
+	Method GetCurrentPopulationSatelliteShare:Double()
+		if _currentPopulationSatelliteShare = -1
+			_currentPopulationSatelliteShare = GetPopulationSatelliteShare()
+		endif
+		return _currentPopulationSatelliteShare
+	End Method
+
+
+	Method GetPopulationAntennaShare:Double(time:Double = -1)
+		if not populationAntennaShareData then LoadPopulationShareData()
+
+		if time = -1 then time = GetWorldTime().GetTimeGone()
+
+		return populationAntennaShareData.GetInterpolatedValue( time )
+	End Method
+
+
+	Method GetPopulationCableShare:Double(time:Double = -1)
+		if not populationCableShareData then LoadPopulationShareData()
+
+		if time = -1 then time = GetWorldTime().GetTimeGone()
+
+		return populationCableShareData.GetInterpolatedValue( time )
+	End Method
+
+
+	Method GetPopulationSatelliteShare:Double(time:Double = -1)
+		if not populationSatelliteShareData then LoadPopulationShareData()
+
+		if time = -1 then time = GetWorldTime().GetTimeGone()
+
+		return populationSatelliteShareData.GetInterpolatedValue( time )
+	End Method
+
+
 	Method GetLastCensusTime:long()
 		return lastCensusTime
 	End Method
@@ -189,8 +202,18 @@ Type TStationMapCollection
 
 
 	Method DoCensus()
+		'reset caches
+		_currentPopulationAntennaShare = -1
+		_currentPopulationCableShare = -1
+		_currentPopulationSatelliteShare = -1
+
+
 		For local section:TStationMapSection = EachIn sections
 			section.DoCensus()
+		Next
+
+		For local stationMap:TStationMap = Eachin stationMaps
+			stationMap.DoCensus()
 		Next
 
 		'if no census was done, do as if it was done right on game start
@@ -211,7 +234,7 @@ Type TStationMapCollection
 		local result:Float
 		For local section:TStationMapSection = EachIn sections
 			if section.populationAntennaShare < 0
-				result :+ defaultPopulationAntennaShare
+				result :+ GetCurrentPopulationAntennaShare()
 			else
 				result :+ section.populationAntennaShare
 			endif
@@ -226,7 +249,7 @@ Type TStationMapCollection
 		local result:Float
 		For local section:TStationMapSection = EachIn sections
 			if section.populationCableShare < 0
-				result :+ defaultPopulationCableShare
+				result :+ GetCurrentPopulationCableShare()
 			else
 				result :+ section.populationCableShare
 			endif
@@ -241,7 +264,7 @@ Type TStationMapCollection
 		local result:Float
 		For local section:TStationMapSection = EachIn sections
 			if section.populationSatelliteShare < 0
-				result :+ defaultPopulationSatelliteShare
+				result :+ GetCurrentPopulationSatelliteShare()
 			else
 				result :+ section.populationSatelliteShare
 			endif
@@ -506,6 +529,132 @@ Type TStationMapCollection
 	End Method
 
 
+	Method LoadPopulationShareData:int()
+		REM
+		ANTENNAS:
+		http://www.spiegel.de/spiegel/print/d-13508831.html
+		-> 1984 50% of 22 Mio western households via (collective antenna)
+
+		CABLE NETWORK
+		cable network share development
+		-> this is _potential_ reach, not numbers actually using cable
+		https://de.wikipedia.org/wiki/Kabelfernsehnetz
+		-> 1986:     (1,53 Mio households)
+		-> 1994:     (15 Mio households)
+		-> 1995: 65% (15,8 Mio households)
+					 75,1% Mecklenburg-Vorpommern
+					 74,4% Brandenburg
+					 --
+					 56,9% Sachsen-Anhalt
+					 61,4% Schleswig-Holstein
+		-> 2017: 70% (22 Mio households)
+
+		Medienrecht im Kontext standortrechtlicher...
+		-> https://books.google.de/books?id=Lk2PDkNeCtEC&pg=PA126&lpg=PA126&dq=kabel+anschlussdichte+schleswig-holstein&source=bl&ots=wQjD6Yzvny&sig=LzuAyh3Oj4sxJMv4pHQBO43T8fU&hl=de&sa=X&ved=0ahUKEwia0P2KjbnXAhVB2KQKHWKnACkQ6AEIQTAF#v=onepage&q=kabel%20anschlussdichte%20schleswig-holstein&f=false
+		-> 1993:	house-			possible	reached of
+					holds			reach		possible
+					  325.000		99,1%		60,8% 	Bremen        		p.119		(60,8% of 99,1% of 325.000 = 196.000 households )
+					  800.000		99,5%		57,8% 	Hamburg       		p.121
+					2.448.000		62,7%		67,4% 	Hessen        		p.122
+												???   	Niedersachsen 		p.123-124 ??
+					  438.000		59,8%		67,2%	Saarland      		p.125
+					1.128.000		77,3%		57,1%	Schleswig-Holstein	p.126
+					1.098.000		75%			75,6	Brandenburg			p.126		(75% = only connectable households here = 275.000) 
+					  816.000		31,3%		68%		Mecklenburg-Vorpommern	p.127
+					  
+
+		http://www.kabelanschluss.eu/in-deutschland.html
+		-> 1982  2% in Germany
+		-> 1990 31% 
+		-> 2015 70%
+
+		http://www.bpb.de/gesellschaft/medien/deutsche-fernsehgeschichte-in-ost-und-west/245730/einfuehrung-des-kabelfernsehens
+		-> 1990 31% / 8,1 Mio households
+		-> 1995      15,8 Mio (including GDR federal states - "neue Bundeslaender")
+
+
+		https://www.bpb.de/system/files/dokument_pdf/NuN_14_Medienausstattung%20Fernsehnutzung.pdf
+		-> 1990 60% antenna    7% satellite   34% cable
+		-> 2000  5% antenna   45% satellite   50% cable
+
+
+		SATELLITES
+		satellites "TV-Sat 1", "TV-Sat 2", "Télécom 1", "Télécom 2" in second half of 80s
+		(GDR: receiving of western satellites forbidden: sat dishes mounted "non-orientable")
+		astra since 1988
+
+
+		Anteile der verschiedenen Übertragungswege* an den TV-Haushalten in Deutschland von 2008 bis 2017
+		(paid content - accessed via university)
+		https://de.statista.com/statistik/daten/studie/180632/umfrage/anteil-der-tv-haushalte-mit-satellitenempfang-in-deutschland-seit-2005/
+
+
+		Anzahl der Kabel-TV-Haushalte in Deutschland von 2008 bis 2017 (in Millionen)
+		(paid content - accessed via university)
+		https://de.statista.com/statistik/daten/studie/203096/umfrage/anzahl-der-kabelanschluesse-in-deutschland-seit-2008/
+		END REM
+
+		populationAntennaShareData = new TNumericPairInterpolator
+		populationCableShareData = new TNumericPairInterpolator
+		populationSatelliteShareData = new TNumericPairInterpolator
+
+		'ATTENTION: sum MUST be <= 100%
+		'give it a start for interpolating from "unknown" to "known" data
+		populationAntennaShareData.insert(YearTime(1955), 0.20)
+		populationCableShareData.insert(YearTime(1955), 0.00)
+		populationSatelliteShareData.insert(YearTime(1955), 0.00)
+
+		'includes dvb't
+		populationAntennaShareData.insert(YearTime(1982), 0.46)
+		populationAntennaShareData.insert(YearTime(1990), 0.60)
+		populationAntennaShareData.insert(YearTime(2000), 0.07) '0.05
+		populationAntennaShareData.insert(YearTime(2008), 0.11)
+		populationAntennaShareData.insert(YearTime(2012), 0.12)
+		populationAntennaShareData.insert(YearTime(2017), 0.07)
+
+		populationSatelliteShareData.insert(YearTime(1982), 0.00)
+		populationSatelliteShareData.insert(YearTime(1984), 0.01)
+		populationSatelliteShareData.insert(YearTime(1990), 0.07)
+		populationSatelliteShareData.insert(YearTime(2000), 0.36) 
+		populationSatelliteShareData.insert(YearTime(2005), 0.41) '0.44 '16,4 mio households
+		populationSatelliteShareData.insert(YearTime(2008), 0.39) '0.42 '16,4 mio households
+		populationSatelliteShareData.insert(YearTime(2013), 0.42) '0.46 '16,4 mio households
+		populationSatelliteShareData.insert(YearTime(2015), 0.43) '0.47 '17,7 mio households
+		populationSatelliteShareData.insert(YearTime(2017), 0.42) '0.46
+
+		populationCableShareData.insert(YearTime(1982), 0.02)
+		populationCableShareData.insert(YearTime(1986), 0.07)
+		populationCableShareData.insert(YearTime(1990), 0.31)
+'		populationCableShareData.insert(YearTime(1993), 0.60)
+'		populationCableShareData.insert(YearTime(1995), 0.65) '= 15,8 Mio Households
+		populationCableShareData.insert(YearTime(2000), 0.47) '0.50
+		populationCableShareData.insert(YearTime(2008), 0.49) '0.52
+		populationCableShareData.insert(YearTime(2011), 0.47) '0.50
+		populationCableShareData.insert(YearTime(2015), 0.45)
+		populationCableShareData.insert(YearTime(2017), 0.44)
+
+		rem
+		'debug output
+		For local y:int = 1980 to 2017
+			local t:Long = YearTime(y)
+			local a:Double = populationAntennaShareData.GetInterpolatedValue(t)
+			local c:Double = populationCableShareData.GetInterpolatedValue(t)
+			local s:Double = populationSatelliteShareData.GetInterpolatedValue(t)
+			local sum:Double = a + c + s
+			print "year="+y+"  antenna="+ Rset(MathHelper.NumberToString(a*100,1),5)+"%"+"  cable="+Rset(MathHelper.NumberToString(c*100,1),5)+"%"+"  satellite="+RSet(MathHelper.NumberToString(s*100,1),5)+"%"+ "   sum="+RSet(MathHelper.NumberToString(sum*100,1),6)+"%"
+		Next
+		end
+		endrem
+
+		Function YearTime:Long(year:int)
+'		return year
+			return GetWorldTime().MakeTime(year, 0, 0, 0, 0)
+		End Function
+
+		return True
+	End Method
+
+
 	'=== EVENT HANDLERS ===
 
 	'as soon as a station gets active (again), the sharemap has to get
@@ -598,6 +747,8 @@ Type TStationMapCollection
 			EndIf
 		Next
 
+
+		_instance.LoadPopulationShareData()
 
 		'=== CREATE SATELLITES ===
 		'_instance.ResetSatellites()
@@ -1426,6 +1577,14 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method DoCensus()
+		'refresh station reach
+		For local station:TStationBase = EachIn stations
+			station.GetReach(true)
+		Next
+	End Method
+	
+
 	Method SetSectionBroadcastPermission:int(sectionName:string, bool:int=True )
 		if not sectionBroadcastPermissions then sectionBroadcastPermissions = new TMap
 		sectionBroadcastPermissions.Insert(sectionName, string(bool))
@@ -2011,7 +2170,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		if pos then self.pos = pos
 
 		self.price = price
-		self.built = GetWorldTime().getTimeGone()
+		self.built = GetWorldTime().GetTimeGone()
 		self.activationTime = -1
 
 		self.SetFlag(TVTStationFlag.FIXED_PRICE, (price <> -1))
@@ -2547,7 +2706,7 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 
 			local section:TStationMapSection = GetStationMapCollection().GetSectionByName( GetSectionName() )
 			if not section or section.populationAntennaShare < 0
-				reach :* GetStationMapCollection().defaultPopulationAntennaShare
+				reach :* GetStationMapCollection().GetCurrentPopulationAntennaShare()
 			else
 				reach :* section.populationAntennaShare
 			endif
@@ -2586,7 +2745,7 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 			'   receiverShare-Map for all the pixels covered by the antenna
 			local section:TStationMapSection = GetStationMapCollection().GetSectionByName( GetSectionName() )
 			if not section or section.populationAntennaShare < 0
-				exclusiveReach :* GetStationMapCollection().defaultPopulationAntennaShare
+				exclusiveReach :* GetStationMapCollection().GetCurrentPopulationAntennaShare()
 			else
 				exclusiveReach :* section.populationAntennaShare
 			endif
@@ -3382,7 +3541,7 @@ rem
 				if not section then continue
 
 				if section.populationSatelliteShare < 0
-					exclusiveReach :+ section.GetPopulation() * GetStationMapCollection().defaultPopulationSatelliteShare
+					exclusiveReach :+ section.GetPopulation() * GetStationMapCollection().GetCurrentPopulationSatelliteShare()
 				else
 					exclusiveReach :+ section.GetPopulation() * section.populationSatelliteShare
 				endif
@@ -4282,7 +4441,7 @@ endrem
 	'summary: returns maximum audience a player reaches with a cablenetwork
 	Method GetCableNetworkAudienceSum:Int()
 		if populationCableshare < 0
-			return population * GetStationMapCollection().defaultPopulationCableShare
+			return population * GetStationMapCollection().GetCurrentPopulationCableShare()
 		else
 			return population * populationCableShare
 		endif
@@ -4292,7 +4451,7 @@ endrem
 	'summary: returns maximum audience a player reaches with a cablenetwork
 	Method GetSatelliteAudienceSum:Int()
 		if populationSatelliteShare < 0
-			return population * GetStationMapCollection().defaultPopulationSatelliteShare
+			return population * GetStationMapCollection().GetCurrentPopulationSatelliteShare()
 		else
 			return population * populationSatelliteShare
 		endif
@@ -4321,7 +4480,7 @@ endrem
 		Next
 
 		if populationAntennaShare < 0
-			Return result * GetStationMapCollection().defaultPopulationAntennaShare
+			Return result * GetStationMapCollection().GetCurrentPopulationAntennaShare()
 		else
 			Return result * populationAntennaShare
 		endif
@@ -4654,7 +4813,7 @@ Type TStationMap_CableNetwork extends TStationMap_BroadcastProvider
 			reach = section.GetPopulation()
 
 			if section.populationCableShare < 0
-				reach :* GetStationMapCollection().defaultPopulationCableShare
+				reach :* GetStationMapCollection().GetCurrentPopulationCableShare()
 			else
 				reach :* section.populationCableShare
 			endif
@@ -4712,7 +4871,7 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
 			reach = GetStationMapCollection().GetPopulation()
-			reach :* GetStationMapCollection().defaultPopulationSatelliteShare
+			reach :* GetStationMapCollection().GetCurrentPopulationSatelliteShare()
 		EndIf
 
 		reach :* populationShare
