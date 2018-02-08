@@ -75,7 +75,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 		'=== register event listeners
 		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickCancelButton", cancelButton ) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickCancelButton", cancelButton ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickActionButton", actionButton ) ]
 		'localize the button
 		'we have to refresh the gui station list as soon as we remove or add a station
 '		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.removeStation", OnChangeStationMapStation ) ]
@@ -102,6 +102,15 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 		'ignore clicks if not in the own office
 		If Not TScreenHandler_StationMap.currentSubRoom Or TScreenHandler_StationMap.currentSubRoom.owner <> GetPlayerBase().playerID Then Return False
+
+		if TScreenHandler_StationMap.mapInformationFrame
+			'ignore clicks as long as map info screen is shown ?
+			'if TScreenHandler_StationMap.mapInformationFrame.IsOpen() Then Return False
+
+			'or close window
+			if TScreenHandler_StationMap.mapInformationFrame.IsOpen() Then TScreenHandler_StationMap.mapInformationFrame.Close()
+		endif
+
 
 		If TScreenHandler_StationMap.IsInBuyActionMode()
 			If TScreenHandler_StationMap.selectedStation And TScreenHandler_StationMap.selectedStation.GetReach() > 0
@@ -161,6 +170,9 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			EndIf
 
 			SetActionMode( GetSellActionMode() )
+
+			'close potentially open item
+			'if TScreenHandler_StationMap.mapInformationFrame.IsOpen() Then TScreenHandler_StationMap.mapInformationFrame.Close()
 		EndIf
 	End Method
 
@@ -485,7 +497,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 
 					'=== BOXES ===
 					If selectedStation
-						local totalPrice:int = GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetTotalStationPrice(selectedStation)
+						local totalPrice:int = GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetTotalStationBuyPrice(selectedStation)
 
 						subHeaderText = GetLocale("MAP_COUNTRY_"+selectedStation.GetSectionName())
 
@@ -581,9 +593,9 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 	Method Create:TGameGUICableNetworkPanel(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
 		Super.Create(pos, dimension, value, State)
 
-		localeKey_NewItem = "NEW_CABLE_NETWORK"
-		localeKey_BuyItem = "BUY_CABLE_NETWORK"
-		localeKey_SellItem = "SELL_CABLE_NETWORK"
+		localeKey_NewItem = "NEW_CABLE_NETWORK_UPLINK"
+		localeKey_BuyItem = "SIGN_UPLINK"
+		localeKey_SellItem = "CANCEL_UPLINK"
 
 
 		'=== register custom event listeners
@@ -782,8 +794,8 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 		Super.Create(pos, dimension, value, State)
 
 		localeKey_NewItem = "NEW_SATELLITE_UPLINK"
-		localeKey_BuyItem = "BUY_SATELLITE_UPLINK"
-		localeKey_SellItem = "SELL_SATELLITE_UPLINK"
+		localeKey_BuyItem = "SIGN_UPLINK"
+		localeKey_SellItem = "CANCEL_UPLINK"
 
 
 		'=== register custom event listeners
@@ -983,7 +995,10 @@ Type TSatelliteSelectionFrame
 
 
 	Method New()
-		satelliteList = New TGUISelectList.Create(New TVec2D.Init(610,133), New TVec2D.Init(178, 100), "STATIONMAP")
+		If Not area Then area = New TRectangle.Init(402, 96, 190, 212)
+		If Not contentArea Then contentArea = New TRectangle
+
+		satelliteList = New TGUISelectList.Create(New TVec2D.Init(410, 121), New TVec2D.Init(178, 100), "STATIONMAP")
 		'scroll by one entry at a time
 		satelliteList.scrollItemHeightPercentage = 1.0
 		satelliteList.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
@@ -1016,6 +1031,7 @@ Type TSatelliteSelectionFrame
 		'we have to refresh the gui station list as soon as we remove or add a station
 		_eventListeners :+ [ EventManager.registerListenerMethod( "stationmapcollection.removeSatellite", Self, "OnChangeSatellites" ) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod( "stationmapcollection.addSatellite", Self, "OnChangeSatellites" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "stationmapcollection.launchSatellite", Self, "OnChangeSatellites" ) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod( "GUISelectList.onSelectEntry", Self, "OnSelectEntryList", satelliteList ) ]
 
 '		return self
@@ -1149,9 +1165,6 @@ Type TSatelliteSelectionFrame
 
 		Local owner:Int = GetPlayer().playerID
 		If TScreenHandler_StationMap.currentSubRoom Then owner = TScreenHandler_StationMap.currentSubRoom.owner
-
-		If Not area Then area = New TRectangle.Init(402, 103, 190, 212)
-		If Not contentArea Then contentArea = New TRectangle
 
 		Local detailsH:Int = 90 * (selectedSatellite<>Null)
 		'local boxH:int = skin.GetBoxSize(100, -1, "").GetY()
@@ -1739,7 +1752,7 @@ Type TScreenHandler_StationMap
 		
 		'=== create gui elements if not done yet
 		If Not guiInfoButton
-			guiAccordeon = New TGameGUIAccordeon.Create(New TVec2D.Init(586, 70), New TVec2D.Init(211, 305), "", "STATIONMAP")
+			guiAccordeon = New TGameGUIAccordeon.Create(New TVec2D.Init(586, 64), New TVec2D.Init(211, 317), "", "STATIONMAP")
 			TGameGUIAccordeon(guiAccordeon).skinName = "stationmapPanel"
 
 			Local p:TGUIAccordeonPanel
@@ -1753,7 +1766,7 @@ Type TScreenHandler_StationMap
 
 
 			'== info panel
-			guiInfoButton = New TGUIButton.Create(New TVec2D.Init(610, 215), New TVec2D.Init(20, 28), "", "STATIONMAP")
+			guiInfoButton = New TGUIButton.Create(New TVec2D.Init(610, 15), New TVec2D.Init(20, 28), "", "STATIONMAP")
 			guiInfoButton.spriteName = "gfx_gui_button.datasheet"
 			guiInfoButton.SetTooltip( New TGUITooltipBase.Initialize(GetLocale("SHOW_MAP_DETAILS"), GetLocale("CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION"), New TRectangle.Init(0,0,-1,-1)) )
 			guiInfoButton.GetTooltip()._minContentDim = New TVec2D.Init(120,-1)
@@ -2005,7 +2018,7 @@ Type TScreenHandler_StationMap
 		GetSpriteFromRegistry(mapBackgroundSpriteName).Draw(0,0)
 
 
-		_DrawStationMapInfoPanel(586, 5, room)
+		_DrawStationMapInfoPanel(586, 7, room)
 
 		'debug draw station map sections
 		'TStationMapSection.DrawAll()
@@ -2324,7 +2337,16 @@ endrem
 		EndIf
 
 
+		'no info screen while something is selected
+		if selectedStation 
+			if TScreenHandler_StationMap.mapInformationFrame.IsOpen() Then TScreenHandler_StationMap.mapInformationFrame.Close()
+		endif
+
+
 		If mapInformationFrame.IsOpen()
+			'no interaction
+			'if actionMode <> MODE_NONE Then ResetActionMode(MODE_NONE)
+			
 			mapInformationFrame.Update()
 		EndIf
 		
@@ -2344,10 +2366,11 @@ endrem
 
 		Local panel:TGameGUIAccordeonPanel = TGameGUIAccordeonPanel(triggerEvent.GetData().Get("panel"))
 
-
 		If triggerEvent.IsTrigger("guiaccordeon.onClosePanel".ToLower())
-			'selectedStation = null
-			'print "selected = null"
+			if mapInformationFrame.IsOpen()
+				mapInformationFrame.Close()
+			endif
+			
 			ResetActionMode(TScreenHandler_StationMap.MODE_NONE)
 		EndIf
 	End Function
@@ -2380,6 +2403,8 @@ endrem
 	Function OnClickInfoButton:Int(triggerEvent:TEventBase)
 		Local button:TGUIButton = TGUIButton(triggerEvent._sender)
 		If Not button Then Return False
+
+		ResetActionMode(0)
 
 		mapInformationFrame.Open()
 	End Function
@@ -2433,7 +2458,7 @@ endrem
 				Else
 					Local finance:TPlayerFinance = GetPlayerFinance(GetPlayerBase().playerID)
 					If finance And finance.canAfford(selectedStation.GetPrice())
-						button.SetValue(GetLocale("BUY_CABLE_NETWORK"))
+						button.SetValue(GetLocale("SIGN_UPLINK"))
 						button.enable()
 					Else
 						button.SetValue(GetLocale("TOO_EXPENSIVE"))
@@ -2451,10 +2476,10 @@ endrem
 						button.SetValue(GetLocale("UNSELLABLE"))
 						button.disable()
 					ElseIf Not selectedStation.HasFlag(TVTStationFlag.PAID)
-						button.SetValue(GetLocale("SELL_CABLE_NETWORK_UPLINK"))
+						button.SetValue(GetLocale("CANCEL_UPLINK"))
 						button.disable()
 					Else
-						button.SetValue(GetLocale("SELL_CABLE_NETWORK_UPLINK"))
+						button.SetValue(GetLocale("CANCEL_UPLINK"))
 						button.enable()
 					EndIf
 				EndIf

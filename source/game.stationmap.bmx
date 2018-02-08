@@ -139,7 +139,7 @@ Type TStationMapCollection
 
 	'return a (cached) value of the current share
 	Method GetCurrentPopulationAntennaShare:Double()
-		if _currentPopulationAntennaShare = -1
+		if _currentPopulationAntennaShare < 0
 			_currentPopulationAntennaShare = GetPopulationAntennaShare()
 		endif
 		return _currentPopulationAntennaShare
@@ -148,7 +148,7 @@ Type TStationMapCollection
 
 	'return a (cached) value of the current share
 	Method GetCurrentPopulationCableShare:Double()
-		if _currentPopulationCableShare = -1
+		if _currentPopulationCableShare < 0
 			_currentPopulationCableShare = GetPopulationCableShare()
 		endif
 		return _currentPopulationCableShare
@@ -157,7 +157,7 @@ Type TStationMapCollection
 
 	'return a (cached) value of the current share
 	Method GetCurrentPopulationSatelliteShare:Double()
-		if _currentPopulationSatelliteShare = -1
+		if _currentPopulationSatelliteShare < 0
 			_currentPopulationSatelliteShare = GetPopulationSatelliteShare()
 		endif
 		return _currentPopulationSatelliteShare
@@ -215,6 +215,11 @@ Type TStationMapCollection
 		For local stationMap:TStationMap = Eachin stationMaps
 			stationMap.DoCensus()
 		Next
+
+		'also update shares (incorporate tech upgrades of satellites etc)
+		UpdateCableNetworkSharesAndQuality()
+		UpdateSatelliteSharesAndQuality()
+
 
 		'if no census was done, do as if it was done right on game start
 		if lastCensusTime = -1
@@ -954,10 +959,26 @@ Type TStationMapCollection
 	Method UpdateSatellites()
 		if not satellites then ResetSatellites()
 		if not satellites then return
+
+		local toRemove:TStationMap_Satellite[]
 		
 		for local s:TStationMap_Satellite = EachIn satellites
 			s.Update()
+
+			if s.deathDecided and s.deathTime < GetWorldTime().GetTimeGone()
+				if not toRemove
+					toRemove = [s]
+				else
+					toRemove :+ [s]
+				endif
+			endif			
 		next
+
+		if toRemove and toRemove.length > 0
+			for local s:TStationMap_Satellite = EachIn toRemove
+				RemoveSatellite(s)
+			next
+		endif
 	End Method
 
 
@@ -1053,27 +1074,12 @@ Type TStationMapCollection
 			satNames[shuffleIndex] = shuffleTmp
 		Next		
 
-		Local lastLaunchTime:Long = GetWorldTime().MakeTime(1982, 1,1, 0,0)
-		Local satNumber:int = 0
-		For local satName:string = EachIn satNames
-			local satellite:TStationMap_Satellite = new TStationMap_Satellite
-			satellite.launchTime = GetWorldTime().ModifyTime(lastLaunchTime, 0, RandRange(18,28), RandRange(1,28), 0)
-			satellite.name = satName
-			satellite.quality = RandRange(95,110)
-			satellite.dailyFeeMod = RandRange(90,110) / 100.0
-			satellite.setupFeeMod = RandRange(80,120) / 100.0
-			satellite.dailyFeeBase = RandRange(75,110) * 1000
-			satellite.setupFeeBase = RandRange(125,175) * 1000
-
-			if satNumber = 0
-				satellite.minimumChannelImage = RandRange(5,15) / 100.0
-			elseif satNumber <= 2
-				satellite.minimumChannelImage = RandRange(10,20) / 100.0
-			else
-				satellite.minimumChannelImage = RandRange(10,35) / 100.0
-			endif
-
-			satNumber :+ 1
+		'create up to 3 satellites
+		Local lastLaunchTime:Long = GetWorldTime().MakeTime(1983, 1,1, 0,0)
+		For Local satNumber:int = 0 until Min(3, satNames.length)
+			local satName:string = satNames[satNumber]
+			local launchTime:Long = GetWorldTime().ModifyTime(lastLaunchTime, 0, RandRange(0,1), RandRange(1,2), 0)
+			local satellite:TStationMap_Satellite = CreateRandomSatellite(satName, launchTime)
 
 			AddSatellite(satellite)
 
@@ -1082,6 +1088,31 @@ Type TStationMapCollection
 		
 	End Method
 
+
+	Method CreateRandomSatellite:TStationMap_Satellite(brandName:string, launchTime:Long, revision:int = 1)
+		local satellite:TStationMap_Satellite = new TStationMap_Satellite
+		satellite.launchTime = launchTime
+'			satellite.launchTime = GetWorldTime().ModifyTime(lastLaunchTime, 0, RandRange(18,28), RandRange(1,28), 0)
+		satellite.brandName = brandName
+		satellite.name = brandName
+		if revision > 1 then satellite.name :+ " " + revision
+		satellite.quality = RandRange(95,110)
+		satellite.dailyFeeMod = RandRange(90,110) / 100.0
+		satellite.setupFeeMod = RandRange(80,120) / 100.0
+		satellite.dailyFeeBase = RandRange(75,110) * 1000
+		satellite.setupFeeBase = RandRange(125,175) * 1000
+
+		if revision <= 1
+			satellite.minimumChannelImage = RandRange(5,15) / 100.0
+		elseif revision = 3
+			satellite.minimumChannelImage = RandRange(10,20) / 100.0
+		else
+			satellite.minimumChannelImage = RandRange(10,35) / 100.0
+		endif
+
+		return satellite
+	End Method
+	
 
 	Method AddSatellite:int(satellite:TStationMap_Satellite)
 		if satellites.AddLast(satellite)
@@ -1112,8 +1143,21 @@ Type TStationMapCollection
 
 
 	Method OnLaunchSatellite:int(satellite:TStationMap_Satellite)
+		EventManager.triggerEvent( TEventSimple.Create( "StationMapCollection.launchSatellite", New TData.Add("satellite", satellite), Self ) )
+
 		'recalculate shared audience percentage between satellites
 		UpdateSatelliteSharesAndQuality()
+	End Method
+
+
+	Method OnLetDieSatellite:int(satellite:TStationMap_Satellite)
+		EventManager.triggerEvent( TEventSimple.Create( "StationMapCollection.letDieSatellite", New TData.Add("satellite", satellite), Self ) )
+
+		TLogger.Log("TStationMapCollection", "Let die satellite ~q"+satellite.name+"~q", LOG_DEBUG)
+
+		'create another satellite ("follow up" revision)
+		local nextSatellite:TStationMap_Satellite = CreateRandomSatellite(satellite.brandName, GetWorldTime().ModifyTime(-1, 0, 0, 0, RandRange(0,30)), satellite.revision + 1)
+		AddSatellite(nextSatellite)
 	End Method
 
 
@@ -1131,13 +1175,13 @@ Type TStationMapCollection
 		local qualitySum:Int = 0
 		local firstFound:int = False
 		local activeSatCount:int = 0
-
 		For local satellite:TStationMap_Satellite = EachIn satellites
 			if not satellite.IsLaunched() then continue
 
 			local subscribedChannelCount:int = satellite.GetSubscribedChannelCount()
 
 			if not firstFound
+				firstFound = True
 				bestQuality = satellite.quality
 				worstQuality = satellite.quality
 
@@ -1146,7 +1190,7 @@ Type TStationMapCollection
 			endif
 			
 			bestQuality = Max(bestQuality, satellite.quality) 
-			worstQuality = min(worstQuality, satellite.quality)
+			worstQuality = Min(worstQuality, satellite.quality)
 			qualitySum :+ satellite.quality
 
 			bestChannelCount = Max(bestChannelCount, subscribedChannelCount)
@@ -1167,7 +1211,8 @@ Type TStationMapCollection
 
 		'spread share across satellites
 		'set best quality to 100% and adjust all others accordingly
-		print "UpdateSatelliteSharesAndQuality:"
+'		print "UpdateSatelliteSharesAndQuality:"
+'		print "  best quality="+bestQuality
 		For local satellite:TStationMap_Satellite = EachIn satellites
 			'ignore if not launched
 			'share is not affected if not launched
@@ -1175,18 +1220,21 @@ Type TStationMapCollection
 			if not satellite.IsLaunched() then continue
 
 			satellite.oldPopulationShare = satellite.populationShare
-			'30% influence of quality, 70% of subscribed channel count
-			if bestChannelCount = 0
-				'ignore channel influence if there is no channel yet
-				satellite.populationShare = MathHelper.Clamp(sharePartQuality * satellite.quality, 0.0, 1.0)
+
+			'min 40% influence of quality
+			'max 60% of subscribed channel count
+			'weight is depending on how many channels use satellites
+			if bestChannelCount > 0
+				local bestChannelWeight:Float = 0.6 * bestChannelCount/4.0 '4 = player count
+				satellite.populationShare = MathHelper.Clamp((1.0 - bestChannelWeight) * (sharePartQuality * satellite.quality) + bestChannelWeight * (sharePartChannelCount * satellite.GetSubscribedChannelCount()), 0.0, 1.0)
 			else
-				satellite.populationShare = MathHelper.Clamp(0.3 * (sharePartQuality * satellite.quality) + 0.7 * (sharePartChannelCount * satellite.GetSubscribedChannelCount()), 0.0, 1.0)
+				satellite.populationShare = MathHelper.Clamp(sharePartQuality * satellite.quality, 0.0, 1.0)
 			endif
 
 			satellite.oldQuality = satellite.quality
-			satellite.quality = 100 * floor(MathHelper.Clamp(satellite.quality / float(bestQuality), 0.0, 1.0) + 0.5)
+			satellite.quality = MathHelper.Clamp(100 * satellite.quality / float(bestQuality), 0.0, 100.0)
 
-			print "  satellite: "+satellite.name+ "  share: " + satellite.oldPopulationShare +" -> " + satellite.populationShare +"   quality: " + satellite.oldQuality +" -> " + satellite.quality
+'			print "  satellite: "+Lset(satellite.name, 12)+ "  share: " + satellite.oldPopulationShare +" -> " + satellite.populationShare +"   quality: " + satellite.oldQuality +" -> " + satellite.quality
 		Next
 
 
@@ -1238,11 +1286,11 @@ Type TStationMapCollection
 			local cableNetwork:TStationMap_CableNetwork = new TStationMap_CableNetwork
 			'shorter and shorter amounts
 			if cnNumber < sections.Count()/4
-				cableNetwork.launchTime = GetWorldTime().ModifyTime(lastLaunchTime, 0, RandRange(3,9), RandRange(1,28), 0)
+				cableNetwork.launchTime = GetWorldTime().ModifyTime(lastLaunchTime, 0, RandRange(5,9), RandRange(1,28), 0)
 			elseif cnNumber < sections.Count()/2
-				cableNetwork.launchTime = GetWorldTime().ModifyTime(lastLaunchTime, 0, RandRange(2,6), RandRange(1,28), 0)
+				cableNetwork.launchTime = GetWorldTime().ModifyTime(lastLaunchTime, 0, RandRange(3,6), RandRange(1,28), 0)
 			else
-				cableNetwork.launchTime = GetWorldTime().ModifyTime(lastLaunchTime, 0, RandRange(0,3), RandRange(1,28), 0)
+				cableNetwork.launchTime = GetWorldTime().ModifyTime(lastLaunchTime, 0, RandRange(2,4), RandRange(1,28), 0)
 			endif
 			'still includes potential place holders!
 			cableNetwork.name = cnNames[RandRange(0, cnNames.length-1)]
@@ -1260,7 +1308,6 @@ Type TStationMapCollection
 			else
 				cableNetwork.minimumChannelImage = RandRange(10,35) / 100.0
 			endif
-
 			cnNumber :+ 1
 
 			AddCableNetwork(cableNetwork)
@@ -1895,10 +1942,10 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetTotalStationPrice:int(station:TStationBase)
+	Method GetTotalStationBuyPrice:int(station:TStationBase)
 		if not station then return 0
 
-		local price:int = station.GetPrice()
+		local buyPrice:int = station.GetBuyPrice()
 		
 		'check if there is a governmental broadcast/build permission
 		'also allow "granted" to be in another section?
@@ -1906,13 +1953,11 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 			local section:TStationMapSection = GetStationMapCollection().GetSectionByName(station.GetSectionName())
 			'stations without assigned section cannot have a permission...
 			if section and section.NeedsBroadcastPermission(owner, station.stationType) and not section.HasBroadcastPermission(owner, station.stationType)
-				price :+ section.GetBroadcastPermissionPrice(owner, station.stationType)
+				buyPrice :+ section.GetBroadcastPermissionPrice(owner, station.stationType)
 			endif
 		endif
-		return price
+		return buyPrice
 	End Method
-
-
 
 
 	Method AddStation:Int(station:TStationBase, buy:Int=False)
@@ -1924,7 +1969,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 		local section:TStationMapSection = GetStationMapCollection().GetSectionByName(station.GetSectionName())
 		local buyPermission:int = False
-		local totalPrice:int = GetTotalStationPrice(station)
+		local totalPrice:int = GetTotalStationBuyPrice(station)
 		'check if there is a governmental broadcast/build permission
 		'also allow "granted" to be in another section?
 		if not station.HasFlag(TVTStationFlag.ILLEGAL) ' and not station.HasFlag(TVTStationFlag.GRANTED)
@@ -1970,8 +2015,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 		'ALSO DO NOT recalculate audience of channel
 		'RecalculateAudienceSum()
-
-		TLogger.Log("TStationMap.AddStation", "Player"+owner+" buys broadcasting station ["+station.GetTypeName()+"] in section ~q" + station.GetSectionName() +"~q for " + station.price + " Euro (reach +" + station.getReach(True) + ")", LOG_DEBUG)
+		TLogger.Log("TStationMap.AddStation", "Player"+owner+" buys broadcasting station ["+station.GetTypeName()+"] in section ~q" + station.GetSectionName() +"~q for " + station.price + " Euro (reach +" + station.GetReach(True) + ")", LOG_DEBUG)
 
 		'inform the station about the add (eg. remove connections)
 		station.OnAddToMap()
@@ -2141,13 +2185,12 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	'audience reachable with current stationtype share
 	Field reach:Int	= -1
 	'maximum audience if all would use that type
-	Field reachMax:Int = 0
+	Field reachMax:Int = -1
+	'reach of just this station without others in range
+	Field reachExclusiveMax:Int = -1
 
-	'increase of reach at when bought
-	Field reachIncrease:Int = -1
-	'decrease of reach when bought (= increase in that state)
-	Field reachDecrease:Int = -1
 	Field price:Int	= -1
+
 	'daily costs for "running" the station
 	Field runningCosts:int = -1
 	Field owner:Int = 0
@@ -2179,9 +2222,6 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		self.RefreshData()
 
-		'save on compution for "initial states"
-		self.reachDecrease = reachIncrease
-
 		Return self
 	End Method
 
@@ -2197,7 +2237,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		GetReachIncrease(True)
 		'save on compution for "initial states" - do it on "create"
 		'GetReachDecrease(True)
-		GetPrice( Not HasFlag(TVTStationFlag.FIXED_PRICE) )
+		'GetPrice( Not HasFlag(TVTStationFlag.FIXED_PRICE) )
 	End Method
 
 
@@ -2233,10 +2273,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'potentially reachable
-	Method GetReachMax:Int(refresh:Int=False) {_exposeToLua}
-		GetReach(refresh)
-		return reachMax
-	End Method
+	Method GetReachMax:Int(refresh:Int=False) abstract {_exposeToLua}
 
 
 	'get the reach of that station
@@ -2248,22 +2285,12 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method GetReachIncrease:Int(refresh:Int=False) {_exposeToLua}
-		If reachIncrease >= 0 And Not refresh Then Return reachIncrease
-		If owner <= 0 then Return 0
-
-		reachIncrease = GetExclusiveReach(refresh)
-
-		return reachIncrease
+		return GetExclusiveReach(refresh)
 	End Method
 
 
 	Method GetReachDecrease:Int(refresh:Int=False) {_exposeToLua}
-		If reachDecrease >= 0 And Not refresh Then Return reachDecrease
-		If owner <= 0 then Return 0
-
-		reachDecrease = GetExclusiveReach(refresh)
-
-		Return reachDecrease
+		Return GetExclusiveReach(refresh)
 	End Method
 
 
@@ -2286,16 +2313,24 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetSellPrice:Int(refresh:Int=False) {_exposeToLua}
+	Method GetSellPrice:Int() {_exposeToLua}
 		'price is multiplied by an age factor of 0.75-0.95
 		Local factor:Float = Max(0.75, 0.95 - Float(getAge())/1.0)
-		If price >= 0 And Not refresh Then Return Int(price * factor / 10000) * 10000
+		If owner Then Return Int(GetPrice() * factor / 10000) * 10000
 
-		Return Int( getPrice(refresh) * factor / 10000) * 10000
+		Return Int( GetPrice() * factor / 10000) * 10000
 	End Method
 
 
-	Method GetPrice:Int(refresh:Int=False) {_exposeToLua}
+	'what was paid for it?
+	Method GetPrice:Int() {_exposeToLua}
+		if price < 0 then return GetBuyPrice()
+		return price
+	End Method
+
+
+	'current price
+	Method GetBuyPrice:Int() {_exposeToLua}
 		return 0
 	End Method
 
@@ -2468,7 +2503,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		If HasFlag(TVTStationFlag.PAID) Then Return True
 		If Not GetPlayerFinance(playerID) Then Return False
 
-		If GetPlayerFinance(playerID).PayStation( getPrice() )
+		If GetPlayerFinance(playerID).PayStation( GetBuyPrice() )
 			owner = playerID
 			SetFlag(TVTStationFlag.PAID, True)
 
@@ -2562,16 +2597,18 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		local totalPrice:int
 		if not showPermissionText
-			totalPrice = GetPrice()
+			'always request the _current_ (refreshed) price
+			totalPrice = GetBuyPrice()
 		else
 			GetBitmapFontManager().baseFont.draw(GetTypeName()+": ", textX, textY)
-			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.DottedValue(GetPrice()) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
+			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.DottedValue(GetBuyPrice()) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
 			textY:+ textH
 			GetBitmapFontManager().baseFont.draw(GetLocale("BROADCAST_PERMISSION")+": ", textX, textY)
 			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.DottedValue(section.GetBroadcastPermissionPrice(owner, stationType)) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
 			textY:+ textH
 
-			totalPrice = GetStationMap(owner).GetTotalStationPrice(self)
+			'always request the _current_ (refreshed) price
+			totalPrice = GetStationMap(owner).GetTotalStationBuyPrice(self)
 		endif
 
 		GetBitmapFontManager().baseFont.draw(GetLocale("PRICE")+": ", textX, textY)
@@ -2688,31 +2725,36 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetReachMax:Int(refresh:Int=False) {_exposeToLua}
+		'not cached?
+		If reachMax < 0 or refresh
+			reachMax = GetStationMapCollection().CalculateTotalAntennaStationReach(Int(pos.x), Int(pos.y), radius)
+		endif
+		return reachMax
+	End Method
+
+
 	'reachable with current stationtype share
 	Method GetReach:Int(refresh:Int=False) {_exposeToLua}
-		If reach >= 0 And Not refresh Then Return reach
+
 
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
-			reach = GetStationMapCollection().CalculateTotalAntennaStationReach(Int(pos.x), Int(pos.y), radius)
-			reachMax = reach
+			return GetReachMax(refresh)
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-			reach = GetStationMapCollection().CalculateTotalAntennaStationReach(Int(pos.x), Int(pos.y), radius)
-			reachMax = reach
-
 			'more exact approach (if SHARES DIFFER between sections) would be to
 			'find split the area into all covered sections and calculate them
 			'individually - then sum them up for the total reach amount
 
 			local section:TStationMapSection = GetStationMapCollection().GetSectionByName( GetSectionName() )
 			if not section or section.populationAntennaShare < 0
-				reach :* GetStationMapCollection().GetCurrentPopulationAntennaShare()
+				return GetReachMax(refresh) * GetStationMapCollection().GetCurrentPopulationAntennaShare()
 			else
-				reach :* section.populationAntennaShare
+				return GetReachMax(refresh) * section.populationAntennaShare
 			endif
 		EndIf
 
-		Return reach
+		return GetReachMax(refresh)
 	End Method
 
 
@@ -2728,15 +2770,22 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 			'TODO
 			Throw "TStationAntenna.GetExclusiveReach() TODO"
 
-			local exclusiveReach:int = GetStationMap(owner).CalculateAntennaAudienceIncrease(Int(pos.x), Int(pos.y), radius)
-			return exclusiveReach
+			'not cached yet?
+			if reachExclusiveMax < 0 or refresh
+				reachExclusiveMax = GetStationMap(owner).CalculateAntennaAudienceIncrease(Int(pos.x), Int(pos.y), radius)
+			endif
+			
+			return reachExclusiveMax
+
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-			local exclusiveReach:int
-			If GetStationMap(owner).HasStation(self)
-				exclusiveReach = GetStationMap(owner).CalculateAntennaAudienceDecrease(self)
-			Else
-				exclusiveReach = GetStationMap(owner).CalculateAntennaAudienceIncrease(Int(pos.x), Int(pos.y), radius)
-			EndIf
+			'not cached yet?
+			if reachExclusiveMax < 0 or refresh
+				If GetStationMap(owner).HasStation(self)
+					reachExclusiveMax = GetStationMap(owner).CalculateAntennaAudienceDecrease(self)
+				Else
+					reachExclusiveMax = GetStationMap(owner).CalculateAntennaAudienceIncrease(Int(pos.x), Int(pos.y), radius)
+				EndIf
+			endif
 
 			'this is NOT correct - as the other sections (overlapping)
 			'might have other antenna share values
@@ -2745,59 +2794,59 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 			'   receiverShare-Map for all the pixels covered by the antenna
 			local section:TStationMapSection = GetStationMapCollection().GetSectionByName( GetSectionName() )
 			if not section or section.populationAntennaShare < 0
-				exclusiveReach :* GetStationMapCollection().GetCurrentPopulationAntennaShare()
+				return reachExclusiveMax * GetStationMapCollection().GetCurrentPopulationAntennaShare()
 			else
-				exclusiveReach :* section.populationAntennaShare
+				return reachExclusiveMax * section.populationAntennaShare
 			endif
-			return exclusiveReach
+
+			return reachExclusiveMax
 		EndIf
 
-		return 0
+		return reachExclusiveMax
 	End Method
 	
 
 	'get the relative reach increase of that station
 	Method GetRelativeReachIncrease:Int(refresh:Int=False) {_exposeToLua}
-		Local r:Float = getReach(refresh)
+		Local r:Float = GetReach(refresh)
 		If r = 0 Then Return 0
 
-		Return getReachIncrease(refresh) / r
+		Return GetReachIncrease(refresh) / r
 	End Method
 
 
 	'override
-	Method GetPrice:Int(refresh:Int=False) {_exposeToLua}
+	Method GetBuyPrice:Int() {_exposeToLua}
+		'If HasFlag(TVTStationFlag.FIXED_PRICE) and price >= 0 Then Return price
+
 		'price corresponds to "possibly reachable" not actually reached
 		'persons...
 		'so during changes between antenna-satellite-cable the price
 		'"effectivity" changes.
-		If price >= 0 And Not refresh Then Return price
 
 		'when refreshing also check for a new section name (might be a
 		'to-place-station)
-		local section:TStationMapSection = GetStationMapCollection().GetSectionByName( GetSectionName( refresh ) )
+		local section:TStationMapSection = GetStationMapCollection().GetSectionByName( GetSectionName() )
 		'return an odd price (if someone sees it...)
 		if not section then return 133701337
 				
-		local channelSympathy:Float = section.GetPressureGroupsChannelSympathy(owner)
-
-		price = 0
-
+		local buyPrice:int = 0
 
 		'construction costs
 		if not IsShutdown()
+			local channelSympathy:Float = section.GetPressureGroupsChannelSympathy(owner)
 			'government-dependent costs
 			'section specific costs for bought land + bureaucracy costs
-			price :+ section.GetPropertyAquisitionCosts(TVTStationType.ANTENNA)
+			buyPrice :+ section.GetPropertyAquisitionCosts(TVTStationType.ANTENNA)
 			'section government costs, changes over time (dynamic reach)
-			price :+ 0.10 * GetReach()
+			buyPrice :+ 0.10 * GetReach(True)
 			'government sympathy adjustments (-10% to +10%)
 			'price :+ 0.1 * (-1 + 2*channelSympathy) * price
-			price :* 1.0 + (0.1 * (1 - 2*channelSympathy))
+			buyPrice :* 1.0 + (0.1 * (1 - 2*channelSympathy))
 
 			'fixed construction costs
 			'building costs for "hardware" (more expensive than sat/cable)
-			price :+ 0.30 * GetReachMax()
+			buyPrice :+ 0.30 * GetReachMax()
 		endif
 
 
@@ -2805,10 +2854,10 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 
 
 		'round it to 25000-steps
-		price = Max(0 , Int(Ceil(price / 25000)) * 25000 )
+		buyPrice = Max(0 , Int(Ceil(buyPrice / 25000)) * 25000 )
 
 
-		Return price
+		Return buyPrice
 	End Method
 
 
@@ -3034,8 +3083,8 @@ Type TStationCableNetworkUplink extends TStationBase
 
 
 	'override
-	Method GetPrice:Int(refresh:Int=False) {_exposeToLua}
-		If price >= 0 And Not refresh Then Return price
+	Method GetBuyPrice:Int() {_exposeToLua}
+'		If price >= 0 And Not refresh Then Return price
 
 		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
 		if not cableNetwork then return 0
@@ -3046,35 +3095,35 @@ Type TStationCableNetworkUplink extends TStationBase
 			return 133701337
 		endif
 				
-		local channelSympathy:Float = section.GetPressureGroupsChannelSympathy(owner)
-
-		price = 0
+		local buyPrice:int = 0
 
 		'construction costs
 		if not IsShutdown()
+			local channelSympathy:Float = section.GetPressureGroupsChannelSympathy(owner)
+			
 			'government-dependent costs
 			'section specific costs for bought land + bureaucracy costs
-			price :+ section.GetPropertyAquisitionCosts(TVTStationType.CABLE_NETWORK_UPLINK)
+			buyPrice :+ section.GetPropertyAquisitionCosts(TVTStationType.CABLE_NETWORK_UPLINK)
 			'section government costs, changes over time (dynamic reach)
-			price :+ 0.10 * GetReach()
+			buyPrice :+ 0.10 * GetReach(True)
 			'government sympathy adjustments (-10% to +10%)
 			'price :+ 0.1 * (-1 + 2*channelSympathy) * price
-			price :* 1.0 + (0.1 * (1 - 2*channelSympathy))
+			buyPrice :* 1.0 + (0.1 * (1 - 2*channelSympathy))
 
 			'fixed building costs
 			'building costs for "hardware"
-			price :+ 65000
+			buyPrice :+ 65000
 		endif
 
 
 		'cable network provider costs
-		price :+ cableNetwork.GetSetupFee(owner)
+		buyPrice :+ cableNetwork.GetSetupFee(owner)
 
 
 		'round it to 5000-steps
-		price = Max(0 , Int(Ceil(price / 5000)) * 5000 )
+		buyPrice = Max(0 , Int(Ceil(buyPrice / 5000)) * 5000 )
 
-		Return price
+		Return buyPrice
 	End Method
 	
 
@@ -3119,6 +3168,16 @@ Type TStationCableNetworkUplink extends TStationBase
 	End Method
 
 
+	Method GetReachMax:Int(refresh:Int=False) {_exposeToLua}
+		if reachMax <= 0 or refresh
+			local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
+			if section then reachMax = section.GetPopulation()
+		endif
+
+		return reachMax
+	End Method
+
+
 	Method GetReach:Int(refresh:Int=False) {_exposeToLua}
 		'always return the satellite's reach - so it stays dynamically
 		'without the hassle of manual "cache refreshs" 
@@ -3126,54 +3185,59 @@ Type TStationCableNetworkUplink extends TStationBase
 
 		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
 		if not cableNetwork then return 0
-		
-		reach = cableNetwork.GetReach()
 
-		if reachMax <= 0
-			local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
-			if section then reachMax = section.GetPopulation()
-		endif
-
-		return reach
+		return cableNetwork.GetReach(refresh)
 	End Method
 
 
 	'reached audience not shared with other stations (antennas, cable, ...)
 	Method GetExclusiveReach:Int(refresh:Int=False) {_exposeToLua}
-		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
-		if not cableNetwork then return 0
-
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
-			'satellites
-			'if a satellite covers the section, then no increase will happen
-			if GetStationMap(owner).GetSatelliteUplinksCount()
-				return 0
+			'not cached yet?
+			if reachExclusiveMax < 0 or refresh
+				local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+				if not cableNetwork
+					reachExclusiveMax = 0
+					return reachExclusiveMax
+				endif
+
+				'satellites
+				'if a satellite covers the section, then no increase will happen
+				if GetStationMap(owner).GetSatelliteUplinksCount()
+					reachExclusiveMax = 0
+					return reachExclusiveMax
+				endif
+				'cable networks
+				'if there is another cable network covering the same section,
+				'then no increase will happen
+				'if reach is calculated for self while already added,
+				'check if another is existing too
+				local cableNetworks:int = GetStationMap(owner).GetCableNetworkUplinksInSectionCount(sectionName)
+				if GetStationMap(owner).HasCableNetworkUplink(self) and cableNetworks > 1
+					reachExclusiveMax = 0
+					return reachExclusiveMax
+				elseif cableNetworks > 0
+					reachExclusiveMax = 0
+					return reachExclusiveMax
+				endif
+
+				reachExclusiveMax = cableNetwork.GetReach()
+
+				'subtract section population for all antennas in that area
+				local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
+				reachExclusiveMax :- section.GetAntennaAudienceSum( GetStationMap(owner).stations )
 			endif
-			'cable networks
-			'if there is another cable network covering the same section,
-			'then no increase will happen
-			'if reach is calculated for self while already added,
-			'check if another is existing too
-			local cableNetworks:int = GetStationMap(owner).GetCableNetworkUplinksInSectionCount(sectionName)
-			if GetStationMap(owner).HasCableNetworkUplink(self) and cableNetworks > 1
-				return 0
-			elseif cableNetworks > 0
-				return 0
-			endif
-
-			local exclusiveReach:int = cableNetwork.GetReach()
-
-			'subtract section population for all antennas in that area
-			local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
-			exclusiveReach :- section.GetAntennaAudienceSum( GetStationMap(owner).stations )
-
-			return exclusiveReach
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-			return cableNetwork.GetReach(refresh)
+			local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+			if not cableNetwork
+				reachExclusiveMax = 0
+			else
+				reachExclusiveMax = cableNetwork.GetReach(refresh)
+			endif
 		EndIf
 
-		return 0
+		return reachExclusiveMax
 	End Method
 
 
@@ -3399,12 +3463,12 @@ Type TStationSatelliteUplink extends TStationBase
 
 
 	'override
-	Method GetSellPrice:Int(refresh:Int=False) {_exposeToLua}
+	Method GetSellPrice:Int() {_exposeToLua}
 		'sell price = cancel costs
 		'cancel costs depend on the days a contract has left
 		Local factor:Float = (1.0 - GetSubscriptionProgress())^2
 
-		Return Int( GetPrice(refresh) * factor / 10000) * 10000
+		Return Int( GetPrice() * factor / 10000) * 10000
 	End Method
 
 
@@ -3428,9 +3492,7 @@ Type TStationSatelliteUplink extends TStationBase
 
 
 	'override
-	Method GetPrice:Int(refresh:Int=False) {_exposeToLua}
-		If price >= 0 And Not refresh Then Return price
-
+	Method GetBuyPrice:Int() {_exposeToLua}
 		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
 		if not satellite then return 0
 
@@ -3447,35 +3509,44 @@ Type TStationSatelliteUplink extends TStationBase
 				
 		local channelSympathy:Float = section.GetPressureGroupsChannelSympathy(owner)
 
-		price = 0
+		local buyPrice:int = 0
 
 		'construction costs
 		if not IsShutdown()
 			'government-dependent costs
 			'section specific costs for bought land + bureaucracy costs
-			price :+ section.GetPropertyAquisitionCosts(TVTStationType.SATELLITE_UPLINK)
+			buyPrice :+ section.GetPropertyAquisitionCosts(TVTStationType.SATELLITE_UPLINK)
 			'section government costs, changes over time (dynamic reach)
-			price :+ 0.10 * GetReach()
+			buyPrice :+ 0.10 * GetReach(True)
 			'government sympathy adjustments (-10% to +10%)
-			'price :+ 0.1 * (-1 + 2*channelSympathy) * price
-			price :* 1.0 + (0.1 * (1 - 2*channelSympathy))
-
+			'buyPrice :+ 0.1 * (-1 + 2*channelSympathy) * price
+			buyPrice :* 1.0 + (0.1 * (1 - 2*channelSympathy))
 
 			'fixed building costs
 			'building costs for "hardware" (big sat dish)
-			price :+ 95000
+			buyPrice :+ 95000
 		endif
 
 
 		'costs for the satellite provider
-		price :+ satellite.GetSetupFee(owner)
+		buyPrice :+ satellite.GetSetupFee(owner)
 
 
 		'round it to 5000-steps
-		price = Max(0 , Int(Ceil(price / 5000)) * 5000 )
+		buyPrice = Max(0 , Int(Ceil(buyPrice / 5000)) * 5000 )
 
 
-		Return price
+		Return buyPrice
+	End Method
+
+
+	'override
+	Method GetReachMax:Int(refresh:Int=False) {_exposeToLua}
+		if reachMax < 0 or refresh
+			reachMax = GetStationMapCollection().GetPopulation()
+		endif
+
+		return reachMax
 	End Method
 
 
@@ -3487,22 +3558,24 @@ Type TStationSatelliteUplink extends TStationBase
 		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
 		if not satellite then return 0
 		
-		reach = satellite.GetReach()
-
-		if reachMax <= 0
-			reachMax = GetStationMapCollection().GetPopulation()
-		endif
-
-		return reach
+		return satellite.GetReach()
 	End Method
 
 
-	'reached audience not shared with another stations (antennas, cable, ...)
+	'reached audience not shared with other stations (antennas, cable, ...)
 	Method GetExclusiveReach:Int(refresh:Int=False) {_exposeToLua}
-		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
-		if not satellite then return 0
+		'not cached yet?
+		if reachExclusiveMax < 0 or refresh
+			local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+			if not satellite
+				reachExclusiveMax = 0
+			else
+				reachExclusiveMax = satellite.GetExclusiveReach()
+			endif
+		endif
+		return reachExclusiveMax
 
-		return satellite.GetExclusiveReach()
+
 rem
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
 			local exclusiveReach:int
@@ -3550,7 +3623,6 @@ rem
 			return exclusiveReach
 		EndIf
 endrem
-		return 0
 	End Method
 	
 
@@ -4833,7 +4905,7 @@ Type TStationMap_CableNetwork extends TStationMap_BroadcastProvider
 		if not Super.Launch() then return False
 
 		GetStationMapCollection().OnLaunchCableNetwork(self)
-		print "Launching cable network ~q"+GetName()+"~q. Reach:" + GetReach()
+		TLogger.Log("CableNetwork.Launch", "Launching cable network ~q"+GetName()+"~q. Reach: " + GetReach() +"  Date: " + GetWorldTime().GetFormattedGameDate(launchTime), LOG_DEBUG)
 
 		return True
 	End Method
@@ -4855,6 +4927,24 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider
 	'the population reachable because of orbit position
 	'Field populationImage:TImage {nosave}
 	'Field populationMap:int[,] {nosave}
+
+	'name without revision
+	Field brandName:string
+
+	Field nextTechUpgradeTime:Long = -1
+	Field nextTechUpgradeValue:int = 0
+	Field techUpgradeSpeed:int
+	Field deathTime:Long = -1
+	'is death decided (no further changes possible)
+	'this allows ancestores/other revisions to get launched then
+	Field deathDecided:int = False
+	'version of the satellite
+	Field revision:int = 1
+
+
+	Method New()
+		techUpgradeSpeed = BiasedRandRange(75,125, 0.5) '75-125%
+	End Method
 
 
 	'override
@@ -4913,9 +5003,38 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider
 	Method Launch:int()
 		if not Super.Launch() then return False
 
+		'set death to be somewhere in 8-12 years
+		deathTime = GetWorldTime().ModifyTime(launchTime, RandRange(8,12), 0, 0, RandRange(200,800))
+
 		GetStationMapCollection().OnLaunchSatellite(self)
-		print "Launching satellite ~q"+name+"~q. Reach:" + GetReach()
+		TLogger.Log("Satellite.Launch", "Launching satellite ~q"+name+"~q. Reach: " + GetReach() +"  Date: " + GetWorldTime().GetFormattedGameDate(launchTime) +"  Death: " + GetWorldTime().GetFormattedGameDate(deathTime), LOG_DEBUG)
 
 		return True
+	End Method
+
+
+	Method Update:int()
+		Super.Update()
+
+		'no research, death ... if already decided to stop soon
+		if IsLaunched() and not deathDecided
+			'death in <3 days?
+			if deathTime - 3*TWorldTime.dayLength < GetWorldTime().GetTimeGone()
+				deathDecided = True
+				GetStationMapCollection().OnLetDieSatellite(self)
+			endif
+
+			if nextTechUpgradeTime < GetWorldTime().GetTimeGone()
+				if nextTechUpgradeTime > 0
+					quality :+ nextTechUpgradeValue
+					'inform others (eg. for news)
+					EventManager.triggerEvent( TEventSimple.Create( "Satellite.onUpgradeTech", New TData.AddNumber("quality", quality).AddNumber("oldQuality", quality - nextTechUpgradeValue), Self ) )
+					'print "satellite " + name +" upgraded technology " + (quality - nextTechUpgradeValue) +" -> " + quality
+				endif
+
+				nextTechUpgradeTime = GetWorldTime().ModifyTime(-1, 0, 0, RandRange(250,350) * 100.0/techUpgradeSpeed)
+				nextTechUpgradeValue = BiasedRandRange(10, 25, 0.2) * 100.0/techUpgradeSpeed
+			endif
+		endif
 	End Method
 End Type

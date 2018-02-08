@@ -622,12 +622,12 @@ PEOPLE_WITH_TV = Re
 NEW_STATION = Neuer Sendemast
 BUY_STATION = Sendemast kaufen
 SELL_STATION = Sendemast verkaufen
-NEW_CABLE_NETWORK = Neues Kabelnetz
-BUY_CABLE_NETWORK = Kabelnetz kaufen
-SELL_CABLE_NETWORK = Kabelnetz verkaufen
+NEW_CABLE_NETWORK_UPLINK = Neue Kabelnetzanbindung
 NEW_SATELLITE_UPLINK = Neue Satellitenanbindung
-BUY_SATELLITE_UPLINK = Anbindung buchen
-SELL_SATELLITE_UPLINK = Anbindung kündigen
+SIGN_UPLINK = Anbindung buchen
+CANCEL_UPLINK = Anbindung kündigen
+RENEW_CONTRACT = Vertrag verlängern
+
 
 SELECT_LOCATION = Standort auswählen
 SELECT_STATION = Sendemast auswählen
