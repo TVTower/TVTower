@@ -1249,7 +1249,8 @@ Type TStationMapCollection
 		local satLink:TStationSatelliteUplink = TStationSatelliteUplink( map.GetSatelliteUplinkBySatellite(satellite) )
 		if not satLink then return False
 
-		'do not sell it directly but just "shutdown" (so contracts can get renewed)
+		'do not sell it directly but just "shutdown"
+		'(so new contracts with this uplink can get created)
 		satLink.ShutDown()
 	End Method
 
@@ -1922,12 +1923,14 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 			local satLink:TStationSatelliteUplink = TStationSatelliteUplink(station)
 			local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satLink.satelliteGUID)
 			if not satellite then Return False
-			if not satellite.IsSubscribedChannel(owner) and not satellite.CanSubscribeChannel(owner, -1) then return False
+			if satellite.IsSubscribedChannel(owner) then Return False
+			if not satellite.CanSubscribeChannel(owner, -1) then Return False
 		elseif TStationCableNetworkUplink(station)
 			local cableNetworkUplink:TStationCableNetworkUplink = TStationCableNetworkUplink(station)
 			local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkUplink.cableNetworkGUID)
 			if not cableNetwork then Return False
-			if not cableNetwork.IsSubscribedChannel(owner) and not cableNetwork.CanSubscribeChannel(owner, -1) then return False
+			if cableNetwork.IsSubscribedChannel(owner) then Return False
+			if not cableNetwork.CanSubscribeChannel(owner, -1) then return False
 		endif
 
 		return True
@@ -2017,7 +2020,10 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		'RecalculateAudienceSum()
 		TLogger.Log("TStationMap.AddStation", "Player"+owner+" buys broadcasting station ["+station.GetTypeName()+"] in section ~q" + station.GetSectionName() +"~q for " + station.price + " Euro (reach +" + station.GetReach(True) + ")", LOG_DEBUG)
 
-		'inform the station about the add (eg. remove connections)
+		'sign potential contracts (= add connections)
+		station.SignContract( -1 )
+
+		'inform the station
 		station.OnAddToMap()
 
 		'emit an event so eg. network can recognize the change
@@ -2051,8 +2057,11 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 			TLogger.Log("TStationMap.AddStation", "Player "+owner+" trashes broadcasting station for 0 Euro (had a reach of " + station.reach + ")", LOG_DEBUG)
 		EndIf
 
-		'inform the station about the removal (eg. remove connections)
-		station.OnRemoveFromMap(owner)
+		'cancel potential contracts (= remove connections)
+		station.CancelContracts()
+
+		'inform the station about the removal
+		station.OnRemoveFromMap()
 
 		'refresh the share map (needed for audience calculations)
 		GetStationMapCollection().GenerateShareMaps()
@@ -2351,6 +2360,11 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method CanBroadcast:Int()
+		Return HasFlag(TVTStationFlag.ACTIVE) and not HasFlag(TVTStationFlag.SHUTDOWN)
+	End Method
+
+
 	Method IsActive:Int()
 		Return HasFlag(TVTStationFlag.ACTIVE)
 	End Method
@@ -2400,17 +2414,40 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method ShutDown:int()
-		SetInactive()
+		if HasFlag(TVTStationFlag.SHUTDOWN) then return False
+
 		SetFlag(TVTStationFlag.SHUTDOWN, True)
+
+		'inform others (eg. to refresh list content)
+		EventManager.triggerEvent(TEventSimple.Create("station.onShutdown", Null, Self))
 
 		return True
 	End Method
 
 
 	Method Resume:int()
-		SetActive()
+		if not HasFlag(TVTStationFlag.SHUTDOWN) then return False
+		
 		SetFlag(TVTStationFlag.SHUTDOWN, False)
 
+		'inform others (eg. to refresh list content)
+		EventManager.triggerEvent(TEventSimple.Create("station.onResume", Null, Self))
+
+		return True
+	End Method
+
+
+	Method RenewContract:int(duration:int)
+		return True
+	End Method
+
+
+	Method SignContract:int(duration:int)
+		return True
+	End Method
+
+
+	Method CancelContracts:int()
 		return True
 	End Method
 
@@ -2422,7 +2459,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'override to remove satellite connection
-	Method OnRemoveFromMap:int(owner:int=-1)
+	Method OnRemoveFromMap:int()
 		return True
 	End Method
 
@@ -2460,8 +2497,18 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetRunningCosts:int() {_exposeToLua}
+	Method GetCurrentRunningCosts:int() {_exposeToLua}
 		return 0
+	End Method
+
+
+	'override
+	Method GetRunningCosts:int() {_exposeToLua}
+		if runningCosts = -1
+			runningCosts = GetCurrentRunningCosts()
+		endif
+
+		return runningCosts
 	End Method
 
 
@@ -2469,7 +2516,8 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		If Not GetPlayerFinance(owner) Then Return False
 
 		If GetPlayerFinance(owner).SellStation( getSellPrice() )
-			owner = 0
+'after selling 
+'			owner = 0
 			Return True
 		EndIf
 		Return False
@@ -2862,33 +2910,13 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 
 
 	'override
-	Method GetRunningCosts:int() {_exposeToLua}
+	Method GetCurrentRunningCosts:int() {_exposeToLua}
 		if HasFlag(TVTStationFlag.NO_RUNNING_COSTS) then return 0
 		
 		local result:int = 0
 
 		'== ADD STATIC RUNNING COSTS ==
-		if runningCosts = -1
-			rem
-			                       daily costs
-				   price       old    static   dynamic
-				  100000      2000      3000      2000        2^1.2 =   2.30 =   2
-				  250000      5000      7500      6000        5^1.2 =   6.90 =   6
-				  500000     10000     15000     15000       10^1.2 =  15.85 =  15
-				 1000000     20000     30000     36000       20^1.2 =  36.41 =  36
-				 2500000     50000     75000    109000       50^1.2 = 109.34 = 109
-				 5000000    100000    150000    251000      100^1.2 = 251.19 = 251
-				10000000    200000    300000    577000      200^1.2 = 577.08 = 577
-				25000000    500000    750000   1732000      500^1.2 =1732.86 =1732
-			endrem
-			'dynamic
-			'runningCosts = 1000 * Floor(Ceil(price / 50000.0)^1.2)
-
-			'static
-			runningCosts = 5000 * ceil(price / 25000.0)
-		endif
-		result :+ runningCosts
-
+		result :+ 5000 * ceil(GetBuyPrice() / 25000.0)
 
 		'== ADD RELATIVE MAINTENANCE COSTS ==
 		if GameRules.stationIncreaseDailyMaintenanceCosts
@@ -2952,7 +2980,7 @@ End Type
 
 
 Type TStationCableNetworkUplink extends TStationBase
-	Field oldCableNetworkGUID:string
+'	Field oldCableNetworkGUID:string
 	Field cableNetworkGUID:string
 
 
@@ -3004,58 +3032,74 @@ Type TStationCableNetworkUplink extends TStationBase
 		return True
 	End Method
 
-
+rem
 	Method ShutDown:int()
-		'already shutdown
-		if oldCableNetworkGUID then return False
-		
-		Super.ShutDown()
+		if not Super.ShutDown() then return False
+
 		oldCableNetworkGUID = cableNetworkGUID
+		cableNetworkGUID = ""
 
 		return True
 	End Method
 
-
 	Method Resume:int()
-		'already resumed
-		if cableNetworkGUID then return False
-		
-		Super.Resume()
+		if not Super.Resume() then return False
+
 		cableNetworkGUID = oldCableNetworkGUID
 		oldCableNetworkGUID = ""
 
 		return True
 	End Method
+endrem
 
-
-	'override to add satellite connection
-	Method OnAddToMap:int()
-		if not cableNetworkGUID then Throw "Adding CableNetworkLink to map without valid cable network guid."
+	Method RenewContract:int(duration:int)
+		if not cableNetworkGUID then Return False 'Throw "Renew CableNetworkUplink without valid cable network guid."
 
 		'inform cable network
 		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
 		if cableNetwork
-			if not cableNetwork.SubscribeChannel(self.owner, GetWorldTime().GetYearLength() )
+			'subtract time left from planned duration
+			local extendAmount:Long = duration - GetSubscriptionTimeLeft()
+			if extendAmount > 0
+				if not cableNetwork.ExtendSubscribedChannelDuration(self.owner, extendAmount )
+					return False
+				endif
+print "renewed cable network contract"				
+			endif
+		endif
+
+		return Super.RenewContract(duration)
+	End Method
+
+
+	'override to add satellite connection
+	Method SignContract:int(duration:int)
+		if not cableNetworkGUID then Throw "Sign to CableNetworkLink without valid cable network guid."
+
+		'inform cable network
+		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+		if cableNetwork
+			if duration < 0 then duration = cableNetwork.GetDefaultSubscribedChannelDuration()
+			if not cableNetwork.SubscribeChannel(self.owner, duration )
 				return False
 			endif
 		endif
 
-		return Super.OnAddToMap()
+		return Super.SignContract(duration)
 	End Method
-
+	
 
 	'override to remove satellite connection
-	Method OnRemoveFromMap:int(owner:int=-1)
+	Method CancelContracts:int()
 		'inform cableNetwork
 		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
 		if cableNetwork
-			if owner = -1 then owner = self.owner
 			if not cableNetwork.UnsubscribeChannel(owner)
 				return False
 			endif
 		endif
 
-		return Super.OnRemoveFromMap(owner)
+		return Super.CancelContracts()
 	End Method
 
 
@@ -3066,7 +3110,7 @@ Type TStationCableNetworkUplink extends TStationBase
 		local endTime:long = cableNetwork.GetSubscribedChannelEndTime(owner)
 		if endTime < 0 then return 0
 
-		return GetWorldTime().GetTimeGone() - endTime
+		return endTime - GetWorldTime().GetTimeGone()
 	End Method
 
 
@@ -3128,20 +3172,18 @@ Type TStationCableNetworkUplink extends TStationBase
 	
 
 	'override
-	Method GetRunningCosts:int() {_exposeToLua}
+	Method GetCurrentRunningCosts:int() {_exposeToLua}
 		if HasFlag(TVTStationFlag.NO_RUNNING_COSTS) then return 0
 
 		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
 		if not cableNetwork then return 0
 		
-		if runningCosts = -1
-			runningCosts = cableNetwork.GetDailyFee(owner)
+		local result:int = cableNetwork.GetDailyFee(owner)
 
-			'maintenance costs for the uplink to the cable network
-			runningCosts :+ 15000
-		endif
+		'maintenance costs for the uplink to the cable network
+		result :+ 15000
 
-		return runningCosts
+		return result
 	End Method
 
 
@@ -3329,7 +3371,7 @@ Type TStationSatelliteUplink extends TStationBase
 	Field satelliteGUID:string
 	'if a link was shut down, this value holds the satellite GUID
 	'so we can easily resume the link
-	Field oldSatelliteGUID:string
+'	Field oldSatelliteGUID:string
 
 	 
 	Method New()
@@ -3391,51 +3433,77 @@ Type TStationSatelliteUplink extends TStationBase
 		return True
 	End Method
 
-
+rem
 	Method ShutDown:int()
-		'already shutdown
-		if oldSatelliteGUID then return False
-		
-		SetInactive()
+		if not Super.ShutDown() then return False
+
 		oldSatelliteGUID = satelliteGUID
+		satelliteGUID = ""
 
 		return True
 	End Method
 
 
 	Method Resume:int()
-		'already resumed
-		if satelliteGUID then return False
-		
-		SetActive()
+		if not Super.Resume() then return False
 
 		satelliteGUID = oldSatelliteGUID
 		oldSatelliteGUID = ""
 
 		return True
 	End Method
+endrem
 
 
-	'override to add satellite connection
-	Method OnAddToMap:int()
-		if not satelliteGUID then Throw "Adding Satellitelink to map without valid satellite guid."
+	Method RenewContract:int(duration:int)
+		if not satelliteGUID then return False 'Throw "Renew a Satellitelink to map without valid satellite guid."
 
 		'inform satellite
 		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
 		if satellite
-			satellite.SubscribeChannel(self.owner, GetWorldTime().GetYearLength() )
+			'subtract time left from planned duration
+			local extendAmount:Long = duration - GetSubscriptionTimeLeft()
+			if extendAmount > 0
+				if not satellite.ExtendSubscribedChannelDuration(self.owner, extendAmount )
+					return False
+				endif
+			endif
 		endif
+
+		return Super.RenewContract(duration)
+	End Method
+	
+
+	'override to add satellite connection
+	Method SignContract:int(duration:int)
+		if not satelliteGUID then Throw "Signing a Satellitelink to map without valid satellite guid."
+
+		'inform satellite
+		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+		if satellite
+			if duration < 0 then duration = satellite.GetDefaultSubscribedChannelDuration()
+			if not satellite.SubscribeChannel(self.owner, duration )
+				print "sign contract: failed to subscribe to channel"
+				if satellite.IsSubscribedChannel(owner) then print "  already subscribed"
+				if satellite.CanSubscribeChannel(owner, duration) then print "  can subscribe"
+			endif
+		endif
+
+		if IsShutDown() then Resume()
+
+		return Super.SignContract(duration)
 	End Method
 
 
 	'override to remove satellite connection
-	Method OnRemoveFromMap:int(owner:int=-1)
+	Method CancelContracts:int()
 		'inform satellite
 		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
 		if satellite
-			if owner = -1 then owner = self.owner
 			satellite.UnsubscribeChannel(owner)
 		endif
+
+		return Super.CancelContracts()
 	End Method
 
 
@@ -3446,7 +3514,7 @@ Type TStationSatelliteUplink extends TStationBase
 		local endTime:long = satellite.GetSubscribedChannelEndTime(owner)
 		if endTime < 0 then return 0
 
-		return GetWorldTime().GetTimeGone() - endTime
+		return endTime - GetWorldTime().GetTimeGone()
 	End Method
 
 
@@ -3473,21 +3541,18 @@ Type TStationSatelliteUplink extends TStationBase
 
 
 	'override
-	Method GetRunningCosts:int() {_exposeToLua}
+	Method GetCurrentRunningCosts:int() {_exposeToLua}
 		if HasFlag(TVTStationFlag.NO_RUNNING_COSTS) then return 0
 
 		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
 		if not satellite then return 0
 		
-		if runningCosts = -1
-			runningCosts = satellite.GetDailyFee(owner)
+		local result:int = satellite.GetDailyFee(owner)
 
-			'maintenance costs for the uplink to the satellite
-			runningCosts :+ 25000
-		endif
+		'maintenance costs for the uplink to the satellite
+		result :+ 25000
 
-
-		return runningCosts
+		return result
 	End Method
 
 
@@ -4055,8 +4120,8 @@ Type TStationMapSection
 			'only handle antennas, no cable network/satellite!
 			'For Local station:TStationBase = EachIn stationmap.stations
 			For Local station:TStationAntenna = EachIn stations
-				'skip inactive stations
-				If Not station.IsActive() Then Continue
+				'skip inactive or shutdown stations
+				If Not station.CanBroadcast() Then Continue
 
 				'mark the area within the stations circle
 
@@ -4174,12 +4239,6 @@ Type TStationMapSection
 
 		'== GENERATE CACHE ==
 		If Not result
-if channelNumbers
-	print "GetCableNetworkShare: "+ name+ "  " + StringHelper.JoinIntArray(",",channelNumbers)
-else
-	print "GetCableNetworkShare: "+ name+ "   /"
-endif
-
 			Local channelsWithCableNetwork:Int = 0
 			'amount of non-ignored channels
 			Local interestingChannelsCount:Int = 0 
@@ -4440,10 +4499,10 @@ endrem
 		'overwrite with stations owner already has - red pixels get
 		'overwritten with white, count red at the end for decrease amount
 		For Local station:TStationAntenna = EachIn stations
-			'DO NOT SKIP INACTIVE STATIONS !!
+			'DO NOT SKIP INACTIVE/SHUTDOWN STATIONS !!
 			'decreases are for estimations - so they should include
 			'non-finished stations too
-			'If Not station.IsActive() Then Continue
+			'If Not station.CanBroadcast() Then Continue
 
 			'exclude the station to remove...
 			If station = removeStation Then Continue
@@ -4487,10 +4546,10 @@ endrem
 		'overwrite with stations owner already has - red pixels get
 		'overwritten with white, count red at the end for increase amount
 		For Local station:TStationAntenna = EachIn stations
-			'DO NOT SKIP INACTIVE STATIONS !!
+			'DO NOT SKIP INACTIVE/SHUTDOWN STATIONS !!
 			'increases are for estimations - so they should include
 			'non-finished stations too
-			'If Not station.IsActive() Then Continue
+			'If Not station.CanBroadcast() Then Continue
 
 			'skip antennas outside of the section
 			if not station.GetRect().Intersects(rect) then continue
@@ -4536,8 +4595,8 @@ endrem
 		Local result:Int = 0
 		
 		For Local station:TStationAntenna = EachIn stations
-			'skip inactive stations
-			If Not station.IsActive() Then Continue
+			'skip inactive/shutdown stations
+			If Not station.CanBroadcast() Then Continue
 
 			'skip antennas outside of the section
 			if not station.GetRect().Intersects(rect) then continue
@@ -4629,7 +4688,11 @@ Type TStationMap_BroadcastProvider extends TEntityBase
 	Field dailyFeeBase:int = 75000
 
 	Field exclusiveReach:Int = -1
-	Field reach:Int = -1
+	'potentially reachable Max
+	Field reachMax:Int = -1
+
+	Field listSpriteNameOn:string = "gfx_datasheet_icon_antenna.on"
+	Field listSpriteNameOff:string = "gfx_datasheet_icon_antenna.off"
 
 
 	'ID might be a combination of multiple groups
@@ -4690,8 +4753,17 @@ Type TStationMap_BroadcastProvider extends TEntityBase
 	End Method
 
 
+	Method ExtendSubscribedChannelDuration:Long(channelID:int, extendBy:int)
+		local i:int = GetSubscribedChannelIndex(channelID)
+		if i = -1 then return -1
+
+		subscribedChannelsDuration[i] :+ extendBy
+		return True
+	End Method
+
+
 	Method GetDefaultSubscribedChannelDuration:Long()
-		return GetWorldTime().GetYearLength()
+		return 0.25 * GetWorldTime().GetYearLength()
 	End Method
 
 
@@ -4844,10 +4916,12 @@ Type TStationMap_BroadcastProvider extends TEntityBase
 				if subscribedChannelsStartTime[i] + subscribedChannelsDuration[i] < GetWorldTime().GetTimeGone()
 					local channelID:int = subscribedChannels[i]
 
-					UnsubscribeChannel(channelID)
-
 					'(indirectly) inform concerning stationlink
 					GetStationMapCollection().RemoveUplinkFromBroadcastProvider(self, channelID)
+
+					'finally unsubscripe (do _after_ uplink removal
+					'as else a uplink identification via channelID would fail)
+					UnsubscribeChannel(channelID)
 				endif
 			endif
 		Next
@@ -4869,29 +4943,40 @@ Type TStationMap_CableNetwork extends TStationMap_BroadcastProvider
 	End Method
 
 
+	Method GetReachMax:Int(refresh:Int=False) {_exposeToLua}
+		'not cached?
+		If reachMax < 0 or refresh
+			if not sectionName then return 0
+
+			local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
+			if not section then return 0
+
+			reachMax = section.GetPopulation()
+		endif
+		return reachMax
+	End Method
+
 
 	Method GetReach:Int(refresh:Int=False) {_exposeToLua}
-		If reach >= 0 And Not refresh Then Return reach
-		if not sectionName then return 0
+		local result:int 
 
-		local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
-		if not section then return 0
-
-		
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
-			reach = section.GetPopulation()
+			result = GetReachMax()
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-			reach = section.GetPopulation()
+			result = GetReachMax()
+
+			local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
+			if not section then return 0
 
 			if section.populationCableShare < 0
-				reach :* GetStationMapCollection().GetCurrentPopulationCableShare()
+				result :* GetStationMapCollection().GetCurrentPopulationCableShare()
 			else
-				reach :* section.populationCableShare
+				result :* section.populationCableShare
 			endif
 		EndIf
 
-		Return reach
+		Return result
 	End Method
 
 
@@ -4944,6 +5029,9 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider
 
 	Method New()
 		techUpgradeSpeed = BiasedRandRange(75,125, 0.5) '75-125%
+
+		listSpriteNameOn = "gfx_datasheet_icon_satellite_uplink.on"
+		listSpriteNameOff = "gfx_datasheet_icon_satellite_uplink.off"
 	End Method
 
 
@@ -4952,21 +5040,30 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider
 		return "stationmap-satellite-"+id
 	End Method
 
+	
+	Method GetReachMax:Int(refresh:Int=False) {_exposeToLua}
+		'not cached?
+		If reachMax < 0 or refresh
+			reachMax = GetStationMapCollection().GetPopulation()
+		endif
+		return reachMax
+	End Method
+
 
 	Method GetReach:Int(refresh:int = False) {_exposeToLua}
-		If reach >= 0 And Not refresh Then Return reach
+		local result:int
 	
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
-			reach = GetStationMapCollection().GetPopulation()
+			result = GetReachMax(refresh)
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-			reach = GetStationMapCollection().GetPopulation()
-			reach :* GetStationMapCollection().GetCurrentPopulationSatelliteShare()
+			result = GetStationMapCollection().GetPopulation()
+			result :* GetStationMapCollection().GetCurrentPopulationSatelliteShare()
 		EndIf
 
-		reach :* populationShare
+		result :* populationShare
 
-		Return reach
+		Return result
 	End Method
 
 
@@ -4975,7 +5072,7 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider
 '		If exclusiveReach >= 0 And Not refresh Then Return exclusiveReach
 
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
-			exclusiveReach = GetStationMapCollection().GetPopulation()
+			exclusiveReach = GetReach(refresh)
 
 			'satellites
 			'as only ONE sat could get received the same time, we can
@@ -5011,6 +5108,8 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider
 
 		return True
 	End Method
+
+
 
 
 	Method Update:int()

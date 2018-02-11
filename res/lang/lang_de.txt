@@ -84,6 +84,9 @@ POPULATION = Einwohner
 
 CURRENCY = €
 OCLOCK = Uhr
+DAY_SHORT = d
+HOUR_SHORT = h
+MINUTE_SHORT = m
 DAY = Tag
 DAYS = Tage
 DATE = Datum
@@ -617,7 +620,7 @@ SATELLITE_UPLINK = Satellitenanbindung
 SATELLITE_UPLINKS = Satellitenanbindungen
 SATELLITE_RECEIVER = Satellitenschüssel
 SATELLITE_RECEIVERS = Satellitenschüsseln
-PEOPLE_WITH_TV = Re
+UNUSED_TRANSMITTER = Freie Sendeanlage
 
 NEW_STATION = Neuer Sendemast
 BUY_STATION = Sendemast kaufen
@@ -626,6 +629,7 @@ NEW_CABLE_NETWORK_UPLINK = Neue Kabelnetzanbindung
 NEW_SATELLITE_UPLINK = Neue Satellitenanbindung
 SIGN_UPLINK = Anbindung buchen
 CANCEL_UPLINK = Anbindung kündigen
+SELL_TRANSMITTER = Sendeanlage verkaufen
 RENEW_CONTRACT = Vertrag verlängern
 
 

@@ -428,6 +428,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		return GetFormattedDate(time, format)
 	End Method
 
+
 	Method GetFormattedDate:String(time:Double = -1, format:string="h:i d.m.y") {_exposeToLua}
 		Local strYear:String = GetYear(time)
 		Local strMonth:String = GetMonth(time)
@@ -439,6 +440,20 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		Return GetFormattedTime(time, format).replace("d", strDay).replace("m", strMonth).replace("y", strYear).replace("g", strGameDay)
 	End Method
 
+
+	Method GetFormattedTimeDifference:String(timeA:Double = -1, timeB:Double, format:string="d h i") {_exposeToLua}
+		if timeA = -1 then timeA = GetTimeGone()
+		return GetFormattedDuration(timeB - timeA, format)
+	End Method
+	
+
+	Method GetFormattedDuration:String(duration:Double, format:string="d h i") {_exposeToLua}
+		local days:int = duration / TWorldTime.DAYLENGTH
+		local hours:int = (duration - days*TWorldTime.DAYLENGTH) / TWorldTime.HOURLENGTH
+		local minutes:int = (duration - days*TWorldTime.DAYLENGTH - hours*TWorldTime.HOURLENGTH) / 60
+
+		return format.replace("d", days + GetLocale("DAY_SHORT")).replace("h", hours + GetLocale("HOUR_SHORT")).replace("i", minutes + GetLocale("MINUTE_SHORT"))
+	End Method
 
 	'returns sunrise that day - in seconds
 	Method GetSunrise:int(useTime:Double = -1.0) {_exposeToLua}
