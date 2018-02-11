@@ -1249,6 +1249,10 @@ Type TStationMapCollection
 		local satLink:TStationSatelliteUplink = TStationSatelliteUplink( map.GetSatelliteUplinkBySatellite(satellite) )
 		if not satLink then return False
 
+		satLink.satelliteGUID = ""
+		'force running costs recalculation
+		satLink.runningCosts = -1
+
 		'do not sell it directly but just "shutdown"
 		'(so new contracts with this uplink can get created)
 		satLink.ShutDown()
@@ -1447,6 +1451,10 @@ endrem
 
 		local cableLink:TStationCableNetworkUplink = TStationCableNetworkUplink( map.GetCableNetworkUplinkStationByCableNetwork(cableNetwork) )
 		if not cableLink then return False
+
+		cableLink.cableNetworkGUID = ""
+		'force running costs recalculation
+		cableLink.runningCosts = -1
 
 		'do not sell it directly but just "shutdown" (so contracts can get renewed)
 		cableLink.ShutDown()
@@ -2324,7 +2332,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method GetSellPrice:Int() {_exposeToLua}
 		'price is multiplied by an age factor of 0.75-0.95
-		Local factor:Float = Max(0.75, 0.95 - Float(getAge())/1.0)
+		Local factor:Float = Max(0.75, 0.95 - Float(GetAge())/1.0)
 		If owner Then Return Int(GetPrice() * factor / 10000) * 10000
 
 		Return Int( GetPrice() * factor / 10000) * 10000
@@ -2443,6 +2451,8 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method SignContract:int(duration:int)
+		runningCosts = -1
+		
 		return True
 	End Method
 
@@ -2982,6 +2992,7 @@ End Type
 Type TStationCableNetworkUplink extends TStationBase
 '	Field oldCableNetworkGUID:string
 	Field cableNetworkGUID:string
+	Field hardwareCosts:int = 65000
 
 
 	Method New()
@@ -3156,7 +3167,7 @@ print "renewed cable network contract"
 
 			'fixed building costs
 			'building costs for "hardware"
-			buyPrice :+ 65000
+			buyPrice :+ hardwareCosts
 		endif
 
 
@@ -3172,13 +3183,38 @@ print "renewed cable network contract"
 	
 
 	'override
+	Method GetSellPrice:Int() {_exposeToLua}
+		'sell price = cancel costs
+		'cancel costs depend on the days a contract has left
+'		Local factor:Float = (1.0 - GetSubscriptionProgress())^2
+'		Return Int( GetPrice() * factor / 10000) * 10000
+
+		local expense:int
+		'pay the provider for cancelingearlier
+		expense = (1.0 - GetSubscriptionProgress())^2 * (GetRunningCosts() - maintenanceCosts)
+
+
+		local income:int
+		'hardware could be sold
+		Local factor:Float = Max(0.75, 0.95 - Float(GetAge())/1.0)
+		income = hardwareCosts * factor
+
+		return income - expense
+	End Method
+
+	'override
 	Method GetCurrentRunningCosts:int() {_exposeToLua}
 		if HasFlag(TVTStationFlag.NO_RUNNING_COSTS) then return 0
 
-		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
-		if not cableNetwork then return 0
-		
-		local result:int = cableNetwork.GetDailyFee(owner)
+		local result:int 
+
+		'add specific costs
+		if cableNetworkGUID
+			local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+			if cableNetwork
+				result :+ cableNetwork.GetDailyFee(owner)
+			endif
+		endif
 
 		'maintenance costs for the uplink to the cable network
 		result :+ 15000
@@ -3369,6 +3405,8 @@ End Type
 
 Type TStationSatelliteUplink extends TStationBase
 	Field satelliteGUID:string
+	Field hardwareCosts:int = 95000
+	Field maintenanceCosts:int = 25000
 	'if a link was shut down, this value holds the satellite GUID
 	'so we can easily resume the link
 '	Field oldSatelliteGUID:string
@@ -3398,7 +3436,11 @@ Type TStationSatelliteUplink extends TStationBase
 
 	'override
 	Method GetLongName:string()
-		return GetName()
+		if not satelliteGUID
+			return GetLocale("UNUSED_TRANSMITTER")
+		else
+			return GetName()
+		endif
 '		if GetName() then return GetTypeName() + " " + GetName()
 '		return GetTypeName()
 	End Method
@@ -3534,9 +3576,20 @@ endrem
 	Method GetSellPrice:Int() {_exposeToLua}
 		'sell price = cancel costs
 		'cancel costs depend on the days a contract has left
-		Local factor:Float = (1.0 - GetSubscriptionProgress())^2
+'		Local factor:Float = (1.0 - GetSubscriptionProgress())^2
+'		Return Int( GetPrice() * factor / 10000) * 10000
 
-		Return Int( GetPrice() * factor / 10000) * 10000
+		local expense:int
+		'pay the provider for cancelingearlier
+		expense = (1.0 - GetSubscriptionProgress())^2 * (GetRunningCosts() - maintenanceCosts)
+
+
+		local income:int
+		'hardware could be sold
+		Local factor:Float = Max(0.75, 0.95 - Float(GetAge())/1.0)
+		income = hardwareCosts * factor
+
+		return income - expense
 	End Method
 
 
@@ -3544,13 +3597,18 @@ endrem
 	Method GetCurrentRunningCosts:int() {_exposeToLua}
 		if HasFlag(TVTStationFlag.NO_RUNNING_COSTS) then return 0
 
-		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
-		if not satellite then return 0
-		
-		local result:int = satellite.GetDailyFee(owner)
+		local result:int
+
+		'add specific costs
+		if satelliteGUID
+			local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+			if satellite
+				result :+ satellite.GetDailyFee(owner)
+			endif
+		endif
 
 		'maintenance costs for the uplink to the satellite
-		result :+ 25000
+		result :+ maintenanceCosts
 
 		return result
 	End Method
@@ -3589,7 +3647,7 @@ endrem
 
 			'fixed building costs
 			'building costs for "hardware" (big sat dish)
-			buyPrice :+ 95000
+			buyPrice :+ hardwareCosts
 		endif
 
 

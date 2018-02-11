@@ -697,6 +697,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 		'=== BOXES ===
 		If TScreenHandler_StationMap.actionMode <> TScreenHandler_StationMap.MODE_NONE
 			Local price:String = "", reach:String = "", reachChange:String = "", runningCost:String =""
+			local payPenalty:int = False
 			Local headerText:String
 			Local subHeaderText:String
 			Local canAfford:Int = True
@@ -709,7 +710,13 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
 'not needed
 '						reachChange = MathHelper.DottedValue(selectedStation.GetReachDecrease())
-						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
+						if selectedStation.GetSellPrice() < 0
+							price = TFunctions.convertValue( - selectedStation.GetSellPrice(), 2, 0)
+							payPenalty = True
+						else
+							price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
+						endif
+
 						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
 						Else
@@ -729,6 +736,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 'not needed
 '						reachChange = MathHelper.DottedValue(selectedStation.GetReachIncrease())
 						price = TFunctions.convertValue(selectedStation.getPrice(), 2, 0)
+
 						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
 						Else
@@ -782,7 +790,11 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 			currentY :+ boxH
 			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_ANTENNA
-				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+				if payPenalty
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
+				else
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "good", skin.fontBold, ALIGN_RIGHT_CENTER)
+				endif
 			Else
 				'fetch financial state of room owner (not player - so take care
 				'if the player is allowed to do this)
@@ -1006,6 +1018,7 @@ endrem
 		'=== BOXES ===
 		If TScreenHandler_StationMap.actionMode <> TScreenHandler_StationMap.MODE_NONE
 			Local price:String = "", reach:String = "", reachChange:String = "", runningCost:String =""
+			Local payPenalty:int
 			Local headerText:String
 			Local subHeaderText:String
 			Local canAfford:Int = True
@@ -1018,7 +1031,13 @@ endrem
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
 'not needed
 '						reachChange = MathHelper.DottedValue(selectedStation.GetReachDecrease())
-						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
+						if selectedStation.GetSellPrice() < 0
+							price = TFunctions.convertValue( - selectedStation.GetSellPrice(), 2, 0)
+							payPenalty = True
+						else
+							price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
+						endif
+
 						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
 						Else
@@ -1039,6 +1058,7 @@ endrem
 'not needed
 '						reachChange = MathHelper.DottedValue(selectedStation.GetReachIncrease())
 						price = TFunctions.convertValue(selectedStation.getPrice(), 2, 0)
+
 						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
 						Else
@@ -1107,7 +1127,11 @@ endrem
 			currentY :+ boxH
 			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			If TScreenHandler_StationMap.actionMode = GetSellActionMode()
-				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+				if payPenalty
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
+				else
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "good", skin.fontBold, ALIGN_RIGHT_CENTER)
+				endif
 			Else
 				'fetch financial state of room owner (not player - so take care
 				'if the player is allowed to do this)
@@ -2762,6 +2786,9 @@ endrem
 		Else If station.IsShutdown()
 			entryColor = New TColor.Create(90,90,60, currentColor.a)
 			leftValue = GetLocale("UNUSED_TRANSMITTER")
+			if TStationSatelliteUplink(station) and not TStationSatelliteUplink(station).satelliteGUID 
+				rightValue = ""
+			endif
 			'leftValue = "|color="+(150 + 50*Sin(Millisecs()*0.5))+",90,90|!!|/color| " + leftValue 
 			rightValueColor = entryColor
 		Else
