@@ -632,7 +632,6 @@ CANCEL_UPLINK = Cancel Uplink
 SELL_TRANSMITTER = Sell Transmitter
 RENEW_CONTRACT = Renew Contract
 
-
 SELECT_LOCATION = Select location
 SELECT_STATION = Select station
 SELECT_SATELLITE = Select satellite

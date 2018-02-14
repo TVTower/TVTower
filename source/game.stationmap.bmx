@@ -378,6 +378,16 @@ Type TStationMapCollection
 
 		return null
 	End Method
+
+
+	Method GetSatelliteIndexByGUID:int(guid:string)
+		local i:int = 0
+		For local satellite:TStationMap_Satellite = EachIn satellites
+			i :+ 1
+			if satellite.GetGUID() = guid then return i
+		Next
+		return -1
+	End Method
 	
 
 	Function GetSatelliteUplinksCount:int(stations:TList)
@@ -1249,6 +1259,9 @@ Type TStationMapCollection
 		local satLink:TStationSatelliteUplink = TStationSatelliteUplink( map.GetSatelliteUplinkBySatellite(satellite) )
 		if not satLink then return False
 
+
+		rem
+		'variant A - keep "uplink" 
 		satLink.satelliteGUID = ""
 		'force running costs recalculation
 		satLink.runningCosts = -1
@@ -1256,6 +1269,10 @@ Type TStationMapCollection
 		'do not sell it directly but just "shutdown"
 		'(so new contracts with this uplink can get created)
 		satLink.ShutDown()
+		endrem
+		
+		'variant B - just sell the uplink
+		return map.SellStation(satLink)
 	End Method
 
 
@@ -1452,12 +1469,18 @@ endrem
 		local cableLink:TStationCableNetworkUplink = TStationCableNetworkUplink( map.GetCableNetworkUplinkStationByCableNetwork(cableNetwork) )
 		if not cableLink then return False
 
+		rem
+		'variant A - keep "uplink" 
 		cableLink.cableNetworkGUID = ""
 		'force running costs recalculation
 		cableLink.runningCosts = -1
 
 		'do not sell it directly but just "shutdown" (so contracts can get renewed)
 		cableLink.ShutDown()
+		endrem
+
+		'variant B - just sell the uplink
+		return map.SellStation(cableLink)
 	End Method
 
 
@@ -1705,9 +1728,8 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 		station.satelliteGUID = satellite.getGUID()
 
-		'TODO: satellite positions
-
-		Return station.Init(New TVec2D.Init(10,10),-1, owner)
+		'TODO: satellite positions ?
+		Return station.Init(New TVec2D.Init(10,430 - satelliteIndex*50),-1, owner)
 	End Method
 
 
@@ -1719,8 +1741,10 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		station.satelliteGUID = satellite.getGUID()
 
 		'TODO: satellite positions
+		'-> some satellites are foreign ones
+		local satelliteIndex:int = GetStationMapCollection().GetSatelliteIndexByGUID(station.satelliteGUID)
 
-		Return station.Init(New TVec2D.Init(10,10),-1, owner)
+		Return station.Init(New TVec2D.Init(10,430 - satelliteIndex*50),-1, owner)
 	End Method
 
 
@@ -1946,8 +1970,12 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'sell a station at the given position in the list
-	Method SellStation:Int(position:Int)
-		Local station:TStationBase = getStationAtIndex(position)
+	Method SellStationAtPosition:Int(position:Int)
+		return SellStation( getStationAtIndex(position) )
+	End Method
+
+
+	Method SellStation:Int(station:TStationBase)
 		If station Then Return RemoveStation(station, True)
 		Return False
 	End Method
@@ -2993,6 +3021,7 @@ Type TStationCableNetworkUplink extends TStationBase
 '	Field oldCableNetworkGUID:string
 	Field cableNetworkGUID:string
 	Field hardwareCosts:int = 65000
+	Field maintenanceCosts:int = 15000
 
 
 	Method New()
@@ -3069,14 +3098,24 @@ endrem
 		'inform cable network
 		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
 		if cableNetwork
+			rem
 			'subtract time left from planned duration
 			local extendAmount:Long = duration - GetSubscriptionTimeLeft()
 			if extendAmount > 0
 				if not cableNetwork.ExtendSubscribedChannelDuration(self.owner, extendAmount )
 					return False
 				endif
-print "renewed cable network contract"				
+				print "renewed cable network contract"				
 			endif
+			endrem
+
+			'subscribe or resubscribe if needed
+			'-> contrary to "ExtendSubscribedChannelDuration" this resets
+			'   SubscriptionProgress (and contract start time)
+			if not cableNetwork.SubscribeChannel(self.owner, duration )
+				return False
+			endif
+
 		endif
 
 		return Super.RenewContract(duration)
@@ -3186,13 +3225,10 @@ print "renewed cable network contract"
 	Method GetSellPrice:Int() {_exposeToLua}
 		'sell price = cancel costs
 		'cancel costs depend on the days a contract has left
-'		Local factor:Float = (1.0 - GetSubscriptionProgress())^2
-'		Return Int( GetPrice() * factor / 10000) * 10000
 
 		local expense:int
 		'pay the provider for cancelingearlier
 		expense = (1.0 - GetSubscriptionProgress())^2 * (GetRunningCosts() - maintenanceCosts)
-
 
 		local income:int
 		'hardware could be sold
@@ -3201,6 +3237,7 @@ print "renewed cable network contract"
 
 		return income - expense
 	End Method
+	
 
 	'override
 	Method GetCurrentRunningCosts:int() {_exposeToLua}
@@ -3217,7 +3254,7 @@ print "renewed cable network contract"
 		endif
 
 		'maintenance costs for the uplink to the cable network
-		result :+ 15000
+		result :+ maintenanceCosts
 
 		return result
 	End Method
@@ -3503,12 +3540,20 @@ endrem
 		'inform satellite
 		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
 		if satellite
+			rem
 			'subtract time left from planned duration
 			local extendAmount:Long = duration - GetSubscriptionTimeLeft()
 			if extendAmount > 0
 				if not satellite.ExtendSubscribedChannelDuration(self.owner, extendAmount )
 					return False
 				endif
+			endif
+			endrem
+			'subscribe or resubscribe if needed
+			'-> contrary to "ExtendSubscribedChannelDuration" this resets
+			'   SubscriptionProgress (and contract start time)
+			if not satellite.SubscribeChannel(self.owner, duration )
+				return False
 			endif
 		endif
 
@@ -3568,7 +3613,7 @@ endrem
 		local duration:int = satellite.GetSubscribedChannelDuration(owner)
 		if duration < 0 then return 0
 
-		return MathHelper.Clamp((GetworldTime().GetTimeGone() - startTime) / float(duration), 0.0, 1.0)
+		return MathHelper.Clamp((GetWorldTime().GetTimeGone() - startTime) / float(duration), 0.0, 1.0)
 	End Method
 
 
@@ -3576,13 +3621,10 @@ endrem
 	Method GetSellPrice:Int() {_exposeToLua}
 		'sell price = cancel costs
 		'cancel costs depend on the days a contract has left
-'		Local factor:Float = (1.0 - GetSubscriptionProgress())^2
-'		Return Int( GetPrice() * factor / 10000) * 10000
 
 		local expense:int
 		'pay the provider for cancelingearlier
 		expense = (1.0 - GetSubscriptionProgress())^2 * (GetRunningCosts() - maintenanceCosts)
-
 
 		local income:int
 		'hardware could be sold
@@ -4848,12 +4890,20 @@ Type TStationMap_BroadcastProvider extends TEntityBase
 
 
 	Method SubscribeChannel:int(channelID:int, duration:Int=-1, force:Int=False)
-		if IsSubscribedChannel(channelID) then return False
 		if not force and CanSubscribeChannel(channelID, duration) <> 1 then return False
 
-		subscribedChannels :+ [channelID]
-		subscribedChannelsStartTime :+ [Long(GetWorldTime().GetTimeGone())]
-		subscribedChannelsDuration :+ [duration]
+		if IsSubscribedChannel(channelID)
+			local i:int = GetSubscribedChannelIndex(channelID)
+			if i = -1 then return -1
+
+			subscribedChannelsStartTime[i] = Long(GetWorldTime().GetTimeGone())
+			subscribedChannelsDuration[i] = duration
+
+		else
+			subscribedChannels :+ [channelID]
+			subscribedChannelsStartTime :+ [Long(GetWorldTime().GetTimeGone())]
+			subscribedChannelsDuration :+ [duration]
+		endif
 
 		return True
 	End Method

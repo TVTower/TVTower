@@ -16,6 +16,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 '	Field selectedStation:TStationBase
 	Field list:TGUISelectList
 	Field renewButton:TGUIButton
+	Field renewInfoButton:TGUIButton
 	Field actionButton:TGUIButton
 	Field cancelButton:TGUIButton
 	Field tooltips:TTooltipBase[]
@@ -41,6 +42,10 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		renewButton = New TGUIButton.Create(New TVec2D.Init(0, 0), New TVec2D.Init(150, 28), "", "STATIONMAP")
 		renewButton.spriteName = "gfx_gui_button.datasheet"
 
+		renewInfoButton = New TGUIButton.Create(New TVec2D.Init(145, 0), New TVec2D.Init(30, 28), "i", "STATIONMAP")
+		renewInfoButton.caption.color = TColor.clBlue.copy()
+		renewInfoButton.spriteName = "gfx_gui_button.datasheet"
+
 		cancelButton = New TGUIButton.Create(New TVec2D.Init(145, 0), New TVec2D.Init(30, 28), "X", "STATIONMAP")
 		cancelButton.caption.color = TColor.clRed.copy()
 		cancelButton.spriteName = "gfx_gui_button.datasheet"
@@ -53,12 +58,14 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 		cancelButton.SetParent(Self)
 		actionButton.SetParent(Self)
+		renewInfoButton.SetParent(Self)
 		renewButton.SetParent(Self)
 		list.SetParent(Self)
 
 		'panel handles them (similar to a child - but with manual draw/update calls)
 		GuiManager.Remove(cancelButton)
 		GuiManager.Remove(actionButton)
+		GuiManager.Remove(renewInfoButton)
 		GuiManager.Remove(renewButton)
 		GuiManager.Remove(list)
 
@@ -128,7 +135,8 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			EndIf
 
 		ElseIf TScreenHandler_StationMap.IsInSellActionMode()
-			If TScreenHandler_StationMap.selectedStation And TScreenHandler_StationMap.selectedStation.GetReach() > 0
+			'do not check reach - to allow selling "unused transmitters" / unconnected uplinks
+			If TScreenHandler_StationMap.selectedStation 'And TScreenHandler_StationMap.selectedStation.GetReach() > 0
 				'remove the station (and sell it)
 				If GetStationMap( GetPlayerBase().playerID ).RemoveStation(TScreenHandler_StationMap.selectedStation, True)
 					ResetActionMode(TScreenHandler_StationMap.MODE_NONE)
@@ -264,6 +272,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 			
 			renewButton.SetPosition(5, GetHeaderHeight() + GetBodyHeight() - 34 - 30 )
+			renewInfoButton.SetPosition(5 + 150, GetHeaderHeight() + GetBodyHeight() - 34 - 30 )
 			actionButton.SetPosition(5, GetHeaderHeight() + GetBodyHeight() - 34 )
 			cancelButton.SetPosition(5 + 150, GetHeaderHeight() + GetBodyHeight() - 34 )
 
@@ -271,6 +280,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 			list.Update()
 			renewButton.Update()
+			renewInfoButton.Update()
 			actionButton.Update()
 			cancelButton.Update()
 		EndIf
@@ -362,9 +372,12 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 			If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_NONE
 				renewButton.Hide()
+				renewInfoButton.Hide()
 				cancelButton.Hide()
+				renewButton.Resize(contentW - 10, -1)
 				actionButton.Resize(contentW - 10, -1)
 			Else
+				renewButton.Resize(150, -1)
 				actionButton.Resize(150, -1)
 				cancelButton.Show()
 			EndIf
@@ -372,15 +385,17 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		EndIf
 
 		list.Draw()
+		renewInfoButton.Draw()
 		renewButton.Draw()
 		actionButton.Draw()
 		cancelButton.Draw()
 
 
-		For Local t:TTooltipBase = EachIn tooltips
-			t.Render()
-		Next
-
+		if TScreenHandler_StationMap.actionMode <> TScreenHandler_StationMap.MODE_NONE
+			For Local t:TTooltipBase = EachIn tooltips
+				t.Render()
+			Next
+		endif
 	End Method
 
 
@@ -820,6 +835,7 @@ End Type
 
 
 Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
+	Field renewContractTooltips:TTooltipBase[]
 
 	Method Create:TGameGUISatellitePanel(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
 		Super.Create(pos, dimension, value, State)
@@ -827,6 +843,23 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 		localeKey_NewItem = "NEW_SATELLITE_UPLINK"
 		localeKey_BuyItem = "SIGN_UPLINK"
 		localeKey_SellItem = "CANCEL_UPLINK"
+
+
+		renewContractTooltips = New TTooltipBase[2]
+		For Local i:Int = 0 Until renewContractTooltips.length
+			renewContractTooltips[i] = New TGUITooltipBase.Initialize("", "", New TRectangle.Init(0,0,-1,-1))
+			renewContractTooltips[i].parentArea = New TRectangle
+			renewContractTooltips[i].SetOrientationPreset("TOP")
+			renewContractTooltips[i].offset = New TVec2D.Init(0,+5)
+			renewContractTooltips[i].SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
+			'standard icons should need a bit longer for tooltips to show up
+			renewContractTooltips[i].dwellTime = 50
+			renewContractTooltips[i].SetContent("i="+i)
+			
+
+			'manually set to hovered when needed
+			renewContractTooltips[i].SetOption(TTooltipBase.OPTION_MANUAL_HOVER_CHECK)
+		Next
 
 
 		'=== register custom event listeners
@@ -939,13 +972,17 @@ endrem
 
 					if openFrame
 						if selectedSatellite
+							renewInfoButton.Enable()
 							renewButton.Enable()
 						else
+							renewInfoButton.Disable()
 							renewButton.Disable()
 						endif
 						renewButton.SetValue(GetLocale("SIGN_UPLINK"))
+						renewInfoButton.Enable()
 					else
 						renewButton.SetValue(GetLocale("SELECT_SATELLITE"))
+						renewInfoButton.Disable()
 '						renewButton.enable()
 					endif
 				EndIf
@@ -985,6 +1022,44 @@ endrem
 	End Method
 
 
+	'override
+	Method Update:Int()
+		if renewButton.IsVisible()
+			if TScreenHandler_StationMap.selectedStation and not TScreenHandler_StationMap.selectedStation.IsShutDown()
+				if renewButton.IsHovered() or renewInfoButton.IsHovered()
+					For Local t:TTooltipBase = EachIn renewContractTooltips
+						t.SetOption(TTooltipBase.OPTION_MANUALLY_HOVERED)
+						'skip dwelling
+						t.SetStep(TTooltipBase.STEP_ACTIVE)
+						t.Update()
+					Next
+				else
+					For Local t:TTooltipBase = EachIn renewContractTooltips
+						t.SetOption(TTooltipBase.OPTION_MANUALLY_HOVERED, False)
+						t.Update()
+					Next
+				endif
+			endif
+		endif
+
+		return Super.Update()
+	End Method
+	
+
+	'override
+	Method DrawBody()
+		Super.DrawBody()
+
+		if renewButton.IsVisible()
+			if TScreenHandler_StationMap.selectedStation and not TScreenHandler_StationMap.selectedStation.IsShutDown()
+				For Local t:TTooltipBase = EachIn renewContractTooltips
+					t.Render()
+				Next
+			endif
+		endif
+	End Method
+
+
 	Method DrawBodyContent(contentX:Int,contentY:Int,contentW:Int,currentY:Int)
 		Local skin:TDatasheetSkin = GetSkin()
 		If Not skin Then Return
@@ -997,12 +1072,20 @@ endrem
 		If TScreenHandler_StationMap.actionMode = GetSellActionMode() Then showDetails = True
 		If TScreenHandler_StationMap.actionMode = GetBuyActionMode() Then showDetails = True
 
+		Local showIncludesHardwareText:int = False
+		Local includesHardwareTextH:int = 24
+
 		'update information
 		detailsBackgroundH = actionButton.GetScreenHeight() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2)
 		If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_SATELLITE_UPLINK or TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_CABLE_NETWORK_UPLINK
 			if selectedStation
 				detailsBackgroundH :+ renewButton.GetScreenHeight() + 3
-			endif
+
+				if TStationSatelliteUplink(selectedStation).IsShutdown()
+					showIncludesHardwareText = True
+					detailsBackgroundH :+ includesHardwareTextH
+				endif
+			EndIf
 		EndIf
 
 		listBackgroundH = GetBodyHeight() - detailsBackgroundH
@@ -1031,20 +1114,29 @@ endrem
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
 'not needed
 '						reachChange = MathHelper.DottedValue(selectedStation.GetReachDecrease())
-						if selectedStation.GetSellPrice() < 0
-							price = TFunctions.convertValue( - selectedStation.GetSellPrice(), 2, 0)
-							payPenalty = True
-						else
-							price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
-						endif
 
-						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
-							runningCost = "-/-"
-						Else
-							runningCost = TFunctions.convertValue(selectedStation.GetRunningCosts(), 2, 0)
-						EndIf
+						'reassign to new satellite?
+						if TScreenHandler_StationMap.satelliteSelectionFrame.IsOpen() and TScreenHandler_StationMap.satelliteSelectionFrame.selectedSatellite
+							price = TFunctions.convertValue( selectedStation.GetBuyPrice(), 2, 0)
+							runningCost = TFunctions.convertValue(selectedStation.GetCurrentRunningCosts(), 2, 0)
+						else
+
+							if selectedStation.GetSellPrice() < 0
+								price = TFunctions.convertValue( - selectedStation.GetSellPrice(), 2, 0)
+								payPenalty = True
+							else
+								price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
+							endif
+
+							If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
+								runningCost = "-/-"
+							Else
+								runningCost = TFunctions.convertValue(selectedStation.GetRunningCosts(), 2, 0)
+							EndIf
+						endif
 					EndIf
 					renewButton.Show()
+					renewInfoButton.Show()
 
 				Case TScreenHandler_StationMap.MODE_BUY_SATELLITE_UPLINK
 					headerText = GetLocale( localeKey_NewItem )
@@ -1069,6 +1161,7 @@ endrem
 						canAfford = (Not finance Or finance.canAfford(selectedStation.GetPrice()))
 					EndIf
 					renewButton.Hide()
+					renewInfoButton.Hide()
 			End Select
 
 
@@ -1122,6 +1215,7 @@ endrem
 
 				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, subscriptionText, "duration", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			EndIf
+			renewContractTooltips[0].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 
 			'=== BOX LINE 3 ===
 			currentY :+ boxH
@@ -1141,10 +1235,16 @@ endrem
 					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
 				EndIf
 			EndIf
+			renewContractTooltips[1].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 			tooltips[3].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 			tooltips[4].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
 
 			currentY :+ boxH
+
+
+			If showIncludesHardwareText
+				skin.fontNormal.drawBlock(getLocale("PRICE_INCLUDES_X_FOR_HARDWARE").Replace("%X%", "|b|"+TFunctions.convertValue(123, 2, 0) + " " + GetLocale("CURRENCY")+"|/b|"), contentX + 5, currentY, contentW - 10, includesHardwareTextH, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+			EndIf
 		EndIf
 
 		'renewButton.rect.position.SetXY(contentX + 5, currentY + 3)
@@ -2616,6 +2716,16 @@ endrem
 	Function OnChangeStationMapStation:Int( triggerEvent:TEventBase )
 		'do nothing when not in a room
 		If Not currentSubRoom Then Return False
+
+		if TScreenHandler_StationMap.selectedStation
+			if triggerEvent.IsTrigger("StationMap.removeStation")
+				'reset action mode (so also "selection") if the
+				'station just got removed/sold 
+				if TScreenHandler_StationMap.selectedStation = TStationBase(triggerEvent.GetData().Get("station"))
+					TScreenHandler_StationMap.ResetActionMode(0)
+				endif
+			endif
+		endif
 
 		TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(0)).RefreshList( currentSubRoom.owner )
 		TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(1)).RefreshList( currentSubRoom.owner )

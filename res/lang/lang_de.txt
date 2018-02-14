@@ -632,7 +632,6 @@ CANCEL_UPLINK = Anbindung kündigen
 SELL_TRANSMITTER = Sendeanlage verkaufen
 RENEW_CONTRACT = Vertrag verlängern
 
-
 SELECT_LOCATION = Standort auswählen
 SELECT_STATION = Sendemast auswählen
 SELECT_SATELLITE = Satelliten auswählen
