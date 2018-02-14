@@ -17,6 +17,8 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 	Field list:TGUISelectList
 	Field renewButton:TGUIButton
 	Field renewInfoButton:TGUIButton
+	Field renewContractTooltips:TTooltipBase[]
+
 	Field actionButton:TGUIButton
 	Field cancelButton:TGUIButton
 	Field tooltips:TTooltipBase[]
@@ -79,6 +81,23 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			tooltips[i].SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
 			'standard icons should need a bit longer for tooltips to show up
 			tooltips[i].dwellTime = 500
+		Next
+
+
+		renewContractTooltips = New TTooltipBase[2]
+		For Local i:Int = 0 Until renewContractTooltips.length
+			renewContractTooltips[i] = New TGUITooltipBase.Initialize("", "", New TRectangle.Init(0,0,-1,-1))
+			renewContractTooltips[i].parentArea = New TRectangle
+			renewContractTooltips[i].SetOrientationPreset("TOP")
+			renewContractTooltips[i].offset = New TVec2D.Init(0,+5)
+			renewContractTooltips[i].SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
+			'standard icons should need a bit longer for tooltips to show up
+			renewContractTooltips[i].dwellTime = 50
+			renewContractTooltips[i].SetContent("i="+i)
+			
+
+			'manually set to hovered when needed
+			renewContractTooltips[i].SetOption(TTooltipBase.OPTION_MANUAL_HOVER_CHECK)
 		Next
 
 
@@ -278,6 +297,26 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 			UpdateActionButton()
 
+
+			if renewButton.IsVisible()
+				if TScreenHandler_StationMap.selectedStation and not TScreenHandler_StationMap.selectedStation.IsShutDown()
+					if renewButton.IsHovered() or renewInfoButton.IsHovered()
+						For Local t:TTooltipBase = EachIn renewContractTooltips
+							t.SetOption(TTooltipBase.OPTION_MANUALLY_HOVERED)
+							'skip dwelling
+							t.SetStep(TTooltipBase.STEP_ACTIVE)
+							t.Update()
+						Next
+					else
+						For Local t:TTooltipBase = EachIn renewContractTooltips
+							t.SetOption(TTooltipBase.OPTION_MANUALLY_HOVERED, False)
+							t.Update()
+						Next
+					endif
+				endif
+			endif
+
+
 			list.Update()
 			renewButton.Update()
 			renewInfoButton.Update()
@@ -316,8 +355,9 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 				EndIf
 				actionButton.disable()
 			Else
+				Local totalPrice:int = GetStationMap(GetPlayerBase().playerID).GetTotalStationBuyPrice(TScreenHandler_StationMap.selectedStation)
 				Local finance:TPlayerFinance = GetPlayerFinance(GetPlayerBase().playerID)
-				If finance And finance.canAfford(TScreenHandler_StationMap.selectedStation.GetPrice())
+				If finance And finance.canAfford(totalPrice)
 					actionButton.SetValue(GetLocale( localeKey_BuyItem))
 					actionButton.enable()
 				Else
@@ -348,6 +388,8 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			actionButton.SetValue(GetLocale( localeKey_NewItem ))
 			actionButton.enable()
 		EndIf
+
+		renewButton.SetValue(GetLocale("RENEW_CONTRACT"))
 
 		Return True
 	End Method
@@ -395,6 +437,14 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			For Local t:TTooltipBase = EachIn tooltips
 				t.Render()
 			Next
+		endif
+
+		if renewButton.IsVisible()
+			if TScreenHandler_StationMap.selectedStation and not TScreenHandler_StationMap.selectedStation.IsShutDown()
+				For Local t:TTooltipBase = EachIn renewContractTooltips
+					t.Render()
+				Next
+			endif
 		endif
 	End Method
 
@@ -483,8 +533,8 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 		Local showPermissionText:Int = False
 		Local permissionTextH:int = 24
 		'only show when buying/looking for a new
-		If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_BUY_ANTENNA 
-			If TScreenHandler_StationMap.selectedStation And section And section.NeedsBroadcastPermission(TScreenHandler_StationMap.selectedStation.owner, TVTStationType.SATELLITE_UPLINK)
+		If TScreenHandler_StationMap.actionMode = GetBuyActionMode() 
+			If TScreenHandler_StationMap.selectedStation And section And section.NeedsBroadcastPermission(TScreenHandler_StationMap.selectedStation.owner, TVTStationType.ANTENNA)
 				showPermissionText = True
 			EndIf
 		EndIf
@@ -589,7 +639,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 			'=== BOX LINE 3 ===
 			currentY :+ boxH
 			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
-			If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_ANTENNA
+			If TScreenHandler_StationMap.actionMode = GetSellActionMode()
 				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 			Else
 				'fetch financial state of room owner (not player - so take care
@@ -688,17 +738,35 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 	Method DrawBodyContent(contentX:Int,contentY:Int,contentW:Int,currentY:Int)
 		Local skin:TDatasheetSkin = GetSkin()
 		If Not skin Then Return
+
+		Local section:TStationMapSection
+		If TScreenHandler_StationMap.selectedStation Then section = GetStationMapCollection().GetSectionByName(TScreenHandler_StationMap.selectedStation.GetSectionName())
 		
 		Local selectedStation:TStationBase = TScreenHandler_StationMap.selectedStation
 		Local boxH:Int = skin.GetBoxSize(100, -1, "").GetY()
 		Local boxAreaH:Int = 0
 		Local showDetails:Int = False
-		If selectedStation Then showDetails = True
-		If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_CABLE_NETWORK_UPLINK Then showDetails = True
-		If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_BUY_CABLE_NETWORK_UPLINK Then showDetails = True
+		If TScreenHandler_StationMap.selectedStation Then showDetails = True
+		If TScreenHandler_StationMap.actionMode = GetSellActionMode() Then showDetails = True
+		If TScreenHandler_StationMap.actionMode = GetBuyActionMode() Then showDetails = True
+
+		Local showPermissionText:Int = False
+		Local permissionTextH:int = 24
+		'only show when buying/looking for a new
+		If TScreenHandler_StationMap.actionMode = GetBuyActionMode()
+			If TScreenHandler_StationMap.selectedStation And section And section.NeedsBroadcastPermission(TScreenHandler_StationMap.selectedStation.owner, TVTStationType.CABLE_NETWORK_UPLINK)
+				showPermissionText = True
+			EndIf
+		EndIf
 
 		'update information
-		detailsBackgroundH = actionButton.GetScreenHeight() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2)
+		detailsBackgroundH = actionButton.GetScreenHeight() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2) + showPermissionText * permissionTextH
+		If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_CABLE_NETWORK_UPLINK
+			if selectedStation
+				detailsBackgroundH :+ renewButton.GetScreenHeight() + 3
+			endif
+		EndIf
+
 		listBackgroundH = GetBodyHeight() - detailsBackgroundH
 		
 		skin.RenderContent(contentX, currentY, contentW, listBackgroundH, "2")
@@ -737,20 +805,37 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 						Else
 							runningCost = TFunctions.convertValue(selectedStation.GetRunningCosts(), 2, 0)
 						EndIf
+
+
+						local runningCostChange:int = selectedStation.GetCurrentRunningCosts() - selectedStation.GetRunningCosts()
+						if runningCostChange < 0
+							renewContractTooltips[1].contentColor = skin.textColorGood
+							renewContractTooltips[1].SetContent( TFunctions.convertValue(runningCostChange, 2, 0) + " " + GetLocale("CURRENCY") )
+						elseif runningCostChange = 0
+							renewContractTooltips[1].contentColor = skin.textColorNeutral
+							renewContractTooltips[1].SetContent( "+/- 0 " + GetLocale("CURRENCY") )
+						else
+							renewContractTooltips[1].contentColor = skin.textColorBad
+							renewContractTooltips[1].SetContent( "+"+TFunctions.convertValue(runningCostChange, 2, 0) + " " + GetLocale("CURRENCY") )
+						endif
+
 					EndIf
+					renewButton.Show()
+					renewInfoButton.Show()
 
 				Case TScreenHandler_StationMap.MODE_BUY_CABLE_NETWORK_UPLINK
 					headerText = GetLocale( localeKey_NewItem )
 
 					'=== BOXES ===
 					If selectedStation
+						local totalPrice:int = GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetTotalStationBuyPrice(selectedStation)
 						subHeaderText = GetLocale("MAP_COUNTRY_"+selectedStation.GetSectionName())
 
 						'stationName = Koordinaten?
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
-'not needed
 '						reachChange = MathHelper.DottedValue(selectedStation.GetReachIncrease())
-						price = TFunctions.convertValue(selectedStation.getPrice(), 2, 0)
+						price = TFunctions.convertValue( totalPrice, 2, 0)
+'						price = TFunctions.convertValue(selectedStation.getPrice(), 2, 0)
 
 						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
@@ -759,8 +844,11 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 						EndIf
 
 						Local finance:TPlayerFinance = GetPlayerFinance(TScreenHandler_StationMap.currentSubRoom.owner)
-						canAfford = (Not finance Or finance.canAfford(selectedStation.GetPrice()))
+						canAfford = (Not finance Or finance.canAfford(totalPrice))
 					EndIf
+
+					renewButton.Hide()
+					renewInfoButton.Hide()
 			End Select
 
 
@@ -780,13 +868,24 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 			If selectedStation
 				Local subscriptionText:String
 				Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID( TStationCableNetworkUplink(selectedStation).cableNetworkGUID)
+				local duration:int
 				If TScreenHandler_StationMap.actionMode = GetBuyActionMode()
-					subscriptionText = cableNetwork.GetDefaultSubscribedChannelDuration()
+					duration = cableNetwork.GetDefaultSubscribedChannelDuration()
 				Else
-					subscriptionText = selectedStation.GetSubscriptionTimeLeft()
+					duration = selectedStation.GetSubscriptionTimeLeft()
 				EndIf
+				if duration >= TWorldTime.DAYLENGTH
+					subscriptionText = GetWorldTime().GetFormattedDuration(duration, "d h")
+				else
+					subscriptionText = GetWorldTime().GetFormattedDuration(duration, "h i")
+				endif
+				'set to subscription time
+				renewContractTooltips[0].SetContent( subscriptionText +" -> " + GetWorldTime().GetFormattedDuration(cableNetwork.GetDefaultSubscribedChannelDuration(), "d h"))
+
 				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, subscriptionText, "duration", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			EndIf
+			renewContractTooltips[0].parentArea.SetXY(contentX + 5 + halfW-5 + 4, currentY).SetWH(halfW+5, boxH)
+
 			tooltips[0].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 			tooltips[1].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
 
@@ -819,10 +918,20 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
 				EndIf
 			EndIf
+			renewContractTooltips[1].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 			tooltips[3].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
 			tooltips[4].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
 
 			currentY :+ boxH
+
+			If showPermissionText And section And selectedStation
+				If Not section.HasBroadcastPermission(selectedStation.owner)
+					skin.fontNormal.drawBlock(getLocale("PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION").Replace("%X%", "|b|"+TFunctions.convertValue(section.GetBroadcastPermissionPrice(selectedStation.owner), 2, 0) + " " + GetLocale("CURRENCY")+"|/b|"), contentX + 5, currentY, contentW - 10, permissionTextH, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+				Else
+					currentY :- 1 'align it a bit better
+					skin.fontNormal.drawBlock(getLocale("BROADCAST_PERMISSION_EXISTING"), contentX + 5, currentY, contentW - 10, permissionTextH, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+				EndIf
+			EndIf
 		EndIf
 
 		'=== BUTTONS ===
@@ -835,32 +944,12 @@ End Type
 
 
 Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
-	Field renewContractTooltips:TTooltipBase[]
-
 	Method Create:TGameGUISatellitePanel(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
 		Super.Create(pos, dimension, value, State)
 
 		localeKey_NewItem = "NEW_SATELLITE_UPLINK"
 		localeKey_BuyItem = "SIGN_UPLINK"
 		localeKey_SellItem = "CANCEL_UPLINK"
-
-
-		renewContractTooltips = New TTooltipBase[2]
-		For Local i:Int = 0 Until renewContractTooltips.length
-			renewContractTooltips[i] = New TGUITooltipBase.Initialize("", "", New TRectangle.Init(0,0,-1,-1))
-			renewContractTooltips[i].parentArea = New TRectangle
-			renewContractTooltips[i].SetOrientationPreset("TOP")
-			renewContractTooltips[i].offset = New TVec2D.Init(0,+5)
-			renewContractTooltips[i].SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
-			'standard icons should need a bit longer for tooltips to show up
-			renewContractTooltips[i].dwellTime = 50
-			renewContractTooltips[i].SetContent("i="+i)
-			
-
-			'manually set to hovered when needed
-			renewContractTooltips[i].SetOption(TTooltipBase.OPTION_MANUAL_HOVER_CHECK)
-		Next
-
 
 		'=== register custom event listeners
 		'localize the button
@@ -940,8 +1029,6 @@ endrem
 
 		Super.UpdateActionButton()
 
-		
-		renewButton.SetValue(GetLocale("RENEW_CONTRACT"))
 
 		local openFrame:int = TScreenHandler_StationMap.satelliteSelectionFrame and TScreenHandler_StationMap.satelliteSelectionFrame.IsOpen()
 		local selectedSatellite:TStationMap_Satellite = TScreenHandler_StationMap.satelliteSelectionFrame.selectedSatellite
@@ -1022,44 +1109,6 @@ endrem
 	End Method
 
 
-	'override
-	Method Update:Int()
-		if renewButton.IsVisible()
-			if TScreenHandler_StationMap.selectedStation and not TScreenHandler_StationMap.selectedStation.IsShutDown()
-				if renewButton.IsHovered() or renewInfoButton.IsHovered()
-					For Local t:TTooltipBase = EachIn renewContractTooltips
-						t.SetOption(TTooltipBase.OPTION_MANUALLY_HOVERED)
-						'skip dwelling
-						t.SetStep(TTooltipBase.STEP_ACTIVE)
-						t.Update()
-					Next
-				else
-					For Local t:TTooltipBase = EachIn renewContractTooltips
-						t.SetOption(TTooltipBase.OPTION_MANUALLY_HOVERED, False)
-						t.Update()
-					Next
-				endif
-			endif
-		endif
-
-		return Super.Update()
-	End Method
-	
-
-	'override
-	Method DrawBody()
-		Super.DrawBody()
-
-		if renewButton.IsVisible()
-			if TScreenHandler_StationMap.selectedStation and not TScreenHandler_StationMap.selectedStation.IsShutDown()
-				For Local t:TTooltipBase = EachIn renewContractTooltips
-					t.Render()
-				Next
-			endif
-		endif
-	End Method
-
-
 	Method DrawBodyContent(contentX:Int,contentY:Int,contentW:Int,currentY:Int)
 		Local skin:TDatasheetSkin = GetSkin()
 		If Not skin Then Return
@@ -1077,7 +1126,7 @@ endrem
 
 		'update information
 		detailsBackgroundH = actionButton.GetScreenHeight() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2)
-		If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_SATELLITE_UPLINK or TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_CABLE_NETWORK_UPLINK
+		If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_SATELLITE_UPLINK
 			if selectedStation
 				detailsBackgroundH :+ renewButton.GetScreenHeight() + 3
 
@@ -1120,6 +1169,18 @@ endrem
 							price = TFunctions.convertValue( selectedStation.GetBuyPrice(), 2, 0)
 							runningCost = TFunctions.convertValue(selectedStation.GetCurrentRunningCosts(), 2, 0)
 						else
+							local runningCostChange:int = selectedStation.GetCurrentRunningCosts() - selectedStation.GetRunningCosts()
+							if runningCostChange < 0
+								renewContractTooltips[1].contentColor = skin.textColorGood
+								renewContractTooltips[1].SetContent( TFunctions.convertValue(runningCostChange, 2, 0) + " " + GetLocale("CURRENCY") )
+							elseif runningCostChange = 0
+								renewContractTooltips[1].contentColor = skin.textColorNeutral
+								renewContractTooltips[1].SetContent( "+/- 0 " + GetLocale("CURRENCY") )
+							else
+								renewContractTooltips[1].contentColor = skin.textColorBad
+								renewContractTooltips[1].SetContent( "+"+TFunctions.convertValue(runningCostChange, 2, 0) + " " + GetLocale("CURRENCY") )
+							endif
+
 
 							if selectedStation.GetSellPrice() < 0
 								price = TFunctions.convertValue( - selectedStation.GetSellPrice(), 2, 0)
@@ -1212,10 +1273,12 @@ endrem
 				else
 					subscriptionText = GetWorldTime().GetFormattedDuration(duration, "h i")
 				endif
+				'set to subscription time
+				renewContractTooltips[0].SetContent( subscriptionText +" -> " + GetWorldTime().GetFormattedDuration(satellite.GetDefaultSubscribedChannelDuration(), "d h"))
 
 				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, subscriptionText, "duration", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			EndIf
-			renewContractTooltips[0].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
+			renewContractTooltips[0].parentArea.SetXY(contentX + 5 + halfW-5 + 4, currentY).SetWH(halfW+5, boxH)
 
 			'=== BOX LINE 3 ===
 			currentY :+ boxH
@@ -2774,88 +2837,6 @@ endrem
 	End Function
 
 
-	Function OnUpdate_ActionButton:Int(triggerEvent:TEventBase)
-		Local button:TGUIButton = TGUIButton(triggerEvent._sender)
-		If Not button Then Return False
-
-		'ignore clicks if not in the own office
-		If Not currentSubRoom Or currentSubRoom.owner <> GetPlayerBase().playerID Then Return False
-
-		Select actionMode
-			Case MODE_BUY_ANTENNA
-				If Not selectedStation
-					button.SetValue(GetLocale("SELECT_LOCATION")+" ...")
-					button.disable()
-				Else
-					Local finance:TPlayerFinance = GetPlayerFinance(GetPlayerBase().playerID)
-					If finance And finance.canAfford(selectedStation.GetPrice())
-						button.SetValue(GetLocale("BUY_STATION"))
-						button.enable()
-					Else
-						button.SetValue(GetLocale("TOO_EXPENSIVE"))
-						button.disable()
-					EndIf
-				EndIf
-
-			Case MODE_SELL_ANTENNA
-				'different owner or not paid or not sellable
-				If selectedStation
-					If selectedStation.owner <> GetPlayerBase().playerID
-						button.disable()
-						button.SetValue(GetLocale("WRONG_PLAYER"))
-					ElseIf Not selectedStation.HasFlag(TVTStationFlag.SELLABLE)
-						button.SetValue(GetLocale("UNSELLABLE"))
-						button.disable()
-					ElseIf Not selectedStation.HasFlag(TVTStationFlag.PAID)
-						button.SetValue(GetLocale("SELL_STATION"))
-						button.disable()
-					Else
-						button.SetValue(GetLocale("SELL_STATION"))
-						button.enable()
-					EndIf
-				EndIf
-
-			Case MODE_BUY_CABLE_NETWORK_UPLINK
-				If Not selectedStation
-					button.SetValue(GetLocale("SELECT_LOCATION")+" ...")
-					button.disable()
-				Else
-					Local finance:TPlayerFinance = GetPlayerFinance(GetPlayerBase().playerID)
-					If finance And finance.canAfford(selectedStation.GetPrice())
-						button.SetValue(GetLocale("SIGN_UPLINK"))
-						button.enable()
-					Else
-						button.SetValue(GetLocale("TOO_EXPENSIVE"))
-						button.disable()
-					EndIf
-				EndIf
-
-			Case MODE_SELL_CABLE_NETWORK_UPLINK
-				'different owner or not paid or not sellable
-				If selectedStation
-					If selectedStation.owner <> GetPlayerBase().playerID
-						button.disable()
-						button.SetValue(GetLocale("WRONG_PLAYER"))
-					ElseIf Not selectedStation.HasFlag(TVTStationFlag.SELLABLE)
-						button.SetValue(GetLocale("UNSELLABLE"))
-						button.disable()
-					ElseIf Not selectedStation.HasFlag(TVTStationFlag.PAID)
-						button.SetValue(GetLocale("CANCEL_UPLINK"))
-						button.disable()
-					Else
-						button.SetValue(GetLocale("CANCEL_UPLINK"))
-						button.enable()
-					EndIf
-				EndIf
-
-
-			Default
-				button.SetValue(GetLocale("NEW_STATION"))
-				button.enable()
-		End Select
-	End Function
-
-
 	'custom drawing function for list entries
 	Function DrawMapStationListEntryContent:Int(obj:TGUIObject)
 		Local item:TGUISelectListItem = TGUISelectListItem(obj)
@@ -2907,11 +2888,16 @@ endrem
 			rightValueColor = entryColor
 		EndIf
 
+		'blink a bit to emphasize a soon ending contract
+		local subTimeLeft:Long = station.GetSubscriptionTimeLeft()
+		if subTimeLeft > 0 and subTimeLeft < 1*TWorldTime.DAYLENGTH
+			entryColor = New TColor.Create(130,100,50, currentColor.a - 0.2 + 0.6 * sin(Millisecs()*0.33))
+			rightValueColor = entryColor
+		endif
 
 		'draw antenna
 		sprite.Draw(Int(item.GetScreenX() + paddingLR), item.GetScreenY() + 0.5*item.rect.getH(), -1, ALIGN_LEFT_CENTER)
 		Local rightValueWidth:Int = item.GetFont().GetWidth(rightValue)
-'		item.GetFont().DrawBlock(int(TGUIScrollablePanel(item._parent).scrollPosition.y)+"/"+int(TGUIScrollablePanel(item._parent).scrollLimit.y)+" "+item.GetValue(), Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), textW, int(item.GetScreenHeight() - textOffsetY), ALIGN_LEFT_CENTER, item.valueColor)
 		item.GetFont().DrawBlock(leftValue, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), textW - rightValueWidth - 5, Int(item.GetScreenHeight() - textOffsetY), ALIGN_LEFT_CENTER, entryColor, , , , False)
 		item.GetFont().DrawBlock(rightValue, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), textW, Int(item.GetScreenHeight() - textOffsetY), ALIGN_RIGHT_CENTER, rightValueColor)
 	End Function

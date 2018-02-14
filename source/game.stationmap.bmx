@@ -1488,7 +1488,7 @@ endrem
 	Method RemoveUplinkFromBroadcastProvider:int(broadcastProvider:TStationMap_BroadcastProvider, uplinkOwner:int)
 		If TStationMap_Satellite(broadcastProvider)
 			return RemoveSatelliteUplinkFromSatellite(TStationMap_Satellite(broadcastProvider), uplinkOwner)
-		ElseIf TStationMap_Satellite(broadcastProvider)
+		ElseIf TStationMap_CableNetwork(broadcastProvider)
 			return RemoveCableNetworkUplinkFromCableNetwork(TStationMap_CableNetwork(broadcastProvider), uplinkOwner)
 		EndIf
 		return False
@@ -3116,6 +3116,8 @@ endrem
 				return False
 			endif
 
+			'fetch new running costs (no setup fees)
+			runningCosts = - 1
 		endif
 
 		return Super.RenewContract(duration)
@@ -3555,6 +3557,9 @@ endrem
 			if not satellite.SubscribeChannel(self.owner, duration )
 				return False
 			endif
+
+			'fetch new running costs (no setup fees)
+			runningCosts = - 1
 		endif
 
 		return Super.RenewContract(duration)
@@ -4863,7 +4868,8 @@ Type TStationMap_BroadcastProvider extends TEntityBase
 
 
 	Method GetDefaultSubscribedChannelDuration:Long()
-		return 0.25 * GetWorldTime().GetYearLength()
+		'return 0.25 * GetWorldTime().GetYearLength()
+		return GetWorldTime().GetYearLength()
 	End Method
 
 
