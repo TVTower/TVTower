@@ -231,7 +231,7 @@ AD_SEND_TILL_MIDNIGHT  = bis Mitternacht senden!!
 AD_SEND_TILL_TOMORROW  = bis Morgen senden!
 AD_STILL_X_DAYS= noch %1 Tage
 
-AD_CHANNEL_IMAGE_TO_LOW = Senderimage zu gering. %CHANNELIMAGE%% < %IMAGE%%.
+AD_CHANNEL_IMAGE_TOO_LOW = Senderimage zu gering. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X = Bitte Genre %GENRE%
 AD_PLEASE_FLAG = Bitte %FLAG%
 
@@ -1131,3 +1131,7 @@ PRESSURE_GROUPS_ARMSLOBBY = Waffenlobby
 PRESSURE_GROUPS_PACIFISTS = Pazifisten
 PRESSURE_GROUPS_CAPITALISTS = Kapitalisten
 PRESSURE_GROUPS_COMMUNISTS = Kommunisten
+
+CHANNEL_IMAGE_TOO_LOW = Senderimage zu gering
+CHANNEL_LIMIT_REACHED = Sendergrenze erreicht
+PROVIDER = Anbieter

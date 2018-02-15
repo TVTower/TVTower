@@ -1590,7 +1590,7 @@ price :* Max(1, minAudience/1000)
 		If owner <= 0 and GetMinImage() > 0 and 0.01*GetPublicImage( GetObservedPlayerID() ).GetAverageImage() < GetMinImage()
 			local requiredImage:string = MathHelper.NumberToString(GetMinImage()*100,2)
 			local channelImage:string = MathHelper.NumberToString(GetPublicImage( GetObservedPlayerID() ).GetAverageImage(),2)
-			imageText = getLocale("AD_CHANNEL_IMAGE_TO_LOW").Replace("%IMAGE%", requiredImage).Replace("%CHANNELIMAGE%", channelImage)
+			imageText = getLocale("AD_CHANNEL_IMAGE_TOO_LOW").Replace("%IMAGE%", requiredImage).Replace("%CHANNELIMAGE%", channelImage)
 
 			msgAreaH :+ msgH
 		endif

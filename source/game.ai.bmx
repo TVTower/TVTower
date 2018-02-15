@@ -901,7 +901,7 @@ endrem
 	Method of_buyCableNetworkStation:int(federalStateName:string)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
-		if GetStationMap(ME).BuyCableNetworkStationBySectionName(federalStateName)
+		if GetStationMap(ME).BuyCableNetworkUplinkStationBySectionName(federalStateName)
 			Return self.RESULT_OK
 		else
 			Return self.RESULT_FAILED
@@ -912,7 +912,7 @@ endrem
 	Method of_buyCableNetworkStationByCableNetworkIndex:int(index:int)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
-		if GetStationMap(ME).BuyCableNetworkStation(index)
+		if GetStationMap(ME).BuyCableNetworkUplinkStation(index)
 			Return self.RESULT_OK
 		else
 			Return self.RESULT_FAILED
@@ -923,7 +923,7 @@ endrem
 	Method of_buySatelliteStation:int(satelliteNumber:int)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
-		if GetStationMap(ME).BuySatelliteStation(satelliteNumber)
+		if GetStationMap(ME).BuySatelliteUplinkStation(satelliteNumber)
 			Return self.RESULT_OK
 		else
 			Return self.RESULT_FAILED
@@ -934,7 +934,7 @@ endrem
 	Method of_sellStation:int(listPosition:int)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
-		if GetStationMap(self.ME).SellStation(listPosition)
+		if GetStationMap(self.ME).SellStationAtPosition(listPosition)
 			Return self.RESULT_OK
 		else
 			Return self.RESULT_FAILED

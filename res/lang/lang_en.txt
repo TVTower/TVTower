@@ -235,7 +235,7 @@ AD_TILL_TOMORROW		= till tomorrow!
 AD_STILL_X_DAYS			= still %1 days
 AD_TIME					= time
 
-AD_CHANNEL_IMAGE_TO_LOW = Channel image to low. %CHANNELIMAGE%% < %IMAGE%%.
+AD_CHANNEL_IMAGE_TOO_LOW = Channel image to low. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X = Please genre %GENRE%
 AD_PLEASE_FLAG = Please %FLAG%
 
@@ -1110,3 +1110,7 @@ PRESSURE_GROUPS_ARMSLOBBY = Arms Lobby
 PRESSURE_GROUPS_PACIFISTS = Pacifists
 PRESSURE_GROUPS_CAPITALISTS = Capitalists
 PRESSURE_GROUPS_COMMUNISTS = Communists
+
+CHANNEL_IMAGE_TOO_LOW = Channel image too low
+CHANNEL_LIMIT_REACHED = Channel limit reached
+PROVIDER = Provider

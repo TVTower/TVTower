@@ -1262,7 +1262,7 @@ Type TStationMapCollection
 
 		rem
 		'variant A - keep "uplink" 
-		satLink.satelliteGUID = ""
+		satLink.providerGUID = ""
 		'force running costs recalculation
 		satLink.runningCosts = -1
 
@@ -1322,13 +1322,14 @@ Type TStationMapCollection
 			cableNetwork.dailyFeeBase = RandRange(50,75) * 1000
 			cableNetwork.setupFeeBase = RandRange(175,215) * 1000
 			cableNetwork.sectionName = section.name
-
 			if cnNumber = 0
-				cableNetwork.minimumChannelImage = RandRange(5,15) / 100.0
-			elseif cnNumber <= 2
-				cableNetwork.minimumChannelImage = RandRange(10,20) / 100.0
+				cableNetwork.minimumChannelImage = RandRange(5,10) / 100.0
+			elseif cnNumber <= 3
+				cableNetwork.minimumChannelImage = RandRange(8,16) / 100.0
+			elseif cnNumber <= 6
+				cableNetwork.minimumChannelImage = RandRange(14,25) / 100.0
 			else
-				cableNetwork.minimumChannelImage = RandRange(10,35) / 100.0
+				cableNetwork.minimumChannelImage = RandRange(23,37) / 100.0
 			endif
 			cnNumber :+ 1
 
@@ -1726,7 +1727,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteAtIndex(satelliteIndex)
 		if not satellite or not satellite.launched then return Null
 
-		station.satelliteGUID = satellite.getGUID()
+		station.providerGUID = satellite.getGUID()
 
 		'TODO: satellite positions ?
 		Return station.Init(New TVec2D.Init(10,430 - satelliteIndex*50),-1, owner)
@@ -1738,11 +1739,11 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
 		if not satellite or not satellite.launched then return Null
 
-		station.satelliteGUID = satellite.getGUID()
+		station.providerGUID = satellite.getGUID()
 
 		'TODO: satellite positions
 		'-> some satellites are foreign ones
-		local satelliteIndex:int = GetStationMapCollection().GetSatelliteIndexByGUID(station.satelliteGUID)
+		local satelliteIndex:int = GetStationMapCollection().GetSatelliteIndexByGUID(station.providerGUID)
 
 		Return station.Init(New TVec2D.Init(10,430 - satelliteIndex*50),-1, owner)
 	End Method
@@ -1808,7 +1809,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method GetSatelliteUplinkBySatellite:TStationBase(satellite:TStationMap_Satellite)
 		For local station:TStationSatelliteUplink = EachIn stations
-			if station.satelliteGUID = satellite.GetGUID() then return station
+			if station.providerGUID = satellite.GetGUID() then return station
 		Next
 		return Null
 	End Method
@@ -1951,18 +1952,20 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		'TODO: ask if the station is ok with it (eg. satlink asks satellite first)
 		'for now:
 		'only add sat links if station can subscribe to satellite
+		local provider:TStationMap_BroadcastProvider
 		if TStationSatelliteUplink(station)
-			local satLink:TStationSatelliteUplink = TStationSatelliteUplink(station)
-			local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satLink.satelliteGUID)
-			if not satellite then Return False
-			if satellite.IsSubscribedChannel(owner) then Return False
-			if not satellite.CanSubscribeChannel(owner, -1) then Return False
+			provider = GetStationMapCollection().GetSatelliteByGUID(station.providerGUID)
+			if not provider then Return False
+			
 		elseif TStationCableNetworkUplink(station)
-			local cableNetworkUplink:TStationCableNetworkUplink = TStationCableNetworkUplink(station)
-			local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkUplink.cableNetworkGUID)
-			if not cableNetwork then Return False
-			if cableNetwork.IsSubscribedChannel(owner) then Return False
-			if not cableNetwork.CanSubscribeChannel(owner, -1) then return False
+			provider = GetStationMapCollection().GetCableNetworkByGUID(station.providerGUID)
+			if not provider then Return False
+
+		endif
+
+		if provider
+			if provider.IsSubscribedChannel(owner) then Return False
+			if provider.CanSubscribeChannel(owner, -1) <= 0 then Return False
 		endif
 
 		return True
@@ -2013,7 +2016,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		'also allow "granted" to be in another section?
 		if not station.HasFlag(TVTStationFlag.ILLEGAL) ' and not station.HasFlag(TVTStationFlag.GRANTED)
 			'stations without assigned section cannot have a permission...
-			if section and not section.HasBroadcastPermission(owner)
+			if section and section.NeedsBroadcastPermission(owner, station.stationType) and not section.HasBroadcastPermission(owner)
 				buyPermission = true
 			endif
 		endif
@@ -2022,7 +2025,13 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		'try to buy it (does nothing if already done)
 		If buy
 			'check if we can pay both things
-			if section and buyPermission and not GetPlayerFinance(owner).CanAfford(totalPrice) then return False
+			if section and buyPermission
+				'fail if permission is needed but cannot get obtained
+				if section.NeedsBroadcastPermission(owner, station.stationType) and not section.HasBroadcastPermission(owner, station.stationType)
+					if not section.CanGetBroadcastPermission(owner) then return False
+				endif
+				if not GetPlayerFinance(owner).CanAfford(totalPrice) then return False
+			endif
 
 			'if needed buy the permission
 			if section and buyPermission and not section.HasBroadcastPermission(owner, station.stationType)
@@ -2236,6 +2245,8 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Field price:Int	= -1
 
+	Field providerGUID:string
+
 	'daily costs for "running" the station
 	Field runningCosts:int = -1
 	Field owner:Int = 0
@@ -2358,6 +2369,11 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetProvider:TStationMap_BroadcastProvider()
+		if not providerGUID then return Null
+	End Method
+
+
 	Method GetSellPrice:Int() {_exposeToLua}
 		'price is multiplied by an age factor of 0.75-0.95
 		Local factor:Float = Max(0.75, 0.95 - Float(GetAge())/1.0)
@@ -2474,6 +2490,11 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method RenewContract:int(duration:int)
+		return True
+	End Method
+
+
+	Method CanSignContract:int(duration:int)
 		return True
 	End Method
 
@@ -2625,10 +2646,20 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method CanSubscribeToProvider:int(duration:int)
+		return True
+	End Method
+
+
 	Method DrawInfoTooltip()
 		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(GetSectionName())
-		Local showPermissionText:Int = section And section.NeedsBroadcastPermission(owner, stationType) and not section.HasBroadcastPermission(owner, stationType)
-
+		Local showPermissionPriceText:Int
+		Local cantGetSectionPermissionReason:Int
+		Local cantGetProviderPermissionReason:Int = CanSubscribeToProvider(1)
+		if section And section.NeedsBroadcastPermission(owner, stationType)
+			showPermissionPriceText = not section.HasBroadcastPermission(owner, stationType)
+			cantGetSectionPermissionReason = section.CanGetBroadcastPermission(owner)
+		endif
 	
 		Local priceSplitH:int = 8
 		Local textH:Int =  GetBitmapFontManager().baseFontBold.getHeight( "Tg" )
@@ -2638,8 +2669,12 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		If GetConstructionTime() > 0 then tooltipH :+ textH
 		'display increase?
 		If stationType = TVTStationType.ANTENNA then tooltipH :+ textH
+		'display required channel image for permission?
+		If cantGetSectionPermissionReason <= 0 then tooltipH :+ textH
+		'display required channel image for provider?
+		If cantGetProviderPermissionReason <= 0 then tooltipH :+ textH
 		'display broadcast permission price?
-		If showPermissionText > 0
+		If showPermissionPriceText > 0
 			tooltipH :+ 2*textH
 			tooltipW :+ 40
 		EndIf
@@ -2679,10 +2714,26 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			textY:+ textH
 		EndIf
 
+
+		If cantGetSectionPermissionReason = -1
+			GetBitmapFontManager().baseFont.draw(GetLocale("CHANNEL_IMAGE")+" ("+GetLocale("STATIONMAP_SECTION_NAME")+"): ", textX, textY)
+			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(section.broadcastPermissionMinimumChannelImage*100,2)+" %", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, new TColor.Create(255,150,150))
+			textY:+ textH
+		EndIf
+		If cantGetProviderPermissionReason = -1
+			local minImage:Float
+			local provider:TStationMap_BroadcastProvider = GetProvider()
+			if provider then minImage = provider.minimumChannelImage
+			
+			GetBitmapFontManager().baseFont.draw(GetLocale("CHANNEL_IMAGE")+" ("+GetLocale("PROVIDER")+"): ", textX, textY)
+			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(minImage*100,2)+" %", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, new TColor.Create(255,150,150))
+			textY:+ textH
+		EndIf
+
 		textY:+ priceSplitH
 
 		local totalPrice:int
-		if not showPermissionText
+		if not showPermissionPriceText
 			'always request the _current_ (refreshed) price
 			totalPrice = GetBuyPrice()
 		else
@@ -3057,17 +3108,19 @@ Type TStationCableNetworkUplink extends TStationBase
 	End Method
 
 
+	Method GetProvider:TStationMap_BroadcastProvider()
+		if not cableNetworkGUID then return Null
+		return GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+	End Method
 
 
 	'override
 	Method CanActivate:int()
-		if not cableNetworkGUID then return False
-		
-		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
-		if not cableNetwork then return False
+		local provider:TStationMap_BroadcastProvider = GetProvider()
+		if not provider then return False
 
-		if not cableNetwork.IsLaunched() then return False
-		if not cableNetwork.IsSubscribedChannel(self.owner) then return False
+		if not provider.IsLaunched() then return False
+		if not provider.IsSubscribedChannel(self.owner) then return False
 		
 		return True
 	End Method
@@ -3124,9 +3177,30 @@ endrem
 	End Method
 
 
+	Method CanSubscribeToProvider:int(duration:int)
+		if not cableNetworkGUID then return False 
+
+		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+		if cableNetwork then return cableNetwork.CanSubscribeChannel(self.owner, duration)
+
+		return True
+	End Method
+
+
+	'override to check if already subscribed
+	Method CanSignContract:int(duration:int)
+		if not Super.CanSignContract(duration) then return False
+
+		if CanSubscribeToProvider(duration) <= 0 then return False
+
+		return True
+	End Method
+		
+
 	'override to add satellite connection
 	Method SignContract:int(duration:int)
 		if not cableNetworkGUID then Throw "Sign to CableNetworkLink without valid cable network guid."
+		if not CanSignContract(duration) then return False
 
 		'inform cable network
 		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
@@ -3501,18 +3575,23 @@ Type TStationSatelliteUplink extends TStationBase
 	End Method
 
 
+	Method GetProvider:TStationMap_BroadcastProvider()
+		if not satelliteGUID then return Null
+		return GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+	End Method
+
+
 	'override
 	Method CanActivate:int()
-		if not satelliteGUID then return False
-		
-		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
-		if not satellite then return False
+		local provider:TStationMap_BroadcastProvider = GetProvider()
+		if not provider then return False
 
-		if not satellite.IsLaunched() then return False
-		if not satellite.IsSubscribedChannel(self.owner) then return False
+		if not provider.IsLaunched() then return False
+		if not provider.IsSubscribedChannel(self.owner) then return False
 		
 		return True
 	End Method
+
 
 rem
 	Method ShutDown:int()
@@ -3564,11 +3643,32 @@ endrem
 
 		return Super.RenewContract(duration)
 	End Method
+
+
+	Method CanSubscribeToProvider:int(duration:int)
+		if not satelliteGUID then return False 
+
+		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+		if satellite then return satellite.CanSubscribeChannel(self.owner, duration)
+
+		return True
+	End Method
+
+
+	'override to check if already subscribed
+	Method CanSignContract:int(duration:int)
+		if not Super.CanSignContract(duration) then return False
+
+		if CanSubscribeToProvider(duration) <= 0 then return False
+
+		return True
+	End Method
 	
 
 	'override to add satellite connection
 	Method SignContract:int(duration:int)
 		if not satelliteGUID then Throw "Signing a Satellitelink to map without valid satellite guid."
+		if not CanSignContract(duration) then return False
 
 		'inform satellite
 		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
@@ -3576,8 +3676,6 @@ endrem
 			if duration < 0 then duration = satellite.GetDefaultSubscribedChannelDuration()
 			if not satellite.SubscribeChannel(self.owner, duration )
 				print "sign contract: failed to subscribe to channel"
-				if satellite.IsSubscribedChannel(owner) then print "  already subscribed"
-				if satellite.CanSubscribeChannel(owner, duration) then print "  can subscribe"
 			endif
 		endif
 

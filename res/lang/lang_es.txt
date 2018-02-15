@@ -194,7 +194,7 @@ AD_TILL_TOMORROW		= hasta mañana!!
 AD_STILL_X_DAYS			= todavia %1 dia
 AD_TIME					= tiempo
 
-AD_CHANNEL_IMAGE_TO_LOW = imagen del canal baja. %CHANNELIMAGE%% < %IMAGE%%.
+AD_CHANNEL_IMAGE_TOO_LOW = imagen del canal baja. %CHANNELIMAGE%% < %IMAGE%%.
 AD_PLEASE_GENRE_X = Por favor género %GENRE%
 AD_PLEASE_FLAG = Por favor %FLAG%
 

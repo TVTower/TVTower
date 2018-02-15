@@ -357,13 +357,23 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			Else
 				Local totalPrice:int = GetStationMap(GetPlayerBase().playerID).GetTotalStationBuyPrice(TScreenHandler_StationMap.selectedStation)
 				Local finance:TPlayerFinance = GetPlayerFinance(GetPlayerBase().playerID)
-				If finance And finance.canAfford(totalPrice)
-					actionButton.SetValue(GetLocale( localeKey_BuyItem))
-					actionButton.enable()
-				Else
-					actionButton.SetValue(GetLocale("TOO_EXPENSIVE"))
+				Local section:TStationMapSection = GetStationMapCollection().GetSectionByName( TScreenHandler_StationMap.selectedStation.GetSectionName() )
+
+				If not section and TStationAntenna(TScreenHandler_StationMap.selectedStation)
+					actionButton.SetValue(GetLocale("SECTION_MISSING"))
 					actionButton.disable()
-				EndIf
+				Else
+					if section and section.CanGetBroadcastPermission(GetPlayerBase().playerID) = -1
+						actionButton.SetValue(GetLocale("CHANNEL_IMAGE_TOO_LOW"))
+						actionButton.Disable()
+					elseif finance And finance.canAfford(totalPrice)
+						actionButton.SetValue(GetLocale( localeKey_BuyItem))
+						actionButton.enable()
+					Else
+						actionButton.SetValue(GetLocale("TOO_EXPENSIVE"))
+						actionButton.disable()
+					EndIf
+				endif
 			EndIf
 
 		ElseIf TScreenHandler_StationMap.IsInSellActionMode()
@@ -735,6 +745,38 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 	End Method
 
 
+
+	'override
+	Method UpdateActionButton:int()
+		'ignore clicks if not in the own office
+		If Not TScreenHandler_StationMap.currentSubRoom Or TScreenHandler_StationMap.currentSubRoom.owner <> GetPlayerBase().playerID Then Return False
+
+		Super.UpdateActionButton()
+
+
+		if TStationCableNetworkUplink(TScreenHandler_StationMap.selectedStation)
+			local selectedCableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID( TStationCableNetworkUplink(TScreenHandler_StationMap.selectedStation).cableNetworkGUID )
+			'disable action button if subscription not possible
+			if selectedCableNetwork
+				if selectedCableNetwork.CanSubscribeChannel(GetPlayerBase().playerID, -1) <= 0 or selectedCableNetwork.IsSubscribedChannel(GetPlayerBase().playerID)
+					Select selectedCableNetwork.CanSubscribeChannel(GetPlayerBase().playerID, -1)
+						case -1
+							actionButton.SetValue(GetLocale("CHANNEL_IMAGE_TOO_LOW"))
+						case -2
+							actionButton.SetValue(GetLocale("CHANNEL_LIMIT_REACHED"))
+					End Select
+					actionButton.Disable()
+				else
+					actionButton.Enable()
+				endif
+			endif
+		EndIf
+
+		return True
+	End Method
+
+
+
 	Method DrawBodyContent(contentX:Int,contentY:Int,contentW:Int,currentY:Int)
 		Local skin:TDatasheetSkin = GetSkin()
 		If Not skin Then Return
@@ -869,7 +911,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 				Local subscriptionText:String
 				Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID( TStationCableNetworkUplink(selectedStation).cableNetworkGUID)
 				local duration:int
-				If TScreenHandler_StationMap.actionMode = GetBuyActionMode()
+				If TScreenHandler_StationMap.actionMode = GetBuyActionMode() and cableNetwork
 					duration = cableNetwork.GetDefaultSubscribedChannelDuration()
 				Else
 					duration = selectedStation.GetSubscriptionTimeLeft()
@@ -1042,7 +1084,13 @@ endrem
 			if openFrame
 				actionButton.Enable()
 				if selectedSatellite
-					if not selectedSatellite.CanSubscribeChannel(GetPlayerBase().playerID, -1) or selectedSatellite.IsSubscribedChannel(GetPlayerBase().playerID)
+					if selectedSatellite.CanSubscribeChannel(GetPlayerBase().playerID, -1) <= 0 or selectedSatellite.IsSubscribedChannel(GetPlayerBase().playerID)
+						Select selectedSatellite.CanSubscribeChannel(GetPlayerBase().playerID, -1)
+							case -1
+								actionButton.SetValue(GetLocale("CHANNEL_IMAGE_TOO_LOW"))
+							case -2
+								actionButton.SetValue(GetLocale("CHANNEL_LIMIT_REACHED"))
+						End Select
 						actionButton.Disable()
 					endif
 				endif
@@ -1263,7 +1311,7 @@ endrem
 				Local subscriptionText:String
 				Local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID( TStationSatelliteUplink(selectedStation).satelliteGUID)
 				local duration:int
-				If TScreenHandler_StationMap.actionMode = GetBuyActionMode()
+				If TScreenHandler_StationMap.actionMode = GetBuyActionMode() and satellite
 					duration = satellite.GetDefaultSubscribedChannelDuration()
 				Else
 					duration = selectedStation.GetSubscriptionTimeLeft()
@@ -1509,7 +1557,7 @@ Type TSatelliteSelectionFrame
 		If satellite.IsSubscribedChannel(GetPlayerBase().playerID)
 			entryColor = New TColor.Create(80,130,50, currentColor.a)
 			highlight = True
-		ElseIf not satellite.CanSubscribeChannel(GetPlayerBase().playerID)
+		ElseIf satellite.CanSubscribeChannel(GetPlayerBase().playerID) <= 0
 			entryColor = New TColor.Create(130,80,50, currentColor.a)
 			entryColor.a = currentColor.a * 0.85
 			highlight = True
@@ -1827,6 +1875,7 @@ Type TStationMapInformationFrame
 
 		local owner:int = 0
 		if TScreenHandler_StationMap.currentSubRoom then owner = TScreenHandler_StationMap.currentSubRoom.owner
+		if owner = 0 then return False
 
 		Local valueA:String = GetLocale("MAP_COUNTRY_"+item.GetValue())
 		Local valueB:String = section.HasBroadcastPermission(owner)
@@ -2523,6 +2572,7 @@ Type TScreenHandler_StationMap
 			if satelliteSelectionFrame.IsOpen()
 				'reassigning to an empty one?
 				if selectedStation 'and selectedStation.IsShutDown()
+					ResetActionMode(0)
 					satelliteSelectionFrame.SelectSatellite(null)
 					satelliteSelectionFrame.Close()
 				else
