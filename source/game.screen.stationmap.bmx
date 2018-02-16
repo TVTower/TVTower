@@ -1779,7 +1779,7 @@ Type TStationMapInformationFrame
 	Field selectedSection:TStationMapSection
 	Field sectionList:TGUISelectList
 	Field tooltips:TTooltipBase[]
-	Field _open:Int = True
+	Field _open:Int = False
 	Global subHeaderColor:TColor = New TColor.Create(115,115,115)
 
 	Field _eventListeners:TLink[]
@@ -1907,7 +1907,8 @@ Type TStationMapInformationFrame
 		if owner = 0 then return False
 
 		Local valueA:String = GetLocale("MAP_COUNTRY_"+item.GetValue())
-		Local valueB:String = section.HasBroadcastPermission(owner)
+		Local valueB:String = GetLocale("NO")
+		if section.HasBroadcastPermission(owner) then valueB = GetLocale("YES")
 		Local valueC:String = MathHelper.NumberToString(section.GetPressureGroupsChannelSympathy(owner)*100,2) +"%"
 		Local valueD:String = TFunctions.convertValue(section.GetPopulation(), 2, 0)
 		Local paddingLR:Int = 2
@@ -1916,10 +1917,10 @@ Type TStationMapInformationFrame
 		Local textW:Int = item.GetScreenWidth() - textOffsetX - paddingLR
 		Local colY:Int = Int(item.GetScreenY() + textOffsetY)
 		Local colHeight:Int = Int(item.GetScreenHeight() - textOffsetY)
-		Local colWidthA:Int = 0.5 * textW
-		Local colWidthB:Int = 0.1 * textW
+		Local colWidthA:Int = 0.45 * textW
+		Local colWidthB:Int = 0.2 * textW
 		Local colWidthC:Int = 0.1 * textW
-		Local colWidthD:Int = 0.3 * textW
+		Local colWidthD:Int = 0.25 * textW
 
 		Local currentColor:TColor = New TColor.Get()
 		Local entryColor:TColor
@@ -1932,12 +1933,12 @@ Type TStationMapInformationFrame
 		entryColor.SetRGBA()
 		item.GetFont().DrawBlock(valueA, Int(item.GetScreenX() + textOffsetX), colY, colWidthA, colHeight, ALIGN_LEFT_CENTER, item.valueColor, , , , False)
 		textOffsetX :+ colWidthA
-		item.GetFont().DrawBlock(valueB, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), colWidthB, colHeight, ALIGN_RIGHT_CENTER, item.valueColor)
+		item.GetFont().DrawBlock(valueB, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), colWidthB, colHeight, ALIGN_LEFT_CENTER, item.valueColor)
 		textOffsetX :+ colWidthB
-		item.GetFont().DrawBlock(valueC, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), colWidthC, colHeight, ALIGN_RIGHT_CENTER, item.valueColor)
-		textOffsetX :+ colWidthB
+		item.GetFont().DrawBlock(valueC, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), colWidthC, colHeight, ALIGN_LEFT_CENTER, item.valueColor)
+		textOffsetX :+ colWidthC
 		item.GetFont().DrawBlock(valueD, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), colWidthD, colHeight, ALIGN_RIGHT_CENTER, item.valueColor)
-		textOffsetX :+ colWidthB
+		textOffsetX :+ colWidthD
 
 		currentColor.SetRGBA()
 	End Function
@@ -2063,10 +2064,12 @@ Type TStationMapInformationFrame
 
 
 		'=== LIST ===
+		local sectionListContentW:int = sectionList.GetContentScreenWidth()
 		skin.RenderContent(contentArea.GetX(), currentY, contentArea.GetW(), sectionListHeight + sectionListHeaderHeight, "2")
-		skin.fontNormal.drawBlock(GetLocale("STATIONMAP_SECTION_NAME"), contentArea.GetX() + 5, currentY, contentArea.GetW() - 10,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
-		skin.fontNormal.drawBlock("Sendegenehm.", contentArea.GetX() + 5 + 0.2*contentArea.GetW(), currentY, contentArea.GetW() - 10,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
-		skin.fontNormal.drawBlock("Image", contentArea.GetX() + 5 + 0.4*contentArea.GetW(), currentY, contentArea.GetW() - 10,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+		skin.fontNormal.drawBlock(GetLocale("STATIONMAP_SECTION_NAME"), contentArea.GetX() + 7, currentY, 0.45*sectionListContentW,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+		skin.fontNormal.drawBlock(GetLocale("BROADCAST_PERMISSION_SHORT"), contentArea.GetX() + 7 + 5 + 0.4*sectionListContentW, currentY, 0.2*sectionListContentW,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+		skin.fontNormal.drawBlock(GetLocale("IMAGE"), contentArea.GetX() + 6 + 0.6*sectionListContentW, currentY, 0.1*sectionListContentW,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+		skin.fontNormal.drawBlock(GetLocale("REACH"), contentArea.GetX() + 11 + 0.65*sectionListContentW, currentY, 0.25*sectionListContentW,  headerHeight, ALIGN_RIGHT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
 		currentY :+ sectionListHeaderHeight
 
 '		skin.RenderContent(contentArea.GetX(), currentY, contentArea.GetW(), sectionListHeight, "2")
@@ -2276,7 +2279,6 @@ Type TScreenHandler_StationMap
 
 		satelliteSelectionFrame = New TSatelliteSelectionFrame
 		mapInformationFrame = New TStationMapInformationFrame
-
 
 		'=== reset gui element options to their defaults
 		For Local i:Int = 0 Until guiShowStations.length
@@ -2998,6 +3000,11 @@ endrem
 		For Local i:Int = 0 To 3
 			Local show:Int = GetStationMap(owner).GetShowStation(i+1)
 			guiShowStations[i].SetChecked(show)
+		Next
+
+		For Local i:Int = 0 To 2
+			Local show:Int = GetStationMap(owner).GetShowStationType(i+1)
+			guiFilterButtons[i].SetChecked(show)
 		Next
 	End Function
 

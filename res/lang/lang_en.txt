@@ -1094,6 +1094,9 @@ PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION = Price includes %X% for broadcast per
 BROADCAST_PERMISSION_EXISTING = Broadcast permission existing
 BROADCAST_PERMISSION_MISSING = Broadcast permission missing
 BROADCAST_PERMISSION = Broadcast permission
+BROADCAST_PERMISSION_SHORT = Broadcast perm.
+PERMISSION = Permission
+IMAGE = Image
 
 STATIONMAP_SECTION_NAME = Federal State
 STATIONMAP_SECTIONS_NAME = Federal States
