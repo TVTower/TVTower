@@ -766,8 +766,8 @@ Type TStationMapCollection
 		_instance.LoadPopulationShareData()
 
 		'=== CREATE SATELLITES ===
-		'_instance.ResetSatellites()
-		'_instance.ResetCableNetworks()
+		_instance.ResetSatellites()
+		_instance.ResetCableNetworks()
 	End Function
 
 
@@ -1472,7 +1472,7 @@ endrem
 
 		rem
 		'variant A - keep "uplink" 
-		cableLink.cableNetworkGUID = ""
+		cableLink.providerGUID = ""
 		'force running costs recalculation
 		cableLink.runningCosts = -1
 
@@ -1711,7 +1711,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		if not cableNetwork or not cableNetwork.launched then return Null
 		local station:TStationCableNetworkUplink = new TStationCableNetworkUplink
 
-		station.cableNetworkGUID = cableNetwork.getGUID()
+		station.providerGUID = cableNetwork.getGUID()
 
 		local mapSection:TStationMapSection = GetStationMapCollection().GetSectionByName(cableNetwork.sectionName)
 		if not mapSection then return Null
@@ -1801,7 +1801,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method GetCableNetworkUplinkStationByCableNetwork:TStationBase(cableNetwork:TStationMap_CableNetwork)
 		For local station:TStationCableNetworkUplink = EachIn stations
-			if station.cableNetworkGUID = cableNetwork.GetGUID() then return station
+			if station.providerGUID = cableNetwork.GetGUID() then return station
 		Next
 		return null
 	End Method
@@ -3069,8 +3069,6 @@ End Type
 
 
 Type TStationCableNetworkUplink extends TStationBase
-'	Field oldCableNetworkGUID:string
-	Field cableNetworkGUID:string
 	Field hardwareCosts:int = 65000
 	Field maintenanceCosts:int = 15000
 
@@ -3109,8 +3107,8 @@ Type TStationCableNetworkUplink extends TStationBase
 
 
 	Method GetProvider:TStationMap_BroadcastProvider()
-		if not cableNetworkGUID then return Null
-		return GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+		if not providerGUID then return Null
+		return GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
 	End Method
 
 
@@ -3125,31 +3123,12 @@ Type TStationCableNetworkUplink extends TStationBase
 		return True
 	End Method
 
-rem
-	Method ShutDown:int()
-		if not Super.ShutDown() then return False
-
-		oldCableNetworkGUID = cableNetworkGUID
-		cableNetworkGUID = ""
-
-		return True
-	End Method
-
-	Method Resume:int()
-		if not Super.Resume() then return False
-
-		cableNetworkGUID = oldCableNetworkGUID
-		oldCableNetworkGUID = ""
-
-		return True
-	End Method
-endrem
 
 	Method RenewContract:int(duration:int)
-		if not cableNetworkGUID then Return False 'Throw "Renew CableNetworkUplink without valid cable network guid."
+		if not providerGUID then Return False 'Throw "Renew CableNetworkUplink without valid cable network guid."
 
 		'inform cable network
-		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
 		if cableNetwork
 			rem
 			'subtract time left from planned duration
@@ -3178,9 +3157,9 @@ endrem
 
 
 	Method CanSubscribeToProvider:int(duration:int)
-		if not cableNetworkGUID then return False 
+		if not providerGUID then return False 
 
-		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
 		if cableNetwork then return cableNetwork.CanSubscribeChannel(self.owner, duration)
 
 		return True
@@ -3199,11 +3178,11 @@ endrem
 
 	'override to add satellite connection
 	Method SignContract:int(duration:int)
-		if not cableNetworkGUID then Throw "Sign to CableNetworkLink without valid cable network guid."
+		if not providerGUID then Throw "Sign to CableNetworkLink without valid cable network guid."
 		if not CanSignContract(duration) then return False
 
 		'inform cable network
-		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
 		if cableNetwork
 			if duration < 0 then duration = cableNetwork.GetDefaultSubscribedChannelDuration()
 			if not cableNetwork.SubscribeChannel(self.owner, duration )
@@ -3218,7 +3197,7 @@ endrem
 	'override to remove satellite connection
 	Method CancelContracts:int()
 		'inform cableNetwork
-		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
 		if cableNetwork
 			if not cableNetwork.UnsubscribeChannel(owner)
 				return False
@@ -3230,7 +3209,7 @@ endrem
 
 
 	Method GetSubscriptionTimeLeft:Long()
-		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
 		if not cableNetwork then return 0
 
 		local endTime:long = cableNetwork.GetSubscribedChannelEndTime(owner)
@@ -3241,7 +3220,7 @@ endrem
 
 
 	Method GetSubscriptionProgress:Float()
-		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
 		if not cableNetwork then return 0
 
 		local startTime:long = cableNetwork.GetSubscribedChannelStartTime(owner)
@@ -3256,7 +3235,7 @@ endrem
 	Method GetBuyPrice:Int() {_exposeToLua}
 '		If price >= 0 And Not refresh Then Return price
 
-		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
 		if not cableNetwork then return 0
 
 		local section:TStationMapSection = GetStationMapCollection().GetSectionByName( GetSectionName() )
@@ -3322,8 +3301,8 @@ endrem
 		local result:int 
 
 		'add specific costs
-		if cableNetworkGUID
-			local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+		if providerGUID
+			local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
 			if cableNetwork
 				result :+ cableNetwork.GetDailyFee(owner)
 			endif
@@ -3374,7 +3353,7 @@ endrem
 		'without the hassle of manual "cache refreshs" 
 		'If reach >= 0 And Not refresh Then Return reach
 
-		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+		local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
 		if not cableNetwork then return 0
 
 		return cableNetwork.GetReach(refresh)
@@ -3386,7 +3365,7 @@ endrem
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
 			'not cached yet?
 			if reachExclusiveMax < 0 or refresh
-				local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+				local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
 				if not cableNetwork
 					reachExclusiveMax = 0
 					return reachExclusiveMax
@@ -3420,7 +3399,7 @@ endrem
 			endif
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-			local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(cableNetworkGUID)
+			local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(providerGUID)
 			if not cableNetwork
 				reachExclusiveMax = 0
 			else
@@ -3517,12 +3496,8 @@ End Type
 
 
 Type TStationSatelliteUplink extends TStationBase
-	Field satelliteGUID:string
 	Field hardwareCosts:int = 95000
 	Field maintenanceCosts:int = 25000
-	'if a link was shut down, this value holds the satellite GUID
-	'so we can easily resume the link
-'	Field oldSatelliteGUID:string
 
 	 
 	Method New()
@@ -3549,7 +3524,7 @@ Type TStationSatelliteUplink extends TStationBase
 
 	'override
 	Method GetLongName:string()
-		if not satelliteGUID
+		if not providerGUID
 			return GetLocale("UNUSED_TRANSMITTER")
 		else
 			return GetName()
@@ -3561,8 +3536,8 @@ Type TStationSatelliteUplink extends TStationBase
 
 	'override
 	Method GetName:string()
-		if satelliteGUID
-			local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+		if providerGUID
+			local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
 			if satellite then return GetLocale("SATUPLINK_TO_X").Replace("%X%", satellite.name)
 		endif
 		return Super.GetName()
@@ -3576,8 +3551,8 @@ Type TStationSatelliteUplink extends TStationBase
 
 
 	Method GetProvider:TStationMap_BroadcastProvider()
-		if not satelliteGUID then return Null
-		return GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+		if not providerGUID then return Null
+		return GetStationMapCollection().GetSatelliteByGUID(providerGUID)
 	End Method
 
 
@@ -3593,33 +3568,11 @@ Type TStationSatelliteUplink extends TStationBase
 	End Method
 
 
-rem
-	Method ShutDown:int()
-		if not Super.ShutDown() then return False
-
-		oldSatelliteGUID = satelliteGUID
-		satelliteGUID = ""
-
-		return True
-	End Method
-
-
-	Method Resume:int()
-		if not Super.Resume() then return False
-
-		satelliteGUID = oldSatelliteGUID
-		oldSatelliteGUID = ""
-
-		return True
-	End Method
-endrem
-
-
 	Method RenewContract:int(duration:int)
-		if not satelliteGUID then return False 'Throw "Renew a Satellitelink to map without valid satellite guid."
+		if not providerGUID then return False 'Throw "Renew a Satellitelink to map without valid satellite guid."
 
 		'inform satellite
-		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
 		if satellite
 			rem
 			'subtract time left from planned duration
@@ -3646,9 +3599,9 @@ endrem
 
 
 	Method CanSubscribeToProvider:int(duration:int)
-		if not satelliteGUID then return False 
+		if not providerGUID then return False 
 
-		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
 		if satellite then return satellite.CanSubscribeChannel(self.owner, duration)
 
 		return True
@@ -3667,11 +3620,11 @@ endrem
 
 	'override to add satellite connection
 	Method SignContract:int(duration:int)
-		if not satelliteGUID then Throw "Signing a Satellitelink to map without valid satellite guid."
+		if not providerGUID then Throw "Signing a Satellitelink to map without valid satellite guid."
 		if not CanSignContract(duration) then return False
 
 		'inform satellite
-		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
 		if satellite
 			if duration < 0 then duration = satellite.GetDefaultSubscribedChannelDuration()
 			if not satellite.SubscribeChannel(self.owner, duration )
@@ -3688,7 +3641,7 @@ endrem
 	'override to remove satellite connection
 	Method CancelContracts:int()
 		'inform satellite
-		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
 		if satellite
 			satellite.UnsubscribeChannel(owner)
 		endif
@@ -3698,7 +3651,7 @@ endrem
 
 
 	Method GetSubscriptionTimeLeft:Long()
-		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
 		if not satellite then return 0
 
 		local endTime:long = satellite.GetSubscribedChannelEndTime(owner)
@@ -3709,7 +3662,7 @@ endrem
 
 
 	Method GetSubscriptionProgress:Float()
-		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
 		if not satellite then return 0
 
 		local startTime:long = satellite.GetSubscribedChannelStartTime(owner)
@@ -3745,8 +3698,8 @@ endrem
 		local result:int
 
 		'add specific costs
-		if satelliteGUID
-			local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+		if providerGUID
+			local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
 			if satellite
 				result :+ satellite.GetDailyFee(owner)
 			endif
@@ -3761,7 +3714,7 @@ endrem
 
 	'override
 	Method GetBuyPrice:Int() {_exposeToLua}
-		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
 		if not satellite then return 0
 
 
@@ -3823,7 +3776,7 @@ endrem
 		'without the hassle of manual "cache refreshs" 
 		'If reach >= 0 And Not refresh Then Return reach
 
-		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+		local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
 		if not satellite then return 0
 		
 		return satellite.GetReach()
@@ -3834,7 +3787,7 @@ endrem
 	Method GetExclusiveReach:Int(refresh:Int=False) {_exposeToLua}
 		'not cached yet?
 		if reachExclusiveMax < 0 or refresh
-			local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(satelliteGUID)
+			local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
 			if not satellite
 				reachExclusiveMax = 0
 			else
@@ -5309,6 +5262,16 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider
 
 
 	'override
+	Method GetDefaultSubscribedChannelDuration:Long()
+		if deathTime <= 0 then return Super.GetDefaultSubscribedChannelDuration()
+		'days are rounded down, so they always are lower than the real life time
+		local daysToDeath:int = (deathTime - GetWorldTime().GetTimeGone()) / TWorldTime.DAYLENGTH
+
+		return Min(Super.GetDefaultSubscribedChannelDuration(), daysToDeath * TWorldTime.DAYLENGTH)
+	End Method
+
+
+	'override
 	Method Launch:int()
 		if not Super.Launch() then return False
 
@@ -5320,7 +5283,6 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider
 
 		return True
 	End Method
-
 
 
 

@@ -29,6 +29,8 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 	Field localeKey_NewItem:String = "NEW_ITEM"
 	Field localeKey_BuyItem:String = "BUY_ITEM"
 	Field localeKey_SellItem:String = "SELL_ITEM"
+	Field buttonFont:TBitmapFont
+	Field listFont:TBitmapFont
 	
 	Field _eventListeners:TLink[]
 	Global headerColor:TColor = New TColor.Create(75,75,75)
@@ -38,24 +40,33 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 	Method Create:TGameGUIBasicStationmapPanel(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
 		Super.Create(pos, dimension, value, State)
 
+		buttonFont = GetBitmapFontManager().Get("Default", 12, BOLDFONT)
+		listFont = GetBitmapFontManager().Get("Default", 12)
+
 		actionButton = New TGUIButton.Create(New TVec2D.Init(0, 0), New TVec2D.Init(150, 28), "", "STATIONMAP")
 		actionButton.spriteName = "gfx_gui_button.datasheet"
+		actionButton.SetFont( buttonFont )
+
 
 		renewButton = New TGUIButton.Create(New TVec2D.Init(0, 0), New TVec2D.Init(150, 28), "", "STATIONMAP")
 		renewButton.spriteName = "gfx_gui_button.datasheet"
+		renewButton.SetFont( buttonFont )
 
 		renewInfoButton = New TGUIButton.Create(New TVec2D.Init(145, 0), New TVec2D.Init(30, 28), "i", "STATIONMAP")
 		renewInfoButton.caption.color = TColor.clBlue.copy()
 		renewInfoButton.spriteName = "gfx_gui_button.datasheet"
+		renewInfoButton.SetFont( buttonFont )
 
 		cancelButton = New TGUIButton.Create(New TVec2D.Init(145, 0), New TVec2D.Init(30, 28), "X", "STATIONMAP")
 		cancelButton.caption.color = TColor.clRed.copy()
 		cancelButton.spriteName = "gfx_gui_button.datasheet"
+		cancelButton.SetFont( buttonFont )
 
 		list = New TGUISelectList.Create(New TVec2D.Init(610,133), New TVec2D.Init(178, 100), "STATIONMAP")
 		'scroll by one entry at a time
 		list.scrollItemHeightPercentage = 1.0
 		list.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
+		list.SetFont( listFont )
 
 
 		cancelButton.SetParent(Self)
@@ -516,6 +527,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 			'link the station to the item
 			item.data.Add("station", station)
 			item._customDrawContent = TScreenHandler_StationMap.DrawMapStationListEntryContent
+			item.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
 			list.AddItem( item )
 		Next
 	End Method
@@ -731,6 +743,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 			'link the station to the item
 			item.data.Add("station", station)
 			item._customDrawContent = TScreenHandler_StationMap.DrawMapStationListEntryContent
+			item.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
 			list.AddItem( item )
 		Next
 	End Method
@@ -755,11 +768,11 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
 
 		if TStationCableNetworkUplink(TScreenHandler_StationMap.selectedStation)
-			local selectedCableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID( TStationCableNetworkUplink(TScreenHandler_StationMap.selectedStation).cableNetworkGUID )
+			local provider:TStationMap_BroadcastProvider = TScreenHandler_StationMap.selectedStation.GetProvider()
 			'disable action button if subscription not possible
-			if selectedCableNetwork
-				if selectedCableNetwork.CanSubscribeChannel(GetPlayerBase().playerID, -1) <= 0 or selectedCableNetwork.IsSubscribedChannel(GetPlayerBase().playerID)
-					Select selectedCableNetwork.CanSubscribeChannel(GetPlayerBase().playerID, -1)
+			if provider
+				if provider.CanSubscribeChannel(GetPlayerBase().playerID, -1) <= 0 or provider.IsSubscribedChannel(GetPlayerBase().playerID)
+					Select provider.CanSubscribeChannel(GetPlayerBase().playerID, -1)
 						case -1
 							actionButton.SetValue(GetLocale("CHANNEL_IMAGE_TOO_LOW"))
 						case -2
@@ -909,10 +922,10 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
 			If selectedStation
 				Local subscriptionText:String
-				Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID( TStationCableNetworkUplink(selectedStation).cableNetworkGUID)
+				Local provider:TStationMap_BroadcastProvider = selectedStation.GetProvider()
 				local duration:int
-				If TScreenHandler_StationMap.actionMode = GetBuyActionMode() and cableNetwork
-					duration = cableNetwork.GetDefaultSubscribedChannelDuration()
+				If TScreenHandler_StationMap.actionMode = GetBuyActionMode() and provider
+					duration = provider.GetDefaultSubscribedChannelDuration()
 				Else
 					duration = selectedStation.GetSubscriptionTimeLeft()
 				EndIf
@@ -922,7 +935,11 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 					subscriptionText = GetWorldTime().GetFormattedDuration(duration, "h i")
 				endif
 				'set to subscription time
-				renewContractTooltips[0].SetContent( subscriptionText +" -> " + GetWorldTime().GetFormattedDuration(cableNetwork.GetDefaultSubscribedChannelDuration(), "d h"))
+				if provider
+					renewContractTooltips[0].SetContent( subscriptionText +" -> " + GetWorldTime().GetFormattedDuration(provider.GetDefaultSubscribedChannelDuration(), "d h"))
+				else
+					renewContractTooltips[0].SetContent( "?" )
+				endif
 
 				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, subscriptionText, "duration", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			EndIf
@@ -1033,7 +1050,7 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 				TScreenHandler_StationMap.satelliteSelectionFrame.Open()
 			else
 				if TScreenHandler_StationMap.satelliteSelectionFrame.selectedSatellite
-					satLink.satelliteGUID = TScreenHandler_StationMap.satelliteSelectionFrame.selectedSatellite.getGUID()
+					satLink.providerGUID = TScreenHandler_StationMap.satelliteSelectionFrame.selectedSatellite.getGUID()
 					'local tmpSatLink:TStationBase = GetStationMap(satLink.owner).GetTemporarySatelliteUplinkStationBySatelliteGUID( TScreenHandler_StationMap.satelliteSelectionFrame.selectedSatellite.GetGUID() )
 					'tmpSatLink.refreshData()
 					satLink.refreshData()
@@ -1143,6 +1160,7 @@ endrem
 			'link the station to the item
 			item.data.Add("station", station)
 			item._customDrawContent = TScreenHandler_StationMap.DrawMapStationListEntryContent
+			item.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
 			list.AddItem( item )
 		Next
 	End Method
@@ -1252,6 +1270,9 @@ endrem
 
 					'=== BOXES ===
 					If selectedStation
+						'Local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID( TStationSatelliteUplink(selectedStation).satelliteGUID)
+						'if not satellite then satellite = TScreenHandler_StationMap.satelliteSelectionFrame.selectedSatellite
+
 						subHeaderText = selectedStation.GetName()
 
 						'stationName = Koordinaten?
@@ -1309,10 +1330,11 @@ endrem
 
 			If selectedStation
 				Local subscriptionText:String
-				Local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID( TStationSatelliteUplink(selectedStation).satelliteGUID)
+				Local provider:TStationMap_BroadcastProvider = selectedStation.GetProvider()
+				if not provider then provider = TScreenHandler_StationMap.satelliteSelectionFrame.selectedSatellite
 				local duration:int
-				If TScreenHandler_StationMap.actionMode = GetBuyActionMode() and satellite
-					duration = satellite.GetDefaultSubscribedChannelDuration()
+				If TScreenHandler_StationMap.actionMode = GetBuyActionMode() and provider
+					duration = provider.GetDefaultSubscribedChannelDuration()
 				Else
 					duration = selectedStation.GetSubscriptionTimeLeft()
 				EndIf
@@ -1322,8 +1344,12 @@ endrem
 					subscriptionText = GetWorldTime().GetFormattedDuration(duration, "h i")
 				endif
 				'set to subscription time
-				renewContractTooltips[0].SetContent( subscriptionText +" -> " + GetWorldTime().GetFormattedDuration(satellite.GetDefaultSubscribedChannelDuration(), "d h"))
-
+				if provider
+					renewContractTooltips[0].SetContent( subscriptionText +" -> " + GetWorldTime().GetFormattedDuration(provider.GetDefaultSubscribedChannelDuration(), "d h"))
+				else
+					renewContractTooltips[0].SetContent( "?" )
+				endif
+				
 				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, subscriptionText, "duration", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			EndIf
 			renewContractTooltips[0].parentArea.SetXY(contentX + 5 + halfW-5 + 4, currentY).SetWH(halfW+5, boxH)
@@ -1390,6 +1416,7 @@ Type TSatelliteSelectionFrame
 		'scroll by one entry at a time
 		satelliteList.scrollItemHeightPercentage = 1.0
 		satelliteList.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
+		satelliteList.SetFont( GetBitmapFontManager().Get("Default", 12) )
 
 		'panel handles them (similar to a child - but with manual draw/update calls)
 		'satelliteList.SetParent(self)
@@ -1520,6 +1547,7 @@ Type TSatelliteSelectionFrame
 				'link the station to the item
 				item.data.Add("satellite", satellite)
 				item._customDrawContent = DrawSatelliteListEntryContent
+				item.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
 				satelliteList.AddItem( item )
 			Next
 		EndIf
@@ -1762,6 +1790,7 @@ Type TStationMapInformationFrame
 		'scroll by one entry at a time
 		sectionList.scrollItemHeightPercentage = 1.0
 		sectionList.SetListOption(GUILIST_SCROLL_TO_NEXT_ITEM, True)
+		sectionList.SetFont( GetBitmapFontManager().Get("Default", 12) )
 
 		'panel handles them (similar to a child - but with manual draw/update calls)
 		GuiManager.Remove(sectionList)
@@ -1935,6 +1964,7 @@ Type TStationMapInformationFrame
 				'link the station to the item
 				item.data.Add("section", section)
 				item._customDrawContent = DrawMapSectionListEntryContent
+				item.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
 				sectionList.AddItem( item )
 			Next
 		EndIf
@@ -2567,6 +2597,7 @@ Type TScreenHandler_StationMap
 
 			If mapInformationFrame.IsOpen()
 				mapInformationFrame.Close()
+				reset = True
 			EndIf
 
 			if satelliteSelectionFrame.IsOpen()
@@ -2578,8 +2609,12 @@ Type TScreenHandler_StationMap
 				else
 					ResetActionMode(0)
 				endif
+				reset = True
 			else
-				ResetActionMode(0)
+				if TScreenHandler_StationMap.actionMode <> TScreenHandler_StationMap.MODE_NONE	
+					ResetActionMode(0)
+					reset = True
+				endif
 			endif
 
 			If reset
@@ -2685,7 +2720,7 @@ endrem
 			If MOUSEMANAGER.isClicked(1)
 				'check reach and valid federal state
 				If hoveredMapSection And mouseoverStation.GetReach() > 0
-					Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetCableNetworkByGUID(TStationCableNetworkUplink(mouseOverStation).cableNetworkGUID)
+					Local cableNetwork:TStationMap_CableNetwork = TStationMap_CableNetwork(mouseOverStation.GetProvider())
 					If cableNetwork And cableNetwork.IsLaunched()
 						selectedStation = GetStationMap(room.owner).GetTemporaryCableNetworkUplinkStationByCableNetwork( cableNetwork )
 						If selectedStation
@@ -2717,7 +2752,7 @@ endrem
 				'only create a temporary sat link station if a satellite was
 				'selected
 				If satelliteSelectionFrame.selectedSatellite
-					If Not satLink Or satLink.satelliteGUID <> satelliteSelectionFrame.selectedSatellite.GetGUID()
+					If Not satLink Or satLink.providerGUID <> satelliteSelectionFrame.selectedSatellite.GetGUID()
 						selectedStation = GetStationMap(room.owner).GetTemporarySatelliteUplinkStationBySatelliteGUID( satelliteSelectionFrame.selectedSatellite.GetGUID() )
 						selectedStation.refreshData()
 					EndIf
@@ -2778,10 +2813,10 @@ endrem
 		'select satellite of the currently selected satlink
 		If TStationSatelliteUplink(selectedStation)
 			Local satLink:TStationSatelliteUplink = TStationSatelliteUplink(selectedStation)
-			Local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID( satLink.satelliteGUID )
+			Local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID( satLink.providerGUID )
 			If satellite <> satelliteSelectionFrame.selectedSatellite
-				if not satLink.IsShutDown()
-					satelliteSelectionFrame.SelectSatellite( GetStationMapCollection().GetSatelliteByGUID( satLink.satelliteGUID ) )
+				if not satLink.IsShutDown() and satLink.providerGUID
+					satelliteSelectionFrame.SelectSatellite( satellite )
 				endif
 			EndIf
 		EndIf
@@ -2927,7 +2962,7 @@ endrem
 		Else If station.IsShutdown()
 			entryColor = New TColor.Create(90,90,60, currentColor.a)
 			leftValue = GetLocale("UNUSED_TRANSMITTER")
-			if TStationSatelliteUplink(station) and not TStationSatelliteUplink(station).satelliteGUID 
+			if TStationSatelliteUplink(station) and not TStationSatelliteUplink(station).providerGUID 
 				rightValue = ""
 			endif
 			'leftValue = "|color="+(150 + 50*Sin(Millisecs()*0.5))+",90,90|!!|/color| " + leftValue 

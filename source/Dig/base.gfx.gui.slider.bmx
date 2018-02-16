@@ -591,6 +591,7 @@ Type TGUISlider extends TGUIObject
 		SetAlpha oldCol.a * GetScreenAlpha()
 		DrawHandle(atPoint)
 
+		rem
 		?debug
 		SetColor 0,0,0
 		DrawRect(GetScreenX()+40, GetScreenY(), 100,20)
@@ -598,7 +599,7 @@ Type TGUISlider extends TGUIObject
 		SetColor 255,255,255
 		DrawText(GetValue()+" : " + Left(value, 6), GetScreenX()+42, GetScreenY()+2)
 		?
-
+		endrem
 		oldCol.SetRGBA()
 	End Method
 End Type
