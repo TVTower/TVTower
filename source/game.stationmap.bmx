@@ -830,7 +830,7 @@ Type TStationMapCollection
 					brightnessRate = brightnessRate^0.25
 				endif
 
-				pix.WritePixel(i,j, ARGB_Color(brightnessRate*255, (1.0-brightnessRate)*255, 0, 0))
+				pix.WritePixel(i,j, ARGB_Color(int(brightnessRate*255), int((1.0-brightnessRate)*255), 0, 0))
 '				pix.WritePixel(i,j, ARGB_Color(255, int(brightnessRate*255), int(brightnessRate*255), int(0.2 * brightnessRate*255)))
 
 				population :+ pixelPopulation
@@ -2162,7 +2162,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 	
 
-	Method Update()
+	Method Update:int()
 		'delete unused
 		if GetStationMapCollection().stationMaps.length < showStations.length
 			showStations = showStations[.. GetStationMapCollection().stationMaps.length + 1]
@@ -2290,10 +2290,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	'refresh the station data
 	Method refreshData() {_exposeToLua}
 		GetReach(True)
-		GetReachIncrease(True)
-		'save on compution for "initial states" - do it on "create"
-		'GetReachDecrease(True)
-		'GetPrice( Not HasFlag(TVTStationFlag.FIXED_PRICE) )
+		GetExclusiveReach(True)
 	End Method
 
 
@@ -2340,22 +2337,12 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	Method GetExclusiveReach:Int(refresh:Int=False) abstract {_exposeToLua}
 
 
-	Method GetReachIncrease:Int(refresh:Int=False) {_exposeToLua}
-		return GetExclusiveReach(refresh)
-	End Method
-
-
-	Method GetReachDecrease:Int(refresh:Int=False) {_exposeToLua}
-		Return GetExclusiveReach(refresh)
-	End Method
-
-
 	'get the relative reach increase of that station
-	Method GetRelativeReachIncrease:Int(refresh:Int=False) {_exposeToLua}
-		Local r:Float = getReach(refresh)
+	Method GetRelativeExclusiveReach:Int(refresh:Int=False) {_exposeToLua}
+		Local r:Float = GetReach(refresh)
 		If r = 0 Then Return 0
 
-		Return getReachIncrease(refresh) / r
+		Return GetExclusiveReach(refresh) / r
 	End Method
 
 
@@ -2704,7 +2691,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		if stationType = TVTStationType.ANTENNA
 			GetBitmapFontManager().baseFont.draw(GetLocale("INCREASE")+": ", textX, textY)
-			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(GetReachIncrease(), 2), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
+			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(GetExclusiveReach(), 2), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
 			textY:+ textH
 		endif
 
@@ -2873,8 +2860,6 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 
 	'reachable with current stationtype share
 	Method GetReach:Int(refresh:Int=False) {_exposeToLua}
-
-
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
 			return GetReachMax(refresh)
 
@@ -2942,15 +2927,6 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 		return reachExclusiveMax
 	End Method
 	
-
-	'get the relative reach increase of that station
-	Method GetRelativeReachIncrease:Int(refresh:Int=False) {_exposeToLua}
-		Local r:Float = GetReach(refresh)
-		If r = 0 Then Return 0
-
-		Return GetReachIncrease(refresh) / r
-	End Method
-
 
 	'override
 	Method GetBuyPrice:Int() {_exposeToLua}
@@ -3227,7 +3203,7 @@ Type TStationCableNetworkUplink extends TStationBase
 		local duration:int = cableNetwork.GetSubscribedChannelDuration(owner)
 		if duration < 0 then return 0
 
-		return MathHelper.Clamp((GetworldTime().GetTimeGone() - startTime) / float(duration), 0.0, 1.0)
+		return MathHelper.Clamp(float((GetworldTime().GetTimeGone() - startTime) / float(duration)), 0.0, 1.0)
 	End Method
 
 
@@ -3669,7 +3645,7 @@ Type TStationSatelliteUplink extends TStationBase
 		local duration:int = satellite.GetSubscribedChannelDuration(owner)
 		if duration < 0 then return 0
 
-		return MathHelper.Clamp((GetWorldTime().GetTimeGone() - startTime) / float(duration), 0.0, 1.0)
+		return MathHelper.Clamp(Float((GetWorldTime().GetTimeGone() - startTime) / float(duration)), 0.0, 1.0)
 	End Method
 
 
@@ -4180,7 +4156,7 @@ Type TStationMapSection
 		For local x:int = startX until endX
 			For local y:int = startY until endY
 				If GetShapeSprite().PixelIsOpaque(Int(x-rect.getX()), Int(y-rect.getY())) > 0
-					pix.WritePixel(x-rect.getX(), y-rect.getY(), sourcePix.ReadPixel(x, y) )
+					pix.WritePixel(int(x-rect.getX()), int(y-rect.getY()), sourcePix.ReadPixel(x, y) )
 				endif
 			Next
 		Next
@@ -5069,7 +5045,7 @@ Type TStationMap_BroadcastProvider extends TEntityBase
 	End Method
 
 
-	Method Update()
+	Method Update:int()
 		if not launched
 			if launchTime < GetWorldTime().GetTimeGone()
 				Launch()
@@ -5305,7 +5281,7 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider
 					'print "satellite " + name +" upgraded technology " + (quality - nextTechUpgradeValue) +" -> " + quality
 				endif
 
-				nextTechUpgradeTime = GetWorldTime().ModifyTime(-1, 0, 0, RandRange(250,350) * 100.0/techUpgradeSpeed)
+				nextTechUpgradeTime = GetWorldTime().ModifyTime(-1, 0, 0, int(RandRange(250,350) * 100.0/techUpgradeSpeed))
 				nextTechUpgradeValue = BiasedRandRange(10, 25, 0.2) * 100.0/techUpgradeSpeed
 			endif
 		endif

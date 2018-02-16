@@ -993,7 +993,7 @@ endrem
 					'check if there is an adcontract base available for this filter
 					local contractBase:TAdContractBase = null
 					while not contractBase
-						contractBase = GetAdContractBaseCollection().GetRandomByFilter(levelFilters[filterNum], False)
+						contractBase = GetAdContractBaseCollection().GetRandomNormalByFilter(levelFilters[filterNum], False)
 						'if not, then lower minimum and increase maximum audience
 						if not contractBase
 							TLogger.log("AdAgency.RefillBlocks", "Adjusting LevelFilter #"+filterNum+"  Min: " +MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMin,2)+"% ("+(100 * levelFilters[filterNum].minAudienceMin)+" - 0.5%   Max: "+ MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)
@@ -1016,7 +1016,7 @@ endrem
 					'check if there is an adcontract base available for this filter
 					local contractBase:TAdContractBase = null
 					while not contractBase
-						contractBase = GetAdContractBaseCollection().GetRandomByFilter(cheapListFilter, False)
+						contractBase = GetAdContractBaseCollection().GetRandomNormalByFilter(cheapListFilter, False)
 						'if not, then lower minimum and increase maximum audience
 						if not contractBase
 							TLogger.log("AdAgency.RefillBlocks", "Adjusting CheapListFilter  Min: " +MathHelper.NumberToString(100 * cheapListFilter.minAudienceMin,2)+"% - 0.5%   Max: "+ MathHelper.NumberToString(100 * cheapListFilter.minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)
@@ -1178,7 +1178,7 @@ endrem
 				'check if there is an adcontract base available for this filter
 				local contractBase:TAdContractBase = null
 				while not contractBase
-					contractBase = GetAdContractBaseCollection().GetRandomByFilter(filter, False)
+					contractBase = GetAdContractBaseCollection().GetRandomNormalByFilter(filter, False)
 					'if not, then lower minimum and increase maximum audience
 					if not contractBase
 						TLogger.log("AdAgency.RefillBlocks", "Adjusting "+filterName+"  Min: " +MathHelper.NumberToString(100 * filter.minAudienceMin,2)+"% ("+(100 * filter.minAudienceMin)+" - 0.5%   Max: "+ MathHelper.NumberToString(100 * filter.minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)

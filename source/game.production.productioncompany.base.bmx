@@ -68,7 +68,7 @@ Type TProductionCompanyBase extends TGameObject
 
 	Method SetLevel:int(level:int)
 		'-1 because level 1 is reached with 0 xp
-		SetExperience((level-1) * Float(MAX_XP) / MAX_LEVEL)
+		SetExperience(int((level-1) * Float(MAX_XP) / MAX_LEVEL))
 	End Method
 
 

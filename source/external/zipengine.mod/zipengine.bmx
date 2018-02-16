@@ -1115,10 +1115,18 @@ Type TZipEStream Extends TStream
 		Return Self.Pos()
 	EndMethod
 
-	Method Flush:Int()
+?bmxng
+	Method Flush()
+?Not bmxng
+	Method Flush:int()
+?
 	EndMethod
 
-	Method Close:Int()
+?bmxng
+	Method Cloase()
+?Not bmxng
+	Method Close:int()
+?
 		If reader Then
 			reader.CloseZip()
 			reader = Null

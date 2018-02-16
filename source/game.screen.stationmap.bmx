@@ -223,7 +223,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			TScreenHandler_StationMap.selectedStation = TStationBase(item.data.get("station"))
 			If TScreenHandler_StationMap.selectedStation
 				'force stat refresh (so we can display decrease properly)!
-				TScreenHandler_StationMap.selectedStation.GetReachDecrease(True)
+				TScreenHandler_StationMap.selectedStation.GetExclusiveReach(True)
 			EndIf
 
 			SetActionMode( GetSellActionMode() )
@@ -593,7 +593,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 						if selectedStation.built = 0 then selectedStation.built = GetWorldTime().GetTimeStart()
 						subHeaderText = GetWorldTime().GetFormattedGameDate(selectedStation.built)
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
-						reachChange = MathHelper.DottedValue( -1 * selectedStation.GetReachDecrease() )
+						reachChange = MathHelper.DottedValue( -1 * selectedStation.GetExclusiveReach() )
 						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
 						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
@@ -613,7 +613,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 
 						'stationName = Koordinaten?
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
-						reachChange = MathHelper.DottedValue(selectedStation.GetReachIncrease())
+						reachChange = MathHelper.DottedValue(selectedStation.GetExclusiveReach())
 						price = TFunctions.convertValue( totalPrice, 2, 0)
 						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
@@ -1610,7 +1610,7 @@ Type TSatelliteSelectionFrame
 	Method Update:Int()
 		If contentArea
 			If satelliteList.rect.GetX() <> contentArea.GetX()
-				satelliteList.SetPosition(contentArea.GetX(), contentArea.GetY() + 16)
+				satelliteList.SetPosition(contentArea.GetX(), contentArea.GetIntY() + 16)
 			EndIf
 			If satelliteList.GetWidth() <> contentArea.GetW()
 				satelliteList.Resize(contentArea.GetW())
@@ -1649,7 +1649,7 @@ Type TSatelliteSelectionFrame
 		EndIf
 
 
-		Local currentY:Int = contentArea.GetY()
+		Local currentY:Int = contentArea.GetIntY()
 
 
 		Local headerText:String = GetLocale("SATELLITES")
@@ -1659,12 +1659,12 @@ Type TSatelliteSelectionFrame
 
 
 		'=== HEADER ===
-		skin.RenderContent(contentArea.GetX(), contentArea.GetY(), contentArea.GetW(), headerHeight, "1_top")
-		skin.fontNormal.drawBlock("|b|"+headerText+"|/b|", contentArea.GetX() + 5, currentY, contentArea.GetW() - 10,  headerHeight, ALIGN_CENTER_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+		skin.RenderContent(contentArea.GetIntX(), contentArea.GetIntY(), contentArea.GetIntW(), headerHeight, "1_top")
+		skin.fontNormal.drawBlock("|b|"+headerText+"|/b|", contentArea.GetX() + 5, currentY, contentArea.GetIntW() - 10,  headerHeight, ALIGN_CENTER_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
 		currentY :+ headerHeight
 
 		'=== LIST ===
-		skin.RenderContent(contentArea.GetX(), currentY, contentArea.GetW(), listHeight, "2")
+		skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), listHeight, "2")
 		satelliteList.Draw()
 		currentY :+ listHeight
 
@@ -1677,11 +1677,11 @@ Type TSatelliteSelectionFrame
 				subtitleText = GetLocale("LAUNCHED")+": " + GetWorldTime().GetFormattedDate(selectedSatellite.launchTime, GameConfig.dateFormat)
 			EndIf
 
-			skin.RenderContent(contentArea.GetX(), currentY, contentArea.GetW(), detailsH, "1_top")
+			skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), detailsH, "1_top")
 			currentY :+ 2
-			skin.fontNormal.drawBlock("|b|"+titleText+"|/b|", contentArea.GetX() + 5, currentY, contentArea.GetW() - 10,  16, ALIGN_CENTER_CENTER, titleColor, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+			skin.fontNormal.drawBlock("|b|"+titleText+"|/b|", contentArea.GetX() + 5, currentY, contentArea.GetIntW() - 10,  16, ALIGN_CENTER_CENTER, titleColor, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
 			currentY :+ 14
-			skin.fontNormal.drawBlock(subTitleText, contentArea.GetX() + 5, currentY, contentArea.GetW() - 10,  16, ALIGN_CENTER_CENTER, subTitleColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+			skin.fontNormal.drawBlock(subTitleText, contentArea.GetX() + 5, currentY, contentArea.GetIntW() - 10,  16, ALIGN_CENTER_CENTER, subTitleColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
 			currentY :+ 15 + 3
 
 
@@ -1696,11 +1696,11 @@ Type TSatelliteSelectionFrame
 			Local marketShareText:String = MathHelper.NumberToString(100*selectedSatellite.populationShare, 1, True)+"%"
 
 			If selectedSatellite.quality < 100
-				skin.RenderBox(contentArea.GetX() + 5, currentY, halfW-5, -1, qualityText, "quality", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
+				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, qualityText, "quality", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
 			Else
-				skin.RenderBox(contentArea.GetX() + 5, currentY, halfW-5, -1, qualityText, "quality", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, qualityText, "quality", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			EndIf
-			skin.RenderBox(contentArea.GetX() + 5 + halfW-5 + 4, currentY, halfW+5, -1, marketShareText, "marketShare", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentArea.GetIntX() + 5 + halfW-5 + 4, currentY, halfW+5, -1, marketShareText, "marketShare", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			tooltips[0].parentArea.SetXY(contentArea.GetX() + 5, currentY).SetWH(halfW+5, boxH)
 			tooltips[1].parentArea.SetXY(contentArea.GetX() + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
 
@@ -1710,9 +1710,9 @@ Type TSatelliteSelectionFrame
 			Local minImageText:String = MathHelper.NumberToString(100*selectedSatellite.minimumChannelImage, 1, True)+"%"
 
 			If Not GetPublicImage(owner) Or GetPublicImage(owner).GetAverageImage() < selectedSatellite.minimumChannelImage
-				skin.RenderBox(contentArea.GetX() + 5, currentY, halfW-5, -1, minImageText, "image", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
+				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, minImageText, "image", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
 			Else
-				skin.RenderBox(contentArea.GetX() + 5, currentY, halfW-5, -1, minImageText, "image", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, minImageText, "image", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			EndIf
 
 
@@ -1746,17 +1746,17 @@ Type TSatelliteSelectionFrame
 		EndIf
 
 
-		skin.RenderBorder(area.GetX(), area.GetY(), area.GetW(), area.GetH())
+		skin.RenderBorder(area.GetIntX(), area.GetIntY(), area.GetIntW(), area.GetIntH())
 
 		'debug
 		Rem
-		DrawRect(contentArea.GetX(), contentArea.GetY(), 20, contentArea.GetH() )
+		DrawRect(contentArea.GetX(), contentArea.GetIntY(), 20, contentArea.GetH() )
 		Setcolor 255,0,0
-		DrawRect(contentArea.GetX() + 10, contentArea.GetY(), 20, headerHeight )
+		DrawRect(contentArea.GetX() + 10, contentArea.GetIntY(), 20, headerHeight )
 		Setcolor 255,255,0
-		DrawRect(contentArea.GetX() + 20, contentArea.GetY() + headerHeight, 20, listHeight )
+		DrawRect(contentArea.GetX() + 20, contentArea.GetIntY() + headerHeight, 20, listHeight )
 		Setcolor 255,0,255
-		DrawRect(contentArea.GetX() + 30, contentArea.GetY() + headerHeight + listHeight, 20, detailsH )
+		DrawRect(contentArea.GetX() + 30, contentArea.GetIntY() + headerHeight + listHeight, 20, detailsH )
 		endrem
 
 		For Local t:TTooltipBase = EachIn tooltips
@@ -1977,7 +1977,7 @@ Type TStationMapInformationFrame
 	Method Update:Int()
 		If contentArea
 			If sectionList.rect.GetX() <> contentArea.GetX()
-				sectionList.SetPosition(contentArea.GetX(), contentArea.GetY() + 16 + countryInformationHeight + sectionListHeaderHeight)
+				sectionList.SetPosition(contentArea.GetX(), contentArea.GetIntY() + 16 + countryInformationHeight + sectionListHeaderHeight)
 			EndIf
 			If sectionList.GetWidth() <> contentArea.GetW()
 				sectionList.Resize(contentArea.GetW())
@@ -2018,7 +2018,7 @@ Type TStationMapInformationFrame
 		EndIf
 
 
-		Local currentY:Int = contentArea.GetY()
+		Local currentY:Int = contentArea.GetIntY()
 
 
 		Local headerText:String = GetLocale("COUNTRYNAME_ISO3166_"+GetStationMapCollection().GetMapISO3166Code())
@@ -2028,12 +2028,12 @@ Type TStationMapInformationFrame
 
 
 		'=== HEADER ===
-		skin.RenderContent(contentArea.GetX(), contentArea.GetY(), contentArea.GetW(), headerHeight, "1_top")
-		skin.fontBold.drawBlock(headerText, contentArea.GetX() + 5, currentY, contentArea.GetW() - 10,  headerHeight, ALIGN_CENTER_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+		skin.RenderContent(contentArea.GetIntX(), contentArea.GetIntY(), contentArea.GetIntW(), headerHeight, "1_top")
+		skin.fontBold.drawBlock(headerText, contentArea.GetX() + 5, currentY, contentArea.GetIntW() - 10,  headerHeight, ALIGN_CENTER_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
 		currentY :+ headerHeight
 
 		'=== COUNTRY DETAILS ===
-		skin.RenderContent(contentArea.GetX(), currentY, contentArea.GetW(), countryInformationHeight, "1")
+		skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), countryInformationHeight, "1")
 		local lineH:int = 14
 		local col1W:int = 100
 		local col2W:int = 60
@@ -2059,20 +2059,20 @@ Type TStationMapInformationFrame
 
 		local statusText:string = GetLocale("AS_OF_DATEX").Replace("%DATEX%", GetWorldTime().GetFormattedGameDate(GetStationMapCollection().GetLastCensusTime()))
 		statusText :+ ". " + GetLocale("NEXT_CENSUS_AT_DATEX").Replace("%DATEX%", GetWorldTime().GetFormattedGameDate(GetStationMapCollection().GetNextCensusTime()))
-		skin.fontNormal.drawBlock("|i|"+statusText+"|/i|", contentArea.GetX() + 5, textY + 4*lineH, contentArea.GetW()- 10,  30, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+		skin.fontNormal.drawBlock("|i|"+statusText+"|/i|", contentArea.GetX() + 5, textY + 4*lineH, contentArea.GetIntW()- 10,  30, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
 		currentY :+ countryInformationHeight
 
 
 		'=== LIST ===
 		local sectionListContentW:int = sectionList.GetContentScreenWidth()
-		skin.RenderContent(contentArea.GetX(), currentY, contentArea.GetW(), sectionListHeight + sectionListHeaderHeight, "2")
+		skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), sectionListHeight + sectionListHeaderHeight, "2")
 		skin.fontNormal.drawBlock(GetLocale("STATIONMAP_SECTION_NAME"), contentArea.GetX() + 7, currentY, 0.45*sectionListContentW,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
 		skin.fontNormal.drawBlock(GetLocale("BROADCAST_PERMISSION_SHORT"), contentArea.GetX() + 7 + 5 + 0.4*sectionListContentW, currentY, 0.2*sectionListContentW,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
 		skin.fontNormal.drawBlock(GetLocale("IMAGE"), contentArea.GetX() + 6 + 0.6*sectionListContentW, currentY, 0.1*sectionListContentW,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
 		skin.fontNormal.drawBlock(GetLocale("REACH"), contentArea.GetX() + 11 + 0.65*sectionListContentW, currentY, 0.25*sectionListContentW,  headerHeight, ALIGN_RIGHT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
 		currentY :+ sectionListHeaderHeight
 
-'		skin.RenderContent(contentArea.GetX(), currentY, contentArea.GetW(), sectionListHeight, "2")
+'		skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), sectionListHeight, "2")
 		sectionList.Draw()
 		currentY :+ sectionListHeight
 
@@ -2084,11 +2084,11 @@ Type TStationMapInformationFrame
 			'col2W :+ 30
 			Local titleText:String = GetLocale("MAP_COUNTRY_"+ selectedSection.name)
 
-			skin.RenderContent(contentArea.GetX(), currentY, contentArea.GetW(), 17, "1_top")
+			skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), 17, "1_top")
 '			currentY :+ 2
-			skin.fontNormal.drawBlock("|b|"+titleText+"|/b|", contentArea.GetX() + 5, currentY, contentArea.GetW() - 10,  16, ALIGN_CENTER_CENTER, titleColor, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+			skin.fontNormal.drawBlock("|b|"+titleText+"|/b|", contentArea.GetX() + 5, currentY, contentArea.GetIntW() - 10,  16, ALIGN_CENTER_CENTER, titleColor, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
 			currentY :+ 14 + 3
-			skin.RenderContent(contentArea.GetX(), currentY , contentArea.GetW(), detailsH - 17, "1")
+			skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), detailsH - 17, "1")
 
 			textY = currentY + 2
 
@@ -2140,17 +2140,17 @@ Type TStationMapInformationFrame
 		EndIf
 
 
-		skin.RenderBorder(area.GetX(), area.GetY(), area.GetW(), area.GetH())
+		skin.RenderBorder(area.GetIntX(), area.GetIntY(), area.GetIntW(), area.GetIntH())
 
 		'debug
 		Rem
-		DrawRect(contentArea.GetX(), contentArea.GetY(), 20, contentArea.GetH() )
+		DrawRect(contentArea.GetX(), contentArea.GetIntY(), 20, contentArea.GetH() )
 		Setcolor 255,0,0
-		DrawRect(contentArea.GetX() + 10, contentArea.GetY(), 20, headerHeight )
+		DrawRect(contentArea.GetX() + 10, contentArea.GetIntY(), 20, headerHeight )
 		Setcolor 255,255,0
-		DrawRect(contentArea.GetX() + 20, contentArea.GetY() + headerHeight, 20, sectionListHeight )
+		DrawRect(contentArea.GetX() + 20, contentArea.GetIntY() + headerHeight, 20, sectionListHeight )
 		Setcolor 255,0,255
-		DrawRect(contentArea.GetX() + 30, contentArea.GetY() + headerHeight + listHeight, 20, detailsH )
+		DrawRect(contentArea.GetX() + 30, contentArea.GetIntY() + headerHeight + listHeight, 20, detailsH )
 		endrem
 
 		For Local t:TTooltipBase = EachIn tooltips
@@ -2978,7 +2978,7 @@ endrem
 		'blink a bit to emphasize a soon ending contract
 		local subTimeLeft:Long = station.GetSubscriptionTimeLeft()
 		if subTimeLeft > 0 and subTimeLeft < 1*TWorldTime.DAYLENGTH
-			entryColor = New TColor.Create(130,100,50, currentColor.a - 0.2 + 0.6 * sin(Millisecs()*0.33))
+			entryColor = New TColor.Create(130,100,50, currentColor.a - float(0.2 + 0.6 * sin(Millisecs()*0.33)))
 			rightValueColor = entryColor
 		endif
 

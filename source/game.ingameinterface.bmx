@@ -673,7 +673,7 @@ Type TInGameInterface
 			'draw noise of tv device
 			If ShowChannel <> 0
 				'decrease contrast a bit
-				SetAlpha 0.1 * (Sin(Millisecs()*0.15)+1)
+				SetAlpha float(0.1 * (Sin(Millisecs()*0.15)+1))
 				SetColor 125,125,125
 				DrawRect(45,405, 220, 170)
 				SetColor 255,255,255

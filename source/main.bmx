@@ -729,7 +729,7 @@ Type TApp
 								else
 									title :+ " "
 								endif
-								if ad.IsAvailable()
+								if ad.base.IsAvailable()
 									availability = RSet("Yes", 5)
 								else
 									availability = RSet("No", 5)

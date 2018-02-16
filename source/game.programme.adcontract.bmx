@@ -114,6 +114,32 @@ Type TAdContractBaseCollection
 	End Method
 
 
+	Method GetRandomNormalByFilter:TAdContractBase(filter:TAdContractBaseFilter, returnUnfilteredOnError:int = True)
+		Local contracts:TAdContractBase[]
+
+		For local contract:TAdContractBase = EachIn entries.Values()
+			if contract.adType <> TVTAdContractType.NORMAL then continue
+			if not filter.DoesFilter(contract) then continue
+
+			'add it to candidates list
+			contracts :+ [contract]
+		Next
+		
+		if contracts.length = 0
+			if returnUnfilteredOnError
+				print "AdContractBaseCollection: GetRandomNormalByFilter without results! Returning Random without filter."
+			else
+				'no need to debug print something - as the param is
+				'manually set to false...
+				'print "AdContractBaseCollection: GetRandomNormalByFilter without results! Returning NULL."
+				Return null
+			endif
+		endif
+	
+		Return GetRandom(contracts)
+	End Method	
+
+
 	Method GetRandomByFilter:TAdContractBase(filter:TAdContractBaseFilter, returnUnfilteredOnError:int = True)
 		Local contracts:TAdContractBase[]
 
@@ -310,6 +336,10 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 	'special expression defining whether a contract is available for
 	'ad vendor or not (eg. "YEAR > 2000" or "YEARSPLAYED > 2")
 	Field availableScript:string = ""
+
+	'defines the type of the ad according to TVTAdContractType
+	'only adType 0 is generically available in the game 
+	Field adType:int = 0
 
 	'array of contract guids using this base at the moment
 	Field currentlyUsedByContracts:string[]
@@ -835,7 +865,13 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	'override
 	Method IsAvailable:int() {_exposeToLua}
-		if not base.IsAvailable() then return False
+		'once we created a contract out of the base, the base availability
+		'should no longer matter
+		'- eg. gamestart-advertisement
+		'- adcontracts are available from 1985-1986, if checking their
+		'  availability after signing in 1986 will result in FALSE in
+		'  begin of 1987 while it should be broadcastable then
+		'if not base.IsAvailable() then return False
 
 		return Super.IsAvailable()
 	End Method
@@ -1905,6 +1941,8 @@ Type TAdContractBaseFilter
 	Field limitedToProgrammeGenres:int[]
 	Field limitedToTargetGroups:int[]
 	Field checkAvailability:int = True
+	'by default we only allow "normal" ads
+	Field adType:int = 0
 	Field skipLimitedProgrammeGenre:int = False
 	Field skipLimitedTargetGroup:int = False
 	Field forbiddenContractGUIDs:string[]
@@ -2011,6 +2049,9 @@ Type TAdContractBaseFilter
 
 		'skip contracts not available (year or by script expression)
 		if checkAvailability and not contract.IsAvailable() then return False
+
+		'skip contracts of the wrong type
+		if adType >= 0 and contract.adType <> adType then return False
 
 
 		if minAudienceMin >= 0 and contract.minAudienceBase < minAudienceMin then return False

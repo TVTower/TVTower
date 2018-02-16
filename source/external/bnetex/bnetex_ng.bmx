@@ -133,10 +133,10 @@ Type TNetStream Extends TStream Abstract
 		return 0
 	End Method
 
-	Method Flush:Int()
+	Method Flush()
 	End Method
 
-	Method Close:Int()
+	Method Close()
 	End Method
 
 	Method RecvAvail:Int()

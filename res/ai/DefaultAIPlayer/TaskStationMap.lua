@@ -149,11 +149,11 @@ function JobBuyStation:Tick()
 		elseif tempStation.GetPrice() > self.Task.CurrentBudget then
 			tempStation = nil
 		--2) relative increase to low (at least 20% required)
-		elseif tempStation.GetRelativeReachIncrease() < 0.25 then
+		elseif tempStation.GetRelativeExclusiveReach() < 0.25 then
 			tempStation = nil
 
 		--3) absolute increase too low
-		--elseif tempStation.GetReachIncrease() < 1500 then
+		--elseif tempStation.GetExclusiveReach() < 1500 then
 		--	tempStation = nil
 
 		--4)  reach to low (at least 75.000 required)
@@ -165,7 +165,7 @@ function JobBuyStation:Tick()
 		-- Liegt im Budget und lohnt sich minimal -> erfuellt Kriterien
 		if tempStation ~= nil then
 			local price = tempStation.GetPrice()
-			local pricePerViewer = tempStation.GetReachIncrease() / price
+			local pricePerViewer = tempStation.GetExclusiveReach() / price
 			local priceDiff = self.Task.CurrentBudget - price
 			local attraction = pricePerViewer - (priceDiff / self.Task.CurrentBudget / 10)
 			debugMsg("   attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget)
@@ -182,7 +182,7 @@ function JobBuyStation:Tick()
 	
 	if bestOffer ~= nil then
 		local price = bestOffer.GetPrice()
-		debugMsg(" Buying Station at " .. bestOffer.pos.GetIntX() .. "," .. bestOffer.pos.GetIntY() .. ".  increase: " .. bestOffer.GetReachIncrease() .. "  price: " .. price)
+		debugMsg(" Buying Station at " .. bestOffer.pos.GetIntX() .. "," .. bestOffer.pos.GetIntY() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. price)
 		TVT.of_buyAntennaStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
 		self.Task:PayFromBudget(price)
 		

@@ -513,8 +513,6 @@ Type TDatabaseLoader
 				Next
 				newsEventTemplate.happenTime = GetWorldTime().CalcTime_Auto( happenTimeParams[0], useParams )
 			endif
-
-			print "geplante News: " + newsEventTemplate.GetTitle() + "   "  + GetWorldTime().GetFormattedDate(newsEventTemplate.happenTime) 
 		endif
 		
 
@@ -779,6 +777,9 @@ Type TDatabaseLoader
 		adContract.description.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
 
 
+		'ad type according to TVTAdContractType - Normal, Ingame, ...
+		adContract.adType = xml.FindValueInt(node,"type", 0)
+
 
 		'=== DATA ===
 		local nodeData:TxmlNode = xml.FindChild(node, "data")
@@ -789,7 +790,7 @@ Type TDatabaseLoader
 			"pro_pressure_groups", "contra_pressure_groups", ..
 			"infomercial_profit", "fix_infomercial_profit", ..
 			"year_range_from", "year_range_to", ..
-			"available", "blocks" ..
+			"available", "blocks", "type" ..
 		])
 
 		adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
@@ -801,6 +802,8 @@ Type TDatabaseLoader
 		'old -> now stored in "availability
 		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
 		adContract.availableYearRangeTo = data.GetInt("year_range_to", adContract.availableYearRangeTo)
+
+		adContract.adType = data.GetInt("type", adContract.adType)
 
 		adContract.blocks = data.GetInt("blocks", adContract.blocks)
 		adContract.spotCount = data.GetInt("repetitions", adContract.spotcount)

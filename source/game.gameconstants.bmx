@@ -29,6 +29,8 @@ Type TVTGameConstants {_exposeToLua}
 	Field AchievementCategory:TVTAchievementCategory = new TVTAchievementCategory 
 	Field MessageCategory:TVTMessageCategory = new TVTMessageCategory 
 
+	Field AdContractType:TVTAdContractType = new TVTAdContractType
+
 	Field NewsType:TVTNewsType = new TVTNewsType
 	Field NewsGenre:TVTNewsGenre = new TVTNewsGenre
 	Field GameObjectEffect:TVTGameModifierBase = new TVTGameModifierBase
@@ -328,6 +330,15 @@ Type TVTNewsType {_exposeToLua}
 	Const FollowingNews:int = 2
 	'news with a planned/scripted "happenedtime"
 	Const TimedNews:int = 3
+End Type
+
+
+
+
+Type TVTAdContractType {_exposeToLua}
+	Const NORMAL:int = 0
+	'only reachable for special events (game start, or by a news trigger)
+	Const INGAME:int = 1
 End Type
 
 

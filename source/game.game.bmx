@@ -980,6 +980,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 			'add the last ad as infomercial (all others should be finished
 			'then)
+'debugstop
 			playerPlan.SetProgrammeSlot(New TAdvertisement.Create(playerCollection.GetAdContractAtIndex(2)), startDay, startHour + currentHour )
 
 			'place ads for all broadcasted hours
@@ -988,7 +989,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			local currentAdHour:int = 0
 			for local adContract:TAdContract = EachIn playerCollection.GetAdContracts()
 				for local spotIndex:int = 1 to adContract.GetSpotCount()
-					playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(adContract), startDay, currentAdHour )
+					local ad:TAdvertisement = New TAdvertisement.Create(adContract)
+					if not ad.GetSource().IsAvailable() then debugstop
+					playerPlan.SetAdvertisementSlot(ad, startDay, currentAdHour )
 					currentAdHour :+ 1
 				next
 			next
@@ -1349,24 +1352,24 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			if startAdContractBaseGUIDs[i] and GetAdContractBaseCollection().GetByGUID(startAdContractBaseGUIDs[i]) then continue
 
 			if i < startAdContractBaseGUIDs.length-1
-				addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
+				addContract = GetAdContractBaseCollection().GetRandomNormalByFilter(cheapFilter, False)
 			else
 				'and one with 0-1% audience requirement
 				cheapFilter.SetAudience(0.015, 0.03)
-				addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
+				addContract = GetAdContractBaseCollection().GetRandomNormalByFilter(cheapFilter, False)
 				if not addContract  
 					print "GenerateStartAdContracts: No ~qno audience~q contract in DB? Trying a 1.5-4% one..."
 					cheapFilter.SetAudience(0.015, 0.04)
-					addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, False)
+					addContract = GetAdContractBaseCollection().GetRandomNormalByFilter(cheapFilter, False)
 					if not addContract
 						print "GenerateStartAdContracts: 1.5-4% failed too... using random contract now."
-						addContract = GetAdContractBaseCollection().GetRandomByFilter(cheapFilter, True)
+						addContract = GetAdContractBaseCollection().GetRandomNormalByFilter(cheapFilter, True)
 					endif
 				endif
 			endif
 			
 			if not addContract
-				print "GenerateStartAdContracts: GetAdContractBaseCollection().GetRandomByFilter failed! Skipping contract ..."
+				print "GenerateStartAdContracts: GetAdContractBaseCollection().GetRandomNormalByFilter failed! Skipping contract ..."
 				continue
 			endif
 			startAdContractBaseGUIDs[i] = addContract.GetGUID()
