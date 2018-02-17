@@ -1,6 +1,8 @@
 SuperStrict
 Import Brl.Math
 Import "Dig/base.util.string.bmx"
+Import "Dig/base.util.logger.bmx"
+Import "Dig/base.util.math.bmx"
 Import "game.gameobject.bmx"
 
 
@@ -62,13 +64,19 @@ Type TProductionCompanyBase extends TGameObject
 'ProductionCompany: Finished production. experience before: 999  level: 2  LevelXP%:0.998000026   XP%:0.0998999998
  '                                          experience now: 1016  level: 2  LevelXP%:0.0320000648   XP%:0.101599999
 	Method GetLevel:int()
-		return 1 + (MAX_LEVEL-1) * GetExperiencePercentage()
+		return Min(MAX_LEVEL, 1 + (MAX_LEVEL-1) * GetExperiencePercentage())
 	End Method
 
 
 	Method SetLevel:int(level:int)
-		'-1 because level 1 is reached with 0 xp
-		SetExperience(int((level-1) * Float(MAX_XP) / MAX_LEVEL))
+		'individual limit
+		if maxXP >= 0
+			'-1 because level 1 is reached with 0 xp
+			SetExperience(int((level-1) * Float(maxXP) / MAX_LEVEL))
+		'generic limit
+		else
+			SetExperience(int((level-1) * Float(MAX_XP) / MAX_LEVEL))
+		endif
 	End Method
 
 
@@ -103,10 +111,12 @@ Type TProductionCompanyBase extends TGameObject
 	
 
 	Method SetExperience(value:int)
+		'individual limit?
 		if maxXP >= 0
 			xp = min(maxXP, value)
+		'generic limit?
 		else
-			xp = value
+			xp = min(MAX_XP, value)
 		endif
 	End Method
 	
@@ -117,7 +127,12 @@ Type TProductionCompanyBase extends TGameObject
 
 
 	Method GetExperiencePercentage:Float()
-		return GetExperience() / float(MAX_XP)
+		if maxXP >= 0
+			if maxXP = 0 then return 1.0
+			return GetExperience() / float(maxXP)
+		else
+			return GetExperience() / float(MAX_XP)
+		endif
 	End Method
 
 
@@ -144,14 +159,17 @@ Type TProductionCompanyBase extends TGameObject
 		'already added
 		if StringHelper.InArray(programmeDataGUID, producedProgrammes, False) then return False
 
+		local oldExperience:int = GetExperience()
+		local oldLevel:int = GetLevel()
+		local oldLevelXP:Float = GetLevelExperiencePercentage()
+		local oldXP:Float = GetExperiencePercentage()
+
 		'add programme
 		producedProgrammes :+ [programmeDataGUID]
-print "ProductionCompany: Finished production. experience before: "+ GetExperience() + "  level: " + GetLevel() +"  LevelXP%:" + GetLevelExperiencePercentage() +"   XP%:"+GetExperiencePercentage()
 		'gain some xp
 		SetExperience(GetExperience() + GetNextExperienceGain(programmeDataGUID))
-print "                                           experience now: "+ GetExperience() + "  level: " + GetLevel() +"  LevelXP%:" + GetLevelExperiencePercentage() +"   XP%:"+GetExperiencePercentage()
-debugstop
-end
+		TLogger.Log("TProductionCompany", "Finish production and gained experience. Experience: "+ oldExperience +"->"+GetExperience() + "  level: " + oldLevel+"->"+GetLevel() +"  LevelXP: " + MathHelper.NumberToString(oldLevelXP*100,2)+"->"+MathHelper.NumberToString(GetLevelExperiencePercentage()*100,2)+"%" +"  XP: "+MathHelper.NumberToString(oldXP*100,2)+"->"+MathHelper.NumberToString(GetExperiencePercentage()*100,2)+"%", LOG_DEBUG)
+
 		return True
 	End Method
 	
