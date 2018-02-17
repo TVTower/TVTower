@@ -636,8 +636,12 @@ function JobSellSuitcaseLicences:Tick()
 			local v = case[i]
 			if v ~= nil 
 			then 
-				err = TVT.md_doSellProgrammeLicence(v.GetId()) 
-				debugMsg("sold "..v.GetTitle().." id "..v.GetId().." with error code: "..err)
+				err = TVT.md_doSellProgrammeLicence(v.GetId())
+				if err == 1 then
+					debugMsg("sold "..v.GetTitle().." id "..v.GetId()..", OK")
+				else
+					debugMsg("sold "..v.GetTitle().." id "..v.GetId().." with error code: "..err)
+				end
 			else debugMsg("md sale: nil value")	end
 		end
 	else debugMsg ("md: empty suitcase") end

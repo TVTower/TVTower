@@ -56,20 +56,22 @@ end
 
 
 function JobSellMovies:Tick()
-	function newarchivedMovie (a,b,c,d,e)
+	function newarchivedMovie (a,b,c,d,e,f)
 		local t = 
 		{
 			Title = "N/A";
+			GUID = "";
 			Id = -1;
 			Freshness = 1;
 			planned = -1;
 			price = 0;
 		}
 		t.Title = a
-		t.Id = b
-		t.Freshness = c
-		t.planned = d
-		t.price = e
+		t.GUID = b
+		t.Id = c
+		t.Freshness = d
+		t.planned = e
+		t.price = f
 		return t;
 	end
 
@@ -86,12 +88,12 @@ function JobSellMovies:Tick()
 	do
 		m = TVT.convertToProgrammeLicence(TVT.ar_GetProgrammeLicence(i).data)
 		if m ~= nil then
-			vm = newarchivedMovie(m.GetTitle(),m.GetId(),(m.GetTopicality() / m.GetMaxTopicality()),m.isPlanned(),m.GetPrice(TVT.ME))
-			debugMsg("found "..vm.Title.." ("..vm.Id..") ".." "..vm.price..", "..(vm.Freshness*100).."%, planned: "..tostring(vm.planned))
+			vm = newarchivedMovie(m.GetTitle(),m.GetGUID(), m.GetId(),(m.GetTopicality() / m.GetMaxTopicality()),m.isPlanned(),m.GetPrice(TVT.ME))
+			debugMsg("found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id..") ".." "..vm.price..", "..(vm.Freshness*100).."%, planned: "..tostring(vm.planned))
 			table.insert(movies,vm)
 		end
 	end
-	--debugMsg("movies in archive: "..#movies)
+	debugMsg("movies in archive: "..#movies)
 
 	--Nach aktualität filtern, keine eingeplanten, im Notfall Schwelle fürs Behalten erhöhen, ganz teure immer behalten
 	local treshold = self.FreshnessTreshold
@@ -112,8 +114,12 @@ function JobSellMovies:Tick()
 	--in koffer legen
 	for i=1, #case
 	do
-		ec = TVT.ar_AddProgrammeLicenceToSuitcase(case[i].Id)  --braucht id, nicht position
-		debugMsg("put "..case[i].Title.." in suitcase, errorcode: "..ec)
+		ec = TVT.ar_AddProgrammeLicenceToSuitcaseByGUID(case[i].GUID)
+		if ec == 1 then
+			debugMsg("put "..case[i].Title.." in suitcase, OK")
+		else
+			debugMsg("put "..case[i].Title.." in suitcase, errorcode: "..ec)
+		end
 	end	
 	
 	self.Status = JOB_STATUS_DONE	

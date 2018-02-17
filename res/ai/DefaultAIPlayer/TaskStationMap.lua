@@ -139,7 +139,7 @@ function JobBuyStation:Tick()
 	for i = 1, 30 do
 		local tempStation = MY.GetStationMap().GetTemporaryAntennaStation(math.random(35, 560), math.random(1, 375))
 				
-		debugMsg(" - Station " .. i .. "  at " .. tempStation.pos.GetIntX() .. "," .. tempStation.pos.GetIntY() .. ".  reach: " .. tempStation.GetReach() .. "  increase: " .. tempStation.GetReachIncrease() .. "  price: " .. tempStation.GetPrice() .. "  F: " .. (tempStation.GetReachIncrease() / tempStation.GetPrice()))
+		debugMsg(" - Station " .. i .. "  at " .. tempStation.pos.GetIntX() .. "," .. tempStation.pos.GetIntY() .. ".  reach: " .. tempStation.GetReach() .. "  exclusive/increase: " .. tempStation.GetExclusiveReach() .. "  price: " .. tempStation.GetPrice() .. "  F: " .. (tempStation.GetExclusiveReach() / tempStation.GetPrice()))
 
 		--filter criterias
 		--0) skip checks if there is no tempstation

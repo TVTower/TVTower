@@ -833,12 +833,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			if GetWorldTime().GetDayMinute(time) >= 55 then currentHour :+ 1
 		endif
 
-
+		rem
 		if slotType = TVTBroadcastMaterialType.PROGRAMME
 			TLogger.Log("PlayerProgrammePlan.RemoveObjectInstances()", "Plan #"+owner+" removes all instances of object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from PROGRAMMES.", LOG_DEBUG)
 		else
 			TLogger.Log("PlayerProgrammePlan.RemoveObjectInstances()", "Plan #"+owner+" removes all instances of object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from ADVERTISEMENTS.", LOG_DEBUG)
 		endif
+		endrem
 		
 
 		Local array:TBroadcastMaterial[] = GetObjectArray(slotType)

@@ -330,6 +330,14 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
+	Method GetUnsignedAdContractFromSuitcaseByGUID:TAdContract(guid:string) {_exposeToLua}
+		For Local contract:TAdContract = EachIn suitcaseAdContracts
+			If contract.GetGUID() = guid Then Return contract
+		Next
+		Return Null
+	End Method
+
+
 	Method HasUnsignedAdContractInSuitcase:int(contract:TAdContract)
 		If not contract then return FALSE
 		return suitcaseAdContracts.contains(contract)
@@ -867,9 +875,18 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 	'get programmeLicence by index number in list - useful for lua-scripts
-	Method GetSuitcaseProgrammeLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=0) {_exposeToLua}
+	Method GetSuitcaseProgrammeLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=0)
 		if arrayIndex < 0 or arrayIndex >= suitcaseProgrammeLicences.Count() then return Null
 		Return TProgrammeLicence(suitcaseProgrammeLicences.ValueAtIndex(arrayIndex))
+	End Method
+
+
+	'get programmeLicence by index number in list - useful for lua-scripts
+	Method GetSuitcaseProgrammeLicenceByGUID:TProgrammeLicence(guid:string)
+		For local licence:TProgrammeLicence = EachIn suitcaseProgrammeLicences
+			if licence.GetGUID() = guid then return licence
+		Next
+		return Null
 	End Method
 
 

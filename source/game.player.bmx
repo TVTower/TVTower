@@ -447,7 +447,6 @@ endrem
 	'remove this helper as soon as "player" class gets a single importable
 	'file
 	Method SendToBoss:Int()	{_exposeToLua}
-	print "SendToBoss: remove figure control!"
 		GetFigure().SendToDoor( TRoomDoor.GetByDetails("boss", playerID), True )
 
 		'inform the boss that the player accepted the call

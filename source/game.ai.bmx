@@ -1683,6 +1683,7 @@ endrem
 	'=== CHANNEL PROGRAMME ARCHIVE ===
 
 	'move licence from archive to suitcase
+	'ATTENTION: if you move multiple licences, position will shift!
 	Method ar_AddProgrammeLicenceToSuitcase:Int(position:Int = -1)
 		If Not _PlayerInRoom("archive") Then Return self.RESULT_WRONGROOM
 
@@ -1691,13 +1692,36 @@ endrem
 
 		Return GetPlayerProgrammeCollection(self.ME).AddProgrammeLicenceToSuitcase(licence)
 	End Method
+
+
+	'move licence from archive to suitcase
+	Method ar_AddProgrammeLicenceToSuitcaseByGUID:Int(guid:string)
+		If Not _PlayerInRoom("archive") Then Return self.RESULT_WRONGROOM
+
+		local licence:TProgrammeLicence = GetPlayerProgrammeCollection(self.ME).GetProgrammeLicenceByGUID(guid)
+		if not licence then return self.RESULT_NOTFOUND
+
+		Return GetPlayerProgrammeCollection(self.ME).AddProgrammeLicenceToSuitcase(licence)
+	End Method
 	
 
 	'move licence from suitcase to archive
+	'ATTENTION: if you move multiple licences, position will shift!
 	Method ar_RemoveProgrammeLicenceFromSuitcase:Int(position:Int = -1)
 		If Not _PlayerInRoom("archive") Then Return self.RESULT_WRONGROOM
 
 		local licence:TProgrammeLicence = GetPlayerProgrammeCollection(self.ME).GetSuitcaseProgrammeLicenceAtIndex(position)
+		if not licence then return self.RESULT_NOTFOUND
+
+		Return GetPlayerProgrammeCollection(self.ME).RemoveProgrammeLicenceFromSuitcase(licence)
+	End Method
+
+
+	'move licence from suitcase to archive
+	Method ar_RemoveProgrammeLicenceFromSuitcaseByGUID:Int(guid:string)
+		If Not _PlayerInRoom("archive") Then Return self.RESULT_WRONGROOM
+
+		local licence:TProgrammeLicence = GetPlayerProgrammeCollection(self.ME).GetSuitcaseProgrammeLicenceByGUID(guid)
 		if not licence then return self.RESULT_NOTFOUND
 
 		Return GetPlayerProgrammeCollection(self.ME).RemoveProgrammeLicenceFromSuitcase(licence)
