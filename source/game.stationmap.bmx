@@ -61,9 +61,12 @@ Type TStationMapCollection
 	Field _currentPopulationCableShare:Double = -1
 	Field _currentPopulationSatelliteShare:Double = -1
 
-	Field populationAntennaShareData:TNumericPairInterpolator
-	Field populationCableShareData:TNumericPairInterpolator
-	Field populationSatelliteShareData:TNumericPairInterpolator
+	'attention: do interpolation function hook is _not_ saved in the
+	'           savegame
+	'           So make sure to tackle this when saving share data!
+	Field populationAntennaShareData:TNumericPairInterpolator {nosave}
+	Field populationCableShareData:TNumericPairInterpolator {nosave}
+	Field populationSatelliteShareData:TNumericPairInterpolator {nosave}
 
 	
 	'how people can receive your TV broadcast

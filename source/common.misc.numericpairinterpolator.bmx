@@ -8,7 +8,7 @@ Type TNumericPairInterpolator
 	Field map:TMap = new TMap
 	Field orderedKeys:Double[]
 	Field _cacheInvalid:int = False
-	Field interpolationFunction:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
+	Field interpolationFunction:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)  {nosave}
 
 	Method GetValueForKey:Double(key:Double)
 		return double(string(map.ValueForKey(string(key))))
