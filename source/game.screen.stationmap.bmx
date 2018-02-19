@@ -17,6 +17,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 	Field list:TGUISelectList
 	Field renewButton:TGUIButton
 	Field renewInfoButton:TGUIButton
+	Field autoRenewCheckbox:TGUICheckbox
 	Field renewContractTooltips:TTooltipBase[]
 
 	Field actionButton:TGUIButton
@@ -57,6 +58,11 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		renewInfoButton.spriteName = "gfx_gui_button.datasheet"
 		renewInfoButton.SetFont( buttonFont )
 
+		autoRenewCheckbox = New TGUICheckBox.Create(New TVec2D.Init(145, 0), New TVec2D.Init(20, 20), "auto renew", "STATIONMAP")
+		'autoRenewCheckbox.caption.color = TColor.clBlue.copy()
+		'autoRenewCheckbox.spriteName = "gfx_gui_button.datasheet"
+		autoRenewCheckbox.SetFont( buttonFont )
+
 		cancelButton = New TGUIButton.Create(New TVec2D.Init(145, 0), New TVec2D.Init(30, 28), "X", "STATIONMAP")
 		cancelButton.caption.color = TColor.clRed.copy()
 		cancelButton.spriteName = "gfx_gui_button.datasheet"
@@ -71,6 +77,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 		cancelButton.SetParent(Self)
 		actionButton.SetParent(Self)
+		autoRenewCheckbox.SetParent(Self)
 		renewInfoButton.SetParent(Self)
 		renewButton.SetParent(Self)
 		list.SetParent(Self)
@@ -78,6 +85,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		'panel handles them (similar to a child - but with manual draw/update calls)
 		GuiManager.Remove(cancelButton)
 		GuiManager.Remove(actionButton)
+		GuiManager.Remove(autoRenewCheckbox)
 		GuiManager.Remove(renewInfoButton)
 		GuiManager.Remove(renewButton)
 		GuiManager.Remove(list)
@@ -120,11 +128,16 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickCancelButton", cancelButton ) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickActionButton", actionButton ) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickRenewButton", renewButton ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickAutoRenewCheckbox", renewButton ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "guiCheckBox.onSetChecked", Self, "OnSetChecked_AutoRenewCheckbox", autoRenewCheckbox) ]
 		'localize the button
 		'we have to refresh the gui station list as soon as we remove or add a station
 '		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.removeStation", OnChangeStationMapStation ) ]
 '		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.addStation", OnChangeStationMapStation ) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod( "GUISelectList.onSelectEntry", Self, "OnSelectEntryList", list ) ]
+
+		'(re-)localize content
+		SetLanguage()
 
 		Return Self
 	End Method
@@ -137,6 +150,10 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		For Local i:Int = 0 Until tooltips.length
 			If tooltips[i] Then tooltips[i].SetContent(strings[i])
 		Next
+
+		if autoRenewCheckbox
+			autoRenewCheckbox.SetCaptionValues(GetLocale("RENEW_AUTOMATICALLY"), GetLocale("RENEW_AUTOMATICALLY"))
+		endif
 	End Method
 
 
@@ -207,7 +224,22 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		'try to renew a contract
 		TScreenHandler_StationMap.selectedStation.RenewContract(12 * TWorldTime.DAYLENGTH)
 	End Method
-	
+
+
+	Method OnSetChecked_AutoRenewCheckbox:Int(triggerEvent:TEventBase)
+		Local button:TGUICheckBox = TGUICheckBox(triggerEvent.GetSender())
+		If Not button Then Return False
+
+		'ignore clicks if not in the own office
+		If Not TScreenHandler_StationMap.currentSubRoom Or TScreenHandler_StationMap.currentSubRoom.owner <> GetPlayerBase().playerID Then Return False
+
+		If TScreenHandler_StationMap.selectedStation
+			TScreenHandler_StationMap.selectedStation.SetFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT, button.IsChecked())
+		EndIf
+
+		return True
+	End Method
+
 
 	'an entry was selected - make the linked station the currently selected station
 	Method OnSelectEntryList:Int(triggerEvent:TEventBase)
@@ -224,6 +256,8 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			If TScreenHandler_StationMap.selectedStation
 				'force stat refresh (so we can display decrease properly)!
 				TScreenHandler_StationMap.selectedStation.GetExclusiveReach(True)
+
+				autoRenewCheckbox.SetChecked( TScreenHandler_StationMap.selectedStation.HasFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT) )
 			EndIf
 
 			SetActionMode( GetSellActionMode() )
@@ -301,6 +335,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			EndIf
 
 			
+			autoRenewCheckbox.SetPosition(5, GetHeaderHeight() + GetBodyHeight() - 34 - 30 - 23 )
 			renewButton.SetPosition(5, GetHeaderHeight() + GetBodyHeight() - 34 - 30 )
 			renewInfoButton.SetPosition(5 + 150, GetHeaderHeight() + GetBodyHeight() - 34 - 30 )
 			actionButton.SetPosition(5, GetHeaderHeight() + GetBodyHeight() - 34 )
@@ -329,6 +364,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 
 			list.Update()
+			autoRenewCheckbox.Update()
 			renewButton.Update()
 			renewInfoButton.Update()
 			actionButton.Update()
@@ -434,12 +470,14 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 
 			If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_NONE
+				autoRenewCheckbox.Hide()
 				renewButton.Hide()
 				renewInfoButton.Hide()
 				cancelButton.Hide()
 				renewButton.Resize(contentW - 10, -1)
 				actionButton.Resize(contentW - 10, -1)
 			Else
+				autoRenewCheckbox.Resize(180,-1)
 				renewButton.Resize(150, -1)
 				actionButton.Resize(150, -1)
 				cancelButton.Show()
@@ -448,6 +486,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		EndIf
 
 		list.Draw()
+		autoRenewCheckbox.Draw()
 		renewInfoButton.Draw()
 		renewButton.Draw()
 		actionButton.Draw()
@@ -455,7 +494,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 	End Method
 
 
-	Method DrawTooltips()
+	Method DrawTooltips:int()
 		Super.DrawTooltips()
 		
 		if TScreenHandler_StationMap.actionMode <> TScreenHandler_StationMap.MODE_NONE
@@ -721,6 +760,8 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
 
 	Method SetLanguage()
+		Super.SetLanguage()
+
 		Local strings:String[] = [GetLocale("REACH"), GetLocale("CONTRACT_DURATION"), GetLocale("CONSTRUCTION_TIME"), GetLocale("RUNNING_COSTS"), GetLocale("PRICE")]
 		strings = strings[.. tooltips.length]
 
@@ -834,6 +875,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 		If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_CABLE_NETWORK_UPLINK
 			if selectedStation
 				detailsBackgroundH :+ renewButton.GetScreenHeight() + 3
+				detailsBackgroundH :+ autoRenewCheckbox.GetScreenHeight() + 3
 			endif
 		EndIf
 
@@ -890,6 +932,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 						endif
 
 					EndIf
+					autoRenewCheckbox.Show()
 					renewButton.Show()
 					renewInfoButton.Show()
 
@@ -917,6 +960,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 						canAfford = (Not finance Or finance.canAfford(totalPrice))
 					EndIf
 
+					autoRenewCheckbox.Hide()
 					renewButton.Hide()
 					renewInfoButton.Hide()
 			End Select
@@ -1038,6 +1082,8 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 
 
 	Method SetLanguage()
+		Super.SetLanguage()
+
 		Local strings:String[] = [GetLocale("REACH"), GetLocale("CONTRACT_DURATION"), GetLocale("CONSTRUCTION_TIME"), GetLocale("RUNNING_COSTS"), GetLocale("PRICE")]
 		strings = strings[.. tooltips.length]
 
@@ -1228,6 +1274,7 @@ endrem
 		If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_SATELLITE_UPLINK
 			if selectedStation
 				detailsBackgroundH :+ renewButton.GetScreenHeight() + 3
+				detailsBackgroundH :+ autoRenewCheckbox.GetScreenHeight() + 3
 
 				if TStationSatelliteUplink(selectedStation).IsShutdown()
 					showIncludesHardwareText = True
@@ -1295,6 +1342,7 @@ endrem
 							EndIf
 						endif
 					EndIf
+					autoRenewCheckbox.Show()
 					renewButton.Show()
 					renewInfoButton.Show()
 
@@ -1323,6 +1371,7 @@ endrem
 						Local finance:TPlayerFinance = GetPlayerFinance(TScreenHandler_StationMap.currentSubRoom.owner)
 						canAfford = (Not finance Or finance.canAfford(selectedStation.GetPrice()))
 					EndIf
+					autoRenewCheckbox.Hide()
 					renewButton.Hide()
 					renewInfoButton.Hide()
 			End Select
@@ -1741,7 +1790,7 @@ Type TSatelliteSelectionFrame
 
 
 			currentY :+ boxH
-			Local minImageText:String = MathHelper.NumberToString(100*selectedSatellite.minimumChannelImage, 1, True)+"%"
+			Local minImageText:String = MathHelper.NumberToString(selectedSatellite.minimumChannelImage, 1, True)+"%"
 
 			If Not GetPublicImage(owner) Or GetPublicImage(owner).GetAverageImage() < selectedSatellite.minimumChannelImage
 				skin.RenderBox(contentArea.GetIntX() + 5, currentY, halfW-5, -1, minImageText, "image", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
@@ -2167,15 +2216,12 @@ Type TStationMapInformationFrame
 			skin.fontNormal.drawBlock(GetLocale("PRICE")+":", col3, textY + 1*lineH, col3W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.4,True, True)
 			skin.fontNormal.drawBlock(TFunctions.DottedValue(selectedSection.GetBroadcastPermissionPrice(owner))+" " + GetLocale("CURRENCY"), col4, textY + 1*lineH, col4W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
 			skin.fontNormal.drawBlock(GetLocale("CHANNEL_IMAGE")+":", col3, textY + 2*lineH, col3W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.4,True, True)
-			skin.fontNormal.drawBlock(GetLocale("MIN_VALUEX").Replace("%VALUEX%", MathHelper.NumberToString(100*selectedSection.broadcastPermissionMinimumChannelImage, 1, True)+"%"), col4, textY + 2*lineH, col4W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+			skin.fontNormal.drawBlock(GetLocale("MIN_VALUEX").Replace("%VALUEX%", MathHelper.NumberToString(selectedSection.broadcastPermissionMinimumChannelImage, 1, True)+"%"), col4, textY + 2*lineH, col4W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
 			if selectedSection.HasBroadcastPermission(owner)
 				skin.fontNormal.drawBlock(getLocale("BROADCAST_PERMISSION_EXISTING"), col3, textY + 3*lineH, col3W+col4W, 14, ALIGN_LEFT_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
 			else
 				skin.fontNormal.drawBlock(getLocale("BROADCAST_PERMISSION_MISSING"), col3, textY + 3*lineH, col3W+col4W, 14, ALIGN_LEFT_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
 			endif
-
-'nur , wenn keine Genehmigung vorliegt
-'			If Not GetPublicImage(owner) Or GetPublicImage(owner).GetAverageImage() < selectedSection.broadcastPermissionMinimumChannelImage
 		EndIf
 
 

@@ -138,10 +138,6 @@ Type TGUIAccordeonPanel extends TGUIObject
 	End Method
 
 
-	Method DrawTooltips()
-		'
-	End Method
-
 	Method DrawContent()
 		'draw header after the body so potential "shadows" are drawn
 		'correctly

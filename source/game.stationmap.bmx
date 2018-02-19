@@ -1011,12 +1011,31 @@ Type TStationMapCollection
 	End Method
 
 
+	Method UpdateSatelliteSubscriptions()
+		if not satellites then return
+		
+		for local s:TStationMap_Satellite = EachIn satellites
+			s.UpdateSubscriptions()
+		next
+	End Method
+
+
+	Method UpdateCableNetworkSubscriptions()
+		if not cableNetworks then return
+		
+		for local c:TStationMap_CableNetwork = EachIn cableNetworks
+			c.UpdateSubscriptions()
+		next
+	End Method
+	
+
 	Method Update:Int()
 		'refresh stats ?
 		if nextCensusTime < 0 or nextCensusTime < GetWorldTime().GetTimegone()
 			DoCensus()
 		endif
-	
+
+		'update (eg. launch)
 		UpdateSatellites()
 		UpdateCableNetworks()
 	
@@ -1027,6 +1046,10 @@ Type TStationMapCollection
 			stationMaps[i].Update()
 		Next
 
+		'update subscriptions (eg. ended contracts -> channel unsubscription)
+		UpdateSatelliteSubscriptions()
+		UpdateCableNetworkSubscriptions()
+	
 
 		'refresh the share map and refresh max audience sum
 		'as soon as one of the stationmap changed
@@ -1063,7 +1086,6 @@ Type TStationMapCollection
 
 	'=== SATELLITES (the launched ones) ===
 	Method ResetSatellites:Int()
-	print "reset satellites"
 		if satellites and satellites.Count() > 0
 			'avoid concurrent list modification and remove from list
 			'by iterating over an array copy
@@ -1123,12 +1145,17 @@ Type TStationMapCollection
 		satellite.setupFeeBase = RandRange(125,175) * 1000
 
 		if revision <= 1
-			satellite.minimumChannelImage = RandRange(5,15) / 100.0
-		elseif revision = 3
-			satellite.minimumChannelImage = RandRange(10,20) / 100.0
+			satellite.minimumChannelImage = RandRange(20,30)
+		elseif revision <= 3
+			satellite.minimumChannelImage = RandRange(15,25)
 		else
-			satellite.minimumChannelImage = RandRange(10,35) / 100.0
+			satellite.minimumChannelImage = RandRange(10,15)
 		endif
+
+		'local year:int = GetWorldTime().GetYear(launchTime)
+		'if year >= 1990
+		'	satellite.minimumChannelImage = RandRange(10,20)
+		'...
 
 		return satellite
 	End Method
@@ -1333,13 +1360,13 @@ Type TStationMapCollection
 			cableNetwork.setupFeeBase = RandRange(175,215) * 1000
 			cableNetwork.sectionName = section.name
 			if cnNumber = 0
-				cableNetwork.minimumChannelImage = RandRange(5,10) / 100.0
+				cableNetwork.minimumChannelImage = RandRange(5,10)
 			elseif cnNumber <= 3
-				cableNetwork.minimumChannelImage = RandRange(8,16) / 100.0
+				cableNetwork.minimumChannelImage = RandRange(8,16)
 			elseif cnNumber <= 6
-				cableNetwork.minimumChannelImage = RandRange(14,25) / 100.0
+				cableNetwork.minimumChannelImage = RandRange(14,25)
 			else
-				cableNetwork.minimumChannelImage = RandRange(23,37) / 100.0
+				cableNetwork.minimumChannelImage = RandRange(23,37)
 			endif
 			cnNumber :+ 1
 
@@ -2628,6 +2655,16 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 				endif
 			EndIf
 		EndIf
+
+		'automatically refresh subscriptions?
+		If HasFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT)
+			'antennas do not have a subscriptionprogress
+			If GetSubscriptionProgress() > 0 and GetSubscriptionTimeLeft() = 0
+				If GetProvider()
+					RenewContract( GetProvider().GetDefaultSubscribedChannelDuration() )
+				EndIf
+			EndIf
+		EndIf
 	End Method
 
 
@@ -2714,7 +2751,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		If cantGetSectionPermissionReason = -1
 			GetBitmapFontManager().baseFont.draw(GetLocale("CHANNEL_IMAGE")+" ("+GetLocale("STATIONMAP_SECTION_NAME")+"): ", textX, textY)
-			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(section.broadcastPermissionMinimumChannelImage*100,2)+" %", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, new TColor.Create(255,150,150))
+			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(section.broadcastPermissionMinimumChannelImage,2)+" %", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, new TColor.Create(255,150,150))
 			textY:+ textH
 		EndIf
 		If cantGetProviderPermissionReason = -1
@@ -3893,7 +3930,7 @@ Type TStationMapSection
 		if config
 			pressureGroups = config.GetInt("pressureGroups", 0)
 			broadcastPermissionPrice = config.GetInt("broadcastPermissionPrice", -1)
-			broadcastPermissionMinimumChannelImage = 0.01 * config.GetFloat("broadcastPermissionMinimumChannelImage", 0)
+			broadcastPermissionMinimumChannelImage = config.GetFloat("broadcastPermissionMinimumChannelImage", 0)
 		endif
 
 		Return Self
@@ -4143,7 +4180,7 @@ Type TStationMapSection
 
 		GetBitmapFontManager().baseFont.draw(GetLocale("CHANNEL_IMAGE")+": ", textX, textY)
 		if not imageOK
-			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(GetPublicImage(channelID).GetAverageImage()/100.0, 2)+"% < "+MathHelper.NumberToString(broadcastPermissionMinimumChannelImage/100.0, 2)+"%", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, new TColor.Create(255, 150, 150))
+			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(GetPublicImage(channelID).GetAverageImage(), 2)+"% < "+MathHelper.NumberToString(broadcastPermissionMinimumChannelImage, 2)+"%", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, new TColor.Create(255, 150, 150))
 		else
 			GetBitmapFontManager().baseFontBold.drawBlock(GetLocale("OK"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
 		endif
@@ -4904,7 +4941,7 @@ Type TStationMap_BroadcastProvider extends TEntityBase
 	End Method
 
 
-	Method GetDefaultSubscribedChannelDuration:Long()
+	Method GetDefaultSubscribedChannelDuration:Int()
 		'return 0.25 * GetWorldTime().GetYearLength()
 		return GetWorldTime().GetYearLength()
 	End Method
@@ -4932,7 +4969,7 @@ Type TStationMap_BroadcastProvider extends TEntityBase
 	End Method
 
 
-	Method SubscribeChannel:int(channelID:int, duration:Int=-1, force:Int=False)
+	Method SubscribeChannel:int(channelID:int, duration:Int, force:Int=False)
 		if not force and CanSubscribeChannel(channelID, duration) <> 1 then return False
 
 		if IsSubscribedChannel(channelID)
@@ -5061,7 +5098,12 @@ Type TStationMap_BroadcastProvider extends TEntityBase
 				Launch()
 			endif
 		endif
+	End Method
 
+
+	'run extra so you could update station (and its subscription) after
+	'a launch/start of the provider but before it removes uplinks
+	Method UpdateSubscriptions:int()
 		For local i:int = 0 until subscribedChannels.length
 			if subscribedChannels[i] and subscribedChannelsDuration[i] >= 0
 				if subscribedChannelsStartTime[i] + subscribedChannelsDuration[i] < GetWorldTime().GetTimeGone()
@@ -5167,6 +5209,8 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider
 	'name without revision
 	Field brandName:string
 
+	Field nextImageReductionTime:Long = -1
+	Field nextImageReductionValue:Float = 0.97
 	Field nextTechUpgradeTime:Long = -1
 	Field nextTechUpgradeValue:int = 0
 	Field techUpgradeSpeed:int
@@ -5248,7 +5292,7 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider
 
 
 	'override
-	Method GetDefaultSubscribedChannelDuration:Long()
+	Method GetDefaultSubscribedChannelDuration:Int()
 		if deathTime <= 0 then return Super.GetDefaultSubscribedChannelDuration()
 		'days are rounded down, so they always are lower than the real life time
 		local daysToDeath:int = (deathTime - GetWorldTime().GetTimeGone()) / TWorldTime.DAYLENGTH
@@ -5293,6 +5337,21 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider
 
 				nextTechUpgradeTime = GetWorldTime().ModifyTime(-1, 0, 0, int(RandRange(250,350) * 100.0/techUpgradeSpeed))
 				nextTechUpgradeValue = BiasedRandRange(10, 25, 0.2) * 100.0/techUpgradeSpeed
+			endif
+
+
+			if minimumChannelImage > 0.1 and nextImageReductionTime < GetWorldTime().GetTimeGone()
+				if nextImageReductionTime > 0
+					local oldMinimumChannelImage:Float = minimumChannelImage
+					minimumChannelImage :* nextImageReductionValue
+					'avoid reducing very small values for ever and ever
+ 					if minimumChannelImage <= 0.1 then minimumChannelImage = 0
+					'inform others (eg. for news)
+					EventManager.triggerEvent( TEventSimple.Create( "Satellite.onReduceMinimumChannelImage", New TData.AddNumber("minimumChannelImage", minimumChannelImage).AddNumber("oldMinimumChannelImage", oldMinimumChannelImage), Self ) )
+				endif
+
+				nextImageReductionTime = GetWorldTime().ModifyTime(-1, 0, 0, int(RandRange(20,30)))
+				nextImageReductionValue = nextImageReductionValue^2
 			endif
 		endif
 	End Method

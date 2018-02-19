@@ -1097,6 +1097,7 @@ BROADCAST_PERMISSION = Broadcast permission
 BROADCAST_PERMISSION_SHORT = Broadcast perm.
 PERMISSION = Permission
 IMAGE = Image
+RENEW_AUTOMATICALLY = Renew automatically
 
 STATIONMAP_SECTION_NAME = Federal State
 STATIONMAP_SECTIONS_NAME = Federal States

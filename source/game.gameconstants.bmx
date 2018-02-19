@@ -254,11 +254,12 @@ Type TVTStationFlag {_exposeToLua}
 	'paid without governmental allowance
 	Const ILLEGAL:int = 128
 	Const SHUTDOWN:int = 256
-	Const UPDATE1:int = 512
-	Const UPDATE2:int = 1024
-	Const UPDATE3:int = 2048
+	Const AUTO_RENEW_PROVIDER_CONTRACT:int = 512
+	Const UPDATE1:int = 1024
+	Const UPDATE2:int = 2048
+	Const UPDATE3:int = 4096
 
-	Const count:int = 12
+	Const count:int = 13
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -281,6 +282,7 @@ Type TVTStationFlag {_exposeToLua}
 			case  512	return 10
 			case 1024	return 11
 			case 2048	return 12
+			case 4096   return 13
 		End Select
 		return 0
 	End Function
@@ -290,20 +292,21 @@ Type TVTStationFlag {_exposeToLua}
 		if key < 0 then return "none"
 		
 		Select key
-			case NONE             return "none"
+			case NONE                         return "none"
 
-			case PAID             return "paid"
-			case FIXED_PRICE      return "fixed_price"
-			case SELLABLE         return "sellable"
-			case ACTIVE           return "active"
-			case GRANTED          return "granted"
-			case NO_AGING         return "no_aging"
-			case NO_RUNNING_COSTS return "no_running_costs"
-			case ILLEGAL          return "illegal"
-			case SHUTDOWN         return "shutdown"
-			case UPDATE1          return "update1"
-			case UPDATE2          return "update2"
-			case UPDATE3          return "update3"
+			case PAID                         return "paid"
+			case FIXED_PRICE                  return "fixed_price"
+			case SELLABLE                     return "sellable"
+			case ACTIVE                       return "active"
+			case GRANTED                      return "granted"
+			case NO_AGING                     return "no_aging"
+			case NO_RUNNING_COSTS             return "no_running_costs"
+			case ILLEGAL                      return "illegal"
+			case SHUTDOWN                     return "shutdown"
+			case AUTO_RENEW_PROVIDER_CONTRACT return "auto_renew_provider_contract"
+			case UPDATE1                      return "update1"
+			case UPDATE2                      return "update2"
+			case UPDATE3                      return "update3"
 
 			default
 				'loop through all entries and add them if contained
