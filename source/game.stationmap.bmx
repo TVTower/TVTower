@@ -738,39 +738,45 @@ Type TStationMapCollection
 		endif
 
 		'=== LOAD STATES ===
-		'remove old states
-		_instance.ResetSections()
+		'only if not done before
+		'ATTENTION: overriding current sections will remove broadcast
+		'           permissions as this is called _after_ a savegame
+		'           got loaded!
+		if _instance.sections.Count() = 0
+			'remove old states
+			'_instance.ResetSections()
 
-		'find and load states configuration
-		Local statesNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "states")
-		If Not statesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <map><states>-area.")
+			'find and load states configuration
+			Local statesNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "states")
+			If Not statesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <map><states>-area.")
 
-		For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
-			Local name:String	= TXmlHelper.FindValue(child, "name", "")
-			Local sprite:String	= TXmlHelper.FindValue(child, "sprite", "")
-			Local pos:TVec2D	= New TVec2D.Init( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
+			For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
+				Local name:String	= TXmlHelper.FindValue(child, "name", "")
+				Local sprite:String	= TXmlHelper.FindValue(child, "sprite", "")
+				Local pos:TVec2D	= New TVec2D.Init( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
 
-			Local pressureGroups:int = TXmlHelper.FindValueInt(child, "pressureGroups", -1)
-			Local sectionConfig:TData = new TData
-			local sectionConfigNode:TxmlNode = TXmlHelper.FindChild(child, "config")
-			if sectionConfigNode
-				TXmlHelper.LoadAllValuesToData(sectionConfigNode, sectionConfig)
-			endif
-			'override config if pressureGroups are defined already
-			if pressureGroups >= 0 then sectionConfig.AddNumber("pressureGroups", pressureGroups)
+				Local pressureGroups:int = TXmlHelper.FindValueInt(child, "pressureGroups", -1)
+				Local sectionConfig:TData = new TData
+				local sectionConfigNode:TxmlNode = TXmlHelper.FindChild(child, "config")
+				if sectionConfigNode
+					TXmlHelper.LoadAllValuesToData(sectionConfigNode, sectionConfig)
+				endif
+				'override config if pressureGroups are defined already
+				if pressureGroups >= 0 then sectionConfig.AddNumber("pressureGroups", pressureGroups)
 
-			'add state section if data is ok
-			If name<>"" And sprite<>""
-				_instance.AddSection( New TStationMapSection.Create(pos, name, sprite, sectionConfig) )
-			EndIf
-		Next
+				'add state section if data is ok
+				If name<>"" And sprite<>""
+					_instance.AddSection( New TStationMapSection.Create(pos, name, sprite, sectionConfig) )
+				EndIf
+			Next
+		endif
 
 
 		_instance.LoadPopulationShareData()
 
-		'=== CREATE SATELLITES ===
-		_instance.ResetSatellites()
-		_instance.ResetCableNetworks()
+		'=== CREATE SATELLITES / CABLE NETWORKS ===
+		if not _instance.satellites or _instance.satellites.Count() = 0 then _instance.ResetSatellites()
+		if not _instance.cableNetworks or _instance.cableNetworks.Count() = 0 then _instance.ResetCableNetworks()
 	End Function
 
 
@@ -1057,6 +1063,7 @@ Type TStationMapCollection
 
 	'=== SATELLITES (the launched ones) ===
 	Method ResetSatellites:Int()
+	print "reset satellites"
 		if satellites and satellites.Count() > 0
 			'avoid concurrent list modification and remove from list
 			'by iterating over an array copy
