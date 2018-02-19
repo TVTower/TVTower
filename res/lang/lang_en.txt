@@ -1117,3 +1117,7 @@ PRESSURE_GROUPS_COMMUNISTS = Communists
 CHANNEL_IMAGE_TOO_LOW = Channel image too low
 CHANNEL_LIMIT_REACHED = Channel limit reached
 PROVIDER = Provider
+
+CONTRACT_DURATION = Contract Duration
+PROCEEDS_OF_SALE = Proceeds of Sale
+TERMINATION_FEE = Termination Fee

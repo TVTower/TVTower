@@ -1138,3 +1138,7 @@ PRESSURE_GROUPS_COMMUNISTS = Kommunisten
 CHANNEL_IMAGE_TOO_LOW = Senderimage zu gering
 CHANNEL_LIMIT_REACHED = Sendergrenze erreicht
 PROVIDER = Anbieter
+
+CONTRACT_DURATION = Vertragslaufzeit
+PROCEEDS_OF_SALE = Verkaufserlöse
+TERMINATION_FEE = Kündigungsgebühr

@@ -131,7 +131,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 
 	Method SetLanguage()
-		Local strings:String[] = [GetLocale("REACH"), GetLocale("Increase"), GetLocale("CONSTRUCTION_TIME"), GetLocale("RUNNING_COSTS"), GetLocale("PRICE")]
+		Local strings:String[] = [GetLocale("REACH"), GetLocale("INCREASE"), GetLocale("CONSTRUCTION_TIME"), GetLocale("RUNNING_COSTS"), GetLocale("PRICE")]
 		strings = strings[.. tooltips.length]
 
 		For Local i:Int = 0 Until tooltips.length
@@ -452,8 +452,12 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		renewButton.Draw()
 		actionButton.Draw()
 		cancelButton.Draw()
+	End Method
 
 
+	Method DrawTooltips()
+		Super.DrawTooltips()
+		
 		if TScreenHandler_StationMap.actionMode <> TScreenHandler_StationMap.MODE_NONE
 			For Local t:TTooltipBase = EachIn tooltips
 				t.Render()
@@ -716,6 +720,16 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 	End Method
 
 
+	Method SetLanguage()
+		Local strings:String[] = [GetLocale("REACH"), GetLocale("CONTRACT_DURATION"), GetLocale("CONSTRUCTION_TIME"), GetLocale("RUNNING_COSTS"), GetLocale("PRICE")]
+		strings = strings[.. tooltips.length]
+
+		For Local i:Int = 0 Until tooltips.length
+			If tooltips[i] Then tooltips[i].SetContent(strings[i])
+		Next
+	End Method
+
+
 	'override
 	Method GetBuyActionMode:Int()
 		Return TScreenHandler_StationMap.MODE_BUY_CABLE_NETWORK_UPLINK
@@ -963,10 +977,12 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 			'=== BOX LINE 3 ===
 			currentY :+ boxH
 			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
-			If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_ANTENNA
+			If TScreenHandler_StationMap.actionMode = GetSellActionMode()
 				if payPenalty
+					tooltips[4].SetContent(GetLocale("TERMINATION_FEE"))
 					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
 				else
+					tooltips[4].SetContent(GetLocale("PROCEEDS_OF_SALE"))
 					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "good", skin.fontBold, ALIGN_RIGHT_CENTER)
 				endif
 			Else
@@ -1018,6 +1034,16 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 		'_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.addStation", OnChangeStationMapStation ) ]
 
 		Return Self
+	End Method
+
+
+	Method SetLanguage()
+		Local strings:String[] = [GetLocale("REACH"), GetLocale("CONTRACT_DURATION"), GetLocale("CONSTRUCTION_TIME"), GetLocale("RUNNING_COSTS"), GetLocale("PRICE")]
+		strings = strings[.. tooltips.length]
+
+		For Local i:Int = 0 Until tooltips.length
+			If tooltips[i] Then tooltips[i].SetContent(strings[i])
+		Next
 	End Method
 
 
@@ -1320,8 +1346,7 @@ endrem
 '				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, "-"+reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
 '			endif
 			tooltips[0].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
-'not needed
-'			tooltips[1].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
+			tooltips[1].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
 
 			'=== BOX LINE 2 (optional) ===
 			tooltips[2].parentArea.SetXY(-1000,0)
@@ -1366,8 +1391,10 @@ endrem
 			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			If TScreenHandler_StationMap.actionMode = GetSellActionMode()
 				if payPenalty
+					tooltips[4].SetContent(GetLocale("TERMINATION_FEE"))
 					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
 				else
+					tooltips[4].SetContent(GetLocale("PROCEEDS_OF_SALE"))
 					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "good", skin.fontBold, ALIGN_RIGHT_CENTER)
 				endif
 			Else
@@ -1765,6 +1792,11 @@ Type TSatelliteSelectionFrame
 		Setcolor 255,0,255
 		DrawRect(contentArea.GetX() + 30, contentArea.GetIntY() + headerHeight + listHeight, 20, detailsH )
 		endrem
+	End Method
+
+
+	Method DrawTooltips()
+'		Super.DrawOverlay()
 
 		For Local t:TTooltipBase = EachIn tooltips
 			t.Render()
@@ -2576,6 +2608,7 @@ Type TScreenHandler_StationMap
 '		if actionMode = MODE_BUY_SATELLITE_UPLINK
 			If satelliteSelectionFrame.IsOpen()
 				satelliteSelectionFrame.Draw()
+				satelliteSelectionFrame.DrawTooltips()
 			EndIf
 '		endif
 	End Function
