@@ -138,6 +138,10 @@ Type TGUIAccordeonPanel extends TGUIObject
 	End Method
 
 
+	Method DrawTooltips()
+		'
+	End Method
+
 	Method DrawContent()
 		'draw header after the body so potential "shadows" are drawn
 		'correctly
@@ -400,7 +404,18 @@ Type TGUIAccordeon extends TGUIObject
 		endif
 		Super.DrawChildren()
 	End Method
-	
+
+
+	'override to add panels
+	Method DrawTooltips:int()
+		if panels
+			For local p:TGUIAccordeonPanel = EachIn panels
+				p.DrawTooltips()
+			Next
+		endif
+		Super.DrawTooltips()
+	End Method	
+
 
 	Method DrawContent()
 		'DrawRect( GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )

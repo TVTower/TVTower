@@ -1771,6 +1771,8 @@ Type TGUIobject
 			Else
 				DrawOverlay()
 			EndIf
+
+			DrawTooltips()
 		EndIf
 
 		If Not(_flags & GUI_OBJECT_ENABLED) Then SetAlpha oldCol.a
@@ -1832,6 +1834,19 @@ Type TGUIobject
 			'tint image if object is disabled
 			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 2.0*GetAlpha()
 		Next
+	End Method
+
+
+	Method DrawTooltips:Int()
+		'skip children if self not visible
+		If Not IsVisible() Then Return False
+
+		If _children
+			'draw children
+			For Local obj:TGUIobject = EachIn _children
+				obj.DrawTooltips()
+			Next
+		endif
 	End Method
 
 
