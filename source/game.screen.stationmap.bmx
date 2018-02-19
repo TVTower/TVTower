@@ -750,10 +750,11 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
 
 	Method GetHeaderValue:String()
+		local maxCount:int = GetStationMapCollection().sections.Count()
 		If TScreenHandler_StationMap.currentSubRoom And GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner)
-			Return GetLocale( "CABLE_NETWORK_UPLINKS" ) + ": " + GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetStationCount(TVTStationType.CABLE_NETWORK_UPLINK)
+			Return GetLocale( "CABLE_NETWORK_UPLINKS" ) + ": " + GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetStationCount(TVTStationType.CABLE_NETWORK_UPLINK) + " / " + maxCount
 		Else
-			Return GetLocale( "CABLE_NETWORK_UPLINKS" ) + ": -/-"
+			Return GetLocale( "CABLE_NETWORK_UPLINKS" ) + ": -" + " / " + maxCount
 		EndIf
 	End Method
 
@@ -1150,6 +1151,11 @@ endrem
 	Method RefreshList(playerID:Int=-1)
 		Super.RefreshList(playerID)
 
+		'update satellites too
+		if TScreenHandler_StationMap.satelliteSelectionFrame
+			TScreenHandler_StationMap.satelliteSelectionFrame.RefreshSatellitesList()
+		endif
+
 		If playerID <= 0 Then playerID = GetPlayerBase().playerID
 
 		Local listContentWidth:Int = list.GetContentScreenWidth()
@@ -1167,10 +1173,11 @@ endrem
 
 
 	Method GetHeaderValue:String()
+		local maxCount:int = GetStationMapCollection().satellites.Count()
 		If TScreenHandler_StationMap.currentSubRoom And GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner)
-			Return GetLocale( "SATELLITE_UPLINKS" ) + ": " + GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetStationCount(TVTStationType.SATELLITE_UPLINK)
+			Return GetLocale( "SATELLITE_UPLINKS" ) + ": " + GetStationMap(TScreenHandler_StationMap.currentSubRoom.owner).GetStationCount(TVTStationType.SATELLITE_UPLINK) + " / " + maxCount
 		Else
-			Return GetLocale( "SATELLITE_UPLINKS" ) + ": -/-"
+			Return GetLocale( "SATELLITE_UPLINKS" ) + ": -/" + " / " + maxCount
 		EndIf
 	End Method
 
@@ -1522,7 +1529,7 @@ Type TSatelliteSelectionFrame
 		_open = True
 		Return True
 	End Method
-
+	
 
 	Method RefreshSatellitesList:Int()
 		satelliteList.EmptyList()
@@ -3006,6 +3013,13 @@ endrem
 			Local show:Int = GetStationMap(owner).GetShowStationType(i+1)
 			guiFilterButtons[i].SetChecked(show)
 		Next
+
+		'rebuild the stationLists
+		if guiAccordeon.GetPanelAtIndex(0)
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(0)).RefreshList()
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(1)).RefreshList()
+			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(2)).RefreshList()
+		endif
 	End Function
 
 
