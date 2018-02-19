@@ -1,15 +1,3 @@
-Diese Spielanleitung umfasst die derzeitig in der Entwicklerversion aktiven Features und Hilfsfunktionen. Sie wird mit dem jeweiligen Entwicklungsstand aktualisiert.
-Sollte etwas fehlen, unklar sein oder gar zuviel, merkt's bitte hier im Strang an.
-
-bis dahin
-Själe
-
-Stand: 22.01.2016, 15:30
-
-
-sjsjsjsjsjsjsjsj
-
-
 Spielanleitung der Entwicklerversion
 ========================================================================
 
@@ -55,6 +43,7 @@ Inhalt:
 - Supermarkt
 - Chef-Kredit-Bettelei
 - Terrorist
+- Immobilien-Makler
 - FSK 18 und Gerichtsvollzieher
 @Interface
 @Chat und Cheaten
@@ -72,8 +61,7 @@ Inhalt:
 ================
 
 Es gibt zwei Möglichkeiten, das Spiel zu speichern und zu laden.
-Zum einen kann über "Escape" ein entsprechendes Menü aufgerufen werden. 
-Per Linksklick auf das jeweilige Menüfeld gelangt Ihr zum entsprechenden Untermenü.
+Zum einen kann über "Escape" ein entsprechendes Menü aufgerufen werden. Per Linksklick auf das jeweilige Menüfeld gelangt Ihr zum entsprechenden Untermenü.
 Beim Speichern noch einen Namen eingeben, beim Laden einen Spielstand aussuchen und das entsprechende Feld auswählen.
 
 Desweiteren gibt es die Möglichkeit zum Schnellspeichern bzw. -laden.
@@ -89,8 +77,9 @@ Schnellladen - Taste „F8“
 @Spielgeschwindigkeit
 =====================
 
-Ihr könnt die Spielgeschwindigkeit mit den Pfeiltasten „hoch“ und „runter“ verändern. Es gibt auch noch voreingestellte
-Geschwindigkeiten. Dazu siehe am Ende die „Tastenkürzel der Enwicklerversion“.
+Ihr könnt die Spielgeschwindigkeit mit den Pfeiltasten „hoch“ und „runter“ verändern. Es gibt auch noch voreingestellte Geschwindigkeiten. Dazu siehe am Ende die „Tastenkürzel der
+Enwicklerversion“.
+Über die Pfeiltasten "links" und "rechts" ändert Ihr die Spielgeschwindigkeit und die Bewegungsgeschwindigkeit der Spielfiguren.
 
 
 
@@ -98,13 +87,14 @@ Geschwindigkeiten. Dazu siehe am Ende die „Tastenkürzel der Enwicklerversion�
 @Bewegung der Spielfigur
 ========================
 
-Grundsätzlich läuft Euer Avatar immer dahin, wo die Cursor-Fingerspitze bei Linksklick hinzeigt. Freilich, sofern dies überhaupt möglich ist. Klickt Ihr auf eine Tür oder ein anderes Interaktionsobjekt, wird sich die Spielfigur versuchen dorthin zu bewegen.
+Grundsätzlich läuft Euer Avatar immer dahin, wo die Cursor-Fingerspitze bei Linksklick hinzeigt. Freilich, sofern dies überhaupt möglich ist. Klickt Ihr auf eine Tür oder ein anderes Interaktionsobjekt, wird sich die Spielfigur versuchen dorthin zu
+bewegen.
 Sollte ein Raum besetzt sein, wird der Avatar davor stehen bleiben.
 
 In den Räumen werden die Aktionen ebenfalls mit Linksklick ausgelöst.
 Mit einem Klick auf die rechte Maustaste verlasst ihr das jeweils aktuelle Menü bzw. den Raum, in dem Ihr Euch befindet.
 
-Die „Esc“-Taste wird hingegen ein Menü aufrufen, das es Euch erlaubt,  das Spiel zu speicher, zu beenden oder neu zu laden.
+Die „Esc“-Taste wird hingegen ein Menü aufrufen, das es Euch erlaubt, das Spiel zu speichern, zu beenden oder neu zu laden.
 
 
 Empfohlen sei Euch, ehe Ihr so richtig loslegt:
@@ -135,8 +125,11 @@ Für jene, die lieber lesen, es auf dem aktuellsten Stand wissen wollen oder sch
 Um in die Programmplanung zu gelangen, müßt Ihr zuvor das Spielerbüro betreten. Linksklick auf die Tür oder im Fahrstuhlplaner auswählen und Eure Spielfigur wird sich dorthin bewegen.
 Im Büro steht ein Computer. Dieser mit links angeklickt, wird Euch den Programmplaner präsentieren.
 
-Ihr seht als erstes den aktuellen Tag. Da sind bei Spielbeginn schon ein paar Filme und Werbungen platziert. Diese wählt das Spiel zum Spielstart zufällig aus. 
+Ihr seht als erstes den aktuellen Tag. Da sind bei Spielbeginn schon die Eröffnungsshow und drei Werbungen platziert. Zudem wurde eine Werbung als Dauerwerbesendung abgelegt. 
+Diese gibt es nur zu Spielbeginn und sollen Euch Zeit einräumen, das Spiel in Ruhe zu erkunden.
+
 Solange die Programm- oder Werbeblöcke grau eingefärbt sind, könnt Ihr sie auf andere Sendeplätze verschieben. Andere Einfärbungen deuten darauf hin, daß sie gerade gesendet werden oder wurden.
+Rot eingefärbte, schon gesendete Werbeblöcke deuten darauf hin, daß die geforderte Einschaltquote nicht erreicht wurde.
 
 Führt Ihr den Mauszeiger über einen Sendung oder eine Werbung, erscheint ein Tooltip, der Informationen zur gewählten Sendung enthält.
 
@@ -144,19 +137,20 @@ Zum Bewegen der Sendungen/Werbung klickt einfach mit links darauf, dann hängt d
 
 Wenn Ihr (auch bereits gesendete) Sendungen/Werbungen noch an anderer Stelle platzieren wollt, so drückt die STRG-Taste und klickt dann mit links darauf. Die eigentliche Sendung bleibt liegen, das Duplikat hängt an Eurer Hand und läßt sich durch erneuten Linksklick an der aktuellen Stelle ablegen.
 
-Für Serien gibt es eine weitere Hilfsfunktion: drückt die „Shift“-Taste und klickt mit links auf eine Episode der Serie. Ein platzierbarer Programmblock der Folgeepisode (oder Folge 1, wenn auf die letzte Folge geklickt wurde) hängt nun an der Hand und lässt sich an der gewünschten Stelle platzieren.
+Wenn Ihr einzelne Folgen von Serien in ihrer Reihenfolge ablegen wollt, so drückt die „Shift“-Taste und klickt mit links darauf. Solange ihr die „Shift“-Taste gedrückt lasst, wird mit jedem Linksklick eine Folge abgelegt.
 
-Legt Ihr eine Werbung auf einem Sendungsplatz ab, so wird daraus eine Dauerwerbesendung. Diese spielt pro Zuschauer eine bestimmte Geldmenge ein.
-Legt Ihr hingegen eine Sendung auf einen Werbeplatz, so entsteht ein Trailer für die entsprechende Sendung. Dieser Trailer sorgt dafür, daß mehr Zuschauer die Sendung sehen. Allerdings sind die zusätzlichen Zuschauer davon abhängig, wieviele die Sendung vor dem Trailer gesehen haben. Mehrfaches Senden verstärkt diesen Effekt. Allerdings bis zu einer Obergrenze. Jeder weitere Trailer bringt dann keinen zusätzlichen Zuschauergewinn.
+Legt Ihr eine Werbung auf einem Sendungsplatz ab, so wird daraus eine Dauerwerbesendung. Diese spielt pro Zuschauer eine bestimmte Geldmenge ein. Vermindert aber auch Euer Image bei den Zuschauern.
+Legt Ihr hingegen eine Sendung auf einen Werbeplatz, so entsteht ein Trailer für die entsprechende Sendung. Dieser Trailer sorgt dafür, daß mehr Zuschauer die Sendung sehen. Allerdings sind die zusätzlichen Zuschauer davon abhängig, wieviele die Sendung vor dem Trailer gesehen haben. Mehrfaches Senden verstärkt diesen Effekt. Allerdings nur bis zu einer Obergrenze. Jeder weitere Trailer bringt dann keinen zusätzlichen Zuschauergewinn.
 
 Wenn Ihr das Programm des nächsten, übernächsten, überübernächsten oder eines gar noch weiter in der Zukunft liegenden Tages sehen oder verändern wollt, dann nutzt die kleinen Pfeile rechts oben. Freilich könnt Ihr dort auch wieder zurückblättern.
 
-Vorhandene Werbung und Programme sind durch Linksklick auf die jeweiligen Menüpunkte rechts ersichtlich. Hier gibt’s wieder Tooltips, wenn Ihr den Mauszeiger über die Sendung/Werbung führt. Mit Linksklick hebt Ihr die Sendung an. Mit Linksklick legt Ihr sie wieder ab. „Shift“ und Linksklick legt die Sendung so oft ab, wie Ihr die „Shift“-Taste gedrückt haltet. Gleiches gilt auch für die „Strg“-Taste.
+Vorhandene Werbung und Programme sind durch Linksklick auf die jeweiligen Menüpunkte rechts ersichtlich. Hier gibt’s wieder Tooltips, wenn Ihr den Mauszeiger über die Sendung/Werbung führt. Mit Linksklick hebt Ihr die Sendung an. Mit Linksklick legt Ihr sie wieder ab. „Shift“ und Linksklick legt die Sendung so oft ab, wie Ihr die „Shift“-Taste gedrückt haltet.
+Per Rechtsklick erhaltet Ihr gegebenenfalls wieder freie Hand.
 
 
-Ebenfalls rechts neben der Programmplanung findet Ihr den Punkt „Finanzen“. Linksklick darauf, lädt einen Finanzbildschirm, der Euch detaillierte Angaben über die Einnahmen und Ausgaben ausweist.
+Ebenfalls rechts neben der Programmplanung findet Ihr die Punkte „Finanzen“, "Statistiken" und "Erfolge". Linksklick darauf, lädt entsprechende Bildschirme, die Euch detalliertere Informationen ausweisen.
 
-Die anderen Features im Programmplaner sind derzeit noch nicht aktiv.
+
 
 
 
@@ -187,16 +181,16 @@ Freilich der Preis. Der sagt aus, ob Ihr ihn Euch leisten könnt. Wichtiger für
 
 Wie die Filmeigenschaften zu bewerten sind, beschrieb STARSCrazy:
 
-"Tempo: Wie interessant finden Normalos den Film (entspricht Zuschauer-Ratings)
-Kritik: Wie interessant finden Kritiker den Film (entspricht Kritiker-Ratings)
-Kinokasse: Wie erfolgreich war der Film an der Kinokasse.
+ "Tempo: Wie interessant finden Normalos den Film (entspricht  Zuschauer-Ratings)
+ Kritik: Wie interessant finden Kritiker den Film (entspricht  Kritiker-Ratings)
+ Kinokasse: Wie erfolgreich war der Film an der Kinokasse.
 
-Bei allen drei Werten gilt: je höher desto besser.
+ Bei allen drei Werten gilt: je höher desto besser.
 
-Je nach Genre sind aber manche Werte wichtiger als andere:
-- Kritik ist vor allem wichtig bei Kultur, Live, Musik, Show.
-- Tempo ist wichtig bei Erotik, Sport, Klatsch, Bezahlfernsehen
-- Kinokasse ist wichtig bei Action, Sci-Fi, Fantasy, Komödie, Liebe"
+ Je nach Genre sind aber manche Werte wichtiger als andere:
+ - Kritik ist vor allem wichtig bei Kultur, Live, Musik, Show.
+ - Tempo ist wichtig bei Erotik, Sport, Klatsch, Bezahlfernsehen
+ - Kinokasse ist wichtig bei Action, Sci-Fi, Fantasy, Komödie, Liebe"
 
 
 
@@ -205,11 +199,12 @@ Je nach Genre sind aber manche Werte wichtiger als andere:
 Klickt auf einen Film, bewegt ihn über den Koffer und klickt erneut, dann landet er im Koffer.
 Das stellt nur eine Vorauswahl dar. Zwar wird Euch das Geld sofort abgezogen, wenn Ihr aber wiederum auf den Film klickt und ihn zum Regal bewegt, dort wieder klickt, landet er im Regal und das Geld ist wieder auf Eurem Konto.
 Verlaßt Ihr aber den Raum mit dem Film im Koffer, dann landet der Film unweigerlich im Archiv und steht automatisch für Eure Sendeplanung zur Verfügung.
-Sollte der Koffer mal voller Filme sein, so verlaßt den Raum, betretet ihn wieder und Ihr habt genug Platz zum Weitershoppen.  Ganz nebenbei: Die vorher durch Euren Einkauf geschaffenen Lücken wurden in der Zwischenzeit vom Agenten aufgefüllt.
+Sollte der Koffer mal voller Filme sein, so verlaßt den Raum, betretet ihn wieder und Ihr habt genug Platz zum Weitershoppen. 
+Ganz nebenbei: Die vorher durch Euren Einkauf geschaffenen Lücken wurden in der Zwischenzeit vom Agenten aufgefüllt.
 
 
 Die zweite Möglichkeit hier Filme zu erwerben, besteht in der Auktion.
-Dazu klickt auf den Holzhammer auf dem Agentenschreibtisch. Da erscheint ein Menü mit Filmen und dem jeweiligen Mindestgebot. Das Drüberfahren mit der Maus zeigt Euch wieder die Informationen zum Film.
+Dazu klickt auf den Holzhammer auf dem Agentenschreibtisch. Da erscheint ein Menü mit Filmen und dem jeweiligen Mindestgebot. Das drüberfahren mit der Maus zeigt Euch wieder die Informationen zum Film.
 Klickt darauf und Ihr habt ein Angebot gemacht. Das Geld wird sofort vom Konto abgezogen. Sollte bis Mitternacht kein weiterer Spieler bieten, landet der Film automatisch in Eurem Archiv und steht für die Sendeplanung bereit.
 
 
@@ -220,16 +215,16 @@ Klickt darauf und Ihr habt ein Angebot gemacht. Das Geld wird sofort vom Konto a
 
 Das ist der gute Mann, der uns die Mäuse fängt. Nun eigentlich schwatzt er uns Sachen auf, die den Zuschauern den Film vermiesen oder Platz schaffen, um Chips zu holen.
 Kurz und gut: Hier gibt’s die Werbeblöcke, die stündlich gesendet dafür sorgen, daß wir Geld reinkriegen.
-Ihr seht auf dem Tisch und an der Wand Ordner stehen und rechts oben wieder einen Koffer. In diesem Koffer stehen auch schon Ordner. Das sind die bereits abgeschlossenen Werbeverträge. Drei davon spendiert das Spiel gleich beim Spielstart.
-Daß die drei Ordner im Koffer stehen und nicht irgendwo im Archiv, soll Euch darauf hinweisen, daß der Platz im Koffer beschränkt ist. Ist der Koffer voll, so könnt Ihr keinen neuen Werbevertrag abschließen. Platz schaffen funktioniert nur, indem Ihr Werbung zu Ende sendet. Oder sie nach der Frist verfällt.
+Ihr seht auf dem Tisch und an der Wand Ordner stehen und rechts oben wieder einen Koffer. In diesem Koffer stehen normalerweise schon Ordner. Das sind die bereits abgeschlossenen Werbeverträge. Drei davon spendiert das Spiel gleich beim Spielstart.
+Daß die drei Ordner im Koffer stehen und nicht irgendwo im Archiv, soll Euch darauf hinweisen, daß der Platz im Koffer beschränkt ist. Ist der Koffer voll, so könnt Ihr keinen neuen Werbevertrag abschließen. Platz schaffen funktioniert nur, indem Ihr Werbung zu Ende sendet. Oder wenn sie nach der Frist verfällt, was jedoch eine Strafzahlung zur Folge hat.
 
 Fahrt mit den Mauszeigern über die Ordner und ihr seht die werberelevanten Informationen.
 Die Prämie muß ich nicht weiter erläutern. Die Strafe wird fällig, wenn Ihr die erforderlichen Blöcke nicht in der angegebenen Zeit mit den geforderten Zuschauern sendet.
-Im Sendeplan wird Euch übrigens auch angezeigt, wie oft die Werbung schon eingeplant bzw. gesendet wurde.
+Im Tooltip wird Euch übrigens auch angezeigt, wie oft die Werbung schon eingeplant bzw. gesendet wurde.
 
 Auch hier werden die gerissenen Lücken nach Verlassen des Raumes wieder aufgefüllt. Also schnell nochmal rein, ob noch was Günstiges hinzugekommen ist.
 
-Links unten im Raumbildschirm gibt es ein abgesetztes Icon. Fahrt mit dem Mauszeiger darauf und ein Menü klappt auf, mit dem die Werbeverträge  nach Einschaltquoten oder Prämien sortiert werden können.
+Links unten im Raumbildschirm gibt es ein abgesetztes Icon. Fahrt mit dem Mauszeiger darauf und ein Menü klappt auf, mit dem die Werbeverträge nach Einschaltquoten oder Prämien sortiert werden können.
 
 Bitte beschwert Euch nicht allzusehr, daß die Werbeprämien noch nicht so richtig ausbalanciert sind. Das ist ein weites Feld und nicht so nebenbei zu erledigen. Wir arbeiten aber daran.
 
@@ -240,26 +235,38 @@ Bitte beschwert Euch nicht allzusehr, daß die Werbeprämien noch nicht so richt
 -------------------
 
 Im Nachrichtenstudio werden, wie nicht anders zu erwarten, die Nachrichten produziert.
+
 Ihr seht rechts die Sprecherkabine. Die soll einfach gut aussehen. 
 Links sind fünf farbige Tafeln mit verschiedenen Symbolen angebracht. Dort könnt Ihr die Abolevels einstellen. Der Tooltip zeigt Euch, welches Symbol zu welchem Genre gehört.
 Die Abolevel unterscheiden sich in der Zeitverzögerung mit der Ihr die Nachrichten zugestellt bekommt. Bei 0 bekommt Ihr für dieses Genre gar keine Nachrichten. Bei 3 erhaltet Ihr sie sofort, wenn sie erscheinen. Analog dazu kostet Abolevel 0 auch nichts, 3 dafür am meisten.
+
+Nach und nach werden dem Spiel auch Nachrichten hinzugefügt, die erst ab einem bestimmten Level zur Verfügung stehen.
+
 Die Nachrichten können Zuschauer von anderen Sendern abziehen, die dann auch die Sendung bei Euch schauen könnten.
+
 Zu beachten ist, daß jeweils das Level für die Abrechnung zugrunde gelegt wird, das am Tag als höchstes eingestellt war. Also lohnt Runterschalten erst kurz vor 0 Uhr. 
 Ihr braucht keine Angst zu haben, wenn Ihr die Level mal durchschaltet. Die Änderung tritt erst nach einigen Sekunden finanzträchtig inkraft.
 
 Klickt Ihr auf die Pinnwand, kommt Ihr zum eigentlichen Herzstück:
 Dem Angebot an Nachrichten – links – und die zur Ausstrahlung ausgewählten – rechts.
 
-Wie üblich auf die zu platzierende Sendung linksklicken und sie an den Platz bewegen, wo sie hin soll. Die zuvor dort gelegene habt Ihr dann an der Hand. Legt sie per Linksklick in der Auswahlliste ab oder entsorgt sie per Rechtsklick.
+Wie üblich auf die zu platzierende Sendung linksklicken und sie an den Platz bewegen, wo sie hin soll. Die zuvor dort gelegene habt Ihr dann an der Hand. Legt sie per Linksklick in der Auswahlliste, an einem anderen Sendeplatz ab oder entsorgt sie per Rechtsklick.
+In letzterem Fall steht sie dann aber nicht mehr zur Verfügung.
 
 Da die Nachrichten eine eigene Einschaltquotenberechnung besitzen, könnte es schon interessant sein, da einige Kombinationen auszuprobieren. Es ist durchaus möglich, die Nachrichteneinschaltquote höherzupushen als die der vorangegangenen Sendung. Was der nachfolgenden Sendung dann wiederum mehr Zuschauer bescheren kann.
+
+Zudem reagieren die verschiedenen Zuschauergruppen verschieden auf verschiedene Nachrichten. Aber das findet selbst heraus.
+
+Auch die Reihenfolge der gesendeten Nachrichten hat einen Einfluss.
+
 
 
 
 
 - Senderkauf
 ------------
-Da sind wir freilich bei einem der strategisch wichtigsten Features. Nutze ich das Geld erstmal für den Senderausbau oder für bessere Filme?
+Da sind wir freilich bei einem der strategisch wichtigsten Features.
+Nutze ich das Geld erstmal für den Senderausbau oder für bessere Filme?
 
 Zu finden ist das Menü für den Senderkauf per Linksklick auf die Landkarte ganz rechts am Rand.
 
@@ -273,14 +280,19 @@ Habt Ihr den Button „kaufen“ schon angeklickt, ist es dafür freilich zu sp�
 Ihr könntet jetzt den Sendemast wieder verkaufen. Wählt Ihn dazu in der Liste rechts unten aus. Und dann auf den Button „Sendemast verkaufen“.
 Gemeinerweise erhaltet Ihr weniger Geld zurück, als er gekostet hat.
 
+Die Menüpunkte am unteren Rand "Kabelnetzanbindun" und "Satellitenanbindung" geben den möglichen Zugriff auf vorhandene Kabelnetze und Satelliten an. Während die vorhandenen Satelliten aufgelistet werden, werden die verfügbaren Kabelnetze durch Überfahren der Landkarte angezeigt.
+Wenn Ihr die angegebenen Bedingungen erfüllt, könnt Ihr die Anbindungen mieten. Vorgesehen ist jeweils eine einjährige Vertragslaufzeit.
+
+Die Abdeckung von Kabel oder Satellit ist an die realen Daten angelehnt. Es ist also nur eine teilweise Abdeckung der Gebiete zu erwarten. Diese steigt jedoch im Laufe des Spiels.
+
+Für alle drei Sendearten wird die Zuschaltung der Reichweite zur nächsten vollen Stunde ermöglicht.
 
 
 
 - Drehbuchagentur
 -----------------
 
-Die Drehbuchagentur gehört zum Gesamtkomplex "Eigenproduktion", der noch in Arbeit ist.
-Momentan könnt Ihr hier Drehbücher kaufen. Die stehen auf und neben  dem kleinen Schrank an der Tür.
+Hier könnt Ihr Drehbücher für die Eigenproduktion kaufen. Die stehen auf und neben dem kleinen Schrank an der Tür.
 Drüberfahren mit dem Mauszeiger lässt Datenblätter erscheinen, auf dem die entsprechenden Informationen nachgelesen werden können. Klickt auf das gewünschte Drehbuch und legt es im Koffer durch Loslassen der linken Maustaste ab. Sobald der Raum verlassen wird, nennt sich das gewählte Drehbuch Euer Eigen.
 
 
@@ -290,7 +302,10 @@ Drüberfahren mit dem Mauszeiger lässt Datenblätter erscheinen, auf dem die en
 --------
 
 Mit dem ausgewählten Drehbuch geht es ins Studio. Klickt dort auf das gewünschte Drehbuch im Koffer und legt es rechts auf dem Schränkchen ab.
-Links steht der Studioleiter. Linksklickt auf ihn und es erscheint ein Dialog, in dem Ihr eine Einkaufsliste fordern könnt. Diese erscheint nach Linksklick auf "ich brauche eine Einkaufsliste..." mittig am unteren Rand. Die kann dann da hängen bleiben. Und ab geht's zum Supermarkt.
+Links steht der Studioleiter. Linksklickt auf ihn und es erscheint ein Dialog, in dem Ihr eine Einkaufsliste fordern könnt. Diese erscheint nach Linksklick auf "ich brauche eine Einkaufsliste..." mittig am unteren Rand. Die kann dann da hängen bleiben. Und ab geht's 
+zum Supermarkt.
+
+Vom Supermarkt zurück, könnt Ihr einen Film mit vollständiger Einkaufsliste zur Produktion freigeben. Wählt dazu den gewünschten Film und klickt auf den Studioleiter.
 
 
 
@@ -299,15 +314,25 @@ Links steht der Studioleiter. Linksklickt auf ihn und es erscheint ein Dialog, i
 --------
 
 Betretet den Supermarkt und es wird ein Dialog angeboten, der zum Einkauf eines Betty-Geschenks oder dem Prozedere der Filmproduktionsvorbereitung führt.
+
+Betty-Geschenke interessieren nur Betty oder eben nicht. Probiert selber aus, ob Eure Einschätzung ihres Charakters der Spielrealität entspricht. Hier kommt weiter nix dazu.
+
 Wählt also die Filmproduktion.
 Im nächsten Bildschirm stehen links oben die Drehbüchertitel für die schon Einkaufslisten angefordert wurden.
-Klickt auf jeden Fall den gewünscht an.
-Mittig erscheinen jetzt die verschiedenen zu besetzenden Akteursanforderungen (Regisseur, Darstellerin usw.). Klickt diese jeweils an und eine Liste möglicher Personen erscheint. Der blaue Balken symbolisiert grob den zugehörigen Erfahrungsstand. Dieser ändert sich weiteren Produktionen. Fahrt mit dem Mauszeigefinger über die Personen und es erscheint für die jeweilige Person ein Tooltip mit den individuellen Eigenschaften. Die eingegrünten Eigenschaften sind besonders nützlich für die zu besetzende Produktion, die eingegrauten eher uninteressant.
+Klickt den gewünscht an.
+
+Mittig erscheinen jetzt die verschiedenen zu besetzenden Akteursanforderungen (Regisseur, Darstellerin usw.). Klickt diese jeweils an und eine Liste möglicher Personen erscheint. Der blaue Balken symbolisiert grob den zugehörigen Erfahrungsstand. Dieser ändert sich mit weiteren Produktionen.
+Fahrt mit dem Mauszeigefinger über die Personen und es erscheint für die jeweilige Person ein Tooltip mit den individuellen Eigenschaften. Die eingegrünten Eigenschaften sind besonders nützlich für die zu besetzende Produktion, die eingegrauten eher uninteressant.
 Wählt für jeden geforderten Akteurstyp eine Person.
+
 Falls die Wahl rückgängig gemacht werden soll, ist dies per Rechtsklick auf die entsprechende Person möglich.
-Als nächstes muss im Rechten Bildschirmteil noch eine Produktionsfirma gewählt werden. Die gibt es in drei Leveln. Wobei jedes Level seinen Preis und eine Anzahl Produktionspunkte mit sich bringt. Ersterer muss gezahlt werden, letztere können auf die Produktionsschwerpunkte vergeben werden. Oder aber auf das Produktionstempo.
-Die Produktionsschwerpunkte sind je nach Genre unterschiedlich gewichtet. Freilich brauch ein Actionfilm eher Stunts, als ein Liebesfilm. Aber das soll nicht im Einzelnen ausgeplaudert werden.
+
+Als nächstes muss im rechten Bildschirmteil noch eine Produktionsfirma gewählt werden. Die gibt es in drei Leveln. Wobei jedes Level seinen Preis und eine Anzahl Produktionspunkte mit sich bringt. Ersterer muss gezahlt werden, letztere können auf die Produktionsschwerpunkte vergeben werden. Oder aber auf das Produktionstempo.
+
+Die Produktionsschwerpunkte sind je nach Genre unterschiedlich gewichtet.
+Freilich brauch ein Actionfilm eher Stunts, als ein Liebesfilm. Aber das soll nicht im Einzelnen ausgeplaudert werden.
 Wenn alle Punkte vergeben sind, kann links unterhalb der Gesamtkosten und der Produktionszeit die Planung abgeschlossen werden.
+
 Zehn Prozent der Gesamtkosten werden sofort fällig. Der Rest dann bei Fertigstellung. Über diese wird per Ingame-Nachricht berichtet. Die Sendung ist dann im Programmplaner verfügbar.
 Für die Zeit der Produktion ist das Studio übrigens nicht betretbar. Per Tooltip an der Studiotür wird über den Zeitpunkt informiert.
 
@@ -320,15 +345,16 @@ Für die Zeit der Produktion ist das Studio übrigens nicht betretbar. Per Toolt
 
 Das Chef-Zimmer ist rechts neben dem Fahrstuhl auf Eurer Etage.
 Der ist ein Chef der alten Schule, achtet bitte auf den vorzüglich animierten Zigarrenqualm.
-Der tut allerdings nichts zur Sache.
+Der tut allerdings nicht zur Sache.
 
-Was es hier zu tun oder zu lassen gibt, wird in der Sprechblase angezeigt. Klickt einfach auf das Eurem Anliegen Entsprechende, wobei
-es sich derzeit ausschließlich um geldwerte Optionen handelt. Zahlt zurück oder nehmt neuen Kredit auf.
+Was es hier zu tun oder zu lassen gibt, wird in der Sprechblase angezeigt. Klickt einfach auf das Eurem Anliegen Entsprechende, wobei es sich derzeit ausschließlich um geldwerte Optionen handelt. Zahlt zurück oder nehmt neuen Kredit auf.
 
 Die Kreditvergabe hängt von verschiedenen Faktoren ab. So veränderen nicht eingehaltene Werbeverträge oder Sendeausfälle Chefs Laune, was momentan aber nur Auswirkungen auf den Kreditrahmen hat.
 
 Von Zeit zu Zeit erscheint eine Meldung, daß Euch der Chef sehen will. Er läßt Euch dafür 2 Spielstunden Zeit. Laßt Ihr die Zeit verstreichen, bewegt sich die Spielfigur selbsttätig ins Direktionsbüro. Sie weiß halt, was sich gehört.
 Durch Linksklick auf die Meldung könnt Ihr den Besuch sofort ausführen.
+
+Desweiteren informiert Euch der Chef über anstehende Sammy-Verleihungen. Wenn Ihr den Wettbewerb gewinnt, winken kleine Preis in Geld oder Boni auf die Einschaltquoten.
 
 
 
@@ -336,11 +362,26 @@ Durch Linksklick auf die Meldung könnt Ihr den Besuch sofort ausführen.
 - Terrorist
 -----------
 
-Das ist der Mann für's Grobe. Nicht unumstritten sorgt er dafür, daß immer genügend freie Räume im Haus zu Verfügung stehen. Denn freie Räume sind knapp und im späteren Spielverlauf braucht es größere Studios. Das erste, das Euer Eigen ist, hat nur die Größe eins. Je weiter rechts, desto größer die Räume.
+Das ist der Mann für's Grobe. Nicht unumstritten sorgt er dafür, daß immer genügend freie Räume im Haus zu Verfügung stehen. Denn freie Räume sind knapp und im späteren Spielverlauf braucht es größere Studios. Das erste, das Euer Eigen ist, hat nur die Größe
+eins.
 
 Der Terrorist ist eigentlich ein Handlanger der beiden dubanischen Botschaften, die in ständigem Zwist miteinander liegen. Die jeweils andere Seite ist das eigentliche Ziel. Die Terrorgefahr wird im späteren Verlauf mit einer Nachricht angekündigt.
 
 Kurz darauf betritt der Terrorist das Gebäude und geht zur Informationstafel. Da wird Euer Mittun möglich. Denn Ihr könnt die Schilder auf der Informationstafel vertauschen. Hängt nun das Schild der Botschaft des Landes, das als Ziel für einen möglichen Angriff in den Nachrichten erwähnt wurde, an eine beliebige Stelle und der Terrorist wird seine Schritte dorthin lenken. Wenn Ihr sehen wollt, was passiert, fahrt einfach mit.
+
+Die KI könnte übrigens das jeweilige Botschaftsschild auch auf Eure Büros oder Studios platzieren.
+
+
+
+
+- Immobilien-Makler
+-------------------
+
+Dieser nette Mensch ermöglicht Euch die Anmietung neuer und eventuell größerer Studios.
+
+Auf die Pinwand links geklickt und es erscheint der im Haus belegten Räume. Etwas hervorgehoben sind die potentiell anmietbaren. Ein Tooltip enthält die jeweiligen derzeitigen Mieter und die Studiogröße. Letztere hat im Moment noch keinen Einfluss auf die Eigenproduktion.
+
+Wie Ihr die Mieter überzeugen könnt, ihre Räume aufzugeben, lernen wir später.
 
 
 
@@ -348,8 +389,9 @@ Kurz darauf betritt der Terrorist das Gebäude und geht zur Informationstafel. D
 - FSK 18 und Gerichtsvollzieher
 -------------------------------
 
-Filme mit dem Hinweis FSK 18 dürfen laut den Jugendschutzgesetzen im TVTower-Land nicht zwischen 6 und 22 Uhr gesendet werden. Es bleibt Euch jedoch überlassen, ob Ihr Euch daran haltet. Immerhin degradiert eine solche Regelung ja 16jährige zu kindlichen Menschen.
+Filme mit dem Hinweis FSK 18 dürfen laut den Jugendschutzgesetzen im TVTower-Land nicht zwischen 6 und 22 Uhr gesendet werden. Es bleibt Euch jedoch überlassen, ob Ihr Euch daran haltet.
 Allerdings hat die Sache einen Haken. Oder besser zwei. Die Behörden können schon in der Programmplanung erkennen, daß Ihr vorhabt ein Gesetz zu unterlaufen. Daraufhin wird eine Strafzahlung fällig und der Film wird aus dem Programmplaner entfernt. Die Lücke müßt Ihr dann wieder füllen.
+
 Habt Ihr es geschafft, den Film unbemerkt an der Zensur vorbeizuschmuggeln, gibt es nach der Ausstrahlung immer noch eine 25%ige Chance, daß einer der beiden Gerichtsvollzieher (Mr. Czwink und Mr. Czwank) erscheint. Da sie sich nicht so gut auskennen im TVTower, informieren sie sich ganz wie der Herr Terrorist an der Informationstafel. Vertauscht die Archivschilder zweckdienlich und ein Film der Konkurrenz könnte beschlagnahmt werden.
 
 Wurde ein Film beschlagnahmt, so erhaltet Ihr eine Meldung darüber.
@@ -368,10 +410,14 @@ Das meint hier den unteren Teil des Spielbildschirms, der Euch durch das gesamte
 Links ist der Fernseher, der das laufende Programm der einzelnen Sender anzeigt.
 Den könnt Ihr ausschalten.
 Desweiteren könnt Ihr über die farbigen Tasten auswählen, welchem Sender Ihr ins laufende Programm schauen wollt. 
-Bewegt Ihr den Mauszeiger über den Bildschirm oder die Tasten der anderen Sender, erscheint ein Tooltipmit Informationen zum laufenden Programm. Unter anderem wird angezeigt, ob die Einschaltquoten der eingestellten Werbung genüge tut.
+
+Bewegt Ihr den Mauszeiger über den Bildschirm oder die Tasten der anderen Sender, erscheint ein Tooltip mit Informationen zum laufenden Programm. 
 Geplant ist, für jedes Filmgenre ein eigenes Bild zu zeigen. Wenn Ihr die Maushand auf dem Bildschirm platziert, wird angezeigt, welcher Film mit welcher Einschaltquote läuft. Zusätzlich bei Eurem eigenen Sender ein Hinweis, ob ein passender Werbeblock gesetzt ist.
+
 Die anderen Anzeigen sind zu Eurer Information gedacht.
-Der rechte Bildschirm soll einmal die jeweiligen Zielgruppen zeigen, die vom Programm erreicht werden. Angedeutet wird es ja schon.
+
+Der rechte Bildschirm soll später die jeweiligen Zielgruppen zeigen, die vom Programm bevorzugt erreicht werden. Angedeutet wird es ja schon.
+
 Die Anzeigen in der Mitte sind ja dank der Tooltips selbsterklärend.
 
 
@@ -379,7 +425,7 @@ Die Anzeigen in der Mitte sind ja dank der Tooltips selbsterklärend.
 
 @Chat und Cheaten
 
-Der InGame-Chat wird mit der "Enter"-Taste aufgerufen. Der Chat kann in der Entwicklerversion verschiedene Kommandos entgegennehmen. Der Befehl "/dev help" listet die verfügbaren Befehle auf. So würde zum Beispiel ein "/dev money 1 1000" dem ersten Spieler 1000 Euro auf das Konto gutschreiben.
+Der InGame-Chat wird mit der "Enter"-Taste aufgerufen. Der Chat kann in der Entwicklerversion verschiedene Kommandos entgegennehmen. Der Befehl "/dev help" listet die verfuegbaren Befehle auf. So würde zum Beispiel ein "/dev money 1 1000" dem ersten Spieler 1000 Euro aufs Konto gutschreiben.
 
 
 
@@ -388,7 +434,8 @@ Der InGame-Chat wird mit der "Enter"-Taste aufgerufen. Der Chat kann in der Entw
 =======================
 
 Zu den Abläufen im Hintergrund gehört zum Beispiel die Einschaltquotenberechnung.
-Hier soll im Moment noch nicht viel erklärt werden. So ist es sicher leichter, daß Ihr auf Ungereimtheiten aufmerksam werdet und sie uns gegebenenfalls mitteilt. Da die meisten, die uns in den Weiten des Netzes finden, erfahrene Spieler und Spielerinnen sein dürften, ist die Intuition ein nicht zu unterschätzender Faktor zu Verbesserung des Spiels.
+Hier soll im Moment noch nicht viel erklärt werden. So ist es sicher leichter, daß Ihr auf Ungereimtheiten aufmerksam werdet und sie uns gegebenenfalls mitteilt. Da die meisten, die uns in den Weiten des Netzes finden, erfahrene Spieler und Spielerinnen sein dürften, ist die Intuition ein nicht zu unterschätzender Faktor zur Verbesserung des Spiels.
+
 Und wir wollen die Ungereimtheiten nicht durch schlaue Wichtigkeiten schon im Vorhinein wegreden.
 
 
@@ -398,88 +445,89 @@ Und wir wollen die Ungereimtheiten nicht durch schlaue Wichtigkeiten schon im Vo
 @Veränderungen durch den Spieler
 ================================
 
-Im Spieleverzeichnis liegt ein config-Ordner. In diesem wiederum gibt es eine Datei „settings.xml“.
-Diese enthält eine Menge Sachen, die per Startmenüpunkt „Einstellungen“ verändert werden können.
-Wenn Ihr in den „Einstellungen“ etwas verändert, was von den Vorgaben abweicht, wird eine "settings.user.xml" angelegt - in dieser können auch händische Abaenderungen stattfinden, die vormals in der "settings.xml" zu hinterlegen waren.
+Im Spieleverzeichnis liegt ein config-Ordner. In diesem wiederum gibt es eine Datei „settings.xml“. Diese enthält eine Menge Sachen, die per Editor verändert werden
+können.
+Wenn Ihr in den "Einstellungen" etwas verändert, was von den Vorgaben abweicht, wird eine "settings.user.xml" angelegt - in dieser können auch händische Abaenderungen stattfinden, die vormals in der "settings.xml" zu hinterlegen waren.
 
-Kurz: die settings.user.xml enthält die Abweichungen zu den vorgesehenen Einstellungen aus settings.xml
+Kurz: die settings.user.xml enthält die  Abweichungen zu den vorgesehenen Einstellungen aus settings.xml 
 
-
-Die Datei "DEV.xml" beinhaltet Entwicklereinstellungen zum Thema Balancing oder andere Feintuninginstrumente wie die Fahrstuhlgeschwindigkeit. Eine Anpassung dieser Werte sollte nicht von unbedarften Nutzern durchgeführt werden.
 
 
 
 @Tastenkürzel für die Entwicklerversion
 =======================================
 
-Diese Tastenkürzel wird es so im endgültigen Spiel nicht geben, gewöhnt Euch also nicht zu sehr daran. Sie sind vor allem dafür gedacht, die Testerei zu erleichtern.
-
-Escape
-------
-
-Es wird ein Menü aufgerufen mit dem das Spiel
-- beendet
-- zum Hauptmenü zurückgekehrt
-- gespeichert
-- geladen
-- fortgesetzt
-werden kann.
-
 
 Spielgeschwindigkeit:
 ---------------------
 Cursor Hoch/Runter : Spielgeschwindigkeit +/-
-Cursor Links/Rechts : Laufgeschwindigkeit +/-
+Cursor Links/Rechts : Laufgeschwindigkeit und Spielgeschwindigkeit +/-
+Strg Links + Cursor Rechts: Schnellvorlauf "Stufe 1"
+Strg Rechts + Cursor Rechts: Schnellvorlauf "Stufe 2"
+
 5 : Spielgeschwindigkeit 60 Spielminuten/s
 6 : Spielgeschwindigkeit 120 Spielminuten/s
 7 : Spielgeschwindigkeit 180 Spielminuten/s
 8 : Spielgeschwindigkeit 240 Spielminuten/s
 9 : Spielgeschwindigkeit 1 Spielminute/s (Standard)
 
+
 Raeume:
 -------
-M: Musik/Soundausgabe an/aus
-Shift+M: Soundeffekte an/aus
-Strg+M: Musik an/aus
-
 W: Werbemakler
 A: Archiv
 B: Betty
-D: Drehbuchagentur
-Linkes Shift + D: Studio
-Linkes Strg + D: Supermarkt
-S: Studio (falls mehrere im Besitz: erstes gefundenes)
-Linkes Strg + S: Supermarkt
 F: Filmagentur
 O: Buero/Office
 C: Chef
-N: Newsraum
-R: Roomboard / Raumplan (Erdgeschoss)
-E: Credits ("employees" ;-))
+N: Nachrichtenstudio
+R: Raumvermietung / Makler
+Strg + R: Roomboard / Raumtafel"zimmer"
+L: Supermark / Laden
+S: Studio (erstes gefundenes)
+Strg Links + S: Supermarkt
+Strg Rechts + S: Drehbuchagentur (Scripts)
+E: Credits (employees :-))
 
 
 Laden/Speichern:
 ----------------
-F8: Schnellspielstand laden
-F5: Schnellspielstand speichern
-ESCAPE: Ruft Spielmenue auf (gezieltes Laden/Speichern moeglich)
+F5: Spielstand speichern (Quicksave)
+F8: Spielstand laden (Quickload)
+
 
 Sonstiges:
 ----------
+1-4: Spieler wechseln (mit Observermodus nur Spieler beobachten)
+Strg Links + O: Observermodus an/aus
+Shift Rechts + 1-4: KI-Skript des Spielers neuladen
+Shift Links + 1-4: Spieler bankrott setzen
+G: Geister-Modus (frei mit Maus durch Hochhaus scrollen) an/aus
+Shift Links + P: Ausstrahlungsuebersicht fuer heute (in Konsole)
+Shift Rechts + P: Ausstrahlungsuebersicht alle Tage (in Konsole und Datei "log.broadcastoverview.txt")
+Strg Links + P: Leistungsuebersicht/Performanz aller Tage (in Konsole und Datei "log.playerperformanceoverview.txt")
+P: Programmplanuebersicht (in Konsole)
+
+TAB: Debug-Infos ein-/ausblenden
+Strg Links + TAB: Programmplan-Debug-Ansicht an/aus
+K: ALLE Figuren werden aus den Raeumen gekickt
 T: Terroristen losschicken
-Q: Quoten-Debugbildschirm an/aus
-TAB: Debug-Infos ein/ausblenden
-linkes STRG + TAB: Programmplan-Debug-Uebersicht
-G: Ghostmodus - mit Maus durchs Hochhaus scrollen
-K: Alle Figuren aus den Raeumen schmeissen
-P: Programmplanübersicht in Konsole ausgeben
-1-4: Spieler wechseln
-Linkes Shift + 1-4: Spieler X beobachten
-Rechtes Shift + 1-4: KI-Script von Spieler X neuladen 
-Shift + F : Finanzuebersicht in Konsole
-Shift + W : Werbeuebersicht in Konsole
-F1: Spielanleitung
-F2: Spielhilfe fuer aktuellen Bildschirm (falls verfuegbar)
+
+F1: Spielanleitung anzeigen
+F2: Raum-/Bildschirmspezifischen Hilfetext anzeigen (wenn verfuegbar)
 F6: Musik spielen
-F9: KI an/aus 
-F10: Alle Fremdfiguren de-/aktivieren
+F10: Alle Fremdfiguren de-/aktivieren (Bewegungen)
+F11: KI an/aus
+
+M: Musik/Soundausgabe an/aus
+Shift+M: Soundeffekte an/aus
+Strg+M: Musik an/aus
+
+
+Debugausgaben:
+--------------
+Alt Links + M: Debugmodifieransicht an/aus
+Q: Quoten-Debugbildschirm an/aus
+Shift Rechts + F: Finanzuebersicht aller Tage (auch nach "log.financeoverview.txt")
+Shift Links + F: Finanzuebersicht aktueller Tag
+Shift + W: Uebersicht Werbevertraege in DB
