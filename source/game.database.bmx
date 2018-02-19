@@ -485,12 +485,13 @@ Type TDatabaseLoader
 		'price and topicality are outdated
 		xml.LoadValuesToData(nodeData, data, [..
 			"genre", "price", "quality", "available", "flags", ..
-			"keywords", "happen_time" ..
+			"keywords", "happen_time", "min_subscription_level" ..
 		])
 
 		newsEventTemplate.flags = data.GetInt("flags", newsEventTemplate.flags)
 		newsEventTemplate.genre = data.GetInt("genre", newsEventTemplate.genre)
 		newsEventTemplate.keywords = data.GetString("keywords", newsEventTemplate.keywords).ToLower()
+		newsEventTemplate.minSubscriptionLevel = data.GetInt("min_subscription_level", newsEventTemplate.minSubscriptionLevel)
 
 		local available:int = data.GetBool("available", not newsEventTemplate.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
 		newsEventTemplate.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not available)		

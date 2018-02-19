@@ -249,9 +249,9 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 		NewsEvent.SetFlag(TVTNewsFlag.UNIQUE_EVENT, True) 'one time event
 		'
 		if league._leaguesIndex = 0 '1. BL
-			NewsEvent.minSubscriptionLevel = 2
+			NewsEvent.minSubscriptionLevel = 3
 		elseif league._leaguesIndex = 1 '2. BL
-			NewsEvent.minSubscriptionLevel = 1
+			NewsEvent.minSubscriptionLevel = 2
 		'elseif league._leaguesIndex = 2 '3. L
 		'	NewsEvent.minSubscriptionLevel = 1
 		endif
