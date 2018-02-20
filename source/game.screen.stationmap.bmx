@@ -824,19 +824,21 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
 
 		if TStationCableNetworkUplink(TScreenHandler_StationMap.selectedStation)
-			local provider:TStationMap_BroadcastProvider = TScreenHandler_StationMap.selectedStation.GetProvider()
-			'disable action button if subscription not possible
-			if provider
-				if provider.CanSubscribeChannel(GetPlayerBase().playerID, -1) <= 0 or provider.IsSubscribedChannel(GetPlayerBase().playerID)
-					Select provider.CanSubscribeChannel(GetPlayerBase().playerID, -1)
-						case -1
-							actionButton.SetValue(GetLocale("CHANNEL_IMAGE_TOO_LOW"))
-						case -2
-							actionButton.SetValue(GetLocale("CHANNEL_LIMIT_REACHED"))
-					End Select
-					actionButton.Disable()
-				else
-					actionButton.Enable()
+			if TScreenHandler_StationMap.IsInBuyActionMode()
+				local provider:TStationMap_BroadcastProvider = TScreenHandler_StationMap.selectedStation.GetProvider()
+				'disable action button if subscription not possible
+				if provider
+					if provider.CanSubscribeChannel(GetPlayerBase().playerID, -1) <= 0 or provider.IsSubscribedChannel(GetPlayerBase().playerID)
+						Select provider.CanSubscribeChannel(GetPlayerBase().playerID, -1)
+							case -1
+								actionButton.SetValue(GetLocale("CHANNEL_IMAGE_TOO_LOW"))
+							case -2
+								actionButton.SetValue(GetLocale("CHANNEL_LIMIT_REACHED"))
+						End Select
+						actionButton.Disable()
+					else
+						actionButton.Enable()
+					endif
 				endif
 			endif
 		EndIf
@@ -1169,19 +1171,20 @@ endrem
 
 
 		if TScreenHandler_StationMap.selectedStation
-
-			'disable action button if subscription not possible
-			if openFrame
-				actionButton.Enable()
-				if selectedSatellite
-					if selectedSatellite.CanSubscribeChannel(GetPlayerBase().playerID, -1) <= 0 or selectedSatellite.IsSubscribedChannel(GetPlayerBase().playerID)
-						Select selectedSatellite.CanSubscribeChannel(GetPlayerBase().playerID, -1)
-							case -1
-								actionButton.SetValue(GetLocale("CHANNEL_IMAGE_TOO_LOW"))
-							case -2
-								actionButton.SetValue(GetLocale("CHANNEL_LIMIT_REACHED"))
-						End Select
-						actionButton.Disable()
+			if TScreenHandler_StationMap.IsInBuyActionMode()
+				'disable action button if subscription not possible
+				if openFrame
+					actionButton.Enable()
+					if selectedSatellite
+						if selectedSatellite.CanSubscribeChannel(GetPlayerBase().playerID, -1) <= 0 or selectedSatellite.IsSubscribedChannel(GetPlayerBase().playerID)
+							Select selectedSatellite.CanSubscribeChannel(GetPlayerBase().playerID, -1)
+								case -1
+									actionButton.SetValue(GetLocale("CHANNEL_IMAGE_TOO_LOW"))
+								case -2
+									actionButton.SetValue(GetLocale("CHANNEL_LIMIT_REACHED"))
+							End Select
+							actionButton.Disable()
+						endif
 					endif
 				endif
 			endif

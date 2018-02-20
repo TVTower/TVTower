@@ -659,7 +659,7 @@ Type TStationMapCollection
 			local c:Double = populationCableShareData.GetInterpolatedValue(t)
 			local s:Double = populationSatelliteShareData.GetInterpolatedValue(t)
 			local sum:Double = a + c + s
-			print "year="+y+"  antenna="+ Rset(MathHelper.NumberToString(a*100,1),5)+"%"+"  cable="+Rset(MathHelper.NumberToString(c*100,1),5)+"%"+"  satellite="+RSet(MathHelper.NumberToString(s*100,1),5)+"%"+ "   sum="+RSet(MathHelper.NumberToString(sum*100,1),6)+"%"
+			print "year="+y+"  antenna="+ Rset(MathHelper.NumberToString(a*100,1),5)+"%"+"  cable="+Rset(MathHelper.NumberToString(c*100,1),5)+"%"+"  satellite="+RSet(MathHelper.NumberToString(s,1),5)+"%"+ "   sum="+RSet(MathHelper.NumberToString(sum*100,1),6)+"%"
 		Next
 		end
 		endrem
@@ -2710,6 +2710,9 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		'display broadcast permission price?
 		If showPermissionPriceText > 0
 			tooltipH :+ 2*textH
+		EndIf
+
+		If showPermissionPriceText > 0 or cantGetSectionPermissionReason <= 0
 			tooltipW :+ 40
 		EndIf
 
@@ -2760,7 +2763,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			if provider then minImage = provider.minimumChannelImage
 			
 			GetBitmapFontManager().baseFont.draw(GetLocale("CHANNEL_IMAGE")+" ("+GetLocale("PROVIDER")+"): ", textX, textY)
-			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(minImage*100,2)+" %", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, new TColor.Create(255,150,150))
+			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(minImage,2)+" %", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, new TColor.Create(255,150,150))
 			textY:+ textH
 		EndIf
 
