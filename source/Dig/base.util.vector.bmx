@@ -157,6 +157,13 @@ Type TVec2D {_exposeToLua="selected"}
 	End Method
 
 
+	Method MultiplyFactor:TVec2D(factor:Float)
+		self.x :* factor
+		self.y :* factor
+		return self
+	End Method
+
+
 	Method MultiplyXY:TVec2D(multiplierX:Float, multiplierY:Float)
 		self.x :* multiplierX
 		self.y :* multiplierY
@@ -436,6 +443,14 @@ Type TVec3D {_exposeToLua="selected"}
 		self.x :- otherVec.x
 		self.y :- otherVec.y
 		self.z :- otherVec.z
+		return self
+	End Method
+
+
+	Method MultiplyFactor:TVec3D(factor:Float)
+		self.x :* factor
+		self.y :* factor
+		self.z :* factor
 		return self
 	End Method
 

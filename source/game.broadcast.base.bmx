@@ -389,6 +389,11 @@ Type TBroadcastAudiencePrediction {_exposeToLua="selected"}
 	End Method
 
 
+	Method NeedsToRefreshMarkets:Int() {_exposeToLua}
+		if not bc or bc.AudienceMarkets.Count() = 0 then return True
+	End Method
+
+
 	Method RefreshMarkets:Int() {_exposeToLua}
 		If bc = Null Then bc = New TBroadcast
 		bc.AscertainPlayerMarkets()
@@ -532,6 +537,17 @@ Type TBroadcast
 '		GetAudienceResult(playerId).Reset()
 
 		SetAttraction(playerId, ComputeAttraction(playerId, lastMovieBroadcast, lastNewsShowBroadcast))
+		rem
+		For local i:int = 1 to 4
+			if playerId = i 
+				SetAttraction(playerId, ComputeAttraction(playerId, lastMovieBroadcast, lastNewsShowBroadcast))
+			else
+				'fill markets with the old attraction values of the
+				'other channels
+				SetAttraction(playerId, Attractions[i-1])
+			endif
+		Next
+		endrem
 
 		'Ronny: when a player gets a manually set malfunction, the
 		'       audience attraction is missing - and then bugging out
@@ -541,6 +557,10 @@ Type TBroadcast
 		If Not ad.audienceAttraction Then ad.audienceAttraction = Attractions[playerId - 1]	
 
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
+			'reassign attractions
+			For local i:int = 1 to 4
+				market.SetPlayersProgrammeAttraction(i, Attractions[i-1])
+			Next
 			market.ComputeAudience(Time)
 			AssimilateResultsForPlayer(playerId, market)
 		Next
@@ -663,6 +683,7 @@ Type TBroadcast
 
 		Local audience:Int = GetStationMapCollection().GetTotalShareAudience(playerIDs, withoutPlayerIDs)
 		If audience > 0
+			'print audience +" players:"+StringHelper.JoinIntArray(",",playerIDs) +" without:"+StringHelper.JoinIntArray(",",withoutPlayerIDs)
 			Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
 			market.maxAudience = New TAudience.InitWithBreakdown(audience)
 			For Local playerID:Int = EachIn playerIDs
@@ -1164,10 +1185,13 @@ Type TAudienceMarketCalculation
 		Local competitionAttractionModifier:TAudience = GetCompetitionAttractionModifier()
 		If Not competitionAttractionModifier Then Return
 
-		
+		'print "ComputeAudience:"
+		'Print "  maxAudience: " + MaxAudience.ToString()
+		'Print "  ChannelSurferToShare: " + ChannelSurferToShare.ToString()
+
 		For Local i:Int = 0 Until playerIDs.length
 			'maybe a player just went bankrupt, so create a malfunction for him
-			If Not audienceAttractions[i] Then audienceAttractions[i] = TBroadcast.CalculateMalfunction(Null)
+			If Not audienceAttractions[i] Then SetPlayersProgrammeAttraction(i, TBroadcast.CalculateMalfunction(Null))
 			Local attraction:TAudienceAttraction = audienceAttractions[i]
 			
 			'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
@@ -1194,9 +1218,10 @@ Type TAudienceMarketCalculation
 
 			audienceResults[i] = audienceResult
 
-			'Print "Attraction #" + currKey + ": " + audienceResult.AudienceAttraction.ToString()
-			'Print "Effektive Attraction #" + currKey + ": " + effectiveAttraction.ToString()
-			'Print "Audience #" + currKey + ": " + audienceResult.Audience.ToString()
+			'print "Player " + (i+1)
+			'Print "  Attraction:      " + audienceResult.AudienceAttraction.ToString()
+			'Print "  Eff. Attraction: " + effectiveAttraction.ToString()
+			'Print "  Audience:        " + audienceResult.Audience.ToString()
 		Next
 		'Print "competitionAttractionModifier: " + competitionAttractionModifier.ToString()
 	End Method

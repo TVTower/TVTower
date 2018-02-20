@@ -432,42 +432,29 @@ Type TStationMapCollection
 		Return GetTotalShare(channelNumbers, withoutChannelNumbers).z
 	End Method
 
-
-	'override
-	'returns a share between channels, encoded in a TVec3D containing:
-	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
-	Method GetShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
-		'all sections: sum up X, sum up Y build average in Z
-		local result:TVec3D = new TVec3D.Init(0,0,0)
-
-		For local section:TStationMapSection = EachIn sections
-			If RECEIVERMODE_SHARED
-				Throw "GetShare: Todo"
-				'result.AddVec( section.GetMixedShare(channelNumbers, withoutChannelNumbers) )
-			ElseIf RECEIVERMODE_EXCLUSIVE
-				result.AddVec( section.GetAntennaShare(channelNumbers, withoutChannelNumbers) )
-				result.AddVec( section.GetCableNetworkShare(channelNumbers, withoutChannelNumbers) )
-				result.AddVec( section.GetSatelliteShare(channelNumbers, withoutChannelNumbers) )
-			EndIf
-		Next
-		If result.y = 0 Then result.z = 0.0 Else result.z = result.x/result.y
-
-		return result
-	End Method
-
 	
 	'returns a share between channels, encoded in a TVec3D containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
 	Method GetTotalShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
 		local result:TVec3D = new TVec3D.Init(0,0,0)
-		'either
-		For local section:TStationMapSection = EachIn sections
-			result.AddVec( section.GetShare(channelNumbers, withoutChannelNumbers) )
-		Next
-		'or:
-		'result.AddVec( GetTotalAntennaShare(channelNumbers, withoutChannelNumbers) )
-		'result.AddVec( GetTotalCableNetworkShare(channelNumbers, withoutChannelNumbers) )
-		'result.AddVec( GetTotalSatelliteShare(channelNumbers, withoutChannelNumbers) )
+
+		If populationReceiverMode = RECEIVERMODE_SHARED
+			Throw "GetTotalShare: Todo"
+
+		ElseIf populationReceiverMode =  RECEIVERMODE_EXCLUSIVE
+
+			'either
+			'ATTENTION: contains only cable and antenna
+			For local section:TStationMapSection = EachIn sections
+				result.AddVec( section.GetShare(channelNumbers, withoutChannelNumbers) )
+			Next
+			'or:
+			'result.AddVec( GetTotalAntennaShare(channelNumbers, withoutChannelNumbers) )
+			'result.AddVec( GetTotalCableNetworkShare(channelNumbers, withoutChannelNumbers) )
+
+			'add Satellite shares
+			result.AddVec( GetTotalSatelliteShare(channelNumbers, withoutChannelNumbers) )
+		EndIf
 
 		if result.y > 0 then result.z = result.x / result.y
 		return result
@@ -504,10 +491,49 @@ Type TStationMapCollection
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
 	Method GetTotalSatelliteShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
 		local result:TVec3D = new TVec3D.Init(0,0,0)
-		For local section:TStationMapSection = EachIn sections
-			result.AddVec( section.GetSatelliteShare(channelNumbers, withoutChannelNumbers) )
+
+		For local satellite:TStationMap_Satellite = EachIn satellites
+			Local channelsUsingThisSatellite:Int = 0
+			'amount of non-ignored channels
+			Local interestingChannelsCount:Int = 0 
+			Local allUseThisSatellite:Int = False
+
+			if channelNumbers and channelNumbers.length > 0
+				allUseThisSatellite = True
+				For local channelID:int = EachIn channelNumbers
+					'ignore unwanted
+					if withoutChannelNumbers and MathHelper.InIntArray(channelID, withoutChannelNumbers) then continue
+
+					interestingChannelsCount :+ 1
+
+					if satellite.IsSubscribedChannel(channelID)
+						channelsUsingThisSatellite :+ 1
+					else
+						allUseThisSatellite = False
+					endif
+				Next
+			endif
+				
+
+			if channelsUsingThisSatellite > 0
+				'total - if there is at least _one_ channel uses this satellite
+				result.y :+ satellite.GetReach()
+
+				'share is only available if we checked some channels
+				if interestingChannelsCount > 0 
+					'share - if _all_ channels use this satellite here
+					if allUseThisSatellite
+						result.x = satellite.GetReach()
+					endif
+
+					'share percentage
+					result.z = channelsUsingThisSatellite / interestingChannelsCount
+				endif
+			endif
+		
+			'store new cached data
+			'If shareCache Then shareCache.insert(cacheKey, result )
 		Next
-		If result.y = 0 Then result.z = 0.0 Else result.z = result.x/result.y
 			
 		return result
 	End Method
@@ -2475,6 +2501,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		'inform others (eg. to recalculate audience)
 		EventManager.triggerEvent(TEventSimple.Create("station.onSetActive", Null, Self))
+
 		return True
 	End Method
 
@@ -2619,14 +2646,12 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		'else
 			If constructionTime <  0 Then constructionTime = 0
 
-			constructionTime :+ 1
-
 			'next hour (+construction hours) at xx:00
 			If GetWorldTime().GetDayMinute(built + constructionTime*3600) >= 5
-				SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour(built + constructionTime*3600), 0))
+				SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour(built) + constructionTime + 1, 0))
 			'this hour (+construction hours) at xx:05
 			Else
-				SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour() + (constructionTime-1), 5, 0))
+				SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour(built) + constructionTime, 5, 0))
 			EndIf
 		'endif
 
@@ -2649,7 +2674,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		'check if it becomes ready
 		If Not IsActive()
 			'TODO: if wanted, check for RepairStates or such things
-			If CanActivate() and GetActivationTime() < GetWorldTime().GetTimeGone()
+			If CanActivate() and GetActivationTime() <= GetWorldTime().GetTimeGone()
 				if not SetActive()
 					print "failed to activate " + GetGUID()
 				endif
@@ -4383,7 +4408,6 @@ Type TStationMapSection
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
 			result.AddVec( GetAntennaShare(channelNumbers, withoutChannelNumbers) )
 			result.AddVec( GetCableNetworkShare(channelNumbers, withoutChannelNumbers) )
-			result.AddVec( GetSatelliteShare(channelNumbers, withoutChannelNumbers) )
 		EndIf
 		if result.y > 0 then result.z = result.x / result.y
 		return result
@@ -4469,16 +4493,11 @@ Type TStationMapSection
 '			print "CABLE share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
 		EndIf
 
-		Return result
+		'adjust by current receiver share
+		Return result.Copy().MultiplyFactor( GetStationMapCollection().GetCurrentPopulationCableShare() )
+'		Return result
 	End Method
 
-
-	'returns a share between channels, encoded in a TVec3D containing:
-	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
-	Method GetSatelliteShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
-		return new TVec3D.Init(0,0,0)
-	End Method
-	
 
 	'returns a share between channels, encoded in a TVec3D containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
@@ -4523,7 +4542,9 @@ Type TStationMapSection
 		EndIf
 
 
-		Return result
+		'adjust by current receiver share
+		Return result.Copy().MultiplyFactor( GetStationMapCollection().GetCurrentPopulationAntennaShare() )
+'		Return result
 	End Method
 
 

@@ -1018,7 +1018,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 	
 	Method PrepareNewGame:Int()
+		'=== SET DEFAULTS ===
 		SetStartYear(userStartYear)
+
 
 		'=== START TIPS ===
 		'maybe show this window each game? or only on game start or ... ?
