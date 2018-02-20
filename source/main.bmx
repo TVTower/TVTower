@@ -4086,6 +4086,8 @@ Type GameEvents
 		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.removeStation", StationMap_OnRemoveStation) ]
 		'show ingame toastmessage if station is under construction
 		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.addStation", StationMap_OnAddStation) ]
+		'show ingame toastmessage if station is under construction
+		_eventListeners :+ [ EventManager.registerListenerFunction("Station.onContractEndsSoon", Station_OnContractEndsSoon) ]
 		'show ingame toastmessage if bankruptcy could happen
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.SetPlayerBankruptLevel", Game_OnSetPlayerBankruptLevel) ]
 
@@ -4589,8 +4591,12 @@ Type GameEvents
 		Local timeGone:Int = triggerEvent.GetData().getInt("timeGone", 0)
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
-			If player.isLocalAI() Then player.PlayerAI.ConditionalCallOnTick()
-			If player.isLocalAI() Then player.PlayerAI.CallOnRealtimeSecond(timeGone)
+			if player.isLocalAI()
+				TProfiler.Enter("PLAYER_"+player.playerID+"_lua")
+				player.PlayerAI.ConditionalCallOnTick()
+				player.PlayerAI.CallOnRealtimeSecond(timeGone)
+				TProfiler.Leave("PLAYER_"+player.playerID+"_lua")
+			endif
 		Next
 		Return True
 	End Function
@@ -4604,8 +4610,12 @@ Type GameEvents
 		If minute < 0 Then Return False
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
-			If player.isLocalAI() Then player.PlayerAI.ConditionalCallOnTick()
-			If player.isLocalAI() Then player.PlayerAI.CallOnMinute(minute)
+			if player.isLocalAI()
+				TProfiler.Enter("PLAYER_"+player.playerID+"_lua")
+				player.PlayerAI.ConditionalCallOnTick()
+				player.PlayerAI.CallOnMinute(minute)
+				TProfiler.Leave("PLAYER_"+player.playerID+"_lua")
+			endif
 		Next
 		Return True
 	End Function
@@ -5411,7 +5421,56 @@ Type GameEvents
 	End Function
 
 
+	Function Station_OnContractEndsSoon:Int(triggerEvent:TEventBase)
+		Local station:TStationBase = TStationBase(triggerEvent.GetSender())
+		If Not station Then Return False
 
+		'only interested in the players stations
+		if GetPlayer().playerID <> station.owner Then Return False
+
+		'in the past?
+		if station.GetSubscriptionTimeLeft() < 0 then return False
+		
+		'send out a toast message
+		Local toast:TGameToastMessage = New TGameToastMessage
+	
+		'toast.SetCloseAtWorldTime( station.GetActivationTime() )
+		'toast.SetCloseAtWorldTimeText(closeText)
+		toast.SetLifeTime(6)
+		toast.SetMessageType(3) 'attention
+		toast.SetMessageCategory(TVTMessageCategory.MISC)
+		toast.SetPriority(2)
+
+		toast.SetCaption( GetLocale("CONTRACT_ENDS_SOON") )
+
+		local subscriptionEndTime:Long = station.GetProvider().GetSubscribedChannelEndTime(station.owner)
+		local t:string 
+		if TStationCableNetworkUplink(station)
+			t = "CABLE_NETWORK_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX"
+		elseif TStationSatelliteUplink(station)
+			t = "SATELLITE_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX"
+		endif
+		t = GetLocale(t)
+		t = t.Replace("%COMPANYX%", station.GetProvider().name)
+		t = t.Replace("%TIMEX%", GetWorldTime().GetFormattedTime(subscriptionEndTime) )
+		if GetWorldTime().GetDay() = GetWorldTime().GetDay(subscriptionEndTime)
+			t = t.Replace("%DAYX%", GetLocale("TODAY") )
+		ElseIf GetWorldTime().GetDay() + 1 = GetWorldTime().GetDay(subscriptionEndTime)
+			t = t.Replace("%DAYX%", GetLocale("TOMORROW") )
+		Else
+			t = t.Replace("%DAYX%", GetWorldTime().GetFormattedGameDate(subscriptionEndTime) )
+		endif
+		
+		toast.SetText( t )
+		toast.GetData().AddNumber("playerID", station.owner)
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
+
+		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+	End Function
+
+	
 	Function OnMinute:Int(triggerEvent:TEventBase)
 		local time:Long = triggerEvent.GetData().GetLong("time",-1)
 		Local minute:Int = GetWorldTime().GetDayMinute(time)

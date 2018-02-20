@@ -2541,6 +2541,9 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method RenewContract:int(duration:int)
+		'reset warning state
+		SetFlag(TVTStationFlag.WARNED_OF_ENDING_CONTRACT, False)
+
 		return True
 	End Method
 
@@ -2551,6 +2554,9 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method SignContract:int(duration:int)
+		'reset warning state
+		SetFlag(TVTStationFlag.WARNED_OF_ENDING_CONTRACT, False)
+
 		runningCosts = -1
 		
 		return True
@@ -2681,12 +2687,19 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			EndIf
 		EndIf
 
-		'automatically refresh subscriptions?
-		If HasFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT)
-			'antennas do not have a subscriptionprogress
-			If GetSubscriptionProgress() > 0 and GetSubscriptionTimeLeft() = 0
-				If GetProvider()
+		'antennas do not have a subscriptionprogress - ignore them
+		If GetSubscriptionProgress() > 0
+			'automatically refresh subscriptions?
+			If HasFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT)
+				If GetSubscriptionTimeLeft() = 0 and GetProvider()
 					RenewContract( GetProvider().GetDefaultSubscribedChannelDuration() )
+				EndIf
+			'inform others that contract ends soon ?
+			ElseIf not HasFlag(TVTStationFlag.WARNED_OF_ENDING_CONTRACT)
+				If GetSubscriptionTimeLeft() <= TWorldTime.DAYLENGTH
+					SetFlag(TVTStationFlag.WARNED_OF_ENDING_CONTRACT, True)
+					'inform others
+					EventManager.triggerEvent( TEventSimple.Create( "Station.onContractEndsSoon", null, Self ) )
 				EndIf
 			EndIf
 		EndIf

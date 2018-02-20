@@ -1122,3 +1122,7 @@ PROVIDER = Provider
 CONTRACT_DURATION = Contract Duration
 PROCEEDS_OF_SALE = Proceeds of Sale
 TERMINATION_FEE = Termination Fee
+
+CONTRACT_ENDS_SOON = Contract ends soon
+CABLE_NETWORK_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX = |b|Cable network uplink|/b| contract with |b|%COMPANYX%|/b| will end at %TIMEX% (%DAYX%).
+SATELLITE_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX = |b|Satellite uplink|/b| contract with |b|%COMPANYX%|/b| will end at %TIMEX% (%DAYX%).

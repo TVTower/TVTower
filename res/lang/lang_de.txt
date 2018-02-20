@@ -1143,3 +1143,7 @@ PROVIDER = Anbieter
 CONTRACT_DURATION = Vertragslaufzeit
 PROCEEDS_OF_SALE = Verkaufserlöse
 TERMINATION_FEE = Kündigungsgebühr
+
+CONTRACT_ENDS_SOON = Vertrag endet bald
+CABLE_NETWORK_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX = Vertrag über die |b|Kabelnetzanbindung mit %COMPANYX%|/b| endet %TIMEX% Uhr (%DAYX%).
+SATELLITE_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX = Vertrag über die |b|Satellitenanbindung mit %COMPANYX%|/b| endet %TIMEX% Uhr (%DAYX%).
