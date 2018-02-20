@@ -3099,6 +3099,9 @@ endrem
 			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(1)).RefreshList()
 			TGameGUIBasicStationmapPanel(guiAccordeon.GetPanelAtIndex(2)).RefreshList()
 		endif
+		if TScreenHandler_StationMap.mapInformationFrame
+			TScreenHandler_StationMap.mapInformationFrame.RefreshSectionList()
+		endif
 	End Function
 
 
