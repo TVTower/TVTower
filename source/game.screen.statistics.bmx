@@ -245,7 +245,7 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 						If TProgramme(audienceResult.broadcastMaterial)
 							Local programme:TProgramme = TProgramme(audienceResult.broadcastMaterial)
 							local blockText:string = " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock(showDay, hoveredHour) + "/" + programme.GetBlocks() + ")"
-							If programme.isSeries() and programme.licence.parentLicenceGUID
+							If (programme.isSeriesEpisode() or programme.IsCollectionElement()) and programme.licence.parentLicenceGUID
 								title = programme.licence.GetParentLicence().GetTitle() + " ("+ programme.GetEpisodeNumber() + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + blockText
 							Else
 								title = programme.GetTitle() + blockText

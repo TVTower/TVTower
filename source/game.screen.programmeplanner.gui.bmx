@@ -396,7 +396,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 				If TProgramme(broadcastMaterial)
 					Local programme:TProgramme	= TProgramme(broadcastMaterial)
 					text = programme.data.getGenreString()
-					If programme.isSeries() And programme.licence.parentLicenceGUID
+					If (programme.IsSeriesEpisode() or programme.IsCollectionElement()) And programme.licence.parentLicenceGUID
 						'use the genre of the parent
 						text = programme.licence.GetParentLicence().data.getGenreString()
 						title = programme.licence.GetParentLicence().GetTitle() + ":  "+programme.GetTitle()

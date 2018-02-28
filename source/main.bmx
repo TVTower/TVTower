@@ -2551,11 +2551,14 @@ Type TSaveGame Extends TGameState
 		endif
 
 
+		local loadingStart:int = Millisecs()
 		'this creates new TGameObjects - and therefore increases ID count!
 		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename, XML_PARSE_HUGE))
 		If Not saveGame
 			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)
 			Return False
+		Else
+			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q loaded in " + (Millisecs() - loadingStart)+"ms.", LOG_SAVELOAD | LOG_DEBUG)
 		EndIf
 
 		If Not saveGame.CheckGameData()
@@ -4474,6 +4477,8 @@ Type GameEvents
 
 				'add series not episodes
 				if licence.IsEpisode() then licence = licence.GetParentLicence()
+				'add collections, not collection episodes
+				if licence.IsCollectionElement() then licence = licence.GetParentLicence()
 
 				'hand the licence to the player
 				if licence.owner <> player.playerID

@@ -590,12 +590,13 @@ End Type
 'to ease access to "comparisons" without knowing
 'the licence object itself
 Type TVTProgrammeLicenceType {_exposeToLua}
-	Const UNKNOWN:int    = 0
-	Const SINGLE:int     = 1 'eg. movies, one-time-events...
-	Const EPISODE:int    = 2 'episodes of a series
-	Const SERIES:int     = 3 'header of series
-	Const COLLECTION:int = 4 'header of collections
-	Const FRANCHISE:int  = 5 'header of franchises ("SAW", "Indiana Jones", ...)
+	Const UNKNOWN:int            = 0
+	Const SINGLE:int             = 1 'eg. movies, one-time-events...
+	Const EPISODE:int            = 2 'episodes of a series
+	Const SERIES:int             = 3 'header of series
+	Const COLLECTION:int         = 4 'header of collections
+	Const COLLECTION_ELEMENT:int = 5 'elements of collections
+	Const FRANCHISE:int          = 6 'header of franchises ("SAW", "Indiana Jones", ...)
 
 
 	Function GetAtIndex:int(index:int = 0)
@@ -605,12 +606,13 @@ Type TVTProgrammeLicenceType {_exposeToLua}
 
 	Function GetAsString:String(key:int = 0)
 		Select key
-			case EPISODE     return "episode"
-			case SERIES      return "series"
-			case SINGLE      return "single"
-			case COLLECTION  return "collection"
-			case FRANCHISE   return "franchise"
-			default          return "unknown"
+			case EPISODE             return "episode"
+			case SERIES              return "series"
+			case SINGLE              return "single"
+			case COLLECTION          return "collection"
+			case COLLECTION_ELEMENT  return "collection_element"
+			case FRANCHISE           return "franchise"
+			default                  return "unknown"
 		End Select
 	End Function
 End Type

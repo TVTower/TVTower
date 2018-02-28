@@ -519,12 +519,13 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 	Method BuyProgrammeLicenceFromPlayer:int(licence:TProgrammeLicence)
 		'do not buy if unowned
-		if not licence.isOwnedByPlayer() then return False
+		if not licence.isOwnedByPlayer() then print "not owned"; return False
 		'do not buy if not tradeable
-		if not licence.IsTradeable() then return False
+		if not licence.IsTradeable() then print "not tradeable";return False
 
 		'remove from player (lists and suitcase) - and give him money
 		if not GetPlayerProgrammeCollection(licence.owner).RemoveProgrammeLicence(licence, TRUE)
+			print "nown owning anymore"
 			return False
 		endif
 		
@@ -548,8 +549,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'we use multiple lists - if the first is full, try second
 		local lists:TProgrammeLicence[][]
 
-		'do not add episodes
-		if licence.isEpisode()
+		'do not add episodes or collection elements
+		if licence.isEpisode() or licence.isCollectionElement()
 			'licence.SetOwner(licence.OWNER_VENDOR)
 			return FALSE
 		endif

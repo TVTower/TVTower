@@ -187,6 +187,29 @@ Type TProgrammeLicenceCollection
 	End Method
 
 
+	Method AddCollectionElement:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
+		'all licences should be listed in the "all-licences-list"
+		if not Add(licence, skipDuplicates) then return False
+
+		'nothing more to do
+		
+		return True
+	End Method
+
+
+	Method RemoveCollectionElement:Int(licence:TProgrammeLicence)
+		'TODO: remove from parents sublicence list?
+		
+		Remove(licence)
+	End Method
+
+
+	'checks if the licences list contains the given licence
+	Method ContainsCollectionElement:Int(licence:TProgrammeLicence)
+		return Contains(licence)
+	End Method	
+
+
 	'add a licence to all needed lists
 	Method AddAutomatic:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
 		'do not add franchise-licences
@@ -201,6 +224,7 @@ Type TProgrammeLicenceCollection
 
 		'=== COLLECTIONS ===
 		if licence.isCollection() then return AddCollection(licence, skipDuplicates)
+		if licence.isCollectionElement() then return AddCollectionElement(licence, skipDuplicates)
 
 		return False
 	End Method
@@ -208,7 +232,7 @@ Type TProgrammeLicenceCollection
 
 	'remove a licence from all needed lists
 	Method RemoveAutomatic:Int(licence:TProgrammeLicence)
-		'skip franchise-licences
+		'skip franchise-licences (parents of frachisees)
 		if licence.licenceType = TVTProgrammeLicenceType.FRANCHISE then return False
 
 		'=== SINGLES ===
@@ -220,6 +244,7 @@ Type TProgrammeLicenceCollection
 
 		'=== COLLECTIONS ===
 		if licence.isCollection() then RemoveCollection(licence)
+		if licence.isCollectionElement() then RemoveCollectionElement(licence)
 
 		return True
 	End Method
@@ -307,6 +332,7 @@ Type TProgrammeLicenceCollection
 			If Licence.IsOwned() Then continue
 			'ignoring episodes
 			If not includeEpisodes and Licence.isEpisode() Then continue
+			If not includeEpisodes and Licence.isCollectionElement() Then continue
 
 			'if available (unbought, released..), add it to candidates list
 			resultList.addLast(Licence)
@@ -326,9 +352,10 @@ Type TProgrammeLicenceCollection
 			If Licence.IsOwned() Then continue
 			'ignoring episodes
 			If not includeEpisodes and Licence.isEpisode() Then continue
+			If not includeEpisodes and Licence.isCollectionElement() Then continue
 
 			'if available (unbought, released..), add it to candidates list
-			If Licence.isSingle() or Licence.isEpisode()
+			If Licence.isSingle() or Licence.isEpisode() or Licence.isCollectionElement()
 				if Licence.GetGenre() = genre Then resultList.addLast(Licence)
 			else
 				local foundGenreInSubLicence:int = FALSE
@@ -354,6 +381,8 @@ Type TProgrammeLicenceCollection
 			If Licence.IsOwned() Then continue
 			'ignore episodes
 			If Licence.isEpisode() Then continue
+			'ignore collection elements
+			If Licence.isCollectionElement() Then continue
 
 			if not filter.DoesFilter(licence) then continue
 
@@ -567,7 +596,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		licence.parentLicenceGUID = self.GetGUID()
 
 		'inform programmeData about being episode of a series
-		if isSeries() and licence.data and self.data
+		if (isSeries() or isCollection()) and licence.data and self.data
 			licence.data.parentGUID = self.data.GetGUID()
 		endif
 
@@ -681,6 +710,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 	Method isCollection:int() {_exposeToLua}
 		return licenceType = TVTProgrammeLicenceType.COLLECTION
+	End Method
+
+
+	Method isCollectionElement:int() {_exposeToLua}
+		return licenceType = TVTProgrammeLicenceType.COLLECTION_ELEMENT
 	End Method
 
 
@@ -959,6 +993,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			Return TRUE
 		EndIf
 		Return FALSE
+	End Method
+
+
+	Method HasParentLicence:int() {_exposeToLua}
+		return self.parentLicenceGUID <> ""
 	End Method
 
 
@@ -1782,7 +1821,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		endif
 
 		local title:string
-		if not isEpisode()
+		if not (isEpisode() or isCollectionElement())
 			title = GetTitle()
 		else
 			title = GetParentLicence().GetTitle()
@@ -1893,7 +1932,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'total height
 		sheetHeight = titleH + genreH + descriptionH + castH + barAreaH + msgAreaH + boxAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
-		if isSeries() or isEpisode() then sheetHeight :+ subtitleH
+		if isSeries() or isCollection() or isEpisode() or isCollectionElement() then sheetHeight :+ subtitleH
 		'there is a splitter between description and cast...
 		sheetHeight :+ splitterHorizontalH
 
@@ -1911,11 +1950,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		
 		'=== SUBTITLE AREA ===
-		if isSeries()
+		if isSeries() or isCollection()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
 			skin.fontNormal.drawBlock(GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetEpisodeCount()), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			contentY :+ subtitleH
-		elseif isEpisode()
+		elseif isEpisode() or isCollectionElement()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
 			'episode num/max + episode title
 			skin.fontNormal.drawBlock(GetEpisodeNumber() + "/" + GetParentLicence().GetEpisodeCount() + ": " + GetTitle(), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)

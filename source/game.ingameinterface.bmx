@@ -219,7 +219,7 @@ Type TInGameInterface
 						If TProgramme(obj)
 							Local programme:TProgramme = TProgramme(obj)
 							CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_genre_" + TVTProgrammeGenre.GetAsString(programme.data.GetGenre()), "gfx_interface_tv_programme_none")
-							If programme.isSeries() and programme.licence.parentLicenceGUID
+							If (programme.IsSeriesEpisode() or programme.IsCollectionElement()) and programme.licence.parentLicenceGUID
 								CurrentProgrammeText = programme.licence.GetParentLicence().GetTitle() + " ("+ programme.GetEpisodeNumber() + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 							Else
 								CurrentProgrammeText = programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
@@ -319,7 +319,7 @@ Type TInGameInterface
 							
 							If TProgramme(obj)
 								content :+ "~n ~n|b|"+getLocale("NEXT_PROGRAMME")+":|/b|~n"
-								If TProgramme(obj) And TProgramme(obj).isSeries() and TProgramme(obj).licence.parentLicenceGUID
+								If TProgramme(obj) And (TProgramme(obj).IsSeriesEpisode() or TProgramme(obj).IsCollectionElement()) And TProgramme(obj).licence.parentLicenceGUID
 									content :+ TProgramme(obj).licence.GetParentLicence().data.GetTitle() + ": " + obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock(upcomingProgDay, upcomingProgHour) + "/" + obj.GetBlocks() + ")"
 								Else
 									content :+ obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock(upcomingProgDay, upcomingProgHour) + "/" + obj.GetBlocks() + ")"
