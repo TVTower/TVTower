@@ -390,6 +390,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 	Method AddProgrammeLicenceToSuitcase:int(programmeLicence:TProgrammeLicence)
+		if programmeLicence.HasParentLicence()
+			TLogger.Log("AddProgrammeLicenceToSuitcase", "Adding of sublicences to suitcase is not allowed", LOG_DEBUG)
+			return FALSE
+		endif
+	
 		'do not add if already "full"
 		if suitcaseProgrammeLicences.count() >= GameRules.maxProgrammeLicencesInSuitcase
 			TLogger.Log("AddProgrammeLicenceToSuitcase", "Not enough space to add licence to suitcase", LOG_DEBUG)
@@ -427,6 +432,16 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method RemoveProgrammeLicenceFromSuitcase:int(licence:TProgrammeLicence)
 		if not suitcaseProgrammeLicences.Contains(licence) then return FALSE
 
+		if licence.HasParentLicence()
+			'just remove, without adding
+			suitcaseProgrammeLicences.Remove(licence)
+			'emit an event so eg. network can recognize the change
+			if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmecollection.removeProgrammeLicenceFromSuitcase", new TData.add("programmeLicence", licence), self))
+
+			TLogger.Log("RemoveProgrammeLicenceFromSuitcase", "Removed an sublicence from suitcase", LOG_DEBUG)
+			return FALSE
+		endif
+
 		if AddProgrammeLicence(licence, FALSE)
 			suitcaseProgrammeLicences.Remove(licence)
 
@@ -442,8 +457,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method RemoveProgrammeLicence:Int(licence:TProgrammeLicence, sell:int=FALSE)
 		If licence = Null Then Return False
-		'do not allow removal of episodes (should get removed via header)
-		If licence.parentLicenceGUID then return False
+		'do not allow removal of episodes/collection elements (should get removed via header)
+		If licence.HasParentLicence() then return False
 		'not owning
 		if not HasProgrammeLicence(licence) and not HasProgrammeLicenceInSuitcase(licence) then return False
 

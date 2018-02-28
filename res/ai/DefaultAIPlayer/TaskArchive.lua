@@ -75,25 +75,26 @@ function JobSellMovies:Tick()
 		return t;
 	end
 
-	debugMsg("archive Job entered")
+	debugMsg("archive: Sell movies job started")
 	--ins archiv wenn nach mitternacht (oben)
 	
 	self.Task.latestSaleOnDay = WorldTime.GetDay()	
 	
 	--filmliste getten
 	local nArchive = TVT.ar_GetProgrammeLicenceCount()
-	--debugMsg ("# archived movies: "..nArchive)
+	debugMsg ("# archived licences: "..nArchive)
 	local movies = {};
 	for i=0, (nArchive-1)
 	do
 		m = TVT.convertToProgrammeLicence(TVT.ar_GetProgrammeLicence(i).data)
-		if m ~= nil then
+		--ignore episodes/collection-elements
+		if m ~= nil and m.HasParentLicence()==0 then
 			vm = newarchivedMovie(m.GetTitle(),m.GetGUID(), m.GetId(),(m.GetTopicality() / m.GetMaxTopicality()),m.isPlanned(),m.GetPrice(TVT.ME))
-			debugMsg("found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id..") ".." "..vm.price..", "..(vm.Freshness*100).."%, planned: "..tostring(vm.planned))
+			debugMsg("# found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id..") ".." "..vm.price..", "..(vm.Freshness*100).."%, planned: "..tostring(vm.planned))
 			table.insert(movies,vm)
 		end
 	end
-	debugMsg("movies in archive: "..#movies)
+	debugMsg("# checking single/series licences: "..#movies)
 
 	--Nach aktualität filtern, keine eingeplanten, im Notfall Schwelle fürs Behalten erhöhen, ganz teure immer behalten
 	local treshold = self.FreshnessTreshold
@@ -101,29 +102,28 @@ function JobSellMovies:Tick()
 	local case = {}
 	for k,v in pairs (movies) 
 	do
-		if v == nil then debugMsg("archive error: movie is nil") end
+		if v == nil then debugMsg("# ERROR: movie #" .. k.." is nil") end
 		if (v.Freshness < self.FreshnessTreshold) and (v.planned ==  0) and (v.price < 100000)
 		then
-			debugMsg("archive: mark "..v.Title.." for suitcase")
+			debugMsg("# mark for suitcase: "..v.Title)
 			table.insert(case,v)
 		end
 	end
 	
-	debugMsg("archive: "..#case.." selected")
+	debugMsg("# selected for suitcase: "..#case)
 
 	--in koffer legen
 	for i=1, #case
 	do
 		ec = TVT.ar_AddProgrammeLicenceToSuitcaseByGUID(case[i].GUID)
 		if ec == 1 then
-			debugMsg("put "..case[i].Title.." in suitcase, OK")
+			debugMsg("# put "..case[i].Title.." in suitcase, OK")
 		else
-			debugMsg("put "..case[i].Title.." in suitcase, errorcode: "..ec)
+			debugMsg("# put "..case[i].Title.." in suitcase, errorcode: "..ec)
 		end
 	end	
 	
 	self.Status = JOB_STATUS_DONE	
-	--debugMsg("archive done")
 	--leave archive klappt noch nicht
 	--im md: verkaufen
 
@@ -132,10 +132,12 @@ function JobSellMovies:Tick()
 	if player ~= nil then 
 		local task = player.TaskList[_G["TASK_MOVIEDISTRIBUTOR"]]
 		if task ~= nil then
-			debugMsg("Increasing SituationPriority for movie distributor task")
+			debugMsg("# increasing SituationPriority for movie distributor task")
 			task.SituationPriority = 150 --arbitrary value, maybe needs higher one
 		end
 	end
+
+	debugMsg("archive: Sell movies job done")
 end
 
 function timetostring()

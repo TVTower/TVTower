@@ -500,6 +500,9 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		if not GetPlayerBaseCollection().IsPlayer(playerID) then return FALSE
 
+		'do not sell episodes/sub elements
+		if licence.HasParentLicence() then return False
+
 		'try to add to suitcase of player
 		if not GetPlayerProgrammeCollection(playerID).AddProgrammeLicenceToSuitcase(licence)
 			return FALSE
@@ -518,14 +521,15 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 
 	Method BuyProgrammeLicenceFromPlayer:int(licence:TProgrammeLicence)
+		'do not buy episodes/sub elements
+		if licence.HasParentLicence() then return False
 		'do not buy if unowned
-		if not licence.isOwnedByPlayer() then print "not owned"; return False
+		if not licence.isOwnedByPlayer() then return False
 		'do not buy if not tradeable
-		if not licence.IsTradeable() then print "not tradeable";return False
+		if not licence.IsTradeable() then return False
 
 		'remove from player (lists and suitcase) - and give him money
 		if not GetPlayerProgrammeCollection(licence.owner).RemoveProgrammeLicence(licence, TRUE)
-			print "nown owning anymore"
 			return False
 		endif
 		
@@ -539,9 +543,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Method AddProgrammeLicence:int(licence:TProgrammeLicence, tryOtherLists:int = False)
 		'do not add if still owned by a player or the vendor
 		if licence.isOwned()
-			TLogger.Log("MovieAgency", "===========", LOG_ERROR)
 			TLogger.Log("MovieAgency", "AddProgrammeLicence() failed: cannot add licence owned by someone else. Owner="+licence.owner+"! Report to developers asap.", LOG_ERROR)
-			TLogger.Log("MovieAgency", "===========", LOG_ERROR)
 			return False
 		endif
 		

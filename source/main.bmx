@@ -2456,6 +2456,26 @@ Type TSaveGame Extends TGameState
 		endif
 
 
+		'remove non-allowed episodes/collections from the suitcase
+		'(versions prior 2018/02/28 mistakingly allowed that) 
+		For local ppc:TPlayerProgrammeCollection = eachin GetPlayerProgrammeCollectionCollection().plans
+			local toRemove:TProgrammeLicence[] = new TProgrammeLicence[0]
+			For local licence:TProgrammeLicence = EachIn ppc.suitcaseProgrammeLicences
+				if licence.HasParentLicence() then toRemove :+ [licence]
+			Next
+			if toRemove.length > 0
+				For local licence:TProgrammeLicence = EachIn toRemove
+					'remove from player collection if we do no longer
+					'possess the series/collection
+					if not ppc.HasProgrammeLicence(licence.GetParentLicence())
+						ppc.singleLicences.remove(licence)
+						ppc._programmeLicences.remove(licence)
+					endif
+					ppc.suitcaseProgrammeLicences.Remove(licence)
+				Next
+				TLogger.Log("Savegame.RepairData()", "Savegame contained licence suitcase of player #" + ppc.owner+" with " + toRemove.length + " invalid licences of episodes or collection-elements.", LOG_SAVELOAD)
+			endif
+		Next
 		rem
 			would "break" unfinished series productions with re-ordered
 			production orders (1,3,2) and missing episodes ([1,null,3])

@@ -1689,6 +1689,8 @@ endrem
 
 		local licence:TProgrammeLicence = GetPlayerProgrammeCollection(self.ME).GetProgrammeLicenceAtIndex(position)
 		if not licence then return self.RESULT_NOTFOUND
+		'Skip series episodes or collection elements
+		if licence.HasParentLicence() then return self.RESULT_NOTALLOWED
 
 		Return GetPlayerProgrammeCollection(self.ME).AddProgrammeLicenceToSuitcase(licence)
 	End Method
@@ -1700,6 +1702,8 @@ endrem
 
 		local licence:TProgrammeLicence = GetPlayerProgrammeCollection(self.ME).GetProgrammeLicenceByGUID(guid)
 		if not licence then return self.RESULT_NOTFOUND
+		'Skip series episodes or collection elements
+		if licence.HasParentLicence() then return self.RESULT_NOTALLOWED
 
 		Return GetPlayerProgrammeCollection(self.ME).AddProgrammeLicenceToSuitcase(licence)
 	End Method
@@ -1770,7 +1774,7 @@ endrem
 	End Method
 
 
-	Method ar_GetSuitcaseProgrammeLicences:TLuaFunctionResult(position:Int = -1)
+	Method ar_GetSuitcaseProgrammeLicences:TLuaFunctionResult()
 		If Not _PlayerInRoom("archive") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
 		local licences:TProgrammeLicence[] = GetPlayerProgrammeCollection(self.ME).GetSuitcaseProgrammeLicencesArray()

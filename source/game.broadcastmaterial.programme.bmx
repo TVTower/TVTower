@@ -642,8 +642,13 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Method
 
 
-	Method IsSeries:int()
+	Method IsSeriesEpisode:int()
 		return self.licence.isEpisode()
+	End Method
+
+
+	Method IsCollectionElement:int()
+		return self.licence.isCollectionElement()
 	End Method
 
 
