@@ -364,7 +364,7 @@ Type TBroadcastAudiencePrediction {_exposeToLua="selected"}
 
 
 	Method SetAttraction(playerID:Int, attraction:TAudienceAttraction) {_exposeToLua}
-		If playerID < 0 Then Return
+		If playerID <= 0 Then Return
 
 		If attractions.length < playerID Then attractions = attractions[.. playerID + 1]
 		attractions[playerID - 1] = attraction

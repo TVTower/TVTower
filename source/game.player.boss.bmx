@@ -170,7 +170,7 @@ Type TPlayerBossCollection
 	'called as soon as a player enters the boss' room
 	Function onFinishAward:Int(triggerEvent:TEventBase)
 		Local award:TAward = TAward(triggerEvent.GetSender())
-		if not award or award.winningPlayerID < 0 then return False
+		if not award or award.winningPlayerID <= 0 then return False
 
 		local boss:TPlayerBoss = GetPlayerBoss(award.winningPlayerID)
 		if not boss then return False
@@ -312,7 +312,7 @@ Type TPlayerBoss
 
 
 	Method GetDialogue:TDialogue(playerID:int)
-		if not dialogues or playerID < 0 or dialogues.length < playerID then return null
+		if not dialogues or playerID <= 0 or dialogues.length < playerID then return null
 		return dialogues[playerID-1]
 	End Method
 	
