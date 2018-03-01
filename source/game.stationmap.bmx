@@ -1746,6 +1746,34 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Function GetReachLevel:Int(reach:int)
+		'put this into GameRules?
+		if reach < 2500000
+			return 1
+		elseif reach < 2500000 * 2 '5mio
+			return 2
+		elseif reach < 2500000 * 5 '12,5 mio
+			return 3
+		elseif reach < 2500000 * 9 '22,5 mio
+			return 4
+		elseif reach < 2500000 * 14 '35 mio
+			return 5
+		elseif reach < 2500000 * 20 '50 mio
+			return 6
+		elseif reach < 2500000 * 28 '70 mio
+			return 7
+		elseif reach < 2500000 * 40 '100 mio
+			return 8
+		elseif reach < 2500000 * 60 '150 mio
+			return 9
+		elseif reach < 2500000 * 100 '250 mio
+			return 10
+		else
+			return 11
+		endif
+	End Function
+	
+
 	Method GetCoverage:Float() {_exposeToLua}
 		Return Float(getReach()) / Float(GetStationMapCollection().getPopulation())
 	End Method

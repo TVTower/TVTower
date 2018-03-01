@@ -314,6 +314,12 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
+	'override
+	Method GetAudienceReachLevel:Int() {_exposeToLua}
+		Return GetStationMap().GetReachLevel( GetMaxAudience() )
+	End Method
+
+
 	Method isInRoom:Int(roomName:String="") {_exposeToLua}
 		return GetFigure().IsInRoom(roomName)
 rem

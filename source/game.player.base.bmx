@@ -281,6 +281,80 @@ Type TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetMaxAudience:Int() {_exposeToLua}
+		Return 0
+	End Method
+
+
+	Method GetAudienceReachLevel:Int() {_exposeToLua}
+		return 0
+	End Method
+
+rem
+	Method SetAudienceReachLevel:int(level:Int)
+		If audienceReachLevel <> level
+			audienceReachLevel = level
+			'set at which time we did this
+			audienceReachLevelSetTime = GetWorldTime().GetTimeGone()
+
+			return True
+		EndIf
+
+		return False
+	End Method
+
+
+	Method GetAudienceReachLevel:Int() {_exposeToLua}
+		Return audienceReachLevel
+	End Method
+
+
+	'return the highest reach level of today (which was active for
+	'longer than X game minutes)
+	'if the last time a reach level was changed was before today
+	'use the current level value
+	Method GetMaxAudienceReachLevel:Int() {_exposeToLua}
+		local currentLevel:int = GetCurrentAudienceReachLevel()
+
+		'not set yet - use the current abonnement
+		if audienceReachLevelDayMax = -1
+			SetMaxAudienceReachLevel(currentLevel)
+		endif
+
+		'if changed - adjust maximum
+		if audienceReachLevelDayMax <> currentLevel
+			'if the "set time" is not the current day, we assume
+			'the current level as maxium
+			'eg.: changed at 23:50 - not catched by the "30 min check"
+			'also a day change sets maximum even if level is lower than
+			'maximum (which is not allowed during day to pay for the best
+			'level you had this day)
+			if GetWorldTime().GetDay(audienceReachLevelSetTime) < GetWorldTime().GetDay()
+				'NOT 0:00 (the time daily costs are computed)
+				if GetWorldTime().GetDayMinute() > 0
+					SetMaxAudienceReachLevel(currentLevel)
+				EndIf
+			EndIf
+
+			'more than 30 mins gone since last "reachLevel set"
+			if GetWorldTime().GetTimeGone() - audienceReachLevelSetTime > 30*60
+				'only set maximum if the new level is higher than the
+				'current days maxmimum.
+				if audienceReachLevelDayMax < currentLevel
+					SetMaxAudienceReachLevel(currentLevel)
+				EndIf
+			EndIf
+		EndIf
+
+		return audienceReachLevelDayMax
+	End Method
+
+
+	'sets the current maximum audience reach level for that day
+	Method SetMaxAudienceReachLevel:Int(level:int)
+		audienceReachLevelDayMax = level
+	End Method
+endrem
 
 	Method SetStartDay:int(day:int)
 		'inform finance too

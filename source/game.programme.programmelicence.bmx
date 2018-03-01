@@ -419,6 +419,10 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	'other licences this licence covers
 	Field subLicences:TProgrammeLicence[]
 	Field episodeNumber:int = -1
+	'the price paid when buying
+	Field buyPrice:int = -1
+	'audience level when bought
+	Field buyAudienceReachLevel:int = 0
 	'store stats for each owner
 	Field broadcastStatistics:TBroadcastStatistic[]
 	'flags:
@@ -974,7 +978,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local finance:TPlayerFinance = GetPlayerFinance(owner)
 		if not finance then return False
 
-		finance.SellProgrammeLicence(getPriceForPlayer(owner), self)
+		finance.SellProgrammeLicence(getPriceForPlayer(owner, buyAudienceReachLevel), self)
 
 		'set unused again
 		SetOwner( TOwnedGameObject.OWNER_NOBODY )
@@ -988,7 +992,15 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local finance:TPlayerFinance = GetPlayerFinance(playerID, -1)
 		if not finance then return False
 
-		If finance.PayProgrammeLicence(getPriceForPlayer(playerID), self)
+		local currentAudienceReachLevel:int = 1
+		if GetPlayerBase(playerID) then currentAudienceReachLevel = GetPlayerBase(playerID).GetAudienceReachLevel()
+
+		local priceToPay:int = getPriceForPlayer(playerID, currentAudienceReachLevel)
+
+		If finance.PayProgrammeLicence(priceToPay, self)
+			buyPrice = priceToPay
+			buyAudienceReachLevel = currentAudienceReachLevel
+
 			SetOwner(playerID)
 			Return TRUE
 		EndIf
@@ -1652,7 +1664,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
-	Method GetPriceForPlayer:int(playerID:int)
+	Method GetPriceForPlayer:int(playerID:int, audienceReachLevel:int = -1)
 		Local value:Float
 
 		'single-licence
@@ -1661,7 +1673,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		else
 			'licence for a package or series
 			For local licence:TProgrammeLicence = eachin subLicences
-				value :+ licence.GetPriceForPlayer(playerID)
+				value :+ licence.GetPriceForPlayer(playerID, audienceReachLevel)
 			Next
 			value :* 0.90
 		endif
@@ -1682,6 +1694,22 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			value :* GetPlayerDifficulty(string(playerID)).programmePriceMod
 		endif
 
+
+		'=== AUDIENCE REACH LEVEL ===
+		if audienceReachLevel = -1
+			if GetPlayerBase(playerID)
+				audienceReachLevel = GetPlayerBase(playerID).GetAudienceReachLevel()
+			else
+				'default to 1
+				audienceReachLevel = 1
+			endif
+		endif
+		'adjust value by audience reach level
+		'for now: level 1 is 50% of the value we used before introduction
+		'of the reach level
+		value :* (0.5*audienceReachLevel) 
+		
+
 		'=== BEAUTIFY ===
 		'round to next "1000" block
 		'value = Int(Floor(value / 1000) * 1000)
@@ -1695,7 +1723,24 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	'param needed as AI requests price using this method, and this also
 	'for not-yet-owned licences
 	Method GetPrice:Int(playerID:int) {_exposeToLua}
-		Return GetPriceForPlayer(playerID)
+		if GetPlayerBase(playerID)
+			Return GetPriceForPlayer(playerID, GetPlayerBase(playerID).GetAudienceReachLevel())
+		else
+			Return GetPriceForPlayer(playerID, 1)
+		endif
+	End Method
+
+
+	'param needed as AI requests price using this method, and this also
+	'for not-yet-owned licences
+	Method GetSellPrice:Int(playerID:int) {_exposeToLua}
+		if owner = playerID
+			Return GetPriceForPlayer(owner, buyAudienceReachLevel)
+		elseif GetPlayerBase(playerID)
+			Return GetPriceForPlayer(playerID, GetPlayerBase(playerID).GetAudienceReachLevel())
+		else
+			Return GetPriceForPlayer(playerID, 1)
+		endif
 	End Method
 
 
@@ -1827,6 +1872,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			title = GetParentLicence().GetTitle()
 		endif
 
+		local price:int
+		if currentPlayerID = useOwner
+			price = GetSellPrice(useOwner)
+		else
+			price = GetPriceForPlayer(useOwner)
+		endif
+
 		'can player afford this licence?
 		local canAfford:int = False
 		'possessing player always can
@@ -1836,7 +1888,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		elseif useOwner > 0
 			canAfford = True
 		'not our licence but enough money to buy
-		elseif finance and finance.canAfford( GetPriceForPlayer(currentPlayerID) )
+		elseif finance and finance.canAfford( price )
 			canAfford = True
 		endif
 		
@@ -2159,12 +2211,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'show price if forced to. ATTENTION: licence flag, not data/broadcast flag!
 		'showPrice = showPrice or hasLicenceFlag(TVTProgrammeLicenceFlag.SHOW_PRICE)
+
 		
 		if showPrice
 			if canAfford
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue( GetPriceForPlayer(useOwner) ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue( price ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 			else
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue( GetPriceForPlayer(useOwner) ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
+				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue( price ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
 			endif
 		else
 			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, "- ?? -", "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)

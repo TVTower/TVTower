@@ -161,6 +161,10 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 	'from when to when you are allowed to broadcast this material
 	Field broadcastTimeSlotStart:int = -1
 	Field broadcastTimeSlotEnd:int = -1
+
+	'maximum reachLevel a material was licenced for
+	'< 0 disables any level limitation
+	Field licencedReachLevel:int = -1
 	
 
 	Method GenerateGUID:string()
@@ -197,6 +201,30 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 			result.Set(value, lang)
 		Next
 		return result
+	End Method
+
+
+	Method GetLicencedReachLevel:int()
+		return licencedReachLevel
+	End Method
+
+
+	'return price for a potential relicencing
+	Method GetRelicenceForReachLevelPrice:int(reachLevel:int)
+		return 0
+	End Method
+	
+
+	'extending classes might add custom restrictions here (payment)
+	Method CanRelicenceForReachLevel:int(reachLevel:int)
+		return True
+	End Method
+
+
+	'set a new reach level limitation
+	Method RelicenceForReachLevel:int(reachLevel:int)
+		self.licencedReachLevel = reachLevel
+		return True
 	End Method
 
 
