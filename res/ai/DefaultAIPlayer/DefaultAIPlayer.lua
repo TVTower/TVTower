@@ -59,6 +59,7 @@ _G["DefaultAIPlayer"] = class(AIPlayer, function(c)
 	c.Ventruesome = 5 --Risikofreude = 1 - 10
 	c.NewsPriority = 5
 	c.BrainSpeed = 1 --Wie schnell handelt die KI = 1-3 (Aktionen pro Tick)
+	c.LastStationMapMarketAnalysis = 0
 end)
 
 function DefaultAIPlayer:typename()

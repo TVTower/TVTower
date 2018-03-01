@@ -304,7 +304,7 @@ end
 function AITask:CallActivate()
 	self.MaxTicks = math.random(9, 17)
 	self.TickCounter = 0
-	debugMsg("### Starte Task '" .. self:typename() .. "'! (Prio: " .. self.CurrentPriority ..")")
+	debugMsg("### Starte Task '" .. self:typename() .. "'! (Prio: " .. self.CurrentPriority .."). MaxTicks: " .. self.MaxTicks)
 	self:Activate()
 end
 

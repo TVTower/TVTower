@@ -4507,7 +4507,7 @@ Type TStationMapSection
 		EndIf
 
 		'adjust by current receiver share
-		Return result.Copy().MultiplyFactor( GetStationMapCollection().GetCurrentPopulationCableShare() )
+		Return result.Copy().MultiplyFactor( Float(GetStationMapCollection().GetCurrentPopulationCableShare()) )
 '		Return result
 	End Method
 
@@ -4556,7 +4556,7 @@ Type TStationMapSection
 
 
 		'adjust by current receiver share
-		Return result.Copy().MultiplyFactor( GetStationMapCollection().GetCurrentPopulationAntennaShare() )
+		Return result.Copy().MultiplyFactor( Float(GetStationMapCollection().GetCurrentPopulationAntennaShare()) )
 '		Return result
 	End Method
 

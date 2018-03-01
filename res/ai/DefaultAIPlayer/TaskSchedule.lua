@@ -330,7 +330,18 @@ function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, pr
 		if block == nil then block = 1; end
 
 		-- todo: refresh markets when "office is visited" (stationmap)
-		TVT.audiencePredictor.RefreshMarkets()
+		if self.Player.LastStationMapMarketAnalysis == 0 then
+			TVT.audiencePredictor.RefreshMarkets()
+			self.Player.LastStationMapMarketAnalysis = self.Player.WorldTicks
+			debugMsg("RefreshMarkets() - never analyzed before")
+		-- until stationmap tasks are balanced in - we avoid outdated ones
+		
+		elseif self.Player.WorldTicks - self.Player.LastStationMapMarketAnalysis > 1000  then
+			TVT.audiencePredictor.RefreshMarkets()
+			self.Player.LastStationMapMarketAnalysis = self.Player.WorldTicks
+			debugMsg("RefreshMarkets() - previous analysis too old")
+		end
+
 		for i=1,4 do
 			-- assume they all send at least a bit as good programme/news as we do
 			local q = math.max(qualities[i], 0.6*qualities[i] + 0.4 * broadcast.GetQuality()) -- Lua-arrays are 1 based
@@ -1155,14 +1166,27 @@ end
 _G["JobSchedule"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.ScheduleTask = nil
+	c.optimizedProgrammeHours = 0
+	c.optimizedAdHours = 0
+	--how many times should we retry to optimize and fill empty slots
+	c.optimizeProgrammeRunsLeft = 5
 end)
+
 
 function JobSchedule:typename()
 	return "JobSchedule"
 end
 
+
 function JobSchedule:Prepare(pParams)
-	--debugMsg("Schaue Programmplan an")
+	self.optimizedProgrammeHours = 0
+	self.optimizedAdHours = 0
+	--up to 5 optimization tries
+	self.optimizeProgrammeRunsLeft = 5
+
+	-- increase max ticks
+	-- optimization takes a while ...
+	self.ScheduleTask.MaxTicks = 60 + self.ScheduleTask.MaxTicks
 end
 
 
@@ -1220,14 +1244,11 @@ function JobSchedule:GetBestAvailableInfomercial(hour)
 end
 
 
-function JobSchedule:OptimizeAdSchedule()
-	debugMsg("OptimizeAdSchedule()")
+function JobSchedule:OptimizeAdScheduleForBlock(day, hour)
+	local fixedDay, fixedHour = FixDayAndHour(day, hour)
 
 	-- replace ads with trailers if ads have to high requirements
 	-- also replace ads with better performing ones
-	local fixedDay, fixedHour = 0
-	local currentDay = WorldTime.GetDay()
-	local currentHour = WorldTime.GetDayHour()
 
 	--rate of "ad-MinAudience / guessedAudience". Ads below get replaced
 	--with trailers 
@@ -1241,299 +1262,281 @@ function JobSchedule:OptimizeAdSchedule()
 	local totalTrailerMax = 6
 	local placedTrailerCount = 0 
 
-	for i = currentHour, currentHour + 12 do
-		fixedDay, fixedHour = self.ScheduleTask:FixDayAndHour(currentDay, i)
-
-		-- increase trailer rate during night
-		local replaceBadAdsWithTrailerRate = replaceBadAdsWithTrailerRateDay
-		if (fixedHour >= 1 and fixedHour <= 7) then
-			replaceBadAdsWithTrailerRate = replaceBadAdsWithTrailerRateNight
-		elseif (fixedHour >= 19 and fixedHour <= 23) then
-			replaceBadAdsWithTrailerRate = replaceBadAdsWithTrailerRatePrimeTime
-		end
-		-- without programme, we cannot send trailers
-		if TVT.of_getProgrammeLicenceCount() <= 1 then replaceBadAdsWithTrailerRate = 0 end
 
 
-		local choosenBroadcastSource = nil
-		local choosenBroadcastLog = ""
-		local currentBroadcastMaterial = MY.GetProgrammePlan().GetAdvertisement(fixedDay, fixedHour)
-		
-		local sendTrailer = false
-		local sendTrailerReason = ""
-		local sendAd = true
-		-- the new ad contract to send (if chosen to do so)
-		local newAdContract = nil
+	-- increase trailer rate during night
+	local replaceBadAdsWithTrailerRate = replaceBadAdsWithTrailerRateDay
+	if (fixedHour >= 1 and fixedHour <= 7) then
+		replaceBadAdsWithTrailerRate = replaceBadAdsWithTrailerRateNight
+	elseif (fixedHour >= 19 and fixedHour <= 23) then
+		replaceBadAdsWithTrailerRate = replaceBadAdsWithTrailerRatePrimeTime
+	end
+	-- without programme, we cannot send trailers
+	if TVT.of_getProgrammeLicenceCount() <= 1 then replaceBadAdsWithTrailerRate = 0 end
 
-		local previousProgramme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
-		local previousProgrammeBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour))
-		-- do not guess when current hour -> "false"
-		local guessedAudience = self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme, block, false)
-		if WorldTime:GetDay() == fixedDay and WorldTime:GetDayHour() == fixedHour then
-			-- we know the audience FOR SURE!
-		else
-			guessedAudience.MultiplyFloat(self.ScheduleTask.guessedAudienceRiskyness)
-		end
-		local guessedAudienceSum = guessedAudience.GetTotalSum()
+
+	local choosenBroadcastSource = nil
+	local choosenBroadcastLog = ""
+	local currentBroadcastMaterial = MY.GetProgrammePlan().GetAdvertisement(fixedDay, fixedHour)
+	
+	local sendTrailer = false
+	local sendTrailerReason = ""
+	local sendAd = true
+	-- the new ad contract to send (if chosen to do so)
+	local newAdContract = nil
+
+	local previousProgramme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
+	local previousProgrammeBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour))
+	-- do not guess when current hour -> "false"
+	local guessedAudience = self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousProgramme, block, false)
+	if WorldTime:GetDay() == fixedDay and WorldTime:GetDayHour() == fixedHour then
+		-- we know the audience FOR SURE!
+	else
+		guessedAudience.MultiplyFloat(self.ScheduleTask.guessedAudienceRiskyness)
+	end
+	local guessedAudienceSum = guessedAudience.GetTotalSum()
 
 --debugMsg("optimizing: " .. fixedDay .. "/"..fixedHour .. "  guessedaud=" .. guessedAudienceSum  .. "  real="..TVT.GetCurrentProgrammeAudience().GetTotalSum())
 
-		-- add to debug data of the 
-		MY.SetAIData("guessedaudience_" .. fixedDay .."_".. fixedHour, guessedAudience)
+	-- add to debug data of the 
+	MY.SetAIData("guessedaudience_" .. fixedDay .."_".. fixedHour, guessedAudience)
 
-		-- send a trailer:
-		-- ===============
-		-- (to avoid outages ... later stages might set an advertisement
-		--  instead)
-		-- a) outage / no ad
-		-- b) not satisfiable advertisement
-		-- c) replace existing trailer with better one
+	-- send a trailer:
+	-- ===============
+	-- (to avoid outages ... later stages might set an advertisement
+	--  instead)
+	-- a) outage / no ad
+	-- b) not satisfiable advertisement
+	-- c) replace existing trailer with better one
 
 
-		-- a)
-		-------------
-		-- send trailer: if nothing is send
-		-- ignore trailer limit here
-		if (currentBroadcastMaterial == nil) then
-			sendTrailerReason = "no ad"
-			sendTrailer = true
+	-- a)
+	-------------
+	-- send trailer: if nothing is send
+	-- ignore trailer limit here
+	if (currentBroadcastMaterial == nil) then
+		sendTrailerReason = "no ad"
+		sendTrailer = true
 
-		-- b)
-		-------------
-		-- send trailer: if a planned advertisement is not satisfiable
-		-- take care of trailer limit!
-		elseif (currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1) then
-			if totalTrailerCount < totalTrailerMax then
-				local adContract = TVT.of_getAdContractByID( currentBroadcastMaterial.GetReferenceID() )
-				if (previousProgramme ~= nil and adContract ~= nil) then
-					local guessedAudienceValue = guessedAudience.GetTotalValue(adContract.GetLimitedToTargetGroup())
-					if guessedAudienceValue < adContract.GetMinAudience() then
-						sendTrailerReason = "unsatisfiable ad (guessedAud "..math.floor(guessedAudienceValue) .. "  <  minAud " .. adContract.GetMinAudience() .. ")"
-						sendTrailer = true
-					end
-				end
-			end
-
-		-- c)
-		-------------
-		-- send trailer: if there is a better one available?
-		-- ignore trailer limit here (replacing trailer with trailer)
-		elseif (currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.PROGRAMME) == 1) then
-			local upcomingProgrammesLicences = self.ScheduleTask:GetUpcomingProgrammesLicenceList()
-			local licenceID = currentBroadcastMaterial.GetReferenceID()
-			-- is the trailer of the past?
-			if (not self.ScheduleTask:GetBroadcastSourceFromTable(licenceID, upcomingProgrammesLicences)) then
-				-- is there something planned in the future?
-				if (table.count(upcomingProgrammesLicences) > 0) then 
-					sendTrailerReason = "better trailer (of upcoming programme)"
+	-- b)
+	-------------
+	-- send trailer: if a planned advertisement is not satisfiable
+	-- take care of trailer limit!
+	elseif (currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1) then
+		if totalTrailerCount < totalTrailerMax then
+			local adContract = TVT.of_getAdContractByID( currentBroadcastMaterial.GetReferenceID() )
+			if (previousProgramme ~= nil and adContract ~= nil) then
+				local guessedAudienceValue = guessedAudience.GetTotalValue(adContract.GetLimitedToTargetGroup())
+				if guessedAudienceValue < adContract.GetMinAudience() then
+					sendTrailerReason = "unsatisfiable ad (guessedAud "..math.floor(guessedAudienceValue) .. "  <  minAud " .. adContract.GetMinAudience() .. ")"
 					sendTrailer = true
 				end
 			end
 		end
 
+	-- c)
+	-------------
+	-- send trailer: if there is a better one available?
+	-- ignore trailer limit here (replacing trailer with trailer)
+	elseif (currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.PROGRAMME) == 1) then
+		local upcomingProgrammesLicences = self.ScheduleTask:GetUpcomingProgrammesLicenceList()
+		local licenceID = currentBroadcastMaterial.GetReferenceID()
+		-- is the trailer of the past?
+		if (not self.ScheduleTask:GetBroadcastSourceFromTable(licenceID, upcomingProgrammesLicences)) then
+			-- is there something planned in the future?
+			if (table.count(upcomingProgrammesLicences) > 0) then 
+				sendTrailerReason = "better trailer (of upcoming programme)"
+				sendTrailer = true
+			end
+		end
+	end
 
 
-		-- find better suiting ad
-		-- ======================
-		-- factor defines when to show an ad or an trailer
-		local minAudienceFactor = 0.4
-		-- during afternoon/evening prefer ads (lower ad requirements)
-		if fixedHour >= 14 and fixedHour < 24 then minAudienceFactor = 0.2 end
-		-- during primetime, send ad at up to all cost?
-		if fixedHour >= 19 and fixedHour <= 23 then minAudienceFactor = 0.05 end
-		-- if we do not have any programme, allow every audience factor...
-		if TVT.of_getProgrammeLicenceCount() <= 1 then minAudienceFactor = 0 end
 
-		-- limit searching to "< current hour" so this allows to use a
-		-- contract with spots planned in LATER hours
-		local betterAdContractList = self.ScheduleTask.EmergencyScheduleJob:GetMatchingSpotList(guessedAudience, minAudienceFactor, previousProgramme, false, false, -1, fixedDay*24 + fixedHour)
-		if (table.count(betterAdContractList) > 0) then
-			local oldAdContract
-			local oldMinAudience = 0
-			local oldMinAudienceTargetGroup = -1
-			-- sending an ad on the current slot?
-			if (currentBroadcastMaterial ~= nil and currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1) then
-				oldAdContract = TVT.of_getAdContractByID( currentBroadcastMaterial.GetReferenceID() )
-				if (oldAdContract ~= nil) then
-					oldMinAudience = oldAdContract.GetMinAudience()
-					oldMinAudienceTargetGroup = oldAdContract.GetLimitedToTargetGroup()
+	-- find better suiting ad
+	-- ======================
+	-- factor defines when to show an ad or an trailer
+	local minAudienceFactor = 0.4
+	-- during afternoon/evening prefer ads (lower ad requirements)
+	if fixedHour >= 14 and fixedHour < 24 then minAudienceFactor = 0.2 end
+	-- during primetime, send ad at up to all cost?
+	if fixedHour >= 19 and fixedHour <= 23 then minAudienceFactor = 0.05 end
+	-- if we do not have any programme, allow every audience factor...
+	if TVT.of_getProgrammeLicenceCount() <= 1 then minAudienceFactor = 0 end
+
+	-- limit searching to "< current hour" so this allows to use a
+	-- contract with spots planned in LATER hours
+	local betterAdContractList = self.ScheduleTask.EmergencyScheduleJob:GetMatchingSpotList(guessedAudience, minAudienceFactor, previousProgramme, false, false, -1, fixedDay*24 + fixedHour)
+	if (table.count(betterAdContractList) > 0) then
+		local oldAdContract
+		local oldMinAudience = 0
+		local oldMinAudienceTargetGroup = -1
+		-- sending an ad on the current slot?
+		if (currentBroadcastMaterial ~= nil and currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1) then
+			oldAdContract = TVT.of_getAdContractByID( currentBroadcastMaterial.GetReferenceID() )
+			if (oldAdContract ~= nil) then
+				oldMinAudience = oldAdContract.GetMinAudience()
+				oldMinAudienceTargetGroup = oldAdContract.GetLimitedToTargetGroup()
+			end
+		end
+		-- fetch best fitting spot (most emerging one)
+		newAdContract = self.ScheduleTask.EmergencyScheduleJob:GetBestMatchingSpot(betterAdContractList)
+		local oldAudienceCoverage = 1.0
+		local newAudienceCoverage = 1.0 --a 0-guessedAudience is always covered by 100%
+		if oldAdContract == nil then oldAudienceCoverage = 0 end
+		if guessedAudienceSum > 0 and newAdContract ~= nil then
+			newAudienceCoverage = newAdContract.GetMinAudience() / guessedAudience.GetTotalValue(newAdContract.GetLimitedToTargetGroup())
+			oldAudienceCoverage = oldMinAudience / guessedAudience.GetTotalValue(oldMinAudienceTargetGroup)
+			--if the old ad would not get satisfied, it does not cover anything 
+			if oldAudienceCoverage > 1 then oldAudienceCoverage = -1 end
+		end
+		local audienceCoverageIncrease = newAudienceCoverage - oldAudienceCoverage
+
+		-- if new spot only covers <x% of guessed Audience, do not place
+		-- an ad, better place a trailer
+		-- replace "minAudience=0"-spots with trailers!
+		if (newAudienceCoverage > replaceBadAdsWithTrailerRate) then
+			-- only different spots - and when audience requirement is at better
+			if (newAdContract ~= oldAdContract and audienceCoverageIncrease > 0) then
+				choosenBroadcastSource = newAdContract
+				choosenBroadcastLog = "Set ad (optimized): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud=" .. newAdContract.GetMinAudience() .. " (old=" .. oldMinAudience .. ")  guessedAud="..guessedAudience.GetTotalValue(newAdContract.GetLimitedToTargetGroup())
+				sendTrailer = false
+			end
+		else
+			-- only place a trailer, if previous is an advertisement
+			-- take care of trailer limit here
+			if (oldSpot ~= nil and totalTrailerCount < totalTrailerMax) then
+				sendTrailerReason = "new ad below ReplaceWithTrailerRate"
+				sendTrailer = true
+			end
+		end
+
+		-- no ad contract found but having an old one?
+		if (choosenBroadcastSource == nil and oldAdContract ~= nil) then
+			sendAd = false
+			sendTrailer = false
+			choosenBroadcastSource = oldAdContract
+			--debugMsg("Belasse alten Werbespot: " .. fixedDay .. "/" ..fixedHour .. ":55  " .. oldAdContract.GetTitle())
+		end
+	end
+
+
+	-- avoid outage and set to send a trailer in all cases
+	if (choosenBroadcastSource == nil and currentBroadcastMaterial == nil and sendTrailer ~= true) then
+		sendTrailer = true
+		sendTrailerReason = "avoid outage"
+	end
+	
+
+	-- send a trailer
+	-- ==============
+	if (sendTrailer == true) then
+		local upcomingProgrammesLicences = self.ScheduleTask:GetUpcomingProgrammesLicenceList()
+
+		local oldTrailer
+		if (currentBroadcastMaterial ~= nil and currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.PROGRAMME) == 1) then
+			oldTrailer = TVT.of_getProgrammeLicenceByID( currentBroadcastMaterial.GetReferenceID() )
+		end
+
+		-- old trailer no longer promoting upcoming programme?
+		local reuseOldTrailer = false
+		if (oldTrailer ~= nil) then
+			reuseOldTrailer = true
+			--not in the upcoming list?
+			if (self.ScheduleTask:GetBroadcastSourceFromTable(oldTrailer.GetID(), upcomingProgrammesLicences) ~= nil) then
+				reuseOldTrailer = false
+			end
+		end
+
+		if (reuseOldTrailer == false) then 
+			-- look for upcoming programmes
+			if (table.count(upcomingProgrammesLicences) == 0) then
+				-- nothing found: use a random one (if possible)
+				if TVT.of_getProgrammeLicenceCount() > 0 then
+					local choosenLicence = TVT.of_getProgrammeLicenceAtIndex( math.random(0, TVT.of_getProgrammeLicenceCount()-1) )
+					if choosenLicence.IsNewBroadcastPossible() then
+						upcomingProgrammesLicences = { choosenLicence }
+					end
 				end
 			end
-			-- fetch best fitting spot (most emerging one)
-			newAdContract = self.ScheduleTask.EmergencyScheduleJob:GetBestMatchingSpot(betterAdContractList)
-			local oldAudienceCoverage = 1.0
-			local newAudienceCoverage = 1.0 --a 0-guessedAudience is always covered by 100%
-			if oldAdContract == nil then oldAudienceCoverage = 0 end
-			if guessedAudienceSum > 0 and newAdContract ~= nil then
-				newAudienceCoverage = newAdContract.GetMinAudience() / guessedAudience.GetTotalValue(newAdContract.GetLimitedToTargetGroup())
-				oldAudienceCoverage = oldMinAudience / guessedAudience.GetTotalValue(oldMinAudienceTargetGroup)
-				--if the old ad would not get satisfied, it does not cover anything 
-				if oldAudienceCoverage > 1 then oldAudienceCoverage = -1 end
-			end
-			local audienceCoverageIncrease = newAudienceCoverage - oldAudienceCoverage
 
-			-- if new spot only covers <x% of guessed Audience, do not place
-			-- an ad, better place a trailer
-			-- replace "minAudience=0"-spots with trailers!
-			if (newAudienceCoverage > replaceBadAdsWithTrailerRate) then
-				-- only different spots - and when audience requirement is at better
-				if (newAdContract ~= oldAdContract and audienceCoverageIncrease > 0) then
-					choosenBroadcastSource = newAdContract
-					choosenBroadcastLog = "Set ad (optimized): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. newAdContract.GetTitle() .. " [" .. newAdContract.GetID() .."]  MinAud=" .. newAdContract.GetMinAudience() .. " (old=" .. oldMinAudience .. ")  guessedAud="..guessedAudience.GetTotalValue(newAdContract.GetLimitedToTargetGroup())
-					sendTrailer = false
-				end
-			else
-				-- only place a trailer, if previous is an advertisement
-				-- take care of trailer limit here
-				if (oldSpot ~= nil and totalTrailerCount < totalTrailerMax) then
-					sendTrailerReason = "new ad below ReplaceWithTrailerRate"
-					sendTrailer = true
+			if (table.count(upcomingProgrammesLicences) > 0) then
+				local choosenLicence = upcomingProgrammesLicences[ math.random( #upcomingProgrammesLicences ) ]
+				if (choosenLicence ~= nil) then
+					choosenBroadcastSource = choosenLicence
+					choosenBroadcastLog = "Set trailer: " .. fixedDay .. "/" .. fixedHour .. ":55  " .. choosenLicence.GetTitle() .. "  Reason: " .. sendTrailerReason
 				end
 			end
-
-			-- no ad contract found but having an old one?
-			if (choosenBroadcastSource == nil and oldAdContract ~= nil) then
+		else
+			-- reuse the old trailer
+			if (reuseOldTrailer) then
 				sendAd = false
 				sendTrailer = false
-				choosenBroadcastSource = oldAdContract
-				--debugMsg("Belasse alten Werbespot: " .. fixedDay .. "/" ..fixedHour .. ":55  " .. oldAdContract.GetTitle())
+				choosenBroadcastSource = oldTrailer
+				--debugMsg("Belasse alten Trailer: " .. fixedDay .. "/" ..fixedHour .. ":55  " .. oldTrailer.GetTitle())
 			end
 		end
+	end
 
 
-		-- avoid outage and set to send a trailer in all cases
-		if (choosenBroadcastSource == nil and currentBroadcastMaterial == nil and sendTrailer ~= true) then
-			sendTrailer = true
-			sendTrailerReason = "avoid outage"
+	-- avoid outage
+	-- ============
+	-- send a random ad spot if nothing else is available
+	if (choosenBroadcastSource == nil and currentBroadcastMaterial == nil) then
+		if TVT.of_getAdContractCount() > 0 then
+			choosenBroadcastSource = TVT.of_getAdContractAtIndex( math.random(0, TVT.of_getAdContractCount()-1) )
+			choosenBroadcastLog = "Set ad (no alternative): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. choosenBroadcastSource.GetTitle() .. " [" ..choosenBroadcastSource.GetID() .."]  MinAud: " .. choosenBroadcastSource.GetMinAudience()
 		end
-		
-
-		-- send a trailer
-		-- ==============
-		if (sendTrailer == true) then
-			local upcomingProgrammesLicences = self.ScheduleTask:GetUpcomingProgrammesLicenceList()
-
-			local oldTrailer
-			if (currentBroadcastMaterial ~= nil and currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.PROGRAMME) == 1) then
-				oldTrailer = TVT.of_getProgrammeLicenceByID( currentBroadcastMaterial.GetReferenceID() )
-			end
-
-			-- old trailer no longer promoting upcoming programme?
-			local reuseOldTrailer = false
-			if (oldTrailer ~= nil) then
-				reuseOldTrailer = true
-				--not in the upcoming list?
-				if (self.ScheduleTask:GetBroadcastSourceFromTable(oldTrailer.GetID(), upcomingProgrammesLicences) ~= nil) then
-					reuseOldTrailer = false
-				end
-			end
-
-			if (reuseOldTrailer == false) then 
-				-- look for upcoming programmes
-				if (table.count(upcomingProgrammesLicences) == 0) then
-					-- nothing found: use a random one (if possible)
-					if TVT.of_getProgrammeLicenceCount() > 0 then
-						local choosenLicence = TVT.of_getProgrammeLicenceAtIndex( math.random(0, TVT.of_getProgrammeLicenceCount()-1) )
-						if choosenLicence.IsNewBroadcastPossible() then
-							upcomingProgrammesLicences = { choosenLicence }
-						end
-					end
-				end
-
-				if (table.count(upcomingProgrammesLicences) > 0) then
-					local choosenLicence = upcomingProgrammesLicences[ math.random( #upcomingProgrammesLicences ) ]
-					if (choosenLicence ~= nil) then
-						choosenBroadcastSource = choosenLicence
-						choosenBroadcastLog = "Set trailer: " .. fixedDay .. "/" .. fixedHour .. ":55  " .. choosenLicence.GetTitle() .. "  Reason: " .. sendTrailerReason
-					end
-				end
-			else
-				-- reuse the old trailer
-				if (reuseOldTrailer) then
-					sendAd = false
-					sendTrailer = false
-					choosenBroadcastSource = oldTrailer
-					--debugMsg("Belasse alten Trailer: " .. fixedDay .. "/" ..fixedHour .. ":55  " .. oldTrailer.GetTitle())
-				end
-			end
-		end
+	end
 
 
-		-- avoid outage
-		-- ============
-		-- send a random ad spot if nothing else is available
-		if (choosenBroadcastSource == nil and currentBroadcastMaterial == nil) then
-			if TVT.of_getAdContractCount() > 0 then
-				choosenBroadcastSource = TVT.of_getAdContractAtIndex( math.random(0, TVT.of_getAdContractCount()-1) )
-				choosenBroadcastLog = "Set ad (no alternative): " .. fixedDay .. "/" .. fixedHour .. ":55  " .. choosenBroadcastSource.GetTitle() .. " [" ..choosenBroadcastSource.GetID() .."]  MinAud: " .. choosenBroadcastSource.GetMinAudience()
-			end
-		end
+	-- set new material
+	-- ================
+	if (choosenBroadcastSource ~= nil) then
+		local result = TVT.of_setAdvertisementSlot(choosenBroadcastSource, fixedDay, fixedHour)
+		if (result > 0) then
+			debugMsg(choosenBroadcastLog)
 
-
-		-- set new material
-		-- ================
-		if (choosenBroadcastSource ~= nil) then
-			local result = TVT.of_setAdvertisementSlot(choosenBroadcastSource, fixedDay, fixedHour)
-			if (result > 0) then
-				debugMsg(choosenBroadcastLog)
-
-				-- if we now have more spots of a contract (because we ignored
-				-- later-planned spots: remove the last one)
-				if sendAd == true and newAdContract ~= nil then
-					local latestHour = MY.GetProgrammePlan().GetAdContractLatestStartHour(newAdContract, fixedDay-1, fixedHour+1, -1, -1)
-					if latestHour >= 0 then
-						local lDay, lHour = self.ScheduleTask:FixDayAndHour(0, latestHour)
-					
-						local latestAd = MY.GetProgrammePlan().GetRealAdvertisement(lDay, lHour)
-						if latestAd ~= nil and latestAd.GetReferenceID() == newAdContract.GetID() then
-							if newAdContract.GetSpotsPlanned() > newAdContract.GetSpotCount() then 
-								if MY.GetProgrammePlan().RemoveAdvertisement(latestAd, lDay, lHour) == 1 then
-									debugMsg("Moved later advertisement to earlier time slot: " ..lDay.."/"..lHour.." -> " .. fixedDay.."/"..fixedHour)
-								end
+			-- if we now have more spots of a contract (because we ignored
+			-- later-planned spots: remove the last one)
+			if sendAd == true and newAdContract ~= nil then
+				local latestHour = MY.GetProgrammePlan().GetAdContractLatestStartHour(newAdContract, fixedDay-1, fixedHour+1, -1, -1)
+				if latestHour >= 0 then
+					local lDay, lHour = self.ScheduleTask:FixDayAndHour(0, latestHour)
+				
+					local latestAd = MY.GetProgrammePlan().GetRealAdvertisement(lDay, lHour)
+					if latestAd ~= nil and latestAd.GetReferenceID() == newAdContract.GetID() then
+						if newAdContract.GetSpotsPlanned() > newAdContract.GetSpotCount() then 
+							if MY.GetProgrammePlan().RemoveAdvertisement(latestAd, lDay, lHour) == 1 then
+								debugMsg("Moved later advertisement to earlier time slot: " ..lDay.."/"..lHour.." -> " .. fixedDay.."/"..fixedHour)
 							end
 						end
 					end
 				end
 			end
 		end
-
-		-- refresh trailer count for next hour
-		totalTrailerCount = self.ScheduleTask.EmergencyScheduleJob:GetTrailerCount(currentDay)
 	end
 end
 
 
-
-function JobSchedule:OptimizeProgrammeSchedule()
-	debugMsg("OptimizeProgrammeSchedule()")
-
+function JobSchedule:OptimizeProgrammeScheduleForBlock(day, hour)
 	-- a) replace infomercials with programme during primetime
 	-- b) replace infomercials with ones providing higher income
 	-- c) replace infomercials with "potentially obsolete contracts then
-	local fixedDay, fixedHour = 0
-	local currentDay = WorldTime.GetDay()
-	local currentHour = WorldTime.GetDayHour()
-	if WorldTime.GetDayMinute() >= 5 then
-		currentHour = currentHour + 1
-	end
 
-	local i = currentHour
-	local hasToOptimizePlan = 5 -- how many times to try
+	local fixedDay, fixedHour = FixDayAndHour(day, hour)
 
-	while hasToOptimizePlan > 0 do
-		while i <= currentHour + 12 do
-			fixedDay, fixedHour = FixDayAndHour(currentDay, i)
-			local choosenBroadcastSource = nil
-			local choosenBroadcastLog = ""
-			local currentBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
-			local sendInfomercial = false
-			local sendInfomercialReason = ""
-			local sendProgramme = true
-			local sendProgrammeReason = ""
-
-			local previousBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour - 1)
-			local previousBroadcastBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour - 1))
-			local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousBroadcastMaterial, previousBroadcastBlock).GetTotalSum()
+	local adjustedBlocks = 0
+	local choosenBroadcastSource = nil
+	local choosenBroadcastLog = ""
+	local currentBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
+	local sendInfomercial = false
+	local sendInfomercialReason = ""
+	local sendProgramme = true
+	local sendProgrammeReason = ""
+	local previousBroadcastMaterial = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour - 1)
+	local previousBroadcastBlock = math.max(1, MY.GetProgrammePlan().GetProgrammeBlock(fixedDay, fixedHour - 1))
+	local guessedAudience = self.ScheduleTask.guessedAudienceRiskyness * self.ScheduleTask:GuessedAudienceForHour(fixedDay, fixedHour, previousBroadcastMaterial, previousBroadcastBlock).GetTotalSum()
 --[[
 local prevText = ""
 local currText = ""
@@ -1541,185 +1544,258 @@ if currentBroadcastMaterial ~= nil then currText = currentBroadcastMaterial.GetT
 if previousBroadcastMaterial ~= nil then prevText = previousBroadcastMaterial.GetTitle();end
 debugMsg("optimizing time="..fixedDay.."/"..fixedHour..":05  curr=\""..currText.."\"  prev=\"" .. prevText.."\"")
 ]]--
-			-- fetch best possible infomercial for that hour
-			local bestInfomercial = self:GetBestAvailableInfomercial(i - currentHour)
+	-- fetch best possible infomercial for that hour
+	local bestInfomercial = self:GetBestAvailableInfomercial(fixedHour)
 
-			-- send an infomercial:
-			-- ===============
-			-- (to avoid outages ... later stages might set an programme
-			--  instead)
-			
-			-- send infomercial: if nothing is send
-			if (currentBroadcastMaterial == nil) then
-				--debugMsg("OptimizeProgrammeSchedule: EMPTY slot " .. fixedDay.."/"..fixedHour..":05")
-				sendInfomercialReason = "nothing to send yet"
-				-- mark hour to be replaceable with a normal programme
-				sendProgramme = true
-				sendInfomercial = true
-			-- send infomercial: if there might be a better one available?
-			elseif (currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1) then
-				--debugMsg("OptimizeProgrammeSchedule: INFOMCERIAL slot " .. fixedDay.."/"..fixedHour..":05")
-				sendInfomercial = true
-			end
-
-
-			-- find better suiting programme
-			-- =============================
-			-- during primetime, send programme at up to all cost?
-			-- TODO
-
-
-			-- place best fitting infomercial
-			if sendInfomercial == true then
-				local oldInfomercial = nil
-				if (currentBroadcastMaterial ~= nil and currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1) then
-					oldInfomercial = TVT.of_getAdContractByID( currentBroadcastMaterial.GetReferenceID() )
-				end
-
-				-- have to send infomercial, but do not have one yet?
-				if oldInfomercial == nil and bestInfomercial ~= nil then
-					choosenBroadcastSource = bestInfomercial
-					choosenBroadcastLog = "Set infomercial (outage): " .. fixedDay .. "/" .. fixedHour .. ":55  \"" .. bestInfomercial.GetTitle() .. "\" [" .. bestInfomercial.GetID() .."]  CPM: " .. bestInfomercial.GetPerViewerRevenue()
-
-					sendInfomercial = false
-				-- having already none, but the other one is better
-				elseif oldInfomercial ~= nil and bestInfomercial ~= nil then
-					choosenBroadcastSource = bestInfomercial
-					choosenBroadcastLog = "Set infomercial (optimized): " .. fixedDay .. "/" .. fixedHour .. ":55 \"" .. bestInfomercial.GetTitle() .. "\" [" .. bestInfomercial.GetID() .."]  CPM:" .. bestInfomercial.GetPerViewerRevenue() .."  (previous: \"" .. oldInfomercial.GetTitle() .. "\"  CPM:" .. oldInfomercial.GetPerViewerRevenue() ..")"
-
-					sendInfomercial = false
-				end
-
-				-- no new infomercial assigned, keep the old one
-				if (choosenBroadcastSource == nil and oldInfomercial ~= nil) then
-					choosenBroadcastSource = oldInfomercial
-					choosenBroadcastLog = "Keep infomercial: " .. fixedDay .. "/" .. fixedHour .. ":55 \"" .. oldInfomercial.GetTitle() .. "\" [" .. oldInfomercial.GetID() .."]  CPM:" .. oldInfomercial.GetPerViewerRevenue() .."  (previous: \"" .. oldInfomercial.GetTitle() .. "\"  CPM:" .. oldInfomercial.GetPerViewerRevenue() ..")"
-					--debugMsg("Keep old infomercial: " .. fixedDay .. "/" ..fixedHour .. ":55  \"" .. oldInfomercial.GetTitle().."\"")
-
-					sendInfomercial = false
-				end
-			end
-
-
-			-- send a programme
-			-- ================
-			-- only send something if there is no other real programme at
-			-- that slot already
-			if (sendProgramme == true) then
-				local sendNewProgramme = true
-				sendProgrammeReason = "Daytime"
-
-				if currentBroadcastMaterial ~= nil and currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.PROGRAMME) == 1 then
-					--debugMsg("OptimizeProgrammeSchedule: PROGRAMME slot " .. fixedDay.."/"..fixedHour..":05")
-
-					sendNewProgramme = false
-
-					-- avoid running the same programme each after another
-					-- (so programmes differ, but licences are the same)
-					if previousBroadcastMaterial ~= currentBroadcastMaterial and previousBroadcastMaterial ~= nil and previousBroadcastMaterial.GetSource() == currentBroadcastMaterial.GetSource() then
-						sendNewProgramme = true
-						sendProgrammeReason = "Avoid duplicate (" .. previousBroadcastMaterial.GetTitle()..")" 
-					end
-
-					-- avoid running the same programme too often a day
-					if sendNewProgramme == false then
-						local sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(currentBroadcastMaterial.GetReferenceID(), fixedDay, 1)
-						if sentAndPlannedToday >= 3 and TVT.of_getProgrammeLicenceCount() >= 3 then
-							sendNewProgramme = true
-							sendProgrammeReason = "Run too often: "..sentAndPlannedToday
-						end
-					end
-				end
-
-				if sendNewProgramme == true then
-					if (fixedHour >= 9 or fixedHour <= 1) then
-						local broadcastSource = self.ScheduleTask:GetMovieOrInfomercialForBlock(fixedDay, fixedHour)
-						--convert source to material so we know the type
-						--as we are only interested in programmes here
-						if broadcastSource ~= nil then 
-							local broadcastMaterialType = MY.GetProgrammeCollection().GetBroadcastMaterialType(broadcastSource)
-							if broadcastMaterialType == TVT.Constants.BroadcastMaterialType.PROGRAMME then
-								choosenBroadcastSource = broadcastSource
-								choosenBroadcastLog = "Set programme licence: " .. fixedDay .. "/" .. fixedHour .. ":05. Title: \"" .. broadcastSource.GetTitle() .. "\"  Reason: " .. sendProgrammeReason
-							end
-						end
-					end
-				end
-			end
-
-
-			-- nothing valid found? Fall back to infomercial
-			if (currentBroadcastMaterial == nil and choosenBroadcastSource == nil) then
-				if bestInfomercial ~= nil then
-					debugMsg("OptimizeProgrammeSchedule: Fall back to infomercial \"" .. choosenBroadcastSource.GetTitle() .. "\" for "..fixedDay .."/" .. fixedHour .. ":05. Already placed")
-					choosenBroadcastSource = bestInfomercial
-					choosenBroadcastLog = "Set infomercial (emergency): " .. fixedDay .. "/" .. fixedHour .. ":55  \"" .. bestInfomercial.GetTitle() .. "\" [" .. bestInfomercial.GetID() .."]  CPM: " .. bestInfomercial.GetPerViewerRevenue()
-				else
-					debugMsg("OptimizeProgrammeSchedule: Fall back to infomercial not possible for "..fixedDay .."/" .. fixedHour .. ":05. NO best infomercial availe")
-				end
-			else
-				--debugMsg("OptimizeProgrammeSchedule: Found something existing or new for "..fixedDay .."/" .. fixedHour .. ":05")
-			end
-
-
-			-- set new material
-			-- ================
-			if (choosenBroadcastSource ~= nil) then
-				--debugMsg("OptimizeProgrammeSchedule: Placing broadcast \"" .. choosenBroadcastSource.GetTitle() .. "\" source for "..fixedDay .."/" .. fixedHour .. ":05")
-				-- skip placement if nothing changes
-				if (currentBroadcastMaterial ~= nil and currentBroadcastMaterial.HasSource(choosenBroadcastSource) == 1) then
-					-- already having it
-					--debugMsg("OptimizeProgrammeSchedule: Skip placing broadcast \"" .. choosenBroadcastSource.GetTitle() .. "\" source for "..fixedDay .."/" .. fixedHour .. ":05. Already placed")
-				else
-					local result = TVT.of_setProgrammeSlot(choosenBroadcastSource, fixedDay, fixedHour)
-					if (result > 0) then
-						debugMsg(choosenBroadcastLog)
-						-- skip other now occupied slots
-						local response = TVT.of_getProgrammeSlot(fixedDay, fixedHour)
-						if ((response.result ~= TVT.RESULT_WRONGROOM) and (response.result ~= TVT.RESULT_NOTFOUND)) then
-							i = i + response.data.GetBlocks() - 1
-
-							currentBroadcastMaterial = response.data
-						end
-					end
-				end
-			elseif (currentBroadcastMaterial == nil) then
-				debugMsg("OptimizeProgrammeSchedule: Failed to find a broadcast source for "..fixedDay .."/" .. fixedHour .. ":05.")
-			end
-
-			--move to next hour
-			i = i + 1
-		end
-
-		-- still outages left? repeat process, if possible
-		if hasToOptimizePlan > 0 then 
-			if self:GetUsedSlotsCount(currentDay, currentHour, 12) == 12 then
-				hasToOptimizePlan = 0
-			else
-				debugMsg("OptimizeProgrammeSchedule: NOT all slots used." .. self:GetUsedSlotsCount(currentDay, currentHour, 12, true))
-			end
-
-			if TVT.GetAdContractCount() == 0 and TVT.GetProgrammeLicenceCount() == 0 then
-				debugMsg("OptimizeProgrammeSchedule: Cannot fill outage slots, no licences or adcontracts available.")
-				hasToOptimizePlan = 0
-			end
-		end
-
-		hasToOptimizePlan = hasToOptimizePlan - 1
+	-- send an infomercial:
+	-- ===============
+	-- (to avoid outages ... later stages might set an programme
+	--  instead)
+	
+	-- send infomercial: if nothing is send
+	if (currentBroadcastMaterial == nil) then
+		--debugMsg("OptimizeProgrammeSchedule: EMPTY slot " .. fixedDay.."/"..fixedHour..":05")
+		sendInfomercialReason = "nothing to send yet"
+		-- mark hour to be replaceable with a normal programme
+		sendProgramme = true
+		sendInfomercial = true
+	-- send infomercial: if there might be a better one available?
+	elseif (currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1) then
+		--debugMsg("OptimizeProgrammeSchedule: INFOMCERIAL slot " .. fixedDay.."/"..fixedHour..":05")
+		sendInfomercial = true
 	end
+
+	-- find better suiting programme
+	-- =============================
+	-- during primetime, send programme at up to all cost?
+	-- TODO
+
+
+	-- place best fitting infomercial
+	if sendInfomercial == true then
+		local oldInfomercial = nil
+		if (currentBroadcastMaterial ~= nil and currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1) then
+			oldInfomercial = TVT.of_getAdContractByID( currentBroadcastMaterial.GetReferenceID() )
+		end
+
+		-- have to send infomercial, but do not have one yet?
+		if oldInfomercial == nil and bestInfomercial ~= nil then
+			choosenBroadcastSource = bestInfomercial
+			choosenBroadcastLog = "Set infomercial (outage): " .. fixedDay .. "/" .. fixedHour .. ":55  \"" .. bestInfomercial.GetTitle() .. "\" [" .. bestInfomercial.GetID() .."]  CPM: " .. bestInfomercial.GetPerViewerRevenue()
+
+			sendInfomercial = false
+		-- having already none, but the other one is better
+		elseif oldInfomercial ~= nil and bestInfomercial ~= nil then
+			choosenBroadcastSource = bestInfomercial
+			choosenBroadcastLog = "Set infomercial (optimized): " .. fixedDay .. "/" .. fixedHour .. ":55 \"" .. bestInfomercial.GetTitle() .. "\" [" .. bestInfomercial.GetID() .."]  CPM:" .. bestInfomercial.GetPerViewerRevenue() .."  (previous: \"" .. oldInfomercial.GetTitle() .. "\"  CPM:" .. oldInfomercial.GetPerViewerRevenue() ..")"
+
+			sendInfomercial = false
+		end
+
+		-- no new infomercial assigned, keep the old one
+		if (choosenBroadcastSource == nil and oldInfomercial ~= nil) then
+			choosenBroadcastSource = oldInfomercial
+			choosenBroadcastLog = "Keep infomercial: " .. fixedDay .. "/" .. fixedHour .. ":55 \"" .. oldInfomercial.GetTitle() .. "\" [" .. oldInfomercial.GetID() .."]  CPM:" .. oldInfomercial.GetPerViewerRevenue() .."  (previous: \"" .. oldInfomercial.GetTitle() .. "\"  CPM:" .. oldInfomercial.GetPerViewerRevenue() ..")"
+			--debugMsg("Keep old infomercial: " .. fixedDay .. "/" ..fixedHour .. ":55  \"" .. oldInfomercial.GetTitle().."\"")
+
+			sendInfomercial = false
+		end
+	end
+
+
+	-- send a programme
+	-- ================
+	-- only send something if there is no other real programme at
+	-- that slot already
+	if (sendProgramme == true) then
+		local sendNewProgramme = true
+		sendProgrammeReason = "Daytime"
+
+		if currentBroadcastMaterial ~= nil and currentBroadcastMaterial.isType(TVT.Constants.BroadcastMaterialType.PROGRAMME) == 1 then
+			--debugMsg("OptimizeProgrammeSchedule: PROGRAMME slot " .. fixedDay.."/"..fixedHour..":05")
+
+			sendNewProgramme = false
+
+			-- avoid running the same programme each after another
+			-- (so programmes differ, but licences are the same)
+			if previousBroadcastMaterial ~= currentBroadcastMaterial and previousBroadcastMaterial ~= nil and previousBroadcastMaterial.GetSource() == currentBroadcastMaterial.GetSource() then
+				sendNewProgramme = true
+				sendProgrammeReason = "Avoid duplicate (" .. previousBroadcastMaterial.GetTitle()..")" 
+			end
+
+			-- avoid running the same programme too often a day
+			if sendNewProgramme == false then
+				local sentAndPlannedToday = TVT.of_GetBroadcastMaterialInProgrammePlanCount(currentBroadcastMaterial.GetReferenceID(), fixedDay, 1)
+				if sentAndPlannedToday >= 3 and TVT.of_getProgrammeLicenceCount() >= 3 then
+					sendNewProgramme = true
+					sendProgrammeReason = "Run too often: "..sentAndPlannedToday
+				end
+			end
+		end
+
+		if sendNewProgramme == true then
+			if (fixedHour >= 9 or fixedHour <= 1) then
+				local broadcastSource = self.ScheduleTask:GetMovieOrInfomercialForBlock(fixedDay, fixedHour)
+				--convert source to material so we know the type
+				--as we are only interested in programmes here
+				if broadcastSource ~= nil then 
+					local broadcastMaterialType = MY.GetProgrammeCollection().GetBroadcastMaterialType(broadcastSource)
+					if broadcastMaterialType == TVT.Constants.BroadcastMaterialType.PROGRAMME then
+						choosenBroadcastSource = broadcastSource
+						choosenBroadcastLog = "Set programme licence: " .. fixedDay .. "/" .. fixedHour .. ":05. Title: \"" .. broadcastSource.GetTitle() .. "\"  Reason: " .. sendProgrammeReason
+					end
+				end
+			end
+		end
+	end
+
+
+	-- nothing valid found? Fall back to infomercial
+	if (currentBroadcastMaterial == nil and choosenBroadcastSource == nil) then
+		if bestInfomercial ~= nil then
+			debugMsg("OptimizeProgrammeSchedule: Fall back to infomercial \"" .. choosenBroadcastSource.GetTitle() .. "\" for "..fixedDay .."/" .. fixedHour .. ":05. Already placed")
+			choosenBroadcastSource = bestInfomercial
+			choosenBroadcastLog = "Set infomercial (emergency): " .. fixedDay .. "/" .. fixedHour .. ":55  \"" .. bestInfomercial.GetTitle() .. "\" [" .. bestInfomercial.GetID() .."]  CPM: " .. bestInfomercial.GetPerViewerRevenue()
+		else
+			debugMsg("OptimizeProgrammeSchedule: Fall back to infomercial not possible for "..fixedDay .."/" .. fixedHour .. ":05. NO best infomercial availe")
+		end
+	else
+		--debugMsg("OptimizeProgrammeSchedule: Found something existing or new for "..fixedDay .."/" .. fixedHour .. ":05")
+	end
+
+
+	-- set new material
+	-- ================
+	if (choosenBroadcastSource ~= nil) then
+		--debugMsg("OptimizeProgrammeSchedule: Placing broadcast \"" .. choosenBroadcastSource.GetTitle() .. "\" source for "..fixedDay .."/" .. fixedHour .. ":05")
+		-- skip placement if nothing changes
+		if (currentBroadcastMaterial ~= nil and currentBroadcastMaterial.HasSource(choosenBroadcastSource) == 1) then
+			-- already having it
+			--debugMsg("OptimizeProgrammeSchedule: Skip placing broadcast \"" .. choosenBroadcastSource.GetTitle() .. "\" source for "..fixedDay .."/" .. fixedHour .. ":05. Already placed")
+		else
+			local result = TVT.of_setProgrammeSlot(choosenBroadcastSource, fixedDay, fixedHour)
+			if (result > 0) then
+				debugMsg(choosenBroadcastLog)
+				-- skip other now occupied slots
+				local response = TVT.of_getProgrammeSlot(fixedDay, fixedHour)
+				if ((response.result ~= TVT.RESULT_WRONGROOM) and (response.result ~= TVT.RESULT_NOTFOUND)) then
+					adjustedBlocks = response.data.GetBlocks()
+
+					currentBroadcastMaterial = response.data
+				end
+			end
+		end
+	elseif (currentBroadcastMaterial == nil) then
+		debugMsg("OptimizeProgrammeSchedule: Failed to find a broadcast source for "..fixedDay .."/" .. fixedHour .. ":05.")
+	end
+
+	return adjustedBlocks
 end
 
+
 function JobSchedule:Tick()
-	--debugMsg("JobSchedule:Tick()  " .. WorldTime.GetDayHour()..":"..WorldTime.GetDayMinute())
+	-- debugMsg("JobSchedule:Tick()  " .. WorldTime.GetDayHour()..":"..WorldTime.GetDayMinute() .. "   Tick: ".. self.ScheduleTask.TickCounter .."/".. self.ScheduleTask.MaxTicks)
+
+	-- avoid "waiting too long"-aborts of the task
+	-- as optimization is rather important
+	if self.optimizedProgrammeHours == 0 then
+		--we need at least 24 ticks, better give some more
+		self.ScheduleTask.MaxTicks = self.ScheduleTask.MaxTicks + 36
+	end
+
 
 	--optimize existing schedule
 	--==========================
+	local currentDay = WorldTime.GetDay()
+	local currentHour = WorldTime.GetDayHour()
 
-	self:OptimizeProgrammeSchedule()
-	self:OptimizeAdSchedule()
+
+	--programmes
+	--==========
+	if self.optimizeProgrammeRunsLeft > 0 then
+		-- optimize up to two slots per tick
+		for i=1, 2 do
+			if self.optimizedProgrammeHours < 12 then
+				local fixedDay, fixedHour = FixDayAndHour(currentDay, currentHour + self.optimizedProgrammeHours)
+
+				-- skip current hour if already started
+				if fixedHour == currentHour and WorldTime.GetDayMinute() >= 5 then
+					--
+				else
+					local adjustedBlocks = self:OptimizeProgrammeScheduleForBlock(fixedDay, fixedHour)
+					-- skip already adjusted blocks
+					if adjustedBlocks > 1 then
+						self.optimizedProgrammeHours = self.optimizedProgrammeHours + (adjustedBlocks-1)
+					end
+				end
+
+				--move on to next hour
+				self.optimizedProgrammeHours = self.optimizedProgrammeHours + 1
+			end
+		end
+
+		-- optimized all - check if we need to run it again
+		if self.optimizedProgrammeHours >= 12 then
+			-- still outages left? repeat process, if possible
+			if self.optimizeProgrammeRunsLeft > 0 then 
+				if self:GetUsedSlotsCount(currentDay, currentHour, 12) == 12 then
+					self.optimizeProgrammeRunsLeft = 0
+				else
+					debugMsg("JobSchedule:Tick() - OptimizeProgrammeSchedule: NOT all slots used." .. self:GetUsedSlotsCount(currentDay, currentHour, 12, true))
+				end
+
+				if TVT.GetAdContractCount() == 0 and TVT.GetProgrammeLicenceCount() == 0 then
+					debugMsg("JobSchedule:Tick() - OptimizeProgrammeSchedule: Cannot fill outage slots, no licences or adcontracts available.")
+					optimizeProgrammeRunsLeft = 0
+				end
+			end
+
+			-- start all over
+			if self.optimizeProgrammeRunsLeft > 0 then 
+				self.optimizeProgrammeRunsLeft = self.optimizeProgrammeRunsLeft - 1
+				self.optimizedProgrammeHours = 0
+
+				--give us 12 more ticks
+				self.ScheduleTask.MaxTicks = self.ScheduleTask.MaxTicks + 24
+			end
+		end
+
+		--finished current tick
+		return
+	end
 
 
-	--only tick one time
+	--advertisements
+	--==============
+	-- optimize up to 2 ads per tick
+	if self.optimizedAdHours < 12 then
+		for i=1, 2 do
+			if self.optimizedAdHours < 12 then
+				local fixedDay, fixedHour = FixDayAndHour(currentDay, currentHour + self.optimizedAdHours)
+
+				--if self.optimizedAdHours == 0 then
+				--	debugMsg("JobSchedule:Tick() - Optimizing ad schedule of the next 12 hours: " .. fixedDay .."/"..fixedHour)
+				--end
+
+				-- skip current hour if already started
+				if fixedHour == currentHour and WorldTime.GetDayMinute() >= 55 then
+					--
+				else
+					self:OptimizeAdScheduleForBlock(fixedDay, fixedHour)
+				end
+
+				--move on to next hour
+				self.optimizedAdHours = self.optimizedAdHours + 1
+			end
+		end
+		--finished current tick
+		return
+	end
+	
+	debugMsg("JobSchedule:Tick() - Optimizations done")
+
+	--done
+	--====
 	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
