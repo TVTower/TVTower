@@ -120,8 +120,8 @@ function JobAdjustStationInvestment:Prepare(pParams)
 end
 
 function JobAdjustStationInvestment:Tick()
-	debugMsg("JobAdjustStationInvestment: currentBudget=" .. self.Task.CurrentBudget .. "  neededInvestmentBudget"..NeededInvestmentBudget)
-	if (self.Task.CurrentBudget < NeededInvestmentBudget) then
+	debugMsg("JobAdjustStationInvestment: currentBudget=" .. self.Task.CurrentBudget .. "  neededInvestmentBudget"..self.Task.NeededInvestmentBudget)
+	if (self.Task.CurrentBudget < self.Task.NeededInvestmentBudget) then
 		self.Task.NeededInvestmentBudget = math.round(self.Task.NeededInvestmentBudget * 0.85 ) -- Nach jeder Überprüfung immer ein kleines bisschen günstiger.
 	end
 
