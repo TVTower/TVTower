@@ -19,7 +19,9 @@ function TaskStationMap:ResetDefaults()
 end
 
 function TaskStationMap:Activate()
-	-- Was getan werden soll:
+	self.AnalyseStationMarketJob = JobAnalyseStationMarket()
+	self.AnalyseStationMarketJob.Task = self
+
 	self.AdjustStationInvestmentJob = JobAdjustStationInvestment()
 	self.AdjustStationInvestmentJob.Task = self
 	
@@ -28,8 +30,10 @@ function TaskStationMap:Activate()
 end
 
 function TaskStationMap:GetNextJobInTargetRoom()
-	if (self.BuyStationJob.Status == JOB_STATUS_DONE) then
-		self:SetWait() --Wenn der Einkauf geklappt hat... muss nichs weiter gemacht werden.
+	if (self.AnalyseStationMarketJob.Status ~= JOB_STATUS_DONE) then
+		return self.AnalyseStationMarketJob
+--	elseif (self.BuyStationJob.Status == JOB_STATUS_DONE) then
+--		self:SetWait() --Wenn der Einkauf geklappt hat... muss nichs weiter gemacht werden.
 	end
 
 	if (self.BuyStationJob.Status ~= JOB_STATUS_DONE) then			
@@ -71,6 +75,36 @@ function TaskStationMap:SetFixedCosts()
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+_G["JobAnalyseStationMarket"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.Task = nil
+end)
+
+function JobAnalyseStationMarket:typename()
+	return "JobAnalyseStationMarket"
+end
+
+function JobAnalyseStationMarket:Prepare(pParams)
+
+end
+
+function JobAnalyseStationMarket:Tick()
+	debugMsg("JobAnalyseStationMarket: checking stations of other players")
+
+	local player = _G["globalPlayer"]
+
+	-- one could do this on each audience calculation but this is a rather
+	-- complex function needing  some execution time
+	TVT.audiencePredictor.RefreshMarkets()
+	player.LastStationMapMarketAnalysis = player.WorldTicks
+
+	self.Status = JOB_STATUS_DONE
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["JobAdjustStationInvestment"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
@@ -92,7 +126,7 @@ function JobAdjustStationInvestment:Tick()
 	end
 
 	-- require a minimum investment
-	self.Task.NeededInvestmentBudget = math.max(400000, self.Task.NeededInvestmentBudget)
+	self.Task.NeededInvestmentBudget = math.max(300000, self.Task.NeededInvestmentBudget)
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
