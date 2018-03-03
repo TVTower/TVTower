@@ -66,7 +66,7 @@ Type TProductionManager
 		'create some companies
 		local cnames:string[] = ["Digidea", "Berlin Film", "Movie World", "Los Krawallos", "Motion Gems", "Screen Jewel"]
 		local levelXP:int = TProductionCompanyBase.MAX_XP / TProductionCompanyBase.MAX_LEVEL
-		local cxp:int[] = [1*levelXP, 1*levelXP, 1*levelXP, 2*levelXP, 2*levelXP, 3*levelXP, 4*levelXP]
+		local cxp:int[] = [0, 0, 0, 1*levelXP, 1*levelXP, 2*levelXP, 3*levelXP]
 		'shuffle XP's so they shuffle levels each start
 		Local shuffleIndex:Int
 		Local shuffleTmp:Int

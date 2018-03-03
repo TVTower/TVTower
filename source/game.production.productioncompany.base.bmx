@@ -49,7 +49,9 @@ Type TProductionCompanyBase extends TGameObject
 	Field channelSympathy:Float[4]
 	Field xp:int = 0
 	'a custom xp limit - eg limited by "age" or so
+	'cannot be higher than DEFAULT_MAX_XP
 	Field maxXP:int = -1
+	Field maxLevel:int = -1
 
 	Const MAX_XP:int = 10000
 	Const MAX_LEVEL:int = 20
@@ -61,6 +63,7 @@ Type TProductionCompanyBase extends TGameObject
 	Method GenerateGUID:string()
 		return "productioncompanybase-"+id
 	End Method
+
 'ProductionCompany: Finished production. experience before: 999  level: 2  LevelXP%:0.998000026   XP%:0.0998999998
  '                                          experience now: 1016  level: 2  LevelXP%:0.0320000648   XP%:0.101599999
 	Method GetLevel:int()
@@ -68,20 +71,20 @@ Type TProductionCompanyBase extends TGameObject
 	End Method
 
 
+	Method GetMaxXP:int()
+		if maxXP < 0 then return MAX_XP
+		return Min(maxXP, MAX_XP)
+	End Method
+
+
 	Method SetLevel:int(level:int)
-		'individual limit
-		if maxXP >= 0
-			'-1 because level 1 is reached with 0 xp
-			SetExperience(int((level-1) * Float(maxXP) / MAX_LEVEL))
-		'generic limit
-		else
-			SetExperience(int((level-1) * Float(MAX_XP) / MAX_LEVEL))
-		endif
+		'-1 because level 1 is reached with 0 xp
+		SetExperience(int(Float(level-1) / MAX_LEVEL * MAX_XP))
 	End Method
 
 
 	Method GetLevelExperiencePercentage:Float()
-		return (MAX_LEVEL * GetExperiencePercentage()) - floor(MAX_LEVEL * GetExperiencePercentage())
+		return GetExperiencePercentage() - floor(GetExperiencePercentage())
 	End Method
 
 
@@ -111,13 +114,8 @@ Type TProductionCompanyBase extends TGameObject
 	
 
 	Method SetExperience(value:int)
-		'individual limit?
-		if maxXP >= 0
-			xp = min(maxXP, value)
-		'generic limit?
-		else
-			xp = min(MAX_XP, value)
-		endif
+		'limit by individual xp limit
+		xp = min(GetMaxXP(), value)
 	End Method
 	
 
@@ -127,12 +125,14 @@ Type TProductionCompanyBase extends TGameObject
 
 
 	Method GetExperiencePercentage:Float()
-		if maxXP >= 0
-			if maxXP = 0 then return 1.0
-			return GetExperience() / float(maxXP)
-		else
-			return GetExperience() / float(MAX_XP)
-		endif
+		return GetExperience() / float(MAX_XP)
+	End Method
+
+
+	Method GetIndividualExperiencePercentage:Float()
+		if GetMaxXP() = 0 then return 1.0
+
+		return GetExperience() / float(GetMaxXP())
 	End Method
 
 
@@ -184,7 +184,7 @@ Type TProductionCompanyBase extends TGameObject
 		'up to "* 100" -> 100% xp means 2000*100 = 200000
 		xpMod :+ 100 * GetExperiencePercentage()
 
-		Return sympathyMod * priceModifier * (15000 + Floor(Int(8000 * xpMod)/100)*100)
+		Return sympathyMod * priceModifier * (15000 + Floor(Int(10000 * xpMod)/100)*100)
 	End Method
 
 
