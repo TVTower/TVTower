@@ -101,16 +101,18 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
 		'calculate outcome for TV
-		if data.IsTVDistribution() and data.GetOutcomeTV() < 0
-			Local quote:Float = 0
-			if audienceResult then quote = audienceResult.GetWholeMarketAudienceQuotePercentage()
-			'base it partially on te production (script) outcome but
-			'also on the quote achieved on its first broadcast
-			'(this makes it dependend on the managers knowledge on when
-			' to best send a specific programme genre)
-			data.outcomeTV = 0.4 * quote + 0.6 * data.GetOutcome()
-		Endif
-
+		'but only when broadcasted as normal programme, not trailer
+		if usedAsType = TVTBroadcastMaterialType.PROGRAMME
+			if data.IsTVDistribution() and data.GetOutcomeTV() < 0
+				Local quote:Float = 0
+				if audienceResult then quote = audienceResult.GetWholeMarketAudienceQuotePercentage()
+				'base it partially on te production (script) outcome but
+				'also on the quote achieved on its first broadcast
+				'(this makes it dependend on the managers knowledge on when
+				' to best send a specific programme genre)
+				data.outcomeTV = 0.4 * quote + 0.6 * data.GetOutcome()
+			Endif
+		endif
 		
 
 		if not isOwnedByPlayer()
