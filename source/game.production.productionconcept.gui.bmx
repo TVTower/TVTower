@@ -12,7 +12,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 
 	Method New()
-'		SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, False)
+		SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, False)
 	End Method
 
 
@@ -598,6 +598,11 @@ Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 	Const scaleAsset:Float = 0.55
 	Const paddingBottom:Int	= 2
 	Const paddingTop:Int = 2
+
+
+	Method New()
+		SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
+	End Method
 
 
     Method Create:TGuiProductionConceptSelectListItem(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")

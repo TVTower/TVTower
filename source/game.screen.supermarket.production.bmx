@@ -781,6 +781,9 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			if productionConcept.IsProduced() then continue
 
 			local item:TGuiProductionConceptSelectListItem = new TGuiProductionConceptSelectListItem.Create(null, new TVec2D.Init(150,24), "concept")
+			'done in TGuiProductionConceptSelectListItem.New() already
+			'item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
+
 			item.SetProductionConcept(productionConcept)
 
 			'base items do not have a size - so we have to give a manual one
