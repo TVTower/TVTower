@@ -689,14 +689,20 @@ Type TNewsAgency
 					continue
 				endif
 
-				'skip news events not for publishing yet - or if not
-				'subscribed to it NOW
+
+				'skip news events not for publishing yet
+				if Not news.IsReadyToPublish(subscriptionDelay)
+					continue
+				endif
+
+				'skip news events if not subscribed to its genre NOW
 				'(including "not satisfying minimum subscription level")
 				'alternatively also check: "or subscriptionDelay < 0"
-				If (player.GetNewsabonnement(genre) < news.newsEvent.GetMinSubscriptionLevel() and not news.newsEvent.HasFlag(TVTNewsFlag.SEND_TO_ALL)) ..
-				   or Not news.IsReadyToPublish(subscriptionDelay)
-					'if playerID=1 then print "ProcessDelayedNews #"+playerID+": NOT subscribed or not ready yet: " + news.GetTitle() + "   announceToPlayer="+ GetWorldTime().GetFormattedDate( news.GetPublishTime() + subscriptionDelay )
-					continue
+				If not news.newsEvent.HasFlag(TVTNewsFlag.SEND_TO_ALL)
+					If player.GetNewsabonnement(genre)<=0 or player.GetNewsabonnement(genre) < news.newsEvent.GetMinSubscriptionLevel()
+						'if playerID=1 then print "ProcessDelayedNews #"+playerID+": NOT subscribed or not ready yet: " + news.GetTitle() + "   announceToPlayer="+ GetWorldTime().GetFormattedDate( news.GetPublishTime() + subscriptionDelay )
+						continue
+					endif
 				endif
 
 
