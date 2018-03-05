@@ -49,7 +49,12 @@ Function GameScriptExpression_Handle_Time:string(variable:string, params:string[
 		case "time_yearsplayed"
 			return string( floor(GetWorldTime().GetDaysRun() / GetWorldTime().GetDaysPerYear()) )
 		case "time_weekday"
-			return string( GetWorldTime().GetWeekday() )
+			'attention, use the weekday depending on game start (day 1
+			'of a game is always a monday)
+			return string( GetWorldTime().GetWeekdayByDay( GetWorldTime().GetDaysRun() ) )
+			'this would return weekday of the exact start date
+			'so 1985/1/1 is a different weekday than 1986/1/1
+			'return string( GetWorldTime().GetWeekday() )
 		case "time_season"
 			return string( GetWorldTime().GetSeason() )
 		case "time_dayofmonth"
