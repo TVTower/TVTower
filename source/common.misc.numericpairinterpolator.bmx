@@ -44,7 +44,11 @@ Type TNumericPairInterpolator
 		GetOrderedKeys()
 		
 		'need at least 2 values for interpolation
-		if orderedKeys.length < 2 then return 0
+		'else we can only "continue" with the single value
+		if orderedKeys.length < 2
+			if orderedKeys.length = 1 then return GetValueForKey(orderedKeys[0])
+			return 0
+		endif
 
 		'find last key _below_ key
 		For local i:int = 1 until orderedKeys.length
@@ -56,17 +60,30 @@ Type TNumericPairInterpolator
 
 			'read previous one
 			keyA = orderedKeys[i-1]
-			valueA = GetValueForKey(keyA)
 			'read current one
 			keyB = orderedKeys[i]
-			valueB = GetValueForKey(keyB)
 
 			found = true
 			exit
 		Next
-		if not found then return 0
+		'variant A
+		'reached end? just extrapolate between last and its predecessor
+		'-> can lead to <0 or >1.0 values (depending on rise)
+		'if not found
+		'	keyA = orderedKeys[orderedKeys.length-2]
+		'	keyB = orderedKeys[orderedKeys.length-1]
+		'endif
 
-		'print "valueA="+valueA+"  valueB="+valueB+"  key="+key+"  keyA="+keyA+"  keyB="+keyB
+		'variant B
+		'just return the last value
+		if not found
+			return GetValueForKey(orderedKeys[orderedKeys.length-1])
+		endif
+
+		valueA = GetValueForKey(keyA)
+		valueB = GetValueForKey(keyB)
+
+'		print "valueA="+valueA+"  valueB="+valueB+"  key="+key+"  keyA="+keyA+"  keyB="+keyB
 
 		if not interpolationFunction
 			return LinearInterpolation(valueA, valueB, key - keyA, keyB - keyA)
