@@ -374,8 +374,11 @@ Type TLuaEngine
 	'adding a new method/field/func to lua
 	Method Index:Int( )
 		Local obj:Object = lua_unboxobject(getLuaState(), 1)
+		'ignore this "TLuaEngine"-instance, it is passed if Lua scripts
+		'call Lua-objects and functions ("toNumber")
+		if obj = self then Return False
+		
 		Local typeId:TTypeId = TTypeId.ForObject(obj)
-		Local ident:String = lua_tostring(getLuaState(), 2)
 		'by default allow read access to lists/maps ?!
 		Local whiteListedType:Int = whiteListedTypes.contains(typeId.name().toLower())
 
@@ -388,6 +391,7 @@ Type TLuaEngine
 		'eg.: field _myPrivateField
 		'
 		'but lua needs access to global: _G
+		Local ident:String = lua_tostring(getLuaState(), 2)
 		If Chr( ident[0] ) =  "_" And ident <> "_G" Then Return False
 
 		'===== CHECK PUSHED OBJECT IS A METHOD or FUNCTION =====

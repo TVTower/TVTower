@@ -434,10 +434,12 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		Local strMonth:String = GetMonth(time)
 		Local strDay:String = GetDayOfMonth(time)
 		Local strGameDay:String = GetDaysRun(time) + 1
+		Local strWeekDay:String = GetWeekdayByDay(GetDaysRun(time))
+		Local strWeekDayLong:String = GetDayName(GetWeekdayByDay(GetDaysRun(time)) )
 		
 		If Int(strMonth) < 10 Then strMonth = "0"+strMonth
 		If Int(strDay) < 10 Then strDay = "0"+strDay
-		Return GetFormattedTime(time, format).replace("d", strDay).replace("m", strMonth).replace("y", strYear).replace("g", strGameDay)
+		Return GetFormattedTime(time, format).replace("d", strDay).replace("m", strMonth).replace("y", strYear).replace("g", strGameDay).replace("w", strWeekDayLong).replace("W", strWeekDay)
 	End Method
 
 

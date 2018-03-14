@@ -290,9 +290,10 @@ Type RoomHandler_Studio extends TRoomHandler
 		'ignore wrong types and NON-dragged items
 		if not guiItem or not guiItem.isDragged() then return FALSE
 
-		if not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).DestroyProductionConcept(guiItem.productionConcept)
-			TLogger.log("Studio.onClickProductionConcept", "Not able to destroy production concept: "+guiItem.productionConcept.GetGUID()+"  " +guiItem.productionConcept.script.GetTitle(), LOG_ERROR)
-		endif
+
+'		if not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).DestroyProductionConcept(guiItem.productionConcept)
+'			TLogger.log("Studio.onClickProductionConcept", "Not able to destroy production concept: "+guiItem.productionConcept.GetGUID()+"  " +guiItem.productionConcept.script.GetTitle(), LOG_ERROR)
+'		endif
 
 		'remove gui object
 		guiItem.remove()

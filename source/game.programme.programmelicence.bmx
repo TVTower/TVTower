@@ -978,7 +978,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local finance:TPlayerFinance = GetPlayerFinance(owner)
 		if not finance then return False
 
-		finance.SellProgrammeLicence(getPriceForPlayer(owner, buyAudienceReachLevel), self)
+		finance.SellProgrammeLicence(GetPriceForPlayer(owner, buyAudienceReachLevel), self)
 
 		'set unused again
 		SetOwner( TOwnedGameObject.OWNER_NOBODY )
@@ -1696,9 +1696,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 
 		'=== AUDIENCE REACH LEVEL ===
-		if audienceReachLevel = -1
+		if audienceReachLevel <= 0
 			if GetPlayerBase(playerID)
-				audienceReachLevel = GetPlayerBase(playerID).GetAudienceReachLevel()
+				audienceReachLevel = Max(1, GetPlayerBase(playerID).GetAudienceReachLevel())
 			else
 				'default to 1
 				audienceReachLevel = 1
@@ -2271,7 +2271,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			contentY :+ 12	
 			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (alle)", contentX + 5, contentY)
 			contentY :+ 12	
-			skin.fontNormal.draw("Preis: "+MathHelper.DottedValue(GetPriceForPlayer(useOwner))+" (old:"+MathHelper.DottedValue(GetPriceForPlayerOld(useOwner))+")", contentX + 5, contentY)
+			skin.fontNormal.draw("Kaufpreis: "+MathHelper.DottedValue(GetPriceForPlayer(useOwner))+" (old:"+MathHelper.DottedValue(GetPriceForPlayerOld(useOwner))+")  Verkauf: " + MathHelper.DottedValue(GetSellPrice(useOwner)), contentX + 5, contentY)
 			contentY :+ 12
 			skin.fontNormal.draw("Trailer: " + data.GetTimesTrailerAiredSinceLastBroadcast(useOwner) +" (total: "+ data.GetTimesTrailerAired()+")", contentX + 5, contentY)
 			if data.GetTrailerMod(useOwner, False)

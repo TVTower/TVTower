@@ -551,7 +551,8 @@ endrem
 
 		if owner and GetPlayerProgrammeCollection(owner)
 			GetPlayerProgrammeCollection(owner).AddProgrammeLicence(addLicence, False)
-			GetPlayerProgrammeCollection(owner)._programmeLicences = null 'cache
+			'done by AddProgrammeLicence already - if successful
+			'GetPlayerProgrammeCollection(owner)._programmeLicences = null 'cache
 		endif
 
 

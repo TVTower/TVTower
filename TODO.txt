@@ -121,3 +121,22 @@ https://www.gamezworld.de/phpforum/viewtopic.php?pid=86100#p86100
 
 - bei automatisch erstellten "Bald im Kino"-News die Schauspieler/Regisseure (je nachdem was erwaehnt wurde) per Effekt einbinden/pushen.
 https://www.gamezworld.de/phpforum/viewtopic.php?pid=87638#p87638
+
+
+Eventuell koennte man hier die letzten X Nachrichten eines Genres
+archivieren (wenn mehr als X Nachrichten insgesamt zur Verfuegung
+stuenden) und diese dann erstmal noch nicht "freigeben". Damit wuerde
+eine allzu zeitnahe Neunutzung vermieden werden.
+https://www.gamezworld.de/phpforum/viewtopic.php?pid=87774#p87774
+
+
+Imagegewinne anpassen, Idee Cherry
+Damit das ganze aber auch richtig funktioniert, muss ein jeder weiterer
+Sendemast das Image wieder herabsetzen - denn man besitzt ja in dem neuen
+Gebiet kein Image. Generell sollte es aber nicht auf den Faktor
+"alteReichweite / neueReichweite" gekuerzt werden, sondern nur um X Prozent
+ diesen Wertes. Es gibt ja auch ein wenig Startsymapathie ("oh hast du schon gehoert, FunTV ist hier bald zu empfangen").
+
+Ich kann gerne von "Zuschauerzahl" auf "relativer Marktanteil" umschwenken (also Marktanteil im eigenen Sendegebiet). Was sagen die anderen dazu?
+https://www.gamezworld.de/phpforum/viewtopic.php?pid=87777#p87777
+

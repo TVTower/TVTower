@@ -67,7 +67,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickEditTextsButton, "TGUIButton") ]
 		'we want to know if we hover a specific block
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverCastItem, "TGUICastListItem" ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverProductionConceptItem, "TGuiProductionConceptListItem" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverProductionConceptItem, "TGuiProductionConceptSelectListItem" ) ]
 
 
 
