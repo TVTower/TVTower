@@ -239,6 +239,16 @@ Type TStationMapCollection
 		UpdateSatelliteSharesAndQuality()
 
 
+		'update cached reach-values
+		'we do not set "changed = true" as we do not need to update
+		'the share maps (satellites are not using them)
+		if not _regenerateMap
+			For local stationMap:TStationMap = Eachin stationMaps
+				stationMap.RecalculateAudienceSum()
+			Next
+		endif
+		
+
 		'if no census was done, do as if it was done right on game start
 		if lastCensusTime = -1
 			lastCensusTime = GetWorldTime().GetTimeStart()
