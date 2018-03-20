@@ -127,6 +127,21 @@ Type TStationMapCollection
 		
 		'optional:
 		'stationMaps = new TStationMap[0]
+
+
+		antennaStationRadius = 20
+		population:int = 0
+		config = New TData
+		cityNames = New TData
+		sportsData = New TData
+		lastCensusTime = -1
+		nextCensusTime = -1
+		mapConfigFile = ""
+		_regenerateMap = False
+		'caches
+		_currentPopulationAntennaShare = -1
+		_currentPopulationCableShare = -1
+		_currentPopulationSatelliteShare = -1
 	End Method
 
 
@@ -230,9 +245,6 @@ Type TStationMapCollection
 		else
 			lastCensusTime = GetWorldTime().GetTimeGone()
 		endif
-
-		'every day?
-		nextCensusTime = GetWorldTime().GetTimeGone() + GetWorldTime().DAYLENGTH * 1
 	End Method
 
 
@@ -1056,9 +1068,17 @@ Type TStationMapCollection
 	
 
 	Method Update:Int()
+		'repair broken census times in DEV patch savegames
+		if nextCensusTime > 0 and nextCensusTime > GetWorldTime().GetTimeGone() + GetWorldTime().DAYLENGTH * 1
+			print "repaired broken DEV Patch census time"
+			nextCensusTime = GetWorldTime().Maketime(0, GetWorldTime().GetDay()+1, 0,0,0)
+		endif
+		
 		'refresh stats ?
 		if nextCensusTime < 0 or nextCensusTime < GetWorldTime().GetTimegone()
 			DoCensus()
+			'every day?
+			nextCensusTime = GetWorldTime().GetTimeGone() + GetWorldTime().DAYLENGTH * 1
 		endif
 
 		'update (eg. launch)
