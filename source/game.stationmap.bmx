@@ -505,6 +505,7 @@ Type TStationMapCollection
 		local result:TVec3D = new TVec3D.Init(0,0,0)
 
 		For local satellite:TStationMap_Satellite = EachIn satellites
+			local satResult:TVec3D = new TVec3D.Init(0,0,0)
 			Local channelsUsingThisSatellite:Int = 0
 			'amount of non-ignored channels
 			Local interestingChannelsCount:Int = 0 
@@ -528,20 +529,27 @@ Type TStationMapCollection
 				
 
 			if channelsUsingThisSatellite > 0
+				'print "GetTotalSatelliteShare: " + satellite.name + "   channelsUsingThisSatellite="+channelsUsingThisSatellite +"  reach="+satellite.GetReach()
 				'total - if there is at least _one_ channel uses this satellite
-				result.y :+ satellite.GetReach()
+				satResult.y = satellite.GetReach()
 
 				'share is only available if we checked some channels
 				if interestingChannelsCount > 0 
 					'share - if _all_ channels use this satellite here
 					if allUseThisSatellite
-						result.x = satellite.GetReach()
+						satResult.x = satellite.GetReach()
 					endif
 
 					'share percentage
-					result.z = channelsUsingThisSatellite / interestingChannelsCount
+					satResult.z = channelsUsingThisSatellite / interestingChannelsCount
 				endif
 			endif
+
+			result.x :+ satResult.x
+			result.y :+ satResult.y
+			'total share percentage depends on the reach of a satellite - or its market share
+			result.z :+ satellite.populationShare * satResult.z
+
 		
 			'store new cached data
 			'If shareCache Then shareCache.insert(cacheKey, result )

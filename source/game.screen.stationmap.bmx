@@ -2660,6 +2660,18 @@ Type TScreenHandler_StationMap
 				satelliteSelectionFrame.DrawTooltips()
 			EndIf
 '		endif
+
+
+		if TVTDebugInfos
+			SetAlpha 0.5
+			SetColor 0,0,0
+			DrawRect(0,25, 200, 55)
+			SetColor 255,255,255
+			SetAlpha 1.0
+			DrawText(GetStationMapCollection().nextCensusTime, 30,30)
+			DrawText("census: " + GetWorldTime().GetFormattedGameDate(GetStationMapCollection().nextCensusTime), 30,45)
+			DrawText("now   : " + GetWorldTime().GetFormattedGameDate(), 30,60)
+		endif
 	End Function
 
 
