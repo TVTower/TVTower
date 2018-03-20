@@ -2383,21 +2383,33 @@ Type TSaveGame Extends TGameState
 		local lines:string[]
 		local line:string = ""
 		local lineNum:int = 0
+		local validSavegame:int = False
 		While not EOF(stream)
 			line = stream.ReadLine()
 			
 			if line.Find("name=~q_Game~q type=~qTGame~q>") > 0
 				exit
 			endif
+
+			'should not be needed - or might fail if we once have a bigger amount stored
+			'in gamesummary then expected
+			if lineNum > 1500 then exit
 			
 			lines :+ [line]
 			lineNum :+ 1
-
-			if lineNum = 4 and not line.Find("name=~q_gameSummary~q type=~qTData~q>") > 0
-				print "unknown savegamefile"
-				return null
+			if lineNum = 4 and line.Find("name=~q___gameSummary~q type=~qTData~q>") > 0
+				validSavegame = True
+			endif
+			if lineNum = 4 and line.Find("name=~q_gameSummary~q type=~qTData~q>") > 0
+				validSavegame = True
 			endif
 		Wend
+		CloseStream(stream)
+		if not validSavegame
+			print "unknown savegamefile"
+			return null
+		endif
+
 		'remove line 3 and 4
 		lines[2] = ""
 		lines[3] = ""
