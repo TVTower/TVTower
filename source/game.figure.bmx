@@ -858,7 +858,7 @@ endrem
 		
 		'=== CHECK IF LEAVING IS ALLOWED ===
 		'skip leaving if not allowed to do so
-		if not forceLeave and not CanLeaveroom(inroom) then return False
+		if not forceLeave and not CanLeaveRoom(inroom) then return False
 
 		'ask if somebody is against leaving that room
 		if not TryLeaveRoom( forceLeave )
@@ -878,11 +878,11 @@ endrem
 
 
 	Method TryLeaveRoom:int(forceLeave:int = False)
-		'but ignore the result if figure is forced to leave
+		'inform others but ignore the result if figure is forced to leave
 		local event:TEventSimple = TEventSimple.Create("figure.onTryLeaveRoom", new TData.Add("door", usedDoor) , self, inroom )
 		EventManager.triggerEvent(event)
 		'stop leaving
-		if event.IsVeto() then return False
+		if not forceLeave and event.IsVeto() then return False
 
 		return True
 	End Method
