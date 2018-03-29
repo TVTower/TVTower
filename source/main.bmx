@@ -3858,31 +3858,14 @@ Type TSettingsWindow
 		Local rendererValues:String[]
 		Local rendererTexts:String[]
 
-		?not bmxng
-			rendererValues = ["0"]
-			rendererTexts = ["OpenGL"]
-		?bmxng
-			rendererValues = ["5"]
-			rendererTexts = ["GL2SDL"]
-		?
-		
-		?Win32
-			'rendererValues :+ ["1","2","3"]
-			'rendererTexts :+ ["DirectX 7", "DirectX 9", "DirectX 11"]
+		'fill with all available renderers
+		For local i:int = 0 until TGraphicsManager.RENDERER_AVAILABILITY.length
+			if TGraphicsManager.RENDERER_AVAILABILITY[i]
+				rendererValues :+ [string(i)] 'i is the same key here
+				rendererTexts :+ [ TGraphicsManager.RENDERER_NAMES[i] ]
+			endif
+		Next
 
-			if D3D7Max2DDriver()
-				rendererValues :+ ["1"]
-				rendererTexts :+ ["DirectX 7"]
-			endif
-			if D3D9Max2DDriver()
-				rendererValues :+ ["2"]
-				rendererTexts :+ ["DirectX 9"]
-			endif
-			if D3D11Max2DDriver()
-				rendererValues :+ ["3"]
-				rendererTexts :+ ["DirectX 11"]
-			endif
-		?
 		itemHeight = 0
 		For Local i:Int = 0 Until rendererValues.Length
 			Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(Null, Null, rendererTexts[i])
@@ -4245,6 +4228,24 @@ Type GameEvents
 		Local PLAYER_NOT_FOUND:String = "[DEV] player not found."
 
 		Select command.Trim().toLower()
+			Case "loaddb"
+				local dbName:string = payload.Trim()
+				if dbName
+					'find all fitting files
+					local dirTree:TDirectoryTree = new TDirectoryTree.SimpleInit("res/database/Default")
+					dirTree.SetIncludeFileEndings(["xml"])
+					dirTree.ScanDir("", True)
+					local fileURIs:String[] = dirTree.GetFiles("", "", "", "", dbName)
+
+					LoadDB(fileURIs)
+					GetGame().SendSystemMessage("[DEV] Loaded the following DBs: "+ ", ".join(fileURIs) +".")
+				else
+					LoadDB()
+					GetGame().SendSystemMessage("[DEV] Loaded the all DBs in the DB directory.")
+				endif
+				
+				GetNewsEventCollection()._InvalidateCaches()
+	
 			Case "maxaudience"
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
 				GetStationMap(player.playerID).CheatMaxAudience()
