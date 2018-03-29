@@ -419,10 +419,10 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 				time = 60 * 60 * 4
 			'rooms like movie agency
 			elseIf owner = 0
-				time = 60 * 60 * 1
+				time = 60 * 60 * 1.5
 			'player rooms
 			elseIf owner > 0
-				time = 60 * 60 * 0.5 
+				time = 60 * 60 * 1 '0.5 
 			endif
 
 		'=== MARSHAL ===
@@ -443,9 +443,12 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 				time = 60 * 10 * randRange(1,2) 
 			endif
 		endif
-			
-		SetBlocked(time, blockedState) 
 
+		if time = 0
+			SetBlocked(0, blockedState, 0)
+		else
+			SetBlocked(time, blockedState, true) 
+		endif
 
 		'inform others
 		if blockedState & BLOCKEDSTATE_BOMB > 0
@@ -458,7 +461,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetBlocked:int(blockTimeInSeconds:int = 0, newBlockedState:int = 0)
+	Method SetBlocked:int(blockTimeInSeconds:int = 0, newBlockedState:int = 0, addToExistingBlockTime:int = True)
 		blockedState :| newBlockedState
 
 		'show the time until end of blocking
@@ -468,8 +471,12 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		if blockedState & (BLOCKEDSTATE_SHOOTING | BLOCKEDSTATE_MARSHAL | BLOCKEDSTATE_BOMB) <> 0
 			blockedUntilShownInTooltip = True
 		endif
-			
-		blockedUntil = GetWorldTime().GetTimeGone() + blockTimeInSeconds
+
+		if addToExistingBlockTime and blockedUntil > GetWorldTime().GetTimeGone()
+			blockedUntil :+ blockTimeInSeconds
+		else
+			blockedUntil = GetWorldTime().GetTimeGone() + blockTimeInSeconds
+		endif
 
 		'remove blockage without effects!
 		if blockTimeInSeconds = 0
@@ -500,6 +507,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		endrem
 				
 		blockedState = BLOCKEDSTATE_NONE
+		blockedUntilShownInTooltip = False
 	End Method
 
 
