@@ -7,6 +7,18 @@ Import BRL.D3D9Max2D
 Import BRL.D3D7Max2D
 ?
 Import "base.util.logger.bmx"
+Import "base.util.graphicsmanagerbase.bmx"
+
+'setup available renderers
+?not bmxng
+TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_DIRECTX11, D3D11Max2DDriver() <> null)
+TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_DIRECTX9, D3D9Max2DDriver() <> null)
+TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_DIRECTX7, D3D7Max2DDriver() <> null)
+TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_OPENGL, GLMax2DDriver() <> null)
+?bmxng
+TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_GL2SDL, GL2Max2DDriver() <> null)
+?
+
 
 
 Function SetRendererWin32:TGraphics(_g:TGraphics, renderer:Int var, realWidth:Int, realHeight:Int, colorDepth:Int, fullScreen:Int, hertz:Int, flags:Int)

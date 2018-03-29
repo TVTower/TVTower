@@ -13,6 +13,10 @@ Import BRL.GLMax2D
 'Import "../source/external/bufferedglmax2d/bufferedglmax2d.bmx"
 ?
 
+'setup available renderers
+TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_OPENGL, GLMax2DDriver() <> null)
+'TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_BUFFEREDOPENGL, BufferedGLMax2DDriver() <> null)
+
 
 
 Type TGraphicsManagerDefault Extends TGraphicsManager
@@ -43,7 +47,7 @@ Type TGraphicsManagerDefault Extends TGraphicsManager
 		'done in base.util.graphicsmanager.win32.bmx
 		'alternatively to "_g = Func(_g,...)"
 		'SetRenderWin32 could also use "_g:TGraphics var"
-		'attention: renderer is passed by referenced (might be changed)
+		'attention: renderer is passed by reference (might be changed)
 		'           during execution of SetRendererWin32(...)
 		_g = SetRendererWin32(_g, renderer, realWidth, realHeight, colorDepth, fullScreen, hertz, flags)
 		?

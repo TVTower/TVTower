@@ -5,6 +5,11 @@ Import sdl.gl2sdlmax2d
 
 Import "base.util.graphicsmanagerbase.bmx"
 
+'setup available renderers -> no renderers but GL2SDL
+TGraphicsManager.SetRendererAvailable(-1, False)
+TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_GL2SDL, GL2Max2DDriver() <> null)
+
+
 Type TGraphicsManagerNG Extends TGraphicsManager
 
 	Function GetInstance:TGraphicsManager()

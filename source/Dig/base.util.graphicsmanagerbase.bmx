@@ -74,12 +74,27 @@ Type TGraphicsManager
 										"Buffered OpenGL", ..
 										"GL2SDL" ..
 									 ]
+	Global RENDERER_AVAILABILITY:Int[] = [ False, False, False, False, False, False ]
+
 	Const RENDERER_OPENGL:Int   		= 0
 	Const RENDERER_DIRECTX7:Int 		= 1
 	Const RENDERER_DIRECTX9:Int 		= 2
 	Const RENDERER_DIRECTX11:Int 		= 3
 	Const RENDERER_BUFFEREDOPENGL:Int   = 4
 	Const RENDERER_GL2SDL:Int           = 5
+
+
+	Function SetRendererAvailable(index:int, bool:int=True)
+		if index >= RENDERER_AVAILABILITY.length then return
+		'setall
+		if index < 0
+			for local i:int = 0 until RENDERER_AVAILABILITY.length
+				SetRendererAvailable(i, bool)
+			next
+		endif
+		RENDERER_AVAILABILITY[index] = bool
+	End Function
+
 
 	Method SetResolution:Int(width:Int, height:Int)
 		If realWidth <> width Or realHeight <> height
