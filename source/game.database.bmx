@@ -30,6 +30,14 @@ Type TDatabaseLoader
 	Field stopWatchAll:TStopWatch = new TStopWatch.Init()
 	Field stopWatch:TStopWatch = new TStopWatch.Init()
 
+	Field allowedNewsCreators:string
+	Field skipNewsCreators:string
+	Field allowedAchievementCreators:string
+	Field skipAchievementCreators:string
+	Field allowedScriptCreators:string
+	Field skipScriptCreators:string
+	Field allowedPersonCreators:string
+	Field skipPersonCreators:string
 	Field allowedAdCreators:string
 	Field skipAdCreators:string
 	Field allowedProgrammeCreators:string
@@ -58,6 +66,46 @@ Type TDatabaseLoader
 		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_PROGRAMMES_CREATED_BY", "").Split(",")
 			skipProgrammeCreators :+ " "+trim(s).ToLower()+" "
 		Next
+
+		allowedNewsCreators = ""
+		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_NEWS_CREATED_BY", "*").Split(",")
+			allowedNewsCreators :+ " "+trim(s).ToLower()+" " 
+		Next
+
+		skipNewsCreators = ""
+		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_NEWS_CREATED_BY", "").Split(",")
+			skipNewsCreators :+ " "+trim(s).ToLower()+" "
+		Next
+
+		allowedScriptCreators = ""
+		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_SCRIPTS_CREATED_BY", "*").Split(",")
+			allowedScriptCreators :+ " "+trim(s).ToLower()+" " 
+		Next
+
+		skipScriptCreators = ""
+		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_SCRIPTS_CREATED_BY", "").Split(",")
+			skipScriptCreators :+ " "+trim(s).ToLower()+" "
+		Next
+
+		allowedAchievementCreators = ""
+		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_ACHIEVEMENTS_CREATED_BY", "*").Split(",")
+			allowedAchievementCreators :+ " "+trim(s).ToLower()+" " 
+		Next
+
+		skipAchievementCreators = ""
+		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_ACHIEVEMENTS_CREATED_BY", "").Split(",")
+			skipAchievementCreators :+ " "+trim(s).ToLower()+" "
+		Next
+
+		allowedPersonCreators = ""
+		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_PERSONS_CREATED_BY", "*").Split(",")
+			allowedPersonCreators :+ " "+trim(s).ToLower()+" " 
+		Next
+
+		skipPersonCreators = ""
+		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_PERSONS_CREATED_BY", "").Split(",")
+			skipPersonCreators :+ " "+trim(s).ToLower()+" "
+		Next
 	End Method
 
 
@@ -76,6 +124,18 @@ Type TDatabaseLoader
 			case "programmelicence"
 				allowed = allowedProgrammeCreators
 				skip = skipProgrammeCreators
+			case "news", "newsevent"
+				allowed = allowedNewsCreators
+				skip = skipNewsCreators
+			case "script", "scripttemplate"
+				allowed = allowedScriptCreators
+				skip = skipScriptCreators
+			case "person", "insignificantpeople"
+				allowed = allowedPersonCreators
+				skip = skipPersonCreators
+			case "achievement"
+				allowed = allowedAchievementCreators
+				skip = skipAchievementCreators
 		EndSelect
 
 		'all allowed? -> check "skip"
@@ -306,7 +366,11 @@ Type TDatabaseLoader
 		local GUID:String = xml.FindValue(node,"id", "")
 
 		'fetch potential meta data
-		metaData.Add(GUID, LoadV3ProgrammePersonBaseMetaDataFromNode(GUID, node, xml, isCelebrity) )
+		local mData:TData = LoadV3ProgrammePersonBaseMetaDataFromNode(GUID, node, xml, isCelebrity)
+		metaData.Add(GUID, mData )
+
+		'skip forbidden users (DEV)
+		if not IsAllowedUser(mData.GetString("createdBy"), "person") then return Null
 
 		'try to fetch an existing one
 		local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(GUID)
@@ -456,7 +520,11 @@ Type TDatabaseLoader
 		local doAdd:int = True
 
 		'fetch potential meta data
-		metaData.Add(GUID, LoadV3NewsEventMetaDataFromNode(GUID, node, xml) )
+		local mData:TData = LoadV3NewsEventMetaDataFromNode(GUID, node, xml)
+		metaData.Add(GUID, mData )
+
+		'skip forbidden users (DEV)
+		if not IsAllowedUser(mData.GetString("createdBy"), "newsevent") then return Null
 
 		'try to fetch an existing one
 		local newsEventTemplate:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(GUID)
@@ -680,7 +748,7 @@ Type TDatabaseLoader
 		Local reuseExisting:int = False
 
 		'skip forbidden users (DEV)
-		'if not IsAllowedUser(mData.GetString("createdBy"), "achievement") then return Null
+		if not IsAllowedUser(mData.GetString("createdBy"), "achievement") then return Null
 
 
 		'try to fetch an existing one
@@ -910,6 +978,7 @@ Type TDatabaseLoader
 
 		local programmeData:TProgrammeData
 		local programmeLicence:TProgrammeLicence
+		local existed:int
 
 		'=== PROGRAMME DATA ===
 		'try to fetch an existing licence with the entries GUID
@@ -923,6 +992,7 @@ Type TDatabaseLoader
 			TLogger.Log("LoadV3ProgrammeLicenceFromNode()", "Extending programmeLicence's data ~q"+programmeData.GetTitle()+"~q. dataGUID="+dataGUID+"  GUID="+GUID, LOG_XML)
 			'unset cached title again
 '			programmeData.titleProcessed = null
+			existed = True
 		endif
 
 
@@ -1282,8 +1352,10 @@ Type TDatabaseLoader
 		'data collection
 		GetProgrammeDataCollection().Add(programmeData)
 
-		programmeLicence.SetOwner(TOwnedGameObject.OWNER_NOBODY)
-
+		if not existed
+			programmeLicence.SetOwner(TOwnedGameObject.OWNER_NOBODY)
+		endif
+		
 		return programmeLicence
 	End Method
 
@@ -1297,7 +1369,10 @@ Type TDatabaseLoader
 		local scriptTemplate:TScriptTemplate
 
 		'fetch potential meta data
-		metaData.Add( GUID, LoadV3ScriptTemplateMetaDataFromNode(GUID, node, xml, parentScriptTemplate) )
+		local mData:TData = LoadV3ScriptTemplateMetaDataFromNode(GUID, node, xml, parentScriptTemplate)
+		metaData.Add( GUID, mData)
+		'skip forbidden users (DEV)
+		if not IsAllowedUser(mData.GetString("createdBy"), "adcontract") then return Null
 
 		'=== SCRIPTTEMPLATE DATA ===
 		'try to fetch an existing template with the entries GUID
