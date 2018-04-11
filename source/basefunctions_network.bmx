@@ -1772,7 +1772,7 @@ Type TNetworkConnection
 						?bmxng
 						packet._bank.resize(Size_T(size))
 						MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),Size_T(size))
-						?no bmxng
+						?not bmxng
 						packet._bank.resize(size)
 						MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),size)
 						?
