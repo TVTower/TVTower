@@ -164,18 +164,7 @@ Type TVTStationType {_exposeToLua}
 			case CABLE_NETWORK_UPLINK return "cable_network_uplink"
 			case SATELLITE_UPLINK     return "satellite_uplink"
 
-			default
-				'loop through all entries and add them if contained
-				local result:string
-				local index:int = 0
-				'do NOT start with 0 ("all")
-				For local i:int = 1 to count
-					index = GetAtIndex(i)
-					if key & index then result :+ GetAsString(index) + ","
-				Next
-				if result = "" then return "unknown"
-				'remove last comma
-				return result[.. result.length-1]
+			default                   return "unknown"
 		End Select
 	End Function
 End Type

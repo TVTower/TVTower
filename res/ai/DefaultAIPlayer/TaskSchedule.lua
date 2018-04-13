@@ -329,8 +329,7 @@ function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, pr
 	if broadcast ~= nil then
 		if block == nil then block = 1; end
 
-		-- todo: refresh markets when "office is visited" (stationmap)
-		if self.Player.LastStationMapMarketAnalysis == 0 then
+		if self.Player.LastStationMapMarketAnalysis == 0 or TVT.audiencePredictor.GetMarketCount() == 0 then
 			TVT.audiencePredictor.RefreshMarkets()
 			self.Player.LastStationMapMarketAnalysis = self.Player.WorldTicks
 			debugMsg("RefreshMarkets() - never analyzed before")

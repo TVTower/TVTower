@@ -423,9 +423,20 @@ Type TBroadcastAudiencePrediction {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetMarketCount:int() {_exposeToLua}
+		if not bc or not bc.AudienceMarkets then return 0
+		return bc.AudienceMarkets.Count()
+	End Method
+
+
 	Method RunPrediction(day:Int, hour:Int) {_exposeToLua}
 		If bc = Null Then bc = New TBroadcast
-		If bc.AudienceMarkets.Count() = 0 Then RefreshMarkets()
+		'it's up to the AI to refresh markets on stationmap visit...
+		'If bc.AudienceMarkets.Count() = 0 Then RefreshMarkets()
+		if bc.AudienceMarkets.Count() = 0
+			print "!!! TBroadcastAudiencePrediction: Calling RunPrediction() without having called ~qRefreshMarkets()~q before!!!"
+			TLogger.Log("TBroadcastAudiencePrediction", "Calling RunPrediction() without having called ~qRefreshMarkets()~q before", LOG_ERROR)
+		endif
 	
 		If day < 0 Then day = GetWorldTime().GetDay()
 		bc.Time = GetWorldTime().MakeTime(0, day, hour, 0, 0)
@@ -683,7 +694,7 @@ Type TBroadcast
 
 		Local audience:Int = GetStationMapCollection().GetTotalShareAudience(playerIDs, withoutPlayerIDs)
 		If audience > 0
-			'print audience +" players:"+StringHelper.JoinIntArray(",",playerIDs) +" without:"+StringHelper.JoinIntArray(",",withoutPlayerIDs)
+			'print "AddMarket: audience="+audience +" players:"+StringHelper.JoinIntArray(",",playerIDs) +" without:"+StringHelper.JoinIntArray(",",withoutPlayerIDs)
 			Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
 			market.maxAudience = New TAudience.InitWithBreakdown(audience)
 			For Local playerID:Int = EachIn playerIDs
@@ -1110,7 +1121,7 @@ End Type
 
 
 
-'Diese Klasse repräsentiert einen Markt um den 1 bis 4 Spieler konkurieren.
+'Diese Klasse repräsentiert einen Markt um den 1 bis 4 Spieler konkurrieren.
 Type TAudienceMarketCalculation
 	'participating playerIDs
 	Field playerIDs:Int[]
@@ -1185,7 +1196,7 @@ Type TAudienceMarketCalculation
 		Local competitionAttractionModifier:TAudience = GetCompetitionAttractionModifier()
 		If Not competitionAttractionModifier Then Return
 
-		'print "ComputeAudience:"
+		'print "ComputeAudience:   time=" + GetWorldTime().GetFormattedGameDate(time)
 		'Print "  maxAudience: " + MaxAudience.ToString()
 		'Print "  ChannelSurferToShare: " + ChannelSurferToShare.ToString()
 
