@@ -240,13 +240,12 @@ Type TStationMapCollection
 
 
 		'update cached reach-values
-		'we do not set "changed = true" as we do not need to update
-		'the share maps (satellites are not using them)
-		if not _regenerateMap
-			For local stationMap:TStationMap = Eachin stationMaps
-				stationMap.RecalculateAudienceSum()
-			Next
-		endif
+		'Update() only recalculates audience sum within "_regenerateMap"
+		'if "map.changed" is set to "true"  - so we need to recalculate
+		'it in all cases
+		For local stationMap:TStationMap = Eachin stationMaps
+			stationMap.RecalculateAudienceSum()
+		Next
 		
 
 		'if no census was done, do as if it was done right on game start
@@ -320,6 +319,21 @@ Type TStationMapCollection
 		next
 	End Method
 
+
+	Method RecalculateMapAudienceSums:Int(forceRecalculation:int = False)
+		Local m:TStationMap
+		For Local i:Int = 1 To stationMaps.length
+			m = GetMap(i)
+			If Not m Then Continue
+			
+			If m.changed or forceRecalculation
+				m.RecalculateAudienceSum()
+				'we handled the changed flag
+				m.changed = False
+			EndIf
+		Next
+	End Method
+	
 
 	Method GetAntennaAudienceSum:int(stations:TList)
 		local result:int
@@ -758,6 +772,9 @@ Type TStationMapCollection
 		TLogger.Log("TStationMapCollection", "Savegame loaded - reloading map data", LOG_DEBUG | LOG_SAVELOAD)
 
 		_instance.LoadMapFromXML()
+
+		'maybe we got a borked up savegame which skipped recalculation
+		_instance.RecalculateMapAudienceSums(True)
 	End Function
 
 
@@ -1125,17 +1142,7 @@ Type TStationMapCollection
 			'gets regenerated)
 			'this individual way saves calculation time (only do what
 			'is needed)
-			Local m:TStationMap
-			For Local i:Int = 1 To stationMaps.length
-				m = GetMap(i)
-				If Not m Then Continue
-				
-				If m.changed
-					m.RecalculateAudienceSum()
-					'we handled the changed flag
-					m.changed = False
-				EndIf
-			Next
+			RecalculateMapAudienceSums(False)
 
 			'we handled regenerating the map
 			_regenerateMap = False
