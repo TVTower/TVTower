@@ -91,8 +91,11 @@ Type TGraphicsManager
 			for local i:int = 0 until RENDERER_AVAILABILITY.length
 				SetRendererAvailable(i, bool)
 			next
+		elseif index < RENDERER_AVAILABILITY.length
+			RENDERER_AVAILABILITY[index] = bool
+		else
+			Throw "Renderer index ~q"+ index+"~q is out of bounds."
 		endif
-		RENDERER_AVAILABILITY[index] = bool
 	End Function
 
 
@@ -128,7 +131,7 @@ Type TGraphicsManager
 		EndIf
 		Return False
 	End Method
-	
+
 
 	Method GetFullscreen:Int()
 		Return (fullscreen = True)
@@ -158,7 +161,7 @@ Type TGraphicsManager
 			Return False
 		EndIf
 	End Method
-	
+
 
 	Method GetColordepth:Int()
 		Return colorDepth
@@ -178,7 +181,7 @@ Type TGraphicsManager
 	Method GetRenderer:Int()
 		Return renderer
 	End Method
-	
+
 
 	Method GetRendererName:String(forRenderer:Int=-1)
 		If forRenderer = -1 Then forRenderer = Self.renderer
@@ -221,7 +224,7 @@ Type TGraphicsManager
 		If designedWidth = -1 And designedHeight = -1 Then Return False
 		Return designedWidth <> realWidth Or designedHeight <> realHeight
 	End Method
-	
+
 
 	'switch between fullscreen or windowed mode
 	Method SwitchFullscreen:Int()
@@ -265,7 +268,7 @@ Type TGraphicsManager
 	End Method
 
 	Method _InitGraphicsDefault:Int() Abstract
-	
+
 Rem
 	Method _InitGraphicsDefault:Int()
 		Select renderer
@@ -305,7 +308,7 @@ End Rem
 	Method ResetVirtualGraphicsArea()
 		TVirtualGfx.ResetVirtualGraphicsArea()
 	End Method
-	
+
 
 	Method SetupVirtualGraphicsArea()
 		TVirtualGfx.SetupVirtualGraphicsArea()
@@ -320,8 +323,8 @@ End Rem
 		.SetViewport(x,y,w,h)
 '		SetViewport( TVirtualGfx.GetInstance().vxoff, TVirtualGfx.GetInstance().vyoff, TVirtualGfx.GetInstance().vwidth, TVirtualGfx.GetInstance().vheight )
 	End Method
-	
-	
+
+
 	Method Flip(restrictFPS:Int=False)
 		'we call "."flip so we call the "original flip function"
 		If Not restrictFPS
@@ -359,10 +362,10 @@ End Rem
 	Method EnableSmoothLines:Int()
 		Return False
 	End Method
-	
+
 	Method CenterDisplay()
 	End Method
-	
+
 End Type
 
 
