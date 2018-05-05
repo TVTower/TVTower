@@ -5,10 +5,15 @@
 @define doVersion
 	version = os.date('%d.%m.%y %H:%M')
 
-	bmk.Sys("echo \"" .. version .. "\" > " .. %BUILDPATH% .. "/source/version.txt")
-#	file = io.open(arg1,"w")
-#	file:write(version)
-#	file:close()
+	file = io.open(%BUILDPATH% .. "/source/version.txt","w")
+	if file ~= nil then
+		#try to write with lua
+		file:write(version)
+		file:close()
+	else
+		#try the OS route
+		bmk.Sys("echo \"" .. version .. "\" > " .. %BUILDPATH% .. "/source/version.txt")
+	end
 @end
 
 # run the pre compile step install
