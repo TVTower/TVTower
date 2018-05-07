@@ -274,7 +274,7 @@ Type TSprite
 		local offsetBottom:int = data.GetInt("offsetBottom", 0)
 		local offset:TRectangle = null
 		if offsetLeft <> 0 or offsetRight <> 0 or offsetTop <> 0 or offsetBottom <> 0
-			offset = new TRectangle.Init(offsetTop, offsetLeft, offsetBottom, offsetRight)
+			offset = new TRectangle.SetTLBR(offsetTop, offsetLeft, offsetBottom, offsetRight)
 		EndIf
 
 		'define the area in the parental spritepack, if no dimension
@@ -523,13 +523,13 @@ Type TSprite
 		'todo: advanced calculation
 		if rotated = 90 or rotated = -90
 			if includeOffset
-				return area.GetH() - offset.GetTop() - offset.GetBottom() - (padding.GetTop() + padding.GetBottom()) - ninePatchPixels
+				return area.GetH() - (offset.GetTop() + offset.GetBottom()) - (padding.GetTop() + padding.GetBottom()) - ninePatchPixels
 			else
 				return area.GetH() - (padding.GetTop() + padding.GetBottom()) - ninePatchPixels
 			endif
 		else
 			if includeOffset
-				return area.GetW() - offset.GetLeft() - offset.GetRight() - (padding.GetLeft() + padding.GetRight()) - ninePatchPixels
+				return area.GetW() - (offset.GetLeft() + offset.GetRight()) - (padding.GetLeft() + padding.GetRight()) - ninePatchPixels
 			else
 				return area.GetW() - (padding.GetLeft() + padding.GetRight()) - ninePatchPixels
 			endif
@@ -554,15 +554,15 @@ Type TSprite
 		'todo: advanced calculation
 		if rotated = 90 or rotated = -90
 			if includeOffset
-				return area.GetW() + offset.GetLeft() + offset.GetRight() - ninePatchPixels
+				return area.GetW() - (offset.GetLeft() + offset.GetRight()) - (padding.GetLeft() + padding.GetRight()) - ninePatchPixels
 			else
-				return area.GetW() - ninePatchPixels
+				return area.GetW() - (padding.GetLeft() + padding.GetRight()) - ninePatchPixels
 			endif
 		else
 			if includeOffset
-				return area.GetH() + offset.GetTop() + offset.GetBottom() - ninePatchPixels
+				return area.GetH() - (offset.GetTop() + offset.GetBottom()) - (padding.GetTop() + padding.GetBottom()) - ninePatchPixels
 			else
-				return area.GetH() - ninePatchPixels
+				return area.GetH() - (padding.GetTop() + padding.GetBottom()) - ninePatchPixels
 			endif
 		endif
 	End Method

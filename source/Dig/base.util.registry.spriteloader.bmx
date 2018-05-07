@@ -87,7 +87,6 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 		fieldNames :+ ["rotated"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
-
 		'are there sprites defined ("children")
 		Local childrenNode:TxmlNode = TXmlHelper.FindChild(node, "children")
 		If not childrenNode then return data
@@ -150,6 +149,16 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 		endif
 
 		'Print "LoadSpritePackResource: "+data.GetString("name") + " ["+url+"]"
+
+		'use path of the XML file if possible
+		if FileType(url) <> FILETYPE_FILE and data.GetString("_xmlSource")
+			local sourcePath:string = ExtractDir(data.GetString("_xmlSource"))
+			if FileType(sourcePath +"/" + url) = FILETYPE_FILE
+				url = sourcePath +"/" + url
+			endif
+		endif
+
+
 		Local img:TImage = LoadImage(url, data.GetInt("flags", 0))
 		'just return - so requests to the sprite should be using the
 		'registries "default sprite" (if registry is used)
@@ -261,7 +270,7 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 											TSpritepack(parent), ..
 											dest, ..
 											new TRectangle.Init(x,y,w,h), ..
-											new TRectangle.Init(offsetTop, offsetLeft, offsetBottom, offsetRight), ..
+											new TRectangle.SetTLBR(offsetTop, offsetLeft, offsetBottom, offsetRight), ..
 											frames ..
 										)
 				sprite.SetImageContent(srcSprite.GetImage(), color)

@@ -126,6 +126,7 @@ Type TBitmapFontManager
 		'set default fonts if not done yet
 		if _defaultFont = null then _defaultFont = Font
 		if baseFont = null then baseFont = Font
+		if baseFontBold = null and style & BOLDFONT > 0 then baseFontBold = Font
 
 		Return Font
 	End Method

@@ -15,7 +15,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2018 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -38,139 +38,9 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
-Import Brl.Map
+Import "base.framework.entity.base.bmx"
 Import "base.util.rectangle.bmx"
 Import "base.util.deltatimer.bmx"
-
-
-
-Type TEntityCollection
-	Field entries:TMap = CreateMap()
-	Field entriesCount:int = -1
-	Field _entriesMapEnumerator:TNodeEnumerator {nosave}
-
-	Method Initialize:TEntityCollection()
-		entries.Clear()
-		entriesCount = -1
-
-		return self
-	End Method
-
-
-	Method GetByGUID:TEntityBase(GUID:String)
-		Return TEntityBase(entries.ValueForKey(GUID))
-	End Method
-
-
-	Method GetCount:Int()
-		if entriesCount >= 0 then return entriesCount
-
-		entriesCount = 0
-		For Local base:TEntityBase = EachIn entries.Values()
-			entriesCount :+1
-		Next
-		return entriesCount
-	End Method
-
-
-	Method Add:int(obj:TEntityBase)
-		if entries.Insert(obj.GetGUID(), obj)
-			'invalidate count
-			entriesCount = -1
-
-			return TRUE
-		endif
-
-		return False
-	End Method
-
-
-	Method Remove:int(obj:TEntityBase)
-		if obj.GetGuid() and entries.Remove(obj.GetGUID())
-			'invalidate count
-			entriesCount = -1
-
-			return True
-		endif
-
-		return False
-	End Method
-
-
-	'=== ITERATOR ===
-	'for "EachIn"-support
-
-	'Set iterator to begin of array
-	Method ObjectEnumerator:TEntityCollection()
-		_entriesMapEnumerator = entries.Values()._enumerator
-		'_iteratorPos = 0
-		Return Self
-	End Method
-	
-
-	'checks if there is another element
-	Method HasNext:Int()
-		Return _entriesMapEnumerator.HasNext()
-
-		'If _iteratorPos > GetCount() Then Return False
-		'Return True
-	End Method
-
-
-	'return next element, and increase position
-	Method NextObject:Object()
-		Return _entriesMapEnumerator.NextObject()
-
-		'_iteratorPos :+ 1
-		'Return entries.ValueAtIndex(_iteratorPos-1)
-	End Method
-End Type
-
-
-
-Type TEntityBase {_exposeToLua="selected"}
-	Field id:Int = 0	{_exposeToLua}
-	Field GUID:String	{_exposeToLua}
-	Global LastID:Int = 0
-
-
-	Method New()
-		LastID :+ 1
-		'assign the new id
-		id = LastID
-
-		'create a new guid
-		SetGUID("")
-	End Method
-
-
-	Method GetID:Int() {_exposeToLua}
-		Return id
-	End Method
-
-
-	Method GetGUID:String() {_exposeToLua}
-		if GUID="" then GUID = GenerateGUID()
-		Return GUID
-	End Method
-
-
-	Method SetGUID:Int(GUID:String="")
-		if GUID="" then GUID = GenerateGUID()
-		self.GUID = GUID
-	End Method
-
-
-	Method GenerateGUID:string()
-		return "entitybase-"+id
-	End Method
-
-
-	'overrideable method for cleanup actions
-	Method Remove:Int()
-		Return True
-	End Method
-End Type
 
 
 

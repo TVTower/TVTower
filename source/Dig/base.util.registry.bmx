@@ -241,7 +241,7 @@ Type TRegistryLoader
 		endif
 
 
-		LoadResourcesFromXML(xmlHelper.GetRootNode(), forceDirectLoad)
+		LoadResourcesFromXML(xmlHelper.GetRootNode(), file, forceDirectLoad)
 
 		'load everything until everything from that file was loaded
 		if forceDirectLoad
@@ -257,14 +257,14 @@ Type TRegistryLoader
 	End Method
 
 
-	Method LoadResourcesFromXML:int(node:TXmlNode, forceDirectLoad:int=FALSE)
+	Method LoadResourcesFromXML:int(node:TXmlNode, source:object, forceDirectLoad:int=FALSE)
 		For local resourceNode:TxmlNode = eachin TXmlHelper.GetNodeChildElements(node)
-			LoadSingleResourceFromXML(resourceNode, forceDirectLoad)
+			LoadSingleResourceFromXML(resourceNode, source, forceDirectLoad)
 		Next
 	End Method
 
 
-	Method LoadSingleResourceFromXML:int(node:TXmlNode, forceDirectLoad:int=FALSE, extras:TData = null)
+	Method LoadSingleResourceFromXML:int(node:TXmlNode, source:object, forceDirectLoad:int=FALSE, extras:TData = null)
 		'get the name defined in:
 		'- type (<bla type="identifier" />) or
 		'- tagname ( <identifier x="1" />)
@@ -273,7 +273,7 @@ Type TRegistryLoader
 		'we handle "resource" on our own
 		if resourceName.ToUpper() = "RESOURCES"
 			local directLoad:int = TXmlHelper.findValueBool(node, "directload", forceDirectLoad)
-			LoadResourcesFromXML(node, directLoad)
+			LoadResourcesFromXML(node, source, directLoad)
 		else
 			local loader:TRegistryBaseLoader = GetResourceLoader(resourceName)
 			if loader
@@ -283,6 +283,8 @@ Type TRegistryLoader
 				'do nothing without a configuration (maybe it is a virtual group handled
 				'directly by the loader -> eg. "fonts" which only groups "font")
 				if conf
+					conf.Add("_xmlSource", source)
+					
 					'merge in the extras (eg. overwrite "names")
 					if extras then conf.Append(extras)
 

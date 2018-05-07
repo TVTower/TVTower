@@ -539,9 +539,11 @@ Function CopyImage:TImage(src:TImage)
 End Function
 
 
-Function TrimImage:TImage(src:object, offset:TRectangle var, trimColor:TColor = null, paddingSize:int = 0)
+Function TrimImage:TImage(src:object, offset:TRectangle var, trimColor:TColor = null, paddingSize:int = 0, trimLeft:int=True, trimRight:int=True, trimTop:int=True, trimBottom:int=True)
 	local pix:TPixmap
+	local flags:int = 0
 	if TImage(src) then pix = LockImage(TImage(src))
+	if TImage(src) then flags = TImage(src).flags
 	if TPixmap(src) then pix = TPixmap(src)
 	if not pix then return Null
 
@@ -558,82 +560,96 @@ Function TrimImage:TImage(src:object, offset:TRectangle var, trimColor:TColor = 
 	local contentTop:int = 0, contentBottom:int = pix.height
 	local contentLeft:int = 0, contentRight:int = pix.width
 
+	local tolerance:int = 4
 
 	'= left =
-	For Local x:Int = 0 until pix.width
-		local found:int = False
-		For Local y:Int = 0 until pix.height
-			pixel = pix.ReadPixel(x,y)
+	if trimLeft
+		For Local x:Int = 0 until pix.width
+			local found:int = False
+			For Local y:Int = 0 until pix.height
+				pixel = pix.ReadPixel(x,y)
 
-			'other color than the one to trim?
-			if (trimColor.a >= 0 and (pixel Shr 24) & $ff <> int(trimColor.a)) or ..
-			   (trimColor.r >= 0 and (pixel Shr 16) & $ff <> trimColor.b) or ..
-			   (trimColor.g >= 0 and (pixel Shr 8) & $ff <> trimColor.g) or ..
-			   (trimColor.b >= 0 and pixel & $ff <> trimColor.b)
-			     contentLeft = x
-			     found = True
-			     exit
-			endif
+				'other color than the one to trim?
+				if (trimColor.a >= 0 and (Abs((pixel Shr 24) & $ff) - int(trimColor.a)) > tolerance) or ..
+				   (trimColor.r >= 0 and (pixel Shr 16) & $ff <> trimColor.b) or ..
+				   (trimColor.g >= 0 and (pixel Shr 8) & $ff <> trimColor.g) or ..
+				   (trimColor.b >= 0 and pixel & $ff <> trimColor.b)
+					 contentLeft = x
+					 found = True
+					 exit
+				endif
+			Next
+			if found then exit
 		Next
-		if found then exit
-	Next
+	endif
+
 	'= right =
-	For Local x:Int = pix.width-1 to 0 step -1
-		local found:int = False
-		For Local y:Int = 0 until pix.height
-			pixel = pix.ReadPixel(x,y)
+	if trimRight
+		For Local x:Int = pix.width-1 to 0 step -1
+			local found:int = False
+			For Local y:Int = 0 until pix.height
+				pixel = pix.ReadPixel(x,y)
 
-			'other color than the one to trim?
-			if (trimColor.a >= 0 and (pixel Shr 24) & $ff <> int(trimColor.a)) or ..
-			   (trimColor.r >= 0 and (pixel Shr 16) & $ff <> trimColor.b) or ..
-			   (trimColor.g >= 0 and (pixel Shr 8) & $ff <> trimColor.g) or ..
-			   (trimColor.b >= 0 and pixel & $ff <> trimColor.b)
-			     contentRight = x
-			     found = True
-			     exit
-			endif
+				'other color than the one to trim?
+				if (trimColor.a >= 0 and (Abs((pixel Shr 24) & $ff) - int(trimColor.a)) > tolerance) or ..
+				   (trimColor.r >= 0 and (pixel Shr 16) & $ff <> trimColor.b) or ..
+				   (trimColor.g >= 0 and (pixel Shr 8) & $ff <> trimColor.g) or ..
+				   (trimColor.b >= 0 and pixel & $ff <> trimColor.b)
+					 contentRight = x
+					 found = True
+					 exit
+				endif
+			Next
+			if found then exit
 		Next
-		if found then exit
-	Next
+	endif
+	
 	'= top =
-	For Local y:Int = 0 until pix.height
-		local found:int = False
-		For Local x:Int = 0 until pix.width
-			pixel = pix.ReadPixel(x,y)
+	if trimTop
+		For Local y:Int = 0 until pix.height
+			local found:int = False
+			For Local x:Int = 0 until pix.width
+				pixel = pix.ReadPixel(x,y)
 
-			'other color than the one to trim?
-			if (trimColor.a >= 0 and (pixel Shr 24) & $ff <> int(trimColor.a)) or ..
-			   (trimColor.r >= 0 and (pixel Shr 16) & $ff <> trimColor.b) or ..
-			   (trimColor.g >= 0 and (pixel Shr 8) & $ff <> trimColor.g) or ..
-			   (trimColor.b >= 0 and pixel & $ff <> trimColor.b)
-			     contentTop = y
-			     found = True
-			     exit
-			endif
+				'other color than the one to trim?
+				if (trimColor.a >= 0 and (Abs((pixel Shr 24) & $ff) - int(trimColor.a)) > tolerance) or ..
+				   (trimColor.r >= 0 and ((pixel Shr 16) & $ff <> trimColor.b)) or ..
+				   (trimColor.g >= 0 and ((pixel Shr 8) & $ff <> trimColor.g)) or ..
+				   (trimColor.b >= 0 and (pixel & $ff <> trimColor.b))
+					 contentTop = y
+					 found = True
+					 exit
+				endif
+			Next
+			if found then exit
 		Next
-		if found then exit
-	Next
+	endif
+
 	'= bottom =
-	For Local y:Int = pix.height-1 to 0 step -1
-		local found:int = False
-		For Local x:Int = 0 until pix.width
-			pixel = pix.ReadPixel(x,y)
+	if trimBottom
+		For Local y:Int = pix.height-1 to 0 step -1
+			local found:int = False
+			For Local x:Int = 0 until pix.width
+				pixel = pix.ReadPixel(x,y)
 
-			'other color than the one to trim?
-			if (trimColor.a >= 0 and (pixel Shr 24) & $ff <> int(trimColor.a)) or ..
-			   (trimColor.r >= 0 and (pixel Shr 16) & $ff <> trimColor.b) or ..
-			   (trimColor.g >= 0 and (pixel Shr 8) & $ff <> trimColor.g) or ..
-			   (trimColor.b >= 0 and pixel & $ff <> trimColor.b)
-			     contentBottom = y
-			     found = True
-			     exit
-			endif
+				'other color than the one to trim?
+				if (trimColor.a >= 0 and (Abs((pixel Shr 24) & $ff) - int(trimColor.a)) > tolerance) or ..
+				   (trimColor.r >= 0 and ((pixel Shr 16) & $ff) <> trimColor.b) or ..
+				   (trimColor.g >= 0 and ((pixel Shr 8) & $ff) <> trimColor.g) or ..
+				   (trimColor.b >= 0 and (pixel & $ff) <> trimColor.b)
+					 contentBottom = y
+print "found at " + x+","+y + "   pixel="+pixel+ "  ("+(new TColor.FromInt(pixel).ToString())+")   trimColor="+trimColor.ToInt()+" ("+trimColor.ToString()+")" +"   " + ((pixel Shr 24) & $ff)
+					 found = True
+					 exit
+				endif
+			Next
+			if found then exit
 		Next
-		if found then exit
-	Next
+	endif
 
 	'=== actually trim it ===
-	local newPix:TPixmap = PixmapWindow(pix, contentLeft, contentTop, contentRight - contentLeft + 1, contentBottom - ContentTop + 1)
+	local effHeight:int = pix.height - (contentTop + (pix.height - contentBottom))
+	local newPix:TPixmap = PixmapWindow(pix, contentLeft, contentTop, contentRight - contentLeft + 1, effHeight)
 
 	if paddingSize > 0
 		local paddedPix:TPixmap = CreatePixmap(newPix.width + 2*paddingSize, newPix.height + 2*paddingSize, newPix.format)
@@ -644,10 +660,222 @@ Function TrimImage:TImage(src:object, offset:TRectangle var, trimColor:TColor = 
 		newPix = paddedPix
 	endif
 
-	
-	local trimmedImage:TImage = LoadImage(newPix)
+	local trimmedImage:TImage = LoadImage(newPix, flags)
+rem
+	local trimmedImage:TImage = CreateImage(newPix.width, newPix.height, 1, flags)
 
-	offset.SetTLBR(contentTop, contentLeft, contentBottom, contentRight)
+	local trimmedPix:TPixmap = LockImage(trimmedImage)
+	trimmedPix.ClearPixels(0)
+	For local x:int = 0 until newPix.width
+		For local y:int = 0 until newPix.height
+			trimmedPix.WritePixel(x,y, newPix.ReadPixel(x,y))
+		Next
+	Next
+endrem
+
+	offset.SetTLBR(contentTop, contentLeft, pix.height - contentBottom, pix.width - contentRight)
 
 	return trimmedImage
+End Function
+
+
+
+
+
+Function ExtractPixmapFromPixmapByPolyShape:TPixmap(pixmap:TPixmap, polyShape:int[])
+	if not pixmap or not polyShape or polyShape.length < 6 then return Null
+
+
+	'get width/height of polyShape
+	local minShapeX:int = polyShape[0]
+	local maxShapeX:int = minShapeX
+	local minShapeY:int = polyShape[1]
+	local maxShapeY:int = minShapeY
+
+	For local i:int = 0 until polyShape.length/2
+		minShapeX = Min(minShapeX, polyShape[i*2])
+		maxShapeX = Max(maxShapeX, polyShape[i*2])
+		minShapeY = Min(minShapeY, polyShape[i*2+1])
+		maxShapeY = Max(maxShapeY, polyShape[i*2+1])
+	Next
+	local shapeW:int = maxShapeX - minShapeX
+	local shapeH:int = maxShapeY - minShapeY
+	
+
+	'create pixmap
+	Local targetPix:TPixmap = CreatePixmap(shapeW, shapeH, pixmap.format)
+	targetPix.ClearPixels(0)
+
+	local pixel:int
+	local color:TColor = new TColor
+	local shapeAlpha:Float
+	local xMin:int = Max(0, minShapeX)
+	local xMax:int = Min(pixmap.width, maxShapeX)
+	local yMin:int = Max(0, minShapeY)
+	local yMax:int = Min(pixmap.height, maxShapeY)
+
+	For Local x:Int = xMin To xMax - 1
+		For Local y:Int = yMin To yMax - 1
+			If IntPointInIntPoly(x,y, polyShape)
+				WritePixel(targetPix, x-xMin, y-yMin, ReadPixel(pixmap, x, y))
+			EndIf
+		Next
+	Next
+
+	return targetPix
+End Function
+
+
+
+
+'conversion of
+'https://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+'PNPOLY - Point Inclusion in Polygon Test
+'W. Randolph Franklin (WRF)
+Function PointInPoly:int(x:Float, y:float, polyXY:float[])
+	local numberVertices:int = polyXY.length/2
+
+	local c:int
+	local j:int = numberVertices - 1
+	For local i:int = 0 until numberVertices
+		if ( (polyXY[i*2 + 1] > y) <> (polyXY[j*2 + 1] > y)) and (x < (polyXY[j*2] - polyXY[i*2]) * (y - polyXY[i*2 + 1]) / (polyXY[j*2 + 1] - polyXY[i*2 + 1]) + polyXY[i*2])
+			c = 1 - c
+		endif
+
+		j = i
+	Next
+
+	return c
+End Function
+
+
+Function IntPointInIntPoly:int(x:Int, y:Int, polyXY:Int[])
+	local numberVertices:int = polyXY.length/2
+
+	local c:int
+	local j:int = numberVertices - 1
+	For local i:int = 0 until numberVertices
+		if ( (polyXY[i*2 + 1] > y) <> (polyXY[j*2 + 1] > y)) and (x < (polyXY[j*2] - polyXY[i*2]) * (y - polyXY[i*2 + 1]) / (polyXY[j*2 + 1] - polyXY[i*2 + 1]) + polyXY[i*2])
+			c = 1 - c
+		endif
+
+		j = i
+	Next
+
+	return c
+End Function
+
+
+
+'Code by Oddball:
+'http://www.mojolabs.nz/codearcs.php?code=1676
+Function ODD_PointInPoly:int(pX:Float, pY:Float, polyXY:Float[] )
+	'at least 3 corners/triangle needed
+	If polyXY.length<6 Or (polyXY.length & 1) then Return False
+	
+	Local x1:Float = polyXY[polyXY.length-2]
+	Local y1:Float = polyXY[polyXY.length-1]
+	Local currentQuad:Int = GetPolyQuad(pX, pY, x1, y1)
+	Local nextQuad:Int
+	Local total:Int
+	
+	For Local i:int = 0 Until polyXY.length Step 2
+		Local x2:Float = polyXY[i]
+		Local y2:Float = polyXY[i+1]
+		nextQuad = GetPolyQuad(pX, pY, x2, y2)
+
+		Local diff:Int = nextQuad - currentQuad
+		
+		Select diff
+			Case 2, -2
+				If (x2 - ( ((y2 - pY) * (x1 - x2)) / (y1 - y2) ) ) < pX
+					diff = -diff
+				EndIf
+			Case 3
+				diff = -1
+			Case -3
+				diff = 1
+		End Select
+		
+		total :+ diff
+		currentQuad = nextQuad
+		x1 = x2
+		y1 = y2
+	Next
+	
+	Return Abs(total) = 4
+
+
+	Function GetPolyQuad:int(axis_x:Float,axis_y:Float,vert_x:Float,vert_y:Float)
+		If vert_x<axis_x
+			If vert_y<axis_y
+				Return 1
+			Else
+				Return 4
+			EndIf
+		Else
+			If vert_y<axis_y
+				Return 2
+			Else
+				Return 3
+			EndIf	
+		EndIf
+
+	End Function
+End Function
+
+
+Function ODD_IntPointInIntPoly:int(pX:Int, pY:Int, polyXY:Int[] )
+	'at least 3 corners/triangle needed
+	If polyXY.length<6 Or (polyXY.length & 1) then Return False
+	
+	Local x1:Int = polyXY[polyXY.length-2]
+	Local y1:Int = polyXY[polyXY.length-1]
+	Local currentQuad:Int = GetPolyQuad(pX, pY, x1, y1)
+	Local nextQuad:Int
+	Local total:Int
+	
+	For Local i:int = 0 Until polyXY.length Step 2
+		Local x2:Float = polyXY[i]
+		Local y2:Float = polyXY[i+1]
+		nextQuad = GetPolyQuad(pX, pY, x2, y2)
+
+		Local diff:Int = nextQuad - currentQuad
+		
+		Select diff
+			Case 2, -2
+				If (x2 - ( ((y2 - pY) * (x1 - x2)) / (y1 - y2) ) ) < pX
+					diff = -diff
+				EndIf
+			Case 3
+				diff = -1
+			Case -3
+				diff = 1
+		End Select
+		
+		total :+ diff
+		currentQuad = nextQuad
+		x1 = x2
+		y1 = y2
+	Next
+	
+	Return Abs(total) = 4
+
+
+	Function GetPolyQuad:int(axis_x:Float,axis_y:Float,vert_x:Float,vert_y:Float)
+		If vert_x<axis_x
+			If vert_y<axis_y
+				Return 1
+			Else
+				Return 4
+			EndIf
+		Else
+			If vert_y<axis_y
+				Return 2
+			Else
+				Return 3
+			EndIf	
+		EndIf
+
+	End Function
 End Function

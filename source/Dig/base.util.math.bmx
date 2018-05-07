@@ -106,6 +106,8 @@ Type MathHelper
 
 
 	Function InIntArray:int(i:int, intArray:int[])
+		if not intArray then return False
+		
 		For local d:Int = EachIn intArray
 			if d = i then return True
 		Next
