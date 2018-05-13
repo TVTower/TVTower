@@ -312,6 +312,13 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiPlayerNames[playerID-1].SetValue( GetPlayerBase(playerID).name )
 		guiChannelNames[playerID-1].SetValue( GetPlayerBase(playerID).channelName )
 
+		if GetPlayerBaseCollection().IsHuman(playerID)
+			guiPlayerNames[playerID-1].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_player"))
+		else
+			guiPlayerNames[playerID-1].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_computerplayer"))
+		endif
+
+
 		local selectedDropDownItem:TGUIDropDownItem
 		For Local item:TGUIDropDownItem = EachIn guiDifficulty[playerID-1].GetEntries()
 			Local s:string = item.data.GetString("value")

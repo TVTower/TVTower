@@ -73,6 +73,11 @@ Type TPlayerBaseCollection
 	End Method
 
 
+	Method IsHuman:Int(number:Int)
+		return True
+	End Method
+
+
 	Method Update()
 		For local p:TPlayerBase = Eachin players
 			p.Update()

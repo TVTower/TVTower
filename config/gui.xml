@@ -66,8 +66,8 @@
 				<child name="gfx_gui_icon_check"				x="252"	y="18"	w="18"	h="18" />
 
 				<child name="gfx_gui_overlay_tvchannel"	x="325"	y="1" 	w="24" 	h="23" />
-				<child name="gfx_gui_overlay_player"	x="349"	y="1" 	w="24" 	h="23" />
-				<child name="gfx_gui_overlay_disc"		x="377"	y="1" 	w="24" 	h="23" />
+				<child name="gfx_gui_overlay_player"	x="350"	y="1" 	w="24" 	h="23" />
+				<child name="gfx_gui_overlay_computerplayer" x="374"	y="1" 	w="24" 	h="23" />
 
 				<!-- tooltips -->
 				<child name="gfx_gui_tooltip.bg"          x="360" y="25"  w="27"  h="28" ninepatch="true" />
