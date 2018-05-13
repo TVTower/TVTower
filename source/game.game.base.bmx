@@ -66,7 +66,7 @@ Type TGameBase {_exposeToLua="selected"}
 	Field onlinegame:Int = 0
 
 	Field terrorists:TFigureBase[2]
-	Field marshals:TFigureBase[2]  
+	Field marshals:TFigureBase[2]
 
 
 	'username of the player ->set in config
@@ -178,7 +178,7 @@ Type TGameBase {_exposeToLua="selected"}
 	Method StartLoadedSaveGame:Int()
 		'stub
 	End Method
-	
+
 
 	Method Update(deltaTime:Float=1.0)
 		'stub
@@ -197,7 +197,7 @@ Type TGameBase {_exposeToLua="selected"}
 
 	Method SetPlayerBankruptLevel:int(playerID:int, level:int, time:Long=-1)
 		if playerID < 1 then return False
-		
+
 		'resize if needed
 		if playerBankruptLevel.length < playerID
 			playerBankruptLevel = playerBankruptLevel[.. playerID]
@@ -285,6 +285,22 @@ Type TGameBase {_exposeToLua="selected"}
 	Method GetStartYear:Int()
 		return GetWorldTime().GetStartYear()
 	End Method
+
+rem
+	Method SwitchPlayer:int(newID:Int, oldID:int=-1)
+		return False
+	End Method
+endrem
+
+	Method SwitchPlayerIdentity:int(ID1:int, ID2:int)
+		return False
+	End Method
+
+
+	Method SetLocalPlayer:int(ID:Int=-1)
+		return False
+	End Method
+
 
 	Method PlayingAGame:Int()
 		If gamestate <> STATE_RUNNING Then Return False

@@ -20,7 +20,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	Field startProgrammeGUIDs:string[]
 
 	Global GameScreen_World:TInGameScreen_World
-	
+
 	Global _initDone:Int = False
 	Global _eventListeners:TLink[]
 	Global StartTipWindow:TGUIModalWindow
@@ -134,7 +134,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 	Method EndGame:int()
-		If Self.gamestate = TGAme.STATE_RUNNING
+		If Self.gamestate = TGame.STATE_RUNNING
 			'start playing the menu music again
 			GetSoundManager().PlayMusicPlaylist("menu")
 		endif
@@ -234,7 +234,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			GameRules.AssignFromData( GameRules.devConfig )
 		endif
 
-		
+
 		'Game screens
 		GameScreen_World.Initialize()
 
@@ -250,7 +250,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			LoadDB(["database_achievements.xml"])
 		endif
 
-		
+
 		TLogger.Log("Game.PrepareStart()", "Reassuring correct room flags (freeholds, fake rooms)", LOG_DEBUG)
 		For local room:TRoomBase = eachin GetRoomBaseCollection().list
 			'mark porter, elevatorplan, ... as fake rooms
@@ -282,7 +282,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			playerNames[i-1] = GetPlayer(i).name
 			channelNames[i-1] = GetPlayer(i).channelName
 		Next
-		
+
 
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)
 		Local gray:TColor = TColor.Create(200, 200, 200)
@@ -358,7 +358,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'inform all AI players about the bankruptcy (eg. to clear their stats)
 		for local p:TPlayer = EachIn GetPlayerCollection().players
 			if not p.IsLocalAI() or not p.PlayerAI then continue
-			
+
 			p.PlayerAI.CallOnPlayerGoesBankrupt( playerID )
 		next
 
@@ -442,7 +442,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'      gespeichert werden sollte (bspweise in TPlayer)
 		'      So koennte auch bei alten Spielern noch auf die Historie
 		'      zurueckgegriffen werden
-		 
+
 
 		'=== SELL ALL PROGRAMMES ===
 		'sell forced too (so also programmed ones)
@@ -463,7 +463,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				TLogger.Log("ResetPlayer()", "Sold licence: "+licence.getTitle(), LOG_DEBUG)
 			else
 				TLogger.Log("ResetPlayer()", "Cannot sell licence: "+licence.getTitle(), LOG_DEBUG)
-			
+
 				'absolutely remove non-tradeable data?
 				'for now: no! We want to be able to retrieve information
 				'         about these licences.
@@ -522,7 +522,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			GetProductionConceptCollection().Remove(p.productionConcept)
 			TLogger.Log("ResetPlayer()", "Stopped production: "+p.productionConcept.getTitle(), LOG_DEBUG)
 		Next
-		
+
 
 
 		'=== STOP ROOM RENT CONTRACTS ===
@@ -556,7 +556,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			player.SetNewsAbonnement(i, 0)
 		Next
 
-		
+
 
 		'=== REMOVE DELAYED NEWS ===
 		GetNewsAgency().ResetDelayedList(playerID)
@@ -606,7 +606,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'set current day's finance to zero
 		GetPlayerFinance(playerID, GetWorldTime().GetDay()).Reset()
-		
+
 		'keep history of previous player (if linked somewhere)
 		'and instead of "GetPlayerFinanceHistoryList(playerID).clear()"
 		'just create a new one
@@ -654,7 +654,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'colorize figure, signs, ...
 		ColorizePlayerExtras(playerID)
-		
+
 
 		'=== 3RD PARTY PLAYER COMPONENTS ===
 		TPublicImage.Create(Player.playerID)
@@ -676,7 +676,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'move figure to offscreen, and set target to their office
 		'(for now just to the "floor", later maybe to the boss)
 		local figure:TFigure = GetPlayer(playerID).GetFigure()
-		'remove potential elevator passenger 
+		'remove potential elevator passenger
 		GetElevator().LeaveTheElevator(figure)
 
 		if figure.inRoom then figure.LeaveRoom(True)
@@ -734,14 +734,14 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				local allStations:TMap = new TMap
 				For local i:int = 1 to 4
 					if i = playerID then continue
-					
+
 					local m:TStationMap = GetStationMap(i)
 					For local s:TStation = EachIn m.stations
 						'decrease details by 10 to avoid "nearly identical"
 						allStations.Insert(int(s.pos.x/10)*10+","+int(s.pos.y/10)*10, s)
 					Next
 				Next
-				
+
 				'- shuffle them
 				local randomStationList:TList = new TList
 				For local s:TStation = EachIn allStations.Values()
@@ -753,7 +753,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				For local s:TStation = EachIn randomStationList
 					'finished if there is nothing more to do
 					if broadcastAreaToDo < 1000 then exit
-					
+
 					local newPos:TVec2D = s.pos.Copy()
 					local increase:int = map.CalculateAntennaAudienceIncrease(Int(newPos.x), Int(newPos.y))
 
@@ -781,7 +781,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				rem
 				While broadcastAreaToDo > 1000
 					For local i:int = 0 to 10
-						
+
 					Next
 				Wend
 				endrem
@@ -827,9 +827,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'print "avgMoney = " + avgMoney
 		endif
 
-		
+
 		if addMoney > 0 then GetPlayerFinance(playerID).EarnGrantedBenefits( addMoney )
-		if difficulty.startCredit > 0 
+		if difficulty.startCredit > 0
 			GetPlayerFinance(playerID).TakeCredit( difficulty.startCredit )
 		endif
 	End Method
@@ -853,7 +853,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'step is not strictly needed here)
 			GetNewsAgency().RemoveFromDelayedListsByNewsEvent(playerID, ne)
 		Next
-		
+
 
 		'place them into the players news shows
 		Local newsToPlace:TNews
@@ -929,7 +929,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			local index:int = (startIndex + guestIndex) mod randomGuests.length
 			programmeData.AddCast( New TProgrammePersonJob.Init(randomGuests[index], TVTProgrammePersonJob.GUEST) )
 		Next
-		
+
 		GetProgrammeDataCollection().Add(programmeData)
 
 		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
@@ -1016,7 +1016,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		GetRegistry().Set("gfx_interface_channelbuttons_on_"+playerID, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(color, playerID), "gfx_interface_channelbuttons_on_"+playerID))
 	End Function
 
-	
+
 	Method PrepareNewGame:Int()
 		'=== SET DEFAULTS ===
 		SetStartYear(userStartYear)
@@ -1156,10 +1156,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'=== CREATE TIMED NEWSEVENTS ===
 		'Creates all newsevents with fixed times in the future
 		GetNewsAgency().CreateTimedNewsEvents()
-		
-		
+
+
 		'=== SETUP INTERFACE ===
-		
+
 		'switch active TV channel to player
 		GetInGameInterface().ShowChannel = GetPlayerCollection().playerID
 	End Method
@@ -1180,7 +1180,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'we draw them in front of the background buildings
 		world.autoRenderSnow = False
 		world.autoRenderRain = False
-		
+
 		'=== SETUP WORLD ===
 		'1. SKY SPRITES
 		World.InitSky(..
@@ -1266,7 +1266,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 					local x:int			= conf.GetInt("x", -1)
 					local y:int			= conf.GetInt("y", -1)
 					local bottomy:int	= conf.GetInt("bottomy", 0)
-					'the "building"-room uses floors 
+					'the "building"-room uses floors
 					local floor:int 	= conf.GetInt("floor", -1)
 					local width:int 	= conf.GetInt("width", 0)
 					local height:int 	= conf.GetInt("height", 0)
@@ -1315,7 +1315,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		startAdContractBaseGUIDs[0] = "ronny-ad-startad-bmxng"
 		startAdContractBaseGUIDs[1] = "ronny-ad-startad-gamezworld"
 		startAdContractBaseGUIDs[2] = "ronny-ad-startad-digidea"
-		
+
 
 		'assign a random one, if the predefined ones are missing
 
@@ -1329,8 +1329,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			endif
 		Next
 		end rem
-		
-		
+
+
 		'all players get the same adContractBase (but of course another
 		'contract for each of them)
 		Local cheapFilter:TAdContractBaseFilter = New TAdContractbaseFilter
@@ -1359,7 +1359,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				'and one with 0-1% audience requirement
 				cheapFilter.SetAudience(0.015, 0.03)
 				addContract = GetAdContractBaseCollection().GetRandomNormalByFilter(cheapFilter, False)
-				if not addContract  
+				if not addContract
 					print "GenerateStartAdContracts: No ~qno audience~q contract in DB? Trying a 1.5-4% one..."
 					cheapFilter.SetAudience(0.015, 0.04)
 					addContract = GetAdContractBaseCollection().GetRandomNormalByFilter(cheapFilter, False)
@@ -1369,7 +1369,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 					endif
 				endif
 			endif
-			
+
 			if not addContract
 				print "GenerateStartAdContracts: GetAdContractBaseCollection().GetRandomNormalByFilter failed! Skipping contract ..."
 				continue
@@ -1499,7 +1499,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			finance.PayStationFees( Player.GetStationMap().CalculateStationCosts() )
 			'interest rate for your current credit
 			finance.PayCreditInterest( finance.GetCreditInterest() )
-			'newsagencyfees			
+			'newsagencyfees
 			finance.PayNewsAgencies(Player.GetTotalNewsAbonnementFees())
 			'room rental costs
 			For local r:TRoomBase = EachIn GetRoomBaseCollection().list
@@ -1562,7 +1562,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	Method CreateInitialPlayers()
 		'skip if already done
 		if GetPlayer(1) then return
-	
+
 		'Creating PlayerColors - could also be done "automagically"
 		Local playerColors:TList = TList(GetRegistry().Get("playerColors"))
 		If playerColors = Null Then Throw "no playerColors found in configuration"
@@ -1602,7 +1602,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 	Method IsControllingPlayer:Int(playerID:Int)
 		If Not GetPlayer(playerID) Then Return False
-		
+
 		If Not networkgame
 			Return True
 		Else
@@ -1611,7 +1611,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'it's an AI player and I am the master
 			If GetPlayer(playerID).IsLocalAI() And IsGameLeader() Then Return True
 			Return False
-		EndIf 
+		EndIf
 	End Method
 
 
@@ -1661,6 +1661,95 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		endif
 	End Method
 
+rem
+	Method SwitchPlayer:int(newID:int, oldID:Int=-1)
+		if oldID = -1 then oldID = GetPlayerBaseCollection().playerID
+		if newID = oldID
+			print "SwitchLocalPlayer() skipped: switching with itself"
+			return False
+		EndIf
+		local playerNew:TPlayer = GetPlayer(newID)
+		local playerOld:TPlayer = GetPlayer(oldID)
+
+		GetPlayerCollection().Set(newID, playerOld)
+		GetPlayerCollection().Set(oldID, playerNew)
+
+		local figureNew:TFigureBase = playerNew.figure
+		local figureOld:TFigureBase = playerOld.figure
+'		playerNew.figure = figureOld
+'		playerOld.figure = figureNew
+		playerNew.figure.playerID = playerNew.playerID
+		playerOld.figure.playerID = playerOld.playerID
+
+		local oldIsLocalHuman:int = playerOld.IsLocalHuman()
+		local newIsLocalHuman:int = playerNew.IsLocalHuman()
+		local oldIsLocalAI:int = playerOld.IsLocalAI()
+		local newIsLocalAI:int = playerNew.IsLocalAI()
+
+		if oldIsLocalHuman
+			playerNew.SetLocalHumanControlled()
+			playerOld.SetLocalAIControlled()
+		elseif newIsLocalHuman
+			playerNew.SetLocalAIControlled()
+			playerOld.SetLocalHumanControlled()
+		endif
+		return True
+	End Method
+endrem
+
+	Method SwitchPlayerIdentity:int(ID1:int, ID2:int)
+		if ID1 = ID2
+			print "SwitchPlayerIdentity() skipped: switching with itself"
+			return False
+		EndIf
+		local tmpPlayerName:string = GetPlayer(ID2).name
+		local tmpChannelName:string = GetPlayer(ID2).channelName
+		local tmpFigureBase:int = GetPlayer(ID2).figureBase
+
+		GetPlayer(ID2).name = GetPlayer(ID1).name
+		GetPlayer(ID2).channelName = GetPlayer(ID1).channelName
+		GetPlayer(ID2).figureBase = GetPlayer(ID1).figureBase
+
+		GetPlayer(ID1).name = tmpPlayerName
+		GetPlayer(ID1).channelName = tmpChannelName
+		GetPlayer(ID1).figureBase = tmpFigureBase
+		return True
+	End Method
+
+
+	'select player in start menu
+	Method SetLocalPlayer:int(ID:Int=-1)
+		'skip if already done
+		if GetPlayerCollection().playerID = ID
+			print "SetLocalPlayer() skipped: already set"
+			return False
+		endif
+
+		local oldID:int = GetPlayerCollection().playerID
+		local playerNew:TPlayer = GetPlayer(ID)
+		local playerOld:TPlayer = GetPlayer()
+
+
+		local oldIsLocalHuman:int = playerOld.IsLocalHuman()
+		local newIsLocalHuman:int = playerNew.IsLocalHuman()
+		local oldIsLocalAI:int = playerOld.IsLocalAI()
+		local newIsLocalAI:int = playerNew.IsLocalAI()
+
+		if oldIsLocalHuman
+			playerNew.SetLocalHumanControlled()
+			playerOld.SetLocalAIControlled()
+		elseif newIsLocalHuman
+			playerNew.SetLocalAIControlled()
+			playerOld.SetLocalHumanControlled()
+		endif
+
+'		GetPlayer(ID).SetLocalHumanControlled()
+'		GetPlayer(oldID).SetLocalAIControlled()
+
+		SetActivePlayer(ID)
+		return True
+	End Method
+
 
 	'sets the player controlled by this client
 	Method SetActivePlayer(ID:Int=-1)
@@ -1673,11 +1762,13 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		GetPlayerBossCollection().playerID = ID
 
 		'get currently shown screen of that player
-		If GetPlayer().GetFigure().inRoom
-			ScreenCollection.GoToScreen(ScreenCollection.GetScreen(GetPlayer().GetFigure().inRoom.GetScreenName()))
-		'go to building
-		Else
-			ScreenCollection.GoToScreen(GameScreen_World)
+		If Self.gamestate = TGame.STATE_RUNNING
+			If GetPlayer().GetFigure().inRoom
+				ScreenCollection.GoToScreen(ScreenCollection.GetScreen(GetPlayer().GetFigure().inRoom.GetScreenName()))
+			'go to building
+			Else
+				ScreenCollection.GoToScreen(GameScreen_World)
+			EndIf
 		EndIf
 	End Method
 
@@ -1764,7 +1855,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		EndIf
 
 
-		
+
 		'init if not done yet
 		If lastTimeMinuteGone = 0 Then lastTimeMinuteGone = worldTime.GetTimeGone()
 
@@ -1790,7 +1881,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		For Local i:Int = 1 To missedMinutes
 			'add back another gone minute each loop
 			worldTime._timeGone :+ 60
-			 
+
 			'day
 			If worldTime.GetDayHour() = 0 And worldTime.GetDayMinute() = 0
 				'year

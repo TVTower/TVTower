@@ -35,6 +35,8 @@ Type TPlayerBaseCollection
 
 		If players.length < playerID Then players = players[..id+1]
 		players[id-1] = player
+		'inform player
+		player.playerID = id
 	End Method
 
 
@@ -121,7 +123,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 
 	Field emptyProgrammeSuitcase:int = False
 	Field emptyProgrammeSuitcaseTime:Long = 0
-	'in which room was the programme suitcase filled the last time? 
+	'in which room was the programme suitcase filled the last time?
 	Field emptyProgrammeSuitcaseFromRoom:string = ""
 
 	'times at which the player was brankrupt (game over)
@@ -161,13 +163,13 @@ Type TPlayerBase {_exposeToLua="selected"}
 			newsabonnementsSetTime[i] = 0
 		next
 	End Method
-		
+
 
 	Method GetPlayerID:Int() {_exposeToLua}
 		Return playerID
 	End Method
 
-	
+
 	Method GetFigure:TFigureBase()
 		return figure
 	End Method
@@ -194,12 +196,12 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Method GetMoneyFormatted:String(day:Int=-1)
 		Return "0"
 	End Method
-	
-	
+
+
 	Method GetTotalNewsAbonnementFees:int() {_exposeToLua}
 		return 0
 	End Method
-	
+
 
 	'return CURRENT newsAbonnement
 	Method GetNewsAbonnement:Int(genre:Int) {_exposeToLua}
@@ -217,7 +219,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 	'use the current level value
 	Method GetNewsAbonnementDaysMax:Int(genre:Int) {_exposeToLua}
 		If genre >= TVTNewsGenre.count or genre < 0 Then Return 0
-		
+
 		local abonnementLevel:int = GetNewsAbonnement(genre)
 
 		'not set yet - use the current abonnement
@@ -373,7 +375,7 @@ endrem
 
 	Method GetBankruptcyAmount:int(untilTime:Long=-1)
 		if bankruptcyTimes.length = 0 then return 0
-		
+
 		if untilTime = -1 then untilTime = GetWorldTime().GetTimeGone()
 
 		local result:int = 0
@@ -391,7 +393,7 @@ endrem
 
 		return bankruptcyTimes[bankruptcyNumber-1]
 	End Method
-	
+
 
 	'attention: when used through LUA without param, the param gets "0"
 	'instead of "-1"
@@ -423,7 +425,6 @@ endrem
 		Local newSprite:TSprite = GetSpriteFromRegistry(newSpriteName)
 		'skip if replacement sprite does not exist or default was returned
 		If not newSprite or newSprite.GetName().toLower() <>  newSpriteName then return False
-
 		Local oldSprite:TSprite = GetSpriteFromRegistry("Player" + Self.playerID)
 		Local newImage:TImage = ColorizeImageCopy(newSprite.GetImage(), color, 0,0,0,1, 0, COLORIZEMODE_OVERLAY)
 		Local figuresPack:TSpritePack = TSpritePack(GetRegistry().Get("gfx_figuresPack"))
@@ -473,7 +474,7 @@ endrem
 
 	Method Compare:Int(otherObject:Object)
 		if otherObject = self then return 0
-		
+
 		Local s:TPlayerBase = TPlayerBase(otherObject)
 		If s
 			If s.playerID > Self.playerID Then Return 1
@@ -481,7 +482,7 @@ endrem
 		EndIf
 		Return Super.Compare(otherObject)
 	End Method
-	
+
 
 	Method IsHuman:Int()
 		Return IsLocalHuman() or IsRemoteHuman()
@@ -513,7 +514,7 @@ endrem
 	Method SetPlayerType(playerType:int)
 		self.playerType = playerType
 	End Method
-	
+
 
 	Method IsActivePlayer:Int()
 		Return (playerID = GetPlayerBaseCollection().playerID)
