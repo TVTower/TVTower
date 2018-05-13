@@ -39,7 +39,7 @@ Type TGUIArrowButton Extends TGUISpriteButton
 	Method SetDirection(direction:String="LEFT")
 		direction = direction.ToUpper()
 		if self.direction = direction then return
-		
+
 		Select direction
 			Case "LEFT"		Self.direction="Left"
 			Case "UP"		Self.direction="Up"
@@ -53,13 +53,19 @@ Type TGUIArrowButton Extends TGUISpriteButton
 End Type
 
 
-	
+
 
 Type TGUISpriteButton Extends TGUIObject
     Field sprite:TSprite
 	Field buttonSprite:TSprite
 	Field spriteBaseName:String	= ""
 	Field spriteButtonBaseName:String = "gfx_gui_button.round"
+
+	Field spriteButtonOptions:int = SHOW_BUTTON_NORMAL + SHOW_BUTTON_HOVER + SHOW_BUTTON_ACTIVE
+
+	CONST SHOW_BUTTON_NORMAL:int = 1
+	CONST SHOW_BUTTON_HOVER:int = 2
+	CONST SHOW_BUTTON_ACTIVE:int = 4
 
 
 	Method Create:TGUISpriteButton(pos:TVec2D, dimension:TVec2D, spriteName:String="", limitState:String = "")
@@ -75,6 +81,20 @@ Type TGUISpriteButton Extends TGUIObject
 		GUIManager.Add(Self)
 
 		Return Self
+	End Method
+
+
+	Method HasSpriteButtonOption:Int(option:Int)
+		Return (spriteButtonOptions & option) <> 0
+	End Method
+
+
+	Method SetSpriteButtonOption(option:Int, enable:Int=True)
+		If enable
+			spriteButtonOptions :| option
+		Else
+			spriteButtonOptions :& ~option
+		EndIf
 	End Method
 
 
@@ -98,7 +118,6 @@ Type TGUISpriteButton Extends TGUIObject
 	End Method
 
 
-
 	'override so we have a minimum size
 	'size 0, 0 is not possible (leads to autosize)
 	Method Resize(w:Float = 0, h:Float = 0)
@@ -116,15 +135,19 @@ Type TGUISpriteButton Extends TGUIObject
 	'acts as cache
 	Method _GetButtonSprite:TSprite()
 		'refresh cache if not set or wrong sprite name
-		if not buttonSprite or buttonSprite.GetName() <> (spriteButtonBaseName + self.state)
-			local newSprite:TSprite = GetSpriteFromRegistry(spriteButtonBaseName + self.state, spriteButtonBaseName)
-			if not buttonSprite or newSprite.GetName() <> buttonSprite.GetName()
-				buttonSprite = newSprite
-				'new image - resize
-				Resize()
+		if spriteButtonBaseName
+			if not buttonSprite or buttonSprite.GetName() <> (spriteButtonBaseName + self.state)
+				local newSprite:TSprite = GetSpriteFromRegistry(spriteButtonBaseName + self.state, spriteButtonBaseName)
+				if not buttonSprite or newSprite.GetName() <> buttonSprite.GetName()
+					buttonSprite = newSprite
+					'new image - resize
+					Resize()
+				endif
 			endif
+			return buttonSprite
+		else
+			return null
 		endif
-		return buttonSprite
 	End Method
 
 
@@ -148,7 +171,16 @@ Type TGUISpriteButton Extends TGUIObject
 		SetAlpha oldCol.a * GetScreenAlpha()
 
 		'draw button (background)
-		_GetButtonSprite().DrawArea(atPoint.getX(), atPoint.getY(), rect.GetW(), rect.GetH())
+		local bs:TSprite
+		if state=".active"
+			if HasSpriteButtonOption(SHOW_BUTTON_ACTIVE) then bs = _GetButtonSprite()
+		elseif state=".hover"
+			if HasSpriteButtonOption(SHOW_BUTTON_HOVER) then bs = _GetButtonSprite()
+		elseif HasSpriteButtonOption(SHOW_BUTTON_NORMAL)
+			bs = _GetButtonSprite()
+		endif
+		if bs then bs.DrawArea(atPoint.getX(), atPoint.getY(), rect.GetW(), rect.GetH())
+
 		'draw arrow at center of button
 		_GetSprite().Draw(atPoint.getX() + int(rect.GetW()/2), atPoint.getY() + int(rect.GetH()/2), -1, new TVec2D.Init(0.5, 0.5))
 

@@ -16,7 +16,7 @@ Type TGUIinput Extends TGUIobject
     Field maxTextWidthBase:Int
     Field maxTextWidthCurrent:Int
     Field spriteName:String = "gfx_gui_input.default"
-   
+
 
 	'=== OVERLAY ===
 	'containing text or an icon (displayed separate from input widget)
@@ -63,6 +63,7 @@ Type TGUIinput Extends TGUIobject
 
 		'this element reacts to keystrokes
 		SetOption(GUI_OBJECT_CAN_RECEIVE_KEYSTROKES, True)
+
 
 		GUIMAnager.Add(Self)
 	  	Return Self
@@ -184,13 +185,13 @@ Type TGUIinput Extends TGUIobject
 					EndIf
 				EndIf
 
-				
+
 
 				'as soon as an input field is marked as active input
 				'all key strokes could change the input
 				If Self = GuiManager.GetKeystrokeReceiver()
 					if _cursorPosition = -1 then _cursorPosition = value.length
-				
+
 					'ignore enter keys => TRUE
 					If Not ConvertKeystrokesToText(value, _cursorPosition, True)
 						value = _valueBeforeEdit
@@ -346,7 +347,7 @@ Type TGUIinput Extends TGUIobject
 
 			if _cursorPosition = -1 then _cursorPosition = printValue.length
 
-			'calculate values left and right sided of the cursor 
+			'calculate values left and right sided of the cursor
 			_valueOffset = 0
 			local leftValue:string, rightValue:string
 			local leftValueW:int, rightValueW:int
@@ -361,14 +362,14 @@ Type TGUIinput Extends TGUIobject
 				leftValue = printValue[.. _cursorPosition]
 				rightValue = printValue[_cursorPosition ..]
 			endif
-			
+
 			'make sure we see the cursor
 			While leftValue.length > 1 And GetFont().getWidth(leftValue) + cursorW > maxTextWidthCurrent
 				leftValue = leftValue[1..]
 				_valueOffset :+ 1
 			Wend
 			'beautify: if there is much on the right side left, move it even further to the left
-			'if value.length - leftValue.length > 0 and leftValue.length >= 3 
+			'if value.length - leftValue.length > 0 and leftValue.length >= 3
 			'	leftValue = leftValue[3 ..]
 			'endif
 
@@ -381,7 +382,7 @@ Type TGUIinput Extends TGUIobject
 				Wend
 			endif
 
-				
+
 			GetFont().draw(leftValue, position.GetIntX(), position.GetIntY())
 
 			local oldAlpha:float = GetAlpha()

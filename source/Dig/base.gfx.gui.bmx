@@ -44,12 +44,14 @@ Const GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE:Int	= 2^14
 Const GUI_OBJECT_CHILDREN_CHANGE_GUIORDER:Int	= 2^15
 'defines whether children are updated automatically or not
 Const GUI_OBJECT_STATIC_CHILDREN:Int            = 2^16
+'does the gui object manage assigned tooltips?
+Const GUI_OBJECT_TOOLTIP_MANAGED:Int            = 2^17
 
 '===== GUI STATUS CONSTANTS =====
 Const GUI_OBJECT_STATUS_HOVERED:Int	= 2^0
 Const GUI_OBJECT_STATUS_SELECTED:Int = 2^1
 Const GUI_OBJECT_STATUS_APPEARANCE_CHANGED:Int	= 2^2
-Const GUI_OBJECT_STATUS_CONTENT_CHANGED:Int	= 2^2
+Const GUI_OBJECT_STATUS_CONTENT_CHANGED:Int	= 2^3
 
 Const GUI_OBJECT_ORIENTATION_VERTICAL:Int   = 0
 Const GUI_OBJECT_ORIENTATION_HORIZONTAL:Int = 1
@@ -70,7 +72,7 @@ Type TGUIManager
 	Field List:TList = CreateList()
 	'contains dragged objects (above normal)
 	Field ListDragged:TList = CreateList()
-	'contains objects which need to get informed because of changed appearance 
+	'contains objects which need to get informed because of changed appearance
 	Field elementsWithChangedAppearance:TList = CreateList()
 
 	'=== UPDATE STATE PROPERTIES ===
@@ -302,7 +304,7 @@ Type TGUIManager
 		If objA.GetZIndex() > objB.GetZIndex() Then Return 1
 		'if objA is "lower"", move to bottom
 		If objA.GetZIndex() < objB.GetZIndex() Then Return -1
-	
+
 
 		'run custom compare job
 '		return objA.compare(objB)
@@ -316,7 +318,7 @@ Type TGUIManager
 
 Rem
 	Method DeleteObject(obj:TGUIObject var)
-		if not obj then return 
+		if not obj then return
 		obj.remove()
 		Remove(obj)
 		obj = null
@@ -326,7 +328,7 @@ endrem
 	'only remove from lists (object cleanup has to get called separately)
 	Method Remove:Int(obj:TGUIObject)
 		If Not obj Then Return False
-		
+
 		obj.setOption(GUI_OBJECT_MANAGED, False)
 
 		List.remove(obj)
@@ -489,7 +491,7 @@ endrem
 
 
 	Method UpdateElementswithChangedAppearance()
-		If elementsWithChangedAppearance.Count() > 0 
+		If elementsWithChangedAppearance.Count() > 0
 			For local obj:TGUIObject = EachIn elementsWithChangedAppearance.Copy()
 				If obj.isAppearanceChanged()
 					obj.onStatusAppearanceChange()
@@ -604,7 +606,7 @@ endrem
 
 				obj.Draw()
 
-				If obj._tooltip and (obj._flags & GUI_OBJECT_ENABLED) 'and not obj.hasOption(GUI_OBJECT_MANAGED)
+				If obj._tooltip and (obj._flags & GUI_OBJECT_ENABLED) and (obj._flags & GUI_OBJECT_TOOLTIP_MANAGED)  'and not obj.hasOption(GUI_OBJECT_MANAGED)
 					activeTooltips.AddLast(obj._tooltip)
 				EndIf
 
@@ -782,7 +784,7 @@ Type TGUIobject
 	End Method
 
 
-	Method SetTooltip(t:TTooltipBase, setTooltipParent:int = True)
+	Method SetTooltip(t:TTooltipBase, setTooltipParent:int = True, setTooltipManaged:int = True)
 		self._tooltip = t
 
 		if self._tooltip
@@ -791,8 +793,12 @@ Type TGUIobject
 
 			'the gui object updates hovered state to only hover if the
 			'widget is hovered (avoids drawing tooltips for window _and_
-			'a child button) 
+			'a child button)
 			self._tooltip.SetOption(TTooltipBase.OPTION_MANUAL_HOVER_CHECK, true)
+
+			'a managed tooltip is automatically drawn by a widget while
+			'a non-managed needs to call stuff on its own
+			self.SetOption(GUI_OBJECT_TOOLTIP_MANAGED, setTooltipManaged)
 		endif
 	End Method
 
@@ -833,7 +839,7 @@ Type TGUIobject
 			_children.Clear()
 			_childrenReversed.Clear()
 		EndIf
-		
+
 		'just in case we have a managed one
 		GUIManager.remove(Self)
 
@@ -901,7 +907,7 @@ Type TGUIobject
 	Method onFinishDrop:Int(triggerEvent:TEventBase)
 		Return True
 	End Method
-	
+
 
 	'default drop handler for all gui objects
 	'by default they do nothing
@@ -987,7 +993,7 @@ Type TGUIobject
 		'inform object
 		child.onRemoveAsChild(Self)
 	End Method
-	
+
 
 	'removes child and adds it back to the guimanager
 	Method RemoveChild:Int(child:TGUIobject)
@@ -1038,7 +1044,7 @@ Type TGUIobject
 	Method onRemoveAsChild:Int(parent:TGUIObject)
 		'stub
 	End Method
-		
+
 
 	Method RestrictContentViewport:Int()
 		Local rect:TRectangle = GetContentScreenRect()
@@ -1054,7 +1060,7 @@ Type TGUIobject
 			Return False
 		EndIf
 	End Method
-	
+
 
 	Method RestrictViewport:Int()
 		Local rect:TRectangle = GetScreenRect()
@@ -1202,7 +1208,7 @@ Type TGUIobject
 		SetStatus(GUI_OBJECT_STATUS_APPEARANCE_CHANGED, bool)
 
 		'remove from the list (if added previously)
-		GuiManager.elementsWithChangedAppearance.Remove( self ) 
+		GuiManager.elementsWithChangedAppearance.Remove( self )
 
 		If bool = True
 			'inform parent (and its grandparent and...)
@@ -1218,7 +1224,7 @@ Type TGUIobject
 			EndIf
 
 			'append to the "to inform" list
-			GuiManager.elementsWithChangedAppearance.AddLast( self ) 
+			GuiManager.elementsWithChangedAppearance.AddLast( self )
 		EndIf
 	End Method
 
@@ -1231,7 +1237,7 @@ Type TGUIobject
 	Method SetContentChanged:Int(bool:Int)
 		SetStatus(GUI_OBJECT_STATUS_CONTENT_CHANGED, bool)
 	End Method
-	
+
 
 	'called when appearance changes - override in widgets to react
 	'to it
@@ -1317,7 +1323,7 @@ Type TGUIobject
 	Method IsEnabled:Int()
 		Return (_flags & GUI_OBJECT_ENABLED) <> 0
 	End Method
-	
+
 
 	Method Resize(w:Float = 0, h:Float = 0)
 		If w > 0 Then rect.dimension.setX(w)
@@ -1648,14 +1654,14 @@ Type TGUIobject
 	Method GetContentScreenX:Float()
 		Return GetScreenX() + GetContentX()
 	End Method
-	
+
 
 	'at which y-coordinate has content/children to be drawn
 	Method GetContentScreenY:Float()
 		Return GetScreenY() + GetContentY()
 	End Method
 
-	
+
 	'available width for content/children on screen
 	Method GetContentScreenWidth:Float()
 		Return GetScreenWidth() - (GetPadding().GetLeft() + GetPadding().GetRight())
@@ -1759,28 +1765,29 @@ Type TGUIobject
 			Else
 				DrawContent()
 			EndIf
-			
+
 			If _customDrawChildren
 				_customDrawChildren(Self)
 			Else
 				DrawChildren()
 			EndIf
-			
+
 			If _customDrawOverlay
 				_customDrawOverlay(Self)
 			Else
 				DrawOverlay()
 			EndIf
-
-			DrawTooltips()
 		EndIf
 
 		If Not(_flags & GUI_OBJECT_ENABLED) Then SetAlpha oldCol.a
 
 		'=== HANDLE TOOLTIP ===
-		if _tooltip and not hasOption(GUI_OBJECT_MANAGED) and not hasOption(GUI_OBJECT_DRAGGED)
-			_tooltip.Render()
+		if not _customDraw
+			DrawTooltips()
 		endif
+'		if _tooltip and not hasOption(GUI_OBJECT_MANAGED) and not hasOption(GUI_OBJECT_DRAGGED)
+'			_tooltip.Render()
+'		endif
 	End Method
 
 
@@ -1818,6 +1825,7 @@ Type TGUIobject
 		'skip children if self not visible
 		If Not IsVisible() Then Return False
 
+'		local activeTooltips:TList = CreateList()
 		'draw children
 		For Local obj:TGUIobject = EachIn _children
 			'before skipping a dragged one, we try to ask it as a ghost (at old position)
@@ -1833,7 +1841,19 @@ Type TGUIobject
 			obj.draw()
 			'tint image if object is disabled
 			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 2.0*GetAlpha()
+
+'			If obj._tooltip and (obj._flags & GUI_OBJECT_ENABLED) 'and not obj.hasOption(GUI_OBJECT_MANAGED)
+'				activeTooltips.AddLast(obj._tooltip)
+'			EndIf
+
+			'fire event
+			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", Null, obj ) )
 		Next
+
+		'TODO: sort by lastActive state?
+'		For local t:TTooltipBase = EachIn activeTooltips
+'			t.Render()
+'		Next
 	End Method
 
 
@@ -1846,6 +1866,10 @@ Type TGUIobject
 			For Local obj:TGUIobject = EachIn _children
 				obj.DrawTooltips()
 			Next
+		endif
+
+		if _tooltip and not hasOption(GUI_OBJECT_MANAGED) and not hasOption(GUI_OBJECT_DRAGGED) and hasOption(GUI_OBJECT_TOOLTIP_MANAGED)
+			_tooltip.Render()
 		endif
 	End Method
 
@@ -1862,7 +1886,7 @@ Type TGUIobject
 	Method Update:Int()
 		'skip handling disabled entries
 		'(eg. deactivated scrollbars which else would "hover" before
-		' list items on the same spot) 
+		' list items on the same spot)
 		if not IsEnabled() then return False
 
 
@@ -1875,7 +1899,7 @@ Type TGUIobject
 		'Attention: this is also called via GUIManager.Update()/Draw()
 		'           but we just do it here too, in case you manually update
 		'           the widget (important: this does not resolve the issue
-		'           if child elements have changed appearance too) 
+		'           if child elements have changed appearance too)
 		If isAppearanceChanged()
 			onStatusAppearanceChange()
 			SetAppearanceChanged(False)
@@ -1940,7 +1964,7 @@ Type TGUIobject
 		'=== HANDLE MOUSE CLICKS / POSITION ===
 		'skip objects the mouse is not over (except it is already dragged).
 		'ATTENTION: this differs to self.isHovered() (which is set later on)
-		If Not containsMouse And Not isDragged() 
+		If Not containsMouse And Not isDragged()
 			'do not return - we need to check tooltips later on
 			'Return False
 		Else
@@ -2039,7 +2063,7 @@ Type TGUIobject
 									EventManager.triggerEvent(hitEvent)
 									isHit = True
 								EndIf
-								
+
 								If MOUSEMANAGER.IsClicked(1) Or MOUSEMANAGER.GetClicks(1) > 0
 									'=== SET CLICKED VAR ====
 									mouseIsClicked = MouseManager.GetClickposition(1)
@@ -2134,7 +2158,7 @@ Type TGUIobject
 
 			Select key
 				case KEY_BACKSPACE
-					If valuePosition > 0 
+					If valuePosition > 0
 						value = value[.. valuePosition-1] + value[valuePosition ..]
 						valuePosition :- 1
 					EndIf
@@ -2332,7 +2356,7 @@ Type TGUITooltipBase Extends TTooltipBase
 		return self
 	End Method
 
-	
+
 	'override
 	Method GetOffset:TVec2D()
 		if offset then return offset
@@ -2351,7 +2375,7 @@ Type TGUITooltipBase Extends TTooltipBase
 			_effectiveContentPadding.SetRight( Max( contentPadding.GetRight(), bgSpritePadding.GetRight()) )
 			_effectiveContentPadding.SetTop( Max( contentPadding.GetTop(), bgSpritePadding.GetTop()) )
 			_effectiveContentPadding.SetBottom( Max( contentPadding.GetBottom(), bgSpritePadding.GetBottom()) )
-		endif	
+		endif
 		return _effectiveContentPadding
 	End Method
 
@@ -2395,7 +2419,7 @@ Type TGUITooltipBase Extends TTooltipBase
 
 		Super.Update()
 	End Method
-	
+
 
 	'override: render a themed background
 	Method _DrawBackground:int(x:int, y:int, w:int, h:int)
@@ -2403,7 +2427,7 @@ Type TGUITooltipBase Extends TTooltipBase
 
 		GetBGSprite().DrawArea(x,y,w,h)
 '		DrawRect(x,y,w,h)
-		
+
 		_DrawArrow(x,y,w,h)
 	End Method
 
@@ -2428,7 +2452,7 @@ Type TGUITooltipBase Extends TTooltipBase
 
 			Select useArrowType
 				case ARROW_UP
-					if parentArea 
+					if parentArea
 						local scrX:int = GetScreenX()
 						local scrW:int = GetScreenWidth()
 						if _effectiveContentPadding
@@ -2442,7 +2466,7 @@ Type TGUITooltipBase Extends TTooltipBase
 						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.up").Draw(GetScreenX() + 0.5 * GetScreenWidth(), GetScreenY(), -1, ALIGN_CENTER_BOTTOM)
 					endif
 				case ARROW_DOWN
-					if parentArea 
+					if parentArea
 						local scrX:int = GetScreenX()
 						local scrW:int = GetScreenWidth()
 						if _effectiveContentPadding
@@ -2456,7 +2480,7 @@ Type TGUITooltipBase Extends TTooltipBase
 						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.down").Draw(GetScreenX() + 0.5 * GetScreenWidth(), GetScreenY() + GetScreenHeight(), -1, ALIGN_CENTER_TOP)
 					endif
 				case ARROW_LEFT
-					if parentArea 
+					if parentArea
 						local scrY:int = GetScreenY()
 						local scrH:int = GetScreenHeight()
 						if _effectiveContentPadding
@@ -2470,7 +2494,7 @@ Type TGUITooltipBase Extends TTooltipBase
 						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.left").Draw(GetScreenX(), GetScreenY() + 0.5 * GetScreenHeight(), -1, ALIGN_RIGHT_CENTER)
 					endif
 				case ARROW_RIGHT
-					if parentArea 
+					if parentArea
 						local scrY:int = GetScreenY()
 						local scrH:int = GetScreenHeight()
 						if _effectiveContentPadding

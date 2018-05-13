@@ -14,6 +14,7 @@ Type TGUIBackgroundBox Extends TGUIobject
 	Field sprite:TSprite
 	Field spriteAlpha:Float = 1.0
 	Field spriteBaseName:String = "gfx_gui_panel"
+	Field spriteTintColor:TColor
 
 
 	Method Create:TGUIBackgroundBox(position:TVec2D, dimension:TVec2D, limitState:String="")
@@ -61,6 +62,7 @@ Type TGUIBackgroundBox Extends TGUIobject
 		'a local spriteAlpha means widget as "parent" can have alpha 1.0
 		'while the sprite is drawn with 0.3
 		SetAlpha oldCol.a * GetScreenAlpha() * spriteAlpha
+		if spriteTintColor then spriteTintColor.SetRGB()
 		GetSprite().DrawArea(drawPos.getX(), drawPos.getY(), GetScreenWidth(), GetScreenHeight())
 		oldCol.SetRGBA()
 	End Method
