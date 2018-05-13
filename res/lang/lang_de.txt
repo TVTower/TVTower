@@ -25,7 +25,7 @@ LONGCLICK_MODE_EXPLANATION = Simuliere Rechtsklick mit lange-drücken-Klick der 
 LONGCLICK_TIME = Zeit bis "langer Klick"
 WINDOW_MODE_RESOLUTION = Auflösung im Fenstermodus
 INPUT = Eingabe
-USE_TOUCH_INPUT = Nutze Touchscreen-Eingabe 
+USE_TOUCH_INPUT = Nutze Touchscreen-Eingabe
 USE_TOUCH_INPUT_EXPLANATION = Der erste Klick setzt den Mauscursor, fortfolgende zählen als Klick. Erneute Cursorpositionierung bei zu großem Abstand zwischen den Klickpositionen.
 MOVE_INSTEAD_CLICK_RADIUS = Radius "Bewegen statt Klick"
 MULTIPLAYER = Mehrspieler
@@ -642,7 +642,7 @@ UNDER_CONSTRUCTION = Im Bau
 READY_AT_TIME_X = Bereit ab %TIME% Uhr
 READY_AT_DAY_X = Bereit am %TIME% Uhr
 X_UNDER_CONSTRUCTION = %X% im Bau
-NEW_STATION_WILL_BE_READY_AT_TIME_X = Der neue Sendemast wird um %TIME% Uhr fertiggestellt. 
+NEW_STATION_WILL_BE_READY_AT_TIME_X = Der neue Sendemast wird um %TIME% Uhr fertiggestellt.
 NEW_STATION_WILL_BE_READY_AT_DAY_X = Der neue Sendemast wird am %TIME% fertiggestellt.
 
 BUY_AND_SELL = Kaufen und Verkaufen
@@ -686,7 +686,7 @@ LOAD_GAME = Spiel laden
 SAVE_GAME = Spiel speichern
 EXIT_GAME = Spiel beenden
 EXIT_TO_MAINMENU = Zum Hauptmenü zurückkehren
-NAME_OF_SAVEGAME = Name des Speicherstands 
+NAME_OF_SAVEGAME = Name des Speicherstands
 OVERWRITE_SAVEGAME = Speicherstand überschreiben?
 DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = Willst du wirklich %SAVEGAME% überschreiben?
 
@@ -710,10 +710,10 @@ BETTER_WATCH_OUT_NEXT_TIME = Pass das nächste Mal lieber auf.
 
 YOU_HAVE_BEEN_OUTBID = Du wurdest überboten
 SOMEONE_BID_MORE_THAN_YOU_FOR_X = Jemand hat mehr für "%TITLE%" geboten.
-YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Dein altes Gebot von %MONEY% wurde zurückerstattet. 
+YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Dein altes Gebot von %MONEY% wurde zurückerstattet.
 
 YOU_HAVE_WON_AN_AUCTION = Du hast eine Auktion gewonnen
-THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = Die Lizenz "%TITLE%" steht Dir nun zur Verfügung. 
+THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = Die Lizenz "%TITLE%" steht Dir nun zur Verfügung.
 
 YOUR_BOSS_WANTS_TO_SEE_YOU = Dein Chef will dich sehen
 YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM = Du hast %HOURS% Stunden, um dich bei Ihm zu melden.
@@ -1147,3 +1147,13 @@ TERMINATION_FEE = Kündigungsgebühr
 CONTRACT_ENDS_SOON = Vertrag endet bald
 CABLE_NETWORK_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX = Vertrag über die |b|Kabelnetzanbindung mit %COMPANYX%|/b| endet %TIMEX% Uhr (%DAYX%).
 SATELLITE_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX = Vertrag über die |b|Satellitenanbindung mit %COMPANYX%|/b| endet %TIMEX% Uhr (%DAYX%).
+
+
+NEWGAMESETTINGS_CHANNELNAME_DETAIL = Der Name des TV-Senders dieses Spielers
+NEWGAMESETTINGS_PLAYERNAME_DETAIL = Der Name dieses Spielers
+NEWGAMESETTINGS_DIFFICULTY = Schwierigkeitsgrad
+NEWGAMESETTINGS_DIFFICULTY_DETAIL = Der Schwierigkeitsgrad |b|für|/b| den betreffenden Spieler
+NEWGAMESETTINGS_START_YEAR_DETAIL = Das Jahr in dem das Spiel startet. Beeinflusst verfügbare Programme!
+NEWGAMESETTINGS_GAME_SEED = Spielnummer
+NEWGAMESETTINGS_GAME_SEED_DETAIL = Gleiche Spielnummern bewirken gleiche Spielstartbedingungen (Programmauswahl).
+

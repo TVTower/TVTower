@@ -71,6 +71,8 @@ Type TTooltipBase
 	'how long fading takes (millisecs)
 	Field fadeTime:Int = 100
 
+	Field data:TData = new TData
+
 	Field title:String
 	Field content:String
 	Field _minTitleDim:TVec2D ' = new TVec2D.Init(160,0)
@@ -120,7 +122,7 @@ Type TTooltipBase
 	Const OPTION_PARENT_OVERLAY_ALLOWED:int = 128
 	Const OPTION_MIRRORED_RENDER_POSITION:int = 256
 
-	
+
 
 
 	Method Initialize:TTooltipBase(title:String="", content:String="unknown", area:TRectangle)
@@ -299,7 +301,7 @@ Type TTooltipBase
 	End Method
 
 
-	'Returns the width (not screen limited)  
+	'Returns the width (not screen limited)
 	Method GetWidth:Int()
 		'manual config
 		If area.GetW() > 0 Then Return area.GetW()
@@ -311,7 +313,7 @@ Type TTooltipBase
 	End Method
 
 
-	'Returns the height (not screen limited)  
+	'Returns the height (not screen limited)
 	Method GetHeight:Int()
 		'manual config
 		If area.GetH() > 0 Then Return area.GetH()
@@ -365,7 +367,7 @@ Type TTooltipBase
 
 		local minContentHeight:int = -1
 		if _minContentDim then minContentHeight = _minContentDim.GetIntY()
-		
+
 		if _maxContentDim and _maxContentDim.GetY() > 0
 			return Min(Max(GetFont().getBlockHeight(content, GetInnerWidth(), -1), minContentHeight), _maxContentDim.GetY())
 		else
@@ -377,7 +379,7 @@ Type TTooltipBase
 	Method GetInnerWidth:int()
 		return GetWidth() - GetContentPadding().GetLeft() - GetContentPadding().GetRight()
 	End Method
-	
+
 
 	Method MoveToVisibleScreenArea(checkParentArea:int = True)
 		if not _renderPosition then _renderPosition = new TVec2D
@@ -455,7 +457,7 @@ Type TTooltipBase
 		if minTitleDim
 			if not minContentDim = -1 then minContentDim = minTitleDim.Copy()
 		endif
-		
+
 		self._minTitleDim = minTitleDim
 		self._minContentDim = minContentDim
 	End Method
@@ -496,7 +498,7 @@ Type TTooltipBase
 		if _stepTime = -1 then return 0.0
 		return float(Min(1.0, Max(0, double(Time.MilliSecsLong() - _stepStartTime) / _stepTime)))
 	End Method
-	
+
 
 	Method GetFont:TBitmapFont()
 		if not _useFont then _useFont = GetBitmapFont("Default", 12)
@@ -674,7 +676,7 @@ Type TTooltipBase
 		if not isHovering and HasOption(OPTION_HOVERED)
 			onMouseOut()
 		endif
-			
+
 
 
 		'=== ADJUST STEPS ====

@@ -54,7 +54,7 @@ TODO
 
 	- Live-Sendungen: Flag "LIVE_WHEN_IN_TIMEFRAME" einfuehren,
 	  Programm ist live, sobald es innerhalb des Zeitfensters gesendet
-	  wird (erlaubt "Luecken", statt taeglicher Ausstrahlung) 
+	  wird (erlaubt "Luecken", statt taeglicher Ausstrahlung)
 
 		BroadcastMaterialSource (Lizenzen)
 			-> GetBroadcastTimeSlotStart()
@@ -76,7 +76,7 @@ TODO
 		Eventuell also alle nur "1x ausstrahlbar" (dann lizenz so einstellen,
 		dass nach Abnutzung nicht mehr handelbar/verkaufbar) dafuer aber
 		10 Episoden anlegen (copy() der Programmedata?)
-		
+
 
 	- Optional: "internal"-Drehbuecher - die nur fuer kuenstliche
 	  Produktionen zur Verfuegung stehen. Flag "internal".
@@ -140,3 +140,6 @@ Gebiet kein Image. Generell sollte es aber nicht auf den Faktor
 Ich kann gerne von "Zuschauerzahl" auf "relativer Marktanteil" umschwenken (also Marktanteil im eigenen Sendegebiet). Was sagen die anderen dazu?
 https://www.gamezworld.de/phpforum/viewtopic.php?pid=87777#p87777
 
+
+Erreichbare Zuschauerreichweite wetterabhaengig machen
+-> bereits integrierte temporaere Modifikatoren nutzen
