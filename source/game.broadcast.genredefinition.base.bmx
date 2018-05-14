@@ -22,7 +22,7 @@ Type TGenreDefinitionBase extends TGameObject
 		'after a new game / savegame
 		_popularity = null
 	End Method
-	
+
 
 	Method LoadFromMap(data:TMap)
 		local mapData:TData = new TData.Init(data.Copy())
@@ -64,7 +64,7 @@ Type TGenreDefinitionBase extends TGameObject
 		endif
 		return _popularity
 	End Method
-	
+
 
 	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase) Abstract
 	rem

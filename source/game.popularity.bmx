@@ -220,12 +220,12 @@ Type TPopularity
 
 
 	'Every broadcast of a genre, every activity of a person, ...
-	'adjusts the trend (except surfeit kicked in already) 
+	'adjusts the trend (except surfeit kicked in already)
 	Method ChangeTrend(changeValue:Float, adjustLongTermPopularity:float=0)
 		If Surfeit
 			'when subtracting - this would add then...
 			'Trend :- changeValue
-			
+
 			Trend :- Max(0, changeValue)
 		Else
 			Trend :+ changeValue
@@ -263,15 +263,16 @@ End Type
 
 Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 	Field popularityGUID:string = ""
-	Field valueMin:int = 0
-	Field valueMax:int = 0
+	'value is divided by 100 - so 1000 becomes 10, 50 becomes 0.5)
+	Field valueMin:Float = 0
+	Field valueMax:Float = 0
 	Field modifyProbability:int = 100
 
 
 	'override to create this type instead of the generic one
 	Function CreateNewInstance:TGameModifierPopularity_ModifyPopularity()
 		return new TGameModifierPopularity_ModifyPopularity
-	End Function	
+	End Function
 
 
 	Method Copy:TGameModifierPopularity_ModifyPopularity()
@@ -291,17 +292,20 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 		'local source:TNewsEvent = TNewsEvent(data.get("source"))
 		local index:string = ""
 		if extra and extra.GetInt("childIndex") > 0 then index = extra.GetInt("childIndex")
-		local popularityGUID:string = data.GetString("guid"+index, data.GetString("guid", ""))
-		if popularityGUID = "" then return Null
+		popularityGUID = data.GetString("guid"+index, data.GetString("guid", ""))
+		if popularityGUID = ""
+			TLogger.Log("TGameModifierPopularity_ModifyPopularity", "Init() failed - no popularity GUID given.", LOG_ERROR)
+			return Null
+		endif
 
-		valueMin = data.GetInt("valueMin"+index, 0)
-		valueMax = data.GetInt("valueMax"+index, 0)
-		modifyProbability = data.GetInt("probability"+index)
+		valueMin = data.GetFloat("valueMin"+index, 0.0)
+		valueMax = data.GetFloat("valueMax"+index, 0.0)
+		modifyProbability = data.GetInt("probability"+index, 100)
 
 		return self
 	End Method
-	
-	
+
+
 	Method ToString:string()
 		local name:string = data.GetString("name", "default")
 		return "TGameModifierPopularity_ModifyPopularity ("+name+")"
@@ -318,13 +322,16 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 			TLogger.Log("TGameModifierPopularity_ModifyPopularity", "cannot find popularity to trigger: "+popularityGUID, LOG_ERROR)
 			return false
 		endif
-		local changeBy:int = RandRange(valueMin, valueMax)
+		local changeBy:Float = RandRange(valueMin*1000, valueMax*1000)/1000.0
 		'does adjust the "trend" (growth direction of popularity) not
 		'popularity directly
 		popularity.ChangeTrend(changeBy)
-		popularity.SetPopularity(popularity.popularity + changeBy * 0.1)
-		print "changed trend: "+changeBy
+		popularity.SetPopularity(popularity.popularity + changeBy)
+		'print "TGameModifierPopularity_ModifyPopularity: changed trend for ~q"+popularityGUID+"~q by "+changeBy+" to " + popularity.Popularity+"."
 
 		return True
 	End Method
 End Type
+
+
+GetGameModifierManager().RegisterCreateFunction("ModifyPopularity", TGameModifierPopularity_ModifyPopularity.CreateNewInstance)

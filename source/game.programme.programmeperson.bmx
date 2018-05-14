@@ -25,7 +25,7 @@ Type TProgrammePersonCollection extends TProgrammePersonBaseCollection
 		endif
 		return result
 	End Method
-	
+
 	Method GetInsignificantByGUID:TProgrammePersonBase(GUID:String)
 		Return TProgrammePersonBase(insignificant.ValueForKey(GUID))
 	End Method
@@ -124,7 +124,7 @@ Function CreateRandomInsignificantPerson:TProgrammePersonBase(countryCode:string
 	GetPersonGenerator().ProtectDataset(p)
 
 	GetProgrammePersonBaseCollection().AddInsignificant(person)
-	
+
 	return person
 End Function
 
@@ -132,7 +132,7 @@ End Function
 Function ConvertInsignificantToCelebrity:TProgrammePersonBase(insignifant:TProgrammePersonBase)
 	'already done
 	if TProgrammePerson(insignifant) then return insignifant
-	
+
 	local person:TProgrammePerson = new TProgrammePerson
 	TProgrammePerson(THelper.TakeOverObjectValues(insignifant, person))
 
@@ -165,7 +165,7 @@ Function ConvertInsignificantToCelebrity:TProgrammePersonBase(insignifant:TProgr
 	'also avoid days 29,30,31 - not possible in all months
 	person.dayOfBirth = (earliestProduction - RandRange(10,40))+"-"+RandRange(1,12)+"-"+RandRange(1,28)
 
-	'TODO: 
+	'TODO:
 	'Wenn GetAge > 50 dann mit Chance (steigend bis zu 100%)
 	'einen Todeszeitpunkt festlegen?
 	'NUR bei fiktiven Personen!
@@ -175,7 +175,7 @@ Function ConvertInsignificantToCelebrity:TProgrammePersonBase(insignifant:TProgr
 	'emit event so eg. news agency could react to it ("new star is born")
 	EventManager.triggerEvent(TEventSimple.Create("programmeperson.newCelebrity", null, person))
 
-	'print "new Star is born: " + person.GetFullName() +", "+person.GetAge()+"years, born " + GetWorldTime().GetFormattedDate( GetWorldTime().GetTimeGoneFromString(person.dayOfBirth)) 
+	'print "new Star is born: " + person.GetFullName() +", "+person.GetAge()+"years, born " + GetWorldTime().GetFormattedDate( GetWorldTime().GetTimeGoneFromString(person.dayOfBirth))
 
 	return person
 End Function
@@ -187,7 +187,7 @@ End Function
 Type TProgrammePerson extends TProgrammePersonBase
 	field dayOfBirth:string	= "0000-00-00"
 	field dayOfDeath:string	= "0000-00-00"
-	field debut:Int	= 0	
+	field debut:Int	= 0
 	'income +, reviews +++, bonus in some genres (drama!)
 	'directors, musicians: how good is he doing his "craftmanships"
 	field skill:float = 0.0
@@ -197,14 +197,14 @@ Type TProgrammePerson extends TProgrammePersonBase
 	Field humor:float = 0.0
 	'income +, reviews ++, bonus in some genres (love, drama, comedy)
 	Field charisma:float = 0.0
-	'income ++, speed +, bonus in some genres (erotic, love, action)	
+	'income ++, speed +, bonus in some genres (erotic, love, action)
 	Field appearance:float = 0.0
 	'income +++
 	'how famous is this person?
 	field fame:float = 0.0
 	'of interest for shows or special events / trigger for news / 0-1.0
 	field scandalizing:float = 0.0
-	'price manipulation. varying price but constant "quality" 
+	'price manipulation. varying price but constant "quality"
 	field priceModifier:Float = 1.0
 	'at which genres this person is doing his best job
 	'TODO: maybe change this later to a general genreExperience-Container
@@ -212,15 +212,15 @@ Type TProgrammePerson extends TProgrammePersonBase
 	field topGenre1:Int = 0
 	field topGenre2:Int = 0
 	field calculatedTopGenreCache:int = 0 {nosave}
-	'cache popularity (possible because the genre exists the whole game)
+	'cache popularity (possible because the person exists the whole game)
 	Field _popularity:TPopularity {nosave}
-	
+
 	field figure:TFigureGeneratorFigure
 	field figureImage:TImage {nosave}
-	'tried to create it? 
+	'tried to create it?
 	field figureImageCreationFailed:int = False {nosave}
 
-	'array containing GUIDs of all programmes 
+	'array containing GUIDs of all programmes
 	Field producedProgrammes:string[] {nosave}
 	Field producedProgrammesCached:int = False {nosave}
 
@@ -249,7 +249,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 			For local guid:string = EachIn GetProducedProgrammes()
 				local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(guid)
 				if not programmeData then continue
-				
+
 				local genre:int = programmeData.GetGenre()
 				if genre > genres.length-1 then genres = genres[..genre+1]
 				genres[genre]:+1
@@ -262,7 +262,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 			return calculatedTopGenreCache
 		endif
-			
+
 		return topGenre1
 	End Method
 
@@ -273,7 +273,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 		For local guid:string = EachIn GetProducedProgrammes()
 			local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(guid)
 			if not programmeData then continue
-			
+
 			if programmeData.GetGenre() = genre then count :+ 1
 		Next
 
@@ -302,7 +302,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 				return 0
 		End Select
 	End Method
-	
+
 
 	Method SetRandomAttributes:int(onlyEmpty:int=False)
 		'reset attributes, so they get all refilled
@@ -316,7 +316,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 			scandalizing = 0
 			priceModifier = 0
 		endif
-	
+
 		'base values
 		if skill = 0 then skill = BiasedRandRange(0,100, 0.1) / 100.0
 		if power = 0 then power = BiasedRandRange(0,100, 0.1) / 100.0
@@ -342,7 +342,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 			if parts.length < 3 then parts :+ ["01"]
 			date = "-".Join(parts)
 		endif
-		
+
 		self.dayOfBirth = date
 	End Method
 
@@ -365,13 +365,13 @@ Type TProgrammePerson extends TProgrammePersonBase
 	'the base fee when engaged
 	'base might differ depending on sympathy for channel
 	Method GetBaseFee:Int(jobID:int, blocks:int, channel:int=-1)
-		'1 = 1, 2 = 1.75, 3 = 2.5, 4 = 3.25, 5 = 4 ... 
+		'1 = 1, 2 = 1.75, 3 = 2.5, 4 = 3.25, 5 = 4 ...
 		local blocksMod:Float = 0.25 + blocks * 0.75
 		local sympathyMod:Float = 1.0
 		local xpMod:Float = 1.0
 		local baseFee:Int = 0
 		local dynamicFee:Int = 0
-		
+
 		Select jobID
 			case TVTProgrammePersonJob.ACTOR,..
 			     TVTProgrammePersonJob.SUPPORTINGACTOR, ..
@@ -400,7 +400,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 				endif
 
 			case TVTProgrammePersonJob.DIRECTOR,..
-			     TVTProgrammePersonJob.SCRIPTWRITER 
+			     TVTProgrammePersonJob.SCRIPTWRITER
 
 				'attributes: 0 - 6.0
 				local attributeMod:float = (2 * power + 0.75 * humor + 1.25 * charisma + 0.5 * appearance + 2*skill)
@@ -450,7 +450,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 				baseFee = 3500
 				dynamicFee = 6500 * attributeMod
-								
+
 			case TVTProgrammePersonJob.GUEST
 				'attributes: 0 - 1.9
 				local attributeMod:Float = humor*0.3 + charisma*0.3 + appearance*0.3 + skill
@@ -495,7 +495,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 		return fee
 	End Method
 
-	
+
 	'override to extend with xp gain + send out events
 	Method FinishProduction:int(programmeDataGUID:string, job:int)
 		local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeDataGUID)
@@ -506,10 +506,10 @@ Type TProgrammePerson extends TProgrammePersonBase
 		'new entries already - so an "not inArray" would fail
 		'if programmeData.HasLifecycleStep(TVTProgrammeLifecycleStep.PRODUCTION_FINISHED) then return False
 		if programmeData.finishedProductionForCast then return False
-	
+
 
 		Super.FinishProduction(programmeDataGUID, job:int)
-	
+
 		GainExperienceForProgramme(programmeDataGUID)
 
 		'add programme (do not just add, as this destroys desc-sort)
@@ -525,7 +525,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 	Method GetProducedProgrammes:String[]()
 		if not producedProgrammesCached
 			producedProgrammes = new String[0]
-			
+
 			'fill up with already finished
 			'ordered by release date
 			local releasedData:TList = GetProgrammeDataCollection().GetFinishedProductionProgrammeDataList()
@@ -534,14 +534,14 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'latest production on top (list is copied then)
 				releasedData = releasedData.reversed()
 			endif
-			
+
 			For local programmeData:TProgrammeData = EachIn releasedData
 				if not programmeData.HasCastPerson(self.GetGUID()) then continue
 				'skip "paid programming" (kind of live programme)
 				if programmeData.HasFlag(TVTProgrammeDataFlag.PAID) then continue
 
 
-				'instead of adding episodes, we add the series 
+				'instead of adding episodes, we add the series
 				if programmeData.parentGUID
 					'skip if already added
 					if StringHelper.InArray(programmeData.parentGUID, producedProgrammes)
@@ -574,7 +574,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 	Method GetPopularityValue:Float()
 		return GetPopularity().Popularity
 	End Method
-	
+
 
 	Method SetChannelSympathy:int(channel:int, newSympathy:float)
 		if channel < 0 or channel >= channelSympathy.length then return False
@@ -602,7 +602,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 			return ""
 		endif
 	End Method
-	
+
 
 	Method GetCountryLong:string()
 		if countryCode <> ""
@@ -681,7 +681,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 		return xp[jobIndex]
 	End Method
-	
+
 
 	Method GetExperiencePercentage:Float(job:int)
 		return GetExperience(job) / float(MAX_XP)
@@ -709,7 +709,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 		local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeDataGUID)
 		if not programmeData then return
 		if not PersonsGainExperienceForProgrammes then return
-		
+
 		'gain experience for each done job
 		local creditedJobs:int[]
 		For local job:TProgrammePersonJob = EachIn programmeData.GetCast()
@@ -727,7 +727,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 	'override
 	Method GetAge:int()
 		if dayOfBirth = "0000-00-00" then return Super.GetAge()
-			
+
 		local dob:Long = GetWorldTime().GetTimeGoneFromString(dayOfBirth)
 		'no dob was given
 		if dob = 0 then return Super.GetAge()
@@ -810,7 +810,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 							skinTone = 1
 						endif
 				End Select
-				
+
 				figure = TFigureGenerator.GenerateFigure(skinTone, genderFlag, ageFlag)
 				faceCode = figure.GetFigureCode()
 			else

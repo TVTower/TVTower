@@ -37,7 +37,7 @@ Type TNewsAgency
 	'progress in the given aggression level (0 - 1.0)
 	Field terroristAggressionLevelProgress:Float[] = [0.0, 0.0]
 	'rate the aggression level progresses each game hour
-	Field terroristAggressionLevelProgressRate:Float[][] = [ [0.06,0.08], [0.06,0.08] ]	
+	Field terroristAggressionLevelProgressRate:Float[][] = [ [0.06,0.08], [0.06,0.08] ]
 
 	Global _eventListeners:TLink[]
 	Global _instance:TNewsAgency
@@ -61,7 +61,7 @@ Type TNewsAgency
 	Method Initialize:int()
 		'=== RESET TO INITIAL STATE ===
 		For local i:int = 0 until TVTNewsGenre.count
-			'NextEventTimes[i] = GetWorldTime().GetTimeGone() - 60 * RandRange(60,180) 
+			'NextEventTimes[i] = GetWorldTime().GetTimeGone() - 60 * RandRange(60,180)
 			NextEventTimes[i] = -1
 		Next
 		'setup the intervals of all genres
@@ -131,7 +131,7 @@ Type TNewsAgency
 			NA.NextEventTimes = NA.NextEventTimes[.. TVTNewsGenre.count]
 			NA.NextEventTimeIntervals = NA.NextEventTimeIntervals[.. TVTNewsGenre.count]
 		endif
-		
+
 		'=== SETUP ALL INTERVALS ===
 		'this sets to the most current values (might differ from older
 		'savegames)
@@ -183,7 +183,7 @@ Type TNewsAgency
 
 				if caughtChannelIDs <> "" then caughtChannelIDs :+ ","
 				caughtChannelIDs :+ string(i)
-				
+
 				caughtChannelIDsArray :+ [i]
 			endif
 		Next
@@ -300,7 +300,7 @@ Type TNewsAgency
 		Next
 		return False
 	End Method
-	
+
 
 	Method Update:int()
 		'All players update their newsagency on their own.
@@ -322,7 +322,7 @@ Type TNewsAgency
 				TLogger.Log("NewsAgency", "Initialize NextEventTime for genre "+i, LOG_DEBUG)
 				ResetNextEventTime(i, RandRange(-120, 0))
 			endif
-			
+
 			If NextEventTimes[i] < GetWorldTime().GetTimeGone() Then AnnounceNewNewsEvent(i)
 		Next
 
@@ -339,7 +339,7 @@ Type TNewsAgency
 			UpdateTerrorist(i, mainAggressor)
 		Next
 	End Method
-	
+
 
 	Method UpdateTerrorist:int(terroristNumber:int, mainAggressor:int)
 		'set next update time (between min-max interval)
@@ -396,13 +396,13 @@ Type TNewsAgency
 		endif
 	End Method
 
-	
+
 	Method SetTerroristAggressionLevel:int(terroristGroup:int, level:int)
 		if terroristGroup >= 0 and terroristGroup <= 1
 			terroristAggressionLevel[terroristGroup] = level
 		endif
 	End Method
-	
+
 
 	Method GetTerroristAggressionLevel:int(terroristGroup:int = -1)
 		if terroristGroup >= 0 and terroristGroup <= 1
@@ -484,7 +484,7 @@ Type TNewsAgency
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
 		Return NewsEvent
 	End Method
-	
+
 
 	Method GetMovieNewsEvent:TNewsEvent()
 		Local licence:TProgrammeLicence = Self._GetAnnouncableProgrammeLicence()
@@ -518,10 +518,9 @@ Type TNewsAgency
 		Self._ReplaceProgrammeData(localizeTitle, licence.GetData())
 		Self._ReplaceProgrammeData(localizeDescription, licence.GetData())
 
-		
 		'quality and price are based on the movies data
 		'quality of movie news never can reach quality of "real" news
-		'so cut them to a specific range (0.10 - 0.80) 
+		'so cut them to a specific range (0.10 - 0.80)
 		local quality:Float = 0.1  + 0.70*licence.GetData().review
 		'if outcome is less than 50%, it subtracts the price, else it increases
 		local priceModifier:Float = 1.0 + 0.2 * (licence.GetData().outcome - 0.5)
@@ -535,8 +534,29 @@ Type TNewsAgency
 		NewsEvent.AddKeyword("MOVIE")
 
 
+		'add triggers
+		'attention: not all persons have a popularity yet - skip them
+		For local job:TProgrammePersonJob = EachIn licence.GetData().cast
+			if job.personGUID
+				local person:TProgrammePerson = GetProgrammePerson(job.personGUID)
+				if person and person.GetPopularity()
+					local jobMod:Float = TVTProgrammePersonJob.GetJobImportanceMod(job.job)
+					if jobMod > 0.0
+						NewsEvent.AddEffectByData(new TData.Add("trigger", "happen").Add("type", "ModifyPersonPopularity").Add("guid", job.personGUID).AddNumber("valueMin", 0.1 * jobMod).AddNumber("valueMax", 0.5 * jobMod))
+						'TODO: take broadcast audience into consideration
+						'      or maybe only use broadcastFirstTimeDone
+						NewsEvent.AddEffectByData(new TData.Add("trigger", "broadcastDone").Add("type", "ModifyPersonPopularity").Add("guid", job.personGUID).AddNumber("valueMin", 0.01 * jobMod).AddNumber("valueMax", 0.025 * jobMod))
+					endif
+				endif
+			endif
+		Next
+		'modify genre
+		NewsEvent.AddEffectByData(new TData.Add("trigger", "broadcastFirstTime").Add("type", "ModifyMovieGenrePopularity").AddNumber("genre", licence.GetData().GetGenre()).AddNumber("valueMin", 0.025).AddNumber("valueMax", 0.04))
+		NewsEvent.AddEffectByData(new TData.Add("trigger", "broadcast").Add("type", "ModifyMovieGenrePopularity").AddNumber("genre", licence.GetData().GetGenre()).AddNumber("valueMin", 0.005).AddNumber("valueMax", 0.01))
+
+
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)
-		
+
 		Return NewsEvent
 	End Method
 
@@ -622,9 +642,9 @@ Type TNewsAgency
 
 			announced:+1
 		Next
-		'invalidate upcoming list 
+		'invalidate upcoming list
 		if announced > 0 then GetNewsEventCollection()._InvalidateUpcomingNewsEvents()
-	
+
 		Return announced
 	End Method
 
@@ -644,7 +664,7 @@ Type TNewsAgency
 				endif
 
 				announceNewsEvent(newsEvent)
-				
+
 				'attention: KEEP_TICKER_TIME is only "useful" for initial/single news
 				if not newsEvent.HasFlag(TVTNewsFlag.KEEP_TICKER_TIME)
 					ResetNextEventTime(newsEvent.GetGenre())
@@ -652,13 +672,13 @@ Type TNewsAgency
 
 				announced :+ 1
 			Next
-			
+
 			nP.ClearNewNewsEvents()
 		Next
 
-		'invalidate upcoming list 
+		'invalidate upcoming list
 		if delayed > 0 then GetNewsEventCollection()._InvalidateUpcomingNewsEvents()
-	
+
 		Return announced
 	End Method
 
@@ -726,7 +746,7 @@ Type TNewsAgency
 
 '			if playerID=1 then end
 		Next
-	
+
 		Return delayed
 	End Method
 
@@ -871,7 +891,7 @@ Type TNewsAgency
 			local skipNews:int = newsEvent.IsSkippable()
 			'override newsevent skippability
 			if not skipIfUnsubscribed then skipNews = False
-			
+
 			If skipNews
 				For Local player:TPlayerBase = eachin GetPlayerBaseCollection().players
 					'a player listens to this genre, disallow skipping
@@ -901,7 +921,7 @@ Type TNewsAgency
 		'=== ADJUST TIME FOR NEXT NEWS ANNOUNCEMENT ===
 		'reset even if no news was found - or if news allows so
 		'attention: KEEP_TICKER_TIME is for initial news
-		'           RESET_TICKER_TIME for follow up news 
+		'           RESET_TICKER_TIME for follow up news
 		if not newsEvent or not newsEvent.HasFlag(TVTNewsFlag.KEEP_TICKER_TIME)
 			ResetNextEventTime(genre)
 		endif
@@ -916,7 +936,7 @@ Type TNewsAgency
 
 		NextEventTimes[genre] = time
 	End Method
-	
+
 
 	Method ResetNextEventTime:int(genre:int, addMinutes:int = 0)
 		if genre >= TVTNewsGenre.count or genre < 0 then return False
@@ -970,7 +990,7 @@ Type TNewsAgencyNewsProvider
 	Method AddNewNewsEvent:int(newsEvent:TNewsEvent)
 		newNewsEvents :+ [newsEvent]
 	End Method
-	
+
 
 	Method GetNewNewsEvents:TNewsEvent[]()
 		return newNewsEvents

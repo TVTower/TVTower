@@ -244,7 +244,7 @@ With practical tricks to identify junk goods.</en>
 			</staff>
 			<!-- pensioners and housewives -->
 			<groups target_groups="68" />
-			<targetgroupattractivity teenagers="0.7" managers="0.7" housewives="1.15" /> 
+			<targetgroupattractivity teenagers="0.7" managers="0.7" housewives="1.15" />
 			<data country="D" year="1983" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="18" speed="12" />
 		</programme>
@@ -264,7 +264,7 @@ With practical tricks to identify junk goods.</en>
 			</staff>
 			<!-- employees and managers -->
 			<groups target_groups="40" />
-			<targetgroupattractivity teenagers="0.7" unemployed="0.8" managers="1.15" employees="1.25" /> 
+			<targetgroupattractivity teenagers="0.7" unemployed="0.8" managers="1.15" employees="1.25" />
 			<data country="D" year="1987" distribution="2" maingenre="103" subgenre="6" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="23" speed="15" />
 		</programme>
@@ -286,7 +286,7 @@ The report accompanies two families for a summer in West Berlin.</en>
 			</staff>
 			<!-- men -->
 			<groups target_groups="256" />
-			<targetgroupattractivity women="0.9" /> 
+			<targetgroupattractivity women="0.9" />
 			<data country="D" year="1962" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="20" speed="10" />
 		</programme>
@@ -306,7 +306,7 @@ The report accompanies two families for a summer in West Berlin.</en>
 			</staff>
 			<!-- women -->
 			<groups target_groups="128" />
-			<targetgroupattractivity men="0.9" teenagers="1.1" /> 
+			<targetgroupattractivity men="0.9" teenagers="1.1" />
 			<data country="D" year="1974" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="24" speed="15" />
 		</programme>
@@ -325,7 +325,7 @@ The report accompanies two families for a summer in West Berlin.</en>
 				<member index="1" function="128">ronny-programmeperson-heinzharaldfehm</member>
 			</staff>
 			<!-- men / male teenagers -->
-			<targetgroupattractivity men="1.05" teenagers_male="1.2" /> 
+			<targetgroupattractivity men="1.05" teenagers_male="1.2" />
 			<data country="D" year="0" year_relative="-1" year_relative_min="1985" year_relative_max="1988" distribution="2" maingenre="300" subgenre="6" flags="0" blocks="2" price_mod="0.9" />
 			<ratings critics="25" speed="20" />
 		</programme>
@@ -346,7 +346,7 @@ Test winner: The "Little Twiddle".</en>
 				<member index="1" function="128">ronny-programmeperson-achimvonklaven</member>
 			</staff>
 			<!-- men / male teenagers -->
-			<targetgroupattractivity men="1.2" teenagers_male="1.4" /> 
+			<targetgroupattractivity men="1.2" teenagers_male="1.4" />
 			<data country="D" year="0" year_relative="+2" year_relative_min="1993" year_relative_max="2000" distribution="2" maingenre="300" subgenre="8" flags="64" blocks="1" />
 			<ratings critics="15" speed="30" />
 		</programme>
@@ -367,7 +367,7 @@ Hold ready some handkerchiefs.</en>
 				<member index="1" function="128">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
 			</staff>
 			<!-- women / female teenagers -->
-			<targetgroupattractivity women="1.20" teenagers_female="1.25" /> 
+			<targetgroupattractivity women="1.20" teenagers_female="1.25" />
 			<data country="D" year="0" year_relative="+2" year_relative_min="1995" year_relative_max="2005" distribution="2" maingenre="300" subgenre="6" blocks="1" />
 			<ratings critics="10" speed="30" />
 		</programme>
@@ -388,7 +388,7 @@ The hoped-for scandal helf off.</en>
 				<member index="1" function="128">88ba23dc-d4f1-4c77-9ddf-8dbf4a4ce3b2</member>
 			</staff>
 			<!-- pensioners -->
-			<targetgroupattractivity pensioners="1.10" /> 
+			<targetgroupattractivity pensioners="1.10" />
 			<data country="D" year="0" year_relative="+2" year_relative_min="1985" year_relative_max="2010" distribution="2" maingenre="300" subgenre="6" blocks="1" />
 			<ratings critics="11" speed="18" />
 		</programme>
@@ -477,7 +477,7 @@ Illustrious guests and music by [3|Nick].</en>
 
 			newsX + probabilityX:
 				Folgenachricht und ihre Wahrscheinlichkeit im Falle einer
-				"oder"-Verknuepfung          
+				"oder"-Verknuepfung
 		-->
 		<news id="ronny-news-spitzel-01" type="0" creator="5578" created_by="Ronny">
 			<title>
@@ -649,13 +649,13 @@ Illustrious guests and music by [3|Nick].</en>
 				<de>Die Forscher der Polarstation gaben kleinlaut zu, dass aus Versehen der neue TV vor dem Fenster stand. Es lief Patty Glansens Liebesfilm „|b|Dornen der Wüste|/b|“.</de>
 				<en>The researchers of the polar station admitted sheepishly that inadvertently their new TV stood in front of the window. It played Patty Glansen's romantic movie "|b|Thorns of the desert|/b|".</en>
 			</description>
-			<!-- 
+			<!--
 				- Popularitaet von "Patty Glansen" erhoehen
-				- Interesse an Liebesfilmen um 1-2% steigern
+				- Interesse an Liebesfilmen steigern
 			-->
 			<effects>
-				<effect trigger="happen" type="modifyPersonPopularity" person="21e88c65-0cc6-4bd1-bd14-b48b6ce25402" valueMin="1" valueMax="2" />
-				<effect trigger="happen" type="modifyGenrePopularity" genre="15" valueMin="1" valueMax="3" />
+				<effect trigger="happen" type="modifyPersonPopularity" guid="21e88c65-0cc6-4bd1-bd14-b48b6ce25402" valueMin="0.1" valueMax="0.2" />
+				<effect trigger="happen" type="modifyMovieGenrePopularity" genre="15" valueMin="0.5" valueMax="2.0" />
 			</effects>
 
 			<data genre="4" price="1.0" quality="28" />

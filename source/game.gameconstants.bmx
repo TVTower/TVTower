@@ -5,7 +5,7 @@ Rem
 	Keep this in sync with the external database so exports wont
 	break things apart.
 	====================================================================
-EndRem	
+EndRem
 SuperStrict
 
 Global VersionDate:String = "unknown"
@@ -17,17 +17,17 @@ Global TVTPlayerCount:int = 4
 
 
 Global TVTDebugInfos:int = False
-Global TVTDebugQuoteInfos:int = False	
-Global TVTDebugModifierInfos:int = False	
-Global TVTDebugProgrammePlan:int = False	
+Global TVTDebugQuoteInfos:int = False
+Global TVTDebugModifierInfos:int = False
+Global TVTDebugProgrammePlan:int = False
 Global TVTGhostBuildingScrollMode:int = False
 
 
 'collection of all constants types (so it could be exposed
 'to LUA in one step)
 Type TVTGameConstants {_exposeToLua}
-	Field AchievementCategory:TVTAchievementCategory = new TVTAchievementCategory 
-	Field MessageCategory:TVTMessageCategory = new TVTMessageCategory 
+	Field AchievementCategory:TVTAchievementCategory = new TVTAchievementCategory
+	Field MessageCategory:TVTMessageCategory = new TVTMessageCategory
 
 	Field AdContractType:TVTAdContractType = new TVTAdContractType
 
@@ -41,23 +41,23 @@ Type TVTGameConstants {_exposeToLua}
 	Field PlayerFinanceEntryType:TVTPlayerFinanceEntryType = new TVTPlayerFinanceEntryType
 
 	Field ProgrammeProductType:TVTProgrammeProductType = new TVTProgrammeProductType
-	Field ProgrammeState:TVTProgrammeState = new TVTProgrammeState 
-	Field ProgrammeGenre:TVTProgrammeGenre = new TVTProgrammeGenre 
-	Field ProgrammeDataFlag:TVTProgrammeDataFlag = new TVTProgrammeDataFlag 
+	Field ProgrammeState:TVTProgrammeState = new TVTProgrammeState
+	Field ProgrammeGenre:TVTProgrammeGenre = new TVTProgrammeGenre
+	Field ProgrammeDataFlag:TVTProgrammeDataFlag = new TVTProgrammeDataFlag
 	Field ProgrammeLicenceFlag:TVTProgrammeLicenceFlag = new TVTProgrammeLicenceFlag
 	Field ProgrammeLicenceType:TVTProgrammeLicenceType = new TVTProgrammeLicenceType
 	Field ProgrammeDistributionChannel:TVTProgrammeDistributionChannel = new TVTProgrammeDistributionChannel
 
-	Field ProductionConceptFlag:TVTProductionConceptFlag = new TVTProductionConceptFlag 
+	Field ProductionConceptFlag:TVTProductionConceptFlag = new TVTProductionConceptFlag
 
-	Field StationFlag:TVTStationFlag = new TVTStationFlag 
+	Field StationFlag:TVTStationFlag = new TVTStationFlag
 
-	Field NewsFlag:TVTNewsFlag = new TVTNewsFlag 
+	Field NewsFlag:TVTNewsFlag = new TVTNewsFlag
 
-	Field TargetGroup:TVTTargetGroup = new TVTTargetGroup 
-	Field PressureGroup:TVTPressureGroup = new TVTPressureGroup 
+	Field TargetGroup:TVTTargetGroup = new TVTTargetGroup
+	Field PressureGroup:TVTPressureGroup = new TVTPressureGroup
 
-	Field PersonGender:TVTPersonGender = new TVTPersonGender 
+	Field PersonGender:TVTPersonGender = new TVTPersonGender
 	Field ProgrammePersonJob:TVTProgrammePersonJob = new TVTProgrammePersonJob
 	Field ProgrammePersonAttribute:TVTProgrammePersonAttribute = new TVTProgrammePersonAttribute
 
@@ -65,7 +65,7 @@ Type TVTGameConstants {_exposeToLua}
 
 	Field AwardType:TVTAwardType = new TVTAwardType
 
-	Field StationType:TVTStationType = new TVTStationType 
+	Field StationType:TVTStationType = new TVTStationType
 End Type
 Global GameConstants:TVTGameConstants = New TVTGameConstants
 
@@ -85,7 +85,7 @@ Type TVTAchievementCategory {_exposeToLua}
 	Function GetAtIndex:int(index:int = 0)
 		if index <= 0 then return 0
 		return 2^(index-1)
-	End Function	
+	End Function
 
 
 	Function GetIndex:int(key:int)
@@ -101,7 +101,7 @@ Type TVTAchievementCategory {_exposeToLua}
 
 	Function GetAsString:String(key:int = 0)
 		if key < 0 then return "none"
-		 
+
 		Select key
 			case ALL           return "all"
 
@@ -141,7 +141,7 @@ Type TVTStationType {_exposeToLua}
 	Function GetAtIndex:int(index:int = 0)
 		if index <= 0 then return 0
 		return index
-	End Function	
+	End Function
 
 
 	Function GetIndex:int(key:int)
@@ -156,7 +156,7 @@ Type TVTStationType {_exposeToLua}
 
 	Function GetAsString:String(key:int = 0)
 		if key < 0 then return "unknown"
-		 
+
 		Select key
 			case UNKNOWN              return "unknown"
 
@@ -185,7 +185,7 @@ Type TVTMessageCategory {_exposeToLua}
 	Function GetAtIndex:int(index:int = 0)
 		if index <= 0 then return 0
 		return 2^(index-1)
-	End Function	
+	End Function
 
 
 	Function GetIndex:int(key:int)
@@ -201,7 +201,7 @@ Type TVTMessageCategory {_exposeToLua}
 
 	Function GetAsString:String(key:int = 0)
 		if key < 0 then return "none"
-		
+
 		Select key
 			case ALL           return "all"
 
@@ -255,7 +255,7 @@ Type TVTStationFlag {_exposeToLua}
 	Function GetAtIndex:int(index:int = 0)
 		if index <= 0 then return 0
 		return 2^(index-1)
-	End Function	
+	End Function
 
 
 	Function GetIndex:int(key:int)
@@ -281,7 +281,7 @@ Type TVTStationFlag {_exposeToLua}
 
 	Function GetAsString:String(key:int = 0)
 		if key < 0 then return "none"
-		
+
 		Select key
 			case NONE                         return "none"
 
@@ -492,7 +492,7 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 
 	Const HAS_BROADCAST_LIMIT:int = 256
 
-	'material never changes from LIVE To LIVEONTAPE 
+	'material never changes from LIVE To LIVEONTAPE
 	Const ALWAYS_LIVE:int = 512
 
 	Const IGNORE_PLAYERDIFFICULTY:int = 1024
@@ -508,7 +508,7 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	Function GetAtIndex:int(index:int = 0)
 		if index <= 0 then return 0
 		return 2^(index-1)
-	End Function	
+	End Function
 
 
 	Function GetIndex:int(key:int)
@@ -532,7 +532,7 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	End Function
 End Type
 
-	
+
 
 Type TVTBroadcastMaterialType {_exposeToLua}
 	Const UNKNOWN:int      = 1
@@ -553,7 +553,7 @@ Type TVTProgrammeDistributionChannel {_exposeToLua}
 	Const TV:int         = 2 'produced for TV
 	Const VIDEO:int      = 3 'direct to video/dvd/br... (often B-Movies)
 	Const count:int      = 3
-	
+
 
 	Function GetAtIndex:int(index:int = 0)
 		return index
@@ -622,14 +622,14 @@ Type TVTScriptFlag {_exposeToLua}
 	Const POOL_RANDOMIZES_ATTRIBUTES:int = 16
 	'when given to pool/vendor, the licence will not be buyable again
 	Const POOL_REMOVES_TRADEABILITY:int = 32
-	
+
 	Const count:int = 6
 
 
 	Function GetAtIndex:int(index:int = 0)
 		if index <= 0 then return 0
 		return 2^(index-1)
-	End Function	
+	End Function
 
 
 	Function GetIndex:int(key:int)
@@ -647,7 +647,7 @@ Type TVTScriptFlag {_exposeToLua}
 
 	Function GetAsString:String(key:int = 0)
 		if key < 0 then return "none"
-		
+
 		Select key
 			case TRADEABLE                            return "tradeable"
 			case SELL_ON_REACHING_PRODUCTIONLIMIT     return "sell_on_reaching_productionlimit"
@@ -688,14 +688,14 @@ Type TVTProgrammeLicenceFlag {_exposeToLua}
 	Const LICENCEPOOL_REFILLS_TOPICALITY:int = 16
 	'when given to pool/vendor, the licence will not be buyable again
 	Const LICENCEPOOL_REMOVES_TRADEABILITY:int = 32
-	
+
 	Const count:int = 6
 
 
 	Function GetAtIndex:int(index:int = 0)
 		if index <= 0 then return 0
 		return 2^(index-1)
-	End Function	
+	End Function
 
 
 	Function GetIndex:int(key:int)
@@ -713,7 +713,7 @@ Type TVTProgrammeLicenceFlag {_exposeToLua}
 
 	Function GetAsString:String(key:int = 0)
 		if key < 0 then return "none"
-		
+
 		Select key
 			case TRADEABLE                            return "tradeable"
 			case SELL_ON_REACHING_BROADCASTLIMIT      return "sell_on_reaching_broadcastlimit"
@@ -758,8 +758,8 @@ Type TVTProgrammeProductType {_exposeToLua}
 		'each index has a const, so just return index
 		return index
 	End Function
-	
-	
+
+
 	Function GetAsString:String(typeKey:int = 0)
 		Select typeKey
 			case MOVIE           return "movie"
@@ -779,7 +779,7 @@ End Type
 
 Type TVTPlayerFinanceEntryType {_exposeToLua}
 	Const UNDEFINED:int = 0                     '0
-	
+
 	Const CREDIT_REPAY:int = 11                 '1
 	Const CREDIT_TAKE:int = 12                  '2
 
@@ -815,7 +815,7 @@ Type TVTPlayerFinanceEntryType {_exposeToLua}
 	Const PAY_DRAWINGCREDITINTEREST:int = 82    '26
 	Const EARN_BALANCEINTEREST:int = 83         '27
 
-	
+
 	Const CHEAT:int = 1000                      '28
 
 	Const count:int = 29                        'index 0 - 28
@@ -848,7 +848,7 @@ Type TVTPlayerFinanceEntryType {_exposeToLua}
 		if index >= 1 and index <= 5 then return index
 		return GROUP_DEFAULT
 	End Function
-	
+
 
 	'returns a textual version of the id
 	Function GetAsString:string(key:int)
@@ -948,7 +948,7 @@ End Type
 
 Type TVTProgrammeGenre {_exposeToLua}
 	Const Undefined:int = 0
- 
+
 	'Movie-Genre 1+
 	Const Adventure:int = 1
 	Const Action:int = 2
@@ -986,7 +986,7 @@ Type TVTProgrammeGenre {_exposeToLua}
 	Const Event_Music:int = 202		'AC/DC-conzert
 	Const Event_Sport:int = 203		'Soccer-WM, Olympic Games
 	Const Event_Showbiz:int = 204	'Oscars, Golden Globes, red-carpet-events
- 
+
 	'Reportage-Genre 300+
 	Const Feature:int = 300
 	Const Feature_YellowPress:int = 301
@@ -1006,10 +1006,10 @@ Type TVTProgrammeGenre {_exposeToLua}
 		if index >= 400 and index <= 401 then return index
 		return -1
 	End Function
-	
+
 
 	Function GetByString:int(keyString:string = "")
-		Select keyString.toLower()	
+		Select keyString.toLower()
 			case "adventure"            return ADVENTURE
 			case "action"               return ACTION
 			case "animation"            return ANIMATION
@@ -1050,7 +1050,7 @@ Type TVTProgrammeGenre {_exposeToLua}
 		End Select
 	End Function
 
-	
+
 	'returns a textual version of the id
 	Function GetAsString:string(key:int)
 		Select key
@@ -1157,12 +1157,12 @@ Type TVTProgrammeDataFlag {_exposeToLua}
 	Function GetAtIndex:int(index:int = 0)
 		if index <= 0 then return 0
 		return 2^(index-1)
-	End Function	
+	End Function
 
 
 	Function GetAsString:String(key:int = 0)
 		if key < 0 then return "none"
-		
+
 		Select key
 			case LIVE       return "live"
 			case ANIMATION  return "animation"
@@ -1287,7 +1287,7 @@ Type TVTProgrammeState {_exposeToLua}
 
 
 	Function GetByString:int(keyString:string = "")
-		Select keyString.toLower()	
+		Select keyString.toLower()
 			case "none"            return NONE
 			case "in_production"   return IN_PRODUCTION
 			case "in_cinema"       return IN_CINEMA
@@ -1296,7 +1296,7 @@ Type TVTProgrammeState {_exposeToLua}
 		End Select
 	End Function
 
-	
+
 	'returns a textual version of the id
 	Function GetAsString:string(key:int)
 		Select key
@@ -1329,7 +1329,7 @@ Type TVTProductionConceptFlag {_exposeToLua}
 	Function GetAtIndex:int(index:int = 0)
 		if index <= 0 then return 0
 		return 2^(index-1)
-	End Function	
+	End Function
 
 
 	Function GetAsString:String(key:int = 0)
@@ -1386,12 +1386,12 @@ Type TVTNewsFlag {_exposeToLua}
 	Function GetAtIndex:int(index:int = 0)
 		if index <= 0 then return 0
 		return 2^(index-1)
-	End Function	
+	End Function
 
 
 	Function GetAsString:String(key:int = 0)
 		if key < 0 then return "none"
-		
+
 		Select key
 			case SEND_IMMEDIATELY  return "send_immediately"
 			case UNIQUE_EVENT      return "unique_event"
@@ -1446,7 +1446,7 @@ Type TVTTargetGroup {_exposeToLua}
 	'returns an array of all hit indexes
 	Function GetIndexes:int[](key:int = 0)
 		if key < 0 then return [0]
-		
+
 		Select key
 			case CHILDREN    return [1]
 			case TEENAGERS   return [2]
@@ -1471,7 +1471,7 @@ Type TVTTargetGroup {_exposeToLua}
 				return result
 		End Select
 	End Function
-	
+
 
 	Function GetByString:int(keyString:string = "")
 		Select keyString.toLower()
@@ -1487,11 +1487,11 @@ Type TVTTargetGroup {_exposeToLua}
 			default            return ALL
 		End Select
 	End Function
-	
+
 
 	Function GetAsString:String(key:int = 0)
 		if key < 0 then return "all"
-		
+
 		Select key
 			case CHILDREN    return "children"
 			case TEENAGERS   return "teenagers"
@@ -1554,7 +1554,7 @@ Type TVTPressureGroup {_exposeToLua}
 	'returns an array of all hit indexes
 	Function GetIndexes:int[](key:int = 0)
 		if key < 0 then return [0]
-		
+
 		Select key
 			case SMOKERLOBBY  return [1]
 			case ANTISMOKER   return [2]
@@ -1576,7 +1576,7 @@ Type TVTPressureGroup {_exposeToLua}
 				return result
 		End Select
 	End Function
-	
+
 
 	Function GetAsString:String(key:int = 0)
 		Select key
@@ -1632,7 +1632,7 @@ Type TVTPersonGender {_exposeToLua}
 		return index
 	End Function
 
-	
+
 	Function GetAsString:String(key:int = 0)
 		Select key
 			case MALE    return "male"
@@ -1735,7 +1735,47 @@ Type TVTProgrammePersonJob {_exposeToLua}
 			case "reporter"        return REPORTER
 			default                return UNKNOWN
 		End Select
-	End Function	
+	End Function
+
+
+	Function GetJobImportanceMod:Float(key:int)
+		Select key
+			Case UNKNOWN
+				return 0.1
+			Case DIRECTOR
+				return 0.8
+			Case ACTOR
+				return 1.0
+			Case SCRIPTWRITER
+				return 0.4
+			Case HOST
+				return 1.0
+			Case MUSICIAN
+				return 0.4
+			Case SUPPORTINGACTOR
+				return 0.3
+			Case GUEST
+				return 0.3
+			Case REPORTER
+				return 0.8
+			Default
+				local result:float
+				local index:int = 0
+				local count:int = 0
+				'do NOT start with 0 ("unknown")
+				For local i:int = 1 to count
+					index = GetAtIndex(i)
+					if key & index
+						result :+ GetJobImportanceMod(index)
+						count :+ 1
+					endif
+				Next
+				if count > 0
+					result :/ count
+				endif
+				return result
+		End Select
+	End Function
 End Type
 
 
@@ -1754,7 +1794,7 @@ Type TVTAwardType {_exposeToLua}
 		return index
 	End Function
 
-	
+
 	Function GetAsString:String(key:int = 0)
 		Select key
 			case NEWS              return "news"

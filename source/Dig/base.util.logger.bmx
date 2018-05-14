@@ -39,13 +39,14 @@ Import BRL.LinkedList
 Import BRL.Retro		'for lset()
 Import BRL.System		'for currenttime()
 ?android
-'needed to be able to retrieve android's internal storage path 
+'needed to be able to retrieve android's internal storage path
 Import Sdl.sdl
 ?
 Import "base.util.string.bmx"
 
 'create a basic log file
 Global AppLog:TLogFile = TLogFile.Create("App Log v1.0", "log.app.txt")
+Global AppErrorLog:TLogFile = TLogFile.Create("App Log v1.0", "log.app.error.txt")
 
 Const LOG_ERROR:int		= 1
 Const LOG_WARNING:int	= 2
@@ -160,6 +161,10 @@ Type TLogger
 			endif
 
 			AppLog.AddLog("[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message)
+			'store errors in an extra file
+			if debugType & LOG_ERROR
+				AppErrorLog.AddLog("[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message)
+			endif
 		endif
 
 		if doPrint
@@ -257,7 +262,7 @@ Type TLogFile
 			if size = -1
 				if not CreateFile(filename)
 					Throw "Cannot create logfile: "+filename
-				endif 
+				endif
 			endif
 			local file:TStream = OpenFile(filename)
 

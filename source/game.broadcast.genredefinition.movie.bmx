@@ -103,7 +103,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		return "movie-genre-definition"
 	End Method
 
-	
+
 	Method InitBasic:TMovieGenreDefinition(genreId:int, data:TData)
 		if not data then data = new TData
 		Super.InitBasic(genreId, data)
@@ -133,7 +133,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 
 		castAttributes.Insert(jobID+"_"+attributeID, string(value))
 	End Method
-	
+
 
 	Method GetCastAttribute:Float(jobID:int, attributeID:int)
 		if not castAttributes then return 0.0
@@ -142,14 +142,14 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 
 		return float(string(value))
 	End Method
-	
+
 
 	Method SetFocusPointPriority(focusPointID:int, value:float)
 		if not focusPointPriorities then focusPointPriorities = CreateMap()
 		focusPointPriorities.Insert(string(focusPointID), string(value))
 	End Method
 
-	
+
 	Method GetFocusPointPriority:Float(focusPointID:int )
 		if not focusPointPriorities then return 1.0
 		local value:object = focusPointPriorities.ValueForKey(string(focusPointID))
@@ -158,7 +158,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		return float(string(value))
 	End Method
 
-	
+
 	Method GetPopularity:TGenrePopularity()
 		return TGenrePopularity(Super.GetPopularity())
 	End Method
@@ -167,7 +167,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase)
 		'default audience flow mod
 		local modValue:Float = 0.35
-		
+
 		Local followerReferenceKey:String = String.FromInt(followerDefinition.referenceId)
 		If referenceId = followerDefinition.referenceId Then 'Perfekter match!
 			modValue = 1.0
@@ -215,9 +215,9 @@ Type TMovieFlagDefinition Extends TMovieGenreDefinition
 
 
 	Method InitBasic:TMovieFlagDefinition(flagID:int, data:TData)
-		'init with flagID so popularity (created there) gets this ID too 
+		'init with flagID so popularity (created there) gets this ID too
 		Super.InitBasic(flagID, data)
-		
+
 		return self
 	End Method
 
@@ -225,5 +225,85 @@ Type TMovieFlagDefinition Extends TMovieGenreDefinition
 	Method GetPopularity:TGenrePopularity()
 		return TGenrePopularity(Super.GetPopularity())
 	End Method
-	
+
 End Type
+
+
+
+
+'=== POPULARITY MODIFIERS ===
+
+Type TGameModifierPopularity_ModifyMovieGenrePopularity extends TGameModifierBase
+	Field genre:int
+	'value is divided by 100 - so 1000 becomes 10, 50 becomes 0.5)
+	Field valueMin:Float = 0
+	Field valueMax:Float = 0
+	Field modifyProbability:int = 100
+
+
+	'override to create this type instead of the generic one
+	Function CreateNewInstance:TGameModifierPopularity_ModifyMovieGenrePopularity()
+		return new TGameModifierPopularity_ModifyMovieGenrePopularity
+	End Function
+
+
+	Method Copy:TGameModifierPopularity_ModifyMovieGenrePopularity()
+		local clone:TGameModifierPopularity_ModifyMovieGenrePopularity = new TGameModifierPopularity_ModifyMovieGenrePopularity
+		clone.CopyBaseFrom(self)
+		clone.genre = self.genre
+		clone.valueMin = self.valueMin
+		clone.valueMax = self.valueMax
+		clone.modifyProbability = self.modifyProbability
+		return clone
+	End Method
+
+
+	Method Init:TGameModifierPopularity_ModifyMovieGenrePopularity(data:TData, extra:TData=null)
+		if not data then return null
+
+		'local source:TNewsEvent = TNewsEvent(data.get("source"))
+		local index:string = ""
+		if extra and extra.GetInt("childIndex") > 0 then index = extra.GetInt("childIndex")
+		genre = data.GetInt("genre"+index, data.GetInt("genre", 0))
+		if genre = 0
+			TLogger.Log("TGameModifierPopularity_ModifyMovieGenrePopularity", "Init() failed - no genre (>0) given.", LOG_ERROR)
+			return Null
+		endif
+
+		valueMin = data.GetFloat("valueMin"+index, 0.0)
+		valueMax = data.GetFloat("valueMax"+index, 0.0)
+		modifyProbability = data.GetInt("probability"+index, 100)
+
+		return self
+	End Method
+
+
+	Method ToString:string()
+		local name:string = data.GetString("name", "default")
+		return "TGameModifierPopularity_ModifyMovieGenrePopularity ("+name+")"
+	End Method
+
+
+	'override to trigger a specific news
+	Method RunFunc:int(params:TData)
+		'skip if probability is missed
+		if modifyProbability <> 100 and RandRange(0, 100) > modifyProbability then return False
+
+		local popularity:TPopularity = GetMovieGenreDefinition(genre).GetPopularity()
+		if not popularity
+			TLogger.Log("TGameModifierPopularity_ModifyMovieGenrePopularity", "cannot find popularity of movie genre: "+genre, LOG_ERROR)
+			return false
+		endif
+		local changeBy:Float = RandRange(valueMin*1000, valueMax*1000)/1000.0
+		'does adjust the "trend" (growth direction of popularity) not
+		'popularity directly
+		popularity.ChangeTrend(changeBy)
+		popularity.SetPopularity(popularity.popularity + changeBy)
+		'print "TGameModifierPopularity_ModifyMovieGenrePopularity: changed trend for genre ~q"+genre+"~q by "+changeBy+" to " + popularity.Popularity+"."
+
+		return True
+	End Method
+End Type
+
+
+GetGameModifierManager().RegisterCreateFunction("ModifyMovieGenrePopularity", TGameModifierPopularity_ModifyMovieGenrePopularity.CreateNewInstance)
