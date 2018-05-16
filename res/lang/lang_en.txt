@@ -202,6 +202,7 @@ TV_OFF					= The TV is off!
 TV_TURN_IT_ON			= You should turn it on again ;D
 AUDIENCE_RATING			= Audience rating
 AUDIENCE_RATINGS		= Audience ratings
+POTENTIAL_AUDIENCE      = potential audience
 POTENTIAL_AUDIENCE_NUMBER	= potential audience
 AUDIENCE_NUMBER				= audience
 MIN_AUDIENCE			= Min. audience

@@ -126,7 +126,7 @@ Type TInGameInterface
 
 		'show chat if an chat entry was added
 		EventManager.registerListenerFunction( "chat.onAddEntry", onIngameChatAddEntry )
-		
+
 
 		Return self
 	End Method
@@ -145,7 +145,7 @@ Type TInGameInterface
 		EndIf
 	End Function
 
-	
+
 	Method Update(deltaTime:Float=1.0)
 		local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan(ShowChannel)
 
@@ -169,7 +169,7 @@ Type TInGameInterface
 				If THelper.MouseIn( 75 + i * 33, 171 + 383 + 16 - i*4, 33, 25)
 					'hover state
 					GetGameBase().cursorstate = 1
-					
+
 					If MOUSEMANAGER.IsClicked(1)
 						ShowChannel = i
 						BottomImgDirty = True
@@ -182,7 +182,7 @@ Type TInGameInterface
 			'reset current programme sprites
 			CurrentProgrammeOverlay = Null
 			CurrentProgramme = Null
-			
+
 			if programmePlan	'similar to "ShowChannel<>0"
 				If GetWorldTime().GetDayMinute() >= 55
 					Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
@@ -281,7 +281,7 @@ Type TInGameInterface
 									if TAdvertisement(obj).contract.GetLimitedToTargetGroup() > 0
 										minAudienceText :+" " + TAdvertisement(obj).contract.GetLimitedToTargetGroupString()
 									endif
-									
+
 									'check if the ad passes all checks for the current broadcast
 									local passingRequirements:String = TAdvertisement(obj).IsPassingRequirements(GetBroadcastManager().GetAudienceResult(programmePlan.owner))
 									if passingRequirements = "OK"
@@ -296,7 +296,7 @@ Type TInGameInterface
 												minAudienceText = "|color=200,100,100|" + minAudienceText + "|/color|"
 										End Select
 									endif
-									
+
 									content :+ "~n ~n|b||color=100,150,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n" + "|b|"+obj.GetTitle()+"|/b|~n" + GetLocale("MIN_AUDIENCE") +": "+ minAudienceText
 								EndIf
 							ElseIf TProgramme(obj)
@@ -316,7 +316,7 @@ Type TInGameInterface
 								upcomingProgHour = GetWorldTime().GetDayHour(nextHourTime)
 							endif
 							obj = programmePlan.GetProgramme(upcomingProgDay, upcomingProgHour)
-							
+
 							If TProgramme(obj)
 								content :+ "~n ~n|b|"+getLocale("NEXT_PROGRAMME")+":|/b|~n"
 								If TProgramme(obj) And (TProgramme(obj).IsSeriesEpisode() or TProgramme(obj).IsCollectionElement()) And TProgramme(obj).licence.parentLicenceGUID
@@ -431,7 +431,7 @@ Type TInGameInterface
 			If THelper.MouseIn(309,577,45,23)
 				hoveredMenuButton = 1
 				hoveredMenuButtonPos.SetXY(309,578)
-				
+
 				MenuToolTip.area.position.SetX(364)
 				MenuToolTip.SetTitle(getLocale("MENU"))
 				MenuToolTip.SetContent(getLocale("OPEN_MENU"))
@@ -605,7 +605,7 @@ Type TInGameInterface
 			return result
 		endif
 		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Children) > 0)
-		
+
 			'maybe sent to bed ? :D
 			'If GetWorldTime().GetDayHour() >= 5 and GetWorldTime().GetDayHour() < 22 then 'manuel: muss im Feedback-Code geprüft werden.
 			result :+ ["girl"]
@@ -677,7 +677,7 @@ Type TInGameInterface
 				SetColor 125,125,125
 				DrawRect(45,405, 220, 170)
 				SetColor 255,255,255
-			
+
 				SetAlpha NoiseAlpha
 				If noiseSprite Then noiseSprite.DrawClipped(new TRectangle.Init(45, 405, 220,170), new TVec2D.Init(noiseDisplace.GetX(), noiseDisplace.GetY()) )
 				SetAlpha 1.0
@@ -751,7 +751,7 @@ Type TInGameInterface
 						if member = "unemployed" or member = "unemployed.bored" then continue
 						'only X slots available
 						if currentSlot >= figureSlots.length then continue
-						
+
 						GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-176)
 						currentslot:+1 'occupy a slot
 					Next
@@ -762,7 +762,7 @@ Type TInGameInterface
 
 
 			'=== INTERFACE TEXTS ===
-			
+
 			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerBase().getMoneyFormatted(), 357, 412 +4, 130, 27, ALIGN_CENTER_TOP, TColor.Create(200,230,200), 2, 1, 0.5)
 
 			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerProgrammePlanCollection().Get(playerID).getFormattedAudience(), 357, 447+4, 130, 27, ALIGN_CENTER_TOP, TColor.Create(200,200,230), 2, 1, 0.5)
@@ -835,7 +835,7 @@ Type TInGameInterface
 			SetBlend LightBLEND
 			SetAlpha 0.5
 		endif
-		
+
 		Select hoveredMenuButton
 			case 1
 				GetSpriteFromRegistry("gfx_interface_button_settings").Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
@@ -870,14 +870,14 @@ Type TInGameInterface
 			arrowPos = 397
 			arrowDir = "down"
 		endif
-	
+
 		if THelper.MouseIn(540, arrowPos, 200, 20)
 			arrowMode = "active"
 		endif
 		if THelper.MouseIn(770, arrowPos, 20, 20)
 			lockMode = "active"
 		endif
-		
+
 		'arrows
 		GetSpriteFromRegistry("gfx_interface_ingamechat_arrow."+arrowDir+"."+arrowMode).Draw(540, arrowPos)
 		GetSpriteFromRegistry("gfx_interface_ingamechat_arrow."+arrowDir+"."+arrowMode).Draw(720, arrowPos)
@@ -885,7 +885,7 @@ Type TInGameInterface
 		GetSpriteFromRegistry("gfx_interface_ingamechat_key."+lockMode).Draw(770, arrowPos)
 		'===
 
-		
+
 	    GUIManager.Draw(ingameState)
 
 		For local tip:TTooltip = eachin tooltips
@@ -980,8 +980,8 @@ Type TTooltipAudience Extends TTooltip
 
 		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).reach
 		Local totalReach:Int = GetStationMapCollection().population
-		result:+ Usefont.GetHeight(GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)")
 		result:+ Usefont.GetHeight(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")")
+		result:+ Usefont.GetHeight(GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)")
 		result:+ 1*lineHeight
 
 		If showDetails
@@ -1021,18 +1021,27 @@ Type TTooltipAudience Extends TTooltip
 		Local lineIconDY:Int = Floor(0.5 * (lineIconHeight - lineHeight))
 		Local lineTextDY:Int = lineIconDY + 2
 
-		'draw overview text
-		lineText = GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)"
-		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
-		lineY :+ 1 * Self.Usefont.GetHeight(lineText)
-
 		'show how many people your stations cover (compared to country)
 		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).reach
 		Local totalReach:Int = GetStationMapCollection().population
 		lineText = GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")"
-
 		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
 		lineY :+ Self.Usefont.GetHeight(lineText)
+
+		'draw overview text
+		lineText = GetLocale("POTENTIAL_AUDIENCE") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)"
+		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
+		lineY :+ 1 * Self.Usefont.GetHeight(lineText)
+
+		rem
+		local receptionAntenna:string = "Antenna " + MathHelper.NumberToString(100.0 * GameConfig.GetModifier("StationMap.Reception.AntennaMod", 1.0), 2, True)+"%"
+		local receptionCableNetwork:string = "CableNetwork " + MathHelper.NumberToString(100.0 * GameConfig.GetModifier("StationMap.Reception.CableNetworkMod", 1.0), 2, True)+"%"
+		local receptionSatellite:string = "Satellite " + MathHelper.NumberToString(100.0 * GameConfig.GetModifier("StationMap.Reception.SatelliteMod", 1.0), 2, True)+"%"
+		lineText = GetLocale("RECEPTION") + ": " + receptionAntenna + " " + receptionCableNetwork + " " + receptionSatellite
+		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
+		lineY :+ Self.Usefont.GetHeight(lineText)
+		endrem
+
 
 		'add 1 line more - as spacing to details
 		lineY :+ lineHeight
@@ -1048,7 +1057,7 @@ Type TTooltipAudience Extends TTooltip
 			lineY :+ lineHeight
 		endif
 
-'print audienceResult.ToString()	
+'print audienceResult.ToString()
 		If Not showDetails
 			Self.Usefont.draw(GetLocale("HINT_PRESSING_ALT_WILL_SHOW_DETAILS") , lineX, lineY, TColor.CreateGrey(150))
 		Else
@@ -1070,7 +1079,7 @@ Type TTooltipAudience Extends TTooltip
 '					percents[i-1] = MathHelper.NumberToString(genderlessQuote.GetValue(targetGroupID) * 100, 2)
 				endif
 			Next
-			
+
 			Local colorLight:TColor = TColor.CreateGrey(240)
 			Local colorDark:TColor = TColor.CreateGrey(230)
 			Local colorTextLight:TColor = colorLight.copy().AdjustFactor(-110)
