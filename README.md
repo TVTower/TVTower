@@ -33,7 +33,7 @@ Should run without further requirements
 
 
 ####Für weitere Details | For further details:
-- Homepage (+Downloads Linux/Mac/Linux): http://www.tvtower.org
+- Homepage (+Downloads Linux/Mac/Windows): http://www.tvtower.org
 - Forum: http://www.gamezworld.de/phpforum
 
 ![Screenshot](https://cloud.githubusercontent.com/assets/2625226/5182430/b714aa28-74a2-11e4-9409-e99083dc677e.png)
