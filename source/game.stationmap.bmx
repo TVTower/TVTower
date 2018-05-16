@@ -4579,9 +4579,9 @@ Type TStationMapSection
 '			print "CABLE share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
 		EndIf
 
-		'adjust by current receiver share
-		Return result.Copy().MultiplyFactor( Float(GetStationMapCollection().GetCurrentPopulationCableShare()) )
-'		Return result
+		'disabled: GetCableNetworkAudienceSum() already contains the share multiplication)
+		'Return result.Copy().MultiplyFactor( Float(GetStationMapCollection().GetCurrentPopulationCableShare()) )
+		Return result
 	End Method
 
 
@@ -4858,7 +4858,7 @@ endrem
 	End Method
 
 
-	'summary: returns maximum audience a player reaches with a cablenetwork
+	'summary: returns maximum audience a player reach with a cablenetwork
 	Method GetCableNetworkAudienceSum:Int()
 		if populationCableshare < 0
 			return population * GetStationMapCollection().GetCurrentPopulationCableShare()
@@ -4868,7 +4868,7 @@ endrem
 	End Method
 
 
-	'summary: returns maximum audience a player reaches with a cablenetwork
+	'summary: returns maximum audience a player can reach with satellites
 	Method GetSatelliteAudienceSum:Int()
 		if populationSatelliteShare < 0
 			return population * GetStationMapCollection().GetCurrentPopulationSatelliteShare()
@@ -5268,7 +5268,6 @@ Type TStationMap_CableNetwork extends TStationMap_BroadcastProvider
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
 			result = GetReachMax()
-
 			local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
 			if not section then return 0
 
