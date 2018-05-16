@@ -4634,6 +4634,9 @@ Type TStationMapSection
 	End Method
 
 
+	'channel numbers: channels we are interested in
+	'without channel numbers: channels not allowed at the checked points!
+	'("missing channel numbers" is different to "without channel numbers" !)
 	Method _CalculateShare:TVec3D(shareMap:TMap, channelNumbers:int[], withoutChannelNumbers:int[]=Null)
 		Local result:TVec3D = New TVec3D.Init(0,0,0.0)
 		Local share:Int	= 0

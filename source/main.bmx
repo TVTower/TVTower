@@ -1920,6 +1920,8 @@ Type TGameState
 	Method Initialize:Int()
 		TLogger.Log("TGameState.Initialize()", "Reinitialize all game objects", LOG_DEBUG)
 
+		GameConfig.Initialize()
+
 		'reset player colors
 		TPlayerColor.Initialize()
 		'initialize times before other things, as they might rely
@@ -5766,6 +5768,8 @@ Type GameEvents
 		Local day:Int = GetWorldTime().GetDay(time)
 		Local hour:Int = GetWorldTime().GetHour(time)
 
+		'=== UPDATE WORLD / WEATHER AUDIENCE MODIFIERS ===
+		GetGame().UpdateBaseGameModifiers()
 
 
 		'=== UPDATE AWARDS / SAMMYS ===

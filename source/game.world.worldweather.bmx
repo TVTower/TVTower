@@ -19,26 +19,26 @@ Type TWorldWeather
 	'=== PRESSURE THRESHOLDS ===
 	'all values must be even numbers.
 	const PRESSURE_THRESHOLD_SEVERESTORM:int= -28
-	const PRESSURE_THRESHOLD_STORM:int		= -24    
-	const PRESSURE_THRESHOLD_HEAVYRAIN:int	= -20    
-	const PRESSURE_THRESHOLD_RAIN:int		= -16    
-	const PRESSURE_THRESHOLD_LIGHTRAIN:int	= -12  
-	const PRESSURE_THRESHOLD_HEAVYCLOUD:int	= -10   
-	const PRESSURE_THRESHOLD_CLOUDY:int		= -8    
-	const PRESSURE_THRESHOLD_FINE:int		= -6    
+	const PRESSURE_THRESHOLD_STORM:int		= -24
+	const PRESSURE_THRESHOLD_HEAVYRAIN:int	= -20
+	const PRESSURE_THRESHOLD_RAIN:int		= -16
+	const PRESSURE_THRESHOLD_LIGHTRAIN:int	= -12
+	const PRESSURE_THRESHOLD_HEAVYCLOUD:int	= -10
+	const PRESSURE_THRESHOLD_CLOUDY:int		= -8
+	const PRESSURE_THRESHOLD_FINE:int		= -6
 	'must be equal to PRESSURE_THRESHOLD_FINE + 8 * positive integer
 	const PRESSURE_THRESHOLD_CLEAR:int		= 10
 
 	'=== WEATHER CONSTANTS ===
-	const WEATHER_HURRICANE:int		= 0    
-	const WEATHER_SEVERESTORM:int	= 1    
-	const WEATHER_STORM:int			= 2    
-	const WEATHER_HEAVYRAIN:int		= 3    
-	const WEATHER_RAIN:int			= 4    
-	const WEATHER_LIGHTRAIN:int		= 5    
-	const WEATHER_HEAVYCLOUD:int	= 6    
-	const WEATHER_CLOUDY:int		= 7    
-	const WEATHER_FINE:int			= 8    
+	const WEATHER_HURRICANE:int		= 0
+	const WEATHER_SEVERESTORM:int	= 1
+	const WEATHER_STORM:int			= 2
+	const WEATHER_HEAVYRAIN:int		= 3
+	const WEATHER_RAIN:int			= 4
+	const WEATHER_LIGHTRAIN:int		= 5
+	const WEATHER_HEAVYCLOUD:int	= 6
+	const WEATHER_CLOUDY:int		= 7
+	const WEATHER_FINE:int			= 8
 	const WEATHER_CLEAR:int			= 9
 
 
@@ -47,7 +47,7 @@ Type TWorldWeather
 		upcomingWeather.Clear()
 		nextUpdateTime = -1
 		lastUpdateTime = -1
-		
+
 		currentWeather = new TWorldWeatherEntry.Init(pressure, temperature, windVelocity, GetWorldTime().GetTimeGone(), new TWorldWeatherConfiguration)
 
 		SetWeatherInterval(weatherInterval)
@@ -78,7 +78,7 @@ Type TWorldWeather
 		return currentWeather.GetTemperature()
 	End Method
 
-	
+
 	Method GetWindSpeed:Float()
 		return currentWeather.GetWindSpeed()
 	End Method
@@ -108,7 +108,7 @@ Type TWorldWeather
 		return currentWeather.GetMaximumLight()
     End Method
 
-   
+
 	Method SetPressure(pressure:Float)
 		currentWeather.SetPressure(pressure)
 		'remove previously predicted weather
@@ -121,7 +121,7 @@ Type TWorldWeather
 		'remove previously predicted weather
 		ResetUpcomingWeather()
 	End Method
-	
+
 
 	'returns whether the sun is visible
     Method IsSunVisible:int()
@@ -176,7 +176,7 @@ Type TWorldWeather
 			if weatherTime >= 0 then weatherTime :+ weatherInterval
 			'create a new one based on the baseWeather
 			baseWeather = TWorldWeatherEntry.Create(baseWeather, weatherTime)
-			
+
 			'add it to the list
 			upcomingWeather.AddLast(baseWeather)
 		Next
@@ -188,7 +188,7 @@ Type TWorldWeather
 		'just rely on the world time
 		return nextUpdateTime < GetWorldTime().GetTimeGone()
 	End Method
-	
+
 
     Method Update:int()
 		'check if there is already weather precalculated
@@ -262,7 +262,7 @@ Type TWorldWeatherEntry
 		else
 			newWeather.Init(0, 18.0, 0, time, new TWorldWeatherConfiguration)
 		endif
-		
+
 		newWeather.Update()
 		return newWeather
 	End Function
@@ -298,7 +298,7 @@ Type TWorldWeatherEntry
 		local temperatureChange:float = 0.0
 		'high noon + 1 the max temperature will be reached (max increase)
 		local maxTempHour:int = GetWorldTime().GetDayHour(GetWorldTime().GetSunrise(_time) + 1.0*GetWorldTime().GetDayLightLength(_time) )
-'print maxTempHour+"  " + (GetWorldTime().GetDayLightLength(_time)/60)+"min"		
+'print maxTempHour+"  " + (GetWorldTime().GetDayLightLength(_time)/60)+"min"
 		'to make it an "increasing" or "decreasing" tendence we use the
 		'distance to half a dayLightLength (summer 18/2=9 hours)
 		'7:00 = "2/9"   0:00 = "-4/9"   15:00 = "8/9"
@@ -340,7 +340,7 @@ Type TWorldWeatherEntry
 		if newTemperature <> GetTemperature() + temperatureChange
 			newTemperature :+ randRange(int(-3*_config.increment), int(3*_config.increment))
 		endif
-		
+
 		if temperatureChange <> 0
 			SetTemperature(newTemperature)
 		endif
@@ -381,7 +381,7 @@ Type TWorldWeatherEntry
 	Method GetTemperature:Float()
 		return _temperature
 	End Method
-	
+
 
 	Method SetTemperature(temperature:Float)
 		'rounded pressure must be an int-multiple of 1/8
@@ -394,7 +394,7 @@ Type TWorldWeatherEntry
 		_temperature = temperature
 	End Method
 
-	
+
 	Method GetWindSpeed:Float()
 		return abs(GetWindVelocity())
 	End Method
@@ -440,7 +440,7 @@ Type TWorldWeatherEntry
 		else
 			result = TWorldWeather.WEATHER_HURRICANE
 		endif
-		
+
 		return result
 	End Method
 
@@ -494,7 +494,7 @@ Type TWorldWeatherEntry
 			case TWorldWeather.WEATHER_HURRICANE    return 6
 			Default                                 return 15
 		End Select
-    End Method    
+    End Method
 
 
 	'returns whether the sun is visible
@@ -513,6 +513,15 @@ Type TWorldWeatherEntry
 			case TWorldWeather.WEATHER_STORM        return 4
 			case TWorldWeather.WEATHER_SEVERESTORM  return 5
 		End Select
+		return 0
+	End Method
+
+
+	Method IsStorming:int()
+		Select GetWorldWeather()
+			case TWorldWeather.WEATHER_STORM        return 1
+			case TWorldWeather.WEATHER_SEVERESTORM  return 2
+		EndSelect
 		return 0
 	End Method
 

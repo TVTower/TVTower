@@ -13,8 +13,18 @@ Type TGameConfig {_exposeToLua}
 	Field KeepBankruptPlayerFinances:int = True
 	Field dateFormat:string = "d.m.y"
 	Field devGUID:string
-	Field _values:TData
+'	Field _values:TData
 	Field _modifiers:TData
+
+
+	Method Initialize:int()
+		_modifiers = null
+		observerMode = False
+		observedObject = null
+		isChristmasTime = False
+		KeepBankruptPlayerFinances = True
+	End Method
+
 
 	Method IsObserved:int(obj:object)
 		if not observerMode then return False
@@ -35,12 +45,12 @@ Type TGameConfig {_exposeToLua}
 		return True
 	End Method
 
-
+rem
 	Method GetValues:TData()
 		if not _values then _values = new TData
 		return _values
 	End Method
-
+endrem
 
 	Method GetModifier:Float(key:string, defaultValue:Float=1.0)
 		if not _modifiers then return defaultValue

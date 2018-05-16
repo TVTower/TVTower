@@ -4,8 +4,8 @@ Rem
 		TGameModifierBaseCreator
 		TGameModifierGroup
 		TGameModifierCondition
-		TGameModifierCondition_TimeLimited extends TGameModifierCondition
-EndRem	
+		TGameModifierCondition_TimeLimit extends TGameModifierCondition
+EndRem
 SuperStrict
 Import "Dig/base.util.data.bmx"
 Import "Dig/base.util.mersenne.bmx"
@@ -112,7 +112,7 @@ Type TGameModifierManager
 	Function GetFunction:TGameModifierFunctionWrapper(key:string)
 		return TGameModifierFunctionWrapper(functions.ValueForKey(key.ToLower()))
 	End Function
-	
+
 
 	Function GetRunFunction:TGameModifierFunctionWrapper(key:string)
 		return TGameModifierFunctionWrapper(functions.ValueForKey("run_"+key.ToLower()))
@@ -221,10 +221,10 @@ Type TGameModifierBase
 	End Function
 
 
-	Method Init:TGameModifierBase(data:TData, extra:TData=null)	
+	Method Init:TGameModifierBase(data:TData, extra:TData=null)
 		'by default ignore "children"
 		if extra and extra.GetInt("childIndex") > 0 then return null
-		
+
 		return self
 	End Method
 
@@ -338,7 +338,7 @@ Type TGameModifierBase
 
 
 	Method SetDelayedExecutionTime:int(delayTime:Long)
-		if delayTime > 0 
+		if delayTime > 0
 			SetFlag(FLAG_DELAYED_EXECUTION, True)
 			GetData().AddNumber("delayExecutionUntilTime", delayTime)
 		else
@@ -393,8 +393,8 @@ Type TGameModifierBase
 		endif
 
 		'if HasDelayedExecution() then print "effect running now"
-			
-	
+
+
 		local conditionsOK:int = ConditionsFulfilled()
 		'run if not done yet and needed
 		if not HasFlag(FLAG_ACTIVATED)
@@ -459,7 +459,7 @@ Type TGameModifierBase
 
 		'mark as run
 		SetFlag(FLAG_ACTIVATED, True)
-		
+
 		return result
 	End Method
 
@@ -468,7 +468,7 @@ Type TGameModifierBase
 '		print "UndoFunc: " + ToString()
 		return True
 	End Method
-	
+
 
 	'override this function in custom types
 	Method RunFunc:int(params:TData)
@@ -477,7 +477,7 @@ Type TGameModifierBase
 		if params
 			print " params: "+params.ToString()
 		endif
-	
+
 		return True
 	End Method
 End Type
@@ -485,6 +485,9 @@ End Type
 
 
 
+'modifier to modify GameConfig.data-values
+'(this way other functions can access the information without needing
+' knowledge about the modifiers)
 Type TGameModifier_GameConfig extends TGameModifierBase
 	Function CreateNewInstance:TGameModifier_GameConfig()
 		return new TGameModifier_GameConfig
@@ -493,9 +496,9 @@ Type TGameModifier_GameConfig extends TGameModifierBase
 
 	Method Init:TGameModifier_GameConfig(data:TData, extra:TData=null)
 		if not super.Init(data, extra) then return null
-		
+
 		if data then self.data = data.copy()
-		
+
 		return self
 	End Method
 
@@ -520,10 +523,10 @@ Type TGameModifier_GameConfig extends TGameModifierBase
 		GameConfig.SetModifier(modKey, value - valueChange)
 
 		'print "TGameModifier_GameConfig: restored ~q"+modKey+"~q. value "+value+" => "+GameConfig.GetModifier(modKey)
-	
+
 		return True
 	End Method
-	
+
 
 	'override this function in custom types
 	Method RunFunc:int(params:TData)
@@ -549,7 +552,7 @@ Type TGameModifier_GameConfig extends TGameModifierBase
 		endif
 
 		'print "TGameModifier_GameConfig: modified ~q"+modKey+"~q. value "+valueBackup+" => "+GameConfig.GetModifier(modKey)
-	
+
 		return True
 	End Method
 End Type
@@ -580,8 +583,8 @@ Type TGameModifierGroup
 
 		return c
 	End Method
-	
-	
+
+
 	Method GetList:TList(trigger:string)
 		if not entries then return Null
 		return TList(entries.ValueForKey(trigger.ToLower()))
@@ -606,18 +609,18 @@ Type TGameModifierGroup
 		return emptyLists.Length
 	End Method
 
-	
+
 	'checks if an certain modifier type is existent
 	Method HasEntryWithModifierType:int(trigger:string, modifierType:int) {_exposeToLua}
 		local list:TList = GetList(trigger)
 		if not list then return false
-		
+
 		For local modifier:TGameModifierBase = eachin list
 			if modifier.HasModifierType(modifierType) then return True
 		Next
 		return False
 	End Method
-	
+
 
 	'checks if an effect was already added before
 	Method HasEntry:int(trigger:string, entry:TGameModifierBase)
@@ -645,7 +648,7 @@ Type TGameModifierGroup
 		endif
 
 		list.AddLast(entry)
-		
+
 		return True
 	End Method
 
@@ -687,7 +690,7 @@ Type TGameModifierGroup
 	Method Update:int(trigger:string, params:TData)
 		local l:TList = GetList(trigger)
 		if not l then return 0
-		
+
 		For local modifier:TGameModifierBase = eachin l
 			modifier.Update(params)
 		Next
@@ -699,7 +702,7 @@ Type TGameModifierGroup
 	Method Run:int(trigger:string, params:TData)
 		local l:TList = GetList(trigger)
 		if not l then return 0
-		
+
 		For local modifier:TGameModifierBase = eachin l
 			modifier.Run(params)
 		Next
@@ -749,7 +752,7 @@ Type TGameModifierChoice extends TGameModifierBase
 			self.modifiers :+ [m.Copy()]
 		Next
 		return self
-	End Method 
+	End Method
 
 
 	Method Init:TGameModifierChoice(data:TData, extra:TData=null)
@@ -764,11 +767,11 @@ Type TGameModifierChoice extends TGameModifierBase
 
 		return self
 	End Method
-	
+
 
 	Method LoadChoices:int(data:TData)
 		'load children
-		local childIndex:int = 0 
+		local childIndex:int = 0
 		local child:TGameModifierBase
 		local extra:TData = new TData
 		Repeat
@@ -860,7 +863,7 @@ Type TGameModifierCondition_TimeLimit extends TGameModifierCondition
 		clone.timeDuration = self.timeDuration
 
 		return clone
-	End Method 
+	End Method
 
 
 	Method SetTimeEnd(time:Long)

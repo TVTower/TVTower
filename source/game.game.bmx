@@ -1794,6 +1794,127 @@ endrem
 	End Method
 
 
+	Method CalculateAudienceWeatherMod:Float()
+		'skip redirection over GetGameModiferManager() if possible
+		'(eg. if we just want to manipulate the value without time-
+		' constraints)
+
+		local weather:TWorldWeatherEntry = GetWorld().Weather.GetCurrentWeather()
+		local hour:int = GetWorldTime().GetHour()
+
+
+		'WEATHER
+		'TODO: country/map dependend ("no" snow in Africa ;-))
+		'      maybe add "minTemp" and "maxTemp" so we know if it is "cold"
+		'      or rather "warm", etc.
+		local weatherMod:Float = 1.0
+		'up to 10% change by temperature
+		'hot temperatures make people go out (<=20°C = 0% change, >=40°C = 100%)
+		weatherMod :- 0.1 * 0.05*MathHelper.Clamp(weather.GetTemperature()-20, 0, 20)
+		'cold temperatures make people stay at home (<=-20°C = 100% change, >=5°C = 0%)
+		weatherMod :+ 0.1 * 0.04*Abs(MathHelper.Clamp(weather.GetTemperature()-5, -25, 0))
+		'winds make people stay at home (speeds from 0-4), ignore 0-1
+		weatherMod :+ 0.05 * 0.25*Abs(MathHelper.Clamp(weather.GetWindSpeed()-1, 0, 4))
+
+
+		'rain makes people stay at home (rain levels = 0-3 = 0-100%)
+		'levels 4 and 5 are "storming"
+		weatherMod :+ 0.1 * 0.33*weather.IsRaining()
+
+		'===
+		'current weatherMod ranges:
+		'0.9 - 1.15
+
+
+		'during night weather does nearly not influence people (they do
+		'not go out ...)
+		'TODO: weekends + teenagers
+		local weatherModDayTimeWeighting:Float = 1.0
+		if hour >= 23 or hour <= 8
+			weatherModDayTimeWeighting = 0.25
+		elseif hour >= 22 or hour <= 9
+			weatherModDayTimeWeighting = 0.6
+		elseif hour >= 21 or hour <= 10
+			weatherModDayTimeWeighting = 0.85
+		endif
+
+		weatherMod :* weatherModDayTimeWeighting + 1.0*(1.0-weatherModDayTimeWeighting)
+
+
+		'storm makes people stay at home AND POWER OFF electric devices
+		'(storm levels = 0-2 = 0-100%)
+		'attention: storming includes raining!
+		'people put off plugs regardless of day time - so modify
+		'after having done the weighting
+		weatherMod :- 0.1 * 0.50*weather.IsStorming()
+
+		return weatherMod
+	End Method
+
+
+	Method CalculateStationMapReceptionWeatherMod:Float(stationType:int)
+		'WEATHER-STATION-RECEPTION
+		'bad weather conditions might influence how good a reception type
+		'rain and storms make satellite/antenna signals weak
+		'clouds make satellite signals weak
+
+		local weather:TWorldWeatherEntry = GetWorld().Weather.GetCurrentWeather()
+		local weatherMod:Float = 1.0
+
+		Select stationType
+			case TVTStationType.ANTENNA, TVTStationType.SATELLITE_UPLINK
+				'storming = 0-2 / 0-100%
+				weatherMod :- 0.1 * 0.50*weather.IsStorming()
+
+				'rain makes reception worse (raining 0-5)
+				'-> 25*0.04 = 1.0 (0, 0.04, 0.16, 0.36,...)
+				weatherMod :- 0.15 * 0.04*(weather.IsRaining()^2)
+
+				'clouds make reception worse (okta 0-8)
+				weatherMod :- 0.1 * 0.125 * weather.GetCloudOkta()
+
+			case TVTStationType.CABLE_NETWORK_UPLINK
+				'no influence
+		End Select
+
+		'===
+		'current weatherMod ranges
+		'0.75 - 1.0
+
+		return weatherMod
+	End Method
+
+
+	Method CalculateStationMapAntennaReceptionWeatherMod:Float()
+		return CalculateStationMapReceptionWeatherMod(TVTStationType.ANTENNA)
+	End Method
+
+
+	Method CalculateStationMapCableNetworkReceptionWeatherMod:Float()
+		return CalculateStationMapReceptionWeatherMod(TVTStationType.CABLE_NETWORK_UPLINK)
+	End Method
+
+
+	Method CalculateStationMapSatelliteReceptionWeatherMod:Float()
+		return CalculateStationMapReceptionWeatherMod(TVTStationType.SATELLITE_UPLINK)
+	End Method
+
+
+	'update basic game modifiers
+	'basic modifiers are not modified by external code (use custom
+	'modifiers and keys for this stuff)
+	'- weather (without extras like tornado-news, ...)
+	Method UpdateBaseGameModifiers()
+		'WEATHER-AUDIENCE
+		GameConfig.SetModifier("StationMap.Audience.WeatherMod", CalculateAudienceWeatherMod())
+
+		'WEATHER-STATION-RECEPTION
+		GameConfig.SetModifier("StationMap.Reception.AntennaMod", CalculateStationMapAntennaReceptionWeatherMod())
+		GameConfig.SetModifier("StationMap.Reception.CableNetworkMod", CalculateStationMapCableNetworkReceptionWeatherMod())
+		GameConfig.SetModifier("StationMap.Reception.SatelliteMod", CalculateStationMapSatelliteReceptionWeatherMod())
+	End Method
+
+
 	'Summary: Updates Time, Costs, States ...
 	Method Update(deltaTime:Float=1.0)
 		Local worldTime:TWorldTime = GetWorldTime()

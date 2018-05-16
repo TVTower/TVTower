@@ -134,7 +134,3 @@ Gebiet kein Image. Generell sollte es aber nicht auf den Faktor
 
 Ich kann gerne von "Zuschauerzahl" auf "relativer Marktanteil" umschwenken (also Marktanteil im eigenen Sendegebiet). Was sagen die anderen dazu?
 https://www.gamezworld.de/phpforum/viewtopic.php?pid=87777#p87777
-
-
-Erreichbare Zuschauerreichweite wetterabhaengig machen
--> bereits integrierte temporaere Modifikatoren nutzen
