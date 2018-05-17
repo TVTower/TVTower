@@ -125,7 +125,7 @@ Für jene, die lieber lesen, es auf dem aktuellsten Stand wissen wollen oder sch
 Um in die Programmplanung zu gelangen, müßt Ihr zuvor das Spielerbüro betreten. Linksklick auf die Tür oder im Fahrstuhlplaner auswählen und Eure Spielfigur wird sich dorthin bewegen.
 Im Büro steht ein Computer. Dieser mit links angeklickt, wird Euch den Programmplaner präsentieren.
 
-Ihr seht als erstes den aktuellen Tag. Da sind bei Spielbeginn schon die Eröffnungsshow und drei Werbungen platziert. Zudem wurde eine Werbung als Dauerwerbesendung abgelegt. 
+Ihr seht als erstes den aktuellen Tag. Da sind bei Spielbeginn schon die Eröffnungsshow und drei Werbungen platziert. Zudem wurde eine Werbung als Dauerwerbesendung abgelegt.
 Diese gibt es nur zu Spielbeginn und sollen Euch Zeit einräumen, das Spiel in Ruhe zu erkunden.
 
 Solange die Programm- oder Werbeblöcke grau eingefärbt sind, könnt Ihr sie auf andere Sendeplätze verschieben. Andere Einfärbungen deuten darauf hin, daß sie gerade gesendet werden oder wurden.
@@ -199,7 +199,7 @@ Wie die Filmeigenschaften zu bewerten sind, beschrieb STARSCrazy:
 Klickt auf einen Film, bewegt ihn über den Koffer und klickt erneut, dann landet er im Koffer.
 Das stellt nur eine Vorauswahl dar. Zwar wird Euch das Geld sofort abgezogen, wenn Ihr aber wiederum auf den Film klickt und ihn zum Regal bewegt, dort wieder klickt, landet er im Regal und das Geld ist wieder auf Eurem Konto.
 Verlaßt Ihr aber den Raum mit dem Film im Koffer, dann landet der Film unweigerlich im Archiv und steht automatisch für Eure Sendeplanung zur Verfügung.
-Sollte der Koffer mal voller Filme sein, so verlaßt den Raum, betretet ihn wieder und Ihr habt genug Platz zum Weitershoppen. 
+Sollte der Koffer mal voller Filme sein, so verlaßt den Raum, betretet ihn wieder und Ihr habt genug Platz zum Weitershoppen.
 Ganz nebenbei: Die vorher durch Euren Einkauf geschaffenen Lücken wurden in der Zwischenzeit vom Agenten aufgefüllt.
 
 
@@ -236,7 +236,7 @@ Bitte beschwert Euch nicht allzusehr, daß die Werbeprämien noch nicht so richt
 
 Im Nachrichtenstudio werden, wie nicht anders zu erwarten, die Nachrichten produziert.
 
-Ihr seht rechts die Sprecherkabine. Die soll einfach gut aussehen. 
+Ihr seht rechts die Sprecherkabine. Die soll einfach gut aussehen.
 Links sind fünf farbige Tafeln mit verschiedenen Symbolen angebracht. Dort könnt Ihr die Abolevels einstellen. Der Tooltip zeigt Euch, welches Symbol zu welchem Genre gehört.
 Die Abolevel unterscheiden sich in der Zeitverzögerung mit der Ihr die Nachrichten zugestellt bekommt. Bei 0 bekommt Ihr für dieses Genre gar keine Nachrichten. Bei 3 erhaltet Ihr sie sofort, wenn sie erscheinen. Analog dazu kostet Abolevel 0 auch nichts, 3 dafür am meisten.
 
@@ -244,7 +244,7 @@ Nach und nach werden dem Spiel auch Nachrichten hinzugefügt, die erst ab einem 
 
 Die Nachrichten können Zuschauer von anderen Sendern abziehen, die dann auch die Sendung bei Euch schauen könnten.
 
-Zu beachten ist, daß jeweils das Level für die Abrechnung zugrunde gelegt wird, das am Tag als höchstes eingestellt war. Also lohnt Runterschalten erst kurz vor 0 Uhr. 
+Zu beachten ist, daß jeweils das Level für die Abrechnung zugrunde gelegt wird, das am Tag als höchstes eingestellt war. Also lohnt Runterschalten erst kurz vor 0 Uhr.
 Ihr braucht keine Angst zu haben, wenn Ihr die Level mal durchschaltet. Die Änderung tritt erst nach einigen Sekunden finanzträchtig inkraft.
 
 Klickt Ihr auf die Pinnwand, kommt Ihr zum eigentlichen Herzstück:
@@ -280,7 +280,7 @@ Habt Ihr den Button „kaufen“ schon angeklickt, ist es dafür freilich zu sp�
 Ihr könntet jetzt den Sendemast wieder verkaufen. Wählt Ihn dazu in der Liste rechts unten aus. Und dann auf den Button „Sendemast verkaufen“.
 Gemeinerweise erhaltet Ihr weniger Geld zurück, als er gekostet hat.
 
-Die Menüpunkte am unteren Rand "Kabelnetzanbindun" und "Satellitenanbindung" geben den möglichen Zugriff auf vorhandene Kabelnetze und Satelliten an. Während die vorhandenen Satelliten aufgelistet werden, werden die verfügbaren Kabelnetze durch Überfahren der Landkarte angezeigt.
+Die Menüpunkte am unteren Rand "Kabelnetzanbindung" und "Satellitenanbindung" geben den möglichen Zugriff auf vorhandene Kabelnetze und Satelliten an. Während die vorhandenen Satelliten aufgelistet werden, werden die verfügbaren Kabelnetze durch Überfahren der Landkarte angezeigt.
 Wenn Ihr die angegebenen Bedingungen erfüllt, könnt Ihr die Anbindungen mieten. Vorgesehen ist jeweils eine einjährige Vertragslaufzeit.
 
 Die Abdeckung von Kabel oder Satellit ist an die realen Daten angelehnt. Es ist also nur eine teilweise Abdeckung der Gebiete zu erwarten. Diese steigt jedoch im Laufe des Spiels.
@@ -302,7 +302,7 @@ Drüberfahren mit dem Mauszeiger lässt Datenblätter erscheinen, auf dem die en
 --------
 
 Mit dem ausgewählten Drehbuch geht es ins Studio. Klickt dort auf das gewünschte Drehbuch im Koffer und legt es rechts auf dem Schränkchen ab.
-Links steht der Studioleiter. Linksklickt auf ihn und es erscheint ein Dialog, in dem Ihr eine Einkaufsliste fordern könnt. Diese erscheint nach Linksklick auf "ich brauche eine Einkaufsliste..." mittig am unteren Rand. Die kann dann da hängen bleiben. Und ab geht's 
+Links steht der Studioleiter. Linksklickt auf ihn und es erscheint ein Dialog, in dem Ihr eine Einkaufsliste fordern könnt. Diese erscheint nach Linksklick auf "ich brauche eine Einkaufsliste..." mittig am unteren Rand. Die kann dann da hängen bleiben. Und ab geht's
 zum Supermarkt.
 
 Vom Supermarkt zurück, könnt Ihr einen Film mit vollständiger Einkaufsliste zur Produktion freigeben. Wählt dazu den gewünschten Film und klickt auf den Studioleiter.
@@ -409,9 +409,9 @@ Wie im wirklichen Leben verringern die FSK18-Ausstrahlungen zur falschen Zeit da
 Das meint hier den unteren Teil des Spielbildschirms, der Euch durch das gesamte Spiel begleiten wird.
 Links ist der Fernseher, der das laufende Programm der einzelnen Sender anzeigt.
 Den könnt Ihr ausschalten.
-Desweiteren könnt Ihr über die farbigen Tasten auswählen, welchem Sender Ihr ins laufende Programm schauen wollt. 
+Desweiteren könnt Ihr über die farbigen Tasten auswählen, welchem Sender Ihr ins laufende Programm schauen wollt.
 
-Bewegt Ihr den Mauszeiger über den Bildschirm oder die Tasten der anderen Sender, erscheint ein Tooltip mit Informationen zum laufenden Programm. 
+Bewegt Ihr den Mauszeiger über den Bildschirm oder die Tasten der anderen Sender, erscheint ein Tooltip mit Informationen zum laufenden Programm.
 Geplant ist, für jedes Filmgenre ein eigenes Bild zu zeigen. Wenn Ihr die Maushand auf dem Bildschirm platziert, wird angezeigt, welcher Film mit welcher Einschaltquote läuft. Zusätzlich bei Eurem eigenen Sender ein Hinweis, ob ein passender Werbeblock gesetzt ist.
 
 Die anderen Anzeigen sind zu Eurer Information gedacht.
@@ -449,7 +449,7 @@ Im Spieleverzeichnis liegt ein config-Ordner. In diesem wiederum gibt es eine Da
 können.
 Wenn Ihr in den "Einstellungen" etwas verändert, was von den Vorgaben abweicht, wird eine "settings.user.xml" angelegt - in dieser können auch händische Abaenderungen stattfinden, die vormals in der "settings.xml" zu hinterlegen waren.
 
-Kurz: die settings.user.xml enthält die  Abweichungen zu den vorgesehenen Einstellungen aus settings.xml 
+Kurz: die settings.user.xml enthält die  Abweichungen zu den vorgesehenen Einstellungen aus settings.xml
 
 
 

@@ -156,7 +156,7 @@ Programmplaner präsentieren.
 
 Ihr seht als erstes den aktuellen Tag. Da sind bei Spielbeginn schon
 die Eröffnungsshow und drei Werbungen platziert. Zudem wurde eine
-Werbung als Dauerwerbesendung abgelegt. 
+Werbung als Dauerwerbesendung abgelegt.
 Diese gibt es nur zu Spielbeginn und sollen Euch Zeit einräumen, das
 Spiel in Ruhe zu erkunden.
 
@@ -292,7 +292,7 @@ Verlaßt Ihr aber den Raum mit dem Film im Koffer, dann landet der Film
 unweigerlich im Archiv und steht automatisch für Eure Sendeplanung zur
 Verfügung.
 Sollte der Koffer mal voller Filme sein, so verlaßt den Raum, betretet
-ihn wieder und Ihr habt genug Platz zum Weitershoppen. 
+ihn wieder und Ihr habt genug Platz zum Weitershoppen.
 Ganz nebenbei: Die vorher durch Euren Einkauf geschaffenen Lücken
 wurden in der Zwischenzeit vom Agenten aufgefüllt.
 
@@ -360,7 +360,7 @@ nebenbei zu erledigen. Wir arbeiten aber daran.
 Im Nachrichtenstudio werden, wie nicht anders zu erwarten, die
 Nachrichten produziert.
 
-Ihr seht rechts die Sprecherkabine. Die soll einfach gut aussehen. 
+Ihr seht rechts die Sprecherkabine. Die soll einfach gut aussehen.
 Links sind fünf farbige Tafeln mit verschiedenen Symbolen
 angebracht. Dort könnt Ihr die Abolevels einstellen. Der Tooltip zeigt
 Euch, welches Symbol zu welchem Genre gehört.
@@ -378,7 +378,7 @@ dann auch die Sendung bei Euch schauen könnten.
 
 Zu beachten ist, daß jeweils das Level für die Abrechnung zugrunde
 gelegt wird, das am Tag als höchstes eingestellt war. Also lohnt
-Runterschalten erst kurz vor 0 Uhr. 
+Runterschalten erst kurz vor 0 Uhr.
 Ihr braucht keine Angst zu haben, wenn Ihr die Level mal
 durchschaltet. Die Änderung tritt erst nach einigen Sekunden
 finanzträchtig inkraft.
@@ -440,7 +440,7 @@ in der Liste rechts unten aus. Und dann auf den Button „Sendemast
 verkaufen“.
 Gemeinerweise erhaltet Ihr weniger Geld zurück, als er gekostet hat.
 
-Die Menüpunkte am unteren Rand "Kabelnetzanbindun" und
+Die Menüpunkte am unteren Rand "Kabelnetzanbindung" und
 "Satellitenanbindung" geben den möglichen Zugriff auf vorhandene
 Kabelnetze und Satelliten an. Während die vorhandenen Satelliten
 aufgelistet werden, werden die verfügbaren Kabelnetze durch
@@ -481,7 +481,7 @@ ab.
 Links steht der Studioleiter. Linksklickt auf ihn und es erscheint ein
 Dialog, in dem Ihr eine Einkaufsliste fordern könnt. Diese erscheint
 nach Linksklick auf "ich brauche eine Einkaufsliste..." mittig am
-unteren Rand. Die kann dann da hängen bleiben. Und ab geht's 
+unteren Rand. Die kann dann da hängen bleiben. Und ab geht's
 zum Supermarkt.
 
 Vom Supermarkt zurück, könnt Ihr einen Film mit vollständiger
@@ -662,11 +662,11 @@ Links ist der Fernseher, der das laufende Programm der einzelnen Sender
 anzeigt.
 Den könnt Ihr ausschalten.
 Desweiteren könnt Ihr über die farbigen Tasten auswählen, welchem
-Sender Ihr ins laufende Programm schauen wollt. 
+Sender Ihr ins laufende Programm schauen wollt.
 
 Bewegt Ihr den Mauszeiger über den Bildschirm oder die Tasten der
 anderen Sender, erscheint ein Tooltip mit Informationen zum laufenden
-Programm. 
+Programm.
 Geplant ist, für jedes Filmgenre ein eigenes Bild zu zeigen. Wenn Ihr
 die Maushand auf dem Bildschirm platziert, wird angezeigt, welcher Film
 mit welcher Einschaltquote läuft. Zusätzlich bei Eurem eigenen Sender
@@ -726,7 +726,7 @@ auch händische Abaenderungen stattfinden, die vormals in der
 "settings.xml" zu hinterlegen waren.
 
 Kurz: die settings.user.xml enthält die  Abweichungen zu den
-vorgesehenen Einstellungen aus settings.xml 
+vorgesehenen Einstellungen aus settings.xml
 
 
 
