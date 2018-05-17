@@ -1434,7 +1434,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			if r.rentalTimes = 0 and r.rent = 0 and r.rentalChangeTime = 0
 				'let original owner rent it
 				r.BeginRental(r.GetOwner(), r.GetRent())
-				TLogger.Log("TGame", "Savegame loaded - re-rented room ~q"+r.GetName()+"~q.", LOG_DEBUG | LOG_SAVELOAD)
+				'TLogger.Log("TGame", "Savegame loaded - re-rented room ~q"+r.GetName()+"~q.", LOG_DEBUG | LOG_SAVELOAD)
 			endif
 		Next
 

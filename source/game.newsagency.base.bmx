@@ -615,13 +615,29 @@ Type TNewsAgency
 			if not template.IsAvailable() then continue
 
 			if template.happenTime = -1 then continue
-			if template.happenTime <= now
-				'TODO: Wenn happened in der Vergangenheit liegt (und temp noch nicht "used")
-				'dann "onHappen" ausloesen damit Folgenachrichten kommen koennen
-			endif
 
 			'create fixed future news
 			local newsEvent:TNewsEvent = new TNewsEvent.InitFromTemplate(template)
+
+			'now and missed are not listed i nthe upcomingNewsList, so
+			'no cache-clearance is needed
+			'now
+			if template.happenTime = 0 ' or template.HasFlag(TVTNewsFlag.TRIGGER_ON_GAME_START)
+				template.happenTime = GetWorldTime().GetTimeGone()
+				if template.IsAvailable()
+					announceNewsEvent(newsEvent)
+				endif
+			'missed - only some minutes too late (eg gamestart news)
+			'we could just announce them as their happen effects would
+			'still be valid (attention: do not add a "new years eve -
+			'drunken people"-effect as this would be active on game start
+			'then)
+			'this would mean a)
+			elseif template.happenTime <= now
+				'TODO: Wenn happened in der Vergangenheit liegt (und template noch nicht "used")
+				'dann "onHappen" ausloesen damit Folgenachrichten kommen koennen
+			endif
+
 			GetNewsEventCollection().Add(newsEvent)
 		Next
 	End Method
@@ -642,6 +658,7 @@ Type TNewsAgency
 
 			announced:+1
 		Next
+
 		'invalidate upcoming list
 		if announced > 0 then GetNewsEventCollection()._InvalidateUpcomingNewsEvents()
 
@@ -820,6 +837,8 @@ Type TNewsAgency
 		local player:TPlayerBase = GetPlayerBase(forPlayer)
 		if not player then return False
 
+		if newsEvent.HasFlag(TVTNewsFlag.INVISIBLE_EVENT) then return False
+
 		local news:TNews = TNews.Create("", 0, newsEvent)
 
 		sendNow = sendNow or newsEvent.HasFlag(TVTNewsFlag.SEND_IMMEDIATELY)
@@ -840,9 +859,12 @@ Type TNewsAgency
 		if happenedTime = 0 then happenedTime = newsEvent.happenedTime
 		newsEvent.doHappen(happenedTime)
 
-		For Local i:Int = 1 To 4
-			AddNewsEventToPlayer(newsEvent, i, sendNow)
-		Next
+		'only announce as news if not invisible
+		if not newsEvent.HasFlag(TVTNewsFlag.INVISIBLE_EVENT)
+			For Local i:Int = 1 To 4
+				AddNewsEventToPlayer(newsEvent, i, sendNow)
+			Next
+		endif
 	End Method
 
 

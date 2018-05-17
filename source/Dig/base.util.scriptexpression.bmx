@@ -9,7 +9,7 @@ Rem
 	variable names.
 
 	Example: "(MyVar > 0 && MyOtherVar <= 0) || (MyLastVar > 100)"
-		
+
 
 	====================================================================
 	If not otherwise stated, the following code is available under the
@@ -129,7 +129,7 @@ Type TScriptExpression
 
 		'level :- 1
 	End Method
-	
+
 
 	'check for conditionals (a ">, >=, <, <=, =" b)
 	Method ParseConditionals:int()
@@ -156,8 +156,8 @@ Type TScriptExpression
 				_expressionIndex :+ 1
 			endif
 			'print "op: "+op
-			
-			if op <> ">=" and op <> "<=" and op <> "=" and op <> ">" and op <> "<" and op <> "<>"
+
+			if op <> ">=" and op <> "=>" and op <> "=<" and op <> "<=" and op <> "=" and op <> ">" and op <> "<" and op <> "<>"
 				_errorCount :+ 1
 				_error :+ "Incorrect conditional ~q"+op+"~q. Valid are ~q>=~q, ~q<=q, ~q=~q, ~q>~q and ~q<~q.~n"
 				return False
@@ -171,7 +171,7 @@ Type TScriptExpression
 			'apply saved operation
 
 			'if at least one is a string, use string comparison
-			if elementType1 = ELEMENTTYPE_STRING or elementType2 = ELEMENTTYPE_STRING 
+			if elementType1 = ELEMENTTYPE_STRING or elementType2 = ELEMENTTYPE_STRING
 				Select op
 					case ">=", "=>"
 						return string(element1) >= string(element2)
@@ -188,7 +188,7 @@ Type TScriptExpression
 				End Select
 
 			'both not "strings", so check if both are numeric
-			elseif elementType1 = ELEMENTTYPE_NUMERIC and elementType2 = ELEMENTTYPE_NUMERIC 
+			elseif elementType1 = ELEMENTTYPE_NUMERIC and elementType2 = ELEMENTTYPE_NUMERIC
 				Select op
 					case ">=", "=>"
 						return double(string(element1)) >= double(string(element2))
@@ -231,7 +231,7 @@ Type TScriptExpression
 				if char = "\"
 					if not escapeNext
 						escapeNext = true
-					
+
 						_expressionIndex :+1
 						char = GetCurrentChar()
 						continue
@@ -287,7 +287,7 @@ Type TScriptExpression
 						exit
 					endif
 				endif
-					 
+
 				if char = "("
 					openBracket = true
 				elseif char = ")"
@@ -347,7 +347,7 @@ Type TScriptExpression
 			return res
 		endif
 
-		
+
 		'extract integer
 		if IsDigit( GetCurrentCharCode() )
 			local variable:string = ""

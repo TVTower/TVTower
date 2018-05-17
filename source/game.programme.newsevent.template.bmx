@@ -46,7 +46,7 @@ Type TNewsEventTemplateCollection
 		reuseableTemplates.Clear()
 
 		_InvalidateCaches()
-		
+
 		return self
 	End Method
 
@@ -74,7 +74,7 @@ Type TNewsEventTemplateCollection
 		allTemplates.Insert(obj.GetLowerStringGUID(), obj)
 		unusedTemplates.Insert(obj.GetLowerStringGUID(), obj)
 
-		_InvalidateCaches()		
+		_InvalidateCaches()
 
 		return TRUE
 	End Method
@@ -130,7 +130,7 @@ Type TNewsEventTemplateCollection
 	Method SearchByPartialGUID:TNewsEventTemplate(GUID:String)
 		'skip searching if there is nothing to search
 		if GUID.trim() = "" then return Null
-		
+
 		GUID = GUID.ToLower()
 
 		'find first hit
@@ -155,7 +155,7 @@ Type TNewsEventTemplateCollection
 
 		For local template:TNewsEventTemplate = eachin reuseableTemplates.Values()
 			'only interested in a specific genre?
-			if genre <> -1 and template.genre <> genre then continue 
+			if genre <> -1 and template.genre <> genre then continue
 
 			if abs(GetWorldTime().GetDay(template.lastUsedTime) - GetWorldTime().GetDay()) >= minAgeInDays
 				toReuse :+ [template]
@@ -181,7 +181,7 @@ Type TNewsEventTemplateCollection
 
 	Method GetRandomUnusedAvailableInitial:TNewsEventTemplate(genre:int=-1)
 		if not GetUnusedAvailableInitialTemplateList(genre) then return Null
-		
+
 		'if no news is available, make older ones available again
 		'start with 4 days ago and lower until we got a news
 		local days:int = 4
@@ -202,7 +202,7 @@ Type TNewsEventTemplateCollection
 				return GetRandomUnusedAvailableInitial(TVTNewsGenre.CURRENTAFFAIRS)
 			endif
 		endif
-		
+
 		'fetch a random news
 		return TNewsEventTemplate( list.ValueAtIndex(randRange(0, list.Count() - 1)))
 	End Method
@@ -299,7 +299,7 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 	Method GenerateGUID:string()
 		return "broadcastmaterialsource-newseventtemplate-"+id
 	End Method
-	
+
 
 	Method Init:TNewsEventTemplate(GUID:string, title:TLocalizedString, description:TLocalizedString, Genre:Int, quality:Float=-1, modifiers:TData=null, newsType:int=0)
 		self.SetGUID(GUID)
@@ -325,7 +325,7 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 	Method CreateTemplateVariables:TTemplateVariables()
 		'the parent of a template is not known in this moment
 		'as the newsEvent gets a potential parent then
-	
+
 		if not templateVariables then templateVariables = new TTemplateVariables
 
 		return templateVariables
@@ -351,7 +351,7 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 		'mark the template (and increase usage count)
 		GetNewsEventTemplateCollection().Use(self)
 	End Method
-	
+
 
 	Method SetTitle(title:TLocalizedString)
 		self.title = title
@@ -381,12 +381,12 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 	Method ToString:String()
 		return "newsEventTemplate: title=" + GetTitle() + "  quality=" + GetQuality() + "  priceMod=" + GetModifier("price")
 	End Method
-	
+
 
 	Method IsAvailable:int()
 		'field "available" = false ?
 		if not available then return False
-		
+
 		if availableYearRangeFrom > 0 and GetWorldTime().GetYear() < availableYearRangeFrom then return False
 		if availableYearRangeTo > 0 and GetWorldTime().GetYear() > availableYearRangeTo then return False
 
@@ -422,7 +422,7 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 
 	Method HasKeyword:int(keyword:string, exactMode:int = False)
 		if not keyword or keyword="," then return False
-		
+
 		if exactMode
 			return (keywords+",").Find(( keyword+",").ToLower() ) >= 0
 		else

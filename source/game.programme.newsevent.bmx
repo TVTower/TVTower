@@ -463,6 +463,8 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		self.SetQualityRaw( template.quality )
 		self.newsType = template.newsType
 
+		self.flags = template.flags
+
 		self.modifiers = template.CopyModifiers()
 		self.effects = template.CopyEffects()
 

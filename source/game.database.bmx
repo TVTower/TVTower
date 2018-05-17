@@ -49,17 +49,17 @@ Type TDatabaseLoader
 	Method New()
 		allowedAdCreators = ""
 		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_ADS_CREATED_BY", "*").Split(",")
-			allowedAdCreators :+ " "+trim(s).ToLower()+" " 
+			allowedAdCreators :+ " "+trim(s).ToLower()+" "
 		Next
 
 		skipAdCreators = ""
 		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_SKIP_ADS_CREATED_BY", "").Split(",")
-			skipAdCreators :+ " "+trim(s).ToLower()+" " 
+			skipAdCreators :+ " "+trim(s).ToLower()+" "
 		Next
 
 		allowedProgrammeCreators = ""
 		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_PROGRAMMES_CREATED_BY", "*").Split(",")
-			allowedProgrammeCreators :+ " "+trim(s).ToLower()+" " 
+			allowedProgrammeCreators :+ " "+trim(s).ToLower()+" "
 		Next
 
 		skipProgrammeCreators = ""
@@ -69,7 +69,7 @@ Type TDatabaseLoader
 
 		allowedNewsCreators = ""
 		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_NEWS_CREATED_BY", "*").Split(",")
-			allowedNewsCreators :+ " "+trim(s).ToLower()+" " 
+			allowedNewsCreators :+ " "+trim(s).ToLower()+" "
 		Next
 
 		skipNewsCreators = ""
@@ -79,7 +79,7 @@ Type TDatabaseLoader
 
 		allowedScriptCreators = ""
 		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_SCRIPTS_CREATED_BY", "*").Split(",")
-			allowedScriptCreators :+ " "+trim(s).ToLower()+" " 
+			allowedScriptCreators :+ " "+trim(s).ToLower()+" "
 		Next
 
 		skipScriptCreators = ""
@@ -89,7 +89,7 @@ Type TDatabaseLoader
 
 		allowedAchievementCreators = ""
 		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_ACHIEVEMENTS_CREATED_BY", "*").Split(",")
-			allowedAchievementCreators :+ " "+trim(s).ToLower()+" " 
+			allowedAchievementCreators :+ " "+trim(s).ToLower()+" "
 		Next
 
 		skipAchievementCreators = ""
@@ -99,7 +99,7 @@ Type TDatabaseLoader
 
 		allowedPersonCreators = ""
 		For local s:string = EachIn GameRules.devConfig.GetString("DEV_DATABASE_LOAD_PERSONS_CREATED_BY", "*").Split(",")
-			allowedPersonCreators :+ " "+trim(s).ToLower()+" " 
+			allowedPersonCreators :+ " "+trim(s).ToLower()+" "
 		Next
 
 		skipPersonCreators = ""
@@ -116,7 +116,7 @@ Type TDatabaseLoader
 		username = username.ToLower().replace("unknown", "*")
 		username = username.Trim()
 		if username = "" then username = "*"
-		
+
 		Select dataType.ToLower()
 			case "adcontract"
 				allowed = allowedAdCreators
@@ -145,7 +145,7 @@ Type TDatabaseLoader
 				print "ALLOWED * and SKIPPED * ... not possible. Type: "+dataType+". Allowing ALL creators for this type."
 				Return True
 			endif
-			
+
 			if skip.Find(" "+username+" ") >= 0
 				print "all allowed but skipping: " +username + "   " + skip.Find(" "+username+" ")
 				Return False
@@ -209,7 +209,7 @@ Type TDatabaseLoader
 
 	Method Load(fileURI:string)
 		config.AddString("currentFileURI", fileURI)
-	
+
 		local xml:TXmlHelper = TXmlHelper.Create(fileURI)
 		'reset "per database" variables
 		moviesCount = 0
@@ -223,7 +223,7 @@ Type TDatabaseLoader
 		'by default version number is "2"
 		local version:int = 2
 		if versionNode then version = xml.FindValueInt(versionNode, "value", 2)
-		
+
 		'load according to version
 		Select version
 '			case 2	LoadV2(xml)
@@ -257,7 +257,7 @@ Type TDatabaseLoader
 			'param true = load as celebrity
 			LoadV3ProgrammePersonBaseFromNode(nodePerson, xml, TRUE)
 		Next
-		
+
 
 		'===== IMPORT ALL ADVERTISEMENTS / CONTRACTS =====
 		local nodeAllAds:TxmlNode = xml.FindRootChild("allads")
@@ -306,7 +306,7 @@ Type TDatabaseLoader
 					For local sub:TProgrammeLicence = EachIn licence.subLicences
 						GetProgrammeLicenceCollection().AddAutomatic(sub)
 					Next
-					
+
 					GetProgrammeLicenceCollection().AddAutomatic(licence)
 					rem
 					if GetWorldTime().GetYear(licence.GetData().releaseTime) > 1985 and licence.IsAvailable()
@@ -393,7 +393,7 @@ Type TDatabaseLoader
 			else
 				person = new TProgrammePersonBase
 			endif
-			
+
 			person.GUID = GUID
 		endif
 
@@ -504,7 +504,7 @@ Type TDatabaseLoader
 
 		'=== ADD TO COLLECTION ===
 		'we removed the person from all lists already, now add it back
-		'to the one we wanted 
+		'to the one we wanted
 		if isCelebrity
 			GetProgrammePersonBaseCollection().AddCelebrity(person)
 		else
@@ -538,7 +538,7 @@ Type TDatabaseLoader
 
 			TLogger.Log("LoadV3NewsEventTemplateFromNodeFromNode()", "Extending newsEventTemplate ~q"+newsEventTemplate.GetTitle()+"~q. GUID="+newsEventTemplate.GetGUID(), LOG_XML)
 		endif
-		
+
 		'=== LOCALIZATION DATA ===
 		newsEventTemplate.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
 		newsEventTemplate.description.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
@@ -562,7 +562,7 @@ Type TDatabaseLoader
 		newsEventTemplate.minSubscriptionLevel = data.GetInt("min_subscription_level", newsEventTemplate.minSubscriptionLevel)
 
 		local available:int = data.GetBool("available", not newsEventTemplate.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
-		newsEventTemplate.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not available)		
+		newsEventTemplate.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not available)
 
 		'topicality is "quality" here
 		newsEventTemplate.quality = 0.01 * data.GetFloat("quality", 100 * newsEventTemplate.quality)
@@ -574,16 +574,20 @@ Type TDatabaseLoader
 		local happenTimeString:string = data.GetString("happen_time", "")
 		if happenTimeString
 			local happenTimeParams:int[] = StringHelper.StringToIntArray(happenTimeString, ",")
-			if happenTimeParams.length > 0 and happenTimeParams[0] <> -1
-				'GetWorldTime().CalcTime_Auto( happenTimeParams[0], happenTimeParams[1 ..] )
-				local useParams:int[] = [-1,-1,-1,-1,-1,-1,-1,-1]
-				for local i:int = 1 until happenTimeParams.length
-					useParams[i-1] = happenTimeParams[i]
-				Next
-				newsEventTemplate.happenTime = GetWorldTime().CalcTime_Auto( happenTimeParams[0], useParams )
+			if happenTimeParams.length > 0
+				if happenTimeParams[0] = 0
+					newsEventTemplate.happenTime = 0
+				elseif happenTimeParams[0] <> -1
+					'GetWorldTime().CalcTime_Auto( happenTimeParams[0], happenTimeParams[1 ..] )
+					local useParams:int[] = [-1,-1,-1,-1,-1,-1,-1,-1]
+					for local i:int = 1 until happenTimeParams.length
+						useParams[i-1] = happenTimeParams[i]
+					Next
+					newsEventTemplate.happenTime = GetWorldTime().CalcTime_Auto( happenTimeParams[0], useParams )
+				endif
 			endif
 		endif
-		
+
 
 
 		'=== CONDITIONS ===
@@ -654,7 +658,7 @@ Type TDatabaseLoader
 		endif
 
 		return newsEventTemplate
-	End Method	
+	End Method
 
 
 	Method LoadV3AchievementFromNode:TAchievement(node:TxmlNode, xml:TXmlHelper)
@@ -678,7 +682,7 @@ Type TDatabaseLoader
 				TLogger.Log("LoadV3AchievementFromNode()", "Extending achievement ~q"+achievement.GetTitle()+"~q. GUID="+achievement.GetGUID(), LOG_XML)
 			endif
 		endif
-		
+
 		'=== LOCALIZATION DATA ===
 		achievement.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
 		achievement.text.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "text")) )
@@ -725,7 +729,7 @@ Type TDatabaseLoader
 		print "  rewards: "+achievement.rewardGUIDs.length
 		endrem
 
-	
+
 		'=== ADD TO COLLECTION ===
 		if doAdd
 			GetAchievementCollection().AddAchievement(achievement)
@@ -801,20 +805,20 @@ Type TDatabaseLoader
 			element.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
 			element.text.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "text")) )
 		endif
-		
+
 
 		if elementName = "task"
 			source.AddTask( GUID )
 			GetAchievementCollection().AddTask( element )
 		elseif elementName = "reward"
-			source.AddReward( GUID ) 
+			source.AddReward( GUID )
 			GetAchievementCollection().AddReward( element )
 		endif
 
 
 		return True
 	End Method
-		
+
 
 	Method LoadV3AdContractBaseFromNode:TAdContractBase(node:TxmlNode, xml:TXmlHelper)
 		local GUID:String = xml.FindValue(node,"id", "")
@@ -823,7 +827,7 @@ Type TDatabaseLoader
 		'fetch potential meta data
 		local mData:TData = LoadV3AdContractBaseMetaDataFromNode(GUID, node, xml)
 		metaData.Add(GUID, mData)
-		
+
 		'skip forbidden users (DEV)
 		if not IsAllowedUser(mData.GetString("createdBy"), "adcontract") then return Null
 
@@ -840,7 +844,7 @@ Type TDatabaseLoader
 		endif
 
 
-		
+
 		'=== LOCALIZATION DATA ===
 		adContract.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
 		adContract.description.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "description")) )
@@ -866,7 +870,7 @@ Type TDatabaseLoader
 		adContract.quality = 0.01 * data.GetFloat("quality", adContract.quality * 100.0)
 
 		local available:int = data.GetBool("available", not adContract.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE))
-		adContract.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not available)		
+		adContract.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, not available)
 
 		'old -> now stored in "availability
 		adContract.availableYearRangeFrom = data.GetInt("year_range_from", adContract.availableYearRangeFrom)
@@ -884,7 +888,7 @@ Type TDatabaseLoader
 		adContract.penaltyBase = data.GetFloat("penalty", adContract.penaltyBase)
 		adContract.infomercialProfitBase = data.GetFloat("infomercial_profit", adContract.infomercialProfitBase)
 		adContract.fixedInfomercialProfit = data.GetFloat("fix_infomercial_profit", adContract.fixedInfomercialProfit)
-		'without data, fall back to 10% of profitBase 
+		'without data, fall back to 10% of profitBase
 		if adContract.infomercialProfitBase = 0 then adContract.infomercialProfitBase = adContract.profitBase * 0.1
 
 
@@ -928,7 +932,7 @@ Type TDatabaseLoader
 		adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
 		adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)
 		rem
-		for multiple groups: 
+		for multiple groups:
 		local proPressureGroups:String[] = data.GetString("pro_pressure_groups", "").Split(" ")
 		For local group:string = EachIn proPressureGroups
 			if not adContract.HasProPressureGroup(int(group))
@@ -1042,7 +1046,7 @@ Type TDatabaseLoader
 				'reuse old one
 				productType = programmeData.productType
 			endif
-			
+
 			programmeLicence = new TProgrammeLicence
 			programmeLicence.GUID = GUID
 		else
@@ -1072,7 +1076,7 @@ Type TDatabaseLoader
 		'this just overrides the existing data - even if identical
 		programmeLicence.SetData(programmeData)
 
-		
+
 		'=== LOCALIZATION DATA ===
 		programmeData.title.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "title")) )
 		programmeData.originalTitle.Append( GetLocalizedStringFromNode(xml.FindElementNode(node, "originalTitle")) )
@@ -1091,9 +1095,9 @@ Type TDatabaseLoader
 			"broadcast_flags", "data_broadcast_flags", "licence_broadcast_flags" ..
 		]) 'also allow a "<live>" block
 		'], ["live"]) 'also allow a "<live>" block
-		
+
 		programmeData.country = data.GetString("country", programmeData.country)
-		
+
 		programmeData.distributionChannel = data.GetInt("distribution", programmeData.distributionChannel)
 		programmeData.blocks = data.GetInt("blocks", programmeData.blocks)
 
@@ -1128,7 +1132,7 @@ Type TDatabaseLoader
 		For local sg:string = EachIn data.GetString("subgenre", "").split(",")
 			if Trim(sg) = "" then continue
 			if int(sg) < 0 then continue
-			
+
 			if not MathHelper.InIntArray(int(sg), programmeData.subGenres)
 				programmeData.subGenres :+ [int(sg)]
 			endif
@@ -1193,7 +1197,7 @@ Type TDatabaseLoader
 				endif
 
 
-				if not memberGUID 
+				if not memberGUID
 					memberGUID = "person-created"
 					memberGUID :+ "-" + LSet(Hashes.MD5(member.firstName + member.lastName), 12)
 					memberGUID :+ "-" + StringHelper.UTF8toISO8859(member.firstName).Replace(".", "").Replace(" ","-")
@@ -1248,7 +1252,7 @@ Type TDatabaseLoader
 		'take over modifiers from parent (if episode)
 		if parentLicence then programmeData.effects = parentLicence.data.effects.Copy()
 		LoadV3ModifiersFromNode(programmeData, node, xml)
-		
+
 
 
 		'=== RATINGS ===
@@ -1281,7 +1285,7 @@ Type TDatabaseLoader
 		programmeLicence.licenceType = licenceType
 
 
-		
+
 		'=== EPISODES ===
 		local nodeEpisodes:TxmlNode = xml.FindChild(node, "children")
 		For local nodeEpisode:TxmlNode = EachIn xml.GetNodeChildElements(nodeEpisodes)
@@ -1310,7 +1314,7 @@ Type TDatabaseLoader
 				continue
 			endif
 
-			'inform if we add an episode again 
+			'inform if we add an episode again
 			if episodeLicence.GetParentLicence() and episodeLicence.parentLicenceGUID
 				TLogger.Log("LoadV3ProgrammeLicenceFromNode()","Episode: ~q"+episodeLicence.GetTitle()+"~q already has parent: ~q"+episodeLicence.GetParentLicencE().GetTitle()+"~q. Multi-usage intended?", LOG_XML)
 			endif
@@ -1335,9 +1339,9 @@ Type TDatabaseLoader
 			TLogger.Log("LoadV3ProgrammeLicenceFromNode()","Licence without licenceType=-1 found.  Converted to single: "+programmeLicence.GetTitle(), LOG_XML)
 		endif
 
-		
+
 		rem
-		for multiple groups: 
+		for multiple groups:
 		local proPressureGroups:String[] = data.GetString("pro_pressure_groups", "").Split(" ")
 		For local group:string = EachIn proPressureGroups
 			if not adContract.HasProPressureGroup(int(group))
@@ -1355,7 +1359,7 @@ Type TDatabaseLoader
 		if not existed
 			programmeLicence.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 		endif
-		
+
 		return programmeLicence
 	End Method
 
@@ -1563,7 +1567,7 @@ Type TDatabaseLoader
 
 			scriptTemplate.templateVariables.AddVariable("%"+varName+"%", varString)
 		Next
-		
+
 
 		'=== SCRIPT - PRODUCT TYPE ===
 		scriptTemplate.scriptProductType = scriptProductType
@@ -1749,7 +1753,7 @@ Type TDatabaseLoader
 			source.AddEffectByData(effectData)
 		Next
 	End Method
-	
+
 
 	Method LoadV3ModifiersFromNode(source:TBroadcastMaterialSourceBase, node:TxmlNode,xml:TXmlHelper)
 		'reuses existing (parent) modifiers and overrides it with custom
@@ -1776,8 +1780,8 @@ Type TDatabaseLoader
 		data.AddString("createdBy", TXmlHelper.FindValue(node,"created_by", ""))
 		return data
 	End Method
-	
-	
+
+
 	Method LoadV3ProgrammeRoleMetaDataFromNode:TData(GUID:string, node:TxmlNode, xml:TXmlHelper)
 		local data:TData = new TData
 		'only set creator if it is the "non overridden" one
@@ -1821,7 +1825,7 @@ Type TDatabaseLoader
 			"imdb", "tmdb" ..
 		])
 
-		
+
 		return data
 	End Method
 
@@ -1841,7 +1845,7 @@ Type TDatabaseLoader
 		'only set creator if it is the "non overridden" one
 		if not GetAchievementCollection().GetAchievement(GUID) and ..
 		   not GetAchievementCollection().GetTask(GUID) and ..
-		   not GetAchievementCollection().GetReward(GUID)	   
+		   not GetAchievementCollection().GetReward(GUID)
 			data = LoadV3CreatorMetaDataFromNode(GUID, data, node, xml)
 		endif
 		return data
@@ -1883,7 +1887,7 @@ Type TDatabaseLoader
 		if releaseYear = 0 and releaseYearRelative = 0 and oldReleaseTime <> 0
 			return oldReleaseTime
 		endif
-			
+
 
 'alles in einen string packen und folgende Berechnungen "bei Bedarf"
 'ausfuehren
@@ -1945,7 +1949,7 @@ Type TDatabaseLoader
 					TLogger.Log("TDatabase.FixLoadedDate()", "No ProgrammeData found for GUID ~q"+programmeDataGUID+"~q.", LOG_ERROR)
 					continue
 				endif
-				
+
 				if not earliestProductionData or programmeData.GetYear() < earliestProductionData.GetYear()
 					earliestProductionData = programmeData
 				endif
@@ -2072,7 +2076,7 @@ Type TDatabaseLoader
 			endif
 		Next
 
-		if not foundEntry then return Null 
+		if not foundEntry then return Null
 		return localized
 	End Function
 End Type

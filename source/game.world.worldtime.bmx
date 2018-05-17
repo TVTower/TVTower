@@ -6,13 +6,13 @@ Import "game.world.worldtime.base.bmx"
 
 'rem
 Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
-	'time (seconds) used when starting 
+	'time (seconds) used when starting
 	Field _timeStart:Double = 0.0
 	'how many days does each season have? (year = 4 * value)
 	Field _daysPerSeason:int = 3
 	'how many days does a week have?
 	Field _daysPerWeek:int = 7
-	 
+
 	'current "phase" of the day: 0=Dawn  1=Day  2=Dusk  3=Night
 	Field currentPhase:int
 	'time at which the dawn starts
@@ -31,7 +31,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	Const SEASON_SUMMER:int  = 2
 	Const SEASON_AUTUMN:int  = 3
 	Const SEASON_WINTER:int  = 4
-	
+
 
 	Function GetInstance:TWorldTime()
 		if not _instance then _instance = new TWorldTime
@@ -42,7 +42,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	Method New()
 		SetStartYear(1900)
 	End Method
-	
+
 
 	Method Init:TWorldTime(timeGone:Double = 0.0)
 		SetTimeGone(timeGone)
@@ -53,7 +53,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 	Method Initialize:int()
 		Super.Initialize()
-		
+
 		_timeStart = 0:double
 		_daysPerSeason = 3
 		_daysPerWeek = 7
@@ -86,7 +86,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 	Method AddTimeGone:int(year:int, day:int, hour:Double, minute:Double, second:Double)
 		local add:Double = second + 60*(minute + 60*(hour + 24*(day + year*GetDaysPerYear())))
-		
+
 		_timeGone :+ add
 		'also set last update
 		_timeGoneLastUpdate :+ add
@@ -110,13 +110,13 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		local hours:int = 0
 		local minutes:int = 0
 		local seconds:int = 0
-		
+
 
 		if dateParts.length > 0 then years = int(dateParts[0])
 		'subtract 1 as we _add_ time so "january" should be 0 instead
 		'of 1 ...
 		if dateParts.length > 1 then days = int(dateParts[1]) - 1
-		'scale down the days as there are x days/year, 
+		'scale down the days as there are x days/year,
 		if dateParts.length > 2 then days :+ int(dateParts[2]) * (GetDaysPerYear()/365.0)
 
 		if dateTime.length > 1
@@ -134,7 +134,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		hours :+ floor(addHours)
 		minutes :+ floor(addMinutes)
 
-		
+
 		return GetWorldTime().MakeTime(years, int(days), hours, minutes, seconds)
 	End Method
 
@@ -171,14 +171,14 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	Method GetTimeStart:Double() {_exposeToLua}
 		Return _timeStart
 	End Method
-	
-	
+
+
 	Method GetTimeGoneAsMinute:Double(sinceStart:Int=False) {_exposeToLua}
 		Local useTime:Double = _timeGone
-		If sinceStart Then useTime = (_timeGone - _timeStart)	
+		If sinceStart Then useTime = (_timeGone - _timeStart)
 		Return Int(Floor(useTime / 60))
 	End Method
-	
+
 
 	Method GetYearLength:int() {_exposeToLua}
 		return DAYLENGTH * GetDaysPerYear()
@@ -197,7 +197,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		Return GetHour(_timeStart)
 	End Method
 
-	
+
 	'returns the day world started running
 	Method GetStartDay:Int() {_exposeToLua}
 		Return GetDay(_timeStart)
@@ -210,7 +210,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		return useTime mod DAYLENGTH
 	End Method
 
-	
+
 	'Calculated hour of the days clock (xx:00:00)
 	Method GetDayHour:int(useTime:Double = -1.0) {_exposeToLua}
 		if Long(useTime) <= 0 then useTime = _timeGone
@@ -233,7 +233,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 		return int(useTime mod 60)
 	End Method
-	
+
 
 	Method GetDayProgress:Float(useTime:Double = -1.0) {_exposeToLua}
 		return GetDayTime(useTime) / DAYLENGTH
@@ -416,7 +416,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		Local strHours:String = GetDayHour(time)
 		Local strMinutes:String = GetDayMinute(time)
 		Local strSeconds:String = GetDaySecond(time)
-		
+
 		If Int(strHours) < 10 Then strHours = "0"+strHours
 		If Int(strMinutes) < 10 Then strMinutes = "0"+strMinutes
 		If Int(strSeconds) < 10 Then strSeconds = "0"+strSeconds
@@ -436,7 +436,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		Local strGameDay:String = GetDaysRun(time) + 1
 		Local strWeekDay:String = GetWeekdayByDay(GetDaysRun(time))
 		Local strWeekDayLong:String = GetDayName(GetWeekdayByDay(GetDaysRun(time)) )
-		
+
 		If Int(strMonth) < 10 Then strMonth = "0"+strMonth
 		If Int(strDay) < 10 Then strDay = "0"+strDay
 		Return GetFormattedTime(time, format).replace("d", strDay).replace("m", strMonth).replace("y", strYear).replace("g", strGameDay).replace("w", strWeekDayLong).replace("W", strWeekDay)
@@ -447,7 +447,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		if timeA = -1 then timeA = GetTimeGone()
 		return GetFormattedDuration(timeB - timeA, format)
 	End Method
-	
+
 
 	Method GetFormattedDuration:String(duration:Double, format:string="d h i") {_exposeToLua}
 		local days:int = duration / TWorldTime.DAYLENGTH
@@ -490,10 +490,10 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		if Long(useTime) <= 0 then useTime = _timeGone
 
 		return GetSunset(useTime) - GetSunrise(useTime)
-		
+
 		'return 0.35 * WorldTime.DAYLENGTH
 	End Method
-	
+
 
 	Method GetDawnDuration:Float(useTime:Double = -1.0) {_exposeToLua}
 		if Long(useTime) <= 0 then useTime = _timeGone
@@ -619,7 +619,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		endif
 	End Method
 
-	
+
 	Method GetDayPhaseText:string(useTime:Double = -1.0) {_exposeToLua}
 		Select GetDayPhase(useTime)
 			case DAYPHASE_DAWN  return "DAWN"
@@ -645,7 +645,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 				return (GetDayTime(useTime) - GetDuskPhaseBegin(useTime)) / GetDuskDuration(useTime)
 		End Select
 		return 0
-	End Method	
+	End Method
 
 
 
@@ -673,7 +673,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 			'for 7-9 this is 7:00, 7:01 ... 8:59, 9:00
 			result :+ RandRange(atHourMin*60, atHourMax*60) * 60
 		endif
-		
+
 		return result
 	End Method
 
@@ -691,7 +691,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 			'for 7-9 this is 7:00, 7:01 ... 8:59, 9:00
 			result :+ RandRange(atHourMin*60, atHourMax*60) * 60
 		endif
-		
+
 		return result
 	End Method
 
@@ -706,7 +706,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 		if dayMin = -1 then dayMin = RandRange(1, 30) 'Sorry february!
 		if dayMax <> dayMin and dayMax > -1000000 then dayMin = RandRange(dayMin, dayMax)
-		
+
 		if hourMin = -1 then hourMin = RandRange(0, 23)
 		if hourMax <> hourMin and hourMax > -1000000 then hourMin = RandRange(hourMin, hourMax)
 
@@ -731,7 +731,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 		if gameDayMin = -1 then gameDayMin = RandRange(1, GetDaysPerYear())
 		if gameDayMax <> gameDayMin and gameDayMax > -1000000 then gameDayMin = RandRange(gameDayMin, gameDayMax)
-		
+
 		if hourMin = -1 then hourMin = RandRange(0, 23)
 		if hourMax <> hourMin and hourMax > -1000000 then hourMin = RandRange(hourMin, hourMax)
 
@@ -745,9 +745,13 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 	Method CalcTime_Auto:long(timeType:int, timeValues:int[])
 		if not timeValues or timeValues.length < 1 then return -1
-		
+
 		'what kind of happen time data do we have?
 		Select timeType
+			'now
+			case 0
+				return GetWorldTime().GetTimeGone()
+
 			'1 = "A"-"B" hours from now
 			case 1
 				if timeValues.length > 1
@@ -758,7 +762,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 			'2 = "A"-"B" days from now at "C":00 - "D":00 o'clock
 			case 2
 				if timeValues.length <= 1 then return -1
-				
+
 				if timeValues.length = 2
 					return CalcTime_DaysFromNowAtHour(timeValues[0], -1, timeValues[1])
 				elseif timeValues.length = 3
@@ -769,7 +773,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 			'3 = next "weekday A" from "B":00 - "C":00 o'clock
 			case 3
 				if timeValues.length <= 1 then return -1
-				
+
 				if timeValues.length = 2
 					return CalcTime_WeekdayAtHour(timeValues[0], -1, timeValues[1])
 				elseif timeValues.length >= 3

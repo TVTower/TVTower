@@ -479,6 +479,19 @@ Illustrious guests and music by [3|Nick].</en>
 				Folgenachricht und ihre Wahrscheinlichkeit im Falle einer
 				"oder"-Verknuepfung
 		-->
+<ignore>
+		<news id="ronny-news-newskickersample-01" type="0" creator="5578" created_by="Ronny">
+			<!-- kicker sample - no texts needed -->
+
+			<effects>
+				<!-- triggers itself again each 7 days (at 0:00) -->
+				<effect trigger="happen" type="triggernews" time="2,7,7,0,0" news="ronny-news-newskickersample-01" />
+				<!-- (maybe) trigger other news on each of that 7 days -->
+				<effect trigger="happen" type="triggernews" time="1,1,2" news="ronny-news-spitzel-01" />
+			</effects>
+			<data genre="3" flags="273" happen_time="0" />
+		</news>
+</ignore>
 		<news id="ronny-news-spitzel-01" type="0" creator="5578" created_by="Ronny">
 			<title>
 				<de>Spitzelaffäre</de>
