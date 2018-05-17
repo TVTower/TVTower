@@ -12,7 +12,7 @@ Import "game.gameconfig.bmx"
 'News room
 Type RoomHandler_News extends TRoomHandler
 	Global PlannerToolTip:TTooltip
-	Global NewsGenreButtons:TGUIButton[5]
+	Global NewsGenreButtons:TGUIButton[6]
 	Global NewsGenreTooltip:TTooltip			'the tooltip if hovering over the genre buttons
 	Global currentRoom:TRoom					'holding the currently updated room (so genre buttons can access it)
 	'the image displaying "send news"
@@ -25,8 +25,8 @@ Type RoomHandler_News extends TRoomHandler
 	Global draggedGuiNews:TGuiNews = null
 	Global hoveredGuiNews:TGuiNews = null
 
-	global LS_newsplanner:TLowerString = TLowerString.Create("newsplanner")	
-	global LS_newsroom:TLowerString = TLowerString.Create("newsroom")	
+	global LS_newsplanner:TLowerString = TLowerString.Create("newsplanner")
+	global LS_newsroom:TLowerString = TLowerString.Create("newsroom")
 
 	Global _instance:RoomHandler_News
 	Global _eventListeners:TLink[]
@@ -63,12 +63,13 @@ Type RoomHandler_News extends TRoomHandler
 			'ATTENTION: We could do this in order of The NewsGenre-Values
 			'           But better add it to the buttons.data-property
 			'           for better checking
-			NewsGenreButtons[0]	= new TGUIButton.Create( new TVec2D.Init(15, 194), null, GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
-			NewsGenreButtons[1]	= new TGUIButton.Create( new TVec2D.Init(64, 194), null, GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
-			NewsGenreButtons[2]	= new TGUIButton.Create( new TVec2D.Init(15, 247), null, GetLocale("NEWS_SHOWBIZ"), "newsroom")
-			NewsGenreButtons[3]	= new TGUIButton.Create( new TVec2D.Init(64, 247), null, GetLocale("NEWS_SPORT"), "newsroom")
-			NewsGenreButtons[4]	= new TGUIButton.Create( new TVec2D.Init(113, 247), null, GetLocale("NEWS_CURRENTAFFAIRS"), "newsroom")
-			For local i:int = 0 to 4
+			NewsGenreButtons[0]	= new TGUIButton.Create( new TVec2D.Init(13, 194), null, GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
+			NewsGenreButtons[1]	= new TGUIButton.Create( new TVec2D.Init(58, 194), null, GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
+			NewsGenreButtons[2]	= new TGUIButton.Create( new TVec2D.Init(103, 194), null, GetLocale("NEWS_SHOWBIZ"), "newsroom")
+			NewsGenreButtons[3]	= new TGUIButton.Create( new TVec2D.Init(13, 239), null, GetLocale("NEWS_SPORT"), "newsroom")
+			NewsGenreButtons[4]	= new TGUIButton.Create( new TVec2D.Init(58, 239), null, GetLocale("NEWS_CURRENTAFFAIRS"), "newsroom")
+			NewsGenreButtons[5]	= new TGUIButton.Create( new TVec2D.Init(103, 239), null, GetLocale("NEWS_CULTURE"), "newsroom")
+			For local i:int = 0 to 5
 				NewsGenreButtons[i].SetAutoSizeMode( TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE )
 				'adjust width according sprite dimensions
 				NewsGenreButtons[i].spriteName = "gfx_news_btn"+i
@@ -99,6 +100,7 @@ Type RoomHandler_News extends TRoomHandler
 		NewsGenreButtons[2].data.AddNumber("newsGenre", TVTNewsGenre.SHOWBIZ)
 		NewsGenreButtons[3].data.AddNumber("newsGenre", TVTNewsGenre.SPORT)
 		NewsGenreButtons[4].data.AddNumber("newsGenre", TVTNewsGenre.CURRENTAFFAIRS)
+		NewsGenreButtons[5].data.AddNumber("newsGenre", TVTNewsGenre.CULTURE)
 
 
 		'=== EVENTS ===
@@ -106,7 +108,7 @@ Type RoomHandler_News extends TRoomHandler
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
 
-		
+
 		'=== register event listeners
 		'we are interested in the genre buttons
 		for local i:int = 0 until NewsGenreButtons.length
@@ -134,7 +136,7 @@ Type RoomHandler_News extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterNewsPlannerScreen, plannerScreen) ]
 		'also we want to interrupt leaving a room with dragged items
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnTryLeave", onTryLeaveNewsPlannerScreen, plannerScreen) ]
-		
+
 		_eventListeners :+ _RegisterScreenHandler( onUpdateNews, onDrawNews, studioScreen )
 		_eventListeners :+ _RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, plannerScreen )
 	End Method
@@ -160,7 +162,7 @@ Type RoomHandler_News extends TRoomHandler
 		if GetInstance() <> self then self.CleanUp()
 		GetRoomHandlerCollection().SetHandler("news", GetInstance())
 	End Method
-	
+
 
 	Method AbortScreenActions:Int()
 		local abortedAction:int = False
@@ -199,7 +201,7 @@ Type RoomHandler_News extends TRoomHandler
 		Next
 		Return False
 	End Function
-	
+
 
 	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase )
 		'for further explanation of this, check
@@ -249,7 +251,7 @@ Type RoomHandler_News extends TRoomHandler
 					upcomingEvent[g] = n
 				endif
 			Next
-				
+
 			For local i:int = 0 until TVTNewsGenre.count
 				GetBitmapFont("default", 10).Draw(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(i))+":  "+GetWorldTime().GetFormattedTime(GetNewsAgency().NextEventTimes[i]), 20, 60 + 24*i)
 
@@ -388,10 +390,23 @@ Type RoomHandler_News extends TRoomHandler
 		Next
 
 		'draw the levels
-		SetColor 0,0,0
-		SetAlpha 0.4
 		For Local i:Int = 0 to level-1
-			DrawRect( button.rect.GetX()+8+i*10, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -7, 7,4)
+			SetAlpha 0.4
+			SetColor 0,0,0
+			DrawRect( button.rect.GetX()+3+i*12, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -5, 9,1)
+			SetAlpha 0.6
+			SetColor 255,255,255
+			DrawRect( button.rect.GetX()+3+i*12, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -9, 9,5)
+		Next
+		For Local i:Int = Max(0,level-1) to 2
+			SetAlpha 0.2
+			SetColor 0,0,0
+			DrawRect( button.rect.GetX()+3+i*12, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -5, 9,1)
+			SetColor 255,255,255
+			DrawRect( button.rect.GetX()+3+i*12, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -9, 9,1)
+			DrawRect( button.rect.GetX()+3+i*12, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -9, 1,5)
+			DrawRect( button.rect.GetX()+3+i*12 + 9, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -9, 1,5)
+			DrawRect( button.rect.GetX()+3+i*12, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -9+4, 9,1)
 		Next
 		SetColor 255,255,255
 		SetAlpha 1.0
@@ -492,7 +507,7 @@ Type RoomHandler_News extends TRoomHandler
 	Function RefreshGuiElements:int()
 		local owner:int = GetPlayerBaseCollection().playerID
 		if currentRoom then owner = currentRoom.owner
-		
+
 		'remove gui elements with news the player does not have anylonger
 		For local guiNews:TGuiNews = eachin guiNewsListAvailable.entries.Copy()
 			if not GetPlayerProgrammeCollection(owner).hasNews(guiNews.news)
@@ -613,14 +628,14 @@ Type RoomHandler_News extends TRoomHandler
 			'GetPlayerProgrammePlan(guiNews.news.owner).RemoveNewsByGUID(guiNews.news.GetGUID(), FALSE)
 			'and meanwhile check "objects"
 			GetPlayerProgrammePlan(guiNews.news.owner).RemoveNews(guiNews.news,-1, FALSE)
-			
+
 			GetPlayerProgrammeCollection(guiNews.news.owner).RemoveNews(guiNews.news)
 		endif
 
 		'remove gui object
 		guiNews.remove()
 		guiNews = null
-		
+
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
 		'also avoid long click (touch screen)
@@ -924,28 +939,28 @@ Type TGUINews Extends TGUIGameListItem
 			Local screenX:Float = Int(GetScreenX())
 			Local screenY:Float = Int(GetScreenY())
 			DrawRect(screenX, screenY, w,h)
-		
+
 			SetColor 255,255,255
 			SetAlpha 1.0
 
 			Local textY:Int = screenY + 2
 			Local fontBold:TBitmapFont = GetBitmapFontManager().basefontBold
 			Local fontNormal:TBitmapFont = GetBitmapFont("",11)
-			
+
 			fontBold.draw("News: " + news.newsEvent.GetTitle(), screenX + 5, textY)
-			textY :+ 12	
+			textY :+ 12
 			fontNormal.draw("GUID: " + news.newsEvent.GetGUID(), screenX + 5, textY)
 			textY :+ 11
 			fontNormal.draw("Preis: " + news.GetPrice(GetPlayerBaseCollection().playerID)+"  (PreisMod: "+MathHelper.NumberToString(news.newsEvent.GetModifier("price"),4)+")", screenX + 5, textY)
-			textY :+ 11	
+			textY :+ 11
 			fontNormal.draw("Qualitaet: " + MathHelper.NumberToString(news.GetQuality(), 4) + " (Event:" + MathHelper.NumberToString(news.newsEvent.GetQuality(),4) + ", roh=" + MathHelper.NumberToString(news.newsEvent.GetQualityRaw(), 4) + ")", screenX + 5, textY)
-			textY :+ 11	
+			textY :+ 11
 			fontNormal.draw("(KI-)Attraktivitaet: "+MathHelper.NumberToString(news.newsEvent.GetAttractiveness(),4), screenX + 5, textY)
 			fontNormal.draw("Aktualitaet: " + MathHelper.NumberToString(news.newsEvent.GetTopicality(),3) + "/" + MathHelper.NumberToString(news.newsEvent.GetMaxTopicality(),3)+" ("+MathHelper.NumberToString(100 * news.newsEvent.GetTopicality()/news.newsEvent.GetMaxTopicality(),1)+"%)", screenX + 5 + 190, textY)
-			textY :+ 11	
+			textY :+ 11
 			fontNormal.draw("Ausstrahlungen: " + news.newsEvent.GetTimesBroadcasted(news.owner)+"x  (" + news.newsEvent.GetTimesBroadcasted()+"x gesamt)", screenX + 5, textY)
 			fontNormal.draw("Alter: " + Long(GetWorldTime().GetTimeGone() - news.GetHappenedtime()) + " Sekunden  (" + (GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())) + " Tage)", screenX + 5 + 190, textY)
-			textY :+ 11	
+			textY :+ 11
 			Rem
 			local eventCan:string = ""
 			if news.newsEvent.skippable
@@ -959,16 +974,16 @@ Type TGUINews Extends TGUIGameListItem
 			else
 				eventCan :+ "nicht erneut nutzbar"
 			endif
-			
+
 			fontNormal.draw("Ist: " + eventCan, screenX + 5, textY)
-			textY :+ 11	
+			textY :+ 11
 			endrem
 			local happenEffects:int = 0
 			local broadcastEffects:int = 0
 			if news.newsEvent.effects.GetList("happen") then happenEffects = news.newsEvent.effects.GetList("happen").Count()
 			if news.newsEvent.effects.GetList("broadcast") then broadcastEffects = news.newsEvent.effects.GetList("broadcast").Count()
 			fontNormal.draw("Effekte: " + happenEffects + "x onHappen, "+ broadcastEffects + "x onBroadcast    Newstyp: " + news.newsEvent.newsType + "   Genre: "+news.GetGenre(), screenX + 5, textY)
-			textY :+ 11	
+			textY :+ 11
 
 			SetAlpha oldAlpha
 		EndIf

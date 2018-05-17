@@ -13,16 +13,18 @@
 		<spritepack name="gfx_news_btn_pack">
  			<url>res/gfx/newsstudio/screen_newsstudio_elements.png</url>
 			<children>
-				<child name="gfx_news_btn0" 			x="0"	y="0"	w="41"	h="42"	/>
-				<child name="gfx_news_btn1" 			x="41"	y="0"	w="41"	h="42"	/>
-				<child name="gfx_news_btn2" 			x="82"	y="0"	w="41"	h="42"	/>
-				<child name="gfx_news_btn3" 			x="123"	y="0"	w="41"	h="42"	/>
-				<child name="gfx_news_btn4" 			x="164"	y="0"	w="41"	h="42"	/>
-				<child name="gfx_news_btn0.active"		x="0"	y="42"	w="41"	h="42"	/>
-				<child name="gfx_news_btn1.active"		x="41"	y="42"	w="41"	h="42"	/>
-				<child name="gfx_news_btn2.active"		x="82"	y="42"	w="41"	h="42"	/>
-				<child name="gfx_news_btn3.active"		x="123"	y="42"	w="41"	h="42"	/>
-				<child name="gfx_news_btn4.active"		x="164"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn0" 			x="0"	y="0"	w="40"	h="40"	/>
+				<child name="gfx_news_btn1" 			x="40"	y="0"	w="40"	h="40"	/>
+				<child name="gfx_news_btn2" 			x="80"	y="0"	w="40"	h="40"	/>
+				<child name="gfx_news_btn3" 			x="120"	y="0"	w="40"	h="40"	/>
+				<child name="gfx_news_btn4" 			x="160"	y="0"	w="40"	h="40"	/>
+				<child name="gfx_news_btn5" 			x="200"	y="0"	w="40"	h="40"	/>
+				<child name="gfx_news_btn0.active"		x="0"	y="40"	w="40"	h="40"	/>
+				<child name="gfx_news_btn1.active"		x="40"	y="40"	w="40"	h="40"	/>
+				<child name="gfx_news_btn2.active"		x="80"	y="40"	w="40"	h="40"	/>
+				<child name="gfx_news_btn3.active"		x="120"	y="40"	w="40"	h="40"	/>
+				<child name="gfx_news_btn4.active"		x="160"	y="40"	w="40"	h="40"	/>
+				<child name="gfx_news_btn5.active"		x="200"	y="40"	w="40"	h="40"	/>
 			</children>
 		</spritepack>
 
@@ -162,7 +164,7 @@
 
 		<!-- STUDIO: manager entity -->
 		<spriteentity name="entity_studio_manager" sprite="gfx_studio_manager" x="0" y="115" />
-		
+
 
 		<!-- MOVIEAGENCY -->
 		<spritepack name="screen_movieagency_elements">
@@ -281,11 +283,11 @@
 		<!-- MOVIE AGENCY: Auction entity - to go to auction screen -->
 		<spriteentity name="entity_movieagency_auction" sprite="gfx_movieagency_hammer" x="214" y="223" />
 
-		
+
 		<!-- OFFICE: STATIONMAP -->
 		<sprite name="stationmap_antenna0" url="res/gfx/office/screen_stationmap_antenna.png" />
 
-		
+
 		<!-- OFFICE: FINANCIAL SCREEN -->
 		<spritepack name="screen_financial_elements">
  			<url>res/gfx/office/screen_financials_elements.png</url>
