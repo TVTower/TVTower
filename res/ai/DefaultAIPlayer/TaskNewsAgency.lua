@@ -13,7 +13,8 @@ _G["TaskNewsAgency"] = class(AITask, function(c)
 	                        TVT.Constants.NewsGenre.POLITICS_ECONOMY,
 	                        TVT.Constants.NewsGenre.SPORT,
 	                        TVT.Constants.NewsGenre.SHOWBIZ,
-	                        TVT.Constants.NewsGenre.TECHNICS_MEDIA
+	                        TVT.Constants.NewsGenre.TECHNICS_MEDIA,
+	                        TVT.Constants.NewsGenre.CULTURE
 	                      }
 end)
 
@@ -24,8 +25,8 @@ end
 function TaskNewsAgency:Activate()
 	-- Was getan werden soll:
 	self.CheckEventNewsJob = JobCheckEventNews()
-	self.CheckEventNewsJob.Task = self	
-	
+	self.CheckEventNewsJob.Task = self
+
 	self.NewsAgencyAbonnementsJob = JobNewsAgencyAbonnements()
 	self.NewsAgencyAbonnementsJob.Task = self
 
@@ -76,19 +77,19 @@ function TaskNewsAgency:BeforeBudgetSetup()
 	local player = _G["globalPlayer"]
 
 	if player.NewsPriority > 7 then
-		self.BudgetWeight = 5 
+		self.BudgetWeight = 5
 	elseif player.NewsPriority >= 6 then
-		self.BudgetWeight = 4 
+		self.BudgetWeight = 4
 	elseif player.NewsPriority >= 5 then
-		self.BudgetWeight = 3 
+		self.BudgetWeight = 3
 	else
 		self.BudgetWeight = 2
-	end 
+	end
 end
 
 function TaskNewsAgency:BudgetSetup()
 	local baseFee = TVT.ne_getNewsAbonnementFee(TVT.Constants.NewsGenre.CURRENTAFFAIRS, 1)
-	
+
 	-- calculate abonnement budget
 	-- to have at least news, we need a minimum budget to be able to sub-
 	-- scribe to current affairs
@@ -146,12 +147,12 @@ function JobCheckEventNews:Tick()
 
 --	if terrorLevel >= 4 then
 --		kiMsg("Terroranschlag geplant! Terror-Level: " .. terrorLevel)
---	end	
-	
+--	end
+
 	local player = _G["globalPlayer"] --Zugriff die globale Variable
 	if player.TaskList[TASK_ROOMBOARD] ~= nil then
-		local roomBoardTask = player.TaskList[TASK_ROOMBOARD]	
-		if terrorLevel >= 2 then	
+		local roomBoardTask = player.TaskList[TASK_ROOMBOARD]
+		if terrorLevel >= 2 then
 			roomBoardTask.SituationPriority = terrorLevel * terrorLevel
 		end
 
@@ -159,11 +160,11 @@ function JobCheckEventNews:Tick()
 		if terrorLevel >= 1 then
 			roomBoardTask.RecognizedTerrorLevel = true
 		end
-	
+
 		roomBoardTask.FRDubanTerrorLevel = TVT.ne_getTerroristAggressionLevel(0) --FR Duban Terroristen
-		roomBoardTask.VRDubanTerrorLevel = TVT.ne_getTerroristAggressionLevel(1) --VR Duban Terroristen			
+		roomBoardTask.VRDubanTerrorLevel = TVT.ne_getTerroristAggressionLevel(1) --VR Duban Terroristen
 	end
-	
+
 	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -238,7 +239,7 @@ function JobNewsAgencyAbonnements:Tick()
 	else
 		--debugMsg("- News budget stays the same. CurrentBudget=" .. self.Task.CurrentBudget)
 	end
-	
+
 	self.Status = JOB_STATUS_DONE
 end
 
@@ -273,7 +274,7 @@ function JobNewsAgency:Prepare(pParams)
 	-- disabled, all news are now returned by
 	-- "GetNewsList()" and should be automatically removed from other
 	-- slots upon placement
-                  
+
 	-- instead of refreshing the news list each time we adjusted a slot
 	-- (which might add back a previously send news to the collection which
 	--  is still better than the other existing ones)
@@ -341,7 +342,7 @@ function JobNewsAgency:GetNewsList(paidBonus)
 		paidBonus = 0.1 --10%
 	end
 	paidBonus = tonumber(paidBonus)
-		
+
 
 	-- fetch all news, insert all available to a list
 	-- fetch available ones
@@ -361,7 +362,7 @@ function JobNewsAgency:GetNewsList(paidBonus)
 	end
 	local broadcastedNews = response.DataArray()
 	-- "pairs", not "ipairs" as the result might contains empty slots
-	-- which "ipairs" does not like 
+	-- which "ipairs" does not like
 	for i, news in pairs(broadcastedNews) do
 		table.insert(currentNewsList, news)
 	end

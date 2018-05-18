@@ -346,7 +346,7 @@ Type TVTNewsGenre {_exposeToLua}
 	Const SPORT:int = 2
 	Const TECHNICS_MEDIA:int = 3
 	Const CURRENTAFFAIRS:int = 4
-	Const CULTURE:int = 5 'not COUNTED yet
+	Const CULTURE:int = 5
 	Const count:int = 6
 
 
