@@ -157,7 +157,7 @@ Type TGameModifierPopularity_ModifyPersonPopularity extends TGameModifierBase
 			TLogger.Log("TGameModifierPopularity_ModifyPersonPopularity", "cannot find popularity to trigger: "+personGUID + " (maybe insignificant person)", LOG_ERROR)
 			return false
 		endif
-		local changeBy:Float = RandRange(valueMin*1000, valueMax*1000)/1000.0
+		local changeBy:Float = RandRange(int(valueMin*1000), int(valueMax*1000))/1000.0
 		'does adjust the "trend" (growth direction of popularity) not
 		'popularity directly
 		popularity.ChangeTrend(changeBy)

@@ -74,7 +74,7 @@ End Function
 '(players, terrorists and so on)
 Type TFigure extends TFigureBase
 	Field fadeOnChangingRoom:int = False
-	
+
 	'the door used (there might be multiple)
 	Field usedDoor:TRoomDoorBase = Null
 	'coming from room
@@ -99,7 +99,8 @@ Type TFigure extends TFigureBase
 		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("walkLeft", [ [4,130], [5,130], [6,130], [7,130] ], -1, 0) )
 		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("standFront", [ [8,2500], [9,250] ], -1, 0, 500) )
 		GetFrameAnimations().Set(TSpriteFrameAnimation.Create("standBack", [ [10,1000] ], -1, 0 ) )
-
+'local coll:TSpriteFrameAnimationCollection = GetFrameAnimations()
+'debugstop
 		name = Figurename
 		area = new TRectangle.Init(x, TBuildingBase.GetFloorY2(onFloor), sprite.framew, sprite.frameh )
 		velocity.SetX(0)
@@ -206,7 +207,7 @@ Type TFigure extends TFigureBase
 	'override to add building/room support
 	Method IsIdling:int()
 		if not Super.IsIdling() then return False
-		
+
 		If not IsInBuilding() then return False
 
 		return True
@@ -215,7 +216,7 @@ Type TFigure extends TFigureBase
 
 	'override to wait when reaching a target door/hotspot
 	Method customReachTargetStep1:Int()
-		local targetObject:object = GetTargetObject()  
+		local targetObject:object = GetTargetObject()
 		'start waiting in front of the target
 		If TRoomDoorBase(targetObject) or THotspot(targetObject)
 			WaitEnterTimer = GetBuildingTime().GetMillisecondsGone() + WaitEnterLeavingTime
@@ -225,9 +226,9 @@ Type TFigure extends TFigureBase
 	End Method
 
 
-	'override to 
+	'override to
 	Method TargetNeedsToGetEntered:int()
-		local targetObject:object = GetTargetObject()  
+		local targetObject:object = GetTargetObject()
 
 		if TRoomDoorBase(targetObject) then return True
 		'if hotspot, ask it whether enter is wanted
@@ -328,7 +329,7 @@ Type TFigure extends TFigureBase
 				'some time too -> FinishEnterRoom is called when that is
 				'finished too)
 				'CanEnterTarget also checks for "IsWaitingToEnter()"
-				if not IsWaitingToEnter() and CanEnterTarget() 'and currentAction = ACTION_IDLE  
+				if not IsWaitingToEnter() and CanEnterTarget() 'and currentAction = ACTION_IDLE
 					WaitEnterTimer = -1
 					if not EnterTarget() then print "Enter target failed. Figure: " + name
 				endif
@@ -478,7 +479,7 @@ Type TFigure extends TFigureBase
 	Method IsVisible:int()
 		'in a fake room?
 		if inRoom and inRoom.ShowsOccupants() then return True
-		
+
 		return (IsInBuilding() or isChangingRoom())
 	End Method
 
@@ -629,8 +630,8 @@ Type TFigure extends TFigureBase
 		'if playerID = 1
 		'		print self.name+" ENTERING " + room.GetName() +" ["+room.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
 		'endif
-		
-		'try to enter the room 
+
+		'try to enter the room
 		if not TryEnterRoom(door, room, forceEnter)
 			return False
 		endif
@@ -697,8 +698,8 @@ Type TFigure extends TFigureBase
 		'do not fade when it is a fake room
 		fadeOnChangingRoom = True
 		if room.ShowsOccupants() then fadeOnChangingRoom = False
-	
-		'kick other figures from the room if figure is the owner 
+
+		'kick other figures from the room if figure is the owner
 		'only player-figures need such handling (events etc.)
 		If playerID and playerID = room.owner and room.occupants.Count() > 0
 			for local occupant:TFigure = eachin room.occupants.Copy()
@@ -827,7 +828,7 @@ endrem
 		if not HasKeyForRoom(room) then return False
 
 		return room.CanEntityEnter(self)
-	End Method 
+	End Method
 
 
 	'command to leave a room - "onLeaveRoom" is called when successful
@@ -855,7 +856,7 @@ endrem
 			'print self.name+" LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
 			'if GetTarget() then print " ... has target"
 		'endif
-		
+
 		'=== CHECK IF LEAVING IS ALLOWED ===
 		'skip leaving if not allowed to do so
 		if not forceLeave and not CanLeaveRoom(inroom) then return False
@@ -902,7 +903,7 @@ endrem
 		'if playerID = 1
 		'	print self.name+" START LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
 		'endif
-		
+
 		'do not fade when it is a fake room
 		fadeOnChangingRoom = True
 		if inRoom.ShowsOccupants() then fadeOnChangingRoom = False
@@ -925,7 +926,7 @@ endrem
 		'if playerID = 1
 		'	print self.name+" FINISHED LEAVING " + inRoom.GetName() +" ["+inRoom.id+"]  (" + Time.GetSystemTime("%H:%I:%S") +")"
 		'endif
-		
+
 		'enter target -> null = building
 		SetInRoom( null )
 
@@ -963,7 +964,7 @@ endrem
 			print "SendToDoor: failed, moveToPos = null"
 			return False
 		endif
-	
+
 		If forceSend
 			ForceChangeTarget(moveToPos.GetIntX(), moveToPos.GetIntY())
 		Else
@@ -1060,7 +1061,7 @@ endrem
 
 		'=== CALCULATE NEW TARGET/TARGET-OBJECT ===
 		local newTarget:object = Null
-	
+
 		'only a partial target was given
 		if x=-1 or y=-1
 			'change current target
@@ -1109,7 +1110,7 @@ endrem
 		endif
 
 		local targetRoom:TRoomBase
-		if TRoomDoor(newTarget) then targetRoom = TRoomDoor(newTarget).GetRoom() 
+		if TRoomDoor(newTarget) then targetRoom = TRoomDoor(newTarget).GetRoom()
 
 
 		'=== CHECK IF ALREADY THERE ===
@@ -1125,7 +1126,7 @@ endrem
 			'new target and current target are at the same position?
 			if newTargetCoord.IsSame( GetTargetMoveToPosition() ) then return False
 
-			'print playerID+": targets are different " + newTargetCoord.getIntX()+","+newTargetCoord.getIntY()+" vs " + GetTargetMovetoPosition().GetIntX()+","+GetTargetMovetoPosition().getIntY() 
+			'print playerID+": targets are different " + newTargetCoord.getIntX()+","+newTargetCoord.getIntY()+" vs " + GetTargetMovetoPosition().GetIntX()+","+GetTargetMovetoPosition().getIntY()
 		endif
 		'or if already in this room
 		if targetRoom and targetRoom = inRoom then return False
@@ -1203,7 +1204,7 @@ endrem
 					local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
 					room.RemoveOccupant(self)
 				endif
-				
+
 '				FinishEnterRoom( inRoom )
 			endif
 		endif
@@ -1251,7 +1252,7 @@ endrem
 				endif
 			endif
 		endif
-		
+
 
 		'TODO: make obsolete ;-)
 		'ATTENTION: Call _before_ figure movement
@@ -1281,7 +1282,7 @@ endrem
 
 
 		'maybe someone is interested in this information
-		If SyncTimer.isExpired() 
+		If SyncTimer.isExpired()
 			EventManager.triggerEvent( TEventSimple.Create("figure.onSyncTimer", self) )
 			SyncTimer.Reset()
 		EndIf
@@ -1327,7 +1328,7 @@ endrem
 		'avoid shaking figures when standing - only use tween
 		'position when moving
 		local tweenPos:TVec2D
-		
+
 		'also do not move with WorldTime being paused
 		'alternatively (also do not move when gamespeed is "0")
 		'-> and GetWorldTime().GetTimeFactor() > 0
@@ -1349,7 +1350,7 @@ endrem
 		'if parent then tweenPos.AddXY(parent.GetScreenX(), parent.GetScreenY())
 
 		return tweenPos
-	End Method 
+	End Method
 
 
 	Method RenderDebug(pos:TVec2D = Null)
@@ -1380,7 +1381,7 @@ endrem
 				targetObjText = "Hotspot"
 			endif
 		endif
-		
+
 		SetAlpha oldCol.a
 		SetColor 255,255,255
 		GetBitMapFont("default").Draw(name, pos.x + 5, pos.y + 5)

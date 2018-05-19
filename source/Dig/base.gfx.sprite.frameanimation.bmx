@@ -28,7 +28,7 @@ Type TSpriteFrameAnimationCollection
 
 		return self
 	End Method
-	
+
 
 	'insert a TSpriteFrameAnimation with a certain Name
 	Method Set(animation:TSpriteFrameAnimation, name:string="")
@@ -193,7 +193,11 @@ Type TSpriteFrameAnimation
 		c.currentFrame = currentFrame
 		c.currentSpriteName = currentSpriteName
 		c.frames = frames[..]
-		c.spriteNames = spriteNames[..]
+		if spriteNames
+			c.spriteNames = spriteNames[..]
+		else
+			c.spriteNames = null
+		endif
 		c.framesTime = framesTime[..]
 		c.paused = paused
 		c.frameTimer = frameTimer
@@ -279,7 +283,10 @@ Type TSpriteFrameAnimation
 		currentFrame = Max( Min(framePos, len(frames) - 1), 0)
 		'set the image frame of thhe animation frame
 		setCurrentImageFrame( frames[currentFrame] )
-		setCurrentSpriteName( spriteNames[currentFrame] )
+
+		if spriteNames and spriteNames.length > currentFrame
+			setCurrentSpriteName( spriteNames[currentFrame] )
+		endif
 	End Method
 
 
