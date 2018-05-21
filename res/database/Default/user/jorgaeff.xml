@@ -73,7 +73,7 @@
 				<de>Deutsches Aktien-System eingeführt</de>
 			</title>
 			<description>
-				<de>An der Deutschen Börse in Frankfurt wurde das deutsche Aktien-System (Daks) eingeführt. Er misst die Wertentwicklung der 30 größten und liquidesten Unternehmen des deutschen Aktienmarktes.</de>
+				<de>An der Deutschen Börse in Frankfurt wurde das deutsche Aktien-System (Daks) eingeführt. Es misst die Wertentwicklung der 30 größten und liquidesten Unternehmen des deutschen Aktienmarktes.</de>
 			</description>
 			<data genre="0" price="0.8" topicality="80" fictional="False" flags="2" />
 		</news>
@@ -121,7 +121,7 @@
 				<de>ShPD gewinnt Bundestagswahl</de>
 			</title>
 			<description>
-				<de>Die großen Parteien gehen als Verlierer aus der Bundestagswahl hervor. Dennoch hat die Scheinheiligen-Partei Deutschland (ShDP) auch weiterhin die Mehrheit. Eine weitere Amtszeit von Herbert Kappes steht bevor.</de>
+				<de>Die großen Parteien gehen als Verlierer aus der Bundestagswahl hervor. Dennoch hat die Scheinheiligen-Partei Deutschland (ShPD) auch weiterhin die Mehrheit. Eine weitere Amtszeit von Herbert Kappes steht bevor.</de>
 			</description>
 			<data genre="0" price="0.5" topicality="50" fictional="False" flags="2" />
 		</news>
@@ -466,7 +466,7 @@
 				<de>Benny Jameson erhält Filmpreis</de>
 			</title>
 			<description>
-				<de>Für die Rolle eines Häftlings wurde Leo de Capri mit einem Filmpreis geehrt. Die Kritiker loben die besonders realistische Darstellung des Schauspielers.</de>
+				<de>Für die Rolle eines Häftlings wurde Benny Jameson mit einem Filmpreis geehrt. Die Kritiker loben die besonders realistische Darstellung des Schauspielers.</de>
 			</description>
 			<data genre="1" price="0.6" topicality="55" fictional="True" />
 			<effects>
@@ -557,7 +557,7 @@
 				<de>Grunge-Band gegründet</de>
 			</title>
 			<description>
-				<de>Mit Elysium hat sich an der nordamerikanischen Ostküste eine neue Band gegründet. Die Musiker um Band-Leader Kurt Kokain möchte "dieses Grunge-Rock-Ding" weiterentwickeln und die Band weltweit berühmt machen.</de>
+				<de>Mit Elysium hat sich an der nordamerikanischen Ostküste eine neue Band gegründet. Die Musiker um Band-Leader Kurt Kokain möchten "dieses Grunge-Rock-Ding" weiterentwickeln und die Band weltweit berühmt machen.</de>
 			</description>
 			<data genre="1" price="0.3" topicality="30" fictional="False" flags="2" />
 		</news>
@@ -1047,7 +1047,7 @@
 				<de>Weltmeisterschaft im Show-Catchen</de>
 			</title>
 			<description>
-				<de>Die Westamerikanischen Wrestling Freunde (WWFr) veranstalten im Texas Skydome ihre ersten Wrestlewahnsinn. Im Main-Event trifft Badguy "Rowdy" Pfeifer auf den Titelträger Horst Hogen.</de>
+				<de>Die Westamerikanischen Wrestling Freunde (WWFr) veranstalten im Texas Skydome ihren ersten Wrestlewahnsinn. Im Main-Event trifft Badguy "Rowdy" Pfeifer auf den Titelträger Horst Hogen.</de>
 			</description>
 			<effects>
 				<!-- "morgen 3-7 Uhr" -->
@@ -1073,7 +1073,7 @@
 				<de>Denkward Kurzer gewinnt Golf-Masters</de>
 			</title>
 			<description>
-				<de>Denkward Kurzer gewinnt als erster deutscher Golfer die mit 500.000 $US dotierten US-Master in Augusta (Georgia).</de>
+				<de>Denkward Kurzer gewinnt als erster deutscher Golfer die mit 500.000 $US dotierten US-Masters in Augusta (Georgia).</de>
 			</description>
 			<data genre="2" price="0.3" topicality="30" fictional="False" flags="2" />
 		</news>
@@ -1186,7 +1186,7 @@
 				<de>Deutsches Team gewinnt Navy-Cup</de>
 			</title>
 			<description>
-				<de>Die deutsche Tennis-Nationalmannschaft Deutschland (mit Bas Body, Charly Raab, Erich Gielen und Peter Kühne) gewinnt das Navy-Cup-Finale gegen Schweden.</de>
+				<de>Die deutsche Tennis-Nationalmannschaft Deutschland (mit Bas Bode, Charly Raab, Erich Gielen und Peter Kühne) gewinnt das Navy-Cup-Finale gegen Schweden.</de>
 			</description>
 			<data genre="2" price="0.3" topicality="30" fictional="False" flags="2" />
 		</news>
@@ -1565,7 +1565,7 @@
 				<de>Schicker roter Flitzer</de>
 			</title>
 			<description>
-				<de>Die italienische Rennwagen-Schmiede Fellaini stellt zum 40. Firmenjubiläum den Ferrari F40 vor. Das Basismodell gibt es ab 444.000 DM und ist in den Farben hellrot, dunkelrot und neonrot erhältlich.</de>
+				<de>Die italienische Rennwagen-Schmiede Fellaini stellt zum 40. Firmenjubiläum den Fellaini F40 vor. Das Basismodell gibt es ab 444.000 DM und ist in den Farben hellrot, dunkelrot und neonrot erhältlich.</de>
 			</description>
 			<data genre="3" price="0.85" topicality="85" fictional="True" flags="2" />
 		</news>
@@ -2146,7 +2146,7 @@
 				<de>Atomkraftwerk in Russland explodiert</de>
 			</title>
 			<description>
-				<de>Vor 3 Tagen ist ein Reaktor im russischen Atomkraftwerk Nobyliwostok expolodiert. Schwerwiegende Folgen für Mensch und Natur befürchtet.</de>
+				<de>Vor 3 Tagen ist ein Reaktor im russischen Atomkraftwerk Nobyliwostok explodiert. Schwerwiegende Folgen für Mensch und Natur befürchtet.</de>
 			</description>
 			<data genre="4" price="1" topicality="100" fictional="False" flags="2" />
 			<effects>
@@ -2241,7 +2241,7 @@
 				<de>Verkehrschaos blieb aus</de>
 			</title>
 			<description>
-				<de>Ohne besondere Vorkommnisse ist die Sonnenfinsternis im West-Pazifik zu Ende gegangen. Die für informierte Bevölkerung hatte genug Zeit sich vorzubereiten; das befürchtete Verkehrschaos blieb aus.</de>
+				<de>Ohne besondere Vorkommnisse ist die Sonnenfinsternis im West-Pazifik zu Ende gegangen. Die gut informierte Bevölkerung hatte genug Zeit sich vorzubereiten; das befürchtete Verkehrschaos blieb aus.</de>
 			</description>
 			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
 			<effects>
