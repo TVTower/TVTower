@@ -181,7 +181,7 @@ Type TBitmapFont
 	Field spriteSet:TSpritePack
 	'by default only the first 256 chars get loaded
 	'as soon as an "utf8"-code is requested, the font will re-init with
-	'more sprites 
+	'more sprites
 	Field MaxSigns:Int = 256
 	Field glyphCount:int = 0
 	Field ExtraChars:String = ""
@@ -189,7 +189,7 @@ Type TBitmapFont
 	Field uniqueID:string =""
 	Field displaceY:float=100.0
 	'modifier * lineheight gets added at the end
-	Field lineHeightModifier:float = 1.2
+	Field lineHeightModifier:float = 1.05
 	'value the width of " " (space) is multiplied with
 	Field spaceWidthModifier:float = 1.0
 	Field tabWidth:int = 15
@@ -264,7 +264,7 @@ Type TBitmapFont
 		if _charsEffectFunc.length > 0
 			'for local _charKey:TIntKey = eachin chars.keys()
 			for local charKey:int = 0 until chars.length
-				
+
 				'local charKey:Int = _charKey.Value
 				'local char:TBitmapFontChar = TBitmapFontChar(chars.ValueForKey(charKey))
 				local char:TBitmapFontChar = chars[charKey]
@@ -295,10 +295,10 @@ Type TBitmapFont
 	Method GetVariant:TBitmapFont(size:int=-1, style:int = -1)
 		if size = -1 then size = self.FSize
 		if style = -1 then style = self.FStyle
-		return TBitmapFontManager.GetInstance().Get(self.FName, size, style)	
+		return TBitmapFontManager.GetInstance().Get(self.FName, size, style)
 	End Method
 
-	
+
 	'generate a charmap containing packed rectangles where to store images
 	Method InitFont(config:TData=null )
 		'1. load chars
@@ -369,7 +369,7 @@ Type TBitmapFont
 			chars[ExtraChars[charNum]] = new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance)
 		Next
 	End Method
-	
+
 	Method resizeChars(index:int)
 		if index >= chars.length then
 			chars = chars[.. index + 1 + chars.length/3]
@@ -410,7 +410,7 @@ Type TBitmapFont
 			Local charKey:Int = _charKey.ToInt()
 			'skip missing data
 			if (charKey > chars.length) or (not chars[charKey]) then continue
-			
+
 			local bm:TBitmapFontChar = chars[charKey]
 			if not bm.img then continue
 
@@ -461,7 +461,7 @@ Type TBitmapFont
 
 	Method GetMaxCharHeight:int(includeBelowBaseLine:int=True)
 		if includeBelowBaseLine
-			if _maxCharHeight = 0 then _maxCharHeight = getHeight("gQ'_")
+			if _maxCharHeight = 0 then _maxCharHeight = getHeight("gQ'_") 'including "()" adds too much to the font height
 			return _maxCharHeight
 		else
 			if _maxCharHeightAboveBaseline = 0 then _maxCharHeightAboveBaseline = getHeight("abCDE")
@@ -566,7 +566,7 @@ Type TBitmapFont
 									skipNextChar = TRUE 'aka delete the " "
 								endif
 								spaces :+ 1
-									
+
 							elseif linePartial[charPos] = Asc("-")
 								breakPosition = charPos+1
 								FoundBreakPosition=TRUE
@@ -625,9 +625,9 @@ Type TBitmapFont
 
 	'draws the text lines in a given block according to given alignment.
 	'@nicelyTruncateLastLine:      try to shorten a word with "..."
-	'                              or just truncate? 
+	'                              or just truncate?
 	'@centerSingleLineOnBaseline:  if only 1 line is given, is center
-	'                              calculated using baseline (no "y,g,p,...") 
+	'                              calculated using baseline (no "y,g,p,...")
 	Method drawLinesBlock:TVec2D(lines:String[], x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE, centerSingleLineOnBaseline:int=False, fixedLineHeight:int = -1)
 		'use special chars (instead of text) for same height on all lines
 		Local alignedX:float = 0.0
@@ -689,7 +689,7 @@ Type TBitmapFont
 			local p:TVec2D = __drawStyled( lines[i], alignedX, y, color, style, doDraw, special, fontStyle)
 
 			if fixedLineHeight <= 0
-				y :+ Max(lineHeight, p.y)
+				y :+ Min(_maxCharHeight, Max(lineHeight, p.y))
 				'add extra spacing _between_ lines
 				If lines.length > 1 and i < lines.length-1
 					y :+ lineHeight * (lineHeightModifier-1.0)
@@ -705,9 +705,9 @@ Type TBitmapFont
 
 	'draws the text in a given block according to given alignment.
 	'@nicelyTruncateLastLine:      try to shorten a word with "..."
-	'                              or just truncate? 
+	'                              or just truncate?
 	'@centerSingleLineOnBaseline:  if only 1 line is given, is center
-	'                              calculated using baseline (no "y,g,p,...") 
+	'                              calculated using baseline (no "y,g,p,...")
 	Method drawBlock:TVec2D(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE, centerSingleLineOnBaseline:int=False, fixedLineHeight:Int = -1)
 		Local lineHeight:float = getMaxCharHeight()
 		Local lines:string[] = TextToMultiLine(text, w, h, lineHeight, nicelyTruncateLastLine)
@@ -869,8 +869,8 @@ Type TBitmapFont
 		if oldColor then oldColor.SetRGBA()
 		return result
 	End Method
-	
-	
+
+
 	Method __draw:TVec2D(text:String,x:Float,y:Float, color:TColor=null, doDraw:int=TRUE, fontStyle:TBitmapFontStyle)
 		local width:float = 0.0
 		local height:float = 0.0
@@ -918,7 +918,7 @@ Type TBitmapFont
 		fontStyle.PushColor(color)
 
 		For text:string = eachin textLines
-		
+
 			'except first line (maybe only one line) - add extra spacing
 			'between lines
 			if currentLine > 0 then height:+ ceil( lineHeight* (font.lineHeightModifier-1.0) )
@@ -934,7 +934,7 @@ Type TBitmapFont
 				If charCode > 256 and MaxSigns = 256 and glyphCount > 256 and extraChars.find(chr(charCode)) = -1
 					LoadExtendedCharacters()
 				EndIf
-					
+
 
 				'check for controls
 				if controlCharStarted
@@ -1084,7 +1084,7 @@ Type TBitmapFontStyle
 		colors.Clear()
 		styleDisplaceY = 0
 	End Method
-	
+
 
 	Method Push:TBitMapFontStyle(fName:string, fSize:int, fStyle:int, color:TColor)
 		PushFontName(fName)
@@ -1093,7 +1093,7 @@ Type TBitmapFontStyle
 		PushColor(color)
 		return self
 	End Method
-	
+
 
 	Method PushColor( color:TColor )
 		'reuse the last one
@@ -1160,14 +1160,14 @@ Type TBitmapFontStyle
 		return int(string(fontSizes.Last()))
 	End Method
 
-	
+
 	Method GetFontStyle:int()
 		local style:int = 0
 		if fontStyles[0] > 0 then style :| BOLDFONT
 		if fontStyles[1] > 0 then style :| ITALICFONT
 		return style
 	End Method
-	
+
 
 	Method GetFont:TBitmapfont()
 		return GetBitmapFontManager().Get(GetFontName(), GetFontSize(), GetFontStyle())
