@@ -8,6 +8,10 @@ Import "game.building.buildingtime.bmx"
 
 Type TFigureBaseCollection extends TEntityCollection
 	Field figuresToRemove:TFigureBase[]
+	Field shuffledFigures:TFigureBase[]
+	'Field shuffledFiguresIndex:int = 0
+
+	Field updateCount:int = 0
 	Global _eventsRegistered:int= FALSE
 	Global _instance:TFigureBaseCollection
 
@@ -55,14 +59,54 @@ Type TFigureBaseCollection extends TEntityCollection
 		Next
 		return Null
 	End Method
-	
+
 
 	Method UpdateAll:int()
-		For Local Figure:TFigureBase = EachIn entries.Values()
+		if GetCount() <= 0 then return False
+
+		'TODO: replace with something like "entering room" - or "logic ticks"
+		'      so things keep synchronized better over network
+		updateCount :+ 1
+		if updateCount > 50 or not shuffledFigures or shuffledFigures.length <> entriesCount
+			updateCount = 0
+
+			rem
+			'instead of shuffling (using a RandRange...) we just shift one
+			'by one
+			'-> disabled as shifting does not change player-figure order
+			'   in most cases (except it wraps between these 4 figures)
+			shuffledFigures = new TFigureBase[entriesCount]
+			shuffledFiguresIndex = ((shuffledFiguresIndex + 1) mod entriesCount)
+			local i:int = shuffledFiguresIndex
+			For Local Figure:TFigureBase = EachIn entries.Values()
+				shuffledFigures[i] = Figure
+				i :+ 1
+				if i >= entriesCount then i = 0
+			Next
+			endrem
+
+			shuffledFigures = new TFigureBase[entriesCount]
+			local i:int = 0
+			For Local Figure:TFigureBase = EachIn entries.Values()
+				shuffledFigures[i] = Figure
+				i :+ 1
+			Next
+			For Local a:int = 0 To entriesCount - 2
+				Local b:int = RandRange( a, entriesCount - 1)
+				Local f:TFigureBase = shuffledFigures[a]
+				shuffledFigures[a] = shuffledFigures[b]
+				shuffledFigures[b] = f
+			Next
+		endif
+
+
+		'For Local Figure:TFigureBase = EachIn entries.Values()
+		For Local Figure:TFigureBase = EachIn shuffledFigures
 			if not Figure.Update()
 				figuresToRemove :+ [Figure]
 			endif
 		Next
+
 
 		if figuresToRemove.length > 0
 			For local f:TFigureBase = EachIn figuresToRemove
@@ -142,7 +186,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Field WaitEnterTimer:Long = -1
 	Field WaitLeavingTimer:Long = -1
 	Field WaitEnterLeavingTime:Int = 200
-	
+
 
 	Field figureID:Int = 0
 	'does the figure accept manual (AI or user) ChangeTarget-commands?
@@ -188,7 +232,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method RunCustomSpeedFactorFunc:float()
 		return TBuildingTime.GetInstance().GetTimeFactor()
 	End Method
-	
+
 
 	Method GetFloor:Int(pos:TVec2D = Null) abstract
 
@@ -222,7 +266,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method IsAcceptingEntityInSameRoom:int(entity:TEntity, room:object)
 		'accept everything "non-figure" (such things do not exist yet)
 		if not TFigureBase(entity) then return True
-		
+
 		'players do not accept others in same room
 		if self.playerID > 0 and TFigureBase(entity).playerID > 0 then return False
 
@@ -294,7 +338,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		if IsWaitingToLeave() then return False
 		return moveable
 	End Method
-	
+
 
 	Method CanSeeFigure:int(figure:TFigureBase, range:int=50)
 		'being in a room (or coming out of one)
@@ -360,7 +404,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method PrependTarget(target:TFigureTargetBase)
 		figureTargets = [target] + figureTargets
 	End Method
-	
+
 
 	Method RemoveCurrentTarget:int()
 		if figureTargets.length = 0 then return False
@@ -450,7 +494,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method ForceChangeTarget:Int(x:Int=-1, y:Int=-1)
 		return _ChangeTarget(x,y, True)
 	End Method
-	
+
 
 	Method ChangeTarget:Int(x:Int=-1, y:Int=-1)
 		return _ChangeTarget(x,y, False)
@@ -477,7 +521,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method LeaveRoom:Int(force:Int=False)
 		return True
 	End Method
-	
+
 
 	'split into two steps to allow a "waiting time"
 	'step 1/2
@@ -485,7 +529,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		if not GetTarget() then return False
 
 		velocity.SetX(0)
-		
+
 		'set target as current position - so we are exactly there we want to be
 		local targetPosition:TVec2D = GetTargetMoveToPosition()
 		if targetPosition then area.position.setX( targetPosition.getX() )
@@ -501,7 +545,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		'or just remove the current target
 		customReachTargetStep1()
 	End Method
-	
+
 
 	'step 2/2
 	Method ReachTargetStep2:int()
@@ -587,7 +631,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 			If GetVelocity().GetX() > 0 Then result = "walkRight"
 			If GetVelocity().GetX() < 0 Then result = "walkLeft"
 		EndIf
-		
+
 		if IsWaitingToLeave() then result = "standFront"
 		if IsWaitingToEnter() then result = "standBack"
 
@@ -599,7 +643,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method GetDeltaTime:Float()
 		return GetDeltaTimer().GetDelta() * GetBuildingTime().GetTimeFactor()
 	End Method
-	
+
 
 	Method Update:int()
 		'call parents update (which does movement and updates current
@@ -679,7 +723,7 @@ Type TFigureTargetBase
 			return True
 		endif
 	End Method
-	
+
 
 	Method Start(figure:TFigureBase)
 		currentStep = 0
@@ -689,7 +733,7 @@ Type TFigureTargetBase
 	Method Abort(figure:TFigureBase)
 		currentStep = 0
 	End Method
-	
+
 
 	Method Finish(figure:TFigureBase)
 		currentStep = 2
@@ -698,7 +742,7 @@ Type TFigureTargetBase
 
 	Method Reach(figure:TFigureBase)
 		currentStep = 1
-	End Method	
+	End Method
 
 
 	Method GetMoveToPosition:TVec2D()
