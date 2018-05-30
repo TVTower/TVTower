@@ -11,7 +11,7 @@
 			<description>
 				<de>Die Volksrepublik Duban hat Donald Dumb zu ihrem neuen Präsidenten ernannt. Für die nächsten vier Jahre wird der Multi-Millionär die Geschicke der Volksrepublik leiten.</de>
 			</description>
-			<data genre="0" price="0.9" topicality="75" fictional="True" />
+			<data genre="0" price="0.9" quality="75" fictional="True" />
 			<effects>
 				<!-- "morgen 9-12 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,9,12" news="news-jorgaeff-dumb-02" />
@@ -25,7 +25,7 @@
 			<description>
 				<de>In seiner Eröffnungsrede bezeichnete Dumb die Freie Republik Duban als "... Abschaum, der beseitigt werden muss!". Die Freie Republik Duban drohte daraufhin Konsequenzen an.</de>
 			</description>
-			<data genre="0" price="0.9" topicality="75" fictional="True" />
+			<data genre="0" price="0.9" quality="75" fictional="True" />
 			<effects>
 				<!-- "uebermorgen 8-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,8,16" news="news-jorgaeff-dumb-03" />
@@ -39,7 +39,7 @@
 			<description>
 				<de>Weil sein hölzerner Gartenzaun schon wieder kaputt ist, möchte der Präsident der Volksrepublik Duban nun eine Mauer um sein Grundstück bauen. Sein Kommentar: "Steine halten einfach länger.".</de>
 			</description>
-			<data genre="0" price="0.7" topicality="55" fictional="True" />
+			<data genre="0" price="0.7" quality="55" fictional="True" />
 			<effects>
 				<!-- "morgen 2-7 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,2,7" news="news-jorgaeff-dumb-04" />
@@ -53,7 +53,7 @@
 			<description>
 				<de>Donald Dumb ist traurig da er schon seit Tagen seine Quietsche-Ente nicht mehr finden kann. "Ohne die Quietsche-Ente macht dem Präsidenten das Baden keinen Spaß mehr und er duscht lieber", wird Dumb von seinem Pressesprecher zitiert.</de>
 			</description>
-			<data genre="0" price="0.7" topicality="55" fictional="True" />
+			<data genre="0" price="0.7" quality="55" fictional="True" />
 		</news>
 
 	<news id="news-jorgaeff-1987-0-01" type="0" creator="8936" created_by="jorgaeff">
@@ -64,7 +64,7 @@
 			<description>
 				<de>Zu einem schwarzen Montag kam es heute an den internationalen Börsen. Weltweit sanken die Kurse um über 20%. Es ist der erste Börsenkrach seit dem 2. Weltkrieg.</de>
 			</description>
-			<data genre="0" price="0.8" topicality="80" fictional="True" flags="2" />
+			<data genre="0" price="0.8" quality="80" fictional="True" flags="2" />
 		</news>
 
 	<news id="news-jorgaeff-1988-0-01" type="0" creator="8936" created_by="jorgaeff">
@@ -75,7 +75,7 @@
 			<description>
 				<de>An der Deutschen Börse in Frankfurt wurde das deutsche Aktien-System (Daks) eingeführt. Es misst die Wertentwicklung der 30 größten und liquidesten Unternehmen des deutschen Aktienmarktes.</de>
 			</description>
-			<data genre="0" price="0.8" topicality="80" fictional="False" flags="2" />
+			<data genre="0" price="0.8" quality="80" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-0-BRD-01" type="0" creator="8936" created_by="jorgaeff">
@@ -86,7 +86,7 @@
 			<description>
 				<de>Bei der Landtagswahl in Nordrhein-Westfalen erzielt die Arbeiterpartei Deutschland (APD) unter Ministerpräsident Hannes Reif mit 52,1 % der Stimmen das beste Wahlergebnis ihrer Geschichte in diesem Bundesland.</de>
 			</description>
-			<data genre="0" price="0.6" topicality="60" fictional="False" flags="2" />
+			<data genre="0" price="0.6" quality="60" fictional="False" flags="2" />
 			<effects>
 				<!-- "in 2 Tagen 14-20 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,14,20" news="news-jorgaeff-1985-0-BRD-02" />
@@ -101,7 +101,7 @@
 			<description>
 				<de>Die Arbeiterpartei Deutschland (APD) nominiert den nordrhein-westfälischen Ministerpräsidenten Hannes Reif zum Kanzlerkandidaten für die Bundestagswahl 1987.</de>
 			</description>
-			<data genre="0" price="0.5" topicality="50" fictional="False" flags="2" />
+			<data genre="0" price="0.5" quality="50" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-0-BRD-01" type="0" creator="8936" created_by="jorgaeff">
@@ -112,7 +112,7 @@
 			<description>
 				<de>Historische Rede von US-Präsident Robert Keagan anlässlich der 750-Jahr-Feier West-Berlins: "Mr. Michailow - Tear down this wall!"</de>
 			</description>
-			<data genre="0" price="0.5" topicality="50" fictional="False" flags="2" />
+			<data genre="0" price="0.5" quality="50" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-0-BRD-02" type="0" creator="8936" created_by="jorgaeff">
@@ -123,7 +123,7 @@
 			<description>
 				<de>Die großen Parteien gehen als Verlierer aus der Bundestagswahl hervor. Dennoch hat die Scheinheiligen-Partei Deutschland (ShPD) auch weiterhin die Mehrheit. Eine weitere Amtszeit von Herbert Kappes steht bevor.</de>
 			</description>
-			<data genre="0" price="0.5" topicality="50" fictional="False" flags="2" />
+			<data genre="0" price="0.5" quality="50" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1988-0-BRD-01" type="0" creator="8936" created_by="jorgaeff">
@@ -134,7 +134,7 @@
 			<description>
 				<de>Bundeskanzler Herbert Kappes besucht den sowjetischen Staats- und Parteichef Sergei Michailow in Moskau. Beide erklären ihre Bereitschaft die „Zeit des Eises“ durch ein freundlicheres Klima abzulösen.</de>
 			</description>
-			<data genre="0" price="0.5" topicality="50" fictional="False" flags="2" />
+			<data genre="0" price="0.5" quality="50" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-0-DDR-01" type="0" creator="8936" created_by="jorgaeff">
@@ -145,7 +145,7 @@
 			<description>
 				<de>Im geteilten Berlin kommt es zum größten Agentenaustausch in der Nachkriegsära. 25 Westspione wechseln auf der Glienicker Brücke gegen vier Ostagenten die Demarkationslinie. 25:4? Ja, das liegt am Wechselkurs!</de>
 			</description>
-			<data genre="0" price="0.6" topicality="60" fictional="False" flags="2" />
+			<data genre="0" price="0.6" quality="60" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1986-0-DDR-01" type="0" creator="8936" created_by="jorgaeff">
@@ -156,7 +156,7 @@
 			<description>
 				<de>Hoher Besuch beim Parteitag der sozialistischen Partei Ost-Deutschland (SPOD) im Palast der Republik: KPdvSS-Generalsekretär, Sergei Michailow, spricht vor den Genossen und hat auch ein paar Geschenke dabei.</de>
 			</description>
-			<data genre="0" price="0.8" topicality="80" fictional="False" flags="2" />
+			<data genre="0" price="0.8" quality="80" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-0-DDR-01" type="0" creator="8936" created_by="jorgaeff">
@@ -167,7 +167,7 @@
 			<description>
 				<de>Emil Hoecker besucht als erster DDR-Staatschef die Bundesrepublik Deutschland und überrascht Bundeskanzler Herbert Kappes mit Senf aus Bautzen und einer Dose Spreewald-Gurken.</de>
 			</description>
-			<data genre="0" price="0.8" topicality="80" fictional="False" flags="2" />
+			<data genre="0" price="0.8" quality="80" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1988-0-DDR-01a" type="0" creator="8936" created_by="jorgaeff">
@@ -178,7 +178,7 @@
 			<description>
 				<de>Der rumänische Präsident Nicolae Grotesko trifft sich in Ost-Berlin zu Gesprächen mit Emil Hoecker und wird anlässlich seines 70. Geburtstages mit dem Karl-Marx-Orden ausgezeichnet.</de>
 			</description>
-			<data genre="0" price="0.8" topicality="80" fictional="False" flags="2" />
+			<data genre="0" price="0.8" quality="80" fictional="False" flags="2" />
 			<effects>
 				<!-- "in 4-8 Stunden" -->
 				<effect trigger="happen" type="triggernews" time="1,4,8" news="news-jorgaeff-1988-0-DDR-01b" />
@@ -193,7 +193,7 @@
 			<description>
 				<de>Am Rande des Treffens mit dem rumänischen Präsidenten Nicolaoe Grotesko kündigt Emil Hoecker einen früheren Abbau von Atomraketen mittlerer Reichweite an.</de>
 			</description>
-			<data genre="0" price="0.8" topicality="80" fictional="False" flags="2" />
+			<data genre="0" price="0.8" quality="80" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-0-UdSSR-01" type="0" creator="8936" created_by="jorgaeff">
@@ -204,7 +204,7 @@
 			<description>
 				<de>Im Alter von 54 Jahren wird Sergei Michailow zum jüngsten Generalsekretär in der Geschichte der Kommunistischen Partei der vereinigten Sowjet-Staaten (KPdvSS) gewählt.</de>
 			</description>
-			<data genre="0" price="0.8" topicality="80" fictional="False" flags="2" />
+			<data genre="0" price="0.8" quality="80" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1986-0-UdSSR-01" type="0" creator="8936" created_by="jorgaeff">
@@ -215,7 +215,7 @@
 			<description>
 				<de>Forderungen von KPdvSS-Generalsekretär, Sergei Michailow, nach mehr Rede- und Pressefreiheit waren das zentrale Thema auf dem 27. Parteitag der Kommunistischen Partei der vereinigten Sowjet-Staaten.</de>
 			</description>
-			<data genre="0" price="0.8" topicality="80" fictional="False" flags="2" />
+			<data genre="0" price="0.8" quality="80" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1986-0-UdSSR-02a" type="0" creator="8936" created_by="jorgaeff">
@@ -226,7 +226,7 @@
 			<description>
 				<de>KPdvSS-Generalsekretär, Sergei Michailow, schlägt dem Westen vor, alle Kernwaffen bis zum Jahr 2000 abzurüsten. Das eingesparte Uran soll in den Kraftwerken zur Energie-Gewinnung verwendet werden.</de>
 			</description>
-			<data genre="0" price="0.8" topicality="80" fictional="False" flags="2" />
+			<data genre="0" price="0.8" quality="80" fictional="False" flags="2" />
 			<effects>
 				<!-- "in 3 Tagen 18-23 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,3,3,18,23" news="news-jorgaeff-1986-4-UdSSR-02b" />
@@ -241,7 +241,7 @@
 			<description>
 				<de>KPdvSS-Generalsekretär Sergei Michailow hat den Verteidigungsminister und den Chef der sowjetischen Luftverteidigung wegen der Landung des deutschen Piloten, Markus Lahr, auf dem Roten Platz in Moskau entlassen.</de>
 			</description>
-			<data genre="0" price="0.6" topicality="60" fictional="False" flags="2" />
+			<data genre="0" price="0.6" quality="60" fictional="False" flags="2" />
 			<effects>
 				<!-- "in 2 Tagen 14-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,16" news="news-jorgaeff-1987-0-UdSSR-01c" />
@@ -256,7 +256,7 @@
 			<description>
 				<de>KPdvSS-Generalsekretär Sergei Michailow hat über 300 weitere perestroika- und glasnostfeindlich eingestellte Generäle entlassen. Er möchte die Wende im Ostblock weiter voran treiben.</de>
 			</description>
-			<data genre="0" price="0.6" topicality="60" fictional="False" flags="2" />
+			<data genre="0" price="0.6" quality="60" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-0-USA-01" type="0" creator="8936" created_by="jorgaeff">
@@ -267,7 +267,7 @@
 			<description>
 				<de>Bundeskanzler Herbert Kappes erwartet einen ganz besonderen Gast: Robert Keagan besucht die Bundesrepublik Deutschland. Der US-Präsident möchte aber auch ein Fußballspiel besuchen.</de>
 			</description>
-			<data genre="0" price="0.5" topicality="50" fictional="False" flags="2" />
+			<data genre="0" price="0.5" quality="50" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-0-USA-01" type="0" creator="8936" created_by="jorgaeff">
@@ -278,7 +278,7 @@
 			<description>
 				<de>Der sowjetische Staatschef Sergei Michailow und US-Präsident Robert Keagan unterzeichnen in Washington den INF-Vertrag über den vollständigen Abbau aller nuklearen Mittelstreckenwaffen kürzerer und längerer Reichweite.</de>
 			</description>
-			<data genre="0" price="0.5" topicality="50" fictional="False" flags="2" />
+			<data genre="0" price="0.5" quality="50" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1988-0-USA-01a" type="0" creator="8936" created_by="jorgaeff">
@@ -289,7 +289,7 @@
 			<description>
 				<de>Da die 2. Amtszeit von Robert Keagan zu Ende geht und er kein drittes Mal kandidieren darf, streiten sich Vize-Präsident Gregory H. W. Cush und Senator Michael "Mc" Monco um das Amt des US-Präsidenten.</de>
 			</description>
-			<data genre="0" price="0.5" topicality="50" fictional="False" flags="2" />
+			<data genre="0" price="0.5" quality="50" fictional="False" flags="2" />
 			<effects>
 				<!-- "in 2 Tagen 3-12 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,3,12" news="news-jorgaeff-1988-0-USA-01b" />
@@ -304,7 +304,7 @@
 			<description>
 				<de>Gregory H. W. Cush setzt sich mit 426 zu 111 Wahlmännerstimmen klar gegen seinen Kontrahanten Michael "Mc" Monco durch und wird 41. Präsident der Vereinigten Staaten.</de>
 			</description>
-			<data genre="0" price="0.5" topicality="50" fictional="False" flags="2" />
+			<data genre="0" price="0.5" quality="50" fictional="False" flags="2" />
 		</news>
 
 
@@ -318,7 +318,7 @@
 			<description>
 				<de>Mit einem Alterdurchschnitt von 89 Jahren touren die Rolling Bricks durch die Altersheime der Nation. Für ihren Pressesprecher ist es "... die perfekte Möglichkeit sich einen Ruhesitz auszusuchen.".</de>
 			</description>
-			<data genre="1" price="0.45" topicality="45" fictional="True" />
+			<data genre="1" price="0.45" quality="45" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-chorris-01" type="0" creator="8936" created_by="jorgaeff">
@@ -328,7 +328,7 @@
 			<description>
 				<de>Das hat vor ihm noch keiner geschafft, doch nun ist es Kampfkünstler und Action-Schauspieler Nuck Chorris gelungen die Zeit tot zu schlagen. Und das Beste: Es ist völlig legal!</de>
 			</description>
-			<data genre="1" price="0.3" topicality="30" fictional="True" />
+			<data genre="1" price="0.3" quality="30" fictional="True" />
 			<effects>
 				<!-- "in 3 Tagen 20-23 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,3,3,20,23" news="news-jorgaeff-chorris-02" />
@@ -342,7 +342,7 @@
 			<description>
 				<de>Laut eigenen Angaben hat Nuck Chorris bereits 2x bis zur Unendlichkeit gezählt. Die Mathe-Experten dieser Erde rätseln immer noch darüber ob das stimmt.</de>
 			</description>
-			<data genre="1" price="0.3" topicality="30" fictional="True" />
+			<data genre="1" price="0.3" quality="30" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-drops-01" type="0" creator="8936" created_by="jorgaeff">
@@ -352,7 +352,7 @@
 			<description>
 				<de>Beim Dreh von "Mein Grog - dein Grog" hat sich Jonnie Drops an einer zerbrochenen Grogflasche verletzt. Die Dreharbeiten verzögern sich.</de>
 			</description>
-			<data genre="1" price="0.4" topicality="40" fictional="True" />
+			<data genre="1" price="0.4" quality="40" fictional="True" />
 			<effects>
 				<!-- "morgen 10-12 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,12" news="news-jorgaeff-drops-02" />
@@ -366,7 +366,7 @@
 			<description>
 				<de>Der Dreh des neuen Drops-Films geht weiter! Der Schauspieler möchte trotz schwerer Verletzung auf die Zähne beißen und den Film fertig drehen.</de>
 			</description>
-			<data genre="1" price="0.35" topicality="35" />
+			<data genre="1" price="0.35" quality="35" />
 			<effects>
 				<!-- "in 2 Tagen 8-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,8,16" news="news-jorgaeff-drops-03" />
@@ -380,7 +380,7 @@
 			<description>
 				<de>Trotz der schweren Verletzung des Hauptdarstellers wurde der Dreh des Filmes zu Ende gebracht und wird nun einem Millionen-Publikum vorgestellt.</de>
 			</description>
-			<data genre="1" price="0.45" topicality="45" />
+			<data genre="1" price="0.45" quality="45" />
 			<effects>
 				<!-- "in 3 Tagen 8-14 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,3,3,8,14" news="news-jorgaeff-drops-04" />
@@ -394,7 +394,7 @@
 			<description>
 				<de>Schauspieler Jonnie Drops wurde für seine schlechte Performance in "Mein Grog - dein Grog" mit der Goldenen Brombeere geehrt.</de>
 			</description>
-			<data genre="1" price="0.45" topicality="45" />
+			<data genre="1" price="0.45" quality="45" />
 			<effects>
 				<!-- "in 2-4 Stunden" -->
 				<effect trigger="happen" type="triggernews" time="1,2,4" news="news-jorgaeff-drops-05" />
@@ -408,7 +408,7 @@
 			<description>
 				<de>Am Rande der Filmpreisverleihungen gesteht Patty Glansen, die zusammen mit Jonnie Drops in "Mein Grog - dein Grog" vor der Kamera stand, eine Affaire mit dem Schauspieler.</de>
 			</description>
-			<data genre="1" price="0.35" topicality="35" fictional="True" />
+			<data genre="1" price="0.35" quality="35" fictional="True" />
 			<effects>
 				<!-- "in 0-3 Stunden" -->
 				<effect trigger="happen" type="triggernews" time="1,0,3" news="news-jorgaeff-drops-06" />
@@ -423,7 +423,7 @@
 			<description>
 				<de>Weil er bei den Filmpreisverleihungen keinen Preis erhalten hat, klaut sich Benny Jameson einfach einen und verschwindet durch die Hintertür.</de>
 			</description>
-			<data genre="1" price="0.45" topicality="40" fictional="True" />
+			<data genre="1" price="0.45" quality="40" fictional="True" />
 			<effects>
 				<!-- "übermorgen 17-23 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,17,23" news="news-jorgaeff-drops-07" />
@@ -438,7 +438,7 @@
 			<description>
 				<de>Den geklauten Filmpreis hat er zurück gegeben. Trotzdem wurde Benny Jameson zu einer dreitägigen Gefängnisstrafe verurteilt, die er bereits angetreten hat.</de>
 			</description>
-			<data genre="1" price="0.5" topicality="45" fictional="True" />
+			<data genre="1" price="0.5" quality="45" fictional="True" />
 			<effects>
 				<!-- "übermorgen 10-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,10,16" news="news-jorgaeff-drops-08" />
@@ -453,7 +453,7 @@
 			<description>
 				<de>Aufgrund guter Führung wurde Benny Jameson einen Tag früher aus dem Gefängnis entlassen. Der Schauspieler möchte seine Erfahrungen nun in einem Film verarbeiten.</de>
 			</description>
-			<data genre="1" price="0.55" topicality="50" fictional="True" />
+			<data genre="1" price="0.55" quality="50" fictional="True" />
 			<effects>
 				<!-- "in 7 Tagen 0-23 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,7,7,0,23" news="news-jorgaeff-drops-09" />
@@ -468,7 +468,7 @@
 			<description>
 				<de>Für die Rolle eines Häftlings wurde Benny Jameson mit einem Filmpreis geehrt. Die Kritiker loben die besonders realistische Darstellung des Schauspielers.</de>
 			</description>
-			<data genre="1" price="0.6" topicality="55" fictional="True" />
+			<data genre="1" price="0.6" quality="55" fictional="True" />
 			<effects>
 				<effect trigger="happen" type="modifyPersonPopularity" guid="ronny-programmeperson-bennyjameson" valueMin="0.03" valueMax="0.07" />
 			</effects>
@@ -482,7 +482,7 @@
 			<description>
 				<de>"Brake on me", der #1-Hit der finnischen Popgruppe hoi-hoi, hält sich seit 14 Wochen an der Spitze der Charts. Weltweit konnte die nordeuropäische Band in 26 Ländern die höchste Chartplatzierung errreichen.</de>
 			</description>
-			<data genre="1" price="0.5" topicality="50" fictional="True" flags="2" />
+			<data genre="1" price="0.5" quality="50" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-1-02" type="0" creator="8936" created_by="jorgaeff">
@@ -493,7 +493,7 @@
 			<description>
 				<de>"Born in the States", das Musikalbum des amerikanischen Sängers Chris Springfield, wurde zum einflussreichsten Musikalbum des Jahres gewählt. Springfield verwendet darin erstmals Synthesizer.</de>
 			</description>
-			<data genre="1" price="0.4" topicality="40" fictional="False" flags="2" />
+			<data genre="1" price="0.4" quality="40" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-1-03" type="0" creator="8936" created_by="jorgaeff">
@@ -504,7 +504,7 @@
 			<description>
 				<de>Bei den diesjährigen deutschen Filmpreisverleihungen wurde das Werk der norddeutschen Komikerin, Anna Friese, ausgezeichnet. Dietbert von den Hallern ging mit "Die Rache der Entthronten" leer aus.</de>
 			</description>
-			<data genre="1" price="0.4" topicality="40" fictional="False" flags="2" />
+			<data genre="1" price="0.4" quality="40" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1986-1-01" type="0" creator="8936" created_by="jorgaeff">
@@ -515,7 +515,7 @@
 			<description>
 				<de>Die Thrash-Metal-Band Palladium bringt heute ihr Album "Der Puppenspieler" heraus. Es wird einmal als Meilenstein des Thrash Metal und eines der besten Metal-Alben überhaupt angesehen werden.</de>
 			</description>
-			<data genre="1" price="0.3" topicality="30" fictional="False" flags="2" />
+			<data genre="1" price="0.3" quality="30" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1986-1-02" type="0" creator="8936" created_by="jorgaeff">
@@ -526,7 +526,7 @@
 			<description>
 				<de>Mater Dolorosa schafft mit ihrem dritten Album "Real Green" den Sprung auf Platz 1 der Hitparaden in 28 Ländern. Für eine weibliche Interpretin ein noch nie da gewesener Erfolg.</de>
 			</description>
-			<data genre="1" price="0.35" topicality="35" fictional="False" flags="2" />
+			<data genre="1" price="0.35" quality="35" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1986-1-03" type="0" creator="8936" created_by="jorgaeff">
@@ -537,7 +537,7 @@
 			<description>
 				<de>Bei den diesjährigen Filmpreisverleihungen wurde George Weismans Film "Jenseits von Eden" als bester Film ausgezeichnet. Der Film basiert auf Briefen der kanadischen Schriftstellerin Elke Beauford.</de>
 			</description>
-			<data genre="1" price="0.4" topicality="40" fictional="False" flags="2" />
+			<data genre="1" price="0.4" quality="40" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-1-01" type="0" creator="8936" created_by="jorgaeff">
@@ -548,7 +548,7 @@
 			<description>
 				<de>Michel Jacobson veröffentlicht mit dem Album "Bed" sein neues und lange erwartetes Nachfolge-Album von "Table". "Bed" wird Nummer 1 in 25 Ländern und verkauft sich über 30 Millionen mal.</de>
 			</description>
-			<data genre="1" price="0.3" topicality="30" fictional="False" flags="2" />
+			<data genre="1" price="0.3" quality="30" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-1-02" type="0" creator="8936" created_by="jorgaeff">
@@ -559,7 +559,7 @@
 			<description>
 				<de>Mit Elysium hat sich an der nordamerikanischen Ostküste eine neue Band gegründet. Die Musiker um Band-Leader Kurt Kokain möchten "dieses Grunge-Rock-Ding" weiterentwickeln und die Band weltweit berühmt machen.</de>
 			</description>
-			<data genre="1" price="0.3" topicality="30" fictional="False" flags="2" />
+			<data genre="1" price="0.3" quality="30" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-1-03" type="0" creator="8936" created_by="jorgaeff">
@@ -570,7 +570,7 @@
 			<description>
 				<de>Bei den diesjährigen Filmpreisverleihungen wurde Bulli Steins Film "Squad" als bester Film ausgezeichnet. Der Kriegsfilm zeigt die Auswüchse des Vietnamkrieges und seine Wirkung auf Infanteriesoldaten.</de>
 			</description>
-			<data genre="1" price="0.4" topicality="40" fictional="False" flags="2" />
+			<data genre="1" price="0.4" quality="40" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-1-04" type="0" creator="8936" created_by="jorgaeff">
@@ -581,7 +581,7 @@
 			<description>
 				<de>Zum erfolgreichsten Song des Jahres hat es leider nicht gereicht. Mater Dolorosas Hit "The Isle of Bel Air" wurde von Eagernesses Chart-Breaker "Travel travel" noch knapp übertroffen.</de>
 			</description>
-			<data genre="1" price="0.4" topicality="40" fictional="False" flags="2" />
+			<data genre="1" price="0.4" quality="40" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1988-1-DDR-01" type="0" creator="8936" created_by="jorgaeff">
@@ -592,7 +592,7 @@
 			<description>
 				<de>160.000 Ost-Berliner waren gekommen um US-Rocklegende Chris Springfield zu sehen. Das Konzert auf der Radrennbahn Hiddensee ist das größte DDR-Konzert aller Zeiten und ein weiterer Beweis, dass der Osten sich dem Westen öffnet.</de>
 			</description>
-			<data genre="1" price="0.6" topicality="60" fictional="False" flags="2" />
+			<data genre="1" price="0.6" quality="60" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1988-1-01" type="0" creator="8936" created_by="jorgaeff">
@@ -603,7 +603,7 @@
 			<description>
 				<de>Hubert Obermeyer veröffentlicht mit "Ä" sein siebtes Studioalbum. Der Rock-Poet aus Bochum ist der kommerziell erfolgreichste zeitgenössische Musiker Deutschlands; seine auffällige Gesangsart und eine marcatoartige Gestik beim Singen gehören zu seinen Markenzeichen.</de>
 			</description>
-			<data genre="1" price="0.6" topicality="60" fictional="False" flags="2" />
+			<data genre="1" price="0.6" quality="60" fictional="False" flags="2" />
 		</news>
 
 
@@ -618,7 +618,7 @@
 			<description>
 				<de>Zum ersten Mal seit 26 Jahren haben die Blue Socks wieder die Meisterschaft gewonnen. In einer packenden Finalserie konnten Sie sich letztendlich gegen die Rednecks mit 4:3 durchsetzen.</de>
 			</description>
-			<data genre="2" price="0.2" topicality="30" fictional="False" />
+			<data genre="2" price="0.2" quality="30" fictional="False" />
 		</news>
 
 		<news id="news-jorgaeff-fufa-01" type="0" creator="8936" created_by="jorgaeff">
@@ -628,7 +628,7 @@
 			<description>
 				<de>Ginge es nach den Vorstellungen der FUFA würden ab dem kommenden Jahr die Fußball-Weltmeisterschaften erstmals ohne die Nationalteams stattfinden. Die Teilnehmer sollen dann durch Casting-Shows ermittelt werden.</de>
 			</description>
-			<data genre="2" price="0.35" topicality="40" fictional="False" />
+			<data genre="2" price="0.35" quality="40" fictional="False" />
 		</news>
 
 		<news id="news-jorgaeff-abstieg-01" type="0" creator="8936" created_by="jorgaeff">
@@ -638,7 +638,7 @@
 			<description>
 				<de>Der Glubb kämpft gegen den SV Hamburg um den Aufstieg in die Fußball-Bundesliga. Wird der Bundesliga-Dino aus dem Norden dem Abstieg erneut entgehen oder werden die Herausforderer aus Franken siegreich sein?</de>
 			</description>
-			<data genre="2" price="0.3" topicality="30" fictional="True" />
+			<data genre="2" price="0.3" quality="30" fictional="True" />
 			<effects>
 				<!-- "morgen 6-10 Uhr / News a oder b" -->
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="2,1,1,6,10" news1="news-jorgaeff-abstieg-02a" probability1="50" news2="news-jorgaeff-abstieg-02b" probability2="50"/>
@@ -652,7 +652,7 @@
 			<description>
 				<de>Erstmalig in seiner Vereinsgeschichte ist der SV Hamburg aus der Bundesliga abgestiegen. Er unterlag dem Glubb in einem spannenden Spiel mit 0:1 nach Verlängerung. Wackelt jetzt der Stuhl von Trainer Knut Knolle?</de>
 			</description>
-			<data genre="2" price="0.3" topicality="30" fictional="True" />
+			<data genre="2" price="0.3" quality="30" fictional="True" />
 			<effects>
 				<!-- "in 4-8 Stunden / News a oder b" -->
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="1,4,8" news1="news-jorgaeff-abstieg-03a" probability1="50" news2="news-jorgaeff-abstieg-03b" probability2="50"/>
@@ -666,7 +666,7 @@
 			<description>
 				<de>Nicht ganz gereicht hat es für den Glubb. Die Franken zogen gegen die Hamburger den Kürzeren und verpassten mit einem knappen 0:1 den Aufstieg in die Bundesliga.</de>
 			</description>
-			<data genre="2" price="0.3" topicality="0" fictional="True" />
+			<data genre="2" price="0.3" quality="0" fictional="True" />
 			<effects>
 				<!-- "in 4-8 Stunden / News c oder d" -->
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="100" time="1,4,8" news1="news-jorgaeff-abstieg-03c" probability1="50" news2="news-jorgaeff-abstieg-03d" probability2="50"/>
@@ -680,7 +680,7 @@
 			<description>
 				<de>Aufgrund des erstmaligen Abstiegs des SV Hamburg zieht Präsident Uwe Gehler die Reißleine und entlässt Trainer Knut Knolle. Geeler möchte nun den Trainermarkt sondieren und nach geeigneten Nachfolgern Ausschau halten.</de>
 			</description>
-			<data genre="2" price="0.25" topicality="25" fictional="True" />
+			<data genre="2" price="0.25" quality="25" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-abstieg-03b" type="2" creator="8936" created_by="jorgaeff">
@@ -690,7 +690,7 @@
 			<description>
 				<de>Trotz des Abstiegs aus der Bundesliga möchte Präsident Uwe Geeler am Trainer festhalten: "Knut Knolle ist unser Mann auch für die 2. Liga. Mit ihm werden wir wieder aufsteigen.".</de>
 			</description>
-			<data genre="2" price="0.25" topicality="25" fictional="True" />
+			<data genre="2" price="0.25" quality="25" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-abstieg-03c" type="2" creator="8936" created_by="jorgaeff">
@@ -700,7 +700,7 @@
 			<description>
 				<de>Viel wurde investiert um nach Jahren der Zweitklassigkeit endlich wieder im Oberhaus mitspielen zu können, doch gebracht hat es leider nichts. Gewachsen ist nur der Schuldenberg und der könnte den Glubberern jetzt zum Verhängnis werden.</de>
 			</description>
-			<data genre="2" price="0.25" topicality="25" fictional="True" />
+			<data genre="2" price="0.25" quality="25" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-abstieg-03d" type="2" creator="8936" created_by="jorgaeff">
@@ -710,7 +710,7 @@
 			<description>
 				<de>Bedingt durch die hohe Aufstiegsprämie konnte der Glubb alle seine Schulden abbauen und steht somit wieder auf gesunden Füßen. Die Glubberer hoffen, dass dies auch so bleibt.</de>
 			</description>
-			<data genre="2" price="0.25" topicality="25" fictional="True" />
+			<data genre="2" price="0.25" quality="25" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-racing-01" type="0" creator="8936" created_by="jorgaeff">
@@ -720,7 +720,7 @@
 			<description>
 				<de>Zu einem Dreikampf kommt es heute Abend beim letzten Rennen der Formel X zwischen den punktgleichen Piloten Luis Pamelton, Bastian Kettel und Ferdinando Alfonso. Wer wird Fahrer-Weltmeister?</de>
 			</description>
-			<data genre="2" price="0.45" topicality="45" fictional="True" />
+			<data genre="2" price="0.45" quality="45" fictional="True" />
 			<effects>
 				<!-- "möglicher Effekt: Live-Übertragung" -->
 				<!-- "morgen 6-12 Uhr / News a, b, c oder d" -->
@@ -735,7 +735,7 @@
 			<description>
 				<de>Der neue Formel-X-Weltmeister heißt Luis Pamelton. In einem spannenden Rennen konnte er sich gegen seine Rivalen Bastian Kettel und Ferdinando Alfonso trotz einer 10-Sekunden-Strafe wegen zu schnellem Fahren durchsetzen.</de>
 			</description>
-			<data genre="2" price="0.5" topicality="50" fictional="True" />
+			<data genre="2" price="0.5" quality="50" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-racing-02b" type="2" creator="8936" created_by="jorgaeff">
@@ -745,7 +745,7 @@
 			<description>
 				<de>Der neue Formel-X-Weltmeister heißt Bastian Kettel. In einem spannenden Rennen konnte er sich gegen seine Rivalen Luis Pamelton und Ferdinando Alfonso trotz einer 10-Sekunden-Strafe wegen zu schnellem Fahren durchsetzen.</de>
 			</description>
-			<data genre="2" price="0.5" topicality="50" fictional="True" />
+			<data genre="2" price="0.5" quality="50" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-racing-02c" type="2" creator="8936" created_by="jorgaeff">
@@ -755,7 +755,7 @@
 			<description>
 				<de>Der neue Formel-X-Weltmeister heißt Ferdinando Alfonso. In einem spannenden Rennen konnte er sich gegen seine Rivalen Luis Pamelton und Bastian Kettel trotz einer 10-Sekunden-Strafe wegen zu schnellem Fahren durchsetzen.</de>
 			</description>
-			<data genre="2" price="0.5" topicality="50" fictional="True" />
+			<data genre="2" price="0.5" quality="50" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-racing-02d" type="2" creator="8936" created_by="jorgaeff">
@@ -765,7 +765,7 @@
 			<description>
 				<de>Zu einem Novum kam es beim letzten Rennen der Formel X: Alle drei WM-Führenden schieden nach Reifenplatzern aus. Somit gibt es erstmalig in der Geschichte der Formel X drei Weltmeister.</de>
 			</description>
-			<data genre="2" price="0.6" topicality="60" fictional="True" />
+			<data genre="2" price="0.6" quality="60" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-nachtrennen-01" type="0" creator="8936" created_by="jorgaeff">
@@ -775,7 +775,7 @@
 			<description>
 				<de>Heute Abend startet das erste Nachtrennen der Formel Öko. Die solarbetriebenen Boliden sollen eine Alternative zu den aus fossilen Rohstoffen betriebenen Flitzern der Formel X sein.</de>
 			</description>
-			<data genre="2" price="0.30" topicality="30" fictional="True" />
+			<data genre="2" price="0.30" quality="30" fictional="True" />
 			<effects>
 				<!-- "möglicher Effekt: Live-Übertragung" -->
 				<!-- "in 1 Tagen 0-23 Uhr" -->
@@ -790,7 +790,7 @@
 			<description>
 				<de>Ein Novum in der Geschichte des Rennsports! Erstmalig muss ein Rennen aufgrund von Energiemangel abgebrochen werden. Die Initiatoren haben wohl vergessen, dass die solarbetriebenen Boliden das Sonnenlicht benötigen um fahren zu können.</de>
 			</description>
-			<data genre="2" price="0.35" topicality="40" fictional="True" />
+			<data genre="2" price="0.35" quality="40" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-kurzer-01" type="0" creator="8936" created_by="jorgaeff">
@@ -800,7 +800,7 @@
 			<description>
 				<de>Mit dem ersten Hole-in-one seiner Profikarriere sichert sich Golf-Ikone Denkward Kurzer den Turniersieg beim Major-Turnier der Senioren in Key Briscane.</de>
 			</description>
-			<data genre="2" price="0.25" topicality="25" fictional="True" />
+			<data genre="2" price="0.25" quality="25" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-dyson-01" type="0" creator="8936" created_by="jorgaeff">
@@ -812,7 +812,7 @@
 			<description>
 				<de>Auch der 49. Herausforderer hat es nicht geschafft Eugen Klatschkowski als Weltmeister im Schwergewicht zu entthronen. Die Suche nach weiteren Herausforderern gestaltet sich schwer.</de>
 			</description>
-			<data genre="2" price="0.35" topicality="35" fictional="True" />
+			<data genre="2" price="0.35" quality="35" fictional="True" />
 			<effects>
 				<!-- "Montag 12-16.00 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,12,16" news="news-jorgaeff-dyson-02" />
@@ -826,7 +826,7 @@
 			<description>
 				<de>Aufgrund des Mangels an Herausforderern spricht der aktuelle Meister im Schwergewicht, Eugen Klatschkowski, eine offene Herausforderung "...an alle die Manns genug sind um mit mir in den Ring zu steigen" aus.</de>
 			</description>
-			<data genre="2" price="0.4" topicality="40" fictional="True" />
+			<data genre="2" price="0.4" quality="40" fictional="True" />
 			<effects>
 				<!-- "in 4-8 Stunden" -->
 				<effect trigger="happen" type="triggernews" time="1,4,8" news="news-jorgaeff-dyson-03" />
@@ -840,7 +840,7 @@
 			<description>
 				<de>Spike Dyson, der ehemalige mehrfache Weltmeister im Schwergewicht, nimmt die offene Herausforderung des aktuellen Champions, Eugen Klatschkowski, an und möchte mit diesem in einer Woche in Vas Legas in den Ring steigen.</de>
 			</description>
-			<data genre="2" price="0.45" topicality="45" fictional="True" />
+			<data genre="2" price="0.45" quality="45" fictional="True" />
 			<effects>
 				<!-- "Dienstag 12-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,12,16" news="news-jorgaeff-dyson-04" />
@@ -854,7 +854,7 @@
 			<description>
 				<de>Trotz seines fortgeschrittenen Alters trainiert der Ex-Weltmeister im Schwergewicht, Spike Dyson, für ein Comeback im Boxring. Ziel ist den amtierenden Champion, Eugen Klatschkowski, beim "Kampf der Titanen" am Samstag zu besiegen.</de>
 			</description>
-			<data genre="2" price="0.5" topicality="50" fictional="True" />
+			<data genre="2" price="0.5" quality="50" fictional="True" />
 			<effects>
 				<!-- "Freitag 12-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,12,16" news="news-jorgaeff-dyson-05" />
@@ -868,7 +868,7 @@
 			<description>
 				<de>Das Wiegen vor dem Fight zwischen Spike Dyson und Eugen Klatschkowski hat sich zum Spektakel entwickelt: Während die Kontrahenten auf die Waage traten eskalierte Dysons Sohn Shawn und trat Klatschkowski mit Anlauf in die Klöten.</de>
 			</description>
-			<data genre="2" price="0.55" topicality="55" fictional="True" />
+			<data genre="2" price="0.55" quality="55" fictional="True" />
 			<effects>
 				<!-- "Samstag 18-20 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,18,20" news="news-jorgaeff-dyson-06" />
@@ -882,7 +882,7 @@
 			<description>
 				<de>Wird es heute Abend einen neuen Box-Champion geben, oder kann Eugen Klatschkowski auch den 50. Herausforderer besiegen? Die Wetten stehen 7:1 für eine erfolgreiche Titelverteidigung.</de>
 			</description>
-			<data genre="2" price="0.6" topicality="60" fictional="True" />
+			<data genre="2" price="0.6" quality="60" fictional="True" />
 			<effects>
 				<!-- "möglicher Effekt: Live-Übertragung" -->
 				<!-- "in 4 Stunden / News a oder b" -->
@@ -897,7 +897,7 @@
 			<description>
 				<de>Der 50. Herausforderer war einer zu viel: Spike Dyson ist trotz seiner 52 Jahre der neue Box-Weltmeister. In einem spannenden Kampf konnte er den Dauer-Champion Eugen Klatschkowski nach klarem K.o. in der 12. Runde den Gürtel abnehmen.</de>
 			</description>
-			<data genre="2" price="0.7" topicality="70" fictional="True" />
+			<data genre="2" price="0.7" quality="70" fictional="True" />
 			<effects>
 				<!-- "morgen 10-18 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,18" news="news-jorgaeff-dyson-07a" />
@@ -911,7 +911,7 @@
 			<description>
 				<de>Auch der 50. Herausforderer hat es nicht geschafft Eugen Klatschkowski zu entthronen. Dyson blieb in dem rund 30-minütigen Kampf letztendlich chancenlos. Somit bleibt Klatschkowski weiterhin Champion.</de>
 			</description>
-			<data genre="2" price="0.7" topicality="70" fictional="True" />
+			<data genre="2" price="0.7" quality="70" fictional="True" />
 			<effects>
 				<!-- "morgen 10-18 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,18" news="news-jorgaeff-dyson-07b" />
@@ -925,7 +925,7 @@
 			<description>
 				<de>Spike Dyson lüftet sein Geheimnis: Eine spezielle Yoga-Therapie hat ihm beim Sieg über Klatschkowski geholfen. Dyson möchte nun ein Buch darüber schreiben und eine DVD herausbringen.</de>
 			</description>
-			<data genre="2" price="0.55" topicality="55" fictional="True" />
+			<data genre="2" price="0.55" quality="55" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-dyson-07b" type="2" creator="8936" created_by="jorgaeff">
@@ -935,7 +935,7 @@
 			<description>
 				<de>Wenn es am schönsten ist soll man aufhören. Nach 50 erfolgreichen Titelverteidigungen beendet Rekord-Champion Klatschkowski seine Karriere und hängt seine Boxhandschuhe an den Nagel.</de>
 			</description>
-			<data genre="2" price="0.55" topicality="55" fictional="True" />
+			<data genre="2" price="0.55" quality="55" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-holland-01" type="0" creator="8936" created_by="jorgaeff">
@@ -947,7 +947,7 @@
 			<description>
 				<de>Die niederländische Fußball-Nationalmannschaft hat die Weltmeisterschaft im Sommer des nächsten Jahres verpasst. Am letzten Spieltag der Qualifikation unterlag "Oranje" dem Erzrivalen aus Belgien.</de>
 			</description>
-			<data genre="2" price="0.4" topicality="40" fictional="False" />
+			<data genre="2" price="0.4" quality="40" fictional="False" />
 		</news>
 
 		<news id="news-jorgaeff-badminton-01" type="0" creator="8936" created_by="jorgaeff">
@@ -957,7 +957,7 @@
 			<description>
 				<de>Alle Badminton-Ergebnisse mit aktuellen Tabellen.</de>
 			</description>
-			<data genre="2" price="0.20" topicality="20" fictional="True" />
+			<data genre="2" price="0.20" quality="20" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-schach-01" type="0" creator="8936" created_by="jorgaeff">
@@ -967,7 +967,7 @@
 			<description>
 				<de>Alle Schach-Ergebnisse mit aktuellen Tabellen.</de>
 			</description>
-			<data genre="2" price="0.20" topicality="20" fictional="True" />
+			<data genre="2" price="0.20" quality="20" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-hockey-01" type="0" creator="8936" created_by="jorgaeff">
@@ -977,7 +977,7 @@
 			<description>
 				<de>Alle Hockey-Ergebnisse mit aktuellen Tabellen.</de>
 			</description>
-			<data genre="2" price="0.20" topicality="20" fictional="True" />
+			<data genre="2" price="0.20" quality="20" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-billard-01" type="0" creator="8936" created_by="jorgaeff">
@@ -987,7 +987,7 @@
 			<description>
 				<de>Alle Ergebnisse vom Billard mit aktuellen Tabellen.</de>
 			</description>
-			<data genre="2" price="0.20" topicality="20" fictional="True" />
+			<data genre="2" price="0.20" quality="20" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-ringen-01" type="0" creator="8936" created_by="jorgaeff">
@@ -997,7 +997,7 @@
 			<description>
 				<de>Alle Ergebnisse vom Ringen mit aktuellen Tabellen.</de>
 			</description>
-			<data genre="2" price="0.20" topicality="20" fictional="True" />
+			<data genre="2" price="0.20" quality="20" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-tennis-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1007,7 +1007,7 @@
 			<description>
 				<de>Alle Tennis-Ergebnisse mit aktuellen Tabellen.</de>
 			</description>
-			<data genre="2" price="0.20" topicality="20" fictional="True" />
+			<data genre="2" price="0.20" quality="20" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-tischtennis-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1017,7 +1017,7 @@
 			<description>
 				<de>Alle Tischtennis-Ergebnisse mit aktuellen Tabellen.</de>
 			</description>
-			<data genre="2" price="0.20" topicality="20" fictional="True" />
+			<data genre="2" price="0.20" quality="20" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-volleyball-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1027,7 +1027,7 @@
 			<description>
 				<de>Alle Volleyball-Ergebnisse mit aktuellen Tabellen.</de>
 			</description>
-			<data genre="2" price="0.20" topicality="20" fictional="True" />
+			<data genre="2" price="0.20" quality="20" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-1985-2-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1038,7 +1038,7 @@
 			<description>
 				<de>Ein ungewohnt langer Wettkampf zur Ermittlung des Schachweltmeisters zwischen Ayatollah Andropow und Kasper Garripow wird nach 48 Partien ohne Ergebnis abgebrochen.</de>
 			</description>
-			<data genre="2" price="0.25" topicality="25" fictional="False" flags="2" />
+			<data genre="2" price="0.25" quality="25" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-2-02a" type="0" creator="8936" created_by="jorgaeff">
@@ -1053,7 +1053,7 @@
 				<!-- "morgen 3-7 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,3,7" news="news-jorgaeff-1985-2-02b" flags="2" />
 			</effects>
-			<data genre="2" price="0.3" topicality="3" fictional="False" />
+			<data genre="2" price="0.3" quality="3" fictional="False" />
 		</news>
 
 		<news id="news-jorgaeff-1985-2-02b" type="1" creator="8936" created_by="jorgaeff">
@@ -1064,7 +1064,7 @@
 			<description>
 				<de>Hollywood-Schauspieler Mr. Y greift im Weltmeisterschaftskampf zwischen "Rowdy" Pfeifer und Horst Hogen zugunsten des Titelträgers ein. Hogen somit weiterhin Weltmeister im Schwergewicht!</de>
 			</description>
-			<data genre="2" price="0.35" topicality="35" fictional="False" flags="2" />
+			<data genre="2" price="0.35" quality="35" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-2-03" type="0" creator="8936" created_by="jorgaeff">
@@ -1075,7 +1075,7 @@
 			<description>
 				<de>Denkward Kurzer gewinnt als erster deutscher Golfer die mit 500.000 $US dotierten US-Masters in Augusta (Georgia).</de>
 			</description>
-			<data genre="2" price="0.3" topicality="30" fictional="False" flags="2" />
+			<data genre="2" price="0.3" quality="30" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-2-04" type="0" creator="8936" created_by="jorgaeff">
@@ -1086,7 +1086,7 @@
 			<description>
 				<de>Bas Bode siegt als erster Deutscher und (mit 17 Jahren) jüngster Tennisspieler aller Zeiten beim Grand-Slam-Turnier von Wimbledon.</de>
 			</description>
-			<data genre="2" price="0.6" topicality="60" fictional="False" flags="2" />
+			<data genre="2" price="0.6" quality="60" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1986-2-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1097,7 +1097,7 @@
 			<description>
 				<de>Wie auch im Vorjahr wurde das Schach-Finale zwischen Ayatollah Andropow und Kasper Garripow ohne Sieger abgebrochen. Der internationale Schachverband kürt somit zwei Spieler zum Schach-Weltmeister.</de>
 			</description>
-			<data genre="2" price="0.35" topicality="35" fictional="False" flags="2" />
+			<data genre="2" price="0.35" quality="35" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1986-2-02" type="0" creator="8936" created_by="jorgaeff">
@@ -1108,7 +1108,7 @@
 			<description>
 				<de>Bas Bode siegt als erster Deutscher und (mit 18 Jahren) jüngster Tennisspieler aller Zeiten zum zweiten Mal beim Grand-Slam-Turnier von Wimbledon.</de>
 			</description>
-			<data genre="2" price="0.6" topicality="60" fictional="False" flags="2" />
+			<data genre="2" price="0.6" quality="60" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1986-2-03" type="0" creator="8936" created_by="jorgaeff">
@@ -1119,7 +1119,7 @@
 			<description>
 				<de>Bei der 13. Fußball-WM in Mexiko gewinnt Argentinien gegen die Bundesrepublik Deutschland im Finale mit 3:2.</de>
 			</description>
-			<data genre="2" price="0.6" topicality="60" fictional="False" flags="2" />
+			<data genre="2" price="0.6" quality="60" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1986-2-04" type="0" creator="8936" created_by="jorgaeff">
@@ -1130,7 +1130,7 @@
 			<description>
 				<de>Siegwart Messier hat als erster Mensch alle 14 Achttausender erstiegen. Während sich andere für Gipfelfotos vom Helikopter absetzen lassen kletterte der Bergsteiger aus Südtirol jeden Berg selbst hinauf.</de>
 			</description>
-			<data genre="2" price="0.3" topicality="30" fictional="False" flags="2" />
+			<data genre="2" price="0.3" quality="30" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-2-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1141,7 +1141,7 @@
 			<description>
 				<de>Deutschlands Tennis-Ikone, Bas Bode, ist gescheitert. Im Halbfinale der australischen Tennis-Meisterschaften verlor der Weltranglisten-18. gegen den Lokal-Matadoren Wolly Maser.</de>
 			</description>
-			<data genre="2" price="0.3" topicality="30" fictional="False" flags="2" />
+			<data genre="2" price="0.3" quality="30" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-2-02a" type="0" creator="8936" created_by="jorgaeff">
@@ -1152,7 +1152,7 @@
 			<description>
 				<de>Betty Lord gewinnt mit den in Paris ausgetragenen French Open ihren ersten von insgesamt 22 Grand Slam-Titeln.</de>
 			</description>
-			<data genre="2" price="0.3" topicality="30" fictional="False" flags="2" />
+			<data genre="2" price="0.3" quality="30" fictional="False" flags="2" />
 			<effects>
 				<!-- "in 1 Tag, 10-18 Uhr " -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,18" news="news-jorgaeff-1987-2-02b" />
@@ -1166,7 +1166,7 @@
 			<description>
 				<de>Betty Lord hat nach dem Gewinn der französischen Tennis-Meisterschaften erstmals die Führung in der Tennis-Weltrangliste der Damen übernommen.</de>
 			</description>
-			<data genre="2" price="0.3" topicality="30" fictional="False" flags="2" />
+			<data genre="2" price="0.3" quality="30" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1988-2-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1177,7 +1177,7 @@
 			<description>
 				<de>Die deutsche Ausnahme-Tennisspielerin Betty Lord gewinnt mit ihrem Sieg bei den US Open gegen die Argentinierin Santina Morella als erste Deutsche und dritte Spielerin überhaupt alle Grand-Slam-Turniere.</de>
 			</description>
-			<data genre="2" price="0.3" topicality="30" fictional="False" flags="2" />
+			<data genre="2" price="0.3" quality="30" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1988-2-02" type="0" creator="8936" created_by="jorgaeff">
@@ -1188,7 +1188,7 @@
 			<description>
 				<de>Die deutsche Tennis-Nationalmannschaft Deutschland (mit Bas Bode, Charly Raab, Erich Gielen und Peter Kühne) gewinnt das Navy-Cup-Finale gegen Schweden.</de>
 			</description>
-			<data genre="2" price="0.3" topicality="30" fictional="False" flags="2" />
+			<data genre="2" price="0.3" quality="30" fictional="False" flags="2" />
 		</news>
 
 
@@ -1201,7 +1201,7 @@
 			<description>
 				<de>Ein Auto das keinen einzigen Liter Benzin verbraucht wurde von Faulkswagen entwickelt. Der Clou: Faulkswagen gibt den Verbrauch ab sofort nur noch in Gallonen an.</de>
 			</description>
-			<data genre="3" price="0.55" topicality="55" fictional="True" />
+			<data genre="3" price="0.55" quality="55" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-blitzenergie-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1211,7 +1211,7 @@
 			<description>
 				<de>Forscher haben endlich eine Möglichkeit gefunden, die Energie der Blitze zu nutzen. Sollte das Projekt seine Serienreife erlangen, so könte dies die Energieprobleme des Planeten lösen.</de>
 			</description>
-			<data genre="3" price="0.45" topicality="45" fictional="True" />
+			<data genre="3" price="0.45" quality="45" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-orange-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1223,7 +1223,7 @@
 			<description>
 				<de>Heute beginnt Orange mit dem Verkauf des neuen my-phones. Das neue Smartphone ist natürlich viel besser als sein Vorgänger. Deshalb werden auch wieder alle eines kaufen und das alte wegschmeißen. Scheiß auf die seltenen Erden.</de>
 			</description>
-			<data genre="3" price="0.45" topicality="45" fictional="True" />
+			<data genre="3" price="0.45" quality="45" fictional="True" />
 			<effects>
 				<!-- "in 6-10 Stunden" -->
 				<effect trigger="happen" type="triggernews" time="1,6,10" news="news-jorgaeff-orange-02" />
@@ -1237,7 +1237,7 @@
 			<description>
 				<de>Bereits wenige Stunden nach Ladenöffnung waren alle my-phones ausverkauft. In den Läden wurden vielerorts traurige Gesichter gesehen. Der Hersteller möchte jetzt kurzfristig nachproduzieren.</de>
 			</description>
-			<data genre="3" price="0.55" topicality="50" fictional="True" />
+			<data genre="3" price="0.55" quality="50" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-milch-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1247,7 +1247,7 @@
 			<description>
 				<de>Alle haben es gewusst - niemand hat es geglaubt. Aber es stimmt! Milch macht müde Männer munter. Diese Nachricht wurde Ihnen präsentiert von der Milchindustrie.</de>
 			</description>
-			<data genre="3" price="0.15" topicality="15" fictional="True" />
+			<data genre="3" price="0.15" quality="15" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-space-1985-3-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1258,7 +1258,7 @@
 			<description>
 				<de>Gestern der Mond und morgen der Mars? Die nordamerikanische Raumfahrtbehörde NASE möchte auch im All die Nase vorn haben und startet ein neues Raumfahrtprogramm. Es soll der Erkundung neuer Planeten dienen.</de>
 			</description>
-			<data genre="3" price="0.6" topicality="60" fictional="False" flags="2" />
+			<data genre="3" price="0.6" quality="60" fictional="False" flags="2" />
 			<effects>
 				<!-- "in 7 Tagen, 6-20 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,4,4,6,20" news="news-jorgaeff-space-1985-3-02" />
@@ -1273,7 +1273,7 @@
 			<description>
 				<de>Es ist der erste orbitale Flug eines unbemannten Space-Shuttles. Die Raumfähre Kolumbus soll den Start und die Landung eines Space-Shuttles erproben. Der Start erfolgt heute Nacht in Cap Carneval.</de>
 			</description>
-			<data genre="3" price="0.65" topicality="65" fictional="False" flags="2" />
+			<data genre="3" price="0.65" quality="65" fictional="False" flags="2" />
 			<effects>
 				<!-- "möglicher Effekt: Live-Übertragung" -->
 				<!-- "morgen 1-8 Uhr" -->
@@ -1289,7 +1289,7 @@
 			<description>
 				<de>Strahlende Gesichter beim NASE-Bodenpersonal in Cap Carneval. Der erste Start eines unbemannten Space-Shuttles war erfolgreich. Wird auch die Landung gelingen?</de>
 			</description>
-			<data genre="3" price="0.7" topicality="70" fictional="False" flags="2" />
+			<data genre="3" price="0.7" quality="70" fictional="False" flags="2" />
 			<effects>
 				<!-- "morgen 1-8 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,1,8" news="news-jorgaeff-space-1985-3-04" />
@@ -1304,7 +1304,7 @@
 			<description>
 				<de>Nach 2 Tagen in der Erdumlaufbahn ist die Raumfähre Kolumbus erfolgreich in Cap Carneval gelandet. Durch den vollen Erfolg dieser Mission sollten weitere Gelder für zukünftige Missionen bewilligt werden. </de>
 			</description>
-			<data genre="3" price="0.65" topicality="65" fictional="False" flags="2" />
+			<data genre="3" price="0.65" quality="65" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-space-1986-3-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1315,7 +1315,7 @@
 			<description>
 				<de>Die nordamerikanische Raumfahrtbehörde NASE möchte wieder ein unbemanntes Shuttle ins All schicken. Die Raumfähre Contender soll einen Kommunikations-Satelliten aussetzen, sowie bekannte Kometen analysieren.</de>
 			</description>
-			<data genre="3" price="0.5" topicality="50" fictional="False" flags="2" />
+			<data genre="3" price="0.5" quality="50" fictional="False" flags="2" />
 			<effects>
 				<!-- "morgen 1-8 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,1,8" news="news-jorgaeff-space-1986-3-02" />
@@ -1330,7 +1330,7 @@
 			<description>
 				<de>Schwerer Rückschlag für das nordamerikanische Raumfahrtprogramm! Nur wenige Sekunden nach dem Start ist die Raumfähre Contender explodiert. Die Raumfahrtbehörde NASE rätselt über die Ursachen des Unglücks.</de>
 			</description>
-			<data genre="3" price="1" topicality="100" fictional="False" flags="2" />
+			<data genre="3" price="1" quality="100" fictional="False" flags="2" />
 			<effects>
 				<!-- "übermorgen 1-10 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,1,10" news="news-jorgaeff-space-1986-3-03" />
@@ -1345,7 +1345,7 @@
 			<description>
 				<de>Die nordamerikanische Raumfahrtbehörde NASE hat die Ursache für die Explosion der Raumfähre Contender gefunden und macht einen fehlenden Dichtungsring für das Unglück verantwortlich.</de>
 			</description>
-			<data genre="3" price="0.85" topicality="85" fictional="False" flags="2" />
+			<data genre="3" price="0.85" quality="85" fictional="False" flags="2" />
 			<effects>
 				<!-- "morgen 4-12 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,4,12" news="news-jorgaeff-space-1986-3-04" />
@@ -1360,7 +1360,7 @@
 			<description>
 				<de>Die nordamerikanische Raumfahrtbehörde NASE möchte vorerst von weiteren Shuttle-Starts absehen. Es sollen zunächst Technologien erforscht werden, die für einen sichereren Start sorgen.</de>
 			</description>
-			<data genre="3" price="0.75" topicality="75" fictional="False" flags="2" />
+			<data genre="3" price="0.75" quality="75" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-c256-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1372,7 +1372,7 @@
 			<description>
 				<de>Der nordamerikanische Technologie-Konzern Cormoran stattet seinen neuen Mikro-Computer mit einem RAM von 256 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
 			</description>
-			<data genre="3" price="0.5" topicality="50" fictional="True" flags="2" />
+			<data genre="3" price="0.5" quality="50" fictional="True" flags="2" />
 			<effects>
 				<!-- "in 3 Tagen 4-8 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,3,3,4,8" news="news-jorgaeff-c256-02" />
@@ -1386,7 +1386,7 @@
 			<description>
 				<de>Der neue C256 von Cormoran geht weg wie warme Semmeln. Viele Nutzer kaufen sich ein Zweitgerät, da der Mikro-Computer, der mittlerweile sogar in eine Butterdose passt, auch mal verlegt werden kann.</de>
 			</description>
-			<data genre="3" price="0.55" topicality="55" fictional="True" flags="2" />
+			<data genre="3" price="0.55" quality="55" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-c256-03" type="0" creator="8936" created_by="jorgaeff">
@@ -1398,7 +1398,7 @@
 			<description>
 				<de>Der nordamerikanische Technologie-Konzern Cormoran stattet seinen neuen Mikro-Computer mit einem RAM von 512 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
 			</description>
-			<data genre="3" price="0.5" topicality="50" fictional="True" flags="2" />
+			<data genre="3" price="0.5" quality="50" fictional="True" flags="2" />
 			<effects>
 				<!-- "in 3 Tagen 4-8 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,3,3,4,8" news="news-jorgaeff-c256-04" />
@@ -1412,7 +1412,7 @@
 			<description>
 				<de>Der neue C512 von Cormoran übertrifft sogar seinen Vorgänger. Viele Nutzer kaufen sich ein Dritt- und Viertgerät, da der Mikro-Computer, der nun in einen Eierbecher passt, auch mal verlegt werden kann.</de>
 			</description>
-			<data genre="3" price="0.55" topicality="55" fictional="True" flags="2" />
+			<data genre="3" price="0.55" quality="55" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-c256-05" type="0" creator="8936" created_by="jorgaeff">
@@ -1424,7 +1424,7 @@
 			<description>
 				<de>Der nordamerikanische Technologie-Konzern Cormoran stattet seinen neuen Mikro-Computer mit einem RAM von 1024 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
 			</description>
-			<data genre="3" price="0.5" topicality="50" fictional="True" flags="2" />
+			<data genre="3" price="0.5" quality="50" fictional="True" flags="2" />
 			<effects>
 				<!-- "in 3 Tagen 4-8 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,3,3,4,8" news="news-jorgaeff-c256-06" />
@@ -1438,7 +1438,7 @@
 			<description>
 				<de>Mal eben locker den Verkaufserfolg des Vorgängers pulverisiert. Viele Nutzer kaufen sich den C1k024 von Cormoran im 10er-Pack, da der in einen Fingerhut passende Mikro-Computer, auch mal verlegt werden kann.</de>
 			</description>
-			<data genre="3" price="0.55" topicality="55" fictional="True" flags="2" />
+			<data genre="3" price="0.55" quality="55" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-c256-07" type="0" creator="8936" created_by="jorgaeff">
@@ -1450,7 +1450,7 @@
 			<description>
 				<de>Der nordamerikanische Technologie-Konzern Cormoran stattet seinen neuen Mikro-Computer mit einem RAM von 2048 KB aus. Fans sind begeistert von der tollen Grafik und der schnellen Rechenleistung.</de>
 			</description>
-			<data genre="3" price="0.5" topicality="50" fictional="True" flags="2" />
+			<data genre="3" price="0.5" quality="50" fictional="True" flags="2" />
 			<effects>
 				<!-- "in 3 Tagen 4-8 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,3,3,4,8" news="news-jorgaeff-c256-08" />
@@ -1464,7 +1464,7 @@
 			<description>
 				<de>Diese Rechnung geht nicht auf: Der auf einen Stecknadelkopf passende Mikro-Computer kann teilweise in den Läden nicht mehr aufgefunden werden. Cormoran hat die Produktion eingestellt.</de>
 			</description>
-			<data genre="3" price="0.55" topicality="55" fictional="True" flags="2" />
+			<data genre="3" price="0.55" quality="55" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-btx-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1476,7 +1476,7 @@
 			<description>
 				<de>Kurz vor seinem 19. Geburtstag wird der interaktive Online-Dienst im deutschsprachigen Raum zum Ende des Jahres abgeschaltet. Kommt jetzt das World Wide Web?</de>
 			</description>
-			<data genre="3" price="0.4" topicality="40" fictional="True" flags="2" />
+			<data genre="3" price="0.4" quality="40" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-dvd-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1488,7 +1488,7 @@
 			<description>
 				<de>Die DVD ist der neue Star unter den Speichermedien. Endlich entfällt das lästige Spulen der Bänder oder Umdrehen bei Laser-Disc und Video-CD. Mit brillianter Bild- und Tonqualität!</de>
 			</description>
-			<data genre="3" price="0.4" topicality="40" fictional="True" flags="2" />
+			<data genre="3" price="0.4" quality="40" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-dvd-02" type="0" creator="8936" created_by="jorgaeff">
@@ -1500,7 +1500,7 @@
 			<description>
 				<de>Die Blu-Ray ist der neue Star unter den Speichermedien. Die Disc schillert in schönen blauen Farben, ermöglicht brilliante Bild- und Tonqualität, sowie genug Platz für Filme in Überlänge.</de>
 			</description>
-			<data genre="3" price="0.4" topicality="40" fictional="True" flags="2" />
+			<data genre="3" price="0.4" quality="40" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-tv-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1512,7 +1512,7 @@
 			<description>
 				<de>Eine enorme Verbesserung in Sachen Bildschärfe und Stromverbrauch bieten die endlich erhältlichen LCD-Fernseher und Computer-Monitore. Auch das Gewicht und der damit verbundene Materialverbrauch haben sich start verbessert.</de>
 			</description>
-			<data genre="3" price="0.4" topicality="40" fictional="True" flags="2" />
+			<data genre="3" price="0.4" quality="40" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-3-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1523,7 +1523,7 @@
 			<description>
 				<de>Die von Makrohart endgültig freigegebene Version Proof 1.01 wurde auf einer Pressekonferenz im südschwedischen Helsingborg vorgestellt. Das Betriebssystem benötigt einen Arbeitsspeicher von 256 KByte und ein 5.25"-Diskettenlaufwerk.</de>
 			</description>
-			<data genre="3" price="0.4" topicality="40" fictional="True" flags="2" />
+			<data genre="3" price="0.4" quality="40" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-3-02" type="0" creator="8936" created_by="jorgaeff">
@@ -1534,7 +1534,7 @@
 			<description>
 				<de>Die Bahn feiert 150 Jahre Eisenbahn. Zum Jubiläum gibt es das ganze Jahr über Veranstaltungen und Sonderfahrten mit historischen Lokomotiven zu Schleuderpreisen.</de>
 			</description>
-			<data genre="3" price="0.3" topicality="30" fictional="True" flags="2" />
+			<data genre="3" price="0.3" quality="30" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-3-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1545,7 +1545,7 @@
 			<description>
 				<de>Die Supernova 1987A wird entdeckt. Sie ist die erste Supernova seit 1604, die mit bloßem Auge beobachtet werden kann. Eine Supernova ist das kurze, helle Aufleuchten eines Sterns am Ende seiner Lebenszeit, durch eine Explosion bei der er vernichtet wird.</de>
 			</description>
-			<data genre="3" price="0.85" topicality="85" fictional="True" flags="2" />
+			<data genre="3" price="0.85" quality="85" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-3-02" type="0" creator="8936" created_by="jorgaeff">
@@ -1556,7 +1556,7 @@
 			<description>
 				<de>Der russische Kosmonaut Juri Victorvox kehrt nach 326 Tagen Aufenthalt an Bord der Raumstation Mir zur Erde zurück. Er war es leid ständig nur auf die Erde hinabzuschauen und sich zu langweilen.</de>
 			</description>
-			<data genre="3" price="0.85" topicality="85" fictional="True" flags="2" />
+			<data genre="3" price="0.85" quality="85" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-3-03" type="0" creator="8936" created_by="jorgaeff">
@@ -1567,7 +1567,7 @@
 			<description>
 				<de>Die italienische Rennwagen-Schmiede Fellaini stellt zum 40. Firmenjubiläum den Fellaini F40 vor. Das Basismodell gibt es ab 444.000 DM und ist in den Farben hellrot, dunkelrot und neonrot erhältlich.</de>
 			</description>
-			<data genre="3" price="0.85" topicality="85" fictional="True" flags="2" />
+			<data genre="3" price="0.85" quality="85" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1988-3-01a" type="0" creator="8936" created_by="jorgaeff">
@@ -1578,7 +1578,7 @@
 			<description>
 				<de>In der Bundesrepublik Deutschland wird verbleites Normalbenzin verboten. So sollen Luftverunreinigungen durch Bleiverbindungen in Ottokraftstoffen verringert werden.</de>
 			</description>
-			<data genre="3" price="0.85" topicality="85" fictional="True" flags="2" />
+			<data genre="3" price="0.85" quality="85" fictional="True" flags="2" />
 			<effects>
 				<!-- "in 2 Tagen 16-22 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,12" news="news-jorgaeff-1988-3-01b" />
@@ -1593,7 +1593,7 @@
 			<description>
 				<de>Die Einführung des bleifreien Benzin sorgt für Verunsicherung an den Zapfsäulen. Die Verbraucher befürchten, der neue Sprit könnte ihrem Auto schaden und tanken weiterhin bleihaltig.</de>
 			</description>
-			<data genre="3" price="0.85" topicality="85" fictional="True" flags="2" />
+			<data genre="3" price="0.85" quality="85" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1988-3-02" type="0" creator="8936" created_by="jorgaeff">
@@ -1604,7 +1604,7 @@
 			<description>
 				<de>Im Rahmen der ICE-Weltrekordfahrt stellt der ICE-Vorläuferzug InterCityExperimental mit 406,9 km/h einen neuen Geschwindigkeitsrekord für Schienenfahrzeuge auf.</de>
 			</description>
-			<data genre="3" price="0.85" topicality="85" fictional="True" flags="2" />
+			<data genre="3" price="0.85" quality="85" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1988-3-03" type="0" creator="8936" created_by="jorgaeff">
@@ -1615,7 +1615,7 @@
 			<description>
 				<de>Der sogenannte Philipp-Wurm verbreitet sich unter Ausnutzung von Unix-Diensten. Zwar hat der Wurm keine direkte Schadensroutine, trotzdem legt er wegen seiner aggressiven Weiterverbreitung ca. 6000 Rechner lahm.</de>
 			</description>
-			<data genre="3" price="0.85" topicality="85" fictional="True" flags="2" />
+			<data genre="3" price="0.85" quality="85" fictional="True" flags="2" />
 		</news>
 
 
@@ -1629,7 +1629,7 @@
 			<description>
 				<de>Das Zentralkomitee der Volonen plant den Neubau einer Hyperraum-Umgehungsstraße in Erdnähe. Gefahr für die Erde?</de>
 			</description>
-			<data genre="4" price="1" topicality="75" fictional="True" />
+			<data genre="4" price="1" quality="75" fictional="True" />
 			<effects>
 				<!-- "morgen 10-12 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,12" news="news-jorgaeff-hyperraum-02" />
@@ -1643,7 +1643,7 @@
 			<description>
 				<de>Die Erde steht dem Neubau einer Hyperraum-Umgehungsstraße im Weg. Ein Ersatzplanet für die Menschheit wird fieberhaft gesucht.</de>
 			</description>
-			<data genre="4" price="1.1" topicality="85" />
+			<data genre="4" price="1.1" quality="85" />
 			<effects>
 				<!-- "übermorgen 8-19 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,8,19" news="news-jorgaeff-hyperraum-03" />
@@ -1657,7 +1657,7 @@
 			<description>
 				<de>Kein geeigneter Planet wurde gefunden! Der Bau der Hyperraum-Umgehungsstraße soll trotzdem wie geplant durchgeführt werden. Wird die Erde jetzt zerstört?</de>
 			</description>
-			<data genre="4" price="1.2" topicality="100" />
+			<data genre="4" price="1.2" quality="100" />
 		</news>
 
 		<news id="news-jorgaeff-hyperraum-04" type="2" creator="8936" created_by="jorgaeff">
@@ -1667,7 +1667,7 @@
 			<description>
 				<de>Aufgrund unüberschaubarer Kosten wird der Bau der Hyperraum-Umgehungsstraße für unbestimmte Zeit auf Eis gelegt. Die Erde atmet auf!</de>
 			</description>
-			<data genre="4" price="1.3" topicality="100" />
+			<data genre="4" price="1.3" quality="100" />
 		</news>
 
 		<news id="news-jorgaeff-news-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1677,7 +1677,7 @@
 			<description>
 				<de>Manfred Mustermann hat Klage gegen VISUM eingereicht. Der Kreditkarten-Anbieter hatte wiederholt Werbung mit dem Namen Mustermanns betrieben ohne um Erlaubnis zu fragen.</de>
 			</description>
-			<data genre="4" price="0.3" topicality="30" />
+			<data genre="4" price="0.3" quality="30" />
 		</news>
 
 		<news id="news-jorgaeff-fisch-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1687,7 +1687,7 @@
 			<description>
 				<de>Von einem an der Wand hängenden singenden Fisch mit Bewegungsmelder wurde ein Einbrecher im TV-Tower vertrieben. Der Dieb hatte es wohl auf Betty Butterblooms Geschenke-Sammlung abgesehen.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="20" fictional="True" />
+			<data genre="4" price="0.1" quality="20" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-oma-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1697,7 +1697,7 @@
 			<description>
 				<de>Da staunten die Polizisten nicht schlecht als sie eine alte Frau auf einem Motorrad sitzend durch einen Hühnerstall fahren sahen. Die betagte Seniorin hatte sich wohl verfahren.</de>
 			</description>
-			<data genre="4" price="0.3" topicality="30" fictional="True" />
+			<data genre="4" price="0.3" quality="30" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-junge-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1707,7 +1707,7 @@
 			<description>
 				<de>Weil ihm der Musikgeschmack seiner Eltern missfiel hielt ein 12-jähriger Junge während einer Autofahrt einen Zettel mit der Aufschrift "Hilfe" an die Fensterscheibe. Besorgte Autofahrer alarmierten die Polizei.</de>
 			</description>
-			<data genre="4" price="0.15" topicality="25" fictional="True" />
+			<data genre="4" price="0.15" quality="25" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-fluchttunnel-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1717,7 +1717,7 @@
 			<description>
 				<de>Zwei Fünfjährige haben mehrere Tage lang mit ihren Sandschaufeln einen Fluchttunnel aus ihrem Kindergarten gegraben und sind geflohen. Die Polizei konnte die beiden finden und wohlbehalten ihren Eltern übergeben.</de>
 			</description>
-			<data genre="4" price="0.25" topicality="35" fictional="True" />
+			<data genre="4" price="0.25" quality="35" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-newsschreiber-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1727,7 +1727,7 @@
 			<description>
 				<de>Zahlreiche Newsschreiber sind dem Aufruf ihrer Gewerkschaft gefolgt und streiken. Sie erhoffen sich bessere Arbeitsbedingungen sowie kostenloses Wasser und Brot während der Arbeitszeit.</de>
 			</description>
-			<data genre="4" price="0.3" topicality="25" fictional="True" />
+			<data genre="4" price="0.3" quality="25" fictional="True" />
 			<!-- "Effekt: es stehen weniger Nachrichten zur Verfügung" -->
 		</news>
 
@@ -1740,7 +1740,7 @@
 			<description>
 				<de>Hier die aktuellen Lottozahlen vom Mittwochs-Lotto präsentiert von Lotto-Fee Gudrun Heinemann. Wurde der Jackpot diesmal geknackt?</de>
 			</description>
-			<data genre="4" price="0.4" topicality="40" fictional="True" />
+			<data genre="4" price="0.4" quality="40" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-lotto-02" type="0" creator="8936" created_by="jorgaeff">
@@ -1752,7 +1752,7 @@
 			<description>
 				<de>Hier die aktuellen Lottozahlen vom Samstags-Lotto präsentiert von Lotto-Fee Else Polsbäck. Wurde der Jackpot diesmal geknackt?.</de>
 			</description>
-			<data genre="4" price="0.6" topicality="60" fictional="True" />
+			<data genre="4" price="0.6" quality="60" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-sonntag-01" type="0" creator="8936" created_by="jorgaeff">
@@ -1764,7 +1764,7 @@
 			<description>
 				<de>Fernseh-Pfarrer Benno Breitkopf wendet sich in seiner allwöchentlichen Kolumne an das deutsche Volk und prangert den zunehmenden Sittenverfall an. Wen's interessiert...</de>
 			</description>
-			<data genre="4" price="0.20" topicality="20" fictional="True" />
+			<data genre="4" price="0.20" quality="20" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-1985-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1775,7 +1775,7 @@
 			<description>
 				<de>Der Neuntöter ist eine Vogelart aus der Familie der Würger und in Mitteleuropa die häufigste Würgerart. Er ist vor allem durch sein Verhalten bekannt, Beutetiere auf Dornen aufzuspießen. </de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1986-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1786,7 +1786,7 @@
 			<description>
 				<de>Die große Krähe mit markantem Schnabel und metallisch glänzendem schwarzem Gefieder ist in einem breiten Gürtel von Westeuropa bis in die Steppen des Altaigebietes verbreitet.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1797,7 +1797,7 @@
 			<description>
 				<de>Das Braunkehlchen ist ein Singvogel aus der Gattung der Wiesenschmätzer und der Familie der Fliegenschnäpper. In Deutschland zählt das Braunkehlchen zu den gefährdeten Arten.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1988-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1808,7 +1808,7 @@
 			<description>
 				<de>Der Wendehals ist ist von Nordwestafrika ostwärts in einem breiten Gürtel bis an die asiatische Pazifikküste verbreitet; Europa ist fast flächendeckend besiedelt.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1989-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1819,7 +1819,7 @@
 			<description>
 				<de>Der Teichrohrsänger, im Volksmund auch Rohrspatz genannt, ist eine Singvogelart aus der Gattung der Rohrsänger und der Familie der Rohrsängerartigen. Er ist ist etwa 13 cm lang und hat eine Flügelspannweite von 17 bis 21 cm.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1990-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1830,7 +1830,7 @@
 			<description>
 				<de>Der Pirol ist ein Singvogel aus der Familie der Pirole. Er ist im Norden und Westen Eurasiens verbreitet; ebenso in Mitteleuropa, im südlichen Zentralasien und im Norden von Indien.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1991-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1841,7 +1841,7 @@
 			<description>
 				<de>Das Rebhuhn ist eine Vogelart aus der Ordnung der Hühnervögel. Rebhühner bewohnen Steppen- und Heidelandschaften in weiten Teilen Europas und Asiens. Sie ernähren sich überwiegend von Sämereien, Wildkräutern und Getreidekörnern.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1992-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1852,7 +1852,7 @@
 			<description>
 				<de>Das Rotkehlchen ist eine Vogelart aus der Familie der Fliegenschnäpper. Es besiedelt Nordafrika, Europa und Kleinasien sowie die Mittelmeerinseln. Seine Nahrung besteht vor allem aus Insekten, kleinen Spinnen, Würmern und Schnecken.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1993-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1863,7 +1863,7 @@
 			<description>
 				<de>Der Flussregenpfeifer ist eine Vogelart aus der Familie der Regenpfeifer. In Mitteleuropa ist er ein verbreiteter, aber wenig häufiger Brut- und Sommervogel. Während der Zugzeiten ist er verhältnismäßig häufig als Durchzügler und Rastvogel zu beobachten.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1994-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1874,7 +1874,7 @@
 			<description>
 				<de>Der Weißstorch, auch Klapperstorch genannt, ist eine Vogelart aus der Familie der Störche. Weißstörche sind etwa 80 bis 100 cm lang und haben eine Flügelspannweite von etwa 200 bis 220 cm. Weißstörche haben ein Gewicht von etwa 2,5 bis 4,5 kg.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1995-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1885,7 +1885,7 @@
 			<description>
 				<de>Die Nachtigall ist eine Vogelart aus der Ordnung der Sperlingsvögel, Unterordnung Singvögel. Nach neueren molekularbiologischen Erkenntnissen zur Phylogenese der Singvögel wird sie heute meist zur Familie der Fliegenschnäpper gestellt.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1996-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1896,7 +1896,7 @@
 			<description>
 				<de>Der Kiebitz ist eine Vogelart aus der Familie der Regenpfeifer. Er brütet typischerweise in den Marschwiesen, auf Vordeichwiesenflächen und anderen Weidelandschaften der Niederungen.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1997-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1907,7 +1907,7 @@
 			<description>
 				<de>Der Buntspecht ist eine Vogelart aus der Familie der Spechte. Der kleine Specht besiedelt große Teile des nördlichen Eurasiens sowie Nordafrika und bewohnt Wälder fast jeder Art sowie Parks und baumreiche Gärten.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1998-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1918,7 +1918,7 @@
 			<description>
 				<de>Die Feldlerche ist eine Vogelart aus der Familie der Lerchen. Diese mittelgroße Lerchenart besiedelt fast die gesamte Paläarktis von Irland und Portugal bis Kamtschatka und Japan.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1999-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1929,7 +1929,7 @@
 			<description>
 				<de>Die Goldammer ist eine Vogelart aus der Familie der Ammern. Sie ist die häufigste Ammer in Europa und einer der charakteristischen Brutvögel der Feldmark.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2000-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1940,7 +1940,7 @@
 			<description>
 				<de>Der Rotmilan, auch Roter Milan, Gabelweihe oder Königsweihe genannt, ist eine etwa mäusebussardgroße Greifvogelart aus der Familie der Habichtartigen. Über 50 Prozent des Gesamtbestandes dieser Art brütet in Deutschland.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2001-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1951,7 +1951,7 @@
 			<description>
 				<de>Der Haubentaucher ist eine Vogelart aus der Familie der Lappentaucher. Der etwa stockentengroße Vogel ist der größte, häufigste und bekannteste Vertreter dieser Familie von Wasservögeln.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2002-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1962,7 +1962,7 @@
 			<description>
 				<de>Der Haussperling - auch Spatz oder Hausspatz genannt – ist eine Vogelart aus der Familie der Sperlinge und einer der bekanntesten und am weitesten verbreiteten Singvögel.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2003-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1973,7 +1973,7 @@
 			<description>
 				<de>Der Mauersegler ist eine Vogelart aus der Familie der Segler. Er ähnelt den Schwalben, ist aber mit diesen nicht näher verwandt; die Ähnlichkeiten beruhen auf konvergenter Evolution. Der Mauersegler ist ein Langstreckenzieher.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2004-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1984,7 +1984,7 @@
 			<description>
 				<de>Der Zaunkönig ist nach dem Winter- und Sommergoldhähnchen der drittkleinste Vogel Europas. Lange Zeit wurde er „Schneekönig“ genannt, da er auch im Winter lebhaft singt. Der Zaunkönig besiedelt Europa, Nordafrika, Vorder-, Zentral- und Ostasien und Nordamerika.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2005-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -1995,7 +1995,7 @@
 			<description>
 				<de>Der Uhu ist eine Vogelart aus der Gattung der Uhus, die zur Ordnung der Eulen gehört. Er ist die größte Eulenart, hat einen massigen Körper und einen auffällig dicken Kopf mit Federohren. Die Augen sind orangegelb. Das Gefieder weist dunkle Längs- und Querzeichnungen auf.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2006-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -2006,7 +2006,7 @@
 			<description>
 				<de>Der Name bezieht sich darauf, dass der Kleiber den Eingang von Bruthöhlen anderer Vögel, zum Beispiel die von Spechten, mit Lehm verklebt, um sie selbst zu nutzen. Um die Höhle zu schützen, „mauern“ die Kleiber den Eingang zu ihren Bruthöhlen mit einer Mischung aus Lehm und Speichel so weit zu, dass sie gerade durchpassen.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2007-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -2017,7 +2017,7 @@
 			<description>
 				<de>Der Turmfalke ist der häufigste Falke in Mitteleuropa. Vielen ist der Turmfalke vertraut, da er sich auch Städte als Lebensraum erobert hat und oft beim Rüttelflug zu beobachten ist.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2008-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -2028,7 +2028,7 @@
 			<description>
 				<de>Der Kuckuck gehört zur Ordnung der Kuckucksvögel und zur Familie der Kuckucke. Er kommt in Nordafrika und in Eurasien von Portugal und Irland nach Osten bis Japan und Kamtschatka vor. Er ist etwa taubengroß, sein Gefieder ist größtenteils grau.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2009-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -2039,7 +2039,7 @@
 			<description>
 				<de>Der Eisvogel besiedelt weite Teile Europas, Asiens sowie das westliche Nordafrika und lebt an mäßig schnell fließenden oder stehenden, klaren Gewässern mit Kleinfischbestand und Sitzwarten. Seine Nahrung setzt sich aus Fischen, Wasserinsekten, Kleinkrebsen und Kaulquappen zusammen.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2010-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -2050,7 +2050,7 @@
 			<description>
 				<de>Das Verbreitungsgebiet des Kormorans umfasst große Teile Europas, Asiens und Afrikas, außerdem Australien und Neuseeland sowie Grönland und die Ostküste Nordamerikas. Die Nahrung besteht wie bei allen Vertretern der Gattung Phalacrocorax fast ausschließlich aus Fisch.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2011-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -2061,7 +2061,7 @@
 			<description>
 				<de>Der Gartenrotschwanz besiedelt Eurasien ostwärts bis zum Baikalsee sowie Teile Nordafrikas und des Nahen Ostens. Als Höhlen- und Halbhöhlenbrüter bewohnt er vorwiegend lichte Laubwälder, Parkanlagen und Gärten mit altem Baumbestand.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2012-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -2072,7 +2072,7 @@
 			<description>
 				<de>Die Dohle ist eine Singvogelart aus der Familie der Rabenvögel. Unter den Raben und Krähen ist sie einer der kleinsten Vertreter. Sie zeichnet sich durch schwarz-graues Gefieder, einen stämmigen Schnabel und hellblaue Augen aus. Ihr Verbreitungsgebiet reicht vom nordafrikanischen Atlasgebirge über Europa bis zum Baikalsee.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2013-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -2083,7 +2083,7 @@
 			<description>
 				<de>Die Bekassine ist eine sehr langschnäbelige, mittelgroße Art aus der Familie der Schnepfenvögel. Sie ist über große Teile der Paläarktis verbreitet und überwintert überwiegend in den Subtropen und Tropen der Alten Welt.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2014-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -2094,7 +2094,7 @@
 			<description>
 				<de>Der Grünspecht, manchmal auch Grasspecht oder Erdspecht genannt, ist eine Vogelart aus der Familie der Spechte. Der Grünspecht und seine Schwesterart, der Grauspecht, sind die einzigen Vertreter der Gattung Picus in Mitteleuropa.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2015-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -2105,7 +2105,7 @@
 			<description>
 				<de>Der Habicht ist ein Greifvogel, dessen Verbreitungsgebiet die arktischen bis subtropischen Zonen der Holarktis umfasst. Habichte ernähren sich überwiegend von kleinen bis mittelgroßen Vögeln und Säugetieren bis zu einem Gewicht von etwa 1,0 kg. Die Art ist nicht gefährdet.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2016-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -2116,7 +2116,7 @@
 			<description>
 				<de>Der Stieglitz, auch Distelfink genannt, ist eine Vogelart aus der Familie der Finken. Er besiedelt Eurasien von Westeuropa bis Zentralasien und Mittelsibirien sowie Nordafrika. In Südamerika und Australien sowie auf Neuseeland und einigen Inseln Ozeaniens wurde er eingeführt.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2017-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -2127,7 +2127,7 @@
 			<description>
 				<de>Der Waldkauz ist eine mittelgroße Eulenart mit einer Verbreitung von Europa bis nach Westsibirien und Iran. Er kommt außerdem in Südostasien vor. In Mitteleuropa ist der Waldkauz gemeinsam mit der Waldohreule die häufigste Eule.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2018-4-99" type="0" creator="8936" created_by="jorgaeff">
@@ -2138,7 +2138,7 @@
 			<description>
 				<de>Der Star, auch als Gemeiner Star bezeichnet, ist der in Eurasien am weitesten verbreitete und häufigste Vertreter der Familie der Stare. Durch zahlreiche Einbürgerungen auf anderen Kontinenten ist der Star heute einer der häufigsten Vögel der Welt. Im Niederdeutschen werden Stare Spreen genannt. </de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1986-4-UdSSR-02b" type="2" creator="8936" created_by="jorgaeff">
@@ -2148,7 +2148,7 @@
 			<description>
 				<de>Vor 3 Tagen ist ein Reaktor im russischen Atomkraftwerk Nobyliwostok explodiert. Schwerwiegende Folgen für Mensch und Natur befürchtet.</de>
 			</description>
-			<data genre="4" price="1" topicality="100" fictional="False" flags="2" />
+			<data genre="4" price="1" quality="100" fictional="False" flags="2" />
 			<effects>
 				<!-- "morgen 4-11 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,4,11" news="news-jorgaeff-1986-0-UdSSR-02c" />
@@ -2162,7 +2162,7 @@
 			<description>
 				<de>Die bei der Explosion des russischen Atomkraftwerks Nobyliwostok entstandene atomare Wolke breitet sich über weite Teile Europas aus. Weitere Ausbreitung über die gesamte nördliche Halbkugel befürchtet.</de>
 			</description>
-			<data genre="4" price="1.05" topicality="95" fictional="False" flags="2" />
+			<data genre="4" price="1.05" quality="95" fictional="False" flags="2" />
 			<effects>
 				<!-- "morgen 13-19 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,13,19" news="news-jorgaeff-1986-0-UdSSR-02d" />
@@ -2177,7 +2177,7 @@
 			<description>
 				<de>Der explodierte Atomreaktor wird mit einem provisorischen Schutzmantel aus Stahlbeton versehen. Der "Sarkophag" soll die Strahlenausbreitung eindämmen.</de>
 			</description>
-			<data genre="4" price="0.85" topicality="85" fictional="False" flags="2" />
+			<data genre="4" price="0.85" quality="85" fictional="False" flags="2" />
 			<effects>
 				<!-- "in 2 Tagen 16-20 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,16,20" news="news-jorgaeff-1986-0-UdSSR-02e" />
@@ -2191,7 +2191,7 @@
 			<description>
 				<de>Zu einem Wandel in der deutschen Atom-Politik ist es trotz der Explosion des russischen Atomkraftwerks Nobyliwostok nicht gekommen. Deutschland hält weiterhin an einem Ausbau der Kernenergie fest.</de>
 			</description>
-			<data genre="4" price="0.7" topicality="70" fictional="True" flags="2" />
+			<data genre="4" price="0.7" quality="70" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-4-01" type="0" creator="8936" created_by="jorgaeff">
@@ -2202,7 +2202,7 @@
 			<description>
 				<de>Das 2. Deutsche Fernsehen (2DF) hat versehentlich die vorjährige Neujahrsansprache von Bundeskanzler Herbert Kappes gesendet. Der Programmdirektor wurde entlassen.</de>
 			</description>
-			<data genre="4" price="0.4" topicality="40" fictional="False" flags="2" />
+			<data genre="4" price="0.4" quality="40" fictional="False" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-4-UdSSR-01a" type="0" creator="8936" created_by="jorgaeff">
@@ -2213,7 +2213,7 @@
 			<description>
 				<de>Der deutsche Pilot Markus Lahr ist mit seiner Cessna auf dem Roten Platz in Moskau gelandet.</de>
 			</description>
-			<data genre="4" price="0.8" topicality="80" fictional="False" flags="2" />
+			<data genre="4" price="0.8" quality="80" fictional="False" flags="2" />
 			<effects>
 				<!-- "in 1 Tagen 10-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,10,16" news="news-jorgaeff-1987-0-UdSSR-01b" />
@@ -2228,7 +2228,7 @@
 			<description>
 				<de>Im West-Pazifik wird morgen Mittag eine totale Sonnenfinsternis erwartet. Die Sonnenfinsternis kann auf den Inseln Indonesiens und der Philippinen beobachtet werden. Verkehrschaos erwartet.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 			<effects>
 				<!-- "morgen, 12-16.00 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,12,16" news="news-jorgaeff-1988-4-01b" />
@@ -2243,7 +2243,7 @@
 			<description>
 				<de>Ohne besondere Vorkommnisse ist die Sonnenfinsternis im West-Pazifik zu Ende gegangen. Die gut informierte Bevölkerung hatte genug Zeit sich vorzubereiten; das befürchtete Verkehrschaos blieb aus.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 			<effects>
 				<!-- "in 1-2 Stunden" -->
 				<effect trigger="happen" type="triggernews" time="1,1,2" news="news-jorgaeff-1988-4-01c" />
@@ -2258,7 +2258,7 @@
 			<description>
 				<de>Gute Nachricht für alle, welche die heutige Sonnenfinsternis verpasst haben: Die majestätische Himmelserscheinung wiederholt sich heute Abend gegen 18.30 Uhr. Die Sonne verschwindet, es wird dunkel, kalt und still.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-2018-4-01" type="0" creator="8936" created_by="jorgaeff">
@@ -2269,7 +2269,7 @@
 			<description>
 				<de>Jorgaeff, der legendäre News-Schreiber von TVTower, gesteht, seit Jahren selbst ausgedachte Nachrichten geschrieben zu haben: Vieles sei gar nicht so passiert und Ähnlichkeiten mit lebenden Personen rein zufällig.</de>
 			</description>
-			<data genre="4" price="0.1" topicality="10" fictional="True" flags="2" />
+			<data genre="4" price="0.1" quality="10" fictional="True" flags="2" />
 		</news>
 
 
@@ -2285,7 +2285,7 @@
 			<description>
 				<de>Klaas Klinskis kaukasische Kaugummi-Klumpen-Sammlung wurde beim Auktionshaus ii-bääh für 1,2 Millionen € versteigert.</de>
 			</description>
-			<data genre="5" price="0.4" topicality="30" fictional="True" />
+			<data genre="5" price="0.4" quality="30" fictional="True" />
 			<effects>
 				<!-- "übermorgen 8-11 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,8,11" news="news-jorgaeff-klinski-02" />
@@ -2299,7 +2299,7 @@
 			<description>
 				<de>Eben ersteigert - schon geklaut. Ein Dieb erbeutet die wohl teuerste Kaugummi-Klumpen-Sammlung der Welt und verschwindet spurlos.</de>
 			</description>
-			<data genre="5" price="0.5" topicality="40" />
+			<data genre="5" price="0.5" quality="40" />
 			<effects>
 				<!-- "übermorgen 15-19 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,15,19" news="news-jorgaeff-klinski-03" />
@@ -2313,7 +2313,7 @@
 			<description>
 				<de>Die Sammlung ist zurück! Ein kluger Kommissar stellt dem Dieb eine Falle; dieser tappt hinein und gesteht: "Ich bin Kleptomane!".</de>
 			</description>
-			<data genre="5" price="0.6" topicality="50" />
+			<data genre="5" price="0.6" quality="50" />
 		</news>
 
 		<news id="news-jorgaeff-festspiele-01" type="0" creator="8936" created_by="jorgaeff">
@@ -2323,7 +2323,7 @@
 			<description>
 				<de>Drei Tage lang finden die Kulturfestspiele statt. Zahlreiche Städte bieten eine unzählbare Menge an kulturellen Veranstaltungen an.</de>
 			</description>
-			<data genre="5" price="0.3" topicality="30" fictional="True" />
+			<data genre="5" price="0.3" quality="30" fictional="True" />
 			<!-- "möglicher Effekt: höhere Zuschauerzahlen bei Kultursendungen" -->
 		</news>
 
@@ -2334,7 +2334,7 @@
 			<description>
 				<de>Das Werk "Bei Hempels unterm Sofa" von Georg Hempel wurde im Nationalmuseum von einer Putzfrau zerstört. Der Reinigungskraft war nicht klar ein 800.000€ teures Kunstwerk vor sich zu haben.</de>
 			</description>
-			<data genre="5" price="0.35" topicality="35" fictional="True" />
+			<data genre="5" price="0.35" quality="35" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-fanta-01" type="0" creator="8936" created_by="jorgaeff">
@@ -2344,7 +2344,7 @@
 			<description>
 				<de>Der Bestseller des deutsch-syrisch-libanesischen Autors Heribert Fanta über einen Fischer im Jemen bricht sämtliche Rekorde und ist mit dem diesjährigen Literaturpreis ausgezeichnet worden.</de>
 			</description>
-			<data genre="5" price="0.3" topicality="30" fictional="True" />
+			<data genre="5" price="0.3" quality="30" fictional="True" />
 			<effects>
 				<!-- "in 2 Tagen 13-17 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,13,17" news="news-jorgaeff-fanta-02" />
@@ -2358,7 +2358,7 @@
 			<description>
 				<de>Nur wenige Menschen leiden an Easiophobie - der Angst zu schreiben. Der deutsche Erfolgsautor Heribert Fanta ist einer von Ihnen. Er möchte sich künftig nur noch auf die Produktion von Film-Dokumentationen konzentrieren.</de>
 			</description>
-			<data genre="5" price="0.4" topicality="40" fictional="True" />
+			<data genre="5" price="0.4" quality="40" fictional="True" />
 			<effects>
 				<!-- "in 3 Tagen 10-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,3,3,10,16" news="news-jorgaeff-fanta-03" />
@@ -2372,7 +2372,7 @@
 			<description>
 				<de>Die neue Dokumentation des deutsch-syrisch-libanesischen Ex-Autors über einen Bäcker im Sudan hat die Herzen der Juroren erweicht. Sie statten das Werk Fantas mit dem Prädikat "Besonders wertvoll" aus.</de>
 			</description>
-			<data genre="5" price="0.35" topicality="35" fictional="True" />
+			<data genre="5" price="0.35" quality="35" fictional="True" />
 			<effects>
 				<!-- "in 5 Tagen 18-22 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,5,5,18,22" news="news-jorgaeff-fanta-04" />
@@ -2386,7 +2386,7 @@
 			<description>
 				<de>Easiophobiker und Ex-Autor, Heribert Fanta, hat seine Schreibangst überwunden und erstmalig seit zwei Jahren einen Einkaufszettel geschrieben. "Ohne war das immer doof, weil ich die Hälfte vergessen habe", so der Autor.</de>
 			</description>
-			<data genre="5" price="0.45" topicality="45" fictional="True" />
+			<data genre="5" price="0.45" quality="45" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-gamseier-01" type="0" creator="8936" created_by="jorgaeff">
@@ -2396,7 +2396,7 @@
 			<description>
 				<de>Der wohl erfolgloseste Nachrichtensprecher aller Zeiten war der Erste im deutschen Fernsehen, der weder "Bonn" noch "Berlin" aussprechen konnte. Er starb gestern im Alter von 63 Jahren beim Versuch die Wetterkarten neu zu mischen.</de>
 			</description>
-			<data genre="5" price="0.3" topicality="30" fictional="True" />
+			<data genre="5" price="0.3" quality="30" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-grafitti-01" type="0" creator="8936" created_by="jorgaeff">
@@ -2406,7 +2406,7 @@
 			<description>
 				<de>Für die einen ist es Vandalismus, für die anderen eine Ausdrucksweise urbaner Kultur. Im vergangenen Jahr musste die Bahn Millionen für die Reinigung beschmierter Waggons aufbringen, was sich natürlich auch auf die Fahrpreise auswirkt.</de>
 			</description>
-			<data genre="5" price="0.35" topicality="35" fictional="True" />
+			<data genre="5" price="0.35" quality="35" fictional="True" />
 			<effects>
 				<!-- "in 7 Tagen 14-20 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,7,7,14,20" news="news-jorgaeff-grafitti-02" />
@@ -2420,7 +2420,7 @@
 			<description>
 				<de>Lange Zeit waren Grafittis nur als Schmierereien angesehen. Doch langsam steigt in der Gesellschaft die Akzeptanz für die bunten Bilder. Sogar Prominente greifen öffentlich zur Sprühdose und besprühen ungeniert Wände und Bahnwaggons.</de>
 			</description>
-			<data genre="5" price="0.4" topicality="40" fictional="True" />
+			<data genre="5" price="0.4" quality="40" fictional="True" />
 			<effects>
 				<!-- "in 4 Tagen 10-20 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,4,4,10,20" news="news-jorgaeff-grafitti-03" />
@@ -2434,7 +2434,7 @@
 			<description>
 				<de>Die Bahn hat einige ihrer besprühten Waggons verkauft. Bei dem derzeitigen Grafitti-Hype sei es lukrativer die alten Waggons zu verscherbeln und neue zu kaufen. Gartenzwerge waren gestern - heute stellt man sich einen Waggon in den Vorgarten.</de>
 			</description>
-			<data genre="5" price="0.45" topicality="45" fictional="True" />
+			<data genre="5" price="0.45" quality="45" fictional="True" />
 			<effects>
 				<!-- "in 2 Tagen 7-12 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,7,12" news="news-jorgaeff-grafitti-04" />
@@ -2448,7 +2448,7 @@
 			<description>
 				<de>Die von DASF entwickelte unübersprühbare Farbe könnte das Ende für Grafittis bedeuten. Dennoch ist sich die Bahn unschlüssig, ob sie die Farbe einsetzen soll, da der Verkauf besprühter Waggons sehr lukrativ zu sein scheint.</de>
 			</description>
-			<data genre="5" price="0.5" topicality="50" fictional="True" />
+			<data genre="5" price="0.5" quality="50" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-1985-5-01" type="0" creator="8936" created_by="jorgaeff">
@@ -2459,7 +2459,7 @@
 			<description>
 				<de>Nach jahrelanger Sanierung wurde die Dresdner Staatsoper mit der Uraufführung der Oper "Der Schäfer und seine Zicklein" von Hannes Lotz wieder eröffnet.</de>
 			</description>
-			<data genre="5" price="0.4" topicality="40" fictional="True" flags="2" />
+			<data genre="5" price="0.4" quality="40" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-5-02" type="0" creator="8936" created_by="jorgaeff">
@@ -2470,7 +2470,7 @@
 			<description>
 				<de>In Rüsselsheim wurde das Museum des ersten avantgardistischen Dichters und Dramaturgen der Neuzeit, Edward Swanstein, eröffnet. Das Museum zeigt Werke des Künstlers und bildet sein Leben anhand von Pantomimen nach.</de>
 			</description>
-			<data genre="5" price="0.3" topicality="30" fictional="True" flags="2" />
+			<data genre="5" price="0.3" quality="30" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-5-03" type="0" creator="8936" created_by="jorgaeff">
@@ -2481,7 +2481,7 @@
 			<description>
 				<de>Durch einen Säureanschlag wird im Kunsthaus Wanne-Eickel das Gemälde "Die Rubensdame" von Hans-Dieter Blasewitz völlig zerstört.</de>
 			</description>
-			<data genre="5" price="0.35" topicality="35" fictional="True" />
+			<data genre="5" price="0.35" quality="35" fictional="True" />
 		</news>
 
 		<news id="news-jorgaeff-1985-5-04a" type="0" creator="8936" created_by="jorgaeff">
@@ -2496,7 +2496,7 @@
 				<!-- "morgen, 12 bis 18.00 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,1,1,12,18" news="news-jorgaeff-chorris-02" />
 			</effects>
-			<data genre="5" price="0.35" topicality="35" fictional="True" flags="2" />
+			<data genre="5" price="0.35" quality="35" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-5-04b" type="2" creator="8936" created_by="jorgaeff">
@@ -2507,7 +2507,7 @@
 			<description>
 				<de>Nur wenig Applaus gab es zum Ende der erstmalig ungekürzt aufgeführten Ulm-Oper "Der Kolibri". Die meisten der 1200 Zuschauer waren bereits zum Ende des ersten Akts eingeschlafen. Kritiker bemängeln die Langatmigkeit des Werks.</de>
 			</description>
-			<data genre="5" price="0.35" topicality="35" fictional="True" flags="2" />
+			<data genre="5" price="0.35" quality="35" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1985-5-05" type="0" creator="8936" created_by="jorgaeff">
@@ -2518,7 +2518,7 @@
 			<description>
 				<de>Die Stadt Augsburg in Bayern feiert ihren 2000. Geburtstag. Sie ist eine der ältesten Städte Deutschlands und war im 16. Jahrhundert Heimat der wohlhabenden Kaufmannsfamilie Fugger.</de>
 			</description>
-			<data genre="5" price="0.25" topicality="25" fictional="True" flags="2" />
+			<data genre="5" price="0.25" quality="25" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1986-5-01" type="0" creator="8936" created_by="jorgaeff">
@@ -2529,7 +2529,7 @@
 			<description>
 				<de>Jean-Pierre Moreau spielt anlässlich des 150. Geburtstags des US-Bundesstaats Texas und dem 25. Jubiläum des NASE-Space-Centers Houston ein Konzert vor mindestens 1.300.000 Zuhörern und erhält einen Eintrag im Guinness-Buch der Rekorde.</de>
 			</description>
-			<data genre="5" price="0.45" topicality="45" fictional="True" flags="2" />
+			<data genre="5" price="0.45" quality="45" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1986-5-02" type="0" creator="8936" created_by="jorgaeff">
@@ -2540,7 +2540,7 @@
 			<description>
 				<de>Mit der Welturaufführung des Musicals „Das Gespenst des Theaters“ startet der Dichtungskunstzyklus im Herman-Sherman-Theater in London.</de>
 			</description>
-			<data genre="5" price="0.35" topicality="35" fictional="True" flags="2" />
+			<data genre="5" price="0.35" quality="35" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-5-01" type="0" creator="8936" created_by="jorgaeff">
@@ -2551,7 +2551,7 @@
 			<description>
 				<de>Die 750-Jahr-Feier der Stadt Berlin wird mit zahlreichen Veranstaltungen beiderseits der Mauer begangen. Als Highlight wird die Rede von US-Präsident Keagan an der Siegessäule erwartet.</de>
 			</description>
-			<data genre="5" price="0.35" topicality="35" fictional="True" flags="2" />
+			<data genre="5" price="0.35" quality="35" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1987-5-02" type="0" creator="8936" created_by="jorgaeff">
@@ -2562,7 +2562,7 @@
 			<description>
 				<de>Die erfolgreichste Live-Sendung im 2. Deutschen Fernsehen (2DF) "Wer wird Wettkönig?" hat einen neuen Moderator: Tommy Göttinger wettet ab sofort mit den Kandidaten um die Wette bis sich die Balken biegen.</de>
 			</description>
-			<data genre="5" price="0.35" topicality="35" fictional="True" flags="2" />
+			<data genre="5" price="0.35" quality="35" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1988-5-01" type="0" creator="8936" created_by="jorgaeff">
@@ -2573,7 +2573,7 @@
 			<description>
 				<de>Die Kulturstadt Europas ist ein Titel, der jährlich von der EU vergeben wird. Die Benennung soll dazu beitragen, den Reichtum, die Vielfalt und die Gemeinsamkeiten des kulturellen Erbes in Europa herauszustellen und ein besseres Verständnis der Bürger füreinander zu ermöglichen.</de>
 			</description>
-			<data genre="5" price="0.35" topicality="35" fictional="True" flags="2" />
+			<data genre="5" price="0.35" quality="35" fictional="True" flags="2" />
 		</news>
 
 		<news id="news-jorgaeff-1988-5-02" type="0" creator="8936" created_by="jorgaeff">
@@ -2584,7 +2584,7 @@
 			<description>
 				<de>Im Londoner Embley-Park-Stadion findet anlässlich des 70. Geburtstags des westafrikanischen Politikers, Nestor Candela, ein Solidaritätskonzert statt. Namhafte Künstler wie die Ghee Bees, UB60 oder Simple Thoughts spielen für lau. </de>
 			</description>
-			<data genre="5" price="0.35" topicality="35" fictional="True" flags="2" />
+			<data genre="5" price="0.35" quality="35" fictional="True" flags="2" />
 		</news>
 	</allnews>
 </tvgdb>
