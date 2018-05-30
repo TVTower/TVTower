@@ -43,10 +43,10 @@ Type TAi extends TAiBase
 
 	Method Start()
 		Super.Start()
-		
+
 		'=== LINK SPECIAL OBJECTS ===
 		local LuaEngine:TLuaEngine = GetLuaEngine()
-		
+
 		'own functions for player
 		LuaEngine.RegisterBlitzmaxObject("TVT", TLuaFunctions.Create(PlayerID))
 		'the player
@@ -295,7 +295,7 @@ Type TAi extends TAiBase
 
 		CallLuaFunction("OnBeginEnterRoom", args)
 	End Method
-	
+
 
 	Method CallOnEnterRoom(roomId:int)
 		if not AiRunning then return
@@ -320,15 +320,15 @@ Type TAi extends TAiBase
 
 		CallLuaFunction("OnReachTarget", args)
 	End Method
-	
-	
+
+
 	Method CallOnDayBegins()
 		if not AiRunning then return
 
 		CallLuaFunction("OnDayBegins", Null)
 	End Method
 
-	
+
 	Method CallOnGameBegins()
 		if not AiRunning then return
 
@@ -341,7 +341,7 @@ Type TAi extends TAiBase
 
 		CallLuaFunction("OnInit", Null)
 	End Method
-		
+
 
 	Method CallOnMoneyChanged(value:int, reason:int, reference:object)
 		if not AiRunning then return
@@ -400,7 +400,7 @@ End Type
 
 
 Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
-	'=== CONST + HELPERS 
+	'=== CONST + HELPERS
 
 	'convenience access to game rules (constants)
 	Field Rules:TGameRules
@@ -410,7 +410,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	Field ME:Int
 
 	Field audiencePredictor:TBroadcastAudiencePrediction = new TBroadcastAudiencePrediction
-	
+
 	Field ROOM_TOWER:Int = 0
 	Field ROOM_MOVIEAGENCY:Int
 	Field ROOM_ADAGENCY:Int
@@ -438,7 +438,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 		b) AI can request room using
 			GetFirstRoomByDetails("office", playerNumber)  - get the first found room
 			GetRoomsByDetails("office") - get array of found rooms
-			GetRoom(roomID) 
+			GetRoom(roomID)
 		    ID is room.GetID()
 		c) a player can have multiple studios - how to handle this with const?
 		d) rooms could change "content" and no longer exist
@@ -499,7 +499,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	Method RestoreExternalObject:object(index:int)
 		return GetPlayerBase(Self.ME).PlayerAI.GetObjectUsedInLua(index)
 	End Method
-	
+
 
 	Method GetArchiveIdOfPlayer:Int(id:Int)
 		Return GetRoomCollection().GetFirstByDetails("archive", id).id
@@ -677,7 +677,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	Method getBroadcastedProgrammeQuality:Float(day:int = - 1, hour:int = -1, playerID:int)
 		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(playerID)
 		if not plan then return 0.0
-		
+
 		local broadcastMaterial:TBroadcastMaterial = plan.GetProgramme(day, hour)
 		if not broadcastMaterial then return 0.0
 
@@ -692,7 +692,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 		if not broadcastMaterial then return ""
 		return broadcastMaterial.GetAudienceAttraction(hour, broadcastMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction, withSequenceEffect, withLuckEffect).ToString()
 	End Method
-	
+
 
 	Method getExclusiveMaxAudience:int()
 		return GetStationMapCollection().GetTotalChannelExclusiveAudience(self.ME)
@@ -702,7 +702,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	Method getMoney:int()
 		return GetPlayerFinance(self.ME, -1).money
 	End Method
-	
+
 	Method convertToAdContract:TAdContract(obj:object)
 		return TAdContract(obj)
 	End Method
@@ -786,7 +786,7 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 		if bm then return bm.GetGUID()
 		return ""
 	End Method
-	
+
 
 	Method GetProgrammeLicenceCount:Int()
 		Return GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceCount()
@@ -886,7 +886,7 @@ endrem
 		return of_buyAntennaStation(x, y)
 	End Method
 
-	
+
 	Method of_buyAntennaStation:int(x:int, y:int)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 
@@ -929,7 +929,7 @@ endrem
 			Return self.RESULT_FAILED
 		endif
 	End Method
-	
+
 
 	Method of_sellStation:int(listPosition:int)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
@@ -984,7 +984,7 @@ endrem
 
 	Method of_GetBroadcastMaterialProgrammedCountInTimeSpan:int(materialSource:TBroadcastMaterialSource, slotType:Int=0, dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
-		
+
 		Return GetPlayerProgrammePlan(self.ME).GetBroadcastMaterialSourceProgrammedCountInTimeSpan(materialSource, slotType, dayStart, hourStart, dayEnd, hourEnd)
 	End Method
 
@@ -1112,7 +1112,7 @@ endrem
 		endif
 	End Method
 
-	
+
 	Method of_getProgrammeLicenceByID:TProgrammeLicence(id:Int=-1)
 		If Not _PlayerInRoom("office") Then Return Null
 
@@ -1165,7 +1165,7 @@ endrem
 		if GetPlayerBase(self.ME).SetNewsAbonnement(newsGenreID, level)
 			return self.RESULT_OK
 		endif
-	End Method	
+	End Method
 
 	'returns the aggression level of the given terrorist group.
 	'Invalid groups return the maximum of all.
@@ -1176,7 +1176,7 @@ endrem
 		return GetNewsAgency().GetTerroristAggressionLevel(terroristGroup)
 	End Method
 
-	
+
 	'returns the maximum level the aggression of terrorists could have
 	Method ne_getTerroristAggressionLevelMax:Int()
 		return GetNewsAgency().terroristAggressionLevelMax
@@ -1193,7 +1193,7 @@ endrem
 			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
 		endif
 	End Method
-	
+
 
 	Method ne_getAvailableNews:TLuaFunctionResult(arrayIndex:Int=-1)
 		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
@@ -1410,7 +1410,7 @@ endrem
 			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
 		endif
 	End Method
-	
+
 
 	'BUY a programme licence with the corresponding ID
 	'Returns result-IDs: WRONGROOM / OK / NOTFOUND
@@ -1461,7 +1461,7 @@ endrem
 			Return TLuaFunctionResult.Create(self.RESULT_OK, Block.licence)
 		else
 			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
-		endif		
+		endif
 	End Method
 
 'untested
@@ -1496,7 +1496,7 @@ endrem
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
 		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
-		If Block and Block.GetLicence() then Return Block.GetNextBid() else Return self.RESULT_NOTFOUND
+		If Block and Block.GetLicence() then Return Block.GetNextBid(self.ME) else Return self.RESULT_NOTFOUND
 	End Method
 
 'untested
@@ -1579,7 +1579,7 @@ endrem
 			Return TLuaFunctionResult.Create(self.RESULT_OK, sign)
 		else
 			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
-		endif		
+		endif
 	End Method
 
 
@@ -1592,7 +1592,7 @@ endrem
 			Return TLuaFunctionResult.Create(self.RESULT_OK, sign)
 		else
 			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
-		endif		
+		endif
 	End Method
 
 
@@ -1606,7 +1606,7 @@ endrem
 			Return TLuaFunctionResult.Create(self.RESULT_OK, sign)
 		else
 			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
-		endif		
+		endif
 	End Method
 
 
@@ -1619,7 +1619,7 @@ endrem
 			Return TLuaFunctionResult.Create(self.RESULT_OK, sign)
 		else
 			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
-		endif		
+		endif
 	End Method
 
 
@@ -1640,19 +1640,19 @@ endrem
 		If Not _PlayerInRoom("roomboard") Then Return self.RESULT_WRONGROOM
 
 		Local signA:TRoomBoardSign = GetRoomBoard().GetSignById(signAId)
-		Local signB:TRoomBoardSign = GetRoomBoard().GetSignById(signBId)		
+		Local signB:TRoomBoardSign = GetRoomBoard().GetSignById(signBId)
 
 		If GetRoomBoard().SwitchSigns(signA, signB)
 			Return self.RESULT_OK
 		Else
 			Return self.RESULT_FAILED
-		Endif		
+		Endif
 	End Method
 
 
 	'switch signs on the given positions.
 	'a potential sign on slotA/floorA will get moved to slotB/floorB
-	'and vice versa. It is NOT needed to have to valid signs on there 
+	'and vice versa. It is NOT needed to have to valid signs on there
 	Method rb_SwitchSignPositions:int(slotA:int, floorA:int, slotB:int, floorB:int)
 		If Not _PlayerInRoom("roomboard") Then Return self.RESULT_WRONGROOM
 
@@ -1660,7 +1660,7 @@ endrem
 			Return self.RESULT_OK
 		Else
 			Return self.RESULT_FAILED
-		Endif		
+		Endif
 	End Method
 
 
@@ -1707,7 +1707,7 @@ endrem
 
 		Return GetPlayerProgrammeCollection(self.ME).AddProgrammeLicenceToSuitcase(licence)
 	End Method
-	
+
 
 	'move licence from suitcase to archive
 	'ATTENTION: if you move multiple licences, position will shift!

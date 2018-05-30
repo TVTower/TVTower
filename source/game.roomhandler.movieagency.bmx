@@ -36,7 +36,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Global GuiListSeries:TGUIProgrammeLicenceSlotList = null
 	Global GuiListSuitcase:TGUIProgrammeLicenceSlotList = null
 
-	global LS_movieagency:TLowerString = TLowerString.Create("movieagency")	
+	global LS_movieagency:TLowerString = TLowerString.Create("movieagency")
 
 	'configuration
 	Global suitcasePos:TVec2D = new TVec2D.Init(350,130)
@@ -60,7 +60,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Method New()
 		InitializeFilters()
 	End Method
-	
+
 
 	Method InitializeFilters:int()
 		if not filterMoviesGood
@@ -74,7 +74,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			filterMoviesCheap.AddFilter(new TProgrammeLicenceFilter)
 		endif
 		if not filterSeries then filterSeries = new TProgrammeLicenceFilter
-		
+
 		'good movies must be more expensive than X _and_ of better
 		'quality then Y
 		rem
@@ -138,7 +138,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterMoviesCheap.filters[1].maxTopicalityMax = -1.0
 		filterMoviesCheap.filters[1].checkTradeability = True
 		filterMoviesCheap.filters[1].requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
-		
+
 		'filter them by price too - eg. for auction ?
 		filterSeries.licenceTypes = [TVTProgrammeLicenceType.SERIES]
 		'filterSeries.filters[0].SetRequiredOwners([TOwnedGameObject.OWNER_NOBODY])
@@ -187,7 +187,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Method Initialize:int()
 		'=== RESET TO INITIAL STATE ===
 		CleanUp()
-		
+
 		listMoviesGood = new TProgrammeLicence[programmesPerLine]
 		listMoviesCheap = new TProgrammeLicence[programmesPerLine]
 		listSeries = new TProgrammeLicence[programmesPerLine]
@@ -252,7 +252,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			'vendor should accept drop - else no recognition
 			VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 		endif
-		
+
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
@@ -270,6 +270,12 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'drop on vendor - sell things
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDropOnTarget", onDropProgrammeLicenceOnVendor, "TGUIProgrammeLicence") ]
 
+		'reset auction block caches
+		_eventListeners :+ [ EventManager.registerListenerFunction("game.onSetActivePlayer", onResetAuctionBlockCache) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("station.onSetActive", onResetAuctionBlockCache) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("station.onSetInActive", onResetAuctionBlockCache) ]
+
+
 		_eventListeners :+ _RegisterScreenHandler( onUpdateMovieAgency, onDrawMovieAgency, ScreenCollection.GetScreen("screen_movieagency"))
 		_eventListeners :+ _RegisterScreenHandler( onUpdateMovieAuction, onDrawMovieAuction, ScreenCollection.GetScreen("screen_movieauction"))
 
@@ -281,7 +287,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Method CleanUp()
 		'=== unset cross referenced objects ===
 		'
-		
+
 		'=== remove obsolete gui elements ===
 		if GuiListMoviesGood then RemoveAllGuiElements()
 
@@ -361,7 +367,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		if IsObservedFigure(figure)
 			'as only 1 player is allowed simultaneously, the limitation
 			'to "observed" is not strictly needed - but does not harm
-			
+
 			'do not allow leaving as long as we have a dragged block
 			if draggedGuiProgrammeLicence
 				triggerEvent.setVeto()
@@ -387,7 +393,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'disabled auto-suitcase-readding
 		'now we use
 		'- readd when timer fires
-		'- readd when going into another room than the movieagency 
+		'- readd when going into another room than the movieagency
 		'GetPlayerProgrammeCollection(figure.playerID).ReaddProgrammeLicencesFromSuitcase()
 
 		local player:TPlayerBase = GetPlayerBase(figure.playerID)
@@ -455,7 +461,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		Next
 		return ret
 	End Method
-	
+
 
 	Method GetProgrammeLicenceByPosition:TProgrammeLicence(position:int)
 		if position > GetProgrammeLicencesInStock() then return null
@@ -532,7 +538,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		if not GetPlayerProgrammeCollection(licence.owner).RemoveProgrammeLicence(licence, TRUE)
 			return False
 		endif
-		
+
 		'add to agency's lists - if not existing yet
 		if not HasProgrammeLicence(licence) then AddProgrammeLicence(licence)
 
@@ -546,7 +552,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			TLogger.Log("MovieAgency", "AddProgrammeLicence() failed: cannot add licence owned by someone else. Owner="+licence.owner+"! Report to developers asap.", LOG_ERROR)
 			return False
 		endif
-		
+
 		'try to fill the licence into the corresponding list
 		'we use multiple lists - if the first is full, try second
 		local lists:TProgrammeLicence[][]
@@ -647,7 +653,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				if not guiLists[j].addItem(lic,"-1" )
 					GUIManager.Remove(lic)
 				endif
-				
+
 				'print "ADD lists"+j+" had missing licence: "+licence.getTitle()
 			Next
 		Next
@@ -731,13 +737,13 @@ rem
 				if not guiLicence.IsEnabled() then guiLicence.Enable()
 			endif
 		Next
-endrem		
+endrem
 
 		if AuctionEntity Then AuctionEntity.Update()
 		if VendorEntity Then VendorEntity.Update()
 	End Method
 
-	
+
 	'===================================
 	'Movie Agency: Room screen
 	'===================================
@@ -834,6 +840,11 @@ endrem
 		End select
 
 		return TRUE
+	End Function
+
+
+	Function onResetAuctionBlockCache:int( triggerEvent:TEventBase )
+		TAuctionProgrammeBlocks.ClearCaches()
 	End Function
 
 
@@ -1057,15 +1068,17 @@ End Type
 Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	Field area:TRectangle = New TRectangle.Init(0,0,0,0)
 	Field licence:TProgrammeLicence		'the licence getting auctionated (a series, movie or collection)
-	Field bestBid:Int = 0				'what was bidden for that licence
-	Field bestBidder:Int = 0			'what was bidden for that licence
+	Field bestBidRaw:Int = 0			'what was bidden for that licence without audience reach level
+	Field bestBid:Int = 0				'what was bidden for that licence with audience reach level
+	Field bestBidder:Int = 0			'who bid for that licence
+	Field bestBidderLevel:Int = 1		'what was the audience reach level when bidding
 	Field slot:Int = 0					'for ordering (and displaying sheets without overlapping)
 	Field bidSavings:Float = 0.75		'how much to shape of the original price
 	Field maxAuctionTime:Long = -1
 	Field _bidSavingsMinimum:Float = -1
 	Field _bidSavingsMaximum:Float = -1
 	Field _bidSavingsDecreaseBy:Float = -1
-	
+
 	'cached image
 	Field _imageWithText:TImage = Null {nosave}
 
@@ -1092,6 +1105,13 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Function ClearCaches:int()
+		for local block:TAuctionProgrammeBlocks = EachIn List
+			block._imageWithText = null
+		next
+	End Function
+
+
 	Function Initialize:int()
 		list.Clear()
 	End Function
@@ -1100,10 +1120,10 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	Function GetByIndex:TAuctionProgrammeBlocks(index:int)
 		if index < 0 then index = 0
 		if index >= list.Count() then return null
-		
+
 		return TAuctionProgrammeBlocks( list.ValueAtIndex(index) )
 	End Function
-	
+
 
 	Function GetByLicence:TAuctionProgrammeBlocks(licence:TProgrammeLicence, licenceGUID:string="")
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
@@ -1178,7 +1198,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 	Method GetMaxAuctionTime:Long(useLicence:TProgrammeLicence = null)
 		if not useLicence then useLicence = licence
-		
+
 		'limit live programme by their airTime - 1 day
 		if useLicence and useLicence.IsLive()
 			return useLicence.data.GetReleaseTime() - 1 * TWorldTime.DAYLENGTH
@@ -1186,7 +1206,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 		return maxAuctionTime
 	End Method
-	 
+
 
 	'sets another licence into the slot
 	Method Refill:Int(programmeLicence:TProgrammeLicence=Null)
@@ -1218,7 +1238,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 				keepOld = true
 				licence = oldLicence
 			endif
-				
+
 
 			if not keepOld
 				'print "   find new live one"
@@ -1270,12 +1290,14 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			licence.SetModifier("auctionPrice", 1.0)
 			licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY, True)
 		endif
-	
+
 		'reset cache
 		_imageWithText = Null
 		'reset bids
+		bestBidRaw = 0
 		bestBid = 0
 		bestBidder = 0
+		bestBidderLevel = 1
 		_bidSavingsDecreaseBy = -1
 		_bidSavingsMaximum = -1
 		_bidSavingsMinimum = -1
@@ -1293,12 +1315,20 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			Return False
 		EndIf
 
-		
+
 		If bestBidder and GetPlayerBaseCollection().IsPlayer(bestBidder)
 			'modify licences new price until a new auction of this licence
 			'might reset it
-			licence.SetModifier("auctionPrice", Float(bestBid) / licence.GetPriceForPlayer(0))
-			
+			licence.SetModifier("auctionPrice", Float(bestBid) / licence.GetPriceForPlayer(bestBidder, bestBidderLevel))
+
+			?debug
+			print "modifier auctionPrice=" + Float(bestBid) / licence.GetPriceForPlayer(bestBidder, bestBidderLevel)
+			print "endAuction: price for p0="+licence.GetPriceForPlayer(0)
+			for local i:int = 1 to 4
+				print "endAuction: price for p"+i+"="+licence.GetPriceForPlayer(i, GetPlayerBase(i).GetAudienceReachLevel()) + " audienceLevel="+GetPlayerBase(i).GetAudienceReachLevel()
+			next
+			?
+
 			Local player:TPlayerBase = GetPlayerBase(bestBidder)
 			GetPlayerProgrammeCollection(player.playerID).AddProgrammeLicence(licence)
 			if not GetPlayerProgrammeCollection(player.playerID).HasProgrammeLicence(licence)
@@ -1313,18 +1343,13 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 				Local evData:TData = New TData
 				evData.Add("licence", licence)
 				evData.AddNumber("bestBidder", player.playerID)
+				evData.AddNumber("bestBidderLevel", bestBidderLevel)
+				evData.AddNumber("bestBidRaw", bestBidRaw)
 				evData.AddNumber("bestBid", bestBid)
 				EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onWin", evData, Self))
 			endif
 		End If
 
-		'emit event
-		Local evData:TData = New TData
-		evData.Add("licence", licence)
-		evData.AddNumber("bestBidder", bestBidder)
-		evData.AddNumber("bestBid", bestBid)
-		evData.AddNumber("bidSavings", bidSavings)
-		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onEndAuction", evData, Self))
 
 		'found nobody to buy this licence
 		'so we decrease price a bit
@@ -1332,26 +1357,44 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			Self.bidSavings :- Self.GetBidSavingsDecreaseBy()
 		EndIf
 
+
+		'actually need to end the auction instead of just decreasing
+		'minimum bid?
+		local auctionEnds:int = False
+
 		'if we had a bidder or found nobody with the allowed price minimum
 		'we add another licence to this block and reset everything
-		If bestBidder Or Self.bidSavings < Self.GetBidSavingsMinimum() or not licence
-			Refill()
-			return True
-		EndIf
-		
+		If bestBidder Or Self.bidSavings < Self.GetBidSavingsMinimum()
+			auctionEnds = True
 		'is time for this auction gone (eg. live-programme has limits)?
-		If licence
+		Else
 			local maxTime:Long = GetMaxAuctionTime(licence)
 			if maxTime <> -1 and maxTime < GetWorldTime().GetTimeGone()
+				auctionEnds = True
 				'print "maxAuctionTime reached: " + licence.GetTitle()
-				Refill()
-				return true
 			endif
+		endif
+
+		if auctionEnds
+			'emit event
+			Local evData:TData = New TData
+			evData.Add("licence", licence)
+			evData.AddNumber("bestBidder", bestBidder)
+			evData.AddNumber("bestBidderLevel", bestBidderLevel)
+			evData.AddNumber("bestBidRaw", bestBidRaw)
+			evData.AddNumber("bestBid", bestBid)
+			evData.AddNumber("bidSavings", bidSavings)
+			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onEndAuction", evData, Self))
+
+			Refill()
+			return True
 		endif
 
 
 		'reset cache
 		_imageWithText = Null
+
+		return False
 	End Method
 
 
@@ -1362,7 +1405,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 	Method SetBid:Int(playerID:Int)
 		If not licence Then Return -1
-		
+
 		Local player:TPlayerBase = GetPlayerBase(playerID)
 		If Not player Then Return -1
 		'if the playerID was -1 ("auto") we should assure we have a correct id now
@@ -1370,30 +1413,46 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		'already highest bidder, no need to add another bid
 		If playerID = bestBidder Then Return 0
 
-		Local price:Int = GetNextBid()
-		If player.getFinance().PayAuctionBid(price, Self.GetLicence())
+
+		'prices differ between the players - depending on their audience
+		'reach level
+		Local audienceReachLevel:int = Max(1, GetPlayerBase(playerID).GetAudienceReachLevel())
+		Local thisBidRaw:Int = GetNextBidRaw()
+		Local thisBid:Int = thisBidRaw * licence.GetAudienceReachLevelPriceMod(audienceReachLevel)
+
+		If player.getFinance().PayAuctionBid(thisBid, Self.GetLicence())
 			'another player was highest bidder, we pay him back the
 			'bid he gave (which is the currently highest bid...)
 			If bestBidder And GetPlayerBase(bestBidder)
-				GetPlayerFinance(bestBidder).PayBackAuctionBid(bestBid, Self)
+				'bestBid contains the best bid adjusted for this players
+				'reach level - so we need to calculate it properly
+				local previousPaidBestBid:int = bestBidRaw * licence.GetAudienceReachLevelPriceMod(bestBidderLevel)
+				GetPlayerFinance(bestBidder).PayBackAuctionBid(previousPaidBestBid, Self)
 
 				'inform player AI that their bid was overbid
 				If GetPlayerBase(bestBidder).isLocalAI()
-					GetPlayerBase(bestBidder).PlayerAI.CallOnProgrammeLicenceAuctionGetOutbid(GetLicence(), price, playerID)
+					local thisPaidBestBid:int = thisBidRaw * licence.GetAudienceReachLevelPriceMod(audienceReachLevel)
+					GetPlayerBase(bestBidder).PlayerAI.CallOnProgrammeLicenceAuctionGetOutbid(GetLicence(), thisPaidBestBid, playerID)
 				EndIf
-				
+
 				'emit event so eg. toastmessages could attach
 				Local evData:TData = New TData
 				evData.Add("licence", GetLicence())
 				evData.AddNumber("previousBestBidder", bestBidder)
+				evData.AddNumber("previousBestBidderLevel", bestBidderLevel)
 				evData.AddNumber("previousBestBid", bestBid)
+				evData.AddNumber("previousBestBidRaw", bestBidRaw)
 				evData.AddNumber("bestBidder", playerID)
-				evData.AddNumber("bestBid", price)
+				evData.AddNumber("bestBidderLevel", audienceReachLevel)
+				evData.AddNumber("bestBid", thisBid)
+				evData.AddNumber("bestBidRaw", thisBidRaw)
 				EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onGetOutbid", evData, Self))
 			EndIf
 			'set new bid values
 			bestBidder = playerID
-			bestBid = price
+			bestBidderLevel = audienceReachLevel
+			bestBidRaw = thisBidRaw
+			bestBid = thisBid
 
 
 			'reset so cache gets renewed
@@ -1403,42 +1462,55 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			Local evData:TData = New TData
 			evData.Add("licence", GetLicence())
 			evData.AddNumber("bestBidder", bestBidder)
+			evData.AddNumber("bestBidderLevel", bestBidderLevel)
 			evData.AddNumber("bestBid", bestBid)
+			evData.AddNumber("bestBidRaw", bestBidRaw)
 			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.setBid", evData, Self))
+
+			Return bestBid
 		EndIf
-		Return price
+
+		Return 0
 	End Method
 
 
-	Method GetNextBid:Int() {_exposeToLua}
+	Method GetNextBid:Int(playerID:int) {_exposeToLua}
+		if not licence then return -1
+
+		Local audienceReachLevel:int = Max(1, GetPlayerBase(playerID).GetAudienceReachLevel())
+		return GetNextBidRaw() * licence.GetAudienceReachLevelPriceMod(audienceReachLevel)
+	End Method
+
+
+	Method GetNextBidRaw:Int()
 		If not licence Then Return -1
 
-		Local nextBid:Int = 0
+		Local nextBidRaw:Int = 0
 		'no bid done yet, next bid is the licences price cut by 25%
 		If bestBid = 0
-			nextBid = licence.getPriceForPlayer(0) * bidSavings
-			nextBid = TFunctions.RoundToBeautifulValue(nextBid)
+			nextBidRaw = licence.getPriceForPlayer(0, 0) * bidSavings
+			nextBidRaw = TFunctions.RoundToBeautifulValue(nextBidRaw)
 		Else
-			nextBid = bestBid
+			nextBidRaw = bestBidRaw
 
-			If nextBid < 100000
-				nextBid :+ 10000
-			Else If nextBid >= 100000 And nextBid < 250000
-				nextBid :+ 25000
-			Else If nextBid >= 250000 And nextBid < 750000
-				nextBid :+ 50000
-			Else If nextBid >= 750000
-				nextBid :+ 75000
+			If nextBidRaw < 100000
+				nextBidRaw :+ 10000
+			Else If nextBidRaw < 250000
+				nextBidRaw :+ 25000
+			Else If nextBidRaw < 750000
+				nextBidRaw :+ 50000
+			Else
+				nextBidRaw :+ 75000
 			EndIf
 		EndIf
 
-		Return nextBid
+		Return nextBidRaw
 	End Method
 
 
 	Method ShowSheet:Int(x:Int,y:Int)
 		If not licence Then Return -1
-		
+
 		licence.ShowSheet(x,y)
 	End Method
 
@@ -1470,7 +1542,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			EndIf
 			titleFont.drawBlock(licence.GetTitle(), 31,5, 215,30, ALIGN_LEFT_TOP, TColor.clBlack, 1, 1, 0.50)
 
-			font.drawBlock(GetLocale("AUCTION_MAKE_BID")+": "+MathHelper.DottedValue(GetNextBid())+CURRENCYSIGN, 31,33, 212,20, ALIGN_RIGHT_TOP, TColor.clBlack, 1)
+			font.drawBlock(GetLocale("AUCTION_MAKE_BID")+": "+MathHelper.DottedValue(GetNextBid(GetPlayerBase().playerID))+CURRENCYSIGN, 31,33, 212,20, ALIGN_RIGHT_TOP, TColor.clBlack, 1)
 
 			'reset target for fonts
 			TBitmapFont.setRenderTarget(Null)
@@ -1501,6 +1573,8 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			SetAlpha oldAlpha
 
 			GetBitmapFont("default", 12).Draw("bidSavings="+MathHelper.NumberToString(bidSavings, 4) + "  Min="+MathHelper.NumberToString(GetBidSavingsMinimum(), 4) + "  Decr="+MathHelper.NumberToString(GetBidSavingsDecreaseBy(), 4), area.getX() + 5, area.GetY() + 5)
+			GetBitmapFont("default", 12).Draw("bestBidder="+bestBidder +"  lvl="+bestBidderLevel+ "  bestBidRaw="+bestBidRaw, area.getX() + 5, area.GetY() + 5 + 12)
+			GetBitmapFont("default", 12).Draw("nextBidRaw="+GetNextBidRaw() + "  MyReachLevel("+GetPlayerBase().playerID+")="+Max(1, GetPlayerBase(GetPlayerBase().playerID).GetAudienceReachLevel()), area.getX() + 5, area.GetY() + 5 + 2*12)
 		endif
 
     End Method
@@ -1516,7 +1590,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		'draw sheets (must be afterwards to avoid overlapping (itemA Sheet itemB itemC) )
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
 			If not obj.GetLicence() Then continue
-			
+
 			If obj.area.containsXY(MouseManager.x, MouseManager.y)
 				Local leftX:Int = 30, rightX:Int = 30
 				Local sheetY:Int = 20

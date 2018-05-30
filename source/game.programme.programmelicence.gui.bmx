@@ -116,7 +116,7 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 		If assetDragged and assetDragged.GetName() <> assetNameDragged
 			assetNameDragged = assetName
 		EndIf
-		
+
 		Self.InitAssets(assetName, assetNameDragged)
 
 		Return Self
@@ -124,7 +124,7 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 
 
 	'override to only allow dragging for affordable or own licences
-	Method IsDragable:Int() 
+	Method IsDragable:Int()
 		If Super.IsDragable()
 			Return (licence.owner = GetPlayerBaseCollection().playerID Or (licence.owner <= 0 And IsAffordable()))
 		Else

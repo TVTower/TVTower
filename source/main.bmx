@@ -4419,7 +4419,7 @@ Type GameEvents
 					local block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks.GetByIndex( int(indexS)-1 )
 					if not block then continue
 					local oldLicence:TProgrammeLicence = block.licence
-					local oldPrice:int = block.GetNextBid()
+					local oldPrice:int = block.GetNextBidRaw()
 					block.EndAuction()
 
 					if not oldLicence
@@ -4429,7 +4429,7 @@ Type GameEvents
 					elseif oldLicence and not block.licence
 						GetGame().SendSystemMessage("[DEV] #"+int(indexS)+". Ended auction for '" + oldLicence.GetTitle()+"', Created no new auction")
 					elseif oldLicence = block.licence
-						GetGame().SendSystemMessage("[DEV] #"+int(indexS)+". Reduced auction price for '" + oldLicence.GetTitle()+"' from " + MathHelper.DottedValue(oldPrice) + " to " + MathHelper.DottedValue(block.GetNextBid()))
+						GetGame().SendSystemMessage("[DEV] #"+int(indexS)+". Reduced auction raw price for '" + oldLicence.GetTitle()+"' from " + MathHelper.DottedValue(oldPrice) + " to " + MathHelper.DottedValue(block.GetNextBidRaw()))
 					endif
 				Next
 

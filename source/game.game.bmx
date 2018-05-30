@@ -1754,12 +1754,17 @@ endrem
 	'sets the player controlled by this client
 	Method SetActivePlayer(ID:Int=-1)
 		If ID = -1 Then ID = GetPlayerCollection().playerID
+
+		local oldPlayerID:int = GetPlayerCollection().playerID
+
 		'for debug purposes we need to adjust more than just
 		'the playerID.
 		GetPlayerCollection().playerID = ID
 		'also set this information for the boss collection (avoids
 		'circular references)
 		GetPlayerBossCollection().playerID = ID
+
+		EventManager.triggerEvent(TEventSimple.Create("game.onSetActivePlayer", New TData.AddNumber("playerID", ID).AddNumber("oldPlayerID", oldPlayerID) ) )
 
 		'get currently shown screen of that player
 		If Self.gamestate = TGame.STATE_RUNNING

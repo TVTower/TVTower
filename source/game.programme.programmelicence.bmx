@@ -46,7 +46,7 @@ Type TProgrammeLicenceCollection
 		collections.Clear()
 		singles.Clear()
 		series.Clear()
-		
+
 		return self
 	End Method
 
@@ -117,14 +117,14 @@ Type TProgrammeLicenceCollection
 	'checks if the singles list contains the given licence
 	Method ContainsSingle:Int(licence:TProgrammeLicence)
 		return singles.contains(licence)
-	End Method	
+	End Method
 
 
 	'add a licence as series
 	Method AddSeries:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
 		'all licences should be listed in the "all-licences-list"
 		if not Add(licence, skipDuplicates) then return False
-		
+
 		series.AddLast(licence)
 		return True
 	End Method
@@ -139,7 +139,7 @@ Type TProgrammeLicenceCollection
 	'checks if the series list contains the given licence
 	Method ContainsSeries:Int(licence:TProgrammeLicence)
 		return series.contains(licence)
-	End Method	
+	End Method
 
 
 	Method AddEpisode:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
@@ -147,14 +147,14 @@ Type TProgrammeLicenceCollection
 		if not Add(licence, skipDuplicates) then return False
 
 		'nothing more to do
-		
+
 		return True
 	End Method
 
 
 	Method RemoveEpisode:Int(licence:TProgrammeLicence)
 		'TODO: remove from parents sublicence list?
-		
+
 		Remove(licence)
 	End Method
 
@@ -162,14 +162,14 @@ Type TProgrammeLicenceCollection
 	'checks if the licences list contains the given licence
 	Method ContainsEpisode:Int(licence:TProgrammeLicence)
 		return Contains(licence)
-	End Method	
+	End Method
 
 
 	'add a licence as collection
 	Method AddCollection:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
 		'all licences should be listed in the "all-licences-list"
 		if not Add(licence, skipDuplicates) then return False
-		
+
 		collections.AddLast(licence)
 		return True
 	End Method
@@ -192,14 +192,14 @@ Type TProgrammeLicenceCollection
 		if not Add(licence, skipDuplicates) then return False
 
 		'nothing more to do
-		
+
 		return True
 	End Method
 
 
 	Method RemoveCollectionElement:Int(licence:TProgrammeLicence)
 		'TODO: remove from parents sublicence list?
-		
+
 		Remove(licence)
 	End Method
 
@@ -207,7 +207,7 @@ Type TProgrammeLicenceCollection
 	'checks if the licences list contains the given licence
 	Method ContainsCollectionElement:Int(licence:TProgrammeLicence)
 		return Contains(licence)
-	End Method	
+	End Method
 
 
 	'add a licence to all needed lists
@@ -228,7 +228,7 @@ Type TProgrammeLicenceCollection
 
 		return False
 	End Method
-		
+
 
 	'remove a licence from all needed lists
 	Method RemoveAutomatic:Int(licence:TProgrammeLicence)
@@ -248,7 +248,7 @@ Type TProgrammeLicenceCollection
 
 		return True
 	End Method
-	
+
 
 	'returns the list to use for the given type
 	'this is just important for "random" access as we could
@@ -307,7 +307,7 @@ Type TProgrammeLicenceCollection
 	Method SearchByPartialGUID:TProgrammeLicence(GUID:String)
 		'skip searching if there is nothing to search
 		if GUID.trim() = "" then return Null
-		
+
 		GUID = GUID.ToLower()
 
 		'find first hit
@@ -390,7 +390,7 @@ Type TProgrammeLicenceCollection
 			resultList.addLast(Licence)
 		Next
 		Return GetRandomFromList(resultList)
-	End Method	
+	End Method
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -453,7 +453,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		Local p2:TProgrammeLicence = TProgrammeLicence(o2)
 		If Not p2 Then Return 1
 		If Not p1 Then Return -1
-		if p1.GetTitle() = p2.GetTitle() 
+		if p1.GetTitle() = p2.GetTitle()
 			return p1.GetGUID() > p2.GetGUID()
 		endif
         If p1.GetTitle().ToLower() > p2.GetTitle().ToLower()
@@ -463,7 +463,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		endif
 		return 0
 	End Function
-	
+
 
 	Function SortByTopicality:Int(o1:Object, o2:Object)
 		Local p1:TProgrammeLicence = TProgrammeLicence(o1)
@@ -477,8 +477,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			'return int(Floor((p1.GetTopicality() - p2.GetTopicality()) + 0.5))
 		Endif
 		return SortByName(o1, o2)
-	End Function	
-	
+	End Function
+
 
 	Function SortByBlocks:Int(o1:Object, o2:Object)
 		Local p1:TProgrammeLicence = TProgrammeLicence(o1)
@@ -487,7 +487,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			return p1.data.GetBlocks() - p2.data.GetBlocks()
 		Endif
 		return SortByName(o1, o2)
-	End Function	
+	End Function
 
 
 	Method hasLicenceFlag:Int(flag:Int) {_exposeToLua}
@@ -502,7 +502,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			licenceFlags :& ~flag
 		EndIf
 	End Method
-	
+
 
 	'connect programmedata to a licence
 	Method SetData:int(data:TProgrammeData)
@@ -575,7 +575,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		Next
 		return result
 	End Method
-	
+
 
 	Method GetSubLicences:TProgrammeLicence[]() {_exposeToLua}
 		local result:TProgrammeLicence[]
@@ -620,14 +620,14 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 				endif
 			endif
 		endif
-				
+
 		Return TRUE
 	End Method
 
 
 	Method GetBroadcastStatistic:TBroadcastStatistic(useOwner:int=-1)
 		if useOwner < 0 then useOwner = Max(0, owner)
-		
+
 		if broadcastStatistics.length <= useOwner then broadcastStatistics = broadcastStatistics[.. useOwner + 1]
 		if not broadcastStatistics[useOwner] then broadcastStatistics[useOwner] = new TBroadcastStatistic
 
@@ -694,7 +694,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		Next
 		return False
 	End Method
-		
+
 
 
 	Method isSeries:int() {_exposeToLua}
@@ -710,7 +710,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	Method isSingle:int() {_exposeToLua}
 		return licenceType = TVTProgrammeLicenceType.SINGLE
 	End Method
-	
+
 
 	Method isCollection:int() {_exposeToLua}
 		return licenceType = TVTProgrammeLicenceType.COLLECTION
@@ -783,7 +783,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			return foundValue
 		endif
 	end Method
-	
+
 
 	'returns whether the licence - or AT LEAST ONE sublicence is a
 	'custom production
@@ -974,7 +974,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	Method Sell:int()
 		'forbid selling if not tradeable
 		if not IsTradeable() then return False
-		
+
 		local finance:TPlayerFinance = GetPlayerFinance(owner)
 		if not finance then return False
 
@@ -996,7 +996,6 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if GetPlayerBase(playerID) then currentAudienceReachLevel = GetPlayerBase(playerID).GetAudienceReachLevel()
 
 		local priceToPay:int = getPriceForPlayer(playerID, currentAudienceReachLevel)
-
 		If finance.PayProgrammeLicence(priceToPay, self)
 			buyPrice = priceToPay
 			buyAudienceReachLevel = currentAudienceReachLevel
@@ -1086,7 +1085,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'disabled: do not skip calculations as you could have a collection
 		'          of series
 		'if parentLicenceGUID then return 1
-		
+
 		'returns the _current_ amount of licences, so if you did not
 		'finish a custom production yet, the number represents the current
 		'state, not the final one!
@@ -1208,8 +1207,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	Method isPlanned:int() {_exposeToLua}
 		return isProgrammePlanned() or isTrailerPlanned()
 	End Method
-	
-	
+
+
 	'instead of asking the programmeplan about each licence
 	'we cache that information directly within the programme
 	Method isProgrammePlanned:int() {_exposeToLua}
@@ -1350,7 +1349,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if subGenres.length > genres.length then genres = genres[.. subGenres.length]
 		For local i:int = 0 until subGenres.length
 			if MathHelper.InIntArray(subGenres[i], genres) then continue
-			
+
 			genres[i] :+ subGenres[i]
 		Next
 
@@ -1420,7 +1419,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			allBroadcastFlags :| licence.GetBroadcastFlags()
 		Next
 		return allBroadcastFlags
-	End Method	
+	End Method
 
 
 	'returns the flags as a mix of all licences
@@ -1466,7 +1465,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if subLicences.length > 0 then return qualityRaw / subLicences.length
 		return 0.0
 	End Method
-	
+
 
 	'override
 	Method GetTitle:string() {_exposeToLua}
@@ -1607,7 +1606,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			return 0.0
 		endif
 	End Method
-	
+
 
 	Method GetDescription:string() {_exposeToLua}
 		if not description and GetData() then return GetData().GetDescription()
@@ -1664,6 +1663,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
+	Method GetAudienceReachLevelPriceMod:Float(audienceReachLevel:int)
+		return (0.5*Max(1, audienceReachLevel))
+	End Method
+
+
 	Method GetPriceForPlayer:int(playerID:int, audienceReachLevel:int = -1)
 		Local value:Float
 
@@ -1696,19 +1700,26 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 
 		'=== AUDIENCE REACH LEVEL ===
-		if audienceReachLevel <= 0
-			if GetPlayerBase(playerID)
-				audienceReachLevel = Max(1, GetPlayerBase(playerID).GetAudienceReachLevel())
-			else
-				'default to 1
-				audienceReachLevel = 1
+		'only do this for single licences or child licences to avoid
+		'multiplying what is already multiplied
+		if GetSubLicenceCount() = 0 and GetData()
+			if audienceReachLevel <= 0
+				if GetPlayerBase(playerID)
+					audienceReachLevel = Max(1, GetPlayerBase(playerID).GetAudienceReachLevel())
+				else
+					'default to 0 to skip modification
+					audienceReachLevel = 0
+				endif
 			endif
+			'adjust value by audience reach level
+			'for now: level 1 is 50% of the value we used before introduction
+			'of the reach level
+			'use audienceReachLevel=0 to skip modification
+			if audienceReachLevel > 0
+				value :* GetAudienceReachLevelPriceMod(audienceReachLevel)
+			endif
+			'print GetTitle() + "    value="+value+"   level="+audienceReachLevel + "  mod="+GetAudienceReachLevelPriceMod(audienceReachLevel)
 		endif
-		'adjust value by audience reach level
-		'for now: level 1 is 50% of the value we used before introduction
-		'of the reach level
-		value :* (0.5*audienceReachLevel) 
-		
 
 		'=== BEAUTIFY ===
 		'round to next "1000" block
@@ -1724,9 +1735,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	'for not-yet-owned licences
 	Method GetPrice:Int(playerID:int) {_exposeToLua}
 		if GetPlayerBase(playerID)
-			Return GetPriceForPlayer(playerID, GetPlayerBase(playerID).GetAudienceReachLevel())
+			Return GetPriceForPlayer(playerID, Max(1, GetPlayerBase(playerID).GetAudienceReachLevel()))
 		else
-			Return GetPriceForPlayer(playerID, 1)
+			Return GetPriceForPlayer(playerID, -1)
 		endif
 	End Method
 
@@ -1737,9 +1748,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if owner = playerID
 			Return GetPriceForPlayer(owner, buyAudienceReachLevel)
 		elseif GetPlayerBase(playerID)
-			Return GetPriceForPlayer(playerID, GetPlayerBase(playerID).GetAudienceReachLevel())
+			Return GetPriceForPlayer(playerID, Max(1, GetPlayerBase(playerID).GetAudienceReachLevel()))
 		else
-			Return GetPriceForPlayer(playerID, 1)
+			Return GetPriceForPlayer(playerID, -1)
 		endif
 	End Method
 
@@ -1813,7 +1824,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			if broadcastLimit > 0 then broadcastLimit :- 1
 		endif
 	End Method
-	
+
 
 	Method ShowSheet:Int(x:Int,y:Int, align:int=0, showMode:int=0, useOwner:int=-1, extraData:TData = null)
 		if useOwner = -1 then useOwner = owner
@@ -1842,7 +1853,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 	Method ShowProgrammeSheet:Int(x:Int,y:Int, align:int=0, useOwner:int=-1, extraData:TData = null)
 		if useOwner = -1 then useOwner = owner
-		
+
 		'=== PREPARE VARIABLES ===
 		local sheetWidth:int = 320
 		local sheetHeight:int = 0 'calculated later
@@ -1876,6 +1887,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if currentPlayerID = useOwner
 			price = GetSellPrice(useOwner)
 		else
+			if useOwner <= 0 then useOwner = currentPlayerID
 			price = GetPriceForPlayer(useOwner)
 		endif
 
@@ -1891,13 +1903,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		elseif finance and finance.canAfford( price )
 			canAfford = True
 		endif
-		
+
 		Local showMsgPlannedWarning:Int = False
 		Local showMsgEarnInfo:Int = False
 		Local showMsgLiveInfo:Int = False
 		Local showMsgBroadcastLimit:Int = False
 		Local showMsgBroadcastTimeSlot:Int = False
-		
+
 		'only if planned and in archive
 		'if useOwner > 0 and GetPlayer().figure.inRoom
 		'	if self.IsPlanned() and GetPlayer().figure.inRoom.name = "archive"
@@ -1931,7 +1943,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 					showMsgLiveInfo = True
 				endif
 			endif
-			
+
 			if GetSubLicenceCount() > 0
 				if IsLive()
 					local nextT:Long = GetNextReleaseTime()
@@ -1953,7 +1965,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local boxH:int = 0, msgH:int = 0, barH:int = 0
 		local msgAreaH:int = 0, boxAreaH:int = 0, barAreaH:int = 0
 		local boxAreaPaddingY:int = 4, msgAreaPaddingY:int = 4, barAreaPaddingY:int = 4
-		 
+
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
 		barH = skin.GetBarSize(100, -1).GetY()
@@ -1988,9 +2000,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'there is a splitter between description and cast...
 		sheetHeight :+ splitterHorizontalH
 
-		
+
 		'=== RENDER ===
-	
+
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 			if titleH <= 18
@@ -2000,7 +2012,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			endif
 		contentY :+ titleH
 
-		
+
 		'=== SUBTITLE AREA ===
 		if isSeries() or isCollection()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
@@ -2012,7 +2024,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			skin.fontNormal.drawBlock(GetEpisodeNumber() + "/" + GetParentLicence().GetEpisodeCount() + ": " + GetTitle(), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			contentY :+ subtitleH
 		endif
-		
+
 
 		'=== COUNTRY / YEAR / GENRE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
@@ -2026,11 +2038,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		endif
 
 		local genreLine:String = GetGenresLine()
-					
+
 		skin.fontNormal.drawBlock(genreLine, contentX + 5 + 65 + 2, contentY, contentW - 10 - 65 - 2, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ genreH
 
-	
+
 		'=== DESCRIPTION AREA ===
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
 		skin.fontNormal.drawBlock(GetDescription(), contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
@@ -2040,7 +2052,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'splitter
 		skin.RenderContent(contentX, contentY, contentW, splitterHorizontalH, "1")
 		contentY :+ splitterHorizontalH
-		
+
 
 		'=== CAST AREA ===
 		skin.RenderContent(contentX, contentY, contentW, castH, "2")
@@ -2059,7 +2071,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			else
 				cast :+ "|b|"+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, False))+":|/b| "
 			endif
-			
+
 			cast :+ data.GetCastGroupString(jobID)
 		Next
 
@@ -2110,7 +2122,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetTopicality(), GetMaxTopicality())
 		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
 		contentY :+ barH + 1
-	
+
 
 		'=== MESSAGES ===
 		'if there is a message then add padding to the begin
@@ -2212,7 +2224,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'show price if forced to. ATTENTION: licence flag, not data/broadcast flag!
 		'showPrice = showPrice or hasLicenceFlag(TVTProgrammeLicenceFlag.SHOW_PRICE)
 
-		
+
 		if showPrice
 			if canAfford
 				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue( price ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
@@ -2242,25 +2254,25 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			skin.fontBold.drawBlock("Programm: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28)
 			contentY :+ 28
 			skin.fontNormal.draw("Letzte Stunde im Plan: "+latestPlannedEndHour, contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Letzte Trailerstunde im Plan: "+latestPlannedTrailerHour, contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Tempo: "+MathHelper.NumberToString(data.GetSpeed(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Kritik: "+MathHelper.NumberToString(data.GetReview(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Kinokasse: "+MathHelper.NumberToString(data.GetOutcome(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("TV-Kasse: "+MathHelper.NumberToString(data.GetOutcomeTV(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Preismodifikator:  Lizenz="+MathHelper.NumberToString(GetModifier("price"), 4)+"  Data="+MathHelper.NumberToString(data.GetModifier("price"), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Qualitaet roh: "+MathHelper.NumberToString(GetQualityRaw(), 4)+"  (ohne Alter, Wdh.)", contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Qualitaet: "+MathHelper.NumberToString(GetQuality(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Aktualitaet: "+MathHelper.NumberToString(GetTopicality(), 4)+" von " + MathHelper.NumberToString(data.GetMaxTopicality(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Bloecke: "+GetBlocks(), contentX + 5, contentY)
 			contentY :+ 12
 			if useOwner <= 0
@@ -2268,9 +2280,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			else
 				skin.fontNormal.draw("Ausgestrahlt: "+GetTimesBroadcasted(useOwner)+"x Spieler, "+GetTimesBroadcasted()+"x alle  Limit:"+broadcastLimit, contentX + 5, contentY)
 			endif
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (alle)", contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Kaufpreis: "+MathHelper.DottedValue(GetPriceForPlayer(useOwner))+" (old:"+MathHelper.DottedValue(GetPriceForPlayerOld(useOwner))+")  Verkauf: " + MathHelper.DottedValue(GetSellPrice(useOwner)), contentX + 5, contentY)
 			contentY :+ 12
 			skin.fontNormal.draw("Trailer: " + data.GetTimesTrailerAiredSinceLastBroadcast(useOwner) +" (total: "+ data.GetTimesTrailerAired()+")", contentX + 5, contentY)
@@ -2299,7 +2311,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 	Method ShowTrailerSheet:Int(x:Int,y:Int, align:int=0, useOwner:int = -1, extraData:TData = null)
 		if useOwner = -1 then useOwner = owner
-		
+
 		'=== PREPARE VARIABLES ===
 		local sheetWidth:int = 310
 		local sheetHeight:int = 0 'calculated later
@@ -2336,14 +2348,14 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'if nothing comes after the messages, add bottom padding
 		if msgAreaH > 0 and barAreaH=0 then msgAreaH :+ msgAreaPaddingY
 		endrem
-		
+
 		'total height
 		sheetHeight = titleH + genreH + descriptionH + msgAreaH + barAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
 
 
-		
+
 		'=== RENDER ===
-	
+
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
@@ -2360,7 +2372,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
 		skin.fontNormal.drawBlock(getLocale("MOVIE_TRAILER"), contentX + 5, contentY + 3, contentW - 10, descriptionH, null, skin.textColorNeutral)
 		contentY :+ descriptionH
-		
+
 
 		'=== MESSAGES ===
 		'background for messages + boxes
@@ -2390,11 +2402,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			SetAlpha oldAlpha
 
 			skin.fontBold.draw("Trailer: "+GetTitle(), contentX + 5, contentY)
-			contentY :+ 14	
+			contentY :+ 14
 			skin.fontNormal.draw("Traileraktualitaet: "+MathHelper.NumberToString(data.GetTrailerTopicality(), 4)+" von " + MathHelper.NumberToString(data.GetMaxTrailerTopicality(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Ausstrahlungen: "+data.trailerAired, contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Ausstrahlungen seit letzter Sendung: "+data.GetTimesTrailerAiredSinceLastBroadcast(useOwner), contentX + 5, contentY)
 		Endif
 
@@ -2687,7 +2699,7 @@ Type TProgrammeLicenceFilter
 				for local genre:int = eachin genres
 					local foundGenre:int = False
 					for local filterGenre:int = eachin filter.genres
-						if filterGenre = genre then foundGenre = True;exit 
+						if filterGenre = genre then foundGenre = True;exit
 					Next
 					'if the genre was not found, the filter is not the right
 					'one -> exit the genre loop
@@ -2732,7 +2744,7 @@ Type TProgrammeLicenceFilter
 		childrenForbidden = bool
 		return self
 	End Method
-	
+
 
 	Method AddGenres:TProgrammeLicenceFilter(newGenres:int[])
 		For local newGenre:int = eachIn newGenres
@@ -2808,7 +2820,7 @@ Type TProgrammeLicenceFilter
 		if checkVisibility and not licence.isVisible() then return False
 
 		if childrenForbidden and licence.parentLicenceGUID then return False
-		
+
 		'check flags filter does NOT care for
 		if notDataFlags > 0 and (licence.GetDataFlags() & notDataFlags) > 0 then return False
 
@@ -2867,7 +2879,7 @@ Type TProgrammeLicenceFilter
 				if licenceType = licence.licenceType then return False
 			Next
 		endif
-		
+
 		'check if owner is one of the owners required for the filter
 		'if not, filter failed
 		if requiredOwners.length > 0
@@ -2885,7 +2897,7 @@ Type TProgrammeLicenceFilter
 				if owner = licence.owner then return False
 			Next
 		endif
-				
+
 		'check flags share something
 		if dataFlags > 0 and (licence.GetDataFlags() & dataFlags) <= 0 then return False
 
@@ -2934,7 +2946,7 @@ Type TProgrammeLicenceFilterGroup extends TProgrammeLicenceFilter
 	Method Copy:TProgrammeLicenceFilterGroup()
 		return New TProgrammeLicenceFilterGroup.InitFrom(self)
 	End Method
-	
+
 
 	Method AddFilter:TProgrammeLicenceFilterGroup(filter:TProgrammeLicenceFilter)
 		filters :+ [filter]
@@ -2946,11 +2958,11 @@ Type TProgrammeLicenceFilterGroup extends TProgrammeLicenceFilter
 		self.connectionType = connectionType
 		return self
 	End Method
-	
-	
+
+
 	Method DoesFilter:Int(licence:TProgrammeLicence)
 		if filters.length = 0 then return Super.DoesFilter(licence)
-		
+
 		if connectionType = CONNECTION_TYPE_OR
 			For local filter:TProgrammeLicenceFilter = Eachin filters
 				if filter.DoesFilter(licence) then return True
