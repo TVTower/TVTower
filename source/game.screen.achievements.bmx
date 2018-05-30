@@ -23,7 +23,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 	Global hoveredGuiAchievement:TGUIAchievementListItem
 
-	Global LS_office_achievements:TLowerString = TLowerString.Create("office_achievements")	
+	Global LS_office_achievements:TLowerString = TLowerString.Create("office_achievements")
 	Global _eventListeners:TLink[]
 	Global _instance:TScreenHandler_OfficeAchievements
 
@@ -31,7 +31,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 	Const SHOW_COMPLETED:int = 1
 	Const SHOW_FAILED:int = 2
 	Const SHOW_INCOMPLETED:int = 4
-	
+
 
 
 	Function GetInstance:TScreenHandler_OfficeAchievements()
@@ -112,10 +112,10 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 	Function onEnterScreen:int( triggerEvent:TEventBase )
 		GetInstance().ReloadAchievements()
 	End Function
-	
 
 
-	
+
+
 	'=== EVENTS ===
 
 	'GUI -> GUI reactio
@@ -146,7 +146,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 	Method ReloadAchievements()
 		'=== PRODUCTION COMPANY SELECT ===
 		achievementlist.EmptyList()
-		
+
 		'add the achievements to that list
 
 		'sort by series/name
@@ -218,7 +218,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 				endif
 			Next
 		endif
-		
+
 
 		GuiManager.Update( LS_office_achievements )
 
@@ -263,7 +263,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 		local contentH:int = 0
 		local outerSizeH:int = skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
 		local outerH:int = 0 'size of the "border"
-		
+
 		local titleH:int = 18
 
 
@@ -281,7 +281,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 		if categoryCountCompleted.length > showCategoryIndex
 			caption :+ " [" + categoryCountCompleted[showCategoryIndex] + "/" + categoryCountMax[showCategoryIndex] + "]"
 		endif
-		
+
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(caption, contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
@@ -331,7 +331,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
    		Super.CreateBase(pos, dimension, "")
 
 		SetValueColor(TColor.Create(0,0,0))
-		
+
 '		GUIManager.add(Self)
 
 		Return Self
@@ -360,10 +360,9 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 		Local maxHeight:Int = Max( sprite.GetHeight(), ..
 		                           textOffsetY + border.GetTop() + border.GetBottom() + maxTextHeight ..
 		                      )
-print "maxHeight: "+sprite.GetHeight()+"  " + maxTextHeight
 
 		Local dimension:TVec2D = New TVec2D.Init(maxWidth, maxHeight)
-		
+
 		'add padding
 		dimension.addXY(0, Self.paddingTop)
 		dimension.addXY(0, Self.paddingBottom)
@@ -409,7 +408,7 @@ print "maxHeight: "+sprite.GetHeight()+"  " + maxTextHeight
 		return achievement.GetTitle()
 	End Method
 
-	
+
 	Method GetAchievementText:string()
 		local achievement:TAchievement = TAchievement(data.Get("achievement"))
 		if not achievement then return ""
@@ -430,7 +429,7 @@ print "maxHeight: "+sprite.GetHeight()+"  " + maxTextHeight
 		if rewardText <> ""
 			rewardText = "" + GetLocale("REWARD") + ":~n" + rewardText
 		endif
-		
+
 		return rewardText
 	End Method
 
@@ -443,7 +442,7 @@ print "maxHeight: "+sprite.GetHeight()+"  " + maxTextHeight
 			return GetAchievementText()
 		endif
 	End Method
-	
+
 
 
 	Method DrawAchievement(x:Float, y:Float, w:Float, h:Float)
@@ -500,7 +499,7 @@ print "maxHeight: "+sprite.GetHeight()+"  " + maxTextHeight
 			ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 
 
-		if textRight <> "" 
+		if textRight <> ""
 			local halfTextWidth:int = 0.5 * (w - textOffsetX - (border.GetRight() + border.GetLeft()))
 			local leftWidth:int = 1.25 * halfTextWidth
 			local rightWidth:int = 0.75 * halfTextWidth
@@ -517,7 +516,7 @@ print "maxHeight: "+sprite.GetHeight()+"  " + maxTextHeight
 			skin.fontNormal.drawBlock( ..
 				textRight, ..
 				x + textOffsetX + border.GetLeft() + leftWidth + 10, ..
-				y + textOffsetY + border.GetTop(), .. 
+				y + textOffsetY + border.GetTop(), ..
 				rightWidth - 10,  ..
 				Max(15, GetScreenHeight() - (border.GetTop() + border.GetBottom() + 15)), ..
 				ALIGN_LEFT_TOP, skin.textColorNeutral)

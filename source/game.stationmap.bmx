@@ -1990,9 +1990,15 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method CheatMaxAudience:int()
+		local oldReachLevel:int = GetReachLevel(reach)
 		cheatedMaxReach = true
 		reach = GetStationMapCollection().population
 		GetStationMapCollection().GenerateShareMaps()
+
+		if GetReachLevel(reach) <> oldReachLevel
+			EventManager.triggerEvent( TEventSimple.Create( "StationMap.onChangeReachLevel", New TData.addNumber("reachLevel", GetReachLevel(reach)).AddNumber("oldReachLevel", oldReachLevel), Self ) )
+		endif
+
 		return True
 	End Method
 
@@ -2005,6 +2011,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	'returns maximum audience a player's stations cover
 	Method RecalculateAudienceSum:Int() {_exposeToLua}
 		local reachBefore:int = reach
+		local oldReachLevel:int = GetReachLevel(reachBefore)
 
 		if cheatedMaxReach
 			reach = GetStationMapCollection().population
@@ -2020,6 +2027,10 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 		'inform others
 		EventManager.triggerEvent( TEventSimple.Create( "StationMap.onRecalculateAudienceSum", New TData.addNumber("reach", reach).AddNumber("reachBefore", reachBefore), Self ) )
+
+		if GetReachLevel(reach) <> oldReachLevel
+			EventManager.triggerEvent( TEventSimple.Create( "StationMap.onChangeReachLevel", New TData.addNumber("reachLevel", GetReachLevel(reach)).AddNumber("oldReachLevel", oldReachLevel), Self ) )
+		endif
 
 		Return reach
 	End Method

@@ -4106,6 +4106,8 @@ Type GameEvents
 		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.removeStation", StationMap_OnRemoveStation) ]
 		'show ingame toastmessage if station is under construction
 		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.addStation", StationMap_OnAddStation) ]
+		'show ingame toastmessage if your audience reach level changes
+		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.onChangeReachLevel", StationMap_OnChangeReachLevel) ]
 		'show ingame toastmessage if station is under construction
 		_eventListeners :+ [ EventManager.registerListenerFunction("Station.onContractEndsSoon", Station_OnContractEndsSoon) ]
 		'show ingame toastmessage if bankruptcy could happen
@@ -5441,6 +5443,61 @@ Type GameEvents
 		'archive it for all players
 		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
 
+
+		'only interested in active player
+		If player = GetPlayer()
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		endif
+	End Function
+
+
+	Function StationMap_OnChangeReachLevel:Int(triggerEvent:TEventBase)
+		Local stationMap:TStationMap = TStationMap(triggerEvent.GetSender())
+		If Not stationMap Then Return False
+
+		local reachLevel:int = triggerEvent.GetData().GetInt("reachLevel")
+		local oldReachLevel:int = triggerEvent.GetData().GetInt("oldReachLevel")
+
+		'only interested in the players stations
+		Local player:TPlayer = GetPlayer(stationMap.owner)
+		If Not player Then Return False
+
+		local caption:string
+		local text:string
+		local text2:string
+
+		if reachLevel > oldReachLevel
+			caption = "AUDIENCE_REACH_LEVEL_INCREASED"
+			text = "LEVEL_INCREASED_FROM_X_TO_Y"
+			text2 = "PRICES_WILL_RISE"
+		else
+			caption = "AUDIENCE_REACH_LEVEL_DECREASED"
+			text = "LEVEL_DECREASED_FROM_X_TO_Y"
+			text2 = "PRICES_WILL_FALL"
+		endif
+
+		'send out a toast message
+		Local toast:TGameToastMessage = New TGameToastMessage
+		toast.SetLifeTime(6)
+		toast.SetMessageType(0)
+		toast.SetMessageCategory(TVTMessageCategory.MISC)
+		toast.SetPriority(2)
+
+		toast.SetCaption( GetLocale(caption) )
+
+		local textJoined:string = GetLocale(text2)
+		if textJoined
+			textJoined = GetLocale(text) + " " + textJoined
+		else
+			textJoined = GetLocale(text)
+		endif
+		toast.SetText( textJoined.Replace("%X%", "|b|"+oldReachLevel+"|/b|").Replace("%Y%", "|b|"+reachLevel+"|/b|") )
+
+		toast.GetData().AddNumber("playerID", player.playerID)
+
+
+		'archive it for all players
+		GetArchivedMessageCollection().Add( CreateArchiveMessageFromToastMessage(toast) )
 
 		'only interested in active player
 		If player = GetPlayer()
