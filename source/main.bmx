@@ -1070,7 +1070,7 @@ endrem
 						If KEYMANAGER.isHit(KEY_S)
 							If KEYMANAGER.IsDown(KEY_LCONTROL)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("supermarket"))
-							elseIf KEYMANAGER.IsDown(KEY_RCONTROL)
+							elseIf KEYMANAGER.IsDown(KEY_RCONTROL) or KEYMANAGER.IsDown(KEY_LALT)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("scriptagency"))
 							else
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", GetPlayerCollection().playerID))
@@ -1897,6 +1897,7 @@ Type TGameState
 	Field _RoomHandler_Studio:RoomHandler_Studio
 	Field _RoomHandler_MovieAgency:RoomHandler_MovieAgency
 	Field _RoomHandler_AdAgency:RoomHandler_AdAgency
+	Field _RoomHandler_ScriptAgency:RoomHandler_ScriptAgency
 	Field _RoomDoorBaseCollection:TRoomDoorBaseCollection
 	Field _RoomBaseCollection:TRoomBaseCollection
 	Field _PlayerColorList:TList
@@ -2063,6 +2064,7 @@ Type TGameState
 		_Assign(_RoomHandler_Studio, RoomHandler_Studio._instance, "Studios", MODE_LOAD)
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
 		_Assign(_RoomHandler_AdAgency, RoomHandler_AdAgency._instance, "AdAgency", MODE_LOAD)
+		_Assign(_RoomHandler_ScriptAgency, RoomHandler_ScriptAgency._instance, "ScriptAgency", MODE_LOAD)
 		_Assign(_Game, TGame._instance, "Game")
 
 
@@ -2172,11 +2174,12 @@ Type TGameState
 		_Assign(TBetty._instance, _Betty, "Betty", MODE_SAVE)
 		_Assign(TAwardCollection._instance, _AwardCollection, "AwardCollection", MODE_SAVE)
 		_Assign(TWorld._instance, _World, "World", MODE_SAVE)
-		_Assign(TAuctionProgrammeBlocks.list, _AuctionProgrammeBlocksList, "AuctionProgrammeBlocks", MODE_Save)
+		_Assign(TAuctionProgrammeBlocks.list, _AuctionProgrammeBlocksList, "AuctionProgrammeBlocks", MODE_SAVE)
 		'special room data
-		_Assign(RoomHandler_Studio._instance, _RoomHandler_Studio, "Studios", MODE_Save)
-		_Assign(RoomHandler_MovieAgency._instance, _RoomHandler_MovieAgency, "MovieAgency", MODE_Save)
-		_Assign(RoomHandler_AdAgency._instance, _RoomHandler_AdAgency, "AdAgency", MODE_Save)
+		_Assign(RoomHandler_Studio._instance, _RoomHandler_Studio, "Studios", MODE_SAVE)
+		_Assign(RoomHandler_MovieAgency._instance, _RoomHandler_MovieAgency, "MovieAgency", MODE_SAVE)
+		_Assign(RoomHandler_AdAgency._instance, _RoomHandler_AdAgency, "AdAgency", MODE_SAVE)
+		_Assign(RoomHandler_ScriptAgency._instance, _RoomHandler_ScriptAgency, "ScriptAgency", MODE_SAVE)
 	End Method
 
 
