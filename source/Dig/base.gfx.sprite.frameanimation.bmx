@@ -95,6 +95,11 @@ Type TSpriteFrameAnimation
 	Field paused:Int = FALSE
 	Field frameTimer:float = null
 	Field randomness:float = 0
+	Field flags:int = 0
+
+	'use this flag to use the default GetDelta() instead of the given
+	'one -> ignores the WorldSpeedFactor given by the sprite
+	Const FLAG_IGNORE_DELTATIME_PARAM:int = 1
 
 
 	Function Create:TSpriteFrameAnimation(name:string, framesArray:int[][], repeatTimes:int=0, paused:int=0, randomness:Int = 0)
@@ -163,6 +168,7 @@ Type TSpriteFrameAnimation
 		paused = data.GetInt("paused")
 		frameTimer = data.GetFloat("frameTimer")
 		randomness = data.GetFloat("randomness")
+		flags = data.GetInt("flags")
 
 		For local s:string = EachIn data.GetString("frames").Split("::")
 			frames :+ [int(s)]
@@ -206,8 +212,22 @@ Type TSpriteFrameAnimation
 	End Method
 
 
+	Method SetFlag(flag:Int, enable:Int=True)
+		If enable
+			flags :| flag
+		Else
+			flags :& ~flag
+		EndIf
+	End Method
+
+
+	Method HasFlag:Int(flag:Int)
+		Return (flags & flag) <> 0
+	End Method
+
+
 	Function GetDeltaTime:Float()
-		GetDeltaTimer().GetDelta()
+		return GetDeltaTimer().GetDelta()
 	End Function
 
 
@@ -217,8 +237,9 @@ Type TSpriteFrameAnimation
 		If paused or frames.length <= 1 then return 0
 
 		'use given or default deltaTime?
-		if deltaTime < 0 then deltaTime = GetDeltaTime()
-
+		if deltaTime < 0 or HasFlag(FLAG_IGNORE_DELTATIME_PARAM)
+			deltaTime = GetDeltaTime()
+		endif
 		if frameTimer = null then ResetFrameTimer()
 		frameTimer :- deltaTime
 

@@ -81,7 +81,7 @@ Type TRegistrySpriteFrameAnimationLoader extends TRegistryBaseLoader
 			if childNode.GetName().ToLower() = "spriteframeanimation"
 				local childData:TData = new TData
 				local childFieldNames:String[]
-				childFieldNames :+ ["name"]
+				childFieldNames :+ ["name", "flags"]
 				childFieldNames :+ ["frames", "framesTime", "frameTimer"]
 				childFieldNames :+ ["repeatTimes", "paused", "randomness"]
 				childFieldNames :+ ["currentImageFrame", "currentFrame"]

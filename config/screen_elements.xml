@@ -95,7 +95,7 @@
 				<!-- add some blinking eyes to the vendor -->
 				<spriteentity name="entity_adagency_vendor_eyes" sprite="gfx_adagency_vendor_eyes" offsetLeft="73" offsetTop="23">
 					<spriteframeanimations currentAnimationName="blink">
-						<spriteframeanimation name="blink" frames="-1::0::-1::1::-1::0::-1::0::-1::0::-1::1::-1::0" framesTime="8.0::0.45::1.0::4.0::2.0::0.35::7.0::0.40::6.0::0.35::4.0::3.0::2.0::0.35" randomness="0.1" />
+						<spriteframeanimation name="blink" frames="-1::0::-1::1::-1::0::-1::0::-1::0::-1::1::-1::0" framesTime="8.0::0.45::1.0::4.0::2.0::0.35::7.0::0.40::6.0::0.35::4.0::3.0::2.0::0.35" randomness="0.1" flags="1" />
 					</spriteframeanimations>
 				</spriteentity>
 			</children>
@@ -126,7 +126,7 @@
 				<!-- add some writing hands eyes to the vendor -->
 				<spriteentity name="entity_scriptagency_vendor_hand" sprite="gfx_scriptagency_vendor_hand" offsetLeft="147" offsetTop="44">
 					<spriteframeanimations currentAnimationName="writing">
-						<spriteframeanimation name="writing" frames="0::1::0::1::0::1" framesTime="0.5::0.2::0.3::0.9::0.2::0.6" randomness="0.1" />
+						<spriteframeanimation name="writing" frames="0::1::0::1::0::1" framesTime="0.5::0.2::0.3::0.9::0.2::0.6" randomness="0.1" flags="1" />
 					</spriteframeanimations>
 				</spriteentity>
 			</children>
@@ -274,7 +274,7 @@
 				<spriteentity name="entity_movieagency_vendor_eyes" sprite="gfx_movieagency_vendor_eyes" offsetLeft="36" offsetTop="47">
 					<spriteframeanimations currentAnimationName="blink">
 						<!-- -1 = "no display", 0 = "frame 0" -->
-						<spriteframeanimation name="blink" frames="-1::0" framesTime="6.0::0.25" />
+						<spriteframeanimation name="blink" frames="-1::0" framesTime="6.0::0.25" flags="1" />
 					</spriteframeanimations>
 				</spriteentity>
 			</children>
