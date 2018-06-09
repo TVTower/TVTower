@@ -447,6 +447,7 @@ NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL			= subscribe genre level
 NEWSSTUDIO_SUBSCRIPTION_LEVEL				= subscription level
 NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER	= do not subscribe genre any longer
 NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL			= next subscription level
+NEWSSTUDIO_CURRENT_SUBSCRIPTION_LEVEL = current subscription level
 NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY = Today you used a maximum of subscription level %MAXLEVEL%. So today you pay %TOPAY%.
 
 MAP_COUNTRY_BREMEN				=	Bremen

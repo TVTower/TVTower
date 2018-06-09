@@ -338,13 +338,14 @@ Type RoomHandler_News extends TRoomHandler
 
 		If level = 0
 			NewsGenreTooltip.title = button.caption.GetValue()+" - "+getLocale("NEWSSTUDIO_NOT_SUBSCRIBED")
-			NewsGenreTooltip.content = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level+1))+getLocale("CURRENCY")
+			NewsGenreTooltip.content = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1:~t"+ MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level+1))+getLocale("CURRENCY")+"/"+getLocale("DAY")
 		Else
 			NewsGenreTooltip.title = button.caption.GetValue()+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+level
+			NewsGenreTooltip.content = getLocale("NEWSSTUDIO_CURRENT_SUBSCRIPTION_LEVEL")+":~t"+ MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level))+getLocale("CURRENCY")+"/"+getLocale("DAY")+"~n"
 			if level = GameRules.maxAbonnementLevel
-				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")+ ": 0" + getLocale("CURRENCY")
+				NewsGenreTooltip.content :+ getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")
 			Else
-				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level+1))+getLocale("CURRENCY")
+				NewsGenreTooltip.content :+ getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+":~t"+ MathHelper.DottedValue(TNewsAgency.GetNewsAbonnementPrice(room.owner, genre, level+1))+getLocale("CURRENCY")+"/"+getLocale("DAY")
 			EndIf
 		EndIf
 		if GetPlayerBase().GetNewsAbonnementDaysMax(genre) > level
