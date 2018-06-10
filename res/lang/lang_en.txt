@@ -825,6 +825,7 @@ PRODUCTION_SETUP_NOT_DONE = Production setup not done
 PRODUCTION_SETUP_INCOMPLETE = Production setup incomplete
 EPISODES_NOT_IN_ORDER = Episodes not in order
 PRODUCTION_CONCEPTS = Shopping lists
+PRODUCTION_DEPOSIT_PAID = Deposit (%MONEY%) paid.
 
 NO_PRESENT_SELECTED = No present selected
 BUY_PRESENTTITLE_FOR_PRICE = Buy %PRESENTTITLE% for %PRICE%

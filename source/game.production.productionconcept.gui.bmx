@@ -49,7 +49,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		If productionConcept.owner = GetPlayerBaseCollection().playerID Or productionConcept.owner <= 0 And isHovered()
 			GetGameBase().cursorstate = 1
 		EndIf
-				
+
 		'set mouse to "dragged"
 		If isDragged()
 			GetGameBase().cursorstate = 2
@@ -58,7 +58,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 
 	Method DrawSheet(leftX:Int=30, rightX:Int=30)
-		Local sheetY:Int = 80 
+		Local sheetY:Int = 80
 		Local sheetX:Int = GetGraphicsManager().GetWidth()/2
 		'move down if unplanned (less spaced needed on datasheet)
 		if productionConcept.IsUnplanned() then sheetY :+ 50
@@ -76,7 +76,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 
 	Method DrawSupermarketSheet(leftX:Int=30, rightX:Int=30)
-		Local sheetY:Int = 80 
+		Local sheetY:Int = 80
 		Local sheetX:Int = GetGraphicsManager().GetWidth()/2
 
 		SetColor 0,0,0
@@ -114,7 +114,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		if productionConcept.script.IsEpisode() and productionConcept.script.GetParentScript() <> productionConcept.script
 			local episodesMax:int = productionConcept.script.GetParentScript().GetSubScriptCount()
 			local episodeNum:int = 1 + productionConcept.script.GetParentScript().GetSubScriptPosition(productionConcept.script)
-			
+
 			title = episodeNum+"/"+episodesMax+": "+title
 
 			'episode got no description?
@@ -129,6 +129,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		local showMsgOrderWarning:Int = False
 		local showMsgIncomplete:Int = productionConcept.IsGettingPlanned()
 		local showMsgNotPlanned:Int = productionConcept.IsUnplanned()
+		local showMsgDepositPaid:Int = productionConcept.IsDepositPaid()
 
 
 		'save on requests to the player finance
@@ -158,17 +159,17 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		local boxH:int = 0, msgH:int = 0, barH:int = 0
 		local msgAreaH:int = 0, boxAreaH:int = 0, barAreaH:int = 0
 		local boxAreaPaddingY:int = 4, msgAreaPaddingY:int = 4, barAreaPaddingY:int = 4
-		 
+
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
 		barH = skin.GetBarSize(100, -1).GetY()
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(title, contentW - 10, 100))
 
-
 		'message area
 		If showMsgOrderWarning then msgAreaH :+ msgH
 		If showMsgNotPlanned then msgAreaH :+ msgH
 		If showMsgIncomplete then msgAreaH :+ msgH
+		If showMsgDepositPaid then msgAreaH :+ msgH
 
 		'if there are messages, add padding of messages
 		if msgAreaH > 0 then msgAreaH :+ 2* msgAreaPaddingY
@@ -195,9 +196,9 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			sheetHeight :+ splitterHorizontalH
 		endif
 
-		
+
 		'=== RENDER ===
-	
+
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 			if titleH <= 18
@@ -207,7 +208,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			endif
 		contentY :+ titleH
 
-	
+
 		'=== DESCRIPTION AREA ===
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
 		skin.fontNormal.drawBlock(description, contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
@@ -218,7 +219,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			'splitter
 			skin.RenderContent(contentX, contentY, contentW, splitterHorizontalH, "1")
 			contentY :+ splitterHorizontalH
-			
+
 
 			'=== CAST AREA ===
 			skin.RenderContent(contentX, contentY, contentW, castH, "2")
@@ -291,6 +292,11 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_NOT_DONE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
+		If showMsgDepositPaid
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_DEPOSIT_PAID").Replace("%MONEY%", MathHelper.DottedValue(productionConcept.GetDepositCost()) + GetLocale("CURRENCY")), "money", "neutral", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		endif
+
 
 		'if there is a message then add padding to the bottom
 		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
@@ -304,7 +310,8 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 			'=== BOX LINE 1 ===
 			'production time
-			skin.RenderBox(contentX + 5, contentY, 47, -1, 2, "duration", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 67, -1, productionconcept.GetBaseProductionTime()+GetLocale("HOUR_SHORT"), "duration", "neutral", skin.fontBold)
+
 			'price
 			if canAfford
 				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(productionConcept.GetTotalCost()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
@@ -332,29 +339,29 @@ rem
 			skin.fontBold.drawBlock("Programm: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28)
 			contentY :+ 28
 			skin.fontNormal.draw("Letzte Stunde im Plan: "+latestPlannedEndHour, contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Tempo: "+MathHelper.NumberToString(data.GetSpeed(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Kritik: "+MathHelper.NumberToString(data.GetReview(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Kinokasse: "+MathHelper.NumberToString(data.GetOutcome(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Preismodifikator: "+MathHelper.NumberToString(data.GetModifier("price"), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Qualitaet roh: "+MathHelper.NumberToString(GetQualityRaw(), 4)+"  (ohne Alter, Wdh.)", contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Qualitaet: "+MathHelper.NumberToString(GetQuality(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Aktualitaet: "+MathHelper.NumberToString(GetTopicality(), 4)+" von " + MathHelper.NumberToString(data.GetMaxTopicality(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Bloecke: "+data.GetBlocks(), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Ausgestrahlt: "+data.GetTimesBroadcasted(useOwner)+"x Spieler, "+data.GetTimesBroadcasted()+"x alle  Limit:"+broadcastLimit, contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (alle)", contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Preis: "+GetPrice(), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Trailerakt.-modifikator: "+MathHelper.NumberToString(GetTrailerMod().GetTotalAverage(), 4), contentX + 5, contentY)
 		endif
 endrem
@@ -404,7 +411,7 @@ endrem
 		local titleH:int = 18, subTitleH:int=16, genreH:int=16, descriptionH:int = 70, subDescriptionH:int = 50, castH:int=50
 		local splitterHorizontalH:int = 6
 		local msgH:int = 0, msgAreaH:int = 0, msgAreaPaddingY:int = 4
-		 
+
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(title, contentW - 10, 100))
 
@@ -438,9 +445,9 @@ endrem
 			endif
 		endif
 
-		
+
 		'=== RENDER ===
-	
+
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 			if titleH <= 18
@@ -471,7 +478,7 @@ endrem
 			GetBitmapFontManager().Get("default", 12).drawBlock(text, contentX + 5, contentY -1, contentW - 10, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ genreH
 
-	
+
 		'=== DESCRIPTION AREA ===
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
 		skin.fontNormal.drawBlock(description, contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
@@ -491,7 +498,7 @@ endrem
 			'splitter
 			skin.RenderContent(contentX, contentY, contentW, splitterHorizontalH, "1")
 			contentY :+ splitterHorizontalH
-			
+
 
 			'=== CAST AREA ===
 			skin.RenderContent(contentX, contentY, contentW, castH, "2")
@@ -556,7 +563,7 @@ endrem
 		'=== OVERLAY / BORDER ===
 		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
 	End Method
-		
+
 
 	Method DrawContent()
 		SetColor 255,255,255
@@ -583,7 +590,7 @@ endrem
 		else 'elseif productionConcept.IsUnplanned()
 			'default color
 		endif
-		
+
 		Super.DrawContent()
 
 		oldCol.SetRGBA()
@@ -656,7 +663,7 @@ Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 			titleB = otherItem.productionConcept.script.GetParentScript().GetTitle() + titleB
 		endif
 
-		'let the name be sorted alphabetically 
+		'let the name be sorted alphabetically
 		if titleA < titleB
 			return -1 'before
 		elseif titleA > titleB
@@ -680,7 +687,7 @@ TODO: might be needed somewhen
 		If Not sprite then sprite = Self.assetDefault
 		If Not name then name = Self.assetNameDefault
 
-			
+
 		'only resize if not done already
 		If Self.asset <> sprite or self.assetName <> name
 			Self.asset = sprite
@@ -698,7 +705,7 @@ endrem
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local dimension:TVec2D = New TVec2D.Init(maxWidth, max(minHeight, asset.GetHeight() * scaleAsset))
-		
+
 		'add padding
 		dimension.addXY(0, Self.paddingTop)
 		dimension.addXY(0, Self.paddingBottom)
@@ -754,7 +761,7 @@ endrem
 	'override
 	Method DrawContent()
 		DrawProductionConceptItem()
-		
+
 		'hovered
 		If isHovered() and not isDragged()
 			Local oldAlpha:Float = GetAlpha()
@@ -829,7 +836,7 @@ endrem
 			titleColor = TColor.CreateGrey(50)
 			genreColor = TColor.CreateGrey(0, 0.6)
 		endif
-		
+
 
 		if isSelected()
 			titleColor.AdjustBrightness(+0.05)
@@ -852,7 +859,7 @@ endrem
 
 
 		titleFont.lineHeightModifier = oldMod
-		
+
 
 		if productionConcept
 			local productionTypeText:string = productionConcept.script.GetProductionTypeString()

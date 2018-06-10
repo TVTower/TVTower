@@ -828,6 +828,7 @@ PRODUCTION_SETUP_NOT_DONE = Produktion noch nicht konzipiert
 PRODUCTION_SETUP_INCOMPLETE = Produktionskonzept unvollständig
 EPISODES_NOT_IN_ORDER = Episoden nicht in richtiger Reihenfolge
 PRODUCTION_CONCEPTS = Einkaufslisten
+PRODUCTION_DEPOSIT_PAID = Anzahlung (%MONEY%) geleistet.
 
 NO_PRESENT_SELECTED = Kein Geschenk ausgewählt
 BUY_PRESENTTITLE_FOR_PRICE = Kaufe %PRESENTTITLE% für %PRICE%
