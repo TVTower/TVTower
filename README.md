@@ -6,8 +6,7 @@
 Du bist Manager eines Fernsehsenders in diesem __kostenlosen Spiel__ . Lenke was gesendet wird und wann. Verdiene Geld durch Werbeeinnahmen und treibe die Konkurrenz in den Bankrott. Hole Zuschauer vor die Flimmerkiste in dem Du brandheiße Nachrichtenstories sendest und mit spannenden Livesendungen Millionen von Mitmenschen am Einschlafen hinderst. Fertigprodukte aus Hollywood sind nicht so dein Ding? Tja, Eigenproduktionen könnten Quotenhits werden - oder aber teure Millionengräber.
 
 ### English
-In this __free game__ you are the manager of a television channel. Control what gets broadcasted and when. Earn Money with commercial breakups and drive your opponents into bankruptcy. Broadcast top stories in your news block or live shows keeping your audience from falling asleep. You dislike convenience products made in Hollywood - no problem - running your own products might lead to new stars of the ratings - or a costly white elephant.
-
+TVTower is a __free game__ where you are the manager of a television channel. Strategically schedule broadcast messages. Earn money with commercial breaks and drive your competition to bankruptcy. Broadcast breaking news stories or live shows to keep viewers from sleeping. Not interested in commercial products from hollywood? No problem, running your own products may lead to increased viewership ratings, or a luxury white elephant.
 #### Spielen / How to Play
 execute (mark executable before, if needed)
 - Linux (1): TVTowerdownload/TVTower_Linux32 (PulseAudio)
@@ -20,7 +19,7 @@ execute (mark executable before, if needed)
 - Windows (5): TVTowerdownload/TVTower_Win32_OpenGL.bat (dito)
 - Mac: TVTowerdownload/TVTower.app
 
-Older releases (including up to 0.3.2) only contain `TVTower/TVTower_noPulseAudio` (Linux 32Bit) and no NG/64Bit-build. Also the naming scheme does not contain the OS (so `TVTower.exe` instead of `TVTower_Win32.exe`)
+Older releases (including up to 0.3.2) only contain `TVTower/TVTower_noPulseAudio` (Linux 32Bit) and no NG/64Bit-build. The naming scheme does not contain the OS (so `TVTower.exe` instead of `TVTower_Win32.exe`)
 
 
 ##### Linux
@@ -29,8 +28,7 @@ Users of Ubuntu 64Bit wanting to run the 32bit variants might install all depend
 Users of ArchLinux (or Manjaro Linux) in 64 bit might have problems running TVTower (32 bit). If you run these distros in a VM or with an Intel GPU the graphics context is bugged and leads to an segfault. This does _not_ happen with "NG"-builds of TVTower (issue still under research).
   
 ##### Windows/Mac
-Should run without further requirements
-
+No requirements to run.
 
 #### Für weitere Details | For further details:
 - Homepage (+Downloads Linux/Mac/Windows): http://www.tvtower.org
