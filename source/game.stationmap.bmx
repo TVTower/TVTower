@@ -2775,7 +2775,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		If GetSubscriptionProgress() > 0
 			'automatically refresh subscriptions?
 			If HasFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT)
-				If GetSubscriptionTimeLeft() = 0 and GetProvider()
+				If GetSubscriptionTimeLeft() <= 0 and GetProvider()
 					RenewContract( GetProvider().GetDefaultSubscribedChannelDuration() )
 				EndIf
 			'inform others that contract ends soon ?
