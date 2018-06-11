@@ -1165,5 +1165,5 @@ AUDIENCE_REACH_LEVEL_INCREASED = Reichweitenlevel erhöht
 LEVEL_INCREASED_FROM_X_TO_Y = Level erhöht sich von %X% auf %Y%.
 PRICES_WILL_RISE = Die Preise für Programme und Nachrichten steigen an.
 AUDIENCE_REACH_LEVEL_DECREASED = Reichweitenlevel gesunken
-LEVEL_DECREASED_FROM_X_TO_Y = Level verringert sich von %X% auf %Y".
+LEVEL_DECREASED_FROM_X_TO_Y = Level verringert sich von %X% auf %Y%.
 PRICES_WILL_FALL = Die Preise für Programme und Nachrichten fallen.
