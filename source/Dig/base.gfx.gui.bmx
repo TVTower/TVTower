@@ -2461,9 +2461,9 @@ Type TGUITooltipBase Extends TTooltipBase
 						endif
 						local minX:int = Max(scrX, parentArea.GetX())
 						local maxX:int = Min(scrX + scrW, parentArea.GetX2())
-						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.up").Draw(0.5 * (minx + maxX), GetScreenY(), -1, ALIGN_CENTER_BOTTOM)
+						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.up").Draw(int(0.5 * (minx + maxX)), int(GetScreenY()), -1, ALIGN_CENTER_BOTTOM)
 					else
-						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.up").Draw(GetScreenX() + 0.5 * GetScreenWidth(), GetScreenY(), -1, ALIGN_CENTER_BOTTOM)
+						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.up").Draw(int(GetScreenX() + 0.5 * GetScreenWidth()), int(GetScreenY()), -1, ALIGN_CENTER_BOTTOM)
 					endif
 				case ARROW_DOWN
 					if parentArea
@@ -2475,9 +2475,9 @@ Type TGUITooltipBase Extends TTooltipBase
 						endif
 						local minX:int = Max(scrX, parentArea.GetX())
 						local maxX:int = Min(scrX + scrW, parentArea.GetX2())
-						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.down").Draw(0.5 * (minx + maxX), GetScreenY() + GetScreenHeight(), -1, ALIGN_CENTER_TOP)
+						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.down").Draw(int(0.5 * (minx + maxX)), int(GetScreenY() + GetScreenHeight()), -1, ALIGN_CENTER_TOP)
 					else
-						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.down").Draw(GetScreenX() + 0.5 * GetScreenWidth(), GetScreenY() + GetScreenHeight(), -1, ALIGN_CENTER_TOP)
+						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.down").Draw(int(GetScreenX() + 0.5 * GetScreenWidth()), int(GetScreenY() + GetScreenHeight()), -1, ALIGN_CENTER_TOP)
 					endif
 				case ARROW_LEFT
 					if parentArea
@@ -2489,9 +2489,9 @@ Type TGUITooltipBase Extends TTooltipBase
 						endif
 						local minY:int = Max(scrY, parentArea.GetY())
 						local maxY:int = Min(scrY + scrH, parentArea.GetY2())
-						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.left").Draw(GetScreenX(), 0.5 * (minY + maxY), -1, ALIGN_RIGHT_CENTER)
+						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.left").Draw(int(GetScreenX()), int(0.5 * (minY + maxY)), -1, ALIGN_RIGHT_CENTER)
 					else
-						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.left").Draw(GetScreenX(), GetScreenY() + 0.5 * GetScreenHeight(), -1, ALIGN_RIGHT_CENTER)
+						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.left").Draw(int(GetScreenX()), int(GetScreenY() + 0.5 * GetScreenHeight()), -1, ALIGN_RIGHT_CENTER)
 					endif
 				case ARROW_RIGHT
 					if parentArea
@@ -2503,9 +2503,9 @@ Type TGUITooltipBase Extends TTooltipBase
 						endif
 						local minY:int = Max(scrY, parentArea.GetY())
 						local maxY:int = Min(scrY + scrH, parentArea.GetY2())
-						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.right").Draw(GetScreenX() + GetScreenWidth(), 0.5 * (minY + maxY), -1, ALIGN_LEFT_CENTER)
+						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.right").Draw(int(GetScreenX() + GetScreenWidth()), int(0.5 * (minY + maxY)), -1, ALIGN_LEFT_CENTER)
 					else
-						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.right").Draw(GetScreenX() + GetScreenWidth(), GetScreenY() + 0.5 * GetScreenHeight(), -1, ALIGN_LEFT_CENTER)
+						GetSpriteFromRegistry("gfx_gui_tooltip.arrow.right").Draw(int(GetScreenX() + GetScreenWidth()), int(GetScreenY() + 0.5 * GetScreenHeight()), -1, ALIGN_LEFT_CENTER)
 					endif
 			End Select
 		endif

@@ -117,7 +117,7 @@ Type TXmlHelper
 
 	Function CreateRootNode:TxmlNode(document:TXmlDoc, key:String)
 		if not document then return Null
-		
+
 		If key = "" Then key = "root"
 		Local result:TxmlNode = TxmlNode.newNode(key)
 		'add a new line within <key></key>" so children get added on
@@ -225,7 +225,7 @@ end rem
 		Next
 		Return data
 	End Function
-	
+
 
 	'loads values of a node into a tdata object
 	Function LoadAllValuesToData:TData(node:TXmlNode, data:TData, ignoreNames:String[] = Null)
@@ -245,7 +245,7 @@ end rem
 				local childList:TList = subNode.GetChildren()
 				if childList then children = childList.Count()
 			endif
-			
+
 			If StringHelper.InArray(subNode.GetName(), ignoreNames, False) Then Continue
 
 			If dataLS.EqualsLower(subNode.getName()) or children > 0
@@ -262,7 +262,7 @@ end rem
 		Next
 		Return data
 	End Function
-	
+
 
 	'search for an attribute
 	'(compared to node.HasAttribute() this is NOT case sensitive!)
@@ -299,7 +299,7 @@ end rem
 			node.SetContent(value)
 			return True
 		endif
-		
+
 		return False
 	End Function
 
@@ -311,7 +311,7 @@ end rem
 			node.SetAttribute(name, value)
 			return True
 		endif
-		
+
 		return False
 	End Function
 
@@ -336,7 +336,7 @@ end rem
 
 	Function _GetNode:TXmlNode(startNode:TXmlNode, path:string, createIfMissing:int = False)
 		if not startNode then return Null
-		
+
 		local branches:string[] = path.ToLower().split("/")
 		local currentNode:TXmlNode = startNode
 		local nextNode:TXmlNode
@@ -372,6 +372,38 @@ end rem
 	End Method
 
 
+	Function RemoveNode:int(node:TXmlNode)
+		if node
+			'removing a node does _not_ remove potentially prepended
+			'whitespace (and the appended newline)
+
+			'so we remove every sibling before until we reach another "node element"
+			'(whitespace is "text node" but we want to remove comments a now
+			' deleted node too )
+			local prevNode:TxmlNode = TxmlNode(node.previousSibling())
+			if prevNode and prevNode.GetType() <> XML_ELEMENT_NODE then RemoveNode(prevNode)
+
+			node.unlinkNode()
+			node.freeNode()
+			return True
+		endif
+		return False
+	End Function
+
+
+	Function RemoveNodeAttribute:int(node:TXmlNode, attributeKey:string)
+		if node
+			Select node.unsetAttribute(attributeKey)
+				case 0
+					return True
+				case -1
+					return False 'not found
+			End Select
+		endif
+		return False
+	End Function
+
+
 	Function HasValue:Int(node:TXmlNode, fieldName:String, searchInChildNodeNames:String[] = Null)
 		If Not node Then Return False
 
@@ -402,10 +434,10 @@ end rem
 	'- the first level children
 	'  <obj><FIELDNAME>bla</FIELDNAME><anotherfield ...></anotherfield></obj>
 	'- in one of the children defined in "searchInChildNodeNames" (recursive!)
-	'  ["other"] or ["*"] 
+	'  ["other"] or ["*"]
 	'  <obj><other><FIELDNAME>bla</FIELDNAME></other></obj>
 	Function FindValue:String(node:TxmlNode, fieldName:String, defaultValue:String, logString:String="", searchInChildNodeNames:String[] = Null)
-		If node 
+		If node
 			'loop through all potential fieldnames ("frames|f" -> "frames", "f")
 			Local fieldNames:String[] = fieldName.ToLower().Split("|")
 
@@ -420,7 +452,7 @@ end rem
 						If searchInChildNodeNames[0] = "*" Or StringHelper.InArray(subNode.getName(), searchInChildNodeNames, False)
 							Return FindValue(subNode, fieldName, defaultValue, logString, searchInChildNodeNames)
 						EndIf
-					EndIf					
+					EndIf
 				Next
 			Next
 		EndIf
