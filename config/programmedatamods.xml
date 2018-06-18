@@ -19,7 +19,7 @@
 							     0  average
 							    +1 popular
 							    +2 extreme popular
-								
+
 				Sources:
 				http://de.statista.com/statistik/daten/studie/168613/umfrage/die-beliebtesten-filmgenres-in-deutschland/
 				http://www.ffa.de/downloads/publikationen/Filmgenres_2010-2011.pdf
@@ -424,7 +424,7 @@
 					<audienceAttraction id="Unemployed" men="1.0" women="-0.2" />
 					<audienceAttraction id="Manager" men="0" women="-2" />
 					<audienceAttraction id="Pensioners" men="-0.2" women="-2" />
-				</audienceAttractions>	
+				</audienceAttractions>
 				<castAttributes>
 					<actor attribute="charisma" value="0.1" />
 					<actor attribute="appearance" value="0.4" />
@@ -609,7 +609,7 @@
 					<audienceAttraction id="Unemployed" value="0" />
 					<audienceAttraction id="Manager" value="-0.5" />
 					<audienceAttraction id="Pensioners" men="-1.8" women="-2" />
-				</audienceAttractions>	
+				</audienceAttractions>
 			</genre>
 			<genre id="13" name="monumental" outcome-mod="0.4" review-mod="0.4" speed-mod="0.2">
 				<goodFollower>6,10,11,18</goodFollower>
@@ -1053,7 +1053,7 @@
 					<guest attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
-			<genre id="102" name="show_music" outcome-mod="0.3" review-mod="0.2" speed-mod="0.5">
+			<genre id="104" name="show_game" outcome-mod="0.3" review-mod="0.2" speed-mod="0.5">
 				<goodFollower>5,9,100,102</goodFollower>
 				<badFollower>6,101,201</badFollower>
 				<timeMods>
@@ -1100,7 +1100,7 @@
 					<guest attribute="appearance" value="0.5" />
 				</castAttributes>
 			</genre>
-			
+
 			<genre id="200" name="event" outcome-mod="0" review-mod="0.5" speed-mod="0.5">
 				<goodFollower>5,9,11</goodFollower>
 				<badFollower>8,12</badFollower>
