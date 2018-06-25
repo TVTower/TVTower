@@ -72,6 +72,8 @@ Type TEntityCollection
 
 
 	Method Add:int(obj:TEntityBase)
+		'insert does not return true or false, so we invalidate in all cases
+		rem
 		if entries.Insert(obj.GetGUID(), obj)
 			'invalidate count
 			entriesCount = -1
@@ -80,6 +82,11 @@ Type TEntityCollection
 		endif
 
 		return False
+		endrem
+
+		entries.Insert(obj.GetGUID(), obj)
+		entriesCount = -1
+		return True
 	End Method
 
 
@@ -104,7 +111,7 @@ Type TEntityCollection
 		'_iteratorPos = 0
 		Return Self
 	End Method
-	
+
 
 	'checks if there is another element
 	Method HasNext:Int()
