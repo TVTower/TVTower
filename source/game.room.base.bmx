@@ -43,11 +43,11 @@ Type TRoomBaseCollection
 		_idMap = null
 		_guidMap = null
 	End Method
-	
+
 
 	Method Add:int(room:TRoomBase)
 		if not room then return False
-		
+
 		'map-based approach
 		'if not Get(room.ID)
 		'	count :+ 1
@@ -60,7 +60,7 @@ Type TRoomBaseCollection
 			GetGUIDMap().Insert(room.GetLowerStringGUID(), room)
 			list.AddLast(room)
 		endif
-		
+
 		return TRUE
 	End Method
 
@@ -78,7 +78,7 @@ Type TRoomBaseCollection
 			_guidMap.Remove( room.GetLowerStringGUID() )
 			return True
 		Endif
-		
+
 		return False
 	End Method
 
@@ -122,7 +122,7 @@ Type TRoomBaseCollection
 	Method GetRandom:TRoomBase()
 		rem
 		'map-based approach
-		local i:Int = RandRange(0, GetInstance().count - 1) 
+		local i:Int = RandRange(0, GetInstance().count - 1)
 		For Local room:TRoomBase = EachIn GetInstance().list.Values()
 			if not i then
 				return room
@@ -136,14 +136,19 @@ Type TRoomBaseCollection
 
 
 	'returns all room fitting to the given details
-	Function GetAllByDetails:TRoomBase[]( name:String, owner:Int=-1000, limit:int=0 ) {_exposeToLua}
+	'use nameRaw to return rooms by their "original name" (eg. rooms now used as studio)
+	Function GetAllByDetails:TRoomBase[](name:string, nameRaw:string="", owner:Int=-1000, limit:int=0 ) {_exposeToLua}
 		local rooms:TRoomBase[]
 		For Local room:TRoomBase = EachIn GetInstance().list
 			'print name+" <> "+room.name+"   "+owner+" <> "+room.owner
 			'skip wrong owners
 			if owner <> -1000 and room.owner <> owner then continue
 
-			If room.GetName() = name Then rooms :+ [room]
+			if nameRaw
+				if room.GetNameRaw() = nameRaw then rooms :+ [room]
+			else
+				If room.GetName() = name Then rooms :+ [room]
+			endif
 
 			if limit > 0 and rooms.length = limit then return rooms
 		Next
@@ -151,8 +156,8 @@ Type TRoomBaseCollection
 	End Function
 
 
-	Function GetFirstByDetails:TRoomBase( name:String, owner:Int=-1000 ) {_exposeToLua}
-		local rooms:TRoomBase[] = GetAllByDetails(name, owner, 1)
+	Function GetFirstByDetails:TRoomBase( name:String, nameRaw:string="", owner:Int=-1000 ) {_exposeToLua}
+		local rooms:TRoomBase[] = GetAllByDetails(name, nameRaw, owner, 1)
 		if not rooms or rooms.length = 0 then return Null
 		return rooms[0]
 	End Function
@@ -167,7 +172,7 @@ Type TRoomBaseCollection
 				endif
 			Next
 			For local action:TEnterLeaveAction = EachIn room.leavingStack
-				'if time is running slow, finish without waiting 
+				'if time is running slow, finish without waiting
 				if action.finishTime <= GetBuildingTime().GetMillisecondsGone() or GetBuildingTime().GetTimeFactor() < 0.25
 					room.FinishLeave(action.entity)
 				endif
@@ -184,7 +189,7 @@ Type TRoomBaseCollection
 	Method GetTotalRent:int(playerID:int)
 		return 0
 	End Method
-	
+
 
 	Method BeginRoomRental:int(room:TRoomBase, owner:int=0)
 		return False
@@ -199,7 +204,7 @@ Type TRoomBaseCollection
 	Method CancelRoomRental:int(room:TRoomBase, owner:int=0)
 		return False
 	End Method
-	
+
 
 	'=== EVENTS ===
 
@@ -246,12 +251,12 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Field originalOwner:int = -1000
 	Field flags:int = 0
 	'does something block that room (eg. previous bomb attack)
-	Field blockedState:Int = BLOCKEDSTATE_NONE 
+	Field blockedState:Int = BLOCKEDSTATE_NONE
 	'time until this seconds in the game are gone
 	Field blockedUntil:Double = 0
 	Field blockedUntilShownInTooltip:int = False
 	Field blockedText:string = ""
-	'if > 0 : time a bomb was placed 
+	'if > 0 : time a bomb was placed
 	Field bombPlacedTime:Double = -1
 	'if > 0 : a bomb explosion will be drawn
 	Field bombExplosionTime:Double = -1
@@ -268,13 +273,13 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Field rentalChangeTime:Long = 0
 	'how many times was the room rented yet?
 	Field rentalTimes:int = 0
-	
+
 
 	'== ENTER / LEAVE VARIABLES ==
 	'currently entering/leaving entities
 	Field enteringStack:TEnterLeaveAction[]
 	Field leavingStack:TEnterLeaveAction[]
-	
+
 	'the image used in the room (store individual backgrounds depending on "money")
 	Field _background:TSprite {nosave}
 	Field backgroundSpriteName:string
@@ -342,7 +347,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 			flags :& ~flag
 		EndIf
 	End Method
-	
+
 
 	Method PlaceBomb:int()
 		bombPlacedTime = GetWorldTime().GetTimeGone()
@@ -359,7 +364,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Method SetScreenname:int(screenname:string)
 		self.screenname = screenname
 	End Method
-	
+
 
 	'returns the screen name to use when in this room
 	Method GetScreenname:string()
@@ -371,7 +376,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Method GetRerentalWaitingTime:int()
 		return GameRules.roomReRentTime
 	End Method
-	
+
 
 	Method GetRerentalTime:Long()
 		return rentalChangeTime + GetRerentalWaitingTime()
@@ -380,7 +385,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method BeginRental:int(newOwner:int, rent:int)
 		if IsRented() and newOwner = owner and self.rent = rent then return False
-		
+
 		local oldOwner:int = owner
 		ChangeOwner(newOwner)
 		SetRented(True)
@@ -396,7 +401,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method CancelRental:int()
 		if not IsRented() then throw "skip cancel rental";return False
-		
+
 		local oldOwner:int = owner
 		ChangeOwner(0)
 		SetRented(False)
@@ -411,7 +416,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	'easy accessor to block a room using predefined values
 	Method SetBlockedState:int(blockedState:int = 0)
 		local time:int = 0
-		
+
 		'=== BOMB ===
 		if blockedState & BLOCKEDSTATE_BOMB > 0
 			'"placerholder rooms" (might get rent later)
@@ -422,32 +427,32 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 				time = 60 * 60 * 1.5
 			'player rooms
 			elseIf owner > 0
-				time = 60 * 60 * 1 '0.5 
+				time = 60 * 60 * 1 '0.5
 			endif
 
 		'=== MARSHAL ===
 		elseif blockedState & BLOCKEDSTATE_MARSHAL > 0
 			'just blocks player rooms
 			If owner > 0
-				time = 60 * 15 * randRange(1,4) 
+				time = 60 * 15 * randRange(1,4)
 			endif
 
 		'=== RENOVATION ===
 		elseif blockedState & BLOCKEDSTATE_RENOVATION > 0
-			if owner = 0 and IsUsableAsStudio() 
+			if owner = 0 and IsUsableAsStudio()
 				'ATTENTION: "randRange" to get the same in multiplayer games
 				time = 60 * 60 * randRange(3,6)
 			elseIf owner = 0
 				time = 60 * 30 * randRange(1,3)
 			elseIf owner > 0
-				time = 60 * 10 * randRange(1,2) 
+				time = 60 * 10 * randRange(1,2)
 			endif
 		endif
 
 		if time = 0
 			SetBlocked(0, blockedState, 0)
 		else
-			SetBlocked(time, blockedState, true) 
+			SetBlocked(time, blockedState, true)
 		endif
 
 		'inform others
@@ -505,7 +510,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 			endif
 		EndIf
 		endrem
-				
+
 		blockedState = BLOCKEDSTATE_NONE
 		blockedUntilShownInTooltip = False
 	End Method
@@ -523,7 +528,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		if not IsBlocked() then return -1
 		return Max(-1, blockedUntil - GetWorldTime().GetTimeGone())
 	End Method
-	
+
 
 	Method SetUsableAsStudio:int(bool:int = True)
 		SetFlag(TVTRoomFlag.USABLE_AS_STUDIO, bool)
@@ -612,7 +617,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Method GetNameRaw:string() {_exposeToLua}
 		return name
 	End Method
-	
+
 
 	Method GetName:string() {_exposeToLua}
 		if IsUsedAsStudio() then return "studio"
@@ -667,7 +672,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		if not event.IsVeto()
 			'to auto-repair old savegames:
 			if self.originalOwner = -1000 then self.originalOwner = owner
-			
+
 			self.owner = newOwner
 			return True
 		else
@@ -703,7 +708,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 			removeOccupant(occupant)
 		Next
 	End Method
-	
+
 
 	'returns if occupants (figure-sprites) in this room are drawn in the
 	'building (eg. for plan room)
@@ -746,17 +751,17 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 			endif
 			return True
 		endif
-		
+
 		return False
 	End Method
-	
+
 
 	'returns whether the entity can leave the room
 	Method CanEntityLeave:int(entity:TEntity=null)
 		'by default everyone can leave
 		return TRUE
 	End Method
-	
+
 
 	'draw Room
 	Method Draw:int()
@@ -884,7 +889,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		elseif direction = 2
 			stack = leavingStack
 		endif
-		
+
 		For local action:TEnterLeaveAction = EachIn stack
 			if not action or action.entity = entity then continue
 
@@ -999,20 +1004,20 @@ End Rem
 		'inform others that we start going into the room (eg. for animations)
 		EventManager.triggerEvent( TEventSimple.Create("room.onBeginEnter", null, self, entity ) )
 	End Method
-	
+
 
 	Method FinishEnter:int(enteringEntity:TEntity)
 		if not enteringEntity
 			TLogger.Log("TRoomBase.FinishEnter", "Called without an entity entering", LOG_ERROR)
 			return False
 		endif
-		
+
 		'=== CLOSE DOORS ===
 		local enteringDoor:TRoomDoorBase
 		for local action:TEnterLeaveAction = Eachin enteringStack
 			'set a default door
 			if not enteringDoor then enteringDoor = action.door
-			
+
 			if action.door.GetDoorType() >= 0
 				'only close the door if it was the entity (or nobody) who
 				'opened it...
@@ -1038,7 +1043,7 @@ End Rem
 		if door and door.GetDoorType() >= 0
 			door.Open(entity)
 		EndIf
-		
+
 		'figure isn't in that room - so just leave
 		if not isOccupant(entity) then return TRUE
 
@@ -1054,13 +1059,13 @@ End Rem
 			TLogger.Log("TRoomBase.FinishEnter", "Called without an entity leaving", LOG_ERROR)
 			return False
 		endif
-		
+
 		'=== CLOSE DOORS ===
 		local leavingDoor:TRoomDoorBase
 		for local action:TEnterLeaveAction = Eachin leavingStack
 			'set a default door
 			if not leavingDoor then leavingDoor = action.door
-			
+
 			if action.door.GetDoorType() >= 0
 				'only close the door if it was the entity (or nobody) who
 				'opened it...
@@ -1091,4 +1096,4 @@ Type TEnterLeaveAction
 	Field door:TRoomDoorBase
 	Field finishTime:Long = -1
 End Type
-	
+

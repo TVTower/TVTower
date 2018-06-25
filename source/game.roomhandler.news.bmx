@@ -197,7 +197,7 @@ Type RoomHandler_News extends TRoomHandler
 
 	Function IsMyRoom:Int(room:TRoomBase)
 		For Local i:Int = 1 To 4
-			If room = GetRoomCollection().GetFirstByDetails("news", i) Then Return True
+			If room = GetRoomCollection().GetFirstByDetails("news", "", i) Then Return True
 		Next
 		Return False
 	End Function

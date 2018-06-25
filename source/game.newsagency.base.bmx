@@ -457,9 +457,9 @@ Type TNewsAgency
 			'using the "roomboard" - so switched signes are taken into
 			'consideration there)
 			if terroristGroup = 0
-				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("frduban"))
+				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("", "frduban"))
 			else
-				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("vrduban"))
+				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("", "vrduban"))
 			endif
 			'mark as a special effect so AI can categorize it accordingly
 			effect.setModifierType(TVTGameModifierBase.TERRORIST_ATTACK)

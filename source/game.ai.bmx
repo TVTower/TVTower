@@ -467,25 +467,25 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 
 		ret.ME = pPlayerId
 
-		ret.ROOM_MOVIEAGENCY = GetRoomCollection().GetFirstByDetails("movieagency").id
-		ret.ROOM_ADAGENCY = GetRoomCollection().GetFirstByDetails("adagency").id
-		ret.ROOM_ROOMBOARD = GetRoomCollection().GetFirstByDetails("roomboard").id
-		ret.ROOM_PORTER = GetRoomCollection().GetFirstByDetails("porter").id
-		ret.ROOM_BETTY = GetRoomCollection().GetFirstByDetails("betty").id
-		ret.ROOM_SUPERMARKET = GetRoomCollection().GetFirstByDetails("supermarket").id
-		ret.ROOM_ROOMAGENCY = GetRoomCollection().GetFirstByDetails("roomagency").id
-		ret.ROOM_PEACEBROTHERS = GetRoomCollection().GetFirstByDetails("peacebrothers").id
-		ret.ROOM_SCRIPTAGENCY = GetRoomCollection().GetFirstByDetails("scriptagency").id
-		ret.ROOM_NOTOBACCO = GetRoomCollection().GetFirstByDetails("notobacco").id
-		ret.ROOM_TOBACCOLOBBY = GetRoomCollection().GetFirstByDetails("tobaccolobby").id
-		ret.ROOM_GUNSAGENCY = GetRoomCollection().GetFirstByDetails("gunsagency").id
-		ret.ROOM_VRDUBAN = GetRoomCollection().GetFirstByDetails("vrduban").id
-		ret.ROOM_FRDUBAN = GetRoomCollection().GetFirstByDetails("frduban").id
+		ret.ROOM_MOVIEAGENCY = GetRoomCollection().GetFirstByDetails("", "movieagency").id
+		ret.ROOM_ADAGENCY = GetRoomCollection().GetFirstByDetails("", "adagency").id
+		ret.ROOM_ROOMBOARD = GetRoomCollection().GetFirstByDetails("", "roomboard").id
+		ret.ROOM_PORTER = GetRoomCollection().GetFirstByDetails("", "porter").id
+		ret.ROOM_BETTY = GetRoomCollection().GetFirstByDetails("", "betty").id
+		ret.ROOM_SUPERMARKET = GetRoomCollection().GetFirstByDetails("", "supermarket").id
+		ret.ROOM_ROOMAGENCY = GetRoomCollection().GetFirstByDetails("", "roomagency").id
+		ret.ROOM_PEACEBROTHERS = GetRoomCollection().GetFirstByDetails("", "peacebrothers").id
+		ret.ROOM_SCRIPTAGENCY = GetRoomCollection().GetFirstByDetails("", "scriptagency").id
+		ret.ROOM_NOTOBACCO = GetRoomCollection().GetFirstByDetails("", "notobacco").id
+		ret.ROOM_TOBACCOLOBBY = GetRoomCollection().GetFirstByDetails("", "tobaccolobby").id
+		ret.ROOM_GUNSAGENCY = GetRoomCollection().GetFirstByDetails("", "gunsagency").id
+		ret.ROOM_VRDUBAN = GetRoomCollection().GetFirstByDetails("", "vrduban").id
+		ret.ROOM_FRDUBAN = GetRoomCollection().GetFirstByDetails("", "frduban").id
 
-		ret.ROOM_ARCHIVE_PLAYER_ME = GetRoomCollection().GetFirstByDetails("archive", pPlayerId).id
-		ret.ROOM_NEWSAGENCY_PLAYER_ME = GetRoomCollection().GetFirstByDetails("news", pPlayerId).id
-		ret.ROOM_BOSS_PLAYER_ME = GetRoomCollection().GetFirstByDetails("boss", pPlayerId).id
-		ret.ROOM_OFFICE_PLAYER_ME = GetRoomCollection().GetFirstByDetails("office", pPlayerId).id
+		ret.ROOM_ARCHIVE_PLAYER_ME = GetRoomCollection().GetFirstByDetails("", "archive", pPlayerId).id
+		ret.ROOM_NEWSAGENCY_PLAYER_ME = GetRoomCollection().GetFirstByDetails("", "news", pPlayerId).id
+		ret.ROOM_BOSS_PLAYER_ME = GetRoomCollection().GetFirstByDetails("", "boss", pPlayerId).id
+		ret.ROOM_OFFICE_PLAYER_ME = GetRoomCollection().GetFirstByDetails("", "office", pPlayerId).id
 
 		Return ret
 	End Function
@@ -502,19 +502,19 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 
 
 	Method GetArchiveIdOfPlayer:Int(id:Int)
-		Return GetRoomCollection().GetFirstByDetails("archive", id).id
+		Return GetRoomCollection().GetFirstByDetails("", "archive", id).id
 	End Method
 
 	Method GetNewsAgencyIdOfPlayer:Int(id:Int)
-		Return GetRoomCollection().GetFirstByDetails("news", id).id
+		Return GetRoomCollection().GetFirstByDetails("", "news", id).id
 	End Method
 
 	Method GetBossOfficeIdOfPlayer:Int(id:Int)
-		Return GetRoomCollection().GetFirstByDetails("boss", id).id
+		Return GetRoomCollection().GetFirstByDetails("", "boss", id).id
 	End Method
 
 	Method GetOfficeIdOfPlayer:Int(id:Int)
-		Return GetRoomCollection().GetFirstByDetails("office", id).id
+		Return GetRoomCollection().GetFirstByDetails("", "office", id).id
 	End Method
 
 
@@ -537,12 +537,12 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 
 
 	Method GetFirstRoomByDetails:TRoom(roomName:String, owner:Int=-1000)
-		return GetRoomCollection().GetFirstByDetails(roomName, owner)
+		return GetRoomCollection().GetFirstByDetails("", roomName, owner)
 	End Method
 
 
 	Method GetRoomsByDetails:TRoom[](roomName:String, owner:Int=-1000)
-		return GetRoomCollection().GetAllByDetails(roomName, owner)
+		return GetRoomCollection().GetAllByDetails("", roomName, owner)
 	End Method
 
 

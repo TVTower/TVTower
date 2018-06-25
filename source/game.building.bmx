@@ -20,7 +20,7 @@ Import "game.figure.bmx" 'TFigureTarget with hotspot support
 
 'Summary: Type of building, area around it and doors,...
 Type TBuilding Extends TBuildingBase
-	
+
 	Field ufo_normal:TSpriteEntity 				{nosave}
 	Field ufo_beaming:TSpriteEntity				{nosave}
 
@@ -143,7 +143,7 @@ Type TBuilding Extends TBuildingBase
 	Method PrepareBuildingSprite:Int()
 		'TODO: copy original building sprite (empty) before modifying
 		'      the first time - so it allows various layouts of room
-	
+
 		'=== BACKGROUND DECORATION ===
 		'draw sprites directly on the building sprite if not done yet
 		If Not _backgroundModified
@@ -291,7 +291,7 @@ Type TBuilding Extends TBuildingBase
 		PrepareBuildingSprite()
 	End Method
 
-	
+
 	Method AddDoor:Int(door:TRoomDoorBase)
 		If Not door Then Return False
 		'add to innerBuilding, so doors can properly layout in the
@@ -338,7 +338,7 @@ Type TBuilding Extends TBuildingBase
 		If hotspot.name <> "elevatorplan" Or GetInstance().GetFloor(hotspot.area.GetY()) = GetInstance().GetFloor(GetPlayerBase().GetFigure().area.GetY())
 			GetPlayerBase().GetFigure().SetTarget( new TFigureTarget.Init(hotspot) )
 		EndIf
-		
+
 		MOUSEMANAGER.ResetKey(1)
 
 		return True
@@ -366,9 +366,9 @@ Type TBuilding Extends TBuildingBase
 		'- if figure is on the list already (and target floor is the same)
 		'  then use this in the calculation !
 		'  Wichtig: wenn Fahrstuhl zu nutzen: Hinweg + Rueckweg
-		
 
-		
+
+
 		return 0
 	End Method
 
@@ -385,7 +385,7 @@ Type TBuilding Extends TBuildingBase
 			if not entity or not GameConfig.observerMode
 				entity = GetPlayerBase().GetFigure()
 			endif
-			
+
 			'subtract 7 because of missing "wall" in last floor
 			area.position.y =  2 * floorHeight - 7 + 50 - entity.area.GetY()
 			'add 50 for roof
@@ -407,7 +407,7 @@ Type TBuilding Extends TBuildingBase
 			christmasTree1.Update()
 			christmasTree2.Update()
 		endif
-	
+
 		'center player
 		If not GetPlayerBase().GetFigure().IsInRoom() or GetPlayerBase().GetFigure().IsChangingRoom() or GameConfig.observerMode
 			CenterToPlayer()
@@ -598,7 +598,7 @@ Type TBuilding Extends TBuildingBase
 			UFO_BeamAnimationDone = False
 		EndIf
 	End Method
-	
+
 
 	'Summary: Draws background of the mainscreen (stars, buildings, moon...)
 	Method DrawBackground(tweenValue:Float=1.0)

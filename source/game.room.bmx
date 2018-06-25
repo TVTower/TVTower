@@ -45,8 +45,8 @@ Type TRoomCollection Extends TRoomBaseCollection
 
 
 	'returns all room fitting to the given details
-	Function GetAllByDetails:TRoom[]( name:String, owner:Int=-1000, limit:int = 0 ) {_exposeToLua}
-		local rooms:TRoomBase[] = Super.GetAllByDetails(name, owner, limit)
+	Function GetAllByDetails:TRoom[]( name:String, nameRaw:string="", owner:Int=-1000, limit:int = 0 ) {_exposeToLua}
+		local rooms:TRoomBase[] = Super.GetAllByDetails(name, nameRaw, owner, limit)
 		local result:TRoom[]
 		For Local room:TRoom = EachIn rooms
 			result :+ [room]
@@ -55,8 +55,8 @@ Type TRoomCollection Extends TRoomBaseCollection
 	End Function
 
 
-	Function GetFirstByDetails:TRoom( name:String, owner:Int=-1000 ) {_exposeToLua}
-		return TRoom(Super.GetFirstByDetails(name, owner))
+	Function GetFirstByDetails:TRoom( name:String, nameRaw:string="", owner:Int=-1000 ) {_exposeToLua}
+		return TRoom(Super.GetFirstByDetails(name, nameRaw, owner))
 	End Function
 End Type
 
@@ -170,7 +170,7 @@ Type TRoom extends TRoomBase {_exposeToLua="selected"}
 
 		return res
 	End Method
-	
+
 
 	'override to add playername/channelname replacement
 	Method GetDescription:string(lineNumber:int=1, raw:int=False) {_exposeToLua}

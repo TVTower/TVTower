@@ -21,7 +21,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 
 	Global _confirmActionTooltip:TTooltipBase
 
-	Global LS_roomagency_board:TLowerString = TLowerString.Create("roomagency")	
+	Global LS_roomagency_board:TLowerString = TLowerString.Create("roomagency")
 	Global _eventListeners:TLink[]
 	Global _instance:RoomHandler_RoomAgency
 
@@ -34,7 +34,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 		return _instance
 	End Function
 
-	
+
 	Method Initialize:Int()
 		'=== RESET TO INITIAL STATE ===
 		CleanUp()
@@ -69,7 +69,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 	Method CleanUp()
 		'=== unset cross referenced objects ===
 		roomboardTooltip = null
-		
+
 		'=== remove obsolete gui elements ===
 		'
 
@@ -157,7 +157,7 @@ endrem
 				roomboardTooltip = TTooltip.Create(GetLocale("ROOM_OVERVIEW"), GetLocale("CANCEL_OR_RENT_ROOMS"), 70, 120, 0, 0)
 				roomboardTooltip._minContentWidth = 150
 			endif
-				
+
 			roomboardTooltip.enabled = 1
 			roomboardTooltip.Hover()
 			GetGameBase().cursorstate = 1
@@ -221,7 +221,7 @@ endrem
 				sign.imageCache = sign.GenerateCacheImage( GetSpriteFromRegistry(sign.imageBaseName + Max(0, sign.door.GetOwner())) )
 			endif
 
-			local x:int = 42 + (sign.door.doorSlot-1) * 179 
+			local x:int = 42 + (sign.door.doorSlot-1) * 179
 			local y:int = 40 + (13 - sign.door.onFloor) * 23
 
 			if THelper.MouseIn(x,y, sign.imageCache.GetWidth(), sign.imageCache.GetHeight())
@@ -230,7 +230,7 @@ endrem
 
 				'if room.IsRentable() or (room.IsRented() and room.GetOwner() = playerID) and MouseManager.IsClicked(1)
 				if MouseManager.IsClicked(1)
-			
+
 					'only select/confirm the room if it is allowed
 					if (hoveredRoom.GetOwner() <= 0 and hoveredRoom.IsRentable()) or ..
 					   (hoveredRoom.GetOwner() = playerID)
@@ -295,7 +295,7 @@ endrem
 					'handled button hit
 					MouseManager.ResetKey(1)
 				endif
-				
+
 				exit
 			endif
 		Next
@@ -362,12 +362,12 @@ endrem
 		For local sign:TRoomBoardSign = EachIn GetRoomBoard().list
 			local room:TRoomBase = TRoomDoor(sign.door).GetRoom()
 			if not room then continue
-		
+
 			if not sign.imageCache
 				sign.imageCache = sign.GenerateCacheImage( GetSpriteFromRegistry(sign.imageBaseName + Max(0, sign.door.GetOwner())) )
 			endif
 
-			local x:int = 42 + (sign.door.doorSlot-1) * 179 
+			local x:int = 42 + (sign.door.doorSlot-1) * 179
 			local y:int = 40 + (13 - sign.door.onFloor) * 23
 
 			if room
@@ -389,7 +389,7 @@ endrem
 			else
 				sign.imageCache.Draw(x,y)
 			endif
-			
+
 
 			if room = selectedRoom
 				SetBlend LIGHTBLEND
@@ -406,7 +406,7 @@ endrem
 				SetBlend ALPHABLEND
 				oldCol.SetRGBA()
 			endif
-				
+
 
 			oldCol.SetRGBA()
 		Next
@@ -418,7 +418,7 @@ endrem
 		GuiManager.Draw( LS_roomagency_board )
 
 		if hoveredSign
-			local signX:int = 42 + (hoveredSign.door.doorSlot-1) * 179 
+			local signX:int = 42 + (hoveredSign.door.doorSlot-1) * 179
 			local signY:int = 40 + (13 - hoveredSign.door.onFloor) * 23
 			local sheetW:int = 340
 			local sheetX:int, sheetY:int
@@ -439,7 +439,7 @@ endrem
 
  	Method UpdateRoomSheet(room:TRoomBase, x:int, y:int)
  	End Method
- 	
+
 
  	Method DrawRoomSheet(room:TRoomBase, x:int, y:int, align:int = 0)
 		'=== PREPARE VARIABLES ===
@@ -488,9 +488,9 @@ endrem
 		endif
 
 
-		
+
 		'=== RENDER ===
-	
+
 		'== title area
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 			if titleH <= 18
@@ -499,7 +499,7 @@ endrem
 				GetBitmapFont("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY +1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			endif
 		contentY :+ titleH
-		
+
 		'== description area
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
 		local t:string = ""
@@ -511,9 +511,9 @@ endrem
 			local door:TRoomDoorBase = GetRoomDoorBaseCollection().GetMainDoorToRoom(room.id)
 			local neighbourRoom:TRoomBase
 			if door
-				local interestingRooms:TRoomBase[] = [  GetRoomBaseCollection().GetFirstByDetails("supermarket") ..
-				                                      , GetRoomBaseCollection().GetFirstByDetails("scriptagency") ..
-				                                      , GetRoomBaseCollection().GetFirstByDetails("office", GetPlayerBaseCollection().playerID) ..
+				local interestingRooms:TRoomBase[] = [  GetRoomBaseCollection().GetFirstByDetails("", "supermarket") ..
+				                                      , GetRoomBaseCollection().GetFirstByDetails("", "scriptagency") ..
+				                                      , GetRoomBaseCollection().GetFirstByDetails("office", "", GetPlayerBaseCollection().playerID) ..
 				                                     ]
 				for local interestingRoom:TRoomBase = EachIn interestingRooms
 					local interestingDoor:TRoomDoorBase = GetRoomDoorBaseCollection().GetMainDoorToRoom(interestingRoom.id)
@@ -528,7 +528,7 @@ endrem
 					if neighbourRoom then exit
 				next
 			endif
-		
+
 			adText = GetRandomLocale2(["ROOMAGENCY_SIZE"+room.GetSize()+"_TEXT", "ROOMAGENCY_SIZE_TEXT"]).REPLACE("%SIZE%", room.GetSize())
 			if adText then adText :+ " "
 			if neighbourRoom
@@ -547,7 +547,7 @@ endrem
 		endif
 		t :+ adText
 		if adText then t :+ "~n"
-		
+
 		if room.IsRentable() and room.GetOwner() <> currentPlayerID
 			t :+ GetLocale("ROOMAGENCY_SIGNING_WILL_COST_A_SINGLE_PAYMENT_OF_X").Replace("%X%", MathHelper.DottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ) +" "+GetLocale("CURRENCY"))
 		endif
@@ -582,7 +582,7 @@ endrem
 				endif
 			endif
 			ownerRerentInfo = ownerRerentInfo.Replace("%X%", timeString)
-			
+
 
 			'splitter
 			skin.RenderContent(contentX, contentY, contentW, splitterHorizontalH, "1")
@@ -644,19 +644,19 @@ Vorbesitzer: XYZ
 			skin.fontBold.drawBlock("Raum: "+room.GetDescription(), contentX + 5, contentY, contentW - 10, 28)
 			contentY :+ 28
 			skin.fontNormal.draw("Name: "+room.GetName(), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Besitzer: "+room.GetOwner(), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("IsRentable: "+room.IsRentable(), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("IsRented: "+room.IsRented(), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("IsUsedAsStudio: "+room.IsUsedAsStudio(), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("RerentalTime: "+room.GetRerentalTime(), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Rerental in: "+(GetWorldTime().GetTimegone()-room.GetRerentalTime())+" s", contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 		endif
 
 		'=== OVERLAY / BORDER ===

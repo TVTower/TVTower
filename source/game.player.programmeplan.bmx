@@ -227,7 +227,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		If arrayIndex >= GetObjectArray(slotType).length
 			If obj
 				ResizeObjectArray(slotType, arrayIndex + 1 + obj.GetBlocks() - 1)
-			'null is used to unset an objectarray 
+			'null is used to unset an objectarray
 			Else
 				ResizeObjectArray(slotType, arrayIndex + 1)
 			EndIf
@@ -309,7 +309,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		else
 			return IsLockedSlot(slotType, day, hour, lockTypeflags)
 		endif
-	End Method 
+	End Method
 
 
 	'returns whether a slot is locked, or belongs to an object which
@@ -328,7 +328,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		else
 			return IsModifyableSlot(slotType, day, hour, lockTypeflags)
 		endif
-	End Method 
+	End Method
 
 
 	'returns whether this slot is locked, ignores locks of other slots
@@ -355,13 +355,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'returns whether the given material occupies a locked slot
 	Method IsLockedBroadcastMaterial:int(broadcastMaterial:TBroadcastMaterial, lockTypeFlags:int=0)
 		if not broadcastMaterial then return False
-		
+
 		'for now we ignore owner checks - so every broadcastmaterial is just
 		'checked if it occupies a locked slot
 
 		'skip material not programmed yet
 		if broadcastMaterial.programmedDay = -1 then return False
-		 
+
 		for local block:int = 0 until broadcastMaterial.GetBlocks()
 			if IsLockedSlot(broadcastMaterial.usedAsType, broadcastMaterial.programmedDay, broadcastMaterial.programmedHour, lockTypeFlags)
 				return True
@@ -369,12 +369,12 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Next
 		return False
 	End Method
-	
+
 
 	'removes slot lock info from past days (to keep things small sized)
 	Method RemoveObsoleteSlotLocks:int()
 		local time:Double = GetWorldTime().GetDay()*24 ' + 0 hours, start at midnight)
-		
+
 		For local k:string = EachIn lockedSlots.Keys()
 			local parts:string[] = k.split("_")
 			if parts.length < 2
@@ -386,7 +386,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				lockedSlots.Remove(k)
 			else
 				'as the keys are sorted by time (and then by type) we could
-				'skip all others once we reached a lock of the present/future 
+				'skip all others once we reached a lock of the present/future
 				return False
 			endif
 		Next
@@ -400,7 +400,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
 		if not obj then return False
 		return obj.SourceHasBroadcastFlag(broadcastMaterialFlags)
-	End Method 
+	End Method
 
 
 	'returns whether a slot is locked, or belongs to an object which
@@ -409,7 +409,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		local obj:TBroadcastMaterial = GetObject(slotType, day, hour)
 		if not obj then return False
 		return not obj.IsControllable()
-	End Method 
+	End Method
 
 
 	'returns whether a slot does not belong to a locked programme,
@@ -420,7 +420,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		if BelongsToOccupiedSlotWithUncontrollableBroadcast(slotType, day, hour) then return False
 
 		return True
-	End Method 
+	End Method
 
 
 	'returns whether the slot can be used or is already in the past...
@@ -507,7 +507,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Local minIndex:Int = GetArrayIndex(dayStart*24 + hourStart)
 		Local maxIndex:Int = GetArrayIndex(dayEnd*24 + hourEnd)
 		if maxIndex - minIndex < 0 then return result
-		
+
 		For Local i:Int = minIndex To maxIndex
 			material = TBroadcastMaterial(GetObjectAtIndex(objectType, i))
 			If Not material Then Continue
@@ -533,7 +533,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Local minIndex:Int = GetArrayIndex(dayStart*24 + hourStart)
 		Local maxIndex:Int = GetArrayIndex(dayEnd*24 + hourEnd)
 		if maxIndex - minIndex < 0 then return result
-		
+
 		result = new TBroadcastMaterial[ maxIndex-minIndex +1 ]
 		For Local i:Int = minIndex To maxIndex
 			result[i-minIndex] = GetObject(objectType, 0, GetHourFromArrayIndex(i))
@@ -680,7 +680,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		If obj = GetObjectAtIndex(slotType, arrayIndex) Then Return True
 
 
-		'check all affected slots whether they allow modification 
+		'check all affected slots whether they allow modification
 		'do not allow adding in the past
 		'do not allow adding to a locked slot
 		If checkModifyableSlot
@@ -696,7 +696,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				endif
 			Next
 		EndIf
-		
+
 
 		'clear all potential overlapping objects
 		Local removedObjects:Object[]
@@ -721,7 +721,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'ProgrammeLicences: recalculate the latest planned hour
 			RecalculatePlannedProgramme(TProgramme(obj))
 		EndIf
-			
+
 		'Advertisements: adjust planned (when placing in contract-slot
 		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT and TAdvertisement(obj)
 			TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
@@ -827,7 +827,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method RemoveObjectInstances:Int(obj:TBroadcastMaterial, slotType:Int=0, time:Long=-1, removeCurrentRunning:Int=False)
 		If time = -1 Then time = GetWorldTime().GetTimeGone()
 		local currentHour:int = GetWorldTime().GetHour(time)
-	
+
 		'programme finished this block already
 		if slotType = TVTBroadcastMaterialType.PROGRAMME
 			if GetWorldTime().GetDayMinute(time) >= 55 then currentHour :+ 1
@@ -840,7 +840,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			TLogger.Log("PlayerProgrammePlan.RemoveObjectInstances()", "Plan #"+owner+" removes all instances of object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from ADVERTISEMENTS.", LOG_DEBUG)
 		endif
 		endrem
-		
+
 
 		Local array:TBroadcastMaterial[] = GetObjectArray(slotType)
 		Local earliestIndex:Int = Max(0, GetArrayIndex(currentHour - obj.GetBlocks()))
@@ -883,7 +883,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'you cannot place an object you do not own
 		'TODO: check how to work out objects of 3rd parties, maybe we
 		'      should add a force-param
-		if not obj.IsOwner(owner) then return False 
+		if not obj.IsOwner(owner) then return False
 
 		FixDayHour(day, hour)
 
@@ -891,7 +891,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		if not obj.GetSource().CanBroadcastAtTime(slotType, day, hour)
 			return -1
 		endif
-	
+
 		'check all slots the obj will occupy...
 		For Local i:Int = 0 To obj.GetBlocks() - 1
 			'... and if there is already an object, return the information
@@ -914,7 +914,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			if not programmes[i] then continue
 
 			local t:long = GetWorldTime().MakeTime(0, 0, GetHourFromArrayIndex(i), 0,0)
-			
+
 			if programmes[i].programmedDay = -1 or programmes[i].programmedDay <> GetWorldTime().GetDay(t) or programmes[i].programmedHour <> GetWorldTime().GetDayHour(t)
 				local useIndex:int = i
 
@@ -927,7 +927,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 						endif
 					Next
 				endif
-				
+
 				'remove oddly placed programme
 				if useIndex <> i
 					programmes[i] = null
@@ -975,7 +975,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				local endDay:int = programmes[i].programmedDay
 				local endHour:int = programmes[i].programmedHour + programmes[i].GetBlocks( TVTBroadcastMaterialType.PROGRAMME )
 				FixDayHour(endDay, endHour)
-				
+
 				_daysPlanned = Max(_daysPlanned, endDay)
 				exit
 			Next
@@ -984,7 +984,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				local endDay:int = advertisements[i].programmedDay
 				local endHour:int = advertisements[i].programmedHour + advertisements[i].GetBlocks( TVTBroadcastMaterialType.ADVERTISEMENT )
 				FixDayHour(endDay, endHour)
-				
+
 				_daysPlanned = Max(_daysPlanned, endDay)
 				exit
 			Next
@@ -1021,7 +1021,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method ForceRemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1) {_exposeToLua}
 		return _RemoveProgramme(obj, day, hour, True)
 	End Method
-	
+
 
 	'clear a slot so others can get placed without trouble
 	Method _RemoveProgramme:Int(obj:TBroadcastMaterial=Null, day:Int=-1, hour:Int=-1, forceRemove:int=False)
@@ -1281,7 +1281,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		Local minIndex:Int = 0
 		Local maxIndex:Int = advertisements.length
-		
+
 		FixDayHour(dayStart, hourStart)
 		minIndex = GetArrayIndex(dayStart*24 + hourStart)
 
@@ -1409,7 +1409,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Return TAdvertisement(GetObject(TVTBroadcastMaterialType.ADVERTISEMENT, day, hour))
 	End Method
 
-	
+
 	'returns an array of real advertisements within the given time frame
 	'in the advertisement list
 	Method GetRealAdvertisementsInTimeSpan:TAdvertisement[](dayStart:Int=-1, hourStart:Int=-1, dayEnd:Int=-1, hourEnd:Int=-1, includeStartingEarlierObject:Int=True) {_exposeToLua}
@@ -1505,7 +1505,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'remove this news from slots if it occupies some of them
 		'do not add it back to the collection
 		'-> this avoids duplicate "cannot remove" messages
-		'-> the news is already removed from the collection some lines later 
+		'-> the news is already removed from the collection some lines later
 		For Local i:Int = 0 To news.length-1
 			if GetNewsAtIndex(i) = newsObject then RemoveNewsBySlot(i, False)
 		Next
@@ -1531,7 +1531,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method RemoveNewsBySlot:Int(slot:Int, addToCollection:Int=True) {_exposeToLua}
 		return RemoveNews(null, slot, addToCollection)
 	End Method
-	
+
 
 	Method RemoveNewsByGUID:Int(newsGUID:string="", addToCollection:Int=True) {_exposeToLua}
 		For Local i:Int = 0 To news.length-1
@@ -1599,7 +1599,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		else
 			guid = string(newsObjectOrGUID)
 		endif
-		
+
 		For local newsEntry:TBroadcastMaterial = EachIn news
 			if newsEntry.GetGUID() = guid then Return True
 		Next
@@ -1618,7 +1618,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method GetNewsArray:TBroadcastMaterial[]() {_exposeToLua}
 		Return news
 	End Method
-	
+
 
 	Method GetNewsAtIndex:TBroadcastMaterial(index:Int) {_exposeToLua}
 		'out of bounds check
@@ -1749,7 +1749,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 			'inform others (eg. boss), "broadcastMaterial" could be null!
 			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
-			
+
 		'=== END OF NEWSSHOW ===
 		ElseIf minute = 4
 			obj = GetNewsShow(day, hour)
@@ -1782,7 +1782,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			EndIf
 			'store audience/broadcast for daily stats (also for outage!)
 			GetDailyBroadcastStatistic( day, true ).SetBroadcastResult(obj, owner, hour, audienceResult)
-			
+
 			'inform others (eg. boss), "broadcastMaterial" could be null!
 			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 
@@ -1830,7 +1830,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
 			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
-			
+
 		'=== BEGIN OF COMMERCIAL BREAK ===
 		ElseIf minute = 55
 			obj = GetAdvertisement(day, hour)
@@ -2002,7 +2002,7 @@ Type TProgrammePlanInformationProvider extends TProgrammePlanInformationProvider
 	Method RefreshAudienceData(player:int, time:Long, audienceData:object)
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 		if not audienceResult then return
-		
+
 		local genreKey:string = ""
 		if GetWorldTime().GetDayMinute(time) = 4 then genreKey = "newsshow"
 

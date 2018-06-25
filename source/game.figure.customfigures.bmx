@@ -30,7 +30,7 @@ Type TFigurePostman Extends TFigure
 		else
 			nextActionTimer.SetInterval(nextActionInterval)
 		endif
-		
+
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
 	End Method
@@ -171,7 +171,7 @@ Type TFigureJanitor Extends TFigure
 			nextActionTimer.SetRandomness(-nextActionRandomTime, nextActionRandomTime)
 			nextActionTimer.SetInterval(nextActionTime)
 			nextActionTimer.Reset()
-			
+
 			currentJanitorAction = 0
 
 			'chose actions
@@ -258,7 +258,7 @@ Type TFigureDeliveryBoy Extends TFigure
 	'           to avoid "resets" while Entering
 	Method BeginEnterRoom:int(door:TRoomDoorBase, room:TRoomBase)
 		Super.BeginEnterRoom(door, room)
-			
+
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
 	End Method
@@ -283,12 +283,12 @@ Type TFigureDeliveryBoy Extends TFigure
 	'DeliveryBoys do not know where the room will be, so they
 	'go to the roomboard first
 	Method SetDeliverToRoom:Int(room:TRoomBase, replaceExistingDeliveryTarget:int = False)
-		'delay current delivery target by adding it back to the schedule    
+		'delay current delivery target by adding it back to the schedule
 		if deliverToRoom and not replaceExistingDeliveryTarget
 			scheduledDeliverRooms = [deliverToRoom] + scheduledDeliverRooms
 			scheduledDeliverTime = [-1:Long] + scheduledDeliverTime
 		endif
-	
+
 		'to go to this room, we have to first visit the roomboard
 		checkedRoomboard = False
 		deliveryDone = False
@@ -303,7 +303,7 @@ Type TFigureDeliveryBoy Extends TFigure
 	Method HasToDeliver:Int() {_exposeToLua}
 		Return Not deliveryDone
 	End Method
-	
+
 
 	'override to react to it
 	Method FailEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase, reason:String)
@@ -461,13 +461,13 @@ Type TFigureTerrorist Extends TFigureDeliveryBoy
 
 		'depending on floor use "grr" or "?!"
 		Return 0 + 2*((1 + GetBuildingBase().GetFloor(area.GetY()) Mod 2)-1)
-	End Method	
+	End Method
 
 
 	'override
 	'do not accept others, once the terrorist is in a room
 	'so behave "normal" if asked from outside of a room regarding
-	'persons in the room 
+	'persons in the room
 	Method IsAcceptingEntityInSameRoom:int(entity:TEntity, room:object)
 		if not GetInRoom()
 			local r:TRoomBase = TRoomBase(room)
@@ -479,7 +479,7 @@ Type TFigureTerrorist Extends TFigureDeliveryBoy
 		endif
 
 		'when in a room, we do no longer accept others to join (we
-		'want to place a bomb...) 
+		'want to place a bomb...)
 		return False
 	End Method
 End Type
@@ -541,13 +541,13 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 			RemoveCurrentConfiscationJob()
 			Return False
 		EndIf
-		
+
 		'when confiscating programmes: start with your authorization
 		'letter
 		sprite = GetSpriteFromRegistry(GetBaseSpriteName()+".letter")
 
 		'send figure to the archive of the stored owner
-		SetDeliverToRoom(GetRoomCollection().GetFirstByDetails("archive", GetConfiscateProgrammeLicenceFromOwner()))
+		SetDeliverToRoom(GetRoomCollection().GetFirstByDetails("archive", "", GetConfiscateProgrammeLicenceFromOwner()))
 	End Method
 
 
@@ -560,7 +560,7 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 		confiscateProgammeLicenceGUID = confiscateProgammeLicenceGUID[1..]
 		confiscateProgammeLicenceFromOwner = confiscateProgammeLicenceFromOwner[1..]
 	End Method
-	
+
 
 	Method GetConfiscateProgrammeLicenceGUID:String()
 		If confiscateProgammeLicenceGUID.length = 0 Then Return ""
@@ -572,7 +572,7 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 		If confiscateProgammeLicenceFromOwner.length = 0 Then Return -1
 		Return confiscateProgammeLicenceFromOwner[0]
 	End Method
-	
+
 
 	Method GetBaseSpriteName:String()
 		Local dotPosition:Int = sprite.GetName().Find(".")
@@ -582,7 +582,7 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 			Return sprite.GetName()
 		EndIf
 	End Method
-	
+
 
 	'override to try to fetch the programme they should confiscate
 	Method FinishDelivery:Int()
@@ -608,11 +608,11 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 			endif
 			endrem
 			If Not licence Then licence = pc.GetRandomProgrammeLicence()
-	
+
 			'hmm player does not have programme licences at all...skip
 			'removal in that case
 			If Not licence Then Return False
-				
+
 			pc.RemoveProgrammeLicence(licence)
 			GetPlayerProgrammePlan(roomOwner).RemoveProgrammeInstancesByLicence(licence, True)
 
@@ -644,7 +644,7 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 	'override
 	'do not accept others, once the marshal is in a room
 	'so behave "normal" if asked from outside of a room regarding
-	'persons in the room 
+	'persons in the room
 	Method IsAcceptingEntityInSameRoom:int(entity:TEntity, room:object)
 		if not GetInRoom()
 			'does not like to use things like the room board while others
@@ -659,5 +659,5 @@ Type TFigureMarshal Extends TFigureDeliveryBoy
 		'are confiscating something and do not want to have that put into
 		'a suitcase before ...)
 		return False
-	End Method	
+	End Method
 End Type

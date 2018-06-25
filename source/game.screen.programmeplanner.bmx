@@ -51,7 +51,7 @@ Type TScreenHandler_ProgrammePlanner
 	Function Initialize:Int()
 		Local screen:TScreen = ScreenCollection.GetScreen(screenName)
 		If Not screen Then Return False
-		
+
 
 
 		'=== create gui elements if not done yet
@@ -234,7 +234,7 @@ Type TScreenHandler_ProgrammePlanner
 
 	Function IsMyRoom:Int(room:TRoomBase)
 		For Local i:Int = 1 To 4
-			If room = GetRoomCollection().GetFirstByDetails("office", i) Then Return True
+			If room = GetRoomCollection().GetFirstByDetails("office", "", i) Then Return True
 		Next
 		Return False
 	End Function
@@ -334,7 +334,7 @@ Type TScreenHandler_ProgrammePlanner
 			obj.Remove()
 		Next
 	End Function
-	
+
 
 	'call this function if the visual user actions need to get
 	'aborted
@@ -397,7 +397,7 @@ Type TScreenHandler_ProgrammePlanner
 	Function DrawSlotHints()
 		'nothing for noe
 	End Function
-	
+
 
 	Function DrawSlotOverlays(invert:Int = False)
 		Local oldCol:TColor = New TColor.get()
@@ -491,13 +491,13 @@ Type TScreenHandler_ProgrammePlanner
 		'important: change back to current planning day
 		ChangePlanningDay(GetWorldTime().GetDay())
 	End Function
-	
+
 
 	'clear the guilist if a player enters
 	'screens are only handled by real players
 	Function onEnterProgrammePlannerScreen:Int(triggerEvent:TEventBase)
 		currentRoom = GetPlayer().GetFigure().inRoom
-	
+
 		'==== EMPTY/DELETE GUI-ELEMENTS =====
 		hoveredGuiProgrammePlanElement = Null
 		draggedGuiProgrammePlanElement = Null
@@ -524,7 +524,7 @@ Type TScreenHandler_ProgrammePlanner
 		'only check a players or a observed figure
 		local figure:TFigureBase = TFigureBase(triggerEvent.GetSender())
 		if not (GameConfig.IsObserved(figure) or GetPlayerBase().GetFigure() = figure) then return False
-		
+
 		'as long as onTryLeaveProgrammePlannerScreen does not
 		'check for specific event data... just forward the event
 		return onTryLeaveProgrammePlannerScreen( triggerEvent )
@@ -553,7 +553,7 @@ Type TScreenHandler_ProgrammePlanner
 		EndIf
 
 		Return True
-	End Function	
+	End Function
 
 
 	Function onChangeProgrammeCollection:Int( triggerEvent:TEventBase )
@@ -700,7 +700,7 @@ Type TScreenHandler_ProgrammePlanner
 
 		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		If Not item Then Return False
-		
+
 		Local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetReceiver())
 		If Not list Then Return False
 
@@ -720,7 +720,7 @@ Type TScreenHandler_ProgrammePlanner
 					triggerEvent.SetVeto()
 					Return False
 				endif
-				
+
 				rem
 				If TProgramme(item.broadcastMaterial) And TProgramme(item.broadcastMaterial).data.IsLive()
 					Local releaseTime:Long = TProgramme(item.broadcastMaterial).data.releaseTime
@@ -758,7 +758,7 @@ Type TScreenHandler_ProgrammePlanner
 
 		return True
 	End Function
-	
+
 
 	'intercept if a freshly created element is dropped on a not modifyable
 	'slot
@@ -805,7 +805,7 @@ Type TScreenHandler_ProgrammePlanner
 		'while elements are dragged
 		If plannerPreviousDayButton = triggerEvent.GetReceiver() Or ..
 		   plannerNExtDayButton = triggerEvent.GetReceiver()
-		
+
 			triggerEvent.SetVeto()
 
 			If plannerPreviousDayButton = triggerEvent.GetReceiver()
@@ -830,7 +830,7 @@ Type TScreenHandler_ProgrammePlanner
 			Return False
 		EndIf
 	End Function
-	
+
 
 	'remove the material from the programme plan
 	Function onRemoveItemFromSlotList:Int(triggerEvent:TEventBase)
@@ -1080,7 +1080,7 @@ Type TScreenHandler_ProgrammePlanner
 		currentRoom = room
 
 		DrawSlotHints()
-		
+
 		GUIManager.Draw( LS_programmeplanner,,, GUIMANAGER_TYPES_NONDRAGGED)
 
 		DrawSlotOverlays()
@@ -1206,14 +1206,14 @@ Ueberpruefen:
 endrem
 				'else mark the exact live time (releasetime + blocks) slots
 				'(if planning day not in the past)
-				ElseIf programme.data.IsLive() And GetWorldTime().GetDay() <= planningDay 
+				ElseIf programme.data.IsLive() And GetWorldTime().GetDay() <= planningDay
 					Local hourSlots:Int[]
-				
+
 					Local blockTime:Long = programme.data.releaseTime
 					If GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
 						'mark allowed slots
 						For Local i:Int = 0 Until programme.GetBlocks()
-							If GetWorldTime().GetDay(blockTime) = planningDay 
+							If GetWorldTime().GetDay(blockTime) = planningDay
 								hourSlots :+ [ GetWorldTime().GetDayHour(blockTime) ]
 							EndIf
 							blockTime :+ 3600
@@ -1258,7 +1258,7 @@ endrem
 
 							'only mark till midnight
 							if startDay <> planningDay then startHour = 0
-							if endDay <> planningDay then endHour = 23 
+							if endDay <> planningDay then endHour = 23
 							if startHour > nowHour
 								For Local i:Int = 0 Until startHour
 									hourSlots :+ [ i ]
@@ -1271,7 +1271,7 @@ endrem
 				EndIf
 			EndIf
 		EndIf
-		
+
 		GetGameBase().cursorstate = 0
 
 		ignoreCopyOrEpisodeShortcut  = False
@@ -1415,7 +1415,7 @@ endrem
 			MouseManager.ResetKey(1)
 			Return True
 		EndIf
-			
+
 
 
 		'close both lists
@@ -1617,7 +1617,7 @@ endrem
 
 
 		'fix not-yet-set-currentroom and set to players office
-		If Not currentRoom Then currentRoom = GetRoomCollection().GetFirstByDetails("office", GetPlayer().playerID)
+		If Not currentRoom Then currentRoom = GetRoomCollection().GetFirstByDetails("office", "", GetPlayer().playerID)
 
 		'===== REMOVE UNUSED =====
 		'remove overnight
@@ -1643,7 +1643,7 @@ endrem
 		Local currDay:Int = planningDay
 		If currDay = -1 Then currDay = GetWorldTime().GetDay()
 
-		
+
 		For Local guiObject:TGuiProgrammePlanElement = EachIn GuiListProgrammes._slots
 			If guiObject.isDragged() Then Continue
 			'check if programmed on the current day
@@ -1691,7 +1691,7 @@ endrem
 				Continue
 			EndIf
 
-						
+
 			'DAYCHANGE
 			'skip programmes started yesterday (they are stored individually)
 			If obj.programmedDay < currDay And currDay  > 0
@@ -1741,7 +1741,7 @@ endrem
 				repairBrokenAd = True
 				Continue
 			EndIf
-			
+
 			'DAYCHANGE
 			'skip programmes started yesterday (they are stored individually)
 			If obj.programmedDay < currDay And currDay > 0
@@ -1805,7 +1805,7 @@ endrem
 			'static background images:
 			programmePlannerBackgroundOriginal = LoadImage(LockImage(roomImg).Copy())
 		endif
-		
+
 		Local Pix:TPixmap = LockImage(roomImg)
 		if Pix.format <> PF_RGB888
 			TLogger.Log("TScreenHandler_ProgrammePlanner.InitProgrammePlannerBackground()", "Converted ~qscreen_bg_programmeplanner~q color space to RGB.", LOG_DEBUG)

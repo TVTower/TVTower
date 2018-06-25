@@ -814,7 +814,7 @@ Type TApp
 						endrem
 
 						rem
-						local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("laundry")
+						local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("", "laundry")
 						if room
 							print "renting room: " + room.GetName()
 							GetRoomAgency().CancelRoomRental(room, GetPlayerBase().playerID)
@@ -1031,15 +1031,15 @@ Type TApp
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("adagency") )
 							endif
 						endif
-						If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("archive", GetPlayerCollection().playerID) )
-						If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("betty") )
+						If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("archive", "", GetPlayerCollection().playerID) )
+						If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "betty") )
 						If KEYMANAGER.IsHit(KEY_F)
 							if not KEYMANAGER.IsDown(KEY_LSHIFT) and not KEYMANAGER.IsDown(KEY_RSHIFT)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
 							endif
 						endif
-						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
-						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("boss", GetPlayerCollection().playerID))
+						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "office", GetPlayerCollection().playerID))
+						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "boss", GetPlayerCollection().playerID))
 						If KEYMANAGER.isHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
 
 						If KEYMANAGER.Ishit(KEY_X)
@@ -1069,22 +1069,25 @@ rem
 endrem
 						If KEYMANAGER.isHit(KEY_S)
 							If KEYMANAGER.IsDown(KEY_LCONTROL)
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("supermarket"))
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "supermarket"))
 							elseIf KEYMANAGER.IsDown(KEY_RCONTROL) or KEYMANAGER.IsDown(KEY_LALT)
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("scriptagency"))
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "scriptagency"))
 							else
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", GetPlayerCollection().playerID))
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", "", GetPlayerCollection().playerID))
 							endif
 						endif
+						If KEYMANAGER.IsHit(KEY_D) 'German "Drehbuchagentur"
+							DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "scriptagency"))
+						EndIf
 
 						'e wie "employees" :D
-						If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("credits"))
-						If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("news", GetPlayerCollection().playerID))
+						If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "credits"))
+						If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "news", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_R)
 							If KEYMANAGER.IsDown(KEY_LCONTROL) or KEYMANAGER.IsDown(KEY_RCONTROL)
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("roomboard"))
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomboard"))
 							else
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("roomagency"))
+								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomagency"))
 							endif
 						endif
 					EndIf
@@ -4360,7 +4363,7 @@ Type GameEvents
 					room = GetRoomBaseCollection().GetByGUID( TLowerString.Create(roomGUID) )
 				endif
 				if not room
-					room = GetRoomBaseCollection().GetFirstByDetails(roomGUID, player.playerID)
+					room = GetRoomBaseCollection().GetFirstByDetails("", roomGUID, player.playerID)
 				endif
 				if room
 					DEV_switchRoom(room, player.GetFigure())
@@ -4377,7 +4380,7 @@ Type GameEvents
 					room = GetRoomBaseCollection().GetByGUID( TLowerString.Create(roomGUID) )
 				endif
 				if not room
-					room = GetRoomBaseCollection().GetFirstByDetails(roomGUID, player.playerID)
+					room = GetRoomBaseCollection().GetFirstByDetails("", roomGUID, player.playerID)
 				endif
 				if room
 					GetRoomAgency().CancelRoomRental(room, player.playerID)
@@ -5614,7 +5617,7 @@ Type GameEvents
 		'refill if needed
 		If GetGame().refillMovieAgencyTime <= 0
 			'delay if there is one in this room
-			If GetRoomCollection().GetFirstByDetails("movieagency").hasOccupant()
+			If GetRoomCollection().GetFirstByDetails("", "movieagency").hasOccupant()
 				GetGame().refillMovieAgencyTime :+ 15
 			Else
 				'reset but with a bit randomness
@@ -5626,7 +5629,7 @@ Type GameEvents
 		EndIf
 		If GetGame().refillScriptAgencyTime <= 0
 			'delay if there is one in this room
-			If GetRoomCollection().GetFirstByDetails("scriptagency").hasOccupant()
+			If GetRoomCollection().GetFirstByDetails("", "scriptagency").hasOccupant()
 				GetGame().refillScriptAgencyTime :+ 15
 			Else
 				'reset but with a bit randomness
@@ -5638,7 +5641,7 @@ Type GameEvents
 		EndIf
 		If GetGame().refillAdAgencyTime <= 0
 			'delay if there is one in this room
-			If GetRoomCollection().GetFirstByDetails("adagency").hasOccupant()
+			If GetRoomCollection().GetFirstByDetails("", "adagency").hasOccupant()
 				GetGame().refillAdAgencyTime :+ 15
 			Else
 				'reset but with a bit randomness
