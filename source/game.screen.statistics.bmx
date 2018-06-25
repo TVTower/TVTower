@@ -48,6 +48,10 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 		if not previousDayButton
 			previousDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20, 10 + 11), new TVec2D.Init(24, 24), "LEFT", "officeStatisticsScreen")
 			nextDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20 + 175 + 20, 10 + 11), new TVec2D.Init(24, 24), "RIGHT", "officeStatisticsScreen")
+
+			previousDayButton.SetSpriteButtonOption(TGUISpriteButton.SHOW_BUTTON_NORMAL, False)
+			nextDayButton.SetSpriteButtonOption(TGUISpriteButton.SHOW_BUTTON_NORMAL, False)
+
 		endif
 
 
@@ -55,7 +59,7 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
 
-		
+
 		'=== register event listeners
 		'listen to clicks on the four buttons
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickButtons, "TGUIArrowButton") ]
@@ -88,7 +92,7 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 		GetInstance().showDay = GetWorldTime().GetDay()
 	End function
 
-	
+
 	Function onClickButtons:int(triggerEvent:TEventBase)
 		local arrowButton:TGUIArrowButton = TGUIArrowButton(triggerEvent.GetSender())
 		if not arrowButton then return False
@@ -106,7 +110,7 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 
 		GetInstance().Render()
 	End Function
-	
+
 
 	Function onUpdate:int( triggerEvent:TEventBase )
 		local room:TOwnedGameObject = TOwnedGameObject( triggerEvent.GetData().get("room") )
@@ -135,7 +139,7 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 		GetGameBase().cursorstate = 0
 		GuiManager.Update( LS_officeStatisticsScreen)
 	End Method
-	
+
 
 	Method Render()
 		'=== CONFIG ===
@@ -165,7 +169,7 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 		Local minValue:int = 0
 		'color of labels
 		Local labelColor:TColor = new TColor.CreateGrey(80)
-		local audienceResult:TAudienceResultBase 
+		local audienceResult:TAudienceResultBase
 
 		'add 1 to "today" as we are on this day then
 		local today:Double = GetWorldTime().MakeTime(0, showDay, 0, 0)
@@ -182,8 +186,8 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 			'for PROGRAMME and NEWS
 			For local progNewsIterator:int = 0 to 1
 				local tableX:int = 20
-				if progNewsIterator = 1 then tableX = 450 
-			
+				if progNewsIterator = 1 then tableX = 450
+
 				'the small added/subtracted numbers are for padding of the text
 				local labelArea:TRectangle = new TRectangle.Init(tableX + 4, 80 + 1, 175-4, 19)
 				local valueArea:TRectangle = new TRectangle.Init(labelArea.GetX2(), labelArea.GetY(), 155 - 5, 19)
@@ -200,7 +204,7 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 						futureHour = True
 					endif
 				endif
-				
+
 				'row backgrounds
 				for local i:int = 0 to 7
 					if i mod 2 = 0
@@ -212,7 +216,7 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 				Next
 
 
-				audienceResult = null 
+				audienceResult = null
 				local audienceRanks:int[]
 				if hoveredHour >= 0
 					if progNewsIterator = 1
@@ -390,7 +394,7 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 			for local i:int = 0 to 23
 				smallTextFont.DrawBlock(i, curveArea.GetX() + i*slotWidth, curveArea.GetY() + curveArea.GetH() + 2, slotWidth, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(80 + 40*(i mod 2)))
 			next
-			
+
 			'NEWS and PROGRAMME
 			for local broadcastType:int = Eachin [TVTBroadcastMaterialType.NEWSSHOW, TVTBroadcastMaterialType.PROGRAMME]
 				local color:TColor
@@ -408,7 +412,7 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 
 				slotPos.SetXY(dx - 0.5*slotWidth,0)
 
-				
+
 				For local i:Int = 0 To maxHour
 					if broadcastType = TVTBroadcastMaterialType.PROGRAMME
 						audienceResult = dailyBroadcastStatistic.GetAudienceResult(roomOwner, i)
@@ -430,7 +434,7 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 						slotPos.SetY(yOfZero - audienceResult.audience.GetTotalSum() * yPerViewer)
 						color.setRGB()
 					endif
-					
+
 					SetAlpha 0.4
 					DrawOval(curveArea.GetX() + slotPos.GetX()-4, curveArea.GetY() + slotPos.GetY()-4, 8, 8)
 					SetAlpha 1.0
@@ -454,5 +458,5 @@ Type TScreenHandler_OfficeStatistics extends TScreenHandler
 		GuiManager.Draw( LS_officeStatisticsScreen )
 	End Method
 
-	
+
 End Type

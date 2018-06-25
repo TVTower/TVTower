@@ -1861,6 +1861,15 @@ End Type
 
 
 Type TStationMapInformationFrame
+rem
+	hier umstellen auf accordeon
+	- einmal "map"
+	- anderes "spielerbezogen"
+		-> reichweitenlevel
+		-> Abdeckung Senderkarte mit antenne / kabel / satellit
+		-> ?
+	 TGameGUIAccordeonPanel
+endrem
 	Field area:TRectangle
 	Field contentArea:TRectangle
 	Field headerHeight:Int
@@ -2347,7 +2356,7 @@ Type TScreenHandler_StationMap
 
 				guiFilterbuttons[i].SetTooltip( New TGUITooltipBase.Initialize("", GetLocale("TOGGLE_DISPLAY_OF_STATIONTYPE").Replace("%STATIONTYPE%", GetLocale(TVTStationType.GetAsString(i+1)+"S")), New TRectangle.Init(0,60,-1,-1)) )
 				guiFilterbuttons[i].GetTooltip()._minContentDim = New TVec2D.Init(80,-1)
-				guiFilterbuttons[i].GetTooltip()._maxContentDim = New TVec2D.Init(120,-1)
+				guiFilterbuttons[i].GetTooltip()._maxContentDim = New TVec2D.Init(150,-1)
 				guiFilterbuttons[i].GetTooltip().SetOrientationPreset("BOTTOM", 10)
 			Next
 
