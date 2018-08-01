@@ -61,8 +61,8 @@ Type TBroadcastManager
 		If initialized Then Return
 
 		'load and init the genres
-		GetMovieGenreDefinitionCollection().Initialize()
-		GetNewsGenreDefinitionCollection().Initialize()
+'		GetMovieGenreDefinitionCollection().Initialize()
+'		GetNewsGenreDefinitionCollection().Initialize()
 
 		initialized = True
 	End Method

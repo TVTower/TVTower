@@ -1388,7 +1388,7 @@
 			</genre>
 
 			<!-- advertisements sent as infomercials -->
-			<genre id="400" name="infomercial">
+			<genre id="400" name="infomercial" outcome-mod="0.1" review-mod="0.3" speed-mod="0.6">
 				<timeMods>
 					<timeMod time="0" value="0.025"/>
 					<timeMod time="1" value="0.05"/>
