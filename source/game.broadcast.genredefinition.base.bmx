@@ -13,7 +13,12 @@ Type TGenreDefinitionBase extends TGameObject
 
 
 	Method GenerateGUID:string()
-		return "genredefinition-base-"+id
+		return GetGUIDBaseName()+"-"+id
+	End Method
+
+
+	Method GetGUIDBaseName:string()
+		return "genredefinition-base"
 	End Method
 
 
@@ -33,7 +38,7 @@ Type TGenreDefinitionBase extends TGameObject
 	Method InitBasic:TGenreDefinitionBase(referenceID:int, data:TData = null)
 		if not data then data = new TData
 
-		SetGUID("genredefinition-base-" + referenceID)
+		SetGUID(GetGUIDBaseName() + "-" + referenceID)
 		self.referenceID = referenceID
 
 		TimeMods = TimeMods[..24]
