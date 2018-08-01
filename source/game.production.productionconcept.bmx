@@ -6,7 +6,7 @@ Import "game.programme.programmeperson.bmx"
 
 Type TProductionConceptCollection Extends TGameObjectCollection
 	Global _instance:TProductionConceptCollection
-	
+
 	'override
 	Function GetInstance:TProductionConceptCollection()
 		if not _instance then _instance = new TProductionConceptCollection
@@ -32,7 +32,7 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 
 		Return array[(randRange(0, array.length-1))]
 	End Method
-		
+
 
 	Method GetProductionConceptsByScript:TProductionConcept[](script:TScriptBase)
 		local result:TProductionConcept[]
@@ -164,7 +164,7 @@ Type TProductionConcept Extends TOwnedGameObject
 		if script then return script.GetDescription()
 		return ""
 	end Method
-	
+
 
 	Method SetScript(script:TScript)
 		self.script = script
@@ -255,7 +255,7 @@ Type TProductionConcept Extends TOwnedGameObject
 		if not cast or castIndex >= cast.length or castIndex < 0 then return Null
 		return cast[castIndex]
 	End Method
-		
+
 
 	Method SetCast:int(castIndex:int, person:TProgrammePersonBase)
 		if not cast or castIndex >= cast.length or castIndex < 0 then return False
@@ -300,7 +300,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 			if castIndex > res.length then Throw "GetCastGroup(): castIndex("+castIndex+") > res.length("+res.length+")"
 
-			
+
 			if not skipEmpty
 				if cast[i]
 					res[castIndex] = GetProgrammePersonBaseCollection().GetByGUID(cast[i].GetGUID())
@@ -360,13 +360,13 @@ Type TProductionConcept Extends TOwnedGameObject
 
 		if _effectiveFocusPointsMax < 0 then CalculateEffectiveFocusPoints()
 
-		if _effectiveFocusPointsMax > 0 
+		if _effectiveFocusPointsMax > 0
 			return _effectiveFocusPoints / _effectiveFocusPointsMax
 		elseif _effectiveFocusPointsMax = 0
 			return 0.0
 		endif
 	End Method
-	
+
 
 	Method CalculateEffectiveFocusPoints:Float(recalculate:int = False)
 		if not productionFocus then return 0.0
@@ -375,13 +375,13 @@ Type TProductionConcept Extends TOwnedGameObject
 
 		_effectiveFocusPoints = 0.0
 		_effectiveFocusPointsMax = 0.0
-		
+
 		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition(script.mainGenre)
 
 		For local focusPointID:int = EachIn productionFocus.GetOrderedFocusIndices()
 			'production speed does not add to quality
 			if focusPointID = TVTProductionFocus.PRODUCTION_SPEED then continue
-			
+
 			if genreDefinition
 				_effectiveFocusPoints :+ GetProductionFocus(focusPointID) * genreDefinition.GetFocusPointPriority(focusPointID)
 				_effectiveFocusPointsMax :+ TProductionFocusBase.focusPointLimit * genreDefinition.GetFocusPointPriority(focusPointID)
@@ -471,7 +471,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 		'use already calculated value
 		if castFit >= 0 and not recalculate then return castFit
-		 
+
 		local castFitSum:Float = 0.0
 		local personCount:int = 0
 		local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition(script.mainGenre)
@@ -517,14 +517,14 @@ Type TProductionConcept Extends TOwnedGameObject
 			if script.GetMainGenre() <> TVTProgrammeGenre.Undefined
 				if TProgrammePerson(person)
 					local p:TProgrammePerson = TProgrammePerson(person)
-					if p.topGenre1 = script.GetMainGenre() 
+					if p.topGenre1 = script.GetMainGenre()
 						genreFit = Min(1.0, genreFit + 0.20)
-					elseif p.topGenre2 = script.GetMainGenre() 
+					elseif p.topGenre2 = script.GetMainGenre()
 						genreFit = Min(1.0, genreFit + 0.15)
 					endif
 				endif
 			endif
-			
+
 
 			'== GENRE FIT #3
 			'increase fit by up to 35% for the persons skill (versatility)
@@ -565,7 +565,7 @@ Type TProductionConcept Extends TOwnedGameObject
 					attributeMod :/ attributeCount
 				endif
 			endif
-			
+
 
 			'if the cast defines a specific gender for this position,
 			'then we reduce the personFit by 10-20%.
@@ -587,7 +587,7 @@ Type TProductionConcept Extends TOwnedGameObject
 					endif
 				endif
 			endif
-						
+
 
 
 			'=== TOTAL FIT ===
@@ -612,7 +612,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			'increase lower fits (increases distance from "nobody" to "novice")
 			personFit = THelper.LogisticalInfluence_Euler(personFit, 2)
 
-			
+
 			TLogger.Log("TProductionConcept.CalculateCastFit()", " --------------------", LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTProgrammePersonJob.GetAsString( script.cast[castIndex].job ) + "~q]", LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "     genreFit:  "+genreFit, LOG_DEBUG)
@@ -633,7 +633,11 @@ Type TProductionConcept Extends TOwnedGameObject
 		Next
 
 		if recalculate or castFit < 0
-			castFit = castFitSum / personCount
+			if personCount > 0
+				castFit = castFitSum / personCount
+			else
+				castFit = 0
+			endif
 		endif
 
 		return castFit
@@ -644,7 +648,7 @@ Type TProductionConcept Extends TOwnedGameObject
 	Method CalculateCastFameMod:Float(recalculate:int = False)
 		'use already calculated value
 		if castFameMod >= 0 and not recalculate then return castFameMod
-		 
+
 		local castFameModSum:Float = 0.0
 		local personCount:int = 0
 
@@ -667,22 +671,26 @@ Type TProductionConcept Extends TOwnedGameObject
 		Next
 
 		if recalculate or castFameMod < 0
-			castFameMod = castFameModSum / personCount
+			if personCount > 0
+				castFameMod = castFameModSum / personCount
+			else
+				castFameMod = 0
+			endif
 		endif
 
 		return castFameMod
 	End Method
-		
+
 
 	Method GetProductionFocus:int(focusIndex:int)
 		if not productionFocus or focusIndex > productionFocus.GetFocusAspectCount() or focusIndex < 1 then return False
 		return productionFocus.GetFocus(focusIndex)
 	End Method
-		
+
 
 	Method SetProductionFocus:int(focusIndex:int, value:int)
 		if not productionCompany then return False
-		
+
 		if not productionFocus or focusIndex > productionFocus.GetFocusAspectCount() or focusIndex < 1 then return False
 		'skip if nothing to do
 		if productionFocus.GetFocus(focusIndex) = value then return False
@@ -706,7 +714,7 @@ Type TProductionConcept Extends TOwnedGameObject
 	Method GetDepositCost:int()
 		'return precalculated if existing
 		if depositCost >= 0 then return depositCost
-		
+
 		return int(0.1 * GetTotalCost())
 	End Method
 
@@ -773,7 +781,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			' 1 point = 93%
 			' 2 points = 87% ...
 			'10 points = 50%
-			local speedPointTimeMod:Float = 0.933 ^ speedPoints 
+			local speedPointTimeMod:Float = 0.933 ^ speedPoints
 
 
 			'TEAM (good teams work a bit more efficient)
@@ -782,7 +790,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			' 1 point = 97%
 			' 2 points = 94% ...
 			'10 points = 75%
-			local teamPointTimeMod:Float = 0.5 + 0.5 * 0.933 ^ teamPoints 
+			local teamPointTimeMod:Float = 0.5 + 0.5 * 0.933 ^ teamPoints
 
 
 			'with a good team, you can record multiple scenes simultaneously
@@ -856,7 +864,7 @@ Type TProductionConcept Extends TOwnedGameObject
 		'if not IsFocusPointsComplete() then return False
 
 		return True
-	End Method	
+	End Method
 
 
 	Method IsGettingPlanned:int()
@@ -948,7 +956,7 @@ Type TProductionFocusBase
 	Method IsFictional:int()
 		return (activeFocusIndices.length = 6)
 	End Method
-	
+
 
 	Method SetFocus:int(index:int, value:int, checkLimits:int = True)
 		if focusPoints.length < index or index < 1 then return False
@@ -1002,7 +1010,7 @@ Type TProductionFocusBase
 	'so 3,3,3,0,0 with limit 5 becomes 2,1,1,0,0
 	Method ClampFocusPoints()
 		if GetFocusPointsSet() = 0 then return
-		
+
 		'clamp values
 		'if more points are spend than allowed, subtract one by one
 		'from all aspects until point maximum is no longer beat
@@ -1032,7 +1040,7 @@ Type TProductionFocusBase
 
 		ClampFocusPoints()
 	End Method
-	
+
 
 	Method GetFocusPointsMax:int()
 		'without limit, each focus aspect can contain focusPointLimit(10) points
@@ -1056,7 +1064,7 @@ Type TProductionConceptFilter
 	Field forbiddenOwners:int[]
 	Field scriptGUID:string
 
-	
+
 	Method DoesFilter:Int(concept:TProductionConcept)
 		if not concept then return False
 
@@ -1082,6 +1090,6 @@ Type TProductionConceptFilter
 				if owner = concept.owner then return False
 			Next
 		endif
-	
+
 	End Method
 End Type

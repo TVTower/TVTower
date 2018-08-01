@@ -82,7 +82,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		_InvalidateCaches()
 		return Super.Remove(obj)
 	End Method
-	
+
 
 	Method GetByGUID:TProgrammeData(GUID:String)
 		Return TProgrammeData( Super.GetByGUID(GUID) )
@@ -110,7 +110,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		endif
 
 		return _unreleasedProgrammeData
-	End Method	
+	End Method
 
 
 	'returns (and creates if needed) a list containing only live
@@ -130,7 +130,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		endif
 
 		return _liveProgrammeData
-	End Method	
+	End Method
 
 
 	'returns (and creates if needed) a list containing only entries
@@ -151,7 +151,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 
 		return _finishedProductionProgrammeData
 	End Method
-	
+
 
 	Method GetGenreRefreshModifier:float(genre:int)
 		'values get multiplied with the refresh factor
@@ -278,7 +278,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		'values get multiplied with the wearOff factor
 		'so this means: higher (>1.0) values increase the resulting
 		'topicality loss
-		
+
 		local flagMod:float = 1.0
 		if flags & TVTProgrammeDataFlag.LIVE then flagMod :* 1.25
 		'if flags & TVTProgrammeDataFlag.ANIMATION then flagMod :* 1.0
@@ -314,7 +314,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		if flags & TVTProgrammeDataFlag.SCRIPTED then flagMod :* 0.90
 
 		return flagMod
-	End Method	
+	End Method
 
 
 	Method RefreshTopicalities:int()
@@ -362,7 +362,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 			'production start of an entry is in the future, all entries
 			'coming after it will be even later and can get skipped
 			if pd.GetProductionStartTime() > now then exit
-		Next 
+		Next
 	End Method
 
 
@@ -370,7 +370,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	Method UpdateLive:int()
 		local live:TList = GetLiveProgrammeDataList()
 		local invalidate:int = False
-		
+
 		For local pd:TProgrammeData = EachIn live
 			'skip not yet started ones
 			if pd.GetReleaseTime() > GetWorldTime().GetTimeGone() then exit
@@ -394,7 +394,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		local now:Double = GetWorldTime().GetTimeGone()
 		For local pd:TProgrammeData = EachIn entries.Values()
 			pd.Update()
-		Next 
+		Next
 	End Method
 
 
@@ -404,7 +404,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 			data.descriptionProcessed = null
 		Next
 	End Method
-	
+
 
 
 	Function _SortByReleaseTime:Int(o1:Object, o2:Object)
@@ -468,7 +468,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	'TVTProgrammeDataType-value
 	'(eg. "SERIES" for series-headers, or "SINGLE" for a movie)
 	Field dataType:int = 0
-	
+
 	'guid of a potential franchise entry (for now only one franchise per
 	'franchisee)
 	Field franchiseGUID:string
@@ -512,7 +512,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	Field genreDefinitionCache:TMovieGenreDefinition = Null {nosave}
 
 	Field extra:TData
-	
+
 	'hide movies of 2012 when in 1985?
 	Global ignoreUnreleasedProgrammes:int = TRUE
 	Global _filterReleaseDateStart:int = 1900
@@ -521,7 +521,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 
 	Rem
 	"modifiers" : extra data block containing various information (if set)
-	
+
 	"topicality::age" - influence of the age on the max topicality
 	"topicality::timesBroadcasted" - influence of the broadcast amount to max topicality
 	"price"
@@ -575,17 +575,17 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 
 		return True
 	End Method
-	
+
 
 	Method AddCast:int(job:TProgrammePersonJob)
 		if HasCast(job) then return False
 
 		cast :+ [job]
-		
+
 		'invalidate caches
 		cachedActors = cachedActors[..0]
 		cachedDirectors = cachedDirectors[..0]
-		return True 
+		return True
 	End Method
 
 
@@ -641,24 +641,24 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		'return a value between 0 and 1
 		Return MathHelper.Clamp(res, 0.0, 1.0 )
 	End Method
-	
+
 
 	Method HasCastPerson:int(personGUID:string, job:int = -1)
 		For local doneJob:TProgrammePersonJob = EachIn cast
 			if job >= 0 and doneJob.job & job <= 0 then continue
-			
+
 			if doneJob.personGUID = personGUID then return True
 		Next
 		return False
 	End Method
-	
+
 
 	Method HasCast:int(job:TProgrammePersonJob, checkRoleGUID:int = True)
 		'do not check job against jobs in the list, as only the
 		'content might be the same but the job a duplicate
 		For local doneJob:TProgrammePersonJob = EachIn cast
-			if job.personGUID <> doneJob.personGUID then continue 
-			if job.job <> doneJob.job then continue 
+			if job.personGUID <> doneJob.personGUID then continue
+			if job.job <> doneJob.job then continue
 			if checkRoleGUID and job.roleGUID <> doneJob.roleGUID then continue
 
 			return True
@@ -687,7 +687,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		Next
 		return res
 	End Method
-	
+
 
 	Method GetCastGroupString:string(jobFlag:int)
 		local result:string = ""
@@ -708,7 +708,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 				endif
 			Next
 		endif
-		
+
 		return cachedActors
 	End Method
 
@@ -721,7 +721,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 				endif
 			Next
 		endif
-		
+
 		return cachedDirectors
 	End Method
 
@@ -784,10 +784,10 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		return False
 	End Method
 
-	
+
 	Method AddFranchisee(programme:TProgrammeData)
 		if HasFranchisee(programme) then return
-		 
+
 		programme.franchiseGUID = self.GetGUID()
 		franchisees :+ [programme.GetGUID()]
 	End Method
@@ -908,7 +908,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 
 		'checkall
 		'local checkFlags:int[]
-		'for local i:int = 0 to 10 '1-1024 
+		'for local i:int = 0 to 10 '1-1024
 		'	checkFlags :+ [2^i]
 		'next
 
@@ -978,7 +978,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 				Next
 			endif
 		endif
-		
+
 		return result
 	End Method
 
@@ -1022,7 +1022,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	Method IsSingle:int() {_exposeToLua}
 		return (dataType = TVTProgrammeDataType.SINGLE)
 	End Method
-	
+
 
 	'first premiered on TV?
 	Method IsTVDistribution:int() {_exposeToLua}
@@ -1035,7 +1035,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		return distributionChannel & TVTProgrammeDistributionChannel.CINEMA > 0
 	End Method
 
-	
+
 	Method IsLive:int()
 		return HasFlag(TVTProgrammeDataFlag.LIVE) > 0
 	End Method
@@ -1070,11 +1070,11 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	Method IsPlayerIsLiveBroadcasting:int(playerID:int)
 		local flag:int = 2^(playerID-1)
 		return (playersBroadcasting & flag > 0)
-	End Method	
+	End Method
 
 
 	'Informs casts about the finish of the production regardless
-	'whether it got broadcasted or not 
+	'whether it got broadcasted or not
 	Method UpdateLive:int()
 		if not IsLive() then return False
 
@@ -1115,27 +1115,27 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	Method IsAnimation:Int()
 		return HasFlag(TVTProgrammeDataFlag.ANIMATION) > 0
 	End Method
-	
-	
+
+
 	Method IsCulture:Int()
 		return HasFlag(TVTProgrammeDataFlag.CULTURE) > 0
-	End Method	
-		
-	
+	End Method
+
+
 	Method IsCult:Int()
 		return HasFlag(TVTProgrammeDataFlag.CULT) > 0
 	End Method
-	
-	
+
+
 	Method IsTrash:Int()
 		return HasFlag(TVTProgrammeDataFlag.TRASH) > 0
 	End Method
-	
+
 	Method IsBMovie:Int()
 		return HasFlag(TVTProgrammeDataFlag.BMOVIE) > 0
 	End Method
-	
-	
+
+
 	Method IsXRated:int()
 		return HasFlag(TVTProgrammeDataFlag.XRATED) > 0
 	End Method
@@ -1154,7 +1154,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	Method IsVisible:int()
 		return not (HasFlag(TVTProgrammeDataFlag.INVISIBLE) > 0)
 	End Method
-	
+
 
 	Method GetYear:int()
 		'PAID is always "live/from now"
@@ -1275,7 +1275,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		'general data price mod
 		value :* GetModifier("price")
 
-		return value		
+		return value
 	End Method
 
 
@@ -1338,7 +1338,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		'general data price mod
 		value :* GetModifier("price")
 
-		return value		
+		return value
 	End Method
 
 	'override
@@ -1398,7 +1398,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		'-> avoids a "topicality > MaxTopicality" when MaxTopicality
 		'   shrinks because of aging/airing
 		trailerTopicality = Min(trailerTopicality, GetMaxTrailerTopicality())
-		
+
 		return trailerTopicality
 	End Method
 
@@ -1420,7 +1420,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	'modifies the quality of the programme -> perceivedQuality
 	Method GetCastQualityMod:Float()
 	End Method
-	
+
 
 	Method GetQualityRaw:Float()
 		Local genreDef:TMovieGenreDefinition = GetGenreDefinition()
@@ -1441,7 +1441,8 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 
 			quality :+ add
 		EndIf
-		Return quality
+		if quality < 0 then Notify("Quality of your programme data ~q" + GetGUID()+ "~q is negative. Please mail savegame to developers.")
+		Return Max(0, quality)
 	End Method
 
 
@@ -1488,7 +1489,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		    |  _/
 		    | /
 		    ||
-		    ||                          basecut 
+		    ||                          basecut
 		    ||_________________________
 		                    cutModifier
 
@@ -1587,7 +1588,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	Method GetTargetGroupAttractivityMod:TAudience()
 		return targetGroupAttractivityMod
 	End Method
-	
+
 
 	Method GetTargetGroups:int()
 		return targetGroups
@@ -1656,19 +1657,19 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	Method SetTimesTrailerAiredSinceLastBroadcast:int(amount:int, playerID:int=-1)
 		if playerID = -1 then playerID = owner
 		if playerID <= 0 or playerID > TVTPlayerCount then return False
-		if playerID > self.trailerAiredSinceLastBroadcast.length then self.trailerAiredSinceLastBroadcast = self.trailerAiredSinceLastBroadcast[.. playerID] 
+		if playerID > self.trailerAiredSinceLastBroadcast.length then self.trailerAiredSinceLastBroadcast = self.trailerAiredSinceLastBroadcast[.. playerID]
 
 		self.trailerAiredSinceLastBroadcast[playerID-1] = amount
 		return True
 	End Method
-	
+
 
 	Method GetTimesTrailerAiredSinceLastBroadcast:int(playerID:int)
 		if playerID <= 0 or playerID > self.trailerAiredSinceLastBroadcast.length then return 0
-		
+
 		return self.trailerAiredSinceLastBroadcast[playerID-1]
 	End Method
-	
+
 
 	'return a value between 0 - 1.0
 	'describes how much of a potential trailer-bonus of 100% was reached
@@ -1729,7 +1730,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		if isReleased() then return False
 		' without stored outcome, the movie wont run in the cinemas
 		if outcome <= 0 then return False
-		
+
 		return GetCinemaReleaseTime() <= GetWorldTime().GetTimeGone()
 	End Method
 
@@ -1739,7 +1740,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		if IsLive() then return False
 
 		if isReleased() then return False
-		
+
 		return GetProductionStartTime() <= GetWorldTime().GetTimeGone() and GetCinemaReleaseTime() > GetWorldTime().GetTimeGone()
 	End Method
 
@@ -1747,14 +1748,14 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	Method isCustomProduction:int() {_exposeToLua}
 		return producedByPlayerID <> 0
 	End Method
-	
+
 
 	Method isType:int(typeID:int)
 		'if productType is a bitmask flag
 		'return (productType & typeID)
 
 		return productType = typeID
-	End Method	
+	End Method
 
 
 	Method SetState:int(state:int)
@@ -1811,7 +1812,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 
 		return newOutcome
 	End Method
-	
+
 
 	Method onProductionStart:int(time:Long = 0)
 		'trigger effects/modifiers
@@ -1824,11 +1825,11 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 
 	Method onCinemaRelease:int(time:Long = 0)
 		if IsLive() then return False
-		
+
 		if not isHeader()
 			onFinishProductionForCast()
 		endif
-		
+
 		return True
 	End Method
 
@@ -1842,7 +1843,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	Method onFinishProductionForCast:int(time:Long = 0)
 		'already done
 		if finishedProductionForCast then return False
-		
+
 		if GetCast()
 			For local job:TProgrammePersonJob = eachIn GetCast()
 				local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )

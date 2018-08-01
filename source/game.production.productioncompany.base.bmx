@@ -42,7 +42,7 @@ Type TProductionCompanyBase extends TGameObject
 	'guids of all done productions
 	Field producedProgrammes:String[]
 	Field baseQuality:Float = 0.50
-	'price manipulation. varying price but constant "quality" 
+	'price manipulation. varying price but constant "quality"
 	Field priceModifier:Float = 1.0
 	'quality manipulation. varying quality but constant "price"
 	Field qualityModifier:Float = 1.0
@@ -78,6 +78,7 @@ Type TProductionCompanyBase extends TGameObject
 
 
 	Method SetLevel:int(level:int)
+		level = Max(1, level)
 		'-1 because level 1 is reached with 0 xp
 		SetExperience(int(Float(level-1) / MAX_LEVEL * MAX_XP))
 	End Method
@@ -94,10 +95,12 @@ Type TProductionCompanyBase extends TGameObject
 
 
 	Function GetFocusPointsAtLevel:int(level:int)
+		level = Max(1, level)
+
 		'20 level = 5pt each level
 		' 1- 5 get  3 from 16-20	= 5 + 3 = 8
 		' 6-10 get  1 from 11-15	= 5 + 1 = 6
-		'11-15 give 1 to    6-10	= 5 - 1 = 4 
+		'11-15 give 1 to    6-10	= 5 - 1 = 4
 		'16-20 give 3 to    1- 5	= 5 - 3 = 2
 		local result:int = 0
 		if level > 0 then result :+ Min(5, level   ) * 8
@@ -111,16 +114,17 @@ Type TProductionCompanyBase extends TGameObject
 	Method SetMaxExperience(value:int)
 		maxXP = value
 	End Method
-	
+
 
 	Method SetExperience(value:int)
+		value = Max(0, value)
 		'limit by individual xp limit
-		xp = min(GetMaxXP(), value)
+		xp = Min(GetMaxXP(), value)
 	End Method
-	
+
 
 	Method GetExperience:int()
-		return xp
+		return Max(0, xp)
 	End Method
 
 
@@ -138,11 +142,12 @@ Type TProductionCompanyBase extends TGameObject
 
 	Method GetNextExperienceGain:int(programmeDataGUID:string)
 		return 0
-	End Method	
+	End Method
 
 
 	Method SetChannelSympathy:int(channel:int, newSympathy:float)
 		if channel < 0 or channel >= channelSympathy.length then return False
+		newSympathy = MathHelper.Clamp(newSympathy, -1.0, +1.0)
 
 		channelSympathy[channel -1] = newSympathy
 	End Method
@@ -172,7 +177,7 @@ Type TProductionCompanyBase extends TGameObject
 
 		return True
 	End Method
-	
+
 
 	'base might differ depending on sympathy for channel
 	Method GetFee:Int(channel:int=-1)

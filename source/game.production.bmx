@@ -12,7 +12,7 @@ Import "game.popularity.person.bmx"
 Type TProductionCollection Extends TGameObjectCollection
 	Field latestProductionByRoom:TMap = CreateMap()
 	Global _instance:TProductionCollection
-	
+
 	'override
 	Function GetInstance:TProductionCollection()
 		if not _instance then _instance = new TProductionCollection
@@ -28,7 +28,7 @@ Type TProductionCollection Extends TGameObjectCollection
 			local roomGUID:string = p.studioRoomGUID
 			if roomGUID <> ""
 				'if the production is newer than a potential previous
-				'production, replace the previous with the new one 
+				'production, replace the previous with the new one
 				local previousP:TProduction = GetProductionByRoom(roomGUID)
 				if previousP and previousP.startDate < p.startDate
 					latestProductionByRoom.Insert(roomGUID, p)
@@ -84,7 +84,7 @@ Type TProduction Extends TOwnedGameObject
 
 	Global DEV_luckEnabled:int = True
 	Global DEV_InformPerson:int = True
-	
+
 
 	Method GenerateGUID:string()
 		return "production-"+id
@@ -107,7 +107,7 @@ Type TProduction Extends TOwnedGameObject
 		return productionTimeMod ..
 		       * GameConfig.GetModifier("Production.ProductionTimeMod") ..
 		       * GameConfig.GetModifier("Production.ProductionTimeMod.player"+Max(0, owner))
-	End Method 
+	End Method
 
 
 	Method IsInProduction:int()
@@ -152,7 +152,7 @@ Type TProduction Extends TOwnedGameObject
 		'sympathy of the cast influences result a bit
 		value :* (0.8 + 0.2 * castSympathyMod)
 
-		
+
 		'it is important to set the production priority according
 		'to the genre
 		value :* 1.0 + 0.4 * (effectiveFocusPointsMod - 0.4)
@@ -169,7 +169,7 @@ Type TProduction Extends TOwnedGameObject
 		if productionConcept.IsBalancePaid() then return True
 		'something missing?
 		if not productionConcept.IsProduceable() then return False
-		
+
 
 		'if invalid owner or finance not existing, skip payment and
 		'just set the prodcuction as paid
@@ -207,15 +207,15 @@ Type TProduction Extends TOwnedGameObject
 
 		'=== 1.1.1 GENRE ===
 		'Compare genre definition with script values (expected vs real)
-		scriptGenreFit = productionConcept.script.CalculateGenreCriteriaFit() 
+		scriptGenreFit = productionConcept.script.CalculateGenreCriteriaFit()
 
 		'=== 1.1.2 CAST ===
 		'Calculate how the selected cast fits to their assigned jobs
-		castFit = productionConcept.CalculateCastFit() 
+		castFit = productionConcept.CalculateCastFit()
 
 		'=== 1.1.3 PRODUCTIONCOMPANY ===
 		'Calculate how the selected company does its job at all
-		productionCompanyQuality = productionConcept.productionCompany.GetQuality() 
+		productionCompanyQuality = productionConcept.productionCompany.GetQuality()
 
 
 		'=== 1.2 INDIVIDUAL IMPROVEMENTS ===
@@ -228,7 +228,7 @@ Type TProduction Extends TOwnedGameObject
 		'=== 1.2.2 MODIFY PRODUCTION VALUE ===
 		effectiveFocusPoints = productionConcept.CalculateEffectiveFocusPoints()
 		effectiveFocusPointsMod = 1.0 + productionConcept.GetEffectiveFocusPointsRatio()
- 
+
 		TLogger.Log("TProduction.Start()", "scriptGenreFit:           " + scriptGenreFit, LOG_DEBUG)
 		TLogger.Log("TProduction.Start()", "castFit:                  " + castFit, LOG_DEBUG)
 		TLogger.Log("TProduction.Start()", "castSympathyMod:          " + castSympathyMod, LOG_DEBUG)
@@ -277,7 +277,7 @@ Type TProduction Extends TOwnedGameObject
 	Method Finalize:TProduction()
 		'already finalized before
 		if status = 2 then return self
-		
+
 		status = 2
 
 		TLogger.Log("TProduction.Finalize()", "Finished shooting.", LOG_DEBUG)
@@ -366,8 +366,6 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
 		'enable mandatory flags
 		programmeData.SetFlag(productionConcept.script.flags, True)
-print "set programmedata flags: " + programmeData.flags +"   script.flags="+productionConcept.script.flags
-print "    isPaid = " + programmeData.IsPaid()
 		'randomly enable optional flags
 		if productionConcept.script.flagsOptional > 0
 			For local i:int = 1 until TVTProgrammeDataFlag.count
@@ -396,7 +394,7 @@ print "    isPaid = " + programmeData.IsPaid()
 
 		'add broadcast limits
 		programmeData.SetBroadcastLimit(productionConcept.script.productionBroadcastLimit)
-		
+
 
 
 		'use the defined liveHour, the production is then ready on the
@@ -420,7 +418,7 @@ print "    isPaid = " + programmeData.IsPaid()
 		programmeData.speed = productionValueMod * productionConcept.script.speed *scriptPotentialMod
 		programmeData.outcome = productionValueMod * productionConcept.script.outcome *scriptPotentialMod
 		'modify outcome by castFameMod ("attractors/startpower")
-		programmeData.outcome = Min(1.0, programmeData.outcome * castFameMod)
+		programmeData.outcome = Max(0, Min(1.0, programmeData.outcome * castFameMod))
 
 		if producerName
 			if not programmeData.extra then programmeData.extra = new TData
@@ -457,7 +455,7 @@ print "    isPaid = " + programmeData.IsPaid()
 			endif
 		Next
 
-		
+
 		'=== 2.4 PROGRAMME LICENCE ===
 		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
 		programmeLicence.SetGUID(programmeGUID)
@@ -526,7 +524,7 @@ endrem
 		'=== 3. INFORM / REMOVE SCRIPT ===
 		'inform production company
 		productionConcept.productionCompany.FinishProduction(programmeData.GetGUID())
-		
+
 		'inform script about a done production based on the script
 		'(parental script is already informed on creation of its licence)
 		productionConcept.script.FinishProduction(programmeLicence.GetGUID())
@@ -545,7 +543,7 @@ endrem
 			'single scripts
 			GetPlayerProgrammeCollection(owner).RemoveScript(productionConcept.script, False)
 		endif
-		
+
 		'=== 4. ADD TO PLAYER ===
 		'add licence (or its header-licence)
 
@@ -581,7 +579,7 @@ endrem
 		'attention: for series this should NOT contain the productionGUID
 		'           as this differs for each episode and would lead to a
 		'           individual series header for each produced episode
-		local parentProgrammeGUID:string = "customProduction-header-"+productionConcept.script.GetParentScript().GetGUID() 
+		local parentProgrammeGUID:string = "customProduction-header-"+productionConcept.script.GetParentScript().GetGUID()
 		local parentLicence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(parentProgrammeGUID)
 
 
@@ -674,7 +672,7 @@ endrem
 				if not parentData.HasCast(job, False)
 					parentData.AddCast(new TProgrammePersonJob.Init(job.personGUID, job.job))
 				endif
-			Next 
+			Next
 		Next
 
 		'=== RATINGS ===
@@ -707,7 +705,7 @@ endrem
 		else
 			programmeData.description = script.description.Copy()
 		endif
-	
+
 		programmeData.blocks = script.GetBlocks()
 		programmeData.flags = script.flags
 		programmeData.genre = script.mainGenre
@@ -718,7 +716,7 @@ endrem
 			Next
 		endif
 	End Function
-	
+
 
 	Method Update:int()
 		Select status
