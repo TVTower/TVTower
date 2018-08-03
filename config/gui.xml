@@ -24,6 +24,27 @@
 				<child name="gfx_gui_button.round.hover"				x="425"	y="50"	w="25"	h="25" ninepatch="true" />
 				<child name="gfx_gui_button.round.active"				x="450"	y="50"	w="25"	h="25" ninepatch="true" />
 
+				<!-- tab group buttons -->
+				<child name="gfx_gui_tabgroup.left.default"				x="452"	y="100"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.left.default.hover"		x="440"	y="125"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.left.default.active"		x="440"	y="150"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.center.default"			x="469"	y="100"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.center.default.hover"		x="463"	y="125"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.center.default.active"	x="463"	y="150"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.right.default"			x="486"	y="100"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.right.default.hover"		x="480"	y="125"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.right.default.active"	    x="480"	y="150"	w="23"	h="25" ninepatch="true" />
+
+				<child name="gfx_gui_tabgroup.left.toggled.default"				x="440"	y="150"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.left.toggled.default.hover"		x="440"	y="150"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.left.toggled.default.active"		x="440"	y="150"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.center.toggled.default"		   x="463"	y="150"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.center.toggled.default.hover"	   x="463"	y="150"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.center.toggled.default.active"   x="463"	y="150"	w="17"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.right.toggled.default"		   x="480"	y="150"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.right.toggled.default.hover"	   x="480"	y="150"	w="23"	h="25" ninepatch="true" />
+				<child name="gfx_gui_tabgroup.right.toggled.default.active"    x="480"	y="150"	w="23"	h="25" ninepatch="true" />
+
 				<!-- slider sprites -->
 				<child name="gfx_gui_slider.handle.active"				x="480"	y="0"	w="25"	h="25" ninepatch="true" />
 				<child name="gfx_gui_slider.handle"						x="480"	y="25"	w="25"	h="25" ninepatch="true" />

@@ -10,9 +10,9 @@ endrem
 
 
 	Method New()
-		className= "TGUIModalMainMenu"
+'		className= "TGUIModalMainMenu"
 	End Method
-	
+
 
 	Method Create:TGUIModalMainMenu(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
@@ -54,7 +54,7 @@ endrem
 			guiCaptionTextBox.Resize(-1,-1)
 			SetCaptionArea(New TRectangle.Init(-1, 5, -1, 25))
 		Endif
-		
+
 		return self
 	End Method
 
@@ -92,7 +92,7 @@ endrem
 			chainLoadMenu = null
 		endif
 	End Method
-	
+
 
 	Method onButtonClick:int(triggerEvent:TEventBase)
 		local clickedButton:TGUIButton = TGUIButton( triggerEvent.GetSender() )
@@ -104,7 +104,7 @@ rem
 			case speedButtons[0] 'slower
 				GetGameBase().SetGameSpeedPreset(0)
 				Close()
-			case speedButtons[1] 'default 
+			case speedButtons[1] 'default
 				GetGameBase().SetGameSpeedPreset(1)
 				Close()
 			case speedButtons[2]
@@ -113,7 +113,7 @@ rem
 			case speedButtons[3]
 				GetGameBase().SetGameSpeedPreset(3)
 				Close()
-endrem			
+endrem
 			case buttons[0]
 				Close()
 
@@ -138,12 +138,12 @@ endrem
 				endif
 				'set new one as the active one
 				SwitchActive( chainSaveMenu )
-				
+
 			case buttons[4]
 				'create extra dialog
 				TApp.CreateConfirmExitAppDialogue(True)
 				Close()
-				
+
 			case buttons[5]
 				'create extra dialog
 				TApp.CreateConfirmExitAppDialogue(False)
@@ -197,7 +197,7 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 	Method Activate:int()
 		'remove previous entries
 		savegamelist.EmptyList()
-	
+
 		local dirTree:TDirectoryTree = new TDirectoryTree.SimpleInit()
 		dirTree.SetIncludeFileEndings(["xml"])
 		dirTree.ScanDir(TSavegame.GetSavegamePath(), True)
@@ -205,7 +205,7 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 
 		'disable autosort - handled via "compare()" now
 		'savegameList.autoSortItems = False
-		
+
 		'loop over all filenames
 		for local fileURI:String = EachIn fileURIs
 			'skip non-existent files
@@ -215,7 +215,7 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 			savegameList.AddItem(item)
 		Next
 	End Method
-	
+
 
 	Method Remove:int()
 		super.Remove()
@@ -225,7 +225,7 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 		'remove all event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
-	
+
 	End Method
 
 
@@ -242,7 +242,7 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 		Super.onRecenter()
 		'as long as a list cannot be the child element of a window
 		'we have to move them manually (and unparented)
-		if savegameList 
+		if savegameList
 			savegameList.rect.position.SetXY(GetContentScreenX(), GetContentScreenY())
 		endif
 	End Method
@@ -320,7 +320,7 @@ global LS_modalLoadMenu:TLowerString = TLowerString.Create("modalloadmenu")
 		local button:TGUIButton = TGUIButton(triggerEvent.GetSender())
 		if not button then return False
 
-	
+
 		if button = dialogueButtons[0]
 			if not LoadSelectedSaveGame()
 				triggerEvent.SetVeto(True)
@@ -384,7 +384,7 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 
 		'localize texts
 		_eventListeners :+ [ EventManager.registerListenerMethod( "Language.onSetLanguage", self, "onSetLanguage" ) ]
-		
+
 		'(re-)localize
 		SetLanguage()
 		return self
@@ -411,7 +411,7 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 			savegameList.AddItem(item)
 		Next
 	End Method
-		
+
 
 	Method SetLanguage()
 		if savegameNameLabel
@@ -434,7 +434,7 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 		'remove all event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
-	
+
 	End Method
 
 
@@ -471,7 +471,7 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 			addH :+ savegameName.GetScreenHeight() + 5
 		endif
 
-		if savegameList 
+		if savegameList
 			savegameList.rect.position.SetXY(GetContentScreenX(), GetContentScreenY() + addH)
 		endif
 	End Method
@@ -519,7 +519,7 @@ global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 		_confirmOverwriteDialogue.defaultCaptionColor = TColor.clWhite.copy()
 		_confirmOverwriteDialogue.SetCaptionArea(New TRectangle.Init(-1,10,-1,25))
 		_confirmOverwriteDialogue.guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP )
-		
+
 		_confirmOverwriteDialogue.SetDialogueType(2)
 		_confirmOverwriteDialogue.SetZIndex(100001)
 		_confirmOverwriteDialogue.SetCaptionAndValue( GetLocale("OVERWRITE_SAVEGAME"), GetLocale("DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X").replace("%SAVEGAME%", fileURI) )
@@ -578,9 +578,9 @@ global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 	Method onConfirmOverwrite:int( triggerEvent:TEventBase )
 		'only react to confirmation dialogue
 		if _confirmOverwriteDialogue <> triggerEvent._sender then return False
-		
+
 		Local buttonNumber:Int = triggerEvent.GetData().getInt("closeButton",-1)
-		
+
 		'approve overwrite
 		If buttonNumber = 0
 			SaveSavegame(savegameName.GetValue(), True)
@@ -589,7 +589,7 @@ global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 		'remove connection to dialogue (guimanager takes care of fading)
 		_confirmOverwriteDialogue = Null
 	End Method
-	
+
 
 	Method onChangeSavegameNameInputValue:int( triggerEvent:TEventBase )
 		local newName:string = TGUIInput(triggerEvent._sender).GetCurrentValue()
@@ -661,7 +661,7 @@ Type TGUISavegameListItem extends TGUISelectListItem
 		GetDimension()
 	End Method
 
-	
+
 	Function SetTypeFont:Int(font:TBitmapFont)
 		_typeDefaultFont = font
 	End Function
@@ -734,9 +734,9 @@ Type TGUISavegameListItem extends TGUISelectListItem
 
 		local leftX:int = GetContentScreenX()
 
-		GetBitmapFont("",-1, BOLDFONT).DrawBlock(GetFileInformation().GetString("fileName"), leftX, GetScreenY() + self.paddingTop, 0.60*width, 15, null, headCol, TBitmapFont.STYLE_SHADOW, 1, 0.6, TRUE)
+		GetBitmapFont("",-1, BOLDFONT).DrawBlock(GetFileInformation().GetString("fileName"), leftX, GetScreenY() + self.paddingTop, 0.70*width, 15, null, headCol, TBitmapFont.STYLE_SHADOW, 1, 0.6, TRUE)
 		GetFont().DrawBlock("|b|"+GetLocale("PLAYER")+":|/b| " + GetFileInformation().GetString("player_name", "unknown player"), leftX, GetScreenY() + 15 + self.paddingTop, 0.25 * width, 15, null, playerCol, TBitmapFont.STYLE_SHADOW, 1, 0.25, TRUE)
-		GetFont().DrawBlock("|b|"+GetLocale("GAMETIME")+":|/b| "+gameTime, leftX + 0.60 * width, GetScreenY() + self.paddingTop, 0.40 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.6, TRUE)
+		GetFont().DrawBlock("|b|"+GetLocale("GAMETIME")+":|/b| "+gameTime, leftX + 0.65 * width, GetScreenY() + self.paddingTop, 0.35 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.6, TRUE)
 		GetFont().DrawBlock("|b|"+GetLocale("MONEY")+":|/b| "+MathHelper.DottedValue(GetFileInformation().GetInt("player_money", 0)), leftX + 0.60 * width, GetScreenY() + 15 + self.paddingTop, 0.40 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.6, TRUE)
 
 		local oldAlpha:Float = GetAlpha()

@@ -23,7 +23,7 @@ Type TGUICheckBox Extends TGUIButton
 	Field uncheckedTintColor:TColor
 	Field checkedTintColor:TColor
 	Field tintColor:TColor
-	
+
 	Global _checkboxMinDimension:TVec2D = new TVec2D.Init(20,20)
 	Global _typeDefaultFont:TBitmapFont
 
@@ -55,6 +55,8 @@ Type TGUICheckBox Extends TGUIButton
 		self.checked = checked
 
 		If informOthers then EventManager.triggerEvent(TEventSimple.Create("guiCheckBox.onSetChecked", new TData.AddNumber("checked", checked), Self ) )
+
+		return True
 	End Method
 
 
@@ -114,8 +116,8 @@ Type TGUICheckBox Extends TGUIButton
 			valueChecked = text
 			valueUnchecked = text
 		endif
-		
-		
+
+
 		if caption
 			caption.SetContentPosition(ALIGN_LEFT, ALIGN_TOP)
 			caption.SetValueEffect(1, 0.2)
@@ -131,7 +133,7 @@ Type TGUICheckBox Extends TGUIButton
 			caption.Hide()
 		endif
 	End Method
-	
+
 
 	'private getter
 	'acts as cache
@@ -149,7 +151,7 @@ Type TGUICheckBox Extends TGUIButton
 	'acts as cache
 	Method GetUncheckedSprite:TSprite()
 		if not uncheckedSpriteName then return Null
-		
+
 		'refresh cache if not set or wrong sprite name
 		if not uncheckedSprite or uncheckedSprite.GetName() <> uncheckedSpriteName
 			uncheckedSprite = GetSpriteFromRegistry(uncheckedSpriteName)
@@ -249,7 +251,7 @@ Type TGUICheckBox Extends TGUIButton
 		'center first line to checkbox center
 		caption.rect.position.y = (GetCheckboxDimension().y - GetFont().GetMaxCharHeight()) / 2 + captionDisplacement.y
 	End Method
-	
+
 
 	'override default draw-method
 	Method DrawContent()
@@ -299,10 +301,10 @@ Type TGUICheckBox Extends TGUIButton
 			If isHovered() Then caption.color.AdjustFactor(-30)
 
 			caption.Draw()
-			'reset color 
+			'reset color
 			caption.color = oldCol
 		EndIf
 
 		oldCol.SetRGBA()
-	End Method	
-End Type	
+	End Method
+End Type

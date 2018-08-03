@@ -80,7 +80,7 @@ Type TGUIChat Extends TGUIPanel
 	Method ShowChat:Int()
 		guiList.Show()
 	End Method
-	
+
 
 	'returns boolean whether chat listens to a channel
 	Method isListeningToChannel:Int(channel:Int)
@@ -111,7 +111,7 @@ Type TGUIChat Extends TGUIPanel
 	Method GetSenderID:Int()
 		return 0
 	End Method
-	
+
 
 	Function onInputChange:Int( triggerEvent:TEventBase )
 		Local guiInput:TGUIInput = TGUIInput(triggerEvent.getSender())
@@ -199,7 +199,7 @@ Type TGUIChat Extends TGUIPanel
 
 		Return Mid(text, 2, Instr(text, " ") - 2 )
 	End Function
-	
+
 
 	Function GetCommandFromText:Int(text:String)
 		Select GetCommandStringFromText(text).ToLower()
@@ -299,10 +299,12 @@ Type TGUIChatEntry Extends TGUIListItem
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(pos, dimension, "")
 
-		Resize(GetDimension().GetX(), GetDimension().GetY())
 		SetValue(value)
 		SetLifetime( 1000 )
 		SetShowtime( 1000 )
+
+		'now we know the actual content and resize properly
+		Resize(GetDimension().GetX(), GetDimension().GetY())
 
 		GUIManager.add(Self)
 
@@ -310,30 +312,36 @@ Type TGUIChatEntry Extends TGUIListItem
 	End Method
 
 
-	Method getDimension:TVec2D()
+	Method GetDimension:TVec2D()
+		local startX:int = self.GetScreenX()
+		local startY:int = self.GetScreenY()
 		Local move:TVec2D = New TVec2D.Init(0,0)
 		If Data.getString("senderName",Null)
 			Local senderColor:TColor = TColor(Data.get("senderColor"))
 			If Not senderColor Then senderColor = TColor.Create(0,0,0)
-			move = GetBitmapFontManager().baseFontBold.drawStyled(Data.getString("senderName")+":", Self.getScreenX(), Self.getScreenY(), senderColor, 2, 0)
+			move = GetBitmapFontManager().baseFontBold.drawStyled(Data.getString("senderName")+":", startX, startY, senderColor, 2, 0)
 			'move the x so we get space between name and text
 			'move the y point 1 pixel as bold fonts are "higher"
-			move.setXY( move.x+5, 1)
+			move.SetXY( move.x + 5, 1)
 		EndIf
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(GetParent("tguiscrollablepanel"))
 		Local maxWidth:Int
 		If parentPanel
-			maxWidth = parentPanel.GetContentScreenWidth() - rect.getX()
+			maxWidth = parentPanel.GetContentScreenWidth()
 		Else
-			maxWidth = GetParent().GetContentScreenWidth() - rect.getX()
+			maxWidth = GetParent().GetContentScreenWidth()
 		EndIf
+		if maxWidth <> -1 then maxWidth :- rect.GetX()
+		if maxWidth = -1 then maxWidth = GetScreenWidth()
+		if maxWidth <> -1 then maxWidth :+ 10
+'		maxWidth=295
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local dimension:TVec2D = GetBitmapFontManager().baseFont.drawBlock(GetValue(), getScreenX()+move.x, getScreenY()+move.y, maxWidth-move.X, maxHeight, Null, Null, 2, 0)
+		Local dimension:TVec2D = GetBitmapFontManager().baseFont.drawBlock(GetValue(), startX + move.x, startY + move.y, maxWidth - move.X, maxHeight, Null, Null, 2, 0)
 		'add padding
 		dimension.addXY(0, paddingBottom)
-
+print GetValue()+"     " + dimension.y +"   move.y="+move.Y+"   maxWidth="+maxWidth+"  move.X="+move.X
 		'set current size and refresh scroll limits of list
 		'but only if something changed (eg. first time or content changed)
 		If rect.getW() <> dimension.getX() Or rect.getH() <> dimension.getY()
@@ -355,13 +363,13 @@ Type TGUIChatEntry Extends TGUIListItem
 	End Method
 
 
-	Method getParentWidth:Float(parentClassName:String="toplevelparent")
+	Method GetParentWidth:Float(parentClassName:String="toplevelparent")
 		If Not Self._parent Then Return Self.rect.getW()
 		Return Self.getParent(parentClassName).rect.getW()
 	End Method
 
 
-	Method getParentHeight:Float(parentClassName:String="toplevelparent")
+	Method GetParentHeight:Float(parentClassName:String="toplevelparent")
 		If Not Self._parent Then Return Self.rect.getH()
 		Return Self.getParent(parentClassName).rect.getH()
 	End Method
@@ -370,27 +378,31 @@ Type TGUIChatEntry Extends TGUIListItem
 	Method DrawContent()
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
+		local screenX:int = GetScreenX()
 		local screenY:int = GetScreenY()
-		if GetParent().GetScreenY() > screenY + rect.GetH() then return  
-		if GetParent().GetScreenY() + GetParent().GetScreenHeight() < screenY then return  
+		if not parentPanel then throw "GUIChatEntry - no parentpanel"
+		if GetParent().GetScreenY() > screenY + rect.GetH() then return
+		if GetParent().GetScreenY() + GetParent().GetScreenHeight() < screenY then return
 
-		Local maxWidth:Int = parentPanel.getContentScreenWidth()-Self.rect.getX()
+		Local maxWidth:Int = parentPanel.getContentScreenWidth() - Self.rect.getX()
 
 		'local maxWidth:int = self.getParentWidth("tguiscrollablepanel")-self.rect.getX()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local move:TVec2D = New TVec2D.Init(0,0)
+		local oldCol:TColor = new TColor.Get()
 
-		If Self.showtime <> Null Then SetAlpha Float(Self.showtime - Time.GetTimeGone())/500.0
+		If Self.showtime <> Null Then SetAlpha oldCol.a * Float(Self.showtime - Time.GetTimeGone())/500.0
 		If Self.Data.getString("senderName",Null)
 			Local senderColor:TColor = TColor(Self.Data.get("senderColor"))
 			If Not senderColor Then senderColor = TColor.Create(0,0,0)
-			move = GetBitmapFontManager().baseFontBold.drawStyled(Self.Data.getString("senderName", "")+":", Self.getScreenX(), screenY, senderColor, 2, 1)
+			move = GetBitmapFontManager().baseFontBold.drawStyled(Self.Data.getString("senderName", "")+":", screenX, screenY, senderColor, 2, 1)
 			'move the x so we get space between name and text
 			'move the y point 1 pixel as bold fonts are "higher"
-			move.setXY( move.x+5, 1)
+			move.SetXY( move.x + 5, 1)
 		EndIf
-		GetBitmapFontManager().baseFont.drawBlock(GetValue(), getScreenX()+move.x, screenY+move.y, maxWidth-move.X, maxHeight, Null, valueColor, 2, 1, 0.5)
-		SetAlpha 1.0
+		GetBitmapFontManager().baseFont.drawBlock(GetValue(), screenX + move.x, screenY + move.y, maxWidth - move.X, maxHeight, Null, valueColor, 2, 1, 0.5)
+
+		oldCol.SetRGBA()
 	End Method
 End Type

@@ -687,7 +687,7 @@ Type TGUIobject
 	Field _registeredEventListener:TLink[]
 	'displacement of object when dragged (null = centered)
 	Field handle:TVec2D	= Null
-	Field className:String = ""
+	'Field className:String = ""
 	'Field _lastDrawTick:int = 0
 	'Field _lastUpdateTick:int = 0
 
@@ -710,7 +710,7 @@ Type TGUIobject
 		_lastID:+1
 		_id = _lastID
 		scale	= GUIManager.globalScale
-		className = TTypeId.ForObject(Self).Name()
+		'className = TTypeId.ForObject(Self).Name()
 
 		'default options
 		setOption(GUI_OBJECT_VISIBLE, True)

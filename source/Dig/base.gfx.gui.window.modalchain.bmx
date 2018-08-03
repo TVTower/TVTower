@@ -4,7 +4,7 @@ Rem
 	====================================================================
 
 	a modal window with chained content (different "pages")
-	
+
 	====================================================================
 	If not otherwise stated, the following code is available under the
 	following licence:
@@ -63,7 +63,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 
 
 	Method New()
-		className= "TGUIModalWindowChain"
+'		className= "TGUIModalWindowChain"
 	End Method
 
 
@@ -71,7 +71,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 		Super.CreateBase(pos, dimension, limitState)
 		setZIndex(10000)
 		setOption(GUI_OBJECT_CLICKABLE, False)
-		
+
 		GuiManager.Add(self)
 
 		Return Self
@@ -89,7 +89,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 		if activeChainElement then activeChainElement.Remove()
 		activeChainElement = null
 	End Method
-	
+
 
 	'size 0, 0 is not possible (leads to autosize)
 	Method Resize(w:Float = 0, h:Float = 0)
@@ -164,7 +164,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 			'maybe change the size of the element too?
 			element.Resize(-1,-1)
 		endif
-		
+
 		activeChainElement = element
 		activeChainElement.SetParent(self)
 		'inform
@@ -176,7 +176,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 		'set to new center
 		Recenter()
 	End Method
-	
+
 
 	Method Back:int()
 		if not activeChainElement or not activeChainElement.Back()
@@ -197,7 +197,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 	Method Close:Int(closeButton:Int=-1)
 		'only close once :D
 		if closeActionStarted then return False
-		
+
 		closeActionStarted = True
 		closeActionTime = Time.GetAppTimeGone()
 		closeActionStartPosition = rect.position.copy()
@@ -301,7 +301,7 @@ Type TGUIModalWindowChainElement Extends TGUIWindowBase
 
 		'avoid auto handling
 		RemoveChild(guiBackground)
-	
+
 		Return Self
 	End Method
 
@@ -316,7 +316,7 @@ Type TGUIModalWindowChainElement Extends TGUIWindowBase
 	'called when set as active content of a container
 	Method Activate:int()
 	End Method
-	
+
 
 	Method Back:int()
 		if previousChainElement
@@ -354,7 +354,7 @@ Type TGUIModalWindowChainElement Extends TGUIWindowBase
 
 	Method onRecenter()
 	End Method
-	
+
 
 	Method Update:int()
 		Super.Update()
@@ -430,7 +430,7 @@ Type TGUIModalWindowChainDialogue extends TGUIModalWindowChainElement
 			dialogueButtons[0].rect.position.setXY(rect.GetW()/2 - dialogueButtons[0].rect.GetW() - 10, GetScreenHeight() - 50)
 			dialogueButtons[1].rect.position.setXY(rect.GetW()/2 + 10, GetScreenHeight() - 50)
 		EndIf
-	End Method	
+	End Method
 
 
 	'handle clicks on the various close buttons

@@ -132,7 +132,7 @@ Include "game.escapemenu.bmx"
 
 '===== Globals =====
 VersionDate = LoadText("incbin::source/version.txt").Trim()
-VersionString = "v0.6.1 Build ~q" + VersionDate+"~q"
+VersionString = "v0.6.2-dev Build ~q" + VersionDate+"~q"
 CopyrightString = "by Ronny Otto & Team"
 
 Global APP_NAME:string = "TVTower"
@@ -4606,15 +4606,15 @@ Type GameEvents
 
 
 		Function SendHelp()
-			GetGame().SendSystemMessage("[DEV] available commands:~n")
-			GetGame().SendSystemMessage("  |b|money|/b| [player#] [+- money]")
-			GetGame().SendSystemMessage("  |b|bossmood|/b| [player#] [+- mood %]")
-			GetGame().SendSystemMessage("  |b|image|/b| [player#] [+- image %]")
-			GetGame().SendSystemMessage("  |b|terrorlvl|/b| [terrorgroup# 0 or 1] [level#]")
-			GetGame().SendSystemMessage("  |b|givelicence|/b| [player#] [GUID / GUID portion / devlicence#] [oay=1, free=0]")
-			GetGame().SendSystemMessage("  |b|givescript|/b| [player#] [GUID / GUID portion / devscript#] [pay=1, free=0]")
-			GetGame().SendSystemMessage("  |b|givead|/b| [player#] [GUID / GUID portion] [checkAvailability=1]")
-			GetGame().SendSystemMessage("  |b|sendnews|/b| [GUID / GUID portion / devnews#] [now=1, normal=0]")
+			GetGame().SendSystemMessage("[DEV] available commands:")
+			GetGame().SendSystemMessage("|b|money|/b| [player#] [+- money]")
+			GetGame().SendSystemMessage("|b|bossmood|/b| [player#] [+- mood %]")
+			GetGame().SendSystemMessage("|b|image|/b| [player#] [+- image %]")
+			GetGame().SendSystemMessage("|b|terrorlvl|/b| [terrorgroup# 0 or 1] [level#]")
+			GetGame().SendSystemMessage("|b|givelicence|/b| [player#] [GUID / GUID portion / devlicence#] [oay=1, free=0]")
+			GetGame().SendSystemMessage("|b|givescript|/b| [player#] [GUID / GUID portion / devscript#] [pay=1, free=0]")
+			GetGame().SendSystemMessage("|b|givead|/b| [player#] [GUID / GUID portion] [checkAvailability=1]")
+			GetGame().SendSystemMessage("|b|sendnews|/b| [GUID / GUID portion / devnews#] [now=1, normal=0]")
 		End Function
 
 		'internal helper function

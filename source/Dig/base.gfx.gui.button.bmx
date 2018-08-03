@@ -45,7 +45,7 @@ Type TGUIButton Extends TGUIobject
 			EventManager.triggerEvent( TEventSimple.Create("guibutton.OnClick", triggerEvent._data, Self) )
 		endif
 	End Method
-	
+
 
 	Method RepositionCaption:Int()
 		if not caption then return FALSE
