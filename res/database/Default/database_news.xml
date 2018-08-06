@@ -376,7 +376,7 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="d79c8cd7-e9b7-444c-93a8-12a983f402f3" thread_id="097948d0-cb97-4739-92fd-f66d55cd6290" type="0" creator="">
 			<title>
 				<de>Baumfäller von eigener Axt erschlagen</de>
-				<en>Logger slain by own own ax</en>
+				<en>Logger slain by own ax</en>
 			</title>
 			<description>
 				<de>Ein kanadischer Baumfäller wurde mit seiner eigener Axt erschlagen. Zeugenberichten nach habe sich der Baum gewehrt.</de>
@@ -517,7 +517,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<data genre="0" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		
+
 		<news id="1b15ca2e-e303-4863-9173-137eff033d7c_chemnitz" thread_id="1e6aa012-4bb1-44f3-82ea-c2d70f05b5f8" type="0" creator="">
 			<title>
 				<de>Nashorn aus Zoo entlaufen</de>
@@ -893,7 +893,7 @@ Her normal body size is expected to be reached in a week.</en>
 			<data genre="0" price="1.0" quality="51" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		
+
 		<news id="32617459-a2eb-412a-87c9-0411314c0694" thread_id="24f462b9-bac5-499e-ae2d-780f225872b1" type="0" creator="">
 			<title>
 				<de>Automaut kommt</de>
@@ -1050,11 +1050,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="6b9c5dc4-d2ca-4f09-9eb7-794765ccd584" thread_id="4edc7a2f-4387-43f8-be1c-5119d4a4fa29" type="0" creator="">
 			<title>
 				<de>Fernseher macht Programm intelligenter</de>
-				<en></en>
+				<en>Television makes programmes more intelligent</en>
 			</title>
 			<description>
-				<de>Star Electric zeigte auf der HiFi-Messe einen neuen Fernsehr, der das laufende Programm intelligenter macht. Dumme werden weniger Dumm. Seifenopern erträglicher.</de>
-				<en></en>
+				<de>Star Electric zeigte auf der HiFi-Messe einen neuen Fernseher, der das laufende Programm intelligenter macht. Dumme werden weniger Dumm. Seifenopern erträglicher.</de>
+				<en>Star Electric presented a new TV at the HiFi fair that makes the current programme more intelligent. Fools getting less foolish - soap operas more bearable.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="8bc34c83-4fc3-4aab-afa6-f67fa479902c" />
@@ -1065,11 +1065,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="8bc34c83-4fc3-4aab-afa6-f67fa479902c" thread_id="4edc7a2f-4387-43f8-be1c-5119d4a4fa29" type="2" creator="">
 			<title>
 				<de>Fernseher doch nix besonderes!</de>
-				<en></en>
+				<en>TV nothing special!</en>
 			</title>
 			<description>
 				<de>Wissenschaftler fanden heraus, das Star Electric die, die Wirkung belegenden, Tierversuche gefälscht hat. Statt Tieren wurden Menschen in Affenkostümen verwendet.</de>
-				<en></en>
+				<en>Scientists found out that Star Electric faked the animal experiments that proved the effect. Instead of animals, humans in monkey costumes were used.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="71ffceeb-a304-4d09-80bd-69fe8e672eab" />
@@ -1080,11 +1080,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="71ffceeb-a304-4d09-80bd-69fe8e672eab" thread_id="4edc7a2f-4387-43f8-be1c-5119d4a4fa29" type="2" creator="">
 			<title>
 				<de>Neues Radio empfängt ferne Galaxien</de>
-				<en></en>
+				<en>New radio receives distant galaxies</en>
 			</title>
 			<description>
 				<de>Die Aktiengesellschaft Star Electric hat ein neuartiges Radio vorgestellt. Mit diesem sei es möglich, Radioprogramme aus fernen Galaxien zu empfangen.</de>
-				<en></en>
+				<en>The stock company Star Electric presented a new type of radio. With this device it becomes possible to receive radio programmes from distant galaxies.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="b06abbd3-94a3-4ebc-8635-9c4beb24195f" />
@@ -1095,11 +1095,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="b06abbd3-94a3-4ebc-8635-9c4beb24195f" thread_id="4edc7a2f-4387-43f8-be1c-5119d4a4fa29" type="2" creator="">
 			<title>
 				<de>Weltall-Radio nur Schwindel</de>
-				<en></en>
+				<en>Space-Radio is a fake!</en>
 			</title>
 			<description>
 				<de>Ein Professor fand heraus, dass das neue Radio der Star Electric kein Programm aus fernen Galaxien empfängt sondern lediglich gewöhnliches Rauschen auf Mittelwelle.</de>
-				<en></en>
+				<en>A professor found out that the new Star Electric radio does not receive a programme from distant galaxies but only ordinary medium-wave noise.</en>
 			</description>
 			<effects />
 			<data genre="3" price="1.0" quality="39" />
@@ -1108,11 +1108,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="5f897c83-8355-4cbc-9478-5bdd8281adb9" thread_id="5695db52-4ad0-4dfa-9e23-192cb9c12146" type="0" creator="">
 			<title>
 				<de>Jamaika neue Bobnation?</de>
-				<en></en>
+				<en>Jamaica new bob nation?</en>
 			</title>
 			<description>
 				<de>Acht erfolgreiche Bobfahrer haben die jamaikanische Staatsbürgerschaft angenommen. Sie seien von einem Film inspiriert worden.</de>
-				<en></en>
+				<en>Eight successful bobsleighers have taken Jamaican citizenship. They claim to have been inspired by a movie.</en>
 			</description>
 			<effects />
 			<data genre="2" price="0.7" quality="25" />
@@ -1121,11 +1121,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="9d57694b-1419-4bb8-bac9-bb092c383e83" thread_id="5bbbce34-01a6-43f9-b882-eceb5ffd7884" type="0" creator="">
 			<title>
 				<de>Licht an?</de>
-				<en></en>
+				<en>Lights on?</en>
 			</title>
 			<description>
 				<de>Ab sofort wird das Fahren mit Licht Pflicht. Damit soll die Unfallrate gesenkt werden.</de>
-				<en></en>
+				<en>Driving with lights is now mandatory. The aim is to reduce the accident rate.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="39" />
@@ -1134,11 +1134,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="67f49f75-14d8-495d-83cf-f36ba136bb9c" thread_id="5c46bb57-f494-4986-ac5a-76061dae1399" type="0" creator="">
 			<title>
 				<de>Priester von Statue erschlagen</de>
-				<en></en>
+				<en>Priest slain by statue</en>
 			</title>
 			<description>
-				<de>Ein argentinischer Priester wurde von einer herab fallenden Statue tödlich am Kopf verletzt.</de>
-				<en></en>
+				<de>Ein argentinischer Priester wurde von einer herabfallenden Statue tödlich am Kopf verletzt.</de>
+				<en>An Argentinian priest was fatally injured in the head by a falling statue.</en>
 			</description>
 			<effects />
 			<data genre="0" price="1.0" quality="9" />
@@ -1147,11 +1147,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="2c217224-62fd-4583-b457-1c69c813aff6" thread_id="5d832597-6cdc-4bfe-9213-0a82cd45b130" type="0" creator="">
 			<title>
 				<de>Fußball: TV-Köche vs. Nationalmannschaft</de>
-				<en></en>
+				<en>Soccer: TV chefs vs. national team</en>
 			</title>
 			<description>
-				<de>Für einen wohltätigen Zweck bestreiten die TV-Köche Deutschlands heute ein Freundschaftsspiel gegen unsere Fußball-Nationalmannschaft. </de>
-				<en></en>
+				<de>Für einen wohltätigen Zweck bestreiten die TV-Köche Deutschlands heute ein Freundschaftsspiel gegen unsere Fußball-Nationalmannschaft.</de>
+				<en>For a charitable purpose, Germany's TV chefs are playing a friendly match against our national soccer team today.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernewschoice" choose="or" probability="50" time="2,1,1,8,14"
@@ -1165,11 +1165,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="e250f180-310d-4639-bdd4-229b818f3a92-a" thread_id="5d832597-6cdc-4bfe-9213-0a82cd45b130" type="2" creator="">
 			<title>
 				<de>Fußball: TV-Köche verlieren</de>
-				<en></en>
+				<en>Soccer: TV chefs lost match</en>
 			</title>
 			<description>
 				<de>Da war die Suppe wohl versalzen. Die Fernsehköche verloren 1:3 gegen die Nationalmannschaft.</de>
-				<en></en>
+				<en>Seems the soup was too salty. The TV cooks lost 1:3 against the national team.</en>
 			</description>
 			<effects />
 			<data genre="2" price="1.05" quality="18" />
@@ -1178,11 +1178,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="e250f180-310d-4639-bdd4-229b818f3a92-b" thread_id="5d832597-6cdc-4bfe-9213-0a82cd45b130" type="2" creator="">
 			<title>
 				<de>Fußball: TV-Köche gewinnen </de>
-				<en></en>
+				<en>Soccer: TV chefs win match</en>
 			</title>
 			<description>
 				<de>Mit einem Kochlöffel Vorsprung gewannen die Fernsehköche gegen die Nationalmannschaft und trugen den 2:1 Sieg an die Kochherde der TV-Landschaft.</de>
-				<en></en>
+				<en>The TV cooks won against the national team with a cooking spoon lead and carried the 2:1 victory to the cookers of the TV landscape.</en>
 			</description>
 			<effects />
 			<data genre="2" price="1.05" quality="39" />
@@ -1191,11 +1191,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="d28c5997-c17c-4b68-9289-773617b62e58" thread_id="60185c09-38ec-4c44-a884-ed76b8bca258" type="0" creator="">
 			<title>
 				<de>Shanghai Hotel wird aufgelöst</de>
-				<en></en>
+				<en>Shanghai Hotel to be disbanded</en>
 			</title>
 			<description>
 				<de>Mit vielen Teenie-Tränen wurde heute Nachmittag die deutsche Teenieband Shanghai Hotel aufgelöst. Die Mitglieder hätten sich die Freundinnen ausgespannt.</de>
-				<en></en>
+				<en>With many teen tears, the German teen band Shanghai Hotel was disbanded this afternoon. The members would have pinched each others girlfriends.</en>
 			</description>
 			<effects />
 			<data genre="1" price="1.0" quality="23" />
@@ -1638,7 +1638,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="2" price="1.0" quality="30" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-			
+
 		<news id="53769295-e71f-4cbc-a127-3e3cfb70b394" thread_id="a3e86722-1b9a-4cf4-991f-a7da7d16872b" type="0" creator="">
 			<title>
 				<de>Rotwein gesund</de>
@@ -1921,7 +1921,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="4" price="1.0" quality="14" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		
+
 		<news id="34977b2a-b976-48f8-8254-001ebe2263f1" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="0" creator="">
 			<title>
 				<de>Wahlen in Deutschland</de>
@@ -2386,7 +2386,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="2" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		
+
 		<news id="3a5e6a8d-a0ee-4175-ba92-a5bada7cf291" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="0" creator="">
 			<title>
 				<de>Semmelgerste erwischt - 3,6 Promille </de>
@@ -2546,7 +2546,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="0" price="0.7" quality="48" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		
+
 		<news id="e730d750-5b8f-4f10-a7c5-86936521de82" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b" type="0" creator="">
 			<title>
 				<de>Programmierer klaut bei Beate Ohse</de>
@@ -2736,7 +2736,7 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 			<data genre="1" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		
+
 		<news id="906a95a1-45c2-403c-b204-2b3f55a6bdad" thread_id="f23be612-26ee-48f8-ad1e-17e310af7997" type="0" creator="">
 			<title>
 				<de>Flandern wird unabhängig!</de>
