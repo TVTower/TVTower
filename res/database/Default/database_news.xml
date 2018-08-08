@@ -1204,11 +1204,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="b2719e00-bd4c-42dd-8398-35cf359009b0" thread_id="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="0" creator="">
 			<title>
 				<de>Computerviren überfallen das Internet</de>
-				<en></en>
+				<en>Computer viruses attack the Internet</en>
 			</title>
 			<description>
 				<de>Eine ganze Armee teuflischer Viren befindet sich im Ansturm auf Rechner in aller Welt. Als besonders gefährlich gilt Virus π (Pi).</de>
-				<en></en>
+				<en>A whole army of diabolical viruses is rushing onto computers all over the world. Virus π (Pi) is considered particularly dangerous.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="0dd305ab-89ef-4961-8a6b-5e67e809d309" />
@@ -1219,60 +1219,17 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="b2719e00-bd4c-42dd-8398-35cf359009b0_2" thread_id="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="0" creator="">
 			<title>
 				<de>Computerviren überfallen Mailboxen</de>
-				<en></en>
+				<en>Computer viruses attack mailboxes</en>
 			</title>
 			<description>
 				<de>Eine ganze Armee teuflischer Viren befindet sich im Ansturm auf Rechner in aller Welt. Als besonders gefährlich gilt Virus π (Pi).</de>
-				<en></en>
+				<en>A whole army of diabolical viruses is rushing onto computers all over the world. Virus π (Pi) is considered particularly dangerous.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="0dd305ab-89ef-4961-8a6b-5e67e809d309" />
 			</effects>
 			<data genre="3" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="1991" />
-		</news>
-		<news id="7c626ce4-5ae7-45d7-9909-6c2b42ce18e3" thread_id="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="2" creator="">
-			<title>
-				<de>Computer spielen verrückt</de>
-				<en></en>
-			</title>
-			<description>
-				<de>3,1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502...</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="2195e517-be06-4729-8508-824119e5d4aa" />
-			</effects>
-			<data genre="3" price="1.0" quality="39" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="44977907-8f02-4023-a42b-c109b8837a86" thread_id="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="2" creator="">
-			<title>
-				<de>Massenunruhen wegen gemeiner Viren</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Die Bevölkerung reagiert zunehmend beunruhigt auf die Ansteckungsgefahr mit Pi. Ist ein PC befallen, startet sofort eine endlose Zahlenkolonne.</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="7c626ce4-5ae7-45d7-9909-6c2b42ce18e3" />
-			</effects>
-			<data genre="3" price="1.0" quality="39" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="2195e517-be06-4729-8508-824119e5d4aa" thread_id="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="2" creator="">
-			<title>
-				<de>Pi gestoppt, Mathematik gerettet</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Um die Endlosberechnung von Pi zu beenden, muß man lediglich das Integral von Pi in Verhältnis zu der relativen Masse der Nachkommastellen setzen.</de>
-				<en></en>
-			</description>
-			<effects />
-			<data genre="0" price="1.0" quality="49" />
-			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="0dd305ab-89ef-4961-8a6b-5e67e809d309" thread_id="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="2" creator="">
 			<title>
@@ -1289,14 +1246,57 @@ Her normal body size is expected to be reached in a week.</en>
 			<data genre="3" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
+		<news id="44977907-8f02-4023-a42b-c109b8837a86" thread_id="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="2" creator="">
+			<title>
+				<de>Massenunruhen wegen gemeiner Viren</de>
+				<en>Mass riots due to nasty viruses</en>
+			</title>
+			<description>
+				<de>Die Bevölkerung reagiert zunehmend beunruhigt auf die Ansteckungsgefahr mit Pi. Ist ein PC befallen, startet sofort eine endlose Zahlenkolonne.</de>
+				<en>The population is increasingly concerned about the risk of infection with Pi. If a PC is infected, an endless column of numbers starts immediately.</en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="7c626ce4-5ae7-45d7-9909-6c2b42ce18e3" />
+			</effects>
+			<data genre="3" price="1.0" quality="39" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="7c626ce4-5ae7-45d7-9909-6c2b42ce18e3" thread_id="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="2" creator="">
+			<title>
+				<de>Computer spielen verrückt</de>
+				<en>Computers go crazy</en>
+			</title>
+			<description>
+				<de>3,14159265358979323846264338327950-2884197169399375105820974944592307-8164062862089986280348253421170679-8214808651328230664709384460955058-22317253594081284811174502...</de>
+				<en></en>
+			</description>
+			<effects>
+				<effect trigger="happen" type="triggernews" news="2195e517-be06-4729-8508-824119e5d4aa" />
+			</effects>
+			<data genre="3" price="1.0" quality="39" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
+		<news id="2195e517-be06-4729-8508-824119e5d4aa" thread_id="646312c1-7980-47ca-8d77-0e0e07a5ba67" type="2" creator="">
+			<title>
+				<de>Pi gestoppt, Mathematik gerettet</de>
+				<en>Pi stopped, mathematics saved</en>
+			</title>
+			<description>
+				<de>Um die Endlosberechnung von Pi zu beenden, muß man lediglich das Integral von Pi in Verhältnis zu der relativen Masse der Nachkommastellen setzen.</de>
+				<en>To end the endless calculation of Pi, one only has to put the integral of Pi in relation to the relative mass of the decimal places.</en>
+			</description>
+			<effects />
+			<data genre="0" price="1.0" quality="49" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
 		<news id="e534c0e3-0f37-4e37-92f1-7c2796168572" thread_id="67c8a17b-d314-4016-bf94-2c2b079912af" type="0" creator="">
 			<title>
 				<de>Schwimmer hat Wasserallergie</de>
-				<en></en>
+				<en>Swimmer is allergic to water</en>
 			</title>
 			<description>
-				<de>Der 100m-Weltrekordler hat seinen Rücktritt angekündigt, da er seit kurzem an einer Wasserallergie leidet. </de>
-				<en></en>
+				<de>Der 100m-Weltrekordler hat seinen Rücktritt angekündigt, da er seit kurzem an einer Wasserallergie leidet.</de>
+				<en>The 100m world record holder has announced his retirement because he has recently become allergic to water.</en>
 			</description>
 			<effects />
 			<data genre="2" price="1.0" quality="19" />
@@ -1305,11 +1305,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="ff604bfe-8d59-4ec4-bf45-46d67f81bf82" thread_id="7677c54c-f01e-48c6-b2e5-3fbdbc94fad1" type="0" creator="">
 			<title>
 				<de>Bier fördert Haarwuchs</de>
-				<en></en>
+				<en>Beer stimulates hair growth</en>
 			</title>
 			<description>
-				<de>Der tägliche Konsum von Bier fördert nach neusten wissenschaftlichen Untersuchen den Haarwuchs. Nebenwirkung: Die Leber gibt den Geist auf. </de>
-				<en></en>
+				<de>Der tägliche Konsum von Bier fördert nach neusten wissenschaftlichen Untersuchen den Haarwuchs. Nebenwirkung: Die Leber gibt den Geist auf.</de>
+				<en>According to the latest scientific research, daily consumption of beer promotes hair growth. Side effect: The liver conks out.</en>
 			</description>
 			<effects />
 			<data genre="3" price="1.0" quality="29" />
@@ -1318,11 +1318,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="df3f342a-6bb2-4445-9f77-2765d51a8187" thread_id="769c4c90-9ddc-4c72-8ad7-1850f0c95109" type="0" creator="">
 			<title>
 				<de>Tele-Komm schafft analog ab</de>
-				<en></en>
+				<en>Tele-Komm abolishes analog</en>
 			</title>
 			<description>
 				<de>Die deutsche Tele-Komm schafft die analoge Technik ab. Sie sei nicht mehr rentabel, da sie nicht mehr genutzt wird, so ein Sprecher.</de>
-				<en></en>
+				<en>The German Tele-Komm abolishes analogue technology. According to a spokesperson, it is no longer profitable because it is no longer used.</en>
 			</description>
 			<effects />
 			<data genre="3" price="1.0" quality="39" />
@@ -1331,11 +1331,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="df3f342a-6bb2-4445-9f77-2765d51a8187_2" thread_id="769c4c90-9ddc-4c72-8ad7-1850f0c95109" type="0" creator="">
 			<title>
 				<de>Tele-Komm schafft Wählscheibe ab</de>
-				<en></en>
+				<en>Tele-Komm abolishes the dial plate</en>
 			</title>
 			<description>
 				<de>Die deutsche Tele-Komm schafft die klassische Wählscheibe ab. Inoffizieller Grund: Zu geringe Effizienz der Callcenter.</de>
-				<en></en>
+				<en>The German Tele-Komm abolishes the classic dial plate. Unofficial reason: Call centre efficiency is too low.</en>
 			</description>
 			<effects />
 			<data genre="3" price="1.0" quality="39" />
@@ -1344,11 +1344,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="bc2475d4-e45d-484d-9095-16e2c06bea72" thread_id="7c62ccae-017a-4db9-872f-dfc75ddd4b4c" type="0" creator="">
 			<title>
 				<de>Alton neuer Programmchef bei Pro9</de>
-				<en></en>
+				<en>Alton new Program Director at Pro9</en>
 			</title>
 			<description>
 				<de>Der Ex-Showpraktikant von Stephan Rapp ist heute überraschend Programmchef geworden. Ändern wird sich nichts, "Wir haben doch Zeit", so Alton.</de>
-				<en></en>
+				<en>Stephan Rapp's ex-show intern has surprisingly become programme director today. Nothing will change, "We have plenty of time" says Alton.</en>
 			</description>
 			<effects />
 			<data genre="1" price="0.7" quality="29" />
@@ -1357,11 +1357,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="d5835942-1658-4140-9272-2450165344de" thread_id="81ef8cbc-3208-4786-aa0d-6d6f824e79ca" type="0" creator="">
 			<title>
 				<de>Caesar war Gallier!</de>
-				<en></en>
+				<en>Caesar was a Gaul!</en>
 			</title>
 			<description>
 				<de>Die römische Welt ist schockiert: bei Ausgrabungen in Rom stellte sich heraus, dass Caesar Gallier war.</de>
-				<en></en>
+				<en>The Roman world is shocked: excavations in Rome revealed that Caesar was a Gaul.</en>
 			</description>
 			<effects />
 			<data genre="3" price="1.0" quality="29" />
@@ -1370,11 +1370,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="68923a81-fdf8-4416-a85b-c943850b9b9a" thread_id="8539de3d-c301-4376-9763-2e0f1f2a6d9f" type="0" creator="">
 			<title>
 				<de>Grüner Punkt wird aufgegeben</de>
-				<en></en>
+				<en>The Green Dot is abandoned</en>
 			</title>
 			<description>
-				<de>Nach Einführung des Dosenpfands geben die Initiatoren des Grünen Punktes auf: Dosen werden nicht mehr weggeschmissen! </de>
-				<en></en>
+				<de>Nach Einführung des Dosenpfands geben die Initiatoren des Grünen Punktes auf: Dosen werden nicht mehr weggeschmissen!</de>
+				<en>After the introduction of the deposit on cans, the initiators of the Green Dot give up: Cans are no longer thrown away!</en>
 			</description>
 			<effects />
 			<data genre="0" price="0.7" quality="25" />
@@ -1383,11 +1383,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="c465e880-20cb-4c42-bdb0-76950380eb02" thread_id="89d538a2-9f45-4d55-b672-49de6ebaaebd" type="0" creator="">
 			<title>
 				<de>Spezial-Sammy für Kalkhoven</de>
-				<en></en>
+				<en>Special Sammy for Kalkhoven</en>
 			</title>
 			<description>
 				<de>Oliver Kalkhoven bekommt einen von TowerTV gesponsorten Spezial-Sammy für seine tiefgehende Beiträge zum Fernsehen.</de>
-				<en></en>
+				<en>Oliver Kalkhoven gets a TowerTV-sponsored special Sammy for his in-depth contributions to television.</en>
 			</description>
 			<effects />
 			<data genre="5" price="1.0" quality="58" />
@@ -1396,11 +1396,11 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="27a9048d-2066-404a-8a8e-aceb1ad6d84a" thread_id="8e1eca41-5270-4fc1-99a6-c2404809e276" type="0" creator="">
 			<title>
 				<de>Die roten Rosen geben Abschiedstournee</de>
-				<en></en>
+				<en>The Red Roses say goodbye tour</en>
 			</title>
 			<description>
 				<de>Die Band mit den Hits wie „Hier kommt Alexandra“ gibt für nächstes Jahr ihre Abschiedstournee bekannt.</de>
-				<en></en>
+				<en>The band with the hits like "Here comes Alexandra" will announce their goodbye tour next year.</en>
 			</description>
 			<effects />
 			<data genre="1" price="0.7" quality="29" />
@@ -1409,12 +1409,13 @@ Her normal body size is expected to be reached in a week.</en>
 		<news id="bd674ac6-d8be-4b53-8023-185adfeaf90c" thread_id="8e65fd80-587e-4c17-a12f-09e368dca29e" type="0" creator="">
 			<title>
 				<de>Joachim Bretzel eröffnet Kaufhaus</de>
-				<en></en>
+				<en>Joachim Bretzel opens department store</en>
 			</title>
 			<description>
 				<de>Der aus dem TV bekannte Barde Joachim Bretzel gibt Autogrammstunde bei Eröffnung des neuen KaDeOst-Kaufhauses.
 Verlost wird dabei noch ein NASA-Topfset.</de>
-				<en></en>
+				<en>The well-known bard Joachim Bretzel gives autograph session at the opening of the new KaDeOst department store.
+A NASA pot set will also be raffled off.</en>
 			</description>
 			<effects />
 			<data genre="1" price="1.0" quality="14" />
@@ -1423,11 +1424,11 @@ Verlost wird dabei noch ein NASA-Topfset.</de>
 		<news id="22e00cc1-288d-4405-815b-51da1e25f6e5" thread_id="902e3964-abe0-41cd-8f80-18a09e7e4aea" type="0" creator="">
 			<title>
 				<de>Rauchen wird teurer</de>
-				<en></en>
+				<en>Smoking will become more expensive</en>
 			</title>
 			<description>
 				<de>Mit der Einführung einer Dung-Steuer für Huftiere erhöhen die Produzenten die Preise um 200%.</de>
-				<en></en>
+				<en>With the introduction of a manure tax for ungulates, producers increase prices by 200%.</en>
 			</description>
 			<effects />
 			<data genre="0" price="0.7" quality="62" />
@@ -1436,11 +1437,11 @@ Verlost wird dabei noch ein NASA-Topfset.</de>
 		<news id="f82cdc27-72a8-4007-94ce-8b94c15eeb7d" thread_id="903482a4-19ea-41d4-9c1c-08edd2b35961" type="0" creator="">
 			<title>
 				<de>Kein Voranschreiten bei TVT</de>
-				<en></en>
+				<en>No progress on TVT</en>
 			</title>
 			<description>
 				<de>Skandal! Keiner schreibt trotz hoher und heiliger Versprechen neue News. Dabei fehlen vor allem Showbizz-, Kultur- und Technik/Wissenschaft-Nachrichten.</de>
-				<en></en>
+				<en>Scandal! No one writes new news despite high and sacred promises. There is a lack of showbiz, cultural and technical/scientific news.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="45" />
@@ -1449,12 +1450,13 @@ Verlost wird dabei noch ein NASA-Topfset.</de>
 		<news id="1a4d7fd8-855a-47e4-871a-dc72eb4680ba" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="0" creator="">
 			<title>
 				<de>G8-Gipfel in 3 Tagen</de>
-				<en></en>
+				<en>G8 summit in 3 days</en>
 			</title>
 			<description>
 				<de>In 3 Tagen beginnt das Treffen der führenden Wirtschaftsnationen in Paris.
 Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
-				<en></en>
+				<en>In 3 days the meeting of the leading economic nations will begin in Paris.
+Demonstrations are expected again this year.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="441f0aa3-0412-4236-991c-ddae48f2b62a" time="2,1,1,9,17" />
@@ -1465,11 +1467,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="441f0aa3-0412-4236-991c-ddae48f2b62a" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="2" creator="">
 			<title>
 				<de>Erste Demos vor G8-Gipfel</de>
-				<en></en>
+				<en>First demos before G8 summit</en>
 			</title>
 			<description>
 				<de>Bereits vor dem Treffen der führenden Witschaftsnationen campen Demonstranten in Paris. „Wir sind zu allem bereit“, so ein Demonstrant.</de>
-				<en></en>
+				<en>Demonstrators are already camping in Paris before the meeting of the leading economic nations. "We are ready for anything," said one of the demonstrators.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="fb43d1ce-61b8-4625-8385-520b8f0d282c" time="2,1,1,4,13" />
@@ -1480,11 +1482,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="fb43d1ce-61b8-4625-8385-520b8f0d282c" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="2" creator="">
 			<title>
 				<de>USA - Angst vor Terrordemonstranten</de>
-				<en></en>
+				<en>USA - Fear of terrorist demonstrators</en>
 			</title>
 			<description>
 				<de>Die vereinigten Staaten fürchten Anschläge beim G8-Gipfel in Paris. Powell: „Wenn die Terrorcamper nicht verschwinden, werden wir nicht teilnehmen.“</de>
-				<en></en>
+				<en>The United States fear attacks at the G8 summit in Paris. Powell: "If the terror campers don't disappear, we won't participate."</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="7949493e-c6e0-4b59-a06c-044ddbf66dd0" time="2,1,1,0,13" />
@@ -1495,11 +1497,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="7949493e-c6e0-4b59-a06c-044ddbf66dd0" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="2" creator="">
 			<title>
 				<de>Tränengas gegen Terrorcamper</de>
-				<en></en>
+				<en>Tear gas against terror campers</en>
 			</title>
 			<description>
 				<de>Im Rahmen des anstehenden G8 Gipfels ließ die Pariser Gendarmerie die Demonstrantenlager mit Tränengas räumen.</de>
-				<en></en>
+				<en>During the upcoming G8 summit, the Paris gendarmerie had the demonstrator camps cleared with tear gas.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d86c9008-6752-4358-b545-2d09e23bf24a" time="1,2,6" />
@@ -1510,11 +1512,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="d86c9008-6752-4358-b545-2d09e23bf24a" thread_id="94e573ec-1350-405c-b2f6-8684958e6e8b" type="2" creator="">
 			<title>
 				<de>G8-Gipfel 2 Demonstranten verletzt</de>
-				<en></en>
+				<en>G8 summit 2 demonstrators injured</en>
 			</title>
 			<description>
 				<de>Nach dem Tränengaseinsatz der Pariser Gendarmerie wurden 2 Demonstranten mit schweren Augenverletzungen ins Krankenhaus eingeliefert.</de>
-				<en></en>
+				<en>After the Parisian gendarmerie used tear gas, two demonstrators were taken to hospital with serious eye injuries.</en>
 			</description>
 			<effects />
 			<data genre="0" price="1.0" quality="39" />
@@ -1524,11 +1526,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="de78d446-a89c-4281-b018-a2c6f8975211" thread_id="9707f767-9129-46ea-84d2-a4870897fdfb" type="0" creator="">
 			<title>
 				<de>Wildschwein-Randale in Schrebergärten</de>
-				<en></en>
+				<en>Wild boar randals in allotment gardens</en>
 			</title>
 			<description>
 				<de>In den letzten Tagen kommt es vermehrt zu Wildschwein-Angriffen auf Schrebergärten. „Die Sau gehört abgeschossen“, so der entrüstete Schrebergärtner Rico Milke.</de>
-				<en></en>
+				<en>In recent days there has been an increase in wild boar attacks on allotments. "The sow belongs shot down," says the indignant allotment holder Rico Milke.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="2899a642-b0dc-4285-98e0-10835eb911fc" time="2,1,3,6,18" />
@@ -1539,11 +1541,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="2899a642-b0dc-4285-98e0-10835eb911fc" thread_id="9707f767-9129-46ea-84d2-a4870897fdfb" type="2" creator="">
 			<title>
 				<de>Kleingärtner schießt Polizisten an</de>
-				<en></en>
+				<en>Allotment gardener shoots at policemen</en>
 			</title>
 			<description>
 				<de>Der Kleingärtner Rico Milke schoss auf der Wildschweinjagd in seinem Garten einen Polizisten an. "Ich hielt ihn für ein Wildschwein", beteuerte der Schütze.</de>
-				<en></en>
+				<en>The allotment gardener Rico Milke shot a policeman during a wild boar hunt in his garden. "I thought he was a boar," the shooter asserted.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="2dd29a642-a0dc-f275-32ef-16815eb34ff" time="2,1,3,6,18" />
@@ -1554,11 +1556,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="2dd29a642-a0dc-f275-32ef-16815eb34ff" thread_id="9707f767-9129-46ea-84d2-a4870897fdfb" type="2" creator="">
 			<title>
 				<de>Wildschwein-Urteil gefällt</de>
-				<en></en>
+				<en>Wild boar judgement adjudicated</en>
 			</title>
 			<description>
-				<de>Die Bachenhausener Strafkammer befand den Gärtner Rico Mielke für schuldig, den Polizisten erschossen zu haben. „Sie sind wohl blind?“, fragte der klagende Anwalt.</de>
-				<en></en>
+				<de>Die Bachenhausener Strafkammer befand den Gärtner Rico Mielke der Körperverletzung schuldig. „Sie sind wohl blind?“, fragte der klagende Anwalt.</de>
+				<en>The Bachenhausen criminal court found the gardener Rico Mielke guilty of assault. "I suppose you're blind?" asked the plaintiff's lawyer.</en>
 			</description>
 			<effects />
 			<data genre="4" price="0.7" quality="39" />
@@ -1568,11 +1570,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="newsevent-unknown-preyts-ep1" thread_id="newsevent-unknown-preyts" type="0" creator="">
 			<title>
 				<de>Preyts neuer Trainer in Berlin?</de>
-				<en></en>
+				<en>Preyts new trainer in Berlin?</en>
 			</title>
 			<description>
 				<de>Dem Rekordtorschützen Michel Preyts wurde von seinem alten Verein der Trainerposten angeboten. Preyts sei interessiert, so der Vorstand.</de>
-				<en></en>
+				<en>Record scorer Michel Preyts was offered coaching positions by his old club. According to the board Preyts is interested.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep2" time="2,1,2,6,18" />
@@ -1583,11 +1585,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="newsevent-unknown-preyts-ep2" thread_id="newsevent-unknown-preyts" type="2" creator="">
 			<title>
 				<de>Trainerschein für M. Preyts?</de>
-				<en></en>
+				<en>Coach's license for M. Preyts?</en>
 			</title>
 			<description>
 				<de>Die Chancen stehen gut: „Ich möchte zuerst die Trainerlizenz erwerben, danach kann man mit mir reden.“, so der Bertaner. Berlin darf hoffen.</de>
-				<en></en>
+				<en>The chances are good: "I would like to acquire a trainer licence first, then I can be talked to," says the Bertan. Berlin can hope.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep3" time="1,6,12" />
@@ -1598,11 +1600,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="newsevent-unknown-preyts-ep3" thread_id="newsevent-unknown-preyts" type="2" creator="">
 			<title>
 				<de>Probleme für Preyts &amp; Co</de>
-				<en></en>
+				<en>Problems for Preyts &amp; Co</en>
 			</title>
 			<description>
 				<de>Da der frühere Kapitän des Berta BSC bisher keinen Trainerschein besitzt, könnte die Entscheidung des Stürmers noch auf sich warten lassen...</de>
-				<en></en>
+				<en>As the former captain of the Berta BSC does not yet have a trainer's licence, the decision of the striker could be a long time in coming...</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep4" time="2,2,3,8,21" />
@@ -1613,11 +1615,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="newsevent-unknown-preyts-ep4" thread_id="newsevent-unknown-preyts" type="2" creator="">
 			<title>
 				<de>Und nun, Herr Preyts?</de>
-				<en></en>
+				<en>And now, Mr. Preyts?</en>
 			</title>
 			<description>
 				<de>Alt-Bertaner Michel Preyts hat gestern den Trainerschein ausgestellt bekommen. Gespräche über die Zukunft seien nun am Laufen, so Preyts Berater.</de>
-				<en></en>
+				<en>Old Bertian Michel Preyts got his trainer's license yesterday. Talks about the future are now underway, Preyt's consultant said.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="newsevent-unknown-preyts-ep2" time="2,1,1,7,11" />
@@ -1628,11 +1630,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="newsevent-unknown-preyts-ep5" thread_id="newsevent-unknown-preyts" type="2" creator="">
 			<title>
 				<de>Berta BSC holt Preyts</de>
-				<en></en>
+				<en>Berta BSC gets Preyts under contract</en>
 			</title>
 			<description>
 				<de>Perfekt: Michel Preyts wird den Trainerposten in der Hauptstadt übernehmen. Er freue sich auf diese Herausforderung, so Preyts, langjährige Nr. 11.</de>
-				<en></en>
+				<en>Perfect: Michel Preyts will take over the coaching post in the capital. He is looking forward to this challenge, says Preyts, No. 11 of many years.</en>
 			</description>
 			<effects />
 			<data genre="2" price="1.0" quality="30" />
@@ -1642,11 +1644,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="53769295-e71f-4cbc-a127-3e3cfb70b394" thread_id="a3e86722-1b9a-4cf4-991f-a7da7d16872b" type="0" creator="">
 			<title>
 				<de>Rotwein gesund</de>
-				<en></en>
+				<en>Red wine healthy</en>
 			</title>
 			<description>
 				<de>Die deutsche Gesundheitsministerin lädt zum Saufen ein. Der Konsum von Rotwein in gesunden Mengen (1-2 Glas pro Tag) beugt Herzinfarkt vor.</de>
-				<en></en>
+				<en>The German Minister of Health invites you to drink. Consuming healthy amounts of red wine (1-2 glasses a day) prevents heart attack.</en>
 			</description>
 			<effects />
 			<data genre="4" price="0.7" quality="58" />
@@ -1655,11 +1657,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="db23af24-bf5c-42d3-8567-fa7b2c1a4e3f" thread_id="a5ba32a7-cedc-463d-9cf9-fb628c7a7fb1" type="0" creator="">
 			<title>
 				<de>Kunstraub im Louvre</de>
-				<en></en>
+				<en>Art theft at the Louvre</en>
 			</title>
 			<description>
 				<de>In der letzten Nacht wurde die Mona Lisa aus dem Louvre in Paris gestohlen. Ein Nachtwächter bemerkte dies, als er den Rahmen säubern wollte.</de>
-				<en></en>
+				<en>Last night the Mona Lisa was stolen from the Louvre in Paris. A night watchman noticed this when he wanted to clean the frame.</en>
 			</description>
 			<data genre="5" price="1.0" quality="49" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -1667,11 +1669,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="3756602f-ddcc-4e7c-9ebc-4c1a3259d8c2" thread_id="a6ec2fd9-ff73-4f4b-829b-01f331dc6f92" type="0" creator="">
 			<title>
 				<de>Mann übersah Glastür</de>
-				<en></en>
+				<en>Man missed glass door</en>
 			</title>
 			<description>
 				<de>Ein angetrunkener Mann übersah eine Glastür und musste mit einer Kopfwunde ins Krankenhaus. Sein Kommentar: „Hab es nicht kommen sehen.“</de>
-				<en></en>
+				<en>A drunken man missed a glass door and had to go to hospital with a head wound. His comment: "Didn't see it coming."</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="9" />
@@ -1680,11 +1682,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="ba7b3713-d66c-4777-b0d4-1195bcef9850" thread_id="a8c65186-08a7-4099-b303-994272ffc9c6" type="0" creator="">
 			<title>
 				<de>Heute Abend wird es dunkel. Für immer</de>
-				<en></en>
+				<en>It's gonna be dark tonight. Forever</en>
 			</title>
 			<description>
 				<de>Unsere Wissenschaftler rätseln. Die Prognose: heute Abend überschattet eine große Finsternis unser Land. Das Problem: Es ist unklar, ob es je wieder hell wird.</de>
-				<en></en>
+				<en>Our scientists are puzzling. The prognosis: tonight a great darkness overshadows our country. The problem: It is unclear if it will ever be light again.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="920616c0-05b7-4078-a253-d070e58b7b98" time="2,1,1,7-9" />
@@ -1695,11 +1697,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="920616c0-05b7-4078-a253-d070e58b7b98" thread_id="a8c65186-08a7-4099-b303-994272ffc9c6" type="2" creator="">
 			<title>
 				<de>Hurra! Es ist wieder hell!</de>
-				<en></en>
+				<en>Hooray! It's light again!</en>
 			</title>
 			<description>
 				<de>Die Menschen feiern: die große Dunkelheit, die gestern Nacht einsetzte, ist vorbei! Das Land lag ca. 7 Stunden in Dunkelheit. Seit den Morgenstunden wird es heller.</de>
-				<en></en>
+				<en>People are celebrating: the great darkness that began last night is over! The country lay in darkness for about 7 hours. Since the morning hours it gets brighter.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="49" />
@@ -1708,11 +1710,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="6134da01-d7d0-48dc-94d5-fbe43bd4dda6" thread_id="aebe2cd0-0c5e-4d38-9cca-b2ab634ee4f6" type="0" creator="">
 			<title>
 				<de>Computer Oskar-nominiert</de>
-				<en></en>
+				<en>Computer Oskar-nominated</en>
 			</title>
 			<description>
-				<de>Der amerikanische Computerhersteller EppelWoi staunte nicht schlecht, als ihr Computer für den besten Nebenrollen-Oskar nominiert wurde. </de>
-				<en></en>
+				<de>Der amerikanische Computerhersteller EppelWoi staunte nicht schlecht, als ihr Computer für den besten Nebenrollen-Oskar nominiert wurde.</de>
+				<en>The American computer manufacturer EppelWoi was astonished when her computer was nominated for the Oskar "best supporting role".</en>
 			</description>
 			<effects />
 			<data genre="3" price="1.0" quality="33" />
@@ -1721,11 +1723,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="ab0b9817-e9af-41f1-a5f1-5c83a4c974ea" thread_id="b22b0ecb-78f4-4bfa-a3dd-19cf475d994c" type="0" creator="">
 			<title>
 				<de>Hurrikanwarnung im Schwarzwald</de>
-				<en></en>
+				<en>Hurricane warning in the Black Forest</en>
 			</title>
 			<description>
 				<de>Der Wetterdienst warnt im Schwarzwald vor heftigen Böen bis hin zu hurrikanähnlichen Stürmen.</de>
-				<en></en>
+				<en>The weather service warns of violent gusts and hurricane-like storms in the Black Forest.</en>
 			</description>
 			<effects />
 			<data genre="4" price="0.7" quality="39" />
@@ -1734,11 +1736,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</de>
 		<news id="053b3454-01b7-4e55-9aaa-06e03dd67e12" thread_id="b2b0eae0-e095-4d99-ac01-cb1ff6c98f5c" type="0" creator="">
 			<title>
 				<de>Feministen boykotieren Beachvolleyball</de>
-				<en></en>
+				<en>Feminists boycotting beach volleyball</en>
 			</title>
 			<description>
-				<de>Die Vereinigung der Feministen boykotieren die zur Zeit laufende Beach-Volleyball-Weltmeisterschaft, da die Kleiderordnung zu sexistisch sei.</de>
-				<en></en>
+				<de>Die Vereinigung der Feministen boykottieren die zur Zeit laufende Beach-Volleyball-Weltmeisterschaft, da die Kleiderordnung zu sexistisch sei.</de>
+				<en>The Association of Feminists is boycotting the current World Beach Volleyball Championship because the dress code is too sexist.</en>
 			</description>
 			<effects />
 			<data genre="2" price="0.7" quality="40" />
