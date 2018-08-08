@@ -1749,11 +1749,11 @@ Demonstrations are expected again this year.</en>
 		<news id="d824c05e-00fc-4d4f-a1cd-40a8e7a42085" thread_id="b504e69a-721b-4c1c-838c-fdbd8684dd45" type="0" creator="">
 			<title>
 				<de>Sono Nobelpreisträger</de>
-				<en></en>
+				<en>Sono Nobel Prize winner</en>
 			</title>
 			<description>
 				<de>In seiner langen und anspruchsvollen Rede hat der norwegische König U3-Sänger Sono zum Nobelpreisträger des Friedens ernannt.</de>
-				<en></en>
+				<en>In his long and demanding speech, the Norwegian King has nominated U3 singer Sono a Nobel Peace Prize winner.</en>
 			</description>
 			<effects />
 			<data genre="0" price="0.5" quality="58" />
@@ -1762,11 +1762,11 @@ Demonstrations are expected again this year.</en>
 		<news id="6898a824-d53c-483b-a9c1-80a22129893b" thread_id="b54104bd-758d-4b1b-88e5-77a4816c6754" type="0" creator="">
 			<title>
 				<de>Lottospielen strafbar</de>
-				<en></en>
+				<en>Lottery games punishable by law</en>
 			</title>
 			<description>
 				<de>Nach einem Urteil des Bundesgerichthofes wird das Lottospielen in Deutschland strafbar. 82 Millionen Deutsche betroffen.</de>
-				<en></en>
+				<en>According to a judgement by the Federal Court of Justice, lotto playing in Germany is punishable by law. 82 million Germans affected.</en>
 			</description>
 			<effects />
 			<data genre="0" price="0.5" quality="39" />
@@ -1775,11 +1775,11 @@ Demonstrations are expected again this year.</en>
 		<news id="9e4efc53-e374-4260-9bf6-e3265f6df566" thread_id="b7c32373-4781-4523-97ec-8398933fc8c3" type="0" creator="">
 			<title>
 				<de>Lotto-Jackpot geknackt</de>
-				<en></en>
+				<en>Lotto jackpot cracked</en>
 			</title>
 			<description>
-				<de>Der Jackpot der gestrigen Ziehung geht an eine 97jährige Halbwaise aus Sachsen. Sie sagte zur Presse: `Eine Million bekommt meine Mutter, ich mache eine Kreuzfahrt´.</de>
-				<en></en>
+				<de>Der Jackpot der gestrigen Ziehung geht an eine 97jährige Halbwaise aus Sachsen. Sie sagte zur Presse: „Eine Million bekommt meine Mutter, ich mache eine Kreuzfahrt“.</de>
+				<en>Yesterday's jackpot goes to a 97-year-old half-orphan from Saxony. She told the press: "My mother will receive a million, I'm going on a cruise".</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="a5bba03c-67ff-4070-ad92-e1e663cf33a4" />
@@ -1787,27 +1787,14 @@ Demonstrations are expected again this year.</en>
 			<data genre="4" price="1.0" quality="39" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="5f7ea775-4031-4cf8-8bc0-83c9b0aca07d" thread_id="b7c32373-4781-4523-97ec-8398933fc8c3" type="2" creator="">
-			<title>
-				<de>Jackpot-Rentnerin wieder aufgetaucht</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Die rüstige Sächsin, die Millionen gewann und auf Kreuzfahrt verscholl, ist wieder da: Sie verbrachte die Nacht in den Armen des Schiffsarztes.</de>
-				<en></en>
-			</description>
-			<effects />
-			<data genre="4" price="1.0" quality="26" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
 		<news id="a5bba03c-67ff-4070-ad92-e1e663cf33a4" thread_id="b7c32373-4781-4523-97ec-8398933fc8c3" type="2" creator="">
 			<title>
 				<de>Lottogewinnerin verschollen</de>
-				<en></en>
+				<en>Lottery winner lost</en>
 			</title>
 			<description>
-				<de>Nur einen Tag nach Start der Kreuzfahrt fehlt von der 97jährigen Lottogewinnerin jede Spur. Ein Matrose: `Sie ist vielleicht mit jemandem durchgebrannt?´.</de>
-				<en></en>
+				<de>Nur einen Tag nach Start der Kreuzfahrt fehlt von der 97jährigen Lottogewinnerin jede Spur. Ein Matrose: „Sie ist vielleicht mit jemandem durchgebrannt?“.</de>
+				<en>Just one day after the start of the cruise, the 97-year-old lottery winner is missing a trail. A sailor: "She might have run off with someone?"</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="5f7ea775-4031-4cf8-8bc0-83c9b0aca07d" />
@@ -1815,14 +1802,27 @@ Demonstrations are expected again this year.</en>
 			<data genre="4" price="1.0" quality="27" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
+		<news id="5f7ea775-4031-4cf8-8bc0-83c9b0aca07d" thread_id="b7c32373-4781-4523-97ec-8398933fc8c3" type="2" creator="">
+			<title>
+				<de>Jackpot-Rentnerin wieder aufgetaucht</de>
+				<en>Jackpot pensioner has reappeared</en>
+			</title>
+			<description>
+				<de>Die rüstige Sächsin, die Millionen gewann und auf Kreuzfahrt verscholl, ist wieder da: Sie verbrachte die Nacht in den Armen des Schiffsarztes.</de>
+				<en>The sprightly Saxon woman, who won millions and seemingly lost her life on a cruise, is back: she spent the night in the arms of the ship's doctor.</en>
+			</description>
+			<effects />
+			<data genre="4" price="1.0" quality="26" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
 		<news id="83ba96bc-4560-4ac0-9929-329eb7f68751" thread_id="b900820c-cc68-4ef8-a021-58b56c7414be" type="0" creator="">
 			<title>
 				<de>MIR empfängt fremde Signale</de>
-				<en></en>
+				<en>MIR receives unknown signals</en>
 			</title>
 			<description>
 				<de>Die sowjetische Raumstation hat Signale empfangen, die nicht aus unserem Sonnensystem stammen. Ob es sich um Außerirdische handelt ist noch unklar.</de>
-				<en></en>
+				<en>The Soviet space station has received signals that are not coming from our solar system. Whether they are aliens is still unclear.</en>
 			</description>
 			<effects />
 			<data genre="3" price="0.7" quality="72" />
@@ -1831,11 +1831,11 @@ Demonstrations are expected again this year.</en>
 		<news id="83ba96bc-4560-4ac0-9929-329eb7f68751_2" thread_id="b900820c-cc68-4ef8-a021-58b56c7414be" type="0" creator="">
 			<title>
 				<de>ISS empfängt fremde Signale</de>
-				<en></en>
+				<en>ISS receives unknown signals</en>
 			</title>
 			<description>
 				<de>Die internationale Raumstation hat Signale empfangen, die nicht aus unserem Sonnensystem stammen. Ob es sich um Außerirdische handelt ist noch unklar.</de>
-				<en></en>
+				<en>The International Space Station has received signals that are not coming from our solar system. Whether they are aliens is still unclear.</en>
 			</description>
 			<effects />
 			<data genre="3" price="0.7" quality="72" />
@@ -1844,11 +1844,11 @@ Demonstrations are expected again this year.</en>
 		<news id="d2b527a3-3181-4cbc-baa2-7bd4c7503a74_1" thread_id="baadc4ea-796b-44a2-b4cb-d333f01516ea_1" type="0" creator="">
 			<title>
 				<de>Straßenfeger findet 1.000 Mark</de>
-				<en></en>
+				<en>Street sweeper finds 1,000 marks</en>
 			</title>
 			<description>
-				<de>Besser hätte der Morgen nicht anfangen können: Beim Arbeiten fand ein Straßenfeger in Hamburg 1.000 Mark. "Die wer'n sofort versofff'n", so der Finder.</de>
-				<en></en>
+				<de>Besser hätte der Morgen nicht anfangen können: Beim Arbeiten fand ein Straßenfeger in Hamburg 1.000 Mark. „Die wer'n sofort versofff'n“, so der Finder.</de>
+				<en>The morning couldn't have started better: While working, a street sweeper in Hamburg found 1,000 marks. "They will immediately be used to get drunk" said the finder.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="9c1f0f27-72d6-4bbd-b271-939ab31c3010_1" />
@@ -1859,11 +1859,11 @@ Demonstrations are expected again this year.</en>
 		<news id="9c1f0f27-72d6-4bbd-b271-939ab31c3010_1" thread_id="baadc4ea-796b-44a2-b4cb-d333f01516ea_1" type="2" creator="">
 			<title>
 				<de>Straßenfeger tot</de>
-				<en></en>
+				<en>Street sweeper dead</en>
 			</title>
 			<description>
-				<de>Der Finder des 1.000-Mark-Scheins starb an einer Alkoholvergiftung. Auf seinem Grabstein steht: "...und er kehrt nie wieder!"</de>
-				<en></en>
+				<de>Der Finder des 1.000-Mark-Scheins starb an einer Alkoholvergiftung. Auf seinem Grabstein steht: „...und er kehrt nie wieder!“.</de>
+				<en>The finder of the 1,000 mark bill died of alcohol poisoning. His tombstone says,"...slammed down"</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="19" />
@@ -1872,11 +1872,11 @@ Demonstrations are expected again this year.</en>
 		<news id="d2b527a3-3181-4cbc-baa2-7bd4c7503a74_2" thread_id="baadc4ea-796b-44a2-b4cb-d333f01516ea_2" type="0" creator="">
 			<title>
 				<de>Straßenfeger findet 500 Euro</de>
-				<en></en>
+				<en>Street sweeper finds 500 euro</en>
 			</title>
 			<description>
-				<de>Besser hätte der Morgen nicht anfangen können: Beim Arbeiten fand ein Straßenfeger in Hamburg 500 Euro. "Die wer'n sofort versofff'n", so der Finder.</de>
-				<en></en>
+				<de>Besser hätte der Morgen nicht anfangen können: Beim Arbeiten fand ein Straßenfeger in Hamburg 500 Euro. „Die wer'n sofort versofff'n“, so der Finder.</de>
+				<en>The morning couldn't have started better: While working, a street sweeper in Hamburg found 500 euros. "They will immediately be used to get drunk" said the finder.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="9c1f0f27-72d6-4bbd-b271-939ab31c3010_2" />
@@ -1887,11 +1887,11 @@ Demonstrations are expected again this year.</en>
 		<news id="9c1f0f27-72d6-4bbd-b271-939ab31c3010_2" thread_id="baadc4ea-796b-44a2-b4cb-d333f01516ea_2" type="2" creator="">
 			<title>
 				<de>Straßenfeger tot</de>
-				<en></en>
+				<en>Street sweeper dead</en>
 			</title>
 			<description>
 				<de>Der Finder des 500-Euro-Scheins starb an einer Alkoholvergiftung. Auf seinem Grabstein steht: "...und er kehrt nie wieder!"</de>
-				<en></en>
+				<en>The finder of the 500 euro bill died of alcohol poisoning. His tombstone says,"...slammed down"</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="19" />
@@ -1900,11 +1900,11 @@ Demonstrations are expected again this year.</en>
 		<news id="4177ebd7-888e-4df0-97bd-c74109e81616" thread_id="bae6336f-1755-4619-96b8-9b66f9ff6c7a" type="0" creator="">
 			<title>
 				<de>C&amp;B bankrott</de>
-				<en></en>
+				<en>C&amp;B bankrupt</en>
 			</title>
 			<description>
 				<de>Das Modehaus C&amp;B meldet Insolvenz an. Man sei nicht vom Rentner-Image losgekommen, so der Geschäftsführer.</de>
-				<en></en>
+				<en>Fashion house C&amp;B files for bankruptcy. According to the managing director they were not able to get rid of the the "for pensioners" image.</en>
 			</description>
 			<effects />
 			<data genre="0" price="0.7" quality="29" />
@@ -1913,11 +1913,11 @@ Demonstrations are expected again this year.</en>
 		<news id="2420ee19-a1a3-41fc-97a0-60c77715324a" thread_id="bb84934b-e89e-45ca-88ad-565ad8151996" type="0" creator="">
 			<title>
 				<de>Pflanze frisst Oma</de>
-				<en></en>
+				<en>Plant eats Grandma</en>
 			</title>
 			<description>
 				<de>Die fleischfressende Pflanze wurde der Oma Charlotte D. zum Verhängnis. Die demente Großmutter hatte vergessen, die Pflanze zu füttern.</de>
-				<en></en>
+				<en>The carnivorous plant became the fate of Grandma Charlotte D. The demented grandmother had forgotten to feed the plant.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="14" />
@@ -1927,11 +1927,11 @@ Demonstrations are expected again this year.</en>
 		<news id="34977b2a-b976-48f8-8254-001ebe2263f1" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="0" creator="">
 			<title>
 				<de>Wahlen in Deutschland</de>
-				<en></en>
+				<en>Elections in Germany</en>
 			</title>
 			<description>
 				<de>Am kommenden Sonntag greift Deutschland zum Stimmzettel: Bundestagswahlen. Aktuelle Umfragen scheinen die momentane Regierung zu bestätigen.</de>
-				<en></en>
+				<en>Next Sunday, Germany will reach for the ballot paper - parliamentary elections. Recent polls seem to confirm the current government.</en>
 			</description>
 			<effects>
 				<!-- time type = 3, special weekday, day 6 = saturday, so bring the next on day 5-->
@@ -1943,11 +1943,11 @@ Demonstrations are expected again this year.</en>
 		<news id="cee19a85-bbf4-4d2b-9239-cca90d8d76ad" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
 				<de>Morgen wird gewählt</de>
-				<en></en>
+				<en>Tomorrow: elections!</en>
 			</title>
 			<description>
 				<de>Am Vorabend der Wahl geben sich die Kanzlerkandidaten der großen Volksparteien optimistisch. Eine große Koalition wird von vornherein ausgeschlossen.</de>
-				<en></en>
+				<en>On the eve of the election, the candidates for chancellor of the big people's parties are optimistic. A grand coalition is ruled out from the outset.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="661a9905-912e-4801-ad63-73b9ead7fd78" time="2,1,1,14,17" />
@@ -1959,11 +1959,11 @@ Demonstrations are expected again this year.</en>
 		<news id="661a9905-912e-4801-ad63-73b9ead7fd78" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
 				<de>Desaster in Wahllokalen</de>
-				<en></en>
+				<en>Disasters in polling stations</en>
 			</title>
 			<description>
 				<de>Erste Hochrechnungen ergaben, die Wahlbeteiligung sei so gering wie noch nie. Die Wahllokale wollen sich auch gegen Nachmittag nicht füllen.</de>
-				<en></en>
+				<en>Initial projections have shown that voter turnout has never been so low. The polls won't fill up in the afternoon.</en>
 			</description>
 			<data genre="0" price="0.5" quality="68" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -1971,11 +1971,11 @@ Demonstrations are expected again this year.</en>
 		<news id="34edc95f-49f3-4131-bc39-8ed5cfc293b1" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
 				<de>Wahlen zum Deutschen Bundestag</de>
-				<en></en>
+				<en>Elections to the German parliament</en>
 			</title>
 			<description>
 				<de>Offizielle Zählungen bezeugen: Die Wahlbeteiligung lag bei katastrophalen 28%. Nur eine Koalition aus SPDS und NPDU erreicht die erforderliche Mehrheit.</de>
-				<en></en>
+				<en>Official censuses show that the turnout was a disastrous 28%. Only a coalition of SPDS and NPDU will achieve the necessary majority.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="9c5ec87d-9056-46ca-a38b-58ce5dddf2eb" time="2,1,1,8,17" />
@@ -1986,11 +1986,11 @@ Demonstrations are expected again this year.</en>
 		<news id="9c5ec87d-9056-46ca-a38b-58ce5dddf2eb" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
 				<de>Ratlosigkeit in der Bundesrepublik</de>
-				<en></en>
+				<en>Perplexity in the Federal Republic of Germany</en>
 			</title>
 			<description>
 				<de>Alt-Kanzler Herbert Kuhl merkte angesichts des unmöglichen Wahlergebnisses an, er fühle sich an die Zeiten der Weimarer Republik erinnert.</de>
-				<en></en>
+				<en>Former Chancellor Herbert Kuhl remarked in view of the impossible election result that he felt reminded of the times of the Weimar Republic.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="c3848e4a-6629-4481-b036-7aa9abad6e92"  time="2,2,3,9,17" />
@@ -2001,11 +2001,11 @@ Demonstrations are expected again this year.</en>
 		<news id="c3848e4a-6629-4481-b036-7aa9abad6e92" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
 				<de>Kommen Neuwahlen?</de>
-				<en></en>
+				<en>New elections coming up?</en>
 			</title>
 			<description>
 				<de>Da sich Rechte und Linke aufgrund fehlender Gespräche nicht einig werden konnten, wird nun über Neuwahlen nachgedacht.</de>
-				<en></en>
+				<en>Since right-wing and left-wing could not reach an agreement due to a lack of talks, new elections are now being considered.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="1b87d798-85de-486d-a683-25c11db8c929" time="2,1,1,8,17"  />
@@ -2016,11 +2016,11 @@ Demonstrations are expected again this year.</en>
 		<news id="1b87d798-85de-486d-a683-25c11db8c929" thread_id="c6a7d19b-eab1-4fc4-87eb-c9b4291e6778" type="2" creator="">
 			<title>
 				<de>Rot-Braun an der Macht</de>
-				<en></en>
+				<en>Red-brown in power</en>
 			</title>
 			<description>
 				<de>Nach einem nächtlichen Gipfeltreffen der Parteispitzen von NPDU und SPDS wird es wohl eine Koalition der beiden stärksten deutschen Parteien geben.</de>
-				<en></en>
+				<en>After a night summit meeting of NPDU and SPDS party leaders, there will probably be a coalition of the two strongest German parties.</en>
 			</description>
 			<effects />
 			<data genre="0" price="0.5" quality="88" />
@@ -2030,11 +2030,11 @@ Demonstrations are expected again this year.</en>
 		<news id="99fe6727-f9ea-4a1d-89b5-928a655b1695" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="0" creator="">
 			<title>
 				<de>Schweres Erdbeben in San Francisco</de>
-				<en></en>
+				<en>Severe earthquake in San Francisco</en>
 			</title>
 			<description>
 				<de>Ein Erdbeben der Stärke 8,4 auf der Richterskala erschüttert San Francisco. Mehr als 10000 Menschen werden vermisst.</de>
-				<en></en>
+				<en>An 8.4 magnitude earthquake on the Richter scale shocks San Francisco. More than 10,000 people are missing.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="f9a45fff-1546-ffa8-aa8a6ddb4880ad7f3" />
@@ -2045,11 +2045,11 @@ Demonstrations are expected again this year.</en>
 		<news id="f9a45fff-1546-ffa8-aa8a6ddb4880ad7f3" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
 			<title>
 				<de>Ausnahmezustand in San Francisco</de>
-				<en></en>
+				<en>Emergency in San Francisco</en>
 			</title>
 			<description>
 				<de>Nach dem Erdbeben in San Francisco erklärt Bürgermeister Cole den Ausnahmezustand, um das Chaos unter Kontrolle zu bringen.</de>
-				<en></en>
+				<en>After the San Francisco earthquake, Mayor Cole declares a state of emergency to bring the chaos under control.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="d8e0085f-2835-48e3-b0a8-4ab489f277f2" />
@@ -2060,10 +2060,10 @@ Demonstrations are expected again this year.</en>
 		<news id="d8e0085f-2835-48e3-b0a8-4ab489f277f2" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
 			<title>
 				<de>Pausenlose Suche nach Verschütteten</de>
-				<en></en>
+				<en>Uninterrupted search for buried victims</en>
 			</title>
 			<description>
-				<de>Hunderte Einsatzkräfte graben sich vorsichtig zu den Verschütteten durch. Mehr als 1000 Menschen konnten bereits lebend geborgen werden.</de>
+				<de>Hundreds of emergency forces carefully dig their way through to the victims. More than 1000 people have already been recovered alive.</de>
 				<en></en>
 			</description>
 			<effects>
@@ -2075,11 +2075,11 @@ Demonstrations are expected again this year.</en>
 		<news id="3b01bf6c-1551-4fc7-b196-d129cce1f7a5" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
 			<title>
 				<de>Erdbeben: Bereits 1500 Tote</de>
-				<en></en>
+				<en>Earthquake: Already 1500 dead</en>
 			</title>
 			<description>
-				<de>Beim Erdbeben in San Francisco wurden bereits mehr als 1500 Menschen Tod geborgen. Mehr als 2000 werden noch vermisst.</de>
-				<en></en>
+				<de>Beim Erdbeben in San Francisco wurden bereits mehr als 1500 Menschen tot geborgen. Mehr als 2000 werden noch vermisst.</de>
+				<en>The San Francisco earthquake has already found more than 1,500 people dead. More than 2000 are still missing.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="64897c07-0f8a-4f2e-ae52-e09ec7295066" />
@@ -2090,11 +2090,11 @@ Demonstrations are expected again this year.</en>
 		<news id="64897c07-0f8a-4f2e-ae52-e09ec7295066" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
 			<title>
 				<de>Erdbeben: Hoffnung schwindet</de>
-				<en></en>
+				<en>Earthquake: Hope is fading</en>
 			</title>
 			<description>
 				<de>Nach dem Erdbeben in San Francisco sinkt die Hoffnung noch sehr viele Überlebende zu finden. Die Zahl der Opfer steigt auf über 2000.</de>
-				<en></en>
+				<en>After the San Francisco earthquake, there is little hope of finding many more survivors. The number of victims rises to over 2000.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="e023198f-1705-46b7-aee4-ce17880e65b3" />
@@ -2105,11 +2105,11 @@ Demonstrations are expected again this year.</en>
 		<news id="e023198f-1705-46b7-aee4-ce17880e65b3" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
 			<title>
 				<de>Nachbeben in San Francisco</de>
-				<en></en>
+				<en>Aftershocks in San Francisco</en>
 			</title>
 			<description>
-				<de>Erneut bebte die Erde in San Francisco mit der Stärke 4,2. Panik brach jedoch keine aus, die Suchaktionen laufen weiter. </de>
-				<en></en>
+				<de>Erneut bebte die Erde in San Francisco mit der Stärke 4,2. Panik brach jedoch keine aus, die Suchaktionen laufen weiter.</de>
+				<en>Once again the earth in San Francisco trembled with a magnitude of 4.2, but none panicked, the searches continue.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="1aad1ce7-966c-4d3b-a6d1-1a0ece958440" />
@@ -2119,12 +2119,12 @@ Demonstrations are expected again this year.</en>
 		</news>
 		<news id="1aad1ce7-966c-4d3b-a6d1-1a0ece958440" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
 			<title>
-				<de>Erdbeben: Suche Eingestellt</de>
-				<en></en>
+				<de>Erdbeben: Suche eingestellt</de>
+				<en>Earthquake: Search stopped</en>
 			</title>
 			<description>
 				<de>Nach dem Erdbeben in San Francisco wird die Suche nach überlebenden eingestellt. "Es besteht eigentlich keine Hoffnung mehr", so ein Helfer.</de>
-				<en></en>
+				<en>After the San Francisco earthquake the search for survivors is stopped. "There's actually no hope," says one of the helpers.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="fd620ae0-8d62-4243-83f2-b36b024d3594" />
@@ -2135,11 +2135,11 @@ Demonstrations are expected again this year.</en>
 		<news id="fd620ae0-8d62-4243-83f2-b36b024d3594" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
 			<title>
 				<de>Erdbeben: Klopfzeichen gehört</de>
-				<en></en>
+				<en>Earthquake: knocking signs!</en>
 			</title>
 			<description>
-				<de>Ein kleiner Junge hat unter den Erdbebentrümmern in San Francisco Klopfzeichen vernommen. Die Suche nach Überlebenden geht somit weiter. </de>
-				<en></en>
+				<de>Ein kleiner Junge hat unter den Erdbebentrümmern in San Francisco Klopfzeichen vernommen. Die Suche nach Überlebenden geht somit weiter.</de>
+				<en>A little boy was knocking under the earthquake debris in San Francisco. The search for survivors thus continues.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="565d023d-7826-47c9-a9cd-bb36ed847c73" />
@@ -2150,41 +2150,26 @@ Demonstrations are expected again this year.</en>
 		<news id="565d023d-7826-47c9-a9cd-bb36ed847c73" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
 			<title>
 				<de>Erdbeben: Überlebende gefunden</de>
-				<en></en>
+				<en>Earthquake: Survivors found</en>
 			</title>
 			<description>
-				<de>7 Menschen konnten heute lebend aus den Erdbebentrümmern in San Francisco befreit werden. Erschöpft harrten Sie in einem unterirdischen Tunnel aus.</de>
-				<en></en>
-			</description>
-			<effects>
-				<effect trigger="happen" type="triggernews" news="faa9ad4d-7422-dfd9-ffdd-a7af5a747c44" />
-			</effects>
-			<data genre="4" price="1.0" quality="88" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
-		<news id="faa9ad4d-7422-dfd9-ffdd-a7af5a747c44" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
-			<title>
-				<de>Erdbeben: Bürgermeister macht Mut</de>
-				<en></en>
-			</title>
-			<description>
-				<de>7 Menschen konnten heute lebend aus den Erdbebentrümmern in San Francisco befreit werden. Erschöpft harrten Sie in einem unterirdischen Tunnel aus.</de>
-				<en></en>
+				<de>7 Menschen konnten heute lebend aus den Erdbebentrümmern in San Francisco befreit werden. Erschöpft harrten sie in einem unterirdischen Tunnel aus.</de>
+				<en>7 people were freed alive today from the earthquake debris in San Francisco. Exhausted, they remained in an underground tunnel.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="aa493fff-2456-ffa3-fa4a-a7bc4e7cc5a3" />
 			</effects>
-			<data genre="4" price="1.0" quality="78" />
+			<data genre="4" price="1.0" quality="88" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
 		<news id="aa493fff-2456-ffa3-fa4a-a7bc4e7cc5a3" thread_id="c82d429c-fa85-4771-b661-7181b4607c9f" type="2" creator="">
 			<title>
 				<de>Erdbeben: Aufräumarbeiten beendet</de>
-				<en></en>
+				<en>Earthquake: Cleanup finished</en>
 			</title>
 			<description>
 				<de>Nach dem Erdbeben in San Francisco sind die Aufräumarbeiten beendet. Bei dem Erdbeben wurden insgesamt 3971 Menschen getötet.</de>
-				<en></en>
+				<en>After the San Francisco earthquake the clean-up work is finished. The earthquake killed a total of 3971 people.</en>
 			</description>
 			<data genre="4" price="1.0" quality="73" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -2193,11 +2178,11 @@ Demonstrations are expected again this year.</en>
 		<news id="64d0b36d-2dda-4ab5-af7f-e9087c35e1ea" thread_id="ccb647c9-025f-4a00-876b-0b95ea303d7c" type="0" creator="">
 			<title>
 				<de>Massenschlägerei in Berliner Diskothek</de>
-				<en></en>
+				<en>Mass brawl in Berlin discotheque</en>
 			</title>
 			<description>
 				<de>In einer Berliner Diskothek kam es heute Nacht zu einer Massenschlägerei. Grund: jemand hatte nach einem Schluck sein Glas in die Bowle zurückgeschüttet.</de>
-				<en></en>
+				<en>There was a mass brawl at a discotheque in Berlin last night. Reason: someone had poured his glass back into the punch bowl after a sip.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="29" />
@@ -2206,11 +2191,11 @@ Demonstrations are expected again this year.</en>
 		<news id="dfd40ed6-dbae-4c7a-9128-8d2befb589f0" thread_id="d259cc83-9c13-438c-a990-1076d6892e60" type="0" creator="">
 			<title>
 				<de>Computerspiel zerstört PC</de>
-				<en></en>
+				<en>Computer game destroys PC</en>
 			</title>
 			<description>
 				<de>Das Spiel "Rasante Geschwindigkeiten 12" des Herstellers Elektromerz hat bei einem Zocker die Grafikkarte zerstört. Sie sei in Flammen aufgegangen.</de>
-				<en></en>
+				<en>The game "Whirlwind Speeds 12" by Elektromerz destroyed the graphics card of a gamer. It burst into flames.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="0e8af79d-2b80-4802-884e-bcaa3b70ed22" />
@@ -2221,11 +2206,11 @@ Demonstrations are expected again this year.</en>
 		<news id="0e8af79d-2b80-4802-884e-bcaa3b70ed22" thread_id="d259cc83-9c13-438c-a990-1076d6892e60" type="2" creator="">
 			<title>
 				<de>Mehrere Zockeropfer melden sich</de>
-				<en></en>
+				<en>Several gamer victims reach out</en>
 			</title>
 			<description>
-				<de>Die Zahl der Opfer, deren PCs explodiert sind, steigt von Stunde zu Stunde. Elektromerz schweigt zu den Vorfällen.  </de>
-				<en></en>
+				<de>Die Zahl der Opfer, deren PCs explodiert sind, steigt von Stunde zu Stunde. Elektromerz schweigt zu den Vorfällen.</de>
+				<en>The number of victims whose PCs have exploded is increasing by the hour. Elektromerz remains silent about the incidents.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="f6890750-2d10-44cd-822c-52e09bcc431c" />
@@ -2233,27 +2218,14 @@ Demonstrations are expected again this year.</en>
 			<data genre="3" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
-		<news id="a8aab24e-fbaa-4fa0-b815-5b4b3a6aca35" thread_id="d259cc83-9c13-438c-a990-1076d6892e60" type="2" creator="">
-			<title>
-				<de>PC-Explosionen nur PR-Gag</de>
-				<en></en>
-			</title>
-			<description>
-				<de>Wie Elektromerz mitteilte, habe man die Hersteller von Computerkomponenten zwingen wollen, optische Rechner anzubieten.</de>
-				<en></en>
-			</description>
-			<effects />
-			<data genre="3" price="1.0" quality="29" />
-			<conditions year_range_from="-1" year_range_to="-1" />
-		</news>
 		<news id="f6890750-2d10-44cd-822c-52e09bcc431c" thread_id="d259cc83-9c13-438c-a990-1076d6892e60" type="2" creator="">
 			<title>
 				<de>PC-Explosionen sind Absicht!</de>
-				<en></en>
+				<en>PC explosions are intentional!</en>
 			</title>
 			<description>
 				<de>Wie ein Sprecher des Herstellers Elektromerz mitteilte, seien die PC-Brände absichtlich geschehen. Die Leistung moderner Rechner wäre zu schwach.</de>
-				<en></en>
+				<en>According to a spokesman for the manufacturer Elektromerz, the PC fires were intentional. The performance of modern computers would be too weak.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="de5a8f0e-3445-432d-987d-56d998d173b6" />
@@ -2264,11 +2236,11 @@ Demonstrations are expected again this year.</en>
 		<news id="de5a8f0e-3445-432d-987d-56d998d173b6" thread_id="d259cc83-9c13-438c-a990-1076d6892e60" type="2" creator="">
 			<title>
 				<de>Zockeropfer werden entschädigt</de>
-				<en></en>
+				<en>Gamer victims are compensated</en>
 			</title>
 			<description>
 				<de>Zockeropfer, deren PCs explodiert sind, werden finanziell entschädigt. PC-Hersteller bieten optische Rechner an, damit das Spiel auch läuft.</de>
-				<en></en>
+				<en>Gamer victims whose PCs exploded will receive financial compensation. PC manufacturers offer optical computers to keep the game running.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="a8aab24e-fbaa-4fa0-b815-5b4b3a6aca35" />
@@ -2276,14 +2248,27 @@ Demonstrations are expected again this year.</en>
 			<data genre="3" price="1.0" quality="29" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
+		<news id="a8aab24e-fbaa-4fa0-b815-5b4b3a6aca35" thread_id="d259cc83-9c13-438c-a990-1076d6892e60" type="2" creator="">
+			<title>
+				<de>PC-Explosionen nur PR-Gag</de>
+				<en>PC explosions only PR gag</en>
+			</title>
+			<description>
+				<de>Wie Elektromerz mitteilte, habe man die Hersteller von Computerkomponenten zwingen wollen, optische Rechner anzubieten.</de>
+				<en>According to Elektromerz, the manufacturers of computer components were forced to offer optical computers.</en>
+			</description>
+			<effects />
+			<data genre="3" price="1.0" quality="29" />
+			<conditions year_range_from="-1" year_range_to="-1" />
+		</news>
 		<news id="11dc4748-f11f-45b6-9a4e-b2dfa6b8abfd" thread_id="d33d8133-e1a8-4660-a1c8-fc2272fb8448" type="0" creator="">
 			<title>
 				<de>Kohlegrills Sommer-Verkaufsschlager</de>
-				<en></en>
+				<en>Coal grills summer bestseller</en>
 			</title>
 			<description>
-				<de>Aufgrund des heissen Sommers verbuchten die Hersteller von Grills einen 363%igen Boom.   </de>
-				<en></en>
+				<de>Aufgrund des heissen Sommers verbuchten die Hersteller von Grills einen 363%igen Boom.</de>
+				<en>Due to the hot summer, barbecue manufacturers recorded a 363% boom.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.1" quality="12" />
@@ -2292,11 +2277,11 @@ Demonstrations are expected again this year.</en>
 		<news id="a6ac4b6c-83a0-433a-9336-c7256b6e3165" thread_id="d4c54bd0-cecf-4f40-bb10-7cda64543f3d" type="0" creator="">
 			<title>
 				<de>Tageszeitungen werden abgeschafft</de>
-				<en></en>
+				<en>Daily newspapers are abolished</en>
 			</title>
 			<description>
 				<de>Ein toller Schritt Richtung Umweltschutz, kommentierte der deutsche Umweltminister. Tageszeitungen gibt es ab sofort nur noch online.</de>
-				<en></en>
+				<en>A great step towards environmental protection, commented the German Environment Minister. From now on, daily newspapers are only available online.</en>
 			</description>
 			<effects />
 			<data genre="3" price="1.0" quality="39" />
@@ -2305,11 +2290,11 @@ Demonstrations are expected again this year.</en>
 		<news id="a6ac4b6c-83a0-433a-9336-c7256b6e3165_2" thread_id="d4c54bd0-cecf-4f40-bb10-7cda64543f3d" type="0" creator="">
 			<title>
 				<de>Tageszeitungen werden abgeschafft</de>
-				<en></en>
+				<en>Daily newspapers are abolished</en>
 			</title>
 			<description>
 				<de>Ein toller Schritt Richtung Umweltschutz, kommentierte der deutsche Umweltminister. Tageszeitungen gibt es ab sofort nur noch per Bildschirmtext.</de>
-				<en></en>
+				<en>A great step towards environmental protection, commented the German Environment Minister. From now on, daily newspapers are only available via teletext.</en>
 			</description>
 			<effects />
 			<data genre="3" price="1.0" quality="39" />
@@ -2318,11 +2303,11 @@ Demonstrations are expected again this year.</en>
 		<news id="a008bb9e-8e06-4b59-84ff-5bd46f3bc1d2" thread_id="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="0" creator="">
 			<title>
 				<de>Michel Bollock will weg</de>
-				<en></en>
+				<en>Michel Bollock wants to leave</en>
 			</title>
 			<description>
 				<de>Fußballstar Bollock hat keine Lust mehr auf Bayerische Weißwurst und Bier. Manager Hochness meint: „Michel kann gehen, wenn die Ablösesumme stimmt“.</de>
-				<en></en>
+				<en>Soccer star Bollock is tired of Bavarian veal sausage and beer. Manager Hochness says: "Michel can leave if the transfer fee is right".</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="571543da-edcb-48c5-866d-e978491be0b9" time="2,1,1,7-15" />
@@ -2332,12 +2317,12 @@ Demonstrations are expected again this year.</en>
 		</news>
 		<news id="571543da-edcb-48c5-866d-e978491be0b9" thread_id="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
 			<title>
-				<de>Real will Bollock haben </de>
-				<en></en>
+				<de>Real will Bollock haben</de>
+				<en>Real wants Bollock</en>
 			</title>
 			<description>
 				<de>Die Königlichen haben Interesse an Bayernstar Bollock. Die Blöd-Zeitung spricht von 60 Mio € Ablöse und 10 Mio € Jahresgehalt.</de>
-				<en></en>
+				<en>Real is interested in Bavaria-star Bollock. The newspaper Blöd-Zeitung speaks of €60 Mio redemption and €10 Mio annual salary.</en>
 			</description>
 			<effects>
 				<!-- this news is triggered some hours afterwards -->
@@ -2349,11 +2334,11 @@ Demonstrations are expected again this year.</en>
 		<news id="ef0b1006-b2ce-41b9-a783-1b556124df40" thread_id="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
 			<title>
 				<de>Hochness verbessert Angebot</de>
-				<en></en>
+				<en>Hochness improves offer</en>
 			</title>
 			<description>
 				<de>Manager Hochness kontert auf das Real-Angebot und bietet Bollock 7 Mio € Jahresgehalt. „Mehr ist nicht drin“, so Hochness.</de>
-				<en></en>
+				<en>Manager Hochness countered the Real offer and offered Bollock an annual salary of €7 million. "There's nothing more to it," says Hochness.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="a4138dc1-9369-4735-9377-64a569cde6dc" time="2,1,1,12,18" />
@@ -2364,11 +2349,11 @@ Demonstrations are expected again this year.</en>
 		<news id="a4138dc1-9369-4735-9377-64a569cde6dc" thread_id="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
 			<title>
 				<de>Bollock und Real einigen sich</de>
-				<en></en>
+				<en>Bollock and Real reached an agreement</en>
 			</title>
 			<description>
 				<de>Wie die Blöd-Zeitung berichtet ist der Wechsel des Bayern-Star zu den Königlichen perfekt. Manager Hochness dementiert: „Ich weiß von nichts“.</de>
-				<en></en>
+				<en>As the newspaper Blöd-Zeitung reports, the change from the Bavarian star to Real is perfect. Manager Hochness denies: "I know nothing".</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="e2ec64a7-fc37-4a07-b567-1f7761821df7" time="2,1,2,8,20" />
@@ -2379,11 +2364,11 @@ Demonstrations are expected again this year.</en>
 		<news id="e2ec64a7-fc37-4a07-b567-1f7761821df7" thread_id="d89029e7-9fa4-43d0-9f59-9704c818e63e" type="2" creator="">
 			<title>
 				<de>Hochness bestätigt nun doch Wechsel</de>
-				<en></en>
+				<en>Hochness confirms change now</en>
 			</title>
 			<description>
 				<de>Michel Bollock wechselt ab nächse Saison für 75 Mio € Ablöse zu Real. Hochness reibt sich die Hände: „Für das Geld bekommen wir 2 neue Bollocks.“</de>
-				<en></en>
+				<en>Michel Bollock will switch to Real next season for €75 million. Hochness rubs his hands: "For the money we get 2 new Bollocks."</en>
 			</description>
 			<data genre="2" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -2391,12 +2376,12 @@ Demonstrations are expected again this year.</en>
 
 		<news id="3a5e6a8d-a0ee-4175-ba92-a5bada7cf291" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="0" creator="">
 			<title>
-				<de>Semmelgerste erwischt - 3,6 Promille </de>
-				<en></en>
+				<de>Semmelgerste erwischt - 3,6 Promille</de>
+				<en>Semmelgerste caught - 3.6 alcohol level</en>
 			</title>
 			<description>
 				<de>Schauspieler Martin Semmelgerste muss wegen Trunkenheit am Steuer für 6 Monate den Führerschein abgeben. Die Polizei stoppte ihn mit 3,6 Promille.</de>
-				<en></en>
+				<en>Actor Martin Semmelgerste has to surrender his driving licence for 6 months due to drunk driving. The police stopped him at 3.6 promille.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="f67941dc-54a1-428f-b3c0-c58d7877aa85" time="2,2,4,5,17" />
@@ -2407,11 +2392,11 @@ Demonstrations are expected again this year.</en>
 		<news id="f67941dc-54a1-428f-b3c0-c58d7877aa85" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
 			<title>
 				<de>Semmelgerste erneut erwischt</de>
-				<en></en>
+				<en>Semmelgerste caught again</en>
 			</title>
 			<description>
-				<de>Martin Semmelgerste war trotz Führerscheintzug mit dem PKW unterwegs. Der Polizei sagte er: "Habt ihr nichts besseres zu tun als mich anzuhalten?"</de>
-				<en></en>
+				<de>Martin Semmelgerste war trotz Führerscheinentzug mit dem PKW unterwegs. Der Polizei sagte er: „Habt ihr nichts besseres zu tun als mich anzuhalten?“</de>
+				<en>Martin Semmelgerste was travelling by car despite his driving licence revoked. He said to the police, "Instead of stopping me: Get a life!"</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="b0dca345-b75e-4d34-97c1-9467339cdbb0" time="2,1,1,3,22" />
@@ -2422,11 +2407,11 @@ Demonstrations are expected again this year.</en>
 		<news id="b0dca345-b75e-4d34-97c1-9467339cdbb0" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
 			<title>
 				<de>Semmelgerste kann es nicht lassen.</de>
-				<en></en>
+				<en>Semmelgerste can't help it</en>
 			</title>
 			<description>
-				<de>Erneut ertappte die Polizei den Schauspieler ohne Führerschein am Steuer. Semmelgerste droht nun sogar eine Gefängnisstrafe. </de>
-				<en></en>
+				<de>Erneut ertappte die Polizei den Schauspieler ohne Führerschein am Steuer. Semmelgerste droht nun sogar eine Gefängnisstrafe.</de>
+				<en>Once again, police caught the actor driving without a license. Semmelgerste now even threatens a prison sentence.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="89857ce2-b83a-4f36-97da-5a780db79d03" time="2,1,2,9,17"  />
@@ -2437,11 +2422,11 @@ Demonstrations are expected again this year.</en>
 		<news id="89857ce2-b83a-4f36-97da-5a780db79d03" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
 			<title>
 				<de>Semmelgerste - Gerichtsurteil</de>
-				<en></en>
+				<en>Semmelgerste - Court decision</en>
 			</title>
 			<description>
 				<de>Martin Semmelgerste wird zu 6 Monaten auf Bewährung verurteilt. Außerdem verlängert sich sein Führerscheinentzug auf 12 Monate.</de>
-				<en></en>
+				<en>Martin Semmelgerste is sentenced to 6 months on probation. In addition, his driving licence revocation is extended to 12 months.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="af1d00d5-19bd-4135-8e66-46263735f688"  time="2,1,1,5,22" />
@@ -2452,11 +2437,11 @@ Demonstrations are expected again this year.</en>
 		<news id="af1d00d5-19bd-4135-8e66-46263735f688" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
 			<title>
 				<de>Semmelgerste uneinsichtig</de>
-				<en></en>
+				<en>BSemmelgerste undiscerning</en>
 			</title>
 			<description>
 				<de>Im Interview mit der Blöd am Sonntag sagte Martin Semmelgerste, dass er auch in Zukunft mit dem Auto fahren will. Die Polizei ist vorbereitet.</de>
-				<en></en>
+				<en>In an interview with "Blöd on Sunday", Martin Semmelgerste said that he wants to continue driving in the future. The police is prepared.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="91a7a88b-b4ff-47b3-b709-6e98d6232cbb" time="1,8,19" />
@@ -2467,11 +2452,11 @@ Demonstrations are expected again this year.</en>
 		<news id="91a7a88b-b4ff-47b3-b709-6e98d6232cbb" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
 			<title>
 				<de>Semmelgerste will keinen Chauffeur</de>
-				<en></en>
+				<en>Semmelgerste doesn't want a chauffeur</en>
 			</title>
 			<description>
-				<de>Nach dem Führerscheinskandal haben sich hunderte PKW-Fahrer bei Semmelgerste als Chauffeur beworben. Vergeblich, ihm ist schon das Busgeld zu teuer. </de>
-				<en></en>
+				<de>Nach dem Führerscheinskandal haben sich hunderte PKW-Fahrer bei Semmelgerste als Chauffeur beworben. Vergeblich, ihm ist schon das Busgeld zu teuer.</de>
+				<en>After the driving licence scandal, hundreds of car drivers applied to Semmelgerste as chauffeurs. In vain, the ticket for a bus is already too expensive for him.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="a0104185-2bc8-4b05-90e1-383418c8d66d" time="2,1,3,5,23" />
@@ -2481,12 +2466,12 @@ Demonstrations are expected again this year.</en>
 		</news>
 		<news id="a0104185-2bc8-4b05-90e1-383418c8d66d" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
 			<title>
-				<de>Stur, sturer - Semmelgerste </de>
-				<en></en>
+				<de>Stur, sturer - Semmelgerste</de>
+				<en>Mulish Semmelgerste</en>
 			</title>
 			<description>
 				<de>Mit 1,4 Promille stoppte die Polizei heute erneut den führerscheinlosen Schauspieler. Durch seine Bewährung ist nun mit einer Haftstrafe zu rechnen.</de>
-				<en></en>
+				<en>Today police stopped the actor again - with 1.4 promille and still without a driver's license. His parole is now expected to result in a prison sentence.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="7fed1494-c4fb-44b1-842f-c6caf08ce376" time="2,1,1,9,13"  />
@@ -2497,11 +2482,11 @@ Demonstrations are expected again this year.</en>
 		<news id="7fed1494-c4fb-44b1-842f-c6caf08ce376" thread_id="d8ca951a-2240-488a-8913-ddb5b75c8add" type="2" creator="">
 			<title>
 				<de>Semmelgerste - 6 Monate Haft</de>
-				<en></en>
+				<en>Semmelgerste - 6 months imprisonment</en>
 			</title>
 			<description>
 				<de>Richterin B. Salosch verurteilte heute Martin Semmelgerste zu 6 Monaten Haft ohne Bewährung. Sein Rechtsanwalt besteht jedoch auf einen Fahrsimulator.</de>
-				<en></en>
+				<en>Judge B. Salosch today sentenced Martin Semmelgerste to 6 months in prison without parole. However, his lawyer insists on a driving simulator.</en>
 			</description>
 			<effects />
 			<data genre="1" price="1.0" quality="29" />
@@ -2511,11 +2496,11 @@ Demonstrations are expected again this year.</en>
 		<news id="fded6521-4bc8-400a-8b97-0749573812d1" thread_id="dcb76d49-9b99-41f1-9020-54d3f1f22ff7" type="0" creator="">
 			<title>
 				<de>Terroristen nur noch mit GPS?</de>
-				<en></en>
+				<en>Terrorists only with GPS?</en>
 			</title>
 			<description>
 				<de>Da sich so viele Terroristen bei Anschlägen auf Duban verirren, sollten sie ab sofort mit GPS ausgestattet werden. Dieses Gerücht wurde im Internet gefunden.</de>
-				<en></en>
+				<en>Since so many terrorists get lost in attacks on Duban, they should now be equipped with GPS. This rumor was found on the Internet.</en>
 			</description>
 			<data genre="0" price="1.0" quality="21" />
 			<conditions year_range_from="-1" year_range_to="-1" />
@@ -2523,11 +2508,11 @@ Demonstrations are expected again this year.</en>
 		<news id="05cb2eba-bad9-424c-920e-5d2772497069" thread_id="de6fcb92-7b35-4a6a-9daf-7d5904d622fa" type="0" creator="">
 			<title>
 				<de>Polnischer Minister: Helme für alle!</de>
-				<en></en>
+				<en>Polish Minister: Helmets for everyone!</en>
 			</title>
 			<description>
 				<de>Der polnische Verkehrsminister will das Tragen von Helmen zur Pflicht machen. Davon betroffen wären alle Fußgänger.</de>
-				<en></en>
+				<en>The Polish Transport Minister wants to make wearing helmets compulsory. This would affect all pedestrians.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="94c8810c-b24b-44f2-a88a-3fb3d49fac22" />
@@ -2538,11 +2523,11 @@ Demonstrations are expected again this year.</en>
 		<news id="94c8810c-b24b-44f2-a88a-3fb3d49fac22" thread_id="de6fcb92-7b35-4a6a-9daf-7d5904d622fa" type="2" creator="">
 			<title>
 				<de>Polnischer Minister tritt zurück</de>
-				<en></en>
+				<en>Polish minister resigns</en>
 			</title>
 			<description>
 				<de>Nachdem Journalisten herausfanden, dass der polnische Verkehrsminister Inhaber einer Helmfabrik ist, tritt dieser nun zurück.</de>
-				<en></en>
+				<en>After journalists found out that the Polish Minister of Transport owns a helmet factory, he now resigns.</en>
 			</description>
 			<effects />
 			<data genre="0" price="0.7" quality="48" />
@@ -2552,11 +2537,11 @@ Demonstrations are expected again this year.</en>
 		<news id="e730d750-5b8f-4f10-a7c5-86936521de82" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b" type="0" creator="">
 			<title>
 				<de>Programmierer klaut bei Beate Ohse</de>
-				<en></en>
+				<en>Programmer steals from Beate Ohse</en>
 			</title>
 			<description>
 				<de>Der TVTower-Entwickler R. hat beim norddeutschen Erotikhaus eine Gummipuppe mit USB-Anschluss geklaut. Seine Fans sind schockiert.</de>
-				<en></en>
+				<en>The TVTower developer R. has stolen a rubber doll with USB connection from the North German erotic house. His fans are shocked.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="b368f82c-392c-47d5-b494-f8bfe9029c25" />
@@ -2567,11 +2552,11 @@ Demonstrations are expected again this year.</en>
 		<news id="b368f82c-392c-47d5-b494-f8bfe9029c25" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b" type="2" creator="">
 			<title>
 				<de>Anzeige gegen Entwickler Ron</de>
-				<en></en>
+				<en>Developer Ron reported to the police</en>
 			</title>
 			<description>
 				<de>Der Erotikkonzern Ohse erstattet Anzeige gegen den TVTower-Programmierer. Nach dem Diebstahl der USB-Gummipuppe drohen Ron bis zu 2 Jahre Haft.</de>
-				<en></en>
+				<en>The erotic company Ohse files a complaint against the TVTower programmer. After the theft of the USB rubber doll Ron is threatened with up to 2 years imprisonment.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="0edca939-dbee-41f9-a1bf-8bec9b7718fb" />
@@ -2582,11 +2567,11 @@ Demonstrations are expected again this year.</en>
 		<news id="0edca939-dbee-41f9-a1bf-8bec9b7718fb" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b" type="2" creator="">
 			<title>
 				<de>Fans sammeln für Ron</de>
-				<en></en>
+				<en>Fans collect for Ron</en>
 			</title>
 			<description>
-				<de>Nach dem USB-Gummipuppenskandal sammeln die TVTower-Fans Geld für die Gerichtskosten: "Wir können doch unseren Ron nicht im Stich lassen."</de>
-				<en></en>
+				<de>Nach dem USB-Gummipuppenskandal sammeln die TVTower-Fans Geld für die Gerichtskosten: „Wir können doch unseren Ron nicht im Stich lassen.“</de>
+				<en>After the USB rubber doll scandal, TVTower fans collect money for the court costs: "We can't maroon our Ron."</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="ff1f0a05-040c-4930-a314-12784ce12177" />
@@ -2597,11 +2582,11 @@ Demonstrations are expected again this year.</en>
 		<news id="ff1f0a05-040c-4930-a314-12784ce12177" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b" type="2" creator="">
 			<title>
 				<de>Freispruch für Programmierer</de>
-				<en></en>
+				<en>Acquittal for programmer</en>
 			</title>
 			<description>
-				<de>Entwickler Ron wurde im Gummipuppenfall freigesprochen. Richter Peterson outete sich als TVTower-Fan und forderte USB-Gummipuppen für Alle. </de>
-				<en></en>
+				<de>Entwickler Ron wurde im Gummipuppenfall freigesprochen. Richter Peterson outete sich als TVTower-Fan und forderte USB-Gummipuppen für Alle.</de>
+				<en>Developer Ron was acquitted in the rubber doll case. Judge Peterson outed himself as a TVTower fan and demanded USB rubber dolls for everyone.</en>
 			</description>
 			<effects />
 			<data genre="4" price="0.7" quality="48" />
@@ -2611,11 +2596,11 @@ Demonstrations are expected again this year.</en>
 		<news id="e730d750-5b8f-4f10-a7c5-86936521de82_2" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b_2" type="0" creator="">
 			<title>
 				<de>Programmierer klaut bei Beate Ohse</de>
-				<en></en>
+				<en>Programmer steals from Beate Ohse</en>
 			</title>
 			<description>
 				<de>Der TVTower-Entwickler R. hat beim norddeutschen Erotikhaus eine Gummipuppe mit RS-232-Anschluss geklaut. Seine Fans sind schockiert.</de>
-				<en></en>
+				<en>The TVTower developer R. has stolen a rubber doll with RS-232-port from the North German erotic house. His fans are shocked.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="b368f82c-392c-47d5-b494-f8bfe9029c25_2" />
@@ -2626,11 +2611,11 @@ Demonstrations are expected again this year.</en>
 		<news id="b368f82c-392c-47d5-b494-f8bfe9029c25_2" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b_2" type="2" creator="">
 			<title>
 				<de>Anzeige gegen Entwickler Ron</de>
-				<en></en>
+				<en>Developer Ron reported to the police</en>
 			</title>
 			<description>
 				<de>Der Erotikkonzern Ohse erstattet Anzeige gegen den TVTower-Programmierer. Nach dem Diebstahl der Com-Port-Gummipuppe drohen Ron bis zu 2 Jahre Haft.</de>
-				<en></en>
+				<en>The erotic company Ohse files a complaint against the TVTower programmer. After the theft of the Com-port-rubber doll Ron is threatened with up to 2 years imprisonment.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="0edca939-dbee-41f9-a1bf-8bec9b7718fb_2" />
@@ -2641,11 +2626,11 @@ Demonstrations are expected again this year.</en>
 		<news id="0edca939-dbee-41f9-a1bf-8bec9b7718fb_2" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b_2" type="2" creator="">
 			<title>
 				<de>Fans sammeln für Ron</de>
-				<en></en>
+				<en>Fans collect for Ron</en>
 			</title>
 			<description>
 				<de>Nach dem Com-Port-Gummipuppenskandal sammeln die TVTower-Fans Geld für die Gerichtskosten: "Wir können doch unseren Ron nicht im Stich lassen."</de>
-				<en></en>
+				<en>After the Com-port-rubber doll scandal, TVTower fans collect money for the court costs: "We can't maroon our Ron."</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="ff1f0a05-040c-4930-a314-12784ce12177_2" />
@@ -2656,11 +2641,11 @@ Demonstrations are expected again this year.</en>
 		<news id="ff1f0a05-040c-4930-a314-12784ce12177_2" thread_id="e6be4f49-d79e-4096-97ff-2cef4795a10b_2" type="2" creator="">
 			<title>
 				<de>Freispruch für Programmierer</de>
-				<en></en>
+				<en>Acquittal for programmer</en>
 			</title>
 			<description>
 				<de>Entwickler Ron wurde im Gummipuppenfall freigesprochen. Richter Peterson outete sich als TVTower-Fan und forderte Gummipuppen mit RS-232-Port für Alle.</de>
-				<en></en>
+				<en>Developer Ron was acquitted in the rubber doll case. Judge Peterson outed himself as a TVTower fan and demanded RS-232-port rubber dolls for everyone.</en>
 			</description>
 			<effects />
 			<data genre="4" price="0.7" quality="48" />
@@ -2670,11 +2655,11 @@ Demonstrations are expected again this year.</en>
 		<news id="d9aa67c1-5aa3-4519-9cc2-ef8e1a769ae5" thread_id="e7afb16c-023e-47d8-a23c-8f45efa02854" type="0" creator="">
 			<title>
 				<de>Grünspecht in der Eifel gesichtet</de>
-				<en></en>
+				<en>Green Woodpecker sighted in the Eifel</en>
 			</title>
 			<description>
 				<de>Endlich, nach 38 Jahren wurde wieder der erste Grünspecht in der Eifel gesichtet. Lokale Naturschützer sind begeistert.</de>
-				<en></en>
+				<en>Finally, after 38 years the first green woodpecker was sighted in the Eifel. Local conservationists are enthusiastic.</en>
 			</description>
 			<effects />
 			<data genre="3" price="1.0" quality="21" />
@@ -2683,11 +2668,11 @@ Demonstrations are expected again this year.</en>
 		<news id="bc7adf97-1b60-4745-99b3-f18604837103" thread_id="f0228a97-bf9b-4d35-9723-9dcbbbc99b1b" type="0" creator="">
 			<title>
 				<de>Stunthund bei Dreharbeiten verletzt</de>
-				<en></en>
+				<en>Stunt dog injured during shooting</en>
 			</title>
 			<description>
-				<de>Der Stunthund von TV-Hundestar Bello Miez verletzte sich an der linken Vorderpfote. Sein Trainer: `Er wird nie wieder der Alte sein´.</de>
-				<en></en>
+				<de>Der Stunthund von TV-Hundestar Bello Miez verletzte sich an der linken Vorderpfote. Sein Trainer: „Er wird nie wieder der Alte sein“.</de>
+				<en>The stunt double of TV-dog star Bello Miez injured his left front paw. His trainer: "He will never be the same again".</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="00f05239-8ab5-41c3-b6d5-de1b86491511" time="2,2,3,8,23" />
@@ -2698,11 +2683,11 @@ Demonstrations are expected again this year.</en>
 		<news id="00f05239-8ab5-41c3-b6d5-de1b86491511" thread_id="f0228a97-bf9b-4d35-9723-9dcbbbc99b1b" type="2" creator="">
 			<title>
 				<de>Stunthund: Besserung in Sicht</de>
-				<en></en>
+				<en>Stunt dog: Improvement in sight</en>
 			</title>
 			<description>
-				<de>Dem bei Dreharbeiten verletzten Stuntdouble von TV-Hund Bello Miez geht es wieder besser. Sein Herrchen: `Er isst schon wieder Feuchtfutter und trinkt sein Bier´. </de>
-				<en></en>
+				<de>Dem bei Dreharbeiten verletzten Stuntdouble von TV-Hund Bello Miez geht es wieder besser. Sein Herrchen: „Er isst schon wieder Nassfutter und trinkt sein Bier“.</de>
+				<en>The stunt double of TV dog Bello Miez, injured during the shooting, is feeling better again. His master: "He eats wet food again and drinks his beer".</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="214c6e1b-b643-465d-8f7c-e40bae941dbc" time="2,1,2,8,23" />
@@ -2713,11 +2698,11 @@ Demonstrations are expected again this year.</en>
 		<news id="214c6e1b-b643-465d-8f7c-e40bae941dbc" thread_id="f0228a97-bf9b-4d35-9723-9dcbbbc99b1b" type="2" creator="">
 			<title>
 				<de>Stunthund: Alles für die Katz</de>
-				<en></en>
+				<en>Stund dog: all for nothing?</en>
 			</title>
 			<description>
 				<de>Von wegen Besserung, herumschwadronierende Journalisten spürten das Stuntdouble in einer Milchbar auf: wie eine Katze schnurrend. Das Ende einer Karriere?</de>
-				<en></en>
+				<en>Get better? The stunt double was tracked down in a milk bar by swaggering journalists: purring like a cat. The end of a career?</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="c0bcc0b2-0a77-4615-8070-7c044af5b9f9"  time="2,1,2,8,23"/>
@@ -2728,11 +2713,11 @@ Demonstrations are expected again this year.</en>
 		<news id="c0bcc0b2-0a77-4615-8070-7c044af5b9f9" thread_id="f0228a97-bf9b-4d35-9723-9dcbbbc99b1b" type="2" creator="">
 			<title>
 				<de>Vom Stunthund zum Streuner</de>
-				<en></en>
+				<en>From stunt dog to stray dog</en>
 			</title>
 			<description>
 				<de>Das aus dem Filmgeschäft ausgestiegene Bello-Hundedouble ist ganz unten angekommen: Beim Streunen erwischt und im Hundeheim in Gewahrsam genommen.</de>
-				<en></en>
+				<en>The Bello-double dog from the film business has reached the bottom: Caught roaming around and taken into custody at the kennel.</en>
 			</description>
 			<effects />
 			<data genre="1" price="1.0" quality="19" />
@@ -2742,11 +2727,11 @@ Demonstrations are expected again this year.</en>
 		<news id="906a95a1-45c2-403c-b204-2b3f55a6bdad" thread_id="f23be612-26ee-48f8-ad1e-17e310af7997" type="0" creator="">
 			<title>
 				<de>Flandern wird unabhängig!</de>
-				<en></en>
+				<en>Flanders becomes independent!</en>
 			</title>
 			<description>
 				<de>Die Flamen wollen ein unabhängiges Flandern. Dies hat nun die flämische Regierung unter Protesten der brüsseler und wallonischen Regierung durchgesetzt.</de>
-				<en></en>
+				<en>The Flemish want an independent Flanders. This has now been pushed through by the Flemish government in protest by the Brussels and Walloon governments.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="fb74b1bd-a603-4eaa-ae64-9b549dd96903" />
@@ -2757,11 +2742,11 @@ Demonstrations are expected again this year.</en>
 		<news id="fb74b1bd-a603-4eaa-ae64-9b549dd96903" thread_id="f23be612-26ee-48f8-ad1e-17e310af7997" type="2" creator="">
 			<title>
 				<de>Aufruhr in Brüssel</de>
-				<en></en>
+				<en>Riots in Brussels</en>
 			</title>
 			<description>
 				<de>Viele Belgier kamen zusammen und demonstrierten gegen die Unabhängigkeitserklärung Flanderns. Dabei griffen Wallonier die Polizei an.</de>
-				<en></en>
+				<en>Many Belgians came together and demonstrated against Flanders' declaration of independence. Walloons attacked the police.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="935ffed6-639e-4bb1-80a1-607cc4665772" />
@@ -2772,11 +2757,11 @@ Demonstrations are expected again this year.</en>
 		<news id="935ffed6-639e-4bb1-80a1-607cc4665772" thread_id="f23be612-26ee-48f8-ad1e-17e310af7997" type="2" creator="">
 			<title>
 				<de>Belgischer König geflüchtet</de>
-				<en></en>
+				<en>Belgian king fled</en>
 			</title>
 			<description>
 				<de>Der belgische König ist zusammen mit der königlichen Familie in die frühere belgische Kolonie Kongo geflüchtet, wo sie herzlich aufgenommen wurden.</de>
-				<en></en>
+				<en>The Belgian king fled with the royal family to the former Belgian colony of Congo, where they were warmly welcomed.</en>
 			</description>
 			<effects>
 				<effect trigger="happen" type="triggernews" news="896c6fc0-4eb8-4363-ba30-c9742b91713c" />
@@ -2787,11 +2772,11 @@ Demonstrations are expected again this year.</en>
 		<news id="896c6fc0-4eb8-4363-ba30-c9742b91713c" thread_id="f23be612-26ee-48f8-ad1e-17e310af7997" type="2" creator="">
 			<title>
 				<de>Wallonien erreicht EU-Kriterien nicht</de>
-				<en></en>
+				<en>Wallonia fails to meet EU criteria</en>
 			</title>
 			<description>
 				<de>Wallonien, das nach der Unabhängigkeit Flanderns auch unabhängig wurde, wird die von Brüssel erlegten EU-Kriterien nicht erreichen können.</de>
-				<en></en>
+				<en>Wallonia, which became independent after Flanders independence, will not be able to meet the EU criteria imposed by Brussels.</en>
 			</description>
 			<effects />
 			<data genre="0" price="1.0" quality="70" />
@@ -2800,11 +2785,11 @@ Demonstrations are expected again this year.</en>
 		<news id="213666dc-f4d5-496c-8e1f-8761827cb7b1" thread_id="f4c775ab-ab54-4ef3-93e7-109e3a7035ee" type="0" creator="">
 			<title>
 				<de>Teelichterpreis auf Rekordhoch</de>
-				<en></en>
+				<en>Tea light price at record high</en>
 			</title>
 			<description>
 				<de>Nachdem sich der Ölpreis auf Öl und Gas gefestigt hat, steigt der Preis von Teelichtern um 300 Prozent des bisherigen Wertes.</de>
-				<en></en>
+				<en>After the oil price of oil and gas has stabilized, the price of tea lights rises by 300 percent of their previous value.</en>
 			</description>
 			<effects />
 			<data genre="4" price="1.0" quality="19" />
@@ -2813,11 +2798,11 @@ Demonstrations are expected again this year.</en>
 		<news id="bb461721-455c-4b8b-b45f-1465c7700644" thread_id="f5f7219e-7144-49de-adc0-19a32c81642c" type="0" creator="">
 			<title>
 				<de>Bundeskanzler lehnt Filmhauptrolle ab</de>
-				<en></en>
+				<en>Chancellor rejects main movie role</en>
 			</title>
 			<description>
 				<de>Kanzler Schröler lehnte die Hauptrolle in dem Film "Lügen ist meine Leidenschaft" verärgert ab. Filmpartnerin Angie Mertel ist bitter enttäuscht.</de>
-				<en></en>
+				<en>Chancellor Schröler angrily rejected the leading role in the movie "Lies are my passion". Movie partner Angie Mertel is bitterly disappointed.</en>
 			</description>
 			<effects />
 			<data genre="1" price="1.0" quality="32" />
@@ -2826,11 +2811,11 @@ Demonstrations are expected again this year.</en>
 		<news id="f9188a93-fa5d-4062-badb-6dba0d25f2ec" thread_id="fc0cbc46-ddf2-470a-95f7-b4329fc7004b" type="0" creator="">
 			<title>
 				<de>Bodyguard von Diva geschlagen</de>
-				<en></en>
+				<en>Bodyguard beaten by Diva</en>
 			</title>
 			<description>
-				<de>Ein Bodyguard soll von einer Modelldiva geschlagen worden sein. Er hatte sich geweigert, der betrunkenen Diva die Autoschlüssel auszuhändigen. </de>
-				<en></en>
+				<de>Ein Bodyguard soll von einer Modeldiva geschlagen worden sein. Er hatte sich geweigert, der betrunkenen Diva die Autoschlüssel auszuhändigen.</de>
+				<en>A bodyguard is said to have been beaten by a model diva. He refused to give the car keys to the drunken diva.</en>
 			</description>
 			<effects />
 			<data genre="1" price="1.0" quality="29" />
@@ -2839,11 +2824,11 @@ Demonstrations are expected again this year.</en>
 		<news id="69190830-8d76-432b-8217-ddcc685d0466" thread_id="fdf31ef7-053f-41b2-9ac2-e92b4f23da48" type="0" creator="">
 			<title>
 				<de>MacGeifer-Satire in Produktion</de>
-				<en></en>
+				<en>MacGeifer satire in production</en>
 			</title>
 			<description>
 				<de>Nach jahrelanger Überlegung produziert R. D. Handerson nun eine Satire seiner Erfolgserie. Papierklammer, Gummiband und Taschenmesser stimmten schon zu.</de>
-				<en></en>
+				<en>After years of consideration, R. D. Handerson now produces a satire of his successful series. Paper clip, elastic band and pocket knife agreed.</en>
 			</description>
 			<effects />
 			<data genre="1" price="1.0" quality="35" />
@@ -2852,11 +2837,11 @@ Demonstrations are expected again this year.</en>
 		<news id="182fc068-6f07-45be-bc60-5637ce50f6e4" thread_id="ffb5a2fd-d41c-4f8b-a3ec-546762485d47" type="0" creator="">
 			<title>
 				<de>Boris Wecker plant Come-back</de>
-				<en></en>
+				<en>Boris Wecker plans comeback</en>
 			</title>
 			<description>
 				<de>Nach jahrelanger Tennis-Abstinenz plant Boris Wecker sein Come-back. Konkurrenten freuen sich auf legendäre Hechtsprünge.</de>
-				<en></en>
+				<en>After years of tennis abstinence, Boris Wecker is planning his comeback. Competitors look forward to legendary pike jumps.</en>
 			</description>
 			<effects />
 			<data genre="2" price="1.0" quality="39" />
