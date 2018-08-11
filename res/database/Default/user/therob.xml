@@ -156,11 +156,11 @@
 		<programme id="TheRob-b5dc-hist-Neuschwanstein" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Der Bau von Neuschwanstein</de>
-				<en></en>
+				<en>The construction of Neuschwanstein</en>
 			</title>
 			<description>
 				<de>Der Bau von Neuschwanstein wird nachgestellt. Laienschauspieler spielen sogar die Unfälle nach.</de>
-				<en></en>
+				<en>The construction of Neuschwanstein is reconstructed. Amateur actors even reenact the accidents.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_399</member>
@@ -195,11 +195,11 @@
 		<programme id="e61018ba-b0db-439c-a852-TheRob04" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Wesensreiter</de>
-				<en></en>
+				<en>Creature Rider</en>
 			</title>
 			<description>
 				<de>Bulbu erkennt, dass er Fantasiewesen dressieren und reiten kann. Ein fliegendes Epos beginnt.</de>
-				<en></en>
+				<en>Bulbu realizes that he can train and ride fantasy creatures. A flying epic begins.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">cdd0e7aa-11eb-48d7-82cc-d693e2130d05</member>
@@ -332,11 +332,11 @@
 		<programme id="5c4c567b-dda6-4d7e-b90a-RobTheTest01" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Iris entdeckt die Alm</de>
-				<en></en>
+				<en>Iris explores the alp</en>
 			</title>
 			<description>
 				<de>Iris besucht mit Ihren Freundinnen die Alm, die Bauern und ihre Betten oder Heuböden. Wurde beim Revival der Seventies leider nicht vergessen.</de>
-				<en></en>
+				<en>Iris and her friends visit the alp, the farmers and their beds or hay floors. Unfortunately this movie was not forgotten during the Seventies' revival.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
@@ -400,7 +400,7 @@
 		<programme id="TheRob-1756-400d-8f9c-JoMeieischeiJodeler" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Jo Mei, ei schei Jodeler</de>
-				<en></en>
+				<en>Jo Mei, a fu'ing yodeler</en>
 			</title>
 			<description>
 				<de>Jodeln und Alpenhorn. Mit Aufnahmen der Alpenlandschaft garniert. Bei schoener Musik werden die Alpenpaesse mit einem 57er Kaefer abgefahren.</de>
@@ -617,33 +617,33 @@
 				<programme id="therob-programme-trash-skandale-ep101" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>[1|Full] qualmt die Bude zu</de>
-						<en></en>
+						<en>[1|Full] smokes the place down</en>
 					</title>
 					<description>
 						<de>[1|Full] als Kettenraucher beleidigt den Moderator bis zum geht nicht mehr.</de>
-						<en></en>
+						<en>[1|Full] as a chain smoker insults the host until he can't stand anylonger.</en>
 					</description>
 					<ratings critics="60" speed="30" />
 				</programme>
 				<programme id="therob-programme-trash-skandale-ep102" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>[1|Full] beleidigt die Interviewerin</de>
-						<en></en>
+						<en>[1|Full] insults the interviewer</en>
 					</title>
 					<description>
 						<de>Dem Mitleid für die Dame kann man sich nicht verwehren. [1|Full] rastet völlig aus und geht sie unflätig an.</de>
-						<en></en>
+						<en>There's no denying pity for the lady. [1|Full] completely freaks out and fouls her rudely.</en>
 					</description>
 					<ratings critics="65" speed="35" />
 				</programme>
 				<programme id="therob-programme-trash-skandale-ep103" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>[1|Full] im Dschungel</de>
-						<en></en>
+						<en>[1|Full] in the jungle</en>
 					</title>
 					<description>
 						<de>[1|Full] legendärer Ausraster im Dschungel. Wen geht er als nächstes an? Die Augenzeugen sind heute noch traumatisiert.</de>
-						<en></en>
+						<en>[1|Full] legendary tantrum in the jungle. Who's he next? Eyewitnesses are still traumatised today.</en>
 					</description>
 					<ratings critics="70" speed="40" />
 				</programme>
@@ -675,8 +675,8 @@
 						<en>Sinbad and the isle</en>
 					</title>
 					<description>
-						<de>Sinbad strandet auf einer Insel. Diese entpuppt sich als riesiger Fisch</de>
-						<en></en>
+						<de>Sinbad strandet auf einer Insel. Diese entpuppt sich als riesiger Fisch.</de>
+						<en>Sinbad is stranded on an island. This one turns out to be a huge fish.</en>
 					</description>
 					<ratings critics="34" speed="41" />
 				</programme>
@@ -686,8 +686,8 @@
 						<en>Sinbad and the diamant valley</en>
 					</title>
 					<description>
-						<de>Sinbad strandet in einem Tal voller Diamtent und riesiger Vögel. Wie komm er da nun raus?</de>
-						<en></en>
+						<de>Sinbad strandet in einem Tal voller Diamanten und riesiger Vögel. Wie kommt er da nun raus?</de>
+						<en>Sinbad is stranded in a valley full of diamonds and huge birds. How does he get out of there?</en>
 					</description>
 					<ratings critics="34" speed="42" />
 				</programme>
@@ -697,8 +697,8 @@
 						<en>Sinbad and the giant</en>
 					</title>
 					<description>
-						<de>Sinbad landet auf der Affeninsel und trifft dort auf einen Riesen. Sinbad merkt schnell, dass er zur Lieblingsspeise des Riesen gehört</de>
-						<en></en>
+						<de>Sinbad landet auf der Affeninsel und trifft dort auf einen Riesen. Sinbad merkt schnell, dass er zur Lieblingsspeise des Riesen gehört.</de>
+						<en>Sinbad lands on Monkey Island and meets a giant. Sinbad quickly realises that it is one of the giant's favourite dishes.</en>
 					</description>
 					<ratings critics="37" speed="47" />
 				</programme>
@@ -709,7 +709,7 @@
 					</title>
 					<description>
 						<de>Sinbad heiratet. Leider verstirbt sein Frau recht schnell und Sinbad wußte nicht, dass er per Sitte mit ihr lebendig begraben wird.</de>
-						<en></en>
+						<en>Sinbad is getting married. Unfortunately, his wife dies quite quickly and Sinbad did not know that it is custom to get buried alive with her.</en>
 					</description>
 					<ratings critics="35" speed="29" />
 				</programme>
@@ -720,7 +720,7 @@
 					</title>
 					<description>
 						<de>Sinbad entdeckt den Riesenvogel. Sinbads Begleiter schlachten einen Babyvogel und erfahren die Rache seiner gigantischen Eltern. Wie wird sich Sinbad wohl diesmal retten?</de>
-						<en></en>
+						<en>Sinbad discovers the giant bird. Sinbad's companions slaughter a baby bird and experience the revenge of his gigantic parents. How will Sinbad save himself this time?</en>
 					</description>
 					<ratings critics="33" speed="51" />
 				</programme>
@@ -731,7 +731,7 @@
 					</title>
 					<description>
 						<de>Sinbad strandet auf eine unwirtlichen Insel. Er baut sich ein Floß, um einen Fluß entlang dem Hungertod zu entkommen.</de>
-						<en></en>
+						<en>Sinbad is stranded on an inhospitable island. He builds a raft to escape starvation.</en>
 					</description>
 					<ratings critics="42" speed="39" />
 				</programme>
@@ -742,7 +742,7 @@
 					</title>
 					<description>
 						<de>Nach einigen abstrusen Abteuern mit geflügelten Menschen, entscheidet sich Sinbad mit seiner neu Angetrauten nach Bagdad zurück zu kehren.</de>
-						<en></en>
+						<en>After some abstruse adventures with winged people, Sinbad decides to return to Baghdad with his new wife.</en>
 					</description>
 					<data year="1979" distribution="2"  blocks="2" price_mod="1.00" />
 					<ratings critics="47" speed="47" />
@@ -775,18 +775,18 @@
 					</title>
 					<description>
 						<de>[1|Full] begleitet Hans Imglück auf seinem Weg Qualitätsfilme in Nollywood zu drehen. Ein grandioses Verlustgeschäft.</de>
-						<en></en>
+						<en>[1|Full] accompanies Hans Inluck on his way to shoot quality films in Nollywood. A terrific loss-making business.</en>
 					</description>
 					<ratings critics="43" speed="22" />
 				</programme>
 				<programme id="therob-programme-mng-firmengruendungen-epp102" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Erotikshop im Jemen</de>
-						<en>Erotic shop in Jemen</en>
+						<en>Erotic shop in Yemen</en>
 					</title>
 					<description>
 						<de>Nick Denknichlang gründet einen Erotikshop im Jemen. [1|Full] führt ein spannendes Interview über Nicks Kenntnisse vom Jemen. Wir freuen uns darauf die Episode zu drehen, was er im Gefängnis für Ideen entwickelt.</de>
-						<en></en>
+						<en>Nick Thinknomore founds an erotic shop in Yemen. [1|Full] leads an exciting interview about Nick's knowledge of Yemen. We're looking forward to shooting the episode of what he's doing in prison for ideas.</en>
 					</description>
 					<ratings critics="48" speed="27" />
 				</programme>
@@ -797,7 +797,7 @@
 					</title>
 					<description>
 						<de>[1|Full] reist mit Mia Issukalt nach Grönland und begleitet den Aufbau ihres Kühlschrankfachhandels. Ein etwas kühle Sache.</de>
-						<en></en>
+						<en>|1|Full] travels to Greenland with Mee Isfreezy and accompanies the development of her refrigerator business. A bit of a cool thing.</en>
 					</description>
 					<ratings critics="44" speed="19" />
 				</programme>
@@ -810,8 +810,8 @@
 				<en>Chess against the masters</en>
 			</title>
 			<description>
-				<de>Schnellschach gegen die Großmeister. Anrufen, durchkommen und den Großmeister Schachmatt setzen. Köpfchen einsetzen, lernen, in der Warteschleife Geld verlieren. Das garantierte Rundum Sorglos Paket</de>
-				<en></en>
+				<de>Schnellschach gegen die Großmeister. Anrufen, durchkommen und den Großmeister Schachmatt setzen. Köpfchen einsetzen, lernen, in der Warteschleife Geld verlieren. Das garantierte Rundum Sorglos Paket.</de>
+				<en>Quick chess against the Grand Masters. Call, get through and checkmate the Grand Master. Use your brains, learn, lose money on hold. The guaranteed all-round carefree package.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">474ae0d7-8233-47bb-bba9-2d3d3df61919</member>
@@ -828,44 +828,44 @@
 				<programme id="8aedcc43-c63d-4ab3-TheRobCallInTestEp101" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>2 Türme, 3 Bauern</de>
-						<en></en>
+						<en>2 rooks, 3 pawns</en>
 					</title>
 					<description>
-						<de>Eine knifflige Situation. Wer findet den richtigen Zug</de>
-						<en></en>
+						<de>Eine knifflige Situation. Wer findet den richtigen Zug.</de>
+						<en>A tricky situation. Who finds the right move.</en>
 					</description>
 					<ratings critics="30" speed="4" />
 				</programme>
 				<programme id="a2ac67b0-6689-4c50-9489-TheRobCallInTestEp102" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Springer und Pferde</de>
-						<en></en>
+						<en>Knights and bishops</en>
 					</title>
 					<description>
 						<de>Steigerung der letzten Folge. Viel Zeit zum überlegen oder einschlafen. Einschlafen bitte nur beim Warten in der kostenpflichtigen Warteschleife.</de>
-						<en></en>
+						<en>improvement to the last episode. Plenty of time to think or go to sleep. Please only fall asleep when waiting in the chargeable waiting loop.</en>
 					</description>
 					<ratings critics="32" speed="4" />
 				</programme>
 				<programme id="82a377c0-4950-40cb-9813-TheRobCallInTestEp103" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Nur noch Bauern</de>
-						<en></en>
+						<en>Only pawns left</en>
 					</title>
 					<description>
 						<de>Gestellte Situation. Wer spielt schon eine Partie, bei der außer dem König nur noch Bauern auf dem Feld stehen.</de>
-						<en></en>
+						<en>Given situation. Who plays a game in which, apart from the king, there are only pawns on the field?</en>
 					</description>
 					<ratings critics="24" speed="4" />
 				</programme>
 				<programme id="81800e30-c387-4a29-9c21-TheRobCallInTestEp104" product="3" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Damen</de>
-						<en></en>
+						<en>Queens</en>
 					</title>
 					<description>
 						<de>Die Damen herrschen. Unterstützt werden sie von lebenden Modellen, die auf einem großen Schachfeld herumlaufen. Ein Abschluß für das Auge.</de>
-						<en></en>
+						<en>Queens are ruling. They are supported by living models walking around a large chessboard. A pleasing finish for the eye.</en>
 					</description>
 					<ratings critics="28" speed="32" />
 				</programme>
@@ -880,7 +880,7 @@
 			</title>
 			<description>
 				<de>Der kommunistische Osten wird beleuchtet. Es wird bewiesen, dass alle dort Aliens sind, die die Weltherrschaft übernehmen möchten und es notwendig ist, alles mit Napalm zu verbrennen. Komplett plausibel und glaubwürdig.</de>
-				<en></en>
+				<en>The communist East is illuminated. It is proven that all there are aliens who want to take over the world and it is necessary to burn everything with Napalm. Completely plausible and credible.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_119</member>
@@ -899,7 +899,7 @@
 			</title>
 			<description>
 				<de>Der kapitalistische Westen wird beleuchtet. Es wird bewiesen, dass alle dort Aliens sind, die die Weltherrschaft übernehmen möchten und es notwendig ist, alles mit Napalm zu verbrennen. Komplett plausibel und glaubwürdig.</de>
-				<en></en>
+				<en>The capitalist West is illuminated. It is proven that all there are aliens who want to take over the world and it is necessary to burn everything with Napalm. Completely plausible and credible.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_406</member>
@@ -917,7 +917,7 @@
 			</title>
 			<description>
 				<de>Die schönsten Brüste der Welt. Dezent verpackt. Nichts und doch viel zu sehen. Die anspruchsvolle Erotikhow mit Einlagen über die Kultur des jeweiligen Landes. Selbst Kritiker konnten sich damit anfreunden. Präsentiert von einer schwedischen Schönheit</de>
-				<en>the most beautiful breasts of the world. decent hidden. Nothing and all could be seen. </en>
+				<en>The most beautiful breasts of the world. decent hidden. Nothing and all could be seen.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_42</member>
@@ -936,33 +936,33 @@
 				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt01" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Jamaika</de>
-						<en></en>
+						<en>Jamaica</en>
 					</title>
 					<description>
-						<de>In der Folge eins ist Jamaika zu eraten. 40 Damen präsentieren ihr Land Es werden Landschaft und Städte gezeigt. Die Kultur wird gezeigt. Und alles garniert mit viel nackter Damenhaut. Erraten muss man den Nachnamen der Dame.</de>
-						<en></en>
+						<de>In der Folge eins ist Jamaika zu eraten. 40 Damen präsentieren ihr Land. Es werden Landschaft und Städte gezeigt. Die Kultur wird gezeigt. Und alles garniert mit viel nackter Damenhaut. Erraten muss man den Nachnamen der Dame.</de>
+						<en>In episode one, Jamaica is to be guessed. 40 ladies present their country. Landscape and cities are shown. The culture is shown. And all garnished with much naked lady skin. You have to guess the lady's last name.</en>
 					</description>
 					<ratings critics="20" speed="38" />
 				</programme>
 				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt02" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Kambodscha</de>
-						<en></en>
+						<en>Cambodia</en>
 					</title>
 					<description>
 						<de>Alte Tempel, Felder, Großstädte und Dschungel. Alles mit noch mehr Haut. Die Anrufer stehen Schlange. Ein Meisterwerk der "sabbernden" Bildung. So nah und doch so fern. Erraten muss man den Nachnamen der Dame.</de>
-						<en></en>
+						<en>Ancient temples, fields, cities and jungles. Everything with even more skin. The callers are queuing. A masterpiece of "drooling" education. So near and yet so far. You have to guess the lady's last name.</en>
 					</description>
 					<ratings critics="29" speed="33" />
 				</programme>
 				<programme id="TheRob-CallIn-TopundTeuer-KurvenderWelt03" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Bulgarien</de>
-						<en></en>
+						<en>Bulgaria</en>
 					</title>
 					<description>
-						<de>Die schwarze Balalaika. Die Vielfalt der Damenwelt wird mit historischen Bauten und schönen Stränden hinterlegt. Ferner wird unpassenderweise auf Transilvanien eingegangen. Erraten muss man den Nachnamen der Dame.</de>
-						<en></en>
+						<de>Die schwarze Balalaika. Die Vielfalt der Damenwelt wird mit historischen Bauten und schönen Stränden hinterlegt. Ferner wird unpassenderweise auf Transsilvanien eingegangen. Erraten muss man den Nachnamen der Dame.</de>
+						<en>The black balalaika. The diversity of the ladies' world is backed by historic buildings and beautiful beaches. Transylvania is also improperly addressed. You have to guess the lady's last name.</en>
 					</description>
 					<ratings critics="21" speed="43" />
 				</programme>
@@ -970,11 +970,11 @@
 					<title>
 						<!-- Zielgruppe Damen -->
 						<de>Tunesien</de>
-						<en></en>
+						<en>Tunisia</en>
 					</title>
 					<description>
 						<de>Gefeierte Abschlußfolge für die Damenwelt. Männliche Hüftschwünge. Diesmal werden die Vornamen der Pobackenträger benötigt. Alles in wunderbaren Landschaftsaufnahmen präsentiert. Der Moderatorin ist der Spaß anzusehen.</de>
-						<en></en>
+						<en>Celebrated finale for the ladies' world. Male hip swings. This time the first names of the buttock carriers are needed. All presented in wonderful landscapes. The presenter is the fun to watch.</en>
 					</description>
 					<ratings critics="26" speed="53" />
 					<groups target_groups="128" pro_pressure_groups="0" contra_pressure_groups="0" />
@@ -1144,7 +1144,7 @@
 			</title>
 			<description>
 				<de>Graf Ruccola ist ein Vitaminvampir und jagt Gemüse zum überleben. Ein Biss und schon sind Vitamine und Mineralien da. Kinder erlernen die leckeren Vorzüge von Gemüse.</de>
-				<en></en>
+				<en>Count Ruccola is a vitamin vampire and hunts vegetables to survive. One bite and there are vitamins and minerals. Children learn the delicious benefits of vegetables.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_356</member>
@@ -1158,55 +1158,55 @@
 				<programme id="therob-programme-GrafRuccola-ep101" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Spargel</de>
-						<en></en>
+						<en>Count Ruccola meets asparagus</en>
 					</title>
 					<description>
-						<de>Graf Ruccola endeckt den Spargel und jetzt riecht es beim ""um die Ecke gehen" auf einmal komisch. Warum ist das so? Und beißt Graf Ruccola noch einmal zu, oder läßt er den Spargel lieber links liegen?</de>
-						<en></en>
+						<de>Graf Ruccola endeckt den Spargel und jetzt riecht es beim ""um die Ecke gehen" auf einmal komisch. Warum ist das so? Und beißt Graf Ruccola noch einmal zu, oder lässt er den Spargel lieber links liegen?</de>
+						<en>Count Ruccola discovers the asparagus and now it suddenly smells funny while "going around the corner". Why is that so? And does Count Ruccola bite again, or would he rather not eat asparagus?</en>
 					</description>
 					<ratings critics="57" speed="35" />
 				</programme>
 				<programme id="therob-programme-GrafRuccola-ep102" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Spinat</de>
-						<en></en>
+						<en>Count Ruccola meets spinach</en>
 					</title>
 					<description>
 						<de>Spinat. Viel Kalium und Magnesium für das Vampirblut. Und danach den kleinen Blubb!</de>
-						<en></en>
+						<en>Spinach. Lots of potassium and magnesium for the vampire blood. And then the little Blubb!</en>
 					</description>
 					<ratings critics="54" speed="35" />
 				</programme>
 				<programme id="therob-programme-GrafRuccola-ep103" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Blumenkohl</de>
-						<en></en>
+						<en>Count Ruccola meets cauliflower</en>
 					</title>
 					<description>
 						<de>Weiß und blass, wie Graf Ruccola. Kann das schmecken. Ja, liebe Kinder es kann. Probiert es eifrig!</de>
-						<en></en>
+						<en>White and pale, like Count Ruccola. It can taste good. Yes, dear children it can. Try it eagerly!</en>
 					</description>
 					<ratings critics="50" speed="30" />
 				</programme>
 				<programme id="therob-programme-GrafRuccola-ep104" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Graf Ruccola trifft Rosenkohl</de>
-						<en></en>
+						<en>Count Ruccola meets Brussels sprouts</en>
 					</title>
 					<description>
 						<de>Rosenkohl, so grün und klein, das ist fein.</de>
-						<en></en>
+						<en>Brussels sprouts, so green and small, that's fine.</en>
 					</description>
 					<ratings critics="49" speed="34" />
 				</programme>
 				<programme id="therob-programme-GrafRuccola-ep105" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Graf Ruccola trifft Bohnen</de>
-						<en></en>
+						<en>Count Ruccola meets beans</en>
 					</title>
 					<description>
 						<de>Was soll man sagen, jedes Böhnchen, ein Tönchen. Graf Ruccola ißt viele Böhnchen und nutzt die Tönchen für die schönsten Kinderlieder.</de>
-						<en></en>
+						<en>What can you say, every little bean, a little chime. Count Ruccola eats many beans and uses the chimes for the most beautiful children's songs.</en>
 					</description>
 					<ratings critics="57" speed="33" />
 				</programme>
@@ -1221,7 +1221,7 @@
 			</title>
 			<description>
 				<de>Graf Ruccola ist ein Vitaminvampir und jagt Obst zum überleben. Ein Biss und schon sind Vitamine und Mineralien da. Kinder erlernen die leckeren Vorzüge von Obst. Späte zweite Staffel mit neuer Technik!</de>
-				<en></en>
+				<en>Count Ruccola is a vitamin vampire and hunts fruit to survive. One bite and there are vitamins and minerals. Children learn the delicious benefits of fruit. Late second season with new technology!</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_356</member>
@@ -1235,99 +1235,99 @@
 				<programme id="therob-programme-GrafRuccola-ep201" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Kirschen</de>
-						<en></en>
+						<en>Count Ruccola meets cherries</en>
 					</title>
 					<description>
 						<de>Graf Ruccola endeckt die Kirschen, schön rot und saftig. Hmmmm. Lecker. Da macht das Beißen Spaß!</de>
-						<en></en>
+						<en>Count Ruccola discovers the cherries, beautiful red and juicy. Hmmmm. Yummy. That makes biting fun!</en>
 					</description>
 					<ratings critics="49" speed="45" />
 				</programme>
 				<programme id="therob-programme-GrafRuccola-ep202" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Birnen</de>
-						<en></en>
+						<en>Count Ruccola meets pears</en>
 					</title>
 					<description>
 						<de>Was eine komische Form? Aber lecker. Nur als Graf Ruccola die Glühbirne beißt, wird es unschön.</de>
-						<en></en>
+						<en>What weird shape? But delicious. Only when Count Ruccola bites the light bulb, it gets ugly.</en>
 					</description>
 					<ratings critics="45" speed="40" />
 				</programme>
 				<programme id="therob-programme-GrafRuccola-ep203" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola trifft Erdbeeren</de>
-						<en></en>
+						<en>Count Ruccola meets strawberries</en>
 					</title>
 					<description>
 						<de>Endlich wieder etwas rotes. Da kommt direkt Freude auf und der Vitaminpegel steigt.</de>
-						<en></en>
+						<en>Finally something red again. There comes joy without delay and the vitamin level rises.</en>
 					</description>
 					<ratings critics="46" speed="37" />
 				</programme>
 				<programme id="therob-programme-GrafRuccola-ep204" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Graf Ruccola trifft Äpfel</de>
-						<en></en>
+						<en>Count Ruccola meets apples</en>
 					</title>
 					<description>
 						<de>Äpfel, rote Äpfel. Aber auch die mit grüner und gelber Farbe werden gerne mal probiert.</de>
-						<en></en>
+						<en>Apples, red apples. But also those with green and yellow colour are often tried.</en>
 					</description>
 					<ratings critics="47" speed="39" />
 				</programme>
 				<programme id="therob-programme-GrafRuccola-ep205" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Graf Ruccola trifft Orangen</de>
-						<en></en>
+						<en>Count Ruccola meets oranges</en>
 					</title>
 					<description>
-						<de>IIIIIH, schmeckt das Doof. Achso Schale. Was ist Schale? Dann lernen wir mal schälen. Wird ja doch noch lecker.</de>
-						<en></en>
+						<de>IIIIIH, schmeckt das doof. Achso Schale. Was ist Schale? Dann lernen wir mal schälen. Wird ja doch noch lecker.</de>
+						<en>Yuck, that tastes awful. Oh, peel. What is a peel? Let's learn how to peel. It'll be delicious after all.</en>
 					</description>
 					<ratings critics="45" speed="41" />
 				</programme>
 				 <programme id="therob-programme-GrafRuccola-ep206" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Graf Ruccola trifft Himbeeren</de>
-						<en></en>
+						<en>Count Ruccola meets raspberries</en>
 					</title>
 					<description>
 						<de>Rot und saftig, wie es sein soll. Und manchmal auch sauer. Aber sauer mach lustig. Auf einen guten Biß.</de>
-						<en></en>
+						<en>Red and juicy, as it should be. And sometimes angry. But sour makes fun. Here's to a good bite.</en>
 					</description>
 					<ratings critics="42" speed="44" />
 				</programme>
 				 <programme id="therob-programme-GrafRuccola-ep207" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Graf Ruccola trifft Trauben</de>
-						<en></en>
+						<en>Count Ruccola meets grapes</en>
 					</title>
 					<description>
 						<de>Was sollen die Kerne da? Beißt man die auch? Oder spuckt man die aus? Und wie finde ich kernlose zum Beißen?</de>
-						<en></en>
+						<en>What's with the seeds? Do you bite these too? Or do you spit them out? And how do I find seedless ones to bite?</en>
 					</description>
 					<ratings critics="45" speed="41" />
 				</programme>
 				<programme id="therob-programme-GrafRuccola-ep208" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Graf Ruccola trifft Brombeeren</de>
-						<en></en>
+						<en>Count Ruccola meets blackberries</en>
 					</title>
 					<description>
-						<de>Aua, wieso beißen die mich? Achso, Dornen. Was sind denn Dornen. Wie komme ich denn unverletzt an die Brombeere?</de>
-						<en></en>
+						<de>Aua, wieso beißen die mich? Ach so, Dornen. Was sind denn Dornen. Wie komme ich denn unverletzt an die Brombeere?</de>
+						<en>Ouch, why are they biting me? Oh, thorns. What are thorns? How do I get to the blackberry unharmed?</en>
 					</description>
 					<ratings critics="50" speed="45" />
 				</programme>
 				<programme id="therob-programme-GrafRuccola-ep209" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Graf Ruccola trifft Bananen</de>
-						<en></en>
+						<en>Count Ruccola meets bananas</en>
 					</title>
 					<description>
-						<de>Ein krummes Ding zum Abschluß. Ud welches Getier versteckt sich denn in den Bananenstauden. Kommt Graf Ruccola an die Bananen?</de>
-						<en></en>
+						<de>Ein krummes Ding zum Abschluss. Ud welches Getier versteckt sich denn in den Bananenstauden. Kommt Graf Ruccola an die Bananen?</de>
+						<en>A bent thing at the end. And what kind of animal is hiding in the banana plants? Will Count Ruccola get the bananas?</en>
 					</description>
 					<ratings critics="37" speed="50" />
 				</programme>
@@ -1338,11 +1338,11 @@
 			<title>
 				<!-- Serie für Jugendliche, geflagt als Animation -->
 				<de>Graf Ruccola und die Nachtschattengewächse</de>
-				<en></en>
+				<en>Count Rucola and the nightshade family</en>
 			</title>
 			<description>
 				<de>Graf Ruccola ist inzwischen ein heranwachsender, jugendlicher Vitaminvampir und lernt im Internat Freunde aus den Nachtschattengewächsen kennen. Er lernt, warum sich seine Freunde vor den monsterlichen Menschen fürchten. Aktuelle Themen der Jugendlichen gepaart mit interessanten Fakten aus der Pflanzenwelt.</de>
-				<en></en>
+				<en>Count Ruccola is now an adolescent, young vitamin vampire and meets friends from the nightshade family at boarding school. He learns why his friends are afraid of monstrous people. Current topics of the young people paired with interesting facts from the plant world.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_356</member>
@@ -1356,55 +1356,55 @@
 				<programme id="therob-programme-GrafRuccola-ep301" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola und die Tomate</de>
-						<en></en>
+						<en>Count Ruccola and the tomato</en>
 					</title>
 					<description>
 						<de>Graf Ruccola endeckt die Tomate, ein schönes rotes und saftiges Nachtschattengewächs. Zusammen erkunden sie das Menschendorf und sind fassungslos, als sie die Fenster mit dem Ketchup sehen!</de>
-						<en></en>
+						<en>Count Ruccola discovers the tomato, a beautiful red and juicy nightshade plant. Together they explore the human village and are stunned when they see the ketchup windows!</en>
 					</description>
 					<ratings critics="59" speed="39" />
 				</programme>
 				<programme id="therob-programme-GrafRuccola-ep302" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola und die Kartoffel</de>
-						<en></en>
+						<en>Count Ruccola and the potato</en>
 					</title>
 					<description>
-						<de>Graf Ruccola lernt die Kartoffel kennen. Obwohl sehr runzelig und mit Wurzeln bedeckt, entdeckt er die inneren Werte. Zusammen geraten sie in eine Chipsfabrik</de>
-						<en></en>
+						<de>Graf Ruccola lernt die Kartoffel kennen. Obwohl sehr runzelig und mit Wurzeln bedeckt, entdeckt er die inneren Werte. Zusammen geraten sie in eine Chipsfabrik.</de>
+						<en>Count Ruccola meets the potato. Although very wrinkled and covered with roots, he discovers the they inner values. Together they get into a crisp factory.</en>
 					</description>
 					<ratings critics="56" speed="39" />
 				</programme>
 				<programme id="therob-programme-GrafRuccola-ep303" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Graf Ruccola und die Aubergine</de>
-						<en></en>
+						<en>Count Ruccola and the aubergine</en>
 					</title>
 					<description>
-						<de>Die Aubergine und Graf Ruccola entdecken ein geheimes AntiPasti Labor der Menschen. Dort entdeckt die Aubergine ihre vermissten Eltern in zubereiteter Form. Kann Graf Ruccola sie trösten?</de>
-						<en></en>
+						<de>Die Aubergine und Graf Ruccola entdecken ein geheimes Antipasti-Labor der Menschen. Dort entdeckt die Aubergine ihre vermissten Eltern in zubereiteter Form. Kann Graf Ruccola sie trösten?</de>
+						<en>The aubergine and Count Ruccola discover a secret human antipasti laboratory. There the eggplant discovers its missing parents in prepared form. Can Count Ruccola console her?</en>
 					</description>
 					<ratings critics="52" speed="34" />
 				</programme>
 				<programme id="therob-programme-GrafRuccola-ep304" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Graf Ruccola und die Paprika</de>
-						<en></en>
+						<en>Count Ruccola and the bell peppers</en>
 					</title>
 					<description>
 						<de>Graf Ruccola muss die Paprika retten. Sie wurde von einem menschlichen Gewürzhersteller entführt. Schafft er es rechtzeitig?</de>
-						<en></en>
+						<en>Count Ruccola has to save the peppers. She was kidnapped by a human spice maker. Will he make it in time?</en>
 					</description>
 					<ratings critics="51" speed="38" />
 				</programme>
 				<programme id="therob-programme-GrafRuccola-ep305" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Graf Ruccola und der Stechapfel</de>
-						<en></en>
+						<en>Count Ruccola and the jimsonweed</en>
 					</title>
 					<description>
 						<de>Der Stechapfel will ein Heilmittel für Husten werden. Da erzählt ihm Graf Ruccola, was er bisher alles mit den Menschen erlebt hat. Wird der Stechapfel jetzt giftig?</de>
-						<en></en>
+						<en>The jimsonweed wants to be a cure for cough. Count Ruccola tells him what he has experienced with the people so far. Is the jimsonweed becoming poisonous?</en>
 					</description>
 					<ratings critics="57" speed="35" />
 				</programme>
@@ -1413,13 +1413,13 @@
 
 		<programme id="TheRob-serie-crime-DieZwillinge" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
-				<!-- DieZwillinge, Crime mit Flag Mystery, letzte Folge mit subgenre Drama und Comedy -->
+				<!-- Die Zwillinge, Crime mit Flag Mystery, letzte Folge mit subgenre Drama und Comedy -->
 				<de>Die Zwillinge</de>
 				<en>The twins</en>
 			</title>
 			<description>
 				<de>Zwillinge werden bei der Geburt getrennt und wissen nichts von einander Einer wird Polizist, der andere Verbrecher. Auf einmal kreuzen sich ihre beruflichen Werdegänge.</de>
-				<en></en>
+				<en>Twins are separated at birth and know nothing of each other. One becomes a policeman, the other a criminal. Suddenly their professional careers cross.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-AlfredNeck</member>
@@ -1437,7 +1437,7 @@
 					</title>
 					<description>
 						<de>Polizist Rolle soll in einem Ladendiebstahl ermitteln. Als er eintrifft, wird er vom Besitzer sofort beschuldigt. Wie kann das sein? Er war doch auf dem Revier!</de>
-						<en></en>
+						<en>Police officer Rolle to investigate in a shoplifting. When he arrives, he is accused by the owner immediately. How could that be? He was at the station!</en>
 					</description>
 					<ratings critics="50" speed="30" />
 				</programme>
@@ -1448,7 +1448,7 @@
 					</title>
 					<description>
 						<de>Ralle versucht einem Hehler seine Beute zu verkaufen. Dieser will aber nichts damit zu tun haben. Ralle kann sich nicht erklären, warum er seine Sachen nicht mehr los wird.</de>
-						<en></en>
+						<en>Ralle tries to sell his booty to a fence. But he does not want to have anything to do with it. Ralle can't explain why he can't get rid of his things.</en>
 					</description>
 					<ratings critics="30" speed="50" />
 				</programme>
@@ -1459,7 +1459,7 @@
 					</title>
 					<description>
 						<de>Rolle vermutet einen Doppelgänger und begibt sich auf die Suche nach dem Übeltäter.</de>
-						<en></en>
+						<en>Rolle suspects a doppelganger and befalls in search of the culprit.</en>
 					</description>
 					<ratings critics="42" speed="38" />
 				</programme>
@@ -1470,7 +1470,7 @@
 					</title>
 					<description>
 						<de>Ralle vermutet, dass sich jemand an ihm rächen möchte und sich als Ralle verkleidet, um seinen Ruf zu ruinieren. Er begint mit der Suche nach dem Täter.</de>
-						<en></en>
+						<en>Ralle suspects that someone wants revenge on him and disguises himself as Ralle in order to ruin his reputation. He begins his search for the culprit.</en>
 					</description>
 					<ratings critics="38" speed="42" />
 				</programme>
@@ -1481,7 +1481,7 @@
 					</title>
 					<description>
 						<de>Ralle und Rolle entdecken die Wahrheit und lernen sich kennen. Freude über die unerwarteten Bruder und blankes Entsetzen über den Beruf sorgen für Unterhaltung.</de>
-						<en></en>
+						<en>Ralle and Rolle discover the truth and get to know each other. Joy at the unexpected brother and sheer horror at the job provide entertainment.</en>
 					</description>
 					<data country="DDR" year="1980" distribution="0" maingenre="4" subgenre="7,5" flags="0" blocks="2" price_mod="1.00" />
 					<ratings critics="52" speed="28" />
@@ -1497,7 +1497,7 @@
 			</title>
 			<description>
 				<de>Mysteriöse und gruselige Kurzgeschichten. Alles beginnt mit Phänomenen, die sich keiner erklären kann.</de>
-				<en></en>
+				<en>Mysterious and creepy short stories. It all starts with phenomena that no one can explain.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-Peppivonsternschnuppe</member>
@@ -1559,11 +1559,11 @@
 				<!-- Musik der Berge, Musikshow 102, Zielgruppe Kinder -->
 			<title>
 				<de>Musik der Berge</de>
-				<en></en>
+				<en>Music of the mountains</en>
 			</title>
 			<description>
 				<de>Kinderchöre wandern singend durch die Berge.</de>
-				<en></en>
+				<en>Children's choirs hike singing through the mountains.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-celebritypeople-WeinWenk</member>
@@ -1580,11 +1580,11 @@
 				<!-- Was ist Sache, Politshow 102, Zielgruppe Arbeitnehmer -->
 			<title>
 				<de>Was ist Sache</de>
-				<en></en>
+				<en>What is the matter</en>
 			</title>
 			<description>
-				<de>Ein Politiker steht Rede und Antwort zur Lage der Nation</de>
-				<en></en>
+				<de>Ein Politiker steht Rede und Antwort zur Lage der Nation.</de>
+				<en>A politician will answer questions about the state of the nation.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_70</member>
@@ -1600,11 +1600,11 @@
 				<!-- Das Leben der Grace, YellowPress 301, Zielgruppe Frauen -->
 			<title>
 				<de>Das Leben der [2|Full]</de>
-				<en></en>
+				<en>The life of [2|Full]</en>
 			</title>
 			<description>
 				<de>Der Tod von [2|Full] wird zum Anlass genommen ihr Leben komplett zu durchleuchten. Inklusive ausgiebigen Hochzeitsaufnahmen mit dem Fürsten.</de>
-				<en></en>
+				<en>The death of [2|Full] is taken as an occasion to completely examine her life. Including extensive wedding shots with the prince.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">Per_custom_Freddy_377</member>
@@ -1620,11 +1620,11 @@
 				<!-- Analyse der Reden, Polit Event 201, Zielgruppe Manager -->
 			<title>
 				<de>Analyse der Reden</de>
-				<en></en>
+				<en>Analysis of speeches</en>
 			</title>
 			<description>
 				<de>Die Kubakrise verängstigte alle. Hier werden die Reden von [2|Full] und [3|Full] chronologisch gezeigt und miteinander verglichen.</de>
-				<en></en>
+				<en>The Cuban crisis frightened everyone. Here the speeches of [2|Full] and [3|Full] are shown chronologically and compared with each other.</en>
 			</description>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-BastlRuetli</member>
@@ -1641,7 +1641,7 @@
 			<title>
 				<!-- Trend fuer Maenner, Sostiges -->
 				<de>Trend für Männer</de>
-				<en>Trends fo men</en>
+				<en>Trends for men</en>
 			</title>
 			<description>
 				<de>Was muss man heutzutage haben? Die absoluten Neuheiten, die man sich unbedingt kaufen muss, wenn man sicher in die Zukunft möchte!</de>
@@ -1658,7 +1658,7 @@
 				<programme id="TheRob-serie-TrendfuerMaenner-Ep001" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Urangrill</de>
-						<en>uranium barbecue</en>
+						<en>Uranium barbecue</en>
 					</title>
 					<description>
 						<de>Wir kaufen das beste Uran vom US und UdSSR Militär für diesen Grill. Sanfte und konstante Strahlung sorgen für beste Ergebnisse beim Grillfleisch!</de>
@@ -1728,7 +1728,7 @@
 					</title>
 					<description>
 						<de>Aus der bewachten Gruft entkommen. Doch der Wärter stört.</de>
-				  <en>Escape from the crypta. But a guardian disturbs.</en>
+						<en>Escape from the crypta. But a guardian disturbs.</en>
 					</description>
 					<ratings critics="13" speed="59" />
 				</programme>
@@ -1778,7 +1778,7 @@
 				</programme>
 			</children>
 		</programme>
-	
+
 		<programme id="TheRob-serie-Moumental-BestofTVTower" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Best of TVTower, Show 204 Wieder gleiche Wertung für alle Folgen. -->
@@ -1800,7 +1800,7 @@
 				<programme id="TheRob-serie-BestofTVTower-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Tiefsee Dinoschrecken, Banzai</de>
-						<en>Dino deep sea terror, banzai</en>   
+						<en>Dino deep sea terror, banzai</en>
 					</title>
 					<description>
 						<de>Total verkannt. Ein Film wie er besser nicht sein könnte. Die Zuschauer haben bisher den wahren Wert noch nicht gesehen.</de>
@@ -1810,7 +1810,7 @@
 						<member index="0" function="1">Per_custom_Freddy_309</member>
 						<member index="1" function="2">Per_custom_Freddy_310</member>
 						<member index="2" function="2">Per_custom_Freddy_308</member>
-					<member index="3" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>            
+					<member index="3" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
 					</staff>
 					<groups target_groups="0" />
 					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="" flags="8" blocks="4" price_mod="1.0" />
@@ -1822,32 +1822,32 @@
 					</title>
 					<description>
 						<de>[4|First] vergleicht die Sendungen. Aber irgendwann lacht sie nur noch über die Augenbrauen von [2|Full]. Das gibt Bauchmuskelkater...</de>
-						<en></en>
+						<en>[4|First] compares the shows. But at some point she just laughs at [2|Full]'s eyebrows. It makes your abs aching ...</en>
 					</description>
 					<staff>
 						<member index="0" function="1">Per_custom_Freddy_119</member>
 						<member index="2" function="2">Per_custom_Freddy_111</member>
 						<member index="1" function="1">Per_custom_Freddy_406</member>
 						<member index="3" function="2">Per_custom_Freddy_429</member>
-					<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>                    
+					<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
 					</staff>
 					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="" flags="8" blocks="4" price_mod="1.00" />
 				</programme>
 				<programme id="TheRob-serie-BestofTVTower-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Iris entdeckt die Alm</de>
-						<en></en>
+						<en>Iris explores the alp</en>
 					</title>
 					<description>
 						<de>[4|First] philosophiert darüber, ob dies nicht eher eine Dokumentation über Melktechniken ist und reichert viele Szenen mit ihren Erfahrungen vom Bauernhof an.</de>
-						<en></en>
+						<en>[4|First] philosophizes about whether this is not more of a documentary about milking techniques and enriches many scenes with her experiences from the farm.</en>
 					</description>
 					<staff>
 						<member index="0" function="1">c45e52c2-32a3-4d3b-87d2-c56a8e4f5279</member>
 						<member index="1" function="2">Per_custom_Freddy_682</member>
 						<member index="2" function="2">779ecf3d-7ca7-4253-aac6-cb5e1aee8e2c</member>
 					<member index="3" function="8">21e88c65-0cc6-4bd1-bd14-b48b6ce25402</member>
-					<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>                        
+					<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
 					</staff>
 					<data country="D" year="1980" distribution="0" maingenre="204" subgenre="" flags="8" blocks="4" price_mod="1.00" />
 				</programme>
@@ -1868,8 +1868,8 @@
 						<member index="0" function="1">TheRob-celebritypeople-AndyCharkowski</member>
 						<member index="1" function="2">TheRob-TowerTV-AlzaFrejndlitsch</member>
 						<member index="2" function="2">TheRob-TowerTV-AlexKaimanowski</member>
-						<member index="3" function="2">TheRob-TowerTV-NikiGringoff</member> 
-						<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>                      
+						<member index="3" function="2">TheRob-TowerTV-NikiGringoff</member>
+						<member index="4" function="8">3d37e02e-78f2-4749-9de5-429e31b5590b</member>
 					</staff>
 					<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 					<data country="UdSSR" year="1980" distribution="0" maingenre="204" subgenre="" flags="0" blocks="3" price_mod="1.00" />
@@ -1894,8 +1894,8 @@
 			<groups target_groups="256" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1979" distribution="1" maingenre="8" subgenre="" flags="64" blocks="3" price_mod="1.00" />
 			<ratings critics="29" speed="49" outcome="89" />
-		</programme> 
-	
+		</programme>
+
 		<programme id="TheRob-serie-DieStraendederWelt" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Die Strände der Welt, fictional, Dok mit Sub Erotik, keine individuellen Werte -->
@@ -1976,7 +1976,7 @@
 				</programme>
 			</children>
 		</programme>
-	
+
 		<programme id="TheRob-serie-Wirstellenvor" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Wir stellen vor, Music show -->
@@ -2074,7 +2074,7 @@
 				</programme>
 			</children>
 		</programme>
-	
+
 		<programme id="TheRob-b5dc-4663-hist-DieWikinger" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<de>Die Wikinger</de>
@@ -2094,7 +2094,7 @@
 			<data country="D" year="1971" distribution="1" maingenre="11" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="71" speed="37" outcome="0" />
 		</programme>
-		
+
 		<!--
 		<programme id="TheRob-Mon-TvTower-EinmonumentalerVersuch" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
@@ -2110,14 +2110,14 @@
 				<member index="1" function="2">Per_custom_Freddy_72</member>
 				<member index="2" function="2">Per_custom_Freddy_75</member>
 				<member index="3" function="2">Per_custom_Freddy_74</member>
-				<member index="4" function="2">Rumpelfreddy-fictionalperson-AnnaAdlerman</member>        
+				<member index="4" function="2">Rumpelfreddy-fictionalperson-AnnaAdlerman</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="DK" year="1951" distribution="2" maingenre="13" subgenre="9" flags="12" blocks="24" price_mod="1.00" />
 			<ratings critics="81" speed="17" outcome="2" />
 		</programme>
 		-->
-	
+
 		<programme id="TheRob-1757-Polit-Show-UndJetzt?" product="1" fictional="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 				<!-- Und Jetzt?, Politshow 102, Zielgruppe Arbeitnehmer -->
 			<title>
@@ -2136,7 +2136,7 @@
 			<groups target_groups="8" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1978" distribution="2" maingenre="101" subgenre="" flags="0" blocks="3" price_mod="1.00" />
 			<ratings critics="55" speed="41" outcome="0" />
-		</programme>    
+		</programme>
 	</allprogrammes>
 
 	<insignificantpeople>
@@ -2183,8 +2183,8 @@
 				<en>Moviescripts fo beginners</en>
 			</title>
 			<description>
-				<de>Wie schreibe ich Drehbücher für TowerTV? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tips entlockt. </de>
-				<en></en>
+				<de>Wie schreibe ich Drehbücher für TowerTV? Eine Reportage, die die erfolgreichsten Autoren besucht, sie genau durchleuchtet und in Interviews spannende Tipps entlockt.</de>
+				<en>How do I write TowerTV scripts? A report that visits the most successful authors, examines them in detail and elicits exciting tips in interviews.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -2209,7 +2209,7 @@
 			</title>
 			<description>
 				<de>Reporter durchreisen das Sendegebiet um ausführlich über lokale Sendegebietsereignisse zu berichten. Die neueste Ausstellung, ein Jubiläum? Alles wird entdeckt.</de>
-				<en></en>
+				<en>Reporters travel through the broadcast area to report in detail on local broadcast area events. The latest exhibition, an anniversary? Everything will be discovered.</en>
 			</description>
 			<jobs>
 				<job index="0" function="1" required="1" />
@@ -2317,7 +2317,7 @@
 			<variables>
 				<was>
 					<de>Grusel|Horror|Angst|Schauder|Zitter</de>
-					<en>Scary|Horror|Fear|Spooky</en>
+					<en>Scary|Horror|Fear|Spooky|Shaky</en>
 				</was>
 				<art>
 					<de>universität|schule|akademie|fachhochschule</de>
@@ -2376,7 +2376,7 @@
 			<variables>
 				<name1>
 					<de>Heimatliche|Romantische|Süße|Schmachtende</de>
-					<en>Stories|Tales|Porkies</en>
+					<en>Stories|Tales|Porkies|Yearny</en>
 				</name1>
 				<name2>
 					<de>Berggeschichten|Dorfgeschichten|Waldgeschichten|O'zapft is-Geschichten</de>
@@ -2526,7 +2526,7 @@
 				<de>Serie über %OBJECT% im TV Tower Hochhaus</de>
 				<en>Series about %OBJECT% In The TV Tower Skyscraper</en>
 			</description>
-			
+
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-dram-TVTintern-Ep1">
 					<title>
@@ -2654,7 +2654,7 @@
 				<de>Die legendäre thailändische Serie in der originalen Sprache ohne Untertitel nachgedreht.</de>
 				<en>The legendary thai series in original language without subtitles </en>
 			</description>
-			
+
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-trash-karprachd-Ep1">
 					<title>
@@ -2709,7 +2709,7 @@
 				<de>Die legendäre iranische Serie in der originalen Sprache ohne Untertitel nachgedreht.</de>
 				<en>The legendary iran series in original language without subtitles </en>
 			</description>
-			
+
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-mix-tanz-amiz-Ep1">
 					<title>
@@ -2764,7 +2764,7 @@
 				<de>%NAME1% löst rasante Fälle in seinem beschaulichen Revier. Verfolgungsjagten garantiert.</de>
 				<en>%NAME1% closes his files in a peacefull territory. Chases guaranteed.</en>
 			</description>
-			
+
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-act-DerFahnder-Ep1">
 					<title>
@@ -3040,7 +3040,7 @@
 				<de>%NAME1% zockt Anrufer ab, die Wörter finden müssen. Im Hintergrund tanzen zwei halbnackte Damen.</de>
 				<en>%NAME1% screws the caller, who has to find words. Two nearly nacked women are dancing in the background.</en>
 			</description>
-			
+
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="TheRob-script-ser-CallIn-Abgezockt-Ep1">
 					<title>
