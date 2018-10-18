@@ -1764,7 +1764,7 @@ Available in any well-stocked drugstore.</en>
 			<description>
 				<de>Diskriminierung oder Hetzschrift. Gerne. - Ehre? Menschenwürde oder Mitgefühl? Das kennen wir nicht!
 				Mietmaul - Wir sind gleicher als Andere.</de>
-				<en>Discrimination or prosecution. With pleasure. - Honor? Human dignity or compassion? Are not known to us! 
+				<en>Discrimination or prosecution. With pleasure. - Honor? Human dignity or compassion? Are not known to us!
 				Hired Parrot - We are more equal than others.</en>
 			</description>
 			<conditions min_audience="14.0663" min_image="30" target_group="32"/>
@@ -1813,7 +1813,7 @@ Available in any well-stocked drugstore.</en>
 				<en>Ear-O-Plug noise control</en>
 			</title>
 			<description>
-				<de>Nölt Ihr Chef? Die Alte sowieso? Die Kinder sind nicht auszuhalten? - RUHE !!! 
+				<de>Nölt Ihr Chef? Die Alte sowieso? Die Kinder sind nicht auszuhalten? - RUHE !!!
 				Jetzt im Handel: Ohrostopf!</de>
 				<en>Is your boss always nagging at you? Your hag anyway? The children are unbearable? - SILENCE !!!
 				Now available: Ear-O-Plug</en>
@@ -2051,9 +2051,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Ticketschalter" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Ticketschalter</de>
+				<en>Ticket Counter</en>
 			</title>
 			<description>
 				<de>Wir verkaufen Eintrittskarten zu allen Großveranstaltungen, Messen und Live-Konzerten. Auch Sonderkarten wie Back-Stage oder On-Stage sind erhältlich!</de>
+				<en>We sell tickets to all major events, trade fairs and live concerts. Also special tickets like Back-Stage or On-Stage are available!</en>
 			</description>
 			<conditions min_audience="15.63" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="20" repetitions="2" duration="3" profit="245" penalty="345" fix_infomercial_profit="1"/>
@@ -2061,9 +2063,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-Weinstein" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Winzerei Weinstein</de>
+				<en>Winery Tartar</en>
 			</title>
 			<description>
 				<de>Lutschen Sie sich durch erlesene Jahrgänge der Weingeschichte. Weinsteinsortimente der gleichnamigen Winzerei ab sofort erhältlich!</de>
+				<en>Suck your way through exquisite vintages of wine history. Tartar of wine assortments from the winery of the same name now available!</en>
 			</description>
 			<conditions min_audience="3.13" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="25" repetitions="1" duration="2" profit="616" penalty="970" infomercial_profit="67" fix_infomercial_profit="1"/>
@@ -2071,9 +2075,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-bafm-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Bundesdeutsche Anstalt für Meditation</de>
+				<en>Federal Institution for Meditation</en>
 			</title>
 			<description>
 				<de>Leitfaden zur aufrichtigen inneren Reinigung, Tipps und Tricks, Best Practices und vieles mehr. Infos bei uns! LAM - VAM - RAM - YAM - HAM - KSHAM - OM.</de>
+				<en>Guide to sincere inner cleansing, tips and tricks, best practices and much more. Info from us! LAM - VAM - RAM - YAM - HAM - KSHAM - OM.</en>
 			</description>
 			<conditions min_audience="26.05" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="11" repetitions="2" duration="5" profit="158" penalty="301" infomercial_profit="69" fix_infomercial_profit="1"/>
@@ -2081,9 +2087,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-baumschule-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Baumschule Bummbarts</de>
+				<en>Tree Nursery Bummbeards</en>
 			</title>
 			<description>
 				<de>Bummbarts Bäume wissen Väter zu schätzen, wenn sie mit Ihrem Sohne einen setzen.</de>
+				<en>Father and son can safely plant as Bummbeard's trees do never slant.</en>
 			</description>
 			<conditions min_audience="8.3352" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="15" repetitions="4" duration="3" profit="377" penalty="544" infomercial_profit="90" fix_infomercial_profit="1"/>
@@ -2091,9 +2099,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-baumschule-02" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Baumschule Bummbarts</de>
+				<en>Tree Nursery Bummbeards</en>
 			</title>
 			<description>
 				<de>In Parks und Gärten genießt man die Räume, die Highlights aber sind Bummbarts Bäume.</de>
+				<en>In parks and gardens you feel free, but the highlight is a Bummbeard's tree.</en>
 			</description>
 			<conditions min_audience="1.82" min_image="45" target_group="256"/>
 			<data infomercial="1" quality="18" repetitions="6" duration="4" profit="848" penalty="999" infomercial_profit="90" fix_infomercial_profit="1"/>
@@ -2101,9 +2111,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-bildergalerie-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Bildergalerie Silberfisch</de>
+				<en>Picture Gallery Silverfish</en>
 			</title>
 			<description>
 				<de>Wir sind bodenständig! Keine einfarbigen Flächen zu Fantasiepreisen. Bei uns z.B. „Röhrender Hirsch auf Zweimastschoner in stürmischer See“ nur 500 Ocken.</de>
+				<en>We are down-to-earth! No monochrome surfaces at fantasy prices. With us e.g. "roaring stag on two-mast schooner in stormy sea" only 500 bucks.</en>
 			</description>
 			<conditions min_audience="2.083" min_image="12" target_group="4"/>
 			<data infomercial="1" quality="19" repetitions="4" duration="2" profit="840" penalty="1400" fix_infomercial_profit="1"/>
@@ -2114,6 +2126,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Pestizid, Fungizid, Herbizid. Unser Flieger steht bereit. Wir spritzen Ihr Feld, Ihre Obstplantage und Ihren Garten. Auch für privat! Einfach anrufen.</de>
+				<en>Pesticide, fungicide, herbicide. Our plane is ready. We spray your field, your orchard and your garden. Also available for private customers! Just give us a call.</en>
 			</description>
 			<conditions min_audience="28.65" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="12" repetitions="1" duration="4" profit="147" penalty="232" fix_infomercial_profit="1"/>
@@ -2121,9 +2134,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-esel24-02" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Esel24</de>
+				<en>Donkey24</en>
 			</title>
 			<description>
 				<de>Hochzeit? Firmenveranstaltung? Familienfeier? Autopanne! Umzug! Esel zum Mieten und zum Kaufen! Esel24!</de>
+				<en>Wedding? Company event? Family celebration? Car breakdown! Removal! Donkeys to rent and to buy! Donkey24!</en>
 			</description>
 			<conditions min_audience="0.78" min_image="0"/>
 			<data infomercial="1" quality="18" repetitions="4" duration="3" profit="1400" penalty="1915" fix_infomercial_profit="1" year_range_to="1999" />
@@ -2131,9 +2146,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-esel24-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Esel24.komm</de>
+				<en>Donkey24.come</en>
 			</title>
 			<description>
 				<de>Hochzeit? Firmenveranstaltung? Familienfeier? Autopanne! Umzug! Esel zum Mieten und zum Kaufen! Esel24.komm!</de>
+				<en>Wedding? Company event? Family celebration? Car breakdown! Removal! Donkeys to rent and to buy! Donkey24.come!</en>
 			</description>
 			<conditions min_audience="0.78" min_image="0"/>
 			<data infomercial="1" quality="15" repetitions="4" duration="3" profit="1400" penalty="1915" fix_infomercial_profit="1" year_range_from="2000"/>
@@ -2144,6 +2161,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Prickelnde Kohlensäure, zischende Dose, Kühlung für Rachen und Kehle, super geschmackvoll? Nicht mehr träumen! four4down bringt Sie auf den Boden zurück!</de>
+				<en>Sparkling carbonic acid, a hissing can, cooling for throat and throat, super tasty? No more dreaming! four4down gets you back on the ground!</en>
 			</description>
 			<conditions min_audience="23.44" min_image="0"/>
 			<data infomercial="1" quality="16" repetitions="1" duration="4" profit="171" penalty="315" infomercial_profit="17" fix_infomercial_profit="1"/>
@@ -2154,6 +2172,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Wir geben eine Ouzo für jede Zentimeter abgeschnittene Haare! Wer brauchte schon Haare, wenne kann tragen Helm?</de>
+				<en>We give ayn Ouzo for everry inch of cut hair! Who needed hair, who can wear helmet?</en>
 			</description>
 			<conditions min_audience="1.3015" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="9" repetitions="2" duration="2" profit="960" penalty="1200" infomercial_profit="40" fix_infomercial_profit="1"/>
@@ -2161,9 +2180,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-hammer-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Hammer</de>
+				<en>Hammer</en>
 			</title>
 			<description>
 				<de>Das Auto ist der Hammer! Höher als ein LKW und breiter als lang. Man kann aufrecht stehen oder sich auf der Rückbank ausstrecken. Warum noch Miete zahlen?</de>
+				<en>The car is a doozie! 100% Steel! Higher than a truck and wider than long. You can stand upright or stretch out on the back seat. Why pay rent?</en>
 			</description>
 			<conditions min_audience="26.05" min_image="4" target_group="256"/>
 			<data infomercial="1" quality="19" repetitions="1" duration="3" profit="168" penalty="307" infomercial_profit="36" fix_infomercial_profit="1"/>
@@ -2174,6 +2195,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Das Hundefutter mit Aspartam. Mästen Sie Ihren Liebling! Wie das Schwein, so auch der Hund, wird Ihr Tierchen kugelrund.</de>
+				<en>The dog food with aspartame. Feed your darling! Just like the pig, so does the dog, your little animal will be round as a ball.</en>
 			</description>
 			<conditions min_audience="10.42" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="15" repetitions="1" duration="2" profit="290" penalty="514" infomercial_profit="60" fix_infomercial_profit="1"/>
@@ -2184,6 +2206,7 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Kommst Du. - Kuckst Du. - Kaufst Du.</de>
+				<en>You come. - You look. - You buy.</en>
 			</description>
 			<conditions min_audience="0.0511" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="7" repetitions="4" duration="3" profit="3200" penalty="3771" infomercial_profit="40" fix_infomercial_profit="1"/>
@@ -2191,9 +2214,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-hexlerundschorsch-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Hexler und Schorsch</de>
+				<en>Hexler and Schorsch</en>
 			</title>
 			<description>
 				<de>Für unsere Bohnen wird kein Regenwald abgeholzt! Blaue Bohnen und mehr von Hexler und Schorsch!</de>
+				<en>No rainforest will be cleared for our bullets! Bullets and more from Hexler and Schorsch!</en>
 			</description>
 			<conditions min_audience="17.19" min_image="4" target_group="256"/>
 			<data infomercial="1" quality="19" repetitions="1" duration="3" profit="242" penalty="445" infomercial_profit="65" fix_infomercial_profit="1"/>
@@ -2204,7 +2229,9 @@ Available in any well-stocked drugstore.</en>
 			</title>
 			<description>
 				<de>Stehplätze, Verpflegung* aus der Dose und Betäubungsgas machen den Flug angenehm. Auch die Piloten sind extrem ausgeruht. Schönen Urlaub!
-		(*gegen Aufpreis)</de>
+(*gegen Aufpreis)</de>
+				<en>Standing room, food* from the can and narcotic gas make the flight pleasant. The pilots are also extremely rested. Have a nice holiday!
+(*for an extra charge)</en>
 			</description>
 			<conditions min_audience="23.44" min_image="7" target_group="8"/>
 			<data infomercial="1" quality="22" repetitions="1" duration="4" profit="193" penalty="268" infomercial_profit="17" fix_infomercial_profit="1"/>
@@ -2212,9 +2239,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-kaiserskleider-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Kaisers neue Kleider</de>
+				<en>Emperor's New Clothes</en>
 			</title>
 			<description>
 				<de>Neue Kollektion bei Kaisers: Extrem guter Tragekomfort, hauchdünner Stoff, fantasievolle Schnitte. Ein echter Hingucker! Kaisers neue Kleider!</de>
+				<en>New collection at Emperor's: Extremely good wearing comfort, wafer-thin fabric, imaginative cuts. A real eye-catcher! Emperor's New Clothes!</en>
 			</description>
 			<conditions min_audience="36.47" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="21" repetitions="1" duration="3" profit="124" penalty="226" infomercial_profit="22" fix_infomercial_profit="1"/>
@@ -2222,9 +2251,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-kakteenwunderland-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Kakteenwunderland</de>
+				<en>Cactus Wonderland</en>
 			</title>
 			<description>
 				<de>Unsere Kakteen stechen härter, länger und ausdauernder, als die der Konkurrenz. Wir haben Kakteen für Garten, Wintergarten, Treibhaus und fürs Bett.</de>
+				<en>Our cacti sting harder, are longer and more enduring than those of our competitors. We have cacti for garden, conservatory, greenhouse and bed.</en>
 			</description>
 			<conditions min_audience="6.25" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="17" repetitions="3" duration="4" profit="450" penalty="650" infomercial_profit="42" fix_infomercial_profit="1"/>
@@ -2232,9 +2263,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-koizucht-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Koizucht Koiner</de>
+				<en>Koi Breeding Koiner</en>
 			</title>
 			<description>
 				<de>Satte Fische zu satten Preisen. Ein weiterer Beleg, was einmal ein Schwabe sagte: „Wenn's nix koscht'! Sonscht kommt koiner nai!“</de>
+				<en>Full fish at full prices. Another proof of what a Swabian once said: "No money no fish!"</en>
 			</description>
 			<conditions min_audience="33.86" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="15" repetitions="1" duration="4" profit="130" penalty="228" infomercial_profit="11" fix_infomercial_profit="1"/>
@@ -2242,9 +2275,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-malereifarbecht-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Malerei Farbecht</de>
+				<en>Painter Colorfast</en>
 			</title>
 			<description>
 				<de>Unschlagbar im Preis. Fenster und Türen abkleben war gestern. Wir sind kosteneffizient, das werden Sie sehen. Zum Termin erscheinen wir! - oft! - manchmal.</de>
+				<en>Unbeatable in price. Taping windows and doors was yesterday. We are cost-efficient you will see. We appear at the appointment! - often! - now and then! - sometimes.</en>
 			</description>
 			<conditions min_audience="0.4679" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="11" repetitions="6" duration="3" profit="2000" penalty="2750" infomercial_profit="100" fix_infomercial_profit="1"/>
@@ -2252,9 +2287,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-overbrain-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Overbrain Bug-Generator</de>
+				<en>Overbrain Bug Generator</en>
 			</title>
 			<description>
 				<de>Ihre Software ist immer fehlerfrei? Ihre Kollegen schütteln den Kopf darüber? Simulieren Sie Normalität! Der „Bug-Generator“ garantiert 5 Bugs auf 1000 Zeilen.</de>
+				<en>Your software is always error-free? Your colleagues shake their heads about it? Simulate normality! The "bug generator" guarantees 5 bugs across 1000 lines.</en>
 			</description>
 			<conditions min_audience="39.07" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="14" repetitions="2" duration="5" profit="118" penalty="241" infomercial_profit="11" fix_infomercial_profit="1"/>
@@ -2262,9 +2299,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-overbrain-02" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Overbrain Virus-Simulator</de>
+				<en>Overbrain Virus Simulator</en>
 			</title>
 			<description>
 				<de>Sie haben keinen Internetanschluss? Sie benutzen nie USB-Sticks? Beim Thema Viren können Sie nicht mitreden? Jetzt schon, mit dem gefahrvollen „Virus-Simulator“!</de>
+				<en>You don't have an internet connection? You never use USB sticks? You can't have a say in the subject of viruses? Now you can: with the dangerous "virus simulator"!</en>
 			</description>
 			<conditions min_audience="39.07" min_image="32" target_group="0"/>
 			<data infomercial="1" quality="20" repetitions="2" duration="5" profit="172" penalty="220" fix_infomercial_profit="1"/>
@@ -2272,9 +2311,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-pizzapaschulke-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Pizza Paschulke</de>
+				<en>Pizza Pachulkee</en>
 			</title>
 			<description>
 				<de>Pizza aus dem Schwedenofen. Schön knackig und bissfest. Auch als Ersatzbrennstoff verwendbar. Jeden ungeraden Kalendertag liefern wir auch aus.</de>
+				<en>Pizza from the Swedish oven. Beautifully crunchy and firm to the bite. Can also be used as a substitute fuel. We also deliver every odd calendar day.</en>
 			</description>
 			<conditions min_audience="0.3898" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="17" repetitions="2" duration="2" profit="2000" penalty="1900" infomercial_profit="20" fix_infomercial_profit="1"/>
@@ -2282,9 +2323,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-placebotazementamol-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Placebotazementamol</de>
+				<en>Placebotazementamol</en>
 			</title>
 			<description>
 				<de>Placebotazementamol seit 1276. Tradition seit dem Mittelalter. Scharlatane und Quacksalber schwören darauf! Jetzt neu als Pastille.</de>
+				<en>Placebotazementamol since 1276. Tradition since the Middle Ages. Charlatans and quacks swear by it! Now new - as Pastille.</en>
 			</description>
 			<conditions min_audience="20.84" min_image="0"/>
 			<data infomercial="1" quality="15" repetitions="2" duration="4" profit="187" penalty="250" infomercial_profit="18" fix_infomercial_profit="1"/>
@@ -2292,9 +2335,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-potzblitz-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Potz-Blitz Autohof</de>
+				<en>Upon-my-Soul Car Yard</en>
 			</title>
 			<description>
 				<de>Kommen Sie zu unserem Autohof. LKW-Waschmöglichkeiten. Duschen und Toiletten vorhanden! Ab 1000l Dieselbetankung ein gratis Kaffee!!! Potz-Blitz! An der A7!</de>
+				<en>Come to our car yard. Truck washing facilities. Showers and toilets available! Free coffe when refuielling 1000l diesel or more!!! Upon-my-Soul! At the Route 7!</en>
 			</description>
 			<conditions min_audience="0.26" min_image="4" target_group="256"/>
 			<data infomercial="1" quality="9" repetitions="3" duration="4" profit="2440" penalty="3200" fix_infomercial_profit="1"/>
@@ -2302,9 +2347,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-raffgier-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Raff und Gier, Banken und Versicherungen</de>
+				<en>Hogg and Greed, banks and insurances</en>
 			</title>
 			<description>
 				<de>Ihr Geld steht bei uns im Mittelpunkt. In unsren Banken bewachen wir es. Wir verteidigen es gegen JEDEN. Keine Ausnahmen.</de>
+				<en>We focus on your money. In our banks we guard it. We defend it against EVERYONE. No exceptions.</en>
 			</description>
 			<conditions min_audience="31.26" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="18" repetitions="1" duration="6" profit="138" penalty="214" infomercial_profit="23" fix_infomercial_profit="1"/>
@@ -2312,9 +2359,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-raffgier-02" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Raff und Gier, Banken und Versicherungen</de>
+				<en>Hogg and Greed, banks and insurances</en>
 			</title>
 			<description>
 				<de>Unsere Versicherungen nehmen Ihr Geld auch völlig ohne Gegenleistung! Bitte einschicken.</de>
+				<en>Our insurances take your money completely without consideration! Please send it in.</en>
 			</description>
 			<conditions min_audience="31.26" min_image="68" target_group="128"/>
 			<data infomercial="1" quality="27" repetitions="3" duration="4" profit="138" penalty="130" infomercial_profit="23" fix_infomercial_profit="1"/>
@@ -2322,9 +2371,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-rauschebart-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Käpt'n Rauschebart</de>
+				<en>Captain Buzz Beard</en>
 			</title>
 			<description>
 				<de>Gefrorene Fischstangen zum Kisten aufstemmen, Wände einreissen, Möbel stabilisieren, Schienen ausbessern. Klasse auf dem Bau, moderat in der Pfanne. Na dann Mahlzeit.</de>
+				<en>Frozen fish sticks to punch into crates, tearing down walls, stabilizing furniture, repairing rails. Class on the construction site, moderate in the pan. That's just great!</en>
 			</description>
 			<conditions min_audience="9.38" min_image="0"/>
 			<data infomercial="1" quality="20" repetitions="2" duration="3" profit="311" penalty="515" infomercial_profit="62" fix_infomercial_profit="1"/>
@@ -2332,9 +2383,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-rechtschreibdudan-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Rechtschreibdudan</de>
+				<en>Diggtionary</en>
 			</title>
 			<description>
-				<de>Sie glauben sie haben sich neulich in der Straßenbahn verhöhrt? Fäkalsprache, Deutsch, der neue Rechtschreibdudan. Greif den Scheiß ab.</de>
+				<de>Sie glauben sie haben sich neulich in der Straßenbahn verhört? Fäkalsprache, Deutsch, der neue Rechtschreibdudan. Greif den Scheiß ab.</de>
+				<en>You think you misheard in the tram the other day? Faecal language, German, the new Diggtionary. Take the crap.</en>
 			</description>
 			<conditions min_audience="4.69" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="471" penalty="646" fix_infomercial_profit="1"/>
@@ -2342,9 +2395,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-rennpferde-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Rennpferde Engel</de>
+				<en>Racehorses Angel</en>
 			</title>
 			<description>
 				<de>Sommerschlussverkauf! Die alten Klepper müssen raus! Für 2 Araber gibt es eine Schindmähre gratis oben drauf! Kein Versand! Schnäppchenwetter bei Engel.</de>
+				<en>Summer sales! The old crocks have to get out! For 2 Arabs there is a free nag on top! No shipping! Bargain weather at Angels.</en>
 			</description>
 			<conditions min_audience="2.08" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="12" repetitions="6" duration="4" profit="812" penalty="1110" infomercial_profit="77" fix_infomercial_profit="1"/>
@@ -2352,9 +2407,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-spackeroog-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Nordseeinsel Spackeroog</de>
+				<en>North Sea island Spackeroog</en>
 			</title>
 			<description>
 				<de>Genießen Sie die See, auch wenn sie nie da ist. Fühlen Sie Schafsköttel zwischen den Zehen und den Geruch modernden Tangs in der Nase. Natürlich, Spackeroog!</de>
+				<en>Enjoy the sea, even if it's never there. Feel sheep's mutt between your toes and the smell of rotting seaweed in your nose. Of course, Spackeroog!</en>
 			</description>
 			<conditions min_audience="0.4679" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="14" repetitions="2" duration="1" profit="1888" penalty="2526" fix_infomercial_profit="1"/>
@@ -2362,9 +2419,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-spargelsund-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Erlebnisbad Spargelsund</de>
+				<en>Water Park Aspargustic</en>
 			</title>
 			<description>
 				<de>Besuchen mit der Familie unseren Wasserpark und erleben Sie unsere Attraktionen. Kettenanzüge fürs Haifischbecken in allen Größen ausleihbar.</de>
+				<en>Visit our water park with your family and experience our attractions. Chain suits for the shark pool can be rented in all sizes.</en>
 			</description>
 			<conditions min_audience="2.34" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="18" repetitions="2" duration="4" profit="700" penalty="1087" infomercial_profit="73" fix_infomercial_profit="1"/>
@@ -2372,9 +2431,11 @@ Available in any well-stocked drugstore.</en>
 		<ad id="speedminister-ad-sportschule-01" creator="8605" created_by="SpeedMinister">
 			<title>
 				<de>Sportschule Steilpass</de>
+				<en>Sport School Steeppass</en>
 			</title>
 			<description>
 				<de>Exzellente Prüfungsvorbereitung der zukünftigen Profisportler durch unsere Lehrkräfte nach der Philosophie: "Nimm Du ihn - ich hab' ihn sicher!"</de>
+				<en>Excellent exam preparation of the future professional athletes by our teachers - according to the philosophy: "Take him - I secured him!"</en>
 			</description>
 			<conditions min_audience="0.31" min_image="0" target_group="0"/>
 			<data infomercial="1" quality="14" repetitions="4" duration="2" profit="2300" penalty="3287" infomercial_profit="150" fix_infomercial_profit="1"/>
