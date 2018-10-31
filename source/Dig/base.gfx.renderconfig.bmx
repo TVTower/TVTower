@@ -3,7 +3,7 @@ Import Brl.LinkedList
 Import "base.util.color.bmx"
 Import "base.util.rectangle.bmx"
 Import "base.util.vector.bmx"
-Import "base.util.graphicsmanager.bmx"
+Import "base.util.graphicsmanagerbase.bmx"
 
 
 Type TRenderConfig

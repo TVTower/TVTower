@@ -84,6 +84,12 @@ Type TGraphicsManager
 	Const RENDERER_GL2SDL:Int           = 5
 
 
+	Function GetInstance:TGraphicsManager()
+		If Not _instance Then _instance = New TGraphicsManager
+		Return _instance
+	End Function
+
+
 	Function SetRendererAvailable(index:int, bool:int=True)
 		if index >= RENDERER_AVAILABILITY.length then return
 		'setall
@@ -267,7 +273,8 @@ Type TGraphicsManager
 		TLogger.Log("GraphicsManager.InitGraphics()", "Initialized virtual graphics (for optional letterboxes).", LOG_DEBUG)
 	End Method
 
-	Method _InitGraphicsDefault:Int() Abstract
+	Method _InitGraphicsDefault:Int() 'Abstract
+	End Method
 
 Rem
 	Method _InitGraphicsDefault:Int()
@@ -368,4 +375,9 @@ End Rem
 
 End Type
 
+
+'convenience function
+Function GetGraphicsManager:TGraphicsManager()
+	Return TGraphicsManager.GetInstance()
+End Function
 

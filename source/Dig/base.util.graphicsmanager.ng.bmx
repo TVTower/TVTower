@@ -13,7 +13,7 @@ TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_GL2SDL, GL2Max2D
 Type TGraphicsManagerNG Extends TGraphicsManager
 
 	Function GetInstance:TGraphicsManager()
-		If Not _instance Then _instance = New TGraphicsManagerNG
+		If Not TGraphicsManagerNG(_instance) Then _instance = New TGraphicsManagerNG
 		Return _instance
 	End Function
 
@@ -45,6 +45,9 @@ Type TGraphicsManagerNG Extends TGraphicsManager
 End Type
 
 'convenience function
-Function GetGraphicsManager:TGraphicsManager()
+Function GetGraphicsManagerNG:TGraphicsManager()
 	Return TGraphicsManagerNG.GetInstance()
 End Function
+
+GetGraphicsManagerNG()
+

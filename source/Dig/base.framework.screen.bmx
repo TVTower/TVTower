@@ -40,7 +40,7 @@ Import "base.framework.layer.bmx"
 Import "base.util.deltatimer.bmx"
 Import "base.util.rectangle.bmx"
 Import "base.util.color.bmx"
-Import "base.util.graphicsmanager.bmx"
+Import "base.util.graphicsmanagerbase.bmx"
 Import BRL.Max2D
 Import BRL.LinkedList
 

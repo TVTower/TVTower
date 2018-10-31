@@ -44,7 +44,7 @@ Import BRL.Random
 Import "base.util.event.bmx"
 Import "base.util.vector.bmx"
 Import "base.gfx.imagehelper.bmx"
-Import "base.util.graphicsmanager.bmx"
+Import "base.util.graphicsmanagerbase.bmx"
 
 
 CONST ALIGN_LEFT:FLOAT = 0
@@ -83,7 +83,7 @@ Type TSpritePack
 	Method GetImage:TImage()
 		return image
 	End Method
-	
+
 
 	'returns the sprite defined by "spriteName"
 	'if no sprite was found, the first in the pack is returned to avoid errors
@@ -319,7 +319,7 @@ Type TSprite
 			DrawImageOnImage(ColorizeImageCopy(img, color), tmppix, int(area.GetX()), int(area.GetY()))
 		UnlockImage(parent.GetImage(), 0)
 	End Method
-	
+
 
 	Method GetName:String()
 		return name
@@ -329,7 +329,7 @@ Type TSprite
 	Method SetPadding:int(padding:TRectangle)
 		self.padding = padding
 	End Method
-	
+
 
 	Method IsNinePatchEnabled:int()
 		return ninePatchEnabled
@@ -400,7 +400,7 @@ Type TSprite
 		'  °= L ====== R = °		COL
 
 		local minVal:int = 0, maxVal:int = 0
-		 
+
 		'find left border: from 1 to first non-transparent pixel in row 0
 		minVal = NINEPATCH_MARKER_WIDTH
 		maxVal = sourceW - NINEPATCH_MARKER_WIDTH
@@ -415,7 +415,7 @@ Type TSprite
 			if ARGB_Alpha(ReadPixel(_pix, i, markerCol)) = 0 then result.SetRight(maxVal - i);exit
 		Next
 
-		
+
 		'find top border: from 1 to first opaque pixel in col 0
 		minVal = NINEPATCH_MARKER_WIDTH
 		maxVal = sourceH - NINEPATCH_MARKER_WIDTH
@@ -510,7 +510,7 @@ Type TSprite
 		if ninePatchEnabled
 			return ninePatch_borderDimension.GetLeft() + ninePatch_borderDimension.GetRight()
 		else
-			return GetWidth(includeOffset) 
+			return GetWidth(includeOffset)
 		endif
 	End Method
 
@@ -541,7 +541,7 @@ Type TSprite
 		if ninePatchEnabled
 			return ninePatch_borderDimension.GetTop() + ninePatch_borderDimension.GetBottom()
 		else
-			return GetHeight(includeOffset) 
+			return GetHeight(includeOffset)
 		endif
 	End Method
 
@@ -683,7 +683,7 @@ Type TSprite
 			local targetW1:int = borderSize.GetLeft() * ninePatch_borderDimensionScale
 			local targetW2:int = stretchDestW
 			local targetW3:int = borderSize.GetRight() * ninePatch_borderDimensionScale
-			local targetH1:int = borderSize.GetTop() * ninePatch_borderDimensionScale				
+			local targetH1:int = borderSize.GetTop() * ninePatch_borderDimensionScale
 			local targetH2:int = stretchDestH
 			local targetH3:int = borderSize.GetBottom() * ninePatch_borderDimensionScale
 
@@ -740,7 +740,7 @@ Type TSprite
 				source.Init( sourceX3, sourceY2, ninePatch_borderDimension.GetRight(), ninePatch_centerDimension.GetY() )
 				DrawResized( target, source, frame, false, clipRect )
 			endif
-			
+
 
 			'bottom
 			if ninePatch_borderDimension.GetBottom()
@@ -855,7 +855,7 @@ Type TSprite
 				DrawSubImageRect(parent.GetImage(), Float(floor(targetCopy.GetX())), Float(floor(targetCopy.GetY())), Float(ceil(targetCopy.GetW())), Float(ceil(targetCopy.GetH())), Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), sourceCopy.GetW(), sourceCopy.GetH())
 			GetGraphicsManager().SetViewPort(vpx, vpy, vpw, vph)
 
-			
+
 rem
 'unfinished- calculations not free of bugs...
 			'Clip left and top
@@ -866,8 +866,8 @@ rem
 			Local clipB:float = Max(0, targetCopy.GetY2() - clipRect.GetY2())
 
 			'source area has to get scaled down because of clipping...
-			Local scaleX:Float = 1.0 - (clipL + clipR) / targetCopy.GetW() 
-			Local scaleY:Float = 1.0 - (clipT + clipB) / targetCopy.GetH() 
+			Local scaleX:Float = 1.0 - (clipL + clipR) / targetCopy.GetW()
+			Local scaleY:Float = 1.0 - (clipT + clipB) / targetCopy.GetH()
 
 '			DrawImageArea(Image, x + startX + offsetX, y + startY + offsetY, startX, startY, w - startX - endX, h - startY - endY, frame)
 
@@ -908,13 +908,13 @@ endrem
 			alignX = alignment.x
 			alignY = alignment.y
 		endif
-	
+
 		'add offset
 		currentX :- offset.GetLeft() * scale
 
 		local offsetX:int = int(alignX * area.GetW())
 		local offsetY:int = int(alignY * area.GetH())
-		
+
 
 		While widthLeft > 0
 			local widthPart:float = Min(frameW, widthLeft) 'draw part of sprite or whole ?
@@ -977,7 +977,7 @@ endrem
 			alignX = alignment.x
 			alignY = alignment.y
 		endif
-	
+
 		'add offset
 		x:- offset.GetLeft() * scale
 		Y:- offset.GetTop() * scale

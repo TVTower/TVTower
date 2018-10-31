@@ -22,7 +22,7 @@ TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_OPENGL, GLMax2DD
 Type TGraphicsManagerDefault Extends TGraphicsManager
 
 	Function GetInstance:TGraphicsManager()
-		If Not _instance Then _instance = New TGraphicsManagerDefault
+		If Not TGraphicsManagerDefault(_instance) Then _instance = New TGraphicsManagerDefault
 		Return _instance
 	End Function
 
@@ -37,7 +37,7 @@ Type TGraphicsManagerDefault Extends TGraphicsManager
 					SetGraphicsDriver GLMax2DDriver()
 					renderer = RENDERER_OPENGL
 			End Select
-	
+
 			_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
 		?
 	End Method
@@ -62,8 +62,8 @@ Type TGraphicsManagerDefault Extends TGraphicsManager
 			Local desk:Int[4], window:Int[4]
 			GetWindowRect(GetDesktopWindow(), desk)
 			GetWindowRect(hWnd, window)
-		
-			SetWindowPos(hWnd, HWND_NOTOPMOST, (desk[2] - (window[2] - window[1])) / 2, (desk[3] - (window[3] - window[0])) / 2, 0, 0, SWP_NOSIZE)	
+
+			SetWindowPos(hWnd, HWND_NOTOPMOST, (desk[2] - (window[2] - window[1])) / 2, (desk[3] - (window[3] - window[0])) / 2, 0, 0, SWP_NOSIZE)
 		?
 		End If
 	End Method
@@ -83,6 +83,8 @@ End Type
 
 
 'convenience function
-Function GetGraphicsManager:TGraphicsManager()
+Function GetGraphicsManagerDefault:TGraphicsManager()
 	Return TGraphicsManagerDefault.GetInstance()
 End Function
+
+GetGraphicsManagerDefault()

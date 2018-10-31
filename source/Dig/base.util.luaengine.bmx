@@ -65,8 +65,8 @@ Extern
 	Function lua_tolightobject:Object( L:Byte Ptr,index:Int )
 	Function lua_unboxobject:Object( L:Byte Ptr,index:Int)
 	?bmxng
-	Function lua_boxobject( L:Byte Ptr,obj:Object )="void lua_boxobject(BBBYTE*, BBObject*)"
-	Function lua_pushlightobject( L:Byte Ptr,obj:Object )="void lua_pushlightobject(BBBYTE*,BBObject*)"
+	Function lua_boxobject:int( L:Byte Ptr,obj:Object )="BBINT lua_boxobject(BBBYTE*, BBObject*)!"
+	Function lua_pushlightobject:int( L:Byte Ptr,obj:Object )="BBINT lua_pushlightobject(BBBYTE*,BBObject*)!"
 	Function lua_gcobject:int( L:Byte Ptr )="BBINT lua_gcobject(BBBYTE*)"
 	?not bmxng
 	Function lua_boxobject( L:Byte Ptr,obj:Object )

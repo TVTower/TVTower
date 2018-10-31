@@ -36,7 +36,7 @@ EndRem
 SuperStrict
 Import "base.util.virtualgraphics.bmx"
 Import "base.util.interpolation.bmx"
-Import "base.util.graphicsmanager.bmx"
+Import "base.util.graphicsmanagerbase.bmx"
 Import "base.gfx.gui.button.bmx"
 Import "base.gfx.gui.input.bmx"
 Import "base.gfx.gui.list.selectlist.bmx"
