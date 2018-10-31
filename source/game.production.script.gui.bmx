@@ -1,5 +1,5 @@
 SuperStrict
-Import "Dig/base.util.graphicsmanager.bmx"
+Import "Dig/base.util.graphicsmanagerbase.bmx"
 Import "common.misc.gamegui.bmx"
 Import "game.production.script.bmx"
 Import "game.player.base.bmx"
@@ -61,7 +61,7 @@ Type TGuiScript Extends TGUIGameListItem
 		If script.owner = GetPlayerBaseCollection().playerID Or script.owner <= 0 And isHovered()
 			GetGameBase().cursorstate = 1
 		EndIf
-				
+
 		'set mouse to "dragged"
 		If isDragged()
 			GetGameBase().cursorstate = 2

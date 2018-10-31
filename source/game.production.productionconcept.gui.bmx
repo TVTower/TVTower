@@ -1,5 +1,5 @@
 SuperStrict
-Import "Dig/base.util.graphicsmanager.bmx"
+Import "Dig/base.util.graphicsmanagerbase.bmx"
 Import "common.misc.gamegui.bmx"
 Import "game.production.productionconcept.bmx"
 Import "game.player.base.bmx"

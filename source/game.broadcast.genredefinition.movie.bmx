@@ -17,6 +17,7 @@ Type TMovieGenreDefinitionCollection
 
 	Method Initialize()
 		'reset previously created ones
+		'this removes eg. popularity links so it reconnects correctly
 		For local def:TGenreDefinitionBase = EachIn definitions
 			def.Reset()
 		Next
@@ -24,14 +25,22 @@ Type TMovieGenreDefinitionCollection
 			def.Reset()
 		Next
 
+		'disabled: leads to duplicate entries if other objects link
+		'          to this definitions directly (instead of "GUID")
 		'clear old definitions
-		definitions = new TMovieGenreDefinition[0]
-		flagDefinitions = new TMovieFlagDefinition[0]
+		'definitions = new TMovieGenreDefinition[0]
+		'flagDefinitions = new TMovieFlagDefinition[0]
+
+		'override existing ones with _new_ values (might change balancing!)
 
 		Local genreMap:TMap = TMap(GetRegistry().Get("genres"))
 		if not genreMap then Throw "Registry misses ~qgenres~q."
 		For Local map:TMap = EachIn genreMap.Values()
-			Local definition:TMovieGenreDefinition = New TMovieGenreDefinition
+			local mapData:TData = new TData.Init(map)
+			local definitionReferenceID:int = mapData.GetInt("id")
+			Local definition:TMovieGenreDefinition = Get(definitionReferenceID)
+			if not definition then definition = New TMovieGenreDefinition
+
 			definition.LoadFromMap(map)
 			Set(definition.referenceId, definition)
 		Next
@@ -39,7 +48,11 @@ Type TMovieGenreDefinitionCollection
 		Local flagsMap:TMap = TMap(GetRegistry().Get("flags"))
 		if not flagsMap then Throw "Registry misses ~qflags~q."
 		For Local map:TMap = EachIn flagsMap.Values()
-			Local definition:TMovieFlagDefinition = New TMovieFlagDefinition
+			local mapData:TData = new TData.Init(map)
+			local definitionReferenceID:int = mapData.GetInt("id")
+			Local definition:TMovieFlagDefinition = GetFlag(definitionReferenceID)
+			if not definition then definition = New TMovieFlagDefinition
+
 			definition.LoadFromMap(map)
 			SetFlag(definition.referenceId, definition)
 		Next

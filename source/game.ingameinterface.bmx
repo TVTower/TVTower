@@ -2,7 +2,7 @@ SuperStrict
 Import "Dig/base.framework.tooltip.bmx"
 Import "Dig/base.framework.toastmessage.bmx"
 Import "Dig/base.gfx.sprite.bmx"
-Import "Dig/base.util.graphicsmanager.bmx"
+Import "Dig/base.util.graphicsmanagerbase.bmx"
 
 Import "game.gui.chat.bmx"
 

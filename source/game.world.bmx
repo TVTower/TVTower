@@ -1,6 +1,6 @@
 SuperStrict
 Import "Dig/base.util.deltatimer.bmx"
-Import "Dig/base.util.graphicsmanager.bmx"
+Import "Dig/base.util.graphicsmanagerbase.bmx"
 
 Import "game.world.worldlighting.bmx"
 Import "game.world.worldtime.bmx"
@@ -60,7 +60,7 @@ Type TWorld
 	Field showMoon:Int = True
 	Field showSkyGradient:Int = True
 
-	'disable if rendering effects on your own (other layer) 
+	'disable if rendering effects on your own (other layer)
 	Field autoRenderRain:Int = True
 	Field autoRenderSnow:Int = True
 	Field autoRenderClouds:Int = True
@@ -161,7 +161,7 @@ Type TWorld
 	Method InitLightningEffect:Int(sprites:TSprite[], spritesSide:TSprite[])
 		lightningEffect = New TWeatherEffectLightning.Init(area.copy(), 1, sprites, spritesSide)
 	End Method
-	
+
 
 	Method InitCloudEffect:Int(cloudAmount:Int = 30, sprites:TSprite[])
 		cloudEffect = New TWeatherEffectClouds.Init(area.copy(), cloudAmount, sprites)
@@ -170,20 +170,20 @@ Type TWorld
 
 	Method InitStars:Int(starCount:Int = 60)
 		stars = stars[..starCount]
-	
+
 		'=== SETUP STARS ===
 		For Local i:Int = 0 Until stars.length
 			stars[i] = New TVec3D.Init(Rand(Int(area.GetX()), Int(area.GetX2())), Rand(Int(area.GetY()), Int(area.GetY2())), 50+Rand(0,StarsBrightness-50))
 		Next
 	End Method
-	
+
 
 	Method UpdateEffects:Int()
 		'=== RAIN ===
 		If showRain And rainEffect
 			'stop rain if it is too cold for water. Snow does the
 			'opposite thing
-			If Weather.GetTemperature() < 0 
+			If Weather.GetTemperature() < 0
 				If rainEffect.IsActive() Then rainEffect.Stop()
 			Else
 				'means rain and snow
@@ -196,7 +196,7 @@ Type TWorld
 
 			'inform rain about current wind
 			rainEffect.windVelocity = Weather.GetWindVelocity()
-			
+
 			rainEffect.Update()
 		EndIf
 
@@ -205,7 +205,7 @@ Type TWorld
 		If showSnow And snowEffect
 			'stop snow if it is too warm for ice. Rain does the
 			'opposite thing
-			If Weather.GetTemperature() >= 0 
+			If Weather.GetTemperature() >= 0
 				If snowEffect.IsActive() Then snowEffect.Stop()
 			Else
 				'means rain and snow
@@ -260,13 +260,13 @@ Type TWorld
 					cloudEffect.cloudColor = cloudEffect.cloudColorBase.copy().AdjustRelative(-1 + factor)
 				EndIf
 			EndIf
-	
+
 
 			'=== ADJUST CLOUDS MOVEMENT ===
 			Local wrapClouds:Int = Weather.GetWeather() <> Weather.WEATHER_CLEAR
 			Local windStrength:Float = Weather.GetWindVelocity() * 0.5
 			If windStrength = 0.0 Then windStrength = 0.1
-		
+
 			cloudEffect.AdjustCloudMovement(windStrength, Int(weather.GetTimeSinceUpdate()), wrapClouds)
 		EndIf
 	End Method
@@ -319,7 +319,7 @@ Type TWorld
 
 		'updates lighing
 		UpdateEnvironment()
-		
+
 		'updates rain/snow/clouds...
 		UpdateEffects()
 	End Method
@@ -350,19 +350,19 @@ Type TWorld
 			skyGradient.DrawArea(area.GetX(), area.GetY2()-300, area.GetW(), 300)
 			SetColor(255,255,255)
 		EndIf
-		
+
 		'=== STARS ===
 		If showStars Then RenderStars()
 
 		'=== SUN ===
 		If showSun Then RenderSun()
-		
+
 		'=== MOON ===
 		If showMoon Then RenderMoon()
 
 		'=== LIGHTNING ===
 		If autoRenderLightning Then RenderLightning()
-	
+
 		'=== CLOUDS ===
 		If autoRenderClouds Then RenderClouds()
 
@@ -401,7 +401,7 @@ Type TWorld
 	Method RenderStars:Int()
 		If stars.length = 0 Then InitStars(60)
 		If Not stars[0] Then InitStars(stars.length)
-	
+
 		Local dayPhase:Int = GetWorldTime().GetDayPhase()
 		'no stars during a day
 		If dayPhase = GetWorldTime().DAYPHASE_DAY Then Return False
@@ -437,7 +437,7 @@ Type TWorld
 					'place at another spot with new color
 					stars[i].z = 50+Rand(0, starsBrightness-50)
 					stars[i].x = Rand(Int(area.GetX()), Int(area.GetX2()))
-					stars[i].y = Rand(Int(area.GetY()), Int(area.GetY2())) 
+					stars[i].y = Rand(Int(area.GetY()), Int(area.GetY2()))
 				EndIf
 			EndIf
 			'some get a blue-ish color
@@ -498,7 +498,7 @@ Type TWorld
 		EndIf
 		SetAlpha oldAlpha
 	End Method
-	
+
 
 	Method RenderDebug:Int(x:Float = 0, y:Float = 0, width:Int=200, height:Int=180)
 		SetColor 0,0,0
@@ -548,7 +548,7 @@ rem
 endrem
 		Local sunRiseString:String = GetWorldTime().GetFormattedDate(GetWorldTime().GetSunRise(), "h:i")
 		Local sunSetString:String = GetWorldTime().GetFormattedDate(GetWorldTime().GetsunSet(), "h:i")
-		
+
 		DrawText("rise: "+sunRiseString+"  set: "+sunSetString, x + 10, y+ dy)
 
 		dy :+ 12
