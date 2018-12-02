@@ -915,8 +915,8 @@ Type TDatabaseLoader
 		'do not reset "data" before - it contains the pressure groups
 		xml.LoadValuesToData(nodeConditions, data, [..
 			"min_audience", "min_image", "target_group", ..
-			"allowed_programme_type", "allowed_genre", ..
-			"prohibited_genre", "prohibited_programme_type" ..
+			"allowed_programme_type", "allowed_programme_flag", "allowed_genre", ..
+			"prohibited_programme_type", "prohibited_programme_flag", "prohibited_genre" ..
 		])
 		'0-100% -> 0.0 - 1.0
 		adContract.minAudienceBase = 0.01 * data.GetFloat("min_audience", adContract.minAudienceBase*100.0)
@@ -929,8 +929,8 @@ Type TDatabaseLoader
 		adContract.forbiddenProgrammeType = data.GetInt("prohibited_programme_type", adContract.forbiddenProgrammeType)
 		adContract.forbiddenProgrammeFlag = data.GetInt("prohibited_programme_flag", adContract.forbiddenProgrammeFlag)
 		'if only one group
-		adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
-		adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)
+		'adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
+		'adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)
 		rem
 		for multiple groups:
 		local proPressureGroups:String[] = data.GetString("pro_pressure_groups", "").Split(" ")
