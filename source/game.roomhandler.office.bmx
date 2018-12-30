@@ -9,17 +9,17 @@ Import "game.screen.statistics.bmx"
 Import "game.misc.archivedmessage.bmx"
 
 
-Include "game.screen.financials.bmx"
+Import "game.screen.financials.bmx"
 
 
 'Office: handling the players room
 Type RoomHandler_Office extends TRoomHandler
 	Field archivedMessageTotalCount:int
 	Field archivedMessageUnreadCount:int
-	
+
 	'=== OFFICE ROOM ===
 	Global roomOwner:int
-	
+
 	Global StationsToolTip:TTooltip
 	Global PlannerToolTip:TTooltip
 	Global SafeToolTip:TTooltip
@@ -35,7 +35,7 @@ Type RoomHandler_Office extends TRoomHandler
 		return _instance
 	End Function
 
-	
+
 	Method Initialize:Int()
 		'=== RESET TO INITIAL STATE ===
 		CleanUp()
@@ -45,9 +45,9 @@ Type RoomHandler_Office extends TRoomHandler
 		TScreenHandler_Financials.Initialize()
 		TScreenHandler_ProgrammePlanner.Initialize()
 		TScreenHandler_StationMap.Initialize()
-		TScreenHandler_OfficeStatistics.GetInstance().Initialize()		
-		TScreenHandler_OfficeAchievements.GetInstance().Initialize()		
-		TScreenHandler_OfficeArchivedMessages.GetInstance().Initialize()		
+		TScreenHandler_OfficeStatistics.GetInstance().Initialize()
+		TScreenHandler_OfficeAchievements.GetInstance().Initialize()
+		TScreenHandler_OfficeArchivedMessages.GetInstance().Initialize()
 
 
 		'=== REGISTER HANDLER ===
@@ -87,7 +87,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'=== remove obsolete gui elements ===
 		'
-		
+
 		'=== remove all registered instance specific event listeners
 		'EventManager.unregisterListenersByLinks(_localEventListeners)
 		'_localEventListeners = new TLink[0]
@@ -122,7 +122,7 @@ Type RoomHandler_Office extends TRoomHandler
 	Method ReloadMessageCount:int()
 		archivedMessageTotalCount = 0
 		archivedMessageUnreadCount = 0
-		
+
 		For local message:TArchivedMessage = EachIn GetArchivedMessageCollection().entries.values()
 			archivedMessageTotalCount :+ 1
 			if not message.IsRead(roomOwner) then archivedMessageUnreadCount :+ 1
@@ -167,13 +167,13 @@ Type RoomHandler_Office extends TRoomHandler
 		if GetInstance().archivedMessageTotalCount > 10 then spriteLevel = 2
 		if GetInstance().archivedMessageTotalCount > 25 then spriteLevel = 3
 		if GetInstance().archivedMessageTotalCount > 50 then spriteLevel = 4
-		if spriteLevel > 0 
+		if spriteLevel > 0
 			GetSpriteFromRegistry("screen_office_messages"+spriteLevel).Draw(0,0)
-		endif	
+		endif
 		if GetInstance().archivedMessageUnreadCount > 0
 			GetSpriteFromRegistry("screen_office_messages_unread").Draw(0,0)
 		endif
-		
+
 		'allowed for owner only - or with key
 		If GetPlayer().HasMasterKey() OR IsPlayersRoom(room)
 			'allowed for all - if having keys
@@ -254,13 +254,13 @@ Type RoomHandler_Office extends TRoomHandler
 						ScreenCollection.GoToSubScreen("screen_office_archivedmessages")
 					endif
 				EndIf
-				
+
 				If THelper.MouseIn(732,45,160,170)
 					If not StationsToolTip
 						StationsToolTip = TTooltip.Create(GetLocale("ROOM_STATIONMAP"), GetLocale("BUY_AND_SELL"), 650, 80, 0, 0)
 						StationsToolTip._minContentWidth = 150
 					endif
-						
+
 					StationsToolTip.enabled = 1
 					StationsToolTip.Hover()
 					GetGameBase().cursorstate = 1
