@@ -325,6 +325,16 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method ArchivePlayerImage()
+		For local playerID:int = 1 to 4
+			local img:TPublicImage = GetPublicImage(playerId)
+			if not img then continue
+
+			img.ArchiveImageValues()
+		Next
+	End Method
+
+
 	Method UpdatePlayerBankruptLevel()
 		'todo: individual time? eg. 24hrs after going into negative balance
 

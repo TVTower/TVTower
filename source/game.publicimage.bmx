@@ -67,6 +67,9 @@ Type TPublicImage {_exposeToLua="selected"}
 	Field playerID:int
 	'image is audience (id + audienceBase + genderDistribution)
 	Field ImageValues:TAudience
+	Field ImageValuesArchive:TAudience[]
+	Global archiveLimit:int = 10
+
 
 	Function Create:TPublicImage(playerID:int)
 		Local obj:TPublicImage = New TPublicImage
@@ -74,27 +77,63 @@ Type TPublicImage {_exposeToLua="selected"}
 
 		'we start with an image of 0 in all target groups
 		obj.ImageValues = new TAudience.InitValue(0, 0)
+
 		'add to collection
 		GetPublicImageCollection().Set(playerID, obj)
 		Return obj
 	End Function
 
 
-	Method GetAttractionMods:TAudience()
+	'call this eg. "each day"
+	Method ArchiveImageValues()
+		if not ImageValuesArchive
+			'store copy of values to avoid manipulating archived data
+			ImageValuesArchive = [ImageValues.copy()]
+		else
+			if ImageValuesArchive.length >= archiveLimit + 1
+				ImageValuesArchive = [ImageValues.copy()] + ImageValuesArchive[.. archiveLimit-1]
+			else
+				ImageValuesArchive = [ImageValues.copy()] + ImageValuesArchive
+			endif
+		endif
+	End Method
+
+
+	Method GetImageValues:TAudience(archivedBefore:int = 0, returnFirstPossible:int = True)
+		local selectedImageValues:TAudience
+
+		if archivedBefore = 0
+			selectedImageValues = ImageValues
+		else
+			if ImageValuesArchive and (returnFirstPossible or ImageValuesArchive.length >= archivedBefore)
+				selectedImageValues = ImageValuesArchive[Min(archivedBefore, ImageValuesArchive.length) - 1]
+			endif
+
+			'nothing archived yet
+			if not selectedImageValues
+				selectedImageValues = new TAudience
+				selectedImageValues.InitValue(0, 0)
+			endif
+		endif
+		return selectedImageValues
+	End Method
+
+
+	Method GetAttractionMods:TAudience(archivedBefore:int = 0, returnFirstPossible:int = True)
 		'a mod is a modifier - so "1.0" does modify nothing, "2.0" doubles
 		'and "0.5" cuts into halves
 		'our image ranges between 0 and 100 so dividing by 100 results
 		'in a value of 0-1.0, adding 1.0 makes it a modifier
 		'ex: teenager-image of "2": 2/100 + 1.0 = 1.02
-		Return ImageValues.Copy().DivideFloat(100).AddFloat(1)
+		Return GetImageValues(archivedBefore, returnFirstPossible).Copy().DivideFloat(100).AddFloat(1)
 	End Method
 
 
 	'returns the average image of all target groups
 	'ATTENTION: return weighted average as some target groups consist
 	'           of less people than other groups)
-	Method GetAverageImage:Float()
-		return ImageValues.GetWeightedAverage()
+	Method GetAverageImage:Float(archivedBefore:int = 0, returnFirstPossible:int = True)
+		return GetImageValues(archivedBefore, returnFirstPossible).GetWeightedAverage()
 	End Method
 
 
@@ -111,10 +150,10 @@ Type TPublicImage {_exposeToLua="selected"}
 		'avoid negative values -> cut to at least 0
 		'also avoid values > 100
 		ImageValues.CutMinimumFloat(0).CutMaximumFloat(100)
-		
+
 		TLogger.Log("ChangePublicImageRelative()", "Change player" + playerID + "'s public image: " + imageChange.ToString(), LOG_DEBUG)
 	End Method
-	
+
 
 	Method ChangeImage(imageChange:TAudience)
 		if not imageChange
@@ -129,7 +168,7 @@ Type TPublicImage {_exposeToLua="selected"}
 		'avoid negative values -> cut to at least 0
 		'also avoid values > 100
 		ImageValues.CutMinimumFloat(0).CutMaximumFloat(100)
-		
+
 		TLogger.Log("ChangePublicImage()", "Change player" + playerID + "'s public image: " + imageChange.ToString(), LOG_DEBUG)
 	End Method
 
@@ -156,7 +195,7 @@ Type TPublicImage {_exposeToLua="selected"}
 				channelAudiencesList.Sort(False, TAudience.PensionersSort)
 			default
 				throw "ChangeForTargetGroup: unknown targetgroup ~q"+targetGroup+"~q."
-		End Select 
+		End Select
 
 		'RONNY:
 		'instead of subtracting won image from other players ("sum stays constant")
@@ -197,7 +236,7 @@ Type TPublicImage {_exposeToLua="selected"}
 		'print "ranks: "+ audienceRank[0]+", "+ audienceRank[1]+", "+ audienceRank[2]+", "+ audienceRank[3]
 		for local i:int = 0 until channelAudiencesList.Count()
 			local channelID:int = TAudience(channelAudiencesList.ValueAtIndex(i)).Id
-			if channelID <= 0 then continue 
+			if channelID <= 0 then continue
 
 			local modifier:Float = 0.0
 			if audienceRank[i] <= modifiers.length then modifier = modifiers[ audienceRank[i]-1 ]
@@ -280,7 +319,7 @@ Type TGameModifierPublicImage_Modify extends TGameModifierBase
 				if not StringHelper.InArray(string(broadcastingPlayerID), playerIDs.Replace(" ", "").split(","))
 					return False
 				endif
-			endif 
+			endif
 
 			local notPlayerIDs:string = paramConditions.GetString("broadcaster_notInPlayerIDs", "")
 			if notPlayerIDs <> ""
@@ -326,6 +365,6 @@ Type TGameModifierPublicImage_Modify extends TGameModifierBase
 		return True
 	End Method
 End Type
-	
+
 
 GetGameModifierManager().RegisterCreateFunction("ModifyChannelPublicImage", TGameModifierPublicImage_Modify.CreateNewInstance)

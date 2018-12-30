@@ -5978,6 +5978,9 @@ Type GameEvents
 			'then earn... (avoid wrong balance interest)
 			GetGame().ComputeDailyIncome(day)
 
+			'archive player image of that day
+			GetGame().ArchivePlayerImage()
+
 			'Check if a player goes bankrupt now
 			GetGame().UpdatePlayerBankruptLevel()
 
