@@ -1,4 +1,5 @@
 SuperStrict
+Import "Dig/base.util.color.bmx"
 Import "Dig/base.util.data.bmx"
 Import "Dig/base.util.rectangle.bmx"
 
@@ -13,6 +14,11 @@ Type TGameConfig {_exposeToLua}
 	Field KeepBankruptPlayerFinances:int = True
 	Field dateFormat:string = "d.m.y"
 	Field devGUID:string
+
+	Global clNormal:TColor = TColor.clBlack
+	Global clPositive:TColor = new TColor.Create(90, 110, 90)
+	Global clNegative:TColor = new TColor.Create(110, 90, 90)
+
 '	Field _values:TData
 	Field _modifiers:TData
 
