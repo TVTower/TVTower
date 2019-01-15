@@ -157,12 +157,13 @@ Type TGUIChat Extends TGUIPanel
 		If triggerEvent.getReceiver() and guiChat <> Self Then Return False
 
 		'DO NOT WRITE COMMANDS !
-		If GetCommandFromText(triggerEvent.GetData().GetString("text")) <> CHAT_COMMAND_NONE
+		If GetCommandFromText(triggerEvent.GetData().GetString("text")) = CHAT_COMMAND_SYSTEM
 			Return False
 		EndIf
 
 		'here we could add code to exlude certain other chat channels
 		Local sendToChannels:Int = triggerEvent.getData().getInt("channels", 0)
+
 		If Self.isListeningToChannel(sendToChannels)
 			Self.AddEntryFromData( triggerEvent.getData() )
 		Else
@@ -341,7 +342,7 @@ Type TGUIChatEntry Extends TGUIListItem
 		Local dimension:TVec2D = GetBitmapFontManager().baseFont.drawBlock(GetValue(), startX + move.x, startY + move.y, maxWidth - move.X, maxHeight, Null, Null, 2, 0)
 		'add padding
 		dimension.addXY(0, paddingBottom)
-print GetValue()+"     " + dimension.y +"   move.y="+move.Y+"   maxWidth="+maxWidth+"  move.X="+move.X
+'print GetValue()+"     " + dimension.y +"   move.y="+move.Y+"   maxWidth="+maxWidth+"  move.X="+move.X
 		'set current size and refresh scroll limits of list
 		'but only if something changed (eg. first time or content changed)
 		If rect.getW() <> dimension.getX() Or rect.getH() <> dimension.getY()

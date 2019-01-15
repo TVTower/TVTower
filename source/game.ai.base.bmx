@@ -61,7 +61,7 @@ endrem
 		'register source and available objects
 		GetLuaEngine().RegisterToLua()
 	End Method
-	
+
 
 	Method Stop()
 '		scriptEnv.ShutDown()
@@ -116,7 +116,7 @@ endrem
 		objectsUsedInLuaCount = 0
 		objectsUsedInLua = new object[0]
 	End Method
-	
+
 
 	'loads the current file again
 	Method ReloadScript:int()
@@ -151,7 +151,7 @@ endrem
 	Method CallOnSave() abstract
 	Method CallOnRealtimeSecond(millisecondsGone:Int=0) abstract
 	Method CallOnMinute(minute:Int=0) abstract
-	Method CallOnChat(fromID:int=0, text:String = "") abstract
+	Method CallOnChat(fromID:int=0, text:String = "", chatType:int = 0, channels:int = 0) abstract
 	Method CallOnProgrammeLicenceAuctionGetOutbid(licence:object, bid:int, bidderID:int) abstract
 	Method CallOnProgrammeLicenceAuctionWin(licence:object, bid:int) abstract
 	Method CallOnBossCalls(latestWorldTime:Double=0) abstract

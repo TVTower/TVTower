@@ -176,13 +176,16 @@ Type TAi extends TAiBase
 	End Method
 
 
-	'eg. use this if one whispers to the AI
-	Method CallOnChat(fromID:int=0, text:String = "")
+	'use this if one talks in the chat
+	'channelType defines if "public" or "private" chat
+	Method CallOnChat(fromID:int=0, text:String = "", chatType:int = 0, channels:int = 0)
 		if not AiRunning then return
 
-		Local args:Object[2]
+		Local args:Object[3]
 		args[0] = text
 		args[1] = string(fromID)
+		args[2] = string(chatType)
+		args[3] = string(channels)
 
 		CallLuaFunction("OnChat", args)
 	End Method

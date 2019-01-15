@@ -70,6 +70,28 @@ function AIPlayer:initializeTasks()
 	--Zum überschreiben
 end
 
+
+-- try to run the given taskID
+function AIPlayer:ForceTask(taskID, priority)
+	local player = _G["globalPlayer"]
+	if player == nil then
+		return
+	end
+
+	local task = self.TaskList[ taskID ]
+	if task ~= nil then
+		if self.CurrentTask ~= nil and self.CurrentTask.SituationPriority > priority then
+			priority = self.CurrentTask.SituationPriority + 10
+			debugMsg("ForceTask: " .. taskID .. " with adjusted priority " .. priority)
+		else
+			debugMsg("ForceTask: " .. taskID .. " with priority " .. priority)
+		end
+		task.SituationPriority = priority
+		player:ForceNextTask()
+	end
+end
+
+
 --stop a current task and start the next one
 function AIPlayer:ForceNextTask()
 	debugMsg("ForceNextTask")
@@ -82,7 +104,7 @@ function AIPlayer:ForceNextTask()
 			nextTask.assignmentType = 1
 
 			local cancelTask = true
-		
+
 			if nextTaskName == self.CurrentTask:typename() then
 				-- not "already doing something" (like in between of choosing
 				-- programme licences)
@@ -101,7 +123,7 @@ function AIPlayer:ForceNextTask()
 				end
 			end
 			-- cancel old one
-			if cancelTask then 
+			if cancelTask then
 				debugMsg("ForceNextTask: Cancel current task...")
 				self.CurrentTask:SetAbort()
 			end
@@ -238,11 +260,11 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.MaxTicks = 30 --Wie viele Ticks darf der Task maximal laufen?
 	c.IdleTicks = 10 --Wie viele Ticks soll nichts gemacht werden?
 	c.TargetRoom = -1 -- Wie lautet die ID des Standard-Zielraumes? !!! Muss überschrieben werden !!!
-	
-	c.CurrentBudget = 0 -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.	
+
+	c.CurrentBudget = 0 -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.
 	c.BudgetWholeDay = 0 -- Wie hoch war das Budget das die KI für diese Aufgabe an diesem Tag einkalkuliert hat.
 	c.BudgetWeight = 0 -- Wie viele Budgetanteile verlangt diese Aufgabe vom Gesamtbudget?
-	
+
 	c.InvestmentPriority = 0 -- Wie wichtig sind die Investitionen in diesen Bereich?
 	c.CurrentInvestmentPriority = 0 -- Wie ist die Prio aktuell? InvestmentPriority wird jede Runde aufaddiert.
 	c.NeededInvestmentBudget = -1 -- Wie viel Geld benötigt die KI für eine Großinvestition
@@ -251,7 +273,7 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	-- 1 = added via ForceNextTask?
 	-- 2 = added via another task (forcefully)?
 	c.assignmentType = 0
-	
+
 	c.FixedCosts = 0
 end)
 
@@ -312,12 +334,12 @@ function AITask:Activate()
 	debugMsg("Implementiere mich... " .. type(self))
 end
 
-function AITask:AdjustmentsForNextDay()	
+function AITask:AdjustmentsForNextDay()
 	self.CurrentInvestmentPriority = self.CurrentInvestmentPriority + self.InvestmentPriority
 	--kann überschrieben werden
 end
 
-function AITask:OnDayBegins()	
+function AITask:OnDayBegins()
 	--kann überschrieben werden
 end
 
@@ -1002,26 +1024,26 @@ function RecalculateTasksPrio(tasks)
 end
 
 function SortTasksByPrio(tasks)
-	RecalculateTasksPrio(tasks)	
+	RecalculateTasksPrio(tasks)
 
 	local sortTable = {}
 	for k,v in pairs(tasks) do
-		table.insert(sortTable, v) 
-	end	
+		table.insert(sortTable, v)
+	end
 	local sortMethod = function(a, b)
 		return a.CurrentPriority > b.CurrentPriority
 	end
 	table.sort(sortTable, sortMethod)
-	return sortTable	
+	return sortTable
 end
 
 function SortTasksByInvestmentPrio(tasks)
-	RecalculateTasksPrio(tasks)	
+	RecalculateTasksPrio(tasks)
 
 	local sortTable = {}
 	for k,v in pairs(tasks) do
-		table.insert(sortTable, v) 
-	end	
+		table.insert(sortTable, v)
+	end
 	local sortMethod = function(a, b)
 		return a.CurrentInvestmentPriority > b.CurrentInvestmentPriority
 	end

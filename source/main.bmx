@@ -4134,6 +4134,8 @@ Type GameEvents
 
 		'we want to handle "/dev bla"-commands via chat
 		_eventListeners :+ [ EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntry ) ]
+		'relay incoming chat messages to the AI
+		_eventListeners :+ [ EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntryForAI ) ]
 
 
 		'dev
@@ -4217,10 +4219,69 @@ Type GameEvents
 	End Function
 
 
+	Function onChatAddEntryForAI:Int(triggerEvent:TEventBase)
+		Local text:String = triggerEvent.GetData().GetString("text")
+		Local senderID:int = triggerEvent.GetData().GetInt("senderID")
+
+		local commandType:int = TGUIChat.GetCommandFromText(text)
+		local commandText:string = TGUIChat.GetCommandStringFromText(text)
+print "SenderID=" + senderID +"   commandType/Text="+commandType + "/"+commandText + "   text="+text
+
+		'=== PRIVATE / WHISPER ===
+		'-> send to AI ?
+		if commandType = CHAT_COMMAND_WHISPER
+			local message:string = TGUIChat.GetPayloadFromText(text)
+			local receiver:string = message.split(" ")[0]
+			local receiverID:int = int(receiver)
+			local playerBase:TPlayerBase
+print "PRIVATCHAT  receiver="+receiver+"  id="+receiverID
+			if string(receiverID) <> receiver > 9 'some odd number containing thing or playername?
+print "  ... searching player"
+				For Local pBase:TPlayerBase = EachIn GetPlayerBaseCollection().players
+					if pBase.name.ToLower() = receiver.ToLower()
+						message = message[receiver.length+1 ..] 'remove name/id
+						receiverID = pBase.playerID
+						receiver = pBase.name
+						playerBase = pBase
+print "found target player: " + receiver+" id="+receiverID
+						exit
+					endif
+				Next
+			elseif receiverID > 0 and receiverID < 9
+				message = message[receiver.length+1 ..] 'remove name/id
+				playerBase = GetPlayerBase(receiverID)
+				if playerBase
+					receiver = playerBase.name
+				endif
+			endif
+			if playerBase and TPlayer(playerBase).isLocalAI()
+print "inform him: " + message
+				TPlayer(playerBase).PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_WHISPER)
+			endif
+		endif
+
+		'public chat
+		if commandType = CHAT_COMMAND_NONE
+			local channels:int = TGUIChat.GetChannelsFromText(text)
+			local message:string = TGUIChat.GetPayloadFromText(text)
+			'inform local AI
+			For Local player:TPLayer = EachIn GetPlayerCollection().players
+				if player.isLocalAI()
+					player.PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_NONE, channels)
+				endif
+			Next
+			return True
+		endif
+	End Function
+
+
 	Function onChatAddEntry:Int(triggerEvent:TEventBase)
 		Local text:String = triggerEvent.GetData().GetString("text")
-		'only interested in system/dev-commands
+
+		'=== SYSTEM / DEV Chat ===
+		'only interested in system/dev-commands from here on
 		If TGUIChat.GetCommandFromText(text) <> CHAT_COMMAND_SYSTEM Then Return False
+
 
 		'skip "/sys " and only return the payload
 		'-> "/sys addmoney 1000" gets "addmoney 1000"
@@ -4269,6 +4330,14 @@ Type GameEvents
 						TVTDebugQuoteInfos = False
 						TVTDebugModifierInfos = False
 				End Select
+
+			Case "commandai"
+				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
+				if not player.IsLocalAI()
+					GetGame().SendSystemMessage("[DEV] cannot command non-local AI player.")
+				else
+					player.playerAI.CallOnChat(GetPlayer().playerID, "CMD " + paramS, CHAT_COMMAND_WHISPER)
+				endif
 
 			Case "playerai"
 				if GetGame().networkGame

@@ -47,7 +47,7 @@ function class(base, init)
 		setmetatable(obj,c)
 		if init then
 			init(obj,...)
-		else 
+		else
 			-- make sure that any stuff from the base class is initialized!
 			if base and base.init then
 				base.init(obj, ...)
@@ -58,7 +58,7 @@ function class(base, init)
 	c.init = init
 	c.is_a = function(self, klass)
 		local m = getmetatable(self)
-		while m do 
+		while m do
 			if m == klass then return true end
 				m = m._base
 			end
@@ -85,7 +85,7 @@ end)
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["SLFDataObject"] = class(SLFObject, function(c)
-	SLFObject.init(c)	-- must init base!	
+	SLFObject.init(c)	-- must init base!
 end)
 
 function SLFDataObject:typename()
@@ -106,7 +106,7 @@ function SLFManager:save()
 	-- Format: Exakter VariablenName = Wert
 	local SaveList = {}
 	local ResultData = "--#Version " .. getApplicationVersion() .. NL
-	for k,v in pairs(SLFManager.StoreDefinition) do		
+	for k,v in pairs(SLFManager.StoreDefinition) do
 		ResultData = ResultData .. SLFManager:saveAsString(k, v, SaveList)
 		ResultData = ResultData .. string.format("%s[%q]", "SLFManager.LoadedData", k) .. " = " .. k
 	end
@@ -120,7 +120,7 @@ function SLFManager:load(pStoreData)
 	_G["LoadCache"] = {}
 	loadstring(SLFManager.StoreData)()	-- Führt das Skript aus
 	debugMsg("Loaded objects: " .. table.count(LoadCache))
-	
+
 	for k,v in pairs(LoadCache) do
 		v:resume()	-- Ruft fuer alle Tables "resume" auf
 	end
@@ -130,7 +130,7 @@ function SLFManager:basicSerialize(o)
 	if type(o) == "number" then
 		return tostring(o)
 	elseif type(o) == "boolean" then
-		return tostring(o)		
+		return tostring(o)
 	else
 		return string.format("%q", o)
 	end
@@ -161,7 +161,7 @@ function SLFManager:saveAsString(name, value, saved)
 					local externalStoreIndex = TVT.SaveExternalObject(v)
 					result = result .. fname .. " = TVT.RestoreExternalObject("..externalStoreIndex..")" .. NL
 					-- return "true" -> leading to "InvalidDataObject" = true
-					--return nil, true 
+					--return nil, true
 				else
 					local fname = string.format("%s[%s]", name, k)
 					local data, isInvalidDataObject = SLFManager:saveAsString(fname, v, saved)
@@ -170,7 +170,7 @@ function SLFManager:saveAsString(name, value, saved)
 					else
 						result = result .. data
 					end
-				end				
+				end
 			end
 		end
 		saved[value] = name
@@ -243,7 +243,7 @@ table.getKey = function(pTable, item)
 end
 
 
--- return the ONE based index of an item in a table 
+-- return the ONE based index of an item in a table
 table.getIndex = function(pTable, item)
 	if pTable == nil then return -1 end
 	local index = 1
@@ -326,9 +326,34 @@ string.right = function(t, count, fixWidth)
 		return string.sub(t, -count)
 	elseif (fixWidth) then
 		return string.rep(" ", count - string.len(t)) .. t
-	end	
+	end
 	return string.sub(t, -count)
 end
+
+
+--split given text into an delim-glued table
+function split(text, delim)
+	local result = {}
+	local magicChars = "^.-+*()[]$%?"
+
+	if delim == nil then
+		delim = "%s"
+	elseif string.find(delim, magicChars, 1, true) then
+		delim = "%" .. delim
+	end
+
+	local pattern = "[^" .. delim .. "]+"
+	for w in string.gmatch(text, pattern) do
+		table.insert(result, w)
+	end
+	return result
+
+
+--	local words = {}
+--	for word in text:gmatch("%w+") do table.insert(words, word) end
+--	return words
+end
+
 
 -- ##### TEST #####
 

@@ -55,7 +55,7 @@ _G["DefaultAIPlayer"] = class(AIPlayer, function(c)
 	--c.Budget = nil  --darf nicht überschrieben werden
 	--c.Stats = nil  --darf nicht überschrieben werden
 	--c.Requisitions = nil  --darf nicht überschrieben werden
-	
+
 	c.Ventruesome = 5 --Risikofreude = 1 - 10
 	c.NewsPriority = 5
 	c.BrainSpeed = 1 --Wie schnell handelt die KI = 1-3 (Aktionen pro Tick)
@@ -100,7 +100,7 @@ function DefaultAIPlayer:resume()
 		infoMsg(self:typename() .. ": Resume Strategy")
 		self.Strategy = DefaultStrategy()
 	end
-	
+
 	if (self.Ventruesome == 0) then
 		self.Ventruesome = 5
 	end
@@ -127,11 +127,11 @@ function DefaultAIPlayer:initializeTasks()
 	self.TaskList[TASK_BOSS]				= TaskBoss()
 	self.TaskList[TASK_ROOMBOARD]			= TaskRoomBoard()
 	self.TaskList[TASK_ARCHIVE]				= TaskArchive()
-	
-	
+
+
 	--self.TaskList[TASK_STATIONMAP].InvestmentPriority = 12
 	--self.TaskList[TASK_STATIONMAP].NeededInvestmentBudget = 10000
-	
+
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask()
 
 	--TODO: WarteTask erstellen. Gehört aber in AIEngine
@@ -165,14 +165,14 @@ function DefaultAIPlayer:OnDayBegins()
 	--Strategie vorher anpassen / Aufgabenparameter anpassen
 	for k,v in pairs(self.TaskList) do
 		v:AdjustmentsForNextDay()
-	end	
-	
+	end
+
 	self.Budget:CalculateNewDayBudget()
 
 	for k,v in pairs(self.TaskList) do
 		v:OnDayBegins()
 	end
-	
+
 	self:CleanUp()
 end
 
@@ -194,7 +194,7 @@ function DefaultAIPlayer:OnMoneyChanged(value, reason, reference)
 	self.Budget:OnMoneyChanged(value, reason, reference)
 	for k,v in pairs(self.TaskList) do
 		v:OnMoneyChanged(value, reason, reference)
-	end	
+	end
 end
 
 function DefaultAIPlayer:AddRequisition(requisition)
@@ -210,7 +210,7 @@ end
 
 function DefaultAIPlayer:RemoveRequisitionByReason(reason)
 	if self.Requisitions == nil then return; end
-	
+
 	local removeList = {}
 	for k,v in pairs(self.Requisitions) do
 		if v.reason and v.reason == reason then
@@ -260,29 +260,29 @@ function DefaultAIPlayer:GetRequisitionsByOwner(TaskOwnerId, ignoreActuality)
 end
 
 function DefaultAIPlayer:GetNextEnemyId()
-	--TODO: Erzfeind ermitteln und als Hauptziel zurückliefern	
-	local result = -1	
+	--TODO: Erzfeind ermitteln und als Hauptziel zurückliefern
+	local result = -1
 	repeat
 		result = math.random(1, 4)
-	until result ~= TVT.ME	
+	until result ~= TVT.ME
 	return result
 end
 
 function DefaultAIPlayer:CleanUp()
 	infoMsg(self:typename() .. ": CleanUp")
-	
-	infoMsg("Requisitions (before): " .. table.count(self.Requisitions))	
-	
+
+	infoMsg("Requisitions (before): " .. table.count(self.Requisitions))
+
 	local tempList = table.copy(self.Requisitions)
-	
+
 	for k,v in pairs(tempList) do
 		if (not v:CheckActuality()) then
 			table.remove(self.Requisitions, index)
 			infoMsg("Requisition removed")
 		end
 	end
-	
-	infoMsg("Requisitions (after): " .. table.count(self.Requisitions))	
+
+	infoMsg("Requisitions (after): " .. table.count(self.Requisitions))
 end
 
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -454,7 +454,7 @@ function getAIPlayer()
 		globalPlayer:initialize()
 
 		globalPlayer.logs = {}
-		_G["globalPlayer"] = globalPlayer --Macht "GlobalPlayer" als globale Variable verfügbar auch in eingebundenen Dateien				
+		_G["globalPlayer"] = globalPlayer --Macht "GlobalPlayer" als globale Variable verfügbar auch in eingebundenen Dateien
 	end
 	return globalPlayer
 end
@@ -473,21 +473,54 @@ function OnPlayerGoesBankrupt(playerID)
 end
 
 
-function OnMoneyChanged(value, reason, reference)	
+function OnMoneyChanged(value, reason, reference)
 	if (aiIsActive) then
 		getAIPlayer():OnMoneyChanged(value, reason, reference)
 	end
 end
 
-function OnChat(message)
-	if (message == "stop") then
-		aiIsActive = false
-		infoMsg("AI stopped!")
+function OnChat(message, fromID, chatType)
+	debugMsg("got a message: " .. message .. "  sub:".. message:sub(0, 4))
+
+	if (message:sub(0, 4) == "CMD_") then
+		OnCommand( message:sub(5) )
+	else
+		debugMsg("got a message: " .. message)
+		if (message == "stop") then
+			aiIsActive = false
+			infoMsg("AI stopped!")
+		elseif (message == "start") then
+			aiIsActive = true
+			infoMsg("AI started!")
+		end
+	end
+end
+
+
+function OnCommand(command)
+	local data = split(command, " ")
+	local command
+
+	if table.count(data) > 0 then
+		command = data[1]
+		debugMsg("  command: " .. command)
+	end
+
+	if (command == "forcetask") then
+		if table.count(data) > 2 then
+			local taskID = data[2]
+			local priority = tonumber(data[3])
+			getAIPlayer():ForceTask(taskID, priority)
+			debugMsg("command forcetask executed.")
+		else
+			debugMsg("command forcetask failed: data missing.")
+		end
 	elseif (message == "start") then
 		aiIsActive = true
 		infoMsg("AI started!")
 	end
 end
+
 
 function OnDayBegins()
 	if (aiIsActive) then
@@ -627,8 +660,8 @@ function OnTick(timeGone, ticksGone)
 		MY.SetAIStringData("currentTaskJob",  "NONE" )
 		MY.SetAIStringData("currentTaskJobStatus",  "0" )
 	end
-	
-	
+
+
 	if (aiIsActive) then
 		-- run tick analyze (read/save stats)
 		-- also run 1 TickProcessTask()
@@ -661,8 +694,8 @@ function OnMinute(number)
 						-- we can only fix if we have licences for trailers
 						-- or adcontracts for ad spots (and this means 1
 						-- contract MORE than just the unsatisfying one)
-						-- -> FixAdvertisement takes care of that 
-						if (TVT.GetAdContractCount() > 1) or (TVT.GetProgrammeLicenceCount() > 0)  then 
+						-- -> FixAdvertisement takes care of that
+						if (TVT.GetAdContractCount() > 1) or (TVT.GetProgrammeLicenceCount() > 0)  then
 							task:FixAdvertisement(WorldTime.GetDay(), WorldTime.GetDayHour())
 						else
 							debugMsg("ProgrammeBegin: FixAdvertisement " .. WorldTime.GetDay() .. "/" .. WorldTime.GetDayHour() .. ":55 - NOT POSSIBLE, not enough adcontracts (>1) or licences.")
@@ -673,13 +706,13 @@ function OnMinute(number)
 			else
 				-- we can only fix if we have licences for programmes
 				-- or adcontracts for infomercials
-				-- -> FixImminentAdOutage takes care of that 
+				-- -> FixImminentAdOutage takes care of that
 				task:FixImminentAdOutage(WorldTime.GetDay(), WorldTime.GetDayHour())
 			end
 		end
 	end
 
-	-- check next 2 hours if there will be an imminent outage 
+	-- check next 2 hours if there will be an imminent outage
 	if (number == 6) then
 		local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
 		local fixedDay, fixedHour = FixDayAndHour(WorldTime.GetDay(), WorldTime.GetDayHour() + 1)
@@ -694,7 +727,7 @@ function OnMinute(number)
 
 				if math.random(0,100) < fixProbability then
 					--make sure we have enough programme to fix it
-					if (TVT.GetAdContractCount() > 1) or (TVT.GetProgrammeLicenceCount() > 0) then 
+					if (TVT.GetAdContractCount() > 1) or (TVT.GetProgrammeLicenceCount() > 0) then
 						debugMsg("ProgrammeBegin: Avoid imminent programme outage at " .. fixedDay .."/" .. fixedHour .. ":55")
 						task:FixImminentProgrammeOutage(fixedDay, fixedHour)
 					else
@@ -715,7 +748,7 @@ function OnMinute(number)
 
 		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
 		local guessedAudience = 0
-		if programme ~= nil then 
+		if programme ~= nil then
 			local programmeAttraction = programme.GetStaticAudienceAttraction(fixedHour, 1, nil, nil)
 
 			local avgQuality = math.round(100 * task:GetAverageBroadcastQualityByLevel(level))
