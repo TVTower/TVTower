@@ -114,9 +114,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		'cheap movies must be cheaper than X _or_ of lower quality than Y
 		filterMoviesCheap.connectionType = TProgrammeLicenceFilterGroup.CONNECTION_TYPE_OR
-		filterMoviesCheap.filters[0].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
-		'filterMoviesCheap.filters[0].SetRequiredOwners([TOwnedGameObject.OWNER_NOBODY])
 
+		filterMoviesCheap.filters[0].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
 		filterMoviesCheap.filters[0].priceMin = 0
 		filterMoviesCheap.filters[0].priceMax = 0.75*movieCheapMoneyMaximum
 		filterMoviesCheap.filters[0].relativeTopicalityMin = 0.25
@@ -127,7 +126,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterMoviesCheap.filters[0].requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
 
 		filterMoviesCheap.filters[1].licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
-		'filterMoviesCheap.filters[1].SetRequiredOwners([TOwnedGameObject.OWNER_NOBODY])
 		filterMoviesCheap.filters[1].priceMin = -1
 		filterMoviesCheap.filters[1].priceMax = 1.0*movieCheapMoneyMaximum
 		filterMoviesCheap.filters[1].qualityMin = -1.0
@@ -676,7 +674,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		local licence:TProgrammeLicence = null
 
 		haveToRefreshGuiElements = TRUE
-
 		'delete some random movies/series
 		if replaceOffer
 			for local j:int = 0 to lists.length-1
@@ -694,24 +691,61 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		endif
 
 
-		for local j:int = 0 to lists.length-1
-			local warnedOfMissingLicence:int = FALSE
-			for local i:int = 0 to lists[j].length-1
-				'if exists...skip it
-				if lists[j][i] then continue
+		'collect as many random licences per list as needed ("empty slots")
+		local licencesPerList:TProgrammeLicence[][]
 
-				if lists[j] = listMoviesGood then licence = GetProgrammeLicenceCollection().GetRandomByFilter(filterMoviesGood)
-				if lists[j] = listMoviesCheap then licence = GetProgrammeLicenceCollection().GetRandomByFilter(filterMoviesCheap)
-				if lists[j] = listSeries then licence = GetProgrammeLicenceCollection().GetRandomByFilter(filterSeries)
+		for local listIndex:int = 0 to lists.length-1
+			local needed:int = 0
+			for local entryIndex:int = 0 to lists[listIndex].length-1
+				if lists[listIndex][entryIndex] then continue
+				needed :+ 1
+			Next
+
+			if needed
+				local licences:TProgrammeLicence[]
+				Select lists[listIndex]
+					case listMoviesGood
+						licences = GetProgrammeLicenceCollection().GetRandomsByFilter(filterMoviesGood, needed)
+					case listMoviesCheap
+						licences = GetProgrammeLicenceCollection().GetRandomsByFilter(filterMoviesCheap, needed)
+					case listSeries
+						licences = GetProgrammeLicenceCollection().GetRandomsByFilter(filterSeries, needed)
+				End Select
+				'fill to "needed" (with null values!)
+				if not licences
+					licences = new TProgrammeLicence[needed]
+				elseif licences.length < needed
+'					print "not enough licences: needed=" + needed+"  got="+licences.length
+					licences = licences[.. needed]
+				endif
+
+				licencesPerList :+ [licences] 'array of arrays
+			else
+				'add empty, so that indices stay intact
+				licencesPerList :+ [new TProgrammeLicence[0]]
+			endif
+		Next
+
+
+		'fill empty slots
+		for local listIndex:int = 0 to lists.length-1
+			local warnedOfMissingLicence:int = False
+			local licenceIndex:int = 0
+			for local entryIndex:int = 0 until lists[listIndex].length
+				'if exists...skip it
+				if lists[listIndex][entryIndex] then continue
+
+				local licence:TProgrammeLicence = licencesPerList[listIndex][licenceIndex]
+				licenceIndex :+ 1
 
 				'add new licence at slot
 				if licence
 					licence.SetOwner(licence.OWNER_VENDOR)
-					lists[j][i] = licence
+					lists[listIndex][entryIndex] = licence
 				else
 					if not warnedOfMissingLicence
-						TLogger.log("MovieAgency.RefillBlocks()", "Not enough licences to refill slot["+i+"+] in list["+j+"]", LOG_WARNING | LOG_DEBUG)
-						warnedOfMissingLicence = TRUE
+						TLogger.log("MovieAgency.RefillBlocks()", "Not enough licences to refill slot["+entryIndex+"+] in list["+listIndex+"]", LOG_WARNING | LOG_DEBUG)
+						warnedOfMissingLicence = True
 					endif
 				endif
 			Next

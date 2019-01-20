@@ -1218,15 +1218,15 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 	Method GetPrice:int(playerID:int)
 		Local value:int = 0
 		local priceMod:Float = GetQuality() 'this includes age-adjustments
-
+		local maxTopicality:Float = GetMaxTopicality()
 
 		'=== FRESHNESS ===
 		'this is ~1 yrs
-		If (GetMaxTopicality() >= 0.98) Then priceMod :* 1.35
+		If (maxTopicality >= 0.98) Then priceMod :* 1.35
 		'this is ~2 yrs
-		If (GetMaxTopicality() >= 0.96) Then priceMod :* 1.30
+		If (maxTopicality >= 0.96) Then priceMod :* 1.30
 		'this is ~3 yrs
-		If (GetMaxTopicality() >= 0.93) Then priceMod :* 1.25
+		If (maxTopicality >= 0.93) Then priceMod :* 1.25
 
 
 		'=== QUALITY FRESHNESS ===
@@ -1234,7 +1234,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		'The older the programme gets, the less important is a high
 		'quality, they then all are relatively "equal"
 		local highQualityIndex:Float = 0.40 * GetQualityRaw() + 0.60 * GetQualityRaw() ^ 4
-		local highTopicalityIndex:Float = 0.30 * GetMaxTopicality() + 0.70 * GetMaxTopicality() ^ 4
+		local highTopicalityIndex:Float = 0.30 * maxTopicality + 0.70 * maxTopicality ^ 4
 
 		priceMod :* highTopicalityIndex * highQualityIndex
 
@@ -1277,7 +1277,6 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 
 		return value
 	End Method
-
 
 
 	Method GetPriceOld:int(playerID:int)
@@ -1340,6 +1339,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 
 		return value
 	End Method
+
 
 	'override
 	Method GetMaxTopicality:Float()
@@ -1441,8 +1441,10 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 
 			quality :+ add
 		EndIf
-		if quality < 0 then Notify("Quality of your programme data ~q" + GetGUID()+ "~q is negative. Please mail savegame to developers.")
-		Return Max(0, quality)
+		'if quality < 0 then Notify("Quality of your programme data ~q" + GetGUID()+ "~q is negative. Please mail savegame to developers.")
+		'FIX: 5.0 is an arbitrary value to limit values of broken savegames
+		'     can get removed 2019 or later
+		Return MathHelper.Clamp(quality, 0, 5.0)
 	End Method
 
 

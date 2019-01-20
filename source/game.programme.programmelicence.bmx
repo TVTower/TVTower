@@ -269,15 +269,86 @@ Type TProgrammeLicenceCollection
 
 	Global warnedEmptyRandomFromList:int = False
 	Method GetRandomFromList:TProgrammeLicence(_list:TList)
+		local result:TProgrammeLicence[] = GetRandomsFromList(_list, 1)
+		if result and result.length > 0 then return result[0]
 
-		If _list = Null Then Return Null
-		If _list.count() > 0
-			Local Licence:TProgrammeLicence = TProgrammeLicence(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
-			If Licence then return Licence
-		EndIf
 		if not warnedEmptyRandomFromList
 			TLogger.log("TProgrammeLicence.GetRandomFromList()", "list is empty (incorrect filter or not enough available licences?)", LOG_DEBUG | LOG_WARNING | LOG_DEV, TRUE)
 			warnedEmptyRandomFromList = true
+		endif
+		Return Null
+	End Method
+
+
+	Global warnedEmptyRandomsFromList:int = False
+	Method GetRandomsFromList:TProgrammeLicence[](_list:TList, amount:int = 1)
+		If _list = Null Then Return Null
+
+		'avoid complicated stuff if there is only 1 entry required
+		If amount = 1 and _list.count() > 0
+			Local Licence:TProgrammeLicence = TProgrammeLicence(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
+			If Licence then return [Licence]
+		'avoid complicated stuff if there is only all entries are required
+		ElseIf _list.count() = amount
+			local result:TProgrammeLicence[] = new TProgrammeLicence[amount]
+			For local i:int = 0 until amount
+				result[i] = TProgrammeLicence(_list.ValueAtIndex(i))
+			Next
+		ElseIf _list.count() >= amount
+			local result:TProgrammeLicence[] = new TProgrammeLicence[amount]
+			'to avoid returning duplicate entries we use RandRangeArray() which
+			'returns a non-colliding set of numbers in the given range
+			local randomNumbers:int[] = RandRangeArray(0, _list.count()-1, amount)
+			For local i:int = 0 until randomNumbers.length
+				result[i] = TProgrammeLicence(_list.ValueAtIndex(randomNumbers[i]))
+			Next
+			return result
+		EndIf
+		if not warnedEmptyRandomsFromList
+			TLogger.log("TProgrammeLicence.GetRandomsFromList()", "list is empty (incorrect filter or not enough available licences?)", LOG_DEBUG | LOG_WARNING | LOG_DEV, TRUE)
+			warnedEmptyRandomsFromList = true
+		endif
+		Return Null
+	End Method
+
+
+	Global warnedEmptyRandomFromArray:int = False
+	Method GetRandomFromArray:TProgrammeLicence(_arr:TProgrammeLicence[])
+		local result:TProgrammeLicence[] = GetRandomsFromArray(_arr, 1)
+		if result and result.length > 0 then return result[0]
+
+		if not warnedEmptyRandomFromArray
+			TLogger.log("TProgrammeLicence.GetRandomFromArray()", "array is empty (incorrect filter or not enough available licences?)", LOG_DEBUG | LOG_WARNING | LOG_DEV, TRUE)
+			warnedEmptyRandomFromArray = true
+		endif
+		Return Null
+	End Method
+
+
+	Global warnedEmptyRandomsFromArray:int = False
+	Method GetRandomsFromArray:TProgrammeLicence[](_arr:TProgrammeLicence[], amount:int = 1)
+		If _arr = Null Then Return Null
+
+		'avoid complicated stuff if there is only 1 entry required
+		If amount = 1 and _arr.length > 0
+			Local Licence:TProgrammeLicence = _arr[randRange(0, _arr.length - 1)]
+			If Licence then return [Licence]
+		'avoid complicated stuff if there is only all entries are required
+		ElseIf _arr.length = amount
+			return _arr[ .. ] 'return a copy!
+		ElseIf _arr.length >= amount
+			local result:TProgrammeLicence[] = new TProgrammeLicence[amount]
+			'to avoid returning duplicate entries we use RandRangeArray() which
+			'returns a non-colliding set of numbers in the given range
+			local randomNumbers:int[] = RandRangeArray(0, _arr.length-1, amount)
+			For local i:int = 0 until randomNumbers.length
+				result[i] = _arr[randomNumbers[i]]
+			Next
+			return result
+		EndIf
+		if not warnedEmptyRandomsFromArray
+			TLogger.log("TProgrammeLicence.GetRandomsFromArray()", "array is empty (incorrect filter or not enough available licences?)", LOG_DEBUG | LOG_WARNING | LOG_DEV, TRUE)
+			warnedEmptyRandomsFromArray = true
 		endif
 		Return Null
 	End Method
@@ -373,6 +444,13 @@ Type TProgrammeLicenceCollection
 
 
 	Method GetRandomByFilter:TProgrammeLicence(filter:TProgrammeLicenceFilter)
+		local results:TProgrammeLicence[] = GetRandomsByFilter(filter, 1)
+		if results and results.length > 0 then return results[0]
+		return null
+	End Method
+
+
+	Method GetRandomsByFilter:TProgrammeLicence[](filter:TProgrammeLicenceFilter, amount:int = 1)
 		Local Licence:TProgrammeLicence
 		Local resultList:TList = CreateList()
 
@@ -389,7 +467,7 @@ Type TProgrammeLicenceCollection
 			'add it to candidates list
 			resultList.addLast(Licence)
 		Next
-		Return GetRandomFromList(resultList)
+		Return GetRandomsFromList(resultList, amount)
 	End Method
 End Type
 
@@ -2808,6 +2886,13 @@ Type TProgrammeLicenceFilter
 	End Method
 
 
+	Method CheckRange:int(minV:Double, maxV:Double, value:Double)
+		if minV >= 0 and value < value then return False
+		if maxV >= 0 and value > value then return False
+		return True
+	End Method
+
+
 	'checks if the given programmelicence contains at least ONE of the given
 	'filter criterias ("OR"-chain of criterias)
 	'Ex.: filter cares for genres 1,2 and flags "trash" and "bmovie"
@@ -2835,33 +2920,41 @@ Type TProgrammeLicenceFilter
 		endif
 
 		'check quality (not qualityRaw which ignores age, airedtimes,...)
-		if qualityMin >= 0 and licence.GetQuality() < qualityMin then return False
-		if qualityMax >= 0 and licence.GetQuality() > qualityMax then return False
+		local quality:Float = licence.GetQuality()
+		if qualityMin >= 0 and quality < qualityMin then return False
+		if qualityMax >= 0 and quality > qualityMax then return False
 
 		'check relative topicality (topicality/maxTopicality)
-		if relativeTopicalityMin >= 0 and licence.GetRelativeTopicality() < relativeTopicalityMin then return False
-		if relativeTopicalityMax >= 0 and licence.GetRelativeTopicality() > relativeTopicalityMax then return False
+		local relativeTopicality:Float = licence.GetRelativeTopicality()
+		if relativeTopicalityMin >= 0 and relativeTopicality < relativeTopicalityMin then return False
+		if relativeTopicalityMax >= 0 and relativeTopicality > relativeTopicalityMax then return False
 
 		'check absolute topicality (maxTopicality)
 		'this is done to avoid selling "no longer useable entries"
-		if maxTopicalityMin >= 0 and licence.GetMaxTopicality() < maxTopicalityMin then return False
-		if maxTopicalityMax >= 0 and licence.GetMaxTopicality() > maxTopicalityMax then return False
+		local maxTopicality:Float = licence.GetMaxTopicality()
+		if maxTopicalityMin >= 0 and maxTopicality < maxTopicalityMin then return False
+		if maxTopicalityMax >= 0 and maxTopicality > maxTopicalityMax then return False
 
 		'check price
-		if priceMin >= 0 and licence.GetPriceForPlayer(playerID) < priceMin then return False
-		if priceMax >= 0 and licence.GetPriceForPlayer(playerID) > priceMax then return False
+		local priceForPlayer:int = licence.GetPriceForPlayer(playerID)
+		if priceMin >= 0 and priceForPlayer < priceMin then return False
+		if priceMax >= 0 and priceForPlayer > priceMax then return False
 
 		'check release time (absolute value)
-		if releaseTimeMin >= 0 and licence.data.GetReleaseTime() < releaseTimeMin then return False
-		if releaseTimeMax >= 0 and licence.data.GetReleaseTime() > releaseTimeMax then return False
+		local releaseTime:Long = licence.data.GetReleaseTime()
+		if releaseTimeMin >= 0 and releaseTime < releaseTimeMin then return False
+		if releaseTimeMax >= 0 and releaseTime > releaseTimeMax then return False
 
 		'check age (relative value)
-		if checkAgeMin and GetWorldTime().GetTimeGone() - licence.data.GetReleaseTime() < ageMin then return False
-		if checkAgeMax and GetWorldTime().GetTimeGone() - licence.data.GetReleaseTime() > ageMax then return False
+		local age:long = GetWorldTime().GetTimeGone() - releaseTime
+		if checkAgeMin and age < ageMin then return False
+		if checkAgeMax and age - releaseTime > ageMax then return False
 
 		'check time to relase (aka "negative age")
-		if checkTimeToReleaseMin and licence.data.GetReleaseTime() - GetWorldTime().GetTimeGone() < timeToReleaseMin then return False
-		if checkTimeToReleaseMax and licence.data.GetReleaseTime() - GetWorldTime().GetTimeGone() > timeToReleaseMax then return False
+		local negativeAge:long = releaseTime - GetWorldTime().GetTimeGone()
+		if checkTimeToReleaseMin and negativeAge < timeToReleaseMin then return False
+		if checkTimeToReleaseMax and negativeAge > timeToReleaseMax then return False
+
 
 		'check licenceType
 		if licenceTypes.length > 0
