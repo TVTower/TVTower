@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2019 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -35,11 +35,51 @@ Rem
 	====================================================================
 EndRem
 SuperStrict
-Import Brl.Retro
 
 
 
 Type MathHelper
+	'little helpers
+	Function _StrLeft:string(str:string, n:int)
+		If n > str.length then n = str.length
+		Return str[.. n]
+	End Function
+
+
+	Function _StrRight:string(str:string, n:int)
+		If n > str.length then n = str.length
+		Return str[str.length-n ..]
+	End Function
+
+
+	Function _StrMid:string(str:string, pos:int, size:int = -1)
+		If pos > str.length then Return Null
+		pos :- 1
+		If size < 0 then Return str[pos ..]
+		If pos < 0
+			size :+ pos
+			pos = 0
+		endif
+		If pos + size > str.length then size = str.length - pos
+		Return str[pos .. pos + size]
+	End Function
+
+
+	global asc0:int = Asc("0")
+	global asc9:int = Asc("9")
+	global ascZ:int = Asc("A") - asc9 - 1
+	Function Int2Hex:String(i:int)
+		Local buf:Short[8]
+		For Local k:int = 7 To 0 Step -1
+			Local n:int = (i & 15) + asc0
+			If n > asc9 then n:+ ascZ
+			buf[k] = n
+			i:Shr 4
+		Next
+		Return String.FromShorts(buf, 8)
+	End Function
+
+
 	'returns the value if within limits, else the corresponding border
 	Function Clamp:Float(value:Float, minValue:Float = 0.0, maxValue:Float = 1.0)
 		Return Min(Max(value, minvalue), maxvalue)
@@ -107,7 +147,7 @@ Type MathHelper
 
 	Function InIntArray:int(i:int, intArray:int[])
 		if not intArray then return False
-		
+
 		For local d:Int = EachIn intArray
 			if d = i then return True
 		Next
@@ -160,21 +200,21 @@ Type MathHelper
 		local dotPos:int = string(long(tmp)).length  '+1
 		if tmp < 0 then dotPos :+ 1
 		local s:string = string(tmp)[.. dotPos + 1 + digitsAfterDecimalPoint]
-		's = Left(string(tmp), dotPos + 1 + digitsAfterDecimalPoint)
+		's = _StrLeft(string(tmp), dotPos + 1 + digitsAfterDecimalPoint)
 
 		'remove 0s? 1.23000 => 1.23, 1.00 = 1
 		if truncateZeros
-			while s<>"" and Right(s, 1) = "0"
+			while s<>"" and _StrRight(s, 1) = "0"
 				s = s[.. s.length-1]
 			Wend
 			'only "xx." left?
-			if Right(s, 1) = "." then s = s[.. s.length-1]
+			if _StrRight(s, 1) = "." then s = s[.. s.length-1]
 		endif
 		return s
 	End Function
 
 
-	'formats a given value from "123000,12" to "123.000,12" 
+	'formats a given value from "123000,12" to "123.000,12"
 	'optimized variant
 	Function DottedValue:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:int = -1)
 		'is there a "minus" in front ?
@@ -192,7 +232,7 @@ Type MathHelper
 			'do we even have a fractionalValue <> ".000" ?
 			if Long(fractionalValue) > 0
 				'not rounded, just truncated
-				fractionalValue = Left(fractionalValue, digitsAfterDecimalPoint)
+				fractionalValue = _StrLeft(fractionalValue, digitsAfterDecimalPoint)
 				result :+ decimalDelimiter + fractionalValue
 			endif
 		else
@@ -204,8 +244,8 @@ Type MathHelper
 			result = Chr(decimalValue[i]) + result
 
 			'every 3rd char, but not if the last one (avoid 100 -> .100)
-			If (decimalValue.length-i) Mod 3 = 0 And i > 0 
-				result = thousandsDelimiter + result 
+			If (decimalValue.length-i) Mod 3 = 0 And i > 0
+				result = thousandsDelimiter + result
 			EndIf
 		Next
 
@@ -215,7 +255,7 @@ Type MathHelper
 			Return result
 		endif
 	End Function
-	
+
 
 	'round to an integer value
 	Function RoundInt:Int(f:Float)

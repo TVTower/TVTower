@@ -98,6 +98,7 @@
 	====================================================================
 End Rem
 SuperStrict
+Import Brl.Retro
 Import "base.util.math.bmx"
 
 Import "external/string_comp.bmx"
@@ -152,7 +153,7 @@ Type StringHelper
 		return result
 	End Function
 
-	
+
 	'extracts and returns all placeholders in a text
 	'ex.: Hi my name is %NAME%
 	Function ExtractPlaceholdersOld:string[](text:string, placeHolderChar:string="%", stripPlaceHolderChar:int = False)
@@ -165,7 +166,7 @@ Type StringHelper
 		local underscoreChar:int = Asc("_")
 		For local i:int = 0 until text.length
 			char = chr(text[i])
-			'found a potential placeholder start 
+			'found a potential placeholder start
 			If char = placeHolderChar and not readingPlaceHolder
 				readingPlaceHolder = True
 			EndIf
@@ -185,7 +186,7 @@ Type StringHelper
 
 				'add the placeHolderChar and alphanumeric characters to
 				'the placeholder value
-				If IsAlphaNum(Asc(char)) or char = placeHolderChar or text[i] = splitterChar or text[i] = underscoreChar 
+				If IsAlphaNum(Asc(char)) or char = placeHolderChar or text[i] = splitterChar or text[i] = underscoreChar
 					currentPlaceHolder :+ char
 				'found something different
 				'ex.: a single placeholderChar ("The % of %ALL% is %X%")
@@ -297,7 +298,7 @@ Type StringHelper
 		local atIndex:int = GetArrayIndex(str, arr, caseSensitive)
 		'not found
 		if atIndex < 0 then return False
-		
+
 		RemoveArrayIndex(atIndex, arr)
 		return True
 	End function
@@ -321,7 +322,7 @@ Type StringHelper
 		endif
 		return -1
 	End Function
-	
+
 
 	Function IsAlpha:Int( ch:Int )
 		Return (ch>=Asc("A") And ch<=Asc("Z")) Or (ch>=Asc("a") And ch<=Asc("z"))
@@ -346,7 +347,7 @@ Type StringHelper
 	Function UnEscapeString:string(in:string, escapeChar:string=":")
 		return in.replace("\"+escapeChar, escapeChar).replace("\\", "\")
 	End Function
-	
+
 
 	Function UTF8toISO8859:String(s:string)
 		Local b:Short[] = New Short[s.length]
@@ -355,7 +356,7 @@ Type StringHelper
 		For Local i:Int = 0 Until s.length
 			bc:+1
 			c = s[i]
-			If c<128 
+			If c<128
 				b[bc] = c
 				Continue
 			End If
@@ -364,7 +365,7 @@ Type StringHelper
 			if i >= s.length then continue
 
 			d=s[i]
-			If c<224 
+			If c<224
 				b[bc] = (c-192)*64+(d-128)
 				Continue
 			End If
@@ -373,7 +374,7 @@ Type StringHelper
 			if i >= s.length then continue
 
 			e = s[i]
-			If c < 240 
+			If c < 240
 				b[bc] = (c-224)*4096+(d-128)*64+(e-128)
 				Continue
 			End If
@@ -391,8 +392,8 @@ Type StringHelper
 		Next
 		return result
 	End Function
-			
-	
+
+
 
 	Function RemoveUmlauts:string(text:string)
 		local s:string[]
@@ -415,10 +416,10 @@ Type StringHelper
 				text = text.replace(src[j], tar[j])
 			Next
 		Next
-	
+
 		return text
 	End function
-	
+
 
 
 	'fill a given string with the args provided
@@ -610,7 +611,7 @@ Type StringHelper
 
 	Function StringToIntArray:int[](s:string, delim:string=",")
 		if s.length = 0 then return new Int[0]
-		
+
 		local sArray:string[] = s.split(delim)
 		local a:int[ sArray.length ]
 		For local i:int = 0 until a.length
@@ -634,7 +635,7 @@ Type StringHelper
 				length :- 1
 			EndIf
 		Next
-		
+
 		Return s
 	End Function
 

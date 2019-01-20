@@ -53,7 +53,7 @@ Type TColor
 	Method ToRGBString:string(glue:string=", ")
 		return r+glue+g+glue+b
 	End Method
-	
+
 
 	Function FromName:TColor(name:String, alpha:float=1.0)
 		Select name.ToLower()
@@ -121,7 +121,7 @@ Type TColor
 	'mixes colors, mixFactor is percentage (0-1) of otherColors influence
 	Method Mix:TColor(otherColor:TColor, mixFactor:float = 0.5)
 		'clamp mixFactor to 0-1.0
-		mixFactor = Min(1.0, Max(0.0, mixFactor)) 
+		mixFactor = Min(1.0, Max(0.0, mixFactor))
 		self.r = Min(255, Max(0, self.r * (1.0 - mixFactor) + otherColor.r * mixFactor))
 		self.g = Min(255, Max(0, self.g * (1.0 - mixFactor) + otherColor.g * mixFactor))
 		self.b = Min(255, Max(0, self.b * (1.0 - mixFactor) + otherColor.b * mixFactor))
@@ -159,15 +159,15 @@ Type TColor
 		return self
 	End Method
 
-	
+
 	Method AdjustSaturation:TColor(percentage:Float=1.0)
 		local h:float, s:float, l:float
 		ToHSL(h,s,l)
 		FromHSL(h,s * (1.0 + percentage), l)
 		return self
 	End Method
-	
-	
+
+
 	Method AdjustBrightness:TColor(percentage:Float=1.0)
 		local h:float, s:float, l:float
 		ToHSL(h,s,l)
@@ -224,18 +224,18 @@ Type TColor
 	Method GetCIELABDelta_CIE76_ByLAB:Float(L:float, A:float, B:float)
 		local myL:float, myA:float, myB:float
 		ToLAB(myL,myA,myB)
-		
+
 		'if result is ~2.3 then this is "jnd", just notable difference
 		return sqr( (L - myL)^2 + (A - myA)^2 + (B - myB)^2 )
 	End Method
-	
+
 
 	Method GetCIELABDelta_CIE76:Float(otherColor:TColor)
 		local L:float, A:float, b:float
 		local otherL:float, otherA:float, otherB:float
 		ToLAB(L,A,B)
 		otherColor.ToLAB(otherL, otherA, otherB)
-		
+
 		'if result is ~2.3 then this is "jnd", just notable difference
 		return sqr( (otherL - L)^2 + (otherA - A)^2 + (otherB - B)^2 )
 	End Method
@@ -246,7 +246,7 @@ Type TColor
 		local tmpG:Float = g/255.0
 		local tmpB:Float = b/255.0
 
-		If tmpR > 0.04045 
+		If tmpR > 0.04045
 			tmpR = 100 * ((tmpR + 0.055) / 1.055) ^ 2.4
 		Else
 			tmpR = 100 * tmpR / 12.92
@@ -278,7 +278,7 @@ Type TColor
 
 		'adjust values according "XYZ (Tristimulus) Reference values"
 		'using "D65" (Daylight, sRGB, Adobe-RGB) and "2°" (CIE 1931)
-		X :/ 95.047 
+		X :/ 95.047
 		Y :/ 100.000
 		Z :/ 108.883
 
@@ -416,7 +416,7 @@ Type TColor
 			h :/ 6.0
 		EndIf
 	End Method
-	
+
 
 	'code based on the jscript code at:
 	'https://github.com/mjackson/mjijackson.github.com/blob/master/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript.txt
@@ -481,7 +481,7 @@ Type TColor
 			dif = (r - g)/255.0
 			ad = 240.0
 		EndIf
-		
+
 		md = mx - mn
 
 		h = (60.0 * (dif / md)) + ad
@@ -543,12 +543,12 @@ Type TColor
 	Method ToHex:string()
 		'lossy compression of alpha!
 		local h:string = ""
-		h :+ Right(Hex(r),2)
-		h :+ Right(Hex(g),2)
-		h :+ Right(Hex(b),2)
+		h :+ MathHelper._StrRight(MathHelper.Int2Hex(r),2)
+		h :+ MathHelper._StrRight(MathHelper.Int2Hex(g),2)
+		h :+ MathHelper._StrRight(MathHelper.Int2Hex(b),2)
 		'do not append alpha if alpha is 1.0
 		if a < 1.0
-			h:+ Right(Hex(int(ceil(a*255))),2)
+			h:+ MathHelper._StrRight(MathHelper.Int2Hex(int(ceil(a*255))),2)
 		endif
 		return h
 	End Method
@@ -559,7 +559,7 @@ Type TColor
 		local colIndex:int = 0
 		if hexColor.Find("#") = 0 then start :+1
 		for local i:int = start until hexColor.length step 2
-			local part:string = Mid(hexColor, i+1, 2)
+			local part:string = MathHelper._StrMid(hexColor, i+1, 2)
 			if colIndex = 0 then r = ("$"+part).ToInt()
 			if colIndex = 1 then g = ("$"+part).ToInt()
 			if colIndex = 2 then b = ("$"+part).ToInt()
