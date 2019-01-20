@@ -24,8 +24,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	Global GuiListNormal2:TGUIScriptSlotList = null
 	Global GuiListSuitcase:TGUIScriptSlotList = null
 
-	global LS_scriptagency:TLowerString = TLowerString.Create("scriptagency")	
-	
+	global LS_scriptagency:TLowerString = TLowerString.Create("scriptagency")
+
 	'configuration
 	Global suitcasePos:TVec2D = new TVec2D.Init(320,270)
 	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(19,32)
@@ -111,7 +111,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			GuiListSuitcase.zIndex = 100
 		endif
 
-		
+
 		'=== EVENTS ===
 		'=== remove all registered event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
@@ -144,7 +144,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	Method CleanUp()
 		'=== unset cross referenced objects ===
 		'
-		
+
 		'=== remove obsolete gui elements ===
 		if GuiListSuitCase then RemoveAllGuiElements()
 
@@ -158,7 +158,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		if GetInstance() <> self then self.CleanUp()
 		GetRoomHandlerCollection().SetHandler("scriptagency", GetInstance())
 	End Method
-	
+
 
 
 
@@ -200,7 +200,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 		haveToRefreshGuiElements = true
 	End Method
-	
+
 
 	'run AFTER the savegame data got loaded
 	'handle faulty adcontracts (after data got loaded)
@@ -542,7 +542,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			'gui list
 			if scriptFound then continue
 
-			'first try to add to the guiListNormal-array, then guiListNormal2 
+			'first try to add to the guiListNormal-array, then guiListNormal2
 			if not AddScriptToVendorGuiLists(script, GuiListNormal + [GuiListNormal2])
 				TLogger.log("ScriptAgency.RefreshGuiElements_Vendor", "script exists in listNormal but does not fit in GuiListNormal or GuiListNormal2 - script removed.", LOG_ERROR)
 				RemoveScript(script)
@@ -587,7 +587,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		Next
 		return False
 	End Function
-	
+
 
 	Method RefreshGuiElements:int()
 		RefreshGuiElements_Suitcase()
@@ -602,7 +602,6 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	'replaceOffer: remove (some) old scripts and place new there?
 	Method ReFillBlocks:Int(replaceOffer:int=FALSE, replaceChance:float=1.0)
 		local lists:TScript[][] = [listNormal,listNormal2]
-		local script:TScript = null
 
 		haveToRefreshGuiElements = TRUE
 
@@ -631,13 +630,20 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 
 		'=== ACTUALLY CREATE SCRIPTS ===
+		'collect used templates to avoid scripts with the same base template
 		local usedTemplateGUIDs:string[]
-
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1
 				if lists[j][i] and lists[j][i].basedOnScriptTemplateGUID
 					usedTemplateGUIDs :+ [lists[j][i].basedOnScriptTemplateGUID]
 				endif
+			Next
+		Next
+
+		'fetch and set new scripts
+		local script:TScript = null
+		for local j:int = 0 to lists.length-1
+			for local i:int = 0 to lists[j].length-1
 				'if exists and is valid...skip it
 				if lists[j][i] then continue
 
@@ -671,7 +677,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 		'refresh the suitcase, not the board shelf!
 		GetInstance().RefreshGuiElements_Suitcase()
-		
+
 rem
 		'only refresh if the vendor did not get the script
 		if triggerEvent.IsTrigger("programmecollection.removeScript")
@@ -771,7 +777,7 @@ endrem
 
 		return TRUE
 	End Function
-	
+
 
 	'handle cover block drops on the vendor ... only sell if from the player
 	Function onDropScriptOnVendor:int( triggerEvent:TEventBase )
@@ -909,7 +915,7 @@ endrem
 		'SetAlpha 1.0
 		'DrawRect(GuiListSuitcase.GetScreenX(),GuiListSuitcase.GetScreenY(), GuiListSuitcase.GetScreenWidth(), GuiListSuitcase.GetScreenHeight())
 
-		
+
 		GUIManager.Draw( LS_scriptagency )
 
 		if hoveredGuiScript
