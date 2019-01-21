@@ -97,7 +97,7 @@ Type TNewsEventCollection
 		'add to common maps
 		'special lists get filled when using their Getters
 		managedNewsEvents.Insert(obj.GetGUID().ToLower(), obj)
-		allNewsEvents.Insert(obj.GetGUID().ToLower(), obj)
+		'allNewsEvents.Insert(obj.GetGUID().ToLower(), obj)
 
 		_InvalidateCaches()
 
@@ -150,7 +150,7 @@ Type TNewsEventCollection
 
 	Method GetByGUID:TNewsEvent(GUID:String)
 		GUID = GUID.ToLower()
-		Return TNewsEvent(allNewsEvents.ValueForKey(GUID))
+		Return TNewsEvent(managedNewsEvents.ValueForKey(GUID))
 	End Method
 
 
@@ -162,7 +162,7 @@ Type TNewsEventCollection
 		GUID = GUID.ToLower()
 
 		'find first hit
-		Local node:TNode = allNewsEvents._FirstNode()
+		Local node:TNode = managedNewsEvents._FirstNode()
 		While node And node <> nilNode
 			if string(node._key).Find(GUID) >= 0
 				return TNewsEvent(node._value)
@@ -198,6 +198,8 @@ Type TNewsEventCollection
 		For local n:TNewsEvent = Eachin toRemove
 			RemoveManaged(n)
 		Next
+
+		allNewsEvents.Clear()
 
 		'reset caches, so lists get filled correctly
 		if somethingDeleted then _InvalidateCaches()
