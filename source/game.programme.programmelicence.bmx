@@ -2887,8 +2887,8 @@ Type TProgrammeLicenceFilter
 
 
 	Method CheckRange:int(minV:Double, maxV:Double, value:Double)
-		if minV >= 0 and value < value then return False
-		if maxV >= 0 and value > value then return False
+		if minV >= 0 and value < minV then return False
+		if maxV >= 0 and value > maxV then return False
 		return True
 	End Method
 
