@@ -31,7 +31,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		endif
 		return TPlayerCollection(_instance)
 	End Function
-	
+
 
 	'override
 	Method Initialize:int()
@@ -71,7 +71,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 	Method IsPlayer:Int(number:Int)
 		Return (number > 0 And number <= players.length And TPlayer(players[number-1]))
 	End Method
-	
+
 
 	Method IsHuman:Int(number:Int)
 		if not IsPlayer(number) then return False
@@ -97,7 +97,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 	Method IsLocalAI:Int(number:Int)
 		Return (IsPlayer(number) And Get(number).IsLocalAI())
 	End Method
-	
+
 
 	'=== EVENTS ===
 	Function OnFigureReachTarget:int(triggerEvent:TEventBase)
@@ -198,7 +198,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 			if player.emptyProgrammeSuitcaseFromRoom = "movieagency" and room.GetName() <> "movieagency" then doEmpty = True
 			'coming from archive - for now nothing!
 			'if player.emptyProgrammeSuitcaseFromRoom = "archive" and room.name <> "archive" and room.name <> "movieagency" then doEmpty = True
-			
+
 			if doEmpty
 				'try to empty the suitcase
 				player.emptyProgrammeSuitcase = True
@@ -215,7 +215,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		'inform player AI
 		If room and player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_OK)
 	End Function
-	
+
 
 	Function OnFigureFinishEnterRoom:int(triggerEvent:TEventBase)
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
@@ -231,7 +231,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		local room:TRoom = TRoom(triggerEvent.GetData().Get("room"))
 		if not room then return False
 		EventManager.triggerEvent( TEventSimple.Create("player.onEnterRoom", new TData.Add("door", door), player, room) )
-		
+
 	 	'inform player AI that figure entered a room
 	 	If player.isLocalAI() Then player.PlayerAI.CallOnEnterRoom(room.id)
 	End Function
@@ -255,6 +255,18 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	field playerControlledByID:int = -1
 	Field aiData:TData = new TData {_exposeToLua}
 
+
+	'override
+	Method Initialize:int()
+		local result:int = Super.Initialize()
+		'reset "script external" data
+		'(external objects for the lua scripts)
+		if aiData then aiData = new TData
+
+		return result
+	End Method
+
+
 	Method SetAIData(key:string, value:object) {_exposeToLua}
 		aiData.Add(key, value)
 	End Method
@@ -262,7 +274,7 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	Method SetAIStringData(key:string, value:string) {_exposeToLua}
 		aiData.Add(key, value)
 	End Method
-	
+
 
 	Method onLoad:int(triggerEvent:TEventBase)
 		if IsLocalAi()
@@ -348,14 +360,14 @@ endrem
 		return GetFinance().GetCreditInterest()
 	end Method
 
-	
+
 	Method GetTotalNewsAbonnementFees:int() {_exposeToLua}
 		Local newsagencyfees:Int =0
 		For Local i:Int = 0 until TVTNewsGenre.count
 			newsagencyfees:+ TNewsAgency.GetNewsAbonnementPrice(playerID, TVTNewsGenre.GetAtIndex(i), GetNewsAbonnementDaysMax(i) )
 		Next
 		return newsagencyfees
-	end Method 	
+	end Method
 
 
 	'creates and returns a player
@@ -423,7 +435,7 @@ endrem
 		SetPlayerType(PLAYERTYPE_LOCAL_AI)
 	End Method
 
-	
+
 	Method SetInactive()
 		playerControlledByID = GetPlayerCollection().playerID
 		SetPlayerType(PLAYERTYPE_INACTIVE)
@@ -447,6 +459,7 @@ endrem
 	Method InitAI(ai:TAiBase)
 		PlayerAI = ai
 		PlayerAI.Start()
+		aiData = new TData
 	End Method
 
 
