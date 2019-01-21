@@ -7,7 +7,7 @@ Import "Dig/base.util.event.bmx"
 Type TGameInformationCollection
 	Field providers:TMap = CreateMap()
 	?Threaded
-	Field _dataMutex:TMutex = CreateMutex()
+	Field _dataMutex:TMutex = CreateMutex() {nosave}
 	?
 	Global _instance:TGameInformationCollection
 
@@ -21,7 +21,7 @@ Type TGameInformationCollection
 	Method AddProvider(providerKey:string, provider:TGameInformationProvider)
 		providers.Insert(providerKey.ToUpper(), provider)
 	End Method
-	
+
 
 	Method GetProvider:TGameInformationProvider(providerKey:string)
 		Return TGameInformationProvider(providers.ValueForKey(providerKey.ToUpper()))
@@ -93,21 +93,21 @@ End Function
 'base class for all information providers
 Type TGameInformationProvider
 	Method Set(key:string, obj:object) abstract
-	
+
 	Method Get:object(key:string, params:object = null) abstract
 
 	Method GetString:string(key:string, params:object = null)
 		return string(Get(key, params))
 	End Method
-	
+
 	Method GetFloat:Float(key:string, params:object = null)
 		return float(string(Get(key, params)))
 	End Method
-	
+
 	Method GetInt:Int(key:string, params:object = null)
 		return int(string(Get(key, params)))
 	End Method
-	
+
 	Method GetLong:Long(key:string, params:object = null)
 		return Long(string(Get(key, params)))
 	End Method

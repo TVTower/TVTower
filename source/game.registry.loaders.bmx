@@ -16,21 +16,21 @@ Import "game.gameconstants.bmx"
 Import "game.player.color.bmx"
 
 'register the loaders
-new TRegistryColorLoader.Init()
-new TRegistryRoomLoader.Init()
-new TRegistryNewsGenresLoader.Init()
-new TRegistryProgrammeDataModsLoader.Init()
+New TRegistryColorLoader.Init()
+New TRegistryRoomLoader.Init()
+New TRegistryNewsGenresLoader.Init()
+New TRegistryProgrammeDataModsLoader.Init()
 
 
 
 '===== COLOR LOADER =====
 'loader caring about "<color>"-types (and "<colors>"-groups)
-Type TRegistryColorLoader extends TRegistryBaseLoader
+Type TRegistryColorLoader Extends TRegistryBaseLoader
 	Method Init:Int()
 		name = "Color"
 		'we also load each image as sprite
 		resourceNames = "color|colors"
-		if not registered then Register()
+		If Not registered Then Register()
 	End Method
 
 
@@ -41,62 +41,62 @@ Type TRegistryColorLoader extends TRegistryBaseLoader
 
 
 	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode)
-		local data:TData = new TData
+		Local data:TData = New TData
 
 		'=== HANDLE "<COLORS>" ===
-		if node.GetName().toLower() = "colors"
+		If node.GetName().toLower() = "colors"
 			Local listName:String = TXmlHelper.FindValue(node, "name", "colorList")
 
 			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
 				'skip other elements
-				if childNode.GetName().ToLower() <> "color" then continue
+				If childNode.GetName().ToLower() <> "color" Then Continue
 
-				local childData:TData = GetConfigFromXML(loader, childNode)
+				Local childData:TData = GetConfigFromXML(loader, childNode)
 				'skip invalid configurations
-				if not childData then continue
+				If Not childData Then Continue
 
 				'add listname to each configuration - if not done yet
 				childData.AddString("list", childData.GetString("list", listName))
 
 				'add each color to "ToLoad"-list
-				local resName:string = GetNameFromConfig(childData)
+				Local resName:String = GetNameFromConfig(childData)
 				TRegistryUnloadedResourceCollection.GetInstance().Add(..
-					new TRegistryUnloadedResource.Init(GetNameFromConfig(childData), "color", childData)..
+					New TRegistryUnloadedResource.Init(GetNameFromConfig(childData), "color", childData)..
 				)
 			Next
-			return Null
-		endif
+			Return Null
+		EndIf
 
 		'=== HANDLE "<COLOR>" ===
-		local fieldNames:String[] = ["name", "r", "g", "b", "a", "list"]
+		Local fieldNames:String[] = ["name", "r", "g", "b", "a", "list"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
-		return data
+		Return data
 	End Method
 
 
 	Method GetNameFromConfig:String(data:TData)
-		return data.GetString("name","unknown color")
+		Return data.GetString("name","unknown color")
 	End Method
 
 
-	Method LoadFromConfig:TColor(data:TData, resourceName:string)
-		Local listName:string = data.getString("list")
+	Method LoadFromConfig:TColor(data:TData, resourceName:String)
+		Local listName:String = data.getString("list")
 		Local name:String = data.GetString("name")
 		Local r:Int	= data.GetInt("r", 0)
 		Local g:Int	= data.GetInt("g", 0)
 		Local b:Int	= data.GetInt("b", 0)
 		Local a:Int	= data.GetFloat("a", 1.0)
 
-		local color:TPlayerColor = TPlayerColor.Create(r,g,b,a)
+		Local color:TPlayerColor = TPlayerColor.Create(r,g,b,a)
 		'if a listname was given - try to add to that group
 		If listName <> ""
-			local list:TList = TList(GetRegistry().Get(listName, null))
+			Local list:TList = TList(GetRegistry().Get(listName, Null))
 			'if list is not existing: create it
-			if not list
+			If Not list
 				list = CreateList()
 				GetRegistry().Set(listName, list)
-			Endif
+			EndIf
 			'add
 			list.addLast(color)
 		EndIf
@@ -105,7 +105,7 @@ Type TRegistryColorLoader extends TRegistryBaseLoader
 		If name <> "" Then GetRegistry().Set(name, color)
 
 		'indicate that the loading was successful
-		return color
+		Return color
 	End Method
 End Type
 
@@ -114,12 +114,12 @@ End Type
 
 '===== ROOM LOADER =====
 'loader caring about "<room>"-types (and "<rooms>"-groups)
-Type TRegistryRoomLoader extends TRegistryBaseLoader
+Type TRegistryRoomLoader Extends TRegistryBaseLoader
 	Method Init:Int()
 		name = "Room"
 		'we also load each image as sprite
 		resourceNames = "room|rooms"
-		if not registered then Register()
+		If Not registered Then Register()
 	End Method
 
 
@@ -130,26 +130,26 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 
 
 	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode)
-		local data:TData = new TData
+		Local data:TData = New TData
 
 		'=== HANDLE "<ROOMS>" ===
-		if node.GetName().toLower() = "rooms"
+		If node.GetName().toLower() = "rooms"
 			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
 				'skip other elements
-				if childNode.GetName().ToLower() <> "room" then continue
+				If childNode.GetName().ToLower() <> "room" Then Continue
 
-				local childData:TData = GetConfigFromXML(loader, childNode)
+				Local childData:TData = GetConfigFromXML(loader, childNode)
 				'skip invalid configurations
-				if not childData then continue
+				If Not childData Then Continue
 
 				'add each room to "ToLoad"-list
-				local resName:string = GetNameFromConfig(childData)
+				Local resName:String = GetNameFromConfig(childData)
 				TRegistryUnloadedResourceCollection.GetInstance().Add(..
-					new TRegistryUnloadedResource.Init(GetNameFromConfig(childData), "room", childData)..
+					New TRegistryUnloadedResource.Init(GetNameFromConfig(childData), "room", childData)..
 				)
 			Next
-			return Null
-		endif
+			Return Null
+		EndIf
 
 		'=== HANDLE "<ROOM>" ===
 		'steps:
@@ -160,12 +160,12 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 		Local subNode:TxmlNode = Null
 
 		'1. room configuration
-		local fieldNames:String[] = ["owner", "name", "id", "flags", "size", "screen"]
+		Local fieldNames:String[] = ["owner", "name", "id", "flags", "size", "screen"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
 
 		'2. load tooltips
-		Local tooltipData:TData = new TData
+		Local tooltipData:TData = New TData
 		subNode = TXmlHelper.FindChild(node, "tooltip")
 		If subNode
 			TXmlHelper.LoadValuesToData(subNode, tooltipData, ["text", "description"])
@@ -182,10 +182,10 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 		If subNode
 			For Local hotSpotNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 				'skip other elements
-				if hotspotNode.GetName().ToLower() <> "hotspot" then continue
+				If hotspotNode.GetName().ToLower() <> "hotspot" Then Continue
 
-				Local hotspotData:TData = new TData
-				local hotspotFields:string[]
+				Local hotspotData:TData = New TData
+				Local hotspotFields:String[]
 				hotspotFields :+ ["name", "tooltiptext", "tooltipdescription"]
 				hotspotFields :+ ["x", "y", "floor", "width", "height", "bottomy"]
 				TXmlHelper.LoadValuesToData(hotspotNode, hotspotData, hotspotFields)
@@ -201,25 +201,25 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 		'4. load door settings
 		subNode = TXmlHelper.FindChild(node, "door")
 		If subNode
-			local doorData:TData = new TData
-			local doorFields:string[] = ["x", "floor", "doorslot", "doortype", "doorwidth", "doortooltip"]
+			Local doorData:TData = New TData
+			Local doorFields:String[] = ["x", "floor", "doorslot", "doortype", "doorwidth", "doortooltip"]
 			TXmlHelper.LoadValuesToData(subNode, doorData, doorFields)
 			'add door configuration
 			data.Add("door", doorData)
 		EndIf
 
 
-		return data
+		Return data
 	End Method
 
 
 	Method GetNameFromConfig:String(data:TData)
-		return data.GetString("name","unknown room")
+		Return data.GetString("name","unknown room")
 	End Method
 
 
-	Method LoadFromConfig:TData(data:TData, resourceName:string)
-		Local roomData:TData = new TData
+	Method LoadFromConfig:TData(data:TData, resourceName:String)
+		Local roomData:TData = New TData
 		Local owner:Int	= data.GetInt("owner", -1)
 		Local name:String = data.GetString("name", "unknown")
 		Local id:String	= data.GetString("id", "")
@@ -232,15 +232,15 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 		roomData.AddString("screen", data.GetString("screen", "screen_credits"))
 
 		'load tooltips
-		local tooltipData:TData = TData(data.Get("tooltip", new TData))
+		Local tooltipData:TData = TData(data.Get("tooltip", New TData))
 		roomData.AddString("tooltip", tooltipData.GetString("text"))
 		roomData.AddString("tooltip2", tooltipData.GetString("description"))
 
 		'load hotspots
 		roomData.Add("hotspots", TList(data.Get("hotspots", CreateList())))
 
-		local doorData:TData = TData(data.Get("door"))
-		if doorData
+		Local doorData:TData = TData(data.Get("door"))
+		If doorData
 			roomData.AddNumber("hasDoorData", True)
 			'load door settings
 			roomData.AddNumber("x", doorData.GetInt("x", -1000))
@@ -249,13 +249,13 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 			roomData.AddNumber("doortype", doorData.GetInt("doortype", -1))
 			roomData.AddNumber("doorwidth", doorData.GetInt("doorwidth", -1))
 			roomData.AddBoolString("doortooltip", doorData.GetBool("doortooltip", True))
-		else
+		Else
 			roomData.AddNumber("hasDoorData", False)
-		endif
+		EndIf
 
 		'fetch/create the rooms config container
-		local roomsMap:TMap = TMap(GetRegistry().Get("rooms"))
-		if not roomsMap
+		Local roomsMap:TMap = TMap(GetRegistry().Get("rooms"))
+		If Not roomsMap
 			roomsMap = CreateMap()
 			GetRegistry().Set("rooms", roomsMap)
 		EndIf
@@ -266,7 +266,7 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 		'TLogger.log("XmlLoader.LoadRooms()", "inserted room: " + Name, LOG_LOADING | LOG_DEBUG, TRUE)
 
 		'indicate that the loading was successful
-		return roomData
+		Return roomData
 	End Method
 End Type
 
@@ -275,12 +275,12 @@ End Type
 
 '===== NEWS GENRE LOADER =====
 'loader caring about "<newsgenre>"-types (and "<newsgenres>"-groups)
-Type TRegistryNewsGenresLoader extends TRegistryBaseLoader
+Type TRegistryNewsGenresLoader Extends TRegistryBaseLoader
 	Method Init:Int()
 		name = "Newsgenres"
 		'we also load each image as sprite
 		resourceNames = "newsgenre|newsgenres"
-		if not registered then Register()
+		If Not registered Then Register()
 	End Method
 
 
@@ -291,82 +291,82 @@ Type TRegistryNewsGenresLoader extends TRegistryBaseLoader
 
 
 	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode)
-		local data:TData = new TData
+		Local data:TData = New TData
 
 		'=== HANDLE "<NEWSGENRES>" ===
-		if node.GetName().toLower() = "newsgenres"
+		If node.GetName().toLower() = "newsgenres"
 			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
 				'skip other elements
-				if childNode.GetName().ToLower() <> "newsgenre" then continue
+				If childNode.GetName().ToLower() <> "newsgenre" Then Continue
 
-				local childData:TData = GetConfigFromXML(loader, childNode)
+				Local childData:TData = GetConfigFromXML(loader, childNode)
 				'skip invalid configurations
-				if not childData then continue
+				If Not childData Then Continue
 
 				'add each entry to "ToLoad"-list
-				local resName:string = GetNameFromConfig(childData)
+				Local resName:String = GetNameFromConfig(childData)
 				TRegistryUnloadedResourceCollection.GetInstance().Add(..
-					new TRegistryUnloadedResource.Init(GetNameFromConfig(childData), "newsgenre", childData)..
+					New TRegistryUnloadedResource.Init(GetNameFromConfig(childData), "newsgenre", childData)..
 				)
 			Next
-			return Null
-		endif
+			Return Null
+		EndIf
 
 		'=== HANDLE "<NEWSGENRE>" ===
-		local fieldNames:String[] = ["id", "name"]
+		Local fieldNames:String[] = ["id", "name"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
 		Local subNode:TxmlNode = TXmlHelper.FindChild(node, "audienceAttractions")
-		if not subNode then return Null
+		If Not subNode Then Return Null
 
-		local audienceAttractions:TMap = CreateMap()
+		Local audienceAttractions:TMap = CreateMap()
 		For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 			Local attrId:String = TXmlHelper.FindValue(subNodeChild, "id", "-1")
 			Local men:String = TXmlHelper.FindValue(subNodeChild, "men", "")
 			Local women:String = TXmlHelper.FindValue(subNodeChild, "women", "")
-			local all:string  = TXmlHelper.FindValue(subNodeChild, "value", "0.7")
-			if men = "" then men = all
-			if women = "" then women = all
+			Local all:String  = TXmlHelper.FindValue(subNodeChild, "value", "0.7")
+			If men = "" Then men = all
+			If women = "" Then women = all
 			audienceAttractions.Insert(attrId+"_men", men)
 			audienceAttractions.Insert(attrId+"_women", women)
 		Next
 		'add attractions to data set
 		data.Add("audienceAttractions", audienceAttractions)
 
-		return data
+		Return data
 	End Method
 
 
 	Method GetNameFromConfig:String(data:TData)
-		return data.GetString("name","unknown newsgenre")
+		Return data.GetString("name","unknown newsgenre")
 	End Method
 
 
-	Method LoadFromConfig:TMap(data:TData, resourceName:string)
-		local newsGenre:TMap = CreateMap()
-		local id:int = data.GetInt("id", -1)
-		newsGenre.Insert("id", string(id))
+	Method LoadFromConfig:TMap(data:TData, resourceName:String)
+		Local newsGenre:TMap = CreateMap()
+		Local id:Int = data.GetInt("id", -1)
+		newsGenre.Insert("id", String(id))
 		newsGenre.Insert("name", data.GetString("name", "unknown"))
 
-		local audienceAttractions:TMap = TMap(data.Get("audienceAttractions", CreateMap()))
-		For local key:string = eachin audienceAttractions.Keys()
+		Local audienceAttractions:TMap = TMap(data.Get("audienceAttractions", CreateMap()))
+		For Local key:String = EachIn audienceAttractions.Keys()
 			newsGenre.Insert(key, AudienceAttractions.ValueForKey(key) )
 		Next
 
 
 		'fetch/create the newsgenres container
-		local newsGenresMap:TMap = TMap(GetRegistry().Get("newsgenres"))
-		if not newsGenresMap
+		Local newsGenresMap:TMap = TMap(GetRegistry().Get("newsgenres"))
+		If Not newsGenresMap
 			newsGenresMap = CreateMap()
 			'add the genres container to the registry
 			GetRegistry().Set("newsgenres", newsGenresMap)
-		endif
+		EndIf
 
 		'add the newsgenre to the container
-		newsGenresMap.Insert(string(id), newsGenre)
+		newsGenresMap.Insert(String(id), newsGenre)
 
 		'indicate that the loading was successful
-		return newsGenre
+		Return newsGenre
 	End Method
 End Type
 
@@ -376,11 +376,11 @@ End Type
 '===== (PROGRAMME) GENRE / FLAGS LOADER =====
 'loader caring about:
 '- <genres>, <genre>, <flags>, <flag>, <programmedatamods>
-Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
+Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 	Method Init:Int()
 		name = "ProgrammeDataMods"
 		resourceNames = "programmedatamods|genre|genres|flag|flags"
-		if not registered then Register()
+		If Not registered Then Register()
 	End Method
 
 
@@ -391,41 +391,41 @@ Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 
 
 	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode)
-		local data:TData = new TData
+		Local data:TData = New TData
 
 		'=== HANDLE "<PROGRAMMEDATAMODS>" ===
-		if node.GetName().toLower() = "programmedatamods"
+		If node.GetName().toLower() = "programmedatamods"
 			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
 				'skip other elements
-				if childNode.GetName().ToLower() <> "genres" and childNode.GetName().ToLower() <> "flags" then continue
+				If childNode.GetName().ToLower() <> "genres" And childNode.GetName().ToLower() <> "flags" Then Continue
 
 				GetConfigFromXML(loader, childNode)
 			Next
-		endif
+		EndIf
 		
 
 		'=== HANDLE "<GENRES>" ===
-		if node.GetName().toLower() = "genres" or node.GetName().toLower() = "flags"
+		If node.GetName().toLower() = "genres" Or node.GetName().toLower() = "flags"
 			For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
 				'skip other elements
-				if childNode.GetName().ToLower() <> "genre" and childNode.GetName().ToLower() <> "flag" then continue
+				If childNode.GetName().ToLower() <> "genre" And childNode.GetName().ToLower() <> "flag" Then Continue
 
-				local childData:TData = GetConfigFromXML(loader, childNode)
+				Local childData:TData = GetConfigFromXML(loader, childNode)
 				'skip invalid configurations
-				if not childData then continue
+				If Not childData Then Continue
 
 				'add each entry to "ToLoad"-list
-				local resName:string = GetNameFromConfig(childData)
+				Local resName:String = GetNameFromConfig(childData)
 				TRegistryUnloadedResourceCollection.GetInstance().Add(..
-					new TRegistryUnloadedResource.Init(GetNameFromConfig(childData), childNode.GetName().ToLower(), childData)..
+					New TRegistryUnloadedResource.Init(GetNameFromConfig(childData), childNode.GetName().ToLower(), childData)..
 				)
 			Next
-			return Null
-		endif
+			Return Null
+		EndIf
 
 
 		'=== HANDLE "<GENRE>" ===
-		local fieldNames:String[] = ["id", "name"]
+		Local fieldNames:String[] = ["id", "name"]
 		fieldNames :+ ["outcomeMod|outcome-mod", "reviewMod|review-mod", "speedMod|speed-mod"]
 		fieldNames :+ ["goodFollower", "badFollower"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
@@ -435,9 +435,9 @@ Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 
 		'load timeMods
 		subNode = TXmlHelper.FindChild(node, "timeMods")
-		if not subNode then return Null
+		If Not subNode Then Return Null
 
-		local timeMods:TMap = CreateMap()
+		Local timeMods:TMap = CreateMap()
 		For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 			Local time:String = TXmlHelper.FindValue(subNodeChild, "time", "-1")
 			Local Value:String = TXmlHelper.FindValue(subNodeChild, "value", "")
@@ -449,16 +449,16 @@ Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 
 		'load audienceAttractions
 		subNode = TXmlHelper.FindChild(node, "audienceAttractions")
-		if not subNode then return Null
+		If Not subNode Then Return Null
 
-		local audienceAttractions:TMap = CreateMap()
+		Local audienceAttractions:TMap = CreateMap()
 		For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 			Local attrId:String = TXmlHelper.FindValue(subNodeChild, "id", "-1")
 			Local men:String = TXmlHelper.FindValue(subNodeChild, "men", "")
 			Local women:String = TXmlHelper.FindValue(subNodeChild, "women", "")
 			Local all:String = TXmlHelper.FindValue(subNodeChild, "value", "0.7")
-			if men = "" then men = all
-			if women = "" then women = all
+			If men = "" Then men = all
+			If women = "" Then women = all
 			audienceAttractions.Insert(attrId+"_men", men)
 			audienceAttractions.Insert(attrId+"_women", women)
 		Next
@@ -468,62 +468,62 @@ Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 
 		'load castAttributes
 		subNode = TXmlHelper.FindChild(node, "castAttributes")
-		if subNode
-			local castAttributes:TMap = null
+		If subNode
+			Local castAttributes:TMap = Null
 			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
-				if not castAttributes then castAttributes = CreateMap()
-				Local jobID:int = TVTProgrammePersonJob.GetByString(subNodeChild.GetName().ToLower())
-				Local attributeID:int = TVTProgrammePersonAttribute.GetByString(TXmlHelper.FindValue(subNodeChild, "attribute", ""))
+				If Not castAttributes Then castAttributes = CreateMap()
+				Local jobID:Int = TVTProgrammePersonJob.GetByString(subNodeChild.GetName().ToLower())
+				Local attributeID:Int = TVTProgrammePersonAttribute.GetByString(TXmlHelper.FindValue(subNodeChild, "attribute", ""))
 				Local value:String = TXmlHelper.FindValue(subNodeChild, "value", "0.0")
 
-				if jobID = TVTProgrammePersonJob.UNKNOWN then continue
-				if attributeID = TVTProgrammePersonAttribute.NONE then continue
+				If jobID = TVTProgrammePersonJob.UNKNOWN Then Continue
+				If attributeID = TVTProgrammePersonAttribute.NONE Then Continue
 
 				'limit values to -1.0 - +1.0
-				value = string( MathHelper.Clamp(float(value), -1.0 , 1.0) )
+				value = String( MathHelper.Clamp(Float(value), -1.0 , 1.0) )
 
 				castAttributes.Insert(jobID+"_"+attributeID, value)
 			Next
 			'add attractions to data set
-			if castAttributes then data.Add("castAttributes", castAttributes)
-		endif
+			If castAttributes Then data.Add("castAttributes", castAttributes)
+		EndIf
 
 
 
 		'load focusPointPriorities
 		subNode = TXmlHelper.FindChild(node, "focusPointPriorities")
-		if subNode
-			local focusPointPriorities:TMap = null
+		If subNode
+			Local focusPointPriorities:TMap = Null
 			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
-				if not focusPointPriorities then focusPointPriorities = CreateMap()
-				Local focusPointID:int = TVTProductionFocus.GetByString(subNodeChild.GetName().ToLower())
+				If Not focusPointPriorities Then focusPointPriorities = CreateMap()
+				Local focusPointID:Int = TVTProductionFocus.GetByString(subNodeChild.GetName().ToLower())
 				Local value:String = TXmlHelper.FindValue(subNodeChild, "value", "1.0")
 
-				if focusPointID = TVTProductionFocus.NONE then continue
+				If focusPointID = TVTProductionFocus.NONE Then Continue
 
-				focusPointPriorities.Insert(string(focusPointID), value)
+				focusPointPriorities.Insert(String(focusPointID), value)
 			Next
 			'add priorities to data set
-			if focusPointPriorities then data.Add("focusPointPriorities", focusPointPriorities)
-		endif
+			If focusPointPriorities Then data.Add("focusPointPriorities", focusPointPriorities)
+		EndIf
 
-		return data
+		Return data
 	End Method
 
 
 	Method GetNameFromConfig:String(data:TData)
-		if data.GetString("nodeName") = "genre"
-			return data.GetString("name","unknown programme genre mod")
-		else
-			return data.GetString("name","unknown programme flag mod")
-		endif
+		If data.GetString("nodeName") = "genre"
+			Return data.GetString("name","unknown programme genre mod")
+		Else
+			Return data.GetString("name","unknown programme flag mod")
+		EndIf
 	End Method
 
 
-	Method LoadFromConfig:TMap(data:TData, resourceName:string)
-		local programmeDataMod:TMap = CreateMap()
-		local id:int = data.GetInt("id", -1)
-		programmeDataMod.Insert("id", string(id))
+	Method LoadFromConfig:TMap(data:TData, resourceName:String)
+		Local programmeDataMod:TMap = CreateMap()
+		Local id:Int = data.GetInt("id", -1)
+		programmeDataMod.Insert("id", String(id))
 		programmeDataMod.Insert("name", data.GetString("name", "unknown"))
 
 		programmeDataMod.Insert("outcomeMod", data.GetString("outcomeMod", -1))
@@ -534,65 +534,66 @@ Type TRegistryProgrammeDataModsLoader extends TRegistryBaseLoader
 		programmeDataMod.Insert("focusPointPriorities", data.Get("focusPointPriorities"))
 
 		If data.GetString("goodFollower") <> ""
-			local followers:string[] = data.GetString("goodFollower").split(",")
-			For local i:int = 0 until followers.length
-				if int(followers[i]) = followers[i].trim() then continue
-				local follower:int = TVTProgrammeGenre.GetByString(followers[i])
-				if follower = TVTProgrammeGenre.UNDEFINED
-					print "INVALID GOODFOLLOWER GENRE: "+followers[i]
-				endif
+			Local followers:String[] = data.GetString("goodFollower").split(",")
+			For Local i:Int = 0 Until followers.length
+				If Int(followers[i]) = followers[i].Trim() Then Continue
+				Local follower:Int = TVTProgrammeGenre.GetByString(followers[i])
+				If follower = TVTProgrammeGenre.UNDEFINED
+					Print "INVALID GOODFOLLOWER GENRE: "+followers[i]
+				EndIf
 				followers[i] = follower
 			Next
 			programmeDataMod.Insert("goodFollower", ListFromArray(followers))
 		EndIf
 
 		If data.GetString("badFollower") <> ""
-			local followers:string[] = data.GetString("badFollower").split(",")
-			For local i:int = 0 until followers.length
-				if int(followers[i]) = followers[i].trim() then continue
-				local follower:int = TVTProgrammeGenre.GetByString(followers[i])
-				if follower = TVTProgrammeGenre.UNDEFINED
-					print "INVALID BADFOLLOWER GENRE: "+followers[i]
-				endif
+			Local followers:String[] = data.GetString("badFollower").split(",")
+			For Local i:Int = 0 Until followers.length
+				If Int(followers[i]) = followers[i].Trim() Then Continue
+				Local follower:Int = TVTProgrammeGenre.GetByString(followers[i])
+				If follower = TVTProgrammeGenre.UNDEFINED
+					Print "INVALID BADFOLLOWER GENRE: "+followers[i]
+				EndIf
 				followers[i] = follower
 			Next
 			programmeDataMod.Insert("badFollower", ListFromArray(followers))
 		EndIf
 
-		local timeMods:TMap = TMap(data.Get("timeMods", CreateMap()))
-		For local key:string = eachin timeMods.Keys()
+		Local timeMods:TMap = TMap(data.Get("timeMods", CreateMap()))
+		For Local key:String = EachIn timeMods.Keys()
 			programmeDataMod.Insert("timeMod_" + key, timeMods.ValueForKey(key) )
 		Next
 
-		local audienceAttractions:TMap = TMap(data.Get("audienceAttractions", CreateMap()))
-		For local key:string = eachin audienceAttractions.Keys()
+
+		Local audienceAttractions:TMap = TMap(data.Get("audienceAttractions", New TMap))
+		For Local key:String = EachIn audienceAttractions.Keys()
 			programmeDataMod.Insert(key, AudienceAttractions.ValueForKey(key) )
 		Next
 
 
 		'fetch/create the genres container
-		local modMap:TMap
+		Local modMap:TMap
 
-		if resourceName.ToLower() = "genre"
+		If resourceName.ToLower() = "genre"
 			modMap = TMap(GetRegistry().Get("genres"))
-			if not modMap
+			If Not modMap
 				modMap = CreateMap()
 				'add the genres container to the registry
 				GetRegistry().Set("genres", modMap)
-			endif
-		elseif resourceName.ToLower() = "flag"
+			EndIf
+		ElseIf resourceName.ToLower() = "flag"
 			modMap = TMap(GetRegistry().Get("flags"))
-			if not modMap
+			If Not modMap
 				modMap = CreateMap()
 				'add the genres container to the registry
 				GetRegistry().Set("flags", modMap)
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'add the genre to the container
-		modMap.Insert(string(id), programmeDataMod)
+		modMap.Insert(String(id), programmeDataMod)
 
 		'indicate that the loading was successful
-		return programmeDataMod
+		Return programmeDataMod
 	End Method
 End Type
