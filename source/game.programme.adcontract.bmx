@@ -41,7 +41,7 @@ Type TAdContractBaseCollection
 	Field infomercialWearoffFactor:float = 1.25
 	'factor by what an infomercial topicality INCREASES on a new day
 	Field infomercialRefreshFactor:float = 1.3
-	
+
 	Global _instance:TAdContractBaseCollection
 
 
@@ -65,7 +65,7 @@ Type TAdContractBaseCollection
 	Method SearchByPartialGUID:TAdContractBase(GUID:String)
 		'skip searching if there is nothing to search
 		if GUID.trim() = "" then return Null
-		
+
 		GUID = GUID.ToLower()
 
 		'find first hit
@@ -77,7 +77,7 @@ Type TAdContractBaseCollection
 
 		return Null
 	End Method
-		
+
 
 	'this is not guaranteed to be unique!
 	Method GetByTitle:TAdContractBase(title:String, language:String="")
@@ -124,7 +124,7 @@ Type TAdContractBaseCollection
 			'add it to candidates list
 			contracts :+ [contract]
 		Next
-		
+
 		if contracts.length = 0
 			if returnUnfilteredOnError
 				print "AdContractBaseCollection: GetRandomNormalByFilter without results! Returning Random without filter."
@@ -135,9 +135,9 @@ Type TAdContractBaseCollection
 				Return null
 			endif
 		endif
-	
+
 		Return GetRandom(contracts)
-	End Method	
+	End Method
 
 
 	Method GetRandomByFilter:TAdContractBase(filter:TAdContractBaseFilter, returnUnfilteredOnError:int = True)
@@ -149,7 +149,7 @@ Type TAdContractBaseCollection
 			'add it to candidates list
 			contracts :+ [contract]
 		Next
-		
+
 		if contracts.length = 0
 			if returnUnfilteredOnError
 				print "AdContractBaseCollection: GetRandomByFilter without results! Returning Random without filter."
@@ -160,9 +160,9 @@ Type TAdContractBaseCollection
 				Return null
 			endif
 		endif
-	
+
 		Return GetRandom(contracts)
-	End Method	
+	End Method
 
 
 	Method GetAllAsArray:TAdContractBase[]()
@@ -202,7 +202,7 @@ Type TAdContractBaseCollection
 		Next
 	End Method
 End Type
-	
+
 '===== CONVENIENCE ACCESSOR =====
 'return collection instance
 Function GetAdContractBaseCollection:TAdContractBaseCollection()
@@ -252,7 +252,7 @@ Type TAdContractCollection
 	Method Add:int(obj:TAdContract)
 		'only add once
 		if list.contains(obj) then return False
-		
+
 		list.AddLast(obj)
 		return TRUE
 	End Method
@@ -305,7 +305,7 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 	'eg. anti-nicotin
 	Field proPressureGroups:Int = 0
 	Field contraPressureGroups:Int = 0
-	
+
 	'minimum audience (real value calculated on sign)
 	Field minAudienceBase:Float
 	'minimum image base value (real value calculated on sign)
@@ -338,7 +338,7 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 	Field availableScript:string = ""
 
 	'defines the type of the ad according to TVTAdContractType
-	'only adType 0 is generically available in the game 
+	'only adType 0 is generically available in the game
 	Field adType:int = 0
 
 	'array of contract guids using this base at the moment
@@ -348,7 +348,7 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 	Field timesBroadcastedAsInfomercial:int[] = [0]
 	Field _handledFirstTimeBroadcast:int = False
 	Field _handledFirstTimeBroadcastAsInfomercial:int = False
-	
+
 	rem
 		modifiers:
 		"topicality:infomercialWearoff"
@@ -356,12 +356,12 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 		"topicality:infomercialRefresh"
 		  changes how much an infomercial "regenerates" on topicality per day
 	endrem
-	
+
 
 	Method GenerateGUID:string()
 		return "broadcastmaterialsource-adcontractbase-"+id
 	End Method
-		
+
 
 	Method Create:TAdContractBase(GUID:String, title:TLocalizedString, description:TLocalizedString, daysToFinish:Int, spotCount:Int, targetgroup:Int, minAudience:Float, minImage:Float, fixedPrice:Int, profit:Float, penalty:Float)
 		self.SetGUID(GUID)
@@ -396,10 +396,60 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 	End Function
 
 
+	'percents = 0.0 - 1.0 (0-100%)
+	Method GetMinAudiencePercentage:Float(value:Float = -1)
+		If value < 0 Then value = minAudienceBase
+
+		'modify according to dev-balancing
+		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG"))
+		if devConfig
+			value :* devConfig.GetFloat("DEV_ADCONTRACT_MINAUDIENCEPERCENTAGE_MOD", 1.0)
+		endif
+
+		Return MathHelper.Clamp(value, 0.0, 1.0)
+	End Method
+
+
+	'returns the non rounded minimum audience
+	'@playerID          playerID = -1 to use the avg audience maximum
+	'@getTotalAudience  avoid breaking down audience if a target group limit is set up
+	Method GetRawMinAudienceForPlayer:Int(playerID:int, getTotalAudience:int = False, audience:int=-1)
+		local useAudience:int = audience
+		if audience < 0
+			if playerID <= 0
+				useAudience = GetStationMapCollection().GetAverageReach()
+			else
+				useAudience = GetStationMap(playerID).GetReach()
+			endif
+		endif
+
+		if not getTotalAudience
+			'if limited to specific target group ... break audience down
+			'to this specific group
+			if GetLimitedToTargetGroup() > 0
+				useAudience :* AudienceManager.GetTargetGroupPercentage(GetLimitedToTargetGroup())
+			endif
+		endif
+
+		local result:int = GetMinAudiencePercentage() * useAudience
+
+		'DEV: adjust by a balancing factor
+		result :* GameRules.devConfig.GetFloat("DEV_ADCONTRACT_RAWMINAUDIENCE_MOD", 1.0)
+
+		Return result
+	End Method
+
+
+	'Gets minimum needed audience in absolute numbers
+	Method GetMinAudienceForPlayer:Int(playerID:int, getTotalAudience:int = False, audience:int=-1)
+		Return TFunctions.RoundToBeautifulValue( GetRawMinAudienceForPlayer(playerID, getTotalAudience, audience) )
+	End Method
+
+
 	Method IsAvailable:int()
 		'field "available" = false ?
 		if not super.IsAvailable() then return False
-		
+
 		'skip contracts not available in this game year
 		if availableYearRangeFrom > 0 and GetWorldTime().GetYear() < availableYearRangeFrom then return False
 		if availableYearRangeTo > 0 and GetWorldTime().GetYear() > availableYearRangeTo then return False
@@ -412,7 +462,7 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 
 		return True
 	End Method
-	
+
 
 	'playerID < 0 means "get all"
 	Method GetTimesBroadcastedAsInfomercial:Int(playerID:int = -1)
@@ -526,7 +576,21 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method GetLimitedToTargetGroup:int() {_exposeToLua}
+		'with no required audience, we cannot limit to target groups
+		'except hmm ... we want that at least 1 of the target group
+		'is watching
+		if GetMinAudiencePercentage() = 0 then return 0
+
 		Return Max(0, limitedToTargetGroup)
+	End Method
+
+
+	Method SetLimitedToTargetGroup:int(group:int, enable:int=True)
+		If enable
+			limitedToTargetGroup = GetLimitedToTargetGroup() | group
+		Else
+			limitedToTargetGroup = GetLimitedToTargetGroup() & ~group
+		EndIf
 	End Method
 
 
@@ -589,7 +653,7 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 	Method RemoveCurrentlyUsedByContract:int(contractGUID:string)
 		'skip if already not existent
 		if not IsCurrentlyUsedByContract(contractGUID) then return False
-		
+
 		local newArray:string[]
 		For local guid:String = EachIn currentlyUsedByContracts
 			if guid <> contractGUID then newArray :+ [contractGUID]
@@ -653,7 +717,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Method GenerateGUID:string()
 		return "broadcastmaterialsource-adcontract-"+id
 	End Method
-	
+
 
 	'create UNSIGNED (adagency)
 	Method Create:TAdContract(baseContract:TAdContractBase)
@@ -692,7 +756,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Local a1:TAdContract = TAdContract(o1)
 		Local a2:TAdContract = TAdContract(o2)
 		If Not a2 Then Return 1
-		if a1.adAgencyClassification = a2.adAgencyClassification 
+		if a1.adAgencyClassification = a2.adAgencyClassification
 			return a1.GetTitle() > a2.GetTitle()
 		endif
         Return a1.adAgencyClassification - a2.adAgencyClassification
@@ -703,7 +767,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Local a1:TAdContract = TAdContract(o1)
 		Local a2:TAdContract = TAdContract(o2)
 		If Not a2 Then Return 1
-		if a1.GetProfit() = a2.GetProfit() 
+		if a1.GetProfit() = a2.GetProfit()
 			return a1.GetTitle() > a2.GetTitle()
 		endif
         Return a1.GetProfit() - a2.GetProfit()
@@ -716,7 +780,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Local a2:TAdContract = TAdContract(o2)
 		If Not a2 Then Return 1
 
-		if a1.GetMinAudience() = a2.GetMinAudience() 
+		if a1.GetMinAudience() = a2.GetMinAudience()
 			return a1.GetTitle() > a2.GetTitle()
 		endif
         Return a1.GetMinAudience() - a2.GetMinAudience()
@@ -729,11 +793,11 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Local a2:TAdContract = TAdContract(o2)
 		If Not a2 Then Return 1
 
-		'calculate the value as if population consists only of the targetgroup 
+		'calculate the value as if population consists only of the targetgroup
 		local relativeAudience1:int = a1.GetMinAudience()/AudienceManager.GetTargetGroupPercentage(a1.GetLimitedToTargetGroup())
 		local relativeAudience2:int = a2.GetMinAudience()/AudienceManager.GetTargetGroupPercentage(a2.GetLimitedToTargetGroup())
 
-		if relativeAudience1 = relativeAudience2 
+		if relativeAudience1 = relativeAudience2
 			return a1.GetTitle() > a2.GetTitle()
 		endif
         Return relativeAudience1 - relativeAudience2
@@ -745,7 +809,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Local a2:TAdContract = TAdContract(o2)
 		If Not a2 Then Return 1
 
-		if a1.GetDaysLeft() = a2.GetDaysLeft() 
+		if a1.GetDaysLeft() = a2.GetDaysLeft()
 			return a1.GetTitle() > a2.GetTitle()
 		endif
         Return a1.GetDaysLeft() - a2.GetDaysLeft()
@@ -757,7 +821,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Local a2:TAdContract = TAdContract(o2)
 		If Not a2 Then Return 1
 
-		if a1.GetSpotsSent() = a2.GetSpotsSent() 
+		if a1.GetSpotsSent() = a2.GetSpotsSent()
 			return a1.GetTitle() > a2.GetTitle()
 		endif
         Return a1.GetSpotsToSend() - a2.GetSpotsToSend()
@@ -766,7 +830,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	Method SetSpotsSent:int(value:int)
 		if spotsSent = value then return False
-		
+
 		spotsSent = value
 		'emit an event so eg. ContractList-caches can get recreated
 		EventManager.triggerEvent(TEventSimple.Create("adContract.onSetSpotsSent", null, Self))
@@ -830,7 +894,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'sign the contract -> calculate values and change owner
 	Method Sign:int(owner:int, day:int=-1, skipChecks:int = False)
 		if self.owner = owner then return FALSE
-		
+
 		if not skipChecks
 			'run checks if sign is allowed
 			if not IsAvailableToSign(owner) then return FALSE
@@ -894,15 +958,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	'percents = 0.0 - 1.0 (0-100%)
 	Method GetMinAudiencePercentage:Float(dbvalue:Float = -1) {_exposeToLua}
-		If dbvalue < 0 Then dbvalue = Self.base.minAudienceBase
-
-		'modify according to dev-balancing
-		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG"))
-		if devConfig
-			dbValue :* devConfig.GetFloat("DEV_ADCONTRACT_MINAUDIENCEPERCENTAGE_MOD", 1.0)
-		endif
-
-		Return MathHelper.Clamp(dbValue, 0.0, 1.0)
+		return base.GetMinAudiencePercentage(dbvalue)
 	End Method
 
 
@@ -957,8 +1013,8 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'at least 1% quality
 		Return MathHelper.Clamp(quality, 0.01, 1.0)
 	End Method
-	
-	
+
+
 	Method GetQuality:Float() {_exposeToLua}
 		return GetQualityForPlayer(owner)
 	End Method
@@ -990,7 +1046,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'clean up (eg. decrease usage counter)
 		Remove()
 	End Method
-	
+
 
 	'call this to set the contract successful and finished (and earn profit)
 	Method Finish:int(time:Double=0)
@@ -1010,7 +1066,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'clean up (eg. decrease usage counter)
 		Remove()
 	End Method
-	
+
 
 	'if targetgroup is set, the price is doubled
 	Method GetProfitForPlayer:Int(playerID:Int, invalidateCache:int = False)
@@ -1033,7 +1089,7 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	'if targetgroup is set, the price is doubled
 	Method GetProfit:Int(playerID:Int=-1) {_exposeToLua}
-		if playerID < 0 then playerID = owner 
+		if playerID < 0 then playerID = owner
 		return GetProfitForPlayer(playerID, False)
 	End Method
 
@@ -1182,32 +1238,10 @@ price :* Max(1, minAudience/1000)
 	'@playerID          playerID = -1 to use the avg audience maximum
 	'@getTotalAudience  avoid breaking down audience if a target group limit is set up
 	Method GetRawMinAudienceForPlayer:Int(playerID:int, getTotalAudience:int = False, audience:int=-1)
-		local useAudience:int = audience
-		if audience < 0
-			if playerID <= 0
-				useAudience = GetStationMapCollection().GetAverageReach()
-			else
-				useAudience = GetStationMap(playerID).GetReach()
-			endif
-		endif
-
-		if not getTotalAudience 
-			'if limited to specific target group ... break audience down
-			'to this specific group
-			if GetLimitedToTargetGroup() > 0
-				useAudience :* AudienceManager.GetTargetGroupPercentage(GetLimitedToTargetGroup())
-			endif
-		endif
-
-		local result:int = GetMinAudiencePercentage() * useAudience
-
-		'DEV: adjust by a balancing factor
-		result :* GameRules.devConfig.GetFloat("DEV_ADCONTRACT_RAWMINAUDIENCE_MOD", 1.0)
-
-		Return result
+		return base.GetRawMinAudienceForPlayer(playerID, getTotalAudience, audience)
 	End Method
 
-	
+
 	Method GetRawMinAudience:Int(playerID:int=-1, getTotalAudience:int = False) {_exposeToLua}
 		if playerID < 0 then playerID = owner
 		Return GetRawMinAudienceForPlayer(playerID, getTotalAudience)
@@ -1221,9 +1255,9 @@ price :* Max(1, minAudience/1000)
 			If owner > 0 and playerId = owner and minAudience >=0 Then Return minAudience
 		EndIf
 
-		Return TFunctions.RoundToBeautifulValue( GetRawMinAudienceForPlayer(playerID) )
+		Return base.GetMinAudienceForPlayer(playerID)
 	End Method
-	
+
 
 	Method GetMinAudience:Int(playerID:Int=-1) {_exposeToLua}
 		if playerID < 0 then playerID = owner
@@ -1361,17 +1395,11 @@ price :* Max(1, minAudience/1000)
 
 
 	Method IsLimitedToTargetGroup:int(targetGroup:int) {_exposeToLua}
-		Return (GetLimitedToTargetGroup() & targetGroup) > 0
+		return base.IsLimitedtoTargetGroup(targetGroup)
 	End Method
 
-
 	Method GetLimitedToTargetGroup:Int() {_exposeToLua}
-		'with no required audience, we cannot limit to target groups
-		'except hmm ... we want that at least 1 of the target group
-		'is watching 
-		if GetMinAudiencePercentage() = 0 then return 0
-
-		Return base.GetLimitedToTargetGroup()
+		return base.GetLimitedToTargetGroup()
 	End Method
 
 
@@ -1449,8 +1477,8 @@ price :* Max(1, minAudience/1000)
 
 	Method ShowInfomercialSheet:Int(x:Int,y:Int, align:int=0, forPlayerID:int)
 		'=== PREPARE VARIABLES ===
-		if forPlayerID <= 0 then forPlayerID = owner 
-		
+		if forPlayerID <= 0 then forPlayerID = owner
+
 		local sheetWidth:int = 320
 		local sheetHeight:int = 0 'calculated later
 		'move sheet to left when right-aligned
@@ -1467,7 +1495,7 @@ price :* Max(1, minAudience/1000)
 		local barH:int = 0, msgH:int = 0
 		local msgAreaH:int = 0, barAreaH:int = 0
 		local barAreaPaddingY:int = 4, msgAreaPaddingY:int = 4
-		 
+
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", null, ALIGN_CENTER_CENTER).GetY()
 		barH = skin.GetBarSize(100, -1).GetY()
 
@@ -1488,9 +1516,9 @@ price :* Max(1, minAudience/1000)
 		sheetHeight = titleH + genreH + descriptionH + msgAreaH + barAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
 
 
-		
+
 		'=== RENDER ===
-	
+
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
@@ -1507,7 +1535,7 @@ price :* Max(1, minAudience/1000)
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
 		skin.fontNormal.drawBlock(getLocale("AD_INFOMERCIAL"), contentX + 5, contentY + 3, contentW - 10, descriptionH, null, skin.textColorNeutral)
 		contentY :+ descriptionH
-		
+
 
 		'=== BARS + MESSAGES ===
 		'background for messages + boxes
@@ -1556,13 +1584,13 @@ price :* Max(1, minAudience/1000)
 			SetAlpha oldAlpha
 
 			skin.fontBold.draw("Dauerwerbesendung: "+GetTitle(), contentX + 5, contentY)
-			contentY :+ 14	
+			contentY :+ 14
 			skin.fontNormal.draw("TKP: "+int(1000*GetPerViewerRevenueForPlayer(forPlayerID)) +" Eur  ("+MathHelper.NumberToString(GetPerViewerRevenueForPlayer(forPlayerID),4)+" Eur/Zuschauer)", contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Aktualitaet: "+MathHelper.NumberToString(base.GetInfomercialTopicality()*100,2)+"%", contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Qualitaet roh: "+MathHelper.NumberToString(GetRawQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 		skin.fontNormal.draw("Qualitaet wahrgenommen: "+MathHelper.NumberToString(GetQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
 		Endif
 
@@ -1574,7 +1602,7 @@ price :* Max(1, minAudience/1000)
 
 	Method ShowAdvertisementSheet:Int(x:Int,y:Int, align:int=0, forPlayerID:int)
 		'=== PREPARE VARIABLES ===
-		if forPlayerID <= 0 then forPlayerID = owner 
+		if forPlayerID <= 0 then forPlayerID = owner
 
 		local sheetWidth:int = 320
 		local sheetHeight:int = 0 'calculated later
@@ -1591,14 +1619,14 @@ price :* Max(1, minAudience/1000)
 		if owner <= 0 then daysLeft = GetDaysToFinish()
 
 		local imageText:String
-		local daysLeftText:String 
+		local daysLeftText:String
 		If daysLeft = 1
 			daysLeftText = getLocale("AD_SEND_TILL_TOMORROW")
 		ElseIf daysLeft = 0
 			daysLeftText = getLocale("AD_SEND_TILL_MIDNIGHT")
 		Else
 			daysLeftText = getLocale("AD_SEND_TILL_TOLATE")
-		EndIf		
+		EndIf
 
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
@@ -1606,7 +1634,7 @@ price :* Max(1, minAudience/1000)
 		local boxH:int = 0, msgH:int = 0
 		local msgAreaH:int = 0, boxAreaH:int = 0
 		local boxAreaPaddingY:int = 4, msgAreaPaddingY:int = 4
-		 
+
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", null, ALIGN_CENTER_CENTER).GetY()
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
 
@@ -1637,9 +1665,9 @@ price :* Max(1, minAudience/1000)
 		sheetHeight = titleH + descriptionH + msgAreaH + boxAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
 
 
-		
+
 		'=== RENDER ===
-	
+
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
@@ -1650,7 +1678,7 @@ price :* Max(1, minAudience/1000)
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
 		skin.fontNormal.drawBlock(GetDescription(), contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
 		contentY :+ descriptionH
-		
+
 
 		'=== MESSAGES ===
 		'background for messages + boxes
@@ -1667,7 +1695,7 @@ price :* Max(1, minAudience/1000)
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_GENRE_X").Replace("%GENRE%", GetLimitedToGenreString()), "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
-		If GetLimitedToProgrammeFlag() > 0 
+		If GetLimitedToProgrammeFlag() > 0
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_FLAG").Replace("%FLAG%", GetLimitedToProgrammeFlagString()), "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
@@ -1735,22 +1763,22 @@ price :* Max(1, minAudience/1000)
 			SetAlpha oldAlpha
 
 			skin.fontBold.draw("Werbung: "+GetTitle(), contentX + 5, contentY)
-			contentY :+ 14	
+			contentY :+ 14
 			if base.fixedPrice
 				skin.fontNormal.draw("Fester Profit: "+GetProfitForPlayer(forPlayerID) + "  (profitBase: "+MathHelper.NumberToString(base.profitBase,2)+")", contentX + 5, contentY)
-				contentY :+ 12	
+				contentY :+ 12
 				skin.fontNormal.draw("Feste Strafe: "+GetPenaltyForPlayer(forPlayerID) + "  (penaltyBase: "+MathHelper.NumberToString(base.penaltyBase,2)+")", contentX + 5, contentY)
 				contentY :+ 12
 			else
 				skin.fontNormal.draw("Dynamischer Profit: "+GetProfitForPlayer(forPlayerID) + "  (profitBase: "+MathHelper.NumberToString(base.profitBase,2)+")", contentX + 5, contentY)
-				contentY :+ 12	
+				contentY :+ 12
 				skin.fontNormal.draw("Dynamische Strafe: "+GetPenaltyForPlayer(forPlayerID) + "  (penaltyBase: "+MathHelper.NumberToString(base.penaltyBase,2)+")", contentX + 5, contentY)
-				contentY :+ 12	
+				contentY :+ 12
 			endif
 			skin.fontNormal.draw("Spots zu senden "+GetSpotsToSend()+" von "+GetSpotCount(), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Spots: "+GetSpotsSent()+" gesendet, "+GetSpotsPlanned()+" geplant", contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Zuschaueranforderung: "+GetMinAudienceForPlayer(forPlayerID) + "  ("+MathHelper.NumberToString(GetMinAudiencePercentage()*100,2)+"%)", contentX + 5, contentY)
 			contentY :+ 12
 			skin.fontNormal.draw("MindestImage: " + MathHelper.NumberToString(base.minImage*100,2)+"%", contentX + 5, contentY)
@@ -1821,7 +1849,7 @@ price :* Max(1, minAudience/1000)
 			base.effects.Update("broadcastInfomercialDone", effectParams)
 		endif
 	End Method
-	
+
 	'override
 	'called as soon as a advertisement of this contract is
 	'broadcasted. If playerID = -1 then this effects might target
@@ -2022,7 +2050,7 @@ Type TAdContractBaseFilter
 			return False
 		endif
 	End Method
-		
+
 
 	Function GetCount:Int()
 		return filters.Count()
@@ -2062,8 +2090,8 @@ Type TAdContractBaseFilter
 
 
 		'limited simultaneous usage ?
-		'-> 1 - 3 means contracts with 1,2 or 3 contracts using it 
-		'-> 0 - 0 means contracts with no contracts using it 
+		'-> 1 - 3 means contracts with 1,2 or 3 contracts using it
+		'-> 0 - 0 means contracts with no contracts using it
 		if currentlyUsedByContractsLimitMin >= 0 and contract.GetCurrentlyUsedByContractCount() < currentlyUsedByContractsLimitMin then return False
 		if currentlyUsedByContractsLimitMax >= 0 and contract.GetCurrentlyUsedByContractCount() > currentlyUsedByContractsLimitMax then return False
 
@@ -2072,7 +2100,7 @@ Type TAdContractBaseFilter
 		if skipLimitedProgrammeGenre and contract.limitedToProgrammeGenre >= 0 then return False
 		if skipLimitedTargetGroup and contract.limitedToTargetGroup > 0 then return False
 
-		
+
 		'limited to one of the defined target groups?
 		if limitedToTargetGroups and limitedToTargetGroups.length > 0
 			For local group:int = EachIn limitedToTargetGroups
