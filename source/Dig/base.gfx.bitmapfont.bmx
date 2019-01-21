@@ -337,6 +337,7 @@ Type TBitmapFont
 			extraChars :+ chr(187) '»
 			'extraChars :+ chr(8227) '‣
 			'extraChars :+ chr(9662) '▾
+			extraChars :+ chr(9650) '▲
 			extraChars :+ chr(9660) '▼
 			extraChars :+ chr(9664) '◀
 			extraChars :+ chr(9654) '▶

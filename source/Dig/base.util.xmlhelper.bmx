@@ -305,7 +305,12 @@ end rem
 
 
 	Function _SetNodeAttribute:int(path:string, name:string, value:string, startNode:TXmlNode)
-		local node:TXmlNode = _GetNode(startNode, path, True)
+		local node:TXmlNode
+		if path
+			node = _GetNode(startNode, path, True)
+		else
+			node = startNode
+		endif
 
 		if node
 			node.SetAttribute(name, value)

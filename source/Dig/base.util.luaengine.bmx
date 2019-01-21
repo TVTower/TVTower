@@ -581,7 +581,11 @@ Type TLuaEngine
 			Else
 				Select fld.TypeId()
 					Case IntTypeId, ShortTypeId, ByteTypeId
-						fld.SetInt(obj, lua_tointeger(getLuaState(), 3))
+						?bmxng
+							fld.SetInt(obj, int(lua_tointeger(getLuaState(), 3)))
+						?not bmxng
+							fld.SetInt(obj, lua_tointeger(getLuaState(), 3))
+						?
 					Case LongTypeId
 						fld.SetLong(obj, Long(lua_tonumber(getLuaState(), 3)))
 					Case FloatTypeId
@@ -667,7 +671,11 @@ Type TLuaEngine
 		For Local i:Int = 0 Until args.length
 			Select tys[i]
 				Case IntTypeId, ShortTypeId, ByteTypeId
-					args[i] = String.FromInt(lua_tointeger(getLuaState(), i + 1))
+					?bmxng
+						args[i] = String.FromLong(lua_tointeger(getLuaState(), i + 1))
+					?not bmxng
+						args[i] = String.FromInt(lua_tointeger(getLuaState(), i + 1))
+					?
 				Case LongTypeId
 					args[i] = String.FromLong(Long(lua_tonumber(getLuaState(), i + 1)))
 				Case FloatTypeId
@@ -717,6 +725,7 @@ endrem
 		Select typeId
 			Case IntTypeId, ShortTypeId, ByteTypeId
 				lua_pushinteger(getLuaState(), t.ToString().ToInt())
+'				lua_pushnumber(getLuaState(), t.ToString().ToLong())
 			Case LongTypeId
 				lua_pushnumber(getLuaState(), t.ToString().ToLong())
 			Case FloatTypeId

@@ -68,8 +68,8 @@ Type TRegistry
 
 
 	Function GetInstance:TRegistry()
-		if not _instance then _instance = new TRegistry
-		return _instance
+		If Not _instance Then _instance = New TRegistry
+		Return _instance
 	End Function
 
 
@@ -79,7 +79,7 @@ Type TRegistry
 
 
 	'set a data with the given key
-	Method Set(key:string, obj:object)
+	Method Set(key:String, obj:Object)
 		?Threaded
 			LockMutex(_dataMutex)
 		?
@@ -91,13 +91,13 @@ Type TRegistry
 
 
 	'set a default object for a data type
-	Method GetDefault:object(key:string)
-		return defaults.ValueForKey(key.ToUpper())
+	Method GetDefault:Object(key:String)
+		Return defaults.ValueForKey(key.ToUpper())
 	End Method
 
 
 	'set a default object for a data type
-	Method SetDefault(key:string, obj:object)
+	Method SetDefault(key:String, obj:Object)
 		?Threaded
 			LockMutex(_dataMutex)
 		?
@@ -108,31 +108,31 @@ Type TRegistry
 	End Method
 
 
-	Method Get:object(key:string, defaultObject:object=null, defaultType:string="")
-		local res:object = data.ValueForKey(key.toUpper())
+	Method Get:Object(key:String, defaultObject:Object=Null, defaultType:String="")
+		Local res:Object = data.ValueForKey(key.toUpper())
 		'try to get the default object
-		if not res
-			if string(defaultObject)<>""
-				res = data.ValueForKey(string(defaultObject).toUpper())
-			else
+		If Not res
+			If String(defaultObject)<>""
+				res = data.ValueForKey(String(defaultObject).toUpper())
+			Else
 				res = defaultObject
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'still no res (none by key, no defaultObject)
 		'try to find defaultType
-		if not res and defaultType <> ""
+		If Not res And defaultType <> ""
 			'does a default object exist in defaults list?
 			res = defaults.ValueForKey(defaultType.toUpper())
-			if res then return res
-		endif
+			If res Then Return res
+		EndIf
 
-		return res
+		Return res
 	End Method
 
 
 	Method ToString:String()
-		local elementCount:int = 0
+		Local elementCount:Int = 0
 		For Local k:String = EachIn data.Keys()
 			elementCount :+ 1
 		Next
@@ -143,14 +143,14 @@ End Type
 
 '===== CONVENIENCE REGISTRY ACCESSORS =====
 Function GetRegistry:TRegistry()
-	return TRegistry.GetInstance()
+	Return TRegistry.GetInstance()
 End Function
 
-Function GetDataFromRegistry:TData(name:string, defaultNameOrObject:object = Null)
+Function GetDataFromRegistry:TData(name:String, defaultNameOrObject:Object = Null)
 	Return TData( GetRegistry().Get(name, defaultNameOrObject, "data") )
 End Function
 
-Function GetStringFromRegistry:String(name:string, defaultNameOrObject:object = Null)
+Function GetStringFromRegistry:String(name:String, defaultNameOrObject:Object = Null)
 	Return String( GetRegistry().Get(name, defaultNameOrObject, "string") )
 End Function
 
@@ -161,30 +161,30 @@ End Function
 
 Type TRegistryLoader
 	'base url prepended to all given paths in a config-file
-	Field baseURI:string = ""
+	Field baseURI:String = ""
 	Field xmlHelper:TXmlHelper
 
 	'holding descendants of TRegistryResourceLoader which handle
 	'certain types.
 	'map-key is TYPENAME in uppercase
 	Global resourceLoaders:TMap = CreateMap()
-	Global _defaultsCreated:int = FALSE
+	Global _defaultsCreated:Int = False
 
 
 	Method New()
-		if not _defaultsCreated
+		If Not _defaultsCreated
 			'give loaders a chance to create default resources
 			TRegistryLoader.CreateRegistryDefaults()
-			_defaultsCreated = TRUE
-		endif
+			_defaultsCreated = True
+		EndIf
 	End Method
 
 
 
-	Function RegisterResourceLoader:Int(resourceLoader:TRegistryBaseLoader, resourceNames:string="")
-		if resourceNames = "" then resourceNames = resourceLoader.resourceNames
+	Function RegisterResourceLoader:Int(resourceLoader:TRegistryBaseLoader, resourceNames:String="")
+		If resourceNames = "" Then resourceNames = resourceLoader.resourceNames
 
-		For local resourceName:string = eachin resourceNames.Split("|")
+		For Local resourceName:String = EachIn resourceNames.Split("|")
 			resourceLoaders.insert(resourceName.ToUpper(), resourceLoader)
 		Next
 	End Function
@@ -194,135 +194,135 @@ Type TRegistryLoader
 		'give loaders a chance to create a default resources
 		'but: call in order of creation, not sorted by name
 		'so dependencies are solved
-		local resList:TList = CreateList()
-		For local loader:TRegistryBaseLoader = eachin resourceLoaders.Values()
+		Local resList:TList = CreateList()
+		For Local loader:TRegistryBaseLoader = EachIn resourceLoaders.Values()
 			resList.AddLast(loader)
 		Next
 		SortList(resList)
 
-		For local loader:TRegistryBaseLoader = eachin resList
+		For Local loader:TRegistryBaseLoader = EachIn resList
 			loader.CreateDefaultResource()
 		Next
 	End Function
 
 
-	Function GetResourceLoader:TRegistryBaseLoader(resourceName:string)
+	Function GetResourceLoader:TRegistryBaseLoader(resourceName:String)
 		Return TRegistryBaseLoader(resourceLoaders.ValueForKey(resourceName.ToUpper()))
 	End Function
 
 
-	Method SetBaseURI:TRegistryLoader(baseURI:string)
-		self.baseURI = baseURI
-		return self
+	Method SetBaseURI:TRegistryLoader(baseURI:String)
+		Self.baseURI = baseURI
+		Return Self
 	End Method
 
 
 	'appends a given uri to the current base uri
-	Method GetUri:String(uri:string="")
+	Method GetUri:String(uri:String="")
 		?android
 			'try to prepend "sdl::" if the file seems to be within the
 			'APK
-			if filesize(uri) <= 0 and uri.Find("sdl::") <> 0
+			If FileSize(uri) <= 0 And uri.Find("sdl::") <> 0
 				uri = "sdl::"+uri
-			endif
-		?		
-	
-		return baseURI + uri
+			EndIf
+		?
+
+		Return baseURI + uri
 	End Method
 
 
-	Method LoadFromXML:int(file:string, forceDirectLoad:int=FALSE)
+	Method LoadFromXML:Int(file:String, forceDirectLoad:Int=False)
 		file = GetUri(file)
 
 		xmlHelper = TXmlHelper.Create(file, "", False)
-		if not xmlHelper.xmlDoc
+		If Not xmlHelper.xmlDoc
 			TLogger.Log("TRegistryLoader.LoadFromXML", "file '" + file + "' not found or invalid.", LOG_LOADING)
-			return FALSE
-		endif
+			Return False
+		EndIf
 
 
 		LoadResourcesFromXML(xmlHelper.GetRootNode(), file, forceDirectLoad)
 
 		'load everything until everything from that file was loaded
-		if forceDirectLoad
-			local instance:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceCollection.GetInstance()
-			repeat
+		If forceDirectLoad
+			Local instance:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceCollection.GetInstance()
+			Repeat
 				instance.Update()
-			until instance.FinishedLoading()
-		endif
+			Until instance.FinishedLoading()
+		EndIf
 
 
-		EventManager.triggerEvent( TEventSimple.Create("RegistryLoader.onLoadXmlFromFinished", new TData.AddString("uri", file) ) )
-		Return TRUE
+		EventManager.triggerEvent( TEventSimple.Create("RegistryLoader.onLoadXmlFromFinished", New TData.AddString("uri", file) ) )
+		Return True
 	End Method
 
 
-	Method LoadResourcesFromXML:int(node:TXmlNode, source:object, forceDirectLoad:int=FALSE)
-		For local resourceNode:TxmlNode = eachin TXmlHelper.GetNodeChildElements(node)
+	Method LoadResourcesFromXML:Int(node:TxmlNode, source:Object, forceDirectLoad:Int=False)
+		For Local resourceNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
 			LoadSingleResourceFromXML(resourceNode, source, forceDirectLoad)
 		Next
 	End Method
 
 
-	Method LoadSingleResourceFromXML:int(node:TXmlNode, source:object, forceDirectLoad:int=FALSE, extras:TData = null)
+	Method LoadSingleResourceFromXML:Int(node:TxmlNode, source:Object, forceDirectLoad:Int=False, extras:TData = Null)
 		'get the name defined in:
 		'- type (<bla type="identifier" />) or
 		'- tagname ( <identifier x="1" />)
-		local resourceName:string = TXmlHelper.FindValue(node, "type", node.getName())
+		Local resourceName:String = TXmlHelper.FindValue(node, "type", node.getName())
 
 		'we handle "resource" on our own
-		if resourceName.ToUpper() = "RESOURCES"
-			local directLoad:int = TXmlHelper.findValueBool(node, "directload", forceDirectLoad)
+		If resourceName.ToUpper() = "RESOURCES"
+			Local directLoad:Int = TXmlHelper.findValueBool(node, "directload", forceDirectLoad)
 			LoadResourcesFromXML(node, source, directLoad)
-		else
-			local loader:TRegistryBaseLoader = GetResourceLoader(resourceName)
-			if loader
+		Else
+			Local loader:TRegistryBaseLoader = GetResourceLoader(resourceName)
+			If loader
 				'load config from XML
-				local conf:TData = loader.GetConfigFromXML(self, node)
+				Local conf:TData = loader.GetConfigFromXML(Self, node)
 
 				'do nothing without a configuration (maybe it is a virtual group handled
 				'directly by the loader -> eg. "fonts" which only groups "font")
-				if conf
+				If conf
 					conf.Add("_xmlSource", source)
-					
-					'merge in the extras (eg. overwrite "names")
-					if extras then conf.Append(extras)
 
-					local lazyLoad:int = not (loader.directLoading or forceDirectLoad)
+					'merge in the extras (eg. overwrite "names")
+					If extras Then conf.Append(extras)
+
+					Local lazyLoad:Int = Not (loader.directLoading Or forceDirectLoad)
 
 					'directly load the objects or defer to a helper
-					if not lazyLoad
-						'if direct loading failed ... load it later 
-						if not loader.LoadFromConfig(conf, resourceName)
-							lazyLoad = true
-						endif
-					endif
+					If Not lazyLoad
+						'if direct loading failed ... load it later
+						If Not loader.LoadFromConfig(conf, resourceName)
+							lazyLoad = True
+						EndIf
+					EndIf
 
-					if lazyLoad
+					If lazyLoad
 						'try to get a name for the resource:
 						'a) from TData "extras"
 						'b) from the config read from xml
-						local name:String = conf.GetString("name")
-						if name = "" then name = loader.GetNameFromConfig(conf)
+						Local name:String = conf.GetString("name")
+						If name = "" Then name = loader.GetNameFromConfig(conf)
 
 						AddLazyLoadedResource(name, resourceName, conf)
-					endif
-				endif
-			endif
-		Endif
+					EndIf
+				EndIf
+			EndIf
+		EndIf
 
 		'inform others about the to-load-element
 		'sender: self (the loader)
 		'target: resourceName in uppercases ("SPRITE") -> so listeners can filter on it
 		'print "RegistryLoader.onLoadResourceFromXML: self + "+ resourceName.ToUpper()
-		EventManager.triggerEvent( TEventSimple.Create("RegistryLoader.onLoadResourceFromXML", new TData.AddString("resourceName", resourceName).Add("xmlNode", node), self, resourceName.ToUpper()))
+		EventManager.triggerEvent( TEventSimple.Create("RegistryLoader.onLoadResourceFromXML", New TData.AddString("resourceName", resourceName).Add("xmlNode", node), Self, resourceName.ToUpper()))
 	End Method
 
 
-	Function AddLazyLoadedResource(name:string, resourceName:string, data:TData)
+	Function AddLazyLoadedResource(name:String, resourceName:String, data:TData)
 		'add to "ToLoad"-list
 		TRegistryUnloadedResourceCollection.GetInstance().Add(..
-			new TRegistryUnloadedResource.Init(name, resourceName, data)..
+			New TRegistryUnloadedResource.Init(name, resourceName, data)..
 		)
 	End Function
 End Type
@@ -333,8 +333,8 @@ End Type
 'collection handling multiple resourcecontainers (unloaded resources)
 Type TRegistryUnloadedResourceCollection
 	'simple counters for a 1of10-display
-	Field toLoadCount:int = 0
-	Field loadedCount:int = 0
+	Field toLoadCount:Int = 0
+	Field loadedCount:Int = 0
 	'list files containing names of loaded resources
 	Field loadedLog:TList = CreateList()
 	Field failedLog:TList = CreateList()
@@ -342,56 +342,74 @@ Type TRegistryUnloadedResourceCollection
 	Field unloadedResources:TList = CreateList()
 	Field failedResources:TList = CreateList()
 	'indicator if something failed when the last list got processed
-	Field failedResourceLoaded:int = FALSE
+	Field failedResourceLoaded:Int = False
 	'indicator (cache) whether there is still something to load
-	Field _finishedLoading:int = TRUE
+	Field _finishedLoading:Int = True
 	?Threaded
-	Field _listMutex:TMutex = CreateMutex()
+	Field _loadedMutex:TMutex = CreateMutex()
+	Field _failedMutex:TMutex = CreateMutex()
+	Field _unloadedMutex:TMutex = CreateMutex()
 	Field _loaderThread:TThread
 	?
 	Global _instance:TRegistryUnloadedResourceCollection
 
 
 	Function GetInstance:TRegistryUnloadedResourceCollection()
-		if not _instance then _instance = new TRegistryUnloadedResourceCollection
-		return _instance
+		If Not _instance Then _instance = New TRegistryUnloadedResourceCollection
+		Return _instance
 	End Function
 
 
 	Method Add(resource:TRegistryUnloadedResource)
 		?Threaded
 			'wait for the listMutex to be unlocked (nobody modifying the list)
-			LockMutex(_listMutex)
+			LockMutex(_unloadedMutex)
 		?
 		unloadedResources.AddLast(resource)
 		toLoadCount :+ 1
 		?Threaded
-			UnlockMutex(_listMutex)
+			UnlockMutex(_unloadedMutex)
 		?
-		_finishedLoading = FALSE
+		_finishedLoading = False
 	End Method
 
 
 	Method AddFailed(resource:TRegistryUnloadedResource)
 		?Threaded
 			'wait for the listMutex to be unlocked (nobody modifying the list)
-			LockMutex(_listMutex)
+			LockMutex(_failedMutex)
 		?
 		failedResources.AddLast(resource)
 		failedLog.AddLast(resource.name)
 		?Threaded
-			UnlockMutex(_listMutex)
+			UnlockMutex(_failedMutex)
 		?
 	End Method
 
 
 	Method GetUnloadedCount:Int()
-		return unloadedResources.Count()
+		?Threaded
+			'wait for the listMutex to be unlocked (nobody modifying the list)
+			LockMutex(_unloadedMutex)
+			Local c:Int =  unloadedResources.Count()
+			UnlockMutex(_unloadedMutex)
+			Return c
+		?Not Threaded
+			Return unloadedResources.Count()
+		?
 	End Method
 
 
 	Method GetFailedCount:Int()
-		return failedResources.Count()
+		?Threaded
+			'wait for the listMutex to be unlocked (nobody modifying the list)
+			LockMutex(_failedMutex)
+			Local c:Int = failedResources.Count()
+			UnlockMutex(_failedMutex)
+			Return c
+		?Not Threaded
+			Return failedResources.Count()
+		?
 	End Method
 
 
@@ -399,62 +417,62 @@ Type TRegistryUnloadedResourceCollection
 	Method PopFirstUnloadedResource:TRegistryUnloadedResource()
 		?Threaded
 			'wait for the listMutex to be unlocked (nobody modifying the list)
-			LockMutex(_listMutex)
+			LockMutex(_unloadedMutex)
 		?
-		local res:TRegistryUnloadedResource = TRegistryUnloadedResource(unloadedResources.RemoveFirst())
+		Local res:TRegistryUnloadedResource = TRegistryUnloadedResource(unloadedResources.RemoveFirst())
 		?Threaded
-			UnlockMutex(_listMutex)
+			UnlockMutex(_unloadedMutex)
 		?
-		return res
+		Return res
 	End Method
 
 
-	Method AddToLoadedLog:int(value:string)
+	Method AddToLoadedLog:Int(value:String)
 		?Threaded
 			'wait for the listMutex to be unlocked (nobody modifying the list)
-			LockMutex(_listMutex)
+			LockMutex(_loadedMutex)
 		?
 		loadedLog.AddLast(value)
 		loadedCount :+ 1
 		?Threaded
-			UnlockMutex(_listMutex)
+			UnlockMutex(_loadedMutex)
 		?
 	End Method
 
 
-	Method FinishedLoading:int()
+	Method FinishedLoading:Int()
 		'if already calculated, just return true (gets "FALSE" on add of
 		'a new resource)
-		if _finishedLoading then return TRUE
+		If _finishedLoading Then Return True
 		'finished as soon as nothing to load and last cycle no
 		'previously failed resource was loaded
-		_finishedLoading = (GetUnloadedCount() = 0 and not failedResourceLoaded)
-		return _FinishedLoading
+		_finishedLoading = (GetUnloadedCount() = 0 And Not failedResourceLoaded)
+		Return _finishedLoading
 	End Method
 
 
-	Method Update:int()
-		if FinishedLoading() then return TRUE
+	Method Update:Int()
+		If FinishedLoading() Then Return True
 
 		'threaded binary: kick off a loader thread
 		'unthreaded: load the next one
 		?Threaded
-			if not _loaderThread OR not ThreadRunning(_loaderThread)
+			If Not _loaderThread Or Not ThreadRunning(_loaderThread)
 				_loaderThread = CreateThread(RunLoaderThread, Null)
+			EndIf
 
-				'helper function
-				Function RunLoaderThread:Object(Input:Object)
-					'this thread runs as long as there is something to load
-					'-> it gets auto-recreated if no longer running but there is
-					'something to load
-					Repeat
-						'try to load the next item
-						TRegistryUnloadedResourceCollection.GetInstance().LoadNext()
-'						delay(1)
-					Until TRegistryUnloadedResourceCollection.GetInstance().FinishedLoading()
-				End Function
-			endif
-		?not Threaded
+			'helper function
+			Function RunLoaderThread:Object(Input:Object)
+				'this thread runs as long as there is something to load
+				'-> it gets auto-recreated if no longer running but there is
+				'something to load
+				Repeat
+					'try to load the next item
+					TRegistryUnloadedResourceCollection.GetInstance().LoadNext()
+					Delay(1)
+				Until TRegistryUnloadedResourceCollection.GetInstance().FinishedLoading()
+			End Function
+		?Not Threaded
 			LoadNext()
 		?
 	End Method
@@ -463,33 +481,38 @@ Type TRegistryUnloadedResourceCollection
 	Method LoadNext:Int()
 		'refresh unloaded list with former failed resources
 		'maybe they are now loadable (dependencies)
-		if GetUnloadedCount() = 0
+		If GetUnloadedCount() = 0
 			'nothing to load
-			If GetFailedCount() = 0 then return TRUE
+			If GetFailedCount() = 0 Then Return True
 
 			'try failed again ?!
 			unloadedResources = failedResources
-			failedResources = CreateList()
-			failedResourceLoaded = FALSE
-		Endif
+			If failedResources
+				failedResources.Clear()
+			Else
+				failedResources = CreateList()
+			EndIf
+			failedResourceLoaded = False
+		EndIf
 
-		local toLoad:TRegistryUnloadedResource = PopFirstUnloadedResource()
-		if not toLoad then return TRUE
+		Local toLoad:TRegistryUnloadedResource = PopFirstUnloadedResource()
+		If Not toLoad Then Return True
 		'try to load the resource
-		if toLoad.Load()
+'Print "loading: " + toLoad.name
+		If toLoad.Load()
 			AddToLoadedLog(toLoad.name)
 			'mark the fact that a previously failed resource was now
 			'correctly loaded - indicator to loop through the failed again
-			if toLoad.loadAttempts > 0 then failedResourceLoaded = TRUE
-			return TRUE
-		endif
+			If toLoad.loadAttempts > 0 Then failedResourceLoaded = True
+'Print "... done loading " + toLoad.name
+			Return True
+		EndIf
 		'loading failed
 		toLoad.loadAttempts :+1
-'RONNY
-'print "  loading failed : "+ toLoad.name + " | "+ toLoad.loadAttempts
+'Print "  loading failed : "+ toLoad.name + " | "+ toLoad.loadAttempts
 		'add to the list of failed resources
 		AddFailed(toLoad)
-		return FALSE
+		Return False
 	End Method
 End Type
 
@@ -499,12 +522,12 @@ End Type
 'object containing information about an not yet loaded element
 Type TRegistryUnloadedResource
 	Field config:TData
-	Field resourceName:string	'eg. "IMAGE"
-	Field name:string			'eg. "my background" or "gfx/office/background.png"
-	Field id:int = 0
-	Field loadAttempts:int = 0 	'times engine tried to load this resource
+	Field resourceName:String	'eg. "IMAGE"
+	Field name:String			'eg. "my background" or "gfx/office/background.png"
+	Field id:Int = 0
+	Field loadAttempts:Int = 0 	'times engine tried to load this resource
 
-	Global LastID:int = 0
+	Global LastID:Int = 0
 
 
 	Method New()
@@ -514,39 +537,39 @@ Type TRegistryUnloadedResource
 
 
 	Method Init:TRegistryUnloadedResource(name:String, resourceName:String, config:TData)
-		self.name = name
-		self.resourceName = resourceName.ToLower()
-		self.config = config
-		return self
+		Self.name = name
+		Self.resourceName = resourceName.ToLower()
+		Self.config = config
+		Return Self
 	End Method
 
 
 	Method Load:Int()
-		EventManager.triggerEvent(TEventSimple.Create("RegistryLoader.onBeginLoadResource", new TData.AddString("name", name).AddString("resourceName", resourceName)))
+		EventManager.triggerEvent(TEventSimple.Create("RegistryLoader.onBeginLoadResource", New TData.AddString("name", name).AddString("resourceName", resourceName)))
 
 		'try to find a loader for the objects resource type
-		local loader:TRegistryBaseLoader = TRegistryLoader.GetResourceLoader(resourceName)
-		if not loader then return false
+		Local loader:TRegistryBaseLoader = TRegistryLoader.GetResourceLoader(resourceName)
+		If Not loader Then Return False
 
 		'try to load an object with the given config and resourceType-name
-		if loader.LoadFromConfig(config, resourceName)
+		If loader.LoadFromConfig(config, resourceName)
 			'inform others: we loaded something
-			EventManager.triggerEvent(TEventSimple.Create("RegistryLoader.onLoadResource", new TData.AddString("name", name).AddString("resourceName", resourceName)))
-			return True
-		else
-			return False
-		endif
+			EventManager.triggerEvent(TEventSimple.Create("RegistryLoader.onLoadResource", New TData.AddString("name", name).AddString("resourceName", resourceName)))
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 
 
 	'sort by ID
-	Method Compare:int(Other:Object)
-		local otherResource:TRegistryUnloadedResource = TRegistryUnloadedResource(Other)
-		if otherResource
-			if otherResource.id > id then return -1
-			if otherResource.id < id then return 1
-		endif
-		return Super.Compare(Other)
+	Method Compare:Int(Other:Object)
+		Local otherResource:TRegistryUnloadedResource = TRegistryUnloadedResource(Other)
+		If otherResource
+			If otherResource.id > id Then Return -1
+			If otherResource.id < id Then Return 1
+		EndIf
+		Return Super.Compare(Other)
 	End Method
 End Type
 
@@ -556,18 +579,18 @@ End Type
 '==== RESOURCE LOADER HANDLING SPECIFIC TYPES ====
 
 'register basic loaders
-new TRegistryFileLoader.Init()
-new TRegistryDataLoader.Init()
+New TRegistryFileLoader.Init()
+New TRegistryDataLoader.Init()
 
 
 'base loader
 Type TRegistryBaseLoader
 	Field name:String = "Base"
-	Field resourceNames:string = "nothing"
-	Field registered:int = FALSE
-	Field directLoading:int = FALSE
-	Field id:int = 0
-	Global LastID:int = 0
+	Field resourceNames:String = "nothing"
+	Field registered:Int = False
+	Field directLoading:Int = False
+	Field id:Int = 0
+	Global LastID:Int = 0
 
 
 	Method New()
@@ -576,20 +599,20 @@ Type TRegistryBaseLoader
 	End Method
 
 	'call to initialize a loader, set names etc
-	Method Init:Int() abstract
+	Method Init:Int() Abstract
 
 	'called with the corresponding xmlNode containing the
 	'element which the loader registered for
 	'loads all recognized values of the node into a tdata-object
-	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode) abstract
+	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode) Abstract
 
 
 	'return a printable identifier of this resource (url, spritename, ...)
-	Method GetNameFromConfig:String(data:TData) abstract
+	Method GetNameFromConfig:String(data:TData) Abstract
 
 
 	'loading the objects contained in the data
-	Method LoadFromConfig:object(data:TData, resourceName:string) abstract
+	Method LoadFromConfig:Object(data:TData, resourceName:String) Abstract
 
 
 	Method CreateDefaultResource:Int()
@@ -601,8 +624,8 @@ Type TRegistryBaseLoader
 	Method Compare:Int(other:Object)
 		Local otherLoader:TRegistryBaseLoader = TRegistryBaseLoader(other)
 		'no weighting
-		If Not otherLoader then Return 0
-		If otherLoader = Self then Return 0
+		If Not otherLoader Then Return 0
+		If otherLoader = Self Then Return 0
 		'below me
 		If otherLoader.id < id Then Return 1
 		'on top of me
@@ -612,13 +635,13 @@ Type TRegistryBaseLoader
 
 	'register loader in registry
 	Method Register:Int()
-		TRegistryLoader.RegisterResourceLoader(self)
+		TRegistryLoader.RegisterResourceLoader(Self)
 		registered = True
 	End Method
 
 
 	Method ToString:String()
-		return "TRegistry"+name.ToUpper()+"Loader"
+		Return "TRegistry"+name.ToUpper()+"Loader"
 	End Method
 End Type
 
@@ -626,47 +649,47 @@ End Type
 
 
 'loader caring about "<file>"-types
-Type TRegistryFileLoader extends TRegistryBaseLoader
+Type TRegistryFileLoader Extends TRegistryBaseLoader
 	Method Init:Int()
 		resourceNames = "file"
 		name = "File"
 		'xml files can get loaded directly
-		directLoading = TRUE
-		if not registered then Register()
+		directLoading = True
+		If Not registered Then Register()
 	End Method
 
 
 	Method GetNameFromConfig:String(data:TData)
-		local res:String = data.GetString("baseURI","")
-		if res<>"" then res :+ "/"
+		Local res:String = data.GetString("baseURI","")
+		If res<>"" Then res :+ "/"
 		res :+ data.GetString("url")
 
-		return res
+		Return res
 	End Method
 
 
 	'load url of the xml file (information about file)
 	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode)
 		Local _url:String = TXmlHelper.FindValue(node, "url", "")
-		if _url = "" then return NULL
+		If _url = "" Then Return Null
 
-		local data:TData = new TData
+		Local data:TData = New TData
 		data.addString("url", _url)
 		data.addString("baseURI", loader.baseURI)
 
-		return data
+		Return data
 	End Method
 
 
 	'load the xml file (content of file)
-	Method LoadFromConfig:object(data:TData, resourceName:string)
-		local newLoader:TRegistryLoader = new TRegistryLoader
+	Method LoadFromConfig:Object(data:TData, resourceName:String)
+		Local newLoader:TRegistryLoader = New TRegistryLoader
 		'take over baseURI
 		newLoader.baseURI = data.GetString("baseURI")
 		newLoader.LoadFromXML(data.GetString("url"))
 
 		'indicate that the loading was successful (else return null)
-		return self
+		Return Self
 	End Method
 End Type
 
@@ -674,53 +697,53 @@ End Type
 'loader caring about "<data>"-types
 'data blocks are merged with existing ones (except "merge" is set to
 'false in the xml-node)
-Type TRegistryDataLoader extends TRegistryBaseLoader
+Type TRegistryDataLoader Extends TRegistryBaseLoader
 	Method Init:Int()
 		resourceNames = "data"
 		name = "Data"
-		if not registered then Register()
+		If Not registered Then Register()
 	End Method
 
 
 	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode)
-		local name:String = TXmlHelper.FindValue(node, "name", node.GetName())
+		Local name:String = TXmlHelper.FindValue(node, "name", node.GetName())
 		'skip unnamed data (no name="x" or <namee type="data">)
-		if name = "" or name.ToUpper() = "DATA"
+		If name = "" Or name.ToUpper() = "DATA"
 			TLogger.Log("TRegistryDataLoader.LoadFromXML", "Node ~q<"+node.GetName()+">~q contained no or invalid name field. Skipped.", LOG_WARNING)
-			return NULL
-		endif
+			Return Null
+		EndIf
 
-		local data:TData = new TData
+		Local data:TData = New TData
 		data.AddString("name", name)
-		data.AddNumber("merge", TXmlHelper.FindValueBool(node, "merge", TRUE))
-		local values:TData = new TData
+		data.AddNumber("merge", TXmlHelper.FindValueBool(node, "merge", True))
+		Local values:TData = New TData
 
 
-		For local child:TxmlNode = eachin TXmlHelper.GetNodeChildElements(node)
-			local childName:String = TXmlHelper.FindValue(child, "name", child.getName())
-			if childName = "" then continue
+		For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
+			Local childName:String = TXmlHelper.FindValue(child, "name", child.getName())
+			If childName = "" Then Continue
 
-			local childValue:String = TXmlHelper.FindValue(child, "value", child.getcontent())
+			Local childValue:String = TXmlHelper.FindValue(child, "value", child.getcontent())
 			values.Add(childName, childValue)
 		Next
 
 		data.Add("values", values)
-		return data
+		Return data
 	End Method
 
 
 	Method GetNameFromConfig:String(data:TData)
-		return data.GetString("name","unknown data block")
+		Return data.GetString("name","unknown data block")
 	End Method
 
 
 	'load the xml file (content of file)
-	Method LoadFromConfig:object(data:TData, resourceName:string)
-		local merge:int = data.GetInt("merge", FALSE)
-		local name:string = GetNameFromConfig(data)
-		local values:TData = new TData
+	Method LoadFromConfig:Object(data:TData, resourceName:String)
+		Local merge:Int = data.GetInt("merge", False)
+		Local name:String = GetNameFromConfig(data)
+		Local values:TData = New TData
 		'if merging - we load the previously stored data (if there is some)
-		if merge then values = TData(GetRegistry().Get(name, new TData))
+		If merge Then values = TData(GetRegistry().Get(name, New TData))
 
 		'merge in the new values (to an empty - or the old tdata)
 		values.Append(TData(data.Get("values")))
@@ -729,6 +752,6 @@ Type TRegistryDataLoader extends TRegistryBaseLoader
 		GetRegistry().Set(name, values)
 
 		'indicate that the loading was successful
-		return values
+		Return values
 	End Method
 End Type
