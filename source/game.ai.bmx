@@ -181,7 +181,7 @@ Type TAi extends TAiBase
 	Method CallOnChat(fromID:int=0, text:String = "", chatType:int = 0, channels:int = 0)
 		if not AiRunning then return
 
-		Local args:Object[3]
+		Local args:Object[4]
 		args[0] = text
 		args[1] = string(fromID)
 		args[2] = string(chatType)
