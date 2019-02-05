@@ -370,37 +370,53 @@ Type TNewsAgency
 
 
 		'handle "level ups"
-
 		'nothing to do if no level up happens
 		if terroristAggressionLevelProgress[terroristNumber] < 1.0 then return False
 
-
 		'set to next level
-		terroristAggressionLevel[terroristNumber] :+ 1
-		'if progress was 1.05, keep the 0.05 for the new level
-		terroristAggressionLevelProgress[terroristNumber] :- 1.0
+		SetTerroristAggressionLevel(terroristNumber, terroristAggressionLevel[terroristNumber] + 1)
+	End Method
+
+
+	Method OnChangeTerroristAggressionLevel:int(terroristGroup:int, oldLevel:int, newLevel:int)
+		if terroristGroup < 0 or terroristGroup > 1 then return False
 
 		'announce news for levels 1-4
-		if terroristAggressionLevel[terroristNumber] <= terroristAggressionLevelMax
-			local newsEvent:TNewsEvent = GetTerroristNewsEvent(terroristNumber)
+		if terroristAggressionLevel[terroristGroup] <= terroristAggressionLevelMax
+			local newsEvent:TNewsEvent = GetTerroristNewsEvent(terroristGroup)
 			If newsEvent then announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + 0)
 		endif
-
-		'reset level if limit reached, also delay next Update so things
-		'do not happen one after another
-		if terroristAggressionLevel[terroristNumber] >= terroristAggressionLevelMax
-			'reset to level 0
-			terroristAggressionLevel[terroristNumber] = 0
-			'8 * normal random "interval"
-			terroristUpdateTime[terroristNumber] :+ 8 * 60*randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
-		endif
+		return True
 	End Method
 
 
 	Method SetTerroristAggressionLevel:int(terroristGroup:int, level:int)
-		if terroristGroup >= 0 and terroristGroup <= 1
-			terroristAggressionLevel[terroristGroup] = level
+		if terroristGroup < 0 or terroristGroup > 1 then return False
+
+		level = MathHelper.Clamp(level, 0, terroristAggressionLevelMax )
+		'nothing to do
+		if level = terroristAggressionLevel[terroristGroup] then return False
+
+		local oldLevel:int = terroristAggressionLevel[terroristGroup]
+		'assign new value
+		terroristAggressionLevel[terroristGroup] = level
+		'if progress was 1.05, keep the 0.05 for the new level
+		terroristAggressionLevelProgress[terroristGroup] = Max(0, terroristAggressionLevelProgress[terroristGroup] - 1.0)
+
+
+		'handle effects
+		OnChangeTerroristAggressionLevel(terroristGroup, oldLevel, level)
+
+
+		'reset level if limit reached, also delay next Update so things
+		'do not happen one after another
+		if terroristAggressionLevel[terroristGroup] >= terroristAggressionLevelMax
+			'reset to level 0
+			terroristAggressionLevel[terroristGroup] = 0
+			'8 * normal random "interval"
+			terroristUpdateTime[terroristGroup] :+ 8 * 60*randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
 		endif
+		return True
 	End Method
 
 
@@ -470,7 +486,14 @@ Type TNewsAgency
 			'effect.GetData().AddNumber("delayTime", 60 * RandRange(45,120))
 			'Variant 2: delay the execution of the effect
 			effect.SetDelayedExecutionTime(60 * RandRange(45,120))
-
+print "DELAYED EXECUTION:"
+print "DELAYED EXECUTION:"
+print "DELAYED EXECUTION:"
+print "DELAYED EXECUTION:"
+effect.GetData().ToString()
+print "========"
+print "========"
+print "========"
 			NewsEvent.effects.AddEntry("happen", effect)
 		endif
 
@@ -609,17 +632,14 @@ Type TNewsAgency
 	'-> call this method on start of a game
 	Method CreateTimedNewsEvents:int()
 		local now:long = GetWorldTime().GetTimeGone()
-		'unusedInitialTemplateList does not check for "available", so have
-		'to do that too!
-		For local template:TNewsEventTemplate = EachIn GetNewsEventTemplateCollection().GetUnusedInitialTemplateList()
-			if not template.IsAvailable() then continue
 
+		For local template:TNewsEventTemplate = EachIn GetNewsEventTemplateCollection().GetUnusedAvailableInitialTemplates()
 			if template.happenTime = -1 then continue
 
 			'create fixed future news
 			local newsEvent:TNewsEvent = new TNewsEvent.InitFromTemplate(template)
 
-			'now and missed are not listed i nthe upcomingNewsList, so
+			'now and missed are not listed in the upcomingNewsList, so
 			'no cache-clearance is needed
 			'now
 			if template.happenTime = 0 ' or template.HasFlag(TVTNewsFlag.TRIGGER_ON_GAME_START)
