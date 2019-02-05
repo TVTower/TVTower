@@ -9,26 +9,23 @@
 		<news id="Sjaele-news-Gas-Pro" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Kauft Gas-Pro Griechenland?</de>
-
+				<en>Will Gas-Pro buy Greece?</en>
 			</title>
 			<description>
 				<de>Der russische Gasriese bietet seine Hilfe bei der Lösung der europäischen Währungskrise an. Auch andere Staaten im Gespräch.</de>
-
+				<en>The Russian gas giant is offering its help in solving the European currency crisis. Also other countries under discussion.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="1.0" quality="49" />
 			<conditions year_range_from="2010" year_range_to="-1" />
 		</news>
 		<news id="Sjaele-news-Urknall" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Bilder vom Urknall</de>
-
+				<en>Pictures of the Big Bang</en>
 			</title>
 			<description>
-				<de>Forschern am Cern gelang es mittels Rückübertragung von Quarks erste Bilder von der Entstehung unserer Galaxie aufzunehmen.</de>
-
+				<de>Forschern am CERN gelang es mittels Rückübertragung von Quarks erste Bilder von der Entstehung unserer Galaxie aufzunehmen.</de>
+				<en>Researchers at CERN succeeded in taking the first images of the formation of our galaxy by retransmitting quarks.</en>
 			</description>
 			<data genre="3" price="1.0" quality="54" />
 		</news>
@@ -36,15 +33,12 @@
 		<news id="Sjaele-news-E-Mail-Porto" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>E-Mail-Porto</de>
-
+				<en>Email postage</en>
 			</title>
 			<description>
 				<de>Der Finanzminister schlägt eine EU-weites E-Mail-Porto von einem Cent pro E-Mail vor.</de>
-
+				<en>The Finance Minister proposes an EU-wide e-mail postage of one cent per e-mail.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="0.7" quality="39" />
 			<conditions year_range_from="1998" year_range_to="-1" />
 		</news>
@@ -52,15 +46,12 @@
 		<news id="Sjaele-news-Update-Automaten" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Update-Automaten</de>
-
+				<en>Update machines</en>
 			</title>
 			<description>
 				<de>Mehrere Discounterketten wollen zu Ferienbeginn Automaten aufstellen, an denen Computernutzer ihre Updates herunterziehen können.</de>
-
+				<en>Several discounters want to set up vending machines at the beginning of the holiday where computer users can download their updates.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="1.0" quality="29" />
 			<conditions year_range_from="1995" year_range_to="-1" />
 		</news>
@@ -68,15 +59,12 @@
 		<news id="Sjaele-news-Internet-neu" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Internet wird neu gestartet</de>
-
+				<en>Restart of the internet</en>
 			</title>
 			<description>
 				<de>Zwecks Löschung kursierender Raubkopien, wird in der Nacht vom Donnerstag zum Freitag dieser Woche ein weltweiter Internetreboot stattfinden.</de>
-
+				<en>A worldwide internet reboot will take place in the night from Thursday to Friday of this week in order to delete pirated copies.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="1.0" quality="56" />
 			<conditions year_range_from="2000" year_range_to="-1" />
 		</news>
@@ -85,15 +73,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Polizei warnt vor Trickbetrügern</de>
-
+				<en>Police warns of tricksters</en>
 			</title>
 			<description>
 				<de>Vermehrt wurden in der Chemnitzer Innenstadt angeblich hochwertige WLan-Kabel verkauft. Diese seien jedoch überteuert, warnt ein Polizeisprecher.</de>
-
+				<en>More and more high-quality WLAN cables were allegedly sold in Chemnitz city centre. However, a police spokesman warns that these are overpriced.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="0.7" quality="29" />
 			<conditions year_range_from="1998" year_range_to="-1" />
 		</news>
@@ -101,15 +86,12 @@
 		<news id="Sjaele-news-Saurierknochen" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Saurierknochen in Gummitieren</de>
-
+				<en>Dinosaur bones in jelly babies</en>
 			</title>
 			<description>
 				<de>In mehreren Sorten Gummitieren ist Gelatine aus Saurierknochen verwendet worden. Gefahr für die Gesundheit bestehe nicht.</de>
-
+				<en>Gelatine from dinosaur bones has been used in several types of jelly babies. There was no danger to health.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="1.0" quality="19" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -117,15 +99,12 @@
 		<news id="Sjaele-news-Einweg-Telefon" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Einweg-Telefon erfunden</de>
-
+				<en>Disposable telephone invented</en>
 			</title>
 			<description>
 				<de>Das abhörsichere Telefon ist keine Zukunftsmusik mehr. Nordkoreanische Wissenschaftler stellten die Weltneuheit auf der High-Tech-Messe vor.</de>
-
+				<en>The tap-proof telephone is no longer a dream of the future. North Korean scientists presented the world's first at the high-tech trade fair.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="1.0" quality="25" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -133,15 +112,12 @@
 		<news id="Sjaele-news-Drohnen-Honig" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Drohnen müssen Honig sammeln</de>
-
+				<en>Drones must collect honey</en>
 			</title>
 			<description>
 				<de>Als Reaktion auf das Bienensterben weist das Umweltministerium alle Imker an, auch ihre Drohnen zum Honigsammeln einzusetzen.</de>
-
+				<en>In response to bee deaths, the Ministry of the Environment has instructed all beekeepers to also use their drones to collect honey.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="0.7" quality="35" />
 			<conditions year_range_from="2000" year_range_to="-1" />
 		</news>
@@ -149,15 +125,12 @@
 		<news id="Sjaele-news-Wohnungsnot" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Endlich Wohnungsnot in Sicht</de>
-
+				<en>Finally housing shortage in sight</en>
 			</title>
 			<description>
-				<de>Vermieterbund erfreut: Durch Abrißsubventionen im Osten ist endlich eine Situation entstanden, die unverschämte Mieterhöhungen möglich macht.</de>
-
+				<de>Vermieterbund erfreut: Durch Abrisssubventionen im Osten ist endlich eine Situation entstanden, die unverschämte Mieterhöhungen möglich macht.</de>
+				<en>Vermieterbund is pleased: The demolition subsidies in the East have finally created a situation that makes outrageous rent increases possible.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="1.0" quality="35" />
 			<conditions year_range_from="1990" year_range_to="-1" />
 		</news>
@@ -166,15 +139,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Neuntöter Vogel des Jahres</de>
-
+				<en>Red-backed shrike is Bird of the Year</en>
 			</title>
 			<description>
 				<de>Wie der Umweltbund jetzt bekanntgab ist der Neuntöter der diesjährige Jahresvogel.</de>
-
+				<en>TThe Environmental Alliance has now announced that the red-backed shrike is this year's Bird of the Year.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="0.5" quality="29" />
 			<conditions year_range_from="1985" year_range_to="1985" />
 			<availability year_range_from="1985" year_range_to="1985" />
@@ -183,15 +153,12 @@
 		<news id="Sjaele-news-Gamezworld-Aktivitäten" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Gamezworld vergrößert Aktivitäten</de>
-
+				<en>Gamezworld expands activities</en>
 			</title>
 			<description>
 				<de>Langweiliges Familienleben soll durch unterbeschäftigte Leveldesigner per family-scripting aufgemöbelt werden. 50 Arbeitsplätze geplant.</de>
-
+				<en>Boring family life is to be encouraged by underemployed level designers via family-scripting. 50 workplaces planned.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="1.0" quality="35" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 			<availability year_range_from="" year_range_to="" />
@@ -200,46 +167,37 @@
 		<news id="Sjaele-news-Kindermädchen" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Kindermädchen hilft Erwachsenen</de>
-
+				<en>Nanny helps adults</en>
 			</title>
 			<description>
 				<de>Walther F. aus Chemnitz erfuhr aus der TV-Sendung “Das  Superkindermädchen”, daß ihn seine Frau vor zwei Jahren verlassen und die Kinder mitgenommen hat.</de>
-
+				<en>Walther F. from Chemnitz learned from the TV show "Das Superkindermädchen" that his wife left him two years ago and took the children with her.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="1" price="1.0" quality="23" />
 			<conditions year_range_from="1990" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Kindergarten-Trophy" type="0" creator="7430" created_by="Sjaele">
 			<title>
-				<de>Sieg bei “Kindergarten-Trophy”</de>
-
+				<de>Sieg bei Kindergarten-Trophy</de>
+				<en>Victory at Kindergarten Trophy</en>
 			</title>
 			<description>
 				<de>Die 32-jährige  Melanie L. hat zusammen mit ihrer Tochter Anna (3) den 12. Kinderwagen-Mehrkampf “Kindergarten-Trophy” in Karl-Marx-Stadt gewonnen.</de>
-
+				<en>32-year-old Melanie L. and her daughter Anna (3) have won the 12th "Kindergarten Trophy" in Karl-Marx-Stadt.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="2" price="1.0" quality="22" />
 			<conditions year_range_from="-1" year_range_to="1989" />
 		</news>
 		<news id="Sjaele-news-Kindergarten-Trophy_Chemnitz" type="0" creator="7430" created_by="Sjaele">
 			<title>
-				<de>Sieg bei “Kindergarten-Trophy”</de>
-
+				<de>Sieg bei Kindergarten-Trophy</de>
+				<en>Victory at Kindergarten Trophy</en>
 			</title>
 			<description>
 				<de>Die 32-jährige  Melanie L. hat zusammen mit ihrer Tochter Anna (3) den 12. Kinderwagen-Mehrkampf “Kindergarten-Trophy” in Chemnitz gewonnen.</de>
-
+				<en>32-year-old Melanie L. and her daughter Anna (3) have won the 12th "Kindergarten Trophy" in Chemnitz.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="2" price="1.0" quality="22" />
 			<conditions year_range_from="1990" year_range_to="-1" />
 		</news>
@@ -248,15 +206,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Witze-Rundweg eröffnet</de>
-
+				<en>Jokes round walk opened</en>
 			</title>
 			<description>
-				<de>Die sächsische Kleinstadt Calau zwischen Spreewald und Niederlausitz hat einen "Witze-Rundweg" zu Ehren des Kalauers eröffnet. </de>
-
+				<de>Die sächsische Kleinstadt Calau zwischen Spreewald und Niederlausitz hat einen "Witze-Rundweg" zu Ehren des Kalauers eröffnet.</de>
+				<en>The small Saxon town of Calau between Spreewald and Lower Lusatia has opened a "Jokes round walk" in honour of the corny jokes.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="1.0" quality="25" />
 			<conditions year_range_from="2011" year_range_to="2011" />
 		</news>
@@ -265,15 +220,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Biertrinkende Sachsen</de>
-
+				<en>Beer Drinking Saxons</en>
 			</title>
 			<description>
-				<de>»Jeder Sachse trinkt rund 150 Liter im Jahr«, so der sächsische Bierbraubund, Drei von vier in Sachsen gebrauten Bieren werden auch in Sachsen getrunken.</de>
-
+				<de>„Jeder Sachse trinkt rund 150 Liter im Jahr“, so der sächsische Brauerbund, Drei von vier in Sachsen gebrauten Bieren werden auch in Sachsen getrunken.</de>
+				<en>"Every Saxon drinks around 150 litres a year," says the Saxon Brewers' Association. Three out of four beers brewed in Saxony are also drunk in Saxony.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="4" price="1.0" quality="35" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -282,15 +234,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Aus für Volksmusik-Show</de>
-
+				<en>The end for folk music show</en>
 			</title>
 			<description>
 				<de>Schlagerbarde Heiner forderte nach Absetzung der "Fröhlichen Musizierenden" die Volksmusikfreunde auf, einen "Volksmusik-Euro" von den Rundfunk-Gebühren einzubehalten.</de>
-
+				<en>After the withdrawal of the "Happy Musicians", Bard Heiner called on the folk music friends to retain a "folk music euro" from the radio fees.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="1.0" quality="15" />
 			<conditions year_range_from="2007" year_range_to="2007" />
 		</news>
@@ -298,15 +247,12 @@
 		<news id="Sjaele-news-Umweltminister" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Umweltminister denkt um</de>
-
+				<en>Environment Minister reconsiders</en>
 			</title>
 			<description>
 				<de>Der Umweltminister wird Geschäftsführer beim Verband der Industrie. Er legt sein Parlamentsmandat nieder. "Ich habe viel wieder gutzumachen."</de>
-
+				<en>The Minister of the Environment becomes Managing Director of the Federation of Industry. He resigns from his seat in Parliament. "I have a lot to make up for."</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="1.0" quality="43" />
 			<conditions year_range_from="-1" year_range_to="-1" />
 		</news>
@@ -314,15 +260,12 @@
 		<news id="Sjaele-news-Tattris-Eins" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Tattris legt Forschung lahm</de>
-
+				<en>Tattris paralyses research</en>
 			</title>
 			<description>
-				<de>Die Forschung an der sowjetischen Akademie der Wissenschaften ist defacto lahmgelegt, seit A. Paknitnow sein „Tattris“ genanntes Spiel an Kollegen weitergab.</de>
-
+				<de>Die Forschung an der sowjetischen Akademie der Wissenschaften ist de facto lahmgelegt, seit A. Paknitnow sein „Tattris“ genanntes Spiel an Kollegen weitergab.</de>
+				<en>Research at the Soviet Academy of Sciences has in fact been paralysed since A. Paknitnow passed on his game called "Tattris" to colleagues.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="1.0" quality="45" />
 			<availability script="TIME_SEASON=1" year_range_from="1985" year_range_to="1985" />
 		</news>
@@ -330,15 +273,12 @@
 		<news id="Sjaele-news-Tattris-2" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Tattris in Farbe</de>
-
+				<en>Tattris in color</en>
 			</title>
 			<description>
 				<de>Das Computerspiel kursiert seit der neuesten farblichen Version in den Ostblockstaaten.</de>
-
+				<en>Since its latest color version, the computer game has been circulating in the Eastern bloc states.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="1.0" quality="45" />
 			<availability script="TIME_SEASON=2" year_range_from="1985" year_range_to="1985" />
 		</news>
@@ -346,15 +286,12 @@
 		<news id="Sjaele-news-Tattris-3" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Tattris erstmals im Westen</de>
-
+				<en>Tattris for the first time in the West</en>
 			</title>
 			<description>
 				<de>Ein ungarischer Geschäftsmann verkauft das Spiel an eine britische Software-Firma.</de>
-
+				<en>A Hungarian businessman sells the game to a British software company.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="1.0" quality="45" />
 			<availability year_range_from="1986" year_range_to="1986" />
 		</news>
@@ -362,15 +299,12 @@
 		<news id="Sjaele-news-Marskalender" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Marskalender erschienen</de>
-
+				<en>Mars Calendar published</en>
 			</title>
 			<description>
 				<de>Der Darische Kalender unterteilt das Marsjahr in 24 Monate und enthält sämtliche Schalttage.</de>
-
+				<en>The Darian Calendar divides the Mars year into 24 months and contains all leap days.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="1.0" quality="35" />
 			<availability year_range_from="1985" year_range_to="2000" />
 		</news>
@@ -378,15 +312,12 @@
 		<news id="Sjaele-news-Neuer-Marskalender" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Neuer Marskalender</de>
-
+				<en>New Mars calendar</en>
 			</title>
 			<description>
 				<de>Der Darische Kalender unterteilt das Marsjahr in 24 Monate und enthält sämtliche Schalttage. Nur noch einen Tag Abweichung auf 12 000 Marsjahre.</de>
-
+				<en>The Darian Calendar divides the Mars year into 24 months and contains all leap days. Only one more day to 12,000 Mars years.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="1.0" quality="25" />
 			<availability year_range_from="2001" year_range_to="" />
 		</news>
@@ -395,15 +326,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Ganz nicht oben</de>
-
+				<en>Not quite on top</en>
 			</title>
 			<description>
 				<de>Der Autor Gunther Raffwall arbeitete unter türkischer Identität in Deutschland. Haarsträubende Erlebnisse in der deutschen Joblandschaft im soeben veröffentlichten Buch.</de>
-
+				<en>The author Gunther Raffwall worked under Turkish identity in Germany. Dreadful experiences in the German job landscape in the recently published book.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="0.7" quality="55" />
 			<availability script="TIME_DAYOFYEAR=10" year_range_from="1985" year_range_to="1985" />
 		</news>
@@ -411,32 +339,26 @@
 		<news id="Sjaele-news-schach-abgebrochen" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Schach-WM abgebrochen</de>
-
+				<en>Chess World Championship aborted</en>
 			</title>
 			<description>
 				<de>Der ungewohnt lange Wettkampf zwischen den beiden sowjetischen Großmeistern um die Schachkrone 1984 wurde nach 48 Partien vom Schachpräsidenten abgebrochen.</de>
-
+				<en>The unusually long competition between the two Soviet grandmasters for the chess crown in 1984 was broken off after 48 games by the chess president.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<!-- happen_time: planned for gameday 2, 1985 between 13-19:00 -->
 			<!-- flags: 2 = unique event, not auto-reuseable -->
 			<data genre="2" price="1.0" quality="45" happen_time="7,1985,1985,2,2,13,19,0,0" flags="2"/>
 		</news>
 
-		<news id="Sjaele-news-Computerära" type="0" creator="7430" created_by="Sjaele">
+		<news id="Sjaele-news-Computeraera" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Neue Computerära begonnen</de>
-
+				<en>New computer era begun</en>
 			</title>
 			<description>
 				<de>Der amerikanische Computerproduzent Kormoran stellt seinen Heimrechner „Eterna“ vor. Seine Grafikleistung ist einfach atemberaubend.</de>
-
+				<en>The American computer manufacturer Kormoran presents its home computer "Eterna". Its graphics performance is simply breathtaking.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="1.0" quality="45" />
 			<availability script="TIME_DAYOFYEAR=7" year_range_from="1985" year_range_to="1985" />
 		</news>
@@ -444,15 +366,12 @@
 		<news id="Sjaele-news-Begehbarer-Hügel" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Begehbarer Hügel</de>
-
+				<en>Walkable hill</en>
 			</title>
 			<description>
 				<de>Das Neue Linzer Rathaus wird ein Jahr früher als geplant und mit geringeren Baukosten eröffnet. Die Megastruktur ist als begehbarer Hügel konzipiert.</de>
-
+				<en>The New Linz City Hall is opened one year earlier than planned and with lower construction costs. The megastructure is designed as a walkable hill.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="1.0" quality="35" />
 			<availability script="TIME_SEASON=3" year_range_from="1985" year_range_to="1985" />
 		</news>
@@ -461,15 +380,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Rot-Grün in Hessen</de>
-
+				<en>Red-Green in Hesse</en>
 			</title>
 			<description>
 				<de>Erstmals kommt es zur Bildung einer Rot-Grünen Landesregierung. Der ehemalige Querulant Joschel Fisch wird Umweltminister.</de>
-
+				<en>For the first time, a red-green state government is formed. Former troublemaker Joschel Fisch becomes Environment Minister.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="0.5" quality="65" />
 			<availability script="TIME_SEASON=3" year_range_from="1985" year_range_to="1985" />
 		</news>
@@ -477,15 +393,12 @@
 		<news id="Sjaele-news-Titanic-Wrack-Eins" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Titanic-Wrack entdeckt</de>
-
+				<en>Titanic wreck discovered</en>
 			</title>
 			<description>
 				<de>Forscher entdeckten auf einer speziellen Expedition das Wrack in 3800 Metern Tiefe. 21 km ostsüdöstlich von der im Notruf angebenen Position.</de>
-
+				<en>On a special expedition, researchers discovered the wreck at a depth of 3800 metres. 21 km east-southeast of the location indicated in the distress call.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="1.0" quality="32" />
 			<availability script="TIME_SEASON=2" year_range_from="1985" year_range_to="1985" />
 		</news>
@@ -493,31 +406,25 @@
 		<news id="Sjaele-news-Titanic-Wrack-2" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Titanic-Wrack untersucht</de>
-
+				<en>Titanic wreck examined</en>
 			</title>
 			<description>
 				<de>Eine erste bemannte Untersuchung des Wracks in 3800 Meter Tiefe fand mit dem Forschungs-U-Boot Alvin statt. Die Kronleuchter sind noch erhalten.</de>
-
+				<en>A first manned investigation of the wreck at 3800 meters depth took place with the research submarine Alvin. The chandeliers are still intact.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="1.0" quality="35" />
 			<availability script="TIME_SEASON=2" year_range_from="1986" year_range_to="1986" />
 		</news>
 
 		<news id="Sjaele-news-Titanic-Navy" type="0" creator="7430" created_by="Sjaele">
 			<title>
-				<de>Titanic ein Navy Projekt?</de>
-
+				<de>Titanic ein Navyprojekt?</de>
+				<en>Titanic a Navy project?</en>
 			</title>
 			<description>
 				<de>Nach Aussagen eines der Forscher, war die Suche nach der Titanic lediglich ein Deckmantel für das Aufspüren zweier gesunkerner US Navy-Atom-U-Boote.</de>
-
+				<en>According to one of the researchers, the search for the Titanic was merely a cover for the detection of two sunken US Navy nuclear submarines.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="1.0" quality="55" />
 			<availability script="TIME_SEASON=4" year_range_from="1985" year_range_to="1985" />
 		</news>
@@ -526,15 +433,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Sendemast stürzt um</de>
-
+				<en>Broadcasting tower topples</en>
 			</title>
 			<description>
 				<de>Der fast 300 Meter hohe Rundfunk-Sendemast auf dem Bielstein stürzte aufgrund starker Vereisung und Bruch einer Pardune um. In der Folge kam es zu Sendeausfällen.</de>
-
+				<en>The almost 300 meter high broadcasting tower on the Bielstein collapsed due to heavy icing and a breaking guy wire. As a result, there were transmission failures.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="1.0" quality="65" />
 			<availability script="TIME_DAYOFYEAR=1" year_range_from="1985" year_range_to="1985" />
 		</news>
@@ -542,16 +446,12 @@
 		<news id="Sjaele-news-Computerspieler-Chirurgen" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Computerspieler bessere Chirurgen</de>
-
+				<en>Computer players better surgeons</en>
 			</title>
 			<description>
-				<de>Laut Studie einer Fachzeitschrift schnitten Chirurgen in Tests bei minimalinvasiven Operationen besser ab, wenn sie regelmäßig Computer spielen.
-.</de>
-
+				<de>Laut Studie einer Fachzeitschrift schnitten Chirurgen in Tests bei minimalinvasiven Operationen besser ab, wenn sie regelmäßig Computer spielen.</de>
+				<en>According to a study in a journal, surgeons performed better in minimally invasive surgery tests when they regularly play computers.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="0.7" quality="75" />
 			<availability year_range_from="" year_range_to="" />
 		</news>
@@ -559,15 +459,12 @@
 		<news id="Sjaele-news-Drogenbeauftragte" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Drogenbeauftragte empfiehlt</de>
-
+				<en>Drug Commissioner recommends</en>
 			</title>
 			<description>
-				<de>Die Einführung eines Schulfaches namens »Wohlfühlen«, das »Lebenskompetenz, Streßbewältigung, Alkoholvorbeugung und gesunde Ernährung« umfasst..</de>
-
+				<de>... die Einführung eines Schulfaches namens »Wohlfühlen«, das »Lebenskompetenz, Stressbewältigung, Alkoholvorbeugung und gesunde Ernährung« umfasst.</de>
+				<en>... the introduction of a school subject called "Well-being", which includes "Life skills, stress management, alcohol prevention and healthy nutrition".</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="0.7" quality="35" />
 			<availability year_range_from="" year_range_to="" />
 		</news>
@@ -576,15 +473,12 @@
 <!-- Episode? Noch eine Kettenstartnachricht mit Spulwürmern erschaffen? -->
 			<title>
 				<de>Richtigstellung: Spulwurmeier</de>
-
+				<en>Correction: Reworm eggs</en>
 			</title>
 			<description>
 				<de>In den gestrigen Nachrichten wurde nicht die Produktion von Spulwurmeiern per Bildeinspielung dokumentiert, sondern die Produktion von Eiern des Schweinepeitschenwurms.</de>
-
+				<en>Yesterday's news did not document the production of roundworm eggs by picture recording, but the production of pork whipworm eggs.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="0.5" quality="35" />
 			<availability year_range_from="" year_range_to="" />
 		</news>
@@ -593,15 +487,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Wassenstieg sponsert Märchentage</de>
-
+				<en>Wassenstieg sponsors fairy tale days</en>
 			</title>
 			<description>
 				<de>Der Energie-Konzern Wassenstieg sponsert die 20. Auflage der Berliner Märchentage parallel zu den Gesprächen um den Ausstieg aus der Braunkohleverstromung.</de>
-
+				<en>The energy company Wassenstieg is sponsoring the 20th edition of the Berlin Fairy Tale Days in parallel to the talks about phasing out lignite-fired power generation.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="0.7" quality="25" />
 			<availability script="TIME_DAYOFYEAR=11" year_range_from="2010" year_range_to="2010" />
 		</news>
@@ -610,15 +501,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Berliner Märchentage  gegründet</de>
-
+				<en>Berlin Fairy Tale Days founded</en>
 			</title>
 			<description>
 				<de>Am 2. April  dem Geburtstag von Hans Christian Andersen wurden vom Märchenlandverein die Berliner Märchentage gegründet. Sie sollen jährlich im November stattfinden.</de>
-
+				<en>The Berlin Fairytale Days were founded by the Fairytale Land Association on April 2nd, Hans Christian Andersen's birthday. They are to take place annually in November...</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="0.7" quality="25" />
 			<availability script="TIME_DAYOFYEAR=4" year_range_from="1990" year_range_to="1990" />
 		</news>
@@ -627,15 +515,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Berliner Märchentage begonnen</de>
-
+				<en>Berlin Fairy Tale Days started</en>
 			</title>
 			<description>
 				<de>An 17 Tagen im November gibt es Märchen satt. Förderer sind auch die Lottogesellschaft und Bundespolitische Bildungszentrale.</de>
-
+				<en>17 days in November are full of fairy tales. Supporters are also the Lottery company and the Federal Political Education Centre.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="0.7" quality="25" />
 			<availability script="TIME_DAYOFYEAR=11" year_range_from="1990" year_range_to="" />
 		</news>
@@ -643,32 +528,25 @@
 		<news id="Sjaele-news-Crash-Kurse" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Crash-Kurse verboten</de>
-
+				<en>Crash courses prohibited</en>
 			</title>
 			<description>
 				<de>Die Regierung verbietet ab sofort alle von den Fahrschulen angebotenen »Ferien-Crash-Kurse«.</de>
-
+				<en>The government now prohibits all "holiday crash courses" offered by driving schools.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="0.5" quality="25" />
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
 		<news id="Sjaele-news-Staaten-verlegen" type="0" creator="7430" created_by="Sjaele">
 			<title>
-				<de>Afrikanische Staaten verlegen
-</de>
-
+				<de>Afrikanische Staaten verlegen</de>
+				<en>African states to relocate</en>
 			</title>
 			<description>
 				<de>Im kommenden Jahr will die USA 35 afrikanische Nationen verlegen, Planungen für das Projekt beginnen im Frühjahr.</de>
-
+				<en>Next year, the USA plans to relocate 35 African nations - plans for the project start in the spring.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="1.0" quality="35" />
 			<availability year_range_from="" year_range_to="" />
 		</news>
@@ -676,15 +554,12 @@
 		<news id="Sjaele-news-Wortreiche-Eremiten" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Wortreiche Eremiten</de>
-
+				<en>Wordy hermits</en>
 			</title>
 			<description>
 				<de>Beim Treffen der europäischen Eremiten in Freiberg kam es zu wortreichen Diskussionen über den Sinn des Einsiedlerlebens.</de>
-
+				<en>At the meeting of the European hermits in Freiberg there were verbose discussions about the meaning of the hermit's life.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="1.0" quality="23" />
 			<availability year_range_from="" year_range_to="" />
 		</news>
@@ -692,15 +567,12 @@
 		<news id="Sjaele-news-Waffe-verwechselt" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Waffe verwechselt?</de>
-
+				<en>Weapons mixed-up?</en>
 			</title>
 			<description>
-				<de>Das Beschaffungsamt des Heeres bestätigte die Meldung, sie habe versehentlich über Internet Spielzeuggewehre bestellt, nicht.</de>
-
+				<de>Das Beschaffungsamt des Heeres bestritt die Meldung, sie habe versehentlich über Internet Spielzeuggewehre bestellt.</de>
+				<en>The Army Procurement Office denied the report that it had inadvertently ordered toy rifles via the Internet.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="0.7" quality="27" />
 			<availability year_range_from="" year_range_to="" />
 		</news>
@@ -708,15 +580,12 @@
 		<news id="Sjaele-news-Plagiatorin-Forschungsausschuss" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Plagiatorin im Forschungsausschuss</de>
-
+				<en>Plagiarist on the Research Committee</en>
 			</title>
 			<description>
-				<de>Wenige Tage nach Aberkennung ihres Doktorgrades wurde eine EU-Palamentarierin in den Forschungsausschuss des Parlamentes berufen.</de>
-
+				<de>Wenige Tage nach Aberkennung ihres Doktorgrades wurde eine EU-Parlamentarierin in den Forschungsausschuss des Parlamentes berufen.</de>
+				<en>An MEP was appointed to the Parliament's Research Committee a few days after her doctorate was withdrawn.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="0.7" quality="35" />
 			<availability year_range_from="" year_range_to="" />
 		</news>
@@ -724,15 +593,12 @@
 		<news id="Sjaele-news-Schlussverkauf-Wahnsinnsrabatten" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Schlussverkauf mit Wahnsinnsrabatten</de>
-
+				<en>Crazy bargain sale</en>
 			</title>
 			<description>
 				<de>Der diesjährige Schlussverkauf startet mit durchschnittlich 600% Rabatten. Händler bitten um passendes Kleingeld.</de>
-
+				<en>This year's sale starts with an average discount of 600%. Dealers ask for suitable change.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="4" price="0.7" quality="21" />
 			<availability script="TIME_DAYOFYEAR=1 || TIME_DAYOFYEAR=7" year_range_from="" year_range_to="" />
 		</news>
@@ -740,15 +606,12 @@
 		<news id="Sjaele-news-Spanner-Spanner" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Spanner spannt Spanner</de>
-
+				<en>Voyeur peeps voyeur</en>
 			</title>
 			<description>
 				<de>Ein Mann, der heimlich Leute beobachtet, wird seit Tagen von einem Mann verfolgt, der ihn beobachtet. Die Polizei ermittelt.</de>
-
+				<en>A man who secretly watches people has been followed for days by a man who watches him. The police are investigating.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="4" price="1.0" quality="21" />
 			<availability year_range_from="" year_range_to="" />
 		</news>
@@ -756,15 +619,12 @@
 		<news id="Sjaele-news-Rentner-sterben" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Rentner sterben früher!</de>
-
+				<en>Pensioners die sooner!</en>
 			</title>
 			<description>
 				<de>In keiner Berufsgruppe ist die Sterblichkeitsrate so hoch, wie bei Rentnern, geht aus einer Studie der Versicherungen hervor.</de>
-
+				<en>According to an insurance study no professional group has such a high mortality rate as pensioners.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="0.7" quality="22" />
 			<availability year_range_from="" year_range_to="" />
 		</news>
@@ -772,15 +632,12 @@
 		<news id="Sjaele-news-Komasaufen-Gewalt" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Komasaufen verringert Gewalt</de>
-
+				<en>Binge drinking reduces violence</en>
 			</title>
 			<description>
 				<de>Wie aus einer Studie des Trinkernahen Forschungsinstitutes TNFI hervorgeht, werden nur wenige Komasäufer gewalttätig.</de>
-
+				<en>According to a study by the TNFI, a research institute close to drinkers, only a few binge drinkers become violent.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="3" price="0.7" quality="35" />
 			<availability year_range_from="2000" year_range_to="" />
 		</news>
@@ -789,15 +646,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Ostkleber im Kommen</de>
-
+				<en>East German glue is coming in</en>
 			</title>
 			<description>
 				<de>Seit Erhöhung der Alkoholsteuer greifen Jugendliche wieder vermehrt zu schnüffelfähigen Klebstoffen. Renner bei den Schnüfflern: ein Ostprodukt.</de>
-
+				<en>Since the increase in alcohol tax, young people have been increasingly turning to sniffable adhesives again. A hit with the snoopers: an East German product.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="4" price="1.0" quality="33" />
 			<availability year_range_from="1990" year_range_to="" />
 		</news>
@@ -805,15 +659,12 @@
 		<news id="Sjaele-news-USA-Kriegsvisagebühr" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>USA erhebt Kriegsvisagebühr</de>
-
+				<en>USA charges war visa fee</en>
 			</title>
 			<description>
 				<de>Um auch weiterhin in vollem Umfang Kriege führen zu können, wird ab sofort eine erhöhte Visagebühr bei Einreise fällig.</de>
-
+				<en>In order to be able to continue to fight wars in full, an increased visa fee is due immediately upon entry.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="0.7" quality="35" />
 			<availability year_range_from="1991" year_range_to="" />
 		</news>
@@ -821,15 +672,12 @@
 		<news id="Sjaele-news-Regierung-Call-In-Show" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Regierung plant Call-In-Show</de>
-
+				<en>Government plans call-in show</en>
 			</title>
 			<description>
 				<de>Zum schnelleren Abbau der Staatsschulden soll der Finanzminister eine Call-In-Show auf 5sat moderieren.</de>
-
+				<en>In order to reduce the national debt more quickly, the finance minister is to moderate a call-in show on 5sat.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="0.7" quality="27" />
 			<availability year_range_from="" year_range_to="" />
 		</news>
@@ -837,15 +685,12 @@
 		<news id="Sjaele-news-Armee-Millionen" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Armee spart 50 Millionen</de>
-
+				<en>Army saves 50 million</en>
 			</title>
 			<description>
 				<de>Wie der Kriegsminister mitteilt, werden durch die Umordnung der Armee über 50 Millionen eingespart. Die Kosten der Reform belaufen sich auf 13 Milliarden.</de>
-
+				<en>According to the war minister, the reorganization of the army will save more than 50 million. The cost of the reform is 13 billion.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="0.7" quality="41" />
 			<availability script="" year_range_from="" year_range_to="" />
 		</news>
@@ -853,15 +698,12 @@
 		<news id="Sjaele-news-Panzer-Friedenseinsatz" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Panzer im Friedenseinsatz leiser</de>
-
+				<en>Tanks quieter in peacekeeping operations</en>
 			</title>
 			<description>
 				<de>Die hiesigen Panzer werden auf ihren friedlichen Friedenseinsätzen bald auch leiser sein, durch den Einsatz von Gummiketten.</de>
-
+				<en>The local tanks will soon be quieter on their peaceful peace missions, thanks to the use of rubber tracks.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="1.0" quality="21" />
 			<availability script="" year_range_from="" year_range_to="" />
 		</news>
@@ -870,15 +712,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Armee im Brunnenplus</de>
-
+				<en>Army in well surplus</en>
 			</title>
 			<description>
 				<de>Die deutsche Armee hat bei den letzten Friedenseinsätzen fast mehr Brunnen gebaut, als vorher alle deutschen Armeen zerstört haben.</de>
-
+				<en>The German army built almost more wells during the last peace missions than all German armies destroyed before.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="0.7" quality="31" />
 			<availability script="" year_range_from="2004" year_range_to="" />
 		</news>
@@ -886,15 +725,12 @@
 		<news id="Sjaele-news-Kriegsminister-stolz" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Kriegsminister stolz</de>
-
+				<en>War Minister proud</en>
 			</title>
 			<description>
-				<de>Bei den letzten Friedenseinsätzen sind insgesamt so wenig Ausländer zu Schaden gekommen, wie nie.</de>
-
+				<de>Bei den letzten Friedenseinsätzen sind insgesamt so wenig Ausländer zu Schaden gekommen, wie nie zuvor.</de>
+				<en>In the last peace missions, less foreigners were injured than ever before.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="0.7" quality="21" />
 			<availability script="" year_range_from="1990" year_range_to="" />
 		</news>
@@ -903,15 +739,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Weniger Fernsehgelder für Osten</de>
-
+				<en>Less TV money for East Germany</en>
 			</title>
 			<description>
 				<de>Da dort rein zahlenmäßig weniger Menschen Fußball gucken, wäre das nur gerecht, so der Fußballbund-Sprecher Siehstenu-Dahaste.</de>
-
+				<en>"Since there are fewer people watching football there, that would only be fair", said Football Association spokesman Lookahere-Thereitis.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="2" price="1.0" quality="31" />
 			<availability script="" year_range_from="1990" year_range_to="" />
 		</news>
@@ -920,15 +753,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Fußball: Westvereine protestieren</de>
-
+				<en>Soccer: Western Germany clubs protest</en>
 			</title>
 			<description>
 				<de>Immer mehr Ostvereine machen es sich in der Dritten Liga gemütlich. Da müsse weniger geleistet werden und es gäbe trotzdem Lohn.</de>
-
+				<en>More and more Eastern clubs are making themselves comfortable in the Third League. There would have to be done less and still there would be wages.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="2" price="1.0" quality="41" />
 			<availability script="" year_range_from="2010" year_range_to="" />
 		</news>
@@ -937,15 +767,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Rote Brause Leipzig dementiert</de>
-
+				<en>Red Bubbles Leipzig denied</en>
 			</title>
 			<description>
 				<de>Sie seien ein ganz normaler Fußballverein. Die Namensgleicheit zum Brausefabrikant zufällig.</de>
-
+				<en>You're just a regular soccer team. The same name as the lemonade manufacturer is coincidental.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="2" price="0.7" quality="11" />
 			<availability script="TIME_DAYOFYEAR=1,7" year_range_from="2010" year_range_to="" />
 		</news>
@@ -953,15 +780,12 @@
 		<news id="Sjaele-news-Fußballbund-vermutet" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Fußballbund vermutet Wettbetrug</de>
-
+				<en>Soccer association suspects betting fraud</en>
 			</title>
 			<description>
 				<de>Das 75:1 im entscheidenden Aufstiegsspiel zur Verbandsliga West-Nord rief die Betrugsexperten des Fußballbundes auf den Plan.</de>
-
+				<en>The 75:1 in the decisive promotion match to the club league West-Nord catched attention of the fraud experts of the soccer federation.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="2" price="1.0" quality="29" />
 			<availability script="TIME_DAYOFYEAR=6" year_range_from="1985" year_range_to="1985" />
 		</news>
@@ -970,15 +794,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Aktena 8</de>
-
+				<en>Aktena 8</en>
 			</title>
 			<description>
 				<de>Am 12. Juni öffnet die weltgrößte Kunstausstellung ihre Pforten. Sie widmet sich der künstlerischen Auseinandersetzung mit Krieg und Gewalt, mit Utopien und Utopieverlust.</de>
-
+				<en>The world's largest art exhibition opens its doors on June 12. It is dedicated to the artistic confrontation with war and violence, with utopias and loss of utopia.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="0.7" quality="41" />
 			<availability script="TIME_DAYOFYEAR=5" year_range_from="1987" year_range_to="1987" />
 		</news>
@@ -987,15 +808,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Aktena 8 eröffnet</de>
-
+				<en>Aktena 8 opened</en>
 			</title>
 			<description>
 				<de>Die Kunstschau mit über 400 austellenden Künstlern widmet sich erstmals verstärkt der Videokunst und breitet sich über das gesamte Stadtgebiet von Kassel aus.</de>
-
+				<en>The art show with over 400 exhibiting artists is increasingly dedicated to video art and spreads over the entire city of Kassel.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="0.7" quality="41" />
 			<availability script="TIME_DAYOFYEAR=6" year_range_from="1987" year_range_to="1987" />
 		</news>
@@ -1004,15 +822,12 @@
 <!-- deutschbezogen -->
 			<title>
 				<de>Aktena 8 beendet</de>
-
+				<en>Aktena 8 closed</en>
 			</title>
 			<description>
 				<de>Nach 100 Tagen wurde die Weltkunstausstellung in Kassel mit fast einer halben Millionen Zuschauern beendet. Besucherrekord trotz beliebiger Kritiken aus Kritikerkreisen.</de>
-
+				<en>After 100 days, the world art exhibition in Kassel ended with almost half a million spectators. Record attendance despite criticism from critics.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="0.7" quality="41" />
 			<availability script="TIME_DAYOFYEAR=10" year_range_from="1987" year_range_to="1987" />
 		</news>
@@ -1020,15 +835,12 @@
 		<news id="Sjaele-news-Festival-lebenden" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Festival verlegt</de>
-
+				<en>Festival postponed</en>
 			</title>
 			<description>
 				<de>Aufgrund technischer Gründe findet das diesjährige Festival der lebenden Bilder wie im Vorjahr in Sternheilig und nicht wie geplant an den Externsteinen statt.</de>
-
+				<en>For technical reasons, this year's festival of living images will take place in Sternheilig, as last year, and not on the Externsteine as planned.</en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="0.7" quality="41" />
 			<availability script="TIME_DAYOFYEAR=11" year_range_from="2003" year_range_to="2003" />
 		</news>
@@ -1036,15 +848,12 @@
 		<news id="Sjaele-news-Serienkanal-startet" type="0" creator="7430" created_by="Sjaele">
 			<title>
 				<de>Serienkanal startet</de>
-
+				<en></en>
 			</title>
 			<description>
 				<de>Zu Beginn des nächsten Jahres soll ein Seriensender seinen Betrieb aufnehmen. Für die Aufnahme einer Serie ins Programm reichen 500 Seherzuschriften.</de>
-
+				<en></en>
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="0.7" quality="31" />
 			<availability script="TIME_DAYOFYEAR=5" year_range_from="1996" year_range_to="1996" />
 		</news>
@@ -1058,9 +867,6 @@
 				<de>Die durch den unzeitgemässen Wintereinbruch völlig verschneiten Strassen haben unter anderem zu einem eklatanten Kaffee-Engpass geführt.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="4" price="1.0" quality="27" />
 			<availability script="TIME_SEASON=4" year_range_from="" year_range_to="" />
 		</news>
@@ -1074,9 +880,6 @@
 				<de>Die Karl-Marx-Städter Kaffee-Ausstellung mit über 400 Kaffeesorten aus 4 Kontinenten begann mit einer Novität: Erstmals wurden arktische Bohnen angeboten.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="0.7" quality="31" />
 			<conditions year_range_from="-1" year_range_to="1989" />
 		</news>
@@ -1090,9 +893,6 @@
 				<de>Die Chemnitzer Kaffee-Ausstellung mit über 400 Kaffeesorten aus 4 Kontinenten begann mit einer Novität: Erstmals wurden arktische Bohnen angeboten.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="0.7" quality="31" />
 			<conditions year_range_from="1990" year_range_to="-1" />
 		</news>
@@ -1107,9 +907,6 @@
 				<de>Eine Abordnung deutscher Weinbauern protestierte beim xten Klimagipfel für Maßnahmen zur Erderwärmung. Grund seien wirtschaftliche Erwägungen.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="0.7" quality="31" />
 			<availability script="" year_range_from="" year_range_to="" />
 		</news>
@@ -1124,9 +921,6 @@
 				<de>Wegen mehrfacher Verstöße gegen die damals gültigen Richtlinien der Kriegsführung wurde die Völkerschlacht bei Leipzig im Jahre 1813 für ungültig erklärt.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="1.0" quality="17" />
 			<availability script="" year_range_from="" year_range_to="" />
 		</news>
@@ -1141,9 +935,6 @@
 				<de>Mehrere von der Deutschen Seekriegsflotte bei der "Ausübung ihrer Erwerbstätigkeit" behinderte somalische Piraten haben am Seerechtsgericht Kiel Klage erhoben.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="1.0" quality="51" />
 			<availability script="" year_range_from="2009" year_range_to="" />
 		</news>
@@ -1157,9 +948,6 @@
 				<de>Das Parlament lehnte in einer Sondersitzung den vorzeitigen Wintereinbruch für dieses Jahr vor allem aus wirtschaftlichen Gründen mehrheitlich ab. </de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="0.7" quality="21" />
 			<availability script="TIME_SEASON=3" year_range_from="" year_range_to="" />
 		</news>
@@ -1174,9 +962,6 @@
 				<de>Der Verband der Luftkurorte begrüßt den Weiterbetrieb des veralteten Kraftwerks. Ein Sprecher dazu: "So werden doch auch bei uns Arbeitsplätze gesichert."</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="4" price="0.7" quality="41" />
 			<availability script="" year_range_from="" year_range_to="" />
 		</news>
@@ -1190,9 +975,6 @@
 				<de>In einer Protestresolution an mehrere Industrienationen plädiert die Pfeifenbläser-Vereinigung gegen die Zerstörung ihrer Existenzgrundlage.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="1.0" quality="33" />
 			<availability script="" year_range_from="2006" year_range_to="" />
 		</news>
@@ -1206,9 +988,6 @@
 				<de>Wegen grober Störung der öffentlichen Ruhe wurde mehreren landesweit bekannten Pfeifenbläsern eine vierhundertseitige Klageschrift zugesandt.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="5" price="0.7" quality="22" />
 			<availability script="" year_range_from="2007" year_range_to="" />
 		</news>
@@ -1223,9 +1002,6 @@
 				<de>Weil die Stadt gerade einen Tunnel durchquert, ist in den nächsten Jahren mit massiven Telefon- und Internetausfällen zu rechnen.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="4" price="1.0" quality="31" />
 			<availability script="" year_range_from="2003" year_range_to="2015" />
 		</news>
@@ -1240,9 +1016,6 @@
 				<de>Billiger als erwartet, wird der Leipziger City-Tunnel. Seine Kosten steigen lediglich auf das Doppelte, nicht auf das Dreifache.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="1.0" quality="41" />
 			<availability script="" year_range_from="2014" year_range_to="2014" />
 		</news>
@@ -1256,9 +1029,6 @@
 				<de>Nach neuesten Einschätzungen seien die 4 Hauptrisiken für den Bahnbetrieb Frühling, Sommer, Herbst und Winter.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="0" price="0.7" quality="21" />
 			<availability script="" year_range_from="" year_range_to="" />
 		</news>
@@ -1272,9 +1042,6 @@
 				<de>Weil er jeden Tag seine Ex-Arbeitsstelle besucht, reichte eine Taschenschaufel, um Weiche vom Schnee zu befreien: ICE pünktlich.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="4" price="1.0" quality="36" />
 			<availability script="TIME_SEASON=4" year_range_from="" year_range_to="" />
 		</news>
@@ -1288,9 +1055,6 @@
 				<de>Weil ihn die Computerstimme nicht verstehen wollte, zertrümmerte Al Friedeno (73) auf der Toilette eines Restaurants sein iPhone.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="1" price="1.0" quality="21" />
 			<availability script="" year_range_from="2007" year_range_to="" />
 		</news>
@@ -1304,9 +1068,6 @@
 				<de>Meint seine Tochter (14). Er darf sie jetzt nicht mehr zu Konzerten begleiten.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="1" price="1.0" quality="21" />
 			<availability script="" year_range_from="2013" year_range_to="2015" />
 		</news>
@@ -1320,9 +1081,6 @@
 				<de>Costa brach beim Bierfest in Chemnitz zusammen. Inzwischen ist er wieder fit.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="1" price="1.0" quality="15" />
 			<availability script="" year_range_from="2007" year_range_to="2011" />
 		</news>
@@ -1337,9 +1095,6 @@
 				<de>Durch das Hochwasser verursachter Rost an den Flutlichtmasten gefährden die Zuschauer im Ernst-Abbe-Sportfeld. Ab sofort ist das Stadion für den Spielbetrieb gesperrt.</de>
 
 			</description>
-			<effects>
-
-			</effects>
 			<data genre="1" price="1.0" quality="27" />
 			<availability script="TIME_SEASON=1" year_range_from="2013" year_range_to="2013" />
 		</news>
