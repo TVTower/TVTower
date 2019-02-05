@@ -485,15 +485,7 @@ Type TNewsAgency
 			'Variant 1: pass delay to the SendFigureToRoom-function (delay delivery schedule)
 			'effect.GetData().AddNumber("delayTime", 60 * RandRange(45,120))
 			'Variant 2: delay the execution of the effect
-			effect.SetDelayedExecutionTime(60 * RandRange(45,120))
-print "DELAYED EXECUTION:"
-print "DELAYED EXECUTION:"
-print "DELAYED EXECUTION:"
-print "DELAYED EXECUTION:"
-effect.GetData().ToString()
-print "========"
-print "========"
-print "========"
+			effect.SetDelayedExecutionTime(Long(GetWorldTime().GetTimeGone()) +  60 * RandRange(45,120))
 			NewsEvent.effects.AddEntry("happen", effect)
 		endif
 

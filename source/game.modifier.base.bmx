@@ -337,6 +337,8 @@ Type TGameModifierBase
 	End Method
 
 
+	'set a point in time at which execution will happen
+	'means an exact time in the future, not the time "until then"
 	Method SetDelayedExecutionTime:int(delayTime:Long)
 		if delayTime > 0
 			SetFlag(FLAG_DELAYED_EXECUTION, True)
