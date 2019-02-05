@@ -11,7 +11,7 @@ Type TAchievementCollection
 	Field achievements:TGameObjectCollection = new TGameObjectCollection
 	Field tasks:TGameObjectCollection = new TGameObjectCollection
 	Field rewards:TGameObjectCollection = new TGameObjectCollection
-	
+
 	Global _instance:TAchievementCollection
 	'as achievements / tasks / rewards base on TAchievementBaseType
 	'they can share a map
@@ -39,10 +39,10 @@ Type TAchievementCollection
 		tasks.Initialize()
 		rewards.Initialize()
 	End Method
-	
+
 
 	'=== ACHIEVEMENTS ===
-	
+
 	Method GetAchievement:TAchievement(guid:string)
 		return TAchievement(achievements.GetByGUID(guid))
 	End Method
@@ -63,10 +63,10 @@ Type TAchievementCollection
 	Method RemoveAchievementByGuid:int(guid:string)
 		return achievements.RemoveByGuid(guid)
 	End Method
-		
+
 
 	'=== TASKS ===
-	
+
 	Method GetTask:TAchievementTask(guid:string)
 		return TAchievementTask(tasks.GetByGUID(guid))
 	End Method
@@ -91,7 +91,7 @@ Type TAchievementCollection
 
 
 	'=== REWARDS ===
-	
+
 	Method GetReward:TAchievementReward(guid:string)
 		return TAchievementReward(rewards.GetByGUID(guid))
 	End Method
@@ -158,7 +158,7 @@ Type TAchievementCollection
 		Next
 	End Method
 
-	
+
 	Method Update:int(time:Long)
 		For local a:TAchievement = EachIn achievements.entries.Values()
 			a.Update(time)
@@ -241,7 +241,7 @@ Type TAchievementBaseType Extends TGameObject
 		self.text = text
 		return self
 	End Method
-		
+
 
 	Method HasFlag:Int(flag:Int) {_exposeToLua}
 		Return flags & flag
@@ -287,7 +287,7 @@ Type TAchievement Extends TAchievementBaseType
 		flags = FLAG_CANFAIL
 	End Method
 
-	
+
 	Function CreateNewInstance:TAchievement()
 		return new TAchievement
 	End Function
@@ -363,7 +363,7 @@ Type TAchievement Extends TAchievementBaseType
 		endif
 		return _rewards
 	End Method
-	
+
 
 	Method AddReward:TAchievement(guid:string)
 		If guid And Not HasReward(null, guid)
@@ -477,7 +477,7 @@ Type TAchievement Extends TAchievementBaseType
 		_tasks = null
 	End Method
 
-	
+
 
 	Method GiveRewards:int(playerID:int, time:Long=0)
 		'print "  Achievement.GiveRewards: "+playerID
@@ -551,7 +551,7 @@ Type TAchievement Extends TAchievementBaseType
 	Method Update(time:Long = 0)
 		'you cannot complete or fail an achievement if there is no task
 		if taskGUIDs.length = 0 then return
-		
+
 		'=== UPDATE & CHECK TASK COMPLETITION ===
 		For local t:TAchievementTask = eachIn GetTasks()
 			t.Update(time)
@@ -561,7 +561,7 @@ Type TAchievement Extends TAchievementBaseType
 			local state:int = stateSet.GetState(i, time)
 			'already completed - you cannot fail afterwards
 			if state = stateSet.STATE_COMPLETED then continue
-			
+
 			local completedCount:int = 0
 			local failedCount:int = 0
 			For local t:TAchievementTask = eachIn GetTasks()
@@ -575,7 +575,7 @@ Type TAchievement Extends TAchievementBaseType
 				SetFailed(i, time, False)
 			endif
 		Next
-	
+
 	End Method
 
 
@@ -623,7 +623,7 @@ Type TAchievement Extends TAchievementBaseType
 		endif
 		return SortByIndex(o1,o2)
 	End Function
-	
+
 
 	Function SortByGroup:int(o1:object, o2:object)
 		Local a1:TAchievement = TAchievement(o1)
@@ -705,14 +705,14 @@ Type TAchievementTask Extends TAchievementBaseType
 		timeCreated = -1
 		timeLimit = -1
 	End Method
-	
+
 
 	Method ToString:string()
 		local res:string = ""
 		res :+ "Task (" + GetGuid() + ")" + "~n"
 
 		local completedString:string = ""
-		for local i:int = 0 To stateSet.stateTime.length 'include 0 + arrayLength
+		for local i:int = 0 until stateSet.stateTime.length 'include 0 + arrayLength
 			if completedString then completedString :+ "  "
 			if IsCompleted(i)
 				completedString :+ i+"=Y"
@@ -720,7 +720,7 @@ Type TAchievementTask Extends TAchievementBaseType
 				completedString :+ i+"=N"
 			endif
 		Next
-		
+
 		res :+ "  completed: "+completedString + "~n"
 
 		return res
@@ -734,7 +734,7 @@ Type TAchievementTask Extends TAchievementBaseType
 
 	Method IsWithinTimeLimit:int(time:long = 0)
 		if timeLimit <= 0 then return True
-		
+
 		return (timeCreated + timeLimit) >= time
 	End Method
 
@@ -825,7 +825,7 @@ Type TAchievementReward Extends TAchievementBaseType
 	Method Reset:int()
 		rewardGiven = [-1:Long,-1:Long,-1:Long,-1:Long]
 	End Method
-	
+
 
 	Method GiveToPlayer:int(playerID:int, time:Long=0)
 		If playerID < 1 or playerID > rewardGiven.length Then Return False
@@ -852,7 +852,7 @@ Type TAchievementReward Extends TAchievementBaseType
 	Method GetGameModifierParams:TData(playerID:int)
 		return null
 	End Method
-	
+
 
 	'override this method for custom implementations/actions
 	Method CustomGiveToPlayer:int(playerID:int)
@@ -886,13 +886,13 @@ Type TAchievementStateSet
 		stateTime = [-1:Long,-1:Long,-1:Long,-1:Long,-1:Long]
 		stateChanged = [0,0,0,0,0]
 	End Method
-		
+
 
 
 	Method GetStates:int[]()
 		return state
 	End Method
-	
+
 
 	'for playerID=0 it sets the state for all
 	Method SetState:TAchievementStateSet(playerID:int=0, time:long, bool:int=True)
@@ -921,14 +921,14 @@ Type TAchievementStateSet
 		else
 			state[playerID] = STATE_FAILED
 		endif
-		
+
 		return self
 	End Method
 
 
 	'for playerID=0 it returns if _all_ have the same value
 	Method GetState:int(playerID:int, time:long)
-		If stateTime.length < playerID Then Return False
+		If stateTime.length <= playerID Then Return False
 		If playerID < 0 then playerID = 0
 
 
@@ -944,7 +944,7 @@ Type TAchievementStateSet
 					stateMask = 0
 					exit
 				endif
-				
+
 				stateMask :| s
 			Next
 
@@ -967,7 +967,7 @@ Type TAchievementStateSet
 
 
 	Method GetStateChanged:int(playerID:int)
-		If stateChanged.length < playerID Then Return 0
+		If stateChanged.length <= playerID Then Return 0
 		If playerID < 0 then playerID = 0
 
 		return stateChanged[playerID]
@@ -986,7 +986,7 @@ Type TAchievementStateSet
 		return GetState(playerID, time) = STATE_COMPLETED
 	End Method
 
-	
+
 	Method IsFailed:int(playerID:int, time:Long = 0)
 		if time = 0 then time = GetWorldTime().GetTimeGone()
 		return GetState(playerID, time) = STATE_FAILED
@@ -1019,5 +1019,5 @@ Type TAchievementStateSet
 				endif
 			endif
 		Next
-	End Method	
+	End Method
 End Type
