@@ -69,7 +69,7 @@ function JobChangeRoomSigns:Prepare(pParams)
 	--kiMsg("Starte JobChangeRoomSigns")
 end
 
-function JobChangeRoomSigns:Tick()	
+function JobChangeRoomSigns:Tick()
     for index = 0, TVT.rb_GetSignCount() - 1, 1 do
 		local response = TVT.rb_GetSignAtIndex(index)
 		if response.result == TVT.RESULT_OK then
@@ -84,15 +84,15 @@ function JobChangeRoomSigns:Tick()
 			end
 		end
     end
-		
+
 	--TODO: Gerichtsvollzieher auf den Gegner hetzen
 	--TODO: Schilder absichtlich durcheinander bringen
 
 	local player = _G["globalPlayer"]
-	
+
 	if self.Task.FRDubanTerrorLevel >= 2 then
 		local sign = TVT.rb_GetFirstSignOfRoom(TVT.ROOM_FRDUBAN).data
-		local enemyId = player.GetNextEnemyId()
+		local enemyId = player:GetNextEnemyId()
 		local roomId = self:GetEnemyRoomId(enemyId)
 		local roomSign = TVT.rb_GetFirstSignOfRoom(roomId).data
 		TVT.rb_SwitchSigns(sign, roomSign)
@@ -101,7 +101,7 @@ function JobChangeRoomSigns:Tick()
 
 	if self.Task.VRDubanTerrorLevel >= 2 then
 		local sign = TVT.rb_GetFirstSignOfRoom(TVT.ROOM_VRDUBAN).data
-		local enemyId = player.GetNextEnemyId()
+		local enemyId = player:GetNextEnemyId()
 		local roomId = self:GetEnemyRoomId(enemyId)
 		local roomSign = TVT.rb_GetFirstSignOfRoom(roomId).data
 		TVT.rb_SwitchSigns(sign, roomSign)
@@ -111,7 +111,7 @@ function JobChangeRoomSigns:Tick()
 	-- handled the situation "for now"
 	self.Task.SituationPriority = 0
 	self.Task.RecognizedTerrorLevel = false
-	
+
 	self.Status = JOB_STATUS_DONE
 end
 
@@ -124,7 +124,7 @@ function JobChangeRoomSigns:GetEnemyRoomId(playerId)
 	elseif (random <= 90) then
 		return TVT.GetBossOfficeIdOfPlayer(playerId)
 	elseif (random <= 100) then
-		return TVT.GetArchiveIdOfPlayer(playerId)	
+		return TVT.GetArchiveIdOfPlayer(playerId)
 	end
 	--TODO: Später sind vielleicht Studios noch sinnvoll.
 end

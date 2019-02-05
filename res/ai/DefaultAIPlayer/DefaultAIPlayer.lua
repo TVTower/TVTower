@@ -89,6 +89,8 @@ function DefaultAIPlayer:initializePlayer()
 	self.Budget.SavingParts = 0.2 + 0.05 * math.random(0,4)
 	-- extra safety add-to-fixed-costs from 40-70%
 	self.Budget.ExtraFixedCostsSavingsPercentage = 0.4 + 0.10 * math.random(0,3)
+
+	self.archEnemyID = -1
 end
 
 function DefaultAIPlayer:resume()
@@ -259,12 +261,27 @@ function DefaultAIPlayer:GetRequisitionsByOwner(TaskOwnerId, ignoreActuality)
 	return result
 end
 
+
+function DefaultAIPlayer:GetArchEnemyId()
+	-- TODO - change arch enemy according to a channels performance?
+	if not self.archEnemyID or self.archEnemyID <= 0 then
+		self.archEnemyID = -1
+		repeat
+			self.archEnemyID = math.random(1, 4)
+		until self.archEnemyID ~= TVT.ME
+	end
+	return self.archEnemyID
+end
+
+
 function DefaultAIPlayer:GetNextEnemyId()
-	--TODO: Erzfeind ermitteln und als Hauptziel zurückliefern
 	local result = -1
 	repeat
-		result = math.random(1, 4)
+		-- +50% chance to return the arch enemy
+		result = math.random(1, 4 + 4)
 	until result ~= TVT.ME
+	if result > 4 then result = self:GetArchEnemyId() end
+
 	return result
 end
 
