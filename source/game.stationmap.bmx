@@ -2134,18 +2134,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	Method GetTotalStationBuyPrice:int(station:TStationBase)
 		if not station then return 0
 
-		local buyPrice:int = station.GetBuyPrice()
-
-		'check if there is a governmental broadcast/build permission
-		'also allow "granted" to be in another section?
-		if not station.HasFlag(TVTStationFlag.ILLEGAL) ' and not station.HasFlag(TVTStationFlag.GRANTED)
-			local section:TStationMapSection = GetStationMapCollection().GetSectionByName(station.GetSectionName())
-			'stations without assigned section cannot have a permission...
-			if section and section.NeedsBroadcastPermission(owner, station.stationType) and not section.HasBroadcastPermission(owner, station.stationType)
-				buyPrice :+ section.GetBroadcastPermissionPrice(owner, station.stationType)
-			endif
-		endif
-		return buyPrice
+		return station.GetTotalBuyPrice()
 	End Method
 
 
@@ -2530,34 +2519,66 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetName:string()
+	'price including potential permission fees
+	Method GetTotalBuyPrice:Int() {_exposeToLua}
+		local buyPrice:int = GetBuyPrice()
+
+		'check if there is a governmental broadcast/build permission
+		'also allow "granted" to be in another section?
+		if not HasFlag(TVTStationFlag.ILLEGAL) ' and not HasFlag(TVTStationFlag.GRANTED)
+			local section:TStationMapSection = GetStationMapCollection().GetSectionByName( GetSectionName() )
+			'stations without assigned section cannot have a permission...
+			if section and section.NeedsBroadcastPermission(owner, stationType) and not section.HasBroadcastPermission(owner, stationType)
+				buyPrice :+ section.GetBroadcastPermissionPrice(owner, stationType)
+			endif
+		endif
+		return buyPrice
+	End Method
+
+
+	Method GetName:string() {_exposeToLua}
 		return name
 	End Method
 
 
-	Method GetTypeName:string()
+	Method GetTypeName:string() {_exposeToLua}
 		return "stationbase"
 	End Method
 
 
-	Method GetLongName:string()
+	Method GetLongName:string() {_exposeToLua}
 		if GetName() then return GetTypeName() + " " + GetName()
 		return GetTypeName()
 	End Method
 
 
-	Method CanBroadcast:Int()
+	Method CanBroadcast:Int() {_exposeToLua}
 		Return HasFlag(TVTStationFlag.ACTIVE) and not HasFlag(TVTStationFlag.SHUTDOWN)
 	End Method
 
 
-	Method IsActive:Int()
+	Method IsActive:Int() {_exposeToLua}
 		Return HasFlag(TVTStationFlag.ACTIVE)
 	End Method
 
 
-	Method IsShutdown:Int()
+	Method IsShutdown:Int() {_exposeToLua}
 		Return HasFlag(TVTStationFlag.SHUTDOWN)
+	End Method
+
+
+	Method IsCableNetworkUplink:int() {_exposeToLua}
+		return stationType = TVTStationType.CABLE_NETWORK_UPLINK
+	End Method
+
+
+	Method IsSatelliteUplink:int() {_exposeToLua}
+		return stationType = TVTStationType.SATELLITE_UPLINK
+	End Method
+
+
+	Method IsAntenna:int() {_exposeToLua}
+		return stationType = TVTStationType.ANTENNA
 	End Method
 
 
@@ -2632,7 +2653,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method CanSignContract:int(duration:int)
+	Method CanSignContract:int(duration:int) {_exposeToLua}
 		return True
 	End Method
 
@@ -3113,7 +3134,7 @@ Type TStationAntenna Extends TStationBase {_exposeToLua="selected"}
 		'to-place-station)
 		local section:TStationMapSection = GetStationMapCollection().GetSectionByName( GetSectionName() )
 		'return an odd price (if someone sees it...)
-		if not section then return 133701337
+		if not section then return -1337
 
 		local buyPrice:int = 0
 
@@ -3389,7 +3410,7 @@ Type TStationCableNetworkUplink extends TStationBase
 		local section:TStationMapSection = GetStationMapCollection().GetSectionByName( GetSectionName() )
 		if not section
 			print "Cablenetwork without section."
-			return 133701337
+			return -1337
 		endif
 
 		local buyPrice:int = 0
@@ -3873,7 +3894,7 @@ Type TStationSatelliteUplink extends TStationBase
 		local section:TStationMapSection = GetStationMapCollection().GetSectionByName( uplinkSectionName )
 		if not section
 			print "Satellite Uplink without assigned section."
-			return 133701337
+			return -1337
 		endif
 
 		local channelSympathy:Float = section.GetPressureGroupsChannelSympathy(owner)
