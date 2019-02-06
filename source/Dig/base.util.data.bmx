@@ -377,11 +377,24 @@ Type TData
 	End Method
 End Type
 
+
 Type TDoubleData
 	Field value:Double
 
 	Method ToString:String()
 		return String(value)
+	End Method
+
+
+	Method SerializeTDoubleDataToString:string()
+		'fits into a long? skip the ".0000" values
+		if double(long(value)) = value then return string(long(value))
+		return string(value)
+	End Method
+
+
+	Method DeSerializeTDoubleDataFromString(text:String)
+		value = double(text)
 	End Method
 End Type
 

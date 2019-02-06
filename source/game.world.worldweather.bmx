@@ -225,11 +225,25 @@ Type TWorldWeatherConfiguration
 	'steps defines how quickly the weather will change
 	Field steps:int = 8
 	Field increment:float = 1.0/steps
-	'treshold determines max deviation from 0 before the generated
+	'threshold determines max deviation from 0 before the generated
 	'random number will influence the system.
 	'It determines how often velocity of the wind will drift towards
 	'0. Larger values = less randomness (= reduce standard deviation).
 	Field threshold:int = 2 '6
+
+
+	Method SerializeTWorldWeatherConfigurationToString:string()
+		return multiplier + " " + steps + " " + increment + " " + threshold
+	End Method
+
+
+	Method DeSerializeTWorldWeatherConfigurationFromString(text:String)
+		local vars:string[] = text.split(" ")
+		if vars.length > 0 then multiplier = int(vars[0])
+		if vars.length > 1 then steps = int(vars[1])
+		if vars.length > 2 then increment = float(vars[2])
+		if vars.length > 3 then threshold = int(vars[3])
+	End Method
 End Type
 
 
