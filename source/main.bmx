@@ -2439,63 +2439,6 @@ Type TSaveGame Extends TGameState
 
 	global _nilNode:TNode = new TNode._parent
 	Function RepairData()
-		local repairedNewsEventTemplates:int = 0
-		'if old savegame misses templates, add them back from news
-		if GetNewsEventTemplateCollection().GetCount() = 0
-			local availableNewsEvents:int = 0
-			Local node:TNode = GetNewsEventCollection().allNewsEvents._FirstNode()
-			While node And node <> _nilNode
-				local ne:TNewsEvent = TNewsEvent(node._value)
-				if not ne
-					node = node.NextNode()
-					continue
-				endif
-
-				availableNewsEvents :+ 1
-
-				'skip happened one time events
-				if ne.HasHappened() and not ne.IsReuseable()
-					node = node.NextNode()
-					continue
-				endif
-
-				local neT:TNewsEventTemplate = new TNewsEventTemplate
-				neT.CopyBaseFrom(ne)
-				neT.genre = ne.GetGenre()
-				neT.newsType = ne.newsType
-				neT.SetGUID( ne.GetGUID()+"-template" )
-				neT.SetOwner(neT.OWNER_NOBODY)
-				GetNewsEventTemplateCollection().Add(neT)
-
-				repairedNewsEventTemplates :+ 1
-
-				'move on to next node
-				node = node.NextNode()
-			Wend
-			TLogger.Log("Savegame.RepairData()", "Savegame missed news event templates. Recreated "+repairedNewsEventTemplates+" news templates from " + availableNewsEvents + " news events.", LOG_SAVELOAD)
-		endif
-
-
-		'remove non-allowed episodes/collections from the suitcase
-		'(versions prior 2018/02/28 mistakingly allowed that)
-		For local ppc:TPlayerProgrammeCollection = eachin GetPlayerProgrammeCollectionCollection().plans
-			local toRemove:TProgrammeLicence[] = new TProgrammeLicence[0]
-			For local licence:TProgrammeLicence = EachIn ppc.suitcaseProgrammeLicences
-				if licence.HasParentLicence() then toRemove :+ [licence]
-			Next
-			if toRemove.length > 0
-				For local licence:TProgrammeLicence = EachIn toRemove
-					'remove from player collection if we do no longer
-					'possess the series/collection
-					if not ppc.HasProgrammeLicence(licence.GetParentLicence())
-						ppc.singleLicences.remove(licence)
-						ppc._programmeLicences.remove(licence)
-					endif
-					ppc.suitcaseProgrammeLicences.Remove(licence)
-				Next
-				TLogger.Log("Savegame.RepairData()", "Savegame contained licence suitcase of player #" + ppc.owner+" with " + toRemove.length + " invalid licences of episodes or collection-elements.", LOG_SAVELOAD)
-			endif
-		Next
 		rem
 			would "break" unfinished series productions with re-ordered
 			production orders (1,3,2) and missing episodes ([1,null,3])
@@ -6678,7 +6621,7 @@ Function PrintCurrentTranslationState(compareLang:string="tr")
 	print "=== NEWSEVENTS ================="
 	print "AVAILABLE:"
 	print "----------"
-	For local obj:TNewsEvent = EachIn GetNewsEventCollection().managedNewsEvents.Values()
+	For local obj:TNewsEvent = EachIn GetNewsEventCollection().newsEvents.Values()
 		local printed:int = False
 		if obj.title.Get("de") <> obj.title.Get(compareLang)
 			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
@@ -6696,7 +6639,7 @@ Function PrintCurrentTranslationState(compareLang:string="tr")
 	print "~t"
 	print "MISSING:"
 	print "--------"
-	For local obj:TNewsEvent = EachIn GetNewsEventCollection().managedNewsEvents.Values()
+	For local obj:TNewsEvent = EachIn GetNewsEventCollection().newsEvents.Values()
 		local printed:int = False
 		if obj.title.Get("de") = obj.title.Get(compareLang)
 			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")

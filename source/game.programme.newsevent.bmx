@@ -23,9 +23,10 @@ Type TNewsEventCollection
 	Field newsEventsHistory:TNewsEvent[]
 	Field newsEventsHistoryIndex:int=0
 	'holding all currently happening/upcoming news events
-	Field managedNewsEvents:TMap = CreateMap()
-	'holding all news event ever created (including non-reuseable ones)
-	Field allNewsEvents:TMap = CreateMap()
+	'GUID->object
+	Field newsEvents:TMap = CreateMap()
+	'ID->object
+	Field newsEventsID:TIntMap = new TIntMap
 
 	'holding a number of "sethappened"-newsevents (for ordering)
 	Field nextNewsNumber:Long = 0
@@ -61,8 +62,8 @@ Type TNewsEventCollection
 		newsEventsHistory = new TNewsEvent[0]
 		newsEventsHistoryIndex = 0
 
-		managedNewsEvents.Clear()
-		allNewsEvents.Clear()
+		newsEvents.Clear()
+		newsEventsID.Clear()
 		_InvalidateCaches()
 
 		nextNewsNumber = 0
@@ -96,8 +97,8 @@ Type TNewsEventCollection
 	Method Add:int(obj:TNewsEvent)
 		'add to common maps
 		'special lists get filled when using their Getters
-		managedNewsEvents.Insert(obj.GetGUID().ToLower(), obj)
-		'allNewsEvents.Insert(obj.GetGUID().ToLower(), obj)
+		newsEvents.Insert(obj.GetGUID().ToLower(), obj)
+		newsEventsID.Insert(obj.GetID(), obj)
 
 		_InvalidateCaches()
 
@@ -130,8 +131,8 @@ Type TNewsEventCollection
 
 
 	Method Remove:int(obj:TNewsEvent)
-		allNewsEvents.Remove(obj.GetGUID().ToLower())
-		managedNewsEvents.Remove(obj.GetGUID().ToLower())
+		newsEvents.Remove(obj.GetGUID().ToLower())
+		newsEventsID.Remove(obj.GetID())
 
 		_InvalidateCaches()
 
@@ -139,18 +140,13 @@ Type TNewsEventCollection
 	End Method
 
 
-	Method RemoveManaged:int(obj:TNewsEvent)
-		managedNewsEvents.Remove(obj.GetGUID().ToLower())
-
-		_InvalidateCaches()
-
-		return TRUE
+	Method GetByID:TNewsEvent(ID:int)
+		Return TNewsEvent(newsEventsID.ValueForKey(ID))
 	End Method
 
 
 	Method GetByGUID:TNewsEvent(GUID:String)
-		GUID = GUID.ToLower()
-		Return TNewsEvent(managedNewsEvents.ValueForKey(GUID))
+		Return TNewsEvent(newsEvents.ValueForKey( GUID.ToLower() ))
 	End Method
 
 
@@ -162,7 +158,7 @@ Type TNewsEventCollection
 		GUID = GUID.ToLower()
 
 		'find first hit
-		Local node:TNode = managedNewsEvents._FirstNode()
+		Local node:TNode = newsEvents._FirstNode()
 		While node And node <> nilNode
 			if string(node._key).Find(GUID) >= 0
 				return TNewsEvent(node._value)
@@ -180,7 +176,7 @@ Type TNewsEventCollection
 		local somethingDeleted:int = False
 		local toRemove:TNewsEvent[]
 
-		For local newsEvent:TNewsEvent = eachin managedNewsEvents.Values()
+		For local newsEvent:TNewsEvent = eachin newsEvents.Values()
 			'not happened yet - should not happen
 			if not newsEvent.HasHappened() then continue
 			'only interested in a specific genre?
@@ -196,10 +192,8 @@ Type TNewsEventCollection
 		'delete/modify in an extra step - this approach skips creation
 		'of a map-copy just to avoid concurrent modification
 		For local n:TNewsEvent = Eachin toRemove
-			RemoveManaged(n)
+			Remove(n)
 		Next
-
-		allNewsEvents.Clear()
 
 		'reset caches, so lists get filled correctly
 		if somethingDeleted then _InvalidateCaches()
@@ -211,7 +205,7 @@ Type TNewsEventCollection
 		local somethingDeleted:int = False
 		local toRemove:TNewsEvent[]
 
-		For local newsEvent:TNewsEvent = eachin managedNewsEvents.Values()
+		For local newsEvent:TNewsEvent = eachin newsEvents.Values()
 			'only interested in a specific genre?
 			if genre <> -1 and newsEvent.GetGenre() <> genre then continue
 
@@ -225,7 +219,7 @@ Type TNewsEventCollection
 		'delete/modify in an extra step - this approach skips creation
 		'of a map-copy just to avoid concurrent modification
 		For local n:TNewsEvent = Eachin toRemove
-			RemoveManaged(n)
+			Remove(n)
 		Next
 
 
@@ -258,7 +252,7 @@ Type TNewsEventCollection
 
 		if not _followingNewsEvents[genre+1]
 			_followingNewsEvents[genre+1] = CreateList()
-			For local event:TNewsEvent = EachIn managedNewsEvents.Values()
+			For local event:TNewsEvent = EachIn newsEvents.Values()
 				if event.newsType <> TVTNewsType.FollowingNews then continue
 				'only interested in a specific genre?
 				if genre <> -1 and event.GetGenre() <> genre then continue
@@ -277,7 +271,7 @@ Type TNewsEventCollection
 
 		if not _upcomingNewsEvents[genre+1]
 			_upcomingNewsEvents[genre+1] = CreateList()
-			For local event:TNewsEvent = EachIn managedNewsEvents.Values()
+			For local event:TNewsEvent = EachIn newsEvents.Values()
 				'skip events already happened or not happened at all (-> "-1")
 				if event.HasHappened() or event.happenedTime = -1 then continue
 				'only interested in a specific genre?
@@ -305,7 +299,7 @@ Type TNewsEventCollection
 				AddHappenedEvent(news)
 
 				'remove from managed ones
-				RemoveManaged(news)
+				Remove(news)
 			endif
 		endif
 
