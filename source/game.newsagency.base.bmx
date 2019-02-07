@@ -598,13 +598,12 @@ Type TNewsAgency
 	'helper to get a movie which can be used for a news
 	Method _GetAnnouncableProgrammeLicence:TProgrammeLicence()
 		'filter to entries we need
-		Local resultList:TList = CreateList()
-		For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().singles
-			'ignore collection and episodes (which should not be in that list)
-			If Not licence.getData() Then Continue
-			'only announce movies...
-			If not licence.IsSingle() Then Continue
-
+		Local candidates:TProgrammeLicence[] = new TProgrammeLicence[20]
+		Local candidatesAdded:int = 0
+		'series,collections,movies but no episodes/collection entries
+		For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection()._GetParentLicences().Values()
+			'must be in production!
+			If not licence.GetData().IsInProduction() then continue
 			'ignore if filtered out
 			If licence.IsOwned() Then Continue
 			'ignore already announced movies
@@ -612,9 +611,13 @@ Type TNewsAgency
 			'ignore unreleased if outside the given filter
 			If Not licence.GetData().ignoreUnreleasedProgrammes And licence.getData().GetYear() < TProgrammeData._filterReleaseDateStart Or licence.getData().GetYear() > TProgrammeData._filterReleaseDateEnd Then Continue
 
-			If licence.GetData().IsInProduction() then resultList.addLast(licence)
+			if candidates.length >= candidatesAdded then candidates = candidates[.. candidates.length + 20]
+			candidates[candidatesAdded] = licence
+			candidatesAdded :+ 1
 		Next
-		If resultList.count() > 0 Then Return GetProgrammeLicenceCollection().GetRandomFromList(resultList)
+		if candidates.length > candidatesAdded then candidates = candidates[.. candidatesAdded]
+
+		If candidates.length > 0 Then Return GetProgrammeLicenceCollection().GetRandomFromArray(candidates)
 
 		Return Null
 	End Method

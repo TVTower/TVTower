@@ -836,7 +836,7 @@ Type TApp
 						local foundAuction:int = 0
 						local foundSkipped:int = 0
 						local skippedFilterCount:int = 0
-						For local p:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences
+						For local p:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences.Values()
 							if p.IsEpisode() then continue
 							if not p.IsReleased() then continue
 							if p.IsSeries() then continue

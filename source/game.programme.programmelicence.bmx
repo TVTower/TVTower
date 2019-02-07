@@ -23,14 +23,18 @@ Import "common.misc.datasheet.bmx"
 
 Type TProgrammeLicenceCollection
 	'holding all programme licences
-	Field licences:TList = CreateList()
+	Field licences:TIntMap = new TIntMap
 	'holding only licences of special packages containing multiple
 	'movies/series
-	Field collections:TList	= CreateList()
+	Field collections:TIntMap = new TIntMap
 	'holding only single licences (movies, one-time-events)
-	Field singles:TList = CreateList()
+	Field singles:TIntMap = new TIntMap
 	'holding only series licences
-	Field series:TList = CreateList()
+	Field series:TIntMap = new TIntMap
+
+	'cache for faster access
+	Field _parentLicences:TIntMap = new TIntMap {nosave}
+	Field _licencesGUID:TMap = new TMap {nosave}
 
 	Global _instance:TProgrammeLicenceCollection
 
@@ -47,26 +51,29 @@ Type TProgrammeLicenceCollection
 		singles.Clear()
 		series.Clear()
 
+		_licencesGUID = null
+		_parentLicences = null
+
 		return self
 	End Method
 
 
 	Method PrintLicences:int()
-		print "--------- singles: "+singles.Count()
-		For local single:TProgrammeLicence = Eachin singles
+		print "--------- singles: " '+singles.GetCount()
+		For local single:TProgrammeLicence = Eachin singles.Values()
 			print single.GetTitle() + "   [owner: "+single.owner+"]"
 		Next
 		print "---------"
-		print "--------- series: "+series.Count()
-		For local serie:TProgrammeLicence = Eachin series
+		print "--------- series: " '+series.GetCount()
+		For local serie:TProgrammeLicence = Eachin series.Values()
 			print serie.GetTitle() + "   [owner: "+serie.owner+"]"
 			For local episode:TProgrammeLicence = Eachin serie.subLicences
 				print "'-- "+episode.GetTitle() + "   [owner: "+episode.owner+"]"
 			Next
 		Next
 		print "---------"
-		print "--------- collections: "+collections.Count()
-		For local collection:TProgrammeLicence = Eachin collections
+		print "--------- collections: " '+collections.Count()
+		For local collection:TProgrammeLicence = Eachin collections.Values()
 			print collection.GetTitle() + "   [owner: "+collection.owner+"]"
 			For local episode:TProgrammeLicence = Eachin collection.subLicences
 				print "'-- "+episode.GetTitle() + "   [owner: "+episode.owner+"]"
@@ -78,9 +85,10 @@ Type TProgrammeLicenceCollection
 
 	'add a licence
 	Method Add:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
-		if skipDuplicates and licences.contains(licence) then return False
+		if skipDuplicates and licences.contains(licence.GetID()) then return False
 
-		licences.AddLast(licence)
+		licences.Insert(licence.GetID(), licence)
+		_GetLicencesGUID().Insert(licence.GetGUID(), licence)
 
 		EventManager.triggerEvent( TEventSimple.Create("ProgrammeLicenceCollection.onAddLicence", null, self, licence) )
 		return True
@@ -88,13 +96,17 @@ Type TProgrammeLicenceCollection
 
 
 	Method Remove:Int(licence:TProgrammeLicence)
-		return licences.Remove(licence)
+		if licences.Remove(licence.GetID())
+			_GetLicencesGUID().Remove(licence.GetGUID())
+			return True
+		endif
 	End Method
 
 
 	'checks if the licences list contains the given licence
 	Method Contains:Int(licence:TProgrammeLicence)
-		return licences.contains(licence)
+		if not licence then return False
+		return licences.contains(licence.GetID())
 	End Method
 
 
@@ -103,20 +115,22 @@ Type TProgrammeLicenceCollection
 		'all licences should be listed in the "all-licences-list"
 		if not Add(licence, skipDuplicates) then return False
 
-		singles.AddLast(licence)
+		singles.Insert(licence.GetID(), licence)
+
 		return True
 	End Method
 
 
 	Method RemoveSingle:Int(licence:TProgrammeLicence)
 		Remove(licence)
-		singles.Remove(licence)
+		singles.Remove(licence.GetID())
 	End Method
 
 
 	'checks if the singles list contains the given licence
 	Method ContainsSingle:Int(licence:TProgrammeLicence)
-		return singles.contains(licence)
+		if not licence then return False
+		return singles.contains(licence.GetID())
 	End Method
 
 
@@ -125,20 +139,22 @@ Type TProgrammeLicenceCollection
 		'all licences should be listed in the "all-licences-list"
 		if not Add(licence, skipDuplicates) then return False
 
-		series.AddLast(licence)
+		series.Insert(licence.GetID(), licence)
+
 		return True
 	End Method
 
 
 	Method RemoveSeries:Int(licence:TProgrammeLicence)
 		Remove(licence)
-		series.Remove(licence)
+		return series.Remove(licence.GetID())
 	End Method
 
 
 	'checks if the series list contains the given licence
 	Method ContainsSeries:Int(licence:TProgrammeLicence)
-		return series.contains(licence)
+		if not licence then return False
+		return series.contains(licence.GetID())
 	End Method
 
 
@@ -170,20 +186,22 @@ Type TProgrammeLicenceCollection
 		'all licences should be listed in the "all-licences-list"
 		if not Add(licence, skipDuplicates) then return False
 
-		collections.AddLast(licence)
+		collections.Insert(licence.GetID(), licence)
+
 		return True
 	End Method
 
 
 	'checks if the collection list contains the given licence
 	Method ContainsCollection:Int(licence:TProgrammeLicence)
-		return collections.contains(licence)
+		if not licence then return False
+		return collections.contains(licence.GetID())
 	End Method
 
 
 	Method RemoveCollection:Int(licence:TProgrammeLicence)
 		Remove(licence)
-		collections.Remove(licence)
+		return collections.Remove(licence.GetID())
 	End Method
 
 
@@ -250,10 +268,10 @@ Type TProgrammeLicenceCollection
 	End Method
 
 
-	'returns the list to use for the given type
+	'returns the id-map to use for the given type
 	'this is just important for "random" access as we could
 	'also just access "progList" in all cases...
-	Method _GetList:TList(programmeLicenceType:int=0)
+	Method _GetMap:TIntMap(programmeLicenceType:int=0)
 		Select programmeLicenceType
 			case TVTProgrammeLicenceType.SINGLE
 				return singles
@@ -264,51 +282,6 @@ Type TProgrammeLicenceCollection
 			default
 				return licences
 		End Select
-	End Method
-
-
-	Global warnedEmptyRandomFromList:int = False
-	Method GetRandomFromList:TProgrammeLicence(_list:TList)
-		local result:TProgrammeLicence[] = GetRandomsFromList(_list, 1)
-		if result and result.length > 0 then return result[0]
-
-		if not warnedEmptyRandomFromList
-			TLogger.log("TProgrammeLicence.GetRandomFromList()", "list is empty (incorrect filter or not enough available licences?)", LOG_DEBUG | LOG_WARNING | LOG_DEV, TRUE)
-			warnedEmptyRandomFromList = true
-		endif
-		Return Null
-	End Method
-
-
-	Global warnedEmptyRandomsFromList:int = False
-	Method GetRandomsFromList:TProgrammeLicence[](_list:TList, amount:int = 1)
-		If _list = Null Then Return Null
-
-		'avoid complicated stuff if there is only 1 entry required
-		If amount = 1 and _list.count() > 0
-			Local Licence:TProgrammeLicence = TProgrammeLicence(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
-			If Licence then return [Licence]
-		'avoid complicated stuff if there is only all entries are required
-		ElseIf _list.count() = amount
-			local result:TProgrammeLicence[] = new TProgrammeLicence[amount]
-			For local i:int = 0 until amount
-				result[i] = TProgrammeLicence(_list.ValueAtIndex(i))
-			Next
-		ElseIf _list.count() >= amount
-			local result:TProgrammeLicence[] = new TProgrammeLicence[amount]
-			'to avoid returning duplicate entries we use RandRangeArray() which
-			'returns a non-colliding set of numbers in the given range
-			local randomNumbers:int[] = RandRangeArray(0, _list.count()-1, amount)
-			For local i:int = 0 until randomNumbers.length
-				result[i] = TProgrammeLicence(_list.ValueAtIndex(randomNumbers[i]))
-			Next
-			return result
-		EndIf
-		if not warnedEmptyRandomsFromList
-			TLogger.log("TProgrammeLicence.GetRandomsFromList()", "list is empty (incorrect filter or not enough available licences?)", LOG_DEBUG | LOG_WARNING | LOG_DEV, TRUE)
-			warnedEmptyRandomsFromList = true
-		endif
-		Return Null
 	End Method
 
 
@@ -354,24 +327,13 @@ Type TProgrammeLicenceCollection
 	End Method
 
 
-	Method Get:TProgrammeLicence(id:Int, programmeLicenceType:int=0)
-		local list:TList = _GetList(programmeLicenceType)
-		local licence:TProgrammeLicence = null
-
-		For Local i:Int = 0 To list.Count() - 1
-			Licence = TProgrammeLicence(list.ValueAtIndex(i))
-			if Licence and Licence.id = id Then Return Licence
-		Next
-		Return Null
+	Method Get:TProgrammeLicence(id:Int)
+		return TProgrammeLicence(licences.ValueForKey(id))
 	End Method
 
 
 	Method GetByGUID:TProgrammeLicence(GUID:String)
-		'TODO: change to tmap if to slow
-		For local licence:TProgrammeLicence = EachIn licences
-			if licence.GetGUID() = GUID then return licence
-		Next
-		Return Null
+		return TProgrammeLicence(_GetLicencesGUID().ValueForKey(GUID))
 	End Method
 
 
@@ -382,7 +344,7 @@ Type TProgrammeLicenceCollection
 		GUID = GUID.ToLower()
 
 		'find first hit
-		For local licence:TProgrammeLicence = EachIn licences
+		For local licence:TProgrammeLicence = EachIn _GetLicencesGUID().Values()
 			if licence.GetGUID().ToLower().Find(GUID) >= 0
 				return licence
 			endif
@@ -392,69 +354,10 @@ Type TProgrammeLicenceCollection
 	End Method
 
 
-	Method GetRandom:TProgrammeLicence(programmeLicenceType:int=0, includeEpisodes:int=FALSE)
-		'filter to entries we need
-		Local Licence:TProgrammeLicence
-		Local sourceList:TList = _GetList(programmeLicenceType)
-		Local resultList:TList = CreateList()
-
-		For Licence = EachIn sourceList
-			'ignore if filtered out
-			If Licence.IsOwned() Then continue
-			'ignoring episodes
-			If not includeEpisodes and Licence.isEpisode() Then continue
-			If not includeEpisodes and Licence.isCollectionElement() Then continue
-
-			'if available (unbought, released..), add it to candidates list
-			resultList.addLast(Licence)
-		Next
-
-		Return GetRandomFromList(resultList)
-	End Method
-
-
-	Method GetRandomWithGenre:TProgrammeLicence(genre:Int=0, programmeLicenceType:int=0, includeEpisodes:int=FALSE)
-		Local Licence:TProgrammeLicence
-		Local sourceList:TList = _GetList(programmeLicenceType)
-		Local resultList:TList = CreateList()
-
-		For Licence = EachIn sourceList
-			'ignore if filtered out
-			If Licence.IsOwned() Then continue
-			'ignoring episodes
-			If not includeEpisodes and Licence.isEpisode() Then continue
-			If not includeEpisodes and Licence.isCollectionElement() Then continue
-
-			'if available (unbought, released..), add it to candidates list
-			If Licence.isSingle() or Licence.isEpisode() or Licence.isCollectionElement()
-				if Licence.GetGenre() = genre Then resultList.addLast(Licence)
-			else
-				local foundGenreInSubLicence:int = FALSE
-				for local subLicence:TProgrammeLicence = eachin Licence.subLicences
-					if foundGenreInSubLicence then continue
-					if subLicence.GetGenre() = genre
-						resultList.addLast(Licence)
-						foundGenreInSubLicence = TRUE
-					endif
-				Next
-			endif
-		Next
-		Return GetRandomFromList(resultList)
-	End Method
-
-
-	Method GetRandomByFilter:TProgrammeLicence(filter:TProgrammeLicenceFilter)
-		local results:TProgrammeLicence[] = GetRandomsByFilter(filter, 1)
-		if results and results.length > 0 then return results[0]
-		return null
-	End Method
-
-
-	Method GetRandomsByFilter:TProgrammeLicence[](filter:TProgrammeLicenceFilter, amount:int = 1)
-		Local Licence:TProgrammeLicence
-		Local resultList:TList = CreateList()
-
-		For Licence = EachIn licences
+	Method GetByFilter:TProgrammeLicence[](filter:TProgrammeLicenceFilter)
+		local result:TProgrammeLicence[] = new TProgrammeLicence[20]
+		local added:int = 0
+		For local Licence:TProgrammeLicence = EachIn licences.Values()
 			'ignore already used
 			If Licence.IsOwned() Then continue
 			'ignore episodes
@@ -465,9 +368,79 @@ Type TProgrammeLicenceCollection
 			if not filter.DoesFilter(licence) then continue
 
 			'add it to candidates list
-			resultList.addLast(Licence)
+			if result.length >= added then result = result[.. result.length + 20]
+			result[added] = Licence
+
+			added :+ 1
 		Next
-		Return GetRandomsFromList(resultList, amount)
+		if result.length > added then result = result[.. added]
+		return result
+	End Method
+
+
+	Method GetRandom:TProgrammeLicence(programmeLicenceType:int=0, includeEpisodes:int=FALSE)
+		'filter to entries we need
+		Local Licence:TProgrammeLicence
+		Local sourceMap:TIntMap = _GetMap(programmeLicenceType)
+		Local candidates:TProgrammeLicence[] = new TProgrammeLicence[20]
+		Local candidatesAdded:int = 0
+
+		For Licence = EachIn sourceMap.Values()
+			'ignore if filtered out
+			If Licence.IsOwned() Then continue
+			'ignoring episodes
+			If not includeEpisodes and Licence.isEpisode() Then continue
+			If not includeEpisodes and Licence.isCollectionElement() Then continue
+
+			'if available (unbought, released..), add it to candidates list
+			if candidates.length >= candidatesAdded then candidates = candidates[.. candidates.length + 20]
+			candidates[candidatesAdded] = Licence
+
+			candidatesAdded :+ 1
+		Next
+		if candidates.length > candidatesAdded then candidates = candidates[.. candidatesAdded]
+
+		Return GetRandomFromArray(candidates)
+	End Method
+
+
+	Method GetRandomByFilter:TProgrammeLicence(filter:TProgrammeLicenceFilter, useLicences:TProgrammeLicence[] = null)
+		local results:TProgrammeLicence[] = GetRandomsByFilter(filter, 1, useLicences)
+		if results and results.length > 0 then return results[0]
+		return null
+	End Method
+
+
+	Method GetRandomsByFilter:TProgrammeLicence[](filter:TProgrammeLicenceFilter, amount:int = 1, useLicences:TProgrammeLicence[] = null)
+		if not useLicences then useLicences = GetByFilter(filter)
+
+		Return GetRandomsFromArray(useLicences, amount)
+	End Method
+
+
+	'Cache generators
+	Method _GetLicencesGUID:TMap()
+		if not _licencesGUID
+			_licencesGUID = new TMap
+			for local licence:TProgrammeLicence = EachIn licences.Values()
+				_licencesGUID.Insert(licence.GetGUID(), licence)
+			next
+		endif
+		return _licencesGUID
+	End Method
+
+
+	Method _GetParentLicences:TIntMap()
+		if not _parentLicences
+			_parentLicences = new TIntMap
+			for local licence:TProgrammeLicence = EachIn licences.Values()
+				if licence.isEpisode() then continue
+				if licence.isCollectionElement() then continue
+
+				_parentLicences.Insert(licence.GetID(), licence)
+			next
+		endif
+		return _parentLicences
 	End Method
 End Type
 
