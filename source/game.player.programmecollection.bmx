@@ -37,7 +37,7 @@ Type TPlayerProgrammeCollectionCollection
 		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSaveGameLoad ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "StationMap.onRecalculateAudienceSum", onRecalculateStationMapAudienceSum ) ]
 	End Method
-	
+
 
 	Method Set:int(playerID:int, plan:TPlayerProgrammeCollection)
 		if playerID <= 0 then return False
@@ -106,7 +106,7 @@ Type TPlayerProgrammeCollectionCollection
 '				print "   after: " + licence.data.GetTrailerMod(owner, True).ToStringPercentage(2)
 			endif
 		Next
-			
+
 	End Function
 End Type
 
@@ -167,7 +167,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method Initialize:Int()
 		'invalidate
 		_programmeLicences = null
-		
+
 		singleLicences.Clear()
 		seriesLicences.Clear()
 		adContracts.Clear()
@@ -178,6 +178,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		suitcaseProgrammeLicences.Clear()
 		suitcaseAdContracts.Clear()
 		justAddedProgrammeLicences.Clear()
+		news.Clear()
 
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
@@ -191,7 +192,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		'invalidate
 		_programmeLicences = null
 	End Method
-	
+
 
 	Method GetSingleLicenceCount:Int() {_exposeToLua}
 		Return singleLicences.count()
@@ -249,7 +250,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		Next
 		return result
 	End Method
-	
+
 
 	'returns a freshly created broadcast material
 	'=====
@@ -285,7 +286,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if TAdContract(materialSource) then return TVTBroadcastMaterialType.ADVERTISEMENT
 		if TNewsShow(materialSource) then return TVTBroadcastMaterialType.NEWSSHOW
 		if TNews(materialSource) then return TVTBroadcastMaterialType.NEWS
-		
+
 		return TVTBroadcastMaterialType.UNKNOWN
 	End Method
 
@@ -308,7 +309,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		If not contract then return False
 		if adContracts.contains(contract) then return False
 
-		if contract.sign(owner, -1, forceAdd)		
+		if contract.sign(owner, -1, forceAdd)
 			adContracts.AddLast(contract)
 			'if stored in suitcase ...remove it from there as we signed it
 			suitcaseAdContracts.Remove(contract)
@@ -378,7 +379,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			if not RemoveProgrammeLicenceFromSuitcase( l )
 				TLogger.Log("ReaddProgrammeLicencesFromSuitcase", "Failed to Remove licence ~q"+ l.GetTitle()+"~q ["+l.GetGUID()+"] from suitcase.", LOG_ERROR | LOG_DEBUG)
 			endif
-		Next	
+		Next
 		return TRUE
 	End Method
 
@@ -394,7 +395,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			TLogger.Log("AddProgrammeLicenceToSuitcase", "Adding of sublicences to suitcase is not allowed", LOG_DEBUG)
 			return FALSE
 		endif
-	
+
 		'do not add if already "full"
 		if suitcaseProgrammeLicences.count() >= GameRules.maxProgrammeLicencesInSuitcase
 			TLogger.Log("AddProgrammeLicenceToSuitcase", "Not enough space to add licence to suitcase", LOG_DEBUG)
@@ -532,7 +533,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		return TRUE
 	End Method
 
-	
+
 	'=== SCRIPTS  ===
 
 	Method HasScriptInStudio:int(script:TScript)
@@ -570,7 +571,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		endif
 
 		return TRUE
-	End Method	
+	End Method
 
 
 	Method MoveScriptFromSuitcaseToArchive:int(script:TScript)
@@ -662,7 +663,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		studioScripts.remove(script)
 
 		suitcaseScripts.AddLast(script)
-	
+
 		'emit an event so eg. network can recognize the change
 		if fireEvents
 			EventManager.triggerEvent(TEventSimple.Create("programmecollection.addScriptToSuitcase", new TData.add("script", script), self))
@@ -670,7 +671,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		endif
 
 		return TRUE
-	End Method	
+	End Method
 
 
 
@@ -705,7 +706,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'sold or "destroyed" script, so destroy its production concepts too
 		DestroyProductionConceptsByScript(script)
-		
+
 		scripts.remove(script)
 		studioScripts.remove(script)
 		'remove from suitcase too!
@@ -743,14 +744,14 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		return TRUE
 	End Method
 
-	
+
 	'=== PRODUCTION CONCEPTS  ===
 	Method CanCreateProductionConcept:Int(script:TScript) {_exposeToLua}
 		'do not allow more concepts than the rules say!
 		return GetProductionConceptCollection().GetProductionConceptsByScript(script).length  < GameRules.maxProductionConceptsPerScript
 	End Method
 
-	
+
 	Method CreateProductionConcept:Int(script:TScript)
 		if not script then return False
 		if not CanCreateProductionConcept(script)
@@ -759,7 +760,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 			return False
 		endif
-		
+
 		AddProductionConcept( new TProductionConcept.Initialize(owner, script) )
 		return True
 	End Method
@@ -794,7 +795,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		return True
 	End Method
 
-	
+
 	'remove a production conept from the collection
 	'ATTENTION: it is then still in "ProductionConceptCollection" !
 	Method RemoveProductionConcept:Int(productionConcept:TProductionConcept)
@@ -806,7 +807,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		return True
 	End Method
-	
+
 
 	'destroy all production concepts of a given script
 	'HINT: they are also removed from ProductionConceptCollection !
@@ -971,7 +972,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if includeLicenceTypes & TVTProgrammeLicenceType.SINGLE then lists :+ [singleLicences]
 		if includeLicenceTypes & TVTProgrammeLicenceType.SERIES then lists :+ [seriesLicences]
 		if includeLicenceTypes & TVTProgrammeLicenceType.COLLECTION then lists :+ [collectionLicences]
-	
+
 		if not filter
 			For local l:TList = EachIn lists
 				amount :+ l.Count()
@@ -997,7 +998,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if includeLicenceTypes & TVTProgrammeLicenceType.SINGLE then lists :+ [singleLicences]
 		if includeLicenceTypes & TVTProgrammeLicenceType.SERIES then lists :+ [seriesLicences]
 		if includeLicenceTypes & TVTProgrammeLicenceType.COLLECTION then lists :+ [collectionLicences]
-	
+
 		For local l:TList = EachIn lists
 			For local licence:TProgrammeLicence = eachin l
 				For local genre:int = eachin genres
@@ -1023,7 +1024,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		return False
 	End Method
 
-	
+
 	Method HasProgrammeLicence:int(licence:TProgrammeLicence) {_exposeToLua}
 		return GetProgrammeLicences().contains(licence)
 	End Method
@@ -1066,7 +1067,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		Next
 		Return Null
 	End Method
-	
+
 
 	Method GetAdContract:TAdContract(id:Int) {_exposeToLua}
 		For Local contract:TAdContract=EachIn adContracts
@@ -1157,7 +1158,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method GetAdContractsArray:TAdContract[]() {_exposeToLua}
 		Return TAdContract[](adContracts.toArray())
 	End Method
-	
+
 
 	Method GetAdContracts:TList() {_exposeToLua}
 		Return adContracts
@@ -1194,7 +1195,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	'returns the news with the given GUID or Null if not found 
+	'returns the news with the given GUID or Null if not found
 	Method GetNews:TNews(GUID:string) {_exposeToLua}
 		For Local obj:TNews = EachIn news
 			If obj.GetGUID() = GUID Then Return obj

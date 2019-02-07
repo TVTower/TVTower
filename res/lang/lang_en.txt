@@ -1074,6 +1074,9 @@ AI_WILL_TAKE_OVER_THIS_PLAYER = AI will take over this player.
 GENDER_MEN = Men
 GENDER_WOMEN = Women
 GENDER_ALL = All
+GENDER_MEN_SHORT = M
+GENDER_WOMEN_SHORT = W
+
 
 LIVE_ON_TAPE = Live on tape
 ALL_MATCHES_FINISHED = All matches finished
