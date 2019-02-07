@@ -453,6 +453,12 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'      So koennte auch bei alten Spielern noch auf die Historie
 		'      zurueckgegriffen werden
 
+		'=== AI DATA ===
+		'reset temporary data of the previous AI
+		if player.aiData
+			player.aiData = new TData
+			TLogger.Log("ResetPlayer()", "Removed aiData", LOG_DEBUG)
+		endif
 
 		'=== SELL ALL PROGRAMMES ===
 		'sell forced too (so also programmed ones)
