@@ -571,11 +571,19 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			player.SetNewsAbonnementDaysMax(i, 0)
 			player.SetNewsAbonnement(i, 0)
 		Next
+		TLogger.Log("ResetPlayer()", "Reset news abonnements", LOG_DEBUG)
 
 
-
-		'=== REMOVE DELAYED NEWS ===
+		'=== REMOVE NEWS ===
+		'delayed ones
 		GetNewsAgency().ResetDelayedList(playerID)
+		'"available" ones
+		'albeit the programmecollection gets replaced by a new one afterwards
+		'this might be useful as RemoveNews() emits events
+		For local news:TNews = EachIn programmeCollection.news.copy()
+			programmeCollection.RemoveNews(news)
+		Next
+		TLogger.Log("ResetPlayer()", "Removed news", LOG_DEBUG)
 
 
 
