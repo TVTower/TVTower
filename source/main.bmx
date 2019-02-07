@@ -4165,10 +4165,11 @@ Type GameEvents
 	Function onChatAddEntryForAI:Int(triggerEvent:TEventBase)
 		Local text:String = triggerEvent.GetData().GetString("text")
 		Local senderID:int = triggerEvent.GetData().GetInt("senderID")
+		Local channels:int = triggerEvent.GetData().GetInt("channels")
 
 		local commandType:int = TGUIChat.GetCommandFromText(text)
 		local commandText:string = TGUIChat.GetCommandStringFromText(text)
-print "SenderID=" + senderID +"   commandType/Text="+commandType + "/"+commandText + "   text="+text
+		'print "SenderID=" + senderID +"   commandType/Text="+commandType + "/"+commandText + "   text="+text
 
 		'=== PRIVATE / WHISPER ===
 		'-> send to AI ?
@@ -4177,16 +4178,13 @@ print "SenderID=" + senderID +"   commandType/Text="+commandType + "/"+commandTe
 			local receiver:string = message.split(" ")[0]
 			local receiverID:int = int(receiver)
 			local playerBase:TPlayerBase
-print "PRIVATCHAT  receiver="+receiver+"  id="+receiverID
 			if string(receiverID) <> receiver > 9 'some odd number containing thing or playername?
-print "  ... searching player"
 				For Local pBase:TPlayerBase = EachIn GetPlayerBaseCollection().players
 					if pBase.name.ToLower() = receiver.ToLower()
 						message = message[receiver.length+1 ..] 'remove name/id
 						receiverID = pBase.playerID
 						receiver = pBase.name
 						playerBase = pBase
-print "found target player: " + receiver+" id="+receiverID
 						exit
 					endif
 				Next
@@ -4198,21 +4196,25 @@ print "found target player: " + receiver+" id="+receiverID
 				endif
 			endif
 			if playerBase and TPlayer(playerBase).isLocalAI()
-print "inform him: " + message
 				TPlayer(playerBase).PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_WHISPER)
 			endif
 		endif
 
 		'public chat
 		if commandType = CHAT_COMMAND_NONE
-			local channels:int = TGUIChat.GetChannelsFromText(text)
-			local message:string = TGUIChat.GetPayloadFromText(text)
-			'inform local AI
-			For Local player:TPLayer = EachIn GetPlayerCollection().players
-				if player.isLocalAI()
-					player.PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_NONE, channels)
-				endif
-			Next
+			'ignore chats starting with a "command" (maybe misspelled a whisper)
+			'also ignore system channel messages
+			if text.trim().Find("/") <> 0 and (channels & CHAT_CHANNEL_SYSTEM) = 0 'or text.trim().Find("[DEV]") = 0
+				'local channels:int = TGUIChat.GetChannelsFromText(text)
+				local message:string = TGUIChat.GetPayloadFromText(text)
+
+				'inform local AI
+				For Local player:TPLayer = EachIn GetPlayerCollection().players
+					if player.isLocalAI()
+						player.PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_NONE, channels)
+					endif
+				Next
+			endif
 			return True
 		endif
 	End Function
