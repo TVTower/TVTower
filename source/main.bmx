@@ -1855,6 +1855,7 @@ Type TGameState
 	Field _AwardCollection:TAwardCollection = Null
 	Field _NewsEventSportCollection:TNewsEventSportCollection = Null
 
+	Field _GameModifierManager:TGameModifierManager = null
 	Field _GameInformationCollection:TGameInformationCollection = Null
 	Field _IngameHelpWindowCollection:TIngameHelpWindowCollection = Null
 
@@ -1940,6 +1941,7 @@ Type TGameState
 		GetNewsGenreDefinitionCollection().Initialize()
 		GetMovieGenreDefinitionCollection().Initialize()
 		AudienceManager.Initialize()
+		GetGameModifierManager().Initialize()
 
 		GetAdContractBaseCollection().Initialize()
 		GetAdContractCollection().Initialize()
@@ -2016,6 +2018,7 @@ Type TGameState
 
 		_Assign(_AudienceManager, AudienceManager, "AudienceManager", MODE_LOAD)
 		_Assign(_ProductionManager, TProductionManager._instance, "ProductionManager", MODE_LOAD)
+		_Assign(_GameModifierManager, TGameModifierManager._instance, "GameModifierManager", MODE_LOAD)
 
 		_Assign(_AdContractCollection, TAdContractCollection._instance, "AdContractCollection", MODE_LOAD)
 		_Assign(_AdContractBaseCollection, TAdContractBaseCollection._instance, "AdContractBaseCollection", MODE_LOAD)
@@ -2142,6 +2145,7 @@ Type TGameState
 
 		_Assign(AudienceManager, _AudienceManager, "AudienceManager", MODE_SAVE)
 		_Assign(TProductionManager._instance, _ProductionManager, "ProductionManager", MODE_SAVE)
+		_Assign(TGameModifierManager._instance, _GameModifierManager, "GameModifierManager", MODE_SAVE)
 
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
 		_Assign(TElevator._instance, _Elevator, "Elevator", MODE_SAVE)
