@@ -3,15 +3,24 @@ Import Brl.Map
 Import "Dig/base.util.mersenne.bmx"
 
 Type TGameObjectCollection
-	Field entries:TMap = CreateMap()
+	'stores the entries referenced by ID
+	Field entriesID:TIntMap = new TIntMap
+	'stores the entries referenced by GUID
+	Field entries:TMap = new TMap
 	Field entriesCount:int = -1
 	Field _entriesMapEnumerator:TNodeEnumerator {nosave}
 
 	Method Initialize:TGameObjectCollection()
 		entries.Clear()
+		entriesID.Clear()
 		entriesCount = -1
 
 		return self
+	End Method
+
+
+	Method GetByID:TGameObject(ID:Int)
+		Return TGameObject(entriesID.ValueForKey(ID))
 	End Method
 
 
@@ -23,7 +32,7 @@ Type TGameObjectCollection
 	Method SearchByPartialGUID:TGameObject(GUID:String)
 		'skip searching if there is nothing to search
 		if GUID.trim() = "" then return Null
-		
+
 		GUID = GUID.ToLower()
 
 		'find first hit
@@ -38,17 +47,17 @@ Type TGameObjectCollection
 
 
 	Method GetRandom:TGameObject()
-		local array:TGameObject[]
-		'create a full array containing all elements
-		For local obj:TGameObject = EachIn entries.Values()
-			array :+ [obj]
-		Next
-		if array.length = 0 then return Null
-		if array.length = 1 then return array[0]
+		if GetCount() = 0 then return Null
 
-		Return array[(randRange(0, array.length-1))]
+		local index:int = randRange(0, GetCount() - 1)
+		local pos:int = 0
+		For local obj:TGameObject = EachIn entries.Values()
+			if pos = index then return obj
+			pos :+ 1
+		Next
+		return Null
 	End Method
-	
+
 
 	Method GetCount:Int()
 		if entriesCount >= 0 then return entriesCount
@@ -63,8 +72,9 @@ Type TGameObjectCollection
 
 	Method Add:int(obj:TGameObject)
 		if not obj then return False
-		
+
 		entries.Insert(obj.GetGUID(), obj)
+		entriesID.Insert(obj.GetID(), obj)
 		'invalidate count
 		entriesCount = -1
 
@@ -74,6 +84,8 @@ Type TGameObjectCollection
 
 	Method Remove:int(obj:TGameObject)
 		if obj.GetGuid() and entries.Remove(obj.GetGUID())
+			entriesID.Remove(obj.GetID())
+
 			'invalidate count
 			entriesCount = -1
 
@@ -84,12 +96,34 @@ Type TGameObjectCollection
 	End Method
 
 
-	Method RemoveByGuid:int(guid:string)
-		if guid and entries.Remove(guid)
-			'invalidate count
-			entriesCount = -1
+	Method RemoveByID:int(ID:int)
+		if ID > 0
+			local entry:TGameObject = TGameObject(entriesID.ValueForKey(ID))
+			if entry and entries.Remove(entry)
+				entries.Remove(entry.GetGUID())
 
-			return True
+				'invalidate count
+				entriesCount = -1
+
+				return True
+			endif
+		endif
+
+		return False
+	End Method
+
+
+	Method RemoveByGUID:int(guid:string)
+		if guid
+			local entry:TGameObject = TGameObject(entries.ValueForKey(guid))
+			if entry and entries.Remove(guid)
+				entriesID.Remove(entry.GetID())
+
+				'invalidate count
+				entriesCount = -1
+
+				return True
+			endif
 		endif
 
 		return False
@@ -105,7 +139,7 @@ Type TGameObjectCollection
 		'_iteratorPos = 0
 		Return Self
 	End Method
-	
+
 
 	'checks if there is another element
 	Method HasNext:Int()
@@ -128,9 +162,15 @@ End Type
 
 
 Type TGameObject {_exposeToLua="selected"}
+	'simple numeric identifier for fast lookups
+	'IDs might differ between games
 	Field id:Int = 0
+	'complex textual identifier for complex lookups (partial searches
+	'etc)
+	'GUIDs can be made the same between games (adjust "GenerateGUID()")
 	Field GUID:String
 	Global LastID:Int = 0
+
 
 	Method New()
 		LastID:+1
@@ -153,7 +193,7 @@ Type TGameObject {_exposeToLua="selected"}
 		self.GUID = GUID
 	End Method
 
-	
+
 	Method GetID:Int() {_exposeToLua}
 		Return id
 	End Method

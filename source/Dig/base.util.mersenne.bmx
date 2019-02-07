@@ -191,3 +191,31 @@ Function RandRangeArray:int[](lo:int, hi:int, amount:int = 1)
 	Next
 	return result
 End Function
+
+
+'returns an array of random numbers (no repetitions)
+'as the costs of the pre-filling all indices are directly dependend of the
+'amount it is only useful for small amount values.
+Function RandRangeArray2:int[](lo:int, hi:int, amount:int = 1)
+	'if hi-lo does not contain enough possible candidates then limit
+	'amount to that
+	if hi - lo < amount then amount = hi - lo
+
+	Local all:int = hi - lo
+	Local indexes:Int[all]
+	Local iptr:Int Ptr = indexes
+	For Local i:Int = 0 Until all
+		iptr[i] = i
+	Next
+
+	Local result:int[] = new int[amount]
+	Local last:Int = all - 1
+	For Local c:Int = 0 Until amount
+		Local index:Int = RandRange(0, last)
+		result[c] = lo + iptr[index]
+
+		iptr[index] = iptr[last]
+		last :- 1
+	Next
+	return result
+End Function

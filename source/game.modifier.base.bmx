@@ -7,6 +7,7 @@ Rem
 		TGameModifierCondition_TimeLimit extends TGameModifierCondition
 EndRem
 SuperStrict
+Import Brl.Reflection
 Import "Dig/base.util.data.bmx"
 Import "Dig/base.util.mersenne.bmx"
 Import "game.world.worldtime.bmx"
@@ -230,7 +231,9 @@ Type TGameModifierBase
 
 
 	Method Copy:TGameModifierBase()
-		local clone:TGameModifierBase = new self
+		'deprecated
+		'local clone:TGameModifierBase = new self
+		local clone:TGameModifierBase = TGameModifierBase(TTypeId.ForObject(self).NewObject())
 		clone.CopyBasefrom(self)
 		return clone
 	End Method
