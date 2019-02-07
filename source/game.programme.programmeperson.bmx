@@ -649,6 +649,9 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 
 	Method SetExperience(job:int, value:int)
+		'limit experience
+		value = MathHelper.Clamp(value, 0, MAX_XP)
+
 		local jobIndex:int = TVTProgrammePersonJob.GetIndex(job)
 		if xp.length <= jobIndex then xp = xp[ .. jobIndex + 1]
 		xp[jobIndex] = value
@@ -671,7 +674,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 			for local jobXP:int = EachIn xp
 				if jobXP > 0
 					jobs :+ 1
-					xp[0] :+ 1
+					xp[0] :+ jobXP
 				endif
 			Next
 			if jobs > 0 then xp[0] :/ jobs
