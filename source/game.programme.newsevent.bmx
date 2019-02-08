@@ -23,10 +23,10 @@ Type TNewsEventCollection
 	Field newsEventsHistory:TNewsEvent[]
 	Field newsEventsHistoryIndex:int=0
 	'holding all currently happening/upcoming news events
-	'GUID->object
-	Field newsEvents:TMap = CreateMap()
 	'ID->object
-	Field newsEventsID:TIntMap = new TIntMap
+	Field newsEvents:TIntMap = new TIntMap
+	'GUID->object
+	Field newsEventsGUID:TMap = new TMap
 
 	'holding a number of "sethappened"-newsevents (for ordering)
 	Field nextNewsNumber:Long = 0
@@ -63,7 +63,7 @@ Type TNewsEventCollection
 		newsEventsHistoryIndex = 0
 
 		newsEvents.Clear()
-		newsEventsID.Clear()
+		newsEventsGUID.Clear()
 		_InvalidateCaches()
 
 		nextNewsNumber = 0
@@ -97,8 +97,8 @@ Type TNewsEventCollection
 	Method Add:int(obj:TNewsEvent)
 		'add to common maps
 		'special lists get filled when using their Getters
-		newsEvents.Insert(obj.GetGUID().ToLower(), obj)
-		newsEventsID.Insert(obj.GetID(), obj)
+		newsEventsGUID.Insert(obj.GetGUID().ToLower(), obj)
+		newsEvents.Insert(obj.GetID(), obj)
 
 		_InvalidateCaches()
 
@@ -131,8 +131,8 @@ Type TNewsEventCollection
 
 
 	Method Remove:int(obj:TNewsEvent)
-		newsEvents.Remove(obj.GetGUID().ToLower())
-		newsEventsID.Remove(obj.GetID())
+		newsEventsGUID.Remove(obj.GetGUID().ToLower())
+		newsEvents.Remove(obj.GetID())
 
 		_InvalidateCaches()
 
@@ -141,12 +141,12 @@ Type TNewsEventCollection
 
 
 	Method GetByID:TNewsEvent(ID:int)
-		Return TNewsEvent(newsEventsID.ValueForKey(ID))
+		Return TNewsEvent(newsEvents.ValueForKey(ID))
 	End Method
 
 
 	Method GetByGUID:TNewsEvent(GUID:String)
-		Return TNewsEvent(newsEvents.ValueForKey( GUID.ToLower() ))
+		Return TNewsEvent(newsEventsGUID.ValueForKey( GUID.ToLower() ))
 	End Method
 
 
@@ -158,7 +158,7 @@ Type TNewsEventCollection
 		GUID = GUID.ToLower()
 
 		'find first hit
-		Local node:TNode = newsEvents._FirstNode()
+		Local node:TNode = newsEventsGUID._FirstNode()
 		While node And node <> nilNode
 			if string(node._key).Find(GUID) >= 0
 				return TNewsEvent(node._value)
