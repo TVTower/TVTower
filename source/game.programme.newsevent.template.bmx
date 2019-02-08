@@ -18,15 +18,24 @@ Import "game.broadcast.genredefinition.news.bmx"
 
 
 Type TNewsEventTemplateCollection
-	'holding all news event templates ever created (for GetByGUID() )
-	Field allTemplates:TMap = new TMap
-	Field reuseableTemplates:TMap = new TMap
-	Field unusedTemplates:TMap = new TMap
+	'ID->object pairs
+	'holding all news event templates ever created (for GetByID() )
+	Field allTemplates:TIntMap = new TIntMap
+	Field reuseableTemplates:TIntMap = new TIntMap
+	Field unusedTemplates:TIntMap = new TIntMap
+	'TLowerString-GUID->object pairs
+	Field allTemplatesGUID:TMap = new TMap
 
 	'CACHES (eg. for random accesses)
+	'the *Count fields help to predefine an initial size of the arrays
+	'when refilling while nothing had changed meanwhile
 	Field _allCount:int = -1 {nosave}
-	Field _unusedInitialTemplates:TList[] {nosave}
-	Field _unusedAvailableInitialTemplates:TList[] {nosave}
+	Field _unusedInitialTemplates:TNewsEventTemplate[][] {nosave}
+	Field _unusedInitialTemplatesCount:int[] {nosave}
+	Field _unusedAvailableInitialTemplates:TNewsEventTemplate[][] {nosave}
+	Field _unusedAvailableInitialTemplatesCount:int[] {nosave}
+'	Field _unusedInitialTemplates:TList[] {nosave}
+'	Field _unusedAvailableInitialTemplates:TList[] {nosave}
 	Global _instance:TNewsEventTemplateCollection
 
 
@@ -41,6 +50,7 @@ Type TNewsEventTemplateCollection
 
 	Method Initialize:TNewsEventTemplateCollection()
 		allTemplates.Clear()
+		allTemplatesGUID.Clear()
 
 		unusedTemplates.Clear()
 		reuseableTemplates.Clear()
@@ -60,19 +70,39 @@ Type TNewsEventTemplateCollection
 
 
 	Method _InvalidateUnusedAvailableInitialTemplates()
-		_unusedAvailableInitialTemplates = New TList[TVTNewsGenre.count + 1]
+'		_unusedAvailableInitialTemplates = New TList[TVTNewsGenre.count + 1]
+		'I know no (vanilla compatible) way to reset an "array of arrays"
+		'_unusedAvailableInitialTemplates = New TNewsEventTemplate[TVTNewsGenre.count +1][0]
+
+		'so this will have to do
+		local empty:TNewsEventTemplate[][]
+		_unusedAvailableInitialTemplates = empty
+		_unusedAvailableInitialTemplates = _unusedAvailableInitialTemplates[.. TVTNewsGenre.count+1]
+
+		_unusedAvailableInitialTemplatesCount = New Int[TVTNewsGenre.count+1]
 	End Method
 
+
 	Method _InvalidateUnusedInitialTemplates()
-		_unusedInitialTemplates = New TList[TVTNewsGenre.count + 1]
+'		_unusedInitialTemplates = New TList[TVTNewsGenre.count + 1]
+		'I know no (vanilla compatible) way to reset an "array of arrays"
+		'_unusedInitialTemplates = New TNewsEventTemplate[TVTNewsGenre.count][]
+
+		'so this will have to do
+		local empty:TNewsEventTemplate[][]
+		_unusedInitialTemplates = empty
+		_unusedInitialTemplates = _unusedInitialTemplates[.. TVTNewsGenre.count+1]
+
+		_unusedInitialTemplatesCount = New Int[TVTNewsGenre.count+1]
 	End Method
 
 
 	Method Add:int(obj:TNewsEventTemplate)
 		'add to common maps
 		'special lists get filled when using their Getters
-		allTemplates.Insert(obj.GetLowerStringGUID(), obj)
-		unusedTemplates.Insert(obj.GetLowerStringGUID(), obj)
+		allTemplatesGUID.Insert(obj.GetLowerStringGUID(), obj)
+		allTemplates.Insert(obj.GetID(), obj)
+		unusedTemplates.Insert(obj.GetID(), obj)
 
 		_InvalidateCaches()
 
@@ -81,9 +111,10 @@ Type TNewsEventTemplateCollection
 
 
 	Method Remove:int(obj:TNewsEventTemplate)
-		allTemplates.Remove(obj.GetLowerStringGUID())
-		reuseableTemplates.Remove(obj.GetLowerStringGUID())
-		unusedTemplates.Remove(obj.GetLowerStringGUID())
+		allTemplatesGUID.Remove(obj.GetLowerStringGUID())
+		allTemplates.Remove(obj.GetID())
+		reuseableTemplates.Remove(obj.GetID())
+		unusedTemplates.Remove(obj.GetID())
 
 		_InvalidateCaches()
 
@@ -100,9 +131,9 @@ Type TNewsEventTemplateCollection
 			obj.happenTime = -1
 		endif
 
-		unusedTemplates.Remove(obj.GetLowerStringGUID())
+		unusedTemplates.Remove(obj.GetID())
 		if obj.IsReuseable()
-			reuseableTemplates.insert(obj.GetLowerStringGUID(), obj)
+			reuseableTemplates.insert(obj.GetID(), obj)
 		endif
 
 		_InvalidateCaches()
@@ -122,7 +153,12 @@ Type TNewsEventTemplateCollection
 
 	Method GetByGUID:TNewsEventTemplate(GUID:object)
 		if not TLowerString(GUID) then GUID = TLowerString.Create(string(GUID))
-		Return TNewsEventTemplate(allTemplates.ValueForKey(GUID))
+		Return TNewsEventTemplate(allTemplatesGUID.ValueForKey(GUID))
+	End Method
+
+
+	Method GetByID:TNewsEventTemplate(ID:int)
+		Return TNewsEventTemplate(allTemplates.ValueForKey(ID))
 	End Method
 
 
@@ -134,7 +170,7 @@ Type TNewsEventTemplateCollection
 		GUID = GUID.ToLower()
 
 		'find first hit
-		Local node:TNode = allTemplates._FirstNode()
+		Local node:TNode = allTemplatesGUID._FirstNode()
 		While node And node <> nilNode
 			if TLowerString(node._key).Find(GUID) >= 0
 				return TNewsEventTemplate(node._value)
@@ -163,9 +199,9 @@ Type TNewsEventTemplateCollection
 		Next
 
 		For local t:TNewsEventTemplate = Eachin toReuse
-			reuseableTemplates.Remove(t.GetLowerStringGUID())
+			reuseableTemplates.Remove(t.GetID())
 
-			unusedTemplates.Insert(t.GetLowerStringGUID(), t)
+			unusedTemplates.Insert(t.GetID(), t)
 
 			t.SetLastUsedTime(0)
 			t.Reset()
@@ -180,19 +216,19 @@ Type TNewsEventTemplateCollection
 
 
 	Method GetRandomUnusedAvailableInitial:TNewsEventTemplate(genre:int=-1)
-		if not GetUnusedAvailableInitialTemplateList(genre) then return Null
+		if not GetUnusedAvailableInitialTemplates(genre) then return Null
 
 		'if no news is available, make older ones available again
 		'start with 4 days ago and lower until we got a news
 		local days:int = 4
-		While GetUnusedAvailableInitialTemplateList(genre).Count() = 0 and days >= 0
+		While GetUnusedAvailableInitialTemplates(genre).length = 0 and days >= 0
 			TLogger.Log("TNewsEventTemplateCollection.GetRandomUnusedAvailableInitial("+genre+")", "ResetUsedTemplates("+days+", "+genre+").", LOG_DEBUG)
 			ResetUsedTemplates(days, genre)
 			days :- 1
 		Wend
 
-		local list:TList = GetUnusedAvailableInitialTemplateList(genre)
-		if list.Count() = 0
+		local arr:TNewsEventTemplate[] = GetUnusedAvailableInitialTemplates(genre)
+		if arr.length = 0
 			'This should only happen if no news events were found in the database
 			if genre = TVTNewsGenre.CURRENTAFFAIRS
 				TLogger.Log("TNewsEventTemplateCollection.GetRandomUnusedAvailableInitial("+genre+")", "no unused news event template found.", LOG_ERROR)
@@ -204,58 +240,99 @@ Type TNewsEventTemplateCollection
 		endif
 
 		'fetch a random news
-		return TNewsEventTemplate( list.ValueAtIndex(randRange(0, list.Count() - 1)))
+		return arr[ RandRange(0, arr.length-1) ]
 	End Method
 
 
-	'returns (and creates if needed) a list containing only available
-	'and initial news
-	Method GetUnusedInitialTemplateList:TList(genre:int=-1)
-		if genre >= TVTNewsGenre.count + 1 then return null
+	'returns (and creates if needed) an array containing initial news
+	Method GetUnusedInitialTemplates:TNewsEventTemplate[](genre:int=-1)
+		if genre >= TVTNewsGenre.count + 1 then return new TNewsEventTemplate[0]
 		if genre < -1 then genre = -1
+
+		'index 0 is for "all" while genre 0 would be Politics/Economy
+		local genreIndex:int = genre + 1
 
 		'create if missing
 		if not _unusedInitialTemplates then _InvalidateUnusedInitialTemplates()
 
-		if not _unusedInitialTemplates[genre+1]
-			_unusedInitialTemplates[genre+1] = CreateList()
+		if not _unusedInitialTemplates[genreIndex]
+			'start with the same size as last time (tries to avoid some
+			'memory copy when doing an array resize)
+			_unusedInitialTemplates[genreIndex] = new TNewsEventTemplate[ _unusedInitialTemplatesCount[genreIndex] ]
+
+			_unusedInitialTemplatesCount[genreIndex] = 0
 			For local t:TNewsEventTemplate = EachIn unusedTemplates.Values()
 				if t.newsType <> TVTNewsType.InitialNews then continue
 				'only interested in a specific genre?
 				if genre <> -1 and t.genre <> genre then continue
 
-				_unusedInitialTemplates[genre+1].AddLast(t)
+				'resize if needed
+				'number of "+20" is artificial and depends on how likely
+				'more than 20 new events get added in average
+				if _unusedInitialTemplates[genreIndex].length <= _unusedInitialTemplatesCount[genreIndex]
+					_unusedInitialTemplates[genreIndex] = _unusedInitialTemplates[genreIndex][.. _unusedInitialTemplates[genreIndex].length + 20]
+				endif
+
+				_unusedInitialTemplates[genreIndex][ _unusedInitialTemplatesCount[genreIndex] ] = t
+
+				_unusedInitialTemplatesCount[genreIndex] :+ 1
 			Next
+
+			'resize the array to the now real amount of entries
+			if _unusedInitialTemplates[genreIndex].length <> _unusedInitialTemplatesCount[genreIndex]
+				local old:int = _unusedInitialTemplates[genreIndex].length
+				_unusedInitialTemplates[genreIndex] = _unusedInitialTemplates[genreIndex][.. _unusedInitialTemplatesCount[genreIndex]]
+			endif
 		endif
-		return _unusedInitialTemplates[genre+1]
+		return _unusedInitialTemplates[genreIndex]
 	End Method
 
 
-	'returns (and creates if needed) a list containing only available
-	'and initial news
-	Method GetUnusedAvailableInitialTemplateList:TList(genre:int=-1)
-		if genre >= TVTNewsGenre.count + 1 then return null
-		if genre < -1 then genre = -1
 
+	'returns (and creates if needed) an array containing only available
+	'and initial news
+	Method GetUnusedAvailableInitialTemplates:TNewsEventTemplate[](genre:int=-1)
 		'create if missing
 		if not _unusedAvailableInitialTemplates then _InvalidateUnusedAvailableInitialTemplates()
 
-		if not _unusedAvailableInitialTemplates[genre+1] 'with -1 this leads to [0]
-			_unusedAvailableInitialTemplates[genre+1] = CreateList()
-			For local t:TNewsEventTemplate = EachIn unusedTemplates.Values()
-				if t.newsType <> TVTNewsType.InitialNews then continue
-				'only interested in a specific genre?
-				if genre <> -1 and t.genre <> genre then continue
+		'index 0 is for "all" while genre 0 would be Politics/Economy
+		local genreIndex:int = genre + 1
 
-				if not t.IsAvailable() then continue
+		if not _unusedAvailableInitialTemplates[genreIndex]
+			'we start with the (maybe) already filtered initial templates
+			'array
+			'(there can never be more available initial than initial at all)
+			local initialEventsArr:TNewsEventTemplate[] = GetUnusedInitialTemplates(genre)
+			_unusedAvailableInitialTemplatesCount[genreIndex] = Min(_unusedInitialTemplatesCount[genreIndex], _unusedAvailableInitialTemplatesCount[genreIndex])
 
-				'ignore also if template has a "dated happen time"
-				if t.happenTime <> - 1 then continue
+			'start with the same size as last time (tries to avoid some
+			'memory copy when doing an array resize)
+			_unusedAvailableInitialTemplates[genreIndex] = new TNewsEventTemplate[ _unusedAvailableInitialTemplatesCount[genreIndex] ]
 
-				_unusedAvailableInitialTemplates[genre+1].AddLast(t)
+			_unusedAvailableInitialTemplatesCount[genreIndex] = 0
+			For local t:TNewsEventTemplate = EachIn initialEventsArr
+				'no further filters required as we already use the
+				'prefiltered array
+
+				'resize if needed
+				'number of "+20" is artificial and depends on how likely
+				'more than 20 new events get added in average
+				if _unusedAvailableInitialTemplates[genreIndex].length <= _unusedAvailableInitialTemplatesCount[genreIndex]
+					_unusedAvailableInitialTemplates[genreIndex] = _unusedAvailableInitialTemplates[genreIndex][.. _unusedAvailableInitialTemplates[genreIndex].length + 20]
+				endif
+
+				_unusedAvailableInitialTemplates[genreIndex][ _unusedAvailableInitialTemplatesCount[genreIndex] ] = t
+
+				_unusedAvailableInitialTemplatesCount[genreIndex] :+ 1
 			Next
+
+			'resize the array to the now real amount of entries
+			if _unusedAvailableInitialTemplates[genreIndex].length <> _unusedAvailableInitialTemplatesCount[genreIndex]
+				local old:int = _unusedAvailableInitialTemplates[genreIndex].length
+				_unusedAvailableInitialTemplates[genreIndex] = _unusedAvailableInitialTemplates[genreIndex][ .. _unusedAvailableInitialTemplatesCount[genreIndex] ]
+			endif
 		endif
-		return _unusedAvailableInitialTemplates[genre+1]
+		return _unusedAvailableInitialTemplates[genreIndex]
 	End Method
 End Type
 
