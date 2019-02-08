@@ -25,11 +25,11 @@ Type TScriptBase Extends TNamedGameObject
 	'is the script title/description editable?
 	Field textsEditable:int = False
 	'scripts of series are parent of episode scripts
-	Field parentScriptGUID:string = ""
+	Field parentScriptID:int = 0
 	'all associated child scripts (episodes)
 	Field subScripts:TScriptBase[]
-	'GUID of a programme produced with this script
-	Field usedInProgrammeGUID:string
+	'ID of a programme produced with this script
+	Field usedInProgrammeID:int
 	'amount of times this script was used in productions
 	Field usedInProductionsCount:int = 0
 	'limit (for shows - this limits how often it - and its script-clones
@@ -105,7 +105,7 @@ Type TScriptBase Extends TNamedGameObject
 
 		return True
 	End Method
-	
+
 
 	Method HasProductionBroadcastFlag:Int(flag:Int) {_exposeToLua}
 		Return productionBroadcastFlags & flag
@@ -163,28 +163,28 @@ Type TScriptBase Extends TNamedGameObject
 	Method IsAnimation:Int()
 		return HasFlag(TVTProgrammeDataFlag.ANIMATION)
 	End Method
-	
-	
+
+
 	Method IsCulture:Int()
 		return HasFlag(TVTProgrammeDataFlag.CULTURE)
-	End Method	
-		
-	
+	End Method
+
+
 	Method IsCult:Int()
 		return HasFlag(TVTProgrammeDataFlag.CULT)
 	End Method
-	
-	
+
+
 	Method IsTrash:Int()
 		return HasFlag(TVTProgrammeDataFlag.TRASH)
 	End Method
-	
-	
+
+
 	Method IsBMovie:Int()
 		return HasFlag(TVTProgrammeDataFlag.BMOVIE)
 	End Method
-	
-	
+
+
 	Method IsXRated:int()
 		return HasFlag(TVTProgrammeDataFlag.XRATED)
 	End Method
@@ -212,12 +212,12 @@ Type TScriptBase Extends TNamedGameObject
 	End Method
 
 
-	Method FinishProduction(programmeLicenceGUID:string)
-		if not programmeLicenceGUID
-			TLogger.Log("FinishProduction", "Cannot set production of script finished, programmeLicenceGUID is empty.", LOG_ERROR)
+	Method FinishProduction(programmeLicenceID:int)
+		if not programmeLicenceID
+			TLogger.Log("FinishProduction", "Cannot set production of script finished, programmeLicenceID is empty.", LOG_ERROR)
 			return
 		endif
-		
+
 		'series header? - check if children were produced +1 than the
 		'header
 		'So if series is produced 2 times and there are some episodes
@@ -240,7 +240,7 @@ Type TScriptBase Extends TNamedGameObject
 			usedInProductionsCount :+ 1
 		endif
 
-		usedInProgrammeGUID = programmeLicenceGUID
+		usedInProgrammeID = programmeLicenceID
 	End Method
 
 
@@ -293,7 +293,7 @@ Type TScriptBase Extends TNamedGameObject
 			return usedInProductionsCount
 		endif
 	End Method
-	
+
 
 	Method IsProduced:int()
 		if isSeries()
@@ -304,7 +304,7 @@ Type TScriptBase Extends TNamedGameObject
 			Next
 			return True
 		else
-			return usedInProgrammeGUID <> ""
+			return usedInProgrammeID > 0
 		endif
 	End Method
 
@@ -383,7 +383,7 @@ Type TScriptBase Extends TNamedGameObject
 
 	'returns the next scriptBase of a scriptBases parent subScripts
 	Method GetNextSubScript:TScriptBase()
-		if not parentScriptGUID then return Null
+		if not parentScriptID then return Null
 
 		'find my position and add 1
 		local nextArrayIndex:int = GetParentScript().GetSubScriptPosition(self) + 1
@@ -398,7 +398,7 @@ Type TScriptBase Extends TNamedGameObject
 		'=== ADJUST SCRIPT TYPES ===
 
 		'so subScriptTemplates can ask for sibling scripts
-		scriptBase.parentScriptGUID = self.GetGUID()
+		scriptBase.parentScriptID = self.GetID()
 
 		'add to array of subScriptTemplates
 		subScripts :+ [scriptBase]

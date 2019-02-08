@@ -631,15 +631,16 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 		'=== ACTUALLY CREATE SCRIPTS ===
 		'collect used templates to avoid scripts with the same base template
-		local usedTemplateGUIDs:string[]
+		local usedTemplateIDs:int[]
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1
-				if lists[j][i] and lists[j][i].basedOnScriptTemplateGUID
-					usedTemplateGUIDs :+ [lists[j][i].basedOnScriptTemplateGUID]
+				if lists[j][i] and lists[j][i].basedOnScriptTemplateID > 0
+					usedTemplateIDs :+ [lists[j][i].basedOnScriptTemplateID]
 				endif
 			Next
 		Next
 
+'hier so weitermachen wie bei der movieagency
 		'fetch and set new scripts
 		local script:TScript = null
 		for local j:int = 0 to lists.length-1
@@ -649,15 +650,15 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 				'get a new script - but avoid having multiple scripts
 				'of the same base template (high similarity)
-				script = GetScriptCollection().GetRandomAvailable(usedTemplateGUIDs)
+				script = GetScriptCollection().GetRandomAvailable(usedTemplateIDs)
 
 				'add new script to slot
 				if script
 					GetScriptCollection().SetScriptOwner(script, TOwnedGameObject.OWNER_VENDOR)
 					lists[j][i] = script
 
-					if script.basedOnScriptTemplateGUID
-						usedTemplateGUIDs :+ [script.basedOnScriptTemplateGUID]
+					if script.basedOnScriptTemplateID
+						usedTemplateIDs :+ [script.basedOnScriptTemplateID]
 					endif
 				endif
 			Next

@@ -1407,11 +1407,11 @@ Type TDatabaseLoader
 			'care of this already)
 			scriptTemplate.templateVariables = null
 			scriptTemplate.subScripts = new TScriptTemplate[0]
-			scriptTemplate.parentScriptGUID = ""
+			scriptTemplate.parentScriptID = 0
 		endif
 
 		if parentScriptTemplate
-			scriptTemplate.parentScriptGUID = parentScriptTemplate.GetGUID()
+			scriptTemplate.parentScriptID = parentScriptTemplate.GetID()
 		endif
 
 

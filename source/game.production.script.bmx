@@ -71,6 +71,11 @@ Type TScriptCollection Extends TGameObjectCollection
 	End Method
 
 
+	Method GetByID:TScript(ID:int)
+		Return TScript( Super.GetByID(ID) )
+	End Method
+
+
 	Method GetByGUID:TScript(GUID:String)
 		Return TScript( Super.GetByGUID(GUID) )
 	End Method
@@ -84,7 +89,7 @@ Type TScriptCollection Extends TGameObjectCollection
 			template = GetScriptTemplateCollection().GetByGUID( string(templateOrTemplateGUID) )
 			if not template then return Null
 		endif
-		
+
 		local script:TScript = TScript.CreateFromTemplate(template)
 		script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 		Add(script)
@@ -92,9 +97,17 @@ Type TScriptCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GenerateRandom:TScript(avoidTemplateGUIDs:string[])
+	Method GenerateFromTemplateID:TScript(ID:int)
+		local template:TScriptTemplate = GetScriptTemplateCollection().GetByID( ID )
+		if not template then return Null
+
+		return GenerateFromTemplate(template)
+	End Method
+
+
+	Method GenerateRandom:TScript(avoidTemplateIDs:int[])
 		local template:TScriptTemplate
-		if not avoidTemplateGUIDs or avoidTemplateGUIDs.length = 0
+		if not avoidTemplateIDs or avoidTemplateIDs.length = 0
 			template = GetScriptTemplateCollection().GetRandomByFilter(True, True)
 		else
 			local foundValid:int = False
@@ -102,7 +115,7 @@ Type TScriptCollection Extends TGameObjectCollection
 			Repeat
 				template = GetScriptTemplateCollection().GetRandomByFilter(True, True)
 				'is this template forbidden?
-				foundValid = not StringHelper.InArray(template.GetGUID(), avoidTemplateGUIDs)
+				foundValid = not MathHelper.InIntArray(template.GetID(), avoidTemplateIDs)
 				tries :+ 1
 
 				if tries > 100
@@ -112,7 +125,7 @@ Type TScriptCollection Extends TGameObjectCollection
 				endif
 			Until foundValid or tries > 100
 		endif
-	
+
 		local script:TScript = TScript.CreateFromTemplate(template)
 		script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 		Add(script)
@@ -120,23 +133,21 @@ Type TScriptCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetRandomAvailable:TScript(avoidTemplateGUIDs:string[] = null)
+	Method GetRandomAvailable:TScript(avoidTemplateIDs:int[] = null)
 		'if no script is available, create (and return) some a new one
-		if GetAvailableScriptList().Count() = 0 then return GenerateRandom(avoidTemplateGUIDs)
+		if GetAvailableScriptList().Count() = 0 then return GenerateRandom(avoidTemplateIDs)
 
 		'fetch a random script
-		if not avoidTemplateGUIDs or avoidTemplateGUIDs.length = 0
+		if not avoidTemplateIDs or avoidTemplateIDs.length = 0
 			return TScript(GetAvailableScriptList().ValueAtIndex(randRange(0, GetAvailableScriptList().Count() - 1)))
 		else
 			local possibleScripts:TScript[]
 			for local s:TScript = EachIn GetAvailableScriptList()
-				if not s.basedOnScriptTemplateGUID or not StringHelper.InArray(s.basedOnScriptTemplateGUID, avoidTemplateGUIDs)
+				if not s.basedOnScriptTemplateID or not MathHelper.InIntArray(s.basedOnScriptTemplateID, avoidTemplateIDs)
 					possibleScripts :+ [s]
-				else
-					'print "skipped: " + s.GetTitle() +" as template ~q"+s.basedOnScriptTemplateGUID+"~q is to avoid."
 				endif
 			next
-			if possibleScripts.length = 0 then return GenerateRandom(avoidTemplateGUIDs)
+			if possibleScripts.length = 0 then return GenerateRandom(avoidTemplateIDs)
 
 			return possibleScripts[ randRange(0, possibleScripts.length - 1) ]
 		endif
@@ -145,7 +156,7 @@ Type TScriptCollection Extends TGameObjectCollection
 
 	'returns (and creates if needed) a list containing only available
 	'and unused scripts.
-	'Scripts of episodes and other children are ignored 
+	'Scripts of episodes and other children are ignored
 	Method GetAvailableScriptList:TList()
 		if not _availableScripts
 			_availableScripts = CreateList()
@@ -162,7 +173,7 @@ Type TScriptCollection Extends TGameObjectCollection
 		endif
 		return _availableScripts
 	End Method
-	
+
 
 	'returns (and creates if needed) a list containing only used scripts.
 	Method GetUsedScriptList:TList()
@@ -177,7 +188,7 @@ Type TScriptCollection Extends TGameObjectCollection
 		endif
 		return _usedScripts
 	End Method
-	
+
 
 	'returns (and creates if needed) a list containing only parental scripts
 	Method GetParentScriptList:TList()
@@ -186,7 +197,7 @@ Type TScriptCollection Extends TGameObjectCollection
 			For local script:TScript = EachIn entries.Values()
 				'skip scripts containing parent information or episodes
 				if script.scriptLicenceType = TVTProgrammeLicenceType.EPISODE then continue
-				if script.parentScriptGUID <> "" then continue
+				if script.parentScriptID <> "" or script.parentScriptID then continue
 
 				_parentScripts.AddLast(script)
 			Next
@@ -242,14 +253,14 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Field price:Int	= 0
 	Field blocks:Int = 0
 
-	'if the script is a clone of something, basedOnScriptGUID contains
-	'the guid of the original script.
+	'if the script is a clone of something, basedOnScriptID contains
+	'the ID of the original script.
 	'This is used for "shows" to be able to use different values of
 	'outcome/speed/price/... while still having a connecting link
-	Field basedOnScriptGUID:String = ""
+	Field basedOnScriptID:int = 0
 	'template this script is based on (this allows to avoid that too
 	'many scripts are based on the same script template on the same time)
-	Field basedOnScriptTemplateGUID:String = ""
+	Field basedOnScriptTemplateID:int = 0
 
 
 	Method GenerateGUID:string()
@@ -282,7 +293,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		For local subGenre:int = EachIn template.subGenres
 			script.subGenres :+ [subGenre]
 		Next
-		
+
 		'replace placeholders as we know the cast / roles now
 		script.title = script._ReplacePlaceholders(script.title)
 		script.description = script._ReplacePlaceholders(script.description)
@@ -293,12 +304,12 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			local subScript:TScript = TScript.CreateFromTemplate(subTemplate)
 			if subScript then script.AddSubScript(subScript)
 		Next
-		script.basedOnScriptTemplateGUID = template.GetGUID()
+		script.basedOnScriptTemplateID = template.GetID()
 
 		'this would GENERATE a new block of jobs (including RANDOM ones)
 		'- for single scripts we could use that jobs
 		'- for parental scripts we use the jobs of the children
-		if template.subScripts.length = 0 
+		if template.subScripts.length = 0
 			script.cast = template.GetJobs()
 		else
 			'for now use this approach
@@ -359,27 +370,27 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			Next
 			endrem
 		endif
- 
+
 
 		'reset the state of the template
 		'without that, the following scripts created with this template
 		'as base will get the same title/description
 		template.Reset()
-		
+
 		return script
 	End Function
 
 
 	'override
 	Method HasParentScript:int()
-		return parentScriptGUID<>""
+		return parentScriptID > 0
 	End Method
 
 
 	'override
 	Method GetParentScript:TScript()
-		if not parentScriptGUID then return self
-		return GetScriptCollection().GetByGUID(parentScriptGUID)
+		if parentScriptID then return GetScriptCollection().GetByID(parentScriptID)
+		return self
 	End Method
 
 
@@ -406,7 +417,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 							actors = GetSpecificCast(TVTProgrammePersonJob.ACTOR | TVTProgrammePersonJob.SUPPORTINGACTOR)
 							actorsFetched = True
 						endif
-						
+
 						'local actorNum:int = int(placeHolder.toUpper().Replace("%ROLENAME", "").Replace("%",""))
 						local actorNum:int = int(chr(placeHolder[8]))
 						if actorNum > 0
@@ -463,29 +474,29 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				'replace if some content was filled in
 				if replaced then value = value.replace("%"+placeHolder+"%", replacement)
 			Next
-			
+
 			result.Set(value, lang)
 		Next
-	
+
 		return result
-	End Method	
+	End Method
 
 
 	'override
-	Method FinishProduction(programmeLicenceGUID:string)
-		Super.FinishProduction(programmeLicenceGUID)
+	Method FinishProduction(programmeLicenceID:int)
+		Super.FinishProduction(programmeLicenceID)
 
-		if basedOnScriptTemplateGUID
-			local template:TScriptTemplate = GetScriptTemplateCollection().GetByGUID(basedOnScriptTemplateGUID)
-			if template then template.FinishProduction(programmeLicenceGUID)
+		if basedOnScriptTemplateID
+			local template:TScriptTemplate = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
+			if template then template.FinishProduction(programmeLicenceID)
 		endif
 	End Method
 
 
 	Method GetScriptTemplate:TScriptTemplate()
-		if not basedOnScriptTemplateGUID then return Null
+		if not basedOnScriptTemplateID then return Null
 
-		return GetScriptTemplateCollection().GetByGUID(basedOnScriptTemplateGUID)
+		return GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
 	End Method
 
 
@@ -499,8 +510,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetBasedOnScriptGUID(basedOnScriptGUID:string)
-		self.basedOnScriptGUID = basedOnScriptGUID
+	Method SetBasedOnScriptID(ID:int)
+		self.basedOnScriptID = ID
 	End Method
 
 
@@ -533,7 +544,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Method GetCast:TProgrammePersonJob[]()
 		return cast
 	End Method
-	
+
 
 	Method GetSpecificCast:TProgrammePersonJob[](job:int, limitPersonGender:int=-1, limitRoleGender:int=-1)
 		local result:TProgrammePersonJob[]
@@ -556,7 +567,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Method GetOutcome:Float() {_exposeToLua}
 		'single-script
 		If GetSubScriptCount() = 0 then return outcome
-		
+
 		'script for a package or scripts
 		Local value:Float
 		For local s:TScript = eachin subScripts
@@ -569,7 +580,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Method GetReview:Float() {_exposeToLua}
 		'single-script
 		If GetSubScriptCount() = 0 then return review
-		
+
 		'script for a package or scripts
 		Local value:Float
 		For local s:TScript = eachin subScripts
@@ -616,13 +627,13 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		return 0
 	End Method
 
-	
+
 	Method GetEpisodes:Int() {_exposeToLua}
 		If isSeries() then return GetSubScriptCount()
-		
+
 		return 0
 	End Method
-	
+
 
 	Method GetPrice:Int() {_exposeToLua}
 		local value:int
@@ -693,7 +704,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Method CalculateGenreCriteriaFit:Float()
 		'Fetch corresponding genre definition, with this we are able to
 		'see what values are "expected" for this genre.
-		
+
 		local reviewGenre:Float, speedGenre:Float, outcomeGenre:Float
 		CalculateTotalGenreCriterias(reviewGenre, speedGenre, outcomeGenre)
 
@@ -716,7 +727,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		'scale to biggest property
 		local maxPropertyScript:Float, maxPropertyGenre:Float
-		if outcomeGenre > 0 
+		if outcomeGenre > 0
 			maxPropertyScript = Max(review, Max(speed, outcome))
 			maxPropertyGenre = Max(reviewGenre, Max(speedGenre, outcomeGenre))
 		else
@@ -732,7 +743,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		local distanceSpeed:Float = Abs(speedGenre - speed*scaleFactor)
 		local distanceOutcome:Float = Abs(outcomeGenre - outcome*scaleFactor)
 		'ignore outcome ?
-		if outcomeGenre = 0 then distanceOutcome = 0 
+		if outcomeGenre = 0 then distanceOutcome = 0
 
 		rem
 		'print "maxPropertyGenre:   "+maxPropertyGenre
@@ -749,7 +760,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		print "ergebnis:           "+(1.0 - (distanceReview + distanceSpeed + distanceOutcome))
 		endrem
 
-		return 1.0 - (distanceReview + distanceSpeed + distanceOutcome)	
+		return 1.0 - (distanceReview + distanceSpeed + distanceOutcome)
 	End Method
 
 
@@ -760,7 +771,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		finance.SellScript(GetPrice(), self)
 
 		'set unused again
-	
+
 		SetOwner( TOwnedGameObject.OWNER_NOBODY )
 
 		return TRUE
@@ -807,20 +818,19 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			endif
 		endif
 		endrem
-		
+
 
 		'randomize attributes?
 		if HasScriptFlag(TVTScriptFlag.POOL_RANDOMIZES_ATTRIBUTES)
-			if basedOnScriptTemplateGUID
-				local template:TScriptTemplate = GetScriptTemplateCollection().GetByGUID(basedOnScriptTemplateGUID)
-				if template
-					outcome = template.GetOutcome()
-					review = template.GetReview()
-					speed = template.GetSpeed()
-					potential = template.GetPotential()
-					blocks = template.GetBlocks()
-					price = template.GetPrice()
-				endif
+			local template:TScriptTemplate
+			if basedOnScriptTemplateID then template = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
+			if template
+				outcome = template.GetOutcome()
+				review = template.GetReview()
+				speed = template.GetSpeed()
+				potential = template.GetPotential()
+				blocks = template.GetBlocks()
+				price = template.GetPrice()
 			endif
 		endif
 
@@ -878,10 +888,10 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			local finance:TPlayerFinance = GetPlayerFinance(GetPlayerBaseCollection().playerID)
 			if finance and finance.canAfford(GetPrice())
 				canAfford = True
-			endif		
+			endif
 		endif
-		
-		
+
+
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
 		local titleH:int = 18, subtitleH:int = 16, genreH:int = 16, descriptionH:int = 70, castH:int=50
 		local splitterHorizontalH:int = 6
@@ -919,7 +929,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 
 		'=== RENDER ===
-	
+
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 			if titleH <= 18
@@ -929,7 +939,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			endif
 		contentY :+ titleH
 
-		
+
 		'=== SUBTITLE AREA ===
 		if isEpisode()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
@@ -957,7 +967,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		skin.fontNormal.drawBlock(genreString, contentX + 5, contentY, contentW - 10, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ genreH
 
-	
+
 		'=== DESCRIPTION AREA ===
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
 		skin.fontNormal.drawBlock(GetDescription(), contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
@@ -967,7 +977,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'splitter
 		skin.RenderContent(contentX, contentY, contentW, splitterHorizontalH, "1")
 		contentY :+ splitterHorizontalH
-		
+
 
 		'=== CAST AREA ===
 		skin.RenderContent(contentX, contentY, contentW, castH, "2")
@@ -994,10 +1004,10 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				cast :+ "|b|"+requiredPersons+"x|/b| "+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, False))
 			endif
 
-			
+
 			local requiredDetails:string = ""
 			if requiredPersonsMale > 0
-				'write amount if multiple genders requested for this job type 
+				'write amount if multiple genders requested for this job type
 				if requiredPersonsMale <> requiredPersons
 					requiredDetails :+ requiredPersonsMale+"x "+GetLocale("MALE")
 				else
@@ -1006,7 +1016,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			endif
 			if requiredPersonsFemale > 0
 				if requiredDetails <> "" then requiredDetails :+ ", "
-				'write amount if multiple genders requested for this job type 
+				'write amount if multiple genders requested for this job type
 				if requiredPersonsFemale <> requiredPersons
 					requiredDetails :+ requiredPersonsFemale+"x "+GetLocale("FEMALE")
 				else
@@ -1014,7 +1024,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				endif
 			endif
 			if requiredPersons - (requiredPersonsMale + requiredPersonsFemale) > 0
-				'write amount if genders for this job type were defined 
+				'write amount if genders for this job type were defined
 				if requiredPersonsMale > 0 or requiredPersonsFemale > 0
 					if requiredDetails <> "" then requiredDetails :+ ", "
 					requiredDetails :+ (requiredPersons - (requiredPersonsMale + requiredPersonsFemale))+"x "+GetLocale("UNDEFINED")
@@ -1024,7 +1034,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				cast :+ " (" + requiredDetails + ")"
 			endif
 		Next
-		 
+
 rem
 		local requiredDirectors:int = GetSpecificCastCount(TVTProgrammePersonJob.DIRECTOR)
 		local requiredStarRoleActorFemale:int = GetSpecificCastCount(TVTProgrammePersonJob.ACTOR, TVTPersonGender.FEMALE)
@@ -1033,7 +1043,7 @@ rem
 
 		if requiredDirectors > 0 then cast :+ "|b|"+requiredDirectors+"x|/b| "+GetLocale("MOVIE_DIRECTOR")
 		if cast <> "" then cast :+ ", "
-	
+
 		if requiredStarRoleActors > 0
 			local requiredStars:int = requiredStarRoleActorMale + requiredStarRoleActorFemale
 			cast :+ "|b|"+requiredStars+"x|/b| "+GetLocale("MOVIE_LEADINGACTOR")
@@ -1117,7 +1127,7 @@ endrem
 		'if there is a message then add padding to the bottom
 		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
 
-		
+
 		'=== BOXES ===
 		'boxes have a top-padding (except with messages)
 		'if msgAreaH = 0 then contentY :+ boxAreaPaddingY
@@ -1148,13 +1158,13 @@ endrem
 			skin.fontBold.drawBlock("Drehbuch: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28)
 			contentY :+ 28
 			skin.fontNormal.draw("Tempo: "+MathHelper.NumberToString(GetSpeed(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Kritik: "+MathHelper.NumberToString(GetReview(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Potential: "+MathHelper.NumberToString(GetPotential(), 4), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("Preis: "+GetPrice(), contentX + 5, contentY)
-			contentY :+ 12	
+			contentY :+ 12
 			skin.fontNormal.draw("IsProduced: "+IsProduced(), contentX + 5, contentY)
 		endif
 
@@ -1164,6 +1174,6 @@ endrem
 		'=== X-Rated Overlay ===
 		If IsXRated()
 			GetSpriteFromRegistry("gfx_datasheet_overlay_xrated").Draw(contentX + sheetWidth, y, -1, ALIGN_RIGHT_TOP)
-		Endif				
+		Endif
 	End Method
 End Type

@@ -6,10 +6,10 @@ Import "game.programme.programmedata.bmx"
 
 Type TProductionCompany extends TProductionCompanyBase
 	'override
-	Method GetNextExperienceGain:int(programmeDataGUID:string)
-		local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeDataGUID)
+	Method GetNextExperienceGain:int(programmeDataID:int)
+		local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByID(programmeDataID)
 		if not programmeData then return 0
-	
+
 		'100 perfect productions would lead to a 100% experienced company
 		local baseGain:float = 100 * programmeData.GetQualityRaw()
 

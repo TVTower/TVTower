@@ -523,11 +523,11 @@ endrem
 
 		'=== 3. INFORM / REMOVE SCRIPT ===
 		'inform production company
-		productionConcept.productionCompany.FinishProduction(programmeData.GetGUID())
+		productionConcept.productionCompany.FinishProduction(programmeData.GetID())
 
 		'inform script about a done production based on the script
 		'(parental script is already informed on creation of its licence)
-		productionConcept.script.FinishProduction(programmeLicence.GetGUID())
+		productionConcept.script.FinishProduction(programmeLicence.GetID())
 
 		if owner and GetPlayerProgrammeCollection(owner)
 			'if the script does not allow further productions, it is finished
@@ -615,9 +615,9 @@ endrem
 			'we already created the parental licence before
 
 			'configured at all?
-			if productionConcept.script.GetParentScript().usedInProgrammeGUID
+			if productionConcept.script.GetParentScript().usedInProgrammeID
 				'differs to GUID of parent?
-				if productionConcept.script.GetParentScript().usedInProgrammeGUID <> parentLicence.GetGUID()
+				if productionConcept.script.GetParentScript().usedInProgrammeID <> parentLicence.GetID()
 					Throw "CreateParentalLicence() failed: another programme is already assigned to the parent script."
 				endif
 			endif
@@ -632,7 +632,7 @@ endrem
 		'inform parental script about the usage, also increases
 		'production count if all episodes are produced (at least +1 than
 		'the series production count)
-		productionConcept.script.GetParentScript().FinishProduction(parentLicence.GetGUID())
+		productionConcept.script.GetParentScript().FinishProduction(parentLicence.GetID())
 
 		local parentData:TProgrammeData = parentLicence.GetData()
 

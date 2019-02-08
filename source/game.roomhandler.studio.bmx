@@ -41,7 +41,7 @@ Type RoomHandler_Studio extends TRoomHandler
 	Global hoveredGuiProductionConcept:TGuiProductionConceptListItem
 	Global draggedGuiProductionConcept:TGuiProductionConceptListItem
 
-	global LS_studio:TLowerString = TLowerString.Create("studio")	
+	global LS_studio:TLowerString = TLowerString.Create("studio")
 
 	Global _instance:RoomHandler_Studio
 	Global _eventListeners:TLink[]
@@ -97,7 +97,7 @@ Type RoomHandler_Studio extends TRoomHandler
 			guiListDeskProductionConcepts.SetAcceptDrop("TGuiProductionConceptListItem")
 			guiListDeskProductionConcepts._debugMode = True
 			guiListDeskProductionConcepts._customDrawContent = DrawProductionConceptStudioSlotListContent
-			
+
 
 			'default studioManager dimension
 			local studioManagerAreaDimension:TVec2D = new TVec2D.Init(150,270)
@@ -110,7 +110,7 @@ Type RoomHandler_Studio extends TRoomHandler
 			studioManagerArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 		endif
 
-		
+
 		'=== EVENTS ===
 		'=== remove all registered event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
@@ -227,7 +227,7 @@ Type RoomHandler_Studio extends TRoomHandler
 	Function onRemoveScriptFromProgrammeCollection:int( triggerEvent:TEventBase )
 		local script:TScriptBase = TScriptBase( triggerEvent.GetData().Get("script") )
 		if not script then return False
-		
+
 		local roomGUID:string = GetStudioGUIDByScript(script)
 		if roomGUID
 			GetInstance().RemoveCurrentStudioScript(roomGUID)
@@ -250,7 +250,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		'multiple events coming in (add + move)
 		haveToRefreshGuiElements = True
 	End Function
-	
+
 
 	'in case of right mouse button click a dragged script is
 	'placed at its original spot again
@@ -307,7 +307,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		'also avoid long click (touch screen)
 		MouseManager.ResetLongClicked(1)
 	End Function
-		
+
 
 	Function onMouseOverScript:int( triggerEvent:TEventBase )
 		if not CheckPlayerInRoom("studio") then return FALSE
@@ -342,7 +342,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
 		if not guiBlock or not receiver then return FALSE
 
-		'try to get a list out of the drag-source-guiobject 
+		'try to get a list out of the drag-source-guiobject
 		local source:TGuiObject = TGuiObject(triggerEvent.GetData().Get("source"))
 		local sourceList:TGUIScriptSlotList
 		if source
@@ -360,7 +360,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		'alternatively TGUIGameListItems contain "lastListID" which
 		'is the id of the last list they there attached too
 		'if guiBlock.lastListID = guiListSuitcase._id ... and so on
-		
+
 		'ATTENTION: senderList (parent of the parent of guiBlock) is
 		'           only correct when NOT dropping on another list
 		'           -> so we use sourceList
@@ -387,7 +387,7 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		'remove an old dialogue, it might be different now
 		studioManagerDialogue = null
-		
+
 		return TRUE
 	End Function
 
@@ -408,10 +408,10 @@ Type RoomHandler_Studio extends TRoomHandler
 		For local i:int = 0 until guiListDeskProductionConcepts._slots.length
 			guiBlock = TGuiProductionConceptListItem(guiListDeskProductionConcepts.GetItemBySlot(i))
 			if not guiBlock then continue
-			
+
 			guiBlock.productionConcept.studioSlot = i
 		Next
-		
+
 		return TRUE
 	End Function
 
@@ -538,7 +538,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(roomOwner)
 
 		'=== REMOVE SCRIPTS ===
-		
+
 		'dragged scripts
 		local draggedScripts:TList = CreateList()
 		For local guiScript:TGUIScript = EachIn GuiManager.listDragged.Copy()
@@ -567,7 +567,7 @@ Type RoomHandler_Studio extends TRoomHandler
 
 
 		'=== REMOVE PRODUCTION CONCEPTS ===
-		
+
 		'dragged ones
 		local draggedProductionConcepts:TList = CreateList()
 		For local guiProductionConcept:TGuiProductionConceptListItem = EachIn GuiManager.listDragged.Copy()
@@ -654,14 +654,14 @@ Type RoomHandler_Studio extends TRoomHandler
 
 				'show episodes
 				if studioScript.IsSeries()
-					if pc.script.parentScriptGUID  <> studioScript.GetGUID() then continue
+					if pc.script.parentScriptID  <> studioScript.GetID() then continue
 				'or single production concepts
 				else
 					if pc.script <> studioScript then continue
 				endif
 
 				if guiListDeskProductionConcepts.ContainsProductionConcept(pc) then continue
-				
+
 				if guiListDeskProductionConcepts.getFreeSlot() >= 0
 
 					'try to place it at the slot we defined before
@@ -712,13 +712,13 @@ Type RoomHandler_Studio extends TRoomHandler
 
 	Function CreateProductionConcept:int(playerID:int, script:TScript)
 		local useScript:TScript = script
-		
+
 		'if it is a series, fetch first free episode script
 		if script.IsSeries()
 			'print "CreateProductionConcept : is series"
 			if script.GetEpisodes() = 0 then return False
 			'print "                        : has episodes"
-			
+
 			for local subScript:TScript = EachIn script.subScripts
 				if subScript.CanGetProduced()
 					if subScript.IsSeries() then continue
@@ -735,7 +735,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		'print "CreateProductionConcept : create... " + useScript.GetTitle()
 		GetPlayerProgrammeCollection( playerID ).CreateProductionConcept(useScript)
 
-		
+
 		return True
 	End Function
 
@@ -760,7 +760,7 @@ Type RoomHandler_Studio extends TRoomHandler
 
 	Method GenerateStudioManagerDialogue(dialogueType:int = 0)
 		if not TFigure(GetPlayerBase().GetFigure()).inRoom then return
-		
+
 		local roomGUID:string = TFigure(GetPlayerBase().GetFigure()).inRoom.GetGUID()
 		local script:TScript = GetCurrentStudioScript(roomGUID)
 
@@ -780,7 +780,7 @@ Type RoomHandler_Studio extends TRoomHandler
 			'=== PRODUCED CONCEPT COUNT ===
 			producedConceptCount = script.GetProductionsCount()
 
-		
+
 			'=== COLLECT PRODUCEABLE CONCEPTS ===
 			if script.GetSubScriptCount() > 0
 				productionConcepts = GetProductionConceptCollection().GetProductionConceptsByScripts(script.subScripts)
@@ -806,12 +806,12 @@ Type RoomHandler_Studio extends TRoomHandler
 					endif
 				endif
 			Next
-			
+
 			'prepend "episodes" to episodes-string
 			if script.IsSeries() then produceableConcepts = GetLocale("MOVIE_EPISODES")+" "+produceableConcepts
 
 			conceptCount = productionConcepts.length
-		
+
 			'series?
 			if script.GetSubScriptCount() > 0
 				conceptCountMax = script.GetSubScriptCount() - producedConceptCount
@@ -820,7 +820,7 @@ Type RoomHandler_Studio extends TRoomHandler
 			endif
 		endif
 
-		
+
 		local text:string
 		'=== SCRIPT HINT ===
 		if dialogueType = 2
@@ -848,7 +848,7 @@ Type RoomHandler_Studio extends TRoomHandler
 						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE").replace("%X%", countText)
 					else
 						local producedCountText:string = producedConceptCount
-						if conceptCountMax > 0 then producedCountText = producedConceptCount + "/" + conceptCountMax 
+						if conceptCountMax > 0 then producedCountText = producedConceptCount + "/" + conceptCountMax
 						if script.GetSubScriptCount() > 0 then producedCountText = producedConceptCount + "/"+script.GetSubScriptCount()
 
 						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE").replace("%X%", countText).replace("%Y%", producedCountText)
@@ -871,12 +871,12 @@ Type RoomHandler_Studio extends TRoomHandler
 		endif
 
 		text = text.replace("%PLAYERNAME%", GetPlayerBase().name)
-		
+
 
 		local texts:TDialogueTexts[1]
 		texts[0] = TDialogueTexts.Create(text)
 
-		if script 
+		if script
 			if dialogueType = 0 and produceableConceptCount > 0
 				local answerText:string
 				if produceableConceptCount = 1
@@ -896,7 +896,7 @@ Type RoomHandler_Studio extends TRoomHandler
 				conceptMax = script.CanGetProducedCount()
 			endif
 
-			If conceptCount < conceptCountMax 
+			If conceptCount < conceptCountMax
 				local answerText:string
 				if conceptCount > 0
 					answerText = GetRandomLocale("DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST")
@@ -923,7 +923,7 @@ Type RoomHandler_Studio extends TRoomHandler
 
 	Method DrawDebug(room:TRoom)
 		if not room then return
-		if not GetPlayerBaseCollection().IsPlayer(room.owner) then return 
+		if not GetPlayerBaseCollection().IsPlayer(room.owner) then return
 
 		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(room.owner)
 
@@ -975,7 +975,7 @@ Type RoomHandler_Studio extends TRoomHandler
 			spriteProductionConcept.Draw(atPoint.x + pos.x, atPoint.y + pos.y, -1, ALIGN_CENTER_CENTER, 0.7)
 		Next
 		SetAlpha 1.0
-	End Function	
+	End Function
 
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
@@ -1024,7 +1024,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		GUIManager.Draw( LS_studio )
 
 		'draw data sheets for scripts or production concepts
-		if not studioManagerDialogue 
+		if not studioManagerDialogue
 			if hoveredGuiScript then hoveredGuiScript.DrawSheet()
 			if hoveredGuiProductionConcept then hoveredGuiProductionConcept.DrawSheet()
 		endif
@@ -1068,7 +1068,7 @@ Type RoomHandler_Studio extends TRoomHandler
 					endif
 
 					'show tooltip of studio manager
-					'only show when no dialogue is (or just got) opened 
+					'only show when no dialogue is (or just got) opened
 					if not studioManagerDialogue
 						If not studioManagerTooltip Then studioManagerTooltip = TTooltip.Create(GetLocale("STUDIO_MANAGER"), GetLocale("STUDIO_MANAGER_TOOLTIP"), 150, 160,-1,-1)
 						studioManagerTooltip.enabled = 1

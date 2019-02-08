@@ -84,6 +84,11 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	End Method
 
 
+	Method GetByID:TProgrammeData(ID:int)
+		Return TProgrammeData( Super.GetByID(ID) )
+	End Method
+
+
 	Method GetByGUID:TProgrammeData(GUID:String)
 		Return TProgrammeData( Super.GetByGUID(GUID) )
 	End Method

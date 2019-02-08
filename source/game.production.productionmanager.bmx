@@ -38,7 +38,7 @@ Type TProductionManager
 
 			'resize news genres when loading an older savegame
 			_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSavegameLoad) ]
-				
+
 			createdEnvironment = true
 		endif
 	End Method
@@ -49,7 +49,7 @@ Type TProductionManager
 			CreateProductionCompanies()
 		endif
 	End Function
-	
+
 
 	Function CreateProductionCompanies:int()
 		'remove old ones
@@ -61,7 +61,7 @@ Type TProductionManager
 		c.SetExperience( 0 )
 		c.SetMaxExperience( 0 )
 		GetProductionCompanyBaseCollection().Add(c)
-		
+
 
 		'create some companies
 		local cnames:string[] = ["Digidea", "Berlin Film", "Movie World", "Los Krawallos", "Motion Gems", "Screen Jewel"]
@@ -76,7 +76,7 @@ Type TProductionManager
 			cxp[i] = cxp[shuffleIndex]
 			cxp[shuffleIndex] = shuffleTmp
 		Next
-		
+
 		For local i:int = 0 until cnames.length
 			local c:TProductionCompany = new TProductionCompany
 			c.name = cnames[i]
@@ -85,7 +85,7 @@ Type TProductionManager
 			GetProductionCompanyBaseCollection().Add(c)
 		Next
 	End Function
-	
+
 
 	Method Update:int()
 		UpdateProductions()
@@ -103,7 +103,7 @@ Type TProductionManager
 		if not productionConcept then return False
 
 		return productionConcept.PayBalance()
-	End Method	
+	End Method
 
 
 	'returns first found production in the given room/studio
@@ -158,7 +158,7 @@ Type TProductionManager
 		For local production:TProduction = EachIn removeProductions
 			productionsToProduce.Remove(production)
 		Next
-		
+
 		local productionCount:int = 0
 		local productionConcepts:TProductionConcept[]
 		if script.IsSeries()
@@ -189,16 +189,16 @@ Type TProductionManager
 		for local prod:TProduction = eachin productionsToProduce
 			print prod.productionConcept.GetTitle()+ "  ep:" + prod.productionConcept.script.GetEpisodeNumber()+"  slot:"+prod.productionConcept.studioSlot
 		Next
-	 	
+
 
 		'actually start the production
 		'- first hit production (with that script) is the one we should
 		'  start
 		'- other productions are produced once the first one is finished
 		For local production:TProduction = EachIn productionsToProduce
-			'series? skip if not an episode of this serie 
+			'series? skip if not an episode of this serie
 			if production.productionConcept.script.GetParentScript().IsSeries()
-				if production.productionConcept.script.parentScriptGUID <> script.GetGUID() then continue
+				if production.productionConcept.script.parentScriptID <> script.GetID() then continue
 			else
 				if production.productionConcept.script <> script then continue
 			endif
@@ -252,7 +252,7 @@ Type TProductionManager
 
 				nextProduction = p
 				exit
-			Next 
+			Next
 			if nextProduction
 				nextProduction.Start()
 				startedProductions :+ 1
