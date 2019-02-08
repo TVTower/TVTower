@@ -1273,21 +1273,31 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 				licence = oldLicence
 			endif
 
-
 			if not keepOld
 				'print "   find new live one"
+				'Searching can be a bit "slow" on huge databases, so we
+				'try to avoid to iterate over all licences each time
+				'-> start with a "loose" filter to limit candidate list
 				local filterLiveNum:int = 1 '0 = normal programme, 1 = live
 				local filter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction.filters[filterLiveNum].Copy()
+				local oldPriceMin:int = filter.priceMin
 				'only take live-programme starting not earlier than 3 days
-				'from now
-				'this is needed to avoid a "live"-programme being no longer
-				'live
+				'from now. This is needed to avoid a "live"-programme
+				'being no longer live
 				filter.timeToReleaseMin = 2 * TWorldTime.DAYLENGTH
-				While Not licence And filter.priceMin >= 0
-					licence = GetProgrammeLicenceCollection().GetRandomByFilter(filter)
-					'lower the requirements
-					If Not licence then filter.priceMin :- 25000
-				End While
+				'do not limit too much
+				filter.priceMin = 0
+
+				'fetch candidates
+				local candidates:TProgrammeLicence[] = GetProgrammeLicenceCollection().GetByFilter(filter)
+				if candidates.length > 0
+					filter.priceMin = oldPriceMin
+					While Not licence And filter.priceMin >= 0
+						licence = GetProgrammeLicenceCollection().GetRandomByFilter(filter, candidates)
+						'lower the requirements
+						If Not licence then filter.priceMin :- 25000
+					End While
+				endif
 			endif
 		endif
 
