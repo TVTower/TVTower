@@ -1029,8 +1029,10 @@ Type RoomHandler_Studio extends TRoomHandler
 			if hoveredGuiProductionConcept then hoveredGuiProductionConcept.DrawSheet()
 		endif
 
-		'DrawDebug(TRoom(triggerEvent.GetSender()))
-		'guiListDeskProductionConcepts.DrawDebug()
+		if TVTDebugInfos
+			DrawDebug(TRoom(triggerEvent.GetSender()))
+			guiListDeskProductionConcepts.DrawDebug()
+		endif
 
 		'draw after potential tooltips
 		if roomOwner and studioManagerDialogue then studioManagerDialogue.Draw()

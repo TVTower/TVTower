@@ -53,13 +53,13 @@ Type TDialogue
 		if not _balloonRect
 			_balloonRect = _rawBalloonRect.Copy()
 
-			
+
 			local text:TDialogueTexts = GetDialogueText(Self._currentTextIndex)
 			if not text then return _balloonRect
 
 			local adjBalloonY:int = int(_balloonRect.getY())
 			local adjBalloonH:int = int(_balloonRect.getH())
-	
+
 			if _balloonGrow <> 0
 				local usedHeight:int = text.GetUsedHeight(_balloonRect) + _contentPadding.GetY() + _contentPadding.GetH()
 
@@ -90,13 +90,13 @@ Type TDialogue
 		if not _answerBalloonRect
 			_answerBalloonRect = _rawAnswerBalloonRect.Copy()
 
-			
+
 			local text:TDialogueTexts = GetDialogueText(Self._currentTextIndex)
 			if not text then return _answerBalloonRect
 
 			local adjBalloonY:int = int(_answerBalloonRect.getY())
 			local adjBalloonH:int = int(_answerBalloonRect.getH())
-	
+
 			if _answerBalloonGrow <> 0
 				local usedHeight:int = text.GetAnswersHeight() + _contentPadding.GetY() + _contentPadding.GetH()
 
@@ -121,14 +121,14 @@ Type TDialogue
 			_answerContentRect = GetAnswerBalloonRect().copy().Grow(-_contentPadding.GetX(),-_contentPadding.GetY(),-_contentPadding.GetW(),-_contentPadding.GetH())
 		endif
 		return _answerContentRect
-	End Method	
+	End Method
 
 
 	Method SetGrow(balloonGrow:int, answerBalloonGrow:int)
 		_balloonGrow = balloonGrow
 		_answerBalloonGrow = answerBalloonGrow
 	End Method
-		
+
 
 	Method AddText(text:TDialogueTexts)
 		_texts.AddLast(text)
@@ -144,7 +144,7 @@ Type TDialogue
 
 	Method GetDialogueText:TDialogueTexts(index:int)
 		if index < 0 or _texts.Count() <= index then return Null
-		
+
 		return TDialogueTexts(_texts.ValueAtIndex(_currentTextIndex))
 	End Method
 
@@ -182,7 +182,7 @@ Type TDialogue
 			DialogFont.drawBlock(DialogText, x + 10, y + 10, DialogWidth - 25, Height - 16, Null, TColor.clBlack)
 		EndIf
 	End Function
-	
+
 
 	Method Update:Int()
 		Local nextTextIndex:Int = _currentTextIndex
@@ -206,7 +206,7 @@ Type TDialogue
 			ResetRects()
 		endif
 
-			
+
 
 		If _currentTextIndex = -2
 			_currentTextIndex = 0
@@ -224,7 +224,7 @@ Type TDialogue
 		local answersHeight:int = dialogueText.GetAnswersHeight()
 		if answersHeight <> GetAnswerContentRect().GetH()
 			'min height? - disabled to avoid wrong cache informations
-			'TODO: find out reason 
+			'TODO: find out reason
 '			if answersHeight > _rawAnswerBalloonRect.GetH()
 				ResetRects()
 '			endif
@@ -271,7 +271,7 @@ Type TDialogueAnswer
 		endif
 
 		'check over complete width - to allow easier selection of short
-		'texts 
+		'texts
 		If THelper.MouseIn(int(screenRect.GetX()), int(screenRect.GetY() + _pos.y), int(screenRect.GetW()), int(_size.y))
 			Self._highlighted = True
 			If MouseManager.isClicked(1)
@@ -300,7 +300,7 @@ Type TDialogueAnswer
 		_size.CopyFrom(_boldFont.GetBlockDimension(self._text, screenRect.GetW() - _pos.y, -1))
 
 		local oldColor:TColor = new TColor.Get()
-		
+
 		If Self._highlighted
 			SetColor 200,100,100
 			DrawOval(screenRect.GetX() + _pos.x, screenRect.GetY() + _pos.y +3, 6, 6)
@@ -353,7 +353,7 @@ Type TDialogueTexts
 
 		return  res
 	End Method
-		
+
 
 	Method Update:Int(textRect:TRectangle, answerRect:TRectangle)
 		'move answers within the answerRect

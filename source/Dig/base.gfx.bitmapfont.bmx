@@ -763,17 +763,23 @@ Type TBitmapFont
 
 			'backup current setting
 			fontStyle.PushColor( color )
-		endif
-		if command = "/color" and not fontStyle.ignoreColorTag
+		elseif command = "/color" and not fontStyle.ignoreColorTag
 			'local color:TColor =
 			fontStyle.PopColor()
+
+		elseif command = "b"
+			fontStyle.PushFontStyle( BOLDFONT )
+
+		elseif command = "/b"
+			fontStyle.PopFontStyle( BOLDFONT )
+
+		elseif command = "i"
+			fontStyle.PushFontStyle( ITALICFONT )
+
+		elseif command = "/i"
+			fontStyle.PopFontStyle( ITALICFONT )
+
 		endif
-
-		if command = "b" then fontStyle.PushFontStyle( BOLDFONT )
-		if command = "/b" then fontStyle.PopFontStyle( BOLDFONT )
-
-		if command = "i" then fontStyle.PushFontStyle( ITALICFONT )
-		if command = "/i" then fontStyle.PopFontStyle( ITALICFONT )
 
 		'adjust line height if another font is selected
 		if fontStyle.GetFont() <> self and fontStyle.GetFont()
@@ -983,18 +989,27 @@ Type TBitmapFont
 
 				Local bm:TBitmapFontChar
 				' = TBitmapFontChar( font.chars.ValueForKey(charCode) )
-				if charCode < font.chars.length then
+				if charCode < font.chars.length
 					bm = font.chars[charCode]
-				end if
+				endif
+
+				'reload a "bold/italic" font with utf8?
+				if not bm and font <> self
+					If charCode > 256 and font.MaxSigns = 256 and font.glyphCount > 256 and font.extraChars.find(chr(charCode)) = -1
+						font.LoadExtendedCharacters()
+						if charCode < font.chars.length
+							bm = font.chars[charCode]
+						endif
+					EndIf
+				endif
+
 				if bm
 					displayCharCode = charCode
 				else
 					displayCharCode = Asc("?")
-					if charCode < font.chars.length then
-						bm = font.chars[charCode]
-					end if
-					'bm = TBitmapFontChar( font.chars.ValueForKey(displayCharCode) )
+					bm = TBitmapFontChar( font.chars[displayCharCode] )
 				endif
+
 				if bm
 					Local tx:Float = bm.area.GetX() * gfx.tform_ix + bm.area.GetY() * gfx.tform_iy
 					Local ty:Float = bm.area.GetX() * gfx.tform_jx + bm.area.GetY() * gfx.tform_jy
