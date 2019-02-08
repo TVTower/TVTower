@@ -33,8 +33,8 @@ Type TProgrammeLicenceCollection
 	Field series:TIntMap = new TIntMap
 
 	'cache for faster access
-	Field _parentLicences:TIntMap = new TIntMap {nosave}
-	Field _licencesGUID:TMap = new TMap {nosave}
+	Field _parentLicences:TIntMap {nosave}
+	Field _licencesGUID:TMap {nosave}
 
 	Global _instance:TProgrammeLicenceCollection
 
