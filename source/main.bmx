@@ -103,6 +103,7 @@ Import "game.gamescriptexpression.bmx"
 Import "game.screen.menu.bmx"
 
 Import "game.network.networkhelper.bmx"
+Import "game.misc.savegameserializers.bmx"
 
 
 'notify users when there are XML-errors
@@ -909,37 +910,6 @@ Type TApp
 						endrem
 
 						rem
-						'dubletten
-						local duplicateCount:int = 0
-						local arr:TProgrammeLicence[] = TProgrammeLicence[] (GetProgrammeLicenceCollection().licences.ToArray())
-						For local i:int = 0 to arr.length -1
-
-							For local j:int = 0 to arr.length -1
-								if j = i then continue
-								if arr[i] = arr[j]
-									print "found duplicate: "+arr[i].GetTitle()
-									duplicateCount :+ 1
-									continue
-								endif
-
-								if arr[i].GetGUID() = arr[j].GetGUID()
-									print "found GUID duplicate: "+arr[i].GetTitle()
-									duplicateCount :+ 1
-									continue
-								endif
-
-
-								if arr[i].GetTitle() <> "Die Streichholzhammerbowle"
-									if arr[i].GetTitle() = arr[j].GetTitle()
-										print "found TITLE duplicate: "+arr[i].GetTitle()
-										duplicateCount :+ 1
-										continue
-									endif
-								endif
-							Next
-						Next
-						'print "COLLECTION DUPLICATE: "+duplicateCount+"      " + millisecs()
-
 						'Programme bei mehreren Spielern
 						'duplicateCount = 0
 						for local playerA:int = 1 to 4
@@ -1440,6 +1410,11 @@ endrem
 			GetBitmapFontManager().baseFont.Draw("Boss #"+i+": "+MathHelper.NumberToString(GetPlayerBoss(i+1).mood,4), 10, 270 + i*13)
 		Next
 
+
+		'GetBitmapFontManager().baseFont.Draw("NewsEvents: "+GetNewsEventCollection().managedNewsEvents.count(), 680, 300)
+		For Local i:Int = 0 To 3
+			GetBitmapFontManager().baseFont.Draw("News #"+i+": "+GetPlayerProgrammeCollection(i+1).news.count(), 680, 320 + i*13)
+		Next
 
 		GetWorld().RenderDebug(660,0, 140, 180)
 		'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
@@ -2215,7 +2190,8 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:string = "1.1"
+	Const SAVEGAME_VERSION:string = "12"
+	Const MIN_SAVEGAME_VERSION:string = "11"
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowBackground:TPixmap
 	Global messageWindowLastUpdate:Long
@@ -2399,6 +2375,14 @@ Type TSaveGame Extends TGameState
 		While not EOF(stream)
 			line = stream.ReadLine()
 
+			'scan bmo version to avoid faulty deserialization
+			if line.Find("<bmo ver=~q") >= 0
+				local bmoVersion:int = int(line[10 .. line.Find("~q>")])
+				if bmoVersion <= 7
+					return null
+				endif
+			endif
+
 			if line.Find("name=~q_Game~q type=~qTGame~q>") > 0
 				exit
 			endif
@@ -2430,12 +2414,15 @@ Type TSaveGame Extends TGameState
 
 		local content:string = "~n".Join(lines)
 
-		local p:TPersist = new TPersist
+
+		'local p:TPersist = new TPersist
+		Local p:TPersist = New TXMLPersistenceBuilder.Build()
 		local res:TData = TData(p.DeserializeObject(content))
 		if not res then res = new TData
 		res.Add("fileURI", fileURI)
 		res.Add("fileName", GetSavegameName(fileURI) )
 		res.AddNumber("fileTime", FileTime(fileURI))
+		p.Free()
 
 		return res
 	End Function
@@ -2448,7 +2435,7 @@ Type TSaveGame Extends TGameState
 			production orders (1,3,2) and missing episodes ([1,null,3])
 
 		'repair broken custom productions
-		For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().series
+		For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().series.Values()
 			if not licence.subLicences or licence.subLicences.length = 0 then continue
 
 			local hasToFix:int = 0
@@ -2513,13 +2500,14 @@ Type TSaveGame Extends TGameState
 		EndIf
 
 		TPersist.maxDepth = 4096*4
-		Local persist:TPersist = New TPersist
+		Local persist:TPersist = New TXMLPersistenceBuilder.Build()
+		'Local persist:TPersist = New TPersist
 		persist.serializer = new TSavegameSerializer
 
 		local savegameSummary:TData = GetGameSummary(savename)
 		'invalid savegame
 		if not savegameSummary
-			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)
+			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt or too old.", LOG_SAVELOAD | LOG_ERROR)
 			return False
 		endif
 
@@ -2541,6 +2529,7 @@ Type TSaveGame Extends TGameState
 		local loadingStart:int = Millisecs()
 		'this creates new TGameObjects - and therefore increases ID count!
 		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename, XML_PARSE_HUGE))
+		persist.Free()
 		If Not saveGame
 			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)
 			Return False
@@ -2650,13 +2639,15 @@ endrem
 		TPersist.maxDepth = 4096
 		'save the savegame data as xml
 		'TPersist.format=False
-		local p:TPersist = New TPersist
+		Local p:TPersist = New TXMLPersistenceBuilder.Build()
+		'local p:TPersist = New TPersist
 		p.serializer = new TSavegameSerializer
 		if TPersist.compressed
 			p.SerializeToFile(saveGame, saveName+".zip")
 		else
 			p.SerializeToFile(saveGame, saveName)
 		endif
+		p.Free()
 
 		'tell everybody we finished saving
 		'payload is saveName and saveGame-object
@@ -4083,7 +4074,6 @@ Type GameEvents
 		_eventListeners :+ [ EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntry ) ]
 		'relay incoming chat messages to the AI
 		_eventListeners :+ [ EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntryForAI ) ]
-
 
 		'dev
 		_eventListeners :+ [ EventManager.registerListenerFunction("player.onEnterRoom", onPlayerEntersRoom ) ]
@@ -5593,10 +5583,10 @@ Type GameEvents
 
 
 	Function OnMinute:Int(triggerEvent:TEventBase)
-		local time:Long = triggerEvent.GetData().GetLong("time",-1)
-		Local minute:Int = GetWorldTime().GetDayMinute(time)
-		Local hour:Int = GetWorldTime().GetDayHour(time)
-		Local day:Int = GetWorldTime().GetDay(time)
+		local now:Long = triggerEvent.GetData().GetLong("time",-1)
+		Local minute:Int = GetWorldTime().GetDayMinute(now)
+		Local hour:Int = GetWorldTime().GetDayHour(now)
+		Local day:Int = GetWorldTime().GetDay(now)
 		If hour = -1 Then Return False
 
 		'=== UPDATE GAME MODIFIERS ===
@@ -5642,7 +5632,9 @@ Type GameEvents
 				GetGame().refillMovieAgencyTime = GetGame().refillMovieAgencyTimer + randrange(0,20)-10
 
 				TLogger.Log("GameEvents.OnMinute", "partly refilling movieagency", LOG_DEBUG)
+				local t:long = Time.MillisecsLong()
 				RoomHandler_movieagency.GetInstance().ReFillBlocks(True, 0.5)
+				TLogger.Log("GameEvents.OnMinute", "... took " + (Time.MillisecsLong() - t)+"ms", LOG_DEBUG)
 			EndIf
 		EndIf
 		If GetGame().refillScriptAgencyTime <= 0
@@ -5654,7 +5646,9 @@ Type GameEvents
 				GetGame().refillScriptAgencyTime = GetGame().refillScriptAgencyTimer + randrange(0,20)-10
 
 				TLogger.Log("GameEvents.OnMinute", "partly refilling scriptagency", LOG_DEBUG)
+				local t:long = Time.MillisecsLong()
 				RoomHandler_scriptagency.GetInstance().ReFillBlocks(True, 0.65)
+				TLogger.Log("GameEvents.OnMinute", "... took " + (Time.MillisecsLong() - t)+"ms", LOG_DEBUG)
 			EndIf
 		EndIf
 		If GetGame().refillAdAgencyTime <= 0
@@ -5666,12 +5660,14 @@ Type GameEvents
 				GetGame().refillAdAgencyTime = GetGame().refillAdAgencyTimer + randrange(0,20)-10
 
 				TLogger.Log("GameEvents.OnMinute", "partly refilling adagency", LOG_DEBUG)
+				local t:long = Time.MillisecsLong()
 				If GetGame().refillAdAgencyOverridePercentage <> GetGame().refillAdAgencyPercentage
 					RoomHandler_adagency.GetInstance().ReFillBlocks(True, GetGame().refillAdAgencyOverridePercentage)
 					GetGame().refillAdAgencyOverridePercentage = GetGame().refillAdAgencyPercentage
 				Else
 					RoomHandler_adagency.GetInstance().ReFillBlocks(True, GetGame().refillAdAgencyPercentage)
 				EndIf
+				TLogger.Log("GameEvents.OnMinute", "... took " + (Time.MillisecsLong() - t)+"ms", LOG_DEBUG)
 			EndIf
 		EndIf
 
@@ -5837,7 +5833,7 @@ Type GameEvents
 		'=== UPDATE ACHIEVEMENTS ===
 		'(do that AFTER setting the broadcasts and calculating the
 		' audience as some achievements check audience of a broadcast)
-		GetAchievementCollection().Update(time)
+		GetAchievementCollection().Update(now)
 
 		Return True
 	End Function
