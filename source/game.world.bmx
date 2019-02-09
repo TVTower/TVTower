@@ -457,12 +457,11 @@ Type TWorld
 		Local modifyAlpha:Float = 0.5 + 0.5*Weather.IsSunVisible()
 		Local rotation:Float = 360.0 * GetWorldTime().GetDayProgress()
 		Local movedMoonPoint:TVec2D = moonPoint.Copy().RotateAroundPoint(centerPoint, rotation)
-
 		SetAlpha(oldAlpha * modifyAlpha)
 		If skyMoon
 			'show a different frame each day
 			Local phase:Int = (skyMoon.frames -1) - ( GetWorldTime().GetDay(GetWorldTime().GetTimeGone() + 6*3600)) Mod skyMoon.frames
-			skyMoon.Draw(movedMoonPoint.x, movedMoonPoint.y, phase, ALIGN_CENTER_CENTER, , Float(0.95+0.05*Sin(Time.GetAppTimeGone()/10)))
+			skyMoon.Draw(movedMoonPoint.x, movedMoonPoint.y, phase, ALIGN_CENTER_CENTER, Float(0.95+0.05*Sin(Time.GetAppTimeGone()/10)))
 		Else
 			DrawOval(Int(movedMoonPoint.x-15), Int(movedMoonPoint.y-15), 30,30)
 		EndIf
