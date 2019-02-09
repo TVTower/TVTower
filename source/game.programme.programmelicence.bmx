@@ -472,8 +472,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	Field episodeNumber:int = -1
 	'the price paid when buying
 	Field buyPrice:int = -1
-	'audience level when bought
-	Field buyAudienceReachLevel:int = 0
+	'licenced audience level when bought/received
+	Field licencedAudienceReachLevel:int = -1
 	'store stats for each owner
 	Field broadcastStatistics:TBroadcastStatistic[]
 	'flags:
@@ -783,6 +783,12 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if owner <> self.owner
 			'remove old trailer data
 			data.RemoveTrailerMod(self.owner)
+
+			if owner > 0
+				local currentAudienceReachLevel:int = 1
+				if GetPlayerBase(owner) then currentAudienceReachLevel = GetPlayerBase(owner).GetAudienceReachLevel()
+				licencedAudienceReachLevel = currentAudienceReachLevel
+			endif
 		endif
 
 		self.owner = owner
@@ -1029,7 +1035,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local finance:TPlayerFinance = GetPlayerFinance(owner)
 		if not finance then return False
 
-		finance.SellProgrammeLicence(GetPriceForPlayer(owner, buyAudienceReachLevel), self)
+		finance.SellProgrammeLicence(GetPriceForPlayer(owner, licencedAudienceReachLevel), self)
 
 		'set unused again
 		SetOwner( TOwnedGameObject.OWNER_NOBODY )
@@ -1046,10 +1052,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local currentAudienceReachLevel:int = 1
 		if GetPlayerBase(playerID) then currentAudienceReachLevel = GetPlayerBase(playerID).GetAudienceReachLevel()
 
-		local priceToPay:int = getPriceForPlayer(playerID, currentAudienceReachLevel)
+		local priceToPay:int = GetPriceForPlayer(playerID, currentAudienceReachLevel)
 		If finance.PayProgrammeLicence(priceToPay, self)
 			buyPrice = priceToPay
-			buyAudienceReachLevel = currentAudienceReachLevel
 
 			SetOwner(playerID)
 			Return TRUE
@@ -1797,7 +1802,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	'for not-yet-owned licences
 	Method GetSellPrice:Int(playerID:int) {_exposeToLua}
 		if owner = playerID
-			Return GetPriceForPlayer(owner, buyAudienceReachLevel)
+			Return GetPriceForPlayer(owner, licencedAudienceReachLevel)
 		elseif GetPlayerBase(playerID)
 			Return GetPriceForPlayer(playerID, Max(1, GetPlayerBase(playerID).GetAudienceReachLevel()))
 		else
@@ -2334,7 +2339,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			contentY :+ 12
 			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (alle)", contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Kaufpreis: "+MathHelper.DottedValue(GetPriceForPlayer(useOwner))+" (old:"+MathHelper.DottedValue(GetPriceForPlayerOld(useOwner))+")  Verkauf: " + MathHelper.DottedValue(GetSellPrice(useOwner)), contentX + 5, contentY)
+			skin.fontNormal.draw("Kaufpreis: "+MathHelper.DottedValue(GetPriceForPlayer(useOwner))+" (licLvl: " + licencedAudienceReachLevel+")  Verkauf: " + MathHelper.DottedValue(GetSellPrice(useOwner)), contentX + 5, contentY)
 			contentY :+ 12
 			skin.fontNormal.draw("Trailer: " + data.GetTimesTrailerAiredSinceLastBroadcast(useOwner) +" (total: "+ data.GetTimesTrailerAired()+")", contentX + 5, contentY)
 			if data.GetTrailerMod(useOwner, False)
