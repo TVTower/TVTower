@@ -783,12 +783,6 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if owner <> self.owner
 			'remove old trailer data
 			data.RemoveTrailerMod(self.owner)
-
-			if owner > 0
-				local currentAudienceReachLevel:int = 1
-				if GetPlayerBase(owner) then currentAudienceReachLevel = GetPlayerBase(owner).GetAudienceReachLevel()
-				licencedAudienceReachLevel = currentAudienceReachLevel
-			endif
 		endif
 
 		self.owner = owner
@@ -798,6 +792,19 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		Next
 
 		return TRUE
+	End Method
+
+
+	'override default method to add sublicences
+	Method SetLicencedAudienceReachLevel:int(level:int)
+		licencedAudienceReachLevel = level
+
+		'do the same for all children
+		For local licence:TProgrammeLicence = eachin subLicences
+			licence.SetLicencedAudienceReachLevel(level)
+		Next
+
+		return True
 	End Method
 
 
@@ -1055,6 +1062,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local priceToPay:int = GetPriceForPlayer(playerID, currentAudienceReachLevel)
 		If finance.PayProgrammeLicence(priceToPay, self)
 			buyPrice = priceToPay
+
+			'set owners audience reach level
+			SetLicencedAudienceReachLevel( currentAudienceReachLevel )
 
 			SetOwner(playerID)
 			Return TRUE

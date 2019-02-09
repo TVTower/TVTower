@@ -71,6 +71,7 @@ Type TProduction Extends TOwnedGameObject
 	Field scriptGenreFit:Float = -1.0
 	Field productionCompanyQuality:Float = 0.0
 	Field castFit:Float = -1.0
+	Field castComplexity:Float = 0.0
 	Field castSympathyMod:Float = 1.0
 	Field castFameMod:Float = 1.0
 	Field effectiveFocusPointsMod:Float = 1.0
@@ -129,20 +130,27 @@ Type TProduction Extends TOwnedGameObject
 	'returns a modificator to a script's intrinsic values (speed, review..)
 	Method GetProductionValueMod:Float()
 		local value:Float
-		'=== BASE ===
+		'=== BASE ===s
 		'if perfectly matching "expectations", we would have a mod of 1.0
 
 		'add script genre fits (up to 20%)
-		value :+ 0.2 * sqr(scriptGenreFit)
+		value :+ 0.2 * scriptGenreFit
 
-		'add  cast fits (up to 40%)
-		value :+ 0.4 * sqr(castFit)
+		'basic cast fit
+		'we assume an average of "10" to result in "no modification"
+		'-> value added: -0.02 - 0.18
+		value :+ 0.2 * (castFit - 0.1)
+		'the more complex a cast is (more people = more complex)
+		'the more it adds
+		'-> value added: 0 - 0.2
+		value :+ 0.2 * castFit * castComplexity
 
 		'production company quality decides about result too
 		'quality:  0.0 to 1.0 (fully experienced)
 		'          but might be a bit higher (qualityMod)
 		'we assume an average of "40" to result in "no modification"
-		value :+ 0.3 * (sqr(productionCompanyQuality) - sqr(0.4))
+		'-> value added: -0.12 - 0.18
+		value :+ 0.3 * (productionCompanyQuality - 0.4)
 
 		value = Max(0, value)
 
@@ -157,6 +165,7 @@ Type TProduction Extends TOwnedGameObject
 		'to the genre
 		value :* 1.0 + 0.4 * (effectiveFocusPointsMod - 0.4)
 
+		'more spent focus points "always" leads to a better product
 		value :+ 0.01 * productionConcept.GetEffectiveFocusPoints()
 
 
@@ -212,6 +221,7 @@ Type TProduction Extends TOwnedGameObject
 		'=== 1.1.2 CAST ===
 		'Calculate how the selected cast fits to their assigned jobs
 		castFit = productionConcept.CalculateCastFit()
+		castComplexity = productionConcept.CalculateCastComplexity()
 
 		'=== 1.1.3 PRODUCTIONCOMPANY ===
 		'Calculate how the selected company does its job at all
@@ -231,6 +241,7 @@ Type TProduction Extends TOwnedGameObject
 
 		TLogger.Log("TProduction.Start()", "scriptGenreFit:           " + scriptGenreFit, LOG_DEBUG)
 		TLogger.Log("TProduction.Start()", "castFit:                  " + castFit, LOG_DEBUG)
+		TLogger.Log("TProduction.Start()", "castComplexity:           " + castComplexity, LOG_DEBUG)
 		TLogger.Log("TProduction.Start()", "castSympathyMod:          " + castSympathyMod, LOG_DEBUG)
 		TLogger.Log("TProduction.Start()", "effectiveFocusPoints:     " + effectiveFocusPoints, LOG_DEBUG)
 		TLogger.Log("TProduction.Start()", "effectiveFocusPointsMod:  " + effectiveFocusPointsMod, LOG_DEBUG)
@@ -414,11 +425,11 @@ Type TProduction Extends TOwnedGameObject
 
 
 		'=== 2.2 PROGRAMME PRODUCTION PROPERTIES ===
-		programmeData.review = productionValueMod * productionConcept.script.review *scriptPotentialMod
-		programmeData.speed = productionValueMod * productionConcept.script.speed *scriptPotentialMod
-		programmeData.outcome = productionValueMod * productionConcept.script.outcome *scriptPotentialMod
+		programmeData.review = MathHelper.Clamp(productionValueMod * productionConcept.script.review *scriptPotentialMod, 0, 1.0)
+		programmeData.speed = MathHelper.Clamp(productionValueMod * productionConcept.script.speed *scriptPotentialMod, 0, 1.0)
+		programmeData.outcome = MathHelper.Clamp(productionValueMod * productionConcept.script.outcome *scriptPotentialMod, 0, 1.0)
 		'modify outcome by castFameMod ("attractors/startpower")
-		programmeData.outcome = Max(0, Min(1.0, programmeData.outcome * castFameMod))
+		programmeData.outcome = MathHelper.Clamp(programmeData.outcome * castFameMod, 0, 1.0)
 
 		if producerName
 			if not programmeData.extra then programmeData.extra = new TData
@@ -500,7 +511,9 @@ Type TProduction Extends TOwnedGameObject
 
 		'set owner of licence (and sublicences)
 		if owner
-
+			'ignore current level (else you can start production and
+			'increase reach until production finish)
+			addLicence.SetLicencedAudienceReachLevel(1)
 			addLicence.SetOwner(owner)
 		endif
 

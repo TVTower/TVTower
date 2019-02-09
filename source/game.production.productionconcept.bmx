@@ -93,6 +93,7 @@ Type TProductionConcept Extends TOwnedGameObject
 	Field liveTime:int = -1
 
 	Field castFit:Float = -1.0
+	Field castComplexity:Float = -1.0
 	Field castFameMod:Float = -1.0
 	Field castSympathy:Float = 0.0
 	Field castSympathyCached:int = False
@@ -460,6 +461,23 @@ Type TProductionConcept Extends TOwnedGameObject
 		castSympathyCached = True
 
 		return castSympathy
+	End Method
+
+
+	'describes how difficult it is to fit the whole cast
+	'the more people, the harder it is (and the higher the value.
+	'returns a value between 0.0 and 1.0
+	Method CalculateCastComplexity:Float(recalculate:int = False)
+		if castComplexity >= 0 and not recalculate then return castComplexity
+
+		'cast size => complexity
+		'0 => 0
+		'1 => 0.1
+		'2 => 0.19
+		'3 => ...
+		castComplexity = 1.0 - 0.9^cast.length
+
+		return castComplexity
 	End Method
 
 
