@@ -3237,7 +3237,7 @@ End Type
 
 
 
-Type TStationCableNetworkUplink extends TStationBase
+Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 	Field hardwareCosts:int = 65000
 	Field maintenanceCosts:int = 15000
 
@@ -3664,7 +3664,7 @@ End Type
 
 
 
-Type TStationSatelliteUplink extends TStationBase
+Type TStationSatelliteUplink extends TStationBase {_exposeToLua="selected"}
 	Field hardwareCosts:int = 95000
 	Field maintenanceCosts:int = 25000
 
