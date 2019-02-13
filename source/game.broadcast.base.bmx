@@ -26,6 +26,7 @@ Type TBroadcastManager
 	Field initialized:Int = False
 
 	'Referenzen
+'hier auf GUID
 	Field newsGenreDefinitions:TNewsGenreDefinition[]		'TODO: Gehört woanders hin
 
 	Field audienceResults:TAudienceResult[]
@@ -218,7 +219,6 @@ Type TBroadcastManager
 		EndIf
 
 		audienceResult.playerId = playerID
-
 		audienceResults[playerID-1] = audienceResult
 	End Method
 
@@ -692,16 +692,16 @@ Type TBroadcast
 			withoutPlayerIDs :+ [i]
 		Next
 
+		'receipient share = portion of the population share eg. using an antenna
+		local audienceAntenna:int = GetStationMapCollection().GetTotalAntennaReceiverShare(playerIDs, withoutPlayerIDs).x
+		local audienceSatellite:int = GetStationMapCollection().GetTotalSatelliteReceiverShare(playerIDs, withoutPlayerIDs).x
+		local audienceCableNetwork:int = GetStationMapCollection().GetTotalCableNetworkReceiverShare(playerIDs, withoutPlayerIDs).x
 
-		local audienceAntenna:int = GetStationMapCollection().GetTotalAntennaShare(playerIDs, withoutPlayerIDs).x
-		local audienceSatellite:int = GetStationMapCollection().GetTotalSatelliteShare(playerIDs, withoutPlayerIDs).x
-		local audienceCableNetwork:int = GetStationMapCollection().GetTotalCableNetworkShare(playerIDs, withoutPlayerIDs).x
 '		Local audience:Int = GetStationMapCollection().GetTotalShareAudience(playerIDs, withoutPlayerIDs)
 '		If audience > 0
 		If audienceAntenna > 0 or audienceSatellite > 0 or audienceCableNetwork > 0
 			Local audience:int = audienceAntenna + audienceSatellite + audienceCableNetwork
 
-			'print "AddMarket:  players="+StringHelper.JoinIntArray(",",playerIDs) +"  without="+StringHelper.JoinIntArray(",",withoutPlayerIDs)+"  audience="+audience+"  (antenna="+audienceAntenna+"  satellite="+audienceSatellite+"  cablenetwork="+audienceCableNetwork+")"
 			Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
 			market.maxAudience = New TAudience.InitWithBreakdown(audience)
 			market.shareAntenna = audienceAntenna / float(audience)
@@ -712,6 +712,7 @@ Type TBroadcast
 			Next
 
 			AudienceMarkets.AddLast(market)
+			'print "AddMarket:  players="+StringHelper.JoinIntArray(",",playerIDs) +"  without="+StringHelper.JoinIntArray(",",withoutPlayerIDs)+"  audience="+audience+"  (maxAudience="+int(market.maxAudience.GetTotalSum())+"  antenna="+audienceAntenna+"  satellite="+audienceSatellite+"  cablenetwork="+audienceCableNetwork+")"
 		End If
 	End Method
 

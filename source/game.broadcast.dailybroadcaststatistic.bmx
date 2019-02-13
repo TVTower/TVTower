@@ -45,7 +45,7 @@ Type TDailyBroadcastStatisticCollection
 		For local key:string = EachIn removed
 			statistics.Remove(key)
 		Next
-		
+
 		return removed.length
 	End Method
 
@@ -143,11 +143,11 @@ Type TDailyBroadcastStatistic
 				endif
 			endif
 		endif
-			
+
 		return True
 	End Method
 
-	
+
 	Method _GetAudience:TAudience(channelNumber:int, hour:int, createIfMissing:int = False, broadcastedAsType:int = 0)
 		local result:TAudienceResultBase = _GetAudienceResult(channelNumber, hour, False, broadcastedAsType)
 		if not result
@@ -158,7 +158,7 @@ Type TDailyBroadcastStatistic
 		endif
 	End Method
 
-	
+
 	Method _GetAudienceResult:TAudienceResultBase(channelNumber:int, hour:int, createIfMissing:int = False, broadcastedAsType:int = 0)
 		local useAllAudiences:TAudienceResultBase[][] = GetAudienceArrayToUse(broadcastedAsType)
 
@@ -183,7 +183,7 @@ Type TDailyBroadcastStatistic
 	Method _GetAverageAudience:TAudience(channelNumber:int = -1, broadcastedAsType:int = 0, hours:int[], hoursMode:int = 1)
 		'hoursMode = 1: skip all non-given hours
 		'hoursMode = 0: skip the given hours
-		
+
 		local checkPlayers:int[]
 		if channelNumber <= 0
 			checkPlayers = [0,1,2,3]
@@ -210,8 +210,8 @@ Type TDailyBroadcastStatistic
 						continue
 					endif
 				endif
-				
-				
+
+
 				result.Add(audienceResult.audience)
 				count :+1
 				hour :+1
@@ -224,7 +224,7 @@ Type TDailyBroadcastStatistic
 
 	Function InIntArray:int(number:int, arr:int[])
 		if not arr or arr.length = 0 then return False
-		
+
 		For local i:int = EachIn arr
 			if i = number then return True
 		Next
@@ -235,7 +235,7 @@ Type TDailyBroadcastStatistic
 	'returns the best audience result of a specific channelNumber/player
 	Method _GetBestAudience:TAudience(channelNumber:Int, broadcastedAsType:int = 0, hours:int[], hoursMode:int = 1)
 		if channelNumber <= 0 then return New TAudience
-	
+
 		local result:TAudienceResultBase = _GetBestAudienceResult(channelNumber, broadcastedAsType, hours, hoursMode)
 		if result then return result.audience
 
@@ -246,7 +246,7 @@ Type TDailyBroadcastStatistic
 	'returns the best audience result of a specific channelNumber/player
 	Method _GetBestAudienceResult:TAudienceResultBase(channelNumber:Int, broadcastedAsType:int = 0, hours:int[], hoursMode:int = 1)
 		if channelNumber <= 0 then return New TAudienceResultBase
-		
+
 		local result:TAudienceResultBase
 		local useAllAudiences:TAudienceResultBase[][] = GetAudienceArrayToUse(broadcastedAsType)
 		local hour:int = 0
@@ -292,12 +292,12 @@ Type TDailyBroadcastStatistic
 				return _cachedNewsRanks
 			endif
 		endif
-		
+
 
 
 		local result:int[]
 		result = result[..TVTTargetGroup.Count + 1]
-	
+
 		'store all available audiences in one list for a later sort
 		local availableAudiences:TList = CreateList()
 		For local i:int = 1 to allAudienceResults.length
@@ -338,7 +338,7 @@ Type TDailyBroadcastStatistic
 					Throw "unimplemented audiencegroup: "+ groupID
 			EndSelect
 
-			'store the groupID->rank in the result array 
+			'store the groupID->rank in the result array
 			local rank:int = 1
 			For local audience:TAudience = EachIn availableAudiences
 				'store rank as the group value
@@ -358,7 +358,7 @@ Type TDailyBroadcastStatistic
 			_cachedNewsRanksChannelNumber = channelNumber
 			_cachedNewsRanks = result
 		endif
-		
+
 		return result
 	End Method
 
@@ -485,15 +485,15 @@ Type TDailyBroadcastStatistic
 
 	Method GetAudienceRanking:int[](channelNumber:Int, hour:int)
 		return _GetAudienceRanking(channelNumber, hour, TVTBroadcastMaterialType.PROGRAMME)
-	End Method	
+	End Method
 
 
 	Method GetNewsAudienceRanking:int[](channelNumber:Int, hour:int)
 		return _GetAudienceRanking(channelNumber, hour, TVTBroadcastMaterialType.NEWSSHOW)
-	End Method	
+	End Method
 
 
 	Method GetAdAudienceRanking:int[](channelNumber:Int, hour:int)
 		return _GetAudienceRanking(channelNumber, hour, TVTBroadcastMaterialType.ADVERTISEMENT)
-	End Method	
+	End Method
 End Type

@@ -55,8 +55,8 @@ Type TTooltip Extends TEntity
 	'left (2) and right (4) is for all elements
 	'top (1) and bottom (3) padding for content
 	Field padding:TRectangle	= new TRectangle.Init(3,5,4,7)
-	Field image:TImage			= Null
-	Field dirtyImage:Int		= 1
+	Field image:TImage			= Null {nosave}
+	Field dirtyImage:Int		= 1 {nosave}
 	Field tooltipImage:Int		=-1
 	Field titleBGtype:Int		= 0
 	Field enabled:Int			= 0
@@ -125,7 +125,7 @@ Type TTooltip Extends TEntity
 
 	Method Update:Int()
 		if not enabled then return False
-		
+
 		lifeTime :- GetDeltaTimer().GetDelta()
 		_aliveTime :+ GetDeltaTimer().GetDelta()
 

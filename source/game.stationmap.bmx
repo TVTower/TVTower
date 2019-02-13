@@ -53,15 +53,12 @@ Type TStationMapCollection
 	Field nextCensusTime:Long = -1
 
 	Field mapConfigFile:String = ""
-	'does the shareMap has to get regenerated during the next
-	'update cycle?
-	Field _regenerateMap:Int = False
 	'caches
-	Field _currentPopulationAntennaShare:Double = -1
-	Field _currentPopulationCableShare:Double = -1
-	Field _currentPopulationSatelliteShare:Double = -1
+	Field _currentPopulationAntennaShare:Double = -1 {nosave}
+	Field _currentPopulationCableShare:Double = -1 {nosave}
+	Field _currentPopulationSatelliteShare:Double = -1 {nosave}
 
-	'attention: do interpolation function hook is _not_ saved in the
+	'attention: the interpolation function hook is _not_ saved in the
 	'           savegame
 	'           So make sure to tackle this when saving share data!
 	Field populationAntennaShareData:TNumericPairInterpolator {nosave}
@@ -137,7 +134,6 @@ Type TStationMapCollection
 		lastCensusTime = -1
 		nextCensusTime = -1
 		mapConfigFile = ""
-		_regenerateMap = False
 		'caches
 		_currentPopulationAntennaShare = -1
 		_currentPopulationCableShare = -1
@@ -155,6 +151,7 @@ Type TStationMapCollection
 	End Method
 
 
+	'Percentage of receipients using an antenna
 	'return a (cached) value of the current share
 	Method GetCurrentPopulationAntennaShare:Double()
 		if _currentPopulationAntennaShare < 0
@@ -164,6 +161,7 @@ Type TStationMapCollection
 	End Method
 
 
+	'Percentage of receipients using a cable network uplink
 	'return a (cached) value of the current share
 	Method GetCurrentPopulationCableShare:Double()
 		if _currentPopulationCableShare < 0
@@ -173,6 +171,7 @@ Type TStationMapCollection
 	End Method
 
 
+	'Percentage of receipients using a satellite dish / uplink
 	'return a (cached) value of the current share
 	Method GetCurrentPopulationSatelliteShare:Double()
 		if _currentPopulationSatelliteShare < 0
@@ -225,6 +224,8 @@ Type TStationMapCollection
 		_currentPopulationCableShare = -1
 		_currentPopulationSatelliteShare = -1
 
+		'generate cache if needed reach-values
+		UpdateSections()
 
 		For local section:TStationMapSection = EachIn sections
 			section.DoCensus()
@@ -239,10 +240,6 @@ Type TStationMapCollection
 		UpdateSatelliteSharesAndQuality()
 
 
-		'update cached reach-values
-		'Update() only recalculates audience sum within "_regenerateMap"
-		'if "map.changed" is set to "true"  - so we need to recalculate
-		'it in all cases
 		For local stationMap:TStationMap = Eachin stationMaps
 			stationMap.RecalculateAudienceSum()
 		Next
@@ -313,32 +310,10 @@ Type TStationMapCollection
 	End Method
 
 
-	Method GenerateShareMaps:Int()
-		for local section:TStationMapSection = EachIn sections
-			section.GenerateShareMap()
-		next
-	End Method
-
-
-	Method RecalculateMapAudienceSums:Int(forceRecalculation:int = False)
-		Local m:TStationMap
-		For Local i:Int = 1 To stationMaps.length
-			m = GetMap(i)
-			If Not m Then Continue
-
-			If m.changed or forceRecalculation
-				m.RecalculateAudienceSum()
-				'we handled the changed flag
-				m.changed = False
-			EndIf
-		Next
-	End Method
-
-
-	Method GetAntennaAudienceSum:int(stations:TList)
+	Method GetAntennaAudienceSum:int(playerID:int)
 		local result:int
 		For local section:TStationMapSection = EachIn sections
-			result :+ section.GetAntennaAudienceSum(stations)
+			result :+ section.GetAntennaAudienceSum(playerID)
 		Next
 		return result
 	End Method
@@ -397,7 +372,8 @@ Type TStationMapCollection
 	Method GetSatelliteUplinkAudienceSum:int(stations:TList)
 		local result:int
 		for local satLink:TStationSatelliteUplink = EachIn stations
-			result :+ satLink.GetExclusiveReach()
+			result :+ satLink.GetReach()
+		'	result :+ satLink.GetExclusiveReach()
 		next
 		return result
 	End Method
@@ -453,7 +429,7 @@ Type TStationMapCollection
 	Method GetTotalChannelExclusiveAudience:Int(channelNumber:int)
 		local result:int
 		For local section:TStationMapSection = EachIn sections
-			result :+ section.GetChannelExclusiveAudience(channelNumber)
+			result :+ section.GetExclusiveAntennaAudienceSum(channelNumber)
 		Next
 		return result
 	End Method
@@ -482,14 +458,24 @@ Type TStationMapCollection
 			'either
 			'ATTENTION: contains only cable and antenna
 			For local section:TStationMapSection = EachIn sections
-				result.AddVec( section.GetShare(channelNumbers, withoutChannelNumbers) )
+				local v:TVec3D = section.GetReceiverShare(channelNumbers, withoutChannelNumbers)
+				'add integer values for "population"
+				result.x :+ v.GetIntX()
+				result.y :+ v.GetIntY()
+				result.z :+ v.z
+				'result.AddVec( section.GetReceiverShare(channelNumbers, withoutChannelNumbers) )
 			Next
 			'or:
 			'result.AddVec( GetTotalAntennaShare(channelNumbers, withoutChannelNumbers) )
 			'result.AddVec( GetTotalCableNetworkShare(channelNumbers, withoutChannelNumbers) )
 
 			'add Satellite shares
-			result.AddVec( GetTotalSatelliteShare(channelNumbers, withoutChannelNumbers) )
+			local v2:TVec3D = GetTotalSatelliteReceiverShare(channelNumbers, withoutChannelNumbers)
+			'add integer values for "population"
+			result.x :+ v2.GetIntX()
+			result.y :+ v2.GetIntY()
+			result.z :+ v2.z
+			'result.AddVec( GetTotalSatelliteReceiverShare(channelNumbers, withoutChannelNumbers) )
 		EndIf
 
 		if result.y > 0 then result.z = result.x / result.y
@@ -499,10 +485,15 @@ Type TStationMapCollection
 
 	'returns a share between channels, encoded in a TVec3D containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
-	Method GetTotalAntennaShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
+	Method GetTotalAntennaReceiverShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
 		local result:TVec3D = new TVec3D.Init(0,0,0)
 		For local section:TStationMapSection = EachIn sections
-			result.AddVec( section.GetAntennaShare(channelNumbers, withoutChannelNumbers) )
+			local v:TVec3D = section.GetAntennaReceiverShare(channelNumbers, withoutChannelNumbers)
+			'add integer values for "population"
+			result.x :+ v.GetIntX()
+			result.y :+ v.GetIntY()
+			result.z :+ v.z
+			'result.AddVec( section.GetAntennaReceiverShare(channelNumbers, withoutChannelNumbers) )
 		Next
 		If result.y = 0 Then result.z = 0.0 Else result.z = result.x/result.y
 
@@ -512,10 +503,15 @@ Type TStationMapCollection
 
 	'returns a share between channels, encoded in a TVec3D containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
-	Method GetTotalCableNetworkShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
+	Method GetTotalCableNetworkReceiverShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
 		local result:TVec3D = new TVec3D.Init(0,0,0)
 		For local section:TStationMapSection = EachIn sections
-			result.AddVec( section.GetCableNetworkShare(channelNumbers, withoutChannelNumbers) )
+			local v:TVec3D = section.GetCableNetworkReceiverShare(channelNumbers, withoutChannelNumbers)
+			'add integer values for "population"
+			result.x :+ v.GetIntX()
+			result.y :+ v.GetIntY()
+			result.z :+ v.z
+			'result.AddVec( section.GetCableNetworkReceiverShare(channelNumbers, withoutChannelNumbers) )
 		Next
 		If result.y = 0 Then result.z = 0.0 Else result.z = result.x/result.y
 
@@ -525,7 +521,7 @@ Type TStationMapCollection
 
 	'returns a share between channels, encoded in a TVec3D containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
-	Method GetTotalSatelliteShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
+	Method GetTotalSatelliteReceiverShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
 		local result:TVec3D = new TVec3D.Init(0,0,0)
 
 		For local satellite:TStationMap_Satellite = EachIn satellites
@@ -748,11 +744,17 @@ Type TStationMapCollection
 	'as soon as a station gets active (again), the sharemap has to get
 	'regenerated (for a correct audience calculation)
 	Function onSetStationActiveState:int(triggerEvent:TEventBase)
-		GetInstance()._regenerateMap = True
-		'also set the owning stationmap to "changed" so only this single
-		'audience sum only gets recalculated (saves cpu time)
 		Local station:TStationBase = TStationBase(triggerEvent.GetSender())
-		If station Then GetInstance().GetMap(station.owner).changed = True
+		If not station then return false
+
+		'invalidate (cached) share data of surrounding sections
+		for local s:TStationMapSection = eachin GetInstance().GetSectionsConnectedToStation(station)
+			s.InvalidateData()
+		next
+
+		'set the owning stationmap to "changed" so only this single
+		'audience sum only gets recalculated (saves cpu time)
+		GetInstance().GetMap(station.owner).reach = -1
 	End Function
 
 
@@ -773,8 +775,10 @@ Type TStationMapCollection
 
 		_instance.LoadMapFromXML()
 
+		'Ronny: no longer needed as recalculation is done automatically
+		'       with a variable set to "false" on init.
 		'maybe we got a borked up savegame which skipped recalculation
-		_instance.RecalculateMapAudienceSums(True)
+		'_instance.RecalculateMapAudienceSums(True)
 	End Function
 
 
@@ -867,7 +871,6 @@ Type TStationMapCollection
 
 		'=== INIT MAP DATA ===
 		CreatePopulationMaps()
-		GenerateShareMaps()
 		AssignPressureGroups()
 
 		Return True
@@ -967,8 +970,12 @@ Type TStationMapCollection
 		'remove from array - zero based
 		stationMaps[map.owner-1] = Null
 
-		'invalidate caches and create sharemaps
-		GenerateShareMaps()
+		'invalidate caches / antenna maps
+		for local section:TStationMapSection = EachIn sections
+			section.InvalidateData()
+			'pre-create data already
+			section.GetAntennaShareMap()
+		next
 
 		Return True
 	End Method
@@ -1048,6 +1055,13 @@ Type TStationMapCollection
 	End Method
 
 
+	Method UpdateSections()
+		'if not sections then return
+		'for local s:TStationMapSection = EachIn sections
+		'next
+	End Method
+
+
 	Method UpdateSatellites()
 		if not satellites then ResetSatellites()
 		if not satellites then return
@@ -1120,6 +1134,8 @@ Type TStationMapCollection
 		UpdateSatellites()
 		UpdateCableNetworks()
 
+		UpdateSections()
+
 		'update all stationmaps (and their stations)
 		For Local i:Int = 0 Until stationMaps.length
 			If Not stationMaps[i] Then Continue
@@ -1130,23 +1146,6 @@ Type TStationMapCollection
 		'update subscriptions (eg. ended contracts -> channel unsubscription)
 		UpdateSatelliteSubscriptions()
 		UpdateCableNetworkSubscriptions()
-
-
-		'refresh the share map and refresh max audience sum
-		'as soon as one of the stationmap changed
-		If _regenerateMap
-			GenerateShareMaps()
-
-			'recalculate the audience sums of all changed maps
-			'maybe generalize it (recalculate ALL as soon as map
-			'gets regenerated)
-			'this individual way saves calculation time (only do what
-			'is needed)
-			RecalculateMapAudienceSums(False)
-
-			'we handled regenerating the map
-			_regenerateMap = False
-		EndIf
 	End Method
 
 
@@ -1648,6 +1647,48 @@ endrem
 	End Method
 
 
+	'returns sections "nearby" a station (connection not guaranteed as
+	'check of a circle-antenna is based on two rects intersecting or not)
+	Method GetSectionsConnectedToStation:TStationMapSection[](station:TStationBase)
+		if not station then return new TStationMapSection[0]
+
+		'GetInstance()._regenerateMap = True
+		if TStationAntenna(station)
+			local radius:int = TStationAntenna(station).radius
+			local stationRect:TRectangle = New TRectangle.Init(station.pos.x - radius, station.pos.y - radius, 2*radius, 2*radius)
+			local result:TStationMapSection[] = new TStationMapSection[sections.count()]
+			local added:int = 0
+
+			For local section:TStationMapSection = EachIn sections
+				if not section.rect.IntersectRect(stationRect) then continue
+
+				result[added] = section
+				added :+ 1
+			Next
+			if added < result.length then result = result[.. added]
+			return result
+
+		elseif TStationCableNetworkUplink(station)
+			local section:TStationMapSection = GetStationMapCollection().GetSectionByName(station.GetSectionName())
+			if section then return [section]
+
+		elseif TStationSatelliteUplink(station)
+			'all
+			local result:TStationMapSection[] = new TStationMapSection[sections.Count()]
+			local added:int = 0
+			For local section:TStationMapSection = EachIn sections
+				result[added] = section
+				added :+ 1
+			Next
+			return result
+		else
+			Throw "GetSectionsConnectedToStation: unhandled station type"
+		endif
+
+		return new TStationMapSection[0]
+	End Method
+
+
 	Method DrawAllSections()
 		If Not sections Then Return
 		Local oldA:Float = GetAlpha()
@@ -1730,14 +1771,13 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	'and what types we want to show
 	Field showStationTypes:Int[3]
 	'maximum audience possible
-	Field reach:Int	= 0
+	Field reach:Int	= -1 {nosave}
 	Field cheatedMaxReach:int = False
 	'all stations of the map owner
 	Field stations:TList = CreateList()
 	'amount of stations added per type
 	Field stationsAdded:int[4]
 	Field sectionBroadcastPermissions:TMap
-	Field changed:Int = False
 
 	'FALSE to avoid recursive handling (network)
 	Global fireEvents:Int = True
@@ -1756,9 +1796,8 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method Initialize:Int()
-		changed = False
 		stations.Clear()
-		reach = 0
+		reach = -1
 		sectionBroadcastPermissions = new TMap
 		showStations = [1,1,1,1]
 		showStationTypes = [1,1,1]
@@ -1766,6 +1805,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method DoCensus()
+		reach = -1
 		'refresh station reach
 		For local station:TStationBase = EachIn stations
 			station.GetReach(true)
@@ -1787,7 +1827,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 	'returns the maximum reach of the stations on that map
 	Method GetReach:Int() {_exposeToLua}
-		Return Self.reach
+		Return Max(0, Self.reach)
 	End Method
 
 
@@ -1820,7 +1860,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method GetCoverage:Float() {_exposeToLua}
-		Return Float(getReach()) / Float(GetStationMapCollection().getPopulation())
+		Return Float(GetReach()) / Float(GetStationMapCollection().getPopulation())
 	End Method
 
 
@@ -1990,10 +2030,13 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method CheatMaxAudience:int()
-		local oldReachLevel:int = GetReachLevel(reach)
+		local oldReachLevel:int = GetReachLevel(GetReach())
 		cheatedMaxReach = true
 		reach = GetStationMapCollection().population
-		GetStationMapCollection().GenerateShareMaps()
+
+		for local s:TStationMapSection = eachin GetStationMapCollection().sections
+			s.InvalidateData()
+		next
 
 		if GetReachLevel(reach) <> oldReachLevel
 			EventManager.triggerEvent( TEventSimple.Create( "StationMap.onChangeReachLevel", New TData.addNumber("reachLevel", GetReachLevel(reach)).AddNumber("oldReachLevel", oldReachLevel), Self ) )
@@ -2010,7 +2053,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 	'returns maximum audience a player's stations cover
 	Method RecalculateAudienceSum:Int() {_exposeToLua}
-		local reachBefore:int = reach
+		local reachBefore:int = GetReach()
 		local oldReachLevel:int = GetReachLevel(reachBefore)
 
 		if cheatedMaxReach
@@ -2019,14 +2062,15 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 			If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
 				Throw "RecalculateAudienceSum: Todo"
 			ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-				reach =  GetStationMapCollection().GetAntennaAudienceSum(stations)
+				reach =  GetStationMapCollection().GetAntennaAudienceSum(owner)
 				reach :+ GetStationMapCollection().GetCableNetworkUplinkAudienceSum(stations)
 				reach :+ GetStationMapCollection().GetSatelliteUplinkAudienceSum(stations)
+				'print "RON: antenna["+owner+"]: " + GetStationMapCollection().GetAntennaAudienceSum(owner) + "   cable["+owner+"]: " + GetStationMapCollection().GetCableNetworkUplinkAudienceSum(stations) +"   satellite["+owner+"]: " + GetStationMapCollection().GetSatelliteUplinkAudienceSum(stations) + "   recalculated: " + reach
 			EndIf
 		endif
 
 		'inform others
-		EventManager.triggerEvent( TEventSimple.Create( "StationMap.onRecalculateAudienceSum", New TData.addNumber("reach", reach).AddNumber("reachBefore", reachBefore), Self ) )
+		EventManager.triggerEvent( TEventSimple.Create( "StationMap.onRecalculateAudienceSum", New TData.addNumber("reach", reach).AddNumber("reachBefore", reachBefore).AddNumber("playerID", owner), Self ) )
 
 		if GetReachLevel(reach) <> oldReachLevel
 			EventManager.triggerEvent( TEventSimple.Create( "StationMap.onChangeReachLevel", New TData.addNumber("reachLevel", GetReachLevel(reach)).AddNumber("oldReachLevel", oldReachLevel), Self ) )
@@ -2233,9 +2277,9 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		stations.Remove(station)
 
 		If sell
-			TLogger.Log("TStationMap.AddStation", "Player "+owner+" sells broadcasting station for " + station.getSellPrice() + " Euro (had a reach of " + station.reach + ")", LOG_DEBUG)
+			TLogger.Log("TStationMap.AddStation", "Player "+owner+" sells broadcasting station for " + station.getSellPrice() + " Euro (had a reach of " + station.GetReach() + ")", LOG_DEBUG)
 		Else
-			TLogger.Log("TStationMap.AddStation", "Player "+owner+" trashes broadcasting station for 0 Euro (had a reach of " + station.reach + ")", LOG_DEBUG)
+			TLogger.Log("TStationMap.AddStation", "Player "+owner+" trashes broadcasting station for 0 Euro (had a reach of " + station.GetReach() + ")", LOG_DEBUG)
 		EndIf
 
 		'cancel potential contracts (= remove connections)
@@ -2244,9 +2288,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		'inform the station about the removal
 		station.OnRemoveFromMap()
 
-		'refresh the share map (needed for audience calculations)
-		GetStationMapCollection().GenerateShareMaps()
-		'recalculate audience of channel
+		'require recalculation
 		RecalculateAudienceSum()
 
 		'when station is sold, audience will decrease,
@@ -2299,6 +2341,8 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method Update:int()
+		if reach = -1 then RecalculateAudienceSum()
+
 		'delete unused
 		if GetStationMapCollection().stationMaps.length < showStations.length
 			showStations = showStations[.. GetStationMapCollection().stationMaps.length + 1]
@@ -3564,7 +3608,7 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 
 				'subtract section population for all antennas in that area
 				local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
-				reachExclusiveMax :- section.GetAntennaAudienceSum( GetStationMap(owner).stations )
+				reachExclusiveMax :- section.GetAntennaAudienceSum( owner )
 			endif
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
@@ -3964,55 +4008,6 @@ Type TStationSatelliteUplink extends TStationBase {_exposeToLua="selected"}
 			endif
 		endif
 		return reachExclusiveMax
-
-
-rem
-		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
-			local exclusiveReach:int
-			For local sectionKey:string = EachIn sectionsCovered
-				local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionKey)
-				if not section then continue
-
-				'if reach is calculated for self while already added,
-				'check if another is existing too
-				local satellites:int = GetStationMap(owner).GetSatellitesInSectionCount(sectionKey)
-				if GetStationMap(owner).HasStation(self) and satellites > 1
-					continue
-				elseif satellites > 0
-					continue
-				endif
-
-				'cable networks
-				'if there is a cable network covering one of the sections
-				'then it cannot be exclusive there
-				if GetStationMap(owner).GetCableNetworksInSectionCount(sectionName)
-					continue
-				endif
-
-
-				exclusiveReach :+ section.GetPopulation()
-
-				'subtract section population for all antennas in that area
-				exclusiveReach :- section.GetAntennaAudienceSum( GetStationMap(owner).stations )
-			Next
-			return exclusiveReach
-
-		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-			local exclusiveReach:int
-			For local sectionKey:string = EachIn sectionsCovered
-				local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionKey)
-				if not section then continue
-
-				if section.populationSatelliteShare < 0
-					exclusiveReach :+ section.GetPopulation() * GetStationMapCollection().GetCurrentPopulationSatelliteShare()
-				else
-					exclusiveReach :+ section.GetPopulation() * section.populationSatelliteShare
-				endif
-
-			Next
-			return exclusiveReach
-		EndIf
-endrem
 	End Method
 
 
@@ -4058,7 +4053,7 @@ Type TStationMapSection
 	'map containing bitmask-coded information for "used" pixels
 	Field antennaShareMap:TMap = Null {nosave}
 	'Field antennaShareMapImage:TImage {nosave}
-	Field shareCache:TMap = Null {nosave}
+	Field shareCache:TMap = new TMap {nosave}
 
 
 	Method New()
@@ -4080,6 +4075,12 @@ Type TStationMapSection
 		endif
 
 		Return Self
+	End Method
+
+
+	Method InvalidateData()
+		shareCache = New TMap
+		antennaShareMap = Null
 	End Method
 
 
@@ -4386,31 +4387,6 @@ Type TStationMapSection
 	End Method
 
 
-	Method GenerateShareMap:Int()
-		'=== ALL TYPES ===
-		'reset cache here too
-		shareCache = New TMap
-
-
-		'=== ANTENNAS ===
-		'reset values
-		antennaShareMap = New TMap
-
-		'local antennaShareMapPix:TPixmap = CreatePixmap(populationImage.width, populationImage.height, LockImage(populationImage).format)
-		'antennaShareMapPix.ClearPixels(0)
-
-		local stations:TStationBase[][]
-		For local map:TStationMap = EachIn GetStationMapCollection().stationMaps
-			_FillAntennaShareMap(map, map.stations)
-		Next
-
-		'antennaShareMapImage = LoadImage(antennaShareMapPix)
-
-
-		return True
-	End Method
-
-
 	Method _FillAntennaShareMap:Int(stationMap:TStationMap, stations:TList)
 		'define locals outside of that for loops...
 		Local posX:Int		= 0
@@ -4487,54 +4463,119 @@ Type TStationMapSection
 
 	'returns the shared amount of audience between channels
 	Method GetShareAudience:Int(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
-		Return GetShare(channelNumbers, withoutChannelNumbers).x
+		Return GetReceiverShare(channelNumbers, withoutChannelNumbers).x
 	End Method
 
 
 	Method GetSharePercentage:Float(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
-		Return GetShare(channelNumbers, withoutChannelNumbers).z
+		Return GetReceiverShare(channelNumbers, withoutChannelNumbers).z
 	End Method
 
 
-	Method GetChannelAudience:Int(channelNumber:int)
-		return GetShare([channelNumber], null).x
+	Method GetPopulationCableShareRatio:Float()
+		if populationCableShare < 0 then return GetStationMapCollection().GetCurrentPopulationCableShare()
+		return populationCableShare
+	End Method
+
+	Method GetPopulationAntennaShareRatio:Float()
+		if populationAntennaShare < 0 then return GetStationMapCollection().GetCurrentPopulationAntennaShare()
+		return populationAntennaShare
+	End Method
+
+	Method GetPopulationSatelliteShareRatio:Float()
+		if populationSatelliteShare < 0 then return GetStationMapCollection().GetCurrentPopulationSatelliteShare()
+		return populationSatelliteShare
 	End Method
 
 
-	Method GetChannelExclusiveAudience:Int(channelNumber:int)
+	'summary: returns maximum audience a player reach with satellites
+	Method GetSatelliteAudienceSum:Int()
+		return population * GetPopulationSatelliteShareRatio()
+	End Method
+
+
+	'summary: returns maximum audience a player reach with a cablenetwork
+	Method GetCableNetworkAudienceSum:Int()
+		return population * GetPopulationCableShareRatio()
+	End Method
+
+
+	'summary: returns maximum audience a player reaches with antennas
+	Method GetAntennaAudienceSum:Int(playerID:int)
+		'passing only the playerID and no other playerIDs is returning
+		'the playerID's audience (with share/total being useless)
+		Return GetAntennaReceiverShare([playerID]).x
+	End Method
+
+
+	Method GetExclusiveAntennaAudienceSum:Int(playerID:int)
 		local without:int[]
 		for local i:int = 1 until 4
-			if i <> channelNumber then without :+ [i]
+			if i <> playerID then without :+ [i]
 		next
-		return GetShare([channelNumber], without).x
+		Return GetAntennaReceiverShare([playerID], without).x
 	End Method
+
 
 
 	Method GetAntennaShareMap:TMap()
-		If Not antennaShareMap Then GenerateShareMap()
-		Return antennaShareMap
+		if not antennaShareMap
+			antennaShareMap = New TMap
+
+			local stations:TStationBase[][]
+			For local map:TStationMap = EachIn GetStationMapCollection().stationMaps
+				_FillAntennaShareMap(map, map.stations)
+			Next
+		endif
+		return antennaShareMap
 	End Method
 
 
+	'There is no need to have a GetPopulationShare() as the value
+	'is not of use for us (PopulationShare is for caching the non-dynamic
+	'elements)
+
 	'returns a share between channels, encoded in a TVec3D containing:
+	'returns AUDIENCE/RECEIVERS, not POPULATION
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
-	Method GetShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
+	Method GetReceiverShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
 		local result:TVec3D = new TVec3D.Init(0,0,0)
 		If TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_SHARED
 			Throw "GetShare: TODO"
 			'result.AddVec( GetMixedShare(channelNumbers, withoutChannelNumbers) )
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-			result.AddVec( GetAntennaShare(channelNumbers, withoutChannelNumbers) )
-			result.AddVec( GetCableNetworkShare(channelNumbers, withoutChannelNumbers) )
+			local v1:TVec3D = GetAntennaReceiverShare(channelNumbers, withoutChannelNumbers)
+			local v2:TVec3D = GetCableNetworkReceiverShare(channelNumbers, withoutChannelNumbers)
+			'add integer values for "population"
+			result.x :+ v1.GetIntX()
+			result.y :+ v1.GetIntY()
+			result.z :+ v1.z
+			result.x :+ v2.GetIntX()
+			result.y :+ v2.GetIntY()
+			result.z :+ v2.z
+
+			'result.AddVec( GetAntennaReceiverShare(channelNumbers, withoutChannelNumbers) )
+			'result.AddVec( GetCableNetworkReceiverShare(channelNumbers, withoutChannelNumbers) )
 		EndIf
 		if result.y > 0 then result.z = result.x / result.y
 		return result
 	End Method
 
 
+	Method GetCableNetworkReceiverShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
+		return GetCableNetworkPopulationShare(channelNumbers, withoutChannelNumbers).Copy().MultiplyFactor(GetPopulationCableShareRatio())
+	End Method
+
+
+	Method GetAntennaReceiverShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
+		return GetAntennaPopulationShare(channelNumbers, withoutChannelNumbers).Copy().MultiplyFactor(GetPopulationAntennaShareRatio())
+	End Method
+
+
 	'returns a share between channels, encoded in a TVec3D containing:
+	'value is POPULATION, not AUDIENCE (so not multiplied with receiver share)
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
-	Method GetCableNetworkShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
+	Method GetCableNetworkPopulationShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
 '		return new TVec3D.Init(0,0,0)
 		If channelNumbers.length <1 Then Return New TVec3D.Init(0,0,0.0)
 		If Not withoutChannelNumbers Then withoutChannelNumbers = New Int[0]
@@ -4584,16 +4625,16 @@ Type TStationMapSection
 				Next
 			endif
 
-			result = new TVec3D
+			result = new TVec3D.Init(0,0,0)
 			if channelsWithCableNetwork > 0
 				'total - if there is at least _one_ channel uses a cable network here
-				result.y = GetCableNetworkAudienceSum()
+				result.y = population
 
 				'share is only available if we checked some channels
 				if interestingChannelsCount > 0
 					'share - if _all_ channels use a cable network here
 					if allHaveCableNetwork
-						result.x = GetCableNetworkAudienceSum()
+						result.x = result.y
 					endif
 
 					'share percentage
@@ -4607,8 +4648,8 @@ Type TStationMapSection
 			'print "CABLE uncached: "+cacheKey
 			'print "CABLE share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
 		else
-'			print "CABLE cached: "+cacheKey
-'			print "CABLE share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
+			'print "CABLE cached: "+cacheKey
+			'print "CABLE share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
 		EndIf
 
 		'disabled: GetCableNetworkAudienceSum() already contains the share multiplication)
@@ -4618,8 +4659,9 @@ Type TStationMapSection
 
 
 	'returns a share between channels, encoded in a TVec3D containing:
+	'value is POPULATION, not AUDIENCE (so not multiplied with receiver share)
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
-	Method GetAntennaShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
+	Method GetAntennaPopulationShare:TVec3D(channelNumbers:Int[], withoutChannelNumbers:Int[]=Null)
 		If channelNumbers.length <1 Then Return New TVec3D.Init(0,0,0.0)
 		If Not withoutChannelNumbers Then withoutChannelNumbers = New Int[0]
 
@@ -4652,17 +4694,14 @@ Type TStationMapSection
 			'store new cached data
 			If shareCache Then shareCache.insert(cacheKey, result )
 
-			'print "uncached: "+cacheKey
-			'print "share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
+			'print "ANTENNA uncached: "+cacheKey
+			'print "ANTENNA share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
 		else
-			'print "cached: "+cacheKey
-			'print "share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
+			'print "ANTENNA cached: "+cacheKey
+			'print "ANTENNA share:  total="+int(result.y)+"  share="+int(result.x)+"  share="+(result.z*100)+"%"
 		EndIf
 
-
-		'adjust by current receiver share
-		Return result.Copy().MultiplyFactor( Float(GetStationMapCollection().GetCurrentPopulationAntennaShare()) )
-'		Return result
+		Return result
 	End Method
 
 
@@ -4890,55 +4929,6 @@ endrem
 			EndIf
 		Next
 		Return result
-	End Method
-
-
-	'summary: returns maximum audience a player reach with a cablenetwork
-	Method GetCableNetworkAudienceSum:Int()
-		if populationCableshare < 0
-			return population * GetStationMapCollection().GetCurrentPopulationCableShare()
-		else
-			return population * populationCableShare
-		endif
-	End Method
-
-
-	'summary: returns maximum audience a player can reach with satellites
-	Method GetSatelliteAudienceSum:Int()
-		if populationSatelliteShare < 0
-			return population * GetStationMapCollection().GetCurrentPopulationSatelliteShare()
-		else
-			return population * populationSatelliteShare
-		endif
-	End Method
-
-
-	'summary: returns maximum audience a player reaches with antennas
-	Method GetAntennaAudienceSum:Int(stations:TList)
-		Local Points:TMap = New TMap
-		Local result:Int = 0
-
-		For Local station:TStationAntenna = EachIn stations
-			'skip inactive/shutdown stations
-			If Not station.CanBroadcast() Then Continue
-
-			'skip antennas outside of the section
-			if not station.GetRect().Intersects(rect) then continue
-
-			Self._FillAntennaPoints(Points, Int(station.pos.x), Int(station.pos.y), station.radius, ARGB_Color(255, 255, 255, 255))
-		Next
-
-		For Local point:TVec3D = EachIn points.Values()
-			If ARGB_Red(Int(point.z)) = 255 And ARGB_Blue(Int(point.z)) = 255
-				result :+ populationMap[point.x, point.y]
-			EndIf
-		Next
-
-		if populationAntennaShare < 0
-			Return result * GetStationMapCollection().GetCurrentPopulationAntennaShare()
-		else
-			Return result * populationAntennaShare
-		endif
 	End Method
 
 
@@ -5396,8 +5386,13 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider
 			result = GetReachMax(refresh)
 
 		ElseIf TStationMapCollection.populationReceiverMode = TStationMapCollection.RECEIVERMODE_EXCLUSIVE
-			result = GetStationMapCollection().GetPopulation()
-			result :* GetStationMapCollection().GetCurrentPopulationSatelliteShare()
+			'sum up all sections
+			'this allows individual satelliteReceiveRatios for the sections
+			for local s:TStationMapSection = EachIn GetStationMapCollection().sections
+				result :+ s.GetSatelliteAudienceSum()
+			next
+			'result = GetStationMapCollection().GetPopulation()
+			'result :* GetStationMapCollection().GetCurrentPopulationSatelliteShare()
 		EndIf
 
 		result :* populationShare

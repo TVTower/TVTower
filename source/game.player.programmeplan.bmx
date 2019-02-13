@@ -1843,12 +1843,12 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'targeting the current advertisement/trailer
 			local oldAudienceResult:TAudienceResult = audienceResult
 			audienceResult = new TAudienceResult
-			'copy base things
+			'copy (reference!) base things
 			audienceResult.CopyFrom(oldAudienceResult)
 			'reuse some values by directly linking to it
-			audienceResult.PotentialMaxAudience = oldAudienceResult.PotentialMaxAudience
 			audienceResult.AudienceAttraction = oldAudienceResult.AudienceAttraction
 			audienceResult.competitionAttractionModifier = oldAudienceResult.competitionAttractionModifier
+
 			'use advertisement instead of programme
 			audienceResult.broadcastMaterial = obj
 
