@@ -107,9 +107,15 @@ Type TPersist
 	End Rem
 	Global maxDepth:Int = xmlParserMaxDepth
 
+?ptr64
 	Global bbEmptyString:String = Base36(Long(bbEmptyStringPtr()))
 	Global bbNullObject:String = Base36(Long(bbNullObjectPtr()))
 	Global bbEmptyArray:String = Base36(Long(bbEmptyArrayPtr()))
+?Not ptr64
+	Global bbEmptyString:String = TPersist.Base36(Int(bbEmptyStringPtr()))
+	Global bbNullObject:String = TPersist.Base36(Int(bbNullObjectPtr()))
+	Global bbEmptyArray:String = TPersist.Base36(Int(bbEmptyArrayPtr()))
+?
 
 	Field fileVersion:Int
 
@@ -372,7 +378,7 @@ Type TPersist
 			serializer.Serialize(tid, obj, node)
 		Else
 			'Ronny: try to let the type or a generic serializer handle it
-			If not CustomSerializeByType(tid, obj, node)
+			If Not CustomSerializeByType(tid, obj, node)
 				'fall back to default field serialization
 				SerializeFields(tid, obj, node)
 			End If
@@ -381,7 +387,7 @@ Type TPersist
 
 
 	'Ronny:
-	Method CustomSerializeByType:int(tid:TTypeId, obj:Object, node:TXmlNode)
+	Method CustomSerializeByType:Int(tid:TTypeId, obj:Object, node:TXmlNode)
 		'check if there is a special "Serialize[classname]ToString" Method
 		'defined for the object
 		'only do serialization, if the way back is defined too
@@ -390,37 +396,37 @@ Type TPersist
 
 		'check if a common serializer wants to handle it
 		If serializer
-			if not serializerTypeID then serializerTypeID = TTypeID.ForObject(serializer)
+			If Not serializerTypeID Then serializerTypeID = TTypeId.ForObject(serializer)
 			mth = serializerTypeID.FindMethod("Serialize"+tid.name()+"ToString")
 			mth2 = serializerTypeID.FindMethod("DeSerialize"+tid.name()+"FromString")
 			If mth And mth2
 				'append the to-serialize-obj as param
 				serializedString = String( mth.Invoke(serializer, [obj]) )
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'check if the type itself wants to handle it
-		if not serializedString
+		If Not serializedString
 			mth = tid.FindMethod("Serialize"+tid.name()+"ToString")
 			mth2 = tid.FindMethod("DeSerialize"+tid.name()+"FromString")
 			If mth And mth2
 				serializedString = String( mth.Invoke(obj) )
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'no need to check wether "serialized" is <> "" (might be
 		'empty on purpose!) - if mth/mth2 exist, then we trust
 		'that methods to serialize properly
-		If mth and mth2 'and serializedString
+		If mth And mth2 'and serializedString
 			'attributes are already encoded, so encoding it now
 			'would lead to double-encoding
 			'serializedString = doc.encodeEntities(serializedString)
 
 			node.setAttribute("serialized" ,serializedString)
-			return True
-		endif
+			Return True
+		EndIf
 
-		return False
+		Return False
 	End Method
 
 
@@ -467,8 +473,8 @@ Type TPersist
 			'just add the newly created "reference node"
 			If Contains(objRef, obj)
 				node.setAttribute("ref", objRef)
-				return node
-			endif
+				Return node
+			EndIf
 
 
 			'not referenced, serialize object
@@ -625,7 +631,7 @@ Type TPersist
 
 	Method DeserializeByType:Object(objType:TTypeId, node:TxmlNode)
 		'Ronny: skip loading elements having "nosave" metadata
-		If objType.MetaData("nosave") and not objType.MetaData("doload") Then return null
+		If objType.MetaData("nosave") And Not objType.MetaData("doload") Then Return Null
 
 		Local serializer:TXMLSerializer = TXMLSerializer(serializers.ValueForKey(objType.Name()))
 		If serializer Then
@@ -633,7 +639,7 @@ Type TPersist
 		Else
 			Local obj:Object = CreateObjectInstance(objType, node)
 '			'Ronny: try to let the type or a generic serializer handle it
-			If not CustomDeserializeByType(objType, obj, node)
+			If Not CustomDeserializeByType(objType, obj, node)
 '				'fall back to default field deserialization
 				DeserializeFields(objType, obj, node)
 			End If
@@ -665,19 +671,19 @@ Type TPersist
 					'Ronny: skip unknown fields (no longer existing in the type)
 					If Not fieldObj
 
-						local serializedFieldTypeID:TTypeId = TTypeId.ForName(fieldNode.getAttribute("type"))
-						if not strictMode and serializedFieldTypeID
+						Local serializedFieldTypeID:TTypeId = TTypeId.ForName(fieldNode.getAttribute("type"))
+						If Not strictMode And serializedFieldTypeID
 							Print "[WARNING] TPersistence: field ~q"+fieldNode.getAttribute("name")+"~q is no longer available. Created WorkAround-Storage."
 
 							'deserialize it, so that its reference exists
 							DeSerializeObject("", fieldNode)
-						else
+						Else
 							Print "[WARNING] TPersistence: field ~q"+fieldNode.getAttribute("name")+"~q is no longer available."
-						endif
+						EndIf
 						Continue
 					End If
 					'Ronny: skip loading elements having "nosave" metadata
-					If fieldObj.MetaData("nosave") and not fieldObj.MetaData("doload") Then continue
+					If fieldObj.MetaData("nosave") And Not fieldObj.MetaData("doload") Then Continue
 
 
 					Local fieldType:String = fieldNode.getAttribute("type")
@@ -785,46 +791,46 @@ Type TPersist
 
 	'Ronny:
 	'deserializes objects defined in "node" into "obj"
-	Method CustomDeserializeByType:int(objType:TTypeId, obj:Object var, node:TxmlNode)
+	Method CustomDeserializeByType:Int(objType:TTypeId, obj:Object Var, node:TxmlNode)
 		' serialized data in attribute?
-		If not node.HasAttribute("serialized") Then return False
+		If Not node.HasAttribute("serialized") Then Return False
 		'no type information provided?
-		If not objType Then return False
+		If Not objType Then Return False
 
 		'serialized might be "" (eg. an empty TLowerString)
-		local serialized:string = node.GetAttribute("serialized")
+		Local serialized:String = node.GetAttribute("serialized")
 		'check if there is a special "DeSerialize[classname]ToString" Method
 		'defined for the object
 		Local mth:TMethod
-		Local deserializationResult:object = null
+		Local deserializationResult:Object = Null
 		'check if a common serializer wants to handle it
 		If serializer
-			if not serializerTypeID then serializerTypeID = TTypeID.ForObject(serializer)
+			If Not serializerTypeID Then serializerTypeID = TTypeId.ForObject(serializer)
 			mth = serializerTypeID.FindMethod("DeSerialize"+objType.Name()+"FromString")
 			'append the obj as param
 			If mth
-				deserializationResult = mth.Invoke(serializer, [object(serialized), obj])
-			endif
-		Endif
+				deserializationResult = mth.Invoke(serializer, [Object(serialized), obj])
+			EndIf
+		EndIf
 
 		'check if the type itself wants to handle it
-		if not deserializationResult or not serializer
+		If Not deserializationResult Or Not serializer
 			deserializationResult = obj
 			mth = objType.FindMethod("DeSerialize"+objType.Name()+"FromString")
-			If mth then mth.Invoke(deserializationResult, [serialized])
-		endif
+			If mth Then mth.Invoke(deserializationResult, [serialized])
+		EndIf
 
 		'override referenced object
-		if deserializationResult
+		If deserializationResult
 			'assign obj (obj is passed as "var")
 			obj = deserializationResult
 
 			AddObjectRef(deserializationResult, node)
 '			objectMap.Insert(node.getAttribute("id"), deserializationResult)
-			return True
-		endif
+			Return True
+		EndIf
 
-		return False
+		Return False
 	End Method
 
 
@@ -873,7 +879,7 @@ Type TPersist
 				Local objRef:Object = objectMap.ValueForKey(ref)
 				If objRef Then
 					obj = objRef
-					return obj
+					Return obj
 				Else
 					Throw "Reference not mapped yet : " + ref
 				End If
@@ -893,8 +899,8 @@ Type TPersist
 				'old:
 				'Local objType:TTypeId = TTypeId.ForName(node.getAttribute("type") + "[]")
 				'new:
-				local attributeName:string = node.getAttribute("type")
-				if attributeName = "Null" then attributeName = "Object"
+				Local attributeName:String = node.getAttribute("type")
+				If attributeName = "Null" Then attributeName = "Object"
 				Local objType:TTypeId = TTypeId.ForName(attributeName + "[]")
 
 				Local size:Int = node.getAttribute("size").toInt()
