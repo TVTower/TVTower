@@ -1051,15 +1051,19 @@ function SortTasksByInvestmentPrio(tasks)
 	return sortTable
 end
 
-function kiMsg(pMessage)
-	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
+function kiMsg(pMessage, allPlayers)
+	if allPlayers ~= nil then
+		TVT.PrintOut("P" .. TVT.ME ..": " .. pMessage)
+	elseif TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
 		TVT.PrintOut(pMessage)
 	end
 	TVT.addToLog(pMessage)
 end
 
-function debugMsg(pMessage)
-	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
+function debugMsg(pMessage, allPlayers)
+	if allPlayers ~= nil then
+		TVT.PrintOut("P" .. TVT.ME ..": " .. pMessage)
+	elseif TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
 		--TVT.PrintOutDebug(pMessage)
 		TVT.PrintOut(pMessage)
 		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
