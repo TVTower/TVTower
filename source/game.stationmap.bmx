@@ -754,7 +754,7 @@ Type TStationMapCollection
 
 		'set the owning stationmap to "changed" so only this single
 		'audience sum only gets recalculated (saves cpu time)
-		GetInstance().GetMap(station.owner).reach = -1
+		GetInstance().GetMap(station.owner).reachInvalid = True
 	End Function
 
 
@@ -1771,7 +1771,8 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	'and what types we want to show
 	Field showStationTypes:Int[3]
 	'maximum audience possible
-	Field reach:Int	= -1 {nosave}
+	Field reach:Int	= 0
+	Field reachInvalid:int = True {nosave}
 	Field cheatedMaxReach:int = False
 	'all stations of the map owner
 	Field stations:TList = CreateList()
@@ -1797,7 +1798,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method Initialize:Int()
 		stations.Clear()
-		reach = -1
+		reachInvalid = true
 		sectionBroadcastPermissions = new TMap
 		showStations = [1,1,1,1]
 		showStationTypes = [1,1,1]
@@ -1805,7 +1806,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method DoCensus()
-		reach = -1
+		reachInvalid = true
 		'refresh station reach
 		For local station:TStationBase = EachIn stations
 			station.GetReach(true)
@@ -2068,13 +2069,17 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 				'print "RON: antenna["+owner+"]: " + GetStationMapCollection().GetAntennaAudienceSum(owner) + "   cable["+owner+"]: " + GetStationMapCollection().GetCableNetworkUplinkAudienceSum(stations) +"   satellite["+owner+"]: " + GetStationMapCollection().GetSatelliteUplinkAudienceSum(stations) + "   recalculated: " + reach
 			EndIf
 		endif
+		'current reach is updated now
+		reachInvalid = False
 
+print "RONNY: reachBefore: " + reachBefore + "   reach: " + reach+"    levelBefore: " + oldReachLevel + "   level: " + GetReachLevel(reach)
 		'inform others
 		EventManager.triggerEvent( TEventSimple.Create( "StationMap.onRecalculateAudienceSum", New TData.addNumber("reach", reach).AddNumber("reachBefore", reachBefore).AddNumber("playerID", owner), Self ) )
 
 		if GetReachLevel(reach) <> oldReachLevel
 			EventManager.triggerEvent( TEventSimple.Create( "StationMap.onChangeReachLevel", New TData.addNumber("reachLevel", GetReachLevel(reach)).AddNumber("oldReachLevel", oldReachLevel), Self ) )
 		endif
+
 
 		Return reach
 	End Method
@@ -2341,7 +2346,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method Update:int()
-		if reach = -1 then RecalculateAudienceSum()
+		if reachInvalid then RecalculateAudienceSum()
 
 		'delete unused
 		if GetStationMapCollection().stationMaps.length < showStations.length
