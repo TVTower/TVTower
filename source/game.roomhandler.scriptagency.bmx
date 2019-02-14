@@ -598,6 +598,32 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	End Method
 
 
+	Method WriteNewScripts()
+		local scriptsToWrite:int = Max(0, 5 - GetScriptCollection().GetAvailableScriptList().Count())
+		if scriptsToWrite = 0 then return
+
+		local usedTemplateIDs:int[]
+		'add written but not offered
+		For local s:TScript = EachIn GetScriptCollection().GetAvailableScriptList()
+			usedTemplateIDs :+ [s.basedOnScriptTemplateID]
+		Next
+		'add check IDs at vendor
+		local lists:TScript[][] = [listNormal,listNormal2]
+		for local j:int = 0 to lists.length-1
+			for local i:int = 0 to lists[j].length-1
+				if not lists[j][i] then continue
+				usedTemplateIDs :+ [ lists[j][i].basedOnScriptTemplateID ]
+			Next
+		Next
+
+
+		for local i:int = 0 until scriptsToWrite
+			local s:TScript = GetScriptCollection().GenerateRandom(usedTemplateIDs)
+			usedTemplateIDs :+ [s.basedOnScriptTemplateID]
+		next
+	End Method
+
+
 	'refills slots in the script agency
 	'replaceOffer: remove (some) old scripts and place new there?
 	Method ReFillBlocks:Int(replaceOffer:int=FALSE, replaceChance:float=1.0)

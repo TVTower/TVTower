@@ -745,6 +745,22 @@ Type TApp
 
 
 					If KEYMANAGER.IsHit(KEY_Y)
+						Local reach:Int = GetStationMap( 1 ).GetReach()
+						print "reach: " + reach +"  audienceReach=" + GetBroadcastmanager().GetAudienceResult(1).WholeMarket.GetTotalSum()
+						reach = GetStationMap( 1 ).GetReach()
+						rem
+						print "GetBroadcastManager: "
+						print GetBroadcastManager().GetAudienceResult(1).ToString()
+						print "Daily: "
+						debugstop
+						local dayHour:int = GetWorldTime().GetDayHour()
+						local day:int = GetWorldTime().GetDay()
+						Local dailyBroadcastStatistic:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day, True)
+						local r:TAudienceResult = TAudienceResult(dailyBroadcastStatistic.GetAudienceResult(1, dayHour))
+						if r then print r.ToString()
+						endrem
+
+
 '						print "Force Next Task:"
 '						GetPlayer(2).PlayerAI.CallLuaFunction("OnForceNextTask", null)
 
@@ -4259,7 +4275,7 @@ Type GameEvents
 			Case "maxaudience"
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
 				GetStationMap(player.playerID).CheatMaxAudience()
-				GetGame().SendSystemMessage("[DEV] Set Player #"+player.playerID+"'s maximum audience to "+GetStationMap(player.playerID).reach)
+				GetGame().SendSystemMessage("[DEV] Set Player #"+player.playerID+"'s maximum audience to "+GetStationMap(player.playerID).GetReach())
 
 			Case "debug"
 				local what:string = payload
@@ -5647,6 +5663,7 @@ Type GameEvents
 
 				TLogger.Log("GameEvents.OnMinute", "partly refilling scriptagency", LOG_DEBUG)
 				local t:long = Time.MillisecsLong()
+				RoomHandler_scriptagency.GetInstance().WriteNewScripts()
 				RoomHandler_scriptagency.GetInstance().ReFillBlocks(True, 0.65)
 				TLogger.Log("GameEvents.OnMinute", "... took " + (Time.MillisecsLong() - t)+"ms", LOG_DEBUG)
 			EndIf
