@@ -126,7 +126,8 @@ Type TInGameInterface
 
 		'show chat if an chat entry was added
 		EventManager.registerListenerFunction( "chat.onAddEntry", onIngameChatAddEntry )
-
+		'invalidate audience tooltip's "audienceresult" on recalculation
+		EventManager.registerListenerFunction( "StationMap.onRecalculateAudienceSum", onStationMapRecalculateAudienceSum )
 
 		Return self
 	End Method
@@ -143,6 +144,19 @@ Type TInGameInterface
 		If not GetInstance().ChatShowHideLocked
 			GetInstance().ChatShow = True
 		EndIf
+	End Function
+
+
+	'invalidate audience tooltip's "audienceresult" on recalculation
+	'this is needed as the passed "audience" is the same instance
+	'(just with different numbers)
+	Function onStationMapRecalculateAudienceSum:Int( triggerEvent:TEventBase )
+		local playerID:int = triggerEvent.GetData().GetInt("playerID", -1)
+		if playerID > 0
+			if GetInstance().CurrentAudienceToolTip
+				GetInstance().CurrentAudienceToolTip.dirtyImage = True
+			endif
+		endif
 	End Function
 
 
@@ -372,10 +386,11 @@ Type TInGameInterface
 				if playerProgrammePlan
 					CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_NUMBER")+": "+playerProgrammePlan.getFormattedAudience()+ " ("+MathHelper.NumberToString(playerProgrammePlan.GetAudiencePercentage() * 100,2)+"%)")
 					CurrentAudienceToolTip.SetAudienceResult(GetBroadcastManager().GetAudienceResult(playerProgrammePlan.owner))
+
 					CurrentAudienceToolTip.enabled = 1
 					CurrentAudienceToolTip.Hover()
 					'force redraw
-					CurrentTimeToolTip.dirtyImage = True
+					'CurrentAudienceToolTip.dirtyImage = True
 				endif
 			EndIf
 			If THelper.MouseIn(309,482,178,25)
@@ -427,6 +442,8 @@ Type TInGameInterface
 				CurrentTimeToolTip.SetContent(content)
 				CurrentTimeToolTip.enabled = 1
 				CurrentTimeToolTip.Hover()
+				'force redraw
+				CurrentTimeToolTip.dirtyImage = True
 			EndIf
 			If THelper.MouseIn(309,577,45,23)
 				hoveredMenuButton = 1
@@ -978,7 +995,7 @@ Type TTooltipAudience Extends TTooltip
 	Method GetContentHeight:Int(width:Int)
 		Local result:Int = 0
 
-		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).reach
+		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).GetReach()
 		Local totalReach:Int = GetStationMapCollection().population
 		result:+ Usefont.GetHeight(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")")
 		result:+ Usefont.GetHeight(GetLocale("POTENTIAL_AUDIENCE_NUMBER") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)")
@@ -1022,7 +1039,7 @@ Type TTooltipAudience Extends TTooltip
 		Local lineTextDY:Int = lineIconDY + 2
 
 		'show how many people your stations cover (compared to country)
-		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).reach
+		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).GetReach()
 		Local totalReach:Int = GetStationMapCollection().population
 		lineText = GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")"
 		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
