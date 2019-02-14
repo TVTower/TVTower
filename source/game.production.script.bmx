@@ -112,23 +112,24 @@ Type TScriptCollection Extends TGameObjectCollection
 		else
 			local foundValid:int = False
 			local tries:int = 0
-			Repeat
-				template = GetScriptTemplateCollection().GetRandomByFilter(True, True)
-				'is this template forbidden?
-				foundValid = not MathHelper.InIntArray(template.GetID(), avoidTemplateIDs)
-				tries :+ 1
 
-				if tries > 100
-					print "TScriptCollection.GenerateRandom() - failed. No available template found (avoid-list too big?). Using an unfiltered entry."
-					'get a random one, ignore availability
-					template = GetScriptTemplateCollection().GetRandomByFilter(False, True)
-				endif
-			Until foundValid or tries > 100
+			template = GetScriptTemplateCollection().GetRandomByFilter(True, True, "", avoidTemplateIDs)
+			'get a random one, ignore avoid IDs
+			if not template and avoidTemplateIDs and avoidTemplateIDs.length > 0
+				print "TScriptCollection.GenerateRandom() - warning. No available template found (avoid-list too big?). Trying an avoided entry."
+				template = GetScriptTemplateCollection().GetRandomByFilter(True, True)
+			endif
+			'get a random one, ignore availability
+			if not template
+				print "TScriptCollection.GenerateRandom() - failed. No available template found (avoid-list too big?). Using an unfiltered entry."
+				template = GetScriptTemplateCollection().GetRandomByFilter(False, True)
+			endif
 		endif
 
 		local script:TScript = TScript.CreateFromTemplate(template)
 		script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 		Add(script)
+
 		return script
 	End Method
 
@@ -168,6 +169,7 @@ Type TScriptCollection Extends TGameObjectCollection
 				if not script.IsAvailable() then continue
 				if not script.IsTradeable() then continue
 
+				'print "GetAvailableScriptList: add " + script.GetTitle() ' +"   owned="+script.IsOwned() + "  available="+script.IsAvailable() + "  tradeable="+script.IsTradeable()
 				_availableScripts.AddLast(script)
 			Next
 		endif
@@ -197,7 +199,7 @@ Type TScriptCollection Extends TGameObjectCollection
 			For local script:TScript = EachIn entries.Values()
 				'skip scripts containing parent information or episodes
 				if script.scriptLicenceType = TVTProgrammeLicenceType.EPISODE then continue
-				if script.parentScriptID <> "" or script.parentScriptID then continue
+				if script.HasParentScript() then continue
 
 				_parentScripts.AddLast(script)
 			Next
@@ -210,10 +212,11 @@ Type TScriptCollection Extends TGameObjectCollection
 		if script.owner = owner then return False
 
 		script.owner = owner
-
 		'reset only specific caches, so script gets in the correct list
 		_usedScripts = Null
 		_availableScripts = Null
+
+		return True
 	End Method
 End Type
 
@@ -284,6 +287,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.flagsOptional = template.flagsOptional
 
 		script.scriptFlags = template.scriptFlags
+		'mark tradeable
+		script.SetScriptFlag(TVTScriptFlag.TRADEABLE, True)
 
 		script.scriptLicenceType = template.scriptLicenceType
 		script.scriptProductType = template.scriptProductType

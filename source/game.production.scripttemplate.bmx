@@ -47,7 +47,7 @@ Type TScriptTemplateCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetRandomByFilter:TScriptTemplate(skipNotAvailable:int = True, skipEpisodes:int = True, containsKeywords:string="")
+	Method GetRandomByFilter:TScriptTemplate(skipNotAvailable:int = True, skipEpisodes:int = True, containsKeywords:string="", avoidIDs:int[] = null)
 		'instead of using "super.GetRandom" we use a custom variant
 		'to NOT return episodes...
 		local array:TScriptTemplate[]
@@ -69,6 +69,8 @@ Type TScriptTemplateCollection Extends TGameObjectCollection
 				Next
 				if not allKeywordsFound then continue
 			endif
+
+			if avoidIDs and MathHelper.InIntArray(obj.GetID(), avoidIDs) then continue
 
 			array :+ [obj]
 		Next
@@ -233,7 +235,7 @@ Type TScriptTemplate Extends TScriptBase
 	End Method
 
 
-	Method FinishProduction(programmeLicenceGUID:string)
+	Method FinishProduction(programmeLicenceID:int)
 		SetProductionTimes( GetProductionTimes() + 1)
 	End Method
 

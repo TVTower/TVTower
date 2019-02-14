@@ -605,21 +605,25 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 		haveToRefreshGuiElements = TRUE
 
+		replaceChance :* 100 '0-1.0 to 0-100
+
 		'delete some random scripts
 		if replaceOffer
 			for local j:int = 0 to lists.length-1
 				for local i:int = 0 to lists[j].length-1
 					if not lists[j][i] then continue
 
-					if RandRange(0,100) < replaceChance*100
+					if RandRange(0,100) < replaceChance
 						'with 30% chance the script gets trashed
 						'and a completely new one will get created
 						if RandRange(0,100) < 30
+							'print "REMOVE: " + lists[j][i].GetTitle()
 							GetScriptCollection().Remove(lists[j][i])
 						'else just give it back to the collection
 						'(reset owner)
 						else
-							GetScriptCollection().SetScriptOwner(lists[j][i], TOwnedGameObject.OWNER_NOBODY)
+							'print "GIVE BACK: " + lists[j][i].GetTitle()
+							lists[j][i].GiveBackToScriptPool()
 						endif
 						'unlink from this list
 						lists[j][i] = null
@@ -640,7 +644,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			Next
 		Next
 
-'hier so weitermachen wie bei der movieagency
+
 		'fetch and set new scripts
 		local script:TScript = null
 		for local j:int = 0 to lists.length-1
@@ -922,6 +926,27 @@ endrem
 		if hoveredGuiScript
 			'draw the current sheet
 			hoveredGuiScript.DrawSheet()
+		endif
+
+		if TVTDebugInfos
+			SetColor 0,0,0
+			SetAlpha 0.6
+			DrawRect(300,215, 480, 200)
+			SetAlpha 1.0
+			SetColor 255,255,255
+			GetBitmapFont("default", 12).Draw("Script Pool (refill: " + GetGameBase().refillScriptAgencyTime+")", 320, 220)
+			GetBitmapFont("default", 12).Draw("available", 320, 235)
+			GetBitmapFont("default", 12).Draw("used", 540, 235)
+			local y:int = 250
+			for local script:TScript = EachIn GetScriptCollection().GetAvailableScriptList()
+				GetBitmapFont("default", 12).Draw(script.GetTitle(), 320, y)
+				y:+ 13
+			Next
+			y = 250
+			for local script:TScript = EachIn GetScriptCollection().GetUsedScriptList()
+				GetBitmapFont("default", 12).Draw(script.GetTitle(), 540, y)
+				y:+ 13
+			Next
 		endif
 	End Method
 
