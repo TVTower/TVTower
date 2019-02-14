@@ -139,7 +139,7 @@
 			</title>
 			<description>
 				<de>%JOB% %ROLENAME1% %ACTION% %ENEMY%. Sie wollen %VICTIM% %ACTION2%.</de>
-				<en>%JOB% %ROLENAME1% %ACTION% %ENEMY%. They want to %ACTION2% %VICTIM%.</en>
+				<en>%JOB% %ROLENAME1% %ACTION% %ENEMY%. They want to %ACTION2%.</en>
 			</description>
 
 			<variables>
@@ -151,7 +151,7 @@
 				</adjective>
 				<job>
 					<de>Ex-Cop|Feuerwehrmann|Chefarzt|Bestatter|Grundschullehrer|Klimaforscher|Paläontologe</de>
-					<en>a landscapist|an AA|a hairdresser for women|climate researcher|paleontologist</en>
+					<en>Former cop|Firefighter|Head physician|Undertaker|Primary teacher|Climate researcher|Paleontologist</en>
 				</job>
 				<action>
 					<de>kämpft gegen|bekämpft|rebelliert gegen|unterstützt widerwillig|unterstützt gutgläubig</de>
@@ -159,7 +159,7 @@
 				</action>
 				<action2>
 					<de>entführen|essen|zum Mond schießen|als Geisel nehmen|mit einem Klon ersetzen</de>
-					<en>kidnap|eat|sky rocket|hostage|clone</en>
+					<en>kidnap %ENEMY%|eat %ENEMY%|sky rocket %ENEMY%|hold %ENEMY% hostage|replace %ENEMY% with a clone</en>
 				</action2>
 				<enemy>
 					<de>ein mexikanisches Drogenkartell|eine geheime CIA-Gruppierung|Außerirdische|eine verwirrte Sekte|die eigene Familie|Piraten</de>
@@ -189,7 +189,7 @@
 			<review min="25" max="55" slope="45" />
 			<speed min="45" max="65" slope="25" />
 		</scripttemplate>
-		
+
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-subtilehumor01">
 			<title>
@@ -211,7 +211,7 @@
 				</object>
 				<action>
 					<de>auf Tour|brechen aus|tanken voll|und die Liebe...|suchen Krawall|schenken ein und teilen aus</de>
-					<en>on tour|breaking out|topping off|and the love...|looking for affray|come clean and mete out</en>
+					<en>on tour|breaking out|topping off|and the love...|looking for affray|deal blows</en>
 				</action>
 			</variables>
 
@@ -281,28 +281,33 @@
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-show1">
 			<title>
 				<de>%KIND%%DATE%</de>
-				<de>%KIND%%DATE%</de>
+				<en>%KIND%%DATE%</en>
 			</title>
 			<description>
 				<de>Lustige Einspieler und Gäste bekannt aus Funk und Fernsehen. Der Moderator bietet peinliche Tanzeinlagen. Nette Unterhaltung für Unbesorgte.</de>
+				<en>Funny clips and guests known from radio and television. The presenter performs embarrassing dance interludes. Nice entertainment for the careless.</en>
 			</description>
 
 			<variables>
 				<kind>
 					<de>Das %INNER%-Quiz|Das %INNER%-Duell|Die %INNER%-Show</de>
+					<en>The %INNER% Quiz|The %INNER%-Duel|The %INNER% Show</en>
 				</kind>
 				<inner>
 					<de>%ATTRIBUTE% %GROUP%</de>
+					<en>%ATTRIBUTE% %GROUP%</en>
 				</inner>
 				<attribute>
 					<de>tierische|große|abgefahrene|lustige|skurile</de>
+					<en>animalistic|big|whacky|funny|quirky</en>
 				</attribute>
 				<group>
 					<de>Promi|Kinder|Politiker|Musik|Film|Rate|Reise</de>
+					<en>Celebrity|Kids|Politicians|Music|Movie|Guessing|Travel</en>
 				</group>
 				<date>
 					<!-- either add the game year (with space!), or nothing -->
-					<de> %WORLDTIME:YEAR%</de>
+					<de>| %WORLDTIME:YEAR%</de>
 				</date>
 			</variables>
 
@@ -320,7 +325,7 @@
 			<outcome min="20" max="35" slope="40" />
 			<review min="25" max="45" slope="40" />
 			<speed min="45" max="60" slope="50" />
-		</scripttemplate>		
+		</scripttemplate>
 
 		<!-- === SERIES === -->
 		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-averagedayseries01">
@@ -332,7 +337,7 @@
 				<de>Serie über %OBJECT% und ihren Alltag. %JOKES%</de>
 				<en>Series about %OBJECT% and their day. %JOKES%</en>
 			</description>
-			
+
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-averagedayseries01_01">
 					<title>
@@ -414,7 +419,7 @@
 				<en>Documentary about %ANIMALS%.
 %EXTRA%</en>
 			</description>
-			
+
 			<children>
 				<scripttemplate index="0" product="2" licence_type="2" guid="scripttemplate-random-ron-animalseries01_01">
 					<title>

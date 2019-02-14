@@ -15,6 +15,8 @@ Import "common.misc.datasheet.bmx"
 
 
 Type TScriptCollection Extends TGameObjectCollection
+	'stores "languagecode::name"=>"used by id" connections
+	Field protectedTitles:TStringMap = new TStringMap
 	'=== CACHE ===
 	'cache for faster access
 
@@ -54,6 +56,13 @@ Type TScriptCollection Extends TGameObjectCollection
 		For local subScript:TScript = EachIn script.subScripts
 			Add(subScript)
 		Next
+
+		'protect title
+		If not script.HasParentScript()
+			AddTitleProtection(script.customTitle, script.GetID())
+			AddTitleProtection(script.title, script.GetID())
+		EndIf
+
 		return Super.Add(script)
 	End Method
 
@@ -67,6 +76,13 @@ Type TScriptCollection Extends TGameObjectCollection
 		For local subScript:TScript = EachIn script.subScripts
 			Remove(subScript)
 		Next
+
+		'unprotect title
+		If not script.HasParentScript()
+			RemoveTitleProtection(script.customTitle)
+			RemoveTitleProtection(script.title)
+		EndIf
+
 		return Super.Remove(script)
 	End Method
 
@@ -151,6 +167,57 @@ Type TScriptCollection Extends TGameObjectCollection
 			if possibleScripts.length = 0 then return GenerateRandom(avoidTemplateIDs)
 
 			return possibleScripts[ randRange(0, possibleScripts.length - 1) ]
+		endif
+	End Method
+
+
+	Method GetTitleProtectedByID:int(title:object)
+		if TLocalizedString(title)
+			local lsTitle:TLocalizedString = TLocalizedString(title)
+			for local langCode:string = EachIn lsTitle.GetLanguageKeys()
+				return int(string(protectedTitles.ValueForKey(langCode + "::" + lsTitle.Get(langCode).ToLower())))
+			next
+		elseif string(title) <> ""
+			return int(string((protectedTitles.ValueForKey("custom::" + string(title).ToLower()))))
+		endif
+	End Method
+
+
+	Method IsTitleProtected:int(title:object)
+		if TLocalizedString(title)
+			local lsTitle:TLocalizedString = TLocalizedString(title)
+			for local langCode:string = EachIn lsTitle.GetLanguageKeys()
+				if protectedTitles.Contains(langCode + "::" + lsTitle.Get(langCode).ToLower()) then return True
+			next
+		elseif string(title) <> ""
+			if protectedTitles.Contains("custom::" + string(title).ToLower()) then return True
+		endif
+		return False
+	End Method
+
+
+	'pass string or TLocalizedString
+	Method AddTitleProtection(title:object, scriptID:int)
+		if TLocalizedString(title)
+			local lsTitle:TLocalizedString = TLocalizedString(title)
+			for local langCode:string = EachIn lsTitle.GetLanguageKeys()
+				protectedTitles.Insert(langCode + "::" + lsTitle.Get(langCode).ToLower(), string(scriptID))
+			next
+		elseif string(title) <> ""
+			protectedTitles.insert("custom::" + string(title).ToLower(), string(scriptID))
+		endif
+	End Method
+
+
+	'pass string or TLocalizedString
+	Method RemoveTitleProtection(title:object)
+		if TLocalizedString(title)
+			local lsTitle:TLocalizedString = TLocalizedString(title)
+			for local langCode:string = EachIn lsTitle.GetLanguageKeys()
+				protectedTitles.Remove(langCode + "::" + lsTitle.Get(langCode).ToLower())
+			next
+		elseif string(title) <> ""
+			protectedTitles.Remove("custom::" + string(title).ToLower())
 		endif
 	End Method
 
@@ -274,6 +341,47 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Function CreateFromTemplate:TScript(template:TScriptTemplate)
 		local script:TScript = new TScript
 		script.title = template.GenerateFinalTitle()
+		if GetScriptCollection().IsTitleProtected(script.title)
+			print "script title in use: " + script.title.Get()
+
+			'use another random one
+			local tries:int = 0
+			local validTitle:int = False
+			For local i:int = 0 until 5
+				script.title = template.GenerateFinalTitle()
+				if not GetScriptCollection().IsTitleProtected(script.title)
+					validTitle = True
+					exit
+				endif
+			Next
+			'no random one available or most already used
+			if not validTitle
+				'remove numbers
+				for local langCode:string = EachIn script.title.GetLanguageKeys()
+					local numberfreeTitle:string = script.title.Get(langCode)
+					local hashPos:int = numberfreeTitle.FindLast("#")
+					if hashPos > 2 '"sometext" + space + hash means > 2
+						local numberS:string = numberFreetitle[hashPos+1 .. ]
+						if numberS = string(int(numberS)) 'so "#123hashtag"
+							numberfreeTitle = numberfreetitle[.. hashPos-1] 'remove space before too
+						endif
+
+						script.title.Set(numberfreeTitle, langCode)
+					endif
+				next
+
+				'append number
+				local titleCopy:TLocalizedString = script.title.Copy()
+				'start with "2" to avoid "title #1"
+				local number:int = 2
+				repeat
+					for local langCode:string = EachIn script.title.GetLanguageKeys()
+						script.title.Set(titleCopy.Get() + " #"+number, langCode)
+					next
+					number :+ 1
+				until not GetScriptCollection().IsTitleProtected(script.title)
+			endif
+		EndIf
 		script.description = template.GenerateFinalDescription()
 
 		script.outcome = template.GetOutcome()
