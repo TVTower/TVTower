@@ -74,7 +74,7 @@ Type TGameRules {_exposeToLua}
 
 	'=== ADCONTRACTS ===
 	'how many contracts can a player collection store
-	Field adContractsPerPlayerMax:int = 10
+	Field adContractsPerPlayerMax:int = 12
 	'how many contracts of the same contractBase can exist at the
 	'same time? (0 disables any limit)
 	Field adContractInstancesMax:int = 1
@@ -83,7 +83,7 @@ Type TGameRules {_exposeToLua}
 
 	'=== ADAGENCY ===
 	Field adagencySortContractyBy:string = "minaudience"
-	Field adagencyRefillMode:int = 1
+	Field adagencyRefillMode:int = 2
 
 	'=== STATIONMAP ===
 	'time a station needs to get constructed
@@ -91,7 +91,7 @@ Type TGameRules {_exposeToLua}
 	'set to default (0) on start (game.game.bmx prepareNewGame())
 	Field stationConstructionTime:int = 0
 	Field cableNetworkConstructionTime:int = 0
-	'increase costs by X percent each day after construction of a station? 
+	'increase costs by X percent each day after construction of a station?
 	Field stationIncreaseDailyMaintenanceCosts:int = False
 	Field stationDailyMaintenanceCostsPercentage:Float = 0.02
 	Field stationDailyMaintenanceCostsPercentageTotalMax:Float = 0.30
@@ -109,22 +109,22 @@ Type TGameRules {_exposeToLua}
 		elevatorWaitAtFloorTime = 1500
 
 		stationConstructionTime = 0
-		
+
 		adagencySortContractyBy = "minaudience"
 		adagencyRefillMode = 2 'new one
 
 		adContractInstancesMax = 1
-		adContractsPerPlayerMax = 10
+		adContractsPerPlayerMax = 12
 		adContractPricePerSpotMax = 1000000
 
 
 		AssignFromData(devConfig)
 	End Method
-	
+
 
 	Method AssignFromData:int(data:TData)
 		if not data then return False
-		
+
 		dailyBossVisit = data.GetInt("DEV_DAILY_BOSS_VISIT", dailyBossVisit)
 
 		sentXRatedPenalty = data.GetInt("DEV_SENT_XRATED_PENALTY", sentXRatedPenalty)
@@ -148,14 +148,14 @@ Type TGameRules {_exposeToLua}
 
 
 		'=== STATION(MAP) ===
-		stationConstructionTime = data.GetInt("DEV_STATION_CONSTRUCTION_TIME", 0)		
+		stationConstructionTime = data.GetInt("DEV_STATION_CONSTRUCTION_TIME", 0)
 		stationIncreaseDailyMaintenanceCosts = data.GetBool("DEV_STATION_INCREASE_DAILY_MAINTENANCE_COSTS", stationIncreaseDailyMaintenanceCosts)
 		stationDailyMaintenanceCostsPercentage = data.GetFloat("DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE", stationDailyMaintenanceCostsPercentage)
 		stationDailyMaintenanceCostsPercentageTotalMax = data.GetFloat("DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE_TOTAL_MAX", stationDailyMaintenanceCostsPercentageTotalMax)
 
 		return True
 	End Method
-		
+
 End Type
 
 Global GameRules:TGameRules = new TGameRules

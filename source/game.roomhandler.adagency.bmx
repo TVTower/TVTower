@@ -42,7 +42,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 	'configuration
 	Global suitcasePos:TVec2D = new TVec2D.Init(520,100)
-	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(19,32)
+	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(14,32)
 	Global contractsPerLine:int	= 4
 	Global contractsNormalAmount:int = 12
 	Global contractsCheapAmount:int	= 4
@@ -64,7 +64,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Method Initialize:int()
 		'=== RESET TO INITIAL STATE ===
 		CleanUp()
-		
+
 		contractsPerLine:int = 4
 		contractsNormalAmount = 12
 		contractsCheapAmount = 4
@@ -73,14 +73,14 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		Select GameRules.adagencySortContractyBy
 			case "minaudience"
-				ListSortMode = SORT_BY_MINAUDIENCE 
+				ListSortMode = SORT_BY_MINAUDIENCE
 			case "classification"
-				ListSortMode = SORT_BY_CLASSIFICATION 
+				ListSortMode = SORT_BY_CLASSIFICATION
 			case "profit"
 				ListSortMode = SORT_BY_PROFIT
 			default
 				ListSortMode = SORT_BY_MINAUDIENCE
-		End Select 
+		End Select
 
 		VendorEntity = GetSpriteEntityFromRegistry("entity_adagency_vendor")
 
@@ -130,7 +130,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 			Next
 
-			GuiListSuitcase	= new TGUIAdContractSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(215, GetSpriteFromRegistry("gfx_contracts_0_dragged").area.GetH()), "adagency")
+			GuiListSuitcase	= new TGUIAdContractSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(255, GetSpriteFromRegistry("gfx_contracts_0_dragged").area.GetH()), "adagency")
 			GuiListSuitcase.SetAutofillSlots(true)
 
 			GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 220), new TVec2D.Init(5 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
@@ -150,7 +150,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			GuiListSuitcase.SetItemLimit(GameRules.adContractsPerPlayerMax)
 
 			GuiListCheap.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
-			GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
+			GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW()-3, GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
 
 			GuiListCheap.SetEntryDisplacement( 0, -5)
 			GuiListSuitcase.SetEntryDisplacement( 0, 0)
@@ -171,7 +171,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			VendorArea.zIndex = 0
 		endif
 
-		
+
 		'=== EVENTS ===
 		'=== remove all registered event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
@@ -200,7 +200,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Method CleanUp()
 		'=== unset cross referenced objects ===
 		'
-		
+
 		'=== remove obsolete gui elements ===
 		if GuiListSuitcase then RemoveAllGuiElements()
 
@@ -214,7 +214,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		if GetInstance() <> self then self.CleanUp()
 		GetRoomHandlerCollection().SetHandler("adagency", GetInstance())
 	End Method
-	
+
 
 	Method AbortScreenActions:Int()
 		local abortedAction:int = False
@@ -264,7 +264,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		haveToRefreshGuiElements = true
 	End Method
-	
+
 
 	'run AFTER the savegame data got loaded
 	'handle faulty adcontracts (after data got loaded)
@@ -369,7 +369,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			ResetContractOrder()
 		endif
 	End Method
-		
+
 
 	Method GetContractsInStock:TList()
 		if not listAll
@@ -504,7 +504,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 	Method SortContracts(list:TList, mode:int = -1)
 		if not list then return
-		
+
 		if mode = -1 then mode = ListSortMode
 
 		Select ListSortMode
@@ -535,7 +535,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		listAll = null
 
 		SortContracts(contracts, ListSortMode)
-		
+
 		'add again - so it gets sorted
 		for local contract:TAdContract = eachin contracts
 			AddContract(contract)
@@ -547,7 +547,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 	Method RemoveContract:int(contract:TAdContract)
 		if GetContractsInStockCount() = 0 then return False
-		
+
 		local foundContract:int = FALSE
 		'remove from agency's lists
 		local lists:TAdContract[][] = [listNormal,listCheap]
@@ -572,7 +572,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Method AddContract:int(contract:TAdContract)
 		'skip if done already
 		if HasContract(contract) then return False
-		
+
 		'try to fill the program into the corresponding list
 		'we use multiple lists - if the first is full, try second
 		local lists:TAdContract[][]
@@ -629,7 +629,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			'let the contract cleanup too
 			c.Remove()
 		Next
-		
+
 		return toRemove.length
 	End Method
 
@@ -804,7 +804,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			averageChannelQuoteDayTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayWithoutPrimeTime).GetTotalSum() / averageChannelReach
 			averageChannelQuotePrimeTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayOnlyPrimeTime).GetTotalSum() / averageChannelReach
 		endif
-		
+
 		local highestChannelImage:Float = averageChannelImage
 		local highestChannelQuoteDayTime:Float = 0.0
 		local highestChannelQuotePrimeTime:Float = 0.0
@@ -1041,7 +1041,7 @@ endrem
 					'try again without filter - to avoid "empty room"
 					contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandom() )
 				endif
-				
+
 				'add new contract to slot
 				if contract
 					'set classification so contract knows its "origin"
@@ -1199,7 +1199,7 @@ endrem
 					'try again without filter - to avoid "empty room"
 					contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandom() )
 				endif
-				
+
 				'add new contract to slot
 				if contract
 					'set classification so contract knows its "origin"
@@ -1396,7 +1396,7 @@ endrem
 		local contentX:int = 5 + skin.GetContentX()
 		skin.RenderContent(contentX, 325 +skin.GetContentY(), skin.GetContentW(boxWidth), 42, "1_top")
 
-		
+
 		For local i:int = 0 until availableSortKeys.length
 			local spriteName:string = "gfx_gui_button.datasheet"
 			if ListSortMode = availableSortKeys[i]
@@ -1448,11 +1448,13 @@ endrem
 
 
 		if TVTDebugInfos
+			DrawImage(GetSpritepackFromRegistry("gfx_screen_adagency_pack").GetImage(), 0,0)
 			SetColor 0,0,0
 			SetAlpha 0.6
-			DrawRect(15,235, 380, 180)
+			DrawRect(15,215, 380, 200)
 			SetAlpha 1.0
 			SetColor 255,255,255
+			GetBitmapFont("default", 12).Draw("RefillMode:" + GameRules.adagencyRefillMode, 20, 220)
 			GetBitmapFont("default", 12).Draw("Durchschnittsquoten:", 20, 240)
 			local y:int = 260
 			local filterNum:int = 0
@@ -1487,7 +1489,7 @@ endrem
 		endif
 
 		ListSortVisible = False
-		If not draggedGuiAdContract 
+		If not draggedGuiAdContract
 			'show and react to mouse-over-sort-buttons
 			'HINT: does not work for touch displays
 			local skin:TDatasheetSkin = GetDatasheetSkin("default")
@@ -1599,13 +1601,13 @@ Type TGuiAdContract Extends TGUIGameListItem
 				SetOption(GUI_OBJECT_DRAGABLE, True)
 			EndIf
 		EndIf
-			
+
 
 		'set mouse to "hover"
 		If contract.owner = GetPlayerBase().playerID Or contract.owner <= 0 And isHovered()
 			GetGameBase().cursorstate = 1
 		EndIf
-	
+
 		'set mouse to "dragged"
 		If isDragged()
 			GetGameBase().cursorstate = 2
@@ -1649,7 +1651,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 
 		local forPlayerID:int = GetObservedPlayerID()
 		if self.contract.IsSigned() then forPlayerID = self.contract.owner
-	
+
 		Self.contract.ShowSheet(sheetX,sheetY, sheetAlign, TVTBroadcastMaterialType.ADVERTISEMENT, forPlayerID)
 	End Method
 

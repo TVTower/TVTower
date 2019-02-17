@@ -21,7 +21,7 @@ Type TgfxContractlist Extends TPlannerList
 	Method Create:TgfxContractlist(x:Int, y:Int)
 		entrySize = null
 		entriesRect = null
-		
+
 		'right align the list
 		Pos.SetXY(x - GetEntrySize().GetX(), y)
 
@@ -38,7 +38,7 @@ Type TgfxContractlist Extends TPlannerList
 		                 new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("REMAINING_TERM")), new TRectangle.Init(0,0,-1,-1)), ..
 		                 new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("SPOTS_TO_SEND")), new TRectangle.Init(0,0,-1,-1)) ..
 		               ]
-	
+
 		RegisterEvents()
 	End Method
 
@@ -51,7 +51,7 @@ Type TgfxContractlist Extends TPlannerList
 		_contractsCacheKey = ""
 		_contractsOwner = 0
 	End Method
-	
+
 
 	Method UnRegisterEvents:Int()
 		For local link:TLink = EachIn _registeredListeners
@@ -61,7 +61,7 @@ Type TgfxContractlist Extends TPlannerList
 		Next
 	End Method
 
-	
+
 	Method RegisterEvents:Int()
 		'register events for all lists
 		if not registeredEvents
@@ -79,7 +79,7 @@ Type TgfxContractlist Extends TPlannerList
 
 			'handle savegame loading (reset cache)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", OnLoadSaveGame)
-		
+
 			registeredEvents = True
 		endif
 	End Method
@@ -114,7 +114,7 @@ Type TgfxContractlist Extends TPlannerList
 
 
 	Method GetContracts:TList(owner:int)
-		local cacheKey:string = ListSortDirection+"_"+ListSortMode+"_"+owner 
+		local cacheKey:string = ListSortDirection+"_"+ListSortMode+"_"+owner
 		'create cached var?
 		if not _contracts or cacheKey <> _contractsCacheKey
 			_contracts = GetPlayerProgrammeCollection(owner).GetAdContracts().Copy()
@@ -134,7 +134,7 @@ Type TgfxContractlist Extends TPlannerList
 				default
 					_contracts.Sort(not ListSortDirection, TAdContract.SortByName)
 			End Select
-			
+
 			_contractsCacheKey = cacheKey
 			_contractsOwner = owner
 		endif
@@ -157,7 +157,7 @@ Type TgfxContractlist Extends TPlannerList
 
 		Local contracts:TList = GetContracts(owner)
 		'draw slots, even if empty
-		For Local i:Int = 0 Until 10 'GameRules.adContractsPerPlayerMax
+		For Local i:Int = 0 Until GameRules.adContractsPerPlayerMax
 			Local contract:TAdContract
 			if i < contracts.Count() then contract = TAdContract( contracts.ValueAtIndex(i) )
 
@@ -165,7 +165,7 @@ Type TgfxContractlist Extends TPlannerList
 			If i = 0 Then entryPositionType = "first"
 			If i = GameRules.adContractsPerPlayerMax-1 Then entryPositionType = "last"
 
-		
+
 			'=== BACKGROUND ===
 			'add "top" portion when drawing first item
 			'do this in the for loop, so the entrydrawType is known
@@ -189,7 +189,7 @@ Type TgfxContractlist Extends TPlannerList
 				if contract.GetDaysLeft() <= 1 then drawType = "planned"
 				'strong emphasize
 				if contract.GetDaysLeft() <= 0 then SetColor 255,220,220
-				
+
 				'hovered - draw hover effect if hovering
 				If THelper.MouseIn(currX, currY, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
 					GetSpriteFromRegistry("gfx_programmetape_movie.hovered").draw(currX + 8, currY+1)
@@ -198,7 +198,7 @@ Type TgfxContractlist Extends TPlannerList
 				EndIf
 
 				if contract.GetDaysLeft() <= 0 then SetColor 255,255,255
-			
+
 				if TVTDebugInfos
 					font.drawBlock(contract.GetProfit() +CURRENCYSIGN+" @ "+ contract.GetMinAudience(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
 				else
@@ -207,7 +207,7 @@ Type TgfxContractlist Extends TPlannerList
 
 				if contract.GetLimitedToTargetGroup() > 0 or contract.GetLimitedToGenre() > 0 or contract.GetLimitedToProgrammeFlag() > 0
 					GetSpriteFromRegistry("gfx_programmetape_stamp_attention").draw(currX + 8, currY+1)
-				endif	
+				endif
 			EndIf
 
 
@@ -334,7 +334,7 @@ Type TgfxContractlist Extends TPlannerList
 		'invalidate contracts list
 		_contracts = null
 	End Function
-	
+
 
 	Function OnLoadSaveGame:int( triggerEvent:TEventBase )
 		'invalidate contracts list

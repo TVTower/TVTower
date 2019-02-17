@@ -61,7 +61,7 @@
 
 				<child name="gfx_datasheet_overlay_xrated"			x="0"	y="100" w="26"  h="26" offsetLeft="15" offsetTop="-2" />
 
-				<!-- cast/actor-item elements --> 
+				<!-- cast/actor-item elements -->
 				<child name="gfx_datasheet_cast_icon"                   x="90"  y="130" w="41"  h="39" ninepatch="true" />
 				<child name="gfx_datasheet_cast_name"                   x="131" y="130" w="28"  h="20" ninepatch="true" />
 				<child name="gfx_datasheet_cast_bar_xp_filled"          x="131" y="150" w="28"  h="8"  ninepatch="true" />
@@ -108,14 +108,14 @@
 
 			</children>
 		</spritepack>
-		
+
 		<spritepack name="gfx_suitcase_pack">
  			<url>res/gfx/misc/suitcase.png</url>
 			<children>
 				<child name="gfx_suitcase" 			x="3"   y="0"   w="215" h="105"	/>
 				<child name="gfx_suitcase_glow"		x="3"   y="107"	w="215" h="105"	/>
-				<child name="gfx_suitcase_big" 		x="218" y="0"   w="245" h="105"	/>
-				<child name="gfx_suitcase_big_glow"	x="218" y="107"	w="245" h="105"	/>
+				<child name="gfx_suitcase_big" 		x="218" y="0"   w="275" h="105"	/>
+				<child name="gfx_suitcase_big_glow"	x="218" y="107"	w="275" h="105"	/>
 			</children>
 		</spritepack>
 
