@@ -2072,7 +2072,6 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		'current reach is updated now
 		reachInvalid = False
 
-print "RONNY: reachBefore: " + reachBefore + "   reach: " + reach+"    levelBefore: " + oldReachLevel + "   level: " + GetReachLevel(reach)
 		'inform others
 		EventManager.triggerEvent( TEventSimple.Create( "StationMap.onRecalculateAudienceSum", New TData.addNumber("reach", reach).AddNumber("reachBefore", reachBefore).AddNumber("playerID", owner), Self ) )
 
@@ -3314,12 +3313,12 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 
 
 	'override
-	Method GetTypeName:string()
+	Method GetTypeName:string() {_exposeToLua}
 		return GetLocale("CABLE_NETWORK_UPLINK")
 	End Method
 
 
-	Method GetLongName:string()
+	Method GetLongName:string() {_exposeToLua}
 		return GetLocale("MAP_COUNTRY_"+GetSectionName())
 	End Method
 
@@ -3741,7 +3740,7 @@ Type TStationSatelliteUplink extends TStationBase {_exposeToLua="selected"}
 
 
 	'override
-	Method GetLongName:string()
+	Method GetLongName:string() {_exposeToLua}
 		if not providerGUID
 			return GetLocale("UNUSED_TRANSMITTER")
 		else
@@ -3753,7 +3752,7 @@ Type TStationSatelliteUplink extends TStationBase {_exposeToLua="selected"}
 
 
 	'override
-	Method GetName:string()
+	Method GetName:string() {_exposeToLua}
 		if providerGUID
 			local satellite:TStationMap_Satellite = GetStationMapCollection().GetSatelliteByGUID(providerGUID)
 			if satellite then return GetLocale("SATUPLINK_TO_X").Replace("%X%", satellite.name)
@@ -3763,7 +3762,7 @@ Type TStationSatelliteUplink extends TStationBase {_exposeToLua="selected"}
 
 
 	'override
-	Method GetTypeName:string()
+	Method GetTypeName:string() {_exposeToLua}
 		return GetLocale("SATELLITE_UPLINK")
 	End Method
 
@@ -5312,7 +5311,7 @@ Type TStationMap_CableNetwork extends TStationMap_BroadcastProvider
 	End Method
 
 
-	Method GetName:string()
+	Method GetName:string() {_exposeToLua}
 		return name.replace("%name%", GetLocale("MAP_COUNTRY_"+sectionName))
 	End Method
 

@@ -75,6 +75,28 @@ end
 function TaskStationMap:SetFixedCosts()
 	self.FixedCosts = MY.GetStationMap().CalculateStationCosts()
 end
+
+
+function TaskStationMap:GetAverageStationRunningCostPerPerson()
+	local totalCost = 0
+	local totalReach = 0
+	local stationCount = TVT.of_getStationCount(TVT.ME)
+
+	debugMsg("TaskStationMapJob.GetAverageStationRunningCostPerPerson")
+	debugMsg("Owning " .. stationCount .. " stations.")
+	if stationCount > 0 then
+		for stationIndex = 0, stationCount-1 do
+			local station = TVT.of_getStationAtIndex(i, stationIndex)
+			if station ~= nil then
+				totalCost = totalCost + station.GetRunningCosts()
+				totalReach = totalReach + station.GetExclusiveReach()
+				--totalReach = totalReach + station.GetReach()
+			end
+		end
+	end
+
+	return totalCost/totalReach
+end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
@@ -198,11 +220,8 @@ function JobBuyStation:SetCancel()
 	--AIJob.SetCancel(self)
 end
 
-function JobBuyStation:Tick()
-	debugMsg("JobBuyStation: Checking stations! current budget:" .. self.Task.CurrentBudget)
 
-	local player = _G["globalPlayer"]
-
+function JobyBuyStation:GetBestAntennaOffer()
 --[[
 - Liste abrufen die alle Sendemasten der Gegner beinhaltet
 - Liste eigener abrufen (obwohl das bei der Berechnung dann eh rausfaellt
@@ -272,8 +291,8 @@ function JobBuyStation:Tick()
 		elseif tempStation.GetPrice() > self.Task.CurrentBudget then
 			debugMsg("    -> too expensive")
 			tempStation = nil
-		--3) relative increase to low (at least 20% required)
-		elseif tempStation.GetRelativeExclusiveReach() < 0.25 then
+		--3) relative increase to low (at least 30% required)
+		elseif tempStation.GetRelativeExclusiveReach() < 0.30 then
 			debugMsg("    -> not enough reach increase")
 			tempStation = nil
 
@@ -315,10 +334,36 @@ function JobBuyStation:Tick()
 		end
 	end
 
+	return bestOffer, bestAttraction
+end
+
+
+function JobBuyStation:Tick()
+	debugMsg("JobBuyStation: Checking stations! current budget:" .. self.Task.CurrentBudget)
+
+	local player = _G["globalPlayer"]
+
+	local bestAntennaOffer, bestAntennaAttraction = self:GetBestAntennaOffer()
+	local bestCableNetworkOffer = nil
+	local bestSatelliteOffer = nil
+
+	local bestOffer = bestAntennaOffer
+
 	if bestOffer ~= nil then
 		local price = bestOffer.GetTotalBuyPrice()
-		debugMsg(" Buying Station at " .. bestOffer.pos.GetIntX() .. "," .. bestOffer.pos.GetIntY() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. price)
-		TVT.of_buyAntennaStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
+		if bestOffer == bestAntennaOffer then
+			debugMsg(" Buying antenna station in " .. bestOffer.GetSectionName() .. " at " .. bestOffer.pos.GetIntX() .. "," .. bestOffer.pos.GetIntY() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. price)
+			TVT.of_buyAntennaStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
+		elseif bestOffer == bestSatelliteOffer then
+			debugMsg(" Contracting satellite uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. price)
+			--TVT.of_buyAntennaStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
+		elseif bestOffer == bestCableNetworkOffer then
+			debugMsg(" Contracting cable network uplink " .. bestOffer.GetLongName() .. ".  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. price)
+			--TVT.of_buyAntennaStation(bestOffer.pos.GetIntX(), bestOffer.pos.GetIntY())
+		end
+
+		-- Wir brauchen noch ein "Fixkostenbudget" fuer Kabelnetze/Satelliten
+
 		self.Task:PayFromBudget(price)
 
 		--next investment sum should be a bit bigger (TODO: make dependend from budget)

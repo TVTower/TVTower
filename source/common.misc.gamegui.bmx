@@ -18,7 +18,7 @@ Type TGUISpriteDropDown Extends TGUIDropDown
 		Super.Create(position, dimension, value, maxLength, limitState)
 		Return Self
 	End Method
-	
+
 
 	'override to add sprite next to value
 	Method DrawInputContent:Int(position:TVec2D)
@@ -47,7 +47,7 @@ End Type
 Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 	Global spriteDimension:TVec2D
 	Global defaultSpriteDimension:TVec2D = New TVec2D.Init(24, 24)
-	
+
 
     Method Create:TGUISpriteDropDownItem(position:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		If Not dimension
@@ -90,7 +90,7 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 		EndIf
 		oldCol.SetRGBA()
 	End Method
-    
+
 
 	Method DrawValue()
 		Local valueX:Int = getScreenX()
@@ -151,7 +151,7 @@ Type TGUIChatWindow Extends TGUIGameWindow
 		If guiBackground Then guiBackground.resize(rect.getW(), rect.getH())
 
 		If guiPanel Then guiPanel.Resize(GetContentScreenWidth(), GetContentScreenHeight())
-		
+
 		If guiChat
 			guiChat.rect.position.SetXY(padding.GetLeft(), padding.GetTop())
 			guiChat.Resize(GetContentScreenWidth() - padding.GetRight() - padding.GetLeft(), GetContentScreenHeight() - padding.GetTop() - padding.GetBottom())
@@ -310,7 +310,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 		SetLifetime(30000) '30 seconds
 		SetValue(":D")
 		SetValueColor(TColor.Create(0,0,0))
-		
+
 		GUIManager.add(Self)
 
 		Return Self
@@ -325,7 +325,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local dimension:TVec2D = New TVec2D.Init(maxWidth, GetBitmapFontManager().baseFont.GetMaxCharHeight())
-		
+
 		'add padding
 		dimension.addXY(0, Self.paddingTop)
 		dimension.addXY(0, Self.paddingBottom)
@@ -371,7 +371,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 		If Self.showtime <> Null
 			SetAlpha Float(Self.showtime - Time.GetAppTimeGone())/500.0
 		EndIf
-		
+
 		'draw highlight-background etc
 		Super.DrawContent()
 
@@ -392,7 +392,7 @@ End Type
 Type TGUIGameSlotList Extends TGUISlotList
 	'Field onlyDropFromList:int = False
 	'Field onlyDropToList:int = False
-	
+
     Method Create:TGUIGameSlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 		return self
@@ -408,7 +408,7 @@ Type TGUIGameSlotList Extends TGUISlotList
 				i.lastListID = i.inListID
 				i.inListID = self._id
 			endif
-				
+
 			GUIManager.sortLists()
 			return TRUE
 		endif
@@ -500,7 +500,7 @@ Type TGUIGameListItem Extends TGUIListItem
 		If Not sprite then sprite = Self.assetDefault
 		If Not name then name = Self.assetNameDefault
 
-			
+
 		'only resize if not done already
 		If Self.asset <> sprite or self.assetName <> name
 			Self.asset = sprite
@@ -551,13 +551,13 @@ Type TGUIGameListItem Extends TGUIListItem
 
 
 	Method DrawContent()
-		asset.draw(Self.GetScreenX(), Self.GetScreenY())
+		asset.draw(int(Self.GetScreenX()), int(Self.GetScreenY()))
 		'hovered
 		If isHovered() and not isDragged()
 			Local oldAlpha:Float = GetAlpha()
 			SetAlpha 0.20*oldAlpha
 			SetBlend LightBlend
-			GetAsset().draw(Self.GetScreenX(), Self.GetScreenY())
+			GetAsset().draw(int(Self.GetScreenX()), int(Self.GetScreenY()))
 			SetBlend AlphaBlend
 			SetAlpha oldAlpha
 		EndIf
@@ -577,7 +577,7 @@ Type TGameGUIAccordeon extends TGUIAccordeon
 			skin = GetDatasheetSkin(skinName)
 			RefitPanelSizes()
 		endif
-		
+
 		return skin
 	End Method
 
@@ -612,7 +612,7 @@ Type TGameGUIAccordeon extends TGUIAccordeon
 		'subtract skin's border padding
 		return skin.GetContentH( super.GetMaxPanelBodyHeight() )
 	End Method
-		
+
 
 	Method DrawOverlay()
 		'use GetSkin() to fetch the skin when drawing was possible
