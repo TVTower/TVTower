@@ -792,10 +792,10 @@ Function DrawMenuBackground(darkened:Int=False)
 
 	If GetGameBase().IsGameState(TGameBase.STATE_MAINMENU)
 		SetColor 255,255,255
-		GetBitmapFont("Default",13, BOLDFONT).DrawBlock("ACHTUNG neue Tastenkürzel:", 10,460, 300,20, Null,TColor.Create(140,75,75))
-		GetBitmapFont("Default",12).DrawBlock("|b|[S]|/b| Schnellspeichern - nun mit |b|[F5]|/b|~n|b|[L]|/b| Schnellspeicherstand einladen - nun mit |b|[F8]|/b|.~nDamit sollten versehentliche Spielverluste durch Einladerei minimiert werden.", 10,480, 300,50, Null,TColor.Create(75,75,75))
+		'GetBitmapFont("Default",13, BOLDFONT).DrawBlock("ACHTUNG neue Tastenkürzel:", 10,460, 300,20, Null,TColor.Create(140,75,75))
+		'GetBitmapFont("Default",12).DrawBlock("|b|[S]|/b| Schnellspeichern - nun mit |b|[F5]|/b|~n|b|[L]|/b| Schnellspeicherstand einladen - nun mit |b|[F8]|/b|.~nDamit sollten versehentliche Spielverluste durch Einladerei minimiert werden.", 10,480, 300,50, Null,TColor.Create(75,75,75))
 
-rem
+
 		SetColor 255,255,255
 		GetBitmapFont("Default",13, BOLDFONT).DrawBlock("Wir brauchen Deine Hilfe!", 10,460, 300,20, Null,TColor.Create(75,75,140))
 		GetBitmapFont("Default",12).DrawBlock("Beteilige Dich an Diskussionen rund um alle Spielelemente in TVTower.", 10,480, 300,30, Null,TColor.Create(75,75,140))
@@ -803,7 +803,6 @@ rem
 		SetAlpha 0.5 * GetAlpha()
 		GetBitmapFont("Default",11).drawBlock("(Keine Anmeldung notwendig)", 10,521, 500,20, Null,TColor.Create(60,60,150))
 		SetAlpha 2.0 * GetAlpha()
-endrem
 
 		GetBitmapFont("Default",12, ITALICFONT).drawBlock(versionstring, 10,565, 500,20, Null,TColor.Create(75,75,140))
 		GetBitmapFont("Default",12, ITALICFONT).drawBlock(copyrightstring+", www.TVTower.org", 10,580, 500,20, Null,TColor.Create(60,60,120))

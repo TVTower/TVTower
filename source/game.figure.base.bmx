@@ -267,7 +267,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		'accept everything "non-figure" (such things do not exist yet)
 		if not TFigureBase(entity) then return True
 
-		'players do not accept others in same room
+		'players do not accept other players in same room
 		if self.playerID > 0 and TFigureBase(entity).playerID > 0 then return False
 
 		return True
