@@ -963,6 +963,36 @@ endrem
 	End Method
 
 
+	Method of_getCableNetworkCount:int()
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+
+		'also returns not yet launched ones!
+		return GetStationMapCollection().GetCableNetworkCount()
+	End Method
+
+
+	Method of_getCableNetworkAtIndex:TStationMap_BroadcastProvider(arrayIndex:int)
+		If Not _PlayerInRoom("office") Then Return null
+
+		return GetStationMapCollection().GetCableNetworkAtIndex(arrayIndex)
+	End Method
+
+
+	Method of_getSatelliteCount:int()
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+
+		'also returns not yet launched ones!
+		return GetStationMapCollection().GetSatelliteCount()
+	End Method
+
+
+	Method of_getSatelliteAtIndex:TStationMap_BroadcastProvider(arrayIndex:int)
+		If Not _PlayerInRoom("office") Then Return null
+
+		return GetStationMapCollection().GetSatelliteAtIndex(arrayIndex)
+	End Method
+
+
 
 	'== PROGRAMME PLAN ==
 

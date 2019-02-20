@@ -343,6 +343,11 @@ Type TStationMapCollection
 	End Method
 
 
+	Method GetCableNetworkCount:int()
+		return cableNetworks.Count()
+	End Method
+
+
 	Method GetCableNetworkAtIndex:TStationMap_CableNetwork(index:int)
 		if cableNetworks.count() <= index or index < 0 then return Null
 
@@ -376,6 +381,11 @@ Type TStationMapCollection
 		'	result :+ satLink.GetExclusiveReach()
 		next
 		return result
+	End Method
+
+
+	Method GetSatelliteCount:int()
+		return satellites.Count()
 	End Method
 
 
@@ -4969,7 +4979,7 @@ End Type
 
 'cable network, satellite ... providers which allows booking of
 'channel capacity
-Type TStationMap_BroadcastProvider extends TEntityBase
+Type TStationMap_BroadcastProvider extends TEntityBase {_exposeToLua="selected"}
 	Field name:string
 
 	'minimum image needed to be able to subscribe
@@ -5086,13 +5096,13 @@ Type TStationMap_BroadcastProvider extends TEntityBase
 	End Method
 
 
-	Method GetSubscribedChannelCount:int()
+	Method GetSubscribedChannelCount:int() {_exposeToLua}
 		if not subscribedChannels then return 0
 		return subscribedChannels.length
 	End Method
 
 
-	Method IsSubscribedChannel:int(channelID:int)
+	Method IsSubscribedChannel:int(channelID:int) {_exposeToLua}
 		For local i:int = EachIn subscribedChannels
 			if i = channelID then return True
 		Next
@@ -5100,7 +5110,7 @@ Type TStationMap_BroadcastProvider extends TEntityBase
 	End Method
 
 
-	Method CanSubscribeChannel:int(channelID:int, duration:Int=-1)
+	Method CanSubscribeChannel:int(channelID:int, duration:Int=-1) {_exposeToLua}
 		if minimumChannelImage > 0 and minimumChannelImage > GetPublicImage(channelID).GetAverageImage() then return -1
 		if channelMax >= 0 and subscribedChannels.length >= channelMax then return -2
 
@@ -5192,13 +5202,13 @@ Type TStationMap_BroadcastProvider extends TEntityBase
 	End Method
 
 
-	Method IsActive:int()
+	Method IsActive:int() {_exposeToLua}
 		'for now we only check "launched" but satellites could need a repair...
 		return launched
 	End Method
 
 
-	Method IsLaunched:int()
+	Method IsLaunched:int() {_exposeToLua}
 		return launched
 	End Method
 
@@ -5264,7 +5274,7 @@ End Type
 
 
 'excuse naming scheme but "TCableNetwork" is ambiguous for "stationtypes"
-Type TStationMap_CableNetwork extends TStationMap_BroadcastProvider
+Type TStationMap_CableNetwork extends TStationMap_BroadcastProvider {_exposeToLua="selected"}
 	'operators
 	Field sectionName:string
 
@@ -5331,7 +5341,7 @@ End Type
 
 
 'excuse naming scheme but "TSatellite" is ambiguous for "stationtypes"
-Type TStationMap_Satellite extends TStationMap_BroadcastProvider
+Type TStationMap_Satellite extends TStationMap_BroadcastProvider {_exposeToLua="selected"}
 	'how many of the people in reach are reachable at all
 	'eg. adjusted their dishes to receive the satellite
 	'    -> this might change over time (more channels on a "better"

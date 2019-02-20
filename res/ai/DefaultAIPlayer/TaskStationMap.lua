@@ -18,6 +18,8 @@ function TaskStationMap:ResetDefaults()
 	self.InvestmentPriority = 8
 
 	self.knownAntennaPositions = {}
+	self.knownSatelliteUplinks = {}
+	self.knownCableNetworkUplinks = {}
 end
 
 function TaskStationMap:Activate()
@@ -119,34 +121,41 @@ function JobAnalyseStationMarket:Tick()
 
 	local player = _G["globalPlayer"]
 
-	-- fetch positions of other players stations
+	-- fetch positions of other players stations, cable network uplinks
+	-- and satellite uplinks
 	-- reset known
 	self.Task.knownAntennaPositions = {}
+
 	for i = 1, 4 do
 		local positions = {}
+		local cableNetworkUplinkProviders = {}
+		local satelliteUplinkProviders = {}
 		if i ~= TVT.ME then
 			local stationCount = TVT.of_getStationCount(i)
 			--debugMsg("JobAnalyseStationMarket: player " .. i .. " has " .. stationCount .. " stations.")
 			if stationCount > 0 then
 				for stationIndex = 0, stationCount-1 do
 					local station = TVT.of_getStationAtIndex(i, stationIndex)
-					if station ~= nil and station.IsAntenna() == 1 then
-						--store x,y and owner
-						table.insert(positions, {station.pos.GetX(), station.pos.GetY(), i})
-						--debugMsg("JobAnalyseStationMarket: player " .. i .. " has an antenna at " .. station.pos.GetX() .."/".. station.pos.GetY())
+					if station ~= nil then
+
+						if station.IsAntenna() == 1 then
+							--store x,y and owner
+							table.insert(positions, {station.pos.GetX(), station.pos.GetY(), i})
+							--debugMsg("JobAnalyseStationMarket: player " .. i .. " has an antenna at " .. station.pos.GetX() .."/".. station.pos.GetY())
+						elseif station.IsCableNetwork() == 1 then
+							table.insert(cableNetworkUplinkProviders, {station.providerGUID})
+						elseif station.IsSatellite() == 1 then
+							table.insert(satelliteUplinkProviders, {station.providerGUID})
+						end
 					end
 				end
 				--debugMsg("JobAnalyseStationMarket: player " .. i .. " has " .. table.count(positions) .." antennas.")
 			end
 		end
 		table.insert(self.Task.knownAntennaPositions, positions)
+		table.insert(self.Task.knownCableNetworkUplinks, cableNetworkUplinkProviders)
+		table.insert(self.Task.knownSatelliteUplinks, satelliteUplinkProviders)
 	end
-
-	-- fetch satellite uplinks of other players
-	-- TODO: avoid references to objects -> IDs ?
-
-	-- fetch cable network uplinks of other players
-	-- TODO: avoid references to objects -> IDs ?
 
 
 	-- one could do this on each audience calculation but this is a rather
@@ -221,16 +230,88 @@ function JobBuyStation:SetCancel()
 end
 
 
-function JobyBuyStation:GetBestAntennaOffer()
---[[
-- Liste abrufen die alle Sendemasten der Gegner beinhaltet
-- Liste eigener abrufen (obwohl das bei der Berechnung dann eh rausfaellt
-- Max-X Punkte in der Naehe eigener Sendemasten raussuchen
-- X Punkte auf der Senderkarte raussuchen
--> besten aller auswaehlen
---]]
+function JobBuyStation:GetBestCableNetworkOffer()
 	local bestOffer = nil
 	local bestAttraction = 0
+	local player = _G["globalPlayer"]
+
+	debugMsg("Cablenetworks to check: " .. TVT.of_getCableNetworkCount())
+
+	if TVT.of_getCableNetworkCount() > 0 then
+		for i = 0, TVT.of_getCableNetworkCount()-1 do
+			local cableNetwork = TVT.of_GetCableNetworkAtIndex(i)
+
+			-- ignore if we already are clients of this provider
+			-- ignore non-launched and not available for player
+			if cableNetwork.IsSubscribedChannel(TVT.ME) == 0 and cableNetwork.IsLaunched() == 1 and cableNetwork.IsActive() == 1 then
+				local tempStation = MY.GetStationMap().GetTemporaryCableNetworkUplinkStation(i)
+				if tempStation then
+					local price = tempStation.GetTotalBuyPrice()
+					local pricePerViewer = tempStation.GetExclusiveReach() / price
+					local priceDiff = self.Task.CurrentBudget - price
+					--little influence by the amount of how well the budget is "used"
+					--to avoid buying too many stations (upkeep!)
+					local attraction = pricePerViewer * (0.9 + 0.1 * math.max(0, (price / self.Task.CurrentBudget)))
+
+					if bestOffer == nil or attraction > bestAttraction then
+						bestOffer = tempStation
+						bestAttraction = attraction
+					end
+				end
+			end
+		end
+	end
+	if bestOffer then
+		debugMsg(" - best cable network " .. bestOffer.GetName() .."  reach: " .. bestOffer.GetReach() .. "  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReach() / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
+	end
+
+	return bestOffer, bestAttraction
+end
+
+
+function JobBuyStation:GetBestSatelliteOffer()
+	local bestOffer = nil
+	local bestAttraction = 0
+	local player = _G["globalPlayer"]
+
+	debugMsg("Satellites to check: " .. TVT.of_getSatelliteCount())
+
+	if TVT.of_getSatelliteCount() > 0 then
+		for i = 0, TVT.of_getSatelliteCount()-1 do
+			local satellite = TVT.of_GetSatelliteAtIndex(i)
+			-- ignore if we already are clients of this provider
+			-- ignore non-launched and not available for player
+			if satellite.IsSubscribedChannel(TVT.ME) == 0 and satellite.IsLaunched() == 1 and satellite.IsActive() == 1 then
+				local tempStation = MY.GetStationMap().GetTemporarySatelliteUplinkStation(i)
+				if tempStation then
+					local price = tempStation.GetTotalBuyPrice()
+					local pricePerViewer = tempStation.GetExclusiveReach() / price
+					local priceDiff = self.Task.CurrentBudget - price
+					--little influence by the amount of how well the budget is "used"
+					--to avoid buying too many stations (upkeep!)
+					local attraction = pricePerViewer * (0.9 + 0.1 * math.max(0, (price / self.Task.CurrentBudget)))
+
+					if bestOffer == nil or attraction > bestAttraction then
+						bestOffer = tempStation
+						bestAttraction = attraction
+
+						debugMsg(" - new best satellite " .. bestOffer.GetName() .."  reach: " .. bestOffer.GetReach() .. "  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReach() / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
+						debugMsg("   -> attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget)
+					end
+				end
+			end
+		end
+	end
+	debugMsg(" -> best satellite " .. bestOffer.GetName() .."  reach: " .. bestOffer.GetReach() .. "  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReach() / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
+
+	return bestOffer, bestAttraction
+end
+
+
+function JobBuyStation:GetBestAntennaOffer()
+	local bestOffer = nil
+	local bestAttraction = 0
+	local player = _G["globalPlayer"]
 
 	-- fill a list with potential spots for an antenna
 	-- 1) start with positions at which other channels are already
@@ -344,8 +425,8 @@ function JobBuyStation:Tick()
 	local player = _G["globalPlayer"]
 
 	local bestAntennaOffer, bestAntennaAttraction = self:GetBestAntennaOffer()
-	local bestCableNetworkOffer = nil
-	local bestSatelliteOffer = nil
+	local bestCableNetworkOffer = self:GetBestCableNetworkOffer()
+	local bestSatelliteOffer = self:GetBestSatelliteOffer()
 
 	local bestOffer = bestAntennaOffer
 
