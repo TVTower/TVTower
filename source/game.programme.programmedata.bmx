@@ -1373,7 +1373,7 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		'modifiers could increase or decrease influences of age/aired/...
 		local ageInfluence:Float = 1.5 * age * GetModifier("topicality::age")
 		local timesBroadcastedInfluence:Float = timesBroadcasted * GetModifier("topicality::timesBroadcasted")
-		'by default thes habe no influence but programmes like sport matches
+		'by default they have no influence but programmes like sport matches
 		'should loose a big bit of max topicality after the first time
 		'on TV. Also they should loose topicality as soon as they are
 		'no longer "live" (eg. send 1 hour later)

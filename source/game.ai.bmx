@@ -1594,6 +1594,67 @@ endrem
 	End Method
 
 
+	Method bo_GetCurrentAwardType:int()
+		If Not _PlayerInRoom("boss") Then Return self.RESULT_WRONGROOM
+
+		local award:TAward = GetAwardCollection().GetCurrentAward()
+		if award then return award.awardType
+
+		return self.RESULT_NOTFOUND
+	End Method
+
+
+	Method bo_GetCurrentAwardStartTime:Long()
+		If Not _PlayerInRoom("boss") Then Return self.RESULT_WRONGROOM
+
+		local award:TAward = GetAwardCollection().GetCurrentAward()
+		if award then return award.GetStartTime()
+
+		return self.RESULT_NOTFOUND
+	End Method
+
+
+	Method bo_GetCurrentAwardEndTime:Long()
+		If Not _PlayerInRoom("boss") Then Return self.RESULT_WRONGROOM
+
+		local award:TAward = GetAwardCollection().GetCurrentAward()
+		if award then return award.GetEndTime()
+
+		return self.RESULT_NOTFOUND
+	End Method
+
+
+	Method bo_GetNextAwardType:int()
+		If Not _PlayerInRoom("boss") Then Return self.RESULT_WRONGROOM
+
+		local award:TAward = GetAwardCollection().GetNextAward()
+		if award then return award.awardType
+
+		return self.RESULT_NOTFOUND
+	End Method
+
+
+	Method bo_GetNextAwardStartTime:Long()
+		If Not _PlayerInRoom("boss") Then Return self.RESULT_WRONGROOM
+
+		local award:TAward = GetAwardCollection().GetNextAward()
+		if award then return award.GetStartTime()
+
+		return self.RESULT_NOTFOUND
+	End Method
+
+
+	Method bo_GetNextAwardEndTime:Long()
+		If Not _PlayerInRoom("boss") Then Return self.RESULT_WRONGROOM
+
+		local award:TAward = GetAwardCollection().GetNextAward()
+		if award then return award.GetEndTime()
+
+		return self.RESULT_NOTFOUND
+	End Method
+
+
+
 	'=== ROOM BOARD ===
 	'the plan on the basement which enables switching room signs
 

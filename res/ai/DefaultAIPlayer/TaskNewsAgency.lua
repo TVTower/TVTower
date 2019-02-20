@@ -58,15 +58,23 @@ end
 function TaskNewsAgency:getStrategicPriority()
 	-- adjust priority according to player character
 	local player = _G["globalPlayer"]
+	local result = 0.9
 	if player.NewsPriority > 7 then
-		return 1.25
+		result = 1.25
 	elseif player.NewsPriority >= 6 then
-		return 1.15
+		result = 1.15
 	elseif player.NewsPriority >= 5 then
-		return 1.0
+		result = 1.0
 	end
 
-	return 0.9
+	-- MODIFIERS
+
+	-- increased priority if the news-sammy is to award
+	if player.currentAwardType == TVT.Constants.AwardType.NEWS then
+		result = result * 1.25
+	end
+
+	return result
 end
 
 
@@ -84,6 +92,13 @@ function TaskNewsAgency:BeforeBudgetSetup()
 		self.BudgetWeight = 3
 	else
 		self.BudgetWeight = 2
+	end
+
+	-- MODIFIERS
+
+	-- increased priority if the news-sammy is to award
+	if player.currentAwardType == TVT.Constants.AwardType.NEWS then
+		self.BudgetWeight = self.BudgetWeight + 1
 	end
 end
 

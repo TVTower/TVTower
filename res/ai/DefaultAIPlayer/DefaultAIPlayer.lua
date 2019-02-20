@@ -91,6 +91,13 @@ function DefaultAIPlayer:initializePlayer()
 	self.Budget.ExtraFixedCostsSavingsPercentage = 0.4 + 0.10 * math.random(0,3)
 
 	self.archEnemyID = -1
+
+	self.currentAwardType = -1
+	self.currentAwardStartTime = -1
+	self.currentAwardEndTime = -1
+	self.nextAwardType = -1
+	self.nextAwardStartTime = -1
+	self.nextAwardEndTime = -1
 end
 
 function DefaultAIPlayer:resume()
@@ -532,6 +539,9 @@ function OnCommand(command)
 		else
 			debugMsg("command forcetask failed: data missing.")
 		end
+	elseif (command == "visitBoss") then
+		TVT.SendToChat("Go to boss now")
+		TVT.DoGoToRoom(TVT.ROOM_BOSS_PLAYER_ME)
 	elseif (message == "start") then
 		aiIsActive = true
 		infoMsg("AI started!")
@@ -581,6 +591,7 @@ end
 
 -- figure approached the target room - will try to open the door soon
 function OnReachRoom(roomId)
+	roomId = tonumber(roomId) --incoming roomId is "string"
 	--debugMsg("OnReachRoom" .. roomId)
 end
 
@@ -588,6 +599,8 @@ end
 -- this is used for "gotoRoom"-jobs to decide weather to wait or not
 -- at an occupied room
 function OnBeginEnterRoom(roomId, result)
+	roomId = tonumber(roomId) --incoming roomId is "string"
+
 	--debugMsg("OnBeginEnterRoom" .. roomId .. " result=" .. result)
 	if (aiIsActive) then
 		getAIPlayer():OnBeginEnterRoom(roomId, result)
@@ -596,9 +609,30 @@ end
 
 -- figure is now in this room
 function OnEnterRoom(roomId)
-	--debugMsg("OnEnterRoom " .. roomId)
+	roomId = tonumber(roomId) --incoming roomId is "string"
+
+	debugMsg("OnEnterRoom " .. roomId .. "  boss: "..TVT.ROOM_BOSS_PLAYER_ME)
 	if (aiIsActive) then
 		getAIPlayer():OnEnterRoom(roomId)
+		debugMsg("Visiting my boss", true)
+
+		-- when visiting the boss or betty, update sammy information
+		if roomId == TVT.ROOM_BOSS_PLAYER_ME then
+			debugMsg("Visiting my boss", true)
+
+			getAIPlayer().currentAwardType = TVT.bo_GetCurrentAwardType()
+			getAIPlayer().currentAwardStartTime = TVT.bo_GetCurrentAwardStartTime()
+			getAIPlayer().currentAwardEndTime = TVT.bo_GetCurrentAwardEndTime()
+
+			getAIPlayer().nextAwardType = TVT.bo_GetNextAwardType()
+			getAIPlayer().nextAwardStartTime = TVT.bo_GetNextAwardStartTime()
+			getAIPlayer().nextAwardEndTime = TVT.bo_GetNextAwardEndTime()
+
+			--debugMsg("current Award type: " .. getAIPlayer().currentAwardType)
+			--debugMsg("current Award end: " .. getAIPlayer().currentAwardEndTime)
+			--debugMsg("next Award type: " .. getAIPlayer().nextAwardType)
+			--debugMsg("next Award end: " .. getAIPlayer().nextAwardEndTime)
+		end
 	end
 end
 
