@@ -1590,7 +1590,7 @@ Type TVTPressureGroup {_exposeToLua}
 			case CAPITALISTS  return "capitalists"
 			case COMMUNISTS   return "communists"
 			default
-				'loop through all targetGroup-entries and add them if contained
+				'loop through all pressure group-entries and add them if contained
 				local result:string
 				local index:int = 0
 				'do NOT start with 0 ("all")

@@ -4291,7 +4291,7 @@ Type GameEvents
 				if not player.IsLocalAI()
 					GetGame().SendSystemMessage("[DEV] cannot command non-local AI player.")
 				else
-					player.playerAI.CallOnChat(GetPlayer().playerID, "CMD " + paramS, CHAT_COMMAND_WHISPER)
+					player.playerAI.CallOnChat(GetPlayer().playerID, "CMD_" + paramS, CHAT_COMMAND_WHISPER)
 				endif
 
 			Case "playerai"
@@ -6010,7 +6010,9 @@ Type GameEvents
 			GetGame().ComputeDailyIncome(day)
 
 			'archive player image of that day
-			GetGame().ArchivePlayerImage()
+			GetPublicImageCollection().ArchiveImages()
+			'archive pressure group sympathies of that day
+			GetPressureGroupCollection().ArchiveSympathies()
 
 			'Check if a player goes bankrupt now
 			GetGame().UpdatePlayerBankruptLevel()
