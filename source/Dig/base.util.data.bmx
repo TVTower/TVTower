@@ -85,6 +85,14 @@ Type TData
 		For local key:TLowerString = eachin data.Keys()
 			if TData(data.ValueForKey(key))
 				res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(TData(data.ValueForKey(key)).ToStringFormat(depth + 1))
+			elseif TData[](data.ValueForKey(key))
+				for local d:TData = EachIn TData[](data.ValueForKey(key))
+					res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(d.ToStringFormat(depth + 1))
+				next
+			elseif object[](data.ValueForKey(key))
+				for local o:object = EachIn object[](data.ValueForKey(key))
+					res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(o.ToString()).Append("~n")
+				next
 			else
 				res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(data.ValueForKey(key).ToString()).Append("~n")
 			endif

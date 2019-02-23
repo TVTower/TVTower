@@ -8,10 +8,6 @@ Import "Dig/base.util.xmlhelper.bmx"
 Import "Dig/base.util.helper.bmx"
 Import "Dig/base.util.string.bmx"
 
-
-'Import "external/libxml/libxml.bmx"
-'Import "Dig/external/libxml/libxml.bmx"
-
 Import "external/zipengine.mod/zipengine.bmx"
 Import brl.reflection
 ?Threaded
@@ -186,7 +182,7 @@ Type TFunctions
 	End Function
 
 
-	'formats a given value from "123000,12" to "123.000,12" 
+	'formats a given value from "123000,12" to "123.000,12"
 	'optimized variant
 	Function dottedValue:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:int = -1)
 		'is there a "minus" in front ?
@@ -216,8 +212,8 @@ Type TFunctions
 			result = Chr(decimalValue[i]) + result
 
 			'every 3rd char, but not if the last one (avoid 100 -> .100)
-			If (decimalValue.length-i) Mod 3 = 0 And i > 0 
-				result = thousandsDelimiter + result 
+			If (decimalValue.length-i) Mod 3 = 0 And i > 0
+				result = thousandsDelimiter + result
 			EndIf
 		Next
 
@@ -250,13 +246,13 @@ Type TFunctions
 				result :+ decimalDelimiter + fractionalValue
 			endif
 		endif
-	
+
 		For Local i:Int = decimalValue.length-1 To 0 Step -1
 			result = Chr(decimalValue[i]) + result
 
 			'every 3rd char, but not if the last one (avoid 100 -> .100)
-			If (decimalValue.length-i) Mod 3 = 0 And i > 0 
-				result = thousandsDelimiter + result 
+			If (decimalValue.length-i) Mod 3 = 0 And i > 0
+				result = thousandsDelimiter + result
 			EndIf
 		Next
 		Return addSign+result

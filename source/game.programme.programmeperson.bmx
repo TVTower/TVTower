@@ -385,17 +385,17 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'sympathy: modify by up to 25% ...
 				if channel >= 0 then sympathyMod = 1.0 - 0.25 * GetChannelSympathy(channel)
 
-				'xp: up to "100% of XP"
-				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
+				'xp: up to "120% of XP"
+				xpMod :+ 1.2 * GetExperiencePercentage(jobID)
 
 				if jobID = TVTProgrammePersonJob.ACTOR
-					baseFee = 9000
+					baseFee = 11000
 					dynamicFee = 38000 * attributeMod
 				elseif jobID = TVTProgrammePersonJob.SUPPORTINGACTOR
-					baseFee = 6000
+					baseFee = 6500
 					dynamicFee = 14000 * attributeMod
 				elseif jobID = TVTProgrammePersonJob.HOST
-					baseFee = 3000
+					baseFee = 3500
 					dynamicFee = 18500 * attributeMod
 				endif
 
@@ -410,11 +410,11 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'sympathy: modify by up to 25% ...
 				if channel >= 0 then sympathyMod = 1.0 - 0.25 * GetChannelSympathy(channel)
 
-				'xp: up to "100% of XP"
-				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
+				'xp: up to "120% of XP"
+				xpMod :+ 1.2 * GetExperiencePercentage(jobID)
 
 				if jobID = TVTProgrammePersonJob.DIRECTOR
-					baseFee = 14500
+					baseFee = 13500
 					dynamicFee = 22500 * attributeMod
 				elseif jobID = TVTProgrammePersonJob.SCRIPTWRITER
 					baseFee = 5000
@@ -430,8 +430,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'sympathy: modify by up to 30% ...
 				if channel >= 0 then sympathyMod = 1.0 - 0.30 * GetChannelSympathy(channel)
 
-				'xp: up to "100% of XP"
-				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
+				'xp: up to "120% of XP"
+				xpMod :+ 1.2 * GetExperiencePercentage(jobID)
 
 				baseFee = 9000
 				dynamicFee = 24500 * attributeMod
@@ -445,10 +445,10 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'sympathy: modify by up to 50% ...
 				if channel >= 0 then sympathyMod = 1.0 - 0.50 * GetChannelSympathy(channel)
 
-				'xp: up to "100% of XP"
-				xpMod :+ 1.0 * GetExperiencePercentage(jobID)
+				'xp: up to "120% of XP"
+				xpMod :+ 1.2 * GetExperiencePercentage(jobID)
 
-				baseFee = 3500
+				baseFee = 4000
 				dynamicFee = 6500 * attributeMod
 
 			case TVTProgrammePersonJob.GUEST
@@ -464,7 +464,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 				xpMod :+ 0.5 * GetExperiencePercentage(jobID)
 
 				baseFee = 1500
-				dynamicFee = 5500 * attributeMod
+				dynamicFee = 6000 * attributeMod
 			default
 				'print "FEE for jobID="+jobID+" not defined."
 				'dynamic fee: 0 - 380
@@ -479,7 +479,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'xp: up to "25% of XP"
 				xpMod :+ 0.25 * GetExperiencePercentage(jobID)
 
-				baseFee = 2500
+				baseFee = 3000
 				dynamicFee = 7000 * attributeMod
 		End Select
 

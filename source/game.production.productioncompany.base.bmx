@@ -145,7 +145,7 @@ Type TProductionCompanyBase extends TGameObject
 	End Method
 
 
-	Method GetNextExperienceGain:int(programmeDataGUID:string)
+	Method GetNextExperienceGain:int(programmeDataID:int)
 		return 0
 	End Method
 
@@ -194,7 +194,7 @@ Type TProductionCompanyBase extends TGameObject
 		'up to "* 100" -> 100% xp means 2000*100 = 200000
 		xpMod :+ 100 * GetExperiencePercentage()
 
-		Return sympathyMod * priceModifier * (15000 + Floor(Int(10000 * xpMod)/100)*100)
+		Return sympathyMod * priceModifier * (20000 + Floor(Int(10000 * xpMod)/100)*100)
 	End Method
 
 

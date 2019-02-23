@@ -9,7 +9,7 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 
 	Function GetInstance:TPlayerDifficultyCollection()
 		if not _instance then _instance = new TPlayerDifficultyCollection
-	
+
 		return _instance
 	End Function
 
@@ -23,6 +23,7 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 		easy.programmePriceMod = 0.75
 		easy.roomRentMod = 0.80
 		easy.advertisementProfitMod = 1.25
+		easy.stationmapPriceMod = 0.80
 		easy.adjustRestartingPlayersToOtherPlayersMod = 1.25
 
 
@@ -34,6 +35,7 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 		normal.programmePriceMod = 1.0
 		normal.roomRentMod = 1.0
 		normal.advertisementProfitMod = 1.0
+		normal.stationmapPriceMod = 1.0
 		normal.adjustRestartingPlayersToOtherPlayersMod = 1.0
 
 
@@ -45,6 +47,7 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 		hard.programmePriceMod = 1.1
 		hard.roomRentMod = 1.15
 		hard.advertisementProfitMod = 0.9
+		hard.stationmapPriceMod = 1.15
 		hard.adjustRestartingPlayersToOtherPlayersMod = 0.85
 
 
@@ -54,7 +57,7 @@ Type TPlayerDifficultyCollection Extends TGameObjectCollection
 
 		_initializedDefaults = True
 	End Method
-	
+
 
 	Method GetByGUID:TPlayerDifficulty(GUID:String)
 		'setup easy/normal/hard with current-versions-data
@@ -97,6 +100,7 @@ Type TPlayerDifficulty extends TGameObject
 	Field programmePriceMod:Float = 1.0
 	Field roomRentmod:Float = 1.0
 	Field advertisementProfitMod:Float = 1.0
+	Field stationmapPriceMod:Float = 1.0
 	Field adjustRestartingPlayersToOtherPlayersMod:Float = 1.0
 
 	Method GenerateGUID:string()

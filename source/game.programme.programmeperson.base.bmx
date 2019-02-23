@@ -4,6 +4,7 @@ Import Brl.Math
 Import "Dig/base.util.mersenne.bmx"
 Import "Dig/base.util.string.bmx"
 Import "Dig/base.util.event.bmx"
+Import "basefunctions.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx"
 Import "game.programme.programmerole.bmx"
@@ -44,7 +45,7 @@ Type TProgrammePersonBaseCollection
 		endif
 		return result
 	End Method
-	
+
 
 	Method GetInsignificantByGUID:TProgrammePersonBase(GUID:String)
 		Return TProgrammePersonBase(insignificant.ValueForKey(GUID))
@@ -78,7 +79,7 @@ Type TProgrammePersonBaseCollection
 		'randRange - so it is the same over network
 		Return array[(randRange(0, array.length-1))]
 	End Method
-	
+
 
 	Method GetRandomCelebrity:TProgrammePersonBase(array:TProgrammePersonBase[] = null, onlyFictional:int = False, onlyBookable:int = False, job:int=0, gender:int=-1)
 		if array = Null or array.length = 0 then array = GetAllCelebritiesAsArray(onlyFictional, onlyBookable, job)
@@ -150,7 +151,7 @@ Type TProgrammePersonBaseCollection
 		return False
 	End Method
 
-	
+
 	Method RemoveCelebrity:int(person:TProgrammePersonBase)
 		if person.GetGuid() and celebrities.Remove(person.GetGUID())
 			'invalidate count
@@ -161,7 +162,7 @@ Type TProgrammePersonBaseCollection
 
 		return False
 	End Method
-	
+
 
 	Method AddInsignificant:int(person:TProgrammePersonBase)
 		insignificant.Insert(person.GetGUID(), person)
@@ -185,7 +186,7 @@ Type TProgrammePersonBaseCollection
 		Local p1:TProgrammePersonBase = TProgrammePersonBase(o1)
 		Local p2:TProgrammePersonBase = TProgrammePersonBase(o2)
 		If Not p2 Then Return 1
-		if p1.GetFullName() = p2.GetFullName() 
+		if p1.GetFullName() = p2.GetFullName()
 			return p1.GetGUID() > p2.GetGUID()
 		endif
         If p1.GetFullName().ToLower() > p2.GetFullName().ToLower()
@@ -290,7 +291,7 @@ Type TProgrammePersonBase extends TGameObject
 
 		Local p2:TProgrammePersonBase = TProgrammePersonBase(o2)
 		If p2
-			if GetFullName() = p2.GetFullName() 
+			if GetFullName() = p2.GetFullName()
 				if GetAge() > p2.GetAge() then return 1
 				if GetAge() < p2.GetAge() then return -1
 			else
@@ -300,7 +301,7 @@ Type TProgrammePersonBase extends TGameObject
 		EndIf
 		Return Super.Compare(o2)
 	End Method
-	
+
 
 	Method GetTopGenre:Int()
 		'base persons does not have top genres (-> unspecified)
@@ -343,7 +344,7 @@ Type TProgrammePersonBase extends TGameObject
 		if jobIndex = 0 and job <> 0
 			TLogger.Log("GetJobsDone()", "unsupported job-param.", LOG_ERROR)
 		endif
-		
+
 		return self.jobsDoneTotal[jobIndex]
 	End Method
 
@@ -398,29 +399,35 @@ Type TProgrammePersonBase extends TGameObject
 	Method IsBorn:int()
 		return True
 	End Method
-	
+
 
 	Method GetBaseFee:Int(jobID:int, blocks:int, channel:int=-1)
+		'1 = 1, 2 = 1.75, 3 = 2.5, 4 = 3.25, 5 = 4 ...
+		local blocksMod:Float = 0.25 + blocks * 0.75
+		local baseFee:int
+
 		Select jobID
 			case TVTProgrammePersonJob.ACTOR
-				return 5000
+				baseFee = 7000
 			case TVTProgrammePersonJob.SUPPORTINGACTOR
-				return 2500
+				baseFee = 3000
 			case TVTProgrammePersonJob.HOST
-			    return 2000
+				baseFee = 2500
 			case TVTProgrammePersonJob.DIRECTOR
-				return 6000
-			case TVTProgrammePersonJob.SCRIPTWRITER 
-				return 3000
-			case TVTProgrammePersonJob.MUSICIAN 
-				return 3500
-			case TVTProgrammePersonJob.REPORTER 
-				return 2000
-			case TVTProgrammePersonJob.GUEST 
-				return 1000
+				baseFee = 6000
+			case TVTProgrammePersonJob.SCRIPTWRITER
+				baseFee = 3000
+			case TVTProgrammePersonJob.MUSICIAN
+				baseFee = 3500
+			case TVTProgrammePersonJob.REPORTER
+				baseFee = 2500
+			case TVTProgrammePersonJob.GUEST
+				baseFee = 1000
 			default
-				return 1000
+				baseFee = 1000
 		End Select
+
+		return TFunctions.RoundToBeautifulValue(baseFee * blocksMod)
 	End Method
 
 
@@ -492,7 +499,7 @@ Type TProgrammePersonJob
 		self.country = country
 
 		self.roleGUID = roleGUID
-		
+
 		return self
 	End Method
 
@@ -514,11 +521,11 @@ Type TProgrammePersonJob
 		if vars.length > 3 then country = StringHelper.UnEscapeString(vars[3])
 		if vars.length > 4 then roleGUID = StringHelper.UnEscapeString(vars[4])
 	End Method
-	
+
 
 	Method IsSimilar:int(otherJob:TProgrammePersonJob)
 		if job <> otherJob.job then return False
-		if personGUID <> otherJob.personGUID then return False 
+		if personGUID <> otherJob.personGUID then return False
 		if roleGUID <> otherJob.roleGUID then return False
 		if gender <> otherJob.gender then return False
 		if country <> otherJob.country then return False
