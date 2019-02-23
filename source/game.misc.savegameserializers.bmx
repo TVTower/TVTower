@@ -1,7 +1,10 @@
 SuperStrict
 Import "Dig/external/string_comp.bmx"
+?bmxng
+Import "Dig/external/persistence.mod/persistence_mxml.bmx"
+?not bmxng
 Import "Dig/external/persistence.mod/persistence.bmx"
-
+?
 TXMLPersistenceBuilder.RegisterDefault(New TLowerStringXMLSerializer)
 
 

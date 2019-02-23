@@ -84,17 +84,19 @@ Type TData
 		'local res:string = "TData~n"
 		For local key:TLowerString = eachin data.Keys()
 			if TData(data.ValueForKey(key))
-				res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(TData(data.ValueForKey(key)).ToStringFormat(depth + 1))
+				res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(TData(data.ValueForKey(key)).ToStringFormat(depth + 1)).Append("~n")
 			elseif TData[](data.ValueForKey(key))
 				for local d:TData = EachIn TData[](data.ValueForKey(key))
-					res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(d.ToStringFormat(depth + 1))
+					res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(d.ToStringFormat(depth + 1)).Append("~n")
 				next
 			elseif object[](data.ValueForKey(key))
 				for local o:object = EachIn object[](data.ValueForKey(key))
 					res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(o.ToString()).Append("~n")
 				next
-			else
+			elseif data.ValueForKey(key)
 				res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(data.ValueForKey(key).ToString()).Append("~n")
+			else
+				res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = NULL~n")
 			endif
 		Next
 		res.AppendObject(depthString).Append("'-------~n")

@@ -2021,7 +2021,11 @@ Type TDatabaseLoader
 		local error:string
 		error :+ "ERROR~n"
 		error :+ err + "~n"
+?not bmxng
 		error :+ "File: ~q" + config.GetString("currentFileURI") + "~q  Line:" + node.getLineNumber() +" ~n"
+?bmxng
+		error :+ "File: ~q" + config.GetString("currentFileURI") + "~q~n"
+?
 		error :+ "- - - -~n"
 		error :+ node.ToString()+"~n"
 		error :+ "- - - -~n"

@@ -14,7 +14,11 @@ Import brl.reflection
 Import Brl.threads
 ?
 'Import bah.libxml
+?bmxng
+Import "Dig/external/persistence.mod/persistence_mxml.bmx"
+?not bmxng
 Import "Dig/external/persistence.mod/persistence.bmx"
+?
 Import "Dig/base.util.mersenne.bmx"
 
 Const CURRENCYSIGN:String = Chr(8364) 'eurosign

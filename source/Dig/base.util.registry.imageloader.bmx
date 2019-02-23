@@ -253,7 +253,7 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 	Method LoadScriptResults:int(data:Tdata, parent:object)
 		local scriptsData:TData[] = TData[](data.Get("scriptsData", new TData[0]))
 		if not scriptsData or scriptsData.length = 0 then return False
-		
+
 		For local scriptData:TData = eachin scriptsData
 			RunScriptData(scriptData, parent)
 		Next

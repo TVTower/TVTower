@@ -75,7 +75,6 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode)
 		local data:TData = Super.GetConfigFromXML(loader, node)
 
-
 		local fieldNames:String[]
 		fieldNames :+ ["name", "id"]
 		fieldNames :+ ["x", "y", "w", "h"]
@@ -101,6 +100,8 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 			childrenData :+ [childData]
 		Next
 		if len(childrenData)>0 then data.Add("childrenData", childrenData)
+
+
 
 		return data
 	End Method
@@ -166,7 +167,7 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 			TLogger.Log("TRegistrySpriteLoader.LoadSpritePackFromConfig()", "File ~q"+url+"~q is missing or corrupt.", LOG_ERROR)
 			return Null
 		endif
-		
+
 		Local spritePack:TSpritePack = new TSpritePack.Init(img, data.GetString("name"))
 		'add spritepack to asset
 		GetRegistry().Set(spritePack.name, spritePack)
@@ -217,7 +218,7 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 				If TImage(useParent) then parentImage = TImage(useParent)
 				If TSpritePack(useParent) then parentImage = TSpritePack(useParent).image
 				If TSprite(useParent) then parentImage = TSprite(useParent).GetImage()
-				
+
 				'check prerequisites
 				If dest = "" or not parentImage then return FALSE
 
@@ -310,7 +311,7 @@ Function GetSpriteGroupFromRegistry:TSprite[](baseName:string, defaultNameOrSpri
 		if sprite then result :+ [sprite]
 	until sprite = null or number >= maxNumber
 
-	'add default one if nothing was found 
+	'add default one if nothing was found
 	if result.length = 0 and defaultNameOrSprite <> null
 		if TSprite(defaultNameOrSprite)
 			result :+ [TSprite(defaultNameOrSprite)]

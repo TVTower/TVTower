@@ -105,7 +105,7 @@ Import "game.screen.menu.bmx"
 Import "game.network.networkhelper.bmx"
 Import "game.misc.savegameserializers.bmx"
 
-
+?not bmxng
 'notify users when there are XML-errors
 Function TVTXmlErrorCallback(data:Object, error:TxmlError)
 	local result:string = "XML-Error~n"
@@ -117,6 +117,7 @@ Function TVTXmlErrorCallback(data:Object, error:TxmlError)
 	TLogger.Log("XML-Error", "File:  "+ error.getFileName()+". Line:"+error.getLine()+" Column:"+error.getColumn(), LOG_ERROR)
 End Function
 xmlSetErrorFunction(TVTXmlErrorCallback, null)
+?
 
 '===== Includes =====
 
@@ -2544,7 +2545,11 @@ Type TSaveGame Extends TGameState
 
 		local loadingStart:int = Millisecs()
 		'this creates new TGameObjects - and therefore increases ID count!
+?bmxng
+		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename))
+?not bmxng
 		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename, XML_PARSE_HUGE))
+?
 		persist.Free()
 		If Not saveGame
 			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)
