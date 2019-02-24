@@ -313,6 +313,8 @@ Type TNewsEventTemplateCollection
 			For local t:TNewsEventTemplate = EachIn initialEventsArr
 				'no further filters required as we already use the
 				'prefiltered array
+				'exception: availability
+				if not t.IsAvailable() then continue
 
 				'resize if needed
 				'number of "+20" is artificial and depends on how likely
