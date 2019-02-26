@@ -5,10 +5,6 @@ SuperStrict
 
 
 Framework BRL.StandardIO
-?Win32
-	'import icon resource file
-	Import "Misc/appData/win32_icon.o"
-?
 Import "source/main.bmx"
 Incbin "source/version.txt"
 
@@ -17,7 +13,7 @@ Incbin "source/version.txt"
 rem
 	'needed ??
 	'seems to work even without
-	
+
 	'set the icon of the app
 	Function SetIcon(iconname$, TheWindow%)
 		Local icon:Int=ExtractIconA(TheWindow,iconname,0)

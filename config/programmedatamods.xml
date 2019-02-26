@@ -337,6 +337,8 @@
 				<castAttributes>
 					<actor attribute="skill" value="0.2" />
 					<actor attribute="charisma" value="0.1" />
+					<host attribute="skill" value="0.1" />
+					<host attribute="appearance" value="0.1" />
 				</castAttributes>
 			</genre>
 			<genre id="7" name="drama" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">

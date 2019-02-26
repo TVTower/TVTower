@@ -43,7 +43,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'the player sold a licence while the broadcast stays forever)
 		obj.SetOwner(licence.owner)
 		obj.data = licence.getData()
-		
+
 		obj.setMaterialType(TVTBroadcastMaterialType.PROGRAMME)
 		'by default a freshly created programme is of its own type
 		obj.setUsedAsType(TVTBroadcastMaterialType.PROGRAMME)
@@ -65,7 +65,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method IsControllable:int() {_exposeToLua}
 		return licence.IsControllable()
 	End Method
-	
+
 
 	Method CheckHourlyBroadcastingRevenue:int(audience:TAudience)
 		if not audience then return False
@@ -113,7 +113,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 				data.outcomeTV = 0.4 * quote + 0.6 * data.GetOutcome()
 			Endif
 		endif
-		
+
 
 		if not isOwnedByPlayer()
 			TLogger.Log("FinishBroadcastingAsProgramme", "===========", LOG_ERROR)
@@ -127,7 +127,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		if audienceResult
 			maxWholeMarketAudiencePercentage = Max(maxWholeMarketAudiencePercentage, audienceResult.GetWholeMarketAudienceQuotePercentage())
 		endif
-		
+
 
 		if usedAsType = TVTBroadcastMaterialType.PROGRAMME
 			FinishBroadcastingAsProgramme(day, hour, minute, audienceData)
@@ -157,7 +157,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		Super.AbortBroadcasting(day, hour, minute, audienceData)
 
 		data.doAbortBroadcast(owner, usedAsType)
-	End Method	
+	End Method
 
 
 	'override
@@ -272,7 +272,15 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			if not p then continue
 			TPersonPopularity(p.GetPopularity()).FinishBroadcastingProgramme(popData)
 		Next
-		
+
+
+		'=== ADJUST PRESSURE GROUPS ===
+		'TODO: aehnlich wie attractionmods fuer zielgruppen, muss definiert werden, welche
+		'      Genre Einfluss auf die Lobbygruppen nehmen (bzw. "ob")
+		'      Alternativ - aehnlich einem Flag "definieren", dass dieses Programm ueberhaupt
+		'      Einfluss hat ("Werbefilm")
+print "gam.broadcastmaterial.programme.bmx:  adjust pressure groups!"
+
 
 		'=== ADJUST CHANNEL IMAGE ===
 		'Image-Penalty
@@ -287,8 +295,8 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		If data.IsTrash()
 			TLogger.Log("ChangePublicImage()", "Player #"+owner+": image change for trash programme.", LOG_DEBUG)
 			Local penalty:TAudience = new TAudience.Init(-1,  0, 0, +0.2, -0.2, +0.2, -0.5, -0.1)
-			penalty.MultiplyFloat(data.blocks)			
-			GetPublicImage(owner).ChangeImage(penalty)						
+			penalty.MultiplyFloat(data.blocks)
+			GetPublicImage(owner).ChangeImage(penalty)
 		End If
 
 
@@ -309,12 +317,12 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		data.SetTimesTrailerAiredSinceLastBroadcast(0, owner)
 		'reset trailerMod
 		data.RemoveTrailerMod(owner)
-		
+
 		'now the trailer is for the next broadcast...
 		'instead of just setting back topicality, just refresh it "once"
 		'data.trailerTopicality = 1.0
 		data.RefreshTrailerTopicality()
-		
+
 		'print "aired programme "+GetTitle()+" "+data.GetTimesAired(owner)+"x."
 		'print self.GetTitle() + "  finished at day="+day+" hour="+hour+" minute="+minute + " aired="+data.timesAired + " topicality="+data.topicality+" oldTop="+oldTop
 	End Method
@@ -323,7 +331,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method GetProgrammeFlags:int() {_exposeToLua}
 		Return data.flags
 	End Method
-	
+
 
 	Method GetQuality:Float() {_exposeToLua}
 		Return data.GetQuality()
@@ -337,7 +345,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		result :+ 0.75 * data.GetCastPopularity()
 		'cast base fame has an influence too (even if unpopular!)
 		result :+ 0.25 * data.GetCastFame()
-		
+
 		'print "castmod: "+result +"  pop: "+ data.GetCastPopularity()
 		return result
 	End Method
@@ -417,7 +425,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 		MathHelper.Clamp(valueMod, 0.0, 2.0)
 		return valueMod
-	End Method	
+	End Method
 
 
 	'override
@@ -452,28 +460,28 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method _GetFlagDefinitions:TGenreDefinitionBase[]()
 		local definitions:TMovieFlagDefinition[]
 		local definition:TMovieFlagDefinition
-	
+
 		'Genereller Quotenbonus!
 		if data.IsLive()
 			definition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.LIVE)
 			if definition then definitions :+ [definition]
 		EndIf
-				
+
 
 		'Bonus bei Kindern / Jugendlichen. Malus bei Rentnern / Managern.
 		if data.IsAnimation()
 			'Da es jetzt doch ein Genre gibt, brauchen wir Animation nicht mehr.
 			'Eventuell kann man daraus ein Kids-Genre machen... aber das kann man auch eventuell über Zielgruppen regeln.
 			'Dennoch ist Kids wohl besser als Animation. Animation kann nämlich sowohl Southpark als auch Biene Maja sein. Das hat definitiv andere Zielgruppen.
-		EndIf		
+		EndIf
 
-		
+
 		'Bonus bei Betty und bei Managern
 		if data.IsCulture()
 			definition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.CULTURE)
 			if definition then definitions :+ [definition]
-		EndIf					
-	
+		EndIf
+
 
 		'Verringert die Nachteile des Filmalters. Bonus bei Rentnern.
 		'Höhere Serientreue bei Serien.
@@ -481,25 +489,25 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			definition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.CULT)
 			if definition then definitions :+ [definition]
 		EndIf
-		
+
 
 		'Bonus bei Arbeitslosen und Hausfrauen. Malus bei Arbeitnehmern
 		'und Managern. Trash läuft morgens und mittags gut => Bonus!
 		if data.IsTrash()
 			definition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.TRASH)
 			if definition then definitions :+ [definition]
-		EndIf	
+		EndIf
 
-		
+
 		'Nochmal deutlich verringerter Preis. Verringert die Nachteile
 		'des Filmalters. Bonus bei Jugendlichen. Malus bei allen anderen
-		'Zielgruppen. Bonus in der Nacht!		
+		'Zielgruppen. Bonus in der Nacht!
 		if data.IsBMovie()
 			definition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.BMOVIE)
 			if definition then definitions :+ [definition]
-		EndIf		
+		EndIf
 
-			
+
 		'Kleiner Bonus für Jugendliche, Arbeitnehmer, Arbeitslose, Männer.
 		'Kleiner Malus für Kinder, Hausfrauen, Rentner, Frauen.
 		if data.IsXRated()
@@ -512,7 +520,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			definition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.SCRIPTED)
 			if definition then definitions :+ [definition]
 		EndIf
-		
+
 
 		if data.IsPaid()
 			definition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.PAID)
@@ -524,7 +532,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 
-	
+
 	Method GetAudienceFlowBonus:TAudience(block:Int, result:TAudienceAttraction, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction) {_exposeToLua}
 		'calculate the audienceflow from one programme to another one
 
@@ -534,7 +542,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 		Return Super.GetAudienceFlowBonus(block, result, lastMovieBlockAttraction, lastNewsBlockAttraction)
 	End Method
-	
+
 
 	Function GetAudienceFlowBonusIntern:TAudience(lastMovieBlockAttraction:TAudienceAttraction, currentAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )
 		Local flowModBase:TAudience = new TAudience
@@ -632,7 +640,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method GetSource:TBroadcastMaterialSource() {_exposeToLua}
 		return self.licence
 	End Method
-	
+
 
 	Method GetEpisodeNumber:int() {_exposeToLua}
 		return licence.GetEpisodeNumber()

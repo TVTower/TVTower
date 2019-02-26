@@ -325,16 +325,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method ArchivePlayerImage()
-		For local playerID:int = 1 to 4
-			local img:TPublicImage = GetPublicImage(playerId)
-			if not img then continue
-
-			img.ArchiveImageValues()
-		Next
-	End Method
-
-
 	Method UpdatePlayerBankruptLevel()
 		'todo: individual time? eg. 24hrs after going into negative balance
 
@@ -453,12 +443,16 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'      So koennte auch bei alten Spielern noch auf die Historie
 		'      zurueckgegriffen werden
 
+
+
 		'=== AI DATA ===
 		'reset temporary data of the previous AI
 		if player.aiData
 			player.aiData = new TData
 			TLogger.Log("ResetPlayer()", "Removed aiData", LOG_DEBUG)
 		endif
+
+
 
 		'=== SELL ALL PROGRAMMES ===
 		'sell forced too (so also programmed ones)
@@ -604,7 +598,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'=== RESET PRESSURE GROUP SYMPATHIES ==
 		For local pg:TPressureGroup = EachIn GetPressureGroupCollection().pressureGroups
-			pg.SetChannelSympathy(playerID, 0)
+			'use Reset instead of a simple "set" to also remove archived
+			'values
+			pg.Reset(playerID)
 		Next
 		TLogger.Log("ResetPlayer()", "Reset pressure group sympathies", LOG_DEBUG)
 
@@ -1120,6 +1116,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 '		GetStationMapCollection().LoadMapFromXML("res/maps/germany.xml")
 
 
+		'=== MOVIE AGENCY ===
+		TLogger.Log("Game.PrepareNewGame()", "initializing movie agency", LOG_DEBUG)
 		'create series/movies in movie agency
 		RoomHandler_MovieAgency.GetInstance().ReFillBlocks()
 
@@ -1129,6 +1127,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Next
 
 
+		'=== NEWS AGENCY ===
+		TLogger.Log("Game.PrepareNewGame()", "initializing news agency", LOG_DEBUG)
 		'create 3 random news happened some time before today ...
 		'Limit to CurrentAffairs as this is the starting abonnement of
 		'all players
