@@ -1170,3 +1170,8 @@ PRICES_WILL_RISE = Die Preise für Programme und Nachrichten steigen an.
 AUDIENCE_REACH_LEVEL_DECREASED = Reichweitenlevel gesunken
 LEVEL_DECREASED_FROM_X_TO_Y = Level verringert sich von %X% auf %Y%.
 PRICES_WILL_FALL = Die Preise für Programme und Nachrichten fallen.
+
+NEWS_SORT_TOPICALITY = Sortiere nach Aktualität
+NEWS_SORT_PAID = Sortiere nach Bezahlt-Status
+NEWS_SORT_AGE = Sortiere nach Alter
+NEWS_SORT_PRICE = Sortiere nach Preis

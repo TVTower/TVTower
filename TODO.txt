@@ -28,7 +28,7 @@ TODO
 	     sein muessen.
 
 * Preisverleihung
-	- KI sollte auf aktuellen Sammy reagieren
+	- KI sollte auf aktuellen Sammy reagieren (derzeit schon partiell auf Newssammy)
 
 * Mehrspielermodus:
 	- Lockstep
@@ -134,3 +134,23 @@ Gebiet kein Image. Generell sollte es aber nicht auf den Faktor
 
 Ich kann gerne von "Zuschauerzahl" auf "relativer Marktanteil" umschwenken (also Marktanteil im eigenen Sendegebiet). Was sagen die anderen dazu?
 https://www.gamezworld.de/phpforum/viewtopic.php?pid=87777#p87777
+
+
+
+Zuschauerbonus fuer Serien:
+- wenn am Vortag ausgestrahlt
+- Anzahl bisherig ausgestrahlter Episoden (einmalig pro Episode zaehlen)
+- individuelle Modifier fuer Bonieinfluss (timeSlotMod, episodesBroadcastedMod)
+https://www.gamezworld.de/phpforum/viewtopic.php?pid=88338#p88338
+
+
+- individuelle Modifier fuer Werbe-Praemien/Profitberechnung (zwei Faktoren in der Berechnung jeweils mit Mod versehen)
+https://www.gamezworld.de/phpforum/viewtopic.php?pid=88291#p88291
+
+
+- Sound fuer "Kasse" leiser machen (volume oder direkt den Sound) by WudanTV
+- "Einstellungen" im Spiel verfuegbar machen
+- Fertiggestellte Produktionen -> Toastmessage braucht Kassengeraeusch und Hinweis, dass XYZ Produktionskosten beglichen wurden.
+https://www.youtube.com/watch?v=THhHlHBJudU&feature=youtu.be
+
+

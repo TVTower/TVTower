@@ -71,7 +71,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		listNormal = new TAdContract[contractsNormalAmount]
 		listCheap = new TAdContract[contractsCheapAmount]
 
-		Select GameRules.adagencySortContractyBy
+		Select GameRules.adagencySortContractsBy
 			case "minaudience"
 				ListSortMode = SORT_BY_MINAUDIENCE
 			case "classification"

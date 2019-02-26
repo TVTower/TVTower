@@ -25,6 +25,16 @@ Type RoomHandler_News extends TRoomHandler
 	Global draggedGuiNews:TGuiNews = null
 	Global hoveredGuiNews:TGuiNews = null
 
+	'sorting
+	Global ListSortMode:int = 0
+	Global ListSortOrder:int = 0
+	Global ListSortVisible:int = False
+	Global sortButtonPos:TVec2D = new TVec2D.Init(373,2)
+	Global newsSortKeys:int[] = [0,1,2,3]
+	Global newsSortKeysTooltips:TTooltipBase[4]
+	'Price, Published time, topicality, bought/not bought
+	Global newsSortSymbols:string[] = ["gfx_datasheet_icon_duration", "gfx_datasheet_icon_money", "gfx_datasheet_icon_topicality", "gfx_datasheet_icon_ok"]
+
 	global LS_newsplanner:TLowerString = TLowerString.Create("newsplanner")
 	global LS_newsroom:TLowerString = TLowerString.Create("newsroom")
 
@@ -35,6 +45,11 @@ Type RoomHandler_News extends TRoomHandler
 	Global showDeleteHintTime:int = 4000
 	'time to wait until hint is shown
 	Global showDeleteHintDwellTime:Int = 1000
+
+	Const SORT_BY_AGE:int = 0
+	Const SORT_BY_PRICE:int = 1
+	Const SORT_BY_TOPICALITY:int = 2
+	Const SORT_BY_PAID:int = 3
 
 
 	Function GetInstance:RoomHandler_News()
@@ -51,6 +66,34 @@ Type RoomHandler_News extends TRoomHandler
 		'=== RESET TO INITIAL STATE ===
 		CleanUp()
 
+
+		Select GameRules.newsStudioSortNewsBy
+			case "price"
+				ListSortMode = SORT_BY_PRICE
+			case "topicality"
+				ListSortMode = SORT_BY_TOPICALITY
+			case "paid"
+				ListSortMode = SORT_BY_PAID
+			default
+				ListSortMode = SORT_BY_AGE
+		End Select
+
+
+		For local i:int = 0 until newsSortKeysTooltips.length
+			Select i
+				case SORT_BY_AGE
+					newsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("NEWS_SORT_AGE")), new TRectangle.Init(0,0,-1,-1))
+				case SORT_BY_PRICE
+					newsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("NEWS_SORT_PRICE")), new TRectangle.Init(0,0,-1,-1))
+				case SORT_BY_TOPICALITY
+					newsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("NEWS_SORT_TOPICALITY")), new TRectangle.Init(0,0,-1,-1))
+				case SORT_BY_PAID
+					newsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("NEWS_SORT_PAID")), new TRectangle.Init(0,0,-1,-1))
+				Default
+					newsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", "UNKNOWN SORT MODE: " + i, new TRectangle.Init(0,0,-1,-1))
+			End Select
+			newsSortKeysTooltips[i].parentArea = new TRectangle.Init(0,0,30,30)
+		Next
 
 		'=== REGISTER HANDLER ===
 		RegisterHandler()
@@ -81,8 +124,15 @@ Type RoomHandler_News extends TRoomHandler
 			'we add 2 pixel to the height to make "auto scrollbar" work better
 			guiNewsListAvailable = new TGUINewsList.Create(new TVec2D.Init(14,13), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 4*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
 			guiNewsListAvailable.SetAcceptDrop("TGUINews")
+			'use a custom sort
+			guiNewsListAvailable.SetAutosortItems(False)
+
 			guiNewsListAvailable.Resize(guiNewsListAvailable.rect.GetW() + guiNewsListAvailable.guiScrollerV.rect.GetW() + 8,guiNewsListAvailable.rect.GetH())
 			guiNewsListAvailable.guiEntriesPanel.minSize.SetXY(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(),356)
+			'move down scroller a bit
+			guiNewsListAvailable.guiScrollerV.SetOption(GUI_OBJECT_POSITIONABSOLUTE)
+			guiNewsListAvailable.guiScrollerV.Move(13, 45)
+			guiNewsListAvailable.guiScrollerV.Resize(0, guiNewsListAvailable.guiScrollerV.rect.GetH() - 35)
 
 			guiNewsListUsed = new TGUINewsSlotList.Create(new TVec2D.Init(419,104), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
 			guiNewsListUsed.SetItemLimit(3)
@@ -419,6 +469,79 @@ Type RoomHandler_News extends TRoomHandler
 	'News: NewsPlanner screen
 	'===================================
 
+	Function onUpdateNewsPlanner:int( triggerEvent:TEventBase )
+		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
+		if not room then return 0
+
+		'store current room for later access (in guiobjects)
+		currentRoom = room
+
+		GetGameBase().cursorstate = 0
+
+
+		ListSortVisible = False
+		If not draggedGuiNews
+			'show and react to mouse-over-sort-buttons
+			'HINT: does not work for touch displays
+			local skin:TDatasheetSkin = GetDatasheetSkin("default")
+			local boxWidth:int = 28 + newsSortKeys.Length * 32
+			local boxHeight:int = 35 + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+			local contentX:int = sortButtonPos.GetIntX() + skin.GetContentX()
+
+			if THelper.MouseIn(sortButtonPos.GetIntX(), sortButtonPos.GetIntY(), boxWidth, boxHeight)
+				ListSortVisible = True
+
+				if MouseManager.isShortClicked(1)
+
+					For local i:int = 0 to newsSortKeys.length-1
+						If THelper.MouseIn(contentX + i*32, sortButtonPos.GetIntY() + 7, 28, 27)
+							'sort now
+							if ListSortMode <> newsSortKeys[i]
+								ListSortMode = newsSortKeys[i]
+								ListSortOrder = True
+								'this sorts the news list and recreates
+								'the gui
+								ResetNewsOrder()
+							else
+								'switch order
+								ListSortOrder = not ListSortOrder
+								ResetNewsOrder()
+							endif
+						endif
+					Next
+				endif
+			endif
+
+			'move tooltips
+			For local i:int = 0 to newsSortKeys.length-1
+				if newsSortKeysTooltips[newsSortKeys[i]]
+					newsSortKeysTooltips[newsSortKeys[i]].parentArea.SetXYWH(contentX + 7 + i*32, sortButtonPos.GetIntY() + 7, 28,27)
+				endif
+			Next
+		endif
+
+		'update tooltips
+		For local i:int = 0 to newsSortKeys.length-1
+			newsSortKeysTooltips[newsSortKeys[i]].Update()
+		Next
+
+
+		'delete unused and create new gui elements
+		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
+
+		'reset dragged block - will get set automatically on gui-update
+		hoveredGuiNews = null
+		draggedGuiNews = null
+
+
+		'no GUI-interaction for other players rooms
+		if not IsPlayersRoom(room) then return False
+
+		'general newsplanner elements
+		GUIManager.Update( LS_newsplanner )
+	End Function
+
+
 	Function onDrawNewsPlanner:int( triggerEvent:TEventBase )
 		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
@@ -442,7 +565,46 @@ Type RoomHandler_News extends TRoomHandler
 		SetRotation(0)
 
 		SetColor 255,255,255  'normal
+
 		GUIManager.Draw( LS_newsplanner )
+
+		local availableSortKeys:int[]
+		if not ListSortVisible
+			availableSortKeys :+ [ListSortMode]
+		else
+			availableSortKeys :+ newsSortKeys
+		endif
+
+		local skin:TDatasheetSkin = GetDatasheetSkin("default")
+		local boxWidth:int = 28 + availableSortKeys.length * 32
+		local boxHeight:int = 35 + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+		local contentX:int = sortButtonPos.GetIntX() + skin.GetContentX()
+		if ListSortVisible then skin.RenderContent(sortButtonPos.GetIntX() + 8, sortButtonPos.GetIntY() + skin.GetContentY() - 5, skin.GetContentW(boxWidth), 42, "1_top")
+
+
+		For local i:int = 0 until availableSortKeys.length
+			local spriteName:string = "gfx_gui_button.datasheet"
+			if ListSortMode = availableSortKeys[i]
+				spriteName = "gfx_gui_button.datasheet.positive"
+			endif
+
+			if ListSortVisible and THelper.MouseIn(contentX + 5 + i*32, sortButtonPos.GetIntY() + 12, 28, 27)
+				spriteName :+ ".hover"
+			endif
+			GetSpriteFromRegistry(spriteName).DrawArea(contentX + 5 + i*32, sortButtonPos.GetIntY() + 12, 28,27)
+			GetSpriteFromRegistry(newsSortSymbols[ availableSortKeys[i] ]).Draw(contentX + 7 + i*32, sortButtonPos.GetIntY() + 14)
+		Next
+
+		'overlay of buttons
+		if ListSortVisible then skin.RenderBorder(sortButtonPos.GetIntX(), sortButtonPos.GetIntY(), boxWidth, boxHeight)
+
+		'tooltips
+		For local i:int = 0 until availableSortKeys.length
+			if newsSortKeysTooltips[availableSortKeys[i]]
+				newsSortKeysTooltips[availableSortKeys[i]].Render()
+			endif
+		Next
+
 
 		if draggedGuiNews
 			'wait to show hint
@@ -482,6 +644,57 @@ Type RoomHandler_News extends TRoomHandler
 		'our plan?
 		'something changed -- refresh  gui elements
 		RefreshGuiElements()
+	End Function
+
+
+	Function SortNews(list:TList, mode:int = -1)
+		if not list then return
+
+		if mode = -1 then mode = ListSortMode
+
+		Select ListSortMode
+			Case SORT_BY_AGE
+				list.sort(ListSortOrder, TNews.SortByPublishedDate)
+			Case SORT_BY_PRICE
+				list.sort(1 - ListSortOrder, TNews.SortByPrice)
+			Case SORT_BY_PAID
+				list.sort(1 - ListSortOrder, TNews.SortByIsPaid)
+			Case SORT_BY_TOPICALITY
+				list.sort(1 - ListSortOrder, TNews.SortByTopicality)
+			default
+				list.sort(ListSortOrder, TNews.SortByPublishedDate)
+		End select
+	End Function
+
+
+	Function ResetNewsOrder:int()
+		local room:TRoom = currentRoom
+		if not room then return 0
+
+
+		RemoveAllGuiElements()
+
+		local newsList:TList = CreateList()
+
+		For Local news:TNews = EachIn GetPlayerProgrammeCollection(room.owner).news
+			'skip if news is dragged
+			if draggedGuiNews and draggedGuiNews.news = news then continue
+			'skip if planned
+			if GetPlayerProgrammePlan(room.owner).HasNews(news) then continue
+
+			newsList.AddLast(news)
+		Next
+
+		SortNews(newsList, ListSortMode)
+
+		'add again - so it gets sorted
+		For local news:TNews = eachin newsList
+			local guiNews:TGUINews = new TGUINews.Create(null,null, news.GetTitle())
+			guiNews.SetNews(news)
+			guiNewsListAvailable.AddItem(guiNews)
+		Next
+
+		'RemoveAllGuiElements()
 	End Function
 
 
@@ -565,31 +778,6 @@ Type RoomHandler_News extends TRoomHandler
 		Next
 
 		haveToRefreshGuiElements = FALSE
-	End Function
-
-
-	Function onUpdateNewsPlanner:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
-		if not room then return 0
-
-		'store current room for later access (in guiobjects)
-		currentRoom = room
-
-		GetGameBase().cursorstate = 0
-
-		'delete unused and create new gui elements
-		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
-
-		'reset dragged block - will get set automatically on gui-update
-		hoveredGuiNews = null
-		draggedGuiNews = null
-
-
-		'no GUI-interaction for other players rooms
-		if not IsPlayersRoom(room) then return False
-
-		'general newsplanner elements
-		GUIManager.Update( LS_newsplanner )
 	End Function
 
 

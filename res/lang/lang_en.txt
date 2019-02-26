@@ -1149,3 +1149,8 @@ PRICES_WILL_RISE = Prices for programmes and news will rise.
 AUDIENCE_REACH_LEVEL_DECREASED = Audience Reach Level decreased
 LEVEL_DECREASED_FROM_X_TO_Y = Level decreased from %X% to %Y%.
 PRICES_WILL_FALL = Prices for programmes and news will fall.
+
+NEWS_SORT_TOPICALITY = Sort by topicality
+NEWS_SORT_PAID = Sort by paid state
+NEWS_SORT_AGE = Sort by age
+NEWS_SORT_PRICE = Sort by price

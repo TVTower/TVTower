@@ -75,7 +75,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 		Super.FinishBroadcasting(day, hour, minute, audienceData)
 
-		'adjust topicality relative to possible audience 
+		'adjust topicality relative to possible audience
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 
 		local newsSlot:int
@@ -124,7 +124,7 @@ endif
 			If not currentNews Then continue
 
 			newsSlotsUsed :+ 1
-			
+
 			local newsGenreTargetGroupMod:TAudience = currentNews.GetGenreTargetGroupMod( currentNews.GetGenreDefinition() )
 			result.Add( newsGenreTargetGroupMod.Copy().MultiplyFloat(GetNewsSlotWeight(i)) )
 		Next
@@ -158,12 +158,12 @@ endif
 		'of the individual news
 		'resultAudienceAttr.GenreTargetGroupMod = GetGenreTargetGroupMod()
 		'just create an empty audience instead, the function still returns
-		'valid values (for debugging output) 
+		'valid values (for debugging output)
 		resultAudienceAttr.GenreTargetGroupMod = New TAudience
 
 		local genreCount:int[ TVTNewsGenre.count ]
 		local slotsUsed:int = 0
-		
+
 		for local i:int = 0 until news.length
 			'RONNY @Manuel: Todo - "Filme" usw. vorbereiten/einplanen
 			'               es koennte ja jemand "Trailer" in die News
@@ -174,13 +174,13 @@ endif
 
 			genreCount[currentNews.GetGenre()] :+ 1
 			slotsUsed :+ 1
-			
+
 			'fix broken (old) savegame-information
 			if currentNews.usedAsType = 0
 				currentNews.setUsedAsType(TVTBroadcastMaterialType.NEWS)
 			endif
 
-			Local tempAudienceAttr:TAudienceAttraction = currentNews.GetAudienceAttraction(hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)			
+			Local tempAudienceAttr:TAudienceAttraction = currentNews.GetAudienceAttraction(hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)
 			'limit attraction values to 0-1.0
 			tempAudienceAttr.CutBordersFloat(0, 1.0)
 
@@ -189,7 +189,7 @@ endif
 			'different weight for news slots
 			resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(GetNewsSlotWeight(i)))
 			local title:string = "--"
-			if currentNews then title = currentNews.GetTitle() 
+			if currentNews then title = currentNews.GetTitle()
 		Next
 		'if owner=1 then print "owner #"+owner+"  newsshow: " + resultaudienceAttr.targetGroupAttractivity.ToString()
 
@@ -313,7 +313,7 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		obj.setMaterialType(TVTBroadcastMaterialType.NEWS)
 		'by default a freshly created programme is of its own type
 		obj.setUsedAsType(TVTBroadcastMaterialType.NEWS)
-		
+
 		Return obj
 	End Function
 
@@ -351,7 +351,7 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'inform newsEvent that it gets broadcasted by a player
 		newsEvent.doFinishBroadcast(owner)
 
-		'adjust topicality relative to possible audience 
+		'adjust topicality relative to possible audience
 		Local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 		newsEvent.CutTopicality( GetTopicalityCutModifier(audienceResult.GetWholeMarketAudienceQuotePercentage() ) )
 
@@ -362,8 +362,8 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method SetSequenceCalculationPredecessorShare(seqCal:TSequenceCalculation, audienceFlow:Int)
 		seqCal.PredecessorShareOnShrink = new TAudience.InitValue(0.4, 0.4) '0.5
 		seqCal.PredecessorShareOnRise = new TAudience.InitValue(0.4, 0.4) '0.5
-	End Method	
-	
+	End Method
+
 rem
 	'returns the audienceAttraction for one (single!) news
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
@@ -380,7 +380,7 @@ endrem
 
 	Method GetQuality:Float() {_exposeToLua}
 		Local quality:Float = newsEvent.GetQuality()
-		'extra bonus for first broadcast 
+		'extra bonus for first broadcast
 		If newsEvent.GetTimesBroadcasted() = 0 Then quality :* 1.10
 		Return MathHelper.Clamp(quality, 0.01, 0.99)
 	End Method
@@ -406,7 +406,7 @@ endrem
 		if map then price :* int(ceil(map.GetReach() / 5000000.0))
 
 		price = TFunctions.RoundToBeautifulValue(price)
-		
+
 		return price
 	End Method
 
@@ -498,7 +498,88 @@ endrem
 
 		return valueMod
 	End Method
-	
+
+
+
+	'=== SORT FUNCTIONS ===
+
+	Function SortByName:Int(o1:Object, o2:Object)
+		Local n1:TNews = TNews(o1)
+		Local n2:TNews = TNews(o2)
+		If Not n2 Then Return 1
+
+		if n1.GetTitle().ToLower() = n2.GetTitle().ToLower()
+			'publishtime is NOT happened time
+			return n1.GetPublishTime() > n2.GetPublishTime()
+		elseif n1.GetTitle().ToLower() > n2.GetTitle().ToLower()
+			return 1
+		endif
+		return -1
+	End Function
+
+
+	Function SortByPrice:Int(o1:Object, o2:Object)
+		Local n1:TNews = TNews(o1)
+		Local n2:TNews = TNews(o2)
+		If Not n2 Then Return 1
+
+		if n1.GetPrice(n1.owner) = n2.GetPrice(n1.owner)
+			'publishtime is NOT happened time
+			return n1.GetPublishTime() > n2.GetPublishTime()
+		endif
+        Return n1.GetPrice(n1.owner) - n2.GetPrice(n2.owner)
+	End Function
+
+
+	Function SortByPublishedDate:Int(o1:Object, o2:Object)
+		Local n1:TNews = TNews(o1)
+		Local n2:TNews = TNews(o2)
+		If Not n2 Then Return 1
+
+		if n1.GetPublishTime() = n2.GetPublishTime()
+			if n1.GetTitle().ToLower() > n2.GetTitle().ToLower()
+				return 1
+			elseif n1.GetTitle().ToLower() < n2.GetTitle().ToLower()
+				return -1
+			else
+				return 0
+			endif
+		endif
+        Return n1.GetPublishTime() - n2.GetPublishTime()
+	End Function
+
+
+	Function SortByIsPaid:Int(o1:Object, o2:Object)
+		Local n1:TNews = TNews(o1)
+		Local n2:TNews = TNews(o2)
+		If Not n2 Then Return 1
+
+		if n1.IsPaid() = n2.IsPaid()
+			'publishtime is NOT happened time
+			return n1.GetPublishTime() > n2.GetPublishTime()
+		endif
+        Return n1.IsPaid() - n2.IsPaid()
+	End Function
+
+
+	Function SortByTopicality:Int(o1:Object, o2:Object)
+		Local n1:TNews = TNews(o1)
+		Local n2:TNews = TNews(o2)
+		If Not n2 Then Return 1
+
+		if n1.newsEvent.GetTopicality() = n2.newsEvent.GetTopicality()
+			'publishtime is NOT happened time
+			return n1.GetPublishTime() > n2.GetPublishTime()
+		endif
+		if n1.newsEvent.GetTopicality() > n2.newsEvent.GetTopicality()
+			return 1
+		elseif n1.newsEvent.GetTopicality() < n2.newsEvent.GetTopicality()
+			return -1
+		else
+			return 0
+		endif
+	End Function
+
 
 	'===== AI-LUA HELPER FUNCTIONS =====
 

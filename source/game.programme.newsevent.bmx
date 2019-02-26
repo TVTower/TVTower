@@ -727,7 +727,10 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Method GetAttractiveness:Float() {_exposeToLua}
 		'the AI only sees something like the "price" and not the real
 		'quality - this is what the player is able to see too
-		return GetQuality() * GetModifier("price")
+
+		'with a higher priceMod price increases while quality stays
+		'the same -> less quality for your money
+		return GetQuality() / Max(0.001, GetModifier("price"))
 	End Method
 
 
@@ -778,8 +781,8 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	'returns price based on a "per 5 million" approach
 	Method GetPrice:Int() {_exposeToLua}
-		'price ranges from 0 to ~7500
-		Return Max(0, 7500 * GetQuality() * GetModifier("price") )
+		'price ranges from 100 to ~7500
+		Return Max(100, 7500 * GetQuality() * GetModifier("price") )
 	End Method
 End Type
 

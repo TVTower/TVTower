@@ -82,8 +82,11 @@ Type TGameRules {_exposeToLua}
 	Field adContractPricePerSpotMax:int = 1000000
 
 	'=== ADAGENCY ===
-	Field adagencySortContractyBy:string = "minaudience"
+	Field adagencySortContractsBy:string = "minaudience"
 	Field adagencyRefillMode:int = 2
+
+	'=== NEWS STUDIO ===
+	Field newsStudioSortNewsBy:string = "age"
 
 	'=== STATIONMAP ===
 	'time a station needs to get constructed
@@ -110,8 +113,10 @@ Type TGameRules {_exposeToLua}
 
 		stationConstructionTime = 0
 
-		adagencySortContractyBy = "minaudience"
+		adagencySortContractsBy = "minaudience"
 		adagencyRefillMode = 2 'new one
+
+		newsStudioSortNewsBy = "age"
 
 		adContractInstancesMax = 1
 		adContractsPerPlayerMax = 12
@@ -137,8 +142,11 @@ Type TGameRules {_exposeToLua}
 		endif
 
 		'=== ADAGENCY ===
-		adagencySortContractyBy = data.GetString("DEV_ADAGENCY_SORT_CONTRACTS_BY", adagencySortContractyBy).Trim().ToLower()
+		adagencySortContractsBy = data.GetString("DEV_ADAGENCY_SORT_CONTRACTS_BY", adagencySortContractsBy).Trim().ToLower()
 		adagencyRefillMode = data.GetInt("DEV_ADAGENCY_REFILL_MODE", adagencyRefillMode)
+
+		'=== NEWS STUDIO ===
+		newsStudioSortNewsBy = data.GetString("DEV_NEWSSTUDIO_SORT_NEWS_BY", newsStudioSortNewsBy).Trim().ToLower()
 
 
 		'=== ELEVATOR ===

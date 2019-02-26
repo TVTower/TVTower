@@ -2497,6 +2497,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 				else
 					mode = 4
 				endif
+'print "ShowCastSheet: jobID="+jobID + "  attributeID=" +attributeID +"  attributeGenre="+attributeGenre +"  mode="+mode
 
 				'set "skill" neutral if not assigned "negative/positive" already
 				if mode = 1 and attributeID = TVTProgrammePersonAttribute.SKILL
@@ -2508,9 +2509,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 					'unused
 					case 1
 						local oldA:Float = GetAlpha()
-						SetAlpha oldA * 0.4
+						SetAlpha oldA * 0.5
 						skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetAttribute(attributeID))
-						SetAlpha oldA * 0.3
+						SetAlpha oldA * 0.4
 						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTProgrammePersonAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
 						SetAlpha oldA
 					'neutral
