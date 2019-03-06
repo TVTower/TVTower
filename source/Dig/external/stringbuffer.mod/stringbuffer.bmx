@@ -336,10 +336,10 @@ Type TSplitBuffer
 	End Method
 
 	Method ObjectEnumerator:TSplitBufferEnum()
-		Local enum:TSplitBufferEnum = New TSplitBufferEnum
-		enum.buffer = Self
-		enum.length = Length()
-		Return enum
+		Local enumerator:TSplitBufferEnum = New TSplitBufferEnum
+		enumerator.buffer = Self
+		enumerator.length = Length()
+		Return enumerator
 	End Method
 
 	Method Delete()
