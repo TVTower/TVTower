@@ -502,82 +502,106 @@ endrem
 
 
 	'=== SORT FUNCTIONS ===
-
-	Function SortByName:Int(o1:Object, o2:Object)
-		Local n1:TNews = TNews(o1)
-		Local n2:TNews = TNews(o2)
+	Method CompareByName:int(other:object)
+		Local n2:TNews = TNews(other)
 		If Not n2 Then Return 1
 
-		if n1.GetTitle().ToLower() = n2.GetTitle().ToLower()
+		if GetTitle().ToLower() = n2.GetTitle().ToLower()
 			'publishtime is NOT happened time
-			return n1.GetPublishTime() > n2.GetPublishTime()
-		elseif n1.GetTitle().ToLower() > n2.GetTitle().ToLower()
+			return GetPublishTime() > n2.GetPublishTime()
+		elseif GetTitle().ToLower() > n2.GetTitle().ToLower()
 			return 1
 		endif
 		return -1
-	End Function
+	End Method
 
 
-	Function SortByPrice:Int(o1:Object, o2:Object)
-		Local n1:TNews = TNews(o1)
-		Local n2:TNews = TNews(o2)
+	Method CompareByPrice:int(other:object)
+		Local n2:TNews = TNews(other)
 		If Not n2 Then Return 1
 
-		if n1.GetPrice(n1.owner) = n2.GetPrice(n1.owner)
+		if GetPrice(owner) = n2.GetPrice(n2.owner)
 			'publishtime is NOT happened time
-			return n1.GetPublishTime() > n2.GetPublishTime()
+			return GetPublishTime() > n2.GetPublishTime()
 		endif
-        Return n1.GetPrice(n1.owner) - n2.GetPrice(n2.owner)
-	End Function
+        Return GetPrice(owner) - n2.GetPrice(n2.owner)
+	End Method
 
 
-	Function SortByPublishedDate:Int(o1:Object, o2:Object)
-		Local n1:TNews = TNews(o1)
-		Local n2:TNews = TNews(o2)
+	Method CompareByPublishedDate:int(other:object)
+		Local n2:TNews = TNews(other)
 		If Not n2 Then Return 1
 
-		if n1.GetPublishTime() = n2.GetPublishTime()
-			if n1.GetTitle().ToLower() > n2.GetTitle().ToLower()
+		if GetPublishTime() = n2.GetPublishTime()
+			if GetTitle().ToLower() > n2.GetTitle().ToLower()
 				return 1
-			elseif n1.GetTitle().ToLower() < n2.GetTitle().ToLower()
+			elseif GetTitle().ToLower() < n2.GetTitle().ToLower()
 				return -1
 			else
 				return 0
 			endif
 		endif
-        Return n1.GetPublishTime() - n2.GetPublishTime()
-	End Function
+        Return GetPublishTime() - n2.GetPublishTime()
+	End Method
 
 
-	Function SortByIsPaid:Int(o1:Object, o2:Object)
-		Local n1:TNews = TNews(o1)
-		Local n2:TNews = TNews(o2)
+	Method CompareByIsPaid:int(other:object)
+		Local n2:TNews = TNews(other)
 		If Not n2 Then Return 1
 
-		if n1.IsPaid() = n2.IsPaid()
+		if IsPaid() = n2.IsPaid()
 			'publishtime is NOT happened time
-			return n1.GetPublishTime() > n2.GetPublishTime()
+			return GetPublishTime() > n2.GetPublishTime()
 		endif
-        Return n1.IsPaid() - n2.IsPaid()
-	End Function
+        Return IsPaid() - n2.IsPaid()
+	End Method
 
 
-	Function SortByTopicality:Int(o1:Object, o2:Object)
-		Local n1:TNews = TNews(o1)
-		Local n2:TNews = TNews(o2)
+	Method CompareByTopicality:int(other:object)
+		Local n2:TNews = TNews(other)
 		If Not n2 Then Return 1
 
-		if n1.newsEvent.GetTopicality() = n2.newsEvent.GetTopicality()
+		if newsEvent.GetTopicality() = n2.newsEvent.GetTopicality()
 			'publishtime is NOT happened time
-			return n1.GetPublishTime() > n2.GetPublishTime()
+			return GetPublishTime() > n2.GetPublishTime()
 		endif
-		if n1.newsEvent.GetTopicality() > n2.newsEvent.GetTopicality()
+		if newsEvent.GetTopicality() > n2.newsEvent.GetTopicality()
 			return 1
-		elseif n1.newsEvent.GetTopicality() < n2.newsEvent.GetTopicality()
+		elseif newsEvent.GetTopicality() < n2.newsEvent.GetTopicality()
 			return -1
 		else
 			return 0
 		endif
+	End Method
+
+
+	Function SortByName:Int(o1:Object, o2:Object)
+		if not TNews(o1) Then Return -1
+		return TNews(o1).CompareByName(o2)
+	End Function
+
+
+	Function SortByPrice:Int(o1:Object, o2:Object)
+		if not TNews(o1) Then Return -1
+		Return TNews(o1).CompareByPrice(o2)
+	End Function
+
+
+	Function SortByPublishedDate:Int(o1:Object, o2:Object)
+		if not TNews(o1) Then Return -1
+		Return TNews(o1).CompareByPublishedDate(o2)
+	End Function
+
+
+	Function SortByIsPaid:Int(o1:Object, o2:Object)
+		if not TNews(o1) Then Return -1
+		Return TNews(o1).CompareByIsPaid(o2)
+	End Function
+
+
+	Function SortByTopicality:Int(o1:Object, o2:Object)
+		if not TNews(o1) Then Return -1
+		Return TNews(o1).CompareByTopicality(o2)
 	End Function
 
 

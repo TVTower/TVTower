@@ -77,6 +77,7 @@ Type RoomHandler_News extends TRoomHandler
 			default
 				ListSortMode = SORT_BY_AGE
 		End Select
+		TGUINews.sortMode = ListSortMode
 
 
 		For local i:int = 0 until newsSortKeysTooltips.length
@@ -498,13 +499,17 @@ Type RoomHandler_News extends TRoomHandler
 							'sort now
 							if ListSortMode <> newsSortKeys[i]
 								ListSortMode = newsSortKeys[i]
+								TGUINews.sortMode = ListSortMode
+
 								ListSortOrder = True
+								TGUINews.sortModeOrder = ListSortOrder
 								'this sorts the news list and recreates
 								'the gui
 								ResetNewsOrder()
 							else
 								'switch order
 								ListSortOrder = not ListSortOrder
+								TGUINews.sortModeOrder = ListSortOrder
 								ResetNewsOrder()
 							endif
 						endif
@@ -641,9 +646,16 @@ Type RoomHandler_News extends TRoomHandler
 		'only adjust GUI if we are displaying that screen (eg. AI skips that)
 		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
 
+		'correct order - and set back scroll state
+		local oldScrollY:float = guiNewsListAvailable.GetScrollPercentageY()
+		ResetNewsOrder()
+
 		'our plan?
 		'something changed -- refresh  gui elements
 		RefreshGuiElements()
+
+		guiNewsListAvailable.SetScrollPercentageY(oldScrollY)
+		guiNewsListAvailable.guiScrollerV.SetRelativeValue( oldScrollY )
 	End Function
 
 
@@ -765,6 +777,8 @@ Type RoomHandler_News extends TRoomHandler
 				endif
 			endif
 		Next
+
+
 		For Local i:int = 0 to GetPlayerProgrammePlan(owner).news.length - 1
 			local news:TNews = TNews(GetPlayerProgrammePlan(owner).GetNewsAtIndex(i))
 			'skip if news is dragged
@@ -858,7 +872,8 @@ Type RoomHandler_News extends TRoomHandler
 	'screens are only handled by real players
 	Function onEnterNewsPlannerScreen:int(triggerEvent:TEventBase)
 		'empty the guilist / delete gui elements
-		RemoveAllGuiElements()
+		ResetNewsOrder()
+		'RemoveAllGuiElements()
 		RefreshGUIElements()
 	End Function
 
@@ -941,6 +956,8 @@ Type TGUINews Extends TGUIGameListItem
 	Field news:TNews = Null
 	Field imageBaseName:String = "gfx_news_sheet"
 	Field cacheTextOverlay:TImage
+	Global sortMode:int
+	Global sortModeOrder:int = 0
 
 
 	Method New()
@@ -953,6 +970,7 @@ Type TGUINews Extends TGUIGameListItem
 
 		Return Self
 	End Method
+
 
 	Method SetNews:Int(news:TNews)
 		Self.news = news
@@ -981,6 +999,21 @@ Type TGUINews Extends TGUIGameListItem
 			EndIf
 
 			If Self.news And otherBlock.news
+rem
+				local orderMulti:int = 1
+				if sortModeOrder = 1 then orderMulti = -1
+				Select sortMode
+					case RoomHandler_News.SORT_BY_PRICE
+						Return news.CompareByPrice(otherBlock.news) * -1 * orderMulti
+					case RoomHandler_News.SORT_BY_TOPICALITY
+						Return news.CompareByTopicality(otherBlock.news) * -1 * orderMulti
+					case RoomHandler_News.SORT_BY_PAID
+						Return news.CompareByIsPaid(otherBlock.news) * orderMulti
+					default 'RoomHandler_News.SORT_BY_AGE
+						Return news.CompareByPublishedDate(otherBlock.news) * -1 * orderMulti
+				End Select
+endrem
+'rem
 				Local publishDifference:Int = Self.news.GetPublishTime() - otherBlock.news.GetPublishTime()
 
 				'self is newer ("later") than other
@@ -989,6 +1022,7 @@ Type TGUINews Extends TGUIGameListItem
 				If publishDifference<0 Then Return 1
 				'self is same age than other
 				If publishDifference=0 Then Return Super.Compare(Other)
+'endrem
 			EndIf
 		EndIf
 
