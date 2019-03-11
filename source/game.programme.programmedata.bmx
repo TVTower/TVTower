@@ -1468,11 +1468,9 @@ Type TProgrammeData extends TBroadcastMaterialSource {_exposeToLua}
 		'that moment (^2 increases loss per air)
 		'but a "good movie" should benefit from being good - so the
 		'influence of repetitions gets lower by higher raw quality
-		'-> a movie with 100% base quality will have at least 25% of
+		'-> a movie with 100% base quality will have at least 10% of
 		'   quality no matter how many times it got aired
-		'-> a movie with 0% base quality will cut to up to 75% of that
-		'   resulting in <= 25% quality
-		quality :* GetQualityRaw() * (0.30 + 0.70 * GetTopicality()^2)
+		quality :* GetQualityRaw() * (0.10 + 0.90 * GetTopicality()^2)
 
 		Return MathHelper.Clamp(quality, 0.01, 1.0)
 	End Method
