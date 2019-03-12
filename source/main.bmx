@@ -1894,6 +1894,7 @@ Type TGameState
 	Field _RoomHandler_MovieAgency:RoomHandler_MovieAgency
 	Field _RoomHandler_AdAgency:RoomHandler_AdAgency
 	Field _RoomHandler_ScriptAgency:RoomHandler_ScriptAgency
+	Field _RoomHandler_News:RoomHandler_News
 	Field _RoomDoorBaseCollection:TRoomDoorBaseCollection
 	Field _RoomBaseCollection:TRoomBaseCollection
 	Field _PlayerColorList:TList
@@ -2063,6 +2064,7 @@ Type TGameState
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
 		_Assign(_RoomHandler_AdAgency, RoomHandler_AdAgency._instance, "AdAgency", MODE_LOAD)
 		_Assign(_RoomHandler_ScriptAgency, RoomHandler_ScriptAgency._instance, "ScriptAgency", MODE_LOAD)
+		_Assign(_RoomHandler_News, RoomHandler_News._instance, "News", MODE_LOAD)
 		_Assign(_Game, TGame._instance, "Game")
 
 
@@ -2179,6 +2181,7 @@ Type TGameState
 		_Assign(RoomHandler_MovieAgency._instance, _RoomHandler_MovieAgency, "MovieAgency", MODE_SAVE)
 		_Assign(RoomHandler_AdAgency._instance, _RoomHandler_AdAgency, "AdAgency", MODE_SAVE)
 		_Assign(RoomHandler_ScriptAgency._instance, _RoomHandler_ScriptAgency, "ScriptAgency", MODE_SAVE)
+		_Assign(RoomHandler_News._instance, _RoomHandler_News, "News", MODE_SAVE)
 	End Method
 
 
