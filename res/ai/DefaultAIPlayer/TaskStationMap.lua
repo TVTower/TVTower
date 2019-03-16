@@ -263,6 +263,8 @@ function JobBuyStation:GetBestCableNetworkOffer()
 	end
 	if bestOffer then
 		debugMsg(" - best cable network " .. bestOffer.GetName() .."  reach: " .. bestOffer.GetReach() .. "  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReach() / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
+	else
+		debugMsg(" -> no best cable network found")
 	end
 
 	return bestOffer, bestAttraction
@@ -302,8 +304,11 @@ function JobBuyStation:GetBestSatelliteOffer()
 			end
 		end
 	end
-	debugMsg(" -> best satellite " .. bestOffer.GetName() .."  reach: " .. bestOffer.GetReach() .. "  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReach() / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
-
+	if bestOffer ~= nil then
+		debugMsg(" -> best satellite " .. bestOffer.GetName() .."  reach: " .. bestOffer.GetReach() .. "  exclusive/increase: " .. bestOffer.GetExclusiveReach() .. "  price: " .. bestOffer.GetBuyPrice() .. " (incl.fees: " .. bestOffer.GetTotalBuyPrice() ..")  F: " .. (bestOffer.GetExclusiveReach() / bestOffer.GetPrice()) .. "  buyPrice: " .. bestOffer.GetBuyPrice() )
+	else
+		debugMsg(" -> no best satellite found")
+	end
 	return bestOffer, bestAttraction
 end
 
