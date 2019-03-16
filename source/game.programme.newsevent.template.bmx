@@ -216,8 +216,6 @@ Type TNewsEventTemplateCollection
 
 
 	Method GetRandomUnusedAvailableInitial:TNewsEventTemplate(genre:int=-1)
-		if not GetUnusedAvailableInitialTemplates(genre) then return Null
-
 		'if no news is available, make older ones available again
 		'start with 4 days ago and lower until we got a news
 		local days:int = 4
