@@ -147,6 +147,12 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	?bmxng
+	Method Contains:int(vec:TVec2D)
+		return containsXY( vec.GetX(), vec.GetY() )
+	End Method
+	?
+
 	'returns whether the rectangle contains a point
 	Method ContainsVec:int(vec:TVec2D) {_exposeToLua}
 		return containsXY( vec.GetX(), vec.GetY() )
@@ -197,6 +203,17 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	'makes sure that width and height are positive
+	Method MakeDimensionsPositive:TRectangle()
+		local minX:Float = Float( Min(GetX(), GetX2()) )
+		local maxX:Float = Float( Max(GetX(), GetX2()) )
+		local minY:Float = Float( Min(GetY(), GetY2()) )
+		local maxY:Float = Float( Max(GetY(), GetY2()) )
+		SetXYWH(minX, minY, maxX-minX, maxY-minY)
+		return self
+	End Method
+
+
 	'moves the rectangle to x,y
 	Method MoveXY:int(x:float, y:float)
 		position.AddXY(x, y)
@@ -204,7 +221,7 @@ Type TRectangle {_exposeToLua="selected"}
 
 
 	'Set the rectangles values
-	Method setXYWH(x:float, y:float, w:float, h:float)
+	Method SetXYWH(x:float, y:float, w:float, h:float)
 		position.setXY(x,y)
 		dimension.setXY(w,h)
 	End Method
@@ -256,6 +273,14 @@ Type TRectangle {_exposeToLua="selected"}
 
 	Method GetIntY:int()
 		return position.GetIntY()
+	End Method
+
+	Method GetIntX2:int()
+		return position.GetIntX() + GetIntW()
+	End Method
+
+	Method GetIntY2:int()
+		return position.GetIntY() + GetIntH()
 	End Method
 
 	Method GetIntW:int()
@@ -323,13 +348,25 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	Method SetX2:TRectangle(value:float)
+		dimension.SetX(value - position.x)
+		return self
+	End Method
+
+
+	Method SetY2:TRectangle(value:float)
+		dimension.SetY(value - position.y)
+		return self
+	End Method
+
+
 	Method SetXY:TRectangle(valueX:float, valueY:float)
 		SetX(valueX)
 		SetY(valueY)
 		return self
 	End Method
 
-	
+
 	Method SetWH:TRectangle(valueW:float, valueH:float)
 		SetW(valueW)
 		SetH(valueH)

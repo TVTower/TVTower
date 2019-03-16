@@ -75,6 +75,7 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 	Method GetConfigFromXML:TData(loader:TRegistryLoader, node:TxmlNode)
 		local data:TData = Super.GetConfigFromXML(loader, node)
 
+
 		local fieldNames:String[]
 		fieldNames :+ ["name", "id"]
 		fieldNames :+ ["x", "y", "w", "h"]
@@ -82,7 +83,7 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 		fieldNames :+ ["paddingLeft", "paddingTop", "paddingRight", "paddingBottom"]
 		fieldNames :+ ["r", "g", "b"]
 		fieldNames :+ ["frames|f"]
-		fieldNames :+ ["ninepatch"]
+		fieldNames :+ ["ninepatch", "tilemode"]
 		fieldNames :+ ["rotated"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
@@ -100,8 +101,6 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 			childrenData :+ [childData]
 		Next
 		if len(childrenData)>0 then data.Add("childrenData", childrenData)
-
-
 
 		return data
 	End Method

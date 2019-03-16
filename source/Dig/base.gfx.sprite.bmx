@@ -169,6 +169,8 @@ Type TSprite
 	Field parent:TSpritePack
 	Field _pix:TPixmap = null
 
+	Field tileMode:int = 0
+
 	'=== NINE PATCH SECTION ===
 	Field ninePatchEnabled:int = FALSE
 	'center: size of the middle parts (width, height)
@@ -188,6 +190,10 @@ Type TSprite
 	CONST BORDER_TOP:int = 4
 	CONST BORDER_BOTTOM:int = 8
 	CONST BORDER_ALL:int = 1 | 2 | 4 | 8
+
+	CONST TILEMODE_UNDEFINED:int = 0
+	CONST TILEMODE_STRETCHED:int = 1
+	CONST TILEMODE_TILED:int = 2
 
 
 
@@ -237,6 +243,7 @@ Type TSprite
 		local frameH:int = data.GetInt("frameH", 0)
 		local id:int = data.GetInt("id", 0)
 		local ninePatch:int = data.GetBool("ninePatch", FALSE)
+		local definedTileMode:int = data.GetInt("tileMode", TILEMODE_UNDEFINED)
 		local parent:TSpritePack = TSpritePack(data.Get("parent", null))
 
 		'create a new spritepack if none is assigned yet
@@ -304,6 +311,8 @@ Type TSprite
 
 		'enable nine patch if wanted
 		if ninePatch then EnableNinePatch()
+
+		tileMode = definedTileMode
 
 		'add to parental spritepack
 		parent.addSprite(self)
@@ -624,7 +633,7 @@ Type TSprite
 
 	'draw the sprite covering an area (if ninePatch is enabled, the
 	'stretching is only done on the center of the sprite)
-	Method DrawArea:int(x:float, y:float, width:float=-1, height:float=-1, frame:int=-1, skipBorders:int = 0, clipRect:TRectangle = null)
+	Method DrawArea:int(x:float, y:float, width:float=-1, height:float=-1, frame:int=-1, skipBorders:int = 0, clipRect:TRectangle = null, forceTileMode:int = 0)
 		if width=-1 then width = area.GetW()
 		if height=-1 then height = area.GetH()
 		if frames <= 0 then frame = -1
@@ -634,7 +643,7 @@ Type TSprite
 
 		'normal sprites draw their image stretched to area
 		if not ninePatchEnabled
-			DrawResized(new TRectangle.Init(x, y, width, height), null, frame)
+			DrawResized(new TRectangle.Init(x, y, width, height), null, frame, False, null, tileMode)
 		else
 			Local middleW:int = area.GetW() - ninePatch_borderDimensionScale*(ninePatch_borderDimension.GetLeft()+ninePatch_borderDimension.GetRight())
 			Local middleH:int = area.GetH() - ninePatch_borderDimensionScale*(ninePatch_borderDimension.GetTop()+ninePatch_borderDimension.GetBottom())
@@ -714,7 +723,7 @@ Type TSprite
 
 				target.Init( targetX2, targetY1, targetW2, targetH1 )
 				source.Init( sourceX2, sourceY1, ninePatch_centerDimension.GetX(), ninePatch_borderDimension.GetTop() )
-				DrawResized( target, source, frame, false, clipRect )
+				DrawResized( target, source, frame, false, clipRect, tileMode )
 
 				If ninePatch_borderDimension.GetRight()
 					target.Init( targetX3, targetY1, targetW3, targetH1 )
@@ -728,17 +737,17 @@ Type TSprite
 			If ninePatch_borderDimension.GetLeft()
 				target.Init( targetX1 , targetY2, targetW1, targetH2 )
 				source.Init( sourceX1, sourceY2, ninePatch_borderDimension.GetLeft(), ninePatch_centerDimension.GetY() )
-				DrawResized( target, source, frame, false, clipRect)
+				DrawResized( target, source, frame, false, clipRect, tileMode )
 			endif
 
 			target.Init( targetX2, targetY2, targetW2, targetH2 )
 			source.Init( sourceX2, sourceY2, ninePatch_centerDimension.GetX(), ninePatch_centerDimension.GetY() )
-			DrawResized( target, source, frame, false, clipRect )
+			DrawResized( target, source, frame, false, clipRect, tileMode )
 
 			If ninePatch_borderDimension.GetRight()
 				target.Init( targetX3, targetY2, targetW3, targetH2 )
 				source.Init( sourceX3, sourceY2, ninePatch_borderDimension.GetRight(), ninePatch_centerDimension.GetY() )
-				DrawResized( target, source, frame, false, clipRect )
+				DrawResized( target, source, frame, false, clipRect, tileMode )
 			endif
 
 
@@ -752,7 +761,7 @@ Type TSprite
 
 				target.Init( targetX2, targetY3, targetW2, targetH3 )
 				source.Init( sourceX2, sourceY3, ninePatch_centerDimension.GetX(), ninePatch_borderDimension.GetBottom() )
-				DrawResized( target, source, frame, false, clipRect )
+				DrawResized( target, source, frame, false, clipRect, tileMode)
 
 				If ninePatch_borderDimension.GetRight()
 					target.Init( targetX3, targetY3, targetW3, targetH3 )
@@ -771,7 +780,7 @@ Type TSprite
 
 	'draw the sprite resized/stretched
 	'source is a rectangle within sprite.area
-	Method DrawResized(target:TRectangle, source:TRectangle = null, frame:int=-1, drawCompleteImage:Int=FALSE, clipRect:TRectangle = null)
+	Method DrawResized(target:TRectangle, source:TRectangle = null, frame:int=-1, drawCompleteImage:Int=FALSE, clipRect:TRectangle = null, forceTileMode:int = 0)
 		'needed as "target" is a reference (changes original variable)
 		local targetCopy:TRectangle = target.Copy()
 		local sourceCopy:TRectangle
@@ -852,7 +861,27 @@ Type TSprite
 			local vpRect:TRectangle = New TRectangle.Init(vpx, vpy, vpw, vph)
 			local intersectingVP:TRectangle = vpRect.Copy().Intersect(clipRect)
 			GetGraphicsManager().SetViewPort(int(intersectingVP.GetX()), int(intersectingVP.GetY()), int(intersectingVP.GetW()), int(intersectingVP.GetH()))
-				DrawSubImageRect(parent.GetImage(), Float(floor(targetCopy.GetX())), Float(floor(targetCopy.GetY())), Float(ceil(targetCopy.GetW())), Float(ceil(targetCopy.GetH())), Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), sourceCopy.GetW(), sourceCopy.GetH())
+				if forceTileMode = TILEMODE_UNDEFINED then forceTileMode = tileMode
+
+				if forceTileMode = TILEMODE_UNDEFINED or forceTileMode = TILEMODE_STRETCHED
+					DrawSubImageRect(parent.GetImage(), Float(floor(targetCopy.GetX())), Float(floor(targetCopy.GetY())), Float(ceil(targetCopy.GetW())), Float(ceil(targetCopy.GetH())), Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), sourceCopy.GetW(), sourceCopy.GetH())
+				elseif forceTileMode = TILEMODE_TILED
+					local startX:int = int(floor(targetCopy.GetX()))
+					local startY:int = int(floor(targetCopy.GetY()))
+					local w:int = int(ceil(targetCopy.GetW()))
+					local h:int = int(ceil(targetCopy.GetH()))
+
+					local x:int = 0
+					while x <= w '- sourceCopy.GetIntW()
+						local y:int = 0
+						local maxW:int = Min(sourceCopy.GetW(), w - x)
+						while y <= h - sourceCopy.GetIntH()
+							DrawSubImageRect(parent.GetImage(), Float(startX + x), Float(startY + y), maxW, sourceCopy.GetH(), Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), maxW, sourceCopy.GetH())
+							y :+ sourceCopy.GetIntH()
+						wend
+						x :+ sourceCopy.GetIntW()
+					wend
+				endif
 			GetGraphicsManager().SetViewPort(vpx, vpy, vpw, vph)
 
 
@@ -881,8 +910,26 @@ rem
 endrem
 '			DrawSubImageRect(parent.GetImage(), Float(floor(targetCopy.GetX())), Float(floor(targetCopy.GetY())), Float(ceil(targetCopy.GetW())), Float(ceil(targetCopy.GetH())), Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), sourceCopy.GetW(), sourceCopy.GetH())
 		else
-			DrawSubImageRect(parent.GetImage(), Float(floor(targetCopy.GetX())), Float(floor(targetCopy.GetY())), Float(ceil(targetCopy.GetW())), Float(ceil(targetCopy.GetH())), Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), sourceCopy.GetW(), sourceCopy.GetH())
+			if tileMode = 0 'stretched
+				DrawSubImageRect(parent.GetImage(), Float(floor(targetCopy.GetX())), Float(floor(targetCopy.GetY())), Float(ceil(targetCopy.GetW())), Float(ceil(targetCopy.GetH())), Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), sourceCopy.GetW(), sourceCopy.GetH())
+			elseif tileMode = 1 'tiled
 
+				local startX:int = int(floor(targetCopy.GetX()))
+				local startY:int = int(floor(targetCopy.GetY()))
+				local w:int = int(ceil(targetCopy.GetW()))
+				local h:int = int(ceil(targetCopy.GetH()))
+
+				local x:int = 0
+				while x <= w '- sourceCopy.GetIntW()
+					local y:int = 0
+					local maxW:int = Min(sourceCopy.GetW(), w - x)
+					while y <= h - sourceCopy.GetIntH()
+						DrawSubImageRect(parent.GetImage(), Float(startX + x), Float(startY + y), maxW, sourceCopy.GetH(), Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), maxW, sourceCopy.GetH())
+						y :+ sourceCopy.GetIntH()
+					wend
+					x :+ sourceCopy.GetIntW()
+				wend
+			endif
 			'TODO: for "target = image" use DrawImageOnImage() and stretch
 			'via "ResizePixmap()"
 		endif
@@ -892,6 +939,26 @@ endrem
 	Method DrawClipped(target:TRectangle, offset:TVec2D = null, frame:int=-1)
 		if not offset then offset = new TVec2D
 		DrawResized(new TRectangle.Init(target.GetX(),target.GetY()), new TRectangle.Init(offset.GetX(), offset.GetY(), target.GetW(), target.GetH()), frame)
+	End Method
+
+
+	Method DrawInArea(x:Float, y:Float, area:TRectangle = null, frame:int=-1)
+		local vpRect:TRectangle
+
+		if area
+			local vpx:int, vpy:int, vpw:int, vph:int
+			GetGraphicsManager().GetViewPort(vpx, vpy, vpw, vph)
+			vpRect = New TRectangle.Init(vpx, vpy, vpw, vph)
+			local intersectingVP:TRectangle = vpRect.Copy().Intersect(area)
+			GetGraphicsManager().SetViewPort(int(intersectingVP.GetX()), int(intersectingVP.GetY()), int(intersectingVP.GetW()), int(intersectingVP.GetH()))
+		endif
+
+		Draw(x, y)
+
+		'reset viewport if it was modified
+		if vpRect
+			GetGraphicsManager().SetViewport(int(vpRect.GetX()), int(vpRect.GetY()), int(vpRect.GetW()), int(vpRect.GetH()))
+		endif
 	End Method
 
 

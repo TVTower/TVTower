@@ -87,7 +87,7 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 		endif
 
 		'=== HANDLE "<BITMAPFONT>" ===
-		local fieldNames:String[] = ["name", "url", "size", "default", "flags", "lineHeightModifier", "spaceWidthModifier"]
+		local fieldNames:String[] = ["name", "url", "size", "default", "flags", "lineHeightModifier", "spaceWidthModifier", "chardWidthModifier", "fixedCharWidth"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 		'process given relative-url
 		data.AddString("url", loader.GetURI(data.GetString("url", "")))
@@ -109,13 +109,14 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 		Local setDefault:Int= data.GetBool("default", False)
 
 		'=== COMPUTE FLAGS ===
-		Local flags:Int = 0
+		Local flags:Int = SMOOTHFONT
 		If flagsString <> ""
 			Local flagsArray:String[] = flagsString.split(",")
 			For Local flag:String = EachIn flagsArray
 				flag = Upper(flag.Trim())
 				If flag = "BOLDFONT" Then flags = flags + BOLDFONT
 				If flag = "ITALICFONT" Then flags = flags + ITALICFONT
+				If flag = "NOSMOOTH" Then flags = flags - SMOOTHFONT
 			Next
 		EndIf
 
@@ -130,7 +131,7 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 		EndIf
 
 		'=== ADD / CREATE THE FONT ===
-		Local font:TBitmapFont = GetBitmapFontManager().Add(name, url, size, SMOOTHFONT + flags)
+		Local font:TBitmapFont = GetBitmapFontManager().Add(name, url, size, flags, True, data.GetInt("fixedCharWidth",-1), data.GetFloat("charWidthModifier", 1.0))
 
 		'=== SET DEFAULTS ===
 		If setDefault

@@ -253,7 +253,12 @@ Type TGUIButton Extends TGUIobject
 		SetAlpha oldCol.a * GetScreenAlpha()
 
 		Local sprite:TSprite = GetSprite()
-		if state <> "" then sprite = GetSpriteFromRegistry(GetSpriteName() + state, sprite)
+		if not IsEnabled()
+			sprite = GetSpriteFromRegistry(GetSpriteName() + ".disabled", sprite)
+		else
+			if state <> "" then sprite = GetSpriteFromRegistry(GetSpriteName() + state, sprite)
+		endif
+
 		if sprite
 			'no active image available (when "mousedown" over widget)
 			if state = ".active" and (sprite.name = spriteName or sprite.name="defaultsprite")

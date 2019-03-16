@@ -55,10 +55,10 @@ Type TBitmapFontManager
 	Field baseFontItalic:TBitmapFont
 	Field baseFontSmall:TBitmapFont
 	Field _defaultFont:TBitmapFont
-	Field List:TList = CreateList()
+	Field fonts:TStringMap = new TStringMap
 	Global systemFont:TBitmapFont
 	Global _instance:TBitmapFontManager
-	Global _defaultFlags:int = SMOOTHFONT
+	Global _defaultFlags:int = 0 'SMOOTHFONT
 
 
 	Function GetInstance:TBitmapFontManager()
@@ -79,49 +79,70 @@ Type TBitmapFontManager
 	End Method
 
 
+	'get ignores the "SMOOTHFONT" flag to allow adding "crisp" fonts
 	Method Get:TBitmapFont(name:String="", size:Int=-1, style:Int=-1)
 		name = lower(name)
+
 		'fall back to default font if none was given
 		if name = "" then name = "default"
-		style :| _defaultFlags
 
-		Local defaultFont:TBitmapFont = GetDefaultFont()
 		'no details given: return default font
-		If name = "default" And size = -1 And style = -1 Then Return defaultFont
+		If name = "default" And size = -1 And style = -1 then return GetDefaultFont()
+
+
+		'try to find default font settings for this font face
+		Local defaultFont:TBitmapFont = TBitmapFont(fonts.ValueForKey(name))
+		Local hasDefaultNameFont:int = defaultFont <> null
+		if not defaultFont then defaultFont = GetDefaultFont()
+
 		'no size given: use default font size
 		If size = -1 Then size = defaultFont.FSize
 		'no style given: use default font style
-		If style = -1 Then style = defaultFont.FStyle 'Else style = style | SMOOTHFONT
+		If style = -1 Then style = defaultFont.FStyle
+
+		local key:string = name + "_" + size + "_" + style
+		local font:TBitmapFont = TBitmapFont(fonts.ValueForKey(key))
+		if font then return font
+
 
 		'if the font wasn't found, use the defaultFont-fontfile to load this style
 		Local defaultFontFile:String = defaultFont.FFile
-		For Local Font:TBitmapFont = EachIn Self.List
-			If Font.FName = name And Font.FStyle = style Then defaultFontFile = Font.FFile
-			If Font.FName = name And Font.FSize = size And Font.FStyle = style Then Return Font
-		Next
-		Return Add(name, defaultFontFile, size, style)
+		font = Add(name, defaultFontFile, size, style)
+
+		'insert as default too
+		if not hasDefaultNameFont then fonts.Insert(name, font)
+
+		Return font
 	End Method
 
 
 	Method Copy:TBitmapFont(sourceName:string, copyName:string, size:int=-1, style:int=-1)
 		local sourceFont:TBitmapFont = Get(sourceName, size, style)
-		Local newFont:TBitmapFont = TBitmapFont.Create(copyName, sourceFont.fFile, sourceFont.fSize, sourceFont.fStyle)
-		List.AddLast(newFont)
+		Local newFont:TBitmapFont = TBitmapFont.Create(copyName, sourceFont.fFile, sourceFont.fSize, sourceFont.fStyle, sourceFont.fixedCharWidth, sourceFont.charWidthModifier)
+		fonts.Insert(copyName+"_"+sourceFont.fSize+"_"+sourceFont.fStyle, newFont)
+
 		return newFont
 	End Method
 
 
-	Method Add:TBitmapFont(name:String, file:String, size:Int, style:Int=0)
+	Method Add:TBitmapFont(name:String, file:String, size:Int, style:Int=0, ignoreDefaultStyle:int = False, fixedCharWidth:int=-1, charWidthModifier:Float=1.0)
 		name = lower(name)
-		style :| _defaultFlags
+		if not ignoreDefaultStyle
+			style :| _defaultFlags
+		endif
 
 		local defaultFont:TBitmapFont = GetDefaultFont()
 		If size = -1 Then size = defaultFont.FSize
 		If style = -1 Then style = defaultFont.FStyle
 		If file = "" Then file = defaultFont.FFile
 
-		Local Font:TBitmapFont = TBitmapFont.Create(name, file, size, style)
-		List.AddLast(Font)
+		Local font:TBitmapFont = TBitmapFont.Create(name, file, size, style, fixedCharWidth, charWidthModifier)
+		Local key:string = name+"_"+size+"_"+style
+		'print "adding font: " + key
+		fonts.Insert(key, font)
+
+		'insert as default font too
+		if not TBitmapFont(fonts.ValueForKey(name)) then fonts.Insert(name, font)
 
 		'set default fonts if not done yet
 		if _defaultFont = null then _defaultFont = Font
@@ -130,6 +151,13 @@ Type TBitmapFontManager
 
 		Return Font
 	End Method
+
+
+	Method AddFont:TBitmapFont(font:TBitmapFont)
+		local key:string = font.FName + "_" + font.FSize + "_" + font.FStyle
+		fonts.insert(key, font)
+	End Method
+
 End Type
 
 '===== CONVENIENCE ACCESSORS =====
@@ -192,6 +220,8 @@ Type TBitmapFont
 	Field lineHeightModifier:float = 1.05
 	'value the width of " " (space) is multiplied with
 	Field spaceWidthModifier:float = 1.0
+	Field charWidthModifier:float = 1.0
+	Field fixedCharWidth:int = -1
 	Field tabWidth:int = 15
 	'whether to use ints or floats for coords
 	Field drawAtFixedPoints:int = true
@@ -217,7 +247,7 @@ Type TBitmapFont
 	Const STYLE_GLOW:int = 3
 
 
-	Function Create:TBitmapFont(name:String, url:String, size:Int, style:Int)
+	Function Create:TBitmapFont(name:String, url:String, size:Int, style:Int, fixedCharWidth:int = -1, charWidthModifier:Float = 1.0)
 		Local obj:TBitmapFont = New TBitmapFont
 		obj.FName = name
 		obj.FFile = url
@@ -225,6 +255,9 @@ Type TBitmapFont
 		obj.FStyle = style
 		obj.uniqueID = name+"_"+url+"_"+size+"_"+style
 		obj.gfx = tmax2dgraphics.Current()
+		obj.fixedCharWidth = fixedCharWidth
+		obj.charWidthModifier = charWidthModifier
+
 		obj.FImageFont = LoadTrueTypeFont(url, size, style)
 		If not obj.FImageFont
 			'get system/current font
@@ -302,7 +335,7 @@ Type TBitmapFont
 	'generate a charmap containing packed rectangles where to store images
 	Method InitFont(config:TData=null )
 		'1. load chars
-		LoadCharsFromImgFont()
+		LoadCharsFromSource()
 		'2. Process the characters (add shadow, gradients, ...)
 		ApplyCharsEffect(config)
 		'3. store them into a packed (optimized) charmap
@@ -319,7 +352,8 @@ Type TBitmapFont
 
 
 	'load glyphs of an imagefont as TBitmapFontChar into a char-TMap
-	Method LoadCharsFromImgFont(imgFont:TImageFont=null)
+	Method LoadCharsFromSource(source:object=null)
+		local imgFont:TImageFont = TImageFont(source)
 		if imgFont = null then imgFont = FImageFont
 		Local glyph:TImageGlyph
 		Local glyphCount:Int = imgFont.CountGlyphs()
@@ -358,7 +392,11 @@ Type TBitmapFont
 			if i >= 65 AND i < 95 then displaceY = Min(displaceY, glyph._y)
 			resizeChars(i)
 			'chars.insert(i, new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance))
-			chars[i] = new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance)
+			if fixedCharWidth > 0
+				chars[i] = new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w ,glyph._h, fixedCharWidth)
+			else
+				chars[i] = new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance * charWidthModifier)
+			endif
 		Next
 		For Local charNum:Int = 0 Until ExtraChars.length
 			n = imgFont.CharToGlyph( ExtraChars[charNum] )
@@ -367,15 +405,21 @@ Type TBitmapFont
 			If not glyph then continue
 			resizeChars(ExtraChars[charNum])
 			'chars.insert(ExtraChars[charNum] , new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance) )
-			chars[ExtraChars[charNum]] = new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance)
+			if fixedCharWidth > 0
+				chars[ExtraChars[charNum]] = new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w ,glyph._h, fixedCharWidth)
+			else
+				chars[ExtraChars[charNum]] = new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance * charWidthModifier)
+			endif
 		Next
 	End Method
+
 
 	Method resizeChars(index:int)
 		if index >= chars.length then
 			chars = chars[.. index + 1 + chars.length/3]
 		end if
 	end method
+
 
 	Method resizeCharsSprites(index:int)
 		if index >= charsSprites.length then
@@ -763,23 +807,17 @@ Type TBitmapFont
 
 			'backup current setting
 			fontStyle.PushColor( color )
-		elseif command = "/color" and not fontStyle.ignoreColorTag
+		endif
+		if command = "/color" and not fontStyle.ignoreColorTag
 			'local color:TColor =
 			fontStyle.PopColor()
-
-		elseif command = "b"
-			fontStyle.PushFontStyle( BOLDFONT )
-
-		elseif command = "/b"
-			fontStyle.PopFontStyle( BOLDFONT )
-
-		elseif command = "i"
-			fontStyle.PushFontStyle( ITALICFONT )
-
-		elseif command = "/i"
-			fontStyle.PopFontStyle( ITALICFONT )
-
 		endif
+
+		if command = "b" then fontStyle.PushFontStyle( BOLDFONT )
+		if command = "/b" then fontStyle.PopFontStyle( BOLDFONT )
+
+		if command = "i" then fontStyle.PushFontStyle( ITALICFONT )
+		if command = "/i" then fontStyle.PopFontStyle( ITALICFONT )
 
 		'adjust line height if another font is selected
 		if fontStyle.GetFont() <> self and fontStyle.GetFont()
@@ -989,27 +1027,18 @@ Type TBitmapFont
 
 				Local bm:TBitmapFontChar
 				' = TBitmapFontChar( font.chars.ValueForKey(charCode) )
-				if charCode < font.chars.length
+				if charCode < font.chars.length then
 					bm = font.chars[charCode]
-				endif
-
-				'reload a "bold/italic" font with utf8?
-				if not bm and font <> self
-					If charCode > 256 and font.MaxSigns = 256 and font.glyphCount > 256 and font.extraChars.find(chr(charCode)) = -1
-						font.LoadExtendedCharacters()
-						if charCode < font.chars.length
-							bm = font.chars[charCode]
-						endif
-					EndIf
-				endif
-
+				end if
 				if bm
 					displayCharCode = charCode
 				else
 					displayCharCode = Asc("?")
-					bm = TBitmapFontChar( font.chars[displayCharCode] )
+					if charCode < font.chars.length then
+						bm = font.chars[charCode]
+					end if
+					'bm = TBitmapFontChar( font.chars.ValueForKey(displayCharCode) )
 				endif
-
 				if bm
 					Local tx:Float = bm.area.GetX() * gfx.tform_ix + bm.area.GetY() * gfx.tform_iy
 					Local ty:Float = bm.area.GetX() * gfx.tform_jx + bm.area.GetY() * gfx.tform_jy
