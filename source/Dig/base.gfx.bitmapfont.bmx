@@ -91,26 +91,47 @@ Type TBitmapFontManager
 
 
 		'try to find default font settings for this font face
-		Local defaultFont:TBitmapFont = TBitmapFont(fonts.ValueForKey(name))
-		Local hasDefaultNameFont:int = defaultFont <> null
-		if not defaultFont then defaultFont = GetDefaultFont()
+		Local hasDefaultStyledFont:int = False
+		Local hasDefaultFont:int = False
+		Local defaultStyledFont:TBitmapFont = TBitmapFont(fonts.ValueForKey(name+"_-1_"+style))
+		Local defaultFont:TBitmapFont = defaultStyledFont
+
+		if not defaultStyledFont
+			defaultFont = TBitmapFont(fonts.ValueForKey(name))
+			defaultStyledFont = defaultFont
+			if defaultFont
+				hasDefaultFont = True
+			endif
+		else
+			hasDefaultStyledFont = True
+		endif
+		if not defaultStyledFont then defaultStyledFont = GetDefaultFont()
+
 
 		'no size given: use default font size
-		If size = -1 Then size = defaultFont.FSize
+		If size = -1 Then size = defaultStyledFont.FSize
 		'no style given: use default font style
-		If style = -1 Then style = defaultFont.FStyle
+		If style = -1 Then style = defaultStyledFont.FStyle
+
 
 		local key:string = name + "_" + size + "_" + style
 		local font:TBitmapFont = TBitmapFont(fonts.ValueForKey(key))
 		if font then return font
-
-
 		'if the font wasn't found, use the defaultFont-fontfile to load this style
-		Local defaultFontFile:String = defaultFont.FFile
-		font = Add(name, defaultFontFile, size, style)
+		font = Add(name, defaultStyledFont.FFile, size, style)
 
+rem
 		'insert as default too
-		if not hasDefaultNameFont then fonts.Insert(name, font)
+		if not hasDefaultStyledFont then fonts.Insert(name+"_-1_"+style, font)
+		if not hasDefaultFont then fonts.Insert(name, font)
+		'if SMOOTHFONT was used - add the unsmoothed too (for easier retrieval)
+		if (style & SMOOTHFONT) <> 0
+			local keyWithoutSmooth:string = name + "_" + size + "_" + (style - SMOOTHFONT)
+			if not TBitmapFont(fonts.ValueForKey(keyWithoutSmooth))
+				fonts.insert(keyWithoutSmooth, font)
+			endif
+		endif
+endrem
 
 		Return font
 	End Method
@@ -138,16 +159,32 @@ Type TBitmapFontManager
 
 		Local font:TBitmapFont = TBitmapFont.Create(name, file, size, style, fixedCharWidth, charWidthModifier)
 		Local key:string = name+"_"+size+"_"+style
-		'print "adding font: " + key
 		fonts.Insert(key, font)
 
-		'insert as default font too
+		'insert as default font too (name + style, ignore size)
+		if not TBitmapFont(fonts.ValueForKey(name+"_-1_"+style)) then fonts.Insert(name+"_-1_"+style, font)
+		'insert as default font too (only name)
 		if not TBitmapFont(fonts.ValueForKey(name)) then fonts.Insert(name, font)
+
+		'if SMOOTHFONT was used - add the unsmoothed too (for easier retrieval)
+		if (style & SMOOTHFONT) <> 0
+			local styleNonSmooth:int = style - SMOOTHFONT
+			if not TBitmapFont(fonts.ValueForKey(name + "_-1_" + (style - SMOOTHFONT)))
+				fonts.insert(name + "_-1_" + (style - SMOOTHFONT), font)
+			endif
+
+			if not TBitmapFont(fonts.ValueForKey(name + "_" + size + "_" + (style - SMOOTHFONT)))
+				fonts.insert(name + "_" + size + "_" + (style - SMOOTHFONT), font)
+			endif
+		endif
+
+
 
 		'set default fonts if not done yet
 		if _defaultFont = null then _defaultFont = Font
 		if baseFont = null then baseFont = Font
 		if baseFontBold = null and style & BOLDFONT > 0 then baseFontBold = Font
+		if baseFontItalic  = null and style & ITALICFONT > 0 then baseFontItalic = Font
 
 		Return Font
 	End Method

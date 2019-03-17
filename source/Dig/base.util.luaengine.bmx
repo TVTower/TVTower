@@ -59,7 +59,11 @@ Import BRL.Reflection
 ?
 Import "base.util.logger.bmx"
 'from maxlua, modified to define "THREADED"
+?bmxng
 Import "base.util.luaengine.c"
+?not bmxng
+Import "base.util.luaengine.vanillabmx.c"
+?
 
 Extern
 	Function lua_tolightobject:Object( L:Byte Ptr,index:Int )
