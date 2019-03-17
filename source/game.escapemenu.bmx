@@ -5,6 +5,7 @@ rem
 'now done via interface
 	Field speedButtons:TGUIButton[]
 endrem
+	Field chainSettingsMenu:TGUIModalWindowChainElement
 	Field chainLoadMenu:TGUIModalWindowChainElement
 	Field chainSaveMenu:TGUIModalWindowChainElement
 
@@ -47,7 +48,7 @@ endrem
 			AddEventListener( EventManager.RegisterListenerMethod("guiobject.onClick", self, "onButtonClick", buttons[i]) )
 		next
 		'disable settings button for now
-		buttons[3].disable()
+'buttons[3].disable()
 
 		If guiCaptionTextBox
 			guiCaptionTextBox.SetFont(headerFont)
@@ -90,6 +91,10 @@ endrem
 		if chainLoadMenu
 			chainLoadMenu.Remove()
 			chainLoadMenu = null
+		endif
+		if chainSettingsMenu
+			chainSettingsMenu.Remove()
+			chainSettingsMenu = null
 		endif
 	End Method
 
@@ -139,6 +144,19 @@ endrem
 				'set new one as the active one
 				SwitchActive( chainSaveMenu )
 
+			case buttons[3]
+				if not chainSettingsMenu
+					chainSettingsMenu = new TGUIModalSettingsMenu.Create(New TVec2D, New TVec2D.Init(700,490), "SYSTEM")
+					chainSettingsMenu._defaultValueColor = TColor.clBlack.copy()
+					chainSettingsMenu.defaultCaptionColor = TColor.clWhite.copy()
+					'set self as previous one
+					chainSettingsMenu.previousChainElement = self
+				endif
+				TGUIModalSettingsMenu(chainSettingsMenu).SetGuiValues(App.config)
+
+				'set new one as the active one
+				SwitchActive( chainSettingsMenu )
+
 			case buttons[4]
 				'create extra dialog
 				TApp.CreateConfirmExitAppDialogue(True)
@@ -149,6 +167,104 @@ endrem
 				TApp.CreateConfirmExitAppDialogue(False)
 				Close()
 		End Select
+	End Method
+End Type
+
+
+
+
+Type TGUIModalSettingsMenu extends TGUIModalWindowChainDialogue
+	Field settingsPanel:TGUISettingsPanel
+	Field _eventListeners:TLink[]
+
+
+	Method Create:TGUIModalSettingsMenu(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+		Super.Create(pos, dimension, limitState)
+		SetDialogueType(2)
+
+		dialogueButtons[0].SetCaption(GetLocale("SAVE_AND_APPLY"))
+		dialogueButtons[0].Resize(180,-1)
+		dialogueButtons[1].SetCaption(GetLocale("CANCEL"))
+		dialogueButtons[1].Resize(160,-1)
+
+		SetCaptionAndValue(GetLocale("MENU_SETTINGS"), "")
+
+		If guiCaptionTextBox
+			guiCaptionTextBox.SetFont(headerFont)
+			guiCaptionTextBox.Resize(-1,-1)
+			SetCaptionArea(New TRectangle.Init(-1, 5, -1, 25))
+		Endif
+
+		'use the gfx with content inset (and padding)
+		guiBackground.spriteBaseName = "gfx_gui_modalWindow"
+
+
+
+		settingsPanel = new TGUISettingsPanel.Create(New TVec2D, New TVec2D.Init(700, 490), "SYSTEM")
+		'add to canvas of this window
+		'GetGuiContent()
+		AddChild(settingsPanel)
+
+
+		'=== EVENTS ===
+		'listen to clicks on "load savegame"
+		_eventListeners :+ [ EventManager.registerListenerMethod( "guibutton.onclick", self, "onApplySettings", dialogueButtons[0]) ]
+
+		return self
+	End Method
+
+
+	Method onApplySettings:int( triggerEvent:TEventBase )
+		App.ApplyConfigToSettings( ReadGuiValues() )
+		return True
+	End Method
+
+
+global LS_modalSettingsMenu:TLowerString = TLowerString.Create("modalSettings")
+	Method Update:int()
+'		GuiManager.Update( LS_modalSettingsMenu )
+		Super.Update()
+	End Method
+
+
+	Method DrawContent()
+		Super.DrawContent()
+
+'		GuiManager.Draw( LS_modalSettingsMenu )
+	End Method
+
+
+	'override
+	Method Activate:int()
+	End Method
+
+
+	Method Remove:int()
+		super.Remove()
+
+		if settingsPanel then settingsPanel.remove()
+		settingsPanel = null
+
+		'remove all event listeners
+		EventManager.unregisterListenersByLinks(_eventListeners)
+		_eventListeners = new TLink[0]
+	End Method
+
+
+	Method Resize(w:Float = 0, h:Float = 0)
+		Super.Resize(w,h)
+'		if settingsPanel then settingsPanel.Resize( GetContentScreenX(), GetContentScreenY() )
+	End Method
+
+
+	Method SetGuiValues:int(data:TData)
+		if settingsPanel then return settingsPanel.SetGuiValues(data)
+	End Method
+
+
+	Method ReadGuiValues:TData()
+		if settingsPanel then return settingsPanel.ReadGuiValues()
+		return new TData
 	End Method
 End Type
 
@@ -171,7 +287,7 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 		'use the gfx with content inset (and padding)
 		guiBackground.spriteBaseName = "gfx_gui_modalWindow"
 
-		Local canvas:TGUIObject = GetGuiContent()
+'		Local canvas:TGUIObject = GetGuiContent()
 
 		savegameList = new TGUISelectList.Create(new TVec2D.Init(GetContentScreenX(), GetContentScreenY()), new TVec2D.Init(GetContentScreenWidth(),80), "MODALLOADMENU")
 '		savegameList.rect.position.SetXY(GetContentScreenX(), GetContentScreenY())
@@ -354,7 +470,7 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 		'use the gfx with content inset (and padding)
 		guiBackground.spriteBaseName = "gfx_gui_modalWindow"
 
-		Local canvas:TGUIObject = GetGuiContent()
+'		Local canvas:TGUIObject = GetGuiContent()
 
 		savegameName = new TGUIInput.Create(new TVec2D.Init(GetContentScreenX(), GetContentScreenY()), new TVec2D.Init(GetContentScreenWidth(), 40), "", 64, "MODALSAVEMENU")
 		savegameNameLabel = New TGUILabel.Create(New TVec2D.Init(0, 0), "", null, "MODALSAVEMENU")

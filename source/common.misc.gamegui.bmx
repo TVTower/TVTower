@@ -3,6 +3,7 @@ Import "Dig/base.gfx.gui.dropdown.bmx"
 Import "Dig/base.gfx.gui.chat.bmx"
 Import "Dig/base.gfx.gui.window.base.bmx"
 Import "Dig/base.gfx.gui.window.modal.bmx"
+Import "Dig/base.gfx.gui.window.modalchain.bmx"
 Import "Dig/base.gfx.gui.list.selectlist.bmx"
 Import "Dig/base.gfx.gui.list.slotlist.bmx"
 Import "Dig/base.gfx.gui.accordeon.bmx"
@@ -228,6 +229,26 @@ Type TGUIGameWindow Extends TGUIWindowBase
 End Type
 
 
+
+Type TGUIGameModalWindowChainDialogue extends TGUIModalWindowChainDialogue
+	Method Create:TGUIGameModalWindowChainDialogue(pos:TVec2D, dimension:TVec2D, limitState:String = "")
+		_defaultValueColor = TColor.clBlack.copy()
+		defaultCaptionColor = TColor.clWhite.copy()
+
+		Super.Create(pos, dimension, limitState)
+
+		SetCaptionArea(New TRectangle.Init(-1,10,-1,25))
+		guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP )
+
+
+		Return Self
+	End Method
+
+	Method SetCaption:Int(caption:String="")
+		Super.SetCaption(caption)
+		If guiCaptionTextBox Then guiCaptionTextBox.SetFont(.headerFont)
+	End Method
+End Type
 
 
 Type TGUIGameModalWindow Extends TGUIModalWindow

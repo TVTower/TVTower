@@ -49,6 +49,8 @@ Import "common.misc.screen.bmx"
 Import "common.misc.dialogue.bmx"
 'Import "common.misc.gamegui.bmx"
 
+Import "game.menu.settings.bmx"
+
 'game specific
 Import "game.world.bmx"
 Import "game.toastmessage.bmx"
@@ -179,6 +181,8 @@ Type TApp
 	'store listener for music loaded in "startup"
 	Field OnLoadMusicListener:TLink
 
+	Field settingsWindow:TSettingsWindow
+
 	'bitmask defining what elements set the game to paused (eg. escape
 	'menu, ingame help ...)
 	Field pausedBy:int = 0
@@ -218,8 +222,10 @@ Type TApp
 		obj.creationTime = Time.MillisecsLong()
 
 		If initializeGUI Then
-			'register to quit confirmation dialogue
-			EventManager.registerListenerFunction( "guiModalWindow.onClose", onAppConfirmExit )
+			'register to:
+			'- quit confirmation dialogue
+			'- handle saving/applying of settings
+			EventManager.registerListenerFunction( "guiModalWindow.onClose", onCloseModalDialogue )
 			EventManager.registerListenerFunction( "guiModalWindowChain.onClose", onCloseEscapeMenu )
 			EventManager.registerListenerFunction( "RegistryLoader.onLoadXmlFromFinished",	TApp.onLoadXmlFromFinished )
 			obj.OnLoadMusicListener = EventManager.registerListenerFunction( "RegistryLoader.onLoadResource",	TApp.onLoadMusicResource )
@@ -354,6 +360,41 @@ Type TApp
 		Wend
 	End Method
 
+
+	Method CreateSettingsWindow()
+		'load config
+		LoadSettings()
+
+		if settingsWindow then settingsWindow.Remove()
+		settingsWindow = New TSettingsWindow.Init() '.Create(New TVec2D(), New TVec2D.Init(520,45), "SYSTEM")
+		'fill values
+		settingsWindow.SetGuiValues(App.config)
+
+	End Method
+
+
+	Method ApplySettingsWindow:Int()
+		'append values stored in gui elements
+		ApplyConfigToSettings( settingsWindow.ReadGuiValues() )
+	End Method
+
+
+	Method ApplyConfigToSettings(newConfig:TData)
+		Local mixedConfig:TData = App.config.copy()
+		'append values stored in gui elements
+		mixedConfig.Append(newConfig)
+
+		SaveSettings(mixedConfig)
+		'save the new config as current config
+		config = mixedConfig
+		'and "reinit" settings
+		ApplySettings()
+
+		'=== GAME SETTINGS ===
+		if not GetGame().PlayingAGame()
+			GetGame().SetStartYear( config.GetInt("startyear", 0) )
+		EndIf
+	End Method
 
 
 	Method LoadSettings:Int()
@@ -1236,7 +1277,7 @@ endrem
 		endif
 
 		If openEscapeMenu
-			print "should open escape menu. gamestate="+GetGame().gamestate
+			'print "should open escape menu. gamestate="+GetGame().gamestate
 
 			'ask to exit to main menu
 			'TApp.CreateConfirmExitAppDialogue(True)
@@ -1756,17 +1797,44 @@ endrem
 	End Function
 
 
+	Function onCloseModalDialogue:Int(triggerEvent:TEventBase)
+'		If App.settingsWindow and dialogue = App.settingsWindow.modalDialogue
+		If App.settingsWindow and App.settingsWindow.modalDialogue = triggerEvent.GetSender()
+			return onCloseSettingsWindow(triggerEvent)
+		elseif ExitAppDialogue = triggerEvent.GetSender()
+			return onAppConfirmExit(triggerEvent)
+		endif
+	End Function
+
+
+	Function onCloseSettingsWindow:Int(triggerEvent:TEventBase)
+		If Not App.settingsWindow Then Return False
+
+		'"apply" button was used...save the whole thing
+		If triggerEvent.GetData().GetInt("closeButton", -1) = 0
+			App.ApplySettingsWindow()
+		EndIf
+
+		'unset variable - allows escape/quit-window again
+		'App.settingsWindow.modaldialogue.Remove()
+		'App.settingsWindow = Null
+	End Function
+
+
 	Function onAppConfirmExit:Int(triggerEvent:TEventBase)
+rem
+'already checked in onCloseModalDialogue()
 		Local dialogue:TGUIModalWindow = TGUIModalWindow(triggerEvent.GetSender())
 		If Not dialogue Then Return False
+
+		'not interested in other dialogues
+		If dialogue <> ExitAppDialogue Then Return False
+endrem
 
 		'store closing time of this modal window (does not matter which
 		'one) to skip creating another exit dialogue within a certain
 		'timeframe
 		ExitAppDialogueTime = Time.MilliSecsLong()
-
-		'not interested in other dialogues
-		If dialogue <> ExitAppDialogue Then Return False
 
 
 		Local buttonNumber:Int = triggerEvent.GetData().getInt("closeButton",-1)
@@ -2802,7 +2870,6 @@ Type TScreen_MainMenu Extends TGameScreen
 	Field guiButtonSettings:TGUIButton
 	Field guiButtonQuit:TGUIButton
 	Field guiLanguageDropDown:TGUISpriteDropDown
-	Field settingsWindow:TSettingsWindow
 	Field loadGameMenuWindow:TGUImodalWindowChain
 
 	Field stateName:TLowerString
@@ -2877,28 +2944,8 @@ Type TScreen_MainMenu Extends TGameScreen
 
 		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickButtons")
 
-		'handle saving/applying of settings
-		EventManager.RegisterListenerMethod("guiModalWindow.onClose", Self, "onCloseModalDialogue")
-
 		Return Self
 	End Method
-
-
-	Method onCloseModalDialogue:Int(triggerEvent:TEventBase)
-		If Not settingsWindow Then Return False
-
-		Local dialogue:TGUIModalWindow = TGUIModalWindow(triggerEvent.GetSender())
-		If dialogue <> settingsWindow.modalDialogue Then Return False
-
-		'"apply" button was used...save the whole thing
-		If triggerEvent.GetData().GetInt("closeButton", -1) = 0
-			ApplySettingsWindow()
-		EndIf
-		'unset variable - allows escape/quit-window again
-		if settingsWindow then settingsWindow.Remove()
-		settingsWindow = Null
-	End Method
-
 
 
 	'handle clicks on the buttons
@@ -2923,7 +2970,7 @@ Type TScreen_MainMenu Extends TGameScreen
 
 		Select sender
 			Case guiButtonSettings
-					CreateSettingsWindow()
+					App.CreateSettingsWindow()
 
 			Case guiButtonStart
 					PrepareGameObject()
@@ -2963,30 +3010,6 @@ Type TScreen_MainMenu Extends TGameScreen
 
 	End Method
 
-
-	Method CreateSettingsWindow()
-		'load config
-		App.LoadSettings()
-
-		if settingsWindow then settingsWindow.Remove()
-		settingsWindow = New TSettingsWindow.Init()
-	End Method
-
-
-	Method ApplySettingsWindow:Int()
-		Local newConfig:TData = App.config.copy()
-		'append values stored in gui elements
-		newConfig.Append(settingsWindow.ReadGuiValues())
-
-		App.SaveSettings(newConfig)
-		'save the new config as current config
-		App.config = newConfig
-		'and "reinit" settings
-		App.ApplySettings()
-
-		'=== GAME SETTINGS ===
-		GetGame().SetStartYear( App.config.GetInt("startyear", 0) )
-	End Method
 
 
 	Method CreateLoadGameWindow()
@@ -3494,509 +3517,6 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		If Not GetGame().networkGame Then Return False
 
 		'send which database to use (or send database itself?)
-	End Method
-End Type
-
-
-
-'the modal window containing various gui elements to configure some
-'basics in the game
-Type TSettingsWindow
-	Field modalDialogue:TGUIGameModalWindow
-	Field inputPlayerName:TGUIInput
-	Field inputChannelName:TGUIInput
-	Field inputStartYear:TGUIInput
-	Field inputStationmap:TGUIDropDown
-	Field inputDatabase:TGUIDropDown
-	Field checkMusic:TGUICheckbox
-	Field checkSfx:TGUICheckbox
-	Field dropdownSoundEngine:TGUIDropDown
-	Field dropdownRenderer:TGUIDropDown
-	Field checkFullscreen:TGUICheckbox
-	Field checkVSync:TGUICheckbox
-	Field inputWindowResolutionWidth:TGUIInput
-	Field inputWindowResolutionHeight:TGUIInput
-	Field inputGameName:TGUIInput
-	Field inputInRoomSlowdown:TGUIInput
-	Field inputOnlinePort:TGUIInput
-	Field inputTouchClickRadius:TGUIInput
-	Field checkTouchInput:TGUICheckbox
-	Field checkLongClickMode:TGUICheckbox
-	Field inputLongClickTime:TGUIInput
-
-	Field checkShowIngameHelp:TGUICheckbox
-
-	'labels for deactivation
-	Field labelLongClickTime:TGUILabel
-	Field labelLongClickTimeMilliseconds:TGUILabel
-	Field labelTouchClickRadiusPixel:TGUILabel
-	Field labelTouchClickRadius:TGUILabel
-
-	Field _eventListeners:TLink[]
-
-
-	Method New()
-		EventManager.registerListenerMethod("guiCheckBox.onSetChecked", Self, "onCheckCheckboxes", "TGUICheckbox")
-	End Method
-
-
-	Method Remove:int()
-		'no need to remove them ... everything is handled via
-		'removal of the modalDialogue as the other elements are children
-		'of that dialogue
-		modalDialogue.Remove()
-		rem
-			inputPlayerName.Remove()
-			inputChannelName.Remove()
-			inputStartYear.Remove()
-			inputStationmap.Remove()
-			inputDatabase.Remove()
-			checkMusic.Remove()
-			checkSfx.Remove()
-			dropdownSoundEngine.Remove()
-			dropdownRenderer.Remove()
-			checkFullscreen.Remove()
-			inputGameName.Remove()
-			inputOnlinePort.Remove()
-		endrem
-
-		EventManager.unregisterListenersByLinks(_eventListeners)
-	End Method
-
-
-	Method Delete()
-
-		Remove()
-	End Method
-
-
-	Method ReadGuiValues:TData()
-		Local data:TData = New TData
-
-		data.Add("playername", inputPlayerName.GetValue())
-		data.Add("channelname", inputChannelName.GetValue())
-		data.Add("startyear", inputStartYear.GetValue())
-		'data.Add("stationmap", inputStationmap.GetValue())
-		data.Add("databaseDir", inputDatabase.GetValue())
-		data.Add("inroomslowdown", inputInRoomSlowdown.GetValue())
-
-		data.AddBoolString("sound_music", checkMusic.IsChecked())
-		data.AddBoolString("sound_effects", checkSfx.IsChecked())
-		data.Add("sound_engine", dropdownSoundEngine.GetSelectedEntry().data.GetString("value", "0"))
-
-
-		data.Add("renderer", dropdownRenderer.GetSelectedEntry().data.GetString("value", "0"))
-		data.AddBoolString("fullscreen", checkFullscreen.IsChecked())
-		data.AddBoolString("vsync", checkVSync.IsChecked())
-		data.Add("screenW", inputWindowResolutionWidth.GetValue())
-		data.Add("screenH", inputWindowResolutionHeight.GetValue())
-
-		data.Add("gamename", inputGameName.GetValue())
-		data.Add("onlineport", inputOnlinePort.GetValue())
-
-		data.AddBoolString("touchInput", checkTouchInput.IsChecked())
-		data.Add("touchClickRadius", inputTouchClickRadius.GetValue())
-		data.AddBoolString("longClickMode", checkLongClickMode.IsChecked())
-		data.Add("longClicktime", inputLongClickTime.GetValue())
-
-		data.AddBoolString("showIngameHelp", checkShowIngameHelp.IsChecked())
-
-		Return data
-	End Method
-
-
-	Method SetGuiValues:Int(data:TData)
-		inputPlayerName.SetValue(data.GetString("playername", "Player"))
-		inputChannelName.SetValue(data.GetString("channelname", "My Channel"))
-		inputStartYear.SetValue(data.GetInt("startyear", 1985))
-		'inputStationmap.SetValue(data.GetString("stationmap", "res/maps/germany.xml"))
-		if FileType(data.GetString("databaseDir")) <> 2
-			data.AddString("databaseDir", "res/database/Default")
-		endif
-		inputDatabase.SetValue(data.GetString("databaseDir", "res/database/Default"))
-		inputInRoomSlowdown.SetValue(data.GetInt("inroomslowdown", 100))
-		checkMusic.SetChecked(data.GetBool("sound_music", True))
-		checkSfx.SetChecked(data.GetBool("sound_effects", True))
-		checkFullscreen.SetChecked(data.GetBool("fullscreen", False))
-		checkVSync.SetChecked(data.GetBool("vsync", True))
-		inputWindowResolutionWidth.SetValue(Max(400, data.GetInt("screenW", 800)))
-		inputWindowResolutionHeight.SetValue(Max(300, data.GetInt("screenH", 600)))
-		checkTouchInput.SetChecked(data.GetBool("touchInput", MouseManager._ignoreFirstClick))
-		inputTouchClickRadius.SetValue(Max(5, data.GetInt("touchClickRadius", MouseManager._minSwipeDistance)))
-		checkLongClickMode.SetChecked(data.GetBool("longClickMode", MouseManager._longClickModeEnabled))
-		inputLongClickTime.SetValue(Max(50, data.GetInt("longClickTime", MouseManager._longClickTime)))
-
-		checkShowIngameHelp.SetChecked(data.GetBool("showIngameHelp", IngameHelpWindowCollection.showHelp))
-
-
-		'disable certain elements if needed
-		if not checkLongClickMode.IsChecked()
-			labelLongClickTime.Disable()
-			inputLongClickTime.Disable()
-			labelLongClickTimeMilliseconds.Disable()
-		endif
-		if not checkTouchInput.IsChecked()
-			labelTouchClickRadius.Disable()
-			inputTouchClickRadius.Disable()
-			labelTouchClickRadiusPixel.Disable()
-		endif
-
-
-		'check available sound engine entries
-		Local selectedDropDownItem:TGUIDropDownItem
-		For Local item:TGUIDropDownItem = EachIn dropdownSoundEngine.GetEntries()
-			Local soundEngine:string = item.data.GetString("value")
-			'if the same renderer - select this
-			If soundEngine = data.GetString("sound_engine", "")
-				selectedDropDownItem = item
-				Exit
-			EndIf
-		Next
-		'select the first if nothing was preselected
-		If Not selectedDropDownItem
-			dropdownSoundEngine.SetSelectedEntryByPos(0)
-		Else
-			dropdownSoundEngine.SetSelectedEntry(selectedDropDownItem)
-		EndIf
-
-		'check available renderer entries
-		selectedDropDownItem = null
-		For Local item:TGUIDropDownItem = EachIn dropdownRenderer.GetEntries()
-			Local renderer:Int = item.data.GetInt("value")
-			'if the same renderer - select this
-			If renderer = data.GetInt("renderer", 0)
-				selectedDropDownItem = item
-				Exit
-			EndIf
-		Next
-		'select the first if nothing was preselected
-		If Not selectedDropDownItem
-			dropdownRenderer.SetSelectedEntryByPos(0)
-		Else
-			dropdownRenderer.SetSelectedEntry(selectedDropDownItem)
-		EndIf
-
-
-		inputGameName.SetValue(data.GetString("gamename", "New Game"))
-		inputOnlinePort.SetValue(data.GetInt("onlineport", 4544))
-	End Method
-
-
-	Method Init:TSettingsWindow()
-		'LAYOUT CONFIG
-		Local nextY:Int = 0, nextX:Int = 0
-		Local rowWidth:Int[] = [210,210,250]
-		Local checkboxWidth:Int = 180
-		Local inputWidth:Int = 170
-		Local labelH:Int = 12
-		Local inputH:Int = 0
-		Local windowW:Int = 700
-		Local windowH:Int = 490
-
-		modalDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(windowW, windowH), "SYSTEM")
-
-		modalDialogue.SetDialogueType(2)
-		modalDialogue.buttons[0].SetCaption(GetLocale("SAVE_AND_APPLY"))
-		modalDialogue.buttons[0].Resize(180,-1)
-		modalDialogue.buttons[1].SetCaption(GetLocale("CANCEL"))
-		modalDialogue.buttons[1].Resize(160,-1)
-		modalDialogue.SetCaptionAndValue(GetLocale("MENU_SETTINGS"), "")
-
-		Local canvas:TGUIObject = modalDialogue.GetGuiContent()
-
-		Local labelTitleGameDefaults:TGUILabel = New TGUILabel.Create(New TVec2D.Init(0, nextY), GetLocale("DEFAULTS_FOR_NEW_GAME"))
-		labelTitleGameDefaults.SetFont(GetBitmapFont("default", 14, BOLDFONT))
-		canvas.AddChild(labelTitleGameDefaults)
-		nextY :+ 25
-
-		Local labelPlayerName:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("PLAYERNAME")+":")
-		inputPlayerName = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "", 128)
-		canvas.AddChild(labelPlayerName)
-		canvas.AddChild(inputPlayerName)
-		inputH = inputPlayerName.GetScreenHeight()
-		nextY :+ inputH + labelH * 1.5
-
-		Local labelChannelName:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("CHANNELNAME")+":")
-		inputChannelName = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "", 128)
-		canvas.AddChild(labelChannelName)
-		canvas.AddChild(inputChannelName)
-		nextY :+ inputH + labelH * 1.5
-
-		Local labelStartYear:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("START_YEAR")+":")
-		inputStartYear = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(50,-1), "", 4)
-		canvas.AddChild(labelStartYear)
-		canvas.AddChild(inputStartYear)
-		nextY :+ inputH + labelH * 1.5
-
-		Local labelStationmap:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("STATIONMAP")+":")
-		inputStationmap = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "germany.xml", 128)
-		inputStationmap.disable()
-		canvas.AddChild(labelStationmap)
-		canvas.AddChild(inputStationmap)
-		nextY :+ inputH + labelH * 1.5
-
-		Local labelDatabase:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("DATABASE")+":")
-		inputDatabase = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "res/database/Default", 128)
-		inputDatabase.disable()
-		canvas.AddChild(labelDatabase)
-		canvas.AddChild(inputDatabase)
-		nextY :+ inputH + labelH * 1.5
-
-		checkShowIngameHelp = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth + 20,-1), GetLocale("SHOW_INTRODUCTORY_GUIDES"))
-		canvas.AddChild(checkShowIngameHelp)
-		nextY :+ checkShowIngameHelp.GetScreenHeight()
-
-		nextY :+ 15
-
-
-
-		'SINGLEPLAYER
-		Local labelTitleSingleplayer:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SINGLEPLAYER"))
-		labelTitleSingleplayer.SetFont(GetBitmapFont("default", 14, BOLDFONT))
-		canvas.AddChild(labelTitleSingleplayer)
-		nextY :+ 25
-
-		Local labelInRoomSlowdown:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("GAME_SPEED_IN_ROOMS")+":")
-		inputInRoomSlowdown = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(75,-1), "", 128)
-		local labelInRoomSlowdownPercentage:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX + 75 + 5, nextY + 18), "%")
-		canvas.AddChild(labelInRoomSlowdown)
-		canvas.AddChild(inputInRoomSlowdown)
-		canvas.AddChild(labelInRoomSlowdownPercentage)
-		nextY :+ inputH + labelH * 1.5
-
-
-		nextY = 0
-		nextX = rowWidth[0]
-		'SOUND
-		Local labelTitleSound:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_OUTPUT"))
-		labelTitleSound.SetFont(GetBitmapFont("default", 14, BOLDFONT))
-		canvas.AddChild(labelTitleSound)
-		nextY :+ 25
-
-		checkMusic = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
-		checkMusic.SetCaption(GetLocale("MUSIC"))
-		canvas.AddChild(checkMusic)
-		nextY :+ Max(inputH - 5, checkMusic.GetScreenHeight())
-
-		checkSfx = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
-		checkSfx.SetCaption(GetLocale("SFX"))
-		canvas.AddChild(checkSfx)
-		nextY :+ Max(inputH, checkSfx.GetScreenHeight())
-
-		Local labelSoundEngine:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_ENGINE") + ":")
-		dropdownSoundEngine = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(inputWidth,-1), "", 128)
-		Local soundEngineValues:String[] = ["AUTOMATIC", "NONE"]
-		Local soundEngineTexts:String[] = ["Auto", "---"]
-		?Win32
-			soundEngineValues :+ ["WINDOWS_ASIO","WINDOWS_DS"]
-			soundEngineTexts :+ ["ASIO", "Direct Sound"]
-		?Linux
-			soundEngineValues :+ ["LINUX_ALSA","LINUX_PULSE","LINUX_OSS"]
-			soundEngineTexts :+ ["ALSA", "PulseAudio", "OSS"]
-		?MacOS
-			soundEngineValues :+ ["MACOSX_CORE"]
-			soundEngineTexts :+ ["CoreAudio"]
-		?
-
-		Local itemHeight:Int = 0
-		For Local i:Int = 0 Until soundEngineValues.Length
-			Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(Null, Null, soundEngineTexts[i])
-			item.SetValueColor(TColor.CreateGrey(50))
-			item.data.Add("value", soundEngineValues[i])
-			dropdownSoundEngine.AddItem(item)
-			If itemHeight = 0 Then itemHeight = item.GetScreenHeight()
-		Next
-		dropdownSoundEngine.SetListContentHeight(itemHeight * Len(soundEngineValues))
-
-		canvas.AddChild(labelSoundEngine)
-		canvas.AddChild(dropdownSoundEngine)
-'		GuiManager.SortLists()
-		nextY :+ inputH + labelH * 1.5
-		nextY :+ 15
-
-
-		'GRAPHICS
-		Local labelTitleGraphics:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("GRAPHICS"))
-		labelTitleGraphics.SetFont(GetBitmapFont("default", 14, BOLDFONT))
-		canvas.AddChild(labelTitleGraphics)
-		nextY :+ 25
-
-		Local labelRenderer:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("RENDERER") + ":")
-		dropdownRenderer = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(inputWidth,-1), "", 128)
-		'Local rendererValues:String[] = ["0", "4"]
-		'Local rendererTexts:String[] = ["OpenGL", "Buffered OpenGL"]
-		Local rendererValues:String[]
-		Local rendererTexts:String[]
-
-		'fill with all available renderers
-		For local i:int = 0 until TGraphicsManager.RENDERER_AVAILABILITY.length
-			if TGraphicsManager.RENDERER_AVAILABILITY[i]
-				rendererValues :+ [string(i)] 'i is the same key here
-				rendererTexts :+ [ TGraphicsManager.RENDERER_NAMES[i] ]
-			endif
-		Next
-
-		itemHeight = 0
-		For Local i:Int = 0 Until rendererValues.Length
-			Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(Null, Null, rendererTexts[i])
-			item.SetValueColor(TColor.CreateGrey(50))
-			item.data.Add("value", rendererValues[i])
-			dropdownRenderer.AddItem(item)
-			If itemHeight = 0 Then itemHeight = item.GetScreenHeight()
-		Next
-		dropdownRenderer.SetListContentHeight(itemHeight * Len(rendererValues))
-
-		canvas.AddChild(labelRenderer)
-		canvas.AddChild(dropdownRenderer)
-		nextY :+ inputH + labelH * 1.5
-
-		checkFullscreen = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
-		checkFullscreen.SetCaption(GetLocale("FULLSCREEN"))
-		canvas.AddChild(checkFullscreen)
-		nextY :+ Max(inputH -5, checkFullscreen.GetScreenHeight())
-
-		checkVSync = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
-		checkVSync.SetCaption(GetLocale("VSYNC"))
-		canvas.AddChild(checkVSync)
-		nextY :+ Max(inputH, checkVSync.GetScreenHeight())
-
-		Local labelWindowResolution:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("WINDOW_MODE_RESOLUTION")+":")
-		inputWindowResolutionWidth = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(inputWidth/2 - 15,-1), "", 4)
-		inputWindowResolutionHeight = New TGUIInput.Create(New TVec2D.Init(nextX + inputWidth/2 + 15, nextY + 12), New TVec2D.Init(inputWidth/2 - 15,-1), "", 4)
-		Local labelWindowResolutionX:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX + inputWidth/2 - 4, nextY + 18), "x")
-		canvas.AddChild(labelWindowResolution)
-		canvas.AddChild(labelWindowResolutionX)
-		canvas.AddChild(inputWindowResolutionWidth)
-		canvas.AddChild(inputWindowResolutionHeight)
-		nextY :+ inputH + 5 + labelH * 1.5
-
-
-		'MULTIPLAYER
-		nextY = 0
-		nextX = rowWidth[0] + rowWidth[1]
-		Local labelTitleMultiplayer:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("MULTIPLAYER"))
-		labelTitleMultiplayer.SetFont(GetBitmapFont("default", 14, BOLDFONT))
-		canvas.AddChild(labelTitleMultiplayer)
-		nextY :+ 25
-
-		Local labelGameName:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("GAME_TITLE")+":")
-		inputGameName = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "", 128)
-		canvas.AddChild(labelGameName)
-		canvas.AddChild(inputGameName)
-		nextY :+ inputH + labelH * 1.5
-
-
-		Local labelOnlinePort:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("PORT_ONLINEGAME")+":")
-		inputOnlinePort = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(50,-1), "", 4)
-		canvas.AddChild(labelOnlinePort)
-		canvas.AddChild(inputOnlinePort)
-		nextY :+ inputH + labelH * 1.5
-		nextY :+ 15
-
-		'INPUT
-		'nextY = 0
-		'nextX = rowWidth[0] + rowWidth[1]
-		Local labelTitleInput:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("INPUT"))
-		labelTitleInput.SetFont(GetBitmapFont("default", 14, BOLDFONT))
-		canvas.AddChild(labelTitleInput)
-		nextY :+ 25
-
-		checkTouchInput = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth + 20,-1), GetLocale("USE_TOUCH_INPUT"))
-		canvas.AddChild(checkTouchInput)
-		nextY :+ checkTouchInput.GetScreenHeight()
-
-		local labelTouchInput:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("USE_TOUCH_INPUT_EXPLANATION"))
-		canvas.AddChild(labelTouchInput)
-		labelTouchInput.Resize(checkboxWidth+30,-1)
-		labelTouchInput.SetFont( GetBitmapFont("default", 10) )
-		labelTouchInput.SetValueColor(new TColor.CreateGrey(75))
-		labelTouchInput.SetValue(labelTouchInput.GetValue())
-		nextY :+ labelTouchInput.GetValueDimension().y + 5
-
-		labelTouchClickRadius = New TGUILabel.Create(New TVec2D.Init(nextX + 22, nextY), GetLocale("MOVE_INSTEAD_CLICK_RADIUS")+":")
-		inputTouchClickRadius = New TGUIInput.Create(New TVec2D.Init(nextX + 22, nextY + 12), New TVec2D.Init(50,-1), "", 4)
-		labelTouchClickRadiusPixel = New TGUILabel.Create(New TVec2D.Init(nextX + 22 + 55, nextY + 18), "px")
-		canvas.AddChild(labelTouchClickRadius)
-		canvas.AddChild(inputTouchClickRadius)
-		canvas.AddChild(labelTouchClickRadiusPixel)
-		nextY :+ Max(inputH, inputTouchClickRadius.GetScreenHeight()) + 18
-
-
-		checkLongClickMode = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth + 20,-1), GetLocale("LONGCLICK_MODE"))
-		canvas.AddChild(checkLongClickMode)
-		nextY :+ checkLongClickMode.GetScreenHeight()
-
-		local labelLongClickMode:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("LONGCLICK_MODE_EXPLANATION"))
-		canvas.AddChild(labelLongClickMode)
-		labelLongClickMode.Resize(checkboxWidth+30, -1)
-		labelLongClickMode.SetFont( GetBitmapFont("default", 10) )
-		labelLongClickMode.SetValueColor(new TColor.CreateGrey(75))
-		nextY :+ labelLongClickMode.GetValueDimension().y + 5
-
-		labelLongClickTime = New TGUILabel.Create(New TVec2D.Init(nextX + 22, nextY), GetLocale("LONGCLICK_TIME")+":")
-		inputLongClickTime = New TGUIInput.Create(New TVec2D.Init(nextX + 22, nextY + 12), New TVec2D.Init(50,-1), "", 4)
-		labelLongClickTimeMilliseconds = New TGUILabel.Create(New TVec2D.Init(nextX + 22 + 55 , nextY + 18), "ms")
-		canvas.AddChild(labelLongClickTime)
-		canvas.AddChild(inputLongClickTime)
-		canvas.AddChild(labelLongClickTimeMilliseconds)
-
-		nextY :+ inputH + 5
-
-
-		'fill values
-		SetGuiValues(App.config)
-
-		modalDialogue.Open()
-
-		Return Self
-	End Method
-
-
-	Method onCheckCheckboxes:int(event:TEventSimple)
-		local checkBox:TGUICheckbox = TGUICheckbox(event.GetSender())
-		if not checkBox then return False
-
-		if checkBox = checkLongClickMode
-			if not labelLongClickTime then return False
-			if not inputLongClickTime then return False
-			if not labelLongClickTimeMilliseconds then return False
-
-			if checkLongClickMode.IsChecked()
-				if not labelLongClickTime.IsEnabled()
-					labelLongClickTime.Enable()
-					inputLongClickTime.Enable()
-					labelLongClickTimeMilliseconds.Enable()
-				endif
-			else
-				if labelLongClickTime.IsEnabled()
-					labelLongClickTime.Disable()
-					inputLongClickTime.Disable()
-					labelLongClickTimeMilliseconds.Disable()
-				endif
-			endif
-		endif
-
-		if checkBox = checkTouchInput
-			if not labelTouchClickRadius then return False
-			if not inputTouchClickRadius then return False
-			if not labelTouchClickRadiusPixel then return False
-
-			if checkTouchInput.IsChecked()
-				if not labelTouchClickRadius.IsEnabled()
-					labelTouchClickRadius.Enable()
-					inputTouchClickRadius.Enable()
-					labelTouchClickRadiusPixel.Enable()
-				endif
-			else
-				if labelTouchClickRadius.IsEnabled()
-					labelTouchClickRadius.Disable()
-					inputTouchClickRadius.Disable()
-					labelTouchClickRadiusPixel.Disable()
-				endif
-			endif
-		endif
-
-		return True
 	End Method
 End Type
 

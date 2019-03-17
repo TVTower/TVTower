@@ -306,6 +306,12 @@ Type TGUIModalWindowChainElement Extends TGUIWindowBase
 	End Method
 
 
+	Method GetZIndex:int() 'override
+		'be at least above parent
+		if GetParent() <> self then return Max(Super.GetZIndex(), GetParent().GetZindex() + 1)
+	End Method
+
+
 	Method Remove:Int()
 		Super.Remove()
 		'unlink, so we do not get circular references
