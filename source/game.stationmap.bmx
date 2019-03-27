@@ -2302,6 +2302,15 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		'inform the station about the removal
 		station.OnRemoveFromMap()
 
+
+		'invalidate (cached) share data of surrounding sections
+		for local s:TStationMapSection = eachin GetStationMapCollection().GetSectionsConnectedToStation(station)
+			s.InvalidateData()
+		next
+		'set the owning stationmap to "changed" so only this single
+		'audience sum only gets recalculated (saves cpu time)
+		reachInvalid = True
+
 		'require recalculation
 		RecalculateAudienceSum()
 
