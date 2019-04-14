@@ -3,6 +3,7 @@ Import "Dig/base.gfx.gui.bmx"
 Import "Dig/base.gfx.gui.dropdown.bmx"
 Import "Dig/base.gfx.gui.checkbox.bmx"
 Import "Dig/base.gfx.gui.input.bmx"
+Import "Dig/base.sfx.soundmanager.base.bmx"
 Import "common.misc.gamegui.bmx"
 Import "game.misc.ingamehelp.bmx"
 
@@ -14,8 +15,10 @@ Type TGUISettingsPanel extends TGUIPanel
 	Field inputStartYear:TGUIInput
 	Field inputStationmap:TGUIDropDown
 	Field inputDatabase:TGUIDropDown
-	Field checkMusic:TGUICheckbox
-	Field checkSfx:TGUICheckbox
+	Field sliderMusicVolume:TGUISlider
+	Field sliderSFXVolume:TGUISlider
+'	Field checkMusic:TGUICheckbox
+'	Field checkSfx:TGUICheckbox
 	Field dropdownSoundEngine:TGUIDropDown
 	Field dropdownRenderer:TGUIDropDown
 	Field checkFullscreen:TGUICheckbox
@@ -128,24 +131,43 @@ Type TGUISettingsPanel extends TGUIPanel
 
 		nextY = 0
 		nextX = rowWidth[0]
+
+
 		'SOUND
 		Local labelTitleSound:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_OUTPUT"))
 		labelTitleSound.SetFont(GetBitmapFont("default", 14, BOLDFONT))
 		self.AddChild(labelTitleSound)
 		nextY :+ 25
 
-		checkMusic = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
-		checkMusic.SetCaption(GetLocale("MUSIC"))
-		self.AddChild(checkMusic)
-		nextY :+ Max(inputH - 5, checkMusic.GetScreenHeight())
+		Local labelMusicVolume:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_MUSIC_VOLUME") + ":")
+		sliderMusicVolume = New TGUISlider.Create(New TVec2D.Init(nextX -2, nextY + 14), New TVec2D.Init(140,inputH -6), "10")
+		sliderMusicVolume.SetValueRange(0, 100)
+		self.AddChild(labelMusicVolume)
+		self.AddChild(sliderMusicVolume)
+		nextY :+ Max(inputH - 5, sliderMusicVolume.GetScreenHeight())
+		nextY :+ 20
 
-		checkSfx = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
-		checkSfx.SetCaption(GetLocale("SFX"))
-		self.AddChild(checkSfx)
-		nextY :+ Max(inputH, checkSfx.GetScreenHeight())
+		Local labelSFXVolume:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_SFX_VOLUME") + ":")
+		sliderSFXVolume = New TGUISlider.Create(New TVec2D.Init(nextX -2, nextY + 14), New TVec2D.Init(140,inputH -6), "10")
+		sliderSFXVolume.SetValueRange(0, 100)
+		self.AddChild(labelSFXVolume)
+		self.AddChild(sliderSFXVolume)
+		nextY :+ Max(inputH - 5, sliderSFXVolume.GetScreenHeight())
+		nextY :+ 20
+
+
+'		checkMusic = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
+'		checkMusic.SetCaption(GetLocale("MUSIC"))
+'		self.AddChild(checkMusic)
+'		nextY :+ Max(inputH - 5, checkMusic.GetScreenHeight())
+
+'		checkSfx = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
+'		checkSfx.SetCaption(GetLocale("SFX"))
+'		self.AddChild(checkSfx)
+'		nextY :+ Max(inputH, checkSfx.GetScreenHeight())
 
 		Local labelSoundEngine:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_ENGINE") + ":")
-		dropdownSoundEngine = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(inputWidth,-1), "", 128)
+		dropdownSoundEngine = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + 14), New TVec2D.Init(inputWidth,-1), "", 128)
 		Local soundEngineValues:String[] = ["AUTOMATIC", "NONE"]
 		Local soundEngineTexts:String[] = ["Auto", "---"]
 		?Win32
@@ -317,8 +339,8 @@ Type TGUISettingsPanel extends TGUIPanel
 		data.Add("databaseDir", inputDatabase.GetValue())
 		data.Add("inroomslowdown", inputInRoomSlowdown.GetValue())
 
-		data.AddBoolString("sound_music", checkMusic.IsChecked())
-		data.AddBoolString("sound_effects", checkSfx.IsChecked())
+'		data.AddBoolString("sound_music", checkMusic.IsChecked())
+'		data.AddBoolString("sound_effects", checkSfx.IsChecked())
 		data.Add("sound_engine", dropdownSoundEngine.GetSelectedEntry().data.GetString("value", "0"))
 
 
@@ -338,11 +360,17 @@ Type TGUISettingsPanel extends TGUIPanel
 
 		data.AddBoolString("showIngameHelp", checkShowIngameHelp.IsChecked())
 
+		data.AddNumber("sound_music_volume", sliderMusicVolume.GetValue().ToInt())
+		data.AddNumber("sound_sfx_volume", sliderSFXVolume.GetValue().ToInt())
+
 		Return data
 	End Method
 
 
 	Method SetGuiValues:Int(data:TData)
+		sliderMusicVolume.SetValue(data.GetInt("sound_music_volume", 100))
+		sliderSFXVolume.SetValue(data.GetInt("sound_sfx_volume", 100))
+
 		inputPlayerName.SetValue(data.GetString("playername", "Player"))
 		inputChannelName.SetValue(data.GetString("channelname", "My Channel"))
 		inputStartYear.SetValue(data.GetInt("startyear", 1985))
@@ -352,8 +380,8 @@ Type TGUISettingsPanel extends TGUIPanel
 		endif
 		inputDatabase.SetValue(data.GetString("databaseDir", "res/database/Default"))
 		inputInRoomSlowdown.SetValue(data.GetInt("inroomslowdown", 100))
-		checkMusic.SetChecked(data.GetBool("sound_music", True))
-		checkSfx.SetChecked(data.GetBool("sound_effects", True))
+'		checkMusic.SetChecked(data.GetBool("sound_music", True))
+'		checkSfx.SetChecked(data.GetBool("sound_effects", True))
 		checkFullscreen.SetChecked(data.GetBool("fullscreen", False))
 		checkVSync.SetChecked(data.GetBool("vsync", True))
 		inputWindowResolutionWidth.SetValue(Max(400, data.GetInt("screenW", 800)))
@@ -466,6 +494,33 @@ Type TGUISettingsPanel extends TGUIPanel
 
 		return True
 	End Method
+
+
+	Method Update:Int()
+		'dynamically update sounds
+		GetSoundManagerBase().sfxVolume = (0.01 * sliderSFXVolume.GetValue().ToInt()) 
+		GetSoundManagerBase().SetMusicVolume(0.01 * sliderMusicVolume.GetValue().ToInt())
+
+		Return Super.Update()
+	End Method
+
+
+	Method DrawContent()
+		Super.DrawContent()
+
+		If Int(sliderSFXVolume.GetValue()) = 0
+			GetBitmapFont("default").Draw("muted", sliderSFXVolume.GetScreenX() + 142, sliderSFXVolume.GetScreenY() + 6, new TColor.CreateGrey(50))
+		Else
+			GetBitmapFont("default").Draw(Int(sliderSFXVolume.GetValue())+" %", sliderSFXVolume.GetScreenX() + 142, sliderSFXVolume.GetScreenY() + 6, new TColor.CreateGrey(50))
+		EndIf
+
+		If Int(sliderMusicVolume.GetValue()) = 0
+			GetBitmapFont("default").Draw("muted", sliderMusicVolume.GetScreenX() + 142, sliderMusicVolume.GetScreenY() + 6, new TColor.CreateGrey(50))
+		Else
+			GetBitmapFont("default").Draw(Int(sliderMusicVolume.GetValue())+" %", sliderMusicVolume.GetScreenX() + 142, sliderMusicVolume.GetScreenY() + 6, new TColor.CreateGrey(50))
+		EndIf
+	End Method
+
 End Type
 
 

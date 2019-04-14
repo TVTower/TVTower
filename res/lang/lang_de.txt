@@ -33,6 +33,8 @@ SINGLEPLAYER = Einzelspieler
 DEFAULTS_FOR_NEW_GAME= Vorgaben "Neues Spiel"
 RENDERER = Renderer
 SOUND_ENGINE = Soundengine
+SOUND_MUSIC_VOLUME = Musiklautstärke
+SOUND_SFX_VOLUME = SFX-Lautstärke
 PORT_ONLINEGAME = Port für Onlinespiele
 GAME_SPEED_IN_ROOMS = Spielgeschwind. in Räumen
 

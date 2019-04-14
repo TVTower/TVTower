@@ -42,6 +42,9 @@ Import "Dig/base.gfx.gui.window.modal.bmx"
 Import "Dig/base.gfx.gui.window.modalchain.bmx"
 Import "Dig/base.framework.tooltip.bmx"
 
+'actually load the sound implementation (not the stub base class)
+Import "Dig/base.sfx.soundmanager.bmx"
+
 
 Import "basefunctions_network.bmx"
 Import "basefunctions.bmx"
@@ -465,17 +468,32 @@ Type TApp
 		endif
 		if adjusted and doInitGraphics then GetGraphicsManager().InitGraphics()
 
+
 		GameRules.InRoomTimeSlowDownMod = config.GetInt("inroomslowdown", 100) / 100.0
 
 		GetDeltatimer().SetRenderRate(config.GetInt("fps", -1))
 
 		adjusted = False
 
-		TSoundManager.SetAudioEngine(config.GetString("sound_engine", "AUTOMATIC"))
-		TSoundManager.GetInstance().MuteMusic(Not config.GetBool("sound_music", True))
-		TSoundManager.GetInstance().MuteSfx(Not config.GetBool("sound_effects", True))
 
-		if not TSoundManager.GetInstance().HasMutedMusic()
+
+		if config.GetString("sound_engine").ToLower() = "none"
+			TSoundManager.audioEngineEnabled = False
+			GetSoundManager()
+			TSoundManager.audioEngineEnabled = True
+			GetSoundManager().MuteMusic(true)
+			GetSoundManager().MuteSfx(true)
+			TSoundManager.audioEngineEnabled = False
+		Else
+			GetSoundManagerBase().ApplyConfig(config.GetString("sound_engine", "AUTOMATIC"), ..
+			                                  0.01 * config.GetInt("sound_music_volume", 100), ..
+			                                  0.01 * config.GetInt("sound_sfx_volume", 100) ..
+			                                 )
+		EndIf
+		GetSoundManager().MuteMusic(config.GetInt("sound_music_volume", 100) = 0)
+		GetSoundManager().MuteSfx(config.GetInt("sound_sfx_volume", 100) = 0)
+
+		if not GetSoundManager().HasMutedMusic()
 			'if no music is played yet, try to get one from the "menu"-playlist
 			If Not GetSoundManager().isPlaying()
 				GetSoundManager().PlayMusicPlaylist("menu")
@@ -651,11 +669,11 @@ Type TApp
 				'CTRL+M: (un)mute all music
 				If KEYMANAGER.IsHit(KEY_M)
 					If KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT)
-						TSoundManager.GetInstance().MuteSfx(Not TSoundManager.GetInstance().HasMutedSfx())
+						GetSoundManager().MuteSfx(Not GetSoundManager().HasMutedSfx())
 					ElseIf KEYMANAGER.IsDown(KEY_LCONTROL) Or KEYMANAGER.IsDown(KEY_RCONTROL)
-						TSoundManager.GetInstance().MuteMusic(Not TSoundManager.GetInstance().HasMutedMusic())
+						GetSoundManager().MuteMusic(Not GetSoundManager().HasMutedMusic())
 					Elseif not KEYMANAGER.IsDown(KEY_LALT)
-						TSoundManager.GetInstance().Mute(Not TSoundManager.GetInstance().IsMuted())
+						GetSoundManager().Mute(Not GetSoundManager().IsMuted())
 					EndIf
 				EndIf
 
