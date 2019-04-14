@@ -18,7 +18,7 @@ Rem
 EndRem
 SuperStrict
 Import "Dig/base.framework.entity.spriteentity.bmx"
-Import "Dig/base.sfx.soundmanager.bmx"
+Import "Dig/base.sfx.soundmanager.base.bmx"
 'Import "game.figure.base.bmx"
 Import "game.player.base.bmx" 'includes figureBase too
 Import "game.building.base.bmx"

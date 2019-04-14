@@ -85,19 +85,19 @@ Type THelper
 	Function LogisticalInfluence:Float(percentage:Float, proportionalityFactor:Float= 0.11)
 		return 1.0 - logisticFunction(percentage*100, 1.0, proportionalityFactor, 0.001)
 	End function
-	
+
 
 	Function LogisticalInfluence_Tangens:Float(percentage:Float, strength:Float=1.0, addRandom:int=True)
 		'sinus is there for some "randomness"
 		'2.5 = "base strength" so 100% will reach "1.0"
 		return Min(1.0, Max(0.0, tanh(percentage*(2.5*strength)) + addRandom * abs(0.03*sin(95*percentage))))
 	End Function
-	
+
 
 	'higher strength values have a stronger decrease per percentage
 	'higher strength can lead to Value(0.5) > Value(0.7)
 	'higher percentages return a higher influence (in 100% = out ~100%)
-	'value growth changes at bei 1/strength!!
+	'value growth changes at 1/strength!!
 	'-> we cut "used" percentage" so 100% = 1/strength
 	Function LogisticalInfluence_Euler:Float(percentage:Float, strength:Float=1.0, addRandom:int=True)
 		'sinus is there for some "randomness"
@@ -128,7 +128,7 @@ Type THelper
 		Next
 		return new TList.FromArray(objArr)
 	End Function
-	 
+
 
 	'returns whether the mouse is within the given rectangle coords
 	Function MouseIn:int(x:Int,y:Int, w:Int,h:Int)
@@ -219,7 +219,7 @@ Type THelper
 				objTypeName = "Object"
 				size = 0
 			End Try
-			
+
 			'if the object does not contain things in that array, the
 			'copy wont need it too
 			If size = 0 then return Null
@@ -253,7 +253,7 @@ Type THelper
 			clone = objTypeID.NewObject()
 			mth.Invoke(clone, [obj])
 		Else
-		
+
 			'=== LISTS ===
 			If objTypeID.ExtendsType(ListTypeID)
 				local list:TList = CreateList()
@@ -263,7 +263,7 @@ Type THelper
 				return list
 			EndIf
 
-			
+
 			'=== TMAPS ===
 			If objTypeID.ExtendsType(MapTypeID)
 				local map:TMap = CreateMap()
@@ -271,7 +271,7 @@ Type THelper
 					map.Insert(key, CloneObject(TMap(obj).ValueForKey(key)) )
 				Next
 				return map
-			EndIf	
+			EndIf
 
 			'=== TINTMAPS ===
 			If objTypeID.ExtendsType(IntMapTypeID)
@@ -280,7 +280,7 @@ Type THelper
 					map.Insert(key.value, CloneObject(TIntMap(obj).ValueForKey(key.value)) )
 				Next
 				return map
-			EndIf	
+			EndIf
 
 
 			'=== OBJECTS ===

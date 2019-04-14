@@ -1,14 +1,14 @@
 SuperStrict
+Import Brl.Map
+Import Brl.Audio 'for TChannel
+Import Brl.LinkedList
 Import brl.Map
-Import brl.WAVLoader
-Import brl.OGGLoader
 Import "base.util.logger.bmx"
 Import "base.util.vector.bmx"
 Import "base.util.time.bmx"
-
-Import "base.sfx.soundstream.bmx"
-
-
+?threaded
+Import Brl.Threads
+?
 
 Type TSoundManager
 	Field soundFiles:TMap = CreateMap()
@@ -33,14 +33,16 @@ Type TSoundManager
 	Field autoCrossFadeTime:Int = 1500
 	'disable to skip fading on next song switch 
 	Field autoCrossFadeNextSong:Int = True
+	'crossfade time for the current crossfade
+	field crossFadeTime:int = 1500
 
 	Field defaultMusicVolume:Float = 1.0
 
 
 	Field forceNextMusic:Int = 0
 	Field fadeProcess:Int = 0 '0 = nicht aktiv  1 = aktiv
-	Field fadeOutVolume:Int = 1000
-	Field fadeInVolume:Int = 0
+	'time when fading started 
+	Field fadeProcessTime:Long = 0
 
 	Field soundSources:TMap = CreateMap()
 	Field receiver:TSoundSourcePosition
@@ -49,6 +51,12 @@ Type TSoundManager
 	'a named array of playlists, playlists contain available musicStreams
 	Field playlists:TMap = CreateMap()
 
+	'contains keys (IDs) and names (string representations and driver names)
+	'of supported audio engines
+	Field engineKeys:string[]
+	Field engineDriverNames:string[]
+	Field engineNames:string[]
+
 	Global instance:TSoundManager
 
 	Global PREFIX_MUSIC:String = "MUSIC_"
@@ -56,89 +64,109 @@ Type TSoundManager
 
 	Global audioEngineEnabled:int = True
 	Global audioEngine:String = "AUTOMATIC"
+	
+	?threaded
+	Global refillBufferMutex:TMutex = CreateMutex()
+	Global updateStreamManagerThread:TThread = new TThread
+	?
+	Global isRefillBufferRunning:Int = False
 
 
 	Function Create:TSoundManager()
 		Local manager:TSoundManager = New TSoundManager
 
 		'initialize sound system
-		InitAudioEngine()
+		manager.InitAudioEngine()
 
 		manager.defaulTSfxDynamicSettings = TSfxSettings.Create()
+		
+		
 		Return manager
 	End Function
+	
+	
+	Method GetAudioEngineDriverName:string(engineKey:string)
+		if not engineKeys or engineKeys.length = 0 then FillAudioEngines()
+		for local i:int = 0 until engineKeys.length
+			if engineKeys[i] = engineKey then return engineDriverNames[i]
+		Next
+		return "default"
+	End Method
 
 
-	Function SetAudioEngine:int(engine:string)
-		if engine.ToUpper() = audioEngine then return False
+	Method GetAudioEngineKeys:String[]()
+		if not engineKeys or engineKeys.length = 0 then FillAudioEngines()
+		return engineKeys
+	End Method
+
+
+	Method GetAudioEngineDriverNames:String[]()
+		if not engineDriverNames or engineDriverNames.length = 0 then FillAudioEngines()
+		return engineDriverNames
+	End Method
+
+
+	Method GetAudioEngineNames:String[]()
+		if not engineNames or engineNames.length = 0 then FillAudioEngines()
+		return engineNames
+	End Method
+
+	
+	Method FillAudioEngines:int()
+	End Method
+	
+
+	Method SetAudioEngine:int(engine:String)
+		engine = engine.ToUpper()
+		if engine = audioEngine then return False
 		
-		'limit to allowed engines
-		Select engine.ToUpper()
-			case "NONE"
-				audioEngine = "NONE"
+		audioEngine = "AUTOMATIC"
+		local keys:string[] = GetAudioEngineKeys()
+		'local driverNames:string[] = GetAudioEngineDriverNames()
 
-			case "LINUX_ALSA"
-				audioEngine = "FreeAudio ALSA System"
-			case "LINUX_PULSE"
-				audioEngine = "FreeAudio PulseAudio System"
-			case "LINUX_OSS"
-				audioEngine = "FreeAudio OpenSound System"
-
-			case "MACOSX_CORE"
-				audioEngine = "FreeAudio CoreAudio"
-
-			case "WINDOWS_MM"
-				audioEngine = "FreeAudio Multimedia"
-			case "WINDOWS_DS"
-				audioEngine = "FreeAudio DirectSound"
-
-			default
-				audioEngine = "AUTOMATIC"
-		End Select
+		for local i:int = 0 until keys.length
+			if engine = keys[i]
+				audioEngine = keys[i]
+				exit
+			endif
+		Next
 
 		return True
-	End Function
+	End Method
+		
 
-
-	Function InitSpecificAudioEngine:int(engine:string)
-		if engine = "AUTOMATIC" then engine = "FreeAudio"
-		If Not SetAudioDriver(engine)
-			if engine = audioEngine
-				TLogger.Log("SoundManager.SetAudioEngine()", "audio engine ~q"+engine+"~q (configured) failed.", LOG_ERROR)
+	Method InitSpecificAudioEngine:int(engineKey:string)
+		local engineDriver:string = GetAudioEngineDriverName(engineKey)
+		If Not SetAudioDriver(engineKey)
+			if engineKey = audioEngine
+				TLogger.Log("SoundManager.SetAudioEngine()", "audio engine ~q"+engineDriver+" [" + engineKey+"]~q (configured) failed.", LOG_ERROR)
 			else
-				TLogger.Log("SoundManager.SetAudioEngine()", "audio engine ~q"+engine+"~q failed.", LOG_ERROR)
+				TLogger.Log("SoundManager.SetAudioEngine()", "audio engine ~q"+engineDriver+" [" + engineKey+"]~q failed.", LOG_ERROR)
 			endif
 			Return False
 		Else
 			Return True
 		endif
-	End Function
+	End Method
 
 
-	Function InitAudioEngine:int()
+	Method InitAudioEngine:int()
 		local engines:String[] = [audioEngine]
-		'add automatic-engine if manual setup is not already set to it
-		if audioEngine <> "AUTOMATIC" then engines :+ ["AUTOMATIC"]
-
-		?Linux
-			if audioEngine <> "FreeAudio PulseAudio System" then engines :+ ["FreeAudio PulseAudio System"]
-			if audioEngine <> "FreeAudio ALSA System" then engines :+ ["FreeAudio ALSA System"]
-			if audioEngine <> "FreeAudio OpenSound System" then engines :+ ["FreeAudio OpenSound System"]
-		?MacOS
-			'ATTENTION: WITHOUT ENABLED SOUNDCARD THIS CRASHES!
-			engines :+ ["FreeAudio CoreAudio"]
-		?Win32
-			engines :+ ["FreeAudio Multimedia"]
-			engines :+ ["FreeAudio DirectSound"]
-		?
-
+		local otherEngineKeys:String[] = GetAudioEngineKeys()
+		
+		for local i:int = 0 until otherEngineKeys.length
+			if otherEngineKeys[i].ToLower() <> audioEngine.toLower()
+				engines :+ [otherEngineKeys[i]]
+			endif
+		Next
+		
 		'try to init one of the engines, starting with the manually set
 		'audioEngine
 		local foundWorkingEngine:string = ""
 		if audioEngine <> "NONE"
-			For local engine:string = eachin engines
-				if InitSpecificAudioEngine(engine)
-					foundWorkingEngine = engine
+			For local engineKey:string = eachin engines
+				if InitSpecificAudioEngine(engineKey)
+					foundWorkingEngine = engineKey
 					exit
 				endif
 			Next
@@ -152,9 +180,10 @@ Type TSoundManager
 			Return False
 		endif
 
-		TLogger.Log("SoundManager.SetAudioEngine()", "initialized with engine ~q"+foundWorkingEngine+"~q.", LOG_DEBUG)
+		local workingDriver:string = GetAudioEngineDriverName(foundWorkingEngine)
+		TLogger.Log("SoundManager.SetAudioEngine()", "initialized with engine ~q"+workingDriver +" ["+foundWorkingEngine+"]~q.", LOG_DEBUG)
 		Return True
-	End Function
+	End Method
 
 
 	Function GetInstance:TSoundManager()
@@ -162,15 +191,49 @@ Type TSoundManager
 		Return instance
 	End Function
 
+	
+	Method ApplyConfig(soundEngine:String="", musicVolume:Float=1.0, sfxVolume:Float=1.0, playlist:String="")
+		if soundEngine.ToLower() = "none"
+			MuteMusic(true)
+			MuteSfx(true)
+			audioEngineEnabled = False
+		elseif soundEngine <> ""
+			audioEngineEnabled = true
+			if SetAudioEngine(soundEngine.ToUpper())
+				InitAudioEngine()
+			endif
+		endif
+
+		self.sfxVolume = sfxVolume
+		SetMusicvolume(musicVolume)
+
+		if audioEngineEnabled
+			MuteSfx(sfxVolume = 0.0)
+			MuteMusic(musicVolume = 0)
+
+			if not HasMutedMusic()
+				'if no music is played yet, try to get one from the "menu"-playlist
+				If Not isPlaying() and playlist 
+					PlayMusicPlaylist(playlist)
+				endif
+			endif
+		endif
+	End Method	
 
 	Function DisableAudioEngine:int()
 		audioEngineEnabled = False
 	End Function
 
 
+	'override for FreeAudio-specific checks
+	Method FixChannel:int(sfxChannel:TSfxChannel)
+		return False
+	End Method
+
+
 	'use 0 to disable feature
-	Method SetAutoCrossfadeTime:int(seconds:int = 0)
-		autoCrossFadeTime = seconds
+	Method SetAutoCrossfadeTime:int(milliseconds:int = 0)
+		autoCrossFadeTime = milliseconds
 	End Method
 
 
@@ -361,7 +424,19 @@ Type TSoundManager
 	Method HasMutedSfx:Int()
 		Return Not sfxOn
 	End Method
+	
 
+	Method RefillBuffers:int()
+		'currently executed?
+		if isRefillBufferRunning then return False
+		isRefillBufferRunning = True	
+
+		If inactiveMusicStream then inactiveMusicStream.Update()
+		If activeMusicStream then activeMusicStream.Update()
+
+		isRefillBufferRunning = False
+	End Method
+	
 
 	Method Update:Int()
 		'skip updates if muted
@@ -372,23 +447,21 @@ Type TSoundManager
 				element.Update()
 			Next
 		EndIf
-
+'rem
 		If Not HasMutedMusic()
-			'Wenn der Musik-Channel nicht l�uft, dann muss nichts gemacht werden
+			'nothing to do if no activated channel exists
 			If Not activeMusicChannel Then Return True
 
-			'refill buffers
-			If inactiveMusicStream then inactiveMusicStream.Update()
-			If activeMusicStream then activeMusicStream.Update()
-
+			'buffers now get refilled by a thread
+			'RefillBuffers()
 
 			'autocrossfade to the next song
 			if autoCrossFadeTime > 0 and autoCrossFadeNextSong and activeMusicStream
 				if activeMusicStream.loop=false and activeMusicStream.GetTimeLeft() < autoCrossFadeTime
+print "auto crossfade to next song: time Left: " + activeMusicStream.GetTimeLeft() + " played="+activeMusicStream.GetTimePlayed() +"  total="+activeMusicStream.GetTimeTotal()
 					PlayMusicPlaylist(GetCurrentPlaylist())
 				endif
 			endif
-
 
 			'if the music didn't stop yet
 			If activeMusicChannel.Playing()
@@ -397,6 +470,7 @@ Type TSoundManager
 					If currentMusicStream.loop and currentMusicStream.GetLoopedPlaytimeLeft() < autoCrossFadeTime
 						currentMusicStream.SetPlaying(false)
 						forceNextMusic = True
+print "auto crossfade looptime ending: " + activeMusicStream.GetLoopedPlaytimeLeft() + " played="+activeMusicStream.GetLoopedTimePlayed() +"  total="+activeMusicStream.GetLoopedPlaytime()
 						PlayMusicPlaylist(GetCurrentPlaylist())
 						'FadeOverToNextTitle()
 					Endif
@@ -404,8 +478,8 @@ Type TSoundManager
 
 							
 				If (forceNextMusic And nextMusicStream) Or fadeProcess > 0
-					'TLogger.log("TSoundManager.Update()", "FadeOverToNextTitle", LOG_DEBUG)
-					FadeOverToNextTitle()
+					'TLogger.log("TSoundManager.Update()", "FadeOverToNextTitle. fadeProcess=" + fadeProcess, LOG_DEBUG)
+					FadeOverToNextTitle(autoCrossFadeTime)
 				EndIf
 			'no music is playing, just start
 			Else
@@ -420,37 +494,59 @@ Type TSoundManager
 	End Method
 
 
-	Method FadeOverToNextTitle:int()
+	Method FadeOverToNextTitle:int(fadeTime:int = -1)
 		if not audioEngineEnabled then return False
 
-		If (fadeProcess = 0) Then
+		'fade in the next channel
+		If fadeProcess = 0
+			if fadeTime = -1 then 
+				self.crossFadeTime = autoCrossFadeTime
+			else
+				self.crossFadeTime = fadeTime
+			endif
+
 			fadeProcess = 1
+			fadeProcessTime = Time.MillisecsLong()
 			inactiveMusicChannel = nextMusicStream.CreateChannel(0)
 			ResumeChannel(inactiveMusicChannel)
 			currentMusicStream = nextMusicStream
 
 			inactiveMusicStream = activeMusicStream
 			activeMusicStream = nextMusicStream
+
 			nextMusicStream = Null
 
 			forceNextMusic = False
-			fadeOutVolume = 1000
-			fadeInVolume = 0
 		EndIf
 
-		If (fadeProcess = 1) Then 'Das fade out des aktiven Channels
-			fadeOutVolume :- 15
-			activeMusicChannel.SetVolume(fadeOutVolume/1000.0 * musicVolume)
-
-			fadeInVolume :+ 15
-			inactiveMusicChannel.SetVolume(fadeInVolume/1000.0 * nextMusicVolume)
+		'fade out of active channel
+		If fadeProcess = 1
+			Local fadeValue:Float = 1.0
+			if self.crossFadeTime > 0 
+				fadeValue = Max(0.0, Min(1.0, (Time.MillisecsLong() - fadeProcessTime) / float(crossFadeTime)))
+			endif
+			activeMusicChannel.SetVolume((1.0 - fadeValue) * musicVolume)
+			inactiveMusicChannel.SetVolume(fadeValue * nextMusicVolume)
+			
+			if fadeValue >= 1.0 then fadeProcess = 2
 		EndIf
 
-		If fadeOutVolume <= 0 And fadeInVolume >= 1000 Then
-			fadeProcess = 0 'Prozess beendet
+		'fade finished
+		If fadeProcess = 2
+			fadeProcess = 0
 			musicVolume = nextMusicVolume
 			SwitchMusicChannels()
 		EndIf
+	End Method
+
+
+	Method SetMusicVolume:int(volume:Float)
+		'disturbs fading!
+		if activeMusicChannel then activeMusicChannel.SetVolume(volume)
+		if inactiveMusicChannel then inactiveMusicChannel.SetVolume(volume)
+		musicVolume = volume
+		nextMusicVolume = volume
+		defaultMusicVolume = volume
 	End Method
 
 
@@ -508,7 +604,8 @@ Type TSoundManager
 
 		forceNextMusic = True
 		
-		'Wenn der Musik-Channel noch nicht laeuft, dann jetzt starten
+
+		'start to play music if not done yet
 		If Not activeMusicChannel Or Not activeMusicChannel.Playing()
 			If Not nextMusicStream
 				TLogger.Log("PlayMusicOrPlaylist", "could not start activeMusicChannel: no next music found", LOG_DEBUG)
@@ -602,18 +699,135 @@ Type TSoundManager
 	Method GetMusicVolume:Float(music:String)
 		Return defaultMusicVolume
 	End Method
+	
+	
+	Method CreateDigAudioStreamOgg:TDigAudioStream(uri:string, loop:int)
+		return null
+	End Method
 End Type
 
 '===== CONVENIENCE ACCESSORS =====
 'convenience instance getter
-Function GetSoundManager:TSoundManager()
+Function GetSoundManagerBase:TSoundManager()
 	return TSoundManager.GetInstance()
 End Function
 
 
 
+'base class
+Type TDigAudioStream
+	Field playing:int = False
+	Field playtime:int = 0
+	Field loop:Int = False
+	Field lastChannelTime:Long
 
-'Diese Basisklasse ist ein Wrapper f�r einen normalen Channel mit erweiterten Funktionen
+
+	Method Clone:TDigAudioStream(deepClone:Int = False) abstract
+
+	Method CreateChannel:TChannel(volume:Float) abstract
+
+	'Method GetChannel:TChannel() abstract
+	
+	Method Update()
+		'do stream updates here if needed
+	End Method
+	
+	
+	Method GetURI:object()
+		return null
+	End Method
+
+
+	Method IsPlaying:int()
+		return playing
+	End Method
+	
+
+	Method SetPlaying:int(playing:int)
+		self.playing = playing
+	End Method
+
+
+	'for looped sounds...
+	Method SetLoopedPlaytime:int(playtime:int)
+		self.playtime = playtime
+	End Method
+
+
+	Method GetLoopedPlaytime:int()
+		return playtime
+	End Method	
+
+
+	Method GetLoopedTimePlayed:int()
+		if lastChannelTime = 0 then return 0
+		return Time.MillisecsLong() - lastChannelTime
+	End Method
+
+
+	Method GetLoopedPlaytimeLeft:int()
+		return GetLoopedPlaytime() - GetLoopedTimePlayed()
+	End Method
+	
+
+	'returns time left in milliseconds
+	Method GetTimeLeft:Float()
+		Return GetLoopedPlaytimeLeft()
+	End Method
+
+
+	'returns milliseconds
+	Method GetTimePlayed:Float()
+		return GetLoopedTimePlayed()
+	End Method
+
+
+	'returns milliseconds
+	Method GetTimeBuffered:Float()
+		return 0
+	End Method
+
+
+	'returns milliseconds
+	Method GetTimeTotal:Int()
+		return GetLoopedPlaytime()
+	End Method
+
+End Type
+
+
+
+
+
+Type TDigAudioStreamManager
+	Field streams:TList = CreateList()
+
+
+	Method AddStream:Int(stream:TDigAudioStream)
+		streams.AddLast(stream)
+		Return True
+	End Method
+
+
+	Method RemoveStream:Int(stream:TDigAudioStream)
+		streams.Remove(stream)
+		Return True
+	End Method
+
+
+	Method Update:Int()
+		For Local stream:TDigAudioStream = EachIn streams
+			stream.Update()
+		Next
+	End Method
+End Type
+Global DigAudioStreamManager:TDigAudioStreamManager = New TDigAudioStreamManager
+
+
+
+
+
+'base class wrapping a normal channel to add extended features
 Type TSfxChannel
 	'preallocating channels returns invalid channels if done before the
 	'soundengine (eg. FreeAudio) is initialized
@@ -630,13 +844,8 @@ Type TSfxChannel
 
 
 	Method GetChannel:TChannel()
-		'unset invalid channels
-		'and try to refresh previous settings
-		if TFreeAudioChannel(_channel) and TFreeAudioChannel(_channel).fa_channel = 0
-			_channel = null
-			_channel = AllocChannel()
-			if CurrentSettings then AdjustSettings(false)
-		endif
+		'Ask sound manager to check the channel
+		TSoundManager.GetInstance().FixChannel(self)
 		
 		if not _channel then _channel = AllocChannel()
 
@@ -645,6 +854,9 @@ Type TSfxChannel
 
 
 	Method PlaySfx(sfx:String, settings:TSfxSettings=Null)
+		'skip adjustments and loading the sound
+		if TSoundManager.GetInstance().HasMutedSfx() then return
+
 		CurrentSfx = sfx
 		CurrentSettings = settings
 
@@ -656,6 +868,9 @@ Type TSfxChannel
 
 
 	Method PlayRandomSfx(playlist:String, settings:TSfxSettings=Null)
+		'skip adjustments and loading the sound
+		if TSoundManager.GetInstance().HasMutedSfx() then return
+
 		CurrentSfx = playlist
 		CurrentSettings = settings
 
@@ -670,7 +885,7 @@ Type TSfxChannel
 
 	Method IsActive:Int()
 		If not _channel then return False
-		
+
 		Return _channel.Playing()
 	End Method
 
@@ -701,7 +916,7 @@ Type TSfxChannel
 		If not _channel then return
 
 		If Not isUpdate
-			GetChannel().SetVolume(TSoundManager.GetInstance().sfxVolume * 0.75 * CurrentSettings.GetVolume()) '0.75 ist ein fixer Wert die Lautst�rke der Sfx reduzieren soll
+			GetChannel().SetVolume(TSoundManager.GetInstance().sfxVolume * 0.75 * CurrentSettings.GetVolume()) '0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
 		EndIf
 	End Method
 End Type
@@ -709,7 +924,7 @@ End Type
 
 
 
-'Der dynamische SfxChannel hat die M�glichkeit abh�ngig von der Position von Sound-Quelle und Empf�nger dynamische Modifikationen an den Einstellungen vorzunehmen. Er wird bei jedem Update aktualisiert.
+'Der dynamische SfxChannel hat die Möglichkeit abhängig von der Position von Sound-Quelle und Empfänger dynamische Modifikationen an den Einstellungen vorzunehmen. Er wird bei jedem Update aktualisiert.
 Type TDynamicSfxChannel Extends TSfxChannel
 	Field Source:TSoundSourceElement
 	Field Receiver:TSoundSourcePosition
@@ -730,8 +945,8 @@ Type TDynamicSfxChannel Extends TSfxChannel
 	Method AdjustSettings(isUpdate:Int)
 		'create one, so we could adjust volume etc before starting to play
 		if not _channel then GetChannel()
-		if not _channel then return 
-		
+		if not _channel then return
+
 		Local sourcePoint:TVec3D = Source.GetCenter()
 		Local receiverPoint:TVec3D = Receiver.GetCenter() 'Meistens die Position der Spielfigur
 
@@ -739,15 +954,15 @@ Type TDynamicSfxChannel Extends TSfxChannel
 			_channel.SetVolume(CurrentSettings.defaultVolume)
 			'print "Volume:" + CurrentSettings.defaultVolume
 		Else
-			'Lautst�rke ist Abh�ngig von der Entfernung zur Ger�uschquelle
+			'Lautstärke ist Abhängig von der Entfernung zur Geräuschquelle
 			Local distanceVolume:Float = CurrentSettings.GetVolumeByDistance(Source, Receiver)
-			_channel.SetVolume(TSoundManager.GetInstance().sfxVolume * distanceVolume) ''0.75 ist ein fixer Wert die Lautst�rke der Sfx reduzieren soll
+			_channel.SetVolume(TSoundManager.GetInstance().sfxVolume * distanceVolume) ''0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
 			'print "Volume: " + (TSoundManager.GetInstance().sfxVolume * distanceVolume)
 		EndIf
 
 		If (sourcePoint.z = 0) Then
-			'170 Grenzwert = Erst aber dem Abstand von 170 (gef�hlt/gesch�tzt) h�rt man nur noch von einer Seite.
-			'Ergebnis sollte ungef�hr zwischen -1 (links) und +1 (rechts) liegen.
+			'170 Grenzwert = Erst aber dem Abstand von 170 (gefühlt/geschätzt) hört man nur noch von einer Seite.
+			'Ergebnis sollte ungefähr zwischen -1 (links) und +1 (rechts) liegen.
 			If CurrentSettings.forcePan
 				_channel.SetPan(CurrentSettings.defaultPan)
 			Else
@@ -764,13 +979,13 @@ Type TDynamicSfxChannel Extends TSfxChannel
 				Local xDistance:Float = Abs(sourcePoint.x - receiverPoint.x)
 				Local yDistance:Float = Abs(sourcePoint.y - receiverPoint.y)
 
-				Local angleZX:Float = ATan(zDistance / xDistance) 'Winkelfunktion: Welchen Winkel hat der H�rer zur Soundquelle. 90� = davor/dahiner    0� = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete
+				Local angleZX:Float = ATan(zDistance / xDistance) 'Winkelfunktion: Welchen Winkel hat der Hörer zur Soundquelle. 90° = davor/dahiner    0° = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete
 
 				Local rawPan:Float = ((90 - angleZX) / 90)
-				Local panCorrection:Float = Max(0, Min(1, xDistance / 170)) 'Den r/l Effekt sollte noch etwas abgeschw�cht werden, wenn die Quelle nah ist
+				Local panCorrection:Float = Max(0, Min(1, xDistance / 170)) 'Den r/l Effekt sollte noch etwas abgeschwächt werden, wenn die Quelle nah ist
 				Local correctPan:Float = rawPan * panCorrection
 
-				'0� => Aus einer Richtung  /  90� => aus beiden Richtungen
+				'0° => Aus einer Richtung  /  90° => aus beiden Richtungen
 				If (sourcePoint.x < receiverPoint.x) Then 'von links
 					_channel.SetPan(-correctPan)
 					'print "Pan:" + (-correctPan) + " - angleZX: " + angleZX + " (" + xDistance + "/" + zDistance + ")    # " + rawPan + " / " + panCorrection
@@ -786,7 +1001,7 @@ Type TDynamicSfxChannel Extends TSfxChannel
 				_channel.SetDepth(CurrentSettings.defaultDepth)
 				'print "Depth:" + CurrentSettings.defaultDepth
 			Else
-				Local angleOfDepth:Float = ATan(receiverPoint.DistanceTo(sourcePoint, False) / zDistance) '0 = direkt hinter mir/vor mir, 90� = �ber/unter/neben mir
+				Local angleOfDepth:Float = ATan(receiverPoint.DistanceTo(sourcePoint, False) / zDistance) '0 = direkt hinter mir/vor mir, 90° = über/unter/neben mir
 
 				If sourcePoint.z < 0 Then 'Hintergrund
 					_channel.SetDepth(-((90 - angleOfDepth) / 90)) 'Minuswert = Hintergrund / Pluswert = Vordergrund
@@ -855,7 +1070,7 @@ End Type
 
 
 
-Type TSoundSourcePosition 'Basisklasse f�r verschiedene Wrapper
+Type TSoundSourcePosition 'Basisklasse für verschiedene Wrapper
 	Field ID:Int = 0
 	Global _lastID:Int = 0
 
@@ -898,7 +1113,7 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 	Method SetGUID(newGUID:String)
 		GUID = newGUID
 	End Method
-	
+
 
 	Method GetReceiver:TSoundSourcePosition()
 		Return TSoundManager.GetInstance().GetDefaultReceiver()
@@ -924,7 +1139,7 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 
 		Local channel:TSfxChannel = GetChannelForSfx(name)
 		if not channel then return
-		
+
 		Local settings:TSfxSettings = sfxSettings
 		If settings = Null Then settings = GetSfxSettings(name)
 
@@ -962,7 +1177,7 @@ Type TSoundSourceElement Extends TSoundSourcePosition
 	Method Stop(sfx:String)
 		Local channel:TSfxChannel = GetChannelForSfx(sfx)
 		if not channel then return
-		
+
 		channel.Stop()
 	End Method
 

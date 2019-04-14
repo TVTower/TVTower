@@ -1,7 +1,7 @@
 'basic type for soundsettings taking "floors" of the building into
 'account
 SuperStrict
-Import "Dig/base.sfx.soundmanager.bmx"
+Import "Dig/base.sfx.soundmanager.base.bmx"
 Import "game.building.base.bmx"
 
 Type TSfxFloorSoundBarrierSettings Extends TSfxSettings

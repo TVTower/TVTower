@@ -50,6 +50,8 @@ Type TGUIDropDown Extends TGUIInput
 	Field selectedEntry:TGUIObject
 	Field list:TGUISelectList
 	Field listHeight:int = 100
+	Global defaultSpriteName:string = "gfx_gui_input.default"
+	Global defaultOverlaySpriteName:string = "gfx_gui_icon_arrowDown"
 
 
 
@@ -61,9 +63,9 @@ Type TGUIDropDown Extends TGUIInput
 
 		'=== STYLE BUTTON ===
 		'use another sprite than the default button
-		spriteName = "gfx_gui_input.default"
+		if not spriteName then spriteName = defaultSpriteName
 		SetOverlayPosition("right")
-		SetOverlay("gfx_gui_icon_arrowDown")
+		SetOverlay(defaultOverlaySpriteName)
 		SetEditable(False)
 
 
@@ -87,7 +89,7 @@ Type TGUIDropDown Extends TGUIInput
 
 		'add bg to list
 		local bg:TGUIBackgroundBox = new TGUIBackgroundBox.Create(new TVec2D, new TVec2D)
-		bg.spriteBaseName = "gfx_gui_input.default"
+		bg.spriteBaseName = spriteName
 		list.SetBackground(bg)
 		'use padding from background
 		list.SetPadding(bg.GetPadding().getTop(), bg.GetPadding().getLeft(),  bg.GetPadding().getBottom(), bg.GetPadding().getRight())

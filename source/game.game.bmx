@@ -136,7 +136,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	Method EndGame:int()
 		If Self.gamestate = TGame.STATE_RUNNING
 			'start playing the menu music again
-			GetSoundManager().PlayMusicPlaylist("menu")
+			GetSoundManagerBase().PlayMusicPlaylist("menu")
 		endif
 
 		'reset speeds (so janitor in main menu moves "normal" again)
@@ -154,7 +154,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'state (eg. when loaded)
 		GetGame().SetGamestate(TGame.STATE_RUNNING, True)
 
-		TSoundManager.GetInstance().PlayMusicPlaylist("default")
+		GetSoundManagerBase().PlayMusicPlaylist("default")
 
 
 		local currDate:int = int(Time.GetSystemTime("%m%d"))

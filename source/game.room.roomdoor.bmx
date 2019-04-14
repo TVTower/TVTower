@@ -1,7 +1,7 @@
 SuperStrict
 Import "Dig/base.util.helper.bmx"
 Import "Dig/base.util.interpolation.bmx"
-Import "Dig/base.sfx.soundmanager.bmx"
+Import "Dig/base.sfx.soundmanager.base.bmx"
 Import "game.player.base.bmx"
 Import "game.building.base.sfx.bmx" 'for TsfxFloorSoundBarrierSettings
 Import "game.room.roomdoor.base.bmx"

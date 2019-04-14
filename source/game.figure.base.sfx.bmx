@@ -1,5 +1,5 @@
 SuperStrict
-Import "Dig/base.sfx.soundmanager.bmx"
+Import "Dig/base.sfx.soundmanager.base.bmx"
 Import "game.figure.base.bmx"
 Import "game.player.base.bmx"
 Import "game.building.base.sfx.bmx"

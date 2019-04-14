@@ -46,7 +46,7 @@ Type TGameToastMessage extends TToastMessage
 	Method SetMessageCategory:Int(messageCategory:int)
 		self.messageCategory = messageCategory
 	End Method
-	
+
 
 	Method SetMessageType:Int(messageType:int)
 		self.messageType = messageType
@@ -129,7 +129,7 @@ Type TGameToastMessage extends TToastMessage
 
 	Method SetPriority:Int(priority:int=0)
 		self.priority = priority
-	End Method 
+	End Method
 
 
 	Method RecalculateHeight:Int()
@@ -156,7 +156,7 @@ Type TGameToastMessage extends TToastMessage
 		if _closeAtWorldTime > 0 and _closeAtWorldTimeText <> ""
 			height :+ GetBitmapFontManager().baseFontBold.GetMaxCharHeight()
 		endif
-		
+
 		area.dimension.SetY(height)
 	End Method
 
@@ -178,7 +178,7 @@ Type TGameToastMessage extends TToastMessage
 				close()
 			endif
 		endif
-		
+
 		return Super.Update()
 	End Method
 
@@ -233,10 +233,10 @@ Type TGameToastMessage extends TToastMessage
 				timeString = GetWorldTime().GetFormattedDay(GetWorldTime().GetDaysRun(_closeAtWorldTime) +1 ) + " " + timeString
 			endif
 			text = text.Replace("%TIME%", timeString)
-			
+
 			GetBitmapFontManager().baseFontItalic.DrawBlock(text, contentX, contentY2 - GetBitmapFontManager().baseFontBold.GetMaxCharHeight(), contentX2 - contentX, -1, null, TColor.CreateGrey(40))
 		endif
-		
+
 		'lifetime bar
 		if _lifeTime > 0
 			local lifeTimeWidth:int = contentX2 - contentX

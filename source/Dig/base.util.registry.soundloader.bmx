@@ -14,7 +14,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -39,7 +39,7 @@ EndRem
 SuperStrict
 Import Brl.OGGLoader
 Import "base.util.registry.bmx"
-Import "base.sfx.soundmanager.bmx"
+Import "base.sfx.soundmanager.base.bmx"
 'register this loader
 new TRegistrySoundLoader.Init()
 
@@ -99,13 +99,13 @@ Type TRegistrySoundLoader extends TRegistryBaseLoader
 
 		Select resourceName
 			case "music"
-				Local stream:TDigAudioStreamOgg = new TDigAudioStreamOgg.CreateWithFile(url, loop)
+				Local stream:TDigAudioStream = GetSoundManagerBase().CreateDigAudioStreamOgg(url, loop)
 				If Not stream
 					TLogger.Log("TRegistrySoundLoader.LoadFromConfig()", "File ~q"+url+"~q is missing or corrupt.", LOG_ERROR)
 				Else
-					GetSoundManager().AddSound(name, stream, playlists)
+					GetSoundManagerBase().AddSound(name, stream, playlists)
 
-					if playonload then TSoundManager.GetInstance().PlayMusic(name)
+					if playonload then GetSoundManagerBase().PlayMusic(name)
 				EndIf
 				'indicate that the loading was successful (or not)
 				return stream
@@ -118,7 +118,7 @@ Type TRegistrySoundLoader extends TRegistryBaseLoader
 				If Not sound
 					TLogger.Log("TRegistrySoundLoader.LoadFromConfig()", "File ~q"+url+"~q is missing or corrupt.", LOG_ERROR)
 				Else
-					GetSoundManager().AddSound(name, sound, playlists)
+					GetSoundManagerBase().AddSound(name, sound, playlists)
 				EndIf
 				'indicate that the loading was successful (or not)
 				return sound
