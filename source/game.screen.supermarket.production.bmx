@@ -2570,8 +2570,8 @@ Type TGUIProductionCompanyDropDownItem Extends TGUIDropDownItem
 
 	Const paddingBottom:Int	= 6
 	Const paddingTop:Int = 0
-	Global xpColor:TColor = new TColor.Create(70,85,160)
-	Global sympathyColor:TColor = new TColor.Create(70,160,90)
+	Global xpColor:TColor = TColor.Create(70,85,160)
+	Global sympathyColor:TColor = TColor.Create(70,160,90)
 
 
 	Method CreateSimple:TGUIProductionCompanyDropDownItem(company:TProductionCompanyBase)

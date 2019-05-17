@@ -448,7 +448,7 @@ Type TInGameScreen_World Extends TInGameScreen
 		if GetGameBase().IsGameOver()
 			local oldA:float = GetAlpha()
 			SetAlpha oldA * 0.85
-			GetBitmapFont("default", 72, BOLDFONT).DrawBlock("GAME OVER", 0,0, GetGraphicsManager().GetWidth(), 380, ALIGN_CENTER_CENTER, new TColor.Create(255,155,125), TBitmapFont.STYLE_SHADOW)
+			GetBitmapFont("default", 72, BOLDFONT).DrawBlock("GAME OVER", 0,0, GetGraphicsManager().GetWidth(), 380, ALIGN_CENTER_CENTER, TColor.Create(255,155,125), TBitmapFont.STYLE_SHADOW)
 			Setalpha oldA
 		endif
 	End Method

@@ -12,7 +12,7 @@ Import "base.gfx.sprite.bmx"
 
 Type TGUIinput Extends TGUIobject
     Field maxLength:Int
-    Field color:TColor = new TColor.Create(120,120,120)
+    Field color:TColor = TColor.Create(120,120,120)
     Field maxTextWidthBase:Int
     Field maxTextWidthCurrent:Int
     Field spriteName:String = "gfx_gui_input.default"
@@ -59,7 +59,7 @@ Type TGUIinput Extends TGUIobject
 		else
 			SetMaxLength(2048)
 		endif
-'		SetValueColor(new TColor.Init(120,120,120))
+'		SetValueColor(TColor.Create(120,120,120))
 
 		'this element reacts to keystrokes
 		SetOption(GUI_OBJECT_CAN_RECEIVE_KEYSTROKES, True)

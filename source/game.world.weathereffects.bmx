@@ -560,8 +560,8 @@ End Type
 Type TWeatherEffectClouds extends TWeatherEffectBase
 	Field clouds:TList = CreateList()
 	Field cloudMax:int = 30
-	Field cloudColor:TColor = new TColor.Create(255,255,255)
-	Field cloudColorBase:TColor = new TColor.Create(255,255,255)
+	Field cloudColor:TColor = TColor.Create(255,255,255)
+	Field cloudColorBase:TColor = TColor.Create(255,255,255)
 	Field cloudBrightness:int = 100
 	Field skyBrightness:Float = 1.0
 	

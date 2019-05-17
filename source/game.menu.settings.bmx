@@ -292,7 +292,7 @@ Type TGUISettingsPanel extends TGUIPanel
 		self.AddChild(labelTouchInput)
 		labelTouchInput.Resize(checkboxWidth+30,-1)
 		labelTouchInput.SetFont( GetBitmapFont("default", 10) )
-		labelTouchInput.SetValueColor(new TColor.CreateGrey(75))
+		labelTouchInput.SetValueColor(TColor.CreateGrey(75))
 		labelTouchInput.SetValue(labelTouchInput.GetValue())
 		nextY :+ labelTouchInput.GetValueDimension().y + 5
 
@@ -313,7 +313,7 @@ Type TGUISettingsPanel extends TGUIPanel
 		self.AddChild(labelLongClickMode)
 		labelLongClickMode.Resize(checkboxWidth+30, -1)
 		labelLongClickMode.SetFont( GetBitmapFont("default", 10) )
-		labelLongClickMode.SetValueColor(new TColor.CreateGrey(75))
+		labelLongClickMode.SetValueColor(TColor.CreateGrey(75))
 		nextY :+ labelLongClickMode.GetValueDimension().y + 5
 
 		labelLongClickTime = New TGUILabel.Create(New TVec2D.Init(nextX + 22, nextY), GetLocale("LONGCLICK_TIME")+":")
@@ -509,15 +509,15 @@ Type TGUISettingsPanel extends TGUIPanel
 		Super.DrawContent()
 
 		If Int(sliderSFXVolume.GetValue()) = 0
-			GetBitmapFont("default").Draw("muted", sliderSFXVolume.GetScreenX() + 142, sliderSFXVolume.GetScreenY() + 6, new TColor.CreateGrey(50))
+			GetBitmapFont("default").Draw("muted", sliderSFXVolume.GetScreenX() + 142, sliderSFXVolume.GetScreenY() + 6, TColor.CreateGrey(50))
 		Else
-			GetBitmapFont("default").Draw(Int(sliderSFXVolume.GetValue())+" %", sliderSFXVolume.GetScreenX() + 142, sliderSFXVolume.GetScreenY() + 6, new TColor.CreateGrey(50))
+			GetBitmapFont("default").Draw(Int(sliderSFXVolume.GetValue())+" %", sliderSFXVolume.GetScreenX() + 142, sliderSFXVolume.GetScreenY() + 6, TColor.CreateGrey(50))
 		EndIf
 
 		If Int(sliderMusicVolume.GetValue()) = 0
-			GetBitmapFont("default").Draw("muted", sliderMusicVolume.GetScreenX() + 142, sliderMusicVolume.GetScreenY() + 6, new TColor.CreateGrey(50))
+			GetBitmapFont("default").Draw("muted", sliderMusicVolume.GetScreenX() + 142, sliderMusicVolume.GetScreenY() + 6, TColor.CreateGrey(50))
 		Else
-			GetBitmapFont("default").Draw(Int(sliderMusicVolume.GetValue())+" %", sliderMusicVolume.GetScreenX() + 142, sliderMusicVolume.GetScreenY() + 6, new TColor.CreateGrey(50))
+			GetBitmapFont("default").Draw(Int(sliderMusicVolume.GetValue())+" %", sliderMusicVolume.GetScreenX() + 142, sliderMusicVolume.GetScreenY() + 6, TColor.CreateGrey(50))
 		EndIf
 	End Method
 

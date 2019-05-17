@@ -31,11 +31,11 @@ Type TScreenHandler_Financials
 		if not screen then return False
 
 		'create finance entry colors
-		clTypes[TVTPlayerFinanceEntryType.GROUP_NEWS] = new TColor.Create(0, 31, 83)
-		clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME] = new TColor.Create(89, 40, 0)
-		clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT] = new TColor.Create(30, 30, 30)
-		clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION] = new TColor.Create(44, 0, 78)
-		clTypes[TVTPlayerFinanceEntryType.GROUP_STATION] = new TColor.Create(0, 75, 69)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_NEWS] = TColor.Create(0, 31, 83)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME] = TColor.Create(89, 40, 0)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT] = TColor.Create(30, 30, 30)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION] = TColor.Create(44, 0, 78)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_STATION] = TColor.Create(0, 75, 69)
 
 
 		'=== create gui elements if not done yet
@@ -100,7 +100,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 
 		local finance:TPlayerFinance = GetPlayerFinanceCollection().GetIgnoringStartDay(room.owner, financeShowDay)
 
-		local captionColor:TColor = new TColor.CreateGrey(70)
+		local captionColor:TColor = TColor.CreateGrey(70)
 		local captionFont:TBitmapFont = GetBitmapFont("Default", 14, BOLDFONT)
 		local captionHeight:int = 20 'to center it to table header according "font Baseline"
 		local textFont:TBitmapFont = GetBitmapFont("Default", 14)
@@ -108,7 +108,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		local textSmallFont:TBitmapFont = GetBitmapFont("Default", 11)
 		local textBoldFont:TBitmapFont = GetBitmapFont("Default", 14, BOLDFONT)
 
-		local clLog:TColor = new TColor.CreateGrey(50)
+		local clLog:TColor = TColor.CreateGrey(50)
 
 
 		local clOriginal:TColor = new TColor.Get()
@@ -329,7 +329,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		'minimum money (may be negative)
 		Local minValue:int = 0
 		'color of labels
-		Local labelColor:TColor = new TColor.CreateGrey(80)
+		Local labelColor:TColor = TColor.CreateGrey(80)
 
 		'first get the maximum value so we know how to scale the rest
 		For local i:Int = GetWorldTime().GetDay()-showDays To GetWorldTime().GetDay()

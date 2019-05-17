@@ -1851,9 +1851,9 @@ endrem
 
 
 		'=== DRAW HINTS FOR PRIMETIME/NIGHTTIME ===
-		Local hintColor:TColor = New TColor.CreateGrey(75)
-		Local hintColorGood:TColor = New TColor.Create(60,110,60)
-		Local hintColorBad:TColor = New TColor.Create(110,60,60)
+		Local hintColor:TColor = TColor.CreateGrey(75)
+		Local hintColorGood:TColor = TColor.Create(60,110,60)
+		Local hintColorBad:TColor = TColor.Create(110,60,60)
 		Local f:TBitmapFont = GetBitmapFont("default", 10)
 		Local fB:TBitmapFont = GetBitmapFont("default", 10, BOLDFONT)
 		Local oldA:Float = GetAlpha()

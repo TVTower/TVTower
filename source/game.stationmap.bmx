@@ -2964,7 +2964,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		If cantGetSectionPermissionReason = -1
 			GetBitmapFontManager().baseFont.draw(GetLocale("CHANNEL_IMAGE")+" ("+GetLocale("STATIONMAP_SECTION_NAME")+"): ", textX, textY)
-			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(section.broadcastPermissionMinimumChannelImage,2)+" %", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, new TColor.Create(255,150,150))
+			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(section.broadcastPermissionMinimumChannelImage,2)+" %", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.Create(255,150,150))
 			textY:+ textH
 		EndIf
 		If cantGetProviderPermissionReason = -1
@@ -2973,7 +2973,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			if provider then minImage = provider.minimumChannelImage
 
 			GetBitmapFontManager().baseFont.draw(GetLocale("CHANNEL_IMAGE")+" ("+GetLocale("PROVIDER")+"): ", textX, textY)
-			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(minImage,2)+" %", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, new TColor.Create(255,150,150))
+			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(minImage,2)+" %", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.Create(255,150,150))
 			textY:+ textH
 		EndIf
 
@@ -2997,7 +2997,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		GetBitmapFontManager().baseFont.draw(GetLocale("PRICE")+": ", textX, textY)
 		if not GetPlayerFinance(owner).CanAfford(totalPrice)
-			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.DottedValue(totalPrice) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, new TColor.Create(255,150,150))
+			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.DottedValue(totalPrice) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.Create(255,150,150))
 		else
 			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.DottedValue(totalPrice) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
 		endif
@@ -4333,7 +4333,7 @@ Type TStationMapSection
 		'broadcast permission
 		GetBitmapFontManager().baseFont.draw(GetLocale("CABLE_NETWORKS")+": ", textX, textY)
 		if not providerOK
-			GetBitmapFontManager().baseFontBold.drawBlock("0", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, new TColor.Create(255, 150, 150))
+			GetBitmapFontManager().baseFontBold.drawBlock("0", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.Create(255, 150, 150))
 		else
 			GetBitmapFontManager().baseFontBold.drawBlock(GetLocale("OK"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
 		endif
@@ -4350,7 +4350,7 @@ Type TStationMapSection
 
 		GetBitmapFontManager().baseFont.draw(GetLocale("CHANNEL_IMAGE")+": ", textX, textY)
 		if not imageOK
-			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(GetPublicImage(channelID).GetAverageImage(), 2)+"% < "+MathHelper.NumberToString(broadcastPermissionMinimumChannelImage, 2)+"%", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, new TColor.Create(255, 150, 150))
+			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(GetPublicImage(channelID).GetAverageImage(), 2)+"% < "+MathHelper.NumberToString(broadcastPermissionMinimumChannelImage, 2)+"%", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.Create(255, 150, 150))
 		else
 			GetBitmapFontManager().baseFontBold.drawBlock(GetLocale("OK"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
 		endif

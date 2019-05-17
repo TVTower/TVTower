@@ -213,26 +213,26 @@ Type TFigureGeneratorFigure
 			case 1 'african
 				local variation:int = Rand(1, 3)
 				Select variation
-					case 1	mixColor = new TColor.Create(106, 65, 46)
-					case 2	mixColor = new TColor.Create(128, 87, 62)
-					case 3	mixColor = new TColor.Create(165, 57,  0)
+					case 1	mixColor = TColor.Create(106, 65, 46)
+					case 2	mixColor = TColor.Create(128, 87, 62)
+					case 3	mixColor = TColor.Create(165, 57,  0)
 				End Select
 			case 2 'asian
 				local variation:int = Rand(1, 4)
 				Select variation
-					case 1	mixColor = new TColor.Create(255,220,177)
-					case 2	mixColor = new TColor.Create(229,194,152)
-					case 3	mixColor = new TColor.Create(204,132, 67)
-					case 4	mixColor = new TColor.Create(223,185,151)
+					case 1	mixColor = TColor.Create(255,220,177)
+					case 2	mixColor = TColor.Create(229,194,152)
+					case 3	mixColor = TColor.Create(204,132, 67)
+					case 4	mixColor = TColor.Create(223,185,151)
 				EndSelect
 '			case 3
 			default 'european/caucasian
 				local variation:int = Rand(1, 4)
 				Select variation
-					case 1	mixColor = new TColor.Create(255,218,204)
-					case 2	mixColor = new TColor.Create(253,192,168)
-					case 3	mixColor = new TColor.Create(233,145,110)
-					case 4	mixColor = new TColor.Create(245,210,195)
+					case 1	mixColor = TColor.Create(255,218,204)
+					case 2	mixColor = TColor.Create(253,192,168)
+					case 3	mixColor = TColor.Create(233,145,110)
+					case 4	mixColor = TColor.Create(245,210,195)
 				End Select
 		EndSelect
 		'add a bit variation
@@ -265,11 +265,11 @@ Type TFigureGeneratorFigure
 		'cloth
 		if Rand(100) < 20
 			if gender = 1
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(Rand(8)*16,Rand(8)*31,Rand(8)*31)
+				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(Rand(8)*16,Rand(8)*31,Rand(8)*31)
 			elseif gender = 2
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(Rand(0,8)*31,Rand(0,8)*31,Rand(0,8)*16)
+				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(Rand(0,8)*31,Rand(0,8)*31,Rand(0,8)*16)
 			else
-				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(Rand(8)*31,Rand(8)*31,Rand(8)*31)
+				partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(Rand(8)*31,Rand(8)*31,Rand(8)*31)
 			endif
 
 			'minimum brightness
@@ -279,41 +279,41 @@ Type TFigureGeneratorFigure
 		else
 			Select Rand(18)
 				case 1
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(255, 180, 0)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(255, 180, 0)
 				case 2
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(100, 130, 0)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(100, 130, 0)
 				case 3
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(215, 210, 0)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(215, 210, 0)
 				case 4
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(120, 220, 0)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(120, 220, 0)
 				case 5
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(50, 220, 0)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(50, 220, 0)
 				case 6
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(250, 50, 120)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(250, 50, 120)
 				case 7
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(0, 180, 220)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(0, 180, 220)
 				case 8
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(0, 80, 220)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(0, 80, 220)
 				case 9
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(100, 80, 200)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(100, 80, 200)
 				case 10
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(220, 0, 40)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(220, 0, 40)
 				case 11
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(40, 190, 70)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(40, 190, 70)
 				case 12
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(40, 0, 220)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(40, 0, 220)
 				case 13
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(200, 100, 90)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(200, 100, 90)
 				case 14
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(40, 70, 130)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(40, 70, 130)
 				case 15 'dark gray
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(100, 100, 100)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(100, 100, 100)
 				case 16 'light gray
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(230, 230, 230)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(230, 230, 230)
 				case 17
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(150, 150, 150)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(150, 150, 150)
 				default 'blackish
-					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  new TColor.Create(35, 35, 35)
+					partsColor[TFigureGeneratorPart.PART_CLOTH -1] =  TColor.Create(35, 35, 35)
 			End Select
 			partsColor[TFigureGeneratorPart.PART_CLOTH -1].AdjustBrightness( Rand(30)/100 - 0.2 ) '-15% - 15%
 
@@ -358,25 +358,25 @@ Type TFigureGeneratorFigure
 		if hairTone < chanceBlonde
 			local variation:int = Rand(1, 2)
 			Select variation
-				Case 1	haircolor = new TColor.Create(225,200,45)
-				Case 2	haircolor = new TColor.Create(225,210,50)
+				Case 1	haircolor = TColor.Create(225,200,45)
+				Case 2	haircolor = TColor.Create(225,210,50)
 			End Select
 		'black
 		elseif hairTone < chanceBlonde + chanceBlack
-			haircolor = new TColor.Create(30,25,20)
+			haircolor = TColor.Create(30,25,20)
 		'brown
 		elseif hairTone < chanceBlonde + chanceBlack + chanceBrown
 			local variation:int = Rand(1, 2)
 			Select variation
-				Case 1	haircolor = new TColor.Create(80,30,10)
-				Case 2	haircolor = new TColor.Create(80,40,15)
+				Case 1	haircolor = TColor.Create(80,30,10)
+				Case 2	haircolor = TColor.Create(80,40,15)
 			End Select
 		'red
 		else
 			local variation:int = Rand(1, 2)
 			Select variation
-				Case 1	haircolor = new TColor.Create(255,100,0)
-				Case 2	haircolor = new TColor.Create(245,120,15)
+				Case 1	haircolor = TColor.Create(255,100,0)
+				Case 2	haircolor = TColor.Create(245,120,15)
 			End Select
 		endif
 		haircolor.AdjustBrightness( Rand(30)/100 - 0.2 ) '-15% - 15%

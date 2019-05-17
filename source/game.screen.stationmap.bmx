@@ -34,8 +34,8 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 	Field listFont:TBitmapFont
 
 	Field _eventListeners:TLink[]
-	Global headerColor:TColor = New TColor.Create(75,75,75)
-	Global subHeaderColor:TColor = New TColor.Create(115,115,115)
+	Global headerColor:TColor = TColor.Create(75,75,75)
+	Global subHeaderColor:TColor = TColor.Create(115,115,115)
 
 
 	Method Create:TGameGUIBasicStationmapPanel(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
@@ -1669,10 +1669,10 @@ Type TSatelliteSelectionFrame
 
 		'draw with different color according status
 		If satellite.IsSubscribedChannel(GetPlayerBase().playerID)
-			entryColor = New TColor.Create(80,130,50, currentColor.a)
+			entryColor = TColor.Create(80,130,50, currentColor.a)
 			highlight = True
 		ElseIf satellite.CanSubscribeChannel(GetPlayerBase().playerID) <= 0
-			entryColor = New TColor.Create(130,80,50, currentColor.a)
+			entryColor = TColor.Create(130,80,50, currentColor.a)
 			entryColor.a = currentColor.a * 0.85
 			highlight = True
 		Else
@@ -1739,8 +1739,8 @@ Type TSatelliteSelectionFrame
 
 
 		Local headerText:String = GetLocale("SATELLITES")
-		Local titleColor:TColor = New TColor.Create(75,75,75)
-		Local subTitleColor:TColor = New TColor.Create(115,115,115)
+		Local titleColor:TColor = TColor.Create(75,75,75)
+		Local subTitleColor:TColor = TColor.Create(115,115,115)
 
 
 
@@ -1880,7 +1880,7 @@ endrem
 	Field sectionList:TGUISelectList
 	Field tooltips:TTooltipBase[]
 	Field _open:Int = False
-	Global subHeaderColor:TColor = New TColor.Create(115,115,115)
+	Global subHeaderColor:TColor = TColor.Create(115,115,115)
 
 	Field _eventListeners:TLink[]
 
@@ -2122,8 +2122,8 @@ endrem
 
 
 		Local headerText:String = GetLocale("COUNTRYNAME_ISO3166_"+GetStationMapCollection().GetMapISO3166Code())
-		Local titleColor:TColor = New TColor.Create(75,75,75)
-		Local subTitleColor:TColor = New TColor.Create(115,115,115)
+		Local titleColor:TColor = TColor.Create(75,75,75)
+		Local subTitleColor:TColor = TColor.Create(115,115,115)
 
 
 
@@ -3064,7 +3064,7 @@ endrem
 		If station.CanBroadcast()
 			'colorize antenna for "not sellable ones
 			If Not station.HasFlag(TVTStationFlag.SELLABLE)
-				entryColor = New TColor.Create(130,80,50, currentColor.a)
+				entryColor = TColor.Create(130,80,50, currentColor.a)
 				rightValueColor = entryColor
 			Else
 				entryColor = item.valueColor.copy()
@@ -3072,7 +3072,7 @@ endrem
 				rightValueColor = entryColor
 			EndIf
 		Else If station.IsShutdown()
-			entryColor = New TColor.Create(90,90,60, currentColor.a)
+			entryColor = TColor.Create(90,90,60, currentColor.a)
 			leftValue = GetLocale("UNUSED_TRANSMITTER")
 			if TStationSatelliteUplink(station) and not TStationSatelliteUplink(station).providerGUID
 				rightValue = ""
@@ -3088,7 +3088,7 @@ endrem
 		'blink a bit to emphasize a soon ending contract
 		local subTimeLeft:Long = station.GetSubscriptionTimeLeft()
 		if subTimeLeft > 0 and subTimeLeft < 1*TWorldTime.DAYLENGTH
-			entryColor = New TColor.Create(130,100,50, currentColor.a - float(0.2 + 0.6 * sin(Millisecs()*0.33)))
+			entryColor = TColor.Create(130,100,50, currentColor.a - float(0.2 + 0.6 * sin(Millisecs()*0.33)))
 			rightValueColor = entryColor
 		endif
 

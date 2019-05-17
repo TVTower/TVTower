@@ -669,7 +669,7 @@ endrem
 
 
 			if GetPlayerBaseCollection().playerID = (i+1)
-				if not guiPlayerPanels[i].spriteTintColor then guiPlayerPanels[i].spriteTintColor = new TColor.Create(255,240,235)
+				if not guiPlayerPanels[i].spriteTintColor then guiPlayerPanels[i].spriteTintColor = TColor.Create(255,240,235)
 
 				'show selection arrows (except most left/right)
 				if i=0
