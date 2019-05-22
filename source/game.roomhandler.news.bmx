@@ -525,7 +525,7 @@ Type RoomHandler_News extends TRoomHandler
 				if MouseManager.isShortClicked(1)
 
 					For local i:int = 0 to newsSortKeys.length-1
-						If THelper.MouseIn(contentX + i*32, sortButtonPos.GetIntY() + 7, 28, 27)
+						If THelper.MouseIn(contentX + 5 + i*32, sortButtonPos.GetIntY() + 12, 28, 27)
 							'sort now
 							if GetInstance().ListSortMode <> newsSortKeys[i]
 								GetInstance().SetAvailableNewsListSort(newsSortKeys[i], True)
