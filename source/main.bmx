@@ -485,7 +485,7 @@ Type TApp
 			GetSoundManager().MuteSfx(true)
 			TSoundManager.audioEngineEnabled = False
 		Else
-			GetSoundManagerBase().ApplyConfig(config.GetString("sound_engine", "AUTOMATIC"), ..
+			GetSoundManager().ApplyConfig(config.GetString("sound_engine", "AUTOMATIC"), ..
 			                                  0.01 * config.GetInt("sound_music_volume", 100), ..
 			                                  0.01 * config.GetInt("sound_sfx_volume", 100) ..
 			                                 )
