@@ -250,17 +250,19 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 						Else
 							GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(New TRectangle.Init(drawPos.x, drawPos.y, -1, 30))
 						EndIf
-						'live
-						If TProgramme(broadcastMaterial) And TProgramme(broadcastMaterial).data.IsLive()
-							GetSpriteFromRegistry("pp_live").Draw(drawPos.x + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), drawPos.y,  -1, ALIGN_RIGHT_TOP)
-						EndIf
-						'xrated
-						If TProgramme(broadcastMaterial) And TProgramme(broadcastMaterial).data.IsXRated()
-							GetSpriteFromRegistry("pp_xrated").Draw(drawPos.x + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), drawPos.y,  -1, ALIGN_RIGHT_TOP)
-						EndIf
-						'paid
-						If TProgramme(broadcastMaterial) And TProgramme(broadcastMaterial).data.IsPaid()
-							GetSpriteFromRegistry("pp_paid").Draw(drawPos.x + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), drawPos.y,  -1, ALIGN_RIGHT_TOP)
+						If TProgramme(broadcastMaterial) 
+							'live
+							If TProgramme(broadcastMaterial).licence.IsLive()
+								GetSpriteFromRegistry("pp_live").Draw(drawPos.x + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), drawPos.y,  -1, ALIGN_RIGHT_TOP)
+							EndIf
+							'xrated
+							If TProgramme(broadcastMaterial).licence.IsXRated()
+								GetSpriteFromRegistry("pp_xrated").Draw(drawPos.x + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), drawPos.y,  -1, ALIGN_RIGHT_TOP)
+							EndIf
+							'paid
+							If TProgramme(broadcastMaterial).licence.IsPaid()
+								GetSpriteFromRegistry("pp_paid").Draw(drawPos.x + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth(), drawPos.y,  -1, ALIGN_RIGHT_TOP)
+							EndIf
 						EndIf
 
 						titleIsVisible = True
@@ -298,14 +300,8 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		'check if we have to skip ghost drawing
 		If hasOption(GUI_OBJECT_DRAWMODE_GHOST) And Not CanDrawGhost() Then Return
 
+		If Not broadcastMaterial then Throw "Programme planner 'TGUIProgrammePlanElement.broadcast' is null!"
 
-		If Not broadcastMaterial
-			SetColor 255,0,0
-			DrawRect(GetScreenX(), GetScreenY(), 150,20)
-			SetColor 255,255,255
-			GetBitmapFontManager().basefontBold.Draw("no broadcastMaterial", GetScreenX()+5, GetScreenY()+3)
-			Return
-		EndIf
 
 		'If isDragged() Then state = 0
 		Select broadcastMaterial.state
@@ -443,9 +439,9 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			TBitmapFont.pixmapOrigin.SetXY(-textArea.position.x, -textArea.position.y)
 
 			'draw
-			titleFont.drawBlock(title, textArea.position.GetIntX() + 5, textArea.position.GetIntY() +2, textArea.GetW() - 5, 18, Null, titleColor, 0, True, 1.0, False)
-			useFont.draw(text, textArea.position.GetIntX() + 5, textArea.position.GetIntY() + 17, textColor)
-			useFont.draw(text2, textArea.position.GetIntX() + 138, textArea.position.GetIntY() + 17, textColor)
+			titleFont.drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() +3, textArea.GetW() - 5, 18, Null, titleColor, 0, True, 1.0, False)
+			useFont.draw(text, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 16, textColor)
+			useFont.draw(text2, textArea.position.GetIntX() + 138, textArea.position.GetIntY() + 16, textColor)
 
 			SetColor 255,255,255
 
@@ -509,10 +505,10 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			If Not titleColor Then titleColor = TColor.Create(0,0,0)
 			If Not textColor Then textColor = TColor.Create(50,50,50)
 
-			GetBitmapFont("DefaultThin", 10, BOLDFONT).drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 2, textArea.GetW(), 18, Null, TColor.CreateGrey(0), 0,1,1.0, False)
+			GetBitmapFont("DefaultThin", 10, BOLDFONT).drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 3, textArea.GetW(), 15, Null, TColor.CreateGrey(0), 0,1,1.0, False)
 			textColor.setRGB()
-			GetBitmapFont("Default", 10).drawBlock(text, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 30)
-			GetBitmapFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 20, New TVec2D.Init(ALIGN_RIGHT))
+			GetBitmapFont("Default", 10).drawBlock(text, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 15)
+			GetBitmapFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 15, New TVec2D.Init(ALIGN_RIGHT))
 
 			SetColor 255,255,255
 

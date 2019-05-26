@@ -739,13 +739,48 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if GetSubLicenceCount() = 0 and GetData()
 			return data.IsLive()
 		endif
-		'is live as soon as one licence is still live
+		'is live as soon as one sub-licence is still live
 		For local licence:TProgrammeLicence = eachin subLicences
 			if licence.isLive() then return True
 		Next
 		return False
 	End Method
 
+
+	Method isXRated:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 and GetData()
+			return data.IsXRated()
+		endif
+		'is live as soon as one sub-licence is still live
+		For local licence:TProgrammeLicence = eachin subLicences
+			if licence.IsXRated() then return True
+		Next
+		return False
+	End Method
+
+
+	Method isLiveOnTape:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 and GetData()
+			return data.IsLiveOnTape()
+		endif
+		'is live-on-tape as soon as one sub-licence is (already) live-on-tape
+		For local licence:TProgrammeLicence = eachin subLicences
+			if licence.IsLiveOnTape() then return True
+		Next
+		return False
+	End Method
+
+
+	Method isPaid:int() {_exposeToLua}
+		if GetSubLicenceCount() = 0 and GetData()
+			return data.IsPaid()
+		endif
+		'is paid as soon as one sub-licence is paid
+		For local licence:TProgrammeLicence = eachin subLicences
+			if licence.ispaid() then return True
+		Next
+		return False
+	End Method
 
 
 	Method isSeries:int() {_exposeToLua}
@@ -1174,7 +1209,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'check live-programme
 		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
-			if data.IsLive()
+			if self.IsLive()
 				'hour or day incorrect
 				if GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
 					if GetWorldTime().GetDayHour( data.releaseTime ) <> hour then return False
@@ -1982,8 +2017,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if useOwner > 0 and self.IsPlanned() then showMsgPlannedWarning = True
 		'if licence is for a specific programme it might contain a flag...
 		'TODO: do this for "all" via licence.HasFlag() doing recursive checks?
-		If data.IsPaid() then showMsgEarnInfo = True
-		If IsLive() or data.IsLiveOnTape()
+		If self.IsPaid() then showMsgEarnInfo = True
+		If self.IsLive() or self.IsLiveOnTape()
 			local programmedDay:int = -1
 			local programmedHour:int = -1
 			if extraData
