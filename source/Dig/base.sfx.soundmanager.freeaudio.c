@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <stddef.h> //definition of NULL
 
 //forward declaration
 int __startThread();
@@ -8,7 +9,7 @@ void __onAppExit();
 //global vars
 int threadID;
 int updateStreamsEnabled = -1; //-1 = auto activate on registering a callback
-int updateInterval = 125; //in ms
+int updateInterval = 500; //in ms
 
 
 //definition and variable for callback

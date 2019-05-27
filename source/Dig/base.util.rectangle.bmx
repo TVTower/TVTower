@@ -215,15 +215,17 @@ Type TRectangle {_exposeToLua="selected"}
 
 
 	'moves the rectangle to x,y
-	Method MoveXY:int(x:float, y:float)
+	Method MoveXY:TRectangle(x:float, y:float)
 		position.AddXY(x, y)
+		return self
 	End Method
 
 
 	'Set the rectangles values
-	Method SetXYWH(x:float, y:float, w:float, h:float)
+	Method SetXYWH:TRectangle(x:float, y:float, w:float, h:float)
 		position.setXY(x,y)
 		dimension.setXY(w,h)
+		return self
 	End Method
 
 

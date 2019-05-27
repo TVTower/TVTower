@@ -185,7 +185,7 @@ Type TMouseManager
 	'includes waiting time
 	Method isDoubleClicked:Int(key:Int, strictMode:Int=True)
 		If Not _enabled[key] Then Return False
-		
+
 		If strictMode
 			Return GetClicks(key) = 2
 		Else
@@ -283,7 +283,7 @@ Type TMouseManager
 	Method GetY:Float()
 		Return currentPos.y
 	End Method
-	
+
 
 	'returns how many milliseconds a button is down
 	Method GetDownTime:Long(key:Int)
@@ -378,7 +378,7 @@ Type TMouseManager
 			_clickPosition[i] = Null
 			_hitPosition[i] = Null
 		EndIf
-		
+
 		'set to non-clicked - for "isClicked()"
 		_keyClicked[i] = False
 		_keyLongClicked[i] = False

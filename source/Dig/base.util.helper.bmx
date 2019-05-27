@@ -318,8 +318,8 @@ Type THelper
 
 
 	'assigns field properties of one object to another
-	'no deep cloning is done but "references" are copied
-	Function TakeOverObjectValues:object(source:object, target:object var, skipFields:string="")
+	'deepCopy: Set to False to skip deep cloning but copy "references" 
+	Function TakeOverObjectValues:object(source:object, target:object var, skipFields:string="", deepCopy:int = False)
 		If source = Null
 			target = null
 			return null
@@ -347,7 +347,11 @@ Type THelper
 			if tarFld
 				tarFldId = tarfld.TypeId()
 				if tarFldID = fldId or tarFldId.ExtendsType(fldId)
-					tarFld.Set(target, fld.Get(source))
+					if not deepCopy
+						tarFld.Set(target, fld.Get(source))
+					else
+						tarFld.Set(target, CloneObject( fld.Get(source) ) )
+					endif
 				endif
 			endif
 		Next

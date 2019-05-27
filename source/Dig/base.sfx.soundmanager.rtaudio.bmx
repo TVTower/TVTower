@@ -32,8 +32,8 @@ Type TSoundManager_RtAudio extends TSoundManager
 		Return TSoundManager_RtAudio(instance)
 	End Function
 
-	
-	
+
+
 	Method FillAudioEngines:int()
 		engineKeys = ["AUTOMATIC", "NONE"]
 		engineNames = ["Automatic", "None"]
@@ -52,7 +52,7 @@ Type TSoundManager_RtAudio extends TSoundManager
 			engineNames :+ ["ASIO", "DirectSound"]
 		?
 	End Method
-	
+
 
 	Method InitSpecificAudioEngine:Int(engine:String)
 		TMaxModRtAudioDriver.Init(engine)
@@ -75,15 +75,15 @@ Type TSoundManager_RtAudio extends TSoundManager
 		'reenable rtAudio-messages
 		TMaxModRtAudioDriver.showWarnings(False)
 
-		Super.InitAudioEngine() 
-		
+		Super.InitAudioEngine()
+
 		'reenable rtAudio-messages
 		TMaxModRtAudioDriver.showWarnings(True)
 
 		Return True
 	End Method
 
-	
+
 	Method CreateDigAudioStreamOgg:TDigAudioStream(uri:string, loop:int)
 		return new TDigAudioStream_RtAudio_Ogg.CreateWithFile(uri, loop)
 	End Method
@@ -155,50 +155,47 @@ Type TDigAudioStream_RtAudio extends TDigAudioStream
 		SetPlaying(true)
 
 		channel.SetVolume(volume)
-		
+
 		SetLoopedPlaytime( GetChannelLength(channel, MM_MILLISECS) )
 
 		Return channel
 	End Method
 
-rem
+
 	Method GetChannel:TChannel()
 		if not url then Throw "no url to play"
-		'if not bank then Throw "empty bank"
-		'Local channel:TChannel = CueMusic(Self.bank, loop)
-		'if not channel
-		'	channel = CueMusic(self.url, loop)
-			local channel:TChannel = CueMusic(self.url, loop)
-			if not channel
-				throw "TDigAudioStream.GetChannel() failed to CueMusic"
-			endif
-			lastChannelTime = Time.MillisecsLong()
-			SetPlaying(true)
-		'endif
+		local channel:TChannel = CueMusic(self.url, loop)
+		if not channel
+			throw "TDigAudioStream_RtAudio.GetChannel() failed to CueMusic"
+		endif
+		lastChannelTime = Time.MillisecsLong()
+		SetPlaying(true)
+
 		channel.SetVolume(volume)
 
 		Return channel
 	End Method
-endrem
+
 
 	'returns time left in milliseconds
 	Method GetTimeLeft:Float()
 		Return GetTimeTotal() - GetTimePlayed()
-	End Method	
+	End Method
 
 
 	'returns time of a track in milliseconds
 	Method GetTimeTotal:Int()
 		if not channel then return 0
 		Return GetChannelLength(channel, MM_MILLISECS)
-	End Method	
+	End Method
 
 
 	'returns time left in milliseconds
 	Method GetTimePlayed:Float()
 		if not channel then return 0
-		Return GetChannelPosition(channel, MM_MILLISECS)
-	End Method	
+
+		Return maxmod2.maxmod2.GetChannelPosition(channel, MM_MILLISECS)
+	End Method
 End Type
 
 

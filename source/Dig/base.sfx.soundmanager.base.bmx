@@ -6,9 +6,6 @@ Import brl.Map
 Import "base.util.logger.bmx"
 Import "base.util.vector.bmx"
 Import "base.util.time.bmx"
-?threaded
-Import Brl.Threads
-?
 
 Type TSoundManager
 	Field soundFiles:TMap = CreateMap()
@@ -27,11 +24,9 @@ Type TSoundManager
 	Field activeMusicStream:TDigAudioStream = Null
 	Field nextMusicStream:TDigAudioStream = Null
 
-	Field currentMusicStream:TDigAudioStream = Null
-
 	'do auto crossfade X milliseconds before song end, 0 disables
 	Field autoCrossFadeTime:Int = 1500
-	'disable to skip fading on next song switch 
+	'disable to skip fading on next song switch
 	Field autoCrossFadeNextSong:Int = True
 	'crossfade time for the current crossfade
 	field crossFadeTime:int = 1500
@@ -41,7 +36,7 @@ Type TSoundManager
 
 	Field forceNextMusic:Int = 0
 	Field fadeProcess:Int = 0 '0 = nicht aktiv  1 = aktiv
-	'time when fading started 
+	'time when fading started
 	Field fadeProcessTime:Long = 0
 
 	Field soundSources:TMap = CreateMap()
@@ -64,27 +59,24 @@ Type TSoundManager
 
 	Global audioEngineEnabled:int = True
 	Global audioEngine:String = "AUTOMATIC"
-	
-	?threaded
-	Global refillBufferMutex:TMutex = CreateMutex()
-	Global updateStreamManagerThread:TThread = new TThread
-	?
+
 	Global isRefillBufferRunning:Int = False
 
 
 	Function Create:TSoundManager()
 		Local manager:TSoundManager = New TSoundManager
-
+print "Create:TSoundManager"
 		'initialize sound system
 		manager.InitAudioEngine()
+print "-----"
 
 		manager.defaulTSfxDynamicSettings = TSfxSettings.Create()
-		
-		
+
+
 		Return manager
 	End Function
-	
-	
+
+
 	Method GetAudioEngineDriverName:string(engineKey:string)
 		if not engineKeys or engineKeys.length = 0 then FillAudioEngines()
 		for local i:int = 0 until engineKeys.length
@@ -111,15 +103,15 @@ Type TSoundManager
 		return engineNames
 	End Method
 
-	
+
 	Method FillAudioEngines:int()
 	End Method
-	
+
 
 	Method SetAudioEngine:int(engine:String)
 		engine = engine.ToUpper()
 		if engine = audioEngine then return False
-		
+
 		audioEngine = "AUTOMATIC"
 		local keys:string[] = GetAudioEngineKeys()
 		'local driverNames:string[] = GetAudioEngineDriverNames()
@@ -133,7 +125,7 @@ Type TSoundManager
 
 		return True
 	End Method
-		
+
 
 	Method InitSpecificAudioEngine:int(engineKey:string)
 		local engineDriver:string = GetAudioEngineDriverName(engineKey)
@@ -153,13 +145,13 @@ Type TSoundManager
 	Method InitAudioEngine:int()
 		local engines:String[] = [audioEngine]
 		local otherEngineKeys:String[] = GetAudioEngineKeys()
-		
+
 		for local i:int = 0 until otherEngineKeys.length
 			if otherEngineKeys[i].ToLower() <> audioEngine.toLower()
 				engines :+ [otherEngineKeys[i]]
 			endif
 		Next
-		
+
 		'try to init one of the engines, starting with the manually set
 		'audioEngine
 		local foundWorkingEngine:string = ""
@@ -191,7 +183,7 @@ Type TSoundManager
 		Return instance
 	End Function
 
-	
+
 	Method ApplyConfig(soundEngine:String="", musicVolume:Float=1.0, sfxVolume:Float=1.0, playlist:String="")
 		if soundEngine.ToLower() = "none"
 			MuteMusic(true)
@@ -200,6 +192,7 @@ Type TSoundManager
 		elseif soundEngine <> ""
 			audioEngineEnabled = true
 			if SetAudioEngine(soundEngine.ToUpper())
+				'new and old engine differed, so initialize the engine
 				InitAudioEngine()
 			endif
 		endif
@@ -213,12 +206,12 @@ Type TSoundManager
 
 			if not HasMutedMusic()
 				'if no music is played yet, try to get one from the "menu"-playlist
-				If Not isPlaying() and playlist 
+				If Not isPlaying() and playlist
 					PlayMusicPlaylist(playlist)
 				endif
 			endif
 		endif
-	End Method	
+	End Method
 
 	Function DisableAudioEngine:int()
 		audioEngineEnabled = False
@@ -348,7 +341,7 @@ Type TSoundManager
 		return TSoundSourceElement(soundSources.ValueForKey(GUID))
 	End Method
 
-	
+
 
 	Method IsPlaying:Int()
 		If Not activeMusicChannel Then Return False
@@ -389,7 +382,7 @@ Type TSoundManager
 	Method MuteMusic:Int(bool:Int=True)
 		'already muted
 		if musicOn = Not bool then return False
-		
+
 		if not audioEngineEnabled then return False
 
 		If bool
@@ -424,118 +417,192 @@ Type TSoundManager
 	Method HasMutedSfx:Int()
 		Return Not sfxOn
 	End Method
-	
+
 
 	Method RefillBuffers:int()
 		'currently executed?
 		if isRefillBufferRunning then return False
-		isRefillBufferRunning = True	
+		isRefillBufferRunning = True
 
 		If inactiveMusicStream then inactiveMusicStream.Update()
 		If activeMusicStream then activeMusicStream.Update()
 
 		isRefillBufferRunning = False
 	End Method
-	
 
-	Method Update:Int()
-		'skip updates if muted
-		If isMuted() Then Return True
 
-		If sfxOn
-			For Local element:TSoundSourceElement = EachIn soundSources.Values()
-				element.Update()
-			Next
-		EndIf
-'rem
-		If Not HasMutedMusic()
-			'nothing to do if no activated channel exists
-			If Not activeMusicChannel Then Return True
+	Method UpdateSFX()
+		If not sfxOn then return
 
-			'buffers now get refilled by a thread
-			'RefillBuffers()
-
-			'autocrossfade to the next song
-			if autoCrossFadeTime > 0 and autoCrossFadeNextSong and activeMusicStream
-				if activeMusicStream.loop=false and activeMusicStream.GetTimeLeft() < autoCrossFadeTime
-print "auto crossfade to next song: time Left: " + activeMusicStream.GetTimeLeft() + " played="+activeMusicStream.GetTimePlayed() +"  total="+activeMusicStream.GetTimeTotal()
-					PlayMusicPlaylist(GetCurrentPlaylist())
-				endif
-			endif
-
-			'if the music didn't stop yet
-			If activeMusicChannel.Playing()
-				'autocrossfade to next song
-				If currentMusicStream and currentMusicStream.IsPlaying() And autoCrossFadeTime > 0 And autoCrossFadeNextSong
-					If currentMusicStream.loop and currentMusicStream.GetLoopedPlaytimeLeft() < autoCrossFadeTime
-						currentMusicStream.SetPlaying(false)
-						forceNextMusic = True
-print "auto crossfade looptime ending: " + activeMusicStream.GetLoopedPlaytimeLeft() + " played="+activeMusicStream.GetLoopedTimePlayed() +"  total="+activeMusicStream.GetLoopedPlaytime()
-						PlayMusicPlaylist(GetCurrentPlaylist())
-						'FadeOverToNextTitle()
-					Endif
-				Endif
-
-							
-				If (forceNextMusic And nextMusicStream) Or fadeProcess > 0
-					'TLogger.log("TSoundManager.Update()", "FadeOverToNextTitle. fadeProcess=" + fadeProcess, LOG_DEBUG)
-					FadeOverToNextTitle(autoCrossFadeTime)
-				EndIf
-			'no music is playing, just start
-			Else
-				TLogger.Log("TSoundManager.Update()", "PlayMusicPlaylist", LOG_DEBUG)
-				PlayMusicPlaylist(GetCurrentPlaylist())
-
-				'enable autocrossfading for next song if disabled in the
-				'past (eg through playing the same song twice)
-				if autoCrossFadeTime > 0 then autoCrossFadeNextSong = True
-			EndIf
-		EndIf
+		For Local element:TSoundSourceElement = EachIn soundSources.Values()
+			element.Update()
+		Next
 	End Method
 
 
-	Method FadeOverToNextTitle:int(fadeTime:int = -1)
-		if not audioEngineEnabled then return False
+	Method UpdateMusic:Int()
+		'nothing to do if no activated channel exists
+		If Not activeMusicChannel Then Return False
+		'also skip actions with muted music
+		If HasMutedMusic() then return False
 
-		'fade in the next channel
-		If fadeProcess = 0
-			if fadeTime = -1 then 
-				self.crossFadeTime = autoCrossFadeTime
-			else
-				self.crossFadeTime = fadeTime
-			endif
 
-			fadeProcess = 1
-			fadeProcessTime = Time.MillisecsLong()
-			inactiveMusicChannel = nextMusicStream.CreateChannel(0)
-			ResumeChannel(inactiveMusicChannel)
-			currentMusicStream = nextMusicStream
+		'=== START PLAYING ===
+		'if nothing was playing yet, just start except we are playing already
+		If not activeMusicChannel.Playing() 'and not activeMusicStream ' and fadeProcess = 0
+			TLogger.Log("TSoundManager.Update()", "No active music channel playing, start new from current playlist", LOG_DEBUG)
+			PlayMusicPlaylist(GetCurrentPlaylist())
 
-			inactiveMusicStream = activeMusicStream
-			activeMusicStream = nextMusicStream
-
-			nextMusicStream = Null
-
-			forceNextMusic = False
+			'enable autocrossfading for next song if disabled in the
+			'past (eg through playing the same song twice)
+			if autoCrossFadeTime > 0 then autoCrossFadeNextSong = True
 		EndIf
 
-		'fade out of active channel
+
+
+		'=== AUTO CROSS FADE ===
+		'autocrossfade to the next song ?
+		'only start a new fade if not already fading
+		if autoCrossFadeNextSong and autoCrossFadeTime > 0 and activeMusicStream and fadeProcess = 0
+			local timeLeft:int = activeMusicStream.GetTimeLeft()
+			if activeMusicStream.loop then timeLeft = activeMusicStream.GetLoopedPlaytimeLeft()
+			if timeLeft < autoCrossFadeTime
+				PlayMusicPlaylist(GetCurrentPlaylist())
+				StartFadeOverToNextTitle(autoCrossFadeTime)
+			endif
+		endif
+
+
+		'=== FORCE NEXT MUSIC ===
+		'if something enforced next music, cross fade to it
+		If forceNextMusic And nextMusicStream
+			'TLogger.log("TSoundManager.Update()", "FadeOverToNextTitle. fadeProcess=" + fadeProcess, LOG_DEBUG)
+			StartFadeOverToNextTitle(autoCrossFadeTime)
+		EndIf
+
+
+
+		'=== UPDATE CROSS FADE ===
+		UpdateFadeOverToNextTitle()
+
+
+		return True
+	End Method
+
+
+	Method Update:Int()
+		'skip updates if muted
+		If isMuted() Then Return False
+
+		UpdateSFX()
+		UpdateMusic()
+
+		Return True
+	End Method
+
+
+	Method StartFadeOverToNextTitle:int(fadeTime:int = -1)
+		if not audioEngineEnabled then return False
+
+		?debug
+		print "StartFadeOverToNextTitle()"
+		?
+
+		If fadeProcess <> 0
+			?debug
+			print "StartFadeOverToNextTitle() called during other fading"
+			?
+			return False
+		EndIf
+
+
+		'set default if none was given
+		if fadeTime = -1 then
+			self.crossFadeTime = autoCrossFadeTime
+		else
+			self.crossFadeTime = fadeTime
+		endif
+
+
+		'maybe we missed the crossfade or "jumped beyond end"
+		'so this limits fade to it and in case of already reaching
+		'the end this means we instantly switch music
+		local timeLeft:int = activeMusicStream.GetTimeLeft()
+		if activeMusicStream.loop then timeLeft = activeMusicStream.GetLoopedPlaytimeLeft()
+		self.crossFadeTime = Max(0, Min(self.crossFadeTime, timeLeft))
+
+		?debug
+		if activeMusicStream.loop
+			print "  crossfade current track looptime left: " + activeMusicStream.GetLoopedPlaytimeLeft() + " played="+activeMusicStream.GetLoopedTimePlayed() +"  total="+activeMusicStream.GetLoopedPlaytime()
+			print "  crossFadeTime: " + self.crossFadeTime
+		else
+			print "  crossfade current track time Left: " + activeMusicStream.GetTimeLeft() + " played="+activeMusicStream.GetTimePlayed() +"  total="+activeMusicStream.GetTimeTotal()
+			print "  crossFadeTime: " + self.crossFadeTime
+		endif
+		?
+
+
+		'fade in the next channel
+		fadeProcess = 1
+		fadeProcessTime = Time.MillisecsLong()
+
+		'load next music "into" a new inactive channel and start playing
+		inactiveMusicChannel = nextMusicStream.CreateChannel(0)
+		ResumeChannel(inactiveMusicChannel)
+
+		'switches inactive channel/stream with active channel/stream
+		SwitchMusicChannels()
+
+		'set current next one
+		activeMusicStream = nextMusicStream
+		nextMusicStream = Null
+
+		?debug
+		print "FadeOverToNextTitle(): inactiveMusicStream.IsPlaying() = " + inactiveMusicStream.IsPlaying()
+		print "FadeOverToNextTitle(): activeMusicStream.IsPlaying() = " + activeMusicStream.IsPlaying()
+		?
+
+
+		forceNextMusic = False
+	End Method
+
+
+	Method UpdateFadeOverToNextTitle:int()
+		if not audioEngineEnabled then return False
+
+		'fade out of old (inactive) channel
 		If fadeProcess = 1
+
 			Local fadeValue:Float = 1.0
-			if self.crossFadeTime > 0 
+			if self.crossFadeTime > 0
 				fadeValue = Max(0.0, Min(1.0, (Time.MillisecsLong() - fadeProcessTime) / float(crossFadeTime)))
 			endif
-			activeMusicChannel.SetVolume((1.0 - fadeValue) * musicVolume)
-			inactiveMusicChannel.SetVolume(fadeValue * nextMusicVolume)
-			
+			inactiveMusicChannel.SetVolume((1.0 - fadeValue) * musicVolume)
+			activeMusicChannel.SetVolume(fadeValue * nextMusicVolume)
+
+
 			if fadeValue >= 1.0 then fadeProcess = 2
 		EndIf
 
 		'fade finished
 		If fadeProcess = 2
+?debug
+print "FadeOverToNextTitle() finished"
+?
 			fadeProcess = 0
 			musicVolume = nextMusicVolume
-			SwitchMusicChannels()
+
+
+			'stops the stream AND the channel (which also removes it)
+			inactiveMusicStream.Stop()
+			'removes that channel!
+			inactiveMusicChannel.Stop()
+			'remove the whole stream (and the associated channel)
+			inactiveMusicStream = null
+			inactiveMusicChannel = null
+
+			'make sure active is unpaused
+			if activeMusicStream then activeMusicStream.SetPlaying(true)
 		EndIf
 	End Method
 
@@ -552,10 +619,13 @@ print "auto crossfade looptime ending: " + activeMusicStream.GetLoopedPlaytimeLe
 
 	Method SwitchMusicChannels()
 		Local channelTemp:TChannel = Self.activeMusicChannel
-		Self.activeMusicChannel = Self.inactiveMusicChannel
-		Self.inactiveMusicChannel = channelTemp
+		Local streamTemp:TDigAudioStream = Self.activeMusicStream
 
-		Self.inactiveMusicChannel.Stop()
+		Self.activeMusicChannel = Self.inactiveMusicChannel
+		Self.activeMusicStream = Self.inactiveMusicStream
+
+		Self.inactiveMusicChannel = channelTemp
+		Self.inactiveMusicStream = streamTemp
 	End Method
 
 
@@ -599,27 +669,27 @@ print "auto crossfade looptime ending: " + activeMusicStream.GetLoopedPlaytimeLe
 		if not nextMusicStream
 			TLogger.Log("PlayMusicOrPlaylist", "Music not found. Using random from default playlist", LOG_DEBUG)
 			nextMusicStream = GetRandomMusicFromPlaylist("default")
-			nextMusicVolume = 1
+			nextMusicVolume = defaultMusicVolume
 		endif
 
 		forceNextMusic = True
-		
+
 
 		'start to play music if not done yet
-		If Not activeMusicChannel Or Not activeMusicChannel.Playing()
+		If Not activeMusicChannel or Not activeMusicChannel.Playing()
 			If Not nextMusicStream
 				TLogger.Log("PlayMusicOrPlaylist", "could not start activeMusicChannel: no next music found", LOG_DEBUG)
 			Else
 				TLogger.Log("PlayMusicOrPlaylist", "start activeMusicChannel", LOG_DEBUG)
 				Local musicVolume:Float = nextMusicVolume
+				if activeMusicChannel then activeMusicChannel.Stop()
 				activeMusicChannel = nextMusicStream.CreateChannel(musicVolume)
 
-				ResumeChannel(activeMusicChannel)
+				activeMusicChannel.SetPaused(False)
 
 				inactiveMusicStream = activeMusicStream
 				activeMusicStream = nextMusicStream
-				currentMusicStream = nextMusicStream
-				
+
 				forceNextMusic = False
 			EndIf
 		EndIf
@@ -638,7 +708,7 @@ print "auto crossfade looptime ending: " + activeMusicStream.GetLoopedPlaytimeLe
 				nextMusicStream = activeMusicStream.Clone()
 				nextMusicVolume = musicVolume
 			endif
-		endif		
+		endif
 	End Method
 
 
@@ -699,8 +769,8 @@ print "auto crossfade looptime ending: " + activeMusicStream.GetLoopedPlaytimeLe
 	Method GetMusicVolume:Float(music:String)
 		Return defaultMusicVolume
 	End Method
-	
-	
+
+
 	Method CreateDigAudioStreamOgg:TDigAudioStream(uri:string, loop:int)
 		return null
 	End Method
@@ -726,13 +796,23 @@ Type TDigAudioStream
 
 	Method CreateChannel:TChannel(volume:Float) abstract
 
-	'Method GetChannel:TChannel() abstract
-	
+	Method GetChannel:TChannel() abstract
+
+	Method GetChannelPosition:int()
+		return 0
+	End Method
+
+
+	Method Stop()
+		SetPlaying(False)
+	End Method
+
+
 	Method Update()
 		'do stream updates here if needed
 	End Method
-	
-	
+
+
 	Method GetURI:object()
 		return null
 	End Method
@@ -741,7 +821,7 @@ Type TDigAudioStream
 	Method IsPlaying:int()
 		return playing
 	End Method
-	
+
 
 	Method SetPlaying:int(playing:int)
 		self.playing = playing
@@ -756,7 +836,7 @@ Type TDigAudioStream
 
 	Method GetLoopedPlaytime:int()
 		return playtime
-	End Method	
+	End Method
 
 
 	Method GetLoopedTimePlayed:int()
@@ -768,7 +848,7 @@ Type TDigAudioStream
 	Method GetLoopedPlaytimeLeft:int()
 		return GetLoopedPlaytime() - GetLoopedTimePlayed()
 	End Method
-	
+
 
 	'returns time left in milliseconds
 	Method GetTimeLeft:Float()
@@ -846,7 +926,7 @@ Type TSfxChannel
 	Method GetChannel:TChannel()
 		'Ask sound manager to check the channel
 		TSoundManager.GetInstance().FixChannel(self)
-		
+
 		if not _channel then _channel = AllocChannel()
 
 		return _channel

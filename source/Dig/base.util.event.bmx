@@ -56,6 +56,12 @@ Import "base.util.time.bmx"
 
 Global EventManager:TEventManager = New TEventManager
 
+Function TriggerSimpleEvent(trigger:string, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	EventManager.triggerEvent(TEventSimple.Create(trigger, data, sender, receiver, channel))
+End Function
+
+
+
 Type TEventManager
 	'holding events
 	Field _events:TList = New TList
@@ -202,7 +208,7 @@ Type TEventManager
 	'runs all listeners NOW ...returns amount of listeners
 	Method triggerEvent:Int(triggeredByEvent:TEventBase)
 		If Not triggeredByEvent Then Return 0
-		
+
 		?Threaded
 		'if we have systemonly-event we cannot do it in a subthread
 		'instead we just add that event to the upcoming events list
@@ -524,7 +530,7 @@ Type TEventBase
 			' they're newer
 			If getStartTime() < event.getStartTime() Then Return -1
 		EndIf
-		
+
 		' let the basic object decide
 		Return Super.Compare(other)
 	End Method

@@ -8,8 +8,8 @@ Rem
 	Various Methods allow restriction of the directory traversal and
 	file listing (relative path, name, extension/ending, ignore files,
 	ignore directories, ...)
-	
-	
+
+
 	====================================================================
 	LICENCE
 
@@ -40,8 +40,8 @@ Import BRL.FileSystem
 
 
 Type TDirectoryTree
-	Field directories:TList             = CreateList()
-	Field filePaths:TList               = CreateList()
+	Field directories:TList            = CreateList()
+	Field filePaths:TList              = CreateList()
 	'root path of the scanned directory
 	Field baseDirectory:String         = ""
 	'files to include/exclude in the tree. "*" means all
@@ -58,10 +58,11 @@ Type TDirectoryTree
 		baseDirectory = AppDir
 	End Method
 
+
 	Method SimpleInit:TDirectoryTree( baseDirectory:String="" )
 		return Init(baseDirectory, ["*"], null, ["*"], null)
 	End Method
-	
+
 
 	'initialize object
 	Method Init:TDirectoryTree( baseDirectory:String="", includeFileEndings:String[] = Null, excludeFileEndings:String[] = Null, includeDirectoryNames:String[] = Null, excludeDirectoryNames:String[] = Null )
@@ -73,19 +74,19 @@ Type TDirectoryTree
 		_excludeDirectoryNames.Clear()
 		directories.Clear()
 		filePaths.Clear()
-	
+
 		'include all if not defined differently
 		If includeFileEndings Then SetIncludeFileEndings(includeFileEndings)
 		If includeDirectoryNames Then SetIncludeDirectoryNames(includeDirectoryNames)
 		'should not be not needed
 		'AddIncludeFileNames(["*"])
-		
+
 		'exclude none if nothing was given
 		If excludeFileEndings Then SetExcludeFileEndings(excludeFileEndings)
 		If excludeDirectoryNames Then SetExcludeDirectoryNames(excludeDirectoryNames)
 
 		Self.baseDirectory = baseDirectory
-		If Self.baseDirectory = "" then Self.baseDirectory = AppDir 
+		If Self.baseDirectory = "" then Self.baseDirectory = AppDir
 
 		Return Self
 	End Method
@@ -149,7 +150,7 @@ Type TDirectoryTree
 			_excludeFileNames.AddLast(name.toLower())
 		Next
 	End Method
-	
+
 
 	'add a directory name to the list of allowed directories
 	Method SetIncludeDirectoryNames( dirNames:String[], resetFirst:Int=True )
@@ -178,19 +179,19 @@ Type TDirectoryTree
 	Method AddExcludeFileEndings( endings:String[] )
 		SetExcludeFileEndings(endings, False)
 	End Method
-	
+
 	Method AddIncludeFileNames( names:String[] )
 		SetIncludeFileNames(names, False)
 	End Method
-	
+
 	Method AddExcludeFileNames( names:String[] )
 		SetExcludeFileNames(names, False)
 	End Method
-	
+
 	Method AddIncludeDirectoryNames( dirNames:String[] )
 		SetIncludeDirectoryNames(dirNames, False)
 	End Method
-	
+
 	Method AddExcludeDirectoryNames( dirNames:String[] )
 		SetExcludeDirectoryNames(dirNames, False)
 	End Method
@@ -200,7 +201,7 @@ Type TDirectoryTree
 		if relativePaths then return uri.Replace(baseDirectory+"/","")
 		return uri
 	End Method
-	
+
 
 	'scans all files and directories within the given base
 	'directory.
@@ -253,14 +254,14 @@ Type TDirectoryTree
 					ScanDir(uri)
 			End Select
 		Forever
-		
+
 		CloseDir(dirHandle)
 
 		if sortResults
 			directories.Sort(True)
 			filePaths.Sort(True)
 		endif
-		
+
 		Return True
 	End Method
 
