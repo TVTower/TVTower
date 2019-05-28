@@ -2019,6 +2019,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'TODO: do this for "all" via licence.HasFlag() doing recursive checks?
 		If self.IsPaid() then showMsgEarnInfo = True
 		If self.IsLive() or self.IsLiveOnTape()
+			'always show live info text - regardless of situation ?!
+			showMsgLiveInfo = True
+			Rem
 			local programmedDay:int = -1
 			local programmedHour:int = -1
 			if extraData
@@ -2054,7 +2057,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 					endif
 				endif
 			endif
-
+			EndRem
 		endif
 		If HasBroadcastLimit() then showMsgBroadcastLimit= True
 		If HasBroadcastTimeSlot() then showMsgBroadcastTimeSlot= True
@@ -2404,7 +2407,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
 
 		'=== X-Rated Overlay ===
-		If data.IsXRated()
+		If IsXRated()
 			GetSpriteFromRegistry("gfx_datasheet_overlay_xrated").Draw(contentX + sheetWidth, y, -1, ALIGN_RIGHT_TOP)
 		Endif
 	End Method
