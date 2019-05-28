@@ -1196,14 +1196,7 @@ Type TScreenHandler_ProgrammePlanner
 					Next
 					EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 1)
 '					EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.ADVERTISEMENT, 1)
-rem
-Ueberpruefen:
-- Lizenzen "Live" setzen und Zeitfenster erlauben
-- Zeigt datenblatt dann "Live morgen 0:05 Uhr" _und_ "Nursendbar 0-6"?
 
-- KI muss auch damit klarkommen (ausfiltern solcher Sendungen in der
-"verfuegbar fuer jetzt" Liste
-endrem
 				'else mark the exact live time (releasetime + blocks) slots
 				'(if planning day not in the past)
 				ElseIf programme.data.IsLive() And GetWorldTime().GetDay() <= planningDay
@@ -1248,22 +1241,28 @@ endrem
 						'past day - mark NO block of today
 						elseif startDay < planningDay and endDay < planningDay
 							'
-						'starts or ends today
+						'starts or ends today / planning day
 						else
-							Local nowHour:Int = GetWorldtime().GetDayHour()
-							Local startHour:Int = GetWorldtime().GetDayHour(blockTime)
+							Local nowHour:Int = GetWorldTime().GetDayHour()
+							Local startHour:Int = GetWorldTime().GetDayHour(blockTime)
 							Local endHour:Int = GetWorldTime().GetDayHour(blockTime) + programme.GetBlocks()
-
 							If GetWorldTime().GetDayMinute() < 5 Then nowHour :- 1
 
 							'only mark till midnight
 							if startDay <> planningDay then startHour = 0
 							if endDay <> planningDay then endHour = 23
-							if startHour > nowHour
-								For Local i:Int = 0 Until startHour
-									hourSlots :+ [ i ]
-								Next
-							endif
+
+							local earliestHour:int = 0
+							'if today then only mark "not run" hours
+							If planningDay = GetWorldTime().GetDay()
+								earliestHour = GetWorldTime().GetDayHour()
+								'already in this hour
+								If GetWorldTime().GetDayMinute() > 5 Then earliestHour :+ 1
+							EndIf
+
+							For Local i:Int = earliestHour Until startHour
+								hourSlots :+ [ i ]
+							Next
 						endif
 
 						EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 2)
