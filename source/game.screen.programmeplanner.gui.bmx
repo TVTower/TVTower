@@ -413,8 +413,16 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 						title = programme.licence.GetParentLicence().GetTitle() + ":  "+programme.GetTitle()
 						'uncomment if you wish episode number in title
 						'titleAppend = " (" + programme.GetEpisodeNumber() + "/" + programme.GetEpisodeCount() + ")"
-						text:+"-"+GetLocale("SERIES_SINGULAR")
-						text2 = "Ep.: " + (programme.GetEpisodeNumber()) + "/" + programme.GetEpisodeCount()
+						
+						'TODO: remove parent-check once older savegames are not in use anymore
+						'      as newer games use "IsCollectionElement()" properly
+						If programme.IsCollectionElement() or programme.licence.GetParentLicence().IsCollection()
+							text:+"-"+GetLocale("LICENCETYPE_COLLECTION")
+						Else
+							text:+"-"+GetLocale("SERIES_SINGULAR")
+						EndIf
+						'text2 = "Ep.: " + (programme.GetEpisodeNumber()) + "/" + programme.GetEpisodeCount()
+						text2 = (programme.GetEpisodeNumber()) + "/" + programme.GetEpisodeCount()
 					EndIf
 				EndIf
 			'we got an advertisement used as programme (aka Tele-Shopping)

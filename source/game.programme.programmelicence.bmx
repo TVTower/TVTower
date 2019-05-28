@@ -2018,10 +2018,12 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'if licence is for a specific programme it might contain a flag...
 		'TODO: do this for "all" via licence.HasFlag() doing recursive checks?
 		If self.IsPaid() then showMsgEarnInfo = True
-		If self.IsLive() or self.IsLiveOnTape()
-			'always show live info text - regardless of situation ?!
+
+		'always show live info text - regardless of situation ?!
+		If self.IsLive()
 			showMsgLiveInfo = True
-			Rem
+		Rem
+		If self.IsLive() or self.IsLiveOnTape()
 			local programmedDay:int = -1
 			local programmedHour:int = -1
 			if extraData
@@ -2057,7 +2059,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 					endif
 				endif
 			endif
-			EndRem
+		EndRem
 		endif
 		If HasBroadcastLimit() then showMsgBroadcastLimit= True
 		If HasBroadcastTimeSlot() then showMsgBroadcastTimeSlot= True
@@ -2118,9 +2120,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 
 		'=== SUBTITLE AREA ===
-		if isSeries() or isCollection()
+		if isSeries()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
 			skin.fontNormal.drawBlock(GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetEpisodeCount()), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			contentY :+ subtitleH
+		elseif isCollection()
+			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
+			skin.fontNormal.drawBlock(GetLocale("COLLECTION_WITH_X_ELEMENTS").Replace("%X%", GetEpisodeCount()), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			contentY :+ subtitleH
 		elseif isEpisode() or isCollectionElement()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")

@@ -93,10 +93,12 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		local programmeData:TSportsHeaderProgrammeData = new TSportsHeaderProgrammeData
 		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
 		programmeLicence.SetData(programmeData)
-		programmeLicence.licenceType = TVTProgrammeLicenceType.COLLECTION
 		programmeLicence.owner = TOwnedGameObject.OWNER_NOBODY
 		programmeLicence.extra = New TData
 		programmeLicence.extra.AddString("producerName", _producerName)
+
+		programmeLicence.licenceType = TVTProgrammeLicenceType.COLLECTION
+		programmeData.dataType = TVTProgrammeDataType.COLLECTION
 
 		programmeData.title = new TLocalizedString
 		programmeData.description = new TLocalizedString
@@ -166,6 +168,8 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 
 		'print "Sportlizenz: " + programmeLicence.GetGUID()
 		'Notify("Sportlizenz: " + programmeLicence.GetGUID())
+		TriggerSimpleEvent("dev.addToastMessage", new TData.Add("caption", "Sport League TV-Licence").Add("text", "Created " + programmeLicence.GetTitle() + "  /  "  + programmeLicence.GetGUID()), null, self)
+		print "Sport League TV-Licence: Created " + programmeLicence.GetTitle() + "  /  "  + programmeLicence.GetGUID()
 
 		return programmeLicence
 	End Method
@@ -179,7 +183,10 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		if not match then return null
 
 		local programmeData:TProgrammeData
-		if parentLicence then programmeData = TProgrammeData(THelper.CloneObject(parentLicence.data, "id"))
+		if parentLicence 
+			programmeData = new TSportsProgrammeData
+			THelper.TakeOverObjectValues(parentLicence.data, programmeData)
+		endif
 		if not programmeData then programmeData = new TSportsProgrammeData
 
 		'needed so title/description can fetch the right information
@@ -189,9 +196,11 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 
 		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
 		programmeLicence.SetData(programmeData)
-		'when setting to "SINGLE" they might be sold independently
-		programmeLicence.licenceType = TVTProgrammeLicenceType.EPISODE
 		programmeLicence.owner = TOwnedGameObject.OWNER_NOBODY
+		'when setting to "SINGLE" they might be sold independently
+		programmeLicence.licenceType = TVTProgrammeLicenceType.COLLECTION_ELEMENT
+		'also set data to this kind of type
+		programmeData.dataType = TVTProgrammeDataType.COLLECTION_ELEMENT
 
 
 		programmeData.GUID = "programmedata-sportmatch-"+match.GetGUID()
