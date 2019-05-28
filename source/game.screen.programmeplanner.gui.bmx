@@ -17,6 +17,10 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	Field lastSlot:Int = 0
 	Field plannedOnDay:Int = -1
 	Field imageBaseName:String = "pp_programmeblock1"
+	Field textImageAd:TImage {nosave}
+	Field textImageProgramme:TImage {nosave}
+	Field cacheStringAd:TStringBuffer {nosave}
+	Field cacheStringProgramme:TStringBuffer {nosave}
 
 	Global ghostAlpha:Float = 0.8
 
@@ -375,16 +379,11 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	End Method
 
 
-	Field textImageAd:TImage {nosave}
-	Field textImageProgramme:TImage {nosave}
-	Field cacheStringAd:string {nosave}
-	Field cacheStringProgramme:string {nosave}
-	
 	Method DrawProgrammeBlockText:Int(textArea:TRectangle, titleColor:TColor=Null, textColor:TColor=Null)
-		Local title:String			= broadcastMaterial.GetTitle()
-		Local titleAppend:String	= ""
-		Local text:String			= ""
-		Local text2:String			= ""
+		Local title:String = broadcastMaterial.GetTitle()
+		Local titleAppend:String = ""
+		Local text:String = ""
+		Local text2:String = ""
 
 		Select broadcastMaterial.materialType
 			'we got a programme used as programme
@@ -411,25 +410,32 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		End Select
 
 
-		Local maxWidth:Int = textArea.GetW()
-		Local titleFont:TBitmapFont = GetBitmapFont("DefaultThin", 12, BOLDFONT)
-
-		'shorten the title to fit into the block
-		While titleFont.getWidth(title + titleAppend) > maxWidth And title.length > 4
-			title = title[..title.length-3]+".."
-		Wend
-		'add eg. "(1/10)"
-		title = title + titleAppend
-
 		'refresh cache?
-		local newCacheString:string = title + text + text2
-		if newCacheString <> cacheStringProgramme
-			textImageProgramme = null
-			cacheStringProgramme = newCacheString
+		if cacheStringProgramme 
+			local newCacheString:TStringBuffer = TStringBuffer.Create(title)
+			newCacheString.Append(text)
+			newCacheString.Append(text2)
+
+			if newCacheString.Length() <> cacheStringProgramme.Length()
+				if newCacheString.ToString() <> cacheStringProgramme.ToString()
+					textImageProgramme = null
+					cacheStringProgramme = newCacheString
+				endif
+			endif
 		endif
 
 		'create cache if needed
 		if not textImageProgramme
+			Local maxWidth:Int = textArea.GetW()
+			Local titleFont:TBitmapFont = GetBitmapFont("DefaultThin", 12, BOLDFONT)
+
+			'shorten the title to fit into the block
+			While title.length > 4 And titleFont.getWidth(title + titleAppend) > maxWidth
+				title = title[.. title.length-3] + ".."
+			Wend
+			'add eg. "(1/10)"
+			title = title + titleAppend
+
 			Local useFont:TBitmapFont = GetBitmapFont("Default", 12, ITALICFONT)
 			If Not titleColor Then titleColor = TColor.Create(0,0,0)
 			If Not textColor Then textColor = TColor.Create(50,50,50)
@@ -490,11 +496,19 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 
 		'refresh cache?
-		local newCacheString:string = title + text + text2
-		if newCacheString <> cacheStringAd
-			textImageAd = null
-			cacheStringAd = newCacheString
+		if cacheStringAd 
+			local newCacheString:TStringBuffer = TStringBuffer.Create(title)
+			newCacheString.Append(text)
+			newCacheString.Append(text2)
+
+			if newCacheString.Length() <> cacheStringAd.Length()
+				if newCacheString.ToString() <> cacheStringAd.ToString()
+					textImageAd = null
+					cacheStringAd = newCacheString
+				endif
+			endif
 		endif
+
 
 		'create cache if needed
 		if not textImageAd
