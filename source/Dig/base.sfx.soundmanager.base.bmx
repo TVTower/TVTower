@@ -759,12 +759,12 @@ print "FadeOverToNextTitle() finished"
 		Return result
 	End Method
 
-
+rem
 	'by default all sfx share the same volume
 	Method GetSfxVolume:Float(sfx:String)
 		Return 0.2
 	End Method
-
+endrem
 	'by default all music share the same volume
 	Method GetMusicVolume:Float(music:String)
 		Return defaultMusicVolume
@@ -1099,17 +1099,15 @@ End Type
 
 
 Type TSfxSettings
-	Field forceVolume:Float = False
-	Field forcePan:Float = False
-	Field forceDepth:Float = False
+	Field forceVolume:Int = False
+	Field forcePan:Int = False
+	Field forceDepth:Int = False
 
 	Field defaultVolume:Float = 1
 	Field defaultPan:Float = 0
 	Field defaultDepth:Float = 0
 
 	Field nearbyDistanceRange:Int = -1
-'	Field nearbyDistanceRangeTopY:int -1
-'	Field nearbyDistanceRangeBottomY:int -1   hier war ich
 	Field maxDistanceRange:Int = 1000
 
 	Field nearbyRangeVolume:Float = 1
