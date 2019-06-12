@@ -104,6 +104,8 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 			endif
 
 			if not IsLive()
+				return "|i|("+GetRandomLocale("LIVE_ON_TAPE")+": " + GetLocale("GAMEDAY")+" "+ GetWorldTime().GetFormattedGameDate(GetMatchTime(), "g, h:i") + " " + GetLocale("OCLOCK")+")|/i|~n" + descriptionProcessed.Get()
+rem
 				'compatibility with old savegames in which "sportheaderprogrammedata"
 				'was not existing and header+matches shared one type
 				if matchGUID
@@ -111,6 +113,7 @@ Type TSportsProgrammeData extends TProgrammeData {_exposeToLua}
 				else
 					return "|i|("+GetRandomLocale("LIVE_ON_TAPE")+": " + GetLocale("ALL_MATCHES_FINISHED") + "|/i|)~n" + descriptionProcessed.Get()
 				endif
+endrem
 			else
 				return descriptionProcessed.Get()
 			endif
