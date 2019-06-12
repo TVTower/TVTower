@@ -6,7 +6,8 @@
 		<image name="screen_bg_office" url="res/gfx/office/screen_office.png" />
 		<image name="screen_bg_programmeplanner" url="res/gfx/office/screen_programmeplanner.png" />
 		<image name="screen_bg_financials" url="res/gfx/office/screen_financials.png" />
-		<image name="screen_bg_statistics" url="res/gfx/office/screen_statistics.png" />
+		<image name="screen_bg_statistics_audience" url="res/gfx/office/screen_statistics.png" />
+		<image name="screen_bg_statistics_channelimage" url="res/gfx/office/screen_statistics_channelimage.png" />
 		<image name="screen_bg_achievements" url="res/gfx/office/screen_achievements.png" />
 		<image name="screen_bg_stationmap" url="res/gfx/office/screen_stationmap.png" />
 		<image name="screen_bg_safe" url="res/gfx/office/screen_safe.png" />
@@ -51,7 +52,7 @@
 		<screen name="screen_office_programmeplanner" image="screen_bg_programmeplanner" parent="screen_office" />
 		<screen name="screen_office_archivedmessages" image="screen_bg_office" parent="screen_office" />
 		<screen name="screen_office_financials" image="screen_bg_financials" parent="screen_office_programmeplanner" />
-		<screen name="screen_office_statistics" image="screen_bg_statistics" parent="screen_office_programmeplanner" />
+		<screen name="screen_office_statistics" image="screen_bg_statistics_audience" parent="screen_office_programmeplanner" />
 		<screen name="screen_office_achievements" image="screen_bg_achievements" parent="screen_office_programmeplanner" />
 		<screen name="screen_office_stationmap" image="screen_bg_stationmap" parent="screen_office" />
 		<screen name="screen_office_safe" image="screen_bg_safe" parent="screen_office" />
