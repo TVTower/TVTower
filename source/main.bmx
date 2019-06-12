@@ -805,9 +805,20 @@ Type TApp
 
 
 					If KEYMANAGER.IsHit(KEY_Y)
+					rem
 						Local reach:Int = GetStationMap( 1 ).GetReach()
 						print "reach: " + reach +"  audienceReach=" + GetBroadcastmanager().GetAudienceResult(1).WholeMarket.GetTotalSum()
 						reach = GetStationMap( 1 ).GetReach()
+					endrem
+
+						GetProgrammeDataCollection()._liveProgrammeData = null
+							
+						print "live data:"
+						For local d:TProgrammeData = EachIn GetProgrammeDataCollection().GetLiveProgrammeDataList()
+							print "  " + LSet(d.GetTitle(), 30) + "  |  " + d.GetGUID()
+						Next 
+						GetProgrammeDataCollection().UpdateLive()
+
 						rem
 						print "GetBroadcastManager: "
 						print GetBroadcastManager().GetAudienceResult(1).ToString()
@@ -3639,6 +3650,7 @@ Type GameEvents
 
 		'dev
 		_eventListeners :+ [ EventManager.registerListenerFunction("player.onEnterRoom", onPlayerEntersRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("dev.addToastMessage", DevAddToastMessage ) ]
 
 	End Function
 
@@ -4217,6 +4229,24 @@ Type GameEvents
 			endif
 		Next
 		Return True
+	End Function
+
+
+	Function DevAddToastMessage:int(triggerEvent:TEventBase)
+		Local caption:string = triggerEvent.GetData().GetString("caption")
+		Local text:string = triggerEvent.GetData().GetString("text")
+		Local messageType:int = triggerEvent.GetData().GetInt("type", 1) '1 = attention
+		Local lifetime:int = triggerEvent.GetData().GetInt("lifetime", 5)
+
+		Local toast:TGameToastMessage = New TGameToastMessage
+		'show it for some seconds
+		toast.SetLifeTime(lifetime)
+		toast.SetMessageType( messageType )
+		toast.SetMessageCategory(TVTMessageCategory.MISC)
+		toast.SetCaption( caption )
+		toast.SetText( text )
+
+		GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
 	End Function
 
 
