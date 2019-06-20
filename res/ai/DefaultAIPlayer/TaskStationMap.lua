@@ -192,6 +192,9 @@ function JobAdjustStationInvestment:Tick()
 
 	-- require a minimum investment
 	self.Task.NeededInvestmentBudget = math.max(300000, self.Task.NeededInvestmentBudget)
+
+
+	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
