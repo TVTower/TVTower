@@ -140,6 +140,7 @@ function AIPlayer:ForceNextTask()
 	end
 end
 
+
 function AIPlayer:Tick()
 	-- update every 5 ticks
 	if self.WorldTicks % 5 == 0 then
@@ -356,6 +357,11 @@ function AITask:StartNextJob()
 		self.Status = TASK_STATUS_RUN
 		self.StartTaskWorldTicks = self:getWorldTicks()
 		self.StartTask = WorldTime.GetTimeGoneAsMinute()
+
+		local oldJob = self.CurrentJob
+		if oldJob ~= nil then
+			oldJob:OnCancel()
+		end
 		self.CurrentJob = self:GetNextJobInTargetRoom()
 
 		if (self.Status == TASK_STATUS_DONE) or (self.Status == TASK_STATUS_CANCEL) then
@@ -401,10 +407,12 @@ function AITask:Tick()
 			self:StartNextJob() --Von vorne anfangen
 		else
 			if self.CurrentJob.Status == JOB_STATUS_CANCEL then
+				self.CurrentJob:OnCancel()
 				self.CurrentJob = nil
 				self:SetCancel()
 				return
 			elseif self.CurrentJob.Status == JOB_STATUS_DONE then
+				self.CurrentJob:OnDone()
 				self.CurrentJob = nil
 				--debugMsg("----- Alter Job ist fertig - Neuen Starten")
 				self:StartNextJob() --Von vorne anfangen
@@ -560,6 +568,7 @@ _G["AIJob"] = class(KIDataObjekt, function(c)
 	c.LastCheckWorldTicks = 0
 	c.Ticks = 0
 	c.StartParams = nil
+	c.jobStartTime = 0
 end)
 
 function AIJob:typename()
@@ -583,6 +592,9 @@ function AIJob:resume()
 end
 
 function AIJob:Start(pParams)
+	self:OnStart()
+
+	self.jobStartTime = os.clock()
 	self.StartParams = pParams
 	self.StartJob = WorldTime.GetTimeGoneAsMinute()
 	self.LastCheck = WorldTime.GetTimeGoneAsMinute()
@@ -613,6 +625,19 @@ function AIJob:ReDoCheck(minutesWait, ticksWait)
 		self.LastCheck = WorldTime.GetTimeGoneAsMinute()
 		self:Prepare(self.StartParams)
 	end
+end
+
+function AIJob:OnStart()
+	--Kann ueberschrieben werden
+end
+
+function AIJob:OnDone()
+	debugMsg("Job " .. self:typename() .. " done in " .. math.floor(1000 * (os.clock() - self.jobStartTime)) .. " ms.")
+end
+
+function AIJob:OnCancel()
+	debugMsg("Job " .. self:typename() .. " cancelled after " .. math.floor(1000 * (os.clock() - self.jobStartTime)) .. " ms.")
+	--Kann ueberschrieben werden
 end
 
 function AIJob:OnBeginEnterRoom(roomId, result)
@@ -1108,3 +1133,43 @@ function FixDayAndHour(day, hour)
 	local newDay = day + (hour - moduloHour) / 24
 	return newDay, moduloHour
 end
+
+
+
+-- enhancing list
+-- from http://www.lua.org/pil/11.4.html
+--[[
+function List.new ()
+	return {first = 0, last = -1}
+end
+
+function List.pushleft (list, value)
+  local first = list.first - 1
+  list.first = first
+  list[first] = value
+end
+
+function List.pushright (list, value)
+  local last = list.last + 1
+  list.last = last
+  list[last] = value
+end
+
+function List.popleft (list)
+  local first = list.first
+  if first > list.last then error("list is empty") end
+  local value = list[first]
+  list[first] = nil        -- to allow garbage collection
+  list.first = first + 1
+  return value
+end
+
+function List.popright (list)
+  local last = list.last
+  if list.first > last then error("list is empty") end
+  local value = list[last]
+  list[last] = nil         -- to allow garbage collection
+  list.last = last - 1
+  return value
+end
+]]

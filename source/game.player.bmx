@@ -424,6 +424,7 @@ endrem
 
 
 	Method SetLocalHumanControlled()
+		if playerAI then StopAI()
 		playerAI = Null
 		playerControlledByID = GetPlayerCollection().playerID
 		SetPlayerType(PLAYERTYPE_LOCAL_HUMAN)
@@ -443,6 +444,7 @@ endrem
 
 
 	Method SetRemoteHumanControlled(remotePlayerID:int)
+		if playerAI then StopAI()
 		playerAI = Null
 		playerControlledByID = remotePlayerID
 		SetPlayerType(PLAYERTYPE_REMOTE_HUMAN)
@@ -450,6 +452,7 @@ endrem
 
 
 	Method SetRemoteAiControlled(remotePlayerID:int)
+		if playerAI then StopAI()
 		playerAI = Null
 		playerControlledByID = remotePlayerID
 		SetPlayerType(PLAYERTYPE_REMOTE_AI)
@@ -457,9 +460,15 @@ endrem
 
 
 	Method InitAI(ai:TAiBase)
+		aiData = new TData
+
 		PlayerAI = ai
 		PlayerAI.Start()
-		aiData = new TData
+	End Method
+
+
+	Method StopAI()
+		if PlayerAI then PlayerAI.Stop()
 	End Method
 
 

@@ -147,6 +147,15 @@ Type TGameBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method SetPaused(bool:Int=False)
+	End Method
+
+
+	Method IsPaused:int()
+		return False
+	End Method
+
+
 	Method SetGameSpeedPreset(preset:int)
 		'stub
 	End Method

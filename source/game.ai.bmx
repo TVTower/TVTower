@@ -61,12 +61,42 @@ Type TAi extends TAiBase
 	End Method
 
 
+	'override to additionally disable AI when game is paused
+	Method IsActive:int()
+		if not Super.IsActive() then return False
+
+		if GetGameBase().IsPaused() then return False
+
+		return True
+	End Method
+
+
 	'override
 	Method AddLog(title:string, text:string, logLevel:int)
 		Super.AddLog(title, text, logLevel)
 		AiLog[Self.playerID-1].AddLog(text, True)
 	End Method
 
+
+	Method CallAddEvent(eventName:string, args:object[])
+		Local luaArgs:Object[2]
+		luaArgs[0] = String(eventName)
+		luaArgs[1] = object(args)
+
+		CallLuaFunction("AddEvent", args)
+	End Method
+	
+
+	Method CallGetEventCount:Int()
+		return int( string(CallLuaFunction("GetEventCount", Null)) )
+	End Method
+	
+	
+	Method CallUpdate()
+'auskommentiert bis reflection threadsafe
+'		CallLuaFunction("Update", Null)
+	End Method
+	
 
 	'only calls the AI "onTick" if the calculated interval passed
 	'in our case this is:
@@ -501,6 +531,31 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 
 	Method RestoreExternalObject:object(index:int)
 		return GetPlayerBase(Self.ME).PlayerAI.GetObjectUsedInLua(index)
+	End Method
+	
+	
+	Method PopNextEvent:TAIEvent()
+		print "PopNextEvent"
+		local aiE:TAIEvent = GetPlayerBase(Self.ME).PlayerAI.PopNextEvent()
+		if not aiE then print "PopNextEvent NULL"
+		if aiE then print "PopNextEvent OK"
+		Return aiE ' GetPlayerBase(Self.ME).PlayerAI.PopNextEvent()
+	End Method
+
+
+	Method GetNextEventCount:Int()
+		Return GetPlayerBase(Self.ME).PlayerAI.GetNextEventCount()
+	End Method
+	
+	
+	Method IsActive:Int()
+		Return GetPlayerBase(Self.ME).PlayerAI.IsActive()
+	End Method
+
+	
+	'use this to send the threaded AI to sleep for a while
+	Method Sleep:Int(milliseconds:int)
+		Delay(milliseconds)
 	End Method
 
 
@@ -1077,9 +1132,9 @@ endrem
 	'or of types: "TProgrammeLicence" or "TAdContract"
 	'returns: (TVT.)RESULT_OK, RESULT_WRONGROOM, RESULT_NOTFOUND
 	Method of_setAdvertisementSlot:Int(materialSource:object, day:Int=-1, hour:Int=-1)
-		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+'		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 		'even if player has access to room, only owner can manage things here
-		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
+'		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
 
 		'create a broadcast material out of the given source
 		local broadcastMaterial:TBroadcastMaterial = GetPlayerProgrammeCollection(self.ME).GetBroadcastMaterial(materialSource)

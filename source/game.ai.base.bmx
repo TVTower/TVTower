@@ -1,7 +1,12 @@
 SuperStrict
+?threaded
+Import Brl.Threads
+?
 Import "Dig/base.util.time.bmx"
 Import "Dig/base.util.luaengine.bmx"
 Import "Dig/base.util.luaengine.bmx"
+
+Const THREADED_AI_DISABLED:int = True
 
 
 Type TAiBase
@@ -18,8 +23,17 @@ Type TAiBase
 	'when saving a gamestate
 	Field objectsUsedInLua:object[]
 	Field objectsUsedInLuaCount:int
+	
+	Field eventQueue:TAIEvent[]
 
 	Field _luaEngine:TLuaEngine {nosave}
+	?threaded
+	Field _callLuaFunctionMutex:TMutex = CreateMutex() {nosave}
+	Field _eventQueueMutex:TMutex = CreateMutex() {nosave}
+	Field _updateThread:TThread {nosave}
+	Field _updateThreadExit:int = False {nosave}
+	?
+	Field paused:int = False
 
 	Global AiRunning:Int = true
 
@@ -36,6 +50,50 @@ Type TAiBase
 		if not _luaEngine then _luaEngine = TLuaEngine.Create("")
 		return _luaEngine
 	End Method
+	
+
+	Method AddEvent(name:string, data:object[])
+		local aiEvent:TAIEvent = new TAIEvent
+		aiEvent.name = name
+		aiEvent.AddDataSet(data)
+		AddEventObj(aiEvent)
+	End Method
+		
+
+	Method AddEventObj(aiEvent:TAIEvent)
+		if THREADED_AI_DISABLED then return
+		'TODO: optimize queue structure / use a pool?
+
+		?threaded
+			LockMutex(_eventQueueMutex)
+			eventQueue :+ [aiEvent]
+			UnlockMutex(_eventQueueMutex)
+		?not threaded
+			eventQueue :+ [aiEvent]
+		?
+	End Method
+	
+
+	Method PopNextEvent:TAIEvent()
+		if THREADED_AI_DISABLED then return Null
+		
+		if not eventQueue or eventQueue.length = 0 then return Null
+		local event:TAIEvent = eventQueue[0]
+		?threaded
+			LockMutex(_eventQueueMutex)
+			eventQueue = eventQueue [1 ..]
+			UnlockMutex(_eventQueueMutex)
+		?not threaded
+			eventQueue = eventQueue [1 ..]
+		?
+		return event
+	End Method
+
+
+	Method GetNextEventCount:Int()
+		if THREADED_AI_DISABLED then return 0
+		return eventQueue.length
+	End Method
 
 
 rem
@@ -50,20 +108,36 @@ endrem
 
 
 	Method Start()
-		'stay compatible for some versions...
-		if scriptFileName = "res/ai/DefaultAIPlayer.lua"
-			scriptFileName = "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua"
-		endif
+		print "Starting AI " + playerID
+
+		scriptFileName = "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua"
 
 		'load lua file
 		LoadScript(scriptFileName)
 
 		'register source and available objects
 		GetLuaEngine().RegisterToLua()
+		
+		'kick off new thread
+		If not THREADED_AI_DISABLED 
+			_updateThread = CreateThread( UpdateThread, self )
+		EndIf
 	End Method
 
 
 	Method Stop()
+		print "Stopping AI " + playerID
+		If not THREADED_AI_DISABLED 
+			_updateThreadExit = True
+			WaitThread(_updateThread)
+			print "stopped thread for AI " + playerID
+		
+			'reset
+			_updateThreadExit = False
+			DetachThread(_updateThread)
+			_updateThread = Null
+		EndIf
+		
 '		scriptEnv.ShutDown()
 '		KI_EventManager.unregisterKI(Self)
 	End Method
@@ -84,6 +158,34 @@ endrem
 		else
 			AddLog("KI.LoadScript", "Loaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
 		endif
+	End Method
+	
+	
+	Function UpdateThread:object( data:object )
+		local aiBase:TAiBase = TAiBase(data)
+		
+		Repeat
+			aiBase.Update()
+			delay(250)
+			
+			'received command to exit the thread
+			if aiBase._updateThreadExit then exit
+		Forever 
+	End Function
+	
+	
+	Method Update()
+		if not IsActive() then return
+
+		'print "updating AI " + playerID
+		CallUpdate()
+	End Method
+	
+	
+	Method IsActive:int()
+		if not AiRunning then return False
+		if paused then return False
+		return True
 	End Method
 
 
@@ -133,17 +235,25 @@ endrem
 
 
 	Method CallLuaFunction:object(name:string, args:object[])
+		?threaded
+			LockMutex(_callLuaFunctionMutex)
+			local result:object = GetLuaEngine().CallLuaFunction(name, args)
+			UnLockMutex(_callLuaFunctionMutex)
+		?not threaded
 '	    Try
 			return GetLuaEngine().CallLuaFunction(name, args)
 '		Catch ex:Object
 '			print "ex: "+ex.ToString()
 '			TLogger.log("Ai.CallLuaFunction", "Script "+scriptFileName+" does not contain function ~q"+name+"~q. Or the function resulted in an error.", LOG_ERROR | LOG_AI)
 '		End Try
+		?
 
-'		return Null
 	End Method
 
-
+	Method CallAddEvent(eventName:string, args:object[]) abstract
+	Method CallGetEventCount:Int() abstract
+	Method CallUpdate() abstract
+	
 	Method ConditionalCallOnTick() abstract
 	Method CallOnLoadState() abstract
 	Method CallOnSaveState() abstract
@@ -186,4 +296,39 @@ Type TLuaFunctionsBase {_exposeToLua}
 	Const RESULT_NOTALLOWED:int= -16
 	Const RESULT_INUSE:int     = -32
 	Const RESULT_SKIPPED:int   = -64
+End Type
+
+
+
+Type TAIEvent {_exposeTolua}
+	Field name:string
+	Field data:object[]
+	
+	Method SetName:TAIEvent(name:string)
+		self.name = name
+		return self
+	End Method
+
+
+	Method AddInt:TAIEvent(i:int)
+		data :+ [object(string(i))]
+		return self
+	End Method
+
+
+	Method AddString:TAIEvent(s:string)
+		data :+ [object(s)]
+		return self
+	End Method
+
+	
+	Method AddData:TAIEvent(o:object)
+		data :+ [o]
+		return self
+	End Method
+
+	Method AddDataSet:TAIEvent(o:object[])
+		data :+ o
+		return self
+	End Method
 End Type

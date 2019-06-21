@@ -451,7 +451,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			player.aiData = new TData
 			TLogger.Log("ResetPlayer()", "Removed aiData", LOG_DEBUG)
 		endif
-
+		'inform player AI (if existing) it stopped (means it also stops its thread)
+		player.StopAI()
+		
 
 
 		'=== SELL ALL PROGRAMMES ===
