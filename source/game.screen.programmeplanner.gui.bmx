@@ -435,18 +435,15 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 
 		'refresh cache?
-		if cacheStringProgramme 
-			local newCacheString:TStringBuffer = TStringBuffer.Create(title)
-			newCacheString.Append(text)
-			newCacheString.Append(text2)
+		local newCacheString:TStringBuffer = TStringBuffer.Create(title)
+		newCacheString.Append(text)
+		newCacheString.Append(text2)
 
-			if newCacheString.Length() <> cacheStringProgramme.Length()
-				if newCacheString.ToString() <> cacheStringProgramme.ToString()
-					textImageProgramme = null
-					cacheStringProgramme = newCacheString
-				endif
-			endif
+		if not cacheStringProgramme or newCacheString.Length() <> cacheStringProgramme.Length() or newCacheString.ToString() <> cacheStringProgramme.ToString()
+			textImageProgramme = null
+			cacheStringProgramme = newCacheString
 		endif
+
 
 		'create cache if needed
 		if not textImageProgramme
@@ -520,17 +517,13 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 
 		'refresh cache?
-		if cacheStringAd 
-			local newCacheString:TStringBuffer = TStringBuffer.Create(title)
-			newCacheString.Append(text)
-			newCacheString.Append(text2)
+		local newCacheString:TStringBuffer = TStringBuffer.Create(title)
+		newCacheString.Append(text)
+		newCacheString.Append(text2)
 
-			if newCacheString.Length() <> cacheStringAd.Length()
-				if newCacheString.ToString() <> cacheStringAd.ToString()
-					textImageAd = null
-					cacheStringAd = newCacheString
-				endif
-			endif
+		if not cacheStringAd or newCacheString.Length() <> cacheStringAd.Length() or newCacheString.ToString() <> cacheStringAd.ToString()
+			textImageAd = null
+			cacheStringAd = newCacheString
 		endif
 
 
