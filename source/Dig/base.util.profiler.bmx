@@ -46,13 +46,17 @@ Type TProfilerCall
 	Field start:Long
 	Field firstStart:Long
 	Field timeTotal:Int
+	Field timeMax:Int
 	Field calls:Int
 	Field id:int = 0
+	Field historyTime:Long[]
+	Field historyDuration:Int[]
+	Field historyIndex:int = 0
 
 	Global callID:int = 0
 
 	Method New()
-		firstStart = Time.GettimeGone()
+		firstStart = Time.GetTimeGone()
 		callID :+ 1
 		id = callID
 	End Method
@@ -80,7 +84,7 @@ End Type
 
 Type TProfiler
 	Global activated:Int = 1
-	Global calls:TMap = CreateMap()
+	Global calls:TStringMap = new TStringMap
 	Global lastCall:TProfilerCall = null
 	?Threaded
 	Global accessMutex:TMutex = CreateMutex()
@@ -89,10 +93,10 @@ Type TProfiler
 
 	Function GetLog:string()
 		local result:string = ""
-		result :+ ".------------------------------------------------------------------------------."+"~n"
-		result :+ "| AppProfiler |                                                                |"+"~n"
-		result :+ "|------------------------------------------------------------------------------|"+"~n"
-		result :+ "| FUNCTION                            |   CALLS |  TOTAL | AVERAGE | OF PARENT |"+"~n"
+		result :+ ".-----------------------------------------------------------------------------------------."+"~n"
+		result :+ "| AppProfiler |                                                                           |"+"~n"
+		result :+ "|-----------------------------------------------------------------------------------------|"+"~n"
+		result :+ "| FUNCTION                            |   CALLS |  TOTAL |    MAX   | AVERAGE | OF PARENT |"+"~n"
 
 		local totalTime:int = 0
 		local entryNumber:int = 1
@@ -101,6 +105,7 @@ Type TProfiler
 		'prepended "0" in a string is buggy)
 		'so we just create an array from 0-maxID and add all calls to it
 		local idSortedCalls:TProfilerCall[] = new TProfilerCall[TProfilerCall.callID+1]
+
 		For Local c:TProfilerCall = EachIn calls.Values()
 			if idSortedCalls.length <= c.id then idSortedCalls = idSortedCalls[.. c.id +1]
 			idSortedCalls[c.id] = c
@@ -126,12 +131,21 @@ Type TProfiler
 				percentageOfParent = RSet("100",4)+"%"
 			endif
 
-			result :+ "| " + LSet(funcName, 35) + " | " + RSet(c.calls, 7) + " | " + LSet(String(c.timeTotal / 1000.0), 5)+"s" + " | " + LSet(AvgTime,5)+"ms"+ " |     "+percentageOfParent+" |" + "~n"
+			result :+ "| " + LSet(funcName, 35) + " | " + RSet(c.calls, 7) + " | " + LSet(String(c.timeTotal / 1000.0), 5)+"s" + " | " + RSet(c.timeMax,6)+"ms" + " | " + LSet(AvgTime,5)+"ms"+ " |     "+percentageOfParent+" |" + "~n"
 			entryNumber :+1
 		Next
-		result :+ "'------------------------------------------------------------------------------'" +"~n"
+		If not activated
+			result :+ "| Profiler deactivated                                                                    |" +"~n"
+		EndIf
+		result :+ "'-----------------------------------------------------------------------------------------'" +"~n"
+		
 
 		return result
+	End Function
+	
+	
+	Function GetCall:TProfilerCall(callName:string)
+		return TProfilerCall(calls.ValueForKey(callName))
 	End Function
 
 
@@ -155,17 +169,22 @@ Type TProfiler
 	End Function
 
 
-	Function Enter:int(func:String)
+	Function Enter:int(func:String, obtainCallPath:int = True)
 		If not TProfiler.activated then return False
 
 		?Threaded
-			return TRUE
+'			return TRUE
 			'wait for the mutex to get access to child variables
 			LockMutex(accessMutex)
 		?
 
 		'try to fetch call from list
-		local funcKey:String = GetCallPath(func)
+		local funcKey:String
+		if obtainCallPath
+			funcKey = GetCallPath(func)
+		else
+			funcKey = func
+		endif
 		Local call:TProfilerCall = TProfilerCall(calls.ValueForKey(funcKey))
 
 		'create new if not existing yet
@@ -192,7 +211,7 @@ Type TProfiler
 	End Function
 
 
-	Function Leave:int( func:String )
+	Function Leave:int( func:String, historyMax:int = 1, obtainCallPath:int = True)
 		If not TProfiler.activated then return False
 
 		?Threaded
@@ -205,12 +224,29 @@ Type TProfiler
 			if TProfiler.lastCall then TProfiler.lastCall = TProfiler.lastCall.parent
 		else
 			'try to fetch call from list
-			local funcKey:String = GetCallPath(func)
+			local funcKey:String
+			if obtainCallPath
+				funcKey = GetCallPath(func)
+			else
+				funcKey = func
+			endif
 			Local call:TProfilerCall = TProfilerCall(calls.ValueForKey(funcKey))
 
 			If call <> null
+				If call.historyTime.length < historyMax
+					call.historyTime = call.historyTime[ .. historyMax]
+					call.historyDuration = call.historyDuration[ .. historyMax]
+				EndIf
+				call.historyIndex = Min(call.historyIndex, historyMax-1)
+				call.historyTime[ call.historyIndex ] = call.start
+				call.historyDuration[ call.historyIndex ] = int(Time.GetTimeGone() - call.start)
+
 				'save time call took
-				call.timeTotal :+ (Time.GetTimeGone() - call.start)
+				call.timeTotal :+ (call.historyDuration[ call.historyIndex ])
+				call.timeMax = Max(call.timeMax, call.historyDuration[ call.historyIndex ])
+
+				'move on to next history slot
+				call.historyIndex = (call.historyIndex + 1) mod Max(1, historyMax)
 
 				'set last call to parent (if there is one)
 				TProfiler.lastCall = call.parent

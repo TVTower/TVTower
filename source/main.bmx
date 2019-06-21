@@ -1505,6 +1505,11 @@ endrem
 
 		GetWorld().RenderDebug(660,0, 140, 180)
 		'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
+
+		DrawProfilerCallHistory(TProfiler.GetCall("PLAYER_AI2_MINUTE"), 140, 0*60, 200, 50, "AI 2")
+		DrawProfilerCallHistory(TProfiler.GetCall("PLAYER_AI3_MINUTE"), 140, 1*60, 200, 50, "AI 3")
+		DrawProfilerCallHistory(TProfiler.GetCall("PLAYER_AI4_MINUTE"), 140, 2*60, 200, 50, "AI 4")
+
 	End Function
 
 
@@ -4222,10 +4227,12 @@ Type GameEvents
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			if player.isLocalAI()
-				TProfiler.Enter("PLAYER_"+player.playerID+"_lua")
+				TProfiler.Enter("PLAYER_AI"+player.playerID+"_SECOND", False)
+				player.PlayerAI.AddEventObj( new TAIEvent.SetName("ConditionalCallOnTick")) 
+				player.PlayerAI.AddEventObj( new TAIEvent.SetName("OnSecond").AddInt(timeGone)) 
 				player.PlayerAI.ConditionalCallOnTick()
 				player.PlayerAI.CallOnRealtimeSecond(timeGone)
-				TProfiler.Leave("PLAYER_"+player.playerID+"_lua")
+				TProfiler.Leave("PLAYER_AI"+player.playerID+"_SECOND", 100, False)
 			endif
 		Next
 		Return True
@@ -4259,10 +4266,12 @@ Type GameEvents
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			if player.isLocalAI()
-				TProfiler.Enter("PLAYER_"+player.playerID+"_lua")
+				TProfiler.Enter("PLAYER_AI"+player.playerID+"_MINUTE", False)
+				player.PlayerAI.AddEventObj( new TAIEvent.SetName("ConditionalCallOnTick")) 
+				player.PlayerAI.AddEventObj( new TAIEvent.SetName("onMinute").AddInt(minute)) 
 				player.PlayerAI.ConditionalCallOnTick()
 				player.PlayerAI.CallOnMinute(minute)
-				TProfiler.Leave("PLAYER_"+player.playerID+"_lua")
+				TProfiler.Leave("PLAYER_AI"+player.playerID+"_MINUTE", 100, False)
 			endif
 		Next
 		Return True
@@ -6450,4 +6459,66 @@ TProfiler.Leave("GameLoop")
 
 	'take care of network
 	If GetGame().networkgame Then Network.DisconnectFromServer()
+End Function
+
+
+
+
+Function DrawProfilerCallHistory(profilerCall:TProfilerCall, x:Int, y:Int, w:Int, h:Int, label:String, drawType:int=0)
+	SetAlpha 0.5
+	SetColor 150,150,150
+	DrawRect(x,y,w,h)
+	
+	SetAlpha 0.75
+	SetColor 200,200,200
+	DrawLine(x,y,x,y+h)
+	DrawLine(x+w,y,x+w,y+h)
+	DrawLine(x,y,x+w,y)
+	DrawLine(x,y+h,x+w,y+h)
+
+	SetAlpha 1.0
+
+	If profilerCall And profilerCall.historyDuration.length > 0
+		Local durationMax:Float = profilerCall.historyDuration[0]
+		Local durationMin:Float = profilerCall.historyDuration[0]
+		Local durationAvg:Float = profilerCall.historyDuration[0]
+		Local timeMin:Double = profilerCall.historyTime[0]
+		Local timeMax:Double = profilerCall.historyTime[ profilerCall.historyTime.length - 1 ]
+		Local timeSpan:Double
+		
+		Local canvasW:Int = w - 2
+		Local canvasH:Int = h - 2 - 10 '-10 for label
+		
+		'find max / calc avg
+		For Local i:Int = 0 Until profilerCall.historyDuration.length
+			if durationMax < profilerCall.historyDuration[i] then durationMax = profilerCall.historyDuration[i]
+			if durationMin > profilerCall.historyDuration[i] then durationMin = profilerCall.historyDuration[i]
+			if timeMin > profilerCall.historyTime[i] then timeMin = profilerCall.historyTime[i] 
+			if timeMax < profilerCall.historyTime[i] then timeMax = profilerCall.historyTime[i] 
+			durationAvg :+ profilerCall.historyDuration[i]
+		Next
+		durationAvg :/ profilerCall.historyDuration.length
+
+		timeSpan = timeMax - timeMin
+	
+		
+		SetColor 150,150,150
+		For Local i:Int = 0 Until profilerCall.historyTime.length
+			local aboveAvg:Float = profilerCall.historyDuration[i] / durationAvg
+			SetColor 150 + int(MathHelper.Clamp(100*(aboveAvg-1), 0, 100)),150,150
+
+			Local px:Float = x + 1 + canvasW * (profilerCall.historyTime[i] - timeMin) / timeSpan
+			Local py:Float = y + h - 1 - canvasH * profilerCall.historyDuration[i] / durationMax
+			Select drawType
+				case 0
+					DrawLine(px, py, px, y + h - 1)
+				default
+					Plot(px, py)
+			End Select
+		Next
+		
+		SetColor 255,255,255
+		GetBitmapFont("Default", 10).DrawBlock(MathHelper.NumberToString(durationMax, 4), x+2, y+2, w-4, 20, ALIGN_RIGHT_TOP)
+	EndIf
+	GetBitmapFont("Default", 10).DrawBlock(label, x+2, y+2, w-4, 20, ALIGN_LEFT_TOP)
 End Function
