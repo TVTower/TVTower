@@ -263,7 +263,7 @@ function JobBuyRequisitedLicences:Tick()
 		if buyLicencesReq.requisitionID ~= nil and buyLicencesReq.requisitionID == "BuyProgrammeLicencesRequisition" then
 			-- delete old ones (also removes in-actual singleLicenceReqs)
 			if not buyLicencesReq:CheckActuality() then
-debugMsg("JobBuyRequisitedLicences:Tick() - buyLicencesReq outdated")
+				debugMsg("JobBuyRequisitedLicences:Tick() - buyLicencesReq outdated")
 				player:RemoveRequisition(buyLicencesReq)
 
 			-- process others
@@ -294,6 +294,10 @@ debugMsg("JobBuyRequisitedLicences:Tick() - buyLicencesReq outdated")
 						else
 							debugMsg("Buying requisition programme licence FAILED: " .. licence.GetTitle() .. " (" .. licence.GetId() .. ") - Price: " .. licence:GetPrice(TVT.ME))
 						end
+						
+						-- remove from the available licences so it is not
+						-- tried to get bought again. Remove even if buy failed!
+						table.removeElement(availableLicences, licence)
 					end
 				end
 			end
