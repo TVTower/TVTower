@@ -490,6 +490,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	Method GenerateGUID:string()
 		return "broadcastmaterialsource-programmelicence-"+id
 	End Method
+	
+	
+	Method GetMaterialSourceType:Int() {_exposeToLua}
+		return TVTBroadcastMaterialSourceType.PROGRAMMELICENCE
+	End Method
 
 
 	Method GetReferenceID:int() {_exposeToLua}
@@ -1538,6 +1543,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
+	'override
 	Method GetQuality:Float() {_exposeToLua}
 		'single-licence
 		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetQuality()
@@ -2400,6 +2406,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 				contentY :+ 12
 				local titleW:int = skin.fontNormal.draw("TrailerMod:", contentX + 5, contentY).GetX()
 				skin.fontNormal.drawBlock(data.GetTrailerMod(useOwner).ToStringPercentage(2), contentX + 5 + titleW + 5, contentY, contentW - titleW - 5 - 5, 60)
+				'2 lines of output...
+				contentY :+ 12
 			endif
 
 			if TSportsProgrammeData(data)
@@ -2543,35 +2551,6 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	Method GetPricePerBlock:Int(broadcastType:int) {_exposeToLua}
 		if broadcastType = 0 then broadcastType = TVTBroadcastMaterialType.PROGRAMME
 		return GetPriceForPlayer(owner) / GetBlocksTotal(broadcastType)
-	End Method
-
-
-	'Wird bisher nur in der LUA-KI verwendet
-	Method GetQualityLevel:Int() {_exposeToLua}
-		'single-licence
-		if GetSubLicenceCount() = 0 and GetData()
-			Local quality:Int = Self.GetData().GetQuality() * 100
-			If quality > 20
-				Return 5
-			ElseIf quality > 15
-				Return 4
-			ElseIf quality > 10
-				Return 3
-			ElseIf quality > 5
-				Return 2
-			Else
-				Return 1
-			EndIf
-		endif
-
-		'if licence is a collection: ask subs
-		local quality:int = 0
-		For local licence:TProgrammeLicence = eachin subLicences
-			quality :+ licence.GetQualityLevel()
-		Next
-
-		if subLicences.length > 0 then return quality / subLicences.length
-		return 1
 	End Method
 	'===== END AI-LUA HELPER FUNCTIONS =====
 End Type

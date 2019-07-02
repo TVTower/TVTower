@@ -363,6 +363,11 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
+	Method GetMaterialSourceType:Int() {_exposeToLua}
+		return TVTBroadcastMaterialSourceType.ADCONTRACT
+	End Method
+
+
 	Method Create:TAdContractBase(GUID:String, title:TLocalizedString, description:TLocalizedString, daysToFinish:Int, spotCount:Int, targetgroup:Int, minAudience:Float, minImage:Float, fixedPrice:Int, profit:Float, penalty:Float)
 		self.SetGUID(GUID)
 		self.title = title
@@ -494,6 +499,7 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
+	'override
 	Method GetQuality:Float() {_exposeToLua}
 		return quality
 	End Method

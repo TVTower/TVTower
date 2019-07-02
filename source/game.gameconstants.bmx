@@ -544,6 +544,14 @@ End Type
 
 
 
+Type TVTBroadcastMaterialSourceType {_exposeToLua}
+	Const UNKNOWN:int          = 1
+	Const PROGRAMMELICENCE:int = 2
+	Const ADCONTRACT:int       = 3
+	Const NEWS:int             = 4
+End Type
+
+
 
 'to ease access to "comparisons" without knowing
 'the licence object itself

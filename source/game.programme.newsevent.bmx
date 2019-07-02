@@ -759,6 +759,7 @@ Type TNewsEvent extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 
+	'override
 	'contains age/topicality decrease
 	Method GetQuality:Float() {_exposeToLua}
 

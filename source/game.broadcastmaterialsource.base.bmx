@@ -26,6 +26,11 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	End Method
 
 
+	Method GetMaterialSourceType:Int() {_exposeToLua}
+		return TVTBroadcastMaterialSourceType.UNKNOWN
+	End Method
+	
+
 	Method CopyBaseFrom:TBroadcastMaterialSourceBase(base:TBroadcastMaterialSourceBase)
 		title = base.title.copy()
 		description = base.description.copy()
@@ -144,6 +149,28 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 
 		effects.AddEntry(effectTrigger, effect)
 		return True
+	End Method
+	
+	
+	Method GetQuality:Float() {_exposeToLua}
+		return 0
+	End Method
+
+
+	'LUA / AI helper
+	Method GetQualityLevel:Int() {_exposeToLua}
+		Local quality:Int = GetQuality() * 100
+		If quality > 20
+			Return 5
+		ElseIf quality > 15
+			Return 4
+		ElseIf quality > 10
+			Return 3
+		ElseIf quality > 5
+			Return 2
+		Else
+			Return 1
+		EndIf
 	End Method
 End Type
 
@@ -373,6 +400,21 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 
 	Method SetControllable(bool:int = True)
 		SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE, not bool)
+	End Method
+	
+
+	Method IsProgrammeLicence:Int() {_exposeToLua}
+		return GetMaterialSourceType() = TVTBroadcastMaterialSourceType.PROGRAMMELICENCE
+	End Method
+
+
+	Method IsAdContract:Int() {_exposeToLua}
+		return GetMaterialSourceType() = TVTBroadcastMaterialSourceType.ADCONTRACT
+	End Method
+
+
+	Method IsNews:Int() {_exposeToLua}
+		return GetMaterialSourceType() = TVTBroadcastMaterialSourceType.NEWS
 	End Method
 
 
