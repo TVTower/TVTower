@@ -759,12 +759,19 @@ endrem
 		lua_rawgeti(getLuaState(), LUA_REGISTRYINDEX, _functionEnvironmentRef)
 
 		lua_getfield(getLuaState(), -1, name)
-		If lua_isnil(getLuaState(), -1)
-			lua_pop(getLuaState(), 2)
+		'make sure it is a function
+		If Not lua_isfunction(getLuaState(), -1)
+			lua_pop(getLuaState(), 1)
+			print "CallLuaFunction(~q" + name + "~q) failed. Unknown function."
+'		If lua_isnil(getLuaState(), -1)
+'			lua_pop(getLuaState(), 2)
 			Return Null
 		EndIf
 
+		local argCount:int = 0
 		if args
+			argCount = args.length
+			
 			For Local i:Int = 0 Until args.length
 				Local typeId:TTypeId = TTypeId.ForObject(args[i])
 				Select typeId
@@ -789,15 +796,22 @@ endrem
 						endif
 				End Select
 			Next
-			If lua_pcall(getLuaState(), args.length, 1, 0) Then DumpError()
-		else
-			If lua_pcall(getLuaState(), 0, 1, 0) Then DumpError()
-		endif
+		EndIf
 
+		'(try to) call the function
+		If lua_pcall(getLuaState(), argCount, 1, 0) <> 0
+			DumpError()
+			lua_pop(getLuaState(), 1)
+		EndIf
+
+
+		'fetch the results
 		Local ret:Object
-		If Not lua_isnil(getLuaState(), -1) Then ret = lua_tostring(getLuaState(), -1)
+		If not lua_isnil(getLuaState(), -1) 
+			ret = lua_tostring(getLuaState(), -1)
+		EndIf
 
-		'pop the result
+		'pop the returned result
 		lua_pop(getLuaState(), 1)
 
 		'pop the _functionEnvironmentRef ?

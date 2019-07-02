@@ -119,14 +119,17 @@ endrem
 		GetLuaEngine().RegisterToLua()
 		
 		'kick off new thread
+?threaded
 		If not THREADED_AI_DISABLED 
 			_updateThread = CreateThread( UpdateThread, self )
 		EndIf
+?
 	End Method
 
 
 	Method Stop()
 		print "Stopping AI " + playerID
+?threaded
 		If not THREADED_AI_DISABLED 
 			_updateThreadExit = True
 			WaitThread(_updateThread)
@@ -137,6 +140,7 @@ endrem
 			DetachThread(_updateThread)
 			_updateThread = Null
 		EndIf
+?
 		
 '		scriptEnv.ShutDown()
 '		KI_EventManager.unregisterKI(Self)
@@ -160,7 +164,7 @@ endrem
 		endif
 	End Method
 	
-	
+?threaded	
 	Function UpdateThread:object( data:object )
 		local aiBase:TAiBase = TAiBase(data)
 		
@@ -172,7 +176,7 @@ endrem
 			if aiBase._updateThreadExit then exit
 		Forever 
 	End Function
-	
+?
 	
 	Method Update()
 		if not IsActive() then return
@@ -239,6 +243,8 @@ endrem
 			LockMutex(_callLuaFunctionMutex)
 			local result:object = GetLuaEngine().CallLuaFunction(name, args)
 			UnLockMutex(_callLuaFunctionMutex)
+
+			return result
 		?not threaded
 '	    Try
 			return GetLuaEngine().CallLuaFunction(name, args)

@@ -182,7 +182,7 @@ Type TAi extends TAiBase
 		Local args:Object[1]
 		args[0] = string(GetWorldTime().GetTimeGone())
 
-		scriptSaveState = string(CallLuaFunction("OnSave", args))
+		scriptSaveState = String(CallLuaFunction("OnSave", args))
 	End Method
 
 
