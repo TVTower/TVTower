@@ -14,6 +14,8 @@ dofile("res/ai/DefaultAIPlayer/SLF.lua")
 globalPlayer = nil
 unitTestMode = false
 
+currentDebugMsgDepth = 0
+
 -- ##### KONSTANTEN #####
 TASK_STATUS_OPEN	= "T_open"
 TASK_STATUS_PREPARE	= "T_prepare"
@@ -49,9 +51,11 @@ _G["AIPlayer"] = class(KIDataObjekt, function(c)
 	c.WorldTicks = 0
 end)
 
+
 function AIPlayer:typename()
 	return "AIPlayer"
 end
+
 
 function AIPlayer:initialize()
 	math.randomseed(TVT.GetMillisecs())
@@ -62,9 +66,11 @@ function AIPlayer:initialize()
 	self:initializeTasks()
 end
 
+
 function AIPlayer:initializePlayer()
 	--Zum überschreiben
 end
+
 
 function AIPlayer:initializeTasks()
 	--Zum überschreiben
@@ -165,6 +171,7 @@ function AIPlayer:Tick()
 	self:TickProcessTask()
 end
 
+
 function AIPlayer:TickProcessTask()
 	-- start new tasks or continue the current
 	if (self.CurrentTask == nil)  then
@@ -176,18 +183,20 @@ function AIPlayer:TickProcessTask()
 			local nextTask = tasksPrioOrdered[1] -- 0 = current, 1 = next
 			if nextTask ~= nil and nextTask.CurrentPriority > 35 then
 				self:BeginNewTask()
-			--else
-			--	devMsg("IDLING a bit ...")
 			end
 		else
+			local nowTime = os.clock()
 			self.CurrentTask:Tick()
+			self.CurrentTask.TicksTotalTime = self.CurrentTask.TicksTotalTime + (os.clock() - nowTime)
 		end
 	end
 end
 
+
 function AIPlayer:TickAnalyse()
 	--Zum überschreiben
 end
+
 
 function AIPlayer:BeginNewTask()
 	--TODO: Warte-Task einfügen, wenn sich ein Task wiederholt
@@ -199,6 +208,7 @@ function AIPlayer:BeginNewTask()
 		self.CurrentTask:StartNextJob()
 	end
 end
+
 
 function AIPlayer:SelectTask()
 	local BestPrio = -1
@@ -220,27 +230,34 @@ function AIPlayer:SelectTask()
 	return BestTask
 end
 
+
 function AIPlayer:OnDayBegins()
 	--Zum überschreiben
 end
+
 
 function AIPlayer:OnBeginEnterRoom(roomId, result)
 	self.CurrentTask:OnBeginEnterRoom(roomId, result)
 end
 
+
 function AIPlayer:OnEnterRoom(roomId)
 	self.CurrentTask:OnEnterRoom(roomId)
 end
+
 
 function AIPlayer:OnReachTarget()
 	self.CurrentTask:OnReachTarget()
 end
 
+
 function AIPlayer:OnMoneyChanged(value, reason, reference)
 	--Zum überschreiben
 end
-
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Ein Task repräsentiert eine zu erledigende KI-Aufgabe die sich üblicherweise wiederholt. Diese kann wiederum aus verschiedenen Jobs bestehen
@@ -258,6 +275,7 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.StartTaskWorldTicks = 0 -- WorldTicks, wann der Task zuletzt gestartet wurde
 	c.StartTask = 0 -- Zeit, wann der Task zuletzt gestartet wurde
 	c.TickCounter = 0 -- Gibt die Anzahl der Ticks an seit dem der Task läuft
+	c.TicksTotalTime = 0 -- Time the ticks needed since task start
 	c.MaxTicks = 30 --Wie viele Ticks darf der Task maximal laufen?
 	c.IdleTicks = 10 --Wie viele Ticks soll nichts gemacht werden?
 	c.TargetRoom = -1 -- Wie lautet die ID des Standard-Zielraumes? !!! Muss überschrieben werden !!!
@@ -282,21 +300,26 @@ function AITask:typename()
 	return "AITask"
 end
 
+
 function AITask:ResetDefaults()
 	--kann überschrieben werden
 end
+
 
 function AITask:getBudgetUnits()
 	return self.BudgetWeight
 end
 
+
 function AITask:getStrategicPriority()
 	return 1.0
 end
 
+
 function AITask:getSituationPriority()
 	return self.SituationPriority
 end
+
 
 function AITask:getWorldTicks()
 	local player = _G["globalPlayer"]
@@ -307,9 +330,11 @@ function AITask:getWorldTicks()
 	return player.WorldTicks
 end
 
+
 function AITask:PayFromBudget(value)
 	self.CurrentBudget = self.CurrentBudget - value
 end
+
 
 function AITask:resume()
 	-- Ronny 16.10.2016: should no longer be needed as the AI now stores
@@ -324,21 +349,31 @@ function AITask:resume()
 	end
 end
 
+
 function AITask:CallActivate()
-	self.MaxTicks = math.random(9, 17)
 	self.TickCounter = 0
+	self.TicksTotalTime = 0
 	debugMsg("### Starte Task '" .. self:typename() .. "'! (Prio: " .. self.CurrentPriority .."). MaxTicks: " .. self.MaxTicks)
 	self:Activate()
 end
+
+
+--override if you need more ticks
+function AITask:InitializeMaxTicks()
+	self.MaxTicks = math.random(9, 17)
+end
+
 
 function AITask:Activate()
 	debugMsg("Implementiere mich... " .. type(self))
 end
 
+
 function AITask:AdjustmentsForNextDay()
 	self.CurrentInvestmentPriority = self.CurrentInvestmentPriority + self.InvestmentPriority
 	--kann überschrieben werden
 end
+
 
 function AITask:OnDayBegins()
 	--kann überschrieben werden
@@ -373,6 +408,7 @@ function AITask:StartNextJob()
 		self.CurrentJob:Start()
 	end
 end
+
 
 function AITask:Tick()
 	--sometimes a figure is stuck in the adagency... we cancel jobs in
@@ -424,10 +460,12 @@ function AITask:Tick()
 	end
 end
 
+
 function AITask:GetNextJobInTargetRoom()
 	--return self:getGotoJob()
 	error("Muss noch implementiert werden")
 end
+
 
 function AITask:getGotoJob()
 	local aJob = AIJobGoToRoom()
@@ -435,6 +473,7 @@ function AITask:getGotoJob()
 	aJob.TargetRoom = self.TargetRoom
 	return aJob
 end
+
 
 function AITask:RecalcPriority()
 	if (self.LastDone == 0) then self.LastDone = WorldTime.GetTimeGoneAsMinute() end
@@ -473,21 +512,25 @@ function AITask:RecalcPriority()
 	--debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. "  (time: " .. timePriority .." | ticks: " .. ticksPriority ..") - TimeDiff:" .. TimeDiff .. "  TicksDiff:" .. TicksDiff.." (tF: " ..timeFactor .." | cP: " .. calcPriority .. ")")
 end
 
+
 function AITask:TooMuchTicks()
 	debugMsg("... waited long enough.")
 	self:SetDone()
 end
+
 
 function AITask:SetWait()
 	debugMsg("Waiting...")
 	self.Status = TASK_STATUS_WAIT
 end
 
+
 function AITask:SetIdle(idleTicks)
 	idleTicks = idleTicks or 10 --default is 10 ticks
 	debugMsg("idling for " .. idleTicks .. " ticks")
 	self.Status = TASK_STATUS_IDLE
 end
+
 
 function AITask:SetDone()
 	debugMsg("### Task abgeschlossen!")
@@ -520,12 +563,14 @@ function AITask:SetCancel()
 	self.assignmentType = 0
 end
 
+
 function AITask:OnEnterRoom(roomId)
 	--debugMsg("OnEnterRoom!")
 	if (self.CurrentJob ~= nil) then
 		self.CurrentJob:OnEnterRoom(roomId)
 	end
 end
+
 
 function AITask:OnBeginEnterRoom(roomId, result)
 	--debugMsg("OnBeginEnterRoom!")
@@ -541,15 +586,19 @@ function AITask:OnReachTarget()
 	end
 end
 
+
 function AITask:BeforeBudgetSetup()
 end
+
 
 function AITask:BudgetSetup()
 end
 
+
 function AITask:BudgetMaximum()
 	return -1
 end
+
 
 function AITask:OnMoneyChanged(value, reason, reference)
 	--Zum überschreiben
@@ -567,6 +616,8 @@ _G["AIJob"] = class(KIDataObjekt, function(c)
 	c.StartJobWorldTicks = 0
 	c.LastCheckWorldTicks = 0
 	c.Ticks = 0
+	c.TicksTotalTime = 0
+	c.TickMaxTime = 0
 	c.StartParams = nil
 	c.jobStartTime = 0
 end)
@@ -575,10 +626,12 @@ function AIJob:typename()
 	return "AIJob"
 end
 
+
 function AIJob:getWorldTicks()
 	local player = _G["globalPlayer"]
 	return player.WorldTicks
 end
+
 
 function AIJob:resume()
 	if self.InvalidDataObject then
@@ -591,6 +644,7 @@ function AIJob:resume()
 	end
 end
 
+
 function AIJob:Start(pParams)
 	self:OnStart()
 
@@ -600,22 +654,35 @@ function AIJob:Start(pParams)
 	self.LastCheck = WorldTime.GetTimeGoneAsMinute()
 	self.StartJobWorldTicks = 0
 	self.LastCheckWorldTicks = 0
+	self.TicksTotalTime = 0
+	self.TickMaxTime = 0
 	self.Ticks = 0
+
 	self:Prepare(pParams)
 end
+
 
 function AIJob:Prepare(pParams)
 	debugMsg("Implementiere mich: " .. type(self))
 end
 
+
 function AIJob:CallTick()
 	self.Ticks = self.Ticks + 1
+
+	local nowTime = os.clock()
 	self:Tick()
+	local timeGone = (os.clock() - nowTime)
+
+	self.TickMaxTime = math.max(timeGone, self.TickMaxTime)
+	self.TicksTotalTime = self.TicksTotalTime + timeGone
 end
+
 
 function AIJob:Tick()
 	--Kann ueberschrieben werden
 end
+
 
 function AIJob:ReDoCheck(minutesWait, ticksWait)
 	if ((self.LastCheckWorldTicks + ticksWait) < self:getWorldTicks() or (self.LastCheck + minutesWait) < WorldTime.GetTimeGoneAsMinute()) then
@@ -627,18 +694,22 @@ function AIJob:ReDoCheck(minutesWait, ticksWait)
 	end
 end
 
+
 function AIJob:OnStart()
 	--Kann ueberschrieben werden
 end
 
+
 function AIJob:OnDone()
-	debugMsg("Job " .. self:typename() .. " done in " .. math.floor(1000 * (os.clock() - self.jobStartTime)) .. " ms.")
+	debugMsg("Job " .. self:typename() .. " done. Duration=" .. string.format("%.4f", (1000 * (os.clock() - self.jobStartTime))) .. "ms  TickCount=" .. self.Ticks .. "  TickTime=" .. string.format("%.4f", 1000 * self.TicksTotalTime) .."ms  TickMax=" .. string.format("%.4f", 1000 * self.TickMaxTime))
 end
 
+
 function AIJob:OnCancel()
-	debugMsg("Job " .. self:typename() .. " cancelled after " .. math.floor(1000 * (os.clock() - self.jobStartTime)) .. " ms.")
+	debugMsg("Job " .. self:typename() .. " cancelled. Duration=" .. string.format("%.4f", (1000 * (os.clock() - self.jobStartTime))) .. "ms  TickCount=" .. self.Ticks .. "  TickTime=" .. string.format("%.4f", 1000 * self.TicksTotalTime) .."ms  TickMax=" .. string.format("%.4f", 1000 * self.TickMaxTime))
 	--Kann ueberschrieben werden
 end
+
 
 function AIJob:OnBeginEnterRoom(roomId, result)
 	--Kann überschrieben werden
@@ -647,20 +718,26 @@ function AIJob:OnBeginEnterRoom(roomId, result)
 	--result = Ergebnis des Versuchs. Bspweise TVT.RESULT_INUSE (besetzt)
 end
 
+
 function AIJob:OnEnterRoom(roomId)
 	--Kann überschrieben werden
 	--wird aufgerufen, sobald die Figur IM Raum ist
 end
+
 
 function AIJob:OnReachTarget()
 	--Kann überschrieben werden
 	--wird aufgerufen, sobald die Figur ihr Ziel erreicht
 end
 
+
 function AIJob:SetCancel()
 	debugMsg("SetCancel(): Implementiere mich: " .. type(self))
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["AIIdleJob"] = class(AIJob, function(c)
@@ -676,9 +753,11 @@ function AIIdleJob:typename()
 	return "AIIdleJob"
 end
 
+
 function AIIdleJob:SetIdleTime(t)
 	self.IdleTime = t
 end
+
 
 function AIIdleJob:SetIdleTicks(ticks)
 	self.IdleTicks = ticks
@@ -696,16 +775,19 @@ function AIIdleJob:Start(pParams)
 	end
 end
 
+
 function AIIdleJob:getWorldTicks()
 	local player = _G["globalPlayer"]
 	return player.WorldTicks
 end
+
 
 function AIIdleJob:Prepare(pParams)
 	if ((self.Status == JOB_STATUS_NEW) or (self.Status == TASK_STATUS_PREPARE) or (self.Status == JOB_STATUS_REDO)) then
 		self.Status = JOB_STATUS_RUN
 	end
 end
+
 
 function AIIdleJob:Tick()
 	local finishedIdling = false
@@ -725,7 +807,15 @@ function AIIdleJob:Tick()
 		--debugMsg("Idling ...")
 	end
 end
+
+--override to disable debugmsg
+function AIIdleJob:OnDone()
+-- debugMsg("Job " .. self:typename() .. " done in " .. math.floor(1000 * (os.clock() - self.jobStartTime)) .. " ms.")
+end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["AIJobGoToRoom"] = class(AIJob, function(c)
@@ -742,6 +832,7 @@ end)
 function AIJobGoToRoom:typename()
 	return "AIJobGoToRoom"
 end
+
 
 function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 	local resultId = tonumber(result)
@@ -787,11 +878,13 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 	end
 end
 
+
 function AIJobGoToRoom:OnEnterRoom(roomId)
 	--debugMsg("EnterRoom: Entering roomId: " .. roomId)
 	--debugMsg("AIJobGoToRoom DONE!")
 	self.Status = JOB_STATUS_DONE
 end
+
 
 function AIJobGoToRoom:ShouldIWait()
 	debugMsg("Warte vor dem Raum... (Prio: " .. self.Task.CurrentPriority .. ")")
@@ -808,6 +901,7 @@ function AIJobGoToRoom:ShouldIWait()
 		return false
 	end
 end
+
 
 --override
 function AIJobGoToRoom:OnReachTarget()
@@ -829,6 +923,7 @@ function AIJobGoToRoom:Prepare(pParams)
 		end
 	end
 end
+
 
 function AIJobGoToRoom:Tick()
 	if (self.IsWaiting) then
@@ -863,7 +958,15 @@ function AIJobGoToRoom:Tick()
 		self:ReDoCheck(10, 10)
 	end
 end
+
+
+--override to disable debugmsg
+function AIJobGoToRoom:OnDone()
+-- debugMsg("Job " .. self:typename() .. " done in " .. math.floor(1000 * (os.clock() - self.jobStartTime)) .. " ms.")
+end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
 
 
 -- >>>>> BROADCAST STATS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -881,6 +984,7 @@ end)
 function BroadcastStatistics:typename()
 	return "BroadcastStatistics"
 end
+
 
 function BroadcastStatistics:AddBroadcast(day, hour, broadcastTypeID, attraction, audience)
 	local currentI = tostring(day) .. string.format("%02d", hour)
@@ -924,6 +1028,7 @@ function BroadcastStatistics:AddBroadcast(day, hour, broadcastTypeID, attraction
 	debugMsg("   -> ADDING FAILED at " .. currentI .. "  unknown broadcastTypeID " .. broadcastTypeID)
 end
 
+
 function BroadcastStatistics:GetAttraction(day, hour, broadcastType)
 	local currentI = tostring(day) .. string.format("%02d", hour)
 	if broadcastType == TVT.Constants.BroadcastMaterialType.NEWSSHOW then
@@ -937,6 +1042,7 @@ function BroadcastStatistics:GetAttraction(day, hour, broadcastType)
 	end
 end
 
+
 function BroadcastStatistics:GetAudience(hour, broadcastType)
 	local currentI = tostring(day) .. string.format("%02d", hour)
 	if broadcastType == TVT.Constants.BroadcastMaterialType.NEWSSHOW then
@@ -945,9 +1051,8 @@ function BroadcastStatistics:GetAudience(hour, broadcastType)
 		return self.hourlyNewsAudience[currentI]
 	end
 end
-
-
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 
 
 
@@ -971,6 +1076,7 @@ end)
 function StatisticEvaluator:typename()
 	return "StatisticEvaluator"
 end
+
 
 function StatisticEvaluator:Adjust()
 	self.MinValueTemp = 100000000000000
@@ -1032,9 +1138,11 @@ function Requisition:typename()
 	return "Requisition"
 end
 
+
 function Requisition:CheckActuality()
 	return true
 end
+
 
 function Requisition:Complete()
 	self.Done = true
@@ -1042,11 +1150,14 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
+
+
 function RecalculateTasksPrio(tasks)
 	for k,v in pairs(tasks) do
 		v:RecalcPriority()
 	end
 end
+
 
 function SortTasksByPrio(tasks)
 	RecalculateTasksPrio(tasks)
@@ -1062,6 +1173,7 @@ function SortTasksByPrio(tasks)
 	return sortTable
 end
 
+
 function SortTasksByInvestmentPrio(tasks)
 	RecalculateTasksPrio(tasks)
 
@@ -1076,6 +1188,7 @@ function SortTasksByInvestmentPrio(tasks)
 	return sortTable
 end
 
+
 function kiMsg(pMessage, allPlayers)
 	if allPlayers ~= nil then
 		TVT.PrintOut("P" .. TVT.ME ..": " .. pMessage)
@@ -1085,7 +1198,17 @@ function kiMsg(pMessage, allPlayers)
 	TVT.addToLog(pMessage)
 end
 
+
+function debugMsgDepth(change)
+	currentDebugMsgDepth = math.max(0, currentDebugMsgDepth + change)
+end
+
+
 function debugMsg(pMessage, allPlayers)
+	if currentDebugMsgDepth > 0 then
+		pMessage = string.rep("  ", currentDebugMsgDepth) .. pMessage
+	end
+	
 	if allPlayers ~= nil then
 		TVT.PrintOut("P" .. TVT.ME ..": " .. pMessage)
 	elseif TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
@@ -1096,6 +1219,7 @@ function debugMsg(pMessage, allPlayers)
 	TVT.addToLog(pMessage)
 end
 
+
 function infoMsg(pMessage)
 	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
 		TVT.PrintOut(pMessage)
@@ -1103,11 +1227,13 @@ function infoMsg(pMessage)
 	end
 end
 
+
 function devMsg(pMessage)
 	TVT.PrintOut("== DEV == : " .. pMessage)
 	--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
 	TVT.addToLog("== DEV == : " .. pMessage)
 end
+
 
 function CutFactor(factor, minValue, maxValue)
 	if (factor > maxValue) then
@@ -1143,17 +1269,20 @@ function List.new ()
 	return {first = 0, last = -1}
 end
 
+
 function List.pushleft (list, value)
   local first = list.first - 1
   list.first = first
   list[first] = value
 end
 
+
 function List.pushright (list, value)
   local last = list.last + 1
   list.last = last
   list[last] = value
 end
+
 
 function List.popleft (list)
   local first = list.first
@@ -1163,6 +1292,7 @@ function List.popleft (list)
   list.first = first + 1
   return value
 end
+
 
 function List.popright (list)
   local last = list.last
