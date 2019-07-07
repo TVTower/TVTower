@@ -1058,36 +1058,40 @@ end
 
 -- >>>>> STATISTIC EVALUATOR >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["StatisticEvaluator"] = class(SLFDataObject, function(c)
-	SLFDataObject.init(c)	-- must init base!
-	c.MinValue = -1
-	c.AverageValue = -1
-	c.MaxValue = -1
-	c.CurrentValue = -1
+	SLFDataObject.init(c)		-- must init base!
+	c.TotalMinValue = -1		-- minimum value
+	c.TotalMaxValue = -1		-- maximum value
+	c.MinValue = -1				-- minimum value since last Adjust() call
+	c.MaxValue = -1				-- maximum value since last Adjust() call
+	c.AverageValue = -1			-- average value since last Adjust() call
+	c.CurrentValue = -1			-- last set value
 
-	c.MinValueTemp = 100000000000000
-	c.AverageValueTemp = -1
-	c.MaxValueTemp = -1
 
-	c.TotalSum = 0
-	c.Values = 0
-	c.adjustTimes = 0
+	c.TotalSum = 0			-- sum of all added values
+	c.Values = 0			-- amount of added values
+	c.adjustTimes = 0		-- times Adjust() was called
+	c._MinMaxSet = false	-- were Min and Max values set?
 end)
+
 
 function StatisticEvaluator:typename()
 	return "StatisticEvaluator"
 end
 
 
+-- sums up the values collected before as a single "averaged" value 
 function StatisticEvaluator:Adjust()
-	self.MinValueTemp = 100000000000000
-	self.AverageValueTemp = -1
-	self.MaxValueTemp = -1
-	-- if used "before Adjust()" already, set Values to 1, so it
-	-- takes the old value into account when calculating the average
-	-- (1*old + x*new) / (1+x)
+	self._MinMaxSet = true
+
 	if self.Values > 0 then
+		self.TotalSum = self.AverageValue
+
 		self.Values = 1
 	end
+
+	self.MinValue = self.AverageValue
+	self.MaxValue = self.AverageValue
+	
 	-- do not reset "CurrentValue"!
 	--self.CurrentValue = -1
 
@@ -1096,30 +1100,34 @@ end
 
 
 function StatisticEvaluator:AddValue(value)
-if value == nil then
-	debugMsg("########## StatisticEvaluator:AddValue - NIL VALUE #############")
-	return
-end
+	if value == nil then
+		debugMsg("########## StatisticEvaluator:AddValue - NIL VALUE #############")
+		return
+	end
+
+
+	--if just adjusted then set new min/max
+	if not self._MinMaxSet then
+		self.MinValue = value
+		self.MaxValue = value
+
+		self._MinMaxSet = true
+	end
+
+	if value < self.MinValue then self.MinValue = value; end
+	if value > self.MaxValue then self.MaxValue = value; end
+	if value < self.TotalMinValue then self.TotalMinValue = value; end
+	if value > self.TotalMaxValue then self.TotalMaxValue = value; end
 
 	self.Values = self.Values + 1
-
-	if value < self.MinValueTemp then
-		self.MinValue = value
-		self.MinValueTemp = value
-	end
-	if value > self.MaxValueTemp then
-		self.MaxValue = value
-		self.MaxValueTemp = value
-	end
-
 	self.CurrentValue = value
 	self.TotalSum = self.TotalSum + value
-	--self.AverageValueTemp = math.round(self.TotalSum / self.Values, 0)
+
 	-- keep up to 3 decimals
-	self.AverageValueTemp = math.round(self.TotalSum / self.Values, 3)
-	self.AverageValue = self.AverageValueTemp
+	self.AverageValue = math.round(self.TotalSum / self.Values, 3)
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 
 
 
@@ -1133,6 +1141,7 @@ _G["Requisition"] = class(SLFDataObject, function(c)
 	c.Done = false
 	c.reason = nil
 end)
+
 
 function Requisition:typename()
 	return "Requisition"
@@ -1152,6 +1161,7 @@ end
 
 
 
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 function RecalculateTasksPrio(tasks)
 	for k,v in pairs(tasks) do
 		v:RecalcPriority()
@@ -1187,6 +1197,10 @@ function SortTasksByInvestmentPrio(tasks)
 	table.sort(sortTable, sortMethod)
 	return sortTable
 end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
 
 
 function kiMsg(pMessage, allPlayers)
