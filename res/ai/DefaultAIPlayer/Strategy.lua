@@ -24,6 +24,9 @@ function AIStrategy:Finalize(playerAI)
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+
+
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["DefaultStrategy"] = class(AIStrategy, function(c)
 	AIStrategy.init(c)	-- must init base!
@@ -59,18 +62,24 @@ function DefaultStrategy:Start(playerAI)
 	if not self.initDone then self:initialize() end
 end
 
+
 function DefaultStrategy:Finalize(playerAI)
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["BeginExpandStrategy"] = class(AIStrategy, function(c)
 	AIStrategy.init(c)	-- must init base!
 end)
 
+
 function BeginExpandStrategy:typename()
 	return "BeginExpandStrategy"
 end
+
 
 function BeginExpandStrategy:Start(playerAI)
 	playerAI.TaskList[TASK_MOVIEDISTRIBUTOR].InvestmentPriority = 0
@@ -78,6 +87,7 @@ function BeginExpandStrategy:Start(playerAI)
 	playerAI.TaskList[TASK_STATIONMAP].InvestmentPriority = 15
 	playerAI.Budget.SavingParts = 0.6
 end
+
 
 function BeginExpandStrategy:Finalize(playerAI)
 	playerAI.TaskList[TASK_MOVIEDISTRIBUTOR]:ResetDefaults()

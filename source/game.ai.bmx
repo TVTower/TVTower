@@ -85,18 +85,18 @@ Type TAi extends TAiBase
 
 		CallLuaFunction("AddEvent", args)
 	End Method
-	
+
 
 	Method CallGetEventCount:Int()
 		return int( string(CallLuaFunction("GetEventCount", Null)) )
 	End Method
-	
-	
+
+
 	Method CallUpdate()
 'auskommentiert bis reflection threadsafe
 '		CallLuaFunction("Update", Null)
 	End Method
-	
+
 
 	'only calls the AI "onTick" if the calculated interval passed
 	'in our case this is:
@@ -532,8 +532,8 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	Method RestoreExternalObject:object(index:int)
 		return GetPlayerBase(Self.ME).PlayerAI.GetObjectUsedInLua(index)
 	End Method
-	
-	
+
+
 	Method PopNextEvent:TAIEvent()
 		print "PopNextEvent"
 		local aiE:TAIEvent = GetPlayerBase(Self.ME).PlayerAI.PopNextEvent()
@@ -546,13 +546,13 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	Method GetNextEventCount:Int()
 		Return GetPlayerBase(Self.ME).PlayerAI.GetNextEventCount()
 	End Method
-	
-	
+
+
 	Method IsActive:Int()
 		Return GetPlayerBase(Self.ME).PlayerAI.IsActive()
 	End Method
 
-	
+
 	'use this to send the threaded AI to sleep for a while
 	Method Sleep:Int(milliseconds:int)
 		Delay(milliseconds)
@@ -1530,12 +1530,25 @@ endrem
 
 	'GET an auction programme block at the given array position
 	'Returns: TAuctionProgrammeBlocks
-	Method md_getAuctionMovieBlock:TAuctionProgrammeBlocks(ArrayID:Int = -1)
+	Method md_getAuctionProgrammeLicenceBlock:TAuctionProgrammeBlocks(ArrayID:Int = -1)
 		If Not _PlayerInRoom("movieagency") Then Return null
 		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 Then Return null
 
 		Local Block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(TAuctionProgrammeBlocks.List.ValueAtIndex(ArrayID))
 		If Block and Block.GetLicence() Then Return Block Else Return null
+	End Method
+
+
+	Method md_getAuctionProgrammeLicenceBlockIndex:Int(licenceID:Int = -1)
+		If Not _PlayerInRoom("movieagency") Then Return null
+
+		Local block:TAuctionProgrammeBlocks
+		For local i:int = 0 until TAuctionProgrammeBlocks.List.Count()
+			block = TAuctionProgrammeBlocks(TAuctionProgrammeBlocks.List.ValueAtIndex(i))
+ 			If block.GetLicence() and block.licence.GetReferenceID() = licenceID Then Return i
+		Next
+
+		Return self.RESULT_NOTFOUND
 	End Method
 
 
@@ -1552,7 +1565,7 @@ endrem
 		endif
 	End Method
 
-'untested
+
 	Method md_getAuctionProgrammeLicenceCount:Int()
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
@@ -1562,7 +1575,6 @@ endrem
 
 	Method md_doBidAuctionProgrammeLicence:Int(licenceID:int= -1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
-
 
 		For local Block:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
 			If Block.GetLicence() and Block.licence.GetReferenceID() = licenceID Then Return Block.SetBid( self.ME )
@@ -1575,23 +1587,23 @@ endrem
 	Method md_doBidAuctionProgrammeLicenceAtIndex:Int(ArrayID:int= -1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
-		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
+		local Block:TAuctionProgrammeBlocks = self.md_getAuctionProgrammeLicenceBlock(ArrayID)
 		If Block and Block.GetLicence() then Return Block.SetBid( self.ME ) else Return self.RESULT_NOTFOUND
 	End Method
 
-'untested
+
 	Method md_GetAuctionProgrammeLicenceNextBid:Int(ArrayID:int= -1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
-		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
+		local Block:TAuctionProgrammeBlocks = self.md_getAuctionProgrammeLicenceBlock(ArrayID)
 		If Block and Block.GetLicence() then Return Block.GetNextBid(self.ME) else Return self.RESULT_NOTFOUND
 	End Method
 
-'untested
+
 	Method md_GetAuctionProgrammeLicenceHighestBidder:Int(ArrayID:int= -1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
-		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
+		local Block:TAuctionProgrammeBlocks = self.md_getAuctionProgrammeLicenceBlock(ArrayID)
 		If Block and Block.GetLicence() then Return Block.bestBidder else Return self.RESULT_NOTFOUND
 	End Method
 

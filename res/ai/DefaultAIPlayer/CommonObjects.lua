@@ -3,10 +3,8 @@
 -- Movie ist jetzt nur noch ein Wrapper
 
 function CheckMovieBuyConditions(licence, maxPrice, minQuality)
-	if (licence.GetPrice() > maxPrice) then return false end
-	if (minQuality ~= nil) then
-		if (licence.GetQuality() < minQuality) then return false end
-	end
+	if maxPrice ~= nil and (licence.GetPrice() > maxPrice) then return false; end
+	if (minQuality ~= nil) and (licence.GetQuality() < minQuality) then return false; end
 	return true
 end
 
@@ -97,7 +95,7 @@ function SpotRequisition:RemoveSlotRequisitionByTime(day, hour)
 	for k,v in pairs(removeList) do
 		table.removeElement(self.SlotReqs, v)
 		self.Count = self.Count - 1
-		--reduce priority but stay at least at 3 (see default initialization) 
+		--reduce priority but stay at least at 3 (see default initialization)
 		self.Priority = math.max(3, self.Priority - 1)
 	end
 
@@ -200,7 +198,7 @@ end
 
 function BuyProgrammeLicencesRequisition:AddLicenceReq(req)
 	if req == nil then return; end
-	
+
 	if self.licenceReqs == nil then self.licenceReqs = {}; end
 	table.insert(self.licenceReqs, req)
 
@@ -257,7 +255,7 @@ function BuyProgrammeLicencesRequisition:RemoveLicenceRequisitionByReason(reason
 	for k,v in pairs(removeList) do
 		table.removeElement(self.licenceReqs, v)
 		self.Count = self.Count - 1
-		--reduce priority but stay at least at 5 (see default initialization) 
+		--reduce priority but stay at least at 5 (see default initialization)
 		self.Priority = math.max(5, self.Priority - 1)
 	end
 

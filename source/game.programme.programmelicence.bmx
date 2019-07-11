@@ -490,8 +490,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	Method GenerateGUID:string()
 		return "broadcastmaterialsource-programmelicence-"+id
 	End Method
-	
-	
+
+
 	Method GetMaterialSourceType:Int() {_exposeToLua}
 		return TVTBroadcastMaterialSourceType.PROGRAMMELICENCE
 	End Method
@@ -2548,9 +2548,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 
 	'Wird bisher nur in der LUA-KI verwendet
-	Method GetPricePerBlock:Int(broadcastType:int) {_exposeToLua}
+	Method GetPricePerBlock:Int(playerID:int, broadcastType:int) {_exposeToLua}
 		if broadcastType = 0 then broadcastType = TVTBroadcastMaterialType.PROGRAMME
-		return GetPriceForPlayer(owner) / GetBlocksTotal(broadcastType)
+		return GetPriceForPlayer(playerID) / GetBlocksTotal(broadcastType)
 	End Method
 	'===== END AI-LUA HELPER FUNCTIONS =====
 End Type

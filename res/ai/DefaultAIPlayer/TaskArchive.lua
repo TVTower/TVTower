@@ -7,6 +7,8 @@ _G["TaskArchive"] = class(AITask, function(c)
 	c.NeededInvestmentBudget = 0
 	c.InvestmentPriority = 0
 
+	c.Player = nil
+
 	c.latestSaleOnDay = -1	
 	c.emergencySale = false --todo: festlegen wann/ob der Notfall ist
 end)
@@ -16,6 +18,8 @@ function TaskArchive:typename()
 end
 
 function TaskArchive:Activate()
+	self.Player = _G["globalPlayer"]
+
 	self.SellMoviesJob = JobSellMovies()
 	self.SellMoviesJob.Task = self
 end
@@ -51,7 +55,9 @@ function JobSellMovies:typename()
 end
 
 function JobSellMovies:Prepare(pParams)
-
+	--refresh stats
+	self.Task.Player.programmeLicencesInArchiveCount = TVT.ar_GetProgrammeLicenceCount()
+	self.Task.Player.programmeLicencesInSuitcaseCount = TVT.ar_GetSuitcaseProgrammeLicenceCount()
 end
 
 
@@ -118,6 +124,9 @@ function JobSellMovies:Tick()
 		ec = TVT.ar_AddProgrammeLicenceToSuitcaseByGUID(case[i].GUID)
 		if ec == 1 then
 			debugMsg("# put "..case[i].Title.." in suitcase, OK")
+
+			self.Task.Player.programmeLicencesInArchiveCount = math.max(0, self.Task.Player.programmeLicencesInArchiveCount - 1)
+			self.Task.Player.programmeLicencesInSuitcaseCount = self.Task.Player.programmeLicencesInSuitcaseCount + 1
 		else
 			debugMsg("# put "..case[i].Title.." in suitcase, errorcode: "..ec)
 		end
@@ -128,12 +137,11 @@ function JobSellMovies:Tick()
 	--im md: verkaufen
 
 	-- send figure to movie dealer now
-	local player = _G["globalPlayer"]
-	if player ~= nil then 
-		local task = player.TaskList[_G["TASK_MOVIEDISTRIBUTOR"]]
-		if task ~= nil then
+	if self.Task.Player ~= nil then
+		local t = self.Task.Player.TaskList[_G["TASK_MOVIEDISTRIBUTOR"]]
+		if t ~= nil then
 			debugMsg("# increasing SituationPriority for movie distributor task")
-			task.SituationPriority = 150 --arbitrary value, maybe needs higher one
+			t.SituationPriority = 150 --arbitrary value, maybe needs higher one
 		end
 	end
 

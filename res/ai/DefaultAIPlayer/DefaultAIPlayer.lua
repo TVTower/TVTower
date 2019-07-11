@@ -2,9 +2,9 @@
 -- ============================
 -- Autoren: Manuel Vögele (STARS_crazy@gmx.de)
 --          Ronny Otto
--- Version: 30.10.2016
+-- Version: 06.07.2019
 
-_G["APP_VERSION"] = "1.7"
+_G["APP_VERSION"] = "1.8"
 
 -- ##### INCLUDES #####
 -- use slash for directories - windows accepts it, linux needs it
@@ -83,6 +83,8 @@ function DefaultAIPlayer:initializePlayer()
 	self.ExpansionPriority = math.random(3,8)
 	--Handlungsgeschwindigkeit 2-4
 	self.BrainSpeed = math.random(2,4)
+
+	--strategy of the player
 	self.Strategy = DefaultStrategy()
 
 	-- budget saving from 10-30%
@@ -91,6 +93,9 @@ function DefaultAIPlayer:initializePlayer()
 	self.Budget.ExtraFixedCostsSavingsPercentage = 0.4 + 0.10 * math.random(0,3)
 
 	self.archEnemyID = -1
+
+	self.programmeLicencesInSuitcaseCount = 0
+	self.programmeLicencesInArchiveCount = 0
 
 	self.currentAwardType = -1
 	self.currentAwardStartTime = -1
@@ -154,6 +159,33 @@ end
 
 function DefaultAIPlayer:OnGameBegins()
 	self.Strategy:Start(self)
+
+--[[
+	local se = StatisticEvaluator()
+	for j = 0, 3 do
+		debugMsg("run " .. j)
+		for i = 0, 2 do
+			se:AddValue(1 + i*2)
+			debugMsg("added " .. i .. ".  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
+		end
+		se:Adjust()
+		debugMsg("adjusted.  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
+	end
+
+	debugMsg("--------------------")
+	debugMsg("--------------------")
+
+	se = StatisticEvaluatorOld()
+	for j = 0, 3 do
+		debugMsg("run " .. j)
+		for i = 0, 2 do
+			se:AddValue(1 + i*2)
+			debugMsg("added " .. i .. ".  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
+		end
+		se:Adjust()
+		debugMsg("adjusted.  AverageValue=" .. se.AverageValue .. "  minValue=" .. se.MinValue .. "  maxValue=" .. se.MaxValue .. "  TotalSum=" .. se.TotalSum .. "  CurrentValue=" .. se.CurrentValue .. "  Values=" .. se.Values)
+	end
+]]
 end
 
 
@@ -430,18 +462,17 @@ end
 
 
 function BusinessStats:AddMovie(licence)
---RON
---TVT.PrintOut("RON: AddMovie")
-
-	local maxPrice = globalPlayer.TaskList[TASK_MOVIEDISTRIBUTOR].BudgetWholeDay / 2
-	if (CheckMovieBuyConditions(licence, maxPrice)) then -- Preisgrenze
-		local quality = licence.GetQuality(0)
-		if licence.getData() ~= nil and licence.IsSingle() then
-			self.MovieQualityAcceptable:AddValue(quality)
-			self.MoviePricePerBlockAcceptable:AddValue(licence:GetPricePerBlock())
-		else
-			self.SeriesQualityAcceptable:AddValue(quality)
-			self.SeriesPricePerBlockAcceptable:AddValue(licence:GetPricePerBlock())
+	local maxPrice = globalPlayer.TaskList[TASK_MOVIEDISTRIBUTOR].BudgetWholeDay * 0.75
+	--add licences suiting to our potential limits
+	if (CheckMovieBuyConditions(licence, maxPrice)) then
+		if licence ~= nil then
+			if licence.IsSingle() == 1 then
+				self.MovieQualityAcceptable:AddValue( licence.GetQuality() )
+				self.MoviePricePerBlockAcceptable:AddValue(licence:GetPricePerBlock(TVT.ME))
+			else
+				self.SeriesQualityAcceptable:AddValue( licence.GetQuality() )
+				self.SeriesPricePerBlockAcceptable:AddValue(licence:GetPricePerBlock(TVT.ME))
+			end
 		end
 	end
 end
@@ -484,6 +515,7 @@ function getAIPlayer()
 end
 
 -- ##### EVENTS #####
+
 function OnBossCalls(latestWorldTime)
 	infoMsg("Boss calls me! " .. latestWorldTime)
 end
@@ -548,10 +580,15 @@ function OnCommand(command)
 	end
 end
 
+function OnGameBegins()
+	debugMsg("AI-Event: OnGameBegins")
+	getAIPlayer():OnGameBegins()
+end
+
 
 function OnDayBegins()
 	if (aiIsActive) then
-		debugMsg("KI-Event: OnDayBegins")
+		debugMsg("AI-Event: OnDayBegins")
 		getAIPlayer():OnDayBegins()
 	end
 
@@ -568,6 +605,7 @@ function OnInit()
 		getAIPlayer():OnInit()
 	end
 end
+
 
 
 function OnProgrammeLicenceAuctionGetOutbid(licence, bid, bidderID)
@@ -690,6 +728,44 @@ function OnRealTimeSecond(millisecondsPassed)
 end
 
 
+-- called by main loop or AI thread within blitzmax code
+function Update()
+	debugMsg("next count = "  .. MY.GetNextEventCount())
+
+	-- AI deactivated / (game) paused?
+--	if MY.IsActive() == 0 then
+--		return
+--	end
+--[[
+	-- process all happened events
+
+--	local nextEvent
+--	if MY.GetNextEventCount() > 0 then
+	local nextEvent = MY.PopNextEvent()
+	if nextEvent == nil then
+--		MY.sleep(1)
+		debugMsg("next is nil")
+		return false
+	else
+		debugMsg("next is OK")
+	end
+]]
+
+--	while nextEvent do
+	--	debugMsg("nextEvent: name=" .. nextEvent.name .. "  data=" .. nextEvent.data)
+
+		--if nextEvent.name ...
+
+		--OnTick
+		--OnMinute
+		--	...
+
+		--nextEvent = MY.PopNextEvent()
+--	end
+	return
+end
+
+
 function OnTick(timeGone, ticksGone)
 	--debugMsg("OnTick  time:" .. timeGone .." ticks:" .. ticksGone .. " gameMinute:" .. WorldTime.GetDayMinute())
 	getAIPlayer().WorldTicks = tonumber(ticksGone)
@@ -739,7 +815,7 @@ function OnMinute(number)
 			local broadcast = TVT.GetCurrentAdvertisement()
 			if broadcast ~= nil then
 				-- only for ads
-				if broadcast.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) then
+				if broadcast.isType(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT) == 1 then
 					local audience = TVT.GetCurrentProgrammeAudience()
 					if audience.GetTotalSum() < TVT.GetCurrentAdvertisementMinAudience() then
 						-- we can only fix if we have licences for trailers

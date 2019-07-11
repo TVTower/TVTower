@@ -1639,7 +1639,10 @@ price :* Max(1, minAudience/1000)
 		If GetLimitedToGenre() >= 0 then msgAreaH :+ msgH
 		If GetLimitedToProgrammeFlag() > 0 then msgAreaH :+ msgH
 		'warn if short of time or finished/failed
-		If daysLeft <= 1 then msgAreaH :+ msgH
+		If daysLeft <= 1 or IsCompleted()
+			msgAreaH :+ msgH
+		EndIf
+
 		'only show image hint when NOT signed (after signing the image
 		'is not required anymore)
 		If owner <= 0 and GetMinImage() > 0 and 0.01*GetPublicImage( GetObservedPlayerID() ).GetAverageImage() < GetMinImage()
