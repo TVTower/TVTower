@@ -1,3 +1,4 @@
+SuperStrict
 Rem
 	Mersenne: Random numbers
 

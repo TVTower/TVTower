@@ -222,7 +222,7 @@ Type TGUIGameWindow Extends TGUIWindowBase
 
 
 	Method Update:Int()
-		If guiCaptionTextBox Then guiCaptionTextBox.SetFont(.headerFont)
+		If guiCaptionTextBox Then guiCaptionTextBox.SetFont(headerFont)
 
 		Super.Update()
 	End Method
@@ -246,7 +246,7 @@ Type TGUIGameModalWindowChainDialogue extends TGUIModalWindowChainDialogue
 
 	Method SetCaption:Int(caption:String="")
 		Super.SetCaption(caption)
-		If guiCaptionTextBox Then guiCaptionTextBox.SetFont(.headerFont)
+		If guiCaptionTextBox Then guiCaptionTextBox.SetFont(headerFont)
 	End Method
 End Type
 
@@ -267,7 +267,7 @@ Type TGUIGameModalWindow Extends TGUIModalWindow
 
 	Method SetCaption:Int(caption:String="")
 		Super.SetCaption(caption)
-		If guiCaptionTextBox Then guiCaptionTextBox.SetFont(.headerFont)
+		If guiCaptionTextBox Then guiCaptionTextBox.SetFont(headerFont)
 	End Method
 End Type
 

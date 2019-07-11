@@ -29,6 +29,8 @@ Rem
 	   distribution.
 	====================================================================
 EndRem
+SuperStrict
+
 Import Brl.LinkedList
 
 

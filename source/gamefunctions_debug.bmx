@@ -731,6 +731,10 @@ Type TDebugProgrammePlanInfos
 		endif
 
 
+		local s:string = "|color=200,255,200|PRED|/color|/|color=200,200,255|GUESS|/color|/|color=255,220,210|REAL|/color|"
+		GetBitmapFont("default", 10).DrawBlock( s, x+125-50, y + -1*lineHeight, 88 +50, lineHeight, ALIGN_RIGHT_TOP)
+
+
 		For local hour:int = 0 until daysProgramme.length
 			local audienceResult:TAudienceResultBase
 			if hour <= currHour
@@ -813,11 +817,6 @@ Type TDebugProgrammePlanInfos
 					
 					progString2 :+ " |color=200,255,200|"+int(predictionCacheProgAudience[hour].GetTotalSum()/1000)+"k|/color|"
 '				endif
-				if audienceResult
-					progString2 :+ " / |color=255,220,210|"+int(audienceResult.audience.GetTotalSum()/1000) +"k|/color|"
-				else
-					progString2 :+ " / |color=255,220,210|??|/color|"
-				endif
 
 				local player:TPlayer = GetPlayer(playerID)
 				local guessedAudience:TAudience
@@ -826,6 +825,12 @@ Type TDebugProgrammePlanInfos
 					progString2 :+ " / |color=200,200,255|"+int(guessedAudience.GetTotalSum()/1000)+"k|/color|"
 				else
 					progString2 :+ " / |color=200,200,255|??|/color|"
+				endif
+
+				if audienceResult
+					progString2 :+ " / |color=255,220,210|"+int(audienceResult.audience.GetTotalSum()/1000) +"k|/color|"
+				else
+					progString2 :+ " / |color=255,220,210|??|/color|"
 				endif
 			EndIf
 

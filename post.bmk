@@ -19,7 +19,15 @@
 		elseif bmk.Platform() == "macos" then
 			bmk.Sys( "strip " .. %exepath% .. "/" .. %outfile% )
 		elseif bmk.Platform() == "win32" then
-			bmk.Sys( bmk.MinGWBinPath() .. "\\strip.exe --strip-all " .. %exepath% .. "\\" .. %outfile% )
+			local outFile = %outfile% .. ".exe"
+#			if bmk.CPU() == "x86" then
+#				outFile = outFile .. "_Win32.exe"
+#			elseif bmk.CPU() == "x64" then
+#				outFile = outFile .. "_Win64.exe"
+#			else
+#				outFile = outFile .. "_Win.exe"
+#			end
+			bmk.Sys( bmk.MinGWBinPath() .. "\\strip.exe --strip-all " .. %exepath% .. "\\" .. outFile )
 		end
 	end
 @end

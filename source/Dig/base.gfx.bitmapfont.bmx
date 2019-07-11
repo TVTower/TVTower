@@ -695,8 +695,12 @@ Type TBitmapFont
 				local currentLine:string = lines[lines.length-1]
 				'check whether we have to subtract some chars for the "..."
 				local ellipsisChar:string = GetEllipsis()
-				if (w>0 and getWidth(currentLine + ellipsisChar) > w)
-					currentLine = currentLine[.. currentLine.length-3] + ellipsisChar
+				if (w > 0 and getWidth(currentLine + ellipsisChar) > w)
+					repeat
+						currentLine = currentLine[.. currentLine.length-1]
+					until getWidth(currentLine + ellipsisChar) <= w
+
+					currentLine = currentLine + ellipsisChar
 				else
 					currentLine = currentLine[.. currentLine.length] + ellipsisChar
 				endif

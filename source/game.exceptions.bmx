@@ -1,3 +1,5 @@
+SuperStrict
+
 Type TTVTException Extends TBlitzException
 	Field message:String
 
