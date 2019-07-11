@@ -199,6 +199,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'so we could add news etc.
 		EventManager.triggerEvent(TEventSimple.Create("Game.OnStart", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
+		'inform about the begin of this game (for now equal to "OnStart")
+		EventManager.triggerEvent(TEventSimple.Create("Game.OnBegin", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
+
 	End Method
 
 
