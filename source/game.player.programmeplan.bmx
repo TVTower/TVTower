@@ -1861,7 +1861,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 					obj.BeginBroadcasting(day, hour, minute, audienceResult)
 
 					'computes ads - if adcontract finishes, earn money
-					If TAdvertisement(obj) And TAdvertisement(obj).contract.isSuccessful()
+					If TAdvertisement(obj) And TAdvertisement(obj).contract.IsCompleted()
 						'removes ads which are more than needed (eg 3 of 2 to be shown ads)
 						RemoveAdvertisementInstances(obj, False)
 						'removes them also from programmes (shopping show)

@@ -160,8 +160,8 @@ function AppraiseSpots:AppraiseCurrentSpot()
 end
 
 function AppraiseSpots:AppraiseSpot(spot)
-	--debugMsg("AppraiseSpot")
-	--debugMsg("===================")
+	debugMsg("AppraiseSpot: " .. spot.GetTitle() )
+	debugMsg("===================")
 	local player = _G["globalPlayer"]
 	local stats = player.Stats
 	local score = -1
@@ -173,39 +173,37 @@ function AppraiseSpots:AppraiseSpot(spot)
 
 	if (spot.GetMinAudience(TVT.ME) > stats.Audience.MaxValue) then
 		--spot.Appraisal = -2
-		--debugMsg("zu viele Zuschauer verlangt! " .. spot.Audience .. " / " .. stats.Audience.MaxValue)
+		debugMsg("  zu viele Zuschauer verlangt! " .. spot.GetMinAudience(TVT.ME) .. " / " .. stats.Audience.MaxValue)
 		return
 	end
 
-	--debugMsg("spot.SpotProfit: " .. spot.SpotProfit .. " ; spot.SpotToSend: " .. spot.SpotToSend)
 	local profitPerSpot = spot.GetProfit(TVT.ME) / spot.GetSpotCount()
-	--debugMsg("profitPerSpot: " .. profitPerSpot .. " ; stats.SpotProfitPerSpotAcceptable.AverageValue: " .. stats.SpotProfitPerSpotAcceptable.AverageValue)
-	local financePower = profitPerSpot / stats.SpotProfitPerSpotAcceptable.AverageValue
-	--debugMsg("financePower1: " .. financePower)
-	financePower = CutFactor(financePower, 0.2, 2)
-	--debugMsg("financePower: " .. financePower)
+	local financePowerRaw = profitPerSpot / stats.SpotProfitPerSpotAcceptable.AverageValue
+	local financePower = CutFactor(financePowerRaw, 0.2, 2)
+	debugMsg("  profit=" .. spot.GetProfit(TVT.ME) .. " (".. profitPerSpot.."/spot)  SpotsToSend=" .. spot.GetSpotsToSend() .."  stats.SpotProfitPerSpotAcceptable(Avg)=" .. stats.SpotProfitPerSpotAcceptable.AverageValue)
+	debugMsg("  financePower=" .. financePowerRaw .. "  financePower(cut)=" .. financePower)
 
 	-- 2 = Locker zu schaffen / 0.3 schwierig zu schaffen
 	local audienceFactor = stats.Audience.AverageValue / spot.GetMinAudience(TVT.ME)
 	audienceFactor = CutFactor(audienceFactor, 0.3, 2)
-	--debugMsg("audienceFactor: " .. audienceFactor .. " ; stats.Audience.AverageValue: " .. stats.Audience.AverageValue .. " ; spot.Audience:" .. spot.Audience)
+	debugMsg("  audienceFactor=" .. audienceFactor .. "  stats.Audience(Avg)=" .. stats.Audience.AverageValue .. "  spot.GetMinAudience()=" .. spot.GetMinAudience(TVT.ME))
 
 	-- 2 = Risiko und Strafe sind im Verhältnis gering  / 0.3 = Risiko und Strafe sind Verhältnis hoch
 	local riskFactor = stats.SpotPenalty.AverageValue / spot.GetPenalty(TVT.ME)
 	riskFactor = CutFactor(riskFactor, 0.3, 2)
 	riskFactor = riskFactor * audienceFactor
 	riskFactor = CutFactor(riskFactor, 0.2, 2)
-	--debugMsg("riskFactor: " .. riskFactor .. " ; SpotPenalty: " .. stats.SpotPenalty.AverageValue .. " ; SpotPenalty:" .. spot.SpotPenalty)
+	debugMsg("  riskFactor=" .. riskFactor .. "  SpotPenalty(Avg)= " .. stats.SpotPenalty.AverageValue .. "  spot.GetPenalty()=" .. spot.GetPenalty(TVT.ME))
 
 	-- 2 leicht zu packen / 0.3 hoher Druck
 	local pressureFactor = spot.GetDaysToFinish() / spot.GetSpotCount()
+	debugMsg("  pressureFactor=" .. pressureFactor .. "  pressureFactor(cut)=" .. CutFactor(pressureFactor, 0.2, 2) .. "  daysToFinish=" .. spot.GetDaysToFinish() .. "  spotsToSend=" .. spot.GetSpotsToSend())
 	pressureFactor = CutFactor(pressureFactor, 0.2, 2)
-	--debugMsg("pressureFactor: " .. pressureFactor .. " ; SpotMaxDays: " .. spot.SpotMaxDays .. " ; SpotToSend:" .. spot.SpotToSend)
 
 	spot.SetAttractiveness(audienceFactor * riskFactor * pressureFactor)
-	--debugMsg("Spot-Attractiveness: ===== " .. spot.GetAttractiveness() .. " ===== ; financePower: " .. financePower .. " ; audienceFactor: " .. audienceFactor .. " ; riskFactor: " .. riskFactor .. " ; pressureFactor: " .. pressureFactor)
+	debugMsg("  spot-attractiveness=" .. spot.GetAttractiveness() .. "  (financePower=" .. financePower .. "  audienceFactor=" .. audienceFactor .. "  riskFactor=" .. riskFactor .. "  pressureFactor=" .. pressureFactor ..")")
 
-	--debugMsg("===================")
+	debugMsg("===================")
 
 	--financeBase
 
@@ -255,7 +253,7 @@ function SignRequisitedContracts:Tick()
 				table.remove(self.AdAgencyTask.SpotsInAgency, i)
 			end
 		end
-		
+
 		table.sort(self.AdAgencyTask.SpotsInAgency, sortMethod)
 	end
 
@@ -287,7 +285,7 @@ function SignRequisitedContracts:GetMinGuessedAudience(guessedAudience, minFacto
 	if minFactor == 1.0 then
 		return guessedAudience
 	end
-	
+
 	if (guessedAudience.GetTotalSum() < 1000) then
 		return TVT.audiencePredictor.GetEmptyAudience()
 	else
@@ -304,7 +302,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		TVT.printOut("AI ERROR: SignMatchingContracts() with requisition.Count=0.")
 		return 0
 	end
-	
+
 	for key, adContract in pairs(self.AdAgencyTask.SpotsInAgency) do
 		-- do not try to get more contracts than allowed
 		if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.adContractsPerPlayerMax then break end
@@ -333,9 +331,9 @@ debugMsg("contract NOT DOABLE: " .. adContract.GetTitle() .. "  targetgroup="..a
 			else
 				maxSurplusSpots = math.max( maxSurplusSpots, math.random(2,3))
 			end
-			
+
 			-- skip if contract requires too many spots for the given level
-			if adContract.GetSpotCount() > requisition.Count + maxSurplusSpots then 
+			if adContract.GetSpotCount() > requisition.Count + maxSurplusSpots then
 				--debugMsg("   Skipping a \"necessary\" contract (too many spots: " .. adContract.GetSpotCount() .. " > ".. requisition.Count .." + "..maxSurplusSpots .. "): " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudienceValue .. "  GuessedAudience: " .. math.floor(minGuessedAudience.GetTotalSum()) .. " - " .. math.floor(guessedAudience.GetTotalSum()))
 			-- sign if audience requirements are OK
 			elseif ((minAudienceValue < guessedAudienceValue) and (minAudienceValue > minGuessedAudienceValue)) then
@@ -394,13 +392,13 @@ function SignContracts:Tick()
 	if (self.AdAgencyTask.SpotsInAgency == nil) then
 		return 0
 	end
-	
+
 	--debugMsg("SignContracts")
 
 	--Sortieren
 	local sortMethod = function(a, b)
 		if a == nil then
-			return false 
+			return false
 		elseif b == nil then
 			return true
 		end
@@ -435,7 +433,7 @@ function SignContracts:GetUnsentSpotCount()
 
 	for i = 0, MY.GetProgrammeCollection().GetAdContractCount() - 1 do
 		local contract = MY.GetProgrammeCollection().GetAdContractAtIndex(i)
-		if (contract.isSuccessful() ~= 1) then
+		if (contract.IsComplete() ~= 1) then
 			unsentSpots = unsentSpots + contract.GetSpotsToSend()
 		end
 	end

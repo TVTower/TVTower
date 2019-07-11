@@ -163,7 +163,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 	'override to disable clicks for items of other players
 	Method IsClickable:int()
-		'only owner can click on it 
+		'only owner can click on it
 		if broadcastMaterial and broadcastMaterial.GetOwner() <> GetPlayerBaseCollection().playerID Then return False
 
 		'skip if player cannot control the material
@@ -254,7 +254,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 						Else
 							GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(New TRectangle.Init(drawPos.x, drawPos.y, -1, 30))
 						EndIf
-						If TProgramme(broadcastMaterial) 
+						If TProgramme(broadcastMaterial)
 							'live
 							If TProgramme(broadcastMaterial).licence.IsLive()
 								Local broadcastedLive:int = True
@@ -378,7 +378,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			GetSpriteFromRegistry("gfx_interface_ingamechat_key.locked").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW() - 4, GetScreenY() + 5, -1, ALIGN_RIGHT_TOP)
 			SetAlpha GetAlpha() * 1.25
 		endif
-		
+
 		If titleIsVisible
 			Local useType:Int = broadcastMaterial.usedAsType
 			If hasOption(GUI_OBJECT_DRAWMODE_GHOST) And lastListType > 0
@@ -413,7 +413,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 						title = programme.licence.GetParentLicence().GetTitle() + ":  "+programme.GetTitle()
 						'uncomment if you wish episode number in title
 						'titleAppend = " (" + programme.GetEpisodeNumber() + "/" + programme.GetEpisodeCount() + ")"
-						
+
 						'TODO: remove parent-check once older savegames are not in use anymore
 						'      as newer games use "IsCollectionElement()" properly
 						If programme.IsCollectionElement() or programme.licence.GetParentLicence().IsCollection()
@@ -493,14 +493,17 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			Case TVTBroadcastMaterialType.ADVERTISEMENT
 				If TAdvertisement(broadcastMaterial)
 					Local advertisement:TAdvertisement = TAdvertisement(broadcastMaterial)
-					If advertisement.isState(advertisement.STATE_FAILED)
-						text = "------"
-					Else
-						If advertisement.contract.isSuccessful()
-							text = "- OK -"
-						Else
-							text = GetPlayerProgrammePlan(advertisement.owner).GetAdvertisementSpotNumber(advertisement, lastListType) + "/" + advertisement.contract.GetSpotCount()
-						EndIf
+					Local number:int = GetPlayerProgrammePlan(advertisement.owner).GetAdvertisementSpotNumber(advertisement, lastListType)
+					Local maxNumber:int = advertisement.contract.GetSpotCount()
+
+					text = number + "/" + maxNumber
+
+					'mark failed adblocks
+					If advertisement.isState(TAdvertisement.STATE_FAILED)
+						text2 = "--"
+					'mark finishing adblock
+					ElseIf maxNumber = number And advertisement.contract.IsCompleted()
+						text2 = "OK"
 					EndIf
 				EndIf
 			'we got an programme used as advertisement (aka programmetrailer)
@@ -539,7 +542,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			GetBitmapFont("DefaultThin", 10, BOLDFONT).drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 3, textArea.GetW(), 15, Null, TColor.CreateGrey(0), 0,1,1.0, False)
 			textColor.setRGB()
 			GetBitmapFont("Default", 10).drawBlock(text, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 15)
-			GetBitmapFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 15, New TVec2D.Init(ALIGN_RIGHT))
+			GetBitmapFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW() - 3, 15, New TVec2D.Init(ALIGN_RIGHT))
 
 			SetColor 255,255,255
 
@@ -689,7 +692,7 @@ rem
 		Return True
 	End Function
 endrem
-	
+
 	'handle successful drops of broadcastmaterial on the list
 	Method onFinishDropProgrammePlanElement:Int(triggerEvent:TEventBase)
 		'resize that item to conform to the list

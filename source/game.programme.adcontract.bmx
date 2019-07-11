@@ -952,12 +952,12 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 
-	Method IsCompleted:int()
+	Method IsCompleted:int() {_exposeToLua}
 		return state = STATE_OK
 	End Method
 
 
-	Method IsFailed:int()
+	Method IsFailed:int() {_exposeToLua}
 		return state = STATE_FAILED
 	End Method
 
@@ -1349,12 +1349,6 @@ price :* Max(1, minAudience/1000)
 	End Method
 
 
-	'returns whether the contract was fulfilled
-	Method isSuccessful:int() {_exposeToLua}
-		Return (base.spotCount <= spotsSent)
-	End Method
-
-
 	Method GetSpotsToSendPercentage:Float() {_exposeToLua}
 		return GetSpotsToSend() / float(GetSpotCount())
 	End Method
@@ -1623,16 +1617,7 @@ price :* Max(1, minAudience/1000)
 		local daysLeft:int = GetDaysLeft()
 		'if unsigned, use DaysToFinish
 		if owner <= 0 then daysLeft = GetDaysToFinish()
-
 		local imageText:String
-		local daysLeftText:String
-		If daysLeft = 1
-			daysLeftText = getLocale("AD_SEND_TILL_TOMORROW")
-		ElseIf daysLeft = 0
-			daysLeftText = getLocale("AD_SEND_TILL_MIDNIGHT")
-		Else
-			daysLeftText = getLocale("AD_SEND_TILL_TOLATE")
-		EndIf
 
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
@@ -1653,7 +1638,7 @@ price :* Max(1, minAudience/1000)
 		If GetLimitedToTargetGroup() > 0 then msgAreaH :+ msgH
 		If GetLimitedToGenre() >= 0 then msgAreaH :+ msgH
 		If GetLimitedToProgrammeFlag() > 0 then msgAreaH :+ msgH
-		'warn if short of time
+		'warn if short of time or finished/failed
 		If daysLeft <= 1 then msgAreaH :+ msgH
 		'only show image hint when NOT signed (after signing the image
 		'is not required anymore)
@@ -1710,8 +1695,16 @@ price :* Max(1, minAudience/1000)
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, imageText, "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
-		If daysLeft <= 1
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, daysLeftText, "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+
+		If IsCompleted()
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ADCONTRACT_FINISHED"), "ok", "good", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		ElseIf daysLeft <= 1
+			Select daysLeft
+				case 1	skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_SEND_TILL_TOMORROW"), "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				case 0	skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_SEND_TILL_MIDNIGHT"), "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				default skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ADCONTRACT_FAILED"), "warning", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			EndSelect
 			contentY :+ msgH
 		EndIf
 		'if there is a message then add padding to the bottom
@@ -1727,8 +1720,10 @@ price :* Max(1, minAudience/1000)
 		'days left for this contract
 		If daysLeft > 1 or daysLeft = 0
 			skin.RenderBox(contentX + 5, contentY, 96, -1, daysLeft +" "+ getLocale("DAYS"), "runningTime", "neutral", skin.fontBold)
-		Else
+		Elseif daysLeft > 1
 			skin.RenderBox(contentX + 5, contentY, 96, -1, daysLeft +" "+ getLocale("DAY"), "runningTime", "neutral", skin.fontBold)
+		Else
+			skin.RenderBox(contentX + 5, contentY, 96, -1, "---", "runningTime", "neutral", skin.fontBold)
 		EndIf
 
 		'spots successfully sent
