@@ -293,13 +293,14 @@ function SignRequisitedContracts:GetMinGuessedAudience(guessedAudience, minFacto
 	end
 end
 
+
 function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudience, minGuessedAudience)
 	local signed = 0
 	local boughtContracts = {}
 	local neededSpotCount = requisition.Count
 
 	if (neededSpotCount <= 0) then
-		TVT.printOut("AI ERROR: SignMatchingContracts() with requisition.Count=0.")
+		errorMsg("AI ERROR: SignMatchingContracts() with requisition.Count=0.", true)
 		return 0
 	end
 
@@ -312,7 +313,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		-- TODO: get breakdown of audience and compare this then
 		if (adContract.GetLimitedToGenre() > 0 or adContract.GetLimitedToProgrammeFlag() > 0 ) then
 			contractDoable = false
-debugMsg("contract NOT DOABLE: " .. adContract.GetTitle() .. "  targetgroup="..adContract.GetLimitedToTargetGroup() .."  genre="..adContract.GetLimitedToGenre() .. "  flags=" .. adContract.GetLimitedToProgrammeFlag())
+			debugMsg("contract NOT DOABLE: " .. adContract.GetTitle() .. "  targetgroup="..adContract.GetLimitedToTargetGroup() .."  genre="..adContract.GetLimitedToGenre() .. "  flags=" .. adContract.GetLimitedToProgrammeFlag())
 		end
 
 		if (contractDoable) then
@@ -370,6 +371,7 @@ end
 
 
 
+
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["SignContracts"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
@@ -377,49 +379,52 @@ _G["SignContracts"] = class(AIJob, function(c)
 	c.AdAgencyTask = nil
 end)
 
+
 function SignContracts:typename()
 	return "SignContracts"
 end
 
+
 --self.SpotRequisition = self.Player:GetRequisitionsByOwner(_G["TASK_SCHEDULE"])
 function SignContracts:Prepare(pParams)
-	--debugMsg("Unterschreibe lukrative Werbeverträge")
+	--debugMsg("Sign lucrative ad contracts")
 	self.CurrentSpotIndex = 0
 end
 
--- sign "good contracts" (not an emergency-sign!)
+
+-- sign "good contracts"
+-- so contracts next to required ones
 function SignContracts:Tick()
-	if (self.AdAgencyTask.SpotsInAgency == nil) then
-		return 0
-	end
-
-	--debugMsg("SignContracts")
-
-	--Sortieren
-	local sortMethod = function(a, b)
-		if a == nil then
-			return false
-		elseif b == nil then
-			return true
-		end
-		return a.GetAttractiveness() > b.GetAttractiveness()
-	end
-	table.sort(self.AdAgencyTask.SpotsInAgency, sortMethod)
-
-	local openSpots = self:GetUnsentSpotCount()
-	--debugMsg("openSpots: " .. openSpots)
+	if (self.AdAgencyTask.SpotsInAgency == nil) then return 0 end
 
 	-- only sign contracts if we haven't enough unsent ad-spots
+	local openSpots = self:GetUnsentSpotCount()
+	local contractsAllowed = TVT.Rules.adContractsPerPlayerMax - MY.GetProgrammeCollection().GetAdContractCount()
 
-	--Ronny: umgestellt und "Notwendigkeitsfilter" von GetUnsentSpotCount hier eingebunden
-	--if (openSpots > 0) then
-	if (openSpots < 8) then
+	if openSpots < 8 and contractsAllowed > 0 then
+		--sort by attractiveness
+		local sortMethod = function(a, b)
+			if a == nil then
+				return false
+			elseif b == nil then
+				return true
+			end
+			return a.GetAttractiveness() > b.GetAttractiveness()
+		end
+		table.sort(self.AdAgencyTask.SpotsInAgency, sortMethod)
+
+
+		--iterate over the available contracts
 		for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
-			if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.adContractsPerPlayerMax then break end
-			if (openSpots > 0) then
+			if TVT.sa_doBuySpot(value.GetID()) == TVT.RESULT_OK then
 				openSpots = openSpots - value.GetSpotCount()
-				TVT.addToLog("Signing a \"good\" contract: " .. value.GetTitle() .. " (" .. value.GetID() .. "). MinAudience: " .. value.GetMinAudience())
-				TVT.sa_doBuySpot(value.GetID())
+				contractsAllowed = contractsAllowed - 1
+
+				TVT.addToLog("Signed a \"good\" contract: " .. value.GetTitle() .. " (" .. value.GetID() .. "). MinAudience: " .. value.GetMinAudience())
+
+				if openSpots <= 0 or contractsAllowed <= 0 then break end
+			else
+				TVT.addToLog("Failed signing a \"good\" contract: " .. value.GetTitle() .. " (" .. value.GetID() .. "). MinAudience: " .. value.GetMinAudience())
 			end
 		end
 	end
@@ -427,13 +432,14 @@ function SignContracts:Tick()
 	self.Status = JOB_STATUS_DONE
 end
 
+
 --returns amount of unsent adcontract-spots
 function SignContracts:GetUnsentSpotCount()
 	local unsentSpots = 0
 
 	for i = 0, MY.GetProgrammeCollection().GetAdContractCount() - 1 do
 		local contract = MY.GetProgrammeCollection().GetAdContractAtIndex(i)
-		if (contract.IsComplete() ~= 1) then
+		if (contract.IsCompleted() ~= 1) then
 			unsentSpots = unsentSpots + contract.GetSpotsToSend()
 		end
 	end

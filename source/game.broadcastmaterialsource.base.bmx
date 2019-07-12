@@ -29,7 +29,7 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	Method GetMaterialSourceType:Int() {_exposeToLua}
 		return TVTBroadcastMaterialSourceType.UNKNOWN
 	End Method
-	
+
 
 	Method CopyBaseFrom:TBroadcastMaterialSourceBase(base:TBroadcastMaterialSourceBase)
 		title = base.title.copy()
@@ -55,7 +55,7 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 		'skip adding the modifier if it is the same - or a default value
 		'-> keeps datasets smaller
 		if GetModifier(modifierKey) = value then Return False
-		
+
 		modifiers.AddNumber(modifierKey, value)
 		Return True
 	End Method
@@ -89,7 +89,7 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 
 		return effects.Copy()
 	End Method
-	
+
 
 	Method GetTitle:string() {_exposeToLua}
 		if title then return title.Get()
@@ -150,27 +150,10 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 		effects.AddEntry(effectTrigger, effect)
 		return True
 	End Method
-	
-	
+
+
 	Method GetQuality:Float() {_exposeToLua}
 		return 0
-	End Method
-
-
-	'LUA / AI helper
-	Method GetQualityLevel:Int() {_exposeToLua}
-		Local quality:Int = GetQuality() * 100
-		If quality > 20
-			Return 5
-		ElseIf quality > 15
-			Return 4
-		ElseIf quality > 10
-			Return 3
-		ElseIf quality > 5
-			Return 2
-		Else
-			Return 1
-		EndIf
 	End Method
 End Type
 
@@ -192,7 +175,7 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 	'maximum reachLevel a material was licenced for
 	'< 0 disables any level limitation
 	Field licencedReachLevel:int = -1
-	
+
 
 	Method GenerateGUID:string()
 		return "broadcastmaterialsource-"+id
@@ -224,7 +207,7 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 				if replaced then value = value.replace("%"+placeHolder+"%", replacement)
 				'print "check placeholder: ~q"+placeholder+"~q => ~q"+replacement+"~q"
 			Next
-			
+
 			result.Set(value, lang)
 		Next
 		return result
@@ -240,7 +223,7 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 	Method GetRelicenceForReachLevelPrice:int(reachLevel:int)
 		return 0
 	End Method
-	
+
 
 	'extending classes might add custom restrictions here (payment)
 	Method CanRelicenceForReachLevel:int(reachLevel:int)
@@ -326,12 +309,12 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 	Method HasBroadcastTimeSlot:int()
 		return broadcastTimeSlotStart <> -1 or broadcastTimeSlotEnd <> -1
 	End Method
-	
+
 
 	Method GetMaxTopicality:Float()
 		Return 1.0
 	End Method
-	
+
 
 	'when used as programme
 	Method GetProgrammeTopicality:Float() {_exposeToLua}
@@ -343,7 +326,7 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 	Method GetAdTopicality:Float() {_exposeToLua}
 		return GetTopicality()
 	End Method
-	
+
 
 	Method GetTopicality:Float() {_exposeToLua}
 		if topicality < 0 then topicality = GetMaxTopicality()
@@ -352,7 +335,7 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 		'-> avoids a "topicality > MaxTopicality" when MaxTopicality
 		'   shrinks because of aging/airing
 		topicality = MathHelper.Clamp(topicality, 0, GetMaxTopicality())
-		
+
 		Return topicality
 	End Method
 
@@ -385,7 +368,7 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 		if not isAvailable() then return False
 
 		return True
-	End Method	
+	End Method
 
 
 	Method IsAvailable:int()
@@ -401,7 +384,7 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 	Method SetControllable(bool:int = True)
 		SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE, not bool)
 	End Method
-	
+
 
 	Method IsProgrammeLicence:Int() {_exposeToLua}
 		return GetMaterialSourceType() = TVTBroadcastMaterialSourceType.PROGRAMMELICENCE

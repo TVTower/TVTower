@@ -155,14 +155,17 @@ _G["JobBuyStartProgramme"] = class(AIJob, function(c)
 	c.AllMoviesChecked = false
 end)
 
+
 function JobBuyStartProgramme:typename()
 	return "JobBuyStartProgramme"
 end
+
 
 function JobBuyStartProgramme:Prepare(pParams)
 	--debugMsg("Schaue Filmangebot an")
 	self.CurrentMovieIndex = 0
 end
+
 
 function JobBuyStartProgramme:Tick()
 	local player = _G["globalPlayer"]
@@ -221,7 +224,7 @@ function JobBuyStartProgramme:Tick()
 		--only buy whole start programme set if possible with budget
 		--else each one should be cheaper than the single licence limit
 		if (table.count(buyStartMovies) >= moviesNeeded or v:GetPrice(TVT.ME) < startMovieBudget) then
-			debugMsg("Buying start programme licence: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. v:GetPrice(TVT.ME) .. ", quality=" .. v:GetQuality() ..", qLevel=" .. v:GetQualityLevel())
+			debugMsg("Buying start programme licence: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. v:GetPrice(TVT.ME) .. ", quality=" .. v:GetQuality() ..", qLevel=" .. AITools:GetBroadcastQualityLevel(v))
 			TVT.md_doBuyProgrammeLicence(v:GetId())
 
 			--attention: we subtract from the overall "buying programme"
@@ -640,7 +643,7 @@ function JobBidAuctions:Tick()
 					-- daily budget for good offers without direct need
 					if (price <= self.MovieDistributorTask.CurrentBargainBudget) then
 						if (v:GetAttractiveness() > 1) then
-							debugMsg("[Licence auction] placing bet for: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. price ..", attractivity=" .. v:GetAttractiveness() .. ", quality=" ..v:GetQuality() ..", qLevel=" .. v:GetQualityLevel()..")")
+							debugMsg("[Licence auction] placing bet for: " .. v:GetTitle() .. " (id=" .. v:GetId() .. ", price=" .. price ..", attractivity=" .. v:GetAttractiveness() .. ", quality=" ..v:GetQuality() ..", qLevel=" .. AITools:GetBroadcastQualityLevel(v)..")")
 							TVT.md_doBidAuctionProgrammeLicence(v:GetId())
 
 							self.MovieDistributorTask:PayFromBudget(v:GetPrice(TVT.ME))

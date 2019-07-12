@@ -285,7 +285,7 @@ Type TAi extends TAiBase
 		Local args:Object[1]
 		args[0] = TAchievement(achievement)
 
-		CallLuaFunction("CallOnAchievementCompleted", args)
+		CallLuaFunction("OnAchievementCompleted", args)
 	End Method
 
 
@@ -295,7 +295,7 @@ Type TAi extends TAiBase
 		Local args:Object[1]
 		args[0] = TAward(award)
 
-		CallLuaFunction("CallOnWonAward", args)
+		CallLuaFunction("OnWonAward", args)
 	End Method
 
 

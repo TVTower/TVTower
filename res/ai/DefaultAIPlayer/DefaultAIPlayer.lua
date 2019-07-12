@@ -231,6 +231,7 @@ function DefaultAIPlayer:OnPlayerGoesBankrupt(playerID)
 	end
 end
 
+
 function DefaultAIPlayer:OnMoneyChanged(value, reason, reference)
 	self.Budget:OnMoneyChanged(value, reason, reference)
 	for k,v in pairs(self.TaskList) do
@@ -238,9 +239,11 @@ function DefaultAIPlayer:OnMoneyChanged(value, reason, reference)
 	end
 end
 
+
 function DefaultAIPlayer:AddRequisition(requisition)
 	table.insert(self.Requisitions, requisition)
 end
+
 
 function DefaultAIPlayer:RemoveRequisition(requisition)
 	local index = table.getIndex(self.Requisitions, requisition)
@@ -248,6 +251,7 @@ function DefaultAIPlayer:RemoveRequisition(requisition)
 		table.remove(self.Requisitions, index)
 	end
 end
+
 
 function DefaultAIPlayer:RemoveRequisitionByReason(reason)
 	if self.Requisitions == nil then return; end
@@ -276,6 +280,7 @@ function DefaultAIPlayer:GetRequisitionPriority(taskId)
 	return prio
 end
 
+
 function DefaultAIPlayer:GetRequisitionsByTaskId(taskId, ignoreActuality)
 	local result = {}
 
@@ -287,6 +292,7 @@ function DefaultAIPlayer:GetRequisitionsByTaskId(taskId, ignoreActuality)
 
 	return result
 end
+
 
 function DefaultAIPlayer:GetRequisitionsByOwner(TaskOwnerId, ignoreActuality)
 	local result = {}

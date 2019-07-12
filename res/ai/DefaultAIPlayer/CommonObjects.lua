@@ -127,6 +127,9 @@ function SpotRequisition:UseThisContract(contract)
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+
+
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["SpotSlotRequisition"] = class(Requisition, function(c)
 	Requisition.init(c)	-- must init base!
@@ -145,9 +148,11 @@ _G["SpotSlotRequisition"] = class(Requisition, function(c)
 	c.level = -1
 end)
 
+
 function SpotSlotRequisition:typename()
 	return "SpotSlotRequisition"
 end
+
 
 function SpotSlotRequisition:CheckActuality()
 	if (self.Done) then return false end
@@ -168,6 +173,7 @@ function SpotSlotRequisition:CheckActuality()
 		return false
 	end
 end
+
 
 function SpotSlotRequisition:Complete()
 	self.Done = true
@@ -277,9 +283,11 @@ _G["BuySingleProgrammeLicenceRequisition"] = class(Requisition, function(c)
 	c.lifeTime = -1
 end)
 
+
 function BuySingleProgrammeLicenceRequisition:typename()
 	return "BuySingleProgrammeLicenceRequisition"
 end
+
 
 function BuySingleProgrammeLicenceRequisition:CheckActuality()
 	if (self.Done) then return false end
@@ -291,6 +299,7 @@ function BuySingleProgrammeLicenceRequisition:CheckActuality()
 		return false
 	end
 end
+
 
 function BuySingleProgrammeLicenceRequisition:Complete()
 	self.Done = true
@@ -309,20 +318,63 @@ function AIToolsClass:typename()
 	return "AIToolsClass"
 end
 
+
+--TODO später dynamisieren
 function AIToolsClass:GetAverageBroadcastQualityByLevel(level)
 	if (level == 1) then
-		return 0.08 --Nachtprogramm
+		return 0.04 --Nachtprogramm
 	elseif (level == 2) then
-		return 0.12 --Mitternacht + Morgen
+		return 0.09 --Mitternacht + Morgen
 	elseif (level == 3) then
-		return 0.15 -- Nachmittag
+		return 0.13 -- Nachmittag
 	elseif (level == 4) then
-		return 0.20 -- Vorabend / Spät
+		return 0.18 -- Vorabend / Spät
 	elseif (level == 5) then
-		return 0.26 -- Primetime
+		return 0.23 -- Primetime
 	end
 	return 0.00
 end
+
+
+function AIToolsClass:GetAudienceQualityLevel(day, hour)
+	local maxAudience = self:GetMaxAudiencePercentage(day, hour)
+	if (maxAudience <= 0.04) then
+		return 1 --Nachtprogramm (2-6)
+	elseif (maxAudience <= 0.12) then
+		return 2 --Mitternacht + Morgen
+	elseif (maxAudience <= 0.20) then
+		return 3 -- Nachmittag
+	elseif (maxAudience <= 0.33) then
+		return 4 -- Vorabend / Spät
+	else
+		return 5 -- Primetime
+	end
+end
+
+
+function AIToolsClass:GetMaxAudiencePercentage(day, hour)
+	--debugMsg("AITools:GetMaxAudiencePercentage("..day ..", "..hour..") = " .. TVT.getPotentialAudiencePercentage(day,hour))
+	return TVT.getPotentialAudiencePercentage(day, hour)
+end
+
+
+function AIToolsClass:GetBroadcastQualityLevel(broadcastMaterial)
+	if broadcastMaterial == nil then return 0 end
+	local quality = broadcastMaterial:GetQuality() * 100
+
+	if quality > 20 then
+		return 5
+	elseif quality > 15 then
+		return 4
+	elseif quality > 10 then
+		return 3
+	elseif quality > 5 then
+		return 2
+	else
+		return 1
+	end
+end
+
 --[[
 function AIToolsClass:GetMaxAudiencePercentageByLevel(level)
 	if level == 1 then
@@ -337,20 +389,6 @@ function AIToolsClass:GetMaxAudiencePercentageByLevel(level)
 		return 0.3459
 	end
 	return 0.00
-end
-
-function AIToolsClass:GuessedAudienceForLevel(level)
-	--debugMsg("GuessedAudienceForLevel - level: " .. level)
-	local globalPercentageByHour = self:GetMaxAudiencePercentageByLevel(level) -- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
-	--debugMsg("globalPercentageByHour: " .. globalPercentageByHour)
-	local averageBroadcastQualityByLevel = self:GetAverageBroadcastQualityByLevel(level) -- Die Durchschnittsquote dieses Qualitätslevels
-
-	--Formel: Filmqualität * Potentielle Quote nach Uhrzeit (maxAudiencePercentage) * Echte Maximalzahl der Zuschauer
-	local guessedAudience = averageBroadcastQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()
-
-	--debugMsg("GuessedAudienceForLevel: " .. guessedAudience .. " = averageBroadcastQualityByLevel (" .. averageBroadcastQualityByLevel .. ") * globalPercentageByHour (" .. globalPercentageByHour .. ") *  MY.GetMaxAudience() (" .. MY.GetMaxAudience() .. ")")
-
-	return guessedAudience
 end
 ]]--
 AITools = AIToolsClass()

@@ -1,11 +1,9 @@
--- File: AIEngine.lua
 -- ============================
 -- === AI Engine ===
 -- ============================
--- Author: Manuel Vögele (STARS_crazy@gmx.de)
---         Ronny Otto
--- Last modified: 25.09.2016
--- Created at: 12.12.2007
+-- Authors: Manuel Vögele (STARS_crazy@gmx.de)
+--          Ronny Otto
+
 
 -- ##### INCLUDES #####
 dofile("res/ai/DefaultAIPlayer/SLF.lua")
@@ -16,7 +14,7 @@ unitTestMode = false
 
 currentDebugMsgDepth = 0
 
--- ##### KONSTANTEN #####
+-- ##### CONSTANTS #####
 TASK_STATUS_OPEN	= "T_open"
 TASK_STATUS_PREPARE	= "T_prepare"
 TASK_STATUS_RUN		= "T_run"
@@ -31,18 +29,24 @@ JOB_STATUS_RUN		= "J_run"
 JOB_STATUS_DONE		= "J_done"
 JOB_STATUS_CANCEL	= "J_cancel"
 
--- ##### KLASSEN #####
+-- ##### CLASSES #####
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["KIObjekt"] = class(SLFObject, function(c)		-- Erbt aus dem Basic-Objekt des Frameworks
 	SLFObject.init(c)	-- must init base!
 end)
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+
+
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["KIDataObjekt"] = class(SLFDataObject, function(c)	-- Erbt aus dem DataObjekt des Frameworks
 	SLFDataObject.init(c)	-- must init base!
 end)
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["AIPlayer"] = class(KIDataObjekt, function(c)
@@ -252,8 +256,19 @@ end
 
 
 function AIPlayer:OnMoneyChanged(value, reason, reference)
-	--Zum überschreiben
+	--override in player
 end
+
+
+function AIPlayer:OnWonAward(award)
+	--override in player
+end
+
+
+function AIPlayer:OnAchievementCompleted(achievement)
+	--override in player
+end
+
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
@@ -295,6 +310,7 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 
 	c.FixedCosts = 0
 end)
+
 
 function AITask:typename()
 	return "AITask"
@@ -353,7 +369,7 @@ end
 function AITask:CallActivate()
 	self.TickCounter = 0
 	self.TicksTotalTime = 0
-	debugMsg("### Starte Task '" .. self:typename() .. "'! (Prio: " .. self.CurrentPriority .."). MaxTicks: " .. self.MaxTicks)
+	debugMsg("### Starting task '" .. self:typename() .. "'! (Prio: " .. self.CurrentPriority .."). MaxTicks: " .. self.MaxTicks)
 	self:Activate()
 end
 
@@ -365,18 +381,18 @@ end
 
 
 function AITask:Activate()
-	debugMsg("Implementiere mich... " .. type(self))
+	debugMsg("Please implement me... " .. type(self))
 end
 
 
 function AITask:AdjustmentsForNextDay()
 	self.CurrentInvestmentPriority = self.CurrentInvestmentPriority + self.InvestmentPriority
-	--kann überschrieben werden
+	--override in actual implementation
 end
 
 
 function AITask:OnDayBegins()
-	--kann überschrieben werden
+	--override in actual implementation
 end
 
 --Wird aufgerufen, wenn der Task zur Bearbeitung ausgewaehlt wurde (NICHT UEBERSCHREIBEN!)
@@ -396,6 +412,7 @@ function AITask:StartNextJob()
 		local oldJob = self.CurrentJob
 		if oldJob ~= nil then
 			oldJob:OnCancel()
+			oldJob:Stop()
 		end
 		self.CurrentJob = self:GetNextJobInTargetRoom()
 
@@ -444,11 +461,13 @@ function AITask:Tick()
 		else
 			if self.CurrentJob.Status == JOB_STATUS_CANCEL then
 				self.CurrentJob:OnCancel()
+				self.CurrentJob:Stop()
 				self.CurrentJob = nil
 				self:SetCancel()
 				return
 			elseif self.CurrentJob.Status == JOB_STATUS_DONE then
 				self.CurrentJob:OnDone()
+				self.CurrentJob:Stop()
 				self.CurrentJob = nil
 				--debugMsg("----- Alter Job ist fertig - Neuen Starten")
 				self:StartNextJob() --Von vorne anfangen
@@ -462,8 +481,7 @@ end
 
 
 function AITask:GetNextJobInTargetRoom()
-	--return self:getGotoJob()
-	error("Muss noch implementiert werden")
+	error("Task:GetNextJobInTargetRoom() not implemented.")
 end
 
 
@@ -533,7 +551,7 @@ end
 
 
 function AITask:SetDone()
-	debugMsg("### Task abgeschlossen!")
+	debugMsg("### Task finished!")
 	local player = _G["globalPlayer"]
 	self.Status = TASK_STATUS_DONE
 	self.SituationPriority = 0
@@ -565,7 +583,6 @@ end
 
 
 function AITask:OnEnterRoom(roomId)
-	--debugMsg("OnEnterRoom!")
 	if (self.CurrentJob ~= nil) then
 		self.CurrentJob:OnEnterRoom(roomId)
 	end
@@ -573,7 +590,6 @@ end
 
 
 function AITask:OnBeginEnterRoom(roomId, result)
-	--debugMsg("OnBeginEnterRoom!")
 	if (self.CurrentJob ~= nil) then
 		self.CurrentJob:OnBeginEnterRoom(roomId, result)
 	end
@@ -662,6 +678,11 @@ function AIJob:Start(pParams)
 end
 
 
+function AIJob:Stop(pParams)
+	self:OnStop()
+end
+
+
 function AIJob:Prepare(pParams)
 	debugMsg("Implementiere mich: " .. type(self))
 end
@@ -700,6 +721,11 @@ function AIJob:OnStart()
 end
 
 
+function AIJob:OnStop()
+	--Kann ueberschrieben werden
+end
+
+
 function AIJob:OnDone()
 	debugMsg("Job " .. self:typename() .. " done. Duration=" .. string.format("%.4f", (1000 * (os.clock() - self.jobStartTime))) .. "ms  TickCount=" .. self.Ticks .. "  TickTime=" .. string.format("%.4f", 1000 * self.TicksTotalTime) .."ms  TickMax=" .. string.format("%.4f", 1000 * self.TickMaxTime))
 end
@@ -707,7 +733,6 @@ end
 
 function AIJob:OnCancel()
 	debugMsg("Job " .. self:typename() .. " cancelled. Duration=" .. string.format("%.4f", (1000 * (os.clock() - self.jobStartTime))) .. "ms  TickCount=" .. self.Ticks .. "  TickTime=" .. string.format("%.4f", 1000 * self.TicksTotalTime) .."ms  TickMax=" .. string.format("%.4f", 1000 * self.TickMaxTime))
-	--Kann ueberschrieben werden
 end
 
 
@@ -1079,7 +1104,7 @@ function StatisticEvaluator:typename()
 end
 
 
--- sums up the values collected before as a single "averaged" value 
+-- sums up the values collected before as a single "averaged" value
 function StatisticEvaluator:Adjust()
 	self._MinMaxSet = true
 
@@ -1091,7 +1116,7 @@ function StatisticEvaluator:Adjust()
 
 	self.MinValue = self.AverageValue
 	self.MaxValue = self.AverageValue
-	
+
 	-- do not reset "CurrentValue"!
 	--self.CurrentValue = -1
 
@@ -1222,7 +1247,7 @@ function debugMsg(pMessage, allPlayers)
 	if currentDebugMsgDepth > 0 then
 		pMessage = string.rep("  ", currentDebugMsgDepth) .. pMessage
 	end
-	
+
 	if allPlayers ~= nil then
 		TVT.PrintOut("P" .. TVT.ME ..": " .. pMessage)
 	elseif TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
