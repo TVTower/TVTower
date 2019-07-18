@@ -925,13 +925,14 @@ Type TDatabaseLoader
 		local nodeConditions:TxmlNode = xml.FindChild(node, "conditions")
 		'do not reset "data" before - it contains the pressure groups
 		xml.LoadValuesToData(nodeConditions, data, [..
-			"min_audience", "min_image", "target_group", ..
+			"min_audience", "min_image", "max_image", "target_group", ..
 			"allowed_programme_type", "allowed_programme_flag", "allowed_genre", ..
 			"prohibited_programme_type", "prohibited_programme_flag", "prohibited_genre" ..
 		])
 		'0-100% -> 0.0 - 1.0
 		adContract.minAudienceBase = 0.01 * data.GetFloat("min_audience", adContract.minAudienceBase*100.0)
 		adContract.minImage = 0.01 * data.GetFloat("min_image", adContract.minImage*100.0)
+		adContract.maxImage = 0.01 * data.GetFloat("max_image", adContract.maxImage*100.0)
 		adContract.limitedToTargetGroup = data.GetInt("target_group", adContract.limitedToTargetGroup)
 		adContract.limitedToProgrammeGenre = data.GetInt("allowed_genre", adContract.limitedToProgrammeGenre)
 		adContract.limitedToProgrammeType = data.GetInt("allowed_programme_type", adContract.limitedToProgrammeType)

@@ -308,8 +308,10 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 
 	'minimum audience (real value calculated on sign)
 	Field minAudienceBase:Float
-	'minimum image base value (real value calculated on sign)
+	'minimum channel image base value (real value calculated on sign)
 	Field minImage:Float
+	'maximum channel image base value (real value calculated on sign)
+	Field maxImage:Float
 	'flag wether price is fixed or not
 	Field fixedPrice:Int = False
 	'base of profit (real value calculated on sign)
@@ -368,7 +370,7 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
-	Method Create:TAdContractBase(GUID:String, title:TLocalizedString, description:TLocalizedString, daysToFinish:Int, spotCount:Int, targetgroup:Int, minAudience:Float, minImage:Float, fixedPrice:Int, profit:Float, penalty:Float)
+	Method Create:TAdContractBase(GUID:String, title:TLocalizedString, description:TLocalizedString, daysToFinish:Int, spotCount:Int, targetgroup:Int, minAudience:Float, minImage:Float, maxImage:Float, fixedPrice:Int, profit:Float, penalty:Float)
 		self.SetGUID(GUID)
 		self.title = title
 		self.description = description
@@ -377,6 +379,7 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 		self.limitedToTargetGroup = targetGroup
 		self.minAudienceBase = minAudience
 		self.minImage = minImage
+		self.maxImage = maxImage
 		self.fixedPrice = fixedPrice
 		self.profitBase	= profit
 		self.penaltyBase = penalty
@@ -928,6 +931,8 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Method IsAvailableToSign:Int(playerID:int) {_exposeToLua}
 		'not enough channel image?
 		if GetMinImage() > 0 and 0.01*GetPublicImageCollection().Get(playerID).GetAverageImage() < GetMinImage() then return False
+		'or too much?
+		if GetMaxImage() > 0 and 0.01*GetPublicImageCollection().Get(playerID).GetAverageImage() > GetMaxImage() then return False
 
 		Return (not IsSigned())
 	End Method
@@ -960,6 +965,15 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Method IsFailed:int() {_exposeToLua}
 		return state = STATE_FAILED
 	End Method
+
+
+	'returns whether the contract was fulfilled and can get finished
+ 	Method CanComplete:int()
+		'already finished / failed?
+		if state = STATE_OK or state = STATE_FAILED then return False
+
+ 		Return (base.spotCount <= spotsSent)
+ 	End Method
 
 
 	'percents = 0.0 - 1.0 (0-100%)
@@ -1100,6 +1114,12 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetProfitCPM:Float(playerID:Int=-1) {_exposeToLua}
+		if playerID < 0 then playerID = owner
+		return 1000 * GetProfitForPlayer(playerID, False) / GetMinAudienceForPlayer(playerID)
+	End Method
+
+
 	Method GetInfomercialProfitForPlayer:Int(playerID:Int, invalidateCache:int = False)
 		'already calculated and data for owner requested
 		If not invalidateCache
@@ -1155,6 +1175,12 @@ Type TAdContract extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	Method GetPenalty:Int(playerID:Int=-1) {_exposeToLua}
 		if playerID < 0 then playerID = owner
 		Return GetPenaltyForPlayer(playerID, False)
+	End Method
+
+
+	Method GetPenaltyCPM:Float(playerID:Int=-1) {_exposeToLua}
+		if playerID < 0 then playerID = owner
+		return 1000 * GetPenaltyForPlayer(playerID, False) / GetMinAudienceForPlayer(playerID)
 	End Method
 
 
@@ -1391,6 +1417,11 @@ price :* Max(1, minAudience/1000)
 
 	Method GetMinImage:Float() {_exposeToLua}
 		Return base.minImage
+	End Method
+
+
+	Method GetMaxImage:Float() {_exposeToLua}
+		Return base.maxImage
 	End Method
 
 
@@ -1651,6 +1682,12 @@ price :* Max(1, minAudience/1000)
 			imageText = getLocale("AD_CHANNEL_IMAGE_TOO_LOW").Replace("%IMAGE%", requiredImage).Replace("%CHANNELIMAGE%", channelImage)
 
 			msgAreaH :+ msgH
+		ElseIf owner <= 0 and GetMaxImage() > 0 and 0.01*GetPublicImage( GetObservedPlayerID() ).GetAverageImage() > GetMaxImage()
+			local requiredMaxImage:string = MathHelper.NumberToString(GetMaxImage()*100,2)
+			local channelImage:string = MathHelper.NumberToString(GetPublicImage( GetObservedPlayerID() ).GetAverageImage(),2)
+			imageText = getLocale("AD_CHANNEL_IMAGE_TOO_HIGH").Replace("%IMAGE%", requiredMaxImage).Replace("%CHANNELIMAGE%", channelImage)
+
+			msgAreaH :+ msgH
 		endif
 		'if there are messages, add padding of messages
 		if msgAreaH > 0 then msgAreaH :+ 2* msgAreaPaddingY
@@ -1785,7 +1822,7 @@ price :* Max(1, minAudience/1000)
 			contentY :+ 12
 			skin.fontNormal.draw("Zuschaueranforderung: "+GetMinAudienceForPlayer(forPlayerID) + "  ("+MathHelper.NumberToString(GetMinAudiencePercentage()*100,2)+"%)", contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("MindestImage: " + MathHelper.NumberToString(base.minImage*100,2)+"%", contentX + 5, contentY)
+			skin.fontNormal.draw("SenderImage: " + MathHelper.NumberToString(GetMinImage()*100,2)+"%" +" - " + MathHelper.NumberToString(GetMaxImage()*100,2)+"%", contentX + 5, contentY)
 			contentY :+ 12
 			skin.fontNormal.draw("Zielgruppe: " + GetLimitedToTargetGroup() + " (" + GetLimitedToTargetGroupString() + ")", contentX + 5, contentY)
 			contentY :+ 12
@@ -1968,6 +2005,8 @@ Type TAdContractBaseFilter
 	Field minAudienceMax:Float = -1.0
 	Field minImageMin:Float = -1.0
 	Field minImageMax:Float = -1.0
+	Field maxImageMin:Float = -1.0
+	Field maxImageMax:Float = -1.0
 	Field currentlyUsedByContractsLimitMin:int = -1
 	Field currentlyUsedByContractsLimitMax:int = -1
 	Field limitedToProgrammeGenres:int[]
@@ -1997,9 +2036,16 @@ Type TAdContractBaseFilter
 	End Method
 
 
-	Method SetImage:TAdContractBaseFilter(minImage:float=-1.0, maxImage:Float=-1.0)
-		minImageMin = minImage
-		minImageMax = maxImage
+	Method SetMinImageRange:TAdContractBaseFilter(minImageMin:float=-1.0, minImageMax:Float=-1.0)
+		self.minImageMin = minImageMin
+		self.minImageMax = minImageMax
+		Return self
+	End Method
+
+
+	Method SetMaxImageRange:TAdContractBaseFilter(maxImageMin:float=-1.0, maxImageMax:Float=-1.0)
+		self.maxImageMin = maxImageMin
+		self.maxImageMax = maxImageMax
 		Return self
 	End Method
 
@@ -2070,7 +2116,8 @@ Type TAdContractBaseFilter
 		local result:string = ""
 		result :+ "Audience: " + MathHelper.NumberToString(100*minAudienceMin,2)+" - "+MathHelper.NumberToString(100 * minAudienceMax, 2)+"%"
 		result :+ "  "
-		result :+ "Image: " + MathHelper.NumberToString(minImageMin,2)+" - "+MathHelper.NumberToString(minImageMax, 2)
+		result :+ "MinImage: " + MathHelper.NumberToString(minImageMin,2)+" - "+MathHelper.NumberToString(minImageMax, 2)
+		result :+ "MaxImage: " + MathHelper.NumberToString(maxImageMin,2)+" - "+MathHelper.NumberToString(maxImageMax, 2)
 		return result
 	End Method
 
@@ -2091,6 +2138,9 @@ Type TAdContractBaseFilter
 
 		if minImageMin >= 0 and contract.minImage < minImageMin then return False
 		if minImageMax >= 0 and contract.minImage > minImageMax then return False
+
+		if maxImageMin >= 0 and contract.maxImage < maxImageMin then return False
+		if maxImageMax >= 0 and contract.maxImage > maxImageMax then return False
 
 
 		'limited simultaneous usage ?

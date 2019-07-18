@@ -866,7 +866,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		cheapListFilter.SetAudience(spotMin, Max(spotMin, 0.005))
 		'no image requirements - or not more than the lowest image
 		'(so all could sign this)
-		cheapListFilter.SetImage(0, 0.01 * lowestChannelImage)
+		cheapListFilter.SetMinImageRange(0, 0.01 * lowestChannelImage)
 		'cheap contracts should in now case limit genre/groups
 		cheapListFilter.SetSkipLimitedToProgrammeGenre()
 		cheapListFilter.SetSkipLimitedToTargetGroup()
@@ -887,7 +887,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'from 80-120% of lowest (Minimum of 0.01%)
 		levelFilters[0].SetAudience(Max(spotMin, 0.8 * lowestChannelQuoteDaytime), Max(spotMin , 1.2 * lowestChannelQuoteDayTime))
 		'1% - avgImage %
-		levelFilters[0].SetImage(0.0, lowestChannelImage)
+		levelFilters[0].SetMinImageRange(0.0, lowestChannelImage)
 		'lowest should be without "limits"
 		levelFilters[0].SetSkipLimitedToProgrammeGenre()
 		levelFilters[0].SetSkipLimitedToTargetGroup()
@@ -895,7 +895,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		levelFilters[1] = new TAdContractbaseFilter
 		levelFilters[1].SetAudience(Max(spotMin, 0.8 * lowestChannelQuotePrimeTime), Max(spotMin , 1.2 * lowestChannelQuotePrimeTime))
-		levelFilters[1].SetImage(0.0, lowestChannelImage)
+		levelFilters[1].SetMinImageRange(0.0, lowestChannelImage)
 		levelFilters[1].SetSkipLimitedToProgrammeGenre()
 		levelFilters[1].SetSkipLimitedToTargetGroup()
 		if limitInstances > 0 then levelFilters[1].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
@@ -910,14 +910,14 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		local maxAvg:Float = (0.3 * averageChannelQuoteDayTime + 0.7 * highestChannelQuoteDayTime)
 		levelFilters[2].SetAudience(Max(spotMin, minAvg), Max(spotMin, maxAvg))
 		'0-100% of average Image
-		levelFilters[2].SetImage(0, averageChannelImage)
+		levelFilters[2].SetMinImageRange(0, averageChannelImage)
 		if limitInstances > 0 then levelFilters[2].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		levelFilters[3] = new TAdContractbaseFilter
 		minAvg = (0.7 * lowestChannelQuotePrimeTime + 0.3 * averageChannelQuotePrimeTime)
 		maxAvg = (0.3 * averageChannelQuotePrimeTime + 0.7 * highestChannelQuotePrimeTime)
 		levelFilters[3].SetAudience(Max(spotMin, minAvg), Max(spotMin, maxAvg))
-		levelFilters[3].SetImage(0, averageChannelImage)
+		levelFilters[3].SetMinImageRange(0, averageChannelImage)
 		if limitInstances > 0 then levelFilters[3].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		'=== HIGH ===
@@ -925,12 +925,12 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'from 50% of avg to 150% of highest
 		levelFilters[4].SetAudience(Max(spotMin, 0.7 * highestChannelQuoteDayTime), Max(spotMin, 1.2 * highestChannelQuoteDayTime))
 		'0-100% of highest Image
-		levelFilters[4].SetImage(0, highestChannelImage)
+		levelFilters[4].SetMinImageRange(0, highestChannelImage)
 		if limitInstances > 0 then levelFilters[4].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		levelFilters[5] = new TAdContractbaseFilter
 		levelFilters[5].SetAudience(Max(spotMin, 0.7 * highestChannelQuotePrimeTime), Max(spotMin, 1.2 * highestChannelQuotePrimeTime))
-		levelFilters[5].SetImage(0, highestChannelImage)
+		levelFilters[5].SetMinImageRange(0, highestChannelImage)
 		if limitInstances > 0 then levelFilters[5].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		TLogger.log("AdAgency.RefillBlocks", "Refilling "+ GetWorldTime().GetFormattedTime() +". Filter details", LOG_DEBUG)
@@ -1131,7 +1131,7 @@ endrem
 		'0.5% market share -> 1mio reach means 5.000 people!
 		cheapListFilter.SetAudience(0.0005, 0.005)
 		'no image requirements > lowest (so all could sign this)
-		cheapListFilter.SetImage(0, 0.01 * lowestChannelImage)
+		cheapListFilter.SetMinImageRange(0, 0.01 * lowestChannelImage)
 		'cheap contracts should in no case limit genre/groups
 		cheapListFilter.SetSkipLimitedToProgrammeGenre()
 		cheapListFilter.SetSkipLimitedToTargetGroup()
@@ -1146,7 +1146,7 @@ endrem
 		'from 0,51% to 120% of best audience of that day
 		levelFilters[0].SetAudience(0.0051, 1.2 * highestChannelQuote)
 		'1% - avgImage %
-		levelFilters[0].SetImage(0.0, 1.2*highestChannelImage)
+		levelFilters[0].SetMinImageRange(0.0, 1.2*highestChannelImage)
 		if limitInstances > 0 then levelFilters[0].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 
