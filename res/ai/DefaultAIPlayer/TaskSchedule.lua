@@ -1388,36 +1388,39 @@ end
 
 function JobSchedule:GetBestAvailableInfomercial(day, hour)
 	local fixedDay, fixedHour = FixDayAndHour(day, hour)
-
 	-- fetch all contracts still available at that time
 	-- (assume "all planned" to be run successful then - which
 	--  means the contract is gone then)
-	local availableInfomercialLicences = self.ScheduleTask:GetAvailableContractsList(fixedDay, fixedHour, false, true)
+	local availableInfomercialContracts = self.ScheduleTask:GetAvailableContractsList(fixedDay, fixedHour, false, true)
 
-	-- sort by PerViewerRevenue and quality (because of attactivity/topicality)
-	local sortMethod = function(a, b)
-		-- also take into consideration the amount of planned infomercials
-		-- from begin of day till now-1h
+	-- precache complex weight calculation
+	-- else it would get called for each sort-comparison (a-b, a-c, a-d, b-c, c-d...)
+	local weights = {}
+	for k,v in pairs(availableInfomercialContracts) do
+		-- fetch how much it was run from "begin of day to hour-1"
 		-- skip calculation for hours 0 and 1 (-1h: not planned yet or
 		-- already refreshed)
-		local plannedA = 0
-		local plannedB = 0
+
 		if hour > 1 then
-			plannedA = tonumber( TVT.of_GetBroadcastMaterialProgrammedCountInTimeSpan(a, TVT.Constants.BroadcastMaterialType.PROGRAMME, fixedDay,0, fixedDay, fixedHour-1) )
-			plannedB = tonumber( TVT.of_GetBroadcastMaterialProgrammedCountInTimeSpan(b, TVT.Constants.BroadcastMaterialType.PROGRAMME, fixedDay,0, fixedDay, fixedHour-1) )
+			weights[ v.GetID() ] =  v.GetPerViewerRevenue() * v.GetQuality() * (0.2 + 0.8 ^ tonumber( TVT.of_GetBroadcastMaterialProgrammedCountInTimeSpan(v, TVT.Constants.BroadcastMaterialType.PROGRAMME, fixedDay, 0, fixedDay, fixedHour-1) ))
+		else
+			weights[ v.GetID() ] =  v.GetPerViewerRevenue() * v.GetQuality() * (0.2 + 0)
 		end
-		local weightA = a.GetPerViewerRevenue() * a.GetQuality() * 0.8 ^ plannedA
-		local weightB = b.GetPerViewerRevenue() * b.GetQuality() * 0.8 ^ plannedB
-
-		--debugMsg(a.GetTitle() ..": " .. weightA .. "  >  " .. b.GetTitle() .. ": " .. weightB .. "    plannedA=" .. plannedA .." plannedB=" .. plannedB )
-
-		return weightA > weightB
 	end
 
-	table.sort(availableInfomercialLicences, sortMethod)
+	-- sort by "weight" (PerViewerRevenue and quality (because of attactivity/topicality))
+	local sortMethod = function(a, b)
+		if hour > 1 then
+			return weights[ a.GetID() ] > weights[ b.GetID() ]
+		end
+		return 0
+	end
 
-	if table.count(availableInfomercialLicences) > 0 then
-		return table.first(availableInfomercialLicences)
+	table.sort(availableInfomercialContracts, sortMethod)
+
+
+	if table.count(availableInfomercialContracts) > 0 then
+		return table.first(availableInfomercialContracts)
 	end
 	return nil
 end
