@@ -456,7 +456,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		endif
 		'inform player AI (if existing) it stopped (means it also stops its thread)
 		player.StopAI()
-		
+
 
 
 		'=== SELL ALL PROGRAMMES ===
@@ -588,8 +588,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'=== SELL ALL STATIONS ===
 		local map:TStationMap = GetStationMap(playerID, True)
-		For local station:TStation = EachIn map.stations
-			map.Removestation(station, True, True)
+		For local station:TStationBase = EachIn map.stations
+			map.RemoveStation(station, True, True)
 		Next
 		GetStationMapCollection().Update()
 		TLogger.Log("ResetPlayer()", "Sold stations", LOG_DEBUG)
@@ -812,8 +812,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				endrem
 			endif
 		endif
-
+		'refresh stats
+		GetStationMap(playerID).DoCensus()
+		GetStationMap(playerID).Update()
 		GetStationMapCollection().Update()
+		if GetStationMap(playerID).GetReach() = 0 then throw "Player initialization: GetStationMap("+playerID+").GetReach() returned 0."
 
 
 		'=== FINANCE ===
@@ -912,7 +915,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID(guid)
 			if adContractBase
 				'forcefully add to the collection (skips requirements checks)
-				GetPlayerProgrammeCollection(playerID).AddAdContract(New TAdContract.Create(adContractBase), True)
+				local ad:TAdContract = New TAdContract.Create(adContractBase)
+				GetPlayerProgrammeCollection(playerID).AddAdContract(ad, True)
 			endif
 		Next
 

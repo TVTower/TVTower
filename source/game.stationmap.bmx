@@ -2291,9 +2291,9 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		stations.Remove(station)
 
 		If sell
-			TLogger.Log("TStationMap.AddStation", "Player "+owner+" sells broadcasting station for " + station.getSellPrice() + " Euro (had a reach of " + station.GetReach() + ")", LOG_DEBUG)
+			TLogger.Log("TStationMap.RemoveStation", "Player "+owner+" sells broadcasting station for " + station.getSellPrice() + " Euro (had a reach of " + station.GetReach() + ")", LOG_DEBUG)
 		Else
-			TLogger.Log("TStationMap.AddStation", "Player "+owner+" trashes broadcasting station for 0 Euro (had a reach of " + station.GetReach() + ")", LOG_DEBUG)
+			TLogger.Log("TStationMap.RemoveStation", "Player "+owner+" trashes broadcasting station for 0 Euro (had a reach of " + station.GetReach() + ")", LOG_DEBUG)
 		EndIf
 
 		'cancel potential contracts (= remove connections)
