@@ -8,15 +8,18 @@ _G["TaskBoss"] = class(AITask, function(c)
 	c.BasePriority = 1
 	c.NeededInvestmentBudget = 0
 	c.InvestmentPriority = 0
-	
+
 	c.GuessCreditAvailable = 100000
 	c.TryToGetCredit = 0
+	c.TryToRepayCredit = 0
 	c.LastMoodLevel = 5
 end)
+
 
 function TaskBoss:typename()
 	return "TaskBoss"
 end
+
 
 function TaskBoss:Activate()
 	-- Was getan werden soll:
@@ -24,26 +27,22 @@ function TaskBoss:Activate()
 	self.CheckCreditJob.Task = self
 end
 
-function TaskBoss:GetNextJobInTargetRoom()
-	if (self.CheckCreditJob.Status == JOB_STATUS_DONE) then
-		self:SetWait() --Wenn der Einkauf geklappt hat... muss nichs weiter gemacht werden.
-	end
 
-	if (self.CheckCreditJob.Status ~= JOB_STATUS_DONE) then			
+function TaskBoss:GetNextJobInTargetRoom()
+	if (self.CheckCreditJob.Status ~= JOB_STATUS_DONE) then
 		return self.CheckCreditJob
 	end
 
---	self:SetWait()
 	self:SetDone()
 end
+
 
 function TaskBoss:BeforeBudgetSetup()
 	self:SetFixedCosts()
 
 	local money = MY.GetMoney()
 	local credit = MY.GetCredit()
-	if (money - credit) > 500000 then	
-		local credit = MY.GetCredit()
+	if (money - credit) > 350000 then
 		if credit > 100000 then
 			self.NeededInvestmentBudget = 100000
 			self.InvestmentPriority = 1
@@ -61,20 +60,25 @@ function TaskBoss:BeforeBudgetSetup()
 	end
 end
 
+
 function TaskBoss:OnMoneyChanged(value, reason, reference)
 	if (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.CREDIT_TAKE)) then
 		self:SetFixedCosts()
 	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.CREDIT_REPAY)) then
 		self:SetFixedCosts()
 	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_CREDITINTEREST)) then
-		self.FixedCosts = value	
+		self.FixedCosts = value
 	end
 end
+
 
 function TaskBoss:SetFixedCosts()
 	self.FixedCosts = MY.GetCreditInterest()
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["JobCheckCredit"] = class(AIJob, function(c)
@@ -82,30 +86,66 @@ _G["JobCheckCredit"] = class(AIJob, function(c)
 	c.Task = nil
 end)
 
+
 function JobCheckCredit:typename()
 	return "JobCheckCredit"
 end
 
+
 function JobCheckCredit:Prepare(pParams)
-
-end
-
-function JobCheckCredit:Tick()
-	self.Task.LastMoodLevel = TVT.bo_getBossMoodlevel()
-	if self.Task.LastMoodLevel < 3 then
-		TVT.addToLog("TODO: Boss hat schlechte Laune: " .. self.Task.LastMoodLevel)
+	if MY.GetMoney() < 0 then
+		-- ATTENTION: money might change until "tick()", we could handle
+		-- it but this behaviour seems more "natural" (to not see the
+		-- money change in time)
+		-- try to at least become "positive" again
+		self.Task.TryToGetCredit = math.min( math.abs(MY.GetMoney()), TVT.bo_getCreditAvailable() )
+	end
+	if self.Task.NeededInvestmentBudget > 0 then
+		self.Task.TryToRepayCredit = math.max(0, math.min(MY.GetMoney(), self.Task.NeededInvestmentBudget))
 	end
 
-	self.Task.GuessCreditAvailable = TVT.bo_getCreditAvailable()
 
-	if self.Task.TryToGetCredit > 0 then
+	self.Task.GuessCreditAvailable = TVT.bo_getCreditAvailable()
+	self.Task.LastMoodLevel = TVT.bo_getBossMoodlevel()
+end
+
+
+function JobCheckCredit:Tick()
+	if self.Task.LastMoodLevel < 3 then
+		TVT.addToLog("TODO: Boss in bad mood: " .. self.Task.LastMoodLevel)
+	end
+
+	-- REPAY credit
+	if self.Task.TryToRepayCredit > 0 then
+		local repay = self.Task.TryToRepayCredit
+		if repay > MY.GetCredit() then
+			repay = MY.GetCredit()
+		end
+
+		if TVT.bo_doRepayCredit(repay) == TVT.RESULT_OK then
+			self.Task.TryToRepayCredit = self.Task.TryToRepayCredit - repay
+			-- adjust budget
+			self.Task.NeededInvestmentBudget = self.Task.NeededInvestmentBudget - repay
+--			debugMsg("Repaid " .. repay .. " from credit to boss.")
+		else
+			debugMsg("FAILED to repay " .. repay .. " from credit to boss.")
+		end
+
+	-- TAKE credit
+	elseif self.Task.TryToGetCredit > 0 then
 		local credit = self.Task.TryToGetCredit
 		if credit > self.Task.GuessCreditAvailable then
 			credit = self.Task.GuessCreditAvailable
-			if credit > 0 then
-				TVT.bo_doTakeCredit(credit)
-				TVT.addToLog("Nehme Kredit auf: " .. credit)
+		end
+
+		if credit > 0 then
+			if TVT.bo_doTakeCredit(credit) == TVT.RESULT_OK then
+--				debugMsg("Took a credit of " .. credit .." from boss.")
+			else
+				debugMsg("FAILED to get credit of " .. credit .." from boss.")
 			end
+
+			self.Task.TryToGetCredit = math.max(0, self.Task.TryToGetCredit - credit)
 		end
 	end
 	self.Status = JOB_STATUS_DONE

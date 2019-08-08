@@ -13,7 +13,7 @@ _G["BudgetManager"] = class(KIDataObjekt, function(c)
 	-- budget at the time of last call to "UpdateBudget"
 	c.BudgetOnLastUpdateBudget = 0
 
-	
+
 	c:ResetDefaults()
 end)
 
@@ -24,7 +24,7 @@ end
 function BudgetManager:ResetDefaults()
 	-- Minimum value of the budgets
 	self.BudgetMinimum = 0
-	-- Maximum value of the budget 
+	-- Maximum value of the budget
 	self.BudgetMaximum = 0
 	-- Percentage of the budget to save for investments
 	self.SavingParts = 0.3
@@ -59,7 +59,7 @@ end
 
 -- Diese Methode wird immer zu Beginn des Tages aufgerufen
 function BudgetManager:CalculateNewDayBudget()
-	TVT.addToLog("=== Budget Tag " .. WorldTime.GetDaysRun() .. " ===")	
+	TVT.addToLog("=== Budget Tag " .. WorldTime.GetDaysRun() .. " ===")
 
 	--Die Erfahrungswerte werden wieder um einen Tag nach hinten verschoben, da ein neuer Erfahrungswert dazukommt
 	self.BudgetHistory[TIME_OLDDAY_3] = self.BudgetHistory[TIME_OLDDAY_2]
@@ -93,20 +93,22 @@ end
 
 function BudgetManager:UpdateBudget(pBudget)
 
-	-- TODO: Kredit ja/nein --- Zurückzahlen ja/nein
-	-- TODO: Aktuell einfach mal ne maximalen Kredit ausreizen. Es sollte hier auf eine Bewertung "Geldnot", "Investitionsfreude" bzw. auf eine Strategie zurückgegriffen werden.
-	local player = _G["globalPlayer"] --Zugriff die globale Variable
+	-- increase chances to go to boss for a credit
+	local player = _G["globalPlayer"]
 	if player.TaskList[TASK_BOSS] ~= nil then
 		local bossTask = player.TaskList[TASK_BOSS]
-		if bossTask.GuessCreditAvailable > 0 then
-			bossTask.TryToGetCredit = 200000
-			bossTask.SituationPriority = 2
+		if bossTask.GuessCreditAvailable > 0
+			if MY.GetMoney() < 100000 then
+				bossTask.SituationPriority = 3
+			elseif MY.GetMoney() < 0 then
+				bossTask.SituationPriority = 10
+			end
 		end
 	end
 
 	TVT.addToLog(string.left("Geplantes Budget:", 20, true) .. string.right(pBudget, 10, true))
 	self:CutInvestmentSavingIfNeeded(pBudget)
-	
+
 	-- Das Budget auf die Tasks verteilen
 	self:AllocateBudgetToTasks(pBudget)
 
@@ -116,12 +118,12 @@ end
 
 function BudgetManager:CutInvestmentSavingIfNeeded(pBudget)
 	local player = _G["globalPlayer"] --Zugriff die globale Variable
-	
+
 	if (pBudget * 0.8) < self.InvestmentSavings then -- zu viel gespart... Ersparnisse angreifen oder Kredit!!! aufnehmen
 		TVT.addToLog("Kürze Ersparnisse: " .. self.InvestmentSavings .. ". Budget aber nur " .. pBudget .. ". Ersparnisse werden halbiert." )
 		self.InvestmentSavings = self.InvestmentSavings / 2
 	end
-	
+
 	if (pBudget * 0.6) < self.InvestmentSavings then -- zu viel gespart... Ersparnisse angreifen oder Kredit!!! aufnehmen
 		TVT.addToLog("Streiche Ersparnisse komplett. Ersparnisse " .. self.InvestmentSavings .. ". Budget aber nur " .. pBudget .. ".")
 		self.InvestmentSavings = 0
@@ -149,23 +151,23 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	for k,v in pairs(player.TaskList) do
 		v:BeforeBudgetSetup()
 	end
-	
+
 	local allFixedCostsSavings = 0
-	
+
 	-- Zählen wie viele Budgetanteile es insgesamt gibt & Alle Fixkosten zusammen zählen
 	local budgetUnits = 0
 	for k,v in pairs(player.TaskList) do
 		budgetUnits = budgetUnits + v:getBudgetUnits()
 		allFixedCostsSavings = allFixedCostsSavings + v.FixedCosts
 	end
-	
+
 	TVT.addToLog(string.left("Echte Fixkosten:", 20, true) .. string.right(allFixedCostsSavings, 10, true))
 	--character riskyness defines how much to save "extra"
 	allFixedCostsSavings = allFixedCostsSavings * self.ExtraFixedCostsSavingsPercentage
 	TVT.addToLog(string.left("Fixkosten-Reserve:", 20, true) .. string.right(allFixedCostsSavings, 10, true))
-	
-	if budgetUnits == 0 then budgetUnits = 1 end	
-		
+
+	if budgetUnits == 0 then budgetUnits = 1 end
+
 	-- Ersparnisse erhöhen und das nun reale Budget bestimmen, dass verteilt werden soll.
 	local tempBudget = pBudget - self.InvestmentSavings - allFixedCostsSavings
 	self.InvestmentSavings = self.InvestmentSavings + math.round(tempBudget * self.SavingParts) -- Einen Teil ansparen
@@ -173,19 +175,19 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	TVT.addToLog(string.left("Sparanteil:", 20, true) .. string.right(self.InvestmentSavings, 10, true))
 	TVT.addToLog(string.left("Tagesbudget:", 20, true) .. string.right(realBudget, 10, true))
 	TVT.addToLog(string.right("=======", 30, true))
-	
+
 	-- Wert einer Budgeteinheit bestimmen
-	local budgetUnitValue = realBudget / budgetUnits	
-				
+	local budgetUnitValue = realBudget / budgetUnits
+
 	-- Die Budgets den Tasks zuweisen
 	for k,v in pairs(player.TaskList) do
 		v.CurrentBudget = math.round(v.BudgetWeight * budgetUnitValue)
 		if v.BudgetMaximum() >= 0 then
 			v.CurrentBudget = math.min(v.CurrentBudget, v.BudgetMaximum())
 		end
-		v.BudgetWholeDay = v.CurrentBudget							
-	end	
-	
+		v.BudgetWholeDay = v.CurrentBudget
+	end
+
 	-- Auf Investitionen prüfen
 	local investTask = self:GetTaskForInvestment(player.TaskList)
 	if (investTask ~= nil) then
@@ -194,19 +196,19 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 		investTask.UseInvestment = true
 		investTask.CurrentInvestmentPriority = 0
 	end
-	
+
 	for k,v in pairs(player.TaskList) do
 		v.BudgetWholeDay = v.CurrentBudget
 		v:BudgetSetup()
-		TVT.addToLog(v:typename() .. ": " .. v.BudgetWholeDay)		
+		TVT.addToLog(v:typename() .. ": " .. v.BudgetWholeDay)
 	end
 end
 
 function BudgetManager:GetTaskForInvestment(tasks)
-	local taskSorted = SortTasksByInvestmentPrio(tasks)	
+	local taskSorted = SortTasksByInvestmentPrio(tasks)
 	local rank = 1
 	local highestPrio = nil
-	
+
 	for k,v in pairs(taskSorted) do
 		if highestPrio == nil then
 			highestPrio = v
@@ -217,10 +219,10 @@ function BudgetManager:GetTaskForInvestment(tasks)
 			if self:IsTaskReadyForInvestment(v, rank, highestPrio) then
 				return v
 			end
-		end		
+		end
 		rank = rank + 1
 		if rank > 3 then return nil end
-	end	
+	end
 	return nil
 end
 
@@ -231,11 +233,11 @@ function BudgetManager:IsTaskReadyForInvestment(task, rank, highestPrioTask)
 		if not rank then rank = 1 end
 		if task.CurrentInvestmentPriority >= rank * 10 then
 			--3. Bedingung: Der Abstand zu Prio des Ersten darf nicht zu groß sein
-			local prioOfHighest = task.CurrentInvestmentPriority	
+			local prioOfHighest = task.CurrentInvestmentPriority
 			if highestPrioTask ~= nil then
 				prioOfHighest = highestPrioTask.CurrentInvestmentPriority
 			end
-			
+
 			if prioOfHighest - task.CurrentInvestmentPriority <= 30 then
 				--4. Bedingung: Ersparnis / Benötigte Investsumme des Ersten <= 0.8
 				if highestPrioTask ~= nil then
@@ -244,8 +246,8 @@ function BudgetManager:IsTaskReadyForInvestment(task, rank, highestPrioTask)
 					end
 				else
 					return true
-				end						
-			end			
+				end
+			end
 		end
 	end
 	return false
@@ -254,7 +256,7 @@ end
 
 function BudgetManager:OnMoneyChanged(value, reason, reference)
 	if (reference ~= nil) then
-		TVT.addToLog("$$ Money changed (" .. TVT.Constants.PlayerFinanceEntryType.GetAsString(reason) ..") : " .. value .. " for \"" .. reference:GetTitle() .. "\"")	
+		TVT.addToLog("$$ Money changed (" .. TVT.Constants.PlayerFinanceEntryType.GetAsString(reason) ..") : " .. value .. " for \"" .. reference:GetTitle() .. "\"")
 	else
 		TVT.addToLog("$$ Money changed (" .. TVT.Constants.PlayerFinanceEntryType.GetAsString(reason) ..") : " .. value)
 	end

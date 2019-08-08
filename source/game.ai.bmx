@@ -1659,7 +1659,7 @@ endrem
 	Method bo_doRepayCredit:int(amount:int)
 		If Not _PlayerInRoom("boss") Then Return self.RESULT_WRONGROOM
 
-		if GetPlayerBoss(self.ME).PlayerTakesCredit(amount)
+		if GetPlayerBoss(self.ME).PlayerRepaysCredit(amount)
 			return True
 		else
 			return self.RESULT_FAILED
