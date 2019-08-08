@@ -376,10 +376,18 @@ function JobNewsAgency:GetNewsList(paidBonus)
 
 
 	-- sort by attractivity modifed by paid-state-bonus
+	-- precache complex weight calculation
+	local weights = {}
+	for k,v in pairs(currentNewsList) do
+		weights[ v.GetID() ] = v.GetAttractiveness() * (1.0 + v.IsPaid() * paidBonus)
+	end
+
+	-- sort
 	local sortMethod = function(a, b)
-		return a.GetAttractiveness()*(1.0 + a.IsPaid()*paidBonus) > b.GetAttractiveness()*(1.0 + b.IsPaid()*paidBonus)
+		return weights[ a.GetID() ] > weights[ b.GetID() ]
 	end
 	table.sort(currentNewsList, sortMethod)
+
 
 	return currentNewsList
 end

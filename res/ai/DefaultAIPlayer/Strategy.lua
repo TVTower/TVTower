@@ -9,6 +9,10 @@ _G["AIStrategy"] = class(KIDataObjekt, function(c)
 	c.startProgrammeBudget = 300000
 	c.startProgrammeAmount = 4
 	c.initDone = false
+
+	-- adjusts attraction of an infomercial when it comes to decide
+	-- on what to broadcast
+	c.infomercialWeight = 0.85
 end)
 
 function AIStrategy:typename()
@@ -21,6 +25,12 @@ end
 
 function AIStrategy:Finalize(playerAI)
 	--überschreiben
+end
+
+
+function AIStrategy:GetInfomercialWeight()
+	-- this could be game-day / progress specific
+	return self.infomercialWeight
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -45,12 +55,12 @@ function DefaultStrategy:initialize()
 	self.startProgrammePriceMax = self.startProgrammePriceMax + 3000 * (5 - playerAI.Ventruesome)
 
 	if playerAI.Ventruesome > 7 then
-		self.startProgrammeAmount = 5 
+		self.startProgrammeAmount = 5
 	elseif playerAI.Ventruesome >= 5 then
-		self.startProgrammeAmount = 6 
+		self.startProgrammeAmount = 6
 	else
 		self.startProgrammeAmount = 7
-	end 
+	end
 	self.startProgrammeBudget = self.startProgrammeAmount * self.startProgrammePriceMax + 8000 * (5 - playerAI.Ventruesome)
 	TVT.PrintOut(TVT.ME .. ": startProgramme=" .. self.startProgrammeAmount .. "  priceMax=" .. self.startProgrammePriceMax .. "  totalBudget=" .. self.startProgrammeBudget)
 

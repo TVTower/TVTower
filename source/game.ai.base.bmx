@@ -23,7 +23,7 @@ Type TAiBase
 	'when saving a gamestate
 	Field objectsUsedInLua:object[]
 	Field objectsUsedInLuaCount:int
-	
+
 	Field eventQueue:TAIEvent[]
 
 	Field _luaEngine:TLuaEngine {nosave}
@@ -50,7 +50,7 @@ Type TAiBase
 		if not _luaEngine then _luaEngine = TLuaEngine.Create("")
 		return _luaEngine
 	End Method
-	
+
 
 	Method AddEvent(name:string, data:object[])
 		local aiEvent:TAIEvent = new TAIEvent
@@ -58,7 +58,7 @@ Type TAiBase
 		aiEvent.AddDataSet(data)
 		AddEventObj(aiEvent)
 	End Method
-		
+
 
 	Method AddEventObj(aiEvent:TAIEvent)
 		if THREADED_AI_DISABLED then return
@@ -72,11 +72,11 @@ Type TAiBase
 			eventQueue :+ [aiEvent]
 		?
 	End Method
-	
+
 
 	Method PopNextEvent:TAIEvent()
 		if THREADED_AI_DISABLED then return Null
-		
+
 		if not eventQueue or eventQueue.length = 0 then return Null
 		local event:TAIEvent = eventQueue[0]
 		?threaded
@@ -117,10 +117,10 @@ endrem
 
 		'register source and available objects
 		GetLuaEngine().RegisterToLua()
-		
+
 		'kick off new thread
 ?threaded
-		If not THREADED_AI_DISABLED 
+		If not THREADED_AI_DISABLED
 			_updateThread = CreateThread( UpdateThread, self )
 		EndIf
 ?
@@ -130,18 +130,18 @@ endrem
 	Method Stop()
 		print "Stopping AI " + playerID
 ?threaded
-		If not THREADED_AI_DISABLED 
+		If not THREADED_AI_DISABLED
 			_updateThreadExit = True
 			WaitThread(_updateThread)
 			print "stopped thread for AI " + playerID
-		
+
 			'reset
 			_updateThreadExit = False
 			DetachThread(_updateThread)
 			_updateThread = Null
 		EndIf
 ?
-		
+
 '		scriptEnv.ShutDown()
 '		KI_EventManager.unregisterKI(Self)
 	End Method
@@ -154,7 +154,7 @@ endrem
 
 		Local loadingStopWatch:TStopWatch = new TStopWatch.Init()
 		'load content
-		GetLuaEngine().SetSource(LoadText(scriptFileName))
+		GetLuaEngine().SetSource(LoadText(scriptFileName), scriptFileName)
 
 		'if there is content set, print it
 		If GetLuaEngine().GetSource() <> ""
@@ -163,29 +163,29 @@ endrem
 			AddLog("KI.LoadScript", "Loaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
 		endif
 	End Method
-	
-?threaded	
+
+?threaded
 	Function UpdateThread:object( data:object )
 		local aiBase:TAiBase = TAiBase(data)
-		
+
 		Repeat
 			aiBase.Update()
 			delay(250)
-			
+
 			'received command to exit the thread
 			if aiBase._updateThreadExit then exit
-		Forever 
+		Forever
 	End Function
 ?
-	
+
 	Method Update()
 		if not IsActive() then return
 
 		'print "updating AI " + playerID
 		CallUpdate()
 	End Method
-	
-	
+
+
 	Method IsActive:int()
 		if not AiRunning then return False
 		if paused then return False
@@ -259,7 +259,7 @@ endrem
 	Method CallAddEvent(eventName:string, args:object[]) abstract
 	Method CallGetEventCount:Int() abstract
 	Method CallUpdate() abstract
-	
+
 	Method ConditionalCallOnTick() abstract
 	Method CallOnLoadState() abstract
 	Method CallOnSaveState() abstract
@@ -309,7 +309,7 @@ End Type
 Type TAIEvent {_exposeTolua}
 	Field name:string
 	Field data:object[]
-	
+
 	Method SetName:TAIEvent(name:string)
 		self.name = name
 		return self
@@ -327,7 +327,7 @@ Type TAIEvent {_exposeTolua}
 		return self
 	End Method
 
-	
+
 	Method AddData:TAIEvent(o:object)
 		data :+ [o]
 		return self

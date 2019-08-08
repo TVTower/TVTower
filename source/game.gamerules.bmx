@@ -51,6 +51,15 @@ Type TGameRules {_exposeToLua}
 	Field elevatorWaitAtFloorTime:int = 1500
 	Field elevatorAnimSpeed:int = 60
 
+	'refill movie agency every X Minutes
+	Field refillMovieAgencyTimer:Int = 180
+	'refill script agency every X Minutes
+	Field refillScriptAgencyTimer:Int = 200
+	'refill ad agency every X Minutes
+	Field refillAdAgencyTimer:Int = 150
+	'refill completely on next refill run?
+	Field refillAdAgencyPercentage:Float = 0.5
+
 	'how many time an original room owner waits until he re-rents a room
 	'which got free again (no longer used as additional studio)
 	Field roomReRentTime:int = 12*3600
@@ -83,7 +92,7 @@ Type TGameRules {_exposeToLua}
 
 	'=== ADAGENCY ===
 	Field adagencySortContractsBy:string = "minaudience"
-	Field adagencyRefillMode:int = 2
+	Field adagencyRefillMode:int = 1
 
 	'=== NEWS STUDIO ===
 	Field newsStudioSortNewsBy:string = "age"

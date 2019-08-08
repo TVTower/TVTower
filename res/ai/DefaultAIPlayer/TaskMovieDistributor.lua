@@ -263,7 +263,6 @@ function JobBuyRequisitedLicences:Tick()
 
 	-- fetch all (also outdated) requisitions
 	local buyLicencesRequisitions = self.Player:GetRequisitionsByTaskId(_G["TASK_MOVIEDISTRIBUTOR"], true)
-	local buyLicencesRequisitions = self.Player:GetRequisitionsByTaskId(_G["TASK_MOVIEDISTRIBUTOR"], true)
 	-- fetch all available licences
 	local licencesResponse = TVT.md_getProgrammeLicences()
 	if ((licencesResponse.result == TVT.RESULT_WRONGROOM) or (licencesResponse.result == TVT.RESULT_NOTFOUND)) then
@@ -297,8 +296,8 @@ function JobBuyRequisitedLicences:Tick()
 					for licenceKey, licence in pairs(availableLicences) do
 						local valid = true
 						local price = licence:GetPrice(TVT.ME)
-						if licence:GetPrice(TVT.ME) < buySingleLicenceReq.minPrice then valid = false; end
-						if licence:GetPrice(TVT.ME) > buySingleLicenceReq.maxPrice and buySingleLicenceReq.maxPrice > 0 then valid = false; end
+						if valid and price < buySingleLicenceReq.minPrice then valid = false; end
+						if valid and price > buySingleLicenceReq.maxPrice and buySingleLicenceReq.maxPrice > 0 then valid = false; end
 
 						if valid then
 							table.insert(relevantLicences, licence)
@@ -423,6 +422,11 @@ function JobAppraiseMovies:Prepare(pParams)
 	self.CurrentMovieIndex = 0
 	self.CurrentAuctionIndex = 0
 	self:AdjustMovieNiveau()
+
+	--skip checking
+	if self.MovieDistributorTask.CurrentBudget <= 0 and self.MovieDistributorTask.CurrentBargainBudget <= 0 then
+		self.Status = JOB_STATUS_DONE
+	end
 end
 
 function JobAppraiseMovies:Tick()
@@ -635,7 +639,7 @@ function JobBidAuctions:Tick()
 		if auctionIndex >= 0 then
 			local nextBid = TVT.md_GetAuctionProgrammeLicenceNextBid(auctionIndex)
 			local currentBidder = TVT.md_GetAuctionProgrammeLicenceHighestBidder(auctionIndex)
-			debugMsg("auction: " .. v:GetTitle() .."   price=" .. price .."  nextBid=" .. nextBid .. "  currentBidder=" .. currentBidder)
+--			debugMsg("auction: " .. v:GetTitle() .."   price=" .. price .."  nextBid=" .. nextBid .. "  currentBidder=" .. currentBidder)
 
 			if currentBidder ~= TVT.ME then
 

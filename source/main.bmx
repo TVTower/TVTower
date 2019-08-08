@@ -1,4 +1,4 @@
-ï»¿'Application: TVGigant/TVTower
+'Application: TVGigant/TVTower
 'Author: Ronny Otto & Team
 
 SuperStrict
@@ -110,10 +110,10 @@ Import "game.screen.menu.bmx"
 Import "game.network.networkhelper.bmx"
 Import "game.misc.savegameserializers.bmx"
 
-?not bmxng
+?Not bmxng
 'notify users when there are XML-errors
 Function TVTXmlErrorCallback(data:Object, error:TxmlError)
-	local result:string = "XML-Error~n"
+	Local result:String = "XML-Error~n"
 	result :+ "Error: "+ error.getErrorMessage()+"~n"
 	result :+ "File:  "+ error.getFileName()+":"+error.getLine()+"@"+error.getColumn()+"~n"
 	Notify result
@@ -121,7 +121,7 @@ Function TVTXmlErrorCallback(data:Object, error:TxmlError)
 	TLogger.Log("XML-Error", error.getErrorMessage(), LOG_ERROR)
 	TLogger.Log("XML-Error", "File:  "+ error.getFileName()+". Line:"+error.getLine()+" Column:"+error.getColumn(), LOG_ERROR)
 End Function
-xmlSetErrorFunction(TVTXmlErrorCallback, null)
+xmlSetErrorFunction(TVTXmlErrorCallback, Null)
 ?
 
 '===== Includes =====
@@ -142,8 +142,8 @@ VersionDate = LoadText("incbin::source/version.txt").Trim()
 VersionString = "v0.6.2-dev Build ~q" + VersionDate+"~q"
 CopyrightString = "by Ronny Otto & Team"
 
-Global APP_NAME:string = "TVTower"
-Global LOG_NAME:string = "log.profiler.txt"
+Global APP_NAME:String = "TVTower"
+Global LOG_NAME:String = "log.profiler.txt"
 
 Global App:TApp = Null
 Global MainMenuJanitor:TFigureJanitor
@@ -171,7 +171,7 @@ TLogger.setPrintMode(LOG_ALL ) '(LOG_AI | LOG_ERROR | LOG_SAVELOAD )
 'Enthaelt Verbindung zu Einstellungen und Timern, sonst nix
 Type TApp
 	'mobile devices: running in background or foreground?
-	Field runningInBackground:int = False
+	Field runningInBackground:Int = False
 	'developer/base configuration
 	Field configBase:TData = New TData
 	'configuration containing base + user
@@ -188,7 +188,7 @@ Type TApp
 
 	'bitmask defining what elements set the game to paused (eg. escape
 	'menu, ingame help ...)
-	Field pausedBy:int = 0
+	Field pausedBy:Int = 0
 
 	'able to draw loading screen?
 	Global baseResourcesLoaded:Int = 0
@@ -205,7 +205,7 @@ Type TApp
 	Global EscapeMenuWindowTime:Long = 0
 	'Global EscapeMenuWindowEventListeners:TLink[]
 
-	Global DEV_FastForward:int = False
+	Global DEV_FastForward:Int = False
 	Global DEV_FastForward_SpeedFactorBackup:Float = 0.0
 	Global DEV_FastForward_TimeFactorBackup:Float = 0.0
 	Global DEV_FastForward_BuildingTimeSpeedFactorBackup:Float = 0.0
@@ -213,10 +213,10 @@ Type TApp
 	Global settingsBasePath:String = "config/settings.xml"
 	Global settingsUserPath:String = "config/settings.user.xml"
 
-	Const PAUSED_BY_ESCAPEMENU:int = 1
-	Const PAUSED_BY_EXITDIALOGUE:int = 2
-	Const PAUSED_BY_INGAMEHELP:int = 4
-	Const PAUSED_BY_MODALWINDOW:int = 8
+	Const PAUSED_BY_ESCAPEMENU:Int = 1
+	Const PAUSED_BY_EXITDIALOGUE:Int = 2
+	Const PAUSED_BY_INGAMEHELP:Int = 4
+	Const PAUSED_BY_MODALWINDOW:Int = 8
 
 	Global systemState:TLowerString = TLowerString.Create("SYSTEM")
 
@@ -309,14 +309,14 @@ Type TApp
 	End Method
 
 
-	Function onBeginLoadResource:int( triggerEvent:TEventBase )
+	Function onBeginLoadResource:Int( triggerEvent:TEventBase )
 		Local resourceName:String = triggerEvent.GetData().GetString("resourceName")
 		Local name:String = triggerEvent.GetData().GetString("name")
 		TLogger.Log("App.onLoadResource", "Loading ~q"+name+"~q ["+resourceName+"]", LOG_LOADING)
 	End Function
 
 
-	Function onLoadResource:int( triggerEvent:TEventBase )
+	Function onLoadResource:Int( triggerEvent:TEventBase )
 		Local resourceName:String = triggerEvent.GetData().GetString("resourceName")
 		Local name:String = triggerEvent.GetData().GetString("name")
 		TLogger.Log("App.onLoadResource", "Loaded ~q"+name+"~q ["+resourceName+"]", LOG_LOADING)
@@ -326,7 +326,7 @@ Type TApp
 
 	'if no startup-music was defined, try to play menu music if some
 	'is loaded
-	Function onLoadMusicResource:int( triggerEvent:TEventBase )
+	Function onLoadMusicResource:Int( triggerEvent:TEventBase )
 		Local resourceName:String = triggerEvent.GetData().GetString("resourceName")
 		If resourceName = "MUSIC"
 			'if no music is played yet, try to get one from the "menu"-playlist
@@ -335,25 +335,25 @@ Type TApp
 	End Function
 
 
-	Function onLoadXmlFromFinished:int( triggerEvent:TEventBase )
+	Function onLoadXmlFromFinished:Int( triggerEvent:TEventBase )
 		If triggerEvent.getData().getString("uri") = TApp.baseResourceXmlUrl
 			TApp.baseResourcesLoaded = 1
 		EndIf
 	End Function
 
 
-	Method IsRunningInBackground:int()
-		return runningInBackground
+	Method IsRunningInBackground:Int()
+		Return runningInBackground
 	End Method
 
 
-	Method SetRunningInBackground:int(bool:int=True)
+	Method SetRunningInBackground:Int(bool:Int=True)
 		runningInBackground = bool
 	End Method
 
 
 	Method ProcessRunningInBackground()
-		If not IsRunningInBackground() then return
+		If Not IsRunningInBackground() Then Return
 
 		While IsRunningInBackground()
 			'TODO: store "setRunningInBackground()" time and adjust
@@ -368,7 +368,7 @@ Type TApp
 		'load config
 		LoadSettings()
 
-		if settingsWindow then settingsWindow.Remove()
+		If settingsWindow Then settingsWindow.Remove()
 		settingsWindow = New TSettingsWindow.Init() '.Create(New TVec2D(), New TVec2D.Init(520,45), "SYSTEM")
 		'fill values
 		settingsWindow.SetGuiValues(App.config)
@@ -394,7 +394,7 @@ Type TApp
 		ApplySettings()
 
 		'=== GAME SETTINGS ===
-		if not GetGame().PlayingAGame()
+		If Not GetGame().PlayingAGame()
 			GetGame().SetStartYear( config.GetInt("startyear", 0) )
 		EndIf
 	End Method
@@ -429,44 +429,44 @@ Type TApp
 	End Method
 
 
-	Method ApplySettings:Int(doInitGraphics:int = True)
-		local adjusted:int = False
-		if GetGraphicsManager().SetFullscreen(config.GetBool("fullscreen", False), False)
+	Method ApplySettings:Int(doInitGraphics:Int = True)
+		Local adjusted:Int = False
+		If GetGraphicsManager().SetFullscreen(config.GetBool("fullscreen", False), False)
 			TLogger.Log("ApplySettings()", "SetFullscreen = "+config.GetBool("fullscreen", False), LOG_DEBUG)
 			'until GLSDL works as intended:
-			?not bmxng
+			?Not bmxng
 			adjusted = True
 			?
-		endif
-		if GetGraphicsManager().SetRenderer(config.GetInt("renderer", GetGraphicsManager().GetRenderer()))
+		EndIf
+		If GetGraphicsManager().SetRenderer(config.GetInt("renderer", GetGraphicsManager().GetRenderer()))
 			TLogger.Log("ApplySettings()", "SetRenderer = "+config.GetInt("renderer", GetGraphicsManager().GetRenderer()), LOG_DEBUG)
 			'until GLSDL works as intended:
-			?not bmxng
+			?Not bmxng
 			adjusted = True
 			?
-		endif
-		if GetGraphicsManager().SetColordepth(config.GetInt("colordepth", 16))
+		EndIf
+		If GetGraphicsManager().SetColordepth(config.GetInt("colordepth", 16))
 			TLogger.Log("ApplySettings()", "SetColordepth = "+config.GetInt("colordepth", -1), LOG_DEBUG)
 			'until GLSDL works as intended:
-			?not bmxng
+			?Not bmxng
 			adjusted = True
 			?
-		endif
-		if GetGraphicsManager().SetVSync(config.GetBool("vsync", True))
+		EndIf
+		If GetGraphicsManager().SetVSync(config.GetBool("vsync", True))
 			TLogger.Log("ApplySettings()", "SetVSync = "+config.GetBool("vsync", False), LOG_DEBUG)
 			'until GLSDL works as intended:
-			?not bmxng
+			?Not bmxng
 			adjusted = True
 			?
-		endif
-		if GetGraphicsManager().SetResolution(config.GetInt("screenW", 800), config.GetInt("screenH", 600))
+		EndIf
+		If GetGraphicsManager().SetResolution(config.GetInt("screenW", 800), config.GetInt("screenH", 600))
 			TLogger.Log("ApplySettings()", "SetResolution = "+config.GetInt("screenW", 800)+"x"+config.GetInt("screenH", 600), LOG_DEBUG)
 			'until GLSDL works as intended:
-			?not bmxng
+			?Not bmxng
 			adjusted = True
 			?
-		endif
-		if adjusted and doInitGraphics then GetGraphicsManager().InitGraphics()
+		EndIf
+		If adjusted And doInitGraphics Then GetGraphicsManager().InitGraphics()
 
 
 		GameRules.InRoomTimeSlowDownMod = config.GetInt("inroomslowdown", 100) / 100.0
@@ -477,12 +477,12 @@ Type TApp
 
 
 
-		if config.GetString("sound_engine").ToLower() = "none"
+		If config.GetString("sound_engine").ToLower() = "none"
 			TSoundManager.audioEngineEnabled = False
 			GetSoundManager()
 			TSoundManager.audioEngineEnabled = True
-			GetSoundManager().MuteMusic(true)
-			GetSoundManager().MuteSfx(true)
+			GetSoundManager().MuteMusic(True)
+			GetSoundManager().MuteSfx(True)
 			TSoundManager.audioEngineEnabled = False
 		Else
 			GetSoundManager().ApplyConfig(config.GetString("sound_engine", "AUTOMATIC"), ..
@@ -493,12 +493,12 @@ Type TApp
 		GetSoundManager().MuteMusic(config.GetInt("sound_music_volume", 100) = 0)
 		GetSoundManager().MuteSfx(config.GetInt("sound_sfx_volume", 100) = 0)
 
-		if not GetSoundManager().HasMutedMusic()
+		If Not GetSoundManager().HasMutedMusic()
 			'if no music is played yet, try to get one from the "menu"-playlist
 			If Not GetSoundManager().isPlaying()
 				GetSoundManager().PlayMusicPlaylist("menu")
-			endif
-		endif
+			EndIf
+		EndIf
 
 		MouseManager._minSwipeDistance = config.GetInt("touchClickRadius", 10)
 		MouseManager._ignoreFirstClick = config.GetBool("touchInput", False)
@@ -506,14 +506,14 @@ Type TApp
 
 		IngameHelpWindowCollection.showHelp = config.GetBool("showIngameHelp", True)
 
-		if TGame._instance Then GetGame().LoadConfig(config)
+		If TGame._instance Then GetGame().LoadConfig(config)
 	End Method
 
 
 	Method LoadResources:Int(path:String="config/resources.xml", directLoad:Int=False)
 		?debug
-		local deferred:string = ""
-		if not directLoad then deferred = "(Deferred) "
+		Local deferred:String = ""
+		If Not directLoad Then deferred = "(Deferred) "
 		TLogger.Log("App.LoadResources()", deferred+"Loading resources from ~q"+path+"~q.", LOG_DEBUG)
 		?
 
@@ -646,7 +646,7 @@ Type TApp
 
 		'as long as the exit dialogue is open, do not accept clicks to
 		'non gui elements (eg. to leave rooms)
-		If App.ExitAppDialogue or App.EscapeMenuWindow
+		If App.ExitAppDialogue Or App.EscapeMenuWindow
 			MouseManager.ResetKey(2)
 			'also avoid long click (touch screen)
 			MouseManager.ResetLongClicked(1)
@@ -659,8 +659,8 @@ Type TApp
 		'ignore shortcuts if a gui object listens to keystrokes
 		'eg. the active chat input field
 		'also ignore if there is a modal window opened
-		If Not GUIManager.GetKeystrokeReceiver() and ..
-		   Not (App.ExitAppDialogue or App.EscapeMenuWindow)
+		If Not GUIManager.GetKeystrokeReceiver() And ..
+		   Not (App.ExitAppDialogue Or App.EscapeMenuWindow)
 
 			If GameRules.devConfig.GetBool("DEV_KEYS", False)
 				'(un)mute sound
@@ -672,48 +672,48 @@ Type TApp
 						GetSoundManager().MuteSfx(Not GetSoundManager().HasMutedSfx())
 					ElseIf KEYMANAGER.IsDown(KEY_LCONTROL) Or KEYMANAGER.IsDown(KEY_RCONTROL)
 						GetSoundManager().MuteMusic(Not GetSoundManager().HasMutedMusic())
-					Elseif not KEYMANAGER.IsDown(KEY_LALT)
+					ElseIf Not KEYMANAGER.IsDown(KEY_LALT)
 						GetSoundManager().Mute(Not GetSoundManager().IsMuted())
 					EndIf
 				EndIf
 
 				'in game and not gameover
-				If GetGame().gamestate = TGame.STATE_RUNNING and not GetGame().IsGameOver()
+				If GetGame().gamestate = TGame.STATE_RUNNING And Not GetGame().IsGameOver()
 					If KEYMANAGER.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+5)
 					If KEYMANAGER.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-5)
 
 					If KEYMANAGER.IsDown(KEY_RIGHT)
-						if not KEYMANAGER.IsDown(KEY_LCONTROL) and not KEYMANAGER.Isdown(KEY_RCONTROL)
+						If Not KEYMANAGER.IsDown(KEY_LCONTROL) And Not KEYMANAGER.Isdown(KEY_RCONTROL)
 							TEntity.globalWorldSpeedFactor :+ 0.05
 							GetWorldTime().AdjustTimeFactor(+10)
 							GetBuildingTime().AdjustTimeFactor(+0.05)
-						else
+						Else
 							'fast forward
-							if not DEV_FastForward
-								DEV_FastForward = true
+							If Not DEV_FastForward
+								DEV_FastForward = True
 								DEV_FastForward_SpeedFactorBackup = TEntity.globalWorldSpeedFactor
 								DEV_FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
 								DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
 
-								if KEYMANAGER.IsDown(KEY_RCONTROL)
+								If KEYMANAGER.IsDown(KEY_RCONTROL)
 									TEntity.globalWorldSpeedFactor :+ 200
 									GetWorldTime().AdjustTimeFactor(+8000)
 									GetBuildingTime().AdjustTimeFactor(+200)
-								elseif KEYMANAGER.IsDown(KEY_LCONTROL)
+								ElseIf KEYMANAGER.IsDown(KEY_LCONTROL)
 									TEntity.globalWorldSpeedFactor :+ 50
 									GetWorldTime().AdjustTimeFactor(+2000)
 									GetBuildingTime().AdjustTimeFactor(+50)
-								endif
-							endif
-						endif
-					else
+								EndIf
+							EndIf
+						EndIf
+					Else
 						'stop fast forward
-						if DEV_FastForward
+						If DEV_FastForward
 							DEV_FastForward = False
 							TEntity.globalWorldSpeedFactor = DEV_FastForward_SpeedFactorBackup
 							GetWorldTime()._timeFactor = DEV_FastForward_TimeFactorBackup
 							GetBuildingTime()._timeFactor = DEV_FastForward_BuildingTimeSpeedFactorBackup
-						endif
+						EndIf
 					EndIf
 
 
@@ -724,102 +724,102 @@ Type TApp
 					EndIf
 
 					If KEYMANAGER.IsHit(KEY_F)
-						If KEYMANAGER.IsDown(KEY_LSHIFT) or KEYMANAGER.IsDown(KEY_RSHIFT)
-							if KEYMANAGER.IsDown(KEY_RSHIFT)
-								local playerIDs:int[] = [1,2,3,4]
+						If KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT)
+							If KEYMANAGER.IsDown(KEY_RSHIFT)
+								Local playerIDs:Int[] = [1,2,3,4]
 
-								print "====== TOTAL FINANCE OVERVIEW ======" + "~n"
-								local result:string = ""
-								For local day:int = GetWorldTime().GetStartDay() to GetworldTime().GetDay()
-									For local playerID:int = EachIn playerIDs
-										For local s:string = EachIn GetPlayerFinanceOverviewText(playerID, day)
+								Print "====== TOTAL FINANCE OVERVIEW ======" + "~n"
+								Local result:String = ""
+								For Local day:Int = GetWorldTime().GetStartDay() To GetworldTime().GetDay()
+									For Local playerID:Int = EachIn playerIDs
+										For Local s:String = EachIn GetPlayerFinanceOverviewText(playerID, day)
 											result :+ s+"~n"
 										Next
 									Next
 									result :+ "~n~n"
 								Next
 
-								local logFile:TStream = WriteStream("utf8::" + "log.financeoverview.txt")
+								Local logFile:TStream = WriteStream("utf8::" + "log.financeoverview.txt")
 								logFile.WriteString(result)
 								logFile.close()
-								print result
-								print "===================================="
-							else
+								Print result
+								Print "===================================="
+							Else
 								'single overview - only today
 
-								local text:string[] = GetPlayerFinanceOverviewText(GetPlayer().playerID, GetWorldTime().GetOnDay() -1 )
-								For local s:string = EachIn text
-									print s
+								Local text:String[] = GetPlayerFinanceOverviewText(GetPlayer().playerID, GetWorldTime().GetOnDay() -1 )
+								For Local s:String = EachIn text
+									Print s
 								Next
-							endif
-						endif
-					endif
+							EndIf
+						EndIf
+					EndIf
 
 
 					If KEYMANAGER.IsHit(KEY_W)
-						If KEYMANAGER.IsDown(KEY_LSHIFT) or KEYMANAGER.IsDown(KEY_RSHIFT)
-							local adList:TList = CreateList()
-							For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+						If KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT)
+							Local adList:TList = CreateList()
+							For Local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
 								adList.AddLast(a)
 							Next
 							adList.Sort(True, TAdContractBase.SortByName)
 
 
 
-							print "==== AD CONTRACT OVERVIEW ===="
-							print ".---------------------------------.------------------.---------.----------.----------.-------.-------."
-							print "| Name                            | Audience       % |  Image  |  Profit  |  Penalty | Spots | Avail |"
-							print "|---------------------------------+------------------+---------+----------+----------|-------|-------|"
+							Print "==== AD CONTRACT OVERVIEW ===="
+							Print ".---------------------------------.------------------.---------.----------.----------.-------.-------."
+							Print "| Name                            | Audience       % |  Image  |  Profit  |  Penalty | Spots | Avail |"
+							Print "|---------------------------------+------------------+---------+----------+----------|-------|-------|"
 
 							'For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
-							For local a:TAdContractBase = EachIn adList
-								local ad:TAdContract = new TAdContract
+							For Local a:TAdContractBase = EachIn adList
+								Local ad:TAdContract = New TAdContract
 								'do NOT call ad.Create() as it adds to the adcollection
 								ad.base = a
-								local title:String = LSet(a.GetTitle(), 30)
-								local audience:string = LSet( RSet(ad.GetMinAudience(), 7), 8)+"  "+RSet( MathHelper.NumberToString(100 * a.minAudienceBase,2)+"%", 6)
-								local image:string =  Rset(MathHelper.NumberToString(ad.GetMinImage()*100, 2)+"%", 7)
-								local profit:string =  Rset(ad.GetProfit(), 8)
-								local penalty:string =  Rset(ad.GetPenalty(), 8)
-								local spots:string = RSet(ad.GetSpotCount(), 5)
-								local availability:string = ""
-								local targetGroup:String = ""
-								if ad.GetLimitedToTargetGroup() > 0
+								Local title:String = LSet(a.GetTitle(), 30)
+								Local audience:String = LSet( RSet(ad.GetMinAudience(), 7), 8)+"  "+RSet( MathHelper.NumberToString(100 * a.minAudienceBase,2)+"%", 6)
+								Local image:String =  RSet(MathHelper.NumberToString(ad.GetMinImage()*100, 2)+"%", 7)
+								Local profit:String =  RSet(ad.GetProfit(), 8)
+								Local penalty:String =  RSet(ad.GetPenalty(), 8)
+								Local spots:String = RSet(ad.GetSpotCount(), 5)
+								Local availability:String = ""
+								Local targetGroup:String = ""
+								If ad.GetLimitedToTargetGroup() > 0
 									targetGroup = "* "+ getLocale("AD_TARGETGROUP")+": "+ad.GetLimitedToTargetGroupString()
 									title :+ "*"
-								else
+								Else
 									title :+ " "
-								endif
-								if ad.base.IsAvailable()
+								EndIf
+								If ad.base.IsAvailable()
 									availability = RSet("Yes", 5)
-								else
+								Else
 									availability = RSet("No", 5)
-								endif
+								EndIf
 
-								print "| "+title + " | " + audience + " | " + image + " | " + profit + " | " + penalty + " | " + spots+" | " + availability +" |" + targetgroup
+								Print "| "+title + " | " + audience + " | " + image + " | " + profit + " | " + penalty + " | " + spots+" | " + availability +" |" + targetgroup
 
 							Next
-							print "'---------------------------------'------------------'---------'----------'----------'-------'-------'"
-						endif
-					endif
+							Print "'---------------------------------'------------------'---------'----------'----------'-------'-------'"
+						EndIf
+					EndIf
 
 
 					If KEYMANAGER.IsHit(KEY_Y)
-					rem
+					Rem
 						Local reach:Int = GetStationMap( 1 ).GetReach()
 						print "reach: " + reach +"  audienceReach=" + GetBroadcastmanager().GetAudienceResult(1).WholeMarket.GetTotalSum()
 						reach = GetStationMap( 1 ).GetReach()
 					endrem
 
-						GetProgrammeDataCollection()._liveProgrammeData = null
-							
-						print "live data:"
-						For local d:TProgrammeData = EachIn GetProgrammeDataCollection().GetLiveProgrammeDataList()
-							print "  " + LSet(d.GetTitle(), 30) + "  |  " + d.GetGUID()
-						Next 
+						GetProgrammeDataCollection()._liveProgrammeData = Null
+
+						Print "live data:"
+						For Local d:TProgrammeData = EachIn GetProgrammeDataCollection().GetLiveProgrammeDataList()
+							Print "  " + LSet(d.GetTitle(), 30) + "  |  " + d.GetGUID()
+						Next
 						GetProgrammeDataCollection().UpdateLive()
 
-						rem
+						Rem
 						print "GetBroadcastManager: "
 						print GetBroadcastManager().GetAudienceResult(1).ToString()
 						print "Daily: "
@@ -831,19 +831,15 @@ Type TApp
 						if r then print r.ToString()
 						endrem
 
-
-'						print "Force Next Task:"
-'						GetPlayer(2).PlayerAI.CallLuaFunction("OnForceNextTask", null)
-
-						local addLicences:string[]
-						local addContracts:string[]
-						local addNewsEventTemplates:string[]
+						Local addLicences:String[]
+						Local addContracts:String[]
+						Local addNewsEventTemplates:String[]
 
 						'addNewsEventTemplates :+ ["ronny-news-drucktaste-02b"]
 						'addLicences :+ ["TheRob-Mon-TvTower-EinmonumentalerVersuch"]
 						'addContracts :+ ["ronny-ad-allhits-02"]
 
-						rem
+						Rem
 						for local i:int = 0 to 9
 							print "i) unused: " + GetNewsEventTemplateCollection().GetUnusedAvailableInitialTemplateList(TVTNewsGenre.CULTURE).Count()
 							local newsEvent:TNewsEvent = GetNewsEventCollection().CreateRandomAvailable(TVTNewsGenre.CULTURE)
@@ -854,41 +850,41 @@ Type TApp
 						next
 						endrem
 
-						for local l:string = EachIn addNewsEventTemplates
-							local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(l)
-							if template
-								local newsEvent:TNewsEvent = new TNewsEvent.InitFromTemplate(template)
+						For Local l:String = EachIn addNewsEventTemplates
+							Local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(l)
+							If template
+								Local newsEvent:TNewsEvent = New TNewsEvent.InitFromTemplate(template)
 								GetNewsAgency().announceNewsEvent(newsEvent, 0, False)
-								print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"] at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
-							endif
-						next
+								Print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"] at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
+							EndIf
+						Next
 
-						for local l:string = EachIn addContracts
-							local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID(l)
-							if adContractBase
+						For Local l:String = EachIn addContracts
+							Local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID(l)
+							If adContractBase
 								'forcefully add to the collection (skips requirements checks)
 								GetPlayerProgrammeCollection(1).AddAdContract(New TAdContract.Create(adContractBase), True)
-							endif
-						next
+							EndIf
+						Next
 
-						for local l:string = EachIn addLicences
-							local p:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(l)
-							if not p
-								print "DEV: programme licence ~q"+l+"~q not found."
-								continue
-							endif
+						For Local l:String = EachIn addLicences
+							Local p:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(l)
+							If Not p
+								Print "DEV: programme licence ~q"+l+"~q not found."
+								Continue
+							EndIf
 
-							if p.owner <> GetPlayer().playerID
+							If p.owner <> GetPlayer().playerID
 								p.SetOwner(0)
 								RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(p, 1)
-								print "added movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
-							else
-								print "already had movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
-							endif
-						next
+								Print "added movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
+							Else
+								Print "already had movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
+							EndIf
+						Next
 
 
-						rem
+						Rem
 						if GetAwardCollection().currentAward
 							TLogger.Log("DEV", "Awards: finish current award.", LOG_DEV)
 							GetAwardCollection().currentAward.AdjustScore(1, 1000)
@@ -901,7 +897,7 @@ Type TApp
 						endif
 						endrem
 
-						rem
+						Rem
 						local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("", "laundry")
 						if room
 							print "renting room: " + room.GetName()
@@ -914,7 +910,7 @@ Type TApp
 						endrem
 
 
-						rem
+						Rem
 						local fCheap:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap
 						local fGood:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesGood
 						local fAuction:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction
@@ -968,7 +964,7 @@ Type TApp
 						'GetWorld().Weather.SetTemperature(-10)
 
 						'send marshal to confiscate the licence
-						rem
+						Rem
 						local licence:TProgrammeLicence = GetPlayer().GetProgrammeCollection().GetRandomProgrammeLicence()
 						if licence
 							TFigureMarshal(GetGame().marshals[rand(0,1)]).AddConfiscationJob( licence.GetGUID() )
@@ -978,7 +974,7 @@ Type TApp
 						endrem
 
 						'buy script
-						rem
+						Rem
 						Local s:TScript = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
 						If Not s
 							RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
@@ -992,11 +988,11 @@ Type TApp
 						EndIf
 						endrem
 
-						rem
+						Rem
 						RoomHandler_MovieAgency.GetInstance().RefillBlocks(true, 0.9)
 						endrem
 
-						rem
+						Rem
 						'Programme bei mehreren Spielern
 						'duplicateCount = 0
 						for local playerA:int = 1 to 4
@@ -1038,7 +1034,7 @@ Type TApp
 						Next
 						endrem
 
-						rem
+						Rem
 						local news:TNewsEvent = GetNewsEventCollection().GetByGUID("ronny-news-sandsturm-01")
 						GetNewsAgency().announceNewsEvent(news, 0, False)
 						print "happen: "+ news.GetTitle() + "  at: "+GetWorldTime().GetformattedTime(news.happenedTime)
@@ -1049,69 +1045,69 @@ Type TApp
 
 
 					If KEYMANAGER.isDown(KEY_LCONTROL)
-						if KEYMANAGER.IsHit(KEY_O)
+						If KEYMANAGER.IsHit(KEY_O)
 							GameConfig.observerMode = 1 - GameConfig.observerMode
 
 							KEYMANAGER.ResetKey(KEY_O)
 							KEYMANAGER.BlockKey(KEY_O, 150)
-						endif
-					endif
+						EndIf
+					EndIf
 
 
 					If Not GetPlayer().GetFigure().isChangingRoom()
-						if not KEYMANAGER.IsDown(KEY_LSHIFT) and not KEYMANAGER.IsDown(KEY_RSHIFT)
-							if GameConfig.observerMode
+						If Not KEYMANAGER.IsDown(KEY_LSHIFT) And Not KEYMANAGER.IsDown(KEY_RSHIFT)
+							If GameConfig.observerMode
 								If KEYMANAGER.IsHit(KEY_1) Then GameConfig.SetObservedObject( GetPlayer(1).GetFigure() )
 								If KEYMANAGER.IsHit(KEY_2) Then GameConfig.SetObservedObject( GetPlayer(2).GetFigure() )
 								If KEYMANAGER.IsHit(KEY_3) Then GameConfig.SetObservedObject( GetPlayer(3).GetFigure() )
 								If KEYMANAGER.IsHit(KEY_4) Then GameConfig.SetObservedObject( GetPlayer(4).GetFigure() )
-							else
+							Else
 								If KEYMANAGER.IsHit(KEY_1) Then GetGame().SetActivePlayer(1)
 								If KEYMANAGER.IsHit(KEY_2) Then GetGame().SetActivePlayer(2)
 								If KEYMANAGER.IsHit(KEY_3) Then GetGame().SetActivePlayer(3)
 								If KEYMANAGER.IsHit(KEY_4) Then GetGame().SetActivePlayer(4)
-							endif
-						elseif KEYMANAGER.IsDown(KEY_RSHIFT)
+							EndIf
+						ElseIf KEYMANAGER.IsDown(KEY_RSHIFT)
 							If KEYMANAGER.IsHit(Key_1) And GetPlayer(1).isLocalAI() Then GetPlayer(1).PlayerAI.reloadScript()
 							If KEYMANAGER.IsHit(Key_2) And GetPlayer(2).isLocalAI() Then GetPlayer(2).PlayerAI.reloadScript()
 							If KEYMANAGER.IsHit(Key_3) And GetPlayer(3).isLocalAI() Then GetPlayer(3).PlayerAI.reloadScript()
 							If KEYMANAGER.IsHit(Key_4) And GetPlayer(4).isLocalAI() Then GetPlayer(4).PlayerAI.reloadScript()
-						else
-							If KEYMANAGER.IsHit(KEY_1) then GetGame().SetPlayerBankrupt(1)
-							If KEYMANAGER.IsHit(KEY_2) then GetGame().SetPlayerBankrupt(2)
-							If KEYMANAGER.IsHit(KEY_3) then GetGame().SetPlayerBankrupt(3)
-							If KEYMANAGER.IsHit(KEY_4) then GetGame().SetPlayerBankrupt(4)
-						endif
+						Else
+							If KEYMANAGER.IsHit(KEY_1) Then GetGame().SetPlayerBankrupt(1)
+							If KEYMANAGER.IsHit(KEY_2) Then GetGame().SetPlayerBankrupt(2)
+							If KEYMANAGER.IsHit(KEY_3) Then GetGame().SetPlayerBankrupt(3)
+							If KEYMANAGER.IsHit(KEY_4) Then GetGame().SetPlayerBankrupt(4)
+						EndIf
 
 						If KEYMANAGER.IsHit(KEY_W)
-							if not KEYMANAGER.IsDown(KEY_LSHIFT) and not KEYMANAGER.IsDown(KEY_RSHIFT)
+							If Not KEYMANAGER.IsDown(KEY_LSHIFT) And Not KEYMANAGER.IsDown(KEY_RSHIFT)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("adagency") )
-							endif
-						endif
+							EndIf
+						EndIf
 						If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("archive", "", GetPlayerCollection().playerID) )
 						If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "betty") )
 						If KEYMANAGER.IsHit(KEY_F)
-							if not KEYMANAGER.IsDown(KEY_LSHIFT) and not KEYMANAGER.IsDown(KEY_RSHIFT)
+							If Not KEYMANAGER.IsDown(KEY_LSHIFT) And Not KEYMANAGER.IsDown(KEY_RSHIFT)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
-							endif
-						endif
+							EndIf
+						EndIf
 						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "office", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "boss", GetPlayerCollection().playerID))
 						If KEYMANAGER.isHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
 
 						If KEYMANAGER.Ishit(KEY_X)
-							print "--- ROOM LOG ---"
-							For local entry:string = EachIn GameEvents.roomLog
-								print entry
+							Print "--- ROOM LOG ---"
+							For Local entry:String = EachIn GameEvents.roomLog
+								Print entry
 							Next
-							print "-- ROOM COUNT --"
-							For local key:string = EachIn GameEvents.roomCount.Keys()
-								print key+" : " + String(GameEvents.roomCount.ValueForKey(key))
+							Print "-- ROOM COUNT --"
+							For Local key:String = EachIn GameEvents.roomCount.Keys()
+								Print key+" : " + String(GameEvents.roomCount.ValueForKey(key))
 							Next
-							print "----------------"
+							Print "----------------"
 						EndIf
 
-rem
+Rem
 						If KEYMANAGER.isHit(KEY_X)
 							print "Player: #" + GetPlayer().GetFigure().playerID + "   time: " + GetWorldTime().GetFormattedTime()
 							print "IsControllable: " + GetPlayer().GetFigure().IsControllable()
@@ -1127,12 +1123,12 @@ endrem
 						If KEYMANAGER.isHit(KEY_S)
 							If KEYMANAGER.IsDown(KEY_LCONTROL)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "supermarket"))
-							elseIf KEYMANAGER.IsDown(KEY_RCONTROL) or KEYMANAGER.IsDown(KEY_LALT)
+							ElseIf KEYMANAGER.IsDown(KEY_RCONTROL) Or KEYMANAGER.IsDown(KEY_LALT)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "scriptagency"))
-							else
+							Else
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", "", GetPlayerCollection().playerID))
-							endif
-						endif
+							EndIf
+						EndIf
 						If KEYMANAGER.IsHit(KEY_D) 'German "Drehbuchagentur"
 							DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "scriptagency"))
 						EndIf
@@ -1141,12 +1137,12 @@ endrem
 						If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "credits"))
 						If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "news", GetPlayerCollection().playerID))
 						If KEYMANAGER.IsHit(KEY_R)
-							If KEYMANAGER.IsDown(KEY_LCONTROL) or KEYMANAGER.IsDown(KEY_RCONTROL)
+							If KEYMANAGER.IsDown(KEY_LCONTROL) Or KEYMANAGER.IsDown(KEY_RCONTROL)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomboard"))
-							else
+							Else
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomagency"))
-							endif
-						endif
+							EndIf
+						EndIf
 					EndIf
 				EndIf
 				If KEYMANAGER.IsHit(KEY_5) Then GetGame().SetGameSpeed( 60*15 )  '60 virtual minutes per realtime second
@@ -1155,45 +1151,45 @@ endrem
 				If KEYMANAGER.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240*15 ) '240 minute per second
 				If KEYMANAGER.IsHit(KEY_9) Then GetGame().SetGameSpeed( 1*15 )   '1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
-				if KEYMANAGER.IsDown(KEY_LALT) and KEYMANAGER.IsHit(KEY_M) then TVTDebugModifierInfos = 1 - TVTDebugModifierInfos
+				If KEYMANAGER.IsDown(KEY_LALT) And KEYMANAGER.IsHit(KEY_M) Then TVTDebugModifierInfos = 1 - TVTDebugModifierInfos
 
 				If KEYMANAGER.IsHit(KEY_P)
-					if KEYMANAGER.IsDown(KEY_LSHIFT)
-						print GetBroadcastOverviewString()
-					elseif KEYMANAGER.IsDown(KEY_RSHIFT)
-						print "====== TOTAL BROADCAST OVERVIEW ======" + "~n"
-						local result:string = ""
-						For local day:int = GetWorldTime().GetStartDay() to GetworldTime().GetDay()
+					If KEYMANAGER.IsDown(KEY_LSHIFT)
+						Print GetBroadcastOverviewString()
+					ElseIf KEYMANAGER.IsDown(KEY_RSHIFT)
+						Print "====== TOTAL BROADCAST OVERVIEW ======" + "~n"
+						Local result:String = ""
+						For Local day:Int = GetWorldTime().GetStartDay() To GetworldTime().GetDay()
 							result :+ GetBroadcastOverviewString(day)
 						Next
 
-						local logFile:TStream = WriteStream("utf8::" + "log.broadcastoverview.txt")
+						Local logFile:TStream = WriteStream("utf8::" + "log.broadcastoverview.txt")
 						logFile.WriteString(result)
 						logFile.close()
-						print result
-						print "======================================"
+						Print result
+						Print "======================================"
 
-					elseif KEYMANAGER.IsDown(KEY_LCONTROL)
-						print "====== TOTAL PLAYER PERFORMANCE OVERVIEW ======" + "~n"
-						local result:string = ""
-						For local day:int = GetWorldTime().GetStartDay() to GetworldTime().GetDay()
-							local text:string[] = GetPlayerPerformanceOverviewText(day)
-							For local s:string = EachIn text
+					ElseIf KEYMANAGER.IsDown(KEY_LCONTROL)
+						Print "====== TOTAL PLAYER PERFORMANCE OVERVIEW ======" + "~n"
+						Local result:String = ""
+						For Local day:Int = GetWorldTime().GetStartDay() To GetworldTime().GetDay()
+							Local text:String[] = GetPlayerPerformanceOverviewText(day)
+							For Local s:String = EachIn text
 								result :+ s + "~n"
 							Next
 						Next
 
-						local logFile:TStream = WriteStream("utf8::" + "log.playerperformanceoverview.txt")
+						Local logFile:TStream = WriteStream("utf8::" + "log.playerperformanceoverview.txt")
 						logFile.WriteString(result)
 						logFile.close()
 
-						print result
-						print "==============================================="
+						Print result
+						Print "==============================================="
 
-					else
+					Else
 						GetPlayer().GetProgrammePlan().printOverview()
-					endif
-				endif
+					EndIf
+				EndIf
 
 				'Save game only when in a game
 				If GetGame().gamestate = TGame.STATE_RUNNING
@@ -1204,17 +1200,19 @@ endrem
 				'If KEYMANAGER.IsHit(KEY_L)
 				If KEYMANAGER.IsHit(KEY_F8)
 					TSaveGame.Load("savegames/quicksave.xml")
-				endif
+				EndIf
 
 				If KEYMANAGER.IsHit(KEY_TAB)
-					if not KEYMANAGER.IsDown(KEY_LCONTROL)
+					If KEYMANAGER.IsDown(KEY_RCONTROL)
+						DebugScreen.enabled = 1 - DebugScreen.enabled
+					ElseIf Not KEYMANAGER.IsDown(KEY_LCONTROL)
 						TVTDebugInfos = 1 - TVTDebugInfos
 						TVTDebugProgrammePlan = False
-					else
+					Else
 						TVTDebugInfos = False
 						TVTDebugProgrammePlan = 1 - TVTDebugProgrammePlan
-					endif
-				endif
+					EndIf
+				EndIf
 
 				If KEYMANAGER.Ishit(KEY_K)
 					TLogger.Log("KickAllFromRooms", "Player kicks all figures out of the rooms.", LOG_DEBUG)
@@ -1222,9 +1220,9 @@ endrem
 						If fig.GetInRoom()
 							fig.KickOutOfRoom()
 							'fig.KickOutOfRoom(GetPlayer().GetFigure())
-						else
-							print "fig: "+fig.name+" not in room."
-						endif
+						Else
+							Print "fig: "+fig.name+" not in room."
+						EndIf
 					Next
 				EndIf
 
@@ -1237,7 +1235,7 @@ endrem
 					Repeat
 						targetRoom = GetRoomCollection().GetRandom()
 					Until targetRoom.GetName() <> "building"
-					print TFigureTerrorist(GetGame().terrorists[whichTerrorist]).name +" - deliver to : "+targetRoom.GetName() + " [id="+targetRoom.id+", owner="+targetRoom.owner+"]"
+					Print TFigureTerrorist(GetGame().terrorists[whichTerrorist]).name +" - deliver to : "+targetRoom.GetName() + " [id="+targetRoom.id+", owner="+targetRoom.owner+"]"
 					TFigureTerrorist(GetGame().terrorists[whichTerrorist]).SetDeliverToRoom( targetRoom )
 				EndIf
 
@@ -1293,17 +1291,17 @@ endrem
 
 		ScreenCollection.UpdateCurrent(GetDeltaTimer().GetDelta())
 
-		local openEscapeMenu:int = openEscapeMenuViaInterface or (Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE))
+		Local openEscapeMenu:Int = openEscapeMenuViaInterface Or (Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE))
 		'no escape menu in start screen or settingsscreen
-		if GetGame().gamestate = TGame.STATE_MAINMENU or GetGame().gamestate = TGame.STATE_SETTINGSMENU
+		If GetGame().gamestate = TGame.STATE_MAINMENU Or GetGame().gamestate = TGame.STATE_SETTINGSMENU
 			openEscapeMenu = False
-		endif
+		EndIf
 
 		'force open escape menu (if eg. borked)
-		if KEYMANAGER.IsDown(KEY_LCONTROL) and KEYWRAPPER.hitKey(KEY_ESCAPE)
+		If KEYMANAGER.IsDown(KEY_LCONTROL) And KEYWRAPPER.hitKey(KEY_ESCAPE)
 			openEscapeMenu = True
-			print "force open escape menu. gamestate="+GetGame().gamestate +"   keystrokereceiver: " + (GuiManager.GetKeystrokeReceiver() <> null)
-		endif
+			Print "force open escape menu. gamestate="+GetGame().gamestate +"   keystrokereceiver: " + (GuiManager.GetKeystrokeReceiver() <> Null)
+		EndIf
 
 		If openEscapeMenu
 			'print "should open escape menu. gamestate="+GetGame().gamestate
@@ -1312,35 +1310,35 @@ endrem
 			'TApp.CreateConfirmExitAppDialogue(True)
 			If GetGame().gamestate = TGame.STATE_RUNNING
 				'RONNY: debug
-				if openEscapeMenuViaInterface
+				If openEscapeMenuViaInterface
 					TLogger.Log("Dialogues", "Open Escape-Menu via button hit.", LOG_DEBUG)
-				else
+				Else
 					TLogger.Log("Dialogues", "Open Escape-Menu via ESC key hit.", LOG_DEBUG)
-				endif
+				EndIf
 
 				'TApp.CreateConfirmExitAppDialogue(True)
 				'create escape-menu
 				TApp.CreateEscapeMenuwindow()
-			else
+			Else
 				TLogger.Log("Dialogues", "Open Escape menu from a gamestate<>STATE_RUNNING!", LOG_DEBUG)
 				'ask to exit the app - from main menu?
 				'TApp.CreateConfirmExitAppDialogue(False)
-			endif
+			EndIf
 			openEscapeMenuViaInterface = False
 		EndIf
 		'Force-quit with CTRL+C
-		if KEYMANAGER.IsDown(KEY_LCONTROL) and KEYMANAGER.IsHit(KEY_C)
+		If KEYMANAGER.IsDown(KEY_LCONTROL) And KEYMANAGER.IsHit(KEY_C)
 			TApp.ExitApp = True
-		endif
+		EndIf
 
 		If AppTerminate()
-			if not TApp.ExitAppDialogue
+			If Not TApp.ExitAppDialogue
 				'ask to exit the app
 				TApp.CreateConfirmExitAppDialogue(False)
-			else
+			Else
 				TLogger.Log("Dialogues", "Skip opening Exit-dialogue, was opened <100ms before.", LOG_DEBUG)
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'check if we need to make a screenshot
 		If KEYMANAGER.IsHit(KEY_F12) Then App.prepareScreenshot = 1
@@ -1349,15 +1347,15 @@ endrem
 
 
 		'in single player: pause game
-		if Not GetGame().networkgame
-			If not GetGame().IsPaused() and App.pausedBy > 0
+		If Not GetGame().networkgame
+			If Not GetGame().IsPaused() And App.pausedBy > 0
 				GetGame().SetPaused(True)
-			endif
-		endif
+			EndIf
+		EndIf
 
-		if GetGame().IsPaused() and App.pausedBy = 0
+		If GetGame().IsPaused() And App.pausedBy = 0
 			GetGame().SetPaused(False)
-		endif
+		EndIf
 
 
 		GUIManager.EndUpdates() 'reset modal window states
@@ -1431,14 +1429,14 @@ endrem
 		For Local i:Int = 0 To 3
 			fig = GetPlayerCollection().Get(i+1).GetFigure()
 
-			local change:string = ""
-			if fig.isChangingRoom()
-				if fig.inRoom
-					change = "<-[]" 'Chr(8646) 'â‡†
-				else
-					change = "->[]" 'Chr(8646) 'â‡†
-				endif
-			endif
+			Local change:String = ""
+			If fig.isChangingRoom()
+				If fig.inRoom
+					change = "<-[]" 'Chr(8646) 'Æ
+				Else
+					change = "->[]" 'Chr(8646) 'Æ
+				EndIf
+			EndIf
 
 			roomName = "Building"
 			If fig.inRoom
@@ -1448,11 +1446,11 @@ endrem
 			ElseIf fig.IsAtElevator()
 				roomName = "AtElevator"
 			EndIf
-			if fig.isControllable()
+			If fig.isControllable()
 				GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName+change , 5, 70 + i * 11)
-			else
+			Else
 				GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName+change +" (forced)" , 5, 70 + i * 11)
-			endif
+			EndIf
 		Next
 
 		If ScreenCollection.GetCurrentScreen()
@@ -1514,83 +1512,73 @@ endrem
 
 
 	Function UpdateDebugControls()
-		If GetGame().gamestate <> TGame.STATE_RUNNING then return
+		If GetGame().gamestate <> TGame.STATE_RUNNING Then Return
 
-		if TVTDebugProgrammePlan
-			local playerID:int = GetPlayerBaseCollection().GetObservedPlayerID()
-			if GetInGameInterface().ShowChannel > 0
+		If TVTDebugProgrammePlan
+			Local playerID:Int = GetPlayerBaseCollection().GetObservedPlayerID()
+			If GetInGameInterface().ShowChannel > 0
 				playerID = GetInGameInterface().ShowChannel
-			endif
-			if playerID <= 0 then playerID = GetPlayerBase().playerID
+			EndIf
+			If playerID <= 0 Then playerID = GetPlayerBase().playerID
 
 			debugProgrammePlanInfos.Update(playerID, 15, 15)
 			debugProgrammeCollectionInfos.Update(playerID, 415, 15)
 			debugPlayerControls.Update(playerID, 15, 365)
-		endif
+		EndIf
+
+
+		If DebugScreen.enabled then DebugScreen.Update()
 	End Function
 
 
 	Function RenderDebugControls()
-		If GetGame().gamestate <> TGame.STATE_RUNNING then return
+		If GetGame().gamestate <> TGame.STATE_RUNNING Then Return
 
-		if TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
+
+		If DebugScreen.enabled then DebugScreen.Render()
+
+
+		If TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
 			RenderSideDebug()
 
 		'show quotes even without "DEV_OSD = true"
-		elseIf TVTDebugQuoteInfos
+		ElseIf TVTDebugQuoteInfos
 			debugAudienceInfos.Draw()
-		elseIf TVTDebugModifierInfos
+		ElseIf TVTDebugModifierInfos
 			debugModifierInfos.Draw()
 
-		elseif TVTDebugProgrammePlan
-			local playerID:int = GetPlayerBaseCollection().GetObservedPlayerID()
-			if GetInGameInterface().ShowChannel > 0
+		ElseIf TVTDebugProgrammePlan
+			Local playerID:Int = GetPlayerBaseCollection().GetObservedPlayerID()
+			If GetInGameInterface().ShowChannel > 0
 				playerID = GetInGameInterface().ShowChannel
-			endif
-			if playerID <= 0 then playerID = GetPlayerBase().playerID
+			EndIf
+			If playerID <= 0 Then playerID = GetPlayerBase().playerID
 
 			debugProgrammePlanInfos.Draw(playerID, 15, 15)
 			debugProgrammeCollectionInfos.Draw(playerID, 415, 15)
 			debugPlayerControls.Draw(playerID, 15, 365)
 
-			local player:TPlayer = GetPlayer(playerID)
-			rem
-			if player.playerAI
-				SetColor 50,40,0
-				DrawRect(235, 313, 150, 36)
-				SetColor 255,255,255
-				local assignmentType:int = player.aiData.GetInt("currentTaskAssignmentType", 0)
-				if assignmentType = 1
-					GetBitmapFont("default", 10).Draw("Task: [F] " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", 238,315)
-				elseif assignmentType = 2
-					GetBitmapFont("default", 10).Draw("Task: [R]" + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", 238,315)
-				else
-					GetBitmapFont("default", 10).Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", 238,315)
-				endif
-				GetBitmapFont("default", 10).Draw("Job:   " + player.aiData.GetString("currentTaskJob") + " ["+player.aiData.GetString("currentTaskJobStatus")+"]", 238,325)
-			endif
-			endrem
-
-			local font:TBitmapFont = GetBitmapFont("default", 10)
-			local fontB:TBitmapFont = GetBitmapFont("default", 10, BOLDFONT)
-			if player.playerAI
+			Local player:TPlayer = GetPlayer(playerID)
+			Local font:TBitmapFont = GetBitmapFont("default", 10)
+			Local fontB:TBitmapFont = GetBitmapFont("default", 10, BOLDFONT)
+			If player.playerAI
 				SetColor 40,40,40
 				DrawRect(605, 240, 185, 135)
 				SetColor 50,50,40
 				DrawRect(606, 241, 183, 23)
 				SetColor 255,255,255
 
-				local textX:int = 605 + 3
-				local textY:int = 240 + 3
+				Local textX:Int = 605 + 3
+				Local textY:Int = 240 + 3
 
-				local assignmentType:int = player.aiData.GetInt("currentTaskAssignmentType", 0)
-				if assignmentType = 1
+				Local assignmentType:Int = player.aiData.GetInt("currentTaskAssignmentType", 0)
+				If assignmentType = 1
 					font.Draw("Task: [F] " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
-				elseif assignmentType = 2
+				ElseIf assignmentType = 2
 					font.Draw("Task: [R]" + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
-				else
+				Else
 					font.Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
-				endif
+				EndIf
 				textY :+ 10
 				font.Draw("Job:   " + player.aiData.GetString("currentTaskJob") + " ["+player.aiData.GetString("currentTaskJobStatus")+"]", textX, textY)
 				textY :+ 13
@@ -1602,20 +1590,20 @@ endrem
 				fontB.Draw("Req", textX + 90 + 22*3, textY)
 				textY :+ 10 + 2
 
-				for local taskNumber:int = 1 to player.aiData.GetInt("tasklist_count", 1)
+				For Local taskNumber:Int = 1 To player.aiData.GetInt("tasklist_count", 1)
 					font.Draw(player.aiData.GetString("tasklist_name"+taskNumber).Replace("Task", ""), textX, textY)
 					font.Draw(player.aiData.GetInt("tasklist_priority"+taskNumber), textX + 90 + 22*0, textY)
 					font.Draw(player.aiData.GetInt("tasklist_basepriority"+taskNumber), textX + 90 + 22*1, textY)
 					font.Draw(player.aiData.GetInt("tasklist_situationpriority"+taskNumber), textX + 90 + 22*2, textY)
 					font.Draw(player.aiData.GetInt("tasklist_requisitionpriority"+taskNumber), textX + 90 + 22*3, textY)
 					textY :+ 10
-				next
-			endif
+				Next
+			EndIf
 
 			debugFinancialInfos.Draw(-1, 235, 305)
 '				debugProgrammePlanInfos.Draw((playerID + 1) mod 4, 415, 15)
 
-rem
+Rem
 			local textX:int = 10
 			local textY:int = 350
 			SetColor 0,0,0
@@ -1626,7 +1614,7 @@ rem
 				textY :+ 10
 			Next
 endrem
-		endif
+		EndIf
 	End Function
 
 
@@ -1639,7 +1627,7 @@ endrem
 			'first
 			'Cls()
 			GetGraphicsManager().Cls()
-		Endif
+		EndIf
 
 		TProfiler.Enter("Draw")
 		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
@@ -1657,29 +1645,29 @@ endrem
 
 
 		If GetGame().gamestate = TGame.STATE_RUNNING
-			if not TAiBase.AiRunning
-				local oldCol:TColor = new TColor.Get()
+			If Not TAiBase.AiRunning
+				Local oldCol:TColor = New TColor.Get()
 				SetColor 100,40,40
 				SetAlpha 0.65
 				DrawRect(275,0,250,35)
 				oldCol.SetRGBA()
 				GetBitmapFont("default", 16).DrawBlock("PLAYER AI DEACTIVATED", 0, 5, GetGraphicsManager().GetWidth(), 355, ALIGN_CENTER_TOP, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
 				GetBitmapFont("default", 12).DrawBlock("(~qF11~q to reactivate AI)", 0, 20, GetGraphicsManager().GetWidth(), 355, ALIGN_CENTER_TOP, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
-			endif
+			EndIf
 
-			if GameConfig.observerMode
-				local playerNum:int = 0
-				For local i:int = 1 to 4
-					if GameConfig.IsObserved( GetPlayer(i).GetFigure() )
+			If GameConfig.observerMode
+				Local playerNum:Int = 0
+				For Local i:Int = 1 To 4
+					If GameConfig.IsObserved( GetPlayer(i).GetFigure() )
 						playerNum = i
-						exit
-					endif
+						Exit
+					EndIf
 				Next
 				GetBitmapFont("default", 20).DrawBlock("OBSERVING PLAYER #"+playerNum, 0, 0, GetGraphicsManager().GetWidth(), 355, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
 				GetBitmapFont("default", 14).DrawBlock("(~qL-Ctrl + O~q to deactivate)", 0, 0, GetGraphicsManager().GetWidth(), 375, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
-			else
-				if not GetPlayerCollection().IsHuman( GetPlayerCollection().playerID )
-					local oldCol:TColor = new TColor.Get()
+			Else
+				If Not GetPlayerCollection().IsHuman( GetPlayerCollection().playerID )
+					Local oldCol:TColor = New TColor.Get()
 					SetColor 60,60,40
 					SetAlpha 0.65
 					DrawRect(275,345,250,35)
@@ -1687,22 +1675,22 @@ endrem
 
 					GetBitmapFont("default", 16).DrawBlock("SWITCHED TO AI PLAYER #" +GetPlayerCollection().playerID, 0, 0, GetGraphicsManager().GetWidth(), 365, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
 
-					local localHumanNum:int = 0
-					For local i:int = 1 to 4
-						if GetPlayer(i).playerType = TPlayerBase.PLAYERTYPE_LOCAL_HUMAN
+					Local localHumanNum:Int = 0
+					For Local i:Int = 1 To 4
+						If GetPlayer(i).playerType = TPlayerBase.PLAYERTYPE_LOCAL_HUMAN
 							localHumanNum = i
-							exit
-						endif
+							Exit
+						EndIf
 					Next
 
-					if localHumanNum > 0
+					If localHumanNum > 0
 						GetBitmapFont("default", 12).DrawBlock("(~q"+localHumanNum+"~q to switch back)", 0, 0, GetGraphicsManager().GetWidth(), 380, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
-					else
+					Else
 						GetBitmapFont("default", 12).DrawBlock("(all players are AI controlled)", 0, 0, GetGraphicsManager().GetWidth(), 380, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
-					endif
-				endif
-			endif
-		endif
+					EndIf
+				EndIf
+			EndIf
+		EndIf
 
 		'rendder debug views and control buttons
 		RenderDebugControls()
@@ -1727,7 +1715,7 @@ endrem
 			App.SaveScreenshot(GetSpriteFromRegistry("gfx_startscreen_logoSmall"))
 			App.prepareScreenshot = False
 		EndIf
-rem
+Rem
 
 		SetColor 100,0,0
 		DrawRect(0,520,250,80)
@@ -1803,7 +1791,7 @@ endrem
 		'somehow)
 		For Local obj:TGUIObject = EachIn GuiManager.ListDragged.Copy()
 			obj.Remove()
-			print "Removed forgotten dragged element " + obj.GetClassName()
+			Print "Removed forgotten dragged element " + obj.GetClassName()
 		Next
 
 		EscapeMenuWindowTime = Time.MilliSecsLong()
@@ -1814,12 +1802,12 @@ endrem
 
 		EscapeMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(400,130), "SYSTEM")
 		EscapeMenuWindow.SetZIndex(99000)
-		EscapeMenuWindow.SetCenterLimit(new TRectangle.setTLBR(20,0,0,0))
+		EscapeMenuWindow.SetCenterLimit(New TRectangle.setTLBR(20,0,0,0))
 
 		'append menu after creation of screen area, so it recenters properly
 		'355 = with speed buttons
 		'local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,355), "SYSTEM")
-		local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,315), "SYSTEM")
+		Local mainMenu:TGUIModalMainMenu = New TGUIModalMainMenu.Create(New TVec2D, New TVec2D.Init(300,315), "SYSTEM")
 		mainMenu.SetCaption(GetLocale("MENU"))
 
 		EscapeMenuWindow.SetContentElement(mainMenu)
@@ -1833,11 +1821,11 @@ endrem
 
 	Function onCloseModalDialogue:Int(triggerEvent:TEventBase)
 '		If App.settingsWindow and dialogue = App.settingsWindow.modalDialogue
-		If App.settingsWindow and App.settingsWindow.modalDialogue = triggerEvent.GetSender()
-			return onCloseSettingsWindow(triggerEvent)
-		elseif ExitAppDialogue = triggerEvent.GetSender()
-			return onAppConfirmExit(triggerEvent)
-		endif
+		If App.settingsWindow And App.settingsWindow.modalDialogue = triggerEvent.GetSender()
+			Return onCloseSettingsWindow(triggerEvent)
+		ElseIf ExitAppDialogue = triggerEvent.GetSender()
+			Return onAppConfirmExit(triggerEvent)
+		EndIf
 	End Function
 
 
@@ -1856,7 +1844,7 @@ endrem
 
 
 	Function onAppConfirmExit:Int(triggerEvent:TEventBase)
-rem
+Rem
 'already checked in onCloseModalDialogue()
 		Local dialogue:TGUIModalWindow = TGUIModalWindow(triggerEvent.GetSender())
 		If Not dialogue Then Return False
@@ -1876,18 +1864,18 @@ endrem
 
 		'approve exit
 		If buttonNumber = 0
-			local quitToMainMenu:int = ExitAppDialogue.data.GetInt("quitToMainMenu", True)
+			Local quitToMainMenu:Int = ExitAppDialogue.data.GetInt("quitToMainMenu", True)
 			'if within a game - just return to mainmenu
-			if GetGame().gamestate = TGame.STATE_RUNNING and quitToMainMenu
+			If GetGame().gamestate = TGame.STATE_RUNNING And quitToMainMenu
 				'adjust darkened Area to fullscreen!
 				'but do not set new screenArea to avoid "jumping"
 				ExitAppDialogue.darkenedArea = New TRectangle.Init(0,0,800,600)
 				'ExitAppDialogue.screenArea = New TRectangle.Init(0,0,800,600)
 
 				GetGame().EndGame()
-			else
+			Else
 				TApp.ExitApp = True
-			endif
+			EndIf
 		EndIf
 		'remove connection to global value (guimanager takes care of fading)
 		TApp.ExitAppDialogue = Null
@@ -1898,12 +1886,12 @@ endrem
 	End Function
 
 
-	Function CreateConfirmExitAppDialogue:Int(quitToMainMenu:int=True)
+	Function CreateConfirmExitAppDialogue:Int(quitToMainMenu:Int=True)
 		'100ms since last dialogue
 		If Time.MilliSecsLong() - ExitAppDialogueTime < 100
 			TLogger.Log("Dialogues", "Skip opening Exit-dialogue, was opened <100ms before.", LOG_DEBUG)
 			Return False
-		endif
+		EndIf
 
 		TLogger.Log("Dialogues", "User hit [x], create Exit-dialogue.", LOG_DEBUG)
 
@@ -1925,11 +1913,11 @@ endrem
 			ExitAppDialogue.screenArea = New TRectangle.Init(0,0,800,385)
 		EndIf
 
-		if GetGame().gamestate = TGame.STATE_RUNNING and quitToMainMenu
+		If GetGame().gamestate = TGame.STATE_RUNNING And quitToMainMenu
 			ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN") )
-		else
+		Else
 			ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT") )
-		endif
+		EndIf
 	End Function
 
 End Type
@@ -1949,7 +1937,7 @@ Type TGameState
 	Field _AwardCollection:TAwardCollection = Null
 	Field _NewsEventSportCollection:TNewsEventSportCollection = Null
 
-	Field _GameModifierManager:TGameModifierManager = null
+	Field _GameModifierManager:TGameModifierManager = Null
 	Field _GameInformationCollection:TGameInformationCollection = Null
 	Field _IngameHelpWindowCollection:TIngameHelpWindowCollection = Null
 
@@ -2001,18 +1989,18 @@ Type TGameState
 	Field _RoomBaseCollection:TRoomBaseCollection
 	Field _PlayerColorList:TList
 	Field _CurrentScreenName:String
-	Field _adAgencySortMode:int
-	Field _officeProgrammeSortMode:int
-	Field _officeProgrammeSortDirection:int
-	Field _officeContractSortMode:int
-	Field _officeContractSortDirection:int
-	Field _programmeDataIgnoreUnreleasedProgrammes:int = False
-	Field _programmeDataFilterReleaseDateStart:int = False
-	Field _programmeDataFilterReleaseDateEnd:int = False
-	Field _interface_ShowChannel:int = 0
-	Field _interface_ChatShow:int = 0
-	Field _interface_ChatShowHideLocked:int = 0
-	Field _aiBase_AiRunning:int = False
+	Field _adAgencySortMode:Int
+	Field _officeProgrammeSortMode:Int
+	Field _officeProgrammeSortDirection:Int
+	Field _officeContractSortMode:Int
+	Field _officeContractSortDirection:Int
+	Field _programmeDataIgnoreUnreleasedProgrammes:Int = False
+	Field _programmeDataFilterReleaseDateStart:Int = False
+	Field _programmeDataFilterReleaseDateEnd:Int = False
+	Field _interface_ShowChannel:Int = 0
+	Field _interface_ChatShow:Int = 0
+	Field _interface_ChatShowHideLocked:Int = 0
+	Field _aiBase_AiRunning:Int = False
 	Const MODE_LOAD:Int = 0
 	Const MODE_SAVE:Int = 1
 
@@ -2093,12 +2081,12 @@ Type TGameState
 		GetRoomHandlerCollection().Initialize()
 
 
-		if TScreenHandler_ProgrammePlanner.PPprogrammeList
+		If TScreenHandler_ProgrammePlanner.PPprogrammeList
 			TScreenHandler_ProgrammePlanner.PPprogrammeList.Initialize()
-		endif
-		if TScreenHandler_ProgrammePlanner.PPcontractList
+		EndIf
+		If TScreenHandler_ProgrammePlanner.PPcontractList
 			TScreenHandler_ProgrammePlanner.PPcontractList.Initialize()
-		endif
+		EndIf
 	End Method
 
 
@@ -2312,12 +2300,12 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:string = "12"
-	Const MIN_SAVEGAME_VERSION:string = "11"
+	Const SAVEGAME_VERSION:String = "12"
+	Const MIN_SAVEGAME_VERSION:String = "11"
 	Global messageWindow:TGUIModalWindow
 	Global messageWindowBackground:TPixmap
 	Global messageWindowLastUpdate:Long
-	Global messageWindowUpdatesSkipped:int = 0
+	Global messageWindowUpdatesSkipped:Int = 0
 
 	'override to do nothing
 	Method Initialize:Int()
@@ -2348,7 +2336,7 @@ Type TSaveGame Extends TGameState
 	'override to add time storage
 	Method BackupGameData:Int()
 		'save a short summary of the game at the begin of the file
-		_gameSummary = new TData
+		_gameSummary = New TData
 		_gameSummary.Add("game_version", VersionString)
 		_gameSummary.Add("game_builddate", VersionDate)
 		_gameSummary.Add("game_mode", "singleplayer")
@@ -2405,30 +2393,30 @@ Type TSaveGame Extends TGameState
 	End Method
 
 
-	Function UpdateMessage:Int(Load:Int=False, text:string="", progress:Float=0.0, forceUpdate:int=False)
+	Function UpdateMessage:Int(Load:Int=False, text:String="", progress:Float=0.0, forceUpdate:Int=False)
 		'skip update if called too often (as it is still FPS limited ... !)
-		if not forceUpdate and Time.GetAppTimeGone() - messageWindowLastUpdate < 25 and messageWindowUpdatesSkipped < 5
+		If Not forceUpdate And Time.GetAppTimeGone() - messageWindowLastUpdate < 25 And messageWindowUpdatesSkipped < 5
 			messageWindowUpdatesSkipped :+ 1
-			return False
-		else
+			Return False
+		Else
 			messageWindowUpdatesSkipped = 0
 			messageWindowLastUpdate = Time.GetAppTimeGone()
-		endif
+		EndIf
 
-		if not messageWindowBackground
+		If Not messageWindowBackground
 			messageWindowBackground = VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() )
-		endif
+		EndIf
 
 		SetClsColor 0,0,0
 		'use graphicsmanager's cls as it resets virtual resolution first
 		GetGraphicsManager().Cls()
 		DrawPixmap(messageWindowBackground, 0,0)
 
-		if load
+		If Load
 			messageWindow.SetValue( getLocale("SAVEGAME_GETS_LOADED") + "~n" + text)
-		else
+		Else
 			messageWindow.SetValue( getLocale("SAVEGAME_GETS_CREATED") + "~n" + text )
-		endif
+		EndIf
 
 		messageWindow.Update()
 		messageWindow.Draw()
@@ -2437,14 +2425,14 @@ Type TSaveGame Extends TGameState
 	End Function
 
 
-	Function ShowMessage:Int(Load:Int=False, text:string="", progress:Float=0.0)
+	Function ShowMessage:Int(Load:Int=False, text:String="", progress:Float=0.0)
 		'grab a fresh copy
 		messageWindowBackground = VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() )
 
-		if messageWindow then messageWindow.Remove()
+		If messageWindow Then messageWindow.Remove()
 
 		'create a new one
-		messageWindow = new TGUIGameModalWindow.Create(null, New TVec2D.Init(400, 100), "SYSTEM")
+		messageWindow = New TGUIGameModalWindow.Create(Null, New TVec2D.Init(400, 100), "SYSTEM")
 		messageWindow.guiCaptionTextBox.SetFont(headerFont)
 		messageWindow._defaultValueColor = TColor.clBlack.copy()
 		messageWindow.defaultCaptionColor = TColor.clWhite.copy()
@@ -2457,21 +2445,21 @@ Type TSaveGame Extends TGameState
 
 
 
-		if GetGame().gamestate = TGame.STATE_RUNNING
+		If GetGame().gamestate = TGame.STATE_RUNNING
 			messageWindow.darkenedArea = New TRectangle.Init(0,0,800,385)
 			messageWindow.screenArea = New TRectangle.Init(0,0,800,385)
-		else
-			messageWindow.darkenedArea = null
-			messageWindow.screenArea = null
-		endif
+		Else
+			messageWindow.darkenedArea = Null
+			messageWindow.screenArea = Null
+		EndIf
 
 		messageWindow.SetCaption( getLocale("PLEASE_BE_PATIENT") )
 
-		if load
+		If Load
 			messageWindow.SetValue( getLocale("SAVEGAME_GETS_LOADED") + "~n" + text)
-		else
+		Else
 			messageWindow.SetValue( getLocale("SAVEGAME_GETS_CREATED") + "~n" + text )
-		endif
+		EndIf
 
 		messageWindow.Open()
 
@@ -2482,51 +2470,51 @@ Type TSaveGame Extends TGameState
 	End Function
 
 
-	Function GetGameSummary:TData(fileURI:string)
-		local stream:TStream = ReadStream(fileURI)
-		if not stream
-			print "file not found: "+fileURI
-			return null
-		endif
+	Function GetGameSummary:TData(fileURI:String)
+		Local stream:TStream = ReadStream(fileURI)
+		If Not stream
+			Print "file not found: "+fileURI
+			Return Null
+		EndIf
 
 
-		local lines:string[]
-		local line:string = ""
-		local lineNum:int = 0
-		local validSavegame:int = False
-		While not EOF(stream)
+		Local lines:String[]
+		Local line:String = ""
+		Local lineNum:Int = 0
+		Local validSavegame:Int = False
+		While Not Eof(stream)
 			line = stream.ReadLine()
 
 			'scan bmo version to avoid faulty deserialization
-			if line.Find("<bmo ver=~q") >= 0
-				local bmoVersion:int = int(line[10 .. line.Find("~q>")])
-				if bmoVersion <= 7
-					return null
-				endif
-			endif
+			If line.Find("<bmo ver=~q") >= 0
+				Local bmoVersion:Int = Int(line[10 .. line.Find("~q>")])
+				If bmoVersion <= 7
+					Return Null
+				EndIf
+			EndIf
 
-			if line.Find("name=~q_Game~q type=~qTGame~q>") > 0
-				exit
-			endif
+			If line.Find("name=~q_Game~q type=~qTGame~q>") > 0
+				Exit
+			EndIf
 
 			'should not be needed - or might fail if we once have a bigger amount stored
 			'in gamesummary then expected
-			if lineNum > 1500 then exit
+			If lineNum > 1500 Then Exit
 
 			lines :+ [line]
 			lineNum :+ 1
-			if lineNum = 4 and line.Find("name=~q___gameSummary~q type=~qTData~q>") > 0
+			If lineNum = 4 And line.Find("name=~q___gameSummary~q type=~qTData~q>") > 0
 				validSavegame = True
-			endif
-			if lineNum = 4 and line.Find("name=~q_gameSummary~q type=~qTData~q>") > 0
+			EndIf
+			If lineNum = 4 And line.Find("name=~q_gameSummary~q type=~qTData~q>") > 0
 				validSavegame = True
-			endif
+			EndIf
 		Wend
 		CloseStream(stream)
-		if not validSavegame
-			print "unknown savegamefile"
-			return null
-		endif
+		If Not validSavegame
+			Print "unknown savegamefile"
+			Return Null
+		EndIf
 
 		'remove line 3 and 4
 		lines[2] = ""
@@ -2534,25 +2522,25 @@ Type TSaveGame Extends TGameState
 		'remove last line / let the bmo-file end there
 		lines[lines.length-1] = "</bmo>"
 
-		local content:string = "~n".Join(lines)
+		Local content:String = "~n".Join(lines)
 
 
 		'local p:TPersist = new TPersist
 		Local p:TPersist = New TXMLPersistenceBuilder.Build()
-		local res:TData = TData(p.DeserializeObject(content))
-		if not res then res = new TData
+		Local res:TData = TData(p.DeserializeObject(content))
+		If Not res Then res = New TData
 		res.Add("fileURI", fileURI)
 		res.Add("fileName", GetSavegameName(fileURI) )
 		res.AddNumber("fileTime", FileTime(fileURI))
 		p.Free()
 
-		return res
+		Return res
 	End Function
 
 
-	global _nilNode:TNode = new TNode._parent
+	Global _nilNode:TNode = New TNode._parent
 	Function RepairData()
-		rem
+		Rem
 			would "break" unfinished series productions with re-ordered
 			production orders (1,3,2) and missing episodes ([1,null,3])
 
@@ -2583,16 +2571,16 @@ Type TSaveGame Extends TGameState
 		'only needed until all "old savegames" run the current one
 		'or our savegames once get incompatible to older versions...
 		'(which happens a lot during dev)
-		local unused:int
-		local used:int = GetAdContractCollection().list.count()
-		local adagencyContracts:TList = RoomHandler_AdAgency.GetInstance().GetContractsInStock()
-		if not adagencyContracts then adagencyContracts = CreateList()
-		local availableContracts:TAdContract[] = TAdContract[](GetAdContractCollection().list.ToArray())
-		For local a:TAdContract = EachIn availableContracts
-			if a.owner = a.OWNER_NOBODY OR (a.daySigned = -1 and a.profit = -1 and not adagencyContracts.Contains(a))
+		Local unused:Int
+		Local used:Int = GetAdContractCollection().list.count()
+		Local adagencyContracts:TList = RoomHandler_AdAgency.GetInstance().GetContractsInStock()
+		If Not adagencyContracts Then adagencyContracts = CreateList()
+		Local availableContracts:TAdContract[] = TAdContract[](GetAdContractCollection().list.ToArray())
+		For Local a:TAdContract = EachIn availableContracts
+			If a.owner = a.OWNER_NOBODY Or (a.daySigned = -1 And a.profit = -1 And Not adagencyContracts.Contains(a))
 				unused :+1
 				GetAdContractCollection().Remove(a)
-			endif
+			EndIf
 		Next
 		'print "Cleanup: removed "+unused+" unused AdContracts."
 
@@ -2601,9 +2589,9 @@ Type TSaveGame Extends TGameState
 		'used = GetScriptCollection().GetAvailableScriptList().Count()
 		'local scriptList:TList = RoomHandler_ScriptAgency.GetInstance().GetScriptsInStock()
 		'if not scriptList then scriptList = CreateList()
-		local availableScripts:TScript[] = TScript[](GetScriptCollection().GetAvailableScriptList().ToArray())
+		Local availableScripts:TScript[] = TScript[](GetScriptCollection().GetAvailableScriptList().ToArray())
 		unused = 0
-		For local s:TScript = EachIn availableScripts
+		For Local s:TScript = EachIn availableScripts
 			unused :+1
 			GetScriptCollection().Remove(s)
 			TLogger.Log("Savegame.CleanUpData().", "- removing script: "+s.GetTitle()+"  ["+s.GetGUID()+"]", LOG_SAVELOAD | LOG_DEBUG)
@@ -2616,22 +2604,22 @@ Type TSaveGame Extends TGameState
 		ShowMessage(True)
 
 		'=== CHECK SAVEGAME ===
-		If filetype(saveName) <> 1
+		If FileType(saveName) <> 1
 			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is missing.", LOG_SAVELOAD | LOG_ERROR)
-			return False
+			Return False
 		EndIf
 
 		TPersist.maxDepth = 4096*4
 		Local persist:TPersist = New TXMLPersistenceBuilder.Build()
 		'Local persist:TPersist = New TPersist
-		persist.serializer = new TSavegameSerializer
+		persist.serializer = New TSavegameSerializer
 
-		local savegameSummary:TData = GetGameSummary(savename)
+		Local savegameSummary:TData = GetGameSummary(savename)
 		'invalid savegame
-		if not savegameSummary
+		If Not savegameSummary
 			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt or too old.", LOG_SAVELOAD | LOG_ERROR)
-			return False
-		endif
+			Return False
+		EndIf
 
 		'reset entity ID
 		'this avoids duplicate GUIDs
@@ -2641,18 +2629,18 @@ Type TSaveGame Extends TGameState
 
 
 		'try to repair older savegames
-		if savegameSummary.GetString("game_version") <> VersionString or savegameSummary.GetString("game_builddate") <> VersionDate
+		If savegameSummary.GetString("game_version") <> VersionString Or savegameSummary.GetString("game_builddate") <> VersionDate
 			TLogger.Log("Savegame.Load()", "Savegame was created with an older TVTower-build. Enabling basic compatibility mode.", LOG_SAVELOAD | LOG_DEBUG)
 			persist.strictMode = False
-			persist.converterTypeID = TTypeID.ForObject( new TSavegameConverter )
-		endif
+			persist.converterTypeID = TTypeId.ForObject( New TSavegameConverter )
+		EndIf
 
 
-		local loadingStart:int = Millisecs()
+		Local loadingStart:Int = MilliSecs()
 		'this creates new TGameObjects - and therefore increases ID count!
 ?bmxng
 		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename))
-?not bmxng
+?Not bmxng
 		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename, XML_PARSE_HUGE))
 ?
 		persist.Free()
@@ -2660,7 +2648,7 @@ Type TSaveGame Extends TGameState
 			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt.", LOG_SAVELOAD | LOG_ERROR)
 			Return False
 		Else
-			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q loaded in " + (Millisecs() - loadingStart)+"ms.", LOG_SAVELOAD | LOG_DEBUG)
+			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q loaded in " + (MilliSecs() - loadingStart)+"ms.", LOG_SAVELOAD | LOG_DEBUG)
 		EndIf
 
 		If Not saveGame.CheckGameData()
@@ -2671,7 +2659,7 @@ Type TSaveGame Extends TGameState
 
 		'=== RESET CURRENT GAME ===
 		'reset game data before loading savegame data
-		new TGameState.Initialize()
+		New TGameState.Initialize()
 
 
 		'=== LOAD SAVED GAME ===
@@ -2685,18 +2673,18 @@ Type TSaveGame Extends TGameState
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
 
-		if GetGame().GetObservedFigure() = GetPlayer().GetFigure()
+		If GetGame().GetObservedFigure() = GetPlayer().GetFigure()
 			'only set the screen if the figure is in this room ... this
 			'allows modifying the player in the savegame
 			If GetPlayer().GetFigure().inRoom
 				Local playerScreen:TScreen = ScreenCollection.GetScreen(saveGame._CurrentScreenName)
-				If playerScreen.name = GetPlayer().GetFigure().inRoom.GetScreenName() or playerScreen.HasParentScreen(GetPlayer().GetFigure().inRoom.GetScreenName())
+				If playerScreen.name = GetPlayer().GetFigure().inRoom.GetScreenName() Or playerScreen.HasParentScreen(GetPlayer().GetFigure().inRoom.GetScreenName())
 					'ScreenCollection.GoToScreen(playerScreen)
 					'just set the current screen... no animation
 					ScreenCollection._SetCurrentScreen(playerScreen)
 				EndIf
 			EndIf
-rem
+Rem
 			'if saved during screen change, try to recreate the transition
 			'without this, the game shows the building while the figure
 			'is in.
@@ -2712,7 +2700,7 @@ rem
 				endif
 			endif
 endrem
-		endif
+		EndIf
 
 
 		CleanUpData()
@@ -2721,7 +2709,7 @@ endrem
 		RepairData()
 
 		'close message window
-		if messageWindow then messageWindow.Close()
+		If messageWindow Then messageWindow.Close()
 
 		'call game that game continues/starts now
 		GetGame().StartLoadedSaveGame()
@@ -2734,20 +2722,22 @@ endrem
 		ShowMessage(False)
 
 		'check directories and create them if needed
-		local dirs:string[] = ExtractDir(saveName.Replace("\", "/")).Split("/")
-		local currDir:string
-		for local dir:string = EachIn dirs
-			currDir :+ dir + "/"
+		Local dirs:String[] = ExtractDir(saveName.Replace("\", "/")).Split("/")
+		Local currDir:String
+		For Local dir:String = EachIn dirs
+			If currDir Then currDir :+ "/"
+			currDir :+ dir
 			'if directory does not exist, create it
-			if filetype(currDir) <> 2
+			If FileType(currDir) <> 2
 				TLogger.Log("Savegame.Save()", "Savegame path contains missing directories. Creating ~q"+currDir[.. currDir.length-1]+"~q.", LOG_SAVELOAD)
 				CreateDir(currDir)
-			endif
+			EndIf
 		Next
-		if filetype(currDir) <> 2
-			TLogger.Log("Savegame.Save()", "Failed to create directories for ~q"+saveName+"~q.", LOG_SAVELOAD)
-		endif
+		If FileType(currDir) <> 2
+			TLogger.Log("Savegame.Save()", "Failed to create directory ~q" + currDir + "~q for ~q"+saveName+"~q.", LOG_SAVELOAD)
+		EndIf
 
+Local t:Int = MilliSecs()
 		Local saveGame:TSaveGame = New TSaveGame
 		'tell everybody we start saving
 		'payload is saveName
@@ -2767,82 +2757,82 @@ endrem
 		'TPersist.format=False
 		Local p:TPersist = New TXMLPersistenceBuilder.Build()
 		'local p:TPersist = New TPersist
-		p.serializer = new TSavegameSerializer
-		if TPersist.compressed
+		p.serializer = New TSavegameSerializer
+		If TPersist.compressed
 			p.SerializeToFile(saveGame, saveName+".zip")
-		else
+		Else
 			p.SerializeToFile(saveGame, saveName)
-		endif
+		EndIf
 		p.Free()
 
 		'tell everybody we finished saving
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnSave", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
-
+Print "saving took " + (MilliSecs() - t) + "ms."
 		'close message window
-		if messageWindow then messageWindow.Close()
+		If messageWindow Then messageWindow.Close()
 
 		Return True
 	End Function
 
 
-	Function GetSavegameName:string(fileURI:string)
-		local p:string = GetSavegamePath()
-		local r:string
-		if p.length > 0 and fileURI.Find( p ) = 0
+	Function GetSavegameName:String(fileURI:String)
+		Local p:String = GetSavegamePath()
+		Local r:String
+		If p.length > 0 And fileURI.Find( p ) = 0
 			r = StripExt( fileURI[ p.length .. ] )
-		else
+		Else
 			r = StripDir(StripExt(fileURI))
-		endif
+		EndIf
 
-		if r.length = 0 then return ""
-		if chr(r[0]) = "/" or chr(r[0]) = "\"
+		If r.length = 0 Then Return ""
+		If Chr(r[0]) = "/" Or Chr(r[0]) = "\"
 			r = r[1 ..]
-		endif
+		EndIf
 
-		return r
+		Return r
 	End Function
 
 
-	Function GetSavegameURI:string(fileName:string)
-		if GetSavegamePath() <> "" then return GetSavegamePath() + "/" + GetSavegameName(fileName) + ".xml"
-		return GetSavegameName(fileName) + ".xml"
+	Function GetSavegameURI:String(fileName:String)
+		If GetSavegamePath() <> "" Then Return GetSavegamePath() + "/" + GetSavegameName(fileName) + ".xml"
+		Return GetSavegameName(fileName) + ".xml"
 	End Function
 
 
-	Function GetSavegamePath:string()
-		return "savegames"
+	Function GetSavegamePath:String()
+		Return "savegames"
 	End Function
 End Type
 
 
 Type TSavegameConverter
-	Method DeSerializeUnknownProperty:object(oldType:string, newType:string, obj:object, parentObj:object)
-		local convert:string = (oldType+">"+newType).ToLower()
+	Method DeSerializeUnknownProperty:Object(oldType:String, newType:String, obj:Object, parentObj:Object)
+		Local convert:String = (oldType+">"+newType).ToLower()
 		Select convert
-			case "TIntervalTimer>TBuildingIntervalTimer".ToLower()
-				local old:TIntervalTimer = TIntervalTimer(obj)
-				if old
-					local res:TBuildingIntervalTimer = new TBuildingIntervalTimer
+			Case "TIntervalTimer>TBuildingIntervalTimer".ToLower()
+				Local old:TIntervalTimer = TIntervalTimer(obj)
+				If old
+					Local res:TBuildingIntervalTimer = New TBuildingIntervalTimer
 					res.Init(old.interval, 0, old.randomnessMin, old.randomnessMax)
 
-					return res
-				endif
+					Return res
+				EndIf
 
-			case "TProgrammeLicenceFilter>TProgrammeLicenceFilterGroup".ToLower()
-				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "RoomHandler_MovieAgency".ToLower()
-					return RoomHandler_MovieAgency.GetInstance().filterAuction
-				endif
-			case "TMap>TAudienceAttraction[]".ToLower()
-				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "TAudienceMarketCalculation".ToLower()
-					local oldMap:TMap = TMap(obj)
-					local newArr:TAudienceAttraction[]
-					for local att:TAudienceAttraction = EachIn oldMap.Values()
+			Case "TProgrammeLicenceFilter>TProgrammeLicenceFilterGroup".ToLower()
+				If parentObj And TTypeId.ForObject(parentObj).name().ToLower() = "RoomHandler_MovieAgency".ToLower()
+					Return RoomHandler_MovieAgency.GetInstance().filterAuction
+				EndIf
+			Case "TMap>TAudienceAttraction[]".ToLower()
+				If parentObj And TTypeId.ForObject(parentObj).name().ToLower() = "TAudienceMarketCalculation".ToLower()
+					Local oldMap:TMap = TMap(obj)
+					Local newArr:TAudienceAttraction[]
+					For Local att:TAudienceAttraction = EachIn oldMap.Values()
 						newArr :+ [att]
-					next
-					return newArr
-				endif
-			rem
+					Next
+					Return newArr
+				EndIf
+			Rem
 			case "TList>TIntMap".ToLower()
 				'room(base)collection?
 				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "TRoomCollection".ToLower()
@@ -2861,36 +2851,36 @@ Type TSavegameConverter
 				endif
 			endrem
 		End Select
-		return null
+		Return Null
 	End Method
 End Type
 
 
 Type TSavegameSerializer
-	Method SerializeTSpriteToString:string(obj:object)
-		local sprite:TSprite = TSprite(obj)
-		if not sprite then return ""
+	Method SerializeTSpriteToString:String(obj:Object)
+		Local sprite:TSprite = TSprite(obj)
+		If Not sprite Then Return ""
 		'Of sprite data, we only need an identifier and all data, which
 		'is differing between games. This works because sprites are
 		'the same between games - so we just reassign them on load
 
 		'individual data: nothing
 		'identifier: name
-		local res:string = sprite.name
+		Local res:String = sprite.name
 
-		return res
+		Return res
 	End Method
 
 
-	Method DeSerializeTSpriteFromString:object(serialized:String, targetObj:object)
+	Method DeSerializeTSpriteFromString:Object(serialized:String, targetObj:Object)
 		'local sprite:TSprite = TSprite(targetObj)
 		'if not sprite then return null
 
 		'only consists of name
-		local name:string = serialized
+		Local name:String = serialized
 		targetObj = GetSpriteFromRegistry(name)
 
-		return targetObj
+		Return targetObj
 	End Method
 End Type
 
@@ -3035,7 +3025,7 @@ Type TScreen_MainMenu Extends TGameScreen
 		TLogger.Log("====== PREPARE NEW GAME ======", "", LOG_DEBUG)
 
 		'reset game data collections
-		new TGameState.Initialize()
+		New TGameState.Initialize()
 		'load custom configuration (usernames, ports, ...)
 		GetGame().LoadConfig(App.config)
 		'create player figures so they can get shown in the settings screen
@@ -3051,14 +3041,14 @@ Type TScreen_MainMenu Extends TGameScreen
 		TGUISavegameListItem.SetTypeFont(GetBitmapFont(""))
 
 		'remove a previously created one
-		if loadGameMenuWindow then loadGameMenuWindow.Remove()
+		If loadGameMenuWindow Then loadGameMenuWindow.Remove()
 
 		loadGameMenuWindow = New TGUIModalWindowChain.Create(New TVec2D, New TVec2D.Init(500,150), "SYSTEM")
 		loadGameMenuWindow.SetZIndex(99000)
-		loadGameMenuWindow.SetCenterLimit(new TRectangle.setTLBR(30,0,0,0))
+		loadGameMenuWindow.SetCenterLimit(New TRectangle.setTLBR(30,0,0,0))
 
 		'append menu after creation of screen area, so it recenters properly
-		local loadMenu:TGUIModalLoadSavegameMenu = new TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,350), "SYSTEM")
+		Local loadMenu:TGUIModalLoadSavegameMenu = New TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,350), "SYSTEM")
 		loadMenu._defaultValueColor = TColor.clBlack.copy()
 		loadMenu.defaultCaptionColor = TColor.clWhite.copy()
 
@@ -3070,7 +3060,7 @@ Type TScreen_MainMenu Extends TGameScreen
 		loadGameMenuWindow.SetScreenArea(New TRectangle.Init(0,0,800,600))
 
 		App.EscapeMenuWindow = loadGameMenuWindow
-		loadGameMenuWindow = null
+		loadGameMenuWindow = Null
 
 		'RONNY: debug
 		TLogger.Log("Dialogues", "Created LoadGame-Menu.", LOG_DEBUG)
@@ -3229,7 +3219,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 					GetGame().SetGamestate(TGame.STATE_SETTINGSMENU)
 					?bmxng
 						Network.localFallbackIP = DottedIPToInt(HostIp(GetGame().userFallbackIP))
-					?not bmxng
+					?Not bmxng
 						Network.localFallbackIP = HostIp(GetGame().userFallbackIP)
 					?
 					Network.StartServer()
@@ -3269,7 +3259,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 		?bmxng
 		If Network.ConnectToServer( DottedIPToInt(HostIp(_hostIP)), _hostPort )
-		?not bmxng
+		?Not bmxng
 		If Network.ConnectToServer( HostIp(_hostIP), _hostPort )
 		?
 			Network.isServer = False
@@ -3305,7 +3295,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 				Network.OnlineIP = responseArray[0]
 				?bmxng
 					Network.intOnlineIP = DottedIPToInt(HostIp(Network.OnlineIP))
-				?not bmxng
+				?Not bmxng
 					Network.intOnlineIP = HostIp(Network.OnlineIP)
 				?
 				Print "[NET] set your onlineIP: "+responseArray[0]
@@ -3561,17 +3551,17 @@ Type GameEvents
 	Global _eventListeners:TLink[]
 
 
-	Function Initialize:int()
+	Function Initialize:Int()
 		UnRegisterEventListeners()
 		RegisterEventListeners()
 
-		return True
+		Return True
 	End Function
 
 
 	Function UnRegisterEventListeners:Int()
 		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		_eventListeners = New TLink[0]
 	End Function
 
 
@@ -3662,9 +3652,9 @@ Type GameEvents
 
 	'helper
 	Function CreateArchiveMessageFromToastMessage:TArchivedMessage(toastMessage:TGameToastMessage)
-		if not toastMessage then return null
+		If Not toastMessage Then Return Null
 
-		local archivedMessage:TArchivedMessage = new TArchivedMessage
+		Local archivedMessage:TArchivedMessage = New TArchivedMessage
 		archivedMessage.SetTitle(toastMessage.caption)
 		archivedMessage.SetText(toastMessage.text)
 		archivedMessage.messageCategory = toastMessage.messageCategory
@@ -3673,123 +3663,123 @@ Type GameEvents
 		archivedMessage.sourceGUID = toastMessage.GetGUID()
 		archivedMessage.SetOwner( toastMessage.GetData().GetInt("playerID", -1) )
 
-		return archivedMessage
+		Return archivedMessage
 	End Function
 
 
-	Function OnOpenIngameHelp:int(triggerEvent:TEventBase)
+	Function OnOpenIngameHelp:Int(triggerEvent:TEventBase)
 		App.SetPausedBy(TApp.PAUSED_BY_INGAMEHELP, True)
 	End Function
 
 
-	Function OnCloseIngameHelp:int(triggerEvent:TEventBase)
+	Function OnCloseIngameHelp:Int(triggerEvent:TEventBase)
 		App.SetPausedBy(TApp.PAUSED_BY_INGAMEHELP, False)
 	End Function
 
 
-	Function OnOpenModalWindow:int(triggerEvent:TEventBase)
+	Function OnOpenModalWindow:Int(triggerEvent:TEventBase)
 		App.SetPausedBy(TApp.PAUSED_BY_MODALWINDOW)
 	End Function
 
 
-	Function OnCloseModalWindow:int(triggerEvent:TEventBase)
+	Function OnCloseModalWindow:Int(triggerEvent:TEventBase)
 		App.SetPausedBy(TApp.PAUSED_BY_MODALWINDOW, False)
 	End Function
 
 
 	'correct potentially "broken" (eg. savegame inbetween a "leaving" state)
 	'screen assignments
-	Function onFigureSetInRoom:int(triggerEvent:TEventBase)
-		local fig:TFigureBase = TFigureBase(triggerEvent.GetSender())
+	Function onFigureSetInRoom:Int(triggerEvent:TEventBase)
+		Local fig:TFigureBase = TFigureBase(triggerEvent.GetSender())
 
-		if GetGame().GetObservedFigure() = fig
+		If GetGame().GetObservedFigure() = fig
 			If fig.GetInRoom()
 				ScreenCollection._SetCurrentScreen(ScreenCollection.GetCurrentScreen())
 			Else
 				ScreenCollection._SetCurrentScreen(GetGame().GameScreen_world)
 			EndIf
-		endif
+		EndIf
 	End Function
 
 
-	Function OnEnterNewScreen:int(triggerEvent:TEventBase)
-		local screen:TScreen = TScreen(triggerEvent.GetSender())
-		if not screen then return False
+	Function OnEnterNewScreen:Int(triggerEvent:TEventBase)
+		Local screen:TScreen = TScreen(triggerEvent.GetSender())
+		If Not screen Then Return False
 		'try to show the ingame help for that screen (if there is any)
 		IngameHelpWindowCollection.ShowByHelpGUID( screen.GetName() )
 	End Function
 
 
-	global roomLog:TList = CreateList()
-	global roomCount:TMap = CreateMap()
+	Global roomLog:TList = CreateList()
+	Global roomCount:TMap = CreateMap()
 	Function onPlayerEntersRoom:Int(triggerEvent:TEventBase)
-		local room:TRoom = TRoom(triggerEvent.GetReceiver())
-		local player:TPlayer = TPlayer(triggerEvent.GetSender())
+		Local room:TRoom = TRoom(triggerEvent.GetReceiver())
+		Local player:TPlayer = TPlayer(triggerEvent.GetSender())
 
 		roomLog.AddLast("Player #"+player.playerID+"  enters " + room.GetName()+ "  [" + GetWorldTime().GetFormattedGameDate()+"]")
 
-		local key:string = player.playerID+"|"+room.GetName()
-		local count:int = int(string(roomCount.ValueForKey(key))) + 1
-		roomCount.insert(key, string(count))
+		Local key:String = player.playerID+"|"+room.GetName()
+		Local count:Int = Int(String(roomCount.ValueForKey(key))) + 1
+		roomCount.insert(key, String(count))
 
 	End Function
 
 
 	Function onChatAddEntryForAI:Int(triggerEvent:TEventBase)
 		Local text:String = triggerEvent.GetData().GetString("text")
-		Local senderID:int = triggerEvent.GetData().GetInt("senderID")
-		Local channels:int = triggerEvent.GetData().GetInt("channels")
+		Local senderID:Int = triggerEvent.GetData().GetInt("senderID")
+		Local channels:Int = triggerEvent.GetData().GetInt("channels")
 
-		local commandType:int = TGUIChat.GetCommandFromText(text)
-		local commandText:string = TGUIChat.GetCommandStringFromText(text)
+		Local commandType:Int = TGUIChat.GetCommandFromText(text)
+		Local commandText:String = TGUIChat.GetCommandStringFromText(text)
 		'print "SenderID=" + senderID +"   commandType/Text="+commandType + "/"+commandText + "   text="+text
 
 		'=== PRIVATE / WHISPER ===
 		'-> send to AI ?
-		if commandType = CHAT_COMMAND_WHISPER
-			local message:string = TGUIChat.GetPayloadFromText(text)
-			local receiver:string = message.split(" ")[0]
-			local receiverID:int = int(receiver)
-			local playerBase:TPlayerBase
-			if string(receiverID) <> receiver > 9 'some odd number containing thing or playername?
+		If commandType = CHAT_COMMAND_WHISPER
+			Local message:String = TGUIChat.GetPayloadFromText(text)
+			Local receiver:String = message.split(" ")[0]
+			Local receiverID:Int = Int(receiver)
+			Local playerBase:TPlayerBase
+			If String(receiverID) <> receiver > 9 'some odd number containing thing or playername?
 				For Local pBase:TPlayerBase = EachIn GetPlayerBaseCollection().players
-					if pBase.name.ToLower() = receiver.ToLower()
+					If pBase.name.ToLower() = receiver.ToLower()
 						message = message[receiver.length+1 ..] 'remove name/id
 						receiverID = pBase.playerID
 						receiver = pBase.name
 						playerBase = pBase
-						exit
-					endif
+						Exit
+					EndIf
 				Next
-			elseif receiverID > 0 and receiverID < 9
+			ElseIf receiverID > 0 And receiverID < 9
 				message = message[receiver.length+1 ..] 'remove name/id
 				playerBase = GetPlayerBase(receiverID)
-				if playerBase
+				If playerBase
 					receiver = playerBase.name
-				endif
-			endif
-			if playerBase and TPlayer(playerBase).isLocalAI()
+				EndIf
+			EndIf
+			If playerBase And TPlayer(playerBase).isLocalAI()
 				TPlayer(playerBase).PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_WHISPER)
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'public chat
-		if commandType = CHAT_COMMAND_NONE
+		If commandType = CHAT_COMMAND_NONE
 			'ignore chats starting with a "command" (maybe misspelled a whisper)
 			'also ignore system channel messages
-			if text.trim().Find("/") <> 0 and (channels & CHAT_CHANNEL_SYSTEM) = 0 'or text.trim().Find("[DEV]") = 0
+			If text.Trim().Find("/") <> 0 And (channels & CHAT_CHANNEL_SYSTEM) = 0 'or text.trim().Find("[DEV]") = 0
 				'local channels:int = TGUIChat.GetChannelsFromText(text)
-				local message:string = TGUIChat.GetPayloadFromText(text)
+				Local message:String = TGUIChat.GetPayloadFromText(text)
 
 				'inform local AI
 				For Local player:TPLayer = EachIn GetPlayerCollection().players
-					if player.isLocalAI()
+					If player.isLocalAI()
 						player.PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_NONE, channels)
-					endif
+					EndIf
 				Next
-			endif
-			return True
-		endif
+			EndIf
+			Return True
+		EndIf
 	End Function
 
 
@@ -3818,20 +3808,20 @@ Type GameEvents
 
 		Select command.Trim().toLower()
 			Case "loaddb"
-				local dbName:string = payload.Trim()
-				if dbName
+				Local dbName:String = payload.Trim()
+				If dbName
 					'find all fitting files
-					local dirTree:TDirectoryTree = new TDirectoryTree.SimpleInit("res/database/Default")
+					Local dirTree:TDirectoryTree = New TDirectoryTree.SimpleInit("res/database/Default")
 					dirTree.SetIncludeFileEndings(["xml"])
 					dirTree.ScanDir("", True)
-					local fileURIs:String[] = dirTree.GetFiles("", "", "", "", dbName)
+					Local fileURIs:String[] = dirTree.GetFiles("", "", "", "", dbName)
 
 					LoadDB(fileURIs)
 					GetGame().SendSystemMessage("[DEV] Loaded the following DBs: "+ ", ".join(fileURIs) +".")
-				else
+				Else
 					LoadDB()
 					GetGame().SendSystemMessage("[DEV] Loaded the all DBs in the DB directory.")
-				endif
+				EndIf
 
 				GetNewsEventCollection()._InvalidateCaches()
 
@@ -3841,9 +3831,9 @@ Type GameEvents
 				GetGame().SendSystemMessage("[DEV] Set Player #"+player.playerID+"'s maximum audience to "+GetStationMap(player.playerID).GetReach())
 
 			Case "debug"
-				local what:string = payload
+				Local what:String = payload
 				Select what.Trim().ToLower()
-					case "programmeplan"
+					Case "programmeplan"
 						TVTDebugProgrammePlan = True
 						TVTDebugQuoteInfos = False
 						TVTDebugModifierInfos = False
@@ -3851,40 +3841,40 @@ Type GameEvents
 
 			Case "commandai"
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
-				if not player.IsLocalAI()
+				If Not player.IsLocalAI()
 					GetGame().SendSystemMessage("[DEV] cannot command non-local AI player.")
-				else
+				Else
 					player.playerAI.CallOnChat(GetPlayer().playerID, "CMD_" + paramS, CHAT_COMMAND_WHISPER)
-				endif
+				EndIf
 
 			Case "playerai"
-				if GetGame().networkGame
+				If GetGame().networkGame
 					GetGame().SendSystemMessage("[DEV] Cannot adjust AI in network games.")
-					return False
-				endif
+					Return False
+				EndIf
 
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
 
 				If Int(params) = 1
-					if not player.IsLocalAI()
+					If Not player.IsLocalAI()
 						player.SetLocalAIControlled()
 						'reload ai - to avoid using "outdated" information
-						player.InitAI( new TAI.Create(player.playerID, GetGame().GetPlayerAIFileURI(player.playerID)) )
+						player.InitAI( New TAI.Create(player.playerID, GetGame().GetPlayerAIFileURI(player.playerID)) )
 						player.playerAI.CallOnInit()
 						'player.PlayerAI.CallLuaFunction("OnForceNextTask", null)
 						GetGame().SendSystemMessage("[DEV] Enabled AI for player "+player.playerID)
-					else
+					Else
 						GetGame().SendSystemMessage("[DEV] Already enabled AI for player "+player.playerID)
-					endif
-				else
-					if player.IsLocalAI()
+					EndIf
+				Else
+					If player.IsLocalAI()
 						'calling "SetLocalHumanControlled()" deletes AI too
 						player.SetLocalHumanControlled()
 						GetGame().SendSystemMessage("[DEV] Disabled AI for player "+player.playerID)
-					else
+					Else
 						GetGame().SendSystemMessage("[DEV] Already disabled AI for player "+player.playerID)
-					endif
-				endif
+					EndIf
+				EndIf
 
 			Case "bossmood"
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
@@ -3923,10 +3913,10 @@ Type GameEvents
 				GetGame().SendSystemMessage("[DEV] Image of player "+playerS+": "+player.GetPublicImage().GetAverageImage()+"%." + changed)
 
 			Case "terrorlvl"
-				local paramArray:String[]
-				If paramS <> "" then paramArray = paramS.Split(" ")
+				Local paramArray:String[]
+				If paramS <> "" Then paramArray = paramS.Split(" ")
 
-				if Len(paramArray) = 1
+				If Len(paramArray) = 1
 					GetNewsAgency().SetTerroristAggressionLevel(Int(playerS), Int(paramArray[0]))
 					GetGame().SendSystemMessage("[DEV] Changed terror level of terror group '" + playerS + "' to '" + paramArray[0] + "'!")
 				Else
@@ -3941,137 +3931,137 @@ Type GameEvents
 
 			Case "gotoroom"
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
-				local roomGUID:string = paramS
-				local room:TRoomBase
-				if string(int(roomGUID)) = roomGUID
-					room = GetRoomBaseCollection().Get( int(roomGUID) )
-				endif
-				if not room
+				Local roomGUID:String = paramS
+				Local room:TRoomBase
+				If String(Int(roomGUID)) = roomGUID
+					room = GetRoomBaseCollection().Get( Int(roomGUID) )
+				EndIf
+				If Not room
 					room = GetRoomBaseCollection().GetByGUID( TLowerString.Create(roomGUID) )
-				endif
-				if not room
+				EndIf
+				If Not room
 					room = GetRoomBaseCollection().GetFirstByDetails("", roomGUID, player.playerID)
-				endif
-				if room
+				EndIf
+				If room
 					DEV_switchRoom(room, player.GetFigure())
-				endif
+				EndIf
 
 			Case "rentroom"
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
-				local roomGUID:string = paramS
-				local room:TRoomBase
-				if string(int(roomGUID)) = roomGUID
-					room = GetRoomBaseCollection().Get( int(roomGUID) )
-				endif
-				if not room
+				Local roomGUID:String = paramS
+				Local room:TRoomBase
+				If String(Int(roomGUID)) = roomGUID
+					room = GetRoomBaseCollection().Get( Int(roomGUID) )
+				EndIf
+				If Not room
 					room = GetRoomBaseCollection().GetByGUID( TLowerString.Create(roomGUID) )
-				endif
-				if not room
+				EndIf
+				If Not room
 					room = GetRoomBaseCollection().GetFirstByDetails("", roomGUID, player.playerID)
-				endif
-				if room
+				EndIf
+				If room
 					GetRoomAgency().CancelRoomRental(room, player.playerID)
 					GetRoomAgency().BeginRoomRental(room, player.playerID)
 					room.SetUsedAsStudio(True)
 					GetGame().SendSystemMessage("[DEV] Rented room '" + room.GetDescription() +"' ["+room.GetName() + "] for player '" + player.name +"' ["+player.playerID + "]!")
-				else
+				Else
 					GetGame().SendSystemMessage("[DEV] Cannot rent room '" + roomGUID + "'. Not found!")
-				endif
+				EndIf
 
 			Case "setmasterkey"
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
-				local bool:int = int(paramS)
+				Local bool:Int = Int(paramS)
 				player.GetFigure().SetHasMasterkey(bool)
-				if bool
+				If bool
 					GetGame().SendSystemMessage("[DEV] Added masterkey to player '" + player.name +"' ["+player.playerID + "]!")
-				else
+				Else
 					GetGame().SendSystemMessage("[DEV] Removed masterkey from player '" + player.name +"' ["+player.playerID + "]!")
-				endif
+				EndIf
 
-			case "reloaddev"
-				if FileType("config/DEV.xml") = 1
-					local dataLoader:TDataXmlStorage = new TDataXmlStorage
-					local data:TData = dataLoader.Load("config/DEV.xml")
-					if data
+			Case "reloaddev"
+				If FileType("config/DEV.xml") = 1
+					Local dataLoader:TDataXmlStorage = New TDataXmlStorage
+					Local data:TData = dataLoader.Load("config/DEV.xml")
+					If data
 						GetRegistry().Set("DEV_CONFIG", data)
 						GameRules.devConfig = data
 						GameRules.AssignFromData( Gamerules.devConfig )
 
 						GetGame().SendSystemMessage("[DEV] Reloaded ~qconfig/DEV.xml~q.")
-					else
+					Else
 						GetGame().SendSystemMessage("[DEV] Failed to reload ~qconfig/DEV.xml~q.")
-					endif
-				else
+					EndIf
+				Else
 					GetGame().SendSystemMessage("[DEV] ~qconfig/DEV.xml~q not found.")
-				endif
+				EndIf
 
 
 			Case "endauctions"
-				local paramArray:String[]
-				If paramS <> "" then paramArray = playerS.Split(" ")
-				if paramArray.length = 0 or paramArray[0] = "-1" then paramArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
-				For local indexS:string = EachIn paramArray
-					local block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks.GetByIndex( int(indexS)-1 )
-					if not block then continue
-					local oldLicence:TProgrammeLicence = block.licence
-					local oldPrice:int = block.GetNextBidRaw()
+				Local paramArray:String[]
+				If paramS <> "" Then paramArray = playerS.Split(" ")
+				If paramArray.length = 0 Or paramArray[0] = "-1" Then paramArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
+				For Local indexS:String = EachIn paramArray
+					Local block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks.GetByIndex( Int(indexS)-1 )
+					If Not block Then Continue
+					Local oldLicence:TProgrammeLicence = block.licence
+					Local oldPrice:Int = block.GetNextBidRaw()
 					block.EndAuction()
 
-					if not oldLicence
-						GetGame().SendSystemMessage("[DEV] #"+int(indexS)+". Created new auction '" + block.licence.GetTitle()+"'")
-					elseif oldLicence <> block.licence and block.licence
-						GetGame().SendSystemMessage("[DEV] #"+int(indexS)+". Ended auction for '" + oldLicence.GetTitle()+"', Created new auction '" + block.licence.GetTitle()+"'")
-					elseif oldLicence and not block.licence
-						GetGame().SendSystemMessage("[DEV] #"+int(indexS)+". Ended auction for '" + oldLicence.GetTitle()+"', Created no new auction")
-					elseif oldLicence = block.licence
-						GetGame().SendSystemMessage("[DEV] #"+int(indexS)+". Reduced auction raw price for '" + oldLicence.GetTitle()+"' from " + MathHelper.DottedValue(oldPrice) + " to " + MathHelper.DottedValue(block.GetNextBidRaw()))
-					endif
+					If Not oldLicence
+						GetGame().SendSystemMessage("[DEV] #"+Int(indexS)+". Created new auction '" + block.licence.GetTitle()+"'")
+					ElseIf oldLicence <> block.licence And block.licence
+						GetGame().SendSystemMessage("[DEV] #"+Int(indexS)+". Ended auction for '" + oldLicence.GetTitle()+"', Created new auction '" + block.licence.GetTitle()+"'")
+					ElseIf oldLicence And Not block.licence
+						GetGame().SendSystemMessage("[DEV] #"+Int(indexS)+". Ended auction for '" + oldLicence.GetTitle()+"', Created no new auction")
+					ElseIf oldLicence = block.licence
+						GetGame().SendSystemMessage("[DEV] #"+Int(indexS)+". Reduced auction raw price for '" + oldLicence.GetTitle()+"' from " + MathHelper.DottedValue(oldPrice) + " to " + MathHelper.DottedValue(block.GetNextBidRaw()))
+					EndIf
 				Next
 
 
 			Case "sendnews"
-				local newsGUID:string = playerS '(first payload-param)
-				local announceNow:int = int(paramS)
+				Local newsGUID:String = playerS '(first payload-param)
+				Local announceNow:Int = Int(paramS)
 
-				if newsGUID.trim() = ""
+				If newsGUID.Trim() = ""
 					GetGame().SendSystemMessage("Wrong syntax (/dev help)!")
-					return False
-				endif
+					Return False
+				EndIf
 
-				if newsGUID.Find("devnews") = 0
+				If newsGUID.Find("devnews") = 0
 					'num 1-xxx
-					local num:int = Max(1, int(newsGUID.replace("devnews", "")))
+					Local num:Int = Max(1, Int(newsGUID.Replace("devnews", "")))
 					newsGUID = GameRules.devConfig.GetString("DEV_NEWS_GUID"+num, "")
-					if not newsGUID
+					If Not newsGUID
 						GetGame().SendSystemMessage("Incorrect devnews-syntax (/dev help)!")
-						return False
-					endif
-				endif
+						Return False
+					EndIf
+				EndIf
 
 				'check template first
-				local news:TNewsEvent
-				local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(newsGUID)
-				if not template then template = GetNewsEventTemplateCollection().SearchByPartialGUID(newsGUID)
+				Local news:TNewsEvent
+				Local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(newsGUID)
+				If Not template Then template = GetNewsEventTemplateCollection().SearchByPartialGUID(newsGUID)
 
-				if template
-					if template.IsAvailable()
-						news = new TNewsEvent.InitFromTemplate(template)
-						if news
+				If template
+					If template.IsAvailable()
+						news = New TNewsEvent.InitFromTemplate(template)
+						If news
 							GetNewsEventCollection().Add(news)
-						endif
-					else
+						EndIf
+					Else
 						TLogger.Log("DevCheat", "SendNews: news template not available (yet): "+newsGUID, LOG_DEBUG)
-						return false
-					endif
-				else
+						Return False
+					EndIf
+				Else
 					news = GetNewsEventCollection().GetByGUID(newsGUID)
-					if not news then news = GetNewsEventCollection().SearchByPartialGUID(newsGUID)
-				endif
+					If Not news Then news = GetNewsEventCollection().SearchByPartialGUID(newsGUID)
+				EndIf
 
-				if not news
+				If Not news
 					GetGame().SendSystemMessage("No news with GUID ~q"+newsGUID+"~q found.")
-					return False
-				endif
+					Return False
+				EndIf
 
 				'announce that news
 				GetNewsAgency().announceNewsEvent(news, 0, announceNow)
@@ -4083,46 +4073,46 @@ Type GameEvents
 				Local licenceGUID:String, hasToPay:String
 				FillCommandPayload(paramS, licenceGUID, hasToPay)
 
-				if licenceGUID.trim() = ""
+				If licenceGUID.Trim() = ""
 					GetGame().SendSystemMessage("Wrong syntax (/dev help)!")
-					return False
-				endif
+					Return False
+				EndIf
 
-				if licenceGUID.Find("devlicence") = 0
+				If licenceGUID.Find("devlicence") = 0
 					'num 1-xxx
-					local num:int = Max(1, int(licenceGUID.replace("devlicence", "")))
+					Local num:Int = Max(1, Int(licenceGUID.Replace("devlicence", "")))
 					licenceGUID = GameRules.devConfig.GetString("DEV_PROGRAMMELICENCE_GUID"+num, "")
-					if not licenceGUID
+					If Not licenceGUID
 						GetGame().SendSystemMessage("Incorrect devlicence-syntax (/dev help)!")
-						return False
-					endif
-				endif
+						Return False
+					EndIf
+				EndIf
 
-				local licence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(licenceGUID)
-				if not licence then licence = GetProgrammeLicenceCollection().SearchByPartialGUID(licenceGUID)
-				if not licence
+				Local licence:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(licenceGUID)
+				If Not licence Then licence = GetProgrammeLicenceCollection().SearchByPartialGUID(licenceGUID)
+				If Not licence
 					GetGame().SendSystemMessage("No licence with GUID ~q"+licenceGUID+"~q found.")
-					return False
-				endif
+					Return False
+				EndIf
 
 				'add series not episodes
-				if licence.IsEpisode() then licence = licence.GetParentLicence()
+				If licence.IsEpisode() Then licence = licence.GetParentLicence()
 				'add collections, not collection episodes
-				if licence.IsCollectionElement() then licence = licence.GetParentLicence()
+				If licence.IsCollectionElement() Then licence = licence.GetParentLicence()
 
 				'hand the licence to the player
-				if licence.owner <> player.playerID
-					if hasToPay = "0" or hasToPay.ToLower() = "false"
+				If licence.owner <> player.playerID
+					If hasToPay = "0" Or hasToPay.ToLower() = "false"
 						licence.SetOwner(player.playerID)
-					else
+					Else
 						licence.SetOwner(0)
-					endif
+					EndIf
 					'true = skip owner check (needed to be able to skip payment
 					RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(licence, player.playerID, True)
 					GetGame().SendSystemMessage("added movie: "+licence.GetTitle()+" ["+licence.GetGUID()+"]")
-				else
+				Else
 					GetGame().SendSystemMessage("already had movie: "+licence.GetTitle()+" ["+licence.GetGUID()+"]")
-				endif
+				EndIf
 
 			Case "givead"
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
@@ -4130,27 +4120,27 @@ Type GameEvents
 				Local adGUID:String, checkAvailability:String
 				FillCommandPayload(paramS, adGUID, checkAvailability)
 
-				if adGUID.trim() = ""
+				If adGUID.Trim() = ""
 					GetGame().SendSystemMessage("Wrong syntax (/dev help)!")
-					return False
-				endif
+					Return False
+				EndIf
 
-				local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID(adGUID)
-				if not adContractBase then adContractBase = GetAdContractBaseCollection().SearchByPartialGUID(adGUID)
-				if not adContractBase
+				Local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID(adGUID)
+				If Not adContractBase Then adContractBase = GetAdContractBaseCollection().SearchByPartialGUID(adGUID)
+				If Not adContractBase
 					GetGame().SendSystemMessage("No adcontract with GUID ~q"+adGUID+"~q found.")
-					return False
-				endif
+					Return False
+				EndIf
 
-				if checkAvailability = "0" or checkAvailability.ToLower() = "false"
+				If checkAvailability = "0" Or checkAvailability.ToLower() = "false"
 					'
-				elseif not adContractBase.IsAvailable()
+				ElseIf Not adContractBase.IsAvailable()
 					GetGame().SendSystemMessage("Adcontract with GUID ~q"+adGUID+"~q not available (yet).")
-					return False
-				endif
+					Return False
+				EndIf
 
 				'forcefully add to the collection (skips requirements checks)
-				local adContract:TAdContract = New TAdContract.Create(adContractBase)
+				Local adContract:TAdContract = New TAdContract.Create(adContractBase)
 				GetPlayerProgrammeCollection(player.playerID).AddAdContract(adContract, True)
 				GetGame().SendSystemMessage("added adcontract: "+adContract.GetTitle()+" ["+adContract.GetGUID()+"]")
 
@@ -4160,25 +4150,25 @@ Type GameEvents
 				Local scriptGUID:String, hasToPay:String
 				FillCommandPayload(paramS, scriptGUID, hasToPay)
 
-				if scriptGUID.trim() = ""
+				If scriptGUID.Trim() = ""
 					GetGame().SendSystemMessage("Wrong syntax (/dev help)!")
-					return False
-				endif
+					Return False
+				EndIf
 
-				local scriptTemplate:TScriptTemplate = GetScriptTemplateCollection().GetByGUID(scriptGUID)
-				if not scriptTemplate then scriptTemplate = GetScriptTemplateCollection().SearchByPartialGUID(scriptGUID)
-				if not scriptTemplate
+				Local scriptTemplate:TScriptTemplate = GetScriptTemplateCollection().GetByGUID(scriptGUID)
+				If Not scriptTemplate Then scriptTemplate = GetScriptTemplateCollection().SearchByPartialGUID(scriptGUID)
+				If Not scriptTemplate
 					GetGame().SendSystemMessage("No script template with GUID ~q"+scriptGUID+"~q found.")
-					return False
-				endif
+					Return False
+				EndIf
 
 				'hand the script to the player
-				local script:TScript = GetScriptCollection().GenerateFromTemplate(scriptTemplate)
-				if hasToPay = "0" or hasToPay.ToLower() = "false"
+				Local script:TScript = GetScriptCollection().GenerateFromTemplate(scriptTemplate)
+				If hasToPay = "0" Or hasToPay.ToLower() = "false"
 					script.SetOwner(player.playerID)
-				else
+				Else
 					script.SetOwner(0)
-				endif
+				EndIf
 				'true = skip owner check (needed to be able to skip payment
 				RoomHandler_ScriptAgency.GetInstance().SellScriptToPlayer(script, player.playerID, True)
 				GetGame().SendSystemMessage("added script: "+script.GetTitle()+" ["+script.GetScriptTemplate().GetGUID()+"]")
@@ -4226,24 +4216,24 @@ Type GameEvents
 		Local timeGone:Int = triggerEvent.GetData().getInt("timeGone", 0)
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
-			if player.isLocalAI()
+			If player.isLocalAI()
 				TProfiler.Enter("PLAYER_AI"+player.playerID+"_SECOND", False)
-				player.PlayerAI.AddEventObj( new TAIEvent.SetName("ConditionalCallOnTick")) 
-				player.PlayerAI.AddEventObj( new TAIEvent.SetName("OnSecond").AddInt(timeGone)) 
+				player.PlayerAI.AddEventObj( New TAIEvent.SetName("ConditionalCallOnTick"))
+				player.PlayerAI.AddEventObj( New TAIEvent.SetName("OnSecond").AddInt(timeGone))
 				player.PlayerAI.ConditionalCallOnTick()
 				player.PlayerAI.CallOnRealtimeSecond(timeGone)
 				TProfiler.Leave("PLAYER_AI"+player.playerID+"_SECOND", 100, False)
-			endif
+			EndIf
 		Next
 		Return True
 	End Function
 
 
-	Function DevAddToastMessage:int(triggerEvent:TEventBase)
-		Local caption:string = triggerEvent.GetData().GetString("caption")
-		Local text:string = triggerEvent.GetData().GetString("text")
-		Local messageType:int = triggerEvent.GetData().GetInt("type", 1) '1 = attention
-		Local lifetime:int = triggerEvent.GetData().GetInt("lifetime", 5)
+	Function DevAddToastMessage:Int(triggerEvent:TEventBase)
+		Local caption:String = triggerEvent.GetData().GetString("caption")
+		Local text:String = triggerEvent.GetData().GetString("text")
+		Local messageType:Int = triggerEvent.GetData().GetInt("type", 1) '1 = attention
+		Local lifetime:Int = triggerEvent.GetData().GetInt("lifetime", 5)
 
 		Local toast:TGameToastMessage = New TGameToastMessage
 		'show it for some seconds
@@ -4261,18 +4251,18 @@ Type GameEvents
 		If Not GetGame().isGameLeader() Then Return False
 
 		Local time:Long = triggerEvent.GetData().getInt("time",-1)
-		local minute:int = GetWorldTime().GetDayMinute(time)
+		Local minute:Int = GetWorldTime().GetDayMinute(time)
 		If minute < 0 Then Return False
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
-			if player.isLocalAI()
+			If player.isLocalAI()
 				TProfiler.Enter("PLAYER_AI"+player.playerID+"_MINUTE", False)
-				player.PlayerAI.AddEventObj( new TAIEvent.SetName("ConditionalCallOnTick")) 
-				player.PlayerAI.AddEventObj( new TAIEvent.SetName("onMinute").AddInt(minute)) 
+				player.PlayerAI.AddEventObj( New TAIEvent.SetName("ConditionalCallOnTick"))
+				player.PlayerAI.AddEventObj( New TAIEvent.SetName("onMinute").AddInt(minute))
 				player.PlayerAI.ConditionalCallOnTick()
 				player.PlayerAI.CallOnMinute(minute)
 				TProfiler.Leave("PLAYER_AI"+player.playerID+"_MINUTE", 100, False)
-			endif
+			EndIf
 		Next
 		Return True
 	End Function
@@ -4282,7 +4272,7 @@ Type GameEvents
 		If Not GetGame().isGameLeader() Then Return False
 
 		Local time:Long = triggerEvent.GetData().getInt("time",-1)
-		local minute:int = GetWorldTime().GetDayMinute(time)
+		Local minute:Int = GetWorldTime().GetDayMinute(time)
 		If minute < 0 Then Return False
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
@@ -4314,14 +4304,14 @@ Type GameEvents
 		toast.SetMessageCategory(TVTMessageCategory.MISC)
 		toast.SetCaption(GetLocale("PLAYER_WENT_BANKRUPT"))
 
-		local t:string
+		Local t:String
 		t :+ GetRandomLocale("PLAYER_X_FROM_CHANNEL_Y_WENT_BANKRUPT").Replace("%X%", "|b|"+player.name+"|/b|").Replace("%Y%", "|b|"+player.channelName+"|/b|")
 		t :+ " "
-		if not player.isHuman()
+		If Not player.isHuman()
 			t :+ GetLocale("PLAYER_WILL_START_AGAIN")
-		else
+		Else
 			t :+ GetLocale("AI_WILL_TAKE_OVER_THIS_PLAYER")
-		endif
+		EndIf
 		toast.SetText(t)
 
 		toast.GetData().AddNumber("playerID", player.playerID)
@@ -4332,9 +4322,9 @@ Type GameEvents
 
 
 		'only interest in other players
-		if not player.IsLocalHuman()
+		If Not player.IsLocalHuman()
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		endif
+		EndIf
 	End Function
 
 
@@ -4368,7 +4358,7 @@ Type GameEvents
 		If playerID = -1 Or Not player Then Return False
 
 		'create an visual error
-		If player.isActivePlayer() and not player.IsLocalAI() Then TError.CreateNotEnoughMoneyError()
+		If player.isActivePlayer() And Not player.IsLocalAI() Then TError.CreateNotEnoughMoneyError()
 	End Function
 
 
@@ -4450,14 +4440,14 @@ Type GameEvents
 
 	Function PlayerBoss_OnTakeOrRepayCredit:Int(triggerEvent:TEventBase)
 		'only show toast message on success
-		local success:int = triggerEvent.GetData().GetBool("result", False)
-		if not success then return false
+		Local success:Int = triggerEvent.GetData().GetBool("result", False)
+		If Not success Then Return False
 
-		local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
-		if not boss then return False
+		Local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
+		If Not boss Then Return False
 
 
-		local value:int = triggerEvent.GetData().GetInt("value", 0)
+		Local value:Int = triggerEvent.GetData().GetInt("value", 0)
 		'send out a toast message
 		Local toast:TGameToastMessage = New TGameToastMessage
 
@@ -4465,15 +4455,15 @@ Type GameEvents
 		toast.SetLifeTime(3)
 		toast.SetMessageCategory(TVTMessageCategory.MONEY)
 
-		if triggerEvent.IsTrigger("PlayerBoss.onPlayerTakesCredit")
+		If triggerEvent.IsTrigger("PlayerBoss.onPlayerTakesCredit")
 			toast.SetMessageType(2) 'positive
 			toast.SetCaption(StringHelper.UCFirst(GetLocale("CREDIT_TAKEN")))
 			toast.SetText(StringHelper.UCFirst(GetLocale("ACCOUNT_BALANCE"))+": |b||color=0,125,0|+ "+ MathHelper.DottedValue(value) + " " + getLocale("CURRENCY") + "|/color||/b|")
-		else
+		Else
 			toast.SetMessageType(3) 'negative
 			toast.SetCaption(StringHelper.UCFirst(GetLocale("CREDIT_REPAID")))
 			toast.SetText(StringHelper.UCFirst(GetLocale("ACCOUNT_BALANCE"))+": |b||color=125,0,0|- "+ MathHelper.DottedValue(value) + " " + getLocale("CURRENCY") + "|/color||/b|")
-		endif
+		EndIf
 
 		'play a special sound instead of the default one
 		toast.GetData().AddString("onAddMessageSFX", "positiveMoneyChange")
@@ -4487,7 +4477,7 @@ Type GameEvents
 		'only interest in active player's boss-credit-actions
 		If boss.playerID = GetPlayerCollection().playerID
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		endif
+		EndIf
 	End Function
 
 
@@ -4519,7 +4509,7 @@ Type GameEvents
 		'only interest in active player's licences
 		If programme.owner = GetPlayerCollection().playerID
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		endif
+		EndIf
 	End Function
 
 
@@ -4556,42 +4546,42 @@ Type GameEvents
 		'only interest in active player's licences
 		If confiscatedProgrammeLicence.owner = GetPlayerCollection().playerID
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		endif
+		EndIf
 	End Function
 
 
 	Function Achievement_OnComplete:Int(triggerEvent:TEventBase)
 		Local achievement:TAchievement = TAchievement(triggerEvent.GetSender())
-		if not achievement then return False
+		If Not achievement Then Return False
 
 		Local playerID:Int = triggerEvent.GetData().GetInt("playerID", 0)
-		if not GetPlayerCollection().IsPlayer(playerID) then return False
+		If Not GetPlayerCollection().IsPlayer(playerID) Then Return False
 
-		local player:TPlayer = GetPlayer(playerID)
-		if not player then return False
+		Local player:TPlayer = GetPlayer(playerID)
+		If Not player Then Return False
 
 
 		'inform ai
 		If player.isLocalAI() Then player.playerAI.CallOnAchievementCompleted(achievement)
 
 
-		local rewardText:string
-		For local i:int = 0 until achievement.GetRewards().length
-			if rewardText <> "" then rewardText :+ "~n"
-			rewardText :+ chr(9654) + " " +achievement.GetRewards()[i].GetTitle()
+		Local rewardText:String
+		For Local i:Int = 0 Until achievement.GetRewards().length
+			If rewardText <> "" Then rewardText :+ "~n"
+			rewardText :+ Chr(9654) + " " +achievement.GetRewards()[i].GetTitle()
 		Next
 
-		rem
+		Rem
 			TODO: Bilder fuer toastmessages (+ Pokal)
 			 _________
 			|[ ] text |
 			|    text |
 			'---------'
 		endrem
-		local text:string = GetLocale("YOU_JUST_COMPLETED_ACHIEVEMENTTITLE").Replace("%ACHIEVEMENTTITLE%", "|b|"+achievement.GetTitle()+"|/b|")
-		if rewardText
+		Local text:String = GetLocale("YOU_JUST_COMPLETED_ACHIEVEMENTTITLE").Replace("%ACHIEVEMENTTITLE%", "|b|"+achievement.GetTitle()+"|/b|")
+		If rewardText
 			text :+ "~n|b|" + GetLocale("REWARD") + ":|/b|~n" + rewardText
-		endif
+		EndIf
 
 
 		Local toast:TGameToastMessage = New TGameToastMessage
@@ -4612,37 +4602,37 @@ Type GameEvents
 		'only interest in active player
 		If player = GetPlayer()
 			GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
-		endif
+		EndIf
 	End Function
 
 
 	Function Award_OnFinish:Int(triggerEvent:TEventBase)
 		Local award:TAward = TAward(triggerEvent.GetSender())
-		if not award then return False
+		If Not award Then Return False
 
 		Local playerID:Int = triggerEvent.GetData().GetInt("winningPlayerID", 0)
-		if not GetPlayerCollection().IsPlayer(playerID) then return False
+		If Not GetPlayerCollection().IsPlayer(playerID) Then Return False
 
-		local player:TPlayer = GetPlayer(playerID)
-		if not player then return False
+		Local player:TPlayer = GetPlayer(playerID)
+		If Not player Then Return False
 
 
 		'inform ai
 		If player.isLocalAI() Then player.playerAI.CallOnWonAward(award)
 
 
-		rem
+		Rem
 			TODO: Bilder fuer toastmessages (+ Preis)
 			 _________
 			|[ ] text |
 			|    text |
 			'---------'
 		endrem
-		local text:string = GetLocale("YOU_WON_THE_AWARDNAME").Replace("%AWARDNAME%", "|b|"+award.GetTitle()+"|/b|")
-		local rewardText:string = award.GetRewardText()
-		if rewardText
+		Local text:String = GetLocale("YOU_WON_THE_AWARDNAME").Replace("%AWARDNAME%", "|b|"+award.GetTitle()+"|/b|")
+		Local rewardText:String = award.GetRewardText()
+		If rewardText
 			text :+ "~n|b|" + GetLocale("REWARD") + ":|/b|~n" + rewardText
-		endif
+		EndIf
 
 
 		Local toast:TGameToastMessage = New TGameToastMessage
@@ -4663,7 +4653,7 @@ Type GameEvents
 		'only interest in active players contracts
 		If player = GetPlayer()
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		endif
+		EndIf
 	End Function
 
 
@@ -4677,22 +4667,22 @@ Type GameEvents
 		'=== SEND TOASTMESSAGE ===
 		'local roomGUID:string = triggerEvent.GetData().GetString("roomGUID")
 		'local room:TRoomBase = GetRoomCollection().GetByGUID( TLowerString.Create(roomGUID) )
-		local room:TRoomBase = TRoomBase( triggerEvent.GetSender() )
-		if room
-			Local caption:string = GetRandomLocale("BOMB_DETONATION_IN_TVTOWER")
-			Local text:string = GetRandomLocale("TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT")
+		Local room:TRoomBase = TRoomBase( triggerEvent.GetSender() )
+		If room
+			Local caption:String = GetRandomLocale("BOMB_DETONATION_IN_TVTOWER")
+			Local text:String = GetRandomLocale("TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT")
 
 			'replace placeholders
-			if room.owner > 0
+			If room.owner > 0
 				Local player:TPlayer = GetPlayer(room.owner)
 				Local col:TColor = player.color
 				text = text.Replace("%ROOM%", "|b||color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color|"+room.GetDescription(1, True)+"|/b||color="+col.r+","+col.g+","+col.b+"|"+Chr(9632)+"|/color|")
-			else
+			Else
 				text = text.Replace("%ROOM%", "|b|"+room.GetDescription(1, True)+"|/b|")
-			endif
+			EndIf
 
 
-			for local i:int = 1 to 4
+			For Local i:Int = 1 To 4
 				Local toast:TGameToastMessage = New TGameToastMessage
 				'show it for some seconds
 				toast.SetLifeTime(15)
@@ -4709,11 +4699,11 @@ Type GameEvents
 
 
 				'only add if it is the active player
-				if i = GetPlayerBase().playerID
+				If i = GetPlayerBase().playerID
 					GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-				endif
+				EndIf
 			Next
-		endif
+		EndIf
 	End Function
 
 
@@ -4754,7 +4744,7 @@ Type GameEvents
 		'only interested in active player
 		If previousBestBidder = GetPlayerCollection().playerID
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		endif
+		EndIf
 	End Function
 
 
@@ -4787,24 +4777,24 @@ Type GameEvents
 		'only interested in active player
 		If bestBidder = GetPlayerCollection().playerID
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		endif
+		EndIf
 	End Function
 
 
 	Function Production_OnFinalize:Int(triggerEvent:TEventBase)
 		'only interested in auctions the player won
 		Local production:TProduction = TProduction(triggerEvent.GetSender())
-		If not production Then Return False
+		If Not production Then Return False
 
 
 		'send out a toast message
 		Local toast:TGameToastMessage = New TGameToastMessage
-		local title:string = production.productionConcept.GetTitle()
-		if production.productionConcept.script.GetEpisodeNumber() > 0
+		Local title:String = production.productionConcept.GetTitle()
+		If production.productionConcept.script.GetEpisodeNumber() > 0
 			title = production.productionConcept.script.GetParentScript().GetTitle() + ": "
 			title :+ production.productionConcept.script.GetEpisodeNumber() + "/" + production.productionConcept.script.GetParentScript().GetSubScriptCount()+" "
 			title :+ production.productionConcept.GetTitle()
-		endif
+		EndIf
 
 		'show it for some seconds
 		toast.SetLifeTime(8)
@@ -4823,29 +4813,29 @@ Type GameEvents
 		'only interested in active player
 		If production.owner = GetPlayerCollection().playerID
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		endif
+		EndIf
 	End Function
 
 
 	Function Game_OnSetPlayerBankruptLevel:Int(triggerEvent:TEventBase)
 		'only interested in levels of the player
-		local playerID:int = triggerEvent.GetData().GetInt("playerID", -1)
+		Local playerID:Int = triggerEvent.GetData().GetInt("playerID", -1)
 
 		'only interested in the first two days (afterwards player is
 		'already gameover)
-		if GetGame().GetPlayerBankruptLevel(playerID) > 2 then return False
+		If GetGame().GetPlayerBankruptLevel(playerID) > 2 Then Return False
 
 		'send out a toast message
 		Local toast:TGameToastMessage = New TGameToastMessage
-		local text:string
-		if GetGame().GetPlayerBankruptLevel(playerID) = 0
+		Local text:String
+		If GetGame().GetPlayerBankruptLevel(playerID) = 0
 			'show it for some seconds
 			toast.SetLifeTime(8)
 			toast.SetMessageType(2) 'positive
 			text =  GetLocale("YOUR_BALANCE_IS_POSITIVE_AGAIN")
 			text :+ "~n"
 			text :+ "|color=0,125,0|"+GetLocale("YOU_ARE_NO_LONGER_IN_DANGER_TO_GET_FIRED")+"|/color|"
-		elseif GetGame().GetPlayerBankruptLevel(playerID) = 1
+		ElseIf GetGame().GetPlayerBankruptLevel(playerID) = 1
 			'show it for some seconds
 			toast.SetLifeTime(8)
 			toast.SetMessageType(3) 'warning
@@ -4854,9 +4844,9 @@ Type GameEvents
 			text :+ GetLocale("YOU_HAVE_X_DAYS_TO_GET_INTO_THE_BLACK").Replace("%DAYS%", 2+GetLocale("DAYS"))
 			text :+ "~n"
 			text :+ "|color=125,0,0|"+GetLocale("YOU_ARE_IN_DANGER_TO_GET_FIRED")+"|/color|"
-		else
+		Else
 			'make this message a bit more sticky
-			local midnight:long = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 23, 59, 59)
+			Local midnight:Long = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(), 23, 59, 59)
 
 			toast.SetCloseAtWorldTime(midnight)
 			toast.SetCloseAtWorldTimeText("MESSAGE_CLOSES_AT_TIME")
@@ -4870,7 +4860,7 @@ Type GameEvents
 			text :+ GetLocale("YOU_HAVE_ONLY_TODAY_TO_GET_INTO_THE_BLACK")
 			text :+ "~n"
 			text :+ "|color=125,0,0|"+GetLocale("YOU_ARE_IN_DANGER_TO_GET_FIRED")+"|/color|"
-		endif
+		EndIf
 		toast.SetText(text)
 
 		toast.SetCaption(GetLocale("ACCOUNT_BALANCE"))
@@ -4887,7 +4877,7 @@ Type GameEvents
 		'only interested in active player
 		If playerID = GetPlayerCollection().playerID
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		endif
+		EndIf
 	End Function
 
 
@@ -4921,7 +4911,7 @@ Type GameEvents
 		'only interested in active player
 		If contract.owner = GetPlayerCollection().playerID
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		endif
+		EndIf
 	End Function
 
 
@@ -4953,16 +4943,16 @@ Type GameEvents
 		'only interested in active player
 		If contract.owner = GetPlayerCollection().playerID
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		endif
+		EndIf
 	End Function
 
 
 	'called each time a room (the active player visits) is updated
 	Function RoomOnUpdate:Int(triggerEvent:TEventBase)
 
-		if not GetPlayer().GetFigure().IsChangingRoom()
+		If Not GetPlayer().GetFigure().IsChangingRoom()
 			'handle normal right click
-			If MOUSEMANAGER.IsClicked(2) or MOUSEMANAGER.IsLongClicked(1)
+			If MOUSEMANAGER.IsClicked(2) Or MOUSEMANAGER.IsLongClicked(1)
 				'check subrooms
 				'only leave a room if not in a subscreen
 				'if in subscreen, go to parent one
@@ -5000,27 +4990,27 @@ Type GameEvents
 		Local stationMap:TStationMap = TStationMap(triggerEvent.GetSender())
 		If Not stationMap Then Return False
 
-		local station:TStation = TStation(triggerEvent.GetData().Get("station"))
-		if not station then return False
+		Local station:TStation = TStation(triggerEvent.GetData().Get("station"))
+		If Not station Then Return False
 
 		'only interested in the players stations
 		Local player:TPlayer = GetPlayer(stationMap.owner)
 		If Not player Then Return False
 
 		'in the past?
-		if station.GetActivationTime() < GetWorldTime().GetTimeGone() then return False
+		If station.GetActivationTime() < GetWorldTime().GetTimeGone() Then Return False
 
 
 
-		local readyTime:String = GetWorldTime().GetFormattedTime(station.GetActivationTime())
-		local closeText:string = "MESSAGE_CLOSES_AT_TIME"
-		local readyText:string = "NEW_STATION_WILL_BE_READY_AT_TIME_X"
+		Local readyTime:String = GetWorldTime().GetFormattedTime(station.GetActivationTime())
+		Local closeText:String = "MESSAGE_CLOSES_AT_TIME"
+		Local readyText:String = "NEW_STATION_WILL_BE_READY_AT_TIME_X"
 		'prepend day if it does not finish today
-		if GetWorldTime().GetDay() < GetWorldTime().GetDay(station.GetActivationTime())
+		If GetWorldTime().GetDay() < GetWorldTime().GetDay(station.GetActivationTime())
 			readyTime = GetWorldTime().GetFormattedDay(GetWorldTime().GetDaysRun(station.GetActivationTime()) +1) + " " + readyTime
 			closeText = "MESSAGE_CLOSES_AT_DAY"
 			readyText = "NEW_STATION_WILL_BE_READY_AT_DAY_X"
-		endif
+		EndIf
 
 		'send out a toast message
 
@@ -5044,7 +5034,7 @@ Type GameEvents
 
 		toast.GetData().AddNumber("playerID", player.playerID)
 
-		rem - if only 1 instance allowed
+		Rem - if only 1 instance allowed
 		'if this was a new message, the guid will differ
 		If toast.GetGUID() <> toastGUID
 			toast.SetGUID(toastGUID)
@@ -5062,7 +5052,7 @@ Type GameEvents
 		'only interested in active player
 		If player = GetPlayer()
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		endif
+		EndIf
 	End Function
 
 
@@ -5070,26 +5060,26 @@ Type GameEvents
 		Local stationMap:TStationMap = TStationMap(triggerEvent.GetSender())
 		If Not stationMap Then Return False
 
-		local reachLevel:int = triggerEvent.GetData().GetInt("reachLevel")
-		local oldReachLevel:int = triggerEvent.GetData().GetInt("oldReachLevel")
+		Local reachLevel:Int = triggerEvent.GetData().GetInt("reachLevel")
+		Local oldReachLevel:Int = triggerEvent.GetData().GetInt("oldReachLevel")
 
 		'only interested in the players stations
 		Local player:TPlayer = GetPlayer(stationMap.owner)
 		If Not player Then Return False
 
-		local caption:string
-		local text:string
-		local text2:string
+		Local caption:String
+		Local text:String
+		Local text2:String
 
-		if reachLevel > oldReachLevel
+		If reachLevel > oldReachLevel
 			caption = "AUDIENCE_REACH_LEVEL_INCREASED"
 			text = "LEVEL_INCREASED_FROM_X_TO_Y"
 			text2 = "PRICES_WILL_RISE"
-		else
+		Else
 			caption = "AUDIENCE_REACH_LEVEL_DECREASED"
 			text = "LEVEL_DECREASED_FROM_X_TO_Y"
 			text2 = "PRICES_WILL_FALL"
-		endif
+		EndIf
 
 		'send out a toast message
 		Local toast:TGameToastMessage = New TGameToastMessage
@@ -5100,12 +5090,12 @@ Type GameEvents
 
 		toast.SetCaption( GetLocale(caption) )
 
-		local textJoined:string = GetLocale(text2)
-		if textJoined
+		Local textJoined:String = GetLocale(text2)
+		If textJoined
 			textJoined = GetLocale(text) + " " + textJoined
-		else
+		Else
 			textJoined = GetLocale(text)
-		endif
+		EndIf
 		toast.SetText( textJoined.Replace("%X%", "|b|"+oldReachLevel+"|/b|").Replace("%Y%", "|b|"+reachLevel+"|/b|") )
 
 		toast.GetData().AddNumber("playerID", player.playerID)
@@ -5117,7 +5107,7 @@ Type GameEvents
 		'only interested in active player
 		If player = GetPlayer()
 			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		endif
+		EndIf
 	End Function
 
 
@@ -5138,10 +5128,10 @@ Type GameEvents
 		If Not station Then Return False
 
 		'only interested in the players stations
-		if GetPlayer().playerID <> station.owner Then Return False
+		If GetPlayer().playerID <> station.owner Then Return False
 
 		'in the past?
-		if station.GetSubscriptionTimeLeft() < 0 then return False
+		If station.GetSubscriptionTimeLeft() < 0 Then Return False
 
 		'send out a toast message
 		Local toast:TGameToastMessage = New TGameToastMessage
@@ -5155,23 +5145,23 @@ Type GameEvents
 
 		toast.SetCaption( GetLocale("CONTRACT_ENDS_SOON") )
 
-		local subscriptionEndTime:Long = station.GetProvider().GetSubscribedChannelEndTime(station.owner)
-		local t:string
-		if TStationCableNetworkUplink(station)
+		Local subscriptionEndTime:Long = station.GetProvider().GetSubscribedChannelEndTime(station.owner)
+		Local t:String
+		If TStationCableNetworkUplink(station)
 			t = "CABLE_NETWORK_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX"
-		elseif TStationSatelliteUplink(station)
+		ElseIf TStationSatelliteUplink(station)
 			t = "SATELLITE_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX"
-		endif
+		EndIf
 		t = GetLocale(t)
 		t = t.Replace("%COMPANYX%", station.GetProvider().name)
 		t = t.Replace("%TIMEX%", GetWorldTime().GetFormattedTime(subscriptionEndTime) )
-		if GetWorldTime().GetDay() = GetWorldTime().GetDay(subscriptionEndTime)
+		If GetWorldTime().GetDay() = GetWorldTime().GetDay(subscriptionEndTime)
 			t = t.Replace("%DAYX%", GetLocale("TODAY") )
 		ElseIf GetWorldTime().GetDay() + 1 = GetWorldTime().GetDay(subscriptionEndTime)
 			t = t.Replace("%DAYX%", GetLocale("TOMORROW") )
 		Else
 			t = t.Replace("%DAYX%", GetWorldTime().GetFormattedGameDate(subscriptionEndTime) )
-		endif
+		EndIf
 
 		toast.SetText( t )
 		toast.GetData().AddNumber("playerID", station.owner)
@@ -5184,7 +5174,7 @@ Type GameEvents
 
 
 	Function OnMinute:Int(triggerEvent:TEventBase)
-		local now:Long = triggerEvent.GetData().GetLong("time",-1)
+		Local now:Long = triggerEvent.GetData().GetLong("time",-1)
 		Local minute:Int = GetWorldTime().GetDayMinute(now)
 		Local hour:Int = GetWorldTime().GetDayHour(now)
 		Local day:Int = GetWorldTime().GetDay(now)
@@ -5213,9 +5203,9 @@ Type GameEvents
 
 		'=== UPDATE STUDIOS ===
 		'check if new productions finished (0:00, 0:05, ...)
-		if (minute + 5) mod 5 = 0
+		If (minute + 5) Mod 5 = 0
 			GetProductionManager().Update()
-		endif
+		EndIf
 
 
 		'=== CHANGE OFFER OF MOVIEAGENCY AND ADAGENCY ===
@@ -5230,10 +5220,10 @@ Type GameEvents
 				GetGame().refillMovieAgencyTime :+ 15
 			Else
 				'reset but with a bit randomness
-				GetGame().refillMovieAgencyTime = GetGame().refillMovieAgencyTimer + randrange(0,20)-10
+				GetGame().refillMovieAgencyTime = GameRules.refillMovieAgencyTimer + randrange(0,20)-10
 
-				TLogger.Log("GameEvents.OnMinute", "partly refilling movieagency", LOG_DEBUG)
-				local t:long = Time.MillisecsLong()
+				TLogger.Log("GameEvents.OnMinute", "partly refilling movieagency (" + GetWorldTime().GetFormattedGameDate() + ")", LOG_DEBUG)
+				Local t:Long = Time.MillisecsLong()
 				RoomHandler_movieagency.GetInstance().ReFillBlocks(True, 0.5)
 				TLogger.Log("GameEvents.OnMinute", "... took " + (Time.MillisecsLong() - t)+"ms", LOG_DEBUG)
 			EndIf
@@ -5243,11 +5233,13 @@ Type GameEvents
 			If GetRoomCollection().GetFirstByDetails("", "scriptagency").hasOccupant()
 				GetGame().refillScriptAgencyTime :+ 15
 			Else
+				'fix old savegames with "-1" values
+				If GameRules.refillScriptAgencyTimer < 0 Then GameRules.refillScriptAgencyTimer = 180
 				'reset but with a bit randomness
-				GetGame().refillScriptAgencyTime = GetGame().refillScriptAgencyTimer + randrange(0,20)-10
+				GetGame().refillScriptAgencyTime = GameRules.refillScriptAgencyTimer + randrange(0,20)-10
 
-				TLogger.Log("GameEvents.OnMinute", "partly refilling scriptagency", LOG_DEBUG)
-				local t:long = Time.MillisecsLong()
+				TLogger.Log("GameEvents.OnMinute", "partly refilling scriptagency (" + GetWorldTime().GetFormattedGameDate() + ")", LOG_DEBUG)
+				Local t:Long = Time.MillisecsLong()
 				RoomHandler_scriptagency.GetInstance().WriteNewScripts()
 				RoomHandler_scriptagency.GetInstance().ReFillBlocks(True, 0.65)
 				TLogger.Log("GameEvents.OnMinute", "... took " + (Time.MillisecsLong() - t)+"ms", LOG_DEBUG)
@@ -5259,15 +5251,15 @@ Type GameEvents
 				GetGame().refillAdAgencyTime :+ 15
 			Else
 				'reset but with a bit randomness
-				GetGame().refillAdAgencyTime = GetGame().refillAdAgencyTimer + randrange(0,20)-10
+				GetGame().refillAdAgencyTime = GameRules.refillAdAgencyTimer + randrange(0,20)-10
 
-				TLogger.Log("GameEvents.OnMinute", "partly refilling adagency", LOG_DEBUG)
-				local t:long = Time.MillisecsLong()
-				If GetGame().refillAdAgencyOverridePercentage <> GetGame().refillAdAgencyPercentage
-					RoomHandler_adagency.GetInstance().ReFillBlocks(True, GetGame().refillAdAgencyOverridePercentage)
-					GetGame().refillAdAgencyOverridePercentage = GetGame().refillAdAgencyPercentage
+				TLogger.Log("GameEvents.OnMinute", "partly refilling adagency (" + GetWorldTime().GetFormattedGameDate() + ")", LOG_DEBUG)
+				Local t:Long = Time.MillisecsLong()
+				If GetGameBase().refillAdAgencyOverridePercentage <> GameRules.refillAdAgencyPercentage
+					RoomHandler_adagency.GetInstance().ReFillBlocks(True, GetGameBase().refillAdAgencyOverridePercentage)
+					GetGameBase().refillAdAgencyOverridePercentage = GameRules.refillAdAgencyPercentage
 				Else
-					RoomHandler_adagency.GetInstance().ReFillBlocks(True, GetGame().refillAdAgencyPercentage)
+					RoomHandler_adagency.GetInstance().ReFillBlocks(True, GameRules.refillAdAgencyPercentage)
 				EndIf
 				TLogger.Log("GameEvents.OnMinute", "... took " + (Time.MillisecsLong() - t)+"ms", LOG_DEBUG)
 			EndIf
@@ -5357,40 +5349,40 @@ Type GameEvents
 			'send out an event for "block types" to begin/finish now
 			'this enables to run things before manipulation like
 			'topicality decrease takes place
-			local evKey:string = ""
-			local evData:TData
+			Local evKey:String = ""
+			Local evData:TData
 			Select minute
 				Case 0
 					evKey = "broadcasting.BeforeStartAllNewsShowBroadcasts"
-					evData = new TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.NEWSSHOW) )
+					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.NEWSSHOW) )
 				Case 4
 					evKey = "broadcasting.BeforeFinishAllNewsShowBroadcasts"
-					evData = new TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.NEWSSHOW) )
+					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.NEWSSHOW) )
 				Case 5
 					evKey = "broadcasting.BeforeStartAllProgrammeBlockBroadcasts"
-					evData = new TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) )
+					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) )
 				Case 54
 					evKey = "broadcasting.BeforeFinishAllProgrammeBlockBroadcasts"
-					evData = new TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) )
+					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) )
 				Case 55
 					evKey = "broadcasting.BeforeStartAllAdBlockBroadcasts"
-					evData = new TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.ADVERTISEMENT) )
+					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.ADVERTISEMENT) )
 				Case 59
 					evKey = "broadcasting.BeforeFinishAllAdBlockBroadcasts"
-					evData = new TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.ADVERTISEMENT) )
+					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.ADVERTISEMENT) )
 			End Select
-			if evKey and evData
+			If evKey And evData
 				EventManager.triggerEvent(TEventSimple.Create(evKey, evData))
-			endif
+			EndIf
 
 
 			'shuffle players, so each time another plan is informed the
 			'first (and their "doBegin" is called earlier than others)
 			'this is useful for "who broadcasted a news as first channel?"
 			'things.
-			local players:TPlayerBase[] = GetPlayerCollection().players[ .. ]
-			For Local a:int = 0 To players.length - 2
-				Local b:int = RandRange( a, players.length - 1)
+			Local players:TPlayerBase[] = GetPlayerCollection().players[ .. ]
+			For Local a:Int = 0 To players.length - 2
+				Local b:Int = RandRange( a, players.length - 1)
 				Local p:TPlayerBase = players[a]
 				players[a] = players[b]
 				players[b] = p
@@ -5417,9 +5409,9 @@ Type GameEvents
 				Case 59
 					evKey = "broadcasting.AfterFinishAllAdBlockBroadcasts"
 			End Select
-			if evKey and evData
+			If evKey And evData
 				EventManager.triggerEvent(TEventSimple.Create(evKey, evData))
-			endif
+			EndIf
 		EndIf
 
 
@@ -5428,9 +5420,9 @@ Type GameEvents
 		' knows whether it is broadcasted currently or not)
 		'1) call data.update()
 		'2) remove LIVE-status from programmes once they finished airing
-		If minute mod 5 = 0
+		If minute Mod 5 = 0
 			GetProgrammeDataCollection().UpdateLive()
-		endif
+		EndIf
 
 		'=== UPDATE ACHIEVEMENTS ===
 		'(do that AFTER setting the broadcasts and calculating the
@@ -5443,7 +5435,7 @@ Type GameEvents
 
 	'things happening each hour
 	Function OnHour:Int(triggerEvent:TEventBase)
-		local time:Long = triggerEvent.GetData().GetLong("time",-1)
+		Local time:Long = triggerEvent.GetData().GetLong("time",-1)
 		Local day:Int = GetWorldTime().GetDay(time)
 		Local hour:Int = GetWorldTime().GetHour(time)
 
@@ -5468,20 +5460,20 @@ Type GameEvents
 		'remove such events when they get invalid
 		'remove from players
 		For Local pBase:TPlayerBase = EachIn GetPlayerBaseCollection().players
-			local p:TPlayer = TPlayer(pBase)
-			if not p then continue
+			Local p:TPlayer = TPlayer(pBase)
+			If Not p Then Continue
 
 			'COLLECTION
 			'loop through a copy to avoid concurrent modification
 			For Local news:TNews = EachIn p.GetProgrammeCollection().news.Copy()
-				If news.newsEvent.HasHappened() and news.newsEvent.HasEnded()
+				If news.newsEvent.HasHappened() And news.newsEvent.HasEnded()
 					p.GetProgrammeCollection().RemoveNews(news)
 				EndIf
 			Next
 
 			'PLAN
 			'do not remove from plan
-			rem
+			Rem
 			'no need to copy the array because it has a fixed length
 			For Local news:TNews = EachIn p.GetProgrammePlan().news
 				If news.newsEvent.HasHappened() and news.newsEvent.HasEnded()
@@ -5500,8 +5492,8 @@ Type GameEvents
 
 			'remove old news from the all player plans and collections
 			For Local pBase:TPlayerBase = EachIn GetPlayerBaseCollection().players
-				local p:TPlayer = TPlayer(pBase)
-				if not p then continue
+				Local p:TPlayer = TPlayer(pBase)
+				If Not p Then Continue
 
 				'COLLECTION
 				'news could stay there for 1.5 days (including today)
@@ -5510,14 +5502,14 @@ Type GameEvents
 				'loop through a copy to avoid concurrent modification
 				For Local news:TNews = EachIn p.GetProgrammeCollection().news.Copy()
 					'if paid for the news, keep it a bit longer
-					if news.IsPaid()
+					If news.IsPaid()
 						minTopicalityToKeep = 0.04
-					else
+					Else
 						minTopicalityToKeep = 0.012
-					endif
+					EndIf
 					If hour - GetWorldTime().GetHour(news.GetHappenedTime()) > hoursToKeep
 						p.GetProgrammeCollection().RemoveNews(news)
-					elseif news.newsevent.GetTopicality() < minTopicalityToKeep
+					ElseIf news.newsevent.GetTopicality() < minTopicalityToKeep
 						p.GetProgrammeCollection().RemoveNews(news)
 					EndIf
 				Next
@@ -5540,7 +5532,7 @@ Type GameEvents
 			'remove old news events - wait a bit more than "plan time"
 			'this also gets rid of "one time" news events which should
 			'have been "triggered" then
-			local daysToKeep:int = int(ceil((hoursToKeep)/48.0) + 1)
+			Local daysToKeep:Int = Int(Ceil((hoursToKeep)/48.0) + 1)
 			GetNewsEventCollection().RemoveOutdatedNewsEvents(daysToKeep)
 		Next
 		'remove from collection (reuse if possible)
@@ -5550,7 +5542,7 @@ Type GameEvents
 
 
 	Function OnDay:Int(triggerEvent:TEventBase)
-		local time:Long = triggerEvent.GetData().GetLong("time",-1)
+		Local time:Long = triggerEvent.GetData().GetLong("time",-1)
 		Local day:Int = GetWorldTime().GetDay(time)
 
 		TLogger.Log("GameEvents.OnDay", "begin of day "+(GetWorldTime().GetDaysRun()+1)+" (real day: "+day+")", LOG_DEBUG)
@@ -5564,12 +5556,12 @@ Type GameEvents
 			GetAdContractBaseCollection().RefreshInfomercialTopicalities()
 
 			TAuctionProgrammeBlocks.EndAllAuctions() 'won auctions moved to programmecollection of player
-			if GetWorldTime().GetDayOfYear(time) = 1
+			If GetWorldTime().GetDayOfYear(time) = 1
 				TAuctionProgrammeBlocks.RefillAuctionsWithoutBid()
-			endif
+			EndIf
 
 
-			rem
+			Rem
 			'Ronny: should not be needed
 
 			'fix old savegames with broken finances (existing finances of
@@ -5608,14 +5600,14 @@ Type GameEvents
 
 			'remove no longer needed DailyBroadcastStatistics
 			'by default we store maximally 1 year + current day
-			local statisticDaysToKeep:int = 4 * GetWorldTime()._daysPerSeason
+			Local statisticDaysToKeep:Int = 4 * GetWorldTime()._daysPerSeason
 			GetDailyBroadcastStatisticCollection().RemoveBeforeDay( day - statisticDaysToKeep )
 
 
 			'force adagency to refill their sortiment a bit more intensive
 			'the next time
-			'GetGame().refillAdAgencyTime = -1
-			GetGame().refillAdAgencyOverridePercentage = 0.75
+			'GameRules.refillAdAgencyTime = -1
+			GetGameBase().refillAdAgencyOverridePercentage = 0.75
 
 
 			'TODO: give image points or something like it for best programme
@@ -5636,9 +5628,9 @@ Type GameEvents
 
 			'=== PRINT OUT FINANCIAL STATS ===
 
-			For local playerID:int = 1 to 4
-				local text:string[] = GetPlayerFinanceOverviewText(playerID, day - 1)
-				For local s:string = EachIn text
+			For Local playerID:Int = 1 To 4
+				Local text:String[] = GetPlayerFinanceOverviewText(playerID, day - 1)
+				For Local s:String = EachIn text
 					TLogger.Log("OnDay Financials", s, LOG_DEBUG)
 				Next
 			Next
@@ -5754,110 +5746,110 @@ End Function
 
 '===== COMMON FUNCTIONS =====
 
-Function GetPlayerPerformanceOverviewText:string[](day:int)
-	if day = -1 then day = GetWorldTime().GetDay()
-	local latestHour:int = 23
-	local latestMinute:int = 59
-	if day = GetWorldTime().GetDay()
+Function GetPlayerPerformanceOverviewText:String[](day:Int)
+	If day = -1 Then day = GetWorldTime().GetDay()
+	Local latestHour:Int = 23
+	Local latestMinute:Int = 59
+	If day = GetWorldTime().GetDay()
 		latestHour = GetWorldTime().GetDayHour()
 		latestMinute = GetWorldTime().GetDayMinute()
-	endif
-	local now:Long = GetWorldTime().MakeTime(0, day, latestHour, latestMinute, 0)
-	local midnight:Long = GetWorldTime().MakeTime(0, day+1, 0, 0, 0)
-	local latestTime:string = RSet(latestHour,2).Replace(" ","0") + ":" + RSet(latestMinute,2).Replace(" ", "0")
+	EndIf
+	Local now:Long = GetWorldTime().MakeTime(0, day, latestHour, latestMinute, 0)
+	Local midnight:Long = GetWorldTime().MakeTime(0, day+1, 0, 0, 0)
+	Local latestTime:String = RSet(latestHour,2).Replace(" ","0") + ":" + RSet(latestMinute,2).Replace(" ", "0")
 
 
-	local text:string[]
+	Local text:String[]
 
-	local title:string = LSet("Performance Stats for day " + (GetWorldTime().GetDaysRun(midnight)+1) + ". Time: 00:00 - " + latestTime, 83)
+	Local title:String = LSet("Performance Stats for day " + (GetWorldTime().GetDaysRun(midnight)+1) + ". Time: 00:00 - " + latestTime, 83)
 
 	text :+ [".-----------------------------------------------------------------------------------."]
 	text :+ ["|" + title                                          + "|"]
 
-	For local playerID:int = 1 to 4
-		local bankruptcyCount:int = GetPlayer(playerID).GetBankruptcyAmount(midnight)
-		local bankruptcyTime:long = GetPlayer(playerID).GetBankruptcyTime(bankruptcyCount)
+	For Local playerID:Int = 1 To 4
+		Local bankruptcyCount:Int = GetPlayer(playerID).GetBankruptcyAmount(midnight)
+		Local bankruptcyTime:Long = GetPlayer(playerID).GetBankruptcyTime(bankruptcyCount)
 		'bankruptcy happened today?
-		if bankruptcyCount > 0
-			local restartTime:Long = bankruptcyTime 'GetWorldTime().ModifyTime(bankruptcyTime, 0, 1, 0, 0, 0)
+		If bankruptcyCount > 0
+			Local restartTime:Long = bankruptcyTime 'GetWorldTime().ModifyTime(bankruptcyTime, 0, 1, 0, 0, 0)
 
 			'bankruptcy on that day (or more detailed: right on midnight the
 			'next day)
-			if GetWorldTime().GetDay(bankruptcyTime) = GetWorldTime().GetDay(midnight)
+			If GetWorldTime().GetDay(bankruptcyTime) = GetWorldTime().GetDay(midnight)
 				text :+ ["| " + LSet("* Player #"+playerID+" went into bankruptcy that day !", 83) + "|"]
-			endif
+			EndIf
 
 			'restarted later on?
-			if GetWorldTime().GetDay(restartTime) = GetWorldTime().GetDay(midnight)
+			If GetWorldTime().GetDay(restartTime) = GetWorldTime().GetDay(midnight)
 				text :+ ["| " + LSet("* Player #"+playerID+" (re)started at "+GetWorldTime().GetFormattedTime(restartTime) +" on day " + (GetWorldTime().getDaysRun(restartTime)+1)+" !", 83) + "|"]
-			endif
-		endif
+			EndIf
+		EndIf
 	Next
 
 	text :+ ["|---------------------------------------.----------.----------.----------.----------|"]
 	text :+ ["| TITLE                                 |       P1 |       P2 |       P3 |       P4 |"]
 	text :+ ["|---------------------------------------|----------|----------|----------|----------|"]
 
-	local keys:string[]
-	local values1:string[]
-	local values2:string[]
-	local values3:string[]
-	local values4:string[]
+	Local keys:String[]
+	Local values1:String[]
+	Local values2:String[]
+	Local values3:String[]
+	Local values4:String[]
 
-	local adAudienceProgrammeAudienceRate:Float[4]
-	local failedAdSpots:int[4]
-	local sentTrailers:int[4]
-	local sentInfomercials:int[4]
-	local sentAdvertisements:int[4]
+	Local adAudienceProgrammeAudienceRate:Float[4]
+	Local failedAdSpots:Int[4]
+	Local sentTrailers:Int[4]
+	Local sentInfomercials:Int[4]
+	Local sentAdvertisements:Int[4]
 
-	local broadcastStat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day)
-	if broadcastStat
-		local audienceSum:Long[4]
-		local adAudienceSum:Long[4]
+	Local broadcastStat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day)
+	If broadcastStat
+		Local audienceSum:Long[4]
+		Local adAudienceSum:Long[4]
 
-		For local player:int = 1 to 4
-			For local hour:int = 0 to latestHour
-				local audience:TAudienceResultBase = broadcastStat.GetAudienceResult(player, hour, false)
-				local adAudience:TAudienceResultBase = broadcastStat.GetAdAudienceResult(player, hour, false)
+		For Local player:Int = 1 To 4
+			For Local hour:Int = 0 To latestHour
+				Local audience:TAudienceResultBase = broadcastStat.GetAudienceResult(player, hour, False)
+				Local adAudience:TAudienceResultBase = broadcastStat.GetAdAudienceResult(player, hour, False)
 
-				local advertisement:TAdvertisement
-				local adAudienceValue:int, audienceValue:int
+				Local advertisement:TAdvertisement
+				Local adAudienceValue:Int, audienceValue:Int
 
 
 				' AD
-				if adAudience
-					if TAdvertisement(adAudience.broadcastMaterial)
+				If adAudience
+					If TAdvertisement(adAudience.broadcastMaterial)
 						advertisement = TAdvertisement(adAudience.broadcastMaterial)
-						adAudienceValue = int(advertisement.contract.GetMinAudience())
-					else
+						adAudienceValue = Int(advertisement.contract.GetMinAudience())
+					Else
 						sentTrailers[player-1] :+ 1
-					endif
-				endif
+					EndIf
+				EndIf
 
 				' PROGRAMME
-				if audience and audience.broadcastMaterial
-					audienceValue = int(audience.audience.GetTotalSum())
+				If audience And audience.broadcastMaterial
+					audienceValue = Int(audience.audience.GetTotalSum())
 
-					if TAdvertisement(audience.broadcastMaterial)
+					If TAdvertisement(audience.broadcastMaterial)
 						sentInfomercials[player-1] :+ 1
-					endif
-				endif
+					EndIf
+				EndIf
 
-				if advertisement
-					if advertisement.isState(TAdvertisement.STATE_OK)
+				If advertisement
+					If advertisement.isState(TAdvertisement.STATE_OK)
 						adAudienceSum[player-1] :+ adAudienceValue
 						audienceSum[player-1] :+ audienceValue
-					elseif advertisement.isState(TAdvertisement.STATE_FAILED)
+					ElseIf advertisement.isState(TAdvertisement.STATE_FAILED)
 						failedAdSpots[player-1] :+ 1
-					endif
-				endif
+					EndIf
+				EndIf
 			Next
 			adAudienceProgrammeAudienceRate[player-1] = 0
-			if adAudienceSum[player-1] > 0
+			If adAudienceSum[player-1] > 0
 				adAudienceProgrammeAudienceRate[player-1] = Float(adAudienceSum[player-1]) / audienceSum[player-1]
-			endif
+			EndIf
 		Next
-	endif
+	EndIf
 
 	keys :+ [ "AdMinAudience/ProgrammeAudience-Rate" ]
 	values1 :+ [ MathHelper.NumberToString(adAudienceProgrammeAudienceRate[0]*100,2)+"%" ]
@@ -5866,10 +5858,10 @@ Function GetPlayerPerformanceOverviewText:string[](day:int)
 	values4 :+ [ MathHelper.NumberToString(adAudienceProgrammeAudienceRate[3]*100,2)+"%" ]
 
 	keys :+ [ "Failed Adspots" ]
-	values1 :+ [ string(failedAdSpots[0]) ]
-	values2 :+ [ string(failedAdSpots[1]) ]
-	values3 :+ [ string(failedAdSpots[2]) ]
-	values4 :+ [ string(failedAdSpots[3]) ]
+	values1 :+ [ String(failedAdSpots[0]) ]
+	values2 :+ [ String(failedAdSpots[1]) ]
+	values3 :+ [ String(failedAdSpots[2]) ]
+	values4 :+ [ String(failedAdSpots[3]) ]
 	keys :+ [ "Sent [T]railers and [I]nfomercials" ]
 	values1 :+ [ "T:"+sentTrailers[0] + " I:"+sentInfomercials[0] ]
 	values2 :+ [ "T:"+sentTrailers[1] + " I:"+sentInfomercials[1] ]
@@ -5880,8 +5872,8 @@ Function GetPlayerPerformanceOverviewText:string[](day:int)
 
 
 	'MathHelper.DottedValue(financeTotal.expense_programmeLicences)
-	For local i:int = 0 until keys.length
-		local line:string = "| "+LSet(StringHelper.RemoveUmlauts(keys[i]), 38) + "|"
+	For Local i:Int = 0 Until keys.length
+		Local line:String = "| "+LSet(StringHelper.RemoveUmlauts(keys[i]), 38) + "|"
 
 		line :+ RSet( values1[i] + " |", 11)
 		line :+ RSet( values2[i] + " |", 11)
@@ -5893,48 +5885,48 @@ Function GetPlayerPerformanceOverviewText:string[](day:int)
 
 	text :+ ["'---------------------------------------'----------'----------'----------'----------'"]
 
-	return text
+	Return text
 End Function
 
 
-Function GetPlayerFinanceOverviewText:string[](playerID:int, day:int)
-	if day = -1 then day = GetWorldTime().GetDay()
-	local latestHour:int = 23
-	local latestMinute:int = 59
-	if day = GetWorldTime().GetDay()
+Function GetPlayerFinanceOverviewText:String[](playerID:Int, day:Int)
+	If day = -1 Then day = GetWorldTime().GetDay()
+	Local latestHour:Int = 23
+	Local latestMinute:Int = 59
+	If day = GetWorldTime().GetDay()
 		latestHour = GetWorldTime().GetDayHour()
 		latestMinute = GetWorldTime().GetDayMinute()
-	endif
-	local now:Long = GetWorldTime().MakeTime(0, day, latestHour, latestMinute, 0)
-	local midnight:Long = GetWorldTime().MakeTime(0, day+1, 0, 0, 0)
-	local latestTime:string = RSet(latestHour,2).Replace(" ","0") + ":" + RSet(latestMinute,2).Replace(" ", "0")
+	EndIf
+	Local now:Long = GetWorldTime().MakeTime(0, day, latestHour, latestMinute, 0)
+	Local midnight:Long = GetWorldTime().MakeTime(0, day+1, 0, 0, 0)
+	Local latestTime:String = RSet(latestHour,2).Replace(" ","0") + ":" + RSet(latestMinute,2).Replace(" ", "0")
 
 
 	'ignore player start day and fetch information about "older incarnations"
 	'of that player too (bankruptcies)
-	local finance:TPlayerFinance = GetPlayerFinanceCollection().GetIgnoringStartDay(playerID, day)
-	local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(playerID)
+	Local finance:TPlayerFinance = GetPlayerFinanceCollection().GetIgnoringStartDay(playerID, day)
+	Local financeTotal:TPlayerFinance = GetPlayerFinanceCollection().GetTotal(playerID)
 
-	local title:string = LSet("Finance Stats for player #" + playerID + " on day " + GetWorldTime().GetDaysRun(midnight) +" ("+GetWorldTime().GetDay(midnight)+")"+ ". Time: 00:00 - " + latestTime, 85)
-	local text:string[]
+	Local title:String = LSet("Finance Stats for player #" + playerID + " on day " + GetWorldTime().GetDaysRun(midnight) +" ("+GetWorldTime().GetDay(midnight)+")"+ ". Time: 00:00 - " + latestTime, 85)
+	Local text:String[]
 
 	text :+ [".--------------------------------------------------------------------------------------."]
 	text :+ ["| " + title                                          + "|"]
-	if not finance
+	If Not finance
 		text :+ ["| " + LSet("No Financial overview available for the requested day.", 85) + "|"]
-	endif
+	EndIf
 
-	local bankruptcyCountAtMidnight:int = GetPlayer(playerID).GetBankruptcyAmount(midnight)
+	Local bankruptcyCountAtMidnight:Int = GetPlayer(playerID).GetBankruptcyAmount(midnight)
 	'bankruptcy happened today?
-	if bankruptcyCountAtMidnight > 0
-		local bankruptcyCountAtDayBegin:int = GetPlayer(playerID).GetBankruptcyAmount(midnight - TWorldTime.DAYLENGTH)
+	If bankruptcyCountAtMidnight > 0
+		Local bankruptcyCountAtDayBegin:Int = GetPlayer(playerID).GetBankruptcyAmount(midnight - TWorldTime.DAYLENGTH)
 		'print "player #"+playerID+": bankruptcyCountAtDayBegin=" + bankruptcyCountAtDayBegin+ "  ..AtMidnight=" + bankruptcyCountAtMidnight+"  midnight="+GetWorldTime().GetFormattedGameDate(midnight)
 
-		For local bankruptcyCount:int = bankruptcyCountAtDayBegin to bankruptcyCountAtMidnight
-			if bankruptcyCount = 0 then continue
-			local bankruptcyTime:long = GetPlayer(playerID).GetBankruptcyTime(bankruptcyCount)
+		For Local bankruptcyCount:Int = bankruptcyCountAtDayBegin To bankruptcyCountAtMidnight
+			If bankruptcyCount = 0 Then Continue
+			Local bankruptcyTime:Long = GetPlayer(playerID).GetBankruptcyTime(bankruptcyCount)
 
-			rem
+			Rem
 			'disabled: use this if restarts of players happen the next day
 			local restartTime:Long = GetWorldTime().ModifyTime(bankruptcyTime, 0, 1, 0, 0, 0)
 
@@ -5947,127 +5939,127 @@ Function GetPlayerFinanceOverviewText:string[](playerID:int, day:int)
 
 			text :+ ["| " + LSet("* Player #"+playerID+" (re)started at "+GetWorldTime().GetFormattedTime(bankruptcyTime) + " that day!", 85) + "|"]
 		Next
-	endif
+	EndIf
 
 
-	if finance and financeTotal
-		local titleLength:int = 30
-
+	If finance And financeTotal
+		Local titleLength:Int = 30
 		text :+ ["|-------------------------------------------------------------.------------------------|"]
-		text :+ ["| Money:        "+Rset(MathHelper.DottedValue(finance.GetMoney()), 15)+"  |                         |           TOTAL           |"]
+		text :+ ["| Money:        "+RSet(MathHelper.DottedValue(finance.GetMoney()), 15)+"  |                         |           TOTAL           |"]
 		text :+ ["|--------------------------------|------------.------------|-------------.-------------|"]
 		text :+ ["|                                |   INCOME   |  EXPENSE   |   INCOME    |   EXPENSE   |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_programmeLicences), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_programmeLicences), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_programmeLicences), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_programmeLicences), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_ads), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_penalty), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_ads), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_penalty), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CALL_IN_SHOW_INCOME")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_callerRevenue), 10) + " | " + Rset("-", 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_callerRevenue), 11) + " | " + Rset("-", 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_sponsorshipRevenue), 10) + " | " + Rset("-", 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_sponsorshipRevenue), 11) + " | " + Rset("-", 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_NEWS")), titleLength) + " | " + RSet("-", 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_news), 10) + " | " + RSet("-", 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_news), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_NEWSAGENCIES")), titleLength) + " | " + RSet("-", 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_newsAgencies), 10)+ " | " + RSet("-", 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_newsAgencies), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STATIONS")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_stations), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_stationFees), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_stations), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_stationFees), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SCRIPTS")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_scripts), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_scripts), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_scripts), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_scripts), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF")), titleLength) + " | " + RSet("-", 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_productionStuff), 10) + " | " + RSet("-", 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_productionStuff), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STUDIO_RENT")), titleLength) + " | " + RSet("-", 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_rent), 10) + " | " + RSet("-", 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_rent), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_balanceInterest), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_drawingCreditInterest), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_balanceInterest), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_drawingCreditInterest), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_creditTaken), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_creditRepayed), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_creditTaken), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_creditRepayed), 11)+ " |"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_MISC")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_misc), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_misc), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_misc), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_misc), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_programmeLicences), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_programmeLicences), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_programmeLicences), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_programmeLicences), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_ads), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_penalty), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_ads), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_penalty), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CALL_IN_SHOW_INCOME")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_callerRevenue), 10) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_callerRevenue), 11) + " | " + RSet("-", 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_sponsorshipRevenue), 10) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_sponsorshipRevenue), 11) + " | " + RSet("-", 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_NEWS")), titleLength) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_news), 10) + " | " + RSet("-", 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_news), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_NEWSAGENCIES")), titleLength) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_newsAgencies), 10)+ " | " + RSet("-", 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_newsAgencies), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STATIONS")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_stations), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_stations), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_stations), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_stations), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STATIONS_FEES")), titleLength) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_stationFees), 10) + " | " + RSet("-", 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_stationFees), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_SCRIPTS")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_scripts), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_scripts), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_scripts), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_scripts), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF")), titleLength) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_productionStuff), 10) + " | " + RSet("-", 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_productionStuff), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_STUDIO_RENT")), titleLength) + " | " + RSet("-", 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_rent), 10) + " | " + RSet("-", 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_rent), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_balanceInterest), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_drawingCreditInterest), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_balanceInterest), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_drawingCreditInterest), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_creditTaken), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_creditRepayed), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_creditTaken), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_creditRepayed), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_MISC")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_misc), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_misc), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_misc), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_misc), 11)+ " |"]
 		text :+ ["|--------------------------------|------------|------------|-------------|-------------|"]
-		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TOTAL")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_total), 10) + " | " + Rset(MathHelper.DottedValue(finance.expense_total), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_total), 11) + " | " + Rset(MathHelper.DottedValue(financeTotal.expense_total), 11)+ " |"]
+		text :+ ["| "+LSet(StringHelper.RemoveUmlauts(GetLocale("FINANCES_TOTAL")), titleLength) + " | " + RSet(MathHelper.DottedValue(finance.income_total), 10) + " | " + RSet(MathHelper.DottedValue(finance.expense_total), 10) + " | " + RSet(MathHelper.DottedValue(financeTotal.income_total), 11) + " | " + RSet(MathHelper.DottedValue(financeTotal.expense_total), 11)+ " |"]
 		text :+ ["'--------------------------------'------------'------------'-------------'-------------'"]
-	else
+	Else
 		text :+ ["'--------------------------------------------------------------------------------------'"]
-	endif
-	return text
+	EndIf
+	Return text
 End Function
 
 
 
-Function GetBroadcastOverviewString:string(day:int = -1, lastHour:int = -1)
-	if day = -1 then day = GetWorldTime().GetDay()
-	if lastHour = -1 then lastHour = GetWorldTime().GetDayHour()
-	if day < GetWorldTime().GetDay() then lastHour = 23
-	local time:Long = GetWorldTime().MakeTime(0, day, lastHour, 0, 0)
+Function GetBroadcastOverviewString:String(day:Int = -1, lastHour:Int = -1)
+	If day = -1 Then day = GetWorldTime().GetDay()
+	If lastHour = -1 Then lastHour = GetWorldTime().GetDayHour()
+	If day < GetWorldTime().GetDay() Then lastHour = 23
+	Local time:Long = GetWorldTime().MakeTime(0, day, lastHour, 0, 0)
 
-	local result:string = ""
+	Local result:String = ""
 	result :+ "==== BROADCAST OVERVIEW ====" + "~n"
 	result :+ GetWorldTime().GetFormattedDate(time) + "~n"
 
-	local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day)
-	if not stat
+	Local stat:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day)
+	If Not stat
 		result :+ "no dailybroadcaststatistic for day "+day+" found." + "~n"
-		return result
-	endif
+		Return result
+	EndIf
 
 
-	For local player:int = 1 to 4
+	For Local player:Int = 1 To 4
 		result :+ ".----------." + "~n"
 		result :+ "| PLAYER " + player + " |" + "~n"
 		result :+ ".-------.--'------.---------------------------.-----------------.----------------------.---------." + "~n"
 		result :+ "| TIME  | NEWS-Q  | PROGRAMME                 | QUOTE / SHARE   | ADVERTISEMENT        | MIN-Q   |" + "~n"
 		result :+ "|-------+---------+---------------------------+-----------------+----------------------+---------|" + "~n"
-		For local hour:int = 0 to lastHour
-			local audience:TAudienceResultBase = stat.GetAudienceResult(player, hour, false)
-			local newsAudience:TAudienceResultBase = stat.GetNewsAudienceResult(player, hour, false)
-			local adAudience:TAudienceResultBase = stat.GetAdAudienceResult(player, hour, false)
+		For Local hour:Int = 0 To lastHour
+			Local audience:TAudienceResultBase = stat.GetAudienceResult(player, hour, False)
+			Local newsAudience:TAudienceResultBase = stat.GetNewsAudienceResult(player, hour, False)
+			Local adAudience:TAudienceResultBase = stat.GetAdAudienceResult(player, hour, False)
 '			local progSlot:TBroadcastMaterial = GetPlayerProgrammePlan(player).GetProgramme(day, hour)
 
 			'old savegames
-			local adSlotMaterial:TBroadcastMaterial
-			if adAudience
+			Local adSlotMaterial:TBroadcastMaterial
+			If adAudience
 				adSlotMaterial = adAudience.broadcastMaterial
-			else
+			Else
 				adSlotMaterial = GetPlayerProgrammePlan(player).GetAdvertisement(day, hour)
-			endif
+			EndIf
 
 
-			local progText:string, progAudienceText:string
-			local adText:string, adAudienceText:string
-			local newsAudienceText:string
+			Local progText:String, progAudienceText:String
+			Local adText:String, adAudienceText:String
+			Local newsAudienceText:String
 
 
-			if audience and audience.broadcastMaterial
+			If audience And audience.broadcastMaterial
 				progText = audience.broadcastMaterial.GetTitle()
-				if not audience.broadcastMaterial.isType(TVTBroadcastMaterialType.PROGRAMME)
+				If Not audience.broadcastMaterial.isType(TVTBroadcastMaterialType.PROGRAMME)
 					progText = "[I] " + progText
-				endif
+				EndIf
 
-				progAudienceText = RSet(int(audience.audience.GetTotalSum()), 7) + " " + RSet(MathHelper.NumberToString(audience.GetAudienceQuotePercentage()*100,2), 6)+"%"
-			else
+				progAudienceText = RSet(Int(audience.audience.GetTotalSum()), 7) + " " + RSet(MathHelper.NumberToString(audience.GetAudienceQuotePercentage()*100,2), 6)+"%"
+			Else
 				progAudienceText = RSet(" -/- ", 7) + " " +RSet("0%", 7)
-				progText = "Keine Ausstrahlung"
-			endif
+				progText = "Outage"
+			EndIf
 			progText = LSet(StringHelper.RemoveUmlauts(progText), 25)
 
 
-			if newsAudience
-				newsAudienceText = RSet(int(newsAudience.audience.GetTotalSum()), 7)
-			else
+			If newsAudience
+				newsAudienceText = RSet(Int(newsAudience.audience.GetTotalSum()), 7)
+			Else
 				newsAudienceText = RSet(" -/- ", 7)
-			endif
+			EndIf
 
 
-			if adSlotMaterial
+			If adSlotMaterial
 				adText = LSet(adSlotMaterial.GetTitle(), 20)
 				adAudienceText = RSet(" -/- ", 7)
 
-				if adSlotMaterial.isType(TVTBroadcastMaterialType.PROGRAMME)
+				If adSlotMaterial.isType(TVTBroadcastMaterialType.PROGRAMME)
 					adText = LSet("[T] " + StringHelper.RemoveUmlauts(adSlotMaterial.GetTitle()), 20)
-				elseif adSlotMaterial.isType(TVTBroadcastMaterialType.ADVERTISEMENT)
-					adAudienceText = RSet(int(TAdvertisement(adSlotMaterial).contract.GetMinAudience()),7)
-				endif
-			else
+				ElseIf adSlotMaterial.isType(TVTBroadcastMaterialType.ADVERTISEMENT)
+					adAudienceText = RSet(Int(TAdvertisement(adSlotMaterial).contract.GetMinAudience()),7)
+				EndIf
+			Else
 				adText = LSet("-/-", 20)
 				adAudienceText = RSet(" -/- ", 7)
-			endif
+			EndIf
 
 			result :+ "| " + RSet(hour, 2)+":00 | " + newsAudienceText+" | " + progText + " | " + progAudienceText+" | " + adText + " | " + adAudienceText +" |" +"~n"
 		Next
 		result :+ "'-------'---------'---------------------------'-----------------'----------------------'---------'" + "~n"
 	Next
-	return result
+	Return result
 End Function
 
 
-?bmxng and (android or ios)
+?bmxng And (android Or ios)
 Function handleMobileDeviceEvents:Int(data:Object, event:Int)
 	Select event
 		Case SDL_APP_WILLENTERBACKGROUND
@@ -6084,21 +6076,21 @@ End Function
 ?
 
 
-Function DEV_switchRoom:Int(room:TRoomBase, figure:TFigure = null)
+Function DEV_switchRoom:Int(room:TRoomBase, figure:TFigure = Null)
 	If Not room Then Return False
 
-	if not figure then figure = GetPlayer().GetFigure()
+	If Not figure Then figure = GetPlayer().GetFigure()
 	'do not react if already switching
-	if figure.IsChangingRoom() then Return False
+	If figure.IsChangingRoom() Then Return False
 
 	'skip if already there
 	If figure.inRoom = room Then Return False
 
-	if figure.playerID
+	If figure.playerID
 		TLogger.Log("DEV_switchRoom", "Player #"+figure.playerID+" switching to room ~q"+room.GetName()+"~q.", LOG_DEBUG)
-	else
+	Else
 		TLogger.Log("DEV_switchRoom", "Figure '"+figure.GetGUID()+"' switching to room ~q"+room.GetName()+"~q.", LOG_DEBUG)
-	endif
+	EndIf
 
 	'to avoid seeing too much animation
 	TInGameScreen_Room.temporaryDisableScreenChangeEffects = True
@@ -6106,21 +6098,21 @@ Function DEV_switchRoom:Int(room:TRoomBase, figure:TFigure = null)
 
 	If figure.inRoom
 		'abort current screen actions (drop back dragged items etc.)
-		local roomHandler:TRoomHandler = GetRoomHandlerCollection().GetHandler(figure.inRoom.GetName())
-		if roomHandler then roomHandler.AbortScreenActions()
+		Local roomHandler:TRoomHandler = GetRoomHandlerCollection().GetHandler(figure.inRoom.GetName())
+		If roomHandler Then roomHandler.AbortScreenActions()
 
 		TLogger.Log("DEV_switchRoom", "Leaving room ~q"+figure.inRoom.GetName()+"~q first.", LOG_DEBUG)
 		'force leave?
 		'figure.LeaveRoom(True)
 		'not forcing a leave is similar to "right-click"-leaving
 		'which means it signs contracts, buys programme etc
-		if figure.LeaveRoom(False)
+		If figure.LeaveRoom(False)
 			'finish leaving room in the same moment
 			figure.FinishLeaveRoom()
-		else
+		Else
 			GetGame().SendSystemMessage("[DEV] cannot switch rooms: Leaving old room failed")
-			return False
-		endif
+			Return False
+		EndIf
 	EndIf
 
 
@@ -6130,7 +6122,7 @@ Function DEV_switchRoom:Int(room:TRoomBase, figure:TFigure = null)
 	'a) add the room as new target before all others
 	'GetPlayer().GetFigure().PrependTarget(TRoomDoor.GetMainDoorToRoom(room))
 	'b) set it as the only route
-	figure.SetTarget( new TFigureTarget.Init( GetRoomDoorCollection().GetMainDoorToRoom(room.id) ) )
+	figure.SetTarget( New TFigureTarget.Init( GetRoomDoorCollection().GetMainDoorToRoom(room.id) ) )
 	figure.MoveToCurrentTarget()
 
 	'call reach step 1 - so it actually reaches the target in this turn
@@ -6142,131 +6134,131 @@ Function DEV_switchRoom:Int(room:TRoomBase, figure:TFigure = null)
 	Return True
 End Function
 
-Function PrintCurrentTranslationState(compareLang:string="tr")
-	print "=== TRANSLATION STATUS: DE - "+compareLang.ToUpper()+" ====="
+Function PrintCurrentTranslationState(compareLang:String="tr")
+	Print "=== TRANSLATION STATUS: DE - "+compareLang.ToUpper()+" ====="
 
 	TLocalization.PrintCurrentTranslationState(compareLang)
 
-	print "~t"
-	print "=== PROGRAMMES ================="
-	print "AVAILABLE:"
-	print "----------"
-	For local obj:TProgrammeData = EachIn GetProgrammeDataCollection().entries.Values()
-		local printed:int = False
-		if obj.title.Get("de") <> obj.title.Get(compareLang)
-			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
-			print "      "+compareLang+": "+ obj.title.Get(compareLang).Replace("~n", "~n          ")
+	Print "~t"
+	Print "=== PROGRAMMES ================="
+	Print "AVAILABLE:"
+	Print "----------"
+	For Local obj:TProgrammeData = EachIn GetProgrammeDataCollection().entries.Values()
+		Local printed:Int = False
+		If obj.title.Get("de") <> obj.title.Get(compareLang)
+			Print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+			Print "      "+compareLang+": "+ obj.title.Get(compareLang).Replace("~n", "~n          ")
 			printed = True
-		endif
-		if obj.description.Get("de") <> obj.description.Get(compareLang)
-			print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
-			print "      "+compareLang+": "+ obj.description.Get(compareLang).Replace("~n", "~n          ")
+		EndIf
+		If obj.description.Get("de") <> obj.description.Get(compareLang)
+			Print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+			Print "      "+compareLang+": "+ obj.description.Get(compareLang).Replace("~n", "~n          ")
 			printed = True
-		endif
-		if printed then print Chr(8203) 'zero width space, else it skips "~n"
+		EndIf
+		If printed Then Print Chr(8203) 'zero width space, else it skips "~n"
 	Next
 
-	print "~t"
-	print "MISSING:"
-	print "--------"
-	For local obj:TProgrammeData = EachIn GetProgrammeDataCollection().entries.Values()
-		local printed:int = False
-		if obj.title.Get("de") = obj.title.Get(compareLang)
-			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
-			print "      "+compareLang+": "
+	Print "~t"
+	Print "MISSING:"
+	Print "--------"
+	For Local obj:TProgrammeData = EachIn GetProgrammeDataCollection().entries.Values()
+		Local printed:Int = False
+		If obj.title.Get("de") = obj.title.Get(compareLang)
+			Print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+			Print "      "+compareLang+": "
 			printed = True
-		endif
-		if obj.description.Get("de") = obj.description.Get(compareLang)
-			print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
-			print "      "+compareLang+": "
+		EndIf
+		If obj.description.Get("de") = obj.description.Get(compareLang)
+			Print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+			Print "      "+compareLang+": "
 			printed = True
-		endif
-		if printed then print Chr(8203) 'zero width space, else it skips "~n"
-	Next
-
-
-	print "~t"
-	print "=== ADCONTRACTS ================"
-	print "AVAILABLE:"
-	print "----------"
-	For local obj:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
-		local printed:int = False
-		if obj.title.Get("de") <> obj.title.Get(compareLang)
-			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
-			print "      "+compareLang+": "+ obj.title.Get(compareLang).Replace("~n", "~n          ")
-			printed = True
-		endif
-		if obj.description.Get("de") <> obj.description.Get(compareLang)
-			print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
-			print "      "+compareLang+": "+ obj.description.Get(compareLang).Replace("~n", "~n          ")
-			printed = True
-		endif
-		if printed then print Chr(8203) 'zero width space, else it skips "~n"
-	Next
-
-	print "~t"
-	print "MISSING:"
-	print "--------"
-	For local obj:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
-		local printed:int = False
-		if obj.title.Get("de") = obj.title.Get(compareLang)
-			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
-			print "      "+compareLang+": "
-			printed = True
-		endif
-		if obj.description.Get("de") = obj.description.Get(compareLang)
-			print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
-			print "      "+compareLang+": "
-			printed = True
-		endif
-		if printed then print Chr(8203) 'zero width space, else it skips "~n"
+		EndIf
+		If printed Then Print Chr(8203) 'zero width space, else it skips "~n"
 	Next
 
 
-	print "~t"
-	print "=== NEWSEVENTS ================="
-	print "AVAILABLE:"
-	print "----------"
-	For local obj:TNewsEvent = EachIn GetNewsEventCollection().newsEvents.Values()
-		local printed:int = False
-		if obj.title.Get("de") <> obj.title.Get(compareLang)
-			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
-			print "      "+compareLang+": "+ obj.title.Get(compareLang).Replace("~n", "~n          ")
+	Print "~t"
+	Print "=== ADCONTRACTS ================"
+	Print "AVAILABLE:"
+	Print "----------"
+	For Local obj:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+		Local printed:Int = False
+		If obj.title.Get("de") <> obj.title.Get(compareLang)
+			Print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+			Print "      "+compareLang+": "+ obj.title.Get(compareLang).Replace("~n", "~n          ")
 			printed = True
-		endif
-		if obj.description.Get("de") <> obj.description.Get(compareLang)
-			print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
-			print "      "+compareLang+": "+ obj.description.Get(compareLang).Replace("~n", "~n          ")
+		EndIf
+		If obj.description.Get("de") <> obj.description.Get(compareLang)
+			Print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+			Print "      "+compareLang+": "+ obj.description.Get(compareLang).Replace("~n", "~n          ")
 			printed = True
-		endif
-		if printed then print Chr(8203) 'zero width space, else it skips "~n"
+		EndIf
+		If printed Then Print Chr(8203) 'zero width space, else it skips "~n"
 	Next
 
-	print "~t"
-	print "MISSING:"
-	print "--------"
-	For local obj:TNewsEvent = EachIn GetNewsEventCollection().newsEvents.Values()
-		local printed:int = False
-		if obj.title.Get("de") = obj.title.Get(compareLang)
-			print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
-			print "      "+compareLang+": "
+	Print "~t"
+	Print "MISSING:"
+	Print "--------"
+	For Local obj:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+		Local printed:Int = False
+		If obj.title.Get("de") = obj.title.Get(compareLang)
+			Print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+			Print "      "+compareLang+": "
 			printed = True
-		endif
-		if obj.description.Get("de") = obj.description.Get(compareLang)
-			print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
-			print "      "+compareLang+": "
+		EndIf
+		If obj.description.Get("de") = obj.description.Get(compareLang)
+			Print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+			Print "      "+compareLang+": "
 			printed = True
-		endif
-		if printed then print Chr(8203) 'zero width space, else it skips "~n"
+		EndIf
+		If printed Then Print Chr(8203) 'zero width space, else it skips "~n"
 	Next
-	print "================================"
+
+
+	Print "~t"
+	Print "=== NEWSEVENTS ================="
+	Print "AVAILABLE:"
+	Print "----------"
+	For Local obj:TNewsEvent = EachIn GetNewsEventCollection().newsEvents.Values()
+		Local printed:Int = False
+		If obj.title.Get("de") <> obj.title.Get(compareLang)
+			Print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+			Print "      "+compareLang+": "+ obj.title.Get(compareLang).Replace("~n", "~n          ")
+			printed = True
+		EndIf
+		If obj.description.Get("de") <> obj.description.Get(compareLang)
+			Print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+			Print "      "+compareLang+": "+ obj.description.Get(compareLang).Replace("~n", "~n          ")
+			printed = True
+		EndIf
+		If printed Then Print Chr(8203) 'zero width space, else it skips "~n"
+	Next
+
+	Print "~t"
+	Print "MISSING:"
+	Print "--------"
+	For Local obj:TNewsEvent = EachIn GetNewsEventCollection().newsEvents.Values()
+		Local printed:Int = False
+		If obj.title.Get("de") = obj.title.Get(compareLang)
+			Print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+			Print "      "+compareLang+": "
+			printed = True
+		EndIf
+		If obj.description.Get("de") = obj.description.Get(compareLang)
+			Print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+			Print "      "+compareLang+": "
+			printed = True
+		EndIf
+		If printed Then Print Chr(8203) 'zero width space, else it skips "~n"
+	Next
+	Print "================================"
 End Function
 
 
 Function StartApp:Int()
 	TProfiler.Enter("StartApp")
 
-	?bmxng and (android or ios)
+	?bmxng And (android Or ios)
 	SetEventFilterCallback(handleMobileDeviceEvents)
 	?
 
@@ -6319,23 +6311,23 @@ Function StartApp:Int()
 
 
 	'temporary solution
-	for local screen:TScreen = EachIn ScreenCollection.screens.Values()
-		local helpTextKeyTitle:string = "INGAME_HELP_TITLE_"+screen.GetName()
-		local helpTextKeyText:string = "INGAME_HELP_TEXT_"+screen.GetName()
-		local helpText:string = GetLocale(helpTextKeyText)
-		local helpTitle:string = GetLocale(helpTextKeyTitle)
-		if helpText = helpTextKeyText
-			print "Kein Hilfetext gefunden fuer ~q"+helpTextKeyText+"~q"
-		else
-			print "Hilfetext gefunden fuer ~q"+helpTextKeyText+"~q -> "+screen.GetName()
-			IngameHelpWindowCollection.Add( new TIngameHelpWindow.Init(GetLocale(helpTitle), GetLocale(helpText), screen.GetName()) )
-		endif
+	For Local screen:TScreen = EachIn ScreenCollection.screens.Values()
+		Local helpTextKeyTitle:String = "INGAME_HELP_TITLE_"+screen.GetName()
+		Local helpTextKeyText:String = "INGAME_HELP_TEXT_"+screen.GetName()
+		Local helpText:String = GetLocale(helpTextKeyText)
+		Local helpTitle:String = GetLocale(helpTextKeyTitle)
+		If helpText = helpTextKeyText
+			Print "Kein Hilfetext gefunden fuer ~q"+helpTextKeyText+"~q"
+		Else
+			Print "Hilfetext gefunden fuer ~q"+helpTextKeyText+"~q -> "+screen.GetName()
+			IngameHelpWindowCollection.Add( New TIngameHelpWindow.Init(GetLocale(helpTitle), GetLocale(helpText), screen.GetName()) )
+		EndIf
 	Next
 
 
 	'generic ingame-help (available via "F1")
-	local manualContent:string = LoadText("Spielanleitung.txt").Replace("~r~n", "~n").Replace("~r", "~n")
-	local manualWindow:TIngameHelpWindow = new TIngameHelpWindow.Init(GetLocale("MANUAL"), manualContent, "GameManual")
+	Local manualContent:String = LoadText("Spielanleitung.txt").Replace("~r~n", "~n").Replace("~r", "~n")
+	Local manualWindow:TIngameHelpWindow = New TIngameHelpWindow.Init(GetLocale("MANUAL"), manualContent, "GameManual")
 	manualWindow.EnableHideOption(False)
 	IngameHelpWindowCollection.Add(manualWindow)
 
@@ -6371,7 +6363,7 @@ End Function
 
 Function StartTVTower(start:Int=True)
 	Global InitialResourceLoadingDone:Int = False
-	global AppSuspendedProcessed:int = False
+	Global AppSuspendedProcessed:Int = False
 
 	EventManager.Init()
 
@@ -6433,15 +6425,15 @@ TProfiler.Leave("InitialLoading")
 TProfiler.Enter("GameLoop")
 	StartApp()
 	Repeat
-		if AppSuspended()
-			if not AppSuspendedProcessed
+		If AppSuspended()
+			If Not AppSuspendedProcessed
 				TLogger.Log("App", "App suspended.", LOG_DEBUG)
 				AppSuspendedProcessed = True
-			endif
-		elseif AppSuspendedProcessed
+			EndIf
+		ElseIf AppSuspendedProcessed
 			TLogger.Log("App", "App resumed.", LOG_DEBUG)
 			AppSuspendedProcessed = False
-		endif
+		EndIf
 
 		'handle if app is run in background (mobile devices like android/iOS)
 		App.ProcessRunningInBackground()
@@ -6464,11 +6456,11 @@ End Function
 
 
 
-Function DrawProfilerCallHistory(profilerCall:TProfilerCall, x:Int, y:Int, w:Int, h:Int, label:String, drawType:int=0)
+Function DrawProfilerCallHistory(profilerCall:TProfilerCall, x:Int, y:Int, w:Int, h:Int, label:String, drawType:Int=0)
 	SetAlpha 0.5
 	SetColor 150,150,150
 	DrawRect(x,y,w,h)
-	
+
 	SetAlpha 0.75
 	SetColor 200,200,200
 	DrawLine(x,y,x,y+h)
@@ -6485,38 +6477,38 @@ Function DrawProfilerCallHistory(profilerCall:TProfilerCall, x:Int, y:Int, w:Int
 		Local timeMin:Double = profilerCall.historyTime[0]
 		Local timeMax:Double = profilerCall.historyTime[ profilerCall.historyTime.length - 1 ]
 		Local timeSpan:Double
-		
+
 		Local canvasW:Int = w - 2
 		Local canvasH:Int = h - 2 - 10 '-10 for label
-		
+
 		'find max / calc avg
 		For Local i:Int = 0 Until profilerCall.historyDuration.length
-			if durationMax < profilerCall.historyDuration[i] then durationMax = profilerCall.historyDuration[i]
-			if durationMin > profilerCall.historyDuration[i] then durationMin = profilerCall.historyDuration[i]
-			if timeMin > profilerCall.historyTime[i] then timeMin = profilerCall.historyTime[i] 
-			if timeMax < profilerCall.historyTime[i] then timeMax = profilerCall.historyTime[i] 
+			If durationMax < profilerCall.historyDuration[i] Then durationMax = profilerCall.historyDuration[i]
+			If durationMin > profilerCall.historyDuration[i] Then durationMin = profilerCall.historyDuration[i]
+			If timeMin > profilerCall.historyTime[i] Then timeMin = profilerCall.historyTime[i]
+			If timeMax < profilerCall.historyTime[i] Then timeMax = profilerCall.historyTime[i]
 			durationAvg :+ profilerCall.historyDuration[i]
 		Next
 		durationAvg :/ profilerCall.historyDuration.length
 
 		timeSpan = timeMax - timeMin
-	
-		
+
+
 		SetColor 150,150,150
 		For Local i:Int = 0 Until profilerCall.historyTime.length
-			local aboveAvg:Float = profilerCall.historyDuration[i] / durationAvg
-			SetColor 150 + int(MathHelper.Clamp(100*(aboveAvg-1), 0, 100)),150,150
+			Local aboveAvg:Float = profilerCall.historyDuration[i] / durationAvg
+			SetColor 150 + Int(MathHelper.Clamp(100*(aboveAvg-1), 0, 100)),150,150
 
 			Local px:Float = x + 1 + canvasW * (profilerCall.historyTime[i] - timeMin) / timeSpan
 			Local py:Float = y + h - 1 - canvasH * profilerCall.historyDuration[i] / durationMax
 			Select drawType
-				case 0
+				Case 0
 					DrawLine(px, py, px, y + h - 1)
-				default
+				Default
 					Plot(px, py)
 			End Select
 		Next
-		
+
 		SetColor 255,255,255
 		GetBitmapFont("Default", 10).DrawBlock(MathHelper.NumberToString(durationMax, 4), x+2, y+2, w-4, 20, ALIGN_RIGHT_TOP)
 	EndIf

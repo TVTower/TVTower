@@ -1,4 +1,4 @@
-ï»¿SuperStrict
+SuperStrict
 Import "Dig/base.util.numbersortmap.bmx"
 Import "Dig/base.util.helper.bmx" 'for roundInt()
 Import "game.exceptions.bmx"
@@ -6,25 +6,25 @@ Import "game.gameconstants.bmx"
 
 
 Type TAudienceManager
-	Field currentAudienceBreakdown:TAudienceBase = null
-	Field currentGenderBreakdown:TAudienceBase = null
-	Field targetAudienceBreakdown:TAudienceBase = null
-	Field targetGenderBreakdown:TAudienceBase = null
-	Field defaultAudienceBreakdown:TAudienceBase = null
-	Field defaultGenderBreakdown:TAudienceBase = null
+	Field currentAudienceBreakdown:TAudienceBase = Null
+	Field currentGenderBreakdown:TAudienceBase = Null
+	Field targetAudienceBreakdown:TAudienceBase = Null
+	Field targetGenderBreakdown:TAudienceBase = Null
+	Field defaultAudienceBreakdown:TAudienceBase = Null
+	Field defaultGenderBreakdown:TAudienceBase = Null
 
-	Method Initialize:int()
-		currentAudienceBreakdown = null
-		currentGenderBreakdown = null
-		targetAudienceBreakdown = null
-		targetGenderBreakdown = null
-		defaultAudienceBreakdown = null
-		defaultGenderBreakdown = null
+	Method Initialize:Int()
+		currentAudienceBreakdown = Null
+		currentGenderBreakdown = Null
+		targetAudienceBreakdown = Null
+		targetGenderBreakdown = Null
+		defaultAudienceBreakdown = Null
+		defaultGenderBreakdown = Null
 	End Method
 
 
 	Method GetAudienceBreakdown:TAudienceBase()
-		if not defaultAudienceBreakdown
+		If Not defaultAudienceBreakdown
 			defaultAudienceBreakDown = New TAudienceBase
 			defaultAudienceBreakDown.Children   = 0.09  'Kinder (9%)
 			defaultAudienceBreakDown.Teenagers	 = 0.1   'Teenager (10%)
@@ -34,14 +34,14 @@ Type TAudienceManager
 			defaultAudienceBreakDown.Unemployed = 0.045 'Arbeitslose (7,5% von 60% Erwachsenen = 4,5%)
 			defaultAudienceBreakDown.Manager    = 0.03  'Manager (5% von 60% Erwachsenen = 3%)
 			defaultAudienceBreakDown.Pensioners = 0.21  'Rentner (21%)
-		endif
+		EndIf
 		'set current to default (reference!) if nothing set for now
-		if not currentAudienceBreakdown then currentAudienceBreakdown = defaultAudienceBreakDown
+		If Not currentAudienceBreakdown Then currentAudienceBreakdown = defaultAudienceBreakDown
 
-		return currentAudienceBreakdown
+		Return currentAudienceBreakdown
 	End Method
 
-rem
+Rem
 	Method ModifyAudienceBreakdown:TAudienceBase(AudienceModifier:TAudienceBase, relativeChange:int = True)
 		if relativeChange
 			currentAudienceBreakdown = GetAudienceBreakdown().Copy().ModifySumRelative(AudienceModifier)
@@ -52,8 +52,8 @@ rem
 endrem
 
 	'returns the female percentage by default
-	Method GetGenderBreakdown:TAudienceBase(gender:int=-1)
-		if not defaultGenderBreakdown
+	Method GetGenderBreakdown:TAudienceBase(gender:Int=-1)
+		If Not defaultGenderBreakdown
 			'based partially on data from:
 			'http://www.bpb.de/wissen/X39RH6,0,0,Bev%F6lkerung_nach_Altersgruppen_und_Geschlecht.html
 			'(of 2010)
@@ -70,34 +70,34 @@ endrem
 			defaultGenderBreakdown.Unemployed = 0.45
 			defaultGenderBreakdown.Manager = 0.20
 			defaultGenderBreakdown.Pensioners = 0.58 'the older the more women
-		endif
+		EndIf
 		'set current to default (reference!) if nothing set for now
-		if not currentGenderBreakdown then currentGenderBreakdown = defaultGenderBreakdown
+		If Not currentGenderBreakdown Then currentGenderBreakdown = defaultGenderBreakdown
 
-		if gender <> TVTPersonGender.MALE
-			return currentGenderBreakdown
-		else
-			return new TAudienceBase.InitValue(1).Subtract( currentGenderBreakdown )
-		endif
+		If gender <> TVTPersonGender.MALE
+			Return currentGenderBreakdown
+		Else
+			Return New TAudienceBase.InitValue(1).Subtract( currentGenderBreakdown )
+		EndIf
 	End Method
 
 
-	Method GetGenderPercentage:Float(gender:int)
-		return GetGenderBreakdown(gender).GetWeightedAverage( GetAudienceBreakdown() )
+	Method GetGenderPercentage:Float(gender:Int)
+		Return GetGenderBreakdown(gender).GetWeightedAverage( GetAudienceBreakdown() )
 	End Method
 
 
-	Method GetGenderGroupPercentage:Float(gender:int, groups:int)
-		local portion:float = 0
-		local gBreakdown:TAudienceBase = GetGenderBreakdown(gender)
-		local aBreakdown:TAudienceBase = GetAudienceBreakdown()
-		For local i:int = 1 to TVTTargetGroup.baseGroupCount
-			local targetGroupID:int = TVTTargetGroup.GetAtIndex(i)
-			if groups & targetGroupID
+	Method GetGenderGroupPercentage:Float(gender:Int, groups:Int)
+		Local portion:Float = 0
+		Local gBreakdown:TAudienceBase = GetGenderBreakdown(gender)
+		Local aBreakdown:TAudienceBase = GetAudienceBreakdown()
+		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
+			Local targetGroupID:Int = TVTTargetGroup.GetAtIndex(i)
+			If groups & targetGroupID
 				portion :+ gBreakdown.GetValue(targetGroupID) * aBreakdown.GetValue(targetGroupID)
-			endif
+			EndIf
 		Next
-		return portion
+		Return portion
 	End Method
 
 
@@ -107,42 +107,42 @@ endrem
 	'---
 	'In contrast to "GetGenderGroupPercentage" this allows to have
 	'TVTTargetGroup.MEN / WOMEN recognized as gender
-	Method GetTargetGroupPercentage:Float(targetGroups:int)
+	Method GetTargetGroupPercentage:Float(targetGroups:Int)
 		'add target groups ignoring the gender
-		if targetGroups & TVTTargetGroup.MEN
+		If targetGroups & TVTTargetGroup.MEN
 			'just men
-			if targetGroups = TVTTargetGroup.MEN
-				return GetGenderPercentage(TVTPersonGender.MALE)
+			If targetGroups = TVTTargetGroup.MEN
+				Return GetGenderPercentage(TVTPersonGender.MALE)
 			'male part of target groups
-			else
-				return GetGenderGroupPercentage(TVTPersonGender.MALE, targetGroups)
-			endif
-		elseif targetGroups & TVTTargetGroup.WOMEN
+			Else
+				Return GetGenderGroupPercentage(TVTPersonGender.MALE, targetGroups)
+			EndIf
+		ElseIf targetGroups & TVTTargetGroup.WOMEN
 			'just women
-			if targetGroups = TVTTargetGroup.WOMEN
-				return GetGenderPercentage(TVTPersonGender.FEMALE)
+			If targetGroups = TVTTargetGroup.WOMEN
+				Return GetGenderPercentage(TVTPersonGender.FEMALE)
 			'female part of target groups
-			else
-				return GetGenderGroupPercentage(TVTPersonGender.FEMALE, targetGroups)
-			endif
-		else
-			return GetAudienceBreakdown().GetValue(targetGroups)
-		endif
+			Else
+				Return GetGenderGroupPercentage(TVTPersonGender.FEMALE, targetGroups)
+			EndIf
+		Else
+			Return GetAudienceBreakdown().GetValue(targetGroups)
+		EndIf
 
 		Throw "unhandled GetTargetGroupAmaount: targetGroups="+targetGroups
-		return 0
+		Return 0
 	End Method
 End Type
 
-Global AudienceManager:TAudienceManager = new TAudienceManager
+Global AudienceManager:TAudienceManager = New TAudienceManager
 
 
 
 
-'Diese Klasse reprÃ¤sentiert das Publikum, dass die Summe seiner Zielgruppen ist.
+'Diese Klasse repräsentiert das Publikum, dass die Summe seiner Zielgruppen ist.
 'Die Klasse kann sowohl Zuschauerzahlen als auch Faktoren/Quoten beinhalten
 'und stellt einige Methoden bereit die Berechnung mit Faktoren und anderen
-'TAudience-Klassen ermÃ¶glichen.
+'TAudience-Klassen ermöglichen.
 Type TAudienceBase {_exposeToLua="selected"}
 	Field Children:Float    = 0 'Kinder
 	Field Teenagers:Float	= 0	'Teenager
@@ -157,26 +157,26 @@ Type TAudienceBase {_exposeToLua="selected"}
 
 	Method Init:TAudienceBase(children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
 		SetValues(children, teenagers, HouseWives, employees, unemployed, manager, pensioners)
-		Return self
+		Return Self
 	End Method
 
 
 	Method InitValue:TAudienceBase(defaultValue:Float)
 		Init(defaultValue, defaultValue, defaultValue, defaultValue, defaultValue, defaultValue, defaultValue)
-		return self
+		Return Self
 	End Method
 
 
 	Method InitWithBreakdown:TAudienceBase(audience:Int, breakdown:TAudienceBase)
 		SetValuesFrom(breakdown)
 		MultiplyFloat(audience)
-		return self
+		Return Self
 	End Method
 
 
 	'=== SERIALIZATION / DESERIALIZATION ===
-	Method SerializeTAudienceBaseToString:string()
-		return f2i(Children) + "," +..
+	Method SerializeTAudienceBaseToString:String()
+		Return f2i(Children) + "," +..
 		       f2i(Teenagers) + "," +..
 		       f2i(HouseWives) + "," +..
 		       f2i(Employees) + "," +..
@@ -184,22 +184,22 @@ Type TAudienceBase {_exposeToLua="selected"}
 		       f2i(Manager) + "," +..
 		       f2i(Pensioners)
 
-		Function f2i:String(f:float)
-			if float(int(f)) = f then return int(f)
-			return string(f).replace(",",".")
+		Function f2i:String(f:Float)
+			If Float(Int(f)) = f Then Return Int(f)
+			Return String(f).Replace(",",".")
 		End Function
 	End Method
 
 
 	Method DeSerializeTAudienceBaseFromString(text:String)
-		local vars:string[] = text.split(",")
-		if vars.length > 0 then Children = float(vars[0])
-		if vars.length > 1 then Teenagers = float(vars[1])
-		if vars.length > 2 then HouseWives = float(vars[2])
-		if vars.length > 3 then Employees = float(vars[3])
-		if vars.length > 4 then Unemployed = float(vars[4])
-		if vars.length > 5 then Manager = float(vars[5])
-		if vars.length > 6 then Pensioners = float(vars[6])
+		Local vars:String[] = text.split(",")
+		If vars.length > 0 Then Children = Float(vars[0])
+		If vars.length > 1 Then Teenagers = Float(vars[1])
+		If vars.length > 2 Then HouseWives = Float(vars[2])
+		If vars.length > 3 Then Employees = Float(vars[3])
+		If vars.length > 4 Then Unemployed = Float(vars[4])
+		If vars.length > 5 Then Manager = Float(vars[5])
+		If vars.length > 6 Then Pensioners = Float(vars[6])
 	End Method
 
 
@@ -210,7 +210,7 @@ Type TAudienceBase {_exposeToLua="selected"}
 	Method Copy:TAudienceBase()
 		Local result:TAudienceBase = New TAudienceBase
 		result.SetValuesFrom(Self)
-		return result
+		Return result
 	End Method
 
 
@@ -233,12 +233,12 @@ Type TAudienceBase {_exposeToLua="selected"}
 
 
 	Method GetAverage:Float() {_exposeToLua}
-		local result:Float = GetSum()
-		if result = 0
-			return 0.0
-		else
-			return result / 7
-		endif
+		Local result:Float = GetSum()
+		If result = 0
+			Return 0.0
+		Else
+			Return result / 7
+		EndIf
 	End Method
 
 
@@ -257,8 +257,8 @@ Type TAudienceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method CutMinimumFloat:TAudienceBase(value:float)
-		CutMinimum(new TAudienceBase.InitValue(value))
+	Method CutMinimumFloat:TAudienceBase(value:Float)
+		CutMinimum(New TAudienceBase.InitValue(value))
 		Return Self
 	End Method
 
@@ -275,8 +275,8 @@ Type TAudienceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method CutMaximumFloat:TAudienceBase(value:float)
-		CutMaximum(new TAudienceBase.InitValue(value))
+	Method CutMaximumFloat:TAudienceBase(value:Float)
+		CutMaximum(New TAudienceBase.InitValue(value))
 		Return Self
 	End Method
 
@@ -293,7 +293,7 @@ Type TAudienceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetValue:Float(targetID:int) {_exposeToLua}
+	Method GetValue:Float(targetID:Int) {_exposeToLua}
 		Select targetID
 			Case TVTTargetGroup.All
 				Return GetSum()
@@ -323,24 +323,24 @@ Type TAudienceBase {_exposeToLua="selected"}
 
 
 	'returns the sum value of a group of targetIDS
-	Method GetGroupValue:Float(targetIDs:int) {_exposeToLua}
+	Method GetGroupValue:Float(targetIDs:Int) {_exposeToLua}
 		'loop through all targetGroup-entries and add them if contained
-		local result:Float
-		local oneFound:int = false
+		Local result:Float
+		Local oneFound:Int = False
 		'do NOT start with 0 ("all")
-		For local i:int = 1 to TVTTargetGroup.count
-			if targetIDs & TVTTargetGroup.GetAtIndex(i)
+		For Local i:Int = 1 To TVTTargetGroup.count
+			If targetIDs & TVTTargetGroup.GetAtIndex(i)
 				result :+ GetValue(i)
 				oneFound = True
-			endif
+			EndIf
 		Next
 
-		if not oneFound
+		If Not oneFound
 			'print "unknown targetID"
-			Throw TArgumentException.Create("targetID", String.FromInt(targetIDs))
-		endif
+			Throw TTVTArgumentException.Create("targetID", String.FromInt(targetIDs))
+		EndIf
 
-		return result
+		Return result
 	End Method
 
 
@@ -361,7 +361,7 @@ Type TAudienceBase {_exposeToLua="selected"}
 			Case TVTTargetGroup.Pensioners
 				Pensioners = newValue
 			Default
-				Throw TArgumentException.Create("targetID", String.FromInt(targetID))
+				Throw TTVTArgumentException.Create("targetID", String.FromInt(targetID))
 		End Select
 	End Method
 
@@ -374,15 +374,15 @@ Type TAudienceBase {_exposeToLua="selected"}
 
 	Method GetAbsSum:Float() {_exposeToLua}
 		'ignore gender in base variant
-		Return abs(Children) + abs(Teenagers) + abs(HouseWives) + abs(Employees) + abs(Unemployed) + abs(Manager) + abs(Pensioners)
+		Return Abs(Children) + Abs(Teenagers) + Abs(HouseWives) + Abs(Employees) + Abs(Unemployed) + Abs(Manager) + Abs(Pensioners)
 	End Method
 
 
-	Method GetWeightedAverage:Float(audienceBreakdown:TAudienceBase = null) {_exposeToLua}
+	Method GetWeightedAverage:Float(audienceBreakdown:TAudienceBase = Null) {_exposeToLua}
 		'fetch current breakdown if nothing was given
-		if not audienceBreakdown then audienceBreakdown = AudienceManager.GetAudienceBreakdown()
+		If Not audienceBreakdown Then audienceBreakdown = AudienceManager.GetAudienceBreakdown()
 
-		local result:Float = 0
+		Local result:Float = 0
 		result :+ Children * audienceBreakdown.Children
 		result :+ Teenagers * audienceBreakdown.Teenagers
 		result :+ HouseWives * audienceBreakdown.HouseWives
@@ -391,7 +391,7 @@ Type TAudienceBase {_exposeToLua="selected"}
 		result :+ Manager * audienceBreakdown.Manager
 		result :+ Pensioners * audienceBreakdown.Pensioners
 
-		return result
+		Return result
 	End Method
 
 
@@ -462,7 +462,15 @@ Type TAudienceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method MultiplyFloat:TAudienceBase(factor:Float)
+	'for now passing floats through reflection (so...Lua) is bugged
+	'in NG.
+	'that is why this workaround is needed
+	Method MultiplyString:TAudienceBase(factor:String) {_exposeToLua}
+		Return MultiplyFloat(Float(factor))
+	End Method
+
+
+	Method MultiplyFloat:TAudienceBase(factor:Float) {_exposeToLua}
 		Children	:* factor
 		Teenagers	:* factor
 		HouseWives	:* factor
@@ -477,92 +485,92 @@ Type TAudienceBase {_exposeToLua="selected"}
 	Method Divide:TAudienceBase(audience:TAudienceBase)
 		If Not audience Then Return Self
 
-		if audience.GetSum() = 0
+		If audience.GetSum() = 0
 			'set all values to 0 (new Audience has 0 as default)
-			SetValuesFrom(new TAudienceBase)
+			SetValuesFrom(New TAudienceBase)
 		Else
 
 			'check for div/0 first
-			if audience.Children = 0
-				if Abs(children - audience.Children) > 0.01
-					throw "TAudienceBase.Divide: Div/0 - audience.Children is 0. Children is " + Children
-				else
+			If audience.Children = 0
+				If Abs(children - audience.Children) > 0.01
+					Throw "TAudienceBase.Divide: Div/0 - audience.Children is 0. Children is " + Children
+				Else
 					Children = 0
-				endif
-			else
+				EndIf
+			Else
 				Children :/ audience.Children
-			endif
+			EndIf
 
-			if audience.Teenagers = 0
-				if Abs(Teenagers - audience.Teenagers) > 0.01
-					throw "TAudienceBase.Divide: Div/0 - audience.Teenagers is 0. Teenagers is " + Teenagers
-				else
+			If audience.Teenagers = 0
+				If Abs(Teenagers - audience.Teenagers) > 0.01
+					Throw "TAudienceBase.Divide: Div/0 - audience.Teenagers is 0. Teenagers is " + Teenagers
+				Else
 					Teenagers = 0
-				endif
-			else
+				EndIf
+			Else
 				Teenagers :/ audience.Teenagers
-			endif
+			EndIf
 
-			if audience.HouseWives = 0
-				if Abs(HouseWives - audience.HouseWives) > 0.01
-					throw "TAudienceBase.Divide: Div/0 - audience.HouseWives is 0. HouseWives is " + HouseWives
-				else
+			If audience.HouseWives = 0
+				If Abs(HouseWives - audience.HouseWives) > 0.01
+					Throw "TAudienceBase.Divide: Div/0 - audience.HouseWives is 0. HouseWives is " + HouseWives
+				Else
 					HouseWives = 0
-				endif
-			else
+				EndIf
+			Else
 				HouseWives :/ audience.HouseWives
-			endif
+			EndIf
 
-			if audience.Employees = 0 and (Abs(Employees - audience.Employees) < 0.01)
+			If audience.Employees = 0 And (Abs(Employees - audience.Employees) < 0.01)
 				'TODO: this seems pretty useless
-				if Abs(Employees - audience.Employees) > 0.01
-					throw "TAudienceBase.Divide: Div/0 - audience.Employees is 0. Employees is " + Employees
-				else
+				If Abs(Employees - audience.Employees) > 0.01
+					Throw "TAudienceBase.Divide: Div/0 - audience.Employees is 0. Employees is " + Employees
+				Else
 					Employees = 0
-				endif
-			else
+				EndIf
+			Else
 				Employees :/ audience.Employees
-			endif
+			EndIf
 
-			if audience.Unemployed = 0 and (Abs(Unemployed - audience.Unemployed) < 0.01)
+			If audience.Unemployed = 0 And (Abs(Unemployed - audience.Unemployed) < 0.01)
 				'TODO: this seems pretty useless
-				if Abs(Unemployed - audience.Unemployed) > 0.01
-					throw "TAudienceBase.Divide: Div/0 - audience.Unemployed is 0. Unemployed is " + Unemployed
-				else
+				If Abs(Unemployed - audience.Unemployed) > 0.01
+					Throw "TAudienceBase.Divide: Div/0 - audience.Unemployed is 0. Unemployed is " + Unemployed
+				Else
 					Unemployed = 0
-				endif
-			else
+				EndIf
+			Else
 				Unemployed :/ audience.Unemployed
-			endif
+			EndIf
 
-			if audience.Manager = 0 and (Abs(Manager - audience.Manager) < 0.01)
+			If audience.Manager = 0 And (Abs(Manager - audience.Manager) < 0.01)
 				'TODO: this seems pretty useless
-				if Abs(Manager - audience.Manager) > 0.01
-					throw "TAudienceBase.Divide: Div/0 - audience.Manager is 0. Manager is " + Manager
-				else
+				If Abs(Manager - audience.Manager) > 0.01
+					Throw "TAudienceBase.Divide: Div/0 - audience.Manager is 0. Manager is " + Manager
+				Else
 					Manager = 0
-				endif
-			else
+				EndIf
+			Else
 				Manager :/ audience.Manager
-			endif
+			EndIf
 
-			if audience.Pensioners = 0 and (Abs(Pensioners - audience.Pensioners) < 0.01)
+			If audience.Pensioners = 0 And (Abs(Pensioners - audience.Pensioners) < 0.01)
 				'TODO: this seems pretty useless
-				if Abs(Pensioners - audience.Pensioners) > 0.01
-					throw "TAudienceBase.Divide: Div/0 - audience.Pensioners is 0. Pensioners is " + Pensioners
-				else
+				If Abs(Pensioners - audience.Pensioners) > 0.01
+					Throw "TAudienceBase.Divide: Div/0 - audience.Pensioners is 0. Pensioners is " + Pensioners
+				Else
 					Pensioners = 0
-				endif
-			else
+				EndIf
+			Else
 				Pensioners :/ audience.Pensioners
-			endif
+			EndIf
 		EndIf
 		Return Self
 	End Method
 
 
 	Method DivideFloat:TAudienceBase(number:Float)
-		if number = 0 then Throw "TAudienceBase.DivideFloat(): Division by zero."
+		If number = 0 Then Throw "TAudienceBase.DivideFloat(): Division by zero."
 
 		Children	:/ number
 		Teenagers	:/ number
@@ -588,7 +596,7 @@ Type TAudienceBase {_exposeToLua="selected"}
 
 
 	Method ToNumberSortMap:TNumberSortMap()
-		Local amap:TNumberSortMap = new TNumberSortMap
+		Local amap:TNumberSortMap = New TNumberSortMap
 		amap.Add(TVTTargetGroup.Children, Children)
 		amap.Add(TVTTargetGroup.Teenagers, Teenagers)
 		amap.Add(TVTTargetGroup.HouseWives, HouseWives)
@@ -600,7 +608,7 @@ Type TAudienceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method ToStringPercentage:String(dec:int = 0)
+	Method ToStringPercentage:String(dec:Int = 0) {_exposeToLua}
 		Return "C:" + MathHelper.NumberToString(Children*100,dec, True) + "% / " + ..
 		       "T:" + MathHelper.NumberToString(Teenagers*100,dec, True) + "% / " + ..
 		       "H:" + MathHelper.NumberToString(HouseWives*100,dec, True) + "% / " + ..
@@ -611,7 +619,7 @@ Type TAudienceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method ToStringMinimal:String(dec:int = 0)
+	Method ToStringMinimal:String(dec:Int = 0) {_exposeToLua}
 		Return "C:" + MathHelper.NumberToString(Children,dec, True) + " / " + ..
 		       "T:" + MathHelper.NumberToString(Teenagers,dec, True) + " / " + ..
 		       "H:" + MathHelper.NumberToString(HouseWives,dec, True) + " / " + ..
@@ -622,14 +630,14 @@ Type TAudienceBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method ToString:String()
+	Method ToString:String() {_exposeToLua}
 		Local dec:Int = 4
 		Return "Sum = " + MathHelper.NumberToString(GetSum(), dec, True) + "  ( " + ToStringMinimal(0) +" )"
 		'Return "Sum =" + Int(Ceil(GetSum())) + "  ( 0=" + MathHelper.NumberToString(Children,dec, True) + "  1=" + MathHelper.NumberToString(Teenagers,dec, True) + "  2=" + MathHelper.NumberToString(HouseWives,dec, True) + "  3=" + MathHelper.NumberToString(Employees,dec, True) + "  4=" + MathHelper.NumberToString(Unemployed,dec, True) + "  5=" + MathHelper.NumberToString(Manager,dec, True) + "  6=" + MathHelper.NumberToString(Pensioners,dec, True) + " )"
 	End Method
 
 
-	Method ToStringAverage:String(dec:int = 4)
+	Method ToStringAverage:String(dec:Int = 4)
 		Return "Avg = " + MathHelper.NumberToString(GetAverage(),3, True) + "  ( " + ToStringMinimal(dec) +" )"
 		'Return "Avg = " + MathHelper.NumberToString(GetAverage(),3, True) + "  ( 0=" + MathHelper.NumberToString(Children,3, True) + "  1=" + MathHelper.NumberToString(Teenagers,3, True) + "  2=" + MathHelper.NumberToString(HouseWives,3, True) + "  3=" + MathHelper.NumberToString(Employees,3, True) + "  4=" + MathHelper.NumberToString(Unemployed,3, True) + "  5=" + MathHelper.NumberToString(Manager,3, True) + "  6=" + MathHelper.NumberToString(Pensioners,3, True) + " )"
 	End Method
@@ -691,48 +699,48 @@ End Type
 
 
 Type TAudience {_exposeToLua="selected"}
-	'Optional: Eine Id zur Identifikation (z.B. PlayerId). Nur bei Bedarf fÃ¼llen!
+	'Optional: Eine Id zur Identifikation (z.B. PlayerId). Nur bei Bedarf füllen!
 	Field Id:Int
 	Field audienceMale:TAudienceBase
 	Field audienceFemale:TAudienceBase
 
 
 	'=== Constructors ===
-	Method Init:TAudience(gender:int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
-		if gender = -1 or gender = TVTPersonGender.FEMALE
+	Method Init:TAudience(gender:Int, children:Float, teenagers:Float, HouseWives:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float)
+		If gender = -1 Or gender = TVTPersonGender.FEMALE
 			GetAudienceFemale().Init(children, teenagers, HouseWives, employees, unemployed, manager, pensioners)
-		endif
-		if gender = -1 or gender = TVTPersonGender.MALE
+		EndIf
+		If gender = -1 Or gender = TVTPersonGender.MALE
 			GetAudienceMale().Init(children, teenagers, HouseWives, employees, unemployed, manager, pensioners)
-		endif
+		EndIf
 
-		return self
+		Return Self
 	End Method
 
 
 	Method InitBase:TAudience(male:TAudienceBase, female:TAudienceBase)
-		if not male then male = new TAudienceBase.InitValue(0)
-		if not female then female = new TAudienceBase.InitValue(0)
+		If Not male Then male = New TAudienceBase.InitValue(0)
+		If Not female Then female = New TAudienceBase.InitValue(0)
 
-		if not audienceMale then audienceMale = new TAudienceBase
-		if not audienceFemale then audienceFemale = new TAudienceBase
+		If Not audienceMale Then audienceMale = New TAudienceBase
+		If Not audienceFemale Then audienceFemale = New TAudienceBase
 
 		audienceMale.SetValuesFrom(male)
 		audienceFemale.SetValuesFrom(female)
 
-		return self
+		Return Self
 	End Method
 
 
 	Method InitValue:TAudience(valueMale:Float, valueFemale:Float) {_exposeToLua}
 		Init(TVTPersonGender.Male, valueMale, valueMale, valueMale, valueMale, valueMale, valueMale, valueMale)
 		Init(TVTPersonGender.Female, valueFemale, valueFemale, valueFemale, valueFemale, valueFemale, valueFemale, valueFemale)
-		return self
+		Return Self
 	End Method
 
 
 	Method InitWithBreakdown:TAudience(audience:Int) {_exposeToLua}
-		local breakdown:TAudienceBase = new TAudienceBase.InitValue(1)
+		Local breakdown:TAudienceBase = New TAudienceBase.InitValue(1)
 		breakdown.Multiply( AudienceManager.GetAudienceBreakdown() )
 
 		GetAudienceFemale().InitWithBreakdown(audience, breakdown)
@@ -741,42 +749,42 @@ Type TAudience {_exposeToLua="selected"}
 		GetAudienceMale().InitWithBreakdown(audience, breakdown)
 		GetAudienceMale().Multiply( AudienceManager.GetGenderBreakdown( TVTPersonGender.MALE ) )
 
-		return self
+		Return Self
 	End Method
 
 
 	Method CopyFrom:TAudience(other:TAudience)
-		self.InitBase(other.audienceMale, other.audienceFemale)
-		return self
+		Self.InitBase(other.audienceMale, other.audienceFemale)
+		Return Self
 	End Method
 
 
 	'=== SERIALIZATION / DESERIALIZATION ===
 
-	Method SerializeTAudienceToString:string()
-		local m:string = ""
-		local w:string = ""
-		if audienceMale then m = audienceMale.SerializeTAudienceBaseToString()
-		if audienceFemale then w = audienceFemale.SerializeTAudienceBaseToString()
+	Method SerializeTAudienceToString:String()
+		Local m:String = ""
+		Local w:String = ""
+		If audienceMale Then m = audienceMale.SerializeTAudienceBaseToString()
+		If audienceFemale Then w = audienceFemale.SerializeTAudienceBaseToString()
 		'convert FloatToInt
-		return id + "::ab=" +..
+		Return id + "::ab=" +..
 		       m  + "::ab=" +..
 		       w
 	End Method
 
 
 	Method DeSerializeTAudienceFromString(text:String)
-		local parts:string[] = text.split("::ab=")
-		id = int(parts[0])
-		if parts.length > 1
+		Local parts:String[] = text.split("::ab=")
+		id = Int(parts[0])
+		If parts.length > 1
 			GetAudienceMale().InitValue(0)
 			audienceMale.DeSerializeTAudienceBaseFromString(parts[1])
-		endif
-		if parts.length > 2
-			if not audienceFemale then audienceFemale = new TAudienceBase
+		EndIf
+		If parts.length > 2
+			If Not audienceFemale Then audienceFemale = New TAudienceBase
 			GetAudienceFemale().InitValue(0)
 			audienceFemale.DeSerializeTAudienceBaseFromString(parts[2])
-		endif
+		EndIf
 	End Method
 
 
@@ -784,14 +792,14 @@ Type TAudience {_exposeToLua="selected"}
 
 	'=== PUBLIC ===
 	Method GetAudienceFemale:TAudienceBase() {_exposeToLua}
-		if not audienceFemale then audienceFemale = new TAudienceBase
-		return audienceFemale
+		If Not audienceFemale Then audienceFemale = New TAudienceBase
+		Return audienceFemale
 	End Method
 
 
 	Method GetAudienceMale:TAudienceBase() {_exposeToLua}
-		if not audienceMale then audienceMale = new TAudienceBase
-		return audienceMale
+		If Not audienceMale Then audienceMale = New TAudienceBase
+		Return audienceMale
 	End Method
 
 
@@ -799,7 +807,7 @@ Type TAudience {_exposeToLua="selected"}
 		Local result:TAudience = New TAudience
 		result.Id = Id
 		result.SetValuesFrom(Self)
-		return result
+		Return result
 	End Method
 
 
@@ -810,121 +818,121 @@ Type TAudience {_exposeToLua="selected"}
 
 
 	Method SetValues:TAudience(audienceMale:TAudienceBase, audienceFemale:TAudienceBase)
-		if audienceMale then self.audienceMale = audienceMale.Copy()
-		if audienceFemale then self.audienceFemale = audienceFemale.Copy()
-		return self
+		If audienceMale Then Self.audienceMale = audienceMale.Copy()
+		If audienceFemale Then Self.audienceFemale = audienceFemale.Copy()
+		Return Self
 	End Method
 
 
-	Method GetTotalValue:Float(targetID:int) {_exposeToLua}
-		if targetID <= 0 then return GetTotalSum()
+	Method GetTotalValue:Float(targetID:Int) {_exposeToLua}
+		If targetID <= 0 Then Return GetTotalSum()
 
-		if targetID = TVTTargetGroup.Women
-			return GetGenderValue(targetID, TVTPersonGender.FEMALE)
-		elseif targetID = TVTTargetGroup.Men
-			return GetGenderValue(targetID, TVTPersonGender.MALE)
-		else
-			local res:Float = 0
-			if audienceMale then res :+ audienceMale.GetValue(targetID)
-			if audienceFemale then res :+ audienceFemale.GetValue(targetID)
-			return res
-		endif
+		If targetID = TVTTargetGroup.Women
+			Return GetGenderValue(targetID, TVTPersonGender.FEMALE)
+		ElseIf targetID = TVTTargetGroup.Men
+			Return GetGenderValue(targetID, TVTPersonGender.MALE)
+		Else
+			Local res:Float = 0
+			If audienceMale Then res :+ audienceMale.GetValue(targetID)
+			If audienceFemale Then res :+ audienceFemale.GetValue(targetID)
+			Return res
+		EndIf
 	End Method
 
 
-	Method GetGenderValue:Float(targetID:int, gender:int) {_exposeToLua}
-		if targetID = TVTTargetGroup.Women
-			if not audienceFemale or gender = TVTPersonGender.MALE then return 0
-			return audienceFemale.GetSum()
-		elseif targetID = TVTTargetGroup.Men
-			if not audienceMale or gender = TVTPersonGender.FEMALE  then return 0
-			return audienceMale.GetSum()
-		endif
+	Method GetGenderValue:Float(targetID:Int, gender:Int) {_exposeToLua}
+		If targetID = TVTTargetGroup.Women
+			If Not audienceFemale Or gender = TVTPersonGender.MALE Then Return 0
+			Return audienceFemale.GetSum()
+		ElseIf targetID = TVTTargetGroup.Men
+			If Not audienceMale Or gender = TVTPersonGender.FEMALE  Then Return 0
+			Return audienceMale.GetSum()
+		EndIf
 
-		if gender = TVTPersonGender.MALE
-			if not audienceMale then return 0
-			return audienceMale.GetValue(targetID)
-		elseif gender = TVTPersonGender.FEMALE
-			if not audienceFemale then return 0
-			return audienceFemale.GetValue(targetID)
-		endif
-		return 0
+		If gender = TVTPersonGender.MALE
+			If Not audienceMale Then Return 0
+			Return audienceMale.GetValue(targetID)
+		ElseIf gender = TVTPersonGender.FEMALE
+			If Not audienceFemale Then Return 0
+			Return audienceFemale.GetValue(targetID)
+		EndIf
+		Return 0
 	End Method
 
 
 	'contrary to "SetGenderValue()" this SPLITS the value into female/male
-	Method SetTotalValue(targetID:int, newValue:Float, femalePercentage:float = 0.5)
+	Method SetTotalValue(targetID:Int, newValue:Float, femalePercentage:Float = 0.5)
 		SetGenderValue(targetID, newValue * femalePercentage, TVTPersonGender.FEMALE)
 		SetGenderValue(targetID, newValue * (1.0 - femalePercentage), TVTPersonGender.MALE)
 	End Method
 
 
-	Method SetGenderValue(targetID:Int, newValue:Float, gender:int)
+	Method SetGenderValue(targetID:Int, newValue:Float, gender:Int)
 		Select targetID
 			Case TVTTargetGroup.Women
-				if gender = TVTPersonGender.MALE then return
+				If gender = TVTPersonGender.MALE Then Return
 			Case TVTTargetGroup.Men
-				if gender = TVTPersonGender.FEMALE then return
+				If gender = TVTPersonGender.FEMALE Then Return
 			Default
-				if gender = TVTPersonGender.MALE
+				If gender = TVTPersonGender.MALE
 					GetAudienceMale().SetValue(targetID, newValue)
-				elseif gender = TVTPersonGender.FEMALE
+				ElseIf gender = TVTPersonGender.FEMALE
 					GetAudienceFemale().SetValue(targetID, newValue)
-				else
+				Else
 					GetAudienceMale().SetValue(targetID, newValue)
 					GetAudienceFemale().SetValue(targetID, newValue)
-				endif
+				EndIf
 		End Select
 	End Method
 
 
 	Method GetTotalSum:Float() {_exposeToLua}
-		local res:float = 0
-		if audienceFemale then res :+ audienceFemale.GetSum()
-		if audienceMale then res :+ audienceMale.GetSum()
+		Local res:Float = 0
+		If audienceFemale Then res :+ audienceFemale.GetSum()
+		If audienceMale Then res :+ audienceMale.GetSum()
 		Return res
 	End Method
 
 
 	Method GetTotalAbsSum:Float() {_exposeToLua}
-		local res:float = 0
-		if audienceFemale then res :+ audienceFemale.GetAbsSum()
-		if audienceMale then res :+ audienceMale.GetAbsSum()
+		Local res:Float = 0
+		If audienceFemale Then res :+ audienceFemale.GetAbsSum()
+		If audienceMale Then res :+ audienceMale.GetAbsSum()
 		Return res
 	End Method
 
 
-	Method GetGenderSum:Float(gender:int) {_exposeToLua}
-		if gender = TVTPersonGender.MALE
-			if audienceMale then return audienceMale.GetSum()
-		elseif gender = TVTPersonGender.FEMALE
-			if audienceFemale then return audienceFemale.GetSum()
-		endif
-		return 0
+	Method GetGenderSum:Float(gender:Int) {_exposeToLua}
+		If gender = TVTPersonGender.MALE
+			If audienceMale Then Return audienceMale.GetSum()
+		ElseIf gender = TVTPersonGender.FEMALE
+			If audienceFemale Then Return audienceFemale.GetSum()
+		EndIf
+		Return 0
 	End Method
 
 
 	Method GetTotalAverage:Float() {_exposeToLua}
-		return 0.5 * (GetAudienceMale().GetAverage() + GetAudienceFemale().GetAverage())
+		Return 0.5 * (GetAudienceMale().GetAverage() + GetAudienceFemale().GetAverage())
 	End Method
 
 
-	Method GetGenderAverage:Float(gender:int) {_exposeToLua}
-		if gender = TVTPersonGender.MALE
-			return GetAudienceMale().GetAverage()
-		elseif gender = TVTPersonGender.FEMALE
-			return GetAudienceFemale().GetAverage()
-		endif
-		return 0
+	Method GetGenderAverage:Float(gender:Int) {_exposeToLua}
+		If gender = TVTPersonGender.MALE
+			Return GetAudienceMale().GetAverage()
+		ElseIf gender = TVTPersonGender.FEMALE
+			Return GetAudienceFemale().GetAverage()
+		EndIf
+		Return 0
 	End Method
 
 
-	Method GetWeightedAverage:Float(audienceBreakdown:TAudienceBase = null) {_exposeToLua}
+	Method GetWeightedAverage:Float(audienceBreakdown:TAudienceBase = Null) {_exposeToLua}
 		'fetch current breakdown if nothing was given
-		if not audienceBreakdown then audienceBreakdown = AudienceManager.GetAudienceBreakdown()
+		If Not audienceBreakdown Then audienceBreakdown = AudienceManager.GetAudienceBreakdown()
 
-		local result:Float = 0
-		if audienceMale
+		Local result:Float = 0
+		If audienceMale
 			result :+ audienceMale.Children * audienceBreakdown.Children
 			result :+ audienceMale.Teenagers * audienceBreakdown.Teenagers
 			result :+ audienceMale.HouseWives * audienceBreakdown.HouseWives
@@ -932,8 +940,8 @@ Type TAudience {_exposeToLua="selected"}
 			result :+ audienceMale.Unemployed * audienceBreakdown.Unemployed
 			result :+ audienceMale.Manager * audienceBreakdown.Manager
 			result :+ audienceMale.Pensioners * audienceBreakdown.Pensioners
-		endif
-		if audienceFemale
+		EndIf
+		If audienceFemale
 			result :+ audienceFemale.Children * audienceBreakdown.Children
 			result :+ audienceFemale.Teenagers * audienceBreakdown.Teenagers
 			result :+ audienceFemale.HouseWives * audienceBreakdown.HouseWives
@@ -941,9 +949,9 @@ Type TAudience {_exposeToLua="selected"}
 			result :+ audienceFemale.Unemployed * audienceBreakdown.Unemployed
 			result :+ audienceFemale.Manager * audienceBreakdown.Manager
 			result :+ audienceFemale.Pensioners * audienceBreakdown.Pensioners
-		endif
+		EndIf
 
-		return result
+		Return result
 	End Method
 
 
@@ -953,24 +961,24 @@ Type TAudience {_exposeToLua="selected"}
 
 		GetAudienceMale().Add(audience.audienceMale)
 		GetAudienceFemale().Add(audience.audienceFemale)
-		return self
+		Return Self
 	End Method
 
 
 	Method AddFloat:TAudience(number:Float)
 		GetAudienceMale().AddFloat(number)
 		GetAudienceFemale().AddFloat(number)
-		return self
+		Return Self
 	End Method
 
 
-	Method AddGenderFloat:TAudience(number:Float, gender:int)
-		if gender = TVTPersonGender.MALE
+	Method AddGenderFloat:TAudience(number:Float, gender:Int)
+		If gender = TVTPersonGender.MALE
 			GetAudienceFemale().AddFloat(number)
-		else
+		Else
 			GetAudienceMale().AddFloat(number)
-		endif
-		return self
+		EndIf
+		Return Self
 	End Method
 
 
@@ -980,30 +988,30 @@ Type TAudience {_exposeToLua="selected"}
 	End Method
 
 
-	Method ModifyGenderValue(targetID:Int, addValue:Float, gender:int)
-		local targetIndexes:int[] = TVTTargetGroup.GetIndexes(targetID)
+	Method ModifyGenderValue(targetID:Int, addValue:Float, gender:Int)
+		Local targetIndexes:Int[] = TVTTargetGroup.GetIndexes(targetID)
 
-		for local targetIndex:int = EachIn targetIndexes
+		For Local targetIndex:Int = EachIn targetIndexes
 			targetID = TVTTargetGroup.GetAtIndex(targetIndex)
 
 			Select targetID
 				Case TVTTargetGroup.Women
-					if gender = TVTPersonGender.MALE then return
-					For local i:int = 1 to TVTTargetGroup.baseGroupCount
+					If gender = TVTPersonGender.MALE Then Return
+					For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
 						ModifyGenderValue( TVTTargetGroup.GetAtIndex(i), addValue, TVTPersonGender.FEMALE )
 					Next
 				Case TVTTargetGroup.Men
-					if gender = TVTPersonGender.FEMALE then return
-					For local i:int = 1 to TVTTargetGroup.baseGroupCount
+					If gender = TVTPersonGender.FEMALE Then Return
+					For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
 						ModifyGenderValue( TVTTargetGroup.GetAtIndex(i), addValue, TVTPersonGender.MALE  )
 					Next
 
 				Default
-					if gender = TVTPersonGender.MALE
+					If gender = TVTPersonGender.MALE
 						GetAudienceMale().SetValue(targetID, GetAudienceMale().GetValue(targetID) + addValue)
-					elseif gender = TVTPersonGender.FEMALE
+					ElseIf gender = TVTPersonGender.FEMALE
 						GetAudienceFemale().SetValue(targetID, GetAudienceFemale().GetValue(targetID) + addValue)
-					endif
+					EndIf
 			End Select
 		Next
 	End Method
@@ -1015,14 +1023,14 @@ Type TAudience {_exposeToLua="selected"}
 
 		GetAudienceMale().Subtract(audience.audienceMale)
 		GetAudienceFemale().Subtract(audience.audienceFemale)
-		return self
+		Return Self
 	End Method
 
 
 	Method SubtractFloat:TAudience(number:Float)
 		GetAudienceMale().SubtractFloat(number)
 		GetAudienceFemale().SubtractFloat(number)
-		return self
+		Return Self
 	End Method
 
 
@@ -1032,14 +1040,22 @@ Type TAudience {_exposeToLua="selected"}
 
 		GetAudienceMale().Multiply(audience.audienceMale)
 		GetAudienceFemale().Multiply(audience.audienceFemale)
-		return self
+		Return Self
+	End Method
+
+
+	'for now passing floats through reflection (so...Lua) is bugged
+	'in NG.
+	'that is why this workaround is needed
+	Method MultiplyString:TAudience(factor:String) {_exposeToLua}
+		Return MultiplyFloat(Float(factor))
 	End Method
 
 
 	Method MultiplyFloat:TAudience(factor:Float) {_exposeToLua}
 		GetAudienceMale().MultiplyFloat(factor)
 		GetAudienceFemale().MultiplyFloat(factor)
-		return self
+		Return Self
 	End Method
 
 
@@ -1048,72 +1064,72 @@ Type TAudience {_exposeToLua="selected"}
 
 		GetAudienceMale().divide(audience.GetAudienceMale())
 		GetAudienceFemale().divide(audience.GetAudienceFemale())
-		return self
+		Return Self
 	End Method
 
 
 	Method DivideFloat:TAudience(number:Float)
 		GetAudienceMale().divideFloat(number)
 		GetAudienceFemale().divideFloat(number)
-		return self
+		Return Self
 	End Method
 
 
 	Method Round:TAudience()
-		if audienceMale then audienceMale.Round()
-		if audienceFemale then audienceFemale.Round()
-		return self
+		If audienceMale Then audienceMale.Round()
+		If audienceFemale Then audienceFemale.Round()
+		Return Self
 	End Method
 
 
 	Method CutBordersFloat:TAudience(minimum:Float, maximum:Float)
-		if audienceMale then audienceMale.CutBordersFloat(minimum, maximum)
-		if audienceFemale then audienceFemale.CutBordersFloat(minimum, maximum)
+		If audienceMale Then audienceMale.CutBordersFloat(minimum, maximum)
+		If audienceFemale Then audienceFemale.CutBordersFloat(minimum, maximum)
 		Return Self
 	End Method
 
 
 	Method CutBorders:TAudience(minimum:TAudience, maximum:TAudience)
-		if not minimum or not maximum then return self
+		If Not minimum Or Not maximum Then Return Self
 
-		if audienceMale then audienceMale.CutBorders(minimum.audienceMale, maximum.audienceMale)
-		if audienceFemale then audienceFemale.CutBorders(minimum.audienceFemale, maximum.audienceFemale)
+		If audienceMale Then audienceMale.CutBorders(minimum.audienceMale, maximum.audienceMale)
+		If audienceFemale Then audienceFemale.CutBorders(minimum.audienceFemale, maximum.audienceFemale)
 		Return Self
 	End Method
 
 
-	Method CutMinimumFloat:TAudience(value:float)
-		CutMinimum( new TAudience.InitValue(value, value) )
+	Method CutMinimumFloat:TAudience(value:Float)
+		CutMinimum( New TAudience.InitValue(value, value) )
 		Return Self
 	End Method
 
 
 	Method CutMinimum:TAudience(minimum:TAudience)
-		if not minimum then return self
+		If Not minimum Then Return Self
 
-		if audienceMale then audienceMale.CutMinimum(minimum.audienceMale)
-		if audienceFemale then audienceFemale.CutMinimum(minimum.audienceFemale)
+		If audienceMale Then audienceMale.CutMinimum(minimum.audienceMale)
+		If audienceFemale Then audienceFemale.CutMinimum(minimum.audienceFemale)
 		Return Self
 	End Method
 
 
-	Method CutMaximumFloat:TAudience(value:float)
-		CutMaximum( new TAudience.InitValue(value, value) )
+	Method CutMaximumFloat:TAudience(value:Float)
+		CutMaximum( New TAudience.InitValue(value, value) )
 		Return Self
 	End Method
 
 
 	Method CutMaximum:TAudience(maximum:TAudience)
-		if not maximum then return self
+		If Not maximum Then Return Self
 
-		if audienceMale then audienceMale.CutMaximum(maximum.audienceMale)
-		if audienceFemale then audienceFemale.CutMaximum(maximum.audienceFemale)
+		If audienceMale Then audienceMale.CutMaximum(maximum.audienceMale)
+		If audienceFemale Then audienceFemale.CutMaximum(maximum.audienceFemale)
 		Return Self
 	End Method
 
 
 	Method ToNumberSortMap:TNumberSortMap()
-		Local amap:TNumberSortMap = new TNumberSortMap
+		Local amap:TNumberSortMap = New TNumberSortMap
 		amap.Add(TVTTargetGroup.Children, GetTotalValue(TVTTargetGroup.Children))
 		amap.Add(TVTTargetGroup.Teenagers, GetTotalValue(TVTTargetGroup.Teenagers))
 		amap.Add(TVTTargetGroup.HouseWives, GetTotalValue(TVTTargetGroup.HouseWives))
@@ -1127,7 +1143,7 @@ Type TAudience {_exposeToLua="selected"}
 
 	'=== TO STRING ===
 
-	Method ToStringPercentage:String(dec:int = 0)
+	Method ToStringPercentage:String(dec:Int = 0) {_exposeToLua}
 		Return "C:" + MathHelper.NumberToString(GetAudienceMale().Children*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Children*100, dec, True) + "% / " + ..
 		       "T:" + MathHelper.NumberToString(GetAudienceMale().Teenagers*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Teenagers*100, dec, True) + "% / " + ..
 		       "H:" + MathHelper.NumberToString(GetAudienceMale().HouseWives*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().HouseWives*100, dec, True) + "% / " + ..
@@ -1138,7 +1154,7 @@ Type TAudience {_exposeToLua="selected"}
 	End Method
 
 
-	Method ToStringMinimal:String(dec:int=0)
+	Method ToStringMinimal:String(dec:Int=0) {_exposeToLua}
 		Return "C:" + MathHelper.NumberToString(GetAudienceMale().Children, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Children, dec, True) + " / " + ..
 		       "T:" + MathHelper.NumberToString(GetAudienceMale().Teenagers, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Teenagers, dec, True) + " / " + ..
 		       "H:" + MathHelper.NumberToString(GetAudienceMale().HouseWives, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().HouseWives, dec, True) + " / " + ..
@@ -1149,7 +1165,7 @@ Type TAudience {_exposeToLua="selected"}
 	End Method
 
 
-	Method ToString:String()
+	Method ToString:String() {_exposeToLua}
 		Local dec:Int = 3
 		Return "Sum = " + MathHelper.NumberToString(GetTotalSum(), dec, True) + "  ( " + ToStringMinimal(dec) +" )"
 		'Return "Sum = " + Int(Ceil(GetSum())) + "  ( 0=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Children),dec, True) + "  1=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Teenagers),dec, True) + "  2=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.HouseWives),dec, True) + "  3=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Employees),dec, True) + "  4=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Unemployed),dec, True) + "  5=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Manager),dec, True) + "  6=" + MathHelper.NumberToString(GetValue(TVTTargetGroup.Pensioners),dec, True) + " )  [[ W=" + MathHelper.NumberToString(GetSum(TVTPersonGender.FEMALE),dec, True) + "  M=" + MathHelper.NumberToString(GetSum(TVTPersonGender.FEMALE) ,dec, True) + " ]]"

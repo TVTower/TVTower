@@ -6,6 +6,13 @@
 -- Last modified: 22.01.2015
 -- Created at: 12.12.2007
 
+-- this is defined by the game engine if called from there
+-- else the file was opened via a direct call
+if CURRENT_WORKING_DIR == nil and debug.getinfo(2, "S") then
+	CURRENT_WORKING_DIR = debug.getinfo(2, "S").source:sub(2):match("(.*[/\\])") or "."
+	package.path = CURRENT_WORKING_DIR .. '/?.lua;' .. package.path .. ';'
+end
+
 -- ##### KONSTANTEN #####
 NL = "\n"
 
@@ -20,6 +27,8 @@ function getApplicationVersion()
 	end
 end
 
+
+-- source: http://lua-users.org/wiki/SimpleLuaClasses
 -- Compatible with Lua 5.1 (not 5.0).
 function class(base, init)
 	local c = {}    -- a new class instance
@@ -32,9 +41,6 @@ function class(base, init)
 			c[i] = v
 		end
 		c._base = base
-		--if not init then
-			--init = base.init
-		--end
 	end
 	-- the class will be the metatable for all its objects,
 	-- and they will look up their methods in it.
@@ -88,9 +94,11 @@ _G["SLFDataObject"] = class(SLFObject, function(c)
 	SLFObject.init(c)	-- must init base!
 end)
 
+
 function SLFDataObject:typename()
-	return "SLFDataObject" --Hier muss der "Klassen"-Name zurückgeliefert werden
+	return "SLFDataObject" --return "class name" here
 end
+
 
 function SLFDataObject:resume()
 	--wird nach dem Laden aufgerufen // Hier auf "InvalidDataObject" prüfen
@@ -98,11 +106,15 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
+
+
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["SLFManager"] = {StoreDefinition = {}, LoadedData = {}, StoreData = ""}
 
+
 function SLFManager:save()
-	-- Standard-Methode zum speichern. Zuvor sollten alle zu speichernden globalen Variablen im StoreDefinition hinterlegt werden.
+	-- Standard-Methode zum speichern. Zuvor sollten alle zu speichernden
+	-- globalen Variablen im StoreDefinition hinterlegt werden.
 	-- Format: Exakter VariablenName = Wert
 	local SaveList = {}
 	local ResultData = "--#Version " .. getApplicationVersion() .. NL
@@ -113,6 +125,7 @@ function SLFManager:save()
 	SLFManager.StoreData = ResultData
 	return SLFManager.StoreData
 end
+
 
 function SLFManager:load(pStoreData)
 	-- Standard-Methode zum laden von vorhandenen Daten
@@ -126,6 +139,7 @@ function SLFManager:load(pStoreData)
 	end
 end
 
+
 function SLFManager:basicSerialize(o)
 	if type(o) == "number" then
 		return tostring(o)
@@ -136,8 +150,9 @@ function SLFManager:basicSerialize(o)
 	end
 end
 
+
 function SLFManager:saveAsString(name, value, saved)
-	local result = ""--savestring or ""
+	local result = "" --savestring or ""
 	local isSLFDataObject = false
 	saved = saved or {}
 	result = name .. " = "
@@ -175,14 +190,17 @@ function SLFManager:saveAsString(name, value, saved)
 		end
 		saved[value] = name
 	else
-		error("Kann Folgendes nicht speichern: " .. type(value) .. " (Name: " .. name .. ")")
+		error("Not able to save: " .. type(value) .. " (Name: " .. name .. ")")
 	end
 
 	return result
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
--- ##### WEITERE FUNKTIONEN #####
+
+
+
+-- ##### AUXILIARY FUNCTIONS #####
 
 function unpack(t, i)
 	i = i or 1
@@ -355,6 +373,25 @@ function split(text, delim)
 end
 
 
+
+-- source: http://lua-users.org/wiki/BitwiseOperators
+function bitmaskNumber(index)
+	return 2 ^ (index - 1)  -- 1-based indexing
+end
+
+-- Typical call:  if hasbit(x, bit(3)) then ...
+function bitmaskHasBit(x, p)
+	return x % (p + p) >= p
+end
+
+function bitmaskSetBit(x, p)
+	return bitmaskHasBit(x, p) and x or x + p
+end
+
+function bitmaskClearBit(x, p)
+	return bitmaskHasBit(x, p) and x - p or x
+end
+
 -- ##### TEST #####
 
 --print(math.round(55.51545))
@@ -385,7 +422,7 @@ SLFManager.load()
 
 Data2 = SLFManager.save()
 
-assert(Data1 == Data2, "Falsches Ergebnis")
+assert(Data1 == Data2, "Wrong Result")
 
 print("====== End!")
 ]]--

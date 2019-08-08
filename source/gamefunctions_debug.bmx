@@ -7,6 +7,58 @@ Global debugPlayerControls :TDebugPlayerControls = new TDebugPlayerControls
 Global debugFinancialInfos :TDebugFinancialInfos = new TDebugFinancialInfos
 
 
+
+Type TDebugScreen
+	Field enabled:int
+	Field mode:int
+	Field sideButtons:TDebugControlsButton[]
+
+	Method New()
+		local button:TDebugControlsButton
+
+		local texts:string[] = ["Player Commands", "Player Financials", "Player Broadcasts", "Ad Vendor", "Movie Vendor", "Script Vencor"]
+		for local i:int = 0 until 6
+			button = new TDebugControlsButton
+			button.x = 10
+			button.y = 10 + i * (button.h + 5)
+			button.dataInt = i
+			button.text = texts[i]
+			button._onClickHandler = OnButtonClickHandler
+'ueberpruefen ob "lists" bei den satelliten fehlerhaft.
+'ab da->	debugMsg("Satellites to check: " .. TVT.of_getSatelliteCount())
+
+			sideButtons :+ [button]
+		next
+	End Method
+
+
+	Function OnButtonClickHandler(sender:TDebugControlsButton)
+		print "clicked " + sender.dataInt
+						'player.PlayerAI.CallLuaFunction("OnForceNextTask", null)
+
+		GetPlayerBase(2).PlayerAI.CallOnChat(1, "CMD_forcetask StationMap 1000", CHAT_COMMAND_WHISPER)
+
+'		DebugScreen.mode = sender.dataInt
+	End Function
+
+
+	Method Update()
+		for local b:TDebugControlsButton = EachIn sideButtons
+			b.Update()
+		next
+	End Method
+
+
+	Method Render()
+		for local b:TDebugControlsButton = EachIn sideButtons
+			b.Render()
+		next
+	End Method
+End Type
+Global DebugScreen:TDebugScreen = new TDebugScreen
+
+
+
 Type TDebugAudienceInfos
 	Field currentStatement:TBroadcastFeedbackStatement
 	Field lastCheckedMinute:Int
@@ -163,7 +215,7 @@ Type TDebugAudienceInfos
 			DrawAudiencePercent(attraction.GetGenreAttractivity(), 200, offset, true, true)
 		endif
 		offset :+ 20
-	
+
 		font.Draw("11. + Sequence", 25, offset, TColor.clWhite)
 		If attraction.SequenceEffect
 			DrawAudiencePercent(attraction.SequenceEffect, 200, offset, true, true)
@@ -326,11 +378,11 @@ Type TDebugProgrammeCollectionInfos
 	Global oldestEntryTime:Long
 	Global _eventListeners:TLink[]
 
-	
+
 	Method New()
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
-		
+
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeAdContract", onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addAdContract", onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addUnsignedAdContractToSuitcase", onChangeProgrammeCollection) ]
@@ -352,7 +404,7 @@ Type TDebugProgrammeCollectionInfos
 	Function onPreparePlayer:Int(triggerEvent:TEventBase)
 		debugProgrammeCollectionInfos.Initialize()
 	End Function
-		
+
 
 	Function onChangeProgrammeCollection:Int(triggerEvent:TEventBase)
 		local prog:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("programmelicence"))
@@ -423,7 +475,7 @@ Type TDebugProgrammeCollectionInfos
 			next
 		Next
 	End Function
-	
+
 
 
 	Function GetAddedTime:Long(guid:string, materialType:int=0)
@@ -455,7 +507,7 @@ Type TDebugProgrammeCollectionInfos
 	Method Initialize:int()
 		availableProgrammeLicences.Clear()
 		availableAdContracts.Clear()
-		'on savegame loads, the maps would be empty without 
+		'on savegame loads, the maps would be empty without
 		for local i:int = 1 to 4
 			local coll:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(i)
 			for local l:TProgrammeLicence = EachIn coll.GetProgrammeLicences()
@@ -473,10 +525,10 @@ Type TDebugProgrammeCollectionInfos
 	Method Update(playerID:int, x:int, y:int)
 	End Method
 
-	
+
 	Method Draw(playerID:int, x:int, y:int)
 		if not initialized then Initialize()
-	
+
 		if playerID <= 0 then playerID = GetPlayerBase().playerID
 		Local lineHeight:int = 12
 
@@ -492,7 +544,7 @@ Type TDebugProgrammeCollectionInfos
 			if l.owner <> playerID then continue
 			'skip starting programme
 			if not l.isControllable() then continue
-			
+
 			local oldAlpha:Float = GetAlpha()
 			if entryPos mod 2 = 0
 				SetColor 0,0,0
@@ -502,7 +554,7 @@ Type TDebugProgrammeCollectionInfos
 			SetAlpha 0.75 * oldAlpha
 			DrawRect(x, y + entryPos * lineHeight, 180, lineHeight-1)
 
-			local changedTime:int = GetChangedTime(l.GetGUID(), TVTBroadcastMaterialType.PROGRAMME) 
+			local changedTime:int = GetChangedTime(l.GetGUID(), TVTBroadcastMaterialType.PROGRAMME)
 			if changedTime <> 0
 				SetColor 255,235,20
 				local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - changedTime) / 5000.0))
@@ -513,17 +565,25 @@ Type TDebugProgrammeCollectionInfos
 			endif
 
 			'draw in topicality
-			SetColor 220,110,110
-			SetAlpha 0.50 * oldAlpha
-			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, 180 * l.GetTopicality(), 2)
-			SetAlpha 0.75 * oldAlpha
+			SetColor 200,50,50
+			SetAlpha 0.65 * oldAlpha
 			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, 180 * l.GetMaxTopicality(), 2)
+			SetColor 240,80,80
+			SetAlpha 0.85 * oldAlpha
+			DrawRect(x, y + entryPos * lineHeight + lineHeight-3, 180 * l.GetTopicality(), 2)
 
 			SetAlpha oldalpha
 			SetColor 255,255,255
 
 			local progString:string = l.GetTitle()
 			GetBitmapFont("default", 10).DrawBlock( progString, x+2, y+1 + entryPos*lineHeight, 175, lineHeight, ALIGN_LEFT_CENTER,,,,,False)
+
+			local attString:string = ""
+'			local s:string = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetGUID()))
+			local s:string = MathHelper.NumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
+			if s then attString = "|color=180,180,180|A|/color|"+ s + " "
+
+			GetBitmapFont("default", 10).DrawBlock(attString, x+2, y+1 + entryPos*lineHeight, 175, lineHeight, ALIGN_RIGHT_CENTER,,,,,False)
 
 			entryPos :+ 1
 		next
@@ -541,7 +601,7 @@ Type TDebugProgrammeCollectionInfos
 			SetAlpha 0.85 * oldAlpha
 			DrawRect(x+190, y + entryPos * lineHeight*2, 175, lineHeight*2-1)
 
-			local changedTime:int = GetChangedTime(a.GetGUID(), TVTBroadcastMaterialType.ADVERTISEMENT) 
+			local changedTime:int = GetChangedTime(a.GetGUID(), TVTBroadcastMaterialType.ADVERTISEMENT)
 			if changedTime <> 0
 				local alphaValue:Float = 1.0 - Min(1.0, ((Time.GetTimeGone() - changedTime) / 5000.0))
 				SetAlpha Float(0.4 * Min(1.0, 2 * alphaValue^3))
@@ -570,9 +630,9 @@ Type TDebugProgrammeCollectionInfos
 				adString1b = "|color=220,80,80|"+adString1b+"|/color|"
 			endif
 			local adString2a:string = "Min: " +MathHelper.DottedValue(a.GetMinAudience())
-			if a.GetLimitedToTargetGroup() > 0 or a.GetLimitedToGenre() > 0  or a.GetLimitedToProgrammeFlag() > 0
+			if a.GetLimitedToTargetGroup() > 0 or a.GetLimitedToProgrammeGenre() > 0  or a.GetLimitedToProgrammeFlag() > 0
 				adString2a = "**" + adString2a
-				'adString1a :+ a.GetLimitedToTargetGroup()+","+a.GetLimitedToGenre()+","+a.GetLimitedToProgrammeFlag()
+				'adString1a :+ a.GetLimitedToTargetGroup()+","+a.GetLimitedToProgrammeGenre()+","+a.GetLimitedToProgrammeFlag()
 			endif
 			adString1b :+ " Bl/D: "+a.SendMinimalBlocksToday()
 
@@ -605,11 +665,11 @@ Type TDebugProgrammePlanInfos
 	global predictionCacheProg:TAudienceAttraction[24]
 	global predictionCacheNews:TAudienceAttraction[24]
 	global currentPlayer:int = 0
-	
+
 	Method New()
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
-		
+
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.addObject", onChangeProgrammePlan) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.SetNews", onChangeNewsShow) ]
 '		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.RemoveNews", onChangeNewsShow) ]
@@ -627,7 +687,7 @@ Type TDebugProgrammePlanInfos
 
 		RemoveOutdated()
 	End Function
-	
+
 
 	Function onChangeProgrammePlan:Int(triggerEvent:TEventBase)
 		local broadcast:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetData().Get("object"))
@@ -687,7 +747,7 @@ Type TDebugProgrammePlanInfos
 			Next
 		endif
 	End Function
-	
+
 
 	Function GetAddedTime:Long(guid:string, slotType:int=0)
 		Select slotType
@@ -705,7 +765,7 @@ Type TDebugProgrammePlanInfos
 	Method Update(playerID:int, x:int, y:int)
 	End Method
 
-	
+
 	Function Draw(playerID:int, x:int, y:int)
 		if playerID <= 0 then playerID = GetPlayerBase().playerID
 		local currDay:int = GetWorldTime().GetDay()
@@ -713,7 +773,7 @@ Type TDebugProgrammePlanInfos
 		Local daysProgramme:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetProgrammeSlotsInTimeSpan(currDay, 0, currDay, 23)
 		Local daysAdvertisements:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetAdvertisementSlotsInTimeSpan(currDay, 0, currDay, 23)
 		Local lineHeight:int = 12
-		
+
 		'statistic for today
 		local dailyBroadcastStatistic:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(currDay, true)
 
@@ -724,6 +784,7 @@ Type TDebugProgrammePlanInfos
 		if currentPlayer <> playerID
 			currentPlayer = playerID
 			ResetPredictionCache(0) 'predict all again
+			predictor.RefreshMarkets() 'in case nobody did yet
 		endif
 
 		if GetWorldTime().GetTimeGone() mod 5 = 0
@@ -759,7 +820,7 @@ Type TDebugProgrammePlanInfos
 						spotNumber = GetPlayerProgrammePlan(advertisement.owner).GetAdvertisementSpotNumber(ad) + "/" + ad.contract.GetSpotCount()
 					endif
 
-					if ad.contract.GetLimitedToTargetGroup()>0 or ad.contract.GetLimitedToGenre()>0 or ad.contract.GetLimitedToProgrammeFlag()>0
+					if ad.contract.GetLimitedToTargetGroup()>0 or ad.contract.GetLimitedToProgrammeGenre()>0 or ad.contract.GetLimitedToProgrammeFlag()>0
 						specialMarker = "**"
 					endif
 				else
@@ -814,7 +875,7 @@ Type TDebugProgrammePlanInfos
 						predictor.RunPrediction(currDay, hour)
 						predictionCacheProgAudience[hour] = predictor.GetAudience(playerID)
 					endif
-					
+
 					progString2 :+ " |color=200,255,200|"+int(predictionCacheProgAudience[hour].GetTotalSum()/1000)+"k|/color|"
 '				endif
 
@@ -868,7 +929,7 @@ Type TDebugProgrammePlanInfos
 				DrawRect(x+220, y + hour * lineHeight, 150, lineHeight-1)
 				SetBlend ALPHABLEND
 			endif
-			
+
 			if hour < currHour and TAdvertisement(advertisement) and audienceResult
 				local reachedAudience:int = audienceResult.audience.GetTotalSum()
 				local adMinAudience:int = TAdvertisement(advertisement).contract.GetMinAudience()
@@ -932,14 +993,14 @@ Type TDebugProgrammePlanInfos
 			endif
 		Next
 	End Function
-	
+
 
 	Function SetStateColor(material:TBroadcastMaterial)
 		if not material
 			SetColor 255,255,255
 			return
 		endif
-			
+
 		Select material.state
 			Case TBroadcastMaterial.STATE_RUNNING
 				SetColor 255,230,120
@@ -972,7 +1033,7 @@ Type TDebugPlayerControls
 		endif
 	End Method
 
-	
+
 	Method Draw:int(playerID:int, x:int, y:int)
 		local player:TPlayer = GetPlayer(playerID)
 		if not player then return False
@@ -1024,6 +1085,51 @@ End Type
 
 
 
+
+Type TDebugControlsButton
+	Field data:object
+	Field dataInt:int = -1
+	Field text:string = "Button"
+	Field x:int = 0
+	Field y:int = 0
+	Field w:int = 150
+	Field h:int = 16
+	Field _onClickHandler(sender:TDebugControlsButton)
+
+
+	Method Update:int(offsetX:int=0, offsetY:int=0)
+		if THelper.MouseIn(offsetX + x,offsetY + y,w,h)
+			if MouseManager.IsHit(1)
+				onClick()
+				MouseManager.ResetKey(1)
+				return True
+			endif
+		endif
+	End Method
+
+
+	Method Render:int(offsetX:int=0, offsetY:int=0)
+		SetColor 150,150,150
+		DrawRect(offsetX + x,offsetY + y,w,h)
+		if THelper.MouseIn(offsetX + x,offsetY + y,w,h)
+			SetColor 50,50,50
+		else
+			SetColor 0,0,0
+		endif
+		DrawRect(offsetX + x+1,offsetY + y+1,w-2,h-2)
+		SetColor 255,255,255
+		GetBitmapFont("default", 11).DrawBlock(text, offsetX + x,offsetY + y,w,h, ALIGN_CENTER_CENTER, TColor.clWhite)
+	End Method
+
+
+	Method onClick()
+		if _onClickHandler then _onClickHandler(self)
+	End Method
+End Type
+
+
+
+
 Type TDebugFinancialInfos
 	Method Update(playerID:int, x:int, y:int)
 	End Method
@@ -1036,7 +1142,7 @@ Type TDebugFinancialInfos
 			Draw(4, x + 125, y + 30*1)
 			return
 		endif
-		
+
 		SetColor 0,0,0
 		DrawRect(x, y, 123, 30)
 
@@ -1080,7 +1186,7 @@ Type TDebugModifierInfos
 		if data
 			for local k:TLowerString = eachIn data.data.Keys()
 				if textY > 370 then continue
-				
+
 				font.DrawBlock(k.ToString(), textX, textY, 210, 15, ALIGN_LEFT_TOP)
 				font.DrawBlock(MathHelper.NumberToString(data.GetFloat(k.ToString()), 3), textX, textY, 245, 15, ALIGN_RIGHT_TOP)
 				textY :+ 12

@@ -846,6 +846,13 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
+	'helper
+	Method CreateBroadcastMaterialFromSource:TBroadcastMaterial(materialSource:TBroadcastMaterialSource)
+		'create a broadcast material out of the given source
+		Return GetPlayerProgrammeCollection(self.ME).GetBroadcastMaterial(materialSource)
+	End Method
+
+
 	Method GetProgrammeLicenceCount:Int()
 		Return GetPlayerProgrammeCollection(Self.ME).GetProgrammeLicenceCount()
 	End Method
@@ -1136,14 +1143,22 @@ endrem
 		'even if player has access to room, only owner can manage things here
 '		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
 
+		local broadcastMaterial:TBroadcastMaterial
 		'create a broadcast material out of the given source
-		local broadcastMaterial:TBroadcastMaterial = GetPlayerProgrammeCollection(self.ME).GetBroadcastMaterial(materialSource)
-		if not broadcastMaterial then return self.RESULT_FAILED
+		if materialSource
+			broadcastMaterial = GetPlayerProgrammeCollection(self.ME).GetBroadcastMaterial(materialSource)
+			if not broadcastMaterial then return self.RESULT_FAILED
+		endif
 
 		'skip setting the slot if already done
 		Local existingMaterial:TBroadcastMaterial = GetPlayerProgrammePlan(self.ME).GetAdvertisement(day, hour)
-		if existingMaterial
+		if existingMaterial and broadcastMaterial
 			if broadcastMaterial.GetReferenceID() = existingMaterial.GetReferenceID() and broadcastMaterial.materialType = existingMaterial.materialType
+				return self.RESULT_SKIPPED
+			endif
+		else
+			'both empty
+			if not existingMaterial and not broadcastMaterial
 				return self.RESULT_SKIPPED
 			endif
 		endif

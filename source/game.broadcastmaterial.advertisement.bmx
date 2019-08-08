@@ -77,7 +77,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	Method SourceHasBroadcastFlag:int(flag:Int) {_exposeToLua}
 		return contract.HasBroadcastFlag(flag)
 	End Method
-	
+
 
 	'get the title
 	Method GetTitle:string() {_exposeToLua}
@@ -102,7 +102,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 
 
 	'override
-	'add PAID-Flag as set flag 
+	'add PAID-Flag as set flag
 	Method GetFlagsTargetGroupMod:TAudience()
 		local audienceMod:TAudience = new TAudience.InitValue(1, 1)
 		local definition:TMovieFlagDefinition = GetMovieGenreDefinitionCollection().GetFlag(TVTProgrammeDataFlag.PAID)
@@ -114,7 +114,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		return audienceMod
 	End Method
 
-	
+
 
 	'ueberschrieben
 	'default implementation
@@ -124,7 +124,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		'add 1 to get a value between 0 - 2
 		Return Super.GetGenreTargetGroupMod(definition)
 	End Method
-	
+
 
 	'override
 	'add targetgroup bonus
@@ -144,7 +144,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 
 		Return result
 	End Method
-	
+
 
 	'override
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
@@ -174,7 +174,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	'ad got send as infomercial
 	Method FinishBroadcastingAsProgramme:int(day:int, hour:int, minute:int, audienceData:object)
 		self.SetState(self.STATE_OK)
-		
+
 		'give money
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 		Local earn:Int = audienceResult.Audience.GetTotalSum() * contract.GetPerViewerRevenue()
@@ -188,7 +188,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		else
 			Notify "FinishBroadcastingAsProgramme: earn value is negative: "+earn+". Ad: "+GetTitle()+" (player: "+owner+")."
 		endif
-		'adjust topicality relative to possible audience 
+		'adjust topicality relative to possible audience
 		contract.base.CutInfomercialTopicality(GetInfomercialTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuotePercentage()))
 
 		contract.base.SetTimesBroadcastedAsInfomercial( contract.base.GetTimesBroadcastedAsInfomercial(owner) + 1, owner )
@@ -259,7 +259,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		EndIf
 
 		'limited to a specific genre - and not fulfilled
-		If contract.GetLimitedToGenre() >= 0 or contract.GetLimitedToProgrammeFlag() > 0
+		If contract.GetLimitedToProgrammeGenre() >= 0 or contract.GetLimitedToProgrammeFlag() > 0
 			'check current programme of the owner
 			'TODO: check if that has flaws playing with high speed
 			'      (check if current broadcast is correctly set at this
@@ -272,8 +272,8 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 				Return "OUTAGE"
 			else
 				local genreDefinition:TGenreDefinitionBase = previouslyRunningBroadcastMaterial.GetGenreDefinition()
-				if contract.GetLimitedToGenre() >= 0
-					if genreDefinition and genreDefinition.referenceId <> contract.GetLimitedToGenre()
+				if contract.GetLimitedToProgrammeGenre() >= 0
+					if genreDefinition and genreDefinition.referenceId <> contract.GetLimitedToProgrammeGenre()
 						Return "GENRE"
 					endif
 				endif

@@ -364,9 +364,9 @@ function JobBuyStation:GetBestAntennaOffer()
 		if table.count(value) > 2 then otherOwner = value[3] end
 		local tempStation = MY.GetStationMap().GetTemporaryAntennaStation(x, y)
 
-		if tempStation ~= nil then
-			debugMsg(" - Station " .. tablePos .. "  at " .. x .. "," .. y .. ".  owner: " .. otherOwner .. "  reach: " .. tempStation.GetReach() .. "  exclusive/increase: " .. tempStation.GetExclusiveReach() .. "  price: " .. tempStation.GetBuyPrice() .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (tempStation.GetExclusiveReach() / tempStation.GetPrice()) .. "  buyPrice: " .. tempStation.GetBuyPrice() )
-		end
+--		if tempStation ~= nil then
+--			debugMsg(" - Station " .. tablePos .. "  at " .. x .. "," .. y .. ".  owner: " .. otherOwner .. "  reach: " .. tempStation.GetReach() .. "  exclusive/increase: " .. tempStation.GetExclusiveReach() .. "  price: " .. tempStation.GetBuyPrice() .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (tempStation.GetExclusiveReach() / tempStation.GetPrice()) .. "  buyPrice: " .. tempStation.GetBuyPrice() )
+--		end
 
 		--filter criterias
 		--0) skip checks if there is no tempstation
@@ -374,15 +374,15 @@ function JobBuyStation:GetBestAntennaOffer()
 			-- debugMsg("tempStation is nil!")
 		--1) outside
 		elseif tempStation.GetPrice() < 0 then
-			debugMsg("    -> outside of map")
+--			debugMsg("    -> outside of map")
 			tempStation = nil
 		--2) price to high
 		elseif tempStation.GetPrice() > self.Task.CurrentBudget then
-			debugMsg("    -> too expensive")
+--			debugMsg("    -> too expensive")
 			tempStation = nil
 		--3) relative increase to low (at least 30% required)
 		elseif tempStation.GetRelativeExclusiveReach() < 0.30 then
-			debugMsg("    -> not enough reach increase")
+--			debugMsg("    -> not enough reach increase")
 			tempStation = nil
 
 		--4) absolute increase too low
@@ -391,7 +391,7 @@ function JobBuyStation:GetBestAntennaOffer()
 
 		--5)  reach to low (at least 75.000 required)
 		elseif tempStation.GetReach() < 75000 then
-			debugMsg("    -> not enough absolute reach")
+--			debugMsg("    -> not enough absolute reach")
 			tempStation = nil
 		end
 
@@ -411,7 +411,7 @@ function JobBuyStation:GetBestAntennaOffer()
 			if otherOwner > 0 then attraction = attraction * 1.10 end
 			-- raise attraction (even further) if AI's enemy is there
 			if otherOwner == player:GetArchEnemyId() then attraction = attraction * 1.06 end
-			debugMsg("    -> attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget)
+--			debugMsg("    -> attraction: " .. attraction .. "  |  ".. pricePerViewer .. " - (" .. priceDiff .. " / currentBudget: " .. self.Task.CurrentBudget)
 
 			if bestOffer == nil then
 				bestOffer = tempStation

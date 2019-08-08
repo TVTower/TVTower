@@ -9,7 +9,7 @@ _G["TaskArchive"] = class(AITask, function(c)
 
 	c.Player = nil
 
-	c.latestSaleOnDay = -1	
+	c.latestSaleOnDay = -1
 	c.emergencySale = false --todo: festlegen wann/ob der Notfall ist
 end)
 
@@ -33,7 +33,7 @@ function TaskArchive:GetNextJobInTargetRoom()
 		debugMsg("return SellMoviesJob")
 		return self.SellMoviesJob
 	end
-	
+
 	self.emergencySale = false
 	self:SetWait()
 end
@@ -45,9 +45,10 @@ end
 _G["JobSellMovies"] = class(AIJob, function(c)
 	AIJob.init(c)	-- must init base!
 	c.Task = nil
-	c.FreshnessTreshold = 1.0	--change to sell movies with more/less Topicalty should be 0.8, changed for debug
-	c.emergencyFreshnessTreshold = 1
-	
+	-- sell movies which lost max topicality (so permanent) above these values
+	c.MaxTopicalityLossTreshold = 0.75
+	c.emergencyMaxTopicalityLossTreshold = 0.4
+
 end)
 
 function JobSellMovies:typename()
@@ -62,31 +63,36 @@ end
 
 
 function JobSellMovies:Tick()
-	function newarchivedMovie (a,b,c,d,e,f)
-		local t = 
+	function newarchivedMovie (licence)
+		local t =
 		{
 			Title = "N/A";
 			GUID = "";
 			Id = -1;
-			Freshness = 1;
+			TopicalityLoss = 1;
+			MaxTopicalityLoss = 0;
 			planned = -1;
 			price = 0;
+			licence = nil;
 		}
-		t.Title = a
-		t.GUID = b
-		t.Id = c
-		t.Freshness = d
-		t.planned = e
-		t.price = f
+		t.Title = licence.GetTitle()
+		t.GUID = licence.GetGUID()
+		t.Id = licence.GetID()
+		t.TopicalityLoss = 1.0 - licence.GetRelativeTopicality()
+		t.MaxTopicalityLoss = licence.GetRelativeMaxTopicalityLoss()
+		t.planned = licence.isPlanned()
+		t.price = licence.GetPrice(TVT.ME)
+		t.licence = licence
 		return t;
 	end
 
 	debugMsg("archive: Sell movies job started")
 	--ins archiv wenn nach mitternacht (oben)
-	
-	self.Task.latestSaleOnDay = WorldTime.GetDay()	
-	
-	--filmliste getten
+
+	self.Task.latestSaleOnDay = WorldTime.GetDay()
+
+
+	--fetch licences
 	local nArchive = TVT.ar_GetProgrammeLicenceCount()
 	debugMsg ("# archived licences: "..nArchive)
 	local movies = {};
@@ -95,32 +101,43 @@ function JobSellMovies:Tick()
 		m = TVT.convertToProgrammeLicence(TVT.ar_GetProgrammeLicence(i).data)
 		--ignore episodes/collection-elements
 		if m ~= nil and m.HasParentLicence()==0 then
-			vm = newarchivedMovie(m.GetTitle(),m.GetGUID(), m.GetId(),(m.GetTopicality() / m.GetMaxTopicality()),m.isPlanned(),m.GetPrice(TVT.ME))
-			debugMsg("# found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id..") ".." "..vm.price..", "..(vm.Freshness*100).."%, planned: "..tostring(vm.planned))
+			vm = newarchivedMovie(m)
+			debugMsg("# found "..vm.Title.." (guid="..vm.GUID.."  id="..vm.Id..") ".." "..vm.price..",  TopicalityLoss="..string.format("%.4f", vm.TopicalityLoss*100).."% (Max="..string.format("%.2f", vm.MaxTopicalityLoss*100).."%), planned: "..tostring(vm.planned))
 			table.insert(movies,vm)
 		end
 	end
-	debugMsg("# checking single/series licences: "..#movies)
 
-	--Nach aktualität filtern, keine eingeplanten, im Notfall Schwelle fürs Behalten erhöhen, ganz teure immer behalten
-	local treshold = self.FreshnessTreshold
-	if self.Task.emergencySale then treshold = self.emergencyFreshnessTreshold end
+
+	-- check licences
+	debugMsg("# checking single/series licences: "..#movies)
+	-- filter by topicality, ignore planned
+	-- in emergency raise bar to keep programme
+	-- keep expensive ones (except their maximum topicality is too low)
+	local useMaxTopicalityLossTreshold = self.MaxTopicalityLossTreshold
+	if self.Task.emergencySale then useMaxTopicalityLossTreshold = self.emergencyMaxTopicalityLossTreshold end
 	local case = {}
-	for k,v in pairs (movies) 
-	do
+	for k,v in pairs (movies) do
 		if v == nil then debugMsg("# ERROR: movie #" .. k.." is nil") end
-		if (v.Freshness < self.FreshnessTreshold) and (v.planned ==  0) and (v.price < 100000)
-		then
+		local sellIt = false
+		-- sell when topicality will never raise enough again ("burned")
+		if v.MaxTopicalityLoss > useMaxTopicalityLossTreshold then sellIt = true end
+		-- sell when broadcasted too much and "maxtopicalityloss" wont
+		-- change that much anymore
+		if not sellIt and v.licence.GetMaxTopicality() < 0.2 and v.licence.GetTimesBroadcasted(TVT.ME) > 15 then sellIt = true end
+
+		-- keep when planned
+		if sellIt and v.planned > 0 then sellIt = false end
+
+		if sellIt then
 			debugMsg("# mark for suitcase: "..v.Title)
 			table.insert(case,v)
 		end
 	end
-	
-	debugMsg("# selected for suitcase: "..#case)
 
-	--in koffer legen
-	for i=1, #case
-	do
+
+	debugMsg("# selected for suitcase: "..#case)
+	-- move licences to suitcase
+	for i=1, #case do
 		ec = TVT.ar_AddProgrammeLicenceToSuitcaseByGUID(case[i].GUID)
 		if ec == 1 then
 			debugMsg("# put "..case[i].Title.." in suitcase, OK")
@@ -130,21 +147,20 @@ function JobSellMovies:Tick()
 		else
 			debugMsg("# put "..case[i].Title.." in suitcase, errorcode: "..ec)
 		end
-	end	
-	
-	self.Status = JOB_STATUS_DONE	
-	--leave archive klappt noch nicht
-	--im md: verkaufen
-
-	-- send figure to movie dealer now
-	if self.Task.Player ~= nil then
-		local t = self.Task.Player.TaskList[_G["TASK_MOVIEDISTRIBUTOR"]]
-		if t ~= nil then
-			debugMsg("# increasing SituationPriority for movie distributor task")
-			t.SituationPriority = 150 --arbitrary value, maybe needs higher one
-		end
 	end
 
+	self.Status = JOB_STATUS_DONE
+
+	-- if there is something to sell, send figure to movie dealer now
+	if table.count(case) > 0 then
+		if self.Task.Player ~= nil then
+			local t = self.Task.Player.TaskList[_G["TASK_MOVIEDISTRIBUTOR"]]
+			if t ~= nil then
+				debugMsg("# increasing SituationPriority for movie distributor task")
+				t.SituationPriority = 150 --arbitrary value, maybe needs higher one
+			end
+		end
+	end
 	debugMsg("archive: Sell movies job done")
 end
 

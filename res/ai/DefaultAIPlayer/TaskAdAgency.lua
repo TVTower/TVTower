@@ -73,7 +73,32 @@ function TaskAdAgency:getStrategicPriority()
 	end
 	return 1.0
 end
+
+
+
+
+function TaskAdAgency.SortAdContractsByAttraction(list)
+	if (table.count(list) > 1) then
+		-- precache complex weight calculation
+		local weights = {}
+		for k,v in pairs(list) do
+			weights[ v.GetID() ] = (0.5 + 0.5*(0.9^v.GetSpotCount())) * v.GetProfitCPM() * (0.8 + 0.2 * 1.0/v.GetPenaltyCPM())
+--			debugMsg("    " .. v.GetTitle() .."   weight: " .. weights[ v.GetID() ] .. "  spotCount="..v.GetSpotCount() .. "  profitCPM=" .. v.GetProfitCPM())
+--			weights[ v.GetID() ] = (0.6 + 0.4*(0.9^v.GetSpotCount())) * v.GetProfit()
+		end
+
+		-- sort
+		local sortMethod = function(a, b)
+			return weights[ a.GetID() ] > weights[ b.GetID() ]
+		end
+		table.sort(list, sortMethod)
+	end
+
+	return list
+end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
 
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -160,51 +185,70 @@ function AppraiseSpots:AppraiseCurrentSpot()
 end
 
 function AppraiseSpots:AppraiseSpot(spot)
-	debugMsg("AppraiseSpot: " .. spot.GetTitle() )
-	debugMsg("===================")
+--	debugMsg("AppraiseSpot: " .. spot.GetTitle() )
+--	debugMsg("===================")
 	local player = _G["globalPlayer"]
 	local stats = player.Stats
 	local score = -1
 
 	-- for now we do not modify our stats if they are special spots
-	if (spot.GetLimitedToTargetGroup() > 0) or (spot.GetLimitedToGenre() > 0) or (spot.GetLimitedToProgrammeFlag() > 0) then
+	if (spot.GetLimitedToTargetGroup() > 0) or (spot.GetLimitedToProgrammeGenre() > 0) or (spot.GetLimitedToProgrammeFlag() > 0) then
 		return
 	end
 
 	if (spot.GetMinAudience(TVT.ME) > stats.Audience.MaxValue) then
 		--spot.Appraisal = -2
-		debugMsg("  zu viele Zuschauer verlangt! " .. spot.GetMinAudience(TVT.ME) .. " / " .. stats.Audience.MaxValue)
+--		debugMsg("  too much audience! " .. spot.GetMinAudience(TVT.ME) .. " / " .. stats.Audience.MaxValue)
 		return
 	end
 
-	local profitPerSpot = spot.GetProfit(TVT.ME) / spot.GetSpotCount()
-	local financePowerRaw = profitPerSpot / stats.SpotProfitPerSpotAcceptable.AverageValue
-	local financePower = CutFactor(financePowerRaw, 0.2, 2)
-	debugMsg("  profit=" .. spot.GetProfit(TVT.ME) .. " (".. profitPerSpot.."/spot)  SpotsToSend=" .. spot.GetSpotsToSend() .."  stats.SpotProfitPerSpotAcceptable(Avg)=" .. stats.SpotProfitPerSpotAcceptable.AverageValue)
-	debugMsg("  financePower=" .. financePowerRaw .. "  financePower(cut)=" .. financePower)
 
+	local profitCPMPerSpot = spot.GetProfitCPM(TVT.ME) / spot.GetSpotCount()
+	local penaltyCPMPerSpot = spot.GetPenaltyCPM(TVT.ME) / spot.GetSpotCount()
+
+	-- PROFIT
+	-- 2 = paid well, 0.2 = way below average
+	local profitFactorRaw = profitCPMPerSpot / stats.SpotProfitCPMPerSpotAcceptable.AverageValue
+	local profitFactor = CutFactor(profitFactorRaw, 0.2, 2)
+
+
+	-- PENALTY
+	-- 2 = low penalty, 0.2 = way too high penalty
+	local penaltyFactorRaw = 1.0 / (penaltyCPMPerSpot / stats.SpotPenaltyCPMPerSpotAcceptable.AverageValue)
+	local penaltyFactor = CutFactor(penaltyFactorRaw, 0.2, 2)
+
+
+	-- REQUIREMENTS
 	-- 2 = Locker zu schaffen / 0.3 schwierig zu schaffen
-	local audienceFactor = stats.Audience.AverageValue / spot.GetMinAudience(TVT.ME)
-	audienceFactor = CutFactor(audienceFactor, 0.3, 2)
-	debugMsg("  audienceFactor=" .. audienceFactor .. "  stats.Audience(Avg)=" .. stats.Audience.AverageValue .. "  spot.GetMinAudience()=" .. spot.GetMinAudience(TVT.ME))
+	local audienceFactorRaw = stats.Audience.AverageValue / spot.GetMinAudience(TVT.ME)
+	if audienceFactorRaw == nil then debugMsg("AUDIENCE NIL ... " .. stats.Audience.AverageValue) end
+	local audienceFactor = CutFactor(audienceFactorRaw, 0.3, 2)
 
+
+	-- DURATION / TIME CONSTRAINTS
+	-- 2 leicht zu packen / 0.3 hoher Druck
+	local pressureFactorRaw = spot.GetDaysToFinish() / spot.GetSpotCount()
+	local pressureFactor = CutFactor(pressureFactorRaw, 0.2, 2)
+
+--[[
+	-- RISK / PENALTY
 	-- 2 = Risiko und Strafe sind im Verhältnis gering  / 0.3 = Risiko und Strafe sind Verhältnis hoch
-	local riskFactor = stats.SpotPenalty.AverageValue / spot.GetPenalty(TVT.ME)
-	riskFactor = CutFactor(riskFactor, 0.3, 2)
+	local riskFactorRaw = profitFactor
+	local riskFactor = CutFactor(riskFactorRaw, 0.3, 2)
 	riskFactor = riskFactor * audienceFactor
 	riskFactor = CutFactor(riskFactor, 0.2, 2)
-	debugMsg("  riskFactor=" .. riskFactor .. "  SpotPenalty(Avg)= " .. stats.SpotPenalty.AverageValue .. "  spot.GetPenalty()=" .. spot.GetPenalty(TVT.ME))
+--]]
 
-	-- 2 leicht zu packen / 0.3 hoher Druck
-	local pressureFactor = spot.GetDaysToFinish() / spot.GetSpotCount()
-	debugMsg("  pressureFactor=" .. pressureFactor .. "  pressureFactor(cut)=" .. CutFactor(pressureFactor, 0.2, 2) .. "  daysToFinish=" .. spot.GetDaysToFinish() .. "  spotsToSend=" .. spot.GetSpotsToSend())
-	pressureFactor = CutFactor(pressureFactor, 0.2, 2)
-
-	spot.SetAttractiveness(audienceFactor * riskFactor * pressureFactor)
-	debugMsg("  spot-attractiveness=" .. spot.GetAttractiveness() .. "  (financePower=" .. financePower .. "  audienceFactor=" .. audienceFactor .. "  riskFactor=" .. riskFactor .. "  pressureFactor=" .. pressureFactor ..")")
-
+	-- RESULTING ATTRACTION
+	spot.SetAttractiveness(audienceFactor * (profitFactor * penaltyFactor) * pressureFactor)
+--[[
+	debugMsg("  Contract:  Spots=" .. spot.GetSpotsToSend() .."  days=" .. spot.GetDaysToFinish() .."  Audience=" .. spot.GetMinAudience(TVT.ME) .. "  Profit=" .. spot.GetProfit(TVT.ME) .." (CPM/spot=" .. profitCPMPerSpot .. ")  Penalty=" .. spot.GetPenalty(TVT.ME) .." (CPM/spot=" .. penaltyCPMPerSpot ..")")
+	debugMsg("  Stats:     Avg.PerSpotAcceptible Profit=" .. stats.SpotProfitCPMPerSpotAcceptable.AverageValue .. "  Penalty=" .. stats.SpotPenaltyCPMPerSpotAcceptable.AverageValue .."  Audience(Avg)=" .. stats.Audience.AverageValue)
+	debugMsg("  Factors:   profit=" .. profitFactor .. "  (raw=" .. profitFactor .. ")  audience=" .. audienceFactor .. " (raw="..audienceFactorRaw ..")")
+	debugMsg("             penalty=" .. penaltyFactor .. " (raw=" .. penaltyFactorRaw..")  pressure=" .. pressureFactor .. " (raw=" .. pressureFactorRaw ..")")
+	debugMsg("  Attractiveness = " .. spot.GetAttractiveness())
 	debugMsg("===================")
-
+--]]
 	--financeBase
 
 	-- Je höher der Gewinn desto besser
@@ -237,19 +281,16 @@ end
 
 function SignRequisitedContracts:Tick()
 	--debugMsg("SignRequisitedContracts")
+
 	if (self.AdAgencyTask.SpotsInAgency ~= nil) then
-		--Sortieren
+		--sort
 		local sortMethod = function(a, b)
 			return a.GetAttractiveness() > b.GetAttractiveness()
 		end
-		--RONNY: Achtung, es muss ueberprueft werden, ob die Liste NULL-
-		--       Eintraege enthaelt (evtl "verschwunden", oder durch einen
-		--       "Refill"-Aufruf nicht mehr beim Makler zu haben.)
-		--       Danach kann sortiert werden, ohne "Null-Zugriffe" innerhalb
-		--       der Sortiermethode.
+
+		-- loop over all contracts and remove the ones no longer available
 		for i=#self.AdAgencyTask.SpotsInAgency,1,-1 do
 			if self.AdAgencyTask.SpotsInAgency[i] == nil then
-				--TVT.PrintOut("======== ENTFERNE UNGUELTIGEN WERBEVERTRAG ========")
 				table.remove(self.AdAgencyTask.SpotsInAgency, i)
 			end
 		end
@@ -258,28 +299,19 @@ function SignRequisitedContracts:Tick()
 	end
 
 	for k,requisition in pairs(self.SpotRequisitions) do
-		-- old savegames? convert to new audience-object-approach
-		if type(requisition.GuessedAudience) == "number" then
-			requisition.GuessedAudience = TVT.audiencePredictor.GetEmptyAudience().InitWithBreakdown(requisition.GuessedAudience)
-		end
-
 		local neededSpotCount = requisition.Count
 		local guessedAudience = requisition.GuessedAudience
 
-		debugMsg(" AdAgencyTick - requisition: Spots="..neededSpotCount .."  Audience="..math.floor(guessedAudience.GetTotalSum()))
-		local signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.8))
+		debugMsg(" AdAgencyTick - requisition:  neededSpots="..neededSpotCount .."  guessedAudience="..math.floor(guessedAudience.GetTotalSum()))
+		local signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.9))
 		if (signedContracts == 0) then
-			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6))
-			if (signedContracts == 0) then
-				signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.5))
-				if (signedContracts == 0) then
-					signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.4))
-				end
-			end
+			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.7))
 		end
 	end
 	self.Status = JOB_STATUS_DONE
 end
+
+
 
 function SignRequisitedContracts:GetMinGuessedAudience(guessedAudience, minFactor)
 	if minFactor == 1.0 then
@@ -289,7 +321,7 @@ function SignRequisitedContracts:GetMinGuessedAudience(guessedAudience, minFacto
 	if (guessedAudience.GetTotalSum() < 1000) then
 		return TVT.audiencePredictor.GetEmptyAudience()
 	else
-		return guessedAudience.Copy().MultiplyFloat(minFactor)
+		return guessedAudience.Copy().MultiplyString(tostring(minFactor))
 	end
 end
 
@@ -304,59 +336,58 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 		return 0
 	end
 
-	for key, adContract in pairs(self.AdAgencyTask.SpotsInAgency) do
+
+	local availableList = self.AdAgencyTask.SpotsInAgency
+	local filteredList = FilterAdContractsByMinAudience(availableList, minGuessedAudience, guessedAudience)
+	-- sort by spot count (less is better) and profit
+	filteredList = TaskAdAgency.SortAdContractsByAttraction(filteredList)
+
+debugMsg("sort contractlist for " .. math.floor(minGuessedAudience.GetTotalSum()) .. " - " .. math.floor(guessedAudience.GetTotalSum()) .. "  entries=" .. table.count(filteredList))
+for key, adContract in pairs(filteredList) do
+	debugMsg(" - " .. adContract.GetTitle() .. "   minAudience=" .. adContract.GetMinAudience() .. "  spots=" .. adContract.GetSpotCount() .. "  profit=" .. adContract.GetProfit(TVT.ME))
+end
+
+	for key, adContract in pairs(filteredList) do
 		-- do not try to get more contracts than allowed
 		if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.adContractsPerPlayerMax then break end
 
-		local contractDoable = true
-		-- skip limited programme genres
-		-- TODO: get breakdown of audience and compare this then
-		if (adContract.GetLimitedToGenre() > 0 or adContract.GetLimitedToProgrammeFlag() > 0 ) then
-			contractDoable = false
-			debugMsg("contract NOT DOABLE: " .. adContract.GetTitle() .. "  targetgroup="..adContract.GetLimitedToTargetGroup() .."  genre="..adContract.GetLimitedToGenre() .. "  flags=" .. adContract.GetLimitedToProgrammeFlag())
+		-- the more we need, the more likely we could finish even more
+		local maxSurplusSpots = math.floor(0.5 * requisition.Count)
+		if requisition.level == 5 then
+			maxSurplusSpots = math.max( maxSurplusSpots, math.random(0,1))
+		elseif requisition.level == 4 then
+			maxSurplusSpots = math.max( maxSurplusSpots, math.random(1,2))
+		else
+			maxSurplusSpots = math.max( maxSurplusSpots, math.random(2,3))
+		end
+		-- max add the amount of the base requisition
+		maxSurplusSpots = math.min(maxSurplusSpots, requisition.Count)
+
+
+		-- skip if contract requires too many spots for the given level
+		if adContract.GetSpotCount() > neededSpotCount + maxSurplusSpots then
+			--debugMsg("   Skipping a \"necessary\" contract (too many spots: " .. adContract.GetSpotCount() .. " > ".. requisition.Count .." + "..maxSurplusSpots .. "): " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudienceValue .. "  GuessedAudience: " .. math.floor(minGuessedAudience.GetTotalSum()) .. " - " .. math.floor(guessedAudience.GetTotalSum()))
+		-- sign if audience requirements are OK
+		else
+			local minGuessedAudienceValue = minGuessedAudience.GetTotalValue(adContract.GetLimitedToTargetGroup())
+			local guessedAudienceValue = guessedAudience.GetTotalValue(adContract.GetLimitedToTargetGroup())
+			debugMsg("   Signing a \"necessary\" contract: " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. " (+" .. maxSurplusSpots ..")  spotCount: " .. adContract.GetSpotCount() .."  guessedAudience=" .. math.floor(minGuessedAudienceValue) .. " - " .. math.floor(guessedAudienceValue) .." (total="..math.floor(guessedAudience.GetTotalSum()).. ")" )
+			TVT.sa_doBuySpot(adContract.GetID())
+			requisition:UseThisContract(adContract)
+			table.insert(boughtContracts, adContract)
+			signed = signed + 1
+
+			-- remove available spots from the total amount of
+			-- spots needed for this requirements
+			neededSpotCount = neededSpotCount - adContract.GetSpotCount()
 		end
 
-		if (contractDoable) then
-			-- this value is already taking care of target group limits
-			local minAudienceValue = adContract.GetMinAudience()
-			local minGuessedAudienceValue = minGuessedAudience.GetTotalValue( adContract.GetLimitedToTargetGroup() )
-			local guessedAudienceValue = guessedAudience.GetTotalValue( adContract.GetLimitedToTargetGroup() )
-
-
-			-- the more we need, the more likely we could finish even more
-			local maxSurplusSpots = math.floor(0.5 * requisition.Count)
-			if requisition.level == 5 then
-				maxSurplusSpots = math.max( maxSurplusSpots, math.random(0,1))
-			elseif requisition.level == 4 then
-				maxSurplusSpots = math.max( maxSurplusSpots, math.random(1,2))
-			else
-				maxSurplusSpots = math.max( maxSurplusSpots, math.random(2,3))
-			end
-
-			-- skip if contract requires too many spots for the given level
-			if adContract.GetSpotCount() > requisition.Count + maxSurplusSpots then
-				--debugMsg("   Skipping a \"necessary\" contract (too many spots: " .. adContract.GetSpotCount() .. " > ".. requisition.Count .." + "..maxSurplusSpots .. "): " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudience: " .. minAudienceValue .. "  GuessedAudience: " .. math.floor(minGuessedAudience.GetTotalSum()) .. " - " .. math.floor(guessedAudience.GetTotalSum()))
-			-- sign if audience requirements are OK
-			elseif ((minAudienceValue < guessedAudienceValue) and (minAudienceValue > minGuessedAudienceValue)) then
-				--Passender Spot... also kaufen
-				debugMsg("   Signing a \"necessary\" contract: " .. adContract.GetTitle() .. " (" .. adContract.GetID() .. "). Level: " .. requisition.Level .. "  NeededSpots: " .. neededSpotCount.. "  MinAudienceValue: " .. minAudienceValue .. "  GuessedAudience: " .. math.floor(minGuessedAudienceValue) .. " - " .. math.floor(guessedAudienceValue) .." (total="..math.floor(guessedAudience.GetTotalSum())..")")
-				TVT.sa_doBuySpot(adContract.GetID())
-				requisition:UseThisContract(adContract)
-				table.insert(boughtContracts, adContract)
-				signed = signed + 1
-
-				-- remove available spots from the total amount of
-				-- spots needed for this requirements
-				neededSpotCount = neededSpotCount - adContract.GetSpotCount()
-			end
-
-			if (neededSpotCount <= 0) then
-				self.Player:RemoveRequisition(requisition)
-				-- do not sign any other contract for this requisition
-				break
-			else
-				requisition.Count = neededSpotCount
-			end
+		if (neededSpotCount <= 0) then
+			self.Player:RemoveRequisition(requisition)
+			-- do not sign any other contract for this requisition
+			break
+		else
+			requisition.Count = neededSpotCount
 		end
 	end
 

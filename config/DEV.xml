@@ -7,7 +7,7 @@
 			<DEV_LOG value="TRUE" />
 
 			<!--
-			<DEV_STATION_CONSTRUCTION_TIME value="0" />	
+			<DEV_STATION_CONSTRUCTION_TIME value="0" />
 			<DEV_STATION_INCREASE_DAILY_MAINTENANCE_COSTS value="false" />
 			<DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE value="0.02" />
 			<DEV_STATION_DAILY_MAINTENANCE_COSTS_PERCENTAGE_TOTAL_MAX value="0.30" />
@@ -55,7 +55,7 @@
 			     (the same "original contract") at the same time
 			     Options:
 			       0 - disable any limit
-			       x - allow up to x contract instances 
+			       x - allow up to x contract instances
 			     Default: 1
 				<DEV_ADCONTRACT_INSTANCES_MAX value="1" />
 			-->
@@ -63,7 +63,7 @@
 			<!-- A potential for profit/penalty values
 			     Options:
 			       0 - disable any limit
-			       x - limit in Euro per spot 
+			       x - limit in Euro per spot
 			     Default: 1000000
 				<DEV_ADCONTRACT_PRICE_PER_SPOT_MAX value="1000000" />
 			-->
@@ -186,8 +186,8 @@
 			<DEV_DATABASE_LOAD_ACHIEVEMENTS_CREATED_BY value="*" />
 
 			<!--
-			<DEV_STARTPROGRAMME_AD1_GUID value="speedminister-ad-spackeroog-01" />			
-			<DEV_STARTPROGRAMME_AD2_GUID value="speedminister-ad-spargelsund-01" />			
+			<DEV_STARTPROGRAMME_AD1_GUID value="speedminister-ad-spackeroog-01" />
+			<DEV_STARTPROGRAMME_AD2_GUID value="speedminister-ad-spargelsund-01" />
 			<DEV_STARTPROGRAMME_AD3_GUID value="speedminister-ad-rechtschreibdudan-01" />
 			-->
 

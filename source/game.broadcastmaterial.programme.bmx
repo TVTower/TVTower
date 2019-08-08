@@ -328,6 +328,11 @@ print "gam.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 	End Method
 
 
+	Method HasProgrammeFlag:int(flag:int) {_exposeToLua}
+		Return data.HasFlag(flag)
+	End Method
+
+
 	Method GetProgrammeFlags:int() {_exposeToLua}
 		Return data.flags
 	End Method

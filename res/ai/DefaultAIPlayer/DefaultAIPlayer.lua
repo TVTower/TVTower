@@ -6,24 +6,50 @@
 
 _G["APP_VERSION"] = "1.8"
 
+-- this is defined by the game engine if called from there
+-- else the file was opened via a direct call
+if CURRENT_WORKING_DIR == nil and debug.getinfo(2, "S") then
+	CURRENT_WORKING_DIR = debug.getinfo(2, "S").source:sub(2):match("(.*[/\\])") or "."
+	package.path = CURRENT_WORKING_DIR .. '/?.lua;' .. package.path .. ';'
+end
+
 -- ##### INCLUDES #####
 -- use slash for directories - windows accepts it, linux needs it
 -- or maybe package.config:sub(1,1)
-dofile("res/ai/DefaultAIPlayer/AIEngine.lua")
-dofile("res/ai/DefaultAIPlayer/CommonObjects.lua")
-dofile("res/ai/DefaultAIPlayer/BudgetManager.lua")
-dofile("res/ai/DefaultAIPlayer/Strategy.lua")
-dofile("res/ai/DefaultAIPlayer/TaskMovieDistributor.lua")
-dofile("res/ai/DefaultAIPlayer/TaskNewsAgency.lua")
-dofile("res/ai/DefaultAIPlayer/TaskAdAgency.lua")
-dofile("res/ai/DefaultAIPlayer/TaskSchedule.lua")
-dofile("res/ai/DefaultAIPlayer/TaskStationMap.lua")
-dofile("res/ai/DefaultAIPlayer/TaskBoss.lua")
-dofile("res/ai/DefaultAIPlayer/TaskRoomBoard.lua")
-dofile("res/ai/DefaultAIPlayer/TaskArchive.lua")
+--[[
+require "AIEngine"
+require "CommonObjects"
+require "BudgetManager"
+require "Strategy"
+require "TaskMovieDistributor"
+require "TaskNewsAgency"
+require "TaskAdAgency"
+require "TaskSchedule"
+require "TaskStationMap"
+require "TaskBoss"
+require "TaskRoomBoard"
+require "TaskArchive"
+if (unitTestMode) then require "UnitTests" end
+]]
+--
+local scriptPath = "res/ai/DefaultAIPlayer/"
+--local scriptPath = ""
+dofile(scriptPath .. "AIEngine.lua")
+dofile(scriptPath .. "CommonObjects.lua")
+dofile(scriptPath .. "BudgetManager.lua")
+dofile(scriptPath .. "Strategy.lua")
+dofile(scriptPath .. "TaskMovieDistributor.lua")
+dofile(scriptPath .. "TaskNewsAgency.lua")
+dofile(scriptPath .. "TaskAdAgency.lua")
+dofile(scriptPath .. "TaskSchedule.lua")
+dofile(scriptPath .. "TaskStationMap.lua")
+dofile(scriptPath .. "TaskBoss.lua")
+dofile(scriptPath .. "TaskRoomBoard.lua")
+dofile(scriptPath .. "TaskArchive.lua")
 if (unitTestMode) then
-	dofile("res/ai/DefaultAIPlayer/UnitTests.lua")
+	dofile(scriptPath .. "UnitTests.lua")
 end
+--]]
 
 -- ##### GLOBALS #####
 aiIsActive = true
@@ -354,10 +380,12 @@ _G["BusinessStats"] = class(SLFDataObject, function(c)
 	SLFDataObject.init(c)	-- must init base!
 	c.Audience = nil;
 	c.BroadcastStatistics = nil;
-	c.SpotProfit = nil;
-	c.SpotProfitPerSpot = nil;
-	c.SpotProfitPerSpotAcceptable = nil;
-	c.SpotPenalty = nil;
+	c.SpotProfitCPM = nil;
+	c.SpotProfitCPMPerSpot = nil;
+	c.SpotProfitCPMPerSpotAcceptable = nil;
+	c.SpotPenaltyCPM = nil;
+	c.SpotPenaltyCPMPerSpot = nil;
+	c.SpotPenaltyCPMPerSpotAcceptable = nil;
 	c.MoviePricePerBlockAcceptable = nil;
 	c.SeriesPricePerBlockAcceptable = nil;
 	c.MovieQualityAcceptable = nil;
@@ -381,10 +409,12 @@ end
 function BusinessStats:Initialize()
 	self.Audience = StatisticEvaluator()
 	self.BroadcastStatistics = BroadcastStatistics()
-	self.SpotProfit = StatisticEvaluator()
-	self.SpotProfitPerSpot = StatisticEvaluator()
-	self.SpotProfitPerSpotAcceptable = StatisticEvaluator()
-	self.SpotPenalty = StatisticEvaluator()
+	self.SpotProfitCPM = StatisticEvaluator()
+	self.SpotProfitCPMPerSpot = StatisticEvaluator()
+	self.SpotProfitCPMPerSpotAcceptable = StatisticEvaluator()
+	self.SpotPenaltyCPM = StatisticEvaluator()
+	self.SpotPenaltyCPMPerSpot = StatisticEvaluator()
+	self.SpotPenaltyCPMPerSpotAcceptable = StatisticEvaluator()
 	self.MoviePricePerBlockAcceptable = StatisticEvaluator()
 	self.SeriesPricePerBlockAcceptable = StatisticEvaluator()
 	self.MovieQualityAcceptable = StatisticEvaluator()
@@ -401,10 +431,12 @@ end
 
 function BusinessStats:OnDayBegins()
 	self.Audience:Adjust()
-	self.SpotProfit:Adjust()
-	self.SpotProfitPerSpot:Adjust()
-	self.SpotProfitPerSpotAcceptable:Adjust()
-	self.SpotPenalty:Adjust()
+	self.SpotProfitCPM:Adjust()
+	self.SpotProfitCPMPerSpot:Adjust()
+	self.SpotProfitCPMPerSpotAcceptable:Adjust()
+	self.SpotPenaltyCPM:Adjust()
+	self.SpotPenaltyCPMPerSpot:Adjust()
+	self.SpotPenaltyCPMPerSpotAcceptable:Adjust()
 	self.MoviePricePerBlockAcceptable:Adjust()
 	self.SeriesPricePerBlockAcceptable:Adjust()
 	self.MovieQualityAcceptable:Adjust()
@@ -455,15 +487,21 @@ end
 
 
 function BusinessStats:AddSpot(spot)
-	self.SpotProfit:AddValue(spot.GetProfit())
-	self.SpotProfitPerSpot:AddValue(spot.GetProfit() / spot.GetSpotCount())
+	local profitCPM = 1000 * spot.GetProfit() / spot.GetMinAudience()
+	local penaltyCPM = 1000 * spot.GetPenalty() / spot.GetMinAudience()
+
+	self.SpotProfitCPM:AddValue(profitCPM)
+	self.SpotProfitCPMPerSpot:AddValue(profitCPM / spot.GetSpotCount())
+
 	-- only add simple spots for now (without target groups / limits)
-	if (spot.GetLimitedToTargetGroup() <= 0) and (spot.GetLimitedToGenre() <= 0) and (spot.GetLimitedToProgrammeFlag() <= 0) then
+	if (spot.GetLimitedToTargetGroup() <= 0) and (spot.GetLimitedToProgrammeGenre() <= 0) and (spot.GetLimitedToProgrammeFlag() <= 0) then
 		if (spot.GetMinAudience() < globalPlayer.Stats.Audience.MaxValue) then
-			self.SpotProfitPerSpotAcceptable:AddValue(spot.GetProfit() / spot.GetSpotCount())
+			self.SpotProfitCPMPerSpotAcceptable:AddValue(profitCPM / spot.GetSpotCount())
+			self.SpotPenaltyCPMPerSpotAcceptable:AddValue(penaltyCPM / spot.GetSpotCount())
 		end
 	end
-	self.SpotPenalty:AddValue(spot.GetPenalty())
+	self.SpotPenaltyCPM:AddValue(penaltyCPM)
+	self.SpotPenaltyCPMPerSpot:AddValue(penaltyCPM / spot.GetSpotCount())
 end
 
 
@@ -703,6 +741,7 @@ end
 
 -- called before "reloading" a script
 function OnSaveState(timeGone)
+	debugMsg("Serializing AI data")
 	SLFManager.StoreDefinition.Player = getAIPlayer()
 	return SLFManager:save()
 end

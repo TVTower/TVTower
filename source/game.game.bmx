@@ -73,6 +73,12 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		startProgrammeGUIDs = new string[0]
 
 
+		refillMovieAgencyTime = GameRules.refillMovieAgencyTimer
+		refillScriptAgencyTime = GameRules.refillScriptAgencyTimer
+		refillAdAgencyTime = GameRules.refillAdAgencyTimer
+		refillAdAgencyOverridePercentage = GameRules.refillAdAgencyPercentage
+
+
 		'=== SETUP TOOLTIPS ===
 		TTooltip.UseFontBold = GetBitmapFontManager().baseFontBold
 		TTooltip.UseFont = GetBitmapFontManager().baseFont
@@ -81,7 +87,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'=== SETUP INTERFACE ===
 		GetInGameInterface() 'calls init() if not done yet
-
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners

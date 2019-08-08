@@ -205,7 +205,7 @@ Type TgfxContractlist Extends TPlannerList
 					font.drawBlock(contract.GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
 				endif
 
-				if contract.GetLimitedToTargetGroup() > 0 or contract.GetLimitedToGenre() > 0 or contract.GetLimitedToProgrammeFlag() > 0
+				if contract.GetLimitedToTargetGroup() > 0 or contract.GetLimitedToProgrammeGenre() > 0 or contract.GetLimitedToProgrammeFlag() > 0
 					GetSpriteFromRegistry("gfx_programmetape_stamp_attention").draw(currX + 8, currY+1)
 				endif
 			EndIf

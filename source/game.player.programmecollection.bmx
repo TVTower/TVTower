@@ -253,9 +253,12 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 	'returns a freshly created broadcast material
+	'(or null for an invalid/empty materialSource object)
 	'=====
 	'recognized materialSources: TProgrammeLicende, TAdContract
 	Method GetBroadcastMaterial:TBroadcastMaterial(materialSource:object)
+		if not materialSource then return Null
+
 		local broadcastMaterial:TBroadcastMaterial = null
 
 		'check if we find something valid

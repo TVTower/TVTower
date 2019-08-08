@@ -457,6 +457,9 @@ End Function
 Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'wird nur in der Lua-KI verwendet um die Lizenzen zu bewerten
 	Field attractiveness:Float = -1
+	'maxTopicality when buying/receiving a licence
+	'used to calculate loss of maxTopicality since owning
+	Field maxTopicalityOnOwnerchange:Float = -1.0
 	Field data:TProgrammeData				{_exposeToLua}
 	'the latest hour-(from-start) one of the planned programmes ends
 	Field latestPlannedEndHour:int = -1
@@ -823,6 +826,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if owner <> self.owner
 			'remove old trailer data
 			data.RemoveTrailerMod(self.owner)
+
+			'fetch original maxTopicality
+			maxTopicalityOnOwnerchange = GetMaxTopicality()
 		endif
 
 		self.owner = owner
@@ -1724,7 +1730,10 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 	'returns the (avg) relative topicality of a licence (package)
 	Method GetRelativeTopicality:Float() {_exposeToLua}
-		return GetTopicality() / GetMaxTopicality()
+		local mTopicality:Float = GetMaxTopicality()
+		if mTopicality = 0 then return 0
+
+		return GetTopicality() / mTopicality
 	End Method
 
 
@@ -1767,6 +1776,30 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		if subLicences.length > 0 then return value / subLicences.length
 		return 0.0
+	End Method
+
+
+	Method GetMaxTopicalityOnOwnerChange:Float() {_exposeToLua}
+		'single-licence
+		if GetSubLicenceCount() = 0
+			if maxTopicalityOnOwnerchange < 0 then maxTopicalityOnOwnerchange = GetMaxTopicality()
+			return maxTopicalityOnOwnerchange
+		endif
+
+		'licence for a package or series
+		Local value:Float
+		For local licence:TProgrammeLicence = eachin subLicences
+			value :+ licence.GetMaxTopicalityOnOwnerChange()
+		Next
+
+		if subLicences.length > 0 then return value / subLicences.length
+		return 0.0
+	End Method
+
+
+	'returns the avg left maxTopicality compared to when bough/received
+	Method GetRelativeMaxTopicalityLoss:Float() {_exposeToLua}
+		return 1.0 - (GetMaxTopicality() / GetMaxTopicalityOnOwnerChange())
 	End Method
 
 
@@ -1910,7 +1943,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
-	Method GetTimesBroadcasted:int(owner:int = -1)
+	Method GetTimesBroadcasted:int(owner:int = -1) {_exposeToLua}
 		if GetSubLicenceCount() = 0 then return data.GetTimesBroadcasted(owner)
 
 		local sum:int = 0

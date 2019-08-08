@@ -574,15 +574,28 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
+	Method IsLimitedToProgrammeGenre:int(genre:int) {_exposeToLua}
+		Return GetLimitedToProgrammeGenre() = genre
+	End Method
+
 	Method GetLimitedToProgrammeGenre:int() {_exposeToLua}
 		Return limitedToProgrammeGenre
 	End Method
 
 
+	Method IsLimitedToProgrammeFlag:int(flag:int) {_exposeToLua}
+		Return (GetLimitedToProgrammeFlag() & flag) > 0
+	End Method
+
+	Method GetLimitedToProgrammeFlag:int() {_exposeToLua}
+		Return limitedToProgrammeFlag
+	End Method
+
+
+
 	Method IsLimitedToTargetGroup:int(targetGroup:int) {_exposeToLua}
 		Return (GetLimitedToTargetGroup() & targetGroup) > 0
 	End Method
-
 
 	Method GetLimitedToTargetGroup:int() {_exposeToLua}
 		'with no required audience, we cannot limit to target groups
@@ -1250,7 +1263,7 @@ price :* Max(1, minAudience/1000)
 		'specific targetgroups change price
 		If GetLimitedToTargetGroup() > 0 Then price :* limitedToTargetGroupMultiplier
 		'limiting to specific genres change the price too
-		If GetLimitedToGenre() > 0 Then price :* limitedToGenreMultiplier
+		If GetLimitedToProgrammeGenre() > 0 Then price :* limitedToGenreMultiplier
 		'limiting to specific flags change the price too
 		If GetLimitedToProgrammeFlag() > 0 Then price :* limitedToProgrammeFlagMultiplier
 
@@ -1355,6 +1368,11 @@ price :* Max(1, minAudience/1000)
 	End Method
 
 
+	Method GetDaySigned:Int() {_exposeToLua}
+		return daySigned
+	End Method
+
+
 	'time left for sending all contract-spots from now
 	Method GetTimeLeft:Long(now:Long = -1) {_exposeToLua}
 		if now < 0 then now = GetWorldTime().GetTimeGone()
@@ -1451,12 +1469,16 @@ price :* Max(1, minAudience/1000)
 	End Method
 
 
-	Method GetLimitedToGenre:Int() {_exposeToLua}
+	Method IsLimitedToProgrammeGenre:int(genre:int) {_exposeToLua}
+		return base.IsLimitedToProgrammeGenre(genre)
+	End Method
+
+	Method GetLimitedToProgrammeGenre:Int() {_exposeToLua}
 		Return base.GetLimitedToProgrammeGenre()
 	End Method
 
 
-	Method GetLimitedToGenreString:String(genre:Int=-1) {_exposeToLua}
+	Method GetLimitedToProgrammeGenreString:String(genre:Int=-1) {_exposeToLua}
 		'if no genre given, use the one of the object
 		if genre < 0 then genre = base.limitedToProgrammeGenre
 		if genre < 0 then return ""
@@ -1465,8 +1487,12 @@ price :* Max(1, minAudience/1000)
 	End Method
 
 
+	Method IsLimitedToProgrammeFlag:int(flag:int) {_exposeToLua}
+		return base.IsLimitedToProgrammeFlag(flag)
+	End Method
+
 	Method GetLimitedToProgrammeFlag:Int() {_exposeToLua}
-		Return base.limitedToProgrammeFlag
+		Return base.GetLimitedToProgrammeFlag()
 	End Method
 
 
@@ -1667,7 +1693,7 @@ price :* Max(1, minAudience/1000)
 
 		'message area
 		If GetLimitedToTargetGroup() > 0 then msgAreaH :+ msgH
-		If GetLimitedToGenre() >= 0 then msgAreaH :+ msgH
+		If GetLimitedToProgrammeGenre() >= 0 then msgAreaH :+ msgH
 		If GetLimitedToProgrammeFlag() > 0 then msgAreaH :+ msgH
 		'warn if short of time or finished/failed
 		If daysLeft <= 1 or IsCompleted()
@@ -1722,8 +1748,8 @@ price :* Max(1, minAudience/1000)
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_TARGETGROUP")+": "+GetLimitedToTargetGroupString(), "targetGroupLimited", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
-		If GetLimitedToGenre() >= 0
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_GENRE_X").Replace("%GENRE%", GetLimitedToGenreString()), "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+		If GetLimitedToProgrammeGenre() >= 0
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_GENRE_X").Replace("%GENRE%", GetLimitedToProgrammeGenreString()), "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 		If GetLimitedToProgrammeFlag() > 0
@@ -1826,10 +1852,10 @@ price :* Max(1, minAudience/1000)
 			contentY :+ 12
 			skin.fontNormal.draw("Zielgruppe: " + GetLimitedToTargetGroup() + " (" + GetLimitedToTargetGroupString() + ")", contentX + 5, contentY)
 			contentY :+ 12
-			if GetLimitedToGenre() >= 0
-				skin.fontNormal.draw("Genre: " + GetLimitedToGenre() + " ("+ GetLimitedToGenreString() + ")", contentX + 5, contentY)
+			if GetLimitedToProgrammeGenre() >= 0
+				skin.fontNormal.draw("Genre: " + GetLimitedToProgrammeGenre() + " ("+ GetLimitedToProgrammeGenreString() + ")", contentX + 5, contentY)
 			else
-				skin.fontNormal.draw("Genre: " + GetLimitedToGenre() + " (keine Einschraenkung)", contentX + 5, contentY)
+				skin.fontNormal.draw("Genre: " + GetLimitedToProgrammeGenre() + " (keine Einschraenkung)", contentX + 5, contentY)
 			endif
 			contentY :+ 12
 			skin.fontNormal.draw("Vertraege mit dieser Werbung: " + base.GetCurrentlyUsedByContractCount(), contentX + 5, contentY)
@@ -1971,7 +1997,7 @@ price :* Max(1, minAudience/1000)
 		If self.getDaysLeft() < 0 then return 0
 
 		'multiply by spot count (the more to send in total, the more acute)
-		Return self.GetSpotsToSend() * GetSpotsToSendPercentage()  * GetTimeGonePercentage()^3
+		Return self.GetSpotsToSend() * GetSpotsToSendPercentage() * GetTimeGonePercentage()^2
 	End Method
 
 

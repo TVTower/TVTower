@@ -6,6 +6,14 @@
 
 
 -- ##### INCLUDES #####
+-- this is defined by the game engine if called from there
+-- else the file was opened via a direct call
+if CURRENT_WORKING_DIR == nil and debug.getinfo(2, "S") then
+	CURRENT_WORKING_DIR = debug.getinfo(2, "S").source:sub(2):match("(.*[/\\])") or "."
+	package.path = CURRENT_WORKING_DIR .. '/?.lua;' .. package.path .. ';'
+end
+
+--require "SLF" -- load SFL.lua
 dofile("res/ai/DefaultAIPlayer/SLF.lua")
 
 -- ##### GLOBALS #####
@@ -369,6 +377,7 @@ end
 function AITask:CallActivate()
 	self.TickCounter = 0
 	self.TicksTotalTime = 0
+	self:InitializeMaxTicks()
 	debugMsg("### Starting task '" .. self:typename() .. "'! (Prio: " .. self.CurrentPriority .."). MaxTicks: " .. self.MaxTicks)
 	self:Activate()
 end
@@ -376,7 +385,7 @@ end
 
 --override if you need more ticks
 function AITask:InitializeMaxTicks()
-	self.MaxTicks = math.random(9, 17)
+	self.MaxTicks = math.random(15, 25)
 end
 
 
@@ -1244,6 +1253,8 @@ end
 
 
 function debugMsg(pMessage, allPlayers)
+	if pMessage == nil then return end
+
 	if currentDebugMsgDepth > 0 then
 		pMessage = string.rep("  ", currentDebugMsgDepth) .. pMessage
 	end
@@ -1291,12 +1302,27 @@ end
 
 
 function FixDayAndHour(day, hour)
+	if day == nil then
+		print(debug.traceback())
+	end
+	if hour == nil then hour = 0; end
+
+	local moduloHour = hour % 24
+	--local moduloHour = hour
+	--if (hour > 23) then
+	--	moduloHour = hour % 24
+	--end
+	local newDay = day + (hour - moduloHour) / 24
+	return newDay, moduloHour
+
+	--[[
 	local moduloHour = hour
 	if (hour > 23) then
 		moduloHour = hour % 24
 	end
 	local newDay = day + (hour - moduloHour) / 24
 	return newDay, moduloHour
+	--]]
 end
 
 

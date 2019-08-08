@@ -50,7 +50,7 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 	Function onSportLeagueStartSeason:int( triggerEvent:TEventBase )
 		local league:TNewsEventSportLeague = TNewsEventSportLeague(triggerEvent.GetSender())
 		if not league then return False
-		
+
 		'ignore seasons if the first match already happened ?
 		if league.GetDoneMatchesCount() = 0 and league.GetNextMatchTime() > GetWorldTime().GetTimeGone()
 '			print "==========================="
@@ -108,7 +108,7 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		'For local locale:string = EachIn TLocalization.languages.Keys()
 		local locales:string[] = [TLocalization.currentLanguage.languageCode, TLocalization.fallbackLanguage.languageCode]
 		For local locale:string = EachIn locales
-			
+
 			local title:string = GetRandomLocalizedString("SPORT_PROGRAMME_TITLE").Get(locale)
 			local description:string = GetRandomLocalizedString("SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X").Get(locale)
 			local descriptionAirtimeHint:string = GetRandomLocalizedString("SPORT_PROGRAMME_MATCH_TIMES").Get(locale)+": %MATCHTIMES%"
@@ -168,12 +168,12 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 
 		'print "Sportlizenz: " + programmeLicence.GetGUID()
 		'Notify("Sportlizenz: " + programmeLicence.GetGUID())
-		TriggerSimpleEvent("dev.addToastMessage", new TData.Add("caption", "Sport League TV-Licence").Add("text", "Created " + programmeLicence.GetTitle() + "  /  "  + programmeLicence.GetGUID()), null, self)
-		print "Sport League TV-Licence: Created " + programmeLicence.GetTitle() + "  /  "  + programmeLicence.GetGUID()
+'		TriggerSimpleEvent("dev.addToastMessage", new TData.Add("caption", "Sport League TV-Licence").Add("text", "Created " + programmeLicence.GetTitle() + "  /  "  + programmeLicence.GetGUID()), null, self)
+'		print "Sport League TV-Licence: Created " + programmeLicence.GetTitle() + "  /  "  + programmeLicence.GetGUID()
 
 		return programmeLicence
 	End Method
-	
+
 
 	Method CreateMatchProgrammeLicence:TProgrammeLicence(match:TNewsEventSportMatch, parentLicence:TProgrammeLicence)
 		'TODO: programmeData.speed 		abhaengig von Liga und Platzierung (-> in Update() )
@@ -183,7 +183,7 @@ Type TProgrammeProducerSport extends TProgrammeProducerBase
 		if not match then return null
 
 		local programmeData:TProgrammeData
-		if parentLicence 
+		if parentLicence
 			programmeData = new TSportsProgrammeData
 			THelper.TakeOverObjectValues(parentLicence.data, programmeData)
 		endif

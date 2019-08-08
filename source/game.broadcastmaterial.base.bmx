@@ -67,9 +67,9 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 
 	'needed for all extending objects
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastProgrammeBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False ) Abstract
-	
+
 	'needed for all extending objects
-	Method GetQuality:Float() Abstract {_exposeToLua}	
+	Method GetQuality:Float() Abstract {_exposeToLua}
 
 
 	'what to earn for each viewers in euros?
@@ -98,7 +98,12 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	Method GetProgrammeFlags:int() {_exposeToLua}
 		Return 0
 	End Method
-	
+
+
+	Method HasProgrammeFlag:int(flag:int) {_exposeToLua}
+		Return 0
+	End Method
+
 
 	Method GetBlocks:int(broadcastType:int=0) {_exposeToLua}
 		Return 1
@@ -120,7 +125,7 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 		audienceQuote = MathHelper.Clamp(audienceQuote, 0.0, 1.0)
 
 
-		
+
 		'by default, all broadcasted news would cut their topicality by
 		'100% when broadcasted on 100% audience watching
 		'but we use ATan instead so it starts growing fast and looses
@@ -154,7 +159,7 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 '		return 1.0 - audienceQuote
 		return 1.0 - THelper.ATanFunction(audienceQuote, 3)
 	End Method
-	
+
 
 	Method isType:int(typeID:int) {_exposeToLua}
 		return self.materialType = typeID
@@ -278,7 +283,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	Function _DownsizeNegativeAttraction:int(audience:TAudience)
 		local value:Float
 		local targetGroupID:Int
-		
+
 		For local gender:int = EachIn [TVTPersonGender.MALE, TVTPersonGender.FEMALE]
 			For Local targetGroup:Int = 1 To TVTTargetGroup.count
 				targetGroupID = TVTTargetGroup.GetAtIndex(targetGroup)
@@ -291,14 +296,14 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 				local difference:float = 2 + value
 				'(-2=>-2, -1.5=>-1.75, -1=>-1)
 				value = -2 + difference^2
-	
+
 				audience.SetGenderValue(targetGroupID, value, gender)
 			Next
 		Next
 	End Function
 
 
-	'default implementation	
+	'default implementation
 	'limited to 0 - 2.0, 1.0 means "no change"
 	Method GetGenrePopularityMod:Float(definition:TGenreDefinitionBase)
 		'Popularity ranges from -50 to 100 (no absolute "unpopular for
@@ -306,7 +311,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		'add 1 to get a value between 0 - 2
 		Return 1.0 + MathHelper.Clamp(definition.GetPopularity().Popularity / 100.0, -1.0, 1.0 )
 	End Method
-	
+
 
 	'default implementation
 	'return a value between 0 - 2.0, 1.0 means "no change"
@@ -320,19 +325,19 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		Return MathHelper.Clamp(definition.TimeMods[hour], 0, 2)
 	End Method
 
-	
+
 	'default implementation
 	'limited to 0 - 2.0, 1.0 means "no change"
 	Method GetGenreTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
 		if not definition then return New TAudience.InitValue(1, 1)
-		
+
 		'multiply with 0.5 to scale "-2 to +2" down to "-1 to +1"
 		'add 1 to get a value between 0 - 2
 		Return definition.AudienceAttraction.Copy().MultiplyFloat(0.5).AddFloat(1.0).CutBordersFloat(0, 2.0)
 	End Method
-	
 
-	'default implementation	
+
+	'default implementation
 	'return a value between -1.0 - 1.0
 	Method GetFlagPopularityMod:Float(definition:TGenreDefinitionBase)
 		'Popularity ranges from -50 to 100 (no absolute "unpopular for
@@ -341,7 +346,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		Return 1.0 + MathHelper.Clamp(definition.GetPopularity().Popularity / 100.0, -1.0, 1.0 )
 	End Method
 
-	
+
 	'default implementation
 	'limited to 0 - 2.0, 1.0 means "no change"
 	Method GetFlagTargetGroupMod:TAudience(definition:TGenreDefinitionBase)
@@ -355,13 +360,13 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		Return New TAudience.InitValue(1, 1)
 	End Method
 
-	
+
 	'default implementation
 	'return a value between 0 - 1.0
 	'describes how much of a potential trailer-bonus of 100% was reached
 	Method GetTrailerMod:TAudience()
 		Return new TAudience.InitValue(0, 0)
-	End Method	
+	End Method
 
 
 	'default implementation
@@ -371,17 +376,17 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		Return 1.0
 	End Method
 
-	
+
 	'default implementation
 	Method GetMiscMod:TAudience(hour:Int)
 		Return new TAudience.InitValue(1.0, 1.0)
 	End Method
 
-	
+
 	'default implementation
 	Method GetPublicImageMod:TAudience()
 		local pubImage:TPublicImage = GetPublicImageCollection().Get(owner)
-		If not pubImage Then Throw TNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has an owner without publicimage.")
+		If not pubImage Then Throw TTVTNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has an owner without publicimage.")
 
 		'multiplication-value
 		Local result:TAudience = pubImage.GetAttractionMods()
@@ -389,33 +394,33 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		result.SubtractFloat(0.35)
 		result.CutBordersFloat(-0.35, 0.35)
 		Return result
-	End Method	
+	End Method
 
-	
+
 	'default implementation
 	Method GetQualityOverTimeEffectMod:Float(quality:Float, block:Int )
-		If (block <= 1) Then Return 0			
+		If (block <= 1) Then Return 0
 		If (quality < 0.5)
 			Return MathHelper.Clamp( ((quality - 0.5)/3) * (block - 1), -0.2, 0.1)
 		Else
 			Return MathHelper.Clamp( ((quality - 0.5)/6) * (block - 1), -0.2, 0.1)
-		EndIf	
+		EndIf
 	End Method
 
-	
+
 	'default implementation
 	Method GetLuckMod:TAudience()
 		Return new TAudience.InitValue(0, 0)
 	End Method
 
-	
+
 	'default implementation
 	Method GetAudienceFlowBonus:TAudience(block:Int, result:TAudienceAttraction, lastProgrammeBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction) {_exposeToLua}
 		If lastProgrammeBlockAttraction And lastProgrammeBlockAttraction.AudienceFlowBonus Then
 			Return lastProgrammeBlockAttraction.AudienceFlowBonus.Copy().MultiplyFloat(0.25)
 		Else
 			Return Null
-		EndIf		
+		EndIf
 	End Method
 
 
@@ -442,8 +447,8 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 	Method GetFlagsMod:Float()
 		Return 1.0
 	End Method
-	
-	
+
+
 	'default implementation
 	global borderMaxDefault:TAudience = new Taudience.InitValue(0.15, 0.15)
 	global borderMinDefault:TAudience = new Taudience.InitValue(-0.15, -0.15)
@@ -453,12 +458,12 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		seqCal.Predecessor = predecessor
 		seqCal.Successor = currentProgramme
 
-		SetSequenceCalculationPredecessorShare(seqCal, (block = 1 And lastProgrammeBlockAttraction))		
+		SetSequenceCalculationPredecessorShare(seqCal, (block = 1 And lastProgrammeBlockAttraction))
 
 		Local seqMod:TAudience
 		Local borderMax:TAudience
 		Local borderMin:TAudience
-		
+
 		If genreDefinition
 			'.Divide(13).Multiply(4) = Divide(4/13)
 			seqMod = genreDefinition.AudienceAttraction.Copy().DivideFloat(4 / 13.0).AddFloat(0.75) '0.75 - 1.15
@@ -476,7 +481,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		Return ret
 	End Method
 
-	
+
 	Method SetSequenceCalculationPredecessorShare(seqCal:TSequenceCalculation, audienceFlow:Int)
 		If audienceFlow
 			seqCal.PredecessorShareOnShrink  = new TAudience.InitValue(0.3, 0.3)
@@ -487,7 +492,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		End If
 	End Method
 
-	
+
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastProgrammeBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False ) {_exposeToLua}
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		AssignStaticAudienceAttraction(result, hour, block, lastProgrammeBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect )
@@ -508,11 +513,11 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 		return result
 	End Method
-		
-	
+
+
 	Method AssignStaticAudienceAttraction(audienceAttraction:TAudienceAttraction var, hour:Int, block:Int, lastProgrammeBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
-		If owner <= 0 then Throw TNullObjectExceptionExt.Create("The broadcast '" + GetTitle() + "' has no owner.")
-		If block <= 0 And usedAsType = TVTBroadcastMaterialType.PROGRAMME then Throw TNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
+		If owner <= 0 then Throw TTVTNullObjectExceptionExt.Create("The broadcast '" + GetTitle() + "' has no owner.")
+		If block <= 0 And usedAsType = TVTBroadcastMaterialType.PROGRAMME then Throw TTVTNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
 
 		audienceAttraction.BroadcastType = Self.materialType
 		audienceAttraction.GenreDefinition = GetGenreDefinition()
@@ -546,8 +551,8 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 
 
 	Method AssignDynamicAudienceAttraction(audienceAttraction:TAudienceAttraction, hour:Int, block:Int, lastProgrammeBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
-		If owner <= 0 then Throw TNullObjectExceptionExt.Create("The broadcast '" + GetTitle() + "' has no owner.")
-		If block <= 0 And usedAsType = TVTBroadcastMaterialType.PROGRAMME then Throw TNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
+		If owner <= 0 then Throw TTVTNullObjectExceptionExt.Create("The broadcast '" + GetTitle() + "' has no owner.")
+		If block <= 0 And usedAsType = TVTBroadcastMaterialType.PROGRAMME then Throw TTVTNullObjectExceptionExt.Create("GetAudienceAttractionInternal: Invalid block param: '" + block + ".")
 
 		audienceAttraction.BroadcastType = Self.materialType
 		audienceAttraction.GenreDefinition = GetGenreDefinition()
@@ -602,7 +607,7 @@ Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="sel
 		audienceAttraction.Recalculate()
 
 		'11 - Audience Flow
-		audienceAttraction.AudienceFlowBonus = GetAudienceFlowBonus(block, audienceAttraction, lastProgrammeBlockAttraction, lastNewsBlockAttraction) 		
+		audienceAttraction.AudienceFlowBonus = GetAudienceFlowBonus(block, audienceAttraction, lastProgrammeBlockAttraction, lastNewsBlockAttraction)
 
 		'12 - Sequence
 		If withSequenceEffect

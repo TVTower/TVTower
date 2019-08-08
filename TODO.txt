@@ -154,3 +154,12 @@ https://www.gamezworld.de/phpforum/viewtopic.php?pid=88291#p88291
 https://www.youtube.com/watch?v=THhHlHBJudU&feature=youtu.be
 
 
+
+rem
+Ueberpruefen:
+- Lizenzen "Live" setzen und Zeitfenster erlauben
+- Zeigt datenblatt dann "Live morgen 0:05 Uhr" _und_ "Nursendbar 0-6"?
+
+- KI muss auch damit klarkommen (ausfiltern solcher Sendungen in der
+"verfuegbar fuer jetzt" Liste
+endrem

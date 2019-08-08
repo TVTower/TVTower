@@ -197,14 +197,21 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-	Function FixDayHour(day:int var, hour:int var)
+	Function FixDayHour(day:int var, hour:int var, disableAutoValue:int = False)
 		If day < 0 Then day = GetWorldTime().GetDay()
-		If hour = -1
+		If hour = -1 and not disableAutoValue
 			hour = GetWorldTime().getDayHour()
 		Else
 			day :+ int(hour / 24)
 			hour = hour mod 24
 		EndIf
+	End Function
+
+
+	'adjusts day value if hour is <0 or >23
+	Function WrapDayHour(day:int var, hour:int var)
+		day :+ int(hour / 24)
+		hour = hour mod 24
 	End Function
 
 	'===== common function for managed objects =====
@@ -631,7 +638,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'returns -1 if no object was found
 	Method GetObjectStartHour:Int(objectType:Int=0, day:Int=-1, hour:Int=-1) {_exposeToLua}
 		FixDayHour(day, hour)
-		Local arrayIndex:Int = GetArrayIndex(day * 24 + hour)
+		Local arrayIndex:Int = GetArrayIndex(day*24 + hour)
 
 		'out of bounds?
 		If arrayIndex < 0 Then Return -1
@@ -662,7 +669,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'add an object / set a slot occupied
 	Method AddObject:Int(obj:TBroadcastMaterial, slotType:Int=0, day:Int=-1, hour:Int=-1, checkModifyableSlot:Int=True)
 		FixDayHour(day, hour)
-		Local arrayIndex:Int = GetArrayIndex(day * 24 + hour)
+		Local arrayIndex:Int = GetArrayIndex(day*24 + hour)
 
 		'do not allow adding objects we do not own
 		If obj.GetOwner() <> owner Then Return False
@@ -724,7 +731,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		'Advertisements: adjust planned (when placing in contract-slot
 		If slotType = TVTBroadcastMaterialType.ADVERTISEMENT and TAdvertisement(obj)
-			TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
+			local ad:TAdvertisement = TAdvertisement(obj)
+			ad.contract.SetSpotsPlanned( GetAdvertisementsPlanned(ad.contract, ad.contract.daySigned, 0, -1, -1) )
 		Endif
 
 		'if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
@@ -794,7 +802,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'ProgrammeLicences: recalculate the latest planned hour
 			If TProgramme(obj) Then RecalculatePlannedProgramme(TProgramme(obj))
 			'Advertisements: adjust planned amount
-			If TAdvertisement(obj) Then TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
+			If TAdvertisement(obj)
+				local ad:TAdvertisement = TAdvertisement(obj)
+				ad.contract.SetSpotsPlanned( GetAdvertisementsPlanned(ad.contract, ad.contract.daySigned, 0, -1, -1) )
+			EndIf
 
 			rem
 			if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
@@ -1305,26 +1316,41 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
+'unused for now
+rem
 	'returns how many times an contract was programmed since signing the contract
 	'start time: contract sign
 	'end time: day +/- hour (if day > -1)
-	Method GetAdvertisementsSent:Int(contract:TAdContract, day:Int=-1, hour:Int=0, onlySuccessful:Int=False) {_exposeToLua}
-		Return GetAdvertisementsCount(contract, day, hour, True, False)
+	Method GetAdvertisementsSent:Int(contract:TAdContract, day:Int=-1, hour:Int=-1, onlySuccessful:Int=False) {_exposeToLua}
+		if not contract then return 0
+		FixDayHour(day, hour)
+		Return GetAdvertisementsCount(contract, contract.daySigned, 0, day, hour, True, False)
+	End Method
+endrem
+
+	Method GetTotalAdvertisementsPlanned:Int(contract:TAdContract, includeSuccessful:Int=True) {_exposeToLua}
+		return GetAdvertisementsPlanned(contract, contract.daySigned, 0, -1, -1, includeSuccessful)
 	End Method
 
 
-	Method GetAdvertisementsPlanned:Int(contract:TAdContract, startHour:int=-1, endHour:int=-1, includeSuccessful:Int=True) {_exposeToLua}
-		Local endIndex:Int = advertisements.length-1
+	'dayEnd=-1 and dayHour=-1 means "total"
+	Method GetAdvertisementsPlanned:Int(contract:TAdContract, dayStart:Int, hourStart:Int, dayEnd:Int=1, hourEnd:Int=-1, includeSuccessful:Int=True) {_exposeToLua}
+		Local minIndex:Int = 0
+		Local maxIndex:Int = advertisements.length - 1
 
-		'default: start with time of the sign
-		if startHour = -1 then startHour = 24 * (contract.daySigned - 1)
-		'default: end with latest planned element
-		if endHour > -1 then endIndex = Min(endIndex, GetArrayIndex(endHour))
+		WrapDayHour(dayStart, hourStart)
+		minIndex = GetArrayIndex(dayStart*24 + hourStart)
 
-		Local startIndex:Int= Max(0, GetArrayIndex(startHour))
+		if dayEnd <> -1 and hourEnd <> -1
+			WrapDayHour(dayEnd, hourEnd)
+			maxIndex = min(maxIndex, GetArrayIndex(dayEnd*24 + hourEnd))
+		endif
+
+		'somehow we have a timeframe ending earlier than starting
+		If maxIndex < minIndex Then Return 0
 
 		Local count:Int	= 0
-		For Local i:Int = startIndex To endIndex
+		For Local i:Int = minIndex To maxIndex
 			Local ad:TAdvertisement = TAdvertisement(advertisements[i])
 			'skip missing or wrong ads
 			If Not ad Or ad.contract <> contract Then Continue
@@ -1339,21 +1365,17 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-	'returns how many times advertisements of an adcontract were sent/planned...
-	'in the case of no given day, the hour MUST be given (or set to 0)
-	'
-	'start time: contract sign
-	'end time: day +/- hour (if day > -1)
-	Method GetAdvertisementsCount:Int(contract:TAdContract, day:Int=-1, hour:Int=0, onlySuccessful:Int=True, includePlanned:Int=False)
-		Local startIndex:Int= Max(0, GetArrayIndex(24 * (contract.daySigned - 1)))
-		Local endIndex:Int	= 0
-		If day = -1
-			endIndex = advertisements.length-1 + hour
-		Else
-			endIndex = GetArrayIndex(day*24 + hour)
-		EndIf
-		endIndex = Min(advertisements.length-1, Max(0,endIndex))
 
+	'returns how many times advertisements of an adcontract were sent/planned...
+	'
+	'start day = -1 then use contract sign day
+	Method GetAdvertisementsCount:Int(contract:TAdContract, dayStart:Int, hourStart:Int, dayEnd:Int, hourEnd:Int, onlySuccessful:Int=True, includePlanned:Int=False)
+		WrapDayHour(dayStart, hourStart)
+		WrapDayHour(dayEnd, hourEnd)
+
+		Local startIndex:Int= Max(0, GetArrayIndex( dayStart*24 + hourStart ))
+		'end with latest planned element
+		Local endIndex:Int = Min(advertisements.length-1, GetArrayIndex(dayEnd*24 + hourEnd))
 		'somehow we have a timeframe ending earlier than starting
 		If endIndex < startIndex Then Return 0
 
@@ -1368,6 +1390,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 			count:+1
 		Next
+
 		Return count
 	End Method
 
@@ -1467,11 +1490,18 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
+'unused for now
+rem
 	'returns the next number a new ad spot will have (counts all existing non-failed ads + 1)
 	Method GetNextAdvertisementSpotNumber:Int(contract:TAdContract) {_exposeToLua}
-		Return 1 + GetAdvertisementsCount(contract, -1, 0, True, True)
+		if not contract then return 1
+		if GetWorldTime().GetDayMinute() >= 55
+			Return 1 + GetAdvertisementsCount(contract, contract.daySigned, 0, GetWorldTime().GetDay(), GetWorldTime().GetDayHour(), True, True)
+		else
+			Return 1 + GetAdvertisementsCount(contract, contract.daySigned, 0, GetWorldTime().GetDay(), GetWorldTime().GetDayHour()-1, True, True)
+		endif
 	End Method
-
+endrem
 
 
 	'===== NEWS FUNCTIONS =====
@@ -1655,15 +1685,19 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'returns which number that given advertisement spot will have
 	Method GetAdvertisementSpotNumber:Int(advertisement:TAdvertisement, viewType:int=-1) {_exposeToLua}
+		if not advertisement then return 0
+		if not advertisement.contract.daySigned then return 0
+
 		'if programmed (as advertisement!) - count all non-failed ads
 		'up to the programmed date
 		If advertisement.isProgrammed() and (viewType < 0 or advertisement.usedAsType = viewType)
-			Return 1 + GetAdvertisementsCount(advertisement.contract, advertisement.programmedDay, advertisement.programmedHour-1, True, True)
+			Return 1 + GetAdvertisementsCount(advertisement.contract, advertisement.contract.daySigned, 0, advertisement.programmedDay, advertisement.programmedHour-1, True, True)
 		'if not programmed we just count ALL existing non-failed ads
 		Else
-			Return 1 + GetAdvertisementsCount(advertisement.contract, -1, 0, True, True)
+			Return 1 + GetAdvertisementsCount(advertisement.contract, advertisement.contract.daySigned, 0, GetWorldTime().GetDay(), GetWorldTime().GetDayHour(), True, True)
 		EndIf
 	End Method
+
 
 	'that method could be externalized to "main.bmx" or another common
 	'function, there is no need to place it in this file
@@ -1861,12 +1895,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 					obj.BeginBroadcasting(day, hour, minute, audienceResult)
 
 					'computes ads - if adcontract finishes, earn money
-					If TAdvertisement(obj) And TAdvertisement(obj).contract.IsCompleted()
+					If TAdvertisement(obj) And TAdvertisement(obj).contract.CanComplete()
 						'removes ads which are more than needed (eg 3 of 2 to be shown ads)
 						RemoveAdvertisementInstances(obj, False)
 						'removes them also from programmes (shopping show)
 						RemoveProgrammeInstances(obj, False)
-'print "Finish advertisement " + day+"/" +hour+":"+minute
+						'print "Finish advertisement " + day+"/" +hour+":"+minute
+
 						'inform contract and earn money
 						TAdvertisement(obj).contract.Finish( GetWorldTime().MakeTime(0, day, hour, minute) )
 

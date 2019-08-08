@@ -33,6 +33,41 @@ function GetDefaultProgrammeQualityByHour(hour)
 	end
 	return 0.00
 end
+
+
+function FilterAdContractsByMinAudience(contractList, minAudienceMin, minAudienceMax, forbiddenIDs)
+	local filteredList = {}
+
+	if contractList ~= nil then
+		if type(minAudienceMin) == "number" or minAudienceMin == nil then
+			minAudienceMin = TVT.audiencePredictor.GetEmptyAudience().InitWithBreakdown(tonumber(minAudienceMin))
+		end
+		if type(minAudienceMax) == "number" or minAudienceMax == nil then
+			minAudienceMax = TVT.audiencePredictor.GetEmptyAudience().InitWithBreakdown(tonumber(minAudienceMax))
+		end
+		local minAudienceMinSum = minAudienceMin.GetTotalSum()
+		local minAudienceMaxSum = minAudienceMax.GetTotalSum()
+
+--debugMsg("FilterAdContractsByMinAudience(list, " .. minAudienceMinSum .. " - " .. minAudienceMaxSum)
+		for k,v in pairs(contractList) do
+			local addIt = true
+
+			-- adjust guessed audience if only specific target groups count
+			if (v.GetLimitedToTargetGroup() > 0) then
+				if addIt and v.GetMinAudience() < minAudienceMin.GetTotalValue( v.GetLimitedToTargetGroup() ) then addIt = false end
+				if addIt and v.GetMinAudience() > minAudienceMax.GetTotalValue( v.GetLimitedToTargetGroup() ) then addIt = false end
+			else
+--debugMsg("  - " .. v.GetTitle() .. ": " .. v.GetMinAudience() .. " < " .. minAudienceMinSum .." or " .. v.GetMinAudience() .." > " .. minAudienceMaxSum .. "   ?")
+				if addIt and v.GetMinAudience() < minAudienceMinSum or v.GetMinAudience() > minAudienceMaxSum then addIt = false end
+			end
+
+			if addIt and table.contains(forbiddenIDs, v.GetID()) then addIt = false end
+
+			if addIt then table.insert(filteredList, v)	end
+		end
+	end
+	return filteredList
+end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -373,6 +408,63 @@ function AIToolsClass:GetBroadcastQualityLevel(broadcastMaterial)
 	else
 		return 1
 	end
+end
+
+
+function AIToolsClass:GetBroadcastAttraction(broadcastMaterialSource, day, hour, forPlayer)
+	if broadcastMaterialSource == nil then return 0 end
+
+	if forPlayer == nil then forPlayer = _G["globalPlayer"] end
+
+	-- how much does time affect the attraction (horror/infomercials at night)
+	local timeMod = 1.0
+	-- how much does the audience like a genre/flag
+	local audienceMod = 1.0
+	-- how much likes the player to send this kind of programme/infomercial
+	local playerMod = 1.0
+
+
+	-- infomercials?
+	if broadcastMaterialSource.IsAdContract() == 1 then
+		audienceMod = 0.55
+		--infomercials are more appreciated during night and morning
+		--and less during afternoon/primetime
+		if hour ~= nil then
+			if hour >= 0 and hour <= 7 then timeMod = 1.07 end
+			if hour >=10 and hour <=12 then timeMod = 1.05 end
+			if hour >=13 and hour <=16 then timeMod = 0.95 end
+			if hour >=17 and hour <=23 then timeMod = 0.85 end
+		end
+
+		--[[
+		-- higher during early hours
+		if level <= 2 then choosenInfomercialValue = choosenInfomercialValue * 1.2; end
+		-- even more during night
+		if level <= 1 then choosenInfomercialValue = choosenInfomercialValue * 1.2; end
+		-- lower during evening
+		if level >= 4 then choosenInfomercialValue = choosenInfomercialValue * 0.80; end
+		-- even lower for prime time
+		if level >= 5 then choosenInfomercialValue = choosenInfomercialValue * 0.80; end
+		--]]
+
+		-- modify attraction by a player-individual modifier.
+		playerMod = forPlayer.Strategy.GetInfomercialWeight()
+
+	-- paid programming?
+	elseif broadcastMaterialSource.IsProgrammeLicence() == 1 and broadcastMaterialSource.HasDataFlag(TVT.Constants.ProgrammeDataFlag.PAID) == 1 then
+		audienceMod = 0.75
+		--infomercials are more appreciated during night and morning
+		--and less during afternoon/primetime
+		if hour ~= nil then
+			if hour >= 0 and hour <=14 then timeMod = 1.10 end
+			if hour >=20 and hour <=22 then timeMod = 0.90 end
+		end
+	end
+
+	-- "GetQuality()" already contains topicality-influence for infomercials
+	-- and programmes
+	-- return playerMod * timeMod * audienceMod * (broadcastMaterialSource.GetQuality() * broadcastMaterialSource.GetProgrammeTopicality())
+	return playerMod * timeMod * audienceMod * broadcastMaterialSource.GetQuality()
 end
 
 --[[
