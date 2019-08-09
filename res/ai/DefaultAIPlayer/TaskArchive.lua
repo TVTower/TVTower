@@ -9,6 +9,9 @@ _G["TaskArchive"] = class(AITask, function(c)
 
 	c.Player = nil
 
+	--no budget to spare
+	c.RequiresBudgetHandling = false
+
 	c.latestSaleOnDay = -1
 	c.emergencySale = false --todo: festlegen wann/ob der Notfall ist
 end)

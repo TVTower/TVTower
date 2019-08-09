@@ -790,6 +790,13 @@ Type TLuaFunctions extends TLuaFunctionsBase {_exposeToLua}
 
 	'=== GENERIC INFORMATION RETRIEVERS ===
 	'player could eg. see in interface / tooltips
+	'or stuff "static" over the whole game - so during a second game this
+	'is known to a player (eg. fees for a news abonnement level)
+
+	Method GetNewsAbonnementFee:Int(newsGenreID:int, level:int)
+		return GetNewsAgency().GetNewsAbonnementPrice(self.ME, newsGenreID, level)
+	End Method
+
 
 	Method GetRoomBlockedTime:Long(roomID:int)
 		local room:TRoomBase = GetRoomBase(roomID)
@@ -1248,10 +1255,10 @@ endrem
 	End Method
 
 
-	Method ne_getNewsAbonnementFee:Int(newsGenreID:int, level:int)
+	Method ne_getNewsAbonnementFee:Int(newsGenreID:int)
 		If Not (_PlayerInRoom("newsroom") or _PlayerInRoom("news")) Then Return self.RESULT_WRONGROOM
 
-		return GetNewsAgency().GetNewsAbonnementPrice(self.ME, newsGenreID, level)
+		return GetNewsAbonnementFee(newsGenreID, GetPlayerBase(self.ME).GetNewsAbonnement(newsGenreID))
 	End Method
 
 
@@ -1269,6 +1276,7 @@ endrem
 			return self.RESULT_OK
 		endif
 	End Method
+
 
 	'returns the aggression level of the given terrorist group.
 	'Invalid groups return the maximum of all.

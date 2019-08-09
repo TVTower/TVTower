@@ -9,6 +9,9 @@ _G["TaskRoomBoard"] = class(AITask, function(c)
 	c.NeededInvestmentBudget = 0
 	c.InvestmentPriority = 0
 
+	--no budget to spare
+	c.RequiresBudgetHandling = false
+
 	c.RecognizedTerrorLevel = false
 	c.FRDubanTerrorLevel = 0 --FR Duban Terroristen
 	c.VRDubanTerrorLevel = 0 --VR Duban Terroristen

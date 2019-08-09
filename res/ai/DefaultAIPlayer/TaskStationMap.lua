@@ -7,9 +7,11 @@ _G["TaskStationMap"] = class(AITask, function(c)
 	c:ResetDefaults()
 end)
 
+
 function TaskStationMap:typename()
 	return "TaskStationMap"
 end
+
 
 function TaskStationMap:ResetDefaults()
 	self.BudgetWeight = 3
@@ -22,6 +24,7 @@ function TaskStationMap:ResetDefaults()
 	self.knownCableNetworkUplinks = {}
 end
 
+
 function TaskStationMap:Activate()
 	self.AnalyseStationMarketJob = JobAnalyseStationMarket()
 	self.AnalyseStationMarketJob.Task = self
@@ -32,6 +35,7 @@ function TaskStationMap:Activate()
 	self.BuyStationJob = JobBuyStation()
 	self.BuyStationJob.Task = self
 end
+
 
 function TaskStationMap:GetNextJobInTargetRoom()
 	if (self.AnalyseStationMarketJob.Status ~= JOB_STATUS_DONE) then
@@ -50,9 +54,11 @@ function TaskStationMap:GetNextJobInTargetRoom()
 	self:SetDone()
 end
 
+
 function TaskStationMap:BeforeBudgetSetup()
-	self:SetFixedCosts()
+	self:CalculateFixedCosts()
 end
+
 
 function TaskStationMap:BudgetSetup()
 	if self.UseInvestment then
@@ -61,20 +67,20 @@ function TaskStationMap:BudgetSetup()
 	end
 end
 
+
 function TaskStationMap:OnMoneyChanged(value, reason, reference)
-	if (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_STATION)) then
+	reason = tonumber(reason)
+	if (reason == TVT.Constants.PlayerFinanceEntryType.PAY_STATION) then
 		self:PayFromBudget(value)
-		self:SetFixedCosts()
-	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.SELL_STATION)) then
+		self:CalculateFixedCosts()
+	elseif (reason == TVT.Constants.PlayerFinanceEntryType.SELL_STATION) then
 		self:PayFromBudget(value)
-		self:SetFixedCosts()
-	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_STATIONFEES)) then
-		self.FixedCosts = value
-		--self.FixedCostsBudget = self.FixedCostsBudget - value
+		self:CalculateFixedCosts()
 	end
 end
 
-function TaskStationMap:SetFixedCosts()
+
+function TaskStationMap:CalculateFixedCosts()
 	self.FixedCosts = MY.GetStationMap().CalculateStationCosts()
 end
 

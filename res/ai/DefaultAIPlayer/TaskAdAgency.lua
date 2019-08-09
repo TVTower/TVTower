@@ -4,12 +4,16 @@ _G["TaskAdAgency"] = class(AITask, function(c)
 	AITask.init(c)	-- must init base!
 	c.Id = _G["TASK_ADAGENCY"]
 	c.TargetRoom = TVT.ROOM_ADAGENCY
-	c.SpotsInAgency = nil;
+	c.SpotsInAgency = nil
 	-- keep adagency task a bit lower priority: when adcontracts get
 	-- requested by the schedule task, this already adds to end priority
 	-- via "requisition priority"
 	c.BasePriority = 3
 	c.BudgetWeight = 0
+
+	--no budget to spare
+	c.RequiresBudgetHandling = false
+
 	-- zu Senden
 	-- Strafe
 	-- Zuschauer
@@ -341,12 +345,12 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 	local filteredList = FilterAdContractsByMinAudience(availableList, minGuessedAudience, guessedAudience)
 	-- sort by spot count (less is better) and profit
 	filteredList = TaskAdAgency.SortAdContractsByAttraction(filteredList)
-
+--[[
 debugMsg("sort contractlist for " .. math.floor(minGuessedAudience.GetTotalSum()) .. " - " .. math.floor(guessedAudience.GetTotalSum()) .. "  entries=" .. table.count(filteredList))
 for key, adContract in pairs(filteredList) do
 	debugMsg(" - " .. adContract.GetTitle() .. "   minAudience=" .. adContract.GetMinAudience() .. "  spots=" .. adContract.GetSpotCount() .. "  profit=" .. adContract.GetProfit(TVT.ME))
 end
-
+--]]
 	for key, adContract in pairs(filteredList) do
 		-- do not try to get more contracts than allowed
 		if MY.GetProgrammeCollection().GetAdContractCount() >= TVT.Rules.adContractsPerPlayerMax then break end

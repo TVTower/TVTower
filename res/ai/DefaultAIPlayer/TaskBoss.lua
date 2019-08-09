@@ -38,7 +38,7 @@ end
 
 
 function TaskBoss:BeforeBudgetSetup()
-	self:SetFixedCosts()
+	self:CalculateFixedCosts()
 
 	local money = MY.GetMoney()
 	local credit = MY.GetCredit()
@@ -62,17 +62,17 @@ end
 
 
 function TaskBoss:OnMoneyChanged(value, reason, reference)
-	if (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.CREDIT_TAKE)) then
-		self:SetFixedCosts()
-	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.CREDIT_REPAY)) then
-		self:SetFixedCosts()
-	elseif (tostring(reason) == tostring(TVT.Constants.PlayerFinanceEntryType.PAY_CREDITINTEREST)) then
-		self.FixedCosts = value
+	reason = tonumber(reason)
+	if (reason == TVT.Constants.PlayerFinanceEntryType.CREDIT_TAKE) then
+		self:CalculateFixedCosts()
+	elseif (reason == TVT.Constants.PlayerFinanceEntryType.CREDIT_REPAY) then
+		self:CalculateFixedCosts()
 	end
 end
 
 
-function TaskBoss:SetFixedCosts()
+-- update value of fixed costs (eg. credit interest)
+function TaskBoss:CalculateFixedCosts()
 	self.FixedCosts = MY.GetCreditInterest()
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

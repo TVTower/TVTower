@@ -303,6 +303,7 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	c.IdleTicks = 10 --Wie viele Ticks soll nichts gemacht werden?
 	c.TargetRoom = -1 -- Wie lautet die ID des Standard-Zielraumes? !!! Muss überschrieben werden !!!
 
+	c.RequiresBudgetHandling = true
 	c.CurrentBudget = 0 -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.
 	c.BudgetWholeDay = 0 -- Wie hoch war das Budget das die KI für diese Aufgabe an diesem Tag einkalkuliert hat.
 	c.BudgetWeight = 0 -- Wie viele Budgetanteile verlangt diese Aufgabe vom Gesamtbudget?
@@ -316,7 +317,7 @@ _G["AITask"] = class(KIDataObjekt, function(c)
 	-- 2 = added via another task (forcefully)?
 	c.assignmentType = 0
 
-	c.FixedCosts = 0
+	c.FixedCosts = nil
 end)
 
 
@@ -352,6 +353,17 @@ function AITask:getWorldTicks()
 		return 0
 	end
 	return player.WorldTicks
+end
+
+
+function AITask:GetFixedCosts()
+	if self.FixedCosts == nil then self:CalculateFixedCosts() end
+	return self.FixedCosts
+end
+
+
+function AITask:CalculateFixedCosts()
+	self.FixedCosts = 0
 end
 
 

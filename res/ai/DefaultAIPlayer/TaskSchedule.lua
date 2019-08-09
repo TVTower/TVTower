@@ -205,20 +205,16 @@ function TaskSchedule:OnChangeAdSlot(broadcastMaterial, day, hour)
 			-- find lastest (total) hour of spots for this contract
 			local latestSpotHour = MY.GetProgrammePlan().GetAdContractLatestStartHour(contract, day, hour + 1, -1, -1)
 			if latestSpotHour > 0 then checkHourMax = math.min(checkHourAmount, latestSpotHour - (day*24 + hour)) end
---RONNY
-debugMsg("OnChangeAdSlot: " .. day .. "/" .. hour)
-debugMsg("checkHour: " .. checkHourMin .. " - " .. checkHourMax)
+
 			for i= checkHourMin, checkHourMax do
 				local planDay, planHour = FixDayAndHour(day, hour + i)
 				local result = TVT.of_getAdvertisementSlot(planDay, planHour)
 				if result.result == TVT.RESULT_OK and result.data ~= nil and result.data.GetReferenceID() == contract.GetID() then
-debugMsg("     check" .. planDay .. "/" .. planHour .. ":  spotsTillNow=" .. spotsTillNow .."  spotsAfter=".. spotsAfter .. "  spotCount=" ..contract.GetSpotCount())
 					-- this spot is still within the limit
 					if spotsAfter + spotsTillNow < contract.GetSpotCount() then
 						spotsAfter = spotsAfter + 1
 					-- reached limit?
 					else
-debugMsg("   remove " .. planDay .. "/" .. planHour)
 						-- remove ad
 						local response = TVT.of_setAdvertisementSlot(nil, planDay, planHour)
 						if response == TVT.RESULT_OK then
