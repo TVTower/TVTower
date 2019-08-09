@@ -748,6 +748,11 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetSellPrice:Int() {_exposeToLua}
+		return GetPrice()
+	End Method
+
+
 	Method GetPrice:Int() {_exposeToLua}
 		local value:int
 		'single-script
@@ -881,7 +886,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		local finance:TPlayerFinance = GetPlayerFinance(owner,-1)
 		if not finance then return False
 
-		finance.SellScript(GetPrice(), self)
+		finance.SellScript(GetSellPrice(), self)
 
 		'set unused again
 
@@ -896,7 +901,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		local finance:TPlayerFinance = GetPlayerFinance(playerID)
 		if not finance then return False
 
-		If finance.PayScript(getPrice(), self)
+		If finance.PayScript(GetPrice(), self)
 			SetOwner(playerID)
 			Return TRUE
 		EndIf

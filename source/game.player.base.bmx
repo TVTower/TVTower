@@ -185,6 +185,31 @@ Type TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetNettoWorthLicences:Long()
+		Return 0
+	End Method
+
+
+	Method GetNettoWorthProduction:Long()
+		Return 0
+	End Method
+
+
+	Method GetNettoWorthNews:Long()
+		Return 0
+	End Method
+
+
+	Method GetNettoWorthStations:Long()
+		Return 0
+	End Method
+
+
+	Method GetNettoWorth:Long() {_exposeToLua}
+		Return 0
+	End Method
+
+
 	'returns value boss will give as credit
 	Method GetCreditAvailable:Int() {_exposeToLua}
 		Return 0

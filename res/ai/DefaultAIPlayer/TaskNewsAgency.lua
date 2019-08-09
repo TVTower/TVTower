@@ -237,7 +237,7 @@ function JobNewsAgencyAbonnements:Prepare(pParams)
 	debugMsgDepth(1)
 
 	-- update current fees
-	self.Task.UpdateNewsAbonnementFees()
+	self.Task:UpdateNewsAbonnementFees()
 end
 
 
@@ -295,7 +295,7 @@ function JobNewsAgencyAbonnements:Tick()
 	end
 
 	-- update current fees
-	self.Task.UpdateNewsAbonnementFees()
+	self.Task:UpdateNewsAbonnementFees()
 
 
 	-- subract new expenses

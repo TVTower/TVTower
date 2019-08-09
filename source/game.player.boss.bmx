@@ -47,6 +47,8 @@ Type TPlayerBossCollection
 		'instead of updating the boss way to often, we update bosses
 		'once a ingame minute
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnMinute", onGameMinute) ]
+		'react to our player starting (or restarting...)
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnStartPlayer", onPlayerStarts) ]
 
 		_eventListeners :+ [ EventManager.registerListenerFunction("AdContract.onFinish", onFinishOrFailAdContract) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("AdContract.onFail", onFinishOrFailAdContract) ]
@@ -150,7 +152,7 @@ Type TPlayerBossCollection
 		boss.onPlayerLeaveRoom(player)
 	End Function
 
-	
+
 	'called as soon as a player enters the boss' room
 	Function onPlayerBeginEnterRoom:Int(triggerEvent:TEventBase)
 		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
@@ -164,6 +166,17 @@ Type TPlayerBossCollection
 		if not boss then return False
 
 		boss.onPlayerBeginEnterRoom(player)
+	End Function
+
+
+	Function onPlayerStarts:Int(triggerEvent:TEventBase)
+		local playerID:int = triggerEvent.GetData().GetInt("playerID", -1)
+		if playerID <= 0 then return False
+
+		local boss:TPlayerBoss = GetPlayerBoss( playerID )
+		if boss
+			boss.InitCreditMaximum()
+		endif
 	End Function
 
 
@@ -220,6 +233,8 @@ Type TPlayerBoss
 	Field playerVisitsMe:int = False
 	'amount the boss is likely to give the player
 	Field creditMaximum:Int	= 600000
+	'worth of the channel at start (or restart)
+	Field nettoWorthAtBegin:Long = -1
 
 	'in the case of the player sends a favorite movie, this might
 	'brighten the mood of the boss
@@ -298,6 +313,31 @@ Type TPlayerBoss
 	End Method
 
 
+	Method InitCreditMaximum:int()
+		if playerID = -1 then return False
+
+		'store current netto worth to have a base to see worth development
+		nettoWorthAtBegin = GetPlayerBase(playerID).GetNettoWorth()
+
+		local difficulty:TPlayerDifficulty = GetPlayerBase(playerID).GetDifficulty()
+		creditMaximum = difficulty.creditMaximum
+	End Method
+
+
+	Method UpdateCreditMaximum:int()
+		local difficulty:TPlayerDifficulty = GetPlayerBase(playerID).GetDifficulty()
+
+		if nettoWorthAtBegin = -1 then nettoWorthAtBegin = GetPlayerBase(playerID).GetNettoWorth()
+
+		local nettoWorthChange:int = GetPlayerBase(playerID).GetNettoWorth() - nettoWorthAtBegin
+		'25.000 bonus each 500.000 added netto worth
+		'but no more than 5000000
+		local nettoWorthBonus:int = Max(0, Min(5000000, 25000 * (nettoWorthChange/500000)))
+
+		creditMaximum = difficulty.creditMaximum + nettoWorthBonus
+	End Method
+
+
 	Method GetCreditMaximum:int()
 		if isInMoodOrWorse(MOOD_ANGRY) then return 0
 		if isInMoodOrWorse(MOOD_UNFRIENDLY) then return 0.25 * creditMaximum
@@ -315,7 +355,7 @@ Type TPlayerBoss
 		if not dialogues or playerID <= 0 or dialogues.length < playerID then return null
 		return dialogues[playerID-1]
 	End Method
-	
+
 
 	Method ResetDialogues:int(playerID:int)
 		if not GetDialogue(playerID) then return False
@@ -333,7 +373,7 @@ Type TPlayerBoss
 		if visitingPlayerID = playerID
 			local isUnfriendly:int = isInMoodOrWorse(MOOD_UNFRIENDLY) or registeredNewsMalfunctions > 0 or registeredProgrammeMalfunctions > 0
 			local showDefaultText:int = True
-			
+
 			if isUnfriendly
 				text = GetRandomLocale("DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY")
 			else
@@ -419,13 +459,18 @@ Type TPlayerBoss
 			endif
 			'creditMax - credit taken
 			If GetPlayerBase().GetCreditAvailable() > 0
+				local possibleCreditValue:int = GetCreditAvailable()
 				local acceptEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCreditAvailable()))
 				local acceptHalfEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", 0.5 * GetPlayerBase().GetCreditAvailable()))
+				local acceptQuarterEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", 0.25 * GetPlayerBase().GetCreditAvailable()))
 				ChefDialogues[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%CREDIT%", MathHelper.DottedValue(GetPlayerBase().GetCreditAvailable())))
 				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT").replace("%CREDIT%",MathHelper.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())), 2, acceptEvent))
 				'avoid micro credits
 				if GetPlayerBase().GetCreditAvailable() > 50000
-					ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF").replace("%CREDITHALF%", MathHelper.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())),2, acceptHalfEvent))
+					ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF").replace("%VALUE%", MathHelper.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())),2, acceptHalfEvent))
+				endif
+				if GetPlayerBase().GetCreditAvailable() > 100000
+					ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT_QUARTER").replace("%VALUE%", MathHelper.DottedValue(0.25 * GetPlayerBase().GetCreditAvailable())),2, acceptQuarterEvent))
 				endif
 				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), - 2))
 			Else
@@ -439,15 +484,14 @@ Type TPlayerBoss
 			ChefDialogues[2].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_BACKTOWORK_OK"), - 2))
 
 			'repay credit + options
+			local credit:int = GetPlayerBase().GetCredit()
 			ChefDialogues[3] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE") )
-			If GetPlayerBase().GetCredit() >= 100000 And GetPlayerBase().GetMoney() >= 100000
-				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", 100000))
-				ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_100K"), 0, payBackEvent))
-			EndIf
-			If GetPlayerBase().GetCredit() >= 500000 And GetPlayerBase().GetMoney() >= 500000
-				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", 500000))
-				ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_500K"), 0, payBackEvent))
-			EndIf
+			For local creditValue:int = EachIn [2500000, 1000000, 500000, 250000, 100000]
+				If credit >= creditValue And GetPlayerBase().GetMoney() >= creditValue
+					local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", creditValue))
+					ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_VALUE").replace("%VALUE%", MathHelper.DottedValue(creditValue)), 0, payBackEvent))
+				EndIf
+			Next
 			If GetPlayerBase().GetCredit() < GetPlayerBase().GetMoney()
 				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCredit()))
 				ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%CREDIT%", GetPlayerBase().GetCredit()), 0, payBackEvent))
@@ -463,7 +507,7 @@ Type TPlayerBoss
 			ChefDialogues[0] = TDialogueTexts.Create(text)
 			ChefDialogues[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER"), - 2, Null))
 		endif
-		
+
 		Local ChefDialogue:TDialogue = new TDialogue
 		ChefDialogue.AddTexts(ChefDialogues)
 
@@ -482,6 +526,11 @@ Type TPlayerBoss
 	End Method
 
 
+	Method GetCreditAvailable:int()
+		Return Max(0, GetCreditMaximum() - GetPlayerFinance(playerID).GetCredit())
+	End Method
+
+
 	'call this method to request the player to visit the boss
 	'-> this creates an event the game listens to and creates
 	'   a toastmessage in the case of the active player, so they can react
@@ -497,7 +546,7 @@ Type TPlayerBoss
 		EventManager.triggerEvent(TEventSimple.Create("playerboss.onCallPlayer", new TData.AddNumber("latestTime", awaitingPlayerVisitTillTime), Self, GetPlayerBaseCollection().Get(playerID)))
 	End Method
 
-	
+
 	'call this method to force the player to visit the boss NOW
 	'-> this creates an event the game listens to
 	Method CallPlayerForced:Int()
@@ -562,11 +611,11 @@ Type TPlayerBoss
 
 		'=== RESET REGISTERED MALFUNCTIONS ===
 		'reset them at a given time?
-		If minute = 0 and hour = 3 
+		If minute = 0 and hour = 3
 			registeredNewsMalfunctions = 0
 			registeredProgrammeMalfunctions = 0
 		EndIf
-		
+
 		'=== CHECK IF BOSS WANTS TO SEE PLAYER ===
 		'await the player each day at 16:00 (except player is already there)
 		if GameRules.dailyBossVisit and not playerVisitsMe
@@ -603,13 +652,13 @@ Type TPlayerBoss
 		ChangeMood(MOODADJUSTMENT_FAIL_CONTRACT)
 	End Method
 
-	
+
 	Method onFinishBroadcasting:Int(broadcastMaterial:TBroadcastMaterial, broadcastedAsType:int = -1)
 		'register malfunctions
 		if not broadcastMaterial
 			if broadcastedAsType = TVTBroadcastMaterialType.NEWSSHOW
 				registeredNewsMalfunctions :+1
-				
+
 				if registeredNewsMalfunctions = 1
 					ChangeMood(MOODADJUSTMENT_MALFUNCTION_NEWS)
 				else
@@ -655,7 +704,7 @@ Type TPlayerBoss
 		playerVisitsMe = False
 	End Method
 
-	
+
 	'called as soon as a player enters the boss' room
 	Method onPlayerBeginEnterRoom:Int(player:TPlayerBase)
 		'no longer await the visit of this player
@@ -664,6 +713,8 @@ Type TPlayerBoss
 
 		playerVisitsMe = True
 
+		'check the charts and update the credit max
+		UpdateCreditMaximum()
 
 		'remove an old (maybe obsolete) dialogue
 		ResetDialogues(player.playerID)

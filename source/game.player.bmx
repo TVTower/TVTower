@@ -361,7 +361,7 @@ endrem
 	end Method
 
 
-	Method GetTotalNewsAbonnementFees:int() {_exposeToLua}
+	Method GetTotalNewsAbonnementFees:int()
 		Local newsagencyfees:Int =0
 		For Local i:Int = 0 until TVTNewsGenre.count
 			newsagencyfees:+ TNewsAgency.GetNewsAbonnementPrice(playerID, TVTNewsGenre.GetAtIndex(i), GetNewsAbonnementDaysMax(i) )
@@ -492,9 +492,103 @@ endrem
 	End Method
 
 
+	'override
+	Method GetNettoWorthLicences:Long()
+		local sum:Long = 0
+		for local l:TProgrammeLicence = EachIn GetProgrammeCollection().GetProgrammeLicences()
+			sum :+ l.GetSellPrice(l.owner)
+		next
+
+		for local l:TProgrammeLicence = EachIn GetProgrammeCollection().suitcaseProgrammeLicences
+			sum :+ l.GetSellPrice(l.owner)
+		next
+
+		'TODO: money in auctions
+
+		Return sum
+	End Method
+
+
+	'override
+	Method GetNettoWorthProduction:Long()
+		local sum:Long = 0
+		local pc:TPlayerProgrammeCollection = GetProgrammeCollection()
+
+		'sell scripts
+		for local l:TList = EachIn [ pc.scripts, pc.suitcaseScripts, pc.studioScripts ]
+			for local s:TScript = EachIn l
+				sum :+ s.GetSellPrice()
+			next
+		next
+
+		'add already paid deposit costs
+		for local p:TProductionConcept = EachIn GetProgrammeCollection().productionConcepts
+			if p.IsProduceable()
+				sum :+ p.GetDepositCost()
+			endif
+		next
+
+		return sum
+	End Method
+
+
+	'override
+	Method GetNettoWorthNews:Long()
+		local sum:Long = 0
+		for local n:TNews = EachIn GetProgrammeCollection().news
+			sum :+ n.GetPrice(n.owner)
+		next
+
+		return sum
+	End Method
+
+
+	'override
+	Method GetNettoWorthStations:Long()
+		local sum:Long = 0
+
+		'stations
+		local map:TStationMap = GetStationMap(playerID, True)
+		For local station:TStationBase = EachIn map.stations
+			if station.IsAntenna()
+				sum :+ station.GetSellPrice()
+			endif
+		Next
+
+		'broadcast permissions
+		For local section:TStationMapSection = EachIn GetStationMapCollection().sections
+			'price might change over time!
+			'we want the current price so that is ok
+			if section.HasBroadcastPermission(playerID, -1)
+				sum :+ section.GetBroadcastPermissionPrice(playerID, -1)
+			endif
+		Next
+
+		Return sum
+	End Method
+
+
+	'overridden
+	Method GetNettoWorth:Long() {_exposeToLua}
+		local sum:Long = 0
+
+		'money
+		sum :+ GetFinance().GetMoney()
+		sum :- GetFinance().GetCredit()
+
+		'assets
+		sum :+ GetNettoWorthLicences()
+		sum :+ GetNettoWorthProduction()
+		sum :+ GetNettoWorthNews()
+		sum :+ GetNettoWorthStations()
+
+		Return sum
+	End Method
+
+
 	'overridden
 	Method GetCreditAvailable:Int() {_exposeToLua}
-		Return Max(0, GetPlayerBoss(playerID).GetCreditMaximum() - GetFinance().GetCredit())
+		Return GetPlayerBoss().GetCreditAvailable()
 	End Method
 
 

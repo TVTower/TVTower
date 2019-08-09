@@ -421,6 +421,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			'prepare new player data (take credit, give starting programme...)
 			PreparePlayerStep1(playerID, True)
 			PreparePlayerStep2(playerID)
+
+			StartPlayer(playerID)
 		endif
 
 
@@ -643,6 +645,12 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		GetPlayerFinanceHistoryListCollection().Set(playerID, CreateList())
 		'also reset bankrupt level
 		SetPlayerBankruptLevel(playerID, 0)
+	End Method
+
+
+	Method StartPlayer(playerID:int)
+		'now names might differ
+		EventManager.triggerEvent( TEventSimple.Create("Game.OnStartPlayer", new TData.AddNumber("playerID", playerID)) )
 	End Method
 
 
@@ -1188,6 +1196,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'stationmaps on sign - which needs 4 stationmaps to be "set up"
 		For local playerID:int = 1 to 4
 			PreparePlayerStep2(playerID)
+		Next
+
+
+		For local playerID:int = 1 to 4
+			StartPlayer(playerID)
 		Next
 
 
