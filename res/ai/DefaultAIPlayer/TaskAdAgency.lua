@@ -79,6 +79,27 @@ function TaskAdAgency:getStrategicPriority()
 end
 
 
+function TaskAdAgency.GetAllAdContracts()
+	local response = TVT.sa_getSignedAdContracts()
+	if ((response.result == TVT.RESULT_WRONGROOM) or (response.result == TVT.RESULT_NOTFOUND)) then
+		return {}
+	end
+	local allContracts = {}
+
+	for i, contract in ipairs(response.DataArray()) do
+		--only add contracts
+		if (contract ~= nil) then
+			-- local addIt = true
+			-- if ... checks ... are any required?
+
+			table.insert(allContracts, contract)
+		end
+	end
+	return allContracts
+end
+
+
+
 
 
 function TaskAdAgency.SortAdContractsByAttraction(list)
@@ -87,12 +108,12 @@ function TaskAdAgency.SortAdContractsByAttraction(list)
 		local weights = {}
 		for k,v in pairs(list) do
 			weights[ v.GetID() ] = (0.5 + 0.5*(0.9^v.GetSpotCount())) * v.GetProfitCPM() * (0.8 + 0.2 * 1.0/v.GetPenaltyCPM())
---			debugMsg("    " .. v.GetTitle() .."   weight: " .. weights[ v.GetID() ] .. "  spotCount="..v.GetSpotCount() .. "  profitCPM=" .. v.GetProfitCPM())
---			weights[ v.GetID() ] = (0.6 + 0.4*(0.9^v.GetSpotCount())) * v.GetProfit()
 		end
 
 		-- sort
 		local sortMethod = function(a, b)
+			if a == nil then return false end
+			if b == nil then return true end
 			return weights[ a.GetID() ] > weights[ b.GetID() ]
 		end
 		table.sort(list, sortMethod)
@@ -342,9 +363,12 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 
 
 	local availableList = self.AdAgencyTask.SpotsInAgency
-	local filteredList = FilterAdContractsByMinAudience(availableList, minGuessedAudience, guessedAudience)
-	-- sort by spot count (less is better) and profit
-	filteredList = TaskAdAgency.SortAdContractsByAttraction(filteredList)
+	local filteredList = {}
+	if table.count(availableList) > 0 then
+		filteredList = FilterAdContractsByMinAudience(availableList, minGuessedAudience, guessedAudience)
+		-- sort by spot count (less is better) and profit
+		filteredList = TaskAdAgency.SortAdContractsByAttraction(filteredList)
+	end
 --[[
 debugMsg("sort contractlist for " .. math.floor(minGuessedAudience.GetTotalSum()) .. " - " .. math.floor(guessedAudience.GetTotalSum()) .. "  entries=" .. table.count(filteredList))
 for key, adContract in pairs(filteredList) do
@@ -436,31 +460,81 @@ function SignContracts:Tick()
 	local openSpots = self:GetUnsentSpotCount()
 	local contractsAllowed = TVT.Rules.adContractsPerPlayerMax - MY.GetProgrammeCollection().GetAdContractCount()
 
-	if openSpots < 8 and contractsAllowed > 0 then
-		--sort by attractiveness
-		local sortMethod = function(a, b)
-			if a == nil then
-				return false
-			elseif b == nil then
-				return true
+
+	-- check if we have a low end contract
+	if contractsAllowed > 0 then
+		local signedContracts = TaskAdAgency.GetAllAdContracts()
+		local lowAudience = 0.02 * MY.GetMaxAudience()
+		local haveLow = false
+		for key, contract in pairs(signedContracts) do
+			if contract.GetMinAudience(TVT.ME) < lowAudience then
+				haveLow = true
+				break
 			end
-			return a.GetAttractiveness() > b.GetAttractiveness()
 		end
-		table.sort(self.AdAgencyTask.SpotsInAgency, sortMethod)
+	end
 
+	-- sign an emergency contract to at least have something to broadcast
+	-- as infomercial if we do not have enough programme licences (or
+	-- money to buy some)	-- try to find a contract with not too much spots / requirements
+	if (not haveLow or openSpots < 4) and contractsAllowed > 0 then
+		local availableList = table.copy(self.AdAgencyTask.SpotsInAgency)
+		availableList = TaskAdAgency.SortAdContractsByAttraction(availableList)
 
-		--iterate over the available contracts
-		for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
-			if TVT.sa_doBuySpot(value.GetID()) == TVT.RESULT_OK then
-				openSpots = openSpots - value.GetSpotCount()
+		local filteredList = FilterAdContractsByMinAudience(availableList, nil, 0.02 * MY.GetMaxAudience(), forbiddenIDs)
+		if table.count(filteredList) > 0 then
+			local contract = table.first(filteredList)
+
+			local result = TVT.sa_doBuySpot(contract.GetID())
+			if result == TVT.RESULT_OK then
+				openSpots = openSpots - contract.GetSpotCount()
 				contractsAllowed = contractsAllowed - 1
 
-				TVT.addToLog("Signed a \"good\" contract: " .. value.GetTitle() .. " (" .. value.GetID() .. "). MinAudience: " .. value.GetMinAudience())
+				debugMsg("Signed an \"low audience\" contract: " .. contract.GetTitle() .. " (" .. contract.GetID() .. "). MinAudience: " .. contract.GetMinAudience())
+			else
+				debugMsg("FAILED signing an \"low audience\" contract: " .. contract.GetTitle() .. " (" .. contract.GetID() .. "). MinAudience: " .. contract.GetMinAudience() .. ". Failure code: " .. result)
+			end
+
+
+			-- loop over all contracts and remove the ones no longer available
+			for i=#self.AdAgencyTask.SpotsInAgency,1,-1 do
+				if self.AdAgencyTask.SpotsInAgency[i] == nil then
+					table.remove(self.AdAgencyTask.SpotsInAgency, i)
+				end
+			end
+		end
+	end
+
+
+
+	if openSpots < 8 and contractsAllowed > 0 then
+		-- do not be too risky and avoid a non achieveable audience requirement
+		local filteredList = FilterAdContractsByMinAudience(self.AdAgencyTask.SpotsInAgency, nil, 0.15 * MY.GetMaxAudience(), forbiddenIDs)
+		-- sort it
+		filteredList = TaskAdAgency.SortAdContractsByAttraction(filteredList)
+
+		--iterate over the available contracts
+		for key, contract in pairs(filteredList) do
+			-- skip contracts requiring too much
+
+			local result = TVT.sa_doBuySpot(contract.GetID())
+			if result == TVT.RESULT_OK then
+				openSpots = openSpots - contract.GetSpotCount()
+				contractsAllowed = contractsAllowed - 1
+
+				debugMsg("Signed a \"good\" contract: " .. contract.GetTitle() .. " (" .. contract.GetID() .. "). MinAudience: " .. contract.GetMinAudience())
 
 				if openSpots <= 0 or contractsAllowed <= 0 then break end
 			else
-				TVT.addToLog("Failed signing a \"good\" contract: " .. value.GetTitle() .. " (" .. value.GetID() .. "). MinAudience: " .. value.GetMinAudience())
+				debugMsg("FAILED signing a \"good\" contract: " .. contract.GetTitle() .. " (" .. contract.GetID() .. "). MinAudience: " .. contract.GetMinAudience() .. ". Failure code: " .. result)
 			end
+		end
+	end
+
+	-- loop over all contracts and remove the ones no longer available
+	for i=#self.AdAgencyTask.SpotsInAgency,1,-1 do
+		if self.AdAgencyTask.SpotsInAgency[i] == nil then
+			table.remove(self.AdAgencyTask.SpotsInAgency, i)
 		end
 	end
 

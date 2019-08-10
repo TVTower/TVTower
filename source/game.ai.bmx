@@ -1404,7 +1404,43 @@ endrem
 
 
 	'=== SPOT AGENCY ===
+	Method sa_getSignedAdContractCount:Int()
+		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
+		Return GetPlayerProgrammeCollection(Self.ME).GetAdContractCount()
+	End Method
+
+
+	Method sa_getSignedAdContracts:TLuaFunctionResult()
+		If Not _PlayerInRoom("adagency") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
+
+		local contracts:TAdContract[] = GetPlayerProgrammeCollection(self.ME).GetAdContractsArray()
+		If contracts
+			Return TLuaFunctionResult.Create(self.RESULT_OK, contracts)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif
+	End Method
+
+
+
+	Method sa_getSignedAdContractAtIndex:TAdContract(arrayIndex:Int=-1)
+		If Not _PlayerInRoom("adagency") Then Return Null
+
+		Local obj:TAdContract = GetPlayerProgrammeCollection(self.ME).GetAdContractAtIndex(arrayIndex)
+		If obj Then Return obj Else Return Null
+	End Method
+
+
+	Method sa_getSignedAdContractByID:TAdContract(id:Int=-1)
+		If Not _PlayerInRoom("adagency") Then Return Null
+
+		Local obj:TAdContract = GetPlayerProgrammeCollection(self.ME).GetAdContract(id)
+		If obj Then Return obj Else Return Null
+	End Method
+
+
+	' spots from the vendor
 	Method sa_getSpotCount:Int()
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 

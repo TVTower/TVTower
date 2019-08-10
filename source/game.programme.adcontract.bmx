@@ -1997,7 +1997,12 @@ price :* Max(1, minAudience/1000)
 		If self.getDaysLeft() < 0 then return 0
 
 		'multiply by spot count (the more to send in total, the more acute)
-		Return self.GetSpotsToSend() * GetSpotsToSendPercentage() * GetTimeGonePercentage()^2
+'		Return self.GetSpotsToSend() * GetSpotsToSendPercentage() * GetTimeGonePercentage()^2
+		'0 days = 1
+		'1 day  = 0.25
+		'2      = 0.125
+		'3      = 0.0725
+		Return self.GetSpotsToSend() * GetSpotsToSendPercentage() * (0.25 ^ GetDaysLeft())
 	End Method
 
 
