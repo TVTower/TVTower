@@ -1547,7 +1547,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			local finance:TPlayerFinance = Player.GetFinance(day)
 			if not finance then Throw "ComputeDailyCosts failed: finance = null."
 			'stationfees
-			finance.PayStationFees( Player.GetStationMap().CalculateStationCosts() )
+			finance.PayStationFees( GetStationMap(Player.playerID, True).CalculateStationCosts() )
 			'interest rate for your current credit
 			finance.PayCreditInterest( finance.GetCreditInterest() )
 			'newsagencyfees

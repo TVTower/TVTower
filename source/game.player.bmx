@@ -298,13 +298,6 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetStationMap:TStationMap() {_exposeToLua}
-		'fetch from StationMap-list - or create if missing
-		local map:TStationMap = GetStationMapCollection().GetMap(playerID, True)
-		return map
-	End Method
-
-
 	'make public image available for AI/Lua
 	Method GetPublicImage:TPublicImage() {_exposeToLua}
 		return .GetPublicImage(playerID)
@@ -322,13 +315,13 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 
 
 	Method GetMaxAudience:Int() {_exposeToLua}
-		Return GetStationMap().GetReach()
+		Return GetStationMap(playerID, True).GetReach()
 	End Method
 
 
 	'override
 	Method GetAudienceReachLevel:Int() {_exposeToLua}
-		Return GetStationMap().GetReachLevel( GetMaxAudience() )
+		Return GetStationMap(playerID, True).GetReachLevel( GetMaxAudience() )
 	End Method
 
 

@@ -919,6 +919,29 @@ endrem
 
 	'=== OFFICE ===
 	'players bureau
+
+
+	Method of_GetTemporaryCableNetworkUplinkStation:TStationBase(cableNetworkIndex:int)
+		If Not _PlayerInRoom("office") Then Return Null
+		Return GetStationMap(self.ME, True).GetTemporaryCableNetworkUplinkStation(cableNetworkIndex)
+	End Method
+
+	Method of_GetTemporaryAntennaStation:TStationBase(x:Int,y:Int)
+		If Not _PlayerInRoom("office") Then Return Null
+		Return GetStationMap(self.ME, True).GetTemporaryAntennaStation(x, y)
+	End Method
+
+	Method of_GetTemporarySatelliteUplinkStation:TStationBase(satelliteIndex:int)
+		If Not _PlayerInRoom("office") Then Return Null
+		Return GetStationMap(self.ME, True).GetTemporarySatelliteUplinkStation(satelliteIndex)
+	End Method
+
+	Method of_GetStationCosts:Int()
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+		return GetStationMap(self.ME, True).CalculateStationCosts()
+	End Method
+
+
 	Method of_IsModifyableProgrammePlanSlot:int(slotType:int, day:int, hour:int)
 		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
 

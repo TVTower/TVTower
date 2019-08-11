@@ -81,7 +81,7 @@ end
 
 
 function TaskStationMap:CalculateFixedCosts()
-	self.FixedCosts = MY.GetStationMap().CalculateStationCosts()
+	self.FixedCosts = TVT.of_GetStationCosts()
 end
 
 
@@ -253,7 +253,7 @@ function JobBuyStation:GetBestCableNetworkOffer()
 			-- ignore if we already are clients of this provider
 			-- ignore non-launched and not available for player
 			if cableNetwork.IsSubscribedChannel(TVT.ME) == 0 and cableNetwork.IsLaunched() == 1 and cableNetwork.IsActive() == 1 then
-				local tempStation = MY.GetStationMap().GetTemporaryCableNetworkUplinkStation(i)
+				local tempStation = TVT.of_GetTemporaryCableNetworkUplinkStation(i)
 				if tempStation then
 					local price = tempStation.GetTotalBuyPrice()
 					local pricePerViewer = tempStation.GetExclusiveReach() / price
@@ -293,7 +293,7 @@ function JobBuyStation:GetBestSatelliteOffer()
 			-- ignore if we already are clients of this provider
 			-- ignore non-launched and not available for player
 			if satellite.IsSubscribedChannel(TVT.ME) == 0 and satellite.IsLaunched() == 1 and satellite.IsActive() == 1 then
-				local tempStation = MY.GetStationMap().GetTemporarySatelliteUplinkStation(i)
+				local tempStation = TVT.of_GetTemporarySatelliteUplinkStation(i)
 				if tempStation then
 					local price = tempStation.GetTotalBuyPrice()
 					local pricePerViewer = tempStation.GetExclusiveReach() / price
@@ -360,7 +360,7 @@ function JobBuyStation:GetBestAntennaOffer()
 
 	-- 4)
 		--for i = 1, 50 do
-		--	local tempStation = MY.GetStationMap().GetTemporaryAntennaStation(math.random(35, 560), math.random(1, 375))
+		--	local tempStation = TVT.of_GetTemporaryAntennaStation(math.random(35, 560), math.random(1, 375))
 	local tablePos = 0
 	for key,value in pairs(stationPositions) do
 		tablePos = tablePos + 1
@@ -368,7 +368,7 @@ function JobBuyStation:GetBestAntennaOffer()
 		local y = value[2] + math.random(-5,5)
 		local otherOwner = 0
 		if table.count(value) > 2 then otherOwner = value[3] end
-		local tempStation = MY.GetStationMap().GetTemporaryAntennaStation(x, y)
+		local tempStation = TVT.of_GetTemporaryAntennaStation(x, y)
 
 --		if tempStation ~= nil then
 --			debugMsg(" - Station " .. tablePos .. "  at " .. x .. "," .. y .. ".  owner: " .. otherOwner .. "  reach: " .. tempStation.GetReach() .. "  exclusive/increase: " .. tempStation.GetExclusiveReach() .. "  price: " .. tempStation.GetBuyPrice() .. " (incl.fees: " .. tempStation.GetTotalBuyPrice() ..")  F: " .. (tempStation.GetExclusiveReach() / tempStation.GetPrice()) .. "  buyPrice: " .. tempStation.GetBuyPrice() )
