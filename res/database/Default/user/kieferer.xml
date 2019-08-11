@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<tvgdb>
+	<version value="3" comment="Kieferers Daten" />
+﻿	<scripttemplates>
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-mysteriousisland">
+			<title>
+				<de>Mysteriöse Insel</de>
+				<en>Mysterious Island</en>
+			</title>
+			<description>
+				<de>Nach einem Bootsunfall stranden Jill und Frank auf einer Insel, die doch nicht so einsam
+ist wie gedacht. Bald kämpfen sie um Leben und Tod.</de>
+				<en>After a boat accident Jill and Frank strand on an island that's not so lonely after all. Soon they fight for life and death.</en>
+			</description>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="2" />
+				<job index="2" function="2" required="1" gender="1" />
+				<job index="3" function="32" required="1" gender="1" />
+			</jobs>
+
+			<genres maingenre="2" subgenres="1" />
+			<blocks value="2" />
+			<price min="7000" max="12000" slope="60" />
+			<potential min="40" max="70" slope="45" />
+			<outcome min="30" max="45" slope="40" />
+			<review min="40" max="60" slope="40" />
+			<speed min="45" max="70" slope="50" />
+		</scripttemplate>
+
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-mummyattack">
+			<title>
+				<de>Mumien greifen an</de>
+				<en>Mummy Attack</en>
+			</title>
+			<description>
+				<de>Ein ganz normaler Teenagerausflug endet in einem Besäufnis und einem Wald voller Untoter.</de>
+				<en>A normal teenage trip ends in drunkenness and a forest full of undead.</en>
+			</description>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="2" />
+				<job index="3" function="32" required="1" gender="1" />
+				<job index="4" function="32" required="1" gender="2" />
+				<job index="5" function="32" required="0" />
+			</jobs>
+
+			<genres maingenre="12" />
+			<blocks value="2" />
+			<price min="9000" max="15000" slope="50" />
+			<potential min="20" max="80" slope="45" />
+			<outcome min="35" max="65" slope="40" />
+			<review min="45" max="70" slope="40" />
+			<speed min="35" max="80" slope="50" />
+		</scripttemplate>
+
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-daytrip">
+			<title>
+				<de>Kaffeefahrt</de>
+				<en>Day Trip</en>
+			</title>
+			<description>
+				<de>Eine Rentnergruppe probt den Aufstand. Sie wollen eine Kaffeefahrt ohne Heizdecken.
+Doch der Reiseveranstalter trickst sie aus.</de>
+				<en>A group of pensioners is rehearsing the uprising. They want a day trip without buying electric blankets.
+But the tour operator tricks them.</en>
+			</description>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="128" required="1" />
+				<job index="2" function="128" required="0" />
+			</jobs>
+
+			<genres maingenre="6" />
+			<blocks value="2" />
+			<price min="4000" max="9000" slope="50" />
+			<potential min="10" max="50" slope="45" />
+			<outcome min="25" max="55" slope="40" />
+			<review min="55" max="75" slope="40" />
+			<speed min="30" max="50" slope="50" />
+		</scripttemplate>
+
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-goldrush">
+			<title>
+				<de>Goldrausch</de>
+				<en>Gold Rush</en>
+			</title>
+			<description>
+				<de>Rivalisierende Goldschürfer wetteifern in Prosperous Creek um die größten Goldfunde.
+Dabei sind ihnen alle Mittel recht.</de>
+				<en>Rival gold prospectors compete for the largest gold finds in Prosperous Creek.
+All means are right for them.</en>
+			</description>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="2" required="1" gender="1" />
+				<job index="3" function="32" required="1" gender="2" />
+			</jobs>
+
+			<genres maingenre="18" subgenres="13" />
+			<blocks value="3" />
+			<price min="8000" max="12000" slope="50" />
+			<potential min="40" max="70" slope="45" />
+			<outcome min="45" max="75" slope="40" />
+			<review min="35" max="75" slope="40" />
+			<speed min="40" max="70" slope="50" />
+		</scripttemplate>
+	</scripttemplates>
+</tvgdb>
