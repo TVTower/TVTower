@@ -556,7 +556,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'means: after ~50 hrs, the topicality is 0
 		Local ageHours:Int = Floor( Float(GetWorldTime().GetTimeGone() - Self.happenedTime)/3600.0 )
 		Local ageInfluence:Float = 1.0 - 0.01 * Max(0, 100 - 2 * Max(0, ageHours) )
-		ageInfluence :* GetModifier("topicality::age")
+		ageInfluence :* GetModifier(modKeyTopicality_AgeLS)
 		'the lower the quality of an newsevent, the higher the age influences
 		'the max topicality, up to 80% is possible
 		ageInfluence = (1.0-qualityAgeMod) * ageInfluence + ageInfluence*qualityAgeMod * (1 - GetQualityRaw())
@@ -564,7 +564,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		'the first 12 broadcasts do decrease maxTopicality
 		Local timesBroadcastedInfluence:Float = 0.02 * Min(12, GetTimesBroadcasted() )
-		timesBroadcastedInfluence :* GetModifier("topicality::timesBroadcasted")
+		timesBroadcastedInfluence :* GetModifier(modKeyTopicality_TimesBroadcastedLS)
 
 		'subtract various influences (with individual weights)
 		maxTopicality :- ageInfluence * devAgeMod
@@ -699,7 +699,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 	Method GetWearoffModifier:Float()
-		Return GetModifier("topicality::wearoff")
+		Return GetModifier(modKeyTopicality_WearoffLS)
 	End Method
 
 
@@ -730,7 +730,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		'with a higher priceMod price increases while quality stays
 		'the same -> less quality for your money
-		Return GetQuality() / Max(0.001, GetModifier("price"))
+		Return GetQuality() / Max(0.001, GetModifier(modKeyPriceLS))
 	End Method
 
 
@@ -774,7 +774,8 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 '		Local quality:Float = 0.05 * GetQualityRaw() + 0.95 * GetQualityRaw() * GetTopicality() ^ 2
 
 		'topicality also includes "topicality loss" by lower-quality events
-		Local quality:Float = GetQualityRaw() * (0.75 * GetTopicality() + 0.25 * GetTopicality() ^ 2)
+		local t:Float = GetTopicality()
+		Local quality:Float = GetQualityRaw() * (0.75 * t + 0.25 * t^2)
 
 		Return Max(0, quality)
 	End Method
@@ -783,7 +784,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'returns price based on a "per 5 million" approach
 	Method GetPrice:Int() {_exposeToLua}
 		'price ranges from 100 to ~7500
-		Return Max(100, 7500 * GetQuality() * GetModifier("price") )
+		Return Max(100, 7500 * GetQuality() * GetModifier(modKeyPriceLS) )
 	End Method
 End Type
 

@@ -18,6 +18,8 @@ _G["TaskMovieDistributor"] = class(AITask, function(c)
 	c.AppraiseMovies = nil
 	c.CurrentBargainBudget = 0
 	c:ResetDefaults()
+
+	c.ActivationTime = os.clock()
 end)
 
 function TaskMovieDistributor:typename()
@@ -41,6 +43,8 @@ function TaskMovieDistributor:ResetDefaults()
 end
 
 function TaskMovieDistributor:Activate()
+	self.ActivationTime = os.clock()
+
 	-- Was getan werden soll:
 	self.BuyStartProgrammeJob = JobBuyStartProgramme()
 	self.BuyStartProgrammeJob.MovieDistributorTask = self
@@ -100,6 +104,9 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 	elseif (self.IdleJob ~= nil and self.IdleJob.Status ~= JOB_STATUS_DONE) then
 		return self.IdleJob
 	end
+
+	debugMsg("####TIME############ done moviedealer task in " .. (os.clock() - self.ActivationTime) .."s.", true)
+	self.ActivationTime = os.clock()
 
 	--self:SetWait()
 	self:SetDone()
@@ -169,6 +176,8 @@ end
 
 function JobBuyStartProgramme:Tick()
 	local player = _G["globalPlayer"]
+
+self.MovieDistributorTask.ActivationTime = os.clock()
 
 	--try to buy at least 4-x cheap start programmes
 	local start

@@ -11,7 +11,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2019 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -45,6 +45,9 @@ new TRegistrySpriteLoader.Init()
 '===== LOADER IMPLEMENTATION =====
 'loader caring about "<sprite>"-types
 Type TRegistrySpriteLoader extends TRegistryImageLoader
+	Global keySpriteLS:TLowerString = new TLowerString.Create("sprite")
+	Global keySpritePackLS:TLowerString = new TLowerString.Create("spritepack")
+
 	Method Init:Int()
 		name = "Sprite"
 		'we also load each image as sprite
@@ -286,13 +289,13 @@ End Type
 
 
 '===== CONVENIENCE REGISTRY ACCESSORS =====
-Function GetSpritePackFromRegistry:TSpritePack(name:string, defaultNameOrSpritePack:object = Null)
-	Return TSpritePack( GetRegistry().Get(name, defaultNameOrSpritePack, "spritepack") )
+Function GetSpritePackFromRegistry:TSpritePack(name:Object, defaultNameOrSpritePack:object = Null)
+	Return TSpritePack( GetRegistry().Get(name, defaultNameOrSpritePack, TRegistrySpriteLoader.keySpritePackLS) )
 End Function
 
 
-Function GetSpriteFromRegistry:TSprite(name:string, defaultNameOrSprite:object = Null)
-	Return TSprite( GetRegistry().Get(name, defaultNameOrSprite, "sprite") )
+Function GetSpriteFromRegistry:TSprite(name:Object, defaultNameOrSprite:object = Null)
+	Return TSprite( GetRegistry().Get(name, defaultNameOrSprite, TRegistrySpriteLoader.keySpriteLS) )
 End Function
 
 
@@ -314,8 +317,8 @@ Function GetSpriteGroupFromRegistry:TSprite[](baseName:string, defaultNameOrSpri
 	if result.length = 0 and defaultNameOrSprite <> null
 		if TSprite(defaultNameOrSprite)
 			result :+ [TSprite(defaultNameOrSprite)]
-		elseif string(defaultNameOrSprite) <> ""
-			sprite = TSprite( GetRegistry().Get(string(defaultNameOrSprite), null, "sprite") )
+		else
+			sprite = TSprite( GetRegistry().Get(defaultNameOrSprite, null, TRegistrySpriteLoader.keySpriteLS) )
 			if sprite then result :+ [sprite]
 		endif
 	endif

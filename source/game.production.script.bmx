@@ -332,6 +332,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	'many scripts are based on the same script template on the same time)
 	Field basedOnScriptTemplateID:int = 0
 
+	Global spriteNameOverlayXRatedLS:TLowerString = new TLowerString.Create("gfx_datasheet_overlay_xrated")
+
 
 	Method GenerateGUID:string()
 		return "script-"+id
@@ -1291,7 +1293,7 @@ endrem
 
 		'=== X-Rated Overlay ===
 		If IsXRated()
-			GetSpriteFromRegistry("gfx_datasheet_overlay_xrated").Draw(contentX + sheetWidth, y, -1, ALIGN_RIGHT_TOP)
+			GetSpriteFromRegistry(spriteNameOverlayXRatedLS).Draw(contentX + sheetWidth, y, -1, ALIGN_RIGHT_TOP)
 		Endif
 	End Method
 End Type

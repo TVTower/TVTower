@@ -197,8 +197,8 @@ Type TNewsAgency
 		NewsEvent.description = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_TEXT")
 		NewsEvent.description.ReplaceLocalized("%ROOM%", room.GetDescriptionLocalized())
 
-		NewsEvent.SetModifier("price", price)
-		NewsEvent.SetModifier("topicality::age", 1.25)
+		NewsEvent.SetModifier(TNewsEvent.modKeyPriceLS, price)
+		NewsEvent.SetModifier(TNewsEvent.modKeyTopicality_AgeLS, 1.25)
 		NewsEvent.SetFlag(TVTNewsFlag.SEND_TO_ALL, True)
 
 		'add news chain 2 ?
@@ -224,7 +224,7 @@ Type TNewsAgency
 			NewsChainEvent1 = new TNewsEvent.Init(newsChain1GUID, null, null, TVTNewsGenre.CURRENTAFFAIRS, qualityChain1, null, TVTNewsType.FollowingNews)
 			NewsChainEvent1.title = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_NO_CLUES")
 			NewsChainEvent1.description = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_NO_CLUES_TEXT")
-			NewsChainEvent1.SetModifier("price", priceChain1)
+			NewsChainEvent1.SetModifier(TNewsEvent.modKeyPriceLS, priceChain1)
 		else
 			'chain 2
 			Local qualityChain1:Float = 0.01 * randRange(60,80)
@@ -232,7 +232,7 @@ Type TNewsAgency
 			NewsChainEvent1 = new TNewsEvent.Init(newsChain1GUID, null, null, TVTNewsGenre.CURRENTAFFAIRS, qualityChain1, null, TVTNewsType.FollowingNews)
 			NewsChainEvent1.title = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES")
 			NewsChainEvent1.description = GetRandomLocalizedString("BOMB_DETONATION_IN_TVTOWER_FOUND_CLUES_TEXT")
-			NewsChainEvent1.SetModifier("price", priceChain1)
+			NewsChainEvent1.SetModifier(TNewsEvent.modKeyPriceLS, priceChain1)
 
 
 			local data:TData
@@ -276,7 +276,7 @@ Type TNewsAgency
 			data.Add("conditions", new TData.AddString("broadcaster_inPlayerIDs", caughtChannelIDs))
 			NewsChainEvent1.AddEffectByData(data)
 		endif
-		NewsChainEvent1.SetModifier("topicality::age", 1.4)
+		NewsChainEvent1.SetModifier(TNewsEvent.modKeyTopicality_AgeLS, 1.4)
 
 		NewsChainEvent1.description.ReplaceLocalized("%ROOM%", room.GetDescriptionLocalized())
 		NewsChainEvent1.description.Replace("%CHANNELS%", caughtChannels)
@@ -461,7 +461,7 @@ Type TNewsAgency
 
 
 		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, genre, quality, null, TVTNewsType.InitialNewsByInGameEvent)
-		NewsEvent.SetModifier("price", price)
+		NewsEvent.SetModifier(TNewsEvent.modKeyPriceLS, price)
 
 		'send out terrorist
 		if aggressionLevel = terroristAggressionLevelMax
@@ -540,11 +540,11 @@ Type TNewsAgency
 		'if outcome is less than 50%, it subtracts the price, else it increases
 		local priceModifier:Float = 1.0 + 0.2 * (licence.GetData().outcome - 0.5)
 		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TVTNewsGenre.SHOWBIZ, quality, null, TVTNewsType.InitialNewsByInGameEvent)
-		NewsEvent.SetModifier("price", priceModifier)
+		NewsEvent.SetModifier(TNewsEvent.modKeyPriceLS, priceModifier)
 
 		'after 20 hours a news topicality is 0 - so accelerating it by
 		'2 means it reaches topicality of 0 at 10 hours after creation.
-		NewsEvent.SetModifier("topicality::age", 2)
+		NewsEvent.SetModifier(TNewsEvent.modKeyTopicality_AgeLS, 2)
 
 		NewsEvent.AddKeyword("MOVIE")
 

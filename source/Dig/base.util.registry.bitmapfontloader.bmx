@@ -14,7 +14,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-now Ronny Otto, digidea.de
+	Copyright (C) 2002-2019 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -97,7 +97,8 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 
 
 	Method GetNameFromConfig:String(data:TData)
-		return data.GetString("name","unknown bitmapfont")
+'		return data.GetString("name","unknown bitmapfont")
+		return data.GetString(keyNameLS,"unknown bitmapfont")
 	End Method
 
 

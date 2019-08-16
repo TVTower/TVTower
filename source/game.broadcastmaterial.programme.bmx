@@ -437,9 +437,9 @@ print "gam.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 	'add game modifier support
 	Method GetFlagsMod:Float()
 		local valueMod:Float = Super.GetFlagsMod()
-
 		for local i:int = 0 until TVTProgrammeDataFlag.count
 			if data.HasFlag(TVTProgrammeDataFlag.GetAtIndex(i))
+'TODO: write all of them as TLowerString Keys?
 				valueMod :* GameConfig.GetModifier("Attractivity.ProgrammeDataFlag."+TVTProgrammeDataFlag.GetAtIndex(i))
 				valueMod :* GameConfig.GetModifier("Attractivity.ProgrammeDataFlag.player"+GetOwner()+"."+TVTProgrammeDataFlag.GetAtIndex(i))
 			endif

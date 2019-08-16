@@ -738,7 +738,7 @@ Type TFigure extends TFigureBase
 			print "Send To Offscreen while entering a door!!!"
 		endif
 		if door then room = GetRoomBaseCollection().Get(door.roomID)
-		if door and not room then print "FinishEnterRoom : NO ROOM"
+		if door and not room then print "FinishEnterRoom : NO ROOM for roomID: " + door.roomID
 
 		'Debug
 		rem

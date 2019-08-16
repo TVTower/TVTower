@@ -54,6 +54,10 @@ _G["TaskSchedule"] = class(AITask, function(c)
 		c.guessedAudienceAccuracyHourly[i] = c.guessedAudienceAccuracyTotal
 		c.guessedAudienceAccuracyHourlyCount[i] = 1
     end
+
+	c.ActivationTime = os.clock()
+	c.TickCount = 0
+	c.TickTimeGone = 0
 end)
 
 
@@ -90,6 +94,8 @@ end
 
 
 function TaskSchedule:Activate()
+	self.ActivationTime = os.clock()
+
 	self.AnalyzeEnvironmentJob = JobAnalyzeEnvironment()
 	self.AnalyzeEnvironmentJob.ScheduleTask = self
 
@@ -133,6 +139,9 @@ function TaskSchedule:GetNextJobInTargetRoom()
 	elseif (self.IdleJob ~= nil and self.IdleJob.Status ~= JOB_STATUS_DONE) then
 		return self.IdleJob
 	end
+
+	debugMsg("####TIME############ done scheduler task in " .. (os.clock() - self.ActivationTime) .."s.", true)
+	self.ActivationTime = os.clock()
 
 	--TODO
 	--self.infoCache = {}
@@ -951,6 +960,7 @@ function TaskSchedule:GuessedAudienceForHour(day, hour, broadcast, block, guessC
 	local statQuality4 = self.Player.Stats:GetAverageQualityByHour(4, hour)
 
 	local qualities = {statQuality1, statQuality2, statQuality3, statQuality4}
+
 	local guessedAudience = self:PredictAudience(broadcast, qualities, fixedDay, fixedHour, block, nil, nil)
 
 	local globalPercentageByHour = AITools:GetMaxAudiencePercentage(fixedDay, fixedHour)
@@ -1015,10 +1025,11 @@ function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, pr
 			debugMsg("RefreshMarkets() - previous analysis too old")
 		end
 
+
+		local broadcastQuality = broadcast.GetQuality()
 		for i=1,4 do
 			-- assume they all send at least a bit as good programme/news as we do
-			local q = math.max(qualities[i], 0.6*qualities[i] + 0.4 * broadcast.GetQuality()) -- Lua-arrays are 1 based
-			--local q = qualities[i]
+			local q = math.max(qualities[i], 0.6*qualities[i] + 0.4 * broadcastQuality) -- Lua-arrays are 1 based
 
 -- ATTENTION:
 			-- for now we cheat and mix in the REAL quality even if
@@ -1031,6 +1042,8 @@ function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, pr
 			TVT.audiencePredictor.SetAverageValueAttraction(i, q)
 
 		end
+
+
 		local previousDay, previousHour = FixDayAndHour(day, hour-1)
 		if previousBroadcastAttraction == nil then
 			previousBroadcastAttraction = self.Player.Stats.BroadcastStatistics:GetAttraction(previousDay, previousHour, TVT.Constants.BroadcastMaterialType.PROGRAMME)
@@ -1058,18 +1071,19 @@ function TaskSchedule:PredictAudience(broadcast, qualities, day, hour, block, pr
 		TVT.audiencePredictor.SetAttraction(TVT.ME, broadcastAttraction)
 		-- do the real prediction work
 		TVT.audiencePredictor.RunPrediction(day, hour)
+		local predictedAudience = TVT.audiencePredictor.GetAudience(TVT.ME)
 
 		--store predicted attraction
 		if storePrediction ~= false then
 			if broadcast.isUsedAsType(TVT.Constants.BroadcastMaterialType.NEWSSHOW) == 1 then
 				--debugMsg("STORE PREDICT - "..day.."/"..hour)
-				self.Player.Stats.BroadcastStatistics:AddBroadcast(day, hour, TVT.Constants.BroadcastMaterialType.NEWSSHOW, broadcastAttraction, TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum())
+--				self.Player.Stats.BroadcastStatistics:AddBroadcast(day, hour, TVT.Constants.BroadcastMaterialType.NEWSSHOW, broadcastAttraction, predictedAudience.GetTotalSum())
 			elseif broadcast.isUsedAsType(TVT.Constants.BroadcastMaterialType.PROGRAMME) == 1 then
-				self.Player.Stats.BroadcastStatistics:AddBroadcast(day, hour, TVT.Constants.BroadcastMaterialType.PROGRAMME, broadcastAttraction, TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum())
+--				self.Player.Stats.BroadcastStatistics:AddBroadcast(day, hour, TVT.Constants.BroadcastMaterialType.PROGRAMME, broadcastAttraction, predictedAudience.GetTotalSum())
 			end
 		end
 
-		return TVT.audiencePredictor.GetAudience(TVT.ME)
+		return predictedAudience
 	else
 		return TVT.audiencePredictor.GetEmptyAudience()
 	end
@@ -1204,6 +1218,10 @@ end
 
 
 function JobAnalyzeEnvironment:Prepare(pParams)
+	self.ScheduleTask.TickCount = 0
+	self.ScheduleTask.TickTime = 0
+	local nowTime = os.clock()
+
 	if not self.initialMarketRefreshDone then
 		-- one could do this on each audience calculation but this is a rather
 		-- complex function needing  some execution time
@@ -1216,10 +1234,14 @@ function JobAnalyzeEnvironment:Prepare(pParams)
 	self.Player = _G["globalPlayer"]
 	self.ScheduleTask.Player.LastStationMapMarketAnalysis = self.Player.WorldTicks
 
+	self.ScheduleTask.TickCount = 0
+	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
 end
 
 
 function JobAnalyzeEnvironment:Tick()
+	local nowTime = os.clock()
+
 	-- not enough programmes ?
 	-- Raise interest for movie distributor to buy start programme
 	local Player = _G["globalPlayer"]
@@ -1292,6 +1314,11 @@ function JobAnalyzeEnvironment:Tick()
 		end
 	end
 
+	self.ScheduleTask.TickCount = self.ScheduleTask.TickCount + 1
+	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+
+	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTime, True)
+
 	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -1312,10 +1339,14 @@ end
 
 
 function JobPreAnalyzeSchedule:Prepare(pParams)
+	self.ScheduleTask.TickCount = 0
+	self.ScheduleTask.TickTime = 0
 end
 
 
 function JobPreAnalyzeSchedule:Tick()
+	local nowTime = os.clock()
+
 	-- STORE CURRENT SLOTS
 	-- only if current-tables are empty/nil (so on start)
 	-- MAYBE also do this when 3rd party changed slots?
@@ -1324,6 +1355,11 @@ function JobPreAnalyzeSchedule:Tick()
 		self.ScheduleTask.currentProgrammeSlots = TaskSchedule.BackupPlan(TVT.Constants.BroadcastMaterialType.PROGRAMME, day)
 		self.ScheduleTask.currentAdSlots = TaskSchedule.BackupPlan(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT, day)
 	--end
+
+	self.ScheduleTask.TickCount = self.ScheduleTask.TickCount + 1
+	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+
+	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTime, True)
 
 	self.Status = JOB_STATUS_DONE
 end
@@ -1347,16 +1383,26 @@ end
 
 
 function JobPostAnalyzeSchedule:Prepare(pParams)
+	self.ScheduleTask.TickCount = 0
+	self.ScheduleTask.TickTime = 0
 end
 
 
 
 function JobPostAnalyzeSchedule:Tick()
+	local nowTime = os.clock()
+
 	-- handled
 	for i=0,23 do
 		self.ScheduleTask.changedProgrammeSlots[i] = false
 		self.ScheduleTask.changedAdSlots[i] = false
 	end
+
+	self.ScheduleTask.TickCount = self.ScheduleTask.TickCount + 1
+	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+
+	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTime, True)
+
 	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -1380,6 +1426,9 @@ end
 
 
 function JobFulfillRequisition:Prepare(pParams)
+	self.ScheduleTask.TickCount = 0
+	self.ScheduleTask.TickTime = 0
+
 	--debugMsg("Erfülle Änderungs-Anforderungen an den Programmplan!")
 
 	self.Player = _G["globalPlayer"]
@@ -1389,6 +1438,8 @@ end
 
 
 function JobFulfillRequisition:Tick()
+	local nowTime = os.clock()
+
 	local gameDay = WorldTime.GetDay()
 	local gameHour = WorldTime.GetDayHour()
 	local gameMinute = WorldTime.GetDayMinute()
@@ -1424,6 +1475,12 @@ function JobFulfillRequisition:Tick()
 			value:Complete()
 		end
 	end
+
+	self.ScheduleTask.TickCount = self.ScheduleTask.TickCount + 1
+	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+
+	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTime, True)
+
 	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -1450,6 +1507,9 @@ end
 
 
 function JobAdSchedule:Prepare(pParams)
+	self.ScheduleTask.TickCount = 0
+	self.ScheduleTask.TickTime = 0
+
 	self.plannedHours = 0
 	--up to 5 planning tries
 	self.planRunsLeft = self.planRuns
@@ -1491,6 +1551,8 @@ end
 
 
 function JobAdSchedule:Tick()
+	local nowTime = os.clock()
+
 	--debugMsg("JobAdSchedule:Tick()  Time: " .. WorldTime.GetDayHour()..":"..WorldTime.GetDayMinute() .. "   Tick: ".. self.ScheduleTask.TickCounter .." / ".. self.ScheduleTask.MaxTicks .."  TickTime: " .. string.format("%.4f", 1000 * self.TicksTotalTime) .."ms.")
 	local nowClock = os.clock()
 
@@ -1519,14 +1581,19 @@ function JobAdSchedule:Tick()
 				self.plannedHours = self.plannedHours + 1
 			end
 		end
+
+	self.ScheduleTask.TickCount = self.ScheduleTask.TickCount + 1
+	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+
 		if self.plannedHours < planHours then
 			--finished current tick
 			return
 		end
 --	end
 
-	--done
-	--====
+
+	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTime, True)
+
 	self.Status = JOB_STATUS_DONE
 end
 
@@ -1610,6 +1677,8 @@ end
 
 -- guessedAudience: optional
 function JobAdSchedule:FillSlot(day, hour, guessedAudience)
+	local nowTime = os.clock()
+
 	local nowClock = os.clock()
 
 	local fixedDay, fixedHour = FixDayAndHour(day, hour)
@@ -1911,6 +1980,9 @@ end
 
 
 function JobProgrammeSchedule:Prepare(pParams)
+	self.ScheduleTask.TickCount = 0
+	self.ScheduleTask.TickTime = 0
+
 	self.plannedHours = 0
 	--up to 5 planning tries
 	self.planRunsLeft = self.planRuns
@@ -1956,6 +2028,8 @@ end
 
 
 function JobProgrammeSchedule:Tick()
+	local nowTime = os.clock()
+
 	--debugMsg("JobProgrammeSchedule:Tick()  Time: " .. WorldTime.GetDayHour()..":"..WorldTime.GetDayMinute() .. "   Tick: ".. self.ScheduleTask.TickCounter .." / ".. self.ScheduleTask.MaxTicks .."  TickTime: " .. string.format("%.4f", 1000 * self.TicksTotalTime) .."ms.")
 	local nowClock = os.clock()
 
@@ -2001,12 +2075,12 @@ function JobProgrammeSchedule:Tick()
 			end
 		end
 
-
 		-- planned/optimized all - check if we need to run it again
 		if self.plannedHours >= planHours then
 			-- still outages left? repeat process, if possible
 			if self.plannedHours > 0 then
 				local usedSlotsCount = TaskSchedule.GetBroadcastTypeCount(TVT.Constants.BroadcastMaterialType.PROGRAMME, nil, currentDay, currentHour, planHours)
+
 				-- finished, no empty slot left
 				if usedSlotsCount == planHours then
 --					debugMsg("JobProgrammeSchedule:Tick(): FINISHED: " .. usedSlotsCount .."/" .. planHours .. ".")
@@ -2047,9 +2121,20 @@ function JobProgrammeSchedule:Tick()
 			end
 		end
 
+
+	self.ScheduleTask.TickCount = self.ScheduleTask.TickCount + 1
+	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+
+
 		--finished current tick
 		return
+	else
+	self.ScheduleTask.TickCount = self.ScheduleTask.TickCount + 1
+	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+
 	end
+
+--	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTime, True)
 
 	--done
 	--====

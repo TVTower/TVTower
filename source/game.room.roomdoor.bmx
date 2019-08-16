@@ -68,6 +68,8 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 	Field showTooltip:Int = True
 	Field tooltip:TRoomDoorTooltip = null
 	Field _soundSource:TDoorSoundSource = Null {nosave}
+	Field _lastOwner:int = 1000 {nosave}
+	Field _signSprite:TSprite {nosave}
 
 
 	Method GenerateGUID:string()
@@ -106,6 +108,25 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetSignSprite:TSprite(owner:int)
+		'invalidate if owner changed
+		if _lastOwner <> owner
+			_signSprite = null
+			_lastOwner = owner
+		endif
+
+		if not _signSprite
+			_signSprite = GetSpriteFromRegistry("gfx_building_sign_" + owner)
+			if _signSprite.name = "defaultsprite"
+				local tmpSprite:TSprite = _signSprite
+				_signSprite = null
+				return tmpSprite
+			endif
+		endif
+		Return _signSprite
+	End Method
+
+
 	'override to play sound
 	Method Close(entity:TEntity)
 		Super.Close(entity)
@@ -117,7 +138,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		if not GetBuildingTime().TooFastForSound()
 			GetSoundSource().PlayCloseDoorSfx(TFigureBase(entity))
 		Endif
-	
+
 	End Method
 
 
@@ -199,11 +220,11 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 		local room:TRoomBase = GetRoom()
 		if not room then return False
-		
+
 		'==== DRAW DOOR OWNER SIGN ====
 		'draw on same height than door startY
 		If room.owner < 5 And room.owner >=0
-			GetSpriteFromRegistry("gfx_building_sign_"+room.owner).Draw(xOffset + GetScreenX() + 2 + doorSprite.framew, yOffset + GetScreenY() - area.GetH())
+			GetSignSprite(room.owner).Draw(xOffset + GetScreenX() + 2 + doorSprite.framew, yOffset + GetScreenY() - area.GetH())
 		EndIf
 
 
@@ -228,8 +249,8 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 
 		'==== DRAW DEBUG TEXT ====
-		local f:TBitmapFont = GetBitmapFont("default", 10)
 		if TVTDebugInfos
+			local f:TBitmapFont = GetBitmapFont("default", 10)
 			local textY:int = GetScreenY() - area.GetH() - 10
 			if room.hasOccupant()
 				for local figure:TFigureBase = eachin room.occupants
@@ -267,7 +288,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 			if floor >=0 and door.GetOnFloor() <> floor then continue
 
 			local room:TRoomBase = door.GetRoom()
-			if not room then continue 
+			if not room then continue
 			'skip wrong owners
 			if room.owner <> owner then continue
 
@@ -353,7 +374,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 		'print "DoorCenter: " + int(door.area.GetX() +  door.area.GetW()/2)+", "+int(door.area.GetY() - door.area.GetH()/2) + "    GetFloorY: " + TBuildingBase.GetFloorY2(Door.area.GetY()) + " ... Floor: " + door.onFloor
 		Return New TVec3D.Init(door.area.GetX() + door.area.GetW()/2, door.area.GetY() + door.area.GetH()/2, -15)
 	End Method
-	
+
 
 	Method IsMovable:Int()
 		Return False
@@ -385,7 +406,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	Method OnPlaySfx:Int(sfx:String)
 		Return True
 	End Method
-	
+
 
 	Method GetDoorOptions:TSfxSettings()
 		Local result:TSfxSettings = New TSfxFloorSoundBarrierSettings

@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2019 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -48,6 +48,8 @@ new TRegistrySpriteFrameAnimationLoader.Init()
 Type TRegistrySpriteFrameAnimationLoader extends TRegistryBaseLoader
 	Field _createdDefaults:int = FALSE
 
+	Global keySpriteFrameAnimationCollectionLS:TLowerString = new TLowerString.Create("spriteframeanimationcollection")
+
 	Method Init:Int()
 		name = "SpriteFrameAnimation"
 		'only handle the collections (spriteframeanimation_s)
@@ -64,7 +66,8 @@ Type TRegistrySpriteFrameAnimationLoader extends TRegistryBaseLoader
 
 
 	Method GetNameFromConfig:String(data:TData)
-		return data.GetString("name","unknown spriteFrameAnimationCollection")
+'		return data.GetString("name","unknown spriteFrameAnimationCollection")
+		return data.GetString(keyNameLS,"unknown spriteFrameAnimationCollection")
 	End Method
 
 
@@ -123,6 +126,6 @@ End Type
 
 
 '===== CONVENIENCE REGISTRY ACCESSORS =====
-Function GetSpriteFrameAnimationCollectionFromRegistry:TSpriteFrameAnimationCollection(name:string, defaultNameOrSpriteFrameAnimationCollection:object = Null)
-	Return TSpriteFrameAnimationCollection( GetRegistry().Get(name, defaultNameOrSpriteFrameAnimationCollection, "spriteframeanimationcollection") )
+Function GetSpriteFrameAnimationCollectionFromRegistry:TSpriteFrameAnimationCollection(name:Object, defaultNameOrSpriteFrameAnimationCollection:object = Null)
+	Return TSpriteFrameAnimationCollection( GetRegistry().Get(name, defaultNameOrSpriteFrameAnimationCollection, TRegistrySpriteFrameAnimationLoader.keySpriteFrameAnimationCollectionLS) )
 End Function

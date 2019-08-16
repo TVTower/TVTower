@@ -489,6 +489,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 '	Field cacheTextOverlay:TImage 			{nosave}
 '	Field cacheTextOverlayMode:string = ""	{nosave}	'for which mode the text was cached
 
+	Global modKeyAuctionPriceLS:TLowerString = New TLowerString.Create("auctionPrice")
+
 
 	Method GenerateGUID:string()
 		return "broadcastmaterialsource-programmelicence-"+id
@@ -1825,12 +1827,12 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'=== INDIVIDUAL PRICE ===
 		'individual licence price mod (eg. "special collection discount")
-		value :* GetModifier("price")
+		value :* GetModifier(modKeyPriceLS)
 
 		'=== AUCTION PRICE ===
 		'if this licence was won in an auction, this price is modifying
 		'the real one
-		value :* GetModifier("auctionPrice")
+		value :* GetModifier(modKeyAuctionPriceLS)
 
 		'=== DIFFICULTY ===
 		'eg. "auctions" set this flag
@@ -1913,12 +1915,12 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'=== INDIVIDUAL PRICE ===
 		'individual licence price mod (eg. "special collection discount")
-		value :* GetModifier("price")
+		value :* GetModifier(modKeyPriceLS)
 
 		'=== AUCTION PRICE ===
 		'if this licence was won in an auction, this price is modifying
 		'the real one
-		value :* GetModifier("auctionPrice")
+		value :* GetModifier(modKeyAuctionPriceLS)
 
 		'=== DIFFICULTY ===
 		'eg. "auctions" set this flag
@@ -2414,7 +2416,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			contentY :+ 12
 			skin.fontNormal.draw("TV-Kasse: "+MathHelper.NumberToString(data.GetOutcomeTV(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Preismodifikator:  Lizenz="+MathHelper.NumberToString(GetModifier("price"), 4)+"  Data="+MathHelper.NumberToString(data.GetModifier("price"), 4), contentX + 5, contentY)
+			skin.fontNormal.draw("Preismodifikator:  Lizenz="+MathHelper.NumberToString(GetModifier(modKeyPriceLS), 4)+"  Data="+MathHelper.NumberToString(data.GetModifier(modKeyPriceLS), 4), contentX + 5, contentY)
 			contentY :+ 12
 			skin.fontNormal.draw("Qualitaet roh: "+MathHelper.NumberToString(GetQualityRaw(), 4)+"  (ohne Alter, Wdh.)", contentX + 5, contentY)
 			contentY :+ 12

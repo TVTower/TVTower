@@ -560,10 +560,12 @@ Type TGUIGameListItem Extends TGUIListItem
 		SetOption(GUI_OBJECT_DRAWMODE_GHOST, True)
 		SetAlpha oldAlpha * 0.5
 
-		local backupAssetName:string = self.asset.getName()
+		local backupAsset:TSprite = asset
+		'local backupAssetName:string = self.asset.getName()
 		self.asset = GetSpriteFromRegistry(assetNameDefault)
 		self.Draw()
-		self.asset = GetSpriteFromRegistry(backupAssetName)
+		'self.asset = GetSpriteFromRegistry(backupAssetName)
+		self.asset = backupAsset
 
 		SetAlpha oldAlpha
 		self.SetOption(GUI_OBJECT_IGNORE_POSITIONMODIFIERS, FALSE)

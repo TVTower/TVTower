@@ -190,6 +190,8 @@ Type TApp
 	'menu, ingame help ...)
 	Field pausedBy:Int = 0
 
+	Global spriteMouseCursor:TSprite {nosave}
+
 	'able to draw loading screen?
 	Global baseResourcesLoaded:Int = 0
 	'holds bg for loading screen and more
@@ -1702,13 +1704,15 @@ endrem
 		'draw system things at last (-> on top)
 		GUIManager.Draw(systemState)
 
-		If GetGameBase().cursorstate = 0 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-9,  MouseManager.y-2,  0)
+		if not spriteMouseCursor then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
+
+		If GetGameBase().cursorstate = 0 Then spriteMouseCursor.Draw(MouseManager.x-9,  MouseManager.y-2,  0)
 		'open hand
-		If GetGameBase().cursorstate = 1 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, MouseManager.y-8,  1)
+		If GetGameBase().cursorstate = 1 Then spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-8,  1)
 		'grabbing hand
-		If GetGameBase().cursorstate = 2 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, MouseManager.y-16, 2)
+		If GetGameBase().cursorstate = 2 Then spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-16, 2)
 		'open hand blocked
-		If GetGameBase().cursorstate = 3 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, MouseManager.y-8	,  3)
+		If GetGameBase().cursorstate = 3 Then spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-8	,  3)
 
 		'if a screenshot is generated, draw a logo in
 		If App.prepareScreenshot = 1

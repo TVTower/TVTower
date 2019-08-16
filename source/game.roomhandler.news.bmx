@@ -1207,7 +1207,7 @@ endrem
 			textY :+ 12
 			fontNormal.draw("GUID: " + news.newsEvent.GetGUID(), screenX + 5, textY)
 			textY :+ 11
-			fontNormal.draw("Preis: " + news.GetPrice(GetPlayerBaseCollection().playerID)+"  (PreisMod: "+MathHelper.NumberToString(news.newsEvent.GetModifier("price"),4)+")", screenX + 5, textY)
+			fontNormal.draw("Preis: " + news.GetPrice(GetPlayerBaseCollection().playerID)+"  (PreisMod: "+MathHelper.NumberToString(news.newsEvent.GetModifier(TBroadcastMaterialSource.modKeyPriceLS),4)+")", screenX + 5, textY)
 			textY :+ 11
 			fontNormal.draw("Qualitaet: " + MathHelper.NumberToString(news.GetQuality(), 4) + " (Event:" + MathHelper.NumberToString(news.newsEvent.GetQuality(),4) + ", roh=" + MathHelper.NumberToString(news.newsEvent.GetQualityRaw(), 4) + ")", screenX + 5, textY)
 			textY :+ 11

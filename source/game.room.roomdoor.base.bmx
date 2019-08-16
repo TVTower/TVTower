@@ -40,7 +40,7 @@ Type TRoomDoorBaseCollection
 
 	Method GetByGUID:TRoomDoorBase(GUID:String)
 		For local door:TRoomDoorBase = eachin List
-			if door.GetGUID() = GUID then return door 
+			if door.GetGUID() = GUID then return door
 		Next
 		return Null
 	End Method
@@ -48,7 +48,7 @@ Type TRoomDoorBaseCollection
 
 	Method GetFirstByRoomID:TRoomDoorBase(roomID:int)
 		For local door:TRoomDoorBase = eachin List
-			if door.roomID = roomID then return door 
+			if door.roomID = roomID then return door
 		Next
 		return Null
 	End Method
@@ -73,7 +73,7 @@ Type TRoomDoorBaseCollection
 		If doors.length = 0 then return Null
 		return doors[0]
 	End Method
-	
+
 
 	Method Add:int(door:TRoomDoorBase)
 		'if there is a room with the same id, remove that first
@@ -149,17 +149,18 @@ Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 	'who opened the door as the last one (this entity also closes the
 	'door then)
 	Field openedByEntityGUID:string
+	Field _sprite:TSprite {nosave}
 
 
 	Method GenerateGUID:string()
 		return "roomdoor-"+roomID+"-"+doorSlot+"-"+onFloor
 	End Method
-	
+
 
 	Method GetOnFloor:int()
 		return onFloor
 	End Method
-	 
+
 
 	Method GetDoorType:int()
 		if DoorTimer.isExpired() then return doortype else return 5
@@ -172,7 +173,15 @@ Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 
 
 	Method GetSprite:TSprite()
-		return GetSpriteFromRegistry("gfx_building_Tueren")
+		if not _sprite
+			_sprite = GetSpriteFromRegistry("gfx_building_Tueren")
+			if _sprite.name = "defaultsprite"
+				local tmpSprite:TSprite = _sprite
+				_sprite = null
+				return tmpSprite
+			endif
+		endif
+		Return _sprite
 	End Method
 
 

@@ -22,7 +22,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2019 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -79,11 +79,14 @@ Type TRegistry
 
 
 	'set a data with the given key
-	Method Set(key:String, obj:Object)
+	Method Set(key:Object, obj:Object)
 		?Threaded
 			LockMutex(_dataMutex)
 		?
-		data.insert(key.ToUpper(), obj)
+		Local ls:TLowerString = TLowerString(key)
+		If Not ls Then ls = TLowerString.Create(String(key))
+
+		data.insert(ls, obj)
 		?Threaded
 			UnlockMutex(_dataMutex)
 		?
@@ -91,29 +94,40 @@ Type TRegistry
 
 
 	'set a default object for a data type
-	Method GetDefault:Object(key:String)
-		Return defaults.ValueForKey(key.ToUpper())
+	Method GetDefault:Object(key:Object)
+		Local ls:TLowerString = TLowerString(key)
+		If Not ls Then ls = TLowerString.Create(String(key))
+
+		Return defaults.ValueForKey(ls)
 	End Method
 
 
 	'set a default object for a data type
-	Method SetDefault(key:String, obj:Object)
+	Method SetDefault(key:Object, obj:Object)
 		?Threaded
 			LockMutex(_dataMutex)
 		?
-		defaults.insert(key.ToUpper(), obj)
+		Local ls:TLowerString = TLowerString(key)
+		If Not ls Then ls = TLowerString.Create(String(key))
+
+		defaults.insert(ls, obj)
 		?Threaded
 			UnlockMutex(_dataMutex)
 		?
 	End Method
 
 
-	Method Get:Object(key:String, defaultObject:Object=Null, defaultType:String="")
-		Local res:Object = data.ValueForKey(key.toUpper())
+	Method Get:Object(key:Object, defaultObject:Object=Null, defaultType:Object=null)
+		Local ls:TLowerString = TLowerString(key)
+		If Not ls Then ls = TLowerString.Create(String(key))
+
+		Local res:Object = data.ValueForKey(ls)
 		'try to get the default object
 		If Not res
-			If String(defaultObject)<>""
-				res = data.ValueForKey(String(defaultObject).toUpper())
+			If TLowerString(defaultObject)
+				res = data.ValueForKey(TLowerString(defaultObject))
+			ElseIf String(defaultObject)
+				res = data.ValueForKey(TLowerString.Create(String(defaultObject)) )
 			Else
 				res = defaultObject
 			EndIf
@@ -121,9 +135,12 @@ Type TRegistry
 
 		'still no res (none by key, no defaultObject)
 		'try to find defaultType
-		If Not res And defaultType <> ""
+		If Not res And defaultType
+			Local defaultTypeLS:TLowerString = TLowerString(defaultType)
+			If Not defaultTypeLS Then defaultTypeLS = TLowerString.Create(String(defaultType))
+
 			'does a default object exist in defaults list?
-			res = defaults.ValueForKey(defaultType.toUpper())
+			res = defaults.ValueForKey(defaultTypeLS)
 			If res Then Return res
 		EndIf
 
@@ -146,12 +163,12 @@ Function GetRegistry:TRegistry()
 	Return TRegistry.GetInstance()
 End Function
 
-Function GetDataFromRegistry:TData(name:String, defaultNameOrObject:Object = Null)
-	Return TData( GetRegistry().Get(name, defaultNameOrObject, "data") )
+Function GetDataFromRegistry:TData(key:Object, defaultNameOrObject:Object = Null)
+	Return TData( GetRegistry().Get(key, defaultNameOrObject, "data") )
 End Function
 
-Function GetStringFromRegistry:String(name:String, defaultNameOrObject:Object = Null)
-	Return String( GetRegistry().Get(name, defaultNameOrObject, "string") )
+Function GetStringFromRegistry:String(key:Object, defaultNameOrObject:Object = Null)
+	Return String( GetRegistry().Get(key, defaultNameOrObject, "string") )
 End Function
 
 
@@ -591,6 +608,8 @@ Type TRegistryBaseLoader
 	Field directLoading:Int = False
 	Field id:Int = 0
 	Global LastID:Int = 0
+
+	Global keyNameLS:TLowerString = new TLowerString.Create("name")
 
 
 	Method New()

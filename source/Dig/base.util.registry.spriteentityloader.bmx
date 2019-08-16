@@ -11,7 +11,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2019 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -49,6 +49,8 @@ new TRegistrySpriteEntityLoader.Init()
 Type TRegistrySpriteEntityLoader extends TRegistryBaseLoader
 	Field _createdDefaults:int = FALSE
 
+	Global keySpriteEntityLS:TLowerString = new TLowerString.Create("spriteentity")
+
 	Method Init:Int()
 		name = "SpriteEntity"
 		resourceNames = "spriteEntity"
@@ -69,7 +71,8 @@ Type TRegistrySpriteEntityLoader extends TRegistryBaseLoader
 
 
 	Method GetNameFromConfig:String(data:TData)
-		return data.GetString("name","unknown spriteentity")
+'		return data.GetString("name","unknown spriteentity")
+		return data.GetString(keyNameLS,"unknown spriteentity")
 	End Method
 
 
@@ -133,7 +136,7 @@ Type TRegistrySpriteEntityLoader extends TRegistryBaseLoader
 		'add to registry
 		GetRegistry().Set(spriteEntity.name, spriteEntity)
 
-		'add (spriteentity) children to global registry too 
+		'add (spriteentity) children to global registry too
 		For local child:TSpriteEntity = eachin spriteEntity.childEntities
 			GetRegistry().Set(child.name, child)
 		Next
@@ -168,8 +171,8 @@ End Type
 
 
 '===== CONVENIENCE REGISTRY ACCESSORS =====
-Function GetSpriteEntityFromRegistry:TSpriteEntity(name:string, defaultNameOrSpriteEntity:object = Null)
-	Return TSpriteEntity( GetRegistry().Get(name, defaultNameOrSpriteEntity, "spriteentity") )
+Function GetSpriteEntityFromRegistry:TSpriteEntity(name:Object, defaultNameOrSpriteEntity:Object = Null)
+	Return TSpriteEntity( GetRegistry().Get(name, defaultNameOrSpriteEntity, TRegistrySpriteEntityLoader.keySpriteEntityLS) )
 End Function
 
 
@@ -187,12 +190,12 @@ Function GetSpriteEntityGroupFromRegistry:TSpriteEntity[](baseName:string, defau
 		if spriteEntity then result :+ [spriteEntity]
 	until spriteEntity = null or number >= maxNumber
 
-	'add default one if nothing was found 
+	'add default one if nothing was found
 	if result.length = 0 and defaultNameOrSpriteEntity <> null
 		if TSpriteEntity(defaultNameOrSpriteEntity)
 			result :+ [TSpriteEntity(defaultNameOrSpriteEntity)]
-		elseif string(defaultNameOrSpriteEntity) <> ""
-			spriteEntity = TSpriteEntity( GetRegistry().Get(string(defaultNameOrSpriteEntity), null, "spriteentity") )
+		else
+			spriteEntity = TSpriteEntity( GetRegistry().Get(defaultNameOrSpriteEntity, null, TRegistrySpriteEntityLoader.keySpriteEntityLS) )
 			if spriteEntity then result :+ [spriteEntity]
 		endif
 	endif

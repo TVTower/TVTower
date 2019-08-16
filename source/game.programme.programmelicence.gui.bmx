@@ -172,6 +172,7 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 		If licence.owner <> GetPlayerBaseCollection().playerID And (licence.owner<=0 And Not IsAffordable())
 			markFaded = True
 		endif
+
 		if licence.owner = GetPlayerBaseCollection().playerID and not licence.IsTradeable()
 			markFaded = True
 		endif

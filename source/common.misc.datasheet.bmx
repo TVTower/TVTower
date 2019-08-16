@@ -37,7 +37,7 @@ Type TDatasheetSkin
 		skin.fontSmall = GetBitmapFontManager().Get("default", skin.fontNormal.FSize-1)
 		skin.fontSemiBold = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
 		skin.fontCaption = GetBitmapFontManager().Get("default", 13, BOLDFONT)
-		
+
 		'use content-params from sprite
 		skin.contentPadding.CopyFrom( GetSpriteFromRegistry(skin.spriteBaseKey+"_border").GetNinePatchContentBorder() )
 		'slight overlay
@@ -55,7 +55,7 @@ Type TDatasheetSkin
 		endif
 		return TDatasheetSkin.defaultSkin
 	End Function
-	
+
 
 	Method RenderContent(x:int, y:int, w:int, h:int, contentType:string="1")
 		GetSpriteFromRegistry(spriteBaseKey+"_content_"+contentType).DrawArea(x, y, w, h)
@@ -109,7 +109,7 @@ Type TDatasheetSkin
 			if not font then font = GetDefaultFont()
 			if not valueAlign then valueAlign = ALIGN_LEFT_CENTER
 			local border:TRectangle = GetSpriteFromRegistry(spriteBaseKey+"_msg_"+msgType).GetNinePatchContentBorder()
-			
+
 			font.drawBlock( ..
 				value, ..
 				x + border.GetLeft(), ..
@@ -119,7 +119,7 @@ Type TDatasheetSkin
 				valueAlign, GetTextColor(msgType), 0,1,1.0,True, True)
 		endif
 	End Method
-	
+
 
 	Method GetMessageSize:TVec2D(w:int, h:int=-1, value:string, iconName:string="", msgType:string="neutral", font:TBitmapFont=null, valueAlign:TVec2D=null)
 		if h > 0
@@ -139,20 +139,21 @@ Type TDatasheetSkin
 		'-> instead of truncating the width/height of the area, we
 		'   restrict the viewport
 
+		local spriteBarUnfilled:TSprite = GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_unfilled")
+		local spriteBarFilled:TSprite = GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_filled")
+
 		'viewports need to know the height...
-		if h = -1 then h = GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_unfilled").GetHeight()
+		if h = -1 then h = spriteBarUnfilled.GetHeight()
 
-		local unfilled:TSprite = GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_unfilled")
-
-		unfilled.DrawArea(x, y, w, h)
-		local barW:int = w - unfilled.GetNinePatchContentBorder().GetLeft() - unfilled.GetNinePatchContentBorder().GetRight()
+		spriteBarUnfilled.DrawArea(x, y, w, h)
+		local barW:int = w - spriteBarUnfilled.GetNinePatchContentBorder().GetLeft() - spriteBarUnfilled.GetNinePatchContentBorder().GetRight()
 		if secondProgress > progress
 			SetAlpha GetAlpha()*0.25
-			GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_filled").DrawArea(x + unfilled.GetNinePatchContentBorder().GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x + unfilled.GetNinePatchContentBorder().GetLeft() + progress*barW, y, barW*(secondProgress-progress), h))
+			spriteBarFilled.DrawArea(x + spriteBarUnfilled.GetNinePatchContentBorder().GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x + spriteBarUnfilled.GetNinePatchContentBorder().GetLeft() + progress*barW, y, barW*(secondProgress-progress), h))
 			SetAlpha GetAlpha()*4.0
 		endif
 		if progress > 0
-			GetSpriteFromRegistry(spriteBaseKey+"_"+barSkin+"_filled").DrawArea(x + unfilled.GetNinePatchContentBorder().GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x+unfilled.GetNinePatchContentBorder().GetLeft(), y, barW*progress, h))
+			spriteBarFilled.DrawArea(x + spriteBarUnfilled.GetNinePatchContentBorder().GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x + spriteBarUnfilled.GetNinePatchContentBorder().GetLeft(), y, barW*progress, h))
 		endif
 	End Method
 
@@ -172,7 +173,7 @@ Type TDatasheetSkin
 		return int(x + contentPadding.GetLeft())
 	End Method
 
-	
+
 	Method GetContentY:int(y:Float = 0)
 		return int(y + contentPadding.GetTop())
 	End Method
@@ -186,7 +187,7 @@ Type TDatasheetSkin
 	Method GetContentH:int(sheetHeight:Float)
 		return int(sheetHeight - contentPadding.GetTop() - contentPadding.GetBottom())
 	End Method
-	
+
 
 	Method GetTextColor:TColor(key:string)
 		Select key.ToLower()

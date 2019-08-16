@@ -41,117 +41,117 @@ Import "external/stringbuffer.mod/stringbuffer.bmx"
 Import "external/string_comp.bmx"
 
 Type TData
-	field data:TMap = New TMap
+	Field data:TMap = New TMap
 
-	Method Init:TData(data:TMap=null)
-		if data
-			self.data.Clear()
+	Method Init:TData(data:TMap=Null)
+		If data
+			Self.data.Clear()
 
-			For local k:object = EachIn data.Keys()
-				local ls:TLowerString = TLowerString(k)
+			For Local k:Object = EachIn data.Keys()
+				Local ls:TLowerString = TLowerString(k)
 				If Not ls Then
 					ls = TLowerString.Create(String(k))
 				End If
 
-				self.data.Insert(ls, data.ValueForKey(k))
+				Self.data.Insert(ls, data.ValueForKey(k))
 			Next
-		endif
+		EndIf
 
-		return self
+		Return Self
 	End Method
 
 
-	Method Clear:int()
-		if data then data.Clear()
-		return true
+	Method Clear:Int()
+		If data Then data.Clear()
+		Return True
 	End Method
 
 
 	Method ToString:String()
-		return ToStringFormat(0)
+		Return ToStringFormat(0)
 	End Method
 
 
-	Method ToStringFormat:String(depth:int = 0)
-		local depthString:TStringBuffer = new TStringBuffer
+	Method ToStringFormat:String(depth:Int = 0)
+		Local depthString:TStringBuffer = New TStringBuffer
 		'local depthString:string = ""
-		For local i:int = 0 until depth
+		For Local i:Int = 0 Until depth
 			depthString.Append("|  ")
 		Next
 
-		local res:TStringBuffer = new TStringBuffer
+		Local res:TStringBuffer = New TStringBuffer
 		res.Append("TData~n")
 		'local res:string = "TData~n"
-		For local key:TLowerString = eachin data.Keys()
-			if TData(data.ValueForKey(key))
+		For Local key:TLowerString = EachIn data.Keys()
+			If TData(data.ValueForKey(key))
 				res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(TData(data.ValueForKey(key)).ToStringFormat(depth + 1)).Append("~n")
-			elseif TData[](data.ValueForKey(key))
-				for local d:TData = EachIn TData[](data.ValueForKey(key))
+			ElseIf TData[](data.ValueForKey(key))
+				For Local d:TData = EachIn TData[](data.ValueForKey(key))
 					res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(d.ToStringFormat(depth + 1)).Append("~n")
-				next
-			elseif object[](data.ValueForKey(key))
-				for local o:object = EachIn object[](data.ValueForKey(key))
+				Next
+			ElseIf Object[](data.ValueForKey(key))
+				For Local o:Object = EachIn Object[](data.ValueForKey(key))
 					res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(o.ToString()).Append("~n")
-				next
-			elseif data.ValueForKey(key)
+				Next
+			ElseIf data.ValueForKey(key)
 				res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = ").Append(data.ValueForKey(key).ToString()).Append("~n")
-			else
+			Else
 				res.AppendObject(depthString).Append("|- ").Append(key.orig).Append(" = NULL~n")
-			endif
+			EndIf
 		Next
 		res.AppendObject(depthString).Append("'-------~n")
-		return res.ToString()
+		Return res.ToString()
 	End Method
 
 
 	Method Copy:TData()
-		local dataCopy:TData = new TData
+		Local dataCopy:TData = New TData
 
-		For local key:TLowerString = eachin data.Keys()
+		For Local key:TLowerString = EachIn data.Keys()
 			'key = key.ToLower()
-			local value:object = data.ValueForKey(key)
-			if TData(value)
+			Local value:Object = data.ValueForKey(key)
+			If TData(value)
 				dataCopy.Add(key, TData(value).Copy())
-			else
+			Else
 				dataCopy.Add(key, value)
-			endif
+			EndIf
 		Next
 
-		return dataCopy
+		Return dataCopy
 	End Method
 
 
-	Function JoinData:int(dataSource:TData, dataTarget:TData)
-		if not dataSource then return False
-		if not dataTarget then return False
-		For local key:TLowerString = eachin dataSource.data.Keys()
+	Function JoinData:Int(dataSource:TData, dataTarget:TData)
+		If Not dataSource Then Return False
+		If Not dataTarget Then Return False
+		For Local key:TLowerString = EachIn dataSource.data.Keys()
 			'key = key.ToLower()
 			dataTarget.Add(key, dataSource.data.ValueForKey(key))
 		Next
-		return True
+		Return True
 	End Function
 
 
 	'merge multiple TData with the current data object
-	Method AppendDataSets:int(dataSets:TData[])
-		For local set:TData = Eachin dataSets
-			JoinData(set, self)
+	Method AppendDataSets:Int(dataSets:TData[])
+		For Local set:TData = EachIn dataSets
+			JoinData(set, Self)
 		Next
-		return True
+		Return True
 	End Method
 
 
 	'add keys->values from other data object (and overwrite own if also existing)
 	Method Append:TData(otherData:TData)
-		JoinData(otherData, self)
-		return Self
+		JoinData(otherData, Self)
+		Return Self
 	End Method
 
 
 	'appends own key->value pairs to given dataset
-	Method AppendTo:TData(otherData:TData var)
-		JoinData(self, otherData)
-		return Self
+	Method AppendTo:TData(otherData:TData Var)
+		JoinData(Self, otherData)
+		Return Self
 	End Method
 
 
@@ -163,14 +163,14 @@ Type TData
 	'3) original contains key->value, customized contains same key->value
 	'   -> SKIP key->value and key->value2
 	Function GetDataDifference:TData(original:TData, customized:TData)
-		Local result:TData = new TData
-		if not original then original = new TData
-		if not customized then customized = new TData
+		Local result:TData = New TData
+		If Not original Then original = New TData
+		If Not customized Then customized = New TData
 
 		'add all data available in "customized" but not in "original"
 		For Local key:TLowerString = EachIn customized.data.Keys()
 			'skip if original contains value too
-			if original.Get(key) then continue
+			If original.Get(key) Then Continue
 
 			result.Add(key, customized.Get(key))
 		Next
@@ -179,23 +179,23 @@ Type TData
 		'add all data differing in "customized" compared to "original"
 		'iterate through original to skip already "added ones"
 		For Local key:TLowerString = EachIn original.data.Keys()
-			local newValue:object = customized.Get(key)
+			Local newValue:Object = customized.Get(key)
 			'if customized does not contain that value yet - skip
-			if not newValue then continue
+			If Not newValue Then Continue
 
 			'both contain a value for the given key
 			'only add the key->value if original and custom differ
-			if newValue <> original.Get(key)
-				if string(newValue) = string(original.Get(key)) then continue
+			If newValue <> original.Get(key)
+				If String(newValue) = String(original.Get(key)) Then Continue
 
 				'if it is another dataset, try to get their
 				'difference too
-				if TData(newValue)
+				If TData(newValue)
 					newValue = GetDataDifference(TData(original.Get(key)), TData(newValue))
-				endif
+				EndIf
 
 				result.Add(key, newValue)
-			endif
+			EndIf
 		Next
 
 		Return result
@@ -203,187 +203,213 @@ Type TData
 
 
 	Method GetDifferenceTo:TData(otherData:TData)
-		return GetDataDifference(otherData, self)
+		Return GetDataDifference(otherData, Self)
 	End Method
 
 
-	Method Add:TData(key:Object, data:object)
-		local ls:TLowerString = TLowerString(key)
-		If Not ls Then
-			ls = TLowerString.Create(String(key))
-		End If
-		self.data.insert(ls, data)
-		return self
+	Method Add:TData(key:Object, data:Object)
+		Local ls:TLowerString = TLowerString(key)
+		If Not ls Then ls = TLowerString.Create(String(key))
+
+		Self.data.insert(ls, data)
+		Return Self
 	End Method
 
 
-	Method AddString:TData(key:Object, data:string)
+	Method AddString:TData(key:Object, data:String)
 		Add( key, data )
-		return self
+		Return Self
 	End Method
 
 
 	Method AddNumber:TData(key:Object, data:Double)
-		Local dd:TDoubleData = new TDoubleData
+		Local dd:TDoubleData = New TDoubleData
 		dd.value = data
 		Add( key, dd )
-		return self
+		Return Self
 	End Method
 
 
-	Method AddBoolString:TData(key:string, data:string)
+	Method AddBoolString:TData(key:String, data:String)
 		Select data.toLower()
-			case "1", "true", "yes"
+			Case "1", "true", "yes"
 				Add( key, "TRUE")
-			default
+			Default
 				Add( key, "FALSE")
 		End Select
-		return self
+		Return Self
 	End Method
 
 
-	Method AddBool:TData(key:string, bool:int)
-		if bool
+	Method AddBool:TData(key:String, bool:Int)
+		If bool
 			Add( key, "TRUE")
-		else
+		Else
 			Add( key, "FALSE")
-		endif
-		return self
+		EndIf
+		Return Self
 	End Method
 
 
-	Method Remove:object(key:object)
-		local removed:object = Get(key)
-		data.Remove(key)
-		return removed
-	End Method
-
-
-	Method Has:int(key:Object)
+	Method Remove:Object(key:Object)
 		Local ls:TLowerString = TLowerString(key)
-		if not ls then
-			ls = TLowerString.Create(String(key))
-		end if
-		return data.Contains(ls)
+		If Not ls Then ls = TLowerString.Create(String(key))
+
+		Local removed:Object = Get(ls)
+		data.Remove(ls)
+
+		Return removed
 	End Method
 
 
-	Method Get:object(k:Object, defaultValue:object=null)
+	Method Has:Int(key:Object)
+		Local ls:TLowerString = TLowerString(key)
+		If Not ls Then ls = TLowerString.Create(String(key))
+
+		Return data.Contains(ls)
+	End Method
+
+
+	Method GetOLD:Object(k:Object, defaultValue:Object=Null)
 		'only react if the "::" is in the middle of something
 
 		Local ls:TLowerString = TLowerString(k)
-		if ls then
-			local key:TLowerString = ls
-			local pos:int = key.Find("::")
+		If ls Then
+			Local key:TLowerString = ls
+			Local pos:Int = key.Find("::")
 
-			if pos > 0
-				local group:string = Left(key.orig,pos)
-				local groupData:TData = TData(Get(group))
-				if groupData
-					return groupData.Get(Right(key.orig, pos+1), defaultValue)
-				endif
-			endif
+			If pos > 0
+				Local group:String = Left(key.orig,pos)
+				Local groupData:TData = TData(Get(group))
+				If groupData
+					Return groupData.Get(Right(key.orig, pos+1), defaultValue)
+				EndIf
+			EndIf
 		Else
 			Local key:String = String(k)
-			local pos:int = key.Find("::")
+			Local pos:Int = key.Find("::")
 
-			if pos > 0
-				local group:string = Left(key,pos)
-				local groupData:TData = TData(Get(group))
-				if groupData
-					return groupData.Get(Right(key, pos+1), defaultValue)
-				endif
-			endif
-		End if
-		if String(k) then
+			If pos > 0
+				Local group:String = Left(key,pos)
+				Local groupData:TData = TData(Get(group))
+				If groupData
+					Return groupData.Get(Right(key, pos+1), defaultValue)
+				EndIf
+			EndIf
+		End If
+		If String(k) Then
 			k = TLowerString.Create(String(k))
-		end if
-		local result:object = data.ValueForKey(k)
-		if result then
-			return result
-		end if
-		return defaultValue
-	End Method
-
-
-	Method GetString:string(key:object, defaultValue:string=null)
-		local result:object = Get(key)
-		if result then
-			return result.ToString()
 		End If
-		return defaultValue
+		Local result:Object = data.ValueForKey(k)
+		If result Then
+			Return result
+		End If
+		Return defaultValue
 	End Method
 
 
-	Method GetBool:int(key:object, defaultValue:int=FALSE)
-		local result:object = Get(key)
-		if not result then return defaultValue
+	Method Get:Object(k:Object, defaultValue:Object=Null, groupsEnabled:Int = False)
+		Local ls:TLowerString = TLowerString(k)
+		If Not ls Then ls = TLowerString.Create(String(k))
+
+		'only react if the "::" is in the middle of something
+		If groupsEnabled
+			Local pos:Int = ls.Find("::")
+			If pos > 0
+				Local group:String = Left(ls.orig, pos)
+				Local groupData:TData = TData(Get(group))
+				If groupData
+					Return groupData.Get(Right(ls.orig, pos+1), defaultValue)
+				EndIf
+			EndIf
+		EndIf
+
+		Local result:Object = data.ValueForKey(ls)
+		If result Then
+			Return result
+		End If
+		Return defaultValue
+	End Method
+
+
+	Method GetString:String(key:Object, defaultValue:String=Null)
+		Local result:Object = Get(key)
+		If result Then
+			Return result.ToString()
+		End If
+		Return defaultValue
+	End Method
+
+
+	Method GetBool:Int(key:Object, defaultValue:Int=False)
+		Local result:Object = Get(key)
+		If Not result Then Return defaultValue
 		Select String(result).toLower()
-			case "true", "yes"
-				return True
-			default
+			Case "true", "yes"
+				Return True
+			Default
 				'also allow "1" / "1.00000" or "33"
-				if int(string(result)) >= 1 then return True
-				return False
+				If Int(String(result)) >= 1 Then Return True
+				Return False
 		End Select
-		return False
+		Return False
 	End Method
 
 
-	Method GetDouble:Double(key:object, defaultValue:Double = 0.0)
-		local result:object = Get(key)
-		if result then
-			local dd:TDoubleData = TDoubleData(result)
-			if dd Then
+	Method GetDouble:Double(key:Object, defaultValue:Double = 0.0)
+		Local result:Object = Get(key)
+		If result Then
+			Local dd:TDoubleData = TDoubleData(result)
+			If dd Then
 				Return dd.value
-			End if
-			return Double( String( result ) )
-		End If
-		return defaultValue
-	End Method
-
-
-	Method GetLong:Long(key:object, defaultValue:Long = 0)
-		local result:object = Get(key)
-		if result then
-			Local dd:TDoubleData = TDoubleData(result)
-			if dd then
-				return Long(dd.value)
-			end if
-			return Long( String( result ) )
-		end if
-		return defaultValue
-	End Method
-
-
-	Method GetFloat:float(key:object, defaultValue:float = 0.0)
-		local result:object = Get(key)
-		if result then
-			local dd:TDoubleData = TDoubleData(result)
-			if dd then
-				return Float(dd.value)
-			end if
-			return float( String( result ) )
-		End If
-		return defaultValue
-	End Method
-
-
-	Method GetInt:int(key:object, defaultValue:int = null)
-		local result:object = Get(key)
-		if result then
-			Local dd:TDoubleData = TDoubleData(result)
-			if dd Then
-				return Int(dd.value)
 			End If
-			return Int( String( result ) )
-		end if
-		return defaultValue
+			Return Double( String( result ) )
+		End If
+		Return defaultValue
 	End Method
 
 
-	Method GetData:TData(key:string, defaultValue:TData = null)
-		return TData(Get(key, defaultValue))
+	Method GetLong:Long(key:Object, defaultValue:Long = 0)
+		Local result:Object = Get(key)
+		If result Then
+			Local dd:TDoubleData = TDoubleData(result)
+			If dd Then
+				Return Long(dd.value)
+			End If
+			Return Long( String( result ) )
+		End If
+		Return defaultValue
+	End Method
+
+
+	Method GetFloat:Float(key:Object, defaultValue:Float = 0.0)
+		Local result:Object = Get(key)
+		If result Then
+			Local dd:TDoubleData = TDoubleData(result)
+			If dd Then
+				Return Float(dd.value)
+			End If
+			Return Float( String( result ) )
+		End If
+		Return defaultValue
+	End Method
+
+
+	Method GetInt:Int(key:Object, defaultValue:Int = Null)
+		Local result:Object = Get(key)
+		If result Then
+			Local dd:TDoubleData = TDoubleData(result)
+			If dd Then
+				Return Int(dd.value)
+			End If
+			Return Int( String( result ) )
+		End If
+		Return defaultValue
+	End Method
+
+
+	Method GetData:TData(key:String, defaultValue:TData = Null)
+		Return TData(Get(key, defaultValue))
 	End Method
 End Type
 
@@ -392,19 +418,19 @@ Type TDoubleData
 	Field value:Double
 
 	Method ToString:String()
-		return String(value)
+		Return String(value)
 	End Method
 
 
-	Method SerializeTDoubleDataToString:string()
+	Method SerializeTDoubleDataToString:String()
 		'fits into a long? skip the ".0000" values
-		if double(long(value)) = value then return string(long(value))
-		return string(value)
+		If Double(Long(value)) = value Then Return String(Long(value))
+		Return String(value)
 	End Method
 
 
 	Method DeSerializeTDoubleDataFromString(text:String)
-		value = double(text)
+		value = Double(text)
 	End Method
 End Type
 

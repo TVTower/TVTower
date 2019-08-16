@@ -1962,12 +1962,12 @@ endrem
 	'- weather (without extras like tornado-news, ...)
 	Method UpdateBaseGameModifiers()
 		'WEATHER-AUDIENCE
-		GameConfig.SetModifier("StationMap.Audience.WeatherMod", CalculateAudienceWeatherMod())
+		GameConfig.SetModifier(modKeyStationMap_Audience_WeatherModLS, CalculateAudienceWeatherMod())
 
 		'WEATHER-STATION-RECEPTION
-		GameConfig.SetModifier("StationMap.Reception.AntennaMod", CalculateStationMapAntennaReceptionWeatherMod())
-		GameConfig.SetModifier("StationMap.Reception.CableNetworkMod", CalculateStationMapCableNetworkReceptionWeatherMod())
-		GameConfig.SetModifier("StationMap.Reception.SatelliteMod", CalculateStationMapSatelliteReceptionWeatherMod())
+		GameConfig.SetModifier(modKeyStationMap_Reception_AntennaModLS, CalculateStationMapAntennaReceptionWeatherMod())
+		GameConfig.SetModifier(modKeyStationMap_Reception_CableNetworkModLS, CalculateStationMapCableNetworkReceptionWeatherMod())
+		GameConfig.SetModifier(modKeyStationMap_Reception_SatelliteModLS, CalculateStationMapSatelliteReceptionWeatherMod())
 	End Method
 
 

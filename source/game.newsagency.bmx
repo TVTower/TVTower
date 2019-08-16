@@ -163,7 +163,7 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 		return _instance
 	End Function
 
-		
+
 	'==== OPTION 1: directly wait for matches (regular and playoffs) ====
 	Function onRunPlayoffMatch:Int(event:TEventBase)
 		Local match:TNewsEventSportMatch = TNewsEventSportMatch(event.GetData().Get("match"))
@@ -177,7 +177,7 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 		'	print "onRunPlayoffMatch " + GetWorldTime().GetFormattedDate(match.GetMatchTime()) +"  " + match.GetReportShort() +"  OK"
 		'else
 		'	print "onRunPlayoffMatch " + GetWorldTime().GetFormattedDate(match.GetMatchTime()) +"  " + match.GetReportShort() +"  FAILED"
-		'endif 
+		'endif
 	End Function
 
 
@@ -193,7 +193,7 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 		'	print "onRunMatch " + GetWorldTime().GetFormattedDate(match.GetMatchTime()) +"  " + match.GetReportShort() +"  OK"
 		'else
 		'	print "onRunMatch " + GetWorldTime().GetFormattedDate(match.GetMatchTime()) +"  " + match.GetReportShort() +"  FAILED"
-		'endif 
+		'endif
 	End Function
 
 
@@ -213,7 +213,7 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 				return False
 			endif
 		endif
-		
+
 		Local weekday:String = GetWorldTime().GetDayName( GetWorldTime().GetWeekday( GetWorldTime().GetOnDay(match.GetMatchTime()) ) )
 
 
@@ -223,7 +223,7 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 		'quality gets lower the higher the league index (less important)
 		Local quality:Float = 0.01 * randRange(50,60) * 0.9 ^ leagueIndex
 		Local price:Float = 1.0 + 0.01 * randRange(-5,10) * 1.05 ^ leagueIndex
-		
+
 
 		localizeTitle.Set(Getlocale("SPORT_"+sport.name) +" ["+league.nameShort+"]: " +match.GetReportShort())
 		if season and season.seasonType = TNewsEventSportSeason.SEASONTYPE_PLAYOFF
@@ -238,13 +238,13 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 			localizeDescription.Set(match.GetReport())
 		endif
 		NewsEvent.Init("", localizeTitle, localizeDescription, TVTNewsGenre.SPORT, quality, null, TVTNewsType.InitialNewsByInGameEvent)
-		NewsEvent.SetModifier("price", price)
+		NewsEvent.SetModifier(TNewsEvent.modKeyPriceLS, price)
 		'3.0 means it reaches topicality of 0 at ~5 hours after creation.
-		NewsEvent.SetModifier("topicality::age", 3.0)
+		NewsEvent.SetModifier(TNewsEvent.modKeyTopicality_AgeLS, 3.0)
 		NewsEvent.AddKeyword("SPORT")
 		'let the game finish first (duration + 15 Min break)
 		NewsEvent.happenedTime = GetWorldTime().GetTimeGone() + match.duration + 60 * 15
-	
+
 		NewsEvent.eventDuration = 6*3600 'only for 8 hours
 		NewsEvent.SetFlag(TVTNewsFlag.UNIQUE_EVENT, True) 'one time event
 		'
@@ -288,7 +288,7 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 
 	Method Initialize:int()
 		Super.Initialize()
-		
+
 		weatherUpdateTime = 0
 		weatherUpdateTimeInterval = [270, 300]
 		weatherType = 0
@@ -308,14 +308,14 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 				local newTime:Long = GetWorldTime().MakeTime(0, GetWorldtime().GetDay(weatherUpdateTime), GetWorldtime().GetDayHour(weatherUpdateTime), RandRange(10, 40), 0)
 				weatherUpdateTime = newTime
 			EndIf
-			
+
 			local newsEvent:TNewsEvent = GetWeatherNewsEvent()
 			If newsEvent
 				?debug
 				Print "[NEWSAGENCY | LOCAL] UpdateWeather: added weather news title="+newsEvent.GetTitle()+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
 				?
 			EndIf
-			
+
 			AddNewNewsEvent(newsEvent)
 '				announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone())
 		EndIf
@@ -382,7 +382,7 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 			if not GetWorldTime().IsDay(weather._time)
 				isNotDay = true
 			endif
-			
+
 			if GetWorldTime().IsNight(weather._time)
 				if isDay then becameNight = True
 				isNight = True
@@ -425,7 +425,7 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 
 		'construct text
 		description = ""
-		
+
 		if isPartiallyCloudy
 			description :+ GetRandomLocale("SKY_IS_PARTIALLY_CLOUDY")+" "
 		elseif isCloudy
@@ -491,11 +491,11 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 		localizeDescription.Set(description) 'use default lang
 
 		Local NewsEvent:TNewsEvent = new TNewsEvent.Init("", localizeTitle, localizeDescription, TVTNewsGenre.CURRENTAFFAIRS, quality, null, TVTNewsType.InitialNewsByInGameEvent)
-		NewsEvent.SetModifier("price", price)
+		NewsEvent.SetModifier(TNewsEvent.modKeyPriceLS, price)
 		'after 50 hours a news topicality is 0 - so accelerating it by
 		'5.0 means it reaches topicality of 0 at 10 hours after creation.
 		'This is 2 hours after the next forecast (a bit overlapping)
-		NewsEvent.SetModifier("topicality::age", 5.0)
+		NewsEvent.SetModifier(TNewsEvent.modKeyTopicality_AgeLS, 5.0)
 
 		NewsEvent.AddKeyword("WEATHERFORECAST")
 

@@ -36,7 +36,12 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Global GuiListSeries:TGUIProgrammeLicenceSlotList = null
 	Global GuiListSuitcase:TGUIProgrammeLicenceSlotList = null
 
-	global LS_movieagency:TLowerString = TLowerString.Create("movieagency")
+	'Field spriteSuitcaseGlow:TSprite {nosave}
+	Global spriteAuctionPanel:TSprite {nosave}
+	Global spriteAuctionPanelContent:TSprite {nosave}
+	Global spriteSuitcase:TSprite {nosave}
+
+	Global LS_movieagency:TLowerString = TLowerString.Create("movieagency")
 
 	'configuration
 	Global suitcasePos:TVec2D = new TVec2D.Init(350,130)
@@ -250,6 +255,11 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			'vendor should accept drop - else no recognition
 			VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 		endif
+
+		spriteAuctionPanel = GetSpriteFromRegistry("gfx_gui_panel")
+		spriteAuctionPanelContent = GetSpriteFromRegistry("gfx_gui_panel.content")
+		spriteSuitcase = GetSpriteFromRegistry("gfx_suitcase")
+		'spriteSuitcaseGlow = GetSpriteFromRegistry("gfx_suitcase_glow")
 
 
 		'=== EVENTS ===
@@ -953,7 +963,8 @@ endrem
 	Function onDrawMovieAgency:int( triggerEvent:TEventBase )
 		if AuctionEntity Then AuctionEntity.Render()
 		if VendorEntity Then VendorEntity.Render()
-		GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
+		if spriteSuitcase then spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		'make auction/suitcase/vendor highlighted if needed
 		local highlightSuitcase:int = False
@@ -983,7 +994,7 @@ endrem
 
 			if AuctionEntity and highlightAuction then AuctionEntity.Render()
 			if VendorEntity and highlightVendor then VendorEntity.Render()
-			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+			if highlightSuitcase and spriteSuitcase then spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 			SetAlpha oldCol.a
 			SetBlend AlphaBlend
@@ -1056,13 +1067,14 @@ endrem
 	Function onDrawMovieAuction:int( triggerEvent:TEventBase )
 		if AuctionEntity Then AuctionEntity.Render()
 		if VendorEntity Then VendorEntity.Render()
-		GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		if spriteSuitcase then spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		SetAlpha 0.5
 		local fontColor:TColor = TColor.CreateGrey(50)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
+		local font:TBitmapFont = GetBitmapFont("Default",12, BOLDFONT)
+		font.drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
+		font.drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
+		font.drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
 		SetAlpha 1.0
 
 		GUIManager.Draw( LS_movieagency )
@@ -1070,11 +1082,11 @@ endrem
 		DrawRect(0,0,800,385)
 		SetAlpha 1.0;SetColor 255,255,255
 
-		GetSpriteFromRegistry("gfx_gui_panel").DrawArea(120-15,60-15,555+30,290+30)
-		GetSpriteFromRegistry("gfx_gui_panel.content").DrawArea(120,60,555,290)
+		if spriteAuctionPanel then spriteAuctionPanel.DrawArea(120-15,60-15,555+30,290+30)
+		if spriteAuctionPanelContent then spriteAuctionPanelContent.DrawArea(120,60,555,290)
 
 		SetAlpha 0.5
-		GetBitmapFont("Default",12,BOLDFONT).drawBlock(GetLocale("CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID"), 140,317, 535,30, new TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(50), 2, 1, 0.20)
+		font.drawBlock(GetLocale("CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID"), 140,317, 535,30, new TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(50), 2, 1, 0.20)
 		SetAlpha 1.0
 
 		TAuctionProgrammeBlocks.DrawAll()
@@ -1117,6 +1129,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	Field _imageWithText:TImage = Null {nosave}
 
 	Global List:TList = CreateList()	'list of all blocks
+	Global spriteAuctionMovie:TSprite {nosave}
 
 	'todo/idea: we could add a "started" and a "endTime"-field so
 	'           auctions do not end at midnight but individually
@@ -1127,8 +1140,10 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method Create:TAuctionProgrammeBlocks(slot:Int=0, licence:TProgrammeLicence)
+		if not spriteAuctionMovie then spriteAuctionMovie = GetSpriteFromRegistry("gfx_auctionmovie")
+
 		Self.area.position.SetXY(140 + (slot Mod 2) * 260, 80 + int(Ceil(slot / 2)) * 60)
-		Self.area.dimension.CopyFrom(GetSpriteFromRegistry("gfx_auctionmovie").area.dimension)
+		Self.area.dimension.CopyFrom(spriteAuctionMovie.area.dimension)
 		Self.slot = slot
 		Self.Refill(licence)
 		List.AddLast(Self)
@@ -1331,7 +1346,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			'ATTENTION: during "filtering" the price might have been
 			'           modified by this modifier - for now we ignore
 			'           the fact it could not have passed the filter...
-			licence.SetModifier("auctionPrice", 1.0)
+			licence.SetModifier(TProgrammeLicence.modKeyAuctionPriceLS, 1.0)
 			licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY, True)
 		endif
 
@@ -1568,8 +1583,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		'not yet cached?
 	    If Not _imageWithText
 			'print "renew cache for "+self.licence.GetTitle()
-			_imageWithText = GetSpriteFromRegistry("gfx_auctionmovie").GetImageCopy()
-			If Not _imageWithText Then Throw "GetImage Error for gfx_auctionmovie"
+			_imageWithText = spriteAuctionMovie.GetImageCopy()
 
 			Local pix:TPixmap = LockImage(_imageWithText)
 			Local font:TBitmapFont = GetBitmapFont("Default", 12)
@@ -1648,7 +1662,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 				SetBlend LightBlend
 				SetAlpha 0.20
-				GetSpriteFromRegistry("gfx_auctionmovie").Draw(obj.area.GetX(), obj.area.GetY())
+				spriteAuctionMovie.Draw(obj.area.GetX(), obj.area.GetY())
 				SetAlpha 1.0
 				SetBlend AlphaBlend
 

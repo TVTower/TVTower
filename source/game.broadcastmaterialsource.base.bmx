@@ -9,25 +9,25 @@ Import "Dig/base.util.string.bmx"
 
 
 'could be done as "interface"
-Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="selected"}
+Type TBroadcastMaterialSourceBase Extends TNamedGameObject {_exposeToLua="selected"}
 	Field title:TLocalizedString
 	Field description:TLocalizedString
 
 	'contains "numeric" modifiers (simple key:num-pairs)
-	Field modifiers:TData = new TData
+	Field modifiers:TData = New TData
 	Field effects:TGameModifierGroup = New TGameModifierGroup
 
 	Field topicality:Float = 1.0
-	Field flags:int = 0
-	Field broadcastFlags:int = 0
+	Field flags:Int = 0
+	Field broadcastFlags:Int = 0
 
-	Method GenerateGUID:string()
-		return "broadcastmaterialsource-base-"+id
+	Method GenerateGUID:String()
+		Return "broadcastmaterialsource-base-"+id
 	End Method
 
 
 	Method GetMaterialSourceType:Int() {_exposeToLua}
-		return TVTBroadcastMaterialSourceType.UNKNOWN
+		Return TVTBroadcastMaterialSourceType.UNKNOWN
 	End Method
 
 
@@ -40,21 +40,21 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 		flags = base.flags
 		broadcastFlags = base.broadcastFlags
 
-		return self
+		Return Self
 	End Method
 
 
 	'returns the stored value for a modifier - defaults to "100%"
-	Method GetModifier:Float(modifierKey:string, defaultValue:Float = 1.0)
+	Method GetModifier:Float(modifierKey:Object, defaultValue:Float = 1.0)
 		Return modifiers.GetFloat(modifierKey, defaultValue)
 	End Method
 
 
 	'stores a modifier value
-	Method SetModifier:int(modifierKey:string, value:Float)
+	Method SetModifier:Int(modifierKey:Object, value:Float)
 		'skip adding the modifier if it is the same - or a default value
 		'-> keeps datasets smaller
-		if GetModifier(modifierKey) = value then Return False
+		If GetModifier(modifierKey) = value Then Return False
 
 		modifiers.AddNumber(modifierKey, value)
 		Return True
@@ -63,43 +63,43 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 
 	Global _nilNode:TNode = New TNode._parent
 	Method CopyModifiers:TData()
-		if not modifiers then return null
+		If Not modifiers Then Return Null
 
-		local clone:TData = new TData
+		Local clone:TData = New TData
 
 		'find first hit
 		Local node:TNode = modifiers.data._FirstNode()
 		While node And node <> _nilNode
-			if TGameModifierBase(node._value)
+			If TGameModifierBase(node._value)
 				clone.Add(node._key, TGameModifierBase(node._value).Copy())
-			else
+			Else
 				clone.Add(node._key, node._value)
-			endif
+			EndIf
 
 			'move on to next node
 			node = node.NextNode()
 		Wend
 
-		return clone
+		Return clone
 	End Method
 
 
 	Method CopyEffects:TGameModifierGroup()
-		if not effects then return null
+		If Not effects Then Return Null
 
-		return effects.Copy()
+		Return effects.Copy()
 	End Method
 
 
-	Method GetTitle:string() {_exposeToLua}
-		if title then return title.Get()
-		return ""
+	Method GetTitle:String() {_exposeToLua}
+		If title Then Return title.Get()
+		Return ""
 	End Method
 
 
-	Method GetDescription:string() {_exposeToLua}
-		if description then return description.Get()
-		return ""
+	Method GetDescription:String() {_exposeToLua}
+		If description Then Return description.Get()
+		Return ""
 	End Method
 
 
@@ -137,177 +137,182 @@ Type TBroadcastMaterialSourceBase extends TNamedGameObject {_exposeToLua="select
 	'trigger = "broadcast", "firstbroadcast", "happen"...
 	'type = "triggernews" (the key under which the desired effect was registered)
 	'news-5
-	Method AddEffectByData:int(effectData:TData)
-		if not effectData then return False
+	Method AddEffectByData:Int(effectData:TData)
+		If Not effectData Then Return False
 
-		local effectName:string = effectData.GetString("type").ToLower()
-		local effectTrigger:string = effectData.GetString("trigger").ToLower()
-		if not effectName or not effectTrigger then return False
+		Local effectName:String = effectData.GetString("type").ToLower()
+		Local effectTrigger:String = effectData.GetString("trigger").ToLower()
+		If Not effectName Or Not effectTrigger Then Return False
 
-		local effect:TGameModifierBase = GetGameModifierManager().CreateAndInit(effectName, effectData)
-		if not effect then return False
+		Local effect:TGameModifierBase = GetGameModifierManager().CreateAndInit(effectName, effectData)
+		If Not effect Then Return False
 
 		effects.AddEntry(effectTrigger, effect)
-		return True
+		Return True
 	End Method
 
 
 	Method GetQuality:Float() {_exposeToLua}
-		return 0
+		Return 0
 	End Method
 End Type
 
 
 'could be done as "interface"
-Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
+Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua="selected"}
 	'how many times that source was broadcasted
 	'(per player, 0 = unknown - allows to adjust "before game start" value)
-	Field timesBroadcasted:int[] = [0]
+	Field timesBroadcasted:Int[] = [0]
 	'the maximum _current_ amount of broadcasts possible for this licence
-	Field broadcastLimit:int = 0
+	Field broadcastLimit:Int = 0
 	'the maximum amount of broadcasts possible for this licence after reset
-	Field broadcastLimitMax:int = 0
+	Field broadcastLimitMax:Int = 0
 
 	'from when to when you are allowed to broadcast this material
-	Field broadcastTimeSlotStart:int = -1
-	Field broadcastTimeSlotEnd:int = -1
+	Field broadcastTimeSlotStart:Int = -1
+	Field broadcastTimeSlotEnd:Int = -1
 
 	'maximum reachLevel a material was licenced for
 	'< 0 disables any level limitation
-	Field licencedReachLevel:int = -1
+	Field licencedReachLevel:Int = -1
+
+	Global modKeyTopicality_AgeLS:TLowerString = New TLowerString.Create("topicality::age")
+	Global modKeyTopicality_TimesBroadcastedLS:TLowerString = New TLowerString.Create("topicality::timesBroadcasted")
+	Global modKeyTopicality_WearoffLS:TLowerString = New TLowerString.Create("topicality::wearoff")
+	Global modKeyPriceLS:TLowerString = New TLowerString.Create("price")
 
 
-	Method GenerateGUID:string()
-		return "broadcastmaterialsource-"+id
+	Method GenerateGUID:String()
+		Return "broadcastmaterialsource-"+id
 	End Method
 
 
-	Method Initialize:int()
+	Method Initialize:Int()
 		timesBroadcasted = [0]
 	End Method
 
 
 	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString)
-		local result:TLocalizedString = text.copy()
+		Local result:TLocalizedString = text.copy()
 		'print "_ReplacePlaceholders: " + text.Get()
 		'for each defined language we check for existent placeholders
 		'which then get replaced by a random string stored in the
 		'variable with the same name
-		For local lang:string = EachIn text.GetLanguageKeys()
-			local value:string = text.Get(lang)
-			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%", True)
-			if placeHolders.length = 0 then continue
+		For Local lang:String = EachIn text.GetLanguageKeys()
+			Local value:String = text.Get(lang)
+			Local placeHolders:String[] = StringHelper.ExtractPlaceholders(value, "%", True)
+			If placeHolders.length = 0 Then Continue
 
-			for local placeHolder:string = EachIn placeHolders
-				local replacement:string = ""
-				local replaced:int = False
-				if not replaced then replaced = ReplaceTextWithGameInformation(placeHolder, replacement)
-				if not replaced then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
+			For Local placeHolder:String = EachIn placeHolders
+				Local replacement:String = ""
+				Local replaced:Int = False
+				If Not replaced Then replaced = ReplaceTextWithGameInformation(placeHolder, replacement)
+				If Not replaced Then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
 				'replace if some content was filled in
-				if replaced then value = value.replace("%"+placeHolder+"%", replacement)
+				If replaced Then value = value.Replace("%"+placeHolder+"%", replacement)
 				'print "check placeholder: ~q"+placeholder+"~q => ~q"+replacement+"~q"
 			Next
 
 			result.Set(value, lang)
 		Next
-		return result
+		Return result
 	End Method
 
 
-	Method GetLicencedReachLevel:int()
-		return licencedReachLevel
+	Method GetLicencedReachLevel:Int()
+		Return licencedReachLevel
 	End Method
 
 
 	'return price for a potential relicencing
-	Method GetRelicenceForReachLevelPrice:int(reachLevel:int)
-		return 0
+	Method GetRelicenceForReachLevelPrice:Int(reachLevel:Int)
+		Return 0
 	End Method
 
 
 	'extending classes might add custom restrictions here (payment)
-	Method CanRelicenceForReachLevel:int(reachLevel:int)
-		return True
+	Method CanRelicenceForReachLevel:Int(reachLevel:Int)
+		Return True
 	End Method
 
 
 	'set a new reach level limitation
-	Method RelicenceForReachLevel:int(reachLevel:int)
-		self.licencedReachLevel = reachLevel
-		return True
+	Method RelicenceForReachLevel:Int(reachLevel:Int)
+		Self.licencedReachLevel = reachLevel
+		Return True
 	End Method
 
 
 	'playerID < 0 means "get all"
-	Method GetTimesBroadcasted:Int(playerID:int = -1)
-		if playerID >= timesBroadcasted.length then Return 0
-		if playerID >= 0 then Return timesBroadcasted[playerID]
+	Method GetTimesBroadcasted:Int(playerID:Int = -1)
+		If playerID >= timesBroadcasted.length Then Return 0
+		If playerID >= 0 Then Return timesBroadcasted[playerID]
 
-		local result:int = 0
-		For local i:int = 0 until timesBroadcasted.length
+		Local result:Int = 0
+		For Local i:Int = 0 Until timesBroadcasted.length
 			result :+ timesBroadcasted[i]
 		Next
 		Return result
 	End Method
 
 
-	Method SetTimesBroadcasted:Int(times:int, playerID:int)
-		if playerID < 0 then playerID = 0
+	Method SetTimesBroadcasted:Int(times:Int, playerID:Int)
+		If playerID < 0 Then playerID = 0
 
 		'resize array if player has no entry yet
-		if playerID >= timesBroadcasted.length
+		If playerID >= timesBroadcasted.length
 			timesBroadcasted = timesBroadcasted[.. playerID + 1]
-		endif
+		EndIf
 
 		timesBroadcasted[playerID] = times
 	End Method
 
 
-	Method SetBroadcastLimit:int(broadcastLimit:int = -1)
+	Method SetBroadcastLimit:Int(broadcastLimit:Int = -1)
 		SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.HAS_BROADCAST_LIMIT, broadcastLimit > 0)
 
-		self.broadcastLimitMax = broadcastLimit
-		self.broadcastLimit = broadcastLimit
+		Self.broadcastLimitMax = broadcastLimit
+		Self.broadcastLimit = broadcastLimit
 	End Method
 
 
-	Method CanBroadcastAtTime:int(broadcastType:int, day:int, hour:int) {_exposeToLua}
-		return True
+	Method CanBroadcastAtTime:Int(broadcastType:Int, day:Int, hour:Int) {_exposeToLua}
+		Return True
 	End Method
 
 
-	Method GetBroadcastLimitMax:int() {_exposeToLua}
-		return self.broadcastLimitMax
+	Method GetBroadcastLimitMax:Int() {_exposeToLua}
+		Return Self.broadcastLimitMax
 	End Method
 
 
-	Method GetBroadcastLimit:int() {_exposeToLua}
-		return self.broadcastLimit
+	Method GetBroadcastLimit:Int() {_exposeToLua}
+		Return Self.broadcastLimit
 	End Method
 
 
-	Method HasBroadcastLimit:int() {_exposeToLua}
-		return HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.HAS_BROADCAST_LIMIT)
+	Method HasBroadcastLimit:Int() {_exposeToLua}
+		Return HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.HAS_BROADCAST_LIMIT)
 	End Method
 
 
-	Method isExceedingBroadcastLimit:int() {_exposeToLua}
-		return GetBroadcastLimit() <= 0 and HasBroadcastLimit()
+	Method isExceedingBroadcastLimit:Int() {_exposeToLua}
+		Return GetBroadcastLimit() <= 0 And HasBroadcastLimit()
 	End Method
 
 
-	Method GetBroadcastTimeSlotStart:int() {_exposeToLua}
-		return self.broadcastTimeSlotStart
+	Method GetBroadcastTimeSlotStart:Int() {_exposeToLua}
+		Return Self.broadcastTimeSlotStart
 	End Method
 
 
-	Method GetBroadcastTimeSlotEnd:int() {_exposeToLua}
-		return self.broadcastTimeSlotEnd
+	Method GetBroadcastTimeSlotEnd:Int() {_exposeToLua}
+		Return Self.broadcastTimeSlotEnd
 	End Method
 
 
-	Method HasBroadcastTimeSlot:int()
-		return broadcastTimeSlotStart <> -1 or broadcastTimeSlotEnd <> -1
+	Method HasBroadcastTimeSlot:Int()
+		Return broadcastTimeSlotStart <> -1 Or broadcastTimeSlotEnd <> -1
 	End Method
 
 
@@ -318,18 +323,18 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 
 	'when used as programme
 	Method GetProgrammeTopicality:Float() {_exposeToLua}
-		return GetTopicality()
+		Return GetTopicality()
 	End Method
 
 
 	'when used as ad
 	Method GetAdTopicality:Float() {_exposeToLua}
-		return GetTopicality()
+		Return GetTopicality()
 	End Method
 
 
 	Method GetTopicality:Float() {_exposeToLua}
-		if topicality < 0 then topicality = GetMaxTopicality()
+		If topicality < 0 Then topicality = GetMaxTopicality()
 
 		'refresh topicality on each request
 		'-> avoids a "topicality > MaxTopicality" when MaxTopicality
@@ -340,15 +345,15 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 	End Method
 
 
-	Method CutTopicality:Float(cutModifier:float=1.0) {_private}
+	Method CutTopicality:Float(cutModifier:Float=1.0) {_private}
 		topicality = MathHelper.Clamp(topicality * cutModifier, 0, GetMaxTopicality())
 
 		Return topicality
 	End Method
 
 
-	Method SetTopicality:int(topicality:FLoat)
-		self.topicality = MathHelper.Clamp(topicality, 0, GetMaxTopicality())
+	Method SetTopicality:Int(topicality:Float)
+		Self.topicality = MathHelper.Clamp(topicality, 0, GetMaxTopicality())
 	End Method
 
 
@@ -360,55 +365,55 @@ Type TBroadcastMaterialSource extends TBroadcastMaterialSourceBase {_exposeToLua
 	End Method
 
 
-	Method IsNewBroadcastPossible:int() {_exposeToLua}
+	Method IsNewBroadcastPossible:Int() {_exposeToLua}
 		'false if not controllable
-		if not IsControllable() then return False
+		If Not IsControllable() Then Return False
 		'false if licence/contract is not available (temporary, or
 		'because broadcast limit was exceeded)
-		if not isAvailable() then return False
+		If Not isAvailable() Then Return False
 
-		return True
+		Return True
 	End Method
 
 
-	Method IsAvailable:int()
-		return not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE)
+	Method IsAvailable:Int()
+		Return Not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE)
 	End Method
 
 
-	Method IsControllable:int()
-		return not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE)
+	Method IsControllable:Int()
+		Return Not hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE)
 	End Method
 
 
-	Method SetControllable(bool:int = True)
-		SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE, not bool)
+	Method SetControllable(bool:Int = True)
+		SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_CONTROLLABLE, Not bool)
 	End Method
 
 
 	Method IsProgrammeLicence:Int() {_exposeToLua}
-		return GetMaterialSourceType() = TVTBroadcastMaterialSourceType.PROGRAMMELICENCE
+		Return GetMaterialSourceType() = TVTBroadcastMaterialSourceType.PROGRAMMELICENCE
 	End Method
 
 
 	Method IsAdContract:Int() {_exposeToLua}
-		return GetMaterialSourceType() = TVTBroadcastMaterialSourceType.ADCONTRACT
+		Return GetMaterialSourceType() = TVTBroadcastMaterialSourceType.ADCONTRACT
 	End Method
 
 
 	Method IsNews:Int() {_exposeToLua}
-		return GetMaterialSourceType() = TVTBroadcastMaterialSourceType.NEWS
+		Return GetMaterialSourceType() = TVTBroadcastMaterialSourceType.NEWS
 	End Method
 
 
 	'=== LISTENERS ===
 	'methods called when special events happen
 
-	Method doBeginBroadcast(playerID:int = -1, broadcastType:int = 0)
+	Method doBeginBroadcast(playerID:Int = -1, broadcastType:Int = 0)
 		'
 	End Method
 
-	Method doFinishBroadcast(playerID:int = -1, broadcastType:int = 0)
+	Method doFinishBroadcast(playerID:Int = -1, broadcastType:Int = 0)
 		'
 	End Method
 End Type

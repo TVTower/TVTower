@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-2019 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -47,6 +47,10 @@ new TRegistryImageLoader.Init()
 'loader caring about "<image>"-types
 Type TRegistryImageLoader extends TRegistryBaseLoader
 	Field _createdDefaults:int = FALSE
+
+	Global keyImageLS:TLowerString = new TLowerString.Create("image")
+	Global keyPixmapLS:TLowerString = new TLowerString.Create("pixmap")
+
 
 	Method Init:Int()
 		name = "Image"
@@ -100,7 +104,8 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 
 
 	Method GetNameFromConfig:String(data:TData)
-		return data.GetString("name","unknown image")
+'		return data.GetString(","unknown image")
+		return data.GetString(keyNameLS,"unknown image")
 	End Method
 
 
@@ -283,10 +288,10 @@ End Type
 
 
 '===== CONVENIENCE REGISTRY ACCESSORS =====
-Function GetImageFromRegistry:TImage(name:string, defaultNameOrSprite:object = Null)
-	Return TImage( GetRegistry().Get(name, defaultNameOrSprite, "image") )
+Function GetImageFromRegistry:TImage(name:object, defaultNameOrSprite:object = Null)
+	Return TImage( GetRegistry().Get(name, defaultNameOrSprite, TRegistryImageLoader.keyImageLS) )
 End Function
 
-Function GetPixmapFromRegistry:TPixmap(name:string, defaultNameOrSprite:object = Null)
-	Return TPixmap( GetRegistry().Get(name, defaultNameOrSprite, "pixmap") )
+Function GetPixmapFromRegistry:TPixmap(name:object, defaultNameOrSprite:object = Null)
+	Return TPixmap( GetRegistry().Get(name, defaultNameOrSprite, TRegistryImageLoader.keyPixmapLS) )
 End Function

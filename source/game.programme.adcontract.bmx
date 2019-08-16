@@ -358,6 +358,8 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 		"topicality:infomercialRefresh"
 		  changes how much an infomercial "regenerates" on topicality per day
 	endrem
+	Global modKeyTopicality_infomercialRefreshLS:TLowerString = new TLowerString.Create("topicality::infomercialRefresh")
+	Global modKeyTopicality_infomercialWearoffLS:TLowerString = new TLowerString.Create("topicality::infomercialWearoff")
 
 
 	Method GenerateGUID:string()
@@ -525,12 +527,12 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method GetInfomercialRefreshModifier:float()
-		return GetModifier("topicality::infomercialRefresh")
+		return GetModifier(modKeyTopicality_infomercialRefreshLS)
 	End Method
 
 
 	Method GetInfomercialWearoffModifier:float()
-		return GetModifier("topicality::infomercialWearoff")
+		return GetModifier(modKeyTopicality_infomercialWearoffLS)
 	End Method
 
 

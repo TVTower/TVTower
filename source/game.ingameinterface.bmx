@@ -1051,9 +1051,9 @@ Type TTooltipAudience Extends TTooltip
 		lineY :+ 1 * Self.Usefont.GetHeight(lineText)
 
 		rem
-		local receptionAntenna:string = "Antenna " + MathHelper.NumberToString(100.0 * GameConfig.GetModifier("StationMap.Reception.AntennaMod", 1.0), 2, True)+"%"
-		local receptionCableNetwork:string = "CableNetwork " + MathHelper.NumberToString(100.0 * GameConfig.GetModifier("StationMap.Reception.CableNetworkMod", 1.0), 2, True)+"%"
-		local receptionSatellite:string = "Satellite " + MathHelper.NumberToString(100.0 * GameConfig.GetModifier("StationMap.Reception.SatelliteMod", 1.0), 2, True)+"%"
+		local receptionAntenna:string = "Antenna " + MathHelper.NumberToString(100.0 * GameConfig.GetModifier(modKeyStationMap_Reception_AntennaMod, 1.0), 2, True)+"%"
+		local receptionCableNetwork:string = "CableNetwork " + MathHelper.NumberToString(100.0 * GameConfig.GetModifier(modKeyStationMap_Reception_CableNetworkMod, 1.0), 2, True)+"%"
+		local receptionSatellite:string = "Satellite " + MathHelper.NumberToString(100.0 * GameConfig.GetModifier(modKeyStationMap_Reception_SatelliteMod, 1.0), 2, True)+"%"
 		lineText = GetLocale("RECEPTION") + ": " + receptionAntenna + " " + receptionCableNetwork + " " + receptionSatellite
 		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
 		lineY :+ Self.Usefont.GetHeight(lineText)

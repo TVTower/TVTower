@@ -22,11 +22,14 @@ Type RoomHandler_Archive extends TRoomHandler
 	Field GuiListSuitcase:TGUIProgrammeLicenceSlotList = null
 	Field DudeArea:TGUISimpleRect	'allows registration of drop-event
 
+	Field spriteSuitcaseGlow:TSprite {nosave}
+	Field spriteSuitcase:TSprite {nosave}
+
 	'configuration
 	Field suitcasePos:TVec2D				= new TVec2D.Init(40,270)
 	Field suitcaseGuiListDisplace:TVec2D	= new TVec2D.Init(14,25)
 
-	global LS_archive:TLowerString = TLowerString.Create("archive")	
+	global LS_archive:TLowerString = TLowerString.Create("archive")
 
 	Global _instance:RoomHandler_Archive
 	Global _eventListeners:TLink[]
@@ -49,12 +52,13 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'=== CREATE ELEMENTS ===
 		if not GuiListSuitCase
+			local baseSprite:TSprite = GetSpriteFromRegistry("gfx_movie_undefined")
 			GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(180, GetSpriteFromRegistry("gfx_movie_undefined").area.GetH()), "archive")
 			GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
 			GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListSuitcase.acceptType = TGUIProgrammeLicenceSlotList.acceptAll
 			GuiListSuitcase.SetItemLimit(GameRules.maxProgrammeLicencesInSuitcase)
-			GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie_undefined").area.GetW(), GetSpriteFromRegistry("gfx_movie_undefined").area.GetH())
+			GuiListSuitcase.SetSlotMinDimension(baseSprite.area.GetW(), baseSprite.area.GetH())
 			GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
 
 			DudeArea = new TGUISimpleRect.Create(new TVec2D.Init(600,100), new TVec2D.Init(200, 350), "archive" )
@@ -64,7 +68,11 @@ Type RoomHandler_Archive extends TRoomHandler
 			programmeList = New TgfxProgrammelist.Create(720, 10)
 		endif
 
-		
+
+		spriteSuitcase = GetSpriteFromRegistry("gfx_suitcase")
+		spriteSuitcaseGlow = GetSpriteFromRegistry("gfx_suitcase_glow")
+
+
 		'=== EVENTS ===
 		'=== remove all registered event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
@@ -144,12 +152,12 @@ Type RoomHandler_Archive extends TRoomHandler
 		'
 		'print "room owner enters room: roomID="+TRoom(triggerEvent.GetSender()).id+"  figure="+figure.name
 
-		
+
 		'=== FOR WATCHED PLAYERS ===
 		if IsObservedFigure(figure)
 			'when entering the archive, all scripts are moved from the
 			'suitcase to the collection
-			'TODO: mark these scripts as "new" 
+			'TODO: mark these scripts as "new"
 
 			'RONNY 2016/08/06:
 			'disabled because there is - for now - now way to move them
@@ -161,7 +169,7 @@ Type RoomHandler_Archive extends TRoomHandler
 			'- the real list still may contain elements with gui-references
 			guiListSuitcase.EmptyList()
 		endif
-	
+
 		return True
 	End Method
 
@@ -177,7 +185,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		'
 		'print "room owner tries to leave archive: roomID="+TRoom(triggerEvent.GetReceiver()).id+"  figure="+figure.name
 
-		
+
 		'=== FOR WATCHED PLAYERS ===
 		if IsObservedFigure(figure)
 			'if the list is open, close it and continue leaving
@@ -214,13 +222,13 @@ Type RoomHandler_Archive extends TRoomHandler
 			plan.RemoveProgrammeInstancesByLicence(licence, true)
 		Next
 
-		
+
 		'=== FOR WATCHED PLAYERS ===
 		if IsObservedFigure(figure)
 			'close the list if open
 			'programmeList.SetOpen(0)
 		endif
-		
+
 		return TRUE
 	End Method
 
@@ -345,7 +353,7 @@ Type RoomHandler_Archive extends TRoomHandler
 					if not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).AddProgrammeLicenceToSuitcase(guiBlock.licence)
 						triggerEvent.setVeto()
 					endif
-					
+
 					guiBlock = null
 				endif
 
@@ -401,11 +409,12 @@ Type RoomHandler_Archive extends TRoomHandler
 		programmeList.owner = room.owner
 		programmeList.Draw()
 
-		'make suitcase/vendor glow if needed
-		local glowSuitcase:string = ""
-		if draggedGuiProgrammeLicence then glowSuitcase = "_glow"
-		'draw suitcase
-		GetSpriteFromRegistry("gfx_suitcase"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		'draw suitcase - make suitcase/vendor glow if needed
+		If draggedGuiProgrammeLicence
+			spriteSuitcaseGlow.Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		Else
+			spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		EndIf
 
 		GUIManager.Draw( LS_archive )
 

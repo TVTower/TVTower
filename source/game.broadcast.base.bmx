@@ -22,6 +22,12 @@ Import "game.stationmap.bmx"
 Import "game.world.worldtime.bmx"
 
 
+Global modKeyStationMap_Audience_WeatherModLS:TLowerString = new TLowerString.Create("StationMap.Audience.WeatherMod")
+Global modKeyStationMap_Reception_AntennaModLS:TLowerString = new TLowerString.Create("StationMap.Reception.AntennaMod")
+Global modKeyStationMap_Reception_CableNetworkModLS:TLowerString = new TLowerString.Create("StationMap.Reception.CableNetworkMod")
+Global modKeyStationMap_Reception_SatelliteModLS:TLowerString = new TLowerString.Create("StationMap.Reception.SatelliteMod")
+
+
 Type TBroadcastManager
 	Field initialized:Int = False
 
@@ -826,7 +832,7 @@ Type TBroadcast
 	'returns how many percent of the people watch TV depending on the
 	'world weather (rain = better audience)
 	Function GetPotentialAudiencePercentage_WeatherMod:TAudience(time:Double = -1)
-		local weatherMod:Float = GameConfig.GetModifier("StationMap.Audience.WeatherMod")
+		local weatherMod:Float = GameConfig.GetModifier(modKeyStationMap_Audience_WeatherModLS)
 		return New TAudience.InitValue(weatherMod, weatherMod)
 	End Function
 
@@ -1234,12 +1240,11 @@ Type TAudienceMarketCalculation
 		potentialChannelSurfer = MaxAudience.Copy().Round()
 		potentialChannelSurfer.Multiply( TBroadcast.GetPotentialAudienceModifier(time) )
 
-
 		'reception might be not possible at all (bad weather)
 		local weatherMod:Float
-		weatherMod :+ shareAntenna * GameConfig.GetModifier("StationMap.Reception.AntennaMod", 1.0)
-		weatherMod :+ shareCableNetwork * GameConfig.GetModifier("StationMap.Reception.CableNetworkMod", 1.0)
-		weatherMod :+ shareSatellite * GameConfig.GetModifier("StationMap.Reception.SatelliteMod", 1.0)
+		weatherMod :+ shareAntenna * GameConfig.GetModifier(modKeyStationMap_Reception_AntennaModLS, 1.0)
+		weatherMod :+ shareCableNetwork * GameConfig.GetModifier(modKeyStationMap_Reception_CableNetworkModLS, 1.0)
+		weatherMod :+ shareSatellite * GameConfig.GetModifier(modKeyStationMap_Reception_SatelliteModLS, 1.0)
 		potentialChannelSurfer.MultiplyFloat(weatherMod)
 
 
