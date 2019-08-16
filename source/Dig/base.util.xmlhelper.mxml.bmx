@@ -51,36 +51,36 @@ Type TXmlHelper
 		Local obj:TXmlHelper = New TXmlHelper
 		obj.LoadDocument(filename, rootNode, createIfMissing)
 
-		return obj
+		Return obj
 	End Function
 
 
 	Method LoadDocument:TxmlDoc(filename:String, rootNode:String="", createIfMissing:Int=True)
 		'reset old values
-		if self.xmlDoc
+		If Self.xmlDoc
 			xmlDoc.free()
-			self.xmlDoc = null
-		endif
+			Self.xmlDoc = Null
+		EndIf
 
 
 		If FileSize(filename) >= 0
-			self.filename = filename
-			self.xmlDoc = TxmlDoc.parseFile(filename)
+			Self.filename = filename
+			Self.xmlDoc = TxmlDoc.parseFile(filename)
 		Else
-			self.filename = filename
+			Self.filename = filename
 
 			'try to load it via a stream (maybe SDL wants to help out)
 			Local stream:TStream = OpenStream(filename)
 			If stream
-				self.xmlDoc = TxmlDoc.ReadDoc(stream)
+				Self.xmlDoc = TxmlDoc.readDoc(stream)
 				stream.Close()
 			EndIf
 		EndIf
 
 
-		If not xmlDoc
+		If Not xmlDoc
 			If createIfmissing
-				self.xmlDoc = CreateDocument(rootNode)
+				Self.xmlDoc = CreateDocument(rootNode)
 			Else
 				If FileSize(filename) >= 0
 					Print "Document ~~"+filename+"~~ not parsed successfully."
@@ -91,7 +91,7 @@ Type TXmlHelper
 			EndIf
 		EndIf
 
-		Return self.xmlDoc
+		Return Self.xmlDoc
 	End Method
 
 
@@ -103,11 +103,11 @@ Type TXmlHelper
 	End Function
 
 
-	Function CreateDocument:TXmlDoc(rootNodeName:string = "")
-		local xmlDoc:TXmlDoc = TxmlDoc.newDoc("1.0")
+	Function CreateDocument:TxmlDoc(rootNodeName:String = "")
+		Local xmlDoc:TxmlDoc = TxmlDoc.newDoc("1.0")
 		If rootNodeName <> "" Then CreateRootNode(xmlDoc, rootNodeName)
 
-		return xmlDoc
+		Return xmlDoc
 	End Function
 
 
@@ -120,8 +120,8 @@ Type TXmlHelper
 	End Method
 
 
-	Function CreateRootNode:TxmlNode(document:TXmlDoc, key:String)
-		if not document then return Null
+	Function CreateRootNode:TxmlNode(document:TxmlDoc, key:String)
+		If Not document Then Return Null
 
 		If key = "" Then key = "root"
 		Local result:TxmlNode = TxmlNode.newNode(key)
@@ -144,22 +144,22 @@ Type TXmlHelper
 	'in all cases.
 	Function GetNodeChildElements:TList(node:TxmlNode)
 		'we only want "<ELEMENTS>"
-		If not node then return CreateList()
-		return node.getChildren()
+		If Not node Then Return CreateList()
+		Return node.getChildren()
 	End Function
 
 
 
 	'find a "<tag>"-element within a given start node
-	Function FindElementNode:TxmlNode(startNode:TXmlNode, _nodeName:String)
-		local nodeName:TLowerString = TLowerString.Create(_nodeName)
-		return _FindElementNodeLS(startNode, nodeName)
+	Function FindElementNode:TxmlNode(startNode:TxmlNode, _nodeName:String)
+		Local nodeName:TLowerString = TLowerString.Create(_nodeName)
+		Return _FindElementNodeLS(startNode, nodeName)
 	End Function
 
 
-	Method FindElementNodeLS:TxmlNode(startNode:TXmlNode, nodeName:TLowerString)
+	Method FindElementNodeLS:TxmlNode(startNode:TxmlNode, nodeName:TLowerString)
 		If Not startNode Then startNode = GetRootNode()
-		return _FindElementNodeLS(startNode, nodeName)
+		Return _FindElementNodeLS(startNode, nodeName)
 	End Method
 
 
@@ -186,7 +186,7 @@ Type TXmlHelper
 
 	'search for an attribute
 	'(compared to node.HasAttribute() this is NOT case sensitive!)
-	Function HasAttribute:Int(node:TXmlNode, fieldName:String)
+	Function HasAttribute:Int(node:TxmlNode, fieldName:String)
 		If Not node Then Return False
 
 		Local att:TList = node.GetAttributeList()
@@ -201,9 +201,9 @@ Type TXmlHelper
 
 	'returns the value of an attribute
 	'(compared to node.GetAttribute() this is NOT case sensitive!)
-	Function GetAttribute:String(node:TXmlNode, _fieldName:String)
+	Function GetAttribute:String(node:TxmlNode, _fieldName:String)
 		Local att:TList = node.GetAttributeList()
-		local fieldName:TLowerString = TLowerString.Create(_fieldName)
+		Local fieldName:TLowerString = TLowerString.Create(_fieldName)
 		'fieldName = fieldName.ToLower()
 		For Local attribute:TxmlAttribute = EachIn att
 			If fieldName.EqualsLower(attribute.GetName()) Then Return node.GetAttribute(attribute.GetName())
@@ -247,7 +247,7 @@ Type TXmlHelper
 	End Function
 
 
-	Function HasValue:Int(node:TXmlNode, fieldName:String, searchInChildNodeNames:String[] = Null)
+	Function HasValue:Int(node:TxmlNode, fieldName:String, searchInChildNodeNames:String[] = Null)
 		If Not node Then Return False
 
 		'loop through all potential fieldnames ("frames|f" -> "frames", "f")
@@ -275,7 +275,7 @@ Type TXmlHelper
 
 
 	'loads values of a node into a tdata object
-	Function LoadValuesToData:TData(node:TXmlNode, data:TData, fieldNames:String[], searchInChildNodeNames:String[] = Null, overwriteExisting:int = True)
+	Function LoadValuesToData:TData(node:TxmlNode, data:TData, fieldNames:String[], searchInChildNodeNames:String[] = Null, overwriteExisting:Int = True)
 		If Not node Then Return data
 
 		For Local fieldName:String = EachIn fieldNames
@@ -283,23 +283,23 @@ Type TXmlHelper
 			'use the first fieldname ("frames|f" -> add as "frames")
 			Local names:String[] = fieldName.Split("|")
 			'if name is occupied -> convert to array and append
-			if not overwriteExisting and data.Has(names[0])
-				local old:object = data.Get(names[0])
-				local arr:object[] = object[](old)
-				if not arr then arr = new object[0]
+			If Not overwriteExisting And data.Has(names[0])
+				Local old:Object = data.Get(names[0])
+				Local arr:Object[] = Object[](old)
+				If Not arr Then arr = New Object[0]
 
 				arr :+ [FindValue(node, fieldName, "", "", searchInChildNodeNames)]
 				data.Add(names[0], arr)
-			else
+			Else
 				data.Add(names[0], FindValue(node, fieldName, "", "", searchInChildNodeNames))
-			endif
+			EndIf
 		Next
 		Return data
 	End Function
 
 
 	'loads values of a node into a tdata object
-	Function LoadAllValuesToData:TData(node:TXmlNode, data:TData, ignoreNames:String[] = Null)
+	Function LoadAllValuesToData:TData(node:TxmlNode, data:TData, ignoreNames:String[] = Null)
 		If Not node Then Return data
 
 		'=== ATTRIBUTES ===
@@ -311,71 +311,71 @@ Type TXmlHelper
 
 		'=== CHILD ELEMENTS ===
 		For Local subNode:TxmlNode = EachIn GetNodeChildElements(node)
-			local children:int = subNode.GetAttributeList().Count()
-			if children = 0
-				local childList:TList = subNode.GetChildren()
-				if childList then children = childList.Count()
-			endif
+			Local children:Int = subNode.GetAttributeList().Count()
+			If children = 0
+				Local childList:TList = subNode.GetChildren()
+				If childList Then children = childList.Count()
+			EndIf
 
 			If StringHelper.InArray(subNode.GetName(), ignoreNames, False) Then Continue
 
-			If dataLS.EqualsLower(subNode.getName()) or children > 0
+			If dataLS.EqualsLower(subNode.getName()) Or children > 0
 				Local subData:TData = New TData
 
 				LoadAllValuesToData(subNode, subData, ignoreNames)
-				local key:object
-				if dataLS.EqualsLower(subNode.getName())
+				Local key:Object
+				If dataLS.EqualsLower(subNode.getName())
 					key = dataLS
-				else
+				Else
 					key = subNode.getName()
-				endif
+				EndIf
 
-				if data.Has(key)
-					local dataArr:TData[] = TData[](data.Get(key))
-					if not dataArr
-						dataArr = new TData[0]
-						if data.GetData(key.ToString())
+				If data.Has(key)
+					Local dataArr:TData[] = TData[](data.Get(key))
+					If Not dataArr
+						dataArr = New TData[0]
+						If data.GetData(key.ToString())
 							dataArr :+ [data.GetData(key.ToString())]
-						endif
-					endif
+						EndIf
+					EndIf
 					dataArr :+ [subData]
 
 					data.Add(key, dataArr)
-				else
+				Else
 					data.Add(key, subData)
-				endif
-			else
-				local value:string = subNode.ToString()
+				EndIf
+			Else
+				Local value:String = subNode.ToString()
 'print bmx_mxmlGetType(subNode.nodePtr) +"  | " + value
 				'skip comments
-				if value and value[0] = Asc("<") and value.Find("<!--") = 0 then continue
+				If value And value[0] = Asc("<") And value.Find("<!--") = 0 Then Continue
 
 
 
-				local key:object = subNode.getName()
-				if data.Has(key)
-					local arr:object[] = object[](data.Get(key.ToString()))
-					if not arr
-						arr = new object[0]
-						if data.Get(key.ToString())
+				Local key:Object = subNode.getName()
+				If data.Has(key)
+					Local arr:Object[] = Object[](data.Get(key.ToString()))
+					If Not arr
+						arr = New Object[0]
+						If data.Get(key.ToString())
 							arr :+ [data.Get(key.ToString())]
-						endif
-					endif
+						EndIf
+					EndIf
 					arr :+ [subNode.GetContent()]
 
 					data.Add(key, arr)
-				else
+				Else
 					data.Add(key, subNode.GetContent())
-				endif
+				EndIf
 				'data.Add(subNode.getName(), subNode.GetContent())
-			endif
+			EndIf
 		Next
 		Return data
 	End Function
 
 
 
-	Function _FindElementNodeLS:TxmlNode(startNode:TXmlNode, nodeName:TLowerString)
+	Function _FindElementNodeLS:TxmlNode(startNode:TxmlNode, nodeName:TLowerString)
 		If Not startNode Then Return Null
 
 		'maybe we are searching for start node
@@ -385,7 +385,7 @@ Type TXmlHelper
 		For Local child:TxmlNode = EachIn GetNodeChildElements(startNode)
 			If nodeName.EqualsLower(child.getName()) Then Return child
 			For Local subStartNode:TxmlNode = EachIn GetNodeChildElements(child)
-				Local subChild:TXmlNode = _FindElementNodeLS(subStartNode, nodeName)
+				Local subChild:TxmlNode = _FindElementNodeLS(subStartNode, nodeName)
 				If subChild Then Return subChild
 			Next
 		Next
@@ -416,148 +416,125 @@ Type TXmlHelper
 		End Select
 		Return defaultValue
 	End Function
-End Type
-rem
 
 
+	'GETTERS
+	Function GetNodeDepth:Int(node:TxmlNode)
+		If node And node.GetParent()
+			Local depth:Int = 0
+			Local nextParent:TxmlNode = node.GetParent()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	Function _SetNodeContent:int(path:string, value:string, startNode:TXmlNode)
-		local node:TXmlNode = _GetNode(startNode, path, True)
-
-		if node
-			node.SetContent(value)
-			return True
-		endif
-
-		return False
-	End Function
-
-
-	Function _SetNodeAttribute:int(path:string, name:string, value:string, startNode:TXmlNode)
-		local node:TXmlNode
-		if path
-			node = _GetNode(startNode, path, True)
-		else
-			node = startNode
-		endif
-
-		if node
-			node.SetAttribute(name, value)
-			return True
-		endif
-
-		return False
-	End Function
-
-
-	Function GetNodeDepth:int(node:TXmlBase)
-		if node and node.GetParent()
-			local depth:int = 0
-			local nextParent:TXmlBase = node.GetParent()
-
-			while nextParent
+			While nextParent
 				depth :+ 1
 				nextParent = nextParent.GetParent()
-			wend
+			Wend
 
 			'ignore "root" -> subtract -1
-			return depth -1
-		endif
+			Return depth -1
+		EndIf
 
-		return 0
+		Return 0
 	End Function
 
 
-	Function _GetNode:TXmlNode(startNode:TXmlNode, path:string, createIfMissing:int = False)
-		if not startNode then return Null
+	Function GetNode:TxmlNode(startNode:TxmlNode, path:String, createIfMissing:Int = False)
+		If Not startNode Then Return Null
 
-		local branches:string[] = path.ToLower().split("/")
-		local currentNode:TXmlNode = startNode
-		local nextNode:TXmlNode
-		for local branch:string = EachIn branches
-			nextNode = TxmlHelper.FindElementNode(currentNode, branch)
+		Local branches:String[] = path.ToLower().split("/")
+		Local currentNode:TxmlNode = startNode
+		Local nextNode:TxmlNode
+		For Local branch:String = EachIn branches
+			nextNode = FindElementNode(currentNode, branch)
 
-			if not nextNode
+			If Not nextNode
+				If Not createIfMissing Then Return Null
+
 				'one deeper than the upcoming </...>-closing tag
-				if currentNode.GetText().Find("~n") < 0
+				If currentNode.GetContent().Find("~n") < 0
 					currentNode.AddContent("~n")
 					currentNode.AddContent( RSet("", GetNodeDepth(currentNode)).Replace(" ", "~t") )
-				endif
+				EndIf
 				currentNode.AddContent("~t")
 
-				nextNode = currentNode.AddTextChild(branch)
+				nextNode = currentNode.AddChild(branch)
 				'new line
 				currentNode.AddContent("~n")
 				'move the upcoming </...>-closing tag into position again
 				currentNode.AddContent( RSet("", GetNodeDepth(currentNode)).Replace(" ", "~t") )
-			endif
+			EndIf
 
 			currentNode = nextNode
 		Next
 
-		return currentNode
+		Return currentNode
 	End Function
 
 
-	Method GetNode:TXmlNode(startNode:TXmlNode, path:string, createIfMissing:int = False)
-		if not startNode then startNode = GetRootNode()
+	'SETTERS / WRITERS
+	Function SetNodeContent:Int(path:String, value:String, startNode:TxmlNode)
+		Local node:TxmlNode = GetNode(startNode, path, True)
 
-		return _GetNode(startNode, path, createIfMissing)
-	End Method
+		If node
+			print "SetNodeContent: " + value
+			node.SetContent(value)
+			print "       Content: " + node.GetContent()
+			Return True
+		EndIf
+
+		Return False
+	End Function
 
 
-	Function RemoveNode:int(node:TXmlNode)
-		if node
+	Function SetNodeAttribute:Int(path:String, name:String, value:String, startNode:TxmlNode)
+		Local node:TxmlNode
+		If path
+			node = GetNode(startNode, path, True)
+		Else
+			node = startNode
+		EndIf
+
+		If node
+			If node.HasAttribute(name)
+				node.SetAttribute(name, value)
+			Else
+				node.AddAttribute(name, value)
+			EndIf
+			Return True
+		EndIf
+
+		Return False
+	End Function
+
+
+	Function RemoveNode:Int(node:TxmlNode)
+		If node
 			'removing a node does _not_ remove potentially prepended
 			'whitespace (and the appended newline)
 
 			'so we remove every sibling before until we reach another "node element"
 			'(whitespace is "text node" but we want to remove comments a now
 			' deleted node too )
-			local prevNode:TxmlNode = TxmlNode(node.previousSibling())
-			if prevNode and prevNode.GetType() <> XML_ELEMENT_NODE then RemoveNode(prevNode)
+			Local prevNode:TxmlNode = TxmlNode(node.previousSibling())
+			'mxml only returns "elements"
+			'If prevNode And prevNode.GetType() <> XML_ELEMENT_NODE Then RemoveNode(prevNode)
+			If prevNode Then RemoveNode(prevNode)
 
-			node.unlinkNode()
-			node.freeNode()
-			return True
-		endif
-		return False
+'			node.free()
+			Return True
+		EndIf
+		Return False
 	End Function
 
 
-	Function RemoveNodeAttribute:int(node:TXmlNode, attributeKey:string)
-		if node
-			Select node.unsetAttribute(attributeKey)
-				case 0
-					return True
-				case -1
-					return False 'not found
-			End Select
-		endif
-		return False
+	Function GetRootNode:TxmlNode(node:TxmlNode)
+		If Not node Then Return null
+
+		Local parent:TxmlNode = node.GetParent()
+		If not parent Then Return node
+
+		While parent And parent.GetParent()
+			parent = parent.GetParent()
+		Wend
+		Return parent
 	End Function
-
-
-
-
-
-
-
 End Type
-endrem
