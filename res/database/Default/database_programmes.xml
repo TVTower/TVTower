@@ -921,7 +921,7 @@ Einzigartig durch die Walzermusik und das Nachkriegswien</de>
 			<data country="USA" year="1982" distribution="1" maingenre="16" subgenre="" flags="0" blocks="2" price_mod="1" />
 			<ratings critics="47" speed="47" outcome="75" />
 		</programme>
-		<programme id="8ef29506-1756-400d-8f9c-30b9d64cd7a4" product="1" licence_type="5" tmdb_id="0" imdb_id="tt0051200" rt_id="0" creator="">
+		<programme id="8ef29506-1756-400d-8f9c-30b9d64cd7a4" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0051200" rt_id="0" creator="">
 			<title>
 				<de>Der Gasthof im Spechtswald</de>
 				<en></en>
@@ -2828,7 +2828,7 @@ Monumentaler Meilenstein</de>
 			<data country="USA" year="1990" distribution="1" maingenre="2" subgenre="" flags="0" blocks="3" price_mod="0.67" />
 			<ratings critics="56" speed="51" outcome="51" />
 		</programme>
-		<programme id="c2f960af-16fa-45f8-8b3a-1a17d4d9f3cf" product="1" licence_type="6" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="c2f960af-16fa-45f8-8b3a-1a17d4d9f3cf" product="7" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Kaminfeuer</de>
 				<en></en>
@@ -3213,7 +3213,7 @@ Nach dem Roman von Agatha Kissme.</de>
 			<data country="GB" year="1961" distribution="1" maingenre="17" subgenre="" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="56" speed="42" outcome="56" />
 		</programme>
-		<programme id="c4348eef-2678-486b-a07c-ce00dc4fed91" product="1" licence_type="5" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="c4348eef-2678-486b-a07c-ce00dc4fed91" product="5" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 			<title>
 				<de>Landung auf dem Mars</de>
 				<en></en>
@@ -3551,7 +3551,7 @@ Gut besetzter Krimi nach Agatha Kissme</de>
 			<data country="GB" year="1978" distribution="1" maingenre="17" subgenre="" flags="0" blocks="3" price_mod="1" />
 			<ratings critics="61" speed="61" outcome="56" />
 		</programme>
-		<programme id="4a8b7373-2f02-4d66-b717-5cfded60c312" product="1" licence_type="5" tmdb_id="0" imdb_id="tt0086879" rt_id="0" creator="">
+		<programme id="4a8b7373-2f02-4d66-b717-5cfded60c312" product="5" licence_type="1" tmdb_id="0" imdb_id="tt0086879" rt_id="0" creator="">
 			<title>
 				<de>Mozart</de>
 				<en></en>
@@ -6266,7 +6266,7 @@ Tragische Liebesgeschichte</de>
 				</programme>
 			</children>
 		</programme>
-		<programme id="5aa779f8-8140-4bef-912a-4aa7a760e1a6" product="5" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="5578" created_by="Ronny">
+		<programme id="5aa779f8-8140-4bef-912a-4aa7a760e1a6" product="4" licence_type="3" tmdb_id="0" imdb_id="" rt_id="0" creator="5578" created_by="Ronny">
 			<title>
 				<de>Maler vergangener Zeiten</de>
 				<en></en>
@@ -6283,7 +6283,7 @@ Tragische Liebesgeschichte</de>
 			<data country="D" year="1981" distribution="2" maingenre="6" subgenre="" flags="4" blocks="1" price_mod="1.0" />
 			<ratings critics="49" speed="17" outcome="0" />
 			<children>
-				<programme id="b1c87d59-cffe-4696-ac75-8f4e7fbbed76" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="b1c87d59-cffe-4696-ac75-8f4e7fbbed76" product="4" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="5578" created_by="Ronny">
 					<title>
 						<de>Michelangelo</de>
 						<en></en>
@@ -6294,7 +6294,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="49" speed="17" />
 				</programme>
-				<programme id="02613833-d54e-4b6b-8de8-2370f4d5bb57" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="02613833-d54e-4b6b-8de8-2370f4d5bb57" product="4" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="5578" created_by="Ronny">
 					<title>
 						<de>Monet</de>
 						<en></en>
@@ -6305,7 +6305,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="47" speed="12" />
 				</programme>
-				<programme id="9ada2a37-6ff5-4ff0-9766-7d0b2d98cff4" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="9ada2a37-6ff5-4ff0-9766-7d0b2d98cff4" product="4" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="5578" created_by="Ronny">
 					<title>
 						<de>Picasso</de>
 						<en></en>
@@ -6316,7 +6316,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="49" speed="18" />
 				</programme>
-				<programme id="494fa370-4744-4616-aa14-910aa692af25" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="494fa370-4744-4616-aa14-910aa692af25" product="4" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="5578" created_by="Ronny">
 					<title>
 						<de>Rembrandt</de>
 						<en></en>
@@ -6327,7 +6327,7 @@ Tragische Liebesgeschichte</de>
 					</description>
 					<ratings critics="22" speed="15" />
 				</programme>
-				<programme id="6eccf754-bb87-40e5-bb5c-931fd2124a1b" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="5578" created_by="Ronny">
+				<programme id="6eccf754-bb87-40e5-bb5c-931fd2124a1b" product="4" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="5578" created_by="Ronny">
 					<title>
 						<de>Kandinsky</de>
 						<en></en>
@@ -6956,7 +6956,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<ratings critics="49" speed="49" outcome="49" />
 		</programme>
 
-		<programme id="04439fd1-e89f-TheRobTestSerie01" product="5" licence_type="3" tmdb_id="0" imdb_id="tt2757036" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="04439fd1-e89f-TheRobTestSerie01" product="2" licence_type="3" tmdb_id="0" imdb_id="tt2757036" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Western von gestern, Orginal Serie wird auf 1975 datiert -->
 				<de>Gestern gab es Western</de>
@@ -6978,7 +6978,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<data country="USA" year="1949" distribution="2" maingenre="18" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="40" speed="29" outcome="29" />
 			<children>
-				<programme id="39803483-0800-46e3-a153-TheRobEpisode1" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="39803483-0800-46e3-a153-TheRobEpisode1" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Jerry das Pferd</de>
 						<en>Jerry the horse</en>
@@ -6989,7 +6989,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="42" speed="42" />
 				</programme>
-				<programme id="4c062f49-f1e8-400a-9c11-TheRobEpisode2" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="4c062f49-f1e8-400a-9c11-TheRobEpisode2" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Lozzo lernt peitschen</de>
 						<en>Lozzo trains whipping</en>
@@ -7000,7 +7000,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="53" speed="39" />
 				</programme>
-				<programme id="dc0b1ca6-c1c1-496f-9882-TheRobEpisode3" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="dc0b1ca6-c1c1-496f-9882-TheRobEpisode3" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Niklas sucht James</de>
 						<en>Niklas looking for James</en>
@@ -7011,7 +7011,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="19" speed="25" />
 				</programme>
-				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode4" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode4" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Njamba der Fotograf</de>
 						<en>Njamba the photograph</en>
@@ -7022,7 +7022,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="29" speed="5" />
 				</programme>
-				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode5" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode5" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Farmer gen Osten</de>
 						<en>Farmers go east</en>
@@ -7033,7 +7033,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="32" speed="79" />
 				</programme>
-				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode6" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode6" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Mensch Jimmy</de>
 						<en>Well, Jimmy</en>
@@ -7044,7 +7044,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="19" speed="55" />
 				</programme>
-				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode7" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="fc7b481e-33b5-4113-89b3-TheRobEpisode7" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>IIIk, wird das Wononza?</de>
 						<en>OMG, will this end in Wononza?</en>
@@ -7462,7 +7462,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<ratings critics="71" speed="46" outcome="63" />
 		</programme>
 
-		<programme id="therob-programme-speiuebelunddubrovnik" product="5" licence_type="3" tmdb_id="series_258516" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="therob-programme-speiuebelunddubrovnik" product="2" licence_type="3" tmdb_id="series_258516" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Spejbl und Hurvinek keine IMDB ID gefunden -->
 				<de>Speiübel und Dubrovnik</de>
@@ -7482,7 +7482,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<data country="CSSR" year="1973" distribution="2" maingenre="9" subgenre="5" flags="2" blocks="1" price_mod="1.00" />
 			<ratings critics="47" speed="29" outcome="0" />
 			<children>
-				<programme id="therob-programme-speiuebelunddubrovnik-ep201" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-speiuebelunddubrovnik-ep201" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Speiübel kommt in die Schule</de>
 						<en>Spyble goes to school</en>
@@ -7493,7 +7493,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="43" speed="26" />
 				</programme>
-				<programme id="therob-programme-speiuebelunddubrovnik-ep202" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-speiuebelunddubrovnik-ep202" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Hausaufgaben</de>
 						<en>Homework</en>
@@ -7504,7 +7504,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="49" speed="31" />
 				</programme>
-				<programme id="therob-programme-speiuebelunddubrovnik-ep203" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="therob-programme-speiuebelunddubrovnik-ep203" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Musikunterricht</de>
 						<en>The music lesson</en>
@@ -7515,7 +7515,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="56" speed="28" />
 				</programme>
-				<programme id="therob-programme-speiuebelunddubrovnik-ep204" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-speiuebelunddubrovnik-ep204" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Speiübel lernt schwimmen</de>
 						<en>Spyble learns to swim</en>
@@ -7526,7 +7526,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</description>
 					<ratings critics="44" speed="32" />
 				</programme>
-				<programme id="therob-programme-speiuebelunddubrovnik-ep205" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+				<programme id="therob-programme-speiuebelunddubrovnik-ep205" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="">
 					<title>
 						<de>Plätzchen backen</de>
 						<en>Baking cookies</en>
@@ -7925,7 +7925,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="26" speed="49" outcome="38" />
 		</programme>
 
-		<programme id="therob-programme-famser-AlsoPapa" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0070964" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="therob-programme-famser-AlsoPapa" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0070964" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Aber Vati von Gast2 umgesetzt. Familie und Kult -->
 				<de>Also Papa</de>
@@ -7950,7 +7950,7 @@ Dreh- und Angelpunkt sind die Versuche, Vati Neu zu verheiraten.</de>
 			<data country="DDR" year="1979" distribution="2" maingenre="9" subgenre="5" flags="8" blocks="2" price_mod="1.00" />
 			<ratings critics="77" speed="35" outcome="40" />
 			<children>
-				<programme id="therob-programme-famser-AlsoPapa-ep101" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep101" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Vati will nicht heiraten</de>
 						<en>Dad does not want to marry</en>
@@ -7963,7 +7963,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					<data country="DDR" year="1974" price_mod="1.00" />
 					<ratings critics="79" speed="36" />
 				</programme>
-				<programme id="therob-programme-famser-AlsoPapa-ep102" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep102" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Vati will heiraten</de>
 						<en>Dad wants to marry</en>
@@ -7975,7 +7975,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					<data country="DDR" year="1974" />
 					<ratings critics="77" speed="36" />
 				</programme>
-				<programme id="therob-programme-famser-AlsoPapa-ep103" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep103" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Vati hat geheiratet</de>
 						<en>Dad has married</en>
@@ -7987,7 +7987,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					<data country="DDR" year="1974" />
 					<ratings critics="77" speed="38" />
 				</programme>
-				<programme id="therob-programme-famser-AlsoPapa-ep104" product="5" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep104" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>5 Jahre danach</de>
 						<en>5 years later</en>
@@ -8001,7 +8001,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="therob-programme-KaltkabelindieZukunft" product="5" fictional="1" licence_type="3" tmdb_id="tv_62451" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="therob-programme-KaltkabelindieZukunft" product="2" fictional="1" licence_type="3" tmdb_id="tv_62451" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Kinderserie, Heißer Draht ins Jenseits, keine IMDB ID, von Gast2 -->
 				<de>Kaltkabel in die Zukunft</de>
@@ -8022,7 +8022,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="HUN" year="1969" distribution="2" maingenre="3" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="27" speed="36" outcome="0" />
 			<children>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep201" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep201" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>3D voll echt</de>
 						<en>3D completely real</en>
@@ -8033,7 +8033,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="28" speed="35" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep202" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep202" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Fischersatz</de>
 						<en>Fish substitute</en>
@@ -8044,7 +8044,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="26" speed="37" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep203" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep203" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Sauschnell zur Fete</de>
 						<en>Very fast to the party</en>
@@ -8055,7 +8055,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="27" speed="36" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep204" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep204" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Wettermacher</de>
 						<en>The weather generator</en>
@@ -8066,7 +8066,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="27" speed="39" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep205" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep205" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Hilfe, Androiden</de>
 						<en></en>
@@ -8077,7 +8077,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="30" speed="33" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep206" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep206" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Planetenurlaub</de>
 						<en>Hollidays on an other planet</en>
@@ -8088,7 +8088,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="25" speed="38" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep207" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep207" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Doof und glücklich</de>
 						<en>Stupid but happy</en>
@@ -8099,7 +8099,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="27" speed="36" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep208" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep208" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Zeitreise</de>
 						<en>Timemachine</en>
@@ -8110,7 +8110,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="26" speed="35" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep209" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep209" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Der Manipulator</de>
 						<en>The manipulator</en>
@@ -8121,7 +8121,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="28" speed="34" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep210" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep210" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Treibhauslegende</de>
 						<en>Green house legend</en>
@@ -8132,7 +8132,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="21" speed="42" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep211" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep211" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Die Tarnkappenpille</de>
 						<en>The invisibility pill</en>
@@ -8143,7 +8143,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="26" speed="34" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep212" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep212" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Rhythmus der Kuh</de>
 						<en>The cow rythm</en>
@@ -8154,7 +8154,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="28" speed="30" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep213" product="5" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep213" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 					<title>
 						<de>Das Traumhaus</de>
 						<en>The perfect house</en>
@@ -8187,7 +8187,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<ratings critics="81" speed="2" outcome="5" />
 		</programme>
 
-		<programme id="TheRob-serie-dok-WunderderMeere" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0192937" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-dok-WunderderMeere" product="4" licence_type="3" tmdb_id="0" imdb_id="tt0192937" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Geheimnisse des Meeres , Dokumention mit Subgenre Familie -->
 				<de>Wunder der Meere</de>
@@ -8210,7 +8210,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="F" year="1975" distribution="2" maingenre="6" subgenre="9" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="75" speed="50" outcome="" />
 			<children>
-				<programme id="TheRob-serie-WunderderMeere-Ep001" product="7"  licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-WunderderMeere-Ep001" product="4"  licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Haie</de>
 						<en>The sharks</en>
@@ -8221,7 +8221,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="73" speed="53" />
 				</programme>
-				<programme id="TheRob-serie-WunderderMeere-Ep002" product="7" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="7430" created_by="TheRob">
+				<programme id="TheRob-serie-WunderderMeere-Ep002" product="4" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="7430" created_by="TheRob">
 					<title>
 						<de>Die Wale</de>
 						<en>The whales</en>
@@ -8232,7 +8232,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="77" speed="48" />
 				</programme>
-				<programme id="TheRob-serie-WunderderMeere-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-WunderderMeere-Ep003" product="4" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>In der Tiefe</de>
 						<en>In the deep</en>
@@ -8243,7 +8243,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="77" speed="49" />
 				</programme>
-				<programme id="TheRob-serie-WunderderMeere-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-WunderderMeere-Ep004" product="4" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Seevögel</de>
 						<en>The sea birds</en>
@@ -8254,7 +8254,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="67" speed="40" />
 				 </programme>
-				<programme id="TheRob-serie-WunderderMeere-Ep005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-WunderderMeere-Ep005" product="4" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Schätze der See</de>
 						<en>Treasure of the ocean</en>
@@ -8268,7 +8268,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-crime-Sensemannhechelt" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0061305" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-crime-Sensemannhechelt" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0061305" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Der Tod läuft hinterher -->
 				<de>Der Sensenmann hechelt hinterher</de>
@@ -8291,7 +8291,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="D" year="1967" distribution="2" maingenre="4" subgenre="" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="76" speed="58" outcome="" />
 			<children>
-				<programme id="TheRob-serie-Sensemannhechelt-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Sensemannhechelt-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Eddie kommt zurück</de>
 						<en>Eddie returns</en>
@@ -8302,7 +8302,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="77" speed="58" />
 				</programme>
-				<programme id="TheRob-serie-Sensemannhechelt-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Sensemannhechelt-Ep002" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Unschuldig oder nicht?</de>
 						<en>Guilty or not?</en>
@@ -8313,7 +8313,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="76" speed="58" />
 				</programme>
-				<programme id="TheRob-serie-Sensemannhechelt-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Sensemannhechelt-Ep003" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Eddie im Schlusspurt</de>
 						<en>Eddie on the final lane</en>
@@ -8327,7 +8327,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-Moumental-FuchsunterFuechsen" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0057800" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-Moumental-FuchsunterFuechsen" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0057800" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Wolf unter Wölfen, Monumental -->
 				<de>Fuchs unter Füchsen</de>
@@ -8345,7 +8345,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="DDR" year="1964" distribution="2" maingenre="13" subgenre="" flags="8" blocks="2" price_mod="1.00" />
 			<ratings critics="67" speed="54" outcome="" />
 			<children>
-				<programme id="TheRob-serie-FuchsunterFuechsen-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-FuchsunterFuechsen-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Das Dorf und seine Rastlosen</de>
 						<en>The village and the restless within</en>
@@ -8356,7 +8356,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="67" speed="53" />
 				</programme>
-				<programme id="TheRob-serie-FuchsunterFuechsen-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-FuchsunterFuechsen-Ep002" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Feuchtes Land</de>
 						<en>Moist land</en>
@@ -8367,7 +8367,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="62" speed="57" />
 				</programme>
-				<programme id="TheRob-serie-FuchsunterFuechsen-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-FuchsunterFuechsen-Ep003" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Des Teufels Jäger nahe</de>
 						<en>The hunters of the devil are coming closer</en>
@@ -8378,7 +8378,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="69" speed="56" />
 				</programme>
-				<programme id="TheRob-serie-FuchsunterFuechsen-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-FuchsunterFuechsen-Ep004" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Der Kreis schließt sich</de>
 						<en>The circle is getting closed</en>
@@ -8491,7 +8491,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<ratings critics="63" speed="41" outcome="47" />
 		</programme>
 
-		<programme id="TheRob-serie-Horror-DasVerborgene" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0255763" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-Horror-DasVerborgene" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0255763" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- The Veil, Horror, Sub Mystery Test: Konstante Wertung. -->
 				<de>Das Verborgene</de>
@@ -8509,7 +8509,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="USA" year="1958" distribution="2" maingenre="12" subgenre="14" flags="8" blocks="1" price_mod="1.00" />
 			<ratings critics="76" speed="54" outcome="40" />
 			<children>
-				<programme id="TheRob-serie-DasVerborgene-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Visionen</de>
 						<en>Visions</en>
@@ -8519,7 +8519,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>In Paris a man has the vision, that his brother is murdered. As he returns home, he discovers that it is true. What happened?</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgenen-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgenen-Ep002" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Anhalter</de>
 						<en>Hitchhiker</en>
@@ -8529,7 +8529,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>A man takes a female hitchhiker to the next village. In the bar a name is mentioned, she gets nuts and flees. Nobody wants to say why. Why not?</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep003" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Essen ist fertig</de>
 						<en>The meal is ready</en>
@@ -8539,7 +8539,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>A husband rescues the live of his wife after she is bitten by a snake. But then he is told that the his truely beloved is a widower.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep004" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>What is up, Doc</de>
 						<en>What is up, Doc</en>
@@ -8549,7 +8549,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>Up, up and away to Italy. A young doctor wants to take his father, who is also a doctor, with him home to America. But the village wont let the real doctor leave.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep005" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Schaue tief</de>
 						<en>Look into depth</en>
@@ -8559,7 +8559,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>A young lady gives her ex-lover a gift. A crstal ball. Now he can see how she is cheating on her husband.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep006" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep006" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Letzter Wille</de>
 						<en>Last will</en>
@@ -8569,7 +8569,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>Two brothers are quarreling about the last will of their father. Well, time for the father to stop this dispute. Leaving his grave?</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep007" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep007" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Alpträume</de>
 						<en>Nightmares</en>
@@ -8579,7 +8579,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>A pilot is suddenly in trance. The copilot rescues the plane in front of a crash. The bilot himself has to move into the hidden to find out the truth.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep008" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep008" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Was eine Hitze</de>
 						<en>OMG how hot the summer is</en>
@@ -8589,7 +8589,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>A brave inhabitant calls the police, when he sees a burglary. When they arive, they find an uninhabitant apartment.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep009" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep009" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Dame kehrt zurück</de>
 						<en>The lady returns</en>
@@ -8599,7 +8599,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 						<en>Died? Not really. Rebirth in India. Time to return home and get some things straight with the family.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-DasVerborgene-Ep010" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DasVerborgene-Ep010" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Londons meistgesuchter Star</de>
 						<en>Londons most wanted star</en>
@@ -9403,7 +9403,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="53" speed="68" outcome="61" />
 		</programme>
 
-		<programme id="TheRob-serie-SamuraiAdam" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0080274" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-SamuraiAdam" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0080274" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Shogun, Serie Abenteuer, Sub Historie -->
 				<de>Samurai Adam</de>
@@ -9428,7 +9428,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<data country="USA" year="1980" distribution="1" maingenre="1" subgenre="11" flags="0" blocks="2" price_mod="1.00" />
 			<ratings critics="88" speed="67" outcome="" />
 			<children>
-				<programme id="TheRob-serie-SamuraiAdam-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1488968" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-SamuraiAdam-Episode001" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1488968" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Episode 1.1</de>
 						<en>Episode 1.1</en>
@@ -9439,7 +9439,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 					</description>
 					<ratings critics="91" speed="62" />
 				</programme>
-				<programme id="TheRob-serie-SamuraiAdam-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1488969" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-SamuraiAdam-Episode002" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1488969" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Episode 1.2</de>
 						<en>Episode 1.2</en>
@@ -9450,7 +9450,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 					</description>
 					<ratings critics="88" speed="67" />
 				</programme>
-				<programme id="TheRob-serie-SamuraiAdam-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1488970" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-SamuraiAdam-Episode003" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1488970" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Episode 1.3</de>
 						<en>Episode 1.3</en>
@@ -9461,7 +9461,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 					</description>
 					<ratings critics="86" speed="65" />
 				</programme>
-				<programme id="TheRob-serie-SamuraiAdam-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1484292" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-SamuraiAdam-Episode004" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1484292" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Episode 1.4</de>
 						<en>Episode 1.4</en>
@@ -9472,7 +9472,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 					</description>
 					<ratings critics="83" speed="72" />
 				</programme>
-				<programme id="TheRob-serie-SamuraiAdam-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-SamuraiAdam-Episode005" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Episode 1.5</de>
 						<en>Episode 1.5</en>
@@ -9486,7 +9486,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-Sanddornkahn" product="5" fictional="1" licence_type="3" tmdb_id="0" imdb_id="tt0074050" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-Sanddornkahn" product="2" fictional="1" licence_type="3" tmdb_id="0" imdb_id="tt0074050" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Sandokan, Action -->
 				<de>Sanddornkahn</de>
@@ -9510,7 +9510,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<data country="I" year="1976" distribution="2" maingenre="2" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="42" speed="46" outcome="" />
 			<children>
-				<programme id="TheRob-serie-Sanddornkahn-Episode001" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1306736" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Sanddornkahn-Episode001" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306736" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Episode 1.1</de>
 						<en>Episode 1.1</en>
@@ -9520,7 +9520,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 						<en>Sanddornkahn sees how mean the British people are to the citizens and decides to fight back.</en>
 					</description>
 				</programme>
-					<programme id="TheRob-serie-Sanddornkahn-Episode002" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1306737" rt_id="0" creator="8751" created_by="TheRob">
+					<programme id="TheRob-serie-Sanddornkahn-Episode002" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306737" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Episode 1.2</de>
 						<en>Episode 1.2</en>
@@ -9530,7 +9530,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 						<en>Sanddornkahn chases the first British ship and destroys it.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-Sanddornkahn-Episode003" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1306738" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Sanddornkahn-Episode003" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306738" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Episode 1.3</de>
 						<en>Episode 1.3</en>
@@ -9541,7 +9541,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 					</description>
 					<ratings critics="54" speed="30" />
 				</programme>
-				<programme id="TheRob-serie-Sanddornkahn-Episode004" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1306739" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Sanddornkahn-Episode004" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306739" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Episode 1.4</de>
 						<en>Episode 1.4</en>
@@ -9551,7 +9551,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 						<en>The Royal navy invests more in the chase of Sanddornkahn. They want to arrest him as fast as possible.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-Sanddornkahn-Episode005" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1306740" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Sanddornkahn-Episode005" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306740" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Episode 1.5</de>
 						<en>Episode 1.5</en>
@@ -9562,7 +9562,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 					</description>
 					<ratings critics="30" speed="59" />
 				</programme>
-				<programme id="TheRob-serie-Sanddornkahn-Episode006" product="7" licence_type="2" tmdb_id="0" imdb_id="tt1306741" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-Sanddornkahn-Episode006" product="2" licence_type="2" tmdb_id="0" imdb_id="tt1306741" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Episode 1.6</de>
 						<en>Episode 1.6</en>
@@ -10461,7 +10461,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="59" speed="67" outcome="76" />
 		</programme>
 
-		<programme id="TheRob-serie-crim-DelanoandChefs" product="5" fictional="0" licence_type="3" tmdb_id="0" imdb_id="tt0084997" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-crim-DelanoandChefs" product="2" fictional="0" licence_type="3" tmdb_id="0" imdb_id="tt0084997" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Die Polizei-Chiefs von Delano -->
 				<de>Delano und seine Polizeichefs</de>
@@ -10485,7 +10485,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<data country="USA" year="1983" distribution="0" maingenre="4" subgenre="7" flags="8" blocks="2" time="0" price_mod="1.00" />
 			<ratings critics="95" speed="80" outcome="85" />
 			<children>
-				<programme id="TheRob-serie-DelanoandChefs-Ep001" product="7" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DelanoandChefs-Ep001" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Zwanziger Jaher</de>
 						<en>The Twenties</en>
@@ -10496,7 +10496,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 					</description>
 					<ratings critics="99" speed="75" />
 				</programme>
-				<programme id="TheRob-serie-DelanoandChefs-Ep002" product="7" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DelanoandChefs-Ep002" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Vierziger Jahre</de>
 						<en>The Fourties</en>
@@ -10507,7 +10507,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 					</description>
 					<ratings critics="90" speed="83" />
 				</programme>
-				<programme id="TheRob-serie-DelanoandChefs-Ep003" product="7" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-DelanoandChefs-Ep003" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Sechziger Jahre</de>
 						<en>The Sixties</en>
@@ -10521,7 +10521,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-dram-HinterEden" product="5" fictional="0" licence_type="3" tmdb_id="0" imdb_id="tt0083409" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-dram-HinterEden" product="2" fictional="0" licence_type="3" tmdb_id="0" imdb_id="tt0083409" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Jenseits von Eden -->
 				<de>Steinbecks Hinter Eden</de>
@@ -10544,7 +10544,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<data country="USA" year="1981" distribution="0" maingenre="7" subgenre="0" flags="0" blocks="3" time="0" price_mod="1.00" />
 			<ratings critics="92" speed="57" outcome="65" />
 			<children>
-				<programme id="TheRob-serie-HinterEden-Ep001" product="7" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-HinterEden-Ep001" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Brüder</de>
 						<en>Brothers</en>
@@ -10555,7 +10555,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 					</description>
 					<ratings critics="97" speed="42" />
 				</programme>
-				<programme id="TheRob-serie-HinterEden-Ep002" product="7" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-HinterEden-Ep002" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Cathy</de>
 						<en>Cathy</en>
@@ -10566,7 +10566,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 					</description>
 					<ratings critics="83" speed="78" />
 				</programme>
-				<programme id="TheRob-serie-HinterEden-Ep003" product="7" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-HinterEden-Ep003" product="2" fictional="0" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Rivalen</de>
 						<en>Rivals</en>
@@ -10805,7 +10805,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="83" speed="69" outcome="84" />
 		</programme>
 
-		<programme id="TheRob-serie-adv-RobinWusoe" product="5" licence_type="3" tmdb_id="0" imdb_id="tt0167516" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-adv-RobinWusoe" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0167516" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Robinson Crusoe, Abenteuer -->
 				<de>Robin Wusoe</de>
@@ -10827,7 +10827,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<data country="D/F" year="1964" distribution="2" maingenre="1" subgenre="" flags="8" blocks="2" price_mod="1.00" />
 			<ratings critics="67" speed="44" outcome="" />
 			<children>
-				<programme id="TheRob-serie-RobinWusoe-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RobinWusoe-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Wie es begann</de>
 						<en>How it began</en>
@@ -10837,7 +10837,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 						<en>Robin Wusoe describes the beginning of his journey. And his wishes and dreams.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-RobinWusoe-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RobinWusoe-Ep002" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Freitag?</de>
 						<en>Friday?</en>
@@ -10847,7 +10847,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 						<en>Stranded on an island Robin meets a stranger.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-RobinWusoe-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RobinWusoe-Ep003" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Kannibalen!!</de>
 						<en>Canibals!</en>
@@ -10857,7 +10857,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 						<en>Robin and Friday are getting aware that they are sharing with some unfriendly humans.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-RobinWusoe-Ep004" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RobinWusoe-Ep004" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Endlich Heimat</de>
 						<en>Home! Sweet Home</en>
@@ -10872,7 +10872,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			</children>
 		</programme>
 
-		<programme id="TheRob-serie-fant-RingeundRosen" product="5" licence_type="3" tmdb_id="0" imdb_id="tt3636830" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-serie-fant-RingeundRosen" product="2" licence_type="3" tmdb_id="0" imdb_id="tt3636830" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- The Rose and the Ring, Fantasy -->
 				<de>Ringe und Rosen</de>
@@ -10894,7 +10894,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<data country="USA" year="1953" distribution="2" maingenre="10" subgenre="" flags="8" blocks="1" price_mod="1.00" />
 			<ratings critics="47" speed="38" outcome="30" />
 			<children>
-				<programme id="TheRob-serie-RingeundRosen-Ep001" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RingeundRosen-Ep001" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Das Frühstück</de>
 						<en>Breakfast</en>
@@ -10904,7 +10904,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 						<en>Indroducing the family. The breakfast of the whole bunch together is the perfect start.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-RingeundRosen-Ep002" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RingeundRosen-Ep002" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Der Ring</de>
 						<en>The Ring</en>
@@ -10914,7 +10914,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 						<en>The fantasy part starts. A magic ring appears.</en>
 					</description>
 				</programme>
-				<programme id="TheRob-serie-RingeundRosen-Ep003" product="7" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
+				<programme id="TheRob-serie-RingeundRosen-Ep003" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751" created_by="TheRob">
 					<title>
 						<de>Die Flucht</de>
 						<en>The Escape</en>
