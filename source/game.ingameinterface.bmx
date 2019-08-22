@@ -187,6 +187,8 @@ Type TInGameInterface
 					If MOUSEMANAGER.IsClicked(1)
 						ShowChannel = i
 						BottomImgDirty = True
+
+						MouseManager.ResetKey(1)
 						exit
 					EndIf
 				EndIf
@@ -456,6 +458,7 @@ Type TInGameInterface
 				MenuToolTip.Hover()
 				If MouseManager.IsClicked(1)
 					openEscapeMenuViaInterface = True
+
 					MouseManager.ResetKey(1)
 				EndIf
 
@@ -471,6 +474,7 @@ Type TInGameInterface
 				If MouseManager.IsClicked(1)
 					'force show manual
 					IngameHelpWindowCollection.ShowByHelpGUID("GameManual", True)
+
 					MouseManager.ResetKey(1)
 				EndIf
 
@@ -485,6 +489,7 @@ Type TInGameInterface
 				MenuToolTip.Hover()
 				If MouseManager.IsClicked(1)
 					GetGameBase().SetGameSpeedPreset(0)
+
 					MouseManager.ResetKey(1)
 				EndIf
 
@@ -499,6 +504,7 @@ Type TInGameInterface
 				MenuToolTip.Hover()
 				If MouseManager.IsClicked(1)
 					GetGameBase().SetGameSpeedPreset(1)
+
 					MouseManager.ResetKey(1)
 				EndIf
 
@@ -513,6 +519,7 @@ Type TInGameInterface
 				MenuToolTip.Hover()
 				If MouseManager.IsClicked(1)
 					GetGameBase().SetGameSpeedPreset(2)
+
 					MouseManager.ResetKey(1)
 				EndIf
 			EndIf
@@ -561,6 +568,8 @@ Type TInGameInterface
 			'lock area
 			if MouseManager.IsClicked(1) and THelper.MouseIn(770, 397, 20, 20)
 				ChatShowHideLocked = 1- ChatShowHideLocked
+
+				MouseManager.ResetKey(1)
 			endif
 		else
 			'arrow area
@@ -576,6 +585,8 @@ Type TInGameInterface
 			'lock area
 			if MouseManager.IsClicked(1) and THelper.MouseIn(770, 583, 20, 20)
 				ChatShowHideLocked = 1 - ChatShowHideLocked
+
+				MouseManager.ResetKey(1)
 			endif
 		endif
 

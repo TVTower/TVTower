@@ -162,10 +162,11 @@ endrem
 			roomboardTooltip.Hover()
 			GetGameBase().cursorstate = 1
 			If MOUSEMANAGER.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
-				MOUSEMANAGER.resetKey(1)
 				GetGameBase().cursorstate = 0
 
 				mode = MODE_SELECTROOM
+
+				MouseManager.resetKey(1)
 			endif
 		EndIf
 		If roomboardTooltip Then roomboardTooltip.Update()
@@ -180,6 +181,8 @@ endrem
 		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
 			'leaving room now
 			RemoveAllGuiElements()
+
+			'no mouse reset - we still want to leave the room
 		endif
 	End Method
 
@@ -304,8 +307,9 @@ endrem
 		If selectedRoom and (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
 			selectedRoom = null
 			_confirmActionTooltip = null
+
 			MouseManager.ResetKey(2)
-			MouseManager.ResetKey(1)
+			MouseManager.ResetLongClicked(1)
 		EndIf
 
 
@@ -325,8 +329,7 @@ endrem
 
 			mode = MODE_NONE
 
-			MouseManager.ResetKey(2)
-			MouseManager.ResetKey(1)
+			'no mouse reset - we still want to leave the room
 		endif
  	End Method
 

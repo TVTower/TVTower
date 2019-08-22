@@ -65,8 +65,8 @@ Type TError
 	Function onClick:Int( triggerEvent:TEventBase )
 		print "clicked gui"
 	End Function
-	
-	
+
+
 	Function CreateNotEnoughMoneyError()
 		Create(getLocale("ERROR_NOT_ENOUGH_MONEY"),getLocale("ERROR_NOT_ENOUGH_MONEY_TEXT"), False)
 	End Function
@@ -98,13 +98,13 @@ Type TError
 			local rect:TRectangle = window.GetScreenRect()
 			If THelper.MouseInRect(rect)
 				window.Close()
-				MouseManager.resetKey(1) 'clicked to remove error
+				MouseManager.ResetKey(1) 'clicked to remove error
 				return True
 			EndIf
 		EndIf
 
 		window.Update()
-		
+
 		if not window.IsClosed()
 			'no right clicking allowed as long as "error notice is active"
 			MouseManager.ResetKey(2)

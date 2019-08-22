@@ -26,14 +26,14 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 	Global hoveredGuiMessage:TGUIArchivedMessageListItem
 
-	Global LS_office_archivedmessages:TLowerString = TLowerString.Create("office_archivedmessages")	
+	Global LS_office_archivedmessages:TLowerString = TLowerString.Create("office_archivedmessages")
 	Global _eventListeners:TLink[]
 	Global _instance:TScreenHandler_OfficeArchivedMessages
 
 	Const SHOW_ALL:int = 0
 	Const SHOW_READ:int = 1
 	Const SHOW_UNREAD:int = 2
-	
+
 
 
 	Function GetInstance:TScreenHandler_OfficeArchivedMessages()
@@ -114,7 +114,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 		GetInstance().markReadTime = Time.MillisecsLong()
 	End Function
-	
+
 
 	Function onAddOrRemoveArchivedMessage:int( triggerEvent:TEventBase )
 		local archivedMessage:TArchivedMessage = TArchivedMessage(triggerEvent.GetReceiver())
@@ -126,7 +126,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 	End Function
 
 
-	
+
 	'=== EVENTS ===
 
 	'GUI -> GUI reactio
@@ -157,7 +157,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 	Method ReloadMessages()
 		'=== PRODUCTION COMPANY SELECT ===
 		messageList.EmptyList()
-		
+
 		'add the messages to that list
 
 		categoryCountRead = new int[TVTMessageCategory.count+1]
@@ -225,17 +225,17 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 						showCategory = TVTMessageCategory.GetAtIndex(i)
 						showCategoryIndex = i
 						ReloadMessages()
-						MouseManager.ResetKey(1)
-
 						'reset
 						markReadTime = Time.MillisecsLong()
+
+						MouseManager.ResetKey(1)
 					endif
 				endif
 			Next
 		endif
 
 		'mark displayed/drawn as read
-		if markReadTime > 0 and Time.MillisecsLong() - markReadTime > 5000 
+		if markReadTime > 0 and Time.MillisecsLong() - markReadTime > 5000
 			For local item:TGUIArchivedMessageListItem = EachIn messageList.entries
 				item.message.SetRead(roomOwner, True)
 			Next
@@ -247,6 +247,8 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
 			'leaving room now
 			RemoveAllGuiElements()
+
+			'no mouse reset - we still want to leave the room
 		endif
 	End Method
 
@@ -316,7 +318,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		if categoryCountRead.length > showCategoryIndex
 			caption :+ " [" + categoryCountRead[showCategoryIndex] + "/" + categoryCountTotal[showCategoryIndex] + "]"
 		endif
-		
+
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(caption, contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
@@ -368,7 +370,7 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
    		Super.CreateBase(pos, dimension, "")
 
 		SetValueColor(TColor.Create(0,0,0))
-		
+
 '		GUIManager.add(Self)
 
 		Return Self
@@ -383,7 +385,7 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local dimension:TVec2D = New TVec2D.Init(maxWidth, GetContentHeight(maxWidth))
-		
+
 		'add padding
 		dimension.addXY(0, Self.paddingTop)
 		dimension.addXY(0, Self.paddingBottom)
@@ -422,7 +424,7 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 
 		return height
 	End Method
-	
+
 
 
 	Method GetBackgroundSprite:TSprite()
@@ -440,8 +442,8 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 		endif
 		return self.backgroundSprite
 	End Method
-	
-		
+
+
 	'override to not draw anything
 	'as "highlights" are drawn in "DrawValue"
 	Method DrawBackground()
@@ -490,7 +492,7 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 			contentH, ..
 			ALIGN_RIGHT_TOP, skin.textColorNeutral, 0,1,1.0,True, True).GetX()
 		timeW :+ 10
-			
+
 		titleH = skin.fontSemiBold.drawBlock( ..
 			title, ..
 			x + border.GetLeft(), ..

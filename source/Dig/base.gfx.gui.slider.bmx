@@ -5,7 +5,7 @@ Rem
 
 	Sliders are similar to SpinControls. Widgets easing a mouse
 	controlled number selection. Also a visual representation.
-	
+
 	====================================================================
 	If not otherwise stated, the following code is available under the
 	following licence:
@@ -63,10 +63,10 @@ Type TGUISlider extends TGUIObject
 	Field _gaugeAlpha:Float = 1.0
 	Field _showFilledGauge:int = True
 	Const DIRECTION_RIGHT:int = 0
-	Const DIRECTION_LEFT:int = 1 
+	Const DIRECTION_LEFT:int = 1
 	Const DIRECTION_UP:int = 2
-	Const DIRECTION_DOWN:int = 3 
-	
+	Const DIRECTION_DOWN:int = 3
+
 	Const RENDERMODE_CONTINUOUS:int = 0  ' [##########   ] - all in one
 	Const RENDERMODE_DISCRETE:int = 1    ' [#][#][#][ ][ ] - in steps
 	Const VALUETYPE_INTEGER:int = 0
@@ -138,7 +138,7 @@ Type TGUISlider extends TGUIObject
 		if not limitValue then return minValue
 		return limitMinValue
 	End Method
-	
+
 
 	Method GetCurrentValue:Double()
 		'this rounds to "int/float/double" before! - according to type
@@ -157,7 +157,7 @@ Type TGUISlider extends TGUIObject
 		SetValue(percentage * (maxValue - minValue))
 		return GetCurrentValue()
 	End Method
-		
+
 
 	'override default
 	Method SetValue(newValue:string)
@@ -174,7 +174,7 @@ Type TGUISlider extends TGUIObject
 
 		'clamp value by potential limitations
 		if limitValue then newValueD = Max(limitMinValue, Min(newValueD, limitMaxValue))
-		
+
 		'only adjust when different
 		if value <> string(newValueD)
 			value = newValueD
@@ -305,7 +305,7 @@ Type TGUISlider extends TGUIObject
 	Method GetGaugeOffsetX:int()
 		return _gaugeOffset.x
 	End Method
-	
+
 
 	Method GetGaugeOffsetY:int()
 		return _gaugeOffset.y
@@ -320,7 +320,7 @@ Type TGUISlider extends TGUIObject
 	Method onClick:Int(triggerEvent:TEventBase)
 		'only if left button was used
 		if triggerEvent.GetData().GetInt("button",0) <> 1 then return False
-		
+
 		'only if not already handling the same situation with mouseDown
 		if not MouseIsDown Then SetValueByMouse
 
@@ -337,9 +337,9 @@ Type TGUISlider extends TGUIObject
 
 		'process long clicks to avoid odd "right click behaviour"
 		if hasFocus() and MouseManager.IsLongClicked(1)
-			MouseManager.ResetKey(1)
+			MouseManager.ResetLongClicked(1)
 		endif
-	End Method	
+	End Method
 
 
 	'draw background element
@@ -533,7 +533,7 @@ Type TGUISlider extends TGUIObject
 	Method DrawHandle(position:TVec2D)
 		local state:string = ""
 		if MouseIsDown then state = ".active"
-		
+
 		Local sprite:TSprite = GetHandleSprite()
 		if state <> "" then sprite = GetSpriteFromRegistry(GetHandleSpriteName() + state, sprite)
 		if sprite
@@ -546,7 +546,7 @@ Type TGUISlider extends TGUIObject
 						'center the handle on the step:  0.5 (stepW - handleW)
 						offsetX :+ ceil( 0.5*(floor(GetGaugeW() / float(steps+1)) - _handleDim.x))
 					else
-						'subtract half of the handle to center the handle   
+						'subtract half of the handle to center the handle
 						offsetX = GetRelativeValue() * GetGaugeW() - 0.5*_handleDim.x
 
 						'but limit start and end

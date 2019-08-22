@@ -225,6 +225,8 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
 			'leaving room now
 			RemoveAllGuiElements()
+
+			'no mouse reset - we still want to leave the room
 		endif
 	End Method
 

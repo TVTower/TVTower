@@ -2731,7 +2731,7 @@ Type TScreenHandler_StationMap
 
 			If reset
 				MOUSEMANAGER.ResetKey(2)
-				MOUSEMANAGER.ResetKey(1) 'also normal clicks
+				MOUSEMANAGER.ResetLongClicked(1)
 			EndIf
 		EndIf
 
@@ -2778,6 +2778,8 @@ endrem
 				'check reach and valid federal state
 				If hoveredMapSection And mouseoverStation.GetReach() > 0
 					selectedStation = GetStationMap(room.owner).GetTemporaryAntennaStation( mouseoverStation.pos.GetIntX(), mouseoverStation.pos.GetIntY() )
+
+					MouseManager.ResetKey(1)
 				EndIf
 			EndIf
 
@@ -2840,6 +2842,8 @@ endrem
 							'refresh state information
 							selectedStation.sectionName = hoveredMapSection.name
 							'selectedStation.GetSectionName(true)
+
+							MouseManager.ResetKey(1)
 						EndIf
 					EndIf
 				EndIf

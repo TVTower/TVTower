@@ -67,18 +67,20 @@ rem
 '		endif
 		Super.Render(xOffset, yOffset, alignment)
 	End Method
-endrem	
+endrem
 
 
 	'update tooltip
 	'handle clicks -> send events so eg can send figure to it
 	Method Update:Int()
 		hovered = False
-	
+
 		If GetScreenArea().containsXY(MouseManager.x, MouseManager.y)
 			hovered = True
 			If MOUSEMANAGER.isClicked(1)
 				EventManager.triggerEvent( TEventSimple.Create("hotspot.onClick", New TData , Self ) )
+				'done by the hotspots if there are some
+				'MouseManager.ResetKey(1)
 			EndIf
 		EndIf
 

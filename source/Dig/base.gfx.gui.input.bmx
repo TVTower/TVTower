@@ -160,7 +160,7 @@ Type TGUIinput Extends TGUIobject
 				'active input fields react to mouse clicks on the input-area
 				'to move the cursor position
 				If Self = GuiManager.GetKeystrokeReceiver()
-					if MouseManager.IsHit(1) and _textPos
+					if MouseManager.IsClicked(1) and _textPos
 						local screenRect:TRectangle = new TRectangle
 						'shrink screenrect to "text area"
 						screenRect.position.SetXY(_textPos.GetX(), _textPos.GetY())
@@ -181,6 +181,8 @@ Type TGUIinput Extends TGUIobject
 							Next
 							if newCursorPosition <> -1 then _cursorPosition = newCursorPosition
 'print " ... Mouse "+int(MouseManager.x)+", "+int(MouseManager.y)+" is in. Position: " + old +" => " + _cursorPosition + "  valueClickedPixel="+valueClickedPixel+"  valueOffsetPixels="+valueOffsetPixels
+
+							MouseManager.ResetKey(1)
 						endif
 					EndIf
 				EndIf

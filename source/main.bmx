@@ -261,7 +261,7 @@ Type TApp
 			MouseManager._minSwipeDistance = obj.config.GetInt("touchClickRadius", 10)
 			MouseManager._ignoreFirstClick = obj.config.GetBool("touchInput", False)
 			MouseManager._longClickModeEnabled = obj.config.GetBool("longClickMode", True)
-			MouseManager._longClickTime = obj.config.GetInt("longClickTime", 400)
+			MouseManager.longClickMinTime = obj.config.GetInt("longClickTime", 400)
 
 			IngameHelpWindowCollection.showHelp = obj.config.GetBool("showIngameHelp", True)
 
@@ -617,10 +617,10 @@ Type TApp
 		TProfiler.Leave("RessourceLoader")
 
 
+		MOUSEMANAGER.Update()
 		'needs modified "brl.mod/polledinput.mod" (disabling autopoll)
 		SetAutoPoll(False)
 		KEYMANAGER.Update()
-		MOUSEMANAGER.Update()
 		SetAutoPoll(True)
 
 		'fetch and cache mouse and keyboard states for this cycle
@@ -653,9 +653,10 @@ Type TApp
 			'also avoid long click (touch screen)
 			MouseManager.ResetLongClicked(1)
 
-			'this sets all IsClicked(), IsHit() to False
-			MouseManager.Disable(1)
-			MouseManager.Disable(2)
+			'this makes all IsClicked(), IsHit() return False
+			'and to not record new clicks/hits
+'			MouseManager.Disable(1)
+'			MouseManager.Disable(2)
 		EndIf
 
 		'ignore shortcuts if a gui object listens to keystrokes
@@ -1362,6 +1363,14 @@ endrem
 
 		GUIManager.EndUpdates() 'reset modal window states
 
+
+		'set the mouse clicks handled anyways
+'		if MOUSEMANAGER.IsClicked(1) then TLogger.Log("Update", "Unhandled mouse button 1 click.", LOG_ERROR)
+'		if MOUSEMANAGER.IsLongClicked(1) then TLogger.Log("Update", "Unhandled mouse button 1 long click.", LOG_ERROR)
+'		if MOUSEMANAGER.IsClicked(2) then TLogger.Log("Update", "Unhandled mouse button 2 click.", LOG_ERROR)
+		MouseManager.ResetClicked(1)
+		MouseManager.ResetClicked(2)
+
 		TProfiler.Leave("Update")
 	End Function
 
@@ -1489,20 +1498,6 @@ endrem
 		EndIf
 
 
-		For Local i:Int = 0 To 3
-			GetBitmapFontManager().baseFont.Draw("Image #"+i+": "+MathHelper.NumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
-		Next
-
-		For Local i:Int = 0 To 3
-			GetBitmapFontManager().baseFont.Draw("Boss #"+i+": "+MathHelper.NumberToString(GetPlayerBoss(i+1).mood,4), 10, 270 + i*13)
-		Next
-
-
-		'GetBitmapFontManager().baseFont.Draw("NewsEvents: "+GetNewsEventCollection().managedNewsEvents.count(), 680, 300)
-		For Local i:Int = 0 To 3
-			GetBitmapFontManager().baseFont.Draw("News #"+i+": "+GetPlayerProgrammeCollection(i+1).news.count(), 680, 320 + i*13)
-		Next
-
 		GetWorld().RenderDebug(660,0, 140, 180)
 		'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
 
@@ -1514,6 +1509,8 @@ endrem
 
 
 	Function UpdateDebugControls()
+		GameConfig.mouseHandlingDisabled = False
+
 		If GetGame().gamestate <> TGame.STATE_RUNNING Then Return
 
 		If TVTDebugProgrammePlan
@@ -1529,7 +1526,10 @@ endrem
 		EndIf
 
 
-		If DebugScreen.enabled then DebugScreen.Update()
+		If DebugScreen.enabled
+			GameConfig.mouseHandlingDisabled = True
+			DebugScreen.Update()
+		EndIf
 	End Function
 
 
@@ -1537,7 +1537,7 @@ endrem
 		If GetGame().gamestate <> TGame.STATE_RUNNING Then Return
 
 
-		If DebugScreen.enabled then DebugScreen.Render()
+		If DebugScreen.enabled Then DebugScreen.Render()
 
 
 		If TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
@@ -1602,7 +1602,6 @@ endrem
 				Next
 			EndIf
 
-			debugFinancialInfos.Draw(-1, 235, 305)
 '				debugProgrammePlanInfos.Draw((playerID + 1) mod 4, 415, 15)
 
 Rem
@@ -1704,7 +1703,7 @@ endrem
 		'draw system things at last (-> on top)
 		GUIManager.Draw(systemState)
 
-		if not spriteMouseCursor then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
+		If Not spriteMouseCursor Then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
 
 		If GetGameBase().cursorstate = 0 Then spriteMouseCursor.Draw(MouseManager.x-9,  MouseManager.y-2,  0)
 		'open hand
@@ -1712,7 +1711,7 @@ endrem
 		'grabbing hand
 		If GetGameBase().cursorstate = 2 Then spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-16, 2)
 		'open hand blocked
-		If GetGameBase().cursorstate = 3 Then spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-8	,  3)
+		If GetGameBase().cursorstate = 3 Then spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-8,  3)
 
 		'if a screenshot is generated, draw a logo in
 		If App.prepareScreenshot = 1
@@ -3831,8 +3830,7 @@ Type GameEvents
 
 			Case "maxaudience"
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
-				GetStationMap(player.playerID).CheatMaxAudience()
-				GetGame().SendSystemMessage("[DEV] Set Player #"+player.playerID+"'s maximum audience to "+GetStationMap(player.playerID).GetReach())
+				DebugScreen.Dev_MaxAudience(player.playerID)
 
 			Case "debug"
 				Local what:String = payload
@@ -3975,12 +3973,7 @@ Type GameEvents
 			Case "setmasterkey"
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
 				Local bool:Int = Int(paramS)
-				player.GetFigure().SetHasMasterkey(bool)
-				If bool
-					GetGame().SendSystemMessage("[DEV] Added masterkey to player '" + player.name +"' ["+player.playerID + "]!")
-				Else
-					GetGame().SendSystemMessage("[DEV] Removed masterkey from player '" + player.name +"' ["+player.playerID + "]!")
-				EndIf
+				DebugScreen.Dev_SetMasterKey(player.playerID, bool)
 
 			Case "reloaddev"
 				If FileType("config/DEV.xml") = 1
@@ -4968,7 +4961,7 @@ Type GameEvents
 				Else
 					'leaving allowed - reset button
 					If GetPlayer().GetFigure().LeaveRoom()
-						MOUSEMANAGER.resetKey(2)
+						MOUSEMANAGER.ResetKey(2)
 						'also avoid long click (touch screen)
 						MouseManager.ResetLongClicked(1)
 					EndIf

@@ -451,12 +451,13 @@ Type RoomHandler_Archive extends TRoomHandler
 					openCollectionTooltip.Hover()
 
 					GetGameBase().cursorstate = 1
-					If MOUSEMANAGER.IsClicked(1) and not MouseManager.IsLongClicked(1)
-						MOUSEMANAGER.resetKey(1)
+					If MOUSEMANAGER.IsClicked(1)
 						GetGameBase().cursorstate = 0
 						programmeList.SetOpen(1)
 						'remove tooltip
 						openCollectionTooltip = null
+
+						MOUSEMANAGER.resetKey(1)
 					endif
 				EndIf
 			endif

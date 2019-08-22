@@ -43,7 +43,7 @@ Type TRoomBoardBase
 			endif
 		Next
 	End Method
-	
+
 
 	Method AddSign:int(sign:TRoomBoardSign)
 		List.AddLast(sign)
@@ -75,7 +75,7 @@ Type TRoomBoardBase
 		Next
 		AdditionallyDragged = 0
 	End Method
-	
+
 
 	Function GetFloorY:int(signFloor:int)
 		return 41 + (13 - signFloor) * 23
@@ -117,7 +117,7 @@ Type TRoomBoardBase
 		return TRoomBoardSign(List.ValueAtIndex(arrayIndex))
 	End Method
 
-	
+
 	Method GetSignById:TRoomBoardSign(id:int)
 		For local sign:TRoomBoardSign = eachin list
 			if sign.id = id
@@ -125,7 +125,7 @@ Type TRoomBoardBase
 			endif
 		Next
 		return Null
-	End Method	
+	End Method
 
 
 	'return the sign which originally was at the given position
@@ -162,7 +162,7 @@ Type TRoomBoardBase
 		Return Null
 	End Method
 
-	
+
 	'return the sign originally at the given pixel coordinates
 	Method GetSignByOriginalXY:TRoomBoardSign(x:int, y:int)
 		For Local sign:TRoomBoardSign = EachIn List
@@ -178,7 +178,7 @@ Type TRoomBoardBase
 		Return Null
 	End Method
 
-	
+
 	'return the first sign leading to a specific room
 	Method GetFirstSignByRoom:TRoomBoardSign(roomID:int)
 		For local sign:TRoomBoardSign = eachin list
@@ -243,7 +243,7 @@ Type TRoomBoardBase
 	Method GetSignCount:int()
 		return list.Count()
 	End Method
-	
+
 
 	Method DropBackDraggedSigns:Int()
 		local droppedSomethingBack:int = False
@@ -257,7 +257,7 @@ Type TRoomBoardBase
 
 		return droppedSomethingBack
 	End Method
-	
+
 
 	Method UpdateSigns(DraggingAllowed:int)
 		'reset additional dragged objects
@@ -285,19 +285,20 @@ Type TRoomBoardBase
 					sign.SetCoords(int(sign.StartPos.x), int(sign.StartPos.y))
 					sign.dragged = False
 					clickedSign = null
-					MOUSEMANAGER.resetKey(2)
-					MOUSEMANAGER.resetKey(1) 'also first button
 
 					if not sign.IsAtOriginalPosition()
 						sign.MarkMoved(GetPlayerBase().playerID)
 					endif
+
+					MOUSEMANAGER.resetKey(2)
+					MOUSEMANAGER.resetLongClicked(1)
 				Else
 					'if left mbutton clicked: drop, replace with underlaying block...
 					If MouseManager.IsClicked(1)
 						'search for underlaying block (we have a block dragged already)
 						If sign.dragged
 							clickedSign = sign
-						
+
 							'obj over old position - drop ?
 							If THelper.MouseIn(int(sign.StartPosBackup.x), int(sign.StartPosBackup.y), int(sign.rect.GetW()), int(sign.rect.GetH()))
 								sign.dragged = False
@@ -308,7 +309,8 @@ Type TRoomBoardBase
 							If sign.containsCoord(MouseManager.x, MouseManager.y)
 								sign.dragged = False
 								clickedSign = null
-								MouseManager.resetKey(1)
+
+								MouseManager.ResetKey(1)
 							'not dropping on origin: search for other underlaying obj
 							Else
 								For Local otherSign:TRoomBoardSign = EachIn List
@@ -319,7 +321,7 @@ Type TRoomBoardBase
 	'	  								End If
 										sign.SwitchBlock(otherSign)
 
-										MouseManager.resetKey(1)
+										MouseManager.ResetKey(1)
 										Exit	'exit enclosing for-loop (stop searching for other underlaying blocks)
 									EndIf
 								Next
@@ -336,7 +338,8 @@ Type TRoomBoardBase
 						Else			'end: an obj is dragged
 							If sign.containsCoord(MouseManager.x, MouseManager.y)
 								sign.dragged = 1
-								MouseManager.resetKey(1)
+
+								MouseManager.ResetKey(1)
 							EndIf
 						EndIf
 					EndIf
@@ -513,7 +516,7 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 		OrigPos = other.OrigPos.Copy()
 		StartPos = other.StartPos.Copy()
 		rect = other.rect.Copy()
-		
+
 		door = other.door
 		movedByPlayers = other.movedByPlayers
 		lastMoveByPlayerID = other.lastMoveByPlayerID
@@ -557,7 +560,7 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	Method GetFloor:int() {_exposeToLua}
 		return GetRoomBoard().GetFloor(StartPos.GetY())
 	End Method
-	
+
 
 	Method GetOriginalSlot:int() {_exposeToLua}
 		return door.doorSlot
@@ -568,10 +571,10 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 		return door.onFloor
 	End Method
 
-	
+
 	Method GetRoomId:int() {_exposeToLua}
 		return door.roomID
-	End Method	
+	End Method
 
 
 	Method SetDragable(_dragable:Int = 1)

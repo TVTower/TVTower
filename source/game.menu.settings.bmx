@@ -389,7 +389,7 @@ Type TGUISettingsPanel extends TGUIPanel
 		checkTouchInput.SetChecked(data.GetBool("touchInput", MouseManager._ignoreFirstClick))
 		inputTouchClickRadius.SetValue(Max(5, data.GetInt("touchClickRadius", MouseManager._minSwipeDistance)))
 		checkLongClickMode.SetChecked(data.GetBool("longClickMode", MouseManager._longClickModeEnabled))
-		inputLongClickTime.SetValue(Max(50, data.GetInt("longClickTime", MouseManager._longClickTime)))
+		inputLongClickTime.SetValue(Max(50, data.GetInt("longClickTime", MouseManager.longClickMinTime)))
 
 		checkShowIngameHelp.SetChecked(data.GetBool("showIngameHelp", IngameHelpWindowCollection.showHelp))
 
@@ -498,7 +498,7 @@ Type TGUISettingsPanel extends TGUIPanel
 
 	Method Update:Int()
 		'dynamically update sounds
-		GetSoundManagerBase().sfxVolume = (0.01 * sliderSFXVolume.GetValue().ToInt()) 
+		GetSoundManagerBase().sfxVolume = (0.01 * sliderSFXVolume.GetValue().ToInt())
 		GetSoundManagerBase().SetMusicVolume(0.01 * sliderMusicVolume.GetValue().ToInt())
 
 		Return Super.Update()

@@ -336,6 +336,15 @@ Type TScreen_GameSettings Extends TGameScreen
 		Local sender:TGUIArrowButton = TGUIArrowButton(triggerEvent._sender)
 		If Not sender Then Return False
 
+		_HandleArrowInteraction(sender)
+		'handled even if disabled/reached figure limit
+		MouseManager.ResetKey(1)
+
+		Return True
+	End Method
+
+
+	Method _HandleArrowInteraction:Int(sender:TGUIArrowButton)
 		'left/right arrows to change figure base
 		For Local i:Int = 0 To 7
 			If sender = guiFigureArrows[i]
@@ -711,25 +720,30 @@ endrem
 		If MOUSEMANAGER.IsClicked(1)
 			Local slotPos:TVec2D = New TVec2D.Init(guiAllPlayersPanel.GetContentScreenX(),guiAllPlayersPanel.GetContentScreeny())
 			For Local i:Int = 0 To 3
-				Local colorRect:TRectangle = New TRectangle.Init(slotPos.GetIntX() + 2, Int(guiChannelNames[i].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
+				If MOUSEMANAGER.IsClicked(1)
+					Local colorRect:TRectangle = New TRectangle.Init(slotPos.GetIntX() + 2, Int(guiChannelNames[i].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 
-				For Local pc:TPlayerColor = EachIn TPlayerColor.List
-					'only for unused colors
-					If pc.ownerID <> 0 Then Continue
+					For Local pc:TPlayerColor = EachIn TPlayerColor.List
+						'only for unused colors
+						If pc.ownerID <> 0 Then Continue
 
-					colorRect.position.AddXY(colorRect.GetW(), 0)
+						colorRect.position.AddXY(colorRect.GetW(), 0)
 
-					'skip if outside of rect
-					If Not THelper.MouseInRect(colorRect) Then Continue
-					'only allow mod if you control the player or if the
-					'player is AI and you are the master player
-					If GetGameBase().IsControllingPlayer(i+1)
-						modifiedPlayers = True
-						GetPlayerBase(i+1).RecolorFigure(pc)
-					EndIf
-				Next
-				'move to next slot position
-				slotPos.AddXY(playerSlotGap + playerBoxDimension.GetX(), 0)
+						'skip if outside of rect
+						If Not THelper.MouseInRect(colorRect) Then Continue
+						'only allow mod if you control the player or if the
+						'player is AI and you are the master player
+						If GetGameBase().IsControllingPlayer(i+1)
+							modifiedPlayers = True
+							GetPlayerBase(i+1).RecolorFigure(pc)
+
+							'handled click/hit
+							MouseManager.ResetClicked(1)
+						EndIf
+					Next
+					'move to next slot position
+					slotPos.AddXY(playerSlotGap + playerBoxDimension.GetX(), 0)
+				EndIf
 			Next
 		EndIf
 

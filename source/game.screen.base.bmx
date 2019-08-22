@@ -102,7 +102,7 @@ Type TGameScreen Extends TScreen
 		'by default do nothing
 	End Method
 
-	
+
 	Method ToString:String()
 		Return "TGameScreen"
 	End Method
@@ -234,14 +234,14 @@ Type TInGameScreen Extends TScreen
 
 	Method BeginLeave:Int(toScreen:TScreen=Null)
 		Super.BeginLeave(toScreen)
-		
+
 		Local toScreenGroup:String = ""
 		Local toScreenName:String = ""
 		If toScreen
 			toScreenGroup = toScreen.group.toUpper()
 			toScreenName = toScreen.name.toUpper()
 		EndIf
-		
+
 		'no change effect when leaving a subscreen
 		If Not HasScreenChangeEffect(toScreen)
 			_leaveScreenEffect = Null
@@ -285,7 +285,7 @@ Type TInGameScreen Extends TScreen
 	Function IsObservedOrPlayerFigure:int(figure:TFigureBase)
 		return figure and (GameConfig.IsObserved(figure) or GetPlayerBase().GetFigure() = figure)
 	End Function
-	
+
 
 	Method Draw:Int(tweenValue:Float)
 		DrawContent(tweenValue)
@@ -386,7 +386,7 @@ Type TInGameScreen_World Extends TInGameScreen
 	Method ToString:String()
 		Return "TInGameScreen_World: group="+group+" name="+name
 	End Method
-	
+
 
 	Function onBeginLeaveRoom:Int( triggerEvent:TEventBase )
 		Local figure:TFigureBase = TFigureBase( triggerEvent._sender )
@@ -414,7 +414,7 @@ Type TInGameScreen_World Extends TInGameScreen
 		ScreenCollection.targetScreen = null
 		ScreenCollection._SetCurrentScreen(instance)
 	End Function
-	
+
 
 	'override default
 	Method UpdateContent(deltaTime:Float)
@@ -431,6 +431,7 @@ Type TInGameScreen_World Extends TInGameScreen
 						Local x:Int = MouseManager.x - GetBuildingBase().buildingInner.GetScreenX()
 						Local y:Int = MouseManager.y - GetBuildingBase().buildingInner.GetScreenY()
 						fig.ChangeTarget(x, y)
+
 						MOUSEMANAGER.resetKey(1)
 					EndIf
 				EndIf
@@ -472,7 +473,7 @@ Type TInGameScreen_Room Extends TInGameScreen
 
 		'register events
 		Initialize()
-		
+
 		Return Self
 	End Method
 
@@ -488,7 +489,7 @@ Type TInGameScreen_Room Extends TInGameScreen
 		_eventListeners :+ [ EventManager.registerListenerFunction("room.onBeginEnter", OnRoomBeginEnter) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("room.onEnter", OnRoomEnter) ]
 	End Method
-	
+
 
 	Method ToString:String()
 		Local rooms:String = ""
@@ -596,7 +597,7 @@ End Type
 Type TIngameScreenChangeEffect_SimpleFader extends TScreenChangeEffect_SimpleFader
 	Field _timeStartRealTime:Long = 0
 
-	
+
 	Method GetCurrentTime:Long()
 		GetBuildingTime().GetMillisecondsGone()
 	End Method
@@ -613,7 +614,7 @@ Type TIngameScreenChangeEffect_SimpleFader extends TScreenChangeEffect_SimpleFad
 		if GetBuildingTime().GetTimeFactor() < 1.0
 			local actionTime:Long = GetDuration() - _waitAtBegin - _waitAtEnd
 			if actionTime <= 0 then return 1.0
-			
+
 			return Float( Min(1.0, Max(0, double(Time.GetAppTimeGone() - _timeStartRealTime - _waitAtBegin) / actionTime)))
 		endif
 
@@ -624,7 +625,7 @@ End Type
 Type TIngameScreenChangeEffect_ClosingRects extends TScreenChangeEffect_ClosingRects
 	Field _timeStartRealTime:Long = 0
 
-	
+
 	Method GetCurrentTime:Long()
 		return GetBuildingTime().GetMillisecondsGone()
 	End Method
@@ -660,7 +661,7 @@ Type TIngameScreenChangeEffect_ClosingRects extends TScreenChangeEffect_ClosingR
 		if GetBuildingTime().GetTimeFactor() < 1.0
 			local actionTime:Long = GetDuration() - _waitAtBegin - _waitAtEnd
 			if actionTime <= 0 then return 1.0
-			
+
 			return Float( Min(1.0, Max(0, double(Time.GetAppTimeGone() - _timeStartRealTime - _waitAtBegin) / actionTime)))
 		endif
 

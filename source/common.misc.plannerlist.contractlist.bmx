@@ -262,7 +262,7 @@ Type TgfxContractlist Extends TPlannerList
 					GetGameBase().cursorstate = 1
 					'only interact if allowed
 					If clicksAllowed
-						If MOUSEMANAGER.IsShortClicked(1)
+						If MOUSEMANAGER.IsClicked(1)
 							New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TAdvertisement.Create(contract), "programmePlanner" ).drag()
 							MOUSEMANAGER.resetKey(1)
 							SetOpen(0)
@@ -286,15 +286,15 @@ Type TgfxContractlist Extends TPlannerList
 		If openState > 0 and (MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1))
 			SetOpen( Max(0, openState - 1) )
 
-			MOUSEMANAGER.resetKey(2)
-			MOUSEMANAGER.resetKey(1) 'also normal clicks
+			MOUSEMANAGER.ResetKey(2)
+			MOUSEMANAGER.ResetLongClicked(1)
 		EndIf
 
 		'close if mouse hit outside - simple mode: so big rect
-		If MouseManager.IsHit(1)
+		If MouseManager.IsClicked(1)
 			If Not GetEntriesRect().containsXY(MouseManager.x, MouseManager.y)
 				SetOpen(0)
-				'MouseManager.ResetKey(1)
+				MouseManager.ResetKey(1)
 			EndIf
 		EndIf
 	End Method

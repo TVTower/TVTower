@@ -1029,17 +1029,16 @@ endrem
 		if CheckPlayerInRoom("movieagency")
 			'show a auction-tooltip (but not if we dragged a block)
 			if not hoveredGuiProgrammeLicence
-				if not MouseManager.IsLongClicked(1)
+				if MouseManager.IsClicked(1)
 					If THelper.MouseIn(210,220,140,60)
 						If not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
 						AuctionToolTip.enabled = 1
 						AuctionToolTip.Hover()
 						GetGameBase().cursorstate = 1
-						If MOUSEMANAGER.IsClicked(1)
-							MOUSEMANAGER.resetKey(1)
-							GetGameBase().cursorstate = 0
-							ScreenCollection.GoToSubScreen("screen_movieauction")
-						endif
+
+						MOUSEMANAGER.resetKey(1)
+						GetGameBase().cursorstate = 0
+						ScreenCollection.GoToSubScreen("screen_movieauction")
 					EndIf
 				endif
 			endif
@@ -1684,6 +1683,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 			If obj.bestBidder <> GetPlayerBaseCollection().playerID And obj.area.containsXY(MouseManager.x, MouseManager.y)
 				obj.SetBid( GetPlayerBaseCollection().playerID )  'set the bid
+
 				MOUSEMANAGER.ResetKey(1)
 				Return True
 			EndIf

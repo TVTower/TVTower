@@ -19,7 +19,7 @@ Type RoomHandler_Betty extends TRoomHandler
 		return _instance
 	End Function
 
-	
+
 	Method Initialize:Int()
 		'=== RESET TO INITIAL STATE ===
 		CleanUp()
@@ -46,12 +46,12 @@ Type RoomHandler_Betty extends TRoomHandler
 		'(re-)localize content
 		SetLanguage()
 	End Method
-	
+
 
 	Method CleanUp()
 		'=== unset cross referenced objects ===
 		'
-		
+
 		'=== remove obsolete gui elements ===
 		'
 
@@ -143,7 +143,7 @@ Type RoomHandler_Betty extends TRoomHandler
 		dialogueTexts[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale2(["DIALOGUE_BETTY_LEVEL"+bettyLoveLevel+"_CHANGETOPIC", "DIALOGUE_BETTY_CHANGETOPIC"]), 0))
 		dialogueTexts[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale2(["DIALOGUE_BETTY_LEVEL"+bettyLoveLevel+"_GOODBYE", "DIALOGUE_BETTY_GOODBYE"]), -2, Null))
 
-	
+
 		GetInstance().dialogue = new TDialogue
 		GetInstance().dialogue.AddTexts(dialogueTexts)
 
@@ -162,7 +162,7 @@ Type RoomHandler_Betty extends TRoomHandler
 		GetPlayerBase().GetFigure().SetHasMasterKey(true)
 
 		ResetDialogue()
-	End Function		
+	End Function
 
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
@@ -197,7 +197,7 @@ Type RoomHandler_Betty extends TRoomHandler
 		   GetPlayerBase().GetFigure().GetInRoomID() > 0
 			GenerateDialogue()
 		endif
-		
+
 		if dialogue
 			'leave the room
 			if dialogue.Update() = 0
@@ -208,6 +208,9 @@ Type RoomHandler_Betty extends TRoomHandler
 			'prepare leaving - will remove room now
 			If MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)
 				dialogue = null
+
+				MouseManager.ResetKey(2)
+				MouseManager.ResetLongClicked(1)
 			endif
 		endif
 	End Method

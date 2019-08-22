@@ -21,8 +21,8 @@ Type TPlannerList extends TOwnedGameObject
 	Field sortSymbols:string[]
 	Field sortKeys:int[]
 	Field sortTooltips:TTooltipBase[]
-	
-	'whether the player can click / create elements? 
+
+	'whether the player can click / create elements?
 	Field clicksAllowed:int = True
 
 	Method GenerateGUID:string()
@@ -35,7 +35,7 @@ Type TPlannerList extends TOwnedGameObject
 		ListSortMode = 0
 		ListSortVisible = True
 	End Method
-	
+
 
 	Method getOpen:Int()
 		Return Self.openState And enabled
@@ -55,7 +55,7 @@ Type TPlannerList extends TOwnedGameObject
 	Method Delete()
 		UnRegisterEvents()
 	End Method
-	
+
 
 	Method UnRegisterEvents:Int() abstract
 
@@ -67,7 +67,7 @@ Type TPlannerList extends TOwnedGameObject
 		local buttonPadding:int = 2
 
 		if THelper.MouseIn(buttonX + 5, buttonY, sortKeys.length * (buttonWidth + buttonPadding), 27)
-			if MouseManager.isShortClicked(1)
+			if MouseManager.IsClicked(1)
 				For local i:int = 0 until sortKeys.length
 					If THelper.MouseIn(buttonX + i * (buttonWidth + buttonPadding), buttonY, 35, 27)
 						'sort now
@@ -76,6 +76,9 @@ Type TPlannerList extends TOwnedGameObject
 						else
 							ListSortDirection = 1 - ListSortDirection
 						endif
+
+						MouseManager.ResetKey(1)
+						exit
 					endif
 				Next
 			endif

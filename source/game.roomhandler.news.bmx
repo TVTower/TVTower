@@ -373,17 +373,15 @@ Type RoomHandler_News extends TRoomHandler
 		if not IsPlayersRoom(room) then return False
 
 		'pinwall
-		if not MouseManager.IsLongClicked(1)
-			If THelper.MouseIn(167,60,240,160)
-				If not PlannerToolTip Then PlannerToolTip = TTooltip.Create(GetLocale("ROOM_NEWSPLANNER"), GetLocale("MANAGE_BROADCASTED_NEWS"), 180, 100, 0, 0)
-				PlannerToolTip.enabled = 1
-				PlannerToolTip.Hover()
-				GetGameBase().cursorstate = 1
-				If MOUSEMANAGER.IsClicked(1)
-					MOUSEMANAGER.resetKey(1)
-					GetGameBase().cursorstate = 0
-					ScreenCollection.GoToSubScreen("screen_newsstudio_newsplanner")
-				endif
+		If THelper.MouseIn(167,60,240,160)
+			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create(GetLocale("ROOM_NEWSPLANNER"), GetLocale("MANAGE_BROADCASTED_NEWS"), 180, 100, 0, 0)
+			PlannerToolTip.enabled = 1
+			PlannerToolTip.Hover()
+			GetGameBase().cursorstate = 1
+			If MOUSEMANAGER.IsClicked(1)
+				MOUSEMANAGER.ResetKey(1)
+				GetGameBase().cursorstate = 0
+				ScreenCollection.GoToSubScreen("screen_newsstudio_newsplanner")
 			endif
 		endif
 	End Function
@@ -522,8 +520,7 @@ Type RoomHandler_News extends TRoomHandler
 			if THelper.MouseIn(sortButtonPos.GetIntX(), sortButtonPos.GetIntY(), boxWidth, boxHeight)
 				ListSortVisible = True
 
-				if MouseManager.isShortClicked(1)
-
+				if MouseManager.isClicked(1)
 					For local i:int = 0 to newsSortKeys.length-1
 						If THelper.MouseIn(contentX + 5 + i*32, sortButtonPos.GetIntY() + 12, 28, 27)
 							'sort now
@@ -533,6 +530,9 @@ Type RoomHandler_News extends TRoomHandler
 								'switch order
 								GetInstance().SetAvailableNewsListSort(GetInstance().ListSortMode, not GetInstance().ListSortInAscendingOrder)
 							endif
+
+							MouseManager.ResetKey(1)
+							exit
 						endif
 					Next
 				endif

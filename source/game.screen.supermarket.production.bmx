@@ -659,7 +659,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		guiCast = null
 
 		'remove right click - to avoid leaving the room
-		MouseManager.ResetKey(2)
+		If MouseManager.IsClicked(2) then MouseManager.ResetKey(2)
 	End Function
 
 
@@ -885,7 +885,10 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 				if not castSlotList.SelectCastWindowIsOpen()
 					SetCurrentProductionConcept(null)
 				endif
+
+				'abort room leaving
 				MouseManager.ResetKey(2)
+				MouseManager.ResetLongClicked(1)
 			endif
 		endif
 	End Method
@@ -1240,8 +1243,9 @@ Type TGUIProductionModalWindow extends TGUIModalWindow
 
 		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
 			Close(2)
-			MouseManager.ResetKey(1)
+
 			MouseManager.ResetKey(2)
+			MouseManager.ResetLongClicked(1)
 		endif
 
 		return super.Update()

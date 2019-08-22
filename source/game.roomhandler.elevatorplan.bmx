@@ -17,7 +17,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		return _instance
 	End Function
 
-	
+
 	Method Initialize:Int()
 		'=== RESET TO INITIAL STATE ===
 		CleanUp()
@@ -30,11 +30,11 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		SetLanguage()
 	End Method
 
-	
+
 	Method CleanUp()
 		'=== unset cross referenced objects ===
 		'
-		
+
 		'=== remove obsolete gui elements ===
 		'
 
@@ -48,7 +48,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		if GetInstance() <> self then self.CleanUp()
 		GetRoomHandlerCollection().SetHandler("elevatorplan", GetInstance())
 	End Method
-	
+
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		GetElevatorRoomBoard().DrawSigns()
@@ -56,10 +56,8 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
-		local mouseClicked:int = MouseManager.IsClicked(1)
-
 		'if possible, change the target to the clicked door
-		if mouseClicked
+		if MouseManager.IsClicked(1)
 			local sign:TRoomBoardSign = GetElevatorRoomBoard().GetSignByOriginalXY(MouseManager.GetPosition().GetIntX(),MouseManager.GetPosition().GetIntY())
 			if sign and sign.door
 				TFigure(GetPlayerBase().GetFigure()).SendToDoor(sign.door)
@@ -105,10 +103,10 @@ Type TElevatorRoomBoard extends TRoomBoardBase
 	Method Initialize:int()
 		Reset()
 		AddBoardSigns()
-	
+
 		'=== EVENTS ===
 		'=== remove all registered event listeners
-		'disabled: no methods 
+		'disabled: no methods
 		'EventManager.unregisterListenersByLinks(_eventListeners)
 		'_eventListeners = new TLink[0]
 

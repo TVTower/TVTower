@@ -18,7 +18,7 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 		return _instance
 	End Function
 
-	
+
 	Method Initialize:Int()
 		'=== RESET TO INITIAL STATE ===
 		CleanUp()
@@ -46,16 +46,16 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 		'using this approach avoids "tooltips" to be visible in subscreens
 		_eventListeners :+ _RegisterScreenHandler( onUpdateSupermarket, onDrawSupermarket, ScreenCollection.GetScreen("screen_supermarket") )
 
-		
+
 		'(re-)localize content
 		SetLanguage()
 	End Method
 
-	
+
 	Method CleanUp()
 		'=== unset cross referenced objects ===
 		'
-		
+
 		'=== remove obsolete gui elements ===
 		'
 
@@ -104,7 +104,7 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 		dialogueText.AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_SUPERMARKET_PLAN_A_PRODUCTION"), 0, Null, onClickPlanAProduction))
 		dialogueText.AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_SUPERMARKET_BUY_A_PRESENT"), 0, Null, onClickBuySomePresents))
 		dialogueText.AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_SUPERMARKET_GOODBYE"), -2, Null))
-	
+
 		dialogue = new TDialogue
 		dialogue.AddTexts([dialogueText])
 
@@ -147,7 +147,7 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 rem
 			'method a
 			'require the player to click on the dude first
-			
+
 			'over dude
 			if THelper.IsIn(MouseManager.x, MouseManager.y, 0,0,160,300)
 				GetGameBase().cursorstate = 1
@@ -165,7 +165,7 @@ endrem
 			'click on the dude
 			GenerateDialogue()
 		endif
-		
+
 		if dialogue
 			'leave the room
 			if dialogue.Update() = 0
@@ -178,14 +178,7 @@ endrem
 				dialogue = null
 			endif
 
-			'reset right clicks as long as dialogue exists
-			'-> leave via "say good bye"
-			rem
-			If MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)
-				MOUSEMANAGER.resetKey(1)
-				MOUSEMANAGER.resetKey(2)
-			endif
-			endrem
+			'no mouse reset - we still want to leave the room
 		endif
 	End Function
 End Type

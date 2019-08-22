@@ -73,7 +73,7 @@ Type TToastMessageCollection extends TRenderableEntity
 		_eventsRegistered = True
 		return True
 	End Function
-	
+
 
 	'=== EVENT FUNCTIONS ===
 
@@ -189,7 +189,7 @@ Type TToastMessageCollection extends TRenderableEntity
 		'=== DRAW CHILDREN ===
 		RenderChildren(xOffset, yOffset, alignment)
 	End Method
-	
+
 
 	Method Update:Int()
 		if spawnPoints
@@ -326,7 +326,7 @@ Type TToastMessageSpawnPoint extends TEntity
 
 
 		if showBackground then RenderBackground(xOffset, yOffset)
-		
+
 		For local message:TToastMessage = EachIn messages
 			message.Render(xOffset, yOffset, alignment)
 		Next
@@ -337,7 +337,7 @@ Type TToastMessageSpawnPoint extends TEntity
 		'restore old render config
 		TRenderConfig.Pop()
 	End Method
-	
+
 
 	Method Update:Int()
 		For local message:TToastMessage = EachIn messages.Copy()
@@ -346,7 +346,7 @@ Type TToastMessageSpawnPoint extends TEntity
 
 		'=== UPDATE CHILDREN ===
 		UpdateChildren()
-	End Method	
+	End Method
 End Type
 
 
@@ -360,7 +360,7 @@ Type TToastMessage extends TEntity
 	'a potential canvas to draw things on
 	Field canvasImage:TImage = null
 	Field _status:Int = 1 'closed
-	'time the animation for opening/closing takes, 0 to disable 
+	'time the animation for opening/closing takes, 0 to disable
 	Field _openCloseDuration:Float = 0.25
 	Field _openCloseTimeGone:Float = 0
 	Field _lifeTime:Float = -1
@@ -379,7 +379,7 @@ Type TToastMessage extends TEntity
 	Method GenerateGUID:string()
 		return "toastmessage-"+id
 	End Method
-	
+
 
 	'sets a function to call when the message gets closed
 	Method SetOnCloseFunction(onCloseFunction:int(sender:TToastMessage))
@@ -403,7 +403,7 @@ Type TToastMessage extends TEntity
 		self.area.dimension.SetXY(w, h)
 	End Method
 
-	
+
 	Method SetStatus(statusCode:Int, enable:Int=True)
 		If enable
 			_status :| statusCode
@@ -488,7 +488,7 @@ Type TToastMessage extends TEntity
 			_lifeTime :- GetDeltaTimer().GetDelta()
 			if _lifeTime < 0 then Close()
 		endif
-	
+
 		'check if closing/opening finished
 		if HasStatus(TOASTMESSAGE_OPENING_OR_CLOSING)
 			_openCloseTimeGone :+ GetDeltaTimer().GetDelta()
@@ -505,12 +505,13 @@ Type TToastMessage extends TEntity
 
 		'check clicked state
 		If GetScreenArea().containsXY(MouseManager.x, MouseManager.y)
-			If MouseManager.IsClicked(1) or MouseManager.IsHit(1)
+			If MouseManager.IsClicked(1)
 				Close()
-				MouseManager.ResetKey(1)
 
 				'fire event (eg. to play sound)
 				EventManager.triggerEvent(TEventSimple.Create("toastmessage.onClick", new TData.AddNumber("mouseButton", 1), Self))
+
+				MouseManager.ResetKey(1)
 			Endif
 		Endif
 	End Method
@@ -552,8 +553,8 @@ Type TToastMessage extends TEntity
 
 		'prepare visuals (alpha)
 		local progress:Float = GetOpeningClosingProgress()
-		if HasStatus(TOASTMESSAGE_OPEN) then progress = 1 - progress 
-		
+		if HasStatus(TOASTMESSAGE_OPEN) then progress = 1 - progress
+
 		local oldAlpha:Float = GetAlpha()
 		if HasStatus(TOASTMESSAGE_OPENING_OR_CLOSING) then SetAlpha(oldAlpha * progress)
 

@@ -854,7 +854,7 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 		dataChart.AddDataSet(new TDataChartDataSet)
 		'26 to have one earlier and later (-1 to 25)
 		dataChart.SetDataCount(0,10)
-		
+
 		local times:long[] = new Long[10]
 		local timeBegin:Long
 		local timeEnd:Long
@@ -873,7 +873,7 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 				dataChart.SetDataEntry(0, 3, 6 -0.5, 0.2)
 				dataChart.SetDataEntry(0, 4, 8 -0.5, 0.5)
 		dataChart.SetDataEntry(0, 8, 9 -0.5, 1.0)
-		
+
 		For local i:int = 0 until 10
 			local dataX:Float = (Float((times[i] - timeBegin)) / timeTotal) * 750
 			'start with "1"
@@ -959,7 +959,7 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 		EndIf
 
 
-		If MouseManager.IsHit(1)
+		If MouseManager.IsClicked(1)
 			selectedChannelImageTargetGroup = -1
 			selectedChannelImagePressureGroup = -1
 			If hoveredChannelImagePressureGroup >= 1 or hoveredChannelImageTargetGroup >= 0
@@ -1245,7 +1245,7 @@ End Type
 Type TDataChart
 	Field area:TRectangle = new TRectangle
 	Field areaGraph:TRectangle = new TRectangle
-	
+
 	'x value limits (min-max)
 	Field xRangeBegin:Float
 	Field xRangeEnd:Float
@@ -1255,12 +1255,12 @@ Type TDataChart
 	Field xRangeDataIndexEnd:Int[]
 	'Field xRangeMinimum:Float
 	'Field xRangeMaximum:Float
-	
+
 	'zoom factor, how many data points fit into one pixel
 	'             or how many pixels are needed to show all data points
 	Field _pixelsPerDataPointX:Float
-	
-	
+
+
 	Field xSegmentsCount:int
 	'width for all (if no individuals are set)
 	Field xSegmentWidth:int = -1
@@ -1309,8 +1309,8 @@ Type TDataChart
 	'depending of to viewport
 	'Field _dataStartIndex:Int
 	'Field _dataEndIndex:Int
-	
-	
+
+
 	Method GetPixelsPerDataPointX:Float()
 		If _pixelsPerDataPointX > 0
 			return _pixelsPerDataPointX
@@ -1322,7 +1322,7 @@ Type TDataChart
 			endif
 		EndIf
 	End Method
-	
+
 
 	Method SetPosition:TDataChart(x:int, y:int)
 		area.SetXY(x,y)
@@ -1339,8 +1339,8 @@ Type TDataChart
 		_RefreshElementSizes()
 		Return self
 	End Method
-	
-	
+
+
 	Method SetXRange(valueBegin:Float, valueEnd:Float)
 		xRangeBegin = valueBegin
 		xRangeEnd = valueEnd
@@ -1400,25 +1400,25 @@ Type TDataChart
 		'add "skipped pixels" to right label area
 		areaGraph.dimension.AddX( - (areaGraph.GetW() - xSegmentWidth * xSegmentsCount))
 	End Method
-	
-	
+
+
 	Method SetSegmentWidth(segmentIndex:int, width:int)
 		if segmentIndex < 0 or segmentIndex >= xSegmentWidths.length then return
-		
+
 		xSegmentWidths[segmentIndex] = width
 		'position this segment after the previous one
 		if segmentIndex > 0
 			xSegmentStarts[segmentIndex] = xSegmentStarts[segmentIndex -1] + GetSegmentWidth(segmentIndex -1)
 		endif
-		
+
 		'reposition all elements afterwards
 		if segmentIndex < xSegmentWidths.length-1
 			'recursive called for all coming segments
 			SetSegmentWidth(segmentIndex + 1, GetSegmentWidth(segmentIndex + 1))
 		endif
 	End Method
-	
-	
+
+
 	Method GetSegmentWidth:int(segmentIndex:int)
 		if segmentIndex < 0 or segmentIndex >= xSegmentWidths.length then return 0
 		'fallback
@@ -1432,14 +1432,14 @@ Type TDataChart
 		if segmentIndex < 0 or not xSegmentStarts or segmentIndex >= xSegmentStarts.length then return 0
 
 		'use auto-calculated value
-		if xSegmentStarts[segmentIndex] <= 0 
-			if segmentIndex > 0 
+		if xSegmentStarts[segmentIndex] <= 0
+			if segmentIndex > 0
 				return GetSegmentStart(segmentIndex -1) + GetSegmentWidth(segmentIndex -1)
 			else
 				return 0
 			endif
 		endif
-		
+
 		'or use defined value
 		return xSegmentStarts[segmentIndex]
 	End Method
@@ -1688,7 +1688,7 @@ Type TDataChart
 		Local minimumY:Float = GetMinimumY()
 		Local effectiveMaximumY:Float = 1.1 * maximumY
 		Local oldCol:TColor = new TColor.Get()
-		
+
 		Local pixelsPerDataPointX:Float = GetPixelsPerDataPointX()
 
 		Local baseDataPointX:Int = x ' + 0.5*pixelsPerDataPointX
@@ -1789,7 +1789,7 @@ Type TDataChart
 		Local col:TColor
 		For Local i:Int = 0 Until xSegmentsCount
 			local dataIndex:int = i  + xDataOffset
-			
+
 			if xSegmentLabels.length > i and xSegmentLabels[i]
 				if i = hoveredSegment
 					col = hoveredColor

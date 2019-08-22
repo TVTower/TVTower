@@ -7,9 +7,9 @@ Import "game.broadcast.dailybroadcaststatistic.bmx"
 
 
 'Ad agency
-Type RoomHandler_AdAgency extends TRoomHandler
-	Global hoveredGuiAdContract:TGuiAdContract = null
-	Global draggedGuiAdContract:TGuiAdContract = null
+Type RoomHandler_AdAgency Extends TRoomHandler
+	Global hoveredGuiAdContract:TGuiAdContract = Null
+	Global draggedGuiAdContract:TGuiAdContract = Null
 
 	Global VendorEntity:TSpriteEntity
 	'allows registration of drop-event
@@ -23,80 +23,80 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Field levelFilters:TAdContractBaseFilter[6]
 
 	'cache to check if changes are processed yet
-	Field _setRefillMode:int = 0 {nosave}
+	Field _setRefillMode:Int = 0 {nosave}
 
 	'graphical lists for interaction with blocks
-	Global haveToRefreshGuiElements:int = TRUE
+	Global haveToRefreshGuiElements:Int = True
 	Global GuiListNormal:TGUIAdContractSlotList[]
-	Global GuiListCheap:TGUIAdContractSlotList = null
-	Global GuiListSuitcase:TGUIAdContractSlotList = null
+	Global GuiListCheap:TGUIAdContractSlotList = Null
+	Global GuiListSuitcase:TGUIAdContractSlotList = Null
 
 	'sorting
-	Global ListSortMode:int = 0
-	Global ListSortVisible:int = False
-	Global contractsSortKeys:int[] = [0,1,2]
+	Global ListSortMode:Int = 0
+	Global ListSortVisible:Int = False
+	Global contractsSortKeys:Int[] = [0,1,2]
 	Global contractsSortKeysTooltips:TTooltipBase[3]
-	Global contractsSortSymbols:string[] = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money", "gfx_datasheet_icon_maxAudience"]
+	Global contractsSortSymbols:String[] = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money", "gfx_datasheet_icon_maxAudience"]
 
-	global LS_adagency:TLowerString = TLowerString.Create("adagency")
+	Global LS_adagency:TLowerString = TLowerString.Create("adagency")
 
 	'configuration
-	Global suitcasePos:TVec2D = new TVec2D.Init(520,100)
-	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(14,32)
-	Global contractsPerLine:int	= 4
-	Global contractsNormalAmount:int = 12
-	Global contractsCheapAmount:int	= 4
+	Global suitcasePos:TVec2D = New TVec2D.Init(520,100)
+	Global suitcaseGuiListDisplace:TVec2D = New TVec2D.Init(14,32)
+	Global contractsPerLine:Int	= 4
+	Global contractsNormalAmount:Int = 12
+	Global contractsCheapAmount:Int	= 4
 
 	Global _instance:RoomHandler_AdAgency
 	Global _eventListeners:TLink[]
 
-	Const SORT_BY_MINAUDIENCE:int = 0
-	Const SORT_BY_PROFIT:int = 1
-	Const SORT_BY_CLASSIFICATION:int = 2
+	Const SORT_BY_MINAUDIENCE:Int = 0
+	Const SORT_BY_PROFIT:Int = 1
+	Const SORT_BY_CLASSIFICATION:Int = 2
 
 
 	Function GetInstance:RoomHandler_AdAgency()
-		if not _instance then _instance = new RoomHandler_AdAgency
-		return _instance
+		If Not _instance Then _instance = New RoomHandler_AdAgency
+		Return _instance
 	End Function
 
 
-	Method Initialize:int()
+	Method Initialize:Int()
 		'=== RESET TO INITIAL STATE ===
 		CleanUp()
 
-		contractsPerLine:int = 4
+		contractsPerLine:Int = 4
 		contractsNormalAmount = 12
 		contractsCheapAmount = 4
-		listNormal = new TAdContract[contractsNormalAmount]
-		listCheap = new TAdContract[contractsCheapAmount]
+		listNormal = New TAdContract[contractsNormalAmount]
+		listCheap = New TAdContract[contractsCheapAmount]
 
 		Select GameRules.adagencySortContractsBy
-			case "minaudience"
+			Case "minaudience"
 				ListSortMode = SORT_BY_MINAUDIENCE
-			case "classification"
+			Case "classification"
 				ListSortMode = SORT_BY_CLASSIFICATION
-			case "profit"
+			Case "profit"
 				ListSortMode = SORT_BY_PROFIT
-			default
+			Default
 				ListSortMode = SORT_BY_MINAUDIENCE
 		End Select
 
 		VendorEntity = GetSpriteEntityFromRegistry("entity_adagency_vendor")
 
 
-		For local i:int = 0 until contractsSortKeysTooltips.length
+		For Local i:Int = 0 Until contractsSortKeysTooltips.length
 			Select i
-				case SORT_BY_CLASSIFICATION
-					contractsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("CLASSIFICATION")), new TRectangle.Init(0,0,-1,-1))
-				case SORT_BY_PROFIT
-					contractsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("AD_PROFIT")), new TRectangle.Init(0,0,-1,-1))
-				case SORT_BY_MINAUDIENCE
-					contractsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("MIN_AUDIENCE")), new TRectangle.Init(0,0,-1,-1))
+				Case SORT_BY_CLASSIFICATION
+					contractsSortKeysTooltips[i] = New TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("CLASSIFICATION")), New TRectangle.Init(0,0,-1,-1))
+				Case SORT_BY_PROFIT
+					contractsSortKeysTooltips[i] = New TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("AD_PROFIT")), New TRectangle.Init(0,0,-1,-1))
+				Case SORT_BY_MINAUDIENCE
+					contractsSortKeysTooltips[i] = New TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("MIN_AUDIENCE")), New TRectangle.Init(0,0,-1,-1))
 				Default
-					contractsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", "UNKNOWN SORT MODE: " + i, new TRectangle.Init(0,0,-1,-1))
+					contractsSortKeysTooltips[i] = New TGUITooltipBase.Initialize("", "UNKNOWN SORT MODE: " + i, New TRectangle.Init(0,0,-1,-1))
 			End Select
-			contractsSortKeysTooltips[i].parentArea = new TRectangle.Init(0,0,30,30)
+			contractsSortKeysTooltips[i].parentArea = New TRectangle.Init(0,0,30,30)
 			'contractsSortKeysTooltips[i]._minTitleDim = null
 			'contractsSortKeysTooltips[i]._minContentDim = null
 		Next
@@ -111,11 +111,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 		'=== CREATE ELEMENTS ===
-		if not GuiListSuitcase
+		If Not GuiListSuitcase
 			GuiListNormal = GuiListNormal[..3]
-			for local i:int = 0 to GuiListNormal.length-1
-				local listIndex:int = GuiListNormal.length-1 - i
-				GuiListNormal[listIndex] = new TGUIAdContractSlotList.Create(new TVec2D.Init(418 - i*80, 122 + i*36), new TVec2D.Init(200, 140), "adagency")
+			For Local i:Int = 0 To GuiListNormal.length-1
+				Local listIndex:Int = GuiListNormal.length-1 - i
+				GuiListNormal[listIndex] = New TGUIAdContractSlotList.Create(New TVec2D.Init(418 - i*80, 122 + i*36), New TVec2D.Init(200, 140), "adagency")
 				GuiListNormal[listIndex].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 				GuiListNormal[listIndex].SetItemLimit( contractsNormalAmount / GuiListNormal.length  )
 				GuiListNormal[listIndex].Resize(GetSpriteFromRegistry("gfx_contracts_0").area.GetW() * (contractsNormalAmount / GuiListNormal.length), GetSpriteFromRegistry("gfx_contracts_0").area.GetH() )
@@ -130,10 +130,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 			Next
 
-			GuiListSuitcase	= new TGUIAdContractSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(255, GetSpriteFromRegistry("gfx_contracts_0_dragged").area.GetH()), "adagency")
-			GuiListSuitcase.SetAutofillSlots(true)
+			GuiListSuitcase	= New TGUIAdContractSlotList.Create(New TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), New TVec2D.Init(255, GetSpriteFromRegistry("gfx_contracts_0_dragged").area.GetH()), "adagency")
+			GuiListSuitcase.SetAutofillSlots(True)
 
-			GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 220), new TVec2D.Init(5 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
+			GuiListCheap = New TGUIAdContractSlotList.Create(New TVec2D.Init(70, 220), New TVec2D.Init(5 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
 			'GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 200), new TVec2D.Init(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
 			'GuiListCheap.setEntriesBlockDisplacement(70,0)
 			'GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 5)
@@ -160,22 +160,22 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 			'default vendor dimension
-			local vendorAreaDimension:TVec2D = new TVec2D.Init(150,200)
-			local vendorAreaPosition:TVec2D = new TVec2D.Init(241,110)
-			if VendorEntity then vendorAreaDimension = VendorEntity.area.dimension.copy()
-			if VendorEntity then vendorAreaPosition = VendorEntity.area.position.copy()
+			Local vendorAreaDimension:TVec2D = New TVec2D.Init(150,200)
+			Local vendorAreaPosition:TVec2D = New TVec2D.Init(241,110)
+			If VendorEntity Then vendorAreaDimension = VendorEntity.area.dimension.copy()
+			If VendorEntity Then vendorAreaPosition = VendorEntity.area.position.copy()
 
-			VendorArea = new TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "scriptagency" )
+			VendorArea = New TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "scriptagency" )
 			'vendor should accept drop - else no recognition
-			VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+			VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, True)
 			VendorArea.zIndex = 0
-		endif
+		EndIf
 
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		_eventListeners = New TLink[0]
 
 		'=== register event listeners
 		'to react on changes in the programmeCollection (eg. contract finished)
@@ -202,7 +202,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'
 
 		'=== remove obsolete gui elements ===
-		if GuiListSuitcase then RemoveAllGuiElements()
+		If GuiListSuitcase Then RemoveAllGuiElements()
 
 		'=== remove all registered instance specific event listeners
 		'EventManager.unregisterListenersByLinks(_localEventListeners)
@@ -210,22 +210,22 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	End Method
 
 
-	Method RegisterHandler:int()
-		if GetInstance() <> self then self.CleanUp()
+	Method RegisterHandler:Int()
+		If GetInstance() <> Self Then Self.CleanUp()
 		GetRoomHandlerCollection().SetHandler("adagency", GetInstance())
 	End Method
 
 
 	Method AbortScreenActions:Int()
-		local abortedAction:int = False
+		Local abortedAction:Int = False
 
-		if draggedGuiAdContract
+		If draggedGuiAdContract
 			'try to drop the licence back
 			draggedGuiAdContract.dropBackToOrigin()
-			draggedGuiAdContract = null
-			hoveredGuiAdContract = null
+			draggedGuiAdContract = Null
+			hoveredGuiAdContract = Null
 			abortedAction = True
-		endif
+		EndIf
 
 		'remove and recreate all (so they get the correct visual style)
 		'do not use that - it reorders elements and changes the position
@@ -235,22 +235,22 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 		'change look to "stand on table look"
-		For local i:int = 0 to GuiListNormal.length-1
+		For Local i:Int = 0 To GuiListNormal.length-1
 			For Local obj:TGUIAdContract = EachIn GuiListNormal[i]._slots
-				obj.InitAssets(obj.getAssetName(-1, FALSE), obj.getAssetName(-1, TRUE))
+				obj.InitAssets(obj.getAssetName(-1, False), obj.getAssetName(-1, True))
 			Next
 		Next
 		For Local obj:TGUIAdContract = EachIn GuiListCheap._slots
-			obj.InitAssets(obj.getAssetName(-1, FALSE), obj.getAssetName(-1, TRUE))
+			obj.InitAssets(obj.getAssetName(-1, False), obj.getAssetName(-1, True))
 		Next
 
-		return abortedAction
+		Return abortedAction
 	End Method
 
 
 
 
-	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase )
+	Method onSaveGameBeginLoad:Int( triggerEvent:TEventBase )
 		'as soon as a savegame gets loaded, we remove every
 		'guiElement this room manages
 		'Afterwards we force the room to update the gui elements
@@ -262,56 +262,56 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'in this room
 		GetInstance().RemoveAllGuiElements()
 
-		haveToRefreshGuiElements = true
+		haveToRefreshGuiElements = True
 	End Method
 
 
 	'run AFTER the savegame data got loaded
 	'handle faulty adcontracts (after data got loaded)
-	Method onSaveGameLoad:int( triggerEvent:TEventBase )
+	Method onSaveGameLoad:Int( triggerEvent:TEventBase )
 		'in the case of being empty (should not happen)
 		GetInstance().RefillBlocks()
 	End Method
 
 
-	Method onEnterRoom:int( triggerEvent:TEventBase )
-		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
+	Method onEnterRoom:Int( triggerEvent:TEventBase )
+		Local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		'only interested in player figures (they cannot be in one room
 		'simultaneously, others like postman should not refill while you
 		'are in)
-		if not figure or not figure.playerID then return FALSE
+		If Not figure Or Not figure.playerID Then Return False
 
 		GetInstance().FigureEntersRoom(figure)
 	End Method
 
 
 	'override
-	Method onTryLeaveRoom:int( triggerEvent:TEventBase )
+	Method onTryLeaveRoom:Int( triggerEvent:TEventBase )
 		'non players can always leave
-		local figure:TFigure = TFigure(triggerEvent.GetSender())
-		if not figure or not figure.playerID then return FALSE
+		Local figure:TFigure = TFigure(triggerEvent.GetSender())
+		If Not figure Or Not figure.playerID Then Return False
 
 		'do not allow leaving as long as we have a dragged block
-		if draggedGuiAdContract
+		If draggedGuiAdContract
 			triggerEvent.setVeto()
-			return FALSE
-		endif
-		return TRUE
+			Return False
+		EndIf
+		Return True
 	End Method
 
 
 	'add back the programmes from the suitcase
 	'also fill empty blocks, remove gui elements
-	Method onLeaveRoom:int( triggerEvent:TEventBase )
+	Method onLeaveRoom:Int( triggerEvent:TEventBase )
 		'non players can always leave
-		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure or not figure.playerID then return FALSE
+		Local figure:TFigure = TFigure(triggerEvent.GetReceiver())
+		If Not figure Or Not figure.playerID Then Return False
 
 
 		'=== FOR ALL PLAYERS ===
 		'
 		'sign all new contracts
-		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(figure.playerID)
+		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(figure.playerID)
 		For Local contract:TAdContract = EachIn programmeCollection.suitcaseAdContracts
 			'adds a contract to the players collection (gets signed THERE)
 			'if successful, this also removes the contract from the suitcase
@@ -320,20 +320,20 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 		'=== FOR WATCHED PLAYERS ===
-		if IsObservedFigure(figure)
+		If IsObservedFigure(figure)
 			'
-		endif
+		EndIf
 
 
-		return TRUE
+		Return True
 	End Method
 
 
 	'called as soon as a players figure is forced to leave the room
-	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
+	Method onForcefullyLeaveRoom:Int( triggerEvent:TEventBase )
 		'only handle the player figures
-		local figure:TFigure = TFigure(triggerEvent.GetSender())
-		if not figure or not figure.playerID then return FALSE
+		Local figure:TFigure = TFigure(triggerEvent.GetSender())
+		If Not figure Or Not figure.playerID Then Return False
 
 
 		'=== FOR ALL PLAYERS ===
@@ -343,11 +343,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 		'=== FOR WATCHED PLAYERS ===
-		if IsObservedFigure(figure)
+		If IsObservedFigure(figure)
 			AbortScreenActions()
-		endif
+		EndIf
 
-		return True
+		Return True
 	End Method
 
 
@@ -355,7 +355,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	'AD Agency: common TFunctions
 	'===================================
 
-	Method FigureEntersRoom:int(figure:TFigureBase)
+	Method FigureEntersRoom:Int(figure:TFigureBase)
 		'=== FOR ALL PLAYERS ===
 		'
 		'refill the empty blocks, also sets haveToRefreshGuiElements=true
@@ -364,30 +364,30 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 		'=== FOR WATCHED PLAYERS ===
-		if IsObservedFigure(figure)
+		If IsObservedFigure(figure)
 			'reorder AFTER refilling
 			ResetContractOrder()
-		endif
+		EndIf
 	End Method
 
 
 	Method GetContractsInStock:TList()
-		if not listAll
+		If Not listAll
 			listAll = CreateList()
-			local lists:TAdContract[][] = [listNormal,listCheap]
-			For local j:int = 0 to lists.length-1
+			Local lists:TAdContract[][] = [listNormal,listCheap]
+			For Local j:Int = 0 To lists.length-1
 				For Local contract:TAdContract = EachIn lists[j]
-					if contract Then listAll.AddLast(contract)
+					If contract Then listAll.AddLast(contract)
 				Next
 			Next
-		endif
-		return listAll
+		EndIf
+		Return listAll
 	End Method
 
 
-	Method GetContractsInStockCount:int()
-		return GetContractsInStock().Count()
-		rem
+	Method GetContractsInStockCount:Int()
+		Return GetContractsInStock().Count()
+		Rem
 		Local ret:Int = 0
 		local lists:TAdContract[][] = [listNormal,listCheap]
 		For local j:int = 0 to lists.length-1
@@ -400,25 +400,25 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	End Method
 
 
-	Method GetContractByPosition:TAdContract(position:int)
-		if position > GetContractsInStockCount() then return null
-		local currentPosition:int = 0
-		local lists:TAdContract[][] = [listNormal,listCheap]
-		For local j:int = 0 to lists.length-1
+	Method GetContractByPosition:TAdContract(position:Int)
+		If position > GetContractsInStockCount() Then Return Null
+		Local currentPosition:Int = 0
+		Local lists:TAdContract[][] = [listNormal,listCheap]
+		For Local j:Int = 0 To lists.length-1
 			For Local contract:TAdContract = EachIn lists[j]
-				if contract
-					if currentPosition = position then return contract
+				If contract
+					If currentPosition = position Then Return contract
 					currentPosition:+1
-				endif
+				EndIf
 			Next
 		Next
-		return null
+		Return Null
 	End Method
 
 
-	Method HasContract:int(contract:TAdContract)
-		return GetContractsInStock().Contains(contract)
-		rem
+	Method HasContract:Int(contract:TAdContract)
+		Return GetContractsInStock().Contains(contract)
+		Rem
 		local lists:TAdContract[][] = [listNormal,listCheap]
 		For local j:int = 0 to lists.length-1
 			For Local cont:TAdContract = EachIn lists[j]
@@ -430,82 +430,82 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	End Method
 
 
-	Method GetContractByID:TAdContract(contractID:int)
-		local lists:TAdContract[][] = [listNormal,listCheap]
-		For local j:int = 0 to lists.length-1
+	Method GetContractByID:TAdContract(contractID:Int)
+		Local lists:TAdContract[][] = [listNormal,listCheap]
+		For Local j:Int = 0 To lists.length-1
 			For Local contract:TAdContract = EachIn lists[j]
-				if contract and contract.id = contractID then return contract
+				If contract And contract.id = contractID Then Return contract
 			Next
 		Next
-		return null
+		Return Null
 	End Method
 
 
-	Method GiveContractToPlayer:int(contract:TAdContract, playerID:int, sign:int=FALSE)
+	Method GiveContractToPlayer:Int(contract:TAdContract, playerID:Int, Sign:Int=False)
 		'alreay owning?
-		if contract.owner = playerID then return FALSE
+		If contract.owner = playerID Then Return False
 		'does not satisfy eg. "channel image"
-		if not contract.IsAvailableToSign(playerID) then return False
+		If Not contract.IsAvailableToSign(playerID) Then Return False
 
-		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
-		if not programmeCollection then return FALSE
+		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
+		If Not programmeCollection Then Return False
 
 		'try to add to suitcase of player
-		if not sign
-			if not programmeCollection.AddUnsignedAdContractToSuitcase(contract) then return FALSE
+		If Not Sign
+			If Not programmeCollection.AddUnsignedAdContractToSuitcase(contract) Then Return False
 		'we do not need the suitcase, direkt sign pls (eg. for AI)
-		else
-			if not programmeCollection.AddAdContract(contract) then return FALSE
-		endif
+		Else
+			If Not programmeCollection.AddAdContract(contract) Then Return False
+		EndIf
 
 		'remove from agency's lists
 		GetInstance().RemoveContract(contract)
 
-		return TRUE
+		Return True
 	End Method
 
 
-	Method TakeContractFromPlayer:int(contract:TAdContract, playerID:int)
-		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
-		if not programmeCollection then return False
+	Method TakeContractFromPlayer:Int(contract:TAdContract, playerID:Int)
+		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
+		If Not programmeCollection Then Return False
 
-		if programmeCollection.RemoveUnsignedAdContractFromSuitcase(contract)
+		If programmeCollection.RemoveUnsignedAdContractFromSuitcase(contract)
 			'add to agency's lists - if not existing yet
-			if not HasContract(contract)
-				if not AddContract(contract)
+			If Not HasContract(contract)
+				If Not AddContract(contract)
 					'if adding failed, remove the contract from the game
 					'at all!
 					GetAdContractCollection().Remove(contract)
-				endif
-			endif
-			return TRUE
-		else
-			return FALSE
-		endif
+				EndIf
+			EndIf
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 
 
-	Function isCheapContract:int(contract:TAdContract)
-		return contract.adAgencyClassification < 0
+	Function isCheapContract:Int(contract:TAdContract)
+		Return contract.adAgencyClassification < 0
 	End Function
 
 
-	Method SetRefillMode(mode:int)
+	Method SetRefillMode(mode:Int)
 		_setRefillMode = mode
-		if _setRefillMode = 2
+		If _setRefillMode = 2
 			contractsSortSymbols = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money"]
 			contractsSortKeys = [0, 1]
-		else
+		Else
 			contractsSortSymbols = ["gfx_datasheet_icon_minAudience", "gfx_datasheet_icon_money", "gfx_datasheet_icon_maxAudience"]
 			contractsSortKeys = [0, 1, 2]
-		endif
+		EndIf
 	End Method
 
 
-	Method SortContracts(list:TList, mode:int = -1)
-		if not list then return
+	Method SortContracts(list:TList, mode:Int = -1)
+		If Not list Then Return
 
-		if mode = -1 then mode = ListSortMode
+		If mode = -1 Then mode = ListSortMode
 
 		Select ListSortMode
 			Case SORT_BY_CLASSIFICATION
@@ -514,30 +514,30 @@ Type RoomHandler_AdAgency extends TRoomHandler
 				list.sort(True, TAdContract.SortByProfit)
 			Case SORT_BY_MINAUDIENCE
 				list.sort(True, TAdContract.SortByMinAudienceRelative)
-			default
+			Default
 				list.sort(True, TAdContract.SortByMinAudienceRelative)
-		End select
+		End Select
 	End Method
 
 
-	Method ResetContractOrder:int()
-		local contracts:TList = CreateList()
-		for local contract:TAdContract = eachin listNormal
+	Method ResetContractOrder:Int()
+		Local contracts:TList = CreateList()
+		For Local contract:TAdContract = EachIn listNormal
 			'only add valid contracts
-			if contract.base then contracts.addLast(contract)
+			If contract.base Then contracts.addLast(contract)
 		Next
-		for local contract:TAdContract = eachin listCheap
+		For Local contract:TAdContract = EachIn listCheap
 			'only add valid contracts
-			if contract.base then contracts.addLast(contract)
+			If contract.base Then contracts.addLast(contract)
 		Next
-		listNormal = new TAdContract[listNormal.length]
-		listCheap = new TAdContract[listCheap.length]
-		listAll = null
+		listNormal = New TAdContract[listNormal.length]
+		listCheap = New TAdContract[listCheap.length]
+		listAll = Null
 
 		SortContracts(contracts, ListSortMode)
 
 		'add again - so it gets sorted
-		for local contract:TAdContract = eachin contracts
+		For Local contract:TAdContract = EachIn contracts
 			AddContract(contract)
 		Next
 
@@ -545,59 +545,59 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	End Method
 
 
-	Method RemoveContract:int(contract:TAdContract)
-		if GetContractsInStockCount() = 0 then return False
+	Method RemoveContract:Int(contract:TAdContract)
+		If GetContractsInStockCount() = 0 Then Return False
 
-		local foundContract:int = FALSE
+		Local foundContract:Int = False
 		'remove from agency's lists
-		local lists:TAdContract[][] = [listNormal,listCheap]
-		For local j:int = 0 to lists.length-1
-			For local i:int = 0 to lists[j].length-1
-				if lists[j][i] = contract
-					lists[j][i] = null
+		Local lists:TAdContract[][] = [listNormal,listCheap]
+		For Local j:Int = 0 To lists.length-1
+			For Local i:Int = 0 To lists[j].length-1
+				If lists[j][i] = contract
+					lists[j][i] = Null
 					listAll.Remove(contract)
 
 					'emit event
 					EventManager.triggerEvent(TEventSimple.Create("adagency.removeAdContract", New TData.add("adcontract", contract), Self))
 
-					foundContract = TRUE
-				endif
+					foundContract = True
+				EndIf
 			Next
 		Next
 
-		return foundContract
+		Return foundContract
 	End Method
 
 
-	Method AddContract:int(contract:TAdContract)
+	Method AddContract:Int(contract:TAdContract)
 		'skip if done already
-		if HasContract(contract) then return False
+		If HasContract(contract) Then Return False
 
 		'try to fill the program into the corresponding list
 		'we use multiple lists - if the first is full, try second
-		local lists:TAdContract[][]
+		Local lists:TAdContract[][]
 
-		if isCheapContract(contract)
+		If isCheapContract(contract)
 			lists = [listCheap,listNormal]
-		else
+		Else
 			lists = [listNormal,listCheap]
-		endif
+		EndIf
 
 		'create list if needed
 		GetContractsInStock()
 
 		'loop through all lists - as soon as we find a spot
 		'to place the programme - do so and return
-		for local j:int = 0 to lists.length-1
-			for local i:int = 0 to lists[j].length-1
-				if lists[j][i] then continue
+		For Local j:Int = 0 To lists.length-1
+			For Local i:Int = 0 To lists[j].length-1
+				If lists[j][i] Then Continue
 				contract.SetOwner(contract.OWNER_VENDOR)
 				lists[j][i] = contract
 				listAll.Addlast(contract)
 				'emit event
 				EventManager.triggerEvent(TEventSimple.Create("adagency.addAdContract", New TData.add("adcontract", contract), Self))
 
-				return TRUE
+				Return True
 			Next
 		Next
 
@@ -605,20 +605,20 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'so just give it back to the pool
 		contract.SetOwner(contract.OWNER_NOBODY)
 
-		return FALSE
+		Return False
 	End Method
 
 
-	Method RemoveRandomContracts:int(removeChance:Float = 1.0)
-		local toRemove:TAdContract[]
-		For local c:TAdContract = EachIn GetContractsInStock()
+	Method RemoveRandomContracts:Int(removeChance:Float = 1.0)
+		Local toRemove:TAdContract[]
+		For Local c:TAdContract = EachIn GetContractsInStock()
 			'delete an old contract by a chance of 50%
-			if RandRange(0,100) < removeChance*100
+			If RandRange(0,100) < removeChance*100
 				toRemove :+ [c]
-			endif
+			EndIf
 		Next
 
-		For local c:TAdContract = EachIn toRemove
+		For Local c:TAdContract = EachIn toRemove
 			'remove from game! - else the contracts stay
 			'there forever!
 			GetAdContractCollection().Remove(c)
@@ -630,61 +630,61 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			c.Remove()
 		Next
 
-		return toRemove.length
+		Return toRemove.length
 	End Method
 
 
 	'deletes all gui elements (eg. for rebuilding)
-	Function RemoveAllGuiElements:int()
-		For local i:int = 0 to GuiListNormal.length-1
+	Function RemoveAllGuiElements:Int()
+		For Local i:Int = 0 To GuiListNormal.length-1
 			GuiListNormal[i].EmptyList()
 		Next
 		GuiListCheap.EmptyList()
 		GuiListSuitcase.EmptyList()
-		For local guiAdContract:TGuiAdContract = eachin GuiManager.listDragged.Copy()
+		For Local guiAdContract:TGuiAdContract = EachIn GuiManager.listDragged.Copy()
 			guiAdContract.remove()
-			guiAdContract = null
+			guiAdContract = Null
 		Next
 
-		hoveredGuiAdContract = null
-		draggedGuiAdContract = null
+		hoveredGuiAdContract = Null
+		draggedGuiAdContract = Null
 
 		'to recreate everything during next update...
-		haveToRefreshGuiElements = TRUE
+		haveToRefreshGuiElements = True
 	End Function
 
 
-	Method RefreshGuiElements:int()
+	Method RefreshGuiElements:Int()
 		'===== REMOVE UNUSED =====
 		'remove gui elements with contracts the player does not have any longer
 
 		'suitcase
-		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(GetPlayerBase().playerID)
-		For local guiAdContract:TGuiAdContract = eachin GuiListSuitcase._slots
+		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(GetPlayerBase().playerID)
+		For Local guiAdContract:TGuiAdContract = EachIn GuiListSuitcase._slots
 			'if the player has this contract in suitcase or list, skip deletion
-			if programmeCollection.HasAdContract(guiAdContract.contract) then continue
-			if programmeCollection.HasUnsignedAdContractInSuitcase(guiAdContract.contract) then continue
+			If programmeCollection.HasAdContract(guiAdContract.contract) Then Continue
+			If programmeCollection.HasUnsignedAdContractInSuitcase(guiAdContract.contract) Then Continue
 
 			'print "guiListSuitcase has obsolete contract: "+guiAdContract.contract.id
 			guiAdContract.remove()
-			guiAdContract = null
+			guiAdContract = Null
 		Next
 		'agency lists
-		For local i:int = 0 to GuiListNormal.length-1
-			For local guiAdContract:TGuiAdContract = eachin GuiListNormal[i]._slots
+		For Local i:Int = 0 To GuiListNormal.length-1
+			For Local guiAdContract:TGuiAdContract = EachIn GuiListNormal[i]._slots
 				'if not HasContract(guiAdContract.contract) then print "REM guiListNormal"+i+" has obsolete contract: "+guiAdContract.contract.id
-				if not HasContract(guiAdContract.contract)
+				If Not HasContract(guiAdContract.contract)
 					guiAdContract.remove()
-					guiAdContract = null
-				endif
+					guiAdContract = Null
+				EndIf
 			Next
 		Next
-		For local guiAdContract:TGuiAdContract = eachin GuiListCheap._slots
+		For Local guiAdContract:TGuiAdContract = EachIn GuiListCheap._slots
 			'if not HasContract(guiAdContract.contract) then	print "REM guiListCheap has obsolete contract: "+guiAdContract.contract.id
-			if not HasContract(guiAdContract.contract)
+			If Not HasContract(guiAdContract.contract)
 				guiAdContract.remove()
-				guiAdContract = null
-			endif
+				guiAdContract = Null
+			EndIf
 		Next
 
 
@@ -692,46 +692,46 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'create missing gui elements for all contract-lists
 
 		'normal list
-		For local contract:TAdContract = eachin listNormal
-			if not contract then continue
-			local contractAdded:int = FALSE
+		For Local contract:TAdContract = EachIn listNormal
+			If Not contract Then Continue
+			Local contractAdded:Int = False
 
 			'search the contract in all of our lists...
-			local contractFound:int = FALSE
-			For local i:int = 0 to GuiListNormal.length-1
-				if contractFound then continue
-				if GuiListNormal[i].ContainsContract(contract) then contractFound=true
+			Local contractFound:Int = False
+			For Local i:Int = 0 To GuiListNormal.length-1
+				If contractFound Then Continue
+				If GuiListNormal[i].ContainsContract(contract) Then contractFound=True
 			Next
 
 			'try to fill in one of the normalList-Parts
-			if not contractFound
-				For local i:int = 0 to GuiListNormal.length-1
-					if contractAdded then continue
-					if GuiListNormal[i].ContainsContract(contract) then contractAdded=true;continue
-					if GuiListNormal[i].getFreeSlot() < 0 then continue
-					local block:TGuiAdContract = new TGuiAdContract.CreateWithContract(contract)
+			If Not contractFound
+				For Local i:Int = 0 To GuiListNormal.length-1
+					If contractAdded Then Continue
+					If GuiListNormal[i].ContainsContract(contract) Then contractAdded=True;Continue
+					If GuiListNormal[i].getFreeSlot() < 0 Then Continue
+					Local block:TGuiAdContract = New TGuiAdContract.CreateWithContract(contract)
 					'change look
-					block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
+					block.InitAssets(block.getAssetName(-1, False), block.getAssetName(-1, True))
 
 					'print "ADD guiListNormal"+i+" missed new contract: "+block.contract.id
 
 					GuiListNormal[i].addItem(block, "-1")
-					contractAdded = true
+					contractAdded = True
 				Next
-				if not contractAdded
-					TLogger.log("AdAgency.RefreshGuiElements", "contract exists but does not fit in GuiListNormal - contract removed.", LOG_ERROR)
+				If Not contractAdded
+					TLogger.Log("AdAgency.RefreshGuiElements", "contract exists but does not fit in GuiListNormal - contract removed.", LOG_ERROR)
 					RemoveContract(contract)
-				endif
-			endif
+				EndIf
+			EndIf
 		Next
 
 		'cheap list
-		For local contract:TAdContract = eachin listCheap
-			if not contract then continue
-			if GuiListCheap.ContainsContract(contract) then continue
-			local block:TGuiAdContract = new TGuiAdContract.CreateWithContract(contract)
+		For Local contract:TAdContract = EachIn listCheap
+			If Not contract Then Continue
+			If GuiListCheap.ContainsContract(contract) Then Continue
+			Local block:TGuiAdContract = New TGuiAdContract.CreateWithContract(contract)
 			'change look
-			block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
+			block.InitAssets(block.getAssetName(-1, False), block.getAssetName(-1, True))
 
 			'print "ADD guiListCheap missed new contract: "+block.contract.id
 
@@ -739,82 +739,82 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		Next
 
 		'create missing gui elements for the players contracts
-		For local contract:TAdContract = eachin programmeCollection.adContracts
-			if guiListSuitcase.ContainsContract(contract) then continue
-			local block:TGuiAdContract = new TGuiAdContract.CreateWithContract(contract)
+		For Local contract:TAdContract = EachIn programmeCollection.adContracts
+			If guiListSuitcase.ContainsContract(contract) Then Continue
+			Local block:TGuiAdContract = New TGuiAdContract.CreateWithContract(contract)
 			'change look
-			block.InitAssets(block.getAssetName(-1, TRUE), block.getAssetName(-1, TRUE))
+			block.InitAssets(block.getAssetName(-1, True), block.getAssetName(-1, True))
 
 			'print "ADD guiListSuitcase missed new (old) contract: "+block.contract.id
 
-			block.setOption(GUI_OBJECT_DRAGABLE, FALSE)
+			block.setOption(GUI_OBJECT_DRAGABLE, False)
 			guiListSuitcase.addItem(block, "-1")
 		Next
 
 		'create missing gui elements for the current suitcase
-		For local contract:TAdContract = eachin programmeCollection.suitcaseAdContracts
-			if guiListSuitcase.ContainsContract(contract) then continue
-			local block:TGuiAdContract = new TGuiAdContract.CreateWithContract(contract)
+		For Local contract:TAdContract = EachIn programmeCollection.suitcaseAdContracts
+			If guiListSuitcase.ContainsContract(contract) Then Continue
+			Local block:TGuiAdContract = New TGuiAdContract.CreateWithContract(contract)
 			'change look
-			block.InitAssets(block.getAssetName(-1, TRUE), block.getAssetName(-1, TRUE))
+			block.InitAssets(block.getAssetName(-1, True), block.getAssetName(-1, True))
 
 			'print "guiListSuitcase missed new contract: "+block.contract.id
 
 			guiListSuitcase.addItem(block, "-1")
 		Next
-		haveToRefreshGuiElements = FALSE
+		haveToRefreshGuiElements = False
 	End Method
 
 
 	'refills slots in the ad agency
 	'replaceOffer: remove (some) old contracts and place new there?
-	Method ReFillBlocks:Int(replaceOffer:int=FALSE, replaceChance:float=1.0)
-		haveToRefreshGuiElements = TRUE
+	Method ReFillBlocks:Int(replaceOffer:Int=False, replaceChance:Float=1.0)
+		haveToRefreshGuiElements = True
 
 		'reset list cache
-		listAll = null
+		listAll = Null
 
 		'delete some random ads
-		if replaceOffer then RemoveRandomContracts(replaceChance)
+		If replaceOffer Then RemoveRandomContracts(replaceChance)
 
 
-		if GameRules.adagencyRefillMode <= 1
+		If GameRules.adagencyRefillMode <= 1
 			RefillBlocksMode1()
-		else
+		Else
 			RefillBlocksMode2()
-		endif
+		EndIf
 	End Method
 
 
 	Method RefillBlocksMode1()
-		TLogger.log("AdAgency.RefillBlocks", "RefillBlocksMode1.", LOG_DEBUG)
+		TLogger.Log("AdAgency.RefillBlocks", "RefillBlocksMode1.", LOG_DEBUG)
 
 		'=== CALCULATE VARIOUS INFORMATION FOR FILTERS ===
 		'we calculate the "average quote" using yesterdays audience but
 		'todays reach ... so it is not 100% accurate (buying stations today
 		'will lower the quote)
-		local averageChannelImage:Float = GetPublicImageCollection().GetAverage().GetAverageImage()
-		local averageChannelReach:Int = GetStationMapCollection().GetAverageReach()
-		local averageChannelQuoteDayTime:Float = 0.0
-		local averageChannelQuotePrimeTime:Float = 0.0
-		local dayWithoutPrimeTime:int[] = [6,7,8,9,10,11,12,13,14,15,16,17,23 ] 'without primetime 18-22 and night time 0-5
-		local dayOnlyPrimeTime:int[] = [18,19,20,21,22]
-		if averageChannelReach > 0
+		Local averageChannelImage:Float = GetPublicImageCollection().GetAverage().GetAverageImage()
+		Local averageChannelReach:Int = GetStationMapCollection().GetAverageReach()
+		Local averageChannelQuoteDayTime:Float = 0.0
+		Local averageChannelQuotePrimeTime:Float = 0.0
+		Local dayWithoutPrimeTime:Int[] = [6,7,8,9,10,11,12,13,14,15,16,17,23 ] 'without primetime 18-22 and night time 0-5
+		Local dayOnlyPrimeTime:Int[] = [18,19,20,21,22]
+		If averageChannelReach > 0
 			'GetAverageAudienceForHours expects "hours to skip" !
 			averageChannelQuoteDayTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayWithoutPrimeTime).GetTotalSum() / averageChannelReach
 			averageChannelQuotePrimeTime = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(-1, dayOnlyPrimeTime).GetTotalSum() / averageChannelReach
-		endif
+		EndIf
 
-		local highestChannelImage:Float = averageChannelImage
-		local highestChannelQuoteDayTime:Float = 0.0
-		local highestChannelQuotePrimeTime:Float = 0.0
+		Local highestChannelImage:Float = averageChannelImage
+		Local highestChannelQuoteDayTime:Float = 0.0
+		Local highestChannelQuotePrimeTime:Float = 0.0
 
-		local lowestChannelImage:Float = averageChannelImage
-		local lowestChannelQuoteDayTime:Float = -1
-		local lowestChannelQuotePrimeTime:Float = -1
+		Local lowestChannelImage:Float = averageChannelImage
+		Local lowestChannelQuoteDayTime:Float = -1
+		Local lowestChannelQuotePrimeTime:Float = -1
 
-		local onDayOne:int = (Getworldtime().GetDay() = GetWorldtime().GetStartDay())
-		if onDayOne
+		Local onDayOne:Int = (Getworldtime().GetDay() = GetWorldtime().GetStartDay())
+		If onDayOne
 			'quotes of TOTAL REACH, not of WHO IS AT HOME
 			lowestChannelQuoteDayTime = 0.005
 			lowestChannelQuotePrimeTime = 0.01
@@ -824,31 +824,31 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 			highestChannelQuoteDayTime = 0.045
 			highestChannelQuotePrimeTime = 0.075 '0.1
-		else
-			For local i:int = 1 to 4
-				local image:Float = GetPublicImageCollection().Get(i).GetAverageImage()
-				if image > highestChannelImage then highestChannelImage = image
-				if image < lowestChannelImage then lowestChannelImage = image
+		Else
+			For Local i:Int = 1 To 4
+				Local image:Float = GetPublicImageCollection().Get(i).GetAverageImage()
+				If image > highestChannelImage Then highestChannelImage = image
+				If image < lowestChannelImage Then lowestChannelImage = image
 
 				'daytime (without night)
-				if averageChannelReach > 0
-					local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayWithoutPrimeTime).GetTotalSum()
-					local quote:Float = audience / averageChannelReach
-					if lowestChannelQuoteDayTime < 0 then lowestChannelQuoteDayTime = quote
-					if lowestChannelQuoteDayTime > quote then lowestChannelQuoteDayTime = quote
-					if highestChannelQuoteDayTime < quote then highestChannelQuoteDayTime = quote
-				endif
+				If averageChannelReach > 0
+					Local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayWithoutPrimeTime).GetTotalSum()
+					Local quote:Float = audience / averageChannelReach
+					If lowestChannelQuoteDayTime < 0 Then lowestChannelQuoteDayTime = quote
+					If lowestChannelQuoteDayTime > quote Then lowestChannelQuoteDayTime = quote
+					If highestChannelQuoteDayTime < quote Then highestChannelQuoteDayTime = quote
+				EndIf
 
 				'primetime (without day and night)
-				if averageChannelReach > 0
-					local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayOnlyPrimeTime).GetTotalSum()
-					local quote:Float = audience / averageChannelReach
-					if lowestChannelQuotePrimeTime < 0 then lowestChannelQuotePrimeTime = quote
-					if lowestChannelQuotePrimeTime > quote then lowestChannelQuotePrimeTime = quote
-					if highestChannelQuotePrimeTime < quote then highestChannelQuotePrimeTime = quote
-				endif
+				If averageChannelReach > 0
+					Local audience:Float = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetAverageAudienceForHours(i, dayOnlyPrimeTime).GetTotalSum()
+					Local quote:Float = audience / averageChannelReach
+					If lowestChannelQuotePrimeTime < 0 Then lowestChannelQuotePrimeTime = quote
+					If lowestChannelQuotePrimeTime > quote Then lowestChannelQuotePrimeTime = quote
+					If highestChannelQuotePrimeTime < quote Then highestChannelQuotePrimeTime = quote
+				EndIf
 			Next
-		endif
+		EndIf
 		'convert to percentage
 		highestChannelImage :* 0.01
 		averageChannelImage :* 0.01
@@ -856,12 +856,12 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 		'=== SETUP FILTERS ===
-		local spotMin:Float = 0.0001 '0.01% to avoid 0.0-spots
-		local rangeStep:Float = 0.005 '0.5%
-		local limitInstances:int = GameRules.adContractInstancesMax
+		Local spotMin:Float = 0.0001 '0.01% to avoid 0.0-spots
+		Local rangeStep:Float = 0.005 '0.5%
+		Local limitInstances:Int = GameRules.adContractInstancesMax
 
 		'the cheap list contains really low contracts
-		local cheapListFilter:TAdContractBaseFilter = new TAdContractbaseFilter
+		Local cheapListFilter:TAdContractBaseFilter = New TAdContractbaseFilter
 		'0.5% market share -> 1mio reach means 5.000 people!
 		cheapListFilter.SetAudience(spotMin, Max(spotMin, 0.005))
 		'no image requirements - or not more than the lowest image
@@ -873,17 +873,17 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'the dev value is defining how many simultaneously are allowed
 		'while the filter filters contracts already having that much (or
 		'more) contracts, that's why we subtract 1
-		if limitInstances > 0 then cheapListFilter.SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
+		If limitInstances > 0 Then cheapListFilter.SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		'the 12 contracts are divided into 6 groups
 		'4x fitting the lowest requirements (2x day, 2x prime)
 		'4x fitting the average requirements -> 8x planned but slots limited (2x day, 2x prime)
 		'4x fitting the highest requirements (2x day, 2x prime)
-		for local i:int = 0 until levelFilters.length
-			if not levelFilters[i] then levelFilters[i] = new TAdContractBaseFilter
+		For Local i:Int = 0 Until levelFilters.length
+			If Not levelFilters[i] Then levelFilters[i] = New TAdContractBaseFilter
 		Next
 		'=== LOWEST ===
-		levelFilters[0] = new TAdContractbaseFilter
+		levelFilters[0] = New TAdContractbaseFilter
 		'from 80-120% of lowest (Minimum of 0.01%)
 		levelFilters[0].SetAudience(Max(spotMin, 0.8 * lowestChannelQuoteDaytime), Max(spotMin , 1.2 * lowestChannelQuoteDayTime))
 		'1% - avgImage %
@@ -891,51 +891,51 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'lowest should be without "limits"
 		levelFilters[0].SetSkipLimitedToProgrammeGenre()
 		levelFilters[0].SetSkipLimitedToTargetGroup()
-		if limitInstances > 0 then levelFilters[0].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
+		If limitInstances > 0 Then levelFilters[0].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
-		levelFilters[1] = new TAdContractbaseFilter
+		levelFilters[1] = New TAdContractbaseFilter
 		levelFilters[1].SetAudience(Max(spotMin, 0.8 * lowestChannelQuotePrimeTime), Max(spotMin , 1.2 * lowestChannelQuotePrimeTime))
 		levelFilters[1].SetMinImageRange(0.0, lowestChannelImage)
 		levelFilters[1].SetSkipLimitedToProgrammeGenre()
 		levelFilters[1].SetSkipLimitedToTargetGroup()
-		if limitInstances > 0 then levelFilters[1].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
+		If limitInstances > 0 Then levelFilters[1].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		'=== AVERAGE ===
-		levelFilters[2] = new TAdContractbaseFilter
+		levelFilters[2] = New TAdContractbaseFilter
 		'from 70% of avg to 130% of avg, may cross with lowest!
 		'levelFilters[1].SetAudience(0.8 * averageChannelQuote, Max(0.01, 1.2 * averageChannelQuote))
 		'weighted Minimum/Maximum (the more away from border, the
 		'stronger the influence)
-		local minAvg:Float = (0.7 * lowestChannelQuoteDayTime + 0.3 * averageChannelQuoteDayTime)
-		local maxAvg:Float = (0.3 * averageChannelQuoteDayTime + 0.7 * highestChannelQuoteDayTime)
+		Local minAvg:Float = (0.7 * lowestChannelQuoteDayTime + 0.3 * averageChannelQuoteDayTime)
+		Local maxAvg:Float = (0.3 * averageChannelQuoteDayTime + 0.7 * highestChannelQuoteDayTime)
 		levelFilters[2].SetAudience(Max(spotMin, minAvg), Max(spotMin, maxAvg))
 		'0-100% of average Image
 		levelFilters[2].SetMinImageRange(0, averageChannelImage)
-		if limitInstances > 0 then levelFilters[2].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
+		If limitInstances > 0 Then levelFilters[2].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
-		levelFilters[3] = new TAdContractbaseFilter
+		levelFilters[3] = New TAdContractbaseFilter
 		minAvg = (0.7 * lowestChannelQuotePrimeTime + 0.3 * averageChannelQuotePrimeTime)
 		maxAvg = (0.3 * averageChannelQuotePrimeTime + 0.7 * highestChannelQuotePrimeTime)
 		levelFilters[3].SetAudience(Max(spotMin, minAvg), Max(spotMin, maxAvg))
 		levelFilters[3].SetMinImageRange(0, averageChannelImage)
-		if limitInstances > 0 then levelFilters[3].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
+		If limitInstances > 0 Then levelFilters[3].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 		'=== HIGH ===
-		levelFilters[4] = new TAdContractbaseFilter
+		levelFilters[4] = New TAdContractbaseFilter
 		'from 50% of avg to 150% of highest
 		levelFilters[4].SetAudience(Max(spotMin, 0.7 * highestChannelQuoteDayTime), Max(spotMin, 1.2 * highestChannelQuoteDayTime))
 		'0-100% of highest Image
 		levelFilters[4].SetMinImageRange(0, highestChannelImage)
-		if limitInstances > 0 then levelFilters[4].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
+		If limitInstances > 0 Then levelFilters[4].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
-		levelFilters[5] = new TAdContractbaseFilter
+		levelFilters[5] = New TAdContractbaseFilter
 		levelFilters[5].SetAudience(Max(spotMin, 0.7 * highestChannelQuotePrimeTime), Max(spotMin, 1.2 * highestChannelQuotePrimeTime))
 		levelFilters[5].SetMinImageRange(0, highestChannelImage)
-		if limitInstances > 0 then levelFilters[5].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
+		If limitInstances > 0 Then levelFilters[5].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
-		TLogger.log("AdAgency.RefillBlocks", "Refilling "+ GetWorldTime().GetFormattedTime() +". Filter details", LOG_DEBUG)
+		TLogger.Log("AdAgency.RefillBlocks", "Refilling "+ GetWorldTime().GetFormattedTime() +". Filter details", LOG_DEBUG)
 
-rem
+Rem
 print "REFILL:"
 print "level0:  audienceDay "+"0.0%"+" - "+MathHelper.NumberToString(100*lowestChannelQuoteDayTime, 2)+"%"
 print "level0:  audiencePrime "+"0.0%"+" - "+MathHelper.NumberToString(100*lowestChannelQuotePrimeTime, 2)+"%"
@@ -949,101 +949,101 @@ print "level2:  image     0.00 - "+highestChannelImage
 print "------------------"
 endrem
 		'=== ACTUALLY CREATE CONTRACTS ===
-		local classification:int = -1
-		local lists:TAdContract[][] = [listNormal,listCheap]
-		for local j:int = 0 to lists.length-1
-			for local i:int = 0 to lists[j].length-1
+		Local classification:Int = -1
+		Local lists:TAdContract[][] = [listNormal,listCheap]
+		For Local j:Int = 0 To lists.length-1
+			For Local i:Int = 0 To lists[j].length-1
 				'if exists and is valid...skip it
-				if lists[j][i] and lists[j][i].base then continue
+				If lists[j][i] And lists[j][i].base Then Continue
 
-				local contract:TAdContract
+				Local contract:TAdContract
 
-				if lists[j] = listNormal
-					local filterNum:int = 0
-					Select floor(i / 4)
-						case 2
+				If lists[j] = listNormal
+					Local filterNum:Int = 0
+					Select Floor(i / 4)
+						Case 2
 							'levelFilters[4 + 5]
-							if i mod 4 <= 1
+							If i Mod 4 <= 1
 								filterNum = 4
 								classification = 4
-							else
+							Else
 								filterNum = 5
 								classification = 5
-							endif
-						case 1
+							EndIf
+						Case 1
 							'levelFilters[2 + 3]
-							if i mod 4 <= 1
+							If i Mod 4 <= 1
 								filterNum = 2
 								classification = 2
-							else
+							Else
 								filterNum = 3
 								classification = 3
-							endif
-						case 0
+							EndIf
+						Case 0
 							'levelFilters[0 + 1]
-							if i mod 4 <= 1
+							If i Mod 4 <= 1
 								filterNum = 0
 								classification = 0
-							else
+							Else
 								filterNum = 1
 								classification = 1
-							endif
+							EndIf
 					End Select
 
 					'check if there is an adcontract base available for this filter
-					local contractBase:TAdContractBase = null
-					while not contractBase
+					Local contractBase:TAdContractBase = Null
+					While Not contractBase
 						contractBase = GetAdContractBaseCollection().GetRandomNormalByFilter(levelFilters[filterNum], False)
 						'if not, then lower minimum and increase maximum audience
-						if not contractBase
-							TLogger.log("AdAgency.RefillBlocks", "Adjusting LevelFilter #"+filterNum+"  Min: " +MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMin,2)+"% ("+(100 * levelFilters[filterNum].minAudienceMin)+" - 0.5%   Max: "+ MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)
+						If Not contractBase
+							TLogger.Log("AdAgency.RefillBlocks", "Adjusting LevelFilter #"+filterNum+"  Min: " +MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMin,2)+"% ("+(100 * levelFilters[filterNum].minAudienceMin)+" - 0.5%   Max: "+ MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)
 							levelFilters[filterNum].SetAudience( Max(0.0, levelFilters[filterNum].minAudienceMin - rangeStep), Min(1.0, levelFilters[filterNum].minAudienceMax + rangeStep))
-						endif
+						EndIf
 
 						'absolutely nothing available?
-						if not contractBase and levelFilters[filterNum].minAudienceMin = 0.0 and levelFilters[filterNum].minAudienceMax = 1.0
-							TLogger.log("AdAgency.RefillBlocks", "FAILED to find new contract for LevelFilter #"+filterNum+"  Min: " +MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMin,2)+"%   Max: "+ MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMax,2)+"%."  , LOG_DEBUG)
-						endif
+						If Not contractBase And levelFilters[filterNum].minAudienceMin = 0.0 And levelFilters[filterNum].minAudienceMax = 1.0
+							TLogger.Log("AdAgency.RefillBlocks", "FAILED to find new contract for LevelFilter #"+filterNum+"  Min: " +MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMin,2)+"%   Max: "+ MathHelper.NumberToString(100 * levelFilters[filterNum].minAudienceMax,2)+"%."  , LOG_DEBUG)
+						EndIf
 					Wend
-					if contractBase
-						contract = new TAdContract.Create( contractBase )
-					endif
+					If contractBase
+						contract = New TAdContract.Create( contractBase )
+					EndIf
 					'print "refilling ads with filternum="+filternum+"  classification="+classification
 				EndIf
 
 				'=== CHEAP LIST ===
-				if lists[j] = listCheap
+				If lists[j] = listCheap
 					'check if there is an adcontract base available for this filter
-					local contractBase:TAdContractBase = null
-					while not contractBase
+					Local contractBase:TAdContractBase = Null
+					While Not contractBase
 						contractBase = GetAdContractBaseCollection().GetRandomNormalByFilter(cheapListFilter, False)
 						'if not, then lower minimum and increase maximum audience
-						if not contractBase
-							TLogger.log("AdAgency.RefillBlocks", "Adjusting CheapListFilter  Min: " +MathHelper.NumberToString(100 * cheapListFilter.minAudienceMin,2)+"% - 0.5%   Max: "+ MathHelper.NumberToString(100 * cheapListFilter.minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)
+						If Not contractBase
+							TLogger.Log("AdAgency.RefillBlocks", "Adjusting CheapListFilter  Min: " +MathHelper.NumberToString(100 * cheapListFilter.minAudienceMin,2)+"% - 0.5%   Max: "+ MathHelper.NumberToString(100 * cheapListFilter.minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)
 							cheapListFilter.SetAudience( Max(0, cheapListFilter.minAudienceMin - rangeStep), Min(1.0, cheapListFilter.minAudienceMax + rangeStep))
-						endif
+						EndIf
 
 						'absolutely nothing available?
-						if not contractBase and cheapListFilter.minAudienceMin = 0.0 and cheapListFilter.minAudienceMax = 1.0
-							TLogger.log("AdAgency.RefillBlocks", "FAILED to find new contract for CheapListFilter  Min: " +MathHelper.NumberToString(100 * cheapListFilter.minAudienceMin,2)+"%   Max: "+ MathHelper.NumberToString(100 * cheapListFilter.minAudienceMax,2)+"%."  , LOG_DEBUG)
-						endif
+						If Not contractBase And cheapListFilter.minAudienceMin = 0.0 And cheapListFilter.minAudienceMax = 1.0
+							TLogger.Log("AdAgency.RefillBlocks", "FAILED to find new contract for CheapListFilter  Min: " +MathHelper.NumberToString(100 * cheapListFilter.minAudienceMin,2)+"%   Max: "+ MathHelper.NumberToString(100 * cheapListFilter.minAudienceMax,2)+"%."  , LOG_DEBUG)
+						EndIf
 					Wend
-					if contractBase
-						contract = new TAdContract.Create( contractBase )
-					endif
+					If contractBase
+						contract = New TAdContract.Create( contractBase )
+					EndIf
 
 					classification = -1
-				endif
+				EndIf
 
 
-				if not contract
-					TLogger.log("AdAgency.ReFillBlocks", "Not enough contracts to fill ad agency in list "+i+". Using absolutely random one without limitations.", LOG_ERROR)
+				If Not contract
+					TLogger.Log("AdAgency.ReFillBlocks", "Not enough contracts to fill ad agency in list "+i+". Using absolutely random one without limitations.", LOG_ERROR)
 					'try again without filter - to avoid "empty room"
-					contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandom() )
-				endif
+					contract = New TAdContract.Create( GetAdContractBaseCollection().GetRandom() )
+				EndIf
 
 				'add new contract to slot
-				if contract
+				If contract
 					'set classification so contract knows its "origin"
 					contract.adAgencyClassification = classification
 					contract.SetOwner(contract.OWNER_VENDOR)
@@ -1055,63 +1055,63 @@ endrem
 
 					'emit event
 					EventManager.triggerEvent(TEventSimple.Create("adagency.addAdContract", New TData.add("adcontract", contract), Self))
-				endif
+				EndIf
 			Next
 		Next
 
 		'now all filters contain "valid ranges"
-		TLogger.log("AdAgency.RefillBlocks", "    Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
+		TLogger.Log("AdAgency.RefillBlocks", "    Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
 
-		for local i:int = 0 until 6
-			if i mod 2 = 0
-				TLogger.log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString() + " [DAYTIME]", LOG_DEBUG)
-			else
-				TLogger.log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString() + " [PRIMETIME]", LOG_DEBUG)
-			endif
-		next
+		For Local i:Int = 0 Until 6
+			If i Mod 2 = 0
+				TLogger.Log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString() + " [DAYTIME]", LOG_DEBUG)
+			Else
+				TLogger.Log("AdAgency.RefillBlocks", "  Level "+i+" filter: "+levelFilters[i].ToString() + " [PRIMETIME]", LOG_DEBUG)
+			EndIf
+		Next
 	End Method
 
 
 	Method RefillBlocksMode2()
-		TLogger.log("AdAgency.RefillBlocks", "RefillBlocksMode2.", LOG_DEBUG)
+		TLogger.Log("AdAgency.RefillBlocks", "RefillBlocksMode2.", LOG_DEBUG)
 
 		'=== CALCULATE VARIOUS INFORMATION FOR FILTERS ===
 		'we calculate the "average quote" using yesterdays audience but
 		'todays reach ... so it is not 100% accurate (buying stations today
 		'will lower the quote)
-		local averageChannelImage:Float = GetPublicImageCollection().GetAverage().GetAverageImage()
-		local averageChannelReach:Int = GetStationMapCollection().GetAverageReach()
+		Local averageChannelImage:Float = GetPublicImageCollection().GetAverage().GetAverageImage()
+		Local averageChannelReach:Int = GetStationMapCollection().GetAverageReach()
 
-		local highestChannelImage:Float = averageChannelImage
-		local lowestChannelImage:Float = averageChannelImage
+		Local highestChannelImage:Float = averageChannelImage
+		Local lowestChannelImage:Float = averageChannelImage
 
-		local highestChannelQuote:Float = 0.0
-		local lowestChannelQuote:Float = -1
-		local averageChannelQuote:Float = -1
+		Local highestChannelQuote:Float = 0.0
+		Local lowestChannelQuote:Float = -1
+		Local averageChannelQuote:Float = -1
 
-		local onDayOne:int = (Getworldtime().GetDay() = GetWorldtime().GetStartDay())
-		if onDayOne
+		Local onDayOne:Int = (Getworldtime().GetDay() = GetWorldtime().GetStartDay())
+		If onDayOne
 			'quotes of TOTAL REACH, not of WHO IS AT HOME
 			lowestChannelQuote = 0.005
 			averageChannelQuote = 0.085
 			highestChannelQuote = 0.175
-		else
-			For local i:int = 1 to 4
-				local image:Float = GetPublicImageCollection().Get(i).GetAverageImage()
-				if image > highestChannelImage then highestChannelImage = image
-				if image < lowestChannelImage then lowestChannelImage = image
+		Else
+			For Local i:Int = 1 To 4
+				Local image:Float = GetPublicImageCollection().Get(i).GetAverageImage()
+				If image > highestChannelImage Then highestChannelImage = image
+				If image < lowestChannelImage Then lowestChannelImage = image
 
-				if averageChannelReach > 0
-					local bestAudience:int = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetBestAudienceForHours(i, [-1]).GetTotalSum()
-					local quote:Float = bestAudience / float(averageChannelReach)
-					if highestChannelQuote < quote then highestChannelQuote = quote
-				endif
+				If averageChannelReach > 0
+					Local bestAudience:Int = GetDailyBroadcastStatistic( GetWorldTime().GetDay()-1, True ).GetBestAudienceForHours(i, [-1]).GetTotalSum()
+					Local quote:Float = bestAudience / Float(averageChannelReach)
+					If highestChannelQuote < quote Then highestChannelQuote = quote
+				EndIf
 			Next
 
 			'highestQuote to use is AT LEAST 17.5% (like default) to avoid
 			'a too low maximum if all channels fail for one day
 			highestChannelQuote = Max(highestChannelQuote, 0.175)
-		endif
+		EndIf
 		'convert to percentage
 		highestChannelImage :* 0.01
 		averageChannelImage :* 0.01
@@ -1119,15 +1119,15 @@ endrem
 
 
 		'=== OTHER BASIC INFORMATION ===
-		local limitInstances:int = GameRules.adContractInstancesMax
-		local rangeStep:Float = 0.005 '0.5%
+		Local limitInstances:Int = GameRules.adContractInstancesMax
+		Local rangeStep:Float = 0.005 '0.5%
 
 
 
 
 		'=== CHEAP LIST ===
 		'the cheap list contains really low contracts
-		local cheapListFilter:TAdContractBaseFilter = new TAdContractbaseFilter
+		Local cheapListFilter:TAdContractBaseFilter = New TAdContractbaseFilter
 		'0.5% market share -> 1mio reach means 5.000 people!
 		cheapListFilter.SetAudience(0.0005, 0.005)
 		'no image requirements > lowest (so all could sign this)
@@ -1138,70 +1138,70 @@ endrem
 		'the dev value is defining how many simultaneously are allowed
 		'while the filter filters contracts already having that much (or
 		'more) contracts, that's why we subtract 1
-		if limitInstances > 0 then cheapListFilter.SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
+		If limitInstances > 0 Then cheapListFilter.SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 
 		'=== NON-CHEAP ===
-		levelFilters[0] = new TAdContractbaseFilter
+		levelFilters[0] = New TAdContractbaseFilter
 		'from 0,51% to 120% of best audience of that day
 		levelFilters[0].SetAudience(0.0051, 1.2 * highestChannelQuote)
 		'1% - avgImage %
 		levelFilters[0].SetMinImageRange(0.0, 1.2*highestChannelImage)
-		if limitInstances > 0 then levelFilters[0].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
+		If limitInstances > 0 Then levelFilters[0].SetCurrentlyUsedByContractsLimit(0, limitInstances-1)
 
 
 
 
 		'=== FILL EMPTY SLOTS ===
 		'=== ACTUALLY CREATE CONTRACTS ===
-		local classification:int = -1
-		local lists:TAdContract[][] = [listNormal,listCheap]
-		for local j:int = 0 to lists.length-1
-			for local i:int = 0 to lists[j].length-1
+		Local classification:Int = -1
+		Local lists:TAdContract[][] = [listNormal,listCheap]
+		For Local j:Int = 0 To lists.length-1
+			For Local i:Int = 0 To lists[j].length-1
 				'if exists and is valid...skip it
-				if lists[j][i] and lists[j][i].base then continue
+				If lists[j][i] And lists[j][i].base Then Continue
 
-				local contract:TAdContract
-				local filter:TAdContractBaseFilter
-				local filterName:string = "unknown"
+				Local contract:TAdContract
+				Local filter:TAdContractBaseFilter
+				Local filterName:String = "unknown"
 
-				if lists[j] = listNormal
+				If lists[j] = listNormal
 					filter = levelFilters[0]
 					classification = 0
 					filterName="LevelFilter #0"
-				else
+				Else
 					filter = cheapListFilter
 					classification = -1
 					filterName="CheapListFilter"
-				endif
+				EndIf
 
 				'check if there is an adcontract base available for this filter
-				local contractBase:TAdContractBase = null
-				while not contractBase
+				Local contractBase:TAdContractBase = Null
+				While Not contractBase
 					contractBase = GetAdContractBaseCollection().GetRandomNormalByFilter(filter, False)
 					'if not, then lower minimum and increase maximum audience
-					if not contractBase
-						TLogger.log("AdAgency.RefillBlocks", "Adjusting "+filterName+"  Min: " +MathHelper.NumberToString(100 * filter.minAudienceMin,2)+"% ("+(100 * filter.minAudienceMin)+" - 0.5%   Max: "+ MathHelper.NumberToString(100 * filter.minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)
+					If Not contractBase
+						TLogger.Log("AdAgency.RefillBlocks", "Adjusting "+filterName+"  Min: " +MathHelper.NumberToString(100 * filter.minAudienceMin,2)+"% ("+(100 * filter.minAudienceMin)+" - 0.5%   Max: "+ MathHelper.NumberToString(100 * filter.minAudienceMax,2)+"% + 0.5%"  , LOG_DEBUG)
 						filter.SetAudience( Max(0.0, filter.minAudienceMin - rangeStep), Min(1.0, filter.minAudienceMax + rangeStep))
-					endif
+					EndIf
 
 					'absolutely nothing available?
-					if not contractBase and filter.minAudienceMin = 0.0 and filter.minAudienceMax = 1.0
-						TLogger.log("AdAgency.RefillBlocks", "FAILED to find new contract for "+filterName+"  Min: " +MathHelper.NumberToString(100 * filter.minAudienceMin,2)+"%   Max: "+ MathHelper.NumberToString(100 * filter.minAudienceMax,2)+"%."  , LOG_DEBUG)
-					endif
+					If Not contractBase And filter.minAudienceMin = 0.0 And filter.minAudienceMax = 1.0
+						TLogger.Log("AdAgency.RefillBlocks", "FAILED to find new contract for "+filterName+"  Min: " +MathHelper.NumberToString(100 * filter.minAudienceMin,2)+"%   Max: "+ MathHelper.NumberToString(100 * filter.minAudienceMax,2)+"%."  , LOG_DEBUG)
+					EndIf
 				Wend
-				if contractBase
-					contract = new TAdContract.Create( contractBase )
-				endif
+				If contractBase
+					contract = New TAdContract.Create( contractBase )
+				EndIf
 
-				if not contract
-					TLogger.log("AdAgency.ReFillBlocks", "Not enough contracts to fill ad agency in list "+j+". Using absolutely random one without limitations.", LOG_ERROR)
+				If Not contract
+					TLogger.Log("AdAgency.ReFillBlocks", "Not enough contracts to fill ad agency in list "+j+". Using absolutely random one without limitations.", LOG_ERROR)
 					'try again without filter - to avoid "empty room"
-					contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandom() )
-				endif
+					contract = New TAdContract.Create( GetAdContractBaseCollection().GetRandom() )
+				EndIf
 
 				'add new contract to slot
-				if contract
+				If contract
 					'set classification so contract knows its "origin"
 					contract.adAgencyClassification = classification
 
@@ -1213,13 +1213,13 @@ endrem
 
 					'emit event
 					EventManager.triggerEvent(TEventSimple.Create("adagency.addAdContract", New TData.add("adcontract", contract), Self))
-				endif
+				EndIf
 			Next
 		Next
 
 		'now all filters contain "valid ranges"
-		TLogger.log("AdAgency.RefillBlocks", "    Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
-		TLogger.log("AdAgency.RefillBlocks", "  Level 0 filter: "+levelFilters[0].ToString(), LOG_DEBUG)
+		TLogger.Log("AdAgency.RefillBlocks", "    Cheap filter: "+cheapListFilter.ToString(), LOG_DEBUG)
+		TLogger.Log("AdAgency.RefillBlocks", "  Level 0 filter: "+levelFilters[0].ToString(), LOG_DEBUG)
 	End Method
 
 
@@ -1230,8 +1230,8 @@ endrem
 
 	'if players are in the agency during changes
 	'to their programme collection, react to...
-	Function onChangeProgrammeCollection:int( triggerEvent:TEventBase )
-		if not CheckObservedFigureInRoom("adagency") then return FALSE
+	Function onChangeProgrammeCollection:Int( triggerEvent:TEventBase )
+		If Not CheckObservedFigureInRoom("adagency") Then Return False
 
 		GetInstance().RefreshGuiElements()
 	End Function
@@ -1239,17 +1239,17 @@ endrem
 
 	'in case of right mouse button click a dragged contract is
 	'placed at its original spot again
-	Function onClickContract:int(triggerEvent:TEventBase)
+	Function onClickContract:Int(triggerEvent:TEventBase)
 		'only react if the click came from the right mouse button
-		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
+		If triggerEvent.GetData().getInt("button",0) <> 2 Then Return True
 
-		local guiAdContract:TGuiAdContract= TGUIAdContract(triggerEvent._sender)
+		Local guiAdContract:TGuiAdContract= TGUIAdContract(triggerEvent._sender)
 		'ignore wrong types and NON-dragged items
-		if not guiAdContract or not guiAdContract.isDragged() then return FALSE
+		If Not guiAdContract Or Not guiAdContract.isDragged() Then Return False
 
 		'remove gui object
 		guiAdContract.remove()
-		guiAdContract = null
+		guiAdContract = Null
 
 		'rebuild at correct spot
 		GetInstance().RefreshGuiElements()
@@ -1261,151 +1261,151 @@ endrem
 	End Function
 
 
-	Function onMouseOverContract:int( triggerEvent:TEventBase )
-		if not CheckObservedFigureInRoom("adagency") then return FALSE
+	Function onMouseOverContract:Int( triggerEvent:TEventBase )
+		If Not CheckObservedFigureInRoom("adagency") Then Return False
 
-		local item:TGuiAdContract = TGuiAdContract(triggerEvent.GetSender())
-		if item = Null then return FALSE
+		Local item:TGuiAdContract = TGuiAdContract(triggerEvent.GetSender())
+		If item = Null Then Return False
 
 		hoveredGuiAdContract = item
-		if item.isDragged() then draggedGuiAdContract = item
+		If item.isDragged() Then draggedGuiAdContract = item
 
-		return TRUE
+		Return True
 	End Function
 
 
 	'handle cover block drops on the vendor ... only sell if from the player
-	Function onDropContractOnVendor:int( triggerEvent:TEventBase )
-		if not CheckObservedFigureInRoom("adagency") then return FALSE
+	Function onDropContractOnVendor:Int( triggerEvent:TEventBase )
+		If Not CheckObservedFigureInRoom("adagency") Then Return False
 
-		local guiBlock:TGuiAdContract = TGuiAdContract( triggerEvent._sender )
-		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
-		if not guiBlock or not receiver or receiver <> VendorArea then return FALSE
+		Local guiBlock:TGuiAdContract = TGuiAdContract( triggerEvent._sender )
+		Local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
+		If Not guiBlock Or Not receiver Or receiver <> VendorArea Then Return False
 
-		local parent:TGUIobject = guiBlock._parent
-		if TGUIPanel(parent) then parent = TGUIPanel(parent)._parent
-		local senderList:TGUIAdContractSlotList = TGUIAdContractSlotList(parent)
-		if not senderList then return FALSE
+		Local parent:TGUIobject = guiBlock._parent
+		If TGUIPanel(parent) Then parent = TGUIPanel(parent)._parent
+		Local senderList:TGUIAdContractSlotList = TGUIAdContractSlotList(parent)
+		If Not senderList Then Return False
 
 		'if coming from suitcase, try to remove it from the player
-		if senderList = GuiListSuitcase
-			if not GetInstance().TakeContractFromPlayer(guiBlock.contract, GetPlayerBase().playerID )
+		If senderList = GuiListSuitcase
+			If Not GetInstance().TakeContractFromPlayer(guiBlock.contract, GetPlayerBase().playerID )
 				triggerEvent.setVeto()
-				return FALSE
-			endif
-		else
+				Return False
+			EndIf
+		Else
 			'remove and add again (so we drop automatically to the correct list)
 			GetInstance().RemoveContract(guiBlock.contract)
 			GetInstance().AddContract(guiBlock.contract)
-		endif
+		EndIf
 		'remove the block, will get recreated if needed
 		guiBlock.remove()
-		guiBlock = null
+		guiBlock = Null
 
 		'something changed...refresh missing/obsolete...
 		GetInstance().RefreshGuiElements()
 
-		return TRUE
-	End function
+		Return True
+	End Function
 
 
 	'in this stage, the item is already added to the new gui list
 	'we now just add or remove it to the player or vendor's list
-	Function onDropContract:int( triggerEvent:TEventBase )
-		if not CheckObservedFigureInRoom("adagency") then return FALSE
+	Function onDropContract:Int( triggerEvent:TEventBase )
+		If Not CheckObservedFigureInRoom("adagency") Then Return False
 
-		local guiAdContract:TGuiAdContract = TGuiAdContract(triggerEvent._sender)
-		local receiverList:TGUIAdContractSlotList = TGUIAdContractSlotList(triggerEvent._receiver)
-		if not guiAdContract or not receiverList then return FALSE
+		Local guiAdContract:TGuiAdContract = TGuiAdContract(triggerEvent._sender)
+		Local receiverList:TGUIAdContractSlotList = TGUIAdContractSlotList(triggerEvent._receiver)
+		If Not guiAdContract Or Not receiverList Then Return False
 
 		'get current owner of the contract, as the field "owner" is set
 		'during sign we cannot rely on it. So we check if the player has
 		'the contract in the suitcaseContractList
-		local owner:int = guiAdContract.contract.owner
-		if owner <= 0 and GetPlayerProgrammeCollection( GetPlayerBase().playerID ).HasUnsignedAdContractInSuitcase( guiAdContract.contract )
+		Local owner:Int = guiAdContract.contract.owner
+		If owner <= 0 And GetPlayerProgrammeCollection( GetPlayerBase().playerID ).HasUnsignedAdContractInSuitcase( guiAdContract.contract )
 			owner = GetPlayerBase().playerID
-		endif
+		EndIf
 
 		'find out if we sell it to the vendor or drop it to our suitcase
-		if receiverList <> GuiListSuitcase
-			guiAdContract.InitAssets( guiAdContract.getAssetName(-1, FALSE ), guiAdContract.getAssetName(-1, TRUE ) )
+		If receiverList <> GuiListSuitcase
+			guiAdContract.InitAssets( guiAdContract.getAssetName(-1, False ), guiAdContract.getAssetName(-1, True ) )
 
 			'no problem when dropping vendor programme to vendor..
-			if owner <= 0 then return TRUE
+			If owner <= 0 Then Return True
 
-			if not GetInstance().TakeContractFromPlayer(guiAdContract.contract, GetPlayerBase().playerID )
+			If Not GetInstance().TakeContractFromPlayer(guiAdContract.contract, GetPlayerBase().playerID )
 				triggerEvent.setVeto()
-				return FALSE
-			endif
+				Return False
+			EndIf
 
 			'remove and add again (so we drop automatically to the correct list)
 			GetInstance().RemoveContract(guiAdContract.contract)
 			GetInstance().AddContract(guiAdContract.contract)
-		else
-			guiAdContract.InitAssets(guiAdContract.getAssetName(-1, TRUE ), guiAdContract.getAssetName(-1, TRUE ))
+		Else
+			guiAdContract.InitAssets(guiAdContract.getAssetName(-1, True ), guiAdContract.getAssetName(-1, True ))
 			'no problem when dropping own programme to suitcase..
-			if owner = GetPlayerBase().playerID then return TRUE
-			if not GetInstance().GiveContractToPlayer(guiAdContract.contract, GetPlayerBase().playerID)
+			If owner = GetPlayerBase().playerID Then Return True
+			If Not GetInstance().GiveContractToPlayer(guiAdContract.contract, GetPlayerBase().playerID)
 				triggerEvent.setVeto()
-				return FALSE
-			endif
-		endIf
+				Return False
+			EndIf
+		EndIf
 
-		return TRUE
+		Return True
 	End Function
 
 
-	Method onDrawRoom:int( triggerEvent:TEventBase )
-		if VendorEntity Then VendorEntity.Render()
+	Method onDrawRoom:Int( triggerEvent:TEventBase )
+		If VendorEntity Then VendorEntity.Render()
 		GetSpriteFromRegistry("gfx_suitcase_big").Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		'make suitcase/vendor highlighted if needed
-		local highlightSuitcase:int = False
-		local highlightVendor:int = False
+		Local highlightSuitcase:Int = False
+		Local highlightVendor:Int = False
 
-		if draggedGuiAdContract
-			if not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).HasUnsignedAdContractInSuitcase(draggedGuiAdContract.contract)
+		If draggedGuiAdContract
+			If Not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).HasUnsignedAdContractInSuitcase(draggedGuiAdContract.contract)
 				highlightSuitcase = True
-			endif
+			EndIf
 			highlightVendor = True
-		endif
+		EndIf
 
-		if highlightVendor or highlightSuitcase
-			local oldCol:TColor = new TColor.Get()
+		If highlightVendor Or highlightSuitcase
+			Local oldCol:TColor = New TColor.Get()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * Float(0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
+			SetAlpha oldCol.a * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
 
-			if VendorEntity and highlightVendor then VendorEntity.Render()
-			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase_big").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+			If VendorEntity And highlightVendor Then VendorEntity.Render()
+			If highlightSuitcase Then GetSpriteFromRegistry("gfx_suitcase_big").Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 			SetAlpha oldCol.a
 			SetBlend AlphaBlend
-		endif
+		EndIf
 
 
-		local availableSortKeys:int[]
-		if not ListSortVisible
+		Local availableSortKeys:Int[]
+		If Not ListSortVisible
 			availableSortKeys :+ [ListSortMode]
-		else
+		Else
 			availableSortKeys :+ contractsSortKeys
-		endif
+		EndIf
 
-		local skin:TDatasheetSkin = GetDatasheetSkin("default")
-		local boxWidth:int = 28 + availableSortKeys.length * 38
-		local boxHeight:int = 35 + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
-		local contentX:int = 5 + skin.GetContentX()
+		Local skin:TDatasheetSkin = GetDatasheetSkin("default")
+		Local boxWidth:Int = 28 + availableSortKeys.length * 38
+		Local boxHeight:Int = 35 + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+		Local contentX:Int = 5 + skin.GetContentX()
 		skin.RenderContent(contentX, 325 +skin.GetContentY(), skin.GetContentW(boxWidth), 42, "1_top")
 
 
-		For local i:int = 0 until availableSortKeys.length
-			local spriteName:string = "gfx_gui_button.datasheet"
-			if ListSortMode = availableSortKeys[i]
+		For Local i:Int = 0 Until availableSortKeys.length
+			Local spriteName:String = "gfx_gui_button.datasheet"
+			If ListSortMode = availableSortKeys[i]
 				spriteName = "gfx_gui_button.datasheet.positive"
-			endif
+			EndIf
 
-			if THelper.MouseIn(contentX + 5 + i*38, 342, 35, 27)
+			If THelper.MouseIn(contentX + 5 + i*38, 342, 35, 27)
 				spriteName :+ ".hover"
-			endif
+			EndIf
 			GetSpriteFromRegistry(spriteName).DrawArea(contentX + 5 + i*38, 342, 35,27)
 			GetSpriteFromRegistry(contractsSortSymbols[ availableSortKeys[i] ]).Draw(contentX + 10 + i*38, 344)
 		Next
@@ -1415,127 +1415,101 @@ endrem
 		skin.RenderBorder(5, 330, boxWidth, boxHeight)
 
 		'tooltips
-		For local i:int = 0 until availableSortKeys.length
-			if contractsSortKeysTooltips[availableSortKeys[i]]
+		For Local i:Int = 0 Until availableSortKeys.length
+			If contractsSortKeysTooltips[availableSortKeys[i]]
 				contractsSortKeysTooltips[availableSortKeys[i]].Render()
-			endif
+			EndIf
 		Next
 
 
-		if hoveredGuiAdContract
+		If hoveredGuiAdContract
 			'draw the current sheet
-			if hoveredGuiAdContract.IsDragged()
+			If hoveredGuiAdContract.IsDragged()
 				hoveredGuiAdContract.DrawSheet()
-			else
+			Else
 				'rem
 				'MODE 1: trash contracts have right aligned sheets
 				'        rest is left aligned
-				if GuiListCheap.ContainsContract(hoveredGuiAdContract.contract)
+				If GuiListCheap.ContainsContract(hoveredGuiAdContract.contract)
 					hoveredGuiAdContract.DrawSheet(,, 1)
-				else
+				Else
 					hoveredGuiAdContract.DrawSheet(,, 0)
-				endif
+				EndIf
 				'endrem
 
-				rem
+				Rem
 				'MODE 2: all contracts are left aligned
 				'        ->problems with big datasheets for trash ads
 				'          as they overlap the contracts then
 				hoveredGuiAdContract.DrawSheet(,, 0)
-				endrem
-			endif
-		endif
-
-
-		if TVTDebugInfos
-			DrawImage(GetSpritepackFromRegistry("gfx_screen_adagency_pack").GetImage(), 0,0)
-			SetColor 0,0,0
-			SetAlpha 0.6
-			DrawRect(15,215, 380, 200)
-			SetAlpha 1.0
-			SetColor 255,255,255
-			GetBitmapFont("default", 12).Draw("RefillMode:" + GameRules.adagencyRefillMode, 20, 220)
-			GetBitmapFont("default", 12).Draw("Durchschnittsquoten:", 20, 240)
-			local y:int = 260
-			local filterNum:int = 0
-			for local filter:TAdContractBaseFilter = eachIn levelFilters
-				filterNum :+ 1
-				local title:string = "#"+filterNum
-				select filterNum
-					case 1	title = "Schlechtester (Tag):~t"
-					case 2	title = "Schlechtester (Prime):"
-					case 3	title = "Durchschnitt (Tag):~t"
-					case 4	title = "Durchschnitt (Prime):"
-					case 5	title = "Bester Spieler (Tag):~t"
-					case 6	title = "Bester Spieler (Prime):"
-				End Select
-				GetBitmapFont("default", 12).Draw(title+"~tMinAudience = " + MathHelper.NumberToString(100 * filter.minAudienceMin,2)+"% - "+ MathHelper.NumberToString(100 * filter.minAudienceMax,2)+"%", 20, y)
-				if filterNum mod 2 = 0 then y :+ 4
-				y:+ 13
-			Next
-		endif
-
+				EndRem
+			EndIf
+		EndIf
 	End Method
 
 
-	Method onUpdateRoom:int( triggerEvent:TEventBase )
-		if VendorEntity Then VendorEntity.Update()
+	Method onUpdateRoom:Int( triggerEvent:TEventBase )
+		If VendorEntity Then VendorEntity.Update()
 
 		GetGameBase().cursorstate = 0
 
 		'update refill mode if needed
-		if GameRules.adagencyRefillMode <> _setRefillMode
+		If GameRules.adagencyRefillMode <> _setRefillMode
 			SetRefillMode(GameRules.adagencyRefillMode)
-		endif
+		EndIf
 
 		ListSortVisible = False
-		If not draggedGuiAdContract
+		If Not draggedGuiAdContract
 			'show and react to mouse-over-sort-buttons
 			'HINT: does not work for touch displays
-			local skin:TDatasheetSkin = GetDatasheetSkin("default")
-			local boxWidth:int = 28 + contractsSortKeys.Length * 38
-			local boxHeight:int = 35 + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
-			if THelper.MouseIn(5, 335, boxWidth, boxHeight)
+			Local skin:TDatasheetSkin = GetDatasheetSkin("default")
+			Local boxWidth:Int = 28 + contractsSortKeys.Length * 38
+			Local boxHeight:Int = 35 + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+			If THelper.MouseIn(5, 335, boxWidth, boxHeight)
 				ListSortVisible = True
 
-				if MouseManager.isShortClicked(1)
-					local contentX:int = 5 + skin.GetContentX()
+				If MouseManager.IsClicked(1)
+					Local contentX:Int = 5 + skin.GetContentX()
 
-					For local i:int = 0 to contractsSortKeys.length-1
+					For Local i:Int = 0 To contractsSortKeys.length-1
 						If THelper.MouseIn(contentX + i*38, 342, 35, 27)
 							'sort now
-							if ListSortMode <> contractsSortKeys[i]
+							If ListSortMode <> contractsSortKeys[i]
 								ListSortMode = contractsSortKeys[i]
 								'this sorts the contract list and recreates
 								'the gui
 								ResetContractOrder()
-							endif
-						endif
+							EndIf
+
+							MouseManager.ResetKey(1)
+
+							exit
+						EndIf
 					Next
-				endif
-			endif
+				EndIf
+			EndIf
 
 			'move tooltips
-			local contentX:int = 5 + skin.GetContentX()
-			For local i:int = 0 to contractsSortKeys.length-1
-				if contractsSortKeysTooltips[contractsSortKeys[i]]
+			Local contentX:Int = 5 + skin.GetContentX()
+			For Local i:Int = 0 To contractsSortKeys.length-1
+				If contractsSortKeysTooltips[contractsSortKeys[i]]
 					contractsSortKeysTooltips[contractsSortKeys[i]].parentArea.SetXYWH(contentX + 5 + i*38, 342, 35,27)
-				endif
+				EndIf
 			Next
-		endif
+		EndIf
 
 		'update tooltips
-		For local i:int = 0 to contractsSortKeys.length-1
+		For Local i:Int = 0 To contractsSortKeys.length-1
 			contractsSortKeysTooltips[contractsSortKeys[i]].Update()
 		Next
 
 		'delete unused and create new gui elements
-		if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
+		If haveToRefreshGuiElements Then GetInstance().RefreshGUIElements()
 
 		'reset hovered block - will get set automatically on gui-update
-		hoveredGuiAdContract = null
+		hoveredGuiAdContract = Null
 		'reset dragged block too
-		draggedGuiAdContract = null
+		draggedGuiAdContract = Null
 
 		GUIManager.Update( LS_adagency )
 	End Method
@@ -1615,7 +1589,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 	End Method
 
 
-	Method DrawSheet(leftX:Int=30, rightX:Int=30, forceAlign:int = -1)
+	Method DrawSheet(leftX:Int=30, rightX:Int=30, forceAlign:Int = -1)
 		Local sheetY:Int = 20
 		Local sheetX:Int = leftX
 		Local sheetAlign:Int= 0
@@ -1629,19 +1603,19 @@ Type TGuiAdContract Extends TGUIGameListItem
 		'the object
 		If forceAlign <> -1
 			sheetAlign = forceAlign
-		elseIf MouseManager.x < GameConfig.nonInterfaceRect.GetXCenter()
+		ElseIf MouseManager.x < GameConfig.nonInterfaceRect.GetXCenter()
 			sheetAlign = 1
 		EndIf
 
-		if sheetAlign = 1
+		If sheetAlign = 1
 			sheetX = GameConfig.nonInterfaceRect.GetX2() - rightX
-		endif
+		EndIf
 
 		SetColor 0,0,0
 		SetAlpha 0.2
-		local pointA:TVec2D = new TVec2D.Init(GetScreenX() + 0.5 * GetScreenWidth(), GetScreenY() + 0.25 * GetScreenHeight())
-		local pointB:TVec2D = new TVec2D.Init(sheetX + (sheetAlign=0)*100 - (sheetalign=1)*100, sheetY + 75)
-		local pointC:TVec2D = pointB.Copy().RotateAroundPoint(pointA, 5)
+		Local pointA:TVec2D = New TVec2D.Init(GetScreenX() + 0.5 * GetScreenWidth(), GetScreenY() + 0.25 * GetScreenHeight())
+		Local pointB:TVec2D = New TVec2D.Init(sheetX + (sheetAlign=0)*100 - (sheetalign=1)*100, sheetY + 75)
+		Local pointC:TVec2D = pointB.Copy().RotateAroundPoint(pointA, 5)
 		'this centers the middle of BC
 		pointB.RotateAroundPoint(pointA, -4)
 		Local tri:Float[]=[pointB.x,pointB.y, pointA.x,pointA.y, pointC.x,pointC.y]
@@ -1649,8 +1623,8 @@ Type TGuiAdContract Extends TGUIGameListItem
 		SetColor 255,255,255
 		SetAlpha 1.0
 
-		local forPlayerID:int = GetObservedPlayerID()
-		if self.contract.IsSigned() then forPlayerID = self.contract.owner
+		Local forPlayerID:Int = GetObservedPlayerID()
+		If Self.contract.IsSigned() Then forPlayerID = Self.contract.owner
 
 		Self.contract.ShowSheet(sheetX,sheetY, sheetAlign, TVTBroadcastMaterialType.ADVERTISEMENT, forPlayerID)
 	End Method
@@ -1674,10 +1648,10 @@ Type TGuiAdContract Extends TGUIGameListItem
 
 		'mark special vendor-contracts
 		If contract.owner <> GetObservedPlayerID()
-			if contract.GetDaysToFinish() <= 1
+			If contract.GetDaysToFinish() <= 1
 				SetColor 255,230,215
-			endif
-		Endif
+			EndIf
+		EndIf
 
 		Super.Draw()
 
