@@ -182,7 +182,8 @@ Type TGUIinput Extends TGUIobject
 							if newCursorPosition <> -1 then _cursorPosition = newCursorPosition
 'print " ... Mouse "+int(MouseManager.x)+", "+int(MouseManager.y)+" is in. Position: " + old +" => " + _cursorPosition + "  valueClickedPixel="+valueClickedPixel+"  valueOffsetPixels="+valueOffsetPixels
 
-							MouseManager.ResetKey(1)
+							'handled left click
+							MouseManager.ResetClicked(1)
 						endif
 					EndIf
 				EndIf

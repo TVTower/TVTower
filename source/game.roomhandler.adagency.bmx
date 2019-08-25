@@ -1254,8 +1254,9 @@ endrem
 		'rebuild at correct spot
 		GetInstance().RefreshGuiElements()
 
+		'avoid clicks
 		'remove right click - to avoid leaving the room
-		MouseManager.ResetKey(2)
+		MouseManager.ResetClicked(2)
 		'also avoid long click (touch screen)
 		MouseManager.ResetLongClicked(1)
 	End Function
@@ -1481,7 +1482,8 @@ endrem
 								ResetContractOrder()
 							EndIf
 
-							MouseManager.ResetKey(1)
+							'handled left click
+							MouseManager.ResetClicked(1)
 
 							exit
 						EndIf

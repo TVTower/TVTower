@@ -195,11 +195,11 @@ Type RoomHandler_Office extends TRoomHandler
 		GetGameBase().cursorstate = 0
 
 		'emulated right click or clicked door
-		If (MOUSEMANAGER.IsClicked(1) and THelper.MouseIn(25,40,150,295)) or  MOUSEMANAGER.IsLongClicked(1)
+		If (MouseManager.IsClicked(1) and THelper.MouseIn(25,40,150,295)) or MouseManager.IsLongClicked(1)
 			GetPlayer().GetFigure().LeaveRoom()
 
-			MOUSEMANAGER.ResetKey(1)
-			MOUSEMANAGER.ResetLongClicked(1)
+			MouseManager.ResetClicked(1)
+			MouseManager.ResetLongClicked(1)
 		EndIf
 
 
@@ -215,8 +215,9 @@ Type RoomHandler_Office extends TRoomHandler
 					SafeToolTip.SetMinTitleAndContentWidth(90, 120)
 					SafeToolTip.Hover()
 					GetGameBase().cursorstate = 1
-					If MOUSEMANAGER.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
-						MOUSEMANAGER.resetKey(1)
+					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
+						'handled click
+						MouseManager.ResetClicked(1)
 						GetGameBase().cursorstate = 0
 
 						ScreenCollection.GoToSubScreen("screen_office_safe")
@@ -232,8 +233,9 @@ Type RoomHandler_Office extends TRoomHandler
 					PlannerToolTip.enabled = 1
 					PlannerToolTip.Hover()
 					GetGameBase().cursorstate = 1
-					If MOUSEMANAGER.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
-						MOUSEMANAGER.resetKey(1)
+					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
+						'handled click
+						MouseManager.ResetClicked(1)
 						GetGameBase().cursorstate = 0
 						ScreenCollection.GoToSubScreen("screen_office_programmeplanner")
 					endif
@@ -248,8 +250,9 @@ Type RoomHandler_Office extends TRoomHandler
 					MessagesToolTip.enabled = 1
 					MessagesToolTip.Hover()
 					GetGameBase().cursorstate = 1
-					If MOUSEMANAGER.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
-						MOUSEMANAGER.resetKey(1)
+					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
+						'handled click
+						MouseManager.ResetClicked(1)
 						GetGameBase().cursorstate = 0
 						ScreenCollection.GoToSubScreen("screen_office_archivedmessages")
 					endif
@@ -264,8 +267,9 @@ Type RoomHandler_Office extends TRoomHandler
 					StationsToolTip.enabled = 1
 					StationsToolTip.Hover()
 					GetGameBase().cursorstate = 1
-					If MOUSEMANAGER.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
-						MOUSEMANAGER.resetKey(1)
+					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
+						'handled click
+						MouseManager.ResetClicked(1)
 						GetGameBase().cursorstate = 0
 						ScreenCollection.GoToSubScreen("screen_office_stationmap")
 					endif

@@ -32,7 +32,7 @@ Type TIngameHelpWindowCollection
 		If currentIngameHelpWindow <> currentWindow
 			'cannot set current if locked
 			If currentIngameHelpWindowLocked Then Return
-			
+
 			If currentIngameHelpWindow Then currentIngameHelpWindow.Remove()
 		EndIf
 		currentIngameHelpWindow = currentWindow
@@ -51,7 +51,7 @@ Type TIngameHelpWindowCollection
 
 	Method ShowByHelpGUID(helpGUID:String, force:Int = False)
 		If Not force And currentIngameHelpWindowLocked Then Return
-	
+
 		If Not currentIngameHelpWindow Or currentIngameHelpWindow.helpGUID <> helpGUID.ToLower()
 			SetCurrentByHelpGUID(helpGUID)
 		EndIf
@@ -83,7 +83,7 @@ Type TIngameHelpWindowCollection
 			If arrIndex >=0 Then StringHelper.RemoveArrayIndex(arrIndex, disabledHelpGUIDs)
 		EndIf
 	End Method
-	
+
 
 	Method Update:Int()
 		If currentIngameHelpWindow
@@ -95,7 +95,7 @@ Type TIngameHelpWindowCollection
 				If Not wasClosing
 					EventManager.triggerEvent(TEventSimple.Create("InGameHelp.CloseHelpWindow", New TData.Add("window", currentIngameHelpWindow) , Self))
 				EndIf
-				
+
 				currentIngameHelpWindowLocked = False
 
 				'disable this help
@@ -147,7 +147,7 @@ Type TIngameHelpWindow
 	Field state:TLowerString
 
 	Method Init:TIngameHelpWindow(title:String, content:String, helpGUID:String)
-		
+
 		area = New TRectangle.Init(100, 20, 600, 350)
 
 		Self.helpGUID = helpGUID.toLower()
@@ -276,7 +276,7 @@ Type TIngameHelpWindow
 		If modalDialogue Then modalDialogue.Remove()
 
 		active = False
-		
+
 		EventManager.unregisterListenersByLinks(_eventListeners)
 	End Method
 
@@ -306,8 +306,8 @@ Type TIngameHelpWindow
 			GuiManager.Update(state)
 
 			'no right clicking allowed as long as "help window" is active
-			MouseManager.ResetKey(2)
-			'also avoid long-clicking (touch)
+			MouseManager.ResetClicked(2)
+			'also avoid long click (touch screen)
 			MouseManager.ResetLongClicked(1)
 		EndIf
 	End Method

@@ -432,7 +432,8 @@ Type TInGameScreen_World Extends TInGameScreen
 						Local y:Int = MouseManager.y - GetBuildingBase().buildingInner.GetScreenY()
 						fig.ChangeTarget(x, y)
 
-						MOUSEMANAGER.resetKey(1)
+						'handled left click
+						MouseManager.ResetClicked(1)
 					EndIf
 				EndIf
 			EndIf

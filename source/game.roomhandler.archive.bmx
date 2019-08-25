@@ -323,8 +323,9 @@ Type RoomHandler_Archive extends TRoomHandler
 		guiBlock.remove()
 		guiBlock = null
 
+		'avoid clicks
 		'remove right click - to avoid leaving the room
-		MouseManager.ResetKey(2)
+		MouseManager.ResetClicked(2)
 		'also avoid long click (touch screen)
 		MouseManager.ResetLongClicked(1)
 	End Function
@@ -457,7 +458,8 @@ Type RoomHandler_Archive extends TRoomHandler
 						'remove tooltip
 						openCollectionTooltip = null
 
-						MOUSEMANAGER.resetKey(1)
+						'handled left click
+						MouseManager.ResetClicked(1)
 					endif
 				EndIf
 			endif

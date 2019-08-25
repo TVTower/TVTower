@@ -378,8 +378,9 @@ Type RoomHandler_News extends TRoomHandler
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
 			GetGameBase().cursorstate = 1
-			If MOUSEMANAGER.IsClicked(1)
-				MOUSEMANAGER.ResetKey(1)
+			If MouseManager.IsClicked(1)
+				'handled left click
+				MouseManager.ResetClicked(1)
 				GetGameBase().cursorstate = 0
 				ScreenCollection.GoToSubScreen("screen_newsstudio_newsplanner")
 			endif
@@ -531,7 +532,8 @@ Type RoomHandler_News extends TRoomHandler
 								GetInstance().SetAvailableNewsListSort(GetInstance().ListSortMode, not GetInstance().ListSortInAscendingOrder)
 							endif
 
-							MouseManager.ResetKey(1)
+							'handled click
+							MouseManager.ResetClicked(1)
 							exit
 						endif
 					Next
@@ -873,8 +875,9 @@ Type RoomHandler_News extends TRoomHandler
 		guiNews.remove()
 		guiNews = null
 
+		'avoid clicks
 		'remove right click - to avoid leaving the room
-		MouseManager.ResetKey(2)
+		MouseManager.ResetClicked(2)
 		'also avoid long click (touch screen)
 		MouseManager.ResetLongClicked(1)
 	End Function

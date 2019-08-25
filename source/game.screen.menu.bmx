@@ -337,8 +337,9 @@ Type TScreen_GameSettings Extends TGameScreen
 		If Not sender Then Return False
 
 		_HandleArrowInteraction(sender)
+
 		'handled even if disabled/reached figure limit
-		MouseManager.ResetKey(1)
+		MouseManager.ResetClicked(1)
 
 		Return True
 	End Method

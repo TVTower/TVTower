@@ -1695,9 +1695,10 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		GuiManager.ResetFocus()
 		GuiManager.SetKeystrokeReceiver(Null)
 
+
 		'reset mouse clicks
-		MouseManager.ResetKey(1)
-		MouseManager.ResetKey(2)
+		MouseManager.ResetClicked(1)
+		MouseManager.ResetClicked(2)
 
 
 		Self.gamestate = gamestate

@@ -824,8 +824,8 @@ Type TScreenHandler_ProgrammePlanner
 				GuiListProgrammes.RemoveItem(item)
 			EndIf
 
-			'reset mousebutton
-			MouseManager.ResetKey(1)
+			'handled single click
+			MouseManager.ResetClicked(1)
 
 			Return False
 		EndIf
@@ -1044,8 +1044,9 @@ Type TScreenHandler_ProgrammePlanner
 			item.remove()
 			item = Null
 
+			'avoid clicks
 			'remove right click - to avoid leaving the room
-			MouseManager.ResetKey(2)
+			MouseManager.ResetClicked(2)
 			'also avoid long click (touch screen)
 			MouseManager.ResetLongClicked(1)
 		EndIf
@@ -1405,13 +1406,15 @@ Type TScreenHandler_ProgrammePlanner
 
 		If button = plannerNextDayButton
 			ChangePlanningDay(planningDay+1)
-			'reset mousebutton
-			MouseManager.ResetKey(1)
+
+			'handled single click
+			MouseManager.ResetClicked(1)
 			Return True
 		ElseIf button = plannerPreviousDayButton
 			ChangePlanningDay(planningDay-1)
-			'reset mousebutton
-			MouseManager.ResetKey(1)
+
+			'handled single click
+			MouseManager.ResetClicked(1)
 			Return True
 		EndIf
 
@@ -1421,8 +1424,8 @@ Type TScreenHandler_ProgrammePlanner
 		PPcontractList.SetOpen(0)
 		PPprogrammeList.SetOpen(0)
 
-		'reset mousebutton
-		MouseManager.ResetKey(1)
+		'handled single click
+		MouseManager.ResetClicked(1)
 
 		'open others?
 		If button = ProgrammePlannerButtons[0] Then Return PPcontractList.SetOpen(1)		'opens contract list

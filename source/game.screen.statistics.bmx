@@ -968,7 +968,9 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 				elseif hoveredChannelImageTargetGroup >= 0
 					selectedChannelImageTargetGroup = hoveredChannelImageTargetGroup
 				endif
-				MouseManager.ResetKey(1)
+
+				'handled single click
+				MouseManager.ResetClicked(1)
 			EndIf
 		EndIf
 
@@ -1568,7 +1570,8 @@ Type TDataChart
 
 					If MouseManager.IsClicked(1)
 						SetSelectedSegment(i)
-						MouseManager.ResetKey(1)
+						'handled single click
+						MouseManager.ResetClicked(1)
 					EndIf
 
 					exit

@@ -1524,7 +1524,8 @@ Type TDebugPlayerControls
 	Method UpdateButton:Int(x:Int, y:Int, w:Int, h:Int)
 		If THelper.MouseIn(x,y,w,h)
 			If MouseManager.IsClicked(1)
-				MouseManager.ResetKey(1)
+				'handle clicked
+				MouseManager.ResetClicked(1)
 				Return True
 			EndIf
 		EndIf
@@ -1552,7 +1553,8 @@ Type TDebugControlsButton
 		If THelper.MouseIn(offsetX + x,offsetY + y,w,h)
 			If MouseManager.IsClicked(1)
 				onClick()
-				MouseManager.ResetKey(1)
+				'handle clicked
+				MouseManager.ResetClicked(1)
 				Return True
 			EndIf
 		EndIf

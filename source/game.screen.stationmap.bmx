@@ -2730,8 +2730,11 @@ Type TScreenHandler_StationMap
 			endif
 
 			If reset
-				MOUSEMANAGER.ResetKey(2)
-				MOUSEMANAGER.ResetLongClicked(1)
+				'avoid clicks
+				'remove right click - to avoid leaving the room
+				MouseManager.ResetClicked(2)
+				'also avoid long click (touch screen)
+				MouseManager.ResetLongClicked(1)
 			EndIf
 		EndIf
 
@@ -2779,7 +2782,8 @@ endrem
 				If hoveredMapSection And mouseoverStation.GetReach() > 0
 					selectedStation = GetStationMap(room.owner).GetTemporaryAntennaStation( mouseoverStation.pos.GetIntX(), mouseoverStation.pos.GetIntY() )
 
-					MouseManager.ResetKey(1)
+					'handled left click
+					MouseManager.ResetClicked(1)
 				EndIf
 			EndIf
 
@@ -2843,7 +2847,8 @@ endrem
 							selectedStation.sectionName = hoveredMapSection.name
 							'selectedStation.GetSectionName(true)
 
-							MouseManager.ResetKey(1)
+							'handled left click
+							MouseManager.ResetClicked(1)
 						EndIf
 					EndIf
 				EndIf

@@ -209,7 +209,10 @@ Type RoomHandler_Betty extends TRoomHandler
 			If MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)
 				dialogue = null
 
-				MouseManager.ResetKey(2)
+				'avoid clicks
+				'remove right click - to avoid leaving the room
+				MouseManager.ResetClicked(2)
+				'also avoid long click (touch screen)
 				MouseManager.ResetLongClicked(1)
 			endif
 		endif

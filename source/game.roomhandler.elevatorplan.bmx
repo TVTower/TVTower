@@ -62,7 +62,9 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 			if sign and sign.door
 				TFigure(GetPlayerBase().GetFigure()).SendToDoor(sign.door)
 			endif
-			MouseManager.ResetKey(1)
+
+			'handled left click
+			MouseManager.ResetClicked(1)
 		endif
 
 		GetElevatorRoomBoard().UpdateSigns(False)

@@ -339,7 +339,8 @@ Type TBuilding Extends TBuildingBase
 			GetPlayerBase().GetFigure().SetTarget( new TFigureTarget.Init(hotspot) )
 		EndIf
 
-		MOUSEMANAGER.ResetKey(1)
+		'handled left click
+		MouseManager.ResetClicked(1)
 
 		return True
 	End Function

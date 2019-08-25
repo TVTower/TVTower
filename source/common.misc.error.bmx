@@ -98,7 +98,8 @@ Type TError
 			local rect:TRectangle = window.GetScreenRect()
 			If THelper.MouseInRect(rect)
 				window.Close()
-				MouseManager.ResetKey(1) 'clicked to remove error
+				'handled left click
+				MouseManager.ResetClicked(1) 'clicked to remove error
 				return True
 			EndIf
 		EndIf
@@ -107,8 +108,8 @@ Type TError
 
 		if not window.IsClosed()
 			'no right clicking allowed as long as "error notice is active"
-			MouseManager.ResetKey(2)
-			'also avoid long-clicking (touch)
+			MouseManager.ResetClicked(2)
+			'also avoid long click (touch screen)
 			MouseManager.ResetLongClicked(1)
 		else
 			window.Remove()

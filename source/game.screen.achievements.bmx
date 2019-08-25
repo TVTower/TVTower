@@ -213,7 +213,9 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 						showCategory = TVTAchievementCategory.GetAtIndex(i)
 						showCategoryIndex = i
 						ReloadAchievements()
-						MouseManager.ResetKey(1)
+
+						'handled left click
+						MouseManager.ResetClicked(1)
 					endif
 				endif
 			Next

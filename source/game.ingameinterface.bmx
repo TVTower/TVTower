@@ -188,7 +188,8 @@ Type TInGameInterface
 						ShowChannel = i
 						BottomImgDirty = True
 
-						MouseManager.ResetKey(1)
+						'handled left click
+						MouseManager.ResetClicked(1)
 						exit
 					EndIf
 				EndIf
@@ -459,7 +460,8 @@ Type TInGameInterface
 				If MouseManager.IsClicked(1)
 					openEscapeMenuViaInterface = True
 
-					MouseManager.ResetKey(1)
+					'handled left click
+					MouseManager.ResetClicked(1)
 				EndIf
 
 			ElseIf THelper.MouseIn(357,577,43,23)
@@ -475,7 +477,8 @@ Type TInGameInterface
 					'force show manual
 					IngameHelpWindowCollection.ShowByHelpGUID("GameManual", True)
 
-					MouseManager.ResetKey(1)
+					'handled left click
+					MouseManager.ResetClicked(1)
 				EndIf
 
 			ElseIf THelper.MouseIn(400,577,29,23)
@@ -490,7 +493,8 @@ Type TInGameInterface
 				If MouseManager.IsClicked(1)
 					GetGameBase().SetGameSpeedPreset(0)
 
-					MouseManager.ResetKey(1)
+					'handled left click
+					MouseManager.ResetClicked(1)
 				EndIf
 
 			ElseIf THelper.MouseIn(429,577,30,23)
@@ -505,7 +509,8 @@ Type TInGameInterface
 				If MouseManager.IsClicked(1)
 					GetGameBase().SetGameSpeedPreset(1)
 
-					MouseManager.ResetKey(1)
+					'handled left click
+					MouseManager.ResetClicked(1)
 				EndIf
 
 			ElseIf THelper.MouseIn(457,577,30,23)
@@ -520,7 +525,8 @@ Type TInGameInterface
 				If MouseManager.IsClicked(1)
 					GetGameBase().SetGameSpeedPreset(2)
 
-					MouseManager.ResetKey(1)
+					'handled left click
+					MouseManager.ResetClicked(1)
 				EndIf
 			EndIf
 		endif
@@ -563,13 +569,15 @@ Type TInGameInterface
 				ChatShow = True
 				if chat then chat.ShowChat()
 
-				MouseManager.ResetKey(1)
+				'handled left click
+				MouseManager.ResetClicked(1)
 			endif
 			'lock area
 			if MouseManager.IsClicked(1) and THelper.MouseIn(770, 397, 20, 20)
 				ChatShowHideLocked = 1- ChatShowHideLocked
 
-				MouseManager.ResetKey(1)
+				'handled left click
+				MouseManager.ResetClicked(1)
 			endif
 		else
 			'arrow area
@@ -580,13 +588,15 @@ Type TInGameInterface
 				ChatShow = False
 				if chat then chat.HideChat()
 
-				MouseManager.ResetKey(1)
+				'handled left click
+				MouseManager.ResetClicked(1)
 			endif
 			'lock area
 			if MouseManager.IsClicked(1) and THelper.MouseIn(770, 583, 20, 20)
 				ChatShowHideLocked = 1 - ChatShowHideLocked
 
-				MouseManager.ResetKey(1)
+				'handled left click
+				MouseManager.ResetClicked(1)
 			endif
 		endif
 

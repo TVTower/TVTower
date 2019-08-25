@@ -228,7 +228,8 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 						'reset
 						markReadTime = Time.MillisecsLong()
 
-						MouseManager.ResetKey(1)
+						'handled left click
+						MouseManager.ResetClicked(1)
 					endif
 				endif
 			Next

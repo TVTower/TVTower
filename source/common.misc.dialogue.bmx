@@ -280,7 +280,8 @@ Type TDialogueAnswer
 				'run callback if there is one
 				If _triggerFunction Then _triggerFunction(_triggerFunctionData)
 
-				MouseManager.ResetKey(1)
+				'handled left click
+				MouseManager.ResetClicked(1)
 
 				Return _leadsTo
 			EndIf

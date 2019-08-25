@@ -2066,11 +2066,7 @@ Type TGUIobject
 
 								'added for imagebutton and arrowbutton not being reset when mouse standing still
 		'						MouseIsDown = Null
-								'reset mouse button
-								'-> do not reset it as it would disable
-								'   "doubleclick" recognition
-								'MOUSEMANAGER.ResetKey(1)
-								'but we can reset clicked state
+								'handled that click
 								MOUSEMANAGER.ResetClicked(1)
 
 

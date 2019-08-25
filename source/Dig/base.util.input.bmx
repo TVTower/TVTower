@@ -90,45 +90,53 @@ Type TMouseManager
 
 	Field _lastPos:TVec2D = New TVec2D.Init(0,0)
 	Field _lastScrollWheel:Int = 0
-	'position at the screen when a button was "CLICKED"
-	Field _clickPosition:TVec2D[4]
-	'previous position at the screen when a button was "CLICKED" last time
-	Field _previousClickPosition:TVec2D[4]
-	'time when the button was last clicked
-	Field _clickTime:Long[] = [0:Long,0:Long,0:Long,0:Long]
-	Field _doubleClickTime:Long[] = [0:Long,0:Long,0:Long,0:Long]
-	Field _longClickTime:Long[] = [0:Long,0:Long,0:Long,0:Long]
-	'amount of clicks since last reset
-	Field _clickCount:Int[] = [0,0,0,0]
-	Field _doubleClickCount:Int[] = [0,0,0,0]
-	Field _longClickCount:Int[] = [0,0,0,0]
+
+	'store up to 20 click information of each type
+	'so clicks between "updates" can still be processed one after another
+	'each information contains: position, click type and time of the click
+	Field _clickStack:TMouseManagerClick[][]
+	Field _clickStackIndex:int[3]
+	Field _longClickStack:TMouseManagerClick[][]
+	Field _longClickStackIndex:int[3]
+	Field _doubleClickStack:TMouseManagerClick[][]
+	Field _doubleClickStackIndex:int[3]
+
+	'previous position at the screen when a button was clicked, doubleclicked
+	'or longclicke the last time
+	Field _lastAnyClickPos:TVec2D[3]
 	'store clicks in the doubleclick timespan to identify double clicks
-	Field _clicksInDoubleClickTimeCount:Int[] = [0,0,0,0]
+	Field _clicksInDoubleClickTimeCount:Int[] = [0,0,0]
 
 	'down or not?
-	Field _down:Int[] = [0,0,0,0]
+	Field _down:Int[] = [0,0,0]
 	'time since when the button was pressed last
-	Field _downTime:Long[] = [0:Long,0:Long,0:Long,0:Long]
+	Field _downTime:Long[] = [0:Long,0:Long,0:Long]
 	'can clicks/hits get read?
 	'special info read is possible (IsDown(), IsNormal())
-	Field _enabled:Int[] = [True, True, True, True]
+	Field _enabled:Int[] = [True, True, True]
 
 
 	'TOUCH emulation
 	Field _longClickModeEnabled:Int = True
 	Field _longClickLeadsToRightClick:Int = True
 	'skip first click (touch screens)
-	Field _ignoreFirstClick:Int = False
-	Field _hasIgnoredFirstClick:Int[] = [0,0,0,0] 'currently ignoring?
+	Field _ignoreFirstClick:Int = True
+	Field _hasIgnoredFirstClick:Int[] = [0,0,0] 'currently ignoring?
+	Field _ignoredFirstClickPos:TVec2D[] = [new TVec2D, new TVec2D, new TVec2D]
 	'distance in pixels, if mouse moved further away, the next
 	'click will get ignored ("tap")
 	Field _minSwipeDistance:Int = 10
 
-
-	Global evMouseDown:Int[4]
-	Global evMouseHits:Int[4]
-	Global evMousePos:Int[2]
+	Global stackSize:int = 20
+	Global evMouseDown:Int[3]
+	Global evMouseHits:Int[3]
+	Global evMousePosX:Int
+	Global evMousePosY:Int
 	Global evMouseZ:Int
+
+	Global CLICKTYPE_CLICK:int = 1
+	Global CLICKTYPE_LONGCLICK:int = 2
+	Global CLICKTYPE_DOUBLECLICK:int = 3
 
 
 	'handle all incoming input events
@@ -142,21 +150,21 @@ Type TMouseManager
 		Select ev.id
 			Case EVENT_MOUSEDOWN
 				If Not evMouseDown[ev.data]
-					evMouseDown[ev.data] = 1
-					evMouseHits[ev.data] :+ 1
+					evMouseDown[ev.data-1] = 1
+					evMouseHits[ev.data-1] :+ 1
 				EndIf
 				MouseManager._HandleButtonEvent(ev.data)
 			Case EVENT_MOUSEUP
-				evMouseDown[ev.data] = 0
+				evMouseDown[ev.data-1] = 0
 				MouseManager._HandleButtonEvent(ev.data)
 			Case EVENT_MOUSEMOVE
-				evMousePos[0] = ev.x
-				evMousePos[1] = ev.y
+				evMousePosX = ev.x
+				evMousePosY = ev.y
 			Case EVENT_MOUSEWHEEL
 				evMouseZ :+ ev.data
 			Case EVENT_APPSUSPEND, EVENT_APPRESUME
-				evMouseDown = New Int[4] 'flush
-				evMouseHits = New Int[4] 'flush
+				evMouseDown = New Int[3] 'flush
+				evMouseHits = New Int[3] 'flush
 				evMouseZ = 0'flush
 		End Select
 
@@ -164,120 +172,235 @@ Type TMouseManager
 	End Function
 
 
-	'return amount of handled buttons
-	Method GetButtonCount:Int()
-		Return _down.length-1 'ignore 0
+	Method New()
+		ResetClickStacks(-1)
 	End Method
 
 
-	'reset the state of the given button
-	Method ResetKey:Int(key:Int)
-		_downTime[key] = 0
-		_down[key] = False
-		_clickTime[key] = 0
-		_clickPosition[key] = Null
-		_doubleClickTime[key] = 0
-		_longClickTime[key] = 0
+	Method _GetClickStackEntry:TMouseManagerClick(button:int, clickType:int = -1)
+	'	if clickType = -1 then clickType = CLICKTYPE_CLICK
 
-		ResetClicked(key)
-		Return KEY_STATE_NORMAL
+		Select clickType
+			case CLICKTYPE_DOUBLECLICK
+				Return _doubleClickStack[button-1][ _doubleClickStackIndex[button-1] ]
+			case CLICKTYPE_LONGCLICK
+				Return _longClickStack[button-1][ _longClickStackIndex[button-1] ]
+			'case CLICKTYPE_CLICK
+			default
+				Return _clickStack[button-1][ _clickStackIndex[button-1] ]
+		End Select
 	End Method
 
 
-	Method ResetClicked(key:Int)
-		_clickCount[key] = 0
-		_doubleClickCount[key] = 0
-		_longClickCount[key] = 0
+	Method _GetClickStackIndex:Int(button:int, clickType:int = -1)
+		Select clickType
+			case CLICKTYPE_DOUBLECLICK
+				Return _doubleClickStackIndex[button-1]
+			case CLICKTYPE_LONGCLICK
+				Return _longClickStackIndex[button-1]
+			'case CLICKTYPE_CLICK
+			default
+				Return _clickStackIndex[button-1]
+		End Select
+	End Method
 
-		'reset emulated right clicks
-		if _longClickModeEnabled and _longClickLeadsToRightClick and key = 2
-			_longClickCount[1] = 0
+
+	Method _AddClickStackEntry:TMouseManagerClick(button:int, clickType:int = -1, position:TVec2D, time:Long = -1)
+		local buttonIndex:int = button - 1
+		local stack:TMouseManagerClick[]
+		local stackIndex:int
+		Select clickType
+			case CLICKTYPE_DOUBLECLICK
+				stack = _doubleClickStack[buttonIndex]
+				stackIndex = _doubleClickStackIndex[buttonIndex]
+
+			case CLICKTYPE_LONGCLICK
+				stack = _longClickStack[buttonIndex]
+				stackIndex = _longClickStackIndex[buttonIndex]
+
+			default
+				stack = _clickStack[buttonIndex]
+				stackIndex = _clickStackIndex[buttonIndex]
+		End Select
+
+
+		stackIndex :+ 1
+		'reached limit? purge oldest 5 clicks
+		if stackIndex >= stackSize
+			stack = stack[5 .. ] + (new TMouseManagerClick[5])
+			stackIndex :- 5
+		endif
+
+		'create new if missing, else just reuse existing
+		if not stack[stackIndex] then stack[stackIndex] = new TMouseManagerClick
+		stack[stackIndex].Init(clickType, position.Copy(), time)
+
+
+		Select clickType
+			case CLICKTYPE_DOUBLECLICK
+				_doubleClickStack[buttonIndex] = stack
+				_doubleClickStackIndex[buttonIndex] = stackIndex
+
+			case CLICKTYPE_LONGCLICK
+				_longClickStack[buttonIndex] = stack
+				_longClickStackIndex[buttonIndex] = stackIndex
+
+			default
+				_clickStack[buttonIndex] = stack
+				_clickStackIndex[buttonIndex] = stackIndex
+		End Select
+
+		Return stack[stackIndex]
+	End Method
+
+
+	Method ResetClickStacks(clickType:int = -1)
+		if clickType = -1 or clickType = CLICKTYPE_CLICK
+			_clickStack = _clickStack[.. GetButtonCount()]
+			for local i:int = 0 until GetButtonCount()
+				_clickStack[i] = new TMouseManagerClick[stackSize]
+			next
+			_clickStackIndex = new Int[stackSize]
+		endif
+		if clickType = -1 or clickType = CLICKTYPE_LONGCLICK
+			_longClickStack = _longClickStack[.. GetButtonCount()]
+			for local i:int = 0 until GetButtonCount()
+				_longClickStack[i] = new TMouseManagerClick[stackSize]
+			next
+			_longClickStackIndex = new Int[stackSize]
+		endif
+		if clickType = -1 or clickType = CLICKTYPE_DOUBLECLICK
+			_doubleClickStack = _doubleClickStack[.. GetButtonCount()]
+			for local i:int = 0 until GetButtonCount()
+				_doubleClickStack[i] = new TMouseManagerClick[stackSize]
+			next
+			_doubleClickStackIndex = new Int[stackSize]
 		endif
 	End Method
 
 
-	Method ResetDoubleClicked(key:Int, resetTime:Int=False)
-		_doubleClickCount[key] = 0
-		If resetTime Then _doubleClickTime[key] = 0
+	Method ResetClickStack(button:int = -1, clickType:int = -1)
+		if button < 1 or button > GetButtonCount() then Return
+
+		if clickType = -1 or clickType = CLICKTYPE_CLICK
+			_clickStack[button-1] = new TMouseManagerClick[stackSize]
+			_clickStackIndex[button-1] = 0
+		endif
+		if clickType = -1 or clickType = CLICKTYPE_LONGCLICK
+			_longClickStack[button-1] = new TMouseManagerClick[stackSize]
+			_longClickStackIndex[button-1] = 0
+		endif
+		if clickType = -1 or clickType = CLICKTYPE_DOUBLECLICK
+			_doubleClickStack[button-1] = new TMouseManagerClick[stackSize]
+			_doubleClickStackIndex[button-1] = 0
+		endif
 	End Method
 
 
-	Method ResetLongClicked(key:Int, resetTime:Int=False)
-		_longClickCount[key] = 0
-		If resetTime Then _longClickTime[key] = 0
+	'return amount of handled buttons
+	Method GetButtonCount:Int()
+		Return _down.length 'ignore 0
 	End Method
 
 
-	Method Disable(key:Int)
-		_enabled[key] = False
+	'reset the state of the given button
+	Method ResetButton:Int(button:Int)
+		_downTime[button-1] = 0
+		_down[button-1] = False
+
+		'remove all potentially logged clicks for that button
+		ResetClicks(button, -1)
+
+		Return KEY_STATE_NORMAL
 	End Method
 
 
-	Method Enable(key:Int)
-		_enabled[key] = True
+	Method ResetClicks(button:Int, clickType:int = -1)
+		ResetClickStack(button, clickType)
+
+		'reset emulated right clicks
+		'-> longclick for real right click
+		if _longClickModeEnabled and button = 2 and (clickType = -1 or clickType = CLICKTYPE_CLICK)
+			ResetClickStack(1, CLICKTYPE_LONGCLICK)
+		endif
+		'-> right click for a long click
+		if _longClickModeEnabled and button = 1 and (clickType = -1 or clickType = CLICKTYPE_LONGCLICK)
+			ResetClickStack(2, CLICKTYPE_CLICK)
+		endif
 	End Method
 
 
-	Method IsEnabled:Int(key:Int)
-		return _enabled[key]
+	Method ResetClicked(button:Int)
+		ResetClicks(button, CLICKTYPE_CLICK)
+	End Method
+
+
+	Method ResetDoubleClicked(button:Int)
+		ResetClicks(button, CLICKTYPE_DOUBLECLICK)
+	End Method
+
+
+	Method ResetLongClicked(button:Int)
+		ResetClicks(button, CLICKTYPE_LONGCLICK)
+	End Method
+
+
+	Method Disable(button:Int)
+		_enabled[button-1] = False
+	End Method
+
+
+	Method Enable(button:Int)
+		_enabled[button-1] = True
+	End Method
+
+
+	Method IsEnabled:Int(button:Int)
+		return _enabled[button-1]
 	End Method
 
 
 	'returns whether the button is in normal state
-	Method IsNormal:Int(key:Int)
+	Method IsNormal:Int(button:Int)
 		'currently ignoring the key?
-		If _ignoreFirstClick And Not _hasIgnoredFirstClick[key] Then Return True
+		If _ignoreFirstClick And Not _hasIgnoredFirstClick[button-1] Then Return True
 
-		Return not _down[key]
+		Return not _down[button-1]
 	End Method
 
 
 	'returns whether the button is in down state
-	Method isDown:Int(key:Int)
+	Method isDown:Int(button:Int)
 		'currently ignoring the key?
-		If _ignoreFirstClick And Not _hasIgnoredFirstClick[key] Then Return False
+		If _ignoreFirstClick And Not _hasIgnoredFirstClick[button-1] Then Return False
 
-		Return _down[key]
+		Return _down[button-1]
 	End Method
 
 
 	'returns whether the button got clicked, no waiting time
 	'is added
-	Method IsClicked:Int(key:Int)
-		If Not _enabled[key] Then Return False
+	Method IsClicked:Int(button:Int)
+		If Not _enabled[button-1] Then Return False
 
-		return _clickCount[key] > 0
+		return _GetClickStackEntry(button, CLICKTYPE_CLICK) <> null
 	End Method
 
 
 	'returns whether the button was clicked 2 times
-	'strictMode defines whether more than 2 clicks also count
-	'as "double click"
-	'includes waiting time
-	Method IsDoubleClicked:Int(key:Int)
-		If Not _enabled[key] Then Return False
+	Method IsDoubleClicked:Int(button:Int)
+		If Not _enabled[button-1] Then Return False
 
-		return _doubleClickCount[key] > 0
-	EndMethod
-
-
-rem
-	'returns whether the button was single (guaranteed no double) clicked
-	Method IsSingleClicked:Int(key:Int)
-		If Not _enabled[key] Then Return False
-
-		Return _singleClickCount[key]
+		return _GetClickStackEntry(button, CLICKTYPE_DOUBLECLICK) <> null
 	End Method
-endrem
 
 
-	'returns whether the button got "long clicked"
-	'(Button needs to have been down for a while)
-	Method IsLongClicked:Int(key:Int)
+	'returns whether the button was clicked 2 times
+	Method IsLongClicked:Int(button:Int)
 		If Not _longClickModeEnabled Then Return False
-		If Not _enabled[key] Then Return False
+		If Not _enabled[button-1] Then Return False
 
-		Return _longClickCount[key] > 0
+		return _GetClickStackEntry(button, CLICKTYPE_LONGCLICK) <> null
 	End Method
 
 
@@ -304,21 +427,37 @@ endrem
 	End Method
 
 
-	Method GetMovedDistanceSinceClick:Int(button:int)
-		if not _clickPosition[button] then return 0
-		Return Sqr((_clickPosition[button].x - Int(x))^2 + (_clickPosition[button].y - Int(y))^2)
+	Method GetMovedDistanceSinceClick:Int(button:int, clickType:int = -1)
+		if clickType = -1 then clickType = CLICKTYPE_CLICK
+
+		local c:TMouseManagerClick = _GetClickStackEntry(button, clickType)
+		if not c then return 0
+		Return Sqr((c.position.x - Int(x))^2 + (c.position.y - Int(y))^2)
 	End Method
 
 
-	Method GetMovedDistanceBetweenClicks:Int(button:int)
-		if not _previousClickPosition[button] then return 0
-		if not _clickPosition[button] then return 0
-		Return Sqr((_previousClickPosition[button].x - _ClickPosition[button].x)^2 + (_previousClickPosition[button].y - _clickPosition[button].y)^2)
+	Method GetMovedDistanceBetweenClicks:Int(button:int, clickType:int = -1)
+		if not _lastAnyClickPos[button-1] then return 0
+
+		local c:TMouseManagerClick = _GetClickStackEntry(button, clickType)
+		if not c then return 0
+
+		Return c.position.DistanceTo(_lastAnyClickPos[button])
+		'Return Sqr((_lastAnyClickPos[button].position.x - c.position.x)^2 + (_lastAnyClickPos.position.y - c.position.y)^2)
 	End Method
 
 
-	Method GetClickPosition:TVec2D(key:Int)
-		Return _clickPosition[key]
+	Method GetClickTime:Long(button:Int, clickType:Int = -1)
+		local c:TMouseManagerClick = _GetClickStackEntry(button, clickType)
+		if not c then return 0
+		return c.t
+	End Method
+
+
+	Method GetClickPosition:TVec2D(button:Int, clickType:Int = -1)
+		local c:TMouseManagerClick = _GetClickStackEntry(button, clickType)
+		if not c then return null
+		return c.position
 	End Method
 
 
@@ -338,9 +477,9 @@ endrem
 
 
 	'returns how many milliseconds a button is down
-	Method GetDownTime:Long(key:Int)
-		If _downTime[key] > 0
-			Return Time.GetAppTimeGone() - _downTime[key]
+	Method GetDownTime:Long(button:Int)
+		If _downTime[button-1] > 0
+			Return Time.GetAppTimeGone() - _downTime[button-1]
 		Else
 			Return 0
 		EndIf
@@ -355,20 +494,20 @@ endrem
 
 
 	'returns the amount of clicks
-	Method GetClicks:Int(key:Int)
-		Return _clickCount[key]
+	Method GetClicks:Int(button:Int)
+		Return _GetClickStackIndex(button, CLICKTYPE_CLICK)
 	End Method
 
 
 	'returns the amount of double clicks
-	Method GetDoubleClicks:Int(key:Int)
-		Return _doubleClickCount[key]
+	Method GetDoubleClicks:Int(button:Int)
+		Return _GetClickStackIndex(button, CLICKTYPE_DOUBLECLICK)
 	End Method
 
 
 	'returns the amount of long clicks
-	Method GetLongClicks:Int(key:Int)
-		Return _longClickCount[key]
+	Method GetLongClicks:Int(button:Int)
+		Return _GetClickStackIndex(button, CLICKTYPE_LONGCLICK)
 	End Method
 
 
@@ -393,21 +532,21 @@ endrem
 
 
 	'returns array of bools describing clicked state of each button
-	Method GetAllIsLongClicked:Int[]()
-		Return [False,..
-		        IsLongClicked(1), ..
-		        IsLongClicked(2), ..
-		        IsLongClicked(3) ..
-		       ]
-	End Method
-
-
-	'returns array of bools describing clicked state of each button
 	Method GetAllIsDoubleClicked:Int[]()
 		Return [False,..
 		        IsDoubleClicked(1),..
 		        IsDoubleClicked(2),..
 		        IsDoubleClicked(3)..
+		       ]
+	End Method
+
+
+	'returns array of bools describing clicked state of each button
+	Method GetAllIsLongClicked:Int[]()
+		Return [False,..
+		        IsLongClicked(1), ..
+		        IsLongClicked(2), ..
+		        IsLongClicked(3) ..
 		       ]
 	End Method
 
@@ -437,10 +576,10 @@ endrem
 		currentPos.y = y
 
 
-		'GESTURES
-		For Local i:Int = 1 To 3
-			'check if we moved far enough to recognize swipe..
-			If _ignoreFirstClick then _CheckSwipe(i)
+		For local i:int = 0 until GetButtonCount()
+			if _ignoreFirstClick and _lastAnyClickPos[i] and _lastAnyClickPos[i].DistanceTo(currentPos) > _minSwipeDistance
+				_hasIgnoredFirstClick[i] = False
+			endif
 		Next
 
 	End Method
@@ -451,111 +590,110 @@ endrem
 
 	'called on incoming OS mouse events
 	Method _HandleButtonEvent:Int(button:Int)
+		local buttonIndex:int = button - 1
+
 		'press (from "up" to "down")
-		If evMouseDown[button] And not _down[button]
-			if not _enabled[button] then return False
+		If evMouseDown[buttonIndex] And not _down[buttonIndex]
+			if not _enabled[buttonIndex] then return False
 
 			'Print Time.GetTimeGone() + "  normal => down"
-			_down[button] = true
-			_downTime[button] = Time.GetAppTimeGone()
-
-			'store mousedown time ... someone may need this measurement
-			If Not _hasIgnoredFirstClick[button]
-				'store time when first mousedown happened
-				if _clickCount[button] = 0 then _downTime[button] = Time.GetAppTimeGone()
-			EndIf
+			_down[buttonIndex] = true
+			_downTime[buttonIndex] = Time.GetAppTimeGone()
 		EndIf
 
 
 		'release -> click (from down to up)
-		If Not evMouseDown[button] And _down[button]
+		If Not evMouseDown[buttonIndex] And _down[buttonIndex]
 
-			if not _enabled[button]
+			if not _enabled[buttonIndex]
 				'if not enabled we still return to "NORMAL" and are no longer
 				'down but do not count the hit/click
-				_downTime[button] = 0
-				_down[button] = false
+				_downTime[buttonIndex] = 0
+				_down[buttonIndex] = false
 				return False
 			endif
 
 			local t:Long = Time.GetAppTimeGone()
-			local timeSinceLastClick:int = t - _clickTime[button]
+			local timeSinceLastClick:int = t - GetClickTime(button, CLICKTYPE_CLICK)
 			if timeSinceLastClick < doubleClickMaxTime
-				_clicksInDoubleClickTimeCount[button] :+ 1
-				'Print Time.GetTimeGone() + "    down => up => click within doubleclick time    clicks=" + (_clicksInDoubleClickTimeCount[button])
+				_clicksInDoubleClickTimeCount[buttonIndex] :+ 1
+				'Print Time.GetTimeGone() + "    down => up => click within doubleclick time    clicks=" + (_clicksInDoubleClickTimeCount[buttonIndex])
 			else
-				_clicksInDoubleClickTimeCount[button] = 1
+				'Print Time.GetTimeGone() + "    down => up => reset doubleclick time"
+				_clicksInDoubleClickTimeCount[buttonIndex] = 1
 			endif
 
+
+			'check for swipe
+			If _hasIgnoredFirstClick[buttonIndex] and _lastAnyClickPos[buttonIndex] and _lastAnyClickPos[buttonIndex].DistanceTo(New TVec2D.Init(x, y)) > _minSwipeDistance
+				print "reset " + GetMovedDistanceBetweenClicks(button)+" > "+_minSwipeDistance
+				_hasIgnoredFirstClick[buttonIndex] = False
+			EndIf
+
+			'store last click pos - even if we ignore the effect of the click
+			_lastAnyClickPos[buttonIndex] = New TVec2D.Init(x, y)
 
 			'- Ignore first click?
 			'- Long click?
 			'- Normal click + Double clicks?
 
 			'ignore this potential click if it is the first one
-			If _ignoreFirstClick And Not _hasIgnoredFirstClick[button]
-				_hasIgnoredFirstClick[button] = True
-				_clickTime[button] = 0
+			If _ignoreFirstClick And Not _hasIgnoredFirstClick[buttonIndex]
+				_hasIgnoredFirstClick[buttonIndex] = True
 				'Print Time.GetTimeGone() + "      click => ignored first click"
-
-			' check for a long click
-			ElseIf _longClickModeEnabled And _downTime[button] + longClickMinTime < t
-				_longClickTime[button] = t
-				_longClickCount[button] :+ 1
-
-				'emulating right click?
-				if _longClickLeadsToRightClick and button = 1
-					_clickCount[2] :+ 1
-					_clickPosition[2] = _clickPosition[1]
-					_downTime[2] = _downTime[1]
-				endif
-
-				'Print Time.GetTimeGone() + "      click => long clicked    downTime="+_downTime[button] +"  longClickMinTime="+longClickMinTime +"   button="+button
-
-			' normal click + double clicks
 			Else
-				'Print Time.GetTimeGone() + "    down => up => click   clicks["+button+"]=" + (_clickCount[button]+1)
-				'store click time
-				_clickTime[button] = t
 
-				'increase click count of this button
-				_clickCount[button] :+ 1
+				' check for a long click
+				If _longClickModeEnabled And _downTime[buttonIndex] + longClickMinTime < t
+					_AddClickStackEntry(button, CLICKTYPE_LONGCLICK, New TVec2D.Init(x, y), t)
 
-				'also store the position of this click
-				'(and backup before - null if not existing!)
-				_previousClickPosition[button] = _clickPosition[button]
-				_clickPosition[button] = New TVec2D.Init(x, y)
+					'emulating right click?
+					if _longClickLeadsToRightClick and button = 1
+						_AddClickStackEntry(2, CLICKTYPE_CLICK, New TVec2D.Init(x, y), t)
+						_downTime[2] = _downTime[1]
+					endif
 
+					'Print Time.GetTimeGone() + "      click => long clicked    downTime="+_downTime[button] +"  longClickMinTime="+longClickMinTime +"   button="+button
 
-				'double clicks (additionally to normal clicks!)
-				if _clicksInDoubleClickTimeCount[button] >= 2
-					'Print Time.GetTimeGone() + "    down => up => click + click => double click    clicks=" + (_doubleClickCount[button] + 1)
-					_doubleClickTime[button] = t
-					_doubleClickCount[button] :+ 1
-					_clicksInDoubleClickTimeCount[button] :- 2
-				endif
+				' normal click + double clicks
+				Else
+					'Print Time.GetTimeGone() + "    down => up => click   GetClicks( " + button + ")=" + GetClicks(button) + " _clicksInDoubleClickTimeCount["+buttonIndex+"]="+_clicksInDoubleClickTimeCount[buttonIndex]
+
+					_AddClickStackEntry(button, CLICKTYPE_CLICK, New TVec2D.Init(x, y), t)
+
+					'double clicks (additionally to normal clicks!)
+					if _clicksInDoubleClickTimeCount[buttonIndex] >= 2
+						_AddClickStackEntry(button, CLICKTYPE_DOUBLECLICK, New TVec2D.Init(x, y), t)
+
+						_clicksInDoubleClickTimeCount[buttonIndex] :- 2
+					endif
+				EndIf
 			EndIf
 
 			'reset mousedown time - no longer happening
-			_downTime[button] = 0
-			_down[button] = false
+			_downTime[buttonIndex] = 0
+			_down[buttonIndex] = false
 		EndIf
 	End Method
-
-
-
-	Method _CheckSwipe:Int(button:int)
-		'moved a bigger distance - "swiped" ?
-		For Local i:Int = 1 to _down.length
-			If Not _hasIgnoredFirstClick[i] Then Continue
-
-			If GetMovedDistanceBetweenClicks(i) > _minSwipeDistance
-				_hasIgnoredFirstClick[i] = False
-				_clickPosition[i] = null
-			EndIf
-		Next
-	End Method
 EndType
+
+
+
+
+'record for each single click
+Type TMouseManagerClick
+	Field clickType:int = 1
+	Field position:TVec2D
+	Field t:Long
+
+	Method Init:TMouseManagerClick(clickType:int, position:TVec2D, clickTime:Long = -1)
+		if clickTime = -1 then clickTime = Time.GetAppTimeGone()
+		self.clickType = clickType
+		self.position = position
+		self.t = clickTime
+		return self
+	End Method
+End Type
 
 
 

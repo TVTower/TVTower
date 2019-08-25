@@ -511,7 +511,8 @@ Type TToastMessage extends TEntity
 				'fire event (eg. to play sound)
 				EventManager.triggerEvent(TEventSimple.Create("toastmessage.onClick", new TData.AddNumber("mouseButton", 1), Self))
 
-				MouseManager.ResetKey(1)
+				'handled single click
+				MouseManager.ResetClicked(1)
 			Endif
 		Endif
 	End Method

@@ -1036,8 +1036,9 @@ endrem
 						AuctionToolTip.Hover()
 						GetGameBase().cursorstate = 1
 
-						MOUSEMANAGER.resetKey(1)
-						GetGameBase().cursorstate = 0
+						'handled left click
+						MouseManager.ResetClicked(1)
+
 						ScreenCollection.GoToSubScreen("screen_movieauction")
 					EndIf
 				endif
@@ -1684,7 +1685,8 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			If obj.bestBidder <> GetPlayerBaseCollection().playerID And obj.area.containsXY(MouseManager.x, MouseManager.y)
 				obj.SetBid( GetPlayerBaseCollection().playerID )  'set the bid
 
-				MOUSEMANAGER.ResetKey(1)
+				'handled left click
+				MouseManager.ResetClicked(1)
 				Return True
 			EndIf
 		Next

@@ -271,8 +271,9 @@ Type RoomHandler_Studio extends TRoomHandler
 		'rebuild at correct spot
 		GetInstance().RefreshGuiElements()
 
+		'avoid clicks
 		'remove right click - to avoid leaving the room
-		MouseManager.ResetKey(2)
+		MouseManager.ResetClicked(2)
 		'also avoid long click (touch screen)
 		MouseManager.ResetLongClicked(1)
 	End Function
@@ -302,8 +303,9 @@ Type RoomHandler_Studio extends TRoomHandler
 		'rebuild elements (also resets hovered/dragged)
 		GetInstance().RefreshGuiElements()
 
+		'avoid clicks
 		'remove right click - to avoid leaving the room
-		MouseManager.ResetKey(2)
+		MouseManager.ResetClicked(2)
 		'also avoid long click (touch screen)
 		MouseManager.ResetLongClicked(1)
 	End Function

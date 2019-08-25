@@ -143,7 +143,7 @@ Type TGUIDropDown Extends TGUIInput
 			SetSelectedEntry(receiver)
 
 			'reset mouse button to avoid clicks below
-			MouseManager.ResetKey(1)
+			MouseManager.ResetClicked(1)
 
 			SetOpen(False)
 		endif
@@ -196,8 +196,8 @@ Type TGUIDropDown Extends TGUIInput
 		local button:int = triggerEvent.GetData().GetInt("button")
 
 		if button = 1 'left button
-			'reset mouse button to avoid clicks below
-			MouseManager.ResetKey(1)
+			'reset mouse click info to avoid clicks below
+			MouseManager.ResetClicked(1)
 
 			SetOpen(1- IsOpen())
 		endif
@@ -338,7 +338,11 @@ Type TGUIDropDown Extends TGUIInput
 			'remove focus from gui object
 			GuiManager.ResetFocus()
 
-			MouseManager.ResetKey(2)
+			'avoid clicks
+			'remove right click - to avoid leaving the room
+			MouseManager.ResetClicked(2)
+			'also avoid long click (touch screen)
+			MouseManager.ResetLongClicked(1)
 		endif
 
 

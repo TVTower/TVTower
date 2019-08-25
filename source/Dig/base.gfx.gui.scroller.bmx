@@ -254,7 +254,7 @@ Type TGUIScrollerBase extends TGUIobject
 			else
 				'(do it in an "update" so it also handles "mousedown"
 				'avoid long left-mousebutton clicks
-				MouseManager.ResetLongClicked(1, True)
+				MouseManager.ResetLongClicked(1)
 			endif
 		endif
 	End Method
@@ -475,7 +475,8 @@ endrem
 					'reset clicked state and button state
 					mouseIsClicked = Null
 
-					MouseManager.ResetKey(1)
+					'handled left click
+					MouseManager.ResetClicked(1)
 				endif
 			endif
 		endif

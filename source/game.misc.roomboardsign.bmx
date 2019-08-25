@@ -290,8 +290,11 @@ Type TRoomBoardBase
 						sign.MarkMoved(GetPlayerBase().playerID)
 					endif
 
-					MOUSEMANAGER.resetKey(2)
-					MOUSEMANAGER.resetLongClicked(1)
+					'avoid clicks
+					'remove right click - to avoid leaving the room
+					MouseManager.ResetClicked(2)
+					'also avoid long click (touch screen)
+					MouseManager.ResetLongClicked(1)
 				Else
 					'if left mbutton clicked: drop, replace with underlaying block...
 					If MouseManager.IsClicked(1)
@@ -310,7 +313,8 @@ Type TRoomBoardBase
 								sign.dragged = False
 								clickedSign = null
 
-								MouseManager.ResetKey(1)
+								'handled left click
+								MouseManager.ResetClicked(1)
 							'not dropping on origin: search for other underlaying obj
 							Else
 								For Local otherSign:TRoomBoardSign = EachIn List
@@ -321,7 +325,8 @@ Type TRoomBoardBase
 	'	  								End If
 										sign.SwitchBlock(otherSign)
 
-										MouseManager.ResetKey(1)
+										'handled left click
+										MouseManager.ResetClicked(1)
 										Exit	'exit enclosing for-loop (stop searching for other underlaying blocks)
 									EndIf
 								Next
@@ -339,7 +344,8 @@ Type TRoomBoardBase
 							If sign.containsCoord(MouseManager.x, MouseManager.y)
 								sign.dragged = 1
 
-								MouseManager.ResetKey(1)
+								'handled left click
+								MouseManager.ResetClicked(1)
 							EndIf
 						EndIf
 					EndIf

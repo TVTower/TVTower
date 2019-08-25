@@ -77,7 +77,8 @@ Type TPlannerList extends TOwnedGameObject
 							ListSortDirection = 1 - ListSortDirection
 						endif
 
-						MouseManager.ResetKey(1)
+						'handled left click
+						MouseManager.ResetClicked(1)
 						exit
 					endif
 				Next

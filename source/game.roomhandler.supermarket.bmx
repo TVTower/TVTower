@@ -125,7 +125,7 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 
 	Function onClickPlanAProduction(data:TData)
 '		If MOUSEMANAGER.IsClicked(1)
-'			MOUSEMANAGER.resetKey(1)
+'			MOUSEMANAGER.resetClicked(1)
 '			GetGameBase().cursorstate = 0
 
 			ScreenCollection.GoToSubScreen("screen_supermarket_production")
@@ -152,7 +152,7 @@ rem
 			if THelper.IsIn(MouseManager.x, MouseManager.y, 0,0,160,300)
 				GetGameBase().cursorstate = 1
 				If MOUSEMANAGER.IsClicked(1) and not MouseManager.IsLongClicked(1)
-					MOUSEMANAGER.resetKey(1)
+					MOUSEMANAGER.ResetClicked(1)
 					GetGameBase().cursorstate = 0
 
 					GenerateDialogue()

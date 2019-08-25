@@ -574,7 +574,8 @@ Type TgfxProgrammelist Extends TPlannerList
 					entriesPage = Min(entriesPage, entriesPage-1)
 					entriesButtonPrev.mouseIsClicked = null
 
-					MouseManager.ResetKey(1)
+					'handled left click
+					MouseManager.ResetClicked(1)
 				endif
 			endif
 
@@ -592,7 +593,8 @@ Type TgfxProgrammelist Extends TPlannerList
 					entriesPage = Max(entriesPage, entriesPage+1)
 					entriesButtonNext.mouseIsClicked = null
 
-					MouseManager.ResetKey(1)
+					'handled left click
+					MouseManager.ResetClicked(1)
 				endif
 			endif
 		endif
@@ -665,7 +667,8 @@ Type TgfxProgrammelist Extends TPlannerList
 
 						'something changed, so stop looping through rest
 						If doneSomething
-							MOUSEMANAGER.resetKey(1)
+							'handled left click
+							MouseManager.ResetClicked(1)
 							Return True
 						EndIf
 					EndIf
@@ -880,7 +883,8 @@ Type TgfxProgrammelist Extends TPlannerList
 					subEntriesPage = Min(subEntriesPage, subEntriesPage-1)
 					subEntriesButtonPrev.mouseIsClicked = null
 
-					MouseManager.ResetKey(1)
+					'handled left click
+					MouseManager.ResetClicked(1)
 				endif
 			endif
 
@@ -898,7 +902,8 @@ Type TgfxProgrammelist Extends TPlannerList
 					subEntriesPage = Max(subEntriesPage, subEntriesPage+1)
 					subEntriesButtonNext.mouseIsClicked = null
 
-					MouseManager.ResetKey(1)
+					'handled left click
+					MouseManager.ResetClicked(1)
 				endif
 			endif
 		endif
@@ -935,7 +940,8 @@ Type TgfxProgrammelist Extends TPlannerList
 								New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TProgramme.Create(licence), "programmePlanner" ).drag()
 								SetOpen(0)
 
-								MOUSEMANAGER.resetKey(1)
+								'handled left click
+								MouseManager.ResetClicked(1)
 								Return True
 							EndIf
 						endif
@@ -976,7 +982,8 @@ Type TgfxProgrammelist Extends TPlannerList
 				Local visibleFilters:TProgrammeLicenceFilter[] = TProgrammeLicenceFilter.GetVisible()
 				currentGenre = Max(0, Min(visibleFilters.length-1, Floor((MouseManager.y - (genresRect.GetY() + genresStartY)) / genreSize.GetY())))
 
-				MOUSEMANAGER.ResetKey(1)
+				'handled left click
+				MouseManager.ResetClicked(1)
 			EndIf
 		EndIf
 
@@ -992,8 +999,11 @@ Type TgfxProgrammelist Extends TPlannerList
 		If openState > 0 and (MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1))
 			SetOpen( Max(0, openState - 1) )
 
-			MOUSEMANAGER.resetKey(2)
-			MOUSEMANAGER.resetLongClicked(1)
+			'avoid clicks
+			'remove right click - to avoid leaving the room
+			MouseManager.ResetClicked(2)
+			'also avoid long click (touch screen)
+			MouseManager.ResetLongClicked(1)
 		EndIf
 
 		'close if clicked outside - simple mode: so big rect
@@ -1009,7 +1019,8 @@ Type TgfxProgrammelist Extends TPlannerList
 			If closeMe
 				SetOpen(0)
 
-				MouseManager.ResetKey(1)
+				'handled left click
+				MouseManager.ResetClicked(1)
 			EndIf
 		EndIf
 	End Method

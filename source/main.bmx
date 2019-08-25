@@ -649,14 +649,11 @@ Type TApp
 		'as long as the exit dialogue is open, do not accept clicks to
 		'non gui elements (eg. to leave rooms)
 		If App.ExitAppDialogue Or App.EscapeMenuWindow
-			MouseManager.ResetKey(2)
+			'avoid clicks
+			'remove right click - to avoid leaving the room
+			MouseManager.ResetClicked(2)
 			'also avoid long click (touch screen)
 			MouseManager.ResetLongClicked(1)
-
-			'this makes all IsClicked(), IsHit() return False
-			'and to not record new clicks/hits
-'			MouseManager.Disable(1)
-'			MouseManager.Disable(2)
 		EndIf
 
 		'ignore shortcuts if a gui object listens to keystrokes
@@ -4955,14 +4952,17 @@ Type GameEvents
 				'if in subscreen, go to parent one
 				If ScreenCollection.GetCurrentScreen().parentScreen
 					ScreenCollection.GoToParentScreen()
-					MOUSEMANAGER.ResetKey(2)
-					'also avoid long click (touch screen)
+
+					'handled clicks
+					MouseManager.ResetClicked(2)
+					'also handled long click (touch screen)
 					MouseManager.ResetLongClicked(1)
 				Else
 					'leaving allowed - reset button
 					If GetPlayer().GetFigure().LeaveRoom()
-						MOUSEMANAGER.ResetKey(2)
-						'also avoid long click (touch screen)
+						'handled clicks
+						MouseManager.ResetClicked(2)
+						'also handled long click (touch screen)
 						MouseManager.ResetLongClicked(1)
 					EndIf
 				EndIf
