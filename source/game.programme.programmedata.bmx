@@ -34,6 +34,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	'helper data
 	Field _unreleasedProgrammeData:TList {nosave}
 	Field _liveProgrammeData:TList {nosave}
+	Field _dynamicDataProgrammeData:TList {nosave}
 	Field _finishedProductionProgrammeData:TList {nosave}
 
 	Global _instance:TProgrammeDataCollection
@@ -68,6 +69,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	Method _InvalidateCaches()
 		_unreleasedProgrammeData = Null
 		_liveProgrammeData = Null
+		_dynamicDataProgrammeData = Null
 		_finishedProductionProgrammeData = Null
 	End Method
 
@@ -135,6 +137,22 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		EndIf
 
 		Return _liveProgrammeData
+	End Method
+
+
+	'returns (and creates if needed) a list containing only programmeData
+	'with dynamic data (eg. text descriptions of live-programme-headers)
+	Method GetDynamicDataProgrammeDataList:TList()
+		If Not _dynamicDataProgrammeData
+			_dynamicDataProgrammeData = CreateList()
+			For Local data:TProgrammeData = EachIn entries.Values()
+				If Not data.HasDynamicData() Then Continue
+
+				_dynamicDataProgrammeData.AddLast(data)
+			Next
+		EndIf
+
+		Return _dynamicDataProgrammeData
 	End Method
 
 
@@ -381,14 +399,25 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 			If pd.GetReleaseTime() > GetWorldTime().GetTimeGone() Then Exit
 
 			If pd.IsLive()
-				'update eg. title/description
-				pd.UpdateLive()
-
-				'invalidate cache if live-status was changed
-				If pd.UpdateLiveStates() Then invalidate = True
+				'update eg. title/description, returns true if live status changed
+				if pd.UpdateLive() Then invalidate = True
 			EndIf
 		Next
 		If invalidate Then _liveProgrammeData = Null
+	End Method
+
+
+	'updates programmes with dynamic data (descriptions, values...)
+	Method UpdateDynamicData:Int()
+		Local dynamicList:TList = GetDynamicDataProgrammeDataList()
+		Local invalidate:Int = False
+
+		For Local pd:TProgrammeData = EachIn dynamicList
+			'update description or other data, returns true if no longer contains
+			'dynamic data-status was changed (= no longer dynamic)
+			if pd.UpdateDynamicData() Then invalidate = True
+		Next
+		If invalidate Then _dynamicDataProgrammeData = Null
 	End Method
 
 
@@ -1089,6 +1118,18 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
+	Method HasDynamicData:Int()
+		Return False
+	End Method
+
+
+	'returns true if the dynamic data state changed
+	Method UpdateDynamicData:Int()
+		Return False
+	End Method
+
+
+	'returns whether the live-state was updated
 	'Informs casts about the finish of the production regardless
 	'whether it got broadcasted or not
 	Method UpdateLive:Int()
@@ -1099,11 +1140,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 				onFinishProductionForCast()
 			EndIf
 		EndIf
-	End Method
 
-
-	'returns whether the live-state was updated
-	Method UpdateLiveStates:Int()
 		'cannot update as long somebody is broadcasting that programme
 		If playersLiveBroadcasting > 0 Then Return False
 
@@ -1119,6 +1156,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 			SetFlag(TVTProgrammeDataFlag.LIVEONTAPE, True)
 			Return True
 		EndIf
+
 		Return False
 	End Method
 

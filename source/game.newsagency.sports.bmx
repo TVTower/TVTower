@@ -133,7 +133,7 @@ Type TNewsEventSport extends TGameObject
 		print "override in custom sport"
 	End Method
 
-	
+
 	'updates all leagues of this sport
 	Method Update:int()
 		'=== regular league matches ===
@@ -149,7 +149,7 @@ Type TNewsEventSport extends TGameObject
 
 			?debug
 			For local season:TNewsEventSportSeason = EachIn playoffSeasons
-				print name+":  playoff matches: " + GetWorldTime().GetFormattedGameDate(season.GetNextMatchTime()) + "   -   " + GetWorldTime().GetFormattedGameDate(season.GetLastMatchTime())
+				print name+":  playoff matches: " + GetWorldTime().GetFormattedGameDate(season.GetNextMatchTime()) + "   -   " + GetWorldTime().GetFormattedGameDate(season.GetLastMatchEndTime())
 			Next
 			?
 		endif
@@ -188,7 +188,7 @@ Type TNewsEventSport extends TGameObject
 					season.doneMatches.AddLast(nextMatch)
 
 					EventManager.triggerEvent(TEventSimple.Create("Sport.Playoffs.RunMatch", New TData.addNumber("matchTime", nextMatch.GetMatchTime()).add("match", nextMatch).Add("season", season).AddNumber("leagueIndex", leagueNumber -1), Self))
-		
+
 					matchesRun :+ 1
 				'else
 				'	print "now: " + GetWorldTime().GetFormattedDate()+"  match: " + GetWorldTime().GetFormattedDate( nextMatch.GetMatchTime())
@@ -279,7 +279,7 @@ Type TNewsEventSport extends TGameObject
 					endif
 				else
 					'print "could not replace next season team in league"+i
-				
+
 				endif
 			endif
 
@@ -307,13 +307,13 @@ Type TNewsEventSport extends TGameObject
 			playoffSeasons[i].AddTeam( leagues[i+1].GetCurrentSeason().GetTeamAtRank( 2 ) )
 'print "playoff #"+i+"  add from loosers in league "+i+": "+ leagues[i].GetCurrentSeason().GetTeamAtRank( -2 ).name
 'print "playoff #"+i+"  add from winners in league "+(i+1)+": "+ leagues[i+1].GetCurrentSeason().GetTeamAtRank( 2 ).name
-	
+
 			playoffSeasons[i].data.matchPlan = new TNewsEventSportMatch[playoffSeasons[i].GetMatchCount()]
 
 			CreateMatchSets(playoffSeasons[i].GetMatchCount(), playoffSeasons[i].GetTeams(), playoffSeasons[i].data.matchPlan, CreateMatch)
 
 			for local match:TNewsEventSportMatch = EachIn playoffSeasons[i].data.matchPlan
-'print "playoff #"+i+"  match: " + match.teams[0].name + " - " + match.teams[1].name 
+'print "playoff #"+i+"  match: " + match.teams[0].name + " - " + match.teams[1].name
 				playoffSeasons[i].upcomingMatches.addLast(match)
 
 				GetNewsEventSportCollection().AddMatch(match)
@@ -344,7 +344,7 @@ Type TNewsEventSport extends TGameObject
 				Next
 			?
 		Next
-	End Method	
+	End Method
 
 
 	Method StartSeason:int(time:Long = 0)
@@ -357,7 +357,7 @@ Type TNewsEventSport extends TGameObject
 		for local l:TNewsEventSportLeague = Eachin leagues
 			l.StartSeason(time)
 			?debug
-				print name+":  season matches: " + GetWorldTime().GetFormattedGameDate(l.GetNextMatchTime()) + "   -   " + GetWorldTime().GetFormattedGameDate(l.GetLastMatchTime())
+				print name+":  season matches: " + GetWorldTime().GetFormattedGameDate(l.GetNextMatchTime()) + "   -   " + GetWorldTime().GetFormattedGameDate(l.GetLastMatchEndTime())
 			?
 		Next
 
@@ -406,7 +406,7 @@ Type TNewsEventSport extends TGameObject
 	Method ArePlayoffsFinished:int()
 		return playoffsState = 2
 	End Method
-	
+
 
 	Method AddLeague:TNewsEventSport(league:TNewsEventSportLeague)
 		leagues :+ [league]
@@ -473,7 +473,7 @@ Type TNewsEventSport extends TGameObject
 		Next
 		return lowestTime
 	End Method
-	
+
 
 	Method GetLastMatchTime:Long()
 		local latestTime:long = -1
@@ -481,6 +481,18 @@ Type TNewsEventSport extends TGameObject
 			local latestLeagueMatchTime:Long = league.GetLastMatchTime()
 			if latestTime = -1 or latestLeagueMatchTime > latestTime
 				latestTime = latestLeagueMatchTime
+			endif
+		Next
+		return latestTime
+	End Method
+
+
+	Method GetLastMatchEndTime:Long()
+		local latestTime:long = -1
+		For local league:TNewsEventSportLeague = EachIn leagues
+			local latestLeagueMatchEndTime:Long = league.GetLastMatchEndTime()
+			if latestTime = -1 or latestLeagueMatchEndTime > latestTime
+				latestTime = latestLeagueMatchEndTime
 			endif
 		Next
 		return latestTime
@@ -633,7 +645,7 @@ Type TNewsEventSport extends TGameObject
 					team1Index = team2Index
 					team2Index = tmp
 				endif
-							
+
 				teamAIndices[ matchNumber-1 ] = team1Index
 				teamBIndices[ matchNumber-1 ] = team2Index
 
@@ -700,7 +712,7 @@ Type TNewsEventSportSeasonData
 	'Field playoffLosers:TNewsEventSportTeam[]
 	'Field playoffWinners:TNewsEventSportTeam[]
 	'Field playoffMatchPlan:TNewsEventSportMatch[]
-	
+
 
 
 	Method InvalidateLeaderboard:int()
@@ -743,7 +755,7 @@ Type TNewsEventSportSeasonData
 		Next
 		return -1
 	End Method
-	
+
 
 	Method GetTeamAtRank:TNewsEventSportTeam(rank:int, upToMatchTime:Long = 0)
 		local board:TNewsEventSportLeagueRank[] = GetLeaderboard(upToMatchTime)
@@ -762,7 +774,7 @@ Type TNewsEventSportSeasonData
 				return _leaderboard
 			endif
 		endif
-		
+
 		_leaderboard = new TNewsEventSportLeagueRank[teams.length]
 		_leaderboardMatchTime = upToMatchTime
 
@@ -810,7 +822,7 @@ Type TNewsEventSportSeason extends TGameObject
 	Field data:TNewsEventSportSeasonData = new TNewsEventSportSeasonData
 	Field started:int = False
 	Field finished:int = True
-	Field updateTime:Long 
+	Field updateTime:Long
 	Field part:int = 0
 	Field partMax:int = 2
 
@@ -865,7 +877,7 @@ Type TNewsEventSportSeason extends TGameObject
 		started = False
 		part = 0
 	End Method
-	
+
 
 	Method InvalidateLeaderboard:int()
 		data.InvalidateLeaderboard()
@@ -910,7 +922,7 @@ Type TNewsEventSportSeason extends TGameObject
 			t.UpdateStats()
 		Next
 	End Method
-	
+
 
 	'assign the ranks of the given time as "current ranks" to the teams
 	Method RefreshRanks(upToMatchTime:Long=0)
@@ -948,13 +960,32 @@ Type TNewsEventSportSeason extends TGameObject
 
 	Method GetLastMatchTime:Long()
 		local latestTime:long = -1
-		For local nextMatch:TNewsEventSportMatch = EachIn upcomingMatches
+		local list:TList = upcomingMatches
+		if list.Count() = 0 then list = doneMatches
+
+		For local nextMatch:TNewsEventSportMatch = EachIn list
 			if latestTime = -1 or nextMatch.GetMatchTime() > latestTime
 				latestTime = nextMatch.GetMatchTime()
 			endif
 		Next
 		return latestTime
 	End Method
+
+
+	Method GetLastMatchEndTime:Long()
+		local latestTime:long = -1
+		local list:TList = upcomingMatches
+		if list.Count() = 0 then list = doneMatches
+
+		For local nextMatch:TNewsEventSportMatch = EachIn list
+			local endTime:Long = nextMatch.GetMatchEndTime()
+			if latestTime = -1 or endTime > latestTime
+				latestTime = endTime
+			endif
+		Next
+		return latestTime
+	End Method
+
 
 
 	Method GetMatchCount:int(teamSize:int = -1)
@@ -980,7 +1011,7 @@ Type TNewsEventSportSeason extends TGameObject
 End Type
 
 
-	
+
 
 Type TNewsEventSportLeague extends TGameObject
 	Field name:string
@@ -1010,7 +1041,7 @@ Type TNewsEventSportLeague extends TGameObject
 	Field sportGUID:string = ""
 	'index of this league in the parental sport
 	Field _leaguesIndex:int = 0
-	
+
 	'callbacks
 	Field _onRunMatch:int(league:TNewsEventSportLeague, match:TNewsEventSportMatch) {nosave}
 	Field _onStartSeason:int(league:TNewsEventSportLeague) {nosave}
@@ -1023,7 +1054,7 @@ Type TNewsEventSportLeague extends TGameObject
 		self.name = name
 		self.nameShort = nameShort
 		self.nextSeasonTeams = initialSeasonTeams
-	
+
 		return self
 	End Method
 
@@ -1062,7 +1093,7 @@ Type TNewsEventSportLeague extends TGameObject
 		nextSeasonTeams = newNextSeasonTeams
 		return True
 	End Method
-	
+
 
 	Method GetNextMatchTime:Long()
 		return GetCurrentSeason().GetNextMatchTime()
@@ -1078,7 +1109,12 @@ Type TNewsEventSportLeague extends TGameObject
 		return GetCurrentSeason().GetLastMatchTime()
 	End Method
 
-	
+
+	Method GetLastMatchEndTime:Long()
+		return GetCurrentSeason().GetLastMatchEndTime()
+	End Method
+
+
 	'playoffs should ignore season breaks (season end / winter break)
 
 
@@ -1120,7 +1156,7 @@ Type TNewsEventSportLeague extends TGameObject
 'if name = "Regionalliga" then print "  future day "+matchDay+" at " + matchHour+":00"+ "   " + t +"  weekdayIndex="+weekdayIndex +"  weekday="+GetWorldTime().GetWeekday(time)
 				exit
 			endif
-				
+
 			if matchHour <> -1 then exit
 		Next
 		'if nothing was found yet, we might have had a time after the
@@ -1176,7 +1212,7 @@ Type TNewsEventSportLeague extends TGameObject
 'if name = "Regionalliga" then print "   -> winterbreak delay"
 			endif
 		endif
-		
+
 		seasonJustBegun = False
 
 'if name = "Regionalliga" then print "   -> day="+GetWorldTime().GetDay(matchTime) +"  " +GetWorldTime().GetDayName(GetWorldTime().GetWeekday(matchTime))+" ["+GetWorldTime().GetWeekday(matchTime)+"]  at "+GetWorldTime().GetFormattedTime(matchTime)
@@ -1270,7 +1306,7 @@ endrem
 			if runMatches.length > 0
 				'refresh team stats for easier retrieval
 				GetCurrentSeason().RefreshTeamStats(endingMatchTime)
-			
+
 				if endingMatchTime = 0 then endingMatchTime = GetWorldTime().GetTimeGone()
 				EventManager.triggerEvent(TEventSimple.Create("SportLeague.FinishMatchGroup", New TData.add("matches", runMatches).AddNumber("time", endingMatchTime).Add("season", GetCurrentSeason()), Self))
 			endif
@@ -1284,7 +1320,7 @@ endrem
 			endif
 			return False
 		endif
-		
+
 		return matchesRun
 	End Method
 
@@ -1352,14 +1388,14 @@ endrem
 		EventManager.triggerEvent(TEventSimple.Create("SportLeague.FinishSeasonPart", new TData.AddNumber("part", part).AddNumber("time", GetCurrentSeason().updateTime), Self))
 		if GetCurrentSeason() and part = GetCurrentSeason().partMax then FinishSeason()
 	End Method
-	
+
 
 	Method IsSeasonStarted:int()
 		if not GetCurrentSeason() then return False
 
 		return GetCurrentSeason().started
 	End Method
-	
+
 
 	Method IsSeasonFinished:int()
 		if not GetCurrentSeason() then return False
@@ -1370,10 +1406,10 @@ endrem
 
 	Method GetMatchProgress:Float()
 		if not GetCurrentSeason() then return 0.0
-		
+
 		if GetCurrentSeason().upcomingMatches.Count() = 0 then return 1.0
 		if GetCurrentSeason().doneMatches.Count() = 0 then return 0.0
-		return GetCurrentSeason().doneMatches.Count() / (GetCurrentSeason().doneMatches.Count() + GetCurrentSeason().upcomingMatches.Count())
+		return GetCurrentSeason().doneMatches.Count() / float(GetCurrentSeason().doneMatches.Count() + GetCurrentSeason().upcomingMatches.Count())
 	End Method
 
 
@@ -1406,7 +1442,7 @@ endrem
 			GetCurrentSeason().upcomingMatches.addLast(match)
 
 			GetNewsEventSportCollection().AddMatch(match)
-		next		
+		next
 	End Method
 
 
@@ -1418,7 +1454,7 @@ endrem
 	Method GetSeasonStartTime:Long(time:Long)
 		return time
 	End Method
-	
+
 
 	Method AssignMatchTimes(season:TNewsEventSportSeason, time:Long = 0, isPlayoffSeason:int = False)
 		if time = 0 then time = GetNextMatchStartTime(time)
@@ -1429,7 +1465,7 @@ endrem
 			time = GetNextMatchStartTime(time)
 		Next
 	End Method
-	
+
 
 	Function SortMatchesByTime:int(o1:object, o2:object)
 		local m1:TNewsEventSportMatch = TNewsEventSportMatch(o1)
@@ -1439,9 +1475,9 @@ endrem
 		if not m1 and m2 then return -1
 		if not m1 and not m2 then return 0
 
-		if m1.GetMatchTime() < m2.GetMatchTime() then return -1 
+		if m1.GetMatchTime() < m2.GetMatchTime() then return -1
 		if m1.GetMatchTime() > m2.GetMatchTime() then return 1
-		return 0 
+		return 0
 	End Function
 
 
@@ -1531,7 +1567,7 @@ Type TNewsEventSportMatch extends TGameObject
 
 		'distribute scores along the match time
 		FillScores()
-		
+
 		matchState = STATE_RUN
 	End Method
 
@@ -1546,7 +1582,7 @@ Type TNewsEventSportMatch extends TGameObject
 			for local i:int = 0 until breakTimes.length
 				breakTimes[i] = breakTime + overtimePart
 				'prepend previous breaktime
-				'ex. [0] = 30+2  [1] = 30+3 + 32   [2] = 30+2 + 65 ... 
+				'ex. [0] = 30+2  [1] = 30+3 + 32   [2] = 30+2 + 65 ...
 				if i > 0 then breakTimes[i] :+ breakTimes[i-1]
 			Next
 			'add rest of overtime to last break
@@ -1625,7 +1661,7 @@ Type TNewsEventSportMatch extends TGameObject
 		Next
 		return res
 	End Method
-	
+
 
 	Method GetScore:int(team:TNewsEventSportTeam)
 		if not IsRun() then return 0
@@ -1641,7 +1677,7 @@ Type TNewsEventSportMatch extends TGameObject
 		local rank:int = 1
 		For local i:int = 0 until teams.length
 			if teams[i] <> team then continue
-			
+
 			'count better ranked teams
 			For local j:int = 0 until teams.length
 				if i = j then continue
@@ -1716,7 +1752,7 @@ Type TNewsEventSportMatch extends TGameObject
 	Method GetLooserScore:int()
 		return 0
 	End Method
-	
+
 
 	Method GetNameShort:string()
 		local result:string
@@ -1762,7 +1798,7 @@ Type TNewsEventSportMatch extends TGameObject
 		return matchTime
 	End Method
 
-	
+
 	Method GetMatchResultText:string()
 		local singularPlural:string = "P"
 		if teams[0].clubNameSingular then singularPlural = "S"
@@ -1879,7 +1915,7 @@ Type TNewsEventSportMatch extends TGameObject
 		result = result.Replace("%PLAYTIMEMINUTES%", int(duration / 60) )
 
 		result = result.Trim().Replace("  ", " ") 'remove space if no team article...
-		
+
 		return result
 	End Method
 End Type
@@ -2078,7 +2114,7 @@ Type TNewsEventSportTeam
 
 		return statsSkill
 	End Method
-	
+
 
 	Method AssignLeague(leagueGUID:string)
 		self.leagueGUID = leagueGUID

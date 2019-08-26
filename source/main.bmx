@@ -1362,11 +1362,10 @@ endrem
 
 
 		'set the mouse clicks handled anyways
-'		if MOUSEMANAGER.IsClicked(1) then TLogger.Log("Update", "Unhandled mouse button 1 click.", LOG_ERROR)
-'		if MOUSEMANAGER.IsLongClicked(1) then TLogger.Log("Update", "Unhandled mouse button 1 long click.", LOG_ERROR)
-'		if MOUSEMANAGER.IsClicked(2) then TLogger.Log("Update", "Unhandled mouse button 2 click.", LOG_ERROR)
-		MouseManager.ResetClicked(1)
-		MouseManager.ResetClicked(2)
+		'MouseManager.ResetClicked(1)
+		'MouseManager.ResetClicked(2)
+		'remove clicks done a longer time ago
+		MouseManager.RemoveOutdatedClicks(1000)
 
 		TProfiler.Leave("Update")
 	End Function
@@ -5419,6 +5418,17 @@ Type GameEvents
 		'2) remove LIVE-status from programmes once they finished airing
 		If minute Mod 5 = 0
 			GetProgrammeDataCollection().UpdateLive()
+		EndIf
+
+		'=== UPDATE DYNAMIC DATA PROGRAMME ===
+		'(do that AFTER setting the broadcasts, so the programme data
+		' knows whether it is broadcasted currently or not)
+		'Calls UpdateDynamicData() of the programme so it could adjust
+		'values like description, title or other values
+		'Example: programme data for the "header" of soccer leagues could
+		'         tell about "live on tape" or "currently run" matches
+		If minute Mod 5 = 0 'minute = 5 or minute = 55
+			GetProgrammeDataCollection().UpdateDynamicData()
 		EndIf
 
 		'=== UPDATE ACHIEVEMENTS ===
