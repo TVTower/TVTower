@@ -6,10 +6,10 @@ Import "Dig/base.util.mersenne.bmx"
 
 
 '=== SOCCER ===
-Type TNewsEventSport_Soccer extends TNewsEventSport
-	Global teamsPerLeague:int = 4
+Type TNewsEventSport_Soccer Extends TNewsEventSport
+	Global teamsPerLeague:Int = 4
 	'name | abbreviation | singular/plural 
-	Global teamPrefixes:string[] = ["Fussballverein|FV|s",..
+	Global teamPrefixes:String[] = ["Fussballverein|FV|s",..
 	                                "Fussballfreunde|FF|p", ..
 	                                "Hallenkicker|HK|p", ..
 	                                "Freizeitkicker|FK|p", ..
@@ -34,19 +34,19 @@ Type TNewsEventSport_Soccer extends TNewsEventSport
 
 	Method Initialize:TNewsEventSport_Soccer()
 		Super.Initialize()
-		return self
+		Return Self
 	End Method
 
 
-	Method CreateDefaultLeagues:int()
-		local soccerConfig:TData = GetStationMapCollection().GetSportData("soccer", new TData)
+	Method CreateDefaultLeagues:Int()
+		Local soccerConfig:TData = GetStationMapCollection().GetSportData("soccer", New TData)
 		'create 4 leagues (if not overridden)
-		local leagueCount:Int = soccerConfig.GetInt("leagueCount", 4)
+		Local leagueCount:Int = soccerConfig.GetInt("leagueCount", 4)
 
 		CreateLeagues( leagueCount )
 
-		for local i:int = 1 to leagueCount
-			local l:TNewsEventSportLeague_Soccer = TNewsEventSportLeague_Soccer(GetLeagueAtIndex(i-1))
+		For Local i:Int = 1 To leagueCount
+			Local l:TNewsEventSportLeague_Soccer = TNewsEventSportLeague_Soccer(GetLeagueAtIndex(i-1))
 			l.name = soccerConfig.GetData("league"+i).GetString("name", i+". Liga")
 			l.nameShort = soccerConfig.GetData("league"+i).GetString("nameShort", i+". L")
 		Next
@@ -54,99 +54,99 @@ Type TNewsEventSport_Soccer extends TNewsEventSport
 
 
 	Function CreateMatch:TNewsEventSportMatch_Soccer()
-		return new TNewsEventSportMatch_Soccer
+		Return New TNewsEventSportMatch_Soccer
 	End Function
 
 
-	Method CreateTeam:TNewsEventSportTeam(prefix:String="", cityName:string="", teamName:string="", teamNameInitials:string="")
-		if not prefix then prefix = teamPrefixes[RandRange(0, teamPrefixes.length-1)]
+	Method CreateTeam:TNewsEventSportTeam(prefix:String="", cityName:String="", teamName:String="", teamNameInitials:String="")
+		If Not prefix Then prefix = teamPrefixes[RandRange(0, teamPrefixes.length-1)]
 
-		local team:TNewsEventSportTeam = new TNewsEventSportTeam
-		local teamPrefix:string[] = prefix.Split("|")
+		Local team:TNewsEventSportTeam = New TNewsEventSportTeam
+		Local teamPrefix:String[] = prefix.Split("|")
 
 
-		if cityName 
+		If cityName 
 			team.city = cityName
-		else
+		Else
 			'fall back to teamname if someone forgot to define a city
 			team.city = teamName
-		endif
-		if teamName
+		EndIf
+		If teamName
 			team.name = teamName
-		else
+		Else
 			team.name = team.city
-		endif
+		EndIf
 
-		local capitalLetters:string = teamNameInitials
-		if capitalLetters = ""
+		Local capitalLetters:String = teamNameInitials
+		If capitalLetters = ""
 			'method 1 - only capital letters
-			rem
+			Rem
 			For local ch:int = EachIn teamNames[i]
 				if (ch>=Asc("A") And ch<=Asc("Z")) then capitalLetters :+ Chr(ch)
 			Next
 			endrem
 			'method 2 - name-parts ("Bad |Klein|grunda" = "BKG")
-			For local part:string = EachIn team.name.split("|")
-				if not part then continue 'happens for second part in "bla|"
+			For Local part:String = EachIn team.name.split("|")
+				If Not part Then Continue 'happens for second part in "bla|"
 				capitalLetters :+ Chr(StringHelper.UCFirst(part)[0])
 			Next
-		endif
+		EndIf
 
 		team.nameInitials = capitalLetters
 		'clean potential "splitters" (now we created "capital letters")
-		team.city = team.city.replace("|","")
-		team.name = team.name.replace("|","")
+		team.city = team.city.Replace("|","")
+		team.name = team.name.Replace("|","")
 
 		team.clubName = teamPrefix[0]
 		team.clubNameInitials = teamPrefix[1]
-		if teamPrefix.length < 3 or teamPrefix[2] = "s" 
+		If teamPrefix.length < 3 Or teamPrefix[2] = "s" 
 			team.clubNameSingular = True
-		else
+		Else
 			team.clubNameSingular = False
-		endif
+		EndIf
 
-		return team
+		Return team
 	End Method
 
 
-	Method CreateLeagues(leagueCount:int)
+	Method CreateLeagues(leagueCount:Int)
 		'select and fill teams
-		local allUsedCityNames:string[]
-		local countryCodes:string[] = GetPersonGenerator().GetCountryCodes()
-		local emptyData:TData = new TData
-		local predefinedSportData:TData = GetStationMapCollection().GetSportData("soccer", emptyData)
+		Local allUsedCityNames:String[]
+		Local countryCodes:String[] = GetPersonGenerator().GetCountryCodes()
+		Local emptyData:TData = New TData
+		Local predefinedSportData:TData = GetStationMapCollection().GetSportData("soccer", emptyData)
 'print predefinedSportData.ToString()
 		
-		For local leagueIndex:int = 0 until leagueCount
-			local cityNames:string[]
-			local predefinedLeagueData:TData = predefinedSportData.GetData("league"+(leagueIndex+1), emptyData)
+		For Local leagueIndex:Int = 0 Until leagueCount
+			Local cityNames:String[]
+			Local predefinedLeagueData:TData = predefinedSportData.GetData("league"+(leagueIndex+1), emptyData)
 
-			For local i:int = 0 until teamsPerLeague
-				local cityName:string
+			For Local i:Int = 0 Until teamsPerLeague
+				Local cityName:String
 				'skip random name generation, if a team is defined already
-				local predefinedTeamData:TData = predefinedLeagueData.GetData("team"+(i+1), emptyData)
+				Local predefinedTeamData:TData = predefinedLeagueData.GetData("team"+(i+1), emptyData)
 				cityName = predefinedTeamData.GetString("name")
 				
 
-				if cityName = ""
-					local tries:int = 0
-					repeat
+				If cityName = ""
+					Local tries:Int = 0
+					Repeat
 						cityName = GetStationMapCollection().GenerateCity("|") 'split parts
 						tries :+ 1
-					until not StringHelper.InArray(cityName, allUsedCityNames) or tries > 1000
-					if tries > 1000 then cityName = "unknown-"+Millisecs()+"-" + RandRange(0,100000)
-				endif
+					Until Not StringHelper.InArray(cityName, allUsedCityNames) Or tries > 1000
+					If tries > 1000 Then cityName = "unknown-"+MilliSecs()+"-" + RandRange(0,100000)
+				EndIf
 				cityNames :+ [cityName]
 				allUsedCityNames :+ [cityName]
 			Next
 
 
-			local teams:TNewsEventSportTeam[]
-			For local i:int = 0 until cityNames.length
+			Local teams:TNewsEventSportTeam[]
+			For Local i:Int = 0 Until cityNames.length
 				'use predefined data if possible
-				local predefinedTeamData:TData = predefinedLeagueData.GetData("team"+(i+1), emptyData)
+				Local predefinedTeamData:TData = predefinedLeagueData.GetData("team"+(i+1), emptyData)
 
-				local team:TNewsEventSportTeam
+				Local team:TNewsEventSportTeam
 				team = CreateTeam(predefinedTeamData.GetString("prefix", ""), ..
 				                  predefinedTeamData.GetString("city", cityNames[i]), ..
 				                  predefinedTeamData.GetString("name", ""), ..
@@ -158,25 +158,25 @@ Type TNewsEventSport_Soccer extends TNewsEventSport
 
 'print "league="+(leagueIndex+1)+"  team="+(i+1)+"  name=" + team.name+"  city="+team.city+"  nameInitials="+team.nameInitials+"  clubName="+team.clubName+"  clubNameInitials="+team.clubNameInitials
 
-				For local j:int = 0 to (11+3) '0 is trainer, 3 is reserve
-					local cCode:string = "de"
-					if RandRange(0, 10) < 3 then cCode = countryCodes[ RandRange(0, countryCodes.length-1) ]
+				For Local j:Int = 0 To (11+3) '0 is trainer, 3 is reserve
+					Local cCode:String = "de"
+					If RandRange(0, 10) < 3 Then cCode = countryCodes[ RandRange(0, countryCodes.length-1) ]
 
-					local p:TPersonGeneratorEntry = GetPersonGenerator().GetUniqueDataset(cCode, TPersonGenerator.GENDER_MALE)
-					local member:TNewsEventsportTeamMember = new TNewsEventsportTeamMember.Init( p.firstName, p.lastName, p.countryCode, p.gender, True)
-					if j <> 0
+					Local p:TPersonGeneratorEntry = GetPersonGenerator().GetUniqueDataset(cCode, TPersonGenerator.GENDER_MALE)
+					Local member:TNewsEventsportTeamMember = New TNewsEventsportTeamMember.Init( p.firstName, p.lastName, p.countryCode, p.gender, True)
+					If j <> 0
 						team.AddMember( member )
-					else
+					Else
 						team.SetTrainer( member )
-					endif
+					EndIf
 				Next
 			Next
 			
 
-			local league:TNewsEventSportLeague_Soccer = new TNewsEventSportLeague_Soccer
+			Local league:TNewsEventSportLeague_Soccer = New TNewsEventSportLeague_Soccer
 			league.Init((leagueIndex+1) + ". " + GetLocale("SOCCER_LEAGUE"), leagueIndex+".", teams)
 			league.matchesPerTimeSlot = 2
-			if leagueIndex = 0
+			If leagueIndex = 0
 				league.timeSlots = [ ..
 				                    "0_16", "0_20", ..
 				                    "2_16", "2_20", ..
@@ -185,7 +185,7 @@ Type TNewsEventSport_Soccer extends TNewsEventSport
 				                   ]
 				league.seasonStartDay = 14
 				league.seasonStartMonth = 8
-			elseif leagueIndex > 0
+			ElseIf leagueIndex > 0
 				league.timeSlots = [ ..
 				                    "0_14", "0_18", ..
 				                    "2_14", "2_18", ..
@@ -194,7 +194,7 @@ Type TNewsEventSport_Soccer extends TNewsEventSport
 				                   ]
 				league.seasonStartDay = 29
 				league.seasonStartMonth = 7
-			endif
+			EndIf
 
 			AddLeague( league )
 		Next
@@ -203,7 +203,7 @@ End Type
 
 
 
-Type TNewsEventSportLeague_Soccer extends TNewsEventSportLeague
+Type TNewsEventSportLeague_Soccer Extends TNewsEventSportLeague
 	Method New()
 		seasonStartMonth = 8
 		seasonStartDay = 14
@@ -211,7 +211,7 @@ Type TNewsEventSportLeague_Soccer extends TNewsEventSportLeague
 	End Method
 
 
-	Method Custom_CreateUpcomingMatches:int()
+	Method Custom_CreateUpcomingMatches:Int()
 		TNewsEventSport_Soccer.CreateMatchSets(GetCurrentSeason().GetMatchCount(), GetCurrentSeason().GetTeams(), GetCurrentSeason().data.matchPlan, TNewsEventSport_Soccer.CreateMatch)
 	End Method
 
@@ -227,29 +227,25 @@ Type TNewsEventSportLeague_Soccer extends TNewsEventSportLeague
 
 	'override
 	'2 matches per "time slot" instead of 1
-	Method AssignMatchTimes(season:TNewsEventSportSeason, time:Long = 0, isPlayoffSeason:int=0)
+	Method AssignMatchTimes(season:TNewsEventSportSeason, time:Long = 0, isPlayoffSeason:Int=0)
 		'time = GetNextMatchStartTime(time)
 
-		if not season then season = GetCurrentSeason()
-'if isPlayoffSeason
-'	print "AssignMatchTimes PLAYOFFS: " + GetWorldTime().GetFormattedDate(time)
-'else
-'	print "AssignMatchTimes: " + GetWorldTime().GetFormattedDate(time)
-'endif
-		local matches:int = 1
-		For local m:TNewsEventSportMatch = EachIn season.data.matchPlan
+		If Not season Then season = GetCurrentSeason()
+
+		Local matches:Int = 1
+		For Local m:TNewsEventSportMatch = EachIn season.data.matchPlan
 			m.SetMatchTime(time)
 '			if GetWorldTime().GetTimeGone() < time
 '				print "   "+ name+ "  match: "+GetWorldTime().GetFormattedDate(m.matchTime) + "  gameday="+ (GetWorldTime().GetDaysRun(m.matchTime)+1) + "  " + m.GetNameShort()
 '			endif
 
 			'every x-th match we increase time - so matches get "grouped"
-			if isPlayoffSeason or (matches > 1 and matches mod matchesPerTimeSlot = 0)
+			If isPlayoffSeason Or (matches > 1 And matches Mod matchesPerTimeSlot = 0)
 				'also append some minutes, es we would not move forward
 				'without (same time returned again and again)
 				'print "      get next time"
 				time = GetNextMatchStartTime(time + 10 * 60)
-			endif
+			EndIf
 
 			matches :+1
 		Next
@@ -259,89 +255,89 @@ End Type
 
 
 
-Type TNewsEventSportMatch_Soccer extends TNewsEventSportMatch
+Type TNewsEventSportMatch_Soccer Extends TNewsEventSportMatch
 	Method New()
 		sportName = "SOCCER"
 	End Method
 	
 
 	Function CreateMatch:TNewsEventSportMatch_Soccer()
-		return new TNewsEventSportMatch_Soccer
+		Return New TNewsEventSportMatch_Soccer
 	End Function
 
 
-	Method GetReport:string()
-		local matchText:string = GetLocale("SPORT_TEAMREPORT_MATCHRESULT")
+	Method GetReport:String()
+		Local matchText:String = GetLocale("SPORT_TEAMREPORT_MATCHRESULT")
 
 		'make first char uppercase
 		matchText = StringHelper.UCFirst( ReplacePlaceholders(matchText) )
-		return matchText
+		Return matchText
 	End Method
 
 
-	Method GetLiveReportShort:string(mode:string="", time:Long=-1)
-		local matchTime:Int = GetMatchTimeGone(time)
+	Method GetLiveReportShort:String(mode:String="", time:Long=-1)
+		Local matchTime:Int = GetMatchTimeGone(time)
 		
-		local usePoints:int[] = GetMatchScore(matchTime)
-		local result:string
+		Local usePoints:Int[] = GetMatchScore(matchTime)
+		Local result:String
 
-		for local i:int = 0 until usePoints.length
-			if result <> ""
+		For Local i:Int = 0 Until usePoints.length
+			If result <> ""
 				result :+ " : "
-				if mode = "INITIALS"
+				If mode = "INITIALS"
 					result :+ usePoints[i] + "] " + teams[i].GetTeamInitials()
-				else
+				Else
 					result :+ usePoints[i] + "] " + teams[i].GetTeamNameShort()
-				endif
-			else
-				if mode = "INITIALS"
+				EndIf
+			Else
+				If mode = "INITIALS"
 					result :+ teams[i].GetTeamInitials() + " [" + usePoints[i]
-				else
+				Else
 					result :+ teams[i].GetTeamNameShort() + " [" + usePoints[i]
-				endif
-			endif
+				EndIf
+			EndIf
 		Next
-		return result
+		Return result
 	End Method
 	
 
-	Method GetReportShort:string(mode:string="")
-		local result:string
+	Method GetReportShort:String(mode:String="")
+		Local result:String
 
-		for local i:int = 0 until points.length
-			if result <> ""
+		For Local i:Int = 0 Until points.length
+			If result <> ""
 				result :+ " : "
-				if mode = "INITIALS"
+				If mode = "INITIALS"
 					result :+ points[i] + "] " + teams[i].GetTeamInitials()
-				else
+				Else
 					result :+ points[i] + "] " + teams[i].GetTeamNameShort()
-				endif
-			else
-				if mode = "INITIALS"
+				EndIf
+			Else
+				If mode = "INITIALS"
 					result :+ teams[i].GetTeamInitials() + " [" + points[i]
-				else
+				Else
 					result :+ teams[i].GetTeamNameShort() + " [" + points[i]
-				endif
-			endif
+				EndIf
+			EndIf
 		Next
-		return result
+		Return result
 
 		'return teams[0].nameInitials + " " + points[0]+" : " + points[1] + " " + teams[1].nameInitials
 	End Method
 
 
-	Method GetFinalScoreText:string()
+	Method GetFinalScoreText:String()
 		'only show halftime points if someone scored something
-		local showHalfTimePoints:int = False
-		for local i:int = 0 until points.length
-			if points[i] <> 0 then showHalfTimePoints = true
+		Local showHalfTimePoints:Int = False
+		For Local i:Int = 0 Until points.length
+			If points[i] <> 0 Then showHalfTimePoints = True
 		Next
 
-		if showHalfTimePoints
-			return Super.GetFinalScoreText()+" (" + StringHelper.JoinIntArray(":", GetMatchScore(duration/2)) + ")"
-		else
-			return Super.GetFinalScoreText()
-		endif
+		If showHalfTimePoints
+			Return Super.GetFinalScoreText()+" (" + StringHelper.JoinIntArray(":", GetMatchScore(duration/2)) + ")"
+		Else
+			Return Super.GetFinalScoreText()
+		EndIf
 	End Method
 	
 End Type

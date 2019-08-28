@@ -7,7 +7,7 @@ Import "game.programme.programmelicence.gui.bmx"
 
 
 'Movie agency
-Type RoomHandler_MovieAgency extends TRoomHandler
+Type RoomHandler_MovieAgency Extends TRoomHandler
 	Global AuctionToolTip:TTooltip
 
 	Global VendorEntity:TSpriteEntity
@@ -15,8 +15,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 	Global AuctionEntity:TSpriteEntity
 
-	Global hoveredGuiProgrammeLicence:TGUIProgrammeLicence = null
-	Global draggedGuiProgrammeLicence:TGUIProgrammeLicence = null
+	Global hoveredGuiProgrammeLicence:TGUIProgrammeLicence = Null
+	Global draggedGuiProgrammeLicence:TGUIProgrammeLicence = Null
 
 	'arrays holding the different blocks
 	'we use arrays to find "free slots" and set to a specific slot
@@ -30,11 +30,11 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Field filterAuction:TProgrammeLicenceFilterGroup {nosave}
 
 	'graphical lists for interaction with blocks
-	Global haveToRefreshGuiElements:int = TRUE
-	Global GuiListMoviesGood:TGUIProgrammeLicenceSlotList = null
-	Global GuiListMoviesCheap:TGUIProgrammeLicenceSlotList = null
-	Global GuiListSeries:TGUIProgrammeLicenceSlotList = null
-	Global GuiListSuitcase:TGUIProgrammeLicenceSlotList = null
+	Global haveToRefreshGuiElements:Int = True
+	Global GuiListMoviesGood:TGUIProgrammeLicenceSlotList = Null
+	Global GuiListMoviesCheap:TGUIProgrammeLicenceSlotList = Null
+	Global GuiListSeries:TGUIProgrammeLicenceSlotList = Null
+	Global GuiListSuitcase:TGUIProgrammeLicenceSlotList = Null
 
 	'Field spriteSuitcaseGlow:TSprite {nosave}
 	Global spriteAuctionPanel:TSprite {nosave}
@@ -44,12 +44,12 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Global LS_movieagency:TLowerString = TLowerString.Create("movieagency")
 
 	'configuration
-	Global suitcasePos:TVec2D = new TVec2D.Init(350,130)
-	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(14,25)
-	Field programmesPerLine:int	= 13
-	Field movieGoodMoneyMinimum:int = 170000
+	Global suitcasePos:TVec2D = New TVec2D.Init(350,130)
+	Global suitcaseGuiListDisplace:TVec2D = New TVec2D.Init(14,25)
+	Field programmesPerLine:Int	= 13
+	Field movieGoodMoneyMinimum:Int = 170000
 	Field movieGoodQualityMinimum:Float = 0.15
-	Field movieCheapMoneyMaximum:int = 145000
+	Field movieCheapMoneyMaximum:Int = 145000
 	Field movieCheapQualityMaximum:Float = 0.50
 
 	Global _instance:RoomHandler_MovieAgency
@@ -57,8 +57,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 
 	Function GetInstance:RoomHandler_MovieAgency()
-		if not _instance then _instance = new RoomHandler_MovieAgency
-		return _instance
+		If Not _instance Then _instance = New RoomHandler_MovieAgency
+		Return _instance
 	End Function
 
 
@@ -67,22 +67,22 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	End Method
 
 
-	Method InitializeFilters:int()
-		if not filterMoviesGood
-			filterMoviesGood = new TProgrammeLicenceFilterGroup
-			filterMoviesGood.AddFilter(new TProgrammeLicenceFilter)
-			filterMoviesGood.AddFilter(new TProgrammeLicenceFilter)
-		endif
-		if not filterMoviesCheap
-			filterMoviesCheap = new TProgrammeLicenceFilterGroup
-			filterMoviesCheap.AddFilter(new TProgrammeLicenceFilter)
-			filterMoviesCheap.AddFilter(new TProgrammeLicenceFilter)
-		endif
-		if not filterSeries then filterSeries = new TProgrammeLicenceFilter
+	Method InitializeFilters:Int()
+		If Not filterMoviesGood
+			filterMoviesGood = New TProgrammeLicenceFilterGroup
+			filterMoviesGood.AddFilter(New TProgrammeLicenceFilter)
+			filterMoviesGood.AddFilter(New TProgrammeLicenceFilter)
+		EndIf
+		If Not filterMoviesCheap
+			filterMoviesCheap = New TProgrammeLicenceFilterGroup
+			filterMoviesCheap.AddFilter(New TProgrammeLicenceFilter)
+			filterMoviesCheap.AddFilter(New TProgrammeLicenceFilter)
+		EndIf
+		If Not filterSeries Then filterSeries = New TProgrammeLicenceFilter
 
 		'good movies must be more expensive than X _and_ of better
 		'quality then Y
-		rem
+		Rem
 		filterMoviesGood.priceMin = movieGoodMoneyMinimum
 		filterMoviesGood.priceMax = 500000
 		filterMoviesGood.licenceTypes = [TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
@@ -154,10 +154,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		filterSeries.requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
 
 
-		if not filterAuction
-			filterAuction = new TProgrammeLicenceFilterGroup
-			filterAuction.AddFilter(new TProgrammeLicenceFilter)
-			filterAuction.AddFilter(new TProgrammeLicenceFilter)
+		If Not filterAuction
+			filterAuction = New TProgrammeLicenceFilterGroup
+			filterAuction.AddFilter(New TProgrammeLicenceFilter)
+			filterAuction.AddFilter(New TProgrammeLicenceFilter)
 
 			'auction: either expensive - or - live programme
 			filterAuction.filters[0].priceMin = 350000
@@ -183,17 +183,17 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			filterAuction.filters[1].checkAgeMin = False
 			filterAuction.filters[1].checkAgeMax = False
 			filterAuction.filters[1].requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
-		endif
+		EndIf
 
 	End Method
 
-	Method Initialize:int()
+	Method Initialize:Int()
 		'=== RESET TO INITIAL STATE ===
 		CleanUp()
 
-		listMoviesGood = new TProgrammeLicence[programmesPerLine]
-		listMoviesCheap = new TProgrammeLicence[programmesPerLine]
-		listSeries = new TProgrammeLicence[programmesPerLine]
+		listMoviesGood = New TProgrammeLicence[programmesPerLine]
+		listMoviesCheap = New TProgrammeLicence[programmesPerLine]
+		listSeries = New TProgrammeLicence[programmesPerLine]
 
 
 
@@ -207,13 +207,13 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		AuctionEntity = GetSpriteEntityFromRegistry("entity_movieagency_auction")
 
 		'=== create gui elements if not done yet
-		if not GuiListMoviesGood
-			local videoCase:TSprite = GetSpriteFromRegistry("gfx_movie_undefined")
+		If Not GuiListMoviesGood
+			Local videoCase:TSprite = GetSpriteFromRegistry("gfx_movie_undefined")
 
-			GuiListMoviesGood = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,50), new TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
-			GuiListMoviesCheap = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,148), new TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
-			GuiListSeries = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,246), new TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
-			GuiListSuitcase = new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(180, videoCase.area.GetH()), "movieagency")
+			GuiListMoviesGood = New TGUIProgrammeLicenceSlotList.Create(New TVec2D.Init(596,50), New TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
+			GuiListMoviesCheap = New TGUIProgrammeLicenceSlotList.Create(New TVec2D.Init(596,148), New TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
+			GuiListSeries = New TGUIProgrammeLicenceSlotList.Create(New TVec2D.Init(596,246), New TVec2D.Init(200, videoCase.area.GetH()), "movieagency")
+			GuiListSuitcase = New TGUIProgrammeLicenceSlotList.Create(New TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), New TVec2D.Init(180, videoCase.area.GetH()), "movieagency")
 
 			GuiListMoviesGood.guiEntriesPanel.minSize.SetXY(200,80)
 			GuiListMoviesCheap.guiEntriesPanel.minSize.SetXY(200,80)
@@ -246,15 +246,15 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
 
 			'default vendor position/dimension
-			local vendorAreaDimension:TVec2D = new TVec2D.Init(200,200)
-			local vendorAreaPosition:TVec2D = new TVec2D.Init(20,60)
-			if VendorEntity then vendorAreaDimension = VendorEntity.area.dimension.copy()
-			if VendorEntity then vendorAreaPosition = VendorEntity.area.position.copy()
+			Local vendorAreaDimension:TVec2D = New TVec2D.Init(200,200)
+			Local vendorAreaPosition:TVec2D = New TVec2D.Init(20,60)
+			If VendorEntity Then vendorAreaDimension = VendorEntity.area.dimension.copy()
+			If VendorEntity Then vendorAreaPosition = VendorEntity.area.position.copy()
 
-			VendorArea = new TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "movieagency" )
+			VendorArea = New TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "movieagency" )
 			'vendor should accept drop - else no recognition
-			VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
-		endif
+			VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, True)
+		EndIf
 
 		spriteAuctionPanel = GetSpriteFromRegistry("gfx_gui_panel")
 		spriteAuctionPanelContent = GetSpriteFromRegistry("gfx_gui_panel.content")
@@ -265,7 +265,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'=== EVENTS ===
 		'=== remove all registered event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		_eventListeners = New TLink[0]
 
 		'=== register event listeners
 		'drop ... so sell/buy the thing
@@ -297,7 +297,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'
 
 		'=== remove obsolete gui elements ===
-		if GuiListMoviesGood then RemoveAllGuiElements()
+		If GuiListMoviesGood Then RemoveAllGuiElements()
 
 		'=== remove all registered instance specific event listeners
 		'EventManager.unregisterListenersByLinks(_localEventListeners)
@@ -305,25 +305,25 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	End Method
 
 
-	Method RegisterHandler:int()
-		if GetInstance() <> self then self.CleanUp()
+	Method RegisterHandler:Int()
+		If GetInstance() <> Self Then Self.CleanUp()
 		GetRoomHandlerCollection().SetHandler("movieagency", GetInstance())
 	End Method
 
 
 	Method AbortScreenActions:Int()
-		if draggedGuiProgrammeLicence
+		If draggedGuiProgrammeLicence
 			'try to drop the licence back
 			draggedGuiProgrammeLicence.dropBackToOrigin()
-			draggedGuiProgrammeLicence = null
-			hoveredGuiProgrammeLicence = null
-			return True
-		endif
-		return False
+			draggedGuiProgrammeLicence = Null
+			hoveredGuiProgrammeLicence = Null
+			Return True
+		EndIf
+		Return False
 	End Method
 
 
-	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase )
+	Method onSaveGameBeginLoad:Int( triggerEvent:TEventBase )
 		'as soon as a savegame gets loaded, we remove every
 		'guiElement this room manages
 		'Afterwards we force the room to update the gui elements
@@ -332,17 +332,17 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'new programmes are not loaded yet
 
 		GetInstance().RemoveAllGuiElements()
-		haveToRefreshGuiElements = true
+		haveToRefreshGuiElements = True
 	End Method
 
 
 	'clear the guilist for the suitcase if a player enters
-	Method onEnterRoom:int( triggerEvent:TEventBase )
-		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
+	Method onEnterRoom:Int( triggerEvent:TEventBase )
+		Local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		'only interested in player figures (they cannot be in one room
 		'simultaneously, others like postman should not refill while you
 		'are in)
-		if not figure or not figure.playerID then return FALSE
+		If Not figure Or Not figure.playerID Then Return False
 
 
 		'=== FOR ALL PLAYERS ===
@@ -352,19 +352,19 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 
 		'=== FOR WATCHED PLAYERS ===
-		if IsObservedFigure(figure)
+		If IsObservedFigure(figure)
 			'
-		endif
+		EndIf
 
-		return True
+		Return True
 	End Method
 
 
 	'override: figure leaves room - only without dragged blocks
-	Method onTryLeaveRoom:int( triggerEvent:TEventBase )
+	Method onTryLeaveRoom:Int( triggerEvent:TEventBase )
 		'non players can always leave
-		local figure:TFigure = TFigure(triggerEvent.GetSender())
-		if not figure or not figure.playerID then return FALSE
+		Local figure:TFigure = TFigure(triggerEvent.GetSender())
+		If Not figure Or Not figure.playerID Then Return False
 
 
 		'=== FOR ALL PLAYERS ===
@@ -372,27 +372,27 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 
 		'=== FOR WATCHED PLAYERS ===
-		if IsObservedFigure(figure)
+		If IsObservedFigure(figure)
 			'as only 1 player is allowed simultaneously, the limitation
 			'to "observed" is not strictly needed - but does not harm
 
 			'do not allow leaving as long as we have a dragged block
-			if draggedGuiProgrammeLicence
+			If draggedGuiProgrammeLicence
 				triggerEvent.setVeto()
-				return FALSE
-			endif
-		endif
+				Return False
+			EndIf
+		EndIf
 
-		return TRUE
+		Return True
 	End Method
 
 
 	'add back the programmes from the suitcase
 	'also fill empty blocks, remove gui elements
-	Method onLeaveRoom:int( triggerEvent:TEventBase )
+	Method onLeaveRoom:Int( triggerEvent:TEventBase )
 		'non players can always leave
-		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure or not figure.playerID then return FALSE
+		Local figure:TFigure = TFigure(triggerEvent.GetReceiver())
+		If Not figure Or Not figure.playerID Then Return False
 
 		'=== FOR ALL PLAYERS ===
 		'
@@ -404,40 +404,40 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'- readd when going into another room than the movieagency
 		'GetPlayerProgrammeCollection(figure.playerID).ReaddProgrammeLicencesFromSuitcase()
 
-		local player:TPlayerBase = GetPlayerBase(figure.playerID)
+		Local player:TPlayerBase = GetPlayerBase(figure.playerID)
 		'empty suitcase after 20 realtime seconds
-		if player
+		If player
 			player.emptyProgrammeSuitcase = True
 			player.emptyProgrammeSuitcaseFromRoom = "movieagency"
 			player.emptyProgrammeSuitcaseTime = Time.GetTimeGone() + 20 * 1000
-		endif
+		EndIf
 
 
 		'=== FOR WATCHED PLAYERS ===
-		if IsObservedFigure(figure)
+		If IsObservedFigure(figure)
 			'
-		endif
+		EndIf
 
-		return TRUE
+		Return True
 	End Method
 
 
 	'called as soon as a players figure is forced to leave the room
-	Method onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
+	Method onForcefullyLeaveRoom:Int( triggerEvent:TEventBase )
 		'only handle the player figures
-		local figure:TFigure = TFigure(triggerEvent.GetSender())
-		if not figure or not figure.playerID then return FALSE
+		Local figure:TFigure = TFigure(triggerEvent.GetSender())
+		If Not figure Or Not figure.playerID Then Return False
 
 		'=== FOR ALL PLAYERS ===
 		'
 
 
 		'=== FOR WATCHED PLAYERS ===
-		if IsObservedFigure(figure)
+		If IsObservedFigure(figure)
 			AbortScreenActions()
-		endif
+		EndIf
 
-		return True
+		Return True
 	End Method
 
 
@@ -445,204 +445,204 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	'Movie Agency: common TFunctions
 	'===================================
 
-	Method GetProgrammeLicencesInStock:int()
+	Method GetProgrammeLicencesInStock:Int()
 		Local ret:Int = 0
-		local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
-		For local j:int = 0 to lists.length-1
+		Local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
+		For Local j:Int = 0 To lists.length-1
 			For Local licence:TProgrammeLicence = EachIn lists[j]
-				if licence Then ret:+1
+				If licence Then ret:+1
 			Next
 		Next
-		return ret
+		Return ret
 	End Method
 
 
 	Method GetProgrammeLicences:TProgrammeLicence[]()
 		Local ret:TProgrammeLicence[ GetProgrammeLicencesInStock() ]
-		local c:int = 0
-		local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
-		For local j:int = 0 to lists.length-1
+		Local c:Int = 0
+		Local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
+		For Local j:Int = 0 To lists.length-1
 			For Local licence:TProgrammeLicence = EachIn lists[j]
-				if licence Then ret[c] = licence
+				If licence Then ret[c] = licence
 				c :+ 1
 			Next
 		Next
-		return ret
+		Return ret
 	End Method
 
 
-	Method GetProgrammeLicenceByPosition:TProgrammeLicence(position:int)
-		if position > GetProgrammeLicencesInStock() then return null
-		local currentPosition:int = 0
-		local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
-		For local j:int = 0 to lists.length-1
+	Method GetProgrammeLicenceByPosition:TProgrammeLicence(position:Int)
+		If position > GetProgrammeLicencesInStock() Then Return Null
+		Local currentPosition:Int = 0
+		Local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
+		For Local j:Int = 0 To lists.length-1
 			For Local licence:TProgrammeLicence = EachIn lists[j]
-				if licence
-					if currentPosition = position then return licence
+				If licence
+					If currentPosition = position Then Return licence
 					currentPosition:+1
-				endif
+				EndIf
 			Next
 		Next
-		return null
+		Return Null
 	End Method
 
 
-	Method HasProgrammeLicence:int(licence:TProgrammeLicence)
-		local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
-		For local j:int = 0 to lists.length-1
+	Method HasProgrammeLicence:Int(licence:TProgrammeLicence)
+		Local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
+		For Local j:Int = 0 To lists.length-1
 			For Local listLicence:TProgrammeLicence = EachIn lists[j]
-				if listLicence= licence then return TRUE
+				If listLicence= licence Then Return True
 			Next
 		Next
-		return FALSE
+		Return False
 	End Method
 
 
-	Method GetProgrammeLicenceByID:TProgrammeLicence(licenceID:int)
-		local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
-		For local j:int = 0 to lists.length-1
+	Method GetProgrammeLicenceByID:TProgrammeLicence(licenceID:Int)
+		Local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
+		For Local j:Int = 0 To lists.length-1
 			For Local licence:TProgrammeLicence = EachIn lists[j]
-				if licence and licence.id = licenceID then return licence
+				If licence And licence.id = licenceID Then Return licence
 			Next
 		Next
-		return null
+		Return Null
 	End Method
 
 
-	Method SellProgrammeLicenceToPlayer:int(licence:TProgrammeLicence, playerID:int, skipOwnerCheck:int=False)
-		if licence.owner = playerID and not skipOwnerCheck then return FALSE
+	Method SellProgrammeLicenceToPlayer:Int(licence:TProgrammeLicence, playerID:Int, skipOwnerCheck:Int=False)
+		If licence.owner = playerID And Not skipOwnerCheck Then Return False
 
-		if not GetPlayerBaseCollection().IsPlayer(playerID) then return FALSE
+		If Not GetPlayerBaseCollection().IsPlayer(playerID) Then Return False
 
 		'do not sell episodes/sub elements
-		if licence.HasParentLicence() then return False
+		If licence.HasParentLicence() Then Return False
 
 		'try to add to suitcase of player
-		if not GetPlayerProgrammeCollection(playerID).AddProgrammeLicenceToSuitcase(licence)
-			return FALSE
-		endif
+		If Not GetPlayerProgrammeCollection(playerID).AddProgrammeLicenceToSuitcase(licence)
+			Return False
+		EndIf
 
 		'remove from agency's lists
-		local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
-		For local j:int = 0 to lists.length-1
-			For local i:int = 0 to lists[j].length-1
-				if lists[j][i] = licence then lists[j][i] = null
+		Local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
+		For Local j:Int = 0 To lists.length-1
+			For Local i:Int = 0 To lists[j].length-1
+				If lists[j][i] = licence Then lists[j][i] = Null
 			Next
 		Next
 
-		return TRUE
+		Return True
 	End Method
 
 
-	Method BuyProgrammeLicenceFromPlayer:int(licence:TProgrammeLicence)
+	Method BuyProgrammeLicenceFromPlayer:Int(licence:TProgrammeLicence)
 		'do not buy episodes/sub elements
-		if licence.HasParentLicence() then return False
+		If licence.HasParentLicence() Then Return False
 		'do not buy if unowned
-		if not licence.isOwnedByPlayer() then return False
+		If Not licence.isOwnedByPlayer() Then Return False
 		'do not buy if not tradeable
-		if not licence.IsTradeable() then return False
+		If Not licence.IsTradeable() Then Return False
 
 		'remove from player (lists and suitcase) - and give him money
-		if not GetPlayerProgrammeCollection(licence.owner).RemoveProgrammeLicence(licence, TRUE)
-			return False
-		endif
+		If Not GetPlayerProgrammeCollection(licence.owner).RemoveProgrammeLicence(licence, True)
+			Return False
+		EndIf
 
 		'add to agency's lists - if not existing yet
-		if not HasProgrammeLicence(licence) then AddProgrammeLicence(licence)
+		If Not HasProgrammeLicence(licence) Then AddProgrammeLicence(licence)
 
-		return TRUE
+		Return True
 	End Method
 
 
-	Method AddProgrammeLicence:int(licence:TProgrammeLicence, tryOtherLists:int = False)
+	Method AddProgrammeLicence:Int(licence:TProgrammeLicence, tryOtherLists:Int = False)
 		'do not add if still owned by a player or the vendor
-		if licence.isOwned()
+		If licence.isOwned()
 			TLogger.Log("MovieAgency", "AddProgrammeLicence() failed: cannot add licence owned by someone else. Owner="+licence.owner+"! Report to developers asap.", LOG_ERROR)
-			return False
-		endif
+			Return False
+		EndIf
 
 		'try to fill the licence into the corresponding list
 		'we use multiple lists - if the first is full, try second
-		local lists:TProgrammeLicence[][]
+		Local lists:TProgrammeLicence[][]
 
 		'do not add episodes or collection elements
-		if licence.isEpisode() or licence.isCollectionElement()
+		If licence.isEpisode() Or licence.isCollectionElement()
 			'licence.SetOwner(licence.OWNER_VENDOR)
-			return FALSE
-		endif
+			Return False
+		EndIf
 
 
-		if filterMoviesCheap.DoesFilter(licence)
+		If filterMoviesCheap.DoesFilter(licence)
 			lists = [listMoviesCheap]
-			if tryOtherLists then lists :+ [listMoviesGood]
-		elseif filterMoviesGood.DoesFilter(licence)
+			If tryOtherLists Then lists :+ [listMoviesGood]
+		ElseIf filterMoviesGood.DoesFilter(licence)
 			lists = [listMoviesGood]
-			if tryOtherLists then lists :+ [listMoviesCheap]
-		else
+			If tryOtherLists Then lists :+ [listMoviesCheap]
+		Else
 			lists = [listSeries]
-		endif
+		EndIf
 
 		'loop through all lists - as soon as we find a spot
 		'to place the programme - do so and return
-		for local j:int = 0 to lists.length-1
-			for local i:int = 0 to lists[j].length-1
-				if lists[j][i] then continue
+		For Local j:Int = 0 To lists.length-1
+			For Local i:Int = 0 To lists[j].length-1
+				If lists[j][i] Then Continue
 				licence.SetOwner(licence.OWNER_VENDOR)
 				lists[j][i] = licence
 				'print "added licence "+licence.title+" to list "+j+" at spot:"+i
-				return TRUE
+				Return True
 			Next
 		Next
 
 
-		return FALSE
+		Return False
 	End Method
 
 
 	'deletes all gui elements (eg. for rebuilding)
-	Method RemoveAllGuiElements:int()
+	Method RemoveAllGuiElements:Int()
 		GuiListMoviesGood.EmptyList()
 		GuiListMoviesCheap.EmptyList()
 		GuiListSeries.EmptyList()
 		GuiListSuitcase.EmptyList()
 
-		For local guiLicence:TGUIProgrammeLicence = eachin GuiManager.listDragged.Copy()
+		For Local guiLicence:TGUIProgrammeLicence = EachIn GuiManager.listDragged.Copy()
 			guiLicence.remove()
-			guiLicence = null
+			guiLicence = Null
 		Next
 
-		hoveredGuiProgrammeLicence = null
-		draggedGuiProgrammeLicence = null
+		hoveredGuiProgrammeLicence = Null
+		draggedGuiProgrammeLicence = Null
 
 		'to recreate everything during next update...
-		haveToRefreshGuiElements = TRUE
+		haveToRefreshGuiElements = True
 	End Method
 
 
-	Method RefreshGuiElements:int()
+	Method RefreshGuiElements:Int()
 		'===== REMOVE UNUSED =====
 		'remove gui elements with movies the player does not have any
 		'longer in the suitcase
 
 		'suitcase
-		For local guiLicence:TGUIProgrammeLicence = eachin GuiListSuitcase._slots
+		For Local guiLicence:TGUIProgrammeLicence = EachIn GuiListSuitcase._slots
 			'if the player has this licence in suitcase, skip deletion
-			if GetPlayerProgrammeCollection(GetPlayerBaseCollection().playerID).HasProgrammeLicenceInSuitcase(guiLicence.licence) then continue
+			If GetPlayerProgrammeCollection(GetPlayerBaseCollection().playerID).HasProgrammeLicenceInSuitcase(guiLicence.licence) Then Continue
 
 			'print "guiListSuitcase has obsolete licence: "+guiLicence.licence.getTitle()
 			guiLicence.remove()
-			guiLicence = null
+			guiLicence = Null
 		Next
 		'agency lists
-		local lists:TProgrammeLicence[][] = [ listMoviesGood,listMoviesCheap,listSeries ]
-		local guiLists:TGUIProgrammeLicenceSlotList[] = [ guiListMoviesGood, guiListMoviesCheap, guiListSeries ]
-		For local j:int = 0 to guiLists.length-1
-			For local guiLicence:TGUIProgrammeLicence = eachin guiLists[j]._slots
-				if HasProgrammeLicence(guiLicence.licence) then continue
+		Local lists:TProgrammeLicence[][] = [ listMoviesGood,listMoviesCheap,listSeries ]
+		Local guiLists:TGUIProgrammeLicenceSlotList[] = [ guiListMoviesGood, guiListMoviesCheap, guiListSeries ]
+		For Local j:Int = 0 To guiLists.length-1
+			For Local guiLicence:TGUIProgrammeLicence = EachIn guiLists[j]._slots
+				If HasProgrammeLicence(guiLicence.licence) Then Continue
 
 				'print "REM lists"+j+" has obsolete licence: "+guiLicence.licence.getTitle()
 				guiLicence.remove()
-				guiLicence = null
+				guiLicence = Null
 			Next
 		Next
 
@@ -650,114 +650,114 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'===== CREATE NEW =====
 		'create missing gui elements for all programme-lists
 
-		For local j:int = 0 to lists.length-1
-			For local licence:TProgrammeLicence = eachin lists[j]
-				if not licence then continue
-				if guiLists[j].ContainsLicence(licence) then continue
+		For Local j:Int = 0 To lists.length-1
+			For Local licence:TProgrammeLicence = EachIn lists[j]
+				If Not licence Then Continue
+				If guiLists[j].ContainsLicence(licence) Then Continue
 
 
-				local lic:TGUIProgrammeLicence = new TGUIProgrammeLicence.CreateWithLicence(licence)
+				Local lic:TGUIProgrammeLicence = New TGUIProgrammeLicence.CreateWithLicence(licence)
 				'if adding to list was not possible, remove the licence again
-				if not guiLists[j].addItem(lic,"-1" )
+				If Not guiLists[j].addItem(lic,"-1" )
 					GUIManager.Remove(lic)
-				endif
+				EndIf
 
 				'print "ADD lists"+j+" had missing licence: "+licence.getTitle()
 			Next
 		Next
 
 		'create missing gui elements for the current suitcase
-		For local licence:TProgrammeLicence = eachin GetPlayerProgrammeCollection(GetPlayerBaseCollection().playerID).suitcaseProgrammeLicences
-			if guiListSuitcase.ContainsLicence(licence) then continue
-			guiListSuitcase.addItem(new TGUIProgrammeLicence.CreateWithLicence(licence),"-1" )
+		For Local licence:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(GetPlayerBaseCollection().playerID).suitcaseProgrammeLicences
+			If guiListSuitcase.ContainsLicence(licence) Then Continue
+			guiListSuitcase.addItem(New TGUIProgrammeLicence.CreateWithLicence(licence),"-1" )
 			'print "ADD suitcase had missing licence: "+licence.getTitle()
 		Next
 
-		haveToRefreshGuiElements = FALSE
+		haveToRefreshGuiElements = False
 	End Method
 
 
 	'refills slots in the movie agency
 	'replaceOffer: remove (some) old programmes and place new there?
-	Method RefillBlocks:Int(replaceOffer:int=FALSE, replaceChance:float=1.0)
-		local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
-		local licence:TProgrammeLicence = null
+	Method RefillBlocks:Int(replaceOffer:Int=False, replaceChance:Float=1.0)
+		Local lists:TProgrammeLicence[][] = [listMoviesGood,listMoviesCheap,listSeries]
+		Local licence:TProgrammeLicence = Null
 
-		haveToRefreshGuiElements = TRUE
+		haveToRefreshGuiElements = True
 		'delete some random movies/series
-		if replaceOffer
-			for local j:int = 0 to lists.length-1
-				for local i:int = 0 to lists[j].length-1
-					if not lists[j][i] then continue
+		If replaceOffer
+			For Local j:Int = 0 To lists.length-1
+				For Local i:Int = 0 To lists[j].length-1
+					If Not lists[j][i] Then Continue
 					'delete an old movie by a chance of 50%
-					if RandRange(0,100) < replaceChance*100
+					If RandRange(0,100) < replaceChance*100
 						'reset owner
 						lists[j][i].SetOwner(TOwnedGameObject.OWNER_NOBODY)
 						'unlink from this list
-						lists[j][i] = null
-					endif
+						lists[j][i] = Null
+					EndIf
 				Next
 			Next
-		endif
+		EndIf
 
 
 		'collect as many random licences per list as needed ("empty slots")
-		local licencesPerList:TProgrammeLicence[][]
+		Local licencesPerList:TProgrammeLicence[][]
 
-		for local listIndex:int = 0 to lists.length-1
-			local needed:int = 0
-			for local entryIndex:int = 0 to lists[listIndex].length-1
-				if lists[listIndex][entryIndex] then continue
+		For Local listIndex:Int = 0 To lists.length-1
+			Local needed:Int = 0
+			For Local entryIndex:Int = 0 To lists[listIndex].length-1
+				If lists[listIndex][entryIndex] Then Continue
 				needed :+ 1
 			Next
 
-			if needed
-				local licences:TProgrammeLicence[]
+			If needed
+				Local licences:TProgrammeLicence[]
 				Select lists[listIndex]
-					case listMoviesGood
+					Case listMoviesGood
 						licences = GetProgrammeLicenceCollection().GetRandomsByFilter(filterMoviesGood, needed)
-					case listMoviesCheap
+					Case listMoviesCheap
 						licences = GetProgrammeLicenceCollection().GetRandomsByFilter(filterMoviesCheap, needed)
-					case listSeries
+					Case listSeries
 						licences = GetProgrammeLicenceCollection().GetRandomsByFilter(filterSeries, needed)
 				End Select
 				'fill to "needed" (with null values!)
-				if not licences
-					licences = new TProgrammeLicence[needed]
-				elseif licences.length < needed
+				If Not licences
+					licences = New TProgrammeLicence[needed]
+				ElseIf licences.length < needed
 '					print "not enough licences: needed=" + needed+"  got="+licences.length
 					licences = licences[.. needed]
-				endif
+				EndIf
 
 				licencesPerList :+ [licences] 'array of arrays
-			else
+			Else
 				'add empty, so that indices stay intact
-				licencesPerList :+ [new TProgrammeLicence[0]]
-			endif
+				licencesPerList :+ [New TProgrammeLicence[0]]
+			EndIf
 		Next
 
 
 		'fill empty slots
-		for local listIndex:int = 0 to lists.length-1
-			local warnedOfMissingLicence:int = False
-			local licenceIndex:int = 0
-			for local entryIndex:int = 0 until lists[listIndex].length
+		For Local listIndex:Int = 0 To lists.length-1
+			Local warnedOfMissingLicence:Int = False
+			Local licenceIndex:Int = 0
+			For Local entryIndex:Int = 0 Until lists[listIndex].length
 				'if exists...skip it
-				if lists[listIndex][entryIndex] then continue
+				If lists[listIndex][entryIndex] Then Continue
 
-				local licence:TProgrammeLicence = licencesPerList[listIndex][licenceIndex]
+				Local licence:TProgrammeLicence = licencesPerList[listIndex][licenceIndex]
 				licenceIndex :+ 1
 
 				'add new licence at slot
-				if licence
+				If licence
 					licence.SetOwner(licence.OWNER_VENDOR)
 					lists[listIndex][entryIndex] = licence
-				else
-					if not warnedOfMissingLicence
-						TLogger.log("MovieAgency.RefillBlocks()", "Not enough licences to refill slot["+entryIndex+"+] in list["+listIndex+"]", LOG_WARNING | LOG_DEBUG)
+				Else
+					If Not warnedOfMissingLicence
+						TLogger.Log("MovieAgency.RefillBlocks()", "Not enough licences to refill slot["+entryIndex+"+] in list["+listIndex+"]", LOG_WARNING | LOG_DEBUG)
 						warnedOfMissingLicence = True
-					endif
-				endif
+					EndIf
+				EndIf
 			Next
 		Next
 	End Method
@@ -769,9 +769,9 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 	'can be done for all, as the order of handling that event
 	'does not care ... just update animations is important
-	Method onUpdateRoom:int( triggerEvent:TEventBase )
+	Method onUpdateRoom:Int( triggerEvent:TEventBase )
 		Super.onUpdateRoom(triggerEvent)
-rem
+Rem
 		'disable non-tradeable licences (or vice versa)
 		For local guiLicence:TGUIProgrammeLicence = eachin GuiListSuitcase._slots
 			if not guiLicence.licence then continue
@@ -783,8 +783,8 @@ rem
 		Next
 endrem
 
-		if AuctionEntity Then AuctionEntity.Update()
-		if VendorEntity Then VendorEntity.Update()
+		If AuctionEntity Then AuctionEntity.Update()
+		If VendorEntity Then VendorEntity.Update()
 	End Method
 
 
@@ -793,245 +793,245 @@ endrem
 	'===================================
 
 
-	Function onMouseOverProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckObservedFigureInRoom("movieagency") then return FALSE
+	Function onMouseOverProgrammeLicence:Int( triggerEvent:TEventBase )
+		If Not CheckObservedFigureInRoom("movieagency") Then Return False
 
-		local item:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent.GetSender())
-		if item = Null then return FALSE
+		Local item:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent.GetSender())
+		If item = Null Then Return False
 
 		hoveredGuiProgrammeLicence = item
 
 		'only handle dragged for the real player
-		if CheckPlayerInRoom("movieagency")
-			if item.isDragged() then draggedGuiProgrammeLicence = item
-		endif
+		If CheckPlayerInRoom("movieagency")
+			If item.isDragged() Then draggedGuiProgrammeLicence = item
+		EndIf
 
-		return TRUE
+		Return True
 	End Function
 
 
 	'check if we are allowed to drag that licence
-	Function onDragProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("movieagency") then return FALSE
+	Function onDragProgrammeLicence:Int( triggerEvent:TEventBase )
+		If Not CheckPlayerInRoom("movieagency") Then Return False
 
-		local item:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent.GetSender())
-		if item = Null then return FALSE
+		Local item:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent.GetSender())
+		If item = Null Then Return False
 
-		local owner:int = item.licence.owner
+		Local owner:Int = item.licence.owner
 
 		'do not allow dragging items from other players
-		if owner > 0 and owner <> GetPlayerBaseCollection().playerID
+		If owner > 0 And owner <> GetPlayerBaseCollection().playerID
 			triggerEvent.setVeto()
-			return FALSE
-		endif
+			Return False
+		EndIf
 
 		'check whether a player could afford the licence
 		'if not - just veto the event so it does not get dragged
-		if owner <= 0
-			if not GetPlayerBase().getFinance().canAfford(item.licence.getPriceForPlayer( GetObservedPlayerID() ))
+		If owner <= 0
+			If Not GetPlayerBase().getFinance().canAfford(item.licence.getPriceForPlayer( GetObservedPlayerID() ))
 				triggerEvent.setVeto()
-				return FALSE
-			endif
-		endif
+				Return False
+			EndIf
+		EndIf
 
 		'check whether a player could sell the licence
 		'if not - just veto the event so it does not get dragged
-		if owner = GetPlayerBaseCollection().playerID
-			if not item.licence.IsTradeable()
+		If owner = GetPlayerBaseCollection().playerID
+			If Not item.licence.IsTradeable()
 				triggerEvent.setVeto()
-				return FALSE
-			endif
-		endif
+				Return False
+			EndIf
+		EndIf
 
-		return TRUE
+		Return True
 	End Function
 
 
 	'- check if dropping on suitcase and affordable
 	'- check if dropping own licence on the shelf (not possible for now)
 	'(OLD: - check if dropping on an item which is not affordable)
-	Function onTryDropProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("movieagency") then return FALSE
+	Function onTryDropProgrammeLicence:Int( triggerEvent:TEventBase )
+		If Not CheckPlayerInRoom("movieagency") Then Return False
 
-		local guiLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
-		local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
-		if not guiLicence or not receiverList then return FALSE
+		Local guiLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
+		Local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
+		If Not guiLicence Or Not receiverList Then Return False
 
-		local owner:int = guiLicence.licence.owner
+		Local owner:Int = guiLicence.licence.owner
 
-		select receiverList
-			case GuiListMoviesGood, GuiListMoviesCheap, GuiListSeries
+		Select receiverList
+			Case GuiListMoviesGood, GuiListMoviesCheap, GuiListSeries
 				'check if something is underlaying and whether the licence
 				'differs to the dropped one
-				local underlayingItem:TGUIProgrammeLicence = null
-				local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D.Init(-1,-1)))
-				if coord then underlayingItem = TGUIProgrammeLicence(receiverList.GetItemByCoord(coord))
+				Local underlayingItem:TGUIProgrammeLicence = Null
+				Local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", New TVec2D.Init(-1,-1)))
+				If coord Then underlayingItem = TGUIProgrammeLicence(receiverList.GetItemByCoord(coord))
 
 				'allow drop on own place
-				if underlayingItem = guiLicence then return TRUE
+				If underlayingItem = guiLicence Then Return True
 
-				if underlayingItem
+				If underlayingItem
 					triggerEvent.SetVeto()
-					return FALSE
-				endif
-			case GuiListSuitcase
+					Return False
+				EndIf
+			Case GuiListSuitcase
 				'no problem when dropping own programme to suitcase..
-				if guiLicence.licence.owner = GetPlayerBaseCollection().playerID then return TRUE
+				If guiLicence.licence.owner = GetPlayerBaseCollection().playerID Then Return True
 
-				if not GetPlayerBase().getFinance().canAfford(guiLicence.licence.getPriceForPlayer( GetObservedPlayerID() ))
+				If Not GetPlayerBase().getFinance().canAfford(guiLicence.licence.getPriceForPlayer( GetObservedPlayerID() ))
 					triggerEvent.setVeto()
-				endif
-		End select
+				EndIf
+		End Select
 
-		return TRUE
+		Return True
 	End Function
 
 
-	Function onResetAuctionBlockCache:int( triggerEvent:TEventBase )
+	Function onResetAuctionBlockCache:Int( triggerEvent:TEventBase )
 		TAuctionProgrammeBlocks.ClearCaches()
 	End Function
 
 
 	'dropping takes place - sell/buy licences or veto if not possible
-	Function onDropProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("movieagency") then return FALSE
+	Function onDropProgrammeLicence:Int( triggerEvent:TEventBase )
+		If Not CheckPlayerInRoom("movieagency") Then Return False
 
-		local guiLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
-		local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
-		if not guiLicence or not receiverList then return FALSE
+		Local guiLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
+		Local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
+		If Not guiLicence Or Not receiverList Then Return False
 
-		local owner:int = guiLicence.licence.owner
+		Local owner:Int = guiLicence.licence.owner
 
-		select receiverList
-			case GuiListMoviesGood, GuiListMoviesCheap, GuiListSeries
+		Select receiverList
+			Case GuiListMoviesGood, GuiListMoviesCheap, GuiListSeries
 				'when dropping vendor licence on vendor shelf .. no prob
-				if guiLicence.licence.owner <= 0 then return true
+				If guiLicence.licence.owner <= 0 Then Return True
 
-				if not GetInstance().BuyProgrammeLicenceFromPlayer(guiLicence.licence)
+				If Not GetInstance().BuyProgrammeLicenceFromPlayer(guiLicence.licence)
 					triggerEvent.setVeto()
-					return FALSE
-				endif
-			case GuiListSuitcase
+					Return False
+				EndIf
+			Case GuiListSuitcase
 				'no problem when dropping own programme to suitcase..
-				if guiLicence.licence.owner = GetPlayerBaseCollection().playerID then return TRUE
+				If guiLicence.licence.owner = GetPlayerBaseCollection().playerID Then Return True
 
-				if not GetInstance().SellProgrammeLicenceToPlayer(guiLicence.licence, GetPlayerBaseCollection().playerID)
+				If Not GetInstance().SellProgrammeLicenceToPlayer(guiLicence.licence, GetPlayerBaseCollection().playerID)
 					triggerEvent.setVeto()
 					'try to drop back to old list - which triggers
 					'this function again... but with a differing list..
 					guiLicence.dropBackToOrigin()
-					haveToRefreshGuiElements = TRUE
-				endif
-		end select
+					haveToRefreshGuiElements = True
+				EndIf
+		End Select
 
-		return TRUE
+		Return True
 	End Function
 
 
 	'handle cover block drops on the vendor ... only sell if from the player
-	Function onDropProgrammeLicenceOnVendor:int(triggerEvent:TEventBase)
-		if not CheckPlayerInRoom("movieagency") then return FALSE
+	Function onDropProgrammeLicenceOnVendor:Int(triggerEvent:TEventBase)
+		If Not CheckPlayerInRoom("movieagency") Then Return False
 
-		local guiLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
-		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
-		if not guiLicence or not receiver then return FALSE
-		if receiver <> VendorArea then return FALSE
+		Local guiLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
+		Local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
+		If Not guiLicence Or Not receiver Then Return False
+		If receiver <> VendorArea Then Return False
 
 		'do not accept blocks from the vendor itself
-		if not guiLicence.licence.isOwnedByPlayer()
+		If Not guiLicence.licence.isOwnedByPlayer()
 			triggerEvent.setVeto()
-			return FALSE
-		endif
+			Return False
+		EndIf
 
 		'buy licence back and place it somewhere in the right board shelf
-		if not GetInstance().BuyProgrammeLicenceFromPlayer(guiLicence.licence)
+		If Not GetInstance().BuyProgrammeLicenceFromPlayer(guiLicence.licence)
 			triggerEvent.setVeto()
-			return FALSE
-		else
+			Return False
+		Else
 			'successful - delete that gui block
 			guiLicence.remove()
 			'remove the whole block too
-			guiLicence = null
+			guiLicence = Null
 'RONNY
 			haveToRefreshGuiElements = True
-		endif
+		EndIf
 
-		return TRUE
-	End function
+		Return True
+	End Function
 
 
-	Function onDrawMovieAgency:int( triggerEvent:TEventBase )
-		if AuctionEntity Then AuctionEntity.Render()
-		if VendorEntity Then VendorEntity.Render()
+	Function onDrawMovieAgency:Int( triggerEvent:TEventBase )
+		If AuctionEntity Then AuctionEntity.Render()
+		If VendorEntity Then VendorEntity.Render()
 
-		if spriteSuitcase then spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		If spriteSuitcase Then spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		'make auction/suitcase/vendor highlighted if needed
-		local highlightSuitcase:int = False
-		local highlightVendor:int = False
-		local highlightAuction:int = False
+		Local highlightSuitcase:Int = False
+		Local highlightVendor:Int = False
+		Local highlightAuction:Int = False
 
 		'sometimes a draggedGuiProgrammeLicence is defined in an update
 		'but isnt dragged anymore (will get removed in the next tick)
 		'the dragged check avoids that the vendor is highlighted for
 		'1-2 render frames
-		if draggedGuiProgrammeLicence and draggedGuiProgrammeLicence.isDragged()
-			if draggedGuiProgrammeLicence.licence.owner <= 0
+		If draggedGuiProgrammeLicence And draggedGuiProgrammeLicence.isDragged()
+			If draggedGuiProgrammeLicence.licence.owner <= 0
 				highlightSuitcase = True
-			else
+			Else
 				highlightVendor = True
-			endif
-		else
-			If AuctionEntity and AuctionEntity.GetScreenArea().ContainsXY(MouseManager.x, MouseManager.y)
+			EndIf
+		Else
+			If AuctionEntity And AuctionEntity.GetScreenArea().ContainsXY(MouseManager.x, MouseManager.y)
 				highlightAuction = True
 			EndIf
-		endif
+		EndIf
 
-		if highlightAuction or highlightVendor or highlightSuitcase
-			local oldCol:TColor = new TColor.Get()
+		If highlightAuction Or highlightVendor Or highlightSuitcase
+			Local oldCol:TColor = New TColor.Get()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * Float(0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
+			SetAlpha oldCol.a * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
 
-			if AuctionEntity and highlightAuction then AuctionEntity.Render()
-			if VendorEntity and highlightVendor then VendorEntity.Render()
-			if highlightSuitcase and spriteSuitcase then spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
+			If AuctionEntity And highlightAuction Then AuctionEntity.Render()
+			If VendorEntity And highlightVendor Then VendorEntity.Render()
+			If highlightSuitcase And spriteSuitcase Then spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 			SetAlpha oldCol.a
 			SetBlend AlphaBlend
-		endif
+		EndIf
 
 
 		SetAlpha 0.5
-		local fontColor:TColor = TColor.CreateGrey(50)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
+		Local fontColor:TColor = TColor.CreateGrey(50)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, New TVec2D.Init(ALIGN_CENTER), fontColor)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, New TVec2D.Init(ALIGN_CENTER), fontColor)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, New TVec2D.Init(ALIGN_CENTER), fontColor)
 		SetAlpha 1.0
 
 		GUIManager.Draw( LS_movieagency )
 
-		if hoveredGuiProgrammeLicence
+		If hoveredGuiProgrammeLicence
 			'draw the current sheet
 			hoveredGuiProgrammeLicence.DrawSheet()
-		endif
+		EndIf
 
 
 		If AuctionToolTip Then AuctionToolTip.Render()
 	End Function
 
 
-	Function onUpdateMovieAgency:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
-		if not room then return 0
+	Function onUpdateMovieAgency:Int( triggerEvent:TEventBase )
+		Local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
+		If Not room Then Return 0
 
 		GetGameBase().cursorstate = 0
 
-		if CheckPlayerInRoom("movieagency")
+		If CheckPlayerInRoom("movieagency")
 			'show a auction-tooltip (but not if we dragged a block)
-			if not hoveredGuiProgrammeLicence
-				if MouseManager.IsClicked(1)
+			If Not hoveredGuiProgrammeLicence
+				If MouseManager.IsClicked(1)
 					If THelper.MouseIn(210,220,140,60)
-						If not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
+						If Not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
 						AuctionToolTip.enabled = 1
 						AuctionToolTip.Hover()
 						GetGameBase().cursorstate = 1
@@ -1041,21 +1041,21 @@ endrem
 
 						ScreenCollection.GoToSubScreen("screen_movieauction")
 					EndIf
-				endif
-			endif
+				EndIf
+			EndIf
 
 			'delete unused and create new gui elements
-			if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
+			If haveToRefreshGuiElements Then GetInstance().RefreshGUIElements()
 
 			'reset hovered block - will get set automatically on gui-update
-			hoveredGuiProgrammeLicence = null
+			hoveredGuiProgrammeLicence = Null
 			'reset dragged block too
-			draggedGuiProgrammeLicence = null
+			draggedGuiProgrammeLicence = Null
 
 			GUIManager.Update( LS_movieagency )
 
 			If AuctionToolTip Then AuctionToolTip.Update()
-		endif
+		EndIf
 	End Function
 
 
@@ -1064,17 +1064,17 @@ endrem
 	'Movie Agency: Room screen
 	'===================================
 
-	Function onDrawMovieAuction:int( triggerEvent:TEventBase )
-		if AuctionEntity Then AuctionEntity.Render()
-		if VendorEntity Then VendorEntity.Render()
-		if spriteSuitcase then spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
+	Function onDrawMovieAuction:Int( triggerEvent:TEventBase )
+		If AuctionEntity Then AuctionEntity.Render()
+		If VendorEntity Then VendorEntity.Render()
+		If spriteSuitcase Then spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		SetAlpha 0.5
-		local fontColor:TColor = TColor.CreateGrey(50)
-		local font:TBitmapFont = GetBitmapFont("Default",12, BOLDFONT)
-		font.drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
-		font.drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
-		font.drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
+		Local fontColor:TColor = TColor.CreateGrey(50)
+		Local font:TBitmapFont = GetBitmapFont("Default",12, BOLDFONT)
+		font.drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, New TVec2D.Init(ALIGN_CENTER), fontColor)
+		font.drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, New TVec2D.Init(ALIGN_CENTER), fontColor)
+		font.drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, New TVec2D.Init(ALIGN_CENTER), fontColor)
 		SetAlpha 1.0
 
 		GUIManager.Draw( LS_movieagency )
@@ -1082,26 +1082,26 @@ endrem
 		DrawRect(0,0,800,385)
 		SetAlpha 1.0;SetColor 255,255,255
 
-		if spriteAuctionPanel then spriteAuctionPanel.DrawArea(120-15,60-15,555+30,290+30)
-		if spriteAuctionPanelContent then spriteAuctionPanelContent.DrawArea(120,60,555,290)
+		If spriteAuctionPanel Then spriteAuctionPanel.DrawArea(120-15,60-15,555+30,290+30)
+		If spriteAuctionPanelContent Then spriteAuctionPanelContent.DrawArea(120,60,555,290)
 
 		SetAlpha 0.5
-		font.drawBlock(GetLocale("CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID"), 140,317, 535,30, new TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(50), 2, 1, 0.20)
+		font.drawBlock(GetLocale("CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID"), 140,317, 535,30, New TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(50), 2, 1, 0.20)
 		SetAlpha 1.0
 
 		TAuctionProgrammeBlocks.DrawAll()
 	End Function
 
 
-	Function onUpdateMovieAuction:int( triggerEvent:TEventBase )
+	Function onUpdateMovieAuction:Int( triggerEvent:TEventBase )
 		GetGameBase().cursorstate = 0
 
-		if CheckPlayerInRoom("movieagency")
+		If CheckPlayerInRoom("movieagency")
 			TAuctionProgrammeBlocks.UpdateAll()
-		endif
+		EndIf
 
 		'remove old tooltips from previous screens
-		If AuctionToolTip Then AuctionToolTip = null
+		If AuctionToolTip Then AuctionToolTip = Null
 	End Function
 End Type
 
@@ -1134,15 +1134,15 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	'todo/idea: we could add a "started" and a "endTime"-field so
 	'           auctions do not end at midnight but individually
 
-	Method GenerateGUID:string()
-		return "auctionprogrammeblocks-"+id
+	Method GenerateGUID:String()
+		Return "auctionprogrammeblocks-"+id
 	End Method
 
 
 	Method Create:TAuctionProgrammeBlocks(slot:Int=0, licence:TProgrammeLicence)
-		if not spriteAuctionMovie then spriteAuctionMovie = GetSpriteFromRegistry("gfx_auctionmovie")
+		'If Not spriteAuctionMovie Then spriteAuctionMovie = GetSpriteFromRegistry("gfx_auctionmovie")
 
-		Self.area.position.SetXY(140 + (slot Mod 2) * 260, 80 + int(Ceil(slot / 2)) * 60)
+		Self.area.position.SetXY(140 + (slot Mod 2) * 260, 80 + Int(Ceil(slot / 2)) * 60)
 		Self.area.dimension.CopyFrom(spriteAuctionMovie.area.dimension)
 		Self.slot = slot
 		Self.Refill(licence)
@@ -1154,30 +1154,30 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Function ClearCaches:int()
-		for local block:TAuctionProgrammeBlocks = EachIn List
-			block._imageWithText = null
-		next
+	Function ClearCaches:Int()
+		For Local block:TAuctionProgrammeBlocks = EachIn List
+			block._imageWithText = Null
+		Next
 	End Function
 
 
-	Function Initialize:int()
+	Function Initialize:Int()
 		list.Clear()
 	End Function
 
 
-	Function GetByIndex:TAuctionProgrammeBlocks(index:int)
-		if index < 0 then index = 0
-		if index >= list.Count() then return null
+	Function GetByIndex:TAuctionProgrammeBlocks(index:Int)
+		If index < 0 Then index = 0
+		If index >= list.Count() Then Return Null
 
-		return TAuctionProgrammeBlocks( list.ValueAtIndex(index) )
+		Return TAuctionProgrammeBlocks( list.ValueAtIndex(index) )
 	End Function
 
 
-	Function GetByLicence:TAuctionProgrammeBlocks(licence:TProgrammeLicence, licenceGUID:string="")
+	Function GetByLicence:TAuctionProgrammeBlocks(licence:TProgrammeLicence, licenceGUID:String="")
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
 			If licence And obj.licence = licence Then Return obj
-			If obj.licence and obj.licence.GetGUID() = licenceGUID Then Return obj
+			If obj.licence And obj.licence.GetGUID() = licenceGUID Then Return obj
 		Next
 		Return Null
 	End Function
@@ -1199,12 +1199,12 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	End Function
 
 
-	Function GetCurrentLiveOffers:int()
-		local res:int = 0
+	Function GetCurrentLiveOffers:Int()
+		Local res:Int = 0
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
-			if obj.licence and obj.licence.IsLive() then res :+1
+			If obj.licence And obj.licence.IsLive() Then res :+1
 		Next
-		return res
+		Return res
 	End Function
 
 
@@ -1213,47 +1213,47 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
 			If Not obj.bestBidder
 				obj.Refill()
-				if not obj.licence then print "RefillAuctionsWithoutBid: no licence available"
-			endif
+				If Not obj.licence Then Print "RefillAuctionsWithoutBid: no licence available"
+			EndIf
 		Next
 	End Function
 
 
 	Method GetBidSavingsMaximum:Float()
-		if _bidSavingsMaximum = -1.0
+		If _bidSavingsMaximum = -1.0
 			_bidSavingsMaximum = RandRange(80,90) / 100.0 '0.8 - 0.9
-		endif
-		return _bidSavingsMaximum
+		EndIf
+		Return _bidSavingsMaximum
 	End Method
 
 
 	Method GetBidSavingsMinimum:Float()
-		if _bidSavingsMinimum = -1.0
+		If _bidSavingsMinimum = -1.0
 			'0.55 - (Max-0.05)
-			_bidSavingsMinimum = RandRange(55, int(100*(GetBidSavingsMaximum()-0.05))) / 100.0
-		endif
-		return _bidSavingsMinimum
+			_bidSavingsMinimum = RandRange(55, Int(100*(GetBidSavingsMaximum()-0.05))) / 100.0
+		EndIf
+		Return _bidSavingsMinimum
 	End Method
 
 
 	Method GetBidSavingsDecreaseBy:Float()
-		if _bidSavingsDecreaseBy = -1.0
+		If _bidSavingsDecreaseBy = -1.0
 			'0.05 - 0.10
 			_bidSavingsDecreaseBy = RandRange(5, 10) / 100.0
-		endif
-		return _bidSavingsDecreaseBy
+		EndIf
+		Return _bidSavingsDecreaseBy
 	End Method
 
 
-	Method GetMaxAuctionTime:Long(useLicence:TProgrammeLicence = null)
-		if not useLicence then useLicence = licence
+	Method GetMaxAuctionTime:Long(useLicence:TProgrammeLicence = Null)
+		If Not useLicence Then useLicence = licence
 
 		'limit live programme by their airTime - 1 day
-		if useLicence and useLicence.IsLive()
-			return useLicence.data.GetReleaseTime() - 1 * TWorldTime.DAYLENGTH
-		endif
+		If useLicence And useLicence.IsLive()
+			Return useLicence.data.GetReleaseTime() - 1 * TWorldTime.DAYLENGTH
+		EndIf
 
-		return maxAuctionTime
+		Return maxAuctionTime
 	End Method
 
 
@@ -1265,37 +1265,37 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		'	print "Refill: Initial call"
 		'endif
 		'turn back licence if nobody bought the old one
-		if licence and licence.owner = TOwnedGameObject.OWNER_VENDOR
+		If licence And licence.owner = TOwnedGameObject.OWNER_VENDOR
 			licence.SetOwner( TOwnedGameObject.OWNER_NOBODY )
 			'no longer ignore player difficulty
 			licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY, False)
 			'print "   gave back licence"
-		endif
+		EndIf
 
 		'backup old licence if a new is to find - but eg. fails (no live)
-		local oldLicence:TProgrammeLicence
-		if not programmeLicence then oldLicence = licence
+		Local oldLicence:TProgrammeLicence
+		If Not programmeLicence Then oldLicence = licence
 		licence = programmeLicence
 
 		'try to find a "live" programme first
-		if GetCurrentLiveOffers() < 3
+		If GetCurrentLiveOffers() < 3
 			'print "   try to find live one"
-			local keepOld:int = False
+			Local keepOld:Int = False
 			'keep an old live programme if it airs _after_ the next day
-			if not bestBidder and GetMaxAuctionTime() > GetWorldTime().GetTimeGone()
+			If Not bestBidder And GetMaxAuctionTime() > GetWorldTime().GetTimeGone()
 				'print "   keep as still in the future"
-				keepOld = true
+				keepOld = True
 				licence = oldLicence
-			endif
+			EndIf
 
-			if not keepOld
+			If Not keepOld
 				'print "   find new live one"
 				'Searching can be a bit "slow" on huge databases, so we
 				'try to avoid to iterate over all licences each time
 				'-> start with a "loose" filter to limit candidate list
-				local filterLiveNum:int = 1 '0 = normal programme, 1 = live
-				local filter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction.filters[filterLiveNum].Copy()
-				local oldPriceMin:int = filter.priceMin
+				Local filterLiveNum:Int = 1 '0 = normal programme, 1 = live
+				Local filter:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction.filters[filterLiveNum].Copy()
+				Local oldPriceMin:Int = filter.priceMin
 				'only take live-programme starting not earlier than 3 days
 				'from now. This is needed to avoid a "live"-programme
 				'being no longer live
@@ -1304,23 +1304,23 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 				filter.priceMin = 0
 
 				'fetch candidates
-				local candidates:TProgrammeLicence[] = GetProgrammeLicenceCollection().GetByFilter(filter)
-				if candidates.length > 0
+				Local candidates:TProgrammeLicence[] = GetProgrammeLicenceCollection().GetByFilter(filter)
+				If candidates.length > 0
 					filter.priceMin = oldPriceMin
 					While Not licence And filter.priceMin >= 0
 						licence = GetProgrammeLicenceCollection().GetRandomByFilter(filter, candidates)
 						'lower the requirements
-						If Not licence then filter.priceMin :- 25000
+						If Not licence Then filter.priceMin :- 25000
 					End While
-				endif
-			endif
-		endif
+				EndIf
+			EndIf
+		EndIf
 
 
 		'find a normal licence
-		if not licence
+		If Not licence
 			'print "   find new one"
-			local filterGroup:TProgrammeLicenceFilterGroup = TProgrammeLicenceFilterGroup(RoomHandler_MovieAgency.GetInstance().filterAuction.Copy())
+			Local filterGroup:TProgrammeLicenceFilterGroup = TProgrammeLicenceFilterGroup(RoomHandler_MovieAgency.GetInstance().filterAuction.Copy())
 			While Not licence And filterGroup.filters[0].priceMin >= 0
 				licence = GetProgrammeLicenceCollection().GetRandomByFilter(filterGroup)
 				'lower the requirements
@@ -1329,15 +1329,15 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 					filterGroup.filters[0].ageMax :+ TWorldTime.DAYLENGTH
 
 					filterGroup.filters[1].priceMin = Max(0, filterGroup.filters[1].priceMin - 5000)
-				endif
+				EndIf
 			Wend
-		endif
-		If not licence
-			TLogger.log("AuctionProgrammeBlocks.Refill()", "No licences for new auction found. Database needs more entries!", LOG_ERROR)
+		EndIf
+		If Not licence
+			TLogger.Log("AuctionProgrammeBlocks.Refill()", "No licences for new auction found. Database needs more entries!", LOG_ERROR)
 			'If Not licence Then Throw "[ERROR] TAuctionProgrammeBlocks.Refill - no licence"
 		EndIf
 
-		if licence
+		If licence
 			'print "   found " + licence.GetTitle()
 			'set licence owner to "-1" so it gets not returned again from Random-Getter
 			licence.SetOwner( TOwnedGameObject.OWNER_VENDOR )
@@ -1348,7 +1348,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			'           the fact it could not have passed the filter...
 			licence.SetModifier(TProgrammeLicence.modKeyAuctionPriceLS, 1.0)
 			licence.SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.IGNORE_PLAYERDIFFICULTY, True)
-		endif
+		EndIf
 
 		'reset cache
 		_imageWithText = Null
@@ -1369,30 +1369,30 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 	Method EndAuction:Int()
 		'if there was no licence stored, try again to refill the block
-		If not licence
+		If Not licence
 			Refill()
 			Return False
 		EndIf
 
 
-		If bestBidder and GetPlayerBaseCollection().IsPlayer(bestBidder)
+		If bestBidder And GetPlayerBaseCollection().IsPlayer(bestBidder)
 			'modify licences new price until a new auction of this licence
 			'might reset it
 			licence.SetModifier("auctionPrice", Float(bestBid) / licence.GetPriceForPlayer(bestBidder, bestBidderLevel))
 
 			?debug
-			print "modifier auctionPrice=" + Float(bestBid) / licence.GetPriceForPlayer(bestBidder, bestBidderLevel)
-			print "endAuction: price for p0="+licence.GetPriceForPlayer(0)
-			for local i:int = 1 to 4
-				print "endAuction: price for p"+i+"="+licence.GetPriceForPlayer(i, GetPlayerBase(i).GetAudienceReachLevel()) + " audienceLevel="+GetPlayerBase(i).GetAudienceReachLevel()
-			next
+			Print "modifier auctionPrice=" + Float(bestBid) / licence.GetPriceForPlayer(bestBidder, bestBidderLevel)
+			Print "endAuction: price for p0="+licence.GetPriceForPlayer(0)
+			For Local i:Int = 1 To 4
+				Print "endAuction: price for p"+i+"="+licence.GetPriceForPlayer(i, GetPlayerBase(i).GetAudienceReachLevel()) + " audienceLevel="+GetPlayerBase(i).GetAudienceReachLevel()
+			Next
 			?
 
 			Local player:TPlayerBase = GetPlayerBase(bestBidder)
 			GetPlayerProgrammeCollection(player.playerID).AddProgrammeLicence(licence)
-			if not GetPlayerProgrammeCollection(player.playerID).HasProgrammeLicence(licence)
+			If Not GetPlayerProgrammeCollection(player.playerID).HasProgrammeLicence(licence)
 				TLogger.Log("EndAuction", "Not able to add won auction to programmeCollection: ~q"+ licence.GetGUID()+"~q.", LOG_ERROR)
-			else
+			Else
 
 				If player.isLocalAI()
 					player.PlayerAI.CallOnProgrammeLicenceAuctionWin(licence, bestBid)
@@ -1406,7 +1406,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 				evData.AddNumber("bestBidRaw", bestBidRaw)
 				evData.AddNumber("bestBid", bestBid)
 				EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onWin", evData, Self))
-			endif
+			EndIf
 		End If
 
 
@@ -1419,7 +1419,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 		'actually need to end the auction instead of just decreasing
 		'minimum bid?
-		local auctionEnds:int = False
+		Local auctionEnds:Int = False
 
 		'if we had a bidder or found nobody with the allowed price minimum
 		'we add another licence to this block and reset everything
@@ -1427,14 +1427,14 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			auctionEnds = True
 		'is time for this auction gone (eg. live-programme has limits)?
 		Else
-			local maxTime:Long = GetMaxAuctionTime(licence)
-			if maxTime <> -1 and maxTime < GetWorldTime().GetTimeGone()
+			Local maxTime:Long = GetMaxAuctionTime(licence)
+			If maxTime <> -1 And maxTime < GetWorldTime().GetTimeGone()
 				auctionEnds = True
 				'print "maxAuctionTime reached: " + licence.GetTitle()
-			endif
-		endif
+			EndIf
+		EndIf
 
-		if auctionEnds
+		If auctionEnds
 			'emit event
 			Local evData:TData = New TData
 			evData.Add("licence", licence)
@@ -1446,14 +1446,14 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onEndAuction", evData, Self))
 
 			Refill()
-			return True
-		endif
+			Return True
+		EndIf
 
 
 		'reset cache
 		_imageWithText = Null
 
-		return False
+		Return False
 	End Method
 
 
@@ -1463,7 +1463,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method SetBid:Int(playerID:Int)
-		If not licence Then Return -1
+		If Not licence Then Return -1
 
 		Local player:TPlayerBase = GetPlayerBase(playerID)
 		If Not player Then Return -1
@@ -1475,7 +1475,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 		'prices differ between the players - depending on their audience
 		'reach level
-		Local audienceReachLevel:int = Max(1, GetPlayerBase(playerID).GetAudienceReachLevel())
+		Local audienceReachLevel:Int = Max(1, GetPlayerBase(playerID).GetAudienceReachLevel())
 		Local thisBidRaw:Int = GetNextBidRaw()
 		Local thisBid:Int = thisBidRaw * licence.GetAudienceReachLevelPriceMod(audienceReachLevel)
 
@@ -1485,12 +1485,12 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			If bestBidder And GetPlayerBase(bestBidder)
 				'bestBid contains the best bid adjusted for this players
 				'reach level - so we need to calculate it properly
-				local previousPaidBestBid:int = bestBidRaw * licence.GetAudienceReachLevelPriceMod(bestBidderLevel)
+				Local previousPaidBestBid:Int = bestBidRaw * licence.GetAudienceReachLevelPriceMod(bestBidderLevel)
 				GetPlayerFinance(bestBidder).PayBackAuctionBid(previousPaidBestBid, Self)
 
 				'inform player AI that their bid was overbid
 				If GetPlayerBase(bestBidder).isLocalAI()
-					local thisPaidBestBid:int = thisBidRaw * licence.GetAudienceReachLevelPriceMod(audienceReachLevel)
+					Local thisPaidBestBid:Int = thisBidRaw * licence.GetAudienceReachLevelPriceMod(audienceReachLevel)
 					GetPlayerBase(bestBidder).PlayerAI.CallOnProgrammeLicenceAuctionGetOutbid(GetLicence(), thisPaidBestBid, playerID)
 				EndIf
 
@@ -1533,16 +1533,16 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetNextBid:Int(playerID:int) {_exposeToLua}
-		if not licence then return -1
+	Method GetNextBid:Int(playerID:Int) {_exposeToLua}
+		If Not licence Then Return -1
 
-		Local audienceReachLevel:int = Max(1, GetPlayerBase(playerID).GetAudienceReachLevel())
-		return GetNextBidRaw() * licence.GetAudienceReachLevelPriceMod(audienceReachLevel)
+		Local audienceReachLevel:Int = Max(1, GetPlayerBase(playerID).GetAudienceReachLevel())
+		Return GetNextBidRaw() * licence.GetAudienceReachLevelPriceMod(audienceReachLevel)
 	End Method
 
 
 	Method GetNextBidRaw:Int()
-		If not licence Then Return -1
+		If Not licence Then Return -1
 
 		Local nextBidRaw:Int = 0
 		'no bid done yet, next bid is the licences price cut by 25%
@@ -1568,7 +1568,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method ShowSheet:Int(x:Int,y:Int)
-		If not licence Then Return -1
+		If Not licence Then Return -1
 
 		licence.ShowSheet(x,y)
 	End Method
@@ -1577,11 +1577,12 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
     'draw the Block inclusive text
     'zeichnet den Block inklusive Text
     Method Draw()
-		If not licence Then Return
+		If Not licence Then Return
 
 		SetColor 255,255,255  'normal
 		'not yet cached?
 	    If Not _imageWithText
+			If Not spriteAuctionMovie Then spriteAuctionMovie = GetSpriteFromRegistry("gfx_auctionmovie")
 			'print "renew cache for "+self.licence.GetTitle()
 			_imageWithText = spriteAuctionMovie.GetImageCopy()
 
@@ -1623,7 +1624,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		EndIf
 
 		If TVTDebugInfos
-			local oldAlpha:Float = GetAlpha()
+			Local oldAlpha:Float = GetAlpha()
 			SetAlpha oldAlpha * 0.75
 			SetColor 0,0,0
 			DrawRect(area.GetX(), area.GetY(), _imageWithText.width, _imageWithText.height)
@@ -1633,21 +1634,21 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			GetBitmapFont("default", 12).Draw("bidSavings="+MathHelper.NumberToString(bidSavings, 4) + "  Min="+MathHelper.NumberToString(GetBidSavingsMinimum(), 4) + "  Decr="+MathHelper.NumberToString(GetBidSavingsDecreaseBy(), 4), area.getX() + 5, area.GetY() + 5)
 			GetBitmapFont("default", 12).Draw("bestBidder="+bestBidder +"  lvl="+bestBidderLevel+ "  bestBidRaw="+bestBidRaw, area.getX() + 5, area.GetY() + 5 + 12)
 			GetBitmapFont("default", 12).Draw("nextBidRaw="+GetNextBidRaw() + "  MyReachLevel("+GetPlayerBase().playerID+")="+Max(1, GetPlayerBase(GetPlayerBase().playerID).GetAudienceReachLevel()), area.getX() + 5, area.GetY() + 5 + 2*12)
-		endif
+		EndIf
 
     End Method
 
 
 	Function DrawAll()
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
-			If not obj.GetLicence() Then continue
+			If Not obj.GetLicence() Then Continue
 
 			obj.Draw()
 		Next
 
 		'draw sheets (must be afterwards to avoid overlapping (itemA Sheet itemB itemC) )
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
-			If not obj.GetLicence() Then continue
+			If Not obj.GetLicence() Then Continue
 
 			If obj.area.containsXY(MouseManager.x, MouseManager.y)
 				Local leftX:Int = 30, rightX:Int = 30
@@ -1680,7 +1681,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		If Not MOUSEMANAGER.IsClicked(1) Then Return False
 
 		For Local obj:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
-			If not obj.GetLicence() Then continue
+			If Not obj.GetLicence() Then Continue
 
 			If obj.bestBidder <> GetPlayerBaseCollection().playerID And obj.area.containsXY(MouseManager.x, MouseManager.y)
 				obj.SetBid( GetPlayerBaseCollection().playerID )  'set the bid

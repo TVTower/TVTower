@@ -126,7 +126,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 		If Not _liveProgrammeData
 			_liveProgrammeData = CreateList()
 			For Local data:TProgrammeData = EachIn entries.Values()
-				If data.IsHeader() Then Continue
+				'If data.IsHeader() Then Continue
 				If Not data.IsLive() Then Continue
 
 				_liveProgrammeData.AddLast(data)
