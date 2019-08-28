@@ -2061,8 +2061,18 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		If self.IsPaid() then showMsgEarnInfo = True
 
 		'always show live info text - regardless of situation ?!
+		local nextReleaseTime:Long
 		If self.IsLive()
-			showMsgLiveInfo = True
+			local nextReleaseTime:Long = GetNextReleaseTime()
+			if nextReleaseTime = -1 then nextReleaseTime = data.GetReleaseTime()
+
+			'release time might be in the past if the live programme is airing
+			'now (so it is "live" but start was in the past)
+			if nextReleaseTime < GetWorldTime().GetTimeGone()
+				showMsgLiveInfo = False
+			else
+				showMsgLiveInfo = True
+			endif
 		Rem
 		If self.IsLive() or self.IsLiveOnTape()
 			local programmedDay:int = -1
@@ -2281,8 +2291,6 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		If showMsgLiveInfo
 			local time:string = ""
-			local nextReleaseTime:Long = GetNextReleaseTime()
-			if nextReleaseTime = -1 then nextReleaseTime = data.GetReleaseTime()
 			local days:int = GetWorldTime().GetDay( nextReleaseTime ) - GetWorldTime().GetDay()
 
 			if days = 0
