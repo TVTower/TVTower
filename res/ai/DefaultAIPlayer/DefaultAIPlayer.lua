@@ -667,6 +667,23 @@ function OnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedLicence, targe
 	debugMsg("Programme licence confiscated: " .. confiscatedLicence.GetTitle())
 end
 
+
+function OnAchievementCompleted(achievement)
+	--debugMsg("OnAchievementCompleted")
+	if (aiIsActive) then
+		getAIPlayer():OnAchievementCompleted(achievement)
+	end
+end
+
+
+function OnWonAward(award)
+	--debugMsg("OnWonAward")
+	if (aiIsActive) then
+		getAIPlayer():OnWonAward(award)
+	end
+end
+
+
 function OnLeaveRoom()
 	--debugMsg("OnLeaveRoom")
 end
@@ -814,24 +831,6 @@ end
 function OnTick(timeGone, ticksGone)
 	--debugMsg("OnTick  time:" .. timeGone .." ticks:" .. ticksGone .. " gameMinute:" .. WorldTime.GetDayMinute())
 	getAIPlayer().WorldTicks = tonumber(ticksGone)
-
-	--debug
-	if getAIPlayer().CurrentTask ~= nil then
-		MY.SetAIStringData("currentTask",  getAIPlayer().CurrentTask.typename() )
-		MY.SetAIStringData("currentTaskStatus",  getAIPlayer().CurrentTask.Status )
-		MY.SetAIStringData("currentTaskAssignmentType", getAIPlayer().CurrentTask.assignmentType )
-		if getAIPlayer().CurrentTask.CurrentJob ~= nil then
-			MY.SetAIStringData("currentTaskJob",  getAIPlayer().CurrentTask.CurrentJob.typename() )
-			MY.SetAIStringData("currentTaskJobStatus",  getAIPlayer().CurrentTask.CurrentJob.Status )
-			--debugMsg("Task: "..getAIPlayer().CurrentTask.typename().." ["..getAIPlayer().CurrentTask.Status.."]   Job:"..getAIPlayer().CurrentTask.CurrentJob.typename().. " ["..getAIPlayer().CurrentTask.CurrentJob.Status.."]")
-		end
-	else
-		MY.SetAIStringData("currentTask",  "NONE" )
-		MY.SetAIStringData("currentTaskStatus",  "0" )
-		MY.SetAIStringData("currentTaskAssignmentType", 0)
-		MY.SetAIStringData("currentTaskJob",  "NONE" )
-		MY.SetAIStringData("currentTaskJobStatus",  "0" )
-	end
 
 
 	if (aiIsActive) then

@@ -1106,7 +1106,7 @@ GENDER_WOMEN_SHORT = F
 
 LIVE_ON_TAPE = Liveaufzeichnung
 ALL_MATCHES_FINISHED = Alle Begegnungen beendet
-
+X_OF_Y_LIVE_MATCHES_ALREADY_STARTED = %X%/%Y% der Live-Begegnungen bereits gestartet.
 
 SHOW_MAP_DETAILS = Zeige Kartendetails
 CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION = Klicken um tiefergehende Karteninformationen anzuzeigen.

@@ -18,6 +18,9 @@ _G["TaskSchedule"] = class(AITask, function(c)
 	c.BudgetWeight = 0
 	c.BasePriority = 10
 
+	--no budget to spare
+	c.RequiresBudgetHandling = false
+
 	-- tables containing GUIDs on each entry (or none for an outage)
 	c.currentProgrammeSlots = {}
 	c.currentAdSlots = {}
@@ -58,6 +61,7 @@ _G["TaskSchedule"] = class(AITask, function(c)
 	c.ActivationTime = os.clock()
 	c.TickCount = 0
 	c.TickTimeGone = 0
+	c.TickTimeMax = 0
 end)
 
 
@@ -1219,7 +1223,9 @@ end
 
 function JobAnalyzeEnvironment:Prepare(pParams)
 	self.ScheduleTask.TickCount = 0
-	self.ScheduleTask.TickTime = 0
+	self.ScheduleTask.TickTimeMax = 0
+	self.ScheduleTask.TickTimeGone = 0
+
 	local nowTime = os.clock()
 
 	if not self.initialMarketRefreshDone then
@@ -1235,7 +1241,7 @@ function JobAnalyzeEnvironment:Prepare(pParams)
 	self.ScheduleTask.Player.LastStationMapMarketAnalysis = self.Player.WorldTicks
 
 	self.ScheduleTask.TickCount = 0
-	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+	self.ScheduleTask.TickTimeGone = self.ScheduleTask.TickTimeGone + (os.clock() - nowTime)
 end
 
 
@@ -1314,10 +1320,12 @@ function JobAnalyzeEnvironment:Tick()
 		end
 	end
 
+	local timeGone = (os.clock() - nowTime)
 	self.ScheduleTask.TickCount = self.ScheduleTask.TickCount + 1
-	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+	self.ScheduleTask.TickTimeGone = self.ScheduleTask.TickTimeGone + timeGone
+	if timeGone > self.ScheduleTask.TickTimeMax then self.ScheduleTask.TickTimeMax = timeGone end
 
-	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTime, True)
+	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTimeGone .. "  time/tick=" .. (self.ScheduleTask.TickTimeGone/self.ScheduleTask.TickCount) .. "  max=" .. self.ScheduleTask.TickTimeMax, True)
 
 	self.Status = JOB_STATUS_DONE
 end
@@ -1340,7 +1348,8 @@ end
 
 function JobPreAnalyzeSchedule:Prepare(pParams)
 	self.ScheduleTask.TickCount = 0
-	self.ScheduleTask.TickTime = 0
+	self.ScheduleTask.TickTimeMax = 0
+	self.ScheduleTask.TickTimeGone = 0
 end
 
 
@@ -1356,10 +1365,12 @@ function JobPreAnalyzeSchedule:Tick()
 		self.ScheduleTask.currentAdSlots = TaskSchedule.BackupPlan(TVT.Constants.BroadcastMaterialType.ADVERTISEMENT, day)
 	--end
 
+	local timeGone = (os.clock() - nowTime)
 	self.ScheduleTask.TickCount = self.ScheduleTask.TickCount + 1
-	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+	self.ScheduleTask.TickTimeGone = self.ScheduleTask.TickTimeGone + timeGone
+	if timeGone > self.ScheduleTask.TickTimeMax then self.ScheduleTask.TickTimeMax = timeGone end
 
-	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTime, True)
+	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTimeGone .. "  time/tick=" .. (self.ScheduleTask.TickTimeGone/self.ScheduleTask.TickCount) .. "  max=" .. self.ScheduleTask.TickTimeMax, True)
 
 	self.Status = JOB_STATUS_DONE
 end
@@ -1384,7 +1395,8 @@ end
 
 function JobPostAnalyzeSchedule:Prepare(pParams)
 	self.ScheduleTask.TickCount = 0
-	self.ScheduleTask.TickTime = 0
+	self.ScheduleTask.TickTimeMax = 0
+	self.ScheduleTask.TickTimeGone = 0
 end
 
 
@@ -1398,10 +1410,12 @@ function JobPostAnalyzeSchedule:Tick()
 		self.ScheduleTask.changedAdSlots[i] = false
 	end
 
+	local timeGone = (os.clock() - nowTime)
 	self.ScheduleTask.TickCount = self.ScheduleTask.TickCount + 1
-	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+	self.ScheduleTask.TickTimeGone = self.ScheduleTask.TickTimeGone + timeGone
+	if timeGone > self.ScheduleTask.TickTimeMax then self.ScheduleTask.TickTimeMax = timeGone end
 
-	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTime, True)
+	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTimeGone .. "  time/tick=" .. (self.ScheduleTask.TickTimeGone/self.ScheduleTask.TickCount) .. "  max=" .. self.ScheduleTask.TickTimeMax, True)
 
 	self.Status = JOB_STATUS_DONE
 end
@@ -1427,7 +1441,8 @@ end
 
 function JobFulfillRequisition:Prepare(pParams)
 	self.ScheduleTask.TickCount = 0
-	self.ScheduleTask.TickTime = 0
+	self.ScheduleTask.TickTimeMax = 0
+	self.ScheduleTask.TickTimeGone = 0
 
 	--debugMsg("Erfülle Änderungs-Anforderungen an den Programmplan!")
 
@@ -1443,43 +1458,66 @@ function JobFulfillRequisition:Tick()
 	local gameDay = WorldTime.GetDay()
 	local gameHour = WorldTime.GetDayHour()
 	local gameMinute = WorldTime.GetDayMinute()
+	local requisitionCount = table.count(self.SpotSlotRequisitions)
 
-	--check the upcoming advertisements
-	for key, value in pairs(self.SpotSlotRequisitions) do
-		if (value.ContractId ~= -1) then
-			local contract = TVT.of_getAdContractByID(value.ContractId)
+	if requisitionCount > 0 then
+		--check the upcoming advertisements
+		--for key, value in pairs(self.SpotSlotRequisitions) do
 
-			if (contract ~= nil) then
-				-- no open spots / all planned before the given hour??
-				local plannedSpots = MY.GetProgrammePlan().GetAdvertisementsPlanned(contract, contract.GetDaySigned(), 0, value.Day, value.Hour-1, 1)
-				if contract.GetSpotCount() > plannedSpots then
-					debugMsg("Set advertisement by requisition: " .. value.Day .. "/" .. string.format("%02d", value.Hour) .. ":" .. value.Minute .. "  contract: " .. contract.GetTitle() .. " [" .. contract.GetID() .."]  MinAud: " .. math.floor(contract.GetMinAudience()) .. "  acuteness: " .. contract.GetAcuteness() .. "  plannedspots=" .. plannedSpots .. " / " ..contract.GetSpotCount() )
+		-- check up to 2 requisitions per slot
+		for i=0, math.min(2, requisitionCount) do
+			local value = table.first(self.SpotSlotRequisitions)
+			if value ~= nil then
+				-- tomorrow OR (today AND (after current hour OR(current hour but no started yet)))
+				local timeOK = (value.Day > gameDay or (value.Day == gameDay and (value.Hour > gameHour or (value.Hour == gameHour and gameMinute < 55))))
 
-					-- TODO: MARK as based on a specific requisition (to keep it!)
-					local result = TVT.of_setAdvertisementSlot(contract, value.Day, value.Hour)
-					if result == TVT.RESULT_OK then
-						self.ScheduleTask:OnChangeAdSlot(nil, value.Day, value.Hour)
-					elseif result == TVT.RESULT_WRONGROOM then
-						debugMsg("Set advertisement: failed - wrong room.")
-					elseif result == TVT.RESULT_FAILED then
-						debugMsg("Set advertisement: corresponding contract not found.")
-					elseif result == TVT.RESULT_SKIPPED then
-						debugMsg("Set advertisement: skipped, already placed at this spot.")
-					elseif result == TVT.RESULT_NOTALLOWED then
-						debugMsg("Set advertisement: too late / not allowed.")
+				if (timeOK and value.ContractId ~= -1) then
+					local contract = TVT.of_getAdContractByID(value.ContractId)
+
+					if (contract ~= nil) then
+						-- no open spots / all planned before the given hour??
+						local plannedSpots = MY.GetProgrammePlan().GetAdvertisementsPlanned(contract, contract.GetDaySigned(), 0, value.Day, value.Hour-1, 1)
+						if contract.GetSpotCount() > plannedSpots then
+							debugMsg("Set advertisement by requisition: " .. value.Day .. "/" .. string.format("%02d", value.Hour) .. ":" .. value.Minute .. "  contract: " .. contract.GetTitle() .. " [" .. contract.GetID() .."]  MinAud: " .. math.floor(contract.GetMinAudience()) .. "  acuteness: " .. contract.GetAcuteness() .. "  plannedspots=" .. plannedSpots .. " / " ..contract.GetSpotCount() )
+
+							-- TODO: MARK as based on a specific requisition (to keep it!)
+							local result = TVT.of_setAdvertisementSlot(contract, value.Day, value.Hour)
+							if result == TVT.RESULT_OK then
+								self.ScheduleTask:OnChangeAdSlot(nil, value.Day, value.Hour)
+							elseif result == TVT.RESULT_WRONGROOM then
+								debugMsg("Set advertisement: failed - wrong room.")
+							elseif result == TVT.RESULT_FAILED then
+								debugMsg("Set advertisement: corresponding contract not found.")
+							elseif result == TVT.RESULT_SKIPPED then
+								debugMsg("Set advertisement: skipped, already placed at this spot.")
+							elseif result == TVT.RESULT_NOTALLOWED then
+								debugMsg("Set advertisement: too late / not allowed. planned=" .. value.Day.."/"..value.Hour .."  now=" .. gameDay .. "/" .. string.format("%02d", gameHour) .. ":" .. string.format("%02d", gameHour))
+							end
+						else
+							debugMsg("Skip setting advertisement by requisition: " .. value.Day .. "/" .. string.format("%02d", value.Hour) .. ":" .. value.Minute .. "  contract: " .. contract.GetTitle() .. " [" .. contract.GetID() .."] - No spots left.")
+						end
 					end
-				else
-					debugMsg("Skip setting advertisement by requisition: " .. value.Day .. "/" .. string.format("%02d", value.Hour) .. ":" .. value.Minute .. "  contract: " .. contract.GetTitle() .. " [" .. contract.GetID() .."] - No spots left.")
 				end
+				-- completes and removes from the global requisition list
+				value:Complete()
+
+				--remove from our cached/prefetched variable too
+				table.removeElement(self.SpotSlotRequisitions, value)
 			end
-			value:Complete()
 		end
 	end
 
+	local timeGone = (os.clock() - nowTime)
 	self.ScheduleTask.TickCount = self.ScheduleTask.TickCount + 1
-	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+	self.ScheduleTask.TickTimeGone = self.ScheduleTask.TickTimeGone + timeGone
+	if timeGone > self.ScheduleTask.TickTimeMax then self.ScheduleTask.TickTimeMax = timeGone end
 
-	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTime, True)
+	-- do the next during the next tick
+	if table.count(self.SpotSlotRequisitions) > 0 then
+		return
+	end
+
+	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTimeGone .. "  time/tick=" .. (self.ScheduleTask.TickTimeGone/self.ScheduleTask.TickCount) .. "  max=" .. self.ScheduleTask.TickTimeMax, True)
 
 	self.Status = JOB_STATUS_DONE
 end
@@ -1508,7 +1546,8 @@ end
 
 function JobAdSchedule:Prepare(pParams)
 	self.ScheduleTask.TickCount = 0
-	self.ScheduleTask.TickTime = 0
+	self.ScheduleTask.TickTimeMax = 0
+	self.ScheduleTask.TickTimeGone = 0
 
 	self.plannedHours = 0
 	--up to 5 planning tries
@@ -1582,8 +1621,10 @@ function JobAdSchedule:Tick()
 			end
 		end
 
+	local timeGone = (os.clock() - nowTime)
 	self.ScheduleTask.TickCount = self.ScheduleTask.TickCount + 1
-	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+	self.ScheduleTask.TickTimeGone = self.ScheduleTask.TickTimeGone + timeGone
+	if timeGone > self.ScheduleTask.TickTimeMax then self.ScheduleTask.TickTimeMax = timeGone end
 
 		if self.plannedHours < planHours then
 			--finished current tick
@@ -1591,8 +1632,7 @@ function JobAdSchedule:Tick()
 		end
 --	end
 
-
-	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTime, True)
+	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTimeGone .. "  time/tick=" .. (self.ScheduleTask.TickTimeGone/self.ScheduleTask.TickCount) .. "  max=" .. self.ScheduleTask.TickTimeMax, True)
 
 	self.Status = JOB_STATUS_DONE
 end
@@ -1981,7 +2021,8 @@ end
 
 function JobProgrammeSchedule:Prepare(pParams)
 	self.ScheduleTask.TickCount = 0
-	self.ScheduleTask.TickTime = 0
+	self.ScheduleTask.TickTimeMax = 0
+	self.ScheduleTask.TickTimeGone = 0
 
 	self.plannedHours = 0
 	--up to 5 planning tries
@@ -2122,19 +2163,25 @@ function JobProgrammeSchedule:Tick()
 		end
 
 
+	local timeGone = (os.clock() - nowTime)
 	self.ScheduleTask.TickCount = self.ScheduleTask.TickCount + 1
-	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+	self.ScheduleTask.TickTimeGone = self.ScheduleTask.TickTimeGone + timeGone
+	if timeGone > self.ScheduleTask.TickTimeMax then self.ScheduleTask.TickTimeMax = timeGone end
 
 
 		--finished current tick
 		return
 	else
+
+	local timeGone = (os.clock() - nowTime)
 	self.ScheduleTask.TickCount = self.ScheduleTask.TickCount + 1
-	self.ScheduleTask.TickTime = self.ScheduleTask.TickTime + (os.clock() - nowTime)
+	self.ScheduleTask.TickTimeGone = self.ScheduleTask.TickTimeGone + timeGone
+	if timeGone > self.ScheduleTask.TickTimeMax then self.ScheduleTask.TickTimeMax = timeGone end
+
 
 	end
 
---	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTime, True)
+	debugMsg( self:typename() .. ": JOB DONE. ticks=" .. self.ScheduleTask.TickCount .. "  time=" .. self.ScheduleTask.TickTimeGone .. "  time/tick=" .. (self.ScheduleTask.TickTimeGone/self.ScheduleTask.TickCount) .. "  max=" .. self.ScheduleTask.TickTimeMax, True)
 
 	--done
 	--====

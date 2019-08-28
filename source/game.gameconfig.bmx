@@ -14,6 +14,7 @@ Type TGameConfig {_exposeToLua}
 	Field KeepBankruptPlayerFinances:int = True
 	Field dateFormat:string = "d.m.y"
 	Field devGUID:string
+	Field mouseHandlingDisabled:int = False
 
 	Global clNormal:TColor = TColor.clBlack
 	Global clPositive:TColor = TColor.Create(90, 110, 90)

@@ -209,10 +209,21 @@ function unpack(t, i)
 	end
 end
 
+--[[
 math.round = function(pNumber, pPosition)
 	pPosition = pPosition or 0
 	local tempPosition = (10^pPosition)
 	return (math.floor((pNumber * tempPosition) + 0.5) / tempPosition)
+end
+--]]
+
+math.round = function(pNum, pNumDecimalPlaces)
+	local multiplier = 10^(pNumDecimalPlaces or 0)
+	if pNum >= 0 then
+		return math.floor(pNum * multiplier + 0.5) / multiplier
+	else
+		return math.ceil(pNum * multiplier - 0.5) / multiplier
+	end
 end
 
 table.count = function(pTable)

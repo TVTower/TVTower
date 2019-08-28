@@ -2,6 +2,7 @@ SuperStrict
 Import "Dig/base.util.helper.bmx"
 Import "Dig/base.util.interpolation.bmx"
 Import "Dig/base.sfx.soundmanager.base.bmx"
+Import "game.gameconfig.bmx"
 Import "game.player.base.bmx"
 Import "game.building.base.sfx.bmx" 'for TsfxFloorSoundBarrierSettings
 Import "game.room.roomdoor.base.bmx"
@@ -185,17 +186,18 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		if not room then return False
 
 		'only show tooltip if not "empty" and mouse in door-rect
-		If room.GetDescription(1) <> "" and GetPlayerBase().GetFigure().IsInBuilding() And THelper.MouseIn(Int(GetScreenX()), Int(GetScreenY() - area.GetH()), Int(area.GetW()), Int(area.GetH()))
-			If not tooltip
-				tooltip = TRoomDoorTooltip.Create("", "", 100, 140, 0, 0)
-				tooltip.SetMinTitleAndContentWidth(100, 160)
-				tooltip.AssignRoom(room.id)
-			endif
+		if not GameConfig.mouseHandlingDisabled
+			If room.GetDescription(1) <> "" and GetPlayerBase().GetFigure().IsInBuilding() And THelper.MouseIn(Int(GetScreenX()), Int(GetScreenY() - area.GetH()), Int(area.GetW()), Int(area.GetH()))
+				If not tooltip
+					tooltip = TRoomDoorTooltip.Create("", "", 100, 140, 0, 0)
+					tooltip.SetMinTitleAndContentWidth(100, 160)
+					tooltip.AssignRoom(room.id)
+				endif
 
-			tooltip.Hover()
-			tooltip.enabled	= 1
-		EndIf
-
+				tooltip.Hover()
+				tooltip.enabled	= 1
+			EndIf
+		endif
 
 		If tooltip AND tooltip.enabled
 			if tooltip.Update()

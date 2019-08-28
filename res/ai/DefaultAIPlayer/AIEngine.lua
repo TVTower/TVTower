@@ -177,6 +177,40 @@ function AIPlayer:Tick()
 			MY.SetAIStringData("tasklist_requisitionpriority" .. taskNumber, math.round(player:GetRequisitionPriority(v.Id),1))
 		end
 		MY.SetAIStringData("tasklist_count", taskNumber)
+
+		-- current task
+		if self.CurrentTask ~= nil then
+			MY.SetAIStringData("currentTask",  self.CurrentTask.typename() )
+			MY.SetAIStringData("currentTaskStatus",  self.CurrentTask.Status )
+			MY.SetAIStringData("currentTaskAssignmentType", self.CurrentTask.assignmentType )
+			if self.CurrentTask.CurrentJob ~= nil then
+				MY.SetAIStringData("currentTaskJob",  self.CurrentTask.CurrentJob.typename() )
+				MY.SetAIStringData("currentTaskJobStatus",  self.CurrentTask.CurrentJob.Status )
+			end
+		else
+			MY.SetAIStringData("currentTask",  "NONE" )
+			MY.SetAIStringData("currentTaskStatus",  "0" )
+			MY.SetAIStringData("currentTaskAssignmentType", 0)
+			MY.SetAIStringData("currentTaskJob",  "NONE" )
+			MY.SetAIStringData("currentTaskJobStatus",  "0" )
+		end
+
+		--budget
+		MY.SetAIStringData("budget_investmentsavings", math.round(self.Budget.InvestmentSavings, 1))
+		MY.SetAIStringData("budget_savingpart", math.round(self.Budget.SavingParts, 4))
+		MY.SetAIStringData("budget_extrafixedcostssavingspercentage", math.round(self.Budget.ExtraFixedCostsSavingsPercentage, 4))
+
+		taskNumber = 0
+		for k,v in pairs(self.TaskList) do
+			if v.RequiresBudgetHandling == true then
+				taskNumber = taskNumber + 1
+				MY.SetAIStringData("budget_task_name" .. taskNumber, v:typename())
+				MY.SetAIStringData("budget_task_currentbudget" .. taskNumber, math.round(v.CurrentBudget,1))
+				MY.SetAIStringData("budget_task_budgetmaximum" .. taskNumber, math.round(v.BudgetMaximum(),1))
+				MY.SetAIStringData("budget_task_budgetwholeday" .. taskNumber, math.round(v.BudgetWholeDay,1))
+			end
+		end
+		MY.SetAIStringData("budget_task_count", taskNumber)
 	end
 
 	self:TickAnalyse()

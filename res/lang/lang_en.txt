@@ -1084,6 +1084,7 @@ GENDER_WOMEN_SHORT = W
 
 LIVE_ON_TAPE = Live on tape
 ALL_MATCHES_FINISHED = All matches finished
+X_OF_Y_LIVE_MATCHES_ALREADY_STARTED = %X%/%Y% Live matches already started.
 
 
 SHOW_MAP_DETAILS = Show Map Details

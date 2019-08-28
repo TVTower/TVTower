@@ -14,9 +14,9 @@ end
 
 
 function TaskStationMap:ResetDefaults()
-	self.BudgetWeight = 3
+	self.BudgetWeight = 4
 	self.BasePriority = 1
-	self.NeededInvestmentBudget = 350000
+	self.NeededInvestmentBudget = 280000
 	self.InvestmentPriority = 8
 
 	self.knownAntennaPositions = {}
