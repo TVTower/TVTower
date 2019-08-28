@@ -1112,7 +1112,7 @@ End Type
 'they do not need to have gui/non-gui objects as no special
 'handling is done (just clicking)
 Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
-	Field area:TRectangle = New TRectangle.Init(0,0,0,0)
+	Field area:TRectangle {nosave}
 	Field licence:TProgrammeLicence		'the licence getting auctionated (a series, movie or collection)
 	Field bestBidRaw:Int = 0			'what was bidden for that licence without audience reach level
 	Field bestBid:Int = 0				'what was bidden for that licence with audience reach level
@@ -1140,10 +1140,6 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method Create:TAuctionProgrammeBlocks(slot:Int=0, licence:TProgrammeLicence)
-		'If Not spriteAuctionMovie Then spriteAuctionMovie = GetSpriteFromRegistry("gfx_auctionmovie")
-
-		Self.area.position.SetXY(140 + (slot Mod 2) * 260, 80 + Int(Ceil(slot / 2)) * 60)
-		Self.area.dimension.CopyFrom(spriteAuctionMovie.area.dimension)
 		Self.slot = slot
 		Self.Refill(licence)
 		List.AddLast(Self)
@@ -1216,6 +1212,12 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 				If Not obj.licence Then Print "RefillAuctionsWithoutBid: no licence available"
 			EndIf
 		Next
+	End Function
+
+
+	Function GetAuctionMovieSprite:TSprite()
+		If Not spriteAuctionMovie Then spriteAuctionMovie = GetSpriteFromRegistry("gfx_auctionmovie")
+		Return spriteAuctionMovie
 	End Function
 
 
@@ -1457,6 +1459,20 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetArea:TRectangle()
+		If Not area
+			area = New TRectangle
+			'fit to the gfx?
+			'area.position.SetXY(140 + (slot Mod 2) * 260, 80 + Int(Ceil(slot / 2)) * GetAuctionMovieSprite().area.dimension.y)
+			'area.dimension.CopyFrom(GetAuctionMovieSprite().area.dimension)
+			'fit to a given height
+			area.position.SetXY(140 + (slot Mod 2) * 260, 80 + Int(Ceil(slot / 2)) * 60)
+			area.dimension.SetXY(GetAuctionMovieSprite().area.dimension.x, 60)
+		EndIf
+		Return area
+	End Method
+
+
 	Method GetLicence:TProgrammeLicence()  {_exposeToLua}
 		Return licence
 	End Method
@@ -1582,9 +1598,8 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		SetColor 255,255,255  'normal
 		'not yet cached?
 	    If Not _imageWithText
-			If Not spriteAuctionMovie Then spriteAuctionMovie = GetSpriteFromRegistry("gfx_auctionmovie")
 			'print "renew cache for "+self.licence.GetTitle()
-			_imageWithText = spriteAuctionMovie.GetImageCopy()
+			_imageWithText = GetAuctionMovieSprite().GetImageCopy()
 
 			Local pix:TPixmap = LockImage(_imageWithText)
 			Local font:TBitmapFont = GetBitmapFont("Default", 12)
@@ -1608,32 +1623,34 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	    EndIf
 		SetColor 255,255,255
 		SetAlpha 1
-		DrawImage(_imageWithText, area.GetX(), area.GetY())
+
+		Local a:TRectangle = GetArea()
+		DrawImage(_imageWithText, a.GetX(), a.GetY())
 
 		'live
 		If licence.data.IsLive()
-			GetSpriteFromRegistry("pp_live").Draw(area.GetX() + _imageWithText.width - 8, area.GetY() +3,  -1, ALIGN_RIGHT_TOP)
+			GetSpriteFromRegistry("pp_live").Draw(a.GetX() + _imageWithText.width - 8, a.GetY() +3,  -1, ALIGN_RIGHT_TOP)
 		EndIf
 		'xrated
 		If licence.data.IsXRated()
-			GetSpriteFromRegistry("pp_xrated").Draw(area.GetX() + _imageWithText.width - 8, area.GetY() +3,  -1, ALIGN_RIGHT_TOP)
+			GetSpriteFromRegistry("pp_xrated").Draw(a.GetX() + _imageWithText.width - 8, a.GetY() +3,  -1, ALIGN_RIGHT_TOP)
 		EndIf
 		'paid
 		If licence.data.IsPaid()
-			GetSpriteFromRegistry("pp_paid").Draw(area.GetX() + _imageWithText.width - 8, area.GetY() +3,  -1, ALIGN_RIGHT_TOP)
+			GetSpriteFromRegistry("pp_paid").Draw(a.GetX() + _imageWithText.width - 8, a.GetY() +3,  -1, ALIGN_RIGHT_TOP)
 		EndIf
 
 		If TVTDebugInfos
 			Local oldAlpha:Float = GetAlpha()
 			SetAlpha oldAlpha * 0.75
 			SetColor 0,0,0
-			DrawRect(area.GetX(), area.GetY(), _imageWithText.width, _imageWithText.height)
+			DrawRect(a.GetX(), a.GetY(), _imageWithText.width, _imageWithText.height)
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			GetBitmapFont("default", 12).Draw("bidSavings="+MathHelper.NumberToString(bidSavings, 4) + "  Min="+MathHelper.NumberToString(GetBidSavingsMinimum(), 4) + "  Decr="+MathHelper.NumberToString(GetBidSavingsDecreaseBy(), 4), area.getX() + 5, area.GetY() + 5)
-			GetBitmapFont("default", 12).Draw("bestBidder="+bestBidder +"  lvl="+bestBidderLevel+ "  bestBidRaw="+bestBidRaw, area.getX() + 5, area.GetY() + 5 + 12)
-			GetBitmapFont("default", 12).Draw("nextBidRaw="+GetNextBidRaw() + "  MyReachLevel("+GetPlayerBase().playerID+")="+Max(1, GetPlayerBase(GetPlayerBase().playerID).GetAudienceReachLevel()), area.getX() + 5, area.GetY() + 5 + 2*12)
+			GetBitmapFont("default", 12).Draw("bidSavings="+MathHelper.NumberToString(bidSavings, 4) + "  Min="+MathHelper.NumberToString(GetBidSavingsMinimum(), 4) + "  Decr="+MathHelper.NumberToString(GetBidSavingsDecreaseBy(), 4), a.getX() + 5, a.GetY() + 5)
+			GetBitmapFont("default", 12).Draw("bestBidder="+bestBidder +"  lvl="+bestBidderLevel+ "  bestBidRaw="+bestBidRaw, a.getX() + 5, a.GetY() + 5 + 12)
+			GetBitmapFont("default", 12).Draw("nextBidRaw="+GetNextBidRaw() + "  MyReachLevel("+GetPlayerBase().playerID+")="+Max(1, GetPlayerBase(GetPlayerBase().playerID).GetAudienceReachLevel()), a.getX() + 5, a.GetY() + 5 + 2*12)
 		EndIf
 
     End Method
@@ -1650,7 +1667,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		For Local obj:TAuctionProgrammeBlocks = EachIn List
 			If Not obj.GetLicence() Then Continue
 
-			If obj.area.containsXY(MouseManager.x, MouseManager.y)
+			If obj.GetArea().containsXY(MouseManager.x, MouseManager.y)
 				Local leftX:Int = 30, rightX:Int = 30
 				Local sheetY:Int = 20
 				Local sheetX:Int = leftX
@@ -1663,10 +1680,9 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 				SetBlend LightBlend
 				SetAlpha 0.20
-				spriteAuctionMovie.Draw(obj.area.GetX(), obj.area.GetY())
+				GetAuctionMovieSprite().Draw(obj.GetArea().GetX(), obj.GetArea().GetY())
 				SetAlpha 1.0
 				SetBlend AlphaBlend
-
 
 				obj.licence.ShowSheet(sheetX, sheetY, sheetAlign, TVTBroadcastMaterialType.PROGRAMME)
 				Exit
@@ -1683,7 +1699,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		For Local obj:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
 			If Not obj.GetLicence() Then Continue
 
-			If obj.bestBidder <> GetPlayerBaseCollection().playerID And obj.area.containsXY(MouseManager.x, MouseManager.y)
+			If obj.bestBidder <> GetPlayerBaseCollection().playerID And obj.GetArea().containsXY(MouseManager.x, MouseManager.y)
 				obj.SetBid( GetPlayerBaseCollection().playerID )  'set the bid
 
 				'handled left click
