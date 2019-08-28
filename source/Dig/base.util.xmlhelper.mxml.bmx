@@ -330,20 +330,23 @@ Type TXmlHelper
 					key = subNode.getName()
 				EndIf
 
+rem
 				If data.Has(key)
-					Local dataArr:TData[] = TData[](data.Get(key))
+					local storedObj:Object = data.Get(key)
+					Local dataArr:TData[] = TData[](storedObj)
 					If Not dataArr
 						dataArr = New TData[0]
-						If data.GetData(key.ToString())
-							dataArr :+ [data.GetData(key.ToString())]
+						If storedObj
+							dataArr :+ [storedObj]
 						EndIf
 					EndIf
 					dataArr :+ [subData]
 
 					data.Add(key, dataArr)
 				Else
+endrem
 					data.Add(key, subData)
-				EndIf
+'				EndIf
 			Else
 				Local value:String = subNode.ToString()
 'print bmx_mxmlGetType(subNode.nodePtr) +"  | " + value
@@ -353,20 +356,24 @@ Type TXmlHelper
 
 
 				Local key:Object = subNode.getName()
+rem
+				'convert to an array?
 				If data.Has(key)
-					Local arr:Object[] = Object[](data.Get(key.ToString()))
+					local storedObj:Object = data.Get(key)
+					Local arr:Object[] = Object[](storedObj)
 					If Not arr
 						arr = New Object[0]
-						If data.Get(key.ToString())
-							arr :+ [data.Get(key.ToString())]
+						If storedObj
+							arr :+ [storedObj]
 						EndIf
 					EndIf
 					arr :+ [subNode.GetContent()]
 
 					data.Add(key, arr)
 				Else
+endrem
 					data.Add(key, subNode.GetContent())
-				EndIf
+'				EndIf
 				'data.Add(subNode.getName(), subNode.GetContent())
 			EndIf
 		Next

@@ -818,6 +818,13 @@ Type TStationMapCollection
 		registryLoader.LoadSingleResourceFromXML(densityNode, null, True, New TData.AddString("name", "map_PopulationDensity"))
 		registryLoader.LoadSingleResourceFromXML(surfaceNode, null, True, New TData.AddString("name", "map_Surface"))
 
+		'older savegames might contain a config which has the data converted
+		'to key->value[] arrays instead of values being overridden on each load.
+		'so better just clear the config
+		_instance.config = new TData
+		_instance.cityNames = new TData
+		if sportsDataNode then _instance.sportsData = new TData
+
 		TXmlHelper.LoadAllValuesToData(configNode, _instance.config)
 		TXmlHelper.LoadAllValuesToData(cityNamesNode, _instance.cityNames)
 		if sportsDataNode
