@@ -604,17 +604,23 @@ Type TApp
 	End Method
 
 
+	global _profilerKey_Draw:TLowerString = new TLowerString.Create("Draw")
+	global _profilerKey_Update:TLowerString = new TLowerString.Create("Update")
+	global _profilerKey_RessourceLoader:TLowerString = new TLowerString.Create("RessourceLoader")
+	global _profilerKey_AI_MINUTE:TLowerString[] = [new TLowerString.Create("PLAYER_AI1_MINUTE"), new TLowerString.Create("PLAYER_AI2_MINUTE"), new TLowerString.Create("PLAYER_AI3_MINUTE"), new TLowerString.Create("PLAYER_AI4_MINUTE")]
+	global _profilerKey_AI_SECOND:TLowerString[] = [new TLowerString.Create("PLAYER_AI1_SECOND"), new TLowerString.Create("PLAYER_AI2_SECOND"), new TLowerString.Create("PLAYER_AI3_SECOND"), new TLowerString.Create("PLAYER_AI4_SECOND")]
+
 	Function Update:Int()
-		TProfiler.Enter("Update")
+		TProfiler.Enter(_profilerKey_Update)
 		'every 3rd update do a low priority update
 		If GetDeltaTimer().timesUpdated Mod 3 = 0
 			EventManager.triggerEvent( TEventSimple.Create("App.onLowPriorityUpdate",Null) )
 		EndIf
 
-		TProfiler.Enter("RessourceLoader")
+		TProfiler.Enter(_profilerKey_RessourceLoader)
 		'check for new resources to load
 		RURC.Update()
-		TProfiler.Leave("RessourceLoader")
+		TProfiler.Leave(_profilerKey_RessourceLoader)
 
 
 		MOUSEMANAGER.Update()
@@ -1367,7 +1373,7 @@ endrem
 		'remove clicks done a longer time ago
 		MouseManager.RemoveOutdatedClicks(1000)
 
-		TProfiler.Leave("Update")
+		TProfiler.Leave(_profilerKey_Update)
 	End Function
 
 
@@ -1497,9 +1503,9 @@ endrem
 		GetWorld().RenderDebug(660,0, 140, 180)
 		'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
 
-		DrawProfilerCallHistory(TProfiler.GetCall("PLAYER_AI2_MINUTE"), 140, 0*60, 200, 50, "AI 2")
-		DrawProfilerCallHistory(TProfiler.GetCall("PLAYER_AI3_MINUTE"), 140, 1*60, 200, 50, "AI 3")
-		DrawProfilerCallHistory(TProfiler.GetCall("PLAYER_AI4_MINUTE"), 140, 2*60, 200, 50, "AI 4")
+		DrawProfilerCallHistory(TProfiler.GetCall(_profilerKey_AI_MINUTE[2-1]), 140, 0*60, 200, 50, "AI 2")
+		DrawProfilerCallHistory(TProfiler.GetCall(_profilerKey_AI_MINUTE[3-1]), 140, 1*60, 200, 50, "AI 3")
+		DrawProfilerCallHistory(TProfiler.GetCall(_profilerKey_AI_MINUTE[4-1]), 140, 2*60, 200, 50, "AI 4")
 
 	End Function
 
@@ -1626,7 +1632,7 @@ endrem
 			GetGraphicsManager().Cls()
 		EndIf
 
-		TProfiler.Enter("Draw")
+		TProfiler.Enter(_profilerKey_Draw)
 		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
 
 		'=== RENDER TOASTMESSAGES ===
@@ -1739,7 +1745,7 @@ endrem
 
 		GetGraphicsManager().Flip(GetDeltaTimer().HasLimitedFPS())
 
-		TProfiler.Leave("Draw")
+		TProfiler.Leave(_profilerKey_Draw)
 		Return True
 	End Function
 
@@ -3079,7 +3085,7 @@ Type TScreen_MainMenu Extends TGameScreen
 
 	'override default draw
 	Method Draw:Int(tweenValue:Float)
-		DrawMenuBackground(False)
+		DrawMenuBackground(False, True)
 
 		'draw the janitor BEHIND the panels
 		If MainMenuJanitor Then MainMenuJanitor.Draw(tweenValue)
@@ -3269,7 +3275,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 
 	Method Draw:Int(tweenValue:Float)
-		DrawMenuBackground(True)
+		DrawMenuBackground(True, False)
 
 		If Not GetGame().onlinegame
 			guiGameListWindow.SetCaption(GetLocale("MENU_NETWORKGAME")+" : "+GetLocale("MENU_AVAILABLE_GAMES"))
@@ -3852,27 +3858,7 @@ Type GameEvents
 				EndIf
 
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
-
-				If Int(params) = 1
-					If Not player.IsLocalAI()
-						player.SetLocalAIControlled()
-						'reload ai - to avoid using "outdated" information
-						player.InitAI( New TAI.Create(player.playerID, GetGame().GetPlayerAIFileURI(player.playerID)) )
-						player.playerAI.CallOnInit()
-						'player.PlayerAI.CallLuaFunction("OnForceNextTask", null)
-						GetGame().SendSystemMessage("[DEV] Enabled AI for player "+player.playerID)
-					Else
-						GetGame().SendSystemMessage("[DEV] Already enabled AI for player "+player.playerID)
-					EndIf
-				Else
-					If player.IsLocalAI()
-						'calling "SetLocalHumanControlled()" deletes AI too
-						player.SetLocalHumanControlled()
-						GetGame().SendSystemMessage("[DEV] Disabled AI for player "+player.playerID)
-					Else
-						GetGame().SendSystemMessage("[DEV] Already disabled AI for player "+player.playerID)
-					EndIf
-				EndIf
+				DebugScreen.Dev_SetPlayerAI(player.playerID, Int(params) = 1)
 
 			Case "bossmood"
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
@@ -4210,12 +4196,12 @@ Type GameEvents
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI()
-				TProfiler.Enter("PLAYER_AI"+player.playerID+"_SECOND", False)
+				TProfiler.Enter(TApp._profilerKey_AI_SECOND[player.playerID-1], False)
 				player.PlayerAI.AddEventObj( New TAIEvent.SetName("ConditionalCallOnTick"))
 				player.PlayerAI.AddEventObj( New TAIEvent.SetName("OnSecond").AddInt(timeGone))
 				player.PlayerAI.ConditionalCallOnTick()
 				player.PlayerAI.CallOnRealtimeSecond(timeGone)
-				TProfiler.Leave("PLAYER_AI"+player.playerID+"_SECOND", 100, False)
+				TProfiler.Leave(TApp._profilerKey_AI_SECOND[player.playerID-1], 100, False)
 			EndIf
 		Next
 		Return True
@@ -4249,12 +4235,12 @@ Type GameEvents
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI()
-				TProfiler.Enter("PLAYER_AI"+player.playerID+"_MINUTE", False)
+				TProfiler.Enter(TApp._profilerKey_AI_MINUTE[player.playerID-1], False)
 				player.PlayerAI.AddEventObj( New TAIEvent.SetName("ConditionalCallOnTick"))
 				player.PlayerAI.AddEventObj( New TAIEvent.SetName("onMinute").AddInt(minute))
 				player.PlayerAI.ConditionalCallOnTick()
 				player.PlayerAI.CallOnMinute(minute)
-				TProfiler.Leave("PLAYER_AI"+player.playerID+"_MINUTE", 100, False)
+				TProfiler.Leave(TApp._profilerKey_AI_MINUTE[player.playerID-1], 100, False)
 			EndIf
 		Next
 		Return True

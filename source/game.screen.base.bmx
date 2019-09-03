@@ -293,10 +293,8 @@ Type TInGameScreen Extends TScreen
 
 
 	Method DrawOverlay:Int(tweenValue:Float)
-		'TProfiler.Enter("Draw-Interface")
 		GetInGameInterface().Draw()
 		TError.DrawErrors()
-		'TProfiler.Leave("Draw-Interface")
 	End Method
 
 
@@ -588,7 +586,6 @@ Type TInGameScreen_Room Extends TInGameScreen
 
 		If GetBackground() And Not room.GetBackground() Then GetBackground().Draw(0, 0)
 		room.Draw()
-		'TProfiler.Leave("Draw-Room")
 	End Method
 End Type
 

@@ -42,6 +42,13 @@ Type TBuilding Extends TBuildingBase
 	Field gfx_buildingFence:TSprite				{nosave}
 	Field gfx_buildingRoof:TSprite				{nosave}
 
+	Field gfx_plant3a:TSprite					{nosave}
+	Field gfx_plant3b:TSprite					{nosave}
+	Field gfx_plant1:TSprite					{nosave}
+	Field gfx_plant2:TSprite					{nosave}
+	Field gfx_plant4:TSprite					{nosave}
+	Field gfx_plant6:TSprite					{nosave}
+
 	'the room used for the building
 	Field room:TRoomBase = Null
 	Field roomUsedTooltip:TTooltip = Null
@@ -51,6 +58,8 @@ Type TBuilding Extends TBuildingBase
 
 	Global _backgroundModified:Int = False
 	Global _eventListeners:TLink[]
+
+	Global _profilerKey_DrawBuildingBG:TLowerString = new TLowerString.Create("Draw-Building-Background")
 
 
 	'override - create a Building instead of BuildingBase
@@ -256,6 +265,12 @@ Type TBuilding Extends TBuildingBase
 		gfx_buildingFence = GetSpriteFromRegistry("gfx_building_Zaun")
 		gfx_buildingRoof = GetSpriteFromRegistry("gfx_building_roof")
 
+		gfx_plant3a = GetSpriteFromRegistry("gfx_building_Pflanze3a")
+		gfx_plant3b = GetSpriteFromRegistry("gfx_building_Pflanze3b")
+		gfx_plant1 = GetSpriteFromRegistry("gfx_building_Pflanze1")
+		gfx_plant2 = GetSpriteFromRegistry("gfx_building_Pflanze2")
+		gfx_plant4 = GetSpriteFromRegistry("gfx_building_Pflanze4")
+		gfx_plant6 = GetSpriteFromRegistry("gfx_building_Pflanze6")
 
 		'=== SETUP SOFTDRINK MACHINE ===
 		softDrinkMachine = New TSpriteEntity
@@ -448,9 +463,9 @@ Type TBuilding Extends TBuildingBase
 
 
 	Method Render:Int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
-		TProfiler.Enter("Draw-Building-Background")
+		TProfiler.Enter(_profilerKey_DrawBuildingBG)
 		DrawBackground()
-		TProfiler.Leave("Draw-Building-Background")
+		TProfiler.Leave(_profilerKey_DrawBuildingBG)
 
 		SetBlend AlphaBlend
 		If Not GetWorld().autoRenderSnow Then GetWorld().RenderSnow()
@@ -506,29 +521,29 @@ Type TBuilding Extends TBuildingBase
 		Next
 
 		'floor 1
-		GetSpriteFromRegistry("gfx_building_Pflanze3a").Draw(buildingInner.GetScreenX() + 60, buildingInner.GetScreenY() + GetFloorY2(1), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant3a.Draw(buildingInner.GetScreenX() + 60, buildingInner.GetScreenY() + GetFloorY2(1), -1, ALIGN_LEFT_BOTTOM)
 		'floor 2	- between rooms
-		GetSpriteFromRegistry("gfx_building_Pflanze4").Draw(buildingInner.GetScreenX() + floorWidth - 105, buildingInner.GetScreenY() + GetFloorY2(2), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant4.Draw(buildingInner.GetScreenX() + floorWidth - 105, buildingInner.GetScreenY() + GetFloorY2(2), -1, ALIGN_LEFT_BOTTOM)
 		'floor 3
-		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(buildingInner.GetScreenX() + floorWidth - 60, buildingInner.GetScreenY() + GetFloorY2(3), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant1.Draw(buildingInner.GetScreenX() + floorWidth - 60, buildingInner.GetScreenY() + GetFloorY2(3), -1, ALIGN_LEFT_BOTTOM)
 		'floor 4
-		GetSpriteFromRegistry("gfx_building_Pflanze6").Draw(buildingInner.GetScreenX() + floorWidth - 60, buildingInner.GetScreenY() + GetFloorY2(4), -1, ALIGN_RIGHT_BOTTOM)
+		gfx_plant6.Draw(buildingInner.GetScreenX() + floorWidth - 60, buildingInner.GetScreenY() + GetFloorY2(4), -1, ALIGN_RIGHT_BOTTOM)
 		'floor 6
-		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(6), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant2.Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(6), -1, ALIGN_LEFT_BOTTOM)
 		'floor 8
-		GetSpriteFromRegistry("gfx_building_Pflanze6").Draw(buildingInner.GetScreenX() + floorWidth - 95, buildingInner.GetScreenY() + GetFloorY2(8), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant6.Draw(buildingInner.GetScreenX() + floorWidth - 95, buildingInner.GetScreenY() + GetFloorY2(8), -1, ALIGN_LEFT_BOTTOM)
 		'floor 9
-		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(buildingInner.GetScreenX() + floorWidth - 130, buildingInner.GetScreenY() + GetFloorY2(9), -1, ALIGN_LEFT_BOTTOM)
-		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(buildingInner.GetScreenX() + floorWidth - 110, buildingInner.GetScreenY() + GetFloorY2(9), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant1.Draw(buildingInner.GetScreenX() + floorWidth - 130, buildingInner.GetScreenY() + GetFloorY2(9), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant2.Draw(buildingInner.GetScreenX() + floorWidth - 110, buildingInner.GetScreenY() + GetFloorY2(9), -1, ALIGN_LEFT_BOTTOM)
 		'floor 11
-		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(buildingInner.GetScreenX() + 85, buildingInner.GetScreenY() + GetFloorY2(11), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant1.Draw(buildingInner.GetScreenX() + 85, buildingInner.GetScreenY() + GetFloorY2(11), -1, ALIGN_LEFT_BOTTOM)
 		'floor 12
-		GetSpriteFromRegistry("gfx_building_Pflanze3a").Draw(buildingInner.GetScreenX() + 60, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
-		GetSpriteFromRegistry("gfx_building_Pflanze3b").Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
-		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(buildingInner.GetScreenX() + floorWidth - 75, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant3a.Draw(buildingInner.GetScreenX() + 60, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant3b.Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant2.Draw(buildingInner.GetScreenX() + floorWidth - 75, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
 		'floor 13
-		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(13), -1, ALIGN_LEFT_BOTTOM)
-		GetSpriteFromRegistry("gfx_building_Pflanze3b").Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant1.Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(13), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant3b.Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
 
 
 		'draw entrance on top of figures

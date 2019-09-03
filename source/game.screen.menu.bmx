@@ -1,4 +1,4 @@
-﻿SuperStrict
+SuperStrict
 Import "Dig/base.gfx.gui.checkbox.bmx"
 Import "Dig/base.gfx.gui.label.bmx"
 Import "Dig/base.gfx.gui.input.bmx"
@@ -31,9 +31,9 @@ Type TScreen_GameSettings Extends TGameScreen
 	Field guiGameSeedLabel:TGuiLabel
 	Field guiGameSeed:TGUIinput
 	'for easier iteration over the widgets (and their tooltips)
-	Field guiWidgets:TList = new TList
+	Field guiWidgets:TList = New TList
 
-	Field figureBaseCount:int = 1
+	Field figureBaseCount:Int = 1
 	Field modifiedPlayers:Int = False
 	Field modifiedGameOptions:Int = False
 
@@ -67,7 +67,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		Local panelGap:Int = GUIManager.config.GetInt("panelGap", 10)
 		guiSettingsWindow.SetPadding(headerSize, panelGap, panelGap, panelGap)
 
-		guiAllPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, int(playerBoxDimension.GetY() + 2 * panelGap))
+		guiAllPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, Int(playerBoxDimension.GetY() + 2 * panelGap))
 		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
 
 		guiGameTitleLabel = New TGUILabel.Create(New TVec2D.Init(0, 0), "", TColor.CreateGrey(90), name)
@@ -159,10 +159,10 @@ Type TScreen_GameSettings Extends TGameScreen
 
 			guiDifficulty[i] = New TGUIDropDown.Create(New TVec2D.Init(0, 0), New TVec2D.Init(guiPlayerPanels[i].GetContentScreenWidth(), -1), "Leicht", 16, name)
 			guiDifficulty[i].rect.position.SetY(guiPlayerPanels[i].GetContentScreenHeight() - guiDifficulty[i].rect.GetH() + 4)
-			local difficultyValues:string[] = ["easy", "normal", "hard"]
-			local itemHeight:int = 0
-			For local s:string = EachIn difficultyValues
-				local item:TGUIDropDownItem = new TGUIDropDownItem.Create(new TVec2D, new TVec2D.Init(100,20), GetLocale("DIFFICULTY_"+s))
+			Local difficultyValues:String[] = ["easy", "normal", "hard"]
+			Local itemHeight:Int = 0
+			For Local s:String = EachIn difficultyValues
+				Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(New TVec2D, New TVec2D.Init(100,20), GetLocale("DIFFICULTY_"+s))
 				item.data.Add("value", s)
 
 				guiDifficulty[i].AddItem( item )
@@ -222,7 +222,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		'guiWidgets.AddLast(guiButtonStart)
 		'guiWidgets.AddLast(guiButtonBack)
 		'guiWidgets.AddLast(guiChatWindow:TGUIChatWindow
-		For local i:int = 0 until 4
+		For Local i:Int = 0 Until 4
 			guiWidgets.AddLast(guiPlayerPanels[i])
 			guiWidgets.AddLast(guiPlayerNames[i])
 			guiWidgets.AddLast(guiChannelNames[i])
@@ -239,8 +239,8 @@ Type TScreen_GameSettings Extends TGameScreen
 		SetLanguage()
 
 
-		Local figuresConfig:TData = TData(GetRegistry().Get("figuresConfig", new TData))
-		Local playerFigures:string[] = figuresConfig.GetString("playerFigures", "").split(",")
+		Local figuresConfig:TData = TData(GetRegistry().Get("figuresConfig", New TData))
+		Local playerFigures:String[] = figuresConfig.GetString("playerFigures", "").split(",")
 		figureBaseCount = Len(playerFigures)
 
 
@@ -267,8 +267,8 @@ Type TScreen_GameSettings Extends TGameScreen
 	End Method
 
 
-	Function CreateBasicTooltip:TGUITooltipBase(titleKey:string, contentKey:string)
-		local tooltip:TGUITooltipBase
+	Function CreateBasicTooltip:TGUITooltipBase(titleKey:String, contentKey:String)
+		Local tooltip:TGUITooltipBase
 		tooltip = New TGUITooltipBase.Initialize("", "", New TRectangle.Init(0,0,-1,-1))
 '		tooltips[i].parentArea = New TRectangle
 		tooltip.SetOrientationPreset("TOP")
@@ -282,7 +282,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		tooltip.data.Add("tooltipTitleLocale", titleKey)
 		tooltip.data.Add("tooltipContentLocale", contentKey)
 
-		return tooltip
+		Return tooltip
 	End Function
 
 
@@ -298,8 +298,8 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiPlayerNames[0].SetValue(GetGameBase().username)
 		guiChannelNames[0].SetValue(GetGameBase().userchannelname)
 
-		SeedRnd(Millisecs())
-		guiGameSeed.SetValue( string(Rand(0, 10000000)) )
+		SeedRnd(MilliSecs())
+		guiGameSeed.SetValue( String(Rand(0, 10000000)) )
 
 		GetPlayerBase(1).Name = GetGameBase().username
 		GetPlayerBase(1).Channelname = GetGameBase().userchannelname
@@ -308,26 +308,26 @@ Type TScreen_GameSettings Extends TGameScreen
 	End Method
 
 
-	Method RefreshPlayerGUIData:int(playerID:int)
+	Method RefreshPlayerGUIData:Int(playerID:Int)
 		guiPlayerNames[playerID-1].SetValue( GetPlayerBase(playerID).name )
 		guiChannelNames[playerID-1].SetValue( GetPlayerBase(playerID).channelName )
 
-		if GetPlayerBaseCollection().IsHuman(playerID)
+		If GetPlayerBaseCollection().IsHuman(playerID)
 			guiPlayerNames[playerID-1].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_player"))
-		else
+		Else
 			guiPlayerNames[playerID-1].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_computerplayer"))
-		endif
+		EndIf
 
 
-		local selectedDropDownItem:TGUIDropDownItem
+		Local selectedDropDownItem:TGUIDropDownItem
 		For Local item:TGUIDropDownItem = EachIn guiDifficulty[playerID-1].GetEntries()
-			Local s:string = item.data.GetString("value")
-			if s = GetPlayerBase(playerID).difficultyGUID
+			Local s:String = item.data.GetString("value")
+			If s = GetPlayerBase(playerID).difficultyGUID
 				selectedDropDownItem = item
 				Exit
-			endif
+			EndIf
 		Next
-		if selectedDropDownItem then guiDifficulty[playerID-1].SetSelectedEntry(selectedDropDownItem)
+		If selectedDropDownItem Then guiDifficulty[playerID-1].SetSelectedEntry(selectedDropDownItem)
 	End Method
 
 
@@ -349,27 +349,27 @@ Type TScreen_GameSettings Extends TGameScreen
 		'left/right arrows to change figure base
 		For Local i:Int = 0 To 7
 			If sender = guiFigureArrows[i]
-				local playerID:int = 1+int(Ceil(i/2))
+				Local playerID:Int = 1+Int(Ceil(i/2))
 				If i Mod 2  = 0 Then GetPlayerBase(playerID).UpdateFigureBase(GetPlayerBase(playerID).figurebase -1)
 				If i Mod 2 <> 0 Then GetPlayerBase(playerID).UpdateFigureBase(GetPlayerBase(playerID).figurebase +1)
 				modifiedPlayers = True
 
-				return True
+				Return True
 			EndIf
 
 			If sender = guiFigureSelectArrows[i]
-				local playerID:int = 1+int(Ceil(i/2))
-				local newPlayerID:int = -1
+				Local playerID:Int = 1+Int(Ceil(i/2))
+				Local newPlayerID:Int = -1
 				'left
-				If i Mod 2  = 0 and playerID>1 Then newPlayerID = playerID - 1
-				If i Mod 2 <> 0 and playerID<4 Then newPlayerID = playerID + 1
+				If i Mod 2  = 0 And playerID>1 Then newPlayerID = playerID - 1
+				If i Mod 2 <> 0 And playerID<4 Then newPlayerID = playerID + 1
 
-				if newPlayerID <> -1
-					if GetGameBase().SwitchPlayerIdentity(newPlayerID, playerID)
+				If newPlayerID <> -1
+					If GetGameBase().SwitchPlayerIdentity(newPlayerID, playerID)
 						GetGameBase().SetLocalPlayer(newPlayerID)
 
 						'switch difficulties too
-						local oldDifficultyGUID:string = GetPlayerBase(playerID).difficultyGUID
+						Local oldDifficultyGUID:String = GetPlayerBase(playerID).difficultyGUID
 						GetPlayerBase(playerID).difficultyGUID = GetPlayerBase(newPlayerID).difficultyGUID
 						GetPlayerBase(newPlayerID).difficultyGUID = oldDifficultyGUID
 
@@ -380,10 +380,10 @@ Type TScreen_GameSettings Extends TGameScreen
 						GetPlayerBase(playerID).UpdateFigureBase(GetPlayerBase(playerID).figurebase)
 						GetPlayerBase(newPlayerID).UpdateFigureBase(GetPlayerBase(newPlayerID).figurebase)
 						modifiedPlayers = True
-					endif
-				endif
+					EndIf
+				EndIf
 
-				return True
+				Return True
 			EndIf
 		Next
 	End Method
@@ -440,7 +440,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		Select sender
 			Case guiFilterUnreleased
 					'ATTENTION: use "not" as checked means "not ignore"
-					TProgrammeData.setIgnoreUnreleasedProgrammes( not sender.isChecked() )
+					TProgrammeData.setIgnoreUnreleasedProgrammes( Not sender.isChecked() )
 		End Select
 
 		'only inform when in settings menu
@@ -460,36 +460,36 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'name or channel changed?
 		For Local i:Int = 0 To 3
-			if not GetPlayerBase(i+1) then continue
+			If Not GetPlayerBase(i+1) Then Continue
 
 			If sender = guiPlayerNames[i] Then GetPlayerBase(i+1).Name = value
 			If sender = guiChannelNames[i] Then GetPlayerBase(i+1).channelName = value
 
 			If sender = guiDifficulty[i]
-				local item:TGUIDropDownItem = TGUIDropDownItem(guiDifficulty[i].GetSelectedEntry())
-				if item
+				Local item:TGUIDropDownItem = TGUIDropDownItem(guiDifficulty[i].GetSelectedEntry())
+				If item
 					GetPlayerBase(i+1).SetDifficulty( item.data.GetString("value") )
-				endif
-			endif
+				EndIf
+			EndIf
 		Next
 
 
-		if sender = guiGameSeed
-			local valueNumeric:string = string(StringHelper.NumericFromString(value))
-			if value <> valueNumeric then sender.SetValue(valueNumeric)
-			GetGameBase().SetRandomizerBase( int(valueNumeric)  )
-		endif
+		If sender = guiGameSeed
+			Local valueNumeric:String = String(StringHelper.NumericFromString(value))
+			If value <> valueNumeric Then sender.SetValue(valueNumeric)
+			GetGameBase().SetRandomizerBase( Int(valueNumeric)  )
+		EndIf
 
 
 		'start year changed
 		If sender = guiStartYear
-			GetGameBase().SetStartYear( int(sender.GetValue()) )
+			GetGameBase().SetStartYear( Int(sender.GetValue()) )
 			'use the (maybe corrected value)
 			TGUIInput(sender).value = GetGameBase().GetStartYear()
 
 			'store it as user setting so it gets used in
 			'GetGameBase().PreparewNewGame()
-			GetGameBase().userStartYear = int(TGUIInput(sender).value)
+			GetGameBase().userStartYear = Int(TGUIInput(sender).value)
 		EndIf
 	End Method
 
@@ -499,14 +499,14 @@ Type TScreen_GameSettings Extends TGameScreen
 		'not needed, done during update
 		'guiSettingsWindow.SetCaption(GetLocale("MENU_NETWORKGAME"))
 
-		For local widget:TGUIObject = EachIn guiWidgets
-			if widget.GetTooltip()
+		For Local widget:TGUIObject = EachIn guiWidgets
+			If widget.GetTooltip()
 				widget.GetTooltip().SetTitle(GetLocale(widget.GetTooltip().data.GetString("tooltipTitleLocale")))
 				widget.GetTooltip().SetContent(GetLocale(widget.GetTooltip().data.GetString("tooltipContentLocale")))
 				widget.GetTooltip().parentArea = widget.GetScreenRect()
-			endif
+			EndIf
 		Next
-rem
+Rem
 		local widgets:TGUIObject[] = [guiStartYear, guiGameSeed, guiGameTitle]
 		For local i:int = 0 until 4
 			widgets :+ [TGUIObject(guiDifficulty[i]), TGUIObject(guiPlayerNames[i]), TGUIObject(guiChannelNames[i])]
@@ -594,8 +594,8 @@ endrem
 		GUIManager.Draw(nameState, 101)
 
 		'draw tooltips above everything
-		For local widget:TGUIObject = EachIn guiWidgets
-			if widget.GetTooltip() then widget.GetTooltip().Render()
+		For Local widget:TGUIObject = EachIn guiWidgets
+			If widget.GetTooltip() Then widget.GetTooltip().Render()
 		Next
 	End Method
 
@@ -652,23 +652,23 @@ endrem
 		EndIf
 
 
-		For Local i:Int = 0 until 4
+		For Local i:Int = 0 Until 4
 			If GetGameBase().networkgame Or GetGameBase().isGameLeader()
-				If not GetGameBase().IsGameState(TGameBase.STATE_PREPAREGAMESTART) And GetGameBase().IsControllingPlayer(i+1)
+				If Not GetGameBase().IsGameState(TGameBase.STATE_PREPAREGAMESTART) And GetGameBase().IsControllingPlayer(i+1)
 					guiPlayerNames[i].enable()
 					guiChannelNames[i].enable()
 
 					'only enable if direction is allowed
-					if GetPlayerBase(i+1).figureBase > 0
+					If GetPlayerBase(i+1).figureBase > 0
 						guiFigureArrows[i*2].Enable()
-					else
+					Else
 						guiFigureArrows[i*2].Disable()
-					endif
-					if GetPlayerBase(i+1).figureBase < figureBaseCount - 1
+					EndIf
+					If GetPlayerBase(i+1).figureBase < figureBaseCount - 1
 						guiFigureArrows[i*2 +1].Enable()
-					else
+					Else
 						guiFigureArrows[i*2 +1].Disable()
-					endif
+					EndIf
 				Else
 					guiPlayerNames[i].disable()
 					guiChannelNames[i].disable()
@@ -678,26 +678,26 @@ endrem
 			EndIf
 
 
-			if GetPlayerBaseCollection().playerID = (i+1)
-				if not guiPlayerPanels[i].spriteTintColor then guiPlayerPanels[i].spriteTintColor = TColor.Create(255,240,235)
+			If GetPlayerBaseCollection().playerID = (i+1)
+				If Not guiPlayerPanels[i].spriteTintColor Then guiPlayerPanels[i].spriteTintColor = TColor.Create(255,240,235)
 
 				'show selection arrows (except most left/right)
-				if i=0
+				If i=0
 					guiFigureSelectArrows[i*2].Hide()
-				else
+				Else
 					guiFigureSelectArrows[i*2].Show()
-				endif
-				if i=3
+				EndIf
+				If i=3
 					guiFigureSelectArrows[i*2+1].Hide()
-				else
+				Else
 					guiFigureSelectArrows[i*2+1].Show()
-				endif
-			else
-				if guiPlayerPanels[i].spriteTintColor then guiPlayerPanels[i].spriteTintColor = null
+				EndIf
+			Else
+				If guiPlayerPanels[i].spriteTintColor Then guiPlayerPanels[i].spriteTintColor = Null
 				'hide selection arrows
 				guiFigureSelectArrows[i*2].Hide()
 				guiFigureSelectArrows[i*2+1].Hide()
-			endif
+			EndIf
 		Next
 
 		GUIManager.Update(settingsState)
@@ -751,63 +751,66 @@ endrem
 
 		If GetGameBase().networkgame = 1
 			'sync if the player got modified
-			If modifiedPlayers or Time.GetTimeGone() >= PlayerDetailsTimer + 2000
+			If modifiedPlayers Or Time.GetTimeGone() >= PlayerDetailsTimer + 2000
 				GetNetworkHelper().SendPlayerDetails()
 				PlayerDetailsTimer = MilliSecs()
 				modifiedPlayers = False
 			EndIf
-			If modifiedGameOptions or Time.GetTimeGone() >= OptionsTimer + 2000
-				print "NET: TODO - GetNetworkHelper().SendGameOptions()"
+			If modifiedGameOptions Or Time.GetTimeGone() >= OptionsTimer + 2000
+				Print "NET: TODO - GetNetworkHelper().SendGameOptions()"
 				'GetNetworkHelper().SendGameOptions()
 				OptionsTimer = MilliSecs()
 
 				modifiedPlayers = False
-			endif
+			EndIf
 		EndIf
 	End Method
 End Type
 
 
 
-Function DrawMenuBackground(darkened:Int=False)
+
+Global spriteNameLS_StartScreen:TLowerString = New TLowerString.Create("gfx_startscreen")
+Global spriteNameLS_StartScreenLogo:TLowerString = New TLowerString.Create("gfx_startscreen_logo")
+
+Function DrawMenuBackground(darkened:Int=False, drawLogo:Int = False)
 	'cls only needed if virtual resolution is enabled, else the
 	'background covers everything
-	if GetGraphicsManager().HasBlackBars()
+	If GetGraphicsManager().HasBlackBars()
 		SetClsColor 0,0,0
 		'use graphicsmanager's cls as it resets virtual resolution
 		'first
 		'Cls()
 		GetGraphicsManager().Cls()
-	endif
+	EndIf
 
 	SetColor 255,255,255
-	GetSpriteFromRegistry("gfx_startscreen").Draw(0,0)
+	GetSpriteFromRegistry(spriteNameLS_StartScreen).Draw(0,0)
 
 
 	'draw an (animated) logo
-	Select ScreenCollection.GetCurrentScreen().name.toUpper()
-		Case "NetworkLobby".toUpper(), "MainMenu".toUpper()
-			Global logoAnimStart:Int = 0
-			Global logoAnimTime:Int = 1500
-			Global logoScale:Float = 0.0
-			Local logo:TSprite = GetSpriteFromRegistry("gfx_startscreen_logo")
-			If logo
-				Local timeGone:Int = Time.GetTimeGone()
-				If logoAnimStart = 0 Then logoAnimStart = timeGone
-				logoScale = TInterpolation.BackOut(0.0, 1.0, Min(logoAnimTime, timeGone - logoAnimStart), logoAnimTime)
-				logoScale :* TInterpolation.BounceOut(0.0, 1.0, Min(logoAnimTime, timeGone - logoAnimStart), logoAnimTime)
+	If drawLogo
+		Global logoAnimStart:Int = 0
+		Global logoAnimTime:Int = 1500
+		Global logoScale:Float = 0.0
+		Local logo:TSprite = GetSpriteFromRegistry(spriteNameLS_StartScreenLogo)
+		If logo
+			Local timeGone:Int = Time.GetTimeGone()
+			If logoAnimStart = 0 Then logoAnimStart = timeGone
+			logoScale = TInterpolation.BackOut(0.0, 1.0, Min(logoAnimTime, timeGone - logoAnimStart), logoAnimTime)
+			logoScale :* TInterpolation.BounceOut(0.0, 1.0, Min(logoAnimTime, timeGone - logoAnimStart), logoAnimTime)
 
-				Local oldAlpha:Float = GetAlpha()
-				SetAlpha Float(TInterpolation.RegularOut(0.0, 1.0, Min(0.5*logoAnimTime, timeGone - logoAnimStart), 0.5*logoAnimTime))
+			Local oldAlpha:Float = GetAlpha()
+			SetAlpha Float(TInterpolation.RegularOut(0.0, 1.0, Min(0.5*logoAnimTime, timeGone - logoAnimStart), 0.5*logoAnimTime))
 
-				logo.Draw( GetGraphicsManager().GetWidth()/2, 150, -1, ALIGN_CENTER_CENTER, logoScale)
-				SetAlpha oldAlpha
-			EndIf
-	End Select
+			logo.Draw( GetGraphicsManager().GetWidth()/2, 150, -1, ALIGN_CENTER_CENTER, logoScale)
+			SetAlpha oldAlpha
+		EndIf
+	EndIf
 
 	If GetGameBase().IsGameState(TGameBase.STATE_MAINMENU)
 		SetColor 255,255,255
-		'GetBitmapFont("Default",13, BOLDFONT).DrawBlock("ACHTUNG neue Tastenkürzel:", 10,460, 300,20, Null,TColor.Create(140,75,75))
+		'GetBitmapFont("Default",13, BOLDFONT).DrawBlock("ACHTUNG neue Tastenk�rzel:", 10,460, 300,20, Null,TColor.Create(140,75,75))
 		'GetBitmapFont("Default",12).DrawBlock("|b|[S]|/b| Schnellspeichern - nun mit |b|[F5]|/b|~n|b|[L]|/b| Schnellspeicherstand einladen - nun mit |b|[F8]|/b|.~nDamit sollten versehentliche Spielverluste durch Einladerei minimiert werden.", 10,480, 300,50, Null,TColor.Create(75,75,75))
 
 

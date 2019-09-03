@@ -39,113 +39,144 @@ Import Brl.Map
 Import Brl.Threads
 ?
 Import "base.util.time.bmx"
+Import "external/string_comp.bmx"
 
 Type TProfilerCall
-	Field parent:TProfilerCall = null
-	Field name:String
+	Field parent:TProfilerCall = Null
+	Field _callPath:TLowerString
+	Field name:TLowerString
 	Field start:Long
 	Field firstStart:Long
 	Field timeTotal:Int
 	Field timeMax:Int
 	Field calls:Int
-	Field id:int = 0
+	Field id:Int = 0
 	Field historyTime:Long[]
 	Field historyDuration:Int[]
-	Field historyIndex:int = 0
+	Field historyIndex:Int = 0
 
-	Global callID:int = 0
+	Global callID:Int = 0
+	Global unknownLS:TLowerString = New TLowerString.Create("unknown")
+
 
 	Method New()
 		firstStart = Time.GetTimeGone()
 		callID :+ 1
 		id = callID
 	End Method
-		
 
-	Method GetDepth:int()
-		if parent then return parent.GetDepth() + 1
-		return 0
+
+	Method GetDepth:Int()
+		If parent Then Return parent.GetDepth() + 1
+		Return 0
 	End Method
 
 
-	Method GetCallPath:string()
-		if parent then return parent.GetCallPath() + "::" + name
+	Method GetCallPath:TLowerString()
+		if not name
+			If parent
+				return New TLowerString.Create(parent.GetCallPath().ToString() + "::unknown")
+			else
+				return unknownLS
+			endif
+		endif
 
-		return name
+
+		if not _callPath
+			If parent
+				_callPath = New TLowerString.Create(parent.GetCallPath().ToString() + "::" + name.ToString())
+			else
+				_callPath = name
+			endif
+		EndIf
+
+		return _callPath
 	End Method
 
 
 	Method GetParentTimeTotal:Int()
-		if parent then return parent.timeTotal
-		return 0
+		If parent Then Return parent.timeTotal
+		Return 0
 	End Method
 End Type
 
 
+
+
 Type TProfiler
 	Global activated:Int = 1
-	Global calls:TStringMap = new TStringMap
-	Global lastCall:TProfilerCall = null
+	Global calls:TObjectMap = New TObjectMap
+	Global lastCall:TProfilerCall = Null
 	?Threaded
 	Global accessMutex:TMutex = CreateMutex()
 	?
 
 
-	Function GetLog:string()
-		local result:string = ""
+	Function GetLog:String()
+		Local result:String = ""
 		result :+ ".-----------------------------------------------------------------------------------------."+"~n"
 		result :+ "| AppProfiler |                                                                           |"+"~n"
 		result :+ "|-----------------------------------------------------------------------------------------|"+"~n"
 		result :+ "| FUNCTION                            |   CALLS |  TOTAL |    MAX   | AVERAGE | OF PARENT |"+"~n"
 
-		local totalTime:int = 0
-		local entryNumber:int = 1
+		Local totalTime:Int = 0
+		Local entryNumber:Int = 1
 
 		'somehow adding to a tmap bugs out (think numbering sorting with
 		'prepended "0" in a string is buggy)
 		'so we just create an array from 0-maxID and add all calls to it
-		local idSortedCalls:TProfilerCall[] = new TProfilerCall[TProfilerCall.callID+1]
+		Local idSortedCalls:TProfilerCall[] = New TProfilerCall[TProfilerCall.callID+1]
 
 		For Local c:TProfilerCall = EachIn calls.Values()
-			if idSortedCalls.length <= c.id then idSortedCalls = idSortedCalls[.. c.id +1]
+			If idSortedCalls.length <= c.id Then idSortedCalls = idSortedCalls[.. c.id +1]
 			idSortedCalls[c.id] = c
 		Next
 
 		For Local c:TProfilerCall = EachIn idSortedCalls
-			local funcName:string = c.Name
-			if c.GetDepth() > 0
+			Local funcName:String
+			If c.name
+				funcName = c.name.ToString()
+			Else
+				funcName = "unknown"
+			EndIf
+
+			If c.GetDepth() > 0
 				funcName = "'-"+funcName
-				if c.GetDepth() >=2
+				If c.GetDepth() >=2
 					'prepend spaces
-					for local i:int = 0 to c.GetDepth() - 2
+					For Local i:Int = 0 To c.GetDepth() - 2
 						funcName = "  "+funcName
 					Next
-				endif
-			endif
-			local AvgTime:string = String( floor(int(1000.0*(Float(c.timeTotal) / Float(c.calls)))) / 1000.0 )
+				EndIf
+			EndIf
+			Local AvgTime:String = String( Floor(Int(1000.0*(Float(c.timeTotal) / Float(c.calls)))) / 1000.0 )
 
-			local percentageOfParent:string
-			if c.GetParentTimeTotal() > 0
-				percentageOfParent = LSet(100 * c.timeTotal/float(c.GetParentTimeTotal()), 4)+"%"
-			else
+			Local percentageOfParent:String
+			If c.GetParentTimeTotal() > 0
+				percentageOfParent = LSet(100 * c.timeTotal/Float(c.GetParentTimeTotal()), 4)+"%"
+			Else
 				percentageOfParent = RSet("100",4)+"%"
-			endif
+			EndIf
 
 			result :+ "| " + LSet(funcName, 35) + " | " + RSet(c.calls, 7) + " | " + LSet(String(c.timeTotal / 1000.0), 5)+"s" + " | " + RSet(c.timeMax,6)+"ms" + " | " + LSet(AvgTime,5)+"ms"+ " |     "+percentageOfParent+" |" + "~n"
 			entryNumber :+1
 		Next
-		If not activated
+		If Not activated
 			result :+ "| Profiler deactivated                                                                    |" +"~n"
 		EndIf
 		result :+ "'-----------------------------------------------------------------------------------------'" +"~n"
-		
 
-		return result
+
+		Return result
 	End Function
-	
-	
-	Function GetCall:TProfilerCall(callName:string)
-		return TProfilerCall(calls.ValueForKey(callName))
+
+
+	Function GetCall:TProfilerCall(callName:Object)
+		If TLowerString(callName)
+			Return TProfilerCall(calls.ValueForKey(callName))
+		Else
+			Return TProfilerCall(calls.ValueForKey(New TLowerString.Create(String(callName))))
+		EndIf
 	End Function
 
 
@@ -156,21 +187,28 @@ Type TProfiler
 	End Function
 
 
-	Function GetCallPath:string(functionName:string)
-		if lastCall
-			if lastCall.name <> functionName
-				return lastCall.GetCallPath() + "::" + functionName
-			else
-				return lastCall.GetCallPath()
-			endif
-		endif
+	Function GetCallPath:TLowerString(functionName:Object)
+		Local ls:TLowerString = TLowerString(functionName)
+		If Not ls Then ls = New TLowerString.Create( String(functionName) )
 
-		return functionName
+		If lastCall
+			If not lastCall.name.Equals(ls)
+				Return New TLowerString.Create( lastCall.GetCallPath().ToString() + "::" + ls.ToString() )
+			Else
+				Return lastCall.GetCallPath()
+			EndIf
+		EndIf
+
+		If Not TLowerString(functionName)
+			Return New TLowerString.Create( String(functionName) )
+		Else
+			Return TLowerString(functionName)
+		EndIf
 	End Function
 
 
-	Function Enter:int(func:String, obtainCallPath:int = True)
-		If not TProfiler.activated then return False
+	Function Enter:Int(func:Object, obtainCallPath:Int = True)
+		If Not TProfiler.activated Then Return False
 
 		?Threaded
 '			return TRUE
@@ -178,25 +216,29 @@ Type TProfiler
 			LockMutex(accessMutex)
 		?
 
+		Local funcLS:TLowerString = TLowerString(func)
+		If Not funcLS Then funcLS = New TLowerString.Create(String(func))
+
+
 		'try to fetch call from list
-		local funcKey:String
-		if obtainCallPath
-			funcKey = GetCallPath(func)
-		else
-			funcKey = func
-		endif
+		Local funcKey:TLowerString
+		If obtainCallPath
+			funcKey = GetCallPath(funcLS)
+		Else
+			funcKey = funcLS
+		EndIf
 		Local call:TProfilerCall = TProfilerCall(calls.ValueForKey(funcKey))
 
 		'create new if not existing yet
-		if call = null
+		If call = Null
 			call = New TProfilerCall
 			call.calls = 0
 			call.parent	= TProfiler.lastCall
-			call.name = func
+			call.name = funcLS
 
 			calls.insert(funcKey, call)
-		endif
-		
+		EndIf
+
 		call.start	= Time.GetTimeGone()
 		call.calls	:+1
 
@@ -206,13 +248,13 @@ Type TProfiler
 
 		?Threaded
 			'wait for the mutex to get access to child variables
-			UnLockMutex(accessMutex)
+			UnlockMutex(accessMutex)
 		?
 	End Function
 
 
-	Function Leave:int( func:String, historyMax:int = 1, obtainCallPath:int = True)
-		If not TProfiler.activated then return False
+	Function Leave:Int( func:Object, historyMax:Int = 1, obtainCallPath:Int = True)
+		If Not TProfiler.activated Then Return False
 
 		?Threaded
 			'wait for the mutex to get access to child variables
@@ -220,44 +262,45 @@ Type TProfiler
 		?
 
 		'just move 1 upwards
-		if func = ""
-			if TProfiler.lastCall then TProfiler.lastCall = TProfiler.lastCall.parent
-		else
+		If Not TLowerString(func) And String(func)=""
+			If TProfiler.lastCall Then TProfiler.lastCall = TProfiler.lastCall.parent
+		Else
 			'try to fetch call from list
-			local funcKey:String
-			if obtainCallPath
+			Local funcKey:TLowerString
+			If obtainCallPath
 				funcKey = GetCallPath(func)
-			else
-				funcKey = func
-			endif
+			Else
+				funcKey = TLowerString(func)
+				If Not funcKey Then funcKey = New TLowerString.Create(String(func))
+			EndIf
 			Local call:TProfilerCall = TProfilerCall(calls.ValueForKey(funcKey))
 
-			If call <> null
+			If call <> Null
 				If call.historyTime.length < historyMax
 					call.historyTime = call.historyTime[ .. historyMax]
 					call.historyDuration = call.historyDuration[ .. historyMax]
 				EndIf
 				call.historyIndex = Min(call.historyIndex, historyMax-1)
 				call.historyTime[ call.historyIndex ] = call.start
-				call.historyDuration[ call.historyIndex ] = int(Time.GetTimeGone() - call.start)
+				call.historyDuration[ call.historyIndex ] = Int(Time.GetTimeGone() - call.start)
 
 				'save time call took
 				call.timeTotal :+ (call.historyDuration[ call.historyIndex ])
 				call.timeMax = Max(call.timeMax, call.historyDuration[ call.historyIndex ])
 
 				'move on to next history slot
-				call.historyIndex = (call.historyIndex + 1) mod Max(1, historyMax)
+				call.historyIndex = (call.historyIndex + 1) Mod Max(1, historyMax)
 
 				'set last call to parent (if there is one)
 				TProfiler.lastCall = call.parent
 			EndIf
-		endif
+		EndIf
 
 		?Threaded
 			'wait for the mutex to get access to child variables
-			UnLockMutex(accessMutex)
+			UnlockMutex(accessMutex)
 		?
 
-		return True
+		Return True
 	End Function
 End Type

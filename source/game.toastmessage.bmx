@@ -28,6 +28,10 @@ Type TGameToastMessage extends TToastMessage
 	Field _registeredEventListener:TLink[]
 	Field _closeAtWorldTime:Double = -1
 	Field _closeAtWorldTimeText:String = "closing at %TIME%"
+	Global spriteNameLS_MessageType_Info:TLowerString = new TLowerString.Create("gfx_toastmessage.info")
+	Global spriteNameLS_MessageType_Attention:TLowerString = new TLowerString.Create("gfx_toastmessage.attention")
+	Global spriteNameLS_MessageType_Positive:TLowerString = new TLowerString.Create("gfx_toastmessage.positive")
+	Global spriteNameLS_MessageType_Negative:TLowerString = new TLowerString.Create("gfx_toastmessage.negative")
 
 
 	Method New()
@@ -53,13 +57,13 @@ Type TGameToastMessage extends TToastMessage
 
 		Select messageType
 			case 0
-				self.backgroundSprite = GetSpriteFromRegistry("gfx_toastmessage.info")
+				self.backgroundSprite = GetSpriteFromRegistry(spriteNameLS_MessageType_Info)
 			case 1
-				self.backgroundSprite = GetSpriteFromRegistry("gfx_toastmessage.attention")
+				self.backgroundSprite = GetSpriteFromRegistry(spriteNameLS_MessageType_Attention)
 			case 2
-				self.backgroundSprite = GetSpriteFromRegistry("gfx_toastmessage.positive")
+				self.backgroundSprite = GetSpriteFromRegistry(spriteNameLS_MessageType_Positive)
 			case 3
-				self.backgroundSprite = GetSpriteFromRegistry("gfx_toastmessage.negative")
+				self.backgroundSprite = GetSpriteFromRegistry(spriteNameLS_MessageType_Negative)
 		EndSelect
 
 		RecalculateHeight()
