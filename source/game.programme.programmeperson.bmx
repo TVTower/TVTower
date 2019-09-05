@@ -143,10 +143,9 @@ Function ConvertInsignificantToCelebrity:TProgrammePersonBase(insignifant:TProgr
 	local earliestProduction:int = -1
 
 
-	For local programmeDataGUID:string = EachIn person.GetProducedProgrammes()
-		person.GainExperienceForProgramme(programmeDataGUID)
-
-		local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeDataGUID)
+	For local programmeDataID:Int = EachIn person.GetProducedProgrammeIDs()
+		local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByID(programmeDataID)
+		person.GainExperienceForProgramme(programmeData.GetGUID())
 
 		if earliestProduction = -1
 			earliestProduction = programmeData.GetYear()
@@ -156,7 +155,7 @@ Function ConvertInsignificantToCelebrity:TProgrammePersonBase(insignifant:TProgr
 	Next
 
 	'no production found - or invalid data contained - or not enough produced
-	if earliestProduction < 0 or person.GetProducedProgrammes().length < 3
+	if earliestProduction < 0 or person.GetProducedProgrammeIDs().length < 3
 		return insignifant
 	endif
 
@@ -220,8 +219,10 @@ Type TProgrammePerson extends TProgrammePersonBase
 	'tried to create it?
 	field figureImageCreationFailed:int = False {nosave}
 
-	'array containing GUIDs of all programmes
+	'array containing GUIDs of all produced programmes
 	Field producedProgrammes:string[] {nosave}
+	'array containing IDs of all produced programmes
+	Field producedProgrammeIDs:int[] {nosave}
 	Field producedProgrammesCached:int = False {nosave}
 
 	Field channelSympathy:Float[4]
@@ -246,8 +247,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 			local genres:int[]
 			local bestGenre:int=0
-			For local guid:string = EachIn GetProducedProgrammes()
-				local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(guid)
+			For local programmeID:int = EachIn GetProducedProgrammeIDs()
+				local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByID(programmeID)
 				if not programmeData then continue
 
 				local genre:int = programmeData.GetGenre()
@@ -270,8 +271,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 	Method GetProducedGenreCount:Int(genre:int)
 		local count:int = 0
-		For local guid:string = EachIn GetProducedProgrammes()
-			local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(guid)
+		For local programmeID:Int = EachIn GetProducedProgrammeIDs()
+			local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByID(programmeID)
 			if not programmeData then continue
 
 			if programmeData.GetGenre() = genre then count :+ 1
@@ -521,40 +522,60 @@ Type TProgrammePerson extends TProgrammePersonBase
 	End Method
 
 
+	Method _GenerateProducedProgrammesCache:Int()
+		producedProgrammes = new String[0]
+		producedProgrammeIDs = new Int[0]
+
+		'fill up with already finished
+		'ordered by release date
+		local releasedData:TList = GetProgrammeDataCollection().GetFinishedProductionProgrammeDataList()
+
+		if releasedData.Count() > 1
+			'latest production on top (list is copied then)
+			releasedData = releasedData.reversed()
+		endif
+
+		For local programmeData:TProgrammeData = EachIn releasedData
+			'skip "paid programming" (kind of live programme)
+			if programmeData.HasFlag(TVTProgrammeDataFlag.PAID) then continue
+
+			if not programmeData.HasCastPerson(self.GetGUID()) then continue
+
+
+			'instead of adding episodes, we add the series
+			if programmeData.parentGUID
+				'skip if already added
+				if StringHelper.InArray(programmeData.parentGUID, producedProgrammes)
+					continue
+				endif
+				producedProgrammes :+ [programmeData.parentGUID]
+
+				local parentData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeData.parentGUID)
+				producedProgrammeIDs :+ [parentData.GetID()]
+			else
+				producedProgrammes :+ [programmeData.GetGUID()]
+				producedProgrammeIDs :+ [programmeData.GetID()]
+			endif
+		Next
+		producedProgrammesCached = True
+	End Method
+
+
 	'refresh cache (for newly converted "insignifants" or after a savegame)
 	Method GetProducedProgrammes:String[]()
 		if not producedProgrammesCached
-			producedProgrammes = new String[0]
-
-			'fill up with already finished
-			'ordered by release date
-			local releasedData:TList = GetProgrammeDataCollection().GetFinishedProductionProgrammeDataList()
-
-			if releasedData.Count() > 1
-				'latest production on top (list is copied then)
-				releasedData = releasedData.reversed()
-			endif
-
-			For local programmeData:TProgrammeData = EachIn releasedData
-				if not programmeData.HasCastPerson(self.GetGUID()) then continue
-				'skip "paid programming" (kind of live programme)
-				if programmeData.HasFlag(TVTProgrammeDataFlag.PAID) then continue
-
-
-				'instead of adding episodes, we add the series
-				if programmeData.parentGUID
-					'skip if already added
-					if StringHelper.InArray(programmeData.parentGUID, producedProgrammes)
-						continue
-					endif
-					producedProgrammes :+ [programmeData.parentGUID]
-				else
-					producedProgrammes :+ [programmeData.GetGUID()]
-				endif
-			Next
-			producedProgrammesCached = True
+			_GenerateProducedProgrammesCache()
 		endif
 		return producedProgrammes
+	End Method
+
+
+	'refresh cache (for newly converted "insignifants" or after a savegame)
+	Method GetProducedProgrammeIDs:Int[]()
+		if not producedProgrammesCached
+			_GenerateProducedProgrammesCache()
+		endif
+		return producedProgrammeIDs
 	End Method
 
 

@@ -2430,12 +2430,12 @@ Type TGUICastListItem Extends TGUISelectListItem
 			contentY :+ 3
 			if celebrity
 				'last productions
-				if celebrity.GetProducedProgrammes().length > 0
-					local productionGUIDs:string[] = celebrity.GetProducedProgrammes()
+				if celebrity.GetProducedProgrammeIDs().length > 0
+					local productionIDs:Int[] = celebrity.GetProducedProgrammeIDs()
 					local i:int = 0
 					local entryNum:int = 0
-					while i < productionGUIDs.length and entryNum < 3
-						local production:TProgrammeData = GetProgrammeDataCollection().GetByGUID( productionGUIDs[ i] )
+					while i < productionIDs.length and entryNum < 3
+						local production:TProgrammeData = GetProgrammeDataCollection().GetByID( productionIDs[ i] )
 						i :+ 1
 						if not production then continue
 

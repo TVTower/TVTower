@@ -1976,10 +1976,10 @@ Type TDatabaseLoader
 
 			'loop through all known productions and find earliest date
 			Local earliestProductionData:TProgrammeData
-			For Local programmeDataGUID:String = EachIn person.GetProducedProgrammes()
-				Local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByGUID(programmeDataGUID)
+			For Local programmeDataID:Int = EachIn person.GetProducedProgrammeIDs()
+				Local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByID(programmeDataID)
 				If Not programmeData
-					TLogger.Log("TDatabase.FixLoadedDate()", "No ProgrammeData found for GUID ~q"+programmeDataGUID+"~q.", LOG_ERROR)
+					TLogger.Log("TDatabase.FixLoadedDate()", "No ProgrammeData found for ID ~q"+programmeDataID+"~q.", LOG_ERROR)
 					Continue
 				EndIf
 
@@ -2103,12 +2103,12 @@ Type TDatabaseLoader
 		Local foundEntry:Int = True
 		Local localized:TLocalizedString = New TLocalizedString
 		For Local nodeLangEntry:TxmlNode = EachIn TxmlHelper.GetNodeChildElements(node)
-			Local language:String = nodeLangEntry.GetName().ToLower()
-			Local languageID:Int = TLocalization.GetLanguageID(language)
 			'do not trim, as this corrupts variables like "<de> %WORLDTIME:YEAR%</de>" (with space!)
 			Local value:String = nodeLangEntry.getContent() '.Trim()
 
 			If value <> ""
+				Local languageID:Int = TLocalization.GetLanguageID( nodeLangEntry.GetName().ToLower() )
+
 				localized.Set(value, languageID)
 				foundEntry = True
 			EndIf
