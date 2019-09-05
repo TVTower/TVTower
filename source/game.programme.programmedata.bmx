@@ -970,8 +970,8 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 	Method _ReplacePlaceholdersInLocalizedString:TLocalizedString(localizedString:TLocalizedString)
 		Local result:TLocalizedString = New TLocalizedString
-		For Local languageKey:String = EachIn localizedString.GetLanguageKeys()
-			result.Set(_ReplacePlaceholdersInString(localizedString.Get(languageKey)), languageKey)
+		For Local langID:Int = EachIn localizedString.GetLanguageIDs()
+			result.Set(_ReplacePlaceholdersInString(localizedString.Get(langID)), langID)
 		Next
 		Return result
 	End Method

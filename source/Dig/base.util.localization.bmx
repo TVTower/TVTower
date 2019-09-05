@@ -4,7 +4,7 @@ Rem
 	====================================================================
 
 	Eases the process of localization.
-	
+
 	====================================================================
 	If not otherwise stated, the following code is available under the
 	following licence:
@@ -39,9 +39,12 @@ Import BRL.Map
 
 
 Type TLocalization
+	Global languages:TLocalizationLanguage[]
+	Global languageIDMap:string[] '0="en", 1="de" ...
 	Global currentLanguage:TLocalizationLanguage
-	Global fallbackLanguage:TLocalizationLanguage
-	Global languages:TMap = CreateMap()
+	Global currentLanguageID:Int = -1
+	Global defaultLanguage:TLocalizationLanguage
+	Global defaultLanguageID:Int = -1
 	Global languagesCount:int = 0
 
 
@@ -59,14 +62,14 @@ Type TLocalization
 	'Returns the value for the specified key, or the given key if
 	'nothing was found
 	Function GetString:String(Key:String, group:String = Null)
-		'skip "has"-check without a fallback
-		if not fallbackLanguage
+		'skip "has"-check without a default
+		if not defaultLanguage
 			if not currentLanguage then Return Key
-		elseif fallbackLanguage <> currentLanguage
+		elseif defaultLanguage <> currentLanguage
 			if currentLanguage.Has(Key, group)
 				Return currentLanguage.Get(Key, group).replace("\n", Chr(13))
 			else
-				Return fallbackLanguage.Get(Key, group).replace("\n", Chr(13))
+				Return defaultLanguage.Get(Key, group).replace("\n", Chr(13))
 			endif
 		endif
 
@@ -78,8 +81,8 @@ Type TLocalization
 	'nothing was found
 	Function GetLocalizedString:TLocalizedString(Key:String, group:String = Null)
 		local ls:TLocalizedString = new TLocalizedString
-		For local lang:TLocalizationLanguage = EachIn languages.Values()
-			ls.Set(lang.Get(Key, group).replace("\n", Chr(13)), lang.languageCode)
+		For local i:int = 0 until languages.length
+			ls.Set(languages[i].Get(Key, group).replace("\n", Chr(13)), i)
 		Next
 
 		return ls
@@ -87,15 +90,15 @@ Type TLocalization
 
 
 	Function GetRandomString2:String(Keys:String[], limit:int=-1)
-		'skip "has"-check without a fallback
-		if not fallbackLanguage
+		'skip "has"-check without a defaultLanguage
+		if not defaultLanguage
 			if not currentLanguage
 				if Keys.length > 0 then Return Keys[0]
 				Return ""
 			endif
-		elseif fallbackLanguage <> currentLanguage
+		elseif defaultLanguage <> currentLanguage
 			'check if current language offers something, if not
-			'fall back to fallbackLanguage
+			'fall back to defaultLanguage
 			local hasOne:int = False
 			for local k:string = EachIn Keys
 				if currentLanguage.HasSub(k) then hasOne = true;exit
@@ -103,22 +106,22 @@ Type TLocalization
 			if hasOne
 				Return _GetRandomString2(currentLanguage, Keys)
 			else
-				Return _GetRandomString2(fallbackLanguage, Keys)
+				Return _GetRandomString2(defaultLanguage, Keys)
 			endif
 		endif
 		Return _GetRandomString2(currentLanguage, Keys)
 	End Function
-	
+
 
 	Function GetRandomString:String(Key:String, limit:int=-1)
-		'skip "has"-check without a fallback
-		if not fallbackLanguage
+		'skip "has"-check without a defaultLanguage
+		if not defaultLanguage
 			if not currentLanguage then Return Key
-		elseif fallbackLanguage <> currentLanguage
+		elseif defaultLanguage <> currentLanguage
 			if currentLanguage.HasSub(Key)
 				Return _GetRandomString(currentLanguage, Key)
 			else
-				Return _GetRandomString(fallbackLanguage, Key)
+				Return _GetRandomString(defaultLanguage, Key)
 			endif
 		endif
 
@@ -131,22 +134,20 @@ Type TLocalization
 	'nothing was found
 	Function GetRandomLocalizedString:TLocalizedString(Key:String, group:String = Null)
 		local ls:TLocalizedString = new TLocalizedString
-		For local lang:TLocalizationLanguage = EachIn languages.Values()
+		For local i:int = 0 until languages.length
 			'skip default ones
-			local res:string = _GetRandomString(lang, Key)
+			local res:string = _GetRandomString(languages[i], Key)
 			if res = key then continue
-			ls.Set(res.replace("\n", Chr(13)), lang.languageCode)
-
-			'ls.Set(_GetRandomString(lang, Key).replace("\n", Chr(13)), lang.languageCode)
+			ls.Set(res.replace("\n", Chr(13)), i)
 		Next
 
 		return ls
 	End Function
 
-	
+
 	Function _GetRandomString:string(language:TLocalizationLanguage, key:string, limit:int=-1)
 		if not language then return key
-		
+
 		local availableStrings:int = 1
 		local subKey:string = ""
 		Repeat
@@ -171,7 +172,7 @@ Type TLocalization
 			if keys.length > 0 then return keys[0]
 			return ""
 		endif
-		
+
 		local availableStrings:string[]
 		local subKey:string
 		for local k:string = EachIn keys
@@ -213,24 +214,41 @@ Type TLocalization
 
 
 	Function GetLanguage:TLocalizationLanguage(languageCode:string)
-		return TLocalizationLanguage(languages.ValueForKey(languageCode))
+		for local l:TLocalizationLanguage = EachIn languages
+			if l.languageCode = languageCode then return l
+		next
+		return null
 	End Function
 
 
 	Function AddLanguage:int(language:TLocalizationLanguage)
-		if not languages.ValueForKey(language.languageCode)
+		if not GetLanguage(language.languageCode)
 			languagesCount :+ 1
+			languages :+ [language]
+			languageIDMap :+ [language.languageCode]
 		endif
-		languages.insert(language.languageCode, language)
 	End Function
 
 
-	Function SetFallbackLanguage:Int(languageCode:String)
+	Function GetLanguageID:int(languageCode:string)
+		for local i:int = 0 until languageIDMap.length
+			if languageIDMap[i] = languageCode then return i
+		next
+		return -1
+	End Function
+
+
+	Function GetLanguageCode:String(languageID:Int)
+		if languages.length < languageID then return ""
+		return languages[languageID].languageCode
+	End Function
+
+
+	Function SetDefaultLanguage:Int(languageCode:String)
 		local lang:TLocalizationLanguage = GetLanguage(languageCode)
 
 		if lang
-			fallbackLanguage = lang
-			TLocalizedString.defaultLanguage = languageCode
+			defaultLanguage = lang
 			Return True
 		else
 			Return False
@@ -239,18 +257,17 @@ Type TLocalization
 
 
 	'Returns the current language
-	Function GetFallbackLanguageCode:String()
-		if fallbackLanguage then return fallbackLanguage.languageCode
+	Function GetDefaultLanguageCode:String()
+		if defaultLanguage then return defaultLanguage.languageCode
 		return ""
 	End Function
-	
+
 
 	Function SetCurrentLanguage:Int(languageCode:String)
-		local lang:TLocalizationLanguage = GetLanguage(languageCode)
-
-		if lang
-			currentLanguage = lang
-			TLocalizedString.SetCurrentLanguage(languageCode)
+		local langID:Int = GetLanguageID(languageCode)
+		if langID >= 0
+			currentLanguage = languages[langID]
+			currentLanguageID = langID
 
 			Return True
 		else
@@ -263,6 +280,11 @@ Type TLocalization
 	Function GetCurrentLanguageCode:String()
 		if currentLanguage then return currentLanguage.languageCode
 		return ""
+	End Function
+
+
+	Function GetCurrentLanguageID:Int()
+		return currentLanguageID
 	End Function
 
 
@@ -337,7 +359,7 @@ Type TLocalization
 		'DE contains everythign
 		local master:TLocalizationLanguage = GetLanguage("de")
 		local compare:TLocalizationLanguage = GetLanguage(compareLang)
-		
+
 		print "=== LANGUAGE FILES ============="
 		print "AVAILABLE:"
 		print "----------"
@@ -361,14 +383,16 @@ Type TLocalization
 
 		print "================================"
 	End Function
-	
+
 
 	'Releases all resources used by the localization class
 	Function Dispose()
-		languages.Clear()
 		languages = Null
+		languageIDMap = Null
 		currentLanguage = Null
-		fallbackLanguage = Null
+		defaultLanguage = Null
+		currentLanguageID = -1
+		defaultLanguageID = -1
 	End Function
 End Type
 
@@ -485,7 +509,7 @@ Type TLocalizationLanguage
 	Method HasSub:int(key:string, group:string = Null)
 		If group Then key = group + "::" + key
 		key = lower(key)
-		
+
 		local availableStrings:int = 1
 		local found:int = 0
 		local subKey:string = ""
@@ -508,24 +532,24 @@ End Type
 
 
 Type TLocalizedString
-	Field values:TMap = CreateMap()
-	Global fallbackLanguage:string = "de"
-	Global defaultLanguage:string = "en"
-	Global currentLanguage:string = "de"
-	Global _nilNode:TNode = New TNode._parent
+	'storing an individual ID array instead of a sparse array containing
+	'all languages even if not set, allows to only store the "used"
+	'translations.
+	Field valueStrings:String[]
+	Field valueLangIDs:Int[]
+	'current value
+	Field value:string {nosave}
+	'boolean if the value was set (might still be "empty" on purpose)
+	Field valueSet:Int = False {nosave}
+
 
 	Method Copy:TLocalizedString()
 		local c:TLocalizedString = New TLocalizedString
 
-		Local node:TNode = values._FirstNode()
-		While node And node <> _nilNode
-			c.values.insert(node._key, node._value)
-			node = node.NextNode()
-		Wend
-
-		'For local k:string = EachIn values.Keys()
-		'	c.values.insert(k, values.ValueForKey(k))
-		'Next
+		c.valueStrings = self.valueStrings[ .. ]
+		c.valueLangIDs = self.valueLangIDs[ .. ]
+		c.value = self.value
+		c.valueSet = self.valueSet
 
 		return c
 	End Method
@@ -533,107 +557,138 @@ Type TLocalizedString
 
 	Method ToString:string()
 		local r:string = ""
-		For local key:string = EachIn values.Keys()
-			r :+ key+": " + string(values.ValueForKey(key))+"~n"
+		For local i:int = 0 until valueLangIDs.length
+			r :+ TLocalization.GetLanguageCode( valueLangIDs[i] ) + ": " + valueStrings[i] + "~n"
 		Next
 		return r
 	End Method
-	
-
-	Function SetCurrentLanguage(language:String)
-		currentLanguage = language
-	End Function
-
-
-	'Returns the current language
-	Function GetCurrentLanguage:String()
-		if currentLanguage then return currentLanguage
-		return ""
-	End Function
 
 
 	'to ease "setting" (mystring.set(value)) the language
 	'comes after the value.
-	Method Set:TLocalizedString(value:String, language:object=null)
-		if not language then language = defaultLanguage
-		values.insert(language, value)
+	Method Set:TLocalizedString(value:String, languageCodeID:Int = - 1)
+		if languageCodeID = -1 then languageCodeID = TLocalization.currentLanguageID
+		local langIndex:int = GetLanguageIndex(languageCodeID)
+
+		'not added yet?
+		if langIndex = -1
+			valueStrings = valueStrings[.. valueStrings.length + 1]
+			valueLangIDs = valueLangIDs[.. valueLangIDs.length + 1]
+
+			langIndex = valueLangIDs.length - 1
+			valueLangIDs[langIndex] = languageCodeID
+		endif
+
+		valueStrings[langIndex] = value
+
+		if languageCodeID = TLocalization.currentLanguageID
+			self.value = value
+			self.valueSet = True
+		endif
 		return self
 	End Method
 
 
-	Method Get:String(language:object=null, returnDefault:int = True)
-		if not language then language = currentLanguage
-		local value:object = values.ValueForKey(language)
-		if value
-			return string(value)
-		elseif returnDefault
-			value = values.ValueForKey(defaultLanguage)
-			if value
-				return string(value)
-			elseif fallbackLanguage <> defaultLanguage
-				value = values.ValueForKey(fallbackLanguage)
-				if value
-					return string(value)
+	Method Get:String(languageCodeID:Int = -1, returnDefault:int = True)
+		if languageCodeID = -1 then languageCodeID = TLocalization.currentLanguageID
+
+		if not valueSet or languageCodeID <> TLocalization.currentLanguageID
+			local langIndex:Int = GetLanguageIndex(languageCodeID)
+			if langIndex >= 0
+				value = valueStrings[langIndex]
+			else
+rem
+				print "UNKNOWN LANGUAGE ID: " + languageCodeID +"   current="+TLocalization.currentLanguageID
+				for local i:int = 0 until valueLangIDs.length
+					print "   knowing: " + valueLangIDs[i] + " (" + TLocalization.GetLanguageCode(valueLangIDs[i])+")"
+				next
+endrem
+				value = ""
+			endif
+
+			if not value and returnDefault
+				local defaultIndex:Int = GetLanguageIndex(TLocalization.defaultLanguageID)
+				if defaultIndex >= 0 and valueStrings.length <= defaultIndex
+					value = valueStrings[TLocalization.defaultLanguageID]
 				endif
 			endif
+
+			valueSet = True
 		endif
-		return ""
+
+		return value
 	End Method
 
 
 	Method Replace:TLocalizedString(source:string, replacement:string)
-		Local node:TNode = values._FirstNode()
-		While node And node <> _nilNode
-			node._value = string(node._value).replace(source, replacement)
-			node = node.NextNode()
-		Wend
+		For local i:int = 0 until valueStrings.length
+			valueStrings[i] = valueStrings[i].replace(source, replacement)
+		Next
 		return self
 	End Method
 
 
 	Method ReplaceLocalized:TLocalizedString(source:string, replacement:TLocalizedString)
-		Local node:TNode = values._FirstNode()
-		While node And node <> _nilNode
-			node._value = string(node._value).replace(source, replacement.Get(node._key))
-			node = node.NextNode()
-		Wend
+		For local i:int = 0 until valueStrings.length
+			valueStrings[i] = valueStrings[i].replace(source, replacement.Get( valueLangIDs[i] ))
+		Next
 		return self
 	End Method
 
 
-	Method HasLanguageKey:int(key:string)
-		for local k:string = EachIn values.Keys()
-			if k = key then return True
-		next
+	Method HasLanguageID:int(languageID:Int)
+		For local i:int = EachIn valueLangIDs
+			if i = languageID then return True
+		Next
 		return False
 	End Method
 
 
-	Method GetFirstLanguageKey:string()
-		for local k:string = EachIn values.Keys()
-			return k
-		next
+	Method HasLanguageCode:int(languageCode:string)
+		For local i:int = EachIn valueLangIDs
+			if TLocalization.languages[ valueLangIDs[i] ].languageCode = languageCode then return True
+		Next
+		return False
 	End Method
-		
 
-	Method GetLanguageKeys:string[]()
-		local keys:string[]
-		for local k:string = EachIn values.Keys()
-			keys :+ [k]
-		next
-		return keys
+
+	Method GetFirstLanguageID:Int()
+		if valueLangIDs.length = 0 then return -1
+		return valueLangIDs[0]
+	End Method
+
+
+	Method GetFirstLanguageCode:string()
+		if valueLangIDs.length = 0 then return ""
+		return TLocalization.languages[ valueLangIDs[0] ].languageCode
+	End Method
+
+
+	Method GetLanguageIndex:Int(languageID:Int)
+		For local i:int = 0 until valueLangIDs.length
+			if valueLangIDs[i] = languageID then return i
+		Next
+		return -1
+	End Method
+
+
+	Method GetLanguageIDs:Int[]()
+		return valueLangIDs
 	End Method
 
 
 	Method SerializeTLocalizedStringToString:string()
 		local s:string = ""
+		'save the locale code as the ID might differ on clients with
+		'different installed locales
+
 		'concencate all into one string
 		'de::TextGerman::en::TextEnglish::...
-		For local language:string = EachIn values.Keys()
+		For local i:Int = 0 until valueLangIDs.length
 			if s <> "" then s :+ "::"
-			s :+ language.replace("\","\\").replace(":", "\:")
+			s :+ TLocalization.languages[ valueLangIDs[i] ].languageCode.replace("\","\\").replace(":", "\:")
 			s :+ "::"
-			s :+ string(values.ValueForKey(language)).replace("\","\\").replace(":", "\:")
+			s :+ valueStrings[i].replace("\","\\").replace(":", "\:")
 		Next
 		return s
 	End Method
@@ -641,17 +696,21 @@ Type TLocalizedString
 
 	Method DeSerializeTLocalizedStringFromString(text:String)
 		local vars:string[] = text.split("::")
-		local language:string, value:string
+		local languageCode:string, value:string
 		local mode:int = 0
 		For local s:string = EachIn vars
 			s = s.replace("\:", ":").replace("\\", "\")
 			if mode = 0
-				language = s
+				languageCode = s
 				mode :+ 1
 			else
 				value = s
 				mode = 0
-				Set(value, language)
+
+				'translate language code back into the currently used
+				'ID
+
+				Set(value, TLocalization.GetLanguageID(languageCode))
 			endif
 		Next
 	End Method
@@ -659,13 +718,12 @@ Type TLocalizedString
 
 	Method Append:TLocalizedString(other:TLocalizedString)
 		if other
-			Local node:TNode = other.values._FirstNode()
-			While node And node <> _nilNode
+			For local i:int = 0 until other.valueLangIDs.length
 				'this might overwrite previous values of the same language
-				Set(string(node._value), node._key)
+				Set(other.valueStrings[i], other.valueLangIDs[i])
+			Next
 
-				node = node.NextNode()
-			Wend
+			valueSet = False
 		endif
 		return self
 	End Method

@@ -198,8 +198,8 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 		'for each defined language we check for existent placeholders
 		'which then get replaced by a random string stored in the
 		'variable with the same name
-		For Local lang:String = EachIn text.GetLanguageKeys()
-			Local value:String = text.Get(lang)
+		For Local langID:Int = EachIn text.GetLanguageIDs()
+			Local value:String = text.Get(langID)
 			Local placeHolders:String[] = StringHelper.ExtractPlaceholders(value, "%", True)
 			If placeHolders.length = 0 Then Continue
 
@@ -213,7 +213,7 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 				'print "check placeholder: ~q"+placeholder+"~q => ~q"+replacement+"~q"
 			Next
 
-			result.Set(value, lang)
+			result.Set(value, langID)
 		Next
 		Return result
 	End Method

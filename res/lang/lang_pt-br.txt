@@ -24,7 +24,7 @@ LONGCLICK_MODE_EXPLANATION = Simula um clique com o botão direito como um cliqu
 WINDOW_MODE_RESOLUTION = Resolução do modo janela
 INPUT = Entrada
 USE_TOUCH_INPUT = Usar modo de toque
-USE_TOUCH_INPUT_EXPLANATION = O primeiro clique posiciona o cursor do mouse, enquanto os próximos são contados como cliques. Reposicione o cursor se a distância if distance between click positions is too great.
+USE_TOUCH_INPUT_EXPLANATION = O primeiro clique posiciona o cursor do mouse, enquanto os próximos são contados como cliques. Reposicione o cursor se a distância entre as posições de clique for muito grande.
 MOVE_INSTEAD_CLICK_RADIUS = Move instead click radius
 MULTIPLAYER = Multiplayer
 SINGLEPLAYER = Singleplayer
@@ -32,7 +32,7 @@ RENDERER = Renderizador
 SOUND_ENGINE = Soundengine
 DEFAULTS_FOR_NEW_GAME= Padrões para "Novo Jogo"
 PORT_ONLINEGAME = Porta para jogos online
-IN_ROOMS_SLOWDOWN_TIME_TO = Dentro das salas, diminua o tempo para 
+IN_ROOMS_SLOWDOWN_TIME_TO = Dentro das salas, diminua o tempo para
 GAME_SPEED_IN_ROOMS = Velocidade do jogo dentro das salas
 
 STARTHINT_TITLE1 = Programação
@@ -627,7 +627,7 @@ LOAD_GAME = Carregar Jogo
 SAVE_GAME = Salvar Jogo
 EXIT_GAME = Sair do Jogo
 EXIT_TO_MAINMENU = Sair para tela inicial
-NAME_OF_SAVEGAME = Nome do savegame 
+NAME_OF_SAVEGAME = Nome do savegame
 OVERWRITE_SAVEGAME = Sobrescrever savegame?
 DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = Quer realmente sobrescrever o savegame %SAVEGAME%?
 
@@ -650,10 +650,10 @@ BETTER_WATCH_OUT_NEXT_TIME = Melhor ter cuidado da próxima vez.
 
 YOU_HAVE_BEEN_OUTBID = Seu lance foi superado
 SOMEONE_BID_MORE_THAN_YOU_FOR_X = Alguém deu um lance maior que o seu para "%TITLE%"
-YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Seu lance anterior de %MONEY% foi reembolsado. 
+YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Seu lance anterior de %MONEY% foi reembolsado.
 
 YOU_HAVE_WON_AN_AUCTION = Você ganhou o leilão
-THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = A licença de "%TITLE%" agora se encontra à sua disposição. 
+THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = A licença de "%TITLE%" agora se encontra à sua disposição.
 
 YOUR_BOSS_WANTS_TO_SEE_YOU = Seu chefe quer te ver
 YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM = Você tem %HOURS% horas para ir vê-lo.
@@ -702,7 +702,7 @@ NEWS_TERROR_GROUP2_LEVEL1_TEXT1 = Não pode ser verdade: embaixador da RL do Dub
 
 NEWS_TERROR_GROUP1_LEVEL2_TITLE1 = Embaixador é agredido
 NEWS_TERROR_GROUP1_LEVEL2_TEXT1 = Indo para residência, o Embaixador da RP do Duban foi agredido na garagem no subsolo. Testemunhas relatam ter visto carro da RL do Duban saindo do local.
-NEWS_TERROR_GROUP2_LEVEL2_TITLE1 = Apartamento de embaixador é vandalizado 
+NEWS_TERROR_GROUP2_LEVEL2_TITLE1 = Apartamento de embaixador é vandalizado
 NEWS_TERROR_GROUP2_LEVEL2_TEXT1 = O apartamento do Embaixador da RL do Duban é devastado. Pistas apontam para círculos da RP do Duban ...
 
 NEWS_TERROR_GROUP1_LEVEL3_TITLE1 = RP do Duban ameaça retaliar
@@ -811,7 +811,7 @@ DO_NOT_SHOW_AGAIN = Não mostrar novamente
 DO_NOT_SHOW_ANY_TIPS = Não mostrar nenhuma dica
 SHOW_INTRODUCTORY_GUIDES = Mostrar guias introdutórios
 
-BOMB_DETONATION_IN_TVTOWER = Explosão de bomba na TVTower 
+BOMB_DETONATION_IN_TVTOWER = Explosão de bomba na TVTower
 BOMB_DETONATION_IN_TVTOWER_TEXT = A explosão de uma bomba abalou os funcionários da famosa TVTower. A bomba danificou a sala "%ROOM%". As investigações estão a todo vapor.
 TOASTMESSAGE_BOMB_DETONATION_IN_TVTOWER_TEXT = A bomb detonation damaged the room %ROOM%.
 
@@ -863,8 +863,8 @@ SCORE_POINTS = Points
 SPORT_ICEHOCKEY = Hóquei no gelo
 
 SPORT_SOCCER = Futebol
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = e o atacante %TEAM1STAR% vence %MATCHKIND% contra 
-SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = e o atacante %TEAM1STAR% vence %MATCHKIND% contra 
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_S1 = e o atacante %TEAM1STAR% vence %MATCHKIND% contra
+SPORT_SOCCER_TEAMREPORT_MATCHWIN_P1 = e o atacante %TEAM1STAR% vence %MATCHKIND% contra
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_S2 = vence graças a um escanteio convertido por %TEAM1STARSHORT% %MATCHKIND%
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_P2 = vence graças a um escanteio convertido por %TEAM1STARSHORT% %MATCHKIND%
 SPORT_SOCCER_TEAMREPORT_MATCHWIN_S3 = vence graças a um pênalti defendido pelo goleiro  %TEAM1KEEPERSHORT% %MATCHKIND%

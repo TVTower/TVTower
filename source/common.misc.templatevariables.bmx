@@ -23,7 +23,7 @@ Type TTemplateVariables
 	'keyword) instead of returning other random elements ("option1|option2")
 	Field placeHolderVariables:TMap
 
-	'override this in CUSTOM variable types to return the parental TTemplateVariables 
+	'override this in CUSTOM variable types to return the parental TTemplateVariables
 	Method GetParentTemplateVariables:TTemplateVariables()
 		return null
 	End Method
@@ -52,7 +52,7 @@ Type TTemplateVariables
 			local parent:TTemplateVariables = GetParentTemplateVariables()
 			if parent then result = parent.GetPlaceholderVariableString(key, defaultValue, createDefault)
 		endif
-		
+
 		if not result and createDefault
 			result = new TLocalizedString
 			result.Set(defaultValue)
@@ -140,30 +140,30 @@ Type TTemplateVariables
 			result.set(defaultValue)
 			return result
 		endif
-		
+
 		'loop through languages and calculate maximum amount of
 		'random values -> this gets our "reference count" if something
 		'is missing
 		local maxRandom:int = 0
-		For local lang:string = EachIn localizedString.GetLanguageKeys()
-			local values:string[] = localizedString.Get(lang).split("|")
+		For local langID:Int = EachIn localizedString.GetLanguageIDs()
+			local values:string[] = localizedString.Get( langID ).split("|")
 			maxRandom = max(maxRandom, values.length - 1)
 		Next
 
 		'decide which random portion we want
 		local useRandom:int = RandRange(0, maxRandom)
 
-		For local lang:string = EachIn localizedString.GetLanguageKeys()
-			local values:string[] = localizedString.Get(lang).split("|")
+		For local langID:Int = EachIn localizedString.GetLanguageIDs()
+			local values:string[] = localizedString.Get( langID ).split("|")
 			'if random index is bigger than the array, set the default
 			'as resulting value for this language
 			if values.length-1 < useRandom
-				result.set(defaultValue, lang)
+				result.set(defaultValue, langID)
 			else
-				result.set(values[useRandom], lang)
+				result.set(values[useRandom], langID)
 			endif
 		Next
-		
+
 		return result
 	End Method
 
@@ -174,13 +174,13 @@ Type TTemplateVariables
 		'for each defined language we check for existent placeholders
 		'which then get replaced by a random string stored in the
 		'variable with the same name
-		For local lang:string = EachIn text.GetLanguageKeys()
+		For local langID:int = eachIn text.GetLanguageIDs()
 			'do it 4 times, this allows for placeholder definitions within
 			'placeholders (at least some of them)!
 			local replacedPlaceholders:int = 0
 			for local i:int = 0 to 3
 				'use result already (to allow recursive-replacement)
-				local value:string = result.Get(lang)
+				local value:string = result.Get(langID)
 				local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%")
 				if placeHolders.length > 0
 'if lang="de" then print "  "+lang+"  run "+i
@@ -209,14 +209,14 @@ Type TTemplateVariables
 								AddPlaceHolderVariable(placeHolder, replacement)
 							endif
 							'store the replacement in the value
-							value = value.replace(placeHolder, replacement.Get(lang))
+							value = value.replace(placeHolder, replacement.Get(langID))
 'if lang="de" then print "        replace: "+placeHolder+" => " + replacement.Get(lang)
 							replacedPlaceHolders :+ 1
 						endif
 					Next
 				endif
-				
-				result.Set(value, lang)
+
+				result.Set(value, langID)
 'if placeHolders.length > 0
 '	if lang="de" then print "   <- value = " + value
 'endif
@@ -230,8 +230,8 @@ Type TTemplateVariables
 
 		'replace common placeholders (%worldtime:year% and so on)
 		'loop over "text", but replace in "result"
-		For local lang:string = EachIn text.GetLanguageKeys()
-			local value:string = result.Get(lang)
+		For local langID:int = EachIn text.GetLanguageIDs()
+			local value:string = result.Get(langID)
 			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%", True)
 			for local placeHolder:string = EachIn placeHolders
 				local replacement:string = string(GetGameInformation(placeHolder.toLower(), ""))
@@ -240,9 +240,9 @@ Type TTemplateVariables
 				endif
 			Next
 
-			result.Set(value, lang)
+			result.Set(value, langID)
 		Next
-	
+
 		return result
 	End Method
 End Type

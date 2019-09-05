@@ -134,7 +134,7 @@ Type TSportsHeaderProgrammeData Extends TSportsProgrammeData {_exposeToLua}
 'repair old savegames which contain already match times
 '-> TODO: REMOVE in 2020 or later
 If descriptionAirTimeHint.Get().Find(":00") > 0
-	descriptionAirtimeHint.Set(StringHelper.UCFirst(GetRandomLocalizedString("SPORT_PROGRAMME_MATCH_TIMES").Get()), TLocalization.GetCurrentLanguageCode())
+	descriptionAirtimeHint.Set(StringHelper.UCFirst(GetRandomLocalizedString("SPORT_PROGRAMME_MATCH_TIMES").Get()))
 EndIf
 					'append match times of UPCOMING matches
 '					if run = 0
@@ -264,17 +264,18 @@ endrem
 	End Method
 
 
-	Function _replaceSportInformation:String(text:String, sport:TNewsEventSport, locale:String="")
+	Function _replaceSportInformation:String(text:String, sport:TNewsEventSport, localeID:Int = -1)
 		If Not sport Then Return text
 
 		Local result:String = text
-		result = result.Replace("%SPORTNAME%", GetLocalizedString("SPORT_"+sport.name).get(locale))
+		result = result.Replace("%SPORTNAME%", GetLocalizedString("SPORT_"+sport.name).get(localeID))
 		Return result
 	End Function
 
 
-	Function _GetLeagueMatchTimes:String(league:TNewsEventSportLeague, onlyUpcoming:Int = False, sortByWeekDay:Int=True, locale:String="")
-		If Not locale Then locale = TLocalization.GetCurrentLanguageCode()
+	Function _GetLeagueMatchTimes:String(league:TNewsEventSportLeague, onlyUpcoming:Int = False, sortByWeekDay:Int=True, localeID:Int = -1)
+		If localeID < 0 Then localeID = TLocalization.GetCurrentLanguageID()
+
 		Local matchTimes:String
 		Local lastWeekdayIndex:Int = -1
 		Local thisWeekdayCount:Int = 0
@@ -287,7 +288,7 @@ endrem
 
 			If lastWeekdayIndex <> weekdayIndex
 				If matchTimes <> "" Then matchTimes :+ " / "
-				matchTimes :+ "|b|"+GetLocalizedString("WEEK_SHORT_" + GetWorldTime().GetDayName(weekdayIndex)).get(locale)+"|/b| "
+				matchTimes :+ "|b|"+GetLocalizedString("WEEK_SHORT_" + GetWorldTime().GetDayName(weekdayIndex)).get(localeID)+"|/b| "
 				lastWeekdayIndex = weekdayIndex
 				thisWeekdayCount = 0
 			Else
@@ -303,7 +304,7 @@ endrem
 	End Function
 
 
-	Function _replaceLeagueInformation:String(text:String, league:TNewsEventSportLeague, locale:String="")
+	Function _replaceLeagueInformation:String(text:String, league:TNewsEventSportLeague, localeID:Int = -1)
 		If Not league Then Return text
 
 		Local result:String = text
@@ -316,18 +317,18 @@ endrem
 		EndIf
 
 		If result.Find("%MATCHTIMES%") >= 0
-			result = result.Replace("%MATCHTIMES%", _GetLeagueMatchTimes(league, False, True, locale))
+			result = result.Replace("%MATCHTIMES%", _GetLeagueMatchTimes(league, False, True, localeID))
 		EndIf
 
 		If result.Find("%UPCOMINGMATCHTIMES%") >= 0
-			result = result.Replace("%UPCOMINGMATCHTIMES%", _GetLeagueMatchTimes(league, True, True, locale))
+			result = result.Replace("%UPCOMINGMATCHTIMES%", _GetLeagueMatchTimes(league, True, True, localeID))
 		EndIf
 
 		Return result
 	End Function
 
 
-	Function _replaceMatchInformation:String(text:String, match:TNewsEventSportMatch, locale:String="")
+	Function _replaceMatchInformation:String(text:String, match:TNewsEventSportMatch, localeID:Int = -1)
 		If Not match Then Return text
 
 		Local result:String = text
@@ -345,7 +346,7 @@ endrem
 	End Function
 
 
-	Function _replaceTeamInformation:String(text:String, team:TNewsEventSportTeam, teamNumber:Int=1, locale:String="")
+	Function _replaceTeamInformation:String(text:String, team:TNewsEventSportTeam, teamNumber:Int=1, localeID:Int = -1)
 		If Not team Then Return text
 
 		Local result:String = text
@@ -366,19 +367,19 @@ endrem
 
 		Local league:TNewsEventSportLeague = GetNewsEventSportCollection().GetLeagueByGUID(leagueGUID)
 		If league
-			result = _replaceLeagueInformation(result, league, TLocalization.GetCurrentLanguageCode())
+			result = _replaceLeagueInformation(result, league, TLocalization.GetCurrentLanguageID())
 
 			Local sport:TNewsEventSport = league.GetSport()
-			If sport Then result = _replaceSportInformation(result, sport, TLocalization.GetCurrentLanguageCode())
+			If sport Then result = _replaceSportInformation(result, sport, TLocalization.GetCurrentLanguageID())
 		EndIf
 
 		Local match:TNewsEventSportMatch = GetNewsEventSportCollection().GetMatchByGUID(matchGUID)
 		If match
-			result = _replaceMatchInformation(result, match, TLocalization.GetCurrentLanguageCode())
+			result = _replaceMatchInformation(result, match, TLocalization.GetCurrentLanguageID())
 
 			If result.Find("%TEAM") >= 0
 				For Local teamIndex:Int = 0 Until match.teams.length
-					result = _replaceTeamInformation(result, match.teams[teamIndex], teamIndex+1, TLocalization.GetCurrentLanguageCode())
+					result = _replaceTeamInformation(result, match.teams[teamIndex], teamIndex+1, TLocalization.GetCurrentLanguageID())
 				Next
 			EndIf
 		EndIf

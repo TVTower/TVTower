@@ -2947,7 +2947,7 @@ Type TScreen_MainMenu Extends TGameScreen
 			Local itemHeight:Int = 0
 			Local languageCount:Int = 0
 
-			For Local lang:TLocalizationLanguage = EachIn TLocalization.languages.Values()
+			For Local lang:TLocalizationLanguage = EachIn TLocalization.languages
 				languageCount :+ 1
 				Local item:TGUISpriteDropDownItem = New TGUISpriteDropDownItem.Create(Null, Null, lang.Get("LANGUAGE_NAME_LOCALE"))
 				item.SetValueColor(TColor.CreateGrey(100))
@@ -6132,20 +6132,23 @@ Function PrintCurrentTranslationState(compareLang:String="tr")
 
 	TLocalization.PrintCurrentTranslationState(compareLang)
 
+	local deLangID:Int = TLocalization.GetLanguageID("de")
+	local compareLangID:Int = TLocalization.GetLanguageID(compareLang)
+
 	Print "~t"
 	Print "=== PROGRAMMES ================="
 	Print "AVAILABLE:"
 	Print "----------"
 	For Local obj:TProgrammeData = EachIn GetProgrammeDataCollection().entries.Values()
 		Local printed:Int = False
-		If obj.title.Get("de") <> obj.title.Get(compareLang)
-			Print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
-			Print "      "+compareLang+": "+ obj.title.Get(compareLang).Replace("~n", "~n          ")
+		If obj.title.Get(deLangID) <> obj.title.Get(compareLangID)
+			Print "* [T] de: "+ obj.title.Get(deLangID).Replace("~n", "~n          ")
+			Print "      "+compareLang+": "+ obj.title.Get(compareLangID).Replace("~n", "~n          ")
 			printed = True
 		EndIf
-		If obj.description.Get("de") <> obj.description.Get(compareLang)
-			Print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
-			Print "      "+compareLang+": "+ obj.description.Get(compareLang).Replace("~n", "~n          ")
+		If obj.description.Get(deLangID) <> obj.description.Get(compareLangID)
+			Print "* [D] de: "+ obj.description.Get(deLangID).Replace("~n", "~n          ")
+			Print "      "+compareLang+": "+ obj.description.Get(compareLangID).Replace("~n", "~n          ")
 			printed = True
 		EndIf
 		If printed Then Print Chr(8203) 'zero width space, else it skips "~n"
@@ -6156,13 +6159,13 @@ Function PrintCurrentTranslationState(compareLang:String="tr")
 	Print "--------"
 	For Local obj:TProgrammeData = EachIn GetProgrammeDataCollection().entries.Values()
 		Local printed:Int = False
-		If obj.title.Get("de") = obj.title.Get(compareLang)
-			Print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+		If obj.title.Get(deLangID) = obj.title.Get(compareLangID)
+			Print "* [T] de: "+ obj.title.Get(deLangID).Replace("~n", "~n          ")
 			Print "      "+compareLang+": "
 			printed = True
 		EndIf
-		If obj.description.Get("de") = obj.description.Get(compareLang)
-			Print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+		If obj.description.Get(deLangID) = obj.description.Get(compareLangID)
+			Print "* [D] de: "+ obj.description.Get(deLangID).Replace("~n", "~n          ")
 			Print "      "+compareLang+": "
 			printed = True
 		EndIf
@@ -6176,14 +6179,14 @@ Function PrintCurrentTranslationState(compareLang:String="tr")
 	Print "----------"
 	For Local obj:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
 		Local printed:Int = False
-		If obj.title.Get("de") <> obj.title.Get(compareLang)
-			Print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
-			Print "      "+compareLang+": "+ obj.title.Get(compareLang).Replace("~n", "~n          ")
+		If obj.title.Get(deLangID) <> obj.title.Get(compareLangID)
+			Print "* [T] de: "+ obj.title.Get(deLangID).Replace("~n", "~n          ")
+			Print "      "+compareLang+": "+ obj.title.Get(compareLangID).Replace("~n", "~n          ")
 			printed = True
 		EndIf
-		If obj.description.Get("de") <> obj.description.Get(compareLang)
-			Print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
-			Print "      "+compareLang+": "+ obj.description.Get(compareLang).Replace("~n", "~n          ")
+		If obj.description.Get(deLangID) <> obj.description.Get(compareLangID)
+			Print "* [D] de: "+ obj.description.Get(deLangID).Replace("~n", "~n          ")
+			Print "      "+compareLang+": "+ obj.description.Get(compareLangID).Replace("~n", "~n          ")
 			printed = True
 		EndIf
 		If printed Then Print Chr(8203) 'zero width space, else it skips "~n"
@@ -6194,13 +6197,13 @@ Function PrintCurrentTranslationState(compareLang:String="tr")
 	Print "--------"
 	For Local obj:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
 		Local printed:Int = False
-		If obj.title.Get("de") = obj.title.Get(compareLang)
-			Print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+		If obj.title.Get(deLangID) = obj.title.Get(compareLangID)
+			Print "* [T] de: "+ obj.title.Get(deLangID).Replace("~n", "~n          ")
 			Print "      "+compareLang+": "
 			printed = True
 		EndIf
-		If obj.description.Get("de") = obj.description.Get(compareLang)
-			Print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+		If obj.description.Get(deLangID) = obj.description.Get(compareLangID)
+			Print "* [D] de: "+ obj.description.Get(deLangID).Replace("~n", "~n          ")
 			Print "      "+compareLang+": "
 			printed = True
 		EndIf
@@ -6214,14 +6217,14 @@ Function PrintCurrentTranslationState(compareLang:String="tr")
 	Print "----------"
 	For Local obj:TNewsEvent = EachIn GetNewsEventCollection().newsEvents.Values()
 		Local printed:Int = False
-		If obj.title.Get("de") <> obj.title.Get(compareLang)
-			Print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
-			Print "      "+compareLang+": "+ obj.title.Get(compareLang).Replace("~n", "~n          ")
+		If obj.title.Get(deLangID) <> obj.title.Get(compareLangID)
+			Print "* [T] de: "+ obj.title.Get(deLangID).Replace("~n", "~n          ")
+			Print "      "+compareLang+": "+ obj.title.Get(compareLangID).Replace("~n", "~n          ")
 			printed = True
 		EndIf
-		If obj.description.Get("de") <> obj.description.Get(compareLang)
-			Print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
-			Print "      "+compareLang+": "+ obj.description.Get(compareLang).Replace("~n", "~n          ")
+		If obj.description.Get(deLangID) <> obj.description.Get(compareLangID)
+			Print "* [D] de: "+ obj.description.Get(deLangID).Replace("~n", "~n          ")
+			Print "      "+compareLang+": "+ obj.description.Get(compareLangID).Replace("~n", "~n          ")
 			printed = True
 		EndIf
 		If printed Then Print Chr(8203) 'zero width space, else it skips "~n"
@@ -6232,13 +6235,13 @@ Function PrintCurrentTranslationState(compareLang:String="tr")
 	Print "--------"
 	For Local obj:TNewsEvent = EachIn GetNewsEventCollection().newsEvents.Values()
 		Local printed:Int = False
-		If obj.title.Get("de") = obj.title.Get(compareLang)
-			Print "* [T] de: "+ obj.title.Get("de").Replace("~n", "~n          ")
+		If obj.title.Get(deLangID) = obj.title.Get(compareLangID)
+			Print "* [T] de: "+ obj.title.Get(deLangID).Replace("~n", "~n          ")
 			Print "      "+compareLang+": "
 			printed = True
 		EndIf
-		If obj.description.Get("de") = obj.description.Get(compareLang)
-			Print "* [D] de: "+ obj.description.Get("de").Replace("~n", "~n          ")
+		If obj.description.Get(deLangID) = obj.description.Get(compareLangID)
+			Print "* [D] de: "+ obj.description.Get(deLangID).Replace("~n", "~n          ")
 			Print "      "+compareLang+": "
 			printed = True
 		EndIf
@@ -6412,7 +6415,7 @@ TProfiler.Leave("InitialLoading")
 
 	'b) set language
 	App.SetLanguage(App.config.GetString("language", "de"))
-	TLocalization.SetFallbackLanguage("en")
+	TLocalization.SetDefaultLanguage("en")
 
 	'c) everything loaded - normal game loop
 TProfiler.Enter("GameLoop")

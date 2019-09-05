@@ -80,9 +80,11 @@ Type TAdContractBaseCollection
 
 
 	'this is not guaranteed to be unique!
-	Method GetByTitle:TAdContractBase(title:String, language:String="")
+	Method GetByTitle:TAdContractBase(title:String, languageCode:String="")
+		local langID:Int = TLocalization.currentLanguageID
+		if languageCode then langID = TLocalization.GetLanguageID(languageCode)
 		For Local base:TAdContractBase = EachIn entries.Values()
-			If base.title.Get(language) = title Then Return base
+			If base.title.Get(langID) = title Then Return base
 		Next
 		Return Null
 	End Method

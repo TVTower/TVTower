@@ -174,8 +174,8 @@ Type TScriptCollection Extends TGameObjectCollection
 	Method GetTitleProtectedByID:int(title:object)
 		if TLocalizedString(title)
 			local lsTitle:TLocalizedString = TLocalizedString(title)
-			for local langCode:string = EachIn lsTitle.GetLanguageKeys()
-				return int(string(protectedTitles.ValueForKey(langCode + "::" + lsTitle.Get(langCode).ToLower())))
+			for local langID:Int = EachIn lsTitle.GetLanguageIDs()
+				return int(string(protectedTitles.ValueForKey(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower())))
 			next
 		elseif string(title) <> ""
 			return int(string((protectedTitles.ValueForKey("custom::" + string(title).ToLower()))))
@@ -186,8 +186,8 @@ Type TScriptCollection Extends TGameObjectCollection
 	Method IsTitleProtected:int(title:object)
 		if TLocalizedString(title)
 			local lsTitle:TLocalizedString = TLocalizedString(title)
-			for local langCode:string = EachIn lsTitle.GetLanguageKeys()
-				if protectedTitles.Contains(langCode + "::" + lsTitle.Get(langCode).ToLower()) then return True
+			for local langID:Int = EachIn lsTitle.GetLanguageIDs()
+				if protectedTitles.Contains(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower()) then return True
 			next
 		elseif string(title) <> ""
 			if protectedTitles.Contains("custom::" + string(title).ToLower()) then return True
@@ -200,8 +200,8 @@ Type TScriptCollection Extends TGameObjectCollection
 	Method AddTitleProtection(title:object, scriptID:int)
 		if TLocalizedString(title)
 			local lsTitle:TLocalizedString = TLocalizedString(title)
-			for local langCode:string = EachIn lsTitle.GetLanguageKeys()
-				protectedTitles.Insert(langCode + "::" + lsTitle.Get(langCode).ToLower(), string(scriptID))
+			for local langID:Int = EachIn lsTitle.GetLanguageIDs()
+				protectedTitles.Insert(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower(), string(scriptID))
 			next
 		elseif string(title) <> ""
 			protectedTitles.insert("custom::" + string(title).ToLower(), string(scriptID))
@@ -213,8 +213,8 @@ Type TScriptCollection Extends TGameObjectCollection
 	Method RemoveTitleProtection(title:object)
 		if TLocalizedString(title)
 			local lsTitle:TLocalizedString = TLocalizedString(title)
-			for local langCode:string = EachIn lsTitle.GetLanguageKeys()
-				protectedTitles.Remove(langCode + "::" + lsTitle.Get(langCode).ToLower())
+			for local langID:Int = EachIn lsTitle.GetLanguageIDs()
+				protectedTitles.Remove(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower())
 			next
 		elseif string(title) <> ""
 			protectedTitles.Remove("custom::" + string(title).ToLower())
@@ -358,9 +358,10 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			Next
 			'no random one available or most already used
 			if not validTitle
+				local langIDs:int[] = script.title.GetLanguageIDs()
 				'remove numbers
-				for local langCode:string = EachIn script.title.GetLanguageKeys()
-					local numberfreeTitle:string = script.title.Get(langCode)
+				for local langID:Int = EachIn langIDs
+					local numberfreeTitle:string = script.title.Get(langID)
 					local hashPos:int = numberfreeTitle.FindLast("#")
 					if hashPos > 2 '"sometext" + space + hash means > 2
 						local numberS:string = numberFreetitle[hashPos+1 .. ]
@@ -368,7 +369,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 							numberfreeTitle = numberfreetitle[.. hashPos-1] 'remove space before too
 						endif
 
-						script.title.Set(numberfreeTitle, langCode)
+						script.title.Set(numberfreeTitle, langID)
 					endif
 				next
 
@@ -377,8 +378,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				'start with "2" to avoid "title #1"
 				local number:int = 2
 				repeat
-					for local langCode:string = EachIn script.title.GetLanguageKeys()
-						script.title.Set(titleCopy.Get() + " #"+number, langCode)
+					for local langID:Int = EachIn langIDs
+						script.title.Set(titleCopy.Get() + " #"+number, langID)
 					next
 					number :+ 1
 				until not GetScriptCollection().IsTitleProtected(script.title)
@@ -515,8 +516,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'for each defined language we check for existent placeholders
 		'which then get replaced by a random string stored in the
 		'variable with the same name
-		For local lang:string = EachIn text.GetLanguageKeys()
-			local value:string = text.Get(lang)
+		For local langID:Int = EachIn text.GetLanguageIDs()
+			local value:string = text.Get(langID)
 			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%", True)
 			if placeHolders.length = 0 then continue
 
@@ -590,7 +591,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				if replaced then value = value.replace("%"+placeHolder+"%", replacement)
 			Next
 
-			result.Set(value, lang)
+			result.Set(value, langID)
 		Next
 
 		return result

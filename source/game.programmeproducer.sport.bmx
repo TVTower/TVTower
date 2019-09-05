@@ -15,7 +15,6 @@ GetProgrammeProducerCollection().Add( TProgrammeProducerSport.GetInstance() )
 
 
 Type TProgrammeProducerSport Extends TProgrammeProducerBase
-	Global _producerName:String = "PP_Sport"
 	Global _eventsRegistered:Int= False
 	Global _eventListeners:TLink[]
 	Global _instance:TProgrammeProducerSport
@@ -104,31 +103,31 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		programmeData.description = New TLocalizedString
 		programmeData.descriptionAirtimeHint = New TLocalizedString
 		programmeData.descriptionAiredHint = New TLocalizedString
-		'only store for current/fallback to save savegame space
+		'only store for current/default to save savegame space
 		'For local locale:string = EachIn TLocalization.languages.Keys()
-		Local locales:String[] = [TLocalization.currentLanguage.languageCode, TLocalization.fallbackLanguage.languageCode]
-		For Local locale:String = EachIn locales
+		Local localeIDs:Int[] = [TLocalization.currentLanguageID, TLocalization.defaultLanguageID]
+		For Local localeID:Int = EachIn localeIDs
 
-			Local title:String = GetRandomLocalizedString("SPORT_PROGRAMME_TITLE").Get(locale)
-			Local description:String = GetRandomLocalizedString("SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X").Get(locale)
-			Local descriptionAirtimeHint:String = GetRandomLocalizedString("SPORT_PROGRAMME_MATCH_TIMES").Get(locale)
-			Local descriptionAiredHint:String = GetRandomLocalizedString("ALL_MATCHES_RUN").Get(locale)
+			Local title:String = GetRandomLocalizedString("SPORT_PROGRAMME_TITLE").Get(localeID)
+			Local description:String = GetRandomLocalizedString("SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X").Get(localeID)
+			Local descriptionAirtimeHint:String = GetRandomLocalizedString("SPORT_PROGRAMME_MATCH_TIMES").Get(localeID)
+			Local descriptionAiredHint:String = GetRandomLocalizedString("ALL_MATCHES_RUN").Get(localeID)
 
 			'as the collection header is of "TProgrammeData" we have to
 			'replace placeholders manually
-			title = TSportsProgrammeData._replaceSportInformation(title, league.GetSport(), locale)
-			title = TSportsProgrammeData._replaceLeagueInformation(title, league, locale)
-			description = TSportsProgrammeData._replaceSportInformation(description, league.GetSport(), locale)
-			description = TSportsProgrammeData._replaceLeagueInformation(description, league, locale)
-			descriptionAirtimeHint = TSportsProgrammeData._replaceSportInformation(descriptionAirtimeHint, league.GetSport(), locale)
-			descriptionAirtimeHint = TSportsProgrammeData._replaceLeagueInformation(descriptionAirtimeHint, league, locale)
-			descriptionAiredHint = TSportsProgrammeData._replaceSportInformation(descriptionAiredHint, league.GetSport(), locale)
-			descriptionAiredHint = TSportsProgrammeData._replaceLeagueInformation(descriptionAiredHint, league, locale)
+			title = TSportsProgrammeData._replaceSportInformation(title, league.GetSport(), localeID)
+			title = TSportsProgrammeData._replaceLeagueInformation(title, league, localeID)
+			description = TSportsProgrammeData._replaceSportInformation(description, league.GetSport(), localeID)
+			description = TSportsProgrammeData._replaceLeagueInformation(description, league, localeID)
+			descriptionAirtimeHint = TSportsProgrammeData._replaceSportInformation(descriptionAirtimeHint, league.GetSport(), localeID)
+			descriptionAirtimeHint = TSportsProgrammeData._replaceLeagueInformation(descriptionAirtimeHint, league, localeID)
+			descriptionAiredHint = TSportsProgrammeData._replaceSportInformation(descriptionAiredHint, league.GetSport(), localeID)
+			descriptionAiredHint = TSportsProgrammeData._replaceLeagueInformation(descriptionAiredHint, league, localeID)
 
-			programmeData.title.Set(StringHelper.UCFirst(title), locale)
-			programmeData.description.Set(StringHelper.UCFirst(description), locale)
-			programmeData.descriptionAirtimeHint.Set(StringHelper.UCFirst(descriptionAirtimeHint), locale)
-			programmeData.descriptionAiredHint.Set(StringHelper.UCFirst(descriptionAiredHint), locale)
+			programmeData.title.Set(StringHelper.UCFirst(title), localeID)
+			programmeData.description.Set(StringHelper.UCFirst(description), localeID)
+			programmeData.descriptionAirtimeHint.Set(StringHelper.UCFirst(descriptionAirtimeHint), localeID)
+			programmeData.descriptionAiredHint.Set(StringHelper.UCFirst(descriptionAiredHint), localeID)
 		Next
 
 		programmeData.GUID = "programmedata-sportleaguecollection-"+league.GetGUID() +"-season-"+league.GetCurrentSeason().GetGUID()

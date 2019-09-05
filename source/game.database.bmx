@@ -2104,11 +2104,12 @@ Type TDatabaseLoader
 		Local localized:TLocalizedString = New TLocalizedString
 		For Local nodeLangEntry:TxmlNode = EachIn TxmlHelper.GetNodeChildElements(node)
 			Local language:String = nodeLangEntry.GetName().ToLower()
+			Local languageID:Int = TLocalization.GetLanguageID(language)
 			'do not trim, as this corrupts variables like "<de> %WORLDTIME:YEAR%</de>" (with space!)
 			Local value:String = nodeLangEntry.getContent() '.Trim()
 
 			If value <> ""
-				localized.Set(value, language)
+				localized.Set(value, languageID)
 				foundEntry = True
 			EndIf
 		Next
