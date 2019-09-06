@@ -788,7 +788,7 @@ ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = Access to this room is
 BLOCKED = Blocked
 ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = Access to this room is currently not possible.
 
-OPENINGSHOW_TITLE = Big launch of "%CHANNELNAME%
+OPENINGSHOW_TITLE = Big launch of "%CHANNELNAME%"
 OPENINGSHOW_DESCRIPTION = Let's pop the corks. %CHANNELNAME% is launching today.
 
 CONSTRUCTION_TIME = Construction Time

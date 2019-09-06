@@ -1,11 +1,11 @@
-﻿LANGUAGE_NAME_INTERNATIONAL = Francais	
+﻿LANGUAGE_NAME_INTERNATIONAL = Francais
 LANGUAGE_NAME_LOCALE = Francais
 
 CHAT = Chat
 SAVE_AND_APPLY = Sauvegarder et appliquer
 CANCEL = Annuler
 
-MALE = Homme	
+MALE = Homme
 FEMALE = femme
 UNDEFINED = Non defini
 
@@ -49,7 +49,7 @@ SAVEGAME_GETS_LOADED = Sauvegarde chargée
 PROGRAMMELICENCES = Programme licences
 SELECT_LICENCES_FOR_SALE = choisir licence à vendre
 
-YES = Oui	
+YES = Oui
 NO = Non
 MONEY = Argent
 DEBT = Dette
@@ -70,8 +70,8 @@ WEEK_SHORT_THURSDAY		= je
 WEEK_SHORT_FRIDAY		= ve
 WEEK_SHORT_SATURDAY		= sa
 WEEK_SHORT_SUNDAY		= di
-WEEK_LONG_MONDAY		= Lundi	
-WEEK_LONG_TUESDAY		= Mardi	
+WEEK_LONG_MONDAY		= Lundi
+WEEK_LONG_TUESDAY		= Mardi
 WEEK_LONG_WEDNESDAY		= Mercredi
 WEEK_LONG_THURSDAY		= Jeudi
 WEEK_LONG_FRIDAY		= Vendredi
@@ -112,7 +112,7 @@ ROOM_ELEVATORPLAN		= Plan de l'ascenceur
 ROOM_NEWSPLANNER		= News planner
 ROOM_FINANCES			= Finances
 ROOM_SAFE				= Sauvegarde
-ROOM_PROGRAMMEPLANNER	= Programme 
+ROOM_PROGRAMMEPLANNER	= Programme
 ROOM_STATIONMAP			= Carte des stations
 ROOM_ROOMMAP			= Plan de la tour
 ROOM_MOVIEAGENCY		= Agence de Film
@@ -166,7 +166,7 @@ TV_OFF					= La TV est sur off
 TV_TURN_IT_ON			= Vous devriez rallumer la TV
 AUDIENCE_RATING			= Audience rating
 AUDIENCE_RATINGS		= Audience ratings
-POTENTIAL_AUDIENCE_NUMBER	= Audience potentiel 
+POTENTIAL_AUDIENCE_NUMBER	= Audience potentiel
 AUDIENCE_NUMBER				= audience
 MIN_AUDIENCE			= Min. audience
 INVALID_BY_BROADCAST_OUTAGE = Invalid by broadcast outage
@@ -233,7 +233,7 @@ MOVIE_TOPICALITY		= Actualité
 MOVIE_BLOCKS			= blocks
 MOVIE_XRATED			= Classé X
 MOVIE_EPISODES			= episodes
-MOVIE_CAST              = Distribution 
+MOVIE_CAST              = Distribution
 MOVIE_LEADINGACTOR      = Acteur Principal
 MOVIE_SUPPORTINGACTOR   = Second Rôle
 
@@ -418,7 +418,7 @@ DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY2         = Fais ton boulot ! La prochaine f
 DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER1          = Hors de mon chemin - et de passer sur les pires salutations à votre patron . Ha ha ha ha..
 DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER2          = Allez-vous en !
 
-DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER =	Bon, uhmmm 
+DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER =	Bon, uhmmm
 DIALOGUE_BOSS_WILLNOTDISTURB			=	Ok patron je ne vais pas vous deranger plus !
 DIALOGUE_BOSS_ASKFORCREDIT				=	J'ai besoin hum... d'un crédit
 DIALOGUE_BOSS_REPAYCREDIT				=	Je souhaite rembourser mon crédit
@@ -461,7 +461,7 @@ UNDER_CONSTRUCTION = en Construction
 READY_AT_TIME_X = Pret à %ACTIVATIONTIME%
 READY_AT_DAY_X = Ready at %ACTIVATIONTIME%
 STATION_UNDER_CONSTRUCTION = Station under construction
-NEW_STATION_WILL_BE_READY_AT_TIME_X = New station will be ready at %TIME% 
+NEW_STATION_WILL_BE_READY_AT_TIME_X = New station will be ready at %TIME%
 NEW_STATION_WILL_BE_READY_AT_DAY_X = New station will be ready at %TIME%
 
 BUY_AND_SELL = Acheter et vendre
@@ -485,9 +485,9 @@ YESTERDAY = Hier
 TWO_DAYS_AGO = Il y à deux jours
 
 INFOMERCIAL = Infomercial
-SPECIAL_NEWS_BROADCAST = Flash Special 
+SPECIAL_NEWS_BROADCAST = Flash Special
 
-24_HOURS_GAMEDAY = Journée de 24 heures 
+24_HOURS_GAMEDAY = Journée de 24 heures
 ALLOW_TRAILERS_AND_INFOMERCIALS = Autoriser bande annonce /Publireportage
 ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR = Autoriser les films avec année de production > année de jeu
 OPTION_ON = Option on
@@ -502,7 +502,7 @@ LOAD_GAME = Load Game
 SAVE_GAME = Save Game
 EXIT_GAME = Exit Game
 EXIT_TO_MAINMENU = Exit to main menu
-NAME_OF_SAVEGAME = Name of savegame 
+NAME_OF_SAVEGAME = Name of savegame
 OVERWRITE_SAVEGAME = Overwrite savegame?
 DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = Do you really want to overwrite savegame %SAVEGAME%?
 
@@ -521,10 +521,10 @@ BETTER_WATCH_OUT_NEXT_TIME = Regarde mieux la prochaine fois
 
 YOU_HAVE_BEEN_OUTBID = Vous avez été surenchéri
 SOMEONE_BID_MORE_THAN_YOU_FOR_X = Quelqu'un enchérir plus que vous pour "%TITLE%"
-YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Votre offre précédente de %MONEY% a été remboursé. 
+YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Votre offre précédente de %MONEY% a été remboursé.
 
 YOU_HAVE_WON_AN_AUCTION = Victoire sur une enchére
-THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = La licence "%TITLE%" est maintenant à vous. 
+THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = La licence "%TITLE%" est maintenant à vous.
 
 YOUR_BOSS_WANTS_TO_SEE_YOU = Votre patron veut vous voir
 YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM = vous avez %HOURS% heures pour lui rendre visite.
@@ -570,7 +570,7 @@ ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = Uniquement possible av
 BLOCKED = Bloqué
 ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = La salle n'est pas disponible
 
-OPENINGSHOW_TITLE = Big launch of "%CHANNELNAME%
+OPENINGSHOW_TITLE = Big launch of "%CHANNELNAME%"
 OPENINGSHOW_DESCRIPTION = Let's pop the corks. %CHANNELNAME% is launching today.
 
 CONSTRUCTION_TIME = Construction Time

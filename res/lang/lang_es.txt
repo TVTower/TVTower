@@ -466,7 +466,7 @@ UNDER_CONSTRUCTION = Under Construction
 READY_AT_TIME_X = presto a %TIME%
 READY_AT_DAY_X = presto a %TIME%
 STATION_UNDER_CONSTRUCTION = Estación en construcción
-NEW_STATION_WILL_BE_READY_AT_TIME_X = Nueva estación estará lista en %TIME% 
+NEW_STATION_WILL_BE_READY_AT_TIME_X = Nueva estación estará lista en %TIME%
 NEW_STATION_WILL_BE_READY_AT_DAY_X = Nueva estación estará lista en %TIME%
 
 
@@ -527,7 +527,7 @@ BETTER_WATCH_OUT_NEXT_TIME = Ten cuidado la próxima vez.
 
 YOU_HAVE_BEEN_OUTBID = Le han sobrepujado
 SOMEONE_BID_MORE_THAN_YOU_FOR_X = Alguien una oferta más de lo que para "%TITLE%"
-YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Su oferta previa de %MONEY% fue devuelto. 
+YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Su oferta previa de %MONEY% fue devuelto.
 
 YOU_HAVE_WON_AN_AUCTION = Ha ganado una subasta
 THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = La licencia de "%TITLE%" ya está a su disposición.
@@ -575,7 +575,7 @@ ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = El acceso a esta sala 
 BLOCKED = Bloqueado
 ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = El acceso a esta sala en este momento no es posible.
 
-OPENINGSHOW_TITLE = Gran lanzamiento de "%ChannelName%"
+OPENINGSHOW_TITLE = Gran lanzamiento de "%CHANNELNAME%"
 OPENINGSHOW_DESCRIPTION = Vamos a estallar los corchos. %CHANNELNAME% está lanzando hoy.
 
 CONSTRUCTION_TIME = tiempo de construcción

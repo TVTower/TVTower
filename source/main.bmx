@@ -609,7 +609,8 @@ Type TApp
 	global _profilerKey_RessourceLoader:TLowerString = new TLowerString.Create("RessourceLoader")
 	global _profilerKey_AI_MINUTE:TLowerString[] = [new TLowerString.Create("PLAYER_AI1_MINUTE"), new TLowerString.Create("PLAYER_AI2_MINUTE"), new TLowerString.Create("PLAYER_AI3_MINUTE"), new TLowerString.Create("PLAYER_AI4_MINUTE")]
 	global _profilerKey_AI_SECOND:TLowerString[] = [new TLowerString.Create("PLAYER_AI1_SECOND"), new TLowerString.Create("PLAYER_AI2_SECOND"), new TLowerString.Create("PLAYER_AI3_SECOND"), new TLowerString.Create("PLAYER_AI4_SECOND")]
-
+	global keyLS_DevOSD:TLowerString = new TLowerString.Create("DEV_OSD")
+	global keyLS_DevKeys:TLowerString = new TLowerString.Create("DEV_KEYS")
 	Function Update:Int()
 		TProfiler.Enter(_profilerKey_Update)
 		'every 3rd update do a low priority update
@@ -668,7 +669,7 @@ Type TApp
 		If Not GUIManager.GetKeystrokeReceiver() And ..
 		   Not (App.ExitAppDialogue Or App.EscapeMenuWindow)
 
-			If GameRules.devConfig.GetBool("DEV_KEYS", False)
+			If GameRules.devConfig.GetBool(keyLS_DevKeys, False)
 				'(un)mute sound
 				'M: (un)mute all sounds
 				'SHIFT+M: (un)mute all sound effects
@@ -816,14 +817,6 @@ Type TApp
 						print "reach: " + reach +"  audienceReach=" + GetBroadcastmanager().GetAudienceResult(1).WholeMarket.GetTotalSum()
 						reach = GetStationMap( 1 ).GetReach()
 					endrem
-
-						GetProgrammeDataCollection()._liveProgrammeData = Null
-
-						Print "live data:"
-						For Local d:TProgrammeData = EachIn GetProgrammeDataCollection().GetLiveProgrammeDataList()
-							Print "  " + LSet(d.GetTitle(), 30) + "  |  " + d.GetGUID()
-						Next
-						GetProgrammeDataCollection().UpdateLive()
 
 						Rem
 						print "GetBroadcastManager: "
@@ -1200,10 +1193,8 @@ endrem
 				'Save game only when in a game
 				If GetGame().gamestate = TGame.STATE_RUNNING
 					If KEYMANAGER.IsHit(KEY_F5) Then TSaveGame.Save("savegames/quicksave.xml")
-					'If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegames/quicksave.xml")
 				EndIf
 
-				'If KEYMANAGER.IsHit(KEY_L)
 				If KEYMANAGER.IsHit(KEY_F8)
 					TSaveGame.Load("savegames/quicksave.xml")
 				EndIf
@@ -1220,7 +1211,7 @@ endrem
 					EndIf
 				EndIf
 
-				If KEYMANAGER.Ishit(KEY_K)
+				If KEYMANAGER.IsHit(KEY_K)
 					TLogger.Log("KickAllFromRooms", "Player kicks all figures out of the rooms.", LOG_DEBUG)
 					For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
 						If fig.GetInRoom()
@@ -1383,43 +1374,42 @@ endrem
 		Local oldCol:TColor = New TColor.Get()
 		SetAlpha oldCol.a * 0.25
 		SetColor 0,0,0
-		If GameRules.devConfig.GetBool("DEV_OSD", False)
+		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
 			DrawRect(0,0, 800,13)
 		Else
 			DrawRect(0,0, 175,13)
 		EndIf
 		oldCol.SetRGBA()
 
-		GetBitmapFontManager().baseFont.drawStyled("Speed:" + Int(GetWorldTime().GetVirtualMinutesPerSecond() * 100), textX , 0)
+		local bf:TBitmapFont = GetBitmapFontManager().baseFont
+
+		bf.draw("Speed:" + Int(GetWorldTime().GetVirtualMinutesPerSecond() * 100), textX , 0)
 		textX:+75
-		GetBitmapFontManager().baseFont.draw("FPS: "+GetDeltaTimer().currentFps, textX, 0)
+		bf.draw("FPS: "+GetDeltaTimer().currentFps, textX, 0)
 		textX:+50
-		GetBitmapFontManager().baseFont.draw("UPS: " + Int(GetDeltaTimer().currentUps), textX,0)
+		bf.draw("UPS: " + Int(GetDeltaTimer().currentUps), textX,0)
 		textX:+50
 
-		If GameRules.devConfig.GetBool("DEV_OSD", False)
-			GetBitmapFontManager().baseFont.draw("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0)
+		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
+			bf.draw("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0)
 			textX:+85
 			'update time per second
-			GetBitmapFontManager().baseFont.draw("UTPS: " + Int(GetDeltaTimer()._currentUpdateTimePerSecond), textX,0)
+			bf.draw("UTPS: " + Int(GetDeltaTimer()._currentUpdateTimePerSecond), textX,0)
 			textX:+65
 			'render time per second
-			GetBitmapFontManager().baseFont.draw("RTPS: " + Int(GetDeltaTimer()._currentRenderTimePerSecond), textX,0)
+			bf.draw("RTPS: " + Int(GetDeltaTimer()._currentRenderTimePerSecond), textX,0)
 			textX:+65
-
-			GetBitmapFontManager().baseFont.draw("gobject-Max: "+ TGameObject.lastID, textX,0)
-			textX:+115
 
 			'RON: debug purpose - see if the managed guielements list increase over time
 			If TGUIObject.GetFocusedObject()
-				GetBitmapFontManager().baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"] focused: "+TGUIObject.GetFocusedObject()._id, textX,0)
+				bf.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"] focused: "+TGUIObject.GetFocusedObject()._id, textX,0)
 			Else
-				GetBitmapFontManager().baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"]" , textX,0)
+				bf.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"]" , textX,0)
 			EndIf
 			textX:+170
 
 			If GetGame().networkgame And Network.client
-				GetBitmapFontManager().baseFont.draw("Ping: "+Int(Network.client.latency)+"ms", textX,0)
+				bf.draw("Ping: "+Int(Network.client.latency)+"ms", textX,0)
 				textX:+50
 			EndIf
 		EndIf
@@ -1605,18 +1595,6 @@ endrem
 			EndIf
 
 '				debugProgrammePlanInfos.Draw((playerID + 1) mod 4, 415, 15)
-
-Rem
-			local textX:int = 10
-			local textY:int = 350
-			SetColor 0,0,0
-			DrawRect(textX, textY, 200, 150)
-			SetColor 255,255,255
-			For local playerID:int = 1 to 4
-				font.Draw("Player "+playerID, textX, textY)
-				textY :+ 10
-			Next
-endrem
 		EndIf
 	End Function
 
@@ -1628,12 +1606,12 @@ endrem
 			SetClsColor 0,0,0
 			'use graphicsmanager's cls as it resets virtual resolution
 			'first
-			'Cls()
 			GetGraphicsManager().Cls()
 		EndIf
 
 		TProfiler.Enter(_profilerKey_Draw)
 		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
+
 
 		'=== RENDER TOASTMESSAGES ===
 		'below everything else of the interface: our toastmessages
@@ -1705,15 +1683,24 @@ endrem
 		'draw system things at last (-> on top)
 		GUIManager.Draw(systemState)
 
-		If Not spriteMouseCursor Then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
 
-		If GetGameBase().cursorstate = 0 Then spriteMouseCursor.Draw(MouseManager.x-9,  MouseManager.y-2,  0)
-		'open hand
-		If GetGameBase().cursorstate = 1 Then spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-8,  1)
-		'grabbing hand
-		If GetGameBase().cursorstate = 2 Then spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-16, 2)
-		'open hand blocked
-		If GetGameBase().cursorstate = 3 Then spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-8,  3)
+		'mnouse cursor
+		If Not spriteMouseCursor Then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
+		Select GetGameBase().cursorstate
+			'open hand
+			case 1
+				spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-8,  1)
+			'grabbing hand
+			case 2
+				spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-16, 2)
+			'open hand blocked
+			case 3
+				spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-8,  3)
+			'normal
+			default
+				spriteMouseCursor.Draw(MouseManager.x-9,  MouseManager.y-2,  0)
+		End Select
+
 
 		'if a screenshot is generated, draw a logo in
 		If App.prepareScreenshot = 1

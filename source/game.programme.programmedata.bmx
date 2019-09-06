@@ -972,6 +972,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		Local result:TLocalizedString = New TLocalizedString
 		For Local langID:Int = EachIn localizedString.GetLanguageIDs()
 			result.Set(_ReplacePlaceholdersInString(localizedString.Get(langID)), langID)
+			'print langID + "  => " + Lset(localizedString.valueStrings[langID],30) + "  =>  " + Lset(localizedString.Get(langID),30) +"     result: " + Lset(result.Get(langID),30) +"  langIndex="+localizedString.GetLanguageIndex(langID)
 		Next
 		Return result
 	End Method

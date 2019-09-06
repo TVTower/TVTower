@@ -538,9 +538,9 @@ Type TLocalizedString
 	Field valueStrings:String[]
 	Field valueLangIDs:Int[]
 	'current value
-	Field value:string {nosave}
-	'boolean if the value was set (might still be "empty" on purpose)
-	Field valueSet:Int = False {nosave}
+	Field valueCached:string {nosave}
+	'language of the current value (which might still be "empty" on purpose)
+	Field valueCachedLanguageID:Int = -1 {nosave}
 
 
 	Method Copy:TLocalizedString()
@@ -548,8 +548,8 @@ Type TLocalizedString
 
 		c.valueStrings = self.valueStrings[ .. ]
 		c.valueLangIDs = self.valueLangIDs[ .. ]
-		c.value = self.value
-		c.valueSet = self.valueSet
+		c.valueCached = self.valueCached
+		c.valueCachedLanguageID = self.valueCachedLanguageID
 
 		return c
 	End Method
@@ -581,9 +581,8 @@ Type TLocalizedString
 
 		valueStrings[langIndex] = value
 
-		if languageCodeID = TLocalization.currentLanguageID
-			self.value = value
-			self.valueSet = True
+		if languageCodeID = valueCachedLanguageID
+			self.valueCached = valueCached
 		endif
 		return self
 	End Method
@@ -592,31 +591,36 @@ Type TLocalizedString
 	Method Get:String(languageCodeID:Int = -1, returnDefault:int = True)
 		if languageCodeID = -1 then languageCodeID = TLocalization.currentLanguageID
 
-		if not valueSet or languageCodeID <> TLocalization.currentLanguageID
+		'not cached yet?
+		if valueCachedLanguageID <> languageCodeID
 			local langIndex:Int = GetLanguageIndex(languageCodeID)
+			local result:String
+
+			'fetch value
 			if langIndex >= 0
-				value = valueStrings[langIndex]
-			else
+				result = valueStrings[langIndex]
 rem
+			else
 				print "UNKNOWN LANGUAGE ID: " + languageCodeID +"   current="+TLocalization.currentLanguageID
 				for local i:int = 0 until valueLangIDs.length
 					print "   knowing: " + valueLangIDs[i] + " (" + TLocalization.GetLanguageCode(valueLangIDs[i])+")"
 				next
 endrem
-				value = ""
 			endif
 
-			if not value and returnDefault
+			if not result and returnDefault
 				local defaultIndex:Int = GetLanguageIndex(TLocalization.defaultLanguageID)
 				if defaultIndex >= 0 and valueStrings.length <= defaultIndex
-					value = valueStrings[TLocalization.defaultLanguageID]
+					result = valueStrings[TLocalization.defaultLanguageID]
 				endif
 			endif
 
-			valueSet = True
+
+			valueCachedLanguageID = languageCodeID
+			valueCached = result
 		endif
 
-		return value
+		return valueCached
 	End Method
 
 
@@ -723,7 +727,7 @@ endrem
 				Set(other.valueStrings[i], other.valueLangIDs[i])
 			Next
 
-			valueSet = False
+			valueCachedLanguageID = -1
 		endif
 		return self
 	End Method
