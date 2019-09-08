@@ -13,10 +13,15 @@ Type TDebugScreen
 	Field mode:Int = 0
 	Field sideButtons:TDebugControlsButton[]
 	Field playerCommandTaskButtons:TDebugControlsButton[]
+	Field playerCommandAIButtons:TDebugControlsButton[]
 	Field sideButtonPanelWidth:Int = 130
+	Global titleFont:TBitmapFont
+	Global textFont:TBitmapFont
+	Global textFontBold:TBitmapFont
 
 	Method New()
 		Local button:TDebugControlsButton
+
 
 		Local texts:String[] = ["Overview", "Player Commands", "Player Financials", "Player Broadcasts", "Ad Vendor", "Movie Vendor", "News Agency", "Script Vendor"]
 		For Local i:Int = 0 Until texts.length
@@ -82,10 +87,16 @@ Type TDebugScreen
 
 
 	Method Render()
+		if not titleFont
+			titleFont = GetBitmapFont("default", 12, BOLDFONT)
+			textFontBold = GetBitmapFont("default", 10, BOLDFONT)
+			textFont = GetBitmapFont("default", 10)
+		endif
+
 		Local oldCol:TColor = New TColor.get()
 
 		SetColor 0,0,0
-		SetAlpha 0.2 * oldCol.a
+		SetAlpha 0.3 * oldCol.a
 		DrawRect(0,0, sideButtonPanelWidth, 383)
 		SetAlpha oldCol.a
 		DrawRect(sideButtonPanelWidth-2,0, 2, 383)
@@ -94,6 +105,12 @@ Type TDebugScreen
 			b.Render()
 		Next
 
+
+		SetColor 0,0,0
+		SetAlpha 0.2 * oldCol.a
+		DrawRect(sideButtonPanelWidth,0, 800 - sideButtonPanelWidth, 383)
+		SetColor 255,255,255
+		SetAlpha oldCol.a
 
 		Select mode
 			Case 0	RenderMode_Overview()
@@ -118,25 +135,32 @@ Type TDebugScreen
 	Method RenderMode_Overview()
 		Local playerID:Int = GetShownPlayerID()
 
-		For Local i:Int = 1 To 4
-			RenderBossMood(i, sideButtonPanelWidth + 5, 10 + i*50)
-		Next
+		textFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 5, 360)
+		If ScreenCollection.GetCurrentScreen()
+			textFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 5, 360 + 11)
+		Else
+			textFont.draw("onScreen: Main", 5, 360 + 11)
+		EndIf
 
 
-		For Local i:Int = 0 To 3
-			GetBitmapFontManager().baseFont.Draw("Image #"+i+": "+MathHelper.NumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
-		Next
+		local x:int = sideButtonPanelWidth + 5
+		RenderPlayerPositions(x, 10)
+		RenderElevatorState(x, 100)
 
-		For Local i:Int = 0 To 3
-			GetBitmapFontManager().baseFont.Draw("Boss #"+i+": "+MathHelper.NumberToString(GetPlayerBoss(i+1).mood,4), 10, 270 + i*13)
-		Next
+		local sideInfoW:int = 160
+		for local i:int = 0 To 3
+			RenderFigureInformation( GetPlayer(i+1).GetFigure(), x + 140, 10 + i*75)
+			RenderBossMood(i+1, x + 140 + 150 + 2, 10 + i*75, sideInfoW, 30)
+'			textFont.Draw("Image #"+i+": "+MathHelper.NumberToString(GetPublicImageCollection().Get(i+1).GetAverageImage(), 4)+" %", 10, 320 + i*13)
 
+			if GetPlayer(i+1).IsLocalAI()
+				DrawOutlineRect(x + 140 + 150 + 2, 10 + i*75 + 33, sideInfoW, 37)
+				DrawProfilerCallHistory(TProfiler.GetCall(TApp._profilerKey_AI_MINUTE[i]), x + 140 + 150 + 5, 10 + i*75 + 33 + 5, sideInfoW - 2*4, 28, "AI " + (i+1))
+			endif
 
-		'GetBitmapFontManager().baseFont.Draw("NewsEvents: "+GetNewsEventCollection().managedNewsEvents.count(), 680, 300)
-		For Local i:Int = 0 To 3
-			GetBitmapFontManager().baseFont.Draw("News #"+i+": "+GetPlayerProgrammeCollection(i+1).news.count(), 680, 320 + i*13)
-		Next
+		next
 
+		GetWorld().RenderDebug(x + 5 + 500, 20, 140, 180)
 	End Method
 
 
@@ -179,6 +203,22 @@ Type TDebugScreen
 			button._onClickHandler = OnPlayerCommandTaskButtonClickHandler
 
 			playerCommandTaskButtons :+ [button]
+		Next
+
+
+		IDs   = [0,           1]
+		texts = ["Enable AI", "Switch Roomsigns"]
+		For Local i:Int = 0 Until texts.length
+			button = New TDebugControlsButton
+			button.w = 120
+			button.h = 15
+			button.x = 0
+			button.y = i * (button.h + 3)
+			button.dataInt = IDs[i]
+			button.text = texts[i]
+			button._onClickHandler = OnPlayerCommandAIButtonClickHandler
+
+			playerCommandAIButtons :+ [button]
 		Next
 	End Method
 
@@ -231,11 +271,36 @@ Type TDebugScreen
 	End Function
 
 
+
+	Function OnPlayerCommandAIButtonClickHandler(sender:TDebugControlsButton)
+'		print "clicked " + sender.dataInt
+
+		Local playerID:Int = DebugScreen.GetShownPlayerID()
+		Local player:TPlayer = GetPlayer(playerID)
+
+		Local taskName:String =""
+		Select sender.dataInt
+			Case 0
+				if player.IsLocalHuman() or player.IsLocalAI()
+					Dev_SetPlayerAI(playerID, not player.IsLocalAI())
+					if player.IsLocalAI()
+						DebugScreen.playerCommandAIButtons[0].text = "Disable AI"
+					else
+						DebugScreen.playerCommandAIButtons[0].text = "Enable AI"
+					endif
+				endif
+		End Select
+	End Function
+
+
 	Method UpdateMode_PlayerCommands()
 '		local playerID:int = GetShownPlayerID()
 
 		For Local b:TDebugControlsButton = EachIn playerCommandTaskButtons
 			b.Update(sideButtonPanelWidth + 5, 30)
+		Next
+		For Local b:TDebugControlsButton = EachIn playerCommandAIButtons
+			b.Update(sideButtonPanelWidth + 5 + 1*(120 + 10), 30)
 		Next
 	End Method
 
@@ -247,22 +312,20 @@ Type TDebugScreen
 
 
 		Local oldCol:TColor = New TColor.get()
-		SetColor 0,0,0
-		SetAlpha 0.25 * oldCol.a
-		DrawRect(sideButtonPanelWidth, 10, 130, 170)
-		SetAlpha oldCol.a
-		DrawRect(sideButtonPanelWidth, 10, 130, 2)
-		DrawRect(sideButtonPanelWidth, 10 + 170 - 2, 130, 2)
-		DrawRect(sideButtonPanelWidth + 130-2, 10, 2, 170)
+		DrawOutlineRect(sideButtonPanelWidth, 10, 130, 170, true, true, true, false, 0,0,0, 0.25)
 		SetColor 255,255,255
 
 		If player.playerAI
-			GetBitmapFont("default", 12, BOLDFONT).Draw("Start task:", sideButtonPanelWidth + 5, 13)
+			titleFont.Draw("Start task:", sideButtonPanelWidth + 5, 13)
 		Else
-			GetBitmapFont("default", 12, BOLDFONT).Draw("Go to room:", sideButtonPanelWidth + 5, 13)
+			titleFont.Draw("Go to room:", sideButtonPanelWidth + 5, 13)
 		EndIf
 		For Local b:TDebugControlsButton = EachIn playerCommandTaskButtons
 			b.Render(sideButtonPanelWidth + 5, 25)
+		Next
+
+		For Local b:TDebugControlsButton = EachIn playerCommandAIButtons
+			b.Render(sideButtonPanelWidth + 5 + 1*(120 + 10), 30)
 		Next
 	End Method
 
@@ -341,26 +404,70 @@ endrem
 
 	'=== BLOCKS ===
 
-	Method RenderBossMood(playerID:Int, x:Int, y:Int)
+	Method RenderFigureInformation(figure:TFigure, x:int, y:int)
+		DrawOutlineRect(x, y, 150, 70)
+
+		local oldCol:TColor = new TColor.Get()
+
+		local usedDoorText:string = ""
+		local targetText:string = ""
+		if TRoomDoor(figure.usedDoor) then usedDoorText = TRoomDoor(figure.usedDoor).GetRoom().GetName()
+		if figure.GetTarget()
+			local t:object = figure.GetTarget()
+			if TRoomDoor(figure.GetTargetObject())
+				targetText = TRoomDoor(figure.GetTargetObject()).GetRoom().GetName()
+			elseif THotSpot(figure.GetTargetObject())
+				targetText = "Hotspot"
+			else
+				targetText = "Building"
+			endif
+			targetText :+ " (" + figure.GetTargetMovetoPosition().ToString() + ")"
+		endif
+
+
+		Local roomName:String = "in Building"
+		If figure.inRoom
+			roomName = StringHelper.UCFirst(figure.inRoom.GetName())
+		ElseIf figure.IsInElevator()
+			roomName = "in Elevator"
+		ElseIf figure.IsAtElevator()
+			roomName = "at Elevator"
+		EndIf
+		If figure.isChangingRoom()
+			If figure.inRoom
+				roomName :+ "<-[]" 'Chr(8646)
+			Else
+				roomName :+ "->[]" 'Chr(8646)
+			EndIf
+		EndIf
+
+		If not figure.isControllable() then roomName :+" (f)"
+
+
+		SetColor 255,255,255
+		local textY:int = y + 5
+		titleFont.Draw(figure.name, x + 5, textY)
+		if not figure.CanMove() then textFont.DrawBlock("cannot move", x, textY, 150 - 3, 14, ALIGN_RIGHT_TOP)
+		textY :+ 10
+		textFont.draw(roomName, x + 5, textY)
+		textY :+ 10
+		if targetText then textFont.draw("-> " + targetText, x + 5, textY)
+		'textY :+ 10
+		'textFont.draw("usedDoor: " + usedDoorText, x + 5, textY)
+	End Method
+
+
+	Method RenderBossMood(playerID:Int, x:Int, y:Int, w:int, h:int)
 		Local boss:TPlayerBoss = GetPlayerBoss(playerID)
 		If Not boss Then Return
 
-		Local oldAlpha:Float = GetAlpha()
 
-		SetAlpha oldAlpha * 0.75
-		SetColor 0,0,0
-		DrawRect(x, y, 160, 50)
+		DrawOutlineRect(x,y,w,h)
+		Local textY:Int = y + 5
 
-		SetColor 255,255,255
-		SetAlpha oldAlpha
-
-		Local textY:Int = y + 2
-		Local fontBold:TBitmapFont = GetBitmapFontManager().basefontBold
-		Local fontNormal:TBitmapFont = GetBitmapFont("", 10)
-
-		fontBold.draw("Boss #"  + boss.playerID, x + 5, textY)
+		titleFont.draw("Boss #"  + boss.playerID, x + 5, textY)
 		textY :+ 12
-		fontNormal.draw("Mood: " + MathHelper.NumberToString(boss.GetMood(), 2), x + 5, textY)
+		textFont.draw("Mood: " + MathHelper.NumberToString(boss.GetMood(), 2), x + 5, textY)
 		SetColor 150,150,150
 		DrawRect(x + 70, textY, 70, 10 )
 		SetColor 0,0,0
@@ -369,7 +476,6 @@ endrem
 		Local handleX:Int = MathHelper.Clamp(boss.GetMoodPercentage()*68 - 2, 0, 68 - 4)
 		DrawRect(x + 70 + 1 + handleX , textY + 1, 4, 10 - 2 )
 		SetColor 255,255,255
-		textY :+ 11
 	End Method
 
 
@@ -377,9 +483,6 @@ endrem
 		Local player:TPlayer = GetPlayer(playerID)
 
 		If player.playerAI
-			Local font:TBitmapFont = GetBitmapFont("default", 10)
-			Local fontB:TBitmapFont = GetBitmapFont("default", 10, BOLDFONT)
-
 			SetColor 40,40,40
 			DrawRect(x, y, 185, 135)
 			SetColor 50,50,40
@@ -391,42 +494,103 @@ endrem
 
 			Local assignmentType:Int = player.aiData.GetInt("currentTaskAssignmentType", 0)
 			If assignmentType = 1
-				font.Draw("Task: [F] " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
+				textFont.Draw("Task: [F] " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
 			ElseIf assignmentType = 2
-				font.Draw("Task: [R]" + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
+				textFont.Draw("Task: [R]" + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
 			Else
-				font.Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
+				textFont.Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
 			EndIf
 			textY :+ 10
-			font.Draw("Job:   " + player.aiData.GetString("currentTaskJob") + " ["+player.aiData.GetString("currentTaskJobStatus")+"]", textX, textY)
+			textFont.Draw("Job:   " + player.aiData.GetString("currentTaskJob") + " ["+player.aiData.GetString("currentTaskJobStatus")+"]", textX, textY)
 			textY :+ 13
 
-			fontB.Draw("Task List: ", textX, textY)
-			fontB.Draw("Prio ", textX + 90 + 22*0, textY)
-			fontB.Draw("Bas", textX + 90 + 22*1, textY)
-			fontB.Draw("Sit", textX + 90 + 22*2, textY)
-			fontB.Draw("Req", textX + 90 + 22*3, textY)
+			textFontBold.Draw("Task List: ", textX, textY)
+			textFontBold.Draw("Prio ", textX + 90 + 22*0, textY)
+			textFontBold.Draw("Bas", textX + 90 + 22*1, textY)
+			textFontBold.Draw("Sit", textX + 90 + 22*2, textY)
+			textFontBold.Draw("Req", textX + 90 + 22*3, textY)
 			textY :+ 10 + 2
 
 			For Local taskNumber:Int = 1 To player.aiData.GetInt("tasklist_count", 1)
-				font.Draw(player.aiData.GetString("tasklist_name"+taskNumber).Replace("Task", ""), textX, textY)
-				font.Draw(player.aiData.GetInt("tasklist_priority"+taskNumber), textX + 90 + 22*0, textY)
-				font.Draw(player.aiData.GetInt("tasklist_basepriority"+taskNumber), textX + 90 + 22*1, textY)
-				font.Draw(player.aiData.GetInt("tasklist_situationpriority"+taskNumber), textX + 90 + 22*2, textY)
-				font.Draw(player.aiData.GetInt("tasklist_requisitionpriority"+taskNumber), textX + 90 + 22*3, textY)
+				textFont.Draw(player.aiData.GetString("tasklist_name"+taskNumber).Replace("Task", ""), textX, textY)
+				textFont.Draw(player.aiData.GetInt("tasklist_priority"+taskNumber), textX + 90 + 22*0, textY)
+				textFont.Draw(player.aiData.GetInt("tasklist_basepriority"+taskNumber), textX + 90 + 22*1, textY)
+				textFont.Draw(player.aiData.GetInt("tasklist_situationpriority"+taskNumber), textX + 90 + 22*2, textY)
+				textFont.Draw(player.aiData.GetInt("tasklist_requisitionpriority"+taskNumber), textX + 90 + 22*3, textY)
 				textY :+ 10
 			Next
 		EndIf
 	End Method
 
 
+	Method RenderPlayerPositions(x:Int, y:Int)
+		DrawOutlineRect(x, y, 130, 70)
+
+		titleFont.draw("Player positions:", x + 5, y + 5)
+
+		Local roomName:String = ""
+		Local fig:TFigure
+		For Local i:Int = 0 To 3
+			fig = GetPlayer(i+1).GetFigure()
+
+			Local change:String = ""
+			If fig.isChangingRoom()
+				If fig.inRoom
+					change = "<-[]" 'Chr(8646)
+				Else
+					change = "->[]" 'Chr(8646)
+				EndIf
+			EndIf
+
+			roomName = "Building"
+			If fig.inRoom
+				roomName = fig.inRoom.GetName()
+			ElseIf fig.IsInElevator()
+				roomName = "InElevator"
+			ElseIf fig.IsAtElevator()
+				roomName = "AtElevator"
+			EndIf
+			If fig.isControllable()
+				textFont.draw((i + 1) + ": "+roomName + change , x + 5, y + 20 + i * 10)
+			Else
+				textFont.draw((i + 1) + ": "+roomName + change +" (forced)" , x + 5, y + 20 + i * 10)
+			EndIf
+		Next
+	End Method
+
+
+	Method RenderElevatorState(x:Int, y:Int)
+		DrawOutlineRect(x, y, 130, 160)
+
+		titleFont.draw("Elevator routes:", x + 5, y + 5)
+		Local routepos:Int = 0
+		Local startY:Int = y + 20
+		Local callType:String = ""
+
+		'Local directionString:String = "up"
+		'If GetElevator().Direction = 1 Then directionString = "down"
+
+		textFont.draw("floor: " + GetElevator().currentFloor + "->" + GetElevator().targetFloor, x + 5, startY)
+		textFont.draw("status:"+GetElevator().ElevatorStatus, x + 5 + 65, startY)
+
+		If GetElevator().RouteLogic.GetSortedRouteList()
+			For Local FloorRoute:TFloorRoute = EachIn GetElevator().RouteLogic.GetSortedRouteList()
+				If floorroute.call = 0 Then callType = "send" Else callType= "call"
+				textFont.draw(FloorRoute.floornumber, x + 5, startY + 15 + routepos * 11)
+				textFont.draw(callType, x + 18, startY + 15 + routepos * 11)
+				textFont.draw(FloorRoute.who.Name, x + 46, startY + 15 + routepos * 11)
+				routepos :+ 1
+			Next
+		Else
+			textFont.draw("recalculate", x + 5, startY + 15)
+		EndIf
+	End Method
+
 
 	Method RenderPlayerBudgets(playerID:Int, x:Int, y:Int)
 		Local player:TPlayer = GetPlayer(playerID)
 
 		If player.playerAI
-			Local font:TBitmapFont = GetBitmapFont("default", 10)
-			Local fontB:TBitmapFont = GetBitmapFont("default", 10, BOLDFONT)
 			Local colWidth:Int = 45
 			Local labelWidth:Int = 80
 			Local padding:Int = 15
@@ -441,28 +605,46 @@ endrem
 			Local textX:Int = x + 3
 			Local textY:Int = y + 3
 
-			font.Draw("Investment Savings: " + MathHelper.DottedValue(player.aiData.GetInt("budget_investmentsavings")), textX, textY)
+			textFont.Draw("Investment Savings: " + MathHelper.DottedValue(player.aiData.GetInt("budget_investmentsavings")), textX, textY)
 			textY :+ 10
-			font.Draw("Savings Part: " + MathHelper.DottedValue(player.aiData.GetFloat("budget_savingpart")*100)+"%", textX, textY)
+			textFont.Draw("Savings Part: " + MathHelper.DottedValue(player.aiData.GetFloat("budget_savingpart")*100)+"%", textX, textY)
 			textY :+ 10
-			font.Draw("Extra fixed costs savings percentage: " + MathHelper.DottedValue(player.aiData.GetFloat("budget_extrafixedcostssavingspercentage")*100)+"%", textX, textY)
+			textFont.Draw("Extra fixed costs savings percentage: " + MathHelper.DottedValue(player.aiData.GetFloat("budget_extrafixedcostssavingspercentage")*100)+"%", textX, textY)
 			textY :+ 10
 
-			fontB.Draw("Budget List: ", textX, textY)
-			fontB.Draw("Current", textX + labelWidth + padding + colWidth*0, textY)
-			fontB.Draw("Max", textX + labelWidth + padding + colWidth*1, textY)
-			fontB.Draw("Day", textX + labelWidth + padding + colWidth*2, textY)
+			textFontBold.Draw("Budget List: ", textX, textY)
+			textFontBold.Draw("Current", textX + labelWidth + padding + colWidth*0, textY)
+			textFontBold.Draw("Max", textX + labelWidth + padding + colWidth*1, textY)
+			textFontBold.Draw("Day", textX + labelWidth + padding + colWidth*2, textY)
 			textY :+ 10 + 2
 
 			For Local taskNumber:Int = 1 To player.aiData.GetInt("budget_task_count", 1)
-				font.Draw(player.aiData.GetString("budget_task_name"+taskNumber).Replace("Task", ""), textX, textY)
-				font.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_currentbudget"+taskNumber)), textX + labelWidth + padding + colWidth*0, textY)
-				font.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_budgetmaximum"+taskNumber)), textX + labelWidth + padding + colWidth*1, textY)
-				font.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_budgetwholeday"+taskNumber)), textX + labelWidth + padding + colWidth*2, textY)
+				textFont.Draw(player.aiData.GetString("budget_task_name"+taskNumber).Replace("Task", ""), textX, textY)
+				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_currentbudget"+taskNumber)), textX + labelWidth + padding + colWidth*0, textY)
+				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_budgetmaximum"+taskNumber)), textX + labelWidth + padding + colWidth*1, textY)
+				textFont.Draw(MathHelper.DottedValue(player.aiData.GetInt("budget_task_budgetwholeday"+taskNumber)), textX + labelWidth + padding + colWidth*2, textY)
 				textY :+ 10
 			Next
 		EndIf
 	End Method
+
+
+
+
+	Function DrawOutlineRect(x:int, y:int, w:int, h:int, borderTop:int = True, borderRight:int = True, borderBottom:int = True, borderLeft:Int = True, r:int = 0, g:int = 0, b:int = 0, alpha:Float = 0.5)
+		local oldCol:TColor = new TColor.get()
+		SetColor r,g,b
+		SetAlpha alpha * oldCol.a
+
+		DrawRect(x, y, w, h)
+		SetAlpha oldCol.a
+		if borderTop then DrawRect(x, y, w, 2)
+		if borderRight then DrawRect(x + w - 2, y, 2, h)
+		if borderBottom then DrawRect(x, y + h - 2, w, 2)
+		if borderLeft then DrawRect(x, y, 2, h)
+
+		oldCol.SetRGBA()
+	End Function
 
 
 	Function Dev_MaxAudience(playerID:Int)
@@ -478,6 +660,33 @@ endrem
 			GetGame().SendSystemMessage("[DEV] Added masterkey to player '" + player.name +"' ["+player.playerID + "]!")
 		Else
 			GetGame().SendSystemMessage("[DEV] Removed masterkey from player '" + player.name +"' ["+player.playerID + "]!")
+		EndIf
+	End Function
+
+
+	Function Dev_SetPlayerAI:Int(playerID:Int, bool:int)
+		Local player:TPlayer = GetPlayer(playerID)
+		if not player then return False
+
+		If bool
+			If Not player.IsLocalAI()
+				player.SetLocalAIControlled()
+				'reload ai - to avoid using "outdated" information
+				player.InitAI( New TAI.Create(player.playerID, GetGame().GetPlayerAIFileURI(player.playerID)) )
+				player.playerAI.CallOnInit()
+				'player.PlayerAI.CallLuaFunction("OnForceNextTask", null)
+				GetGame().SendSystemMessage("[DEV] Enabled AI for player "+player.playerID)
+			Else
+				GetGame().SendSystemMessage("[DEV] Already enabled AI for player "+player.playerID)
+			EndIf
+		Else
+			If player.IsLocalAI()
+				'calling "SetLocalHumanControlled()" deletes AI too
+				player.SetLocalHumanControlled()
+				GetGame().SendSystemMessage("[DEV] Disabled AI for player "+player.playerID)
+			Else
+				GetGame().SendSystemMessage("[DEV] Already disabled AI for player "+player.playerID)
+			EndIf
 		EndIf
 	End Function
 End Type

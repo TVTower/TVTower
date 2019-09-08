@@ -1416,89 +1416,6 @@ endrem
 	End Function
 
 
-	Function RenderSideDebug()
-		SetAlpha GetAlpha() * 0.5
-		SetColor 0,0,0
-		DrawRect(0,0,160,385)
-		SetColor 255, 255, 255
-		SetAlpha GetAlpha() * 2.0
-		GetBitmapFontManager().baseFontBold.draw("Debug information:", 5,10)
-		GetBitmapFontManager().baseFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 5,30)
-
-		'GetBitmapFontManager().baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
-		GetBitmapFontManager().baseFont.draw("Player positions:", 5,55)
-		Local roomName:String = ""
-		Local fig:TFigure
-		For Local i:Int = 0 To 3
-			fig = GetPlayerCollection().Get(i+1).GetFigure()
-
-			Local change:String = ""
-			If fig.isChangingRoom()
-				If fig.inRoom
-					change = "<-[]" 'Chr(8646) 'Æ
-				Else
-					change = "->[]" 'Chr(8646) 'Æ
-				EndIf
-			EndIf
-
-			roomName = "Building"
-			If fig.inRoom
-				roomName = fig.inRoom.GetName()
-			ElseIf fig.IsInElevator()
-				roomName = "InElevator"
-			ElseIf fig.IsAtElevator()
-				roomName = "AtElevator"
-			EndIf
-			If fig.isControllable()
-				GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName+change , 5, 70 + i * 11)
-			Else
-				GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName+change +" (forced)" , 5, 70 + i * 11)
-			EndIf
-		Next
-
-		If ScreenCollection.GetCurrentScreen()
-			GetBitmapFontManager().baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 5, 120)
-		Else
-			GetBitmapFontManager().baseFont.draw("onScreen: Main", 5, 120)
-		EndIf
-
-
-		GetBitmapFontManager().baseFont.draw("Elevator routes:", 5,140)
-		Local routepos:Int = 0
-		Local startY:Int = 155
-		If GetGame().networkgame Then startY :+ 4*11
-
-		Local callType:String = ""
-
-		Local directionString:String = "up"
-		If GetElevator().Direction = 1 Then directionString = "down"
-		Local debugString:String =	"floor:" + GetElevator().currentFloor +..
-									"->" + GetElevator().targetFloor +..
-									" status:"+GetElevator().ElevatorStatus
-
-		GetBitmapFontManager().baseFont.draw(debugString, 5, startY)
-
-
-		If GetElevator().RouteLogic.GetSortedRouteList() <> Null
-			For Local FloorRoute:TFloorRoute = EachIn GetElevator().RouteLogic.GetSortedRouteList()
-				If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
-				GetBitmapFontManager().baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 5, startY + 15 + routepos * 11)
-				routepos:+1
-			Next
-		Else
-			GetBitmapFontManager().baseFont.draw("recalculate", 5, startY + 15)
-		EndIf
-
-
-		GetWorld().RenderDebug(660,0, 140, 180)
-		'GetPlayer().GetFigure().RenderDebug(new TVec2D.Init(660, 150))
-
-		DrawProfilerCallHistory(TProfiler.GetCall(_profilerKey_AI_MINUTE[2-1]), 140, 0*60, 200, 50, "AI 2")
-		DrawProfilerCallHistory(TProfiler.GetCall(_profilerKey_AI_MINUTE[3-1]), 140, 1*60, 200, 50, "AI 3")
-		DrawProfilerCallHistory(TProfiler.GetCall(_profilerKey_AI_MINUTE[4-1]), 140, 2*60, 200, 50, "AI 4")
-
-	End Function
-
 
 	Function UpdateDebugControls()
 		GameConfig.mouseHandlingDisabled = False
@@ -1533,9 +1450,8 @@ endrem
 
 
 		If TVTDebugInfos And Not GetPlayer().GetFigure().inRoom
-			RenderSideDebug()
-
 		'show quotes even without "DEV_OSD = true"
+
 		ElseIf TVTDebugQuoteInfos
 			debugAudienceInfos.Draw()
 		ElseIf TVTDebugModifierInfos

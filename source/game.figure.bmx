@@ -1351,51 +1351,6 @@ endrem
 
 		return tweenPos
 	End Method
-
-
-	Method RenderDebug(pos:TVec2D = Null)
-		if not pos
-			pos = GetRenderAtPosition()
-			pos.AddXY(40, -100)
-		endif
-
-		local oldCol:TColor = new TColor.Get()
-
-		SetAlpha oldCol.a * 0.5
-		SetColor 0,0,0
-		DrawRect(pos.x, pos.y, 140, 110)
-
-
-		local usedDoorText:string = ""
-		local inRoomText:string = ""
-		local targetText:string = ""
-		local targetObjText:string = ""
-		if TRoomDoor(usedDoor) then usedDoorText = TRoomDoor(usedDoor).GetRoom().GetName()
-		if TRoom(inRoom) then inRoomText = TRoom(inRoom).GetName()
-		if GetTarget()
-			local t:object = GetTarget()
-			targetText = int(GetTargetMovetoPosition().x)+", "+int(GetTargetMovetoPosition().y)
-			if TRoomDoor(GetTargetObject())
-				targetObjText = TRoomDoor(GetTargetObject()).GetRoom().GetName()
-			elseif THotSpot(GetTargetObject())
-				targetObjText = "Hotspot"
-			endif
-		endif
-
-		SetAlpha oldCol.a
-		SetColor 255,255,255
-		GetBitMapFont("default").Draw(name, pos.x + 5, pos.y + 5)
-		GetBitMapFont("default").Draw("isChangingRoom: "+isChangingRoom(), pos.x+ 5, pos.y + 5 + 1*12)
-		GetBitmapFont("default").draw("IsControllable(): " + IsControllable(), pos.x + 5, pos.y + 5 + 2 * 12)
-		GetBitmapFont("default").draw("CanMove(): " + CanMove(), pos.x + 5, pos.y + 5 + 3 * 12)
-		GetBitmapFont("default").draw("usedDoor: " + usedDoorText, pos.x + 5, pos.y + 5 + 4 * 12)
-		GetBitmapFont("default").draw("inRoom: " + inRoomText, pos.x + 5, pos.y + 5 + 6 * 12)
-		GetBitmapFont("default").draw("target: " + targetText, pos.x + 5, pos.y + 5 + 7 * 12)
-		GetBitmapFont("default").draw("targetObj: " + targetObjText, pos.x + 5, pos.y + 5 + 8 * 12)
-
-		'restore col/alpha
-		oldCol.SetRGBA()
-	End Method
 End Type
 
 
