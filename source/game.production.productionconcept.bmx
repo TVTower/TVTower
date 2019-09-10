@@ -761,7 +761,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 	Method GetProductionCost:int()
 		if productionCompany
-			local fee:int = productionCompany.GetFee(script.owner)
+			local fee:int = productionCompany.GetFee(owner) ' script.owner)
 
 			'each set point costs a bit more than the previous
 			local focusPoints:int = productionFocus.GetFocusPointsSet()

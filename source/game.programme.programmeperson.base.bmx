@@ -15,14 +15,14 @@ Import "game.programme.programmerole.bmx"
 Type TProgrammePersonBaseCollection
 	Field insignificant:TMap = CreateMap()
 	Field celebrities:TMap = CreateMap()
-	Field insignificantCount:int = -1 {nosave}
-	Field celebritiesCount:int = -1 {nosave}
+	Field insignificantCount:Int = -1 {nosave}
+	Field celebritiesCount:Int = -1 {nosave}
 	Global _instance:TProgrammePersonBaseCollection
 
 
 	Function GetInstance:TProgrammePersonBaseCollection()
-		if not _instance then _instance = new TProgrammePersonBaseCollection
-		return _instance
+		If Not _instance Then _instance = New TProgrammePersonBaseCollection
+		Return _instance
 	End Function
 
 
@@ -33,17 +33,17 @@ Type TProgrammePersonBaseCollection
 		celebrities.Clear()
 		celebritiesCount = -1
 
-		return self
+		Return Self
 	End Method
 
 
 	Method GetByGUID:TProgrammePersonBase(GUID:String)
-		local result:TProgrammePersonBase
+		Local result:TProgrammePersonBase
 		result = TProgrammePersonBase(insignificant.ValueForKey(GUID))
-		if not result
+		If Not result
 			result = TProgrammePersonBase(celebrities.ValueForKey(GUID))
-		endif
-		return result
+		EndIf
+		Return result
 	End Method
 
 
@@ -58,22 +58,54 @@ Type TProgrammePersonBaseCollection
 
 
 	'deprecated - used for v2-database
-	Method GetCelebrityByName:TProgrammePersonBase(firstName:string, lastName:string)
+	Method GetCelebrityByName:TProgrammePersonBase(firstName:String, lastName:String)
 		firstName = firstName.toLower()
 		lastName = lastName.toLower()
 
-		For local person:TProgrammePersonBase = eachin celebrities.Values()
-			if person.firstName.toLower() <> firstName then continue
-			if person.lastName.toLower() <> lastName then continue
-			return person
+		For Local person:TProgrammePersonBase = EachIn celebrities.Values()
+			If person.firstName.toLower() <> firstName Then Continue
+			If person.lastName.toLower() <> lastName Then Continue
+			Return person
 		Next
-		return Null
+		Return Null
+	End Method
+
+
+	Function FilterArray:TProgrammePersonBase[](array:TProgrammePersonBase[], onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, forbiddenGUIDs:String[] = Null)
+		If Not array Or array.length = 0 Then Return Null
+
+		Local result:TProgrammePersonBase[] = New TProgrammePersonBase[Min(10, array.length)]
+		Local found:Int = 0
+		For Local p:TProgrammePersonBase = EachIn array
+			If onlyFictional And Not p.fictional Then Continue
+			If onlyBookable And Not p.bookable Then Continue
+			If job>0 And p.job & job = 0 Then Continue
+			If gender>=0 And p.gender <> gender Then Continue
+			If forbiddenGUIDs And StringHelper.InArray(p.GetGUID(), forbiddenGUIDs) Then Continue
+
+			result[found] = p
+			found :+ 1
+		Next
+		If found <> result.length Then result = result[.. found]
+
+		Return result
+	End Function
+
+
+	Method GetRandomFromArray:TProgrammePersonBase(array:TProgrammePersonBase[], onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, forbiddenGUIDs:String[] = Null)
+		If Not array Or array.length = 0 Then Return Null
+
+		Local effectiveArray:TProgrammePersonBase[] = FilterArray(array, onlyFictional, onlyBookable, job, gender, forbiddenGUIDs)
+		If effectiveArray.length = 0 Then Return Null
+
+		'randRange - so it is the same over network
+		Return effectiveArray[(randRange(0, effectiveArray.length-1))]
 	End Method
 
 
 	'useful to fetch a random "amateur" (aka "layman")
-	Method GetRandomInsignificant:TProgrammePersonBase(array:TProgrammePersonBase[] = null, onlyFictional:int = False, onlyBookable:int = False, job:int=0, gender:int=-1)
-		if array = Null or array.length = 0 then array = GetAllInsignificantAsArray(onlyFictional, onlyBookable, job)
+	Method GetRandomInsignificant:TProgrammePersonBase(array:TProgrammePersonBase[] = Null, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, forbiddenGUIDs:String[] = Null)
+		If array = Null Or array.length = 0 Then array = GetAllInsignificantAsArray(onlyFictional, onlyBookable, job, gender, forbiddenGUIDs)
 		If array.length = 0 Then Return Null
 
 		'randRange - so it is the same over network
@@ -81,8 +113,8 @@ Type TProgrammePersonBaseCollection
 	End Method
 
 
-	Method GetRandomCelebrity:TProgrammePersonBase(array:TProgrammePersonBase[] = null, onlyFictional:int = False, onlyBookable:int = False, job:int=0, gender:int=-1)
-		if array = Null or array.length = 0 then array = GetAllCelebritiesAsArray(onlyFictional, onlyBookable, job)
+	Method GetRandomCelebrity:TProgrammePersonBase(array:TProgrammePersonBase[] = Null, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, forbiddenGUIDs:String[] = Null)
+		If array = Null Or array.length = 0 Then array = GetAllCelebritiesAsArray(onlyFictional, onlyBookable, job, gender, forbiddenGUIDs)
 		If array.length = 0 Then Return Null
 
 		'randRange - so it is the same over network
@@ -90,95 +122,99 @@ Type TProgrammePersonBaseCollection
 	End Method
 
 
-	Method GetAllInsignificantAsArray:TProgrammePersonBase[](onlyFictional:int = False, onlyBookable:int = False, job:int=0, gender:int=-1)
-		local array:TProgrammePersonBase[]
+	Method GetAllInsignificantAsArray:TProgrammePersonBase[](onlyFictional:Int = False, onlyBookable:Int = False, job:Int=0, gender:Int=-1, forbiddenGUIDs:String[] = Null)
+		Local array:TProgrammePersonBase[]
 		'create a full array containing all elements
-		For local obj:TProgrammePersonBase = EachIn insignificant.Values()
-			if onlyFictional and not obj.fictional then continue
-			if onlyBookable and not obj.bookable then continue
-			if job>0 and obj.job & job = 0 then continue
-			if gender>=0 and obj.gender <> gender then continue
+		For Local obj:TProgrammePersonBase = EachIn insignificant.Values()
+			If onlyFictional And Not obj.fictional Then Continue
+			If onlyBookable And Not obj.bookable Then Continue
+			If job>0 And obj.job & job = 0 Then Continue
+			If gender>=0 And obj.gender <> gender Then Continue
+			If forbiddenGUIDs And StringHelper.InArray(obj.GetGUID(), forbiddenGUIDs) Then Continue
+
 			array :+ [obj]
 		Next
-		return array
+		Return array
 	End Method
 
 
-	Method GetAllCelebritiesAsArray:TProgrammePersonBase[](onlyFictional:int = False, onlyBookable:int = False, job:int=0, gender:int=-1)
-		local array:TProgrammePersonBase[]
+	Method GetAllCelebritiesAsArray:TProgrammePersonBase[](onlyFictional:Int = False, onlyBookable:Int = False, job:Int=0, gender:Int=-1, forbiddenGUIDs:String[] = Null)
+		Local array:TProgrammePersonBase[]
 		'create a full array containing all elements
-		For local obj:TProgrammePersonBase = EachIn celebrities.Values()
-			if onlyFictional and not obj.fictional then continue
-			if onlyBookable and not obj.bookable then continue
-			if job>0 and obj.job & job = 0 then continue
-			if gender>=0 and obj.gender <> gender then continue
+		For Local obj:TProgrammePersonBase = EachIn celebrities.Values()
+			If onlyFictional And Not obj.fictional Then Continue
+			If onlyBookable And Not obj.bookable Then Continue
+			If job>0 And obj.job & job = 0 Then Continue
+			If gender>=0 And obj.gender <> gender Then Continue
+			If forbiddenGUIDs And StringHelper.InArray(obj.GetGUID(), forbiddenGUIDs) Then Continue
+
 			array :+ [obj]
 		Next
-		return array
+		Return array
 	End Method
 
 
 	Method GetInsignificantCount:Int()
-		if insignificantCount >= 0 then return insignificantCount
+		If insignificantCount >= 0 Then Return insignificantCount
 
 		insignificantCount = 0
 		For Local person:TProgrammePersonBase = EachIn insignificant.Values()
 			insignificantCount :+1
 		Next
-		return insignificantCount
+		Return insignificantCount
 	End Method
 
 
 	Method GetCelebrityCount:Int()
-		if celebritiesCount >= 0 then return celebritiesCount
+		If celebritiesCount >= 0 Then Return celebritiesCount
 
 		celebritiesCount = 0
 		For Local person:TProgrammePersonBase = EachIn celebrities.Values()
 			celebritiesCount :+1
 		Next
-		return celebritiesCount
+		Return celebritiesCount
 	End Method
 
 
-	Method RemoveInsignificant:int(person:TProgrammePersonBase)
-		if person.GetGuid() and insignificant.Remove(person.GetGUID())
+	Method RemoveInsignificant:Int(person:TProgrammePersonBase)
+		If person.GetGuid() And insignificant.Remove(person.GetGUID())
 			'invalidate count
 			insignificantCount = -1
 
-			return True
-		endif
+			Return True
+		EndIf
 
-		return False
+		Return False
 	End Method
 
 
-	Method RemoveCelebrity:int(person:TProgrammePersonBase)
-		if person.GetGuid() and celebrities.Remove(person.GetGUID())
+	Method RemoveCelebrity:Int(person:TProgrammePersonBase)
+		If person.GetGuid() And celebrities.Remove(person.GetGUID())
 			'invalidate count
 			celebritiesCount = -1
 
-			return True
-		endif
+			Return True
+		EndIf
 
-		return False
+		Return False
 	End Method
 
 
-	Method AddInsignificant:int(person:TProgrammePersonBase)
+	Method AddInsignificant:Int(person:TProgrammePersonBase)
 		insignificant.Insert(person.GetGUID(), person)
 		'invalidate count
 		insignificantCount = -1
 
-		return TRUE
+		Return True
 	End Method
 
 
-	Method AddCelebrity:int(person:TProgrammePersonBase)
+	Method AddCelebrity:Int(person:TProgrammePersonBase)
 		celebrities.Insert(person.GetGUID(), person)
 		'invalidate count
 		celebritiesCount = -1
 
-		return TRUE
+		Return True
 	End Method
 
 
@@ -186,15 +222,15 @@ Type TProgrammePersonBaseCollection
 		Local p1:TProgrammePersonBase = TProgrammePersonBase(o1)
 		Local p2:TProgrammePersonBase = TProgrammePersonBase(o2)
 		If Not p2 Then Return 1
-		if p1.GetFullName() = p2.GetFullName()
-			return p1.GetGUID() > p2.GetGUID()
-		endif
+		If p1.GetFullName() = p2.GetFullName()
+			Return p1.GetGUID() > p2.GetGUID()
+		EndIf
         If p1.GetFullName().ToLower() > p2.GetFullName().ToLower()
-			return 1
-        elseif p1.GetFullName().ToLower() < p2.GetFullName().ToLower()
-			return -1
-		endif
-		return 0
+			Return 1
+        ElseIf p1.GetFullName().ToLower() < p2.GetFullName().ToLower()
+			Return -1
+		EndIf
+		Return 0
 	End Function
 End Type
 '===== CONVENIENCE ACCESSOR =====
@@ -203,34 +239,34 @@ Function GetProgrammePersonBaseCollection:TProgrammePersonBaseCollection()
 	Return TProgrammePersonBaseCollection.GetInstance()
 End Function
 
-Function GetProgrammePersonBase:TProgrammePersonBase(guid:string)
+Function GetProgrammePersonBase:TProgrammePersonBase(guid:String)
 	Return TProgrammePersonBaseCollection.GetInstance().GetByGUID(guid)
 End Function
 
 
 
 
-Type TProgrammePersonBase extends TGameObject
-	field lastName:String = ""
-	field firstName:String = ""
-	field nickName:String = ""
-	field job:int = 0
+Type TProgrammePersonBase Extends TGameObject
+	Field lastName:String = ""
+	Field firstName:String = ""
+	Field nickName:String = ""
+	Field job:Int = 0
 	'indicator for potential "upgrades" to become a celebrity
-	field jobsDone:int
-	field jobsDoneTotal:int[]
-	field canLevelUp:int = True
-	field countryCode:string = ""
-	field gender:int = 0
+	Field jobsDone:Int
+	Field jobsDoneTotal:Int[]
+	Field canLevelUp:Int = True
+	Field countryCode:String = ""
+	Field gender:Int = 0
 	'a text code representing the config for the figure generator
-	field faceCode:string
+	Field faceCode:String
 	'can this person _theoretically_ be booked for a production
 	'(this allows disabling show-guests like "the queen" - which might
 	' be guest in an older show)
-	field bookable:int = True
+	Field bookable:Int = True
 	'is this an real existing person or someone we imaginated for the game?
-	field fictional:int = False
+	Field fictional:Int = False
 	'is the person currently filming something?
-	field producingGUIDs:string[]
+	Field producingGUIDs:String[]
 
 
 	Method New()
@@ -239,18 +275,18 @@ Type TProgrammePersonBase extends TGameObject
 	End Method
 
 
-	Method GenerateGUID:string()
-		return "programmeperson-base-"+id
+	Method GenerateGUID:String()
+		Return "programmeperson-base-"+id
 	End Method
 
 
-	Method SerializeTProgrammePersonBaseToString:string()
-		local jobsDoneString:string = string(jobsDone)
-		For local i:int = eachin jobsDoneTotal
-			if jobsDoneString <> "" then jobsDoneString :+","
-			jobsDoneString :+ string(i)
+	Method SerializeTProgrammePersonBaseToString:String()
+		Local jobsDoneString:String = String(jobsDone)
+		For Local i:Int = EachIn jobsDoneTotal
+			If jobsDoneString <> "" Then jobsDoneString :+","
+			jobsDoneString :+ String(i)
 		Next
-		return StringHelper.EscapeString(lastName, ":") + "::" + ..
+		Return StringHelper.EscapeString(lastName, ":") + "::" + ..
 		       StringHelper.EscapeString(firstName, ":") + "::" + ..
 		       StringHelper.EscapeString(nickName, ":") + "::" + ..
 		       job + "::" + ..
@@ -265,39 +301,39 @@ Type TProgrammePersonBase extends TGameObject
 
 
 	Method DeSerializeTProgrammePersonBaseFromString(text:String)
-		local vars:string[] = text.split("::")
-		if vars.length > 0 then lastName = StringHelper.UnEscapeString(vars[0])
-		if vars.length > 1 then firstName = StringHelper.UnEscapeString(vars[1])
-		if vars.length > 2 then nickName = StringHelper.UnEscapeString(vars[2])
-		if vars.length > 3 then job = int(vars[3])
-		if vars.length > 4
-			local jD:string[] = vars[4].split(",")
-			jobsDone = int(jD[0])
-			For local i:int = 1 until jD.length
-				jobsDoneTotal[i-1] = int(jD[i-1])
+		Local vars:String[] = text.split("::")
+		If vars.length > 0 Then lastName = StringHelper.UnEscapeString(vars[0])
+		If vars.length > 1 Then firstName = StringHelper.UnEscapeString(vars[1])
+		If vars.length > 2 Then nickName = StringHelper.UnEscapeString(vars[2])
+		If vars.length > 3 Then job = Int(vars[3])
+		If vars.length > 4
+			Local jD:String[] = vars[4].split(",")
+			jobsDone = Int(jD[0])
+			For Local i:Int = 1 Until jD.length
+				jobsDoneTotal[i-1] = Int(jD[i-1])
 			Next
-		endif
-		if vars.length > 5 then canLevelUp = int(vars[5])
-		if vars.length > 6 then fictional = int(vars[6])
-		if vars.length > 7 then producingGUIDs = StringHelper.UnEscapeString(vars[7]).split(",")
-		if vars.length > 8 then id = int(vars[8])
-		if vars.length > 9 then GUID = StringHelper.UnEscapeString(vars[9])
-		if vars.length > 10 then bookable = int(vars[10])
+		EndIf
+		If vars.length > 5 Then canLevelUp = Int(vars[5])
+		If vars.length > 6 Then fictional = Int(vars[6])
+		If vars.length > 7 Then producingGUIDs = StringHelper.UnEscapeString(vars[7]).split(",")
+		If vars.length > 8 Then id = Int(vars[8])
+		If vars.length > 9 Then GUID = StringHelper.UnEscapeString(vars[9])
+		If vars.length > 10 Then bookable = Int(vars[10])
 	End Method
 
 
 	Method Compare:Int(o2:Object)
-		if o2 = self then return 0
+		If o2 = Self Then Return 0
 
 		Local p2:TProgrammePersonBase = TProgrammePersonBase(o2)
 		If p2
-			if GetFullName() = p2.GetFullName()
-				if GetAge() > p2.GetAge() then return 1
-				if GetAge() < p2.GetAge() then return -1
-			else
-				if GetFullName().ToLower() > p2.GetFullName().ToLower() then return 1
-				if GetFullName().ToLower() < p2.GetFullName().ToLower() then return -1
-			endif
+			If GetFullName() = p2.GetFullName()
+				If GetAge() > p2.GetAge() Then Return 1
+				If GetAge() < p2.GetAge() Then Return -1
+			Else
+				If GetFullName().ToLower() > p2.GetFullName().ToLower() Then Return 1
+				If GetFullName().ToLower() < p2.GetFullName().ToLower() Then Return -1
+			EndIf
 		EndIf
 		Return Super.Compare(o2)
 	End Method
@@ -305,144 +341,147 @@ Type TProgrammePersonBase extends TGameObject
 
 	Method GetTopGenre:Int()
 		'base persons does not have top genres (-> unspecified)
-		return TVTProgrammeGenre.undefined
+		Return TVTProgrammeGenre.undefined
 	End Method
 
 
-	Method GetProducedGenreCount:Int(genre:int)
-		return 0
+	Method GetProducedGenreCount:Int(genre:Int)
+		Return 0
 	End Method
 
 
 	'base implementation: nobody knows the person
 	Method GetPopularityValue:Float()
-		return 0.0
+		Return 0.0
 	End Method
 
 
-	Method GetAttribute:float(attributeID:int)
-		return 0
+	Method GetAttribute:Float(attributeID:Int)
+		Return 0
 	End Method
 
 
 	Method SetJob(job:Int, enable:Int=True)
 		If enable
-			self.job :| job
+			Self.job :| job
 		Else
-			self.job :& ~job
+			Self.job :& ~job
 		EndIf
 	End Method
 
 
-	Method HasJob:int(job:int)
-		return (self.job & job) > 0
+	Method HasJob:Int(job:Int)
+		Return (Self.job & job) > 0
 	End Method
 
 
-	Method GetJobsDone:int(job:int)
-		local jobIndex:int = TVTProgrammePersonJob.GetIndex(job)
-		if jobIndex = 0 and job <> 0
+	Method GetJobsDone:Int(job:Int)
+		Local jobIndex:Int = TVTProgrammePersonJob.GetIndex(job)
+		If jobIndex = 0 And job <> 0
 			TLogger.Log("GetJobsDone()", "unsupported job-param.", LOG_ERROR)
-		endif
+		EndIf
 
-		return self.jobsDoneTotal[jobIndex]
+		Return Self.jobsDoneTotal[jobIndex]
 	End Method
 
 
-	Method SetFirstName:Int(firstName:string)
-		self.firstName = firstName
+	Method SetFirstName:Int(firstName:String)
+		Self.firstName = firstName
 	End Method
 
 
-	Method SetLastName:Int(lastName:string)
-		self.lastName = lastName
+	Method SetLastName:Int(lastName:String)
+		Self.lastName = lastName
 	End Method
 
 
-	Method SetNickName:Int(nickName:string)
-		self.nickName = nickName
+	Method SetNickName:Int(nickName:String)
+		Self.nickName = nickName
 	End Method
 
 
 	Method GetNickName:String()
-		if nickName = "" then return firstName
-		return nickName
+		If nickName = "" Then Return firstName
+		Return nickName
 	End Method
 
 
 	Method GetFirstName:String()
-		return firstName
+		Return firstName
 	End Method
 
 
 	Method GetLastName:String()
-		return lastName
+		Return lastName
 	End Method
 
 
-	Method GetFullName:string()
-		if self.lastName<>"" then return self.firstName + " " + self.lastName
-		return self.firstName
+	Method GetFullName:String()
+		If Self.lastName<>""
+			If Self.firstName <> "" Then Return Self.firstName + " " + Self.lastName
+			Return Self.lastName
+		EndIf
+		Return Self.firstName
 	End Method
 
 
-	Method GetAge:int()
-		return -1
+	Method GetAge:Int()
+		Return -1
 	End Method
 
 
-	Method IsAlive:int()
-		return True
+	Method IsAlive:Int()
+		Return True
 	End Method
 
 
-	Method IsBorn:int()
-		return True
+	Method IsBorn:Int()
+		Return True
 	End Method
 
 
-	Method GetBaseFee:Int(jobID:int, blocks:int, channel:int=-1)
+	Method GetBaseFee:Int(jobID:Int, blocks:Int, channel:Int=-1)
 		'1 = 1, 2 = 1.75, 3 = 2.5, 4 = 3.25, 5 = 4 ...
-		local blocksMod:Float = 0.25 + blocks * 0.75
-		local baseFee:int
+		Local blocksMod:Float = 0.25 + blocks * 0.75
+		Local baseFee:Int
 
 		Select jobID
-			case TVTProgrammePersonJob.ACTOR
+			Case TVTProgrammePersonJob.ACTOR
 				baseFee = 7000
-			case TVTProgrammePersonJob.SUPPORTINGACTOR
+			Case TVTProgrammePersonJob.SUPPORTINGACTOR
 				baseFee = 3000
-			case TVTProgrammePersonJob.HOST
+			Case TVTProgrammePersonJob.HOST
 				baseFee = 2500
-			case TVTProgrammePersonJob.DIRECTOR
+			Case TVTProgrammePersonJob.DIRECTOR
 				baseFee = 6000
-			case TVTProgrammePersonJob.SCRIPTWRITER
+			Case TVTProgrammePersonJob.SCRIPTWRITER
 				baseFee = 3000
-			case TVTProgrammePersonJob.MUSICIAN
+			Case TVTProgrammePersonJob.MUSICIAN
 				baseFee = 3500
-			case TVTProgrammePersonJob.REPORTER
+			Case TVTProgrammePersonJob.REPORTER
 				baseFee = 2500
-			case TVTProgrammePersonJob.GUEST
+			Case TVTProgrammePersonJob.GUEST
 				baseFee = 1000
-			default
+			Default
 				baseFee = 1000
 		End Select
 
-		return TFunctions.RoundToBeautifulValue(baseFee * blocksMod)
+		Return TFunctions.RoundToBeautifulValue(baseFee * blocksMod)
 	End Method
 
 
-	Method IsProducing:int(programmeDataGUID:string)
-		For local guid:string = EachIn producingGUIDs
-			if guid = programmeDataGUID then return True
+	Method IsProducing:Int(programmeDataGUID:String)
+		For Local guid:String = EachIn producingGUIDs
+			If guid = programmeDataGUID Then Return True
 		Next
-		return False
+		Return False
 	End Method
 
 
-	Method StartProduction:int(programmeDataGUID:string)
-		if not IsProducing(programmeDataGUID)
+	Method StartProduction:Int(programmeDataGUID:String)
+		If Not IsProducing(programmeDataGUID)
 			producingGUIDs :+ [programmeDataGUID]
-		endif
+		EndIf
 
 		'emit event so eg. news agency could react to it ("bla has a new job")
 		'-> or to set them on the "scandals" list
@@ -450,18 +489,18 @@ Type TProgrammePersonBase extends TGameObject
 	End Method
 
 
-	Method FinishProduction:int(programmeDataGUID:string, job:int)
+	Method FinishProduction:Int(programmeDataGUID:String, job:Int)
 		jobsDone :+ 1
 		jobsDoneTotal[0] :+ 1
-		For local jobIndex:int = 1 to TVTProgrammePersonJob.count
-			if (job & TVTProgrammePersonJob.GetAtIndex(jobIndex)) > 0
+		For Local jobIndex:Int = 1 To TVTProgrammePersonJob.count
+			If (job & TVTProgrammePersonJob.GetAtIndex(jobIndex)) > 0
 				jobsDoneTotal[jobIndex] :+ 1
-			endif
+			EndIf
 		Next
 
-		local newProducingGUIDs:string[]
-		For local guid:string = EachIn producingGUIDs
-			if guid = programmeDataGUID then continue
+		Local newProducingGUIDs:String[]
+		For Local guid:String = EachIn producingGUIDs
+			If guid = programmeDataGUID Then Continue
 			newProducingGUIDs :+ [guid]
 		Next
 		producingGUIDs = newProducingGUIDs
@@ -479,33 +518,33 @@ Type TProgrammePersonJob
 	'the person having done this job
 	'using the GUID instead of "TProgrammePersonBase" allows to upgrade
 	'a "normal" person to a "celebrity"
-	Field personGUID:string
+	Field personGUID:String
 
 	'job is a bitmask for values defined in TVTProgrammePersonJob
-	Field job:int = 0
+	Field job:Int = 0
 	'maybe only female directors are allowed?
-	Field gender:int = 0
+	Field gender:Int = 0
 	'allows limiting the job to specific heritages
-	Field country:string = ""
+	Field country:String = ""
 
 	'only valid for actors
-	Field roleGUID:string = ""
+	Field roleGUID:String = ""
 
 
-	Method Init:TProgrammePersonJob(personGUID:string, job:int, gender:int=0, country:string="", roleGUID:string="")
-		self.personGUID = personGUID
-		self.job = job
-		self.gender = gender
-		self.country = country
+	Method Init:TProgrammePersonJob(personGUID:String, job:Int, gender:Int=0, country:String="", roleGUID:String="")
+		Self.personGUID = personGUID
+		Self.job = job
+		Self.gender = gender
+		Self.country = country
 
-		self.roleGUID = roleGUID
+		Self.roleGUID = roleGUID
 
-		return self
+		Return Self
 	End Method
 
 
-	Method SerializeTProgrammePersonJobToString:string()
-		return StringHelper.EscapeString(personGUID, ":") + "::" +..
+	Method SerializeTProgrammePersonJobToString:String()
+		Return StringHelper.EscapeString(personGUID, ":") + "::" +..
 		       job + "::" +..
 		       gender + "::" +..
 		       StringHelper.EscapeString(country, ":") + "::" + ..
@@ -514,22 +553,22 @@ Type TProgrammePersonJob
 
 
 	Method DeSerializeTProgrammePersonJobFromString(text:String)
-		local vars:string[] = text.split("::")
-		if vars.length > 0 then personGUID = StringHelper.UnEscapeString(vars[0])
-		if vars.length > 1 then job = int(vars[1])
-		if vars.length > 2 then gender = int(vars[2])
-		if vars.length > 3 then country = StringHelper.UnEscapeString(vars[3])
-		if vars.length > 4 then roleGUID = StringHelper.UnEscapeString(vars[4])
+		Local vars:String[] = text.split("::")
+		If vars.length > 0 Then personGUID = StringHelper.UnEscapeString(vars[0])
+		If vars.length > 1 Then job = Int(vars[1])
+		If vars.length > 2 Then gender = Int(vars[2])
+		If vars.length > 3 Then country = StringHelper.UnEscapeString(vars[3])
+		If vars.length > 4 Then roleGUID = StringHelper.UnEscapeString(vars[4])
 	End Method
 
 
-	Method IsSimilar:int(otherJob:TProgrammePersonJob)
-		if job <> otherJob.job then return False
-		if personGUID <> otherJob.personGUID then return False
-		if roleGUID <> otherJob.roleGUID then return False
-		if gender <> otherJob.gender then return False
-		if country <> otherJob.country then return False
-		return True
+	Method IsSimilar:Int(otherJob:TProgrammePersonJob)
+		If job <> otherJob.job Then Return False
+		If personGUID <> otherJob.personGUID Then Return False
+		If roleGUID <> otherJob.roleGUID Then Return False
+		If gender <> otherJob.gender Then Return False
+		If country <> otherJob.country Then Return False
+		Return True
 	End Method
 End Type
 
