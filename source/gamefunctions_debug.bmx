@@ -14,7 +14,9 @@ Type TDebugScreen
 	Field sideButtons:TDebugControlsButton[]
 	Field playerCommandTaskButtons:TDebugControlsButton[]
 	Field playerCommandAIButtons:TDebugControlsButton[]
+	Field buttonsAdAgency:TDebugControlsButton[]
 	Field sideButtonPanelWidth:Int = 130
+	Field adAgencyOfferHightlight:TAdContract
 	Global titleFont:TBitmapFont
 	Global textFont:TBitmapFont
 	Global textFontBold:TBitmapFont
@@ -23,7 +25,7 @@ Type TDebugScreen
 		Local button:TDebugControlsButton
 
 
-		Local texts:String[] = ["Overview", "Player Commands", "Player Financials", "Player Broadcasts", "Ad Vendor", "Movie Vendor", "News Agency", "Script Vendor"]
+		Local texts:String[] = ["Overview", "Player Commands", "Player Financials", "Player Broadcasts", "Ad Agency", "Movie Vendor", "News Agency", "Script Vendor"]
 		For Local i:Int = 0 Until texts.length
 			button = New TDebugControlsButton
 			button.w = 118
@@ -33,8 +35,6 @@ Type TDebugScreen
 			button.dataInt = i
 			button.text = texts[i]
 			button._onClickHandler = OnButtonClickHandler
-'ueberpruefen ob "lists" bei den satelliten fehlerhaft.
-'ab da->	debugMsg("Satellites to check: " .. TVT.of_getSatelliteCount())
 
 			sideButtons :+ [button]
 		Next
@@ -42,6 +42,8 @@ Type TDebugScreen
 		InitMode_Overview()
 		InitMode_PlayerCommands()
 		InitMode_PlayerFinancials()
+		InitMode_PlayerBroadcasts()
+		InitMode_AdAgency()
 	End Method
 
 
@@ -82,6 +84,7 @@ Type TDebugScreen
 			Case 1	UpdateMode_PlayerCommands()
 			Case 2	UpdateMode_PlayerFinancials()
 			Case 3	UpdateMode_PlayerBroadcasts()
+			Case 4	UpdateMode_AdAgency()
 		End Select
 	End Method
 
@@ -117,6 +120,7 @@ Type TDebugScreen
 			Case 1	RenderMode_PlayerCommands()
 			Case 2	RenderMode_PlayerFinancials()
 			Case 3	RenderMode_PlayerBroadcasts()
+			Case 4	RenderMode_AdAgency()
 		End Select
 	End Method
 
@@ -357,19 +361,98 @@ Type TDebugScreen
 	'=== PLAYER BROADCASTS ===
 
 	Method InitMode_AdAgency()
+		Local texts:String[] = ["Refill Offers", "Replace Offers", "Change Mode"]
+		Local button:TDebugControlsButton
+		For Local i:Int = 0 Until texts.length
+			button = New TDebugControlsButton
+			button.w = 130
+			button.h = 15
+			button.x = sideButtonPanelWidth + 10 + 250
+			button.y = 10 + i * (button.h + 3)
+			button.dataInt = i
+			button.text = texts[i]
+			button._onClickHandler = OnButtonClickHandler_AdAgency
+
+			buttonsAdAgency :+ [button]
+		Next
+
+'		buttonsAdAgency[0].w = 70
+'		buttonsAdAgency[0].x = sideButtonPanelWidth + 10 + 150
+'		buttonsAdAgency[0].y = 15
+		buttonsAdAgency[0].y = 15
+		buttonsAdAgency[1].y = 35
+		buttonsAdAgency[2].y = 55
+
+		UpdateAdAgencyModeButton()
+	End Method
+
+
+	Function OnButtonClickHandler_AdAgency(sender:TDebugControlsButton)
+		Select sender.dataInt
+			case 0
+				RoomHandler_AdAgency.GetInstance().ReFillBlocks()
+			case 1
+				RoomHandler_AdAgency.GetInstance().ReFillBlocks(True, 1.0)
+			case 2
+				if RoomHandler_AdAgency.GetInstance()._setRefillMode = 2
+					RoomHandler_AdAgency.GetInstance().SetRefillMode(1)
+					DebugScreen.UpdateAdAgencyModeButton()
+				else
+					RoomHandler_AdAgency.GetInstance().SetRefillMode(2)
+					DebugScreen.UpdateAdAgencyModeButton()
+				endif
+		End Select
+
+		'handled
+		sender.clicked = False
+		sender.selected = False
+	End Function
+
+
+	Method UpdateAdAgencyModeButton()
+		Select RoomHandler_AdAgency.GetInstance()._setRefillMode
+			case 1	buttonsAdAgency[2].text = "Change Mode: " + RoomHandler_AdAgency.GetInstance()._setRefillMode + "->2"
+			case 2	buttonsAdAgency[2].text = "Change Mode: " + RoomHandler_AdAgency.GetInstance()._setRefillMode + "->1"
+			default	buttonsAdAgency[2].text = "Change Mode: " + RoomHandler_AdAgency.GetInstance()._setRefillMode + "->2"
+		End Select
 	End Method
 
 
 	Method UpdateMode_AdAgency()
 		Local playerID:Int = GetShownPlayerID()
 
-		debugProgrammePlanInfos.Update(playerID, sideButtonPanelWidth + 5, 13)
-		debugProgrammeCollectionInfos.Update(playerID, sideButtonPanelWidth + 5 + 350, 13)
+		'initial refill?
+		'if RoomHandler_AdAgency.listNormal.length = 0 then ReFillBlocks()
+
+		UpdateAdAgencyOffers(playerID, sideButtonPanelWidth + 5, 13, 250, 230)
+
+		For Local b:TDebugControlsButton = EachIn buttonsAdAgency
+			b.Update()
+		Next
+
 	End Method
 
 
 	Method RenderMode_AdAgency()
 		Local playerID:Int = GetShownPlayerID()
+
+		RenderAdAgencyOffers(playerID, sideButtonPanelWidth + 5, 13, 250, 230)
+		RenderAdAgencyInformation(playerID, sideButtonPanelWidth + 5 + 250 + 5, 13)
+
+		For Local b:TDebugControlsButton = EachIn buttonsAdAgency
+			b.Render()
+		Next
+
+		if adAgencyOfferHightlight
+			adAgencyOfferHightlight.ShowSheet(sideButtonPanelWidth + 5 + 250, 13, 0, TVTBroadcastMaterialType.ADVERTISEMENT, playerID)
+		endif
+	End Method
+
+
+
+	'=== BLOCKS ===
+	Method RenderAdAgencyInformation(playerID:int, x:int, y:int, w:int = 200, h:int = 150)
+		DrawOutlineRect(x, y, w, h)
 rem
 		Local captionFont:TBitMapFont
 			SetColor 0,0,0
@@ -397,12 +480,101 @@ rem
 				y:+ 13
 			Next
 endrem
-'		RenderAdAgencyOffer(playerID, sideButtonPanelWidth + 5, 15)
 	End Method
 
 
+	Method UpdateAdAgencyOffers(playerID:int, x:int, y:int, w:int = 200, h:int = 150)
+		'reset
+		adAgencyOfferHightlight = null
 
-	'=== BLOCKS ===
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+		local adAgency:RoomHandler_AdAgency = RoomHandler_AdAgency.GetInstance()
+		textY :+ 12 + 10 + 5
+
+		local adLists:TAdContract[][] = [adAgency.listNormal, adAgency.listCheap]
+		local entryPos:int = 0
+		For local listNumber:int = 0 until adLists.length
+			local ads:TAdContract[] = adLists[listNumber]
+			textY :+ 10
+			For local i:int = 0 until ads.length
+				if THelper.MouseIn(textX, textY, 240, 10)
+					adAgencyOfferHightlight = ads[i]
+					exit
+				endif
+
+				textY :+ 10
+				entryPos :+ 1
+			Next
+			if adAgencyOfferHightlight then exit
+		Next
+	End Method
+
+
+	Method RenderAdAgencyOffers(playerID:int, x:int, y:int, w:int = 200, h:int = 150)
+		DrawOutlineRect(x, y, w, h)
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+		local adAgency:RoomHandler_AdAgency = RoomHandler_AdAgency.GetInstance()
+
+		titleFont.draw("AdAgency", textX, textY)
+		textY :+ 12
+		textFont.Draw("Refilled on figure visit.", textX, textY)
+		textY :+ 10
+		textY :+ 5
+
+		local adlistTitle:String[] = ["Normal", "Cheap"]
+		local adLists:TAdContract[][] = [adAgency.listNormal, adAgency.listCheap]
+		local entryPos:int = 0
+		local oldAlpha:Float = GetAlpha()
+		For local listNumber:int = 0 until adLists.length
+			local ads:TAdContract[] = adLists[listNumber]
+
+			textFontBold.Draw(adListTitle[listNumber] + ":", textX, textY)
+			textY :+ 10
+			For local i:int = 0 until ads.length
+				If entryPos Mod 2 = 0
+					SetColor 0,0,0
+				Else
+					SetColor 60,60,60
+				EndIf
+				SetAlpha 0.75 * oldAlpha
+				DrawRect(textX, textY, 240, 10)
+
+				SetColor 255,255,255
+				SetAlpha oldAlpha
+
+				if ads[i] and ads[i] = adAgencyOfferHightlight
+					SetAlpha 0.25 * oldAlpha
+					SetBlend LIGHTBLEND
+					DrawRect(textX, textY, 240, 10)
+					SetAlpha oldAlpha
+					SetBlend ALPHABLEND
+				endif
+
+				textFont.Draw(RSet(i, 2).Replace(" ", "0"), textX, textY)
+				if ads[i]
+					textFont.DrawBlock(": " + ads[i].GetTitle(), textX + 15, textY, 110, 11)
+					textFont.Draw(MathHelper.DottedValue(ads[i].GetMinAudience(playerID)), textX + 15 + 120, textY)
+					if ads[i].GetLimitedToTargetGroup() > 0
+						textFont.DrawBlock(ads[i].GetLimitedToTargetGroupString(), textX + 15 + 120, textY, 100, 11, ALIGN_RIGHT_TOP)
+					else
+						SetAlpha 0.5
+						textFont.DrawBlock("no limit", textX + 15 + 120, textY, 100, 11, ALIGN_RIGHT_TOP)
+						SetAlpha oldAlpha
+					endif
+				else
+					textFont.Draw(": -", textX + 15, textY)
+				endif
+				textY :+ 10
+
+				entryPos :+ 1
+			Next
+			textY :+ 5
+		Next
+	End Method
+
+
 
 	Method RenderFigureInformation(figure:TFigure, x:int, y:int)
 		DrawOutlineRect(x, y, 150, 70)
