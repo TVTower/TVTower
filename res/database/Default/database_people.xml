@@ -2180,9 +2180,9 @@
 	</celebritypeople>
 
 	<insignificantpeople>
-		<person id="common-amateur-actors" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" fictional="1" levelup="0" />
-		<person id="common-amateur-director" first_name="" last_name="Regiepraktikant" nick_name="Regiepraktikant" fictional="1" levelup="0" />
-		<person id="unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" fictional="1" levelup="0" />
+		<person id="common-amateur-actors" first_name="" last_name="Laiendarsteller" nick_name="Laiendarsteller" fictional="1" levelup="0" bookable="0" />
+		<person id="common-amateur-director" first_name="" last_name="Regiepraktikant" nick_name="Regiepraktikant" fictional="1" levelup="0" bookable="0" />
+		<person id="unnamed-person" first_name="" last_name="Unbekannt" nick_name="Unbekannt" fictional="1" levelup="0"  bookable="0" />
 
 		<person id="1994aa3a-23c3-48ce-b20a-d1f021df8c63" first_name="Königin Svetlana" last_name="von Schweden" nick_name="" bookable="0"/>
 		<person id="2994ff3d-ffc4-f8ce-c25a-e1g0d1df8c64" first_name="ein Arbeitsloser namens" last_name="&quot;Groggy&quot;" nick_name=""  bookable="0"/>
