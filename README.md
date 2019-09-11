@@ -34,7 +34,7 @@ No additional packages required to run.
 - Homepage (+Downloads Linux/Mac/Windows): http://www.tvtower.org
 - Forum: http://www.gamezworld.de/phpforum
 
-![Screenshot](https://cloud.githubusercontent.com/assets/2625226/5182430/b714aa28-74a2-11e4-9409-e99083dc677e.png)
+![Screenshot](https://user-images.githubusercontent.com/2625226/64739997-2935a100-d4f4-11e9-93e2-0b8c9ca00095.png)
 
 ***
 
