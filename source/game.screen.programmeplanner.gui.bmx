@@ -19,8 +19,8 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	Field imageBaseName:String = "pp_programmeblock1"
 	Field textImageAd:TImage {nosave}
 	Field textImageProgramme:TImage {nosave}
-	Field cacheStringAd:TStringBuffer {nosave}
-	Field cacheStringProgramme:TStringBuffer {nosave}
+	Field cacheStringAd:TStringBuilder {nosave}
+	Field cacheStringProgramme:TStringBuilder {nosave}
 
 	Global ghostAlpha:Float = 0.8
 
@@ -435,7 +435,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 
 		'refresh cache?
-		local newCacheString:TStringBuffer = TStringBuffer.Create(title)
+		local newCacheString:TStringBuilder = TStringBuilder.Create(title)
 		newCacheString.Append(text)
 		newCacheString.Append(text2)
 
@@ -520,7 +520,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 
 		'refresh cache?
-		local newCacheString:TStringBuffer = TStringBuffer.Create(title)
+		local newCacheString:TStringBuilder = TStringBuilder.Create(title)
 		newCacheString.Append(text)
 		newCacheString.Append(text2)
 

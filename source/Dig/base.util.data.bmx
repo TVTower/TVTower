@@ -36,8 +36,7 @@ EndRem
 SuperStrict
 Import brl.Map
 Import brl.Retro
-'Import BaH.StringBuffer
-Import "external/stringbuffer.mod/stringbuffer.bmx"
+Import brl.StringBuilder
 Import "external/string_comp.bmx"
 
 Type TData
@@ -73,13 +72,13 @@ Type TData
 
 
 	Method ToStringFormat:String(depth:Int = 0)
-		Local depthString:TStringBuffer = New TStringBuffer
+		Local depthString:TStringBuilder = New TStringBuilder
 		'local depthString:string = ""
 		For Local i:Int = 0 Until depth
 			depthString.Append("|  ")
 		Next
 
-		Local res:TStringBuffer = New TStringBuffer
+		Local res:TStringBuilder = New TStringBuilder
 		res.Append("TData~n")
 		'local res:string = "TData~n"
 		For Local key:TLowerString = EachIn data.Keys()

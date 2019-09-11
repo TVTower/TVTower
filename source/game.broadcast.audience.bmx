@@ -1,9 +1,9 @@
 SuperStrict
+Import Brl.StringBuilder
 Import "Dig/base.util.numbersortmap.bmx"
 Import "Dig/base.util.helper.bmx" 'for roundInt()
 Import "game.exceptions.bmx"
 Import "game.gameconstants.bmx"
-
 
 Type TAudienceManager
 	Field currentAudienceBreakdown:TAudienceBase = Null
@@ -609,24 +609,30 @@ Type TAudienceBase {_exposeToLua="selected"}
 
 
 	Method ToStringPercentage:String(dec:Int = 0) {_exposeToLua}
-		Return "C:" + MathHelper.NumberToString(Children*100,dec, True) + "% / " + ..
-		       "T:" + MathHelper.NumberToString(Teenagers*100,dec, True) + "% / " + ..
-		       "H:" + MathHelper.NumberToString(HouseWives*100,dec, True) + "% / " + ..
-		       "E:" + MathHelper.NumberToString(Employees*100,dec, True) + "% / " + ..
-		       "U:" + MathHelper.NumberToString(Unemployed*100,dec, True) + "% / " + ..
-		       "M:" + MathHelper.NumberToString(Manager*100,dec, True) + "% / " + ..
-		       "P:" + MathHelper.NumberToString(Pensioners*100,dec, True) +"%"
+        Local sb:TStringBuilder = New TStringBuilder()
+        Local splitter:string = "% /"
+        sb.Append("C:").Append(MathHelper.NumberToString(Children*100, dec, True)).Append(splitter)
+        sb.Append("T:").Append(MathHelper.NumberToString(Teenagers*100, dec, True)).Append(splitter)
+        sb.Append("H:").Append(MathHelper.NumberToString(HouseWives*100, dec, True)).Append(splitter)
+        sb.Append("E:").Append(MathHelper.NumberToString(Employees*100, dec, True)).Append(splitter)
+        sb.Append("U:").Append(MathHelper.NumberToString(Unemployed*100, dec, True)).Append(splitter)
+        sb.Append("M:").Append(MathHelper.NumberToString(Manager*100, dec, True)).Append(splitter)
+        sb.Append("P:").Append(MathHelper.NumberToString(Pensioners*100, dec, True)).Append("%")
+        Return sb.ToString()
 	End Method
 
 
 	Method ToStringMinimal:String(dec:Int = 0) {_exposeToLua}
-		Return "C:" + MathHelper.NumberToString(Children,dec, True) + " / " + ..
-		       "T:" + MathHelper.NumberToString(Teenagers,dec, True) + " / " + ..
-		       "H:" + MathHelper.NumberToString(HouseWives,dec, True) + " / " + ..
-		       "E:" + MathHelper.NumberToString(Employees,dec, True) + " / " + ..
-		       "U:" + MathHelper.NumberToString(Unemployed,dec, True) + " / " + ..
-		       "M:" + MathHelper.NumberToString(Manager,dec, True) + " / " + ..
-		       "P:" + MathHelper.NumberToString(Pensioners,dec, True)
+        Local sb:TStringBuilder = New TStringBuilder()
+        Local splitter:string = "/"
+        sb.Append("C:").Append(MathHelper.NumberToString(Children, dec, True)).Append(splitter)
+        sb.Append("T:").Append(MathHelper.NumberToString(Teenagers, dec, True)).Append(splitter)
+        sb.Append("H:").Append(MathHelper.NumberToString(HouseWives, dec, True)).Append(splitter)
+        sb.Append("E:").Append(MathHelper.NumberToString(Employees, dec, True)).Append(splitter)
+        sb.Append("U:").Append(MathHelper.NumberToString(Unemployed, dec, True)).Append(splitter)
+        sb.Append("M:").Append(MathHelper.NumberToString(Manager, dec, True)).Append(splitter)
+        sb.Append("P:").Append(MathHelper.NumberToString(Pensioners, dec, True))
+        Return sb.ToString()
 	End Method
 
 
@@ -762,14 +768,16 @@ Type TAudience {_exposeToLua="selected"}
 	'=== SERIALIZATION / DESERIALIZATION ===
 
 	Method SerializeTAudienceToString:String()
-		Local m:String = ""
-		Local w:String = ""
-		If audienceMale Then m = audienceMale.SerializeTAudienceBaseToString()
-		If audienceFemale Then w = audienceFemale.SerializeTAudienceBaseToString()
-		'convert FloatToInt
-		Return id + "::ab=" +..
-		       m  + "::ab=" +..
-		       w
+		Local sb:TStringBuilder = New TStringBuilder()
+		sb.Append(id)
+
+		sb.Append("::ab=")
+		If audienceMale Then sb.Append( audienceMale.SerializeTAudienceBaseToString() )
+
+		sb.Append(id).Append("::ab=")
+		If audienceFemale Then sb.Append( audienceFemale.SerializeTAudienceBaseToString() )
+
+		Return sb.ToString()
 	End Method
 
 
@@ -1144,25 +1152,29 @@ Type TAudience {_exposeToLua="selected"}
 	'=== TO STRING ===
 
 	Method ToStringPercentage:String(dec:Int = 0) {_exposeToLua}
-		Return "C:" + MathHelper.NumberToString(GetAudienceMale().Children*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Children*100, dec, True) + "% / " + ..
-		       "T:" + MathHelper.NumberToString(GetAudienceMale().Teenagers*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Teenagers*100, dec, True) + "% / " + ..
-		       "H:" + MathHelper.NumberToString(GetAudienceMale().HouseWives*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().HouseWives*100, dec, True) + "% / " + ..
-		       "E:" + MathHelper.NumberToString(GetAudienceMale().Employees*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Employees*100, dec, True) + "% / " + ..
-		       "U:" + MathHelper.NumberToString(GetAudienceMale().Unemployed*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Unemployed*100, dec, True) + "% / " + ..
-		       "M:" + MathHelper.NumberToString(GetAudienceMale().Manager*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Manager*100, dec, True) + "% / " + ..
-		       "P:" + MathHelper.NumberToString(GetAudienceMale().Pensioners*100, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Pensioners*100, dec, True) +"%"
+        Local sb:TStringBuilder = New TStringBuilder()
+        sb.Append("C:").Append(MathHelper.NumberToString(GetAudienceMale().Children*100, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Children*100, dec, True)).Append("% / ")
+        sb.Append("T:").Append(MathHelper.NumberToString(GetAudienceMale().Teenagers*100, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Teenagers*100, dec, True)).Append("% / ")
+        sb.Append("H:").Append(MathHelper.NumberToString(GetAudienceMale().HouseWives*100, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().HouseWives*100, dec, True)).Append("% / ")
+        sb.Append("E:").Append(MathHelper.NumberToString(GetAudienceMale().Employees*100, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Employees*100, dec, True)).Append("% / ")
+        sb.Append("U:").Append(MathHelper.NumberToString(GetAudienceMale().Unemployed*100, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Unemployed*100, dec, True)).Append("% / ")
+        sb.Append("M:").Append(MathHelper.NumberToString(GetAudienceMale().Manager*100, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Manager*100, dec, True)).Append("% / ")
+        sb.Append("P:").Append(MathHelper.NumberToString(GetAudienceMale().Pensioners*100, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Pensioners*100, dec, True)).Append("%")
+        Return sb.ToString()
 	End Method
 
 
 	Method ToStringMinimal:String(dec:Int=0) {_exposeToLua}
-		Return "C:" + MathHelper.NumberToString(GetAudienceMale().Children, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Children, dec, True) + " / " + ..
-		       "T:" + MathHelper.NumberToString(GetAudienceMale().Teenagers, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Teenagers, dec, True) + " / " + ..
-		       "H:" + MathHelper.NumberToString(GetAudienceMale().HouseWives, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().HouseWives, dec, True) + " / " + ..
-		       "E:" + MathHelper.NumberToString(GetAudienceMale().Employees, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Employees, dec, True) + " / " + ..
-		       "U:" + MathHelper.NumberToString(GetAudienceMale().Unemployed, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Unemployed, dec, True) + " / " + ..
-		       "M:" + MathHelper.NumberToString(GetAudienceMale().Manager, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Manager, dec, True) + " / " + ..
-		       "P:" + MathHelper.NumberToString(GetAudienceMale().Pensioners, dec, True) + "/" + MathHelper.NumberToString(GetAudienceFemale().Pensioners, dec, True)
-	End Method
+        Local sb:TStringBuilder = New TStringBuilder()
+        sb.Append("C:").Append(MathHelper.NumberToString(GetAudienceMale().Children, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Children, dec, True)).Append(" / ")
+        sb.Append("T:").Append(MathHelper.NumberToString(GetAudienceMale().Teenagers, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Teenagers, dec, True)).Append(" / ")
+        sb.Append("H:").Append(MathHelper.NumberToString(GetAudienceMale().HouseWives, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().HouseWives, dec, True)).Append(" / ")
+        sb.Append("E:").Append(MathHelper.NumberToString(GetAudienceMale().Employees, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Employees, dec, True)).Append(" / ")
+        sb.Append("U:").Append(MathHelper.NumberToString(GetAudienceMale().Unemployed, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Unemployed, dec, True)).Append(" / ")
+        sb.Append("M:").Append(MathHelper.NumberToString(GetAudienceMale().Manager, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Manager, dec, True)).Append(" / ")
+        sb.Append("P:").Append(MathHelper.NumberToString(GetAudienceMale().Pensioners, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Pensioners, dec, True))
+        Return sb.ToString()
+    End Method
 
 
 	Method ToString:String() {_exposeToLua}
