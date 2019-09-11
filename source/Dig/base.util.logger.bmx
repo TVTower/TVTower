@@ -48,21 +48,21 @@ Import "base.util.string.bmx"
 Global AppLog:TLogFile = TLogFile.Create("App Log v1.0", "log.app.txt")
 Global AppErrorLog:TLogFile = TLogFile.Create("App Log v1.0", "log.app.error.txt")
 
-Const LOG_ERROR:int		= 1
-Const LOG_WARNING:int	= 2
-Const LOG_INFO:int		= 4
-Const LOG_DEBUG:int		= 8
-Const LOG_DEV:int		= 16
-Const LOG_TESTING:int	= 32
-Const LOG_LOADING:int	= 64
-Const LOG_GAME:int		= 128
-Const LOG_AI:int		= 256
-Const LOG_XML:int		= 512
-Const LOG_NETWORK:int	= 1024
-Const LOG_SAVELOAD:int	= 2048
+Const LOG_ERROR:Int		= 1
+Const LOG_WARNING:Int	= 2
+Const LOG_INFO:Int		= 4
+Const LOG_DEBUG:Int		= 8
+Const LOG_DEV:Int		= 16
+Const LOG_TESTING:Int	= 32
+Const LOG_LOADING:Int	= 64
+Const LOG_GAME:Int		= 128
+Const LOG_AI:Int		= 256
+Const LOG_XML:Int		= 512
+Const LOG_NETWORK:Int	= 1024
+Const LOG_SAVELOAD:Int	= 2048
 'all but debug/dev/testing/ai
-Const LOG_ALL_NORMAL:int	= 1|2|4| 0 | 0 | 0 |64|128| 0 |512|1024|2048
-Const LOG_ALL:int			= 1|2|4| 8 |16 |32 |64|128|256|512|1024|2048
+Const LOG_ALL_NORMAL:Int	= 1|2|4| 0 | 0 | 0 |64|128| 0 |512|1024|2048
+Const LOG_ALL:Int			= 1|2|4| 8 |16 |32 |64|128|256|512|1024|2048
 
 
 'by default EVERYTHING is logged
@@ -70,50 +70,50 @@ TLogger.setLogMode(LOG_ALL)
 TLogger.setPrintMode(LOG_ALL)
 
 Type TLogger
-	global printMode:int = 0 'print nothing
-	global logMode:int = 0 'log nothing
-	global lastLoggedMode:int =0
-	global lastPrintMode:int =0
-	global lastLoggedFunction:string=""
-	global lastPrintFunction:string=""
-	const MODE_LENGTH:int = 8
+	Global printMode:Int = 0 'print nothing
+	Global logMode:Int = 0 'log nothing
+	Global lastLoggedMode:Int =0
+	Global lastPrintMode:Int =0
+	Global lastLoggedFunction:String=""
+	Global lastPrintFunction:String=""
+	Const MODE_LENGTH:Int = 8
 
 
 	'replace print mode flags
-	Function setPrintMode(flag:int=0)
+	Function setPrintMode(flag:Int=0)
 		printMode = flag
 	End Function
 
 
 	'replace logfile mode flags
-	Function setLogMode(flag:int=0)
+	Function setLogMode(flag:Int=0)
 		logMode = flag
 	End Function
 
 
 	'change an existing print mode (add or remove flag)
-	Function changePrintMode(flag:int=0, enable:int=TRUE)
-		if enable
+	Function changePrintMode(flag:Int=0, enable:Int=True)
+		If enable
 			printMode :| flag
-		else
+		Else
 			printMode :& ~flag
-		endif
+		EndIf
 	End Function
 
 	'change an existing logfile mode (add or remove flag)
-	Function changeLogMode(flag:int=0, enable:int=TRUE)
-		if enable
+	Function changeLogMode(flag:Int=0, enable:Int=True)
+		If enable
 			logMode :| flag
-		else
+		Else
 			logMode :& ~flag
-		endif
+		EndIf
 	End Function
 
 
 	'outputs a string to stdout and/or logfile
 	'exactTypeRequired: requires the mode to exactly contain the debugType
 	'                   so a LOG_AI|LOG_DEBUG will only get logged if BOTH are enabled
-	Function Log(functiontext:String = "", message:String, debugType:int=LOG_DEBUG, exactTypeRequired:int=FALSE)
+	Function Log(functiontext:String = "", message:String, debugType:Int=LOG_DEBUG, exactTypeRequired:Int=False)
 		Local debugtext:String = ""
 		If debugType & LOG_LOADING Then debugtext :+ "LOAD "
 		If debugType & LOG_GAME Then debugtext :+ "GAME "
@@ -138,43 +138,43 @@ Type TLogger
 '			debugtext = debugtext + " | "
 '		endif
 
-		local showFunctionText:string = ""
-		local doLog:int = FALSE
-		local doPrint:int = FALSE
+		Local showFunctionText:String = ""
+		Local doLog:Int = False
+		Local doPrint:Int = False
 		'means ALL GIVEN TYPES have to fit
-		if exactTypeRequired
+		If exactTypeRequired
 			doLog = ((logMode & debugType) = debugType)
 			doPrint = ((printMode & debugType) = debugType)
 		'only one of the given types has to fit
-		else
+		Else
 			doLog = (logMode & debugType)
 			doPrint = (printMode & debugType)
-		endif
+		EndIf
 
-		if doLog
-			if debugType = lastLoggedMode and functiontext = lastLoggedFunction
-				showFunctionText = LSet("", len(lastLoggedFunction))
-			else
+		If doLog
+			If debugType = lastLoggedMode And functiontext = lastLoggedFunction
+				showFunctionText = LSet("", Len(lastLoggedFunction))
+			Else
 				lastLoggedFunction = functiontext
 				lastLoggedMode = debugType
 				showFunctionText = functiontext
-			endif
+			EndIf
 
 			AppLog.AddLog("[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message)
 			'store errors in an extra file
-			if debugType & LOG_ERROR
+			If debugType & LOG_ERROR
 				AppErrorLog.AddLog("[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message)
-			endif
-		endif
+			EndIf
+		EndIf
 
-		if doPrint
-			if debugType = lastPrintMode and functiontext = lastPrintFunction
-				showFunctionText = LSet("", len(lastPrintFunction))
-			else
+		If doPrint
+			If debugType = lastPrintMode And functiontext = lastPrintFunction
+				showFunctionText = LSet("", Len(lastPrintFunction))
+			Else
 				lastPrintFunction = functiontext
 				lastPrintMode = debugType
 				showFunctionText = functiontext
-			endif
+			EndIf
 
 			'message = StringHelper.UTF8toISO8859(message)
 '			?Win32
@@ -182,21 +182,21 @@ Type TLogger
 '			?
 			message = StringHelper.RemoveUmlauts(message)
 
-			local text:string = "[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message
+			Local text:String = "[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message
 			?android
-				if debugType & LOG_DEBUG
+				If debugType & LOG_DEBUG
 					'debug not shown in normal logcat
 					'LogDebug(SDL_LOG_CATEGORY_APPLICATION, text)
 					LogInfo(SDL_LOG_CATEGORY_APPLICATION, text)
-				elseif debugType & LOG_WARNING
+				ElseIf debugType & LOG_WARNING
 					LogWarn(SDL_LOG_CATEGORY_APPLICATION, text)
-				else
+				Else
 					LogInfo(SDL_LOG_CATEGORY_APPLICATION, text)
-				endif
-			?not android
-				print text
+				EndIf
+			?Not android
+				Print text
 			?
-		endif
+		EndIf
 	End Function
 
 End Type
@@ -206,18 +206,20 @@ End Type
 
 Type TLogFile
 	Field Strings:TList = CreateList()
-	Field title:string = ""
-	Field filename:string = ""
-	Field headerWritten:int = False
-	Field immediateWrite:int = True
+	Field title:String = ""
+	Field filename:String = ""
+	Field headerWritten:Int = False
+	Field immediateWrite:Int = True
+	Field fileObj:TStream
+	Field keepFileOpen:Int = True
 
 	Global logs:TList = CreateList()
 
 
 	'immediateWrite decides whether a added log is immediately written
 	'to the log file or not
-	Function Create:TLogFile(title:string, filename:string, immediateWrite:int = True)
-		local obj:TLogFile = new TLogFile
+	Function Create:TLogFile(title:String, filename:String, immediateWrite:Int = True, keepFileOpen:Int = True)
+		Local obj:TLogFile = New TLogFile
 		obj.title = title
 		?android
 			'prefix with the path to the internal storage
@@ -227,23 +229,33 @@ Type TLogFile
 		obj.immediateWrite = immediateWrite
 
 		'create the file ("renew" it)
-		CreateFile(filename)
+		If Not CreateFile(filename)
+			Throw "Cannot create logfile: "+filename
+		EndIf
+
+		obj.keepFileOpen = keepFileOpen
 
 		TLogfile.logs.addLast(obj)
 
-		return obj
+		Return obj
 	End Function
 
 
 	Function DumpLogs()
-		For local logfile:TLogFile = eachin TLogFile.logs
+		For Local logfile:TLogFile = EachIn TLogFile.logs
+			'if the file is still open, close first
+			If logfile.fileObj Then CloseFile(logfile.fileObj)
+
 			'in all cases, just dump down the file again regardless
 			'of the mode (you might have manipulated logs meanwhile)
 			'try to create the file
 			CreateFile(logfile.filename)
 			Local file:TStream = WriteFile( logfile.filename )
+			If Not file Then Throw "Cannot open ~q" + logfile.filename + "~q to dump log to."
 
+			'header
 			WriteLine(file, logfile.title)
+			'current logs
 			For Local line:String = EachIn logfile.Strings
 				WriteLine(file, line)
 			Next
@@ -253,32 +265,30 @@ Type TLogFile
 	End Function
 
 
-	Method AddLog:int(text:String, addDateTime:int=FALSE)
-		if addDateTime then text = "[" + CurrentTime() + "] " + text
+	Method AddLog:Int(text:String, addDateTime:Int=False)
+		If addDateTime Then text = "[" + CurrentTime() + "] " + text
 		Strings.AddLast(text)
 
-		if immediateWrite
-			local size:int = filesize(filename)
-			if size = -1
-				if not CreateFile(filename)
-					Throw "Cannot create logfile: "+filename
-				endif
-			endif
-			local file:TStream = OpenFile(filename)
+		If immediateWrite
+			'open to append if not done yet
+			If Not fileObj
+				fileObj = AppendStream(filename)
+				If Not fileObj Then Throw "Cannot open ~q"+filename+"~q to append log entry to."
+			EndIf
 
-
-			if not headerWritten
-				WriteLine(file, title)
+			'write the header if not done yet
+			'(doing it here allows to adjust the title after creation)
+			If Not headerWritten
+				WriteLine(fileObj, title)
 				headerWritten = True
-			'if we already have written the header, move to the end of
-			'the file
-			else
-				file.Seek(size)
-			endif
-			WriteLine(file, text)
+			EndIf
 
-			CloseFile(file)
-		endif
-		return TRUE
+			WriteLine(fileObj, text)
+			fileObj.Flush()
+
+			'close file to allow access by other processes
+			If Not keepFileOpen Then CloseFile(fileObj)
+		EndIf
+		Return True
 	End Method
 End Type
