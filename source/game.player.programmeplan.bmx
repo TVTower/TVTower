@@ -2041,8 +2041,14 @@ Type TProgrammePlanInformationProvider extends TProgrammePlanInformationProvider
 		local genreKey:string = ""
 		if GetWorldTime().GetDayMinute(time) = 4 then genreKey = "newsshow"
 
-		local programme:TProgramme = TProgramme(GetPlayerProgrammePlan(player).GetProgramme(GetWorldTime().GetDay(time), GetWorldTime().GetDayHour(time)))
-		if programme then genreKey = string(programme.data.GetGenre())
+		local broadcast:TBroadcastMaterial = TBroadcastMaterial(GetPlayerProgrammePlan(player).GetProgramme(GetWorldTime().GetDay(time), GetWorldTime().GetDayHour(time)))
+		if TProgramme(broadcast)
+			genreKey = string(TProgramme(broadcast).data.GetGenre())
+		elseif TAdvertisement(broadcast)
+			genreKey = "infomercial"
+		else
+			genreKey = "unknown"
+		endif
 
 		local audience:int = audienceResult.audience.GetTotalSum()
 		if audience > int(string(audienceRecord[player].ValueForKey(genreKey)))
