@@ -365,13 +365,27 @@ Type TToastMessage extends TEntity
 	Field _openCloseTimeGone:Float = 0
 	Field _lifeTime:Float = -1
 	Field _lifeTimeStartValue:Float = -1
+	Field _lifeTimeBarHeight:int = 5
+	Field _lifeTimeBarColor:TColor
+	Field _lifeTimeBarBottomY:int = 15
+	Field _textOffset:TVec2D
 	'additional data
 	Field _data:TData
 	Field _onCloseFunction:int(sender:TToastMessage)
+	Global defaultDimension:TVec2D = new TVec2D.Init(200,50)
+	Global defaultLifeTimeBarHeight:int = 10
+	Global defaultLifeTimeBarColor:TColor = TColor.clWhite
+	Global defaultLifeTimeBarBottomY:int = 15
+	Global defaultTextOffset:TVec2D = new TVec2D.Init(5,5)
 
 
 	Method New()
-		area.dimension.SetXY(200,50)
+		area.dimension = defaultDimension.Copy()
+		_lifeTimeBarHeight = defaultLifeTimeBarHeight
+		_lifeTimeBarColor = defaultLifeTimeBarColor.Copy()
+		_lifeTimeBarBottomY = defaultLifeTimeBarBottomY
+		_textOffset = defaultTextOffset.Copy()
+
 		Open()
 	End Method
 
@@ -512,7 +526,7 @@ Type TToastMessage extends TEntity
 				EventManager.triggerEvent(TEventSimple.Create("toastmessage.onClick", new TData.AddNumber("mouseButton", 1), Self))
 
 				'handled single click
-				MouseManager.ResetClicked(1)
+				MouseManager.SetClickHandled(1)
 			Endif
 		Endif
 	End Method
@@ -524,14 +538,14 @@ Type TToastMessage extends TEntity
 'rem
 		else
 			DrawRect(xOffset + GetScreenX(), yOffset + GetScreenY(), area.GetW(), area.GetH())
-			SetColor 0,0,255
+			_lifeTimeBarColor.SetRGB()
 			if _lifeTime > 0
-				local lifeTimeWidth:int = GetScreenWidth() - 10
+				local lifeTimeWidth:int = GetScreenWidth() - 2 * _textOffset.GetIntX()
 				lifeTimeWidth :* GetLifeTimeProgress()
-				DrawRect(xOffset + GetScreenX() + 5, yOffset + GetScreenY() + area.GetH() - 15, lifeTimeWidth, 10)
+				DrawRect(xOffset + GetScreenX() + _textOffset.GetIntX(), yOffset + GetScreenY() + area.GetH() - _lifeTimeBarBottomY, lifeTimeWidth, _lifeTimeBarHeight)
 			endif
-			DrawText(name+" "+id, xOffset + GetScreenX() + 5, yOffset + GetScreenY() + 5)
 			SetColor 255,255,255
+			DrawText(name+" "+id, xOffset + GetScreenX() + _textOffset.GetIntX(), yOffset + GetScreenY() + _textOffset.GetIntY())
 'endrem
 		endif
 	End Method
@@ -560,7 +574,7 @@ Type TToastMessage extends TEntity
 		if HasStatus(TOASTMESSAGE_OPENING_OR_CLOSING) then SetAlpha(oldAlpha * progress)
 
 		'draw the message container itself
-		Rendercontent(xOffset, yOffset)
+		RenderContent(xOffset, yOffset)
 
 		SetAlpha(oldAlpha)
 

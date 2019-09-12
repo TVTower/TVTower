@@ -23,6 +23,7 @@ Type TGUICheckBox Extends TGUIButton
 	Field uncheckedTintColor:TColor
 	Field checkedTintColor:TColor
 	Field tintColor:TColor
+	Field tintEnabled:int = True
 
 	Global _checkboxMinDimension:TVec2D = new TVec2D.Init(20,20)
 	Global _typeDefaultFont:TBitmapFont
@@ -259,7 +260,7 @@ Type TGUICheckBox Extends TGUIButton
 		Local oldCol:TColor = new TColor.Get()
 
 		'SetColor 255, 255, 255
-'		if state = ""
+		if tintEnabled
 			if IsChecked() and checkedTintColor
 				SetAlpha oldCol.a * GetScreenAlpha() * checkedTintColor.a
 				checkedTintColor.SetRGB()
@@ -272,9 +273,7 @@ Type TGUICheckBox Extends TGUIButton
 			else
 				SetAlpha oldCol.a * GetScreenAlpha()
 			endif
-'		else
-'			SetAlpha oldCol.a * GetScreenAlpha()
-'		endif
+		endif
 
 		Local sprite:TSprite = GetSprite()
 		if state <> "" then sprite = GetSpriteFromRegistry(GetSpriteName() + state, sprite)
@@ -297,8 +296,10 @@ Type TGUICheckBox Extends TGUIButton
 			caption.SetValue(GetValue())
 
 			Local oldCol:TColor = caption.color.copy()
-			If isChecked() Then caption.color.AdjustFactor(-60)
-			If isHovered() Then caption.color.AdjustFactor(-30)
+			if tintEnabled
+				If isChecked() Then caption.color.AdjustFactor(-60)
+				If isHovered() Then caption.color.AdjustFactor(-30)
+			endif
 
 			caption.Draw()
 			'reset color

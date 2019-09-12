@@ -1028,6 +1028,7 @@ Type TGUIListItem Extends TGUIobject
 	Field initialShowtime:Int = 0
 	'color of the displayed value
 	Field valueColor:TColor	= New TColor
+	Field extra:object
 
 	Field positionNumber:Int = 0
 	Field _listItemFlags:Int = 0
@@ -1066,6 +1067,12 @@ Type TGUIListItem Extends TGUIobject
 		Local guiList:TGUIListBase = TGUIListBase.FindGUIListBaseParent(Self._parent)
 		If guiList And guiList.HasItem(Self) Then guiList.RemoveItem(Self)
 		Return True
+	End Method
+
+
+	Method SetExtra:TGUIListItem(extra:object)
+		self.extra = extra
+		return self
 	End Method
 
 

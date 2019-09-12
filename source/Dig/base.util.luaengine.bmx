@@ -279,57 +279,6 @@ Type TLuaEngine
 		TLogger.Log("TLuaEngine", "#### ERROR #######################", LOG_ERROR)
 		TLogger.Log("TLuaEngine", "Engine: " + id, LOG_ERROR)
 		Tlogger.Log("TLuaEngine", lua_tostring( getLuaState(), -1 ), LOG_ERROR)
-Rem
-For c:
-int lua_mypcall( lua_State* L, int nargs, int nret ) {
-  /* calculate stack position for message handler */
-  int hpos = lua_gettop( L ) - nargs;
-  int ret = 0;
-  /* push custom error message handler */
-  lua_pushcfunction( L, my_error_handler );
-  /* move it before function and arguments */
-  lua_insert( L, hpos );
-  /* call lua_pcall function with custom handler */
-  ret = lua_pcall( L, nargs, nret, hpos );
-  /* remove custom error message handler from stack */
-  lua_remove( L, hpos );
-  /* pass return value of lua_pcall */
-  return ret;
-}
-endrem
-
-
-
-Rem
-		?bmxng
-		local info:lua_Debug = new lua_Debug
-		local level:int = 0
-		print "lua_getstack: " + lua_getstack(getLuaState(), 0, varptr (info))
-		print "info: " + info.name
-
-		while lua_getstack(getLuaState(), level, varptr (info))
-			print "fetch info"
-			lua_getinfo(getLuaState(), "nSl", varptr (info))
-			if info.name
-				print "  [" + level + "] " + info.short_src + ":" + info.currentline + " -- " + info.name + " [" + info.what + "]"
-			else
-				print "  [" + level + "] " + info.short_src + ":" + info.currentline + " -- " + "<unknown>" + " [" + info.what + "]"
-			endif
-			level :+ 1
-		wend
-		?
-endrem
-
-Rem
-		lua_getfield(getLuaState(), LUA_GLOBALSINDEX, "debug");
-		lua_getfield(getLuaState(), -1, "traceback");
-		lua_pushvalue(getLuaState(), 1);
-		lua_pushinteger(getLuaState(), 2);
-		lua_call(getLuaState(), 2, 1);
-		TLogger.Log("TLuaEngine", lua_tostring( getLuaState(), -1));
-    return 1;
-}
-endrem
 	End Method
 
 

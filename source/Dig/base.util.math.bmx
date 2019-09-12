@@ -217,13 +217,11 @@ Type MathHelper
 	'formats a given value from "123000,12" to "123.000,12"
 	'optimized variant
 	Function DottedValue:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:int = -1)
-		'is there a "minus" in front ?
-		Local addSign:Int = value < 0
 		Local result:String
 		Local decimalValue:string
 
 		'only process decimals when requested
-		if digitsAfterDecimalPoint > 0 and 1=2
+		if digitsAfterDecimalPoint > 0
 			Local stringValues:String[] = String(Abs(value)).Split(".")
 			Local fractionalValue:String = ""
 			decimalValue = stringValues[0]
@@ -249,7 +247,8 @@ Type MathHelper
 			EndIf
 		Next
 
-		if addSign
+		'is there a "minus" in front ?
+		if value < 0
 			Return "-" + result
 		else
 			Return result

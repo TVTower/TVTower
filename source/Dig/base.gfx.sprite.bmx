@@ -876,7 +876,8 @@ Type TSprite
 						local y:int = 0
 						local maxW:int = Min(sourceCopy.GetW(), w - x)
 						while y <= h - sourceCopy.GetIntH()
-							DrawSubImageRect(parent.GetImage(), Float(startX + x), Float(startY + y), maxW, sourceCopy.GetH(), Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), maxW, sourceCopy.GetH())
+							local maxH:int = Min(sourceCopy.GetH(), h - y)
+							DrawSubImageRect(parent.GetImage(), Float(startX + x), Float(startY + y), maxW, maxH, Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), maxW, maxH)
 							y :+ sourceCopy.GetIntH()
 						wend
 						x :+ sourceCopy.GetIntW()
@@ -923,8 +924,9 @@ endrem
 				while x <= w '- sourceCopy.GetIntW()
 					local y:int = 0
 					local maxW:int = Min(sourceCopy.GetW(), w - x)
-					while y <= h - sourceCopy.GetIntH()
-						DrawSubImageRect(parent.GetImage(), Float(startX + x), Float(startY + y), maxW, sourceCopy.GetH(), Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), maxW, sourceCopy.GetH())
+					while y <= h '- sourceCopy.GetIntH()
+						local maxH:int = Min(sourceCopy.GetH(), h - y)
+						DrawSubImageRect(parent.GetImage(), Float(startX + x), Float(startY + y), maxW, maxH, Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), maxW, maxH)
 						y :+ sourceCopy.GetIntH()
 					wend
 					x :+ sourceCopy.GetIntW()

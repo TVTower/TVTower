@@ -245,10 +245,11 @@ Type TLocalization
 
 
 	Function SetDefaultLanguage:Int(languageCode:String)
-		local lang:TLocalizationLanguage = GetLanguage(languageCode)
+		local langID:Int = GetLanguageID(languageCode)
+		if langID >= 0
+			defaultLanguage = languages[langID]
+			defaultLanguageID = langID
 
-		if lang
-			defaultLanguage = lang
 			Return True
 		else
 			Return False
@@ -607,11 +608,11 @@ rem
 				next
 endrem
 			endif
-
 			if not result and returnDefault
 				local defaultIndex:Int = GetLanguageIndex(TLocalization.defaultLanguageID)
-				if defaultIndex >= 0 and valueStrings.length <= defaultIndex
-					result = valueStrings[TLocalization.defaultLanguageID]
+				if defaultIndex >= 0 and defaultIndex <= valueStrings.length
+
+					result = valueStrings[defaultIndex]
 				endif
 			endif
 

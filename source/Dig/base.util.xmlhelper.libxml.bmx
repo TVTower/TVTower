@@ -38,6 +38,7 @@ Import Brl.Standardio
 Import "external/libxml/libxml.bmx"
 Import "base.util.data.bmx"
 Import "base.util.string.bmx"
+Import "base.util.localization.bmx"
 Import Brl.Retro 'for filesize
 
 
@@ -463,6 +464,27 @@ end rem
 		EndIf
 		If logString <> "" Then Print logString
 		Return defaultValue
+	End Function
+
+
+	Function GetLocalizedStringFromNode:TLocalizedString(node:TxmlNode)
+		if not node then return Null
+
+		local foundEntry:int = True
+		local localized:TLocalizedString = new TLocalizedString
+		For local nodeLangEntry:TxmlNode = EachIn GetNodeChildElements(node)
+			local language:String = nodeLangEntry.GetName().ToLower()
+			'do not trim, as this corrupts variables like "<de> %WORLDTIME:YEAR%</de>" (with space!)
+			local value:String = nodeLangEntry.getContent() '.Trim()
+
+			if value <> ""
+				localized.Set(value, TLocalization.GetLanguageID(language))
+				foundEntry = True
+			endif
+		Next
+
+		if not foundEntry then return Null
+		return localized
 	End Function
 
 

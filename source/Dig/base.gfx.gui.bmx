@@ -78,7 +78,6 @@ Type TGUIManager
 	'=== UPDATE STATE PROPERTIES ===
 
 	Field UpdateState_mouseButtonDown:Int[]
-	Field UpdateState_mouseButtonClicked:Int[]
 	Field UpdateState_mouseScrollwheelMovement:Int = 0
 	Field UpdateState_foundClickedObject:TGUIObject[]
 	Field UpdateState_foundHoverObject:TGUIObject = Null
@@ -120,7 +119,6 @@ Type TGUIManager
 
 
 		UpdateState_mouseButtonDown = New Int[ MouseManager.GetButtonCount() +1]
-		UpdateState_mouseButtonClicked = New Int[ MouseManager.GetButtonCount() +1]
 		UpdateState_foundClickedObject = New TGUIObject[ MouseManager.GetButtonCount() +1]
 
 		Return Self
@@ -465,7 +463,6 @@ endrem
 		UpdateState_mouseScrollwheelMovement = MouseManager.GetScrollwheelMovement()
 
 		UpdateState_mouseButtonDown = MouseManager.GetAllIsDown()
-		UpdateState_mouseButtonClicked = MouseManager.GetAllIsClicked() 'single  clicks!
 
 		UpdateState_foundFocusObject = Null
 		UpdateState_foundClickedObject = New TGUIObject[ MouseManager.GetButtonCount() + 1]
@@ -1992,10 +1989,8 @@ Type TGUIobject
 
 						'we found a gui element which can accept clicks
 						'dont check further guiobjects for mousedown
-						'ATTENTION: do not use MouseManager.ResetKey(1)
 						'as this also removes "down" state
 						GUIManager.UpdateState_mouseButtonDown[1] = False
-						GUIManager.UpdateState_mouseButtonClicked[1] = False
 						'MOUSEMANAGER.ResetKey(1)
 					EndIf
 				EndIf
@@ -2040,10 +2035,10 @@ Type TGUIobject
 
 							'reset Button
 							If MouseManager.IsLongClicked(1)
-								GUIManager.UpdateState_mouseButtonClicked[1] = False
-								'MouseManager.ResetClicked(1) 'long and normal
+								MouseManager.SetLongClickHandled(1)
+'								MouseManager.SetClickHandled(1) 'long mousedown also is a "short click"
 							Else
-								GUIManager.UpdateState_mouseButtonClicked[2] = False
+								MouseManager.SetClickHandled(2)
 							EndIf
 
 							GUIManager.UpdateState_foundClickedObject[2] = Self
@@ -2063,15 +2058,10 @@ Type TGUIobject
 								isClicked = True
 
 								mouseIsClicked = MouseManager.GetClickposition(1)
-
-								'added for imagebutton and arrowbutton not being reset when mouse standing still
-		'						MouseIsDown = Null
+'TODO: only handled if Onclick or the event tell so!
 								'handled that click
-								MOUSEMANAGER.ResetClicked(1)
+								MOUSEMANAGER.SetClickHandled(1)
 
-
-								'reset Button cache
-								GUIManager.UpdateState_mouseButtonClicked[1] = False
 
 								GUIManager.UpdateState_foundClickedObject[1] = Self
 							EndIf
@@ -2081,6 +2071,9 @@ Type TGUIobject
 								Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnDoubleClick", New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 								'let the object handle the click
 								OnDoubleClick(clickEvent)
+
+								'handled that click
+								MouseManager.SetDoubleClickHandled(1)
 							EndIf
 						EndIf
 					EndIf

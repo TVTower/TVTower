@@ -12,10 +12,13 @@ Import "base.gfx.sprite.bmx"
 
 Type TGUIinput Extends TGUIobject
     Field maxLength:Int
-    Field color:TColor = TColor.Create(120,120,120)
+    Field color:TColor = new TColor.Create(120,120,120)
+    Field editColor:TColor
     Field maxTextWidthBase:Int
     Field maxTextWidthCurrent:Int
     Field spriteName:String = "gfx_gui_input.default"
+    Field textEffectAmount:Float = -1.0
+    Field textEffectType:int = 1
 
 
 	'=== OVERLAY ===
@@ -59,7 +62,7 @@ Type TGUIinput Extends TGUIobject
 		else
 			SetMaxLength(2048)
 		endif
-'		SetValueColor(TColor.Create(120,120,120))
+'		SetValueColor(new TColor.Init(120,120,120))
 
 		'this element reacts to keystrokes
 		SetOption(GUI_OBJECT_CAN_RECEIVE_KEYSTROKES, True)
@@ -183,7 +186,7 @@ Type TGUIinput Extends TGUIobject
 'print " ... Mouse "+int(MouseManager.x)+", "+int(MouseManager.y)+" is in. Position: " + old +" => " + _cursorPosition + "  valueClickedPixel="+valueClickedPixel+"  valueOffsetPixels="+valueOffsetPixels
 
 							'handled left click
-							MouseManager.ResetClicked(1)
+							MouseManager.SetClickHandled(1)
 						endif
 					EndIf
 				EndIf
@@ -346,7 +349,11 @@ Type TGUIinput Extends TGUIobject
 		'blinking underscore sign "text_"
 		'else just draw it like a normal gui object
 		If _editable AND Self = GuiManager.GetKeystrokeReceiver()
-			color.copy().AdjustFactor(-80).SetRGB()
+			if editColor
+				editColor.SetRGB()
+			else
+				color.copy().AdjustFactor(-80).SetRGB()
+			endif
 
 			if _cursorPosition = -1 then _cursorPosition = printValue.length
 
@@ -388,10 +395,7 @@ Type TGUIinput Extends TGUIobject
 
 			GetFont().draw(leftValue, position.GetIntX(), position.GetIntY())
 
-			local oldAlpha:float = GetAlpha()
-			SetAlpha Float(Ceil(Sin(Time.GetTimeGone() / 4)) * oldAlpha)
-			DrawLine(Int(position.GetIntX() + leftValueW), Int(position.GetY()), Int(position.GetIntX() + leftValueW), Int(position.GetY()) + GetFont().GetMaxCharHeight() )
-			SetAlpha oldAlpha
+			DrawCaret(Int(position.GetIntX() + leftValueW), Int(position.GetY()))
 
 			'ignore cursor-offset (to avoid "letter-jiggling")
 			GetFont().draw(rightValue, position.GetIntX() + leftValueW, position.GetIntY())
@@ -404,13 +408,29 @@ Type TGUIinput Extends TGUIobject
 				printValue = printValue[.. printValue.length - 1]
 			Wend
 
-			if value.length = 0
-				GetFont().drawStyled(printValue, position.GetIntX(), position.GetIntY(), placeholderColor, 1)
+			if textEffectType <> 0
+				if value.length = 0
+					GetFont().drawStyled(printValue, position.GetIntX(), position.GetIntY(), placeholderColor, textEffectType, 1, textEffectAmount)
+				else
+					GetFont().drawStyled(printValue, position.GetIntX(), position.GetIntY(), color, textEffectType, 1, textEffectAmount)
+				endif
 			else
-				GetFont().drawStyled(printValue, position.GetIntX(), position.GetIntY(), color, 1)
+				if value.length = 0
+					GetFont().draw(printValue, position.GetIntX(), position.GetIntY(), placeholderColor)
+				else
+					GetFont().draw(printValue, position.GetIntX(), position.GetIntY(), color)
+				endif
 			endif
 		EndIf
 
+	End Method
+
+
+	Method DrawCaret(x:int, y:int)
+		local oldAlpha:float = GetAlpha()
+		SetAlpha Float(Ceil(Sin(Time.GetTimeGone() / 4)) * oldAlpha)
+		DrawLine(x, y, x, y + GetFont().GetMaxCharHeight() )
+		SetAlpha oldAlpha
 	End Method
 
 

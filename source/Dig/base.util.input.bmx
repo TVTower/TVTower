@@ -120,7 +120,7 @@ Type TMouseManager
 	Field _longClickModeEnabled:Int = True
 	Field _longClickLeadsToRightClick:Int = True
 	'skip first click (touch screens)
-	Field _ignoreFirstClick:Int = True
+	Field _ignoreFirstClick:Int = False
 	Field _hasIgnoredFirstClick:Int[] = [0,0,0] 'currently ignoring?
 	Field _ignoredFirstClickPos:TVec2D[] = [New TVec2D, New TVec2D, New TVec2D]
 	'distance in pixels, if mouse moved further away, the next
@@ -203,8 +203,8 @@ Type TMouseManager
 				Return _clickStackIndex[button-1]
 		End Select
 	End Method
-	
-	
+
+
 	'remove the last added click from the stack
 	'(actually it just lowers the index so the old click object will
 	' be reused on the next click)
@@ -364,12 +364,12 @@ Type TMouseManager
 	Method ResetLongClicked(button:Int)
 		ResetClicks(button, CLICKTYPE_LONGCLICK)
 	End Method
-	
-	
+
+
 	'remove all logged clicks older than "age" milliseconds
 	Method RemoveOutdatedClicks:Int(age:Int)
 		Local removed:Int = 0
-		Local click:TMouseManagerClick 
+		Local click:TMouseManagerClick
 		Local t:Long = Time.GetAppTimeGone()
 
 		For Local i:Int = 1 To GetButtonCount()
@@ -413,7 +413,7 @@ Type TMouseManager
 			_RemoveClickStackEntry(2, CLICKTYPE_CLICK)
 		EndIf
 	End Method
-	
+
 
 	Method Disable(button:Int)
 		_enabled[button-1] = False

@@ -67,6 +67,7 @@ Type TChannelPool
 			EndIf
 			AddChannel(key, channel)
 		EndIf
+
 		'if we do not have a channel now, we will surely have exceeded a
 		'limit. In that case we return a random one to override it
 		If not channel and GetChannelCount() >= 1

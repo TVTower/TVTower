@@ -376,7 +376,7 @@ Type TColor
 	'Formula adapted from http://en.wikipedia.org/wiki/HSL_color_space.
 	'code based on the jscript code at:
 	'https://github.com/mjackson/mjijackson.github.com/blob/master/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript.txt
-	Method ToHSL(h:float var, s:float var, l:float var)
+	Method ToHSL:TColor(h:float var, s:float var, l:float var)
 		'convert 0-255 to 0-1
 		Local rk:float = r / 255.0
 		local gk:float = g / 255.0
@@ -415,18 +415,20 @@ Type TColor
 			end select
 			h :/ 6.0
 		EndIf
+		
+		return self
 	End Method
 
 
 	'code based on the jscript code at:
 	'https://github.com/mjackson/mjijackson.github.com/blob/master/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript.txt
-	Method FromHSL(h:float, s:float, l:float)
+	Method FromHSL:TColor(h:float, s:float, l:float)
 		'grayscale
 		if Abs(s) < 0.0001 'floating point problems in bmax
 			r = MathHelper.Clamp(int(l * 255), 0,255)
 			g = r
 			b = r
-			return
+			return self
 		endif
 
         local q:float
@@ -453,12 +455,14 @@ Type TColor
 			if t < 2/3.0 then return p + (q - p) * (2/3.0 - t) * 6.0
 			return p
 		End Function
+		
+		return self
 	End Method
 
 
 	'code based on Yashas work:
 	'http://www.blitzmax.com/codearcs/codearcs.php?code=2333
-	Method ToHSV(h:float var, s:float var, v:float var)
+	Method ToHSV:TColor(h:float var, s:float var, v:float var)
 		Local mn:float, mx:float, dif:float, ad:float, dv:float, md:float
 		If(r < g and r < b)
 			mn = r/255.0
@@ -487,6 +491,8 @@ Type TColor
 		h = (60.0 * (dif / md)) + ad
 		s = md / mx
 		v = mx
+		
+		return self
 	End Method
 
 

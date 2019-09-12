@@ -142,8 +142,8 @@ Type TGUIDropDown Extends TGUIInput
 		if receiver and list.HasItem(receiver)
 			SetSelectedEntry(receiver)
 
-			'reset mouse button to avoid clicks below
-			MouseManager.ResetClicked(1)
+			'handled mouse button click to avoid clicks below
+			MouseManager.SetClickHandled(1)
 
 			SetOpen(False)
 		endif
@@ -196,8 +196,8 @@ Type TGUIDropDown Extends TGUIInput
 		local button:int = triggerEvent.GetData().GetInt("button")
 
 		if button = 1 'left button
-			'reset mouse click info to avoid clicks below
-			MouseManager.ResetClicked(1)
+			'handled mouse button click to avoid clicks below
+			MouseManager.SetClickHandled(1)
 
 			SetOpen(1- IsOpen())
 		endif

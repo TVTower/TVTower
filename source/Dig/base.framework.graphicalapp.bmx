@@ -11,7 +11,7 @@ Rem
 	====================================================================
 	LICENCE
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -83,10 +83,14 @@ Type TGraphicalApp extends TApp
 			endif
 		EndIf
 
-		If KeyManager.IsHit(KEY_ESCAPE)
-			exitApp = true
-			print "exit now"
-		endif
+		if ExitAppRequested() then exitApp = true
+	End Method
+
+
+	'by default we exit on ESCAPE key
+	Method ExitAppRequested:int()
+		If KeyManager.IsHit(KEY_ESCAPE) then return True
+		return False
 	End Method
 
 

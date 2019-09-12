@@ -425,14 +425,6 @@ Type TGUIScrollerSimple Extends TGUIScrollerBase
 	'override to add progressRect-click support
 	Method Update:int()
 		Super.Update()
-rem
-		if (guiButtonMinus and guiButtonMinus.isHovered()) or (guiButtonPlus and guiButtonPlus.isHovered())
-			'process long clicks to avoid odd "right click behaviour"
-			if MouseManager.IsLongClicked(1)
-				MouseManager.ResetClicked(1)
-			endif
-		endif
-endrem
 
 		'check if mouse over progressRect
 		if not isHovered()
@@ -476,7 +468,7 @@ endrem
 					mouseIsClicked = Null
 
 					'handled left click
-					MouseManager.ResetClicked(1)
+					MouseManager.SetClickHandled(1)
 				endif
 			endif
 		endif
