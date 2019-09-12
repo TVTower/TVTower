@@ -148,9 +148,9 @@ function JobAnalyseStationMarket:Tick()
 							--store x,y and owner
 							table.insert(positions, {station.pos.GetX(), station.pos.GetY(), i})
 							--debugMsg("JobAnalyseStationMarket: player " .. i .. " has an antenna at " .. station.pos.GetX() .."/".. station.pos.GetY())
-						elseif station.IsCableNetwork() == 1 then
+						elseif station.IsCableNetworkUplink() == 1 then
 							table.insert(cableNetworkUplinkProviders, {station.providerGUID})
-						elseif station.IsSatellite() == 1 then
+						elseif station.IsSatelliteUplink() == 1 then
 							table.insert(satelliteUplinkProviders, {station.providerGUID})
 						end
 					end
