@@ -1,6 +1,7 @@
 SuperStrict
 Import "Dig/base.util.event.bmx"
 Import "game.gameobject.bmx"
+Import "game.programme.programmelicence.bmx"
 
 
 
@@ -24,6 +25,11 @@ Type TProgrammeProducerCollection Extends TGameObjectCollection
 			_eventListeners = new TLink[0]
 			'...
 
+
+			'inform producers about no longer used or sold programmes
+			_eventListeners :+ [ EventManager.registerListenerMethod("ProgrammeLicence.onGiveBackToLicencePool", self, "onGiveBackLicenceToPool") ]
+
+
 			_eventsRegistered = True
 		endif
 	End Method
@@ -37,6 +43,26 @@ Type TProgrammeProducerCollection Extends TGameObjectCollection
 	Method GetRandom:TProgrammeProducerBase()
 		Return TProgrammeProducerBase( Super.GetRandom() )
 	End Method
+
+
+	Method UpdateAll()
+		For local p:TProgrammeProducerBase = EachIn entries.Values()
+			p.Update()
+		Next
+	End Method
+
+
+	Function onGiveBackLicenceToPool:Int( triggerEvent:TEventBase )
+		Local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetSender())
+		If Not licence Then Return False
+
+		For local producer:TProgrammeProducerBase = EachIn GetProgrammeProducerCollection()
+			If licence.data.extra And licence.data.extra.GetString("producerName") = producer._producerName
+				producer.onGiveBackLicenceToPool(licence)
+			EndIf
+		Next
+
+	End Function
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -49,6 +75,8 @@ End Function
 
 
 Type TProgrammeProducerBase extends TGameObject
+	Field _producerName:string
+
 	'override
 	Method GenerateGUID:string()
 		return "programmeproducerbase-"+id
@@ -56,4 +84,14 @@ Type TProgrammeProducerBase extends TGameObject
 
 
 	Method CreateProgrammeLicence:object(params:TData) abstract
+
+
+	'called on a more or less regular base (to start new productions etc)
+	Method Update:Int()
+	End Method
+
+
+	Method onGiveBackLicenceToPool:Int(licence:TProgrammeLicence)
+		Return True
+	End Method
 End Type

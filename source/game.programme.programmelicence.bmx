@@ -2412,6 +2412,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 			skin.fontBold.drawBlock("Programm: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28)
 			contentY :+ 28
+			skin.fontNormal.draw("GUID: "+GetGUID(), contentX + 5, contentY)
+			contentY :+ 12
 			skin.fontNormal.draw("Letzte Stunde im Plan: "+latestPlannedEndHour, contentX + 5, contentY)
 			contentY :+ 12
 			skin.fontNormal.draw("Letzte Trailerstunde im Plan: "+latestPlannedTrailerHour, contentX + 5, contentY)

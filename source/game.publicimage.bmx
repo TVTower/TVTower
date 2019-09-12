@@ -454,7 +454,20 @@ Type TGameModifierPublicImage_Modify Extends TGameModifierBase
 
 		'broadcaster specific conditions
 		If broadcastingPlayerID > 0
+			'as long as playerIDs are < 10 we simply could check the string...
 			Local playerIDs:String = paramConditions.GetString("broadcaster_inPlayerIDs", "")
+			If playerIDs and playerIDs.Find(String(broadcastingPlayerID)) = -1
+				Return False
+			EndIf
+
+			Local notPlayerIDs:String = paramConditions.GetString("broadcaster_notInPlayerIDs", "")
+			If notPlayerIDs and notPlayerIDs.Find(String(broadcastingPlayerID)) >= 0
+				Return False
+			EndIf
+
+			rem
+			Local playerIDs:String = paramConditions.GetString("broadcaster_inPlayerIDs", "")
+
 			If playerIDs <> ""
 				If Not StringHelper.InArray(String(broadcastingPlayerID), playerIDs.Replace(" ", "").split(","))
 					Return False
@@ -467,6 +480,7 @@ Type TGameModifierPublicImage_Modify Extends TGameModifierBase
 					Return False
 				EndIf
 			EndIf
+			endrem
 		EndIf
 
 		Return True
