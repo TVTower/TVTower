@@ -2026,21 +2026,28 @@ Type TGUIobject
 						'we found a one handling it
 						If (MouseManager.IsClicked(2) Or MouseManager.IsLongClicked(1)) And Not GUIManager.UpdateState_foundClickedObject[2]
 							Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnClick", New TData.AddNumber("button",2).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-							OnClick(clickEvent)
+							Local handledClick:int
+
+							handledClick = OnClick(clickEvent)
 							'fire onClickEvent
 							EventManager.triggerEvent(clickEvent)
+'TODO: add veto
+							'if not handledClick and not clickEvent.IsVeto() then handledClick = True
 
 							'maybe change to "isAccepted" - but then each gui object
 							'have to modify the event IF they accepted the click
 
 							'reset Button
-							If MouseManager.IsLongClicked(1)
-								MouseManager.SetLongClickHandled(1)
-'								MouseManager.SetClickHandled(1) 'long mousedown also is a "short click"
-							Else
-								MouseManager.SetClickHandled(2)
-							EndIf
+							If handledClick
+								If MouseManager.IsLongClicked(1)
+									MouseManager.SetLongClickHandled(1)
+	'								MouseManager.SetClickHandled(1) 'long mousedown also is a "short click"
+								Else
+									MouseManager.SetClickHandled(2)
+								EndIf
+							Endif
 
+							'found clicked even if not handled?
 							GUIManager.UpdateState_foundClickedObject[2] = Self
 						EndIf
 
@@ -2051,17 +2058,22 @@ Type TGUIobject
 
 							If MouseManager.IsClicked(1)
 								Local clickEvent:TEvenTsimple = TEventSimple.Create("guiobject.OnClick", New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+								Local handledClick:int
+
 								'let the object handle the click
-								OnClick(clickEvent)
+								handledClick = OnClick(clickEvent)
 								'fire onClickEvent
 								EventManager.triggerEvent(clickEvent)
+								if not handledClick and not clickEvent.IsVeto() then handledClick = True
+
 								isClicked = True
 
 								mouseIsClicked = MouseManager.GetClickposition(1)
-'TODO: only handled if Onclick or the event tell so!
-								'handled that click
-								MOUSEMANAGER.SetClickHandled(1)
 
+								'handled that click
+								If handledClick
+									MOUSEMANAGER.SetClickHandled(1)
+								EndIf
 
 								GUIManager.UpdateState_foundClickedObject[1] = Self
 							EndIf
