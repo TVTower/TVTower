@@ -1127,12 +1127,12 @@ Type TScreenHandler_ProgrammePlanner
 
 		'draw lists sheet
 		If PPprogrammeList.GetOpen() And PPprogrammeList.hoveredLicence
-			PPprogrammeList.hoveredLicence.ShowSheet(15-3, 10)
+			PPprogrammeList.hoveredLicence.ShowSheet(10-3, 8)
 		EndIf
 
 		'If PPcontractList.GetOpen() and
 		If PPcontractList.hoveredAdContract
-			PPcontractList.hoveredAdContract.ShowSheet(15-3, 10)
+			PPcontractList.hoveredAdContract.ShowSheet(10-3, 8)
 		EndIf
 
 
@@ -1140,7 +1140,7 @@ Type TScreenHandler_ProgrammePlanner
 		'only draw, if not over the right side button
 		If hoveredGuiProgrammePlanElement and MouseManager.x < 680
 			'draw the current sheet
-			hoveredGuiProgrammePlanElement.DrawSheet(15-3, 15-3, 680) ' +/-3 for dropshadow
+			hoveredGuiProgrammePlanElement.DrawSheet(7, 8, 680) ' +/-3 for dropshadow
 		EndIf
 
 

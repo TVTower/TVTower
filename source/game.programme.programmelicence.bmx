@@ -711,7 +711,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'remove tradeability?
 		if HasLicenceFlag(TVTProgrammeLicenceFlag.LICENCEPOOL_REMOVES_TRADEABILITY)
-			setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, False)
+			SetLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, False)
 		endif
 
 		'refill broadcast limits - or disable tradeability
@@ -719,7 +719,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			if HasLicenceFlag(TVTProgrammeLicenceFlag.LICENCEPOOL_REFILLS_BROADCASTLIMITS)
 				SetBroadcastLimit(broadcastLimitMax)
 			else
-				setLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, False)
+				SetLicenceFlag(TVTProgrammeLicenceFlag.TRADEABLE, False)
 			endif
 		endif
 
@@ -831,6 +831,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 			'fetch original maxTopicality
 			maxTopicalityOnOwnerchange = GetMaxTopicality()
+
+			'inform others about the new owner of the licence
+			EventManager.triggerEvent( TEventSimple.Create("ProgrammeLicence.onSetOwner", new TData.AddNumber("newOwner", owner).AddNumber("oldOwner", self.owner), self))
 		endif
 
 		self.owner = owner
@@ -1997,7 +2000,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if useOwner = -1 then useOwner = owner
 
 		'=== PREPARE VARIABLES ===
-		local sheetWidth:int = 320
+		local sheetWidth:int = 330
 		local sheetHeight:int = 0 'calculated later
 		'move sheet to left when right-aligned
 		if align = 1 then x = x - sheetWidth
@@ -2370,7 +2373,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			skin.RenderBox(contentX + 5 + 51, contentY, 52, -1, GetTimesBroadcasted(useOwner), "repetitions", "neutral", skin.fontBold)
 		endif
 		'record
-		skin.RenderBox(contentX + 5 + 107, contentY, 83, -1, TFunctions.convertValue(GetBroadcastStatistic(useOwner).GetBestAudienceResult(useOwner, -1).audience.GetTotalSum(),2), "maxAudience", "neutral", skin.fontBold)
+		skin.RenderBox(contentX + 5 + 107, contentY, 88, -1, TFunctions.convertValue(GetBroadcastStatistic(useOwner).GetBestAudienceResult(useOwner, -1).audience.GetTotalSum(),2), "maxAudience", "neutral", skin.fontBold)
 
 		'price
 		local showPrice:int = not data.hasBroadcastFlag(TVTBroadcastMaterialSourceFlag.HIDE_PRICE)
@@ -2386,12 +2389,12 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		if showPrice
 			if canAfford
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue( price ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+				skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, MathHelper.DottedValue( price ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 			else
-				skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue( price ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
+				skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, MathHelper.DottedValue( price ), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
 			endif
 		else
-			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, "- ?? -", "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 199, contentY, contentW - 10 - 199 +1, -1, "- ?? -", "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 		endif
 		'=== BOX LINE 2 ===
 		contentY :+ boxH
@@ -2476,7 +2479,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		if useOwner = -1 then useOwner = owner
 
 		'=== PREPARE VARIABLES ===
-		local sheetWidth:int = 310
+		local sheetWidth:int = 330
 		local sheetHeight:int = 0 'calculated later
 		'move sheet to left when right-aligned
 		if align = 1 then x = x - sheetWidth

@@ -1540,7 +1540,7 @@ price :* Max(1, minAudience/1000)
 		'=== PREPARE VARIABLES ===
 		if forPlayerID <= 0 then forPlayerID = owner
 
-		local sheetWidth:int = 320
+		local sheetWidth:int = 330
 		local sheetHeight:int = 0 'calculated later
 		'move sheet to left when right-aligned
 		if align = 1 then x = x - sheetWidth
@@ -1665,7 +1665,7 @@ price :* Max(1, minAudience/1000)
 		'=== PREPARE VARIABLES ===
 		if forPlayerID <= 0 then forPlayerID = owner
 
-		local sheetWidth:int = 320
+		local sheetWidth:int = 330
 		local sheetHeight:int = 0 'calculated later
 		'move sheet to left when right-aligned
 		if align = 1 then x = x - sheetWidth
