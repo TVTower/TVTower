@@ -351,18 +351,21 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			description = window.inputSubDescription.GetValue()
 		endif
 
+		'set title / description of the element
 		if title <> window.concept.script.GetTitle()
 			window.concept.SetCustomTitle(title)
 		endif
 		if description <> window.concept.script.GetDescription()
 			window.concept.SetCustomDescription(description)
 		endif
+
+		'set the title / description of the parent (series header)
 		if window.concept.script.IsEpisode()
 			local seriesScript:TScript = window.concept.script.GetParentScript()
-			if title <> seriesScript.GetTitle()
+			if parentTitle <> seriesScript.GetTitle()
 				seriesScript.SetCustomTitle(parentTitle)
 			endif
-			if description <> window.concept.script.GetDescription()
+			if parentDescription <> window.concept.script.GetDescription()
 				seriesScript.SetCustomDescription(parentDescription)
 			endif
 		endif
