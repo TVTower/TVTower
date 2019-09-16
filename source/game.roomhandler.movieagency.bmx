@@ -26,8 +26,17 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 
 	Field filterMoviesGood:TProgrammeLicenceFilterGroup {nosave}
 	Field filterMoviesCheap:TProgrammeLicenceFilterGroup {nosave}
+	Field filterCrap:TProgrammeLicenceFilter {nosave}
 	Field filterSeries:TProgrammeLicenceFilter {nosave}
 	Field filterAuction:TProgrammeLicenceFilterGroup {nosave}
+
+	'a list containing all licenses which _could_ be offered
+	'(so no licences currently owned by someone)
+	'- newly added licences are added "somewhere" at the end
+	'- licences to get offered are choosen "somewhere" from the top
+	Field offerPlanSingleLicences:TList = New TList
+	Field offerPlanSeriesLicences:TList = New TList
+	Field offerPlanCollectionLicences:TList = New TList
 
 	'graphical lists for interaction with blocks
 	Global haveToRefreshGuiElements:Int = True
@@ -78,6 +87,8 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 			filterMoviesCheap.AddFilter(New TProgrammeLicenceFilter)
 			filterMoviesCheap.AddFilter(New TProgrammeLicenceFilter)
 		EndIf
+		If Not filterCrap Then filterCrap = New TProgrammeLicenceFilter
+
 		If Not filterSeries Then filterSeries = New TProgrammeLicenceFilter
 
 		'good movies must be more expensive than X _and_ of better
@@ -154,6 +165,14 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		filterSeries.requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
 
 
+		'filter out no longer useful-to-broadcast stuff
+		filterCrap.licenceTypes = [TVTProgrammeLicenceType.SERIES, TVTProgrammeLicenceType.SINGLE, TVTProgrammeLicenceType.COLLECTION]
+		filterCrap.maxTopicalityMin = 0.00
+		filterCrap.maxTopicalityMax = 0.05
+		filterCrap.checkTradeability = True
+'		filterCrap.requiredOwners = [TOwnedGameObject.OWNER_NOBODY]
+
+
 		If Not filterAuction
 			filterAuction = New TProgrammeLicenceFilterGroup
 			filterAuction.AddFilter(New TProgrammeLicenceFilter)
@@ -187,6 +206,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 
 	End Method
 
+
 	Method Initialize:Int()
 		'=== RESET TO INITIAL STATE ===
 		CleanUp()
@@ -195,7 +215,10 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		listMoviesCheap = New TProgrammeLicence[programmesPerLine]
 		listSeries = New TProgrammeLicence[programmesPerLine]
 
-
+'		InitializeOfferPlanLists()
+		offerPlanSeriesLicences = New TList
+		offerPlanSingleLicences = New TList
+		offerPlanCollectionLicences = New TList
 
 		'=== REGISTER HANDLER ===
 		RegisterHandler()
@@ -283,6 +306,9 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction("station.onSetActive", onResetAuctionBlockCache) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("station.onSetInActive", onResetAuctionBlockCache) ]
 
+		'fill/update offerPlan-lists
+		_eventListeners :+ [ EventManager.registerListenerFunction("ProgrammeLicence.onSetOwner", onSetProgrammeLicenceOwner) ]
+
 
 		_eventListeners :+ _RegisterScreenHandler( onUpdateMovieAgency, onDrawMovieAgency, ScreenCollection.GetScreen("screen_movieagency"))
 		_eventListeners :+ _RegisterScreenHandler( onUpdateMovieAuction, onDrawMovieAuction, ScreenCollection.GetScreen("screen_movieauction"))
@@ -333,6 +359,22 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 
 		GetInstance().RemoveAllGuiElements()
 		haveToRefreshGuiElements = True
+	End Method
+
+
+	'fill offerPlan if the savegame is too old and did not contain one
+	Method onSaveGameLoad:Int( triggerEvent:TEventBase )
+		local added:int = 0
+		If offerPlanSingleLicences.Count() = 0
+			For local pl:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences.Values()
+				'only add un-owned
+				if pl.owner <> TOwnedGameObject.OWNER_NOBODY then continue
+				if OfferPlanLicenceAdd(pl)
+					added :+ 1
+				endif
+			Next
+		EndIf
+		if added then print "MovieAgency: initialized OfferPlan with " + added + " unowned (parental) elements."
 	End Method
 
 
@@ -440,6 +482,95 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		Return True
 	End Method
 
+
+	'called when the owner of a licence changes - so we could remove it
+	'from lists or add it to one of them
+	Function onSetProgrammeLicenceOwner:Int( triggerEvent:TEventBase )
+		Local oldOwner:Int = triggerEvent.GetData().GetInt("oldOwner")
+		Local newOwner:Int = triggerEvent.GetData().GetInt("newOwner")
+		Local licence:TProgrammeLicence = TProgrammeLicence( triggerEvent.GetSender() )
+		Local mA:RoomHandler_MovieAgency = RoomHandler_MovieAgency.GetInstance()
+
+		If oldOwner = newOwner Then Return False
+
+		'give back to pool -> add to list
+		If newOwner = TOwnedGameObject.OWNER_NOBODY ' or newOwner = TOwnedGameObject.OWNER_VENDOR
+			ma.OfferPlanLicenceAdd(licence)
+		'players or vendor now owns it -> remove from list
+		ElseIf oldOwner = TOwnedGameObject.OWNER_NOBODY
+			ma.OfferPlanLicenceRemove(licence)
+		EndIf
+	End Function
+
+
+	Method OfferPlanLicenceAdd:Int(licence:TProgrammeLicence)
+		Local useList:TList
+		'ignore franchise-licences ?
+		If licence.licenceType = TVTProgrammeLicenceType.FRANCHISE
+			Return False
+		'single / normal programme licences like movies / documentations /...
+		ElseIf licence.isSingle()
+			useList = offerPlanSingleLicences
+		ElseIf licence.IsSeries()
+			useList = offerPlanSeriesLicences
+		ElseIf licence.IsCollection()
+			useList = offerPlanCollectionLicences
+		Else 'isEpisode() or isCollectionElement()
+			Return False
+		EndIf
+		If useList.Contains(licence) Then Return False
+
+		'add to somewhere "at the bottom"
+		Local index:Int = BiasedRandRange(0, useList.Count(), 0.90)
+		'TODO useList.Add(licence)
+		If ListAddAtIndex(licence, useList, index)
+	'		Print "MovieAgency: offer plan - added " + licence.GetTitle() +"    index: " + index+" of 0-" + (useList.Count())
+	'	Else
+	'		Print "MovieAgency: offer plan - Failed to add licence " + licence.GetTitle()
+		EndIf
+
+		Return True
+	End Method
+
+
+	Method OfferPlanLicenceRemove:Int(licence:TProgrammeLicence)
+		'ignore franchise-licences ?
+		If licence.licenceType = TVTProgrammeLicenceType.FRANCHISE
+			Return False
+		'single / normal programme licences like movies / documentations /...
+		ElseIf licence.isSingle()
+			offerPlanSingleLicences.Remove(licence)
+		ElseIf licence.IsSeries()
+			offerPlanSeriesLicences.Remove(licence)
+		ElseIf licence.IsCollection()
+			offerPlanCollectionLicences.Remove(licence)
+		Else 'isEpisode() or isCollectionElement()
+			Return False
+		EndIf
+
+'		Print "MovieAgency: offer plan - removed " + licence.GetTitle()
+	End Method
+
+
+	Function ListAddAtIndex:Int(o:Object, l:TList, index:Int)
+		Local link:TLink = GetListLink(o, l, index)
+		If Not link
+			l.AddLast(o)
+		Else
+			l.InsertBeforeLink(o, link)
+		EndIf
+		Return True
+	End Function
+
+
+	Function GetListLink:TLink(o:Object, l:TList, index:Int)
+		Local link:TLink = l._head._succ
+		While link <> l._head
+			If Not index Then Return link
+			link = link._succ
+			index :- 1
+		Wend
+	End Function
 
 	'===================================
 	'Movie Agency: common TFunctions
@@ -715,11 +846,15 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 				Local licences:TProgrammeLicence[]
 				Select lists[listIndex]
 					Case listMoviesGood
-						licences = GetProgrammeLicenceCollection().GetRandomsByFilter(filterMoviesGood, needed)
+						licences = GetNextOffers([filterMoviesGood], Null, needed)
+						'licences = GetProgrammeLicenceCollection().GetRandomsByFilter(filterMoviesGood, needed)
 					Case listMoviesCheap
-						licences = GetProgrammeLicenceCollection().GetRandomsByFilter(filterMoviesCheap, needed)
+						'exclude the good movies
+						licences = GetNextOffers(Null, [filterCrap, TProgrammeLicenceFilter(filterMoviesGood)], needed)
+						'licences = GetProgrammeLicenceCollection().GetRandomsByFilter(filterMoviesCheap, needed)
 					Case listSeries
-						licences = GetProgrammeLicenceCollection().GetRandomsByFilter(filterSeries, needed)
+						licences = GetNextOffers([filterSeries], [filterCrap], needed, offerPlanSeriesLicences)
+						'licences = GetProgrammeLicenceCollection().GetRandomsByFilter(filterSeries, needed)
 				End Select
 				'fill to "needed" (with null values!)
 				If Not licences
@@ -750,6 +885,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 
 				'add new licence at slot
 				If licence
+					'set owner (and automatically remove from offerPlan-lists)
 					licence.SetOwner(licence.OWNER_VENDOR)
 					lists[listIndex][entryIndex] = licence
 				Else
@@ -760,6 +896,49 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 				EndIf
 			Next
 		Next
+	End Method
+
+
+	Method GetNextOffers:TProgrammeLicence[](includeFilters:TProgrammeLicenceFilter[], excludeFilters:TProgrammeLicenceFilter[], amount:Int=1, list:TList=Null)
+		If Not list Then list = offerPlanSingleLicences
+
+		Local result:TProgrammeLicence[] = New TProgrammeLicence[amount]
+		Local added:Int = 0
+		For Local p:TProgrammeLicence = EachIn list
+			If Not includeFilters
+				If Not p.IsTradeable() Then Continue
+				If Not p.IsReleased() Then Continue
+			Else
+				Local unfiltered:int = False
+				For Local includeFilter:TProgrammeLicenceFilter = EachIn includeFilters
+					If not includeFilter.DoesFilter(p)
+						unfiltered = True
+						Continue
+					EndIf
+				Next
+				If unfiltered Then Continue
+			EndIf
+
+			If excludeFilters
+				Local filtered:Int = False
+				For Local excludeFilter:TProgrammeLicenceFilter = EachIn excludeFilters
+					If excludeFilter.DoesFilter(p)
+						filtered = True
+						Continue
+					EndIf
+				Next
+				If filtered Then Continue
+			EndIf
+
+			result[added] = p
+			added :+ 1
+
+			'found enough
+			If added >= amount Then Exit
+		Next
+
+		If result.length <> added Then result = result[.. added]
+		Return result
 	End Method
 
 
