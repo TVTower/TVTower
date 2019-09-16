@@ -61,12 +61,27 @@ End Function
 
 
 'returns a "biased" random number
+'bias of 1.0 means "mostly maximum", a bias of 0.1 means "mostly minimum"
 Function BiasedRandRange:Int(lo:int, hi:int, bias:Float)
 	'higher bias values lead to more results near "hi"
 	'lower bias values lead to more results near "lo"
-	local r:Float = mt_RandRange(0, 1000000) / 1000000.0
-    r = r ^ bias
-    return hi - (hi - lo) * r
+
+	If bias < 0.5
+		bias = 2 * bias
+
+		local r:Float = mt_RandRange(0, 1000000) / 1000000.0
+		r = r ^ bias
+		return hi - (hi - lo) * r
+	ElseIf bias > 0.5
+		bias = 2 * (1 - bias)
+
+		local r:Float = mt_RandRange(0, 1000000) / 1000000.0
+		r = r ^ bias
+		return (hi - lo) * r
+	Else
+		Return hi - (hi - lo) * mt_RandRange(0, 1000000) / 1000000.0
+	EndIf
+
 End Function
 
 
