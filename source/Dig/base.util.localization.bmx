@@ -582,8 +582,9 @@ Type TLocalizedString
 
 		valueStrings[langIndex] = value
 
+		'refresh cache
 		if languageCodeID = valueCachedLanguageID
-			self.valueCached = valueCached
+			self.valueCached = value
 		endif
 		return self
 	End Method

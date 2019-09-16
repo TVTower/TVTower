@@ -187,10 +187,14 @@ Type TScriptCollection Extends TGameObjectCollection
 		if TLocalizedString(title)
 			local lsTitle:TLocalizedString = TLocalizedString(title)
 			for local langID:Int = EachIn lsTitle.GetLanguageIDs()
-				if protectedTitles.Contains(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower()) then return True
+				if protectedTitles.Contains(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower())
+					return True
+				endif
 			next
 		elseif string(title) <> ""
-			if protectedTitles.Contains("custom::" + string(title).ToLower()) then return True
+			if protectedTitles.Contains("custom::" + string(title).ToLower())
+				return True
+			endif
 		endif
 		return False
 	End Method
@@ -344,7 +348,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		local script:TScript = new TScript
 		script.title = template.GenerateFinalTitle()
 		if GetScriptCollection().IsTitleProtected(script.title)
-			print "script title in use: " + script.title.Get()
+'			print "script title in use: " + script.title.Get()
 
 			'use another random one
 			local tries:int = 0
@@ -372,16 +376,16 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 						script.title.Set(numberfreeTitle, langID)
 					endif
 				next
-
 				'append number
 				local titleCopy:TLocalizedString = script.title.Copy()
 				'start with "2" to avoid "title #1"
 				local number:int = 2
 				repeat
 					for local langID:Int = EachIn langIDs
-						script.title.Set(titleCopy.Get() + " #"+number, langID)
+						script.title.Set(titleCopy.Get(langID) + " #"+number, langID)
 					next
 					number :+ 1
+					if number > 10000 then Throw "TScript.CreateFromTemplate() - failed to generate title with increased number: " + script.title.Get()
 				until not GetScriptCollection().IsTitleProtected(script.title)
 			endif
 		EndIf
