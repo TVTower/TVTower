@@ -17,7 +17,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 	Field firstTrailerAired:long
 	Field lastTrailerAired:long
 	Field trailerAired:int[]
-	
+
 	Field firstInfomercialAired:long
 	Field lastInfomercialAired:long
 	Field infomercialsAired:int[]
@@ -26,12 +26,12 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 
 	'times a genre was broadcasted by each player
 	Field programmeGenreAired:TMap[]
-	
+
 	'each genre stores its record, newsshows are stored as "newsshow"
 	Field audienceRecord:TMap[]
 
 	Global _instance:TProgrammePlanInformationProviderBase
-	
+
 	CONST FIRST_TRAILER_AIRED:int = 101
 	CONST LAST_TRAILER_AIRED:int = 102
 	CONST TRAILER_AIRED:int = 102
@@ -61,7 +61,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 		firstTrailerAired = -1
 		lastTrailerAired = -1
 		trailerAired = new Int[5]
-	
+
 		firstInfomercialAired = -1
 		lastInfomercialAired = -1
 		infomercialsAired = new Int[5]
@@ -76,7 +76,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 		Next
 	End Method
 
-	
+
 	Method SerializeTProgrammePlanInformationProviderBaseToString:string()
 		local result:string = ""
 		result :+       firstTrailerAired
@@ -112,7 +112,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 		Next
 		return result
 	End Method
-	
+
 
 	Method DeSerializeTProgrammePlanInformationProviderBaseFromString(text:String)
 		local parts:string[] = text.split(":")
@@ -132,7 +132,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 		For local player:int = 0 to 4
 			programmeGenreAired[player].Clear()
 			audienceRecord[player].Clear()
-			'4 because 2 * (keys + values) 
+			'4 because 2 * (keys + values)
 			local start:int = 7 + (player)*4
 			if parts.length >= start + 4
 				local keys:string[] = parts[start].split(",")
@@ -224,9 +224,9 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 		if lastInfomercialAired = -1 or lastInfomercialAired > time
 			lastInfomercialAired = time
 		endif
-	End Method	
+	End Method
 
-	
+
 
 	Method Get:object(key:string, params:object)
 		Select int(key)
@@ -279,7 +279,7 @@ Type TProgrammePlanInformationProviderBase extends TGameInformationProvider
 
 	Method RefreshProgrammeData(player:int, time:Long); End Method
 	Method RefreshAudienceData(player:int, time:Long, audienceData:object); End Method
-	
+
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -313,7 +313,7 @@ Type TWorldTimeInformationProviderBase extends TGameInformationProvider
 		'nothing cached
 	End Method
 
-	
+
 	Method Set(key:string, obj:object)
 		Select int(key)
 			Default
@@ -326,14 +326,38 @@ Type TWorldTimeInformationProviderBase extends TGameInformationProvider
 		Select key.ToLower()
 			Case "year", "gameyear"
 				return string( GetWorldTime().GetYear() )
+			Case "gameday"
+				return string( GetWorldTime().GetDaysRun() + 1 )
 			Case "day"
 				return string( GetWorldTime().GetOnDay() )
+			Case "daylong"
+				'already localized to current lang!
+				return GetWorldTime().GetFormattedDayLong()
 			Case "weekday"
 				return string( GetWorldTime().GetWeekDay() )
 			Case "hour"
 				return string( GetWorldTime().GetDayHour() )
 			Case "season"
 				return string( GetWorldTime().GetSeason() )
+
+			'Germany has a time dependend capital and currency
+			Case "germancurrency"
+				if GetWorldTime().GetYear() >= 2002
+					return "Euro"
+				elseif GetWorldTime().GetYear() >= 1990
+					return "DM"
+				else
+					return "Mark"
+				endif
+
+			Case "germancapital"
+				if GetWorldTime().GetYear() >= 1990
+					return "Berlin"
+				else
+					return "Bonn"
+				endif
+
+
 			Default
 				return "UNHANDLED_KEY"
 		End Select
@@ -370,7 +394,7 @@ Type TStationMapInformationProviderBase extends TGameInformationProvider
 		'nothing cached
 	End Method
 
-	
+
 	Method Set(key:string, obj:object)
 		Select int(key)
 			Default
