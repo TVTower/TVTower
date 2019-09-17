@@ -178,7 +178,7 @@ Type TTemplateVariables
 			'do it 4 times, this allows for placeholder definitions within
 			'placeholders (at least some of them)!
 			local replacedPlaceholders:int = 0
-			for local i:int = 0 to 3
+			for local i:int = 0 to 20 'depth of 20 should do
 				'use result already (to allow recursive-replacement)
 				local value:string = result.Get(langID)
 				local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%")
