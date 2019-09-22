@@ -511,8 +511,12 @@ Type TNewsAgency
 		Local localizeTitle:TLocalizedString
 		Local localizeDescription:TLocalizedString
 
-		'no director
+		'no director and no actors
 		If licence.GetData().getActor(1) = null and licence.GetData().getDirector(1) = null
+			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_CAST_TITLE")
+			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_CAST_DESCRIPTION")
+		'no director
+		ElseIf licence.GetData().getDirector(1) = null
 			localizeTitle = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_CAST_TITLE")
 			localizeDescription = GetRandomLocalizedString("NEWS_ANNOUNCE_MOVIE_NO_CAST_DESCRIPTION")
 		'no actor named (eg. cartoon)
