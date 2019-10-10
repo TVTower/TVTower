@@ -136,8 +136,8 @@ Type TLuaEngine
 	Method GenerateWhiteList:Int()
 		If whiteListCreated Then Return True
 
-		whiteListedTypes.AddLast("tlist")
-		whiteListedTypes.AddLast("tmap")
+		whiteListedTypes.AddLast("TList")
+		whiteListedTypes.AddLast("TMap")
 
 		whiteListCreated = True
 		Return True
@@ -393,11 +393,21 @@ Type TLuaEngine
 
 		Local typeId:TTypeId = TTypeId.ForObject(obj)
 		'by default allow read access to lists/maps ?!
-		Local whiteListedType:Int = whiteListedTypes.contains(typeId.name().toLower())
+		Local whiteListedType:Int = whiteListedTypes.contains(typeId.name())
+		Local exposeType:String
+		if not whiteListedType
+			exposeType = typeId.MetaData("_exposeToLua")
+
+			'whitelist the type if set to expose everything not just
+			'"selected"
+			if exposeType <> "selected"
+				whiteListedTypes.AddLast( typeId.name() )
+			endif
+		endif
 
 		'only expose if type ("parent") is set to get exposed
-		If Not whiteListedType And Not typeId.MetaData("_exposeToLua") Then Return False
-		Local exposeType:String = typeId.MetaData("_exposeToLua")
+		If Not whiteListedType And Not exposeType Then Return False
+
 		'===== SKIP PRIVATE THINGS =====
 		'each variable/function with an underscore is private
 		'eg.: function _myPrivateFunction
@@ -405,7 +415,7 @@ Type TLuaEngine
 		'
 		'but lua needs access to global: _G
 		Local ident:String = lua_tostring(getLuaState(), 2)
-		If Chr( ident[0] ) =  "_" And ident <> "_G" Then Return False
+		If ident[0] =  Asc("_") And ident <> "_G" Then Return False
 
 		'===== CHECK PUSHED OBJECT IS A METHOD or FUNCTION =====
 		Local callable:TMember = typeId.FindMethod(ident)
@@ -518,13 +528,11 @@ Type TLuaEngine
 		Local obj1:Object, obj2:Object
 
 		If lua_isnil(getLuaState(), -1)
-			Print "CompareObjects: obj1 is nil"
 			TLogger.Log("TLuaEngine", "CompareObjects: param #1 is nil.", LOG_DEBUG)
 		Else
 			obj1 = lua_unboxobject(getLuaState(), -1)
 		EndIf
 		If lua_isnil(getLuaState(), 1)
-			Print "CompareObjects: obj2 is nil"
 			TLogger.Log("TLuaEngine", "CompareObjects: param #2 is nil.", LOG_DEBUG)
 		Else
 			obj2 = lua_unboxobject(getLuaState(), 1)

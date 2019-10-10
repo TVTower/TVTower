@@ -46,8 +46,8 @@ Import "base.gfx.spriteatlas.bmx"
 
 
 
-CONST SHADOWFONT:INT = 256
-CONST GRADIENTFONT:INT = 512
+Const SHADOWFONT:Int = 256
+Const GRADIENTFONT:Int = 512
 
 Type TBitmapFontManager
 	Field baseFont:TBitmapFont
@@ -55,174 +55,196 @@ Type TBitmapFontManager
 	Field baseFontItalic:TBitmapFont
 	Field baseFontSmall:TBitmapFont
 	Field _defaultFont:TBitmapFont
-	Field fonts:TStringMap = new TStringMap
+'Private
+	Field fonts:TMap = New TMap
+Public
 	Global systemFont:TBitmapFont
 	Global _instance:TBitmapFontManager
-	Global _defaultFlags:int = 0 'SMOOTHFONT
+	Global _defaultFlags:Int = 0 'SMOOTHFONT
 
 
 	Function GetInstance:TBitmapFontManager()
-		if not _instance then _instance = new TBitmapFontManager
-		return _instance
+		If Not _instance Then _instance = New TBitmapFontManager
+		Return _instance
 	End Function
 
 
 	Method GetDefaultFont:TBitmapFont()
 		'instead of doing it in "new" (no guarantee that graphicsmode
 		'is set up already)
-		if not systemFont then systemFont = TBitmapFont.Create("SystemFont", "", 12, SMOOTHFONT)
+		If Not systemFont Then systemFont = TBitmapFont.Create("SystemFont", "", 12, SMOOTHFONT)
 
 		'if no default font was set, return the system font
-		if not _defaultFont then return systemFont
+		If Not _defaultFont Then Return systemFont
 
-		return _defaultFont
+		Return _defaultFont
 	End Method
 
 
 	'get ignores the "SMOOTHFONT" flag to allow adding "crisp" fonts
 	Method Get:TBitmapFont(name:String="", size:Int=-1, style:Int=-1)
-		name = lower(name)
+		name = Lower(name)
 
 		'fall back to default font if none was given
-		if name = "" then name = "default"
+		If name = "" Then name = "default"
 
 		'no details given: return default font
-		If name = "default" And size = -1 And style = -1 then return GetDefaultFont()
+		If name = "default" And size = -1 And style = -1 Then Return GetDefaultFont()
 
 
 		'try to find default font settings for this font face
-		Local hasDefaultStyledFont:int = False
-		Local hasDefaultFont:int = False
-		Local defaultStyledFont:TBitmapFont = TBitmapFont(fonts.ValueForKey(name+"_-1_"+style))
-		Local defaultFont:TBitmapFont = defaultStyledFont
+		Local defaultStyledFont:TBitmapFont' = GetFont(name, -1, style) ' TBitmapFont(fonts.ValueForKey(name+"_-1_"+style))
+		Local defaultFont:TBitmapFont' = defaultStyledFont
 
-		if not defaultStyledFont
-			defaultFont = TBitmapFont(fonts.ValueForKey(name))
-			defaultStyledFont = defaultFont
-			if defaultFont
-				hasDefaultFont = True
-			endif
-		else
-			hasDefaultStyledFont = True
-		endif
-		if not defaultStyledFont then defaultStyledFont = GetDefaultFont()
+		If size = -1 Or style = -1 Then
+			defaultStyledFont = GetDefaultStyledFont(name, style)
 
+			'no size given: use default font size
+			If size = -1 Then size = defaultStyledFont.FSize
+			'no style given: use default font style
+			If style = -1 Then style = defaultStyledFont.FStyle
+		End If
 
-		'no size given: use default font size
-		If size = -1 Then size = defaultStyledFont.FSize
-		'no style given: use default font style
-		If style = -1 Then style = defaultStyledFont.FStyle
-
-
-		local key:string = name + "_" + size + "_" + style
-		local font:TBitmapFont = TBitmapFont(fonts.ValueForKey(key))
-		if font then return font
+		'Local key:String = name + "_" + size + "_" + style
+		Local font:TBitmapFont = GetFont(name, size, style) 'TBitmapFont(fonts.ValueForKey(key))
+		If font Then Return font
 		'if the font wasn't found, use the defaultFont-fontfile to load this style
-		font = Add(name, defaultStyledFont.FFile, size, style)
 
-rem
-		'insert as default too
-		if not hasDefaultStyledFont then fonts.Insert(name+"_-1_"+style, font)
-		if not hasDefaultFont then fonts.Insert(name, font)
-		'if SMOOTHFONT was used - add the unsmoothed too (for easier retrieval)
-		if (style & SMOOTHFONT) <> 0
-			local keyWithoutSmooth:string = name + "_" + size + "_" + (style - SMOOTHFONT)
-			if not TBitmapFont(fonts.ValueForKey(keyWithoutSmooth))
-				fonts.insert(keyWithoutSmooth, font)
-			endif
-		endif
-endrem
+		If Not defaultStyledFont Then
+			defaultStyledFont = GetDefaultStyledFont(name, style)
+		End If
+
+		font = Add(name, defaultStyledFont.FFile, size, style)
 
 		Return font
 	End Method
 
 
-	Method Copy:TBitmapFont(sourceName:string, copyName:string, size:int=-1, style:int=-1)
-		local sourceFont:TBitmapFont = Get(sourceName, size, style)
-		Local newFont:TBitmapFont = TBitmapFont.Create(copyName, sourceFont.fFile, sourceFont.fSize, sourceFont.fStyle, sourceFont.fixedCharWidth, sourceFont.charWidthModifier)
-		fonts.Insert(copyName+"_"+sourceFont.fSize+"_"+sourceFont.fStyle, newFont)
+	Method GetDefaultStyledFont:TBitmapFont(name:String, style:Int)
 
-		return newFont
+		Local defaultStyledFont:TBitmapFont = GetFont(name, -1, style) ' TBitmapFont(fonts.ValueForKey(name+"_-1_"+style))
+
+		If Not defaultStyledFont
+			defaultStyledFont = GetFont(name, -1, -1) 'TBitmapFont(fonts.ValueForKey(name))
+		EndIf
+		If Not defaultStyledFont Then defaultStyledFont = GetDefaultFont()
+
+		Return defaultStyledFont
 	End Method
 
 
-	Method Add:TBitmapFont(name:String, file:String, size:Int, style:Int=0, ignoreDefaultStyle:int = False, fixedCharWidth:int=-1, charWidthModifier:Float=1.0)
-		name = lower(name)
-		if not ignoreDefaultStyle
-			style :| _defaultFlags
-		endif
+	Method Copy:TBitmapFont(sourceName:String, copyName:String, size:Int=-1, style:Int=-1)
+		Local sourceFont:TBitmapFont = Get(sourceName, size, style)
+		Local newFont:TBitmapFont = TBitmapFont.Create(copyName, sourceFont.fFile, sourceFont.fSize, sourceFont.fStyle, sourceFont.fixedCharWidth, sourceFont.charWidthModifier)
+		InsertFont(copyName, sourceFont.fSize, sourceFont.fStyle, newFont)
 
-		local defaultFont:TBitmapFont = GetDefaultFont()
+		Return newFont
+	End Method
+
+
+	Method InsertFont(name:String, size:Int, style:Int, font:TBitmapFont)
+TLogger.Log("inserting font : " + name + ", " + size + ", " + style,LOG_DEBUG)
+
+		Local sizes:TSizedBitmapFonts = TSizedBitmapFonts(fonts.ValueForKey(name))
+
+		If Not sizes Then
+			sizes = New TSizedBitmapFonts
+			fonts.Insert(name, sizes)
+		End If
+
+		sizes.Insert(size, style, font)
+	End Method
+
+
+	Method GetFont:TBitmapFont(name:String, size:Int = -1, style:Int = -1)
+'TLogger.Log("getting font : " + name + ", " + size + ", " + style,LOG_DEBUG)
+		Local sizes:TSizedBitmapFonts = TSizedBitmapFonts(fonts.ValueForKey(name))
+
+		If Not sizes Then
+			Return Null
+		End If
+
+		Return sizes.Get(size, style)
+	End Method
+
+
+	Method Add:TBitmapFont(name:String, file:String, size:Int, style:Int=0, ignoreDefaultStyle:Int = False, fixedCharWidth:Int=-1, charWidthModifier:Float=1.0)
+		name = Lower(name)
+		If Not ignoreDefaultStyle
+			style :| _defaultFlags
+		EndIf
+
+		Local defaultFont:TBitmapFont = GetDefaultFont()
 		If size = -1 Then size = defaultFont.FSize
 		If style = -1 Then style = defaultFont.FStyle
 		If file = "" Then file = defaultFont.FFile
 
 		Local font:TBitmapFont = TBitmapFont.Create(name, file, size, style, fixedCharWidth, charWidthModifier)
-		Local key:string = name+"_"+size+"_"+style
-		fonts.Insert(key, font)
+
+		InsertFont(name, size, style, font)
 
 		'insert as default font too (name + style, ignore size)
-		if not TBitmapFont(fonts.ValueForKey(name+"_-1_"+style)) then fonts.Insert(name+"_-1_"+style, font)
+		If Not GetFont(name, -1, style) Then InsertFont(name, -1, style, font)
+
 		'insert as default font too (only name)
-		if not TBitmapFont(fonts.ValueForKey(name)) then fonts.Insert(name, font)
+		If Not GetFont(name) Then InsertFont(name, -1, -1, font)
 
 		'if SMOOTHFONT was used - add the unsmoothed too (for easier retrieval)
-		if (style & SMOOTHFONT) <> 0
-			local styleNonSmooth:int = style - SMOOTHFONT
-			if not TBitmapFont(fonts.ValueForKey(name + "_-1_" + (style - SMOOTHFONT)))
-				fonts.insert(name + "_-1_" + (style - SMOOTHFONT), font)
-			endif
+		If (style & SMOOTHFONT) <> 0
+			Local styleNonSmooth:Int = style - SMOOTHFONT
+			If Not GetFont(name, -1, (style - SMOOTHFONT))
+				InsertFont(name, -1, (style - SMOOTHFONT), font)
+			EndIf
 
-			if not TBitmapFont(fonts.ValueForKey(name + "_" + size + "_" + (style - SMOOTHFONT)))
-				fonts.insert(name + "_" + size + "_" + (style - SMOOTHFONT), font)
-			endif
-		endif
+			If Not GetFont(name, size , (style - SMOOTHFONT))
+				InsertFont(name, size, (style - SMOOTHFONT), font)
+			EndIf
+		EndIf
 
 
 
 		'set default fonts if not done yet
-		if _defaultFont = null then _defaultFont = Font
-		if baseFont = null then baseFont = Font
-		if baseFontBold = null and style & BOLDFONT > 0 then baseFontBold = Font
-		if baseFontItalic  = null and style & ITALICFONT > 0 then baseFontItalic = Font
+		If _defaultFont = Null Then _defaultFont = Font
+		If baseFont = Null Then baseFont = Font
+		If baseFontBold = Null And style & BOLDFONT > 0 Then baseFontBold = Font
+		If baseFontItalic  = Null And style & ITALICFONT > 0 Then baseFontItalic = Font
 
 		Return Font
 	End Method
 
 
 	Method AddFont:TBitmapFont(font:TBitmapFont)
-		local key:string = font.FName + "_" + font.FSize + "_" + font.FStyle
-		fonts.insert(key, font)
+		InsertFont(font.FName, font.FSize, font.FStyle, font)
 	End Method
-
 End Type
+
 
 '===== CONVENIENCE ACCESSORS =====
 'convenience instance getter
 Function GetBitmapFontManager:TBitmapFontManager()
-	return TBitmapFontManager.GetInstance()
+	Return TBitmapFontManager.GetInstance()
 End Function
 
-'===== CONVENIENCE ACCESSORS =====
 'not really needed - but for convenience to avoid direct call to the
 'instance getter GetBitmapFontManager()
-Function GetBitmapFont:TBitmapfont(name:string="", size:Int=-1, style:Int=-1)
+Function GetBitmapFont:TBitmapfont(name:String="", size:Int=-1, style:Int=-1)
 	Return TBitmapFontManager.GetInstance().Get(name, size, style)
 End Function
 
 
 
+
 Type TBitmapFontChar
 	Field area:TRectangle
-	Field charWidth:float
+	Field charWidth:Float
 	Field img:TImage
 
 
-	Method Init:TBitmapFontChar(img:TImage, x:int,y:int,w:Int, h:int, charWidth:float)
-		self.img = img
-		self.area = new TRectangle.Init(x, y, w, h)
-		self.charWidth = charWidth
-		Return self
+	Method Init:TBitmapFontChar(img:TImage, x:Int,y:Int,w:Int, h:Int, charWidth:Float)
+		Self.img = img
+		Self.area = New TRectangle.Init(x, y, w, h)
+		Self.charWidth = charWidth
+		Return Self
 	End Method
 End Type
 
@@ -231,60 +253,60 @@ End Type
 
 Type TBitmapFont
 	'identifier
-	Field FName:string = ""
+	Field FName:String = ""
 	'source path
-	Field FFile:string = ""
+	Field FFile:String = ""
 	'size of this font
-	Field FSize:int = 0
+	Field FSize:Int = 0
 	'style used in this font
-	Field FStyle:int = 0
+	Field FStyle:Int = 0
 	'the original imagefont
 	Field FImageFont:TImageFont
 
-	Field chars:TBitmapFontChar[] = new TBitmapFontChar[256]
-	Field charsSprites:TSprite[] = new TSprite[0]
+	Field chars:TBitmapFontChar[] = New TBitmapFontChar[256]
+	Field charsSprites:TSprite[] = New TSprite[0]
 	Field spriteSet:TSpritePack
 	'by default only the first 256 chars get loaded
 	'as soon as an "utf8"-code is requested, the font will re-init with
 	'more sprites
 	Field MaxSigns:Int = 256
-	Field glyphCount:int = 0
+	Field glyphCount:Int = 0
 	Field ExtraChars:String = ""
 	Field gfx:TMax2dGraphics
-	Field uniqueID:string =""
-	Field displaceY:float=100.0
+	Field uniqueID:String =""
+	Field displaceY:Float=100.0
 	'modifier * lineheight gets added at the end
-	Field lineHeightModifier:float = 1.05
+	Field lineHeightModifier:Float = 1.05
 	'value the width of " " (space) is multiplied with
-	Field spaceWidthModifier:float = 1.0
-	Field charWidthModifier:float = 1.0
-	Field fixedCharWidth:int = -1
-	Field tabWidth:int = 15
+	Field spaceWidthModifier:Float = 1.0
+	Field charWidthModifier:Float = 1.0
+	Field fixedCharWidth:Int = -1
+	Field tabWidth:Int = 15
 	'whether to use ints or floats for coords
-	Field drawAtFixedPoints:int = true
-	Field _charsEffectFunc:TBitmapFontChar(font:TBitmapFont, charKey:int, char:TBitmapFontChar, config:TData)[]
+	Field drawAtFixedPoints:Int = True
+	Field _charsEffectFunc:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData)[]
 	Field _charsEffectFuncConfig:TData[]
 	'by default this is 8bit alpha only
-	Field _pixmapFormat:int = PF_A8
-	Field _maxCharHeight:int = 0
-	Field _maxCharHeightAboveBaseline:int = 0
-	Field _hasEllipsis:int = -1
+	Field _pixmapFormat:Int = PF_A8
+	Field _maxCharHeight:Int = 0
+	Field _maxCharHeightAboveBaseline:Int = 0
+	Field _hasEllipsis:Int = -1
 
-	global drawToPixmap:TPixmap = null
-	global pixmapOrigin:TVec2D = new TVec2D.Init(0,0)
+	Global drawToPixmap:TPixmap = Null
+	Global pixmapOrigin:TVec2D = New TVec2D.Init(0,0)
 'DISABLECACHE	global ImageCaches:TMap = CreateMap()
-	global eventRegistered:int = 0
+	Global eventRegistered:Int = 0
 
-	global shadowColor:TColor = new TColor.clBlack
-	global embossColor:TColor = new TColor.clWhite
+	Global shadowColor:TColor = New TColor.clBlack
+	Global embossColor:TColor = New TColor.clWhite
 
-	Const STYLE_NONE:int = 0
-	Const STYLE_EMBOSS:int = 1
-	Const STYLE_SHADOW:int = 2
-	Const STYLE_GLOW:int = 3
+	Const STYLE_NONE:Int = 0
+	Const STYLE_EMBOSS:Int = 1
+	Const STYLE_SHADOW:Int = 2
+	Const STYLE_GLOW:Int = 3
 
 
-	Function Create:TBitmapFont(name:String, url:String, size:Int, style:Int, fixedCharWidth:int = -1, charWidthModifier:Float = 1.0)
+	Function Create:TBitmapFont(name:String, url:String, size:Int, style:Int, fixedCharWidth:Int = -1, charWidthModifier:Float = 1.0)
 		Local obj:TBitmapFont = New TBitmapFont
 		obj.FName = name
 		obj.FFile = url
@@ -296,81 +318,79 @@ Type TBitmapFont
 		obj.charWidthModifier = charWidthModifier
 
 		obj.FImageFont = LoadTrueTypeFont(url, size, style)
-		If not obj.FImageFont
+		If Not obj.FImageFont
 			'get system/current font
 			obj.FImageFont = GetImageFont()
-		endif
-		If not obj.FImageFont
+		EndIf
+		If Not obj.FImageFont
 			Throw ("TBitmapFont.Create: font ~q"+url+"~q not found.")
 			Return Null 'font not found
-		endif
+		EndIf
 
 		'create spriteset
-		obj.spriteSet = new TSpritePack.Init(null, obj.uniqueID+"_charmap")
+		obj.spriteSet = New TSpritePack.Init(Null, obj.uniqueID+"_charmap")
 
 		'generate a charmap containing packed rectangles where to store images
 		obj.InitFont()
 
-		'listen to App-timer
-'DISABLECACHE		EventManager.registerListener( "App.onUpdate", 	TEventListenerRunFunction.Create(TBitmapFont.onUpdateCaches) )
 		Return obj
 	End Function
 
 
-	Method SetCharsEffectFunction(position:int, _func:TBitmapFontChar(font:TBitmapFont, charKey:int, char:TBitmapFontChar, config:TData), config:TData=null)
+	Method SetCharsEffectFunction(position:Int, _func:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData), config:TData=Null)
 		position :-1 '0 based
-		if _charsEffectFunc.length <= position
+		If _charsEffectFunc.length <= position
 			_charsEffectFunc = _charsEffectFunc[..position+1]
 			_charsEffectFuncConfig = _charsEffectFuncConfig[..position+1]
-		endif
+		EndIf
 		_charsEffectFunc[position] = _func
 		_charsEffectFuncConfig[position] = config
 	End Method
 
 
 	'overrideable method
-	Method ApplyCharsEffect(config:TData=null)
+	Method ApplyCharsEffect(config:TData=Null)
 		'if instead of overriding a function was provided - use this
-		if _charsEffectFunc.length > 0
+		If _charsEffectFunc.length > 0
 			'for local _charKey:TIntKey = eachin chars.keys()
-			for local charKey:int = 0 until chars.length
+			For Local charKey:Int = 0 Until chars.length
 
 				'local charKey:Int = _charKey.Value
 				'local char:TBitmapFontChar = TBitmapFontChar(chars.ValueForKey(charKey))
-				local char:TBitmapFontChar = chars[charKey]
-				If Not char then
+				Local char:TBitmapFontChar = chars[charKey]
+				If Not char Then
 					Continue
 				End If
 
 				'manipulate char
-				local _func:TBitmapFontChar(font:TBitmapFont, charKey:int, char:TBitmapFontChar, config:TData)
-				local _config:TData
-				for local i:int = 0 to _charsEffectFunc.length-1
+				Local _func:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBitmapFontChar, config:TData)
+				Local _config:TData
+				For Local i:Int = 0 To _charsEffectFunc.length-1
 					_func = _charsEffectFunc[i]
 					_config = _charsEffectFuncConfig[i]
-					if not _config then _config = config
-					char = _func(self, charKey, char, _config)
+					If Not _config Then _config = config
+					char = _func(Self, charKey, char, _config)
 				Next
 				'overwrite char
 				'chars.Insert(charKey, char)
 				chars[charKey] = char
 			Next
-		endif
+		EndIf
 		'else do nothing by default
 	End Method
 
 
 	'returns the same font in the given size/style combination
 	'it is more or less a wrapper to make acces more convenient
-	Method GetVariant:TBitmapFont(size:int=-1, style:int = -1)
-		if size = -1 then size = self.FSize
-		if style = -1 then style = self.FStyle
-		return TBitmapFontManager.GetInstance().Get(self.FName, size, style)
+	Method GetVariant:TBitmapFont(size:Int=-1, style:Int = -1)
+		If size = -1 Then size = Self.FSize
+		If style = -1 Then style = Self.FStyle
+		Return TBitmapFontManager.GetInstance().Get(Self.FName, size, style)
 	End Method
 
 
 	'generate a charmap containing packed rectangles where to store images
-	Method InitFont(config:TData=null )
+	Method InitFont(config:TData=Null )
 		'1. load chars
 		LoadCharsFromSource()
 		'2. Process the characters (add shadow, gradients, ...)
@@ -389,295 +409,305 @@ Type TBitmapFont
 
 
 	'load glyphs of an imagefont as TBitmapFontChar into a char-TMap
-	Method LoadCharsFromSource(source:object=null)
-		local imgFont:TImageFont = TImageFont(source)
-		if imgFont = null then imgFont = FImageFont
+	Method LoadCharsFromSource(source:Object=Null)
+		Local imgFont:TImageFont = TImageFont(source)
+		If imgFont = Null Then imgFont = FImageFont
 		Local glyph:TImageGlyph
 		Local glyphCount:Int = imgFont.CountGlyphs()
-		Local n:int
-		Local loadMaxGlyphs:int = glyphCount
-		if MaxSigns <> -1 then loadMaxGlyphs = MaxSigns
+		Local n:Int
+		Local loadMaxGlyphs:Int = glyphCount
+		If MaxSigns <> -1 Then loadMaxGlyphs = MaxSigns
 
-		if extraChars = ""
-			extraChars :+ chr(8364) '€
-			extraChars :+ chr(8230) '…
-			extraChars :+ chr(8220) '“
-			extraChars :+ chr(8221) '”
-			extraChars :+ chr(8222) '„
-			extraChars :+ chr(171) '«
-			extraChars :+ chr(187) '»
-			'extraChars :+ chr(8227) '‣
-			'extraChars :+ chr(9662) '▾
-			extraChars :+ chr(9650) '▲
-			extraChars :+ chr(9660) '▼
-			extraChars :+ chr(9664) '◀
-			extraChars :+ chr(9654) '▶
-			extraChars :+ chr(9632) '■
-		endif
+		If extraChars = ""
+			extraChars :+ Chr(8364) '
+			extraChars :+ Chr(8230) '
+			extraChars :+ Chr(8220) '
+			extraChars :+ Chr(8221) '
+			extraChars :+ Chr(8222) '
+			extraChars :+ Chr(171) '
+			extraChars :+ Chr(187) '
+			'extraChars :+ chr(8227) '
+			'extraChars :+ chr(9662) '
+			extraChars :+ Chr(9650) '
+			extraChars :+ Chr(9660) '
+			extraChars :+ Chr(9664) '
+			extraChars :+ Chr(9654) '
+			extraChars :+ Chr(9632) '
+		EndIf
 
-		self.glyphCount = glyphCount
+		Self.glyphCount = glyphCount
 
 		For Local i:Int = 0 Until loadMaxGlyphs
 '		For Local i:Int = 0 Until MaxSigns
 			n = imgFont.CharToGlyph(i)
-			If n < 0 or n > glyphCount then Continue
+			If n < 0 Or n > glyphCount Then Continue
 			glyph = imgFont.LoadGlyph(n)
-			If not glyph then continue
+			If Not glyph Then Continue
 
 			'base displacement calculated with A-Z (space between
 			'TOPLEFT of 'ABCDE' and TOPLEFT of 'acen'...)
-			if i >= 65 AND i < 95 then displaceY = Min(displaceY, glyph._y)
+			If i >= 65 And i < 95 Then displaceY = Min(displaceY, glyph._y)
 			resizeChars(i)
 			'chars.insert(i, new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance))
-			if fixedCharWidth > 0
-				chars[i] = new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w ,glyph._h, fixedCharWidth)
-			else
-				chars[i] = new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance * charWidthModifier)
-			endif
+			If fixedCharWidth > 0
+				chars[i] = New TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w ,glyph._h, fixedCharWidth)
+			Else
+				chars[i] = New TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance * charWidthModifier)
+			EndIf
 		Next
 		For Local charNum:Int = 0 Until ExtraChars.length
 			n = imgFont.CharToGlyph( ExtraChars[charNum] )
-			If n < 0 or n > glyphCount then Continue
+			If n < 0 Or n > glyphCount Then Continue
 			glyph = imgFont.LoadGlyph(n)
-			If not glyph then continue
+			If Not glyph Then Continue
 			resizeChars(ExtraChars[charNum])
 			'chars.insert(ExtraChars[charNum] , new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance) )
-			if fixedCharWidth > 0
-				chars[ExtraChars[charNum]] = new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w ,glyph._h, fixedCharWidth)
-			else
-				chars[ExtraChars[charNum]] = new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance * charWidthModifier)
-			endif
+			If fixedCharWidth > 0
+				chars[ExtraChars[charNum]] = New TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w ,glyph._h, fixedCharWidth)
+			Else
+				chars[ExtraChars[charNum]] = New TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance * charWidthModifier)
+			EndIf
 		Next
 	End Method
 
 
-	Method resizeChars(index:int)
-		if index >= chars.length then
+	Method resizeChars(index:Int)
+		If index >= chars.length Then
 			chars = chars[.. index + 1 + chars.length/3]
-		end if
-	end method
+		End If
+	End Method
 
 
-	Method resizeCharsSprites(index:int)
-		if index >= charsSprites.length then
+	Method resizeCharsSprites(index:Int)
+		If index >= charsSprites.length Then
 			charsSprites = charsSprites[.. index + 1 + charsSprites.length/3]
-		end if
-	end method
+		End If
+	End Method
 
 
 	'create a charmap-atlas with information where to optimally store
 	'each char
-	Method CreateCharmap:TSpriteAtlas(spaceBetweenChars:int=0)
-		local charmap:TSpriteAtlas = TSpriteAtlas.Create(64,64)
-		local bitmapFontChar:TBitmapFontChar
+	Method CreateCharmap:TSpriteAtlas(spaceBetweenChars:Int=0)
+		Local charmap:TSpriteAtlas = TSpriteAtlas.Create(64,64)
+		Local bitmapFontChar:TBitmapFontChar
 		'for local _charKey:TIntKey = eachin chars.keys()
-		for Local charKey:int = 0 until chars.length
+		For Local charKey:Int = 0 Until chars.length
 			'local charKey:Int = _charKey.Value
 			'bitmapFontChar = TBitmapFontChar(chars.ValueForKey(charKey))
 			bitmapFontChar = chars[charKey]
-			if not bitmapFontChar then continue
-			charmap.AddElement(charKey, int(bitmapFontChar.area.GetW()+spaceBetweenChars), int(bitmapFontChar.area.GetH()+spaceBetweenChars) ) 'add box of char and package atlas
+			If Not bitmapFontChar Then Continue
+			charmap.AddElement(charKey, Int(bitmapFontChar.area.GetW()+spaceBetweenChars), Int(bitmapFontChar.area.GetH()+spaceBetweenChars) ) 'add box of char and package atlas
 		Next
-		return charmap
+		Return charmap
 	End Method
 
 
 	'create an image containing all chars
 	'the charmap-atlas contains information where to store each character
 	Method CreateCharmapImage(charmap:TSpriteAtlas)
-		local pix:TPixmap = CreatePixmap(charmap.w,charmap.h, _pixmapFormat) ; pix.ClearPixels(0)
+		Local pix:TPixmap = CreatePixmap(charmap.w,charmap.h, _pixmapFormat) ; pix.ClearPixels(0)
 		'create spriteset
-		if not spriteSet then spriteSet = new TSpritePack.Init(null, uniqueID+"_charmap")
+		If Not spriteSet Then spriteSet = New TSpritePack.Init(Null, uniqueID+"_charmap")
 
 		'loop through atlas boxes and add chars
-		For local _charKey:String = eachin charmap.elements.Keys()
-			local rect:TRectangle = TRectangle(charmap.elements.ValueForKey(_charKey))
+		For Local _charKey:String = EachIn charmap.elements.Keys()
+			Local rect:TRectangle = TRectangle(charmap.elements.ValueForKey(_charKey))
 			Local charKey:Int = _charKey.ToInt()
 			'skip missing data
-			if (charKey > chars.length) or (not chars[charKey]) then continue
+			If (charKey > chars.length) Or (Not chars[charKey]) Then Continue
 
-			local bm:TBitmapFontChar = chars[charKey]
-			if not bm.img then continue
+			Local bm:TBitmapFontChar = chars[charKey]
+			If Not bm.img Then Continue
 
 			'draw char image on charmap
 			'local charPix:TPixmap = LockImage(TBitmapFontChar(chars.ValueForKey(charKey)).img)
-			local charPix:TPixmap = LockImage(bm.img)
+			Local charPix:TPixmap = LockImage(bm.img)
 			'make sure the pixmaps are 8bit alpha-format
 '			If charPix.format <> 2 Then charPix.convert(PF_A8)
-			DrawImageOnImage(charPix, pix, int(rect.GetX()), int(rect.GetY()))
+			DrawImageOnImage(charPix, pix, Int(rect.GetX()), Int(rect.GetY()))
 			'UnlockImage(TBitmapFontChar(chars.ValueForKey(charKey)).img)
 			UnlockImage(bm.img)
 			' es fehlt noch charWidth - extraTyp?
 
 			resizeCharsSprites(charKey)
-			charsSprites[charKey] = new TSprite.Init(spriteSet, charKey, rect, null, 0)
+			charsSprites[charKey] = New TSprite.Init(spriteSet, charKey, rect, Null, 0)
 		Next
 		'set image to sprite pack
-		if IsSmooth()
+		If IsSmooth()
 			spriteSet.image = LoadImage(pix)
-		else
+		Else
 			'non smooth fonts should disable any filtering (eg. in virtual resolution scaling)
 			spriteSet.image = LoadImage(pix, 0)
-		endif
+		EndIf
 	End Method
 
 
 	Method IsBold:Int()
-		return (FStyle & BOLDFONT)
+		Return (FStyle & BOLDFONT)
 	End Method
 
 	Method IsSmooth:Int()
-		return (FStyle & SMOOTHFONT)
+		Return (FStyle & SMOOTHFONT)
 	End Method
 
 
-	'Returns whether this font has a visible ellipsis char ("…")
-	Method HasEllipsis:int()
-		if _hasEllipsis = -1 then _hasEllipsis = GetWidth(chr(8230))
-		return _hasEllipsis
+	'Returns whether this font has a visible ellipsis char ("&")
+	Method HasEllipsis:Int()
+		If _hasEllipsis = -1 Then _hasEllipsis = GetWidth(Chr(8230))
+		Return _hasEllipsis
 	End Method
 
 
-	Method GetEllipsis:string()
-		if hasEllipsis() then return chr(8230)
-		return "..."
+	Method GetEllipsis:String()
+		If hasEllipsis() Then Return Chr(8230)
+		Return "..."
 	End Method
 
 
-	Method GetMaxCharHeight:int(includeBelowBaseLine:int=True)
-		if includeBelowBaseLine
-			if _maxCharHeight = 0 then _maxCharHeight = getHeight("gQ'_") 'including "()" adds too much to the font height
-			return _maxCharHeight
-		else
-			if _maxCharHeightAboveBaseline = 0 then _maxCharHeightAboveBaseline = getHeight("abCDE")
-			return _maxCharHeightAboveBaseline
-		endif
+	Method GetMaxCharHeight:Int(includeBelowBaseLine:Int=True)
+		If includeBelowBaseLine
+			If _maxCharHeight = 0 Then _maxCharHeight = getHeight("gQ'_") 'including "()" adds too much to the font height
+			Return _maxCharHeight
+		Else
+			If _maxCharHeightAboveBaseline = 0 Then _maxCharHeightAboveBaseline = getHeight("abCDE")
+			Return _maxCharHeightAboveBaseline
+		EndIf
 	End Method
 
 
 	Method GetWidth:Float(text:String)
-		return draw(text,0,0,null,0).getX()
+		Local v:TVec2D = New TVec2D
+		draw(text,0,0,Null,0, v)
+		Return v.x
 	End Method
 
 
 	Method GetHeight:Float(text:String)
-		return draw(text,0,0,null,0).getY()
+		Local v:TVec2D = New TVec2D
+		draw(text,0,0,Null,0, v)
+		Return v.y
 	End Method
 
 
-	Method GetBlockHeight:Float(text:String, w:Float, h:Float, fixedLineHeight:int = -1)
-		return drawBlock(text, 0,0,w,h, null, null, 0, 0).GetY()
+	Method GetBlockHeight:Float(text:String, w:Float, h:Float, fixedLineHeight:Int = -1, dimensionResult:TVec2D = Null)
+		if not dimensionResult then dimensionResult = New TVec2D
+		drawBlock(text, 0,0,w,h, Null, Null, 0, 0, , , , , dimensionResult)
+		Return dimensionResult.GetY()
 	End Method
 
 
-	Method GetBlockWidth:Float(text:String, w:Float, h:Float, fixedLineHeight:int = -1)
-		return drawBlock(text, 0,0,w,h, null, null, 0, 0).GetX()
+	Method GetBlockWidth:Float(text:String, w:Float, h:Float, fixedLineHeight:Int = -1, dimensionResult:TVec2D = Null)
+		if not dimensionResult then dimensionResult = New TVec2D
+		drawBlock(text, 0,0,w,h, Null, Null, 0, 0, , , , , dimensionResult)
+		Return dimensionResult.GetX()
 	End Method
 
 
-	Method GetBlockDimension:TVec2D(text:String, w:Float, h:Float, fixedLineHeight:int = -1)
-		return drawBlock(text, 0,0,w,h, null, null, 0, 0, 1.0, True, False, fixedLineHeight)
+	Method GetBlockDimension:TVec2D(text:String, w:Float, h:Float, fixedLineHeight:Int = -1, dimensionResult:TVec2D = Null)
+		if not dimensionResult then dimensionResult = New TVec2D
+		drawBlock(text, 0,0,w,h, Null, Null, 0, 0, , , , fixedLineHeight, dimensionResult)
+		Return dimensionResult
 	End Method
 
 
 	'render to target pixmap/image/screen
-	Function SetRenderTarget:int(target:object=null)
+	Function SetRenderTarget:Int(target:Object=Null)
 		'render to screen
-		if not target
-			drawToPixmap = null
-			return TRUE
-		endif
+		If Not target
+			drawToPixmap = Null
+			Return True
+		EndIf
 
-		if TImage(target)
+		If TImage(target)
 			drawToPixmap = LockImage(TImage(target))
-		elseif TPixmap(target)
+		ElseIf TPixmap(target)
 			drawToPixmap = TPixmap(target)
-		endif
+		EndIf
 	End Function
 
 
 	'splits a given text into an array of lines
 	'splitting is done on "spaces", "-"
 	'or in the middle of a word if "nicelyTruncateLastLine" is "FALSE"
-	Method TextToMultiLine:string[](text:string, w:float, h:float, lineHeight:float, nicelyTruncateLastLine:int=TRUE)
-		Local fittingChars:int	= 0
+	Method TextToMultiLine:String[](text:String, w:Float, h:Float, lineHeight:Float, nicelyTruncateLastLine:Int=True)
+		Local fittingChars:Int	= 0
 		Local processedChars:Int= 0
-		Local paragraphs:string[]	= text.replace(chr(13), "~n").split("~n")
+		Local paragraphs:String[]	= text.Replace(Chr(13), "~n").split("~n")
 		'the lines to output at the end
-		Local lines:string[]= null
+		Local LINES:String[]= Null
 		'how many space is left to draw?
-		local heightLeft:float	= h
+		Local heightLeft:Float	= h
 		'are we limited in height?
-		local limitHeight:int = (heightLeft > 0)
+		Local limitHeight:Int = (heightLeft > 0)
 
 		'for each line/paragraph
 		For Local i:Int= 0 Until paragraphs.length
 			'skip paragraphs if no space was left
-			if limitHeight and heightLeft < lineHeight then continue
+			If limitHeight And heightLeft < lineHeight Then Continue
 
-			local line:string = paragraphs[i]
+			Local line:String = paragraphs[i]
 
 			'process each line - and if needed add a line break
-			repeat
+			Repeat
 				'the part of the line which has to get processed at that moment
-				local linePartial:string = line
-				local breakPosition:int = line.length
+				Local linePartial:String = line
+				Local breakPosition:Int = line.length
 				'whether to skip the next char of a new line
-				local skipNextChar:int	= FALSE
+				Local skipNextChar:Int	= False
 
 
 				'as long as the part of the line does not fit into
 				'the given width, we have to search for linebreakers
-				while (w>0 and self.getWidth(linePartial) > w) and linePartial.length >0
+				While (w>0 And Self.getWidth(linePartial) > w) And linePartial.length >0
 					'whether we found a break position by a rule
-					local FoundBreakPosition:int = FALSE
-					local spaces:int = 0
+					Local FoundBreakPosition:Int = False
+					Local spaces:Int = 0
 
 					'search for "nice" linebreak:
 					'- if not on last line
 					'- if enforced to do so ("nicelyTruncateLastLine")
-					if i < (paragraphs.length-1) or nicelyTruncateLastLine
+					If i < (paragraphs.length-1) Or nicelyTruncateLastLine
 						'search for the "most right" position of a
 						'linebreak
 						'no need to check for the last char (no break then ;-)
-						For local charPos:int = 0 until linePartial.length -1
+						For Local charPos:Int = 0 Until linePartial.length -1
 							'special line break rules (spaces, -, ...)
 							If linePartial[charPos] = Asc(" ")
 								'use first space in a row ("  ")
-								if spaces = 0
+								If spaces = 0
 									breakPosition = charPos+1
-									FoundBreakPosition=TRUE
+									FoundBreakPosition=True
 									'if it is a " "-space, we have to skip it
-									skipNextChar = TRUE 'aka delete the " "
-								endif
+									skipNextChar = True 'aka delete the " "
+								EndIf
 								spaces :+ 1
 
-							elseif linePartial[charPos] = Asc("-")
+							ElseIf linePartial[charPos] = Asc("-")
 								breakPosition = charPos+1
-								FoundBreakPosition=TRUE
+								FoundBreakPosition=True
 
-								skipNextChar = FALSE
+								skipNextChar = False
 
 								spaces = 0
-							else
+							Else
 								spaces = 0
-							endif
+							EndIf
 						Next
 						'remove spaces at end
-						if spaces > 0
+						If spaces > 0
 							linePartial  = linePartial[.. linePartial.length - spaces]
-						endif
-					endif
+						EndIf
+					EndIf
 
 					'if no line break rule hit, use a "cut" in the
 					'middle of a word
-					if not FoundBreakPosition then breakPosition = Max(0, linePartial.length-1 -1)
+					If Not FoundBreakPosition Then breakPosition = Max(0, linePartial.length-1 -1)
 
 					'cut off the part AFTER the breakposition
 					linePartial = linePartial[..breakPosition]
-				wend
+				Wend
 				'add that line to the lines to draw
-				lines :+ [linePartial]
+				LINES :+ [linePartial]
 
 				heightLeft :- lineHeight
 
@@ -687,28 +717,28 @@ Type TBitmapFont
 
 			'	if skipNextChar then line = line[Min(1, line.length)..]
 			'until no text left, or no space left for another line
-			until line.length = 0  or (limitHeight and heightLeft < lineHeight)
+			Until line.length = 0  Or (limitHeight And heightLeft < lineHeight)
 
 			'if the height was not enough - add a "..."
-			if line.length > 0
+			If line.length > 0
 				'get the line BEFORE
-				local currentLine:string = lines[lines.length-1]
+				Local currentLine:String = LINES[LINES.length-1]
 				'check whether we have to subtract some chars for the "..."
-				local ellipsisChar:string = GetEllipsis()
-				if (w > 0 and getWidth(currentLine + ellipsisChar) > w)
-					repeat
+				Local ellipsisChar:String = GetEllipsis()
+				If (w > 0 And getWidth(currentLine + ellipsisChar) > w)
+					Repeat
 						currentLine = currentLine[.. currentLine.length-1]
-					until getWidth(currentLine + ellipsisChar) <= w
+					Until getWidth(currentLine + ellipsisChar) <= w
 
 					currentLine = currentLine + ellipsisChar
-				else
+				Else
 					currentLine = currentLine[.. currentLine.length] + ellipsisChar
-				endif
-				lines[lines.length-1] = currentLine
-			endif
+				EndIf
+				LINES[LINES.length-1] = currentLine
+			EndIf
 		Next
 
-		return lines
+		Return LINES
 	End Method
 
 
@@ -717,78 +747,83 @@ Type TBitmapFont
 	'                              or just truncate?
 	'@centerSingleLineOnBaseline:  if only 1 line is given, is center
 	'                              calculated using baseline (no "y,g,p,...")
-	Method drawLinesBlock:TVec2D(lines:String[], x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE, centerSingleLineOnBaseline:int=False, fixedLineHeight:int = -1)
+	Method drawLinesBlock:Int(LINES:String[], x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=Null, color:TColor=Null, style:Int=0, doDraw:Int = 1, special:Float=1.0, nicelyTruncateLastLine:Int=True, centerSingleLineOnBaseline:Int=False, fixedLineHeight:Int = -1, dimensionResult:TVec2D = Null)
 		'use special chars (instead of text) for same height on all lines
-		Local alignedX:float = 0.0
+		Local alignedX:Float = 0.0
 		Local lineMaxWidth:Float = 0
-		local lineWidth:Float = 0
-		Local lineHeight:float = getMaxCharHeight()
-		if fixedLineHeight > 0 then lineHeight = fixedLineHeight
+		Local lineWidth:Float = 0
+		Local lineHeight:Float = getMaxCharHeight()
+		If fixedLineHeight > 0 Then lineHeight = fixedLineHeight
 
 		'first height was calculated using all characters, but we now
 		'know if we could center using baseline only (only available
 		'when there is only 1 line to draw)
-		if fixedLineHeight <= 0
-			if lines.length = 1 and centerSingleLineOnBaseline
+		If fixedLineHeight <= 0
+			If LINES.length = 1 And centerSingleLineOnBaseline
 				lineHeight = getMaxCharHeight(False)
 				'lineHeight = 0.25 * lineHeight + 0.75 * getMaxCharHeight(False)
 				'lineHeight :+ 1 'a bit of influence of "below baseline" chars
-			endif
-		endif
+			EndIf
+		EndIf
 
-		local blockHeight:Float = lineHeight * lines.length
-		if fixedLineHeight <= 0
-			if lines.length > 1
+		Local blockHeight:Float = lineHeight * LINES.length
+		If fixedLineHeight <= 0
+			If LINES.length > 1
 				'add the lineHeightModifier for all lines but the first or
 				'single one
 				blockHeight :+ lineHeight * (lineHeightModifier-1.0)
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'move along y according alignment
 		'-> aligned top: no change
 		'-> aligned bottom: move down by unused space so last line ends at Y + h
 		'-> aligned inbetween: move accordingly
-		if alignment
+		If alignment
 			'empty space = height - (..)
 			'-> alignTop = add 0 of that space
 			'-> alignBottom = add 100% of that space
-			if alignment.GetY() <> ALIGN_TOP and h > 0
+			If alignment.GetY() <> ALIGN_TOP And h > 0
 				y :+ alignment.GetY() * (h - blockHeight)
-			endif
-		endif
+			EndIf
+		EndIf
 
 
 		'backup current setting
-		local fontStyle:TBitmapFontStyle = new TBitmapFontStyle.Push(FName, FSize, FStyle, color)
+		Local FontStyle:TBitmapFontStyle = New TBitmapFontStyle.Push(FName, FSize, FStyle, color)
 
-		local startY:Float = y
-		For local i:int = 0 until lines.length
-			lineWidth = getWidth(lines[i])
+		Local startY:Float = y
+		For Local i:Int = 0 Until LINES.length
+			lineWidth = getWidth(LINES[i])
 			lineMaxWidth = Max(lineMaxwidth, lineWidth)
 
 			'only align when drawing
 			If doDraw
-				if alignment and alignment.GetX() <> ALIGN_LEFT and w > 0
+				If alignment And alignment.GetX() <> ALIGN_LEFT And w > 0
 					alignedX = x + alignment.GetX() * (w - lineWidth)
-				else
+				Else
 					alignedX = x
-				endif
+				EndIf
 			EndIf
-			local p:TVec2D = __drawStyled( lines[i], alignedX, y, color, style, doDraw, special, fontStyle)
+			If fixedLineHeight <= 0
+				Local p:TVec2D = New TVec2D
+				__drawStyled( LINES[i], alignedX, y, color, style, doDraw, special, FontStyle, p)
 
-			if fixedLineHeight <= 0
 				y :+ Min(_maxCharHeight, Max(lineHeight, p.y))
 				'add extra spacing _between_ lines
-				If lines.length > 1 and i < lines.length-1
+				If LINES.length > 1 And i < LINES.length-1
 					y :+ lineHeight * (lineHeightModifier-1.0)
-				Endif
-			else
+				EndIf
+			Else
+				__drawStyled( LINES[i], alignedX, y, color, style, doDraw, special, FontStyle, Null)
+
 				y :+ fixedLineHeight
-			endif
+			EndIf
 		Next
 
-		return new TVec2D.Init(lineMaxWidth, y - startY)
+		If dimensionResult Then dimensionResult.SetXY(lineMaxWidth, y - startY)
+
+		Return True
 	End Method
 
 
@@ -797,349 +832,336 @@ Type TBitmapFont
 	'                              or just truncate?
 	'@centerSingleLineOnBaseline:  if only 1 line is given, is center
 	'                              calculated using baseline (no "y,g,p,...")
-	Method drawBlock:TVec2D(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE, centerSingleLineOnBaseline:int=False, fixedLineHeight:Int = -1)
-		Local lineHeight:float = getMaxCharHeight()
-		Local lines:string[] = TextToMultiLine(text, w, h, lineHeight, nicelyTruncateLastLine)
+	Method drawBlock:Int(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=Null, color:TColor=Null, style:Int=0, doDraw:Int = 1, special:Float=1.0, nicelyTruncateLastLine:Int=True, centerSingleLineOnBaseline:Int=False, fixedLineHeight:Int = -1, dimensionResult:TVec2D = Null)
+		Local lineHeight:Float = getMaxCharHeight()
+		Local LINES:String[] = TextToMultiLine(text, w, h, lineHeight, nicelyTruncateLastLine)
 
-		return drawLinesBlock(lines, x, y, w, h, alignment, color, style, doDraw, special, nicelyTruncateLastLine, centerSingleLineOnBaseline, fixedLineHeight)
+		Return drawLinesBlock(LINES, x, y, w, h, alignment, color, style, doDraw, special, nicelyTruncateLastLine, centerSingleLineOnBaseline, fixedLineHeight, dimensionResult)
 	End Method
 
 
-	Method drawWithBG:TVec2D(value:String, x:Int, y:Int, bgAlpha:Float = 0.3, bgCol:Int = 0, style:int=0)
+	Method drawWithBG:Int(value:String, x:Int, y:Int, bgAlpha:Float = 0.3, bgCol:Int = 0, style:Int=0, dimensionResult:TVec2D = Null)
 		Local OldAlpha:Float = GetAlpha()
-		Local color:TColor = new TColor.Get()
-		local dimension:TVec2D = drawStyled(value,0,0, null, style,0)
+		Local color:TColor = New TColor.Get()
+
+		drawStyled(value,0,0, Null, style,0 , , dimensionResult)
+
 		SetAlpha bgAlpha
 		SetColor bgCol, bgCol, bgCol
-		DrawRect(x, y, dimension.GetX(), dimension.GetY())
+		DrawRect(x, y, dimensionResult.GetX(), dimensionResult.GetY())
 		color.setRGBA()
 
 		'backup current setting
-		local fontStyle:TBitmapFontStyle = new TBitMapFontStyle.Push( FName, FSize, FStyle, color )
+		Local FontStyle:TBitmapFontStyle = New TBitMapFontStyle.Push( FName, FSize, FStyle, color )
 
-		local vec:TVec2D = __drawStyled(value, x, y, color, style, true, , fontStyle)
-
-		'restore backup
-		'style.Reset()
-
-		return vec
+		Return __drawStyled(value, x, y, color, style, True, , FontStyle, dimensionResult)
 	End Method
 
 
 	'can adjust used font or color
-	Method ProcessCommand:int(command:string, payload:string, fontStyle:TBitMapFontStyle)
-		if command = "color" and not fontStyle.ignoreColorTag
-			local colors:string[] = payload.split(",")
-			local color:TColor
-			if colors.length >= 3
-				color = new TColor
-				color.r = int(colors[0])
-				color.g = int(colors[1])
-				color.b = int(colors[2])
-				if colors.length >= 4
-					color.a = int(colors[3]) / 255.0
-				else
+	Method ProcessCommand:Int(command:String, payload:String, FontStyle:TBitMapFontStyle)
+		If command = "color" And Not FontStyle.ignoreColorTag
+			Local colors:String[] = payload.split(",")
+			Local color:TColor
+			If colors.length >= 3
+				color = New TColor
+				color.r = Int(colors[0])
+				color.g = Int(colors[1])
+				color.b = Int(colors[2])
+				If colors.length >= 4
+					color.a = Int(colors[3]) / 255.0
+				Else
 					color.a = 1.0
-				endif
-			else
-				if not fontStyle.GetColor()
+				EndIf
+			Else
+				If Not FontStyle.GetColor()
 					color = TColor.clWhite.Copy()
-				else
-					color = fontStyle.GetColor().Copy()
-				endif
-			endif
+				Else
+					color = FontStyle.GetColor().Copy()
+				EndIf
+			EndIf
 
 			'backup current setting
-			fontStyle.PushColor( color )
-		endif
-		if command = "/color" and not fontStyle.ignoreColorTag
+			FontStyle.PushColor( color )
+		EndIf
+		If command = "/color" And Not FontStyle.ignoreColorTag
 			'local color:TColor =
-			fontStyle.PopColor()
-		endif
+			FontStyle.PopColor()
+		EndIf
 
-		if command = "b" then fontStyle.PushFontStyle( BOLDFONT )
-		if command = "/b" then fontStyle.PopFontStyle( BOLDFONT )
+		If command = "b" Then FontStyle.PushFontStyle( BOLDFONT )
+		If command = "/b" Then FontStyle.PopFontStyle( BOLDFONT )
 
-		if command = "i" then fontStyle.PushFontStyle( ITALICFONT )
-		if command = "/i" then fontStyle.PopFontStyle( ITALICFONT )
+		If command = "i" Then FontStyle.PushFontStyle( ITALICFONT )
+		If command = "/i" Then FontStyle.PopFontStyle( ITALICFONT )
 
 		'adjust line height if another font is selected
-		if fontStyle.GetFont() <> self and fontStyle.GetFont()
-			fontStyle.styleDisplaceY = 0.5*(getMaxCharHeight() - fontStyle.GetFont().getMaxCharHeight())
-		else
+		If FontStyle.GetFont() <> Self And FontStyle.GetFont()
+			FontStyle.styleDisplaceY = 0.5*(getMaxCharHeight() - FontStyle.GetFont().getMaxCharHeight())
+		Else
 			'reset displace
-			fontStyle.styleDisplaceY = 0
-		endif
+			FontStyle.styleDisplaceY = 0
+		EndIf
 	End Method
 
 
-	Method draw:TVec2D(text:String,x:Float,y:Float, color:TColor=null, doDraw:int=TRUE)
+	Method draw:Int(text:String,x:Float,y:Float, color:TColor=Null, doDraw:Int=True, dimensionResult:TVec2D = Null)
 		'backup current setting
-		local fontStyle:TBitmapFontStyle = new TBitmapFontStyle.Push(FName, FSize, FStyle, color)
+		Local FontStyle:TBitmapFontStyle = New TBitmapFontStyle.Push(FName, FSize, FStyle, color)
 
-		local vec:TVec2D = __draw(text, x, y, color, doDraw, fontStyle)
-
-		'restore backup
-		'TBitmapFontStyle.Reset()
-
-		return vec
+		Return __draw(text, x, y, color, doDraw, FontStyle, dimensionResult)
 	End Method
 
 
-	Method drawStyled:TVec2D(text:String,x:Float,y:Float, color:TColor=null, style:int=0, doDraw:int=1, special:float=-1.0)
+	Method drawStyled:Int(text:String,x:Float,y:Float, color:TColor=Null, style:Int=0, doDraw:Int=1, special:Float=-1.0, dimensionResult:TVec2D = Null)
 		'backup current setting
-		local fontStyle:TBitmapFontStyle = new TBitmapFontStyle.Push(FName, FSize, FStyle, color)
-		'backup current setting
-		'TBitmapFontStyle.Push(FName, FSize, FStyle, color)
+		Local FontStyle:TBitmapFontStyle = New TBitmapFontStyle.Push(FName, FSize, FStyle, color)
 
-		local vec:TVec2D = __drawStyled(text, x, y, color, style, doDraw, special, fontStyle)
-
-		'restore backup
-		'fontStyle.Reset()
-
-		return vec
+		Return __drawStyled(text, x, y, color, style, doDraw, special, FontStyle, dimensionResult)
 	End Method
 
 
-	Method __drawStyled:TVec2D(text:String,x:Float,y:Float, color:TColor=null, style:int=0, doDraw:int=1, special:float=-1.0, fontStyle:TBitmapFontStyle)
-		if special = -1 then special = 1 '100%
+	Method __drawStyled:Int(text:String,x:Float,y:Float, color:TColor=Null, style:Int=0, doDraw:Int=1, special:Float=-1.0, FontStyle:TBitmapFontStyle, dimensionResult:TVec2D = Null)
+		If special = -1 Then special = 1 '100%
 
-		if drawAtFixedPoints
-			x = int(x)
-			y = int(y)
-		endif
+		If drawAtFixedPoints
+			x = Int(x)
+			y = Int(y)
+		EndIf
 
-		local height:float = 0.0
-		local width:float = 0.0
+		Local height:Float = 0.0
+		Local width:Float = 0.0
 
 		'backup old color
-		local oldColor:TColor
-		if doDraw then oldColor = new TColor.Get()
+		Local oldColor:TColor
+		If doDraw Then oldColor = New TColor.Get()
 
 		'emboss
-		if style = STYLE_EMBOSS
+		If style = STYLE_EMBOSS
 			height:+ 1
-			if doDraw
-				SetAlpha float(special * 0.5 * oldColor.a)
-				fontStyle.ignoreColorTag :+ 1
-				__draw(text, x, y+1, embossColor, doDraw, fontStyle)
-				fontStyle.ignoreColorTag :- 1
-			endif
+			If doDraw
+				SetAlpha Float(special * 0.5 * oldColor.a)
+				FontStyle.ignoreColorTag :+ 1
+				__draw(text, x, y+1, embossColor, doDraw, FontStyle, Null)
+				FontStyle.ignoreColorTag :- 1
+			EndIf
 		'shadow
-		else if style = STYLE_SHADOW
+		Else If style = STYLE_SHADOW
 			height:+ 1
 			width:+1
-			if doDraw
+			If doDraw
 				SetAlpha special*0.5*oldColor.a
-				fontStyle.ignoreColorTag :+ 1
-				__draw(text, x+1,y+1, shadowColor, doDraw, fontStyle)
-				fontStyle.ignoreColorTag :- 1
-			endif
+				FontStyle.ignoreColorTag :+ 1
+				__draw(text, x+1,y+1, shadowColor, doDraw, FontStyle, Null)
+				FontStyle.ignoreColorTag :- 1
+			EndIf
 		'glow
-		else if style = STYLE_GLOW
-			if doDraw
-				fontStyle.ignoreColorTag :+ 1
+		Else If style = STYLE_GLOW
+			If doDraw
+				FontStyle.ignoreColorTag :+ 1
 				shadowColor.SetRGB()
 				SetAlpha special*0.25*oldColor.a
-				__draw(text, x-2,y, ,doDraw, fontStyle)
-				__draw(text, x+2,y, ,doDraw, fontStyle)
-				__draw(text, x,y-2, ,doDraw, fontStyle)
-				__draw(text, x,y+2, ,doDraw, fontStyle)
+				__draw(text, x-2,y, ,doDraw, FontStyle, Null)
+				__draw(text, x+2,y, ,doDraw, FontStyle, Null)
+				__draw(text, x,y-2, ,doDraw, FontStyle, Null)
+				__draw(text, x,y+2, ,doDraw, FontStyle, Null)
 				SetAlpha special*0.5*oldColor.a
-				__draw(text, x+1,y+1, ,doDraw, fontStyle)
-				__draw(text, x-1,y-1, ,doDraw, fontStyle)
-				fontStyle.ignoreColorTag :- 1
-			endif
-		endif
+				__draw(text, x+1,y+1, ,doDraw, FontStyle, Null)
+				__draw(text, x-1,y-1, ,doDraw, FontStyle, Null)
+				FontStyle.ignoreColorTag :- 1
+			EndIf
+		EndIf
 
-		if oldColor then SetAlpha oldColor.a
-		local result:TVec2D = __draw(text,x,y, color, doDraw, fontStyle)
+		If oldColor Then SetAlpha oldColor.a
+		__draw(text,x,y, color, doDraw, FontStyle, dimensionResult)
+		If oldColor Then oldColor.SetRGBA()
 
-		if oldColor then oldColor.SetRGBA()
-		return result
+		Return True
 	End Method
 
 
-	Method __draw:TVec2D(text:String,x:Float,y:Float, color:TColor=null, doDraw:int=TRUE, fontStyle:TBitmapFontStyle)
-		local width:float = 0.0
-		local height:float = 0.0
-		local textLines:string[]	= text.replace(chr(13), "~n").split("~n")
-		local currentLine:int = 0
-		local oldColor:TColor
-		if doDraw
-			oldColor = new TColor.Get()
-			if not color
+	Method __draw:Int(text:String,x:Float,y:Float, color:TColor=Null, doDraw:Int=True, FontStyle:TBitmapFontStyle, dimensionResult:TVec2D = Null)
+		Local width:Float = 0.0
+		Local height:Float = 0.0
+		Local textLines:String[]	= text.Replace(Chr(13), "~n").split("~n")
+		Local currentLine:Int = 0
+		Local oldColor:TColor
+		If doDraw
+			oldColor = New TColor.Get()
+			If Not color
 				color = oldColor.copy()
-			else
+			Else
 				'take screen alpha into consideration
 				'create a copy to not modify the original
 				color = color.copy()
 				color.a :* oldColor.a
-			endif
+			EndIf
 			'black text is default
 '			if not color then color = TColor.Create(0,0,0)
-			if color then color.SetRGBA()
-		endif
+			If color Then color.SetRGBA()
+		EndIf
 		'set the lineHeight before the "for-loop" so it has a set
 		'value if a line "in the middle" just consists of spaces/nothing
 		'-> allows double-linebreaks
 
 		'control vars
-		local controlChar:int = asc("|")
-		local controlCharEscape:int = asc("\")
-		local controlCharStarted:int = FALSE
-		local currentControlCommandPayloadSeparator:string = "="
-		local currentControlCommand:string = ""
-		local currentControlCommandPayload:string = ""
+		Local controlChar:Int = Asc("|")
+		Local controlCharEscape:Int = Asc("\")
+		Local controlCharStarted:Int = False
+		Local currentControlCommandPayloadSeparator:String = "="
+		Local currentControlCommand:String = ""
+		Local currentControlCommandPayload:String = ""
 
-		local lineHeight:int = 0
-		local charCode:int
-		local displayCharCode:int 'if char is not found
-		local charBefore:int
-		local rotation:int = GetRotation()
-		local sprite:TSprite
+		Local lineHeight:Int = 0
+		Local charCode:Int
+		Local displayCharCode:Int 'if char is not found
+		Local charBefore:Int
+		Local Rotation:Int = GetRotation()
+		Local sprite:TSprite
 		'cache
-		local font:TBitmapFont = fontStyle.GetFont()
+		Local font:TBitmapFont = FontStyle.GetFont()
 '		if not color then color = new TColor.Get()
 
 		'store current color
-		fontStyle.PushColor(color)
+		FontStyle.PushColor(color)
 
-		For text:string = eachin textLines
+		For text:String = EachIn textLines
 
 			'except first line (maybe only one line) - add extra spacing
 			'between lines
-			if currentLine > 0 then height:+ ceil( lineHeight* (font.lineHeightModifier-1.0) )
+			If currentLine > 0 Then height:+ Ceil( lineHeight* (font.lineHeightModifier-1.0) )
 
 			currentLine:+1
 
-			local lineWidth:Float = 0
+			Local lineWidth:Float = 0
 
 			For Local i:Int = 0 Until text.length
-				charCode = int(text[i])
+				charCode = Int(text[i])
 
 				'reload with utf8?
-				If charCode > 256 and MaxSigns = 256 and glyphCount > 256 and extraChars.find(chr(charCode)) = -1
+				If charCode > 256 And MaxSigns = 256 And glyphCount > 256 And extraChars.find(Chr(charCode)) = -1
 					LoadExtendedCharacters()
 				EndIf
 
 
 				'check for controls
-				if controlCharStarted
+				If controlCharStarted
 					'receiving command
-					if charCode <> controlChar
-						currentControlCommand:+ chr(charCode)
+					If charCode <> controlChar
+						currentControlCommand:+ Chr(charCode)
 					'receive stopper
-					else
-						controlCharStarted = FALSE
-						local commandData:string[] = currentControlCommand.split(currentControlCommandPayloadSeparator)
+					Else
+						controlCharStarted = False
+						Local commandData:String[] = currentControlCommand.split(currentControlCommandPayloadSeparator)
 						currentControlCommand = commandData[0]
-						if commandData.length>1 then currentControlCommandPayload = commandData[1]
+						If commandData.length>1 Then currentControlCommandPayload = commandData[1]
 
-							ProcessCommand(currentControlCommand, currentControlCommandPayload, fontStyle)
-							if fontStyle.GetColor()
-								color = fontStyle.GetColor().Copy()
-								if doDraw
+							ProcessCommand(currentControlCommand, currentControlCommandPayload, FontStyle)
+							If FontStyle.GetColor()
+								color = FontStyle.GetColor().Copy()
+								If doDraw
 									color.SetRGBA()
-								endif
-							endif
+								EndIf
+							EndIf
 						'cache font to speed up processing
-						font = fontStyle.GetFont()
+						font = FontStyle.GetFont()
 
 						'reset
 						currentControlCommand = ""
 						currentControlCommandPayload = ""
-					endif
+					EndIf
 					'skip char
-					continue
-				endif
+					Continue
+				EndIf
 
 				'someone wants style the font
-				if charCode = controlChar and charBefore <> controlCharEscape
+				If charCode = controlChar And charBefore <> controlCharEscape
 					controlCharStarted = 1 - controlCharStarted
 					'skip char
 					charBefore = charCode
-					continue
-				endif
+					Continue
+				EndIf
 				'skip drawing the escape char if we are escaping the
 				'command char
-				if charCode = controlCharEscape and i < text.length-1 and text[i+1] = controlChar
+				If charCode = controlCharEscape And i < text.length-1 And text[i+1] = controlChar
 					charBefore = charCode
-					continue
-				endif
+					Continue
+				EndIf
 
 				Local bm:TBitmapFontChar
 				' = TBitmapFontChar( font.chars.ValueForKey(charCode) )
-				if charCode < font.chars.length then
+				If charCode < font.chars.length Then
 					bm = font.chars[charCode]
-				end if
-				if bm
+				End If
+				If bm
 					displayCharCode = charCode
-				else
+				Else
 					displayCharCode = Asc("?")
-					if charCode < font.chars.length then
+					If charCode < font.chars.length Then
 						bm = font.chars[charCode]
-					end if
+					End If
 					'bm = TBitmapFontChar( font.chars.ValueForKey(displayCharCode) )
-				endif
-				if bm
+				EndIf
+				If bm
 					Local tx:Float = bm.area.GetX() * gfx.tform_ix + bm.area.GetY() * gfx.tform_iy
 					Local ty:Float = bm.area.GetX() * gfx.tform_jx + bm.area.GetY() * gfx.tform_jy
 					'drawable ? (> 32)
-					if text[i] > 32
-						lineHeight = MAX(lineHeight, bm.area.GetH())
-						if doDraw
-							if displayCharCode < font.charsSprites.length
+					If text[i] > 32
+						lineHeight = Max(lineHeight, bm.area.GetH())
+						If doDraw
+							If displayCharCode < font.charsSprites.length
 								sprite = font.charsSprites[displayCharCode]
-							else
-								sprite = null
-							end if
+							Else
+								sprite = Null
+							End If
 							'sprite = TSprite(font.charsSprites.ValueForKey(displayCharCode))
-							if sprite
-								if drawToPixmap
-									sprite.DrawOnImage(drawToPixmap, int(pixmapOrigin.x + x+lineWidth+tx), int(pixmapOrigin.y + y+height+ty + fontStyle.styleDisplaceY - font.displaceY), -1, null, color)
-								else
-									sprite.Draw(int(x+lineWidth+tx), int(y+height+ty + fontStyle.styleDisplaceY - font.displaceY))
-								endif
-							endif
-						endif
-					endif
-					if rotation = -90
-						height:- MIN(lineHeight, bm.area.GetW())
-					elseif rotation = 90
-						height:+ MIN(lineHeight, bm.area.GetW())
-					elseif rotation = 180
+							If sprite
+								If drawToPixmap
+									sprite.DrawOnImage(drawToPixmap, Int(pixmapOrigin.x + x+lineWidth+tx), Int(pixmapOrigin.y + y+height+ty + FontStyle.styleDisplaceY - font.displaceY), -1, Null, color)
+								Else
+									sprite.Draw(Int(x+lineWidth+tx), Int(y+height+ty + FontStyle.styleDisplaceY - font.displaceY))
+								EndIf
+							EndIf
+						EndIf
+					EndIf
+					If Rotation = -90
+						height:- Min(lineHeight, bm.area.GetW())
+					ElseIf Rotation = 90
+						height:+ Min(lineHeight, bm.area.GetW())
+					ElseIf Rotation = 180
 						lineWidth :- bm.charWidth * gfx.tform_ix
-					else
-						if text[i] = 32 'space
+					Else
+						If text[i] = 32 'space
 							lineWidth :+ bm.charWidth * gfx.tform_ix * spaceWidthModifier
-						elseif text[i] = KEY_TAB
-							lineWidth =  (int(lineWidth / tabWidth)+1) * tabWidth
-						else
+						ElseIf text[i] = KEY_TAB
+							lineWidth =  (Int(lineWidth / tabWidth)+1) * tabWidth
+						Else
 							lineWidth :+ bm.charWidth * gfx.tform_ix
-						endif
-					endif
-				elseif text[i] = KEY_TAB
-					lineWidth =  (int(lineWidth / tabWidth)+1) * tabWidth
+						EndIf
+					EndIf
+				ElseIf text[i] = KEY_TAB
+					lineWidth =  (Int(lineWidth / tabWidth)+1) * tabWidth
 				EndIf
 
 				charBefore = charCode
 			Next
-			width = max(width, lineWidth)
+			width = Max(width, lineWidth)
 			height :+ lineHeight
 			'add extra spacing _between_ lines
 			'not done when only 1 line available or on last line
-			if currentLine < textLines.length
-				height:+ ceil( lineHeight* (font.lineHeightModifier-1.0) )
-			endif
+			If currentLine < textLines.length
+				height:+ Ceil( lineHeight* (font.lineHeightModifier-1.0) )
+			EndIf
 		Next
 
 		'restore color
-		if doDraw then oldColor.SetRGBA()
+		If doDraw Then oldColor.SetRGBA()
 
-		fontStyle.PopColor()
+		FontStyle.PopColor()
 
-		return new TVec2D.Init(width, height)
+		If dimensionResult Then dimensionResult.SetXY(width, height)
+
+		Return True
 	End Method
 
 Rem
@@ -1154,15 +1176,68 @@ EndRem
 End Type
 
 
+
+
+Type TStyledBitmapFonts
+	Field styles:TBitmapFont[2]
+
+	Method Get:TBitmapFont(style:Int)
+		style :+ 1
+		If style < styles.length
+			Return styles[style]
+		End If
+	End Method
+
+	Method Insert(style:Int, font:TBitmapFont)
+		style :+ 1
+		If style >= styles.length
+			styles = styles[..style + 1]
+		End If
+		styles[style] = font
+	End Method
+End Type
+
+
+
+
+Type TSizedBitmapFonts
+	Field sizes:TStyledBitmapFonts[12]
+
+	Method Get:TBitmapFont(size:Int, style:Int)
+		size :+ 1
+		If size < sizes.length
+			Local styled:TStyledBitmapFonts = sizes[size]
+			If styled Then
+				Return styled.Get(style)
+			End If
+		End If
+	End Method
+
+	Method Insert(size:Int, style:Int, font:TBitmapFont)
+		size :+ 1
+		If size >= sizes.length
+			sizes = sizes[..size + 1]
+		End If
+		Local styled:TStyledBitmapFonts = sizes[size]
+		If Not styled Then
+			styled = New TStyledBitmapFonts
+			sizes[size] = styled
+		End If
+
+		styled.Insert(style, font)
+	End Method
+End Type
+
+
 Type TBitmapFontStyle
 	Field fontNames:TList = CreateList()
 	Field fontSizes:TList = CreateList()
 	'one counter for each style (italicfont, boldfont)
-	Field fontStyles:int[2]
+	Field fontStyles:Int[2]
 	Field colors:TList = CreateList()
-	Field ignoreColorTag:int = False
-	Field ignoreStyleTags:int = False
-	Global styleDisplaceY:int = 0
+	Field ignoreColorTag:Int = False
+	Field ignoreStyleTags:Int = False
+	Global styleDisplaceY:Int = 0
 
 	Method Reset()
 		fontNames.Clear()
@@ -1174,91 +1249,91 @@ Type TBitmapFontStyle
 	End Method
 
 
-	Method Push:TBitMapFontStyle(fName:string, fSize:int, fStyle:int, color:TColor)
+	Method Push:TBitMapFontStyle(fName:String, fSize:Int, fStyle:Int, color:TColor)
 		PushFontName(fName)
 		PushFontSize(fSize)
 		PushFontStyle(fStyle)
 		PushColor(color)
-		return self
+		Return Self
 	End Method
 
 
 	Method PushColor( color:TColor )
 		'reuse the last one
-		if not color then color = GetColor()
+		If Not color Then color = GetColor()
 
 		colors.AddLast( color )
 	End Method
 
 
 	Method PopColor:TColor()
-		return TColor(colors.RemoveLast())
+		Return TColor(colors.RemoveLast())
 	End Method
 
 
-	Method PushFontStyle( style:int )
-		if (style & BOLDFONT) > 0 then fontStyles[0] :+ 1
-		if (style & ITALICFONT) > 0 then fontStyles[1] :+ 1
+	Method PushFontStyle( style:Int )
+		If (style & BOLDFONT) > 0 Then fontStyles[0] :+ 1
+		If (style & ITALICFONT) > 0 Then fontStyles[1] :+ 1
 	End Method
 
 
-	Method PopFontStyle:int( style:int )
-		if (style & BOLDFONT) > 0 then fontStyles[0] = Max(0, fontStyles[0] - 1)
-		if (style & ITALICFONT) > 0 then fontStyles[1] = Max(0, fontStyles[1] - 1)
+	Method PopFontStyle:Int( style:Int )
+		If (style & BOLDFONT) > 0 Then fontStyles[0] = Max(0, fontStyles[0] - 1)
+		If (style & ITALICFONT) > 0 Then fontStyles[1] = Max(0, fontStyles[1] - 1)
 
 		Return GetFontStyle()
 	End Method
 
 
-	Method PushFontSize( size:int )
-		if not size then size = GetFontSize()
+	Method PushFontSize( size:Int )
+		If Not size Then size = GetFontSize()
 
-		fontSizes.AddLast( string(size) )
+		fontSizes.AddLast( String(size) )
 	End Method
 
 
-	Method PopFontSize:int()
-		return int(string(fontSizes.RemoveLast()))
+	Method PopFontSize:Int()
+		Return Int(String(fontSizes.RemoveLast()))
 	End Method
 
 
-	Method PushFontName( name:string)
+	Method PushFontName( name:String)
 		fontNames.AddLast( name )
 	End Method
 
 
-	Method PopFontname:string()
-		return string(fontNames.RemoveLast())
+	Method PopFontname:String()
+		Return String(fontNames.RemoveLast())
 	End Method
 
 
 	Method GetColor:TColor()
-		local col:TColor = TColor(colors.Last())
-		if not col then col = new TColor.Get()
-		return col
+		Local col:TColor = TColor(colors.Last())
+		If Not col Then col = New TColor.Get()
+		Return col
 	End Method
 
 
-	Method GetFontName:string()
-		return string(fontNames.Last())
+	Method GetFontName:String()
+		Return String(fontNames.Last())
 	End Method
 
 
-	Method GetFontSize:int()
-		return int(string(fontSizes.Last()))
+	Method GetFontSize:Int()
+		Return Int(String(fontSizes.Last()))
 	End Method
 
 
-	Method GetFontStyle:int()
-		local style:int = 0
-		if fontStyles[0] > 0 then style :| BOLDFONT
-		if fontStyles[1] > 0 then style :| ITALICFONT
-		return style
+	Method GetFontStyle:Int()
+		Local style:Int = 0
+		If fontStyles[0] > 0 Then style :| BOLDFONT
+		If fontStyles[1] > 0 Then style :| ITALICFONT
+		Return style
 	End Method
 
 
 	Method GetFont:TBitmapfont()
-		return GetBitmapFontManager().Get(GetFontName(), GetFontSize(), GetFontStyle())
+		Return GetBitmapFontManager().Get(GetFontName(), GetFontSize(), GetFontStyle())
 	End Method
 End Type
 
@@ -1267,14 +1342,225 @@ End Type
 
 ' - max2d/max2d.bmx -> loadimagefont
 ' - max2d/imagefont.bmx TImageFont.Load ->
-Function LoadTrueTypeFont:TImageFont( url:Object,size:int,style:int )
+Function LoadTrueTypeFont:TImageFont( url:Object,size:Int,style:Int )
 	Local src:TFont = TFreeTypeFont.Load( String( url ), size, style )
-	If Not src Return null
+	If Not src Then Return Null
 
 	Local font:TImageFont=New TImageFont
 	font._src_font=src
 	font._glyphs=New TImageGlyph[src.CountGlyphs()]
-	If style & SMOOTHFONT then font._imageFlags=FILTEREDIMAGE|MIPMAPPEDIMAGE
+	If style & SMOOTHFONT Then font._imageFlags=FILTEREDIMAGE|MIPMAPPEDIMAGE
 
 	Return font
 End Function
+
+
+
+
+Type TBitmapFontText
+	Field offsetX:Int, offsetY:Int
+	Field text:String
+	Field x:Float, y:Float, w:Float, h:Float
+	Field style:Int = 0
+	Field special:Float = -1.0
+	Field font:TBitmapFont
+	Field alignment:TVec2D
+	Field color:TColor
+	Field nicelyTruncateLastLine:Int = True
+	Field centerSingleLineOnBaseline:Int = False
+	Field fixedLineHeight:Int = -1
+
+	Field cache:TImage
+
+Rem
+	Method SetText(text:String, skipChecks:Int = False)
+		if skipChecks or self.text <> text
+			self.text = text
+
+			cache = CreateImage( dimensionResult.x, dimensionResult.y )
+			FillCache(cache)
+		EndIf
+	End Method
+endrem
+
+	Method Invalidate()
+		cache = Null
+	End Method
+
+
+	Method HasCache:Int()
+		Return cache <> Null
+	End Method
+
+
+	Method FillCache(img:TImage)
+		Local p:TPixmap = LockImage(img)
+		p.ClearPixels(0)
+		UnlockImage(img)
+
+		font.SetRenderTarget( img )
+		font.DrawBlock(text, -offsetX, -offsetY,w,h,alignment,color,style, True, special, nicelyTruncateLastLine, centerSingleLineOnBaseline, fixedLineHeight, Null)
+		font.SetRenderTarget( Null )
+	End Method
+
+
+	Method DrawCached:Int(x:Float, y:Float)
+		If cache Then DrawImage(cache, x + offsetX, y + offsetY)
+	End Method
+
+
+	Method CacheDraw:Int(font:TBitmapFont, text:String, x:Float, y:Float, color:TColor=Null, dimensionResult:TVec2D = Null)
+		If cache
+			If Self.w<>w Or Self.h<>h
+				cache = Null
+			ElseIf text <> text
+				cache = Null
+			ElseIf Self.font<>font
+				cache = Null
+			ElseIf (Self.color And Not Self.color.IsSame(color)) Or (Not Self.color And color)
+				cache = Null
+			EndIf
+		EndIf
+
+		If Not cache
+			Self.font = font
+			Self.text = text
+			If color
+				Self.color = color.copy()
+			Else
+				Self.color = Null
+			EndIf
+
+			'render to image
+			'first we render to the screen to get the dimensions
+			If Not dimensionResult Then dimensionResult = New TVec2D
+			'fetch dimension
+			font.Draw(text, x,y, color, False, dimensionResult)
+
+			Self.w = dimensionResult.x
+			Self.h = dimensionResult.y
+
+			cache = CreateImage( Int(Self.w), Int(Self.h) )
+
+'Print "create draw cache for: " + text + "    " + w +"," +h
+			FillCache(cache)
+		EndIf
+	End Method
+
+
+	Method Draw:Int(font:TBitmapFont, text:String, x:Float, y:Float, color:TColor=Null, dimensionResult:TVec2D = Null)
+		If text = ""
+			'an empty text can still move forward to a "new line"
+			If font And dimensionResult
+				dimensionResult.x = 0
+				dimensionResult.y = font.GetMaxCharHeight()
+			EndIf
+			Return False 'nothing to render
+		EndIf
+
+		If Not cache Then CacheDraw(font, text, x, y, color, dimensionResult)
+
+		DrawImage(cache, x, y)
+
+		If dimensionResult Then dimensionResult.SetXY(cache.width, cache.height)
+		Return True
+	End Method
+
+
+	Method CacheDrawBlock:Int(font:TBitmapFont, text:String, x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=Null, color:TColor=Null, style:Int=0, doDraw:Int = 1, special:Float=1.0, nicelyTruncateLastLine:Int=True, centerSingleLineOnBaseline:Int=False, fixedLineHeight:Int = -1, dimensionResult:TVec2D = Null)
+		If cache
+'			If self.x<>x or self.y<>y or self.w<>w or self.h<>h
+'				cache = Null
+			If Self.w<>w Or Self.h<>h
+				cache = Null
+			ElseIf text <> text
+				cache = Null
+			ElseIf Self.font<>font
+				cache = Null
+			ElseIf Self.style<>style Or Self.special<>special
+				cache = Null
+			ElseIf (Self.color And Not Self.color.IsSame(color)) Or ((Self.color<>Null) <> (color<>Null))
+				cache = Null
+			ElseIf (Self.alignment And Not Self.alignment.IsSame(alignment)) Or ((Self.alignment<>Null) <> (alignment<>Null))
+				cache = Null
+			ElseIf Self.nicelyTruncateLastLine <> nicelyTruncateLastLine Or Self.centerSingleLineOnBaseline <> centerSingleLineOnBaseline Or Self.fixedLineHeight <> fixedLineHeight
+				cache = Null
+			EndIf
+		EndIf
+
+		If Not cache
+			Self.font = font
+			Self.text = text
+'			self.x = x
+'			self.y = y
+			Self.w = w
+			Self.h = h
+			Self.style = style
+			Self.special = special
+			If alignment
+				Self.alignment = alignment.copy()
+			Else
+				Self.alignment = Null
+			EndIf
+			If color
+				Self.color = color.copy()
+			Else
+				Self.color = Null
+			EndIf
+			Self.nicelyTruncateLastLine = nicelyTruncateLastLine
+			Self.centerSingleLineOnBaseline = centerSingleLineOnBaseline
+			Self.fixedLineHeight = fixedLineHeight
+
+			'render to image
+			If Not dimensionResult Then dimensionResult = New TVec2D
+			'fetch dimension
+			font.DrawBlock(text, x,y,w,h,alignment,color,style, False, special, nicelyTruncateLastLine, centerSingleLineOnBaseline, fixedLineHeight, dimensionResult)
+
+			'invalid glyphs might lead to dimensions of "0"
+			If dimensionResult.x <= 0 Then dimensionResult.x = 1
+			If dimensionResult.y <= 0 Then dimensionResult.y = 1
+
+			If w = -1
+				offsetX = 0
+			Else
+				offsetX = (w - dimensionResult.x) * alignment.x
+			EndIf
+			If h = -1
+				offsetY = 0
+			Else
+				offsetY = (h - dimensionResult.y) * alignment.y
+			EndIf
+Rem
+Print "size: " + w + ", " + h
+Print "offset: " + offsetX + ", " + offsetY
+Print "dimension: " + dimensionResult.ToString()
+Print "alignment: " + alignment.ToString()
+
+Print "create drawblock cache for: " + text + "    " + w +"," +h + "   " + dimensionResult.ToString()
+EndRem
+
+			cache = CreateImage( Int(dimensionResult.x), Int(dimensionResult.y) )
+'			cache = CreateImage( int(Max(dimensionResult.x, w)), int(Max(dimensionResult.y, h)) )
+			FillCache(cache)
+		EndIf
+	End Method
+
+
+	Method DrawBlock:Int(font:TBitmapFont, text:String, x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=Null, color:TColor=Null, style:Int=0, doDraw:Int = 1, special:Float=1.0, nicelyTruncateLastLine:Int=True, centerSingleLineOnBaseline:Int=False, fixedLineHeight:Int = -1, dimensionResult:TVec2D = Null)
+		If text = ""
+			'an empty text can still move forward to a "new line"
+			If font And dimensionResult
+				dimensionResult.x = 0
+				dimensionResult.y = font.GetMaxCharHeight()
+			EndIf
+			Return False 'nothing to render
+		EndIf
+
+		CacheDrawBlock(font, text, x, y, w, h, alignment, color, style, doDraw, special, nicelyTruncateLastLine, centerSingleLineOnBaseline, fixedLineHeight, dimensionResult)
+
+		DrawImage(cache, x + offsetX, y + offsetY)
+
+		If dimensionResult Then dimensionResult.SetXY(cache.width, cache.height)
+		Return True
+	End Method
+End Type

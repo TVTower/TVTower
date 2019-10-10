@@ -415,7 +415,7 @@ Type TColor
 			end select
 			h :/ 6.0
 		EndIf
-		
+
 		return self
 	End Method
 
@@ -455,7 +455,7 @@ Type TColor
 			if t < 2/3.0 then return p + (q - p) * (2/3.0 - t) * 6.0
 			return p
 		End Function
-		
+
 		return self
 	End Method
 
@@ -491,7 +491,7 @@ Type TColor
 		h = (60.0 * (dif / md)) + ad
 		s = md / mx
 		v = mx
-		
+
 		return self
 	End Method
 
@@ -515,6 +515,19 @@ Type TColor
 
 		Self.a = a
 		Return Self
+	End Method
+
+
+	Method IsSame:Int(otherCol:TColor)
+		if self = otherCol then Return True
+		if not otherCol then Return False
+
+		Return (r = otherCol.r and g = otherCol.g and b = otherCol.b and a = otherCol.a)
+	End Method
+
+
+	Method IsSameRGBA:Int(r:int, g:int, b:int, a:Float)
+		Return (self.r <> r or self.g <> g or self.b <> b or self.a <> a)
 	End Method
 
 

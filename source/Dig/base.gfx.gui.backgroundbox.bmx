@@ -17,6 +17,11 @@ Type TGUIBackgroundBox Extends TGUIobject
 	Field spriteTintColor:TColor
 
 
+	Method GetClassName:String()
+		Return "tguibackgroundbox"
+	End Method
+
+
 	Method Create:TGUIBackgroundBox(position:TVec2D, dimension:TVec2D, limitState:String="")
 		Super.CreateBase(position, dimension, limitState)
 
@@ -52,18 +57,23 @@ Type TGUIBackgroundBox Extends TGUIobject
 
 
 	Method DrawContent()
-		'
 	End Method
 
 
 	Method DrawBackground()
-		Local drawPos:TVec2D = GetScreenPos()
 		local oldCol:TColor = new TColor.Get()
 		'a local spriteAlpha means widget as "parent" can have alpha 1.0
 		'while the sprite is drawn with 0.3
 		SetAlpha oldCol.a * GetScreenAlpha() * spriteAlpha
 		if spriteTintColor then spriteTintColor.SetRGB()
-		GetSprite().DrawArea(drawPos.getX(), drawPos.getY(), GetScreenWidth(), GetScreenHeight())
+
+		local r:TRectangle = GetScreenRect()
+		GetSprite().DrawArea(r.GetX(), r.GetY(), r.GetW(), r.GetH())
+
 		oldCol.SetRGBA()
+	End Method
+
+
+	Method UpdateLayout()
 	End Method
 End Type

@@ -40,7 +40,7 @@ Type TGUIChat Extends TGUIPanel
 	Method Create:TGUIChat(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
-		guiList = New TGUIListBase.Create(New TVec2D.Init(0,0), New TVec2D.Init(GetContentScreenWidth(),GetContentScreenHeight()), limitState)
+		guiList = New TGUIListBase.Create(New TVec2D.Init(0,0), New TVec2D.Init(GetContentScreenRect().GetW(),GetContentScreenRect().GetH()), limitState)
 		guiList.setOption(GUI_OBJECT_ACCEPTS_DROP, False)
 		guiList.SetAutoSortItems(False)
 		guiList.SetAcceptDrop("")
@@ -52,7 +52,7 @@ Type TGUIChat Extends TGUIPanel
 		guiInput.setParent(Self)
 
 		'resize base and move child elements
-		resize(dimension.GetX(), dimension.GetY())
+		SetSize(dimension.GetX(), dimension.GetY())
 
 		'by default all chats want to list private messages and system announcements
 		setListenToChannel(CHAT_CHANNEL_PRIVATE, True)
@@ -109,7 +109,7 @@ Type TGUIChat Extends TGUIPanel
 
 	'implement in custom chats
 	Method GetSenderID:Int()
-		return 0
+		Return 0
 	End Method
 
 
@@ -154,7 +154,7 @@ Type TGUIChat Extends TGUIPanel
 	Method onAddEntry:Int( triggerEvent:TEventBase )
 		Local guiChat:TGUIChat = TGUIChat(triggerEvent.getReceiver())
 		'if event has a specific receiver and this is not this chat
-		If triggerEvent.getReceiver() and guiChat <> Self Then Return False
+		If triggerEvent.getReceiver() And guiChat <> Self Then Return False
 
 		'DO NOT WRITE COMMANDS !
 		If GetCommandFromText(triggerEvent.GetData().GetString("text")) = CHAT_COMMAND_SYSTEM
@@ -172,7 +172,7 @@ Type TGUIChat Extends TGUIPanel
 	End Method
 
 
-	Function getChannelsFromText:Int(text:String)
+	Function GetChannelsFromText:Int(text:String)
 		Local sendToChannels:Int = 0 'by default send to no channel
 		Select GetCommandFromText(text)
 			Case CHAT_COMMAND_WHISPER
@@ -236,34 +236,6 @@ Type TGUIChat Extends TGUIPanel
 	End Method
 
 
-	Method SetPadding:Int(top:Float, left:Float, bottom:Float, right:Float)
-		GetPadding().setTLBR(top,Left,bottom,Right)
-		resize()
-	End Method
-
-
-	'override resize and add minSize-support
-	Method Resize(w:Float=Null,h:Float=Null)
-		Super.Resize(w,h)
-
-		'background covers whole area, so resize it
-		If guiBackground Then guiBackground.resize(rect.getW(), rect.getH())
-
-		Local subtractInputHeight:Float = 0.0
-		'move and resize input field to the bottom
-		If guiInput And Not guiInput.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
-			guiInput.resize(GetContentScreenWidth(),Null)
-			guiInput.rect.position.setXY(0, GetContentScreenHeight() - guiInput.GetScreenHeight())
-			subtractInputHeight = guiInput.GetScreenHeight()
-		EndIf
-
-		'move and resize the listbox (subtract input if needed)
-		If guiList
-			guiList.resize(GetContentScreenWidth(), GetContentScreenHeight() - subtractInputHeight)
-		EndIf
-	End Method
-
-
 	'override default update-method
 	Method Update:Int()
 		Super.Update()
@@ -275,7 +247,30 @@ Type TGUIChat Extends TGUIPanel
 			Next
 		EndIf
 	End Method
+
+
+	Method UpdateLayout()
+		Super.UpdateLayout()
+
+		'background covers whole area, so resize it
+		If guiBackground Then guiBackground.SetSize(rect.getW(), rect.getH())
+
+		Local subtractInputHeight:Float = 0.0
+		'move and resize input field to the bottom
+		If guiInput And Not guiInput.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
+			guiInput.SetSize(GetContentScreenRect().GetW(),Null)
+			guiInput.SetPosition(0, GetContentScreenRect().GetH() - guiInput.GetScreenRect().GetH())
+			subtractInputHeight = guiInput.GetScreenRect().GetH()
+		EndIf
+
+		'move and resize the listbox (subtract input if needed)
+		If guiList
+			guiList.SetSize(GetContentScreenRect().GetW(), GetContentScreenRect().GetH() - subtractInputHeight)
+		EndIf
+	End Method
 End Type
+
+
 
 
 Type TGUIChatEntry Extends TGUIListItem
@@ -305,7 +300,7 @@ Type TGUIChatEntry Extends TGUIListItem
 		SetShowtime( 1000 )
 
 		'now we know the actual content and resize properly
-		Resize(GetDimension().GetX(), GetDimension().GetY())
+		SetSize(GetDimension().GetX(), GetDimension().GetY())
 
 		GUIManager.add(Self)
 
@@ -314,32 +309,36 @@ Type TGUIChatEntry Extends TGUIListItem
 
 
 	Method GetDimension:TVec2D()
-		local startX:int = self.GetScreenX()
-		local startY:int = self.GetScreenY()
-		Local move:TVec2D = New TVec2D.Init(0,0)
+		Local startX:Int = Self.GetScreenRect().GetX()
+		Local startY:Int = Self.GetScreenRect().GetY()
+		Local move:TVec2D = New TVec2D
 		If Data.getString("senderName",Null)
 			Local senderColor:TColor = TColor(Data.get("senderColor"))
 			If Not senderColor Then senderColor = TColor.Create(0,0,0)
-			move = GetBitmapFontManager().baseFontBold.drawStyled(Data.getString("senderName")+":", startX, startY, senderColor, 2, 0)
+
+			GetBitmapFontManager().baseFontBold.drawStyled(Data.getString("senderName")+":", startX, startY, senderColor, 2, 0, ,move)
 			'move the x so we get space between name and text
 			'move the y point 1 pixel as bold fonts are "higher"
 			move.SetXY( move.x + 5, 1)
 		EndIf
 		'available width is parentsDimension minus startingpoint
-		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(GetParent("tguiscrollablepanel"))
+		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel( GetFirstParentalObject("tguiscrollablepanel") )
 		Local maxWidth:Int
 		If parentPanel
-			maxWidth = parentPanel.GetContentScreenWidth()
+			maxWidth = parentPanel.GetContentScreenRect().GetW()
+		ElseIf _parent
+			maxWidth = _parent.GetContentScreenRect().GetW()
 		Else
-			maxWidth = GetParent().GetContentScreenWidth()
+			maxWidth = rect.GetW()
 		EndIf
-		if maxWidth <> -1 then maxWidth :- rect.GetX()
-		if maxWidth = -1 then maxWidth = GetScreenWidth()
-		if maxWidth <> -1 then maxWidth :+ 10
+		If maxWidth <> -1 Then maxWidth :- rect.GetX()
+		If maxWidth = -1 Then maxWidth = GetScreenRect().GetW()
+		If maxWidth <> -1 Then maxWidth :+ 10
 '		maxWidth=295
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local dimension:TVec2D = GetBitmapFontManager().baseFont.drawBlock(GetValue(), startX + move.x, startY + move.y, maxWidth - move.X, maxHeight, Null, Null, 2, 0)
+		Local dimension:TVec2D = New TVec2D
+		GetBitmapFontManager().baseFont.drawBlock(GetValue(), startX + move.x, startY + move.y, maxWidth - move.X, maxHeight, Null, Null, 2, 0, , , , , dimension)
 		'add padding
 		dimension.addXY(0, paddingBottom)
 'print GetValue()+"     " + dimension.y +"   move.y="+move.Y+"   maxWidth="+maxWidth+"  move.X="+move.X
@@ -347,11 +346,11 @@ Type TGUIChatEntry Extends TGUIListItem
 		'but only if something changed (eg. first time or content changed)
 		If rect.getW() <> dimension.getX() Or rect.getH() <> dimension.getY()
 			'resize item
-			Resize(dimension.getX(), dimension.getY())
+			SetSize(dimension.getX(), dimension.getY())
 			'recalculate item positions and scroll limits
 			'-> without multi-line entries would be not completely visible
-			local list:TGUIListBase = TGUIListBase(self.getParent("tguilistbase"))
-			if list then list.RecalculateElements()
+			Local list:TGUIListBase = TGUIListBase( GetFirstParentalObject("tguilistbase") )
+			If list Then list.RecalculateElements()
 		EndIf
 
 		Return dimension
@@ -364,40 +363,27 @@ Type TGUIChatEntry Extends TGUIListItem
 	End Method
 
 
-	Method GetParentWidth:Float(parentClassName:String="toplevelparent")
-		If Not Self._parent Then Return Self.rect.getW()
-		Return Self.getParent(parentClassName).rect.getW()
-	End Method
-
-
-	Method GetParentHeight:Float(parentClassName:String="toplevelparent")
-		If Not Self._parent Then Return Self.rect.getH()
-		Return Self.getParent(parentClassName).rect.getH()
-	End Method
-
-
 	Method DrawContent()
 		'available width is parentsDimension minus startingpoint
-		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
-		local screenX:int = GetScreenX()
-		local screenY:int = GetScreenY()
-		if not parentPanel then throw "GUIChatEntry - no parentpanel"
-		if GetParent().GetScreenY() > screenY + rect.GetH() then return
-		if GetParent().GetScreenY() + GetParent().GetScreenHeight() < screenY then return
+		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(GetFirstParentalObject("tguiscrollablepanel"))
+		Local screenX:Int = GetScreenRect().GetX()
+		Local screenY:Int = GetScreenRect().GetY()
+		If Not parentPanel Then Throw "GUIChatEntry - no parentpanel"
+		If _parent.GetScreenRect().GetY() > screenY + rect.GetH() Then Return
+		If _parent.GetScreenRect().GetY() + _parent.GetScreenRect().GetH() < screenY Then Return
 
-		Local maxWidth:Int = parentPanel.getContentScreenWidth() - Self.rect.getX()
+		Local maxWidth:Int = parentPanel.GetContentScreenRect().GetW() - Self.rect.getX()
 
-		'local maxWidth:int = self.getParentWidth("tguiscrollablepanel")-self.rect.getX()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local move:TVec2D = New TVec2D.Init(0,0)
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:TColor = New TColor.Get()
 
 		If Self.showtime <> Null Then SetAlpha oldCol.a * Float(Self.showtime - Time.GetTimeGone())/500.0
 		If Self.Data.getString("senderName",Null)
 			Local senderColor:TColor = TColor(Self.Data.get("senderColor"))
 			If Not senderColor Then senderColor = TColor.Create(0,0,0)
-			move = GetBitmapFontManager().baseFontBold.drawStyled(Self.Data.getString("senderName", "")+":", screenX, screenY, senderColor, 2, 1)
+			GetBitmapFontManager().baseFontBold.drawStyled(Self.Data.getString("senderName", "")+":", screenX, screenY, senderColor, 2, 1, , move)
 			'move the x so we get space between name and text
 			'move the y point 1 pixel as bold fonts are "higher"
 			move.SetXY( move.x + 5, 1)

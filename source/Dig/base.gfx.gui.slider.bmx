@@ -73,6 +73,12 @@ Type TGUISlider extends TGUIObject
 	Const VALUETYPE_FLOAT:int = 1
 	Const VALUETYPE_DOUBLE:int = 2
 
+
+	Method GetClassName:String()
+		Return "tguislider"
+	End Method
+
+
 	Method Create:TGUISlider(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, State)
@@ -200,8 +206,8 @@ Type TGUISlider extends TGUIObject
 		'convert current mouse position to local widget coordinates
 		'-9 is "manual adjustment"
 		local mousePos:TVec2D = New TVec2D.Init(..
-									MouseManager.x - GetScreenX() - GetGaugeOffsetX(), ..
-									MouseManager.y - GetScreenY() - GetGaugeOffsetY() ..
+									MouseManager.x - GetScreenRect().GetX() - GetGaugeOffsetX(), ..
+									MouseManager.y - GetScreenRect().GetY() - GetGaugeOffsetY() ..
 								)
 
 		local scale:Float = (maxValue - minValue + 1) / Float(maxValue - minValue)
@@ -333,10 +339,10 @@ Type TGUISlider extends TGUIObject
 		Super.Update()
 
 		'adjust value
-		if MouseIsDown and hasFocus() Then SetValueByMouse()
+		if MouseIsDown and IsFocused() Then SetValueByMouse()
 
 		'process long clicks to avoid odd "right click behaviour"
-		if hasFocus() and MouseManager.IsLongClicked(1)
+		if IsFocused() and MouseManager.IsLongClicked(1)
 			MouseManager.ResetLongClicked(1)
 		endif
 	End Method
@@ -582,24 +588,27 @@ Type TGUISlider extends TGUIObject
 
 
 	Method DrawContent()
-		Local atPoint:TVec2D = GetScreenPos()
 		Local oldCol:TColor = new TColor.Get()
 
 		SetColor 255, 255, 255
 		SetAlpha oldCol.a * GetScreenAlpha() * _gaugeAlpha
-		DrawGauge(atPoint)
+		DrawGauge(GetScreenRect().position)
 		SetAlpha oldCol.a * GetScreenAlpha()
-		DrawHandle(atPoint)
+		DrawHandle(GetScreenRect().position)
 
 		rem
 		?debug
 		SetColor 0,0,0
-		DrawRect(GetScreenX()+40, GetScreenY(), 100,20)
+		DrawRect(GetScreenRect().GetX()+40, GetScreenRect().GetY(), 100,20)
 		SetAlpha 1.0
 		SetColor 255,255,255
-		DrawText(GetValue()+" : " + Left(value, 6), GetScreenX()+42, GetScreenY()+2)
+		DrawText(GetValue()+" : " + Left(value, 6), GetScreenRect().GetX()+42, GetScreenRect().GetY()+2)
 		?
 		endrem
 		oldCol.SetRGBA()
+	End Method
+
+
+	Method UpdateLayout()
 	End Method
 End Type

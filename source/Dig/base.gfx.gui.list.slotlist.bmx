@@ -10,7 +10,7 @@ Rem
 	====================================================================
 	LICENCE
 
-	Copyright (C) 2002-2014 Ronny Otto, digidea.de
+	Copyright (C) 2002-2019 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -36,7 +36,7 @@ Import "base.gfx.gui.list.base.bmx"
 
 
 Type TGUISlotList Extends TGUIListBase
-	Field _slotMinDimension:TVec2D = new TVec2D.Init(0,0)
+	Field _slotMinDimension:TVec2D = New TVec2D.Init(0,0)
 	'slotAmount: <=0 means dynamically, else it is fixed
 	Field _slotAmount:Int = -1
 	Field _slots:TGUIobject[0]
@@ -45,7 +45,12 @@ Type TGUISlotList Extends TGUIListBase
 	Field _fixedSlotDimension:Int = False
 
 
-    Method Create:TGUISlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
+	Method GetClassName:String()
+		Return "tguislotlist"
+	End Method
+
+
+    Method Create:TGUISlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		setListOption(GUILIST_AUTOSORT_ITEMS, False)
@@ -77,12 +82,13 @@ Type TGUISlotList Extends TGUIListBase
 
 		For Local i:Int = 0 To _slots.length-1
 			'skip empty slots
-			If _slots[i]=null then continue
+			If _slots[i]=Null Then Continue
 			'call the objects cleanup-method and unsets afterwards
 			_slots[i].Remove()
-			_slots[i] = null
+			_slots[i] = Null
 			_slotsState[i] = 0
 		Next
+		InvalidateLayout()
 	End Method
 
 
@@ -130,7 +136,7 @@ Type TGUISlotList Extends TGUIListBase
 
 
 	'which slot is occupied by the given item?
-	Method getSlot:Int(item:TGUIobject)
+	Method GetSlot:Int(item:TGUIobject)
 		For Local i:Int = 0 To _slots.length-1
 			If _slots[i] = item Then Return i
 		Next
@@ -139,7 +145,7 @@ Type TGUISlotList Extends TGUIListBase
 
 
 	'return the next free slot (for autofill)
-	Method getFreeSlot:Int()
+	Method GetFreeSlot:Int()
 		For Local i:Int = 0 To _slots.length-1
 			If _slots[i] Then Continue
 			Return i
@@ -151,14 +157,14 @@ Type TGUISlotList Extends TGUIListBase
 	Method GetSlotOrCoord:TVec3D(slot:Int=-1, coord:TVec2D=Null)
 		Local baseRect:TRectangle = Null
 		If _fixedSlotDimension
-			baseRect = new TRectangle.Init(0, 0, _slotMinDimension.getX(), _slotMinDimension.getY())
+			baseRect = New TRectangle.Init(0, 0, _slotMinDimension.getX(), _slotMinDimension.getY())
 		Else
 			If _orientation = GUI_OBJECT_ORIENTATION_VERTICAL
-				baseRect = new TRectangle.Init(0, 0, rect.GetW(), _slotMinDimension.getY())
+				baseRect = New TRectangle.Init(0, 0, rect.GetW(), _slotMinDimension.getY())
 			ElseIf _orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
-				baseRect = new TRectangle.Init(0, 0, _slotMinDimension.getX(), rect.GetH())
+				baseRect = New TRectangle.Init(0, 0, _slotMinDimension.getX(), rect.GetH())
 			Else
-				TLogger.log("TGUISlotList.GetSlotOrCoord", "unknown orientation : " + _orientation, LOG_ERROR)
+				TLogger.Log("TGUISlotList.GetSlotOrCoord", "unknown orientation : " + _orientation, LOG_ERROR)
 			EndIf
 		EndIf
 
@@ -230,13 +236,15 @@ Type TGUISlotList Extends TGUIListBase
 
 	'get a slot by a (global/screen) coord
 	Method GetSlotByCoord:Int(coord:TVec2D, isScreenCoord:Int=True)
-		'create a copy of the given coord - avoids modifying it
-		Local useCoord:TVec2D = coord.copy()
-
 		'convert global/screen to local coords
-		If isScreenCoord Then useCoord.AddXY(-Self.GetScreenX(),-Self.GetScreenY())
-
-		Return GetSlotOrCoord(-1, useCoord).z
+		If isScreenCoord And coord
+			'create a copy of the given coord - avoids modifying it
+			Local useCoord:TVec2D = coord.copy()
+			useCoord.AddXY( - GetScreenRect().GetX(), - GetScreenRect().GetY() )
+			Return GetSlotOrCoord(-1, useCoord).z
+		Else
+			Return GetSlotOrCoord(-1, coord).z
+		EndIf
 	End Method
 
 
@@ -282,26 +290,26 @@ Type TGUISlotList Extends TGUIListBase
 		If slot < 0 Or slot > Self._slots.length-1 Then Return False
 
 		'skip clearing an empty slot
-		if not item and not Self._slots[slot] then Return False
+		If Not item And Not Self._slots[slot] Then Return False
 
-		local slotItem:TGUIObject = Self._slots[slot]
+		Local slotItem:TGUIObject = Self._slots[slot]
 
-		if item
-			EventManager.triggerEvent(TEventSimple.Create("guiList.AddItem", new TData.Add("item", item).AddNumber("slot",slot) , Self))
-		elseif slotItem
-			EventManager.triggerEvent(TEventSimple.Create("guiList.RemoveItem", new TData.Add("item", slotItem).AddNumber("slot",slot) , Self))
-		endif
-		
+		If item
+			EventManager.triggerEvent(TEventSimple.Create("guiList.AddItem", New TData.Add("item", item).AddNumber("slot",slot) , Self))
+		ElseIf slotItem
+			EventManager.triggerEvent(TEventSimple.Create("guiList.RemoveItem", New TData.Add("item", slotItem).AddNumber("slot",slot) , Self))
+		EndIf
+
 		Self._slots[slot] = item
 
 		'resize item
-		if item then item.onParentResize()
+		If item Then item.onParentResize()
 
-		if item
-			EventManager.triggerEvent(TEventSimple.Create("guiList.AddedItem", new TData.Add("item", item).AddNumber("slot",slot) , Self))
-		elseif slotItem
-			EventManager.triggerEvent(TEventSimple.Create("guiList.RemovedItem", new TData.Add("item", slotItem).AddNumber("slot",slot) , Self))
-		endif
+		If item
+			EventManager.triggerEvent(TEventSimple.Create("guiList.AddedItem", New TData.Add("item", item).AddNumber("slot",slot) , Self))
+		ElseIf slotItem
+			EventManager.triggerEvent(TEventSimple.Create("guiList.RemovedItem", New TData.Add("item", slotItem).AddNumber("slot",slot) , Self))
+		EndIf
 
 		Return True
 	End Method
@@ -315,14 +323,14 @@ Type TGUISlotList Extends TGUIListBase
 		If itemSlot = slot Then Return True
 
 		'is there another item?
-		Local dragItem:TGUIobject = TGUIobject(Self.getItemBySlot(slot))
+		Local dragItem:TGUIobject = TGUIobject(Self.GetItemBySlot(slot))
 
 		If dragItem
 			'do not allow if the underlying item cannot get dragged
 			If Not dragItem.isDragable() Then Return False
 
 			'ask others if they want to intercept that exchange
-			Local event:TEventSimple = TEventSimple.Create( "guiSlotList.onBeginReplaceSlotItem", new TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot), Self)
+			Local event:TEventSimple = TEventSimple.Create( "guiSlotList.onBeginReplaceSlotItem", New TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot), Self)
 			EventManager.triggerEvent(event)
 
 			If Not event.isVeto()
@@ -334,17 +342,17 @@ Type TGUISlotList Extends TGUIListBase
 				'unset the occupied slot
 				Self._SetSlot(slot, Null)
 
-				EventManager.triggerEvent(TEventSimple.Create( "guiSlotList.onReplaceSlotItem", new TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot) , Self))
+				EventManager.triggerEvent(TEventSimple.Create( "guiSlotList.onReplaceSlotItem", New TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot) , Self))
 			EndIf
 		EndIf
 
 		'if the item is already on the list, remove it from the former slot
 		If itemSlot >= 0 Then Self._SetSlot(itemSlot, Null)
 
+		guiEntriesPanel.addChild(item)
+
 		'set the item to the new slot
 		Self._SetSlot(slot, item)
-
-		guiEntriesPanel.addChild(item)
 
 		Self.RecalculateElements()
 
@@ -365,10 +373,10 @@ Type TGUISlotList Extends TGUIListBase
 		'the drop-coordinate is the same one as the original slot, so we
 		'handled that situation
 		If dropCoord
-			local dropToSlot:int = GetSlotByCoord(dropCoord)
-			if dropToSlot >= 0 and dropToSlot = GetSlot(item)
+			Local dropToSlot:Int = GetSlotByCoord(dropCoord)
+			If dropToSlot >= 0 And dropToSlot = GetSlot(item)
 				Return True
-			endif
+			EndIf
 		EndIf
 
 		Return False
@@ -382,7 +390,7 @@ Type TGUISlotList Extends TGUIListBase
 		If String(extra) <> ""
 			addToSlot = Int( String(extra) )
 			extraIsRawSlot = True
-		Endif
+		EndIf
 
 		'search for first free slot
 		If Self._autofillSlots Then addToSlot = Self.getFreeSlot()
@@ -400,22 +408,26 @@ Type TGUISlotList Extends TGUIListBase
 
 			'set slot to land
 			addToSlot = Self.GetSlotByCoord(dropCoord)
-
+print addToSlot
 			'no slot was hit
-			If addToSlot < 0 then Return False
+			If addToSlot < 0 Then Return False
 		EndIf
 
 		'ask if an add to this slot is ok
-		Local event:TEventSimple =  TEventSimple.Create("guiList.TryAddItem", new TData.Add("item", item).AddNumber("slot",addtoSlot) , Self)
+		Local event:TEventSimple =  TEventSimple.Create("guiList.TryAddItem", New TData.Add("item", item).AddNumber("slot",addtoSlot) , Self)
 		EventManager.triggerEvent(event)
 		If event.isVeto() Then Return False
 
 		'return if there is an underlying item which cannot get dragged
-		Local dragItem:TGUIobject = TGUIobject(Self.getItemBySlot(addToSlot))
+		Local dragItem:TGUIobject = TGUIobject(Self.GetItemBySlot(addToSlot))
 		If dragItem And Not dragItem.isDragable() Then Return False
 
 		'set parent of the item - so item is able to calculate position
 		guiEntriesPanel.addChild(item )
+
+
+		'recalculate positions, dimensions etc.
+		InvalidateLayout()
 
 		Return Self.SetItemToSlot(item, addToSlot)
 	End Method
@@ -426,7 +438,7 @@ Type TGUISlotList Extends TGUIListBase
 		Local slot:Int = GetSlot(item)
 		If slot >=0
 			'ask if a removal from this slot is ok
-			Local event:TEventSimple =  TEventSimple.Create("guiList.TryRemoveItem", new TData.Add("item", item).AddNumber("slot",slot) , Self)
+			Local event:TEventSimple =  TEventSimple.Create("guiList.TryRemoveItem", New TData.Add("item", item).AddNumber("slot",slot) , Self)
 			EventManager.triggerEvent(event)
 			If event.isVeto() Then Return False
 
@@ -444,7 +456,9 @@ Type TGUISlotList Extends TGUIListBase
 			'remove from panel - and add back to guimanager
 			'guiEntriesPanel.removeChild(item)
 
-			Self.RecalculateElements()
+			'recalculate positions, dimensions etc.
+			InvalidateLayout()
+'			Self.RecalculateElements()
 			Return True
 		EndIf
 		Return False
@@ -452,40 +466,38 @@ Type TGUISlotList Extends TGUIListBase
 
 
 	Method DrawDebug()
-		If _debugMode
-			Setalpha 0.25
-			SetColor 255,0,0
-			Setalpha 0.25
-			DrawRect(guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY(), guiEntriesPanel.GetScreenWidth(), guiEntriesPanel.GetScreenHeight())
-			SetColor 255,255,255
-			Setalpha 1.0
-			DrawText("Slot: " + GetSlotByCoord(MouseManager.currentPos), guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY() - 65)
-			DrawText("ID:"+_id, guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY() - 50)
-			DrawText("scr:"+int(guiEntriesPanel.scrollPosition.GetY())+"/"+int(guiEntriesPanel.scrollLimit.GetY()), guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY() - 35)
-			DrawText("entrDim:"+int(entriesDimension.GetY()), guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY() - 20)
+		SetAlpha 0.25
+		SetColor 255,0,0
+		SetAlpha 0.25
+		DrawRect(guiEntriesPanel.GetScreenRect().GetX(), guiEntriesPanel.GetScreenRect().GetY(), guiEntriesPanel.GetScreenRect().GetW(), guiEntriesPanel.GetScreenRect().GetH())
+		SetColor 255,255,255
+		SetAlpha 1.0
+		DrawText("Slot: " + GetSlotByCoord(MouseManager.currentPos), guiEntriesPanel.GetScreenRect().GetX(), guiEntriesPanel.GetScreenRect().GetY() - 65)
+		DrawText("ID:"+_id, guiEntriesPanel.GetScreenRect().GetX(), guiEntriesPanel.GetScreenRect().GetY() - 50)
+		DrawText("scr:"+Int(guiEntriesPanel.scrollPosition.GetY())+"/"+Int(guiEntriesPanel.scrollLimit.GetY()), guiEntriesPanel.GetScreenRect().GetX(), guiEntriesPanel.GetScreenRect().GetY() - 35)
+		DrawText("entrDim:"+Int(entriesDimension.GetY()), guiEntriesPanel.GetScreenRect().GetX(), guiEntriesPanel.GetScreenRect().GetY() - 20)
 
 
-			Local atPoint:TVec2D = GetScreenPos()
-			'restrict by scrollable panel - if not possible, there is no "space left"
-			If RestrictViewport()
-				Local pos:TVec3D = Null
-				For Local i:Int = 0 To Self._slots.length-1
-				SetAlpha 0.3
-					pos = GetSlotOrCoord(i)
-					'print "slot "+i+": "+pos.GetX()+","+pos.GetY() +" result: "+(atPoint.GetX()+pos.getX())+","+(atPoint.GetY()+pos.getY()) +" h:"+self._slotMinDimension.getY()
-					SetColor 0,0,0
-					DrawRect(atPoint.GetX()+pos.getX(), atPoint.GetY()+pos.getY(), _slotMinDimension.getX(), _slotMinDimension.getY())
-					SetColor 255,255,255
-					DrawRect(atPoint.GetX()+pos.getX()+1, atPoint.GetY()+pos.getY()+1, _slotMinDimension.getX()-2, _slotMinDimension.getY()-2)
-				SetAlpha 0.8
-					SetColor 0,0,0
-					DrawText("slot "+i+"|"+GetSlotByCoord(pos.ToVec2D()), atPoint.GetX()+pos.getX()+1, atPoint.GetY()+pos.getY()+1)
-					SetColor 255,255,255
-					DrawText("slot "+i+"|"+GetSlotByCoord(pos.ToVec2D()), atPoint.GetX()+pos.getX(), atPoint.GetY()+pos.getY())
-				Next
-				SetAlpha 1.0
-				ResetViewPort()
-			EndIf
+		Local atPoint:TVec2D = GetScreenRect().position
+		'restrict by scrollable panel - if not possible, there is no "space left"
+		If RestrictViewport()
+			Local pos:TVec3D = Null
+			For Local i:Int = 0 To Self._slots.length-1
+			SetAlpha 0.3
+				pos = GetSlotOrCoord(i)
+				'print "slot "+i+": "+pos.GetX()+","+pos.GetY() +" result: "+(atPoint.GetX()+pos.getX())+","+(atPoint.GetY()+pos.getY()) +" h:"+self._slotMinDimension.getY()
+				SetColor 0,0,0
+				DrawRect(atPoint.GetX()+pos.getX(), atPoint.GetY()+pos.getY(), _slotMinDimension.getX(), _slotMinDimension.getY())
+				SetColor 255,255,255
+				DrawRect(atPoint.GetX()+pos.getX()+1, atPoint.GetY()+pos.getY()+1, _slotMinDimension.getX()-2, _slotMinDimension.getY()-2)
+			SetAlpha 0.8
+				SetColor 0,0,0
+				DrawText("slot "+i+"|"+GetSlotByCoord(pos.ToVec2D()), atPoint.GetX()+pos.getX()+1, atPoint.GetY()+pos.getY()+1)
+				SetColor 255,255,255
+				DrawText("slot "+i+"|"+GetSlotByCoord(pos.ToVec2D()), atPoint.GetX()+pos.getX(), atPoint.GetY()+pos.getY())
+			Next
+			SetAlpha 1.0
+			ResetViewPort()
 		EndIf
 	End Method
 
@@ -496,7 +508,7 @@ Type TGUISlotList Extends TGUIListBase
 
 		'set startpos at point of block displacement
 		Local currentPos:TVec2D = _entriesBlockDisplacement.copy()
-		Local coveredArea:TRectangle = new TRectangle.Init(0,0,_entriesBlockDisplacement.x,_entriesBlockDisplacement.y)
+		Local coveredArea:TRectangle = New TRectangle.Init(0,0,_entriesBlockDisplacement.x,_entriesBlockDisplacement.y)
 		For Local i:Int = 0 To Self._slots.length-1
 			Local slotW:Int = _slotMinDimension.getX()
 			Local slotH:Int = _slotMinDimension.getY()
@@ -534,32 +546,37 @@ Type TGUISlotList Extends TGUIListBase
 	End Method
 
 
+	Method UpdateLayout()
+		Super.UpdateLayout()
+	End Method
+
+
 	'override
 	Method GetFirstItem:TGUIListItem()
-		for local i:int = 0 to _slots.length
-			if _slots[i] then return TGUIListItem(_slots[i])
-		next
-		return null
+		For Local i:Int = 0 To _slots.length
+			If _slots[i] Then Return TGUIListItem(_slots[i])
+		Next
+		Return Null
 	End Method
 
 
 	'override
 	Method GetLastItem:TGUIListItem()
-		for local i:int = _slots.length-1 to 0 step -1
-			if _slots[i] then return TGUIListItem(_slots[i])
-		next
-		return null
+		For Local i:Int = _slots.length-1 To 0 Step -1
+			If _slots[i] Then Return TGUIListItem(_slots[i])
+		Next
+		Return Null
 	End Method
 
 
 	'override
-	Method GetLastItemY:int()
-		if not _fixedSlotDimension
-			local i:TGUIListItem = GetLastItem()
-			if i then return i.GetScreenY()
-			return 0
-		else
-			return (_slots.length-1) * int(_slotMinDimension.GetY())
-		endif
+	Method GetLastItemY:Int()
+		If Not _fixedSlotDimension
+			Local i:TGUIListItem = GetLastItem()
+			If i Then Return i.GetScreenRect().GetY()
+			Return 0
+		Else
+			Return (_slots.length-1) * Int(_slotMinDimension.GetY())
+		EndIf
 	End Method
 End Type

@@ -62,8 +62,8 @@ Type TGUIModalWindowChain Extends TGUIObject
 	Field closeActionStartPosition:TVec2D = new TVec2D
 
 
-	Method New()
-'		className= "TGUIModalWindowChain"
+	Method GetClassName:String()
+		Return "tguimodalwindowchain"
 	End Method
 
 
@@ -92,15 +92,15 @@ Type TGUIModalWindowChain Extends TGUIObject
 
 
 	'size 0, 0 is not possible (leads to autosize)
-	Method Resize(w:Float = 0, h:Float = 0)
-		Super.Resize(w, h)
+	Method SetSize(w:Float = 0, h:Float = 0)
+		Super.SetSize(w, h)
 		Recenter()
 	End Method
 
 
 	'overwrite windowBase-method to recenter after appearance change
-	Method onStatusAppearanceChange:int()
-		Super.onStatusAppearanceChange()
+	Method onAppearanceChanged:int()
+		Super.onAppearanceChanged()
 		Recenter()
 	End Method
 
@@ -123,7 +123,8 @@ Type TGUIModalWindowChain Extends TGUIObject
 	End Method
 
 
-	Method Recenter:Int(moveBy:TVec2D=Null)
+	'override
+	Method Recenter:Int(moveByX:Float = 0, moveByY:Float = 0)
 		'center the window
 		Local centerX:Float=0.0
 		Local centerY:Float=0.0
@@ -139,8 +140,8 @@ Type TGUIModalWindowChain Extends TGUIObject
 			centerY = MathHelper.Clamp(centerY, centerLimit.GetTop() + rect.GetH()/2, GetGraphicsManager().GetHeight() - centerLimit.GetBottom() - rect.GetH()/2)
 		endif
 
-		If Not moveBy Then moveBy = new TVec2D.Init(0,0)
-		rect.position.setXY(centerX - rect.getW()/2 + moveBy.getX(),centerY - rect.getH()/2 + moveBy.getY() )
+		SetPosition(centerX - rect.getW()/2 + moveByX, centerY - rect.getH()/2 + moveByY)
+
 
 		'inform element
 		if activeChainElement then activeChainElement.onRecenter()
@@ -160,9 +161,9 @@ Type TGUIModalWindowChain Extends TGUIObject
 
 		if element
 			'resize to dimensions of the content element
-			Resize(element.GetScreenWidth(), element.GetScreenHeight())
+			SetSize(element.GetScreenRect().GetW(), element.GetScreenRect().GetH())
 			'maybe change the size of the element too?
-			element.Resize(-1,-1)
+			element.SetSize(-1,-1)
 		endif
 
 		activeChainElement = element
@@ -269,9 +270,9 @@ Type TGUIModalWindowChain Extends TGUIObject
 		local newAlpha:Float = 1.0
 
 		if closeActionStarted
-			local yUntilScreenLeft:int = VirtualHeight() - (closeActionStartPosition.y + GetScreenHeight())
+			local yUntilScreenLeft:int = VirtualHeight() - (closeActionStartPosition.y + GetScreenRect().GetH())
 			newAlpha = 1.0 - TInterpolation.Linear(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)
-			recenter(new TVec2D.Init(0, - yUntilScreenLeft * Float(TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration))))
+			Recenter(0, - yUntilScreenLeft * Float(TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)))
 		endif
 
 		self.alpha = newAlpha
@@ -287,6 +288,10 @@ Type TGUIModalWindowChain Extends TGUIObject
 
 		if activeChainElement then activeChainElement.Draw()
 	End Method
+
+
+	Method UpdateLayout()
+	End Method
 End Type
 
 
@@ -294,6 +299,12 @@ End Type
 
 Type TGUIModalWindowChainElement Extends TGUIWindowBase
 	Field previousChainElement:TGUIModalWindowChainElement
+
+
+	Method GetClassName:String()
+		Return "tguimodalwindowchainelement"
+	End Method
+
 
 	Method Create:TGUIModalWindowChainElement(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
@@ -308,7 +319,9 @@ Type TGUIModalWindowChainElement Extends TGUIWindowBase
 
 	Method GetZIndex:int() 'override
 		'be at least above parent
-		if GetParent() <> self then return Max(Super.GetZIndex(), GetParent().GetZindex() + 1)
+		if _parent and _parent <> self then return Max(Super.GetZIndex(), _parent.GetZindex() + 1)
+
+		Return Super.GetZIndex()
 	End Method
 
 
@@ -335,30 +348,31 @@ Type TGUIModalWindowChainElement Extends TGUIWindowBase
 
 
 	Method Close:int(closeButton:Int=-1)
-		local parent:TGUIModalWindowChain = TGUIModalWindowChain(GetParent())
-		if not parent
+		local p:TGUIModalWindowChain = TGUIModalWindowChain(_parent)
+		if not p
 			print "Cannot Close(), parent is not of type TGUIModalWindowChain"
 			return false
 		endif
-		parent.Close(closeButton)
+		p.Close(closeButton)
 		return true
 	End Method
 
 
 	Method SwitchActive:int(otherElement:TGUIModalWindowChainElement)
-		local parent:TGUIModalWindowChain = TGUIModalWindowChain(GetParent())
-		if not parent
+		local p:TGUIModalWindowChain = TGUIModalWindowChain(_parent)
+		if not p
 			print "Cannot SwitchActive(), parent is not of type TGUIModalWindowChain"
 			return false
 		endif
 
-		parent.SetContentElement(otherElement)
+		p.SetContentElement(otherElement)
 
 		return true
 	End Method
 
 
 	Method onRecenter()
+		InvalidateScreenRect()
 	End Method
 
 
@@ -380,6 +394,11 @@ Type TGUIModalWindowChainDialogue extends TGUIModalWindowChainElement
 	Field dialogueButtons:TGUIButton[]
 
 
+	Method GetClassName:String()
+		Return "tguimodalwindowchaindialogue"
+	End Method
+
+
 	Method Create:TGUIModalWindowChainDialogue(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
@@ -399,7 +418,7 @@ Type TGUIModalWindowChainDialogue extends TGUIModalWindowChainElement
 		'remove old buttons
 		For Local button:TGUIobject = EachIn dialogueButtons
 			button.remove()
-			'DeleteChild(button)
+			'RemoveChild(button)
 		Next
 		dialogueButtons = New TGUIButton[0] '0 sized array
 
@@ -415,8 +434,8 @@ Type TGUIModalWindowChainDialogue extends TGUIModalWindowChainElement
 			'yes and no button
 			Case 2
 				dialogueButtons = dialogueButtons[..2]
-				dialogueButtons[0] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(GetContentScreenWidth() / 2 - 10, -1), GetLocale("YES"))
-				dialogueButtons[1] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(GetContentScreenWidth() / 2 - 10, -1), GetLocale("NO"))
+				dialogueButtons[0] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(GetContentScreenRect().GetW() / 2 - 10, -1), GetLocale("YES"))
+				dialogueButtons[1] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(GetContentScreenRect().GetW() / 2 - 10, -1), GetLocale("NO"))
 				AddChild(dialogueButtons[0])
 				AddChild(dialogueButtons[1])
 				'set to ignore parental padding (so it starts at 0,0)
@@ -427,14 +446,14 @@ Type TGUIModalWindowChainDialogue extends TGUIModalWindowChainElement
 
 
 	'size 0, 0 is not possible (leads to autosize)
-	Method Resize(w:Float = 0, h:Float = 0)
-		Super.Resize(w, h)
+	Method SetSize(w:Float = 0, h:Float = 0)
+		Super.SetSize(w, h)
 		'move button
 		If dialogueButtons.length = 1
-			dialogueButtons[0].rect.position.setXY(rect.GetW()/2 - dialogueButtons[0].rect.GetW()/2, GetScreenHeight() - 50)
+			dialogueButtons[0].SetPosition(rect.GetW()/2 - dialogueButtons[0].rect.GetW()/2, GetScreenRect().GetH() - 50)
 		ElseIf dialogueButtons.length = 2
-			dialogueButtons[0].rect.position.setXY(rect.GetW()/2 - dialogueButtons[0].rect.GetW() - 10, GetScreenHeight() - 50)
-			dialogueButtons[1].rect.position.setXY(rect.GetW()/2 + 10, GetScreenHeight() - 50)
+			dialogueButtons[0].SetPosition(rect.GetW()/2 - dialogueButtons[0].rect.GetW() - 10, GetScreenRect().GetH() - 50)
+			dialogueButtons[1].SetPosition(rect.GetW()/2 + 10, GetScreenRect().GetH() - 50)
 		EndIf
 	End Method
 

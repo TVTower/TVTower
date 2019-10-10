@@ -15,6 +15,11 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	Field minSize:TVec2D		= new TVec2D.Init(0,0)
 
 
+	Method GetClassName:String()
+		Return "tguiscrollablepanel"
+	End Method
+
+
 	Method Create:TGUIScrollablePanel(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.CreateBase(pos, dimension, limitState)
 		Self.minSize.SetXY(50,50)
@@ -23,32 +28,24 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	End Method
 
 
-	'override resize and add minSize-support
-	Method Resize(w:Float = 0, h:Float = 0)
-		If w > 0 And w >= minSize.GetX() Then rect.dimension.setX(w)
-		If h > 0 And h >= minSize.GetY() Then rect.dimension.setY(h)
+	'override SetSize and add minSize-support
+	Method SetSize(w:Float = 0, h:Float = 0)
+		if w < minSize.getX() then w = -1
+		if h < minSize.getY() then h = -1
+		Super.SetSize(w, h)
 	End Method
 
 
 	'override getters - to adjust values by scrollposition
-	Method GetScreenHeight:Float()
-		Return Min(Super.GetScreenHeight(), minSize.getY())
+	Method _UpdateScreenH:Float()
+		_screenRect.SetH( Min(Super._UpdateScreenH(), minSize.getY()) )
+		Return _screenRect.GetH()
 	End Method
-
 
 	'override getters - to adjust values by scrollposition
-	Method GetScreenWidth:Float()
-		Return Min(Super.GetScreenWidth(), minSize.getX())
-	End Method
-
-
-	Method GetContentScreenY:Float()
-		Return Super.GetContentScreenY() + scrollPosition.getY()
-	End Method
-
-
-	Method GetContentScreenX:Float()
-		Return Super.GetContentScreenX() + scrollPosition.getX()
+	Method _UpdateScreenW:Float()
+		_screenRect.SetW( Min(Super._UpdateScreenW(), minSize.getX()) )
+		Return _screenRect.GetW()
 	End Method
 
 
@@ -69,7 +66,6 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	End Method
 
 
-
 	Method SetLimits(lx:Float,ly:Float)
 		scrollLimit.setXY(lx,ly)
 	End Method
@@ -85,8 +81,11 @@ Type TGUIScrollablePanel Extends TGUIPanel
 
 	Method ScrollToY:Int(y:Float)
 		'check limits
-		scrollPosition.SetY(Max(Min(0, y), scrollLimit.GetY()))
+		local newY:Float = Max(Min(0, y), scrollLimit.GetY())
 
+		if scrollPosition.GetY() <> newY
+			scrollPosition.SetY(Max(Min(0, y), scrollLimit.GetY()))
+		endif
 		return scrollPosition.GetY()
 	End Method
 
@@ -128,34 +127,23 @@ Type TGUIScrollablePanel Extends TGUIPanel
 		return scrollPosition.GetY()
 	End Method
 
-	
 
-
-	Method RestrictViewport:Int()
-		Local screenRect:TRectangle = Self.GetScreenRect()
-		If screenRect
-			'disabled by Ronny, 2017/05/16:
-			'do IGNORE scrollPosition and just view the original position
-			'move viewport by scrolled amount ("virtual displace")
-			'GUIManager.RestrictViewport(int(screenRect.getX() - scrollPosition.getX()), int(screenRect.getY() + scrollPosition.getY()), int(screenRect.getW()), int(screenRect.getH()))
-			GUIManager.RestrictViewport(int(screenRect.getX()), int(screenRect.getY()), int(screenRect.getW()), int(screenRect.getH()))
-			Return True
-		Else
-			Return False
-		EndIf
-	End Method
-
-	
 	Method DrawDebug()
 		SetAlpha 0.3
-		SetColor 255,0,0
-		DrawRect(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
+		SetColor 255,255,0
+		DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetScreenRect().GetH())
+'		SetColor 255,0,255
+'		DrawRect(GetContentScreenRect().GetX(), GetContentScreenRect().GetY(), GetContentScreenRect().GetW(), GetContentScreenRect().GetH())
 		SetAlpha 0.9
 		SetColor 0,255,0
-		DrawRect(GetScreenX() + scrollPosition.x + 10, GetScreenY() + scrollPosition.y, GetScreenWidth()/2, 2)
+		DrawRect(GetScreenRect().GetX() + scrollPosition.x, GetScreenRect().GetY() + scrollPosition.y, GetScreenRect().GetW(), 2)
 		SetColor 0,0,255
-		DrawRect(GetScreenX() + scrollLimit.x, GetScreenY() + scrollLimit.y, GetScreenWidth()/2, 2)
+		DrawRect(GetScreenRect().GetX() + scrollLimit.x, GetScreenRect().GetY() + scrollLimit.y, GetScreenRect().GetW(), 2)
 		SetColor 255,255,255
 		SetAlpha 1.0
+	End Method
+
+
+	Method UpdateLayout()
 	End Method
 End Type

@@ -10,6 +10,10 @@ Type TGUIToggleButton Extends TGUIButton
 	Field spriteNameUntoggled:String
 
 
+	Method GetClassName:String()
+		Return "tguitogglebutton"
+	End Method
+
 
 	Method Create:TGUIToggleButton(pos:TVec2D, dimension:TVec2D, value:String, limitState:String="")
 		'use another sprite name (assign before initing super)
@@ -123,6 +127,10 @@ endrem
 		EndIf
 		Return _sprite
 	End Method
+
+
+	Method UpdateLayout()
+	End Method
 End Type
 
 
@@ -132,9 +140,14 @@ Type TGUITabGroup Extends TGUIObject
 	Field buttons:TGUIToggleButton[]
 	Field toggledButtonIndex:Int = -1
 
+	Method GetClassName:String()
+		Return "tguitabgroup"
+	End Method
+
+
 	Method Create:TGUITabGroup(position:TVec2D, dimension:TVec2D, limitState:String="")
 		Super.CreateBase(position, dimension, limitState)
-		Self.Resize(dimension.GetX(), dimension.GetY() )
+		Self.SetSize(dimension.GetX(), dimension.GetY() )
 
     	GUIManager.Add( Self )
 		Return Self
@@ -178,7 +191,7 @@ Type TGUITabGroup Extends TGUIObject
 			If buttons[i].autoSizeModeWidth = TGUIBUtton.AUTO_SIZE_MODE_TEXT
 				totalButtonsWidth :+ buttons[i].GetFont().getWidth(buttons[i].value) + 8 'TODO: button padding
 			Else
-				totalButtonsWidth :+ buttons[i].GetScreenWidth()
+				totalButtonsWidth :+ buttons[i].GetScreenRect().GetW()
 			EndIf
 			visibleButtonsCount :+ 1
 		Next
@@ -187,14 +200,14 @@ Type TGUITabGroup Extends TGUIObject
 		Local buttonX:Int = 0
 		If visibleButtonsCount > 0 Then buttonSpacing = totalButtonsWidth / visibleButtonsCount
 		'center buttons?
-		buttonX = 0.5 * (GetScreenWidth() - totalButtonsWidth)
+		buttonX = 0.5 * (GetScreenRect().GetW() - totalButtonsWidth)
 		For Local i:Int = 0 Until buttons.length
 			If Not buttons[i] Then Continue
 
-'print "  buttons["+i+"].rect.position.SetX("+buttonX+")   screenWidth="+buttons[i].GetScreenWidth()
+'print "  buttons["+i+"].rect.position.SetX("+buttonX+")   screenWidth="+buttons[i].GetScreenRect().GetW()
 			buttons[i].rect.position.SetX(buttonX)
 
-			buttonX :+ buttons[i].GetScreenWidth() + Max(0, (buttonSpacing - buttons[i].GetScreenWidth()))
+			buttonX :+ buttons[i].GetScreenRect().GetW() + Max(0, (buttonSpacing - buttons[i].GetScreenRect().GetW()))
 		Next
 
 
@@ -288,18 +301,12 @@ endrem
 	Method DrawContent()
 		Local oldCol:TColor = New TColor.Get()
 		SetAlpha( oldCol.a*0.3 )
-		GetSpriteFromRegistry("gfx_gui_slider.gauge").DrawArea(GetScreenX(), GetScreenY() + GetScreenHeight()*0.5 - 8, GetScreenWidth(), 6)
+		GetSpriteFromRegistry("gfx_gui_slider.gauge").DrawArea(GetScreenRect().GetX(), GetScreenRect().GetY() + GetScreenRect().GetH()*0.5 - 8, GetScreenRect().GetW(), 6)
 		SetAlpha( oldCol.a )
 '		Super.DrawContent()
 	End Method
 
-Rem
-	Method Draw()
-'		For local b:TGUIToggleButton = EachIn buttons
-'			b.Draw()
-'		Next
 
-		Super.Draw()
+	Method UpdateLayout()
 	End Method
-endrem
 End Type

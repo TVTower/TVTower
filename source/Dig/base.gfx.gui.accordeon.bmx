@@ -7,9 +7,14 @@ SuperStrict
 Import "base.gfx.gui.bmx"
 
 
-Type TGUIAccordeonPanel extends TGUIObject
-	Field isOpen:int = False
-	Field fixedSize:TVec2D = new TVec2D.Init(-1,-1)
+Type TGUIAccordeonPanel Extends TGUIObject
+	Field isOpen:Int = False
+	Field fixedSize:TVec2D = New TVec2D.Init(-1,-1)
+
+
+	Method GetClassName:String()
+		Return "tguiaccordeonpanel"
+	End Method
 
 
 	Method Create:TGUIAccordeonPanel(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
@@ -21,51 +26,51 @@ Type TGUIAccordeonPanel extends TGUIObject
     	GUIManager.Add(Self)
 		Return Self
 	End Method
-	
+
 
 	Method New()
 '		setOption(GUI_OBJECT_CLICKABLE, False)
 		setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
 	End Method
-	
-	
-	Method Close:int()
-		if isOpen = False then return True
+
+
+	Method Close:Int()
+		If isOpen = False Then Return True
 
 		isOpen = False
-		SetAppearanceChanged(True)
+'		SetAppearanceChanged(True)
 
 		'adjust parental accordeon
-		if TGUIAccordeon(GetParent()) then TGUIAccordeon(GetParent()).onClosePanel(self)
+		If TGUIAccordeon(_parent) Then TGUIAccordeon(_parent).onClosePanel(Self)
 
-		EventManager.triggerEvent( TEventSimple.Create("guiaccordeonpanel.OnClose", null, Self) )
-		
-		return True
+		EventManager.triggerEvent( TEventSimple.Create("guiaccordeonpanel.OnClose", Null, Self) )
+
+		Return True
 	End Method
 
 
-	Method Open:int()
-		if isOpen = true then return True
+	Method Open:Int()
+		If isOpen = True Then Return True
 
 		isOpen = True
-		SetAppearanceChanged(True)
+'		SetAppearanceChanged(True)
 
 		'adjust parental accordeon
-		if TGUIAccordeon(GetParent()) then TGUIAccordeon(GetParent()).onOpenPanel(self)
+		If TGUIAccordeon(_parent) Then TGUIAccordeon(_parent).onOpenPanel(Self)
 
-		EventManager.triggerEvent( TEventSimple.Create("guiaccordeonpanel.OnOpen", null, Self) )
+		EventManager.triggerEvent( TEventSimple.Create("guiaccordeonpanel.OnOpen", Null, Self) )
 
-		return True
+		Return True
 	End Method
 
 
 	Method GetHeaderHeight:Float()
-		return 16
+		Return 16
 	End Method
 
 
 	Method GetHeaderScreenHeight:Float()
-		return GetHeaderHeight()
+		Return GetHeaderHeight()
 	End Method
 
 
@@ -76,64 +81,65 @@ Type TGUIAccordeonPanel extends TGUIObject
 
 
 	Method GetBodyHeight:Float()
-		if isOpen
-			if fixedSize.y = -1
-				return Max(0, GetScreenHeight() - GetHeaderScreenHeight())
-			else
-				return Max(0, fixedSize.y - GetHeaderScreenHeight())
-			endif
-		else
-			return 0
-		endif
+		If isOpen
+			If fixedSize.y = -1
+				Return Max(0, GetScreenRect().GetH() - GetHeaderScreenHeight())
+			Else
+				Return Max(0, fixedSize.y - GetHeaderScreenHeight())
+			EndIf
+		Else
+			Return 0
+		EndIf
 	End Method
 
 
-	Method GetHeight:int()
-		if isOpen
-			if fixedSize.y = -1
-				return Max(Super.GetHeight(), GetHeaderHeight())
-			else
-				return Max(fixedSize.y, GetHeaderHeight())
-			endif
-		endif
-		return GetHeaderHeight()
-	End Method
-
-
-	Method GetScreenHeight:Float()
-		return GetHeight()
+	Method GetHeight:Int()
+		If isOpen
+			If fixedSize.y = -1
+				Return Max(Super.GetHeight(), GetHeaderHeight())
+			Else
+				Return Max(fixedSize.y, GetHeaderHeight())
+			EndIf
+		EndIf
+		Return GetHeaderHeight()
 	End Method
 
 
 	Method GetWidth:Int()
-		if fixedSize.x = -1 then return Super.GetWidth()
-		return fixedSize.x
+		If fixedSize.x = -1 Then Return Super.GetWidth()
+		Return fixedSize.x
+	End Method
+
+
+	Method _UpdateScreenH:Float()
+		_screenRect.SetH( GetHeight() )
+		return _screenRect.GetH()
 	End Method
 
 
 	Method DrawHeader()
-		SetColor 80, abs(255 - (25 * _id)) mod 255, (35 * _id) mod 255
-		DrawRect( GetScreenX(), GetScreenY(), GetScreenWidth(), GetHeaderScreenHeight() )
+		SetColor 80, Abs(255 - (25 * _id)) Mod 255, (35 * _id) Mod 255
+		DrawRect( GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetScreenRect().GetH() )
 
-		if IsHovered()
+		If IsHovered()
 			SetColor 250,250,250
-		else
+		Else
 			SetColor 0, 0, 0
-		endif
-		local openStr:string = Chr(9654)
-		if isOpen then openStr = Chr(9660)
-		if TGUIAccordeon(GetParent())
-			DrawText(openStr + " Panel #" + TGUIAccordeon(GetParent()).GetPanelIndex(self), GetScreenX(), GetScreenY())
-		else
-			DrawText(openStr + " Panel [id=" + _id+"]", GetScreenX(), GetScreenY())
-		endif
+		EndIf
+		Local openStr:String = Chr(9654)
+		If isOpen Then openStr = Chr(9660)
+		If TGUIAccordeon(_parent)
+			DrawText(openStr + " Panel #" + TGUIAccordeon(_parent).GetPanelIndex(Self), GetScreenRect().GetX(), GetScreenRect().GetY())
+		Else
+			DrawText(openStr + " Panel [id=" + _id+"]", GetScreenRect().GetX(), GetScreenRect().GetY())
+		EndIf
 		SetColor 255,255,255
 	End Method
 
 
 	Method DrawBody()
 		SetColor 120,120,120
-		DrawRect( GetScreenX(), GetScreenY() + GetHeaderScreenHeight(), GetScreenWidth(), GetBodyHeight() )
+		DrawRect( GetScreenRect().GetX(), GetScreenRect().GetY() + GetHeaderScreenHeight(), GetScreenRect().GetW(), GetBodyHeight() )
 		SetColor 255,255,255
 	End Method
 
@@ -148,38 +154,40 @@ Type TGUIAccordeonPanel extends TGUIObject
 
 	'override to toggle open/close
 	Method onClick:Int(triggerEvent:TEventBase)
-		local coord:TVec2D = TVec2D(triggerEvent.GetData().Get("coord"))
-		local headerScreenRect:TRectangle = new TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetHeaderScreenHeight())
-		if headerScreenRect.containsVec( coord )
-			if isOpen
+		Local coord:TVec2D = TVec2D(triggerEvent.GetData().Get("coord"))
+		Local headerScreenRect:TRectangle = New TRectangle.Init(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetHeaderScreenHeight())
+
+		If headerScreenRect.containsVec( coord )
+			If isOpen
 				Close()
-			else
+			Else
 				Open()
-			endif
-		endif
+			EndIf
+		EndIf
 
 		Return Super.onClick(triggerEvent)
+	End Method
+
+
+	Method UpdateLayout()
 	End Method
 End Type
 
 
 
 
-Type TGUIAccordeon extends TGUIObject
+Type TGUIAccordeon Extends TGUIObject
 	Field panels:TGUIAccordeonPanel[]
 
-	Field _panelsFillAccordeon:int = True
-	Field _allowMultipleOpenPanels:int = False
-	Field _disableRefitPanelSizes:int = False
-	
+	Field _panelsFillAccordeon:Int = True
+	Field _allowMultipleOpenPanels:Int = False
 
 
-'	Method New()
-'		setOption(GUI_OBJECT_CLICKABLE, False)
-'		setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
-'	End Method
+	Method GetClassName:String()
+		Return "tguiaccordeon"
+	End Method
 
-		
+
 	Method Create:TGUIAccordeon(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, State)
@@ -191,229 +199,241 @@ Type TGUIAccordeon extends TGUIObject
 	End Method
 
 
-	Method onOpenPanel:int(panel:TGUIAccordeonPanel)
-		local disableRefitPanelSizesBackup:int = _disableRefitPanelSizes
-		'avoid running multiple refits during closing other panels
-		_disableRefitPanelSizes = true
-		
+	Method onOpenPanel:Int(panel:TGUIAccordeonPanel)
 		'close all other open panels
-		if not _allowMultipleOpenPanels
-			For local i:int = 0 until panels.length
-				if panels[i] = panel then continue
-				if panels[i].isOpen then panels[i].Close()
+		If Not _allowMultipleOpenPanels
+			For Local i:Int = 0 Until panels.length
+				If panels[i] = panel Then Continue
+				If panels[i].isOpen Then panels[i].Close()
 			Next
-		endif
+		EndIf
 
-		_disableRefitPanelSizes = disableRefitPanelSizesBackup
-		if not _disableRefitPanelSizes then RefitPanelSizes()
+		InvalidateLayout()
 
-		EventManager.triggerEvent( TEventSimple.Create("guiaccordeon.OnOpenPanel", new TData.Add("panel", panel), Self) )
+		EventManager.triggerEvent( TEventSimple.Create("guiaccordeon.OnOpenPanel", New TData.Add("panel", panel), Self) )
 
-		return True
+		Return True
 	End Method
 
 
-	Method onClosePanel:int(panel:TGUIAccordeonPanel)
+	Method onClosePanel:Int(panel:TGUIAccordeonPanel)
 		'if no panel is open now, keep the closing one opened
-		if GetOpenPanelCount() = 0
+		If GetOpenPanelCount() = 0
 			panel.Open()
-			return False
-		endif
-		
-		RefitPanelSizes()
+			Return False
+		EndIf
 
-		EventManager.triggerEvent( TEventSimple.Create("guiaccordeon.OnClosePanel", new TData.Add("panel", panel), Self) )
+		InvalidateLayout()
 
-		return True
+		EventManager.triggerEvent( TEventSimple.Create("guiaccordeon.OnClosePanel", New TData.Add("panel", panel), Self) )
+
+		Return True
 	End Method
-	
 
-	Method OpenPanel:int(index:int)
-		local child:TGUIAccordeonPanel = TGUIAccordeonPanel( GetPanelAtIndex(index) )
-		if not child then return False
-		return child.Open()
-	End Method 
-		
 
-	Method ClosePanel:int(index:int)
-		local child:TGUIAccordeonPanel = TGUIAccordeonPanel( GetPanelAtIndex(index) )
-		if not child then return False
-		return child.Close()
+	Method OpenPanel:Int(index:Int)
+		Local child:TGUIAccordeonPanel = TGUIAccordeonPanel( GetPanelAtIndex(index) )
+		If Not child Then Return False
+		Return child.Open()
+	End Method
+
+
+	Method ClosePanel:Int(index:Int)
+		Local child:TGUIAccordeonPanel = TGUIAccordeonPanel( GetPanelAtIndex(index) )
+		If Not child Then Return False
+		Return child.Close()
 	End Method
 
 
 	'override, remove panels too
 	Method RemoveChild:Int(child:TGUIobject)
-		if TGUIAccordeonPanel(child)
+		If TGUIAccordeonPanel(child)
 			RemovePanel(TGUIAccordeonPanel(child))
-		endif
+		EndIf
 
-		return Super.RemoveChild(child)
+		Return Super.RemoveChild(child)
 	End Method
-	
 
-	Method AddPanel:int(panel:TGUIAccordeonPanel, index:int = -1)
-		if not panel then return False
+
+	Method AddPanel:Int(panel:TGUIAccordeonPanel, index:Int = -1)
+		If Not panel Then Return False
 		'already added ?
-		if GetPanelIndex(panel) >= 0 then return False
+		If GetPanelIndex(panel) >= 0 Then Return False
 
-		if not panels
+		If Not panels
 			panels = [panel]
-		else
+		Else
 			'within existing or "next" index
 			index = Min(panels.length, index)
 
-			if index = panels.length
+			If index = panels.length
 				panels :+ [panel]
-			elseif index = 0
+			ElseIf index = 0
 				panels = [panel] + panels
-			else
+			Else
 				panels = panels[.. index] + [panel] + panels[index ..]
-			endif
-		endif
+			EndIf
+		EndIf
 
-		panel.SetParent(self)
+		panel.SetParent(Self)
+
 		'accordeon manages the panel
 		GUIManager.remove(panel)
 
-		RefitPanelSizes()
+		InvalidateLayout()
 
-		return True
+		Return True
 	End Method
 
 
-	Method RemovePanel:int(panel:TGUIAccordeonPanel)
-		if not panel or not panels then return False
+	Method RemovePanel:Int(panel:TGUIAccordeonPanel)
+		If Not panel Or Not panels Then Return False
 
-		local newPanels:TGUIAccordeonPanel[] = new TGUIAccordeonPanel[0]
-		local removedSomething:int = False
-		for local p:TGUIAccordeonPanel = EachIn panels
-			if p = panel
-				p.SetParent(null)
+		Local newPanels:TGUIAccordeonPanel[] = New TGUIAccordeonPanel[0]
+		Local removedSomething:Int = False
+		For Local p:TGUIAccordeonPanel = EachIn panels
+			If p = panel
+				p.SetParent(Null)
 				removedSomething = True
-				continue
-			endif
+				Continue
+			EndIf
 
 			newPanels :+ [p]
-		next
+		Next
 
 		panels = newPanels
 
-		if removedSomething then RefitPanelSizes()
+'		If removedSomething Then RefitPanelSizes()
+		If removedSomething Then InvalidateLayout()
 
-		return removedSomething
+
+		Return removedSomething
 	End Method
 
 
-	Method GetPanelAtIndex:TGUIAccordeonPanel(index:int)
-		if index < 0 or not panels or index >= panels.length then return Null
+	Method GetPanelAtIndex:TGUIAccordeonPanel(index:Int)
+		If index < 0 Or Not panels Or index >= panels.length Then Return Null
 
-		return panels[index]
+		Return panels[index]
 	End Method
 
 
-	Method GetPanelIndex:int(panel:TGUIAccordeonPanel)
-		if not panels or panels.length = 0 then return -1
+	Method GetPanelIndex:Int(panel:TGUIAccordeonPanel)
+		If Not panels Or panels.length = 0 Then Return -1
 
-		for local i:int = 0 until panels.length
-			if panels[i] = panel then return i
-		next
+		For Local i:Int = 0 Until panels.length
+			If panels[i] = panel Then Return i
+		Next
 
-		return -1
+		Return -1
 	End Method
 
 
-	Method GetOpenPanelCount:int()
-		local openPanels:int = 0
-		for local i:int = 0 until panels.length
-			if panels[i].isOpen then openPanels :+ 1
-		next
-		return openPanels
+	Method GetOpenPanelCount:Int()
+		Local openPanels:Int = 0
+		For Local i:Int = 0 Until panels.length
+			If panels[i].isOpen Then openPanels :+ 1
+		Next
+		Return openPanels
 	End Method
 
 
-	Method GetPanelCount:int()
-		if not panels then return 0
-		return panels.length
+	Method GetPanelCount:Int()
+		If Not panels Then Return 0
+		Return panels.length
 	End Method
 
 
-	Method GetTotalPanelHeadersHeight:int()
-		if not panels then return 0
-		
-		local panelHeadersHeight:int = 0
-		for local p:TGUIAccordeonPanel = EachIn panels
+	Method GetTotalPanelHeadersHeight:Int()
+		If Not panels Then Return 0
+
+		Local panelHeadersHeight:Int = 0
+		For Local p:TGUIAccordeonPanel = EachIn panels
 			panelHeadersHeight :+ p.GetHeaderHeight()
-		next
-		return panelHeadersHeight
+		Next
+		Return panelHeadersHeight
 	End Method
 
 
 	'returns the maximum height for an open panel's body
-	Method GetMaxPanelBodyHeight:int()
-		return Max(0, GetHeight() - GetTotalPanelHeadersHeight())
-	End Method
-
-
-	Method RefitPanelSizes:int()
-		if not panels then return False
-
-		local panelX:int = 0
-		local panelY:int = 0
-		For local p:TGUIAccordeonPanel = Eachin panels
-			p.SetPosition(panelX, panelY)
-
-			if not p.isOpen
-				p.Resize(GetContentWidth(), -1)
-				panelY :+ p.GetHeaderHeight()
-			else
-				'auto height
-				if not p.fixedSize or p.fixedSize.y = -1
-					if _panelsFillAccordeon and not _allowMultipleOpenPanels
-						p.Resize(GetContentWidth(), p.GetHeaderHeight() + GetMaxPanelBodyHeight())
-					else
-						p.Resize(GetContentWidth(), p.GetHeaderHeight() + p.GetBodyHeight())
-					endif
-				endif
-				
-				panelY :+ p.GetHeight()
-			endif
-		Next
+	Method GetMaxPanelBodyHeight:Int()
+		Return Max(0, GetHeight() - GetTotalPanelHeadersHeight())
 	End Method
 
 
 	'override to add panels
-	Method UpdateChildren:int()
-		if panels
-			For local p:TGUIAccordeonPanel = EachIn panels
+	Method UpdateChildren:Int()
+		If panels
+			For Local p:TGUIAccordeonPanel = EachIn panels
 				p.Update()
 			Next
-		endif
+		EndIf
 	End Method
 
 	'override to add panels
-	Method DrawChildren:int()
-		if panels
-			For local p:TGUIAccordeonPanel = EachIn panels
+	Method DrawChildren:Int()
+		If panels
+			For Local p:TGUIAccordeonPanel = EachIn panels
 				p.Draw()
 			Next
-		endif
+		EndIf
 		Super.DrawChildren()
 	End Method
 
 
 	'override to add panels
-	Method DrawTooltips:int()
-		if panels
-			For local p:TGUIAccordeonPanel = EachIn panels
+	Method DrawTooltips:Int()
+		If panels
+			For Local p:TGUIAccordeonPanel = EachIn panels
 				p.DrawTooltips()
 			Next
-		endif
+		EndIf
 		Super.DrawTooltips()
-	End Method	
+	End Method
 
 
 	Method DrawContent()
-		'DrawRect( GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
+		'DrawRect( GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetScreenRect().GetH() )
+	End Method
+
+
+	Method onAppearanceChanged:Int()
+		Super.onAppearanceChanged()
+		if panels
+			For Local p:TGUIAccordeonPanel = EachIn panels
+				p.InvalidateLayout()
+				p.SetAppearanceChanged(True)
+			Next
+		endif
+	End Method
+
+
+	Method UpdateLayout()
+		If panels
+			InvalidateScreenRect()
+
+			Local panelX:Int = 0
+			Local panelY:Int = 0
+			For Local p:TGUIAccordeonPanel = EachIn panels
+				p.SetPosition(panelX, panelY)
+
+				If Not p.isOpen
+					p.SetSize(GetContentWidth(), -1)
+					panelY :+ p.GetHeaderHeight()
+				Else
+					'auto height
+					If Not p.fixedSize Or p.fixedSize.y = -1
+						If _panelsFillAccordeon And Not _allowMultipleOpenPanels
+							p.SetSize(GetContentWidth(), p.GetHeaderHeight() + GetMaxPanelBodyHeight())
+						Else
+							p.SetSize(GetContentWidth(), p.GetHeaderHeight() + p.GetBodyHeight())
+						EndIf
+					EndIf
+
+					panelY :+ p.GetHeight()
+				EndIf
+
+			Next
+		EndIf
 	End Method
 End Type

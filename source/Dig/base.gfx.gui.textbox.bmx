@@ -16,6 +16,11 @@ Type TGUITextBox Extends TGUIobject
 	Field _autoAdjustHeight:Int	= False
 
 
+	Method GetClassName:String()
+		Return "tguitextbox"
+	End Method
+
+
 	Method Create:TGUITextBox(position:TVec2D = null, dimension:TVec2D = null, text:String, limitState:String="")
 		Super.CreateBase(position, dimension, limitState)
 
@@ -40,11 +45,6 @@ Type TGUITextBox Extends TGUIobject
 	End Method
 
 
-	Method SetValue(value:string)
-		self.value = value
-	End Method
-
-
 	Method SetValueColor(color:TColor)
 		valueColor = color
 	End Method
@@ -64,8 +64,12 @@ Type TGUITextBox Extends TGUIobject
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha()
 
-		GetFont().drawBlock(value, int(GetScreenX()), int(GetScreenY()), rect.GetW(), rect.GetH(), valueAlignment, valueColor, 1, 1, 0.25)
+		GetFont().drawBlock(value, int(GetScreenRect().GetX()), int(GetScreenRect().GetY()), rect.GetW(), rect.GetH(), valueAlignment, valueColor, 1, 1, 0.25)
 
 		oldCol.SetRGBA()
+	End Method
+
+
+	Method UpdateLayout()
 	End Method
 End Type

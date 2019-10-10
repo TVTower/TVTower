@@ -254,13 +254,14 @@ Type TEventManager
 	'process all events currently in the queue
 	Method _processEvents(onlyChannel:Int=Null)
 		If Not _events.IsEmpty()
-			Local event:TEventBase = TEventBase(_events.First()) 			' get the next event
-			If event<> Null
-				If onlyChannel<>Null
+			' get the next event
+			Local event:TEventBase = TEventBase(_events.First())
+			If event <> Null
+				If onlyChannel <> Null
 					'system
 					?Threaded
 					If event._channel = 1 And event._channel <> onlyChannel
-						If CurrentThread()<>MainThread() Then Return
+						If CurrentThread() <> MainThread() Then Return
 					EndIf
 					?
 				EndIf
@@ -289,22 +290,24 @@ Type TEventManager
 		'one of both is empty
 		If Not checkedObject Then Return False
 		If Not limit Then Return False
-		'same object
+		'same object (also compares strings if they are both strings)
 		If checkedObject = limit Then Return True
 
-		'check if both are strings
+		'if both strings we just compare and also return if different
 		If String(limit) And String(checkedObject)
 			Return String(limit) = String(checkedObject)
 		EndIf
 
-		'check if classname / type is the same (type-name given as limit )
-		If String(limit)<>Null
-			Local typeId:TTypeId = TTypeId.ForName(String(limit))
-			'if we haven't got a valid classname
-			If Not typeId Then Return False
-			'if checked object is same type or does extend from that type
-			If TTypeId.ForObject(checkedObject).ExtendsType(typeId) Then Return True
+		'check if classname / type is the same (type-name/id given as limit )
+		Local typeId:TTypeId
+		If TTypeId(limit)
+			typeId = TTypeId(limit)
+		ElseIf String(limit)
+			typeId = TTypeId.ForName(String(limit))
 		EndIf
+
+		'got a valid classname and checked object is same type or does extend from that type
+		If typeId and TTypeId.ForObject(checkedObject).ExtendsType(typeId) Then Return True
 
 		Return False
 	End Function

@@ -95,41 +95,41 @@ Type TMouseManager
 	'so clicks between "updates" can still be processed one after another
 	'each information contains: position, click type and time of the click
 	Field _clickStack:TMouseManagerClick[][]
-	Field _clickStackIndex:Int[3]
+	Field _clickStackIndex:Int[5]
 	Field _longClickStack:TMouseManagerClick[][]
-	Field _longClickStackIndex:Int[3]
+	Field _longClickStackIndex:Int[5]
 	Field _doubleClickStack:TMouseManagerClick[][]
-	Field _doubleClickStackIndex:Int[3]
+	Field _doubleClickStackIndex:Int[5]
 
 	'previous position at the screen when a button was clicked, doubleclicked
 	'or longclicke the last time
-	Field _lastAnyClickPos:TVec2D[3]
+	Field _lastAnyClickPos:TVec2D[5]
 	'store clicks in the doubleclick timespan to identify double clicks
-	Field _clicksInDoubleClickTimeCount:Int[] = [0,0,0]
+	Field _clicksInDoubleClickTimeCount:Int[] = [0,0,0,0,0]
 
 	'down or not?
-	Field _down:Int[] = [0,0,0]
+	Field _down:Int[] = [0,0,0,0,0]
 	'time since when the button was pressed last
-	Field _downTime:Long[] = [0:Long,0:Long,0:Long]
+	Field _downTime:Long[] = [0,0,0,0,0]
 	'can clicks/hits get read?
 	'special info read is possible (IsDown(), IsNormal())
-	Field _enabled:Int[] = [True, True, True]
+	Field _enabled:Int[] = [True, True, True, True, True]
 
 
 	'TOUCH emulation
-	Field _longClickModeEnabled:Int = True
+	Field _longClickModeEnabled:Int = False
 	Field _longClickLeadsToRightClick:Int = True
 	'skip first click (touch screens)
 	Field _ignoreFirstClick:Int = False
-	Field _hasIgnoredFirstClick:Int[] = [0,0,0] 'currently ignoring?
-	Field _ignoredFirstClickPos:TVec2D[] = [New TVec2D, New TVec2D, New TVec2D]
+	Field _hasIgnoredFirstClick:Int[] = [0,0,0,0,0] 'currently ignoring?
+	Field _ignoredFirstClickPos:TVec2D[] = [New TVec2D, New TVec2D, New TVec2D, New TVec2D, New TVec2D]
 	'distance in pixels, if mouse moved further away, the next
 	'click will get ignored ("tap")
 	Field _minSwipeDistance:Int = 10
 
 	Global stackSize:Int = 20
-	Global evMouseDown:Int[3]
-	Global evMouseHits:Int[3]
+	Global evMouseDown:Int[5]
+	Global evMouseHits:Int[5]
 	Global evMousePosX:Int
 	Global evMousePosY:Int
 	Global evMouseZ:Int
@@ -149,22 +149,28 @@ Type TMouseManager
 
 		Select ev.id
 			Case EVENT_MOUSEDOWN
-				If Not evMouseDown[ev.data]
-					evMouseDown[ev.data-1] = 1
-					evMouseHits[ev.data-1] :+ 1
+				'we only handle up to the 5h mousebutton
+				If ev.data > 0 and ev.data <= 5
+					If Not evMouseDown[ev.data-1]
+						evMouseDown[ev.data-1] = 1
+						evMouseHits[ev.data-1] :+ 1
+					EndIf
+					MouseManager._HandleButtonEvent(ev.data)
 				EndIf
-				MouseManager._HandleButtonEvent(ev.data)
 			Case EVENT_MOUSEUP
-				evMouseDown[ev.data-1] = 0
-				MouseManager._HandleButtonEvent(ev.data)
+				'we only handle up to the 5h mousebutton
+				If ev.data > 0 and ev.data <= 5
+					evMouseDown[ev.data-1] = 0
+					MouseManager._HandleButtonEvent(ev.data)
+				EndIf
 			Case EVENT_MOUSEMOVE
 				evMousePosX = ev.x
 				evMousePosY = ev.y
 			Case EVENT_MOUSEWHEEL
 				evMouseZ :+ ev.data
 			Case EVENT_APPSUSPEND, EVENT_APPRESUME
-				evMouseDown = New Int[3] 'flush
-				evMouseHits = New Int[3] 'flush
+				evMouseDown = New Int[5] 'flush
+				evMouseHits = New Int[5] 'flush
 				evMouseZ = 0'flush
 		End Select
 
@@ -376,7 +382,7 @@ Type TMouseManager
 			For Local cType:Int = EachIn [CLICKTYPE_CLICK, CLICKTYPE_DOUBLECLICK, CLICKTYPE_LONGCLICK]
 				click = _GetClickStackEntry(i, cType)
 				While GetClicks(i, cType) > 0 And click And click.t + age < t
-					_RemoveClickstackEntry(i, CLICKTYPE_CLICK)
+					_RemoveClickstackEntry(i, cType)
 					click = _GetClickStackEntry(i, cType)
 				Wend
 			Next
@@ -631,8 +637,9 @@ Type TMouseManager
 		scrollWheelMoved = 0
 
 		If _lastScrollWheel <> evMouseZ
-			scrollWheelMoved = _lastScrollWheel - evMouseZ
-			_lastScrollWheel = evMouseZ
+			scrollWheelMoved = -evMouseZ
+			_lastScrollWheel = -evMouseZ
+			evMouseZ = 0
 		EndIf
 
 
@@ -694,14 +701,16 @@ Type TMouseManager
 			EndIf
 
 
+			Local currentPosVec:TVec2D = New TVec2D.Init(x, y)
+
 			'check for swipe
-			If _hasIgnoredFirstClick[buttonIndex] And _lastAnyClickPos[buttonIndex] And _lastAnyClickPos[buttonIndex].DistanceTo(New TVec2D.Init(x, y)) > _minSwipeDistance
-				Print "reset " + GetMovedDistanceBetweenClicks(button)+" > "+_minSwipeDistance
+			If _hasIgnoredFirstClick[buttonIndex] And _lastAnyClickPos[buttonIndex] And _lastAnyClickPos[buttonIndex].DistanceTo(currentPosVec) > _minSwipeDistance
+				'Print "reset " + GetMovedDistanceBetweenClicks(button)+" > "+_minSwipeDistance
 				_hasIgnoredFirstClick[buttonIndex] = False
 			EndIf
 
 			'store last click pos - even if we ignore the effect of the click
-			_lastAnyClickPos[buttonIndex] = New TVec2D.Init(x, y)
+			_lastAnyClickPos[buttonIndex] = currentPosVec
 
 			'- Ignore first click?
 			'- Long click?
@@ -715,11 +724,11 @@ Type TMouseManager
 
 				' check for a long click
 				If _longClickModeEnabled And _downTime[buttonIndex] + longClickMinTime < t
-					_AddClickStackEntry(button, CLICKTYPE_LONGCLICK, New TVec2D.Init(x, y), t)
+					_AddClickStackEntry(button, CLICKTYPE_LONGCLICK, currentPosVec.Copy(), t)
 
 					'emulating right click?
 					If _longClickLeadsToRightClick And button = 1
-						_AddClickStackEntry(2, CLICKTYPE_CLICK, New TVec2D.Init(x, y), t)
+						_AddClickStackEntry(2, CLICKTYPE_CLICK, currentPosVec.Copy(), t)
 						_downTime[2] = _downTime[1]
 					EndIf
 
@@ -729,11 +738,11 @@ Type TMouseManager
 				Else
 					'Print Time.GetTimeGone() + "    down => up => click   GetClicks( " + button + ")=" + GetClicks(button) + " _clicksInDoubleClickTimeCount["+buttonIndex+"]="+_clicksInDoubleClickTimeCount[buttonIndex]
 
-					_AddClickStackEntry(button, CLICKTYPE_CLICK, New TVec2D.Init(x, y), t)
+					_AddClickStackEntry(button, CLICKTYPE_CLICK, currentPosVec.Copy(), t)
 
 					'double clicks (additionally to normal clicks!)
 					If _clicksInDoubleClickTimeCount[buttonIndex] >= 2
-						_AddClickStackEntry(button, CLICKTYPE_DOUBLECLICK, New TVec2D.Init(x, y), t)
+						_AddClickStackEntry(button, CLICKTYPE_DOUBLECLICK, currentPosVec.Copy(), t)
 
 						_clicksInDoubleClickTimeCount[buttonIndex] :- 2
 					EndIf

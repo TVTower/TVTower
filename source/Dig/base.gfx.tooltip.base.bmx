@@ -14,32 +14,32 @@ Import "base.gfx.bitmapfont.bmx"
 
 
 Type TTooltipBaseGroup
-	Field entries:TMap = new TMap
+	Field entries:TMap = New TMap
 
-	Method Add(name:object, tooltip:TTooltipBase)
-		local key:TLowerString = TLowerString(name)
-		if key
+	Method Add(name:Object, tooltip:TTooltipBase)
+		Local key:TLowerString = TLowerString(name)
+		If key
 			entries.Insert(key, tooltip)
-		else
-			entries.Insert(TLowerString.Create(string(name)), tooltip)
-		endif
+		Else
+			entries.Insert(TLowerString.Create(String(name)), tooltip)
+		EndIf
 	End Method
 
 
 	Method Get:TTooltipBase(key:TLowerString)
-		return TTooltipBase(entries.ValueForKey(key))
+		Return TTooltipBase(entries.ValueForKey(key))
 	End Method
 
 
-	Method Update:int()
-		For local t:TTooltipBase = EachIn entries.Values()
+	Method Update:Int()
+		For Local t:TTooltipBase = EachIn entries.Values()
 			t.Update()
 		Next
 	End Method
 
 
 	Method Render:Int(xOffset:Int = 0, yOffset:Int=0)
-		For local t:TTooltipBase = EachIn entries.Values()
+		For Local t:TTooltipBase = EachIn entries.Values()
 			t.Render(xOffset, yOffset)
 		Next
 	End Method
@@ -58,23 +58,25 @@ Type TTooltipBase
 	Field parentAlignment:TVec2D
 	'if a tooltip does not fit on the canvas, it is moved to these
 	'coordinates so it fits properly
-	Field _renderPosition:TVec2D
+	Field _renderPositionOffset:TVec2D
 
 	'time the step was set
 	'time when first hovering
 	Field _stepStartTime:Long = -1
-	Field _stepTime:int = 0
+	Field _stepTime:Int = 0
 	'time until the tooltip is shown (millisecs)
-	Field dwellTime:int = 250
+	Field dwellTime:Int = 250
 	'how long this tooltip will still be shown (millisecs)
 	Field activeTime:Int = 5000
 	'how long fading takes (millisecs)
 	Field fadeTime:Int = 100
 
-	Field data:TData = new TData
+	Field data:TData = New TData
 
 	Field title:String
 	Field content:String
+	Field _titleCache:TBitmapFontText
+	Field _contentCache:TBitmapFontText
 	Field _minTitleDim:TVec2D ' = new TVec2D.Init(160,0)
 	Field _maxTitleDim:TVec2D
 	Field _minContentDim:TVec2D ' = new TVec2D.Init(160,0)
@@ -85,42 +87,40 @@ Type TTooltipBase
 
 	'left (2) and right (4) is for all elements
 	'top (1) and bottom (3) padding for content
-	Field _contentPadding:TRectangle = new TRectangle.Init(2,3,2,3)
+	Field _contentPadding:TRectangle = New TRectangle.Init(2,3,2,3)
 
-	Field _options:int = 0
-	Field _step:int = 0
-	Field _contentChanged:int = False
-	'cache
-	Field _contentDimension:TVec2D()
+	Field _options:Int = 0
+	Field _step:Int = 0
 
-	Field _customDrawBackground:int(tooltip:TTooltipBase, x:int, y:int, w:int, h:int)
-	Field _customDrawForeground:int(tooltip:TTooltipBase, x:int, y:int, w:int, h:int)
-	Field _customDrawHeader:int(tooltip:TTooltipBase, x:int, y:int, w:int, h:int)
-	Field _customDrawContent:int(tooltip:TTooltipBase, x:int, y:int, w:int, h:int)
+	Field _customDrawBackground:Int(tooltip:TTooltipBase, x:Int, y:Int, w:Int, h:Int)
+	Field _customDrawForeground:Int(tooltip:TTooltipBase, x:Int, y:Int, w:Int, h:Int)
+	Field _customDrawHeader:Int(tooltip:TTooltipBase, x:Int, y:Int, w:Int, h:Int)
+	Field _customDrawContent:Int(tooltip:TTooltipBase, x:Int, y:Int, w:Int, h:Int)
 
-	Global sharedDwellTime:int = 1000
+	Global sharedDwellTime:Int = 1000
 	'after this time sharedDwellTime is added again to total DwellTime
-	Global sharedDwellTimeSkipTime:int = 1000
+	Global sharedDwellTimeSkipTime:Int = 1000
 	Global _lastTooltipActiveTime:Long = -1
 	Global _useFontBold:TBitmapFont
 	Global _useFont:TBitmapFont
 
-	Const STEP_INACTIVE:int = 1
-	Const STEP_DWELLING:int = 2
-	Const STEP_ACTIVE:int = 3
-	Const STEP_FADING_OUT:int = 4
+	Const STEP_INACTIVE:Int = 1
+	Const STEP_DWELLING:Int = 2
+	Const STEP_ACTIVE:Int = 3
+	Const STEP_FADING_OUT:Int = 4
 
-	Const OPTION_DISABLED:int = 1
-	Const OPTION_HOVERED:int = 2
-	Const OPTION_MANUAL_HOVER_CHECK:int = 4
-	Const OPTION_MANUALLY_HOVERED:int = 8
-	Const OPTION_NULL_LIFETIME_WHEN_NOT_HOVERED:int = 16
-	Const OPTION_HAS_LIFETIME:int = 32
-	Const OPTION_WAS_ACTIVE:int = 64
+	Const OPTION_DISABLED:Int = 1
+	Const OPTION_HOVERED:Int = 2
+	Const OPTION_MANUAL_HOVER_CHECK:Int = 4
+	Const OPTION_MANUALLY_HOVERED:Int = 8
+	Const OPTION_NULL_LIFETIME_WHEN_NOT_HOVERED:Int = 16
+	Const OPTION_HAS_LIFETIME:Int = 32
+	Const OPTION_WAS_ACTIVE:Int = 64
 	'if the tooltip has to be moved to stay on screen - this sets if it
 	'may be rendered over the parent area
-	Const OPTION_PARENT_OVERLAY_ALLOWED:int = 128
-	Const OPTION_MIRRORED_RENDER_POSITION:int = 256
+	Const OPTION_PARENT_OVERLAY_ALLOWED:Int = 128
+	Const OPTION_MIRRORED_RENDER_POSITION_X:Int = 256
+	Const OPTION_MIRRORED_RENDER_POSITION_Y:Int = 512
 
 
 
@@ -136,7 +136,7 @@ Type TTooltipBase
 
 		SetStep(STEP_INACTIVE)
 
-		return Self
+		Return Self
 	End Method
 
 
@@ -145,37 +145,38 @@ Type TTooltipBase
 		Local otherTip:TTooltipBase = TTooltipBase(other)
 		If otherTip
 			'below me
-			If otherTip.IsStep(STEP_ACTIVE) and otherTip._step = _step
-				if otherTip._stepStartTime > _stepStartTime	Then Return 1
-				if otherTip._stepStartTime < _stepStartTime	Then Return -1
-			endif
+			If otherTip.IsStep(STEP_ACTIVE) And otherTip._step = _step
+				If otherTip._stepStartTime > _stepStartTime	Then Return 1
+				If otherTip._stepStartTime < _stepStartTime	Then Return -1
+			EndIf
 			'on top of me
-			If otherTip.IsStep(STEP_ACTIVE) and otherTip._step <> _step Then Return 1
-		endif
+			If otherTip.IsStep(STEP_ACTIVE) And otherTip._step <> _step Then Return 1
+		EndIf
 
 		Return Super.Compare(other)
 	End Method
 
 
-	Method SetOrientationPreset(direction:string="TOP", distance:int = 0)
-		offset = null
+	Method SetOrientationPreset(direction:String="TOP", distance:Int = 0)
+		If Not offset Then offset = New TVec2D
+
 		Select direction.ToUpper()
-			case "LEFT"
+			Case "LEFT"
 				parentAlignment = ALIGN_LEFT_CENTER
 				alignment = ALIGN_RIGHT_CENTER
-				if distance then offset = new TVec2D.Init(-1 * abs(distance), 0)
-			case "RIGHT"
+				If distance Then offset.Init(-1 * Abs(distance), 0)
+			Case "RIGHT"
 				parentAlignment = ALIGN_RIGHT_CENTER
 				alignment = ALIGN_LEFT_CENTER
-				if distance then offset = new TVec2D.Init(+1 * abs(distance), 0)
-			case "BOTTOM"
+				If distance Then offset.Init(+1 * Abs(distance), 0)
+			Case "BOTTOM"
 				parentAlignment = ALIGN_CENTER_BOTTOM
 				alignment = ALIGN_CENTER_TOP
-				if distance then offset = new TVec2D.Init(0, +1 * abs(distance))
-			default
+				If distance Then offset.Init(0, +1 * Abs(distance))
+			Default
 				parentAlignment = ALIGN_CENTER_TOP
 				alignment = ALIGN_CENTER_BOTTOM
-				if distance then offset = new TVec2D.Init(0, -1 * abs(distance))
+				If distance Then offset.Init(0, +1 * Abs(distance))
 		End Select
 	End Method
 
@@ -194,110 +195,126 @@ Type TTooltipBase
 	End Method
 
 
-	Method SetActiveTime(time:int)
-		self.activeTime = time
-		if time = -1
+	Method SetActiveTime(time:Int)
+		Self.activeTime = time
+		If time = -1
 			SetOption(OPTION_HAS_LIFETIME, False)
-		else
+		Else
 			SetOption(OPTION_HAS_LIFETIME, True)
-		endif
+		EndIf
 	End Method
 
 
-	Method SetStep:int(s:int)
-		if self._step = s then return False
+	Method SetStep:Int(s:Int)
+		If Self._step = s Then Return False
 
 		Select s
 			Case STEP_DWELLING
-				self._stepTime = GetDwellTime()
+				Self._stepTime = GetDwellTime()
 				'
 			Case STEP_ACTIVE
-				self._stepTime = activeTime
+				Self._stepTime = activeTime
 				'
 			Case STEP_FADING_OUT
-				self._stepTime = fadeTime
+				Self._stepTime = fadeTime
 				'
 			Case STEP_INACTIVE
-				self._stepTime = -1
+				Self._stepTime = -1
 				'
 			Default
-				return False
+				Return False
 		End Select
 
-		self._step = s
-		self._stepStartTime = Time.MilliSecsLong()
+		Self._step = s
+		Self._stepStartTime = Time.MilliSecsLong()
 
-		return True
+		Return True
 	End Method
 
 
-	Method IsStep:int(s:int)
-		return self._step = s
+	Method IsStep:Int(s:Int)
+		Return Self._step = s
 	End Method
 
 
-	Method IsStepTimeGone:int()
+	Method IsStepTimeGone:Int()
 		Return Time.MilliSecsLong() > _stepStartTime + _stepTime
 	End Method
 
 
 	Method GetContentPadding:TRectangle()
-		return _contentPadding
+		Return _contentPadding
 	End Method
 
 
 	'Returns the visible rectangle on screen
 	Method GetScreenRect:TRectangle()
-		return new TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
+		Return New TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
 	End Method
 
 
 	'Returns the x coordinate on the screen
-	Method GetScreenX:int()
-		local moveX:int = 0
-		if alignment then moveX :- alignment.GetX() * GetWidth()
-		if GetOffset() then moveX :+ GetOffset().GetX()
-		if _renderPosition then moveX :+ _renderPosition.x
+	Method GetScreenX:Int()
+		Local moveX:Int = 0
+		If alignment Then moveX :- alignment.GetX() * GetWidth()
+		If GetOffset()
+			'offset is static (not multiplied with alignment) but when
+			'mirrored it should switch direction
+			If HasOption(OPTION_MIRRORED_RENDER_POSITION_X)
+				moveX :- GetOffset().GetX()
+			Else
+				moveX :+ GetOffset().GetX()
+			EndIf
+		EndIf
+		If _renderPositionOffset Then moveX :+ _renderPositionOffset.x
 
-		if parentArea
-			if parentAlignment then moveX :+ parentAlignment.GetX() * parentArea.GetW()
+		If parentArea
+			If parentAlignment Then moveX :+ parentAlignment.GetX() * parentArea.GetW()
 
-			return parentArea.GetX() + moveX
-		endif
-		return area.GetX() - moveX
+			Return parentArea.GetX() + moveX
+		EndIf
+		Return area.GetX() - moveX
 	End Method
 
 
 	'Returns the y coordinate on the screen
-	Method GetScreenY:int()
-		local moveY:int = 0
-		if alignment then moveY :- alignment.GetY() * GetHeight()
-		if GetOffset() then moveY :+ GetOffset().GetY()
-		if _renderPosition then movey :+ _renderPosition.y
+	Method GetScreenY:Int()
+		Local moveY:Int = 0
+		If alignment Then moveY :- alignment.GetY() * GetHeight()
+		If GetOffset()
+			'offset is static (not multiplied with alignment) but when
+			'mirrored it should switch direction
+			If HasOption(OPTION_MIRRORED_RENDER_POSITION_Y)
+				moveY :- GetOffset().GetY()
+			Else
+				moveY :+ GetOffset().GetY()
+			EndIf
+		EndIf
+		If _renderPositionOffset Then moveY :+ _renderPositionOffset.y
 
-		if parentArea
-			if parentAlignment then moveY :+ parentAlignment.GetY() * parentArea.GetH()
+		If parentArea
+			If parentAlignment Then moveY :+ parentAlignment.GetY() * parentArea.GetH()
 
-			return parentArea.GetY() + moveY
-		endif
-		return area.GetY() + moveY
+			Return parentArea.GetY() + moveY
+		EndIf
+		Return area.GetY() + moveY
 	End Method
 
 
 	'Returns the visible width on the screen
-	Method GetScreenWidth:int()
-		return GetWidth()
+	Method GetScreenWidth:Int()
+		Return GetWidth()
 	End Method
 
 
 	'Returns the visible height on the screen
-	Method GetScreenHeight:int()
-		return GetHeight()
+	Method GetScreenHeight:Int()
+		Return GetHeight()
 	End Method
 
 
 	Method GetOffset:TVec2D()
-		return offset
+		Return offset
 	End Method
 
 
@@ -308,7 +325,7 @@ Type TTooltipBase
 
 		'auto width calculation
 		If area.GetW() <= 0
-			return Max(GetTitleWidth(), GetContentWidth()) + GetContentPadding().GetLeft() + GetContentPadding().GetRight()
+			Return Max(GetTitleWidth(), GetContentWidth()) + GetContentPadding().GetLeft() + GetContentPadding().GetRight()
 		EndIf
 	End Method
 
@@ -321,13 +338,13 @@ Type TTooltipBase
 		'auto height calculation
 		If area.GetH() <= 0
 			Local result:Int = 0
-			Local contentHeight:int = GetContentHeight()
+			Local contentHeight:Int = GetContentHeight()
 			'height from title + content + spacing
 			result:+ GetTitleHeight()
-			if contentHeight > 0
+			If contentHeight > 0
 				result:+ contentHeight
 '				result:+ GetContentPadding().GetTop() + GetContentPadding().GetBottom()
-			endif
+			EndIf
 				result:+ GetContentPadding().GetTop() + GetContentPadding().GetBottom()
 			Return result
 		EndIf
@@ -336,187 +353,210 @@ Type TTooltipBase
 
 
 	Method GetContentWidth:Int()
-		if content = ""
-			if _minContentDim then return _minContentDim.GetIntX()
-			return 0
-		endif
+		If content = ""
+			If _minContentDim Then Return _minContentDim.GetIntX()
+			Return 0
+		EndIf
 
-		local maxWidth:int = 0
-		local minWidth:int = 0
-		if area.GetW() > 0
+		If _contentCache And _contentCache.HasCache() Then Return _contentCache.cache.width
+
+		Local maxWidth:Int = 0
+		Local minWidth:Int = 0
+		If area.GetW() > 0
 			maxWidth = area.GetW() - GetContentPadding().GetLeft() - GetContentPadding().GetRight()
-		else if _maxContentDim
+		Else If _maxContentDim
 			maxWidth = _maxContentDim.GetIntX()
-		endif
-		if _minContentDim then minWidth = _minContentDim.GetIntX()
-		if maxWidth > 0 then minWidth = Min(minWidth, maxWidth)
+		EndIf
+		If _minContentDim Then minWidth = _minContentDim.GetIntX()
+		If maxWidth > 0 Then minWidth = Min(minWidth, maxWidth)
 
-		if _maxContentDim and _maxContentDim.GetX() > 0
-			return Min(Max(minWidth, 1 + GetFont().GetBlockWidth(content, Min(maxWidth, _maxContentDim.GetX()), -1)), _maxContentDim.GetX())
-		else
-			return Max(minWidth, 1 + GetFont().GetBlockWidth(content, maxWidth, -1))
-		endif
+		If _maxContentDim And _maxContentDim.GetX() > 0
+			Return Min(Max(minWidth, 1 + GetFont().GetBlockWidth(content, Min(maxWidth, _maxContentDim.GetX()), -1)), _maxContentDim.GetX())
+		Else
+			Return Max(minWidth, 1 + GetFont().GetBlockWidth(content, maxWidth, -1))
+		EndIf
 	End Method
 
 
 	Method GetContentHeight:Int()
-		if content=""
-			if _minContentDim then return _minContentDim.GetIntY()
-			return 0
-		endif
+		If content=""
+			If _minContentDim Then Return _minContentDim.GetIntY()
+			Return 0
+		EndIf
 
-		local minContentHeight:int = -1
-		if _minContentDim then minContentHeight = _minContentDim.GetIntY()
+		Local minContentHeight:Int = 0
+		If _minContentDim Then minContentHeight = _minContentDim.GetIntY()
 
-		if _maxContentDim and _maxContentDim.GetY() > 0
-			return Min(Max(GetFont().getBlockHeight(content, GetInnerWidth(), -1), minContentHeight), _maxContentDim.GetY())
-		else
-			return Max(GetFont().getBlockHeight(content, GetInnerWidth(), -1), minContentHeight)
-		endif
+		If _contentCache And _contentCache.HasCache() Then Return Max(minContentHeight, _contentCache.cache.height)
+
+		If _maxContentDim And _maxContentDim.GetY() > 0
+			Return Min(Max(GetFont().getBlockHeight(content, GetInnerWidth(), -1), minContentHeight), _maxContentDim.GetY())
+		Else
+			Return Max(GetFont().getBlockHeight(content, GetInnerWidth(), -1), minContentHeight)
+		EndIf
 	End Method
 
 
-	Method GetInnerWidth:int()
-		return GetWidth() - GetContentPadding().GetLeft() - GetContentPadding().GetRight()
+	Method GetInnerWidth:Int()
+		Return GetWidth() - GetContentPadding().GetLeft() - GetContentPadding().GetRight()
 	End Method
 
 
-	Method MoveToVisibleScreenArea(checkParentArea:int = True)
-		if not _renderPosition then _renderPosition = new TVec2D
-		_renderPosition.SetXY(0,0)
-		SetOption(OPTION_MIRRORED_RENDER_POSITION, False)
+	'adjusts "_renderPositionOffset" to be totally visible on screen
+	Method MoveToVisibleScreenArea(checkParentArea:Int = True)
+		If Not _renderPositionOffset Then _renderPositionOffset = New TVec2D
+		_renderPositionOffset.SetXY(0,0)
+		SetOption(OPTION_MIRRORED_RENDER_POSITION_X, False)
+		SetOption(OPTION_MIRRORED_RENDER_POSITION_Y, False)
 
-		local screenRect:TRectangle = GetScreenRect()
+		Local screenRect:TRectangle = GetScreenRect()
 
 		'limit to visible areas
 		'-> moves tooltip  so that everything is visible on screen
-		local outOfScreenLeft:int = Min(0, screenRect.GetX())
-		local outOfScreenRight:int = Max(0, screenRect.GetX2() - GetGraphicsManager().GetWidth())
-		local outOfScreenTop:int = Min(0, screenRect.GetY())
-		local outOfScreenBottom:int = Max(0, screenRect.GetY2() - GetGraphicsManager().GetHeight())
+		Local outOfScreenLeft:Int = Min(0, screenRect.GetX())
+		Local outOfScreenRight:Int = Max(0, screenRect.GetX2() - GetGraphicsManager().GetWidth())
+		Local outOfScreenTop:Int = Min(0, screenRect.GetY())
+		Local outOfScreenBottom:Int = Max(0, screenRect.GetY2() - GetGraphicsManager().GetHeight())
 
-		if outOfScreenLeft then _renderPosition.AddXY(-outOfScreenLeft, 0)
-		if outOfScreenRight then _renderPosition.AddXY(-outOfScreenRight, 0)
-		if outOfScreenTop then _renderPosition.AddXY(0, -outOfScreenTop)
-		if outOfScreenBottom then _renderPosition.AddXY(0, -outOfScreenBottom)
+		If outOfScreenLeft Then _renderPositionOffset.AddXY(-outOfScreenLeft, 0)
+		If outOfScreenRight Then _renderPositionOffset.AddXY(-outOfScreenRight, 0)
+		If outOfScreenTop Then _renderPositionOffset.AddXY(0, -outOfScreenTop)
+		If outOfScreenBottom Then _renderPositionOffset.AddXY(0, -outOfScreenBottom)
 
 		'check if it overlaps a parental area
-		if checkParentArea and parentArea and not HasOption(OPTION_PARENT_OVERLAY_ALLOWED)
+		If checkParentArea And parentArea And Not HasOption(OPTION_PARENT_OVERLAY_ALLOWED)
 			'store how much it overlaps
-			local intersectRect:TRectangle = parentArea.IntersectRect(screenRect)
-			if intersectRect
-				'move to _other_ side of the widget if overlapping is too much
-				if (outOfScreenTop<0 or outOfScreenBottom<0) and intersectRect.GetH() > 5
-					local offsetY:int = 0
-					if GetOffset() then offsetY = GetOffset().GetY()
+			Local intersectRect:TRectangle = parentArea.IntersectRectXYWH(screenRect.GetX() + _renderPositionOffset.x, screenRect.GetY() + _renderPositionOffset.y, screenRect.GetW(), screenRect.GetH())
+			If intersectRect
+				'only correct if we else would cross the parentArea
 
-					if intersectRect.GetY() = parentArea.GetY()
-						_renderPosition.SetY( parentArea.GetY2() - screenRect.GetY() + intersectRect.GetH() - 2 * offsetY )
-						SetOption(OPTION_MIRRORED_RENDER_POSITION, True)
-					else
-						_renderPosition.SetY( -outOfScreenBottom + parentArea.GetY() - screenRect.GetY2() + offsetY )
-						SetOption(OPTION_MIRRORED_RENDER_POSITION, True)
-					endif
-				endif
+				If alignment.GetX() <> 1.0 And alignment.GetX() <> 0.0
+					'move to _other_ side of the widget if overlapping is too much
+					If (outOfScreenTop < 0 Or outOfScreenBottom > 0) And intersectRect.GetH() > 5
+						Local offsetY:Int = 0
+						If GetOffset() Then offsetY = GetOffset().GetY()
 
-				if (outOfScreenLeft<0 or outOfScreenRight<0) and intersectRect.GetW() > 5
-					local offsetX:int = 0
-					if GetOffset() then offsetX = GetOffset().GetX()
+						'from top to bottom?
+						If screenRect.GetY() < parentArea.GetY()
+							_renderPositionOffset.SetY( parentArea.GetY2() + _renderPositionOffset.y + offsetY)
+							SetOption(OPTION_MIRRORED_RENDER_POSITION_Y, True)
+						'from bottom to top
+						Else
+							_renderPositionOffset.SetY( - parentArea.GetH() - screenRect.GetH())
+							SetOption(OPTION_MIRRORED_RENDER_POSITION_Y, True)
+						EndIf
+					EndIf
+				EndIf
 
-					if outOfScreenLeft<>0
-						_renderPosition.SetX( -outOfScreenLeft + parentArea.GetX2() - offsetX )
-						SetOption(OPTION_MIRRORED_RENDER_POSITION, True)
-					else
-						_renderPosition.SetX( - screenRect.GetW() - parentArea.GetW()  - 2 * offsetX )
-						SetOption(OPTION_MIRRORED_RENDER_POSITION, True)
-					endif
-				endif
-			endif
-		endif
+				If alignment.GetY() <> 1.0 And alignment.GetY() <> 0.0
+					If (outOfScreenLeft < 0 Or outOfScreenRight > 0) And intersectRect.GetW() > 5
+						Local offsetX:Int = 0
+						If GetOffset() Then offsetX = GetOffset().GetX()
+
+						'from left to right?
+						If screenRect.GetX() < parentArea.GetX()
+							_renderPositionOffset.SetX( parentArea.GetX2() + _renderPositionOffset.x + offsetX)
+							SetOption(OPTION_MIRRORED_RENDER_POSITION_X, True)
+						'from right to left
+						Else
+							_renderPositionOffset.SetX( - parentArea.GetW() - screenRect.GetW())
+							SetOption(OPTION_MIRRORED_RENDER_POSITION_X, True)
+						EndIf
+					EndIf
+				EndIf
+			EndIf
+		EndIf
 	End Method
 
 
 	Method SetTitle:Int(value:String)
-		if title = value then return FALSE
+		If title = value Then Return False
+
+		If _titleCache Then _titleCache.Invalidate()
 
 		title = value
 	End Method
 
 
 	Method SetContent:Int(value:String)
-		if content = value then return FALSE
+		If content = value Then Return False
+
+		If _contentCache Then _contentCache.Invalidate()
 
 		content = value
-		_contentChanged = True
 
-		return True
+		Return True
 	End Method
 
 
-	Method SetTitleAndContentMinLimits(minTitleDim:TVec2D, minContentDim:TVec2D=null)
-		if minTitleDim
-			if not minContentDim = -1 then minContentDim = minTitleDim.Copy()
-		endif
+	Method SetTitleAndContentMinLimits(minTitleDim:TVec2D, minContentDim:TVec2D=Null)
+		If minTitleDim
+			If Not minContentDim = -1 Then minContentDim = minTitleDim.Copy()
+		EndIf
 
-		self._minTitleDim = minTitleDim
-		self._minContentDim = minContentDim
+		Self._minTitleDim = minTitleDim
+		Self._minContentDim = minContentDim
 	End Method
 
 
 	Method GetTitleHeight:Int()
-		if title = ""
-			if _minTitleDim then return _minTitleDim.GetIntY()
-			return 0
-		endif
+		If title = ""
+			If _minTitleDim Then Return _minTitleDim.GetIntY()
+			Return 0
+		EndIf
 
-		if _maxTitleDim and _maxTitleDim.GetIntY() > 0
-			return Min(GetFontBold().GetBlockHeight(title, GetTitleWidth(), -1), _maxTitleDim.GetIntY())
-		else
-			return GetFontBold().GetBlockHeight(title, GetTitleWidth(), -1)
-		endif
+		If _titleCache And _titleCache.HasCache() Then Return _titleCache.cache.height
+
+		If _maxTitleDim And _maxTitleDim.GetIntY() > 0
+			Return Min(GetFontBold().GetBlockHeight(title, GetTitleWidth(), -1), _maxTitleDim.GetIntY())
+		Else
+			Return GetFontBold().GetBlockHeight(title, GetTitleWidth(), -1)
+		EndIf
 	End Method
 
 
-	Method GetTitleWidth:int()
-		if title = ""
-			if _minTitleDim then return _minTitleDim.GetIntX()
-			return 0
-		endif
+	Method GetTitleWidth:Int()
+		If title = ""
+			If _minTitleDim Then Return _minTitleDim.GetIntX()
+			Return 0
+		EndIf
 
-		local minTitleW:int = 0
-		if _minTitleDim then minTitleW = _minTitleDim.GetIntX()
+		If _titleCache And _titleCache.HasCache() Then Return _titleCache.cache.width
 
-		if _maxTitleDim and _maxTitleDim.GetIntX() > 0
-			return Min(Max(minTitleW, 1 + GetFontBold().GetBlockWidth(title, _maxTitleDim.GetIntX(), -1)), _maxTitleDim.GetIntX())
-		else
-			return Max(minTitleW, 1 + GetFontBold().GetBlockWidth(title, -1, -1))
-		endif
+		Local minTitleW:Int = 0
+		If _minTitleDim Then minTitleW = _minTitleDim.GetIntX()
+
+		If _maxTitleDim And _maxTitleDim.GetIntX() > 0
+			Return Min(Max(minTitleW, 1 + GetFontBold().GetBlockWidth(title, _maxTitleDim.GetIntX(), -1)), _maxTitleDim.GetIntX())
+		Else
+			Return Max(minTitleW, 1 + GetFontBold().GetBlockWidth(title, -1, -1))
+		EndIf
 	End Method
 
 
 	Method GetStepProgress:Float()
-		if _stepTime = -1 then return 0.0
-		return float(Min(1.0, Max(0, double(Time.MilliSecsLong() - _stepStartTime) / _stepTime)))
+		If _stepTime = -1 Then Return 0.0
+		Return Float(Min(1.0, Max(0, Double(Time.MilliSecsLong() - _stepStartTime) / _stepTime)))
 	End Method
 
 
 	Method GetFont:TBitmapFont()
-		if not _useFont then _useFont = GetBitmapFont("Default", 12)
-		return _useFont
+		If Not _useFont Then _useFont = GetBitmapFont("Default", 12)
+		Return _useFont
 	End Method
 
 
 	Method GetFontBold:TBitmapFont()
-		if not _useFontBold then _useFontBold = GetBitmapFont("Default", 12, BOLDFONT)
-		return _useFontBold
+		If Not _useFontBold Then _useFontBold = GetBitmapFont("Default", 12, BOLDFONT)
+		Return _useFontBold
 	End Method
 
 
-	Method GetDwellTime:int()
-		if _lastTooltipActiveTime + sharedDwellTimeSkipTime > Time.MilliSecsLong()
-			return dwellTime
-		endif
-		return dwellTime + sharedDwellTime
+	Method GetDwellTime:Int()
+		If _lastTooltipActiveTime + sharedDwellTimeSkipTime > Time.MilliSecsLong()
+			Return dwellTime
+		EndIf
+		Return dwellTime + sharedDwellTime
 	End Method
 
 
@@ -539,14 +579,14 @@ Type TTooltipBase
 		SetStep(STEP_INACTIVE)
 	End Method
 
-	Method IsFadingOut:int()
-		return IsStep(STEP_FADING_OUT)
+	Method IsFadingOut:Int()
+		Return IsStep(STEP_FADING_OUT)
 	End Method
 
 
 
-	Method _DrawForeground:Int(x:int, y:int, w:int, h:int)
-		if _customDrawForeground then return _customDrawForeground(self, x, y, w, h)
+	Method _DrawForeground:Int(x:Int, y:Int, w:Int, h:Int)
+		If _customDrawForeground Then Return _customDrawForeground(Self, x, y, w, h)
 
 		Local headerSize:Int = GetTitleHeight()
 
@@ -555,42 +595,42 @@ Type TTooltipBase
 	End Method
 
 
-	Method _DrawHeader:Int(x:int, y:int, w:int, h:int)
-		if _customDrawHeader then return _customDrawHeader(self, x, y, w, h)
-
-		rem
-		SetColor 255,200,200
-		DrawRect(x, y, w, h)
-		SetColor 255,255,255
-		endrem
+	Method _DrawHeader:Int(x:Int, y:Int, w:Int, h:Int)
+		If _customDrawHeader Then Return _customDrawHeader(Self, x, y, w, h)
 
 		'caption
-		GetFontBold().DrawBlock(title, x, y, w, h, ALIGN_LEFT_CENTER, titleColor, 2, 1, 0.1)
+		If Not _titleCache Then _titleCache = New TBitmapFontText
+		If _titleCache.HasCache()
+			_titleCache.DrawCached(x,y)
+		Else
+			'GetFontBold().DrawBlock(title, x, y, w, h, ALIGN_LEFT_CENTER, titleColor, 2, 1, 0.1)
+			_titleCache.DrawBlock(GetFontBold(), title, x, y, w, h, ALIGN_LEFT_CENTER, titleColor, 2, 1, 0.1)
+		EndIf
 
-		return True
+		Return True
 	End Method
 
 
 	Method _DrawContent:Int(x:Int, y:Int, w:Int, h:Int)
-		if _customDrawContent then return _customDrawContent(self, x, y, w, h)
-		If content = "" then return FALSE
+		If _customDrawContent Then Return _customDrawContent(Self, x, y, w, h)
+		If content = "" Then Return False
 
-		rem
-		SetColor 200,255,200
-		DrawRect(x, y, w, h)
-		SetColor 255,255,255
-		endrem
+		If Not _contentCache Then _contentCache = New TBitmapFontText
+		If _contentCache.HasCache()
+			_contentCache.DrawCached(x,y)
+		Else
+			'GetFont().drawBlock(content, x, y, GetContentWidth(), -1, ALIGN_LEFT_TOP, contentColor)
+			_contentCache.DrawBlock(GetFont(), content, x, y, GetContentWidth(), -1, ALIGN_LEFT_TOP, contentColor)
+		EndIf
 
-		GetFont().drawBlock(content, x, y, GetContentWidth(), -1, ALIGN_LEFT_TOP, contentColor)
-
-		return True
+		Return True
 	End Method
 
 
-	Method _DrawBackground:int(x:int, y:int, w:int, h:int)
-		if _customDrawBackground then return _customDrawBackground(self, x, y, w, h)
+	Method _DrawBackground:Int(x:Int, y:Int, w:Int, h:Int)
+		If _customDrawBackground Then Return _customDrawBackground(Self, x, y, w, h)
 
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:TColor = New TColor.Get()
 
 		'=== SHADOW ===
 		SetColor 0, 0, 0
@@ -612,99 +652,94 @@ Type TTooltipBase
 
 		oldCol.SetRGBA()
 
-		return True
+		Return True
 	End Method
 
 
 	Method Render:Int(xOffset:Int = 0, yOffset:Int=0)
-		rem
-		DrawText(GetFadeProgress(), GetScreenX() + xOffset,GetScreenY() + yOffset + 50)
-		DrawText("lifetime="+lifetime, GetScreenX() + xOffset,GetScreenY() + yOffset + 62)
-		DrawText("fadeStartTime="+_fadeStartTime, GetScreenX() + xOffset,GetScreenY() + yOffset + 74)
-		DrawText("hovered="+HasOption(OPTION_HOVERED), GetScreenX() + xOffset,GetScreenY() + yOffset + 86)
-		DrawText("inactive="+HasOption(OPTION_INACTIVE), GetScreenX() + xOffset,GetScreenY() + yOffset + 98)
-		DrawText("dwelling="+IsDwelling(), GetScreenX() + xOffset,GetScreenY() + yOffset + 110)
+		Rem
+		DrawText(GetFadeProgress(), GetScreenRect().GetX() + xOffset,GetScreenRect().GetY() + yOffset + 50)
+		DrawText("lifetime="+lifetime, GetScreenRect().GetX() + xOffset,GetScreenRect().GetY() + yOffset + 62)
+		DrawText("fadeStartTime="+_fadeStartTime, GetScreenRect().GetX() + xOffset,GetScreenRect().GetY() + yOffset + 74)
+		DrawText("hovered="+HasOption(OPTION_HOVERED), GetScreenRect().GetX() + xOffset,GetScreenRect().GetY() + yOffset + 86)
+		DrawText("inactive="+HasOption(OPTION_INACTIVE), GetScreenRect().GetX() + xOffset,GetScreenRect().GetY() + yOffset + 98)
+		DrawText("dwelling="+IsDwelling(), GetScreenRect().GetX() + xOffset,GetScreenRect().GetY() + yOffset + 110)
 		endrem
 
 		If HasOption(OPTION_DISABLED) Then Return False
-		If not IsStep(STEP_ACTIVE) and not IsStep(STEP_FADING_OUT) Then Return False
+		If Not IsStep(STEP_ACTIVE) And Not IsStep(STEP_FADING_OUT) Then Return False
 
 		MoveToVisibleScreenArea()
 
-		Local boxX:int = GetScreenX() + xOffset
-		Local boxY:Int	= GetScreenY() + yOffset
-		Local boxWidth:int = GetWidth()
+		Local boxX:Int = GetScreenRect().GetX() + xOffset
+		Local boxY:Int	= GetScreenRect().GetY() + yOffset
+		Local boxWidth:Int = GetWidth()
 		Local boxHeight:Int	= GetHeight()
 		Local padding:TRectangle = GetContentPadding()
 
-		local oldCol:TColor = new TColor.Get()
-		if IsFadingOut()
+		Local oldCol:TColor = New TColor.Get()
+		If IsFadingOut()
 			'fade out a bit faster ... ^3
-			SetAlpha oldCol.a * float((1.0-GetStepProgress())^2)
-		endif
+			SetAlpha oldCol.a * Float((1.0-GetStepProgress())^2)
+		EndIf
 
 		_DrawBackground(boxX, boxY, boxWidth, boxHeight)
-		_DrawForeground(boxX + int(padding.GetLeft()), boxY + int(padding.GetTop()), boxWidth - int(padding.GetLeft() - padding.GetRight()), boxHeight - int(padding.GetTop() - padding.GetBottom()))
+		_DrawForeground(boxX + Int(padding.GetLeft()), boxY + Int(padding.GetTop()), boxWidth - Int(padding.GetLeft() - padding.GetRight()), boxHeight - Int(padding.GetTop() - padding.GetBottom()))
 
 		SetAlpha oldCol.a
 
-		return True
+		Return True
 	End Method
 
 
 	Method Update:Int()
 		If HasOption(OPTION_DISABLED) Then Return False
 
-		'if _contentChanged
-		'	_contentDimension = new TVec2D.Init(GetContentWidth(), GetContentHeight())
-		'	_contentChanged = False
-		'endif
-
 		'=== ADJUST HOVER STATE ===
-		local isHovering:int = False
-		if HasOption(OPTION_MANUAL_HOVER_CHECK)
-			if HasOption(OPTION_MANUALLY_HOVERED)
+		Local isHovering:Int = False
+		If HasOption(OPTION_MANUAL_HOVER_CHECK)
+			If HasOption(OPTION_MANUALLY_HOVERED)
 				isHovering = True
 				onMouseOver()
-			endif
-		else
-			if parentArea and THelper.MouseInRect(parentArea)
+			EndIf
+		Else
+			If parentArea And THelper.MouseInRect(parentArea)
 				isHovering = True
 				onMouseOver()
-			endif
-		endif
-		if not isHovering and HasOption(OPTION_HOVERED)
+			EndIf
+		EndIf
+		If Not isHovering And HasOption(OPTION_HOVERED)
 			onMouseOut()
-		endif
+		EndIf
 
 
 
 		'=== ADJUST STEPS ====
-		If IsStep(STEP_INACTIVE) and isHovering
+		If IsStep(STEP_INACTIVE) And isHovering
 			SetStep(STEP_DWELLING)
-		endif
+		EndIf
 
-		If IsStep(STEP_DWELLING) and IsStepTimeGone()
-			if isHovering or HasOption(OPTION_HAS_LIFETIME)
+		If IsStep(STEP_DWELLING) And IsStepTimeGone()
+			If isHovering Or HasOption(OPTION_HAS_LIFETIME)
 				SetStep(STEP_ACTIVE)
-			elseif not isHovering
+			ElseIf Not isHovering
 				SetStep(STEP_INACTIVE)
-			endif
-		endif
+			EndIf
+		EndIf
 
 		If IsStep(STEP_ACTIVE)
 			_lastTooltipActiveTime = Time.MilliSecsLong()
 
-			if not HasOption(OPTION_HAS_LIFETIME) and not isHovering
+			If Not HasOption(OPTION_HAS_LIFETIME) And Not isHovering
 				SetStep(STEP_FADING_OUT)
-			elseif HasOption(OPTION_HAS_LIFETIME) and IsStepTimeGone()
+			ElseIf HasOption(OPTION_HAS_LIFETIME) And IsStepTimeGone()
 				SetStep(STEP_FADING_OUT)
-			endif
-		endif
+			EndIf
+		EndIf
 
-		If IsStep(STEP_FADING_OUT) and IsStepTimeGone()
+		If IsStep(STEP_FADING_OUT) And IsStepTimeGone()
 			SetStep(STEP_INACTIVE)
-		endif
+		EndIf
 
 		Return True
 	End Method

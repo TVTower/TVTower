@@ -2,7 +2,7 @@ Rem
 	====================================================================
 	GUI Window
 	====================================================================
-	
+
 	====================================================================
 	If not otherwise stated, the following code is available under the
 	following licence:
@@ -64,14 +64,14 @@ Type TGUIWindowBase Extends TGUIPanel
 
 		return True
 	End Method
-	
+
 
 	Method InitWindow(dimension:TVec2D)
 		If Not guiBackground
 			SetBackground( new TGUIBackgroundBox.Create(null, null) )
 		Else
 			guiBackground.rect.position.SetXY(0,0)
-			guiBackground.resize(dimension.GetX(), dimension.GetY())
+			guiBackground.SetSize(dimension.GetX(), dimension.GetY())
 		EndIf
 
 		'set another panel background
@@ -92,7 +92,7 @@ Type TGUIWindowBase Extends TGUIPanel
 	'content panel gets created if not done yet
 	Method GetGuiContent:TGUIPanel()
 		if not guiContent
-			guiContent = new TGUIPanel.Create(new TVec2D, new TVec2D.Init(GetContentScreenWidth(), GetContentScreenHeight()), "")
+			guiContent = new TGUIPanel.Create(new TVec2D, new TVec2D.Init(GetContentScreenRect().GetW(), GetContentScreenRect().GetH()), "")
 			AddChild(guiContent)
 		endif
 
@@ -102,20 +102,23 @@ Type TGUIWindowBase Extends TGUIPanel
 
 	'override to add guiContent-resizing
 	'size 0, 0 is not possible (leads to autosize)
-	Method Resize(w:Float = 0, h:Float = 0)
-		Super.Resize(w, h)
-
-		'resize content (if exists) to use all available content space
-		If guiContent
-			guiContent.SetPosition(0,0)
-			guiContent.resize(GetContentScreenWidth(),GetContentScreenHeight())
-		EndIf
+	Method SetSize(w:Float = 0, h:Float = 0)
+		Super.SetSize(w, h)
 	End Method
 
 
 
-	'overwrite default to reapply caption/value to reposition them
-	Method onStatusAppearanceChange:int()
+	'override
+	Method UpdateLayout()
+		Super.UpdateLayout()
+
+		'resize content (if exists) to use all available content space
+		If guiContent
+			guiContent.SetPosition(0,0)
+			guiContent.SetSize(GetContentScreenRect().GetW(),GetContentScreenRect().GetH())
+		EndIf
+
+
 		if guiCaptionTextBox
 			Local rect:TRectangle = new TRectangle.Init(-1,-1,-1,-1)
 			'if an area was defined - use as much values of this as
@@ -138,15 +141,14 @@ Type TGUIWindowBase Extends TGUIPanel
 			endif
 			if rect.position.x = -1 then rect.position.x = padding.GetLeft()
 			if rect.position.y = -1 then rect.position.y = 0
-			if rect.dimension.x = -1 then rect.dimension.x = GetContentScreenWidth()
+			if rect.dimension.x = -1 then rect.dimension.x = GetContentScreenRect().GetW()
 			if rect.dimension.y = -1 then rect.dimension.y = Max(25, padding.GetTop())
 
 
 			'reposition in all cases
 			guiCaptionTextBox.rect.position.SetXY(rect.GetX(), rect.GetY())
-			guiCaptionTextBox.resize(rect.GetW(), rect.GetH())
+			guiCaptionTextBox.SetSize(rect.GetW(), rect.GetH())
 		endif
-
 	End Method
 
 
@@ -185,26 +187,26 @@ Type TGUIWindowBase Extends TGUIPanel
 			guiCaptionTextBox.value = caption
 
 			'manually call reposition function
-			onStatusAppearanceChange()
+			InvalidateLayout()
 		EndIf
 	End Method
 
 
 	Method SetCaptionAndValue:Int(caption:String="", value:String="")
-		Local oldTextboxHeight:Float = GetContentScreenHeight()
+		Local oldTextboxHeight:Float = GetContentScreenRect().GetH()
 
 		SetCaption(caption)
 		SetValue(value)
 
 		'resize window
 		if guiTextBox
-			if guiTextBox.getHeight() - GetContentScreenHeight() > 0
-				Self.resize(0, GetScreenHeight() + Max(guiTextBox.GetScreenHeight(), guiTextBox.getHeight()) - GetContentScreenHeight())
+			if guiTextBox.getHeight() - GetContentScreenRect().GetH() > 0
+				Self.SetSize(0, GetScreenRect().GetH() + Max(guiTextBox.GetScreenRect.GetH(), guiTextBox.getHeight()) - GetContentScreenRect().GetH())
 			else
-				Self.resize(0, GetScreenHeight() + guiTextBox.getHeight() - GetContentScreenHeight() + 4)
+				Self.SetSize(0, GetScreenRect().GetH() + guiTextBox.getHeight() - GetContentScreenRect().GetH() + 4)
 			endif
 		else
-			Self.resize(0, rect.getH())
+			Self.SetSize(0, rect.getH())
 		endif
 
 		Return True

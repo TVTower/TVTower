@@ -55,6 +55,11 @@ Type TGUIDropDown Extends TGUIInput
 
 
 
+	Method GetClassName:String()
+		Return "tguidropdown"
+	End Method
+
+
     Method Create:TGUIDropDown(position:TVec2D = null, dimension:TVec2D = null, value:string="", maxLength:Int=128, limitState:String = "")
 		'setup base widget (input)
 		Super.Create(position, dimension, value, maxLength, limitState)
@@ -90,6 +95,7 @@ Type TGUIDropDown Extends TGUIInput
 		'add bg to list
 		local bg:TGUIBackgroundBox = new TGUIBackgroundBox.Create(new TVec2D, new TVec2D)
 		bg.spriteBaseName = spriteName
+'		bg.SetOption(GUI_OBJECT_IGNORE_PARENTPADDING, True)
 		list.SetBackground(bg)
 		'use padding from background
 		list.SetPadding(bg.GetPadding().getTop(), bg.GetPadding().getLeft(),  bg.GetPadding().getBottom(), bg.GetPadding().getRight())
@@ -97,28 +103,36 @@ Type TGUIDropDown Extends TGUIInput
 
 		'=== REGISTER EVENTS ===
 		'to close the list automatically if the object looses focus
-		AddEventListener(EventManager.registerListenerMethod("guiobject.onRemoveFocus", Self, "onRemoveFocus", self ))
+		AddEventListener(EventManager.registerListenerMethod("guiobject.onRemoveFocus", Self, "onRemoveFocus", self))
 		'listen to clicks to dropdown-items
-		AddEventListener(EventManager.registerListenerMethod("GUIDropDownItem.onClick",	Self.list, "onClickOnEntry" ))
+		AddEventListener(EventManager.registerListenerMethod("GUIDropDownItem.onClick",	Self.list, "onClickOnEntry"))
 		'someone uses the mouse wheel to scroll over the panel
-		AddEventListener(EventManager.registerListenerFunction( "guiobject.OnScrollwheel", onScrollWheel, Self))
+		AddEventListener(EventManager.registerListenerFunction("guiobject.OnScrollwheel", onScrollWheel, Self))
 
 		'to register if an item was selected
-		AddEventListener(EventManager.registerListenerMethod("guiselectlist.onSelectEntry", self, "onSelectEntry", self.list ))
+		AddEventListener(EventManager.registerListenerMethod("guiselectlist.onSelectEntry", self, "onSelectEntry", self.list))
 
 		Return Self
 	End Method
 
 
-	Method Resize(w:Float = 0, h:Float = 0)
-		Super.Resize(w, h)
-		if list then list.Resize(w, -1)
+	Method SetSize(w:Float = 0, h:Float = 0)
+		Super.SetSize(w, h)
+		if list then list.SetSize(w, -1)
 	End Method
 
 
 	Method Remove:int()
 		Super.Remove()
-		list.Remove()
+		if list then list.Remove()
+	End Method
+
+
+	'override
+	Method OnUpdateScreenRect()
+		Super.OnUpdateScreenRect()
+		if list then list.InvalidateScreenRect()
+'		if list then list.InvalidateLayout()
 	End Method
 
 
@@ -204,7 +218,7 @@ Type TGUIDropDown Extends TGUIInput
 	End Method
 
 
-	'handle clicks on the up/down-buttons and inform others about changes
+	'handle mousewheel right on the drop down "input" (not the list)
 	Function onScrollWheel:Int( triggerEvent:TEventBase )
 		Local dropdown:TGUIDropDown = TGUIDropDown(triggerEvent.GetSender())
 		Local value:Int = triggerEvent.GetData().getInt("value",0)
@@ -266,7 +280,8 @@ Type TGUIDropDown Extends TGUIInput
 
 	'sets the height of the lists content area (ignoring padding)
 	Method SetListContentHeight:int(height:Float)
-		list.Resize(list.rect.GetW(), height + list.GetPadding().GetTop() + list.GetPadding().GetBottom())
+		listHeight = height + list.GetPadding().GetTop() + list.GetPadding().GetBottom()
+		list.SetSize(list.rect.GetW(), listHeight)
 	End Method
 
 
@@ -274,7 +289,7 @@ Type TGUIDropDown Extends TGUIInput
 		open = bool
 		if open
 			'update z index to be above parent's child widgets
-			if GetParent() <> self
+			if _parent
 				if list.GetZIndex() <= GetZIndex() + 1
 					list.SetZIndex( GetZIndex() + 2)
 				endif
@@ -306,14 +321,14 @@ Type TGUIDropDown Extends TGUIInput
 
 	Method MoveListIntoPosition()
 		'move list to our position
-		local listPosY:int = GetScreenY() + GetScreenHeight()
+		local listPosY:int = GetScreenRect().GetY() + GetScreenRect().GetH()
 		'if list ends below screen end we might move it above the button
-		if listPosY + list.GetScreenHeight() > GetGraphicsManager().GetHeight()
-			if list.GetScreenHeight() < GetScreenY()
-				listPosY = GetScreenY() - list.GetScreenHeight()
+		if listPosY + list.GetScreenRect().GetH() > GetGraphicsManager().GetHeight()
+			if list.GetScreenRect().GetH() < GetScreenRect().GetY()
+				listPosY = GetScreenRect().GetY() - list.GetScreenRect().GetH()
 			endif
 		endif
-		list.SetPosition( GetScreenX(), listPosY )
+		list.SetPosition( GetScreenRect().GetX(), listPosY )
 	End Method
 
 
@@ -346,9 +361,10 @@ Type TGUIDropDown Extends TGUIInput
 		endif
 
 
-		local screenPos:TVec2D = GetScreenPos()
-		if not lastPosition or not lastPosition.IsSame(screenPos)
-			lastPosition = screenPos
+		local screenPos:TVec2D = GetScreenRect().position
+		if not lastPosition or not lastPosition.IsSame(GetScreenRect().position)
+			if not lastPosition then lastPosition = new TVec2D
+			lastPosition.CopyFrom( GetScreenRect().position )
 
 			'update list position (as it is not maintained as "child")
 			MoveListIntoPosition()
@@ -365,6 +381,11 @@ End Type
 Type TGUIDropDownItem Extends TGUISelectListItem
 
 
+	Method GetClassName:String()
+		Return "tguidropdownitem"
+	End Method
+
+
     Method Create:TGUIDropDownItem(position:TVec2D=null, dimension:TVec2D=null, value:String="")
 		if not dimension then dimension = new TVec2D.Init(80,20)
 
@@ -379,16 +400,6 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 	End Method
 
 
-	Method GetScreenWidth:Float()
-		local listParent:TGUIListBase = TGUIListBase(GetParent("TGUIListBase"))
-		if not listParent or not listParent.guiEntriesPanel
-			Return GetParent().GetScreenWidth()
-		else
-			Return listParent.guiEntriesPanel.GetContentScreenWidth()
-		endif
-	End Method
-
-
 	Method DrawBackground()
 		if not isHovered() and not isSelected() then return
 
@@ -396,17 +407,17 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha()
 
-		local upperParent:TGUIObject = GetParent("TGUIListBase")
+		local upperParent:TGUIObject = TGUIListBase.FindGUIListBaseParent(self)
 		upperParent.RestrictContentViewPort()
 
 		If isHovered()
 			SetColor 250,210,100
-			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), GetScreenHeight())
+			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetScreenRect().GetH())
 			SetColor 255,255,255
 		ElseIf isSelected()
 			SetAlpha GetAlpha()*0.5
 			SetColor 250,210,100
-			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), GetScreenHeight())
+			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetScreenRect().GetH())
 			SetColor 255,255,255
 			SetAlpha GetAlpha()*2.0
 		EndIf
@@ -433,27 +444,29 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 
 
 	Method DrawValue()
-		GetFont().DrawBlock(value, getScreenX()+2, GetScreenY(), GetScreenWidth()-4, GetScreenHeight(), ALIGN_LEFT_CENTER, valueColor)
+		'use rect height as limit as screen rect height might be limited
+		GetFont().DrawBlock(value, GetScreenRect().GetX()+2, GetScreenRect().GetY(), rect.GetW()-4, rect.GetH(), ALIGN_LEFT_CENTER, valueColor)
 	End Method
 
 
 	'override to select another parent
 	Method GetRestrictingViewPortObject:TGUIObject()
-		return GetParent("TGUIListBase")
+		return TGUIListBase.FindGUIListBaseParent(self)
 	End Method
 
 
 	'override
 	Method DrawContent()
+		if GetScreenRect().GetH() = 0 or GetScreenRect().GetW() = 0 then return
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha()
 
-		local upperParent:TGUIObject = GetParent("TGUIListBase")
-		upperParent.RestrictContentViewPort()
+		local upperParent:TGUIObject = TGUIListBase.FindGUIListBaseParent(self)
+		if upperParent then upperParent.RestrictContentViewPort()
 
 		DrawValue()
 
-		upperParent.ResetViewPort()
+		if upperParent then	upperParent.ResetViewPort()
 		oldCol.SetRGBA()
 	End Method
 End Type

@@ -11,7 +11,7 @@ Rem
 	====================================================================
 	LICENCE
 
-	Copyright (C) 2002-2014 Ronny Otto, digidea.de
+	Copyright (C) 2002-2019 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -38,6 +38,11 @@ Import "base.gfx.gui.list.base.bmx"
 
 Type TGUISelectList Extends TGUIListBase
 	Field selectedEntry:TGUIobject = Null
+
+
+	Method GetClassName:String()
+		Return "tguiselectlist"
+	End Method
 
 
     Method Create:TGUISelectList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
@@ -93,7 +98,7 @@ Type TGUISelectList Extends TGUIListBase
 			EventManager.triggerEvent( TEventSimple.Create( "GUISelectList.onSelectEntry", new TData.Add("entry", entry) , Self ) )
 		EndIf
 	End Method
-	
+
 
 	Method DeselectEntry:Int()
 		If TGUIListItem(selectedEntry)
@@ -103,7 +108,7 @@ Type TGUISelectList Extends TGUIListBase
 	End Method
 
 
-	Method getSelectedEntry:TGUIobject()
+	Method GetSelectedEntry:TGUIobject()
 		Return selectedEntry
 	End Method
 End Type
@@ -112,6 +117,13 @@ End Type
 
 
 Type TGUISelectListItem Extends TGUIListItem
+
+
+	Method GetClassName:String()
+		Return "tguiselectlistitem"
+	End Method
+
+
     Method Create:TGUISelectListItem(position:TVec2D=null, dimension:TVec2D=null, value:String="")
 		if not dimension then dimension = new TVec2D.Init(80,20)
 
@@ -131,15 +143,15 @@ Type TGUISelectListItem Extends TGUIListItem
 
 		'available width is parentsDimension minus startingpoint
 		'Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
-		Local maxWidth:Int = GetScreenWidth()
+		Local maxWidth:Int = GetScreenRect().GetW()
 		If isHovered()
 			SetColor 250,210,100
-			DrawRect(getScreenX(), getScreenY(), maxWidth, getScreenHeight())
+			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), maxWidth, GetScreenRect().GetH())
 			SetColor 255,255,255
 		ElseIf isSelected()
 			SetAlpha GetAlpha()*0.5
 			SetColor 250,210,100
-			DrawRect(getScreenX(), getScreenY(), maxWidth, getScreenHeight())
+			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), maxWidth, GetScreenRect().GetH())
 			SetColor 255,255,255
 			SetAlpha GetAlpha()*2.0
 		EndIf
@@ -148,17 +160,11 @@ Type TGUISelectListItem Extends TGUIListItem
 	End Method
 
 
-	Method DrawValue()
-		'draw value
-		GetFont().draw(value, Int(GetScreenX() + 5), Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(Self.value))), valueColor)
-	End Method
-
-
 	Method DrawContent()
 		DrawValue()
 	End Method
 
-	
+
 	Method Draw()
 		if not isDragged()
 			'this allows to use a list in a modal dialogue
@@ -171,5 +177,9 @@ Type TGUISelectListItem Extends TGUIListItem
 		else
 			Super.Draw()
 		endif
+	End Method
+
+
+	Method UpdateLayout()
 	End Method
 End Type

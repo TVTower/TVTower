@@ -13,9 +13,11 @@ Type TRenderConfig
 	Field scale:TVec2D
 	Field origin:TVec2D
 	Field rotation:Float
-	Field viewPort:TRectangle
+	Field viewport:TRectangle
 
 	Global list:TList = CreateList()
+	Global _stackedViewport:TRectangle = new TRectangle
+	Global _stackedViewportValid:Int = False
 
 
 	'fetch the last render configuration from the list
@@ -31,7 +33,7 @@ Type TRenderConfig
 		SetOrigin(config.origin.x, config.origin.y)
 		SetScale(config.scale.x, config.scale.y)
 		SetRotation(config.rotation)
-		GetGraphicsManager().setViewPort(int(config.viewPort.position.x), int(config.viewPort.position.y), int(config.viewPort.dimension.x), int(config.viewPort.dimension.y))
+		GetGraphicsManager().setViewPort(int(config.viewport.position.x), int(config.viewport.position.y), int(config.viewport.dimension.x), int(config.viewport.dimension.y))
 
 		return config
 	End Function
@@ -39,7 +41,9 @@ Type TRenderConfig
 
 	'remove a specific configuration
 	Function RemoveConfig:Int(config:TRenderConfig)
-		list.Remove(config)
+		if list.Remove(config)
+			_stackedViewport = null
+		endif
 	End Function
 
 
@@ -56,7 +60,7 @@ Type TRenderConfig
 		config.scale = new TVec2D; GetScale(config.scale.x, config.scale.y)
 		config.rotation = GetRotation()
 		local x:int,y:int,w:int,h:int; GetGraphicsManager().GetViewPort(x, y, w, h)
-		config.viewPort = new TRectangle.Init(x,y,w,h)
+		config.viewport = new TRectangle.Init(x,y,w,h)
 
 
 		list.AddLast(config)
@@ -71,13 +75,13 @@ Type TRenderConfig
 		For local config:TRenderConfig = EachIn list
 			'if first configuration: store it as first viewport rect
 			if not result
-				result = config.viewPort.copy()
+				result = config.viewport.copy()
 				continue
 			endif
 
 			'all other configurations intersect with the base rect (they
 			'keep decreasing the viewport)
-			result.Intersect(config.viewPort)
+			result.Intersect(config.viewport)
 		Next
 
 		return result

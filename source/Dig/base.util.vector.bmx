@@ -36,9 +36,14 @@ EndRem
 SuperStrict
 Import Brl.Math
 
+Global vec2d_created:int = 0
 Type TVec2D {_exposeToLua="selected"}
 	Field x:Float = 0
 	Field y:Float = 0
+
+	Method New()
+		vec2d_created :+ 1
+	End Method
 
 
 	Method Init:TVec2D(x:Float=0.0, y:Float=0.0)
@@ -170,7 +175,7 @@ Type TVec2D {_exposeToLua="selected"}
 		return self
 	End Method
 
-		
+
 	Method MultiplyVec:TVec2D(otherVec:TVec2D)
 		self.x :* otherVec.x
 		self.y :* otherVec.y
@@ -180,7 +185,7 @@ Type TVec2D {_exposeToLua="selected"}
 
 	Method Divide:TVec2D(scalar:Float)
 		if scalar = 0 then return self
-		
+
 		self.x :/ scalar
 		self.y :/ scalar
 		return self
@@ -242,7 +247,7 @@ Type TVec2D {_exposeToLua="selected"}
 
 		return self
 	End Method
-		
+
 
 	Method Rotate:TVec2D(angle:Float)
 		local newX:Float = Cos(angle) * x - Sin(angle) * y
@@ -262,8 +267,10 @@ Type TVec2D {_exposeToLua="selected"}
 		return self
 	End Method
 
-	
+
 	Method isSame:int(otherVec:TVec2D, round:int=FALSE) {_exposeToLua}
+		if not otherVec then return False
+
 		If round
 			Return abs(x - otherVec.x) < 1.0 AND abs(y - otherVec.y) < 1.0
 		Else
@@ -271,6 +278,14 @@ Type TVec2D {_exposeToLua="selected"}
 		Endif
 	End Method
 
+
+	Method EqualsXY:int(x:Float, y:Float, round:int=FALSE)
+		If round
+			Return abs(self.x - x) < 1.0 AND abs(self.y - y) < 1.0
+		Else
+			Return self.x = x AND self.y = y
+		Endif
+	End Method
 
 	Method DistanceTo:Float(otherVec:TVec2D) {_exposeToLua}
 		'a² + b² = c²... pythagoras
@@ -462,7 +477,7 @@ Type TVec3D {_exposeToLua="selected"}
 		return self
 	End Method
 
-		
+
 	Method MultiplyVec:TVec3D(otherVec:TVec3D)
 		self.x :* otherVec.x
 		self.y :* otherVec.y
@@ -473,7 +488,7 @@ Type TVec3D {_exposeToLua="selected"}
 
 	Method Divide:TVec3D(scalar:Float)
 		if scalar = 0 then return self
-		
+
 		self.x :/ scalar
 		self.y :/ scalar
 		self.z :/ scalar
@@ -558,10 +573,10 @@ Type TVec3D {_exposeToLua="selected"}
 		local newY:Float = Sin(angle) * x + Cos(angle) * y
 		x = newX
 		y = newY
-		
+
 		return Self
 	End Method
-				
+
 
 	Method isSame:int(otherVec:TVec3D, round:int=FALSE) {_exposeToLua}
 		If round

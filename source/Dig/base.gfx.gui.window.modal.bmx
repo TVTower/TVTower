@@ -2,7 +2,7 @@ Rem
 	====================================================================
 	GUI Modal Window
 	====================================================================
-	
+
 	====================================================================
 	If not otherwise stated, the following code is available under the
 	following licence:
@@ -91,7 +91,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	Method SetDialogueType:Int(typeID:Int)
 		For Local button:TGUIobject = EachIn Self.buttons
 			button.remove()
-			'DeleteChild(button)
+			'RemoveChild(button)
 		Next
 		buttons = New TGUIButton[0] '0 sized array
 
@@ -119,14 +119,14 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 
 	'size 0, 0 is not possible (leads to autosize)
-	Method Resize(w:Float = 0, h:Float = 0)
-		Super.Resize(w, h)
+	Method SetSize(w:Float = 0, h:Float = 0)
+		Super.SetSize(w, h)
 		'move button
 		If buttons.length = 1
-			buttons[0].rect.position.setXY(rect.GetW()/2 - buttons[0].rect.GetW()/2, GetScreenHeight() - 49)
+			buttons[0].SetPosition(rect.GetW()/2 - buttons[0].rect.GetW()/2, GetScreenRect().GetH() - 49)
 		ElseIf buttons.length = 2
-			buttons[0].rect.position.setXY(rect.GetW()/2 - buttons[0].rect.GetW() - 10, GetScreenHeight() - 49)
-			buttons[1].rect.position.setXY(rect.GetW()/2 + 10, GetScreenHeight() - 49)
+			buttons[0].SetPosition(rect.GetW()/2 - buttons[0].rect.GetW() - 10, GetScreenRect().GetH() - 49)
+			buttons[1].SetPosition(rect.GetW()/2 + 10, GetScreenRect().GetH() - 49)
 		EndIf
 
 		Recenter()
@@ -134,13 +134,13 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 
 	'overwrite windowBase-method to recenter after appearance change
-	Method onStatusAppearanceChange:int()
-		Super.onStatusAppearanceChange()
+	Method onAppearanceChanged:int()
+		Super.onAppearanceChanged()
 		Recenter()
 	End Method
 
 
-	Method Recenter:Int(moveBy:TVec2D=Null)
+	Method Recenter:Int(moveByX:Float = 0, moveByY:Float = 0)
 		'center the window
 		Local centerX:Float=0.0
 		Local centerY:Float=0.0
@@ -152,21 +152,20 @@ Type TGUIModalWindow Extends TGUIWindowBase
 			centerY = screenArea.getY() + screenArea.GetH()/2
 		EndIf
 
-		If Not moveBy Then moveBy = new TVec2D.Init(0,0)
-		rect.position.setXY(centerX - rect.getW()/2 + moveBy.getX(),centerY - rect.getH()/2 + moveBy.getY() )
+		SetPosition(centerX - rect.getW()/2 + moveByX,centerY - rect.getH()/2 + moveByY)
 	End Method
 
 
 	Method Open:Int()
 		EventManager.triggerEvent(TEventSimple.Create("guiModalWindow.onOpen", Self))
 	End Method
-	
+
 
 	'close the window (eg. with an animation)
 	Method Close:Int(closeButton:Int=-1)
 		'only close once :D
 		if closeActionStarted then return False
-		
+
 		closeActionStarted = True
 		closeActionTime = Time.GetAppTimeGone()
 		closeActionStartPosition = rect.position.copy()
@@ -220,8 +219,8 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		Super.Update()
 
 		if closeActionStarted
-			local yUntilScreenLeft:int = VirtualHeight() - (closeActionStartPosition.y + GetScreenHeight())
-			recenter(new TVec2D.Init(0, Float(- yUntilScreenLeft * TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration))))
+			local yUntilScreenLeft:int = VirtualHeight() - (closeActionStartPosition.y + GetScreenRect().GetH())
+			Recenter(0, Float(- yUntilScreenLeft * TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)))
 		endif
 
 		if Not GuiManager.GetKeystrokeReceiver() and KeyManager.IsHit(KEY_ESCAPE)

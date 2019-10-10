@@ -17,6 +17,11 @@ Type TGUIArrowButton Extends TGUISpriteButton
 	End Method
 
 
+	Method GetClassName:String()
+		Return "tguiarrowbutton"
+	End Method
+
+
 	Method Create:TGUIArrowButton(pos:TVec2D, dimension:TVec2D, direction:String="LEFT", limitState:String = "")
 		Super.Create(pos, dimension, spriteBaseName, limitState)
 
@@ -74,7 +79,6 @@ Type TGUISpriteButton Extends TGUIObject
 
 		SetSpriteName(spriteName)
 
-'		setZindex(40)
 		value = ""
 
 		'let the guimanager manage the button
@@ -120,14 +124,16 @@ Type TGUISpriteButton Extends TGUIObject
 
 	'override so we have a minimum size
 	'size 0, 0 is not possible (leads to autosize)
-	Method Resize(w:Float = 0, h:Float = 0)
+	Method SetSize(w:Float = 0, h:Float = 0)
 		if w <= 0 then w = rect.dimension.GetX()
 		if h <= 0 then h = rect.dimension.GetY()
 
 		'set to minimum size or bigger
 		local spriteDimension:TRectangle = _GetButtonSprite().GetNinePatchBorderDimension()
-		rect.dimension.setX( Max(w, spriteDimension.GetLeft() + spriteDimension.GetRight()) )
-		rect.dimension.sety( Max(h, spriteDimension.GetTop() + spriteDimension.GetBottom()) )
+		w = Max(w, spriteDimension.GetLeft() + spriteDimension.GetRight())
+		h = Max(h, spriteDimension.GetTop() + spriteDimension.GetBottom())
+
+		Super.SetSize(w, h)
 	End Method
 
 
@@ -136,12 +142,12 @@ Type TGUISpriteButton Extends TGUIObject
 	Method _GetButtonSprite:TSprite()
 		'refresh cache if not set or wrong sprite name
 		if spriteButtonBaseName
-			if not buttonSprite or buttonSprite.GetName() <> (spriteButtonBaseName + self.state)
-				local newSprite:TSprite = GetSpriteFromRegistry(spriteButtonBaseName + self.state, spriteButtonBaseName)
+			if not buttonSprite or buttonSprite.GetName() <> (spriteButtonBaseName + self.GetStateSpriteAppendix())
+				local newSprite:TSprite = GetSpriteFromRegistry(spriteButtonBaseName + self.GetStateSpriteAppendix(), spriteButtonBaseName)
 				if not buttonSprite or newSprite.GetName() <> buttonSprite.GetName()
 					buttonSprite = newSprite
 					'new image - resize
-					Resize()
+					SetSize(-1, -1)
 				endif
 			endif
 			return buttonSprite
@@ -164,7 +170,7 @@ Type TGUISpriteButton Extends TGUIObject
 
 	'override default draw-method
 	Method DrawContent()
-		Local atPoint:TVec2D = GetScreenPos()
+		Local atPoint:TVec2D = GetScreenRect().position
 		Local oldCol:TColor = new TColor.Get()
 
 		SetColor 255, 255, 255
@@ -172,9 +178,9 @@ Type TGUISpriteButton Extends TGUIObject
 
 		'draw button (background)
 		local bs:TSprite
-		if state=".active"
+		if IsActive()
 			if HasSpriteButtonOption(SHOW_BUTTON_ACTIVE) then bs = _GetButtonSprite()
-		elseif state=".hover"
+		elseif IsHovered()
 			if HasSpriteButtonOption(SHOW_BUTTON_HOVER) then bs = _GetButtonSprite()
 		elseif HasSpriteButtonOption(SHOW_BUTTON_NORMAL)
 			bs = _GetButtonSprite()
@@ -185,5 +191,9 @@ Type TGUISpriteButton Extends TGUIObject
 		_GetSprite().Draw(atPoint.getX() + int(rect.GetW()/2), atPoint.getY() + int(rect.GetH()/2), -1, new TVec2D.Init(0.5, 0.5))
 
 		oldCol.SetRGBA()
+	End Method
+
+
+	Method UpdateLayout()
 	End Method
 End Type

@@ -29,6 +29,11 @@ Type TGUICheckBox Extends TGUIButton
 	Global _typeDefaultFont:TBitmapFont
 
 
+	Method GetClassName:String()
+		Return "tguicheckbox"
+	End Method
+
+
 	Method Create:TGUICheckbox(pos:TVec2D, dimension:TVec2D, value:String, limitState:String="")
 		'use another sprite name (assign before initing super)
 		spriteName = "gfx_gui_button.round"
@@ -78,7 +83,8 @@ Type TGUICheckBox Extends TGUIButton
 			checkboxDimension = null
 			checkboxDimensionAutocalculated = True
 		else
-			checkboxDimension = dimension.copy()
+			if not checkboxDimension then checkboxDimension = new TVec2D
+			checkboxDimension.CopyFrom(dimension)
 			checkboxDimensionAutocalculated = False
 		endif
 	End Method
@@ -120,7 +126,7 @@ Type TGUICheckBox Extends TGUIButton
 
 
 		if caption
-			caption.SetContentPosition(ALIGN_LEFT, ALIGN_TOP)
+			caption.SetContentAlignment(ALIGN_LEFT, ALIGN_TOP)
 			caption.SetValueEffect(1, 0.2)
 			caption.SetValueColor(TColor.CreateGrey(120))
 		endif
@@ -202,22 +208,28 @@ Type TGUICheckBox Extends TGUIButton
 
 
 	'override default to add checkbox+caption
-	Method GetScreenWidth:float()
-		if caption
-			return GetCheckboxDimension().x + caption.rect.position.x + caption.GetValueDimension().x
+	Method _UpdateScreenW:float()
+		Super._UpdateScreenW()
+
+		if caption and caption.IsVisible() and caption.GetValue() <> ""
+			_screenRect.SetW( GetCheckboxDimension().x + caption.rect.position.x + caption.GetValueDimension().x )
 		else
-			return GetCheckboxDimension().x
+			_screenRect.SetW( GetCheckboxDimension().x )
 		endif
+		return _screenRect.GetW()
 	End Method
 
 
 	'override default to add checkbox+caption
-	Method GetScreenHeight:float()
-		if caption
-			return Max(GetCheckboxDimension().y, caption.rect.position.y + caption.GetValueDimension().y)
+	Method _UpdateScreenH:float()
+		Super._UpdateScreenH()
+
+		if caption and caption.IsVisible() and caption.GetValue() <> ""
+			_screenRect.SetH( Max(GetCheckboxDimension().y, caption.rect.position.y + caption.GetValueDimension().y + 5) )
 		else
-			return GetCheckboxDimension().y
+			_screenRect.SetH( GetCheckboxDimension().y )
 		endif
+		return _screenRect.GetH()
 	End Method
 
 
@@ -233,8 +245,8 @@ Type TGUICheckBox Extends TGUIButton
 
 
 	'override default to handle image changes
-	Method onStatusAppearanceChange:int()
-		Super.onStatusAppearanceChange()
+	Method onAppearanceChanged:int()
+		Super.onAppearanceChanged()
 
 		'reset autocalculated checkbox dimension
 		if checkboxDimensionAutocalculated then SetCheckboxDimension(null)
@@ -256,7 +268,7 @@ Type TGUICheckBox Extends TGUIButton
 
 	'override default draw-method
 	Method DrawContent()
-		Local atPoint:TVec2D = GetScreenPos()
+		Local atPoint:TVec2D = GetScreenRect().position
 		Local oldCol:TColor = new TColor.Get()
 
 		'SetColor 255, 255, 255
@@ -276,7 +288,7 @@ Type TGUICheckBox Extends TGUIButton
 		endif
 
 		Local sprite:TSprite = GetSprite()
-		if state <> "" then sprite = GetSpriteFromRegistry(GetSpriteName() + state, sprite)
+		if IsActive() or IsHovered() Then sprite = GetSpriteFromRegistry(GetSpriteName() + GetStateSpriteAppendix(), sprite)
 		if sprite then sprite.DrawArea(atPoint.getX(), atPoint.getY(), GetCheckboxDimension().x, GetCheckboxDimension().y)
 
 
@@ -305,7 +317,6 @@ Type TGUICheckBox Extends TGUIButton
 			'reset color
 			caption.color = oldCol
 		EndIf
-
 		oldCol.SetRGBA()
 	End Method
 End Type
