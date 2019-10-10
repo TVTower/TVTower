@@ -151,8 +151,8 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 
 		SetColor 0,0,0
 		SetAlpha 0.2
-		Local x:Float = Self.GetScreenX()
-		Local tri:Float[]=[Float(sheetX+20),Float(sheetY+25),Float(sheetX+20),Float(sheetY+90),Self.GetScreenX()+Self.GetScreenWidth()/2.0+3,Self.GetScreenY()+Self.GetScreenHeight()/2.0]
+		Local x:Float = Self.GetScreenRect().GetX()
+		Local tri:Float[]=[Float(sheetX+20),Float(sheetY+25),Float(sheetX+20),Float(sheetY+90),Self.GetScreenRect().GetX()+Self.GetScreenRect().GetW()/2.0+3,Self.GetScreenRect().GetY()+Self.GetScreenRect().GetH()/2.0]
 		DrawPoly(tri)
 		SetColor 255,255,255
 		SetAlpha 1.0
@@ -187,9 +187,9 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 		else
 			SetAlpha oldCol.a * 0.9
 		endif
-		if licence.IsPaid() then GetSpriteFromRegistry("gfx_movie_flag_paid").Draw(GetScreenX(), GetScreenY() + GetScreenHeight() - 14, -1, ALIGN_LEFT_BOTTOM)
-		if licence.IsXRated() then GetSpriteFromRegistry("gfx_movie_flag_xrated").Draw(GetScreenX(), GetScreenY() + GetScreenHeight()  - 20, -1, ALIGN_LEFT_BOTTOM)
-		if licence.IsLive() then GetSpriteFromRegistry("gfx_movie_flag_live").Draw(GetScreenX(), GetScreenY() + GetScreenHeight()  - 26, -1, ALIGN_LEFT_BOTTOM)
+		if licence.IsPaid() then GetSpriteFromRegistry("gfx_movie_flag_paid").Draw(GetScreenRect().GetX(), GetScreenRect().GetY() + GetScreenRect().GetH() - 14, -1, ALIGN_LEFT_BOTTOM)
+		if licence.IsXRated() then GetSpriteFromRegistry("gfx_movie_flag_xrated").Draw(GetScreenRect().GetX(), GetScreenRect().GetY() + GetScreenRect().GetH()  - 20, -1, ALIGN_LEFT_BOTTOM)
+		if licence.IsLive() then GetSpriteFromRegistry("gfx_movie_flag_live").Draw(GetScreenRect().GetX(), GetScreenRect().GetY() + GetScreenRect().GetH()  - 26, -1, ALIGN_LEFT_BOTTOM)
 
 		SetAlpha oldCol.a
 	End Method

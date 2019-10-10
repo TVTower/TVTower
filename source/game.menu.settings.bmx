@@ -77,7 +77,7 @@ Type TGUISettingsPanel extends TGUIPanel
 		inputPlayerName = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "", 128)
 		self.AddChild(labelPlayerName)
 		self.AddChild(inputPlayerName)
-		inputH = inputPlayerName.GetScreenHeight()
+		inputH = inputPlayerName.GetScreenRect().GetH()
 		nextY :+ inputH + labelH * 1.5
 
 		Local labelChannelName:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("CHANNELNAME")+":")
@@ -108,7 +108,7 @@ Type TGUISettingsPanel extends TGUIPanel
 
 		checkShowIngameHelp = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth + 20,-1), GetLocale("SHOW_INTRODUCTORY_GUIDES"))
 		self.AddChild(checkShowIngameHelp)
-		nextY :+ checkShowIngameHelp.GetScreenHeight()
+		nextY :+ checkShowIngameHelp.GetScreenRect().GetH()
 
 		nextY :+ 15
 
@@ -144,7 +144,7 @@ Type TGUISettingsPanel extends TGUIPanel
 		sliderMusicVolume.SetValueRange(0, 100)
 		self.AddChild(labelMusicVolume)
 		self.AddChild(sliderMusicVolume)
-		nextY :+ Max(inputH - 5, sliderMusicVolume.GetScreenHeight())
+		nextY :+ Max(inputH - 5, sliderMusicVolume.GetScreenRect().GetH())
 		nextY :+ 20
 
 		Local labelSFXVolume:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_SFX_VOLUME") + ":")
@@ -152,19 +152,19 @@ Type TGUISettingsPanel extends TGUIPanel
 		sliderSFXVolume.SetValueRange(0, 100)
 		self.AddChild(labelSFXVolume)
 		self.AddChild(sliderSFXVolume)
-		nextY :+ Max(inputH - 5, sliderSFXVolume.GetScreenHeight())
+		nextY :+ Max(inputH - 5, sliderSFXVolume.GetScreenRect().GetH())
 		nextY :+ 20
 
 
 '		checkMusic = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
 '		checkMusic.SetCaption(GetLocale("MUSIC"))
 '		self.AddChild(checkMusic)
-'		nextY :+ Max(inputH - 5, checkMusic.GetScreenHeight())
+'		nextY :+ Max(inputH - 5, checkMusic.GetScreenRect().GetH())
 
 '		checkSfx = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
 '		checkSfx.SetCaption(GetLocale("SFX"))
 '		self.AddChild(checkSfx)
-'		nextY :+ Max(inputH, checkSfx.GetScreenHeight())
+'		nextY :+ Max(inputH, checkSfx.GetScreenRect().GetH())
 
 		Local labelSoundEngine:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_ENGINE") + ":")
 		dropdownSoundEngine = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + 14), New TVec2D.Init(inputWidth,-1), "", 128)
@@ -187,7 +187,7 @@ Type TGUISettingsPanel extends TGUIPanel
 			item.SetValueColor(TColor.CreateGrey(50))
 			item.data.Add("value", soundEngineValues[i])
 			dropdownSoundEngine.AddItem(item)
-			If itemHeight = 0 Then itemHeight = item.GetScreenHeight()
+			If itemHeight = 0 Then itemHeight = item.GetScreenRect().GetH()
 		Next
 		dropdownSoundEngine.SetListContentHeight(itemHeight * Len(soundEngineValues))
 
@@ -225,7 +225,7 @@ Type TGUISettingsPanel extends TGUIPanel
 			item.SetValueColor(TColor.CreateGrey(50))
 			item.data.Add("value", rendererValues[i])
 			dropdownRenderer.AddItem(item)
-			If itemHeight = 0 Then itemHeight = item.GetScreenHeight()
+			If itemHeight = 0 Then itemHeight = item.GetScreenRect().GetH()
 		Next
 		dropdownRenderer.SetListContentHeight(itemHeight * Len(rendererValues))
 
@@ -236,12 +236,12 @@ Type TGUISettingsPanel extends TGUIPanel
 		checkFullscreen = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
 		checkFullscreen.SetCaption(GetLocale("FULLSCREEN"))
 		self.AddChild(checkFullscreen)
-		nextY :+ Max(inputH -5, checkFullscreen.GetScreenHeight())
+		nextY :+ Max(inputH -5, checkFullscreen.GetScreenRect().GetH())
 
 		checkVSync = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
 		checkVSync.SetCaption(GetLocale("VSYNC"))
 		self.AddChild(checkVSync)
-		nextY :+ Max(inputH, checkVSync.GetScreenHeight())
+		nextY :+ Max(inputH, checkVSync.GetScreenRect().GetH())
 
 		Local labelWindowResolution:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("WINDOW_MODE_RESOLUTION")+":")
 		inputWindowResolutionWidth = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(inputWidth/2 - 15,-1), "", 4)
@@ -286,11 +286,11 @@ Type TGUISettingsPanel extends TGUIPanel
 
 		checkTouchInput = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth + 20,-1), GetLocale("USE_TOUCH_INPUT"))
 		self.AddChild(checkTouchInput)
-		nextY :+ checkTouchInput.GetScreenHeight()
+		nextY :+ checkTouchInput.GetScreenRect().GetH()
 
 		local labelTouchInput:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("USE_TOUCH_INPUT_EXPLANATION"))
 		self.AddChild(labelTouchInput)
-		labelTouchInput.Resize(checkboxWidth+30,-1)
+		labelTouchInput.SetSize(checkboxWidth+30,-1)
 		labelTouchInput.SetFont( GetBitmapFont("default", 10) )
 		labelTouchInput.SetValueColor(TColor.CreateGrey(75))
 		labelTouchInput.SetValue(labelTouchInput.GetValue())
@@ -302,16 +302,16 @@ Type TGUISettingsPanel extends TGUIPanel
 		self.AddChild(labelTouchClickRadius)
 		self.AddChild(inputTouchClickRadius)
 		self.AddChild(labelTouchClickRadiusPixel)
-		nextY :+ Max(inputH, inputTouchClickRadius.GetScreenHeight()) + 18
+		nextY :+ Max(inputH, inputTouchClickRadius.GetScreenRect().GetH()) + 18
 
 
 		checkLongClickMode = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth + 20,-1), GetLocale("LONGCLICK_MODE"))
 		self.AddChild(checkLongClickMode)
-		nextY :+ checkLongClickMode.GetScreenHeight()
+		nextY :+ checkLongClickMode.GetScreenRect().GetH()
 
 		local labelLongClickMode:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("LONGCLICK_MODE_EXPLANATION"))
 		self.AddChild(labelLongClickMode)
-		labelLongClickMode.Resize(checkboxWidth+30, -1)
+		labelLongClickMode.SetSize(checkboxWidth+30, -1)
 		labelLongClickMode.SetFont( GetBitmapFont("default", 10) )
 		labelLongClickMode.SetValueColor(TColor.CreateGrey(75))
 		nextY :+ labelLongClickMode.GetValueDimension().y + 5
@@ -509,15 +509,15 @@ Type TGUISettingsPanel extends TGUIPanel
 		Super.DrawContent()
 
 		If Int(sliderSFXVolume.GetValue()) = 0
-			GetBitmapFont("default").Draw("muted", sliderSFXVolume.GetScreenX() + 142, sliderSFXVolume.GetScreenY() + 6, TColor.CreateGrey(50))
+			GetBitmapFont("default").Draw("muted", sliderSFXVolume.GetScreenRect().GetX() + 142, sliderSFXVolume.GetScreenRect().GetY() + 6, TColor.CreateGrey(50))
 		Else
-			GetBitmapFont("default").Draw(Int(sliderSFXVolume.GetValue())+" %", sliderSFXVolume.GetScreenX() + 142, sliderSFXVolume.GetScreenY() + 6, TColor.CreateGrey(50))
+			GetBitmapFont("default").Draw(Int(sliderSFXVolume.GetValue())+" %", sliderSFXVolume.GetScreenRect().GetX() + 142, sliderSFXVolume.GetScreenRect().GetY() + 6, TColor.CreateGrey(50))
 		EndIf
 
 		If Int(sliderMusicVolume.GetValue()) = 0
-			GetBitmapFont("default").Draw("muted", sliderMusicVolume.GetScreenX() + 142, sliderMusicVolume.GetScreenY() + 6, TColor.CreateGrey(50))
+			GetBitmapFont("default").Draw("muted", sliderMusicVolume.GetScreenRect().GetX() + 142, sliderMusicVolume.GetScreenRect().GetY() + 6, TColor.CreateGrey(50))
 		Else
-			GetBitmapFont("default").Draw(Int(sliderMusicVolume.GetValue())+" %", sliderMusicVolume.GetScreenX() + 142, sliderMusicVolume.GetScreenY() + 6, TColor.CreateGrey(50))
+			GetBitmapFont("default").Draw(Int(sliderMusicVolume.GetValue())+" %", sliderMusicVolume.GetScreenRect().GetX() + 142, sliderMusicVolume.GetScreenRect().GetY() + 6, TColor.CreateGrey(50))
 		EndIf
 	End Method
 
@@ -558,9 +558,9 @@ Type TSettingsWindow
 
 		modalDialogue.SetDialogueType(2)
 		modalDialogue.buttons[0].SetCaption(GetLocale("SAVE_AND_APPLY"))
-		modalDialogue.buttons[0].Resize(180,-1)
+		modalDialogue.buttons[0].SetSize(180,-1)
 		modalDialogue.buttons[1].SetCaption(GetLocale("CANCEL"))
-		modalDialogue.buttons[1].Resize(160,-1)
+		modalDialogue.buttons[1].SetSize(160,-1)
 		modalDialogue.SetCaptionAndValue(GetLocale("MENU_SETTINGS"), "")
 
 

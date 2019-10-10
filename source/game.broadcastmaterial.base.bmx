@@ -52,7 +52,7 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method hasFlag:Int(flag:Int) {_exposeToLua}
-		Return (flags & flag) <> 0
+		Return (flags & flag)
 	End Method
 
 

@@ -118,12 +118,12 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 				GuiListNormal[listIndex] = New TGUIAdContractSlotList.Create(New TVec2D.Init(418 - i*80, 122 + i*36), New TVec2D.Init(200, 140), "adagency")
 				GuiListNormal[listIndex].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 				GuiListNormal[listIndex].SetItemLimit( contractsNormalAmount / GuiListNormal.length  )
-				GuiListNormal[listIndex].Resize(GetSpriteFromRegistry("gfx_contracts_0").area.GetW() * (contractsNormalAmount / GuiListNormal.length), GetSpriteFromRegistry("gfx_contracts_0").area.GetH() )
+				GuiListNormal[listIndex].SetSize(GetSpriteFromRegistry("gfx_contracts_0").area.GetW() * (contractsNormalAmount / GuiListNormal.length), GetSpriteFromRegistry("gfx_contracts_0").area.GetH() )
 				GuiListNormal[listIndex].SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
 				GuiListNormal[listIndex].SetAcceptDrop("TGuiAdContract")
 				GuiListNormal[listIndex].setZindex(i)
 
-				GuiListNormal[listIndex].Resize(-1, GuiListNormal[listIndex].rect.GetH() + 30) 'for 4x displacement
+				GuiListNormal[listIndex].SetSize(-1, GuiListNormal[listIndex].rect.GetH() + 30) 'for 4x displacement
 				GuiListNormal[listIndex].SetEntriesBlockDisplacement(0, 0) 'displace by 20
 				GuiListNormal[listIndex].Move(0, 20)
 				GuiListNormal[listIndex].SetEntryDisplacement( 0, 10)
@@ -139,7 +139,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 			'GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 5)
 
 			GuiListCheap.Move(0, -20)
-			GuiListCheap.Resize(-1, GuiListCheap.rect.GetH() + 20) 'for 4x displacement
+			GuiListCheap.SetSize(-1, GuiListCheap.rect.GetH() + 20) 'for 4x displacement
 			GuiListCheap.SetEntriesBlockDisplacement(0, 20) 'displace by 20
 
 
@@ -1615,7 +1615,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 
 		SetColor 0,0,0
 		SetAlpha 0.2
-		Local pointA:TVec2D = New TVec2D.Init(GetScreenX() + 0.5 * GetScreenWidth(), GetScreenY() + 0.25 * GetScreenHeight())
+		Local pointA:TVec2D = New TVec2D.Init(GetScreenRect().GetX() + 0.5 * GetScreenRect().GetW(), GetScreenRect().GetY() + 0.25 * GetScreenRect().GetH())
 		Local pointB:TVec2D = New TVec2D.Init(sheetX + (sheetAlign=0)*100 - (sheetalign=1)*100, sheetY + 75)
 		Local pointC:TVec2D = pointB.Copy().RotateAroundPoint(pointA, 5)
 		'this centers the middle of BC

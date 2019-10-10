@@ -129,12 +129,12 @@ Type RoomHandler_News extends TRoomHandler
 '			guiNewsListAvailable.SetAutosortItems(False)
 			guiNewsListAvailable._autoSortFunction = TNews.SortByPublishedDate
 
-			guiNewsListAvailable.Resize(guiNewsListAvailable.rect.GetW() + guiNewsListAvailable.guiScrollerV.rect.GetW() + 8,guiNewsListAvailable.rect.GetH())
+			guiNewsListAvailable.SetSize(guiNewsListAvailable.rect.GetW() + guiNewsListAvailable.guiScrollerV.rect.GetW() + 8,guiNewsListAvailable.rect.GetH())
 			guiNewsListAvailable.guiEntriesPanel.minSize.SetXY(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(),356)
 			'move down scroller a bit
 			guiNewsListAvailable.guiScrollerV.SetOption(GUI_OBJECT_POSITIONABSOLUTE)
 			guiNewsListAvailable.guiScrollerV.Move(13, 45)
-			guiNewsListAvailable.guiScrollerV.Resize(0, guiNewsListAvailable.guiScrollerV.rect.GetH() - 35)
+			guiNewsListAvailable.guiScrollerV.SetSize(0, guiNewsListAvailable.guiScrollerV.rect.GetH() - 35)
 
 			guiNewsListUsed = new TGUINewsSlotList.Create(new TVec2D.Init(419,104), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
 			guiNewsListUsed.SetItemLimit(3)
@@ -654,7 +654,7 @@ Type RoomHandler_News extends TRoomHandler
 			elseif showDeleteHintTimer < Time.GetTimeGone() and showDeleteHintTime + showDeleteHintTimer > Time.GetTimeGone()
 				local oldA:float = Getalpha()
 				SetAlpha oldA * 7
-				GetBitmapFont("default", 12, BOLDFONT).DrawBlock(GetLocale("RIGHT_CLICK_TO_DELETE"), draggedGuiNews.GetScreenX(), draggedGuiNews.GetScreenY2() + 3, draggedGuiNews.GetScreenWidth(), 30, ALIGN_CENTER_TOP, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+				GetBitmapFont("default", 12, BOLDFONT).DrawBlock(GetLocale("RIGHT_CLICK_TO_DELETE"), draggedGuiNews.GetScreenRect().GetX(), draggedGuiNews.GetScreenRect().GetY2() + 3, draggedGuiNews.GetScreenRect().GetW(), 30, ALIGN_CENTER_TOP, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
 				SetAlpha oldA
 			endif
 		else
@@ -1004,6 +1004,10 @@ Type TGUINews Extends TGUIGameListItem
     Method Create:TGUINews(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		Super.Create(pos, dimension, value)
 
+		'to resize it properly
+'		initAssets("gfx_news_sheet0","gfx_news_sheet0")
+'  		Self.SetAsset()
+
 		Return Self
 	End Method
 
@@ -1012,9 +1016,8 @@ Type TGUINews Extends TGUIGameListItem
 		Self.news = news
 		If news
 			'now we can calculate the item width
-			Self.Resize( GetSpriteFromRegistry(Self.imageBaseName+news.GetGenre()).area.GetW(), GetSpriteFromRegistry(Self.imageBaseName+news.GetGenre()).area.GetH() )
+			Self.SetSize( GetSpriteFromRegistry(Self.imageBaseName+news.GetGenre()).area.GetW(), GetSpriteFromRegistry(Self.imageBaseName+news.GetGenre()).area.GetH() )
 		EndIf
-		'self.SetLimitToState("Newsplanner")
 
 		'as the news inflicts the sorting algorithm - resort
 		GUIManager.sortLists()
@@ -1035,21 +1038,6 @@ Type TGUINews Extends TGUIGameListItem
 			EndIf
 
 			If Self.news And otherBlock.news
-rem
-				local orderMulti:int = 1
-				if sortModeOrder = 1 then orderMulti = -1
-				Select sortMode
-					case RoomHandler_News.SORT_BY_PRICE
-						Return news.CompareByPrice(otherBlock.news) * -1 * orderMulti
-					case RoomHandler_News.SORT_BY_TOPICALITY
-						Return news.CompareByTopicality(otherBlock.news) * -1 * orderMulti
-					case RoomHandler_News.SORT_BY_PAID
-						Return news.CompareByIsPaid(otherBlock.news) * orderMulti
-					default 'RoomHandler_News.SORT_BY_AGE
-						Return news.CompareByPublishedDate(otherBlock.news) * -1 * orderMulti
-				End Select
-endrem
-'rem
 				Local publishDifference:Int = Self.news.GetPublishTime() - otherBlock.news.GetPublishTime()
 
 				'self is newer ("later") than other
@@ -1058,7 +1046,6 @@ endrem
 				If publishDifference<0 Then Return 1
 				'self is same age than other
 				If publishDifference=0 Then Return Super.Compare(Other)
-'endrem
 			EndIf
 		EndIf
 
@@ -1084,8 +1071,8 @@ endrem
 
 
 	Method DrawTextOverlay()
-		Local screenX:Float = Int(GetScreenX())
-		Local screenY:Float = Int(GetScreenY())
+		Local screenX:Float = Int(GetScreenRect().GetX())
+		Local screenY:Float = Int(GetScreenRect().GetY())
 
 		'===== CREATE CACHE IF MISSING =====
 		If Not cacheTextOverlay
@@ -1114,15 +1101,14 @@ endrem
 
 
 	Method DrawContent()
-		State = 0
 		SetColor 255,255,255
 
 		'Ronny: this flickers for the item moving "from the top" into the
 		'       list while scrolling
-		'local sR:TRectangle = GetScreenRect()
-		'if sr.GetW() > 0 and sr.GetH() > 0
-			Local screenX:Float = Int(GetScreenX())
-			Local screenY:Float = Int(GetScreenY())
+		local sR:TRectangle = GetScreenRect()
+		if sr.GetW() > 0 and sr.GetH() > 0
+			Local screenX:Float = Int(GetScreenRect().GetX())
+			Local screenY:Float = Int(GetScreenRect().GetY())
 
 			Local oldAlpha:Float = GetAlpha()
 			Local itemAlpha:Float = 1.0
@@ -1186,7 +1172,7 @@ endrem
 
 			SetColor 255, 255, 255
 			SetAlpha oldAlpha
-		'EndIf
+		EndIf
 
 		If TVTDebugInfos
 			Local oldAlpha:Float = GetAlpha()
@@ -1195,8 +1181,8 @@ endrem
 
 			Local w:Int = rect.GetW()
 			Local h:Int = rect.GetH()
-			Local screenX:Float = Int(GetScreenX())
-			Local screenY:Float = Int(GetScreenY())
+			Local screenX:Float = Int(GetScreenRect().GetX())
+			Local screenY:Float = Int(GetScreenRect().GetY())
 			DrawRect(screenX, screenY, w,h)
 
 			SetColor 255,255,255

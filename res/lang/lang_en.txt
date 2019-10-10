@@ -827,6 +827,7 @@ NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS = At least one point
 NO_PRODUCTION_COMPANY_SELECTED = No production company selected
 PRODUCTION_SETUP_NOT_DONE = Production setup not done
 PRODUCTION_SETUP_INCOMPLETE = Production setup incomplete
+CAST_INCOMPLETE = Cast incomplete
 EPISODES_NOT_IN_ORDER = Episodes not in order
 PRODUCTION_CONCEPTS = Shopping lists
 PRODUCTION_DEPOSIT_PAID = Deposit (%MONEY%) paid.

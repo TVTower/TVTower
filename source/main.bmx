@@ -604,13 +604,13 @@ Type TApp
 	End Method
 
 
-	global _profilerKey_Draw:TLowerString = new TLowerString.Create("Draw")
-	global _profilerKey_Update:TLowerString = new TLowerString.Create("Update")
-	global _profilerKey_RessourceLoader:TLowerString = new TLowerString.Create("RessourceLoader")
-	global _profilerKey_AI_MINUTE:TLowerString[] = [new TLowerString.Create("PLAYER_AI1_MINUTE"), new TLowerString.Create("PLAYER_AI2_MINUTE"), new TLowerString.Create("PLAYER_AI3_MINUTE"), new TLowerString.Create("PLAYER_AI4_MINUTE")]
-	global _profilerKey_AI_SECOND:TLowerString[] = [new TLowerString.Create("PLAYER_AI1_SECOND"), new TLowerString.Create("PLAYER_AI2_SECOND"), new TLowerString.Create("PLAYER_AI3_SECOND"), new TLowerString.Create("PLAYER_AI4_SECOND")]
-	global keyLS_DevOSD:TLowerString = new TLowerString.Create("DEV_OSD")
-	global keyLS_DevKeys:TLowerString = new TLowerString.Create("DEV_KEYS")
+	Global _profilerKey_Draw:TLowerString = New TLowerString.Create("Draw")
+	Global _profilerKey_Update:TLowerString = New TLowerString.Create("Update")
+	Global _profilerKey_RessourceLoader:TLowerString = New TLowerString.Create("RessourceLoader")
+	Global _profilerKey_AI_MINUTE:TLowerString[] = [New TLowerString.Create("PLAYER_AI1_MINUTE"), New TLowerString.Create("PLAYER_AI2_MINUTE"), New TLowerString.Create("PLAYER_AI3_MINUTE"), New TLowerString.Create("PLAYER_AI4_MINUTE")]
+	Global _profilerKey_AI_SECOND:TLowerString[] = [New TLowerString.Create("PLAYER_AI1_SECOND"), New TLowerString.Create("PLAYER_AI2_SECOND"), New TLowerString.Create("PLAYER_AI3_SECOND"), New TLowerString.Create("PLAYER_AI4_SECOND")]
+	Global keyLS_DevOSD:TLowerString = New TLowerString.Create("DEV_OSD")
+	Global keyLS_DevKeys:TLowerString = New TLowerString.Create("DEV_KEYS")
 	Function Update:Int()
 		TProfiler.Enter(_profilerKey_Update)
 		'every 3rd update do a low priority update
@@ -681,6 +681,19 @@ Type TApp
 						GetSoundManager().MuteMusic(Not GetSoundManager().HasMutedMusic())
 					ElseIf Not KEYMANAGER.IsDown(KEY_LALT)
 						GetSoundManager().Mute(Not GetSoundManager().IsMuted())
+					EndIf
+				EndIf
+
+				If KEYMANAGER.IsHit(KEY_MINUS)
+					Global gcEnabled:Int = True
+					If gcEnabled
+						 GCSuspend()
+						 gcEnabled = False
+						 Print "DISABLED GC"
+					Else
+						 GCResume()
+						 gcEnabled = True
+						 Print "ENABLED GC"
 					EndIf
 				EndIf
 
@@ -1377,11 +1390,11 @@ endrem
 		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
 			DrawRect(0,0, 800,13)
 		Else
-			DrawRect(0,0, 175,13)
+			DrawRect(0,0, 175 + 90,13)
 		EndIf
 		oldCol.SetRGBA()
 
-		local bf:TBitmapFont = GetBitmapFontManager().baseFont
+		Local bf:TBitmapFont = GetBitmapFontManager().baseFont
 
 		bf.draw("Speed:" + Int(GetWorldTime().GetVirtualMinutesPerSecond() * 100), textX , 0)
 		textX:+75
@@ -1389,6 +1402,8 @@ endrem
 		textX:+50
 		bf.draw("UPS: " + Int(GetDeltaTimer().currentUps), textX,0)
 		textX:+50
+'		bf.draw("GC: " + bbGCAllocCount+"/s", textX,0)
+'		textX:+50
 
 		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
 			bf.draw("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0)
@@ -1401,8 +1416,8 @@ endrem
 			textX:+65
 
 			'RON: debug purpose - see if the managed guielements list increase over time
-			If TGUIObject.GetFocusedObject()
-				bf.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"] focused: "+TGUIObject.GetFocusedObject()._id, textX,0)
+			If GUIManager.GetFocus()
+				bf.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"] focused: "+GUIManager.GetFocus()._id, textX,0)
 			Else
 				bf.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"]" , textX,0)
 			EndIf
@@ -1604,16 +1619,16 @@ endrem
 		If Not spriteMouseCursor Then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
 		Select GetGameBase().cursorstate
 			'open hand
-			case 1
+			Case 1
 				spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-8,  1)
 			'grabbing hand
-			case 2
+			Case 2
 				spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-16, 2)
 			'open hand blocked
-			case 3
+			Case 3
 				spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-8,  3)
 			'normal
-			default
+			Default
 				spriteMouseCursor.Draw(MouseManager.x-9,  MouseManager.y-2,  0)
 		End Select
 
@@ -2718,6 +2733,7 @@ Type TSavegameConverter
 	Method DeSerializeUnknownProperty:Object(oldType:String, newType:String, obj:Object, parentObj:Object)
 		Local convert:String = (oldType+">"+newType).ToLower()
 		Select convert
+			Rem
 			Case "TIntervalTimer>TBuildingIntervalTimer".ToLower()
 				Local old:TIntervalTimer = TIntervalTimer(obj)
 				If old
@@ -2740,7 +2756,7 @@ Type TSavegameConverter
 					Next
 					Return newArr
 				EndIf
-			Rem
+
 			case "TList>TIntMap".ToLower()
 				'room(base)collection?
 				if parentObj and TTypeID.ForObject(parentObj).name().ToLower() = "TRoomCollection".ToLower()
@@ -2826,14 +2842,14 @@ Type TScreen_MainMenu Extends TGameScreen
 		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
 		TGUIButton.SetTypeCaptionColor( TColor.CreateGrey(75) )
 
-		guiButtonStart		= New TGUIButton.Create(New TVec2D.Init(0, 0*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
-		guiButtonNetwork	= New TGUIButton.Create(New TVec2D.Init(0, 1*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonStart		= New TGUIButton.Create(New TVec2D.Init(0, 0*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
+		guiButtonNetwork	= New TGUIButton.Create(New TVec2D.Init(0, 1*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
 		guiButtonNetwork.Disable()
-		guiButtonOnline		= New TGUIButton.Create(New TVec2D.Init(0, 2*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonOnline		= New TGUIButton.Create(New TVec2D.Init(0, 2*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
 		guiButtonOnline.Disable()
-		guiButtonLoadGame	= New TGUIButton.Create(New TVec2D.Init(0, 3*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
-		guiButtonSettings	= New TGUIButton.Create(New TVec2D.Init(0, 4*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
-		guiButtonQuit		= New TGUIButton.Create(New TVec2D.Init(0, 5*38 + 10), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonLoadGame	= New TGUIButton.Create(New TVec2D.Init(0, 3*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
+		guiButtonSettings	= New TGUIButton.Create(New TVec2D.Init(0, 4*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
+		guiButtonQuit		= New TGUIButton.Create(New TVec2D.Init(0, 5*38 + 10), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
 
 		guiButtonsPanel.AddChild(guiButtonStart)
 		guiButtonsPanel.AddChild(guiButtonNetwork)
@@ -2859,7 +2875,7 @@ Type TScreen_MainMenu Extends TGameScreen
 				item.data.add("spriteName", "flag_"+lang.languageCode)
 				'item.SetZindex(10000)
 				guiLanguageDropDown.AddItem(item)
-				If itemHeight = 0 Then itemHeight = item.GetScreenHeight()
+				If itemHeight = 0 Then itemHeight = item.GetScreenRect().GetH()
 
 				If lang.languageCode = TLocalization.GetCurrentLanguageCode()
 					guiLanguageDropDown.SetSelectedEntry(item)
@@ -3055,9 +3071,9 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		guiButtonsPanel = guiButtonsWindow.AddContentBox(0,0,-1,-1)
 
 
-		guiButtonJoin	= New TGUIButton.Create(New TVec2D.Init(0, 0), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(),-1), GetLocale("MENU_JOIN"), name)
-		guiButtonCreate	= New TGUIButton.Create(New TVec2D.Init(0, 45), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(),-1), GetLocale("MENU_CREATE_GAME"), name)
-		guiButtonBack	= New TGUIButton.Create(New TVec2D.Init(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonJoin.GetScreenHeight()), New TVec2D.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_BACK"), name)
+		guiButtonJoin	= New TGUIButton.Create(New TVec2D.Init(0, 0), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(),-1), GetLocale("MENU_JOIN"), name)
+		guiButtonCreate	= New TGUIButton.Create(New TVec2D.Init(0, 45), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(),-1), GetLocale("MENU_CREATE_GAME"), name)
+		guiButtonBack	= New TGUIButton.Create(New TVec2D.Init(0, guiButtonsPanel.GetContentScreenRect().GetH() - guiButtonJoin.GetScreenRect().GetH()), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), GetLocale("MENU_BACK"), name)
 
 		guiButtonsPanel.AddChild(guiButtonJoin)
 		guiButtonsPanel.AddChild(guiButtonCreate)
@@ -3073,7 +3089,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		guiGameListWindow.guiBackground.spriteAlpha = 0.5
 		Local guiGameListPanel:TGUIBackgroundBox = guiGameListWindow.AddContentBox(0,0,-1,-1)
 		'add list to the panel (which is located in the window
-		guiGameList	= New TGUIGameEntryList.Create(New TVec2D.Init(0,0), New TVec2D.Init(guiGameListPanel.GetContentScreenWidth(),guiGameListPanel.GetContentScreenHeight()), name)
+		guiGameList	= New TGUIGameEntryList.Create(New TVec2D.Init(0,0), New TVec2D.Init(guiGameListPanel.GetContentScreenRect().GetW(),guiGameListPanel.GetContentScreenRect().GetH()), name)
 		guiGameList.SetBackground(Null)
 		guiGameList.SetPadding(0, 0, 0, 0)
 
@@ -3681,7 +3697,9 @@ Type GameEvents
 
 				'inform local AI
 				For Local player:TPLayer = EachIn GetPlayerCollection().players
-					If player.isLocalAI()
+					'also check playerAI as in start settings screen the AI
+					'is not there yet
+					If player.isLocalAI() and player.playerAI
 						player.PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_NONE, channels)
 					EndIf
 				Next
@@ -4228,7 +4246,7 @@ Type GameEvents
 		If playerID = -1 Or Not player Then Return False
 
 		If player.isLocalAI() Then player.playerAI.CallOnMoneyChanged(value, reason, reference)
-		If player.isActivePlayer() Then GetInGameInterface().BottomImgDirty = True
+		If player.isActivePlayer() Then GetInGameInterface().ValuesChanged = True
 	End Function
 
 
@@ -5152,7 +5170,7 @@ Type GameEvents
 
 
 		'=== REFRESH INTERFACE IF NEEDED ===
-		If minute = 5 Or minute = 55 Or minute = 0 Then GetInGameInterface().BottomImgDirty = True
+		If minute = 5 Or minute = 55 Or minute = 0 Then GetInGameInterface().ValuesChanged = True
 
 
 		'=== UPDATE STATIONMAPS ===
@@ -6035,8 +6053,8 @@ Function PrintCurrentTranslationState(compareLang:String="tr")
 
 	TLocalization.PrintCurrentTranslationState(compareLang)
 
-	local deLangID:Int = TLocalization.GetLanguageID("de")
-	local compareLangID:Int = TLocalization.GetLanguageID(compareLang)
+	Local deLangID:Int = TLocalization.GetLanguageID("de")
+	Local compareLangID:Int = TLocalization.GetLanguageID(compareLang)
 
 	Print "~t"
 	Print "=== PROGRAMMES ================="
@@ -6204,7 +6222,6 @@ Function StartApp:Int()
 	'init sound receiver
 	GetSoundManager().SetDefaultReceiver(TPlayerSoundSourcePosition.Create())
 
-
 	'example for ingame-help "MainMenu"
 	'IngameHelpWindowCollection.Add(new TIngameHelpWindow.Init(GetLocale("WELCOME"), "Willkommen bei TVTower", "MainMenu"))
 
@@ -6259,6 +6276,9 @@ Function ShowApp:Int()
 	TProfiler.Leave("ShowApp")
 End Function
 
+'Extern
+'    Global bbGCAllocCount:ULong="bbGCAllocCount"
+'End Extern
 
 Function StartTVTower(start:Int=True)
 	Global InitialResourceLoadingDone:Int = False
@@ -6323,7 +6343,17 @@ TProfiler.Leave("InitialLoading")
 	'c) everything loaded - normal game loop
 TProfiler.Enter("GameLoop")
 	StartApp()
+Global rectangleTime:Int = MilliSecs()
+
 	Repeat
+		If MilliSecs() - rectangleTime > 1000
+'			Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations. " + ExtractMetaDataCalls + " ExtractMetaDataCalls."
+			rectangle_created = 0
+			vec2d_created = 0
+'			bbGCAllocCount = 0
+			rectangleTime :+ 1000
+'			ExtractMetaDataCalls = 0
+		EndIf
 		If AppSuspended()
 			If Not AppSuspendedProcessed
 				TLogger.Log("App", "App suspended.", LOG_DEBUG)

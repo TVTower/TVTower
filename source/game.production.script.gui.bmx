@@ -88,8 +88,8 @@ Type TGuiScript Extends TGUIGameListItem
 
 		SetColor 0,0,0
 		SetAlpha 0.2
-		Local x:Float = Self.GetScreenX()
-		Local tri:Float[]=[float(sheetX + (sheetAlign=0)*20 - (sheetAlign=1)*30),float(sheetY+25),float(sheetX + (sheetAlign=0)*20 - (sheetAlign=1)*30),float(sheetY+90),Self.GetScreenX()+Self.GetScreenWidth()/2.0+3,Self.GetScreenY()+Self.GetScreenHeight()/2.0]
+		Local x:Float = GetScreenRect().GetX()
+		Local tri:Float[]=[float(sheetX + (sheetAlign=0)*20 - (sheetAlign=1)*30),float(sheetY+25),float(sheetX + (sheetAlign=0)*20 - (sheetAlign=1)*30),float(sheetY+90),GetScreenRect().GetXCenter()+3, GetScreenRect().GetYCenter()]
 		DrawPoly(tri)
 		SetColor 255,255,255
 		SetAlpha 1.0

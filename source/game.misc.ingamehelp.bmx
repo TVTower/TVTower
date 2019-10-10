@@ -186,7 +186,7 @@ Type TIngameHelpWindow
 
 		modalDialogue.SetDialogueType(1)
 		modalDialogue.buttons[0].SetCaption(GetLocale("OK"))
-		modalDialogue.buttons[0].Resize(180,-1)
+		modalDialogue.buttons[0].SetSize(180,-1)
 
 '		modalDialogue.SetOption(GUI_OBJECT_CLICKABLE, FALSE)
 
@@ -213,7 +213,7 @@ Type TIngameHelpWindow
 			checkboxHideThis.SetValue( GetLocale("DO_NOT_SHOW_AGAIN") )
 			canvas.AddChild(checkboxHideThis)
 
-			checkboxWidth = checkboxHideThis.GetScreenWidth() + 20
+			checkboxWidth = checkboxHideThis.GetScreenRect().GetW() + 20
 		EndIf
 
 
@@ -248,9 +248,9 @@ Type TIngameHelpWindow
 			If Not showHideOption And checkboxHideAll.IsVisible()
 				If checkboxHideThis Then checkboxHideThis.Hide()
 				checkboxHideAll.Hide()
-				guiTextArea.Resize(-1, guiTextArea.rect.GetH() + checkboxHideAll.GetScreenheight())
+				guiTextArea.SetSize(-1, guiTextArea.rect.GetH() + checkboxHideAll.GetScreenRect().GetH())
 			Else
-				guiTextArea.Resize(-1, guiTextArea.rect.GetH() - checkboxHideAll.GetScreenheight())
+				guiTextArea.SetSize(-1, guiTextArea.rect.GetH() - checkboxHideAll.GetScreenRect().GetH())
 			EndIf
 		EndIf
 	End Method

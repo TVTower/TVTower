@@ -64,7 +64,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			EndIf
 
 			'now we can calculate the item dimensions
-			Resize(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * material.getBlocks())
+			SetSize(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * material.getBlocks())
 
 			'set handle (center for dragged objects) to half of a 1-Block
 			Self.SetHandle(New TVec2D.Init(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()/2, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH()/2))
@@ -135,7 +135,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		Local pos:TVec2D = Null
 		'dragged and not in DrawGhostMode
 		If isDragged() And Not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
-			pos = New TVec2D.Init(GetScreenX(), GetScreenY())
+			pos = New TVec2D.Init(GetScreenRect().GetX(), GetScreenRect().GetY())
 			If block > 1
 				pos.addXY(0, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * (block - 1))
 			EndIf
@@ -149,9 +149,9 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 			If list
 				pos = list.GetSlotCoord(startSlot + block-1).ToVec2D()
-				pos.addXY(list.getScreenX(), list.getScreenY())
+				pos.addXY(list.GetScreenRect().GetX(), list.GetScreenRect().GetY())
 			Else
-				pos = New TVec2D.Init(Self.GetScreenX(),Self.GetScreenY())
+				pos = New TVec2D.Init(Self.GetScreenRect().GetX(),Self.GetScreenRect().GetY())
 				pos.addXY(0, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * (block - 1))
 				'print "block: "+block+"  "+pos.GetIntX()+","+pos.GetIntY()
 			EndIf
@@ -216,7 +216,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	'draws the background
 	Method DrawBlockBackground:Int(variant:String="")
 		Local titleIsVisible:Int = False
-		Local drawPos:TVec2D = New TVec2D.Init(GetScreenX(), GetScreenY())
+		Local drawPos:TVec2D = New TVec2D.Init(GetScreenRect().GetX(), GetScreenRect().GetY())
 		'if dragged and not in ghost mode
 		If isDragged() And Not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
 			If broadcastMaterial.state = broadcastMaterial.STATE_NORMAL Then variant = "_dragged"
@@ -252,7 +252,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 						If blocks = 1
 							GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).Draw(drawPos.x, drawPos.y)
 						Else
-							GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(New TRectangle.Init(drawPos.x, drawPos.y, -1, 30))
+							GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos.x, drawPos.y, -1, 30)
 						EndIf
 						If TProgramme(broadcastMaterial)
 							'live
@@ -287,11 +287,11 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 						titleIsVisible = True
 				Case 2	'middle
-						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(New TRectangle.Init(drawPos.x, drawPos.y, -1, 15), New TVec2D.Init(0, 30))
+						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos.x, drawPos.y, -1, 15, 0, 30)
 						drawPos.addXY(0,15)
-						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(New TRectangle.Init(drawPos.x, drawPos.y, -1, 15), New TVec2D.Init(0, 30))
+						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos.x, drawPos.y, -1, 15, 0, 30)
 				Case 3	'bottom
-						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(New TRectangle.Init(drawPos.x, drawpos.y, -1, 30), New TVec2D.Init(0, 30))
+						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos.x, drawpos.y, -1, 30, 0, 30)
 			End Select
 		Next
 		Return titleIsVisible
@@ -375,7 +375,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 		if not broadcastMaterial.IsControllable()
 			SetAlpha GetAlpha() * 0.8
-			GetSpriteFromRegistry("gfx_interface_ingamechat_key.locked").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW() - 4, GetScreenY() + 5, -1, ALIGN_RIGHT_TOP)
+			GetSpriteFromRegistry("gfx_interface_ingamechat_key.locked").Draw(GetScreenRect().GetX() + GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW() - 4, GetScreenRect().GetY() + 5, -1, ALIGN_RIGHT_TOP)
 			SetAlpha GetAlpha() * 1.25
 		endif
 
@@ -387,9 +387,9 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 			Select useType
 				Case TVTBroadcastMaterialType.PROGRAMME
-					DrawProgrammeBlockText(New TRectangle.Init(GetScreenX(), GetScreenY(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()-1,30))
+					DrawProgrammeBlockText(New TRectangle.Init(GetScreenRect().GetX(), GetScreenRect().GetY(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()-1,30))
 				Case TVTBroadcastMaterialType.ADVERTISEMENT
-					DrawAdvertisementBlockText(New TRectangle.Init(GetScreenX(), GetScreenY(), GetSpriteFromRegistry(GetAssetBaseName()+"2").area.GetW()-4,30))
+					DrawAdvertisementBlockText(New TRectangle.Init(GetScreenRect().GetX(), GetScreenRect().GetY(), GetSpriteFromRegistry(GetAssetBaseName()+"2").area.GetW()-4,30))
 			End Select
 		EndIf
 	End Method
@@ -439,7 +439,13 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		newCacheString.Append(text)
 		newCacheString.Append(text2)
 
+		?bmxng
+		'ng overloads the "<>" and "=" to do a content comparison so no
+		'need do "tostring()" first
+		if not cacheStringProgramme or newCacheString <> cacheStringProgramme
+		?not bmxng
 		if not cacheStringProgramme or newCacheString.Length() <> cacheStringProgramme.Length() or newCacheString.ToString() <> cacheStringProgramme.ToString()
+		?
 			textImageProgramme = null
 			cacheStringProgramme = newCacheString
 		endif
@@ -524,7 +530,13 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		newCacheString.Append(text)
 		newCacheString.Append(text2)
 
+		?bmxng
+		'ng overloads the "<>" and "=" to do a content comparison so no
+		'need do "tostring()" first
+		if not cacheStringAd or newCacheString <> cacheStringAd
+		?not bmxng
 		if not cacheStringAd or newCacheString.Length() <> cacheStringAd.Length() or newCacheString.ToString() <> cacheStringAd.ToString()
+		?
 			textImageAd = null
 			cacheStringAd = newCacheString
 		endif
@@ -572,12 +584,12 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		Rem
 			SetColor 0,0,0
 			SetAlpha 0.2
-			Local x:Float = self.GetScreenX()
+			Local x:Float = self.GetScreenRect().GetX()
 			Local tri:Float[]
 			if sheetAlign=0
-				tri = [sheetX+20,sheetY+25,sheetX+20,sheetY+90,self.GetScreenX()+self.GetScreenWidth()/2.0+3,self.GetScreenY()+self.GetScreenHeight()/2.0]
+				tri = [sheetX+20,sheetY+25,sheetX+20,sheetY+90,self.GetScreenRect().GetX()+self.GetScreenRect().GetW()/2.0+3,self.GetScreenRect().GetY()+self.GetScreenRect().GetH()/2.0]
 			else
-				tri = [sheetX-20,sheetY+25,sheetX-20,sheetY+90,self.GetScreenX()+self.GetScreenWidth()/2.0+3,self.GetScreenY()+self.GetScreenHeight()/2.0]
+				tri = [sheetX-20,sheetY+25,sheetX-20,sheetY+90,self.GetScreenRect().GetX()+self.GetScreenRect().GetW()/2.0+3,self.GetScreenRect().GetY()+self.GetScreenRect().GetH()/2.0]
 			endif
 			DrawPoly(tri)
 			SetColor 255,255,255
@@ -617,7 +629,7 @@ Type TGUIProgrammePlanSlotList Extends TGUISlotList
 		Super.Create(position, dimension, limitState)
 
 		SetOrientation(GUI_OBJECT_ORIENTATION_VERTICAL)
-		Self.resize( dimension.x, dimension.y)
+		Self.SetSize( dimension.x, dimension.y)
 		Self.Init("pp_programmeblock1")
 		Self.SetItemLimit(24)
 		Self._fixedSlotDimension = True
@@ -1002,8 +1014,8 @@ endrem
 	'override default "rectangle"-check to include splitted panels
 	Method containsXY:Int(x:Float,y:Float)
 		'convert to local coord
-		x :-GetScreenX()
-		y :-GetScreenY()
+		x :-GetScreenRect().GetX()
+		y :-GetScreenRect().GetY()
 
 		If zoneLeft.containsXY(x,y) Or zoneRight.containsXY(x,y)
 			Return True
@@ -1021,8 +1033,8 @@ endrem
 
 
 	Method DrawContent()
-		Local atPoint:TVec2D = GetScreenPos()
-		Local pos:TVec2D = Null
+		Local atPoint:TVec2D = GetScreenRect().position
+		Local pos:TVec3D = Null
 		For Local i:Int = 0 To _slotsState.length-1
 			'skip occupied slots
 			If _slots[i]
@@ -1034,7 +1046,7 @@ endrem
 
 			If _slotsState[i] = 0 Then Continue
 
-			pos = GetSlotOrCoord(i).ToVec2D()
+			pos = GetSlotOrCoord(i)
 			'disabled
 			If _slotsState[i] = 1 Then SetColor 100,100,100
 			'occupied

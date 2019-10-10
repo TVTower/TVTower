@@ -480,13 +480,13 @@ Type TBuilding Extends TBuildingBase
 		Next
 
 		GetElevator().DrawFloorDoors()
-		gfx_building.draw(GetScreenX() + leftWallX, area.GetY())
+		gfx_building.draw(GetScreenRect().GetX() + leftWallX, area.GetY())
 
 		'only draw the building roof if the player figure (or ghost view)
 		'is in a specific area
 		If area.GetY() >= 0
 			SetColor 255, 255, 255
-			gfx_buildingRoof.Draw(GetScreenX() + leftWallX, area.GetY(), 0, ALIGN_LEFT_BOTTOM)
+			gfx_buildingRoof.Draw(GetScreenRect().GetX() + leftWallX, area.GetY(), 0, ALIGN_LEFT_BOTTOM)
 		EndIf
 
 		'draw owner signs next to doors,
@@ -497,13 +497,13 @@ Type TBuilding Extends TBuildingBase
 		'draw elevator parts
 		GetElevator().Render()
 		'draw softdrinkmachine
-		softDrinkMachine.Render(buildingInner.GetScreenX() + innerX2 - 90, buildingInner.GetScreenY() + GetFloorY2(6), ALIGN_LEFT_BOTTOM)
+		softDrinkMachine.Render(buildingInner.GetScreenRect().GetX() + innerX2 - 90, buildingInner.GetScreenRect().GetY() + GetFloorY2(6), ALIGN_LEFT_BOTTOM)
 
 		'draw christmas trees
 		if GameConfig.isChristmasTime
-			christmasTree1.Render(buildingInner.GetScreenX() + innerX2 - 180, buildingInner.GetScreenY() + GetFloorY2(0), ALIGN_LEFT_BOTTOM)
-			christmasTree1.Render(buildingInner.GetScreenX() + 45, buildingInner.GetScreenY() + GetFloorY2(4), ALIGN_LEFT_BOTTOM)
-			christmasTree2.Render(buildingInner.GetScreenX() + 30, buildingInner.GetScreenY() + GetFloorY2(9), ALIGN_LEFT_BOTTOM)
+			christmasTree1.Render(buildingInner.GetScreenRect().GetX() + innerX2 - 180, buildingInner.GetScreenRect().GetY() + GetFloorY2(0), ALIGN_LEFT_BOTTOM)
+			christmasTree1.Render(buildingInner.GetScreenRect().GetX() + 45, buildingInner.GetScreenRect().GetY() + GetFloorY2(4), ALIGN_LEFT_BOTTOM)
+			christmasTree2.Render(buildingInner.GetScreenRect().GetX() + 30, buildingInner.GetScreenRect().GetY() + GetFloorY2(9), ALIGN_LEFT_BOTTOM)
 		endif
 
 		If Not softDrinkMachineActive
@@ -514,36 +514,36 @@ Type TBuilding Extends TBuildingBase
 
 		For Local figure:TFigureBase = EachIn GetFigureBaseCollection()
 			'draw figure later if outside of building
-'			If figure.GetScreenX() < GetScreenX() + 127 Then Continue
-			If figure.GetScreenX() + figure.GetScreenWidth() < buildingInner.GetScreenX() Then Continue
+'			If figure.GetScreenRect().GetX() < GetScreenRect().GetX() + 127 Then Continue
+			If figure.GetScreenRect().GetX() + figure.GetScreenRect().GetW() < buildingInner.GetScreenRect().GetX() Then Continue
 			If Not Figure.alreadydrawn Then Figure.Draw()
 			Figure.alreadydrawn = True
 		Next
 
 		'floor 1
-		gfx_plant3a.Draw(buildingInner.GetScreenX() + 60, buildingInner.GetScreenY() + GetFloorY2(1), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant3a.Draw(buildingInner.GetScreenRect().GetX() + 60, buildingInner.GetScreenRect().GetY() + GetFloorY2(1), -1, ALIGN_LEFT_BOTTOM)
 		'floor 2	- between rooms
-		gfx_plant4.Draw(buildingInner.GetScreenX() + floorWidth - 105, buildingInner.GetScreenY() + GetFloorY2(2), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant4.Draw(buildingInner.GetScreenRect().GetX() + floorWidth - 105, buildingInner.GetScreenRect().GetY() + GetFloorY2(2), -1, ALIGN_LEFT_BOTTOM)
 		'floor 3
-		gfx_plant1.Draw(buildingInner.GetScreenX() + floorWidth - 60, buildingInner.GetScreenY() + GetFloorY2(3), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant1.Draw(buildingInner.GetScreenRect().GetX() + floorWidth - 60, buildingInner.GetScreenRect().GetY() + GetFloorY2(3), -1, ALIGN_LEFT_BOTTOM)
 		'floor 4
-		gfx_plant6.Draw(buildingInner.GetScreenX() + floorWidth - 60, buildingInner.GetScreenY() + GetFloorY2(4), -1, ALIGN_RIGHT_BOTTOM)
+		gfx_plant6.Draw(buildingInner.GetScreenRect().GetX() + floorWidth - 60, buildingInner.GetScreenRect().GetY() + GetFloorY2(4), -1, ALIGN_RIGHT_BOTTOM)
 		'floor 6
-		gfx_plant2.Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(6), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant2.Draw(buildingInner.GetScreenRect().GetX() + 150, buildingInner.GetScreenRect().GetY() + GetFloorY2(6), -1, ALIGN_LEFT_BOTTOM)
 		'floor 8
-		gfx_plant6.Draw(buildingInner.GetScreenX() + floorWidth - 95, buildingInner.GetScreenY() + GetFloorY2(8), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant6.Draw(buildingInner.GetScreenRect().GetX() + floorWidth - 95, buildingInner.GetScreenRect().GetY() + GetFloorY2(8), -1, ALIGN_LEFT_BOTTOM)
 		'floor 9
-		gfx_plant1.Draw(buildingInner.GetScreenX() + floorWidth - 130, buildingInner.GetScreenY() + GetFloorY2(9), -1, ALIGN_LEFT_BOTTOM)
-		gfx_plant2.Draw(buildingInner.GetScreenX() + floorWidth - 110, buildingInner.GetScreenY() + GetFloorY2(9), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant1.Draw(buildingInner.GetScreenRect().GetX() + floorWidth - 130, buildingInner.GetScreenRect().GetY() + GetFloorY2(9), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant2.Draw(buildingInner.GetScreenRect().GetX() + floorWidth - 110, buildingInner.GetScreenRect().GetY() + GetFloorY2(9), -1, ALIGN_LEFT_BOTTOM)
 		'floor 11
-		gfx_plant1.Draw(buildingInner.GetScreenX() + 85, buildingInner.GetScreenY() + GetFloorY2(11), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant1.Draw(buildingInner.GetScreenRect().GetX() + 85, buildingInner.GetScreenRect().GetY() + GetFloorY2(11), -1, ALIGN_LEFT_BOTTOM)
 		'floor 12
-		gfx_plant3a.Draw(buildingInner.GetScreenX() + 60, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
-		gfx_plant3b.Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
-		gfx_plant2.Draw(buildingInner.GetScreenX() + floorWidth - 75, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant3a.Draw(buildingInner.GetScreenRect().GetX() + 60, buildingInner.GetScreenRect().GetY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant3b.Draw(buildingInner.GetScreenRect().GetX() + 150, buildingInner.GetScreenRect().GetY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant2.Draw(buildingInner.GetScreenRect().GetX() + floorWidth - 75, buildingInner.GetScreenRect().GetY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
 		'floor 13
-		gfx_plant1.Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(13), -1, ALIGN_LEFT_BOTTOM)
-		gfx_plant3b.Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant1.Draw(buildingInner.GetScreenRect().GetX() + 150, buildingInner.GetScreenRect().GetY() + GetFloorY2(13), -1, ALIGN_LEFT_BOTTOM)
+		gfx_plant3b.Draw(buildingInner.GetScreenRect().GetX() + 150, buildingInner.GetScreenRect().GetY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
 
 
 		'draw entrance on top of figures
@@ -559,13 +559,13 @@ Type TBuilding Extends TBuildingBase
 			'the bottom elements (entrance, fence ...) are using offsets
 			'to properly align with the building
 
-			gfx_buildingEntrance.Draw(GetScreenX(), GetScreenY())
+			gfx_buildingEntrance.Draw(GetScreenRect().GetX(), GetScreenRect().GetY())
 
 			TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 0.9).SetRGB()
 			'draw wall
-			gfx_buildingEntranceWall.Draw(GetScreenX(), GetScreenY())
+			gfx_buildingEntranceWall.Draw(GetScreenRect().GetX(), GetScreenRect().GetY())
 			'draw fence
-			gfx_buildingFence.Draw(GetScreenX(), GetScreenY())
+			gfx_buildingFence.Draw(GetScreenRect().GetX(), GetScreenRect().GetY())
 		EndIf
 		SetColor(255,255,255)
 		GetRoomDoorCollection().DrawTooltips()
@@ -645,18 +645,18 @@ Type TBuilding Extends TBuildingBase
 
 		skyInfluence = 0.7
 		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
-		gfx_bgBuildings[0].Draw(GetScreenX(), 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[0].area.GetH()), - 1)
-		gfx_bgBuildings[1].Draw(GetScreenX() + 674, 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[1].area.GetH()), - 1)
+		gfx_bgBuildings[0].Draw(GetScreenRect().GetX(), 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[0].area.GetH()), - 1)
+		gfx_bgBuildings[1].Draw(GetScreenRect().GetX() + 674, 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[1].area.GetH()), - 1)
 
 		skyInfluence = 0.5
 		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
-		gfx_bgBuildings[2].Draw(GetScreenX(), 120 + 0.35 * (area.GetY() + BuildingHeight - gfx_bgBuildings[2].area.GetH()), - 1)
-		gfx_bgBuildings[3].Draw(GetScreenX() + 676, 120 + 0.35 * (area.GetY() + 60 + BuildingHeight - gfx_bgBuildings[3].area.GetH()), - 1)
+		gfx_bgBuildings[2].Draw(GetScreenRect().GetX(), 120 + 0.35 * (area.GetY() + BuildingHeight - gfx_bgBuildings[2].area.GetH()), - 1)
+		gfx_bgBuildings[3].Draw(GetScreenRect().GetX() + 676, 120 + 0.35 * (area.GetY() + 60 + BuildingHeight - gfx_bgBuildings[3].area.GetH()), - 1)
 
 		skyInfluence = 0.3
 		TColor.CreateGrey(int(GetWorld().lighting.GetSkyBrightness() * 255)).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
-		gfx_bgBuildings[4].Draw(GetScreenX(), 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[4].area.GetH()), - 1)
-		gfx_bgBuildings[5].Draw(GetScreenX() + 674, 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[5].area.GetH()), - 1)
+		gfx_bgBuildings[4].Draw(GetScreenRect().GetX(), 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[4].area.GetH()), - 1)
+		gfx_bgBuildings[5].Draw(GetScreenRect().GetX() + 674, 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[5].area.GetH()), - 1)
 
 		SetColor 255, 255, 255
 		SetAlpha 1.0
@@ -668,8 +668,8 @@ Type TBuilding Extends TBuildingBase
 		If Not door And room Then door = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 		If Not door Then Return False
 		roomUsedTooltip	= TTooltip.Create(GetLocale("ROOM_IS_OCCUPIED"), GetLocale("ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM"), 0,0,-1,-1, 2000)
-		roomUsedTooltip.area.position.SetY(door.GetScreenY() - door.area.GetH() - roomUsedTooltip.GetHeight())
-		roomUsedTooltip.area.position.SetX(door.GetScreenX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
+		roomUsedTooltip.area.position.SetY(door.GetScreenRect().GetY() - door.area.GetH() - roomUsedTooltip.GetHeight())
+		roomUsedTooltip.area.position.SetX(door.GetScreenRect().GetX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
 
 		Return True
@@ -681,8 +681,8 @@ Type TBuilding Extends TBuildingBase
 		If Not door And room Then door = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 		If Not door Then Return False
 		roomUsedTooltip = TTooltip.Create(GetLocale("BLOCKED"), GetLocale("ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE"), 0,0,-1,-1,2000)
-		roomUsedTooltip.area.position.SetY(door.GetScreenY() - door.area.GetH() - roomUsedTooltip.GetHeight())
-		roomUsedTooltip.area.position.SetX(door.GetScreenX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
+		roomUsedTooltip.area.position.SetY(door.GetScreenRect().GetY() - door.area.GetH() - roomUsedTooltip.GetHeight())
+		roomUsedTooltip.area.position.SetX(door.GetScreenRect().GetX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
 
 		Return True
@@ -694,8 +694,8 @@ Type TBuilding Extends TBuildingBase
 		If Not door And room Then door = GetRoomDoorCollection().GetMainDoorToRoom(room.id)
 		If Not door Then Return False
 		roomUsedTooltip = TTooltip.Create(GetLocale("LOCKED"), GetLocale("ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY"), 0,0,-1,-1,2000)
-		roomUsedTooltip.area.position.SetY(door.GetScreenY() - door.area.GetH() - roomUsedTooltip.GetHeight())
-		roomUsedTooltip.area.position.SetX(door.GetScreenX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
+		roomUsedTooltip.area.position.SetY(door.GetScreenRect().GetY() - door.area.GetH() - roomUsedTooltip.GetHeight())
+		roomUsedTooltip.area.position.SetX(door.GetScreenRect().GetX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
 
 		Return True

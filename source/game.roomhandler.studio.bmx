@@ -76,7 +76,7 @@ Type RoomHandler_Studio extends TRoomHandler
 			guiListStudio.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			guiListStudio.SetItemLimit( studioScriptLimit )
 			'increase list size by 2 times - makes it easier to drop
-			guiListStudio.Resize(2 * spriteScript.area.GetW(), spriteScript.area.GetH() )
+			guiListStudio.SetSize(2 * spriteScript.area.GetW(), spriteScript.area.GetH() )
 			guiListStudio.SetSlotMinDimension(2 * spriteScript.area.GetW(), spriteScript.area.GetH())
 			guiListStudio.SetAcceptDrop("TGuiScript")
 
@@ -95,7 +95,6 @@ Type RoomHandler_Studio extends TRoomHandler
 			guiListDeskProductionConcepts.SetSlotMinDimension(spriteProductionConcept.area.GetW(), spriteProductionConcept.area.GetH())
 			guiListDeskProductionConcepts.SetEntryDisplacement( 0, 0 )
 			guiListDeskProductionConcepts.SetAcceptDrop("TGuiProductionConceptListItem")
-			guiListDeskProductionConcepts._debugMode = True
 			guiListDeskProductionConcepts._customDrawContent = DrawProductionConceptStudioSlotListContent
 
 
@@ -962,7 +961,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		Local list:TGUIProductionConceptSlotList = TGUIProductionConceptSlotList(guiObject)
 		if not list then return False
 
-		Local atPoint:TVec2D = guiObject.GetScreenPos()
+		Local atPoint:TVec2D = guiObject.GetScreenRect().position
 		local spriteProductionConcept:TSprite = GetSpriteFromRegistry("gfx_studio_productionconcept_0")
 
 		SetAlpha 0.20

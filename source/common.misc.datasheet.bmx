@@ -17,6 +17,7 @@ Type TDatasheetSkin
 	Field fontBold:TBitmapFont
 	Field fontSemiBold:TBitmapFont
 	Field fontCaption:TBitmapFont
+	Field fontSmallCaption:TBitmapFont
 
 	Field defaultFont:TBitmapFont
 	Field contentPadding:TRectangle = New TRectangle
@@ -37,6 +38,7 @@ Type TDatasheetSkin
 		skin.fontSmall = GetBitmapFontManager().Get("default", skin.fontNormal.FSize-1)
 		skin.fontSemiBold = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
 		skin.fontCaption = GetBitmapFontManager().Get("default", 13, BOLDFONT)
+		skin.fontSmallCaption = GetBitmapFontManager().Get("default", 12, BOLDFONT)
 
 		'use content-params from sprite
 		skin.contentPadding.CopyFrom( GetSpriteFromRegistry(skin.spriteBaseKey+"_border").GetNinePatchContentBorder() )

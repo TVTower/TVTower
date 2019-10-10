@@ -831,6 +831,7 @@ NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS = Mindestens einen P
 NO_PRODUCTION_COMPANY_SELECTED = Keine Produktionsfirma ausgewählt
 PRODUCTION_SETUP_NOT_DONE = Produktion noch nicht konzipiert
 PRODUCTION_SETUP_INCOMPLETE = Produktionskonzept unvollständig
+CAST_INCOMPLETE = Besetzung unvollständig
 EPISODES_NOT_IN_ORDER = Episoden nicht in richtiger Reihenfolge
 PRODUCTION_CONCEPTS = Einkaufslisten
 PRODUCTION_DEPOSIT_PAID = Anzahlung (%MONEY%) geleistet.

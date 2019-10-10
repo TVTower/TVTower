@@ -15,6 +15,12 @@ Global headerFont:TBitmapFont
 
 Type TGUISpriteDropDown Extends TGUIDropDown
 
+
+	Method GetClassName:String()
+		Return "tguispritedropdown"
+	End Method
+
+
 	Method Create:TGUISpriteDropDown(position:TVec2D = Null, dimension:TVec2D = Null, value:String="", maxLength:Int=128, limitState:String = "")
 		Super.Create(position, dimension, value, maxLength, limitState)
 		Return Self
@@ -45,9 +51,16 @@ Type TGUISpriteDropDown Extends TGUIDropDown
 End Type
 
 
+
+
 Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 	Global spriteDimension:TVec2D
 	Global defaultSpriteDimension:TVec2D = New TVec2D.Init(24, 24)
+
+
+	Method GetClassName:String()
+		Return "tguispritedropdownitem"
+	End Method
 
 
     Method Create:TGUISpriteDropDownItem(position:TVec2D=Null, dimension:TVec2D=Null, value:String="")
@@ -71,7 +84,7 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 	Method SetSpriteDimension:Int(dimension:TVec2D)
 		spriteDimension = dimension.copy()
 
-		Resize(..
+		SetSize(..
 			Max(dimension.x, GetSpriteDimension().x), ..
 			Max(dimension.y, GetSpriteDimension().y) ..
 		)
@@ -84,36 +97,41 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 		SetColor(125, 160, 215)
 		If IsHovered()
 			SetAlpha(oldCol.a * 0.75)
-			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
+			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), rect.getH())
 		ElseIf IsSelected()
 			SetAlpha(oldCol.a * 0.5)
-			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
+			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), rect.getH())
 		EndIf
 		oldCol.SetRGBA()
 	End Method
 
 
 	Method DrawValue()
-		Local valueX:Int = getScreenX()
+		Local valueX:Int = GetScreenRect().GetX()
 
 		Local sprite:TSprite = GetSpriteFromRegistry( data.GetString("spriteName", "default") )
 		If sprite.GetName() <> "defaultSprite"
-			sprite.DrawArea(valueX, GetScreenY()+1, GetSpriteDimension().x, GetSpriteDimension().y)
+			sprite.DrawArea(valueX, GetScreenRect().GetY()+1, GetSpriteDimension().x, GetSpriteDimension().y)
 			valueX :+ GetSpriteDimension().x + 3
 		Else
 			valueX :+ GetSpriteDimension().x + 3
 		EndIf
 		'draw value
-		GetFont().draw(value, valueX, Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(value))), valueColor)
+		GetFont().draw(value, valueX, Int(GetScreenRect().GetY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(value))), valueColor)
 	End Method
 End Type
+
 
 
 
 Type TGUIChatWindow Extends TGUIGameWindow
 	Field guiPanel:TGUIBackgroundBox
 	Field guiChat:TGUIChat
-	Field padding:TRectangle = New TRectangle.Init(8, 8, 8, 8)
+
+
+	Method GetClassName:String()
+		Return "tguichatwindow"
+	End Method
 
 
 	Method Create:TGUIChatWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
@@ -121,16 +139,16 @@ Type TGUIChatWindow Extends TGUIGameWindow
 		'positioned similar
 		Super.Create(pos, dimension, limitState)
 
-		guiPanel = AddContentBox(0, 0, Int(GetContentScreenWidth()-10), -1)
-		'we manage the panel
-		AddChild(guiPanel)
+		guiPanel = AddContentBox(0, 0, GetContentScreenRect().GetIntW(), -1)
 
 		guiChat = New TGUIChat.Create(New TVec2D.Init(0,0), New TVec2D.Init(-1,-1), limitState)
-		'we manage the panel
-		AddChild(guiChat)
+
+		'panel manages the chat and window manages the panel
+		guiPanel.AddChild(guiChat)
+		AddChild(guiPanel)
 
 		'resize base and move child elements
-		resize(dimension.GetX(), dimension.GetY())
+		SetSize(dimension.GetX(), dimension.GetY())
 
 		GUIManager.Add( Self )
 
@@ -138,27 +156,39 @@ Type TGUIChatWindow Extends TGUIGameWindow
 	End Method
 
 
-	Method SetPadding:Int(top:Float, Left:Float, bottom:Float, Right:Float)
-		GetPadding().setTLBR(top,Left,bottom,Right)
-		resize()
-	End Method
-
-
-	'override resize and add minSize-support
-	Method Resize(w:Float=Null,h:Float=Null)
-		Super.Resize(w,h)
+	Method UpdateLayout()
+		Super.UpdateLayout()
 
 		'background covers whole area, so resize it
-		If guiBackground Then guiBackground.resize(rect.getW(), rect.getH())
+		If guiBackground Then guiBackground.SetSize(rect.getW(), rect.getH())
 
-		If guiPanel Then guiPanel.Resize(GetContentScreenWidth(), GetContentScreenHeight())
+		If guiPanel
+			guiPanel.SetSize(GetContentScreenRect().GetW(), GetContentScreenRect().GetH())
+'			guiPanel.InvalidateContentScreenRect()
+		EndIf
 
 		If guiChat
-			guiChat.rect.position.SetXY(padding.GetLeft(), padding.GetTop())
-			guiChat.Resize(GetContentScreenWidth() - padding.GetRight() - padding.GetLeft(), GetContentScreenHeight() - padding.GetTop() - padding.GetBottom())
+			guiChat.SetPosition(0, 0)
+			guiChat.SetSize(guiPanel.GetContentScreenRect().GetW(), guiPanel.GetContentScreenRect().GetH())
 		EndIf
 	End Method
+
+
+	Method DrawOverlay()
+		Super.DrawOverlay()
+	rem
+		SetColor 255,0,0
+		SetAlpha 0.5
+		DrawRect(guiPanel.GetScreenRect().GetX(), guiPanel.GetScreenRect().GetY(), guiPanel.GetScreenRect().GetW(), guiPanel.GetScreenRect().GetH())
+		SetColor 0,0,255
+		DrawRect(guiPanel.GetContentScreenRect().GetX(), guiPanel.GetContentScreenRect().GetY(), guiPanel.GetContentScreenRect().GetW(), guiPanel.GetContentScreenRect().GetH())
+		SetColor 255,255,255
+		setAlpha 1.0
+	EndRem
+	End Method
 End Type
+
+
 
 
 Type TGUIGameWindow Extends TGUIWindowBase
@@ -167,12 +197,19 @@ Type TGUIGameWindow Extends TGUIWindowBase
 	Global childSpriteBaseName:String = "gfx_gui_panel.content"
 
 
+	Method GetClassName:String()
+		Return "tguigamewindow"
+	End Method
+
+
 	Method Create:TGUIGameWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
 		GetPadding().SetTop(35)
+		OnChangePadding()
 
-		SetCaptionArea(New TRectangle.Init(20, 10, GetContentScreenWidth() - 2*20, 25))
+
+		SetCaptionArea(New TRectangle.Init(20, 10, GetContentScreenRect().GetW() - 2*20, 25))
 		guiCaptionTextBox.SetValueAlignment( ALIGN_LEFT_TOP )
 
 		Return Self
@@ -181,8 +218,8 @@ Type TGUIGameWindow Extends TGUIWindowBase
 
 	'special handling for child elements of kind GuiGameBackgroundBox
 	Method AddContentBox:TGUIBackgroundBox(displaceX:Int=0, displaceY:Int=0, w:Int=-1, h:Int=-1)
-		If w < 0 Then w = GetContentScreenWidth()
-		If h < 0 Then h = GetContentScreenHeight()
+		If w < 0 Then w = GetContentScreenRect().GetW()
+		If h < 0 Then h = GetContentScreenRect().GetH()
 
 		'if no background was set yet - do it now
 		If Not guiBackground Then SetBackground( New TGUIBackgroundBox.Create(Null, Null) )
@@ -199,12 +236,12 @@ Type TGUIGameWindow Extends TGUIWindowBase
 				maxOtherBoxesY :+ panelGap
 			Next
 		EndIf
+
 		Local box:TGUIBackgroundBox = New TGUIBackgroundBox.Create(New TVec2D.Init(displaceX, maxOtherBoxesY + displaceY), New TVec2D.Init(w, h), "")
 
 		box.spriteBaseName = childSpriteBaseName
 		box.spriteAlpha = 1.0
 		box.SetPadding(panelGap, panelGap, panelGap, panelGap)
-
 		AddChild(box)
 
 		contentBoxes = contentBoxes[.. contentBoxes.length +1]
@@ -215,7 +252,7 @@ Type TGUIGameWindow Extends TGUIWindowBase
 		Local newHeight:Int = box.rect.GetY() + box.rect.GetH()
 		'add padding
 		newHeight :+ GetPadding().GetTop() + GetPadding().GetBottom()
-		resize(rect.GetW(), Max(rect.GetH(), newHeight))
+		SetSize(rect.GetW(), Max(rect.GetH(), newHeight))
 
 		Return box
 	End Method
@@ -230,7 +267,15 @@ End Type
 
 
 
+
 Type TGUIGameModalWindowChainDialogue extends TGUIModalWindowChainDialogue
+
+
+	Method GetClassName:String()
+		Return "tguigamemodalwindowchaindialogue"
+	End Method
+
+
 	Method Create:TGUIGameModalWindowChainDialogue(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		_defaultValueColor = TColor.clBlack.copy()
 		defaultCaptionColor = TColor.clWhite.copy()
@@ -251,7 +296,16 @@ Type TGUIGameModalWindowChainDialogue extends TGUIModalWindowChainDialogue
 End Type
 
 
+
+
 Type TGUIGameModalWindow Extends TGUIModalWindow
+
+
+	Method GetClassName:String()
+		Return "tguigamemodalwindow"
+	End Method
+
+
 	Method Create:TGUIGameModalWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		_defaultValueColor = TColor.clBlack.copy()
 		defaultCaptionColor = TColor.clWhite.copy()
@@ -265,6 +319,7 @@ Type TGUIGameModalWindow Extends TGUIModalWindow
 		Return Self
 	End Method
 
+
 	Method SetCaption:Int(caption:String="")
 		Super.SetCaption(caption)
 		If guiCaptionTextBox Then guiCaptionTextBox.SetFont(headerFont)
@@ -273,12 +328,21 @@ End Type
 
 
 
+
 Type TGUIGameEntryList Extends TGUIGameList
+
+
+	Method GetClassName:String()
+		Return "tguigameentrylist"
+	End Method
+
+
     Method Create:TGUIGameEntryList(pos:TVec2D=Null, dimension:TVec2D=Null, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
 		Return Self
 	End Method
+
 
 	'override to check for similar entries
 	Method AddItem:Int(item:TGUIobject, extra:Object=Null)
@@ -300,9 +364,16 @@ Type TGUIGameEntryList Extends TGUIGameList
 End Type
 
 
+
+
 Type TGUIGameEntry Extends TGUISelectListItem
 	Field paddingBottom:Int		= 3
 	Field paddingTop:Int		= 2
+
+
+	Method GetClassName:String()
+		Return "tguigameentry"
+	End Method
 
 
 	Method CreateSimple:TGUIGameEntry(HostIp:String, hostPort:Int, HostName:String="", gameTitle:String="", slotsUsed:Int, slotsMax:Int)
@@ -340,9 +411,9 @@ Type TGUIGameEntry Extends TGUISelectListItem
 
 	Method getDimension:TVec2D()
 		'available width is parentsDimension minus startingpoint
-		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
+		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel( GetFirstParentalObject("tguiscrollablepanel") )
 		Local maxWidth:Int = 200
-		If parentPanel Then maxWidth = parentPanel.getContentScreenWidth() '- GetScreenWidth()
+		If parentPanel Then maxWidth = parentPanel.GetContentScreenRect().GetW() '- GetScreenRect().GetW()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local dimension:TVec2D = New TVec2D.Init(maxWidth, GetBitmapFontManager().baseFont.GetMaxCharHeight())
@@ -355,7 +426,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 		'but only if something changed (eg. first time or content changed)
 		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
 			'resize item
-			Self.Resize(dimension.getX(), dimension.getY())
+			Self.SetSize(dimension.getX(), dimension.getY())
 		EndIf
 
 		Return dimension
@@ -370,20 +441,20 @@ Type TGUIGameEntry Extends TGUISelectListItem
 		Local textColor:TColor = Null
 		Local textDim:TVec2D = Null
 		'line: title by hostname (slotsused/slotsmax)
-'DrawRect(GetScreenX(), GetScreenY(), GetDimension().x, GetDimension().y)
-		text 		= Self.Data.getString("gameTitle","#unknowngametitle#")
-		textColor	= TColor(Self.Data.get("gameTitleColor", TColor.Create(150,80,50)) )
-		textDim		= GetBitmapFontManager().baseFontBold.drawStyled(text, Self.getScreenX() + move.x, Self.getScreenY() + move.y, textColor, 2, 1,0.5)
+'DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetDimension().x, GetDimension().y)
+		text = Self.Data.getString("gameTitle","#unknowngametitle#")
+		textColor = TColor(Self.Data.get("gameTitleColor", TColor.Create(150,80,50)) )
+		GetBitmapFontManager().baseFontBold.drawStyled(text, Self.GetScreenRect().GetX() + move.x, Self.GetScreenRect().GetY() + move.y, textColor, 2, 1,0.5, textDim)
 		move.addXY(textDim.x,1)
 
-		text 		= " by "+Self.Data.getString("hostName","#unknownhostname#")
-		textColor	= TColor(Self.Data.get("hostNameColor", TColor.Create(50,50,150)) )
-		textDim		= GetBitmapFontManager().baseFontBold.drawStyled(text, Self.getScreenX() + move.x, Self.getScreenY() + move.y, textColor)
+		text = " by "+Self.Data.getString("hostName","#unknownhostname#")
+		textColor = TColor(Self.Data.get("hostNameColor", TColor.Create(50,50,150)) )
+		GetBitmapFontManager().baseFontBold.drawStyled(text, Self.GetScreenRect().GetX() + move.x, Self.GetScreenRect().GetY() + move.y, textColor, , , , textDim)
 		move.addXY(textDim.x,0)
 
-		text 		= " ("+Self.Data.getInt("slotsUsed",1)+"/"++Self.Data.getInt("slotsMax",4)+")"
-		textColor	= TColor(Self.Data.get("hostNameColor", TColor.Create(0,0,0)) )
-		textDim		= GetBitmapFontManager().baseFontBold.drawStyled(text, Self.getScreenX() + move.x, Self.getScreenY() + move.y, textColor)
+		text = " ("+Self.Data.getInt("slotsUsed",1)+"/"++Self.Data.getInt("slotsMax",4)+")"
+		textColor = TColor(Self.Data.get("hostNameColor", TColor.Create(0,0,0)) )
+		GetBitmapFontManager().baseFontBold.drawStyled(text, Self.GetScreenRect().GetX() + move.x, Self.GetScreenRect().GetY() + move.y, textColor, , , , textDim)
 		move.addXY(textDim.x,0)
 	End Method
 
@@ -401,7 +472,16 @@ Type TGUIGameEntry Extends TGUISelectListItem
 End Type
 
 
+
+
 Type TGUIGameList Extends TGUISelectList
+
+
+	Method GetClassName:String()
+		Return "tguigamelist"
+	End Method
+
+
     Method Create:TGUIGameList(pos:TVec2D=null, dimension:TVec2D=null, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
@@ -410,9 +490,17 @@ Type TGUIGameList Extends TGUISelectList
 End Type
 
 
+
+
 Type TGUIGameSlotList Extends TGUISlotList
 	'Field onlyDropFromList:int = False
 	'Field onlyDropToList:int = False
+
+
+	Method GetClassName:String()
+		Return "tguigameslotlist"
+	End Method
+
 
     Method Create:TGUIGameSlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
@@ -475,6 +563,8 @@ Type TGUIGameSlotList Extends TGUISlotList
 End Type
 
 
+
+
 'a graphical representation of multiple object ingame
 Type TGUIGameListItem Extends TGUIListItem
 	Field assetNameDefault:String = "gfx_movie_undefined"
@@ -485,6 +575,11 @@ Type TGUIGameListItem Extends TGUIListItem
 	Field assetName:string = ""
 	Field assetDefault:TSprite = Null
 	Field assetDragged:TSprite = Null
+
+
+	Method GetClassName:String()
+		Return "tguigamelistitem"
+	End Method
 
 
     Method Create:TGUIGameListItem(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
@@ -526,7 +621,10 @@ Type TGUIGameListItem Extends TGUIListItem
 		If Self.asset <> sprite or self.assetName <> name
 			Self.asset = sprite
 			Self.assetName = name
-			Self.Resize(sprite.area.GetW(), sprite.area.GetH())
+
+			Self.SetSize(sprite.area.GetW(), sprite.area.GetH())
+			Self.InvalidateScreenRect()
+			Self.InvalidateLayout()
 		EndIf
 	End Method
 
@@ -574,13 +672,13 @@ Type TGUIGameListItem Extends TGUIListItem
 
 
 	Method DrawContent()
-		asset.draw(int(Self.GetScreenX()), int(Self.GetScreenY()))
+		asset.draw(int(Self.GetScreenRect().GetX()), int(Self.GetScreenRect().GetY()))
 		'hovered
 		If isHovered() and not isDragged()
 			Local oldAlpha:Float = GetAlpha()
 			SetAlpha 0.20*oldAlpha
 			SetBlend LightBlend
-			GetAsset().draw(int(Self.GetScreenX()), int(Self.GetScreenY()))
+			GetAsset().draw(int(Self.GetScreenRect().GetX()), int(Self.GetScreenRect().GetY()))
 			SetBlend AlphaBlend
 			SetAlpha oldAlpha
 		EndIf
@@ -595,25 +693,36 @@ Type TGameGUIAccordeon extends TGUIAccordeon
 	Field skinName:string = "default"
 
 
+	Method GetClassName:String()
+		Return "tgameguicaccordeon"
+	End Method
+
+
 	Method GetSkin:TDatasheetSkin()
 		if not skin
 			skin = GetDatasheetSkin(skinName)
-			RefitPanelSizes()
+			InvalidateLayout()
+			SetAppearanceChanged(True)
 		endif
 
 		return skin
 	End Method
 
 
-	Method GetContentScreenWidth:Float()
-		if not skin then return GetScreenWidth()
-		return skin.GetContentW(GetScreenWidth())
+	Method _UpdateContentScreenW:Float()
+		If not skin
+			_contentScreenRect.SetW( GetScreenRect().GetW() )
+		Else
+			_contentScreenRect.SetW( skin.GetContentW( GetScreenRect().GetW() ) )
+		EndIf
+
+		Return _contentScreenRect.GetW()
 	End Method
 
 
 	Method GetContentWidth:Float()
 		if not skin then return Super.GetContentWidth()
-		return skin.GetContentW(GetWidth())
+		return skin.GetContentW( GetWidth() )
 	End Method
 
 
@@ -639,7 +748,7 @@ Type TGameGUIAccordeon extends TGUIAccordeon
 
 	Method DrawOverlay()
 		'use GetSkin() to fetch the skin when drawing was possible
-		GetSkin().RenderBorder(int(GetScreenX()), int(GetScreenY()), int(GetScreenWidth()), int(GetScreenHeight()))
+		GetSkin().RenderBorder(int(GetScreenRect().GetX()), int(GetScreenRect().GetY()), int(GetScreenRect().GetW()), int(GetScreenRect().GetH()))
 	End Method
 End Type
 
@@ -647,8 +756,15 @@ End Type
 
 
 Type TGameGUIAccordeonPanel extends TGUIAccordeonPanel
+
+
+	Method GetClassName:String()
+		Return "tgameguiaccordeonpanel"
+	End Method
+
+
 	Method GetSkin:TDatasheetSkin()
-		if TGameGUIAccordeon(GetParent()) then return TGameGUIAccordeon(GetParent()).GetSkin()
+		if TGameGUIAccordeon(_parent) then return TGameGUIAccordeon(_parent).GetSkin()
 		return null
 	End Method
 
@@ -657,7 +773,7 @@ Type TGameGUIAccordeonPanel extends TGUIAccordeonPanel
 		'skip further checks
 		if not isHovered() then return False
 
-		local mouseYOffset:int = MouseManager.y - GetScreenY()
+		local mouseYOffset:int = MouseManager.y - GetScreenRect().GetY()
 
 		Return mouseYOffset > 0 and mouseYOffset < GetHeaderHeight()
 	End Method
@@ -674,9 +790,9 @@ Type TGameGUIAccordeonPanel extends TGUIAccordeonPanel
 
 		local skin:TDatasheetSkin = GetSkin()
 		if skin
-			local contentW:int = GetScreenWidth()
-			local contentX:int = GetScreenX()
-			local contentY:int = GetScreenY()
+			local contentW:int = GetScreenRect().GetW()
+			local contentX:int = GetScreenRect().GetX()
+			local contentY:int = GetScreenRect().GetY()
 			local headerHeight:int = GetHeaderHeight()
 
 			skin.RenderContent(contentX, contentY, contentW, headerHeight, "1_top")
@@ -700,7 +816,7 @@ Type TGameGUIAccordeonPanel extends TGUIAccordeonPanel
 	Method DrawBody()
 		local skin:TDatasheetSkin = GetSkin()
 		if skin
-			skin.RenderContent(int(GetScreenX()), int(GetScreenY() + GetHeaderHeight()), int(GetScreenWidth()), int(GetBodyHeight()), "2")
+			skin.RenderContent(int(GetScreenRect().GetX()), int(GetScreenRect().GetY() + GetHeaderHeight()), int(GetScreenRect().GetW()), int(GetBodyHeight()), "2")
 		endif
 	End Method
 End Type

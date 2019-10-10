@@ -28,7 +28,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 	Method CreateWithproductionConcept:TGuiProductionConceptListItem(productionConcept:TProductionConcept)
 		Self.Create()
-		Self.SeTProductionConcept(productionConcept)
+		Self.SetProductionConcept(productionConcept)
 		Return Self
 	End Method
 
@@ -65,8 +65,8 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 		SetColor 0,0,0
 		SetAlpha 0.2
-		Local x:Float = Self.GetScreenX()
-		Local tri:Float[]=[float(sheetX+20),float(sheetY+25),float(sheetX+20),float(sheetY+90),Self.GetScreenX()+Self.GetScreenWidth()/2.0+3,Self.GetScreenY()+Self.GetScreenHeight()/2.0]
+		Local x:Float = Self.GetScreenRect().GetX()
+		Local tri:Float[]=[float(sheetX+20),float(sheetY+25),float(sheetX+20),float(sheetY+90),Self.GetScreenRect().GetX()+Self.GetScreenRect().GetW()/2.0+3,Self.GetScreenRect().GetY()+Self.GetScreenRect().GetH()/2.0]
 		DrawPoly(tri)
 		SetColor 255,255,255
 		SetAlpha 1.0
@@ -81,8 +81,8 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 		SetColor 0,0,0
 		SetAlpha 0.2
-		Local x:Float = Self.GetScreenX()
-		Local tri:Float[]=[float(sheetX+20),float(sheetY+25),float(sheetX+20),float(sheetY+90),Self.GetScreenX()+Self.GetScreenWidth()/2.0+3,Self.GetScreenY()+Self.GetScreenHeight()/2.0]
+		Local x:Float = Self.GetScreenRect().GetX()
+		Local tri:Float[]=[float(sheetX+20),float(sheetY+25),float(sheetX+20),float(sheetY+90),Self.GetScreenRect().GetX()+Self.GetScreenRect().GetW()/2.0+3,Self.GetScreenRect().GetY()+Self.GetScreenRect().GetH()/2.0]
 		DrawPoly(tri)
 		SetColor 255,255,255
 		SetAlpha 1.0
@@ -416,7 +416,7 @@ endrem
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(title, contentW - 10, 100))
 
 		if subTitle
-			subTitleH = Max(subTitleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(subTitle, contentW - 10, 100))
+			subTitleH = Max(subTitleH, 2 + GetBitmapFontManager().Get("default", 12, BOLDFONT).getBlockHeight(subTitle, contentW - 10, 100))
 		else
 			subTitleH = 0
 		endif
@@ -449,7 +449,7 @@ endrem
 		'=== RENDER ===
 
 		'=== TITLE AREA ===
-		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
+		skin.RenderContent(contentX, contentY, contentW, titleH + subTitleH, "1_top")
 			if titleH <= 18
 				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY -1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			else
@@ -459,12 +459,11 @@ endrem
 
 		'=== SUBTITLE AREA ===
 		if subTitleH
-			skin.RenderContent(contentX, contentY, contentW, subTitleH, "1")
-				if subTitleH <= 18
-					GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(subTitle, contentX + 5, contentY -1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-				else
-					GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(subTitle, contentX + 5, contentY +1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-				endif
+			if subTitleH <= 18
+				GetBitmapFontManager().Get("default", 12, BOLDFONT).drawBlock(subTitle, contentX + 5, contentY -1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			else
+				GetBitmapFontManager().Get("default", 12, BOLDFONT).drawBlock(subTitle, contentX + 5, contentY +1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			endif
 			contentY :+ subTitleH
 		endif
 
@@ -599,9 +598,22 @@ End Type
 
 
 
+
 Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 	Field displayName:string = ""
 	Field minHeight:int = 50 '61
+
+	Global colorPlanned:TColor = TColor.Create(30,80,150)
+	Global colorGettingPlanned:TColor = TColor.Create(150,80,30)
+	Global colorProduceable:TColor = TColor.Create(80,150,30)
+	Global colorDefault:TColor = TColor.CreateGrey(50)
+	Global colorHint:TColor = TColor.CreateGrey(0, 0.6)
+
+	Global colorProduceableBG:TColor = TColor.Create(110,180,60, 0.1)
+	Global colorPlannedBG:TColor = TColor.Create(60,110,180, 0.1)
+	Global colorGettingPlannedBG:TColor = TColor.Create(180,110,60, 0.1)
+	Global colorSelectedBG:TColor = TColor.Create(175,165,120, 0.25)
+
 	Const scaleAsset:Float = 0.55
 	Const paddingBottom:Int	= 2
 	Const paddingTop:Int = 2
@@ -697,11 +709,11 @@ TODO: might be needed somewhen
 	End Method
 endrem
 
-	Method getDimension:TVec2D()
+	Method GetDimension:TVec2D()
 		'available width is parentsDimension minus startingpoint
-		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
+		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(GetFirstParentalObject("tguiscrollablepanel"))
 		Local maxWidth:Int = 300
-		If parentPanel Then maxWidth = parentPanel.getContentScreenWidth() '- GetScreenWidth()
+		If parentPanel Then maxWidth = parentPanel.GetContentScreenRect().GetW() '- GetScreenRect().GetW()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local dimension:TVec2D = New TVec2D.Init(maxWidth, max(minHeight, asset.GetHeight() * scaleAsset))
@@ -714,7 +726,7 @@ endrem
 		'but only if something changed (eg. first time or content changed)
 		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
 			'resize item
-			Self.Resize(dimension.getX(), dimension.getY())
+			Self.SetSize(dimension.getX(), dimension.getY())
 		EndIf
 
 		Return dimension
@@ -725,33 +737,43 @@ endrem
 		local oldCol:TColor = new TColor.Get()
 
 		'available width is parentsDimension minus startingpoint
-		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
+		Local maxWidth:Int = rect.GetX()
+		if _parent then maxWidth = _parent.GetContentScreenRect().GetW() - rect.getX()
 		local bgColor:TColor
 
 		'ready for production
 		if productionConcept.IsProduceable()
-			bgColor = TColor.Create(110,180,60, 0.1)
+			bgColor = colorProduceableBG
 		'planned but not paid
 		elseif productionConcept.isPlanned()
-			bgColor = TColor.Create(60,110,180, 0.1)
+			bgColor = colorPlannedBG
 		'in planning
 		elseif productionConcept.IsGettingPlanned()
-			bgColor = TColor.Create(180,110,60, 0.1)
+			bgColor = colorGettingPlannedBG
 		'default
 		else 'elseif productionConcept.IsUnplanned()
 			if IsHovered() or isSelected()
-				bgColor = TColor.Create(175,165,120, 0.25)
+				bgColor = colorSelectedBG
 			endif
 		endif
 
 
 		if bgColor
-			If isSelected() then bgColor.a :+ 0.05; bgColor.AdjustBrightness(0.1)
-			If isHovered() then bgColor.a :+ 0.1; bgColor.AdjustBrightness(0.1)
+			If isSelected() or isHovered()
+				bgColor = bgColor.copy()
+				If isSelected()
+					bgColor.a :+ 0.05
+					bgColor.AdjustBrightness(0.1)
+				EndIf
+				If isHovered()
+					bgColor.a :+ 0.1
+					bgColor.AdjustBrightness(0.1)
+				EndIf
+			EndIf
 
 			bgColor.SetRGBA()
 
-			DrawRect(GetScreenX(), GetScreenY() + paddingTop -2, GetScreenWidth(), GetScreenHeight() - paddingBottom -3)
+			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY() + paddingTop -2, GetScreenRect().GetW(), GetScreenRect().GetH() - paddingBottom -3)
 
 			oldCol.SetRGBA()
 		endif
@@ -775,24 +797,24 @@ endrem
 		EndIf
 
 		SetColor 150,150,150
-		DrawLine(GetScreenX() + 10, GetScreenY2() - paddingBottom -1, GetScreenX2() - 20, GetScreenY2() - paddingBottom -1)
+		DrawLine(GetScreenRect().GetX() + 10, GetScreenRect().GetY2() - paddingBottom -1, GetScreenRect().GetX2() - 20, GetScreenRect().GetY2() - paddingBottom -1)
 		SetColor 210,210,210
-		DrawLine(GetScreenX() + 10, GetScreenY2() - paddingBottom, GetScreenX2() - 20, GetScreenY2() - paddingBottom)
+		DrawLine(GetScreenRect().GetX() + 10, GetScreenRect().GetY2() - paddingBottom, GetScreenRect().GetX2() - 20, GetScreenRect().GetY2() - paddingBottom)
 	End Method
 
 
 	Method DrawProductionConceptItem()
-		GetAsset().draw(Self.GetScreenX(), Self.GetScreenY(), -1, null, scaleAsset)
+		GetAsset().draw(Self.GetScreenRect().GetX(), Self.GetScreenRect().GetY(), -1, null, scaleAsset)
 
 		'ready for production
 		if productionConcept.IsProduceable()
-			GetSpriteFromRegistry("gfx_datasheet_icon_ok").Draw(Self.GetScreenX()-2, Self.GetScreenY() + GetAsset().GetHeight() * scaleAsset -1)
+			GetSpriteFromRegistry("gfx_datasheet_icon_ok").Draw(Self.GetScreenRect().GetX()-2, Self.GetScreenRect().GetY() + GetAsset().GetHeight() * scaleAsset -1)
 		'finished planning
 		elseif productionConcept.IsPlanned()
-			GetSpriteFromRegistry("gfx_datasheet_icon_ok2").Draw(Self.GetScreenX()-2, Self.GetScreenY() + GetAsset().GetHeight() * scaleAsset -1)
+			GetSpriteFromRegistry("gfx_datasheet_icon_ok2").Draw(Self.GetScreenRect().GetX()-2, Self.GetScreenRect().GetY() + GetAsset().GetHeight() * scaleAsset -1)
 		'planning not yet finished
 		elseif productionConcept.IsGettingPlanned()
-			GetSpriteFromRegistry("gfx_datasheet_icon_warning").Draw(Self.GetScreenX()-3, Self.GetScreenY() + GetAsset().GetHeight() * scaleAsset -1)
+			GetSpriteFromRegistry("gfx_datasheet_icon_warning").Draw(Self.GetScreenRect().GetX()-3, Self.GetScreenRect().GetY() + GetAsset().GetHeight() * scaleAsset -1)
 		'default
 		else 'elseif productionConcept.IsUnplanned()
 			'nothing
@@ -800,12 +822,12 @@ endrem
 
 		local textOffsetX:int = asset.GetWidth()*scaleAsset + 3
 		local title:string = "unknown script"
+		local titleSize:TVec2D = new TVec2D
 		local subtitle:string = ""
-		local titleSize:TVec2D
-		local subTitleSize:TVec2D
+		local subTitleSize:TVec2D = new TVec2D
 		local genreColor:TColor
 		local titleColor:TColor
-		local titleFont:TBitmapFont = GetBitmapFont("default",,BOLDFONT)
+		local titleFont:TBitmapFont = GetBitmapFont("default",12,BOLDFONT)
 		local oldMod:float = titleFont.lineHeightModifier
 		titleFont.lineHeightModifier :* 0.9
 
@@ -821,40 +843,48 @@ endrem
 
 		'finished
 		if productionConcept.IsProduceable()
-			titleColor = TColor.Create(80,150,30)
-			genreColor = TColor.CreateGrey(0, 0.6)
+			titleColor = colorProduceable
+			genreColor = colorHint
 		'all slots filled, just not paid
 		elseif productionConcept.IsPlanned()
-			titleColor = TColor.Create(30,80,150)
-			genreColor = TColor.CreateGrey(0, 0.6)
+			titleColor = colorPlanned
+			genreColor = colorHint
 		'planned but not finished
 		elseif productionConcept.IsGettingPlanned()
-			titleColor = TColor.Create(150,80,30)
-			genreColor = TColor.CreateGrey(0, 0.6)
+			titleColor = colorGettingPlanned
+			genreColor = colorHint
 		'default /unplanned
 		else 'elseif productionConcept.IsUnplanned()
-			titleColor = TColor.CreateGrey(50)
-			genreColor = TColor.CreateGrey(0, 0.6)
+			titleColor = colorDefault
+			genreColor = colorHint
 		endif
 
 
-		if isSelected()
-			titleColor.AdjustBrightness(+0.05)
-			genreColor.AdjustBrightness(+0.05)
-		endif
-		if isHovered()
-			titleColor.AdjustBrightness(+0.05)
-			genreColor.AdjustBrightness(+0.05)
-		endif
+		if isSelected() or isHovered()
+			titleColor = titleColor.copy()
+			genreColor = genreColor.copy()
 
-
-		titleSize = titleFont.DrawBlock(title, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2), GetScreenWidth() - textOffsetX - 1, GetScreenHeight()-4,,titleColor)
-		if subTitle
-			if titleSize.y > 20
-				subTitleSize = titleFont.DrawBlock(subTitle, int(GetScreenX()+ textOffsetX), int(GetScreenY() + titleSize.y + 2), GetScreenWidth() - textOffsetX - 3, 14,,titleColor)
-			else
-				subTitleSize = titleFont.DrawBlock(subTitle, int(GetScreenX()+ textOffsetX), int(GetScreenY() + titleSize.y + 2), GetScreenWidth() - textOffsetX - 3, 28,,titleColor)
+			if isSelected()
+				titleColor.AdjustBrightness(+0.05)
+				genreColor.AdjustBrightness(+0.05)
 			endif
+			if isHovered()
+				titleColor.AdjustBrightness(+0.05)
+				genreColor.AdjustBrightness(+0.05)
+			endif
+		endif
+
+
+		if subTitle
+			titleFont.DrawBlock(title, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY()+2), GetScreenRect().GetW() - textOffsetX - 1, GetScreenRect().GetH()-4,,titleColor, , , , , , , titleSize)
+			if titleSize.y > 20
+				titleFont.DrawBlock(subTitle, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() + titleSize.y + 2), GetScreenRect().GetW() - textOffsetX - 3, 14,,titleColor, , , , , , , subTitleSize)
+			else
+				titleFont.DrawBlock(subTitle, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() + titleSize.y + 2), GetScreenRect().GetW() - textOffsetX - 3, 28,,titleColor, , , , , , , subTitleSize)
+			endif
+		else
+			titleFont.DrawBlock(title, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY()+2), GetScreenRect().GetW() - textOffsetX - 1, GetScreenRect().GetH()-4,,titleColor, , , , , , , titleSize)
+'print title + "  " + titleSize.ToString() + "  scrRect="+GetScreenRect().ToString()
 		endif
 
 
@@ -867,9 +897,9 @@ endrem
 			local text:string = productionTypeText
 			if genreText <> productionTypeText then text :+ " / "+genreText
 			if subTitle
-				GetBitmapFont("default").DrawBlock(text, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2 + titleSize.y + subTitleSize.y), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,genreColor)
+				GetBitmapFont("default").DrawBlock(text, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY()+2 + titleSize.y + subTitleSize.y), GetScreenRect().GetW() - textOffsetX - 3, GetScreenRect().GetH()-4,,genreColor)
 			else
-				GetBitmapFont("default").DrawBlock(text, int(GetScreenX()+ textOffsetX), int(GetScreenY()+2 + titleSize.y), GetScreenWidth() - textOffsetX - 3, GetScreenHeight()-4,,genreColor)
+				GetBitmapFont("default").DrawBlock(text, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY()+2 + titleSize.y), GetScreenRect().GetW() - textOffsetX - 3, GetScreenRect().GetH()-4,,genreColor)
 			endif
 		endif
 	End Method

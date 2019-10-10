@@ -839,6 +839,27 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 					End Select
 				endif
 
+			'8 = next work day (mo-fr) + daysToAdd to current, hour H-H2, minute I-I2
+			case 8
+				if timeValues.length < 1
+					return -1
+				else
+					local nowDay:Int = GetWeekday()
+					local nextDay:Int = nowDay + timeValues[0]
+					local nextDayWeekIndex:Int = nextDay mod 7
+					'weekend?
+					if nextDayWeekIndex = 5
+						nextDay :+ 2
+					elseif nextDayWeekIndex = 6
+						nextDay :+ 1
+					endif
+
+					if timeValues.length < 3
+						return CalcTime_DaysFromNowAtHour(nextDay - nowDay, -1, 0, -1)
+					else
+						return CalcTime_DaysFromNowAtHour(nextDay - nowDay, -1, timeValues[1], timeValues[2])
+					endif
+				endif
 		End Select
 		return -1
 	End Method

@@ -183,7 +183,7 @@ Type RoomHandler_Betty extends TRoomHandler
 			SetAlpha 1.0
 			local x:float = picX + Int(sprite.area.GetW() / 2) - Int(GetPlayerBase(i).Figure.Sprite.framew / 2)
 			local y:float = picY + sprite.area.GetH() - 30
-			GetPlayerBase(i).Figure.Sprite.DrawClipped(new TRectangle.Init(x, y, -1, sprite.area.GetH()-16), null, 8)
+			GetPlayerBase(i).Figure.Sprite.DrawClipped(x, y, -1, sprite.area.GetH()-16, 0,0, 8)
 		Next
 
 		If dialogue then dialogue.Draw()

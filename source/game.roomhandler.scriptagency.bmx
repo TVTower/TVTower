@@ -67,7 +67,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				GuiListNormal[i] = new TGUIScriptSlotList.Create(new TVec2D.Init(233 + (GuiListNormal.length-1 - i)*22, 143 + i*2), new TVec2D.Init(17, sprite.area.GetH()), "scriptagency")
 				GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 				GuiListNormal[i].SetItemLimit( scriptsNormalAmount / GuiListNormal.length  )
-				GuiListNormal[i].Resize(sprite.area.GetW() * (scriptsNormalAmount / GuiListNormal.length), sprite.area.GetH() )
+				GuiListNormal[i].SetSize(sprite.area.GetW() * (scriptsNormalAmount / GuiListNormal.length), sprite.area.GetH() )
 				GuiListNormal[i].SetSlotMinDimension(sprite.area.GetW(), sprite.area.GetH())
 				GuiListNormal[i].SetAcceptDrop("TGuiScript")
 				GuiListNormal[i].setZindex(i)
@@ -946,7 +946,7 @@ endrem
 		'SetAlpha 0.4
 		'DrawRect(VendorArea.rect.GetX(),VendorArea.rect.GetY(), VendorArea.rect.GetW(), VendorArea.rect.GetH())
 		'SetAlpha 1.0
-		'DrawRect(GuiListSuitcase.GetScreenX(),GuiListSuitcase.GetScreenY(), GuiListSuitcase.GetScreenWidth(), GuiListSuitcase.GetScreenHeight())
+		'DrawRect(GuiListSuitcase.GetScreenRect().GetX(),GuiListSuitcase.GetScreenRect().GetY(), GuiListSuitcase.GetScreenRect().GetW(), GuiListSuitcase.GetScreenRect().GetH())
 
 
 		GUIManager.Draw( LS_scriptagency )

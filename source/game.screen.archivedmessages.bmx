@@ -195,13 +195,13 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 			local item:TGUIArchivedMessageListItem = new TGUIArchivedMessageListItem.Create(null, null, message.GetTitle())
 			item.message = message
 			item.displayName = message.GetTitle()
-			item.Resize(400, 70)
+			item.SetSize(400, 70)
 			messageList.AddItem( item )
 		Next
 
 		messageList.RecalculateElements()
 		'refresh scrolling state
-		messageList.Resize(-1, -1)
+		messageList.SetSize(-1, -1)
 	End Method
 
 
@@ -328,7 +328,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		'reposition list
 		if messageList.rect.getX() <> contentX + 5
 			messageList.rect.SetXY(contentX + 5, contentY + 3)
-			messageList.Resize(contentW - 8, listH - 6)
+			messageList.SetSize(contentW - 8, listH - 6)
 		endif
 		contentY :+ listH
 
@@ -380,9 +380,9 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 'rem
 	Method getDimension:TVec2D()
 		'available width is parentsDimension minus startingpoint
-		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
+		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(GetFirstParentalObject("tguiscrollablepanel"))
 		Local maxWidth:Int = 300
-		If parentPanel Then maxWidth = parentPanel.getContentScreenWidth() '- GetScreenWidth()
+		If parentPanel Then maxWidth = parentPanel.GetContentScreenRect().GetW() '- GetScreenRect().GetW()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local dimension:TVec2D = New TVec2D.Init(maxWidth, GetContentHeight(maxWidth))
@@ -395,7 +395,7 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 		'but only if something changed (eg. first time or content changed)
 		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
 			'resize item
-			Self.Resize(dimension.getX(), dimension.getY())
+			Self.SetSize(dimension.getX(), dimension.getY())
 		EndIf
 
 		Return dimension
@@ -454,13 +454,13 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 
 	'override
 	Method DrawValue()
-		DrawMessage(GetScreenX(), GetScreenY() + Self.paddingTop, GetScreenWidth(), GetScreenHeight() - Self.paddingBottom - Self.paddingTop)
+		DrawMessage(GetScreenRect().GetX(), GetScreenRect().GetY() + Self.paddingTop, GetScreenRect().GetW(), GetScreenRect().GetH() - Self.paddingBottom - Self.paddingTop)
 
 		If isHovered()
 			SetBlend LightBlend
 			SetAlpha 0.10 * GetAlpha()
 
-			DrawMessage(GetScreenX(), GetScreenY() + Self.paddingTop, GetScreenWidth(), GetScreenHeight() - Self.paddingBottom - Self.paddingTop)
+			DrawMessage(GetScreenRect().GetX(), GetScreenRect().GetY() + Self.paddingTop, GetScreenRect().GetW(), GetScreenRect().GetH() - Self.paddingBottom - Self.paddingTop)
 
 			SetBlend AlphaBlend
 			SetAlpha 10.0 * GetAlpha()
@@ -481,27 +481,29 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 		local border:TRectangle = sprite.GetNinePatchContentBorder()
 
 		'local oldCol:TColor = new TColor.Get()
-		local contentH:int = GetScreenHeight() - (border.GetTop() + border.GetBottom())
+		local contentH:int = GetScreenRect().GetH() - (border.GetTop() + border.GetBottom())
 		local titleH:int = 0
 		local timeW:int = 0
+		local dim:TVec2D = new TVec2D
 
-		timeW = skin.fontNormal.drawBlock( ..
+		skin.fontNormal.drawBlock( ..
 			GetLocale("DAY") + " " + (GetWorldTime().GetDaysRun(message.time)+1) + " " + GetWorldTime().GetFormattedTime(message.time), ..
 			x + (w - border.GetRight() - 100), ..
 			y + border.GetTop(), .. '-1 to align it more properly
 			100, ..
 			contentH, ..
-			ALIGN_RIGHT_TOP, skin.textColorNeutral, 0,1,1.0,True, True).GetX()
+			ALIGN_RIGHT_TOP, skin.textColorNeutral, 0,1,1.0,True, True, , dim)
+		timeW = dim.x
 		timeW :+ 10
 
-		titleH = skin.fontSemiBold.drawBlock( ..
+		skin.fontSemiBold.drawBlock( ..
 			title, ..
 			x + border.GetLeft(), ..
 			y + border.GetTop(), .. '-1 to align it more properly
 			w - (border.GetRight() + border.GetLeft() - timeW),  ..
 			contentH, ..
-			ALIGN_LEFT_TOP, skin.textColorNeutral, 0,1,1.0,True, True).GetY()
-
+			ALIGN_LEFT_TOP, skin.textColorNeutral, 0,1,1.0,True, True, , dim)
+		titleH = dim.y
 		titleH :+ 3
 
 		skin.fontNormal.drawBlock( ..
@@ -550,7 +552,7 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 		else
 			sheetCenterX :- 250/2 '250 is sheetWidth
 		endif
-		Local tri:Float[]=[sheetCenterX,sheetY+25, sheetCenterX,sheetY+90, getScreenX() + getScreenWidth()/2.0, getScreenY() + GetScreenHeight()/2.0]
+		Local tri:Float[]=[sheetCenterX,sheetY+25, sheetCenterX,sheetY+90, GetScreenRect().GetX() + GetScreenRect().GetW()/2.0, GetScreenRect().GetY() + GetScreenRect().GetH()/2.0]
 		DrawPoly(tri)
 		SetColor 255,255,255
 		SetAlpha 1.0

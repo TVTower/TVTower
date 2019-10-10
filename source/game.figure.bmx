@@ -447,11 +447,11 @@ Type TFigure extends TFigureBase
 				'figure right of me
 				If Figure.area.GetX() > area.GetX()
 					'draw the "to the right" balloon a bit lower (so both are better visible)
-					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(GetScreenX() + area.GetW()/2 -2), int(GetScreenY() - sprite.area.GetH() + 2), greetType, ALIGN_LEFT_CENTER, scale)
+					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(GetScreenRect().GetX() + area.GetW()/2 -2), int(GetScreenRect().GetY() - sprite.area.GetH() + 2), greetType, ALIGN_LEFT_CENTER, scale)
 				'figure left of me
 				else
 					greetType :+ 3
-					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(GetScreenX() - area.GetW()/2 +2), int(GetScreenY() - sprite.area.GetH()), greetType, ALIGN_RIGHT_CENTER, scale)
+					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(GetScreenRect().GetX() - area.GetW()/2 +2), int(GetScreenRect().GetY() - sprite.area.GetH()), greetType, ALIGN_RIGHT_CENTER, scale)
 				endif
 				SetAlpha oldAlpha
 			endif
@@ -1343,11 +1343,6 @@ endrem
 
 		'center figure
 		tweenPos.AddXY(- Float(ceil(area.GetW()/2)) + PosOffset.getX(), - sprite.area.GetH() + PosOffset.getY())
-
-		'with parent: set local to parent (add parents screen coord)
-		'RONNY: 2015/01/22 - no longer needed with new RenderAt-function
-		'                    for entities
-		'if parent then tweenPos.AddXY(parent.GetScreenX(), parent.GetScreenY())
 
 		return tweenPos
 	End Method

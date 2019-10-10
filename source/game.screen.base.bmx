@@ -307,7 +307,7 @@ Type TInGameScreen Extends TScreen
 
 		'ingamechat
 		If KEYMANAGER.IsHit(KEY_ENTER)
-			If Not GetIngameInterface().chat.guiInput.hasFocus()
+			If Not GetIngameInterface().chat.guiInput.Isfocused()
 				If GetIngameInterface().chat.antiSpamTimer < Time.GetAppTimeGone()
 					GUIManager.setFocus( GetIngameInterface().chat.guiInput )
 				Else
@@ -426,8 +426,8 @@ Type TInGameScreen_World Extends TInGameScreen
 				If Not fig.isChangingRoom()
 					If THelper.MouseIn(0, 0, 800, 385)
 						'convert mouse position to building-coordinates
-						Local x:Int = MouseManager.x - GetBuildingBase().buildingInner.GetScreenX()
-						Local y:Int = MouseManager.y - GetBuildingBase().buildingInner.GetScreenY()
+						Local x:Int = MouseManager.x - GetBuildingBase().buildingInner.GetScreenRect().GetX()
+						Local y:Int = MouseManager.y - GetBuildingBase().buildingInner.GetScreenRect().GetY()
 						fig.ChangeTarget(x, y)
 
 						'handled left click

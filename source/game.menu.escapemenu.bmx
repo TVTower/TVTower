@@ -1,10 +1,6 @@
 'INCLUDED FILE
-Type TGUIModalMainMenu extends TGUIModalWindowChainElement
+Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 	Field buttons:TGUIButton[]
-rem
-'now done via interface
-	Field speedButtons:TGUIButton[]
-endrem
 	Field chainSettingsMenu:TGUIModalWindowChainElement
 	Field chainLoadMenu:TGUIModalWindowChainElement
 	Field chainSaveMenu:TGUIModalWindowChainElement
@@ -19,161 +15,141 @@ endrem
 		Super.Create(pos, dimension, limitState)
 
 		Local canvas:TGUIObject = GetGuiContent()
+		Local buttonsY:Int = 10
 
-		local buttonsY:int = 10
 
-rem
-'now done via interface
-		buttonsY = 55
-		local speedButtonsText:string[] = [">", ">>", ">>>", ">>>>"]
-		speedButtons = speedButtons[ .. speedButtonsText.length]
-		local speedButtonWidth:int = floor(canvas.GetContentScreenWidth() / speedButtons.length)
-		for local i:int = 0 until speedButtons.length
-			speedButtons[i] = New TGUIButton.Create(New TVec2D.Init(0 + i*speedButtonWidth, 5), New TVec2D.Init(speedButtonWidth, -1), speedButtonsText[i], "")
-			canvas.AddChild(speedButtons[i])
-			AddEventListener( EventManager.RegisterListenerMethod("guiobject.onClick", self, "onButtonClick", speedButtons[i]) )
-		next
-endrem
-
-		local buttonsText:string[] = ["CONTINUE_GAME", "LOAD_GAME", "SAVE_GAME", "MENU_SETTINGS", "EXIT_TO_MAINMENU", "EXIT_GAME"]
+		Local buttonsText:String[] = ["CONTINUE_GAME", "LOAD_GAME", "SAVE_GAME", "MENU_SETTINGS", "EXIT_TO_MAINMENU", "EXIT_GAME"]
 		buttons = buttons[ .. buttonsText.length]
-		for local i:int = 0 until buttons.length
+		For Local i:Int = 0 Until buttons.length
 			'move exit-buttons a bit down
-			if i >= 4
-				buttons[i] = New TGUIButton.Create(New TVec2D.Init(0, buttonsY + 10 + i*40), New TVec2D.Init(canvas.GetContentScreenWidth(), -1), GetLocale(buttonsText[i]), "")
-			else
-				buttons[i] = New TGUIButton.Create(New TVec2D.Init(0, buttonsY + i*40), New TVec2D.Init(canvas.GetContentScreenWidth(), -1), GetLocale(buttonsText[i]), "")
-			endif
-			canvas.AddChild(buttons[i])
-			AddEventListener( EventManager.RegisterListenerMethod("guiobject.onClick", self, "onButtonClick", buttons[i]) )
-		next
-		'disable settings button for now
-'buttons[3].disable()
+			If i >= 4
+				buttons[i] = New TGUIButton.Create(New TVec2D.Init(0, buttonsY + 10 + i*40), New TVec2D.Init(canvas.GetContentScreenRect().GetW(), -1), GetLocale(buttonsText[i]), "")
+			Else
+				buttons[i] = New TGUIButton.Create(New TVec2D.Init(0, buttonsY + i*40), New TVec2D.Init(canvas.GetContentScreenRect().GetW(), -1), GetLocale(buttonsText[i]), "")
+			EndIf
+			AddChild(buttons[i])
+			AddEventListener( EventManager.RegisterListenerMethod("guiobject.onClick", Self, "onButtonClick", buttons[i]) )
+		Next
 
 		If guiCaptionTextBox
 			guiCaptionTextBox.SetFont(headerFont)
-			guiCaptionTextBox.Resize(-1,-1)
+			guiCaptionTextBox.SetSize(-1,-1)
 			SetCaptionArea(New TRectangle.Init(-1, 5, -1, 25))
-		Endif
+		EndIf
 
-		return self
+		Return Self
 	End Method
 
 
-	Method Activate:int()
+	Method Activate:Int()
 		'reset gui states
-		For local i:int = 0 until buttons.length
-			buttons[i].SetState("")
+		For Local i:Int = 0 Until buttons.length
+			buttons[i].SetActive(False)
+			buttons[i].SetHovered(False)
 		Next
-
-rem
-'now done via interface
-		For local i:int = 0 until speedButtons.length
-			speedButtons[i].SetState("")
-
-			if GameRules.worldTimeSpeedPresets[i] = int(GetWorldTime().GetRawTimeFactor())
-				speedButtons[i].disable()
-			else
-				speedButtons[i].enable()
-			endif
-		Next
-endrem
 	End Method
 
 
 	'override to remove all known submenus
-	Method Remove:int()
-		super.Remove()
-		if chainSaveMenu
+	Method Remove:Int()
+		Super.Remove()
+		If chainSaveMenu
 			chainSaveMenu.Remove()
-			chainSaveMenu = null
-		endif
-		if chainLoadMenu
+			chainSaveMenu = Null
+		EndIf
+		If chainLoadMenu
 			chainLoadMenu.Remove()
-			chainLoadMenu = null
-		endif
-		if chainSettingsMenu
+			chainLoadMenu = Null
+		EndIf
+		If chainSettingsMenu
 			chainSettingsMenu.Remove()
-			chainSettingsMenu = null
-		endif
+			chainSettingsMenu = Null
+		EndIf
 	End Method
 
 
-	Method onButtonClick:int(triggerEvent:TEventBase)
-		local clickedButton:TGUIButton = TGUIButton( triggerEvent.GetSender() )
-		if not clickedButton then return False
+	Method onButtonClick:Int(triggerEvent:TEventBase)
+		Local clickedButton:TGUIButton = TGUIButton( triggerEvent.GetSender() )
+		If Not clickedButton Then Return False
 
 		Select clickedButton
-rem
-'now done via interface
-			case speedButtons[0] 'slower
-				GetGameBase().SetGameSpeedPreset(0)
-				Close()
-			case speedButtons[1] 'default
-				GetGameBase().SetGameSpeedPreset(1)
-				Close()
-			case speedButtons[2]
-				GetGameBase().SetGameSpeedPreset(2)
-				Close()
-			case speedButtons[3]
-				GetGameBase().SetGameSpeedPreset(3)
-				Close()
-endrem
-			case buttons[0]
+			Case buttons[0]
 				Close()
 
-			case buttons[1]
-				if not chainLoadMenu
-					chainLoadMenu = new TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,350), "SYSTEM")
+			Case buttons[1]
+				If Not chainLoadMenu
+					chainLoadMenu = New TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,350), "SYSTEM")
 					chainLoadMenu._defaultValueColor = TColor.clBlack.copy()
 					chainLoadMenu.defaultCaptionColor = TColor.clWhite.copy()
 					'set self as previous one
-					chainLoadMenu.previousChainElement = self
-				endif
+					chainLoadMenu.previousChainElement = Self
+				EndIf
 				'set new one as the active one
 				SwitchActive( chainLoadMenu )
 
-			case buttons[2]
-				if not chainSaveMenu
-					chainSaveMenu = new TGUIModalSaveSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,350), "SYSTEM")
+			Case buttons[2]
+				If Not chainSaveMenu
+					chainSaveMenu = New TGUIModalSaveSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,350), "SYSTEM")
 					chainSaveMenu._defaultValueColor = TColor.clBlack.copy()
 					chainSaveMenu.defaultCaptionColor = TColor.clWhite.copy()
 					'set self as previous one
-					chainSaveMenu.previousChainElement = self
-				endif
+					chainSaveMenu.previousChainElement = Self
+				EndIf
 				'set new one as the active one
 				SwitchActive( chainSaveMenu )
 
-			case buttons[3]
-				if not chainSettingsMenu
-					chainSettingsMenu = new TGUIModalSettingsMenu.Create(New TVec2D, New TVec2D.Init(700,490), "SYSTEM")
+			Case buttons[3]
+				If Not chainSettingsMenu
+					chainSettingsMenu = New TGUIModalSettingsMenu.Create(New TVec2D, New TVec2D.Init(700,490), "SYSTEM")
 					chainSettingsMenu._defaultValueColor = TColor.clBlack.copy()
 					chainSettingsMenu.defaultCaptionColor = TColor.clWhite.copy()
 					'set self as previous one
-					chainSettingsMenu.previousChainElement = self
-				endif
+					chainSettingsMenu.previousChainElement = Self
+				EndIf
 				TGUIModalSettingsMenu(chainSettingsMenu).SetGuiValues(App.config)
 
 				'set new one as the active one
 				SwitchActive( chainSettingsMenu )
 
-			case buttons[4]
+			Case buttons[4]
 				'create extra dialog
 				TApp.CreateConfirmExitAppDialogue(True)
 				Close()
 
-			case buttons[5]
+			Case buttons[5]
 				'create extra dialog
 				TApp.CreateConfirmExitAppDialogue(False)
 				Close()
 		End Select
 	End Method
+
+Rem
+	'override
+	Method OnReposition(dx:Float, dy:Float)
+		If dx = 0 And dy = 0 Then Return
+
+		Super.OnReposition(dx, dy)
+
+		For local i:int = 0 until buttons.length
+			buttons[i].OnReposition(dx,dy)
+		Next
+	End Method
+
+
+	Method OnParentReposition(parent:TGUIObject, dx:Float, dy:Float)
+		Super.OnParentReposition(parent,dx,dy)
+
+		For local i:int = 0 until buttons.length
+			buttons[i].OnParentReposition(self, dx,dy)
+		Next
+	End Method
+endrem
 End Type
 
 
 
 
-Type TGUIModalSettingsMenu extends TGUIModalWindowChainDialogue
+Type TGUIModalSettingsMenu Extends TGUIModalWindowChainDialogue
 	Field settingsPanel:TGUISettingsPanel
 	Field _eventListeners:TLink[]
 
@@ -183,24 +159,24 @@ Type TGUIModalSettingsMenu extends TGUIModalWindowChainDialogue
 		SetDialogueType(2)
 
 		dialogueButtons[0].SetCaption(GetLocale("SAVE_AND_APPLY"))
-		dialogueButtons[0].Resize(180,-1)
+		dialogueButtons[0].SetSize(180,-1)
 		dialogueButtons[1].SetCaption(GetLocale("CANCEL"))
-		dialogueButtons[1].Resize(160,-1)
+		dialogueButtons[1].SetSize(160,-1)
 
 		SetCaptionAndValue(GetLocale("MENU_SETTINGS"), "")
 
 		If guiCaptionTextBox
 			guiCaptionTextBox.SetFont(headerFont)
-			guiCaptionTextBox.Resize(-1,-1)
+			guiCaptionTextBox.SetSize(-1,-1)
 			SetCaptionArea(New TRectangle.Init(-1, 5, -1, 25))
-		Endif
+		EndIf
 
 		'use the gfx with content inset (and padding)
 		guiBackground.spriteBaseName = "gfx_gui_modalWindow"
 
 
 
-		settingsPanel = new TGUISettingsPanel.Create(New TVec2D, New TVec2D.Init(700, 490), "SYSTEM")
+		settingsPanel = New TGUISettingsPanel.Create(New TVec2D, New TVec2D.Init(700, 490), "SYSTEM")
 		'add to canvas of this window
 		'GetGuiContent()
 		AddChild(settingsPanel)
@@ -208,20 +184,20 @@ Type TGUIModalSettingsMenu extends TGUIModalWindowChainDialogue
 
 		'=== EVENTS ===
 		'listen to clicks on "load savegame"
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guibutton.onclick", self, "onApplySettings", dialogueButtons[0]) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "guibutton.onclick", Self, "onApplySettings", dialogueButtons[0]) ]
 
-		return self
+		Return Self
 	End Method
 
 
-	Method onApplySettings:int( triggerEvent:TEventBase )
+	Method onApplySettings:Int( triggerEvent:TEventBase )
 		App.ApplyConfigToSettings( ReadGuiValues() )
-		return True
+		Return True
 	End Method
 
 
-global LS_modalSettingsMenu:TLowerString = TLowerString.Create("modalSettings")
-	Method Update:int()
+Global LS_modalSettingsMenu:TLowerString = TLowerString.Create("modalSettings")
+	Method Update:Int()
 '		GuiManager.Update( LS_modalSettingsMenu )
 		Super.Update()
 	End Method
@@ -235,46 +211,40 @@ global LS_modalSettingsMenu:TLowerString = TLowerString.Create("modalSettings")
 
 
 	'override
-	Method Activate:int()
+	Method Activate:Int()
 	End Method
 
 
-	Method Remove:int()
-		super.Remove()
+	Method Remove:Int()
+		Super.Remove()
 
-		if settingsPanel then settingsPanel.remove()
-		settingsPanel = null
+		If settingsPanel Then settingsPanel.remove()
+		settingsPanel = Null
 
 		'remove all event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		_eventListeners = New TLink[0]
 	End Method
 
 
-	Method Resize(w:Float = 0, h:Float = 0)
-		Super.Resize(w,h)
-'		if settingsPanel then settingsPanel.Resize( GetContentScreenX(), GetContentScreenY() )
-	End Method
-
-
-	Method SetGuiValues:int(data:TData)
-		if settingsPanel then return settingsPanel.SetGuiValues(data)
+	Method SetGuiValues:Int(data:TData)
+		If settingsPanel Then Return settingsPanel.SetGuiValues(data)
 	End Method
 
 
 	Method ReadGuiValues:TData()
-		if settingsPanel then return settingsPanel.ReadGuiValues()
-		return new TData
+		If settingsPanel Then Return settingsPanel.ReadGuiValues()
+		Return New TData
 	End Method
 End Type
 
 
 
 
-Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
+Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 	Field savegameList:TGUISelectList
 	Field _eventListeners:TLink[]
-	Field _onLoadSavegameFunc:int()
+	Field _onLoadSavegameFunc:Int()
 
 	Method Create:TGUIModalLoadSavegameMenu(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
@@ -289,102 +259,85 @@ Type TGUIModalLoadSavegameMenu extends TGUIModalWindowChainDialogue
 
 '		Local canvas:TGUIObject = GetGuiContent()
 
-		savegameList = new TGUISelectList.Create(new TVec2D.Init(GetContentScreenX(), GetContentScreenY()), new TVec2D.Init(GetContentScreenWidth(),80), "MODALLOADMENU")
-'		savegameList.rect.position.SetXY(GetContentScreenX(), GetContentScreenY())
+		savegameList = New TGUISelectList.Create(New TVec2D.Init(0, 0), New TVec2D.Init(GetContentScreenRect().GetW(),80), "MODALLOADMENU")
+'		savegameList.rect.position.SetXY(GetContentScreenRect().GetX(), GetContentScreenRect().GetY())
 
+		AddChild(savegameList)
 
 		If guiCaptionTextBox
 			guiCaptionTextBox.SetFont(headerFont)
-			guiCaptionTextBox.Resize(-1,-1)
+			guiCaptionTextBox.SetSize(-1,-1)
 			SetCaptionArea(New TRectangle.Init(-1, 5, -1, 25))
-		Endif
+		EndIf
 
 		'=== EVENTS ===
 		'listen to clicks on "load savegame"
 		'_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onclick", onClickLoadSavegame, dialogueButtons[0]) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guibutton.onclick", self, "onClickLoadSavegame") ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "SaveGame.OnLoad", self, "onLoadSavegame") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "guibutton.onclick", Self, "onClickLoadSavegame") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "SaveGame.OnLoad", Self, "onLoadSavegame") ]
 
-		return self
+		Return Self
 	End Method
 
 
 	'override
-	Method Activate:int()
+	Method Activate:Int()
 		'remove previous entries
 		savegamelist.EmptyList()
 
-		local dirTree:TDirectoryTree = new TDirectoryTree.SimpleInit()
+		Local dirTree:TDirectoryTree = New TDirectoryTree.SimpleInit()
 		dirTree.SetIncludeFileEndings(["xml"])
 		dirTree.ScanDir(TSavegame.GetSavegamePath(), True)
-		local fileURIs:String[] = dirTree.GetFiles()
+		Local fileURIs:String[] = dirTree.GetFiles()
 
 		'disable autosort - handled via "compare()" now
 		'savegameList.autoSortItems = False
 
 		'loop over all filenames
-		for local fileURI:String = EachIn fileURIs
+		For Local fileURI:String = EachIn fileURIs
 			'skip non-existent files
-			if filesize(fileURI) = 0 then continue
-			local item:TGUISavegameListItem = new TGUISavegameListItem.Create(null, null, "savegame " + fileURI)
+			If FileSize(fileURI) = 0 Then Continue
+			Local item:TGUISavegameListItem = New TGUISavegameListItem.Create(Null, Null, "savegame " + fileURI)
 			item.SetSavegameFile(fileURI)
 			savegameList.AddItem(item)
 		Next
 	End Method
 
 
-	Method Remove:int()
-		super.Remove()
-		if savegameList then savegameList.remove()
-		self.savegameList = null
+	Method Remove:Int()
+		Super.Remove()
+		If savegameList Then savegameList.remove()
+		Self.savegameList = Null
 
 		'remove all event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		_eventListeners = New TLink[0]
 
 	End Method
 
 
-	Method Resize(w:Float = 0, h:Float = 0)
-		Super.Resize(w,h)
-		if savegameList
-			savegameList.Resize(GetContentScreenWidth(), GetContentScreenHeight())
-			savegameList.RecalculateElements()
-		endif
-	End Method
 
-
-	Method onRecenter()
-		Super.onRecenter()
-		'as long as a list cannot be the child element of a window
-		'we have to move them manually (and unparented)
-		if savegameList
-			savegameList.rect.position.SetXY(GetContentScreenX(), GetContentScreenY())
-		endif
-	End Method
-
-
-global LS_modalLoadMenu:TLowerString = TLowerString.Create("modalloadmenu")
-	Method Update:int()
+Global LS_modalLoadMenu:TLowerString = TLowerString.Create("modalloadmenu")
+	Method Update:Int()
 		GuiManager.Update( LS_modalLoadMenu )
 
 		'disable/enable load-button
-		if not TGUISaveGameListItem(savegameList.getSelectedEntry())
-			if dialogueButtons[0].isEnabled() then dialogueButtons[0].disable()
-		else
-			if not dialogueButtons[0].isEnabled() then dialogueButtons[0].enable()
-		endif
+		If Not TGUISaveGameListItem(savegameList.getSelectedEntry())
+			If dialogueButtons[0].isEnabled() Then dialogueButtons[0].disable()
+		Else
+			If Not dialogueButtons[0].isEnabled() Then dialogueButtons[0].enable()
+		EndIf
 
 
 		'handle Enter-Key
-		if KeyManager.IsHit(KEY_ENTER)
+		If KeyManager.IsHit(KEY_ENTER)
 			'avoid others getting triggered too (eg. chat)
 			KeyManager.ResetKey(KEY_ENTER)
 
-			if dialogueButtons[0].isEnabled()
+			If dialogueButtons[0].isEnabled()
 				LoadSelectedSaveGame()
-			endif
-		endif
+			EndIf
+		EndIf
 
 		Super.Update()
 	End Method
@@ -397,67 +350,80 @@ global LS_modalLoadMenu:TLowerString = TLowerString.Create("modalloadmenu")
 	End Method
 
 
-	Method LoadSelectedSaveGame:int()
-		local selectedItem:TGUISaveGameListItem = TGUISaveGameListItem(savegameList.getSelectedEntry())
-		if not selectedItem then return False
+	Method LoadSelectedSaveGame:Int()
+		Local selectedItem:TGUISaveGameListItem = TGUISaveGameListItem(savegameList.getSelectedEntry())
+		If Not selectedItem Then Return False
 
-		local fileName:string = selectedItem.GetFileInformation().GetString("fileURI")
-		local fileURI:string = TSavegame.GetSavegameURI(fileName)
+		Local fileName:String = selectedItem.GetFileInformation().GetString("fileURI")
+		Local fileURI:String = TSavegame.GetSavegameURI(fileName)
 
-		if FileType(fileURI) = 1
+		If FileType(fileURI) = 1
 			'close self
 			Back()
 
 			'close escape menu
-			if App.EscapeMenuWindow
+			If App.EscapeMenuWindow
 				App.EscapeMenuWindow.Close()
-			elseif TGUIModalWindowChain(GetParent())
-				TGUIModalWindowChain(GetParent()).SetClosed()
-				TGUIModalWindowChain(GetParent()).Close()
-			endif
+			ElseIf TGUIModalWindowChain(_parent)
+				TGUIModalWindowChain(_parent).SetClosed()
+				TGUIModalWindowChain(_parent).Close()
+			EndIf
 
 			TSaveGame.Load(fileURI)
 
-			return True
-		endif
+			Return True
+		EndIf
 
-		return False
+		Return False
 	End Method
 
 
-	Method onLoadSavegame:int( triggerEvent:TEventBase )
+	Method UpdateLayout()
+		Super.UpdateLayout()
+
+		If savegameList
+			savegameList.SetSize(GetContentScreenRect().GetW(), GetContentScreenRect().GetH())
+'			savegameList.RecalculateElements()
+		EndIf
+	End Method
+
+
+	Method onLoadSavegame:Int( triggerEvent:TEventBase )
 		'close escape menu regardless of "loading/saving" via
 		'shortcut or gui?
-		return True
+		Return True
 	End Method
 
 
-	Method onClickLoadSavegame:int( triggerEvent:TEventBase )
-		local button:TGUIButton = TGUIButton(triggerEvent.GetSender())
-		if not button then return False
+	Method onClickLoadSavegame:Int( triggerEvent:TEventBase )
+		Local button:TGUIButton = TGUIButton(triggerEvent.GetSender())
+		If Not button Then Return False
 
 
-		if button = dialogueButtons[0]
-			if not LoadSelectedSaveGame()
+		If button = dialogueButtons[0]
+			If Not LoadSelectedSaveGame()
 				triggerEvent.SetVeto(True)
-				return false
-			endif
-		elseif button = dialogueButtons[1]
+				Return False
+			EndIf
+		ElseIf button = dialogueButtons[1]
 			Close()
-		Endif
+		EndIf
 
-		return True
+		Return True
 	End Method
 End Type
 
 
-Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
+
+
+Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 	Field savegameList:TGUISelectList
 	Field savegameName:TGUIInput
 	Field savegameNameLabel:TGUILabel
 	Field _eventListeners:TLink[]
 
 	Global _confirmOverwriteDialogue:TGUIModalWindow
+
 
 	Method Create:TGUIModalSaveSavegameMenu(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
@@ -472,57 +438,56 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 
 '		Local canvas:TGUIObject = GetGuiContent()
 
-		savegameName = new TGUIInput.Create(new TVec2D.Init(GetContentScreenX(), GetContentScreenY()), new TVec2D.Init(GetContentScreenWidth(), 40), "", 64, "MODALSAVEMENU")
-		savegameNameLabel = New TGUILabel.Create(New TVec2D.Init(0, 0), "", null, "MODALSAVEMENU")
+		savegameName = New TGUIInput.Create(New TVec2D.Init(GetContentScreenRect().GetX(), GetContentScreenRect().GetY()), New TVec2D.Init(GetContentScreenRect().GetW(), 40), "", 64, "MODALSAVEMENU")
+		savegameName.SetPosition(GetContentScreenRect().GetX(), GetContentScreenRect().GetY())
 
+		savegameNameLabel = New TGUILabel.Create(New TVec2D.Init(0, 0), "", Null, "MODALSAVEMENU")
 
-		savegameList = new TGUISelectList.Create(new TVec2D.Init(GetContentScreenX(), GetContentScreenY() + savegameName.GetScreenHeight()), new TVec2D.Init(GetContentScreenWidth(),80), "MODALSAVEMENU")
+		savegameList = New TGUISelectList.Create(New TVec2D.Init(GetContentScreenRect().GetX(), GetContentScreenRect().GetY() + savegameName.GetScreenRect().GetH()), New TVec2D.Init(GetContentScreenRect().GetW(),80), "MODALSAVEMENU")
 
-'		savegameList.rect.position.SetXY(GetContentScreenX(), GetContentScreenY())
-		savegameName.rect.position.SetXY(GetContentScreenX(), GetContentScreenY())
-
+		AddChild(savegameList)
 
 		If guiCaptionTextBox
 			guiCaptionTextBox.SetFont(headerFont)
 			SetCaptionArea(New TRectangle.Init(-1, 5, -1, 25))
-			guiCaptionTextBox.Resize(-1,-1)
-		Endif
+			guiCaptionTextBox.SetSize(-1,-1)
+		EndIf
 
 		'=== EVENTS ===
 		'listen to clicks on "save savegame"
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guibutton.onclick", self, "onClickSaveSavegame") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "guibutton.onclick", Self, "onClickSaveSavegame") ]
 		'listen to clicks on the list
-		_eventListeners :+ [ EventManager.registerListenerMethod( "GUISelectList.onSelectEntry", self, "onClickOnSavegameEntry") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "GUISelectList.onSelectEntry", Self, "onClickOnSavegameEntry") ]
 		'select entry according input content
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guiinput.onChangeValue", self, "onChangeSavegameNameInputValue") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "guiinput.onChangeValue", Self, "onChangeSavegameNameInputValue") ]
 		'register to quit confirmation dialogue
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guiModalWindow.onClose", self, "onConfirmOverwrite" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "guiModalWindow.onClose", Self, "onConfirmOverwrite" ) ]
 
 		'localize texts
-		_eventListeners :+ [ EventManager.registerListenerMethod( "Language.onSetLanguage", self, "onSetLanguage" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "Language.onSetLanguage", Self, "onSetLanguage" ) ]
 
 		'(re-)localize
 		SetLanguage()
-		return self
+		Return Self
 	End Method
 
 
 	'override
-	Method Activate:int()
+	Method Activate:Int()
 		'remove previous entries
 		savegamelist.EmptyList()
 
 		'fill existing savegames
-		local dirTree:TDirectoryTree = new TDirectoryTree.SimpleInit()
+		Local dirTree:TDirectoryTree = New TDirectoryTree.SimpleInit()
 		dirTree.SetIncludeFileEndings(["xml"])
 		dirTree.ScanDir(TSavegame.GetSavegamePath(), True)
-		local fileURIs:String[] = dirTree.GetFiles()
+		Local fileURIs:String[] = dirTree.GetFiles()
 
 		'loop over all filenames
-		for local fileURI:String = EachIn fileURIs
+		For Local fileURI:String = EachIn fileURIs
 			'skip non-existent files
-			if filesize(fileURI) = 0 then continue
-			local item:TGUISavegameListItem = new TGUISavegameListItem.Create(null, null, "savegame " + fileURI)
+			If FileSize(fileURI) = 0 Then Continue
+			Local item:TGUISavegameListItem = New TGUISavegameListItem.Create(Null, Null, "savegame " + fileURI)
 			item.SetSavegameFile(fileURI)
 			savegameList.AddItem(item)
 		Next
@@ -530,90 +495,50 @@ Type TGUIModalSaveSavegameMenu extends TGUIModalWindowChainDialogue
 
 
 	Method SetLanguage()
-		if savegameNameLabel
+		If savegameNameLabel
 			savegameNameLabel.SetValue( GetLocale("NAME_OF_SAVEGAME") + ":" )
-		endif
+		EndIf
 	End Method
 
 
-	Method Remove:int()
-		super.Remove()
-		if savegameList then savegameList.remove()
-		self.savegameList = null
+	Method Remove:Int()
+		Super.Remove()
+		If savegameList Then savegameList.remove()
+		Self.savegameList = Null
 
-		if savegameName then savegameName.remove()
-		self.savegameName = null
+		If savegameName Then savegameName.remove()
+		Self.savegameName = Null
 
-		if savegameNameLabel then savegameNameLabel.remove()
-		self.savegameNameLabel = null
+		If savegameNameLabel Then savegameNameLabel.remove()
+		Self.savegameNameLabel = Null
 
 		'remove all event listeners
 		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
-
+		_eventListeners = New TLink[0]
 	End Method
 
 
-	Method Resize(w:Float = 0, h:Float = 0)
-		Super.Resize(w,h)
-
-		local addH:int = 0
-		if savegameNameLabel
-			savegameNameLabel.Resize(GetContentScreenWidth(), -1)
-			addH :+ savegameNameLabel.GetScreenHeight() + 15
-		endif
-		if savegameName
-			savegameName.Resize(GetContentScreenWidth(), -1)
-			addH :+ savegameName.GetScreenHeight() + 5
-		endif
-		if savegameList
-			savegameList.Resize(GetContentScreenWidth(), GetContentScreenHeight() - addH)
-			savegameList.RecalculateElements()
-		endif
-	End Method
-
-
-	Method onRecenter()
-		Super.onRecenter()
-		'as long as a list cannot be the child element of a window
-		'we have to move them manually (and unparented)
-		local addH:int = 0
-		if savegameNameLabel
-			savegameNameLabel.rect.position.SetXY(GetContentScreenX(), GetContentScreenY())
-			addH :+ savegameNameLabel.GetScreenHeight() + 15
-		endif
-		if savegameName
-			savegameName.rect.position.SetXY(GetContentScreenX(), GetContentScreenY() + addH)
-			addH :+ savegameName.GetScreenHeight() + 5
-		endif
-
-		if savegameList
-			savegameList.rect.position.SetXY(GetContentScreenX(), GetContentScreenY() + addH)
-		endif
-	End Method
-
-
-global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
-	Method Update:int()
+Global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
+	Method Update:Int()
 		GuiManager.Update( LS_modalSaveMenu )
 
 		'disable/enable load-button
-		if savegameName.GetValue() = ""
-			if dialogueButtons[0].isEnabled() then dialogueButtons[0].disable()
-		else
-			if not dialogueButtons[0].isEnabled() then dialogueButtons[0].enable()
-		endif
+		If savegameName.GetValue() = ""
+			If dialogueButtons[0].isEnabled() Then dialogueButtons[0].disable()
+		Else
+			If Not dialogueButtons[0].isEnabled() Then dialogueButtons[0].enable()
+		EndIf
 
 
 		'handle Enter-Key
-		if KeyManager.IsHit(KEY_ENTER)
+		If KeyManager.IsHit(KEY_ENTER)
 			'avoid others getting triggered too (eg. chat)
 			KeyManager.ResetKey(KEY_ENTER)
 
-			if dialogueButtons[0].isEnabled()
+			If dialogueButtons[0].isEnabled()
 				SaveSavegame(savegameName.GetValue())
-			endif
-		endif
+			EndIf
+		EndIf
 
 		Super.Update()
 	End Method
@@ -626,8 +551,8 @@ global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 	End Method
 
 
-	Method CreateConfirmOverwriteDialogue:int(fileURI:string)
-		if _confirmOverwriteDialogue then return False
+	Method CreateConfirmOverwriteDialogue:Int(fileURI:String)
+		If _confirmOverwriteDialogue Then Return False
 		_confirmOverwriteDialogue = New TGUIModalWindow.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
 		_confirmOverwriteDialogue.guiCaptionTextBox.SetFont(headerFont)
 
@@ -638,7 +563,7 @@ global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 
 		_confirmOverwriteDialogue.SetDialogueType(2)
 		_confirmOverwriteDialogue.SetZIndex(100001)
-		_confirmOverwriteDialogue.SetCaptionAndValue( GetLocale("OVERWRITE_SAVEGAME"), GetLocale("DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X").replace("%SAVEGAME%", fileURI) )
+		_confirmOverwriteDialogue.SetCaptionAndValue( GetLocale("OVERWRITE_SAVEGAME"), GetLocale("DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X").Replace("%SAVEGAME%", fileURI) )
 
 		_confirmOverwriteDialogue.darkenedArea = New TRectangle.Init(0,0,800,385)
 		'center to this area
@@ -648,16 +573,16 @@ global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 	End Method
 
 
-	Method SaveSavegame:int(fileName:string, skipFileCheck:int = False)
-		if not fileName then return False
+	Method SaveSavegame:Int(fileName:String, skipFileCheck:Int = False)
+		If Not fileName Then Return False
 
-		local fileURI:string = TSavegame.GetSavegameURI(fileName)
+		Local fileURI:String = TSavegame.GetSavegameURI(fileName)
 
 		'if savegame exists already, create confirmation dialogue
-		if not skipFileCheck and filetype(fileURI) = 1
+		If Not skipFileCheck And FileType(fileURI) = 1
 			CreateConfirmOverwriteDialogue(fileURI)
-			return False
-		endif
+			Return False
+		EndIf
 
 		TSaveGame.Save(fileURI)
 
@@ -666,12 +591,48 @@ global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 '		Close()
 
 		'close escape menu
-		if App.EscapeMenuWindow then App.EscapeMenuWindow.Close()
+		If App.EscapeMenuWindow Then App.EscapeMenuWindow.Close()
 
-		return True
+		Return True
 	End Method
 
 
+
+	Method UpdateLayout()
+		Super.UpdateLayout()
+
+		Local addH:Int = 0
+		If savegameNameLabel
+			savegameNameLabel.SetSize(GetContentScreenRect().GetW(), -1)
+			addH :+ savegameNameLabel.GetScreenRect().GetH() + 15
+		EndIf
+		If savegameName
+			savegameName.SetSize(GetContentScreenRect().GetW(), -1)
+			addH :+ savegameName.GetScreenRect().GetH() + 5
+		EndIf
+		If savegameList
+			savegameList.SetSize(GetContentScreenRect().GetW(), GetContentScreenRect().GetH() - addH)
+'			savegameList.RecalculateElements()
+		EndIf
+
+
+		'as long as a list cannot be the child element of a window
+		'we have to move them manually (and unparented)
+		addH = 0
+'		local addH:int = 0
+		If savegameNameLabel
+			savegameNameLabel.SetPosition(GetContentScreenRect().GetX(), GetContentScreenRect().GetY())
+			addH :+ savegameNameLabel.GetScreenRect().GetH() + 15
+		EndIf
+		If savegameName
+			savegameName.SetPosition(GetContentScreenRect().GetX(), GetContentScreenRect().GetY() + addH)
+			addH :+ savegameName.GetScreenRect().GetH() + 5
+		EndIf
+
+		If savegameList
+			savegameList.SetPosition(GetContentScreenRect().GetX(), GetContentScreenRect().GetY() + addH)
+		EndIf
+	End Method
 
 
 	'=== EVENTS ===
@@ -680,35 +641,35 @@ global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 	Method onButtonClick:Int( triggerEvent:TEventBase )
 		'skip "save" button handling - we go back if we do not
 		'have to confirm or "saved"
-		if dialogueButtons[0] = triggerEvent._sender then return False
+		If dialogueButtons[0] = triggerEvent._sender Then Return False
 
 		Super.onButtonClick(triggerEvent)
 	End Method
 
 
-	Method onSetLanguage:int( triggerEvent:TEventBase )
+	Method onSetLanguage:Int( triggerEvent:TEventBase )
 		SetLanguage()
 	End Method
 
 
-	Method onConfirmOverwrite:int( triggerEvent:TEventBase )
+	Method onConfirmOverwrite:Int( triggerEvent:TEventBase )
 		'only react to confirmation dialogue
-		if _confirmOverwriteDialogue <> triggerEvent._sender then return False
+		If _confirmOverwriteDialogue <> triggerEvent._sender Then Return False
 
 		Local buttonNumber:Int = triggerEvent.GetData().getInt("closeButton",-1)
 
 		'approve overwrite
 		If buttonNumber = 0
 			SaveSavegame(savegameName.GetValue(), True)
-		endif
+		EndIf
 
 		'remove connection to dialogue (guimanager takes care of fading)
 		_confirmOverwriteDialogue = Null
 	End Method
 
 
-	Method onChangeSavegameNameInputValue:int( triggerEvent:TEventBase )
-		local newName:string = TGUIInput(triggerEvent._sender).GetCurrentValue()
+	Method onChangeSavegameNameInputValue:Int( triggerEvent:TEventBase )
+		Local newName:String = TGUIInput(triggerEvent._sender).GetCurrentValue()
 
 		'loop through all savegames and select the one with the name
 		'(if there is none, select nothing)
@@ -717,37 +678,37 @@ global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 		'           which might lead to the wrong file selected if the
 		'           list contains multiple savegames with the same name
 		'           but in different directories
-		For local i:TGUISavegameListItem = EachIn savegameList.entries
-			local fileName:string = i.GetFileInformation().GetString("fileURI")
-			if TSavegame.GetSavegameName(fileName) = newName
+		For Local i:TGUISavegameListItem = EachIn savegameList.entries
+			Local fileName:String = i.GetFileInformation().GetString("fileURI")
+			If TSavegame.GetSavegameName(fileName) = newName
 				savegameList.SelectEntry(i)
-				return True
-			endif
+				Return True
+			EndIf
 		Next
 
-		return False
+		Return False
 	End Method
 
 
-	Method onClickSaveSavegame:int( triggerEvent:TEventBase )
-		local button:TGUIButton = TGUIButton(triggerEvent.GetSender())
-		if not button or button <> dialogueButtons[0] then return False
+	Method onClickSaveSavegame:Int( triggerEvent:TEventBase )
+		Local button:TGUIButton = TGUIButton(triggerEvent.GetSender())
+		If Not button Or button <> dialogueButtons[0] Then Return False
 
-		if not SaveSavegame(savegameName.GetValue())
+		If Not SaveSavegame(savegameName.GetValue())
 			triggerEvent.SetVeto(True)
-			return false
-		endif
+			Return False
+		EndIf
 
-		return True
+		Return True
 	End Method
 
 
 	'fill the name of the selected entry as savegame name
-	Method onClickOnSavegameEntry:int( triggerEvent:TEventBase )
-		local entry:TGUISaveGameListItem = TGUISaveGameListItem(triggerEvent.GetData().Get("entry"))
-		if not entry then return False
+	Method onClickOnSavegameEntry:Int( triggerEvent:TEventBase )
+		Local entry:TGUISaveGameListItem = TGUISaveGameListItem(triggerEvent.GetData().Get("entry"))
+		If Not entry Then Return False
 
-		local fileName:string = TSavegame.GetSavegameName( entry.GetFileInformation().GetString("fileURI") )
+		Local fileName:String = TSavegame.GetSavegameName( entry.GetFileInformation().GetString("fileURI") )
 
 		savegameName.SetValue( fileName )
 	End Method
@@ -756,23 +717,23 @@ End Type
 
 
 
-Type TGUISavegameListItem extends TGUISelectListItem
+Type TGUISavegameListItem Extends TGUISelectListItem
 	Field paddingBottom:Int = 12
 	Field paddingTop:Int = 4
-	Field fileInformation:TData = null
+	Field fileInformation:TData = Null
 	Global _typeDefaultFont:TBitmapFont
 
-    Method Create:TGUISavegameListItem(position:TVec2D=null, dimension:TVec2D=null, value:String="")
+    Method Create:TGUISavegameListItem(position:TVec2D=Null, dimension:TVec2D=Null, value:String="")
 		Super.Create(position, dimension, value)
 
 		'resize it
 		GetDimension()
 
-		return self
+		Return Self
 	End Method
 
 
-	Method onAddAsChild:int(parent:TGUIObject)
+	Method onAddAsChild:Int(parent:TGUIObject)
 		'resize it
 		GetDimension()
 	End Method
@@ -785,41 +746,41 @@ Type TGUISavegameListItem extends TGUISelectListItem
 
 	'override in extended classes if wanted
 	Function GetTypeFont:TBitmapFont()
-		return _typeDefaultFont
+		Return _typeDefaultFont
 	End Function
 
 
 	Method Compare:Int( other:Object )
-		local otherItem:TGUISavegameListItem = TGUISavegameListItem(other)
-		if otherItem
-			local timeA:int = GetFileInformation().GetInt("fileTime", 0)
-			local timeB:int = otherItem.GetFileInformation().GetInt("fileTime", 0)
-			if timeA < timeB then return 1
-			if timeA > timeB then return -1
-		endif
+		Local otherItem:TGUISavegameListItem = TGUISavegameListItem(other)
+		If otherItem
+			Local timeA:Int = GetFileInformation().GetInt("fileTime", 0)
+			Local timeB:Int = otherItem.GetFileInformation().GetInt("fileTime", 0)
+			If timeA < timeB Then Return 1
+			If timeA > timeB Then Return -1
+		EndIf
 
-		return Super.Compare(other)
+		Return Super.Compare(other)
 	End Method
 
 
-	Method SetSavegameFile(fileURI:string)
+	Method SetSavegameFile(fileURI:String)
 		fileInformation = TSavegame.GetGameSummary(fileURI)
 	End Method
 
 
 	Method GetFileInformation:TData()
-		if not fileInformation then fileInformation = new TData
-		return fileInformation
+		If Not fileInformation Then fileInformation = New TData
+		Return fileInformation
 	End Method
 
 
 	'override
 	Method GetDimension:TVec2D()
 		'available width is parentsDimension minus startingpoint
-		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
+		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(GetFirstParentalObject("tguiscrollablepanel"))
 
 		Local maxWidth:Int = 170
-		If parentPanel Then maxWidth = parentPanel.getContentScreenWidth()
+		If parentPanel Then maxWidth = parentPanel.GetContentScreenRect().GetW()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		'2 lines of text
@@ -833,7 +794,7 @@ Type TGUISavegameListItem extends TGUISelectListItem
 		'but only if something changed (eg. first time or content changed)
 		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
 			'resize item
-			Self.Resize(dimension.getX(), dimension.getY())
+			Self.SetSize(dimension.getX(), dimension.getY())
 		EndIf
 
 		Return dimension
@@ -841,23 +802,23 @@ Type TGUISavegameListItem extends TGUISelectListItem
 
 
 	Method DrawContent()
-		local time:Double = GetFileInformation().GetDouble("game_timegone", 0)
-		local gameTime:string = GetWorldTime().getFormattedTime(time)+" "+getLocale("DAY")+" "+GetWorldTime().getDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
-		local col:TColor = TColor.Create(100,105,140)
-		local playerCol:TColor = TColor.Create(70, 75, 110)
-		local headCol:TColor = TColor.clWhite 'TColor.Create(150,90,0)
-		local width:int = GetContentScreenWidth()
+		Local time:Double = GetFileInformation().GetDouble("game_timegone", 0)
+		Local gameTime:String = GetWorldTime().getFormattedTime(time)+" "+getLocale("DAY")+" "+GetWorldTime().getDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
+		Local col:TColor = TColor.Create(100,105,140)
+		Local playerCol:TColor = TColor.Create(70, 75, 110)
+		Local headCol:TColor = TColor.clWhite 'TColor.Create(150,90,0)
+		Local width:Int = GetContentScreenRect().GetW()
 
-		local leftX:int = GetContentScreenX()
+		Local leftX:Int = GetContentScreenRect().GetX()
 
-		GetBitmapFont("",-1, BOLDFONT).DrawBlock(GetFileInformation().GetString("fileName"), leftX, GetScreenY() + self.paddingTop, 0.70*width, 15, null, headCol, TBitmapFont.STYLE_SHADOW, 1, 0.6, TRUE)
-		GetFont().DrawBlock("|b|"+GetLocale("PLAYER")+":|/b| " + GetFileInformation().GetString("player_name", "unknown player"), leftX, GetScreenY() + 15 + self.paddingTop, 0.25 * width, 15, null, playerCol, TBitmapFont.STYLE_SHADOW, 1, 0.25, TRUE)
-		GetFont().DrawBlock("|b|"+GetLocale("GAMETIME")+":|/b| "+gameTime, leftX + 0.65 * width, GetScreenY() + self.paddingTop, 0.35 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.6, TRUE)
-		GetFont().DrawBlock("|b|"+GetLocale("MONEY")+":|/b| "+MathHelper.DottedValue(GetFileInformation().GetInt("player_money", 0)), leftX + 0.60 * width, GetScreenY() + 15 + self.paddingTop, 0.40 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.6, TRUE)
+		GetBitmapFontManager().baseFontBold.DrawBlock(GetFileInformation().GetString("fileName"), leftX, GetScreenRect().GetY() + Self.paddingTop, 0.70*width, 15, Null, headCol, TBitmapFont.STYLE_SHADOW, 1, 0.6, True)
+		GetFont().DrawBlock("|b|"+GetLocale("PLAYER")+":|/b| " + GetFileInformation().GetString("player_name", "unknown player"), leftX, GetScreenRect().GetY() + 15 + Self.paddingTop, 0.25 * width, 15, Null, playerCol, TBitmapFont.STYLE_SHADOW, 1, 0.25, True)
+		GetFont().DrawBlock("|b|"+GetLocale("GAMETIME")+":|/b| "+gameTime, leftX + 0.65 * width, GetScreenRect().GetY() + Self.paddingTop, 0.35 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.6, True)
+		GetFont().DrawBlock("|b|"+GetLocale("MONEY")+":|/b| "+MathHelper.DottedValue(GetFileInformation().GetInt("player_money", 0)), leftX + 0.60 * width, GetScreenRect().GetY() + 15 + Self.paddingTop, 0.40 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.6, True)
 
-		local oldAlpha:Float = GetAlpha()
+		Local oldAlpha:Float = GetAlpha()
 		SetAlpha oldAlpha * 0.30
-		DrawRect(leftX, GetScreenY() + GetScreenHeight() - 1, width, 1)
+		DrawRect(leftX, GetScreenRect().GetY() + GetScreenRect().GetH() - 1, width, 1)
 		SetAlpha oldAlpha
 	End Method
 End Type

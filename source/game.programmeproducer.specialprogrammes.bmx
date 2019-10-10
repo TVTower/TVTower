@@ -16,6 +16,25 @@ GetProgrammeProducerCollection().Add( TProgrammeProducerMorningShows.GetInstance
 'TODO: so umbauen, dass es ein Drehbuchproduzent ist - egal ob Morningshow oder Film
 '      daraus dann "spezialisieren"
 
+rem
+https://www.gamezworld.de/phpforum/viewtopic.php?pid=88875#p88875
+
+Kurz fuer mich als "Erinnerung":
+- BioPics ueber Kuenstler (evtl gleich mit "Kuenstler-Sim" + "News ueber Touren")
+- Dokus ueber Fussballvereine (Saisonende - Aufsteiger bzw "Platz 1 der 1. Liga")
+- Doku bei Senderpleite ("Aufstieg und Fall...")
+- Doku bei Terroranschlaegen im Hochhaus ("VR - FR Duban")
+- Fruehstuecksfernsehen + Mittagsunterhaltung
+- Trashtalk fuer Nachmittag
+- Sondersendungen zu Nachrichten (wichtig: bei wiederholter Nachricht nicht erneut erzeugen, also newsEventTemplateID protokollieren)
+- Boersensendungen
+- zufaellige Drehbuchumsetzungen (also auch Filme, Serien ...)
+
+Zur Lokalisierung der Sonderformate muessten diese als Drehbuecher in der DB stehen, aber als "intern" markiert sein (so, dass sie nicht beim Drehbuchhaendler auftauchen).
+
+
+endrem
+
 
 Type TProgrammeProducerWithProduction Extends TProgrammeProducerBase
 	Field castFavorites:TProgrammePersonBase[]
@@ -230,6 +249,9 @@ Type TProgrammeProducerMorningShows Extends TProgrammeProducerWithProduction
 			CreateProgrammeLicence(Null)
 		EndIf
 	End Method
+
+
+
 
 
 Rem

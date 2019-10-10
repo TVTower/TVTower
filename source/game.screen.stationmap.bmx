@@ -308,38 +308,24 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 
 	'override to resize list accordingly
-	Method onStatusAppearanceChange:Int()
-		Super.onStatusAppearanceChange()
-
-		list.Resize(GetContentScreenWidth()- 2, -1)
+	Method onAppearanceChanged:Int()
+		Super.onAppearanceChanged()
+		InvalidateContentScreenRect()
+		print "on change: " + GetContentScreenRect().GetW()
+		list.SetSize(GetContentScreenRect().GetW()- 2, -1)
 	End Method
 
 
 	Method Update:Int()
 		If isOpen
+			'NOW done in UpdateLayout()
 			'move list to here...
-			If list.rect.position.GetX() <> 2
-				list.SetPosition(2, GetHeaderHeight() + 3 )
-'local tt:TTypeID = TTypeId.ForObject(self)
-'print tt.name() + "   " + GetContentScreenWidth()
-				'list.rect.dimension.SetX(GetContentScreenWidth() - 23)
+'			If list.rect.position.GetX() <> 2 'or list.IsAppearanceChanged()
+'				list.SetPosition(2, GetHeaderHeight() + 3 )
 				'resizing is done when status changes
-'				list.Resize(GetContentScreenWidth() - 23, -1)
-			EndIf
+				'list.SetSize(GetContentScreenRect().GetW() - 2, -1)
+'			EndIf
 
-			'adjust list size if needed
-			Local listH:Int = listBackgroundH - 6
-			If listBackgroundH > 0 And list.GetHeight() <> listH
-				list.Resize(-1, listH)
-'				list.RecalculateElements()
-			EndIf
-
-
-			autoRenewCheckbox.SetPosition(5, GetHeaderHeight() + GetBodyHeight() - 34 - 30 - 23 )
-			renewButton.SetPosition(5, GetHeaderHeight() + GetBodyHeight() - 34 - 30 )
-			renewInfoButton.SetPosition(5 + 150, GetHeaderHeight() + GetBodyHeight() - 34 - 30 )
-			actionButton.SetPosition(5, GetHeaderHeight() + GetBodyHeight() - 34 )
-			cancelButton.SetPosition(5 + 150, GetHeaderHeight() + GetBodyHeight() - 34 )
 
 			UpdateActionButton()
 
@@ -414,6 +400,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 						actionButton.SetValue(GetLocale("CHANNEL_IMAGE_TOO_LOW"))
 						actionButton.Disable()
 					elseif finance And finance.canAfford(totalPrice)
+'TODO: die ganze funktion nur aufrufen, wenn sich was geaendert hat
 						actionButton.SetValue(GetLocale( localeKey_BuyItem))
 						actionButton.enable()
 					Else
@@ -460,9 +447,9 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 		Local skin:TDatasheetSkin = GetSkin()
 		If skin
-			Local contentX:Int = GetScreenX()
-			Local contentY:Int = GetScreenY()
-			Local contentW:Int = GetScreenWidth()
+			Local contentX:Int = GetScreenRect().GetX()
+			Local contentY:Int = GetScreenRect().GetY()
+			Local contentW:Int = GetScreenRect().GetW()
 			Local currentY:Int = contentY + GetHeaderHeight()
 
 
@@ -474,12 +461,12 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 				renewButton.Hide()
 				renewInfoButton.Hide()
 				cancelButton.Hide()
-				renewButton.Resize(contentW - 10, -1)
-				actionButton.Resize(contentW - 10, -1)
+				renewButton.SetSize(contentW - 10, -1)
+				actionButton.SetSize(contentW - 10, -1)
 			Else
-				autoRenewCheckbox.Resize(180,-1)
-				renewButton.Resize(150, -1)
-				actionButton.Resize(150, -1)
+				autoRenewCheckbox.SetSize(180,-1)
+				renewButton.SetSize(150, -1)
+				actionButton.SetSize(150, -1)
 				cancelButton.Show()
 			EndIf
 
@@ -515,6 +502,27 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 	Method DrawBodyContent(contentX:Int, contentY:Int, contentW:Int, contentH:Int)
 		'by default draw nothing
+	End Method
+
+
+	Method UpdateLayout()
+		Super.UpdateLayout()
+
+		list.SetPosition(2, GetHeaderHeight() + 3 )
+		list.SetSize(GetContentScreenRect().GetW() - 2, -1)
+
+		'adjust list size if needed
+		Local listH:Int = listBackgroundH - 6
+		If listBackgroundH > 0 And list.GetHeight() <> listH
+			list.SetSize(-1, listH)
+		EndIf
+
+
+		autoRenewCheckbox.SetPosition(5, GetHeaderHeight() + GetBodyHeight() - 34 - 30 - 23 )
+		renewButton.SetPosition(5, GetHeaderHeight() + GetBodyHeight() - 34 - 30 )
+		renewInfoButton.SetPosition(5 + 150, GetHeaderHeight() + GetBodyHeight() - 34 - 30 )
+		actionButton.SetPosition(5, GetHeaderHeight() + GetBodyHeight() - 34 )
+		cancelButton.SetPosition(5 + 150, GetHeaderHeight() + GetBodyHeight() - 34 )
 	End Method
 End Type
 
@@ -562,7 +570,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 
 		If playerID <= 0 Then playerID = GetPlayerBase().playerID
 
-		Local listContentWidth:Int = list.GetContentScreenWidth()
+		Local listContentWidth:Int = list.GetContentScreenRect().GetW()
 		For Local station:TStationAntenna = EachIn GetStationMap(playerID).Stations
 			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D.Init(listContentWidth,20), station.GetLongName())
 			'fill complete width
@@ -608,7 +616,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 		If TScreenHandler_StationMap.actionMode = GetBuyActionMode() Then showDetails = True
 
 		'update information
-		detailsBackgroundH = actionButton.GetScreenHeight() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2) + showPermissionText * permissionTextH
+		detailsBackgroundH = actionButton.GetScreenRect().GetH() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2) + showPermissionText * permissionTextH
 
 		listBackgroundH = GetBodyHeight() - detailsBackgroundH
 
@@ -790,7 +798,7 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
 		If playerID <= 0 Then playerID = GetPlayerBase().playerID
 
-		Local listContentWidth:Int = list.GetContentScreenWidth()
+		Local listContentWidth:Int = list.GetContentScreenRect().GetW()
 		For Local station:TStationCableNetworkUplink = EachIn GetStationMap(playerID).Stations
 			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D.Init(listContentWidth,20), station.GetLongName())
 			'fill complete width
@@ -873,11 +881,11 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 		EndIf
 
 		'update information
-		detailsBackgroundH = actionButton.GetScreenHeight() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2) + showPermissionText * permissionTextH
+		detailsBackgroundH = actionButton.GetScreenRect().GetH() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2) + showPermissionText * permissionTextH
 		If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_CABLE_NETWORK_UPLINK
 			if selectedStation
-				detailsBackgroundH :+ renewButton.GetScreenHeight() + 3
-				detailsBackgroundH :+ autoRenewCheckbox.GetScreenHeight() + 3
+				detailsBackgroundH :+ renewButton.GetScreenRect().GetH() + 3
+				detailsBackgroundH :+ autoRenewCheckbox.GetScreenRect().GetH() + 3
 			endif
 		EndIf
 
@@ -1233,7 +1241,7 @@ endrem
 
 		If playerID <= 0 Then playerID = GetPlayerBase().playerID
 
-		Local listContentWidth:Int = list.GetContentScreenWidth()
+		Local listContentWidth:Int = list.GetContentScreenRect().GetW()
 		For Local station:TStationSatelliteUplink = EachIn GetStationMap(playerID).Stations
 			Local item:TGUISelectListItem = New TGUISelectListItem.Create(New TVec2D, New TVec2D.Init(listContentWidth,20), station.GetLongName())
 			'fill complete width
@@ -1273,11 +1281,11 @@ endrem
 		Local includesHardwareTextH:int = 24
 
 		'update information
-		detailsBackgroundH = actionButton.GetScreenHeight() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2)
+		detailsBackgroundH = actionButton.GetScreenRect().GetH() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2)
 		If TScreenHandler_StationMap.actionMode = TScreenHandler_StationMap.MODE_SELL_SATELLITE_UPLINK
 			if selectedStation
-				detailsBackgroundH :+ renewButton.GetScreenHeight() + 3
-				detailsBackgroundH :+ autoRenewCheckbox.GetScreenHeight() + 3
+				detailsBackgroundH :+ renewButton.GetScreenRect().GetH() + 3
+				detailsBackgroundH :+ autoRenewCheckbox.GetScreenRect().GetH() + 3
 
 				if TStationSatelliteUplink(selectedStation).IsShutdown()
 					showIncludesHardwareText = True
@@ -1619,7 +1627,7 @@ Type TSatelliteSelectionFrame
 		satelliteList.setListOption(GUILIST_AUTOSORT_ITEMS, False)
 
 
-		Local listContentWidth:Int = satelliteList.GetContentScreenWidth()
+		Local listContentWidth:Int = satelliteList.GetContentScreenRect().GetW()
 
 		If GetStationMapCollection().satellites
 			For Local satellite:TStationMap_Satellite = EachIn GetStationMapCollection().satellites
@@ -1660,7 +1668,7 @@ Type TSatelliteSelectionFrame
 		Local paddingLR:Int = 2
 		Local textOffsetX:Int = paddingLR + sprite.GetWidth() + 5
 		Local textOffsetY:Int = 2
-		Local textW:Int = item.GetScreenWidth() - textOffsetX - paddingLR
+		Local textW:Int = item.GetScreenRect().GetW() - textOffsetX - paddingLR
 
 		Local currentColor:TColor = New TColor.Get()
 		Local entryColor:TColor
@@ -1683,13 +1691,13 @@ Type TSatelliteSelectionFrame
 		if highlight
 			entryColor.SetRGB()
 			SetAlpha entryColor.a * 0.5
-			DrawRect(Int(item.GetScreenX() + paddingLR), item.GetScreenY(), sprite.GetWidth(), item.rect.getH())
+			DrawRect(Int(item.GetScreenRect().GetX() + paddingLR), item.GetScreenRect().GetY(), sprite.GetWidth(), item.rect.getH())
 			currentColor.SetRGBA()
 		endif
 
 		'draw antenna
-		sprite.Draw(Int(item.GetScreenX() + paddingLR), item.GetScreenY() + 0.5*item.rect.getH(), -1, ALIGN_LEFT_CENTER)
-		item.GetFont().DrawBlock(leftValue, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), textW - 5, Int(item.GetScreenHeight() - textOffsetY), ALIGN_LEFT_CENTER, entryColor, , , , False)
+		sprite.Draw(Int(item.GetScreenRect().GetX() + paddingLR), item.GetScreenRect().GetY() + 0.5*item.rect.getH(), -1, ALIGN_LEFT_CENTER)
+		item.GetFont().DrawBlock(leftValue, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), textW - 5, Int(item.GetScreenRect().GetH() - textOffsetY), ALIGN_LEFT_CENTER, entryColor, , , , False)
 	End Function
 
 
@@ -1699,7 +1707,7 @@ Type TSatelliteSelectionFrame
 				satelliteList.SetPosition(contentArea.GetX(), contentArea.GetIntY() + 16)
 			EndIf
 			If satelliteList.GetWidth() <> contentArea.GetW()
-				satelliteList.Resize(contentArea.GetW())
+				satelliteList.SetSize(contentArea.GetW())
 			EndIf
 		EndIf
 
@@ -1731,7 +1739,7 @@ Type TSatelliteSelectionFrame
 
 		'resize list if needed
 		If listHeight <> satelliteList.GetHeight()
-			satelliteList.Resize(-1, listHeight)
+			satelliteList.SetSize(-1, listHeight)
 		EndIf
 
 
@@ -1861,15 +1869,6 @@ End Type
 
 
 Type TStationMapInformationFrame
-rem
-	hier umstellen auf accordeon
-	- einmal "map"
-	- anderes "spielerbezogen"
-		-> reichweitenlevel
-		-> Abdeckung Senderkarte mit antenne / kabel / satellit
-		-> ?
-	 TGameGUIAccordeonPanel
-endrem
 	Field area:TRectangle
 	Field contentArea:TRectangle
 	Field headerHeight:Int
@@ -2014,9 +2013,9 @@ endrem
 		Local paddingLR:Int = 2
 		Local textOffsetX:Int = paddingLR + 5
 		Local textOffsetY:Int = 2
-		Local textW:Int = item.GetScreenWidth() - textOffsetX - paddingLR
-		Local colY:Int = Int(item.GetScreenY() + textOffsetY)
-		Local colHeight:Int = Int(item.GetScreenHeight() - textOffsetY)
+		Local textW:Int = item.GetScreenRect().GetW() - textOffsetX - paddingLR
+		Local colY:Int = Int(item.GetScreenRect().GetY() + textOffsetY)
+		Local colHeight:Int = Int(item.GetScreenRect().GetH() - textOffsetY)
 		Local colWidthA:Int = 0.45 * textW
 		Local colWidthB:Int = 0.2 * textW
 		Local colWidthC:Int = 0.1 * textW
@@ -2031,13 +2030,13 @@ endrem
 
 		'draw antenna
 		entryColor.SetRGBA()
-		item.GetFont().DrawBlock(valueA, Int(item.GetScreenX() + textOffsetX), colY, colWidthA, colHeight, ALIGN_LEFT_CENTER, item.valueColor, , , , False)
+		item.GetFont().DrawBlock(valueA, Int(item.GetScreenRect().GetX() + textOffsetX), colY, colWidthA, colHeight, ALIGN_LEFT_CENTER, item.valueColor, , , , False)
 		textOffsetX :+ colWidthA
-		item.GetFont().DrawBlock(valueB, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), colWidthB, colHeight, ALIGN_LEFT_CENTER, item.valueColor)
+		item.GetFont().DrawBlock(valueB, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), colWidthB, colHeight, ALIGN_LEFT_CENTER, item.valueColor)
 		textOffsetX :+ colWidthB
-		item.GetFont().DrawBlock(valueC, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), colWidthC, colHeight, ALIGN_LEFT_CENTER, item.valueColor)
+		item.GetFont().DrawBlock(valueC, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), colWidthC, colHeight, ALIGN_LEFT_CENTER, item.valueColor)
 		textOffsetX :+ colWidthC
-		item.GetFont().DrawBlock(valueD, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), colWidthD, colHeight, ALIGN_RIGHT_CENTER, item.valueColor)
+		item.GetFont().DrawBlock(valueD, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), colWidthD, colHeight, ALIGN_RIGHT_CENTER, item.valueColor)
 		textOffsetX :+ colWidthD
 
 		currentColor.SetRGBA()
@@ -2053,7 +2052,7 @@ endrem
 		sectionList.setListOption(GUILIST_AUTOSORT_ITEMS, False)
 
 
-		Local listContentWidth:Int = sectionList.GetContentScreenWidth()
+		Local listContentWidth:Int = sectionList.GetContentScreenRect().GetW()
 
 		If GetStationMapCollection().sections
 			For Local section:TStationMapSection = EachIn GetStationMapCollection().sections
@@ -2080,7 +2079,7 @@ endrem
 				sectionList.SetPosition(contentArea.GetX(), contentArea.GetIntY() + 16 + countryInformationHeight + sectionListHeaderHeight)
 			EndIf
 			If sectionList.GetWidth() <> contentArea.GetW()
-				sectionList.Resize(contentArea.GetW())
+				sectionList.SetSize(contentArea.GetW())
 			EndIf
 		EndIf
 
@@ -2114,7 +2113,7 @@ endrem
 
 		'resize list if needed
 		If sectionListHeight <> sectionList.GetHeight()-5
-			sectionList.Resize(-1, sectionListHeight-5)
+			sectionList.SetSize(-1, sectionListHeight-5)
 		EndIf
 
 
@@ -2164,7 +2163,7 @@ endrem
 
 
 		'=== LIST ===
-		local sectionListContentW:int = sectionList.GetContentScreenWidth()
+		local sectionListContentW:int = sectionList.GetContentScreenRect().GetW()
 		skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), sectionListHeight + sectionListHeaderHeight, "2")
 		skin.fontNormal.drawBlock(GetLocale("STATIONMAP_SECTION_NAME"), contentArea.GetX() + 7, currentY, 0.45*sectionListContentW,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
 		skin.fontNormal.drawBlock(GetLocale("BROADCAST_PERMISSION_SHORT"), contentArea.GetX() + 7 + 5 + 0.4*sectionListContentW, currentY, 0.2*sectionListContentW,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
@@ -2311,7 +2310,10 @@ Type TScreenHandler_StationMap
 
 	Function Initialize:Int()
 		Local screen:TIngameScreen = TIngameScreen(ScreenCollection.GetScreen("screen_office_stationmap"))
-		If Not screen Then Return False
+		If Not screen
+			print "TScreenHandler_StationMap.Initialize(): FAILED. Screen not available"
+			Return False
+		EndIf
 
 		'remove background from stationmap screen
 		'(we draw the map and then the screen bg)
@@ -2337,6 +2339,7 @@ Type TScreenHandler_StationMap
 
 			'== info panel
 			guiInfoButton = New TGUIButton.Create(New TVec2D.Init(610, 15), New TVec2D.Init(20, 28), "", "STATIONMAP")
+
 			guiInfoButton.spriteName = "gfx_gui_button.datasheet"
 			guiInfoButton.SetTooltip( New TGUITooltipBase.Initialize(GetLocale("SHOW_MAP_DETAILS"), GetLocale("CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION"), New TRectangle.Init(0,0,-1,-1)) )
 			guiInfoButton.GetTooltip()._minContentDim = New TVec2D.Init(120,-1)
@@ -2357,7 +2360,7 @@ Type TScreenHandler_StationMap
 				guiFilterbuttons[i].SetTooltip( New TGUITooltipBase.Initialize("", GetLocale("TOGGLE_DISPLAY_OF_STATIONTYPE").Replace("%STATIONTYPE%", GetLocale(TVTStationType.GetAsString(i+1)+"S")), New TRectangle.Init(0,60,-1,-1)) )
 				guiFilterbuttons[i].GetTooltip()._minContentDim = New TVec2D.Init(80,-1)
 				guiFilterbuttons[i].GetTooltip()._maxContentDim = New TVec2D.Init(150,-1)
-				guiFilterbuttons[i].GetTooltip().SetOrientationPreset("BOTTOM", 10)
+				guiFilterbuttons[i].GetTooltip().SetOrientationPreset("BOTTOM", 5)
 			Next
 
 
@@ -2369,7 +2372,7 @@ Type TScreenHandler_StationMap
 				guiShowStations[i].SetTooltip( New TGUITooltipBase.Initialize("", GetLocale("TOGGLE_DISPLAY_OF_PLAYER_X").Replace("%X%", i+1), New TRectangle.Init(0,60,-1,-1)) )
 				guiShowStations[i].GetTooltip()._minContentDim = New TVec2D.Init(80,-1)
 				guiShowStations[i].GetTooltip()._maxContentDim = New TVec2D.Init(120,-1)
-				guiShowStations[i].GetTooltip().SetOrientationPreset("BOTTOM", 10)
+				guiShowStations[i].GetTooltip().SetOrientationPreset("BOTTOM", 5)
 			Next
 		EndIf
 
@@ -2498,22 +2501,21 @@ Type TScreenHandler_StationMap
 		'=== BUTTON / CHECKBOX AREA ===
 		skin.RenderContent(contentX, contentY, contentW, bottomAreaH, "1_top")
 
-
 		'=== BUTTON ===
 		'move buy button accordingly
 		contentY :+ buttonAreaPaddingY
 		Local buttonX:Int = contentX + 5
-		guiInfoButton.rect.dimension.SetX(25)
-		guiInfoButton.rect.position.SetXY(contentX + 5, contentY)
+		guiInfoButton.SetSize(25, -1)
+		guiInfoButton.SetPosition(contentX + 5, contentY)
 		buttonX :+ guiInfoButton.rect.GetW() + 6
 
 		For Local i:Int = 0 Until guiFilterButtons.length
-			guiFilterButtons[i].rect.position.SetXY(buttonX, contentY + ((guiInfoButton.rect.GetH() - guiFilterButtons[i].rect.GetH())/2) )
+			guiFilterButtons[i].SetPosition(buttonX, contentY + ((guiInfoButton.rect.GetH() - guiFilterButtons[i].rect.GetH())/2) )
 			buttonX :+ guiFilterButtons[i].rect.GetW()
 		Next
 
 		For Local i:Int = 0 Until guiShowStations.length
-			guiShowStations[i].rect.position.SetXY(contentX + 8 + 50+15+30 + 21*i, contentY + ((guiInfoButton.rect.GetH() - guiShowStations[i].rect.GetH())/2) )
+			guiShowStations[i].SetPosition(contentX + 8 + 50+15+30 + 21*i, contentY + ((guiInfoButton.rect.GetH() - guiShowStations[i].rect.GetH())/2) )
 		Next
 		contentY :+ buttonAreaPaddingY
 
@@ -3062,7 +3064,7 @@ endrem
 		Local paddingLR:Int = 2
 		Local textOffsetX:Int = paddingLR + sprite.GetWidth() + 5
 		Local textOffsetY:Int = 2
-		Local textW:Int = item.GetScreenWidth() - textOffsetX - paddingLR
+		Local textW:Int = item.GetScreenRect().GetW() - textOffsetX - paddingLR
 
 		Local currentColor:TColor = New TColor.Get()
 		Local entryColor:TColor
@@ -3102,10 +3104,10 @@ endrem
 		endif
 
 		'draw antenna
-		sprite.Draw(Int(item.GetScreenX() + paddingLR), item.GetScreenY() + 0.5*item.rect.getH(), -1, ALIGN_LEFT_CENTER)
+		sprite.Draw(Int(item.GetScreenRect().GetX() + paddingLR), item.GetScreenRect().GetY() + 0.5*item.rect.getH(), -1, ALIGN_LEFT_CENTER)
 		Local rightValueWidth:Int = item.GetFont().GetWidth(rightValue)
-		item.GetFont().DrawBlock(leftValue, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), textW - rightValueWidth - 5, Int(item.GetScreenHeight() - textOffsetY), ALIGN_LEFT_CENTER, entryColor, , , , False)
-		item.GetFont().DrawBlock(rightValue, Int(item.GetScreenX() + textOffsetX), Int(item.GetScreenY() + textOffsetY), textW, Int(item.GetScreenHeight() - textOffsetY), ALIGN_RIGHT_CENTER, rightValueColor)
+		item.GetFont().DrawBlock(leftValue, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), textW - rightValueWidth - 5, Int(item.GetScreenRect().GetH() - textOffsetY), ALIGN_LEFT_CENTER, entryColor, , , , False)
+		item.GetFont().DrawBlock(rightValue, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), textW, Int(item.GetScreenRect().GetH() - textOffsetY), ALIGN_RIGHT_CENTER, rightValueColor)
 	End Function
 
 

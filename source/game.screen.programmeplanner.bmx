@@ -115,7 +115,7 @@ Type TScreenHandler_ProgrammePlanner
 
 			For Local i:Int = 0 To 5
 				ProgrammePlannerButtons[i].SetAutoSizeMode(TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE)
-				ProgrammePlannerButtons[i].caption.SetContentPosition(ALIGN_CENTER, ALIGN_TOP)
+				ProgrammePlannerButtons[i].caption.SetContentAlignment(ALIGN_CENTER, ALIGN_TOP)
 				ProgrammePlannerButtons[i].caption.SetFont( GetBitmapFont("Default", 10, BOLDFONT) )
 
 				ProgrammePlannerButtons[i].SetCaptionOffset(0,42)
@@ -1515,7 +1515,7 @@ Type TScreenHandler_ProgrammePlanner
 			guiObject.drag()
 			'remove position backup so a "dropback" does not work, and
 			'the item does not drop back to "0,0"
-			guiObject.positionBackup = Null
+'RON			guiObject.positionBackup = Null
 		EndIf
 	End Function
 

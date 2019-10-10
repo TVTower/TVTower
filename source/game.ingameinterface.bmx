@@ -35,16 +35,42 @@ Type TInGameInterface
 	Field tooltips:TList = CreateList()
 	Field tvOverlaySprite:TSprite
 	Field noiseSprite:TSprite
+	Field spriteProgrammeNews:TSprite
+	Field spriteProgrammeNone:TSprite
+	Field spriteProgrammeAdsNone:TSprite
+	Field spriteProgrammeTrailerOverlay:TSprite
+	Field spriteProgrammeAds:TSprite
+	Field spriteProgrammeInfomercialOverlay:TSprite
+	Field spriteInterfaceBottom:TSprite
+	Field spriteInterfaceAudienceBG:TSprite
+	Field spriteInterfaceAudienceOverlay:TSprite
+	Field spriteInterfaceButtonSpeed1:TSprite
+	Field spriteInterfaceButtonSpeed2:TSprite
+	Field spriteInterfaceButtonSpeed3:TSprite
+	Field spriteInterfaceButtonHelp:TSprite
+	Field spriteInterfaceButtonSettings:TSprite
+	Field _interfaceFont:TBitmapFont
+	Field _interfaceBigFont:TBitmapFont
+	Field moneyColor:TColor
+	Field audienceColor:TColor
+	Field bettyLovecolor:TColor
+	Field channelImageColor:TColor
+	Field currentDaycolor:TColor
+	Field marketShareColor:TColor
+	Field negativeProfitColor:TColor
+	Field neutralProfitColor:TColor
+	Field positiveProfitColor:TColor
 	Field noiseAlpha:Float	= 0.95
-	Field noiseDisplace:Trectangle = new TRectangle.Init(0,0,0,0)
+	Field noiseDisplace:Trectangle = new TRectangle
 	Field ChangeNoiseTimer:Float= 0.0
 	Field ShowChannel:Byte 	= 1
 	Field ChatShow:int = False
 	Field ChatContainsUnread:int = False
 	Field ChatShowHideLocked:int = False
-	Field BottomImgDirty:Int = 1
 	Field hoveredMenuButton:int = 0
 	Field hoveredMenuButtonPos:TVec2D = new TVec2D.Init(0,0)
+	'did text values change?
+	Field valuesChanged:int = True
 
 	Field chat:TGUIGameChat
 
@@ -74,7 +100,7 @@ Type TInGameInterface
 
 			'reposition input
 			chat.guiInput.rect.position.setXY( 515, 354 )
-			chat.guiInput.Resize( 280, 30 )
+			chat.guiInput.SetSize( 280, 30 )
 			chat.guiInput.setMaxLength(200)
 			chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
 			chat.guiInput.SetMaxTextWidth(255)
@@ -111,6 +137,35 @@ Type TInGameInterface
 
 		noiseSprite = GetSpriteFromRegistry("gfx_interface_tv_noise")
 		tvOverlaySprite = GetSpriteFromRegistry("gfx_interface_tv_overlay")
+		spriteProgrammeNone = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
+		spriteProgrammeAdsNone = GetSpriteFromRegistry("gfx_interface_tv_programme_ads_none")
+		spriteProgrammeNews = GetSpriteFromRegistry("gfx_interface_tv_programme_news")
+		spriteProgrammeTrailerOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_traileroverlay")
+		spriteProgrammeAds = GetSpriteFromRegistry("gfx_interface_tv_programme_ads")
+		spriteProgrammeInfomercialOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_infomercialoverlay")
+
+		spriteInterfaceBottom = GetSpriteFromRegistry("gfx_interface_bottom")
+		spriteInterfaceButtonSpeed1 = GetSpriteFromRegistry("gfx_interface_button_speed1")
+		spriteInterfaceButtonSpeed2 = GetSpriteFromRegistry("gfx_interface_button_speed2")
+		spriteInterfaceButtonSpeed3 = GetSpriteFromRegistry("gfx_interface_button_speed3")
+		spriteInterfaceButtonHelp = GetSpriteFromRegistry("gfx_interface_button_help")
+		spriteInterfaceButtonSettings = GetSpriteFromRegistry("gfx_interface_button_settings")
+		spriteInterfaceAudienceBG = GetSpriteFromRegistry("gfx_interface_audience_bg")
+		spriteInterfaceAudienceOverlay = GetSpriteFromRegistry("gfx_interface_audience_overlay")
+
+		_interfaceFont = GetBitmapFont("Default", 12, BOLDFONT)
+		_interfaceBigFont = GetBitmapFont("Default", 16, BOLDFONT)
+
+		moneyColor = TColor.Create(200,230,200)
+		audienceColor = TColor.Create(200,200,230)
+		bettyLovecolor = TColor.Create(220,200,180)
+		channelImageColor = TColor.Create(200,220,180)
+		currentDaycolor = TColor.Create(180,180,180)
+		marketShareColor = TColor.Create(170,170,200)
+		negativeProfitColor = TColor.Create(200,170,170)
+		neutralProfitColor = TColor.Create(170,170,170)
+		positiveProfitColor = TColor.Create(170,200,170)
+
 		'set space "left" when subtracting the genre image
 		'so we know how many pixels we can move that image to simulate animation
 		noiseDisplace.Dimension.SetX(Max(0, noiseSprite.GetWidth() - tvOverlaySprite.GetWidth()))
@@ -186,10 +241,9 @@ Type TInGameInterface
 
 					If MOUSEMANAGER.IsClicked(1)
 						ShowChannel = i
-						BottomImgDirty = True
 
 						'handled left click
-						MouseManager.ResetClicked(1)
+						MouseManager.SetClickHandled(1)
 						exit
 					EndIf
 				EndIf
@@ -204,33 +258,33 @@ Type TInGameInterface
 				If GetWorldTime().GetDayMinute() >= 55
 					Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
 					If obj
-						CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads")
+						CurrentProgramme = spriteProgrammeAds
 						'real ad
 						If TAdvertisement(obj)
 							CurrentProgrammeToolTip.TitleBGtype = 1
-							CurrentProgrammeText = getLocale("ADVERTISMENT") + ": " + obj.GetTitle()
+							CurrentProgrammeText = GetLocale("ADVERTISMENT") + ": " + obj.GetTitle()
 						Else
 							If(TProgramme(obj))
 								CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_" + TProgramme(obj).data.GetGenre(), "gfx_interface_tv_programme_none")
 							EndIf
-							CurrentProgrammeOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_traileroverlay")
+							CurrentProgrammeOverlay = spriteProgrammeTrailerOverlay
 							CurrentProgrammeToolTip.TitleBGtype = 1
-							CurrentProgrammeText = getLocale("TRAILER") + ": " + obj.GetTitle()
+							CurrentProgrammeText = GetLocale("TRAILER") + ": " + obj.GetTitle()
 						EndIf
 					Else
-						CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads_none")
+						CurrentProgramme = spriteProgrammeAdsNone
 
 						CurrentProgrammeToolTip.TitleBGtype	= 2
 						CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
 					EndIf
 				ElseIf GetWorldTime().GetDayMinute() < 5
-					CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_news")
+					CurrentProgramme = spriteProgrammeNews
 					CurrentProgrammeToolTip.TitleBGtype	= 3
 					CurrentProgrammeText = getLocale("NEWS")
 				Else
 					Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
 					If obj
-						CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
+						CurrentProgramme = spriteProgrammeNone
 						CurrentProgrammeToolTip.TitleBGtype	= 0
 						'real programme
 						If TProgramme(obj)
@@ -242,14 +296,14 @@ Type TInGameInterface
 								CurrentProgrammeText = programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 							EndIf
 						ElseIf TAdvertisement(obj)
-							CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads")
-							CurrentProgrammeOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_infomercialoverlay")
+							CurrentProgramme = spriteProgrammeAds
+							CurrentProgrammeOverlay = spriteProgrammeInfomercialOverlay
 							CurrentProgrammeText = GetLocale("PROGRAMME_PRODUCT_INFOMERCIAL")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 						ElseIf TNews(obj)
 							CurrentProgrammeText = GetLocale("SPECIAL_NEWS_BROADCAST")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 						EndIf
 					Else
-						CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
+						CurrentProgramme = spriteProgrammeNone
 						CurrentProgrammeToolTip.TitleBGtype	= 2
 						CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
 					EndIf
@@ -570,14 +624,14 @@ Type TInGameInterface
 				if chat then chat.ShowChat()
 
 				'handled left click
-				MouseManager.ResetClicked(1)
+				MouseManager.SetClickHandled(1)
 			endif
 			'lock area
 			if MouseManager.IsClicked(1) and THelper.MouseIn(770, 397, 20, 20)
 				ChatShowHideLocked = 1- ChatShowHideLocked
 
 				'handled left click
-				MouseManager.ResetClicked(1)
+				MouseManager.SetClickHandled(1)
 			endif
 		else
 			'arrow area
@@ -589,14 +643,14 @@ Type TInGameInterface
 				if chat then chat.HideChat()
 
 				'handled left click
-				MouseManager.ResetClicked(1)
+				MouseManager.SetClickHandled(1)
 			endif
 			'lock area
 			if MouseManager.IsClicked(1) and THelper.MouseIn(770, 583, 20, 20)
 				ChatShowHideLocked = 1 - ChatShowHideLocked
 
 				'handled left click
-				MouseManager.ResetClicked(1)
+				MouseManager.SetClickHandled(1)
 			endif
 		endif
 
@@ -674,197 +728,195 @@ Type TInGameInterface
 	Method Draw(tweenValue:Float=1.0)
 		local oldAlpha:float = GetAlpha()
 
-		If BottomImgDirty 'unused for now
-			local playerID:int = GetPlayerBase().playerID
-		    'channel choosen and something aired?
-			local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan( ShowChannel )
+		local playerID:int = GetPlayerBase().playerID
+		'channel choosen and something aired?
+		local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan( ShowChannel )
 
 
-			'=== INTERFACE ===
+		'=== INTERFACE ===
 
-			'draw bottom, aligned "bottom"
-			GetSpriteFromRegistry("gfx_interface_bottom").Draw(0, GetGraphicsManager().GetHeight(), 0, ALIGN_LEFT_BOTTOM)
+		'draw bottom, aligned "bottom"
+		spriteInterfaceBottom.Draw(0, GetGraphicsManager().GetHeight(), 0, ALIGN_LEFT_BOTTOM)
 
 
-			'=== TV on the left ===
+		'=== TV on the left ===
 
-			'CurrentProgramme can contain "outage"-image, so draw
-			'even without audience
-			If CurrentProgramme
-				if CurrentProgramme.GetWidth() < 200 '220 is normal width
-					local scaleRatio:Float = 220.0 / CurrentProgramme.GetWidth()
-					CurrentProgramme.DrawArea(45, 405, 220, CurrentProgramme.GetHeight()*scaleRatio)
-				else
-					CurrentProgramme.Draw(45, 405)
-				endif
+		'CurrentProgramme can contain "outage"-image, so draw
+		'even without audience
+		If CurrentProgramme
+			if CurrentProgramme.GetWidth() < 200 '220 is normal width
+				local scaleRatio:Float = 220.0 / CurrentProgramme.GetWidth()
+				CurrentProgramme.DrawArea(45, 405, 220, CurrentProgramme.GetHeight()*scaleRatio)
+			else
+				CurrentProgramme.Draw(45, 405)
 			endif
-			'draw trailer/infomercial-hint
-			If CurrentProgrammeOverlay
-				if CurrentProgrammeOverlay.GetWidth() < 200 '220 is normal width
-					local scaleRatio:Float = 220.0 / CurrentProgrammeOverlay.GetWidth()
-					CurrentProgrammeOverlay.DrawArea(45, 405, 220, CurrentProgrammeOverlay.GetHeight()*scaleRatio)
-				else
-					CurrentProgrammeOverlay.Draw(45, 405)
-				endif
+		endif
+		'draw trailer/infomercial-hint
+		If CurrentProgrammeOverlay
+			if CurrentProgrammeOverlay.GetWidth() < 200 '220 is normal width
+				local scaleRatio:Float = 220.0 / CurrentProgrammeOverlay.GetWidth()
+				CurrentProgrammeOverlay.DrawArea(45, 405, 220, CurrentProgrammeOverlay.GetHeight()*scaleRatio)
+			else
+				CurrentProgrammeOverlay.Draw(45, 405)
 			endif
+		endif
 
-			'draw noise of tv device
-			If ShowChannel <> 0
-				'decrease contrast a bit
-				SetAlpha float(0.1 * (Sin(Millisecs()*0.15)+1))
-				SetColor 125,125,125
-				DrawRect(45,405, 220, 170)
-				SetColor 255,255,255
+		'draw noise of tv device
+		If ShowChannel <> 0
+			'decrease contrast a bit
+			SetAlpha float(0.1 * (Sin(Millisecs()*0.15)+1))
+			SetColor 125,125,125
+			DrawRect(45,405, 220, 170)
+			SetColor 255,255,255
 
-				SetAlpha NoiseAlpha
-				If noiseSprite Then noiseSprite.DrawClipped(new TRectangle.Init(45, 405, 220,170), new TVec2D.Init(noiseDisplace.GetX(), noiseDisplace.GetY()) )
-				SetAlpha 1.0
+			SetAlpha NoiseAlpha
+			If noiseSprite Then noiseSprite.DrawClipped(45, 405, 220,170, noiseDisplace.GetX(), noiseDisplace.GetY())
+			SetAlpha 1.0
+		EndIf
+
+		'draw overlay to hide corners of non-round images
+		if tvOverlaySprite then tvOverlaySprite.Draw(45,405)
+
+		'draw buttons
+		For Local i:Int = 0 To 4
+			If i = ShowChannel
+				GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
+				'lighten up the channel button
+				SetBlend LightBlend
+				SetAlpha 0.25 * oldAlpha
+				GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
+				SetAlpha oldAlpha
+				SetBlend AlphaBlend
+			Else
+				GetSpriteFromRegistry("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 559)
 			EndIf
-
-			'draw overlay to hide corners of non-round images
-			if tvOverlaySprite then tvOverlaySprite.Draw(45,405)
-
-			'draw buttons
-		    For Local i:Int = 0 To 4
+			'hover effect
+			If THelper.MouseIn( 75 + i * 33, 171 + 383 + 16 - i*4, 33, 25)
+				SetBlend LightBlend
+				SetAlpha 0.35 * oldAlpha
 				If i = ShowChannel
 					GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
-					'lighten up the channel button
-					SetBlend LightBlend
-					SetAlpha 0.25 * oldAlpha
-					GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
-					SetAlpha oldAlpha
-					SetBlend AlphaBlend
 				Else
 					GetSpriteFromRegistry("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 559)
 				EndIf
-				'hover effect
-				If THelper.MouseIn( 75 + i * 33, 171 + 383 + 16 - i*4, 33, 25)
-					SetBlend LightBlend
-					SetAlpha 0.35 * oldAlpha
-					If i = ShowChannel
-						GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
-					Else
-						GetSpriteFromRegistry("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 559)
-					EndIf
-					SetAlpha oldAlpha
-					SetBlend AlphaBlend
-				EndIf
-		    Next
+				SetAlpha oldAlpha
+				SetBlend AlphaBlend
+			EndIf
+		Next
 
 
-			'=== TV-FAMILY ===
+		'=== TV-FAMILY ===
 
-			'draw TV-family
-			If programmePlan and GetBroadcastManager().GetCurrentAudience(showChannel) > 0
+		'draw TV-family
+		If programmePlan and GetBroadcastManager().GetCurrentAudience(showChannel) > 0
 
-				'fetch a list of watching family members
-				local members:string[] = GetWatchingFamily( ShowChannel )
-				'later: limit to amount of "places" on couch
-				Local familyMembersUsed:int = members.length
+			'fetch a list of watching family members
+			local members:string[] = GetWatchingFamily( ShowChannel )
+			'later: limit to amount of "places" on couch
+			Local familyMembersUsed:int = members.length
 
-				'slots if 3 members watch
-				local figureSlots:int[]
-				if familyMembersUsed >= 3 then figureSlots = [550, 610, 670]
-				if familyMembersUsed = 2 then figureSlots = [580, 640]
-				if familyMembersUsed = 1 then figureSlots = [610]
+			'slots if 3 members watch
+			local figureSlots:int[]
+			if familyMembersUsed >= 3 then figureSlots = [550, 610, 670]
+			if familyMembersUsed = 2 then figureSlots = [580, 640]
+			if familyMembersUsed = 1 then figureSlots = [610]
 
-				'if nothing is displayed, a empty/dark room is shown
-				'by default (on interface bg)
-				'-> just care if family is watching
-				if familyMembersUsed > 0
-					GetSpriteFromRegistry("gfx_interface_audience_bg").Draw(520, GetGraphicsManager().GetHeight()-31, 0, ALIGN_LEFT_BOTTOM)
-					local currentSlot:int = 0
+			'if nothing is displayed, a empty/dark room is shown
+			'by default (on interface bg)
+			'-> just care if family is watching
+			if familyMembersUsed > 0
+				spriteInterfaceAudienceBG.Draw(520, GetGraphicsManager().GetHeight()-31, 0, ALIGN_LEFT_BOTTOM)
+				local currentSlot:int = 0
 
-					'unemployed always on the "most left slot"
-					For local member:string = eachin members
-						if member = "unemployed" or member = "unemployed.bored"
-							figureSlots[0] = 540
-							GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-176)
-							currentslot:+1 'occupy a slot
-						endif
-					Next
-
-					For local member:string = eachin members
-						'unemployed already handled
-						if member = "unemployed" or member = "unemployed.bored" then continue
-						'only X slots available
-						if currentSlot >= figureSlots.length then continue
-
+				'unemployed always on the "most left slot"
+				For local member:string = eachin members
+					if member = "unemployed" or member = "unemployed.bored"
+						figureSlots[0] = 540
 						GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-176)
 						currentslot:+1 'occupy a slot
-					Next
-					'draw the small electronic parts - "the inner tv"
-					GetSpriteFromRegistry("gfx_interface_audience_overlay").Draw(520, GetGraphicsManager().GetHeight()-31, 0, ALIGN_LEFT_BOTTOM)
-				endif
-			EndIf 'showchannel <>0
+					endif
+				Next
+
+				For local member:string = eachin members
+					'unemployed already handled
+					if member = "unemployed" or member = "unemployed.bored" then continue
+					'only X slots available
+					if currentSlot >= figureSlots.length then continue
+
+					GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-176)
+					currentslot:+1 'occupy a slot
+				Next
+				'draw the small electronic parts - "the inner tv"
+				spriteInterfaceAudienceOverlay.Draw(520, GetGraphicsManager().GetHeight()-31, 0, ALIGN_LEFT_BOTTOM)
+			endif
+		EndIf 'showchannel <>0
 
 
-			'=== INTERFACE TEXTS ===
+		'=== INTERFACE TEXTS ===
 
-			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerBase().getMoneyFormatted(), 357, 412 +4, 130, 27, ALIGN_CENTER_TOP, TColor.Create(200,230,200), 2, 1, 0.5)
+		_interfaceBigFont.drawBlock(GetPlayerBase().getMoneyFormatted(), 357, 412 +4, 130, 27, ALIGN_CENTER_TOP, moneyColor, 2, 1, 0.5)
 
-			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerProgrammePlanCollection().Get(playerID).getFormattedAudience(), 357, 447+4, 130, 27, ALIGN_CENTER_TOP, TColor.Create(200,200,230), 2, 1, 0.5)
+		_interfaceBigFont.drawBlock(GetPlayerProgrammePlanCollection().Get(playerID).getFormattedAudience(), 357, 447+4, 130, 27, ALIGN_CENTER_TOP, audienceColor, 2, 1, 0.5)
 
-			'=== DRAW SECONDARY INFO ===
+
+		'=== DRAW SECONDARY INFO ===
 '			local oldAlpha:Float = GetAlpha()
-			SetAlpha oldAlpha*0.75
+		SetAlpha oldAlpha*0.75
 
-			'current days financial win/loss
-			local profit:int = GetPlayerFinance(playerID).GetCurrentProfit()
-			if profit > 0
-				GetBitmapFont("Default", 12, BOLDFONT).drawBlock("+"+MathHelper.DottedValue(profit), 357, 412, 130, 32 - 2, ALIGN_CENTER_BOTTOM, TColor.Create(170,200,170), 2, 1, 0.5)
-			elseif profit = 0
-				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(0, 357, 412, 130, 32 - 2, ALIGN_CENTER_BOTTOM, TColor.Create(170,170,170), 2, 1, 0.5)
-			else
-				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(MathHelper.DottedValue(profit), 357, 412, 130, 32 - 2, ALIGN_CENTER_BOTTOM, TColor.Create(200,170,170), 2, 1, 0.5)
-			endif
+		'current days financial win/loss
+		local profit:int = GetPlayerFinance(playerID).GetCurrentProfit()
+		if profit > 0
+			_interfaceFont.drawBlock("+"+MathHelper.DottedValue(profit), 357, 412, 130, 32 - 2, ALIGN_CENTER_BOTTOM, positiveProfitColor, 2, 1, 0.5)
+		elseif profit = 0
+			_interfaceFont.drawBlock(0, 357, 412, 130, 32 - 2, ALIGN_CENTER_BOTTOM, neutralProfitColor, 2, 1, 0.5)
+		else
+			_interfaceFont.drawBlock(MathHelper.DottedValue(profit), 357, 412, 130, 32 - 2, ALIGN_CENTER_BOTTOM, negativeProfitColor, 2, 1, 0.5)
+		endif
 
-			'market share
-			GetBitmapFont("Default", 12, BOLDFONT).drawBlock(MathHelper.NumberToString(GetPlayerProgrammePlan(playerID).GetAudiencePercentage()*100,2)+"%", 357, 447, 130, 32 - 2, ALIGN_CENTER_BOTTOM, TColor.Create(170,170,200), 2, 1, 0.5)
+		'market share
+		_interfaceFont.drawBlock(MathHelper.NumberToString(GetPlayerProgrammePlan(playerID).GetAudiencePercentage()*100,2)+"%", 357, 447, 130, 32 - 2, ALIGN_CENTER_BOTTOM, marketShareColor, 2, 1, 0.5)
 
-			'current day
-		 	GetBitmapFont("Default", 12, BOLDFONT).drawBlock((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 357, 538, 130, 32 - 2, ALIGN_CENTER_BOTTOM, TColor.Create(180,180,180), 2, 1, 0.5)
+		'current day
+		_interfaceFont.drawBlock((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 357, 538, 130, 32 - 2, ALIGN_CENTER_BOTTOM, currentDayColor, 2, 1, 0.5)
 
+		SetAlpha oldAlpha
+
+		local bettyLove:Float = Min(Max(GetBetty().GetInLovePercentage( playerID ), 0.0),1.0)
+		local bettyLoveText:String = MathHelper.NumberToString(bettyLove*100, 2)+"%"
+		if bettyLove * 116 >= 1
+			SetAlpha oldAlpha * 0.65
+			SetColor 180,85,65
+			DrawRect(364, 489, 116 * bettyLove, 12)
+			Setcolor 255,255,255
 			SetAlpha oldAlpha
+		endif
+		_interfaceFont.drawBlock(bettyLoveText, 363, 488+1, 118, 14, ALIGN_CENTER_CENTER, bettyLoveColor, 2, 1, 0.5)
 
-			local bettyLove:Float = Min(Max(GetBetty().GetInLovePercentage( playerID ), 0.0),1.0)
-			local bettyLoveText:String = MathHelper.NumberToString(bettyLove*100, 2)+"%"
-			if bettyLove * 116 >= 1
-				SetAlpha oldAlpha * 0.65
-				SetColor 180,85,65
-				DrawRect(364, 489, 116 * bettyLove, 12)
-				Setcolor 255,255,255
-				SetAlpha oldAlpha
-			endif
-		 	GetBitmapFont("Default", 12, BOLDFONT).drawBlock(bettyLoveText, 363, 488+1, 118, 14, ALIGN_CENTER_CENTER, TColor.Create(220,200,180), 2, 1, 0.5)
+		local channelImage:Float = Min(Max(GetPublicImageCollection().Get( playerID ).GetAverageImage()/100.0, 0.0),1.0)
+		local channelImageText:String = MathHelper.NumberToString(channelImage*100, 2)+"%"
+		if channelImage * 120 >= 1
+			SetAlpha oldAlpha * 0.65
+			SetColor 150,170,65
+			DrawRect(364, 517, 116 * channelImage, 12)
+			Setcolor 255,255,255
+			SetAlpha oldAlpha
+		endif
+		_interfaceFont.drawBlock(channelImageText, 363, 516+1, 118, 14, ALIGN_CENTER_CENTER, channelImageColor, 2, 1, 0.5)
 
-
-			local channelImage:Float = Min(Max(GetPublicImageCollection().Get( playerID ).GetAverageImage()/100.0, 0.0),1.0)
-			local channelImageText:String = MathHelper.NumberToString(channelImage*100, 2)+"%"
-			if channelImage * 120 >= 1
-				SetAlpha oldAlpha * 0.65
-				SetColor 150,170,65
-				DrawRect(364, 517, 116 * channelImage, 12)
-				Setcolor 255,255,255
-				SetAlpha oldAlpha
-			endif
-		 	GetBitmapFont("Default", 12, BOLDFONT ).drawBlock(channelImageText, 363, 516+1, 118, 14, ALIGN_CENTER_CENTER, TColor.Create(200,220,180), 2, 1, 0.5)
-
-			'DrawText(GetBetty().GetLoveSummary(),358, 535)
-		EndIf 'bottomimg is dirty
+		'DrawText(GetBetty().GetLoveSummary(),358, 535)
 
 		SetBlend ALPHABLEND
 
-		GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 357, 538 + 4, 130, 27, ALIGN_CENTER_TOP, TColor.Create(220,220,220), 2, 1, 0.5)
+		_interfaceBigFont.drawBlock(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 357, 538 + 4, 130, 27, ALIGN_CENTER_TOP, TColor.Create(220,220,220), 2, 1, 0.5)
 
 
 		'=== DRAW HIGHLIGHTED CURRENT SPEED ===
 		if GameRules.worldTimeSpeedPresets[0] = int(GetWorldTime().GetRawTimeFactor())
-			GetSpriteFromRegistry("gfx_interface_button_speed1").Draw(400,577)
+			spriteInterfaceButtonSpeed1.Draw(400,577)
 		elseif GameRules.worldTimeSpeedPresets[1] = int(GetWorldTime().GetRawTimeFactor())
-			GetSpriteFromRegistry("gfx_interface_button_speed2").Draw(429,577)
+			spriteInterfaceButtonSpeed2.Draw(429,577)
 		elseif GameRules.worldTimeSpeedPresets[2] = int(GetWorldTime().GetRawTimeFactor())
-			GetSpriteFromRegistry("gfx_interface_button_speed3").Draw(457,577)
+			spriteInterfaceButtonSpeed3.Draw(457,577)
 		endif
 
 
@@ -872,22 +924,20 @@ Type TInGameInterface
 		if hoveredMenuButton > 0
 			SetBlend LightBLEND
 			SetAlpha 0.5
-		endif
 
-		Select hoveredMenuButton
-			case 1
-				GetSpriteFromRegistry("gfx_interface_button_settings").Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
-			case 2
-				GetSpriteFromRegistry("gfx_interface_button_help").Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
-			case 3
-				GetSpriteFromRegistry("gfx_interface_button_speed1").Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
-			case 4
-				GetSpriteFromRegistry("gfx_interface_button_speed2").Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
-			case 5
-				GetSpriteFromRegistry("gfx_interface_button_speed3").Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
-		End Select
+			Select hoveredMenuButton
+				case 1
+					spriteInterfaceButtonSettings.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
+				case 2
+					spriteInterfaceButtonHelp.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
+				case 3
+					spriteInterfaceButtonSpeed1.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
+				case 4
+					spriteInterfaceButtonSpeed2.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
+				case 5
+					spriteInterfaceButtonSpeed3.Draw(hoveredMenuButtonPos.GetIntX(), hoveredMenuButtonPos.GetIntY())
+			End Select
 
-		if hoveredMenuButton > 0
 			SetBlend ALPHABLEND
 			SetAlpha oldAlpha
 		endif

@@ -99,7 +99,7 @@ Type TElevator Extends TEntity
 		If Not _instance Then _instance = New TElevator
 		Return _instance
 	End Function
-	
+
 
 	'override
 	'elevator uses building time and not game time
@@ -115,7 +115,7 @@ Type TElevator Extends TEntity
 	Method RunCustomSpeedFactorFunc:float()
 		return TBuildingTime.GetInstance().GetTimeFactor()
 	End Method
-	
+
 
 	Method Initialize:TElevator()
 		ElevatorStatus = ELEVATOR_AWAITING_TASK
@@ -136,7 +136,7 @@ Type TElevator Extends TEntity
 		'reset floor route list and passengers
 		FloorRouteList.Clear()
 		Passengers.Clear()
-	
+
 		PassengerPosition  = New String[6]
 		PassengerOffset    = New TVec2D[6]
 		PassengerOffset[0] = New TVec2D.Init(0, 0)
@@ -236,7 +236,7 @@ Type TElevator Extends TEntity
 	Method GetDoorCenterX:Int()
 		Return area.GetX() + GetDoorWidth()/2
 	End Method
-	
+
 
 	Method GetDoorWidth:Int()
 		if not door then return 0
@@ -269,7 +269,7 @@ Type TElevator Extends TEntity
 		'Aus der Passagierliste entfernen
 		Passengers.remove(figure.GetGUID())
 	End Method
-	
+
 
 	Method HasPassenger:Int(figure:TFigureBase)
 		Return passengers.Contains(figure.GetGUID())
@@ -283,7 +283,7 @@ Type TElevator Extends TEntity
 			RouteLogic.AddFloorRoute(floornumber, call, who)
 		EndIf
 	End Method
-	
+
 
 	Method RemoveRouteOfPlayer(figure:TFigureBase, call:Int)
 		RemoveRoute(GetRouteByPassenger(figure, call))
@@ -296,7 +296,7 @@ Type TElevator Extends TEntity
 			RouteLogic.RemoveRouteOfPlayer(route)
 		EndIf
 	End Method
-	
+
 
 	'Entfernt alle (Call-)Routen die nicht wahrgenommen wurden
 	Method RemoveIgnoredRoutes()
@@ -315,12 +315,12 @@ Type TElevator Extends TEntity
 			EndIf
 		Next
 	End Method
-	
+
 
 	Method IsAllowedToEnterToElevator:Int(figure:TFigureBase, myTargetFloor:Int=-1)
 		Return RouteLogic.IsAllowedToEnterToElevator(figure, myTargetFloor)
 	End Method
-	
+
 
 	Method ElevatorCallIsDuplicate:Int(floornumber:Int, who:TFigureBase)
 		For Local DupeRoute:TFloorRoute = EachIn FloorRouteList
@@ -328,7 +328,7 @@ Type TElevator Extends TEntity
 		Next
 		Return False
 	End Method
-	
+
 
 	Method GetRouteByPassenger:TFloorRoute(passenger:TFigureBase, isCallRoute:Int)
 		For Local route:TFloorRoute = EachIn FloorRouteList
@@ -341,7 +341,7 @@ Type TElevator Extends TEntity
 	Method CalculateNextTarget:Int()
 		Return RouteLogic.CalculateNextTarget()
 	End Method
-	
+
 
 	Method GetElevatorCenterPos:TVec3D()
 		'-25 = z-Achse fuer Audio. Der Fahrstuhl liegt etwas im Hintergrund
@@ -418,7 +418,7 @@ Type TElevator Extends TEntity
 				figure.boardingState = -1
 				fixedsomething = true
 			endif
-			
+
 			'-> elevator on same floor
 			If route And route.floornumber = CurrentFloor
 				TLogger.Log("FixDeboardingPassengers", "Figure "+figure.name+" ("+figure.GetGUID()+") had borked boarding state. Fixed!", LOG_DEBUG)
@@ -484,7 +484,7 @@ Type TElevator Extends TEntity
 
 		Local deltaTime:Float = GetDeltaTime()
 		local deboardingPersons:int = 0
-	
+
 		For Local i:Int = 0 To Len(PassengerPosition) - 1
 			Local figureGUID:String = PassengerPosition[i]
 			If Not figureGUID Then Continue
@@ -501,10 +501,10 @@ Type TElevator Extends TEntity
 			Local route:TFloorRoute = GetRouteByPassenger(figure, 0)
 			'Will die Person aussteigen?
 			'-> elevator on same floor and route is a "SEND"-route
-			If route And route.floornumber = useFloor And route.call = 0 
+			If route And route.floornumber = useFloor And route.call = 0
 				If figure.PosOffset.getIntX() <> 0
 					local reachedPos:int = False
-					
+
 					'set state to -1 -> indicator we are moving in the
 					'elevator but from Offset to 0 (different to boarding)
 					figure.boardingState = -1
@@ -683,7 +683,7 @@ Type TElevator Extends TEntity
 
 				'do not move further than the target floor
 				Local tmpTargetFloorY:Int = TBuildingBase.GetFloorY2(TargetFloor) - GetInnerHeight()
-				
+
 				If (direction < 0 And area.GetY() > tmpTargetFloorY) Or ..
 				   (direction > 0 And area.GetY() < tmpTargetFloorY)
 					area.position.y = tmpTargetFloorY
@@ -719,7 +719,7 @@ Type TElevator Extends TEntity
 				'while the door animation is active, the deboarding
 				'figures will move to the exit/door (one after another)
 				MoveDeboardingPassengersToCenter(-1, 1)
-				
+
 				If door.GetFrameAnimations().GetCurrent().isFinished()
 'print Millisecs()+"  Elevator: 3) opened -> 4)"
 					ElevatorStatus = ELEVATOR_BOARDING
@@ -767,20 +767,20 @@ Type TElevator Extends TEntity
 	Method Render:Int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		SetBlend ALPHABLEND
 
-		Local parentY:Int = GetScreenY()
-		If parent Then parentY = parent.GetScreenY()
+		Local parentY:Int = GetScreenRect().GetY()
+		If parent Then parentY = parent.GetScreenRect().GetY()
 
 		'draw the door the elevator is currently at (eg. for animation)
-		'instead of using GetScreenY() we fix our y coordinate to the
+		'instead of using GetScreenRect().GetY() we fix our y coordinate to the
 		'current floor
-		door.RenderAt(GetScreenX(), parentY + TBuildingBase.GetFloorY2(CurrentFloor) - 50)
-		
+		door.RenderAt(GetScreenRect().GetX(), parentY + TBuildingBase.GetFloorY2(CurrentFloor) - 50)
+
 		'draw elevator position above the doors
 		For Local i:Int = 0 To 13
 			Local locy:Int = parentY + TBuildingBase.GetFloorY2(i) - door.sprite.area.GetH() - 8
 			If locy < 410 And locy > -50
 				SetColor 200,0,0
-				DrawRect(GetScreenX() - 4 + 10 + (CurrentFloor)*2, locy + 3, 2,2)
+				DrawRect(GetScreenRect().GetX() - 4 + 10 + (CurrentFloor)*2, locy + 3, 2,2)
 				SetColor 255,255,255
 			EndIf
 		Next
@@ -792,17 +792,17 @@ Type TElevator Extends TEntity
 				'elevator is called to this floor
 				SetColor 220,240,40
 				SetAlpha 0.55
-				DrawRect(GetScreenX() + 44, locy, 3,2)
+				DrawRect(GetScreenRect().GetX() + 44, locy, 3,2)
 				SetAlpha 1.0
-				DrawRect(GetScreenX() + 44, locy, 3,1)
+				DrawRect(GetScreenRect().GetX() + 44, locy, 3,1)
 			Else
 				'elevator will stop there (destination)
 				SetColor 220,120,50
 				SetAlpha 0.85
-				DrawRect(GetScreenX() + 44, locy+3, 3,2)
+				DrawRect(GetScreenRect().GetX() + 44, locy+3, 3,2)
 				SetColor 250,150,80
 				SetAlpha 1.0
-				DrawRect(GetScreenX() + 44, locy+4, 3,1)
+				DrawRect(GetScreenRect().GetX() + 44, locy+4, 3,1)
 				SetAlpha 1.0
 			EndIf
 			SetColor 255,255,255
@@ -813,14 +813,14 @@ Type TElevator Extends TEntity
 
 
 	Method DrawFloorDoors()
-		Local parentY:Int = GetScreenY()
-		If parent Then parentY = parent.GetScreenY()
-		
+		Local parentY:Int = GetScreenRect().GetY()
+		If parent Then parentY = parent.GetScreenRect().GetY()
+
 		'draw inner (BG) => elevatorBG without image -> black
 		SetColor 0,0,0
-		DrawRect(GetScreenX(), Max(parentY, 0) , 44, 385)
+		DrawRect(GetScreenRect().GetX(), Max(parentY, 0) , 44, 385)
 		SetColor 255, 255, 255
-		spriteInner.Draw(GetScreenX(), GetScreenY() + 3.0)
+		spriteInner.Draw(GetScreenRect().GetX(), GetScreenRect().GetY() + 3.0)
 
 		'Draw Figures
 		If Not passengers.IsEmpty()
@@ -835,7 +835,7 @@ Type TElevator Extends TEntity
 		For Local i:Int = 0 To 13
 			Local locy:Int = parentY + TBuildingBase.GetFloorY2(i) - door.sprite.area.GetH()
 			If locy < 410 And locy > - 50 And i <> CurrentFloor
-				door.RenderAnimationAt(GetScreenX(), locy, "closed")
+				door.RenderAnimationAt(GetScreenRect().GetX(), locy, "closed")
 			EndIf
 		Next
 	End Method
@@ -1032,7 +1032,7 @@ Type TElevatorSmartLogic Extends TElevatorRouteLogic
 			If route.floornumber > TopTurningPointForSort Then TopTurningPointForSort = route.floornumber
 		Next
 	End Method
-	
+
 
 	Method FixDirection()
 		'Das oberste und unterste Stockwerk legen fest ob ein
@@ -1041,7 +1041,7 @@ Type TElevatorSmartLogic Extends TElevatorRouteLogic
 		If Elevator.CurrentFloor >= TopTurningPointForSort Then Elevator.Direction = -1
 		If Elevator.CurrentFloor <= BottomTurningPointForSort Then Elevator.Direction = 1
 	End Method
-	
+
 
 	Method CalcSortNumbers()
 		For Local route:TSmartFloorRoute = EachIn Elevator.FloorRouteList
@@ -1063,7 +1063,7 @@ Type TElevatorSmartLogic Extends TElevatorRouteLogic
 		Next
 		Return -1
 	End Function
-	
+
 
 	'Sortiert die Liste nach aktiven Spielern und deren
 	'Klickreihenfolge... und dann nach deren Sortiernummer
@@ -1095,7 +1095,7 @@ Type TElevatorSmartLogic Extends TElevatorRouteLogic
 	Function DefaultRouteSort:Int( o1:Object, o2:Object )
 		Return TSmartFloorRoute(o1).SortNumber - TSmartFloorRoute(o2).SortNumber
 	End Function
-	
+
 
 	Function PlayerPreferenceRouteSort:Int( o1:Object, o2:Object )
 		Local route1:TSmartFloorRoute = TSmartFloorRoute(o1)
@@ -1141,7 +1141,7 @@ Type TSmartFloorRoute Extends TFloorRoute
 	Method GetSmartLogic:TElevatorSmartLogic()
 		Return TElevatorSmartLogic(elevator.RouteLogic)
 	End Method
-	
+
 
 	Method IntendedFollowingTarget:Int()
 		If who.GetTarget()
@@ -1150,7 +1150,7 @@ Type TSmartFloorRoute Extends TFloorRoute
 			Return who.getFloor(New TVec2D.Init())
 		EndIf
 	End Method
-	
+
 
 	Method IntendedDirection:Int()
 		If call = 1
@@ -1189,7 +1189,7 @@ Type TSmartFloorRoute Extends TFloorRoute
 		'Zur konstanteren Sortierung... kann man eventuell auch weglassen
 		sortNumber = sortNumber + GetDistance( floornumber, IntendedFollowingTarget() );
 	End Method
-	
+
 
 	Method IsAcceptableForPath:Int(fromFloor:Int, toFloor:Int)
 		Local direction:Int = GetDirectionOf(fromFloor, toFloor)
@@ -1205,13 +1205,13 @@ Type TSmartFloorRoute Extends TFloorRoute
 
 		Return True
 	End Method
-	
+
 
 	Method GetDirectionOf:Int(fromFloor:Int, toFloor:Int)
 		If fromFloor = toFloor Then Return 0
 		If fromFloor < toFloor Then Return 1 Else Return -1
 	End Method
-	
+
 
 	Method GetDistance:Int( value1:Int, value2:Int)
 		If value1 = value2
@@ -1222,7 +1222,7 @@ Type TSmartFloorRoute Extends TFloorRoute
 			Return value2 - value1
 		EndIf
 	End Method
-	
+
 
 	Method CalcSortNumberForPath:Int(fromFloor:Int, toFloor:Int, turningPointPenalty:Int, notInPathPenalty:Int)
 		If IsAcceptableForPath(fromFloor, toFloor)
@@ -1304,7 +1304,7 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 				Return GetSfxChannelByName("Main")
 		EndSelect
 	End Method
-	
+
 
 	Method GetSfxSettings:TSfxSettings(sfx:String)
 		Select sfx

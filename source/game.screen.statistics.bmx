@@ -721,7 +721,7 @@ endrem
 
 			Local dim:TVec2D
 			Local rightX:Int = 0
-			dim = smallTextFont.DrawBlock(GetLocale("PROGRAMME"), 30 + 370, startY+1, 370, 20, ALIGN_RIGHT_CENTER, TColor.CreateGrey(50), 1, 1, 0.7)
+			smallTextFont.DrawBlock(GetLocale("PROGRAMME"), 30 + 370, startY+1, 370, 20, ALIGN_RIGHT_CENTER, TColor.CreateGrey(50), 1, 1, 0.7, , , , dim)
 			rightX :+ dim.x + 5
 
 			SetAlpha 0.5 * backupColor.a
@@ -732,7 +732,7 @@ endrem
 			DrawRect(30 + 740 - rightX - 15, startY+3, 15, 14)
 			rightX :+ 15 + 20
 
-			dim = smallTextFont.DrawBlock(GetLocale("NEWS"), 30 + 370 , startY+1, 370 - rightX, 20, ALIGN_RIGHT_CENTER, TColor.CreateGrey(50), 1, 1, 0.7)
+			smallTextFont.DrawBlock(GetLocale("NEWS"), 30 + 370 , startY+1, 370 - rightX, 20, ALIGN_RIGHT_CENTER, TColor.CreateGrey(50), 1, 1, 0.7, , , , dim)
 			rightX :+ dim.x + 5
 
 			SetAlpha 0.5 * backupColor.a

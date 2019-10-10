@@ -44,7 +44,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 				presentButtons[i].spriteName = "gfx_supermarket_present"+(i+1)
 
 '				presentButtons[i].SetAutoSizeMode(TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE)
-				presentButtons[i].caption.SetContentPosition(ALIGN_CENTER, ALIGN_TOP)
+				presentButtons[i].caption.SetContentAlignment(ALIGN_CENTER, ALIGN_TOP)
 				presentButtons[i].caption.SetFont( GetBitmapFont("Default", 11, BOLDFONT) )
 				presentButtons[i].SetCaptionOffset(0,92)
 
@@ -59,7 +59,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		EventManager.unregisterListenersByLinks(_eventListeners)
 		_eventListeners = new TLink[0]
 
-		
+
 		'=== register event listeners
 		'listen to clicks on the four buttons
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickButtons, "TGUIButton") ]
@@ -88,7 +88,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		lastSelectedPresent = -1
 	End function
 
-	
+
 	Function onClickButtons:int(triggerEvent:TEventBase)
 		local button:TGUIButton = TGUIButton(triggerEvent.GetSender())
 		if not button then return False
@@ -110,7 +110,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 			selectedPresent = i+1
 			exit
 		Next
-			 
+
 	End Function
 
 
@@ -123,7 +123,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		GetInstance().Render()
 	End Function
 
-global LS_supermarket_presents:TLowerString = TLowerString.Create("supermarket_presents")	
+global LS_supermarket_presents:TLowerString = TLowerString.Create("supermarket_presents")
 
 	Method Render()
 		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
@@ -141,11 +141,11 @@ global LS_supermarket_presents:TLowerString = TLowerString.Create("supermarket_p
 		skin.RenderContent(contentX, contentY, contentW, 30 , "1_bottom")
 
 		GuiManager.Draw( LS_supermarket_presents )
-		
+
 		skin.RenderBorder(box.GetIntX(), box.GetIntY(), box.GetIntW(), box.GetIntH())
 	End Method
 
-	
+
 	Method Update()
 		local present:TBettyPresent = TBettyPresent.GetPresent(selectedPresent -1)
 
@@ -162,7 +162,7 @@ global LS_supermarket_presents:TLowerString = TLowerString.Create("supermarket_p
 				buyButton.SetValue(GetLocale("BUY_PRESENTTITLE_FOR_PRICE").Replace("%PRESENTTITLE%", "|color=50,90,135|"+presentTitle+"|/color|").Replace("%PRICE%", presentPrice) )
 				buyButton.Enable()
 			endif
-				
+
 			lastSelectedPresent = selectedPresent
 		endif
 		if present

@@ -204,7 +204,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			castSlotList.SetSlotCast(i, currentProductionConcept.cast[i])
 		Next
 		'enable/disable scrollbars
-		castSlotList.RecalculateElements()
+		castSlotList.InvalidateLayout() 'RecalculateElements()
 
 
 		'=== PRODUCTION COMPANY ===
@@ -722,7 +722,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		'=== PRODUCTION COMPANY SELECT ===
 		if not productionCompanySelect
 			productionCompanySelect = new TGUIDropDown.Create(new TVec2D.Init(600,200), new TVec2D.Init(150,-1), GetLocale("PRODUCTION_COMPANY"), 128, "supermarket_customproduction_productionbox")
-			productionCompanySelect.SetListContentHeight(90)
+			productionCompanySelect.SetListContentHeight(120)
 		endif
 		'entries added during ReloadProductionConceptContent()
 
@@ -824,9 +824,10 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		Next
 '		productionConceptList.entries.sort(true)
 
-		productionConceptList.RecalculateElements()
+		productionConceptList.InvalidateLayout()
+'		productionConceptList.RecalculateElements()
 		'refresh scrolling state
-		productionConceptList.Resize(-1, -1)
+'		productionConceptList.SetSize(-1, -1)
 	End Method
 
 
@@ -880,15 +881,11 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
 			'leaving room now
-			if not currentProductionConcept
+			If not currentProductionConcept
 				RemoveAllGuiElements()
-'				InitCustomProductionElements()
-'				ReloadProductionConceptContent()
-'				RefreshProductionConceptGUI()
-			endif
 
 			'just aborting current production planning
-			if currentProductionConcept
+			Else
 				if not castSlotList.SelectCastWindowIsOpen()
 					SetCurrentProductionConcept(null)
 				endif
@@ -898,7 +895,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 				MouseManager.ResetClicked(2)
 				'also avoid long click (touch screen)
 				MouseManager.ResetLongClicked(1)
-			endif
+			EndIf
 		endif
 	End Method
 
@@ -949,22 +946,22 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		skin.RenderContent(contentX, contentY, contentW, listH , "2")
 		'reposition list
 		if productionConceptList.rect.getX() <> contentX + 5
-			productionConceptList.rect.SetXY(contentX + 5, contentY + 3)
-			productionConceptList.Resize(contentW - 10, listH - 6)
+			productionConceptList.SetPosition(contentX + 5, contentY + 3)
+			productionConceptList.SetSize(contentW - 10, listH - 6)
 		endif
 		contentY :+ listH
 
 		skin.RenderContent(contentX, contentY, contentW, contentH - (listH+titleH) , "1_bottom")
 		'reposition checkbox
-		productionConceptTakeOver.rect.SetXY(contentX + 5, contentY + buttonAreaPaddingY)
-		productionConceptTakeOver.Resize(contentW - 10)
+		productionConceptTakeOver.SetPosition(contentX + 5, contentY + buttonAreaPaddingY)
+		productionConceptTakeOver.SetSize(contentW - 10)
 		contentY :+ contentH - (listH+titleH)
 
 		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 
 
 
-		if GetInstance().currentProductionConcept
+		if currentProductionConcept
 			'=== CHECK AND START BOX ===
 			outer.SetXY(10, 225)
 			outer.dimension.SetXY(210,145)
@@ -980,18 +977,10 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			skin.RenderContent(contentX, contentY, contentW, contentH - buttonAreaH, "1_top")
 			contentY :+ 3
 			skin.fontBold.drawBlock(GetLocale("MOVIE_CAST"), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
-			if currentProductionConcept
-				skin.fontNormal.drawBlock(MathHelper.DottedValue(currentProductionConcept.GetCastCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
-			else
-				skin.fontNormal.drawBlock("0", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
-			endif
+			skin.fontNormal.drawBlock(MathHelper.DottedValue(currentProductionConcept.GetCastCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
 			contentY :+ subtitleH
 			skin.fontBold.drawBlock(GetLocale("PRODUCTION"), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
-			if currentProductionConcept
-				skin.fontNormal.drawBlock(MathHelper.DottedValue(currentProductionConcept.GetProductionCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
-			else
-				skin.fontNormal.drawBlock("0", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
-			endif
+			skin.fontNormal.drawBlock(MathHelper.DottedValue(currentProductionConcept.GetProductionCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
 			contentY :+ subtitleH
 
 			SetColor 150,150,150
@@ -1000,30 +989,20 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 			contentY :+ 1
 			skin.fontBold.drawBlock(GetLocale("TOTAL_COSTS"), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			if currentProductionConcept
-				skin.fontBold.drawBlock(MathHelper.DottedValue(currentProductionConcept.GetTotalCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
-			else
-				skin.fontBold.drawBlock("0", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
-			endif
-
-
+			skin.fontBold.drawBlock(MathHelper.DottedValue(currentProductionConcept.GetTotalCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
 			contentY :+ subtitleH
 
 			contentY :+ 10
 			skin.fontBold.drawBlock(GetLocale("DURATION"), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			if currentProductionConcept
-				skin.fontNormal.drawBlock(currentProductionConcept.GetBaseProductionTime()+" Stunden", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			else
-				skin.fontNormal.drawBlock("", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			endif
+			skin.fontNormal.drawBlock(currentProductionConcept.GetBaseProductionTime()+" Stunden", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			contentY :+ subtitleH
 
 			contentY :+ (contentH - buttonAreaH) - 4*subtitleH - 3 -1 - 10
 
 			skin.RenderContent(contentX, contentY, contentW, buttonAreaH, "1_bottom")
 			'reposition button
-			finishProductionConcept.rect.SetXY(contentX + 5, contentY + buttonAreaPaddingY)
-			finishProductionConcept.Resize(contentW - 10, 38)
+			finishProductionConcept.SetPosition(contentX + 5, contentY + buttonAreaPaddingY)
+			finishProductionConcept.SetSize(contentW - 10, 38)
 			contentY :+ buttonAreaH
 
 			skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
@@ -1033,10 +1012,8 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			'calc height
 			local castAreaH:int = 215
 			local msgAreaH:int = 0
-			if currentProductionConcept
-				if not currentProductionConcept.IsCastComplete() then msgAreaH :+ msgH + msgPaddingY
-				if not currentProductionConcept.IsFocusPointsComplete() then msgAreaH :+ msgH + msgPaddingY
-			endif
+			if not currentProductionConcept.IsCastComplete() then msgAreaH :+ msgH + msgPaddingY
+			if not currentProductionConcept.IsFocusPointsComplete() then msgAreaH :+ msgH + msgPaddingY
 			outerH = outerSizeH + titleH + subTitleH + castAreaH + msgAreaH
 
 			outer.SetXY(225, 15)
@@ -1049,22 +1026,30 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			'reset
 			contentY = contentY
 
-			skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-			if currentProductionConcept
-				skin.fontCaption.drawBlock(currentProductionConcept.GetTitle(), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			endif
+			Local title:String = currentProductionConcept.GetTitle()
+			Local subTitle:String
+			If currentProductionConcept.script.IsEpisode()
+				Local seriesScript:TScript = currentProductionConcept.script.GetParentScript()
+				subTitle = (seriesScript.GetSubScriptPosition(currentProductionConcept.script)+1) + "/" + seriesScript.GetSubscriptCount() + ": " + title
+				title = seriesScript.GetTitle()
+			EndIf
+
+
+			skin.RenderContent(contentX, contentY, contentW, titleH + subTitleH, "1_top")
+			skin.fontCaption.drawBlock(title, contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			contentY :+ titleH
 
-			skin.RenderContent(contentX, contentY, contentW, subTitleH, "1")
-			skin.fontNormal.drawBlock(GetLocale("SUBHEADING"), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			If currentProductionConcept.script.IsEpisode()
+				skin.fontSmallCaption.drawBlock(subTitle, contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			EndIf
 			contentY :+ subTitleH
 
 			skin.RenderContent(contentX, contentY, contentW, castAreaH, "2")
 			'reposition cast list
 			if castSlotList.rect.getX() <> contentX + 5
-				castSlotList.rect.SetXY(contentX +5, contentY + 3)
+				castSlotList.SetPosition(contentX +5, contentY + 3)
 				'-5 => 210 height, each slot 42px, so 5 slots fit
-				castSlotList.resize(contentW - 10, castAreaH - 5 )
+				castSlotList.SetSize(contentW - 10, castAreaH - 5 )
 				castSlotList.SetSlotMinDimension(contentW - 10, 42)
 			endif
 
@@ -1073,7 +1058,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			if msgAreaH > 0
 				skin.RenderContent(contentX, contentY, contentW, msgAreaH, "1_bottom")
 				if not currentProductionConcept.IsCastComplete()
-					skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, "Besetzung unvollstaendig", "audience", "warning")
+					skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, GetLocale("CAST_INCOMPLETE"), "audience", "warning")
 					contentY :+ msgH + msgPaddingY
 				endif
 				if not currentProductionConcept.IsFocusPointsComplete()
@@ -1125,7 +1110,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			'reposition dropdown
 			if productionCompanySelect.rect.getX() <> contentX + 5
 				productionCompanySelect.SetPosition(contentX + 5, contentY + 20)
-				productionCompanySelect.resize(contentW - 10, -1)
+				productionCompanySelect.SetSize(contentW - 10, -1)
 			endif
 			contentY :+ productionCompanyH
 
@@ -1142,8 +1127,8 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 				For local i:int = 0 until sliderOrder.length
 					local sliderNum:int = sliderOrder[i]
 					local slider:TGUISlider = productionFocusSlider[ sliderNum-1]
-					slider.rect.SetXY(contentX + 5, contentY + productionFocusLabelH + i * (productionFocusLabelH + productionFocusSliderH))
-					slider.Resize(contentW - 10)
+					slider.SetPosition(contentX + 5, contentY + productionFocusLabelH + i * (productionFocusLabelH + productionFocusSliderH))
+					slider.SetSize(contentW - 10)
 				Next
 				repositionSliders = False
 			endif
@@ -1186,7 +1171,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionbox_modal") )
 
 			'draw datasheet if needed
-			if hoveredGuiCastItem then hoveredGuiCastItem.DrawDatasheet(hoveredGuiCastItem.GetScreenX() - 230, hoveredGuiCastItem.GetScreenX() - 170 )
+			if hoveredGuiCastItem then hoveredGuiCastItem.DrawDatasheet(hoveredGuiCastItem.GetScreenRect().GetX() - 230, hoveredGuiCastItem.GetScreenRect().GetX() - 170 )
 
 		else
 			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionconceptbox") )
@@ -1233,8 +1218,8 @@ Type TGUIProductionModalWindow extends TGUIModalWindow
 	End Method
 
 
-	Method Resize(w:Float = 0, h:Float = 0)
-		Super.Resize(w, h)
+	Method SetSize(w:Float = 0, h:Float = 0)
+		Super.SetSize(w, h)
 		if buttonOK then buttonOK.rect.position.SetY( rect.dimension.GetY() - 44)
 		if buttonCancel then buttonCancel.rect.position.SetY( rect.dimension.GetY() - 44)
 	End Method
@@ -1255,9 +1240,9 @@ Type TGUIProductionModalWindow extends TGUIModalWindow
 
 			'avoid clicks
 			'remove right click - to avoid leaving the room
-			MouseManager.ResetClicked(2)
+			MouseManager.SetClickHandled(2)
 			'also avoid long click (touch screen)
-			MouseManager.ResetLongClicked(1)
+			MouseManager.SetLongClickHandled(1)
 		endif
 
 		return super.Update()
@@ -1288,6 +1273,7 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		jobFilterSelect = new TGUIDropDown.Create(new TVec2D.Init(15,12), new TVec2D.Init(170,-1), "Hauptberuf", 128, "")
 		jobFilterSelect.SetZIndex( GetZIndex() + 10)
 		jobFilterSelect.list.SetZIndex( GetZIndex() + 11)
+		jobFilterSelect.SetListContentHeight(180)
 
 		'add some items to that list
 		for local i:int = 0 to TVTProgrammePersonJob.count
@@ -1458,9 +1444,6 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 
 
 		LoadPersons(listOnlyJobID, listOnlyGenderID)
-
-		'refresh scrolling state
-'		castSelectList.Resize(-1, 150)
 	End Method
 
 
@@ -1535,7 +1518,7 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 				endif
 				item.isAmateur = True
 			endif
-			item.Resize(180,40)
+			item.SetSize(180,40)
 			castSelectList.AddItem( item )
 		Next
 
@@ -1553,7 +1536,7 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 
 		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
 
-		local outer:TRectangle = GetScreenRect().Copy() ')new TRectangle.Init(GetScreenX(), GetScreenY(), 200, 200)
+		local outer:TRectangle = GetScreenRect().Copy() ')new TRectangle.Init(GetScreenRect().GetX(), GetScreenRect().GetY(), 200, 200)
 		local contentX:int = skin.GetContentX(outer.GetX())
 		local contentY:int = skin.GetContentY(outer.GetY())
 		local contentW:int = skin.GetContentW(outer.GetW())
@@ -1563,7 +1546,6 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		skin.RenderContent(contentX, contentY+38, contentW, contentH-73, "1")
 		skin.RenderContent(contentX, contentY+contentH-35, contentW, 35, "1_bottom")
 		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
-
 	End Method
 End Type
 
@@ -1661,14 +1643,14 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 			local seriesScript:TScript = concept.script.GetParentScript()
 			labelEpisode.SetValue( GetLocale("EPISODE") +": "+(seriesScript.GetSubScriptPosition(concept.script)+1)+"/"+seriesScript.GetSubscriptCount() )
 
-			Resize(-1,280)
+			SetSize(-1,280)
 		else
 			inputSubDescription.Hide()
 			inputSubTitle.Hide()
 			labelSubDescription.Hide()
 			labelSubTitle.Hide()
 			labelEpisode.Hide()
-			Resize(-1,155)
+			SetSize(-1,155)
 		endif
 	End Method
 
@@ -1866,6 +1848,7 @@ Type TGUICastSlotList Extends TGUISlotList
 		selectCastWindow.selectJobID = job
 		selectCastWindow.listOnlyJobID = job
 		selectCastWindow.listOnlyGenderID = gender
+		selectCastWindow.screenArea = new TRectangle.Init(0,0, 800, 383)
 		selectCastWindow.Open() 'loads the cast
 		GuiManager.Add(selectCastWindow)
 	End Method
@@ -1897,16 +1880,6 @@ Type TGUICastSlotList Extends TGUISlotList
 		endif
 	End Method
 
-rem
-	'override to refresh list item dimension
-	Method Resize(w:Float = 0, h:Float = 0)
-		Super.Resize(w, h)
-
-		For local i:TGUIListItem = EachIn _slots
-			i.GetDimension()
-		Next
-	End Method
-endrem
 
 	Method Update:int()
 		'window is "modal"
@@ -1935,7 +1908,7 @@ endrem
 		if RestrictViewport()
 			SetAlpha 0.5 * GetAlpha()
 
-			Local atPoint:TVec2D = GetScreenPos()
+			Local atPoint:TVec2D = GetScreenRect().position
 
 			For local slot:int = 0 until _slots.length
 			'	local pos:TVec3D = GetSlotOrCoord(slot)
@@ -1960,9 +1933,9 @@ endrem
 	'TODO: nur zeichnen, wenn innerhalb "panel rect"
 				if MouseManager._ignoreFirstClick 'touch mode
 '					TGUICastListItem.DrawCast(atPoint.GetX() + pos.getX(), atPoint.GetY() + pos.getY(), _slotMinDimension.getX(), GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), null, 0,0,0)
-					TGUICastListItem.DrawCast(GetScreenX() + coord.GetX(), GetScreenY() + coord.GetY(), guiEntriesPanel.GetContentScreenWidth()-2, GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), null, 0,0,0)
+					TGUICastListItem.DrawCast(GetScreenRect().GetX() + coord.GetX(), GetScreenRect().GetY() + coord.GetY(), guiEntriesPanel.GetContentScreenRect().GetW()-2, GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), null, 0,0,0)
 				else
-					TGUICastListItem.DrawCast(GetScreenX() + coord.GetX(), GetScreenY() + coord.GetY(), guiEntriesPanel.GetContentScreenWidth()-2, GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("CLICK_TO_SELECT_PERSON"), null, 0,0,0)
+					TGUICastListItem.DrawCast(GetScreenRect().GetX() + coord.GetX(), GetScreenRect().GetY() + coord.GetY(), guiEntriesPanel.GetContentScreenRect().GetW()-2, GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("CLICK_TO_SELECT_PERSON"), null, 0,0,0)
 				endif
 			Next
 			SetAlpha 2.0 * GetAlpha()
@@ -2122,9 +2095,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 	Method getDimension:TVec2D()
 		'available width is parentsDimension minus startingpoint
-		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
+		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(GetFirstParentalObject("tguiscrollablepanel"))
 		Local maxWidth:Int = 295
-		If parentPanel Then maxWidth = parentPanel.getContentScreenWidth() '- GetScreenWidth()
+		If parentPanel Then maxWidth = parentPanel.GetContentScreenRect().GetW() '- GetScreenRect().GetW()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local dimension:TVec2D = New TVec2D.Init(maxWidth, GetSpriteFromRegistry("gfx_datasheet_cast_icon").GetHeight())
@@ -2137,7 +2110,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 		'but only if something changed (eg. first time or content changed)
 		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
 			'resize item
-			Self.Resize(dimension.getX(), dimension.getY())
+			Self.SetSize(dimension.getX(), dimension.getY())
 		EndIf
 
 		Return dimension
@@ -2170,13 +2143,13 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 		local face:TImage
 		if TProgrammePerson(person) then face = TProgrammePerson(person).GetFigureImage()
-		DrawCast(GetScreenX(), GetScreenY(), GetScreenWidth(), name, "", face, xpPercentage, sympathyPercentage, 1)
+		DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, "", face, xpPercentage, sympathyPercentage, 1)
 
 		If isHovered()
 			SetBlend LightBlend
 			SetAlpha 0.10 * GetAlpha()
 
-			DrawCast(GetScreenX(), GetScreenY(), GetScreenWidth(), name, "", face, xpPercentage, 0, 1)
+			DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, "", face, xpPercentage, 0, 1)
 
 			SetBlend AlphaBlend
 			SetAlpha 10.0 * GetAlpha()
@@ -2220,7 +2193,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 		else
 			sheetCenterX :- 250/2 '250 is sheetWidth
 		endif
-		Local tri:Float[]=[sheetCenterX,sheetY+25, sheetCenterX,sheetY+90, getScreenX() + getScreenWidth()/2.0, getScreenY() + GetScreenHeight()/2.0]
+		Local tri:Float[]=[sheetCenterX,sheetY+25, sheetCenterX,sheetY+90, GetScreenRect().GetX() + GetScreenRect().GetW()/2.0, GetScreenRect().GetY() + GetScreenRect().GetH()/2.0]
 		DrawPoly(tri)
 		SetColor 255,255,255
 		SetAlpha 1.0
@@ -2243,6 +2216,10 @@ Type TGUICastListItem Extends TGUISelectListItem
 		'draw mood icon
 		'draw Pic overlay
 		'render text
+
+		'avoid rendering on subpixels (sometimes renders ninepatch borders ...)
+		x = int(x)
+		y = int(y)
 
 		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
 		local nameSprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_cast_name")
@@ -2273,7 +2250,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 		else
 			if TImage(face)
 				DrawImageArea(TImage(face), x+1, y+3, 2, 4, 34, 33)
-				'DrawImage(TProgrammePerson(person).GetFigureImage(), GetScreenX(), GetScreenY())
+				'DrawImage(TProgrammePerson(person).GetFigureImage(), GetScreenRect().GetX(), GetScreenRect().GetY())
 			endif
 		endif
 
@@ -2609,22 +2586,22 @@ Type TGUIProductionCompanyDropDownItem Extends TGUIDropDownItem
 		local company:TProductionCompanyBase = TProductionCompanyBase(data.Get("productionCompany"))
 
 		'Super.DrawValue()
-		skin.fontSemiBold.DrawBlock(company.name, getScreenX()+2, GetScreenY(), GetScreenWidth()-4 - 20, GetScreenHeight(), ALIGN_LEFT_TOP, skin.textColorNeutral, 0,1,1.0, True, True)
-		skin.fontNormal.DrawBlock("Lvl: "+company.GetLevel(), getScreenX()+2, GetScreenY(), GetScreenWidth()-4, GetScreenHeight(), ALIGN_RIGHT_TOP, skin.textColorNeutral)
+		skin.fontSmallCaption.DrawBlock(company.name, GetScreenRect().GetX()+2, GetScreenRect().GetY(), GetScreenRect().GetW()-4 - 20, GetScreenRect().GetH(), ALIGN_LEFT_TOP, skin.textColorNeutral, 0,1,1.0, True, True)
+		skin.fontSmall.DrawBlock("Lvl: "+company.GetLevel(), GetScreenRect().GetX()+2, GetScreenRect().GetY(), GetScreenRect().GetW()-4, GetScreenRect().GetH(), ALIGN_RIGHT_TOP, skin.textColorNeutral)
 
 
 		local barH:int = skin.GetBarSize(100,-1, "cast_bar_xp").GetY()
-		local bottomY:int = GetScreenY() + rect.GetH()
+		local bottomY:int = GetScreenRect().GetY() + rect.GetH()
 
-		skin.RenderBar(GetScreenX() + 1, bottomY - 2*barH - paddingBottom, 80, -1, company.GetLevelExperiencePercentage(), -1, "cast_bar_xp")
-		skin.RenderBar(GetScreenX() + 1, bottomY - 1*barH - paddingBottom, 80, -1, company.GetChannelSympathy( GetPlayerBase().playerID ), -1, "cast_bar_sympathy")
+		skin.RenderBar(GetScreenRect().GetX() + 1, bottomY - 2*barH - paddingBottom, 80, -1, company.GetLevelExperiencePercentage(), -1, "cast_bar_xp")
+		skin.RenderBar(GetScreenRect().GetX() + 1, bottomY - 1*barH - paddingBottom, 80, -1, company.GetChannelSympathy( GetPlayerBase().playerID ), -1, "cast_bar_sympathy")
 
 		if IsHovered() and (Time.MillisecsLong() / 1500) mod 3 = 0 'every 3s for 1.5s
-			skin.fontNormal.drawBlock("XP", GetScreenX() + 76, bottomY - 2*barH - paddingBottom -2, 30, 2*barH+4, ALIGN_RIGHT_CENTER, xpColor)
-			skin.fontNormal.drawBlock("SYMP", GetScreenX() + 2, bottomY - 2*barH - paddingBottom -2, GetScreenWidth()-4, 2*barH+4, ALIGN_RIGHT_CENTER, sympathyColor)
+			skin.fontSmall.drawBlock("XP", GetScreenRect().GetX() + 76, bottomY - 2*barH - paddingBottom -2, 30, 2*barH+4, ALIGN_RIGHT_CENTER, xpColor)
+			skin.fontSmall.drawBlock("SYMP", GetScreenRect().GetX() + 2, bottomY - 2*barH - paddingBottom -2, GetScreenRect().GetW()-4, 2*barH+4, ALIGN_RIGHT_CENTER, sympathyColor)
 		else
-			skin.fontNormal.drawBlock(int(company.GetLevelExperiencePercentage()*100)+"%", GetScreenX() + 76, bottomY - 2*barH - paddingBottom -2, 30, 2*barH+4, ALIGN_RIGHT_CENTER, xpColor)
-			skin.fontNormal.drawBlock(int(company.GetChannelSympathy( GetPlayerBase().playerID )*100)+"%", GetScreenX() + 2, bottomY - 2*barH - paddingBottom -2, GetScreenWidth()-4, 2*barH+4, ALIGN_RIGHT_CENTER, sympathyColor)
+			skin.fontSmall.drawBlock(int(company.GetLevelExperiencePercentage()*100)+"%", GetScreenRect().GetX() + 76, bottomY - 2*barH - paddingBottom -2, 30, 2*barH+4, ALIGN_RIGHT_CENTER, xpColor)
+			skin.fontSmall.drawBlock(int(company.GetChannelSympathy( GetPlayerBase().playerID )*100)+"%", GetScreenRect().GetX() + 2, bottomY - 2*barH - paddingBottom -2, GetScreenRect().GetW()-4, 2*barH+4, ALIGN_RIGHT_CENTER, sympathyColor)
 		endif
 	End Method
 End Type

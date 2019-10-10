@@ -2452,8 +2452,9 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			skin.fontNormal.draw("Trailer: " + data.GetTimesTrailerAiredSinceLastBroadcast(useOwner) +" (total: "+ data.GetTimesTrailerAired()+")", contentX + 5, contentY)
 			if data.GetTrailerMod(useOwner, False)
 				contentY :+ 12
-				local titleW:int = skin.fontNormal.draw("TrailerMod:", contentX + 5, contentY).GetX()
-				skin.fontNormal.drawBlock(data.GetTrailerMod(useOwner).ToStringPercentage(2), contentX + 5 + titleW + 5, contentY, contentW - titleW - 5 - 5, 60)
+				local titleDim:TVec2D = new TVec2D
+				skin.fontNormal.draw("TrailerMod:", contentX + 5, contentY, , , titleDim)
+				skin.fontNormal.drawBlock(data.GetTrailerMod(useOwner).ToStringPercentage(2), contentX + 5 + titleDim.GetX() + 5, contentY, contentW - titleDim.GetX() - 5 - 5, 60)
 				'2 lines of output...
 				contentY :+ 12
 			endif

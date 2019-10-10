@@ -5,12 +5,12 @@ Import "game.gameobject.bmx"
 
 
 Type TBlockMoveable Extends TOwnedGameObject
-	Field rect:TRectangle			= new TRectangle.Init(0,0,0,0)
-	Field dragable:Int				= 1 {saveload = "normalExt"}
-	Field dragged:Int				= 0 {saveload = "normalExt"}
-	Field OrigPos:TVec2D 			= new TVec2D.Init(0, 0) {saveload = "normalExtB"}
-	Field StartPos:TVec2D			= new TVec2D.Init(0, 0) {saveload = "normalExt"}
-	Field StartPosBackup:TVec2D		= new TVec2D.Init(0, 0)
+	Field rect:TRectangle = new TRectangle.Init(0,0,0,0)
+	Field dragable:Int = 1
+	Field dragged:Int = 0
+	Field OrigPos:TVec2D = new TVec2D
+	Field StartPos:TVec2D = new TVec2D
+	Field StartPosBackup:TVec2D = new TVec2D
 
 
 	'switches coords and state of blocks

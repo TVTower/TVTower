@@ -187,14 +187,14 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 			local item:TGUIAchievementListItem = new TGUIAchievementListItem.Create(null, null, achievement.GetTitle())
 			item.data = new TData.Add("achievement", achievement)
 			item.displayName = achievement.GetTitle()
-			item.Resize(400, 70)
+			item.SetSize(400, 70)
 			item.GetDimension()
 			achievementList.AddItem( item )
 		Next
 
 		achievementList.RecalculateElements()
 		'refresh scrolling state
-		achievementList.Resize(-1, -1)
+		achievementList.SetSize(-1, -1)
 	End Method
 
 
@@ -294,7 +294,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 		'reposition list
 		if achievementList.rect.getX() <> contentX + 5
 			achievementList.rect.SetXY(contentX + 5, contentY + 3)
-			achievementList.Resize(contentW - 8, listH - 6)
+			achievementList.SetSize(contentW - 8, listH - 6)
 		endif
 		contentY :+ listH
 
@@ -344,9 +344,9 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 'rem
 	Method getDimension:TVec2D()
 		'available width is parentsDimension minus startingpoint
-		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
+		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(GetFirstParentalObject("tguiscrollablepanel"))
 		Local maxWidth:Int = 400
-		If parentPanel Then maxWidth = parentPanel.getContentScreenWidth() '- GetScreenWidth()
+		If parentPanel Then maxWidth = parentPanel.GetContentScreenRect().GetW() '- GetScreenRect().GetW()
 
 
 		local titleOffsetX:int = 3, titleOffsetY:int = 3
@@ -354,7 +354,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 		local skin:TDatasheetSkin = GetDatasheetSkin("achievement")
 		local sprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_achievement_bg")
 		local border:TRectangle = sprite.GetNinePatchContentBorder()
-		local halfTextWidth:int = 0.5 * (GetScreenWidth() - textOffsetX - (border.GetRight() + border.GetLeft()))
+		local halfTextWidth:int = 0.5 * (GetScreenRect().GetW() - textOffsetX - (border.GetRight() + border.GetLeft()))
 		local leftWidth:int = 1.25 * halfTextWidth
 		local rightWidth:int = 0.75 * halfTextWidth
 
@@ -375,7 +375,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 		'but only if something changed (eg. first time or content changed)
 		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
 			'resize item
-			Self.Resize(dimension.getX(), dimension.getY())
+			Self.SetSize(dimension.getX(), dimension.getY())
 		EndIf
 
 		Return dimension
@@ -391,13 +391,13 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 
 	'override
 	Method DrawValue()
-		DrawAchievement(GetScreenX(), GetScreenY() + Self.paddingTop, GetScreenWidth(), GetScreenHeight() - Self.paddingBottom - Self.paddingTop)
+		DrawAchievement(GetScreenRect().GetX(), GetScreenRect().GetY() + Self.paddingTop, GetScreenRect().GetW(), GetScreenRect().GetH() - Self.paddingBottom - Self.paddingTop)
 
 		If isHovered()
 			SetBlend LightBlend
 			SetAlpha 0.10 * GetAlpha()
 
-			DrawAchievement(GetScreenX(), GetScreenY() + Self.paddingTop, GetScreenWidth(), GetScreenHeight() - Self.paddingBottom - Self.paddingTop)
+			DrawAchievement(GetScreenRect().GetX(), GetScreenRect().GetY() + Self.paddingTop, GetScreenRect().GetW(), GetScreenRect().GetH() - Self.paddingBottom - Self.paddingTop)
 
 			SetBlend AlphaBlend
 			SetAlpha 10.0 * GetAlpha()
@@ -514,7 +514,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 				x + textOffsetX + border.GetLeft(), ..
 				y + textOffsetY + border.GetTop(), ..
 				leftWidth - 10,  ..
-				Max(15, GetScreenHeight() - (border.GetTop() + border.GetBottom() + 15)), ..
+				Max(15, GetScreenRect().GetH() - (border.GetTop() + border.GetBottom() + 15)), ..
 				ALIGN_LEFT_TOP, skin.textColorNeutral)
 
 			skin.fontNormal.drawBlock( ..
@@ -522,7 +522,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 				x + textOffsetX + border.GetLeft() + leftWidth + 10, ..
 				y + textOffsetY + border.GetTop(), ..
 				rightWidth - 10,  ..
-				Max(15, GetScreenHeight() - (border.GetTop() + border.GetBottom() + 15)), ..
+				Max(15, GetScreenRect().GetH() - (border.GetTop() + border.GetBottom() + 15)), ..
 				ALIGN_LEFT_TOP, skin.textColorNeutral)
 			SetAlpha (oldCol.a)
 		else
@@ -576,7 +576,7 @@ rem
 		else
 			sheetCenterX :- 250/2 '250 is sheetWidth
 		endif
-		Local tri:Float[]=[sheetCenterX,sheetY+25, sheetCenterX,sheetY+90, getScreenX() + getScreenWidth()/2.0, getScreenY() + GetScreenHeight()/2.0]
+		Local tri:Float[]=[sheetCenterX,sheetY+25, sheetCenterX,sheetY+90, GetScreenRect().GetX() + GetScreenRect().GetW()/2.0, GetScreenRect().GetY() + GetScreenRect().GetH()/2.0]
 		DrawPoly(tri)
 		SetColor 255,255,255
 		SetAlpha 1.0

@@ -15,7 +15,7 @@ Type TScreenCollection
 	'containing all screens
 	Field screens:TMap = CreateMap()
 	Field screenTransitionActive:int = False
-	
+
 	Global instance:TScreenCollection
 	Global _screenDimension:TVec2D = new TVec2D.Init(0,0)
 	Global useChangeEffects:int = TRUE
@@ -70,7 +70,7 @@ Type TScreenCollection
 	Method IsScreenTransitionActive:int()
 		return screenTransitionActive
 	End Method
-	
+
 
 	Method GoToScreen:int(screen:TScreen=null, screenName:string="", force:int = False)
 		'skip if current screen has same name
@@ -100,7 +100,7 @@ Type TScreenCollection
 		endif
 
 		EventManager.triggerEvent( TEventSimple.Create("screen.onBeginLeave", new TData.Add("toScreen", screen), currentScreen) )
-	
+
 
 		'instead of assigning currentScreen directly we use a setter
 		'so visual effects can happen first
@@ -164,7 +164,7 @@ endrem
 			currentScreen.BeginLeave(screen)
 'print "               : begin leave [from: "+currentScreen.GetName()+"]"
 		endif
-			
+
 		targetScreen = screen
 		return TRUE
 	End Method
@@ -260,7 +260,8 @@ endrem
 
 
 	Function SetScreenDimension(width:int, height:int)
-		_screenDimension = new TVec2D.Init(width,height)
+		if not _screenDimension then _screenDimension = new TVec2D
+		_screenDimension.Init(width,height)
 	End Function
 End Type
 Global ScreenCollection:TScreenCollection = TScreenCollection.Create(null)
@@ -339,7 +340,7 @@ Type TScreen
 			return parentScreen.HasParentScreen(screenName)
 		endif
 	End Method
-	
+
 
 	Method HasSubScreen:int(screenName:string)
 		if not subScreens then return False
@@ -550,10 +551,10 @@ Type TScreenChangeEffect
 	Method GetProgress:Float()
 		local actionTime:Long = GetDuration() - _waitAtBegin - _waitAtEnd
 		if actionTime <= 0 then return 1.0
-		
+
 		return Float( Min(1.0, Max(0, double(GetCurrentTime() - GetTimeStart() - _waitAtBegin) / actionTime)))
 	End Method
-	
+
 
 	Method Draw:int(tweenValue:Float=1.0)	abstract
 
@@ -600,7 +601,7 @@ Type TScreenChangeEffect_SimpleFader extends TScreenChangeEffect
 	Method Draw:int(tweenValue:Float=1.0)
 		'skip drawing if whole thing takes less than 10 ms
 		if GetRealtimeDuration() < 10 then return False
-		
+
 		local oldCol:TColor = new TColor.Get()
 		local tweenProgress:float = MathHelper.Tween(_progressOld, GetProgress(), tweenValue)
 		if _direction = DIRECTION_OPEN then tweenProgress = Max(0, 1.0 - tweenProgress)
