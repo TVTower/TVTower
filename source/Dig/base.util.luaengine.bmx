@@ -424,7 +424,11 @@ Type TLuaEngine
 		'thing we have to push is a method/function
 		If callable
 			'PRIVATE...do not add private functions/methods
+			?not bmxng
 			If callable.MetaData("_private")
+			?bmxng
+			If callable.HasMetaData("_private")
+			?
 				If TMethod(callable)
 					TLogger.Log("TLuaEngine", "Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				Else
@@ -453,7 +457,11 @@ Type TLuaEngine
 		Local _constant:TConstant = typeId.FindConstant(ident)
 		If _constant
 			'PRIVATE...do not add private functions/methods
+			?not bmxng
 			If _constant.MetaData("_private")
+			?bmxng
+			If _constant.HasMetaData("_private")
+			?
 				TLogger.Log("TLuaEngine", "Object "+typeId.name()+" does not expose constant ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				Return False
 			EndIf
@@ -485,7 +493,11 @@ Type TLuaEngine
 		If fld
 			'PRIVATE...do not add private functions/methods
 			'SELECTED...only expose the children with explicit mention
+			?not bmxng
 			If fld.MetaData("_private")
+			?bmxng
+			If fld.HasMetaData("_private")
+			?
 				TLogger.Log("TLuaEngine", "Object "+typeId.name()+" does not expose field ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				Return False
 			EndIf
@@ -576,7 +588,11 @@ Type TLuaEngine
 		If fld
 			'PRIVATE...do not allow write to  private functions/methods
 			'check could be removed if performance critical
+			?not bmxng
 			If fld.MetaData("_private") Then Return True
+			?bmxng
+			If fld.HasMetaData("_private") Then Return True
+			?
 			'only set values of children with explicit mention
 			If exposeType = "selected" And Not fld.MetaData("_exposeToLua") Then Return True
 			If fld.MetaData("_exposeToLua")<>"rw"

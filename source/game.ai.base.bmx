@@ -71,6 +71,8 @@ Type TAiBase
 		?not threaded
 			eventQueue :+ [aiEvent]
 		?
+
+		print eventQueue.length
 	End Method
 
 
@@ -114,14 +116,17 @@ endrem
 
 		'load lua file
 		LoadScript(scriptFileName)
+		print "Loaded Script: " + scriptFileName
 
 		'register source and available objects
 		GetLuaEngine().RegisterToLua()
+		print "Registered base objects"
 
 		'kick off new thread
 ?threaded
 		If not THREADED_AI_DISABLED
 			_updateThread = CreateThread( UpdateThread, self )
+			print "Created AI Update Thread"
 		EndIf
 ?
 	End Method
@@ -318,6 +323,12 @@ Type TAIEvent {_exposeTolua}
 
 	Method AddInt:TAIEvent(i:int)
 		data :+ [object(string(i))]
+		return self
+	End Method
+
+
+	Method AddLong:TAIEvent(l:Long)
+		data :+ [object(string(l))]
 		return self
 	End Method
 

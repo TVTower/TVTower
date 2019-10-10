@@ -93,8 +93,7 @@ Type TAi extends TAiBase
 
 
 	Method CallUpdate()
-'auskommentiert bis reflection threadsafe
-'		CallLuaFunction("Update", Null)
+		CallLuaFunction("Update", Null)
 	End Method
 
 

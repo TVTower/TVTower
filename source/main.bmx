@@ -3683,6 +3683,7 @@ Type GameEvents
 				EndIf
 			EndIf
 			If playerBase And TPlayer(playerBase).isLocalAI()
+				TPlayer(playerBase).PlayerAI.AddEventObj( New TAIEvent.SetName("onChat").AddInt(senderID).AddString(message).AddInt(CHAT_COMMAND_WHISPER))
 				TPlayer(playerBase).PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_WHISPER)
 			EndIf
 		EndIf
@@ -3700,6 +3701,7 @@ Type GameEvents
 					'also check playerAI as in start settings screen the AI
 					'is not there yet
 					If player.isLocalAI() and player.playerAI
+						player.PlayerAI.AddEventObj( New TAIEvent.SetName("onChat").AddInt(senderID).AddString(message).AddInt(CHAT_COMMAND_WHISPER).AddInt(channels))
 						player.PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_NONE, channels)
 					EndIf
 				Next
@@ -3769,6 +3771,7 @@ Type GameEvents
 				If Not player.IsLocalAI()
 					GetGame().SendSystemMessage("[DEV] cannot command non-local AI player.")
 				Else
+					player.PlayerAI.AddEventObj( New TAIEvent.SetName("onChat").AddInt(GetPlayer().playerID).AddString("CMD_" + paramS).AddInt(CHAT_COMMAND_WHISPER))
 					player.playerAI.CallOnChat(GetPlayer().playerID, "CMD_" + paramS, CHAT_COMMAND_WHISPER)
 				EndIf
 
@@ -4176,7 +4179,10 @@ Type GameEvents
 		If minute < 0 Then Return False
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
-			If player.isLocalAI() Then player.PlayerAI.CallOnDayBegins()
+			If player.isLocalAI()
+				player.PlayerAI.AddEventObj( New TAIEvent.SetName("onDayBegins"))
+				player.PlayerAI.CallOnDayBegins()
+			EndIf
 		Next
 		Return True
 	End Function
@@ -4186,7 +4192,10 @@ Type GameEvents
 		If Not GetGame().isGameLeader() Then Return False
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
-			If player.isLocalAI() Then player.PlayerAI.CallOnGameBegins()
+			If player.isLocalAI()
+				player.PlayerAI.AddEventObj( New TAIEvent.SetName("onGameBegins"))
+				player.PlayerAI.CallOnGameBegins()
+			EndIf
 		Next
 		Return True
 	End Function
@@ -4233,7 +4242,10 @@ Type GameEvents
 		Local player:TPlayer = GetPlayerCollection().Get(playerID)
 		If Not player Then Return False
 
-		If player.isLocalAI() Then player.playerAI.CallOnMalfunction()
+		If player.isLocalAI()
+			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onMalfunction"))
+			player.playerAI.CallOnMalfunction()
+		EndIf
 	End Function
 
 
@@ -4245,7 +4257,10 @@ Type GameEvents
 		Local reference:TNamedGameObject = TNamedGameObject(triggerEvent.GetData().Get("reference", Null))
 		If playerID = -1 Or Not player Then Return False
 
-		If player.isLocalAI() Then player.playerAI.CallOnMoneyChanged(value, reason, reference)
+		If player.isLocalAI()
+			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onMoneyChanged").AddInt(value).AddInt(reason).AddData(reference))
+			player.playerAI.CallOnMoneyChanged(value, reason, reference)
+		EndIf
 		If player.isActivePlayer() Then GetInGameInterface().ValuesChanged = True
 	End Function
 
@@ -4268,7 +4283,10 @@ Type GameEvents
 		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
 		'inform ai before
-		If player.isLocalAI() Then player.playerAI.CallOnBossCallsForced()
+		If player.isLocalAI()
+			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onBossCallsForced"))
+			player.playerAI.CallOnBossCallsForced()
+		EndIf
 		'send player to boss now
 		player.SendToBoss()
 	End Function
@@ -4294,6 +4312,7 @@ Type GameEvents
 
 		'inform ai about the request
 		If player.isLocalAI()
+			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onBossCalls").AddLong(latestTime))
 			player.playerAI.CallOnBossCalls(latestTime)
 		Else
 			'send out a toast message
@@ -4386,8 +4405,10 @@ Type GameEvents
 		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
 		'inform ai before
-		If player.isLocalAI() Then player.playerAI.CallOnPublicAuthoritiesStopXRatedBroadcast()
-
+		If player.isLocalAI()
+			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onPublicAuthoritiesStopXRatedBroadcast"))
+			player.playerAI.CallOnPublicAuthoritiesStopXRatedBroadcast()
+		EndIf
 
 		Local toast:TGameToastMessage = New TGameToastMessage
 		'show it for some seconds
@@ -4419,8 +4440,10 @@ Type GameEvents
 		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
 		'inform ai before
-		If player.isLocalAI() Then player.playerAI.CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedProgrammeLicence, targetProgrammeLicence)
-
+		If player.isLocalAI()
+			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onPublicAuthoritiesConfiscateProgrammeLicence").AddData(confiscatedProgrammeLicence).AddData(targetProgrammeLicence))
+			player.playerAI.CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedProgrammeLicence, targetProgrammeLicence)
+		EndIf
 
 		Local toast:TGameToastMessage = New TGameToastMessage
 		'show it for some seconds
@@ -4462,7 +4485,10 @@ Type GameEvents
 
 
 		'inform ai
-		If player.isLocalAI() Then player.playerAI.CallOnAchievementCompleted(achievement)
+		If player.isLocalAI()
+			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onAchievementcompleted").AddData(achievement))
+			player.playerAI.CallOnAchievementCompleted(achievement)
+		EndIf
 
 
 		Local rewardText:String
@@ -4518,7 +4544,10 @@ Type GameEvents
 
 
 		'inform ai
-		If player.isLocalAI() Then player.playerAI.CallOnWonAward(award)
+		If player.isLocalAI()
+			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onWonAward").AddData(award))
+			player.playerAI.CallOnWonAward(award)
+		EndIf
 
 
 		Rem
@@ -6276,9 +6305,9 @@ Function ShowApp:Int()
 	TProfiler.Leave("ShowApp")
 End Function
 
-'Extern
-'    Global bbGCAllocCount:ULong="bbGCAllocCount"
-'End Extern
+Extern
+    Global bbGCAllocCount:ULong="bbGCAllocCount"
+End Extern
 
 Function StartTVTower(start:Int=True)
 	Global InitialResourceLoadingDone:Int = False
@@ -6347,12 +6376,11 @@ Global rectangleTime:Int = MilliSecs()
 
 	Repeat
 		If MilliSecs() - rectangleTime > 1000
-'			Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations. " + ExtractMetaDataCalls + " ExtractMetaDataCalls."
+			Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations."
 			rectangle_created = 0
 			vec2d_created = 0
-'			bbGCAllocCount = 0
+			bbGCAllocCount = 0
 			rectangleTime :+ 1000
-'			ExtractMetaDataCalls = 0
 		EndIf
 		If AppSuspended()
 			If Not AppSuspendedProcessed
