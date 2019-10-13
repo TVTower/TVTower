@@ -430,18 +430,18 @@ Type TLuaEngine
 			If callable.HasMetaData("_private")
 			?
 				If TMethod(callable)
-					TLogger.Log("TLuaEngine", "Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+					TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				Else
-					TLogger.Log("TLuaEngine", "Object "+typeId.name()+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+					TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+typeId.name()+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				EndIf
 				Return False
 			EndIf
 			'only expose the children with explicit mention
 			If exposeType = "selected" And Not callable.MetaData("_exposeToLua")
 				If TMethod(callable)
-					TLogger.Log("TLuaEngine", "Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+					TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				Else
-					TLogger.Log("TLuaEngine", "Object "+typeId.name()+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+					TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+typeId.name()+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				EndIf
 				Return False
 			EndIf
@@ -462,12 +462,12 @@ Type TLuaEngine
 			?bmxng
 			If _constant.HasMetaData("_private")
 			?
-				TLogger.Log("TLuaEngine", "Object "+typeId.name()+" does not expose constant ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+				TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+typeId.name()+" does not expose constant ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				Return False
 			EndIf
 			'only expose the children with explicit mention
 			If exposeType = "selected" And Not _constant.MetaData("_exposeToLua")
-				TLogger.Log("TLuaEngine", "Object "+typeId.name()+" does not expose constant ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+				TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+typeId.name()+" does not expose constant ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				Return False
 			EndIf
 
@@ -498,11 +498,11 @@ Type TLuaEngine
 			?bmxng
 			If fld.HasMetaData("_private")
 			?
-				TLogger.Log("TLuaEngine", "Object "+typeId.name()+" does not expose field ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+				TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+typeId.name()+" does not expose field ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				Return False
 			EndIf
 			If exposeType = "selected" And Not fld.MetaData("_exposeToLua")
-				TLogger.Log("TLuaEngine", "Object "+typeId.name()+" does not expose field ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+				TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+typeId.name()+" does not expose field ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 				Return False
 			EndIf
 
@@ -531,7 +531,7 @@ Type TLuaEngine
 		EndIf
 
 
-		TLogger.Log("TLuaEngine", "Object "+typeId.name()+" does not have a property called ~q" + ident+"~q.", LOG_ERROR)
+		TLogger.Log("TLuaEngine", "[Engine " + id + "] Object "+typeId.name()+" does not have a property called ~q" + ident+"~q.", LOG_ERROR)
 		Return False
 	End Method
 
@@ -540,12 +540,12 @@ Type TLuaEngine
 		Local obj1:Object, obj2:Object
 
 		If lua_isnil(getLuaState(), -1)
-			TLogger.Log("TLuaEngine", "CompareObjects: param #1 is nil.", LOG_DEBUG)
+			TLogger.Log("TLuaEngine", "[Engine " + id + "] CompareObjects: param #1 is nil.", LOG_DEBUG)
 		Else
 			obj1 = lua_unboxobject(getLuaState(), -1)
 		EndIf
 		If lua_isnil(getLuaState(), 1)
-			TLogger.Log("TLuaEngine", "CompareObjects: param #2 is nil.", LOG_DEBUG)
+			TLogger.Log("TLuaEngine", "[Engine " + id + "] CompareObjects: param #2 is nil.", LOG_DEBUG)
 		Else
 			obj2 = lua_unboxobject(getLuaState(), 1)
 		EndIf
@@ -569,7 +569,7 @@ Type TLuaEngine
 		'I do not know how to handle arrays properly (needs metatables
 		'and custom userdata)
 		If typeId.name().contains("[]")
-			TLogger.Log("TLuaEngine", "Arrays are not supported - array type: " + typeId.name() + ".", LOG_ERROR)
+			TLogger.Log("TLuaEngine", "[Engine " + id + "] Arrays are not supported - array type: " + typeId.name() + ".", LOG_ERROR)
 			'array index is
 			'print lua_tostring(getLuaState(), 2)
 			'array value is
@@ -579,7 +579,7 @@ Type TLuaEngine
 
 		'only expose if type set to get exposed
 		If Not typeId.MetaData("_exposeToLua")
-			TLogger.Log("TLuaEngine", "Type " + typeId.name() + " not exposed to Lua.", LOG_ERROR)
+			TLogger.Log("TLuaEngine", "[Engine " + id + "] Type " + typeId.name() + " not exposed to Lua.", LOG_ERROR)
 		EndIf
 		Local exposeType:String = typeId.MetaData("_exposeToLua")
 
@@ -596,7 +596,7 @@ Type TLuaEngine
 			'only set values of children with explicit mention
 			If exposeType = "selected" And Not fld.MetaData("_exposeToLua") Then Return True
 			If fld.MetaData("_exposeToLua")<>"rw"
-				TLogger.Log("TLuaEngine", "Object property "+typeId.name()+"."+ident+" is read-only.", LOG_ERROR)
+				TLogger.Log("TLuaEngine", "[Engine " + id + "] Object property "+typeId.name()+"."+ident+" is read-only.", LOG_ERROR)
 				Return True
 			EndIf
 
@@ -748,11 +748,11 @@ Rem
 						if TTypeID.ForObject(obj).ExtendsType(tys[i])
 							args[i] = obj
 						else
-							print "LuaEngine._Invoke(): "+funcOrMeth.name()+"() got broken param #"+i+" (expected ~q"+tys[i].name()+"~q, got ~q"+TTypeID.ForObject(obj).name()+"~q). Falling back to ~qNull~q."
+							TLogger.Log("TLuaEngine", "[Engine " + id + "] LuaEngine._Invoke() - "+funcOrMeth.name()+"() got broken param #"+i+" (expected ~q"+tys[i].name()+"~q, got ~q"+TTypeID.ForObject(obj).name()+"~q). Falling back to ~qNull~q.", LOG_DEBUG)
 							args[i] = null
 						endif
 					else
-						print "LuaEngine._Invoke(): "+funcOrMeth.name()+"() got broken param #"+i+" (expected ~q"+tys[i].name()+"~q). Falling back to ~qNull~q."
+						TLogger.Log("TLuaEngine", "[Engine " + id + "] LuaEngine._Invoke() - "+funcOrMeth.name()+"() got broken param #"+i+" (expected ~q"+tys[i].name()+"~q. Falling back to ~qNull~q.", LOG_DEBUG)
 						args[i] = null
 					endif
 endrem
@@ -806,7 +806,7 @@ endrem
 		'make sure it is a function
 		If Not lua_isfunction(getLuaState(), -1)
 			lua_pop(getLuaState(), 1)
-			Print "CallLuaFunction(~q" + name + "~q) failed. Unknown function."
+			TLogger.Log("TLuaEngine", "[Engine " + id + "] CallLuaFunction(~q" + name + "~q) failed. Unknown function.", LOG_DEBUG)
 '		If lua_isnil(getLuaState(), -1)
 '			lua_pop(getLuaState(), 2)
 			Return Null

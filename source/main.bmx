@@ -1213,14 +1213,10 @@ endrem
 				EndIf
 
 				If KEYMANAGER.IsHit(KEY_TAB)
-					If KEYMANAGER.IsDown(KEY_RCONTROL)
+					If Not KEYMANAGER.IsDown(KEY_LCONTROL)
 						DebugScreen.enabled = 1 - DebugScreen.enabled
-					ElseIf Not KEYMANAGER.IsDown(KEY_LCONTROL)
-						TVTDebugInfos = 1 - TVTDebugInfos
-						TVTDebugProgrammePlan = False
 					Else
-						TVTDebugInfos = False
-						TVTDebugProgrammePlan = 1 - TVTDebugProgrammePlan
+						TVTDebugInfos = 1 - TVTDebugInfos
 					EndIf
 				EndIf
 
@@ -2198,10 +2194,10 @@ Type TGameState
 	End Method
 
 
-	Method _Assign(objSource:Object Var, objTarget:Object Var, name:String="DATA", mode:Int=0)
+	Method _Assign(objSource:Object Var, objTarget:Object Var, name:String="DATA", Mode:Int=0)
 		If objSource
 			objTarget = objSource
-			If mode = MODE_LOAD
+			If Mode = MODE_LOAD
 				TLogger.Log("TGameState.RestoreGameData()", "Restore object "+name, LOG_DEBUG)
 			Else
 				TLogger.Log("TGameState.BackupGameData()", "Backup object "+name, LOG_DEBUG)
@@ -2290,14 +2286,14 @@ Type TSaveGame Extends TGameState
 
 
 	'override to output differing log texts
-	Method _Assign(objSource:Object Var, objTarget:Object Var, name:String="DATA", mode:Int=0)
+	Method _Assign(objSource:Object Var, objTarget:Object Var, name:String="DATA", Mode:Int=0)
 		If objSource
 			objTarget = objSource
 
 			'uncommented log and update message as the real work is
 			'done in the serialization and not in variable=otherVariable
 			'assignments
-			If mode = MODE_LOAD
+			If Mode = MODE_LOAD
 				'TLogger.Log("TSaveGame.RestoreGameData()", "Loaded object "+name, LOG_DEBUG | LOG_SAVELOAD)
 				'UpdateMessage(True, "Loading: " + name)
 			Else
@@ -2401,7 +2397,7 @@ Type TSaveGame Extends TGameState
 		EndIf
 
 
-		Local lines:String[]
+		Local LINES:String[]
 		Local line:String = ""
 		Local lineNum:Int = 0
 		Local validSavegame:Int = False
@@ -2424,7 +2420,7 @@ Type TSaveGame Extends TGameState
 			'in gamesummary then expected
 			If lineNum > 1500 Then Exit
 
-			lines :+ [line]
+			LINES :+ [line]
 			lineNum :+ 1
 			If lineNum = 4 And line.Find("name=~q___gameSummary~q type=~qTData~q>") > 0
 				validSavegame = True
@@ -2440,12 +2436,12 @@ Type TSaveGame Extends TGameState
 		EndIf
 
 		'remove line 3 and 4
-		lines[2] = ""
-		lines[3] = ""
+		LINES[2] = ""
+		LINES[3] = ""
 		'remove last line / let the bmo-file end there
-		lines[lines.length-1] = "</bmo>"
+		LINES[LINES.length-1] = "</bmo>"
 
-		Local content:String = "~n".Join(lines)
+		Local content:String = "~n".Join(LINES)
 
 
 		'local p:TPersist = new TPersist
@@ -2524,6 +2520,11 @@ Type TSaveGame Extends TGameState
 
 
 	Function Load:Int(saveName:String="savegame.xml")
+		'stop ai of previous game if some was running
+		For Local i:Int = 1 To 4
+			If GetPlayer(i) Then GetPlayer(i).StopAI()
+		Next
+
 		ShowMessage(True)
 
 		'=== CHECK SAVEGAME ===
@@ -3683,8 +3684,8 @@ Type GameEvents
 				EndIf
 			EndIf
 			If playerBase And TPlayer(playerBase).isLocalAI()
-				TPlayer(playerBase).PlayerAI.AddEventObj( New TAIEvent.SetName("onChat").AddInt(senderID).AddString(message).AddInt(CHAT_COMMAND_WHISPER))
-				TPlayer(playerBase).PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_WHISPER)
+				TPlayer(playerBase).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).AddInt(senderID).AddString(message).AddInt(CHAT_COMMAND_WHISPER))
+				'TPlayer(playerBase).PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_WHISPER)
 			EndIf
 		EndIf
 
@@ -3700,9 +3701,9 @@ Type GameEvents
 				For Local player:TPLayer = EachIn GetPlayerCollection().players
 					'also check playerAI as in start settings screen the AI
 					'is not there yet
-					If player.isLocalAI() and player.playerAI
-						player.PlayerAI.AddEventObj( New TAIEvent.SetName("onChat").AddInt(senderID).AddString(message).AddInt(CHAT_COMMAND_WHISPER).AddInt(channels))
-						player.PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_NONE, channels)
+					If player.isLocalAI() And player.playerAI
+						player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).AddInt(senderID).AddString(message).AddInt(CHAT_COMMAND_WHISPER).AddInt(channels))
+						'player.PlayerAI.CallOnChat(senderID, message, CHAT_COMMAND_NONE, channels)
 					EndIf
 				Next
 			EndIf
@@ -3771,8 +3772,8 @@ Type GameEvents
 				If Not player.IsLocalAI()
 					GetGame().SendSystemMessage("[DEV] cannot command non-local AI player.")
 				Else
-					player.PlayerAI.AddEventObj( New TAIEvent.SetName("onChat").AddInt(GetPlayer().playerID).AddString("CMD_" + paramS).AddInt(CHAT_COMMAND_WHISPER))
-					player.playerAI.CallOnChat(GetPlayer().playerID, "CMD_" + paramS, CHAT_COMMAND_WHISPER)
+					player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).AddInt(GetPlayer().playerID).AddString("CMD_" + paramS).AddInt(CHAT_COMMAND_WHISPER))
+					'player.playerAI.CallOnChat(GetPlayer().playerID, "CMD_" + paramS, CHAT_COMMAND_WHISPER)
 				EndIf
 
 			Case "playerai"
@@ -4121,10 +4122,10 @@ Type GameEvents
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI()
 				TProfiler.Enter(TApp._profilerKey_AI_SECOND[player.playerID-1], False)
-				player.PlayerAI.AddEventObj( New TAIEvent.SetName("ConditionalCallOnTick"))
-				player.PlayerAI.AddEventObj( New TAIEvent.SetName("OnSecond").AddInt(timeGone))
-				player.PlayerAI.ConditionalCallOnTick()
-				player.PlayerAI.CallOnRealtimeSecond(timeGone)
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnConditionalCallOnTick))
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnRealTimeSecond).AddInt(timeGone))
+				'player.PlayerAI.ConditionalCallOnTick()
+				'player.PlayerAI.CallOnRealtimeSecond(timeGone)
 				TProfiler.Leave(TApp._profilerKey_AI_SECOND[player.playerID-1], 100, False)
 			EndIf
 		Next
@@ -4160,10 +4161,10 @@ Type GameEvents
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI()
 				TProfiler.Enter(TApp._profilerKey_AI_MINUTE[player.playerID-1], False)
-				player.PlayerAI.AddEventObj( New TAIEvent.SetName("ConditionalCallOnTick"))
-				player.PlayerAI.AddEventObj( New TAIEvent.SetName("onMinute").AddInt(minute))
-				player.PlayerAI.ConditionalCallOnTick()
-				player.PlayerAI.CallOnMinute(minute)
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnConditionalCallOnTick))
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnMinute).AddInt(minute))
+				'player.PlayerAI.ConditionalCallOnTick()
+				'player.PlayerAI.CallOnMinute(minute)
 				TProfiler.Leave(TApp._profilerKey_AI_MINUTE[player.playerID-1], 100, False)
 			EndIf
 		Next
@@ -4180,8 +4181,8 @@ Type GameEvents
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI()
-				player.PlayerAI.AddEventObj( New TAIEvent.SetName("onDayBegins"))
-				player.PlayerAI.CallOnDayBegins()
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnDayBegins))
+				'player.PlayerAI.CallOnDayBegins()
 			EndIf
 		Next
 		Return True
@@ -4193,8 +4194,8 @@ Type GameEvents
 
 		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isLocalAI()
-				player.PlayerAI.AddEventObj( New TAIEvent.SetName("onGameBegins"))
-				player.PlayerAI.CallOnGameBegins()
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnGameBegins))
+				'player.PlayerAI.CallOnGameBegins()
 			EndIf
 		Next
 		Return True
@@ -4243,8 +4244,8 @@ Type GameEvents
 		If Not player Then Return False
 
 		If player.isLocalAI()
-			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onMalfunction"))
-			player.playerAI.CallOnMalfunction()
+			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnMalfunction))
+			'player.playerAI.CallOnMalfunction()
 		EndIf
 	End Function
 
@@ -4258,8 +4259,8 @@ Type GameEvents
 		If playerID = -1 Or Not player Then Return False
 
 		If player.isLocalAI()
-			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onMoneyChanged").AddInt(value).AddInt(reason).AddData(reference))
-			player.playerAI.CallOnMoneyChanged(value, reason, reference)
+			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnMoneyChanged).AddInt(value).AddInt(reason).AddData(reference))
+			'player.playerAI.CallOnMoneyChanged(value, reason, reference)
 		EndIf
 		If player.isActivePlayer() Then GetInGameInterface().ValuesChanged = True
 	End Function
@@ -4284,8 +4285,8 @@ Type GameEvents
 
 		'inform ai before
 		If player.isLocalAI()
-			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onBossCallsForced"))
-			player.playerAI.CallOnBossCallsForced()
+			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnBossCallsForced))
+			'player.playerAI.CallOnBossCallsForced()
 		EndIf
 		'send player to boss now
 		player.SendToBoss()
@@ -4312,8 +4313,8 @@ Type GameEvents
 
 		'inform ai about the request
 		If player.isLocalAI()
-			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onBossCalls").AddLong(latestTime))
-			player.playerAI.CallOnBossCalls(latestTime)
+			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnBossCalls).AddLong(latestTime))
+			'player.playerAI.CallOnBossCalls(latestTime)
 		Else
 			'send out a toast message
 			Local toastGUID:String = "toastmessage-playerboss-callplayer"+player.playerID
@@ -4406,8 +4407,8 @@ Type GameEvents
 
 		'inform ai before
 		If player.isLocalAI()
-			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onPublicAuthoritiesStopXRatedBroadcast"))
-			player.playerAI.CallOnPublicAuthoritiesStopXRatedBroadcast()
+			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnPublicAuthoritiesStopXRatedBroadcast))
+			'player.playerAI.CallOnPublicAuthoritiesStopXRatedBroadcast()
 		EndIf
 
 		Local toast:TGameToastMessage = New TGameToastMessage
@@ -4441,8 +4442,8 @@ Type GameEvents
 
 		'inform ai before
 		If player.isLocalAI()
-			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onPublicAuthoritiesConfiscateProgrammeLicence").AddData(confiscatedProgrammeLicence).AddData(targetProgrammeLicence))
-			player.playerAI.CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedProgrammeLicence, targetProgrammeLicence)
+			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnPublicAuthoritiesConfiscateProgrammeLicence).AddData(confiscatedProgrammeLicence).AddData(targetProgrammeLicence))
+			'player.playerAI.CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedProgrammeLicence, targetProgrammeLicence)
 		EndIf
 
 		Local toast:TGameToastMessage = New TGameToastMessage
@@ -4486,8 +4487,8 @@ Type GameEvents
 
 		'inform ai
 		If player.isLocalAI()
-			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onAchievementcompleted").AddData(achievement))
-			player.playerAI.CallOnAchievementCompleted(achievement)
+			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnAchievementcompleted).AddData(achievement))
+			'player.playerAI.CallOnAchievementCompleted(achievement)
 		EndIf
 
 
@@ -4545,8 +4546,8 @@ Type GameEvents
 
 		'inform ai
 		If player.isLocalAI()
-			player.PlayerAI.AddEventObj( New TAIEvent.SetName("onWonAward").AddData(award))
-			player.playerAI.CallOnWonAward(award)
+			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnWonAward).AddData(award))
+			'player.playerAI.CallOnWonAward(award)
 		EndIf
 
 

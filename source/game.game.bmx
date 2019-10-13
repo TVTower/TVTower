@@ -149,6 +149,15 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		SetGameState(TGame.STATE_MAINMENU)
 		GetToastMessageCollection().RemoveAllMessages()
+
+		'stop ai
+		For local i:int = 1 to 4
+			GetPlayer(i).StopAI()
+'			if GetPlayer(i).IsLocalAI() and GetPlayer(i).playerAI
+'				GetPlayer(i).playerAI.Stop()
+'			endif
+		Next
+
 		TLogger.Log("TGame", "====== END CURRENT GAME ======", LOG_DEBUG)
 	End Method
 
@@ -367,7 +376,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		for local p:TPlayer = EachIn GetPlayerCollection().players
 			if not p.IsLocalAI() or not p.PlayerAI then continue
 
-			p.PlayerAI.CallOnPlayerGoesBankrupt( playerID )
+			'p.PlayerAI.CallOnPlayerGoesBankrupt( playerID )
+			p.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnPlayerGoesBankrupt).AddInt(playerID))
+
+			'stop playerAI
+			p.StopAI()
 		next
 
 		local figure:TFigure = player.GetFigure()

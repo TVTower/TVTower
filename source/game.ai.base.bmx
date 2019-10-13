@@ -6,7 +6,7 @@ Import "Dig/base.util.time.bmx"
 Import "Dig/base.util.luaengine.bmx"
 Import "Dig/base.util.luaengine.bmx"
 
-Const THREADED_AI_DISABLED:int = True
+Const THREADED_AI_DISABLED:int = False
 
 
 Type TAiBase
@@ -23,7 +23,7 @@ Type TAiBase
 	'when saving a gamestate
 	Field objectsUsedInLua:object[]
 	Field objectsUsedInLuaCount:int
-
+	Field started:int = False
 	Field eventQueue:TAIEvent[]
 
 	Field _luaEngine:TLuaEngine {nosave}
@@ -52,17 +52,100 @@ Type TAiBase
 	End Method
 
 
-	Method AddEvent(name:string, data:object[])
-		local aiEvent:TAIEvent = new TAIEvent
-		aiEvent.name = name
-		aiEvent.AddDataSet(data)
-		AddEventObj(aiEvent)
+	'handle all currently queued Events
+	Method HandleQueuedEvents()
+		?threaded
+			LockMutex(_eventQueueMutex)
+		?
+
+		For local aiEvent:TAIEvent = EachIn eventQueue
+			HandleAIEvent(aiEvent)
+		Next
+		eventQueue = new TAIEvent[0]
+
+		?threaded
+			UnlockMutex(_eventQueueMutex)
+		?
 	End Method
 
 
-	Method AddEventObj(aiEvent:TAIEvent)
-		if THREADED_AI_DISABLED then return
-		'TODO: optimize queue structure / use a pool?
+	Method HandleAIEvent(event:TAIEvent)
+		Select event.id
+			case TAIEvent.OnMinute
+				CallLuaFunction("OnMinute", event.data)
+			case TAIEvent.OnConditionalCallOnTick
+				ConditionalCallOnTick()
+			case TAIEvent.OnRealTimeSecond
+				CallLuaFunction("OnRealTimeSecond", event.data)
+			case TAIEvent.OnLoad
+				CallOnLoad()
+			case TAIEvent.OnSave
+				CallOnSave()
+			case TAIEvent.OnSaveState
+				CallOnSaveState
+			case TAIEvent.OnLoadState
+				CallOnLoadState()
+			case TAIEvent.OnChat
+				CallLuaFunction("OnChat", event.data)
+			case TAIEvent.OnProgrammeLicenceAuctionGetOutbid
+				CallLuaFunction("OnProgrammeLicenceAuctionGetOutbid", event.data)
+			case TAIEvent.OnProgrammeLicenceAuctionWin
+				CallLuaFunction("OnProgrammeLicenceAuctionWin", event.data)
+			case TAIEvent.OnBossCalls
+				CallLuaFunction("OnBossCalls", event.data)
+			case TAIEvent.OnBossCallsForced
+				CallLuaFunction("OnBossCallsForced", event.data)
+			case TAIEvent.OnPublicAuthoritiesStopXRatedBroadcast
+				CallLuaFunction("OnPublicAuthoritiesStopXRatedBroadcast", event.data)
+			case TAIEvent.OnPublicAuthoritiesConfiscateProgrammeLicence
+				CallLuaFunction("OnPublicAuthoritiesConfiscateProgrammeLicence", event.data)
+			case TAIEvent.OnAchievementCompleted
+				CallLuaFunction("OnAchievementCompleted", event.data)
+			case TAIEvent.OnWonAward
+				CallLuaFunction("OnWonAward", event.data)
+			case TAIEvent.OnLeaveRoom
+				CallLuaFunction("OnLeaveRoom", event.data)
+			case TAIEvent.OnReachRoom
+				CallLuaFunction("OnReachRoom", event.data)
+			case TAIEvent.OnBeginEnterRoom
+				CallLuaFunction("OnBeginEnterRoom", event.data)
+			case TAIEvent.OnEnterRoom
+				CallLuaFunction("OnEnterRoom", event.data)
+			case TAIEvent.OnReachTarget
+				CallLuaFunction("OnReachTarget", event.data)
+			case TAIEvent.OnDayBegins
+				CallLuaFunction("OnDayBegins", Null)
+			case TAIEvent.OnGameBegins
+				CallLuaFunction("OnGameBegins", Null)
+			case TAIEvent.OnInit
+				CallLuaFunction("OnInit", Null)
+			case TAIEvent.OnMoneyChanged
+				CallLuaFunction("OnMoneyChanged", event.data)
+			case TAIEvent.OnMalfunction
+				CallLuaFunction("OnMalfunction", Null)
+			case TAIEvent.OnPlayerGoesBankrupt
+				CallLuaFunction("OnPlayerGoesBankrupt", event.data)
+
+			default
+				print "Unhandled AIEvent: " + event.id
+		End Select
+	End Method
+
+
+	Method AddEvent(id:Int, data:object[], handleNow:Int = False)
+		local aiEvent:TAIEvent = new TAIEvent
+		aiEvent.SetID(id)
+		aiEvent.AddDataSet(data)
+		AddEventObj(aiEvent, handleNow)
+	End Method
+
+
+	Method AddEventObj(aiEvent:TAIEvent, handleNow:Int = False)
+		'non threaded AI just handles the event now
+		if THREADED_AI_DISABLED or handleNow
+			HandleAIEvent(aiEvent)
+			return
+		endif
 
 		?threaded
 			LockMutex(_eventQueueMutex)
@@ -71,8 +154,6 @@ Type TAiBase
 		?not threaded
 			eventQueue :+ [aiEvent]
 		?
-
-		print eventQueue.length
 	End Method
 
 
@@ -110,7 +191,7 @@ endrem
 
 
 	Method Start()
-		print "Starting AI " + playerID
+		print "=== Starting AI " + playerID + " ==="
 
 		scriptFileName = "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua"
 
@@ -118,9 +199,12 @@ endrem
 		LoadScript(scriptFileName)
 		print "Loaded Script: " + scriptFileName
 
+		started = True
+
 		'register source and available objects
-		GetLuaEngine().RegisterToLua()
-		print "Registered base objects"
+		'-> done in TLuaEngine.Create()
+'		GetLuaEngine().RegisterToLua()
+'		print "Registered base objects"
 
 		'kick off new thread
 ?threaded
@@ -133,9 +217,10 @@ endrem
 
 
 	Method Stop()
-		print "Stopping AI " + playerID
+		print "=== Stopping AI " + playerID + " ==="
+		started = False
 ?threaded
-		If not THREADED_AI_DISABLED
+		If not THREADED_AI_DISABLED and _updateThread
 			_updateThreadExit = True
 			WaitThread(_updateThread)
 			print "stopped thread for AI " + playerID
@@ -146,9 +231,6 @@ endrem
 			_updateThread = Null
 		EndIf
 ?
-
-'		scriptEnv.ShutDown()
-'		KI_EventManager.unregisterKI(Self)
 	End Method
 
 
@@ -169,13 +251,14 @@ endrem
 		endif
 	End Method
 
+
 ?threaded
 	Function UpdateThread:object( data:object )
 		local aiBase:TAiBase = TAiBase(data)
 
 		Repeat
 			aiBase.Update()
-			delay(250)
+			delay(100)
 
 			'received command to exit the thread
 			if aiBase._updateThreadExit then exit
@@ -185,6 +268,8 @@ endrem
 
 	Method Update()
 		if not IsActive() then return
+		'shut down initialized?
+		if not started then return
 
 		'print "updating AI " + playerID
 		CallUpdate()
@@ -261,8 +346,6 @@ endrem
 
 	End Method
 
-	Method CallAddEvent(eventName:string, args:object[]) abstract
-	Method CallGetEventCount:Int() abstract
 	Method CallUpdate() abstract
 
 	Method ConditionalCallOnTick() abstract
@@ -270,6 +353,9 @@ endrem
 	Method CallOnSaveState() abstract
 	Method CallOnLoad() abstract
 	Method CallOnSave() abstract
+	Method CallOnInit() abstract
+
+rem
 	Method CallOnRealtimeSecond(millisecondsGone:Int=0) abstract
 	Method CallOnMinute(minute:Int=0) abstract
 	Method CallOnChat(fromID:int=0, text:String = "", chatType:int = 0, channels:int = 0) abstract
@@ -283,17 +369,15 @@ endrem
 	Method CallOnWonAward(award:object) abstract
 	Method CallOnLeaveRoom(roomId:int) abstract
 	Method CallOnReachTarget(target:object) abstract
-	'	Method CallOnReachTarget() abstract
 	Method CallOnReachRoom(roomId:Int) abstract
 	Method CallOnBeginEnterRoom(roomId:int, result:int) abstract
 	Method CallOnEnterRoom(roomId:int) abstract
 	Method CallOnDayBegins() abstract
 	Method CallOnGameBegins() abstract
-	Method CallOnInit() abstract
 	Method CallOnMoneyChanged(value:int, reason:int, reference:object) abstract
 	Method CallOnMalfunction() abstract
-
 	Method CallOnPlayerGoesBankrupt(playerID:int) abstract
+endrem
 End Type
 
 
@@ -312,11 +396,40 @@ End Type
 
 
 Type TAIEvent {_exposeTolua}
-	Field name:string
+	Field id:int
 	Field data:object[]
 
-	Method SetName:TAIEvent(name:string)
-		self.name = name
+	Const OnLoadState:Int = 1
+	Const OnSaveState:Int = 2
+	Const OnLoad:Int = 3
+	Const OnSave:Int = 4
+	Const OnRealtimeSecond:Int = 5
+	Const OnMinute:Int = 6
+	Const OnChat:Int = 7
+	Const OnProgrammeLicenceAuctionGetOutbid:Int = 8
+	Const OnProgrammeLicenceAuctionWin:Int = 9
+	Const OnBossCalls:Int = 10
+	Const OnBossCallsForced:Int = 11
+	Const OnPublicAuthoritiesStopXRatedBroadcast:Int = 12
+	Const OnPublicAuthoritiesConfiscateProgrammeLicence:Int = 13
+	Const OnAchievementCompleted:Int = 14
+	Const OnWonAward:Int = 15
+	Const OnLeaveRoom:Int = 16
+	Const OnReachTarget:Int = 17
+	Const OnReachRoom:Int = 18
+	Const OnBeginEnterRoom:Int = 19
+	Const OnEnterRoom:Int = 20
+	Const OnDayBegins:Int = 21
+	Const OnGameBegins:Int = 22
+	Const OnInit:Int = 23
+	Const OnMoneyChanged:Int = 24
+	Const OnMalfunction:Int = 25
+	Const OnPlayerGoesBankrupt:Int = 26
+	Const OnConditionalCallOnTick:Int = 27
+
+
+	Method SetID:TAIEvent(evID:int)
+		self.id = evID
 		return self
 	End Method
 
@@ -343,6 +456,13 @@ Type TAIEvent {_exposeTolua}
 		data :+ [o]
 		return self
 	End Method
+
+
+	Method Add:TAIEvent(o:object)
+		data :+ [o]
+		return self
+	End Method
+
 
 	Method AddDataSet:TAIEvent(o:object[])
 		data :+ o

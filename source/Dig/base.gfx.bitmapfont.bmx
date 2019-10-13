@@ -143,8 +143,6 @@ Public
 
 
 	Method InsertFont(name:String, size:Int, style:Int, font:TBitmapFont)
-TLogger.Log("inserting font : " + name + ", " + size + ", " + style,LOG_DEBUG)
-
 		Local sizes:TSizedBitmapFonts = TSizedBitmapFonts(fonts.ValueForKey(name))
 
 		If Not sizes Then
@@ -157,7 +155,6 @@ TLogger.Log("inserting font : " + name + ", " + size + ", " + style,LOG_DEBUG)
 
 
 	Method GetFont:TBitmapFont(name:String, size:Int = -1, style:Int = -1)
-'TLogger.Log("getting font : " + name + ", " + size + ", " + style,LOG_DEBUG)
 		Local sizes:TSizedBitmapFonts = TSizedBitmapFonts(fonts.ValueForKey(name))
 
 		If Not sizes Then

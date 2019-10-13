@@ -113,7 +113,8 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		If player.isLocalAI()
 			local target:TFigureTargetBase = TFigureTargetBase(triggerEvent.GetReceiver())
 			if target
-				player.PlayerAI.CallOnReachTarget( target.targetObj )
+				player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnReachTarget).Add(target.targetObj))
+				'player.PlayerAI.CallOnReachTarget( target.targetObj )
 			endif
 		endif
 
@@ -130,7 +131,8 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 		'inform player AI
 		If player.isLocalAI()
-			player.PlayerAI.CallOnReachRoom(room.id)
+			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnReachRoom).AddInt(room.id))
+			'player.PlayerAI.CallOnReachRoom(room.id)
 		endif
 	End Function
 
@@ -149,7 +151,8 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		If player.isLocalAI()
 			local roomID:int = 0
 			if room then roomID = room.id
-			player.PlayerAI.CallOnLeaveRoom(roomID)
+			player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnLeaveRoom).AddInt(roomID))
+			'player.PlayerAI.CallOnLeaveRoom(roomID)
 		endif
 	End Function
 
@@ -166,17 +169,20 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 		if reason = "inuse"
 			'inform player AI
-			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_INUSE)
+'			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_INUSE)
+			If player.isLocalAI() then player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnBeginEnterRoom).AddInt(room.id).AddInt(TLuaFunctionsBase.RESULT_INUSE))
 			'tooltip only for active user
 			If player.isLocalHuman() then GetBuilding().CreateRoomUsedTooltip(door, room)
 		elseif reason = "blocked"
 			'inform player AI
-			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_NOTALLOWED)
+			'If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_NOTALLOWED)
+			If player.isLocalAI() then player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnBeginEnterRoom).AddInt(room.id).AddInt(TLuaFunctionsBase.RESULT_NOTALLOWED))
 			'tooltip only for active user
 			If player.isLocalHuman() then GetBuilding().CreateRoomBlockedTooltip(door, room)
 		elseif reason = "locked"
 			'inform player AI
-			If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_NOKEY)
+			'If player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_NOKEY)
+			If player.isLocalAI() then player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnBeginEnterRoom).AddInt(room.id).AddInt(TLuaFunctionsBase.RESULT_NOKEY))
 			'tooltip only for active user
 			If player.isLocalHuman() then GetBuilding().CreateRoomLockedTooltip(door, room)
 		endif
@@ -213,7 +219,8 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		EventManager.triggerEvent( TEventSimple.Create("player.onBeginEnterRoom", null, player, room) )
 
 		'inform player AI
-		If room and player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_OK)
+'		If room and player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_OK)
+		If room and player.isLocalAI() then player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnBeginEnterRoom).AddInt(room.id).AddInt(TLuaFunctionsBase.RESULT_OK))
 	End Function
 
 
@@ -233,7 +240,8 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		EventManager.triggerEvent( TEventSimple.Create("player.onEnterRoom", new TData.Add("door", door), player, room) )
 
 	 	'inform player AI that figure entered a room
-	 	If player.isLocalAI() Then player.PlayerAI.CallOnEnterRoom(room.id)
+'	 	If player.isLocalAI() Then player.PlayerAI.CallOnEnterRoom(room.id)
+		If room and player.isLocalAI() then player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnEnterRoom).AddInt(room.id))
 	End Function
 End Type
 

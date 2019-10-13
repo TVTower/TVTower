@@ -792,18 +792,18 @@ end
 
 -- called by main loop or AI thread within blitzmax code
 function Update()
-	debugMsg("next count = "  .. MY.GetNextEventCount())
+	debugMsg("next count = "  .. TVT.GetNextEventCount())
 
 	-- AI deactivated / (game) paused?
---	if MY.IsActive() == 0 then
---		return
---	end
---[[
+	if TVT.IsActive() == 0 then
+		return
+	end
+
 	-- process all happened events
 
 --	local nextEvent
 --	if MY.GetNextEventCount() > 0 then
-	local nextEvent = MY.PopNextEvent()
+	local nextEvent = TVT.PopNextEvent()
 	if nextEvent == nil then
 --		MY.sleep(1)
 		debugMsg("next is nil")
@@ -811,7 +811,6 @@ function Update()
 	else
 		debugMsg("next is OK")
 	end
-]]
 
 --	while nextEvent do
 	--	debugMsg("nextEvent: name=" .. nextEvent.name .. "  data=" .. nextEvent.data)

@@ -51,11 +51,6 @@ Type TDebugScreen
 
 
 	Function OnButtonClickHandler(sender:TDebugControlsButton)
-'		print "clicked " + sender.dataInt
-						'player.PlayerAI.CallLuaFunction("OnForceNextTask", null)
-
-'		GetPlayerBase(2).PlayerAI.CallOnChat(1, "CMD_forcetask StationMap 1000", CHAT_COMMAND_WHISPER)
-
 		DebugScreen.mode = sender.dataInt
 	End Function
 
@@ -253,7 +248,8 @@ Type TDebugScreen
 		If taskName
 			If player.playerAI
 				'player.PlayerAI.CallLuaFunction("OnForceNextTask", null)
-				GetPlayerBase(2).PlayerAI.CallOnChat(1, "CMD_forcetask " + taskName +" 1000", CHAT_COMMAND_WHISPER)
+				'GetPlayerBase(2).PlayerAI.CallOnChat(1, "CMD_forcetask " + taskName +" 1000", CHAT_COMMAND_WHISPER)
+				player.playerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).AddInt(1).AddString("CMD_forcetask " + taskName +" 1000").AddInt(CHAT_COMMAND_WHISPER))
 			Else
 				'send player to the room of the task
 				Local room:TRoom
@@ -336,6 +332,9 @@ Type TDebugScreen
 		For Local b:TDebugControlsButton = EachIn playerCommandAIButtons
 			b.Render(sideButtonPanelWidth + 5 + 1*(120 + 10), 30)
 		Next
+
+
+		RenderPlayerEventQueue(playerID, 600, 20)
 	End Method
 
 
@@ -917,6 +916,25 @@ endrem
 				textFont.Draw(player.aiData.GetInt("tasklist_basepriority"+taskNumber), textX + 90 + 22*1, textY)
 				textFont.Draw(player.aiData.GetInt("tasklist_situationpriority"+taskNumber), textX + 90 + 22*2, textY)
 				textFont.Draw(player.aiData.GetInt("tasklist_requisitionpriority"+taskNumber), textX + 90 + 22*3, textY)
+				textY :+ 10
+			Next
+		EndIf
+	End Method
+
+
+	Method RenderPlayerEventQueue(playerID:Int, x:Int, y:Int)
+		Local player:TPlayer = GetPlayer(playerID)
+
+		If player.playerAI
+			SetColor 40,40,40
+			DrawRect(x, y, 185, Max(100, player.playerAI.eventQueue.length * 10 + 6))
+			SetColor 255,255,255
+
+			Local textX:Int = x + 3
+			Local textY:Int = y + 3
+
+			For local aievent:TAIEvent = EachIn player.playerAI.eventQueue
+				textFont.Draw("event:   " + aievent.ID, textX, textY)
 				textY :+ 10
 			Next
 		EndIf

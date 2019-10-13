@@ -1576,7 +1576,8 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			Else
 
 				If player.isLocalAI()
-					player.PlayerAI.CallOnProgrammeLicenceAuctionWin(licence, bestBid)
+					'player.PlayerAI.CallOnProgrammeLicenceAuctionWin(licence, bestBid)
+					player.PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnProgrammeLicenceAuctionWin).Add(licence).AddInt(bestBid))
 				EndIf
 
 				'emit event so eg. toastmessages could attach
@@ -1686,7 +1687,8 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 				'inform player AI that their bid was overbid
 				If GetPlayerBase(bestBidder).isLocalAI()
 					Local thisPaidBestBid:Int = thisBidRaw * licence.GetAudienceReachLevelPriceMod(audienceReachLevel)
-					GetPlayerBase(bestBidder).PlayerAI.CallOnProgrammeLicenceAuctionGetOutbid(GetLicence(), thisPaidBestBid, playerID)
+					'GetPlayerBase(bestBidder).PlayerAI.CallOnProgrammeLicenceAuctionGetOutbid(GetLicence(), thisPaidBestBid, playerID)
+					GetPlayerBase(bestBidder).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnProgrammeLicenceAuctionGetOutbid).Add(GetLicence()).AddInt(thisPaidBestBid).AddInt(playerID))
 				EndIf
 
 				'emit event so eg. toastmessages could attach
