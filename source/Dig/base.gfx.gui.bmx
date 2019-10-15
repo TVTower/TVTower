@@ -314,6 +314,10 @@ Type TGUIManager
 		'if objA is "lower"", move to bottom
 		If objA.GetZIndex() < objB.GetZIndex() Then Return -1
 
+		'if one of them is active - prefer it
+		If objA._status & GUI_OBJECT_STATUS_ACTIVE Then Return 1
+		If objB._status & GUI_OBJECT_STATUS_ACTIVE Then Return -1
+
 
 		'run custom compare job
 '		return objA.compare(objB)
@@ -585,6 +589,7 @@ Type TGUIManager
 				'If ListDraggedBackup.contains(obj) Then Continue
 
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
+
 				'avoid getting updated multiple times
 				'this can be overcome with a manual "obj.Update()"-call
 				'if obj._lastUpdateTick = _lastUpdateTick then continue
@@ -925,6 +930,12 @@ Type TGUIobject
 	End Method
 
 
+	Method SortChildren()
+		if _children then _children.sort(True, TGUIManager.SortObjects)
+		if _childrenReversed then _childrenReversed.sort(False, TGUIManager.SortObjects)
+	End Method
+
+
 	Method AddChild:Int(child:TGUIobject)
 		'remove child from a prior parent to avoid multiple references
 		If child._parent Then child._parent.RemoveChild(child)
@@ -938,8 +949,7 @@ Type TGUIobject
 
 			'remove from guimanager, we take care of it
 			GUIManager.Remove(child)
-			_children.sort(True, TGUIManager.SortObjects)
-			_childrenReversed.sort(False, TGUIManager.SortObjects)
+			SortChildren()
 
 			'maybe zindex changed now
 			If hasOption(GUI_OBJECT_CHILDREN_CHANGE_GUIORDER)
@@ -1342,9 +1352,14 @@ Type TGUIobject
 	End Method
 
 
-	Method SetZIndex(zindex:Int)
-		Self.zIndex = zindex
-		GUIManager.SortLists()
+	Method SetZIndex(zIndex:Int)
+		If self.zIndex <> zIndex
+			Self.zIndex = zindex
+
+			If hasOption(GUI_OBJECT_MANAGED) then GUIManager.SortLists()
+
+			If _parent then _parent.OnChildZIndexChanged()
+		EndIf
 	End Method
 
 
@@ -2089,6 +2104,7 @@ Type TGUIobject
 							Local isClicked:Int = False
 
 							If MouseManager.IsClicked(1)
+								print "onClick for: " + GetClassName() + "  " + GetValue()
 								Local clickEvent:TEvenTsimple = TEventSimple.Create("guiobject.OnClick", New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 								Local handledClick:Int
 
@@ -2473,6 +2489,12 @@ Type TGUIobject
 				obj.OnParentReposition(Self, dx,dy)
 			Next
 		EndIf
+	End Method
+
+
+	Method OnChildZIndexChanged()
+		SortChildren()
+		If _parent Then _parent.OnChildZIndexChanged()
 	End Method
 
 

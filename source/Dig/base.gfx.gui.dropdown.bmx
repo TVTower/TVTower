@@ -439,7 +439,12 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 			'if the itemclass gets extended (compared to the general approach
 			'of "guiobject.onclick")
 			EventManager.triggerEvent(TEventSimple.Create("GUIDropDownItem.onClick", new TData.AddNumber("button", button), Self, triggerEvent.GetReceiver()) )
+
+			'we handled it
+			Return True
 		endif
+
+		Return False
 	End Method
 
 
