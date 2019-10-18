@@ -32,7 +32,7 @@ Type RoomHandler_Archive extends TRoomHandler
 	global LS_archive:TLowerString = TLowerString.Create("archive")
 
 	Global _instance:RoomHandler_Archive
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 
 	Function GetInstance:RoomHandler_Archive()
@@ -75,8 +75,8 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
 		'we want to know if we hover a specific block - to show a datasheet
@@ -263,10 +263,12 @@ Type RoomHandler_Archive extends TRoomHandler
 	Method RemoveAllGuiElements:int()
 		GuiListSuitcase.EmptyList()
 
-		For local guiLicence:TGUIProgrammeLicence = eachin GuiManager.listDragged.Copy()
-			guiLicence.remove()
-			guiLicence = null
-		Next
+		If GUIManager.listDragged.Count() > 0
+			For local guiLicence:TGUIProgrammeLicence = eachin GuiManager.listDragged.Copy()
+				guiLicence.remove()
+				guiLicence = null
+			Next
+		EndIf
 
 		hoveredGuiProgrammeLicence = null
 		draggedGuiProgrammeLicence = null

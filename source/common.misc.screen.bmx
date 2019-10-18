@@ -582,8 +582,12 @@ Type TScreenChangeEffect_SimpleFader extends TScreenChangeEffect
 	Method Create:TScreenChangeEffect_SimpleFader(direction:int=0, area:TRectangle=null)
 		_direction = direction
 
-		_area = null
-		if area then _area = area.copy()
+		If area
+			if not _area then _area = new TRectangle
+			_area.CopyFrom(area)
+		Else
+			_area = null
+		EndIf
 
 		Initialize()
 

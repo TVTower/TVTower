@@ -52,7 +52,7 @@ Type TGUIListBase Extends TGUIobject
 	Field entriesLimit:Int = -1
 	'private mouseover-field (ignoring covering child elements)
 	Field _mouseOverArea:Int = False
-	Field _dropOnTargetListenerLink:TLink = Null
+	Field _dropOnTargetListener:TEventListenerBase = Null
 	'displace each entry by (z-value is stepping)...
 	Field _entryDisplacement:TVec3D	= New TVec3D.Init(0, 0, 1)
 	'displace the entriesblock by x,y...
@@ -236,10 +236,10 @@ Type TGUIListBase Extends TGUIobject
 
 	Method SetAcceptDrop:Int(accept:Object)
 		'if we registered already - remove the old one
-		If _dropOnTargetListenerLink Then EventManager.unregisterListenerByLink(_dropOnTargetListenerLink)
+		If _dropOnTargetListener Then EventManager.unregisterListener(_dropOnTargetListener)
 
 		'is something dropping - check if it is this list
-		_dropOnTargetListenerLink = EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropOnTarget, accept, Self)
+		_dropOnTargetListener = EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropOnTarget, accept, Self)
 	End Method
 
 

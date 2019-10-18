@@ -8,13 +8,13 @@ Import "game.gameobject.bmx"
 
 
 Type TArchivedMessageCollection Extends TGameObjectCollection
-	Global _eventListeners:TLink[] {nosave}
+	Global _eventListeners:TEventListenerBase[] {nosave}
 	Global _instance:TArchivedMessageCollection
 
 	Method New()
 		'=== REGISTER EVENTS ===
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'disabled: now done manually
 		'scan for newly added toast messages
@@ -54,7 +54,7 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 	Method Add:int(obj:TGameObject)
 		local message:TArchivedMessage = TArchivedMessage(obj)
 		if not message then return False
-		
+
 		'keep count below 100 for each owner
 		if message
 			if GetCountByOwner(message.GetOwner()) > 110 then LimitArchive(100, message.GetOwner())
@@ -82,7 +82,7 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 			if owner = -1 or a.GetOwner() = owner then toRemove :+ [a]
 		Next
 
-	
+
 		For local a:TArchivedMessage = EachIn toRemove
 			Remove(a)
 		Next
@@ -110,7 +110,7 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 		Next
 		return index > limitToAmount
 	End Method
-	
+
 
 	rem
 	Function onAddToastMessage:int(triggerEvent:TEventBase)
@@ -243,7 +243,7 @@ Type TArchivedMessage extends TOwnedGameObject
 		endif
 		return SortByTime(o1,o2)
 	End Function
-	
+
 
 	Function SortByGroup:int(o1:object, o2:object)
 		Local a1:TArchivedMessage = TArchivedMessage(o1)

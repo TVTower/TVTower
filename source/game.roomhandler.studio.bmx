@@ -44,7 +44,7 @@ Type RoomHandler_Studio extends TRoomHandler
 	global LS_studio:TLowerString = TLowerString.Create("studio")
 
 	Global _instance:RoomHandler_Studio
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 
 	Function GetInstance:RoomHandler_Studio()
@@ -112,8 +112,8 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
 		'to react on changes in the programmeCollection (eg. custom script finished)
@@ -181,11 +181,13 @@ Type RoomHandler_Studio extends TRoomHandler
 		endif
 
 		'Try to drop back dragged elements
-		For local obj:TGUIScript = eachIn GuiManager.ListDragged.Copy()
-			obj.dropBackToOrigin()
-			'successful or not - get rid of the gui element
-			obj.Remove()
-		Next
+		If GUIManager.listDragged.Count() > 0
+			For local obj:TGUIScript = eachIn GuiManager.ListDragged.Copy()
+				obj.dropBackToOrigin()
+				'successful or not - get rid of the gui element
+				obj.Remove()
+			Next
+		EndIf
 
 		return abortedAction
 	End Method
@@ -499,15 +501,19 @@ Type RoomHandler_Studio extends TRoomHandler
 		guiListSuitcase.EmptyList()
 		guiListDeskProductionConcepts.EmptyList()
 
-		For local guiScript:TGUIScript = eachin GuiManager.listDragged.Copy()
-			guiScript.remove()
-			guiScript = null
-		Next
+		If GUIManager.listDragged.Count() > 0
+			For local guiScript:TGUIScript = eachin GuiManager.listDragged.Copy()
+				guiScript.remove()
+				guiScript = null
+			Next
+		EndIf
 
-		For local guiConcept:TGuiProductionConceptListItem = eachin GuiManager.listDragged.Copy()
-			guiConcept.remove()
-			guiConcept = null
-		Next
+		If GUIManager.listDragged.Count() > 0
+			For local guiConcept:TGuiProductionConceptListItem = eachin GuiManager.listDragged.Copy()
+				guiConcept.remove()
+				guiConcept = null
+			Next
+		EndIf
 
 		hoveredGuiScript = null
 		draggedGuiScript = null
@@ -542,12 +548,14 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		'dragged scripts
 		local draggedScripts:TList = CreateList()
-		For local guiScript:TGUIScript = EachIn GuiManager.listDragged.Copy()
-			draggedScripts.AddLast(guiScript.script)
-			'remove the dragged guiscript, gets replaced by a new
-			'instance
-			guiScript.Remove()
-		Next
+		If GUIManager.listDragged.Count() > 0
+			For local guiScript:TGUIScript = EachIn GuiManager.listDragged.Copy()
+				draggedScripts.AddLast(guiScript.script)
+				'remove the dragged guiscript, gets replaced by a new
+				'instance
+				guiScript.Remove()
+			Next
+		EndIf
 
 		'suitcase
 		For local guiScript:TGUIScript = eachin GuiListSuitcase._slots
@@ -571,11 +579,13 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		'dragged ones
 		local draggedProductionConcepts:TList = CreateList()
-		For local guiProductionConcept:TGuiProductionConceptListItem = EachIn GuiManager.listDragged.Copy()
-			draggedProductionConcepts.AddLast(guiProductionConcept.productionConcept)
-			'remove the dragged one, gets replaced by a new instance
-			guiProductionConcept.Remove()
-		Next
+		If GUIManager.listDragged.Count() > 0
+			For local guiProductionConcept:TGuiProductionConceptListItem = EachIn GuiManager.listDragged.Copy()
+				draggedProductionConcepts.AddLast(guiProductionConcept.productionConcept)
+				'remove the dragged one, gets replaced by a new instance
+				guiProductionConcept.Remove()
+			Next
+		EndIf
 
 		'desk production concepts
 		For local guiProductionConcept:TGuiProductionConceptListItem = eachin guiListDeskProductionConcepts._slots

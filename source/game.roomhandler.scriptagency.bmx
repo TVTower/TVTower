@@ -34,7 +34,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	Global scriptsNormal2Amount:int	= 1
 
 	Global _instance:RoomHandler_ScriptAgency
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 
 	Function GetInstance:RoomHandler_ScriptAgency()
@@ -114,8 +114,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
 		'to react on changes in the programmeCollection (eg. custom script finished)

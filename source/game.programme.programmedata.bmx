@@ -38,7 +38,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	Field _finishedProductionProgrammeData:TList {nosave}
 
 	Global _instance:TProgrammeDataCollection
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 
 	Function GetInstance:TProgrammeDataCollection()
@@ -49,8 +49,8 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 
 	Method New()
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
 		'_eventListeners :+ [ EventManager.registerListenerFunction( "Language.onSetLanguage", onSetLanguage ) ]

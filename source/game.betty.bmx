@@ -9,7 +9,7 @@ Import "game.world.worldtime.bmx"
 Import "game.publicimage.bmx"
 
 
-	
+
 
 Type TBetty
 	Field inLove:Int[4]
@@ -17,22 +17,22 @@ Type TBetty
 	'cached values
 	Field _inLoveSum:Int
 
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TBetty
 	Const LOVE_MAXIMUM:int = 10000
 
 
 	Method New()
 		'=== REGISTER EVENTS ===
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'scan news shows for culture news
 		_eventListeners :+ [ EventManager.registerListenerFunction( "broadcasting.BeforeFinishAllNewsShowBroadcasts", onBeforeFinishAllNewsShowBroadcasts) ]
 		'scan programmes for culture-flag
 		_eventListeners :+ [ EventManager.registerListenerFunction( "broadcasting.BeforeFinishAllProgrammeBlockBroadcasts", onBeforeFinishAllProgrammeBlockBroadcasts) ]
 	End Method
-	
+
 
 	Function GetInstance:TBetty()
 		if not _instance then _instance = new TBetty
@@ -61,7 +61,7 @@ Type TBetty
 
 		local action:TBettyPresentGivingAction = new TBettyPresentGivingAction.Init(playerID, present, time)
 		GetPresentHistory(playerID).AddLast(action)
-		
+
 		AdjustLove(playerID, present.bettyValue)
 
 		TLogger.Log("Betty", "Player "+playerID+" gave Betty a present ~q"+present.GetName()+"~q.", LOG_DEBUG)
@@ -79,7 +79,7 @@ Type TBetty
 		return presentHistory[playerID-1]
 	End Method
 
-	
+
 	Method GetLoveSummary:string()
 		local res:string
 		for local i:int = 1 to 4
@@ -87,7 +87,7 @@ Type TBetty
 		Next
 		return res
 	End Method
-	
+
 
 	Method AdjustLove(PlayerID:Int, amount:Int, ignorePublicImage:int = False, adjustOthersLove:int = True)
 		'you cannot subtract more than what is there
@@ -155,7 +155,7 @@ Type TBetty
 
 	'returns a value how love is shared between players
 	Method GetInLoveShare:Float(PlayerID:Int)
-		If GetInLoveSum() > 0 
+		If GetInLoveSum() > 0
 			Return Max(0.0, Min(1.0, Self.InLove[PlayerID -1] / Float( GetInLoveSum() )))
 		Else
 			Return 1.0 / Self.inLove.length
@@ -181,7 +181,7 @@ Type TBetty
 
 		For local broadcastMaterial:TBroadcastMaterial = Eachin broadcasts
 			'only material which ends now ? So a 5block culture would get
-			'ignored if ending _after_ award time 
+			'ignored if ending _after_ award time
 			'if broadcastMaterial.currentBlockBroadcasting <> broadcastMaterial.GetBlocks()
 
 			local score:int = CalculateProgrammeScore(broadcastMaterial)
@@ -228,7 +228,7 @@ Type TBetty
 		'news have only a small influence
 		return int(ceil(allPoints))
 	End Function
-	
+
 
 	Function CalculateProgrammeScore:int(broadcastMaterial:TBroadcastMaterial)
 		if not broadcastMaterial or broadcastMaterial.owner < 0 then return 0
@@ -293,7 +293,7 @@ Type TBettyPresent
 	'value for betty
 	Field bettyValue:int
 	'locale key for GetLocale(key)
-	Field localeKey:string 
+	Field localeKey:string
 
 	Global presents:TBettyPresent[10]
 

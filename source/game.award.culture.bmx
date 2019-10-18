@@ -14,12 +14,12 @@ TAwardCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardType.C
 '- broadcasting culture news
 Type TAwardCulture extends TAward
 	Field cultureBoost:Float = 0.1
-	
+
 	'how important are news for the award
 	Global newsWeight:float = 0.25
-	
-	Global _eventListeners:TLink[]
-	
+
+	Global _eventListeners:TEventListenerBase[]
+
 
 	Method New()
 		awardType = TVTAwardType.CULTURE
@@ -28,8 +28,8 @@ Type TAwardCulture extends TAward
 		priceImage = 2.5
 
 		'=== REGISTER EVENTS ===
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'scan news shows for culture news
 		_eventListeners :+ [ EventManager.registerListenerFunction( "broadcasting.BeforeFinishAllNewsShowBroadcasts", onBeforeFinishAllNewsShowBroadcasts) ]
@@ -59,7 +59,7 @@ Type TAwardCulture extends TAward
 		result :+ chr(9654) + " " +StringHelper.UCFirst(GetLocale("ATTRACTIVITY"))+": "+GetLocale("PROGRAMME_FLAG_CULTURE")+" " + valueStr + timeStr
 		return result
 	End Method
-	
+
 
 	'override
 	'add temporary culture-boost
@@ -100,7 +100,7 @@ Type TAwardCulture extends TAward
 			modifier.AddCondition(mTimeCondition)
 			GetGameModifierManager().Add( modifier )
 		endif
-		
+
 		return True
 	End Method
 
@@ -127,7 +127,7 @@ Type TAwardCulture extends TAward
 
 		For local broadcastMaterial:TBroadcastMaterial = Eachin broadcasts
 			'only material which ends now ? So a 5block culture would get
-			'ignored if ending _after_ award time 
+			'ignored if ending _after_ award time
 			'if broadcastMaterial.currentBlockBroadcasting <> broadcastMaterial.GetBlocks()
 
 			local score:int = CalculateProgrammeScore(broadcastMaterial)
@@ -166,11 +166,11 @@ Type TAwardCulture extends TAward
 
 		'divide by block count so each block adds some points
 		points :/ programme.GetBlocks()
-		
+
 		'calculate final score
 		return int(ceil(Max(0, points * pointsMod)))
 	End Function
-	
+
 
 	Function CalculateNewsShowScore:int(newsShow:TNewsShow)
 		if not newsShow

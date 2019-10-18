@@ -133,7 +133,7 @@ Type TIngameHelpWindow
 	Field checkboxHideThis:TGUICheckbox
 	Field checkboxHideAll:TGUICHeckbox
 
-	Field _eventListeners:TLink[]
+	Field _eventListeners:TEventListenerBase[]
 	Field active:Int = False
 	Field helpGUID:String = "" 'id of the ingame help
 	Field title:String
@@ -277,7 +277,7 @@ Type TIngameHelpWindow
 
 		active = False
 
-		EventManager.unregisterListenersByLinks(_eventListeners)
+		EventManager.UnregisterListenersArray(_eventListeners)
 	End Method
 
 

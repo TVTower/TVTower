@@ -101,7 +101,7 @@ Type TGUIManager
 	Field _focusedObject:TGUIObject
 
 	Global _instance:TGUIManager
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 
 
@@ -118,8 +118,8 @@ Type TGUIManager
 
 	Method Init:TGUIManager()
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 
 		'is something dropping on a gui element?
@@ -574,6 +574,7 @@ Type TGUIManager
 			Local listBackupReversed:TGUIObject[] = TGUIObject[](List.ToArray())
 			Local i:Int = listBackupReversed.Length
 			'For Local obj:TGUIobject = EachIn listBackupReversed
+
 			While i
 				i :- 1
 				Local obj:TGUIObject = listBackupReversed[i]
@@ -727,7 +728,7 @@ Type TGUIobject
 	'only handle if this state is requested on guimanager.update / draw
 	Field _limitToState:String = ""
 	'an array containing registered event listeners
-	Field _registeredEventListener:TLink[]
+	Field _registeredEventListener:TEventListenerBase[]
 	'Field _lastDrawTick:int = 0
 	'Field _lastUpdateTick:int = 0
 
@@ -789,8 +790,8 @@ Type TGUIobject
 		'unlink all potential event listeners concerning that object
 		EventManager.unregisterListenerByLimit(Self,Self)
 
-		EventManager.unregisterListenersByLinks(_registeredEventListener)
-		_registeredEventListener = New TLink[0]
+		EventManager.UnregisterListenersArray(_registeredEventListener)
+		_registeredEventListener = new TEventListenerBase[0]
 
 		'maybe our parent takes care of us...
 		If _parent Then _parent.RemoveChild(Self)
@@ -813,8 +814,8 @@ Type TGUIobject
 	End Method
 
 
-	Method AddEventListener:Int(listenerLink:TLink)
-		_registeredEventListener :+ [listenerLink]
+	Method AddEventListener:Int(listener:TEventListenerBase)
+		_registeredEventListener :+ [listener]
 	End Method
 
 
@@ -2104,7 +2105,6 @@ Type TGUIobject
 							Local isClicked:Int = False
 
 							If MouseManager.IsClicked(1)
-								print "onClick for: " + GetClassName() + "  " + GetValue()
 								Local clickEvent:TEvenTsimple = TEventSimple.Create("guiobject.OnClick", New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 								Local handledClick:Int
 

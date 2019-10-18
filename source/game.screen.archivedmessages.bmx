@@ -27,7 +27,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 	Global hoveredGuiMessage:TGUIArchivedMessageListItem
 
 	Global LS_office_archivedmessages:TLowerString = TLowerString.Create("office_archivedmessages")
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TScreenHandler_OfficeArchivedMessages
 
 	Const SHOW_ALL:int = 0
@@ -52,8 +52,8 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'to reload message list when entering a screen
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterScreen, screen) ]

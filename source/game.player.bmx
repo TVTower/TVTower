@@ -9,7 +9,7 @@ Import "game.player.boss.bmx"
 
 
 Type TPlayerCollection extends TPlayerBaseCollection
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _registeredEvents:int = False
 
 
@@ -39,10 +39,10 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 		'=== EVENTS ===
 		'remove old listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
+		EventManager.UnregisterListenersArray(_eventListeners)
 
 		'register new listeners
-		_eventListeners = new TLink[0]
+		_eventListeners = new TEventListenerBase[0]
 		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onFailEnterRoom", OnFigureFailEnterRoom) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onBeginEnterRoom", OnFigureBeginEnterRoom) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onFinishEnterRoom", OnFigureFinishEnterRoom) ]

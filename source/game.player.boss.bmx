@@ -25,7 +25,7 @@ Type TPlayerBossCollection
 	'adjust this TOO when switching players
 	Field playerID:Int = 1
 
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TPlayerBossCollection
 
 
@@ -39,10 +39,10 @@ Type TPlayerBossCollection
 
 		'=== EVENTS ===
 		'remove old listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
+		EventManager.UnregisterListenersArray(_eventListeners)
 
 		'register new listeners
-		_eventListeners = new TLink[0]
+		_eventListeners = new TEventListenerBase[0]
 		_eventListeners :+ [ EventManager.registerListenerFunction("broadcast.common.FinishBroadcasting", onFinishBroadcasting) ]
 		'instead of updating the boss way to often, we update bosses
 		'once a ingame minute

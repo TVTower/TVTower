@@ -151,7 +151,7 @@ End Type
 
 Type TGUIModalSettingsMenu Extends TGUIModalWindowChainDialogue
 	Field settingsPanel:TGUISettingsPanel
-	Field _eventListeners:TLink[]
+	Field _eventListeners:TEventListenerBase[]
 
 
 	Method Create:TGUIModalSettingsMenu(pos:TVec2D, dimension:TVec2D, limitState:String = "")
@@ -222,8 +222,8 @@ Global LS_modalSettingsMenu:TLowerString = TLowerString.Create("modalSettings")
 		settingsPanel = Null
 
 		'remove all event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 	End Method
 
 
@@ -243,7 +243,7 @@ End Type
 
 Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 	Field savegameList:TGUISelectList
-	Field _eventListeners:TLink[]
+	Field _eventListeners:TEventListenerBase[]
 	Field _onLoadSavegameFunc:Int()
 
 	Method Create:TGUIModalLoadSavegameMenu(pos:TVec2D, dimension:TVec2D, limitState:String = "")
@@ -273,8 +273,8 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 		'=== EVENTS ===
 		'listen to clicks on "load savegame"
 		'_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onclick", onClickLoadSavegame, dialogueButtons[0]) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guibutton.onclick", Self, "onClickLoadSavegame") ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "SaveGame.OnLoad", Self, "onLoadSavegame") ]
+		_eventListeners :+ [ EventManager.RegisterListenerMethod( "guibutton.onclick", Self, "onClickLoadSavegame") ]
+		_eventListeners :+ [ EventManager.RegisterListenerMethod( "SaveGame.OnLoad", Self, "onLoadSavegame") ]
 
 		Return Self
 	End Method
@@ -310,8 +310,8 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 		Self.savegameList = Null
 
 		'remove all event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 	End Method
 
@@ -420,7 +420,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 	Field savegameList:TGUISelectList
 	Field savegameName:TGUIInput
 	Field savegameNameLabel:TGUILabel
-	Field _eventListeners:TLink[]
+	Field _eventListeners:TEventListenerBase[]
 
 	Global _confirmOverwriteDialogue:TGUIModalWindow
 
@@ -513,8 +513,8 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 		Self.savegameNameLabel = Null
 
 		'remove all event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 	End Method
 
 

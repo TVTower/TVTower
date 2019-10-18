@@ -22,7 +22,7 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 	Global _confirmActionTooltip:TTooltipBase
 
 	Global LS_roomagency_board:TLowerString = TLowerString.Create("roomagency")
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:RoomHandler_RoomAgency
 
 	Const MODE_NONE:int = 0
@@ -50,8 +50,8 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'react to changes (eg. cancel a buy/sell-selection if the selected
 		'room changes owner)

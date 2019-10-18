@@ -16,7 +16,7 @@ GetProgrammeProducerCollection().Add( TProgrammeProducerSport.GetInstance() )
 
 Type TProgrammeProducerSport Extends TProgrammeProducerBase
 	Global _eventsRegistered:Int= False
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TProgrammeProducerSport
 
 
@@ -35,8 +35,8 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 	Method New()
 		If Not _eventsRegistered
 			'=== remove all registered event listeners
-			EventManager.unregisterListenersByLinks(_eventListeners)
-			_eventListeners = New TLink[0]
+			EventManager.UnregisterListenersArray(_eventListeners)
+			_eventListeners = new TEventListenerBase[0]
 
 			_eventListeners :+ [ EventManager.registerListenerFunction("SportLeague.StartSeason", onSportLeagueStartSeason) ]
 			'_eventListeners :+ [ EventManager.registerListenerFunction("Sport.StartPlayoffs", onSportLeagueStartSeason) ]

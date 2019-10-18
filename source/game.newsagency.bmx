@@ -144,14 +144,14 @@ End Function
 
 
 Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TNewsAgencyNewsProvider_Sport
 
 
 	Method New()
 		'=== REGISTER EVENTS ===
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		_eventListeners :+ [EventManager.registerListenerFunction( "SportLeague.RunMatch", onRunMatch )]
 		_eventListeners :+ [EventManager.registerListenerFunction( "Sport.Playoffs.RunMatch", onRunPlayoffMatch )]
@@ -283,7 +283,7 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 	Field weatherUpdateTimeInterval:int[] = [270, 300]
 	Field weatherType:int = 0
 
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 
 	Method Initialize:int()
@@ -294,8 +294,8 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 		weatherType = 0
 
 		'=== REGISTER EVENTS ===
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 	End Method
 
 

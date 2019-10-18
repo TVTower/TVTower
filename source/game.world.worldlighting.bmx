@@ -36,7 +36,7 @@ Type TWorldLighting
 		currentLight = fullLight.Copy()
 		currentFogColor = dayFog.Copy()
 
-		return Self 
+		return Self
 	End Method
 
 
@@ -51,11 +51,11 @@ Type TWorldLighting
 		Select GetWorldTime().GetDayPhase()
 			Case GetWorldTime().DAYPHASE_DAY
 				_lightIntensity = _lightIntensityBase
-				currentLight = fullLight.copy()
+				currentLight.CopyFrom( fullLight )
 
 			Case GetWorldTime().DAYPHASE_NIGHT
 				_lightIntensity = 0
-				currentLight = fullDark.copy()
+				currentLight.CopyFrom( fullDark )
 
 			Case GetWorldTime().DAYPHASE_DAWN
 				local relativeTime:Float = GetWorldTime().GetDayTime() - GetWorldTime().GetDawnPhaseBegin()
@@ -96,7 +96,7 @@ Type TWorldLighting
 					progress = ((relativeTime / time.GetDawnDuration()) - 0.75) * 2
 					currentFogColor = TColor.CreateFromMix(dawnDuskFog, dayFog, progress)
 				endif
-				
+
 			Case time.DAYPHASE_DAY
 				relativeTime = time.GetDayTime() - time.GetDayPhaseBegin()
 
@@ -112,7 +112,7 @@ Type TWorldLighting
 					progress = ((relativeTime / time.GetDayDuration()) - 3.0/4) * 2.0
 					currentFogColor = TColor.CreateFromMix(dayFog, dawnDuskFog, progress)
 				endif
-				
+
 			Case time.DAYPHASE_DUSK
 				relativeTime = time.GetDayTime() - time.GetDuskPhaseBegin()
 
@@ -128,7 +128,7 @@ Type TWorldLighting
 					progress = ((relativeTime / time.GetDuskDuration()) - 3.0/4) * 2.0
 					currentFogColor = TColor.CreateFromMix(dawnDuskFog, nightFog, progress)
 				endif
-				
+
 			Case time.DAYPHASE_NIGHT
 				'the time from 0 - dawn
 				if time.GetDayTime() < time.GetDawnPhaseBegin()
@@ -155,7 +155,7 @@ Type TWorldLighting
 		End Select
 	End Method
 
- 
+
 	Method Update:int()
 		_UpdateDaylight()
 		_UpdateFog()

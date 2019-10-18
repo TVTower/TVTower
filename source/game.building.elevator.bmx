@@ -1005,9 +1005,8 @@ Type TElevatorSmartLogic Extends TElevatorRouteLogic
 			EndIf
 
 			'Die Sortierung ausführen (anhand der Sortiernummer)
-			local tempList:TList = Elevator.FloorRouteList.Copy()
-			SortList(tempList, True, DefaultRouteSort)
-			TemporaryRouteList = tempList
+			TemporaryRouteList = Elevator.FloorRouteList.Copy()
+			TemporaryRouteList.Sort(True, DefaultRouteSort)
 		EndIf
 
 		'Den ersten Eintrag zurückgeben oder das aktuelle Stockwert wenn

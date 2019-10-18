@@ -10,7 +10,7 @@ Type TProductionManager
 	Field productionsToProduce:TList = CreateList()
 
 	Global _instance:TProductionManager
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global createdEnvironment:int = False
 
 
@@ -33,8 +33,8 @@ Type TProductionManager
 		if not createdEnvironment
 
 			'=== REGISTER EVENTS ===
-			EventManager.unregisterListenersByLinks(_eventListeners)
-			_eventListeners = new TLink[0]
+			EventManager.UnregisterListenersArray(_eventListeners)
+			_eventListeners = new TEventListenerBase[0]
 
 			'resize news genres when loading an older savegame
 			_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSavegameLoad) ]

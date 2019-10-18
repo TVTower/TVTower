@@ -16,7 +16,7 @@ Type TAchievementCollection
 	'as achievements / tasks / rewards base on TAchievementBaseType
 	'they can share a map
 	Global registeredElements:TMap = CreateMap()
-	Global eventListeners:TLink[] {nosave}
+	Global eventListeners:TEventListenerBase[] {nosave}
 
 
 	Function GetInstance:TAchievementCollection()
@@ -661,7 +661,7 @@ Type TAchievementTask Extends TAchievementBaseType
 	Field stateSet:TAchievementStateSet = new TAchievementStateSet
 	Field timeCreated:Long = -1
 	Field timeLimit:Long = -1
-	Field eventListeners:TLink[] {nosave}
+	Field eventListeners:TEventListenerBase[] {nosave}
 
 
 	'DO NOT DO THIS as this also would register listeners for the "creator"
@@ -672,7 +672,7 @@ Type TAchievementTask Extends TAchievementBaseType
 
 
 	Method Delete()
-		EventManager.unregisterListenersByLinks(eventListeners)
+		EventManager.UnregisterListenersArray(eventListeners)
 	End Method
 
 
@@ -688,7 +688,7 @@ Type TAchievementTask Extends TAchievementBaseType
 
 	Method RegisterEventListeners:int()
 		'remove old ones
-		EventManager.unregisterListenersByLinks(eventListeners)
+		EventManager.UnregisterListenersArray(eventListeners)
 
 		return True
 	End Method

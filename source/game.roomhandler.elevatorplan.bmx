@@ -8,7 +8,7 @@ Import "game.player.base.bmx"
 
 'Dies hier ist die Raumauswahl im Fahrstuhl.
 Type RoomHandler_ElevatorPlan extends TRoomHandler
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:RoomHandler_ElevatorPlan
 
 
@@ -73,7 +73,7 @@ End Type
 
 
 Type TElevatorRoomBoard extends TRoomBoardBase
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TElevatorRoomBoard
 
 
@@ -109,8 +109,8 @@ Type TElevatorRoomBoard extends TRoomBoardBase
 		'=== EVENTS ===
 		'=== remove all registered event listeners
 		'disabled: no methods
-		'EventManager.unregisterListenersByLinks(_eventListeners)
-		'_eventListeners = new TLink[0]
+		'EventManager.UnregisterListenersArray(_eventListeners)
+		'_eventListeners = new TEventListenerBase[0]
 
 		if not _eventListeners or _eventListeners.length = 0
 			'invalidate caches of signs - so they get redone

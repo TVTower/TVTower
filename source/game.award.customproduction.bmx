@@ -13,18 +13,18 @@ TAwardCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardType.C
 '- the best of the productions done within the time
 Type TAwardCustomProduction extends TAward
 	Field bestLicences:TProgrammeLicence[]
-	Global _eventListeners:TLink[]
-	
+	Global _eventListeners:TEventListenerBase[]
+
 
 	Method New()
 		awardType = TVTAwardType.CUSTOMPRODUCTION
 
 		priceMoney = 50000
 		priceImage = 1.5
-		
+
 		'=== REGISTER EVENTS ===
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'listen to finished productions
 		_eventListeners :+ [ EventManager.registerListenerFunction( "production.finalize", onProductionFinalize) ]
@@ -45,11 +45,11 @@ Type TAwardCustomProduction extends TAward
 	Method GetDuration:int()
 		if duration = -1
 			'2days
-			duration = GetWorldTime().MakeTime(0, 2, 0, 0) 
+			duration = GetWorldTime().MakeTime(0, 2, 0, 0)
 		endif
 		return duration
 	End Method
-	
+
 
 	Method Finish:int()
 		local result:int = Super.Finish()
@@ -63,7 +63,7 @@ Type TAwardCustomProduction extends TAward
 
 	Method UpdateBestScore(licence:TProgrammeLicence)
 		if not licence then return
-		
+
 		local score:int = CalculateProgrammeLicenceScore(licence)
 		local currentScore:int = GetScore(licence.owner)
 		if score > currentScore

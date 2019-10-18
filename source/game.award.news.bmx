@@ -8,8 +8,8 @@ TAwardCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardType.N
 
 
 Type TAwardNews extends TAward
-	Global _eventListeners:TLink[]
-	
+	Global _eventListeners:TEventListenerBase[]
+
 
 	Method New()
 		awardType = TVTAwardType.NEWS
@@ -18,8 +18,8 @@ Type TAwardNews extends TAward
 		priceImage = 2.0
 
 		'=== REGISTER EVENTS ===
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'react to news shows
 		'news(event)-quality is adjusted (aired amount increases,

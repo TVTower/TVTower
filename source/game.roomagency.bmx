@@ -17,7 +17,7 @@ Type TRoomAgency
 	'- make genres "visible" via dialogue ?
 
 
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TRoomAgency
 
 
@@ -29,8 +29,8 @@ Type TRoomAgency
 
 	Method Initialize:int()
 		'=== REGISTER EVENTS ===
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'react to bombs, marshals, ...
 		_eventListeners :+ [ EventManager.registerListenerFunction("room.onBombExplosion", onRoomBombExplosion) ]

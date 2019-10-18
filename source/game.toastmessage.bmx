@@ -25,7 +25,7 @@ Type TGameToastMessage Extends TToastMessage
 	Field priority:Int = 0
 	Field showBackgroundSprite:Int = True
 	'an array containing registered event listeners
-	Field _registeredEventListener:TLink[]
+	Field _registeredEventListener:TEventListenerBase[]
 	Field _closeAtWorldTime:Double = -1
 	Field _closeAtWorldTimeText:String = "closing at %TIME%"
 	Global spriteNameLS_MessageType_Info:TLowerString = New TLowerString.Create("gfx_toastmessage.info")
@@ -40,9 +40,9 @@ Type TGameToastMessage Extends TToastMessage
 
 
 	Method Remove:Int()
-		For Local link:TLink = EachIn _registeredEventListener
-			link.Remove()
-		Next
+		EventManager.UnregisterListenersArray(_registeredEventListener)
+		_registeredEventListener = new TEventListenerBase[0]
+
 		Return Super.Remove()
 	End Method
 
@@ -76,8 +76,8 @@ Type TGameToastMessage Extends TToastMessage
 
 
 	Method AddCloseOnEvent(eventKey:String)
-		Local listenerLink:TLink = EventManager.registerListenerMethod(eventKey, Self, "onReceiveCloseEvent", Self)
-		_registeredEventListener :+ [listenerLink]
+		Local listener:TEventListenerBase = EventManager.registerListenerMethod(eventKey, Self, "onReceiveCloseEvent", Self)
+		_registeredEventListener :+ [listener]
 	End Method
 
 

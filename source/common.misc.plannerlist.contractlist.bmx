@@ -14,7 +14,7 @@ Type TgfxContractlist Extends TPlannerList
 	Global _contractsCacheKey:string = "" {nosave}
 	Global _contractsOwner:int = 0 {nosave}
 
-	Global _registeredListeners:TList = CreateList() {nosave}
+	Global _registeredListeners:TEventListenerBase[] {nosave}
 	Global registeredEvents:int = False
 
 
@@ -54,11 +54,8 @@ Type TgfxContractlist Extends TPlannerList
 
 
 	Method UnRegisterEvents:Int()
-		For local link:TLink = EachIn _registeredListeners
-			'variant a: link.Remove()
-			'variant b: we never know if there happens something else
-			EventManager.unregisterListenerByLink(link)
-		Next
+		EventManager.UnregisterListenersArray(_registeredListeners)
+		_registeredListeners = new TEventListenerBase[0]
 	End Method
 
 
@@ -67,18 +64,18 @@ Type TgfxContractlist Extends TPlannerList
 		if not registeredEvents
 			'handle changes to the programme collections (add/removal
 			'of contracts)
-			EventManager.registerListenerFunction("programmecollection.addAdContract", OnChangeProgrammeCollection)
-			EventManager.registerListenerFunction("programmecollection.removeAdContract", OnChangeProgrammeCollection)
+			_registeredListeners :+ [ EventManager.registerListenerFunction("programmecollection.addAdContract", OnChangeProgrammeCollection) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeAdContract", OnChangeProgrammeCollection) ]
 
 			'handle broadcasts of advertisements with our contracts
-			EventManager.registerListenerFunction("broadcast.advertisement.BeginBroadcasting", OnBroadcastAdvertisement)
-			EventManager.registerListenerFunction("broadcast.advertisement.BeginBroadcastingAsProgramme", OnBroadcastAdvertisement)
+			_registeredListeners :+ [ EventManager.registerListenerFunction("broadcast.advertisement.BeginBroadcasting", OnBroadcastAdvertisement) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction("broadcast.advertisement.BeginBroadcastingAsProgramme", OnBroadcastAdvertisement) ]
 
 			'handle changes to the contracts to avoid outdated information
-			EventManager.registerListenerFunction("adContract.onSetSpotsSent", OnChangeContractData)
+			_registeredListeners :+ [ EventManager.registerListenerFunction("adContract.onSetSpotsSent", OnChangeContractData) ]
 
 			'handle savegame loading (reset cache)
-			EventManager.registerListenerFunction("SaveGame.OnLoad", OnLoadSaveGame)
+			_registeredListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnLoad", OnLoadSaveGame) ]
 
 			registeredEvents = True
 		endif

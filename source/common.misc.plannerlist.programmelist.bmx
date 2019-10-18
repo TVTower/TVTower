@@ -38,7 +38,7 @@ Type TgfxProgrammelist Extends TPlannerList
 	Global _licencesCacheKey:string = "" {nosave}
 	Global _licencesOwner:int = 0 {nosave}
 
-	Global _registeredListeners:TList = CreateList() {nosave}
+	Global _registeredListeners:TEventListenerBase[] {nosave}
 	Global registeredEvents:int = False
 
 	Const MAX_LICENCES_PER_PAGE:int= 8
@@ -79,11 +79,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 
 	Method UnRegisterEvents:Int()
-		For local link:TLink = EachIn _registeredListeners
-			'variant a: link.Remove()
-			'variant b: we never know if there happens something else
-			EventManager.unregisterListenerByLink(link)
-		Next
+		EventManager.UnregisterListenersArray(_registeredListeners)
 	End Method
 
 
@@ -92,18 +88,18 @@ Type TgfxProgrammelist Extends TPlannerList
 		if not registeredEvents
 			'handle changes to the programme collections (add/removal
 			'of contracts)
-			EventManager.registerListenerFunction("programmecollection.addProgrammeLicence", OnChangeProgrammeCollection)
-			EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", OnChangeProgrammeCollection)
+			_registeredListeners :+ [ EventManager.registerListenerFunction("programmecollection.addProgrammeLicence", OnChangeProgrammeCollection) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", OnChangeProgrammeCollection) ]
 			'also clear cache if licences get moved from/to suitcase
-			EventManager.registerListenerFunction("programmecollection.addProgrammeLicenceToSuitcase", OnChangeProgrammeCollection)
-			EventManager.registerListenerFunction("programmecollection.removeProgrammeLicenceFromSuitcase", OnChangeProgrammeCollection)
+			_registeredListeners :+ [ EventManager.registerListenerFunction("programmecollection.addProgrammeLicenceToSuitcase", OnChangeProgrammeCollection) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeProgrammeLicenceFromSuitcase", OnChangeProgrammeCollection) ]
 
 			'handle broadcasts of the programme
-			EventManager.registerListenerFunction("broadcast.programme.BeginBroadcasting", OnBroadcastProgramme)
-			EventManager.registerListenerFunction("broadcast.programme.BeginBroadcastingAsAdvertisement", OnBroadcastProgramme)
+			_registeredListeners :+ [ EventManager.registerListenerFunction("broadcast.programme.BeginBroadcasting", OnBroadcastProgramme) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction("broadcast.programme.BeginBroadcastingAsAdvertisement", OnBroadcastProgramme) ]
 
 			'handle savegame loading (reset cache)
-			EventManager.registerListenerFunction("SaveGame.OnLoad", OnLoadSaveGame)
+			_registeredListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnLoad", OnLoadSaveGame) ]
 
 			registeredEvents = True
 		endif
@@ -260,7 +256,7 @@ Type TgfxProgrammelist Extends TPlannerList
 			'=== DRAW ===
 			Local currSprite:TSprite
 			'maybe it has changed since initialization
-			genreSize = GetSpriteFromRegistry("gfx_programmegenres_entry.default").area.dimension.copy()
+			genreSize.CopyFrom( GetSpriteFromRegistry("gfx_programmegenres_entry.default").area.dimension )
 			Local currY:Int = GetGenresRect().GetY()
 			Local currX:Int = GetGenresRect().GetX()
 			Local textRect:TRectangle = New TRectangle.Init(currX + 13, currY, GetGenreSize().x - 12 - 5, GetGenreSize().y)
@@ -352,7 +348,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 		Local currSprite:TSprite
 		'maybe it has changed since initialization
-		entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
+		entrySize.CopyFrom( GetSpriteFromRegistry("gfx_programmegenres_entry.default").area.dimension )
 		Local currY:Int = GetEntriesRect().GetY()
 		Local currX:Int = GetEntriesRect().GetX()
 		Local font:TBitmapFont = GetBitmapFont("Default", 10)

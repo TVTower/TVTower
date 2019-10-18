@@ -31,13 +31,13 @@ Type TScreenHandler
 	'special events for screens used in rooms - only this event has the room as sender
 	'screen.onScreenUpdate/Draw is more general purpose
 	'returns the event listener links
-	Function _RegisterScreenHandler:TLink[](updateFunc:int(triggerEvent:TEventBase), drawFunc:int(triggerEvent:TEventBase), screen:TScreen)
-		local links:TLink[]
+	Function _RegisterScreenHandler:TEventListenerBase[](updateFunc:int(triggerEvent:TEventBase), drawFunc:int(triggerEvent:TEventBase), screen:TScreen)
+		local listeners:TEventListenerBase[]
 		if screen
-			links :+ [ EventManager.registerListenerFunction( "room.onScreenUpdate", updateFunc, screen ) ]
-			links :+ [ EventManager.registerListenerFunction( "room.onScreenDraw", drawFunc, screen ) ]
+			listeners :+ [ EventManager.registerListenerFunction( "room.onScreenUpdate", updateFunc, screen ) ]
+			listeners :+ [ EventManager.registerListenerFunction( "room.onScreenDraw", drawFunc, screen ) ]
 		endif
-		return links
+		return listeners
 	End Function
 End Type
 
@@ -352,7 +352,7 @@ End Type
 'of this type only one instance can exist
 Type TInGameScreen_World Extends TInGameScreen
 	Global instance:TInGameScreen_World
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 
 	Method Create:TInGameScreen_World(name:String)
@@ -372,8 +372,8 @@ Type TInGameScreen_World Extends TInGameScreen
 		Super.Initialize()
 
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== add new event listeners
 		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onBeginLeaveRoom", onBeginLeaveRoom, "TFigure" ) ]
@@ -462,7 +462,7 @@ Type TInGameScreen_Room Extends TInGameScreen
 '	Field roomIDs:int[]
 	Field currentRoomID:Int = -1
 	Global temporaryDisableScreenChangeEffects:Int = False
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 
 	Method Create:TInGameScreen_Room(name:String)
@@ -481,8 +481,8 @@ Type TInGameScreen_Room Extends TInGameScreen
 		Super.Initialize()
 
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== add new event listeners
 		_eventListeners :+ [ EventManager.registerListenerFunction("room.onBeginEnter", OnRoomBeginEnter) ]

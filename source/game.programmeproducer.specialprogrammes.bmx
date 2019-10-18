@@ -207,7 +207,7 @@ End Type
 
 
 Type TProgrammeProducerMorningShows Extends TProgrammeProducerWithProduction
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TProgrammeProducerMorningShows
 
 
@@ -229,8 +229,8 @@ Type TProgrammeProducerMorningShows Extends TProgrammeProducerWithProduction
 
 	Method New()
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'react to "finished" special programmes
 		'_eventListeners :+ [ EventManager.registerListenerFunction("ProgrammeLicence.onGiveBackToLicencePool", onGiveBackLicenceToPool) ]

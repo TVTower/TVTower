@@ -8,7 +8,7 @@ Import "game.programme.programmelicence.bmx"
 
 Type TProgrammeProducerCollection Extends TGameObjectCollection
 	Global _eventsRegistered:int= FALSE
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance :TProgrammeProducerCollection
 
 
@@ -21,8 +21,8 @@ Type TProgrammeProducerCollection Extends TGameObjectCollection
 	Method New()
 		if not _eventsRegistered
 			'=== remove all registered event listeners
-			EventManager.unregisterListenersByLinks(_eventListeners)
-			_eventListeners = new TLink[0]
+			EventManager.UnregisterListenersArray(_eventListeners)
+			_eventListeners = new TEventListenerBase[0]
 			'...
 
 

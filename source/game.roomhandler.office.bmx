@@ -27,7 +27,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 	Global _instance:RoomHandler_Office
 	Global _initDone:int = False
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 
 	Function GetInstance:RoomHandler_Office()
@@ -59,8 +59,8 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
 		'handle the "office" itself (not computer etc)

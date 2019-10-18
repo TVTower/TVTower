@@ -24,7 +24,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 	Global hoveredGuiAchievement:TGUIAchievementListItem
 
 	Global LS_office_achievements:TLowerString = TLowerString.Create("office_achievements")
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TScreenHandler_OfficeAchievements
 
 	Const SHOW_ALL:int = 0
@@ -50,8 +50,8 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
 		'GUI -> GUI

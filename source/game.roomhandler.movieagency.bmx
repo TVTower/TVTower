@@ -62,7 +62,7 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 	Field movieCheapQualityMaximum:Float = 0.50
 
 	Global _instance:RoomHandler_MovieAgency
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 
 	Function GetInstance:RoomHandler_MovieAgency()
@@ -287,8 +287,8 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
 		'drop ... so sell/buy the thing

@@ -18,7 +18,7 @@ Import "game.production.productionconcept.bmx"
 Type TPlayerProgrammeCollectionCollection
 	Field plans:TPlayerProgrammeCollection[]
 	Global _instance:TPlayerProgrammeCollectionCollection
-	Global _eventListeners:TLink[0]
+	Global _eventListeners:TEventListenerBase[0]
 
 
 	Function GetInstance:TPlayerProgrammeCollectionCollection()
@@ -29,8 +29,8 @@ Type TPlayerProgrammeCollectionCollection
 
 	Method New()
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
 		'informing _old_ instances of the various roomhandlers
@@ -149,7 +149,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Field justAddedProgrammeLicences:TList = CreateList() {nosave}
 	'FALSE to avoid recursive handling (network)
 	Global fireEvents:int = TRUE
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 
 	Method Create:TPlayerProgrammeCollection(owner:int)
@@ -180,8 +180,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		justAddedProgrammeLicences.Clear()
 		news.Clear()
 
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 		_eventListeners :+ [ EventManager.registerListenerMethod( "programmeproduction.onFinish", self, "onFinishProgrammeProduction" ) ]
 
 	End Method
@@ -383,6 +383,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 				TLogger.Log("ReaddProgrammeLicencesFromSuitcase", "Failed to Remove licence ~q"+ l.GetTitle()+"~q ["+l.GetGUID()+"] from suitcase.", LOG_ERROR | LOG_DEBUG)
 			endif
 		Next
+
 		return TRUE
 	End Method
 
@@ -454,6 +455,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 			return True
 		else
+			TLogger.Log("RemoveProgrammeLicenceFromSuitcase", "Failed to add licence to collection", LOG_DEBUG)
 			return False
 		endif
 	End Method

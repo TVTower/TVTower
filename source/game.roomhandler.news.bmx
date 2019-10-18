@@ -39,7 +39,7 @@ Type RoomHandler_News extends TRoomHandler
 	global LS_newsroom:TLowerString = TLowerString.Create("newsroom")
 
 	Global _instance:RoomHandler_News
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global showDeleteHintTimer:Long = 0
 	'how long to display?
 	Global showDeleteHintTime:int = 4000
@@ -157,8 +157,8 @@ Type RoomHandler_News extends TRoomHandler
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 
 		'=== register event listeners
@@ -228,11 +228,13 @@ Type RoomHandler_News extends TRoomHandler
 		endif
 
 		'Try to drop back dragged elements
-		For local obj:TGUINews = eachIn GuiManager.ListDragged.Copy()
-			obj.dropBackToOrigin()
-			'successful or not - get rid of the gui element
-			obj.Remove()
-		Next
+		If GUIManager.ListDragged.count() > 0
+			For local obj:TGUINews = eachIn GuiManager.ListDragged.Copy()
+				obj.dropBackToOrigin()
+				'successful or not - get rid of the gui element
+				obj.Remove()
+			Next
+		EndIf
 
 		return abortedAction
 	End Method
@@ -714,17 +716,13 @@ Type RoomHandler_News extends TRoomHandler
 		guiNewsListAvailable.emptyList()
 		guiNewsListUsed.emptyList()
 
-		For local guiNews:TGuiNews = eachin GuiManager.listDragged.Copy()
-			guiNews.remove()
-			guiNews = null
-		Next
-		'should not be needed
-		rem
-		For local guiNews:TGuiNews = eachin GuiManager.list
-			guiNews.remove()
-			guiNews = null
-		Next
-		endrem
+		If GUIManager.ListDragged.count() > 0
+			For local guiNews:TGuiNews = eachin GuiManager.listDragged.Copy()
+				guiNews.remove()
+				guiNews = null
+			Next
+		EndIf
+
 		haveToRefreshGuiElements = True
 	End Function
 

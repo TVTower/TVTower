@@ -19,19 +19,19 @@ TAwardCollection.AddAwardCreatorFunction(TVTAwardType.GetAsString(TVTAwardType.A
 Type TAwardAudience extends TAward
 	'how important are news for the award
 	Global newsWeight:float = 0.25
-	
-	Global _eventListeners:TLink[]
-	
+
+	Global _eventListeners:TEventListenerBase[]
+
 
 	Method New()
 		awardType = TVTAwardType.AUDIENCE
 
 		priceMoney = 25000
 		priceImage = 0.5
-		
+
 		'=== REGISTER EVENTS ===
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'scan news shows for culture news
 		_eventListeners :+ [ EventManager.registerListenerFunction( "broadcasting.BeforeFinishAllNewsShowBroadcasts", onBeforeFinishAllNewsShowBroadcasts) ]
@@ -99,12 +99,12 @@ Type TAwardAudience extends TAward
 		local points:Float = 1000 * audienceResult.GetWholeMarketAudienceQuotePercentage()
 		local pointsMod:Float = 1.0
 		'print "TAwardAudience: player #"+audienceResult.playerId+" : " +audienceResult.GetTitle() + "  points:" +points +"  audience:"+audienceResult.GetWholeMarketAudienceQuotePercentage()
-	
+
 		'calculate final score
 		return Max(0, points * pointsMod)
 	End Function
 
-	
+
 	Function CalculateProgrammeAudienceResultScore:int(audienceResult:TAudienceResult)
 		return int(ceil(CalculateAudienceResultScoreRaw(audienceResult)))
 	End Function

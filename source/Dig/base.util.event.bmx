@@ -50,6 +50,7 @@ Import Brl.threads
 Import "base.util.logger.bmx"
 Import "base.util.data.bmx"
 Import "base.util.time.bmx"
+Import "external/bah.objectlist.bmx"
 
 
 
@@ -69,6 +70,7 @@ Type TEventManager
 	Field _ticks:Int = -1
 	'list of eventhandlers waiting for trigger
 	Field _listeners:TMap = CreateMap()
+	Field eventsProcessed:Int = 0
 
 
 	'returns how many update ticks are gone since start
@@ -104,7 +106,7 @@ Type TEventManager
 
 	Method GetRegisteredListenersCount:Int()
 		Local count:Int = 0
-		For Local list:TList = EachIn _listeners.Values()
+		For Local list:TObjectList = EachIn _listeners.Values()
 			For Local listener:TEventListenerBase = EachIn list
 				count :+1
 			Next
@@ -114,44 +116,71 @@ Type TEventManager
 
 
 	'add a new listener to a trigger
-	Method registerListener:TLink(trigger:String, eventListener:TEventListenerBase)
+	Method RegisterListener:TEventListenerBase(trigger:String, eventListener:TEventListenerBase)
 		trigger = Lower(trigger)
-		Local listeners:TList = TList(_listeners.ValueForKey(trigger))
-		If listeners = Null									'if not existing, create a new list
-			listeners = CreateList()
+		Local listeners:TObjectList = TObjectList(_listeners.ValueForKey(trigger))
+		If not listeners
+			listeners = new TObjectList
 			_listeners.Insert(trigger, listeners)
 		EndIf
-		Return listeners.AddLast(eventListener)					'add to list of listeners
+
+		listeners.AddLast(eventListener)
+
+		return eventListener
 	End Method
 
 
 	'register a function getting called as soon as a trigger is fired
-	Method registerListenerFunction:TLink( trigger:String, _function:int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
-		Return registerListener( trigger, TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
+	Method RegisterListenerFunction:TEventListenerBase( trigger:String, _function:int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
+		Return RegisterListener( trigger, TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
 	End Method
 
 
 	'register a method getting called as soon as a trigger is fired
-	Method registerListenerMethod:TLink( trigger:String, objectInstance:Object, methodName:String, limitToSender:Object=Null, limitToReceiver:Object=Null )
-		Return registerListener( trigger, TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
+	Method RegisterListenerMethod:TEventListenerBase( trigger:String, objectInstance:Object, methodName:String, limitToSender:Object=Null, limitToReceiver:Object=Null )
+		Return RegisterListener( trigger, TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
 	End Method
 
 
 	'remove an event listener from a trigger
-	Method unregisterListener(trigger:String, eventListener:TEventListenerBase)
-		Local listeners:TList = TList(_listeners.ValueForKey( Lower(trigger) ))
-		If listeners <> Null Then listeners.remove(eventListener)
+	Method UnregisterListener(eventListener:TEventListenerBase, trigger:String = "")
+		'remove only for trigger
+		if trigger
+			Local listeners:TObjectList = TObjectList(_listeners.ValueForKey( Lower(trigger) ))
+			If listeners Then listeners.Remove(eventListener)
+		'remove from all
+		else
+			for local listeners:TObjectList = EachIn _listeners.Values()
+				listeners.Remove(eventListener)
+			next
+		endif
+	End Method
+
+
+	'removes a listener using a list of eventlisteners
+	Method UnregisterListenersList(list:TList)
+		For Local listener:TEventListenerBase = EachIn list
+			UnregisterListener(listener)
+		Next
+	End Method
+
+
+	'removes a listener using a list of eventlisteners
+	Method UnregisterListenersArray(arr:TEventListenerBase[])
+		For Local listener:TEventListenerBase = EachIn arr
+			unregisterListener(listener)
+		Next
 	End Method
 
 
 	'remove all listeners having the given receiver or sender as limit
-	Method unregisterListenerByLimit(limitReceiver:Object=Null, limitSender:Object=Null)
-		For Local list:TList = EachIn _listeners
+	Method UnregisterListenerByLimit(limitReceiver:Object=Null, limitSender:Object=Null)
+		For Local list:TObjectList = EachIn _listeners.Values()
 			For Local listener:TEventListenerBase = EachIn list
 				'if one of both limits hits, remove that listener
 				If ObjectsAreEqual(listener._limitToSender, limitSender) Or..
 				   ObjectsAreEqual(listener._limitToReceiver, limitReceiver)
-					list.remove(listener)
+					list.Remove(listener)
 				EndIf
 			Next
 		Next
@@ -159,13 +188,13 @@ Type TEventManager
 
 
 	'removes all listeners listening to a specific trigger
-	Method unregisterListenersByTrigger(trigger:String, limitReceiver:Object=Null, limitSender:Object=Null)
+	Method UnregisterListenersByTrigger(trigger:String, limitReceiver:Object=Null, limitSender:Object=Null)
 		'remove all of that trigger
 		If Not limitReceiver And Not limitSender
-			_listeners.remove( Lower(trigger) )
+			_listeners.Remove( Lower(trigger) )
 		'remove all defined by limits
 		Else
-			Local triggerListeners:TList = TList(_listeners.ValueForKey( Lower(trigger) ))
+			Local triggerListeners:TObjectList = TObjectList(_listeners.ValueForKey( Lower(trigger) ))
 			For Local listener:TEventListenerBase = EachIn triggerListeners
 				'if one of both limits hits, remove that listener
 				If ObjectsAreEqual(listener._limitToSender, limitSender) Or..
@@ -177,51 +206,29 @@ Type TEventManager
 	End Method
 
 
-	'removes a listener using its list link
-	Method unregisterListenerByLink(link:TLink)
-		link.remove()
-	End Method
-
-
-	'removes a listener using a list of links
-	Method unregisterListenersByLinkList(linkList:TList)
-		For Local l:TLink = EachIn linkList
-			l.remove()
-		Next
-	End Method
-
-
-	'removes a listener using an array of links
-	Method unregisterListenersByLinks(links:TLink[])
-		For Local l:TLink = EachIn links
-			l.remove()
-		Next
-	End Method
-
-
 	'add a new event to the list
-	Method registerEvent(event:TEventBase)
+	Method RegisterEvent(event:TEventBase)
 		_events.AddLast(event)
 	End Method
 
 
 	'runs all listeners NOW ...returns amount of listeners
-	Method triggerEvent:Int(triggeredByEvent:TEventBase)
+	Method TriggerEvent:Int(triggeredByEvent:TEventBase)
 		If Not triggeredByEvent Then Return 0
 
 		?Threaded
 		'if we have systemonly-event we cannot do it in a subthread
 		'instead we just add that event to the upcoming events list
 		If triggeredByEvent._channel = 1
-			If CurrentThread()<>MainThread() Then registerEvent(triggeredByEvent)
+			If CurrentThread()<>MainThread() Then RegisterEvent(triggeredByEvent)
 		EndIf
 		?
 
-		Local listeners:TList = TList(_listeners.ValueForKey( Lower(triggeredByEvent._trigger) ))
+		Local listeners:TObjectList = TObjectList(_listeners.ValueForKey( Lower(triggeredByEvent._trigger) ))
 		If listeners
 			'use a _copy_ of the original listeners to avoid concurrent
 			'modification within the loop
-			listeners = listeners.Copy()
+			'listeners = listeners.Copy()
 			For Local listener:TEventListenerBase = EachIn listeners
 				listener.onEvent(triggeredByEvent)
 				'stop triggering the event if ONE of them vetos
@@ -243,16 +250,16 @@ Type TEventManager
 
 
 	'update the event manager - call this each cycle of your app loop
-	Method update(onlyChannel:Int=Null)
+	Method Update(onlyChannel:Int=Null)
 		If Not isStarted() Then Init()
 		'Assert _ticks >= 0, "TEventManager: updating event manager that hasn't been prepared"
-		_processEvents(onlyChannel)
+		_ProcessEvents(onlyChannel)
 		_ticks = Time.GetTimeGone()
 	End Method
 
 
 	'process all events currently in the queue
-	Method _processEvents(onlyChannel:Int=Null)
+	Method _ProcessEvents(onlyChannel:Int=Null)
 		If Not _events.IsEmpty()
 			' get the next event
 			Local event:TEventBase = TEventBase(_events.First())
@@ -368,10 +375,10 @@ Type TEventListenerRunMethod Extends TEventListenerBase
 
 	Function Create:TEventListenerRunMethod(objectInstance:Object, methodName:String, limitToSender:Object=Null, limitToReceiver:Object=Null )
 		Local obj:TEventListenerRunMethod = New TEventListenerRunMethod
-		obj._methodName			= methodName
-		obj._objectInstance		= objectInstance
-		obj._limitToSender		= limitToSender
-		obj._limitToReceiver	= limitToReceiver
+		obj._methodName	= methodName
+		obj._objectInstance = objectInstance
+		obj._limitToSender = limitToSender
+		obj._limitToReceiver = limitToReceiver
 		Return obj
 	End Function
 
@@ -407,9 +414,9 @@ Type TEventListenerRunFunction Extends TEventListenerBase
 
 	Function Create:TEventListenerRunFunction(_function:int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
 		Local obj:TEventListenerRunFunction = New TEventListenerRunFunction
-		obj._function			= _function
-		obj._limitToSender		= limitToSender
-		obj._limitToReceiver	= limitToReceiver
+		obj._function = _function
+		obj._limitToSender = limitToSender
+		obj._limitToReceiver = limitToReceiver
 		Return obj
 	End Function
 
@@ -506,7 +513,7 @@ Type TEventBase
 
 
 	Method getTrigger:String()
-		Return Lower(_trigger)
+		Return _trigger
 	End Method
 
 

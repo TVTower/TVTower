@@ -33,7 +33,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 	Field buttonFont:TBitmapFont
 	Field listFont:TBitmapFont
 
-	Field _eventListeners:TLink[]
+	Field _eventListeners:TEventListenerBase[]
 	Global headerColor:TColor = TColor.Create(75,75,75)
 	Global subHeaderColor:TColor = TColor.Create(115,115,115)
 
@@ -121,8 +121,8 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
 		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickCancelButton", cancelButton ) ]
@@ -1499,7 +1499,7 @@ Type TSatelliteSelectionFrame
 	Field tooltips:TTooltipBase[]
 	Field _open:Int = True
 
-	Field _eventListeners:TLink[]
+	Field _eventListeners:TEventListenerBase[]
 
 
 	Method New()
@@ -1533,8 +1533,8 @@ Type TSatelliteSelectionFrame
 
 
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
 		'we have to refresh the gui station list as soon as we remove or add a station
@@ -1881,7 +1881,7 @@ Type TStationMapInformationFrame
 	Field _open:Int = False
 	Global subHeaderColor:TColor = TColor.Create(115,115,115)
 
-	Field _eventListeners:TLink[]
+	Field _eventListeners:TEventListenerBase[]
 
 
 	Method New()
@@ -1910,8 +1910,8 @@ Type TStationMapInformationFrame
 
 
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
 		'we have to refresh the gui station list as soon as we remove or add a station
@@ -2283,7 +2283,7 @@ Type TScreenHandler_StationMap
 
 	Global LS_stationmap:TLowerString = TLowerString.Create("stationmap")
 
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 	Const PRODUCT_NONE:Int = 0
 	Const PRODUCT_STATION:Int = 1
@@ -2390,8 +2390,8 @@ Type TScreenHandler_StationMap
 
 
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 
 		'=== register event listeners

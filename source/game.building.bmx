@@ -57,7 +57,7 @@ Type TBuilding Extends TBuildingBase
 	Global softDrinkMachine:TSpriteEntity
 
 	Global _backgroundModified:Int = False
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 	Global _profilerKey_DrawBuildingBG:TLowerString = new TLowerString.Create("Draw-Building-Background")
 
@@ -116,8 +116,8 @@ Type TBuilding Extends TBuildingBase
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 
 		'=== register event listeners

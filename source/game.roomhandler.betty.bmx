@@ -10,7 +10,7 @@ Import "common.misc.dialogue.bmx"
 'Betty
 Type RoomHandler_Betty extends TRoomHandler
 	Field dialogue:TDialogue
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:RoomHandler_Betty
 
 
@@ -35,10 +35,10 @@ Type RoomHandler_Betty extends TRoomHandler
 
 		'=== EVENTS ===
 		'remove old listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
+		EventManager.UnregisterListenersArray(_eventListeners)
 
 		'register new listeners
-		_eventListeners = new TLink[0]
+		_eventListeners = new TEventListenerBase[0]
 		'handle players visiting betty
 		_eventListeners :+ [ EventManager.registerListenerFunction("player.onBeginEnterRoom", onPlayerBeginEnterRoom) ]
 

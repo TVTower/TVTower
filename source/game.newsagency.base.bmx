@@ -39,7 +39,7 @@ Type TNewsAgency
 	'rate the aggression level progresses each game hour
 	Field terroristAggressionLevelProgressRate:Float[][] = [ [0.06,0.08], [0.06,0.08] ]
 
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TNewsAgency
 
 
@@ -86,8 +86,8 @@ Type TNewsAgency
 
 
 		'=== REGISTER EVENTS ===
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'react to confiscations
 		_eventListeners :+ [ EventManager.registerListenerFunction( "publicAuthorities.onConfiscateProgrammeLicence", onPublicAuthoritiesConfiscateProgrammeLicence) ]
@@ -634,14 +634,14 @@ Type TNewsAgency
 
 		For local template:TNewsEventTemplate = EachIn GetNewsEventTemplateCollection().GetUnusedAvailableInitialTemplates()
 			if template.happenTime = -1 then continue
-
+if template.GetTitle().Find("rsennachricht") Then Debugstop
 			'create fixed future news
 			local newsEvent:TNewsEvent = new TNewsEvent.InitFromTemplate(template)
 
 			'now and missed are not listed in the upcomingNewsList, so
 			'no cache-clearance is needed
 			'now
-			if template.happenTime = 0 ' or template.HasFlag(TVTNewsFlag.TRIGGER_ON_GAME_START)
+			if template.happenTime = 0
 				template.happenTime = GetWorldTime().GetTimeGone()
 				if template.IsAvailable()
 					announceNewsEvent(newsEvent)
@@ -662,14 +662,17 @@ Type TNewsAgency
 	End Method
 
 
-	'announces planned news events (triggered by news some time before)
+	'announces planned news events (triggered by news some time before
+	'or with an fixed data)
 	Method ProcessUpcomingNewsEvents:Int()
 		Local announced:Int = 0
 
 		For local newsEvent:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
 			'skip news events not happening yet
 			If Not newsEvent.HasHappened() then continue
+
 			announceNewsEvent(newsEvent)
+
 			'attention: RESET_TICKER_TIME is only "useful" for followup news
 			if newsEvent.HasFlag(TVTNewsFlag.RESET_TICKER_TIME)
 				ResetNextEventTime(newsEvent.GetGenre())

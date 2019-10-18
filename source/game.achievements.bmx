@@ -10,8 +10,8 @@ Import "game.player.finance.bmx"
 
 Type TAchievementTask_FulfillAchievements extends TAchievementTask
 	Field achievementGUIDs:string[]
-	Field eventListeners:TLink[] {nosave}
-	
+	Field eventListeners:TEventListenerBase[] {nosave}
+
 
 	Method New()
 'print "register fulfill listeners"
@@ -20,7 +20,8 @@ Type TAchievementTask_FulfillAchievements extends TAchievementTask
 
 
 	Method Delete()
-		EventManager.unregisterListenersByLinks(eventListeners)
+		EventManager.UnregisterListenersArray(eventListeners)
+		eventListeners = new TEventListenerBase[0]
 	End Method
 
 
@@ -85,7 +86,7 @@ print "on completing an achievement ... and interested"
 			if completing then SetCompleted(playerID, time)
 		Next
 	End Method
-			 
+
 
 	'no override needed
 	'we only update on achievement completitions
@@ -110,7 +111,7 @@ Type TAchievementTask_ReachAudience extends TAchievementTask
 		return new TAchievementTask_ReachAudience
 	End Function
 
-		
+
 	'override
 	Method GetTitle:string()
 		local t:string = Super.GetTitle()
@@ -121,7 +122,7 @@ Type TAchievementTask_ReachAudience extends TAchievementTask
 		endif
 		return t
 	End Method
-		
+
 
 	Method Init:TAchievementTask_ReachAudience(config:object)
 		local configData:TData = TData(config)
@@ -149,7 +150,7 @@ Type TAchievementTask_ReachAudience extends TAchievementTask
 					if IsCompleted(playerID, time) or IsFailed(playerID, time) then continue
 
 					'todo: check genres/flags
-					
+
 					local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(playerID)
 					if not audienceResult or not audienceResult.audience then continue
 
@@ -195,7 +196,7 @@ Type TAchievementTask_ReachBroadcastArea extends TAchievementTask
 		return True
 	End Method
 
-		
+
 	'override
 	Method GetTitle:string()
 		local t:string = Super.GetTitle()
@@ -206,7 +207,7 @@ Type TAchievementTask_ReachBroadcastArea extends TAchievementTask
 		endif
 		return t
 	End Method
-		
+
 
 	Method Init:TAchievementTask_ReachBroadcastArea(config:object)
 		local configData:TData = TData(config)
@@ -272,7 +273,7 @@ Type TAchievementTask_BroadcastNewsShow extends TAchievementTask
 		return True
 	End Method
 
-		
+
 	'override
 	Method GetTitle:string()
 		local t:string = Super.GetTitle()
@@ -283,7 +284,7 @@ Type TAchievementTask_BroadcastNewsShow extends TAchievementTask
 
 		return t
 	End Method
-		
+
 
 	Method Init:TAchievementTask_BroadcastNewsShow(config:object)
 		local configData:TData = TData(config)
@@ -344,7 +345,7 @@ End Type
 
 Type TAchievementReward_Money extends TAchievementReward
 	Field money:int
-	
+
 
 	'override
 	Function CreateNewInstance:TAchievementReward_Money()
@@ -375,7 +376,7 @@ Type TAchievementReward_Money extends TAchievementReward
 		local finance:TPlayerFinance = GetPlayerFinance(playerID)
 		if not finance then return False
 
-			
+
 		finance.EarnGrantedBenefits(money)
 		return True
 	End Method

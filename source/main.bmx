@@ -182,7 +182,7 @@ Type TApp
 	'only used for debug purpose (loadingtime)
 	Field creationTime:Long
 	'store listener for music loaded in "startup"
-	Field OnLoadMusicListener:TLink
+	Field OnLoadMusicListener:TEventListenerBase
 
 	Field settingsWindow:TSettingsWindow
 
@@ -570,7 +570,7 @@ Type TApp
 
 		'from now on we are no longer interested in loaded elements
 		'as we are no longer in the loading screen (-> silent loading)
-		If OnLoadMusicListener Then EventManager.unregisterListenerByLink( OnLoadMusicListener )
+		If OnLoadMusicListener Then EventManager.unregisterListener( OnLoadMusicListener )
 
 		TLogger.Log("TApp.Start()", "loading time: "+(Time.MillisecsLong() - creationTime) +"ms", LOG_INFO)
 	End Method
@@ -3030,8 +3030,6 @@ Type TScreen_MainMenu Extends TGameScreen
 			'guiButtonOnline.Enable()
 		EndIf
 
-
-
 		GUIManager.Update(stateName)
 
 		If MainMenuJanitor
@@ -3473,7 +3471,7 @@ End Type
 
 
 Type GameEvents
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 
 	Function Initialize:Int()
@@ -3485,8 +3483,8 @@ Type GameEvents
 
 
 	Function UnRegisterEventListeners:Int()
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 	End Function
 
 
@@ -6383,6 +6381,7 @@ Global rectangleTime:Int = MilliSecs()
 			bbGCAllocCount = 0
 			rectangleTime :+ 1000
 		EndIf
+
 		If AppSuspended()
 			If Not AppSuspendedProcessed
 				TLogger.Log("App", "App suspended.", LOG_DEBUG)
@@ -6392,6 +6391,7 @@ Global rectangleTime:Int = MilliSecs()
 			TLogger.Log("App", "App resumed.", LOG_DEBUG)
 			AppSuspendedProcessed = False
 		EndIf
+
 
 		'handle if app is run in background (mobile devices like android/iOS)
 		App.ProcessRunningInBackground()

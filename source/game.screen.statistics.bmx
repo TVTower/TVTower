@@ -45,7 +45,7 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 	Global valueBG:TSprite
 	Global valueBG2:TSprite
 
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TScreenHandler_OfficeStatistics
 
 	Const SUBSCREEN_AUDIENCE:Int = 0
@@ -94,8 +94,8 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 		EndIf
 
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 
 		'=== register event listeners
@@ -315,7 +315,7 @@ Type TStatisticsSubScreen_Audience extends TStatisticsSubScreen
 	Field dataChart:TDataChart
 	Field dataChartRequiresRefresh:int = True
 	Field lastShowDay:int = -1
-	Field _eventListeners:TLink[]
+	Field _eventListeners:TEventListenerBase[]
 	Const DATASET_NEWS:int = 0
 	Const DATASET_PROGRAMME:int = 1
 
@@ -355,8 +355,8 @@ endrem
 		Next
 
 
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 
 		'refresh charts when a new broadcast begins (newsshow, movie...)

@@ -37,7 +37,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 	Global hoveredGuiCastItem:TGUICastListItem
 	Global hoveredGuiProductionConcept:TGuiProductionConceptListItem
 
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TScreenHandler_SupermarketProduction
 
 
@@ -57,8 +57,8 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
 		'GUI -> GUI
@@ -1187,7 +1187,7 @@ End Type
 Type TGUIProductionModalWindow extends TGUIModalWindow
 	Field buttonOK:TGUIButton
 	Field buttonCancel:TGUIButton
-	Field _eventListeners:TLink[]
+	Field _eventListeners:TEventListenerBase[]
 
 
 	Method Create:TGUIProductionModalWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
@@ -1207,7 +1207,7 @@ Type TGUIProductionModalWindow extends TGUIModalWindow
 
 
 	Method Remove:Int()
-		EventManager.unregisterListenersByLinks(_eventListeners)
+		EventManager.UnregisterListenersArray(_eventListeners)
 		return Super.Remove()
 	End Method
 
@@ -1707,7 +1707,7 @@ Type TGUICastSelectList extends TGUISelectList
 	'the job/gender the selection is currently filtered for
 	Field filteredJobID:int = -1
 	Field filteredGenderID:int = -1
-	Field _eventListeners:TLink[]
+	Field _eventListeners:TEventListenerBase[]
 
 
     Method Create:TGUICastSelectList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
@@ -1718,7 +1718,7 @@ Type TGUICastSelectList extends TGUISelectList
 
 
 	Method Remove:Int()
-		EventManager.unregisterListenersByLinks(_eventListeners)
+		EventManager.UnregisterListenersArray(_eventListeners)
 		return Super.Remove()
 	End Method
 
@@ -1734,7 +1734,7 @@ End Type
 Type TGUICastSlotList Extends TGUISlotList
 	'contains job for each slot
 	Field slotJob:TProgrammePersonJob[]
-	Field _eventListeners:TLink[]
+	Field _eventListeners:TEventListenerBase[]
 	Field selectCastWindow:TGUISelectCastWindow
 	'the currently clicked/selected slot for a cast selection
 	Field selectCastSlot:int = -1
@@ -1756,7 +1756,7 @@ Type TGUICastSlotList Extends TGUISlotList
 
 
 	Method Remove:Int()
-		EventManager.unregisterListenersByLinks(_eventListeners)
+		EventManager.UnregisterListenersArray(_eventListeners)
 		return Super.Remove()
 	End Method
 

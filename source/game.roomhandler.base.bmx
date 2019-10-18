@@ -13,7 +13,7 @@ Type TRoomHandlerCollection
 	Global currentHandler:TRoomHandler
 
 	Global _instance:TRoomHandlerCollection
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 
 	Function GetInstance:TRoomHandlerCollection()
@@ -45,8 +45,8 @@ Type TRoomHandlerCollection
 
 
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 
 		'=== register event listeners
@@ -80,13 +80,13 @@ Type TRoomHandlerCollection
 
 
 	'=== EVENTS FOR ALL HANDLERS ===
-	
+
 	Function onSetLanguage:int( triggerEvent:TEventBase )
 		For local handler:TRoomHandler = EachIn GetInstance().handlers.Values()
 			handler.SetLanguage()
 		Next
 	End Function
-	
+
 
 	'called _before_ a game (and its data) gets loaded
 	Function onSaveGameBeginLoad:int( triggerEvent:TEventBase )
@@ -115,7 +115,7 @@ Type TRoomHandlerCollection
 		'           handler. The alternative (storing a "handle:string"-
 		'           property in each handler) would lead to problems
 		'           as soon as some offices have varying handlers
-		'           or a handler wants to take care of multiply rooms 
+		'           or a handler wants to take care of multiply rooms
 		GetInstance().handlers.Clear()
 
 		For local handler:TRoomHandler = EachIn oldHandlers
@@ -147,7 +147,7 @@ Type TRoomHandlerCollection
 		End Select
 	End Function
 
-	
+
 	Function onHandleRoom:int( triggerEvent:TEventBase )
 		local room:TRoomBase = TRoomBase( triggerEvent.GetSender())
 		if not room then print "onHandleRoom: room stored elsewhere: "+triggerEvent._trigger.toLower()
@@ -155,7 +155,7 @@ Type TRoomHandlerCollection
 
 		currentHandler = GetInstance().GetHandler(room.GetName())
 		if not currentHandler then return False
-		
+
 		Select triggerEvent._trigger.toLower()
 			case "room.onupdate"
 				if KeyManager.IsHit(KEY_ESCAPE)
@@ -219,13 +219,13 @@ Type TRoomHandler
 	'special events for screens used in rooms - only this event has the room as sender
 	'screen.onScreenUpdate/Draw is more general purpose
 	'returns the event listener links
-	Function _RegisterScreenHandler:TLink[](updateFunc:int(triggerEvent:TEventBase), drawFunc:int(triggerEvent:TEventBase), screen:TScreen)
-		local links:TLink[]
+	Function _RegisterScreenHandler:TEventListenerBase[](updateFunc:int(triggerEvent:TEventBase), drawFunc:int(triggerEvent:TEventBase), screen:TScreen)
+		local listeners:TEventListenerBase[]
 		if screen
-			links :+ [ EventManager.registerListenerFunction( "room.onScreenUpdate", updateFunc, screen ) ]
-			links :+ [ EventManager.registerListenerFunction( "room.onScreenDraw", drawFunc, screen ) ]
+			listeners :+ [ EventManager.registerListenerFunction( "room.onScreenUpdate", updateFunc, screen ) ]
+			listeners :+ [ EventManager.registerListenerFunction( "room.onScreenDraw", drawFunc, screen ) ]
 		endif
-		return links
+		return listeners
 	End Function
 
 
@@ -259,7 +259,7 @@ Type TRoomHandler
 		if figure.inRoom.GetName() <> roomName then return FALSE
 		return TRUE
 	End Function
-	
+
 
 	Function CheckObservedFigureInRoom:int(roomName:string, allowChangingRoom:int = true)
 		local figure:TFigure = TFigure(GameConfig.GetObservedObject())
@@ -287,7 +287,7 @@ Type TRoomHandler
 
 	Function IsObservedFiguresRoom:int(room:TRoomBase)
 		if not room then return False
-		
+
 		local figure:TFigure = TFigure(GameConfig.GetObservedObject())
 		'when not observing someone, fall back to the players figure
 		if not figure then figure = TFigure(GetPlayerBase().GetFigure())

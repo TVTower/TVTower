@@ -41,18 +41,19 @@ Type TGUISettingsPanel extends TGUIPanel
 	Field labelTouchClickRadiusPixel:TGUILabel
 	Field labelTouchClickRadius:TGUILabel
 
-	Field _eventListeners:TLink[]
+	Field _eventListeners:TEventListenerBase[]
 
 
 	Method New()
-		_EventListeners :+ [ EventManager.registerListenerMethod("guiCheckBox.onSetChecked", Self, "onCheckCheckboxes", "TGUICheckbox") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod("guiCheckBox.onSetChecked", Self, "onCheckCheckboxes", "TGUICheckbox") ]
 	End Method
 
 
 	Method Remove:int()
 		Super.Remove()
 
-		EventManager.unregisterListenersByLinks(_eventListeners)
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 	End Method
 
 
@@ -530,7 +531,7 @@ End Type
 Type TSettingsWindow
 	Field modalDialogue:TGUIGameModalWindow
 	Field settingsPanel:TGUISettingsPanel
-	Field _eventListeners:TLink[]
+	Field _eventListeners:TEventListenerBase[]
 
 
 	Method Remove:int()
@@ -540,7 +541,8 @@ Type TSettingsWindow
 		settingsPanel = null
 		modalDialogue = null
 
-		EventManager.unregisterListenersByLinks(_eventListeners)
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 	End Method
 
 

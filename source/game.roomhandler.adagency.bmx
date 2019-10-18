@@ -48,7 +48,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 	Global contractsCheapAmount:Int	= 4
 
 	Global _instance:RoomHandler_AdAgency
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 	Const SORT_BY_MINAUDIENCE:Int = 0
 	Const SORT_BY_PROFIT:Int = 1
@@ -174,8 +174,8 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
 		'to react on changes in the programmeCollection (eg. contract finished)

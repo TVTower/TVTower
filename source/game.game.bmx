@@ -22,7 +22,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	Global GameScreen_World:TInGameScreen_World
 
 	Global _initDone:Int = False
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global StartTipWindow:TGUIModalWindow
 
 
@@ -90,8 +90,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'=== EVENTS ===
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = new TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnStart", onStart) ]
@@ -1188,10 +1188,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			endif
 		Next
 
-		'adjust news agency to wait some time until next news
-		'RON: disabled, no longer needed as AnnounceNewNewsEvent() already
-		'resets next event times
-		'GetNewsAgency().ResetNextEventTime(-1)
 
 		'adjust next ticker times to something right after game start
 		'(or a bit before)
