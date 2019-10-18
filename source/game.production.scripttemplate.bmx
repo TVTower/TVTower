@@ -310,7 +310,7 @@ Type TScriptTemplate Extends TScriptBase
 
 		'try to avoid as much randoms as possible (weight to min)
 		'but this still allows for "up to all"
-		local randomJobsAmount:int = WeightedRandRange(0, randomJobs.length, 0.1)
+		local randomJobsAmount:int = BiasedRandRange(0, randomJobs.length, 0.1)
 		local allRandomJobs:TProgrammePersonJob[]
 		For local job:TProgrammePersonJob = EachIn randomJobs
 			allRandomJobs :+ [job]
@@ -519,42 +519,42 @@ Type TScriptTemplate Extends TScriptBase
 
 
 	Method GetOutcome:Float()
-		return 0.001 * WeightedRandRange(int(1000*outcomeMin), int(1000*outcomeMax), outcomeSlope)
+		return 0.001 * BiasedRandRange(int(1000*outcomeMin), int(1000*outcomeMax), outcomeSlope)
 	End Method
 
 
 	Method GetReview:Float()
-		return 0.001 * WeightedRandRange(int(1000*reviewMin), int(1000*reviewMax), reviewSlope)
+		return 0.001 * BiasedRandRange(int(1000*reviewMin), int(1000*reviewMax), reviewSlope)
 	End Method
 
 
 	Method GetSpeed:Float()
-		return 0.001 * WeightedRandRange(int(1000*speedMin), int(1000*speedMax), speedSlope)
+		return 0.001 * BiasedRandRange(int(1000*speedMin), int(1000*speedMax), speedSlope)
 	End Method
 
 
 	Method GetPotential:Float()
-		return 0.001 * WeightedRandRange(int(1000*potentialMin), int(1000*potentialMax), potentialSlope)
+		return 0.001 * BiasedRandRange(int(1000*potentialMin), int(1000*potentialMax), potentialSlope)
 	End Method
 
 
 	Method GetBlocks:Int()
-		return WeightedRandRange(blocksMin, blocksMax, blocksSlope)
+		return BiasedRandRange(blocksMin, blocksMax, blocksSlope)
 	End Method
 
 
 	Method GetEpisodes:Int()
-		return WeightedRandRange(episodesMin, episodesMax, episodesSlope)
+		return BiasedRandRange(episodesMin, episodesMax, episodesSlope)
 	End Method
 
 
 	Method GetStudioSize:Int()
-		return WeightedRandRange(studioSizeMin, studioSizeMax, studioSizeSlope)
+		return BiasedRandRange(studioSizeMin, studioSizeMax, studioSizeSlope)
 	End Method
 
 
 	Method GetPrice:Int()
-		local value:int = WeightedRandRange(priceMin, priceMax, priceSlope)
+		local value:int = BiasedRandRange(priceMin, priceMax, priceSlope)
 		'round to next "100" block
 		value = Int(Floor(value / 100) * 100)
 
