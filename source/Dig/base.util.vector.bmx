@@ -110,15 +110,19 @@ Type TVec2D {_exposeToLua="selected"}
 	End Method
 
 
-	Method CopyFrom:Int(otherVec:TVec2D)
-		if not otherVec then return FALSE
-		SetXY(otherVec.x, otherVec.y)
+	Method CopyFrom:TVec2D(otherVec:TVec2D)
+		If otherVec
+			SetXY(otherVec.x, otherVec.y)
+		EndIf
+		Return self
 	End Method
 
 
-	Method CopyFromVec3D:Int(otherVec:TVec3D)
-		if not otherVec then return FALSE
-		SetXY(otherVec.x, otherVec.y)
+	Method CopyFromVec3D:TVec2D(otherVec:TVec3D)
+		If otherVec
+			SetXY(otherVec.x, otherVec.y)
+		EndIf
+		Return self
 	End Method
 
 

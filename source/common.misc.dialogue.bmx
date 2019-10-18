@@ -31,7 +31,7 @@ Type TDialogue
 
 
 	Method SetArea:TDialogue(rect:TRectangle)
-		If rect Then _rawBalloonRect = rect.Copy()
+		If rect Then _rawBalloonRect.CopyFrom( rect )
 		Return Self
 	End Method
 

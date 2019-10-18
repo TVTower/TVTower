@@ -115,18 +115,18 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			Return GetScreenRect().containsXY(x,y)
 		EndIf
 
-		For Local i:Int = 1 To GetBlocks()
-			Local resultRect:TRectangle = Null
-			If Self._parent
-				resultRect = Self._parent.GetScreenRect()
+		If Self._parent
+			For Local i:Int = 1 To GetBlocks()
 				'get the intersecting rectangle between parentRect and blockRect
 				'the x,y-values are screen coordinates!
-				resultRect = resultRect.intersectRect(GetBlockRect(i))
-			Else
-				resultRect = GetBlockRect(i)
-			EndIf
-			If resultRect And resultRect.containsXY(x,y) Then Return True
-		Next
+				'GetBlockRect() returns a new TRectangle instance
+				If GetBlockRect(i).Intersect( _parent.GetScreenRect() ).containsXY(x,y) Then Return True
+			Next
+		Else
+			For Local i:Int = 1 To GetBlocks()
+				If GetBlockRect(i).containsXY(x,y) Then Return True
+			Next
+		EndIf
 		Return False
 	End Method
 
@@ -149,9 +149,9 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 			If list
 				pos = list.GetSlotCoord(startSlot + block-1).ToVec2D()
-				pos.addXY(list.GetScreenRect().GetX(), list.GetScreenRect().GetY())
+				pos.addVec(list.GetScreenRect().position)
 			Else
-				pos = New TVec2D.Init(Self.GetScreenRect().GetX(),Self.GetScreenRect().GetY())
+				pos = New TVec2D.CopyFrom(GetScreenRect().position)
 				pos.addXY(0, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * (block - 1))
 				'print "block: "+block+"  "+pos.GetIntX()+","+pos.GetIntY()
 			EndIf
@@ -190,7 +190,6 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 		'no longer allowed to have this item dragged
 		If isDragged() And Not hasOption(GUI_OBJECT_DRAGABLE)
-			Print "RONNY: FORCE DROP"
 			dropBackToOrigin()
 		EndIf
 
@@ -387,15 +386,15 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 			Select useType
 				Case TVTBroadcastMaterialType.PROGRAMME
-					DrawProgrammeBlockText(New TRectangle.Init(GetScreenRect().GetX(), GetScreenRect().GetY(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()-1,30))
+					DrawProgrammeBlockText(GetScreenRect().GetIntX(), GetScreenRect().GetIntY(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetIntW()-1, 30)
 				Case TVTBroadcastMaterialType.ADVERTISEMENT
-					DrawAdvertisementBlockText(New TRectangle.Init(GetScreenRect().GetX(), GetScreenRect().GetY(), GetSpriteFromRegistry(GetAssetBaseName()+"2").area.GetW()-4,30))
+					DrawAdvertisementBlockText(GetScreenRect().GetIntX(), GetScreenRect().GetIntY(), GetSpriteFromRegistry(GetAssetBaseName()+"2").area.GetIntW()-4, 30)
 			End Select
 		EndIf
 	End Method
 
 
-	Method DrawProgrammeBlockText:Int(textArea:TRectangle, titleColor:TColor=Null, textColor:TColor=Null)
+	Method DrawProgrammeBlockText:Int(textX:Int, textY:Int, textW:Int, textH:Int, titleColor:TColor=Null, textColor:TColor=Null)
 		Local title:String = broadcastMaterial.GetTitle()
 		Local titleAppend:String = ""
 		Local text:String = ""
@@ -453,7 +452,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 		'create cache if needed
 		if not textImageProgramme
-			Local maxWidth:Int = textArea.GetW()
+			Local maxWidth:Int = textW
 			Local titleFont:TBitmapFont = GetBitmapFont("DefaultThin", 12, BOLDFONT)
 
 			'shorten the title to fit into the block
@@ -467,14 +466,14 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			If Not titleColor Then titleColor = TColor.Create(0,0,0)
 			If Not textColor Then textColor = TColor.Create(50,50,50)
 
-			textImageProgramme = TFunctions.CreateEmptyImage(int(textArea.GetW()), int(textArea.GetH()))
+			textImageProgramme = TFunctions.CreateEmptyImage(textW, textH)
 			TBitmapFont.setRenderTarget(textImageProgramme)
-			TBitmapFont.pixmapOrigin.SetXY(-textArea.position.x, -textArea.position.y)
+			TBitmapFont.pixmapOrigin.SetXY(-textX, -textY)
 
 			'draw
-			titleFont.drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() +3, textArea.GetW() - 5, 18, Null, titleColor, 0, True, 1.0, False)
-			useFont.draw(text, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 16, textColor)
-			useFont.draw(text2, textArea.position.GetIntX() + 138, textArea.position.GetIntY() + 16, textColor)
+			titleFont.drawBlock(title, textX + 3, textY +3, textW - 5, 18, Null, titleColor, 0, True, 1.0, False)
+			useFont.draw(text, textX + 3, textY + 16, textColor)
+			useFont.draw(text2, textX + 138, textY + 16, textColor)
 
 			SetColor 255,255,255
 
@@ -483,12 +482,12 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		endif
 
 		if textImageProgramme
-			DrawImage(textImageProgramme, textArea.position.GetIntX(), textArea.position.GetIntY())
+			DrawImage(textImageProgramme, textX, textY)
 		endif
 	End Method
 
 
-	Method DrawAdvertisementBlockText(textArea:TRectangle, titleColor:TColor=Null, textColor:TColor=Null)
+	Method DrawAdvertisementBlockText(textX:Int, textY:Int, textW:Int, textH:Int, titleColor:TColor=Null, textColor:TColor=Null)
 		Local title:String			= broadcastMaterial.GetTitle()
 		Local titleAppend:String	= ""
 		Local text:String			= "123"
@@ -544,17 +543,17 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 		'create cache if needed
 		if not textImageAd
-			textImageAd = TFunctions.CreateEmptyImage(int(textArea.GetW()), int(textArea.GetH()))
+			textImageAd = TFunctions.CreateEmptyImage(textW, textH)
 			TBitmapFont.setRenderTarget(textImageAd)
-			TBitmapFont.pixmapOrigin.SetXY(-textArea.position.x, -textArea.position.y)
+			TBitmapFont.pixmapOrigin.SetXY(-textX, -textY)
 
 			If Not titleColor Then titleColor = TColor.Create(0,0,0)
 			If Not textColor Then textColor = TColor.Create(50,50,50)
 
-			GetBitmapFont("DefaultThin", 10, BOLDFONT).drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 3, textArea.GetW(), 15, Null, TColor.CreateGrey(0), 0,1,1.0, False)
+			GetBitmapFont("DefaultThin", 10, BOLDFONT).drawBlock(title, textX + 3, textY + 3, textW, 15, Null, TColor.clBlack, 0,1,1.0, False)
 			textColor.setRGB()
-			GetBitmapFont("Default", 10).drawBlock(text, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 15)
-			GetBitmapFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW() - 3, 15, New TVec2D.Init(ALIGN_RIGHT))
+			GetBitmapFont("Default", 10).drawBlock(text, textX + 3, textY + 17, textW, 15)
+			GetBitmapFont("Default", 10).drawBlock(text2,textX + 3, textY + 17, textW - 3, 15, ALIGN_RIGHT_TOP)
 
 			SetColor 255,255,255
 
@@ -563,7 +562,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		endif
 
 		if textImageAd
-			DrawImage(textImageAd, textArea.position.GetIntX(), textArea.position.GetIntY())
+			DrawImage(textImageAd, textX, textY)
 		endif
 	End Method
 
@@ -607,8 +606,8 @@ End Type
 Type TGUIProgrammePlanSlotList Extends TGUISlotList
 	'sollten nicht gebraucht werden - die "slotpositionen" muessten auch herhalten
 	'koennen
-	Field zoneLeft:TRectangle		= New TRectangle.Init(0, 0, 200, 350)
-	Field zoneRight:TRectangle		= New TRectangle.Init(300, 0, 200, 350)
+	Field zoneLeft:TRectangle = New TRectangle.Init(0, 0, 200, 350)
+	Field zoneRight:TRectangle = New TRectangle.Init(300, 0, 200, 350)
 
 	'what day this slotlist is planning currently
 	Field planDay:Int = -1
@@ -1014,8 +1013,8 @@ endrem
 	'override default "rectangle"-check to include splitted panels
 	Method containsXY:Int(x:Float,y:Float)
 		'convert to local coord
-		x :-GetScreenRect().GetX()
-		y :-GetScreenRect().GetY()
+		x :- GetScreenRect().GetX()
+		y :- GetScreenRect().GetY()
 
 		If zoneLeft.containsXY(x,y) Or zoneRight.containsXY(x,y)
 			Return True

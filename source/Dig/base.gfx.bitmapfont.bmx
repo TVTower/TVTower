@@ -587,21 +587,21 @@ Type TBitmapFont
 
 
 	Method GetBlockHeight:Float(text:String, w:Float, h:Float, fixedLineHeight:Int = -1, dimensionResult:TVec2D = Null)
-		if not dimensionResult then dimensionResult = New TVec2D
+		If Not dimensionResult Then dimensionResult = New TVec2D
 		drawBlock(text, 0,0,w,h, Null, Null, 0, 0, , , , , dimensionResult)
 		Return dimensionResult.GetY()
 	End Method
 
 
 	Method GetBlockWidth:Float(text:String, w:Float, h:Float, fixedLineHeight:Int = -1, dimensionResult:TVec2D = Null)
-		if not dimensionResult then dimensionResult = New TVec2D
+		If Not dimensionResult Then dimensionResult = New TVec2D
 		drawBlock(text, 0,0,w,h, Null, Null, 0, 0, , , , , dimensionResult)
 		Return dimensionResult.GetX()
 	End Method
 
 
 	Method GetBlockDimension:TVec2D(text:String, w:Float, h:Float, fixedLineHeight:Int = -1, dimensionResult:TVec2D = Null)
-		if not dimensionResult then dimensionResult = New TVec2D
+		If Not dimensionResult Then dimensionResult = New TVec2D
 		drawBlock(text, 0,0,w,h, Null, Null, 0, 0, , , , fixedLineHeight, dimensionResult)
 		Return dimensionResult
 	End Method
@@ -1517,12 +1517,12 @@ endrem
 			If dimensionResult.x <= 0 Then dimensionResult.x = 1
 			If dimensionResult.y <= 0 Then dimensionResult.y = 1
 
-			If w = -1
+			If w = -1 Or Not alignment
 				offsetX = 0
 			Else
 				offsetX = (w - dimensionResult.x) * alignment.x
 			EndIf
-			If h = -1
+			If h = -1 Or Not alignment
 				offsetY = 0
 			Else
 				offsetY = (h - dimensionResult.y) * alignment.y

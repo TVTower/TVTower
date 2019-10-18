@@ -28,6 +28,9 @@ Type TScreenHandler_ProgrammePlanner
 	Global plannerPreviousDayButton:TGUIButton
 	Global openedProgrammeListThisVisit:Int = False
 	Global currentRoom:TRoomBase
+	Global slotOverlaysBlock:TSprite
+	Global slotOverlaysClock1:TSprite
+	Global slotOverlaysClock2:TSprite
 	'indicator whether an item just got dropped and therefor the next
 	'check should ignore "shift/ctrl"-shortcuts
 	Global ignoreCopyOrEpisodeShortcut:Int = False
@@ -43,7 +46,7 @@ Type TScreenHandler_ProgrammePlanner
 	Global LS_programmeplanner_buttons:TLowerString = TLowerString.Create("programmeplanner_buttons")
 	Global LS_programmeplanner_and_programmeplanner_buttons:TLowerString = TLowerString.Create("programmeplanner|programmeplanner_buttons")
 
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global screenName:string = "screen_office_programmeplanner"
 	Global programmePlannerBackgroundOriginal:TImage
 
@@ -52,6 +55,9 @@ Type TScreenHandler_ProgrammePlanner
 		Local screen:TScreen = ScreenCollection.GetScreen(screenName)
 		If Not screen Then Return False
 
+		slotOverlaysBlock = GetSpriteFromRegistry("gfx_programmeplanner_blockoverlay.highlighted")
+		slotOverlaysClock1 = GetSpriteFromRegistry("gfx_programmeplanner_clockoverlay1.highlighted")
+		slotOverlaysClock2 = GetSpriteFromRegistry("gfx_programmeplanner_clockoverlay2.highlighted")
 
 
 		'=== create gui elements if not done yet
@@ -124,8 +130,8 @@ Type TScreenHandler_ProgrammePlanner
 
 
 		'=== remove all registered event listeners
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 
 		'=== register event listeners
@@ -330,9 +336,11 @@ Type TScreenHandler_ProgrammePlanner
 		endif
 		hoveredGuiProgrammePlanElement = null
 
-		For Local obj:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged.Copy()
-			obj.Remove()
-		Next
+		if GUIManager.ListDragged.count() > 0
+			For Local obj:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged.Copy()
+				obj.Remove()
+			Next
+		endif
 	End Function
 
 
@@ -355,12 +363,13 @@ Type TScreenHandler_ProgrammePlanner
 		EndIf
 
 		'Try to drop back dragged elements
-		For Local obj:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged.Copy()
-			obj.dropBackToOrigin()
-			'successful or not - get rid of the gui element
-			obj.Remove()
-		Next
-
+		If GUIManager.ListDragged.count() > 0
+			For Local obj:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged.Copy()
+				obj.dropBackToOrigin()
+				'successful or not - get rid of the gui element
+				obj.Remove()
+			Next
+		EndIf
 		'=== IMAGE SCREEN ===
 		'...
 
@@ -403,11 +412,6 @@ Type TScreenHandler_ProgrammePlanner
 		Local oldCol:TColor = New TColor.get()
 		SetAlpha oldCol.a * 0.65 + Float(Min(0.15, Max(-0.20, Sin(MilliSecs() / 6) * 0.20)))
 
-		Local blockOverlay:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_blockoverlay.highlighted")
-		Local clockOverlay1:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_clockoverlay1.highlighted")
-		Local clockOverlay2:TSprite = GetSpriteFromRegistry("gfx_programmeplanner_clockoverlay2.highlighted")
-
-
 		For Local i:Int = 0 To 23
 			Local overlayedCount:Int = 0
 			Local mode1:Int = GetSlotOverlay(i, TVTBroadcastMaterialType.PROGRAMME)
@@ -429,31 +433,40 @@ Type TScreenHandler_ProgrammePlanner
 
 			'clock overlay
 			If mode1 = mode2
-				If mode1 = 1 Then SetColor 110, 255, 110
-				If mode1 = 2 Then SetColor 255,200,75
+				If mode1 = 1
+					SetColor 110,255,110
+				ElseIf mode1 = 2
+					SetColor 255,200,75
+				EndIf
 			Else
 				SetColor 255,190,75
 			EndIf
 			If i Mod 2 = 0
-				clockOverlay1.Draw(x, y)
+				slotOverlaysClock1.Draw(x, y)
 			Else
-				clockOverlay2.Draw(x, y)
+				slotOverlaysClock2.Draw(x, y)
 			EndIf
 
 			'programme overlay
 			If (mode1<>0) = Not invert
-				If mode1 = 1 Then SetColor 110, 255, 110
-				If mode1 = 2 Then SetColor 255,200,75
+				If mode1 = 1
+					SetColor 110,255,110
+				ElseIf mode1 = 2
+					SetColor 255,200,75
+				EndIf
 
-				blockOverlay.DrawArea(x+40, y, 205, 30)
+				slotOverlaysBlock.DrawArea(x+40, y, 205, 30)
 			EndIf
 
 			'ad overlay
 			If (mode2<>0) = Not invert
-				If mode2 = 1 Then SetColor 110, 255, 110
-				If mode2 = 2 Then SetColor 255,200,75
+				If mode2 = 1
+					SetColor 110,255,110
+				ElseIf mode2 = 2
+					SetColor 255,200,75
+				EndIf
 
-				blockOverlay.DrawArea(x+40 + 205, y, 85, 30)
+				slotOverlaysBlock.DrawArea(x+40 + 205, y, 85, 30)
 			EndIf
 		Next
 
@@ -462,19 +475,20 @@ Type TScreenHandler_ProgrammePlanner
 		Local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
 		SetAlpha oldCol.a * 0.30
 		SetColor 170,30,0
+		local d:Int = GetWorldTime().GetDay()
 		For Local i:Int = 0 To 23
-			If plan.IsLockedSlot(TVTBroadcastMaterialType.PROGRAMME, GetWorldTime().GetDay(), i)
+			If plan.IsLockedSlot(TVTBroadcastMaterialType.PROGRAMME, d, i)
 				If i < 12
-					blockOverlay.DrawArea(45, 5 + i*30, 205, 30)
+					slotOverlaysBlock.DrawArea(45, 5 + i*30, 205, 30)
 				Else
-					blockOverlay.DrawArea(380, 5 + i*30, 205, 30)
+					slotOverlaysBlock.DrawArea(380, 5 + i*30, 205, 30)
 				EndIf
 			EndIf
-			If plan.IsLockedSlot(TVTBroadcastMaterialType.ADVERTISEMENT, GetWorldTime().GetDay(), i)
+			If plan.IsLockedSlot(TVTBroadcastMaterialType.ADVERTISEMENT, d, i)
 				If i < 12
-					blockOverlay.DrawArea(45 + 205, 5 + i*30, 85, 30)
+					slotOverlaysBlock.DrawArea(45 + 205, 5 + i*30, 85, 30)
 				Else
-					blockOverlay.DrawArea(380 + 205, 5 + i*30, 85, 30)
+					slotOverlaysBlock.DrawArea(380 + 205, 5 + i*30, 85, 30)
 				EndIf
 			EndIf
 		Next
@@ -1099,9 +1113,13 @@ Type TScreenHandler_ProgrammePlanner
 		GetSpriteFromRegistry("screen_programmeplanner_overlay").Draw(0,0)
 
 		'time indicator
-		If planningDay = GetWorldTime().GetDay() Then SetColor 0,100,0
-		If planningDay < GetWorldTime().GetDay() Then SetColor 100,100,0
-		If planningDay > GetWorldTime().GetDay() Then SetColor 0,0,0
+		If planningDay = GetWorldTime().GetDay()
+			SetColor 0,100,0
+		ElseIf planningDay < GetWorldTime().GetDay()
+			SetColor 100,100,0
+		Else
+			SetColor 0,0,0
+		EndIf
 		Local day:Int = 1+ planningDay - GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
 		GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY"),712, 7, 56, 26, ALIGN_CENTER_TOP)
 		GetBitmapFont("default", 10).drawBlock(GetWorldTime().GetFormattedDayLong(planningDay),712, 7, 56, 26, ALIGN_CENTER_BOTTOM)
@@ -1572,7 +1590,7 @@ Type TScreenHandler_ProgrammePlanner
 '		End Rem
 
 		'remove dragged ones of gui manager
-		If removeDragged
+		If removeDragged and GUIManager.listDragged.count() > 0
 			For Local guiObject:TGuiProgrammePlanElement = EachIn GuiManager.listDragged.Copy()
 				guiObject.remove()
 				guiObject = Null
@@ -1633,11 +1651,13 @@ Type TScreenHandler_ProgrammePlanner
 		EndIf
 
 		'remove dragged ones we do no longer own / have access too
-		For Local obj:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged.Copy()
-			if not GetPlayerProgrammeCollection(currentRoom.owner).HasBroadcastMaterial(obj.broadcastMaterial)
-				obj.Remove()
-			endif
-		Next
+		If GUIManager.ListDragged.count() > 0
+			For Local obj:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged.Copy()
+				if not GetPlayerProgrammeCollection(currentRoom.owner).HasBroadcastMaterial(obj.broadcastMaterial)
+					obj.Remove()
+				endif
+			Next
+		EndIf
 		draggedGuiProgrammePlanElement = Null
 		hoveredGuiProgrammePlanElement = Null
 

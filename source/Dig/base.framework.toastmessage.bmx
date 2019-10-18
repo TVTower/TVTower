@@ -218,7 +218,7 @@ Type TToastMessageSpawnPoint extends TEntity
 	'alignment of messages according to the position of the spawnpoint
 	Field alignment:TVec2D
 	'messages of the spawnpoint
-	Field messages:TList = CreateList()
+	Field messages:TObjectList = new TObjectList
 	'=== CONFIGURATION ===
 	'vector describing spaces between two messages
 	Field spacerSize:TVec2D = New TVec2D.Init(0,5)
@@ -340,7 +340,7 @@ Type TToastMessageSpawnPoint extends TEntity
 
 
 	Method Update:Int()
-		For local message:TToastMessage = EachIn messages.Copy()
+		For local message:TToastMessage = EachIn messages
 			message.Update()
 		Next
 

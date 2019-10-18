@@ -436,7 +436,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Method MoveToCurrentTarget:int()
 		if not GetTarget() then return False
 
-		area.position = GetTargetMoveToPosition().copy()
+		area.position.CopyFrom( GetTargetMoveToPosition() )
 	End Method
 
 
