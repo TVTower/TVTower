@@ -149,7 +149,11 @@ Type TNetworkClient extends TNetworkConnection
 			client.ip		= ENET_HOST_ANY
 			client.port		= port
 			addr			= enet_address_create( client.ip,client.port )
+			?bmxng
+			client.enethost	= enet_host_create( addr,size_t(maxClients),0,0, 0)
+			?not bmxng
 			client.enethost	= enet_host_create( addr,maxClients,0,0 )
+			?
 			enet_address_destroy(addr)
 			If Not client.enethost Return Null
 			client.link		= list.addlast(client)
@@ -157,7 +161,11 @@ Type TNetworkClient extends TNetworkConnection
 			If port=0 then port=4544
 			For Local n:Int=port To port+portrange-1
 				addr			= enet_address_create( ENET_HOST_ANY,n )
+				?bmxng
+				client.enethost	= enet_host_create( addr,size_t(maxClients),0,0, 0 )
+				?not bmxng
 				client.enethost	= enet_host_create( addr,maxClients,0,0 )
+				?
 				enet_address_destroy(addr)
 				If client.enethost then client.port = port;exit
 			Next
@@ -173,7 +181,11 @@ Type TNetworkClient extends TNetworkConnection
 
 		If Server
 			If force
+				?bmxng
+				enet_peer_disconnect(server.enetpeer, 0)
+				?not bmxng
 				enet_peer_reset(Server.enetpeer)
+				?
 			Else
 				SendEvent(NET_LEAVEGAMEREQUEST,NET_PACKET_RELIABLE)
 				Local ev:ENetEvent=New ENetEvent
@@ -187,13 +199,17 @@ Type TNetworkClient extends TNetworkConnection
 						Case ENET_EVENT_TYPE_RECEIVE
 							If ev.packet
 								Local packet:TNetworkPacket
+								?bmxng
+								Local size:Int=bmx_enet_packet_size(ev.packet)
+								?not bmxng
 								Local size:Int=enet_packet_size(ev.packet)
+								?
 								Local data:Byte[size]
 								If size
 									packet=New TNetworkPacket
 									?bmxng
 									packet._bank.resize(Size_T(size))
-									MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),Size_T(size))
+									MemCopy(packet._bank.buf(),bmx_enet_packet_data(ev.packet),Size_T(size))
 									?not bmxng
 									packet._bank.resize(size)
 									MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),size)
@@ -205,7 +221,11 @@ Type TNetworkClient extends TNetworkConnection
 							EndIf
 					EndSelect
 				Forever
+				?bmxng
+				enet_peer_disconnect(server.enetpeer, 0)
+				?not bmxng
 				enet_peer_disconnect(server.enetpeer)
+				?
 			EndIf
 			server=Null
 		EndIf
@@ -230,7 +250,11 @@ Type TNetworkClient extends TNetworkConnection
 		server.port	= port
 
 		Local addr:Byte Ptr = enet_address_create(server.ip, server.port)
+		?bmxng
+		server.enetpeer	= enet_host_connect(enethost, addr, size_t(channels), 0)
+		?not bmxng
 		server.enetpeer	= enet_host_connect(enethost, addr, channels)
+		?
 		enet_address_destroy( addr )
 
 		If server.enetpeer = Null
@@ -256,7 +280,7 @@ Type TNetworkClient extends TNetworkConnection
 			'we return TRUE so the package seems to get sent successful.
 			return True
 		endif
-		
+
 		if not NetworkObject then return 0
 		local packet:TNetworkPacket = NetworkObject.ToPacket()
 		if not packet then return 0
@@ -270,9 +294,15 @@ Type TNetworkClient extends TNetworkConnection
 		If packet
 			Local data:Byte[] = New Byte[packet._bank.size()]
 			MemCopy(Varptr data[0],packet._bank.buf(),packet._bank.size())
+			?bmxng
+			Local enetpacket:Byte Ptr = enet_packet_create(data,size_t(data.length),uint(flags))
+			'send to this peer / connection
+			result = (enet_peer_send(server.enetpeer,Byte(channel),enetpacket)=0)
+			?not bmxng
 			Local enetpacket:Byte Ptr = enet_packet_create(data,data.length,flags)
 			'send to this peer / connection
 			result = (enet_peer_send(server.enetpeer,channel,enetpacket)=0)
+			?
 		endif
 		return result
 	End Method
@@ -282,7 +312,11 @@ Type TNetworkClient extends TNetworkConnection
 		local response:TNetworkObject = TNetworkObject.fromPacket(packet)
 		if response = null then response = TNetworkObject.Create(0)
 		if evType = 0 then evType = response.evType
+?not bmxng
 		enet_peer_address( enetpeer , response.senderIP , response.senderPort )
+?bmxng
+Throw "implement enet_peer_address"
+?
 		'print "<-- client receives packet from="+dottedIP(response.senderIP)+", evType="+evType
 
 		Select evType
@@ -295,7 +329,7 @@ Type TNetworkClient extends TNetworkConnection
 					obj.setString(1, playerName)
 					self.Send(obj)
 				endif
-				
+
 			Case NET_JOINRESPONSE
 				'got join - if ok then also set playerID
 				joined = response.getInt(1)
@@ -306,22 +340,26 @@ Type TNetworkClient extends TNetworkConnection
 					self.playerID = Max(0,playerID)
 				endif
 				TLogger.Log("Network.EvaluateEvent()", "Got join response. Set playerID to " +self.playerID, LOG_DEBUG | LOG_NETWORK)
-				
+
 			Case NET_PINGREQUEST
 				'change ev type from ping request to response
 				response.evType = NET_PINGRESPONSE
 				Send(response)
-				
+
 			Case NET_PINGRESPONSE
 				latency = Time.GetTimeGone() - response.getLong(1)
 				response.SetInt(2, response.senderIP)
 				response.SetInt(3, response.senderPort)
 				If enetpeer=pingpeer
+					?bmxng
+					enet_peer_disconnect(pingpeer, 0)
+					?not bmxng
 					enet_peer_disconnect(pingpeer)
+					?
 					pingpeer=Null
 				EndIf
 		EndSelect
-		
+
 		'run extension callback
 		If callback then callback(Self,evType, response)
 	End Method
@@ -340,8 +378,11 @@ Type TNetworkServer Extends TNetworkConnection
 	Field clients:TList=New TList
 	Field clientmap:TMap = CreateMap()
 	Field callback(server:TNetworkServer,client:TNetworkclient,id:Int, networkObject:TNetworkObject)
+?bmxng
+	Field bannedips:String[]
+?not bmxng
 	Field bannedips:Int[]
-
+?
 	Function Create:TNetworkServer(port:Int=0,portRange:Int=40)
 		Local addr:Byte Ptr
 		local server:TNetworkServer=New TNetworkServer
@@ -349,13 +390,21 @@ Type TNetworkServer Extends TNetworkConnection
 
 		If portrange <= 1
 			addr = enet_address_create( server.ip,server.port )
+			?bmxng
+			server.enethost	= enet_host_create( addr,32,0,0, 0)
+			?not bmxng
 			server.enethost	= enet_host_create( addr,32,0,0 )
+			?
 			enet_address_destroy(addr)
 		Else
 			If port=0 then port=4544
 			For Local n:Int=port To port+portrange-1
 				addr = enet_address_create( ENET_HOST_ANY,n )
+				?bmxng
+				server.enethost	= enet_host_create( addr,64,0,0, 0 )
+				?not bmxng
 				server.enethost	= enet_host_create( addr,64,0,0 )
+				?
 				enet_address_destroy(addr)
 				If server.enethost
 					server.port = n
@@ -380,7 +429,7 @@ Type TNetworkServer Extends TNetworkConnection
 		Next
 		return Null
 	End Method
-	
+
 
 	Method FindClient:TNetworkClient(ip:Int,port:Int)
 		Local client:TNetworkClient
@@ -410,7 +459,11 @@ Type TNetworkServer Extends TNetworkConnection
 
 
 		Local answer:TNetworkObject
+?not bmxng
 		enet_peer_address( enetpeer , response.senderIP , response.senderPort )
+?bmxng
+Throw "implement enet_peer_address"
+?
 	'	print "<-- server receives packet from="+dottedIP(response.senderIP)+", evType="+evType
 
 		if evType = 0 then evType = response.evType
@@ -445,7 +498,7 @@ Type TNetworkServer Extends TNetworkConnection
 					Disconnect(client,0)
 					Return
 				Endif
-				
+
 				'handle join
 				client.name = response.GetString(1)
 				'duplicate name "boon" => "boon (1)"
@@ -542,9 +595,15 @@ Type TNetworkServer Extends TNetworkConnection
 		If packet
 			Local data:Byte[] = New Byte[packet._bank.size()]
 			MemCopy(Varptr data[0],packet._bank.buf(),packet._bank.size())
+			?bmxng
+			Local enetpacket:Byte Ptr = enet_packet_create(data,size_t(data.length),uint(flags))
+			'send to this peer / connection
+			result = (enet_peer_send(self.enetpeer,Byte(channel),enetpacket)=0)
+			?not bmxng
 			Local enetpacket:Byte Ptr = enet_packet_create(data,data.length,flags)
 			'send to this peer / connection
 			result = (enet_peer_send(self.enetpeer,channel,enetpacket)=0)
+			?
 		endif
 		return result
 	End Method
@@ -559,9 +618,15 @@ Type TNetworkServer Extends TNetworkConnection
 		If packet
 			Local data:Byte[] = New Byte[packet._bank.size()]
 			MemCopy(Varptr data[0],packet._bank.buf(),packet._bank.size())
+			?bmxng
+			Local enetpacket:Byte Ptr = enet_packet_create(data,size_t(data.length),uint(flags))
+			'send to this peer / connection
+			result = (enet_peer_send(client.enetpeer,Byte(channel),enetpacket)=0)
+			?not bmxng
 			Local enetpacket:Byte Ptr = enet_packet_create(data,data.length,flags)
 			'send to this peer / connection
 			result = (enet_peer_send(client.enetpeer,channel,enetpacket)=0)
+			?
 		endif
 		return result
 	End Method
@@ -576,9 +641,17 @@ Type TNetworkServer Extends TNetworkConnection
 	Method Disconnect(client:TNetworkClient,force:Int=False)
 		If client.enetpeer
 			If force
+				?not bmxng
 				enet_peer_reset(client.enetpeer)
+				?bmxng
+				Throw "implement enet_peer_reset"
+				?
 			Else
+				?bmxng
+				enet_peer_disconnect(client.enetpeer, 0)
+				?not bmxng
 				enet_peer_disconnect(client.enetpeer)
+				?
 			EndIf
 			clients.remove(client)
 			If Not client.enethost then client.link.remove()
@@ -587,12 +660,20 @@ Type TNetworkServer Extends TNetworkConnection
 		EndIf
 	End Method
 
+?bmxng
+	Method BanIP(ip:String)
+?not bmxng
 	Method BanIP(ip:Int)
+?
 		bannedips=bannedips[..bannedips.length+1]
 		bannedips[bannedips.length-1]=ip
 	End Method
 
+?bmxng
+	Method IPBanned:Int(ip:String)
+?not bmxng
 	Method IPBanned:Int(ip:Int)
+?
 		For Local n:Int=0 To bannedips.length-1
 			If ip=bannedips[n] Return True
 		Next
@@ -709,14 +790,14 @@ Type TDigNetwork
 		self.announceToLan = toLan
 	End Method
 
-	
+
 	Method FindGames()
 		if inGame then return
 		if not infoStream
 			TLogger.Log("Network.FindGames()", "Initialized info stream.", LOG_DEBUG | LOG_NETWORK)
 			self.InitInfoStream()
 		endif
-		
+
 		local packet:TNetworkPacket = self.ReceiveInfoPackets()
 		if packet
 			local obj:TNetworkObject = TNetworkObject.FromPacket(packet)
@@ -775,7 +856,7 @@ Type TDigNetwork
 
 		TEventSimple.Create("network.onStopServer", null).trigger()
 	End Method
-	
+
 
 	Method GetMyIP:int()
 		local MyIP:int = GetHostIP("")
@@ -789,7 +870,7 @@ Type TDigNetwork
 		'return DottedIP(ip)
 		return (ip Shr 24)+"."+(ip Shr 16 & 255)+"."+(ip Shr 8 & 255 )+"."+(ip & 255)
 	End Function
-	
+
 
 	Method ConnectToLocalServer:int()
 		if not client then client = TNetworkClient.Create(localPort, 20)
@@ -914,7 +995,7 @@ Type TDigNetwork
 			EndIf
 		?
 	End Function
-	
+
 
 	Function GetBroadcastIP:String(intIP:int)
 		local ip:string = DottedIP(intIP)
@@ -971,7 +1052,7 @@ Type TDigNetwork
 			obj.SetInt(4, self.localPort)
 			obj.setString(5, client.playerName)
 			obj.setString(6, self.announceTitle)
-		
+
 			self.SendInfoPacket(obj.toPacket(), GetBroadcastIP(self.GetMyIP()), self.infoPort)
 		Else
 rem
@@ -1126,7 +1207,7 @@ Type TNetworkObject
 		endif
 		Return obj
 	End Function
-	
+
 
 	Method SetInt( index:int,data:int )
 		WriteSlot( index ).SetInt( data )
@@ -1141,7 +1222,7 @@ Type TNetworkObject
 	Method SetDouble( index:int, data:Double )
 		WriteSlot( index ).SetDouble( data )
 	End Method
-	
+
 
 	Method SetLong( index:int, data:Long )
 		WriteSlot( index ).SetLong( data )
@@ -1488,7 +1569,7 @@ Type TNetworkObject
 	Function UnpackFloat32:float( i:int )
 		Return (Float Ptr Varptr i)[0]
 	End Function
-	
+
 	'=== / END FROM gnet.bmx ===
 End Type
 
@@ -1618,7 +1699,7 @@ Type TNetworkObjectSlot
 			Return _string.ToLong()
 		endif
 	End Method
-		
+
 
 	Method GetString:string(defaultValue:string="", defaultProvided:int=FALSE)
 		'float/int/string don't have real NULL, so we have to rely on
@@ -1661,7 +1742,11 @@ End Type
 
 Type TNetworkConnection
 	'ip of remote peer
+	?bmxng
+	Field ip:String
+	?not bmxng
 	Field ip:int
+	?
 	'port of remote peer
 	Field port:int
 	Field link:TLink
@@ -1698,14 +1783,22 @@ Type TNetworkConnection
 	End Method
 
 
+?bmxng
+	Method GetIP:String()
+?not bmxng
 	Method GetIP:int()
+?
 		return self.ip
 	End Method
-	
+
 
 	Method GetDottedIP:string()
 		'return DottedIP(ip)
+?bmxng
+		return ip
+?not bmxng
 		return TDigNetwork.GetDottedIP(ip)
+?
 	End Method
 
 
@@ -1719,7 +1812,7 @@ Type TNetworkConnection
 			RuntimeError "Can't update a remote server."
 			return
 		endif
-		
+
 		Repeat
 			If not enet_host_service(Self.enethost, ev, 0) then exit
 
@@ -1730,13 +1823,17 @@ Type TNetworkConnection
 					id=NET_DISCONNECT
 				Case ENET_EVENT_TYPE_RECEIVE
 					local obj:TNetworkObject
+					?bmxng
+					Local size:Int=bmx_enet_packet_size(ev.packet)
+					?not bmxng
 					Local size:Int=enet_packet_size(ev.packet)
+					?
 					Local data:Byte[size]
 					If size
 						packet=New TNetworkPacket
 						?bmxng
 						packet._bank.resize(Size_T(size))
-						MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),Size_T(size))
+						MemCopy(packet._bank.buf(),bmx_enet_packet_data(ev.packet),Size_T(size))
 						?not bmxng
 						packet._bank.resize(size)
 						MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),size)
@@ -1757,7 +1854,7 @@ Type TNetworkConnection
 			If self.enethost=Null then Exit
 		Forever
 	End Method
-	
+
 
 	Function ConvertEvent:Int(ev:EnetEvent,packet:TNetworkPacket)
 		Select ev.event
@@ -1767,11 +1864,15 @@ Type TNetworkConnection
 				Return NET_DISCONNECT
 			Case ENET_EVENT_TYPE_RECEIVE
 				If ev.packet
+					?bmxng
+					Local size:Int=bmx_enet_packet_size(ev.packet)
+					?not bmxng
 					Local size:Int=enet_packet_size(ev.packet)
+					?
 					If size
 						?bmxng
 						packet._bank.resize(Size_T(size))
-						MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),Size_T(size))
+						MemCopy(packet._bank.buf(),bmx_enet_packet_data(ev.packet),Size_T(size))
 						?not bmxng
 						packet._bank.resize(size)
 						MemCopy(packet._bank.buf(),enet_packet_data(ev.packet),size)
