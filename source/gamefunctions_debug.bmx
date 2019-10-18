@@ -16,6 +16,7 @@ Type TDebugScreen
 	Field playerCommandAIButtons:TDebugControlsButton[]
 	Field buttonsAdAgency:TDebugControlsButton[]
 	Field buttonsMovieVendor:TDebugControlsButton[]
+	Field buttonsNewsAgency:TDebugControlsButton[]
 	Field sideButtonPanelWidth:Int = 130
 	Field adAgencyOfferHightlight:TAdContract
 	Field movieVendorOfferHightlight:TProgrammeLicence
@@ -47,6 +48,7 @@ Type TDebugScreen
 		InitMode_PlayerBroadcasts()
 		InitMode_AdAgency()
 		InitMode_MovieVendor()
+		InitMode_NewsAgency()
 	End Method
 
 
@@ -84,6 +86,7 @@ Type TDebugScreen
 			Case 3	UpdateMode_PlayerBroadcasts()
 			Case 4	UpdateMode_AdAgency()
 			Case 5	UpdateMode_MovieVendor()
+			Case 6	UpdateMode_NewsAgency()
 		End Select
 	End Method
 
@@ -121,6 +124,7 @@ Type TDebugScreen
 			Case 3	RenderMode_PlayerBroadcasts()
 			Case 4	RenderMode_AdAgency()
 			Case 5	RenderMode_MovieVendor()
+			Case 6	RenderMode_NewsAgency()
 		End Select
 	End Method
 
@@ -534,7 +538,137 @@ Type TDebugScreen
 
 
 
+	'=== NEWS AGENCY ===
+
+	Method InitMode_NewsAgency()
+		Local texts:String[] = ["Announce News", "Reset Terror Levels"]
+		Local button:TDebugControlsButton
+		For Local i:Int = 0 Until texts.length
+			button = New TDebugControlsButton
+			button.w = 130
+			button.h = 15
+			button.x = sideButtonPanelWidth + 10 + 260
+			button.y = 10 + i * (button.h + 3)
+			button.dataInt = i
+			button.text = texts[i]
+			button._onClickHandler = OnButtonClickHandler_NewsAgency
+
+			buttonsNewsAgency :+ [button]
+		Next
+	End Method
+
+
+	Function OnButtonClickHandler_NewsAgency(sender:TDebugControlsButton)
+		Select sender.dataInt
+			case 0
+				'RoomHandler_MovieAgency.GetInstance().ReFillBlocks()
+			case 1
+				'RoomHandler_MovieAgency.GetInstance().ReFillBlocks(True, 1.0)
+		End Select
+
+		'handled
+		sender.clicked = False
+		sender.selected = False
+	End Function
+
+
+	Method UpdateMode_NewsAgency()
+		Local playerID:Int = GetShownPlayerID()
+
+		UpdateNewsAgencyQueue(playerID, sideButtonPanelWidth + 5, 13, 410, 230)
+
+		For Local b:TDebugControlsButton = EachIn buttonsNewsAgency
+			b.Update()
+		Next
+	End Method
+
+
+	Method RenderMode_NewsAgency()
+		Local playerID:Int = GetShownPlayerID()
+
+		RenderNewsAgencyQueue(playerID, sideButtonPanelWidth + 5, 13, 410, 340)
+		RenderNewsAgencyInformation(playerID, sideButtonPanelWidth + 5 + 250 + 250 + 5, 13)
+
+		For Local b:TDebugControlsButton = EachIn buttonsNewsAgency
+			b.Render()
+		Next
+
+'		if newsAgencyNewsHighlight
+'			newsAgencyNewsHighlight.ShowSheet(sideButtonPanelWidth + 5 + 250, 13, 0	, playerID)
+'		endif
+	End Method
+
+
+
+
 	'=== BLOCKS ===
+
+	Method RenderNewsAgencyInformation(playerID:int, x:int, y:int, w:int = 180, h:int = 150)
+		DrawOutlineRect(x, y, w, h)
+	End Method
+
+
+
+	Method UpdateNewsAgencyQueue(playerID:int, x:int, y:int, w:int = 200, h:int = 150)
+		'reset
+		'newsAgencyNewsHighlight = null
+	End Method
+
+
+	Method RenderNewsAgencyQueue(playerID:int, x:int, y:int, w:int = 200, h:int = 150)
+		DrawOutlineRect(x, y, w, h)
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+
+		textY :+ 12 + 10 + 5
+
+
+		local upcomingCount:int[TVTNewsGenre.count+1]
+		local upcomingEvents:TNewsEvent[][]
+		local upcomingCountTotal:int = 0
+
+		upcomingEvents = upcomingEvents[.. TVTNewsGenre.count+1]
+		For local i:int = 0 until TVTNewsGenre.count
+			upcomingEvents[i] = new TNewsEvent[0]
+		Next
+
+		For local n:TNewsEvent = EachIn GetNewsEventCollection().GetUpcomingNewsList()
+			local g:int = n.GetGenre()
+			upcomingCountTotal :+ 1
+			upcomingCount[n.GetGenre()] :+ 1
+			if not upcomingEvents[g]
+				upcomingEvents[g] = [n]
+'			elseif upcomingEvent[g].happenedTime > n.happenedTime 'new one is earlier
+'				upcomingEvent[g] = n
+			else
+				upcomingEvents[g] :+ [n]
+			endif
+		Next
+
+
+		For local i:int = 0 until TVTNewsGenre.count
+			textFont.Draw(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(i)), textX, textY)
+			textFont.Draw("Next"+GetWorldTime().GetFormattedTime(GetNewsAgency().NextEventTimes[i]) +"  "+upcomingCount[i]+" upcoming.", textX + 100, textY)
+			textY :+ 12
+
+			if upcomingEvents[i].length = 0
+				textFont.Draw("--", textX , textY)
+				textY :+ 12
+			else
+				For local eventIndex:int = 0 until Min(3, upcomingEvents[i].length)
+					textFont.Draw(GetWorldTime().GetFormattedGameDate(upcomingEvents[i][eventIndex].happenedTime), textX, textY)
+					textFont.DrawBlock(upcomingEvents[i][eventIndex].GetTitle(), textX + 100, textY, 200, 15)
+					textY :+ 12
+				Next
+				'empty lines for not-set upcoming events in that genre
+				textY :+ Max(0, 3 - upcomingEvents[i].length) * 12
+			endif
+
+			textY :+ 5
+		Next
+	End Method
+
+
 	'stuff filtered out
 	Method RenderMovieVendorNoLongerAvailable(playerID:Int, x:int, y:int, w:int = 200, h:int = 300)
 		DrawOutlineRect(x, y, w, h)
@@ -1429,12 +1563,12 @@ Type TDebugProgrammeCollectionInfos
 	Global removedAdContracts:TMap = CreateMap()
 	Global availableAdContracts:TMap = CreateMap()
 	Global oldestEntryTime:Long
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 
 
 	Method New()
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeAdContract", onChangeProgrammeCollection) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addAdContract", onChangeProgrammeCollection) ]
@@ -1716,7 +1850,7 @@ Type TDebugProgrammePlanInfos
 	Global adBroadcasts:TMap = CreateMap()
 	Global newsInShow:TMap = CreateMap()
 	Global oldestEntryTime:Long
-	Global _eventListeners:TLink[]
+	Global _eventListeners:TEventListenerBase[]
 	Global predictor:TBroadcastAudiencePrediction = New TBroadcastAudiencePrediction
 	Global predictionCacheProgAudience:TAudience[24]
 	Global predictionCacheProg:TAudienceAttraction[24]
@@ -1728,8 +1862,8 @@ Type TDebugProgrammePlanInfos
 	Global slotPadding:Int = 3
 
 	Method New()
-		EventManager.unregisterListenersByLinks(_eventListeners)
-		_eventListeners = New TLink[0]
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = new TEventListenerBase[0]
 
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.addObject", onChangeProgrammePlan) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.SetNews", onChangeNewsShow) ]
