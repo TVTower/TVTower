@@ -456,7 +456,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		EndIf
 
 		Self.topicality = template.topicality
-		Self.SetQualityRaw( template.quality )
+		Self.SetQualityRaw( template.GetQuality() )
 		Self.newsType = template.newsType
 
 		Self.flags = template.flags

@@ -347,7 +347,10 @@ End Function
 Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 	Field LS_guid:TLowerString
 	Field genre:Int = 0
-	Field quality:Float = 1.0
+	Field quality:Float = -1.0
+	Field qualityMin:Float = -1.0
+	Field qualityMax:Float = -1.0
+	Field qualitySlope:Float = 0.5
 	Field keywords:string = ""
 	Field available:int = True
 	Field templateVariables:TTemplateVariables = null
@@ -384,7 +387,7 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 		self.description = description
 		self.genre       = Genre
 		self.topicality  = 1.0
-		if quality >= 0 then SetQuality(quality)
+		if quality >= 0 then quality = MathHelper.Clamp(quality, 0, 1.0)
 		self.newsType	 = newsType
 		'modificators: > 1.0 increases price (1.0 = 100%)
 		if modifiers then self.modifiers = modifiers.Copy()
@@ -450,11 +453,6 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 	End Method
 
 
-	Method SetQuality(quality:Float)
-		self.quality = MathHelper.Clamp(quality, 0, 1.0)
-	End Method
-
-
 	Method ToString:String()
 		return "newsEventTemplate: title=" + GetTitle() + "  quality=" + GetQuality() + "  priceMod=" + GetModifier("price")
 	End Method
@@ -480,6 +478,15 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 	Function GetGenreString:String(Genre:Int)
 		return GetLocale("NEWS_"+ TVTNewsGenre.GetasString(Genre).toUpper())
 	End Function
+
+
+	Method GetQuality:Float()
+		If qualityMin >= 0 And qualityMax >= 0
+			return 0.001 * BiasedRandRange(int(1000*qualityMin), int(1000*qualityMax), qualitySlope)
+		Endif
+
+		Return quality
+	End Method
 
 
 	'override
@@ -510,11 +517,5 @@ Type TNewsEventTemplate extends TBroadcastMaterialSourceBase
 
 	Method IsReuseable:int()
 		return not HasFlag(TVTNewsFlag.UNIQUE_EVENT)
-	End Method
-
-
-	'contains age/topicality decrease
-	Method GetQuality:Float() {_exposeToLua}
-		return quality
 	End Method
 End Type
