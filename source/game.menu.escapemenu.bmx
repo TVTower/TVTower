@@ -260,7 +260,6 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 '		Local canvas:TGUIObject = GetGuiContent()
 
 		savegameList = New TGUISelectList.Create(New TVec2D.Init(0, 0), New TVec2D.Init(GetContentScreenRect().GetW(),80), "MODALLOADMENU")
-'		savegameList.rect.position.SetXY(GetContentScreenRect().GetX(), GetContentScreenRect().GetY())
 
 		AddChild(savegameList)
 
@@ -443,7 +442,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 
 		savegameNameLabel = New TGUILabel.Create(New TVec2D.Init(0, 0), "", Null, "MODALSAVEMENU")
 
-		savegameList = New TGUISelectList.Create(New TVec2D.Init(GetContentScreenRect().GetX(), GetContentScreenRect().GetY() + savegameName.GetScreenRect().GetH()), New TVec2D.Init(GetContentScreenRect().GetW(),80), "MODALSAVEMENU")
+		savegameList = New TGUISelectList.Create(New TVec2D.Init(0, savegameName.GetScreenRect().GetH()), New TVec2D.Init(GetContentScreenRect().GetW(),80), "MODALSAVEMENU")
 
 		AddChild(savegameList)
 
@@ -630,7 +629,7 @@ Global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 		EndIf
 
 		If savegameList
-			savegameList.SetPosition(GetContentScreenRect().GetX(), GetContentScreenRect().GetY() + addH)
+			savegameList.SetPosition(0, 0 + addH)
 		EndIf
 	End Method
 
