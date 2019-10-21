@@ -2732,8 +2732,19 @@ End Type
 
 Type TSavegameConverter
 	Method DeSerializeUnknownProperty:Object(oldType:String, newType:String, obj:Object, parentObj:Object)
+		print "DeSerializeUnknownProperty: " + oldType + " > " + newType
 		Local convert:String = (oldType+">"+newType).ToLower()
 		Select convert
+			'v0.6.2 -> BroadcastStatistics from TMap to TIntMap
+			Case "TMap>TIntMap".ToLower()
+				Local old:TMap = TMap(obj)
+				if old
+					local res:TIntMap = new TIntMap
+					For local oldV:string = EachIn old.Keys()
+						res.Insert(int(oldV), old.ValueForKey(oldV))
+					Next
+					return res
+				endif
 			Rem
 			Case "TIntervalTimer>TBuildingIntervalTimer".ToLower()
 				Local old:TIntervalTimer = TIntervalTimer(obj)

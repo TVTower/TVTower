@@ -5,7 +5,7 @@ Import "game.broadcast.audienceresult.bmx"
 
 
 Type TDailyBroadcastStatisticCollection
-	Field statistics:TMap = CreateMap()
+	Field statistics:TIntMap = new TIntMap
 	Field minShowDay:int = 0
 	Global _instance:TDailyBroadcastStatisticCollection
 
@@ -27,7 +27,7 @@ Type TDailyBroadcastStatisticCollection
 
 
 	Method Add:int(statistic:TDailyBroadcastStatistic, day:int)
-		statistics.Insert(string(day), statistic)
+		statistics.Insert(day, statistic)
 	End Method
 
 
@@ -37,12 +37,12 @@ Type TDailyBroadcastStatisticCollection
 
 		'avoid concurrent map modification (remove while iterating)
 		'and store to-remove-objects in an extra array
-		local removed:string[]
-		For local key:string = Eachin statistics.Keys()
-			if int(key) < day then removed :+ [key]
+		local removed:int[]
+		For Local k:TIntKey = Eachin statistics.Keys()
+			if k.value < day then removed :+ [k.value]
 		Next
 
-		For local key:string = EachIn removed
+		For local key:int = EachIn removed
 			statistics.Remove(key)
 		Next
 
@@ -51,7 +51,7 @@ Type TDailyBroadcastStatisticCollection
 
 
 	Method Get:TDailyBroadcastStatistic(day:int, createIfMissing:int = False)
-		local stat:TDailyBroadcastStatistic = TDailyBroadcastStatistic(statistics.ValueForKey(string(day)))
+		local stat:TDailyBroadcastStatistic = TDailyBroadcastStatistic(statistics.ValueForKey(day))
 		if not stat and createIfMissing
 			stat = new TDailyBroadcastStatistic
 			Add(stat, day)

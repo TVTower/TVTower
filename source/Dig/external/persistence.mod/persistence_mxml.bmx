@@ -750,7 +750,19 @@ Type TPersist
 											Throw "Reference not mapped yet : " + ref
 										End If
 									Else
-										fieldObj.Set(obj, DeSerializeObject("", fieldNode))
+										'Ronny
+										'check if the current programme knows the stored data structure / type
+										local storedFieldTypeID:TTypeId = TTypeId.ForName(fieldType)
+										if not storedFieldTypeID
+											fieldObj.Set(obj, DelegateDeserializationToType(obj, fieldNode.getAttribute("name"), fieldType, fieldObj.TypeId().name(), null) )
+										'or if it differs
+										elseif storedFieldTypeID <> fieldObj.TypeId()
+											fieldObj.Set(obj, DelegateDeserializationToType(obj, fieldNode.getAttribute("name"), fieldType, fieldObj.TypeId().name(), DeSerializeObject("", fieldNode)) )
+										else
+											fieldObj.Set(obj, DeSerializeObject("", fieldNode))
+										endif
+
+'										fieldObj.Set(obj, DeSerializeObject("", fieldNode))
 									End If
 								End If
 							End If
@@ -761,6 +773,52 @@ Type TPersist
 		End If
 	End Method
 
+
+	'ronny
+	Method DelegateDeserializationToType:object(typeObj:object, fieldName:string, sourceTypeName:string, targetTypeName:string, obj:object)
+ 		Local typeID:TTypeID = TTypeID.ForObject(typeObj)
+ 		Local deserializeName:string = "DeSerialize"+ sourceTypeName + "To" + targetTypeName
+ 		Local deserializeFunction:TMethod
+ 		Local functionContainer:object = typeObj
+ 		if typeID then deserializeFunction = typeID.FindMethod(deserializeName)
+
+  		'search for a more generic function if no individual function was
+ 		'found
+ 		if not deserializeFunction
+ 			local deserializeName2:string = "DeSerializeUnknownProperty"
+ 			if typeID then deserializeFunction = typeID.FindMethod(deserializeName2)
+
+  			'ask the generic converter
+ 			if not deserializeFunction
+ 				if converterTypeID
+ 					deserializeFunction = converterTypeID.FindMethod(deserializeName)
+ 					if not deserializeFunction
+ 						deserializeFunction = converterTypeID.FindMethod(deserializeName2)
+ 					endif
+
+  					if deserializeFunction
+ 						if not converterType then converterType = converterTypeID.NewObject()
+ 						functionContainer = converterType
+ 					endif
+ 				endif
+ 			endif
+
+  			if not deserializeFunction
+ 				if typeID
+ 					Throw "~q"+typeID.name()+":"+fieldName+"~q contains incompatible type (~q"+sourceTypeName+"~q). To handle it, create function ~q"+deserializeName+"()~q or ~q"+deserializeName2+"()~q."
+ 				else
+ 					Throw "~qunknown:"+fieldName+"~q contains incompatible type (~q"+sourceTypeName+"~q). To handle it, create function ~q"+deserializeName+"()~q or ~q"+deserializeName2+"()~q."
+ 				endif
+ 			endif
+ 		endif
+
+  		local res:object = deserializeFunction.Invoke(functionContainer, [object(sourceTypeName), object(targetTypeName), obj, typeObj])
+ 		if not res
+ 			Throw "Failed to deserialize ~q" + fieldName + "~q. Function ~q" + deserializeFunction.name() + "~q does not handle that type."
+ 		endif
+
+  		return res
+ 	End Method
 
 	'Ronny:
 	'deserializes objects defined in "node" into "obj"
