@@ -209,16 +209,16 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 					If match And match.GetMatchTime() <= GetWorldTime().GetTimeGone()
 						'still running?
 						If match.GetMatchEndTime() >= GetWorldTime().GetTimeGone()
-							title.Set(leagueText + "%MATCHLIVEREPORTSHORT%", Null )
+							title.Set(leagueText + "%MATCHLIVEREPORTSHORT%", -1 )
 							foundTitle = True
 						Else
-							title.Set(leagueText + "%MATCHREPORTSHORT%", Null )
+							title.Set(leagueText + "%MATCHREPORTSHORT%", -1 )
 							foundTitle = True
 						EndIf
 					EndIf
 
 					If Not foundtitle
-						title.Set(leagueText + "%MATCHNAMESHORT%", Null )
+						title.Set(leagueText + "%MATCHNAMESHORT%", -1 )
 					EndIf
 				EndIf
 
@@ -236,9 +236,9 @@ Type TSportsProgrammeData Extends TProgrammeData {_exposeToLua}
 			If Not descriptionProcessed
 				If dynamicTexts
 					If leagueGUID
-						description.Set( GetLocale("SPORT_PROGRAMME_MATCH_OF_LEAGUEX")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , Null )
+						description.Set( GetLocale("SPORT_PROGRAMME_MATCH_OF_LEAGUEX")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , -1 )
 					Else
-						description.Set( GetLocale("SPORT_PROGRAMME_PLAYOFF_MATCH")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , Null )
+						description.Set( GetLocale("SPORT_PROGRAMME_PLAYOFF_MATCH")+"~n"+GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , -1 )
 					EndIf
 				EndIf
 

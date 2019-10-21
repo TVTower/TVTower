@@ -205,9 +205,16 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 
 		programmeData.GUID = "programmedata-sportmatch-"+match.GetGUID()
 
+
+		programmeData.title = New TLocalizedString
+		programmeData.description = New TLocalizedString
+		Local localeIDs:Int[] = [TLocalization.currentLanguageID, TLocalization.defaultLanguageID]
+		For Local localeID:Int = EachIn localeIDs
+			programmeData.title.Set("%LEAGUENAMESHORT%: %MATCHNAMESHORT%", localeID )
+			programmeData.description.Set( GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , localeID )
+		Next
+
 		'this gets overridden in "GetTitle()/GetDescription()"
-		programmeData.title = New TLocalizedString.Set("%LEAGUENAMESHORT%: %MATCHNAMESHORT%", Null )
-		programmeData.description = New TLocalizedString.Set( GetRandomLocale("SPORT_PROGRAMME_MATCH_DESCRIPTION") , Null )
 		TSportsProgrammeData(programmeData).dynamicTexts = True
 
 		programmeData.titleProcessed = Null
