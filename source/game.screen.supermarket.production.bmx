@@ -1226,7 +1226,7 @@ Type TGUIProductionModalWindow extends TGUIModalWindow
 
 
 	'override to _not_ recenter
-	Method Recenter:Int(moveBy:TVec2D=Null)
+	Method Recenter:Int(moveByX:Float = 0, moveByY:Float = 0)
 		return True
 	End Method
 

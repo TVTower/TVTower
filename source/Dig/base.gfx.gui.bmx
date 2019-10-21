@@ -76,11 +76,12 @@ Type TGUIManager
 	Field currentState:TLowerString = Null
 	'config about specific gui settings (eg. panelGap)
 	Field config:TData = New TData
-	Field List:TList = CreateList()
+	Field List:TObjectList = new TObjectList
 	'contains dragged objects (above normal)
-	Field ListDragged:TList = CreateList()
+	Field ListDragged:TObjectList = new TObjectlist
 	'contains objects which need to get informed because of changed appearance
-	Field elementsWithChangedAppearance:TList = CreateList()
+	Field elementsWithChangedAppearance:TObjectList = new TObjectList
+	Field activeTooltips:TObjectList = new TObjectList
 
 
 	'=== UPDATE STATE PROPERTIES ===
@@ -383,12 +384,12 @@ Type TGUIManager
 
 		Local guiObjects:TGuiObject[]
 		'from TOP to BOTTOM (user clicks to visible things - which are at the top)
-		'Local listReversed:TList = list.Reversed()
-		Local listReversed:TGUIObject[] = TGUIObject[](list.ToArray())
-		Local i:Int = listReversed.Length
+		Local i:Int = list.Count()
 		While i
 			i :- 1
-			Local obj:TGUIobject = listReversed[i]
+			Local obj:TGUIobject = TGUIobject(list.ValueAtIndex(i))
+			if not obj then continue
+
 			'return array if we reached the limit
 			If limit > 0 And guiObjects.length >= limit Then Return guiObjects
 
@@ -523,7 +524,7 @@ Type TGUIManager
 
 	Method UpdateElementswithChangedAppearance()
 		If elementsWithChangedAppearance.Count() > 0
-			For Local obj:TGUIObject = EachIn elementsWithChangedAppearance.Copy()
+			For Local obj:TGUIObject = EachIn elementsWithChangedAppearance
 				If obj.isAppearanceChanged()
 					obj.onAppearanceChanged()
 					obj.SetAppearanceChanged(False)
@@ -545,14 +546,9 @@ Type TGUIManager
 		UpdateElementswithChangedAppearance()
 
 
-		'store a list of special elements - maybe the list gets changed
-		'during update... some elements will get added/destroyed...
-		'Local ListDraggedBackup:TList = ListDragged.Copy()
-		Local ListDraggedBackup:TGUIObject[] = TGUIObject[](ListDragged.ToArray())
-
 		'first update all dragged objects...
 		If GUIMANAGER_TYPES_DRAGGED & updateTypes
-			For Local obj:TGUIobject = EachIn ListDraggedBackup
+			For Local obj:TGUIobject = EachIn ListDragged
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
 				'avoid getting updated multiple times
@@ -569,24 +565,15 @@ Type TGUIManager
 		'then the rest
 		If GUIMANAGER_TYPES_NONDRAGGED & updateTypes
 			'from top to bottom
-			'traverse through a backup to avoid concurrent modification
-			'Local listBackupReversed:TList = List.Reversed()
-			Local listBackupReversed:TGUIObject[] = TGUIObject[](List.ToArray())
-			Local i:Int = listBackupReversed.Length
-			'For Local obj:TGUIobject = EachIn listBackupReversed
-
+			Local i:Int = list.Count()
 			While i
 				i :- 1
-				Local obj:TGUIObject = listBackupReversed[i]
+				Local obj:TGUIObject = TGUIobject(list.ValueAtIndex(i))
+				if not obj then continue
+
 				'all dragged objects got already updated...
-				Local found:Int
-				For Local n:Int = 0 Until ListDraggedBackup.Length
-					If obj = ListDraggedBackup[n] Then
-						found = True
-						Exit
-					End If
-				Next
-				If found Then Continue
+				If ListDragged.Contains(obj) Then Continue
+
 				'If ListDraggedBackup.contains(obj) Then Continue
 
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
@@ -623,7 +610,7 @@ Type TGUIManager
 
 
 		If GUIMANAGER_TYPES_NONDRAGGED & drawTypes
-			Local activeTooltips:TList = CreateList()
+			activeTooltips.Clear()
 			For Local obj:TGUIobject = EachIn List
 				'all special objects get drawn separately
 				If ListDragged.contains(obj) Then Continue
@@ -656,13 +643,12 @@ Type TGUIManager
 
 		If GUIMANAGER_TYPES_DRAGGED & drawTypes
 			'draw all dragged objects above normal objects...
-			'Local listReversed:TList = ListDragged.Reversed()
-			Local listReversed:TGUIObject[] = TGUIObject[](ListDragged.ToArray())
-			Local i:Int = listReversed.Length
+			Local i:Int = ListDragged.Count()
 			While i
-			'For Local obj:TGUIobject = EachIn listReversed
 				i :- 1
-				Local obj:TGUIobject = listReversed[i]
+				Local obj:TGUIobject = TGUIobject(ListDragged.ValueAtIndex(i))
+				if not obj then continue
+
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
 				'avoid getting drawn multiple times
@@ -711,8 +697,8 @@ Type TGUIobject
 
 
 	Field _tooltip:TTooltipBase = Null
-	Field _children:TList = Null
-	Field _childrenReversed:TList = Null
+	Field _children:TObjectList = Null
+	Field _childrenReversed:TObjectList = Null
 	Field _id:Int
 	Field _padding:TRectangle = Null 'by default no padding
 	Field _flags:Int = 0
@@ -799,8 +785,7 @@ Type TGUIobject
 		'remove children (so they might inform their children and so on)
 		If _children
 			'traverse along a copy to avoid concurrent modification
-			Local childrenCopy:TGUIObject[] = TGUIObject[](_children.ToArray())
-			For Local child:TGUIObject = EachIn childrenCopy
+			For Local child:TGUIObject = EachIn _children
 				child.Remove()
 			Next
 			_children.Clear()
@@ -942,20 +927,19 @@ Type TGUIobject
 		If child._parent Then child._parent.RemoveChild(child)
 
 		child.setParent( Self )
-		If Not _children Then _children = CreateList()
-		If Not _childrenReversed Then _childrenReversed = CreateList()
+		If Not _children Then _children = new TObjectList
+		If Not _childrenReversed Then _childrenReversed = new TObjectList
 
-		If _children.addLast(child)
-			_childrenReversed.addFirst(child)
+		_children.addLast(child)
+		_childrenReversed.addFirst(child)
 
-			'remove from guimanager, we take care of it
-			GUIManager.Remove(child)
-			SortChildren()
+		'remove from guimanager, we take care of it
+		GUIManager.Remove(child)
+		SortChildren()
 
-			'maybe zindex changed now
-			If hasOption(GUI_OBJECT_CHILDREN_CHANGE_GUIORDER)
-				GuiManager.SortLists()
-			EndIf
+		'maybe zindex changed now
+		If hasOption(GUI_OBJECT_CHILDREN_CHANGE_GUIORDER)
+			GuiManager.SortLists()
 		EndIf
 
 		'inform object
@@ -988,11 +972,8 @@ Type TGUIobject
 		If Not _children Or _children.Count() = 0 Then Return False
 		If HasOption(GUI_OBJECT_STATIC_CHILDREN) Then Return False
 
-		'traverse through a backup to avoid concurrent modification
-		Local childrenReversedBackup:TGUIobject[] = TGUIObject[](_childrenReversed.ToArray())
-
 		'update added elements
-		For Local obj:TGUIobject = EachIn childrenReversedBackup
+		For Local obj:TGUIobject = EachIn _childrenReversed
 			obj.update()
 		Next
 	End Method
@@ -1075,9 +1056,9 @@ Type TGUIobject
 'print "setactive invalidate " + bool + "   " + (_status & GUI_OBJECT_STATUS_ACTIVE)
 			SetStatus(GUI_OBJECT_STATUS_FOCUSED, bool)
 			If bool
-				OnSetFocus()
+				_OnSetFocus()
 			Else
-				OnRemoveFocus()
+				_OnRemoveFocus()
 			EndIf
 		EndIf
 	End Method
@@ -2346,13 +2327,15 @@ Type TGUIobject
 
 
 	'object gains focus
-	Method OnSetFocus:Int()
+	'private function, NOT the event listener
+	Method _OnSetFocus:Int()
 		Return True
 	End Method
 
 
 	'object looses focus
-	Method OnRemoveFocus:Int()
+	'private function, NOT the event listener
+	Method _OnRemoveFocus:Int()
 		Return True
 	End Method
 

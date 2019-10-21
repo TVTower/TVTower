@@ -57,7 +57,9 @@ Type TBitmapFontManager
 	Field _defaultFont:TBitmapFont
 'Private
 	Field fonts:TMap = New TMap
+?bmxng
 Public
+?
 	Global systemFont:TBitmapFont
 	Global _instance:TBitmapFontManager
 	Global _defaultFlags:Int = 0 'SMOOTHFONT

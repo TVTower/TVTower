@@ -131,9 +131,10 @@ Type TGUIinput Extends TGUIobject
 	End Method
 
 
+	'override
 	'(this creates a backup of the old value)
-	Method OnSetFocus:Int()
-		if Super.OnSetFocus()
+	Method _OnSetFocus:Int()
+		if Super._OnSetFocus()
 			'backup old value
 			_valueBeforeEdit = value
 

@@ -246,12 +246,12 @@ Type TGUIAccordeon Extends TGUIObject
 
 
 	'override, remove panels too
-	Method RemoveChild:Int(child:TGUIobject)
+	Method RemoveChild:Int(child:TGUIobject, giveBackToManager:Int=False)
 		If TGUIAccordeonPanel(child)
 			RemovePanel(TGUIAccordeonPanel(child))
 		EndIf
 
-		Return Super.RemoveChild(child)
+		Return Super.RemoveChild(child, giveBackToManager)
 	End Method
 
 

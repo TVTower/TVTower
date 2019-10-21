@@ -171,7 +171,7 @@ Type TObjectList
 	Method Copy:TObjectList()
 		Compact()
 
-		Local list:TObjectList = New TObjectList()
+		Local list:TObjectList = New TObjectList
 
 		For Local i:Int = 0 Until size
 			list.AddLast(data[i])
@@ -202,7 +202,7 @@ Type TObjectList
 	Method Reversed:TObjectList()
 		Compact()
 
-		Local list:TObjectList = New TObjectList()
+		Local list:TObjectList = New TObjectList
 
 		Local i:Int = size - 1
 
@@ -225,6 +225,72 @@ Type TObjectList
 		enumeration.list = Self
 		Return enumeration
 	End Method
+
+	Method ToArray:Object[]()
+		Compact()
+
+		Local arr:Object[] = New Object[size]
+		If size Then
+			ArrayCopy(data, 0, arr, 0, size)
+		End If
+		Return arr
+	End Method
+
+	Function FromArray:TObjectList(arr:Object[])
+		Local list:TObjectList = New TObjectList
+		For Local i:Int = 0 Until arr.length
+			list.AddLast arr[i]
+		Next
+		Return list
+	End Function
+
+	Method Sort(ascending:Int=True, compareFunc:Int( o1:Object,o2:Object ))
+		If size < 2 Then
+			Return
+		End If
+
+		Local ccsgn:Int = -1
+		If ascending Then
+			ccsgn = 1
+		End If
+
+		Compact()
+
+		_sort(data, 0, size - 1, compareFunc, ccsgn)
+
+	End Method
+
+	Function _sort(data:Object[], low:Int, high:Int, compareFunc:Int( o1:Object,o2:Object ), ccsgn:Int)
+		If low < high Then
+			Local index:Int = _partition(data, low, high, compareFunc, ccsgn)
+			_sort(data, low, index - 1, compareFunc, ccsgn)
+			_sort(data, index + 1, high, compareFunc, ccsgn)
+		End If
+	End Function
+
+	Function _partition:Int(data:Object[], low:Int, high:Int, compareFunc:Int( o1:Object,o2:Object ), ccsgn:Int)
+		Local pivot:Object = data[high]
+		Local index:Int = low - 1
+
+		For Local n:Int = low Until high
+			If compareFunc(data[n], pivot) * ccsgn < 0 Then
+				index :+ 1
+				Local tmp:Object = data[index]
+				data[index] = data[n]
+				data[n] = tmp
+			End If
+		Next
+
+		Local tmp:Object = data[index + 1]
+		data[index + 1] = data[high]
+		data[high] = tmp
+
+		Return index + 1
+	End Function
+
+	Function _CompareObjects:Int( o1:Object,o2:Object )
+		Return o1.Compare( o2 )
+	End Function
 
 End Type
 

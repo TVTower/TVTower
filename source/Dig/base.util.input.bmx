@@ -110,7 +110,7 @@ Type TMouseManager
 	'down or not?
 	Field _down:Int[] = [0,0,0,0,0]
 	'time since when the button was pressed last
-	Field _downTime:Long[] = [0,0,0,0,0]
+	Field _downTime:Long[] = [0:Long,0:Long,0:Long,0:Long,0:Long]
 	'can clicks/hits get read?
 	'special info read is possible (IsDown(), IsNormal())
 	Field _enabled:Int[] = [True, True, True, True, True]

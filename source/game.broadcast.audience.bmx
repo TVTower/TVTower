@@ -609,7 +609,7 @@ Type TAudienceBase {_exposeToLua="selected"}
 
 
 	Method ToStringPercentage:String(dec:Int = 0) {_exposeToLua}
-        Local sb:TStringBuilder = New TStringBuilder()
+        Local sb:TStringBuilder = New TStringBuilder
         Local splitter:string = "% /"
         sb.Append("C:").Append(MathHelper.NumberToString(Children*100, dec, True)).Append(splitter)
         sb.Append("T:").Append(MathHelper.NumberToString(Teenagers*100, dec, True)).Append(splitter)
@@ -623,7 +623,7 @@ Type TAudienceBase {_exposeToLua="selected"}
 
 
 	Method ToStringMinimal:String(dec:Int = 0) {_exposeToLua}
-        Local sb:TStringBuilder = New TStringBuilder()
+        Local sb:TStringBuilder = New TStringBuilder
         Local splitter:string = "/"
         sb.Append("C:").Append(MathHelper.NumberToString(Children, dec, True)).Append(splitter)
         sb.Append("T:").Append(MathHelper.NumberToString(Teenagers, dec, True)).Append(splitter)
@@ -768,7 +768,7 @@ Type TAudience {_exposeToLua="selected"}
 	'=== SERIALIZATION / DESERIALIZATION ===
 
 	Method SerializeTAudienceToString:String()
-		Local sb:TStringBuilder = New TStringBuilder()
+		Local sb:TStringBuilder = New TStringBuilder
 		sb.Append(id)
 
 		sb.Append("::ab=")
@@ -1152,7 +1152,7 @@ Type TAudience {_exposeToLua="selected"}
 	'=== TO STRING ===
 
 	Method ToStringPercentage:String(dec:Int = 0) {_exposeToLua}
-        Local sb:TStringBuilder = New TStringBuilder()
+        Local sb:TStringBuilder = New TStringBuilder
         sb.Append("C:").Append(MathHelper.NumberToString(GetAudienceMale().Children*100, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Children*100, dec, True)).Append("% / ")
         sb.Append("T:").Append(MathHelper.NumberToString(GetAudienceMale().Teenagers*100, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Teenagers*100, dec, True)).Append("% / ")
         sb.Append("H:").Append(MathHelper.NumberToString(GetAudienceMale().HouseWives*100, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().HouseWives*100, dec, True)).Append("% / ")
@@ -1165,7 +1165,7 @@ Type TAudience {_exposeToLua="selected"}
 
 
 	Method ToStringMinimal:String(dec:Int=0) {_exposeToLua}
-        Local sb:TStringBuilder = New TStringBuilder()
+        Local sb:TStringBuilder = New TStringBuilder
         sb.Append("C:").Append(MathHelper.NumberToString(GetAudienceMale().Children, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Children, dec, True)).Append(" / ")
         sb.Append("T:").Append(MathHelper.NumberToString(GetAudienceMale().Teenagers, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().Teenagers, dec, True)).Append(" / ")
         sb.Append("H:").Append(MathHelper.NumberToString(GetAudienceMale().HouseWives, dec, True)).Append("/").Append(MathHelper.NumberToString(GetAudienceFemale().HouseWives, dec, True)).Append(" / ")

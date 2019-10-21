@@ -469,7 +469,7 @@ Type TGUIScrollerSimple Extends TGUIScrollerBase
 			progressRectHovered = False
 
 		else
-			local overPos:TVec2D = new TVec2D.Init( MouseManager.x - GetScreenRect().GetX, MouseManager.y - GetScreenRect().GetY())
+			local overPos:TVec2D = new TVec2D.Init( MouseManager.x - GetScreenRect().GetX(), MouseManager.y - GetScreenRect().GetY())
 			if progressRect.ContainsVec(overPos)
 				progressRectHovered = True
 			endif

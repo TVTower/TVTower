@@ -201,7 +201,7 @@ Type TGUIWindowBase Extends TGUIPanel
 		'resize window
 		if guiTextBox
 			if guiTextBox.getHeight() - GetContentScreenRect().GetH() > 0
-				Self.SetSize(0, GetScreenRect().GetH() + Max(guiTextBox.GetScreenRect.GetH(), guiTextBox.getHeight()) - GetContentScreenRect().GetH())
+				Self.SetSize(0, GetScreenRect().GetH() + Max(guiTextBox.GetScreenRect().GetH(), guiTextBox.getHeight()) - GetContentScreenRect().GetH())
 			else
 				Self.SetSize(0, GetScreenRect().GetH() + guiTextBox.getHeight() - GetContentScreenRect().GetH() + 4)
 			endif
