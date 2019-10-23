@@ -1460,6 +1460,10 @@ Type TStationMapCollection
 			AddCableNetwork(cableNetwork)
 
 			lastLaunchTime = cableNetwork.launchTime
+
+			'add federal state name for cable providers etc (else this
+			'is only appended when using GetName() instead of ".name"
+			cable.name = cable.GetName()
 		Next
 	End Method
 

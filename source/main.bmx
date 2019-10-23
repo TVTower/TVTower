@@ -5095,7 +5095,7 @@ Type GameEvents
 			t = "SATELLITE_UPLINK_CONTRACT_WITH_COMPANYX_WILL_END_AT_TIMEX_DAYX"
 		EndIf
 		t = GetLocale(t)
-		t = t.Replace("%COMPANYX%", station.GetProvider().name)
+		t = t.Replace("%COMPANYX%", station.GetProvider().GetName())
 		t = t.Replace("%TIMEX%", GetWorldTime().GetFormattedTime(subscriptionEndTime) )
 		If GetWorldTime().GetDay() = GetWorldTime().GetDay(subscriptionEndTime)
 			t = t.Replace("%DAYX%", GetLocale("TODAY") )
