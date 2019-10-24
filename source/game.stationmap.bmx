@@ -1463,7 +1463,7 @@ Type TStationMapCollection
 
 			'add federal state name for cable providers etc (else this
 			'is only appended when using GetName() instead of ".name"
-			cable.name = cable.GetName()
+			cableNetwork.name = cableNetwork.GetName()
 		Next
 	End Method
 
@@ -5041,6 +5041,11 @@ Type TStationMap_BroadcastProvider extends TEntityBase {_exposeToLua="selected"}
 
 	Field listSpriteNameOn:string = "gfx_datasheet_icon_antenna.on"
 	Field listSpriteNameOff:string = "gfx_datasheet_icon_antenna.off"
+
+
+	Method GetName:string() {_exposeToLua}
+		return name
+	End Method
 
 
 	'ID might be a combination of multiple groups

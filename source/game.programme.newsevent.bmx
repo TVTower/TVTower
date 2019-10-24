@@ -896,7 +896,7 @@ Type TGameModifierNews_TriggerNews Extends TGameModifierBase
 			TLogger.Log("TGameModifierNews_TriggerNews", "news to trigger not available (yet): "+triggerNewsGUID, LOG_ERROR)
 			Return False
 		EndIf
-		Local triggerTime:Long = GetWorldTime().CalcTime_Auto(happenTimeType, happenTimeData)
+		Local triggerTime:Long = GetWorldTime().CalcTime_Auto(-1, happenTimeType, happenTimeData)
 		GetNewsEventCollection().setNewsHappened(news, triggerTime)
 
 		Return True

@@ -98,6 +98,8 @@ Type TInGameInterface
 			'remove unneeded elements
 			chat.SetBackground(Null)
 
+			chat.guiList.SetSize(chat.guiList.rect.GetW(), chat.guiList.rect.GetH()-10)
+
 			'reposition input
 			chat.guiInput.rect.position.setXY( 515, 354 )
 			chat.guiInput.SetSize( 280, 30 )

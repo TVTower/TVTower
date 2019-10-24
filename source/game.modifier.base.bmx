@@ -897,7 +897,7 @@ Type TGameModifierCondition_TimeLimit Extends TGameModifierCondition
 
 
 	Method SetTimeBegin_Auto(timeType:Int, timeValues:Int[])
-		SetTimeBegin( GetWorldTime().CalcTime_Auto(timeType, timeValues) )
+		SetTimeBegin( GetWorldTime().CalcTime_Auto(-1, timeType, timeValues) )
 	End Method
 
 

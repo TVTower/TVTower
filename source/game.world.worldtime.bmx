@@ -649,21 +649,22 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 
 
-	Method CalcTime_HoursFromNow:Long(hoursMin:int, hoursMax:int = -1)
+	Method CalcTime_HoursFromNow:Long(nowTime:Long=-1, hoursMin:int, hoursMax:int = -1)
+		if nowTime = -1 then nowTime = GetTimeGone()
 		if hoursMax = -1
-			return GetTimeGone() + hoursMin * HOURLENGTH
+			return nowTime + hoursMin * HOURLENGTH
 		else
-			return GetTimeGone() + RandRange(hoursMin, hoursMax) * HOURLENGTH
+			return nowTime + RandRange(hoursMin, hoursMax) * HOURLENGTH
 		endif
 	End Method
 
 
-	Method CalcTime_DaysFromNowAtHour:Long(daysBegin:int, daysEnd:int = -1, atHourMin:int, atHourMax:int = -1)
+	Method CalcTime_DaysFromNowAtHour:Long(nowTime:Long=-1, daysBegin:int, daysEnd:int = -1, atHourMin:int, atHourMax:int = -1)
 		local result:Long
 		if daysEnd = -1
-			result = MakeTime(0, GetDay() + daysBegin, 0, 0)
+			result = MakeTime(0, GetDay(nowTime) + daysBegin, 0, 0)
 		else
-			result = MakeTime(0, GetDay() + RandRange(daysBegin, daysEnd), 0, 0)
+			result = MakeTime(0, GetDay(nowTime) + RandRange(daysBegin, daysEnd), 0, 0)
 		endif
 
 		if atHourMax = -1
@@ -678,11 +679,13 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method CalcTime_WeekdayAtHour:Long(weekday:int, atHourMin:int, atHourMax:int = -1)
-		local daysTillWeekday:int = (7 - GetWeekDay() + weekday) mod 7
-		if GetWeekDay() = weekday then daysTillWeekday = 7
+	Method CalcTime_WeekdayAtHour:Long(nowTime:Long=-1, weekday:int, atHourMin:int, atHourMax:int = -1)
+		If nowTime = -1 Then nowTime = GetTimeGone()
 
-		local result:Long = MakeTime(0, GetDay() + daysTillWeekday, 0, 0)
+		local daysTillWeekday:int = (7 - GetWeekDay(nowTime) + weekday) mod 7
+		if GetWeekDay(nowTime) = weekday then daysTillWeekday = 7
+
+		local result:Long = MakeTime(0, GetDay(nowTime) + daysTillWeekday, 0, 0)
 
 		if atHourMax = -1
 			result :+ atHourMin * TWorldTime.HOURLENGTH
@@ -696,7 +699,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method CalcTime_ExactDate:Long(yearMin:int, yearMax:int=-1000000, monthMin:int=-1000000, monthMax:int=-1000000, dayMin:int=-1000000, dayMax:int=-1000000, hourMin:int=-1000000, hourMax:int=-1000000, minuteMin:int=-1000000, minuteMax:int=-1000000)
+	Method CalcTime_ExactDate:Long(nowTime:Long=-1, yearMin:int, yearMax:int=-1000000, monthMin:int=-1000000, monthMax:int=-1000000, dayMin:int=-1000000, dayMax:int=-1000000, hourMin:int=-1000000, hourMax:int=-1000000, minuteMin:int=-1000000, minuteMax:int=-1000000)
 		'use the "min"-values to store the final values for calculation
 		'to save some variables
 		if yearMax <> yearMin and yearMax > -1000000 then yearMin = RandRange(yearMin, yearMax)
@@ -716,7 +719,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 		'relative mode, there wont be an time entry before 1000 AD.
 		if yearMin < 1000
-			return MakeRealTime(GetYear() + yearMin, monthMin, dayMin, hourMin, minuteMin)
+			return MakeRealTime(GetYear(nowTime) + yearMin, monthMin, dayMin, hourMin, minuteMin)
 		else
 			return MakeRealTime(yearMin, monthMin, dayMin, hourMin, minuteMin)
 		endif
@@ -724,7 +727,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 
 	'use "-1000000" as default to allow relative values - which often include "-1"
-	Method CalcTime_ExactGameDate:Long(yearMin:int, yearMax:int=-1000000, gameDayMin:int=-1000000, gameDayMax:int=-1000000, hourMin:int=-1000000, hourMax:int=-1000000, minuteMin:int=-1000000, minuteMax:int=-1000000)
+	Method CalcTime_ExactGameDate:Long(nowTime:Long=-1, yearMin:int, yearMax:int=-1000000, gameDayMin:int=-1000000, gameDayMax:int=-1000000, hourMin:int=-1000000, hourMax:int=-1000000, minuteMin:int=-1000000, minuteMax:int=-1000000)
 		'use the "min"-values to store the final values for calculation
 		'to save some variables
 		if yearMax <> yearMin and yearMax >= 0 then yearMin = RandRange(yearMin, yearMax)
@@ -743,41 +746,42 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method CalcTime_Auto:long(timeType:int, timeValues:int[])
+	Method CalcTime_Auto:long(nowTime:Long=-1, timeType:int, timeValues:int[])
 		if not timeValues or timeValues.length < 1 then return -1
 
 		'what kind of happen time data do we have?
 		Select timeType
 			'now
 			case 0
-				return GetWorldTime().GetTimeGone()
+				If nowTime <> -1 Then Return nowTime
+				Return GetWorldTime().GetTimeGone()
 
 			'1 = "A"-"B" hours from now
 			case 1
 				if timeValues.length > 1
-					return CalcTime_HoursFromNow(timeValues[0], timeValues[1])
+					return CalcTime_HoursFromNow(nowTime, timeValues[0], timeValues[1])
 				else
-					return CalcTime_HoursFromNow(timeValues[0], -1)
+					return CalcTime_HoursFromNow(nowTime, timeValues[0], -1)
 				endif
 			'2 = "A"-"B" days from now at "C":00 - "D":00 o'clock
 			case 2
-				if timeValues.length <= 1 then return -1
+				if timeValues.length <= 1 then return nowTime
 
 				if timeValues.length = 2
-					return CalcTime_DaysFromNowAtHour(timeValues[0], -1, timeValues[1])
+					return CalcTime_DaysFromNowAtHour(nowTime, timeValues[0], -1, timeValues[1])
 				elseif timeValues.length = 3
-					return CalcTime_DaysFromNowAtHour(timeValues[0], timeValues[1], timeValues[2])
+					return CalcTime_DaysFromNowAtHour(nowTime, timeValues[0], timeValues[1], timeValues[2])
 				else
-					return CalcTime_DaysFromNowAtHour(timeValues[0], timeValues[1], timeValues[2], timeValues[3])
+					return CalcTime_DaysFromNowAtHour(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3])
 				endif
 			'3 = next "weekday A" from "B":00 - "C":00 o'clock
 			case 3
 				if timeValues.length <= 1 then return -1
 
 				if timeValues.length = 2
-					return CalcTime_WeekdayAtHour(timeValues[0], -1, timeValues[1])
+					return CalcTime_WeekdayAtHour(nowTime, timeValues[0], -1, timeValues[1])
 				elseif timeValues.length >= 3
-					return CalcTime_WeekdayAtHour(timeValues[0], timeValues[1], timeValues[2])
+					return CalcTime_WeekdayAtHour(nowTime, timeValues[0], timeValues[1], timeValues[2])
 				endif
 			'4 = next year Y, month M, day D, hour H, minute I
 			case 4
@@ -785,11 +789,11 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 					return -1
 				else
 					Select timeValues.length
-						Case 1   return CalcTime_ExactDate(timeValues[0])
-						Case 2   return CalcTime_ExactDate(timeValues[0], , timeValues[1])
-						Case 3   return CalcTime_ExactDate(timeValues[0], , timeValues[1], , timeValues[2])
-						Case 4   return CalcTime_ExactDate(timeValues[0], , timeValues[1], , timeValues[2], , timeValues[3])
-						Default  return CalcTime_ExactDate(timeValues[0], , timeValues[1], , timeValues[2], , timeValues[3], , timeValues[4])
+						Case 1   return CalcTime_ExactDate(nowTime, timeValues[0])
+						Case 2   return CalcTime_ExactDate(nowTime, timeValues[0], , timeValues[1])
+						Case 3   return CalcTime_ExactDate(nowTime, timeValues[0], , timeValues[1], , timeValues[2])
+						Case 4   return CalcTime_ExactDate(nowTime, timeValues[0], , timeValues[1], , timeValues[2], , timeValues[3])
+						Default  return CalcTime_ExactDate(nowTime, timeValues[0], , timeValues[1], , timeValues[2], , timeValues[3], , timeValues[4])
 					End Select
 				endif
 			'5 = next year Y-Y2, month M-M2, day D-D2, hour H-H2, minute I-I2
@@ -798,16 +802,16 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 					return -1
 				else
 					Select timeValues.length
-						Case 1   return CalcTime_ExactDate(timeValues[0], timeValues[0])
-						Case 2   return CalcTime_ExactDate(timeValues[0], timeValues[1])
-						Case 3   return CalcTime_ExactDate(timeValues[0], timeValues[1], timeValues[2], timeValues[2])
-						Case 4   return CalcTime_ExactDate(timeValues[0], timeValues[1], timeValues[2], timeValues[3])
-						Case 5   return CalcTime_ExactDate(timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[4])
-						Case 6   return CalcTime_ExactDate(timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5])
-						Case 7   return CalcTime_ExactDate(timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[6])
-						Case 8   return CalcTime_ExactDate(timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[7])
-						Case 9   return CalcTime_ExactDate(timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[7], timeValues[8], timeValues[8])
-						Default  return CalcTime_ExactDate(timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[7], timeValues[8], timeValues[9])
+						Case 1   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[0])
+						Case 2   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1])
+						Case 3   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[2])
+						Case 4   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3])
+						Case 5   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[4])
+						Case 6   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5])
+						Case 7   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[6])
+						Case 8   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[7])
+						Case 9   return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[7], timeValues[8], timeValues[8])
+						Default  return CalcTime_ExactDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[7], timeValues[8], timeValues[9])
 					End Select
 				endif
 			'6 = next year Y, gameday GD, hour H, minute I
@@ -816,10 +820,10 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 					return -1
 				else
 					Select timeValues.length
-						Case 1   return CalcTime_ExactGameDate(timeValues[0])
-						Case 2   return CalcTime_ExactGameDate(timeValues[0], , timeValues[1])
-						Case 3   return CalcTime_ExactGameDate(timeValues[0], , timeValues[1], , timeValues[2])
-						Default  return CalcTime_ExactGameDate(timeValues[0], , timeValues[1], , timeValues[2], , timeValues[3])
+						Case 1   return CalcTime_ExactGameDate(nowTime, timeValues[0])
+						Case 2   return CalcTime_ExactGameDate(nowTime, timeValues[0], , timeValues[1])
+						Case 3   return CalcTime_ExactGameDate(nowTime, timeValues[0], , timeValues[1], , timeValues[2])
+						Default  return CalcTime_ExactGameDate(nowTime, timeValues[0], , timeValues[1], , timeValues[2], , timeValues[3])
 					End Select
 				endif
 			'7 = next year Y-Y2, gameday GD-GD2, hour H-H2, minute I-I2
@@ -828,14 +832,14 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 					return -1
 				else
 					Select timeValues.length
-						Case 1   return CalcTime_ExactGameDate(timeValues[0], timeValues[0])
-						Case 2   return CalcTime_ExactGameDate(timeValues[0], timeValues[1])
-						Case 3   return CalcTime_ExactGameDate(timeValues[0], timeValues[1], timeValues[2], timeValues[2])
-						Case 4   return CalcTime_ExactGameDate(timeValues[0], timeValues[1], timeValues[2], timeValues[3])
-						Case 5   return CalcTime_ExactGameDate(timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[4])
-						Case 6   return CalcTime_ExactGameDate(timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5])
-						Case 7   return CalcTime_ExactGameDate(timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[6])
-						Default  return CalcTime_ExactGameDate(timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[7])
+						Case 1   return CalcTime_ExactGameDate(nowTime, timeValues[0], timeValues[0])
+						Case 2   return CalcTime_ExactGameDate(nowTime, timeValues[0], timeValues[1])
+						Case 3   return CalcTime_ExactGameDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[2])
+						Case 4   return CalcTime_ExactGameDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3])
+						Case 5   return CalcTime_ExactGameDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[4])
+						Case 6   return CalcTime_ExactGameDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5])
+						Case 7   return CalcTime_ExactGameDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[6])
+						Default  return CalcTime_ExactGameDate(nowTime, timeValues[0], timeValues[1], timeValues[2], timeValues[3], timeValues[4], timeValues[5], timeValues[6], timeValues[7])
 					End Select
 				endif
 
@@ -855,9 +859,9 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 					endif
 
 					if timeValues.length < 3
-						return CalcTime_DaysFromNowAtHour(nextDay - nowDay, -1, 0, -1)
+						return CalcTime_DaysFromNowAtHour(nowTime, nextDay - nowDay, -1, 0, -1)
 					else
-						return CalcTime_DaysFromNowAtHour(nextDay - nowDay, -1, timeValues[1], timeValues[2])
+						return CalcTime_DaysFromNowAtHour(nowTime, nextDay - nowDay, -1, timeValues[1], timeValues[2])
 					endif
 				endif
 		End Select
