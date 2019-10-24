@@ -2,6 +2,7 @@ SuperStrict
 Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.string.bmx"
 Import "Dig/base.util.logger.bmx"
+Import "game.world.worldtime.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx" 'to access type-constants
 
@@ -22,6 +23,7 @@ Type TScriptBase Extends TNamedGameObject
 	Field scriptFlags:Int = 0
 	'is the live time fixed?
 	Field liveTime:int =  -1
+	Field liveDateCode:String
 	'is the script title/description editable?
 	Field textsEditable:int = False
 	'scripts of series are parent of episode scripts
@@ -40,6 +42,8 @@ Type TScriptBase Extends TNamedGameObject
 	Field productionBroadcastFlags:int = 0
 	Field productionLicenceFlags:int = 0
 	Field productionBroadcastLimit:int = 0
+	Field productionTime:Int = -1
+	Field productionTimeMod:Float = 1.0
 
 
 	Method GenerateGUID:string()
@@ -247,6 +251,56 @@ Type TScriptBase Extends TNamedGameObject
 	Method GetEpisodeNumber:Int() {_exposeToLua}
 		return 0
 	End Method
+
+
+	Method GetLiveTime:Long(nowTime:Long=-1, productionTime:Int = 0)
+		If not IsLive() then return -1
+
+		if nowTime = -1 then nowTime = GetWorldTime().GetTimeGone()
+
+		Local releaseTime:Long = nowTime + productionTime
+
+		'use the defined liveHour, the production is then ready on the
+		'next day
+		local nowDay:int = GetWorldTime().GetDay( releaseTime )
+		'move to next day if live show is in less than 2 hours
+		if GetWorldTime().GetTimeGone() - releaseTime < 2*3600
+			releaseTime = GetWorldTime().MakeTime(0, nowDay +1, self.liveTime, 5, 0)
+		else
+			releaseTime = GetWorldTime().MakeTime(0, nowDay, self.liveTime, 5, 0)
+		endif
+
+
+		if self.liveDateCode
+			Local liveDateCodeParams:Int[] = StringHelper.StringToIntArray(self.liveDateCode, ",")
+			If liveDateCodeParams.length > 0
+				If liveDateCodeParams[0] > 0
+					Local useParams:Int[] = [-1,-1,-1,-1,-1,-1,-1,-1]
+					For Local i:Int = 1 Until liveDateCodeParams.length
+						useParams[i-1] = liveDateCodeParams[i]
+					Next
+					local t:long = GetWorldTime().CalcTime_Auto(releaseTime, liveDateCodeParams[0], useParams )
+					'fix to not use any minutes except ":05"
+					releaseTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(t), GetWorldTime().GetDayHour(t), 5, 0)
+
+
+					'override "hour" with a custom time ?
+					'this allows to have "liveDateCode" to define a general
+					'day - and the liveTime to define the exact hour that day
+					if liveTime >= 0
+						local releaseDay:int = GetWorldTime().GetDay( releaseTime )
+						releaseTime = GetWorldTime().MakeTime(0, releaseDay, liveTime, 5, 0)
+						'move to next day if live hour is in the past is
+						if GetWorldTime().GetTimeGone() > releaseTime
+							releaseTime = GetWorldTime().MakeTime(0, releaseDay + 1, liveTime, 5, 0)
+						EndIf
+					EndIf
+				EndIf
+			EndIf
+		EndIf
+		Return releaseTime
+	End Method
+
 
 
 	'returns whether a new production could be done with this script

@@ -401,6 +401,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.flags = template.flags
 		script.flagsOptional = template.flagsOptional
 
+		script.productionTime = template.GetProductionTime()
+		script.productionTimeMod = template.productionTimeMod
+
 		script.scriptFlags = template.scriptFlags
 		'mark tradeable
 		script.SetScriptFlag(TVTScriptFlag.TRADEABLE, True)
@@ -1234,7 +1237,10 @@ endrem
 
 		If showMsgLiveInfo
 			'TODO
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "TODO: " + getLocale("LIVE_BROADCAST"), "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			Local plannedLiveTime:Long = GetLiveTime()
+			local plannedLiveTimeStr:String = GetWorldTime().GetFormattedDate(GetLiveTime())
+			if productionTime >= 0 then plannedLiveTimeStr = "Vorproduktion " + (productionTime/60)+"h. " + plannedLiveTimeStr
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_LIVESHOW")+": " + plannedLiveTimeStr, "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 

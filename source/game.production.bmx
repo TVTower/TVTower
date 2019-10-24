@@ -257,12 +257,17 @@ Type TProduction Extends TOwnedGameObject
 		'set studio blocked
 		if studioRoomGUID and GetRoomBaseByGUID(studioRoomGUID)
 			'time in seconds
-			'also add 5 minutes to avoid people coming into the studio
-			'in the break between two productions
-			local productionTime:int = (endDate - startDate) + 600
-			productionTime :* GetProductionTimeMod()
-			GetRoomBaseByGUID(studioRoomGUID).SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_SHOOTING)
-			GetRoomBaseByGUID(studioRoomGUID).blockedText = productionConcept.GetTitle()
+			local productionTime:int = (endDate - startDate)
+			if productionTime > 0
+				'also add 5 minutes to avoid people coming into the studio
+				'in the break between two productions
+				productionTime :+ 300
+
+				productionTime :* GetProductionTimeMod()
+
+				GetRoomBaseByGUID(studioRoomGUID).SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_SHOOTING)
+				GetRoomBaseByGUID(studioRoomGUID).blockedText = productionConcept.GetTitle()
+			EndIf
 		endif
 
 
@@ -370,6 +375,10 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK")
 		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
 		programmeData.releaseTime = GetWorldTime().GetTimeGone()
+		If productionConcept.script.IsLive()
+print "============ Pre-produced a live programme ========="
+			programmeData.releaseTime = productionConcept.script.GetLiveTime(-1, 0)
+		EndIf
 		programmeData.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
 		programmeData.producedByPlayerID = owner
 		programmeData.dataType = productionConcept.script.scriptLicenceType
@@ -385,7 +394,7 @@ Type TProduction Extends TOwnedGameObject
 					'do not enable X-Rated for live productions when
 					'live time is not in the night
 					if optionalFlag = TVTProgrammeDataFlag.XRATED
-						if productionConcept.liveTime <= 22 and productionConcept.liveTime >= 6
+						if productionConcept.script.liveTime <= 22 and productionConcept.script.liveTime >= 6
 							programmeData.SetFlag(optionalFlag, True)
 						endif
 					else
@@ -407,18 +416,6 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.SetBroadcastLimit(productionConcept.script.productionBroadcastLimit)
 
 
-
-		'use the defined liveHour, the production is then ready on the
-		'next day
-		if productionConcept.script.IsLive()
-			local nowDay:int = GetWorldTime().GetDay( programmeData.releaseTime )
-			'move to next day if live show is in less than 2 hours
-			if GetWorldTime().GetTimeGone() - programmeData.releaseTime < 2*3600
-				programmeData.releaseTime = GetWorldTime().MakeTime(0, nowDay +1, productionConcept.liveTime, 0, 0)
-			else
-				programmeData.releaseTime = GetWorldTime().MakeTime(0, nowDay, productionConcept.liveTime, 0, 0)
-			endif
-		endif
 		if productionPriceMod <> 1.0
 			programmeData.SetModifier("price", productionPriceMod)
 		endif
@@ -744,7 +741,7 @@ endrem
 				return False
 			'in production
 			case 1
-				if GetWorldTime().GetTimeGone() > endDate
+				if GetWorldTime().GetTimeGone() >= endDate
 					Finalize()
 					return True
 				endif

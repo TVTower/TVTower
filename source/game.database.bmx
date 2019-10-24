@@ -596,12 +596,12 @@ Type TDatabaseLoader
 				If happenTimeParams[0] = 0
 					newsEventTemplate.happenTime = 0
 				ElseIf happenTimeParams[0] <> -1
-					'GetWorldTime().CalcTime_Auto( happenTimeParams[0], happenTimeParams[1 ..] )
+					'GetWorldTime().CalcTime_Auto(-1, happenTimeParams[0], happenTimeParams[1 ..] )
 					Local useParams:Int[] = [-1,-1,-1,-1,-1,-1,-1,-1]
 					For Local i:Int = 1 Until happenTimeParams.length
 						useParams[i-1] = happenTimeParams[i]
 					Next
-					newsEventTemplate.happenTime = GetWorldTime().CalcTime_Auto( happenTimeParams[0], useParams )
+					newsEventTemplate.happenTime = GetWorldTime().CalcTime_Auto(-1, happenTimeParams[0], useParams )
 				EndIf
 			EndIf
 		EndIf
@@ -1606,12 +1606,16 @@ Type TDatabaseLoader
 		data = New TData
 		xml.LoadValuesToData(nodeData, data, [..
 			"scriptflags", "flags", "flags_optional", "keywords", ..
-			"productionBroadcastFlags", "productionLicenceFlags", "productionBroadcastLimit" ..
+			"productionBroadcastFlags", "productionLicenceFlags", "productionBroadcastLimit", ..
+			"live_date", "live_time", ..
+			"production_time", "production_time_min", "production_time_max", "production_time_slope", "production_time_mod" ..
 		])
 		scriptTemplate.scriptFlags = data.GetInt("scriptflags", scriptTemplate.scriptFlags)
 
 		scriptTemplate.flags = data.GetInt("flags", scriptTemplate.flags)
 		scriptTemplate.flagsOptional = data.GetInt("flags_optional", scriptTemplate.flagsOptional)
+		scriptTemplate.liveDateCode = data.GetString("live_date", scriptTemplate.liveDateCode)
+		scriptTemplate.liveTime = data.GetInt("live_time", scriptTemplate.liveTime)
 
 		scriptTemplate.keywords = data.GetString("keywords", scriptTemplate.keywords).Trim()
 
@@ -1619,6 +1623,12 @@ Type TDatabaseLoader
 		scriptTemplate.productionLicenceFlags = data.GetInt("productionLicenceFlags", scriptTemplate.productionLicenceFlags)
 		scriptTemplate.productionBroadcastLimit = data.GetInt("productionBroadcastLimit", scriptTemplate.productionBroadcastLimit)
 
+		scriptTemplate.productionTime = data.GetInt("production_time", scriptTemplate.productionTime)
+		scriptTemplate.productionTimeMin = data.GetInt("production_time_min", scriptTemplate.productionTimeMin)
+		scriptTemplate.productionTimeMax = data.GetInt("production_time_max", scriptTemplate.productionTimeMax)
+		scriptTemplate.productionTimeSlope = 0.01 * data.GetFloat("production_time_slope", 100 * scriptTemplate.productionTimeSlope)
+
+		scriptTemplate.productionTimeMod = 0.01 * data.GetFloat("production_time_mod", 100*scriptTemplate.productionTimeMod)
 
 		'=== AVAILABILITY ===
 		xml.LoadValuesToData(xml.FindChild(node, "availability"), data, [..

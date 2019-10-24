@@ -140,6 +140,14 @@ Type TScriptTemplate Extends TScriptBase
 	Field productionLimit:int = -1
 	Field productionTimes:int = 0
 
+	'manipulators for the production using a script
+	Field productionTimeMin:Int = -1
+	Field productionTimeMax:Int = -1
+	Field productionTimeSlope:Float = 0.5
+	'defined in TScriptBase already
+	'Field productionTime:Int = -1
+	'Field productionTimeMod:Float = 1.0
+
 	Field keywords:string
 
 
@@ -217,6 +225,15 @@ Type TScriptTemplate Extends TScriptBase
 		if GetProductionLimit() > 0 and GetProductionTimes() >= GetProductionLimit() then return False
 
 		return True
+	End Method
+
+
+	Method GetProductionTime:Int()
+		If productionTimeMin >= 0 And productionTimeMax >= 0
+			return 0.001 * BiasedRandRange(int(1000*productionTimeMin), int(1000*productionTimeMax), productionTimeSlope)
+		Endif
+
+		Return productionTime
 	End Method
 
 

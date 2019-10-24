@@ -90,7 +90,6 @@ Type TProductionConcept Extends TOwnedGameObject
 
 	'depositCostPaid, live, ...
 	Field flags:int = 0
-	Field liveTime:int = -1
 
 	Field castFit:Float = -1.0
 	Field castComplexity:Float = -1.0
@@ -835,18 +834,26 @@ Type TProductionConcept Extends TOwnedGameObject
 			endif
 		endif
 
+		'if there is something defined (eg for live preproductions)
+		'then use this. Return in hours not minutes!
+		if script.productionTime > 0
+			base = script.productionTime
 
+			base :* speedPointTimeMod
+			base :* teamPointTimeMod
+			base :* script.productionTimeMod
+			return int(base/60)
+		else
+			base :* typeTimeMod
+			base :* speedPointTimeMod
+			base :* teamPointTimeMod
+			base :* script.productionTimeMod
 
+			base = Max(base, ceil(script.GetBlocks()*blockMinimumMod)*60)
+			'round minutes to hours
+			return int(Max(1, base/60))
+		endif
 
-		base :* typeTimeMod
-		base :* speedPointTimeMod
-		base :* teamPointTimeMod
-
-
-		base = Max(base, ceil(script.GetBlocks()*blockMinimumMod)*60)
-
-		'round minutes to hours
-		return floor(Max(1, base/60))
 	End Method
 
 
