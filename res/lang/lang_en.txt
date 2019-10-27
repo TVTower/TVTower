@@ -142,6 +142,8 @@ ROOM_IS_BLOCKED = Room is blocked!
 ROOM_IS_OCCUPIED = Room is occupied!
 SHOOTING_IN_PROGRESS = Shooting in progress
 SHOOTING_FINISHED = Shooting finished
+PREPRODUCTION_IN_PROGRESS = Preproduction in progress
+PREPRODUCTION_FINISHED = Preproduction finished
 BLOCKED_UNTIL_TIME = Blocked until %TIME%
 ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = There is already someone in this room.
 

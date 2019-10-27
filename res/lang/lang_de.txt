@@ -143,6 +143,8 @@ ROOM_IS_BLOCKED = Raum ist blockiert!
 ROOM_IS_OCCUPIED = Raum ist besetzt
 SHOOTING_IN_PROGRESS = Dreharbeiten im Gange
 SHOOTING_FINISHED = Dreharbeiten beendet
+PREPRODUCTION_IN_PROGRESS = Vorproduktion im Gange
+PREPRODUCTION_FINISHED = Vorproduktion beendet
 BLOCKED_UNTIL_TIME = Blockiert bis %TIME%
 ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = Da ist schon jemand in diesem Raum.
 

@@ -299,11 +299,12 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	'realtime milliseconds a bomb visually explodes
 	Global bombExplosionDuration:int = 1000
 
-	Const BLOCKEDSTATE_NONE:int       = 0 'not blocked at all
-	Const BLOCKEDSTATE_BOMB:int       = 1 'eg. after terrorists attacked
-	Const BLOCKEDSTATE_RENOVATION:int = 2 'eg. for rooms not "bombable"
-	Const BLOCKEDSTATE_MARSHAL:int    = 4 'eg. archive when not enough money
-	Const BLOCKEDSTATE_SHOOTING:int   = 8 'studios: when in production
+	Const BLOCKEDSTATE_NONE:int          =  0 'not blocked at all
+	Const BLOCKEDSTATE_BOMB:int          =  1 'eg. after terrorists attacked
+	Const BLOCKEDSTATE_RENOVATION:int    =  2 'eg. for rooms not "bombable"
+	Const BLOCKEDSTATE_MARSHAL:int       =  4 'eg. archive when not enough money
+	Const BLOCKEDSTATE_SHOOTING:int      =  8 'studios: when in production
+	Const BLOCKEDSTATE_PREPRODUCTION:int = 16 'studios: when doing preproduction for live stuff
 
 
 	'init a room base with basic variables
@@ -473,7 +474,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		'- when marshal visited the room
 		'- when terrorist put a bomb into a room
 		'- when shooting / production takes place
-		if blockedState & (BLOCKEDSTATE_SHOOTING | BLOCKEDSTATE_MARSHAL | BLOCKEDSTATE_BOMB) <> 0
+		if blockedState & (BLOCKEDSTATE_SHOOTING | BLOCKEDSTATE_PREPRODUCTION | BLOCKEDSTATE_MARSHAL | BLOCKEDSTATE_BOMB) <> 0
 			blockedUntilShownInTooltip = True
 		endif
 

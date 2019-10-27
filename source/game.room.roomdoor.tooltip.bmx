@@ -45,7 +45,7 @@ Type TRoomDoorTooltip extends TTooltip
 			Super.SetHeaderColor()
 		endif
 	End Method
-	
+
 
 
 	Method Update:Int()
@@ -92,6 +92,9 @@ Type TRoomDoorTooltip extends TTooltip
 
 				if room.blockedState & TRoomBase.BLOCKEDSTATE_SHOOTING > 0
 					newContent :+ GetLocale("SHOOTING_IN_PROGRESS") + "~n"
+					if room.blockedText then newContent :+ "|b|"+room.blockedText + "|/b|~n"
+				elseif room.blockedState & TRoomBase.BLOCKEDSTATE_PREPRODUCTION > 0
+					newContent :+ GetLocale("PREPRODUCTION_IN_PROGRESS") + "~n"
 					if room.blockedText then newContent :+ "|b|"+room.blockedText + "|/b|~n"
 				endif
 

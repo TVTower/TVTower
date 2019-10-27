@@ -16,7 +16,7 @@ Import "common.misc.datasheet.bmx"
 
 Type TScriptCollection Extends TGameObjectCollection
 	'stores "languagecode::name"=>"used by id" connections
-	Field protectedTitles:TStringMap = new TStringMap
+	Field protectedTitles:TStringMap = New TStringMap
 	'=== CACHE ===
 	'cache for faster access
 
@@ -29,14 +29,14 @@ Type TScriptCollection Extends TGameObjectCollection
 
 
 	Function GetInstance:TScriptCollection()
-		if not _instance then _instance = new TScriptCollection
-		return _instance
+		If Not _instance Then _instance = New TScriptCollection
+		Return _instance
 	End Function
 
 
 	Method Initialize:TScriptCollection()
 		Super.Initialize()
-		return self
+		Return Self
 	End Method
 
 
@@ -47,47 +47,47 @@ Type TScriptCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method Add:int(obj:TGameObject)
-		local script:TScript = TScript(obj)
-		if not script then return False
+	Method Add:Int(obj:TGameObject)
+		Local script:TScript = TScript(obj)
+		If Not script Then Return False
 
 		_InvalidateCaches()
 		'add child scripts too
-		For local subScript:TScript = EachIn script.subScripts
+		For Local subScript:TScript = EachIn script.subScripts
 			Add(subScript)
 		Next
 
 		'protect title
-		If not script.HasParentScript()
+		If Not script.HasParentScript()
 			AddTitleProtection(script.customTitle, script.GetID())
 			AddTitleProtection(script.title, script.GetID())
 		EndIf
 
-		return Super.Add(script)
+		Return Super.Add(script)
 	End Method
 
 
-	Method Remove:int(obj:TGameObject)
-		local script:TScript = TScript(obj)
-		if not script then return False
+	Method Remove:Int(obj:TGameObject)
+		Local script:TScript = TScript(obj)
+		If Not script Then Return False
 
 		_InvalidateCaches()
 		'remove child scripts too
-		For local subScript:TScript = EachIn script.subScripts
+		For Local subScript:TScript = EachIn script.subScripts
 			Remove(subScript)
 		Next
 
 		'unprotect title
-		If not script.HasParentScript()
+		If Not script.HasParentScript()
 			RemoveTitleProtection(script.customTitle)
 			RemoveTitleProtection(script.title)
 		EndIf
 
-		return Super.Remove(script)
+		Return Super.Remove(script)
 	End Method
 
 
-	Method GetByID:TScript(ID:int)
+	Method GetByID:TScript(ID:Int)
 		Return TScript( Super.GetByID(ID) )
 	End Method
 
@@ -97,132 +97,132 @@ Type TScriptCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GenerateFromTemplate:TScript(templateOrTemplateGUID:object)
-		local template:TScriptTemplate
-		if TScriptTemplate(templateOrTemplateGUID)
+	Method GenerateFromTemplate:TScript(templateOrTemplateGUID:Object)
+		Local template:TScriptTemplate
+		If TScriptTemplate(templateOrTemplateGUID)
 			template = TScriptTemplate(templateOrTemplateGUID)
-		else
-			template = GetScriptTemplateCollection().GetByGUID( string(templateOrTemplateGUID) )
-			if not template then return Null
-		endif
+		Else
+			template = GetScriptTemplateCollection().GetByGUID( String(templateOrTemplateGUID) )
+			If Not template Then Return Null
+		EndIf
 
-		local script:TScript = TScript.CreateFromTemplate(template)
+		Local script:TScript = TScript.CreateFromTemplate(template)
 		script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 		Add(script)
-		return script
+		Return script
 	End Method
 
 
-	Method GenerateFromTemplateID:TScript(ID:int)
-		local template:TScriptTemplate = GetScriptTemplateCollection().GetByID( ID )
-		if not template then return Null
+	Method GenerateFromTemplateID:TScript(ID:Int)
+		Local template:TScriptTemplate = GetScriptTemplateCollection().GetByID( ID )
+		If Not template Then Return Null
 
-		return GenerateFromTemplate(template)
+		Return GenerateFromTemplate(template)
 	End Method
 
 
-	Method GenerateRandom:TScript(avoidTemplateIDs:int[])
-		local template:TScriptTemplate
-		if not avoidTemplateIDs or avoidTemplateIDs.length = 0
+	Method GenerateRandom:TScript(avoidTemplateIDs:Int[])
+		Local template:TScriptTemplate
+		If Not avoidTemplateIDs Or avoidTemplateIDs.length = 0
 			template = GetScriptTemplateCollection().GetRandomByFilter(True, True)
-		else
-			local foundValid:int = False
-			local tries:int = 0
+		Else
+			Local foundValid:Int = False
+			Local tries:Int = 0
 
 			template = GetScriptTemplateCollection().GetRandomByFilter(True, True, "", avoidTemplateIDs)
 			'get a random one, ignore avoid IDs
-			if not template and avoidTemplateIDs and avoidTemplateIDs.length > 0
-				print "TScriptCollection.GenerateRandom() - warning. No available template found (avoid-list too big?). Trying an avoided entry."
+			If Not template And avoidTemplateIDs And avoidTemplateIDs.length > 0
+				Print "TScriptCollection.GenerateRandom() - warning. No available template found (avoid-list too big?). Trying an avoided entry."
 				template = GetScriptTemplateCollection().GetRandomByFilter(True, True)
-			endif
+			EndIf
 			'get a random one, ignore availability
-			if not template
-				print "TScriptCollection.GenerateRandom() - failed. No available template found (avoid-list too big?). Using an unfiltered entry."
+			If Not template
+				Print "TScriptCollection.GenerateRandom() - failed. No available template found (avoid-list too big?). Using an unfiltered entry."
 				template = GetScriptTemplateCollection().GetRandomByFilter(False, True)
-			endif
-		endif
+			EndIf
+		EndIf
 
-		local script:TScript = TScript.CreateFromTemplate(template)
+		Local script:TScript = TScript.CreateFromTemplate(template)
 		script.SetOwner(TOwnedGameObject.OWNER_NOBODY)
 		Add(script)
 
-		return script
+		Return script
 	End Method
 
 
-	Method GetRandomAvailable:TScript(avoidTemplateIDs:int[] = null)
+	Method GetRandomAvailable:TScript(avoidTemplateIDs:Int[] = Null)
 		'if no script is available, create (and return) some a new one
-		if GetAvailableScriptList().Count() = 0 then return GenerateRandom(avoidTemplateIDs)
+		If GetAvailableScriptList().Count() = 0 Then Return GenerateRandom(avoidTemplateIDs)
 
 		'fetch a random script
-		if not avoidTemplateIDs or avoidTemplateIDs.length = 0
-			return TScript(GetAvailableScriptList().ValueAtIndex(randRange(0, GetAvailableScriptList().Count() - 1)))
-		else
-			local possibleScripts:TScript[]
-			for local s:TScript = EachIn GetAvailableScriptList()
-				if not s.basedOnScriptTemplateID or not MathHelper.InIntArray(s.basedOnScriptTemplateID, avoidTemplateIDs)
+		If Not avoidTemplateIDs Or avoidTemplateIDs.length = 0
+			Return TScript(GetAvailableScriptList().ValueAtIndex(randRange(0, GetAvailableScriptList().Count() - 1)))
+		Else
+			Local possibleScripts:TScript[]
+			For Local s:TScript = EachIn GetAvailableScriptList()
+				If Not s.basedOnScriptTemplateID Or Not MathHelper.InIntArray(s.basedOnScriptTemplateID, avoidTemplateIDs)
 					possibleScripts :+ [s]
-				endif
-			next
-			if possibleScripts.length = 0 then return GenerateRandom(avoidTemplateIDs)
+				EndIf
+			Next
+			If possibleScripts.length = 0 Then Return GenerateRandom(avoidTemplateIDs)
 
-			return possibleScripts[ randRange(0, possibleScripts.length - 1) ]
-		endif
+			Return possibleScripts[ randRange(0, possibleScripts.length - 1) ]
+		EndIf
 	End Method
 
 
-	Method GetTitleProtectedByID:int(title:object)
-		if TLocalizedString(title)
-			local lsTitle:TLocalizedString = TLocalizedString(title)
-			for local langID:Int = EachIn lsTitle.GetLanguageIDs()
-				return int(string(protectedTitles.ValueForKey(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower())))
-			next
-		elseif string(title) <> ""
-			return int(string((protectedTitles.ValueForKey("custom::" + string(title).ToLower()))))
-		endif
+	Method GetTitleProtectedByID:Int(title:Object)
+		If TLocalizedString(title)
+			Local lsTitle:TLocalizedString = TLocalizedString(title)
+			For Local langID:Int = EachIn lsTitle.GetLanguageIDs()
+				Return Int(String(protectedTitles.ValueForKey(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower())))
+			Next
+		ElseIf String(title) <> ""
+			Return Int(String((protectedTitles.ValueForKey("custom::" + String(title).ToLower()))))
+		EndIf
 	End Method
 
 
-	Method IsTitleProtected:int(title:object)
-		if TLocalizedString(title)
-			local lsTitle:TLocalizedString = TLocalizedString(title)
-			for local langID:Int = EachIn lsTitle.GetLanguageIDs()
-				if protectedTitles.Contains(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower())
-					return True
-				endif
-			next
-		elseif string(title) <> ""
-			if protectedTitles.Contains("custom::" + string(title).ToLower())
-				return True
-			endif
-		endif
-		return False
-	End Method
-
-
-	'pass string or TLocalizedString
-	Method AddTitleProtection(title:object, scriptID:int)
-		if TLocalizedString(title)
-			local lsTitle:TLocalizedString = TLocalizedString(title)
-			for local langID:Int = EachIn lsTitle.GetLanguageIDs()
-				protectedTitles.Insert(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower(), string(scriptID))
-			next
-		elseif string(title) <> ""
-			protectedTitles.insert("custom::" + string(title).ToLower(), string(scriptID))
-		endif
+	Method IsTitleProtected:Int(title:Object)
+		If TLocalizedString(title)
+			Local lsTitle:TLocalizedString = TLocalizedString(title)
+			For Local langID:Int = EachIn lsTitle.GetLanguageIDs()
+				If protectedTitles.Contains(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower())
+					Return True
+				EndIf
+			Next
+		ElseIf String(title) <> ""
+			If protectedTitles.Contains("custom::" + String(title).ToLower())
+				Return True
+			EndIf
+		EndIf
+		Return False
 	End Method
 
 
 	'pass string or TLocalizedString
-	Method RemoveTitleProtection(title:object)
-		if TLocalizedString(title)
-			local lsTitle:TLocalizedString = TLocalizedString(title)
-			for local langID:Int = EachIn lsTitle.GetLanguageIDs()
+	Method AddTitleProtection(title:Object, scriptID:Int)
+		If TLocalizedString(title)
+			Local lsTitle:TLocalizedString = TLocalizedString(title)
+			For Local langID:Int = EachIn lsTitle.GetLanguageIDs()
+				protectedTitles.Insert(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower(), String(scriptID))
+			Next
+		ElseIf String(title) <> ""
+			protectedTitles.insert("custom::" + String(title).ToLower(), String(scriptID))
+		EndIf
+	End Method
+
+
+	'pass string or TLocalizedString
+	Method RemoveTitleProtection(title:Object)
+		If TLocalizedString(title)
+			Local lsTitle:TLocalizedString = TLocalizedString(title)
+			For Local langID:Int = EachIn lsTitle.GetLanguageIDs()
 				protectedTitles.Remove(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower())
-			next
-		elseif string(title) <> ""
-			protectedTitles.Remove("custom::" + string(title).ToLower())
-		endif
+			Next
+		ElseIf String(title) <> ""
+			protectedTitles.Remove("custom::" + String(title).ToLower())
+		EndIf
 	End Method
 
 
@@ -230,64 +230,64 @@ Type TScriptCollection Extends TGameObjectCollection
 	'and unused scripts.
 	'Scripts of episodes and other children are ignored
 	Method GetAvailableScriptList:TList()
-		if not _availableScripts
+		If Not _availableScripts
 			_availableScripts = CreateList()
-			For local script:TScript = EachIn GetParentScriptList()
+			For Local script:TScript = EachIn GetParentScriptList()
 				'skip used scripts (or scripts already at the vendor)
-				if script.IsOwned() then continue
+				If script.IsOwned() Then Continue
 				'skip scripts not available yet (or anymore)
 				'(eg. they are obsolete now, or not yet possible)
-				if not script.IsAvailable() then continue
-				if not script.IsTradeable() then continue
+				If Not script.IsAvailable() Then Continue
+				If Not script.IsTradeable() Then Continue
 
 				'print "GetAvailableScriptList: add " + script.GetTitle() ' +"   owned="+script.IsOwned() + "  available="+script.IsAvailable() + "  tradeable="+script.IsTradeable()
 				_availableScripts.AddLast(script)
 			Next
-		endif
-		return _availableScripts
+		EndIf
+		Return _availableScripts
 	End Method
 
 
 	'returns (and creates if needed) a list containing only used scripts.
 	Method GetUsedScriptList:TList()
-		if not _usedScripts
+		If Not _usedScripts
 			_usedScripts = CreateList()
-			For local script:TScript = EachIn entries.Values()
+			For Local script:TScript = EachIn entries.Values()
 				'skip unused scripts
-				if not script.IsOwned() then continue
+				If Not script.IsOwned() Then Continue
 
 				_usedScripts.AddLast(script)
 			Next
-		endif
-		return _usedScripts
+		EndIf
+		Return _usedScripts
 	End Method
 
 
 	'returns (and creates if needed) a list containing only parental scripts
 	Method GetParentScriptList:TList()
-		if not _parentScripts
+		If Not _parentScripts
 			_parentScripts = CreateList()
-			For local script:TScript = EachIn entries.Values()
+			For Local script:TScript = EachIn entries.Values()
 				'skip scripts containing parent information or episodes
-				if script.scriptLicenceType = TVTProgrammeLicenceType.EPISODE then continue
-				if script.HasParentScript() then continue
+				If script.scriptLicenceType = TVTProgrammeLicenceType.EPISODE Then Continue
+				If script.HasParentScript() Then Continue
 
 				_parentScripts.AddLast(script)
 			Next
-		endif
-		return _parentScripts
+		EndIf
+		Return _parentScripts
 	End Method
 
 
-	Method SetScriptOwner:int(script:TScript, owner:int)
-		if script.owner = owner then return False
+	Method SetScriptOwner:Int(script:TScript, owner:Int)
+		If script.owner = owner Then Return False
 
 		script.owner = owner
 		'reset only specific caches, so script gets in the correct list
 		_usedScripts = Null
 		_availableScripts = Null
 
-		return True
+		Return True
 	End Method
 End Type
 
@@ -301,10 +301,10 @@ End Function
 
 
 Type TScript Extends TScriptBase {_exposeToLua="selected"}
-	Field ownProduction:Int	= false
+	Field ownProduction:Int	= False
 
-	Field newsTopicGUID:string = ""
-	Field newsGenre:int
+	Field newsTopicGUID:String = ""
+	Field newsGenre:Int
 
 	Field outcome:Float	= 0.0
 	Field review:Float = 0.0
@@ -316,7 +316,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Field cast:TProgrammePersonJob[]
 
 	'See TVTProgrammePersonJob
-	Field allowedGuestTypes:int	= 0
+	Field allowedGuestTypes:Int	= 0
 
 	Field requiredStudioSize:Int = 1
 	'more expensive
@@ -331,63 +331,63 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	'the ID of the original script.
 	'This is used for "shows" to be able to use different values of
 	'outcome/speed/price/... while still having a connecting link
-	Field basedOnScriptID:int = 0
+	Field basedOnScriptID:Int = 0
 	'template this script is based on (this allows to avoid that too
 	'many scripts are based on the same script template on the same time)
-	Field basedOnScriptTemplateID:int = 0
+	Field basedOnScriptTemplateID:Int = 0
 
-	Global spriteNameOverlayXRatedLS:TLowerString = new TLowerString.Create("gfx_datasheet_overlay_xrated")
+	Global spriteNameOverlayXRatedLS:TLowerString = New TLowerString.Create("gfx_datasheet_overlay_xrated")
 
 
-	Method GenerateGUID:string()
-		return "script-"+id
+	Method GenerateGUID:String()
+		Return "script-"+id
 	End Method
 
 
 	Function CreateFromTemplate:TScript(template:TScriptTemplate)
-		local script:TScript = new TScript
+		Local script:TScript = New TScript
 		script.title = template.GenerateFinalTitle()
-		if GetScriptCollection().IsTitleProtected(script.title)
+		If GetScriptCollection().IsTitleProtected(script.title)
 '			print "script title in use: " + script.title.Get()
 
 			'use another random one
-			local tries:int = 0
-			local validTitle:int = False
-			For local i:int = 0 until 5
+			Local tries:Int = 0
+			Local validTitle:Int = False
+			For Local i:Int = 0 Until 5
 				script.title = template.GenerateFinalTitle()
-				if not GetScriptCollection().IsTitleProtected(script.title)
+				If Not GetScriptCollection().IsTitleProtected(script.title)
 					validTitle = True
-					exit
-				endif
+					Exit
+				EndIf
 			Next
 			'no random one available or most already used
-			if not validTitle
-				local langIDs:int[] = script.title.GetLanguageIDs()
+			If Not validTitle
+				Local langIDs:Int[] = script.title.GetLanguageIDs()
 				'remove numbers
-				for local langID:Int = EachIn langIDs
-					local numberfreeTitle:string = script.title.Get(langID)
-					local hashPos:int = numberfreeTitle.FindLast("#")
-					if hashPos > 2 '"sometext" + space + hash means > 2
-						local numberS:string = numberFreetitle[hashPos+1 .. ]
-						if numberS = string(int(numberS)) 'so "#123hashtag"
+				For Local langID:Int = EachIn langIDs
+					Local numberfreeTitle:String = script.title.Get(langID)
+					Local hashPos:Int = numberfreeTitle.FindLast("#")
+					If hashPos > 2 '"sometext" + space + hash means > 2
+						Local numberS:String = numberFreetitle[hashPos+1 .. ]
+						If numberS = String(Int(numberS)) 'so "#123hashtag"
 							numberfreeTitle = numberfreetitle[.. hashPos-1] 'remove space before too
-						endif
+						EndIf
 
 						script.title.Set(numberfreeTitle, langID)
-					endif
-				next
+					EndIf
+				Next
 				'append number
-				local titleCopy:TLocalizedString = script.title.Copy()
+				Local titleCopy:TLocalizedString = script.title.Copy()
 				'start with "2" to avoid "title #1"
-				local number:int = 2
-				repeat
-					for local langID:Int = EachIn langIDs
+				Local number:Int = 2
+				Repeat
+					For Local langID:Int = EachIn langIDs
 						script.title.Set(titleCopy.Get(langID) + " #"+number, langID)
-					next
+					Next
 					number :+ 1
-					if number > 10000 then Throw "TScript.CreateFromTemplate() - failed to generate title with increased number: " + script.title.Get()
-				until not GetScriptCollection().IsTitleProtected(script.title)
-			endif
+					If number > 10000 Then Throw "TScript.CreateFromTemplate() - failed to generate title with increased number: " + script.title.Get()
+				Until Not GetScriptCollection().IsTitleProtected(script.title)
+			EndIf
 		EndIf
 		script.description = template.GenerateFinalDescription()
 
@@ -413,7 +413,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		script.mainGenre = template.mainGenre
 		'add genres
-		For local subGenre:int = EachIn template.subGenres
+		For Local subGenre:Int = EachIn template.subGenres
 			script.subGenres :+ [subGenre]
 		Next
 
@@ -423,23 +423,23 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 
 		'add children
-		For local subTemplate:TScriptTemplate = EachIn template.subScripts
-			local subScript:TScript = TScript.CreateFromTemplate(subTemplate)
-			if subScript then script.AddSubScript(subScript)
+		For Local subTemplate:TScriptTemplate = EachIn template.subScripts
+			Local subScript:TScript = TScript.CreateFromTemplate(subTemplate)
+			If subScript Then script.AddSubScript(subScript)
 		Next
 		script.basedOnScriptTemplateID = template.GetID()
 
 		'this would GENERATE a new block of jobs (including RANDOM ones)
 		'- for single scripts we could use that jobs
 		'- for parental scripts we use the jobs of the children
-		if template.subScripts.length = 0
+		If template.subScripts.length = 0
 			script.cast = template.GetJobs()
-		else
+		Else
 			'for now use this approach
 			'and dynamically count individual cast count by using
 			'Max(script-cast-count, max-of-subscripts-cast-count)
 			script.cast = template.GetJobs()
-			rem
+			Rem
 			local myCastCountAll:int[] = new Int[TVTProgrammePersonJob.count]
 			local myCastCountMale:int[] = new Int[TVTProgrammePersonJob.count]
 			local myCastCountFemale:int[] = new Int[TVTProgrammePersonJob.count]
@@ -492,7 +492,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				Next
 			Next
 			endrem
-		endif
+		EndIf
 
 
 		'reset the state of the template
@@ -500,281 +500,281 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'as base will get the same title/description
 		template.Reset()
 
-		return script
+		Return script
 	End Function
 
 
 	'override
-	Method HasParentScript:int()
-		return parentScriptID > 0
+	Method HasParentScript:Int()
+		Return parentScriptID > 0
 	End Method
 
 
 	'override
 	Method GetParentScript:TScript()
-		if parentScriptID then return GetScriptCollection().GetByID(parentScriptID)
-		return self
+		If parentScriptID Then Return GetScriptCollection().GetByID(parentScriptID)
+		Return Self
 	End Method
 
 
 	Method _ReplacePlaceholders:TLocalizedString(text:TLocalizedString)
-		local result:TLocalizedString = text.copy()
+		Local result:TLocalizedString = text.copy()
 
 		'for each defined language we check for existent placeholders
 		'which then get replaced by a random string stored in the
 		'variable with the same name
-		For local langID:Int = EachIn text.GetLanguageIDs()
-			local value:string = text.Get(langID)
-			local placeHolders:string[] = StringHelper.ExtractPlaceholders(value, "%", True)
-			if placeHolders.length = 0 then continue
+		For Local langID:Int = EachIn text.GetLanguageIDs()
+			Local value:String = text.Get(langID)
+			Local placeHolders:String[] = StringHelper.ExtractPlaceholders(value, "%", True)
+			If placeHolders.length = 0 Then Continue
 
-			local actorsFetched:int = False
-			local actors:TProgrammePersonJob[]
-			local replacement:string = ""
-			for local placeHolder:string = EachIn placeHolders
-				local replaced:int = False
+			Local actorsFetched:Int = False
+			Local actors:TProgrammePersonJob[]
+			Local replacement:String = ""
+			For Local placeHolder:String = EachIn placeHolders
+				Local replaced:Int = False
 				replacement = ""
 				Select placeHolder.toUpper()
-					case "ROLENAME1", "ROLENAME2", "ROLENAME3", "ROLENAME4", "ROLENAME5", "ROLENAME6", "ROLENAME7"
-						if not actorsFetched
+					Case "ROLENAME1", "ROLENAME2", "ROLENAME3", "ROLENAME4", "ROLENAME5", "ROLENAME6", "ROLENAME7"
+						If Not actorsFetched
 							actors = GetSpecificCast(TVTProgrammePersonJob.ACTOR | TVTProgrammePersonJob.SUPPORTINGACTOR)
 							actorsFetched = True
-						endif
+						EndIf
 
 						'local actorNum:int = int(placeHolder.toUpper().Replace("%ROLENAME", "").Replace("%",""))
-						local actorNum:int = int(chr(placeHolder[8]))
-						if actorNum > 0
-							if actors.length > actorNum and actors[actorNum].roleGUID <> ""
-								local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[actorNum].roleGUID)
-								if role then replacement = role.GetFirstName()
-							endif
+						Local actorNum:Int = Int(Chr(placeHolder[8]))
+						If actorNum > 0
+							If actors.length > actorNum And actors[actorNum].roleGUID <> ""
+								Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[actorNum].roleGUID)
+								If role Then replacement = role.GetFirstName()
+							EndIf
 							'gender neutral default
-							if replacement = ""
+							If replacement = ""
 								Select actorNum
-									case 1	replacement = "Robin"
-									case 2	replacement = "Alex"
-									default	replacement = "Jamie"
+									Case 1	replacement = "Robin"
+									Case 2	replacement = "Alex"
+									Default	replacement = "Jamie"
 								End Select
-							endif
+							EndIf
 							replaced = True
-						endif
-					case "ROLE1", "ROLE2", "ROLE3", "ROLE4", "ROLE5", "ROLE6", "ROLE7"
-						if not actorsFetched
+						EndIf
+					Case "ROLE1", "ROLE2", "ROLE3", "ROLE4", "ROLE5", "ROLE6", "ROLE7"
+						If Not actorsFetched
 							actors = GetSpecificCast(TVTProgrammePersonJob.ACTOR | TVTProgrammePersonJob.SUPPORTINGACTOR)
 							actorsFetched = True
-						endif
+						EndIf
 
 						'local actorNum:int = int(placeHolder.toUpper().Replace("%ROLE", "").Replace("%",""))
-						local actorNum:int = int(chr(placeHolder[4]))
-						if actorNum > 0
-							if actors.length > actorNum and actors[actorNum].roleGUID <> ""
-								local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[actorNum].roleGUID)
-								if role then replacement = role.GetFullName()
-							endif
+						Local actorNum:Int = Int(Chr(placeHolder[4]))
+						If actorNum > 0
+							If actors.length > actorNum And actors[actorNum].roleGUID <> ""
+								Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[actorNum].roleGUID)
+								If role Then replacement = role.GetFullName()
+							EndIf
 							'gender neutral default
-							if replacement = ""
+							If replacement = ""
 								Select actorNum
-									case 1	replacement = "Robin Mayer"
-									case 2	replacement = "Alex Hulley"
-									default	replacement = "Jamie Larsen"
+									Case 1	replacement = "Robin Mayer"
+									Case 2	replacement = "Alex Hulley"
+									Default	replacement = "Jamie Larsen"
 								End Select
-							endif
+							EndIf
 							replaced = True
-						endif
+						EndIf
 
-					case "GENRE"
+					Case "GENRE"
 						replacement = GetMainGenreString()
 						replaced = True
-					case "EPISODES"
+					Case "EPISODES"
 						replacement = GetMainGenreString()
 						replaced = True
 
-					default
-						if not replaced then replaced = ReplaceTextWithGameInformation(placeHolder, replacement)
-						if not replaced then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
+					Default
+						If Not replaced Then replaced = ReplaceTextWithGameInformation(placeHolder, replacement)
+						If Not replaced Then replaced = ReplaceTextWithScriptExpression(placeHolder, replacement)
 				End Select
 
 				'replace if some content was filled in
-				if replaced then value = value.replace("%"+placeHolder+"%", replacement)
+				If replaced Then value = value.Replace("%"+placeHolder+"%", replacement)
 			Next
 
 			result.Set(value, langID)
 		Next
 
-		return result
+		Return result
 	End Method
 
 
 	'override
-	Method FinishProduction(programmeLicenceID:int)
+	Method FinishProduction(programmeLicenceID:Int)
 		Super.FinishProduction(programmeLicenceID)
 
-		if basedOnScriptTemplateID
-			local template:TScriptTemplate = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
-			if template then template.FinishProduction(programmeLicenceID)
-		endif
+		If basedOnScriptTemplateID
+			Local template:TScriptTemplate = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
+			If template Then template.FinishProduction(programmeLicenceID)
+		EndIf
 	End Method
 
 
 	Method GetScriptTemplate:TScriptTemplate()
-		if not basedOnScriptTemplateID then return Null
+		If Not basedOnScriptTemplateID Then Return Null
 
-		return GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
+		Return GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
 	End Method
 
 
 	'override default method to add subscripts
-	Method SetOwner:int(owner:int=0)
-		GetScriptCollection().SetScriptOwner(self, owner)
+	Method SetOwner:Int(owner:Int=0)
+		GetScriptCollection().SetScriptOwner(Self, owner)
 
 		Super.SetOwner(owner)
 
-		return TRUE
+		Return True
 	End Method
 
 
-	Method SetBasedOnScriptID(ID:int)
-		self.basedOnScriptID = ID
+	Method SetBasedOnScriptID(ID:Int)
+		Self.basedOnScriptID = ID
 	End Method
 
 
-	Method GetSpecificCastCount:int(job:int, limitPersonGender:int=-1, limitRoleGender:int=-1, ignoreSubScripts:int = False)
-		local result:int = 0
-		For local j:TProgrammePersonJob = EachIn cast
+	Method GetSpecificCastCount:Int(job:Int, limitPersonGender:Int=-1, limitRoleGender:Int=-1, ignoreSubScripts:Int = False)
+		Local result:Int = 0
+		For Local j:TProgrammePersonJob = EachIn cast
 			'skip roles with wrong gender
-			if limitRoleGender >= 0 and j.roleGUID
-				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
-				if role and role.gender <> limitRoleGender then continue
-			endif
+			If limitRoleGender >= 0 And j.roleGUID
+				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
+				If role And role.gender <> limitRoleGender Then Continue
+			EndIf
 			'skip persons with wrong gender
-			if limitPersonGender >= 0 and j.gender <> limitPersonGender then continue
+			If limitPersonGender >= 0 And j.gender <> limitPersonGender Then Continue
 
 			'current job is one of the given job(s)
-			if job & j.job then result :+ 1
+			If job & j.job Then result :+ 1
 		Next
 
 		'override with maximum found in subscripts
-		if not ignoreSubscripts and subScripts
-			For local subScript:TScript = EachIn subScripts
+		If Not ignoreSubscripts And subScripts
+			For Local subScript:TScript = EachIn subScripts
 				result = Max(result, subScript.GetSpecificCastCount(job, limitPersonGender, limitRoleGender))
 			Next
-		endif
+		EndIf
 
-		return result
+		Return result
 	End Method
 
 
 	Method GetCast:TProgrammePersonJob[]()
-		return cast
+		Return cast
 	End Method
 
 
-	Method GetSpecificCast:TProgrammePersonJob[](job:int, limitPersonGender:int=-1, limitRoleGender:int=-1)
-		local result:TProgrammePersonJob[]
-		For local j:TProgrammePersonJob = EachIn cast
+	Method GetSpecificCast:TProgrammePersonJob[](job:Int, limitPersonGender:Int=-1, limitRoleGender:Int=-1)
+		Local result:TProgrammePersonJob[]
+		For Local j:TProgrammePersonJob = EachIn cast
 			'skip roles with wrong gender
-			if limitRoleGender >= 0 and j.roleGUID
-				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
-				if role and role.gender <> limitRoleGender then continue
-			endif
+			If limitRoleGender >= 0 And j.roleGUID
+				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
+				If role And role.gender <> limitRoleGender Then Continue
+			EndIf
 			'skip persons with wrong gender
-			if limitPersonGender >= 0 and j.gender <> limitPersonGender then continue
+			If limitPersonGender >= 0 And j.gender <> limitPersonGender Then Continue
 
 			'current job is one of the given job(s)
-			if job & j.job then result :+ [j]
+			If job & j.job Then result :+ [j]
 		Next
-		return result
+		Return result
 	End Method
 
 
 	Method GetOutcome:Float() {_exposeToLua}
 		'single-script
-		If GetSubScriptCount() = 0 then return outcome
+		If GetSubScriptCount() = 0 Then Return outcome
 
 		'script for a package or scripts
 		Local value:Float
-		For local s:TScript = eachin subScripts
+		For Local s:TScript = EachIn subScripts
 			value :+ s.GetOutcome()
 		Next
-		return value / subScripts.length
+		Return value / subScripts.length
 	End Method
 
 
 	Method GetReview:Float() {_exposeToLua}
 		'single-script
-		If GetSubScriptCount() = 0 then return review
+		If GetSubScriptCount() = 0 Then Return review
 
 		'script for a package or scripts
 		Local value:Float
-		For local s:TScript = eachin subScripts
+		For Local s:TScript = EachIn subScripts
 			value :+ s.GetReview()
 		Next
-		return value / subScripts.length
+		Return value / subScripts.length
 	End Method
 
 
 	Method GetSpeed:Float() {_exposeToLua}
 		'single-script
-		If GetSubScriptCount() = 0 then return speed
+		If GetSubScriptCount() = 0 Then Return speed
 
 		'script for a package or scripts
 		Local value:Float
-		For local s:TScript = eachin subScripts
+		For Local s:TScript = EachIn subScripts
 			value :+ s.GetSpeed()
 		Next
-		return value / subScripts.length
+		Return value / subScripts.length
 	End Method
 
 
 	Method GetPotential:Float() {_exposeToLua}
 		'single-script
-		If GetSubScriptCount() = 0 then return potential
+		If GetSubScriptCount() = 0 Then Return potential
 
 		'script for a package or scripts
 		Local value:Float
-		For local s:TScript = eachin subScripts
+		For Local s:TScript = EachIn subScripts
 			value :+ s.GetPotential()
 		Next
-		return value / subScripts.length
+		Return value / subScripts.length
 	End Method
 
 
 	Method GetBlocks:Int() {_exposeToLua}
-		return blocks
+		Return blocks
 	End Method
 
 
 	Method GetEpisodeNumber:Int() {_exposeToLua}
-		if self <> GetParentScript() then return GetParentScript().GetSubScriptPosition(self) + 1
+		If Self <> GetParentScript() Then Return GetParentScript().GetSubScriptPosition(Self) + 1
 
-		return 0
+		Return 0
 	End Method
 
 
 	Method GetEpisodes:Int() {_exposeToLua}
-		If isSeries() then return GetSubScriptCount()
+		If isSeries() Then Return GetSubScriptCount()
 
-		return 0
+		Return 0
 	End Method
 
 
 	Method GetSellPrice:Int() {_exposeToLua}
-		return GetPrice()
+		Return GetPrice()
 	End Method
 
 
 	Method GetPrice:Int() {_exposeToLua}
-		local value:int
+		Local value:Int
 		'single-script
-		if GetSubScriptCount() = 0
+		If GetSubScriptCount() = 0
 			value = price
 		'script for a package or scripts
-		else
-			For local script:TScript = eachin subScripts
+		Else
+			For Local script:TScript = EachIn subScripts
 				value :+ script.GetPrice()
 			Next
 			value :* 0.75
-		endif
+		EndIf
 
 		'round to next "100" block
 		value = Int(Floor(value / 100) * 100)
@@ -783,45 +783,45 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 	'mixes main and subgenre criterias
-	Method CalculateTotalGenreCriterias(totalReview:float var, totalSpeed:float var, totalOutcome:float var)
+	Method CalculateTotalGenreCriterias(totalReview:Float Var, totalSpeed:Float Var, totalOutcome:Float Var)
 		Local genreDefinition:TMovieGenreDefinition = GetMovieGenreDefinition(mainGenre)
-		if not genreDefinition
+		If Not genreDefinition
 			TLogger.Log("TScript.CalculateTotalGenreCriterias()", "script with wrong movie genre definition, criteria calculation failed.", LOG_ERROR)
-			return
-		endif
+			Return
+		EndIf
 
 		totalOutcome = genreDefinition.OutcomeMod
 		totalReview = genreDefinition.ReviewMod
 		totalSpeed = genreDefinition.SpeedMod
 
 		'build subgenre-averages
-		local subGenreDefinition:TMovieGenreDefinition
-		local subGenreCount:int
-		local subGenreOutcome:Float, subGenreReview:Float, subGenreSpeed:Float
-		For local i:int = 0 until subGenres.length
+		Local subGenreDefinition:TMovieGenreDefinition
+		Local subGenreCount:Int
+		Local subGenreOutcome:Float, subGenreReview:Float, subGenreSpeed:Float
+		For Local i:Int = 0 Until subGenres.length
 			subGenreDefinition = GetMovieGenreDefinition(i)
-			if not subGenreDefinition then continue
+			If Not subGenreDefinition Then Continue
 
 			subGenreOutcome :+ subGenreDefinition.OutcomeMod
 			subGenreReview :+ subGenreDefinition.ReviewMod
 			subGenreSpeed :+ subGenreDefinition.SpeedMod
 			subGenreCount :+ 1
 		Next
-		if subGenreCount > 1
+		If subGenreCount > 1
 			subGenreOutcome :/ subGenreCount
 			subGenreReview :/ subGenreCount
 			subGenreSpeed :/ subGenreCount
-		endif
+		EndIf
 
 		'mix maingenre and subgenres by 60:40
-		if subGenreCount > 0
+		If subGenreCount > 0
 			'if main genre ignores outcome, ignore for subgenres too!
-			if totalOutcome > 0
+			If totalOutcome > 0
 				totalOutcome = totalOutcome*0.6 + subGenreOutcome*0.4
-			endif
+			EndIf
 			totalReview = totalReview*0.6 + subGenreReview*0.4
 			totalSpeed = totalSpeed*0.6 + subGenreSpeed*0.4
-		endif
+		EndIf
 	End Method
 
 
@@ -833,16 +833,16 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'Fetch corresponding genre definition, with this we are able to
 		'see what values are "expected" for this genre.
 
-		local reviewGenre:Float, speedGenre:Float, outcomeGenre:Float
+		Local reviewGenre:Float, speedGenre:Float, outcomeGenre:Float
 		CalculateTotalGenreCriterias(reviewGenre, speedGenre, outcomeGenre)
 
 		'scale to total of 100%
-		local resultTotal:Float = reviewGenre + speedGenre + outcomeGenre
+		Local resultTotal:Float = reviewGenre + speedGenre + outcomeGenre
 		reviewGenre :/ resultTotal
 		speedGenre :/ resultTotal
 		outcomeGenre :/ resultTotal
 
-		rem
+		Rem
 		reviewGenre = 0.5
 		speedGenre = 0.3
 		outcomeGenre = 0.2
@@ -854,26 +854,26 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		endrem
 
 		'scale to biggest property
-		local maxPropertyScript:Float, maxPropertyGenre:Float
-		if outcomeGenre > 0
+		Local maxPropertyScript:Float, maxPropertyGenre:Float
+		If outcomeGenre > 0
 			maxPropertyScript = Max(review, Max(speed, outcome))
 			maxPropertyGenre = Max(reviewGenre, Max(speedGenre, outcomeGenre))
-		else
+		Else
 			maxPropertyScript = Max(review, speed)
 			maxPropertyGenre = Max(reviewGenre, speedGenre)
-		endif
-		if maxPropertyGenre = 0 or MathHelper.AreApproximatelyEqual(maxPropertyScript, maxPropertyGenre)
-			return 1
-		endif
+		EndIf
+		If maxPropertyGenre = 0 Or MathHelper.AreApproximatelyEqual(maxPropertyScript, maxPropertyGenre)
+			Return 1
+		EndIf
 
-		local scaleFactor:Float = maxPropertyGenre / maxPropertyScript
-		local distanceReview:Float = Abs(reviewGenre - review*scaleFactor)
-		local distanceSpeed:Float = Abs(speedGenre - speed*scaleFactor)
-		local distanceOutcome:Float = Abs(outcomeGenre - outcome*scaleFactor)
+		Local scaleFactor:Float = maxPropertyGenre / maxPropertyScript
+		Local distanceReview:Float = Abs(reviewGenre - review*scaleFactor)
+		Local distanceSpeed:Float = Abs(speedGenre - speed*scaleFactor)
+		Local distanceOutcome:Float = Abs(outcomeGenre - outcome*scaleFactor)
 		'ignore outcome ?
-		if outcomeGenre = 0 then distanceOutcome = 0
+		If outcomeGenre = 0 Then distanceOutcome = 0
 
-		rem
+		Rem
 		'print "maxPropertyGenre:   "+maxPropertyGenre
 		'print "maxPropertyScript:  "+maxPropertyScript
 		print "mainGenre:          "+mainGenre
@@ -888,56 +888,56 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		print "ergebnis:           "+(1.0 - (distanceReview + distanceSpeed + distanceOutcome))
 		endrem
 
-		return 1.0 - (distanceReview + distanceSpeed + distanceOutcome)
+		Return 1.0 - (distanceReview + distanceSpeed + distanceOutcome)
 	End Method
 
 
-	Method Sell:int()
-		local finance:TPlayerFinance = GetPlayerFinance(owner,-1)
-		if not finance then return False
+	Method Sell:Int()
+		Local finance:TPlayerFinance = GetPlayerFinance(owner,-1)
+		If Not finance Then Return False
 
-		finance.SellScript(GetSellPrice(), self)
+		finance.SellScript(GetSellPrice(), Self)
 
 		'set unused again
 
 		SetOwner( TOwnedGameObject.OWNER_NOBODY )
 
-		return TRUE
+		Return True
 	End Method
 
 
 	'buy means pay and set owner, but in players collection only if left the room!!
 	Method Buy:Int(playerID:Int=-1)
-		local finance:TPlayerFinance = GetPlayerFinance(playerID)
-		if not finance then return False
+		Local finance:TPlayerFinance = GetPlayerFinance(playerID)
+		If Not finance Then Return False
 
-		If finance.PayScript(GetPrice(), self)
+		If finance.PayScript(GetPrice(), Self)
 			SetOwner(playerID)
-			Return TRUE
+			Return True
 		EndIf
-		Return FALSE
+		Return False
 	End Method
 
 
-	Method GiveBackToScriptPool:int()
+	Method GiveBackToScriptPool:Int()
 		SetOwner( TOwnedGameObject.OWNER_NOBODY )
 
 		'remove tradeability?
 		'(eg. for "exclusively written for player X scripts")
-		if HasScriptFlag(TVTScriptFlag.POOL_REMOVES_TRADEABILITY)
+		If HasScriptFlag(TVTScriptFlag.POOL_REMOVES_TRADEABILITY)
 			SetScriptFlag(TVTScriptFlag.TRADEABLE, False)
-		endif
+		EndIf
 
 
 		'remove tradeability for partially produced series
-		if GetSubScriptCount() > 0 and GetProductionsCount() > 0
+		If GetSubScriptCount() > 0 And GetProductionsCount() > 0
 			SetScriptFlag(TVTScriptFlag.TRADEABLE, False)
-		endif
+		EndIf
 
 
 		'refill production limits - or disable tradeability
 		'TODO
-		rem
+		Rem
 		if GetProductionBroadcastLimit() > 0 and (isExceedingBroadcastLimit() or GetSublicenceExceedingBroadcastLimitCount() > 0 )
 			if HasScriptFlag(TVTScriptFlag.POOL_REFILLS_PRODUCTIONLIMITS)
 				SetProductionLimit(broadcastLimitMax)
@@ -949,95 +949,95 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 
 		'randomize attributes?
-		if HasScriptFlag(TVTScriptFlag.POOL_RANDOMIZES_ATTRIBUTES)
-			local template:TScriptTemplate
-			if basedOnScriptTemplateID then template = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
-			if template
+		If HasScriptFlag(TVTScriptFlag.POOL_RANDOMIZES_ATTRIBUTES)
+			Local template:TScriptTemplate
+			If basedOnScriptTemplateID Then template = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
+			If template
 				outcome = template.GetOutcome()
 				review = template.GetReview()
 				speed = template.GetSpeed()
 				potential = template.GetPotential()
 				blocks = template.GetBlocks()
 				price = template.GetPrice()
-			endif
-		endif
+			EndIf
+		EndIf
 
 
 		'do the same for all children
-		For local subScript:TScript = EachIn subScripts
+		For Local subScript:TScript = EachIn subScripts
 			subScript.GiveBackToScriptPool()
 		Next
 
 		'inform others about a now unused licence
-		EventManager.triggerEvent( TEventSimple.Create("Script.onGiveBackToScriptPool", null, self))
+		EventManager.triggerEvent( TEventSimple.Create("Script.onGiveBackToScriptPool", Null, Self))
 
-		return True
+		Return True
 	End Method
 
 
-	Method ShowSheet:Int(x:Int,y:Int, align:int=0)
+	Method ShowSheet:Int(x:Int,y:Int, align:Int=0)
 		'=== PREPARE VARIABLES ===
-		local sheetWidth:int = 310
-		local sheetHeight:int = 0 'calculated later
+		Local sheetWidth:Int = 310
+		Local sheetHeight:Int = 0 'calculated later
 		'move sheet to left when right-aligned
-		if align = 1 then x = x - sheetWidth
+		If align = 1 Then x = x - sheetWidth
 
-		local skin:TDatasheetSkin = GetDatasheetSkin("script")
-		local contentW:int = skin.GetContentW(sheetWidth)
-		local contentX:int = x + skin.GetContentY()
-		local contentY:int = y + skin.GetContentY()
+		Local skin:TDatasheetSkin = GetDatasheetSkin("script")
+		Local contentW:Int = skin.GetContentW(sheetWidth)
+		Local contentX:Int = x + skin.GetContentY()
+		Local contentY:Int = y + skin.GetContentY()
 
 		Local showMsgEarnInfo:Int = False
 		Local showMsgLiveInfo:Int = False
 		Local showMsgBroadcastLimit:Int = False
 
-		If IsPaid() then showMsgEarnInfo = True
-		If IsLive() then showMsgLiveInfo = True
-		If HasProductionBroadcastLimit() then showMsgBroadcastLimit= True
+		If IsPaid() Then showMsgEarnInfo = True
+		If IsLive() Then showMsgLiveInfo = True
+		If HasProductionBroadcastLimit() Then showMsgBroadcastLimit= True
 
 
-		local title:string
-		if not isEpisode()
+		Local title:String
+		If Not isEpisode()
 			title = GetTitle()
-		else
+		Else
 			title = GetParentScript().GetTitle()
-		endif
+		EndIf
 
 		'can player afford this licence?
-		local canAfford:int = False
+		Local canAfford:Int = False
 		'possessing player always can
-		if GetPlayerBaseCollection().playerID = owner
+		If GetPlayerBaseCollection().playerID = owner
 			canAfford = True
 		'if it is another player... just display "can afford"
-		elseif owner > 0
+		ElseIf owner > 0
 			canAfford = True
 		'not our licence but enough money to buy ?
-		else
-			local finance:TPlayerFinance = GetPlayerFinance(GetPlayerBaseCollection().playerID)
-			if finance and finance.canAfford(GetPrice())
+		Else
+			Local finance:TPlayerFinance = GetPlayerFinance(GetPlayerBaseCollection().playerID)
+			If finance And finance.canAfford(GetPrice())
 				canAfford = True
-			endif
-		endif
+			EndIf
+		EndIf
 
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
-		local titleH:int = 18, subtitleH:int = 16, genreH:int = 16, descriptionH:int = 70, castH:int=50
-		local splitterHorizontalH:int = 6
-		local boxH:int = 0, msgH:int = 0, barH:int = 0
-		local msgAreaH:int = 0, boxAreaH:int = 0, barAreaH:int = 0
-		local boxAreaPaddingY:int = 4, msgAreaPaddingY:int = 4, barAreaPaddingY:int = 4
+		Local titleH:Int = 18, subtitleH:Int = 16, genreH:Int = 16, descriptionH:Int = 70, castH:Int=50
+		Local splitterHorizontalH:Int = 6
+		Local boxH:Int = 0, msgH:Int = 0, barH:Int = 0
+		Local msgAreaH:Int = 0, boxAreaH:Int = 0, barAreaH:Int = 0
+		Local boxAreaPaddingY:Int = 4, msgAreaPaddingY:Int = 4, barAreaPaddingY:Int = 4
 
-		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
+		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", Null, ALIGN_CENTER_CENTER).GetY()
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
 		barH = skin.GetBarSize(100, -1).GetY()
 		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(title, contentW - 10, 100))
 
 		'message area
-		If showMsgEarnInfo then msgAreaH :+ msgH
-		If showMsgLiveInfo then msgAreaH :+ msgH
-		If showMsgBroadcastLimit then msgAreaH :+ msgH
+		If showMsgEarnInfo Then msgAreaH :+ msgH
+		If showMsgLiveInfo Then msgAreaH :+ 2 * msgH
+		If showMsgBroadcastLimit Then msgAreaH :+ msgH
 		'if there are messages, add padding of messages
-		if msgAreaH > 0 then msgAreaH :+ 2* msgAreaPaddingY
+		If msgAreaH > 0 Then msgAreaH :+ 2* msgAreaPaddingY
 
 
 		'bar area starts with padding, ends with padding and contains
@@ -1047,11 +1047,11 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'box area
 		'contains 1 line of boxes + padding at the top
 		boxAreaH = 1 * boxH
-		if msgAreaH = 0 then boxAreaH :+ boxAreaPaddingY
+		If msgAreaH = 0 Then boxAreaH :+ boxAreaPaddingY
 
 		'total height
 		sheetHeight = titleH + genreH + descriptionH + castH + barAreaH + msgAreaH + boxAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
-		if isEpisode() then sheetHeight :+ subtitleH
+		If isEpisode() Then sheetHeight :+ subtitleH
 		'there is a splitter between description and cast...
 		sheetHeight :+ splitterHorizontalH
 
@@ -1060,37 +1060,37 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-			if titleH <= 18
+			If titleH <= 18
 				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY -1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			else
+			Else
 				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY +1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			endif
+			EndIf
 		contentY :+ titleH
 
 
 		'=== SUBTITLE AREA ===
-		if isEpisode()
+		If isEpisode()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
 			'episode num/max + episode title
-			skin.fontNormal.drawBlock((GetParentScript().GetSubScriptPosition(self)+1) + "/" + GetParentScript().GetSubScriptCount() + ": " + GetTitle(), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontNormal.drawBlock((GetParentScript().GetSubScriptPosition(Self)+1) + "/" + GetParentScript().GetSubScriptCount() + ": " + GetTitle(), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			contentY :+ subtitleH
-		endif
+		EndIf
 
 
 		'=== COUNTRY / YEAR / GENRE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
-		local genreString:string = GetMainGenreString()
+		Local genreString:String = GetMainGenreString()
 		'avoid "Action-Undefined" and "Show-Show"
-		if scriptProductType <> TVTProgrammeProductType.UNDEFINED and scriptProductType <> TVTProgrammeProductType.SERIES
-			if (TVTProgrammeProductType.GetAsString(scriptProductType) <> TVTProgrammeGenre.GetAsString(mainGenre))
-				if not(TVTProgrammeProductType.GetAsString(scriptProductType) = "feature" and TVTProgrammeGenre.GetAsString(mainGenre).Find("feature")>=0)
+		If scriptProductType <> TVTProgrammeProductType.UNDEFINED And scriptProductType <> TVTProgrammeProductType.SERIES
+			If (TVTProgrammeProductType.GetAsString(scriptProductType) <> TVTProgrammeGenre.GetAsString(mainGenre))
+				If Not(TVTProgrammeProductType.GetAsString(scriptProductType) = "feature" And TVTProgrammeGenre.GetAsString(mainGenre).Find("feature")>=0)
 					genreString :+ " / " +GetProductionTypeString()
-				endif
-			endif
-		endif
-		if IsSeries()
+				EndIf
+			EndIf
+		EndIf
+		If IsSeries()
 			genreString :+ " / " + GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetSubScriptCount())
-		endif
+		EndIf
 
 		skin.fontNormal.drawBlock(genreString, contentX + 5, contentY, contentW - 10, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ genreH
@@ -1098,7 +1098,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		'=== DESCRIPTION AREA ===
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
-		skin.fontNormal.drawBlock(GetDescription(), contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
+		skin.fontNormal.drawBlock(GetDescription(), contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, Null, skin.textColorNeutral)
 		contentY :+ descriptionH
 
 
@@ -1111,59 +1111,59 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		skin.RenderContent(contentX, contentY, contentW, castH, "2")
 
 		'cast
-		local cast:string = ""
+		Local cast:String = ""
 
-		For local i:int = 1 to TVTProgrammePersonJob.count
-			local jobID:int = TVTProgrammePersonJob.GetAtIndex(i)
+		For Local i:Int = 1 To TVTProgrammePersonJob.count
+			Local jobID:Int = TVTProgrammePersonJob.GetAtIndex(i)
 			'call with "false" to return maximum required persons within
 			'sub scripts too
-			local requiredPersons:int = GetSpecificCastCount(jobID,-1,-1, False)
-			if requiredPersons <= 0 then continue
+			Local requiredPersons:Int = GetSpecificCastCount(jobID,-1,-1, False)
+			If requiredPersons <= 0 Then Continue
 
-			if cast <> "" then cast :+ ", "
+			If cast <> "" Then cast :+ ", "
 
-			local requiredPersonsMale:int = GetSpecificCastCount(jobID, TVTPersonGender.MALE)
-			local requiredPersonsFemale:int = GetSpecificCastCount(jobID, TVTPersonGender.FEMALE)
+			Local requiredPersonsMale:Int = GetSpecificCastCount(jobID, TVTPersonGender.MALE)
+			Local requiredPersonsFemale:Int = GetSpecificCastCount(jobID, TVTPersonGender.FEMALE)
 			requiredPersons = Max(requiredPersons, requiredPersonsMale + requiredPersonsFemale)
 
-			if requiredPersons = 1
+			If requiredPersons = 1
 				cast :+ "|b|"+requiredPersons+"x|/b| "+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, True))
-			else
+			Else
 				cast :+ "|b|"+requiredPersons+"x|/b| "+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, False))
-			endif
+			EndIf
 
 
-			local requiredDetails:string = ""
-			if requiredPersonsMale > 0
+			Local requiredDetails:String = ""
+			If requiredPersonsMale > 0
 				'write amount if multiple genders requested for this job type
-				if requiredPersonsMale <> requiredPersons
+				If requiredPersonsMale <> requiredPersons
 					requiredDetails :+ requiredPersonsMale+"x "+GetLocale("MALE")
-				else
+				Else
 					requiredDetails :+ GetLocale("MALE")
-				endif
-			endif
-			if requiredPersonsFemale > 0
-				if requiredDetails <> "" then requiredDetails :+ ", "
+				EndIf
+			EndIf
+			If requiredPersonsFemale > 0
+				If requiredDetails <> "" Then requiredDetails :+ ", "
 				'write amount if multiple genders requested for this job type
-				if requiredPersonsFemale <> requiredPersons
+				If requiredPersonsFemale <> requiredPersons
 					requiredDetails :+ requiredPersonsFemale+"x "+GetLocale("FEMALE")
-				else
+				Else
 					requiredDetails :+ GetLocale("FEMALE")
-				endif
-			endif
-			if requiredPersons - (requiredPersonsMale + requiredPersonsFemale) > 0
+				EndIf
+			EndIf
+			If requiredPersons - (requiredPersonsMale + requiredPersonsFemale) > 0
 				'write amount if genders for this job type were defined
-				if requiredPersonsMale > 0 or requiredPersonsFemale > 0
-					if requiredDetails <> "" then requiredDetails :+ ", "
+				If requiredPersonsMale > 0 Or requiredPersonsFemale > 0
+					If requiredDetails <> "" Then requiredDetails :+ ", "
 					requiredDetails :+ (requiredPersons - (requiredPersonsMale + requiredPersonsFemale))+"x "+GetLocale("UNDEFINED")
-				endif
-			endif
-			if requiredDetails <> ""
+				EndIf
+			EndIf
+			If requiredDetails <> ""
 				cast :+ " (" + requiredDetails + ")"
-			endif
+			EndIf
 		Next
 
-rem
+Rem
 		local requiredDirectors:int = GetSpecificCastCount(TVTProgrammePersonJob.DIRECTOR)
 		local requiredStarRoleActorFemale:int = GetSpecificCastCount(TVTProgrammePersonJob.ACTOR, TVTPersonGender.FEMALE)
 		local requiredStarRoleActorMale:int = GetSpecificCastCount(TVTProgrammePersonJob.ACTOR, TVTPersonGender.MALE)
@@ -1193,19 +1193,19 @@ rem
 		endif
 endrem
 
-		if cast <> ""
+		If cast <> ""
 			'render director + cast (offset by 3 px)
 			contentY :+ 3
 
 			'max width of cast word - to align their content properly
-			local captionWidth:int = skin.fontSemiBold.getWidth(GetLocale("MOVIE_CAST")+":")
-			skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CAST")+":", contentX + 5, contentY, contentW, castH, null, skin.textColorNeutral)
-			skin.fontNormal.drawBlock(cast, contentX + 5 + captionWidth + 5, contentY , contentW  - 10 - captionWidth - 5, castH, null, skin.textColorNeutral)
+			Local captionWidth:Int = skin.fontSemiBold.getWidth(GetLocale("MOVIE_CAST")+":")
+			skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CAST")+":", contentX + 5, contentY, contentW, castH, Null, skin.textColorNeutral)
+			skin.fontNormal.drawBlock(cast, contentX + 5 + captionWidth + 5, contentY , contentW  - 10 - captionWidth - 5, castH, Null, skin.textColorNeutral)
 
 			contentY:+ castH - 3
-		else
+		Else
 			contentY:+ castH
-		endif
+		EndIf
 
 
 		'=== BARS / MESSAGES / BOXES AREA ===
@@ -1219,44 +1219,65 @@ endrem
 		contentY :+ barAreaPaddingY
 		'speed
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetSpeed())
-		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY, 75, 15, Null, skin.textColorLabel)
 		contentY :+ barH + 2
 		'critic/review
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetReview())
-		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY, 75, 15, Null, skin.textColorLabel)
 		contentY :+ barH + 2
 		'potential
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetPotential())
-		skin.fontSemiBold.drawBlock(GetLocale("SCRIPT_POTENTIAL"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		skin.fontSemiBold.drawBlock(GetLocale("SCRIPT_POTENTIAL"), contentX + 5 + 200 + 5, contentY, 75, 15, Null, skin.textColorLabel)
 		contentY :+ barH + 2
 
 
 		'=== MESSAGES ===
 		'if there is a message then add padding to the begin
-		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
+		If msgAreaH > 0 Then contentY :+ msgAreaPaddingY
 
 		If showMsgLiveInfo
 			'TODO
-			Local plannedLiveTime:Long = GetLiveTime()
-			local plannedLiveTimeStr:String = GetWorldTime().GetFormattedDate(GetLiveTime())
-			if productionTime >= 0 then plannedLiveTimeStr = "Vorproduktion " + (productionTime/60)+"h. " + plannedLiveTimeStr
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_LIVESHOW")+": " + plannedLiveTimeStr, "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			Local earliestProductionFinishTime:Long = GetWorldTime().GetTimeGone()
+			If productionTime >= 0 Then earliestProductionFinishTime :+ productionTime
+
+			Local plannedLiveTime:Long = GetLiveTime( earliestProductionFinishTime )
+			Local plannedLiveTimeStr:String = GetWorldTime().GetFormattedDate( plannedLiveTime )
+
+			Local liveDay:Int = GetWorldTime().GetDay( plannedLivetime )
+			Local nowDay:Int = GetWorldTime().GetDay()
+			Local timeDiff:Int = earliestProductionFinishTime - GetWorldTime().GetTimeGone()
+
+			If liveDay = nowDay
+				plannedLiveTimeStr = "Ausstrahlung heute: " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
+			ElseIf liveDay = nowDay + 1
+				plannedLiveTimeStr = "Ausstrahlung morgen: " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
+			Else
+				plannedLiveTimeStr = "Ausstrahlung in " + (liveDay - nowDay) + " Tagen: " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
+			EndIf
+
+			If productionTime >= 0
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "Live: Dauer der Vorproduktion " + (productionTime/60)+"h.", "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			Else
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "Live: Keine Vorproduktion notwendig.", "runningTime", "good", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			EndIf
+			contentY :+ msgH
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "Live: " + plannedLiveTimeStr, "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
-		if showMsgBroadcastLimit
+		If showMsgBroadcastLimit
 			'TODO
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "TODO: " + getLocale("BROASCAST_LIMIT"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
-		endif
+		EndIf
 
 		If showMsgEarnInfo
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", "***"), "money", "good", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").Replace("%PROFIT%", "***"), "money", "good", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
 		'if there is a message then add padding to the bottom
-		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
+		If msgAreaH > 0 Then contentY :+ msgAreaPaddingY
 
 
 		'=== BOXES ===
@@ -1266,11 +1287,11 @@ endrem
 		'blocks
 		skin.RenderBox(contentX + 5, contentY, 47, -1, GetBlocks(), "duration", "neutral", skin.fontBold)
 		'price
-		if canAfford
+		If canAfford
 			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
-		else
+		Else
 			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER, "bad")
-		endif
+		EndIf
 		contentY :+ boxH
 
 
@@ -1278,7 +1299,7 @@ endrem
 		If TVTDebugInfos
 			'begin at the top ...again
 			contentY = y + skin.GetContentY()
-			local oldAlpha:Float = GetAlpha()
+			Local oldAlpha:Float = GetAlpha()
 
 			SetAlpha oldAlpha * 0.75
 			SetColor 0,0,0
@@ -1297,7 +1318,7 @@ endrem
 			skin.fontNormal.draw("Preis: "+GetPrice(), contentX + 5, contentY)
 			contentY :+ 12
 			skin.fontNormal.draw("IsProduced: "+IsProduced(), contentX + 5, contentY)
-		endif
+		EndIf
 
 		'=== OVERLAY / BORDER ===
 		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
@@ -1305,6 +1326,6 @@ endrem
 		'=== X-Rated Overlay ===
 		If IsXRated()
 			GetSpriteFromRegistry(spriteNameOverlayXRatedLS).Draw(contentX + sheetWidth, y, -1, ALIGN_RIGHT_TOP)
-		Endif
+		EndIf
 	End Method
 End Type

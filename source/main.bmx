@@ -4739,8 +4739,13 @@ Type GameEvents
 		toast.SetLifeTime(8)
 		toast.SetMessageType(2) 'positive
 		toast.SetMessageCategory(TVTMessageCategory.MISC)
-		toast.SetCaption(GetLocale("SHOOTING_FINISHED"))
-		toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+title+"|/b|"))
+		if production.productionConcept.script.IsLive()
+			toast.SetCaption(GetLocale("PREPRODUCTION_FINISHED"))
+			toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+title+"|/b|"))
+		else
+			toast.SetCaption(GetLocale("SHOOTING_FINISHED"))
+			toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+title+"|/b|"))
+		endif
 
 		toast.GetData().AddNumber("playerID", production.owner)
 

@@ -1228,16 +1228,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			if self.IsLive()
 				'hour or day incorrect
 				if GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
-					if GetWorldTime().GetDayHour( data.releaseTime ) <> hour then return False
-					if GetWorldTime().GetDay( data.releaseTime ) <> day then return False
+					if GetWorldTime().GetDayHour( data.GetReleaseTime() ) <> hour then return False
+					if GetWorldTime().GetDay( data.GetReleaseTime() ) <> day then return False
 				'all times after the live event are allowed too
 				else
 					'live happens on a later day
-					if GetWorldTime().GetDay( data.releaseTime ) > day
+					if GetWorldTime().GetDay( data.GetReleaseTime() ) > day
 						return False
 					'live happens on that day but on a later hour
-					elseif GetWorldTime().GetDay( data.releaseTime ) = day
-						if GetWorldTime().GetDayHour( data.releaseTime ) > hour then return False
+					elseif GetWorldTime().GetDay( data.GetReleaseTime() ) = day
+						if GetWorldTime().GetDayHour( data.GetReleaseTime() ) > hour then return False
 					endif
 				endif
 			endif
@@ -2066,7 +2066,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'always show live info text - regardless of situation ?!
 		local nextReleaseTime:Long
 		If self.IsLive()
-			local nextReleaseTime:Long = GetNextReleaseTime()
+			nextReleaseTime = GetNextReleaseTime()
 			if nextReleaseTime = -1 then nextReleaseTime = data.GetReleaseTime()
 
 			'release time might be in the past if the live programme is airing
@@ -2309,6 +2309,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			endif
 			'programme start time
 			time :+ ", "+ GetWorldTime().GetDayHour( nextReleaseTime )+":05"
+
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_LIVESHOW")+": "+time, "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf

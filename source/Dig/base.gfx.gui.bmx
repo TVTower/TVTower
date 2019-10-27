@@ -76,12 +76,12 @@ Type TGUIManager
 	Field currentState:TLowerString = Null
 	'config about specific gui settings (eg. panelGap)
 	Field config:TData = New TData
-	Field List:TObjectList = new TObjectList
+	Field List:TObjectList = New TObjectList
 	'contains dragged objects (above normal)
-	Field ListDragged:TObjectList = new TObjectlist
+	Field ListDragged:TObjectList = New TObjectlist
 	'contains objects which need to get informed because of changed appearance
-	Field elementsWithChangedAppearance:TObjectList = new TObjectList
-	Field activeTooltips:TObjectList = new TObjectList
+	Field elementsWithChangedAppearance:TObjectList = New TObjectList
+	Field activeTooltips:TObjectList = New TObjectList
 
 
 	'=== UPDATE STATE PROPERTIES ===
@@ -120,7 +120,7 @@ Type TGUIManager
 	Method Init:TGUIManager()
 		'=== remove all registered event listeners
 		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
+		_eventListeners = New TEventListenerBase[0]
 
 
 		'is something dropping on a gui element?
@@ -387,8 +387,10 @@ Type TGUIManager
 		Local i:Int = list.Count()
 		While i
 			i :- 1
+			'should not need the check here
+			'If i >= list.Count() Then Continue
 			Local obj:TGUIobject = TGUIobject(list.ValueAtIndex(i))
-			if not obj then continue
+			If Not obj Then Continue
 
 			'return array if we reached the limit
 			If limit > 0 And guiObjects.length >= limit Then Return guiObjects
@@ -568,8 +570,9 @@ Type TGUIManager
 			Local i:Int = list.Count()
 			While i
 				i :- 1
+				If i >= list.Count() Then Continue
 				Local obj:TGUIObject = TGUIobject(list.ValueAtIndex(i))
-				if not obj then continue
+				If Not obj Then Continue
 
 				'all dragged objects got already updated...
 				If ListDragged.Contains(obj) Then Continue
@@ -646,8 +649,10 @@ Type TGUIManager
 			Local i:Int = ListDragged.Count()
 			While i
 				i :- 1
+				'should not need the check here
+				'If i >= list.Count() Then Continue
 				Local obj:TGUIobject = TGUIobject(ListDragged.ValueAtIndex(i))
-				if not obj then continue
+				If Not obj Then Continue
 
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
@@ -777,7 +782,7 @@ Type TGUIobject
 		EventManager.unregisterListenerByLimit(Self,Self)
 
 		EventManager.UnregisterListenersArray(_registeredEventListener)
-		_registeredEventListener = new TEventListenerBase[0]
+		_registeredEventListener = New TEventListenerBase[0]
 
 		'maybe our parent takes care of us...
 		If _parent Then _parent.RemoveChild(Self)
@@ -917,8 +922,8 @@ Type TGUIobject
 
 
 	Method SortChildren()
-		if _children then _children.sort(True, TGUIManager.SortObjects)
-		if _childrenReversed then _childrenReversed.sort(False, TGUIManager.SortObjects)
+		If _children Then _children.sort(True, TGUIManager.SortObjects)
+		If _childrenReversed Then _childrenReversed.sort(False, TGUIManager.SortObjects)
 	End Method
 
 
@@ -927,8 +932,8 @@ Type TGUIobject
 		If child._parent Then child._parent.RemoveChild(child)
 
 		child.setParent( Self )
-		If Not _children Then _children = new TObjectList
-		If Not _childrenReversed Then _childrenReversed = new TObjectList
+		If Not _children Then _children = New TObjectList
+		If Not _childrenReversed Then _childrenReversed = New TObjectList
 
 		_children.addLast(child)
 		_childrenReversed.addFirst(child)
@@ -1335,12 +1340,12 @@ Type TGUIobject
 
 
 	Method SetZIndex(zIndex:Int)
-		If self.zIndex <> zIndex
+		If Self.zIndex <> zIndex
 			Self.zIndex = zindex
 
-			If hasOption(GUI_OBJECT_MANAGED) then GUIManager.SortLists()
+			If hasOption(GUI_OBJECT_MANAGED) Then GUIManager.SortLists()
 
-			If _parent then _parent.OnChildZIndexChanged()
+			If _parent Then _parent.OnChildZIndexChanged()
 		EndIf
 	End Method
 
@@ -2010,7 +2015,7 @@ Type TGUIobject
 						If Not MouseIsDown
 							'as soon as someone clicks on a object it is getting focused
 							If HasOption(GUI_OBJECT_CAN_GAIN_FOCUS)
-								GUImanager.setFocus(Self)
+								GUImanager.SetFocus(Self)
 							EndIf
 
 							'store a copy (might be the currentPos instance of MouseManager)

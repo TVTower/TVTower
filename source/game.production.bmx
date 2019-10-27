@@ -265,7 +265,11 @@ Type TProduction Extends TOwnedGameObject
 
 				productionTime :* GetProductionTimeMod()
 
-				GetRoomBaseByGUID(studioRoomGUID).SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_SHOOTING)
+				If productionConcept.script.IsLive()
+					GetRoomBaseByGUID(studioRoomGUID).SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_PREPRODUCTION)
+				Else
+					GetRoomBaseByGUID(studioRoomGUID).SetBlocked(productionTime, TRoomBase.BLOCKEDSTATE_SHOOTING)
+				EndIf
 				GetRoomBaseByGUID(studioRoomGUID).blockedText = productionConcept.GetTitle()
 			EndIf
 		endif
@@ -376,7 +380,6 @@ Type TProduction Extends TOwnedGameObject
 		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
 		programmeData.releaseTime = GetWorldTime().GetTimeGone()
 		If productionConcept.script.IsLive()
-print "============ Pre-produced a live programme ========="
 			programmeData.releaseTime = productionConcept.script.GetLiveTime(-1, 0)
 		EndIf
 		programmeData.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
