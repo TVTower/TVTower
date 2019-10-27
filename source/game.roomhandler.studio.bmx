@@ -850,19 +850,35 @@ Type RoomHandler_Studio extends TRoomHandler
 
 				if conceptCount = 1 and conceptCountMax = 1
 					if producedConceptCount = 0
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED")
+						if script.IsLive()
+							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PREPRODUCTION_PLANNED")
+						else
+							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED")
+						endif
 					else
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE")
+						if script.IsLive()
+							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PREPRODUCTION_DONE")
+						else
+							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_DONE")
+						endif
 					endif
 				else
 					if producedConceptCount = 0
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE").replace("%X%", countText)
+						if script.IsLive()
+							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PREPRODUCTIONS_DONE").replace("%X%", countText)
+						else
+							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE").replace("%X%", countText)
+						endif
 					else
 						local producedCountText:string = producedConceptCount
 						if conceptCountMax > 0 then producedCountText = producedConceptCount + "/" + conceptCountMax
 						if script.GetSubScriptCount() > 0 then producedCountText = producedConceptCount + "/"+script.GetSubScriptCount()
 
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE").replace("%X%", countText).replace("%Y%", producedCountText)
+						if script.IsLive()
+							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PREPRODUCTIONS_PLANNED_AND_Y_PREPRODUCTIONS_DONE").replace("%X%", countText).replace("%Y%", producedCountText)
+						else
+							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE").replace("%X%", countText).replace("%Y%", producedCountText)
+						endif
 					endif
 				endif
 				if not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).CanCreateProductionConcept(script)
@@ -872,7 +888,11 @@ Type RoomHandler_Studio extends TRoomHandler
 
 				if produceableConceptCount = 0 and conceptCount > 0
 					text :+ "~n"
-					text :+ GetRandomLocale("DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING")
+					if script.IsLive()
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PREPRODUCTION_PLANNING")
+					else
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING")
+					endif
 				endif
 
 				text = text.replace("%SCRIPTTITLE%", script.GetTitle())
@@ -891,9 +911,17 @@ Type RoomHandler_Studio extends TRoomHandler
 			if dialogueType = 0 and produceableConceptCount > 0
 				local answerText:string
 				if produceableConceptCount = 1
-					answerText = GetRandomLocale("DIALOGUE_STUDIO_START_PRODUCTION")
+					if script.IsLive()
+						answerText = GetRandomLocale("DIALOGUE_STUDIO_START_PREPRODUCTION")
+					else
+						answerText = GetRandomLocale("DIALOGUE_STUDIO_START_PRODUCTION")
+					endif
 				else
-					answerText = GetRandomLocale("DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS").Replace("%X%", produceableConcepts)
+					if script.IsLive()
+						answerText = GetRandomLocale("DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PREPRODUCTIONS").Replace("%X%", produceableConcepts)
+					else
+						answerText = GetRandomLocale("DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS").Replace("%X%", produceableConcepts)
+					endif
 				endif
 				texts[0].AddAnswer(TDialogueAnswer.Create( answerText, -2, null, onClickStartProduction, new TData.Add("script", script)))
 			endif
@@ -1034,19 +1062,19 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		GUIManager.Draw( LS_studio )
 
+		'draw before potential tooltips
+		if roomOwner and studioManagerDialogue then studioManagerDialogue.Draw()
+
 		'draw data sheets for scripts or production concepts
-		if not studioManagerDialogue
+'		if not studioManagerDialogue
 			if hoveredGuiScript then hoveredGuiScript.DrawSheet()
 			if hoveredGuiProductionConcept then hoveredGuiProductionConcept.DrawSheet()
-		endif
+'		endif
 
 		if TVTDebugInfos
 			DrawDebug(TRoom(triggerEvent.GetSender()))
 			guiListDeskProductionConcepts.DrawDebug()
 		endif
-
-		'draw after potential tooltips
-		if roomOwner and studioManagerDialogue then studioManagerDialogue.Draw()
 
 		if roomOwner and studioManagerTooltip then studioManagerTooltip.Render()
 	End Method
@@ -1096,6 +1124,15 @@ Type RoomHandler_Studio extends TRoomHandler
 
 		if studioManagerDialogue and studioManagerDialogue.Update() = 0
 			studioManagerDialogue = null
+		endif
+
+		if studioManagerDialogue and MouseManager.IsClicked(2)
+			studioManagerDialogue = null
+
+			'remove right click - to avoid leaving the room
+			MouseManager.ResetClicked(2)
+			'also avoid long click (touch screen)
+			MouseManager.ResetLongClicked(1)
 		endif
 
 
