@@ -705,6 +705,8 @@ Type TInGameInterface
 			result :+ ["girl"]
 		endif
 
+		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Housewives) > 0) then result :+ ["mother"]
+
 		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Pensioners) > 0) then result :+ ["grandpa"]
 
 		if (feedback.AudienceInterest.GetTotalValue(TVTTargetGroup.Teenagers) > 0)
