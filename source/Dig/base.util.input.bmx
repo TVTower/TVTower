@@ -736,7 +736,7 @@ Type TMouseManager
 
 				' normal click + double clicks
 				Else
-					'Print Time.GetTimeGone() + "    down => up => click   GetClicks( " + button + ")=" + GetClicks(button) + " _clicksInDoubleClickTimeCount["+buttonIndex+"]="+_clicksInDoubleClickTimeCount[buttonIndex]
+					Print Time.GetTimeGone() + "    down => up => click   GetClicks( " + button + ")=" + GetClicks(button) + " _clicksInDoubleClickTimeCount["+buttonIndex+"]="+_clicksInDoubleClickTimeCount[buttonIndex]
 
 					_AddClickStackEntry(button, CLICKTYPE_CLICK, currentPosVec.Copy(), t)
 

@@ -573,7 +573,6 @@ Type TGUIManager
 				If i >= list.Count() Then Continue
 				Local obj:TGUIObject = TGUIobject(list.ValueAtIndex(i))
 				If Not obj Then Continue
-
 				'all dragged objects got already updated...
 				If ListDragged.Contains(obj) Then Continue
 
@@ -2010,14 +2009,21 @@ Type TGUIobject
 
 				If IsClickable()
 					'activate objects - or skip if if one gets active
+					'as soon as someone clicks on a object it is getting focused
+					'	do this "on click" instead of "on mouse down"
+					'	as else a drop down widget which covers another widget
+					'	with its listbox will handle the "losr focus" event
+					'	and after closing the underlaying widget receives the
+					'	click event
+					IF _flags & GUI_OBJECT_ENABLED and MouseManager.IsClicked(1)
+						If HasOption(GUI_OBJECT_CAN_GAIN_FOCUS)
+							GUImanager.SetFocus(Self)
+						EndIf
+					EndIf
+
 					If GUIManager.UpdateState_mouseButtonDown[1] And _flags & GUI_OBJECT_ENABLED
 						'create a new "event"
 						If Not MouseIsDown
-							'as soon as someone clicks on a object it is getting focused
-							If HasOption(GUI_OBJECT_CAN_GAIN_FOCUS)
-								GUImanager.SetFocus(Self)
-							EndIf
-
 							'store a copy (might be the currentPos instance of MouseManager)
 							MouseIsDown = mousePos.Copy()
 						EndIf
@@ -2091,6 +2097,7 @@ Type TGUIobject
 							Local isClicked:Int = False
 
 							If MouseManager.IsClicked(1)
+				print "GUI is clicked : " + GetClassName() + "  " + GetValue()
 								Local clickEvent:TEvenTsimple = TEventSimple.Create("guiobject.OnClick", New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 								Local handledClick:Int
 

@@ -45,7 +45,7 @@ Type TGUISelectList Extends TGUIListBase
 	End Method
 
 
-    Method Create:TGUISelectList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
+    Method Create:TGUISelectList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		'register listeners in a central location
@@ -55,12 +55,12 @@ Type TGUISelectList Extends TGUIListBase
 	End Method
 
 
-	Method Remove:int()
+	Method Remove:Int()
 		Super.Remove()
-		if selectedEntry
+		If selectedEntry
 			selectedEntry.Remove()
-			selectedEntry = null
-		endif
+			selectedEntry = Null
+		EndIf
 	End Method
 
 
@@ -76,13 +76,15 @@ Type TGUISelectList Extends TGUIListBase
 		If Not entry Then Return False
 
 		'ignore entries of other lists
-		if entry._parent <> self.guiEntriesPanel then Return False
+		If entry._parent <> Self.guiEntriesPanel Then Return False
 
 		'default to left button if nothing was sent
-		local button:int = triggerEvent.GetData().GetInt("button", 1)
-		if button = 1
+		Local button:Int = triggerEvent.GetData().GetInt("button", 1)
+		If button = 1
 			SelectEntry(entry)
-		endif
+		EndIf
+		
+		Return True
 	End Method
 
 
@@ -95,7 +97,7 @@ Type TGUISelectList Extends TGUIListBase
 			Self.selectedEntry.SetSelected(True)
 
 			'inform others: we successfully selected an item
-			EventManager.triggerEvent( TEventSimple.Create( "GUISelectList.onSelectEntry", new TData.Add("entry", entry) , Self ) )
+			EventManager.triggerEvent( TEventSimple.Create( "GUISelectList.onSelectEntry", New TData.Add("entry", entry) , Self ) )
 		EndIf
 	End Method
 
@@ -124,8 +126,8 @@ Type TGUISelectListItem Extends TGUIListItem
 	End Method
 
 
-    Method Create:TGUISelectListItem(position:TVec2D=null, dimension:TVec2D=null, value:String="")
-		if not dimension then dimension = new TVec2D.Init(80,20)
+    Method Create:TGUISelectListItem(position:TVec2D=Null, dimension:TVec2D=Null, value:String="")
+		If Not dimension Then dimension = New TVec2D.Init(80,20)
 
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(position, dimension, "")
@@ -139,7 +141,7 @@ Type TGUISelectListItem Extends TGUIListItem
 
 
 	Method DrawBackground()
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:TColor = New TColor.Get()
 
 		'available width is parentsDimension minus startingpoint
 		'Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
@@ -166,17 +168,17 @@ Type TGUISelectListItem Extends TGUIListItem
 
 
 	Method Draw()
-		if not isDragged()
+		If Not isDragged()
 			'this allows to use a list in a modal dialogue
-			local upperParent:TGUIObject = TGUIListBase.FindGUIListBaseParent(self)
-			if upperParent then upperParent.RestrictViewPort()
+			Local upperParent:TGUIObject = TGUIListBase.FindGUIListBaseParent(Self)
+			If upperParent Then upperParent.RestrictViewPort()
 
 			Super.Draw()
 
-			if upperParent then upperParent.ResetViewPort()
-		else
+			If upperParent Then upperParent.ResetViewPort()
+		Else
 			Super.Draw()
-		endif
+		EndIf
 	End Method
 
 

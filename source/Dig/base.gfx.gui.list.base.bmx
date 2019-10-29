@@ -1201,7 +1201,6 @@ Type TGUIListItem Extends TGUIobject
 	Method OnClick:Int(triggerEvent:TEventBase)
 		Super.OnClick(triggerEvent)
 
-
 		Local data:TData = triggerEvent.GetData()
 		If Not data Then Return False
 
