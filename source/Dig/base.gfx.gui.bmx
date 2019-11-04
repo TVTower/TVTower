@@ -2097,7 +2097,6 @@ Type TGUIobject
 							Local isClicked:Int = False
 
 							If MouseManager.IsClicked(1)
-				print "GUI is clicked : " + GetClassName() + "  " + GetValue()
 								Local clickEvent:TEvenTsimple = TEventSimple.Create("guiobject.OnClick", New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 								Local handledClick:Int
 

@@ -51,4 +51,5 @@ int lua_gcobject( lua_State *L ){
 	p=lua_touserdata( L,1 );
 	struct BBObjectContainer * uc = *(struct BBObjectContainer**)p;
 	GC_FREE(uc);
+	return 0;
 }

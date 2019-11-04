@@ -719,10 +719,10 @@ Type TLuaEngine
 		For Local i:Int = 0 Until args.length
 			Select tys[i]
 				Case IntTypeId, ShortTypeId, ByteTypeId
-					?bmxng
+					?ptr64
 						args[i] = String.FromLong(lua_tointeger(getLuaState(), i + 1))
-					?Not bmxng
-						args[i] = String.FromInt(lua_tointeger(getLuaState(), i + 1))
+					?Not ptr64
+						args[i] = String.FromInt(int(lua_tointeger(getLuaState(), i + 1)))
 					?
 				Case LongTypeId
 					args[i] = String.FromLong(Long(lua_tonumber(getLuaState(), i + 1)))

@@ -105,7 +105,11 @@ End Type
 
 Type TProfiler
 	Global activated:Int = 1
+	?not bmxng
+	Global calls:TMap = New TMap
+	?bmxng
 	Global calls:TObjectMap = New TObjectMap
+	?
 	Global lastCall:TProfilerCall = Null
 	?Threaded
 	Global accessMutex:TMutex = CreateMutex()
