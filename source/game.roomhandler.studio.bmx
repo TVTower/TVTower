@@ -321,6 +321,11 @@ Type RoomHandler_Studio extends TRoomHandler
 		hoveredGuiScript = item
 		if item.isDragged() then draggedGuiScript = item
 
+		'close dialogue if we drag a script
+		if draggedGuiScript and studioManagerDialogue
+			studioManagerDialogue = null
+		endif
+
 		return TRUE
 	End Function
 
@@ -332,7 +337,14 @@ Type RoomHandler_Studio extends TRoomHandler
 		if item = Null then return FALSE
 
 		hoveredGuiProductionConcept = item
-		if item.isDragged() then draggedGuiProductionConcept = item
+		if item.isDragged()
+			'close dialogue if we started dragging a script
+			if not draggedGuiProductionConcept and studioManagerDialogue
+				studioManagerDialogue = null
+			endif
+
+			draggedGuiProductionConcept = item
+		endif
 
 		return TRUE
 	End Function
@@ -839,6 +851,79 @@ Type RoomHandler_Studio extends TRoomHandler
 		'=== PRODUCTION CONCEPT HINT ===
 		elseif dialogueType = 1
 			text = GetRandomLocale("DIALOGUE_STUDIO_PRODUCTIONCONCEPT_HINT")
+
+			if not draggedGuiProductionConcept
+				text = "Report to developer: DialogueType 1 while no production concept was dragged on the vendor"
+			else
+				Local pc:TProductionConcept = draggedGuiProductionConcept.productionConcept
+
+				'instead of returning the actual values we cluster them to only hand out
+				'raw "estimations"
+				Local scriptGenreFit:Float = pc.CalculateScriptGenreFit(True)
+				'"Nice cast you got there!"
+				Local castFit:Float = pc.CalculateCastFit(True)
+				'"You know the cast does not like you?!"
+				'values from -1 to 1
+				Local castSympathy:Float = pc.CalculateCastSympathy(True)
+
+				'"what a bad production company!"
+				Local productionCompanyQuality:Float = pc.productionCompany.GetQuality()
+				Local effectiveFocusPoints:Int = pc.CalculateEffectiveFocusPoints()
+				Local effectiveFocusPointsRatio:Float = pc.GetEffectiveFocusPointsRatio()
+
+				text = GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX").Replace("%TITLE%", pc.GetTitle()) + "~n~n"
+
+
+				If scriptGenreFit < 0.30
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD")
+				ElseIf scriptGenreFit > 0.70
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_GOOD")
+				Else
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_AVERAGE")
+				EndIf
+				text :+ "~n"
+
+
+				Local castSympathyKey:string
+				If castSympathy < - 0.10
+					castSympathyKey = "_CASTSYMPATHY_BAD"
+				ElseIf castSympathy > 0.50
+					castSympathyKey = "_CASTSYMPATHY_GOOD"
+				Else
+					castSympathyKey = "_CASTSYMPATHY_AVERAGE"
+				EndIf
+
+				If castFit < 0.30
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_BAD" + castSympathyKey)
+				ElseIf castFit > 0.70
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_GOOD" + castSympathyKey)
+				Else
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE" + castSympathyKey)
+				EndIf
+				text :+ "~n"
+
+
+				If productionCompanyQuality < 0.30
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD")
+				ElseIf productionCompanyQuality > 0.70
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD")
+				Else
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_AVERAGE")
+				EndIf
+				text :+ " "
+
+
+				If effectiveFocusPointsRatio < 0.30
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD")
+				ElseIf effectiveFocusPointsRatio> 0.70
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD")
+				Else
+					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE")
+				EndIf
+
+				'local effectiveFocusPoints:Int = pc.CalculateEffectiveFocusPoints()
+			endif
+
 		'=== INFORMATION ABOUT CURRENT PRODUCTION ===
 		else
 			if script
@@ -1087,6 +1172,7 @@ Type RoomHandler_Studio extends TRoomHandler
 		'no interaction for other players rooms
 		if not IsPlayersRoom(TRoom(triggerEvent.GetSender())) then return False
 
+
 		'mouse over studio manager
 		if not MouseManager.IsLongClicked(1)
 			if THelper.MouseIn(0,100,150,300)
@@ -1094,15 +1180,15 @@ Type RoomHandler_Studio extends TRoomHandler
 					'generate the dialogue if not done yet
 					if MouseManager.IsClicked(1)
 						if draggedGuiProductionConcept
-'							draggedGuiProductionConcept.dropBackToOrigin()
-'							draggedGuiProductionConcept = null
+							GenerateStudioManagerDialogue(1)
 
-'							GenerateStudioManagerDialogue(1)
+							draggedGuiProductionConcept.dropBackToOrigin()
+							draggedGuiProductionConcept = null
 						elseif draggedGuiScript
+							GenerateStudioManagerDialogue(2)
+
 							draggedGuiScript.dropBackToOrigin()
 							draggedGuiScript = null
-
-							GenerateStudioManagerDialogue(2)
 						else
 							GenerateStudioManagerDialogue(0)
 						endif

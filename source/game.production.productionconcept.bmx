@@ -354,11 +354,11 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 	'returns the percentage of used to maximum focus points
-	Method GetEffectiveFocusPointsRatio:Float()
+	Method GetEffectiveFocusPointsRatio:Float(recalculate:Int = False)
 		'a "drama" production might have VFX-priority of 0.5, each point
 		'spent there is only added by 50% to the effective ratio
 
-		if _effectiveFocusPointsMax < 0 then CalculateEffectiveFocusPoints()
+		if _effectiveFocusPointsMax < 0 or recalculate then CalculateEffectiveFocusPoints(True)
 
 		if _effectiveFocusPointsMax > 0
 			return _effectiveFocusPoints / _effectiveFocusPointsMax
@@ -396,6 +396,13 @@ Type TProductionConcept Extends TOwnedGameObject
 		Next
 
 		return _effectiveFocusPoints
+	End Method
+
+
+	Method CalculateScriptGenreFit:Float(recalculate:int = False)
+		if _scriptGenreFit < 0 Then _scriptGenreFit = script.CalculateGenreCriteriaFit()
+
+		return _scriptGenreFit
 	End Method
 
 

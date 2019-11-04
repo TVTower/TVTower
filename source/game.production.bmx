@@ -216,12 +216,12 @@ Type TProduction Extends TOwnedGameObject
 
 		'=== 1.1.1 GENRE ===
 		'Compare genre definition with script values (expected vs real)
-		scriptGenreFit = productionConcept.script.CalculateGenreCriteriaFit()
+		scriptGenreFit = productionConcept.CalculateScriptGenreFit(True)
 
 		'=== 1.1.2 CAST ===
 		'Calculate how the selected cast fits to their assigned jobs
-		castFit = productionConcept.CalculateCastFit()
-		castComplexity = productionConcept.CalculateCastComplexity()
+		castFit = productionConcept.CalculateCastFit(True)
+		castComplexity = productionConcept.CalculateCastComplexity(True)
 
 		'=== 1.1.3 PRODUCTIONCOMPANY ===
 		'Calculate how the selected company does its job at all
@@ -233,11 +233,11 @@ Type TProduction Extends TOwnedGameObject
 		'=== 1.2.1 CAST SYMPATHY ===
 		'improve cast job by "sympathy" (they like your channel, so they
 		'do a slightly better job)
-		castSympathyMod = 1.0 + productionConcept.CalculateCastSympathy()
+		castSympathyMod = 1.0 + productionConcept.CalculateCastSympathy(True)
 
 		'=== 1.2.2 MODIFY PRODUCTION VALUE ===
-		effectiveFocusPoints = productionConcept.CalculateEffectiveFocusPoints()
-		effectiveFocusPointsMod = 1.0 + productionConcept.GetEffectiveFocusPointsRatio()
+		effectiveFocusPoints = productionConcept.CalculateEffectiveFocusPoints(True)
+		effectiveFocusPointsMod = 1.0 + productionConcept.GetEffectiveFocusPointsRatio(True)
 
 		TLogger.Log("TProduction.Start()", "scriptGenreFit:           " + scriptGenreFit, LOG_DEBUG)
 		TLogger.Log("TProduction.Start()", "castFit:                  " + castFit, LOG_DEBUG)

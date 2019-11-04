@@ -613,7 +613,26 @@ DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST = Ich brauche eine Einkaufsliste für die
 DIALOGUE_STUDIO_GOODBYE1 = Tschüss.
 DIALOGUE_STUDIO_GOODBYE2 = Bis später.
 
-
+DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX = Ich kann Dir folgendes zu deiner geplanten Produktion |b|%TITLE%|/b| sagen:
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD1 = Das Genre des Drehbuchs passt nicht!
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD2 = Ein anderes Genre wäre besser gewesen.
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_AVERAGE1 =
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_GOOD1 = Genau das richtige Genre!
+DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_BAD1 = Du hast eine miserable Besetzung zusammengestellt, aber wenigstens können sie Dich sowieso nicht leiden!
+DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_AVERAGE1 = Du hast eine miserable Besetzung zusammengestellt.
+DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_GOOD1 = Du hast eine miserable Besetzung zusammengestellt, immerhin kann sie Dich wirklich gut leiden.
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_BAD1 = Du hast eine durchschnittliche Besetzung zusammengestellt und sie kann Dich nichteinmalmal gut leiden!
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_AVERAGE1 = Du hast eine durchschnittliche Besetzung zusammengestellt.
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_GOOD1 = Du hast eine durchschnittliche Besetzung zusammengestellt und sie kann Dich wirklich gut leiden.
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_BAD1 = Du hast eine passende Besetzung zusammengestellt, aber sie kann Dich nichteinmal gut leiden!
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_AVERAGE1 = Du hast eine passende Besetzung zusammengestellt.
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_GOOD1 = Du hast eine passende Besetzung zusammengestellt und sie kann Dich wirklich gut leiden.
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD1 = Die Produktionsfirma ist eher unterirdisch
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_AVERAGE1 = Die Produktionsfirma ist Durchschnitt
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD1 = Die Produktionsfirma zählt zu den Besseren der Branche
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD1 = und Du solltest Deine Produktionsschwerpunkte besser verteilen!
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE1 = und Du hast Deine Produktionsschwerpunkte mittelmäßig verteilt!
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD1 = und Du hast Deine Produktionsschwerpunkte sehr gut verteilt!
 
 SHOW_PLAYERS = zeige Spieler
 PURCHASE = Einkauf
