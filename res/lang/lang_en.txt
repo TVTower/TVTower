@@ -614,26 +614,25 @@ DIALOGUE_STUDIO_GOODBYE1 = Bye.
 DIALOGUE_STUDIO_GOODBYE2 = Goodbye.
 
 DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX = I can tell you the following for your planned production of |b|%TITLE%|/b|:
-DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD1 = Genre of the script does not fit!
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD1 = The script genre does not fit!
 DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD2 = A different genre might be better.
 DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_AVERAGE1 =
-DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_GOOD1 = Nicely fitting genre!
-DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_BAD1 = You have chosen a pretty bad cast. At least they do not like you anyways!
+DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_GOOD1 = Good choice of genre!
+DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_BAD1 = You have chosen a pretty bad cast, and they don't appear to like you either!
 DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_AVERAGE1 = You have chosen a pretty bad cast.
-DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_GOOD1 = You have chosen a pretty bad cast. At least they do like you pretty much.
-DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_BAD1 = You have chosen an average cast and they even do not like you!
+DIALOGUE_STUDIO_CONCEPT_CAST_BAD_CASTSYMPATHY_GOOD1 = You have chosen a pretty bad cast. But at least they seem to like you.
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_BAD1 = You have chosen an average cast and they don't like you!
 DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_AVERAGE1 = You have chosen an average cast.
-DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_GOOD1 = You have chosen an average cast and they do like you pretty much.
-DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_BAD1 = You have chosen a nicely suiting cast but they do not like you!
-DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_AVERAGE1 = You have chosen a nicely suiting cast.
-DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_GOOD1 = You have chosen a nicely suiting cast and they even do like you pretty much.
-DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD1 = The production company is pretty sub par
+DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE_CASTSYMPATHY_GOOD1 = You have chosen an average cast who appear to like you.
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_BAD1 = You have chosen suitable cast, but they do not like you!
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_AVERAGE1 = You have chosen a suitable cast.
+DIALOGUE_STUDIO_CONCEPT_CAST_GOOD_CASTSYMPATHY_GOOD1 = You have chosen a suitable cast that even appear to like you.
+DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD1 = The production company is fairly sub par
 DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_AVERAGE1 = The production company is average
 DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD1 = The production company is one of the better in the business
 DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD1 = and you should distribute your production focus points better!
-DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE1 = and you distributed your production focus points at an average!
-DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD1 = and you distributed your production focus points pretty good!
-
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE1 = and you distributed your production focus points reasonably well!
+DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD1 = and you distributed your production focus points excellently!
 
 
 SHOW_PLAYERS = Show players
