@@ -362,7 +362,8 @@ Type TInGameInterface
 									else
 										Select passingRequirements
 											case "TARGETGROUP"
-												minAudienceText = "|color=200,100,100|" + minAudienceText + " " + TAdvertisement(obj).contract.GetLimitedToTargetGroupString()+ "!|/color|"
+												'tg already added above (for OK and WILL FAIL)
+												minAudienceText = "|color=200,100,100|" + minAudienceText + "!|/color|"
 											case "GENRE"
 												minAudienceText = "|color=200,100,100|" + minAudienceText + " " + TAdvertisement(obj).contract.GetLimitedToProgrammeGenreString()+ "!|/color|"
 											default
