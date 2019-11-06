@@ -675,7 +675,6 @@ Illustrious guests and music by [3|Nick].</en>
 		</news>
 
 
-		<!-- Kulturnachrichten - wenn Kulturgenre eroeffnet, Genre wechseln) -->
 		<news id="ronny-news-katschminski-01" type="0" creator="5578" created_by="Ronny">
 			<title>
 				<de>Leser lesen wieder, dank Katschminski</de>
@@ -838,4 +837,62 @@ Illustrious guests and music by [3|Nick].</en>
 			<data genre="5" price="0.9" quality="28" />
 		</news>
 	</allnews>
+
+﻿	<scripttemplates>
+		<!-- product="3" => "Show" -->
+		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-musiksterneamabend">
+			<title>
+				<de>Musiksterne am Abend</de>
+			</title>
+			<description>
+				<de>Fetzige Popmusik für Jung und Alt. Von gefüllten Fussballstadien auf die Showbühne. Unterhaltung pur</de>
+			</description>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1" gender="2" />
+				<job index="2" function="16" required="1" />
+				<job index="3" function="16" required="0" />
+				<job index="4" function="16" required="0" />
+			</jobs>
+
+			<genres maingenre="102" />
+			<blocks value="3" />
+			<price min="7000" max="16000" slope="60" />
+			<potential min="40" max="70" slope="45" />
+			<outcome min="30" max="45" slope="40" />
+			<review min="40" max="60" slope="40" />
+			<speed min="45" max="70" slope="50" />
+			<!-- live on next work day 20:00 -->
+			<data flags="1" live_date="8,1,20,20" production_time="120" />
+		</scripttemplate>
+
+		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-morningshow">
+			<title>
+				<de>Goldene Morgenstunden</de>
+			</title>
+			<description>
+				<de>Aufgewacht das Bettchen kracht. Lockere Morgenunterhaltung für alle - vom Frühaufsteher bis zum arbeitslosen Langschläfer.</de>
+			</description>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="8" required="1" />
+				<job index="2" function="8" required="0" />
+				<job index="3" function="16" required="0" />
+			</jobs>
+
+			<genres maingenre="103" subgenres="9" />
+			<blocks value="3" />
+			<price min="3000" max="5000" slope="60" />
+			<potential min="40" max="60" slope="45" />
+			<outcome min="30" max="50" slope="40" />
+			<review min="40" max="50" slope="40" />
+			<speed min="45" max="60" slope="50" />
+			<!-- live on next work day 5 - 10:00 - so 5,6,7 as start possible -->
+			<!-- licence flags: 4 + 32 (REMOVE_ON_REACHING_BROADCASTLIMIT + LICENCEPOOL_REMOVES_TRADEABILITY) -->
+			<data flags="1" broadcast_time_slot_start="5" broadcast_time_slot_end="10" live_date="8,1,5,5" production_time="60" production_limit="4" production_broadcast_limit="1" production_broadcast_flags="" production_licence_flags="36" />
+		</scripttemplate>
+
+	</scripttemplates>
 </tvgdb>
