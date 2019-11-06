@@ -399,7 +399,19 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		script.price = template.GetPrice()
 
 		script.flags = template.flags
+
 		script.flagsOptional = template.flagsOptional
+		script.productionBroadcastFlags = template.productionBroadcastFlags
+		script.productionLicenceFlags = template.productionLicenceFlags
+
+		script.liveTime = template.liveTime
+		script.liveDateCode = template.liveDateCode
+
+		script.broadcastTimeSlotStart = template.broadcastTimeSlotStart
+		script.broadcastTimeSlotEnd = template.broadcastTimeSlotEnd
+
+		script.SetProductionLimit( template.GetProductionLimit() )
+		script.SetProductionBroadcastLimit( template.GetProductionBroadcastLimit() )
 
 		script.productionTime = template.GetProductionTime()
 		script.productionTimeMod = template.productionTimeMod
@@ -936,16 +948,13 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 
 		'refill production limits - or disable tradeability
-		'TODO
-		Rem
-		if GetProductionBroadcastLimit() > 0 and (isExceedingBroadcastLimit() or GetSublicenceExceedingBroadcastLimitCount() > 0 )
-			if HasScriptFlag(TVTScriptFlag.POOL_REFILLS_PRODUCTIONLIMITS)
-				SetProductionLimit(broadcastLimitMax)
-			else
-				setScriptFlag(TVTProgrammeLicenceFlag.TRADEABLE, False)
-			endif
-		endif
-		endrem
+		If GetProductionLimit() > 0 or IsExceedingProductionLimit()
+			If HasScriptFlag(TVTScriptFlag.POOL_REFILLS_PRODUCTIONLIMITS)
+				SetProductionLimit( GetProductionLimitMax() )
+			Else
+				SetScriptFlag(TVTProgrammeLicenceFlag.TRADEABLE, False)
+			EndIf
+		EndIf
 
 
 		'randomize attributes?
@@ -990,10 +999,12 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		Local showMsgEarnInfo:Int = False
 		Local showMsgLiveInfo:Int = False
 		Local showMsgBroadcastLimit:Int = False
+		Local showMsgTimeSlotLimit:Int = False
 
 		If IsPaid() Then showMsgEarnInfo = True
 		If IsLive() Then showMsgLiveInfo = True
 		If HasProductionBroadcastLimit() Then showMsgBroadcastLimit= True
+		If HasBroadcastTimeSlot() Then showMsgTimeSlotLimit = True
 
 
 		Local title:String
@@ -1036,6 +1047,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		If showMsgEarnInfo Then msgAreaH :+ msgH
 		If showMsgLiveInfo Then msgAreaH :+ 2 * msgH
 		If showMsgBroadcastLimit Then msgAreaH :+ msgH
+		'suits into the live-block
+'If showMsgTimeSlotLimit and not showMsgLiveInfo Then msgAreaH :+ msgH
+		If showMsgTimeSlotLimit  Then msgAreaH :+ msgH
 		'if there are messages, add padding of messages
 		If msgAreaH > 0 Then msgAreaH :+ 2* msgAreaPaddingY
 
@@ -1239,6 +1253,11 @@ endrem
 			'TODO
 			Local earliestProductionFinishTime:Long = GetWorldTime().GetTimeGone()
 			If productionTime >= 0 Then earliestProductionFinishTime :+ productionTime
+rem
+hier weitermachen:
+- Besetzung beim Drehbuch 2 pixel nach oben verschoben
+- Produktionszeit neben Blocklaenge angeben (mittig zwischen blocklaenge und preis)
+endrem
 
 			Local plannedLiveTime:Long = GetLiveTime( earliestProductionFinishTime )
 			Local plannedLiveTimeStr:String = GetWorldTime().GetFormattedDate( plannedLiveTime )
@@ -1247,27 +1266,46 @@ endrem
 			Local nowDay:Int = GetWorldTime().GetDay()
 			Local timeDiff:Int = earliestProductionFinishTime - GetWorldTime().GetTimeGone()
 
-			If liveDay = nowDay
-				plannedLiveTimeStr = "Ausstrahlung heute: " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
-			ElseIf liveDay = nowDay + 1
-				plannedLiveTimeStr = "Ausstrahlung morgen: " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
-			Else
-				plannedLiveTimeStr = "Ausstrahlung in " + (liveDay - nowDay) + " Tagen: " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
-			EndIf
-
 			If productionTime >= 0
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "Live: Dauer der Vorproduktion " + (productionTime/60)+"h.", "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			Else
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "Live: Keine Vorproduktion notwendig.", "runningTime", "good", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			EndIf
 			contentY :+ msgH
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "Live: " + plannedLiveTimeStr, "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+
+
+			If showMsgTimeSlotLimit
+				If liveDay = nowDay
+					plannedLiveTimeStr = "Ausstrahlung heute: ab " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
+				ElseIf liveDay = nowDay + 1
+					plannedLiveTimeStr = "Ausstrahlung morgen: ab " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
+				Else
+					plannedLiveTimeStr = "Ausstrahlung in " + (liveDay - nowDay) + " Tagen: ab " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
+				EndIf
+			Else
+				If liveDay = nowDay
+					plannedLiveTimeStr = "Ausstrahlung heute: " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
+				ElseIf liveDay = nowDay + 1
+					plannedLiveTimeStr = "Ausstrahlung morgen: " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
+				Else
+					plannedLiveTimeStr = "Ausstrahlung in " + (liveDay - nowDay) + " Tagen: " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
+				EndIf
+			EndIf
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "Live : " + plannedLiveTimeStr, "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
+
+			If showMsgTimeSlotLimit
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				contentY :+ msgH
+			EndIf
 		EndIf
 
 		If showMsgBroadcastLimit
-			'TODO
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "TODO: " + getLocale("BROASCAST_LIMIT"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			if GetProductionBroadcastLimit() = 1
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			Else
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").Replace("%X%", GetProductionBroadcastLimit()), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			EndIf
 			contentY :+ msgH
 		EndIf
 

@@ -407,6 +407,11 @@ Type TProduction Extends TOwnedGameObject
 			Next
 		endif
 
+
+		programmeData.broadcastTimeSlotStart = productionConcept.script.broadcastTimeSlotStart
+		programmeData.broadcastTimeSlotEnd = productionConcept.script.broadcastTimeSlotEnd
+
+
 		'add flags given in script
 		For local i:int = 1 to TVTBroadcastMaterialSourceFlag.count
 			local flag:int = TVTBroadcastMaterialSourceFlag.GetAtIndex(i)
@@ -417,7 +422,6 @@ Type TProduction Extends TOwnedGameObject
 
 		'add broadcast limits
 		programmeData.SetBroadcastLimit(productionConcept.script.productionBroadcastLimit)
-
 
 		if productionPriceMod <> 1.0
 			programmeData.SetModifier("price", productionPriceMod)
@@ -721,6 +725,7 @@ endrem
 
 		programmeData.blocks = script.GetBlocks()
 		programmeData.flags = script.flags
+
 		programmeData.genre = script.mainGenre
 		if script.subGenres
 			For local sg:int = EachIn script.subGenres

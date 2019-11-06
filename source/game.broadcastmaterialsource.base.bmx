@@ -276,7 +276,39 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 	End Method
 
 
-	Method CanBroadcastAtTime:Int(broadcastType:Int, day:Int, hour:Int) {_exposeToLua}
+	Method CanBroadcastAtTime:int(broadcastType:int, day:int, hour:int) {_exposeToLua}
+		Return True
+	End Method
+
+
+	Method CanBroadcastAtTimeSlot:Int(broadcastType:Int, hour:Int) {_exposeToLua}
+		'check timeslot limits
+		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			if HasBroadcastTimeSlot()
+
+				'check if hour is inside of the timespan?
+				'check for inside when :  2:00 to 11:00
+				'check for outside when: 11:00 to  2:00
+				local checkForInside:int = GetBroadcastTimeSlotStart() < GetBroadcastTimeSlotEnd()
+				local startSlot:int, endslot:int
+				If checkForInside
+					startSlot = GetBroadcastTimeSlotStart()
+					endSlot = GetBroadcastTimeSlotEnd()
+				Else
+					startSlot = GetBroadcastTimeSlotEnd()
+					endSlot = GetBroadcastTimeSlotStart()
+				EndIf
+
+				local isInside:Int = True
+				'begin is outside
+				if isInside and hour < startSlot Then isInside = False
+				'outside "right"
+				if isInside and (hour + GetBlocks(broadcastType)-1) > endSlot Then isInside = False
+
+				if isInside <> checkForInside then Return False
+			endif
+		endif
+
 		Return True
 	End Method
 
@@ -312,7 +344,8 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 
 
 	Method HasBroadcastTimeSlot:Int()
-		Return broadcastTimeSlotStart <> -1 Or broadcastTimeSlotEnd <> -1
+		'both need to be set!
+		Return broadcastTimeSlotStart >= 0 And broadcastTimeSlotEnd >= 0
 	End Method
 
 
@@ -362,6 +395,11 @@ Type TBroadcastMaterialSource Extends TBroadcastMaterialSourceBase {_exposeToLua
 		topicality = MathHelper.Clamp(topicality * refreshModifier, 0, GetMaxTopicality())
 
 		Return topicality
+	End Method
+
+
+	Method GetBlocks:Int(broadcastType:Int = -1)
+		Return 1
 	End Method
 
 

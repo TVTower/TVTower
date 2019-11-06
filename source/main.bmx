@@ -153,6 +153,9 @@ Global Init_Complete:Int = 0
 
 Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceCollection.GetInstance()
 
+Global rectangleTime:Int = MilliSecs()
+Global printDebugStats:Int = False
+
 
 '==== Initialize ====
 AppTitle = "TVTower: " + VersionString
@@ -684,7 +687,8 @@ Type TApp
 					EndIf
 				EndIf
 
-				If KEYMANAGER.IsHit(KEY_MINUS)
+				If KEYMANAGER.IsHit(KEY_MINUS) and KEYMANAGER.IsDown(KEY_RCONTROL)
+					rem
 					Global gcEnabled:Int = True
 					If gcEnabled
 						 GCSuspend()
@@ -694,6 +698,15 @@ Type TApp
 						 GCResume()
 						 gcEnabled = True
 						 Print "ENABLED GC"
+					EndIf
+					endrem
+
+					If printDebugStats
+						printDebugStats = False
+						Print "DISABLED DEBUG STATS"
+					Else
+						printDebugStats = True
+						Print "ENABLED DEBUG STATS"
 					EndIf
 				EndIf
 
@@ -1368,8 +1381,8 @@ endrem
 
 
 		'set the mouse clicks handled anyways
-		'MouseManager.ResetClicked(1)
-		'MouseManager.ResetClicked(2)
+		MouseManager.ResetClicked(1)
+		MouseManager.ResetClicked(2)
 		'remove clicks done a longer time ago
 		MouseManager.RemoveOutdatedClicks(1000)
 
@@ -6387,11 +6400,10 @@ TProfiler.Leave("InitialLoading")
 	'c) everything loaded - normal game loop
 TProfiler.Enter("GameLoop")
 	StartApp()
-Global rectangleTime:Int = MilliSecs()
 
 	Repeat
 		If MilliSecs() - rectangleTime > 1000
-			Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations."
+			if printDebugStats then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations."
 			rectangle_created = 0
 			vec2d_created = 0
 			bbGCAllocCount = 0

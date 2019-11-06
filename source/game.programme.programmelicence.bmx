@@ -1214,22 +1214,32 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 
 	Method CanBroadcastAtTime:int(broadcastType:int, day:int, hour:int) {_exposeToLua}
-		'check timeslot limits
-		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
-			if HasBroadcastTimeSlot()
-				'hour incorrect?
-				if GetBroadcastTimeSlotStart() >= 0 and GetBroadcastTimeSlotStart() > hour then return False
-				if GetBroadcastTimeSlotEnd() >= 0 and GetBroadcastTimeSlotEnd() < (hour + GetBlocks(broadcastType)-1) then return False
-			endif
-		endif
+		'check timeslot limits (ignoring days!)
+		If not CanBroadcastAtTimeSlot(broadcastType, hour) then Return False
 
 		'check live-programme
 		if broadcastType = TVTBroadcastMaterialType.PROGRAMME
 			if self.IsLive()
 				'hour or day incorrect
 				if GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
-					if GetWorldTime().GetDayHour( data.GetReleaseTime() ) <> hour then return False
-					if GetWorldTime().GetDay( data.GetReleaseTime() ) <> day then return False
+					if data.HasFixedLiveTime()
+						if GetWorldTime().GetDayHour( data.GetReleaseTime() ) <> hour then return False
+						if GetWorldTime().GetDay( data.GetReleaseTime() ) <> day then return False
+					else
+						'a)
+						'23 - 02:00 => 2-23 = -21.  -21 + 24 = 3.  3 mod 24 = 3
+						'05 - 15:00 => 15-5 = 10.  10 + 24 = 34.  34 mod 24 = 10
+						'local slotCount:int = ((GetBroadcastTimeSlotEnd() - GetBroadcastTimeSlotStart()) + 24) mod 24
+						'or b)
+						local slotCount:int = GetBroadcastTimeSlotEnd() - GetBroadcastTimeSlotStart()
+						if slotCount < 0 then slotCount :+ 24
+
+						'check if earliest release time is later
+						if GetWorldTime().GetDay( data.GetReleaseTime() ) > day then return False
+						'check if latest release time is earlier
+						if GetWorldTime().GetDay( data.GetReleaseTime() + slotCount*3600 ) < day then return False
+
+					endif
 				'all times after the live event are allowed too
 				else
 					'live happens on a later day

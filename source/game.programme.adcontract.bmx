@@ -501,7 +501,7 @@ Type TAdContractBase extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
-	Method GetBlocks:int() {_exposeToLua}
+	Method GetBlocks:Int(broadcastType:Int = 0) {_exposeToLua}
 		return blocks
 	End Method
 

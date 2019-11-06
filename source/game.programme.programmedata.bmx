@@ -517,7 +517,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	'ID according to TVTProgrammeProductType
 	Field productType:Int = 1
 	'at which day was the programme released?
-	'for live shows this is the time of the live event
+	'for live shows this is the time of the live event (if fixed)
 	Field releaseTime:Long = -1
 	'announced in news etc?
 	Field releaseAnnounced:Int = False
@@ -1124,6 +1124,11 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
+	Method HasFixedLiveTime:Int()
+		Return not HasBroadcastTimeSlot() or HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.LIVE_TIME_FIXED)
+	End Method
+
+
 	'returns true if the dynamic data state changed
 	Method UpdateDynamicData:Int()
 		Return False
@@ -1136,9 +1141,11 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	Method UpdateLive:Int()
 		If Not IsLive() Then Return False
 
-		If GetWorldTime().GetTimeGone() >= Double(GetWorldTime().GetHour(releaseTime))*3600 + blocks*3600 - 5*60
-			If GetTimesBroadcasted() <= 1
-				onFinishProductionForCast()
+		If HasFixedLiveTime()
+			If GetWorldTime().GetTimeGone() >= Double(GetWorldTime().GetHour(releaseTime))*3600 + blocks*3600 - 5*60
+				If GetTimesBroadcasted() <= 1
+					onFinishProductionForCast()
+				EndIf
 			EndIf
 		EndIf
 
@@ -1152,10 +1159,12 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 		'programmes begin at xx:05 - but their live events will end xx:55
 		'releaseTime is not guaranteed to be "xx:00" so, we use GetHours()
-		If IsLive() And GetWorldTime().GetTimeGone() >= Double(GetWorldTime().GetHour(releaseTime))*3600 + blocks*3600 - 5*60
-			SetFlag(TVTProgrammeDataFlag.LIVE, False)
-			SetFlag(TVTProgrammeDataFlag.LIVEONTAPE, True)
-			Return True
+		If HasFixedLiveTime()
+			If GetWorldTime().GetTimeGone() >= Double(GetWorldTime().GetHour(releaseTime))*3600 + blocks*3600 - 5*60
+				SetFlag(TVTProgrammeDataFlag.LIVE, False)
+				SetFlag(TVTProgrammeDataFlag.LIVEONTAPE, True)
+				Return True
+			EndIf
 		EndIf
 
 		Return False
@@ -1219,7 +1228,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
-	Method GetBlocks:Int()
+	Method GetBlocks:Int(broadcastType:Int = -1)
 		Return Self.blocks
 	End Method
 
@@ -1966,6 +1975,16 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 			EndIf
 		EndIf
 
+
+		'mark fixed live time as not fixed anymore
+		If broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			If HasBroadcastTimeSlot() and HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.LIVE_TIME_FIXED)
+				'mark it so releaseTime can get updated again
+				SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.LIVE_TIME_FIXED, False)
+			EndIf
+		EndIf
+
+
 		'=== BROADCAST LIMITS ===
 		If broadcastType = TVTBroadcastMaterialType.PROGRAMME
 			If broadcastLimit > 0 Then broadcastLimit :- 1
@@ -2036,12 +2055,26 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	'override
 	'called as soon as the programme is broadcasted
 	Method doBeginBroadcast(playerID:Int = -1, broadcastType:Int = 0)
+		'update release time of a flexible live time broadcast to the
+		'current time
+		'also mark it to no longer have a flexible live time
+		If broadcastType = TVTBroadcastMaterialType.PROGRAMME
+			'live + flexible broadcast slot + live time not fixed yet
+			If IsLive() and HasBroadcastTimeSlot() and not HasBroadcastFlag(TVTBroadcastMaterialSourceFlag.LIVE_TIME_FIXED)
+				releaseTime = GetWorldTime().GetTimeGone()
+
+				'mark it so releaseTime is not updated again
+				SetBroadcastFlag(TVTBroadcastMaterialSourceFlag.LIVE_TIME_FIXED, TRUE)
+			EndIf
+		EndIf
+
+
 		'mark broadcasting state
 		If broadcastType = TVTBroadcastMaterialType.PROGRAMME
 			If playerID > 0
 				SetPlayerIsBroadcasting(playerID, True)
 				'if broadcasting right at live time - mark it
-				If isLive() And GetWorldTime().GetDayHour() = GetWorldTime().GetDayHour( releaseTime )
+				If IsLive() And GetWorldTime().GetDayHour() = GetWorldTime().GetDayHour( releaseTime )
 					SetPlayerIsLiveBroadcasting(playerID, True)
 				EndIf
 			EndIf

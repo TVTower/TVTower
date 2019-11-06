@@ -1606,9 +1606,10 @@ Type TDatabaseLoader
 		data = New TData
 		xml.LoadValuesToData(nodeData, data, [..
 			"scriptflags", "flags", "flags_optional", "keywords", ..
-			"productionBroadcastFlags", "productionLicenceFlags", "productionBroadcastLimit", ..
+			"production_broadcast_flags", "production_licence_flags", "production_broadcast_limit", ..
 			"live_date", "live_time", ..
-			"production_time", "production_time_min", "production_time_max", "production_time_slope", "production_time_mod" ..
+			"broadcast_time_slot_start", "broadcast_time_slot_end", ..
+			"production_limit", "production_time", "production_time_min", "production_time_max", "production_time_slope", "production_time_mod" ..
 		])
 		scriptTemplate.scriptFlags = data.GetInt("scriptflags", scriptTemplate.scriptFlags)
 
@@ -1616,12 +1617,17 @@ Type TDatabaseLoader
 		scriptTemplate.flagsOptional = data.GetInt("flags_optional", scriptTemplate.flagsOptional)
 		scriptTemplate.liveDateCode = data.GetString("live_date", scriptTemplate.liveDateCode)
 		scriptTemplate.liveTime = data.GetInt("live_time", scriptTemplate.liveTime)
+		scriptTemplate.broadcastTimeSlotStart = data.GetInt("broadcast_time_slot_start", scriptTemplate.broadcastTimeSlotStart)
+		scriptTemplate.broadcastTimeSlotEnd = data.GetInt("broadcast_time_slot_end", scriptTemplate.broadcastTimeSlotEnd)
 
 		scriptTemplate.keywords = data.GetString("keywords", scriptTemplate.keywords).Trim()
 
-		scriptTemplate.productionBroadcastFlags = data.GetInt("productionBroadcastFlags", scriptTemplate.productionBroadcastFlags)
-		scriptTemplate.productionLicenceFlags = data.GetInt("productionLicenceFlags", scriptTemplate.productionLicenceFlags)
-		scriptTemplate.productionBroadcastLimit = data.GetInt("productionBroadcastLimit", scriptTemplate.productionBroadcastLimit)
+		scriptTemplate.productionLimit = data.GetInt("production_limit", scriptTemplate.productionLimit)
+		scriptTemplate.productionLimitMax = scriptTemplate.productionLimit
+
+		scriptTemplate.productionBroadcastFlags = data.GetInt("production_broadcast_flags", scriptTemplate.productionBroadcastFlags)
+		scriptTemplate.productionLicenceFlags = data.GetInt("production_licence_flags", scriptTemplate.productionLicenceFlags)
+		scriptTemplate.SetProductionBroadcastLimit( data.GetInt("production_broadcast_limit", scriptTemplate.GetProductionBroadcastLimit()) )
 
 		scriptTemplate.productionTime = data.GetInt("production_time", scriptTemplate.productionTime)
 		scriptTemplate.productionTimeMin = data.GetInt("production_time_min", scriptTemplate.productionTimeMin)

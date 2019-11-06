@@ -502,6 +502,9 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 	'news could be exclusive (investigation done by one tv channel)
 	Const EXCLUSIVE_TO_ONE_OWNER:Int = 8192
 
+	'used for live programme with varying broadcast slots
+	Const LIVE_TIME_FIXED:Int = 16384
+
 	Const count:int = 14
 
 
@@ -630,6 +633,8 @@ Type TVTScriptFlag {_exposeToLua}
 	Const POOL_RANDOMIZES_ATTRIBUTES:int = 16
 	'when given to pool/vendor, the licence will not be buyable again
 	Const POOL_REMOVES_TRADEABILITY:int = 32
+	'flag indicating if a production limit is set
+	Const HAS_PRODUCTION_LIMIT:int = 64
 
 	Const count:int = 6
 
@@ -648,6 +653,7 @@ Type TVTScriptFlag {_exposeToLua}
 			case   8	return 4
 			case  16	return 5
 			case  32	return 6
+			case  64	return 7
 		End Select
 		return 0
 	End Function
@@ -663,6 +669,7 @@ Type TVTScriptFlag {_exposeToLua}
 			case POOL_REFILLS_PRODUCTIONLIMITS        return "pool_refills_productionlimits"
 			case POOL_RANDOMIZES_ATTRIBUTES           return "pool_randomizes_attributes"
 			case POOL_REMOVES_TRADEABILITY            return "pool_removes_tradeability"
+			case HAS_PRODUCTION_LIMIT                 return "has_production_limit"
 
 			default
 				'loop through all entries and add them if contained
@@ -1084,6 +1091,7 @@ Type TVTProgrammeGenre {_exposeToLua}
 			case Show					return "show"
 			case Show_Music				return "show_music"
 			case Show_Politics			return "show_politics"
+			case Show_Talk			    return "show_talk"
 			'Event-Genre 200+
 			case Event					return "event"
 			case Event_Politics			return "event_politics"
