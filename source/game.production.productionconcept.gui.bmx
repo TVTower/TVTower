@@ -62,6 +62,9 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		Local sheetX:Int = GetGraphicsManager().GetWidth()/2
 		'move down if unplanned (less spaced needed on datasheet)
 		if productionConcept.IsUnplanned() then sheetY :+ 50
+		if productionConcept.script.IsLive() then sheetY :- 20
+		if productionConcept.script.HasProductionBroadcastLimit() then sheetY :- 15
+		if productionConcept.script.HasBroadcastTimeSlot() then sheetY :- 15
 
 		SetColor 0,0,0
 		SetAlpha 0.2
@@ -130,6 +133,13 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		local showMsgIncomplete:Int = productionConcept.IsGettingPlanned()
 		local showMsgNotPlanned:Int = productionConcept.IsUnplanned()
 		local showMsgDepositPaid:Int = productionConcept.IsDepositPaid()
+		Local showMsgLiveInfo:Int = False
+		Local showMsgBroadcastLimit:Int = False
+		Local showMsgTimeSlotLimit:Int = False
+
+		If productionConcept.script.IsLive() Then showMsgLiveInfo = True
+		If productionConcept.script.HasProductionBroadcastLimit() Then showMsgBroadcastLimit= True
+		If productionConcept.script.HasBroadcastTimeSlot() Then showMsgTimeSlotLimit = True
 
 
 		'save on requests to the player finance
@@ -170,6 +180,9 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		If showMsgNotPlanned then msgAreaH :+ msgH
 		If showMsgIncomplete then msgAreaH :+ msgH
 		If showMsgDepositPaid then msgAreaH :+ msgH
+		If showMsgLiveInfo Then msgAreaH :+ msgH
+		If showMsgBroadcastLimit Then msgAreaH :+ msgH
+		If showMsgTimeSlotLimit Then msgAreaH :+ msgH
 
 		'if there are messages, add padding of messages
 		if msgAreaH > 0 then msgAreaH :+ 2* msgAreaPaddingY
@@ -280,6 +293,25 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		'if there is a message then add padding to the begin
 		if msgAreaH > 0 then contentY :+ msgAreaPaddingY
 
+
+		If showMsgLiveInfo
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, productionconcept.script.GetPlannedLiveTimeText(), "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+			If showMsgTimeSlotLimit
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", productionConcept.script.GetBroadcastTimeSlotStart()).Replace("%Y%", productionConcept.script.GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				contentY :+ msgH
+			EndIf
+		EndIf
+
+		If showMsgBroadcastLimit
+			if productionConcept.script.GetProductionBroadcastLimit() = 1
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			Else
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").Replace("%X%", productionConcept.script.GetProductionBroadcastLimit()), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			EndIf
+			contentY :+ msgH
+		EndIf
+
 		If showMsgOrderWarning
 			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("EPISODES_NOT_IN_ORDER"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
@@ -309,8 +341,10 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 
 			'=== BOX LINE 1 ===
+			'duration (blocks)
+			skin.RenderBox(contentX + 5, contentY, 50, -1, productionconcept.script.GetBlocks(), "duration", "neutral", skin.fontBold)
 			'production time
-			skin.RenderBox(contentX + 5, contentY, 67, -1, productionconcept.GetBaseProductionTime()+GetLocale("HOUR_SHORT"), "duration", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 60, contentY, 60, -1, productionconcept.GetBaseProductionTime() + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
 
 			'price
 			if canAfford

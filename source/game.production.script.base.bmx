@@ -223,6 +223,40 @@ Type TScriptBase Extends TNamedGameObject
 	End Method
 
 
+	Method GetPlannedLiveTimeText:String(nowTime:Long = -1)
+		if nowTime = -1 then nowTime = GetWorldTime().GetTimeGone()
+		Local earliestProductionFinishTime:Long = nowTime
+		If productionTime >= 0 Then earliestProductionFinishTime :+ productionTime
+
+		Local plannedLiveTime:Long = GetLiveTime( earliestProductionFinishTime )
+		Local plannedLiveTimeStr:String = GetWorldTime().GetFormattedDate( plannedLiveTime )
+
+		Local liveDay:Int = GetWorldTime().GetDay( plannedLivetime )
+		Local nowDay:Int = GetWorldTime().GetDay(nowTime)
+		Local timeDiff:Int = earliestProductionFinishTime - nowTime
+
+
+		If HasBroadcastTimeSlot()
+			If liveDay = nowDay
+				Return GetLocale("PLANNED_LIVE_TIMESPAN_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
+			ElseIf liveDay = nowDay + 1
+				Return GetLocale("PLANNED_LIVE_TIMESPAN_TOMORROW_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
+			Else
+				Return GetLocale("PLANNED_LIVE_TIMESPAN_IN_Y_DAYS_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime )).Replace("%Y%", (liveDay - nowDay))
+			EndIf
+		Else
+			If liveDay = nowDay
+				Return GetLocale("PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
+			ElseIf liveDay = nowDay + 1
+				Return GetLocale("PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
+			Else
+				Return GetLocale("PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime )).Replace("%Y%", (liveDay - nowDay))
+			EndIf
+		EndIf
+		Return ""
+	End Method
+
+
 	Method IsLive:int()
 		return HasFlag(TVTProgrammeDataFlag.LIVE)
 	End Method

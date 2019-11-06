@@ -1045,7 +1045,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		'message area
 		If showMsgEarnInfo Then msgAreaH :+ msgH
-		If showMsgLiveInfo Then msgAreaH :+ 2 * msgH
+		If showMsgLiveInfo Then msgAreaH :+ msgH
 		If showMsgBroadcastLimit Then msgAreaH :+ msgH
 		'suits into the live-block
 'If showMsgTimeSlotLimit and not showMsgLiveInfo Then msgAreaH :+ msgH
@@ -1211,10 +1211,7 @@ endrem
 			'render director + cast (offset by 3 px)
 			contentY :+ 3
 
-			'max width of cast word - to align their content properly
-			Local captionWidth:Int = skin.fontSemiBold.getWidth(GetLocale("MOVIE_CAST")+":")
-			skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CAST")+":", contentX + 5, contentY, contentW, castH, Null, skin.textColorNeutral)
-			skin.fontNormal.drawBlock(cast, contentX + 5 + captionWidth + 5, contentY , contentW  - 10 - captionWidth - 5, castH, Null, skin.textColorNeutral)
+			skin.fontNormal.drawBlock("|b|"+GetLocale("MOVIE_CAST") + ":|/b| " + cast, contentX + 5, contentY , contentW  - 10, castH, Null, skin.textColorNeutral)
 
 			contentY:+ castH - 3
 		Else
@@ -1250,48 +1247,7 @@ endrem
 		If msgAreaH > 0 Then contentY :+ msgAreaPaddingY
 
 		If showMsgLiveInfo
-			'TODO
-			Local earliestProductionFinishTime:Long = GetWorldTime().GetTimeGone()
-			If productionTime >= 0 Then earliestProductionFinishTime :+ productionTime
-rem
-hier weitermachen:
-- Besetzung beim Drehbuch 2 pixel nach oben verschoben
-- Produktionszeit neben Blocklaenge angeben (mittig zwischen blocklaenge und preis)
-endrem
-
-			Local plannedLiveTime:Long = GetLiveTime( earliestProductionFinishTime )
-			Local plannedLiveTimeStr:String = GetWorldTime().GetFormattedDate( plannedLiveTime )
-
-			Local liveDay:Int = GetWorldTime().GetDay( plannedLivetime )
-			Local nowDay:Int = GetWorldTime().GetDay()
-			Local timeDiff:Int = earliestProductionFinishTime - GetWorldTime().GetTimeGone()
-
-			If productionTime >= 0
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "Live: Dauer der Vorproduktion " + (productionTime/60)+"h.", "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
-			Else
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "Live: Keine Vorproduktion notwendig.", "runningTime", "good", skin.fontSemiBold, ALIGN_CENTER_CENTER)
-			EndIf
-			contentY :+ msgH
-
-
-			If showMsgTimeSlotLimit
-				If liveDay = nowDay
-					plannedLiveTimeStr = "Ausstrahlung heute: ab " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
-				ElseIf liveDay = nowDay + 1
-					plannedLiveTimeStr = "Ausstrahlung morgen: ab " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
-				Else
-					plannedLiveTimeStr = "Ausstrahlung in " + (liveDay - nowDay) + " Tagen: ab " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
-				EndIf
-			Else
-				If liveDay = nowDay
-					plannedLiveTimeStr = "Ausstrahlung heute: " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
-				ElseIf liveDay = nowDay + 1
-					plannedLiveTimeStr = "Ausstrahlung morgen: " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
-				Else
-					plannedLiveTimeStr = "Ausstrahlung in " + (liveDay - nowDay) + " Tagen: " + GetWorldTime().GetDayHour( plannedLiveTime ) + " Uhr."
-				EndIf
-			EndIf
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, "Live : " + plannedLiveTimeStr, "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetPlannedLiveTimeText(), "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 
 			If showMsgTimeSlotLimit
@@ -1323,7 +1279,11 @@ endrem
 		'if msgAreaH = 0 then contentY :+ boxAreaPaddingY
 		contentY :+ boxAreaPaddingY
 		'blocks
-		skin.RenderBox(contentX + 5, contentY, 47, -1, GetBlocks(), "duration", "neutral", skin.fontBold)
+		skin.RenderBox(contentX + 5, contentY, 50, -1, GetBlocks(), "duration", "neutral", skin.fontBold)
+		if IsLive()
+			'(pre-)production time
+			skin.RenderBox(contentX + 5 + 60, contentY, 60, -1, productionTime + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
+		EndIf
 		'price
 		If canAfford
 			skin.RenderBox(contentX + 5 + 194, contentY, contentW - 10 - 194 +1, -1, MathHelper.DottedValue(GetPrice()), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
