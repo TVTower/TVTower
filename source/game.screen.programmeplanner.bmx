@@ -260,6 +260,34 @@ Type TScreenHandler_ProgrammePlanner
 	End Function
 
 
+	Function EnableAllSlotOverlays:Int( slotType:Int = -1, mode:Int=1)
+		For Local i:Int = 0 to 23
+			If slotType = TVTBroadcastMaterialType.PROGRAMME
+				overlayedProgrammeSlots[i] = mode
+			ElseIf slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+				overlayedAdSlots[i] = mode
+			Else
+				overlayedProgrammeSlots[i] = mode
+				overlayedAdSlots[i] = mode
+			EndIf
+		Next
+	End Function
+
+
+	Function DisableAllSlotOverlays:Int( slotType:Int = -1)
+		For Local i:Int = 0 to 23
+			If slotType = TVTBroadcastMaterialType.PROGRAMME
+				overlayedProgrammeSlots[i] = 0
+			ElseIf slotType = TVTBroadcastMaterialType.ADVERTISEMENT
+				overlayedAdSlots[i] = 0
+			Else
+				overlayedProgrammeSlots[i] = 0
+				overlayedAdSlots[i] = 0
+			EndIf
+		Next
+	End Function
+
+
 	Function EnableSlotOverlays:Int(hours:Int[] = Null, slotType:Int = -1, mode:Int=1)
 		If hours And hours.length > 0
 			For Local hour:Int = EachIn hours
@@ -1188,13 +1216,7 @@ Type TScreenHandler_ProgrammePlanner
 		'reset and refresh locked slots of this day
 		ResetSlotOverlays()
 		Local pp:TPlayerProgrammePlan = GetPlayerProgrammePlan(room.owner)
-		Local hrs:Int[]
-		For Local h:Int = 0 To 23
-			If pp.IsLockedSlot(TVTBroadcastMaterialType.PROGRAMME, planningDay, h)
-				hrs :+ [h]
-			EndIf
-		Next
-		If hrs.length > 0 Then DisableSlotOverlays(hrs, TVTBroadcastMaterialType.PROGRAMME)
+		DisableAllSlotOverlays(TVTBroadcastMaterialType.PROGRAMME)
 
 		'enable slot overlay if a dragged element is "live" or has a
 		'"time slot" defining allowed times
@@ -1205,24 +1227,88 @@ Type TScreenHandler_ProgrammePlanner
 				'if it has a given time slot, mark these
 				If programme.data.HasBroadcastTimeSlot()
 					Local hourSlots:Int[]
-					Local startHour:int = programme.data.broadcastTimeSlotStart
-					Local endHour:int = programme.data.broadcastTimeSlotEnd
-					If startHour < 0 Then startHour = 0
-					If endHour < 0 Then endHour = 23
 
-					For local hour:int = startHour to endHour
-						hourSlots :+ [hour]
-					Next
+					local allowedSlotCount:int
+					'01:00 - 11:00
+					if programme.data.broadcastTimeSlotStart < programme.data.broadcastTimeSlotEnd
+						allowedSlotCount = programme.data.broadcastTimeSlotEnd - programme.data.broadcastTimeSlotStart
+					'11:00 - 01:00
+					ElseIf programme.data.broadcastTimeSlotStart > programme.data.broadcastTimeSlotEnd
+						allowedSlotCount = 24 - (programme.data.broadcastTimeSlotEnd - programme.data.broadcastTimeSlotStart)
+					'01:00 - 01:00
+					Else
+						allowedSlotCount = 1
+					EndIf
+
+
+					If not programme.data.IsLive()
+						'mark allowed slots of whole day
+						For Local i:Int = 0 Until allowedSlotCount
+							hourSlots :+ [ (programme.data.broadcastTimeSlotStart + i mod 24) ]
+						Next
+					Else
+						'mark allowed slots since earliest start hour
+						Local blockTime:Long = programme.data.releaseTime
+						if GetWorldTime().GetDay(blockTime) <= planningDay
+							'ex. 02:00 - 11:00
+							If programme.data.broadcastTimeSlotStart <= programme.data.broadcastTimeSlotEnd
+								local earliestSlot:int = programme.data.broadcastTimeSlotStart
+								local latestSlot:int = programme.data.broadcastTimeSlotEnd
+								'starting today?
+								if GetWorldTime().GetDay(blockTime) = planningDay
+									earliestSlot = Max(earliestSlot, GetWorldTime().GetDayHour(blockTime))
+								endif
+								if latestSlot < earliestSlot then latestSlot = 23
+
+								For Local i:Int = earliestSlot to latestSlot
+									hourSlots :+ [ i ]
+								Next
+
+							'ex. 11:00 - 02:00
+							ElseIf programme.data.broadcastTimeSlotStart > programme.data.broadcastTimeSlotEnd
+								'11:00 - 0:00
+								local earliestSlot:int = programme.data.broadcastTimeSlotStart
+								local latestSlot:int = 23
+								'starting today?
+								if GetWorldTime().GetDay(blockTime) = planningDay
+									earliestSlot = Max(earliestSlot, GetWorldTime().GetDayHour(blockTime))
+								endif
+
+								For Local i:Int = earliestSlot to latestSlot
+									hourSlots :+ [ i ]
+								Next
+
+
+								'0:00 - 2:00
+								earliestSlot = 0
+								latestSlot = programme.data.broadcastTimeSlotEnd
+								'starting today?
+								if GetWorldTime().GetDay(blockTime) = planningDay
+									earliestSlot = Max(earliestSlot, GetWorldTime().GetDayHour(blockTime))
+								endif
+								if latestSlot > earliestSlot
+									For Local i:Int = earliestSlot to latestSlot
+										hourSlots :+ [ i ]
+									Next
+								endif
+							EndIf
+						EndIf
+					EndIf
+					'mark all others red
+					EnableAllSlotOverlays(TVTBroadcastMaterialType.PROGRAMME, 2)
+					'keep the possible green (Not just free!)
 					EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 1)
-'					EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.ADVERTISEMENT, 1)
 
 				'else mark the exact live time (releasetime + blocks) slots
 				'(if planning day not in the past)
 				ElseIf programme.data.IsLive() And GetWorldTime().GetDay() <= planningDay
+					'mark all others red
+					EnableAllSlotOverlays(-1, TVTBroadcastMaterialType.PROGRAMME)
+
 					Local hourSlots:Int[]
 
 					Local blockTime:Long = programme.data.releaseTime
-					If GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
+					If not GameRules.onlyExactLiveProgrammeTimeAllowedInProgrammePlan
 						'mark allowed slots
 						For Local i:Int = 0 Until programme.GetBlocks()
 							If GetWorldTime().GetDay(blockTime) = planningDay
@@ -1230,18 +1316,23 @@ Type TScreenHandler_ProgrammePlanner
 							EndIf
 							blockTime :+ 3600
 						Next
+						'keep the possible "free"
+						'DisableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME)
+						'mark the live-time-slot green!
 						EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 1)
 
 
 						'mark all future ad-slots allowed
-						hourSlots = New Int[0]
-						Local start:Int = GetWorldTime().GetDayHour()+1
-						If GetWorldTime().GetDayMinute() < 55 Then start :- 1
-						If GetWorldTime().GetDay() < planningDay Then start = 0
-						For Local i:Int = start To 23
-							hourSlots :+ [i]
-						Next
-						EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.ADVERTISEMENT, 1)
+						hourSlots = new Int[0]
+						Local start:Int = GetWorldTime().GetDayHour(programme.data.releaseTime + programme.GetBlocks()*3600)
+						if start <= 23
+							For Local i:Int = start To 23
+								hourSlots :+ [i]
+							Next
+							'keep the non-live "free"
+							DisableSlotOverlays(hourSlots, -1)
+						Endif
+						'EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.ADVERTISEMENT, 1)
 					Else
 						'mark all forbidden slots
 						Local startDay:Int = GetWorldtime().GetDay(blockTime)
@@ -1250,11 +1341,8 @@ Type TScreenHandler_ProgrammePlanner
 						'future day - mark ALL blocks of today
 						if startDay > planningDay and endDay > planningDay
 							if GetWorldTime().GetDay() = planningDay
-								For Local i:Int = GetWorldTime().GetDayHour() Until 24
-									hourSlots :+ [ i ]
-								Next
-							else
-								hourSlots = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+								'mark all hours red
+								EnableAllSlotOverlays(TVTBroadcastMaterialType.PROGRAMME, 2)
 							endif
 
 						'past day - mark NO block of today
@@ -1267,6 +1355,22 @@ Type TScreenHandler_ProgrammePlanner
 							Local endHour:Int = GetWorldTime().GetDayHour(blockTime) + programme.GetBlocks()
 							If GetWorldTime().GetDayMinute() < 5 Then nowHour :- 1
 
+							'mark all hours red
+							EnableAllSlotOverlays(TVTBroadcastMaterialType.PROGRAMME, 2)
+
+							'mark live slots green
+							For Local i:Int = 0 Until programme.GetBlocks()
+								If GetWorldTime().GetDay(blockTime) = planningDay
+									If GetWorldTime().GetDayHour() < GetWorldTime().GetDayHour(blockTime)
+										hourSlots :+ [ GetWorldTime().GetDayHour(blockTime) ]
+									ElseIf GetWorldTime().GetDayHour() = GetWorldTime().GetDayHour(blockTime) and GetWorldTime().GetDayMinute() < 5
+										hourSlots :+ [ GetWorldTime().GetDayHour(blockTime) ]
+									EndIf
+								endIf
+								blockTime :+ 3600
+							Next
+							EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 1)
+rem
 							'only mark till midnight
 							if startDay <> planningDay then startHour = 0
 							if endDay <> planningDay then endHour = 23
@@ -1282,9 +1386,11 @@ Type TScreenHandler_ProgrammePlanner
 							For Local i:Int = earliestHour Until startHour
 								hourSlots :+ [ i ]
 							Next
+							DisableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME)
+endrem
 						endif
 
-						EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 2)
+						'EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 2)
 					EndIf
 				EndIf
 			EndIf
