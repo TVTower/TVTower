@@ -1096,10 +1096,13 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		Local genreString:String = GetMainGenreString()
 		'avoid "Action-Undefined" and "Show-Show"
 		If scriptProductType <> TVTProgrammeProductType.UNDEFINED And scriptProductType <> TVTProgrammeProductType.SERIES
-			If (TVTProgrammeProductType.GetAsString(scriptProductType) <> TVTProgrammeGenre.GetAsString(mainGenre))
-				If Not(TVTProgrammeProductType.GetAsString(scriptProductType) = "feature" And TVTProgrammeGenre.GetAsString(mainGenre).Find("feature")>=0)
-					genreString :+ " / " +GetProductionTypeString()
-				EndIf
+			local sameType:int = (TVTProgrammeProductType.GetAsString(scriptProductType) = TVTProgrammeGenre.GetAsString(mainGenre))
+			if sameType and scriptProductType = TVTProgrammeProductType.SHOW and TVTProgrammeGenre.GetGroupIndex(mainGenre) = TVTProgrammeGenre.SHOW then sameType = False
+			if sameType and scriptProductType = TVTProgrammeProductType.FEATURE and TVTProgrammeGenre.GetGroupIndex(mainGenre) = TVTProgrammeGenre.FEATURE then sameType = False
+
+'				If Not(TVTProgrammeProductType.GetAsString(scriptProductType) = "feature" And TVTProgrammeGenre.GetAsString(mainGenre).Find("feature")>=0)
+			If not sameType
+				genreString :+ " / " +GetProductionTypeString()
 			EndIf
 		EndIf
 		If IsSeries()
@@ -1282,7 +1285,7 @@ endrem
 		skin.RenderBox(contentX + 5, contentY, 50, -1, GetBlocks(), "duration", "neutral", skin.fontBold)
 		if IsLive()
 			'(pre-)production time
-			skin.RenderBox(contentX + 5 + 60, contentY, 60, -1, productionTime + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 60, contentY, 65, -1, "~~ " + (productionTime/60) + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
 		EndIf
 		'price
 		If canAfford

@@ -1023,6 +1023,16 @@ Type TVTProgrammeGenre {_exposeToLua}
 	End Function
 
 
+	Function GetGroupIndex:int(index:int)
+		if index >= 0 and index <= 18 then return -1
+		if index >= 100 and index <= 104 then return 100
+		if index >= 200 and index <= 204 then return 200
+		if index >= 300 and index <= 301 then return 300
+		if index >= 400 and index <= 401 then return 400
+		return -1
+	End Function
+
+
 	Function GetByString:int(keyString:string = "")
 		Select keyString.toLower()
 			case "adventure"            return ADVENTURE
