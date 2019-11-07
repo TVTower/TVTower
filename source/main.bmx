@@ -687,8 +687,8 @@ Type TApp
 					EndIf
 				EndIf
 
-				If KEYMANAGER.IsHit(KEY_MINUS) and KEYMANAGER.IsDown(KEY_RCONTROL)
-					rem
+				If KEYMANAGER.IsHit(KEY_MINUS) And KEYMANAGER.IsDown(KEY_RCONTROL)
+					Rem
 					Global gcEnabled:Int = True
 					If gcEnabled
 						 GCSuspend()
@@ -2745,19 +2745,19 @@ End Type
 
 Type TSavegameConverter
 	Method DeSerializeUnknownProperty:Object(oldType:String, newType:String, obj:Object, parentObj:Object)
-		print "DeSerializeUnknownProperty: " + oldType + " > " + newType
+		Print "DeSerializeUnknownProperty: " + oldType + " > " + newType
 		Local convert:String = (oldType+">"+newType).ToLower()
 		Select convert
 			'v0.6.2 -> BroadcastStatistics from TMap to TIntMap
 			Case "TMap>TIntMap".ToLower()
 				Local old:TMap = TMap(obj)
-				if old
-					local res:TIntMap = new TIntMap
-					For local oldV:string = EachIn old.Keys()
-						res.Insert(int(oldV), old.ValueForKey(oldV))
+				If old
+					Local res:TIntMap = New TIntMap
+					For Local oldV:String = EachIn old.Keys()
+						res.Insert(Int(oldV), old.ValueForKey(oldV))
 					Next
-					return res
-				endif
+					Return res
+				EndIf
 			Rem
 			Case "TIntervalTimer>TBuildingIntervalTimer".ToLower()
 				Local old:TIntervalTimer = TIntervalTimer(obj)
@@ -3508,7 +3508,7 @@ Type GameEvents
 
 	Function UnRegisterEventListeners:Int()
 		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
+		_eventListeners = New TEventListenerBase[0]
 	End Function
 
 
@@ -4752,13 +4752,13 @@ Type GameEvents
 		toast.SetLifeTime(8)
 		toast.SetMessageType(2) 'positive
 		toast.SetMessageCategory(TVTMessageCategory.MISC)
-		if production.productionConcept.script.IsLive()
+		If production.productionConcept.script.IsLive()
 			toast.SetCaption(GetLocale("PREPRODUCTION_FINISHED"))
 			toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+title+"|/b|"))
-		else
+		Else
 			toast.SetCaption(GetLocale("SHOOTING_FINISHED"))
 			toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+title+"|/b|"))
-		endif
+		EndIf
 
 		toast.GetData().AddNumber("playerID", production.owner)
 
@@ -6333,10 +6333,11 @@ Function ShowApp:Int()
 	TProfiler.Leave("ShowApp")
 End Function
 
+?bmxng
 Extern
     Global bbGCAllocCount:ULong="bbGCAllocCount"
 End Extern
-
+?
 Function StartTVTower(start:Int=True)
 	Global InitialResourceLoadingDone:Int = False
 	Global AppSuspendedProcessed:Int = False
@@ -6403,10 +6404,14 @@ TProfiler.Enter("GameLoop")
 
 	Repeat
 		If MilliSecs() - rectangleTime > 1000
-			if printDebugStats then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations."
+	?bmxng
+			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations."
+			bbGCAllocCount = 0
+	?Not bmxng
+			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
+	?
 			rectangle_created = 0
 			vec2d_created = 0
-			bbGCAllocCount = 0
 			rectangleTime :+ 1000
 		EndIf
 

@@ -35,11 +35,7 @@ Type TObjectList
 		If size Then
 			_ensureCapacity(size + 1)
 
-			?not bmxng
-			data = (new object[1]) + data
-			?bmxng
 			ArrayCopy(data, 0, data, 1, size)
-			?
 		End If
 
 		data[0] = value
@@ -87,11 +83,7 @@ Type TObjectList
 
 			If size Then
 				Local value:Object = data[0]
-				?not bmxng
-				data = data[1 ..]
-				?bmxng
 				ArrayCopy(data, 1, data, 0, size - 1)
-				?
 				size :- 1
 				data[size] = Null
 				version :+ 1
@@ -238,15 +230,11 @@ Type TObjectList
 	Method ToArray:Object[]()
 		Compact()
 
-		?bmxng
 		Local arr:Object[] = New Object[size]
 		If size Then
 			ArrayCopy(data, 0, arr, 0, size)
 		End If
 		Return arr
-		?not bmxng
-			return data[ .. ]
-		?
 	End Method
 
 	Function FromArray:TObjectList(arr:Object[])
