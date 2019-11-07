@@ -1037,12 +1037,6 @@ Type TBitmapFont
 			For Local i:Int = 0 Until text.length
 				charCode = Int(text[i])
 
-				'reload with utf8?
-				If charCode > 256 And MaxSigns = 256 And glyphCount > 256 And extraChars.find(Chr(charCode)) = -1
-					LoadExtendedCharacters()
-				EndIf
-
-
 				'check for controls
 				If controlCharStarted
 					'receiving command
@@ -1088,6 +1082,12 @@ Type TBitmapFont
 				EndIf
 
 				Local bm:TBitmapFontChar
+
+				'reload current font with utf8?
+				If charCode > 256 And font.MaxSigns = 256 And font.glyphCount > 256 And font.extraChars.find(Chr(charCode)) = -1
+					font.LoadExtendedCharacters()
+				EndIf
+
 				' = TBitmapFontChar( font.chars.ValueForKey(charCode) )
 				If charCode < font.chars.length Then
 					bm = font.chars[charCode]
