@@ -430,6 +430,8 @@ Type TDigAudioStream_FreeAudio Extends TDigAudioStream
 		'int arrays get cleaned without our help
 		'so only free the buffer if it was MemAlloc'ed
 		'if GetBufferSize() > 0 then MemFree buffer
+
+		if buffer and buffer._locked then buffer.Unlock()
 	End Method
 
 

@@ -14,12 +14,12 @@ Import "base.sfx.soundmanager.base.bmx"
 
 
 
-Type TSoundManager_RtAudio extends TSoundManager
+Type TSoundManager_RtAudio Extends TSoundManager
 	Function Create:TSoundManager_RtAudio()
 		Local manager:TSoundManager_RtAudio = New TSoundManager_RtAudio
 
 		'initialize sound system
-		if audioEngineEnabled then manager.InitAudioEngine()
+		If audioEngineEnabled Then manager.InitAudioEngine()
 
 		manager.defaultSfxDynamicSettings = TSfxSettings.Create()
 
@@ -34,7 +34,7 @@ Type TSoundManager_RtAudio extends TSoundManager
 
 
 
-	Method FillAudioEngines:int()
+	Method FillAudioEngines:Int()
 		engineKeys = ["AUTOMATIC", "NONE"]
 		engineNames = ["Automatic", "None"]
 		engineDriverNames = ["AUTOMATIC", "NONE"]
@@ -55,6 +55,7 @@ Type TSoundManager_RtAudio extends TSoundManager
 
 
 	Method InitSpecificAudioEngine:Int(engine:String)
+	If engine = "AUTOMATIC" Then engine = "WINDOWS_DS"
 		TMaxModRtAudioDriver.Init(engine)
 		'
 		If Not SetAudioDriver("MaxMod RtAudio")
@@ -84,15 +85,15 @@ Type TSoundManager_RtAudio extends TSoundManager
 	End Method
 
 
-	Method CreateDigAudioStreamOgg:TDigAudioStream(uri:string, loop:int)
-		return new TDigAudioStream_RtAudio_Ogg.CreateWithFile(uri, loop)
+	Method CreateDigAudioStreamOgg:TDigAudioStream(uri:String, loop:Int)
+		Return New TDigAudioStream_RtAudio_Ogg.CreateWithFile(uri, loop)
 	End Method
 End Type
 
 '===== CONVENIENCE ACCESSORS =====
 'convenience instance getter
 Function GetSoundManager:TSoundManager()
-	return TSoundManager_RtAudio.GetInstance()
+	Return TSoundManager_RtAudio.GetInstance()
 End Function
 
 
@@ -102,7 +103,7 @@ End Function
 'type to store music files (ogg) in it
 '(no longer) data is stored in bank
 'Play-Method is adopted from maxmod2.bmx-Function "play"
-Type TDigAudioStream_RtAudio extends TDigAudioStream
+Type TDigAudioStream_RtAudio Extends TDigAudioStream
 	'Field bank:TBank
 	Field url:String
 	Field volume:Float = 1.0
@@ -130,11 +131,11 @@ Type TDigAudioStream_RtAudio extends TDigAudioStream
 
 
 	Method isValid:Int()
-		if url
-			return FileType(url) <> 1
-		else
-			return False
-		endif
+		If url
+			Return FileType(url) <> 1
+		Else
+			Return False
+		EndIf
 
 		'If Not Self.bank Then Return False
 		'Return True
@@ -142,17 +143,17 @@ Type TDigAudioStream_RtAudio extends TDigAudioStream
 
 
 	Method CreateChannel:TChannel(volume:Float)
-		self.volume = volume
+		Self.volume = volume
 		'just return the channel
 '		return GetChannel()
 
-		if not url then Throw "no url to play"
-		channel = CueMusic(self.url, loop)
-		if not channel
-			throw "TDigAudioStream.GetChannel() failed to CueMusic"
-		endif
+		If Not url Then Throw "no url to play"
+		channel = CueMusic(Self.url, loop)
+		If Not channel
+			Throw "TDigAudioStream.GetChannel() failed to CueMusic"
+		EndIf
 		lastChannelTime = Time.MillisecsLong()
-		SetPlaying(true)
+		SetPlaying(True)
 
 		channel.SetVolume(volume)
 
@@ -163,13 +164,13 @@ Type TDigAudioStream_RtAudio extends TDigAudioStream
 
 
 	Method GetChannel:TChannel()
-		if not url then Throw "no url to play"
-		local channel:TChannel = CueMusic(self.url, loop)
-		if not channel
-			throw "TDigAudioStream_RtAudio.GetChannel() failed to CueMusic"
-		endif
+		If Not url Then Throw "no url to play"
+		Local channel:TChannel = CueMusic(Self.url, loop)
+		If Not channel
+			Throw "TDigAudioStream_RtAudio.GetChannel() failed to CueMusic"
+		EndIf
 		lastChannelTime = Time.MillisecsLong()
-		SetPlaying(true)
+		SetPlaying(True)
 
 		channel.SetVolume(volume)
 
@@ -185,14 +186,14 @@ Type TDigAudioStream_RtAudio extends TDigAudioStream
 
 	'returns time of a track in milliseconds
 	Method GetTimeTotal:Int()
-		if not channel then return 0
+		If Not channel Then Return 0
 		Return GetChannelLength(channel, MM_MILLISECS)
 	End Method
 
 
 	'returns time left in milliseconds
 	Method GetTimePlayed:Float()
-		if not channel then return 0
+		If Not channel Then Return 0
 
 		Return maxmod2.maxmod2.GetChannelPosition(channel, MM_MILLISECS)
 	End Method

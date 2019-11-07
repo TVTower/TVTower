@@ -16,6 +16,7 @@ TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_DIRECTX9, D3D9Ma
 TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_DIRECTX7, D3D7Max2DDriver() <> Null)
 TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_OPENGL, GLMax2DDriver() <> Null)
 ?bmxng
+TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_DIRECTX9, D3D9Max2DDriver() <> Null)
 TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_GL2SDL, GL2Max2DDriver() <> Null)
 ?
 
@@ -66,7 +67,7 @@ Function SetRendererWin32:TGraphics(_g:TGraphics, renderer:Int Var, realWidth:In
 			EndIf
 		Next
 		TLogger.Log("GraphicsManager.InitGraphics()", "Known renderers: "+driversAvailable, LOG_WARNING)
-		
+
 		'loop over all drivers
 		For Local i:Int = 0 Until driversID.length
 			'skip current
@@ -97,7 +98,7 @@ Function SetRendererWin32:TGraphics(_g:TGraphics, renderer:Int Var, realWidth:In
 	If driversID.length > 1
 		TLogger.Log("GraphicsManager.InitGraphics()", "Failed to create graphic context with ~q"+driversName[currentDriverIndex]+"~q. Trying alternative renderers.", LOG_DEBUG)
 		Notify "Failed to open graphics context for ~q"+driversName[currentDriverIndex]+"~q. Trying alternative renderers."
-	
+
 		'try to create the context with another available renderer
 		For Local i:Int = 0 Until driversID.length
 			If Not drivers[i] Then Continue
@@ -106,7 +107,7 @@ Function SetRendererWin32:TGraphics(_g:TGraphics, renderer:Int Var, realWidth:In
 
 			SetGraphicsDriver drivers[i]
 			_g = Graphics(realWidth, realHeight, colorDepth*fullScreen, hertz, flags)
-			
+
 			If Not _g
 				TLogger.Log("GraphicsManager.InitGraphics()", "Failed to create graphic context with alternative renderer ~q"+driversName[i]+"~q. Trying ~q"+driversName[i Mod driversName.length]+"~q now.", LOG_DEBUG)
 			Else
@@ -125,6 +126,6 @@ Function SetRendererWin32:TGraphics(_g:TGraphics, renderer:Int Var, realWidth:In
 		EndIf
 
 	EndIf
-	
+
 	Return _g
 End Function

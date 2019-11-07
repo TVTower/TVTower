@@ -2,6 +2,9 @@ SuperStrict
 
 Import sdl.glsdlmax2d
 Import sdl.gl2sdlmax2d
+?Win32
+Import sdl.d3d9sdlmax2d
+?
 
 Import "base.util.graphicsmanagerbase.bmx"
 
@@ -9,7 +12,9 @@ Import "base.util.graphicsmanagerbase.bmx"
 TGraphicsManager.SetRendererAvailable(-1, False)
 TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_OPENGL, GLMax2DDriver() <> Null)
 TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_GL2SDL, GL2Max2DDriver() <> Null)
-
+?Win32
+TGraphicsManager.SetRendererAvailable(TGraphicsManager.RENDERER_DIRECTX9, D3D9SDLMax2DDriver() <> Null)
+?
 
 Type TGraphicsManagerNG Extends TGraphicsManager
 
