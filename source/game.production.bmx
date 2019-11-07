@@ -557,8 +557,10 @@ endrem
 					GetPlayerProgrammeCollection(owner).RemoveScript(parentscript, False)
 				endif
 			endif
-			'single scripts
-			GetPlayerProgrammeCollection(owner).RemoveScript(productionConcept.script, False)
+			'single scripts? done all allowed?
+			if not productionConcept.script.CanGetProducedCount()
+				GetPlayerProgrammeCollection(owner).RemoveScript(productionConcept.script, False)
+			endif
 		endif
 
 		'=== 4. ADD TO PLAYER ===

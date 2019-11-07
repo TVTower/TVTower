@@ -16,7 +16,7 @@ GetProgrammeProducerCollection().Add( TProgrammeProducerMorningShows.GetInstance
 'TODO: so umbauen, dass es ein Drehbuchproduzent ist - egal ob Morningshow oder Film
 '      daraus dann "spezialisieren"
 
-rem
+Rem
 https://www.gamezworld.de/phpforum/viewtopic.php?pid=88875#p88875
 
 Kurz fuer mich als "Erinnerung":
@@ -49,18 +49,18 @@ Type TProgrammeProducerWithProduction Extends TProgrammeProducerBase
 
 		Local productionConcept:TProductionConcept = CreateProductionConcept()
 
-		Local production:TProduction = new TProduction
+		Local production:TProduction = New TProduction
 		production.SetProductionConcept(productionConcept)
 		production.SetStudio("")
 		production.PayProduction()
 		production.Start()
 		production.Finalize() 'skip waiting
 
-		local result:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID( production.producedLicenceGUID )
-		if result
-			if not result.data.extra then result.data.extra = new TData
+		Local result:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID( production.producedLicenceGUID )
+		If result
+			If Not result.data.extra Then result.data.extra = New TData
 			result.data.extra.AddString("producerName", _producerName)
-		endif
+		EndIf
 
 		productionsRunning = Max(0, productionsRunning - 1)
 
@@ -71,11 +71,11 @@ Type TProgrammeProducerWithProduction Extends TProgrammeProducerBase
 
 	Method CreateScript:TScript()
 		Local scriptTemplate:TScriptTemplate = GetScriptTemplateCollection().GetRandomByFilter(True, True)
-		If Not scriptTemplate then return null
+		If Not scriptTemplate Then Return Null
 
 		Local script:TScript = TScript.CreateFromTemplate(scriptTemplate)
 		script.SetOwner(-1)
-		return script
+		Return script
 	End Method
 
 
@@ -115,8 +115,8 @@ Type TProgrammeProducerWithProduction Extends TProgrammeProducerBase
 
 			'store used cast selections so amateurs sooner become celebs
 			'with specialization
-			local favoriteIndex:int = StringHelper.GetArrayIndex(person.GetGUID(), castFavoritesGUIDs)
-			if favoriteIndex = -1
+			Local favoriteIndex:Int = StringHelper.GetArrayIndex(person.GetGUID(), castFavoritesGUIDs)
+			If favoriteIndex = -1
 				castFavoritesGUIDs :+ [person.GetGUID()]
 				castFavorites :+ [person]
 				castFavoritesUsageCount :+ [0]
@@ -128,11 +128,11 @@ Type TProgrammeProducerWithProduction Extends TProgrammeProducerBase
 
 			'produced often enough with this cast?
 			'remove from favorites again
-			if castFavoritesUsageCount[favoriteIndex] > 10
+			If castFavoritesUsageCount[favoriteIndex] > 10
 				castFavorites = castFavorites[.. favoriteIndex] + castFavorites[favoriteIndex + 1 ..]
 				castFavoritesGUIDs = castFavoritesGUIDs[.. favoriteIndex] + castFavoritesGUIDs[favoriteIndex + 1 ..]
 				castFavoritesUsageCount = castFavoritesUsageCount[.. favoriteIndex] + castFavoritesUsageCount[favoriteIndex + 1 ..]
-			endif
+			EndIf
 
 			productionConcept.SetCast(i, person)
 
@@ -165,8 +165,8 @@ Print "  production company: " + productionCompany.name +"   focusPoints=" + pro
 
 
 	Method ChooseFocusPoints(productionConcept:TProductionConcept, script:TScript, focusPointPerfection:Float = 0.5)
-		local fpToSpend:int = productionConcept.productionCompany.GetFocusPoints()
-		local fpUsed:int = fpToSpend * Max(0, Min(100, focusPointPerfection * RandRange(75, 125)))/100.0
+		Local fpToSpend:Int = productionConcept.productionCompany.GetFocusPoints()
+		Local fpUsed:Int = fpToSpend * Max(0, Min(100, focusPointPerfection * RandRange(75, 125)))/100.0
 
 		'to make fp checks fulfilled:
 		productionConcept.SetProductionFocus(0, fpToSpend)
@@ -177,8 +177,8 @@ Print "  production company: " + productionCompany.name +"   focusPoints=" + pro
 
 
 
-	Method CreateProductionConcept:TProductionConcept(script:TScript = null)
-		if not script then script = CreateScript()
+	Method CreateProductionConcept:TProductionConcept(script:TScript = Null)
+		If Not script Then script = CreateScript()
 		'add the script to the collection?
 		'...
 		'or just protect the title of being used again
@@ -199,7 +199,7 @@ Print "  script: " + script.GetTitle()
 		'3) Focus points
 		ChooseFocusPoints(pc, script)
 
-		return pc
+		Return pc
 	End Method
 End Type
 
@@ -213,6 +213,13 @@ Type TProgrammeProducerMorningShows Extends TProgrammeProducerWithProduction
 
 	Method New()
 		_producerName:String = "PP_MorningShows"
+
+		'=== remove all registered event listeners
+		EventManager.UnregisterListenersArray(_eventListeners)
+		_eventListeners = New TEventListenerBase[0]
+
+		'react to "finished" special programmes
+		'_eventListeners :+ [ EventManager.registerListenerFunction("ProgrammeLicence.onGiveBackToLicencePool", onGiveBackLicenceToPool) ]
 	End Method
 
 	'override
@@ -225,16 +232,6 @@ Type TProgrammeProducerMorningShows Extends TProgrammeProducerWithProduction
 		If Not _instance Then _instance = New TProgrammeProducerMorningShows
 		Return _instance
 	End Function
-
-
-	Method New()
-		'=== remove all registered event listeners
-		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
-
-		'react to "finished" special programmes
-		'_eventListeners :+ [ EventManager.registerListenerFunction("ProgrammeLicence.onGiveBackToLicencePool", onGiveBackLicenceToPool) ]
-	End Method
 
 
 	Method onGiveBackLicenceToPool:Int( licence:TProgrammeLicence )

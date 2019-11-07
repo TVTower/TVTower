@@ -34,14 +34,11 @@ Type TScriptBase Extends TNamedGameObject
 	Field usedInProgrammeID:int
 	'amount of times this script was used in productions
 	Field usedInProductionsCount:int = 0
-	'limit (for shows - this limits how often it - and its script-clones
-	'could get produced)
-	Field usedInProductionsLimit:int = 1
 
 	'the maximum _current_ amount of productions with this script
-	Field productionLimit:Int = 0
+	Field productionLimit:Int = 1
 	'the maximum amount of productions possible for this script after reset
-	Field productionLimitMax:Int = 0
+	Field productionLimitMax:Int = 1
 
 	'flags for the created production
 	Field productionBroadcastFlags:int = 0
@@ -52,6 +49,11 @@ Type TScriptBase Extends TNamedGameObject
 	'flags for the created broadcastmaterial
 	Field broadcastTimeSlotStart:Int = -1
 	Field broadcastTimeSlotEnd:Int = -1
+
+
+	Method New()
+		SetProductionLimit(1)
+	End Method
 
 
 	Method GenerateGUID:string()
@@ -409,7 +411,7 @@ Type TScriptBase Extends TNamedGameObject
 
 
 	Method CanGetProducedCount:int()
-		local res:int = usedInProductionsLimit - usedInProductionsCount
+		local res:int = productionLimit - usedInProductionsCount
 
 		if GetSubScriptCount() > 0
 			For local sub:TScriptBase = EachIn subScripts
@@ -418,7 +420,7 @@ Type TScriptBase Extends TNamedGameObject
 		endif
 
 		'return a high number when there is no limit
-		if usedInProductionsLimit <= 0 then res = 1000
+		if productionLimit <= 0 then res = 1000
 
 		return res
 	End Method

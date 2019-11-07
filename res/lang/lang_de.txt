@@ -222,7 +222,7 @@ PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN = Programm und Trailer im Sendeplan!
 ONLY_1_BROADCAST_POSSIBLE = Nur 1 Ausstrahlung möglich!
 ONLY_X_BROADCASTS_POSSIBLE = Nur %X% Ausstrahlungen möglich!
 NO_MORE_BROADCASTS_ALLOWED = Keine weiteren Ausstrahlungen möglich!
-BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y = Ausstrahlung nur von %X% bis %Y% Uhr möglich!
+BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y = Nur zwischen %X% bis %Y% Uhr ausstrahlbar!
 
 
 AD_PROFIT		= Prämie
@@ -634,6 +634,14 @@ DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD1 = Die Produktionsfirma zählt zu
 DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD1 = und Du solltest Deine Produktionsschwerpunkte besser verteilen!
 DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE1 = und Du hast Deine Produktionsschwerpunkte mittelmäßig verteilt!
 DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD1 = und Du hast Deine Produktionsschwerpunkte sehr gut verteilt!
+
+
+PLANNED_LIVE_TIMESPAN_TODAY_FROM_X_OCLOCK = Live-Ausstrahlung heute: ab %X% Uhr.
+PLANNED_LIVE_TIMESPAN_TOMORROW_FROM_X_OCLOCK = Live-Ausstrahlung morgen: ab %X% Uhr.
+PLANNED_LIVE_TIMESPAN_IN_Y_DAYS_FROM_X_OCLOCK = Live-Ausstrahlung in %Y% Tagen: ab %X% Uhr.
+PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK = Live-Ausstrahlung heute: %X% Uhr.
+PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK = Live-Ausstrahlung morgen: %X% Uhr.
+PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK = Live-Ausstrahlung in %Y% Tagen: %X% Uhr.
 
 SHOW_PLAYERS = zeige Spieler
 PURCHASE = Einkauf

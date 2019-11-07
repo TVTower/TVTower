@@ -6404,12 +6404,12 @@ TProfiler.Enter("GameLoop")
 
 	Repeat
 		If MilliSecs() - rectangleTime > 1000
-	?bmxng
+			?bmxng
 			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations."
 			bbGCAllocCount = 0
-	?Not bmxng
+			?Not bmxng
 			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
-	?
+			?
 			rectangle_created = 0
 			vec2d_created = 0
 			rectangleTime :+ 1000
