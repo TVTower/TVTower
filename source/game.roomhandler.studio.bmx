@@ -857,74 +857,80 @@ Type RoomHandler_Studio Extends TRoomHandler
 			Else
 				Local pc:TProductionConcept = draggedGuiProductionConcept.productionConcept
 
-				'instead of returning the actual values we cluster them to only hand out
-				'raw "estimations"
-				Local scriptGenreFit:Float = pc.CalculateScriptGenreFit(True)
-				'"Nice cast you got there!"
-				Local castFit:Float = pc.CalculateCastFit(True)
-				'"You know the cast does not like you?!"
-				'values from -1 to 1
-				Local castSympathy:Float = pc.CalculateCastSympathy(True)
+				if not pc.IsPlanned()
+					text = GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_UNPLANNED_FOR_TITLEX").Replace("%TITLE%", pc.GetTitle()) + "~n~n"
+				else
+					text = GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX").Replace("%TITLE%", pc.GetTitle()) + "~n~n"
 
-				'"what a bad production company!"
-				Local productionCompanyQuality:Float = 0
-				If pc.productionCompany Then productionCompanyQuality = pc.productionCompany.GetQuality()
-				Local effectiveFocusPoints:Int = pc.CalculateEffectiveFocusPoints()
-				Local effectiveFocusPointsRatio:Float = pc.GetEffectiveFocusPointsRatio()
+					'instead of returning the actual values we cluster them to only hand out
+					'raw "estimations"
+					Local scriptGenreFit:Float = pc.CalculateScriptGenreFit(True)
+					'"Nice cast you got there!"
+					Local castFit:Float = pc.CalculateCastFit(True)
+					'"You know the cast does not like you?!"
+					'values from -1 to 1
+					Local castSympathy:Float = pc.CalculateCastSympathy(True)
 
-				text = GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX").Replace("%TITLE%", pc.GetTitle()) + "~n~n"
+					'"what a bad production company!"
+					Local productionCompanyQuality:Float = 0
+					If pc.productionCompany Then productionCompanyQuality = pc.productionCompany.GetQuality()
+					Local effectiveFocusPoints:Int = pc.CalculateEffectiveFocusPoints()
+					Local effectiveFocusPointsRatio:Float = pc.GetEffectiveFocusPointsRatio()
 
-
-				If scriptGenreFit < 0.30
-					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD")
-				ElseIf scriptGenreFit > 0.70
-					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_GOOD")
-				Else
-					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_AVERAGE")
-				EndIf
-				text :+ "~n"
+					text = GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX").Replace("%TITLE%", pc.GetTitle()) + "~n~n"
 
 
-				Local castSympathyKey:String
-				If castSympathy < - 0.10
-					castSympathyKey = "_CASTSYMPATHY_BAD"
-				ElseIf castSympathy > 0.50
-					castSympathyKey = "_CASTSYMPATHY_GOOD"
-				Else
-					castSympathyKey = "_CASTSYMPATHY_AVERAGE"
-				EndIf
-
-				If castFit < 0.30
-					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_BAD" + castSympathyKey)
-				ElseIf castFit > 0.70
-					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_GOOD" + castSympathyKey)
-				Else
-					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE" + castSympathyKey)
-				EndIf
-				text :+ "~n"
-
-
-				If pc.productionCompany
-					If productionCompanyQuality < 0.30
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD")
-					ElseIf productionCompanyQuality > 0.70
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD")
+					If scriptGenreFit < 0.30
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD")
+					ElseIf scriptGenreFit > 0.70
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_GOOD")
 					Else
-						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_AVERAGE")
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_AVERAGE")
 					EndIf
-					text :+ " "
-				EndIf
+					text :+ "~n"
 
 
-				If effectiveFocusPointsRatio < 0.30
-					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD")
-				ElseIf effectiveFocusPointsRatio> 0.70
-					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD")
-				Else
-					text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE")
-				EndIf
+					Local castSympathyKey:String
+					If castSympathy < - 0.10
+						castSympathyKey = "_CASTSYMPATHY_BAD"
+					ElseIf castSympathy > 0.50
+						castSympathyKey = "_CASTSYMPATHY_GOOD"
+					Else
+						castSympathyKey = "_CASTSYMPATHY_AVERAGE"
+					EndIf
 
-				'local effectiveFocusPoints:Int = pc.CalculateEffectiveFocusPoints()
+					If castFit < 0.30
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_BAD" + castSympathyKey)
+					ElseIf castFit > 0.70
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_GOOD" + castSympathyKey)
+					Else
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_CAST_AVERAGE" + castSympathyKey)
+					EndIf
+					text :+ "~n"
+
+
+					If pc.productionCompany
+						If productionCompanyQuality < 0.30
+							text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_BAD")
+						ElseIf productionCompanyQuality > 0.70
+							text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_GOOD")
+						Else
+							text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_PRODUCTIONCOMPANY_AVERAGE")
+						EndIf
+						text :+ " "
+					EndIf
+
+
+					If effectiveFocusPointsRatio < 0.30
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_BAD")
+					ElseIf effectiveFocusPointsRatio> 0.70
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_GOOD")
+					Else
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CONCEPT_EFFECTIVEFOCUSPOINTSRATIO_AVERAGE")
+					EndIf
+
+					'local effectiveFocusPoints:Int = pc.CalculateEffectiveFocusPoints()
+				endif
 			EndIf
 
 		'=== INFORMATION ABOUT CURRENT PRODUCTION ===

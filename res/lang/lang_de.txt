@@ -589,7 +589,6 @@ DIALOGUE_BETTY_LEVEL3_GOODBYE = Betty, hör mal, die Arbeit ruft. Ich muss kurz 
 
 DIALOGUE_STUDIO_BRING_SOME_SCRIPT = Hi %PLAYERNAME%,\n\nBring doch einfach mal ein Drehbuch vorbei. Dann können wir sicher was feines produzieren.
 DIALOGUE_STUDIO_SCRIPT_HINT = Hmmm, Ich kann Dir zu dem Drehbuch keine weiteren Details nennen. Vielleicht darf ich ja spaeter einmal Details zum Drehbuch einbringen: wie zum Beispiel das Geschlecht oder Alter einer Rolle. Das kommt aber alles auf die Entwickler an.
-DIALOGUE_STUDIO_PRODUCTIONCONCEPT_HINT = (TODO) Informationen ueber Produktionsplan (erwartete Qualität) anbieten
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION = Du willst also |b|%SCRIPTTITLE%|/b| produzieren?
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_1_PRODUCTION_PLANNED = Bisher ist |b|1 Produktion|/b| mit diesem Drehbuch geplant.
 DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED = Bisher sind |b|%X% Produktion|/b| mit diesem Drehbuch geplant.
@@ -615,6 +614,7 @@ DIALOGUE_STUDIO_GOODBYE1 = Tschüss.
 DIALOGUE_STUDIO_GOODBYE2 = Bis später.
 
 DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX = Ich kann Dir folgendes zu deiner geplanten Produktion |b|%TITLE%|/b| sagen:
+DIALOGUE_STUDIO_CONCEPT_UNPLANNED_FOR_TITLEX = Die Produktionsplanung von |b|%TITLE%|/b| ist noch unvollständig. Wenn Du die Produktionsschwerpunkte festgelegt und eine Besetzung ausgesucht hast, kann ich Dir vielleicht ein paar Tipps geben.
 DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD1 = Das Genre des Drehbuchs passt nicht!
 DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD2 = Ein anderes Genre wäre besser gewesen.
 DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_AVERAGE1 =
