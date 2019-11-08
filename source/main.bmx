@@ -1748,6 +1748,8 @@ endrem
 		EscapeMenuWindow.SetDarkenedArea( GameConfig.nonInterfaceRect.Copy() )
 		'center to this area
 		EscapeMenuWindow.SetScreenArea( GameConfig.nonInterfaceRect.Copy() )
+
+		EscapeMenuWindow.Open() 'to play sound
 	End Function
 
 
@@ -3007,6 +3009,8 @@ Type TScreen_MainMenu Extends TGameScreen
 		loadGameMenuWindow.SetDarkenedArea(New TRectangle.Init(0,0,800,600))
 		'center to this area
 		loadGameMenuWindow.SetScreenArea(New TRectangle.Init(0,0,800,600))
+
+		loadGameMenuWindow.Open() 'to play a sound
 
 		App.EscapeMenuWindow = loadGameMenuWindow
 		loadGameMenuWindow = Null
