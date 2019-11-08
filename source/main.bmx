@@ -673,20 +673,6 @@ Type TApp
 		   Not (App.ExitAppDialogue Or App.EscapeMenuWindow)
 
 			If GameRules.devConfig.GetBool(keyLS_DevKeys, False)
-				'(un)mute sound
-				'M: (un)mute all sounds
-				'SHIFT+M: (un)mute all sound effects
-				'CTRL+M: (un)mute all music
-				If KEYMANAGER.IsHit(KEY_M)
-					If KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT)
-						GetSoundManager().MuteSfx(Not GetSoundManager().HasMutedSfx())
-					ElseIf KEYMANAGER.IsDown(KEY_LCONTROL) Or KEYMANAGER.IsDown(KEY_RCONTROL)
-						GetSoundManager().MuteMusic(Not GetSoundManager().HasMutedMusic())
-					ElseIf Not KEYMANAGER.IsDown(KEY_LALT)
-						GetSoundManager().Mute(Not GetSoundManager().IsMuted())
-					EndIf
-				EndIf
-
 				If KEYMANAGER.IsHit(KEY_MINUS) And KEYMANAGER.IsDown(KEY_RCONTROL)
 					Rem
 					Global gcEnabled:Int = True
