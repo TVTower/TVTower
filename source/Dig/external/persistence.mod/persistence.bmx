@@ -460,6 +460,11 @@ Type TPersist
 			Local tid:TTypeId = TTypeId.ForObject(obj)
 			Local tidName:String = tid.Name()
 
+			'do not add empty strings as reference ...
+			If tidName = "String" and string(obj) = ""
+'				Return Null
+			EndIf
+
 			' Is this an array "Object" ?
 			If tidName.EndsWith("[]") Then
 				tidName = "_array_"

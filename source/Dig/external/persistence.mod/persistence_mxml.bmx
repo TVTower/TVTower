@@ -725,7 +725,7 @@ Type TPersist
 															If objRef Then
 																arrayType.SetArrayElement(arrayObj, i, objRef)
 															Else
-																Throw "Reference not mapped yet : " + ref
+																Throw "[Array] Reference not mapped yet : " + ref
 															End If
 														Else
 															arrayType.SetArrayElement(arrayObj, i, DeSerializeObject("", arrayNode))
@@ -746,8 +746,12 @@ Type TPersist
 										Local objRef:Object = objectMap.ValueForKey(ref)
 										If objRef Then
 											fieldObj.Set(obj, objRef)
+										'empty string - fileVersion >= 8 uses "String", not "string" ?
+										'ElseIf fieldType = "String" and objectMap.Contains(ref)
+										ElseIf fieldType.ToLower() = "string" and objectMap.Contains(ref)
+											fieldObj.Set(obj, "")
 										Else
-											Throw "Reference not mapped yet : " + ref
+											Throw "[Field] Reference not mapped yet : " + ref
 										End If
 									Else
 										'Ronny
@@ -909,8 +913,20 @@ Type TPersist
 				If objRef Then
 					obj = objRef
 					Return obj
+				'empty string?
+				ElseIf node.getAttribute("type") = "String" and objectMap.Contains(ref)
+					Return Null
 				Else
-					Throw "Reference not mapped yet : " + ref
+rem
+					'correct wrongly set reference for empty strings..
+					if node.getAttribute("Type") = "String"
+						obj = object("")
+		objectMap.Insert(node.getAttribute("id"), obj)
+						AddObjectRef(obj)
+						Return obj
+					EndIf
+endrem
+					Throw "[Object] Reference not mapped yet : " + ref
 				End If
 			EndIf
 
@@ -968,7 +984,7 @@ Type TPersist
 												If objRef Then
 													objType.SetArrayElement(obj, i, objRef)
 												Else
-													Throw "Reference not mapped yet : " + ref
+													Throw "[Array2] Reference not mapped yet : " + ref
 												End If
 											Else
 												objType.SetArrayElement(obj, i, DeSerializeObject("", arrayNode))

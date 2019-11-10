@@ -55,7 +55,6 @@ Type TSoundManager_RtAudio Extends TSoundManager
 
 
 	Method InitSpecificAudioEngine:Int(engine:String)
-	If engine = "AUTOMATIC" Then engine = "WINDOWS_DS"
 		TMaxModRtAudioDriver.Init(engine)
 		'
 		If Not SetAudioDriver("MaxMod RtAudio")

@@ -613,7 +613,7 @@ DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST = Ich brauche eine Einkaufsliste für die
 DIALOGUE_STUDIO_GOODBYE1 = Tschüss.
 DIALOGUE_STUDIO_GOODBYE2 = Bis später.
 
-DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX = Ich kann Dir folgendes zu deiner geplanten Produktion |b|%TITLE%|/b| sagen:
+DIALOGUE_STUDIO_CONCEPT_INTRO_FOR_TITLEX = Ich kann Dir folgendes zu Deiner geplanten Produktion |b|%TITLE%|/b| sagen:
 DIALOGUE_STUDIO_CONCEPT_UNPLANNED_FOR_TITLEX = Die Produktionsplanung von |b|%TITLE%|/b| ist noch unvollständig. Wenn Du die Produktionsschwerpunkte festgelegt und eine Besetzung ausgesucht hast, kann ich Dir vielleicht ein paar Tipps geben.
 DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD1 = Das Genre des Drehbuchs passt nicht!
 DIALOGUE_STUDIO_CONCEPT_SCRIPT_GENRE_BAD2 = Ein anderes Genre wäre besser gewesen.
