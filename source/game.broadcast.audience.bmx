@@ -774,7 +774,7 @@ Type TAudience {_exposeToLua="selected"}
 		sb.Append("::ab=")
 		If audienceMale Then sb.Append( audienceMale.SerializeTAudienceBaseToString() )
 
-		sb.Append(id).Append("::ab=")
+		sb.Append("::ab=")
 		If audienceFemale Then sb.Append( audienceFemale.SerializeTAudienceBaseToString() )
 
 		Return sb.ToString()
