@@ -1790,7 +1790,7 @@ price :* Max(1, minAudience/1000)
 		'days left for this contract
 		If daysLeft > 1 Or daysLeft = 0
 			skin.RenderBox(contentX + 5, contentY, 96, -1, daysLeft +" "+ getLocale("DAYS"), "runningTime", "neutral", skin.fontBold)
-		ElseIf daysLeft > 1
+		ElseIf daysLeft = 1
 			skin.RenderBox(contentX + 5, contentY, 96, -1, daysLeft +" "+ getLocale("DAY"), "runningTime", "neutral", skin.fontBold)
 		Else
 			skin.RenderBox(contentX + 5, contentY, 96, -1, "---", "runningTime", "neutral", skin.fontBold)
