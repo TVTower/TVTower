@@ -462,7 +462,7 @@ Type TPersist
 
 			'do not add empty strings as reference ...
 			If tidName = "String" and string(obj) = ""
-'				Return Null
+				Return Null
 			EndIf
 
 			' Is this an array "Object" ?

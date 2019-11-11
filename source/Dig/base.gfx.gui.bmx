@@ -384,14 +384,7 @@ Type TGUIManager
 
 		Local guiObjects:TGuiObject[]
 		'from TOP to BOTTOM (user clicks to visible things - which are at the top)
-		Local i:Int = list.Count()
-		While i
-			i :- 1
-			'should not need the check here
-			'If i >= list.Count() Then Continue
-			Local obj:TGUIobject = TGUIobject(list.ValueAtIndex(i))
-			If Not obj Then Continue
-
+		For Local obj:TGUIobject = EachIn list.ReverseEnumerator()
 			'return array if we reached the limit
 			If limit > 0 And guiObjects.length >= limit Then Return guiObjects
 
@@ -408,7 +401,7 @@ Type TGUIManager
 				guiObjects = guiObjects[..guiObjects.length+1]
 				guiObjects[guiObjects.length-1] = obj
 			EndIf
-		Wend
+		Next
 
 		Return guiObjects
 	End Method
@@ -567,17 +560,9 @@ Type TGUIManager
 		'then the rest
 		If GUIMANAGER_TYPES_NONDRAGGED & updateTypes
 			'from top to bottom
-			Local i:Int = list.Count()
-			While i
-				i :- 1
-				If i >= list.Count() Then Continue
-				Local obj:TGUIObject = TGUIobject(list.ValueAtIndex(i))
-				If Not obj Then Continue
+			For Local obj:TGUIobject = EachIn list.ReverseEnumerator()
 				'all dragged objects got already updated...
 				If ListDragged.Contains(obj) Then Continue
-
-				'If ListDraggedBackup.contains(obj) Then Continue
-
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
 				'avoid getting updated multiple times
@@ -594,7 +579,7 @@ Type TGUIManager
 				EndIf
 				'fire event
 				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onUpdate", Null, obj ) )
-			Wend
+			Next
 		EndIf
 	End Method
 
@@ -645,14 +630,8 @@ Type TGUIManager
 
 		If GUIMANAGER_TYPES_DRAGGED & drawTypes
 			'draw all dragged objects above normal objects...
-			Local i:Int = ListDragged.Count()
-			While i
-				i :- 1
-				'should not need the check here
-				'If i >= list.Count() Then Continue
-				Local obj:TGUIobject = TGUIobject(ListDragged.ValueAtIndex(i))
-				If Not obj Then Continue
-
+			'from bottom to top
+			For Local obj:TGUIobject = EachIn ListDragged.ReverseEnumerator()
 				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
 				'avoid getting drawn multiple times
@@ -664,7 +643,7 @@ Type TGUIManager
 
 				'fire event
 				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", Null, obj ) )
-			Wend
+			Next
 		EndIf
 	End Method
 End Type

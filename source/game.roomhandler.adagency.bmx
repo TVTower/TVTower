@@ -1233,7 +1233,8 @@ endrem
 	Function onChangeProgrammeCollection:Int( triggerEvent:TEventBase )
 		If Not CheckObservedFigureInRoom("adagency") Then Return False
 
-		GetInstance().RefreshGuiElements()
+		GetInstance().haveToRefreshGuiElements = True
+		'GetInstance().RefreshGuiElements()
 	End Function
 
 
