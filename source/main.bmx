@@ -2332,10 +2332,12 @@ Type TSaveGame Extends TGameState
 		GetGraphicsManager().Cls()
 		DrawPixmap(messageWindowBackground, 0,0)
 
-		If Load
-			messageWindow.SetValue( getLocale("SAVEGAME_GETS_LOADED") + "~n" + text)
+		If Load = 1
+			messageWindow.SetValue( GetLocale("SAVEGAME_GETS_LOADED") + "~n" + text)
+		ElseIf Load = 0
+			messageWindow.SetValue( GetLocale("SAVEGAME_GETS_CREATED") + "~n" + text )
 		Else
-			messageWindow.SetValue( getLocale("SAVEGAME_GETS_CREATED") + "~n" + text )
+			messageWindow.SetValue( text )
 		EndIf
 
 		messageWindow.Update()
@@ -2531,6 +2533,13 @@ Type TSaveGame Extends TGameState
 		'=== CHECK SAVEGAME ===
 		If FileType(saveName) <> 1
 			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is missing.", LOG_SAVELOAD | LOG_ERROR)
+
+			UpdateMessage(2, "|b|ERROR:|/b|~nSavegame file ~q"+saveName+"~q is missing.", 0, True)
+			'wait a second
+			Delay(2000)
+			'close message window
+			If messageWindow Then messageWindow.Close()
+
 			Return False
 		EndIf
 
