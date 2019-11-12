@@ -311,7 +311,6 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 	Method onAppearanceChanged:Int()
 		Super.onAppearanceChanged()
 		InvalidateContentScreenRect()
-		print "on change: " + GetContentScreenRect().GetW()
 		list.SetSize(GetContentScreenRect().GetW()- 2, -1)
 	End Method
 
@@ -618,7 +617,11 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 		'update information
 		detailsBackgroundH = actionButton.GetScreenRect().GetH() + 2*6 + (showDetails<>False)*(24 + (boxH+2)*2) + showPermissionText * permissionTextH
 
-		listBackgroundH = GetBodyHeight() - detailsBackgroundH
+		If listBackgroundH <> GetBodyHeight() - detailsBackgroundH
+			listBackgroundH = GetBodyHeight() - detailsBackgroundH
+			'InvalidateLayout()
+			UpdateLayout()
+		EndIf
 
 		skin.RenderContent(contentX, currentY, contentW, listBackgroundH, "2")
 		skin.RenderContent(contentX, currentY + listBackgroundH, contentW, detailsBackgroundH, "1_top")
@@ -889,7 +892,11 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 			endif
 		EndIf
 
-		listBackgroundH = GetBodyHeight() - detailsBackgroundH
+		If listBackgroundH <> GetBodyHeight() - detailsBackgroundH
+			listBackgroundH = GetBodyHeight() - detailsBackgroundH
+			'InvalidateLayout()
+			UpdateLayout()
+		EndIf
 
 		skin.RenderContent(contentX, currentY, contentW, listBackgroundH, "2")
 		skin.RenderContent(contentX, currentY + listBackgroundH, contentW, detailsBackgroundH, "1_top")
@@ -1294,7 +1301,11 @@ endrem
 			EndIf
 		EndIf
 
-		listBackgroundH = GetBodyHeight() - detailsBackgroundH
+		If listBackgroundH <> GetBodyHeight() - detailsBackgroundH
+			listBackgroundH = GetBodyHeight() - detailsBackgroundH
+			'InvalidateLayout()
+			UpdateLayout()
+		EndIf
 
 		skin.RenderContent(contentX, currentY, contentW, listBackgroundH, "2")
 		skin.RenderContent(contentX, currentY + listBackgroundH, contentW, detailsBackgroundH, "1_top")
