@@ -137,7 +137,7 @@ Type TScriptTemplate Extends TScriptBase
 
 	Field targetGroup:Int = -1
 
-	Field productionLimit:int = -1
+	Field productionLimit:int = 1
 	Field productionTimes:int = 0
 
 	'manipulators for the production using a script
