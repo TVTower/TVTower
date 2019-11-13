@@ -60,7 +60,7 @@
 						<en>Wirschi and the photographer</en>
 					</title>
 					<description>
-						<de>Kommissar Wirsch wird mit Anzeigen überhäuft. Die Einnwohner fühlen sich von einem Fotografen in ihrer Privatsphäre belästigt. Gibt es da eine Handhabe?</de>
+						<de>Kommissar Wirsch wird mit Anzeigen überhäuft. Die Einwohner fühlen sich von einem Fotografen in ihrer Privatsphäre belästigt. Gibt es da eine Handhabe?</de>
 						<en>Inspector Wirsch is called due to a photographer. The people don't want to see picutres of them in delicate moments. Are there any possibilitys to stopp the photographer?</en>
 					</description>
 					<ratings critics="32" speed="50" />
@@ -71,7 +71,7 @@
 						<en>Wirschi and the border stone</en>
 					</title>
 					<description>
-						<de>Kommissar Wirsch muß einen vermissten Grenzstein sucehn. Die spannende Aufgabe wird durch die demotivierte Schauspielerleistung untermalt.</de>
+						<de>Kommissar Wirsch muß einen vermissten Grenzstein suchen. Die spannende Aufgabe wird durch die demotivierte Schauspielerleistung untermalt.</de>
 						<en>Inspector Wirsch has to search a missing border stone. This spectactular case was combined with demotivated actors.</en>
 					</description>
 					<ratings critics="12" speed="8" />
@@ -82,7 +82,7 @@
 						<en>The Assistant becomes a singstar</en>
 					</title>
 					<description>
-						<de>[2|Full] singt in einer Bar. Ein Plattenproduzent endeckt sie. Der traurige Abschied beginnt</de>
+						<de>[2|Full] singt in einer Bar. Ein Plattenproduzent entdeckt sie. Der traurige Abschied beginnt</de>
 						<en>[2|Full] sings in a bar. A producer is there and takes her under contract. A sad good bye show.</en>
 					</description>
 					<ratings critics="50" speed="25" />
@@ -97,7 +97,7 @@
 				<en>Mine! All MINE!</en>
 			</title>
 			<description>
-				<de>Ein Mann, der Alles in der Welt als sein Eigentum betracht, rastet aus, als ihm eine Krawatte entwendet wird. Eine der ersten Ammoklaufverfilmungen. </de>
+				<de>Ein Mann, der Alles in der Welt als sein Eigentum betracht, rastet aus, als ihm eine Krawatte entwendet wird. Eine der ersten Amoklaufverfilmungen. </de>
 				<en>A man, thinks everything in the world belongs to him. Somebody steals one of his ties. Time to show the world: "It is mine! ALL MINE!"</en>
 			</description>
 			<staff>
@@ -2463,7 +2463,7 @@
 				<en>ISS - Searching for %NAME%</en>
 			</title>
 			<description>
-				<de>Die Geschichte der ISS. Ausführlich dargestellt und mit viel Wissenwertem ausgeschmückt.</de>
+				<de>Die Geschichte der ISS. Ausführlich dargestellt und mit viel Wissenswertem ausgeschmückt.</de>
 				<en>The history of the ISS. Everything you need to know. Even more than that.</en>
 			</description>
 			<variables>
@@ -2493,7 +2493,7 @@
 				<en>MIR - Searching for %NAME%</en>
 			</title>
 			<description>
-				<de>Die Geschichte der MIR. Ausführlich dargestellt und mit viel Wissenwertem ausgeschmückt.</de>
+				<de>Die Geschichte der MIR. Ausführlich dargestellt und mit viel Wissenswertem ausgeschmückt.</de>
 				<en>The history of the MIR. Everything you need to know. Even more than that.</en>
 			</description>
 			<variables>
