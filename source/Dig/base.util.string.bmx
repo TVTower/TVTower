@@ -324,6 +324,17 @@ Type StringHelper
 	End Function
 
 
+	Function StringHash:Long(txt:String)
+		Local hash:Long = 5381
+
+		For Local c:Int = EachIn txt
+			hash = ((hash Shl 5) + hash) + c
+		Next
+
+		Return hash
+	End Function
+
+
 	Function IsAlpha:Int( ch:Int )
 		Return (ch>=Asc("A") And ch<=Asc("Z")) Or (ch>=Asc("a") And ch<=Asc("z"))
 	End Function

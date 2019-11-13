@@ -160,9 +160,7 @@ Function ConvertInsignificantToCelebrity:TProgrammePersonBase(insignifant:TProgr
 	endif
 
 
-	'maybe first movie was done at age of 10 - 40
-	'also avoid days 29,30,31 - not possible in all months
-	person.dayOfBirth = (earliestProduction - RandRange(10,40))+"-"+RandRange(1,12)+"-"+RandRange(1,28)
+	person.FixDayOfBirthDate(earliestProduction)
 
 	'TODO:
 	'Wenn GetAge > 50 dann mit Chance (steigend bis zu 100%)
@@ -232,6 +230,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 	Const MAX_XP:int = 10000
 
 	Global PersonsGainExperienceForProgrammes:int = True
+	Global daysPerMonth:int[] = [31,28,31,30,31,30,31,30,31,30,31,30,31]
+	Global daysPerMonthLeap:int[] = [31,29,31,30,31,30,31,30,31,30,31,30,31]
 
 
 	Method GenerateGUID:string()
@@ -750,7 +750,9 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 	'override
 	Method GetAge:int()
-		if dayOfBirth = "0000-00-00" then return Super.GetAge()
+		If dayOfBirth = "0000-00-00"
+			FixDayOfBirthDate()
+		EndIf
 
 		local dob:Long = GetWorldTime().GetTimeGoneFromString(dayOfBirth)
 		'no dob was given
@@ -760,6 +762,51 @@ Type TProgrammePerson extends TProgrammePersonBase
 		if now < dob then return 0
 
 		return GetWorldTime().GetYear( now - dob)
+	End Method
+
+
+	Method FixDayOfBirthDate:Int(earliestYear:Int = -1)
+		if earliestYear = -1
+			For local programmeDataID:Int = EachIn GetProducedProgrammeIDs()
+				local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByID(programmeDataID)
+
+				if earliestYear = -1
+					earliestYear = programmeData.GetYear()
+				else
+					earliestYear = Min(programmeData.GetYear(), earliestYear)
+				endif
+			Next
+
+			'fall back to current year
+			if earliestYear = -1 then earliestYear = GetWorldTime().GetYear()
+		endif
+
+		'maybe first movie was done at age of 10 - 40
+		'also avoid days 29,30,31 - not possible in all months
+		'dayOfBirth = (earliestYear - RandRange(10,40))+"-"+RandRange(1,12)+"-"+RandRange(1,28)
+
+		'do not use randomness - stay same each time
+		local fName:String = GetFullName()
+		'hash might be negative - think positive now
+		local hash:Long = abs(StringHelper.StringHash(fName))
+		rem
+		If hash > 0
+			For local i:int = 0 until fName.length
+				hash :+ fName[i]
+			Next
+		EndIf
+		endrem
+
+		local year:int = earliestYear - ((hash + 1) mod 30 + 10 ) 'subtract 10-40 years
+		local month:int = (hash + 5) mod 12 + 1 '1 - 12
+		local daysInMonth:int
+		If (year Mod 400 = 0) or (year Mod 4 = 0 and year Mod 100 <> 0)
+			daysInMonth = daysPerMonthLeap[month -1]
+		Else
+			daysInMonth = daysPerMonth[month -1]
+		EndIf
+		local day:int = (hash + 7) mod daysInMonth + 1
+		dayOfBirth = year + "-" + month + "-" + day
 	End Method
 
 
