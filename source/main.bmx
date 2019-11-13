@@ -6334,7 +6334,7 @@ End Function
 
 ?bmxng
 Extern
-    Global bbGCAllocCount:ULong="bbGCAllocCount"
+ '   Global bbGCAllocCount:ULong="bbGCAllocCount"
 End Extern
 ?
 Function StartTVTower(start:Int=True)
@@ -6404,8 +6404,9 @@ TProfiler.Enter("GameLoop")
 	Repeat
 		If MilliSecs() - rectangleTime > 1000
 			?bmxng
-			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations."
-			bbGCAllocCount = 0
+			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
+'			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations."
+'			bbGCAllocCount = 0
 			?Not bmxng
 			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
 			?

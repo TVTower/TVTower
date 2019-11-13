@@ -1991,6 +1991,8 @@ Type TGUICastListItem Extends TGUISelectListItem
 	Field lastDisplayJobID:int = -1
 	Field selectJobID:int = -1
 
+	Global yearColor:TColor = new TColor.Create(80,80,80, 0.8)
+
 	Const paddingBottom:Int	= 5
 	Const paddingTop:Int = 0
 
@@ -2407,7 +2409,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 			'=== LAST PRODUCTIONS AREA ===
 			skin.RenderContent(contentX, contentY, contentW, lastProductionsH, "2")
 
-			contentY :+ 3
+			contentY :+ 5
 			if celebrity
 				'last productions
 				if celebrity.GetProducedProgrammeIDs().length > 0
@@ -2419,17 +2421,19 @@ Type TGUICastListItem Extends TGUISelectListItem
 						i :+ 1
 						if not production then continue
 
-						skin.fontSemiBold.drawBlock(production.GetYear(), contentX + 5, contentY + lastProductionEntryH*entryNum, contentW, lastProductionEntryH, null, skin.textColorNeutral)
+'						skin.fontSemiBold.drawBlock(production.GetYear(), contentX + 5, contentY + lastProductionEntryH*entryNum, contentW, lastProductionEntryH, null, skin.textColorNeutral)
+						GetBitmapfont("default", 12, BOLDFONT).drawBlock(production.GetYear(), contentX + 5, contentY + lastProductionEntryH*entryNum + 1, contentW, lastProductionEntryH, null, yearColor)
 						if production.IsInProduction()
-							skin.fontNormal.drawBlock(production.GetTitle() + " (In Produktion)", contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, null, skin.textColorNeutral)
+							GetBitmapfont("default", 12).drawBlock(production.GetTitle() + " (In Produktion)", contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, null, skin.textColorNeutral)
 						else
-							skin.fontNormal.drawBlock(production.GetTitle(), contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, null, skin.textColorNeutral)
+						'	skin.fontNormal.drawBlock(production.GetTitle(), contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, null, skin.textColorNeutral)
+							GetBitmapfont("default", 12).drawBlock(production.GetTitle(), contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, null, skin.textColorNeutral)
 						endif
 						entryNum :+1
 					Wend
 				endif
 			endif
-			contentY :+ lastProductionsH - 3
+			contentY :+ lastProductionsH - 5
 		endif
 
 		'=== BARS / BOXES AREA ===

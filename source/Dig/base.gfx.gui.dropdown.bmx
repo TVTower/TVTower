@@ -163,7 +163,6 @@ Type TGUIDropDown Extends TGUIInput
 			GUIManager.UpdateState_foundClickedObject[1] = receiver
 			MouseManager.SetClickHandled(1)
 			MouseManager.ResetClicked(1)
-print "found clicked object    stillclicked=" + MouseManager.IsClicked(1)
 			SetOpen(False)
 		EndIf
 
