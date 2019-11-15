@@ -303,6 +303,20 @@ Type TAchievement Extends TAchievementBaseType
 	End Method
 
 
+	'Override
+	Method Remove()
+		For local r:TAchievementReward = EachIn _rewards
+			r.Remove()
+		Next
+
+		For local t:TAchievementTask = EachIn _tasks
+			t.Remove()
+		Next
+
+		Super.Remove()
+	End Method
+
+
 	Method ToString:string()
 		local res:string = ""
 		res :+ "Achievement ~q" + GetTitle() + "~q (" + GetGuid() + ")" + "~n"
@@ -670,9 +684,10 @@ Type TAchievementTask Extends TAchievementBaseType
 	'	RegisterEventListeners()
 	'End Method
 
-
-	Method Delete()
+	'override
+	Method Remove()
 		EventManager.UnregisterListenersArray(eventListeners)
+		eventListeners = new TEventListenerBase[0]
 	End Method
 
 

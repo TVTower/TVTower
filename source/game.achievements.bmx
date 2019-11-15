@@ -10,19 +10,12 @@ Import "game.player.finance.bmx"
 
 Type TAchievementTask_FulfillAchievements extends TAchievementTask
 	Field achievementGUIDs:string[]
-	Field eventListeners:TEventListenerBase[] {nosave}
-
 
 	Method New()
 'print "register fulfill listeners"
 		eventListeners :+ [EventManager.registerListenerMethod( "Achievement.OnComplete", self, "OnCompleteAchievement" ) ]
 	End Method
 
-
-	Method Delete()
-		EventManager.UnregisterListenersArray(eventListeners)
-		eventListeners = new TEventListenerBase[0]
-	End Method
 
 
 	'override

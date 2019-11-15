@@ -50,8 +50,11 @@ Import Brl.threads
 Import "base.util.logger.bmx"
 Import "base.util.data.bmx"
 Import "base.util.time.bmx"
+?not bmxng
 Import "external/bah.objectlist.bmx"
-
+?bmxng
+Import Brl.ObjectList
+?
 
 
 
@@ -286,6 +289,37 @@ Type TEventManager
 				EndIf
 			EndIf
 		EndIf
+	End Method
+
+
+	Method DumpListeners()
+		Print "==== EVENT MANAGER DUMP LISTENERS ===="
+		Print "Events: " + _events.Count()
+
+		local listeners:int
+		For local l:TObjectList = EachIn EventManager._listeners.Values()
+			listeners :+ l.Count()
+		Next
+		Print "Event Listeners: " + listeners
+
+		For local s:string = EachIn EventManager._listeners.Keys()
+			For local elb:TEventListenerBase = EachIn TObjectList(EventManager._listeners.ValueForKey(s))
+				If TEventListenerRunFunction(elb)
+					print "KEY="+s+"  :: run function"
+				ElseIf TEventListenerRunMethod(elb)
+					local tyd:TTypeId = TTypeID.ForObject(TEventListenerRunMethod(elb)._objectInstance)
+					if tyd
+						print "KEY="+s+"  :: run method. instance "+ tyd.name
+					else
+						print "KEY="+s+"  :: run method. instance UNKNOWN"
+					endif
+				Else
+					print "KEY="+s+"  :: run " + TTypeID.ForObject(elb).name
+				EndIf
+			Next
+		Next
+
+		Print "====="
 	End Method
 
 

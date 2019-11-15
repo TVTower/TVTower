@@ -11,6 +11,13 @@ Type TGameObjectCollection
 	Field _entriesMapEnumerator:TNodeEnumerator {nosave}
 
 	Method Initialize:TGameObjectCollection()
+		'call Remove() for all objects so they can unregister stuff
+		'and tidy up in general
+		For local o:TGameObject = EachIn entriesID.Values()
+			o.Remove()
+		Next
+
+
 		entries.Clear()
 		entriesID.Clear()
 		entriesCount = -1

@@ -183,7 +183,6 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		EventManager.UnregisterListenersArray(_eventListeners)
 		_eventListeners = new TEventListenerBase[0]
 		_eventListeners :+ [ EventManager.registerListenerMethod( "programmeproduction.onFinish", self, "onFinishProgrammeProduction" ) ]
-
 	End Method
 
 
@@ -757,17 +756,21 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	Method CreateProductionConcept:Int(script:TScript)
-		if not script then return False
+	Method CreateProductionConcept:TProductionConcept(script:TScript)
+		if not script then return Null
 		if not CanCreateProductionConcept(script)
 			'emit event to inform others (eg. for ingame warning)
 			EventManager.triggerEvent( TEventSimple.Create("programmecollection.onCreateProductionConceptFailed", new TData.AddNumber("productionConceptCount", GetProductionConceptCollection().GetProductionConceptsByScript(script).length).AddNumber("playerID", owner)) )
 
-			return False
+			return Null
 		endif
 
-		AddProductionConcept( new TProductionConcept.Initialize(owner, script) )
-		return True
+		Local pc:TProductionConcept = new TProductionConcept.Initialize(owner, script)
+		If AddProductionConcept( pc )
+			Return pc
+		Else
+			Return null
+		EndIf
 	End Method
 
 

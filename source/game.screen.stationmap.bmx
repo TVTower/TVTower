@@ -2385,11 +2385,11 @@ Type TScreenHandler_StationMap
 				guiShowStations[i].GetTooltip()._maxContentDim = New TVec2D.Init(120,-1)
 				guiShowStations[i].GetTooltip().SetOrientationPreset("BOTTOM", 5)
 			Next
+
+			satelliteSelectionFrame = New TSatelliteSelectionFrame
+			mapInformationFrame = New TStationMapInformationFrame
 		EndIf
 
-
-		satelliteSelectionFrame = New TSatelliteSelectionFrame
-		mapInformationFrame = New TStationMapInformationFrame
 
 		'=== reset gui element options to their defaults
 		For Local i:Int = 0 Until guiShowStations.length
