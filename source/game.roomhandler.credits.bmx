@@ -103,14 +103,17 @@ Type RoomHandler_Credits extends TRoomHandler
 		SetLanguage()
 	End Method
 
-		
+
 	Method CleanUp()
+		'remove old roles
+		roles = new TCreditsRole[0]
+
 		'=== unset cross referenced objects ===
 		'
-		
+
 		'=== remove obsolete gui elements ===
 		'
-		
+
 		'=== remove all registered instance specific event listeners
 		'EventManager.unregisterListenersByLinks(_localEventListeners)
 		'_localEventListeners = new TLink[0]
@@ -121,7 +124,7 @@ Type RoomHandler_Credits extends TRoomHandler
 		if GetInstance() <> self then self.CleanUp()
 		GetRoomHandlerCollection().SetHandler("credits", GetInstance())
 	End Method
-	
+
 
 
 	'helper to create a role and store it in the array
