@@ -81,6 +81,11 @@ End Extern
 'end from maxlua
 
 
+Type TLuaEngineSuperDummy
+End Type
+Global LuaEngineSuperDummy:TLuaEngineSuperDummy = new TLuaEngineSuperDummy
+
+
 Type TLuaEngine
 	Global list:TList = CreateList()
 	Global lastID:Int = 0
@@ -116,6 +121,7 @@ Type TLuaEngine
 	Field whiteListCreated:Int = False
 
 
+
 	Function Create:TLuaEngine(source:String, uri:String="")
 		Local obj:TLuaEngine = New TLuaEngine.SetSource(source)
 		obj._uri = uri
@@ -145,9 +151,21 @@ Type TLuaEngine
 
 
 	Method Delete()
-		luaL_unref(getLuaState(), LUA_REGISTRYINDEX, _functionEnvironmentRef)
-		luaL_unref(getLuaState(), LUA_REGISTRYINDEX, _chunk)
+		if _luaState
+			luaL_unref(getLuaState(), LUA_REGISTRYINDEX, _functionEnvironmentRef)
+			luaL_unref(getLuaState(), LUA_REGISTRYINDEX, _chunk)
+			luaL_unref(getLuaState(), LUA_REGISTRYINDEX, _objMetaTable)
+
+			lua_close(_luaState)
+			_luaState = Null
+		endif
 	End Method
+
+
+	Function RemoveEngine(engine:TLuaEngine)
+		list.Remove(engine)
+		TLogger.Log("TLuaEngine", "RemoveEngine(): engine removed.", LOG_DEBUG)
+	End Function
 
 
 	Function FindEngine:TLuaEngine(LuaState:Byte Ptr)
@@ -245,8 +263,10 @@ Type TLuaEngine
 		'set self/super object
 		lua_pushvalue(getLuaState(), -1)
 		lua_setfield(getLuaState(), -2, "self")
-		lua_pushobject(Self)
+
+		lua_pushobject(LuaEngineSuperDummy)
 		lua_setfield(getLuaState(), -2, "super")
+
 		'set meta indices
 		lua_pushcfunction(getLuaState(), IndexSelf)
 		lua_setfield(getLuaState(), -2, "__index")
@@ -387,9 +407,9 @@ Type TLuaEngine
 	'adding a new method/field/func to lua
 	Method Index:Int( )
 		Local obj:Object = lua_unboxobject(getLuaState(), 1)
-		'ignore this "TLuaEngine"-instance, it is passed if Lua scripts
-		'call Lua-objects and functions ("toNumber")
-		If obj = Self Then Return False
+		'ignore this LuaEngineSuperdummy, it is passed if Lua scripts
+		'call Lua-objects and functions ("toNumber", "pairs")
+		If obj = LuaEngineSuperDummy Then Return False
 
 		Local typeId:TTypeId = TTypeId.ForObject(obj)
 		'by default allow read access to lists/maps ?!
