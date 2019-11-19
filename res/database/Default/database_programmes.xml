@@ -1586,12 +1586,12 @@ Keine leichte Aufgabe für [1|Full]</de>
 		</programme>
 		<programme id="c714764b-adf6-423d-9d6e-c8c8aa92aa0e" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0036818" rt_id="0" creator="">
 			<title>
-				<de>Der Streichholzhammerpunsch - Jetzt wird's heiß!</de>
+				<de>Die Streichholzhammerbowle</de>
 				<en></en>
 			</title>
 			<description>
-				<de>Dachbodenfund der bisher unbekannten Fortsetzung um den Schüler Pfeiffer, der die Schulzeit nachholt und den Lehrern neue Streiche spielt.
-Klassiker mit [1|Full]</de>
+				<de>Die Geschichte um den Schüler Pfeiffer, der die Schulzeit auskostet.
+Bestechender Klassiker mit [1|Full]</de>
 				<en></en>
 			</description>
 			<staff>
@@ -1603,8 +1603,8 @@ Klassiker mit [1|Full]</de>
 				<member index="5" function="2">aa96c3b5-5a8b-481b-a426-bb5c4b059132</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1978" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="0.67" />
-			<ratings critics="32" speed="51" outcome="28" />
+			<data country="D" year="1944" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="0.67" />
+			<ratings critics="89" speed="65" outcome="65" />
 		</programme>
 		<programme id="8a018228-cd6a-49eb-88fb-ade85d730cea" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0053604" rt_id="0" creator="">
 			<title>
