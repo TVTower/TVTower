@@ -16,7 +16,6 @@ struct BBObjectContainer {
 
 void lua_boxobject( lua_State *L,BBObject *obj ){
 	void *p;
-	BBRETAIN( obj );
 
 	struct BBObjectContainer * uc = (struct BBObjectContainer *)GC_MALLOC_UNCOLLECTABLE(sizeof(struct BBObjectContainer));
 	uc->o = obj;
