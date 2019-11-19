@@ -45,6 +45,14 @@ Type TAiBase
 	End Method
 
 
+	Method Delete()
+		If _luaEngine
+			TLuaEngine.RemoveEngine(_luaEngine)
+			_luaEngine = Null
+		EndIf
+	End Method
+
+
 	Method GetLuaEngine:TLuaEngine()
 		'register engine
 		if not _luaEngine then _luaEngine = TLuaEngine.Create("")
