@@ -13,25 +13,14 @@ Type THotspot Extends TRenderableEntity
 	Field tooltipDescription:String	= ""
 	Field hovered:Int = False
 	Field enterable:Int = False
-	Global list:TList = CreateList()
 
 
 	Method Create:THotSpot(name:String, x:Int,y:Int,w:Int,h:Int)
 		area = New TRectangle.Init(x,y,w,h)
 		Self.name = name
 
-		list.AddLast(Self)
 		Return Self
 	End Method
-
-
-	Function Get:THotspot(id:Int)
-		For Local hotspot:THotspot = EachIn list
-			If hotspot.id = id Then Return hotspot
-		Next
-
-		Return Null
-	End Function
 
 
 	Method setTooltipText( text:String="", description:String="" )
