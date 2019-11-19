@@ -376,8 +376,11 @@ Type TLuaEngine
 		If obj = Null
 			lua_pushnil(getLuaState())
 		Else
+			'create metatable if not done yet
+			getObjMetaTable()
+
 			lua_boxobject(getLuaState(), obj)
-			lua_rawgeti(getLuaState(), LUA_REGISTRYINDEX, getObjMetaTable())
+			lua_rawgeti(getLuaState(), LUA_REGISTRYINDEX, _objMetaTable)
 			lua_setmetatable(getLuaState(),-2)
 		EndIf
 	End Method
