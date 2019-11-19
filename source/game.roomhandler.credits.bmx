@@ -65,12 +65,12 @@ Type RoomHandler_Credits extends TRoomHandler
 		role.addCast("...und Motivationsteam")
 		'old testers (< 2007)
 		'role.addCast("Ceddy")
-		'role.addCast("dirkw")
 		'role.addCast("djmetzger")
 
 		role.addCast("Basti")
 		role.addCast("DannyF")
 		role.addCast("DerFronck")
+		role.addCast("dirkw")
 		role.addCast("domi")
 		role.addCast("Helmut")
 		role.addCast("Kurt TV")

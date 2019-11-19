@@ -42,6 +42,12 @@ Type TPlayerProgrammeCollectionCollection
 	Method Set:int(playerID:int, plan:TPlayerProgrammeCollection)
 		if playerID <= 0 then return False
 		if playerID > plans.length then plans = plans[.. playerID]
+
+		if plans[playerID-1] and plans[playerID-1] <> plan
+			'prepare old plan for removal
+			plans[playerID-1].Reset()
+		EndIf
+
 		plans[playerID-1] = plan
 	End Method
 
@@ -147,9 +153,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	'objects in the suitcase but not signed
 	Field suitcaseAdContracts:TList	= CreateList()
 	Field justAddedProgrammeLicences:TList = CreateList() {nosave}
+
+	Field _eventListeners:TEventListenerBase[] {nosave}
+
 	'FALSE to avoid recursive handling (network)
 	Global fireEvents:int = TRUE
-	Global _eventListeners:TEventListenerBase[]
 
 
 	Method Create:TPlayerProgrammeCollection(owner:int)
@@ -164,7 +172,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	Method Initialize:Int()
+	Method Reset()
 		'invalidate
 		_programmeLicences = null
 
@@ -181,6 +189,12 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		news.Clear()
 
 		EventManager.UnregisterListenersArray(_eventListeners)
+	End Method
+
+
+	Method Initialize:Int()
+		Reset()
+
 		_eventListeners = new TEventListenerBase[0]
 		_eventListeners :+ [ EventManager.registerListenerMethod( "programmeproduction.onFinish", self, "onFinishProgrammeProduction" ) ]
 	End Method
@@ -1027,7 +1041,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		elseif TAdvertisement(obj)
 			return HasAdContract( TAdvertisement(obj).contract )
 		elseif TNews(obj)
-			return HasNewsEvent( TNews(obj).newsEvent )
+			return HasNewsEventID( TNews(obj).newsEventID )
 		endif
 		return False
 	End Method
@@ -1055,7 +1069,15 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method HasNewsEvent:int(newsEvent:TNewsEvent) {_exposeToLua}
 		For local n:TNews = EachIn news
-			if n.newsEvent = newsEvent then return True
+			if n.GetNewsEvent() = newsEvent then return True
+		Next
+		return False
+	End Method
+
+
+	Method HasNewsEventID:int(newsEventID:int) {_exposeToLua}
+		For local n:TNews = EachIn news
+			if n.newsEventID = newsEventID then return True
 		Next
 		return False
 	End Method

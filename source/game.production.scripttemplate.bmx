@@ -23,6 +23,7 @@ Type TScriptTemplateCollection Extends TGameObjectCollection
 
 	Method Initialize:TScriptTemplateCollection()
 		Super.Initialize()
+
 		return self
 	End Method
 

@@ -6,12 +6,12 @@ Import "game.building.base.sfx.bmx"
 
 
 Type TFigureBaseSoundSource Extends TSoundSourceElement
-	Field Figure:TFigureBase
+'	Field Figure:TFigureBase
 	Field ChannelInitialized:Int = 0
 
 	Function Create:TFigureBaseSoundSource (_figure:TFigureBase)
 		Local result:TFigureBaseSoundSource = New TFigureBaseSoundSource
-		result.Figure = _figure
+'		result.Figure = _figure
 		'result.AddDynamicSfxChannel("Steps" + result.Figure.name)
 
 		Return result
@@ -22,7 +22,8 @@ Type TFigureBaseSoundSource Extends TSoundSourceElement
 	End Method
 
 	Method GetCenter:TVec3D()
-		Return Figure.area.GetAbsoluteCenterVec().ToVec3D()
+'		Return Figure.area.GetAbsoluteCenterVec().ToVec3D()
+		Return new TVec3D
 	End Method
 
 	Method IsMovable:Int()

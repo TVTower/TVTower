@@ -24,6 +24,10 @@ Type TPlayerBaseCollection
 
 
 	Method Initialize:int()
+		For local p:TPlayerBase = EachIn players
+			p.RemoveFromCollection(self)
+		Next
+
 		players = new TPlayerBase[4]
 		playerID = 1
 	End Method
@@ -34,6 +38,11 @@ Type TPlayerBaseCollection
 		if id <= 0 Then return False
 
 		If players.length < playerID Then players = players[..id+1]
+
+		if players[id-1] and players[id-1] <> player
+			players[id-1].RemoveFromCollection(self)
+		endif
+
 		players[id-1] = player
 		'inform player
 		player.playerID = id
@@ -559,5 +568,14 @@ endrem
 	'file
 	Method SendToBoss:Int()
 		'implement in real class
+	End Method
+
+
+	'override
+	Method RemoveFromCollection:Int(collection:object = null)
+		color = null 'unset?
+		Figure = null
+		difficulty = null
+		playerAI = null
 	End Method
 End Type

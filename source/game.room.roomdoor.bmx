@@ -311,6 +311,15 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 		Next
 		Return Null
 	End Function
+
+
+	'override
+	Method RemoveFromCollection:Int(collection:object = null)
+		'if collection = GetRoomDoorBaseCollection() ...
+		if _soundSource
+			GetSoundManagerBase().RemoveSoundSource(_soundSource)
+		EndIf
+	End Method
 End Type
 
 

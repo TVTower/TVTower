@@ -2189,7 +2189,7 @@ Type TDebugProgrammePlanInfos
 
 				SetColor 220,110,110
 				SetAlpha 0.50 * oldAlpha
-				DrawRect(programmeSlotX, newsY + newsSlot * lineHeight + lineHeight-3, programmeSlotWidth * TNews(news).newsEvent.GetTopicality(), 2)
+				DrawRect(programmeSlotX, newsY + newsSlot * lineHeight + lineHeight-3, programmeSlotWidth * TNews(news).GetNewsEvent().GetTopicality(), 2)
 			EndIf
 
 			SetColor 255,255,255

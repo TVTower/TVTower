@@ -274,7 +274,6 @@ Type TGameModifierPopularity_ModifyMovieGenrePopularity extends TGameModifierBas
 	Method Init:TGameModifierPopularity_ModifyMovieGenrePopularity(data:TData, extra:TData=null)
 		if not data then return null
 
-		'local source:TNewsEvent = TNewsEvent(data.get("source"))
 		local index:string = ""
 		if extra and extra.GetInt("childIndex") > 0 then index = extra.GetInt("childIndex")
 		genre = data.GetInt("genre"+index, data.GetInt("genre", 0))

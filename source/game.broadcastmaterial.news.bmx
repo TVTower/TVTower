@@ -96,7 +96,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 				popData.AddNumber("audienceSum", audienceSum)
 				popData.AddNumber("broadcastTopAudience", topAudience)
 
-				Local popularity:TGenrePopularity = news.newsEvent.GetGenreDefinition().GetPopularity()
+				Local popularity:TGenrePopularity = news.GetNewsEvent().GetGenreDefinition().GetPopularity()
 if popularity
 				popularity.FinishBroadcastingNews(popData, i+1)
 else
@@ -275,7 +275,8 @@ End Type
 
 'This object stores a players news.
 Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
-    Field newsEvent:TNewsEvent	= Null	{_exposeToLua}
+    Field newsEventID:Int {_exposeToLua}
+    'Field newsEvent:TNewsEvent	= Null	{_exposeToLua}
     'delay the news for a certain time (depending on the abonnement-level)
     Field publishDelay:Int = 0
     'store the event happenedTime here, so the event could get used
@@ -300,6 +301,7 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Function Create:TNews(text:String="unknown", publishdelay:Int=0, useNewsEvent:TNewsEvent=Null)
 		If not useNewsEvent
 			useNewsEvent = GetNewsEventCollection().CreateRandomAvailable()
+			GetNewsEventCollection().Add(useNewsEvent)
 			useNewsEvent.doHappen()
 		endif
 
@@ -308,7 +310,7 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 		Local obj:TNews = New TNews
 		obj.publishDelay = publishdelay
-		obj.newsEvent = useNewsEvent
+		obj.newsEventID = useNewsEvent.GetID()
 
 		obj.setMaterialType(TVTBroadcastMaterialType.NEWS)
 		'by default a freshly created programme is of its own type
@@ -319,18 +321,18 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	Method GetSource:TBroadcastMaterialSource() {_exposeToLua}
-		return newsEvent
+		return GetNewsEventCollection().GetByID(newsEventID)
 	End Method
 
 
 	'override
 	Method SourceHasBroadcastFlag:int(flag:Int) {_exposeToLua}
-		return newsEvent.HasBroadcastFlag(flag)
+		return GetNewsEventCollection().GetByID(newsEventID).HasBroadcastFlag(flag)
 	End Method
 
 
 	Method GetHappenedTime:Double()
-		If happenedTime = - 1 Then happenedTime = newsEvent.happenedTime
+		If happenedTime = - 1 Then happenedTime = GetNewsEventCollection().GetByID(newsEventID).happenedTime
 		return happenedTime
 	End Method
 
@@ -340,7 +342,7 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		Super.BeginBroadcasting(day, hour, minute, audienceData)
 
 		'inform newsEvent that it gets broadcasted by a player
-		newsEvent.doBeginBroadcast(owner)
+		GetNewsEventCollection().GetByID(newsEventID).doBeginBroadcast(owner)
 	End Method
 
 
@@ -348,14 +350,16 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		Super.FinishBroadcasting(day, hour, minute, audienceData)
 
+		local ne:TNewsEvent = GetNewsEventCollection().GetByID(newsEventID)
+
 		'inform newsEvent that it gets broadcasted by a player
-		newsEvent.doFinishBroadcast(owner)
+		ne.doFinishBroadcast(owner)
 
 		'adjust topicality relative to possible audience
 		Local audienceResult:TAudienceResult = TAudienceResult(audienceData)
-		newsEvent.CutTopicality( GetTopicalityCutModifier(audienceResult.GetWholeMarketAudienceQuotePercentage() ) )
+		ne.CutTopicality( GetTopicalityCutModifier(audienceResult.GetWholeMarketAudienceQuotePercentage() ) )
 
-		newsEvent.SetTimesBroadcasted( newsEvent.GetTimesBroadcasted(owner) + 1, owner )
+		ne.SetTimesBroadcasted( ne.GetTimesBroadcasted(owner) + 1, owner )
 	End Method
 
 
@@ -379,9 +383,10 @@ endrem
 
 
 	Method GetQuality:Float() {_exposeToLua}
-		Local quality:Float = newsEvent.GetQuality()
+		local ne:TNewsEvent = GetNewsEventCollection().GetByID(newsEventID)
+		Local quality:Float = ne.GetQuality()
 		'extra bonus for first broadcast
-		If newsEvent.GetTimesBroadcasted() = 0 Then quality :* 1.10
+		If ne.GetTimesBroadcasted() = 0 Then quality :* 1.10
 		Return MathHelper.Clamp(quality, 0.01, 0.99)
 	End Method
 
@@ -395,7 +400,7 @@ endrem
 		'if paid and paidPrice<>0 then return paidPrice
 
 		'calculate the price including modifications
-		local price:int = newsEvent.GetPrice()
+		local price:int = GetNewsEventCollection().GetByID(newsEventID).GetPrice()
 		'add modificators
 		price :+ priceModRelativeNewsAgency * price
 		price :+ priceModAbsoluteNewsAgency
@@ -427,19 +432,19 @@ endrem
 
 	'override default getter to make event id the reference id
 	Method GetReferenceID:int() {_exposeToLua}
-		return newsEvent.id
+		return newsEventID
 	End Method
 
 
 	'override default
     Method GetTitle:string() {_exposeToLua}
-		return newsEvent.GetTitle()
+		return GetNewsEventCollection().GetByID(newsEventID).GetTitle()
     End Method
 
 
 	'override default
     Method GetDescription:string() {_exposeToLua}
-		return newsEvent.GetDescription()
+		return GetNewsEventCollection().GetByID(newsEventID).GetDescription()
     End Method
 
 
@@ -454,23 +459,23 @@ endrem
 
 
 	Method GetGenre:int() {_exposeToLua}
-		return newsEvent.GetGenre()
+		return GetNewsEventCollection().GetByID(newsEventID).GetGenre()
 	End Method
 
 
 	Method GetGenreString:string() {_exposeToLua}
-		return TNewsEvent.GetGenreString(newsEvent.GetGenre())
+		return TNewsEvent.GetGenreString(GetNewsEventCollection().GetByID(newsEventID).GetGenre())
 	End Method
 
 
 	Method GetNewsEvent:TNewsEvent() {_exposeToLua}
-		return newsEvent
+		return GetNewsEventCollection().GetByID(newsEventID)
 	End Method
 
 
 	'override
 	Method GetGenreDefinition:TGenreDefinitionBase()
-		Return newsEvent.GetGenreDefinition()
+		Return GetNewsEventCollection().GetByID(newsEventID).GetGenreDefinition()
 	End Method
 
 
@@ -480,8 +485,9 @@ endrem
 		Local result:TAudience = Super.GetTargetGroupAttractivityMod()
 
 		'modify with a complete fine grained target group setup
-		If newsEvent.GetTargetGroupAttractivityMod()
-			result.Multiply( newsEvent.GetTargetGroupAttractivityMod() )
+		local ne:TNewsEvent = GetNewsEventCollection().GetByID(newsEventID)
+		If ne.GetTargetGroupAttractivityMod()
+			result.Multiply( ne.GetTargetGroupAttractivityMod() )
 		EndIf
 
 		Return result
@@ -561,13 +567,13 @@ endrem
 		Local n2:TNews = TNews(other)
 		If Not n2 Then Return 1
 
-		if newsEvent.GetTopicality() = n2.newsEvent.GetTopicality()
+		if GetNewsEvent().GetTopicality() = n2.GetNewsEvent().GetTopicality()
 			'publishtime is NOT happened time
 			return GetPublishTime() > n2.GetPublishTime()
 		endif
-		if newsEvent.GetTopicality() > n2.newsEvent.GetTopicality()
+		if GetNewsEvent().GetTopicality() > n2.GetNewsEvent().GetTopicality()
 			return 1
-		elseif newsEvent.GetTopicality() < n2.newsEvent.GetTopicality()
+		elseif GetNewsEvent().GetTopicality() < n2.GetNewsEvent().GetTopicality()
 			return -1
 		else
 			return 0
@@ -609,7 +615,7 @@ endrem
 
 	'Wird bisher nur in der LUA-KI verwendet
 	Method GetAttractiveness:Float() {_exposeToLua}
-		return newsEvent.GetAttractiveness()
+		return GetNewsEvent().GetAttractiveness()
 	End Method
 	'===== END AI-LUA HELPER FUNCTIONS =====
 End Type

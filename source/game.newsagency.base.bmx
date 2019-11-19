@@ -148,7 +148,7 @@ Type TNewsAgency
 
 		Local news:TNews = TNews(triggerEvent.GetData().get("news"))
 		If Not news Then Return False
-		_instance.RemoveFromDelayedListsByNewsEvent(news.owner, news.newsEvent)
+		_instance.RemoveFromDelayedListsByNewsEventID(news.owner, news.newsEventID)
 	End Function
 
 
@@ -732,7 +732,7 @@ Type TNewsAgency
 
 			Local toRemove:TNews[]
 			For Local news:TNews = EachIn delayedLists[playerID-1]
-				Local genre:Int = news.newsEvent.GetGenre()
+				Local genre:Int = news.GetNewsEvent().GetGenre()
 				Local subscriptionDelay:Int = GetNewsAbonnementDelay(genre, player.GetNewsAbonnement(genre) )
 				Local maxSubscriptionDelay:Int = GetNewsAbonnementDelay(genre, 1)
 
@@ -757,8 +757,8 @@ Type TNewsAgency
 				'skip news events if not subscribed to its genre NOW
 				'(including "not satisfying minimum subscription level")
 				'alternatively also check: "or subscriptionDelay < 0"
-				If Not news.newsEvent.HasFlag(TVTNewsFlag.SEND_TO_ALL)
-					If player.GetNewsabonnement(genre)<=0 Or player.GetNewsabonnement(genre) < news.newsEvent.GetMinSubscriptionLevel()
+				If Not news.GetNewsEvent().HasFlag(TVTNewsFlag.SEND_TO_ALL)
+					If player.GetNewsabonnement(genre)<=0 Or player.GetNewsabonnement(genre) < news.GetNewsEvent().GetMinSubscriptionLevel()
 						'if playerID=1 then print "ProcessDelayedNews #"+playerID+": NOT subscribed or not ready yet: " + news.GetTitle() + "   announceToPlayer="+ GetWorldTime().GetFormattedDate( news.GetPublishTime() + subscriptionDelay )
 						Continue
 					EndIf
@@ -766,7 +766,7 @@ Type TNewsAgency
 
 
 				'do not charge for immediate news
-				If news.newsEvent.HasFlag(TVTNewsFlag.SEND_IMMEDIATELY)
+				If news.GetNewsEvent().HasFlag(TVTNewsFlag.SEND_IMMEDIATELY)
 					news.priceModRelativeNewsAgency = 0.0
 				Else
 					news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(genre, player.GetNewsAbonnement(genre))
@@ -799,13 +799,35 @@ Type TNewsAgency
 			If delayedLists.length >= playerID And delayedLists[playerID-1]
 				Local remove:TNews[]
 				For Local n:TNews = EachIn delayedLists[playerID-1]
-					If n.newsEvent = newsEvent Then remove :+ [n]
+					If n.GetNewsEvent() = newsEvent Then remove :+ [n]
 				Next
 				For Local n:TNews = EachIn remove
 					delayedLists[playerID-1].Remove(n)
 				Next
 				For Local n:TNews = EachIn delayedLists[playerID-1]
-					If n.newsEvent = newsEvent Then remove :+ [n]
+					If n.GetNewsEvent() = newsEvent Then remove :+ [n]
+				Next
+			EndIf
+		EndIf
+	End Method
+
+
+	Method RemoveFromDelayedListsByNewsEventID(playerID:Int=0, newsEventID:Int)
+		If playerID<=0
+			For Local i:Int = 1 To delayedLists.Length
+				RemoveFromDelayedListsByNewsEventID(playerID, newsEventID)
+			Next
+		Else
+			If delayedLists.length >= playerID And delayedLists[playerID-1]
+				Local remove:TNews[]
+				For Local n:TNews = EachIn delayedLists[playerID-1]
+					If n.newsEventID = newsEventID Then remove :+ [n]
+				Next
+				For Local n:TNews = EachIn remove
+					delayedLists[playerID-1].Remove(n)
+				Next
+				For Local n:TNews = EachIn delayedLists[playerID-1]
+					If n.newsEventID = newsEventID Then remove :+ [n]
 				Next
 			EndIf
 		EndIf
@@ -912,6 +934,7 @@ Type TNewsAgency
 		'if no "special case" triggered, just use a random news
 		If Not newsEvent
 			newsEvent = GetNewsEventCollection().CreateRandomAvailable(genre)
+			GetNewsEventCollection().Add(newsEvent)
 		EndIf
 
 		Return newsEvent

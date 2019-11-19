@@ -1387,6 +1387,7 @@ Type TVTNewsFlag {_exposeToLua}
 	Const SEND_IMMEDIATELY:Int = 1
 	'can the event happen again - or only once?
 	'eg. dynamically created weather news should set this flag
+	'UNUSED IN TNewsEvent -> should belong to TNewsEventTemplate
 	Const UNIQUE_EVENT:Int = 2
 	'can the "happening" get skipped ("happens later")
 	'eg. if no player listens to the genre

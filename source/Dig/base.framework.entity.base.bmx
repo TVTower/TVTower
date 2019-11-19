@@ -48,6 +48,12 @@ Type TEntityCollection
 	Field _entriesMapEnumerator:TNodeEnumerator {nosave}
 
 	Method Initialize:TEntityCollection()
+		'call Remove() for all objects so they can unregister stuff
+		'and tidy up in general
+		For local e:TEntityBase = EachIn entries.Values()
+			e.RemoveFromCollection(self)
+		Next
+
 		entries.Clear()
 		entriesCount = -1
 
@@ -173,6 +179,12 @@ Type TEntityBase {_exposeToLua="selected"}
 
 	'overrideable method for cleanup actions
 	Method Remove:Int()
+		Return True
+	End Method
+
+
+	'overrideable method for cleanup actions
+	Method RemoveFromCollection:Int(collection:object = null)
 		Return True
 	End Method
 End Type

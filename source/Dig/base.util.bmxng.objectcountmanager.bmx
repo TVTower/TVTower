@@ -13,6 +13,7 @@ Type TObjectCountManager
 	Field dumps:TObjectList = New TObjectList
 	Field baseDump:TObjectCountDump
 	Field dumpKeyCount:Int 'cache
+	Field ignoreTypes:TStringMap
 
 	Method New()
 		'fire reflection so it inits its TStringMap, TList, ...
@@ -28,8 +29,34 @@ Type TObjectCountManager
 	Method GetTotal:Int(key:String)
 		Local dumpEntry:TObjectCountDump = TObjectCountDump(dumps.Last())
 		if not dumpEntry Then dumpEntry = baseDump
-		if not dumpEntry Then print "no dumpentry";return 0
+		if not dumpEntry Then print "no dumpentry2";return 0
 		Return dumpEntry.GetTotal(key)
+	End Method
+
+
+	'add one or multiple (comma separated) types to ignore in outputs
+	Method AddIgnoreTypes(types:string)
+		local typeArr:string[] = types.split(",")
+
+		if not ignoreTypes Then ignoreTypes = new TStringMap
+
+		For local s:string = EachIn typeArr
+			s = s.trim().ToLower()
+			if not s then continue
+
+			ignoreTypes.Insert(s, null)
+		Next
+	End Method
+
+
+	Method ClearIngoreTypes()
+		if ignoreTypes then ignoreTypes.clear()
+	End Method
+
+
+	Method IsIgnoringType:Int(t:string)
+		if ignoreTypes and ignoreTypes.Contains(t.ToLower()) Then return True
+		return False
 	End Method
 
 
@@ -119,6 +146,8 @@ Type TObjectCountManager
 
 			local e:TObjectCountDumpEntry
 			For Local k:String = EachIn ocd.entries.Keys()
+				if IsIgnoringType(k) then continue
+
 				e = ocd.Get(k)
 				If Not e Then Continue
 				If onlyChanged
@@ -126,11 +155,11 @@ Type TObjectCountManager
 					If changeDirection < 0 And e.change >= 0 Then Continue
 				EndIf
 				if e.change < 0
-					s.Append(LSet(k, 32) + RSet(e.total, 8) + RSet(e.change, 8) + "~n")
+					s.Append(LSet(e.name, 32) + RSet(e.total, 8) + RSet(e.change, 8) + "~n")
 				elseif e.change > 0
-					s.Append(LSet(k, 32) + RSet(e.total, 8) + RSet("+" + e.change, 8) + "~n")
+					s.Append(LSet(e.name, 32) + RSet(e.total, 8) + RSet("+" + e.change, 8) + "~n")
 				else
-					s.Append(LSet(k, 32) + RSet(e.total, 8) + RSet("0", 8) + "~n")
+					s.Append(LSet(e.name, 32) + RSet(e.total, 8) + RSet("0", 8) + "~n")
 				endif
 			Next
 		EndIf
@@ -151,27 +180,28 @@ Type TObjectCountDump
 
 	Method Add(key:String, change:Int, total:Int)
 		Local e:TObjectCountDumpEntry = New TObjectCountDumpEntry
+		e.name = key
 		e.change = change
 		e.total = total
 
-		entries.Insert(key, e)
+		entries.Insert(key.ToLower(), e)
 	End Method
 
 
 	Method Get:TObjectCountDumpEntry(key:String)
-		Return TObjectCountDumpEntry(entries.ValueForKey(key))
+		Return TObjectCountDumpEntry(entries.ValueForKey(key.ToLower()))
 	End Method
 
 
 	Method GetChange:Int(key:String)
-		Local e:TObjectCountDumpEntry = TObjectCountDumpEntry(entries.ValueForKey(key))
+		Local e:TObjectCountDumpEntry = TObjectCountDumpEntry(entries.ValueForKey(key.ToLower()))
 		If e Then Return e.change
 		Return 0
 	End Method
 
 
 	Method GetTotal:Int(key:String)
-		Local e:TObjectCountDumpEntry = TObjectCountDumpEntry(entries.ValueForKey(key))
+		Local e:TObjectCountDumpEntry = TObjectCountDumpEntry(entries.ValueForKey(key.ToLower()))
 		If e Then Return e.total
 		Return 0
 	End Method
@@ -179,6 +209,7 @@ End Type
 
 
 Type TObjectCountDumpEntry
+	Field name:string
 	'contains the amount of change since last
 	Field change:Int
 	'contains the amount since base/reference dump

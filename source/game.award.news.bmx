@@ -89,10 +89,10 @@ Type TAwardNews extends TAward
 			Select news.GetGenre()
 				case TVTNewsGenre.SHOWBIZ
 					'jury dislikes SHOWBIZ - except good stories!
-					if news.newsEvent.GetQualityRaw() < 0.8 then newsPointsMod :- 0.1
+					if news.GetNewsEvent().GetQualityRaw() < 0.8 then newsPointsMod :- 0.1
 				case TVTNewsGenre.CULTURE
 					'jury likes CULTURE - except the really bad ones
-					if news.newsEvent.GetQualityRaw() >= 0.2
+					if news.GetNewsEvent().GetQualityRaw() >= 0.2
 						newsPointsMod :+ 0.1
 					else
 						newsPointsMod :- 0.1
@@ -100,7 +100,7 @@ Type TAwardNews extends TAward
 			End Select
 
 			'not aired before? (this is also considered in news.GetQuality() !)
-			if news.newsEvent.GetTimesBroadcasted() = 0 then newsPointsMod :+ 0.1
+			if news.GetNewsEvent().GetTimesBroadcasted() = 0 then newsPointsMod :+ 0.1
 			if news.SourceHasBroadcastFlag(TVTBroadcastMaterialSourceFlag.EXCLUSIVE_TO_ONE_OWNER) then newsPointsMod :+ 0.1
 
 			allPoints :+ Max(0, newsPoints * newsPointsMod)

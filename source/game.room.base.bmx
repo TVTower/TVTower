@@ -356,8 +356,12 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method addHotspot:int( hotspot:THotspot )
-		if hotspot then hotspots.addLast(hotspot);return TRUE
-		return FALSE
+		If hotspot
+			hotspots.addLast(hotspot)
+			return True
+		Else
+			return False
+		EndIf
 	End Method
 
 

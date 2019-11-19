@@ -551,7 +551,7 @@ Type TInGameInterface
 					GetGameBase().SetGameSpeedPreset(0)
 
 					'handled left click
-					MouseManager.ResetClicked(1)
+					MouseManager.SetClickHandled(1)
 				EndIf
 
 			ElseIf THelper.MouseIn(429,577,30,23)
@@ -567,7 +567,7 @@ Type TInGameInterface
 					GetGameBase().SetGameSpeedPreset(1)
 
 					'handled left click
-					MouseManager.ResetClicked(1)
+					MouseManager.SetClickHandled(1)
 				EndIf
 
 			ElseIf THelper.MouseIn(457,577,30,23)
@@ -583,7 +583,7 @@ Type TInGameInterface
 					GetGameBase().SetGameSpeedPreset(2)
 
 					'handled left click
-					MouseManager.ResetClicked(1)
+					MouseManager.SetClickHandled(1)
 				EndIf
 			EndIf
 		endif

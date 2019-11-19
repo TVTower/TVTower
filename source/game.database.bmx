@@ -1405,7 +1405,9 @@ Type TDatabaseLoader
 		scriptTemplate = GetScriptTemplateCollection().GetByGUID(GUID)
 		If Not scriptTemplate
 			'try to clone the parent, if that fails, create a new instance
-			If parentScriptTemplate Then scriptTemplate = TScriptTemplate(THelper.CloneObject(parentScriptTemplate, "id"))
+			If parentScriptTemplate
+				scriptTemplate = TScriptTemplate(THelper.CloneObject(parentScriptTemplate, "id"))
+			EndIf
 			If Not scriptTemplate
 				scriptTemplate = New TScriptTemplate
 			EndIf
@@ -1671,7 +1673,6 @@ Type TDatabaseLoader
 
 			'recursively load the child script - parent is the new scriptTemplate
 			Local childScriptTemplate:TScriptTemplate = LoadV3ScriptTemplateFromNode(nodeChild, xml, scriptTemplate)
-
 			'the childIndex is currently not needed, as we autocalculate
 			'it by the position in the xml-episodes-list
 			'local childIndex:int = xml.FindValueInt(nodechild, "index", 1)

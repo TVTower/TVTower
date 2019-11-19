@@ -1118,7 +1118,7 @@ Type TGUINews Extends TGUIGameListItem
 			GetSpriteFromRegistry(Self.imageBaseName+news.GetGenre()).Draw(screenX, screenY)
 
 			'mark special news
-			if news.newsEvent.HasFlag(TVTNewsFlag.SPECIAL_EVENT)
+			if news.GetNewsEvent().HasFlag(TVTNewsFlag.SPECIAL_EVENT)
 				GetSpriteFromRegistry("gfx_newssheet_genreoverlay").Draw(screenX, screenY)
 			endif
 
@@ -1162,11 +1162,11 @@ Type TGUINews Extends TGUIGameListItem
 			DrawRect(screenX + 16, screenY + 68, 150, 3)
 			SetColor 230,150,100
 			SetAlpha oldAlpha * 0.4
-			DrawRect(screenX + 16, screenY + 68, news.newsEvent.GetMaxTopicality()*150, 3)
+			DrawRect(screenX + 16, screenY + 68, news.GetNewsEvent().GetMaxTopicality()*150, 3)
 			SetAlpha oldAlpha
-			DrawRect(screenX + 16 + news.newsEvent.GetMaxTopicality()*150 - 1, screenY + 68, 2, 3)
+			DrawRect(screenX + 16 + news.GetNewsEvent().GetMaxTopicality()*150 - 1, screenY + 68, 2, 3)
 			SetAlpha oldAlpha
-			DrawRect(screenX + 16, screenY + 68, news.newsEvent.GetTopicality()*150, 3)
+			DrawRect(screenX + 16, screenY + 68, news.GetNewsEvent().GetTopicality()*150, 3)
 
 			SetColor 255, 255, 255
 			SetAlpha oldAlpha
@@ -1189,19 +1189,20 @@ Type TGUINews Extends TGUIGameListItem
 			Local textY:Int = screenY + 2
 			Local fontBold:TBitmapFont = GetBitmapFontManager().basefontBold
 			Local fontNormal:TBitmapFont = GetBitmapFont("",11)
+			Local ne:TNewsEvent = news.GetNewsEvent()
 
-			fontBold.draw("News: " + news.newsEvent.GetTitle(), screenX + 5, textY)
+			fontBold.draw("News: " + ne.GetTitle(), screenX + 5, textY)
 			textY :+ 12
-			fontNormal.draw("GUID: " + news.newsEvent.GetGUID(), screenX + 5, textY)
+			fontNormal.draw("GUID: " + ne.GetGUID(), screenX + 5, textY)
 			textY :+ 11
-			fontNormal.draw("Preis: " + news.GetPrice(GetPlayerBaseCollection().playerID)+"  (PreisMod: "+MathHelper.NumberToString(news.newsEvent.GetModifier(TBroadcastMaterialSource.modKeyPriceLS),4)+")", screenX + 5, textY)
+			fontNormal.draw("Preis: " + news.GetPrice(GetPlayerBaseCollection().playerID)+"  (PreisMod: "+MathHelper.NumberToString(ne.GetModifier(TBroadcastMaterialSource.modKeyPriceLS),4)+")", screenX + 5, textY)
 			textY :+ 11
-			fontNormal.draw("Qualitaet: " + MathHelper.NumberToString(news.GetQuality(), 4) + " (Event:" + MathHelper.NumberToString(news.newsEvent.GetQuality(),4) + ", roh=" + MathHelper.NumberToString(news.newsEvent.GetQualityRaw(), 4) + ")", screenX + 5, textY)
+			fontNormal.draw("Qualitaet: " + MathHelper.NumberToString(news.GetQuality(), 4) + " (Event:" + MathHelper.NumberToString(ne.GetQuality(),4) + ", roh=" + MathHelper.NumberToString(ne.GetQualityRaw(), 4) + ")", screenX + 5, textY)
 			textY :+ 11
-			fontNormal.draw("(KI-)Attraktivitaet: "+MathHelper.NumberToString(news.newsEvent.GetAttractiveness(),4), screenX + 5, textY)
-			fontNormal.draw("Aktualitaet: " + MathHelper.NumberToString(news.newsEvent.GetTopicality(),3) + "/" + MathHelper.NumberToString(news.newsEvent.GetMaxTopicality(),3)+" ("+MathHelper.NumberToString(100 * news.newsEvent.GetTopicality()/news.newsEvent.GetMaxTopicality(),1)+"%)", screenX + 5 + 190, textY)
+			fontNormal.draw("(KI-)Attraktivitaet: "+MathHelper.NumberToString(ne.GetAttractiveness(),4), screenX + 5, textY)
+			fontNormal.draw("Aktualitaet: " + MathHelper.NumberToString(ne.GetTopicality(),3) + "/" + MathHelper.NumberToString(ne.GetMaxTopicality(),3)+" ("+MathHelper.NumberToString(100 * ne.GetTopicality()/ne.GetMaxTopicality(),1)+"%)", screenX + 5 + 190, textY)
 			textY :+ 11
-			fontNormal.draw("Ausstrahlungen: " + news.newsEvent.GetTimesBroadcasted(news.owner)+"x  (" + news.newsEvent.GetTimesBroadcasted()+"x gesamt)", screenX + 5, textY)
+			fontNormal.draw("Ausstrahlungen: " + ne.GetTimesBroadcasted(news.owner)+"x  (" + ne.GetTimesBroadcasted()+"x gesamt)", screenX + 5, textY)
 			fontNormal.draw("Alter: " + Long(GetWorldTime().GetTimeGone() - news.GetHappenedtime()) + " Sekunden  (" + (GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())) + " Tage)", screenX + 5 + 190, textY)
 			textY :+ 11
 			Rem
@@ -1223,9 +1224,9 @@ Type TGUINews Extends TGUIGameListItem
 			endrem
 			local happenEffects:int = 0
 			local broadcastEffects:int = 0
-			if news.newsEvent.effects.GetList("happen") then happenEffects = news.newsEvent.effects.GetList("happen").Count()
-			if news.newsEvent.effects.GetList("broadcast") then broadcastEffects = news.newsEvent.effects.GetList("broadcast").Count()
-			fontNormal.draw("Effekte: " + happenEffects + "x onHappen, "+ broadcastEffects + "x onBroadcast    Newstyp: " + news.newsEvent.newsType + "   Genre: "+news.GetGenre(), screenX + 5, textY)
+			if ne.effects.GetList("happen") then happenEffects = ne.effects.GetList("happen").Count()
+			if ne.effects.GetList("broadcast") then broadcastEffects = ne.effects.GetList("broadcast").Count()
+			fontNormal.draw("Effekte: " + happenEffects + "x onHappen, "+ broadcastEffects + "x onBroadcast    Newstyp: " + ne.newsType + "   Genre: "+news.GetGenre(), screenX + 5, textY)
 			textY :+ 11
 
 			SetAlpha oldAlpha

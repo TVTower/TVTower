@@ -39,7 +39,7 @@ Type TSoundManager
 	'time when fading started
 	Field fadeProcessTime:Long = 0
 
-	Field soundSources:TMap = CreateMap()
+	Field soundSources:TIntMap = new TIntMap
 	Field receiver:TSoundSourcePosition
 
 	Field _currentPlaylistName:String = "default"
@@ -329,18 +329,26 @@ print "-----"
 	End Method
 
 
+	Method RemoveSoundSource:int(soundSource:TSoundSourceElement)
+		If Not soundSource then Return False
+		If Not soundSources.ValueForKey(soundSource.GetID()) then Return False
+
+		soundSources.Remove(soundSource.GetID())
+		Return True
+	End Method
+
+
 	Method RegisterSoundSource:int(soundSource:TSoundSourceElement)
 		if not soundSource then return False
-		If Not soundSources.ValueForKey(soundSource.GetGUID())
-			soundSources.Insert(soundSource.GetGUID(), soundSource)
+		If Not soundSources.ValueForKey(soundSource.GetID())
+			soundSources.Insert(soundSource.GetID(), soundSource)
 		endif
 	End Method
 
 
-	Method GetSoundSource:TSoundSourceElement(GUID:string)
-		return TSoundSourceElement(soundSources.ValueForKey(GUID))
+	Method GetSoundSource:TSoundSourceElement(ID:Int)
+		return TSoundSourceElement(soundSources.ValueForKey(ID))
 	End Method
-
 
 
 	Method IsPlaying:Int()
@@ -432,7 +440,7 @@ print "-----"
 
 
 	Method UpdateSFX()
-		If not sfxOn then return
+		If sfxOn Then Return
 
 		For Local element:TSoundSourceElement = EachIn soundSources.Values()
 			element.Update()
@@ -1172,14 +1180,26 @@ End Type
 
 
 Type TSoundSourceElement Extends TSoundSourcePosition
+	Field id:int
 	Field GUID:String = ""
 	Field SfxChannels:TMap = CreateMap()
-
+	Global lastID:int = 0
 
 	Method GetIsHearable:Int() Abstract
 	Method GetChannelForSfx:TSfxChannel(sfx:String) Abstract
 	Method GetSfxSettings:TSfxSettings(sfx:String) Abstract
 	Method OnPlaySfx:Int(sfx:String) Abstract
+
+
+	Method New()
+		lastID :+ 1
+		id = lastID
+	End Method
+
+
+	Method GetID:Int()
+		Return id
+	End Method
 
 
 	Method GetGUID:String()

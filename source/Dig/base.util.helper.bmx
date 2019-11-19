@@ -318,7 +318,7 @@ Type THelper
 
 
 	'assigns field properties of one object to another
-	'deepCopy: Set to False to skip deep cloning but copy "references" 
+	'deepCopy: Set to False to skip deep cloning but copy "references"
 	Function TakeOverObjectValues:object(source:object, target:object var, skipFields:string="", deepCopy:int = False)
 		If source = Null
 			target = null

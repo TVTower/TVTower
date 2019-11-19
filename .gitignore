@@ -4,6 +4,8 @@
 /TVTower_Linux32
 /TVTower_Linux64
 /TVTower_Linux32_noPulseAudio
+/TVTower.mt
+/TVTower.nonstripped
 *.exe
 *.bak
 *.app
@@ -18,3 +20,4 @@ TVTower.blpo
 screenshot*.png
 screenshot*.jpg
 .DS_Store
+*.ffs_db

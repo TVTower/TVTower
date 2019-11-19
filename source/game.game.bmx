@@ -12,6 +12,7 @@ Import "game.roomhandler.elevatorplan.bmx"
 Import "game.ai.bmx"
 Import "basefunctions_network.bmx"
 Import "game.network.networkhelper.bmx"
+Import "Dig/base.util.bmxng.objectcountmanager.bmx"
 
 
 'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
@@ -24,6 +25,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	Global _initDone:Int = False
 	Global _eventListeners:TEventListenerBase[]
 	Global StartTipWindow:TGUIModalWindow
+	Global gamesStarted:int = 0
 
 
 	Method New()
@@ -114,11 +116,21 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 	Method SetGameSpeed(timeFactor:int = 15)
 		local modifier:Float = float(timeFactor) / GameRules.worldTimeSpeedPresets[0]
 
-		GetWorldTime().SetTimeFactor(modifier * GameRules.worldTimeSpeedPresets[0])
-
+		GetWorldTime().SetTimeFactor( timeFactor ) 'same as "modifier * GameRules.worldTimeSpeedPresets[0]"
+'15 30 180 600
+'1 2 12 40
 		TEntity.globalWorldSpeedFactor = GameRules.globalEntityWorldSpeedFactor + 0.005 * modifier
+		'also move slightly faster with higher speed...
+		'speed preset 1 (modifier = 2) is default
+		'normally a "modifier" as factor would be a direct translation
+		'but this does not look nice for the normal presets where you do
+		'not expect "speed 3" to look so "fast forward"
+		GetBuildingTime().SetTimeFactor( 0.75 + 0.5 * (modifier-1) )
+
+'		TEntity.globalWorldSpeedFactor = GameRules.globalEntityWorldSpeedFactor + 0.005 * modifier
 		'move as fast as on level 2 (to avoid odd looking figures)
-		GetBuildingTime().SetTimeFactor( Max(1.0, (modifier-1) * 1.0) )
+'		GetBuildingTime().SetTimeFactor( Max(1.0, (modifier-1) * 1.0) )
+'print "modifier: " + modifier + "  timefactor: " + (modifier * GameRules.worldTimeSpeedPresets[0]) + "  TEntity.globalWorldSpeedFactor="+TEntity.globalWorldSpeedFactor  +"   building time fac: "  + (Max(1.0, (modifier-1) * 1.0))
 	End Method
 
 
@@ -159,6 +171,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Next
 
 		TLogger.Log("TGame", "====== END CURRENT GAME ======", LOG_DEBUG)
+		'EventManager.DumpListeners()
 	End Method
 
 
@@ -216,6 +229,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'inform about the begin of this game (for now equal to "OnStart")
 		EventManager.triggerEvent(TEventSimple.Create("Game.OnBegin", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
 
+		OCM.FetchDump("GAMESTART")
+		OCM.Dump()
+		SaveText(OCM.DumpToString(), "log.objectcount.gamestart" + (gamesStarted+1)+".txt")
+
+		gamesStarted :+ 1
 	End Method
 
 
@@ -902,10 +920,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'fetch last 3 news events
 		For local ne:TNewsEvent = EachIn GetNewsEventCollection().GetNewsHistory(3)
 			if GetPlayerProgrammeCollection(playerID).HasNewsEvent(ne) then continue
+
 			GetNewsAgency().AddNewsEventToPlayer(ne, playerID, True)
 			'avoid having that news again (same is done during add, so this
 			'step is not strictly needed here)
-			GetNewsAgency().RemoveFromDelayedListsByNewsEvent(playerID, ne)
+			GetNewsAgency().RemoveFromDelayedListsByNewsEventID(playerID, ne.GetID())
 		Next
 
 

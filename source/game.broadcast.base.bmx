@@ -22,15 +22,13 @@ Import "game.stationmap.bmx"
 Import "game.world.worldtime.bmx"
 
 
-Global modKeyStationMap_Audience_WeatherModLS:TLowerString = new TLowerString.Create("StationMap.Audience.WeatherMod")
-Global modKeyStationMap_Reception_AntennaModLS:TLowerString = new TLowerString.Create("StationMap.Reception.AntennaMod")
-Global modKeyStationMap_Reception_CableNetworkModLS:TLowerString = new TLowerString.Create("StationMap.Reception.CableNetworkMod")
-Global modKeyStationMap_Reception_SatelliteModLS:TLowerString = new TLowerString.Create("StationMap.Reception.SatelliteMod")
+Global modKeyStationMap_Audience_WeatherModLS:TLowerString = New TLowerString.Create("StationMap.Audience.WeatherMod")
+Global modKeyStationMap_Reception_AntennaModLS:TLowerString = New TLowerString.Create("StationMap.Reception.AntennaMod")
+Global modKeyStationMap_Reception_CableNetworkModLS:TLowerString = New TLowerString.Create("StationMap.Reception.CableNetworkMod")
+Global modKeyStationMap_Reception_SatelliteModLS:TLowerString = New TLowerString.Create("StationMap.Reception.SatelliteMod")
 
 
 Type TBroadcastManager
-	Field initialized:Int = False
-
 	'Referenzen
 'hier auf GUID
 	Field newsGenreDefinitions:TNewsGenreDefinition[]		'TODO: Gehört woanders hin
@@ -41,9 +39,6 @@ Type TBroadcastManager
 	Field currentAdvertisementBroadcastMaterial:TBroadcastMaterial[]
 	Field currentProgrammeBroadcastMaterial:TBroadcastMaterial[]
 	Field currentNewsShowBroadcastMaterial:TBroadcastMaterial[]
-
-	'Für die Manipulationen von außen... funktioniert noch nicht
-	Field PotentialAudienceManipulations:TMap = CreateMap()
 
 	Field Sequence:TBroadcastSequence = New TBroadcastSequence
 
@@ -57,21 +52,20 @@ Type TBroadcastManager
 
 	'===== Konstrukor, Speichern, Laden =====
 
-	'reinitializes the manager
+	'removes any connection to other objects
 	Method Reset()
-		initialized = False
-		Initialize()
+		newsGenreDefinitions = New TNewsGenreDefinition[0]
+		audienceResults = New TAudienceResult[0]
+		currentAdvertisementBroadcastMaterial = New TBroadcastMaterial[0]
+		currentProgrammeBroadcastMaterial = New TBroadcastMaterial[0]
+		currentNewsShowBroadcastMaterial = New TBroadcastMaterial[0]
+
+		Sequence = New TBroadcastSequence
 	End Method
 
-
+	'reinitializes the manager
 	Method Initialize()
-		If initialized Then Return
-
-		'load and init the genres
-'		GetMovieGenreDefinitionCollection().Initialize()
-'		GetNewsGenreDefinitionCollection().Initialize()
-
-		initialized = True
+		Reset()
 	End Method
 
 
@@ -349,7 +343,7 @@ Type TBroadcastManager
 
 	Method GetCurrentAudienceObject:TAudience(owner:Int)
 		Local audienceResult:TAudienceResult = GetAudienceResult(owner)
-		If Not audienceResult Then Return new TAudience.InitValue(0,0)
+		If Not audienceResult Then Return New TAudience.InitValue(0,0)
 		Return audienceResult.Audience
 	End Method
 End Type
@@ -396,7 +390,7 @@ Type TBroadcastAudiencePrediction {_exposeToLua="selected"}
 
 
 	Method NeedsToRefreshMarkets:Int() {_exposeToLua}
-		if not bc or bc.AudienceMarkets.Count() = 0 then return True
+		If Not bc Or bc.AudienceMarkets.Count() = 0 Then Return True
 	End Method
 
 
@@ -429,9 +423,9 @@ Type TBroadcastAudiencePrediction {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetMarketCount:int() {_exposeToLua}
-		if not bc or not bc.AudienceMarkets then return 0
-		return bc.AudienceMarkets.Count()
+	Method GetMarketCount:Int() {_exposeToLua}
+		If Not bc Or Not bc.AudienceMarkets Then Return 0
+		Return bc.AudienceMarkets.Count()
 	End Method
 
 
@@ -439,10 +433,10 @@ Type TBroadcastAudiencePrediction {_exposeToLua="selected"}
 		If bc = Null Then bc = New TBroadcast
 		'it's up to the AI to refresh markets on stationmap visit...
 		'If bc.AudienceMarkets.Count() = 0 Then RefreshMarkets()
-		if bc.AudienceMarkets.Count() = 0
-			print "!!! TBroadcastAudiencePrediction: Calling RunPrediction() without having called ~qRefreshMarkets()~q before!!!"
+		If bc.AudienceMarkets.Count() = 0
+			Print "!!! TBroadcastAudiencePrediction: Calling RunPrediction() without having called ~qRefreshMarkets()~q before!!!"
 			TLogger.Log("TBroadcastAudiencePrediction", "Calling RunPrediction() without having called ~qRefreshMarkets()~q before", LOG_ERROR)
-		endif
+		EndIf
 
 		If day < 0 Then day = GetWorldTime().GetDay()
 		bc.Time = GetWorldTime().MakeTime(0, day, hour, 0, 0)
@@ -554,7 +548,7 @@ Type TBroadcast
 '		GetAudienceResult(playerId).Reset()
 
 		SetAttraction(playerId, ComputeAttraction(playerId, lastMovieBroadcast, lastNewsShowBroadcast))
-		rem
+		Rem
 		For local i:int = 1 to 4
 			if playerId = i
 				SetAttraction(playerId, ComputeAttraction(playerId, lastMovieBroadcast, lastNewsShowBroadcast))
@@ -575,7 +569,7 @@ Type TBroadcast
 
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 			'reassign attractions
-			For local i:int = 1 to 4
+			For Local i:Int = 1 To 4
 				market.SetPlayersProgrammeAttraction(i, Attractions[i-1])
 			Next
 			market.ComputeAudience(Time)
@@ -699,20 +693,20 @@ Type TBroadcast
 		Next
 
 		'receipient share = portion of the population share eg. using an antenna
-		local audienceAntenna:int = GetStationMapCollection().GetTotalAntennaReceiverShare(playerIDs, withoutPlayerIDs).x
-		local audienceSatellite:int = GetStationMapCollection().GetTotalSatelliteReceiverShare(playerIDs, withoutPlayerIDs).x
-		local audienceCableNetwork:int = GetStationMapCollection().GetTotalCableNetworkReceiverShare(playerIDs, withoutPlayerIDs).x
+		Local audienceAntenna:Int = GetStationMapCollection().GetTotalAntennaReceiverShare(playerIDs, withoutPlayerIDs).x
+		Local audienceSatellite:Int = GetStationMapCollection().GetTotalSatelliteReceiverShare(playerIDs, withoutPlayerIDs).x
+		Local audienceCableNetwork:Int = GetStationMapCollection().GetTotalCableNetworkReceiverShare(playerIDs, withoutPlayerIDs).x
 
 '		Local audience:Int = GetStationMapCollection().GetTotalShareAudience(playerIDs, withoutPlayerIDs)
 '		If audience > 0
-		If audienceAntenna > 0 or audienceSatellite > 0 or audienceCableNetwork > 0
-			Local audience:int = audienceAntenna + audienceSatellite + audienceCableNetwork
+		If audienceAntenna > 0 Or audienceSatellite > 0 Or audienceCableNetwork > 0
+			Local audience:Int = audienceAntenna + audienceSatellite + audienceCableNetwork
 
 			Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
 			market.maxAudience = New TAudience.InitWithBreakdown(audience)
-			market.shareAntenna = audienceAntenna / float(audience)
-			market.shareSatellite = audienceSatellite / float(audience)
-			market.shareCableNetwork = audienceCableNetwork / float(audience)
+			market.shareAntenna = audienceAntenna / Float(audience)
+			market.shareSatellite = audienceSatellite / Float(audience)
+			market.shareCableNetwork = audienceCableNetwork / Float(audience)
 			For Local playerID:Int = EachIn playerIDs
 				market.AddPlayer(playerID)
 			Next
@@ -832,8 +826,8 @@ Type TBroadcast
 	'returns how many percent of the people watch TV depending on the
 	'world weather (rain = better audience)
 	Function GetPotentialAudiencePercentage_WeatherMod:TAudience(time:Double = -1)
-		local weatherMod:Float = GameConfig.GetModifier(modKeyStationMap_Audience_WeatherModLS)
-		return New TAudience.InitValue(weatherMod, weatherMod)
+		Local weatherMod:Float = GameConfig.GetModifier(modKeyStationMap_Audience_WeatherModLS)
+		Return New TAudience.InitValue(weatherMod, weatherMod)
 	End Function
 
 
@@ -965,7 +959,7 @@ Type TBroadcastFeedback
 			'ATTENTION: divide by 2 as GetTotalSum() returns both genders
 			'summarized! Our family is "genderless" - girl="children"
 			Local attrPerMember:Float = 0.9 / (allowedAll.GetTotalSum()/2)
-			Local familyMemberCount:Int = int(averageAttraction / attrPerMember)
+			Local familyMemberCount:Int = Int(averageAttraction / attrPerMember)
 			'Local familyMemberCountOld:Int = Int((averageAttraction - (averageAttraction Mod attrPerMember)) / attrPerMember)
 
 			'find the first/best #familyMemberCount members and store
@@ -1241,7 +1235,7 @@ Type TAudienceMarketCalculation
 		potentialChannelSurfer.Multiply( TBroadcast.GetPotentialAudienceModifier(time) )
 
 		'reception might be not possible at all (bad weather)
-		local weatherMod:Float
+		Local weatherMod:Float
 		weatherMod :+ shareAntenna * GameConfig.GetModifier(modKeyStationMap_Reception_AntennaModLS, 1.0)
 		weatherMod :+ shareCableNetwork * GameConfig.GetModifier(modKeyStationMap_Reception_CableNetworkModLS, 1.0)
 		weatherMod :+ shareSatellite * GameConfig.GetModifier(modKeyStationMap_Reception_SatelliteModLS, 1.0)
@@ -1426,46 +1420,45 @@ End Type
 Type TGameModifierAudience Extends TGameModifierBase
 	Field audienceBaseMod:Float = 0.5
 	Field audienceDetailMod:TAudience
-	Field modifyProbability:int = 100
+	Field modifyProbability:Int = 100
 	Global className:String = "ModifierAudience"
 
 
 	Function CreateNewInstance:TGameModifierAudience()
-		return new TGameModifierAudience
+		Return New TGameModifierAudience
 	End Function
 
 
 	Method Copy:TGameModifierAudience()
-		local clone:TGameModifierAudience = new TGameModifierAudience
-		clone.CopyBaseFrom(self)
-		clone.audienceBaseMod = self.audienceBaseMod
-		clone.audienceDetailMod = self.audienceDetailMod
-		return clone
+		Local clone:TGameModifierAudience = New TGameModifierAudience
+		clone.CopyBaseFrom(Self)
+		clone.audienceBaseMod = Self.audienceBaseMod
+		clone.audienceDetailMod = Self.audienceDetailMod
+		Return clone
 	End Method
 
 
-	Method Init:TGameModifierAudience(data:TData, extra:TData=null)
-		if not data then return null
+	Method Init:TGameModifierAudience(data:TData, extra:TData=Null)
+		If Not data Then Return Null
 
-		'local source:TNewsEvent = TNewsEvent(data.get("source"))
-		local index:string = ""
-		if extra and extra.GetInt("childIndex") > 0 then index = extra.GetInt("childIndex")
+		Local index:String = ""
+		If extra And extra.GetInt("childIndex") > 0 Then index = extra.GetInt("childIndex")
 		audienceBaseMod = data.GetFloat("audienceBaseMod"+index, data.GetFloat("audienceBaseMod", 1.0))
 		audienceDetailMod = TAudience(data.Get("audienceDetailMod"+index, data.Get("audienceDetailMod")))
-		if audienceBaseMod = 1.0 and not audienceDetailMod
+		If audienceBaseMod = 1.0 And Not audienceDetailMod
 			TLogger.Log("TGameModifierAudience", "Init() failed - no baseMod and no detailMod given.", LOG_ERROR)
-			return Null
-		endif
+			Return Null
+		EndIf
 
 		modifyProbability = data.GetInt("probability"+index, 100)
 
-		return self
+		Return Self
 	End Method
 
 
-	Method ToString:string()
-		local name:string = data.GetString("name", "default")
-		return className +" ("+name+")"
+	Method ToString:String()
+		Local name:String = data.GetString("name", "default")
+		Return className +" ("+name+")"
 	End Method
 
 
@@ -1475,8 +1468,8 @@ Type TGameModifierAudience Extends TGameModifierBase
 		Local audience:TAudience = TAudience(params.Get("audience"))
 		If Not audience Then Throw(className + " failed. Param misses 'audience'.")
 
-		if audienceBaseMod <> 1.0 then audience.MultiplyFloat(audienceBaseMod)
-		if audienceDetailMod then audience.Multiply(audienceDetailMod)
+		If audienceBaseMod <> 1.0 Then audience.MultiplyFloat(audienceBaseMod)
+		If audienceDetailMod Then audience.Multiply(audienceDetailMod)
 		Return True
 	End Method
 End Type
@@ -1489,14 +1482,14 @@ Type TGameModifierAudience_Weather Extends TGameModifierAudience
 
 
 	Function CreateNewInstance:TGameModifierAudience_Weather()
-		return new TGameModifierAudience_Weather
+		Return New TGameModifierAudience_Weather
 	End Function
 
 
 	Method Copy:TGameModifierAudience_Weather()
-		local clone:TGameModifierAudience_Weather = new TGameModifierAudience_Weather
-		clone.CopyBaseFrom(self)
-		return clone
+		Local clone:TGameModifierAudience_Weather = New TGameModifierAudience_Weather
+		clone.CopyBaseFrom(Self)
+		Return clone
 	End Method
 
 

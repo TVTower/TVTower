@@ -16,7 +16,7 @@ Import "common.misc.datasheet.bmx"
 
 Type TScriptCollection Extends TGameObjectCollection
 	'stores "languagecode::name"=>"used by id" connections
-	Field protectedTitles:TStringMap = New TStringMap
+	Field protectedTitles:TMap = New TMap
 	'=== CACHE ===
 	'cache for faster access
 
@@ -327,11 +327,10 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Field price:Int	= 0
 	Field blocks:Int = 0
 
-	'if the script is a clone of something, basedOnScriptID contains
-	'the ID of the original script.
-	'This is used for "shows" to be able to use different values of
-	'outcome/speed/price/... while still having a connecting link
-	Field basedOnScriptID:Int = 0
+	'scripts allowing multiple productions of the same script
+	'
+	Field lastLiveTime:Long = -1
+
 	'template this script is based on (this allows to avoid that too
 	'many scripts are based on the same script template on the same time)
 	Field basedOnScriptTemplateID:Int = 0
@@ -642,11 +641,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		Super.SetOwner(owner)
 
 		Return True
-	End Method
-
-
-	Method SetBasedOnScriptID(ID:Int)
-		Self.basedOnScriptID = ID
 	End Method
 
 
@@ -962,10 +956,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			Local template:TScriptTemplate
 			If basedOnScriptTemplateID Then template = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
 			If template
-				outcome = template.GetOutcome()
-				review = template.GetReview()
-				speed = template.GetSpeed()
-				potential = template.GetPotential()
+				RandomizeBaseAttributes(template)
 				blocks = template.GetBlocks()
 				price = template.GetPrice()
 			EndIf
@@ -981,6 +972,31 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		EventManager.triggerEvent( TEventSimple.Create("Script.onGiveBackToScriptPool", Null, Self))
 
 		Return True
+	End Method
+
+
+	Method RandomizeBaseAttributes(template:TScriptTemplate = Null)
+		If not template
+			If basedOnScriptTemplateID Then template = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
+		EndIf
+
+		If template
+			outcome = template.GetOutcome()
+			review = template.GetReview()
+			speed = template.GetSpeed()
+			potential = template.GetPotential()
+		EndIf
+	End Method
+
+
+	Method RandomizeCast(template:TScriptTemplate = Null)
+		If not template
+			If basedOnScriptTemplateID Then template = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
+		EndIf
+
+		If template
+			template.GetJobs()
+		EndIf
 	End Method
 
 
@@ -1250,7 +1266,7 @@ endrem
 		If msgAreaH > 0 Then contentY :+ msgAreaPaddingY
 
 		If showMsgLiveInfo
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetPlannedLiveTimeText(), "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLiveTimeText(), "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 
 			If showMsgTimeSlotLimit

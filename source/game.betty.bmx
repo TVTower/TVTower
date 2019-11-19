@@ -215,7 +215,7 @@ Type TBetty
 			local newsPointsMod:Float = 1.0
 
 			'jury likes good news - and dislikes the really bad ones
-			if news.newsEvent.GetQualityRaw() >= 0.2
+			if news.GetNewsEvent().GetQualityRaw() >= 0.2
 				newsPointsMod :+ 0.2
 			else
 				newsPointsMod :- 0.2

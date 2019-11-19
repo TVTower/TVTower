@@ -26,6 +26,12 @@ Type TRoomDoorBaseCollection
 
 
 	Method Initialize:Int()
+		'call Remove() for all objects so they can unregister stuff
+		'and tidy up in general
+		For local r:TRoomDoorBase = EachIn list
+			r.RemoveFromCollection(self)
+		Next
+
 		list.Clear()
 	End Method
 
@@ -215,5 +221,10 @@ Type TRoomDoorBase extends TRenderableEntity  {_exposeToLua="selected"}
 
 	Method GetOwner:Int()
 		return 0
+	End Method
+
+
+	Method RemoveFromCollection:Int(collection:object = null)
+		Return True
 	End Method
 End Type

@@ -36,6 +36,10 @@ Type TFigureBaseCollection extends TEntityCollection
 
 	Method Initialize:TFigureBaseCollection()
 		Super.Initialize()
+
+		figuresToRemove = figuresToRemove[.. 0]
+		shuffledFigures = shuffledFigures[.. 0]
+
 		return self
 	End Method
 
@@ -217,6 +221,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Const ACTION_WALK:int = 1
 	Const ACTION_ENTERING:int = 2
 	Const ACTION_LEAVING:int = 3
+
 
 	'override
 	'figures use building time and not game time

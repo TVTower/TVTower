@@ -27,6 +27,11 @@ Type TNewsEventCollection
 	Field newsEvents:TIntMap = New TIntMap
 	'GUID->object
 	Field newsEventsGUID:TMap = New TMap
+	'holding all ever added news events
+	'ID->object
+	Field allNewsEvents:TIntMap
+	'GUID->object
+	Field allNewsEventsGUID:TMap
 
 	'holding a number of "sethappened"-newsevents (for ordering)
 	Field nextNewsNumber:Long = 0
@@ -64,6 +69,10 @@ Type TNewsEventCollection
 
 		newsEvents.Clear()
 		newsEventsGUID.Clear()
+
+		if allNewsEvents then allNewsEvents.Clear()
+		if allNewsEventsGUID then allNewsEventsGUID.Clear()
+
 		_InvalidateCaches()
 
 		nextNewsNumber = 0
@@ -100,6 +109,11 @@ Type TNewsEventCollection
 		newsEventsGUID.Insert(obj.GetGUID().ToLower(), obj)
 		newsEvents.Insert(obj.GetID(), obj)
 
+		if not allNewsEvents then allNewsEvents = new TIntMap
+		if not allNewsEventsGUID then allNewsEventsGUID = new TMap
+		allNewsEventsGUID.Insert(obj.GetGUID().ToLower(), obj)
+		allNewsEvents.Insert(obj.GetID(), obj)
+
 		_InvalidateCaches()
 
 		Return True
@@ -130,7 +144,8 @@ Type TNewsEventCollection
 
 
 
-	Method Remove:Int(obj:TNewsEvent)
+	'remove from "upcoming/alive" news - but keep the "all"
+	Method RemoveActive:Int(obj:TNewsEvent)
 		newsEventsGUID.Remove(obj.GetGUID().ToLower())
 		newsEvents.Remove(obj.GetID())
 
@@ -140,13 +155,29 @@ Type TNewsEventCollection
 	End Method
 
 
+	'remove from "all" - make sure it is not referenced by ID/GUID
+	'from any active object
+	Method Remove:Int(obj:TNewsEvent)
+		RemoveActive(obj)
+
+		allNewsEventsGUID.Remove(obj.GetGUID().ToLower())
+		allNewsEvents.Remove(obj.GetID())
+
+		Return True
+	End Method
+
+
 	Method GetByID:TNewsEvent(ID:Int)
-		Return TNewsEvent(newsEvents.ValueForKey(ID))
+		if not allNewsEvents then allNewsEvents = newsEvents.Copy()
+
+		Return TNewsEvent(allNewsEvents.ValueForKey(ID))
 	End Method
 
 
 	Method GetByGUID:TNewsEvent(GUID:String)
-		Return TNewsEvent(newsEventsGUID.ValueForKey( GUID.ToLower() ))
+		if not allNewsEventsGUID then allNewsEventsGUID = newsEventsGUID.Copy()
+
+		Return TNewsEvent(allNewsEventsGUID.ValueForKey( GUID.ToLower() ))
 	End Method
 
 
@@ -157,8 +188,10 @@ Type TNewsEventCollection
 
 		GUID = GUID.ToLower()
 
+		if not allNewsEventsGUID then allNewsEventsGUID = newsEventsGUID.Copy()
+
 		'find first hit
-		Local node:TNode = newsEventsGUID._FirstNode()
+		Local node:TNode = allNewsEventsGUID._FirstNode()
 		While node And node <> nilNode
 			If String(node._key).Find(GUID) >= 0
 				Return TNewsEvent(node._value)
@@ -192,7 +225,7 @@ Type TNewsEventCollection
 		'delete/modify in an extra step - this approach skips creation
 		'of a map-copy just to avoid concurrent modification
 		For Local n:TNewsEvent = EachIn toRemove
-			Remove(n)
+			RemoveActive(n)
 		Next
 
 		'reset caches, so lists get filled correctly
@@ -219,7 +252,7 @@ Type TNewsEventCollection
 		'delete/modify in an extra step - this approach skips creation
 		'of a map-copy just to avoid concurrent modification
 		For Local n:TNewsEvent = EachIn toRemove
-			Remove(n)
+			RemoveActive(n)
 		Next
 
 
@@ -299,7 +332,7 @@ Type TNewsEventCollection
 				AddHappenedEvent(news)
 
 				'remove from managed ones
-				Remove(news)
+				RemoveActive(news)
 			EndIf
 		EndIf
 
@@ -368,7 +401,8 @@ End Function
 
 
 Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
-	Field template:TNewsEventTemplate
+	'Field template:TNewsEventTemplate
+	Field templateID:Int
 
 	'time when something happened or will happen. "-1" = not happened
 	Field happenedTime:Long = -1
@@ -422,7 +456,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'reset template (random data like template variables)
 		If template Then template.ResetRandomData()
 
-		Self.template = template
+		Self.templateID = template.GetID()
 		Self.SetGUID( template.GetGUID()+"-instance"+(template.timesUsed+1))
 
 		'mark the template (and increase usage count)
@@ -484,7 +518,10 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 	Method GetMinSubscriptionLevel:Int()
-		If minSubscriptionLevel = -1 And template Then Return template.minSubscriptionLevel
+		If minSubscriptionLevel = -1 And templateID
+			local t:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
+			if t then Return t.minSubscriptionLevel
+		EndIf
 		Return Max(0, minSubscriptionLevel)
 	End Method
 
@@ -511,7 +548,10 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 	Method IsAvailable:Int()
-		If template And Not template.IsAvailable() Then Return False
+		If templateID
+			local t:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
+			If t And Not t.IsAvailable() Then Return False
+		EnDIf
 
 		'field "available" = false ?
 		If Not Super.IsAvailable() Then Return False
@@ -620,7 +660,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			'If keywords.Find("movie") >= 0 Then DebugStop
 
 			'trigger happenEffects
-			Local effectParams:TData = New TData.Add("source", Self)
+			Local effectParams:TData = New TData.AddNumber("newsEventID", Self.GetID())
 			effects.Update("happen", effectParams)
 		EndIf
 	End Method
@@ -632,7 +672,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'"all players" (depends on implementation)
 	Method doBeginBroadcast(playerID:Int = -1, broadcastType:Int = 0)
 		'trigger broadcastEffects
-		Local effectParams:TData = New TData.Add("source", Self).AddNumber("playerID", playerID)
+		Local effectParams:TData = New TData.AddNumber("newsEventID", Self.GetID()).AddNumber("playerID", playerID)
 
 		'if nobody broadcasted till now (times are adjusted on
 		'finishBroadcast while this is called on beginBroadcast)
@@ -650,7 +690,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'override
 	Method doFinishBroadcast(playerID:Int = -1, broadcastType:Int = 0)
 		'trigger broadcastEffects
-		Local effectParams:TData = New TData.Add("source", Self).AddNumber("playerID", playerID)
+		Local effectParams:TData = New TData.AddNumber("newsEventID", Self.GetID()).AddNumber("playerID", playerID)
 
 		'if nobody broadcasted till now (times are adjusted on
 		'finishBroadcast while this is called on beginBroadcast)
@@ -709,14 +749,12 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	End Method
 
 
-	Method IsReuseable:Int()
-		Return Not HasFlag(TVTNewsFlag.UNIQUE_EVENT)
-	End Method
-
-
 	Method GetGenre:Int()
 		'return default it not overridden
-		If template And genre = -1 Then Return template.genre
+		If genre = -1 and templateID
+			local t:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
+			If t Then Return t.genre
+		EndIf
 		Return genre
 	End Method
 
@@ -823,7 +861,6 @@ Type TGameModifierNews_TriggerNews Extends TGameModifierBase
 	Method Init:TGameModifierNews_TriggerNews(data:TData, extra:TData=Null)
 		If Not data Then Return Null
 
-		'local source:TNewsEvent = TNewsEvent(data.get("source"))
 		Local index:String = ""
 		If extra And extra.GetInt("childIndex") > 0 Then index = extra.GetInt("childIndex")
 		Local triggerNewsGUID:String = data.GetString("news"+index, data.GetString("news", ""))

@@ -324,7 +324,7 @@ Type TAchievementTask_BroadcastNewsShow extends TAchievementTask
 
 
 			'check keyword
-			if ok and keyword[i] and (not news or not news.newsEvent.HasKeyword(keyword[i])) then ok = False
+			if ok and keyword[i] and (not news or not news.GetNewsEvent().HasKeyword(keyword[i])) then ok = False
 
 			if not ok then exit
 		Next

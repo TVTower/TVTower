@@ -615,4 +615,12 @@ endrem
 	Method GetCredit:Int(day:Int=-1) {_exposeToLua}
 		Return GetFinance(day).GetCredit()
 	End Method
+
+
+	'override
+	Method RemoveFromCollection:Int(collection:object = null)
+		Super.RemoveFromCollection(collection)
+
+		aiData = new TData
+	End Method
 End Type

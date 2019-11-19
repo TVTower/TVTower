@@ -118,6 +118,15 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+	'override
+	Method RemoveFromCollection:Int(collection:object = null)
+		'if collection = GetFigureCollection() ...
+		if _soundSource
+			GetSoundManagerBase().RemoveSoundSource(_soundSource)
+		EndIf
+	End Method
+
+
 	Method GetSoundSource:TSoundSourceElement()
 		if not _soundSource then _soundSource = TFigureBaseSoundSource.Create(Self)
 		return _soundSource

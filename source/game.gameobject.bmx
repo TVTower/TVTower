@@ -21,6 +21,7 @@ Type TGameObjectCollection
 		entries.Clear()
 		entriesID.Clear()
 		entriesCount = -1
+		_entriesMapEnumerator = Null
 
 		return self
 	End Method

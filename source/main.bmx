@@ -109,6 +109,9 @@ Import "game.screen.menu.bmx"
 
 Import "game.network.networkhelper.bmx"
 Import "game.misc.savegameserializers.bmx"
+?bmxng
+Import "Dig/base.util.bmxng.objectcountmanager.bmx"
+?
 
 ?Not bmxng
 'notify users when there are XML-errors
@@ -855,6 +858,7 @@ Type TApp
 							print "i) unused: " + GetNewsEventTemplateCollection().GetUnusedAvailableInitialTemplateList(TVTNewsGenre.CULTURE).Count()
 							local newsEvent:TNewsEvent = GetNewsEventCollection().CreateRandomAvailable(TVTNewsGenre.CULTURE)
 							if newsEvent
+								GetNewsEventCollection().add(newsEvent)
 								GetNewsAgency().announceNewsEvent(newsEvent, 0, False)
 								print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"~q  at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
 							endif
@@ -865,6 +869,7 @@ Type TApp
 							Local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(l)
 							If template
 								Local newsEvent:TNewsEvent = New TNewsEvent.InitFromTemplate(template)
+								GetNewsEventCollection().Add(newsEvent)
 								GetNewsAgency().announceNewsEvent(newsEvent, 0, False)
 								Print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"] at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
 							EndIf
@@ -1397,8 +1402,9 @@ endrem
 		textX:+50
 		bf.draw("UPS: " + Int(GetDeltaTimer().currentUps), textX,0)
 		textX:+50
+		bf.draw("GC: " + (GCMemAlloced()/1024) +" Kb", textX,0)
 '		bf.draw("GC: " + bbGCAllocCount+"/s", textX,0)
-'		textX:+50
+		textX:+50
 
 		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
 			bf.draw("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0)
@@ -1549,6 +1555,17 @@ endrem
 
 
 		RenderDevOSD()
+
+		SetColor 0,0,0
+		DrawRect(5,455, 200, 100)
+		SetColor 190,190,190
+		local linePos:int = 460
+		'OK: "TRoom", "TRoomDoor"
+		For local s:string = EachIn ["TImage", "TPixmap", "TGLImageFrame", "TNewsEvent", "TPlayerProgrammePlan", "TPlayerProgrammeCollection", "TFigure", "TPlayer", "TPlayerBoss", "TProgrammeLicence"]
+			GetBitmapFontManager().baseFont.Draw(s+": " + OCM.GetTotal(s), 10 , linePos)
+			linePos :+ 12
+		Next
+		SetColor 255,255,255
 
 
 		If GetGame().gamestate = TGame.STATE_RUNNING
@@ -1978,6 +1995,7 @@ Type TGameState
 		GetRoomBoard().Initialize()
 		GetElevatorRoomBoard().Initialize()
 		GetWorld().Initialize()
+
 		GetGame().Initialize()
 		're-register event listeners
 		GameEvents.Initialize()
@@ -2007,6 +2025,10 @@ Type TGameState
 		If TScreenHandler_ProgrammePlanner.PPcontractList
 			TScreenHandler_ProgrammePlanner.PPcontractList.Initialize()
 		EndIf
+
+
+		OCM.FetchDump("GAMESTATE INITIALIZE")
+		OCM.Dump()
 	End Method
 
 
@@ -2063,7 +2085,7 @@ Type TGameState
 		_Assign(_NewsEventSportCollection, TNewsEventSportCollection._instance, "NewsEventSportCollection", MODE_LOAD)
 		_Assign(_Betty, TBetty._instance, "Betty", MODE_LOAD)
 		_Assign(_AwardCollection, TAwardCollection._instance, "AwardCollection", MODE_LOAD)
-		_Assign(_World, TWorld._instance, "World", MODE_LOAD)
+'		_Assign(_World, TWorld._instance, "World", MODE_LOAD)
 		_Assign(_WorldTime, TWorldTime._instance, "WorldTime", MODE_LOAD)
 		_Assign(_BuildingTime, TBuildingTime._instance, "BuildingTime", MODE_LOAD)
 		_Assign(_GameRules, GameRules, "GameRules", MODE_LOAD)
@@ -2184,7 +2206,7 @@ Type TGameState
 		_Assign(TNewsEventSportCollection._instance, _NewsEventSportCollection, "NewsEventSportCollection", MODE_SAVE)
 		_Assign(TBetty._instance, _Betty, "Betty", MODE_SAVE)
 		_Assign(TAwardCollection._instance, _AwardCollection, "AwardCollection", MODE_SAVE)
-		_Assign(TWorld._instance, _World, "World", MODE_SAVE)
+'		_Assign(TWorld._instance, _World, "World", MODE_SAVE)
 		_Assign(TAuctionProgrammeBlocks.list, _AuctionProgrammeBlocksList, "AuctionProgrammeBlocks", MODE_SAVE)
 		'special room data
 		_Assign(RoomHandler_Studio._instance, _RoomHandler_Studio, "Studios", MODE_SAVE)
@@ -2969,6 +2991,7 @@ Type TScreen_MainMenu Extends TGameScreen
 
 	Method PrepareGameObject()
 		TLogger.Log("====== PREPARE NEW GAME ======", "", LOG_DEBUG)
+		'EventManager.DumpListeners()
 
 		'reset game data collections
 		New TGameState.Initialize()
@@ -2977,7 +3000,6 @@ Type TScreen_MainMenu Extends TGameScreen
 		'create player figures so they can get shown in the settings screen
 		'does nothing if already done
 		GetGame().CreateInitialPlayers()
-
 	End Method
 
 
@@ -5436,7 +5458,8 @@ Type GameEvents
 			'COLLECTION
 			'loop through a copy to avoid concurrent modification
 			For Local news:TNews = EachIn p.GetProgrammeCollection().news.Copy()
-				If news.newsEvent.HasHappened() And news.newsEvent.HasEnded()
+				local ne:TNewsEvent = news.GetNewsEvent()
+				If ne.HasHappened() And ne.HasEnded()
 					p.GetProgrammeCollection().RemoveNews(news)
 				EndIf
 			Next
@@ -5479,7 +5502,7 @@ Type GameEvents
 					EndIf
 					If hour - GetWorldTime().GetHour(news.GetHappenedTime()) > hoursToKeep
 						p.GetProgrammeCollection().RemoveNews(news)
-					ElseIf news.newsevent.GetTopicality() < minTopicalityToKeep
+					ElseIf news.GetNewsEvent().GetTopicality() < minTopicalityToKeep
 						p.GetProgrammeCollection().RemoveNews(news)
 					EndIf
 				Next
@@ -5711,6 +5734,14 @@ OnEnd( EndHook )
 Function EndHook()
 	TProfiler.DumpLog(LOG_NAME)
 	TLogFile.DumpLogs()
+
+?bmxng
+'	Local buf:Byte[4096*3]
+'	DumpObjectCounts(buf, 4096*3, 0)
+'	Print String.FromCString(buf)
+'	OCM.FetchDump("OnEnd")
+'	OCM.Dump()
+?
 End Function
 
 
@@ -6336,8 +6367,18 @@ End Function
 Extern
  '   Global bbGCAllocCount:ULong="bbGCAllocCount"
 End Extern
+
+
 ?
 Function StartTVTower(start:Int=True)
+?bmxng
+'OCM.AddIgnoreTypes("TObjectCountDumpEntry, TObjectCountDump, TRamStream")
+'OCM.AddIgnoreTypes("String, TApp, TBank, TBitmapFont, TBitmapFontChar, TBitmapFontManager")
+'OCM.AddIgnoreTypes("TCatmullRomSpline, TConstant, TField, TFreeAudioChannel, TFreeAudioSound, TFreeTypeFont, TFreeTypeGlyph")
+'OCM.AddIgnoreTypes("TGLImageFrame, TGlobal, TGraphicsContext, THook, TSDLGLContext, TSDLGraphics, TSDLWindow")
+'OCM.AddIgnoreTypes("TImageFont, TImageGlyph, TMax2DGraphics, TMethod, TMutex, TTypeId")
+OCM.StoreBaseDump()
+?
 	Global InitialResourceLoadingDone:Int = False
 	Global AppSuspendedProcessed:Int = False
 
@@ -6413,6 +6454,11 @@ TProfiler.Enter("GameLoop")
 			rectangle_created = 0
 			vec2d_created = 0
 			rectangleTime :+ 1000
+
+			?bmxng
+'				OCM.FetchDump()
+'				OCM.Dump(null)
+			?
 		EndIf
 
 		If AppSuspended()

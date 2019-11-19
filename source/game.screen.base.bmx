@@ -142,8 +142,7 @@ End Type
 'screens used ingame (with visible interface)
 Type TInGameScreen Extends TScreen
     Field backgroundSpriteName:String
-    'Field hotspots:THotspots     'clickable areas on the screen
-	Field _contentArea:TRectangle
+ 	Field _contentArea:TRectangle
 
 	Field ingameState:TLowerString = TLowerString.Create("InGame")
 

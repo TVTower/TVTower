@@ -50,6 +50,12 @@ Type TPlayerProgrammePlanCollection
 	Method Set:Int(playerID:Int, plan:TPlayerProgrammePlan)
 		If playerID <= 0 Then Return False
 		If playerID > plans.length Then plans = plans[.. playerID]
+
+		if plans[playerID-1] and plans[playerID-1] <> plan
+			'prepare old plan for removal
+			plans[playerID-1].Reset()
+		EndIf
+
 		plans[playerID-1] = plan
 	End Method
 
@@ -113,11 +119,20 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-	Method Initialize:Int()
+	Method Reset()
 		programmes = programmes[..0]
 		news = New TBroadcastMaterial[3]
 		newsShow = newsShow[..0]
 		advertisements = advertisements[..0]
+
+		'unregister events if any
+	End Method
+
+
+	Method Initialize:Int()
+		Reset()
+
+		'register events if any
 	End Method
 
 
@@ -1623,7 +1638,7 @@ endrem
 		endif
 
 		For local newsEntry:TNews = EachIn news
-			if newsEntry.newsEvent.GetGUID() = guid then Return True
+			if newsEntry.GetNewsEvent().GetGUID() = guid then Return True
 		Next
 		Return False
 	End Method

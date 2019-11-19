@@ -230,7 +230,7 @@ Type TObjectList
 	Method Copy:TObjectList()
 		Compact()
 
-		Local list:TObjectList = New TObjectList()
+		Local list:TObjectList = New TObjectList
 
 		For Local i:Int = 0 Until size
 			list.AddLast(data[i])
@@ -267,7 +267,7 @@ Type TObjectList
 	Method Reversed:TObjectList()
 		Compact()
 
-		Local list:TObjectList = New TObjectList()
+		Local list:TObjectList = New TObjectList
 
 		Local i:Int = size - 1
 
@@ -328,7 +328,12 @@ Type TObjectList
 	bbdoc: Sort the list in either ascending (default) or decending order.
 	about: User types should implement a Compare method in order to be sorted.
 	End Rem
+?bmxng
 	Method Sort(ascending:Int=True, compareFunc:Int( o1:Object,o2:Object )=_CompareObjects)
+?Not bmxng
+	Method Sort(ascending:Int=True, compareFunc:Int( o1:Object,o2:Object ))
+		If Not compareFunc Then compareFunc = _CompareObjects
+?
 		If size < 2 Then
 			Return
 		End If
