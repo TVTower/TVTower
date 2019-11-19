@@ -21,6 +21,7 @@ Type TNewsEventSportCollection Extends TGameObjectCollection
 
 	Method Initialize:TNewsEventSportCollection()
 		Super.Initialize()
+
 		Return Self
 	End Method
 
@@ -51,6 +52,9 @@ Type TNewsEventSportCollection Extends TGameObjectCollection
 
 
 	Method InitializeAll:Int()
+		if leagues then leagues.clear()
+		if matches then matches.clear()
+
 		For Local sport:TNewsEventSport = EachIn entries.Values()
 			sport.Initialize()
 		Next
@@ -1121,7 +1125,7 @@ Type TNewsEventSportLeague Extends TGameObject
 
 		Local season:TNewsEventSportSeason = GetCurrentSeason()
 		If Not season Then Return Null
-	
+
 		Local result:String[]
 		Local lists:TList[]
 		If Not onlyUpcomingMatches
@@ -1139,13 +1143,13 @@ Type TNewsEventSportLeague Extends TGameObject
 				If result.length = Self.timeSlots.length Then Exit
 			Next
 		Next
-		'sort, so earliest weekday is first, else the first found 
+		'sort, so earliest weekday is first, else the first found
 		'is the first entry (useful for "upcoming" when in the next days)
 		If sortSlots Then result.sort()
-		
+
 		Return result
 	End Method
-	
+
 
 	'playoffs should ignore season breaks (season end / winter break)
 
