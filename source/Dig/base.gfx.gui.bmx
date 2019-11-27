@@ -1894,16 +1894,6 @@ Type TGUIobject
 		_UpdateLayout()
 		If IsDragged() Then InvalidateScreenRect()
 
-		'skip handling disabled entries
-		'(eg. deactivated scrollbars which else would "hover" before
-		' list items on the same spot)
-		If Not IsEnabled() Then Return False
-
-		'to recognize clicks/hovers/actions on child elements:
-		'ask them first!
-		UpdateChildren()
-
-
 		'if appearance changed since last update tick: inform widget
 		'Attention: this is also called via GUIManager.Update()/Draw()
 		'           but we just do it here too, in case you manually update
@@ -1913,6 +1903,21 @@ Type TGUIobject
 			onAppearanceChanged()
 			SetAppearanceChanged(False)
 		EndIf
+
+
+		'skip handling disabled entries
+		'(eg. deactivated scrollbars which else would "hover" before
+		' list items on the same spot)
+		If Not IsEnabled() Then Return False
+
+		'do not handle invisible elements
+		If Not IsVisible() Then Return False
+
+
+		'to recognize clicks/hovers/actions on child elements:
+		'ask them first!
+		UpdateChildren()
+
 
 
 		If GUIManager._ignoreMouse Then Return False
@@ -1931,7 +1936,7 @@ Type TGUIobject
 		'   in that case the mouse position should be the one of the
 		'   moment the "click" begun
 		Local mousePos:TVec2D
-		If MouseManager.IsClicked(1) Or MouseManager.GetClicks(1) > 0
+		If MouseManager.IsClicked(1)
 			mousePos = MouseManager.GetClickPosition(1)
 		EndIf
 		If Not mousePos Then mousePos = MouseManager.currentPos
