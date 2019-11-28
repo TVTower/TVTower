@@ -45,6 +45,7 @@ Import "base.util.vector.bmx"
 Import "base.util.time.bmx"
 Import "base.util.virtualgraphics.bmx"
 Import "base.util.objectqueue.bmx"
+
 Global MOUSEMANAGER:TMouseManager = New TMouseManager
 Global KEYMANAGER:TKeyManager = New TKeyManager
 Global KEYWRAPPER:TKeyWrapper = New TKeyWrapper
@@ -200,7 +201,7 @@ Type TMouseManager
 	Method _GetClickStack:TObjectQueue(button:Int, clickType:Int = -1)
 		Local buttonIndex:Int = button - 1
 		'default to left click
-		If button < 0 Then button = 0 
+		If buttonIndex < 0 Then buttonIndex = 0 
 
 		Select clickType
 			Case CLICKTYPE_DOUBLECLICK
@@ -215,9 +216,13 @@ Type TMouseManager
 	End Method
 	
 		
-	'remove the first added click from the stack (the "oldest")
-	Method _RemoveClickStackEntry:TMouseManagerClick(button:Int, clickType:Int = -1, clickCount:Int = 1)
+	'remove X added clicks from the stack (the "oldest")
+	Method _RemoveClickStackEntry:Int(button:Int, clickType:Int = -1, clickCount:Int = 1)
 		Local stack:TObjectQueue = _GetClickStack(button, clickType)
+		If Not stack 
+			Print "_RemoveClickStackEntry(): ClickStack not found. button="+button+"  clickType="+clickType
+			Return False
+		EndIf
 		
 		'remove all
 		If clickCount < 0 
@@ -228,11 +233,16 @@ Type TMouseManager
 				If Not stack.IsEmpty() Then stack.Dequeue()
 			Next
 		EndIf
+		Return True
 	End Method
 
 
 	Method _AddClickStackEntry:TMouseManagerClick(button:Int, clickType:Int = -1, position:TVec2D, time:Long = -1)
 		Local stack:TObjectQueue = _GetClickStack(button, clickType)
+		If Not stack 
+			Print "_AddClickStackEntry(): ClickStack not found. button="+button+"  clickType="+clickType
+			Return Null
+		EndIf
 
 		'purge excess (too many entries stored ?!)
 		'_Remove.. (amount = size - 20)
@@ -302,6 +312,13 @@ Type TMouseManager
 
 
 	Method ResetClicks(button:Int, clickType:Int = -1)
+		If button = -1 Then
+			For Local i:Int = 1 To GetButtonCount()
+				ResetClicks(i, clickType)
+			Next
+			Return
+		EndIf
+
 		_RemoveClickStackEntry(button, clickType, -1)
 
 		'reset emulated right clicks
