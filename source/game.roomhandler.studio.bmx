@@ -21,6 +21,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 	Global deskGuiListPos:TVec2D = New TVec2D.Init(350,335)
 	Global suitcasePos:TVec2D = New TVec2D.Init(520,70)
+	Global trashBinPos:TVec2D = New TVec2D.Init(148,327)
 	Global suitcaseGuiListDisplace:TVec2D = New TVec2D.Init(19,32)
 
 	Global studioManagerEntity:TSpriteEntity
@@ -756,8 +757,17 @@ Type RoomHandler_Studio Extends TRoomHandler
 			If useScript.IsSeries() Then Return False
 		EndIf
 		'print "CreateProductionConcept : create... " + useScript.GetTitle()
-		GetPlayerProgrammeCollection( playerID ).CreateProductionConcept(useScript)
+		local pc:TProductionConcept = GetPlayerProgrammeCollection( playerID ).CreateProductionConcept(useScript)
 
+		'if this not the first concept of a non-series script then append a number
+		'to distinguish them
+		If script.GetEpisodes() = 0 and not pc.HasCustomTitle()
+			Local conceptCount:int = GetProductionConceptCollection().GetProductionConceptsByScript( script ).length
+			If conceptCount > 1
+				'use title of the script to avoid reading in the custom title
+				pc.SetCustomTitle( pc.script.GetTitle() + " - #" + conceptCount)
+			EndIf
+		EndIf
 
 		Return True
 	End Function
@@ -840,6 +850,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 				conceptCountMax = script.GetSubScriptCount() - producedConceptCount
 			Else
 				conceptCountMax = script.CanGetProducedCount()
+				print "conceptCountMax = " + conceptCountMax  +"  productionLimit=" + script.productionLimit + "  usedInProductionsCount="+script.usedInProductionsCount
 			EndIf
 		EndIf
 
@@ -1127,6 +1138,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'make suitcase/vendor highlighted if needed
 		Local highlightSuitcase:Int = False
 		Local highlightStudioManager:Int = False
+		Local highlightTrashBin:Int = False
 
 		If draggedGuiScript And draggedGuiScript.isDragged()
 			If draggedGuiScript.script = GetCurrentStudioScript(roomGUID)
@@ -1135,8 +1147,13 @@ Type RoomHandler_Studio Extends TRoomHandler
 				highlightStudioManager = True
 			EndIf
 		EndIf
+		
+		If draggedGuiProductionConcept and draggedGuiProductionConcept.isDragged()
+			highlightTrashBin = True
+			highlightStudioManager = True
+		EndIf
 
-		If highlightStudioManager Or highlightSuitcase
+		If highlightStudioManager Or highlightSuitcase or highlightTrashBin
 			Local oldCol:TColor = New TColor.Get()
 			SetBlend LightBlend
 			SetAlpha oldCol.a * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
@@ -1145,7 +1162,13 @@ Type RoomHandler_Studio Extends TRoomHandler
 				If studioManagerEntity Then studioManagerEntity.Render()
 				GetSpriteFromRegistry("gfx_studio_deskhint").Draw(710, 325)
 			EndIf
-			If highlightSuitcase Then GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+			If highlightSuitcase 
+				GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+			EndIf
+			If highlightTrashBin 
+				'DrawRect(140, 330, 76, 59)
+				GetSpriteFromRegistry("gfx_studio_trashbin").Draw(trashBinPos.GetX(), trashBinPos.GetY())
+			EndIf
 
 			SetAlpha oldCol.a
 			SetBlend AlphaBlend
@@ -1184,7 +1207,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		'mouse over studio manager
 		If Not MouseManager.IsLongClicked(1)
-			If THelper.MouseIn(0,100,150,300)
+'			If THelper.MouseIn(0,100,150,300)
+			If THelper.MouseInRect( studioManagerArea.rect )
 				If Not studioManagerDialogue
 					'generate the dialogue if not done yet
 					If MouseManager.IsClicked(1)
@@ -1213,6 +1237,19 @@ Type RoomHandler_Studio Extends TRoomHandler
 					EndIf
 				EndIf
 			EndIf
+
+			If MouseManager.IsClicked(1) and THelper.MouseIn( trashBinPos.GetIntX(), trashBinPos.GetIntY(), 76, 59)
+				Local roomOwner:Int = TRoom(triggerEvent.GetSender()).owner
+				Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(roomOwner)
+
+				'Destroy, not just remove (would keep it in the concept collection)
+				If programmeCollection and programmeCollection.DestroyProductionConcept(draggedGuiProductionConcept.productionConcept)
+					draggedGuiProductionConcept = null
+			
+					'handled left click
+					MouseManager.SetClickHandled(1)
+				EndIf
+			EndIf
 		EndIf
 
 		If studioManagerTooltip Then studioManagerTooltip.Update()
@@ -1220,14 +1257,32 @@ Type RoomHandler_Studio Extends TRoomHandler
 		If studioManagerDialogue And studioManagerDialogue.Update() = 0
 			studioManagerDialogue = Null
 		EndIf
+		
+
+		'remove dragged concept list
+		If draggedGuiProductionConcept And MouseManager.IsClicked(2)
+			'no need to check owner - done at begin of function already
+			'If IsPlayersRoom(TRoom(triggerEvent.GetSender())) ...
+
+			Local roomOwner:Int = TRoom(triggerEvent.GetSender()).owner
+			Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(roomOwner)
+
+			'Destroy, not just remove (would keep it in the concept collection)
+			If programmeCollection and programmeCollection.DestroyProductionConcept(draggedGuiProductionConcept.productionConcept)
+				draggedGuiProductionConcept = null
+			
+				'remove right click - to avoid leaving the room
+				MouseManager.SetClickHandled(2)
+			EndIf
+		EndIf
+
 
 		If studioManagerDialogue And MouseManager.IsClicked(2)
 			studioManagerDialogue = Null
 
 			'remove right click - to avoid leaving the room
-			MouseManager.ResetClicked(2)
-			'also avoid long click (touch screen)
-			MouseManager.ResetLongClicked(1)
+			'this also handles long clicks
+			MouseManager.SetClickHandled(2)
 		EndIf
 
 

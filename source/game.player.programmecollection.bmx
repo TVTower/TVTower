@@ -818,7 +818,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	'remove a production conept from the collection
+	'remove a production concept from the collection
 	'ATTENTION: it is then still in "ProductionConceptCollection" !
 	Method RemoveProductionConcept:Int(productionConcept:TProductionConcept)
 		if productionConcept = Null then return False

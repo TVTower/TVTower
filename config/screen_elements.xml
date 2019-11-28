@@ -141,6 +141,7 @@
 				<child name="gfx_studio_productionconcept_0" x="141" y="60"  w="35"  h="47" />
 				<child name="gfx_studio_deskhint"       x="170" y="0"   w="80"  h="45" />
 				<child name="gfx_studio_manager"        x="0"   y="0"   w="139" h="270" />
+				<child name="gfx_studio_trashbin"       x="141" y="110" w="76" h="59" />
 			</children>
 		</spritepack>
 
