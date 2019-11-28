@@ -50,17 +50,13 @@ Import Brl.threads
 Import "base.util.logger.bmx"
 Import "base.util.data.bmx"
 Import "base.util.time.bmx"
-?not bmxng
-Import "external/bah.objectlist.bmx"
-?bmxng
 Import Brl.ObjectList
-?
 
 
 
 Global EventManager:TEventManager = New TEventManager
 
-Function TriggerSimpleEvent(trigger:string, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+Function TriggerSimpleEvent(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
 	EventManager.triggerEvent(TEventSimple.Create(trigger, data, sender, receiver, channel))
 End Function
 
@@ -122,19 +118,19 @@ Type TEventManager
 	Method RegisterListener:TEventListenerBase(trigger:String, eventListener:TEventListenerBase)
 		trigger = Lower(trigger)
 		Local listeners:TObjectList = TObjectList(_listeners.ValueForKey(trigger))
-		If not listeners
-			listeners = new TObjectList
+		If Not listeners
+			listeners = New TObjectList
 			_listeners.Insert(trigger, listeners)
 		EndIf
 
 		listeners.AddLast(eventListener)
 
-		return eventListener
+		Return eventListener
 	End Method
 
 
 	'register a function getting called as soon as a trigger is fired
-	Method RegisterListenerFunction:TEventListenerBase( trigger:String, _function:int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
+	Method RegisterListenerFunction:TEventListenerBase( trigger:String, _function:Int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
 		Return RegisterListener( trigger, TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
 	End Method
 
@@ -148,15 +144,15 @@ Type TEventManager
 	'remove an event listener from a trigger
 	Method UnregisterListener(eventListener:TEventListenerBase, trigger:String = "")
 		'remove only for trigger
-		if trigger
+		If trigger
 			Local listeners:TObjectList = TObjectList(_listeners.ValueForKey( Lower(trigger) ))
 			If listeners Then listeners.Remove(eventListener)
 		'remove from all
-		else
-			for local listeners:TObjectList = EachIn _listeners.Values()
+		Else
+			For Local listeners:TObjectList = EachIn _listeners.Values()
 				listeners.Remove(eventListener)
-			next
-		endif
+			Next
+		EndIf
 	End Method
 
 
@@ -296,25 +292,25 @@ Type TEventManager
 		Print "==== EVENT MANAGER DUMP LISTENERS ===="
 		Print "Events: " + _events.Count()
 
-		local listeners:int
-		For local l:TObjectList = EachIn EventManager._listeners.Values()
+		Local listeners:Int
+		For Local l:TObjectList = EachIn EventManager._listeners.Values()
 			listeners :+ l.Count()
 		Next
 		Print "Event Listeners: " + listeners
 
-		For local s:string = EachIn EventManager._listeners.Keys()
-			For local elb:TEventListenerBase = EachIn TObjectList(EventManager._listeners.ValueForKey(s))
+		For Local s:String = EachIn EventManager._listeners.Keys()
+			For Local elb:TEventListenerBase = EachIn TObjectList(EventManager._listeners.ValueForKey(s))
 				If TEventListenerRunFunction(elb)
-					print "KEY="+s+"  :: run function"
+					Print "KEY="+s+"  :: run function"
 				ElseIf TEventListenerRunMethod(elb)
-					local tyd:TTypeId = TTypeID.ForObject(TEventListenerRunMethod(elb)._objectInstance)
-					if tyd
-						print "KEY="+s+"  :: run method. instance "+ tyd.name
-					else
-						print "KEY="+s+"  :: run method. instance UNKNOWN"
-					endif
+					Local tyd:TTypeId = TTypeId.ForObject(TEventListenerRunMethod(elb)._objectInstance)
+					If tyd
+						Print "KEY="+s+"  :: run method. instance "+ tyd.name()
+					Else
+						Print "KEY="+s+"  :: run method. instance UNKNOWN"
+					EndIf
 				Else
-					print "KEY="+s+"  :: run " + TTypeID.ForObject(elb).name
+					Print "KEY="+s+"  :: run " + TTypeId.ForObject(elb).name()
 				EndIf
 			Next
 		Next
@@ -348,7 +344,7 @@ Type TEventManager
 		EndIf
 
 		'got a valid classname and checked object is same type or does extend from that type
-		If typeId and TTypeId.ForObject(checkedObject).ExtendsType(typeId) Then Return True
+		If typeId And TTypeId.ForObject(checkedObject).ExtendsType(typeId) Then Return True
 
 		Return False
 	End Function
@@ -421,10 +417,10 @@ Type TEventListenerRunMethod Extends TEventListenerBase
 		If triggerEvent = Null Then Return 0
 
 		If Not Self.ignoreEvent(triggerEvent)
-			if not _method
+			If Not _method
 				Local id:TTypeId = TTypeId.ForObject( _objectInstance )
 				_method = id.FindMethod( _methodName )
-			endif
+			EndIf
 
 			If _method
 				_method.Invoke(_objectInstance ,[triggerEvent])
@@ -446,7 +442,7 @@ Type TEventListenerRunFunction Extends TEventListenerBase
 	Field _function:Int(triggeredByEvent:TEventBase)
 
 
-	Function Create:TEventListenerRunFunction(_function:int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
+	Function Create:TEventListenerRunFunction(_function:Int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
 		Local obj:TEventListenerRunFunction = New TEventListenerRunFunction
 		obj._function = _function
 		obj._limitToSender = limitToSender
