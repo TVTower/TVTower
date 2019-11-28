@@ -199,13 +199,12 @@ endrem
 
 
 	Method Start()
-		print "=== Starting AI " + playerID + " ==="
+		TLogger.Log("TAiBase", "Starting AI " + playerID, LOG_DEBUG)
 
 		scriptFileName = "res/ai/DefaultAIPlayer/DefaultAIPlayer.lua"
 
 		'load lua file
 		LoadScript(scriptFileName)
-		print "Loaded Script: " + scriptFileName
 
 		started = True
 
@@ -218,25 +217,26 @@ endrem
 ?threaded
 		If not THREADED_AI_DISABLED
 			_updateThread = CreateThread( UpdateThread, self )
-			print "Created AI Update Thread"
+			TLogger.Log("TAiBase", "Created AI " + playerID + " Update Thread", LOG_DEBUG)
 		EndIf
 ?
 	End Method
 
 
 	Method Stop()
-		print "=== Stopping AI " + playerID + " ==="
+		TLogger.Log("TAiBase", "Stopping AI " + playerID, LOG_DEBUG)
 		started = False
 ?threaded
 		If not THREADED_AI_DISABLED and _updateThread
 			_updateThreadExit = True
 			WaitThread(_updateThread)
-			print "stopped thread for AI " + playerID
 
 			'reset
 			_updateThreadExit = False
 			DetachThread(_updateThread)
 			_updateThread = Null
+
+			TLogger.Log("TAiBase", "Removed AI " + playerID + " Update Thread", LOG_DEBUG)
 		EndIf
 ?
 	End Method

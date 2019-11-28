@@ -87,6 +87,8 @@ Type TSoundManager_FreeAudio Extends TSoundManager
 	Function Create:TSoundManager_FreeAudio()
 		Local manager:TSoundManager_FreeAudio = New TSoundManager_FreeAudio
 
+		SetAudioDriver("FreeAudio")
+
 		'initialize sound system
 		manager.InitAudioEngine()
 
@@ -403,26 +405,26 @@ Type TDigAudioStream_FreeAudio Extends TDigAudioStream
 
 
 	'returns time left in milliseconds
-	Method GetTimeLeft:Float()
-		Return 1000.0 * (samplesCount - GetPosition()) / Float(freq)
+	Method GetTimeLeft:Int()
+		Return Int(1000 * (samplesCount - GetPosition()) / Float(freq))
 	End Method
 
 
 	'returns milliseconds
-	Method GetTimePlayed:Float()
-		Return 1000.0 * GetPosition() / Float(freq)
+	Method GetTimePlayed:Int()
+		Return Int(1000 * GetPosition() / Float(freq))
 	End Method
 
 
 	'returns milliseconds
-	Method GetTimeBuffered:Float()
-		Return 1000.0 * (GetPosition() + GetBufferPosition()) / Float(freq)
+	Method GetTimeBuffered:Int()
+		Return Int(1000 * (GetPosition() + GetBufferPosition()) / Float(freq))
 	End Method
 
 
 	'returns milliseconds
 	Method GetTimeTotal:Int()
-		Return 1000 * (samplesCount / Float(freq))
+		Return int(1000 * (samplesCount / Float(freq)))
 	End Method
 
 

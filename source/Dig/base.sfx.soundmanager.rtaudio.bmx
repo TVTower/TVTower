@@ -18,6 +18,8 @@ Type TSoundManager_RtAudio Extends TSoundManager
 	Function Create:TSoundManager_RtAudio()
 		Local manager:TSoundManager_RtAudio = New TSoundManager_RtAudio
 
+		SetAudioDriver("RtAudio")
+
 		'initialize sound system
 		If audioEngineEnabled Then manager.InitAudioEngine()
 
@@ -178,7 +180,7 @@ Type TDigAudioStream_RtAudio Extends TDigAudioStream
 
 
 	'returns time left in milliseconds
-	Method GetTimeLeft:Float()
+	Method GetTimeLeft:Int()
 		Return GetTimeTotal() - GetTimePlayed()
 	End Method
 
@@ -191,7 +193,7 @@ Type TDigAudioStream_RtAudio Extends TDigAudioStream
 
 
 	'returns time left in milliseconds
-	Method GetTimePlayed:Float()
+	Method GetTimePlayed:Int()
 		If Not channel Then Return 0
 
 		Return maxmod2.maxmod2.GetChannelPosition(channel, MM_MILLISECS)

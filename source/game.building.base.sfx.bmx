@@ -10,19 +10,8 @@ Type TSfxFloorSoundBarrierSettings Extends TSfxSettings
 		Local floorNumberSource:Int = TBuildingBase.getFloorByPixelExactPoint(source.GetCenter().toVec2D())
 		Local floorNumberTarget:Int = TBuildingBase.getFloorByPixelExactPoint(receiver.GetCenter().toVec2D())
 		Local floorDistance:Int = Abs(floorNumberSource - floorNumberTarget)
-'		print "floorDistance: " + floorDistance + " - " + Exponential(0.5, floorDistance) + " # " + floorNumberSource + " $ " + floorNumberTarget
-		Return Super.GetVolumeByDistance(source, receiver) * Exponential(0.5, floorDistance)
-	End Method
-
-	Method Exponential:Float(base:Float, expo:Float)
-'		print "Exponential1: " + base + " - " + expo
-		Local result:Float = base
-		If expo >= 2
-			For Local i:Int = 1 To expo - 1
-				result = result * base
-			Next
-		EndIf
-'		print "Exponential2: " + result
-		Return result
+		'print "floorDistance: " + floorDistance + " - " + (0.5^floorDistance) + " # " + floorNumberSource + " $ " + floorNumberTarget + "  source="+source.GetCenter().toVec2D().ToString() + "  receiver="+receiver.GetCenter().toVec2D().ToString()
+		'0 floors = *1  |  1 floor = *0.5  |  2 floors = *0.25 ..
+		Return Super.GetVolumeByDistance(source, receiver) * (0.5^floorDistance)
 	End Method
 End Type
