@@ -148,22 +148,43 @@ Type TLocalization
 	Function _GetRandomString:string(language:TLocalizationLanguage, key:string, limit:int=-1)
 		if not language then return key
 
-		local availableStrings:int = 1
+
+		local keyLower:String = key.ToLower()
+		local hasMain:Int = language.HasRaw(keyLower)
+		local availableAlternatives:Int = 0
 		local subKey:string = ""
+
 		Repeat
-			subKey = Key
-			if availableStrings > 0 then subKey :+ availableStrings
-			if language.Get(subKey) <> subKey
-				availableStrings :+1
+			subKey = keyLower + (availableAlternatives + 1)
+
+			'alternative existing?
+			if language.HasRaw(subKey)
+				availableAlternatives :+ 1
 				continue
 			endif
-
-			if availableStrings = 1
-				return language.Get(Key).replace("\n", Chr(13))
-			else
-				return language.Get(Key + Rand(1, availableStrings-1)).replace("\n", Chr(13))
-			endif
+			
+			exit
 		Forever
+
+
+		if hasMain
+			if availableAlternatives = 0
+				return language.GetRaw(keyLower).replace("\n", Chr(13))
+			else
+				local index:int = Rand(0, availableAlternatives)
+				if index = 0
+					return language.GetRaw(keyLower).replace("\n", Chr(13))
+				else
+					return language.GetRaw(keyLower + index).replace("\n", Chr(13))
+				endif
+			endif
+		else
+			if availableAlternatives = 0
+				return key
+			else
+				return language.GetRaw(keyLower + Rand(1, availableAlternatives-1)).replace("\n", Chr(13))
+			endif
+		endif
 	End Function
 
 
@@ -488,11 +509,30 @@ Type TLocalizationLanguage
 		Local ret:Object
 
 		If group Then key = group + "::" + Key
+		key = lower(key)
 
-		ret = map.ValueForKey(lower(key))
+		ret = map.ValueForKey(key)
 
-		If ret = Null
-			Return Key
+		If ret = Null 'empty strings or not existing?
+			If not HasRaw(key) Then Return Key
+			Return ""
+		Else
+			Return String(ret)
+		EndIf
+	End Method
+
+
+	'Gets the value for the specified key
+	Method GetRaw:String(Key:String, group:String = Null)
+		Local ret:Object
+
+		If group Then key = group + "::" + Key
+
+		ret = map.ValueForKey(key)
+
+		If ret = Null 'empty strings or not existing?
+			If not HasRaw(key) Then Return Key
+			Return ""
 		Else
 			Return String(ret)
 		EndIf
@@ -503,6 +543,11 @@ Type TLocalizationLanguage
 		If group Then key = group + "::" + Key
 
 		return map.Contains(lower(key))
+	End Method
+
+
+	Method HasRaw:int(key:string)
+		return map.Contains(key)
 	End Method
 
 
