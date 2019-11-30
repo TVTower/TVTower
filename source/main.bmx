@@ -1372,10 +1372,10 @@ endrem
 
 
 		'set the mouse clicks handled anyways
-		MouseManager.ResetClicked(1)
-		MouseManager.ResetClicked(2)
+'		MouseManager.ResetClicked(1)
+'		MouseManager.ResetClicked(2)
 		'remove clicks done a longer time ago
-		MouseManager.RemoveOutdatedClicks(1000)
+'		MouseManager.RemoveOutdatedClicks(1000)
 
 		TProfiler.Leave(_profilerKey_Update)
 	End Function
@@ -1556,17 +1556,20 @@ endrem
 
 		RenderDevOSD()
 
-		SetColor 0,0,0
-		DrawRect(5,455, 200, 100)
-		SetColor 190,190,190
-		local linePos:int = 460
-		'OK: "TRoom", "TRoomDoor"
-		For local s:string = EachIn ["TImage", "TPixmap", "TGLImageFrame", "TNewsEvent", "TPlayerProgrammePlan", "TPlayerProgrammeCollection", "TFigure", "TPlayer", "TPlayerBoss", "TProgrammeLicence"]
-			GetBitmapFontManager().baseFont.Draw(s+": " + OCM.GetTotal(s), 10 , linePos)
-			linePos :+ 12
-		Next
-		SetColor 255,255,255
-
+		?bmxng
+		If OCM.enabled
+			SetColor 0,0,0
+			DrawRect(5,455, 200, 100)
+			SetColor 190,190,190
+			Local linePos:Int = 460
+			'OK: "TRoom", "TRoomDoor"
+			For Local s:String = EachIn ["TImage", "TPixmap", "TGLImageFrame", "TNewsEvent", "TPlayerProgrammePlan", "TPlayerProgrammeCollection", "TFigure", "TPlayer", "TPlayerBoss", "TProgrammeLicence"]
+				GetBitmapFontManager().baseFont.Draw(s+": " + OCM.GetTotal(s), 10 , linePos)
+				linePos :+ 12
+			Next
+			SetColor 255,255,255
+		EndIf
+		?
 
 		If GetGame().gamestate = TGame.STATE_RUNNING
 			If Not TAiBase.AiRunning
@@ -2026,9 +2029,10 @@ Type TGameState
 			TScreenHandler_ProgrammePlanner.PPcontractList.Initialize()
 		EndIf
 
-
+		?bmxng
 		OCM.FetchDump("GAMESTATE INITIALIZE")
 		OCM.Dump()
+		?
 	End Method
 
 
@@ -5458,7 +5462,7 @@ Type GameEvents
 			'COLLECTION
 			'loop through a copy to avoid concurrent modification
 			For Local news:TNews = EachIn p.GetProgrammeCollection().news.Copy()
-				local ne:TNewsEvent = news.GetNewsEvent()
+				Local ne:TNewsEvent = news.GetNewsEvent()
 				If ne.HasHappened() And ne.HasEnded()
 					p.GetProgrammeCollection().RemoveNews(news)
 				EndIf
@@ -6372,6 +6376,7 @@ End Extern
 ?
 Function StartTVTower(start:Int=True)
 ?bmxng
+OCM.enabled  = False
 'OCM.AddIgnoreTypes("TObjectCountDumpEntry, TObjectCountDump, TRamStream")
 'OCM.AddIgnoreTypes("String, TApp, TBank, TBitmapFont, TBitmapFontChar, TBitmapFontManager")
 'OCM.AddIgnoreTypes("TCatmullRomSpline, TConstant, TField, TFreeAudioChannel, TFreeAudioSound, TFreeTypeFont, TFreeTypeGlyph")
