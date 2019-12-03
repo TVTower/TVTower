@@ -194,22 +194,35 @@ Type TLocalization
 			return ""
 		endif
 
-		local availableStrings:string[]
+		local availableStrings:string[4]
+		local availableStringsCount:int = 0
 		local subKey:string
+
 		for local k:string = EachIn keys
 			local availableSubKeys:int = 0
 			local foundEntry:int =  False
+			local kLS:string = k.ToLower()
+			
+
 			Repeat
-				subKey = k
 				'append a number except for first
-				if availableSubKeys > 0 then subKey :+ availableSubKeys
-				if language.Get(subKey) <> subKey
+				if availableSubKeys > 0 
+					subKey = kLS + availableSubKeys
+				else
+					subKey = kLS
+				endif
+				if language.HasRaw(subKey)
 					availableSubKeys :+1
-					availableStrings :+ [subKey]
+					availableStringsCount :+ 1
+					if availableStrings.length <= availableSubKeys
+						availableStrings = availableStrings[.. availableStrings.length + 4]
+					endif
+					availableStrings[availableSubKeys-1] = subKey
+
 					continue
 				else
 					'stop searching if nothing was found for this "key+number"
-					if availablesubKeys > 0 then exit
+					if availableSubKeys > 0 then exit
 				endif
 
 
@@ -218,11 +231,11 @@ Type TLocalization
 		Next
 
 		'found no more entries
-		if availableStrings.length > 0
-			if availableStrings.length = 1
-				return language.Get(availableStrings[0]).replace("\n", Chr(13))
+		if availableStringsCount > 0
+			if availableStringsCount = 1
+				return language.GetRaw(availableStrings[0]).replace("\n", Chr(13))
 			else
-				return language.Get(availableStrings[Rand(0, availableStrings.length-1)]).replace("\n", Chr(13))
+				return language.GetRaw(availableStrings[Rand(0, availableStringsCount-1)]).replace("\n", Chr(13))
 			endif
 		endif
 
