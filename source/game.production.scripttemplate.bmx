@@ -138,8 +138,10 @@ Type TScriptTemplate Extends TScriptBase
 
 	Field targetGroup:Int = -1
 
-	Field productionLimit:int = 1
-	Field productionTimes:int = 0
+	'stores all TScripts using this base template
+	Field usedForScripts:Int[]
+	'defines a limit of how often it can be used as base for scripts
+	Field usedForScriptsLimit:int = -1
 
 	'manipulators for the production using a script
 	Field productionTimeMin:Int = -1
@@ -223,7 +225,7 @@ Type TScriptTemplate Extends TScriptBase
 
 
 		'=== specific availability ===
-		if GetProductionLimit() > 0 and GetProductionTimes() >= GetProductionLimit() then return False
+		if GetUsedForScriptsLimit() > 0 and GetUsedForScriptsCount() >= GetUsedForScriptsLimit() then return False
 
 		return True
 	End Method
@@ -238,23 +240,31 @@ Type TScriptTemplate Extends TScriptBase
 	End Method
 
 
-	Method GetProductionLimit:int()
-		return productionLimit
+	Method GetUsedForScriptsLimit:int()
+		return usedForScriptsLimit
 	End Method
 
 
-	Method GetProductionTimes:int()
-		return productionTimes
+	Method GetUsedForScriptsCount:int()
+		If not usedForScripts then return 0
+		Return usedForScripts.length
+	End Method
+	
+	
+	Method IsUsedForScript:int(scriptID:Int)
+		If not usedForScripts then return False
+		For local i:Int = eachIn usedForScripts
+			if i = scriptID then return True
+		Next
+		Return False
 	End Method
 
 
-	Method SetProductionTimes(times:int)
-		productionTimes = times
-	End Method
+	Method AddUsedForScript:Int(scriptID:int)
+		if IsUsedForScript(scriptID) Then Return False
 
-
-	Method FinishProduction(programmeLicenceID:int)
-		SetProductionTimes( GetProductionTimes() + 1)
+		usedForScripts :+ [scriptID]
+		Return True
 	End Method
 
 

@@ -16,7 +16,7 @@ Import "common.misc.datasheet.bmx"
 
 Type TScriptCollection Extends TGameObjectCollection
 	'stores "languagecode::name"=>"used by id" connections
-	Field protectedTitles:TMap = New TMap
+	Field protectedTitles:TStringMap = New TStringMap
 	'=== CACHE ===
 	'cache for faster access
 
@@ -438,7 +438,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			Local subScript:TScript = TScript.CreateFromTemplate(subTemplate)
 			If subScript Then script.AddSubScript(subScript)
 		Next
-		script.basedOnScriptTemplateID = template.GetID()
 
 		'this would GENERATE a new block of jobs (including RANDOM ones)
 		'- for single scripts we could use that jobs
@@ -450,61 +449,10 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			'and dynamically count individual cast count by using
 			'Max(script-cast-count, max-of-subscripts-cast-count)
 			script.cast = template.GetJobs()
-			Rem
-			local myCastCountAll:int[] = new Int[TVTProgrammePersonJob.count]
-			local myCastCountMale:int[] = new Int[TVTProgrammePersonJob.count]
-			local myCastCountFemale:int[] = new Int[TVTProgrammePersonJob.count]
-			local subCastCountAll:int[] = new Int[TVTProgrammePersonJob.count]
-			local subCastCountMale:int[] = new Int[TVTProgrammePersonJob.count]
-			local subCastCountFemale:int[] = new Int[TVTProgrammePersonJob.count]
-			local allCastCountAll:int[] = new Int[TVTProgrammePersonJob.count]
-			local allCastCountMale:int[] = new Int[TVTProgrammePersonJob.count]
-			local allCastCountFemale:int[] = new Int[TVTProgrammePersonJob.count]
-
-			For local j:TProgrammePersonJob = EachIn script.cast
-				'increase count for each associated job
-				For local jobIndex:int = 1 to TVTProgrammePersonJob.count
-					local jobID:int = TVTProgrammePersonJob.GetAtIndex(jobIndex)
-					if jobID & j.job = 0 then continue
-
-					if j.gender = 0
-						myCastCountAll[jobIndex-1] :+ 1
-					elseif j.gender = TVTPersonGender.MALE
-						myCastCountMale[jobIndex-1] :+ 1
-					elseif j.gender = TVTPersonGender.FEMALE
-						myCastCountFemale[jobIndex-1] :+ 1
-					endif
-				Next
-			Next
-
-			'do the same for all subs
-			For local subScript:TScript = EachIn script.subScripts
-				For local j:TProgrammePersonJob = EachIn script.cast
-					'increase count for each associated job
-					For local jobIndex:int = 1 to TVTProgrammePersonJob.count
-						local jobID:int = TVTProgrammePersonJob.GetAtIndex(jobIndex)
-						if jobID & j.job = 0 then continue
-
-						if j.gender = 0
-							subCastCountAll[jobIndex-1] :+ 1
-						elseif j.gender = TVTPersonGender.MALE
-							subCastCountMale[jobIndex-1] :+ 1
-						elseif j.gender = TVTPersonGender.FEMALE
-							subCastCountFemale[jobIndex-1] :+ 1
-						endif
-					Next
-				Next
-
-				'keep the biggest cast count of all subscripts
-				For local jobIndex:int = 1 to TVTProgrammePersonJob.count
-					allCastCountAll[jobIndex-1] = Max(allCastCountAll[jobIndex-1], subCastCountAll[jobIndex-1])
-					allCastCountMale[jobIndex-1] = Max(allCastCountMale[jobIndex-1], subCastCountMale[jobIndex-1])
-					allCastCountFemale[jobIndex-1] = Max(allCastCountFemale[jobIndex-1], subCastCountFemale[jobIndex-1])
-				Next
-			Next
-			endrem
 		EndIf
 
+		script.basedOnScriptTemplateID = template.GetID()
+		template.AddUsedForScript(script.GetID())
 
 		'reset the state of the template
 		'without that, the following scripts created with this template
