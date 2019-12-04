@@ -185,9 +185,14 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
-	Method SetProductionCompany(productionCompany:TProductionCompanyBase)
-		'skip if no change is needed
-		if self.productionCompany = productionCompany then return
+	Method GetProductionCompany:TProductionCompanyBase()
+		Return self.productionCompany
+	End Method 
+
+
+	Method SetProductionCompany(productionCompany:TProductionCompanyBase, force:Int = False)
+		'skip if no change is needed - except forced (eg re-apply focus max)
+		if self.productionCompany = productionCompany and not force then return
 
 
 		self.productionCompany = productionCompany

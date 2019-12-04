@@ -83,6 +83,8 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onRemoveFocus", onProductionConceptRemoveFocusSliderFocus, "TGUISlider" ) ]
 		'changes to production company dropdown
 		_eventListeners :+ [ EventManager.registerListenerFunction("GUIDropDown.onSelectEntry", onProductionConceptChangeProductionCompanyDropDown, "TGUIDropDown" ) ]
+		'changes to production company levels / skill points
+		_eventListeners :+ [ EventManager.registerListenerFunction("ProductionCompany.OnChangeLevel", onProductionCompanyChangesLevel ) ]
 		'select a production concept
 		_eventListeners :+ [ EventManager.registerListenerFunction("GUISelectList.onSelectEntry", onSelectProductionConcept) ]
 		'edit title/description
@@ -330,6 +332,28 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 	End Method
 
 
+	Function onProductionCompanyChangesLevel:int(triggerEvent:TEventBase)
+		If not GetInstance().currentProductionConcept then Return False
+
+		Local pc:TProductionCompanyBase = TProductionCompanyBase(triggerEvent.GetSender())
+		If Not pc Then Return False
+		'only interested if the currently set company changes their level
+		If GetInstance().currentProductionConcept.GetProductionCompany() <> pc Then Return False
+		
+		'set it anew so values change (force = true)
+		GetInstance().currentProductionConcept.SetProductionCompany(pc, True)
+
+		'update displayed value
+		local entry:TGUIProductionCompanyDropDownItem = TGUIProductionCompanyDropDownItem( GetInstance().productionCompanySelect.GetSelectedEntry() )
+		If entry
+			entry.SetValue( entry.GetBaseValue() )
+			GetInstance().productionCompanySelect.RefreshValue()
+		EndIf
+		
+		Return True
+	End Function
+
+
 	Function onCloseEditTextsWindow:int( triggerEvent:TEventBase )
 		local closeButton:int = triggerEvent.GetData().GetInt("closeButton", -1)
 		if closeButton <> 1 then return False
@@ -566,7 +590,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 	'=== CAST LISTS - EVENTS ===
 
-	'GUI -> GUI reactio
+	'GUI -> GUI reaction
 	Function onMouseOverProductionConceptItem:int( triggerEvent:TEventBase )
 		local item:TGuiProductionConceptListItem = TGuiProductionConceptListItem(triggerEvent.GetSender())
 		if item = Null then return FALSE
@@ -2581,6 +2605,16 @@ Type TGUIProductionCompanyDropDownItem Extends TGUIDropDownItem
 		GetDimension()
 
 		Return Self
+	End Method
+	
+	
+	Method GetBaseValue:String()
+		Local company:TProductionCompanyBase = TProductionCompanyBase(data.Get("productionCompany"))
+		If company
+			Return company.name+" [Lvl: "+company.GetLevel()+"]"
+		Else
+			Return "Unknown company [Lvl: /]"
+		EndIf
 	End Method
 
 

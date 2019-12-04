@@ -22,4 +22,21 @@ Type TProductionCompany extends TProductionCompanyBase
 		if currentXP < 5000 then return 0.4 * baseGain
 		return 0.2 * baseGain
 	End Method
+
+
+	'override
+	Method OnChangeLevel:Int(oldLevel:Int, newLevel:Int)
+		EventManager.triggerEvent( TEventSimple.Create("ProductionCompany.OnChangeLevel", new TData.AddNumber("oldLevel", oldLevel).AddNumber("newLevel", newLevel), Self ) )
+
+		Return True
+	End Method
+
+
+	'override
+	Method OnChangeXP:Int(oldXP:Int, newXP:Int)
+		EventManager.triggerEvent( TEventSimple.Create("ProductionCompany.OnChangeXP", new TData.AddNumber("oldXP", oldXP).AddNumber("newXP", newXP), Self ) )
+
+		Return True
+	End Method
+
 End Type

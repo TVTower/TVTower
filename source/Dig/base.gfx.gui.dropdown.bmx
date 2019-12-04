@@ -239,11 +239,21 @@ Type TGUIDropDown Extends TGUIInput
 		'set to accepted so that nobody else receives the event
 		triggerEvent.SetAccepted(True)
 	End Function
-
+	
+	
+	Method RefreshValue()
+		If selectedEntry
+			SetValue(selectedEntry.GetValue())
+		Else
+			SetValue("")
+		EndIf
+	End Method
+	
 
 	Method SetSelectedEntry(item:TGUIObject)
 		selectedEntry = item
-		SetValue(item.GetValue())
+		
+		RefreshValue()
 
 		EventManager.triggerEvent( TEventSimple.Create("GUIDropDown.onSelectEntry", Null, Self, item) )
 	End Method

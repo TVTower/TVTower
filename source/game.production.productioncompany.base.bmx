@@ -143,9 +143,17 @@ Type TProductionCompanyBase Extends TGameObject
 
 
 	Method SetExperience(value:Int)
+		local oldLevel:Int = GetLevel()
+		local oldXP:Int = xp
+
 		value = Max(0, value)
 		'limit by individual xp limit
 		xp = Min(GetMaxXP(), value)
+		
+		local newLevel:Int = GetLevel()
+
+		if oldLevel <> newLevel Then OnChangeLevel(oldLevel, newLevel)
+		if oldXP <> xp Then OnChangeXP(oldXP, xp)
 	End Method
 
 
@@ -219,5 +227,15 @@ Type TProductionCompanyBase Extends TGameObject
 		Local q:Float = 0.25 * baseQuality + 0.75 * GetExperiencePercentage()
 		'modified by an individual modifier
 		Return Max(0.0, Min(1.0, qualityModifier * q))
+	End Method
+	
+	
+	Method OnChangeXP:Int(oldXP:Int, newXP:Int)
+		Return True
+	End Method
+
+
+	Method OnChangeLevel:Int(oldLevel:Int, newLevel:Int)
+		Return True
 	End Method
 End Type

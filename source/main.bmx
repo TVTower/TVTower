@@ -827,6 +827,24 @@ Type TApp
 
 
 					If KEYMANAGER.IsHit(KEY_Y)
+					
+					Rem
+						local pcIndex:Int = 0
+						For local pc:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.values()
+							if pcIndex = 1 'for first only
+								local oldLevel:int = pc.GetLevel()
+								pc.SetExperience( pc.GetExperience() + 500 )
+								if oldLevel <> pc.GetLevel()
+									print "Increased XP of production company ~q" + pc.name +"~q by 500. Levelup: " + oldLevel + " -> " + pc.GetLevel()
+								else
+									print "Increased XP of production company ~q" + pc.name +"~q by 500."
+								endif
+								exit
+							endif
+							pcIndex :+ 1
+						Next
+					End Rem
+					
 					Rem
 						Local reach:Int = GetStationMap( 1 ).GetReach()
 						print "reach: " + reach +"  audienceReach=" + GetBroadcastmanager().GetAudienceResult(1).WholeMarket.GetTotalSum()
@@ -865,6 +883,7 @@ Type TApp
 						next
 						endrem
 
+						Rem
 						For Local l:String = EachIn addNewsEventTemplates
 							Local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(l)
 							If template
@@ -898,6 +917,7 @@ Type TApp
 								Print "already had movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
 							EndIf
 						Next
+						EndRem
 
 
 						Rem
