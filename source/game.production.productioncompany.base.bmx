@@ -12,8 +12,8 @@ Type TProductionCompanyBaseCollection Extends TGameObjectCollection
 	Global _instance:TProductionCompanyBaseCollection
 
 	Function GetInstance:TProductionCompanyBaseCollection()
-		if not _instance then _instance = new TProductionCompanyBaseCollection
-		return _instance
+		If Not _instance Then _instance = New TProductionCompanyBaseCollection
+		Return _instance
 	End Function
 
 
@@ -22,7 +22,7 @@ Type TProductionCompanyBaseCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetByID:TProductionCompanyBase(ID:int)
+	Method GetByID:TProductionCompanyBase(ID:Int)
 		Return TProductionCompanyBase( Super.GetByID(ID) )
 	End Method
 
@@ -42,8 +42,8 @@ End Function
 
 
 
-Type TProductionCompanyBase extends TGameObject
-	Field name:string
+Type TProductionCompanyBase Extends TGameObject
+	Field name:String
 	'IDs of all done productions
 	Field producedProgrammeIDs:Int[]
 	Field baseQuality:Float = 0.50
@@ -52,54 +52,75 @@ Type TProductionCompanyBase extends TGameObject
 	'quality manipulation. varying quality but constant "price"
 	Field qualityModifier:Float = 1.0
 	Field channelSympathy:Float[4]
-	Field xp:int = 0
+	Field xp:Int = 0
 	'a custom xp limit - eg limited by "age" or so
 	'cannot be higher than DEFAULT_MAX_XP
-	Field maxXP:int = -1
-	Field maxLevel:int = -1
+	Field maxXP:Int = -1
+	Field maxLevel:Int = -1
 
-	Const MAX_XP:int = 10000
-	Const MAX_LEVEL:int = 20
+	Const MAX_XP:Int = 10000
+	Const MAX_LEVEL:Int = 20
 	'minimum amount of points (added to level 1)
-	Const MIN_FOCUSPOINTS:int = 2
-	Const MAX_FOCUSPOINTS:int = 60
+	Const MIN_FOCUSPOINTS:Int = 2
+	Const MAX_FOCUSPOINTS:Int = 60
 
 
-	Method GenerateGUID:string()
-		return "productioncompanybase-"+id
-	End Method
-
-'ProductionCompany: Finished production. experience before: 999  level: 2  LevelXP%:0.998000026   XP%:0.0998999998
- '                                          experience now: 1016  level: 2  LevelXP%:0.0320000648   XP%:0.101599999
-	Method GetLevel:int()
-		return Min(MAX_LEVEL, 1 + (MAX_LEVEL-1) * GetExperiencePercentage())
+	Method GenerateGUID:String()
+		Return "productioncompanybase-"+id
 	End Method
 
 
-	Method GetMaxXP:int()
-		if maxXP < 0 then return MAX_XP
-		return Min(maxXP, MAX_XP)
+	Method GetLevelXPMinimum:Int( level:Int = -1)
+		If level = -1 Then level = GetLevel()
+		Return level / Float(GetMaxLevel()) * GetMaxXP()
 	End Method
 
 
-	Method SetLevel:int(level:int)
+	Method GetLevel:Int()
+		Return Min(GetMaxLevel(), 1 + GetMaxLevel() * GetExperiencePercentage())
+	End Method
+
+
+	Method SetMaxLevel:Int(level:Int)
+		maxLevel = level
+	End Method
+
+
+	Method GetMaxLevel:Int()
+		'fix for old savegames / instances of the companies
+		If maxXP = 0 then maxLevel = 1
+
+		If maxLevel < 0 Then Return MAX_LEVEL
+		Return Min(maxLevel, MAX_LEVEL)
+	End Method
+
+
+	Method GetMaxXP:Int()
+		If maxXP < 0 Then Return MAX_XP
+		Return Min(maxXP, MAX_XP)
+	End Method
+
+
+	Method SetLevel:Int(level:Int)
 		level = Max(1, level)
 		'-1 because level 1 is reached with 0 xp
-		SetExperience(int(Float(level-1) / MAX_LEVEL * MAX_XP))
+		SetExperience(Int(Float(level-1) / GetMaxLevel() * GetMaxXP()))
 	End Method
 
 
 	Method GetLevelExperiencePercentage:Float()
-		return GetExperiencePercentage() - floor(GetExperiencePercentage())
+		Local level:Float = GetExperiencePercentage() * GetMaxLevel()
+		' GetExperience() / float(mXP)
+		Return level - Int(level)
 	End Method
 
 
-	Method GetFocusPoints:int()
-		return GetFocusPointsAtLevel( GetLevel() )
+	Method GetFocusPoints:Int()
+		Return GetFocusPointsAtLevel( GetLevel() )
 	End Method
 
 
-	Function GetFocusPointsAtLevel:int(level:int)
+	Function GetFocusPointsAtLevel:Int(level:Int)
 		level = Max(1, level)
 
 		'20 level = 5pt each level
@@ -107,90 +128,85 @@ Type TProductionCompanyBase extends TGameObject
 		' 6-10 get  1 from 11-15	= 5 + 1 = 6
 		'11-15 give 1 to    6-10	= 5 - 1 = 4
 		'16-20 give 3 to    1- 5	= 5 - 3 = 2
-		local result:int = 0
-		if level > 0 then result :+ Min(5, level   ) * 8
-		if level > 5 then result :+ Min(5, level- 5) * 6
-		if level >10 then result :+ Min(5, level-10) * 4
-		if level >15 then result :+ Min(5, level-15) * 2
-		return floor(result * (MAX_FOCUSPOINTS - MIN_FOCUSPOINTS)/100.0) + MIN_FOCUSPOINTS
+		Local result:Int = 0
+		If level > 0 Then result :+ Min(5, level   ) * 8
+		If level > 5 Then result :+ Min(5, level- 5) * 6
+		If level >10 Then result :+ Min(5, level-10) * 4
+		If level >15 Then result :+ Min(5, level-15) * 2
+		Return Floor(result * (MAX_FOCUSPOINTS - MIN_FOCUSPOINTS)/100.0) + MIN_FOCUSPOINTS
 	End Function
 
 
-	Method SetMaxExperience(value:int)
+	Method SetMaxExperience(value:Int)
 		maxXP = value
 	End Method
 
 
-	Method SetExperience(value:int)
+	Method SetExperience(value:Int)
 		value = Max(0, value)
 		'limit by individual xp limit
 		xp = Min(GetMaxXP(), value)
 	End Method
 
 
-	Method GetExperience:int()
-		return Max(0, xp)
+	Method GetExperience:Int()
+		Return Max(0, xp)
 	End Method
 
 
 	Method GetExperiencePercentage:Float()
-		return GetExperience() / float(MAX_XP)
+		If GetMaxXP() = 0 Then Return 1.0
+
+		Return GetExperience() / Float(GetMaxXP())
 	End Method
 
 
-	Method GetIndividualExperiencePercentage:Float()
-		if GetMaxXP() = 0 then return 1.0
-
-		return GetExperience() / float(GetMaxXP())
+	Method GetNextExperienceGain:Int(programmeDataID:Int)
+		Return 0
 	End Method
 
 
-	Method GetNextExperienceGain:int(programmeDataID:int)
-		return 0
-	End Method
-
-
-	Method SetChannelSympathy:int(channel:int, newSympathy:float)
-		if channel < 0 or channel >= channelSympathy.length then return False
+	Method SetChannelSympathy:Int(channel:Int, newSympathy:Float)
+		If channel < 0 Or channel >= channelSympathy.length Then Return False
 		newSympathy = MathHelper.Clamp(newSympathy, -1.0, +1.0)
 
 		channelSympathy[channel -1] = newSympathy
 	End Method
 
 
-	Method GetChannelSympathy:float(channel:int)
-		if channel < 0 or channel >= channelSympathy.length then return 0.0
+	Method GetChannelSympathy:Float(channel:Int)
+		If channel < 0 Or channel >= channelSympathy.length Then Return 0.0
 
-		return channelSympathy[channel -1]
+		Return channelSympathy[channel -1]
 	End Method
 
 
-	Method FinishProduction:int(programmeDataID:int)
+	Method FinishProduction:Int(programmeDataID:Int)
 		'already added
-		if MathHelper.InIntArray(programmeDataID, producedProgrammeIDs) then return False
+		If MathHelper.InIntArray(programmeDataID, producedProgrammeIDs) Then Return False
 
-		local oldExperience:int = GetExperience()
-		local oldLevel:int = GetLevel()
-		local oldLevelXP:Float = GetLevelExperiencePercentage()
-		local oldXP:Float = GetExperiencePercentage()
+		Local oldExperience:Int = GetExperience()
+		Local oldLevel:Int = GetLevel()
+		Local oldLevelXP:Float = GetLevelExperiencePercentage()
+		Local oldXP:Float = GetExperiencePercentage()
 
 		'add programme
 		producedProgrammeIDs :+ [programmeDataID]
 		'gain some xp
 		SetExperience(GetExperience() + GetNextExperienceGain(programmeDataID))
-		TLogger.Log("TProductionCompany", "Finish production and gained experience. Experience: "+ oldExperience +"->"+GetExperience() + "  level: " + oldLevel+"->"+GetLevel() +"  LevelXP: " + MathHelper.NumberToString(oldLevelXP*100,2)+"->"+MathHelper.NumberToString(GetLevelExperiencePercentage()*100,2)+"%" +"  XP: "+MathHelper.NumberToString(oldXP*100,2)+"->"+MathHelper.NumberToString(GetExperiencePercentage()*100,2)+"%", LOG_DEBUG)
+		TLogger.Log("TProductionCompany", "Finish production and gained experience. Experience: "+ oldExperience +"->"+GetExperience() + "   Level: " + oldLevel+"->"+GetLevel() +"   LevelXP: " + MathHelper.NumberToString(oldLevelXP*100,2)+"->"+MathHelper.NumberToString(GetLevelExperiencePercentage()*100,2)+"%" +"   XP: "+MathHelper.NumberToString(oldXP*100,2)+"->"+MathHelper.NumberToString(GetExperiencePercentage()*100,2)+"%", LOG_DEBUG)
 
-		return True
+		Return True
 	End Method
 
 
 	'base might differ depending on sympathy for channel
-	Method GetFee:Int(channel:int=-1)
-		local sympathyMod:Float = 1.0
+	Method GetFee:Int(channel:Int=-1)
+		Local sympathyMod:Float = 1.0
 		'modify by up to 50% ...
-		if channel >= 0 then sympathyMod :- 0.5 * GetChannelSympathy(channel)
+		If channel >= 0 Then sympathyMod :- 0.5 * GetChannelSympathy(channel)
 
-		local xpMod:Float = 1.0
+		Local xpMod:Float = 1.0
 		'up to "* 100" -> 100% xp means 2000*100 = 200000
 		xpMod :+ 100 * GetExperiencePercentage()
 
@@ -200,8 +216,8 @@ Type TProductionCompanyBase extends TGameObject
 
 	Method GetQuality:Float()
 		'quality is based on base quality and an experience based quality
-		local q:Float = 0.25 * baseQuality + 0.75 * GetExperiencePercentage()
+		Local q:Float = 0.25 * baseQuality + 0.75 * GetExperiencePercentage()
 		'modified by an individual modifier
-		return Max(0.0, Min(1.0, qualityModifier * q))
+		Return Max(0.0, Min(1.0, qualityModifier * q))
 	End Method
 End Type
