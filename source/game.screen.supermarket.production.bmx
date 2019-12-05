@@ -367,7 +367,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 		title = window.inputTitle.GetValue()
 		description = window.inputDescription.GetValue()
-
+		
 		if window.concept.script.IsEpisode()
 			parentTitle = title
 			parentDescription = description
@@ -376,11 +376,23 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		endif
 
 		'set title / description of the element
-		if title <> window.concept.script.GetTitle()
+		if title <> window.concept.GetTitle()
 			window.concept.SetCustomTitle(title)
+			'also assign this to the script 
+			'(means for a multi-concept-script the last custom value
+			' will be displayed in the studio/script displays)
+			if not window.concept.script.IsEpisode()
+				window.concept.script.SetCustomTitle(title)
+			endif
 		endif
-		if description <> window.concept.script.GetDescription()
+		if description <> window.concept.GetDescription()
 			window.concept.SetCustomDescription(description)
+			'also assign this to the script 
+			'(means for a multi-concept-script the last custom value
+			' will be displayed in the studio/script displays)
+			if not window.concept.script.IsEpisode()
+				window.concept.script.SetCustomDescription(description)
+			endif
 		endif
 
 		'set the title / description of the parent (series header)

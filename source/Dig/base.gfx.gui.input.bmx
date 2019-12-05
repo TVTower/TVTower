@@ -231,18 +231,13 @@ Type TGUIinput Extends TGUIobject
 			'if input is not the active input (enter key or clicked on another input)
 			'and the value changed, inform others with an event
 			If Self <> GuiManager.GetKeystrokeReceiver() And _valueChanged
-				'reset changed indicator
-				_valueChanged = False
-				'reset cursor position
-				_cursorPosition = -1
-
 				'only send this once
 				if not onChangeValueSent
 					'fire onChange-event (text changed)
 					EventManager.triggerEvent( TEventSimple.Create( "guiobject.onChange", new TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit), Self ) )
 				endif
-				'explicitely inform about a change of the displayed value
-				EventManager.triggerEvent( TEventSimple.Create( "guiinput.onChangeValue", new TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit), Self ) )
+
+				FinishEdit()
 			EndIf
 		EndIf
 		'set to "active" look
@@ -253,6 +248,20 @@ Type TGUIinput Extends TGUIobject
 			value = value[..maxlength]
 			_cursorPosition = -1
 		EndIf
+	End Method
+	
+	
+	Method FinishEdit()
+		If not _valueChanged then Return
+		
+		
+		'reset changed indicator
+		_valueChanged = False
+		'reset cursor position
+		_cursorPosition = -1
+
+		'explicitely inform about a change of the displayed value
+		EventManager.triggerEvent( TEventSimple.Create( "guiinput.onChangeValue", new TData.AddNumber("type", 1).AddString("value", value).AddString("originalValue", _valueBeforeEdit), Self ) )
 	End Method
 
 
@@ -520,5 +529,12 @@ Type TGUIinput Extends TGUIobject
 
 
 	Method UpdateLayout()
+	End Method
+
+
+	'override
+	Method _OnRemoveFocus:Int()
+		FinishEdit()
+		Return True
 	End Method
 End Type

@@ -295,7 +295,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 
 '		if not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).DestroyProductionConcept(guiItem.productionConcept)
-'			TLogger.log("Studio.onClickProductionConcept", "Not able to destroy production concept: "+guiItem.productionConcept.GetGUID()+"  " +guiItem.productionConcept.script.GetTitle(), LOG_ERROR)
+'			TLogger.log("Studio.onClickProductionConcept", "Not able to destroy production concept: "+guiItem.productionConcept.GetGUID()+"  " +guiItem.productionConcept.GetTitle(), LOG_ERROR)
 '		endif
 
 		'remove gui object
@@ -999,8 +999,15 @@ Type RoomHandler_Studio Extends TRoomHandler
 						text :+ GetRandomLocale("DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PRODUCTION_PLANNING")
 					EndIf
 				EndIf
+				
+				local title:String
+				if productionConcepts.length = 1
+					title = productionConcepts[0].GetTitle()
+				else
+					title = script.GetTitle()
+				endif
 
-				text = text.Replace("%SCRIPTTITLE%", script.GetTitle())
+				text = text.Replace("%SCRIPTTITLE%", title)
 			Else
 				text = GetRandomLocale("DIALOGUE_STUDIO_BRING_SOME_SCRIPT")
 			EndIf
