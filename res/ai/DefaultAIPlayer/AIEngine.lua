@@ -931,9 +931,7 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 			if ((self.WaitTillWorldTicks - self.WaitSinceWorldTicks) > 20) then
 				self.WaitTillWorldTicks = self.WaitSinceWorldTicks + 20
 			end
-			local rand = math.random(50, 75)
-			debugMsg("BeginEnterRoom: Room occupied! Will wait a bit. Moving to pixel " .. rand .. ". Waiting time: " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute().."  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
-			TVT.doGoToRelative(rand)
+			debugMsg("BeginEnterRoom: Room occupied! Will wait a bit. Waiting time: " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute().."  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
 		else
 			debugMsg("BeginEnterRoom: Room occupied! Won't wait this time.")
 			self.Status = JOB_STATUS_CANCEL
@@ -967,7 +965,6 @@ end
 
 
 function AIJobGoToRoom:ShouldIWait()
-	debugMsg("Warte vor dem Raum... (Prio: " .. self.Task.CurrentPriority .. ")")
 	if (self.Task.CurrentPriority >= 60) then
 		return true
 	elseif (self.Task.CurrentPriority >= 30) then
@@ -985,10 +982,16 @@ end
 
 --override
 function AIJobGoToRoom:OnReachTarget()
-	-- if we reached the target, just set it again
+	-- if we reached the target, try to go to our target room again
+	-- maybe we were on an intermediate step - or failed to enter the 
+	-- room as it was occupied
 	if (self.Status == JOB_STATUS_REDO) or (self.Status == JOB_STATUS_RUN) then
-		--debugMsg("OnReachTarget - GoToRoom again")
-		TVT.DoGoToRoom(self.TargetRoom)
+		if TVT.isRoomUnused(self.TargetRoom) == TVT.RESULT_INUSE then
+			--debugMsg("OnReachTarget - Skip going in, still used")
+		else
+			--debugMsg("OnReachTarget - GoToRoom again")
+			TVT.DoGoToRoom(self.TargetRoom)
+		end
 	end
 end
 

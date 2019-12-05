@@ -338,7 +338,7 @@ Type TFigure extends TFigureBase
 				'some time too -> FinishEnterRoom is called when that is
 				'finished too)
 				'CanEnterTarget also checks for "IsWaitingToEnter()"
-				if not IsWaitingToEnter() and CanEnterTarget() 'and currentAction = ACTION_IDLE
+				if not IsWaitingToEnter() and CanEnterTarget() 'and (currentAction = ACTION_IDLE or currentAction = ACTION_PLANNED_ENTER)
 					WaitEnterTimer = -1
 					if not EnterTarget() then print "Enter target failed. Figure: " + name
 				endif
@@ -399,6 +399,9 @@ Type TFigure extends TFigureBase
 				result = "standBack"
 			'not moving but wants to go to somewhere (also show back if
 			'room is used and enter not possible "for now".
+			ElseIf currentAction = ACTION_ENTERING or IsInFrontOfTarget()
+				result = "standBack"
+			'planning to enter a room
 			ElseIf currentAction = ACTION_ENTERING or IsInFrontOfTarget()
 				result = "standBack"
 			'in a room (or standing in front of a fake room - looking at plan)
@@ -788,18 +791,6 @@ Type TFigure extends TFigureBase
 		'(eg. for players informing the ai)
 		EventManager.triggerEvent( TEventSimple.Create("figure.onFinishEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
 
-rem
-'Ronny: "normally" this should not be needed at all
-		'another target to do?
-		if GetTarget()
-			print "Figure "  + name + " got another target - going to it now " + hasT
-			local targetPos:TVec2D = GetTargetMoveToPosition()
-			'remove that target, so we can add it again
-			RemoveCurrentTarget()
-			ChangeTarget( int(targetPos.x), int(targetPos.y))
-		endif
-endrem
-
 		return True
 	End Method
 
@@ -814,7 +805,9 @@ endrem
 		'print self.name+" FAILED ENTERING " + room.GetName() +" ["+room.id+"]"
 
 		'reset action
-		currentAction = ACTION_IDLE
+		'currentAction = ACTION_IDLE
+		'stay looking at the door
+		currentAction = ACTION_PLANNED_ENTER
 
 		'reset wait timer
 		WaitEnterTimer = -1
@@ -1217,34 +1210,6 @@ endrem
 '				FinishEnterRoom( inRoom )
 			endif
 		endif
-
-rem
-		'we have a target and are in this moment entering it
-		if GetTarget() and currentReachTargetStep = 1 'and not isChangingRoom()
-			if TargetNeedsToGetEntered()
-				'if waitingtime is over, start going-into-animation (takes
-				'some time too -> FinishEnterRoom is called when that is
-				'finished too)
-				'CanEnterTarget also checks for "IsWaitingToEnter()"
-				if not IsWaitingToEnter() and CanEnterTarget()
-					'TODO: find reason for the need of the following fix
-					'      (Ronny: I assume it happens when saving while
-					'       a figure enters a room)
-					'fix broken savegames
-					if WaitEnterTimer > 0 and GetBuildingTime().GetMillisecondsGone() > WaitEnterTimer + WaitEnterLeavingTime + 100 and GetBuildingTime().GetTimeFactor() < 100
-						print "FIX ENTER state for figure ~q"+name+"~q (playerID: "+playerID+")"
-						currentReachTargetStep = 0
-						currentAction = ACTION_IDLE
-						if TRoomDoorBase(GetTarget())
-							local door:TRoomDoorBase = TRoomDoorBase(GetTarget())
-							local room:TRoomBase = GetRoomBaseCollection().Get(door.roomID)
-							room.RemoveOccupant(self)
-						endif
-					endif
-				endif
-			endif
-		endif
-endrem
 	End Method
 
 

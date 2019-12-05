@@ -221,7 +221,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Const ACTION_WALK:int = 1
 	Const ACTION_ENTERING:int = 2
 	Const ACTION_LEAVING:int = 3
-
+	Const ACTION_PLANNED_ENTER:int = 4
 
 	'override
 	'figures use building time and not game time
@@ -627,7 +627,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 		'if standing
 		If GetVelocity().GetX() = 0 or not moveable
-			if currentAction = ACTION_ENTERING
+			if currentAction = ACTION_ENTERING or currentAction = ACTION_PLANNED_ENTER
 				result = "standBack"
 			else
 				result = "standFront"
