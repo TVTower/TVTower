@@ -9,8 +9,6 @@ Import "game.gameconstants.bmx" 'to access type-constants
 Type TScriptBase Extends TNamedGameObject
 	Field title:TLocalizedString
 	Field description:TLocalizedString
-	Field customTitle:string = ""
-	Field customDescription:string = ""
 	Field scriptLicenceType:Int = 0
 	Field scriptProductType:Int = 0
 	Field mainGenre:Int
@@ -201,61 +199,16 @@ Type TScriptBase Extends TNamedGameObject
 		Return GetProductionBroadcastLimit() <= 0 And HasProductionBroadcastLimit()
 	End Method
 
+
 	Method GetTitle:string()
-		if customTitle then return customTitle
 		if title then return title.Get()
 		return ""
 	End Method
 
 
 	Method GetDescription:string()
-		if customDescription then return customDescription
 		if description then return description.Get()
 		return ""
-	End Method
-
-
-	Method SetCustomTitle(value:string)
-		customTitle = value
-	End Method
-
-
-	Method SetCustomDescription(value:string)
-		customDescription = value
-	End Method
-
-
-	Method GetPlannedLiveTimeText:String(nowTime:Long = -1)
-		if nowTime = -1 then nowTime = GetWorldTime().GetTimeGone()
-		Local earliestProductionFinishTime:Long = nowTime
-		If productionTime >= 0 Then earliestProductionFinishTime :+ productionTime
-
-		Local plannedLiveTime:Long = GetLiveTime( earliestProductionFinishTime )
-		Local plannedLiveTimeStr:String = GetWorldTime().GetFormattedDate( plannedLiveTime )
-
-		Local liveDay:Int = GetWorldTime().GetDay( plannedLivetime )
-		Local nowDay:Int = GetWorldTime().GetDay(nowTime)
-		Local timeDiff:Int = earliestProductionFinishTime - nowTime
-
-
-		If HasBroadcastTimeSlot()
-			If liveDay = nowDay
-				Return GetLocale("PLANNED_LIVE_TIMESPAN_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
-			ElseIf liveDay = nowDay + 1
-				Return GetLocale("PLANNED_LIVE_TIMESPAN_TOMORROW_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
-			Else
-				Return GetLocale("PLANNED_LIVE_TIMESPAN_IN_Y_DAYS_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime )).Replace("%Y%", (liveDay - nowDay))
-			EndIf
-		Else
-			If liveDay = nowDay
-				Return GetLocale("PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
-			ElseIf liveDay = nowDay + 1
-				Return GetLocale("PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
-			Else
-				Return GetLocale("PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime )).Replace("%Y%", (liveDay - nowDay))
-			EndIf
-		EndIf
-		Return ""
 	End Method
 
 
@@ -402,6 +355,39 @@ Type TScriptBase Extends TNamedGameObject
 	End Method
 
 
+	Method GetLiveTimeText:String(nowTime:Long = -1)
+		if nowTime = -1 then nowTime = GetWorldTime().GetTimeGone()
+		Local earliestProductionFinishTime:Long = nowTime
+		If productionTime >= 0 Then earliestProductionFinishTime :+ productionTime
+
+		Local plannedLiveTime:Long = GetLiveTime( earliestProductionFinishTime )
+		Local plannedLiveTimeStr:String = GetWorldTime().GetFormattedDate( plannedLiveTime )
+
+		Local liveDay:Int = GetWorldTime().GetDay( plannedLivetime )
+		Local nowDay:Int = GetWorldTime().GetDay(nowTime)
+		Local timeDiff:Int = earliestProductionFinishTime - nowTime
+
+
+		If HasBroadcastTimeSlot()
+			If liveDay = nowDay
+				Return GetLocale("PLANNED_LIVE_TIMESPAN_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
+			ElseIf liveDay = nowDay + 1
+				Return GetLocale("PLANNED_LIVE_TIMESPAN_TOMORROW_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
+			Else
+				Return GetLocale("PLANNED_LIVE_TIMESPAN_IN_Y_DAYS_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime )).Replace("%Y%", (liveDay - nowDay))
+			EndIf
+		Else
+			If liveDay = nowDay
+				Return GetLocale("PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
+			ElseIf liveDay = nowDay + 1
+				Return GetLocale("PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
+			Else
+				Return GetLocale("PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime )).Replace("%Y%", (liveDay - nowDay))
+			EndIf
+		EndIf
+		Return ""
+	End Method
+
 
 	'returns whether a new production could be done with this script
 	'or if a limit is already reached
@@ -411,7 +397,7 @@ Type TScriptBase Extends TNamedGameObject
 
 
 	Method CanGetProducedCount:int()
-		local res:int = productionLimit - usedInProductionsCount
+		local res:int = GetProductionLimit() - usedInProductionsCount
 
 		if GetSubScriptCount() > 0
 			For local sub:TScriptBase = EachIn subScripts
@@ -420,7 +406,7 @@ Type TScriptBase Extends TNamedGameObject
 		endif
 
 		'return a high number when there is no limit
-		if productionLimit <= 0 then res = 1000
+		if GetProductionLimit() <= 0 then res = 1000
 
 		return res
 	End Method

@@ -60,6 +60,7 @@ Type TProductionManager
 		c.name = GetLocale("JOB_AMATEURS")
 		c.SetExperience( 0 )
 		c.SetMaxExperience( 0 )
+		c.SetMaxLevel( 1 )
 		GetProductionCompanyBaseCollection().Add(c)
 
 
@@ -125,7 +126,7 @@ Type TProductionManager
 
 
 	'start the production in the given studio
-	'returns amount of productions
+	'returns amount of productions in that studio
 	Method StartProductionInStudio:int(roomGUID:string, script:TScript)
 		if not roomGUID then return False
 
@@ -148,7 +149,58 @@ Type TProductionManager
 		Next
 
 
-		'cleanup
+		'update list of to produce productions in that studio
+		Local productionCount:Int = RefreshProductionsToProduceInStudio(roomGUID, script)
+
+
+		'actually start the production
+		'- first hit production (with that script) is the one we should
+		'  start
+		'- other productions are produced once the first one is finished
+		For local production:TProduction = EachIn productionsToProduce
+			'skip productions of other studios
+			if production.studioRoomGUID <> roomGUID then continue
+
+			'series? skip if not an episode of this serie
+			if production.productionConcept.script.GetParentScript().IsSeries()
+				if production.productionConcept.script.parentScriptID <> script.GetID() then continue
+			else
+				if production.productionConcept.script <> script then continue
+			endif
+
+			production.Start()
+			If production.productionConcept.script.IsLive()
+				production.productionConcept.SetLiveTime( production.productionConcept.GetPlannedLiveTime() )
+				print "Starte Preproduktion: Livezeit = " + production.productionConcept.GetLiveTimeText()
+			EndIf
+
+			'start the FIRST production only!
+			return productionCount
+		Next
+
+		return productionCount
+	End Method
+
+
+	Method GetProductionsToProduceInStudioCount:Int(roomGUID:string)
+		Local productionCount:int = 0
+		For local production:TProduction = EachIn productionsToProduce
+			'skip productions of other studios
+			if production.studioRoomGUID <> roomGUID then continue
+
+			productionCount :+ 1
+		Next
+
+		Return productionCount
+	End Method
+
+
+	Method RefreshProductionsToProduceInStudio:Int(roomGUID:string, script:TScript)
+		'amount of productions in this studio
+		Local productionCount:int = 0
+
+
+		'cleanup (remove productions of this script - add them again later)
 		local removeProductions:TProduction[]
 		For local production:TProduction = EachIn productionsToProduce
 			if production.productionConcept.script <> script then continue
@@ -159,13 +211,14 @@ Type TProductionManager
 			productionsToProduce.Remove(production)
 		Next
 
-		local productionCount:int = 0
+
 		local productionConcepts:TProductionConcept[]
 		if script.IsSeries()
 			productionConcepts = GetProductionConceptCollection().GetProductionConceptsByScripts(script.subScripts)
 		else
 			productionConcepts = GetProductionConceptCollection().GetProductionConceptsByScript(script)
 		endif
+
 
 		For local productionConcept:TProductionConcept = EachIn productionConcepts
 			'skip produced concepts
@@ -181,34 +234,11 @@ Type TProductionManager
 			productionCount :+ 1
 		Next
 
+
 		'sort productions by "slots"
 		if productionCount > 0
 			SortList(productionsToProduce, True, SortProductionsByStudioSlot)
 		endif
-		'debug
-		for local prod:TProduction = eachin productionsToProduce
-			print prod.productionConcept.GetTitle()+ "  ep:" + prod.productionConcept.script.GetEpisodeNumber()+"  slot:"+prod.productionConcept.studioSlot
-		Next
-
-
-		'actually start the production
-		'- first hit production (with that script) is the one we should
-		'  start
-		'- other productions are produced once the first one is finished
-		For local production:TProduction = EachIn productionsToProduce
-			'series? skip if not an episode of this serie
-			if production.productionConcept.script.GetParentScript().IsSeries()
-				if production.productionConcept.script.parentScriptID <> script.GetID() then continue
-			else
-				if production.productionConcept.script <> script then continue
-			endif
-			if production.studioRoomGUID <> roomGUID then continue
-
-			production.Start()
-
-			'start the FIRST production only!
-			return productionCount
-		Next
 
 		return productionCount
 	End Method

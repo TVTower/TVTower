@@ -375,12 +375,16 @@ Type TProduction Extends TOwnedGameObject
 		endif
 
 		'=== 2.1 PROGRAMME BASE PROPERTIES ===
-		FillProgrammeDataByScript(programmeData, productionConcept.script)
+		FillProgrammeData(programmeData, productionConcept)
 		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK")
 		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
 		programmeData.releaseTime = GetWorldTime().GetTimeGone()
 		If productionConcept.script.IsLive()
-			programmeData.releaseTime = productionConcept.script.GetLiveTime(-1, 0)
+			'programmeData.releaseTime = productionConcept.script.GetLiveTime(-1, 0)
+
+			programmeData.releaseTime = productionConcept.GetLiveTime()
+			'inform script about the latest live time used
+			productionConcept.script.lastLiveTime = programmeData.releaseTime
 		EndIf
 		programmeData.setBroadcastFlag(TVTBroadcastMaterialSourceFlag.NOT_AVAILABLE, False)
 		programmeData.producedByPlayerID = owner
@@ -617,7 +621,7 @@ endrem
 			parentLicence.GetData().SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
 
 			'fill with basic data (title, description, ...)
-			FillProgrammeDataByScript(parentLicence.GetData(), productionConcept.script.GetParentScript())
+			FillProgrammeData(parentLicence.GetData(), productionConcept, productionConcept.script.GetParentScript())
 
 			if parentLicenceType = TVTProgrammeLicenceType.SERIES
 				parentLicence.licenceType = TVTProgrammeLicenceType.SERIES
@@ -712,15 +716,16 @@ endrem
 	End Method
 
 
-	Function FillProgrammeDataByScript(programmeData:TProgrammeData, script:TScript)
-		programmeData.description = script.description.Copy()
-		if script.customTitle
-			programmeData.title = new TLocalizedString.Set(script.customTitle)
+	Function FillProgrammeData(programmeData:TProgrammeData, productionConcept:TProductionConcept, script:TScript = Null)
+		If script = Null Then script = productionConcept.script
+
+		if productionConcept.customTitle
+			programmeData.title = new TLocalizedString.Set(productionConcept.customTitle)
 		else
 			programmeData.title = script.title.Copy()
 		endif
-		if script.customDescription
-			programmeData.description = new TLocalizedString.Set(script.customDescription)
+		if productionConcept.customDescription
+			programmeData.description = new TLocalizedString.Set(productionConcept.customDescription)
 		else
 			programmeData.description = script.description.Copy()
 		endif

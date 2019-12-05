@@ -59,7 +59,6 @@ Type TScriptCollection Extends TGameObjectCollection
 
 		'protect title
 		If Not script.HasParentScript()
-			AddTitleProtection(script.customTitle, script.GetID())
 			AddTitleProtection(script.title, script.GetID())
 		EndIf
 
@@ -79,7 +78,6 @@ Type TScriptCollection Extends TGameObjectCollection
 
 		'unprotect title
 		If Not script.HasParentScript()
-			RemoveTitleProtection(script.customTitle)
 			RemoveTitleProtection(script.title)
 		EndIf
 
@@ -171,14 +169,18 @@ Type TScriptCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetTitleProtectedByID:Int(title:Object)
+	Method GetTitleProtectedByID:Int(title:Object, contentType:String="script")
 		If TLocalizedString(title)
 			Local lsTitle:TLocalizedString = TLocalizedString(title)
 			For Local langID:Int = EachIn lsTitle.GetLanguageIDs()
-				Return Int(String(protectedTitles.ValueForKey(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower())))
+				Local parts:String[] = String(protectedTitles.ValueForKey(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower())).split("::")
+				if parts.length = 2 then Return Int(parts[1])
+				Return Int(parts[0])
 			Next
 		ElseIf String(title) <> ""
-			Return Int(String((protectedTitles.ValueForKey("custom::" + String(title).ToLower()))))
+			Local parts:String[] = String((protectedTitles.ValueForKey("custom::" + String(title).ToLower()))).split("::")
+			if parts.length = 2 then Return Int(parts[1])
+			Return Int(parts[0])
 		EndIf
 	End Method
 
@@ -201,14 +203,14 @@ Type TScriptCollection Extends TGameObjectCollection
 
 
 	'pass string or TLocalizedString
-	Method AddTitleProtection(title:Object, scriptID:Int)
+	Method AddTitleProtection(title:Object, ID:Int, contentType:String="script")
 		If TLocalizedString(title)
 			Local lsTitle:TLocalizedString = TLocalizedString(title)
 			For Local langID:Int = EachIn lsTitle.GetLanguageIDs()
-				protectedTitles.Insert(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower(), String(scriptID))
+				protectedTitles.Insert(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower(), contentType+"::"+String(ID))
 			Next
 		ElseIf String(title) <> ""
-			protectedTitles.insert("custom::" + String(title).ToLower(), String(scriptID))
+			protectedTitles.insert("custom::" + String(title).ToLower(), contentType+"::"+String(ID))
 		EndIf
 	End Method
 
@@ -302,7 +304,12 @@ End Function
 
 Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Field ownProduction:Int	= False
-
+	
+	'custom titles/descriptions allow to adjust a series title
+	'or description (what a production concept cannot do)
+	Field customTitle:string = ""
+	Field customDescription:string = ""
+	
 	Field newsTopicGUID:String = ""
 	Field newsGenre:Int
 
@@ -462,6 +469,31 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		Return script
 	End Function
 
+
+
+	'override
+	Method GetTitle:string()
+		If customTitle Then Return customTitle
+		Return super.GetTitle()
+	End Method
+
+
+	'override
+	Method GetDescription:string()
+		If customDescription Then Return customDescription
+		Return super.GetDescription()
+	End Method
+
+
+	Method SetCustomTitle(value:string)
+		customTitle = value
+	End Method
+
+
+	Method SetCustomDescription(value:string)
+		customDescription = value
+	End Method
+	
 
 	'override
 	Method HasParentScript:Int()

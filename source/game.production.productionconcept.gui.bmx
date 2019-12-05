@@ -110,8 +110,8 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		local contentY:int = y + skin.GetContentY()
 
 		local conceptIsEmpty:int = productionConcept.IsUnplanned()
-		local title:string = productionConcept.script.GetTitle()
-		local description:string = productionConcept.script.GetDescription()
+		local title:string = productionConcept.GetTitle()
+		local description:string = productionConcept.GetDescription()
 
 		'series episode
 		if productionConcept.script.IsEpisode() and productionConcept.script.GetParentScript() <> productionConcept.script
@@ -295,7 +295,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 
 		If showMsgLiveInfo
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, productionconcept.script.GetPlannedLiveTimeText(), "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, productionconcept.GetLiveTimeText(), "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 			If showMsgTimeSlotLimit
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", productionConcept.script.GetBroadcastTimeSlotStart()).Replace("%Y%", productionConcept.script.GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
@@ -419,16 +419,16 @@ endrem
 		local contentX:int = x + skin.GetContentY()
 		local contentY:int = y + skin.GetContentY()
 
-		local title:string = productionConcept.script.GetTitle()
+		local title:string = productionConcept.GetTitle()
 		local subTitle:string = ""
-		local description:string = productionConcept.script.GetDescription()
+		local description:string = productionConcept.GetDescription()
 		local subDescription:string = ""
 		if productionConcept.script.IsEpisode()
 			local seriesScript:TScript = productionConcept.script.GetParentScript()
 			subtitle = (seriesScript.GetSubScriptPosition(productionConcept.script)+1)+"/"+seriesScript.GetSubscriptCount()+": "+ title
 			title = seriesScript.GetTitle()
 
-			subDescription = productionConcept.script.GetDescription()
+			subDescription = productionConcept.GetDescription()
 			description = seriesScript.GetDescription()
 		endif
 		local conceptIsEmpty:int = productionConcept.IsUnplanned()

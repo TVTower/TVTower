@@ -71,7 +71,10 @@ Type TProgrammeProducerWithProduction Extends TProgrammeProducerBase
 
 	Method CreateScript:TScript()
 		Local scriptTemplate:TScriptTemplate = GetScriptTemplateCollection().GetRandomByFilter(True, True)
-		If Not scriptTemplate Then Return Null
+		If Not scriptTemplate 
+			Throw "CreateScript(): Failed to fetch a random script template. All reached their limits?"
+			Return Null
+		EndIf
 
 		Local script:TScript = TScript.CreateFromTemplate(scriptTemplate)
 		script.SetOwner(-1)

@@ -71,22 +71,24 @@ Type TProductionConcept Extends TOwnedGameObject
 	'storing the position/order in the studio saves the hassle of storing
 	'this information in a "scriptOrder"-Collection
 	Field studioSlot:int = -1
+	'designated live time of a live broadcast
+	Field liveTime:Long = -1
 
 	'each assigned person (directors, actors, ...)
 	Field cast:TProgrammePersonBase[]
 
 	Field productionCompany:TProductionCompanyBase
 	Field productionFocus:TProductionFocusBase
+	'the productionconcept's custom title/description will is what
+	'the final produc will have as title/description. A script's 
+	'custom title/description is used to eg append numbers/years to
+	'a script generated from a template
+	Field customTitle:string = ""
+	Field customDescription:string = ""
 
-'	Field additionalBudget:Int
-
-'	Field niveau:Float = 0.0
-'	Field innovation:Float = 0.0
 
 	'optional for shows
 	Field targetGroup:Int = -1
-	'the higher the more speed
-'	Field trophyMoney:Int = 0
 
 	'depositCostPaid, live, ...
 	Field flags:int = 0
@@ -145,25 +147,37 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 	Method SetCustomTitle(value:string)
-		if script then script.SetCustomTitle(value)
+		customTitle = value
 	End Method
 
 
 	Method SetCustomDescription(value:string)
-		if script then script.SetCustomDescription(value)
+		customDescription = value
+	End Method
+
+
+	Method HasCustomTitle:Int()
+		return customTitle <> ""
+	End Method
+
+
+	Method HasCustomDescription:Int()
+		return customDescription <> ""
 	End Method
 
 
 	Method GetTitle:string()
-		if script then return script.GetTitle()
-		return ""
-	end Method
+		If customTitle Then Return customTitle
+		If script Then Return script.GetTitle()
+		Return ""
+	End Method
 
 
 	Method GetDescription:string()
-		if script then return script.GetDescription()
-		return ""
-	end Method
+		If customDescription Then Return customDescription
+		If script Then Return script.GetDescription()
+		Return ""
+	End Method
 
 
 	Method SetScript(script:TScript)
@@ -222,6 +236,78 @@ Type TProductionConcept Extends TOwnedGameObject
 		Else
 			flags :& ~flag
 		EndIf
+	End Method
+
+
+	'returns the time when a production _could_ live broadcast the first
+	'time. Parameter "earliestBroadcastTime" can be used to have at least
+	'end of a live broadcasting prequel as minimum
+	Method GetPlannedLiveTime:Long(earliestBroadcastTime:Long = -1)
+		If Not script Then Return -1
+
+		'without given time use the (pre-)production end time
+		If earliestBroadcastTime = -1
+			earliestBroadcastTime = liveTime
+
+			If earliestBroadcastTime = - 1
+				'check script for some last live time - and use that as minimum
+				earliestBroadcastTime = Max(script.lastLivetime, GetWorldTime().GetTimeGone())
+
+				If not IsProduced() and script.productionTime > 0
+					earliestBroadcastTime :+ script.productionTime
+				EndIf
+			EndIf
+		EndIf
+
+		'calculate live broadcast time depending on the "time code" in
+		'the script
+		Return script.GetLiveTime(earliestBroadcastTime, 0)
+	End Method
+
+
+	Method SetLiveTime(time:Long)
+		liveTime = time
+	End Method
+
+
+	Method GetLiveTime:Long()
+		If liveTime = -1 Then Return GetPlannedLiveTime()
+		Return liveTime
+	End Method
+
+
+	Method GetLiveTimeText:String(liveBroadcastTime:Long = -1)
+		If liveBroadcastTime = -1
+			liveBroadcastTime = liveTime
+			If livetime = -1
+				liveBroadcastTime = GetPlannedLiveTime( liveBroadcastTime )
+			EndIf
+		EndIf
+
+		Local plannedLiveTime:Long = script.GetLiveTime( liveBroadcastTime )
+		Local plannedLiveTimeStr:String = GetWorldTime().GetFormattedDate( plannedLiveTime )
+
+		Local liveDay:Int = GetWorldTime().GetDay( plannedLiveTime )
+		Local nowDay:Int = GetWorldTime().GetDay()
+
+		If script.HasBroadcastTimeSlot()
+			If liveDay = nowDay
+				Return GetLocale("PLANNED_LIVE_TIMESPAN_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
+			ElseIf liveDay = nowDay + 1
+				Return GetLocale("PLANNED_LIVE_TIMESPAN_TOMORROW_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
+			Else
+				Return GetLocale("PLANNED_LIVE_TIMESPAN_IN_Y_DAYS_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime )).Replace("%Y%", (liveDay - nowDay))
+			EndIf
+		Else
+			If liveDay = nowDay
+				Return GetLocale("PLANNED_LIVE_TIME_TODAY_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
+			ElseIf liveDay = nowDay + 1
+				Return GetLocale("PLANNED_LIVE_TIME_TOMORROW_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime ))
+			Else
+				Return GetLocale("PLANNED_LIVE_TIME_IN_Y_DAYS_FROM_X_OCLOCK").Replace("%X%", GetWorldTime().GetDayHour( plannedLiveTime )).Replace("%Y%", (liveDay - nowDay))
+			EndIf
+		EndIf
+		Return ""
 	End Method
 
 
