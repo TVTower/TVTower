@@ -70,8 +70,8 @@ Type TNewsEventCollection
 		newsEvents.Clear()
 		newsEventsGUID.Clear()
 
-		if allNewsEvents then allNewsEvents.Clear()
-		if allNewsEventsGUID then allNewsEventsGUID.Clear()
+		If allNewsEvents Then allNewsEvents.Clear()
+		If allNewsEventsGUID Then allNewsEventsGUID.Clear()
 
 		_InvalidateCaches()
 
@@ -103,16 +103,33 @@ Type TNewsEventCollection
 	End Method
 
 
+	Method RepairAllNewsEventsMap()
+		If Not allNewsEvents Then allNewsEvents = New TIntMap
+		If Not allNewsEventsGUID Then allNewsEventsGUID = New TMap
+
+		TLogger.Log("TNewsEventCollection", "RepairAllNewsEventsMap() - allNewsEvents were not existing, old savegame? Tried to recreate from newsEvents.", LOG_DEBUG)
+		For Local n:TNewsEvent = EachIn newsEvents.Values()
+			allNewsEvents.Insert(n.GetID(), n)
+			allNewsEventsGUID.Insert(n.GetGUID(), n)
+		Next
+	End Method
+
+
 	Method Add:Int(obj:TNewsEvent)
 		'add to common maps
 		'special lists get filled when using their Getters
 		newsEventsGUID.Insert(obj.GetGUID().ToLower(), obj)
 		newsEvents.Insert(obj.GetID(), obj)
 
-		if not allNewsEvents then allNewsEvents = new TIntMap
-		if not allNewsEventsGUID then allNewsEventsGUID = new TMap
-		allNewsEventsGUID.Insert(obj.GetGUID().ToLower(), obj)
-		allNewsEvents.Insert(obj.GetID(), obj)
+		'old savegame?
+		If Not allNewsEventsGUID
+			RepairAllNewsEventsMap()
+			'no need to add, already added to newsEvents above and then
+			'during Repair to allNewsEvents too
+		Else
+			allNewsEventsGUID.Insert(obj.GetGUID().ToLower(), obj)
+			allNewsEvents.Insert(obj.GetID(), obj)
+		EndIf
 
 		_InvalidateCaches()
 
@@ -160,22 +177,28 @@ Type TNewsEventCollection
 	Method Remove:Int(obj:TNewsEvent)
 		RemoveActive(obj)
 
-		allNewsEventsGUID.Remove(obj.GetGUID().ToLower())
-		allNewsEvents.Remove(obj.GetID())
+		'old savegame?
+		If Not allNewsEventsGUID
+			RepairAllNewsEventsMap()
+			'no need to remove, done already
+		Else
+			allNewsEventsGUID.Remove(obj.GetGUID().ToLower())
+			allNewsEvents.Remove(obj.GetID())
+		EndIf
 
 		Return True
 	End Method
 
 
 	Method GetByID:TNewsEvent(ID:Int)
-		if not allNewsEvents then allNewsEvents = newsEvents.Copy()
+		If Not allNewsEvents Then allNewsEvents = newsEvents.Copy()
 
 		Return TNewsEvent(allNewsEvents.ValueForKey(ID))
 	End Method
 
 
 	Method GetByGUID:TNewsEvent(GUID:String)
-		if not allNewsEventsGUID then allNewsEventsGUID = newsEventsGUID.Copy()
+		If Not allNewsEventsGUID Then RepairAllNewsEventsMap()
 
 		Return TNewsEvent(allNewsEventsGUID.ValueForKey( GUID.ToLower() ))
 	End Method
@@ -188,7 +211,7 @@ Type TNewsEventCollection
 
 		GUID = GUID.ToLower()
 
-		if not allNewsEventsGUID then allNewsEventsGUID = newsEventsGUID.Copy()
+		If Not allNewsEventsGUID Then RepairAllNewsEventsMap()
 
 		'find first hit
 		Local node:TNode = allNewsEventsGUID._FirstNode()
@@ -401,7 +424,7 @@ End Function
 
 
 Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
-	'Field template:TNewsEventTemplate
+	Field template:TNewsEventTemplate
 	Field templateID:Int
 
 	'time when something happened or will happen. "-1" = not happened
@@ -519,8 +542,8 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	Method GetMinSubscriptionLevel:Int()
 		If minSubscriptionLevel = -1 And templateID
-			local t:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
-			if t then Return t.minSubscriptionLevel
+			Local t:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
+			If t Then Return t.minSubscriptionLevel
 		EndIf
 		Return Max(0, minSubscriptionLevel)
 	End Method
@@ -549,9 +572,9 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	Method IsAvailable:Int()
 		If templateID
-			local t:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
+			Local t:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
 			If t And Not t.IsAvailable() Then Return False
-		EnDIf
+		EndIf
 
 		'field "available" = false ?
 		If Not Super.IsAvailable() Then Return False
@@ -750,9 +773,11 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 	Method GetGenre:Int()
+		If genre = -1 And template Then Return template.genre
+
 		'return default it not overridden
-		If genre = -1 and templateID
-			local t:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
+		If genre = -1 And templateID
+			Local t:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByID(templateID)
 			If t Then Return t.genre
 		EndIf
 		Return genre
@@ -791,7 +816,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		If qualityRaw >= 0 Then Return qualityRaw
 
 		'create a random quality
-		qualityRaw = (Float(RandRange(1, 100)) / 100.0) '1%-Punkte bis 3%-Punkte Basis-Qualit√§t
+		qualityRaw = (Float(RandRange(1, 100)) / 100.0) '1%-Punkte bis 3%-Punkte Basis-Qualit‰t
 
 		Return qualityRaw
 	End Method
@@ -812,7 +837,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 '		Local quality:Float = 0.05 * GetQualityRaw() + 0.95 * GetQualityRaw() * GetTopicality() ^ 2
 
 		'topicality also includes "topicality loss" by lower-quality events
-		local t:Float = GetTopicality()
+		Local t:Float = GetTopicality()
 		Local quality:Float = GetQualityRaw() * (0.75 * t + 0.25 * t^2)
 
 		Return Max(0, quality)
