@@ -10,6 +10,7 @@ Global OCM:TObjectCountManager = new TObjectCountManager
 
 
 Type TObjectCountManager
+	Field enabled:int = True
 	Field dumps:TObjectList = New TObjectList
 	Field baseDump:TObjectCountDump
 	Field dumpKeyCount:Int 'cache
@@ -22,6 +23,7 @@ Type TObjectCountManager
 
 
 	Method EnableObjectCount(bool:int = True)
+		if not enabled then return
 		CountObjectInstances = bool
 	End Method
 
@@ -29,7 +31,7 @@ Type TObjectCountManager
 	Method GetTotal:Int(key:String)
 		Local dumpEntry:TObjectCountDump = TObjectCountDump(dumps.Last())
 		if not dumpEntry Then dumpEntry = baseDump
-		if not dumpEntry Then print "no dumpentry2";return 0
+		if not dumpEntry Then return 0
 		Return dumpEntry.GetTotal(key)
 	End Method
 
@@ -61,6 +63,8 @@ Type TObjectCountManager
 
 
 	Method FetchDump(description:String = "")
+		if not enabled then return
+
 		EnableObjectCount()
 
 		Local dump:TObjectCountDump = AnalyzeDump(TObjectCountDump(dumps.Last()), FetchDumpString(), MilliSecs())
@@ -72,6 +76,8 @@ Type TObjectCountManager
 
 
 	Method StoreBaseDump(description:String = "Base Dump")
+		if not enabled then return
+
 		EnableObjectCount()
 
 		baseDump = AnalyzeDump(Null, FetchDumpString(), MilliSecs())
@@ -81,6 +87,8 @@ Type TObjectCountManager
 
 
 	Method FetchDumpString:String()
+		if not enabled then return ""
+
 		'try to free as much as possible
 		GCCollect()
 
@@ -128,11 +136,15 @@ Type TObjectCountManager
 	'changeDirection = 1 to only show entries with increase of amount
 	'changeDirection =-1 to only show entries with decrease of amount
 	Method Dump(ocd:TObjectCountDump = Null, onlyChanged:Int = False, changeDirection:Int = 1)
+		if not enabled then return
+
 		Print DumpToString(ocd, onlyChanged, changeDirection)
 	End Method
 
 
 	Method DumpToString:String(ocd:TObjectCountDump = Null, onlyChanged:Int = False, changeDirection:Int = 1)
+		if not enabled then return ""
+
 		Local s:TStringBuilder = New TStringBuilder
 
 		s.Append("========   Instance count dump (" + RSet(dumpKeyCount, 4) + ")   ========~n")
