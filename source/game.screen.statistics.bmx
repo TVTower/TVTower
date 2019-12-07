@@ -970,7 +970,7 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 				endif
 
 				'handled single click
-				MouseManager.ResetClicked(1)
+				MouseManager.SetClickHandled(1)
 			EndIf
 		EndIf
 
@@ -1571,7 +1571,7 @@ Type TDataChart
 					If MouseManager.IsClicked(1)
 						SetSelectedSegment(i)
 						'handled single click
-						MouseManager.ResetClicked(1)
+						MouseManager.SetClickHandled(1)
 					EndIf
 
 					exit

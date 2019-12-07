@@ -1216,7 +1216,7 @@ endrem
 						GetGameBase().cursorstate = 1
 
 						'handled left click
-						MouseManager.ResetClicked(1)
+						MouseManager.SetClickHandled(1)
 
 						ScreenCollection.GoToSubScreen("screen_movieauction")
 					EndIf
@@ -1884,7 +1884,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 				obj.SetBid( GetPlayerBaseCollection().playerID )  'set the bid
 
 				'handled left click
-				MouseManager.ResetClicked(1)
+				MouseManager.SetClickHandled(1)
 				Return True
 			EndIf
 		Next

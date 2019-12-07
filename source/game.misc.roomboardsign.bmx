@@ -292,9 +292,7 @@ Type TRoomBoardBase
 
 					'avoid clicks
 					'remove right click - to avoid leaving the room
-					MouseManager.ResetClicked(2)
-					'also avoid long click (touch screen)
-					MouseManager.ResetLongClicked(1)
+					MouseManager.SetClickHandled(2)
 				Else
 					'if left mbutton clicked: drop, replace with underlaying block...
 					If MouseManager.IsClicked(1)
@@ -314,7 +312,7 @@ Type TRoomBoardBase
 								clickedSign = null
 
 								'handled left click
-								MouseManager.ResetClicked(1)
+								MouseManager.SetClickHandled(1)
 							'not dropping on origin: search for other underlaying obj
 							Else
 								For Local otherSign:TRoomBoardSign = EachIn List
@@ -326,7 +324,7 @@ Type TRoomBoardBase
 										sign.SwitchBlock(otherSign)
 
 										'handled left click
-										MouseManager.ResetClicked(1)
+										MouseManager.SetClickHandled(1)
 										Exit	'exit enclosing for-loop (stop searching for other underlaying blocks)
 									EndIf
 								Next
@@ -345,7 +343,7 @@ Type TRoomBoardBase
 								sign.dragged = 1
 
 								'handled left click
-								MouseManager.ResetClicked(1)
+								MouseManager.SetClickHandled(1)
 							EndIf
 						EndIf
 					EndIf

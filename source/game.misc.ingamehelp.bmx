@@ -306,9 +306,7 @@ Type TIngameHelpWindow
 			GuiManager.Update(state)
 
 			'no right clicking allowed as long as "help window" is active
-			MouseManager.ResetClicked(2)
-			'also avoid long click (touch screen)
-			MouseManager.ResetLongClicked(1)
+			MouseManager.SetClickHandled(2)
 		EndIf
 	End Method
 

@@ -571,7 +571,7 @@ Type TgfxProgrammelist Extends TPlannerList
 					entriesButtonPrev.mouseIsClicked = null
 
 					'handled left click
-					MouseManager.ResetClicked(1)
+					MouseManager.SetClickHandled(1)
 				endif
 			endif
 
@@ -590,7 +590,7 @@ Type TgfxProgrammelist Extends TPlannerList
 					entriesButtonNext.mouseIsClicked = null
 
 					'handled left click
-					MouseManager.ResetClicked(1)
+					MouseManager.SetClickHandled(1)
 				endif
 			endif
 		endif
@@ -664,7 +664,7 @@ Type TgfxProgrammelist Extends TPlannerList
 						'something changed, so stop looping through rest
 						If doneSomething
 							'handled left click
-							MouseManager.ResetClicked(1)
+							MouseManager.SetClickHandled(1)
 							Return True
 						EndIf
 					EndIf
@@ -880,7 +880,7 @@ Type TgfxProgrammelist Extends TPlannerList
 					subEntriesButtonPrev.mouseIsClicked = null
 
 					'handled left click
-					MouseManager.ResetClicked(1)
+					MouseManager.SetClickHandled(1)
 				endif
 			endif
 
@@ -899,7 +899,7 @@ Type TgfxProgrammelist Extends TPlannerList
 					subEntriesButtonNext.mouseIsClicked = null
 
 					'handled left click
-					MouseManager.ResetClicked(1)
+					MouseManager.SetClickHandled(1)
 				endif
 			endif
 		endif
@@ -937,7 +937,7 @@ Type TgfxProgrammelist Extends TPlannerList
 								SetOpen(0)
 
 								'handled left click
-								MouseManager.ResetClicked(1)
+								MouseManager.SetClickHandled(1)
 								Return True
 							EndIf
 						endif
@@ -973,13 +973,14 @@ Type TgfxProgrammelist Extends TPlannerList
 
 		'only react to genre area if episode area is not open
 		If openState <3
+			GetGenresRect() 'refresh
 			If MOUSEMANAGER.IsClicked(1) And THelper.MouseIn(int(genresRect.GetX()), int(genresRect.GetY()) + genresStartY, int(genresRect.GetW()), int(genreSize.GetY())*TProgrammeLicenceFilter.GetVisibleCount())
 				SetOpen(2)
 				Local visibleFilters:TProgrammeLicenceFilter[] = TProgrammeLicenceFilter.GetVisible()
 				currentGenre = Max(0, Min(visibleFilters.length-1, Floor((MouseManager.y - (genresRect.GetY() + genresStartY)) / genreSize.GetY())))
 
 				'handled left click
-				MouseManager.ResetClicked(1)
+				MouseManager.SetClickHandled(1)
 			EndIf
 		EndIf
 
@@ -997,16 +998,14 @@ Type TgfxProgrammelist Extends TPlannerList
 
 			'avoid clicks
 			'remove right click - to avoid leaving the room
-			MouseManager.ResetClicked(2)
-			'also avoid long click (touch screen)
-			MouseManager.ResetLongClicked(1)
+			MouseManager.SetClickHandled(2)
 		EndIf
 
 		'close if clicked outside - simple mode: so big rect
 		If MouseManager.isClicked(1) ' and mode=MODE_ARCHIVE
 			Local closeMe:Int = True
 			'in all cases the genre selector is opened
-			If genresRect.containsXY(MouseManager.x, MouseManager.y) Then closeMe = False
+			If GetGenresRect().containsXY(MouseManager.x, MouseManager.y) Then closeMe = False
 			'check tape rect
 			If openState >=2 And GetEntriesRect().containsXY(MouseManager.x, MouseManager.y) then closeMe = False
 			'check episodetape rect
@@ -1016,7 +1015,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				SetOpen(0)
 
 				'handled left click
-				MouseManager.ResetClicked(1)
+				MouseManager.SetClickHandled(1)
 			EndIf
 		EndIf
 	End Method

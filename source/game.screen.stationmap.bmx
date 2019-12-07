@@ -2745,9 +2745,7 @@ Type TScreenHandler_StationMap
 			If reset
 				'avoid clicks
 				'remove right click - to avoid leaving the room
-				MouseManager.ResetClicked(2)
-				'also avoid long click (touch screen)
-				MouseManager.ResetLongClicked(1)
+				MouseManager.SetClickHandled(2)
 			EndIf
 		EndIf
 
@@ -2796,7 +2794,7 @@ endrem
 					selectedStation = GetStationMap(room.owner).GetTemporaryAntennaStation( mouseoverStation.pos.GetIntX(), mouseoverStation.pos.GetIntY() )
 
 					'handled left click
-					MouseManager.ResetClicked(1)
+					MouseManager.SetClickHandled(1)
 				EndIf
 			EndIf
 
@@ -2861,7 +2859,7 @@ endrem
 							'selectedStation.GetSectionName(true)
 
 							'handled left click
-							MouseManager.ResetClicked(1)
+							MouseManager.SetClickHandled(1)
 						EndIf
 					EndIf
 				EndIf

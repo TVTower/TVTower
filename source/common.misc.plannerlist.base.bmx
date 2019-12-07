@@ -78,7 +78,7 @@ Type TPlannerList extends TOwnedGameObject
 						endif
 
 						'handled left click
-						MouseManager.ResetClicked(1)
+						MouseManager.SetClickHandled(1)
 						exit
 					endif
 				Next

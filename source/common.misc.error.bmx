@@ -99,7 +99,7 @@ Type TError
 			If THelper.MouseInRect(rect)
 				window.Close()
 				'handled left click
-				MouseManager.ResetClicked(1) 'clicked to remove error
+				MouseManager.SetClickHandled(1) 'clicked to remove error
 				return True
 			EndIf
 		EndIf
@@ -108,9 +108,7 @@ Type TError
 
 		if not window.IsClosed()
 			'no right clicking allowed as long as "error notice is active"
-			MouseManager.ResetClicked(2)
-			'also avoid long click (touch screen)
-			MouseManager.ResetLongClicked(1)
+			MouseManager.SetClickHandled(2)
 		else
 			window.Remove()
 			link.Remove()

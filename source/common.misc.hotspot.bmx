@@ -69,7 +69,7 @@ endrem
 			If MOUSEMANAGER.isClicked(1)
 				EventManager.triggerEvent( TEventSimple.Create("hotspot.onClick", New TData , Self ) )
 				'done by the hotspots if there are some
-				'MouseManager.ResetClicked(1)
+				'MouseManager.SetClickHandled(1)
 			EndIf
 		EndIf
 

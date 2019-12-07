@@ -355,7 +355,7 @@ Type TBuilding Extends TBuildingBase
 		EndIf
 
 		'handled left click
-		MouseManager.ResetClicked(1)
+		MouseManager.SetClickHandled(1)
 
 		return True
 	End Function

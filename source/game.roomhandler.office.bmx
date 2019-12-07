@@ -198,8 +198,7 @@ Type RoomHandler_Office extends TRoomHandler
 		If (MouseManager.IsClicked(1) and THelper.MouseIn(25,40,150,295)) or MouseManager.IsLongClicked(1)
 			GetPlayer().GetFigure().LeaveRoom()
 
-			MouseManager.ResetClicked(1)
-			MouseManager.ResetLongClicked(1)
+			MouseManager.SetClickHandled(1)
 		EndIf
 
 
@@ -217,7 +216,7 @@ Type RoomHandler_Office extends TRoomHandler
 					GetGameBase().cursorstate = 1
 					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						'handled click
-						MouseManager.ResetClicked(1)
+						MouseManager.SetClickHandled(1)
 						GetGameBase().cursorstate = 0
 
 						ScreenCollection.GoToSubScreen("screen_office_safe")
@@ -235,7 +234,7 @@ Type RoomHandler_Office extends TRoomHandler
 					GetGameBase().cursorstate = 1
 					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						'handled click
-						MouseManager.ResetClicked(1)
+						MouseManager.SetClickHandled(1)
 						GetGameBase().cursorstate = 0
 						ScreenCollection.GoToSubScreen("screen_office_programmeplanner")
 					endif
@@ -252,7 +251,7 @@ Type RoomHandler_Office extends TRoomHandler
 					GetGameBase().cursorstate = 1
 					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						'handled click
-						MouseManager.ResetClicked(1)
+						MouseManager.SetClickHandled(1)
 						GetGameBase().cursorstate = 0
 						ScreenCollection.GoToSubScreen("screen_office_archivedmessages")
 					endif
@@ -269,7 +268,7 @@ Type RoomHandler_Office extends TRoomHandler
 					GetGameBase().cursorstate = 1
 					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						'handled click
-						MouseManager.ResetClicked(1)
+						MouseManager.SetClickHandled(1)
 						GetGameBase().cursorstate = 0
 						ScreenCollection.GoToSubScreen("screen_office_stationmap")
 					endif

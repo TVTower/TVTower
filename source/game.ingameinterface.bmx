@@ -518,7 +518,7 @@ Type TInGameInterface
 					openEscapeMenuViaInterface = True
 
 					'handled left click
-					MouseManager.ResetClicked(1)
+					MouseManager.SetClickHandled(1)
 				EndIf
 
 			ElseIf THelper.MouseIn(357,577,43,23)
@@ -535,7 +535,7 @@ Type TInGameInterface
 					IngameHelpWindowCollection.ShowByHelpGUID("GameManual", True)
 
 					'handled left click
-					MouseManager.ResetClicked(1)
+					MouseManager.SetClickHandled(1)
 				EndIf
 
 			ElseIf THelper.MouseIn(400,577,29,23)

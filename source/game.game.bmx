@@ -186,7 +186,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		Local currDate:Int = Int(Time.GetSystemTime("%m%d"))
-		If currDate > 1210 Or currDate < 115
+		If currDate > 1201 Or currDate < 115
 			GameConfig.isChristmasTime = True
 		Else
 			GameConfig.isChristmasTime = False

@@ -430,7 +430,7 @@ Type TInGameScreen_World Extends TInGameScreen
 						fig.ChangeTarget(x, y)
 
 						'handled left click
-						MouseManager.ResetClicked(1)
+						MouseManager.SetClickHandled(1)
 					EndIf
 				EndIf
 			EndIf

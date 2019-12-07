@@ -2286,7 +2286,7 @@ Type TDebugPlayerControls
 		If THelper.MouseIn(x,y,w,h)
 			If MouseManager.IsClicked(1)
 				'handle clicked
-				MouseManager.ResetClicked(1)
+				MouseManager.SetClickHandled(1)
 				Return True
 			EndIf
 		EndIf
@@ -2315,7 +2315,7 @@ Type TDebugControlsButton
 			If MouseManager.IsClicked(1)
 				onClick()
 				'handle clicked
-				MouseManager.ResetClicked(1)
+				MouseManager.SetClickHandled(1)
 				Return True
 			EndIf
 		EndIf

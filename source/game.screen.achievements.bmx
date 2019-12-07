@@ -215,7 +215,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 						ReloadAchievements()
 
 						'handled left click
-						MouseManager.ResetClicked(1)
+						MouseManager.SetClickHandled(1)
 					endif
 				endif
 			Next

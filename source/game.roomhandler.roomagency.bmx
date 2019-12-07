@@ -167,7 +167,7 @@ endrem
 				mode = MODE_SELECTROOM
 
 				'handled left click
-				MouseManager.ResetClicked(1)
+				MouseManager.SetClickHandled(1)
 			endif
 		EndIf
 		If roomboardTooltip Then roomboardTooltip.Update()
@@ -297,7 +297,7 @@ endrem
 					endif
 
 					'handled left click
-					MouseManager.ResetClicked(1)
+					MouseManager.SetClickHandled(1)
 				endif
 
 				exit
@@ -311,9 +311,7 @@ endrem
 
 			'avoid clicks
 			'remove right click - to avoid leaving the room
-			MouseManager.ResetClicked(2)
-			'also avoid long click (touch screen)
-			MouseManager.ResetLongClicked(1)
+			MouseManager.SetClickHandled(2)
 		EndIf
 
 

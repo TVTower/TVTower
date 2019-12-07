@@ -336,7 +336,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		_HandleArrowInteraction(sender)
 
 		'handled even if disabled/reached figure limit
-		MouseManager.ResetClicked(1)
+		MouseManager.SetClickHandled(1)
 
 		Return True
 	End Method
@@ -738,7 +738,7 @@ endrem
 							GetPlayerBase(i+1).RecolorFigure(pc)
 
 							'handled click/hit
-							MouseManager.ResetClicked(1)
+							MouseManager.SetClickHandled(1)
 						EndIf
 					Next
 					'move to next slot position

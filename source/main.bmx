@@ -664,9 +664,7 @@ Type TApp
 		If App.ExitAppDialogue Or App.EscapeMenuWindow
 			'avoid clicks
 			'remove right click - to avoid leaving the room
-			MouseManager.ResetClicked(2)
-			'also avoid long click (touch screen)
-			MouseManager.ResetLongClicked(1)
+			MouseManager.SetClickHandled(2)
 		EndIf
 
 		'ignore shortcuts if a gui object listens to keystrokes
@@ -4962,16 +4960,12 @@ Type GameEvents
 					ScreenCollection.GoToParentScreen()
 
 					'handled clicks
-					MouseManager.ResetClicked(2)
-					'also handled long click (touch screen)
-					MouseManager.ResetLongClicked(1)
+					MouseManager.SetClickHandled(2)
 				Else
 					'leaving allowed - reset button
 					If GetPlayer().GetFigure().LeaveRoom()
 						'handled clicks
-						MouseManager.ResetClicked(2)
-						'also handled long click (touch screen)
-						MouseManager.ResetLongClicked(1)
+						MouseManager.SetClickHandled(2)
 					EndIf
 				EndIf
 			EndIf

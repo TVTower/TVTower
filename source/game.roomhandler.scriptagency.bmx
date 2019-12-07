@@ -749,9 +749,7 @@ endrem
 
 		'avoid clicks
 		'remove right click - to avoid leaving the room
-		MouseManager.ResetClicked(2)
-		'also avoid long click (touch screen)
-		MouseManager.ResetLongClicked(1)
+		MouseManager.SetClickHandled(2)
 	End Function
 
 

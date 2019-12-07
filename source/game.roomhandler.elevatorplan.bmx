@@ -64,7 +64,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 			endif
 
 			'handled left click
-			MouseManager.ResetClicked(1)
+			MouseManager.SetClickHandled(1)
 		endif
 
 		GetElevatorRoomBoard().UpdateSigns(False)

@@ -867,7 +867,7 @@ Type TScreenHandler_ProgrammePlanner
 			EndIf
 
 			'handled single click
-			MouseManager.ResetClicked(1)
+			MouseManager.SetClickHandled(1)
 
 			Return False
 		EndIf
@@ -1088,9 +1088,7 @@ Type TScreenHandler_ProgrammePlanner
 
 			'avoid clicks
 			'remove right click - to avoid leaving the room
-			MouseManager.ResetClicked(2)
-			'also avoid long click (touch screen)
-			MouseManager.ResetLongClicked(1)
+			MouseManager.SetClickHandled(2)
 		EndIf
 	End Function
 
@@ -1532,13 +1530,13 @@ endrem
 			ChangePlanningDay(planningDay+1)
 
 			'handled single click
-			MouseManager.ResetClicked(1)
+			MouseManager.SetClickHandled(1)
 			Return True
 		ElseIf button = plannerPreviousDayButton
 			ChangePlanningDay(planningDay-1)
 
 			'handled single click
-			MouseManager.ResetClicked(1)
+			MouseManager.SetClickHandled(1)
 			Return True
 		EndIf
 
@@ -1549,7 +1547,7 @@ endrem
 		PPprogrammeList.SetOpen(0)
 
 		'handled single click
-		MouseManager.ResetClicked(1)
+		MouseManager.SetClickHandled(1)
 
 		'open others?
 		If button = ProgrammePlannerButtons[0] Then Return PPcontractList.SetOpen(1)		'opens contract list
