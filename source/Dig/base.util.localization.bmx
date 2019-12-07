@@ -166,7 +166,6 @@ Type TLocalization
 			exit
 		Forever
 
-
 		if hasMain
 			if availableAlternatives = 0
 				return language.GetRaw(keyLower).replace("\n", Chr(13))
@@ -182,7 +181,7 @@ Type TLocalization
 			if availableAlternatives = 0
 				return key
 			else
-				return language.GetRaw(keyLower + Rand(1, availableAlternatives-1)).replace("\n", Chr(13))
+				return language.GetRaw(keyLower + (1 + Rand(0, availableAlternatives-1))).replace("\n", Chr(13))
 			endif
 		endif
 	End Function
@@ -217,14 +216,12 @@ Type TLocalization
 					if availableStrings.length <= availableSubKeys
 						availableStrings = availableStrings[.. availableStrings.length + 4]
 					endif
-					availableStrings[availableSubKeys-1] = subKey
-
+					availableStrings[availableStringsCount-1] = subKey
 					continue
 				else
 					'stop searching if nothing was found for this "key+number"
 					if availableSubKeys > 0 then exit
 				endif
-
 
 				availableSubKeys :+ 1
 			Forever
