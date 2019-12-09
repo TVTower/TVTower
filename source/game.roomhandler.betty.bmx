@@ -211,7 +211,11 @@ Type RoomHandler_Betty extends TRoomHandler
 
 				'avoid clicks
 				'remove right click - to avoid leaving the room
-				MouseManager.SetClickHandled(2)
+
+'for now we leave the room now
+'change this when we can actually give Betty our presents 
+'				MouseManager.SetClickHandled(2)
+
 			endif
 		endif
 	End Method
