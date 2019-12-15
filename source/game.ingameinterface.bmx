@@ -320,10 +320,37 @@ Type TInGameInterface
 				CurrentProgrammeToolTip.SetTitle(CurrentProgrammeText)
 				local content:String = ""
 				If programmePlan
-					content	= GetLocale("AUDIENCE_NUMBER")+": "+programmePlan.getFormattedAudience()+ " ("+MathHelper.NumberToString(programmePlan.GetAudiencePercentage()*100,2)+"%)"
+					Local adMinAudience:Int = -1
+					'fetch advertisement requirement to display enough
+					'audience digits if minAudience is almost equal to
+					'actual audience
+					If GetWorldTime().GetDayMinute() >= 5 And GetWorldTime().GetDayMinute() < 55
+						Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
+						If TAdvertisement(obj)
+							adMinAudience = TAdvertisement(obj).contract.getMinAudience()
+						EndIf
+					EndIf
+
+
+					Local audience:Int = -1
+					Local audienceStr:String = "0"
+					Local audiencePercentageStr:String = "0"
+					Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( ShowChannel )
+					If audienceResult 
+						audience = audienceResult.audience.GetTotalSum()
+						If adMinAudience >= 0
+							audienceStr = TFunctions.ConvertCompareValue(audience, adMinAudience, 2)
+						Else
+							audienceStr = TFunctions.ConvertValue(audience, 2)
+						EndIf
+						audiencePercentageStr = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
+					EndIf
+
+					content	= GetLocale("AUDIENCE_NUMBER")+": "+ audienceStr + " (" + audiencePercentageStr + " %)"
+
 
 					'Newsshow details
-					If GetWorldTime().GetDayMinute()<5
+					If GetWorldTime().GetDayMinute() < 5
 						local newsCount:int = 0
 						Local show:TNewsShow = TNewsShow(programmePlan.GetNewsShow())
 
@@ -341,6 +368,7 @@ Type TInGameInterface
 						endif
 					EndIf
 
+
 					'show additional information if channel is player's channel
 					If programmePlan.owner = GetPlayerBaseCollection().playerID
 						If GetWorldTime().GetDayMinute() >= 5 And GetWorldTime().GetDayMinute() < 55
@@ -350,26 +378,30 @@ Type TInGameInterface
 								If not programmePlan.GetProgramme()
 									content :+ "~n ~n|b||color=200,100,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n" + obj.GetTitle()+" ("+ GetLocale("INVALID_BY_BROADCAST_OUTAGE") +")"
 								Else
-									local minAudienceText:string = TFunctions.convertValue(TAdvertisement(obj).contract.getMinAudience())
+									Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(programmePlan.owner)
+									local minAudienceText:string
+									If audience >= 0
+										minAudienceText = TFunctions.ConvertCompareValue(TAdvertisement(obj).contract.getMinAudience(), audience, 2)
+									Else
+										minAudienceText = TFunctions.ConvertValue(TAdvertisement(obj).contract.getMinAudience(), 2)
+									Endif
 									if TAdvertisement(obj).contract.GetLimitedToTargetGroup() > 0
-										minAudienceText :+" " + TAdvertisement(obj).contract.GetLimitedToTargetGroupString()
+										minAudienceText :+ " " + TAdvertisement(obj).contract.GetLimitedToTargetGroupString()
 									endif
 
 									'check if the ad passes all checks for the current broadcast
-									local passingRequirements:String = TAdvertisement(obj).IsPassingRequirements(GetBroadcastManager().GetAudienceResult(programmePlan.owner))
-									if passingRequirements = "OK"
-										minAudienceText = "|color=100,200,100|" + minAudienceText + "|/color|"
-									else
-										Select passingRequirements
-											case "TARGETGROUP"
-												'tg already added above (for OK and WILL FAIL)
-												minAudienceText = "|color=200,100,100|" + minAudienceText + "!|/color|"
-											case "GENRE"
-												minAudienceText = "|color=200,100,100|" + minAudienceText + " " + TAdvertisement(obj).contract.GetLimitedToProgrammeGenreString()+ "!|/color|"
-											default
-												minAudienceText = "|color=200,100,100|" + minAudienceText + "|/color|"
-										End Select
-									endif
+									local passingRequirements:String = TAdvertisement(obj).IsPassingRequirements(audienceResult)
+									Select passingRequirements
+										case "OK"
+											minAudienceText = "|color=100,200,100|" + minAudienceText + "|/color|"
+										case "TARGETGROUP"
+											'tg already added above (for OK and WILL FAIL)
+											minAudienceText = "|color=200,100,100|" + minAudienceText + "!|/color|"
+										case "GENRE"
+											minAudienceText = "|color=200,100,100|" + minAudienceText + " " + TAdvertisement(obj).contract.GetLimitedToProgrammeGenreString()+ "!|/color|"
+										default
+											minAudienceText = "|color=200,100,100|" + minAudienceText + "|/color|"
+									End Select
 
 									content :+ "~n ~n|b||color=100,150,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n" + "|b|"+obj.GetTitle()+"|/b|~n" + GetLocale("MIN_AUDIENCE") +": "+ minAudienceText
 								EndIf
@@ -444,7 +476,14 @@ Type TInGameInterface
 			If THelper.MouseIn(309,447,178,32) or CurrentAudienceToolTip.forceShow
 				local playerProgrammePlan:TPlayerProgrammePlan = GetPlayerProgrammePlan( GetPlayerBaseCollection().playerID )
 				if playerProgrammePlan
-					CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_NUMBER")+": "+playerProgrammePlan.getFormattedAudience()+ " ("+MathHelper.NumberToString(playerProgrammePlan.GetAudiencePercentage() * 100,2)+"%)")
+					Local audienceStr:String = "0"
+					Local audiencePercentageStr:String = "0"
+					Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( GetPlayerBaseCollection().playerID )
+					If audienceResult 
+						audienceStr = TFunctions.convertValue(audienceResult.audience.GetTotalSum(), 2)
+						audiencePercentageStr = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
+					EndIf
+					CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_NUMBER")+": " + audienceStr + " (" + audiencePercentageStr +" %)")
 					CurrentAudienceToolTip.SetAudienceResult(GetBroadcastManager().GetAudienceResult(playerProgrammePlan.owner))
 
 					CurrentAudienceToolTip.enabled = 1
@@ -720,7 +759,8 @@ Type TInGameInterface
 			result :+ ["unemployed"]
 		else
 			'if there is some audience, show the sleeping unemployed
-			if GetPlayerProgrammePlan( GetPlayerBase().playerID ).GetAudiencePercentage() > 0.05
+			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( GetPlayerBaseCollection().playerID )
+			If audienceResult and audienceResult.GetAudienceQuotePercentage() > 0.05
 				result :+ ["unemployed.bored"]
 			endif
 		endif
@@ -861,7 +901,14 @@ Type TInGameInterface
 
 		_interfaceBigFont.drawBlock(GetPlayerBase().getMoneyFormatted(), 357, 412 +4, 130, 27, ALIGN_CENTER_TOP, moneyColor, 2, 1, 0.5)
 
-		_interfaceBigFont.drawBlock(GetPlayerProgrammePlanCollection().Get(playerID).getFormattedAudience(), 357, 447+4, 130, 27, ALIGN_CENTER_TOP, audienceColor, 2, 1, 0.5)
+		Local audienceStr:String = "0"
+		Local audiencePercentageStr:String = "0"
+		Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( playerID )
+		If audienceResult 
+			audienceStr = TFunctions.convertValue(audienceResult.audience.GetTotalSum(), 2)
+			audiencePercentageStr = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
+		EndIf
+		_interfaceBigFont.drawBlock(audienceStr, 357, 447+4, 130, 27, ALIGN_CENTER_TOP, audienceColor, 2, 1, 0.5)
 
 
 		'=== DRAW SECONDARY INFO ===
@@ -879,7 +926,7 @@ Type TInGameInterface
 		endif
 
 		'market share
-		_interfaceFont.drawBlock(MathHelper.NumberToString(GetPlayerProgrammePlan(playerID).GetAudiencePercentage()*100,2)+"%", 357, 447, 130, 32 - 2, ALIGN_CENTER_BOTTOM, marketShareColor, 2, 1, 0.5)
+		_interfaceFont.drawBlock(audiencePercentageStr+" %", 357, 447, 130, 32 - 2, ALIGN_CENTER_BOTTOM, marketShareColor, 2, 1, 0.5)
 
 		'current day
 		_interfaceFont.drawBlock((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 357, 538, 130, 32 - 2, ALIGN_CENTER_BOTTOM, currentDayColor, 2, 1, 0.5)

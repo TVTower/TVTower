@@ -1969,29 +1969,6 @@ endrem
 			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 		EndIf
 	End Method
-
-
-	'=== AUDIENCE ===
-	'maybe move that helpers to TBroadcastManager
-
-
-	'returns formatted value of actual audience
-	Method GetFormattedAudience:String() {_exposeToLua}
-		Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
-		If audienceResult Then return TFunctions.convertValue(audienceResult.audience.GetTotalSum(), 2)
-		return "0"
-	End Method
-
-
-	'calculates and returns the percentage of the players audience depending on the maxaudience
-	Method GetAudiencePercentage:Float() {_exposeToLua}
-		Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
-		If audienceResult Then Return audienceResult.GetAudienceQuotePercentage()
-
-		Return 0
-		'Local audienceResult:TAudienceResult = TAudienceResult.Curr(playerID)
-		'Return audienceResult.MaxAudienceThisHour.GetSumFloat() / audienceResult.WholeMarket.GetSumFloat()
-	End Method
 End Type
 
 

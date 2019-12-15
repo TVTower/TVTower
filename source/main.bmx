@@ -825,7 +825,8 @@ Type TApp
 
 
 					If KEYMANAGER.IsHit(KEY_Y)
-					
+						'print TFunctions.ConvertCompareValue(1009000, 1008800, 2) + ": " + TFunctions.ConvertValue(1009000, 2) + "  -  " + TFunctions.ConvertValue(1008800, 2)
+						'print TFunctions.ConvertCompareValue(1010100, 1009400, 2) + ": " + TFunctions.ConvertValue(1010100, 2) + "  -  " + TFunctions.ConvertValue(1009400, 2)
 					Rem
 						local pcIndex:Int = 0
 						For local pc:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.values()

@@ -263,6 +263,22 @@ Type TFunctions
 	End Function
 
 
+	'converts a value in a way that it shows as much digits as needed to
+	'distinguish between value and compareValue
+	Function ConvertCompareValue:String(value:Double, compareValue:Double, digitsAfterDecimalPoint:Int=2, delimeter:String=",")
+		If value = compareValue Then Return ConvertValue(value, digitsAfterDecimalPoint, 0, delimeter)
+
+		Local valueS:String
+		For local i:int = digitsAfterDecimalPoint to 10
+			valueS = ConvertValue(value, i, 0, delimeter)
+			If valueS <> ConvertValue(compareValue, i, 0, delimeter)
+				return valueS
+			EndIf
+		Next
+		Return valueS 
+	End Function
+
+
 	'formats a value: 1000400 = 1,0 Mio
 	Function convertValue:String(value:Double, digitsAfterDecimalPoint:Int=2, typ:Int=0, delimeter:String=",")
 		typ = MathHelper.Clamp(typ, 0,3)
@@ -287,9 +303,9 @@ Type TFunctions
 		'250000 = 250Tsd -> divide by 1000
 		If typ=1 Then Return MathHelper.NumberToString(value/1000.0, 0)+" "+GetLocale("ABBREVIATION_THOUSAND")
 		'250000 = 0,25Mio -> divide by 1000000
-		If typ=2 Then Return MathHelper.NumberToString(value/1000000.0, 2)+" "+GetLocale("ABBREVIATION_MILLION")
+		If typ=2 Then Return MathHelper.NumberToString(value/1000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_MILLION")
 		'250000 = 0,0Mrd -> divide by 1000000000
-		If typ=3 Then Return MathHelper.NumberToString(value/1000000000.0, 2)+" "+GetLocale("ABBREVIATION_BILLION")
+		If typ=3 Then Return MathHelper.NumberToString(value/1000000000.0, digitsAfterDecimalPoint)+" "+GetLocale("ABBREVIATION_BILLION")
 
 		'add thousands-delimiter: 10000 = 10.000
 		return dottedValue(value, ".", ",", digitsAfterDecimalPoint)
