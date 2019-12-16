@@ -1589,6 +1589,11 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 	Field inputDescription:TGUIInput
 	Field inputSubTitle:TGUIInput
 	Field inputSubDescription:TGUIInput
+	Field clearTitle:TGUIButton
+	Field clearDescription:TGUIButton
+	Field clearSubTitle:TGUIButton
+	Field clearSubDescription:TGUIButton
+
 	Field labelTitle:TGUILabel
 	Field labelDescription:TGUILabel
 	Field labelEpisode:TGUILabel
@@ -1608,10 +1613,21 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 		labelSubTitle = new TGUILabel.Create(new TVec2D.Init(15,137), GetLocale("TITLE"), null, "")
 		labelSubDescription = new TGUILabel.Create(new TVec2D.Init(15,180), GetLocale("DESCRIPTION"), null, "")
 
-		inputTitle = new TGUIInput.Create(new TVec2D.Init(15,12+13), new TVec2D.Init(265,-1), "Titel", 128, "")
-		inputDescription = new TGUIInput.Create(new TVec2D.Init(15,60+13), new TVec2D.Init(265,-1), "Text", 128, "")
-		inputSubTitle = new TGUIInput.Create(new TVec2D.Init(15,137+13), new TVec2D.Init(265,-1), "Subtitel", 128, "")
-		inputSubDescription = new TGUIInput.Create(new TVec2D.Init(15,180+13), new TVec2D.Init(265,-1), "Subtext", 128, "")
+		inputTitle = new TGUIInput.Create(new TVec2D.Init(15,12+13), new TVec2D.Init(245,-1), GetLocale("TITLE"), 128, "")
+		inputDescription = new TGUIInput.Create(new TVec2D.Init(15,60+13), new TVec2D.Init(245,-1), GetLocale("DESCRIPTION"), 128, "")
+		inputSubTitle = new TGUIInput.Create(new TVec2D.Init(15,137+13), new TVec2D.Init(245,-1), GetLocale("TITLE"), 128, "")
+		inputSubDescription = new TGUIInput.Create(new TVec2D.Init(15,180+13), new TVec2D.Init(245,-1), GetLocale("DESCRIPTION"), 128, "")
+
+		clearTitle = new TGUIButton.Create(new TVec2D.Init(15+245, 12 + 13 + 2), new TVec2D.Init(25, 25), "x", "")
+		clearTitle.spriteName = "gfx_gui_button.datasheet"
+		clearDescription = new TGUIButton.Create(new TVec2D.Init(15+245, 60 + 13 + 2), new TVec2D.Init(25, 25), "x", "")
+		clearDescription.spriteName = "gfx_gui_button.datasheet"
+		clearSubTitle = new TGUIButton.Create(new TVec2D.Init(15+245, 137 + 13 + 2), new TVec2D.Init(25, 25), "x", "")
+		clearSubTitle.spriteName = "gfx_gui_button.datasheet"
+		clearSubDescription = new TGUIButton.Create(new TVec2D.Init(15+245, 180 + 13 + 2), new TVec2D.Init(25, 26), "x", "")
+		clearSubDescription.spriteName = "gfx_gui_button.datasheet"
+
+
 
 		AddChild(labelTitle)
 		AddChild(labelDescription)
@@ -1624,10 +1640,16 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 		AddChild(inputSubTitle)
 		AddChild(inputSubDescription)
 
+		AddChild(clearTitle)
+		AddChild(clearDescription)
+		AddChild(clearSubTitle)
+		AddChild(clearSubDescription)
+
 		buttonOK.SetValue(GetLocale("EDIT_TEXTS"))
 		buttonCancel.SetValue(GetLocale("CANCEL"))
 
 		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.onChange", self, "onChangeInputValues", "TGUIInput" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.onClick", self, "onClickClearInputButton", "TGUIButton") ]
 
 		Return self
 	End Method
@@ -1668,6 +1690,8 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 		if concept.script.IsEpisode()
 			inputSubDescription.Show()
 			inputSubTitle.Show()
+			clearSubTitle.Show()
+			clearSubDescription.Show()
 			labelSubDescription.Show()
 			labelSubTitle.Show()
 			labelEpisode.Show()
@@ -1679,6 +1703,8 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 		else
 			inputSubDescription.Hide()
 			inputSubTitle.Hide()
+			clearSubDescription.Hide()
+			clearSubTitle.Hide()
 			labelSubDescription.Hide()
 			labelSubTitle.Hide()
 			labelEpisode.Hide()
@@ -1713,20 +1739,39 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 	End Method
 
 
+	Method onClickClearInputButton:int( triggerEvent:TEventBase )
+		local button:TGUIButton = TGUIButton( triggerEvent.GetSender() )
+		Select button
+			case clearTitle
+				If inputTitle.GetValue() = "" and concept and concept.script
+					inputTitle.SetValue(concept.script.GetTitle())
+				Else
+					inputTitle.SetValue("")
+				EndIf
+				'TODO: setfocus
+			case clearSubTitle
+				inputSubTitle.SetValue("")
+			case clearDescription
+				inputDescription.SetValue("")
+			case clearSubDescription
+				inputSubDescription.SetValue("")
+		EndSelect
+	End Method
+
+
 	Method onChangeInputValues:int( triggerEvent:TEventBase )
 		local input:TGUIInput = TGUIInput( triggerEvent.GetSender() )
 
-		if inputTitle
-			'ueberpruefen ob Titel OK
-			'wenn leer - dann Originaltext wieder einbinden
-		elseif inputSubTitle
-			'ueberpruefen ob Titel OK
-			'wenn leer - dann Originaltext wieder einbinden
-		elseif inputDescription
-			'wenn leer - dann Originaltext wieder einbinden
-		elseif inputSubDescription
-			'wenn leer - dann Originaltext wieder einbinden
-		endif
+		Select input
+			case inputTitle
+				'restore original title when empty?
+			case inputSubTitle
+				'restore original title when empty?
+			case inputDescription
+				'restore original description when empty?
+			case inputSubDescription
+				'restore original description when empty?
+		EndSelect
 	End Method
 End Type
 
