@@ -621,7 +621,7 @@ endrem
 			parentLicence.GetData().SetFlag(TVTProgrammeDataFlag.CUSTOMPRODUCTION, True)
 
 			'fill with basic data (title, description, ...)
-			FillProgrammeData(parentLicence.GetData(), productionConcept, productionConcept.script.GetParentScript())
+			FillProgrammeData(parentLicence.GetData(), productionConcept, productionConcept.script.GetParentScript(), True)
 
 			if parentLicenceType = TVTProgrammeLicenceType.SERIES
 				parentLicence.licenceType = TVTProgrammeLicenceType.SERIES
@@ -716,15 +716,22 @@ endrem
 	End Method
 
 
-	Function FillProgrammeData(programmeData:TProgrammeData, productionConcept:TProductionConcept, script:TScript = Null)
+	'pass "isSeriesHeader = True" when filling programme data for a series
+	'header (as the passed productionConcept is of one of the episodes
+	'which might have a custom title/description)
+	Function FillProgrammeData(programmeData:TProgrammeData, productionConcept:TProductionConcept, script:TScript = Null, isSeriesHeader:Int = False)
 		If script = Null Then script = productionConcept.script
 
-		if productionConcept.customTitle
+		if isSeriesHeader and script.customTitle
+			programmeData.title = new TLocalizedString.Set(script.customTitle)
+		Elseif not isSeriesHeader and productionConcept.customTitle
 			programmeData.title = new TLocalizedString.Set(productionConcept.customTitle)
 		else
 			programmeData.title = script.title.Copy()
 		endif
-		if productionConcept.customDescription
+		if isSeriesHeader and productionConcept.customDescription
+			programmeData.description = new TLocalizedString.Set(script.customDescription)
+		Elseif not isSeriesHeader and productionConcept.customDescription
 			programmeData.description = new TLocalizedString.Set(productionConcept.customDescription)
 		else
 			programmeData.description = script.description.Copy()
