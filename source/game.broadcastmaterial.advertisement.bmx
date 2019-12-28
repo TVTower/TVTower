@@ -307,6 +307,28 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 
 
 	Method ShowSheet:int(x:int,y:int,align:int)
-		self.contract.ShowSheet(x, y, align, self.usedAsType)
+		local minAudienceHightlightType:Int = 0
+		If (programmedDay=-1 and programmedHour=-1) or (programmedDay=GetWorldTime().GetDay() and programmedHour=GetWorldTime().GetDayHour())
+			local audienceResult:TAudienceResultBase = GetBroadcastManager().GetAudienceResult( owner )
+			If audienceResult
+				minAudienceHightlightType = +1
+				
+				If audienceResult.broadcastOutage
+					minAudienceHightlightType = -1
+				'condition not fulfilled
+				ElseIf audienceResult.Audience.GetTotalSum() < contract.GetMinAudience()
+					minAudienceHightlightType = -1
+				'limited to a specific target group - and not fulfilled
+				ElseIf contract.GetLimitedToTargetGroup() > 0 and audienceResult.Audience.GetTotalValue(contract.GetLimitedToTargetGroup()) < contract.GetMinAudience()
+					minAudienceHightlightType = -1
+				EndIf
+			Else
+				minAudienceHightlightType = -1
+			EndIf
+		EndIf
+
+
+
+		self.contract.ShowSheet(x, y, align, 0, self.usedAsType, minAudienceHightlightType)
 	End Method
 End Type

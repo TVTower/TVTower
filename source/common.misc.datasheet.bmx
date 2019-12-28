@@ -70,7 +70,8 @@ Type TDatasheetSkin
 
 
 	Method RenderBox(x:int, y:int, w:int, h:int=-1, value:string, iconName:string="", boxType:string="neutral", font:TBitmapFont=null, valueAlign:TVec2D=null, fontColorType:string="")
-		GetSpriteFromRegistry(spriteBaseKey+"_box_"+boxType).DrawArea(x, y, w, h)
+		local boxSprite:TSprite = GetSpriteFromRegistry(spriteBaseKey+"_box_"+boxType)
+		boxSprite.DrawArea(x, y, w, h)
 		if iconName then GetSpriteFromRegistry(spriteBaseKey+"_icon_"+iconName).Draw(x, y)
 
 		if value
@@ -78,7 +79,7 @@ Type TDatasheetSkin
 			if fontColorType = "" then fontColorType = boxType
 			if not font then font = GetDefaultFont()
 			if not valueAlign then valueAlign = ALIGN_CENTER_CENTER
-			local border:TRectangle = GetSpriteFromRegistry(spriteBaseKey+"_box_"+boxType).GetNinePatchContentBorder()
+			local border:TRectangle = boxSprite.GetNinePatchContentBorder()
 
 			font.drawBlock( ..
 				value, ..
@@ -194,8 +195,10 @@ Type TDatasheetSkin
 	Method GetTextColor:TColor(key:string)
 		Select key.ToLower()
 			case "good"     return textColorGood
+			case "goodhint" return textColorNeutral 'green overemphasizes?
 			case "neutral"  return textColorNeutral
 			case "bad"      return textColorBad
+			case "badhint"  return textColorBad
 			case "warning"  return textColorWarning
 			case "label"    return textColorLabel
 		End Select

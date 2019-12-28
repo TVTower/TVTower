@@ -1516,7 +1516,7 @@ price :* Max(1, minAudience/1000)
 
 
 
-	Method ShowSheet:Int(x:Int,y:Int, align:Int=0, showMode:Int=0, forPlayerID:Int=-1)
+	Method ShowSheet:Int(x:Int,y:Int, align:Int=0, showMode:Int=0, forPlayerID:Int=-1, minAudienceHightlightType:Int=0)
 		'set default mode
 		If showMode = 0 Then showMode = TVTBroadcastMaterialType.ADVERTISEMENT
 
@@ -1531,7 +1531,7 @@ price :* Max(1, minAudience/1000)
 		If showMode = TVTBroadcastMaterialType.PROGRAMME
 			ShowInfomercialSheet(x, y, align, forPlayerID)
 		ElseIf showMode = TVTBroadcastMaterialType.ADVERTISEMENT
-			ShowAdvertisementSheet(x, y, align, forPlayerID)
+			ShowAdvertisementSheet(x, y, align, forPlayerID, minAudienceHightlightType)
 		EndIf
 	End Method
 
@@ -1661,7 +1661,7 @@ price :* Max(1, minAudience/1000)
 	End Method
 
 
-	Method ShowAdvertisementSheet:Int(x:Int,y:Int, align:Int=0, forPlayerID:Int)
+	Method ShowAdvertisementSheet:Int(x:Int,y:Int, align:Int=0, forPlayerID:Int, minAudienceHightlightType:int = 0)
 		'=== PREPARE VARIABLES ===
 		If forPlayerID <= 0 Then forPlayerID = owner
 
@@ -1788,8 +1788,12 @@ price :* Max(1, minAudience/1000)
 
 		'=== BOX LINE 1 ===
 		'days left for this contract
-		If daysLeft > 1 Or daysLeft = 0
+		If IsCompleted()
+			skin.RenderBox(contentX + 5, contentY, 96, -1, "---", "runningTime", "neutral", skin.fontBold)
+		ElseIf daysLeft > 1 
 			skin.RenderBox(contentX + 5, contentY, 96, -1, daysLeft +" "+ getLocale("DAYS"), "runningTime", "neutral", skin.fontBold)
+		ElseIf daysLeft = 0
+			skin.RenderBox(contentX + 5, contentY, 96, -1, daysLeft +" "+ getLocale("DAYS"), "runningTime", "badHint", skin.fontBold)
 		ElseIf daysLeft = 1
 			skin.RenderBox(contentX + 5, contentY, 96, -1, daysLeft +" "+ getLocale("DAY"), "runningTime", "neutral", skin.fontBold)
 		Else
@@ -1814,7 +1818,13 @@ price :* Max(1, minAudience/1000)
 		contentY :+ boxH
 
 		'minAudience
-		skin.RenderBox(contentX + 5, contentY, 96, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", "neutral", skin.fontBold)
+		If minAudienceHightlightType = 1
+			skin.RenderBox(contentX + 5, contentY, 96, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", "goodHint", skin.fontBold)
+		ElseIf minAudienceHightlightType = -1
+			skin.RenderBox(contentX + 5, contentY, 96, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", "badHint", skin.fontBold)
+		Else
+			skin.RenderBox(contentX + 5, contentY, 96, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", "neutral", skin.fontBold)
+		EndIf
 		'penalty
 		skin.RenderBox(contentX + 5 + 100, contentY, 92, -1, TFunctions.convertValue(GetPenaltyForPlayer(forPlayerID), 2), "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
 		'profit

@@ -1176,7 +1176,25 @@ Type TScreenHandler_ProgrammePlanner
 
 		'If PPcontractList.GetOpen() and
 		If PPcontractList.hoveredAdContract
-			PPcontractList.hoveredAdContract.ShowSheet(10-3, 8)
+			local minAudienceHightlightType:Int = 0
+			local audienceResult:TAudienceResultBase = GetBroadcastManager().GetAudienceResult( currentRoom.owner )
+			If audienceResult
+				minAudienceHightlightType = +1
+				
+				If audienceResult.broadcastOutage
+					minAudienceHightlightType = -1
+				'condition not fulfilled
+				ElseIf audienceResult.Audience.GetTotalSum() < PPcontractList.hoveredAdContract.GetMinAudience()
+					minAudienceHightlightType = -1
+				'limited to a specific target group - and not fulfilled
+				ElseIf PPcontractList.hoveredAdContract.GetLimitedToTargetGroup() > 0 and audienceResult.Audience.GetTotalValue(PPcontractList.hoveredAdContract.GetLimitedToTargetGroup()) < PPcontractList.hoveredAdContract.GetMinAudience()
+					minAudienceHightlightType = -1
+				EndIf
+			Else
+				minAudienceHightlightType = -1
+			EndIf
+		
+			PPcontractList.hoveredAdContract.ShowSheet(10-3, 8, 0, 0, TVTBroadcastMaterialType.ADVERTISEMENT, minAudienceHightlightType)
 		EndIf
 
 
@@ -1765,6 +1783,7 @@ endrem
 		If GUIManager.ListDragged.count() > 0
 			For Local obj:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged.Copy()
 				if not GetPlayerProgrammeCollection(currentRoom.owner).HasBroadcastMaterial(obj.broadcastMaterial)
+					'print "no longer owning: " + obj.broadcastMaterial.GetTitle()
 					obj.Remove()
 				endif
 			Next

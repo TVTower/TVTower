@@ -19,6 +19,8 @@
 				<child name="gfx_datasheet_box_good"           x="120"  y="43"   w="40"  h="28"  ninepatch="true" />
 				<child name="gfx_datasheet_box_neutral"        x="160"  y="43"   w="40"  h="28"  ninepatch="true" />
 				<child name="gfx_datasheet_box_bad"            x="200"  y="43"   w="40"  h="28"  ninepatch="true" />
+				<child name="gfx_datasheet_box_badHint"        x="240"  y="43"   w="40"  h="28"  ninepatch="true" />
+				<child name="gfx_datasheet_box_goodHint"       x="280"  y="43"   w="40"  h="28"  ninepatch="true" />
 				<child name="gfx_datasheet_content_splitterV"  x="43"   y="33"   w="4"   h="7"   ninepatch="true" />
 
 				<child name="gfx_datasheet_icon_money"              x="1"    y="72"   w="24"  h="23" />
