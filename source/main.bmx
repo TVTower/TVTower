@@ -1409,7 +1409,7 @@ endrem
 		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
 			DrawRect(0,0, 800,13)
 		Else
-			DrawRect(0,0, 175 + 90,13)
+			DrawRect(0,0, 175 + 90 + 150,13)
 		EndIf
 		oldCol.SetRGBA()
 
@@ -1423,7 +1423,16 @@ endrem
 		textX:+50
 		bf.draw("GC: " + (GCMemAlloced()/1024) +" Kb", textX,0)
 '		bf.draw("GC: " + bbGCAllocCount+"/s", textX,0)
-		textX:+50
+		textX:+80
+
+		local soloudDriver:TSoloudAudioDriver = TSoloudAudioDriver(GetAudioDriver())
+		if soloudDriver
+			bf.draw("SOL: " + soloudDriver._soloud.getActiveVoiceCount() + "/" + soloudDriver._soloud.getMaxActiveVoiceCount() + "/" + soloudDriver._soloud.getVoiceCount() +" voices", textX,0)
+			textX:+75
+		Else
+			bf.draw("SOL: " + TTypeID.ForObject(GetAudioDriver()).name(), textX,0)
+			textX:+75
+		endif
 
 		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
 			bf.draw("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0)
@@ -5751,6 +5760,11 @@ End Type
 
 OnEnd( EndHook )
 Function EndHook()
+	'CleanUp
+	For Local player:TPLayer = EachIn GetPlayerCollection().players
+		player.StopAI()
+	Next
+	
 	TProfiler.DumpLog(LOG_NAME)
 	TLogFile.DumpLogs()
 
