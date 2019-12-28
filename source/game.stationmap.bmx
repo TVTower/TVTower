@@ -1948,14 +1948,46 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'return a station at the given coordinates (eg. used by network)
-	Method GetStationsByXY:TStationBase[](x:Int=0,y:Int=0) {_exposeToLua}
+	Method GetStationsByXY:TStationBase[](x:Int=0,y:Int=0, exactPosition:Int = True) {_exposeToLua}
 		Local res:TStationBase[]
 		Local pos:TVec2D = New TVec2D.Init(x, y)
 		For Local station:TStationBase = EachIn stations
-			If Not station.pos.isSame(pos) Then Continue
+			If exactPosition 
+				If Not station.pos.isSame(pos) Then Continue
+			Else
+				'no antenna -> must be exact
+				If not TStationAntenna(station) and Not station.pos.isSame(pos) Then Continue
+				'or x,y outside of station-circle?
+				If TStationAntenna(station).radius < Sqr((x - station.pos.x)^2 + (y - station.pos.y)^2) Then Continue
+			EndIf
 			res :+ [station]
 		Next
 		Return res
+	End Method
+
+
+	'returns best suiting station
+	Method GetStationByXY:TStationBase(x:Int=0,y:Int=0, exactPosition:Int = True) {_exposeToLua}
+		Local best:TStationBase
+		Local bestDistance:Float = -1
+		Local pos:TVec2D = New TVec2D.Init(x, y)
+		For Local station:TStationBase = EachIn stations
+			If exactPosition 
+				If station.pos.isSame(pos) Then return station
+			Else
+				'no antenna -> must be exact
+				If not TStationAntenna(station) and station.pos.isSame(pos) Then return station
+				'or x,y outside of station-circle?
+				local distance:Float = Sqr((x - station.pos.x)^2 + (y - station.pos.y)^2)
+				If TStationAntenna(station).radius < distance Then Continue
+				
+				if distance < bestDistance or bestDistance = -1
+					bestDistance = distance
+					best = station
+				endif
+			EndIf
+		Next
+		Return best
 	End Method
 
 

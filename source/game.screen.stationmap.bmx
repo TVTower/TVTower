@@ -252,19 +252,24 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		'also set the stationmap's userAction so the map knows we want to sell
 		Local item:TGUISelectListItem = TGUISelectListItem(senderList.getSelectedEntry())
 		If item
-			TScreenHandler_StationMap.selectedStation = TStationBase(item.data.get("station"))
-			If TScreenHandler_StationMap.selectedStation
-				'force stat refresh (so we can display decrease properly)!
-				TScreenHandler_StationMap.selectedStation.GetExclusiveReach(True)
-
-				autoRenewCheckbox.SetChecked( TScreenHandler_StationMap.selectedStation.HasFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT) )
-			EndIf
-
-			SetActionMode( GetSellActionMode() )
+			SetSelectedStation( TStationBase(item.data.get("station")) )
 
 			'close potentially open item
 			'if TScreenHandler_StationMap.mapInformationFrame.IsOpen() Then TScreenHandler_StationMap.mapInformationFrame.Close()
 		EndIf
+	End Method
+	
+	
+	Method SetSelectedStation(station:TStationBase)
+		TScreenHandler_StationMap.selectedStation = station
+		If TScreenHandler_StationMap.selectedStation
+			'force stat refresh (so we can display decrease properly)!
+			TScreenHandler_StationMap.selectedStation.GetExclusiveReach(True)
+
+			autoRenewCheckbox.SetChecked( TScreenHandler_StationMap.selectedStation.HasFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT) )
+		EndIf
+
+		SetActionMode( GetSellActionMode() )
 	End Method
 
 
@@ -2276,6 +2281,8 @@ Type TScreenHandler_StationMap
 
 	Global actionMode:Int = 0
 	Global actionConfirmed:Int = False
+	
+	Global antennaPanel:TGameGUIAntennaPanel
 
 	Global mouseoverSection:TStationMapSection
 	Global selectedStation:TStationBase
@@ -2338,10 +2345,10 @@ Type TScreenHandler_StationMap
 			guiAccordeon = New TGameGUIAccordeon.Create(New TVec2D.Init(586, 64), New TVec2D.Init(211, 317), "", "STATIONMAP")
 			TGameGUIAccordeon(guiAccordeon).skinName = "stationmapPanel"
 
+			antennaPanel = New TGameGUIAntennaPanel.Create(New TVec2D.Init(-1, -1), New TVec2D.Init(-1, -1), "Stations", "STATIONMAP")
+			antennaPanel.Open()
+			guiAccordeon.AddPanel(antennaPanel, 0)
 			Local p:TGUIAccordeonPanel
-			p = New TGameGUIAntennaPanel.Create(New TVec2D.Init(-1, -1), New TVec2D.Init(-1, -1), "Stations", "STATIONMAP")
-			p.Open()
-			guiAccordeon.AddPanel(p, 0)
 			p = New TGameGUICableNetworkPanel.Create(New TVec2D.Init(-1, -1), New TVec2D.Init(-1, -1), "Cable Networks", "STATIONMAP")
 			guiAccordeon.AddPanel(p, 1)
 			p = New TGameGUISatellitePanel.Create(New TVec2D.Init(-1, -1), New TVec2D.Init(-1, -1), "Satellites", "STATIONMAP")
@@ -2940,6 +2947,23 @@ Rem
 endrem
 		EndIf
 
+
+		'select an antenna by mouse?
+		If actionMode = 0 or actionMode = MODE_SELL_ANTENNA
+			If MouseManager.IsClicked(1)
+				local station:TStationBase = GetStationMap(room.owner).GetStationByXY(int(MouseManager.GetClickPosition(1).x), int(MouseManager.GetClickPosition(1).y), False)
+				if TStationAntenna(station)
+					'make sure antenna panel is open
+					antennaPanel.Open()
+					guiAccordeon.UpdateLayout()
+					antennaPanel.UpdateLayout()
+
+					antennaPanel.SetSelectedStation(station)
+
+					MouseManager.SetClickHandled(1)
+				endif
+			EndIf
+		EndIf
 
 
 		'select satellite of the currently selected satlink
