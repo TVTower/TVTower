@@ -1789,28 +1789,28 @@ price :* Max(1, minAudience/1000)
 		'=== BOX LINE 1 ===
 		'days left for this contract
 		If IsCompleted()
-			skin.RenderBox(contentX + 5, contentY, 96, -1, "---", "runningTime", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, "---", "runningTime", "neutral", skin.fontBold)
 		ElseIf daysLeft > 1 
-			skin.RenderBox(contentX + 5, contentY, 96, -1, daysLeft +" "+ getLocale("DAYS"), "runningTime", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, daysLeft +" "+ getLocale("DAYS"), "runningTime", "neutral", skin.fontBold)
 		ElseIf daysLeft = 0
-			skin.RenderBox(contentX + 5, contentY, 96, -1, daysLeft +" "+ getLocale("DAYS"), "runningTime", "badHint", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, daysLeft +" "+ getLocale("DAYS"), "runningTime", "badHint", skin.fontBold)
 		ElseIf daysLeft = 1
-			skin.RenderBox(contentX + 5, contentY, 96, -1, daysLeft +" "+ getLocale("DAY"), "runningTime", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, daysLeft +" "+ getLocale("DAY"), "runningTime", "neutral", skin.fontBold)
 		Else
-			skin.RenderBox(contentX + 5, contentY, 96, -1, "---", "runningTime", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, "---", "runningTime", "neutral", skin.fontBold)
 		EndIf
 
 		'spots successfully sent
 		If owner < 0
 			'show how many we have to send
-			skin.RenderBox(contentX + 5 + 100, contentY, 92, -1, GetSpotCount() + "x", "spotsAired", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, GetSpotCount() + "x", "spotsAired", "neutral", skin.fontBold)
 		Else
-			skin.RenderBox(contentX + 5 + 100, contentY, 92, -1, GetSpotsSent() + "/" + GetSpotCount(), "spotsAired", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, GetSpotsSent() + "/" + GetSpotCount(), "spotsAired", "neutral", skin.fontBold)
 		EndIf
 
 		'planned
 		If owner > 0
-			skin.RenderBox(contentX + 5 + 196, contentY, 93, -1, GetSpotsPlanned() + "/" + GetSpotCount(), "spotsPlanned", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 204, contentY, 96, -1, GetSpotsPlanned() + "/" + GetSpotCount(), "spotsPlanned", "neutral", skin.fontBold)
 		EndIf
 
 
@@ -1819,16 +1819,16 @@ price :* Max(1, minAudience/1000)
 
 		'minAudience
 		If minAudienceHightlightType = 1
-			skin.RenderBox(contentX + 5, contentY, 96, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", "goodHint", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", "goodHint", skin.fontBold)
 		ElseIf minAudienceHightlightType = -1
-			skin.RenderBox(contentX + 5, contentY, 96, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", "badHint", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", "badHint", skin.fontBold)
 		Else
-			skin.RenderBox(contentX + 5, contentY, 96, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5, contentY, 100, -1, TFunctions.convertValue(GetMinAudienceForPlayer(forPlayerID), 2), "minAudience", "neutral", skin.fontBold)
 		EndIf
 		'penalty
-		skin.RenderBox(contentX + 5 + 100, contentY, 92, -1, TFunctions.convertValue(GetPenaltyForPlayer(forPlayerID), 2), "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
+		skin.RenderBox(contentX + 5 + 104, contentY, 96, -1, TFunctions.convertValue(GetPenaltyForPlayer(forPlayerID), 2), "money", "bad", skin.fontBold, ALIGN_RIGHT_CENTER)
 		'profit
-		skin.RenderBox(contentX + 5 + 196, contentY, 93, -1, TFunctions.convertValue(GetProfitForPlayer(forPlayerID), 2), "money", "good", skin.fontBold, ALIGN_RIGHT_CENTER)
+		skin.RenderBox(contentX + 5 + 204, contentY, 96, -1, TFunctions.convertValue(GetProfitForPlayer(forPlayerID), 2), "money", "good", skin.fontBold, ALIGN_RIGHT_CENTER)
 
 
 		'=== DEBUG ===
