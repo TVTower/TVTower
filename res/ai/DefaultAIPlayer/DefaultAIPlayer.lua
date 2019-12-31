@@ -579,7 +579,7 @@ function OnMoneyChanged(value, reason, reference)
 	end
 end
 
-function OnChat(message, fromID, chatType)
+function OnChat(fromID, message, chatType)
 	debugMsg("got a message: " .. message .. "  sub:".. message:sub(0, 4))
 
 	if (message:sub(0, 4) == "CMD_") then
@@ -710,10 +710,8 @@ end
 function OnEnterRoom(roomId)
 	roomId = tonumber(roomId) --incoming roomId is "string"
 
-	debugMsg("OnEnterRoom " .. roomId .. "  boss: "..TVT.ROOM_BOSS_PLAYER_ME)
 	if (aiIsActive) then
 		getAIPlayer():OnEnterRoom(roomId)
-		debugMsg("Visiting my boss", true)
 
 		-- when visiting the boss or betty, update sammy information
 		if roomId == TVT.ROOM_BOSS_PLAYER_ME then
@@ -907,48 +905,6 @@ function OnMinute(number)
 			end
 		end
 	end
-
-
-	--Zum Test
-	--[[
-	if (number == 6) then
-
-		local task = getAIPlayer().TaskList[ _G["TASK_SCHEDULE"] ]
-		local fixedDay, fixedHour = FixDayAndHour(WorldTime.GetDay(), WorldTime.GetDayHour())
-
-		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
-		local guessedAudience = 0
-		if programme ~= nil then
-			local programmeAttraction = programme.GetStaticAudienceAttraction(fixedHour, 1, nil, nil)
-
-			local avgQuality = math.round(100 * task:GetAverageBroadcastQualityByLevel(level))
-			-- assume they all send at least as good programme as we do
-			avgQuality = math.max(avgQuality, programme.GetQuality())
-
-			-- todo: refresh markets when "office is visited" (stationmap)
-			TVT.audiencePredictor.RefreshMarkets()
-			TVT.audiencePredictor.SetAverageValueAttraction(1, avgQuality)
-			TVT.audiencePredictor.SetAverageValueAttraction(2, avgQuality)
-			TVT.audiencePredictor.SetAverageValueAttraction(3, avgQuality)
-			TVT.audiencePredictor.SetAverageValueAttraction(4, avgQuality)
-			TVT.audiencePredictor.SetAttraction(TVT.ME, programmeAttraction)
-			TVT.audiencePredictor.RunPrediction(fixedDay, fixedHour)
-			guessedAudience = TVT.audiencePredictor.GetAudience(TVT.ME).GetTotalSum()
-		end
-
-
-		local audience = TVT.GetCurrentProgrammeAudience()
-
-		local title = "OUTAGE / NO PROG"
-		if (programme ~= nil) then title = programme.GetTitle(); end
-
-		debugMsg("GUESSING AUDIENCE: " .. fixedHour .. ":05 \"" .. title .. "\"")
-		debugMsg("  realAudience= " .. audience.GetTotalSum() .. "  guessedAudience=" .. guessedAudience .. "  guessRealFactor=" .. math.round(100 * audience.GetTotalSum()/guessedAudience) .."%" )
-
-		table.insert(globalPlayer.logs, "GUESSING AUDIENCE: " .. fixedHour .. ":05 \"" .. title .. "\"")
-		table.insert(globalPlayer.logs, "  realAudience= " .. audience.GetTotalSum() .. "  guessedAudience=" .. guessedAudience .. "  guessRealFactor=" .. math.round(100 * audience.GetTotalSum()/guessedAudience) .."%" )
-	end
-	]]--
 end
 
 function OnMalfunction()

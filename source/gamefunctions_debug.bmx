@@ -339,6 +339,7 @@ Type TDebugScreen
 
 
 		RenderPlayerEventQueue(playerID, 600, 20)
+		RenderPlayerTaskList(playerID, 600, 160)
 	End Method
 
 
