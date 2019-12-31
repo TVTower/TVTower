@@ -1668,6 +1668,27 @@ endrem
 	End Method
 
 
+	Method GetSectionsFiltered:TStationMapSection[](channelID:Int=-1, checkBroadcastPermission:Int=True, requiredBroadcastPermissionState:Int=True, stationType:Int=-1)
+		Local count:int = sections.Count()
+		Local sections:TStationMapSection[] = new TStationMapSection[count]
+		Local used:Int = 0
+		For Local section:TStationMapSection = EachIn sections
+			If (checkBroadcastPermission and section.NeedsBroadcastPermission(channelID, stationType))
+				If section.HasBroadcastPermission(channelID, stationType) <> requiredBroadcastPermissionState Then Continue
+			EndIf
+			sections[used] = section
+			
+			used :+ 1
+		Next
+
+		if used <> count
+			return sections[.. used]
+		else
+			return sections
+		endif
+	End Method
+	
+
 	'returns sections "nearby" a station (connection not guaranteed as
 	'check of a circle-antenna is based on two rects intersecting or not)
 	Method GetSectionsConnectedToStation:TStationMapSection[](station:TStationBase)
@@ -2010,13 +2031,20 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 	'returns all stations of a player in a given section
 	Method GetStationsBySectionName:TStationBase[](sectionName:string, stationType:int=0) {_exposeToLua}
-		local result:TStationBase[]
+		local result:TStationBase[5]
+		Local found:int = 0 
 		For local station:TStationBase = EachIn stations
 			if stationType >0 and station.stationType <> stationType then continue
-			if station.sectionName = sectionName then result :+ [station]
+			if station.sectionName = sectionName 
+				result[found] = station
+				found :+ 1
+				if found > result.length then result = result[.. result.length + 5]
+			endif
 		Next
-
-		Return result
+		if found <> result.length
+			result = result[.. found]
+		endif
+		return result
 	End Method
 
 
@@ -2080,6 +2108,67 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method HasStation:int(station:TStationBase)
 		return stations.contains(station)
+	End Method
+
+
+
+	Method GetRandomAntennaCoordinateOnMap:TVec2D(checkBroadcastPermission:Int=True, requiredBroadcastPermissionState:Int=True)
+		Local x:int = Rand(35, 560)
+		Local y:int = Rand(1, 375)
+		Local station:TStationBase = GetTemporaryAntennaStation(x, y)
+		if station.GetPrice() < 0 then return Null
+		
+		if checkBroadcastPermission and GetStationMapCollection().GetSection(x,y).HasBroadcastPermission(owner, TVTStationType.ANTENNA) <> requiredBroadcastPermissionState Then Return Null
+		 
+		Return new TVec2D.Init(x,y)
+	End Method
+	
+
+	Method GetRandomAntennaCoordinateInPlayerSections:TVec2D()
+		local sections:TStationMapSection[] = GetStationMapCollection().GetSectionsFiltered(owner, True, True, TVTStationType.ANTENNA)
+		if sections.length = 0 Then Return Null
+
+		Local sectionName:String = sections[ Rand(0, sections.length-1) ].name
+		Return GetRandomAntennaCoordinateInSection(sectionName)
+	End Method
+
+
+	Method GetRandomAntennaCoordinateInSections:TVec2D(sectionNames:string[])
+		if sectionNames.length = 0 Then return Null
+
+		local sectionName:String = sectionNames[ Rand(0, sectionNames.length-1) ]
+		Return GetRandomAntennaCoordinateInSection(sectionName)
+	End Method
+
+
+	'specific section
+	Method GetRandomAntennaCoordinateInSection:TVec2D(sectionName:string)
+		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName( sectionName)
+		If not section then return Null 
+			
+		Local found:Int = False
+		Local x:Int = 0
+		Local y:Int = 0
+		Local tries:int = 0
+		Repeat
+			x = rand(section.rect.GetIntX(), section.rect.GetIntX2())
+			y = rand(section.rect.GetIntY(), section.rect.GetIntY2())
+			If section.GetShapeSprite().PixelIsOpaque(Int(x-section.rect.GetX()), Int(y-section.rect.GetY())) > 0
+				found = True
+			EndIf
+			tries :+ 1
+		Until found or tries > 1000
+
+		If tries > 1000 
+			print "Failed to find a valid random section point in < 1000 tries."
+			Return Null
+		EndIf
+		
+		If found
+			Return new TVec2D.Init(x,y)
+		EndIf
+		
+		Return Null
 	End Method
 
 
@@ -2584,7 +2673,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'get the relative reach increase of that station
-	Method GetRelativeExclusiveReach:Int(refresh:Int=False) {_exposeToLua}
+	Method GetRelativeExclusiveReach:Float(refresh:Int=False) {_exposeToLua}
 		Local r:Float = GetReach(refresh)
 		If r = 0 Then Return 0
 

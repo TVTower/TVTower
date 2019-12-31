@@ -912,8 +912,27 @@ endrem
 
 
 	'=== OFFICE ===
-	'players bureau
+	'player's office
 
+	Method of_GetRandomAntennaCoordinateInPlayerSections:TVec2D()
+		If Not _PlayerInRoom("office") Then Return Null
+		Return GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInPlayerSections()
+	End Method
+
+	Method of_GetRandomAntennaCoordinateInSections:TVec2D(sectionNames:string[])
+		If Not _PlayerInRoom("office") Then Return Null
+		Return GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInSections(sectionNames)
+	End Method
+
+	Method of_GetRandomAntennaCoordinateInSection:TVec2D(sectionName:string)
+		If Not _PlayerInRoom("office") Then Return Null
+		Return GetStationMap(Self.ME, True).GetRandomAntennaCoordinateInSection(sectionName)
+	End Method
+
+	Method of_GetRandomAntennaCoordinateOnMap:TVec2D(checkBroadcastPermission:Int=True, requiredBroadcastPermissionState:Int=True)
+		If Not _PlayerInRoom("office") Then Return Null
+		Return GetStationMap(Self.ME, True).GetRandomAntennaCoordinateOnMap(checkBroadcastPermission, requiredBroadcastPermissionState)
+	End Method
 
 	Method of_GetTemporaryCableNetworkUplinkStation:TStationBase(cableNetworkIndex:Int)
 		If Not _PlayerInRoom("office") Then Return Null
