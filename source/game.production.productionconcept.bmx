@@ -507,15 +507,18 @@ Type TProductionConcept Extends TOwnedGameObject
 			local person:TProgrammePersonBase = cast[castIndex]
 			if not person then continue
 
+			local job:TProgrammePersonJob = script.cast[castIndex]
+			if not job then continue
+
 			'castXP to improve a script depends on
 			'- work done (for the given job) and
 			'- experience gained
-			local jobsDone:int = 1.0 * person.HasJob(script.cast[castIndex].job) + 0.10 * person.GetJobsDone(0) + 0.90 * person.GetJobsDone( script.cast[castIndex].job )
+			local jobsDone:int = 1.0 * person.HasJob(job.job) + 0.10 * person.GetJobsDone(0) + 0.90 * person.GetJobsDone( job.job )
 			'euler strength: 2.5, so for done jobs: 22%, 39%, 52%, ...
 			local castXP:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
 
 			if TProgrammePerson(person)
-				castXP :* 1.0 + 0.15 * TProgrammePerson(person).GetExperiencePercentage(script.cast[castIndex].job)
+				castXP :* 1.0 + 0.15 * TProgrammePerson(person).GetEffectiveExperiencePercentage(job.job)
 			endif
 
 			castXPSum :+ castXP
@@ -650,7 +653,8 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 			'=== JOB FIT ===
-			local jobsDone:int = 1.0 * person.HasJob(script.cast[castIndex].job) + 0.10 * person.GetJobsDone(0) + 0.90 * person.GetJobsDone( script.cast[castIndex].job )
+			local job:TProgrammePersonJob = script.cast[castIndex]
+			local jobsDone:int = 1.0 * person.HasJob(job.job) + 0.10 * person.GetJobsDone(0) + 0.90 * person.GetJobsDone( job.job )
 			'euler strength: 2.5, so for done jobs: 22%, 39%, 52%, ...
 			local jobFit:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
 			'by 5% chance "switch" effect
@@ -667,7 +671,7 @@ Type TProductionConcept Extends TOwnedGameObject
 				'loop through all attributes and add their weighted values
 				for local i:int = 1 to TVTProgrammePersonAttribute.count
 					local attributeID:int = TVTProgrammePersonAttribute.GetAtIndex(i)
-					local attributeGenre:Float = genreDefinition.GetCastAttribute(script.cast[castIndex].job, attributeID)
+					local attributeGenre:Float = genreDefinition.GetCastAttribute(job.job, attributeID)
 					local attributePerson:Float = TProgrammePerson(person).GetAttribute(attributeID)
 					if MathHelper.AreApproximatelyEqual(attributePerson, 0.0) then continue
 					if MathHelper.AreApproximatelyEqual(attributeGenre, 0.0) then continue
@@ -690,8 +694,8 @@ Type TProductionConcept Extends TOwnedGameObject
 			'And even 8% benefit from being another gender (script writer
 			'was wrong then ;-))
 			local genderFit:Float = 1.0
-			if script.cast[castIndex].gender <> 0
-				if person.gender <> script.cast[castIndex].gender
+			if job.gender <> 0
+				if person.gender <> job.gender
 					local luck:int = RandRange(0,100)
 					if luck <= 80 '80%
 						genderFit = RandRange(10,20)/100.0
@@ -721,7 +725,11 @@ Type TProductionConcept Extends TOwnedGameObject
 			'a persons fit depends on its XP
 			'so make 25% of the fit dependend from XP
 			local xpMod:Float = 0.75
-			if TProgrammePerson(person) then xpMod :+ 0.25 * TProgrammePerson(person).GetExperiencePercentage(script.cast[castIndex].job)
+			if TProgrammePerson(person) 
+				'to fit as a show's GUEST it depends on how "good/interesting"
+				'you are (depending on your profession)
+				xpMod :+ 0.25 * TProgrammePerson(person).GetEffectiveExperiencePercentage(job.job)
+			EndIf
 			personFit :* xpMod
 
 			'increase lower fits (increases distance from "nobody" to "novice")
@@ -729,14 +737,14 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 			TLogger.Log("TProductionConcept.CalculateCastFit()", " --------------------", LOG_DEBUG)
-			TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTProgrammePersonJob.GetAsString( script.cast[castIndex].job ) + "~q]", LOG_DEBUG)
+			TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTProgrammePersonJob.GetAsString( job.job ) + "~q]", LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "     genreFit:  "+genreFit, LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "       jobFit:  "+jobFit, LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "    genderFit:  "+genderFit, LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", " attributeMod:  "+attributeMod, LOG_DEBUG)
 			if TProgrammePerson(person)
 				TLogger.Log("TProductionConcept.CalculateCastFit()", " (sympathy   :  "+TProgrammePerson(person).GetChannelSympathy(owner)+")", LOG_DEBUG)
-				TLogger.Log("TProductionConcept.CalculateCastFit()", " (xp         :  "+(TProgrammePerson(person).GetExperiencePercentage(script.cast[castIndex].job)*100)+"%)", LOG_DEBUG)
+				TLogger.Log("TProductionConcept.CalculateCastFit()", " (xp         :  "+(TProgrammePerson(person).GetEffectiveExperiencePercentage(job.job)*100)+"%)", LOG_DEBUG)
 			else
 				TLogger.Log("TProductionConcept.CalculateCastFit()", " (sympathy   :  --)", LOG_DEBUG)
 				TLogger.Log("TProductionConcept.CalculateCastFit()", " (xp         :  --)", LOG_DEBUG)
@@ -778,7 +786,7 @@ Type TProductionConcept Extends TOwnedGameObject
 				personFameMod :+ 0.75 * TProgrammePerson(person).GetFame()
 				'really experienced persons benefit from it too (eg.
 				'won awards and so on)
-				personFameMod :+ 0.25 * TProgrammePerson(person).GetExperiencePercentage(jobID)
+				personFameMod :+ 0.25 * TProgrammePerson(person).GetEffectiveExperiencePercentage(jobID)
 			endif
 
 			castFameModSum :+ personFameMod

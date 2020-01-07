@@ -387,7 +387,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 				if channel >= 0 then sympathyMod = 1.0 - 0.25 * GetChannelSympathy(channel)
 
 				'xp: up to "120% of XP"
-				xpMod :+ 1.2 * GetExperiencePercentage(jobID)
+				xpMod :+ 1.2 * GetEffectiveExperiencePercentage(jobID)
 
 				if jobID = TVTProgrammePersonJob.ACTOR
 					baseFee = 11000
@@ -412,7 +412,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 				if channel >= 0 then sympathyMod = 1.0 - 0.25 * GetChannelSympathy(channel)
 
 				'xp: up to "120% of XP"
-				xpMod :+ 1.2 * GetExperiencePercentage(jobID)
+				xpMod :+ 1.2 * GetEffectiveExperiencePercentage(jobID)
 
 				if jobID = TVTProgrammePersonJob.DIRECTOR
 					baseFee = 13500
@@ -432,7 +432,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 				if channel >= 0 then sympathyMod = 1.0 - 0.30 * GetChannelSympathy(channel)
 
 				'xp: up to "120% of XP"
-				xpMod :+ 1.2 * GetExperiencePercentage(jobID)
+				xpMod :+ 1.2 * GetEffectiveExperiencePercentage(jobID)
 
 				baseFee = 9000
 				dynamicFee = 24500 * attributeMod
@@ -447,7 +447,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 				if channel >= 0 then sympathyMod = 1.0 - 0.50 * GetChannelSympathy(channel)
 
 				'xp: up to "120% of XP"
-				xpMod :+ 1.2 * GetExperiencePercentage(jobID)
+				xpMod :+ 1.2 * GetEffectiveExperiencePercentage(jobID)
 
 				baseFee = 4000
 				dynamicFee = 6500 * attributeMod
@@ -461,8 +461,8 @@ Type TProgrammePerson extends TProgrammePersonBase
 				'sympathy: modify by up to 50% ...
 				if channel >= 0 then sympathyMod = 1.0 - 0.5 * GetChannelSympathy(channel)
 
-				'xp: up to "50% of XP"
-				xpMod :+ 0.5 * GetExperiencePercentage(jobID)
+				'xp: up to "75% of XP"
+				xpMod :+ 0.75 * GetEffectiveExperiencePercentage(jobID)
 
 				baseFee = 1500
 				dynamicFee = 6000 * attributeMod
@@ -478,7 +478,7 @@ Type TProgrammePerson extends TProgrammePersonBase
 				if channel >= 0 then sympathyMod = 1.0 - 0.25 * GetChannelSympathy(channel)
 
 				'xp: up to "25% of XP"
-				xpMod :+ 0.25 * GetExperiencePercentage(jobID)
+				xpMod :+ 0.25 * GetEffectiveExperiencePercentage(jobID)
 
 				baseFee = 3000
 				dynamicFee = 7000 * attributeMod
@@ -709,6 +709,104 @@ Type TProgrammePerson extends TProgrammePersonBase
 
 	Method GetExperiencePercentage:Float(job:int)
 		return GetExperience(job) / float(MAX_XP)
+	End Method
+
+
+	Method GetEffectiveExperiencePercentage:Float(job:int)
+		Local jobXP:Float = GetExperiencePercentage(job)
+		Local result:Float
+		Local otherXP:Float
+		Local otherWeightMod:Float
+		
+		'add partial XP of other "also suiting" jobs
+		'(an actor can also act as supporting actor ...)
+		Select job
+			case TVTProgrammePersonJob.GUEST
+				'take the best job the person can do
+				otherXP  = 1.00 * GetBestJobExperiencePercentage()
+				otherWeightMod = 0.9
+				'print GetFullName() + " as guest. jobXP=" + jobXP + "  otherXP="+otherXP
+
+			case TVTProgrammePersonJob.ACTOR
+				'> 1.0 (so weight mod needs to make sure to stay < 1.0 at the end)
+				otherXP  = 0.90 * GetExperiencePercentage(TVTProgrammePersonJob.SUPPORTINGACTOR)
+				otherXP :+ 0.20 * GetExperiencePercentage(TVTProgrammePersonJob.MUSICIAN)
+				otherWeightMod = 0.75
+
+			case TVTProgrammePersonJob.SUPPORTINGACTOR
+				'> 1.0 (so weight mod needs to make sure to stay < 1.0 at the end)
+				otherXP  = 0.90 * GetExperiencePercentage(TVTProgrammePersonJob.ACTOR)
+				otherXP :+ 0.20 * GetExperiencePercentage(TVTProgrammePersonJob.MUSICIAN)
+				otherWeightMod = 0.60
+
+			case TVTProgrammePersonJob.HOST
+				otherXP  = 0.35 * GetExperiencePercentage(TVTProgrammePersonJob.ACTOR)
+				otherXP :+ 0.20 * GetExperiencePercentage(TVTProgrammePersonJob.SUPPORTINGACTOR)
+				otherXP :+ 0.30 * GetExperiencePercentage(TVTProgrammePersonJob.MUSICIAN)
+				otherXP :+ 0.15 * GetExperiencePercentage(TVTProgrammePersonJob.REPORTER)
+				otherWeightMod = 0.4
+
+			case TVTProgrammePersonJob.DIRECTOR
+				otherXP  = 0.50 * GetExperiencePercentage(TVTProgrammePersonJob.ACTOR)
+				otherXP :+ 0.40 * GetExperiencePercentage(TVTProgrammePersonJob.SUPPORTINGACTOR)
+				otherXP :+ 0.05 * GetExperiencePercentage(TVTProgrammePersonJob.HOST)
+				otherXP :+ 0.05 * GetExperiencePercentage(TVTProgrammePersonJob.REPORTER)
+				otherWeightMod = 0.2
+
+			case TVTProgrammePersonJob.SCRIPTWRITER
+				otherXP  = 0.50 * GetExperiencePercentage(TVTProgrammePersonJob.DIRECTOR)
+				otherXP :+ 0.20 * GetExperiencePercentage(TVTProgrammePersonJob.ACTOR)
+				otherXP :+ 0.15 * GetExperiencePercentage(TVTProgrammePersonJob.SUPPORTINGACTOR)
+				otherXP :+ 0.10 * GetExperiencePercentage(TVTProgrammePersonJob.MUSICIAN) 'they write songs!
+				otherXP :+ 0.05 * GetExperiencePercentage(TVTProgrammePersonJob.REPORTER)
+				otherWeightMod = 0.15
+
+			Default
+				otherXP = 0
+				otherWeightMod = 0
+		End Select
+
+		Return (jobXP + otherWeightMod * (1.0 - jobXP) * otherXP)
+	End Method
+
+
+	'returns job with best XP
+	Method GetBestJob:int()
+		If xp.length = 0 Then Return 0
+
+		local bestIndex:int = -1
+		local bestXP:int
+		for local jobIndex:int = 0 until xp.length
+			if bestIndex = -1 or bestXP < xp[jobIndex] 
+				bestIndex = jobIndex
+				bestXP = xp[jobIndex]
+			endif
+		Next
+		
+		Return TVTProgrammePersonJob.GetAtIndex(bestIndex)
+	End Method
+
+
+	'returns best xp value
+	Method GetBestJobExperience:int()
+		If xp.length = 0 Then Return 0
+
+		local bestIndex:int = -1
+		local bestXP:int
+		for local jobIndex:int = 0 until xp.length
+			if bestIndex = -1 or bestXP < xp[jobIndex] 
+				bestIndex = jobIndex
+				bestXP = xp[jobIndex]
+			endif
+		Next
+		
+		Return bestXP
+	End Method
+
+
+	'returns xp percentage of best job
+	Method GetBestJobExperiencePercentage:Float()
+		return GetBestJobExperience() / float(MAX_XP)
 	End Method
 
 

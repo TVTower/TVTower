@@ -2206,7 +2206,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 	'override
 	Method DrawValue()
 		local xpPercentage:float = 0.0
-		if TProgrammePerson(person) then xpPercentage = TProgrammePerson(person).GetExperiencePercentage( GetDisplayJobID() )
+		if TProgrammePerson(person) then xpPercentage = TProgrammePerson(person).GetEffectiveExperiencePercentage( GetDisplayJobID() )
 		local sympathyPercentage:float = 0.0
 		if TProgrammePerson(person) then sympathyPercentage = TProgrammePerson(person).GetChannelSympathy( GetPlayerBase().playerID )
 
@@ -2529,8 +2529,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 			'bars have a top-padding
 			contentY :+ barAreaPaddingY
 			'XP
-			skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetExperiencePercentage(jobID))
-			skin.fontSemiBold.drawBlock(GetLocale("CAST_EXPERIENCE"), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
+			local xpValue:Float = celebrity.GetEffectiveExperiencePercentage(jobID)
+			skin.RenderBar(contentX + 5, contentY, 100, 12, xpValue)
+			skin.fontSemiBold.drawBlock(GetLocale("CAST_EXPERIENCE") + xpValue, contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
 			contentY :+ barH + 2
 
 
