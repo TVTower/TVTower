@@ -17,6 +17,7 @@ Type TDebugScreen
 	Field buttonsAdAgency:TDebugControlsButton[]
 	Field buttonsMovieVendor:TDebugControlsButton[]
 	Field buttonsNewsAgency:TDebugControlsButton[]
+	Field buttonsRoomAgency:TDebugControlsButton[]
 	Field sideButtonPanelWidth:Int = 130
 	Field adAgencyOfferHightlight:TAdContract
 	Field movieVendorOfferHightlight:TProgrammeLicence
@@ -28,7 +29,7 @@ Type TDebugScreen
 		Local button:TDebugControlsButton
 
 
-		Local texts:String[] = ["Overview", "Player Commands", "Player Financials", "Player Broadcasts", "Ad Agency", "Movie Vendor", "News Agency", "Script Vendor"]
+		Local texts:String[] = ["Overview", "Player Commands", "Player Financials", "Player Broadcasts", "Ad Agency", "Movie Vendor", "News Agency", "Script Vendor", "Room Agency"]
 		For Local i:Int = 0 Until texts.length
 			button = New TDebugControlsButton
 			button.w = 118
@@ -49,6 +50,7 @@ Type TDebugScreen
 		InitMode_AdAgency()
 		InitMode_MovieVendor()
 		InitMode_NewsAgency()
+		InitMode_RoomAgency()
 	End Method
 
 
@@ -87,6 +89,7 @@ Type TDebugScreen
 			Case 4	UpdateMode_AdAgency()
 			Case 5	UpdateMode_MovieVendor()
 			Case 6	UpdateMode_NewsAgency()
+			Case 7	UpdateMode_RoomAgency()
 		End Select
 	End Method
 
@@ -125,6 +128,7 @@ Type TDebugScreen
 			Case 4	RenderMode_AdAgency()
 			Case 5	RenderMode_MovieVendor()
 			Case 6	RenderMode_NewsAgency()
+			Case 7	RenderMode_RoomAgency()
 		End Select
 	End Method
 
@@ -562,9 +566,9 @@ Type TDebugScreen
 	Function OnButtonClickHandler_NewsAgency(sender:TDebugControlsButton)
 		Select sender.dataInt
 			case 0
-				'RoomHandler_MovieAgency.GetInstance().ReFillBlocks()
+				RoomHandler_MovieAgency.GetInstance().ReFillBlocks()
 			case 1
-				'RoomHandler_MovieAgency.GetInstance().ReFillBlocks(True, 1.0)
+				RoomHandler_MovieAgency.GetInstance().ReFillBlocks(True, 1.0)
 		End Select
 
 		'handled
@@ -600,6 +604,59 @@ Type TDebugScreen
 	End Method
 
 
+
+
+	'=== Room AGENCY ===
+
+	Method InitMode_RoomAgency()
+		Local texts:String[] = ["Re-Rent", "Kick Renter"]
+		Local button:TDebugControlsButton
+		For Local i:Int = 0 Until texts.length
+			button = New TDebugControlsButton
+			button.w = 130
+			button.h = 15
+			button.x = sideButtonPanelWidth + 10 + 260
+			button.y = 10 + i * (button.h + 3)
+			button.dataInt = i
+			button.text = texts[i]
+			button._onClickHandler = OnButtonClickHandler_RoomAgency
+
+			buttonsRoomAgency :+ [button]
+		Next
+	End Method
+
+
+	Function OnButtonClickHandler_RoomAgency(sender:TDebugControlsButton)
+		Select sender.dataInt
+			case 0
+'
+			case 1
+'					if GetRoomAgency().CancelRoomRental(useRoom, GetPlayerBase().playerID)
+'				GetRoomAgency().BeginRoomRental(useRoom, GetPlayerBase().playerID)
+		End Select
+
+		'handled
+		sender.clicked = False
+		sender.selected = False
+	End Function
+
+
+	Method UpdateMode_RoomAgency()
+		Local playerID:Int = GetShownPlayerID()
+
+		For Local b:TDebugControlsButton = EachIn buttonsRoomAgency
+			b.Update()
+		Next
+	End Method
+
+
+	Method RenderMode_RoomAgency()
+		Local playerID:Int = GetShownPlayerID()
+
+		For Local b:TDebugControlsButton = EachIn buttonsRoomAgency
+			b.Render()
+		Next
+	End Method
 
 
 	'=== BLOCKS ===

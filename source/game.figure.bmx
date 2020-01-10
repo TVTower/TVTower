@@ -807,7 +807,9 @@ Type TFigure extends TFigureBase
 		'reset action
 		'currentAction = ACTION_IDLE
 		'stay looking at the door
-		currentAction = ACTION_PLANNED_ENTER
+		if not room.IsBlocked()
+			currentAction = ACTION_PLANNED_ENTER
+		endif
 
 		'reset wait timer
 		WaitEnterTimer = -1
@@ -1052,6 +1054,12 @@ Type TFigure extends TFigureBase
 	Method _ChangeTarget:Int(x:Int=-1, y:Int=-1, forceChange:Int=False)
 		'reset target reach
 		currentReachTargetStep = 0
+		'if enter failed and we now move to somewhere else, we would
+		'show the back once we reach a spot somewhere in the building 
+		'(not a door)
+		If currentAction = ACTION_PLANNED_ENTER
+			currentAction = ACTION_IDLE
+		EndIf
 
 		'is controlling allowed (eg. figure MUST go to a specific target)
 		if not forceChange and not IsControllable() then Return False

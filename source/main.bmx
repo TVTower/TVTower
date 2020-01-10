@@ -825,6 +825,27 @@ Type TApp
 
 
 					If KEYMANAGER.IsHit(KEY_Y)
+						local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("laundry", "laundry", 0)
+						GetRoomAgency().CancelRoomRental(room, GetPlayer().playerID)
+						GetRoomAgency().BeginRoomRental(room, GetPlayer().playerID)
+						room.SetUsedAsStudio(True)
+						GetGame().SendSystemMessage("[KEY_Y] Rented room '" + room.GetDescription() +"' ["+room.GetName() + "] for player '" + GetPlayer().name +"' ["+GetPlayer().playerID + "]!")
+
+						rem
+						local playerID:int = 2
+						local chatCMD:String = "CMD_forcetask StationMap 10000"
+	
+						GetPlayer(playerID).GetFinance().CheatMoney(100000000)
+						'move player to room
+						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", "", playerID), GetPlayer(playerID).GetFigure() )
+						'assign task
+						'GetPlayer(playerID).PlayerAI.CallLuaFunction("OnForceNextTask", null)
+						'GetPlayerBase(2).PlayerAI.CallOnChat(1, "CMD_forcetask " + taskName +" 1000", CHAT_COMMAND_WHISPER)
+						GetPlayer(playerID).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).AddInt(playerID).AddString(chatCMD).AddInt(CHAT_COMMAND_WHISPER))
+						print "AI - force station map task"
+						endrem
+
+
 						'print TFunctions.ConvertCompareValue(1009000, 1008800, 2) + ": " + TFunctions.ConvertValue(1009000, 2) + "  -  " + TFunctions.ConvertValue(1008800, 2)
 						'print TFunctions.ConvertCompareValue(1010100, 1009400, 2) + ": " + TFunctions.ConvertValue(1010100, 2) + "  -  " + TFunctions.ConvertValue(1009400, 2)
 					Rem
@@ -1409,7 +1430,8 @@ endrem
 		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
 			DrawRect(0,0, 800,13)
 		Else
-			DrawRect(0,0, 175 + 90 + 150,13)
+'			DrawRect(0,0, 175 + 90 + 150,13)
+			DrawRect(0,0, 175 + 90 + 50,13)
 		EndIf
 		oldCol.SetRGBA()
 
@@ -1424,7 +1446,7 @@ endrem
 		bf.draw("GC: " + (GCMemAlloced()/1024) +" Kb", textX,0)
 '		bf.draw("GC: " + bbGCAllocCount+"/s", textX,0)
 		textX:+80
-
+rem
 		local soloudDriver:TSoloudAudioDriver = TSoloudAudioDriver(GetAudioDriver())
 		if soloudDriver
 			bf.draw("SOL: " + soloudDriver._soloud.getActiveVoiceCount() + "/" + soloudDriver._soloud.getMaxActiveVoiceCount() + "/" + soloudDriver._soloud.getVoiceCount() +" voices", textX,0)
@@ -1433,7 +1455,7 @@ endrem
 			bf.draw("SOL: " + TTypeID.ForObject(GetAudioDriver()).name(), textX,0)
 			textX:+75
 		endif
-
+endrem
 		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
 			bf.draw("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0)
 			textX:+85
