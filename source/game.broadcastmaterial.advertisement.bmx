@@ -329,6 +329,6 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 
 
 
-		self.contract.ShowSheet(x, y, align, 0, self.usedAsType, minAudienceHightlightType)
+		self.contract.ShowSheet(x, y, align, self.usedAsType, 0, minAudienceHightlightType)
 	End Method
 End Type
