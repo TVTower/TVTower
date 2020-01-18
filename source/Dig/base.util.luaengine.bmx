@@ -818,7 +818,66 @@ endrem
 		Return True
 	End Method
 
+
 	'===== END CODE FROM MAXLUA ====
+
+	'object must be a global - eg "_G[objectName] = object" in Lua
+	Method CallLuaMethod:Object(objectName:String, methodName:String, args:Object[] = Null)
+		lua_getglobal(getLuaState(), objectName)
+		lua_getfield(getLuaState(), -1, methodName)
+
+
+		Local argCount:Int = 0
+		If args
+			argCount = args.length
+
+			For Local i:Int = 0 Until args.length
+				Local typeId:TTypeId = TTypeId.ForObject(args[i])
+				Select typeId
+					Case IntTypeId, ShortTypeId, ByteTypeId
+						lua_pushinteger(getLuaState(), args[i].ToString().ToInt())
+					Case LongTypeId
+						lua_pushnumber(getLuaState(), args[i].ToString().ToLong())
+					Case FloatTypeId
+						lua_pushnumber(getLuaState(), args[i].ToString().ToFloat())
+					Case DoubleTypeId
+						lua_pushnumber(getLuaState(), args[i].ToString().ToDouble())
+					Case StringTypeId
+						Local s:String = args[i].ToString()
+						lua_pushlstring(getLuaState(), s, s.length)
+					Case ArrayTypeId
+						Self.lua_pushArray(args[i])
+					Default
+						If typeId And typeId.ExtendsType(ArrayTypeId)
+							Self.lua_pushArray(args[i])
+						Else
+							Self.lua_pushObject(args[i])
+						EndIf
+				End Select
+			Next
+		EndIf
+
+		Local ret:Object
+
+		'(try to) call the function
+		If lua_pcall(getLuaState(), argCount, 1, 0) <> 0
+			DumpError()
+			lua_pop(getLuaState(), 1)
+		Else
+			'fetch the results
+			If Not lua_isnil(getLuaState(), -1)
+				ret = lua_tostring(getLuaState(), -1)
+			EndIf
+
+			'pop the returned result
+			lua_pop(getLuaState(), 1)
+		EndIf
+
+
+		'pop the _functionEnvironmentRef ?
+		lua_pop(getLuaState(), 1)
+		Return ret
+	End Method
 
 
 	Method CallLuaFunction:Object(name:String, args:Object[] = Null)
