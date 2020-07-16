@@ -165,7 +165,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 			If VendorEntity Then vendorAreaDimension = VendorEntity.area.dimension.copy()
 			If VendorEntity Then vendorAreaPosition = VendorEntity.area.position.copy()
 
-			VendorArea = New TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "scriptagency" )
+			VendorArea = New TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "adagency" )
 			'vendor should accept drop - else no recognition
 			VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, True)
 			VendorArea.zIndex = 0
