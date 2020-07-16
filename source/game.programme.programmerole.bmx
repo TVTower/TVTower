@@ -21,6 +21,11 @@ Type TProgrammeRoleCollection Extends TGameObjectCollection
 	Method GetByGUID:TProgrammeRole(GUID:String)
 		return TProgrammeRole(Super.GetByGUID(GUID))
 	End Method
+
+
+	Method GetByID:TProgrammeRole(ID:Int)
+		return TProgrammeRole(Super.GetByID(ID))
+	End Method
 	
 
 	Method GetRandom:TProgrammeRole()

@@ -6,7 +6,7 @@ Import "game.popularity.bmx"
 
 
 Type TPersonPopularity Extends TPopularity
-	Function Create:TPersonPopularity(referenceGUID:string, popularity:Float = 0.0, longTermPopularity:Float = 0.0)
+	Function Create:TPersonPopularity(referenceID:Int, popularity:Float = 0.0, longTermPopularity:Float = 0.0)
 		Local obj:TPersonPopularity = New TPersonPopularity
 
 		obj.LongTermPopularityLowerBound		= -50
@@ -30,7 +30,7 @@ Type TPersonPopularity Extends TPopularity
 		obj.ChangeLowerBound					= -35
 		obj.ChangeUpperBound					= 35
 
-		obj.referenceGUID = referenceGUID
+		obj.referenceID = referenceID
 		obj.SetPopularity(popularity)
 		obj.SetLongTermPopularity(longTermPopularity)
 		'obj.LogFile = TLogFile.Create("GenrePopularity Log", "GenrePopularityLog" + contentId + ".txt")
@@ -64,7 +64,7 @@ Type TPersonPopularity Extends TPopularity
 
 
 		'decrease effect by the importance of a job
-		changeVal :* TVTProgrammePersonJob.GetJobImportanceMod(jobID)
+		changeVal :* TVTPersonJob.GetCastJobImportanceMod(jobID)
 
 
 		'maximum adjustment is 1.5% ?
@@ -95,14 +95,7 @@ End Type
 
 '=== POPULARITY MODIFIERS ===
 
-Type TGameModifierPopularity_ModifyPersonPopularity extends TGameModifierBase
-	Field personGUID:string = ""
-	'value is divided by 100 - so 1000 becomes 10, 50 becomes 0.5)
-	Field valueMin:Float = 0
-	Field valueMax:Float = 0
-	Field modifyProbability:int = 100
-
-
+Type TGameModifierPopularity_ModifyPersonPopularity extends TGameModifierPopularity_ModifyPopularity
 	'override to create this type instead of the generic one
 	Function CreateNewInstance:TGameModifierPopularity_ModifyPersonPopularity()
 		return new TGameModifierPopularity_ModifyPersonPopularity
@@ -112,7 +105,8 @@ Type TGameModifierPopularity_ModifyPersonPopularity extends TGameModifierBase
 	Method Copy:TGameModifierPopularity_ModifyPersonPopularity()
 		local clone:TGameModifierPopularity_ModifyPersonPopularity = new TGameModifierPopularity_ModifyPersonPopularity
 		clone.CopyBaseFrom(self)
-		clone.personGUID = self.personGUID
+		clone.popularityReferenceID = self.popularityReferenceID
+		clone.popularityReferenceGUID = self.popularityReferenceGUID
 		clone.valueMin = self.valueMin
 		clone.valueMax = self.valueMax
 		clone.modifyProbability = self.modifyProbability
@@ -123,13 +117,13 @@ Type TGameModifierPopularity_ModifyPersonPopularity extends TGameModifierBase
 	Method Init:TGameModifierPopularity_ModifyPersonPopularity(data:TData, extra:TData=null)
 		if not data then return null
 
-		'local newsEventID:int = TNewsEvent( GetNewsEventCollection().GetByID(data.get("newsEventID") )
 		local index:string = ""
 		if extra and extra.GetInt("childIndex") > 0 then index = extra.GetInt("childIndex")
-
-		personGUID = data.GetString("guid"+index, data.GetString("guid", ""))
-		if personGUID = ""
-			TLogger.Log("TGameModifierPopularity_ModifyPersonPopularity", "Init() failed - no personGUID given.", LOG_ERROR)
+		popularityID = data.GetInt("id"+index, data.GetInt("id", 0))
+		popularityReferenceID = data.GetInt("personID"+index, data.GetInt("personID", 0))
+		popularityReferenceGUID = data.GetString("personGUID"+index, data.GetString("personGUID", ""))
+		if popularityID = 0 and popularityReferenceID = 0 and popularityReferenceGUID = ""
+			TLogger.Log("TGameModifierPopularity_ModifyPopularity", "Init() failed - no popularityID or referenceID/referenceGUID given.", LOG_ERROR)
 			return Null
 		endif
 
@@ -137,34 +131,13 @@ Type TGameModifierPopularity_ModifyPersonPopularity extends TGameModifierBase
 		valueMax = data.GetFloat("valueMax"+index, 0.0)
 		modifyProbability = data.GetInt("probability"+index, 100)
 
-		return self
+		Return self
 	End Method
-
-
+	
+	
 	Method ToString:string()
 		local name:string = data.GetString("name", "default")
 		return "TGameModifierPopularity_ModifyPersonPopularity ("+name+")"
-	End Method
-
-
-	'override to trigger a specific news
-	Method RunFunc:int(params:TData)
-		'skip if probability is missed
-		if modifyProbability <> 100 and RandRange(0, 100) > modifyProbability then return False
-
-		local popularity:TPopularity = GetPopularityManager().GetByGUID(personGUID)
-		if not popularity
-			TLogger.Log("TGameModifierPopularity_ModifyPersonPopularity", "cannot find popularity to trigger: "+personGUID + " (maybe insignificant person)", LOG_ERROR)
-			return false
-		endif
-		local changeBy:Float = RandRange(int(valueMin*1000), int(valueMax*1000))/1000.0
-		'does adjust the "trend" (growth direction of popularity) not
-		'popularity directly
-		popularity.ChangeTrend(changeBy)
-		popularity.SetPopularity(popularity.popularity + changeBy)
-		'print "TGameModifierPopularity_ModifyPersonPopularity: changed trend for ~q"+personGUID+"~q by "+changeBy+" to " + popularity.Popularity+"."
-
-		return True
 	End Method
 End Type
 

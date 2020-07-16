@@ -991,9 +991,9 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'hide from player/vendor/...
 		programmeData.SetFlag(TVTProgrammeDataFlag.INVISIBLE, True)
 
-		programmeData.AddCast( New TProgrammePersonJob.Init("Ronny-person-various-sjaele", TVTProgrammePersonJob.DIRECTOR) )
-		programmeData.AddCast( New TProgrammePersonJob.Init("9104f9c1-7a0f-4bc0-a34c-389ce282eebf", TVTProgrammePersonJob.HOST) )
-		programmeData.AddCast( New TProgrammePersonJob.Init("Ronny-person-various-ukuleleorchesterstarscrazy", TVTProgrammePersonJob.MUSICIAN) )
+		programmeData.AddCast( New TPersonProductionJob.Init(GetPersonBaseCollection().GetByGUID("Ronny-person-various-sjaele").GetID(), TVTPersonJob.DIRECTOR) )
+		programmeData.AddCast( New TPersonProductionJob.Init(GetPersonBaseCollection().GetByGUID("9104f9c1-7a0f-4bc0-a34c-389ce282eebf").GetID(), TVTPersonJob.HOST) )
+		programmeData.AddCast( New TPersonProductionJob.Init(GetPersonBaseCollection().GetByGUID("Ronny-person-various-ukuleleorchesterstarscrazy").GetID(), TVTPersonJob.MUSICIAN) )
 		'select 3 guests out of the listed ones
 		Local randomGuests:String[] = ["Ronny-person-various-helmut", ..
 		                               "Ronny-person-various-ratz", ..
@@ -1004,7 +1004,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		Local startIndex:Int = (GetWorldTime().GetTimeGone() + MersenneSeed) Mod randomGuests.length
 		For Local guestIndex:Int = 0 To 2
 			Local index:Int = (startIndex + guestIndex) Mod randomGuests.length
-			programmeData.AddCast( New TProgrammePersonJob.Init(randomGuests[index], TVTProgrammePersonJob.GUEST) )
+			programmeData.AddCast( New TPersonProductionJob.Init(GetPersonBaseCollection().GetByGUID(randomGuests[index]).GetID(), TVTPersonJob.GUEST) )
 		Next
 
 		GetProgrammeDataCollection().Add(programmeData)

@@ -4,34 +4,33 @@ Import "game.popularity.bmx"
 
 
 Type TGenrePopularity Extends TPopularity
-	Function Create:TGenrePopularity(referenceGUID:string, popularity:Float = 0.0, longTermPopularity:Float = 0.0)
+	Function Create:TGenrePopularity(referenceID:Int, popularity:Float = 0.0, longTermPopularity:Float = 0.0)
 		Local obj:TGenrePopularity = New TGenrePopularity
 
-		obj.LongTermPopularityLowerBound		= -50
-		obj.LongTermPopularityUpperBound		= 50
+		obj.LongTermPopularityLowerBound     = -50
+		obj.LongTermPopularityUpperBound     =  50
 
-		obj.SurfeitLowerBoundAdd				= -30
-		obj.SurfeitUpperBoundAdd				= 35
-		obj.SurfeitTrendMalus					= 5
-		obj.SurfeitCounterUpperBoundAdd			= 3
+		obj.SurfeitLowerBoundAdd             = -30
+		obj.SurfeitUpperBoundAdd             =  35
+		obj.SurfeitTrendMalus                =   5
+		obj.SurfeitCounterUpperBoundAdd      =   3
 
-		obj.TrendLowerBound						= -10
-		obj.TrendUpperBound						= 10
-		obj.TrendAdjustDivider					= 5
-		obj.TrendRandRangLower					= -15
-		obj.TrendRandRangUpper					= 15
+		obj.TrendLowerBound                  = -10
+		obj.TrendUpperBound                  =  10
+		obj.TrendAdjustDivider               =   5
+		obj.TrendRandRangLower               = -15
+		obj.TrendRandRangUpper               =  15
 
-		obj.ChanceToChangeCompletely			= 2
-		obj.ChanceToChange						= 15
-		obj.ChanceToAdjustLongTermPopularity	= 25
+		obj.ChanceToChangeCompletely         =   2
+		obj.ChanceToChange                   =  15
+		obj.ChanceToAdjustLongTermPopularity =  25
 
-		obj.ChangeLowerBound					= -35
-		obj.ChangeUpperBound					= 35
+		obj.ChangeLowerBound                 = -35
+		obj.ChangeUpperBound                 =  35
 
-		obj.referenceGUID = referenceGUID
+		obj.referenceID = referenceID
 		obj.SetPopularity(popularity)
 		obj.SetLongTermPopularity(longTermPopularity)
-		'obj.LogFile = TLogFile.Create("GenrePopularity Log", "GenrePopularityLog" + contentId + ".txt")
 
 		Return obj
 	End Function

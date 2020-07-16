@@ -1,4 +1,4 @@
-﻿SuperStrict
+SuperStrict
 Import "Dig/base.gfx.gui.window.modal.bmx"
 Import "Dig/base.gfx.gui.button.bmx"
 Import "Dig/base.gfx.gui.dropdown.bmx"
@@ -8,7 +8,7 @@ Import "Dig/base.gfx.gui.list.base.bmx"
 Import "Dig/base.gfx.gui.list.slotlist.bmx"
 
 Import "common.misc.datasheet.bmx"
-Import "game.programme.programmeperson.base.bmx"
+Import "game.person.base.bmx"
 Import "game.production.productionconcept.bmx"
 Import "game.production.productionconcept.gui.bmx"
 Import "game.production.productionmanager.bmx"
@@ -16,9 +16,9 @@ Import "game.screen.base.bmx"
 Import "game.player.finance.bmx"
 
 
-Type TScreenHandler_SupermarketProduction extends TScreenHandler
+Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	Global productionFocusSlider:TGUISlider[6]
-	Global productionFocusLabel:string[6]
+	Global productionFocusLabel:String[6]
 	Global editTextsButton:TGUIButton
 	Global editTextsWindow:TGUIProductionEditTextsModalWindow
 	Global finishProductionConcept:TGUIButton
@@ -27,10 +27,10 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 	Global productionCompanySelect:TGUIDropDown
 	Global castSlotList:TGUICastSlotList
 
-	Field repositionSliders:int = True
+	Field repositionSliders:Int = True
 	'set to true and production GUI changes wont affect logic
-	Field refreshingProductionGUI:int = False
-	Field refreshFinishProductionConcept:int = True
+	Field refreshingProductionGUI:Int = False
+	Field refreshFinishProductionConcept:Int = True
 
 	Field currentProductionConcept:TProductionConcept
 
@@ -42,14 +42,14 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 
 	Function GetInstance:TScreenHandler_SupermarketProduction()
-		if not _instance then _instance = new TScreenHandler_SupermarketProduction
-		return _instance
+		If Not _instance Then _instance = New TScreenHandler_SupermarketProduction
+		Return _instance
 	End Function
 
 
-	Method Initialize:int()
-		local screen:TScreen = ScreenCollection.GetScreen("screen_supermarket_production")
-		if not screen then return False
+	Method Initialize:Int()
+		Local screen:TScreen = ScreenCollection.GetScreen("screen_supermarket_production")
+		If Not screen Then Return False
 
 		'=== CREATE ELEMENTS ===
 		InitCustomProductionElements()
@@ -58,7 +58,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		'=== EVENTS ===
 		'=== remove all registered event listeners
 		EventManager.UnregisterListenersArray(_eventListeners)
-		_eventListeners = new TEventListenerBase[0]
+		_eventListeners = New TEventListenerBase[0]
 
 		'=== register event listeners
 		'GUI -> GUI
@@ -104,13 +104,13 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 	End Method
 
 
-	Method RemoveAllGuiElements:int()
+	Method RemoveAllGuiElements:Int()
 		productionConceptList.EmptyList()
 		productionCompanySelect.list.EmptyList()
 		castSlotList.EmptyList()
 
-		hoveredGuiProductionConcept = null
-		hoveredGuiCastItem = null
+		hoveredGuiProductionConcept = Null
+		hoveredGuiCastItem = Null
 
 '		'to recreate everything during next update...
 	End Method
@@ -121,24 +121,24 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 
 	Method AbortScreenActions:Int()
-		if castSlotList.SelectCastWindowIsOpen()
+		If castSlotList.SelectCastWindowIsOpen()
 			castSlotList.selectCastWindow.Close(2)
-		endif
-		SetCurrentProductionConcept(null)
+		EndIf
+		SetCurrentProductionConcept(Null)
 	End Method
 
 
-	Function onUpdate:int( triggerEvent:TEventBase )
+	Function onUpdate:Int( triggerEvent:TEventBase )
 		GetInstance().Update()
 	End Function
 
 
-	Function onDraw:int( triggerEvent:TEventBase )
+	Function onDraw:Int( triggerEvent:TEventBase )
 		GetInstance().Render()
 	End Function
 
 
-	Function onEnterScreen:int( triggerEvent:TEventBase )
+	Function onEnterScreen:Int( triggerEvent:TEventBase )
 		GetInstance().ReloadProductionConceptContent()
 	End Function
 
@@ -147,7 +147,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 	Method ResetProductionConceptGUI()
 		refreshingProductionGUI = True
 
-		For local i:int = 0 to productionFocusSlider.length -1
+		For Local i:Int = 0 To productionFocusSlider.length -1
 			productionFocusSlider[i].SetValue(0)
 		Next
 
@@ -157,51 +157,51 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		castSlotList.EmptyList()
 
 		'reselect currently selected production concept
-		local selectedGuiConcept:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(productionConceptList.GetSelectedEntry())
-		if selectedGuiConcept and selectedGuiConcept.productionConcept <> currentProductionConcept
+		Local selectedGuiConcept:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(productionConceptList.GetSelectedEntry())
+		If selectedGuiConcept And selectedGuiConcept.productionConcept <> currentProductionConcept
 			productionConceptList.DeselectEntry()
-		endif
+		EndIf
 
 		refreshingProductionGUI = False
 	End Method
 
 
 	Method RefreshFinishProductionConceptGUI()
-		if not currentProductionConcept
+		If Not currentProductionConcept
 			finishProductionConcept.Disable()
 			finishProductionConcept.spriteName = "gfx_gui_button.datasheet"
 			finishProductionConcept.SetValue("")
 
-			return
-		endif
+			Return
+		EndIf
 
-		if currentProductionConcept.IsProduceable()
+		If currentProductionConcept.IsProduceable()
 			finishProductionConcept.Disable()
 			finishProductionConcept.spriteName = "gfx_gui_button.datasheet.informative"
 
 			finishProductionConcept.SetValue("|b|"+GetLocale("FINISHED_PLANNING")+"|/b|")
-		elseif currentProductionConcept.IsPlanned()
+		ElseIf currentProductionConcept.IsPlanned()
 			finishProductionConcept.Enable()
 			'TODO: positive/negative je nach Geldstand
 			finishProductionConcept.spriteName = "gfx_gui_button.datasheet.positive"
 			finishProductionConcept.SetValue("|b|"+GetLocale("FINISH_PLANNING")+"|/b|~n" + GetLocale("AND_PAY_DOWN_MONEY").Replace("%money%", "|b|"+MathHelper.DottedValue(currentProductionConcept.GetDepositCost())+" " + GetLocale("CURRENCY")+"|/b|"))
-		else
+		Else
 			finishProductionConcept.Disable()
 			finishProductionConcept.spriteName = "gfx_gui_button.datasheet"
 			finishProductionConcept.SetValue("|b|"+GetLocale("PLANNING")+"|/b|~n(" + GetLocale("MONEY_TO_PAY_DOWN").Replace("%money%", "|b|"+MathHelper.DottedValue(currentProductionConcept.GetDepositCost())+" " + GetLocale("CURRENCY")+"|/b|") +")")
-		endif
+		EndIf
 	End Method
 
 
 	'set all gui elements to the values of the production concept
 	Method RefreshProductionConceptGUI()
-		if not currentProductionConcept then return
+		If Not currentProductionConcept Then Return
 
 
 		'=== CAST SLOT LIST ===
-		castSlotList.SetItemLimit( currentProductionConcept.script.cast.length )
-		For local i:int = 0 until currentProductionConcept.script.cast.length
-			castSlotList.SetSlotJob(currentProductionConcept.script.cast[i], i)
+		castSlotList.SetItemLimit( currentProductionConcept.script.jobs.length )
+		For Local i:Int = 0 Until currentProductionConcept.script.jobs.length
+			castSlotList.SetSlotJob(currentProductionConcept.script.jobs[i], i)
 			'also create gui
 			castSlotList.SetSlotCast(i, currentProductionConcept.cast[i])
 		Next
@@ -210,87 +210,86 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 
 		'=== PRODUCTION COMPANY ===
-		local productionCompanyItem:TGUIDropDownItem
-		For local i:TGUIDropDownItem = EachIn productionCompanySelect.GetEntries()
-			if not i.data or i.data.Get("productionCompany") <> currentProductionConcept.productionCompany then continue
+		Local productionCompanyItem:TGUIDropDownItem
+		For Local i:TGUIDropDownItem = EachIn productionCompanySelect.GetEntries()
+			If Not i.data Or i.data.Get("productionCompany") <> currentProductionConcept.productionCompany Then Continue
 
 			productionCompanyItem = i
-			exit
+			Exit
 		Next
 		'adjust gui dropdown
-		if productionCompanyItem then productionCompanySelect.SetSelectedEntry(productionCompanyItem)
+		If productionCompanyItem Then productionCompanySelect.SetSelectedEntry(productionCompanyItem)
 
 
 		'=== PRODUCTION FOCUS ITEMS ===
 		'hide sliders according to focuspoint type of script
 		'(this is _different_ to the "disable" action done in
 		' UpdateCustomProduction())
-		For local i:int = 0 to productionFocusSlider.length -1
+		For Local i:Int = 0 To productionFocusSlider.length -1
 			productionFocusSlider[i].Hide()
 		Next
 		'enable used ones...
-		For local i:int = 0 to productionFocusSlider.length -1
-			if currentProductionConcept.productionFocus.GetFocusAspectCount() > i
+		For Local i:Int = 0 To productionFocusSlider.length -1
+			If currentProductionConcept.productionFocus.GetFocusAspectCount() > i
 				productionFocusSlider[i].Show()
-			endif
+			EndIf
 		Next
 		'reposition them
 		repositionSliders = True
 	End Method
 
 
-	Method PayCurrentProductionConceptDeposit:int()
-		if not currentProductionConcept then return False
+	Method PayCurrentProductionConceptDeposit:Int()
+		If Not currentProductionConcept Then Return False
 
-		return currentProductionConcept.PayDeposit()
+		Return currentProductionConcept.PayDeposit()
 	End Method
 
 
-	Method SetCurrentProductionConcept(productionConcept:TProductionConcept = null, takeOverConcept:TProductionConcept = null)
+	Method SetCurrentProductionConcept(productionConcept:TProductionConcept = Null, takeOverConcept:TProductionConcept = Null)
 		currentProductionConcept = productionConcept
 		'use values of the new concept if nothing defined to take over
-		if not takeOverConcept then takeOverConcept = productionConcept
+		If Not takeOverConcept Then takeOverConcept = productionConcept
 
 
 		ResetProductionConceptGUI()
 		ReloadProductionConceptContent()
 
 		'=== TAKE OVER OLD CONCEPT VALUES ===
-		if currentProductionConcept
+		If currentProductionConcept
 			'=== CAST ===
 			'loop over all jobs and try to take over as much of them as
 			'possible.
 			'So if there are 3 actors in the old concept but only 2 in the
 			'new one, 2 of 3 actors are taken over
 			'Cast not available in the new one, is ignored
-			local currentCastIndex:int = 0
-			for local jobIndex:int = 1 to TVTProgrammePersonJob.Count
-				local jobID:int = TVTProgrammePersonJob.GetAtIndex(jobIndex)
-				local castGroup:TProgrammePersonBase[] = currentProductionConcept.GetCastGroup(jobID, False)
-				local oldCastGroup:TProgrammePersonBase[] = takeOverConcept.GetCastGroup(jobID)
+			Local currentCastIndex:Int = 0
+			For Local jobID:Int = EachIn TVTPersonJob.GetCastJobs()
+				Local castGroup:TPersonBase[] = currentProductionConcept.GetCastGroup(jobID, False)
+				Local oldCastGroup:TPersonBase[] = takeOverConcept.GetCastGroup(jobID)
 
 				'skip group if current concept does not contain that group
-				if castGroup.length = 0 then continue
+				If castGroup.length = 0 Then Continue
 
 				'leave group empty if previous concept does not contain that
 				'job
-				if oldCastGroup.length = 0
+				If oldCastGroup.length = 0
 					currentCastIndex :+ castGroup.length
-					continue
-				endif
+					Continue
+				EndIf
 
 				'has to collapse unused cast slots?
-				local hasToCollapseUnused:int = (castGroup.length - oldCastGroup.length) < 0
+				Local hasToCollapseUnused:Int = (castGroup.length - oldCastGroup.length) < 0
 
 				'try to fill slots
-				for local castGroupIndex:int = 0 until castGroup.length
+				For Local castGroupIndex:Int = 0 Until castGroup.length
 					'skip other cast slots not available in old concept
-					if castGroupIndex >= oldCastGroup.length
+					If castGroupIndex >= oldCastGroup.length
 						currentCastIndex :+ (castGroup.length - castGroupIndex)
-						continue
-					endif
+						Continue
+					EndIf
 					'collapse: skip unused
-					if hasToCollapseUnused and not oldCastGroup[castGroupIndex] then continue
+					If hasToCollapseUnused And Not oldCastGroup[castGroupIndex] Then Continue
 
 					currentProductionConcept.SetCast(currentCastIndex, oldCastGroup[castGroupIndex])
 
@@ -302,18 +301,18 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 
 			'=== PRODUCTION COMPANY ===
-			if takeOverConcept.productionCompany
+			If takeOverConcept.productionCompany
 				currentProductionConcept.SetProductionCompany(takeOverConcept.productionCompany)
-			endif
+			EndIf
 
 
 			'=== PRODUCTION FOCUS POINTS ===
-			if takeOverConcept.productionFocus
-				For local i:int = 1 to takeOverConcept.productionFocus.focusPoints.length
+			If takeOverConcept.productionFocus
+				For Local i:Int = 1 To takeOverConcept.productionFocus.focusPoints.length
 					currentProductionConcept.productionFocus.SetFocus(i, takeOverConcept.productionFocus.GetFocus(i) )
 				Next
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'refresh the gui objects (create items, set sliders,  ...)
 		RefreshProductionConceptGUI()
@@ -322,7 +321,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 
 	Method OpenEditTextsWindow()
-		if editTextsWindow then editTextsWindow.Remove()
+		If editTextsWindow Then editTextsWindow.Remove()
 
 		editTextsWindow = New TGUIProductionEditTextsModalWindow.Create(New TVec2D.Init(250,60), New TVec2D.Init(300,220), "supermarket_customproduction_productionbox_modal")
 		editTextsWindow.SetZIndex(100000)
@@ -332,8 +331,8 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 	End Method
 
 
-	Function onProductionCompanyChangesLevel:int(triggerEvent:TEventBase)
-		If not GetInstance().currentProductionConcept then Return False
+	Function onProductionCompanyChangesLevel:Int(triggerEvent:TEventBase)
+		If Not GetInstance().currentProductionConcept Then Return False
 
 		Local pc:TProductionCompanyBase = TProductionCompanyBase(triggerEvent.GetSender())
 		If Not pc Then Return False
@@ -344,7 +343,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		GetInstance().currentProductionConcept.SetProductionCompany(pc, True)
 
 		'update displayed value
-		local entry:TGUIProductionCompanyDropDownItem = TGUIProductionCompanyDropDownItem( GetInstance().productionCompanySelect.GetSelectedEntry() )
+		Local entry:TGUIProductionCompanyDropDownItem = TGUIProductionCompanyDropDownItem( GetInstance().productionCompanySelect.GetSelectedEntry() )
 		If entry
 			entry.SetValue( entry.GetBaseValue() )
 			GetInstance().productionCompanySelect.RefreshValue()
@@ -354,57 +353,57 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 	End Function
 
 
-	Function onCloseEditTextsWindow:int( triggerEvent:TEventBase )
-		local closeButton:int = triggerEvent.GetData().GetInt("closeButton", -1)
-		if closeButton <> 1 then return False
+	Function onCloseEditTextsWindow:Int( triggerEvent:TEventBase )
+		Local closeButton:Int = triggerEvent.GetData().GetInt("closeButton", -1)
+		If closeButton <> 1 Then Return False
 
-		local window:TGUIProductionEditTextsModalWindow = TGUIProductionEditTextsModalWindow( triggerEvent.GetSender() )
+		Local window:TGUIProductionEditTextsModalWindow = TGUIProductionEditTextsModalWindow( triggerEvent.GetSender() )
 
-		local title:String = ""
-		local description:String = ""
-		local parentTitle:String = ""
-		local parentDescription:String = ""
+		Local title:String = ""
+		Local description:String = ""
+		Local parentTitle:String = ""
+		Local parentDescription:String = ""
 
 		title = window.inputTitle.GetValue()
 		description = window.inputDescription.GetValue()
 		
-		if window.concept.script.IsEpisode()
+		If window.concept.script.IsEpisode()
 			parentTitle = title
 			parentDescription = description
 			title = window.inputSubTitle.GetValue()
 			description = window.inputSubDescription.GetValue()
-		endif
+		EndIf
 
 		'set title / description of the element
-		if title <> window.concept.GetTitle()
+		If title <> window.concept.GetTitle()
 			window.concept.SetCustomTitle(title)
 			'also assign this to the script 
 			'(means for a multi-concept-script the last custom value
 			' will be displayed in the studio/script displays)
-			if not window.concept.script.IsEpisode()
+			If Not window.concept.script.IsEpisode()
 				window.concept.script.SetCustomTitle(title)
-			endif
-		endif
-		if description <> window.concept.GetDescription()
+			EndIf
+		EndIf
+		If description <> window.concept.GetDescription()
 			window.concept.SetCustomDescription(description)
 			'also assign this to the script 
 			'(means for a multi-concept-script the last custom value
 			' will be displayed in the studio/script displays)
-			if not window.concept.script.IsEpisode()
+			If Not window.concept.script.IsEpisode()
 				window.concept.script.SetCustomDescription(description)
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'set the title / description of the parent (series header)
-		if window.concept.script.IsEpisode()
-			local seriesScript:TScript = window.concept.script.GetParentScript()
-			if parentTitle <> seriesScript.GetTitle()
+		If window.concept.script.IsEpisode()
+			Local seriesScript:TScript = window.concept.script.GetParentScript()
+			If parentTitle <> seriesScript.GetTitle()
 				seriesScript.SetCustomTitle(parentTitle)
-			endif
-			if parentDescription <> window.concept.script.GetDescription()
+			EndIf
+			If parentDescription <> window.concept.script.GetDescription()
 				seriesScript.SetCustomDescription(parentDescription)
-			endif
-		endif
+			EndIf
+		EndIf
 	End Function
 
 
@@ -412,24 +411,24 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 	'GUI -> LOGIC
 	'create new production / pause current
-	Function onSelectProductionConcept:int(triggerEvent:TeventBase)
+	Function onSelectProductionConcept:Int(triggerEvent:TeventBase)
 		'only interested in production concept list entries
-		if GetInstance().productionConceptList <> TGUIListBase(triggerEvent.GetSender()) then return False
+		If GetInstance().productionConceptList <> TGUIListBase(triggerEvent.GetSender()) Then Return False
 
 
 		'create new one ?
-		local currentGUIScript:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(GetInstance().productionConceptList.getSelectedEntry())
-		if not currentGUIScript or not currentGUIScript.productionConcept then return False
+		Local currentGUIScript:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(GetInstance().productionConceptList.getSelectedEntry())
+		If Not currentGUIScript Or Not currentGUIScript.productionConcept Then Return False
 
 		'skip if not changed
-		if currentGUIScript.productionConcept <> GetInstance().currentProductionConcept
+		If currentGUIScript.productionConcept <> GetInstance().currentProductionConcept
 			'take over values from last concept - if desired
-			if GetInstance().productionConceptTakeOver.isChecked() and GetInstance().currentProductionConcept
+			If GetInstance().productionConceptTakeOver.isChecked() And GetInstance().currentProductionConcept
 				GetInstance().SetCurrentProductionConcept(currentGUIScript.productionConcept, GetInstance().currentProductionConcept)
-			else
-				GetInstance().SetCurrentProductionConcept(currentGUIScript.productionConcept, null)
-			endif
-		endif
+			Else
+				GetInstance().SetCurrentProductionConcept(currentGUIScript.productionConcept, Null)
+			EndIf
+		EndIf
 	End Function
 
 
@@ -437,37 +436,37 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 	'GUI -> LOGIC reaction
 	'set production concepts production company according to selection
-	Function onProductionConceptChangeProductionCompanyDropDown:int(triggerEvent:TeventBase)
-		if not GetInstance().currentProductionConcept then return False
+	Function onProductionConceptChangeProductionCompanyDropDown:Int(triggerEvent:TeventBase)
+		If Not GetInstance().currentProductionConcept Then Return False
 
-		local dropdown:TGUIDropDown = TGUIDropDown(triggerEvent.GetSender())
-		if dropdown <> GetInstance().productionCompanySelect then return False
+		Local dropdown:TGUIDropDown = TGUIDropDown(triggerEvent.GetSender())
+		If dropdown <> GetInstance().productionCompanySelect Then Return False
 
-		local entry:TGUIDropDownItem = TGUIDropDownItem(dropdown.GetSelectedEntry())
-		if not entry or not entry.data then return False
+		Local entry:TGUIDropDownItem = TGUIDropDownItem(dropdown.GetSelectedEntry())
+		If Not entry Or Not entry.data Then Return False
 
-		local company:TProductionCompanyBase = TProductionCompanyBase(entry.data.Get("productionCompany"))
-		if not company then return False
+		Local company:TProductionCompanyBase = TProductionCompanyBase(entry.data.Get("productionCompany"))
+		If Not company Then Return False
 
 		GetInstance().currentProductionConcept.SetProductionCompany(company)
 	End Function
 
 
 	'LOGIC -> GUI reaction
-	Function onProductionConceptChangeProductionCompany:int(triggerEvent:TEventBase)
-		if not GetInstance().currentProductionConcept then return False
+	Function onProductionConceptChangeProductionCompany:Int(triggerEvent:TEventBase)
+		If Not GetInstance().currentProductionConcept Then Return False
 
-		local productionConcept:TProductionConcept = TProductionConcept(triggerEvent.GetSender())
-		local company:TProductionCompanyBase = TProductionCompanyBase(triggerEvent.GetData().Get("productionCompany"))
-		if productionConcept <> GetInstance().currentProductionConcept then return False
+		Local productionConcept:TProductionConcept = TProductionConcept(triggerEvent.GetSender())
+		Local company:TProductionCompanyBase = TProductionCompanyBase(triggerEvent.GetData().Get("productionCompany"))
+		If productionConcept <> GetInstance().currentProductionConcept Then Return False
 
 		'skip without changes
-		local newItem:TGUIDropDownItem
-		For local i:TGUIDropDownItem = EachIn GetInstance().productionCompanySelect.GetEntries()
-			if not i.data or i.data.Get("productionCompany") <> company then continue
+		Local newItem:TGUIDropDownItem
+		For Local i:TGUIDropDownItem = EachIn GetInstance().productionCompanySelect.GetEntries()
+			If Not i.data Or i.data.Get("productionCompany") <> company Then Continue
 
 			newItem = i
-			exit
+			Exit
 		Next
 	'	if newItem = GetInstance().productionCompanySelect.GetSelectedEntry() then return False
 
@@ -484,7 +483,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		'	_AdjustProductionConceptFocusSliderLimit(GetInstance().productionFocusSlider[i])
 		'Next
 
-		return True
+		Return True
 	End Function
 
 
@@ -493,66 +492,66 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 	'LOGIC -> GUI reaction
 	'Triggered on change of the production concepts production focus.
 	'Adjusts the GUI sliders to represent the new values.
-	Function onProductionConceptChangeProductionFocus:int(triggerEvent:TEventBase)
-		if not GetInstance().currentProductionConcept then return False
+	Function onProductionConceptChangeProductionFocus:Int(triggerEvent:TEventBase)
+		If Not GetInstance().currentProductionConcept Then Return False
 
-		local productionFocus:TProductionFocusBase = TProductionFocusBase(triggerEvent.GetSender())
-		if GetInstance().currentProductionConcept.productionFocus <> productionFocus then return False
+		Local productionFocus:TProductionFocusBase = TProductionFocusBase(triggerEvent.GetSender())
+		If GetInstance().currentProductionConcept.productionFocus <> productionFocus Then Return False
 
-		local focusIndex:int = triggerEvent.GetData().GetInt("focusIndex")
-		local value:int = triggerEvent.GetData().GetInt("value")
+		Local focusIndex:Int = triggerEvent.GetData().GetInt("focusIndex")
+		Local value:Int = triggerEvent.GetData().GetInt("value")
 
 		'skip without production company!
-		if not GetInstance().currentProductionConcept.productionCompany then return False
+		If Not GetInstance().currentProductionConcept.productionCompany Then Return False
 
 		'skip focus aspects without sliders
-		if focusIndex < 0 or GetInstance().productionFocusSlider.length < focusIndex then return False
+		If focusIndex < 0 Or GetInstance().productionFocusSlider.length < focusIndex Then Return False
 
 		'do this before skipping without changes
 		GetInstance().refreshFinishProductionConcept = True
 
 		'skip without changes
-		if int(GetInstance().productionFocusSlider[focusIndex -1].GetValue()) = value then return False
+		If Int(GetInstance().productionFocusSlider[focusIndex -1].GetValue()) = value Then Return False
 
 		'disable a previously set limit
 		GetInstance().productionFocusSlider[focusIndex -1].DisableLimitValue()
 		'adjust values
 		GetInstance().productionFocusSlider[focusIndex -1].SetValue(value)
 
-		return True
+		Return True
 	End Function
 
 
 	'GUI
 	'Limit slider range to points available
 	'Triggered as soon as the user activates the TGUISlider element.
-	Function onProductionConceptSetFocusSliderFocus:int(triggerEvent:TEventBase)
-		local slider:TGUISlider = _GetEventFocusSlider(triggerEvent)
-		if not slider then return False
+	Function onProductionConceptSetFocusSliderFocus:Int(triggerEvent:TEventBase)
+		Local slider:TGUISlider = _GetEventFocusSlider(triggerEvent)
+		If Not slider Then Return False
 
 		_AdjustProductionConceptFocusSliderLimit(slider)
 	End Function
 
 
-	Function _GetProductionConceptFocusSliderByFocusIndex:TGUISlider(index:int)
-		For local s:TGUISlider = EachIn GetInstance().productionFocusSlider
-			if s.data and s.data.GetInt("focusIndex") = index then return s
+	Function _GetProductionConceptFocusSliderByFocusIndex:TGUISlider(index:Int)
+		For Local s:TGUISlider = EachIn GetInstance().productionFocusSlider
+			If s.data And s.data.GetInt("focusIndex") = index Then Return s
 		Next
-		return Null
+		Return Null
 	End Function
 
 
 	'helper, so slider limit could get adjusted by other objects too
-	Function _AdjustProductionConceptFocusSliderLimit:int(slider:TGUISlider)
-		if not GetInstance().currentProductionConcept then return False
-		if not slider then return False
+	Function _AdjustProductionConceptFocusSliderLimit:Int(slider:TGUISlider)
+		If Not GetInstance().currentProductionConcept Then Return False
+		If Not slider Then Return False
 
 		'adjust slider limit dynamically
-		local focusIndex:int = slider.data.GetInt("focusIndex")
-		local currentValue:int = Max(0, GetInstance().currentProductionConcept.GetProductionFocus(focusIndex))
-		local desiredValue:int = int(slider.GetValue())
+		Local focusIndex:Int = slider.data.GetInt("focusIndex")
+		Local currentValue:Int = Max(0, GetInstance().currentProductionConcept.GetProductionFocus(focusIndex))
+		Local desiredValue:Int = Int(slider.GetValue())
 		'available points (of 10)
-		local maxValue:int = Min(10, GetInstance().currentProductionConcept.productionFocus.GetFocusPointsLeft() + currentValue)
+		Local maxValue:Int = Min(10, GetInstance().currentProductionConcept.productionFocus.GetFocusPointsLeft() + currentValue)
 
 		slider.SetLimitValueRange(0, maxValue)
 	End Function
@@ -561,9 +560,9 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 	'GUI
 	'Remove slider limit
 	'Triggered as soon as the user deactivates the TGUISlider element.
-	Function onProductionConceptRemoveFocusSliderFocus:int(triggerEvent:TEventBase)
-		local slider:TGUISlider = _GetEventFocusSlider(triggerEvent)
-		if not slider then return False
+	Function onProductionConceptRemoveFocusSliderFocus:Int(triggerEvent:TEventBase)
+		Local slider:TGUISlider = _GetEventFocusSlider(triggerEvent)
+		If Not slider Then Return False
 
 		Slider.DisableLimitValue()
 	End Function
@@ -574,56 +573,56 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 	'Changes production focus value according to TGUISlider values.
 	'Triggered on each change to a TGUISlider element. Additionally the
 	'function adjusts slider values on limited production focus values.
-	Function onProductionConceptChangeFocusSliders:int(triggerEvent:TEventBase)
-		if not GetInstance().currentProductionConcept then return False
-		local slider:TGUISlider = _GetEventFocusSlider(triggerEvent)
-		if not slider then return False
+	Function onProductionConceptChangeFocusSliders:Int(triggerEvent:TEventBase)
+		If Not GetInstance().currentProductionConcept Then Return False
+		Local slider:TGUISlider = _GetEventFocusSlider(triggerEvent)
+		If Not slider Then Return False
 
-		local focusIndex:int = slider.data.GetInt("focusIndex")
-		local currentValue:int = GetInstance().currentProductionConcept.GetProductionFocus(focusIndex)
-		local newValue:int = int(slider.GetValue())
+		Local focusIndex:Int = slider.data.GetInt("focusIndex")
+		Local currentValue:Int = GetInstance().currentProductionConcept.GetProductionFocus(focusIndex)
+		Local newValue:Int = Int(slider.GetValue())
 
 		'skip if nothing to do
-		if newValue = currentValue then return False
+		If newValue = currentValue Then Return False
 
 		'set logic-value
-		if not GetInstance().refreshingProductionGUI
+		If Not GetInstance().refreshingProductionGUI
 			GetInstance().currentProductionConcept.SetProductionFocus( focusIndex, newValue )
-		endif
+		EndIf
 		'fetch resulting value (might differ because of limitations)
 		newValue = Max(0, GetInstance().currentProductionConcept.GetProductionFocus(focusIndex))
 
 		'there might be a limitation - so adjust gui slider
-		if newValue <> int(slider.GetValue())
+		If newValue <> Int(slider.GetValue())
 			slider.SetValue( newValue )
-		endif
+		EndIf
 	End Function
 
 
 	'=== CAST LISTS - EVENTS ===
 
 	'GUI -> GUI reaction
-	Function onMouseOverProductionConceptItem:int( triggerEvent:TEventBase )
-		local item:TGuiProductionConceptListItem = TGuiProductionConceptListItem(triggerEvent.GetSender())
-		if item = Null then return FALSE
+	Function onMouseOverProductionConceptItem:Int( triggerEvent:TEventBase )
+		Local item:TGuiProductionConceptListItem = TGuiProductionConceptListItem(triggerEvent.GetSender())
+		If item = Null Then Return False
 
 		GetInstance().hoveredGuiProductionConcept = item
 
-		return TRUE
+		Return True
 	End Function
 
 
 	'LOGIC -> GUI reaction
 	'GUI -> GUI reaction
-	Function onProductionConceptChangeCast:int(triggerEvent:TEventBase)
-		local castIndex:int = triggerEvent.GetData().GetInt("castIndex")
-		local person:TProgrammePersonBase = TProgrammePersonBase(triggerEvent.GetData().Get("person"))
+	Function onProductionConceptChangeCast:Int(triggerEvent:TEventBase)
+		Local castIndex:Int = triggerEvent.GetData().GetInt("castIndex")
+		Local person:TPersonBase = TPersonBase(triggerEvent.GetData().Get("person"))
 
 		'do this before skipping without changes
 		GetInstance().refreshFinishProductionConcept = True
 
 		'skip without changes
-		if GetInstance().castSlotList.GetSlotCast(castIndex) = person then return False
+		If GetInstance().castSlotList.GetSlotCast(castIndex) = person Then Return False
 		'if currentProductionConcept.GetCast(castIndex) = person then return False
 
 		'create new gui element
@@ -632,22 +631,22 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 
 	'open modal window for editing titles
-	Function onClickEditTextsButton:int(triggerEvent:TEventBase)
-		local button:TGUIButton = TGUIButton(triggerEvent._sender)
+	Function onClickEditTextsButton:Int(triggerEvent:TEventBase)
+		Local button:TGUIButton = TGUIButton(triggerEvent._sender)
 		'ignore wrong types and NON-dragged items
-		if not button or button <> GetInstance().editTextsButton then return FALSE
+		If Not button Or button <> GetInstance().editTextsButton Then Return False
 
 		GetInstance().OpenEditTextsWindow()
 	End Function
 
 
 	'GUI -> LOGIC reaction
-	Function onProductionConceptChangeCastSlotList:int(triggerEvent:TEventBase)
-		if not GetInstance().currentProductionConcept then return False
+	Function onProductionConceptChangeCastSlotList:Int(triggerEvent:TEventBase)
+		If Not GetInstance().currentProductionConcept Then Return False
 
 		'local list:TGUICastSlotList = TGUICastSlotList( triggerEvent.GetSender() )
-		local item:TGUICastListItem = TGUICastListItem( triggerEvent.GetData().Get("item") )
-		local slot:int = triggerEvent.GetData().GetInt("slot")
+		Local item:TGUICastListItem = TGUICastListItem( triggerEvent.GetData().Get("item") )
+		Local slot:Int = triggerEvent.GetData().GetInt("slot")
 
 		'DO NOT skip without changes
 		'-> we listen to "successful"-message ("added" vs "add")
@@ -655,47 +654,47 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		'if GetInstance().castSlotList.GetSlotCast(slot) = item.person then return False
 
 
-		if not GetInstance().refreshingProductionGUI
-			if item and triggerEvent.IsTrigger("guiList.addedItem")
+		If Not GetInstance().refreshingProductionGUI
+			If item And triggerEvent.IsTrigger("guiList.addedItem")
 				'print "set "+slot + "  " + item.person.GetFullName()
 				GetInstance().currentProductionConcept.SetCast(slot, item.person)
-			else
+			Else
 				'print "clear "+slot
-				GetInstance().currentProductionConcept.SetCast(slot, null)
-			endif
-		endif
+				GetInstance().currentProductionConcept.SetCast(slot, Null)
+			EndIf
+		EndIf
 	End Function
 
 
 	'we need to know whether we hovered an cast entry to show the
 	'datasheet
-	Function onMouseOverCastItem:int( triggerEvent:TEventBase )
-		local item:TGUICastListItem = TGUICastListItem(triggerEvent.GetSender())
-		if item = Null then return FALSE
+	Function onMouseOverCastItem:Int( triggerEvent:TEventBase )
+		Local item:TGUICastListItem = TGUICastListItem(triggerEvent.GetSender())
+		If item = Null Then Return False
 
 		GetInstance().hoveredGuiCastItem = item
 
-		return TRUE
+		Return True
 	End Function
 
 
 	'in case of right mouse button click we want to remove the
 	'cast
-	Function onClickCastItem:int(triggerEvent:TEventBase)
+	Function onClickCastItem:Int(triggerEvent:TEventBase)
 		'print "click on cast item"
 		'only react if the click came from the right mouse button
-		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
+		If triggerEvent.GetData().getInt("button",0) <> 2 Then Return True
 
-		local guiCast:TGUICastListItem = TGUICastListItem(triggerEvent._sender)
+		Local guiCast:TGUICastListItem = TGUICastListItem(triggerEvent._sender)
 		'ignore wrong types and NON-dragged items
-		if not guiCast or not guiCast.isDragged() then return FALSE
+		If Not guiCast Or Not guiCast.isDragged() Then Return False
 
 		'remove from production
 '		currentProductionConcept.SetCast(slot, null)
 
 		'remove gui object
 		guiCast.remove()
-		guiCast = null
+		guiCast = Null
 
 
 		'avoid clicks
@@ -705,47 +704,47 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 
 	'finish production concept
-	Function onClickFinishProductionConcept:int(triggerEvent:TEventBase)
+	Function onClickFinishProductionConcept:Int(triggerEvent:TEventBase)
 		'skip other buttons
-		if triggerEvent.GetSender() <> GetInstance().finishProductionConcept then return False
+		If triggerEvent.GetSender() <> GetInstance().finishProductionConcept Then Return False
 
-		if not GetInstance().currentProductionConcept then return False
+		If Not GetInstance().currentProductionConcept Then Return False
 		'already at last step
-		if GetInstance().currentProductionConcept.IsProduceable() then return False
+		If GetInstance().currentProductionConcept.IsProduceable() Then Return False
 		'nothing to do (should be disabled already)
-		if GetInstance().currentProductionConcept.IsUnplanned() then return False
+		If GetInstance().currentProductionConcept.IsUnplanned() Then Return False
 
-		if GetInstance().currentProductionConcept.IsPlanned()
-			return GetInstance().PayCurrentProductionConceptDeposit()
-		endif
+		If GetInstance().currentProductionConcept.IsPlanned()
+			Return GetInstance().PayCurrentProductionConceptDeposit()
+		EndIf
 
-		return True
+		Return True
 	End Function
 
 
 	Function _GetEventFocusSlider:TGUISlider(triggerEvent:TEventBase)
-		local slider:TGUISlider
-		For local s:TGUISlider = Eachin GetInstance().productionFocusSlider
-			if s = triggerEvent.GetSender() then slider = s
+		Local slider:TGUISlider
+		For Local s:TGUISlider = EachIn GetInstance().productionFocusSlider
+			If s = triggerEvent.GetSender() Then slider = s
 		Next
 		'skip other sliders
-		if not slider then return null
-		if not slider.data then return null
-		return slider
+		If Not slider Then Return Null
+		If Not slider.data Then Return Null
+		Return slider
 	End Function
 
 
 	Method InitCustomProductionElements()
-		local screenDefaultFont:TBitmapFont = GetBitmapFontManager().Get("default", 12)
+		Local screenDefaultFont:TBitmapFont = GetBitmapFontManager().Get("default", 12)
 
 		'=== CAST ===
 		'============
-		if not castSlotList
-			castSlotList = new TGUICastSlotList.Create(new TVec2D.Init(300,200), new TVec2D.Init(200, 200), "supermarket_customproduction_castbox")
-		endif
+		If Not castSlotList
+			castSlotList = New TGUICastSlotList.Create(New TVec2D.Init(300,200), New TVec2D.Init(200, 200), "supermarket_customproduction_castbox")
+		EndIf
 
 		castSlotList.SetSlotMinDimension(230, 42)
-		castSlotList._fixedSlotDimension = true
+		castSlotList._fixedSlotDimension = True
 		'occupy the first free slot?
 		'castSlotList.SetAutofillSlots(true)
 
@@ -754,33 +753,33 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		'==========================
 
 		'=== PRODUCTION COMPANY SELECT ===
-		if not productionCompanySelect
-			productionCompanySelect = new TGUIDropDown.Create(new TVec2D.Init(600,200), new TVec2D.Init(150,-1), GetLocale("PRODUCTION_COMPANY"), 128, "supermarket_customproduction_productionbox")
+		If Not productionCompanySelect
+			productionCompanySelect = New TGUIDropDown.Create(New TVec2D.Init(600,200), New TVec2D.Init(150,-1), GetLocale("PRODUCTION_COMPANY"), 128, "supermarket_customproduction_productionbox")
 			productionCompanySelect.SetListContentHeight(120)
-		endif
+		EndIf
 		'entries added during ReloadProductionConceptContent()
 
 
 		'=== PRODUCTION WEIGHTS ===
-		For local i:int = 0 to productionFocusSlider.length -1
-			if not productionFocusSlider[i]
+		For Local i:Int = 0 To productionFocusSlider.length -1
+			If Not productionFocusSlider[i]
 				productionFocusSlider[i] = New TGUISlider.Create(New TVec2D.Init(640,300 + i*25), New TVec2D.Init(150,22), "0", "supermarket_customproduction_productionbox")
-			endif
+			EndIf
 			productionFocusSlider[i].SetValueRange(0,10)
 			productionFocusSlider[i].steps = 10
 			productionFocusSlider[i]._gaugeOffset.SetY(2)
 			productionFocusSlider[i].SetRenderMode(TGUISlider.RENDERMODE_DISCRETE)
 			productionFocusSlider[i].SetDirection(TGUISlider.DIRECTION_RIGHT)
-			productionFocusSlider[i].data = new TData.AddNumber("focusIndex", i+1)
+			productionFocusSlider[i].data = New TData.AddNumber("focusIndex", i+1)
 
 			productionFocusSlider[i]._handleDim.SetX(17)
 		Next
 
 
 		'=== EDIT TEXTS BUTTON ===
-		if not editTextsButton
-			editTextsButton = new TGUIButton.Create(new TVec2D.Init(530, 26), new TVec2D.Init(30, 28), "...", "supermarket_customproduction_newproduction")
-		endif
+		If Not editTextsButton
+			editTextsButton = New TGUIButton.Create(New TVec2D.Init(530, 26), New TVec2D.Init(30, 28), "...", "supermarket_customproduction_newproduction")
+		EndIf
 		'editTextsButton.disable()
 		editTextsButton.caption.SetSpriteName("gfx_datasheet_icon_pencil")
 		editTextsButton.caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_ONLY )
@@ -788,9 +787,9 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 
 		'=== FINISH CONCEPT BUTTON ===
-		if not finishProductionConcept
-			finishProductionConcept = new TGUIButton.Create(new TVec2D.Init(20, 220), new TVec2D.Init(100, 28), "...", "supermarket_customproduction_newproduction")
-		endif
+		If Not finishProductionConcept
+			finishProductionConcept = New TGUIButton.Create(New TVec2D.Init(20, 220), New TVec2D.Init(100, 28), "...", "supermarket_customproduction_newproduction")
+		EndIf
 		finishProductionConcept.caption.SetSpriteName("gfx_datasheet_icon_money")
 		finishProductionConcept.caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_LEFT_OF_TEXT3 )
 		finishProductionConcept.disable()
@@ -798,18 +797,18 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		finishProductionConcept.SetFont( screenDefaultFont )
 
 		'=== PRODUCTION TAKEOVER CHECKBOX ===
-		if not productionConceptTakeOver
-			productionConceptTakeOver = new TGUICheckbox.Create(new TVec2D.Init(20, 220), new TVec2D.Init(100, 28), GetLocale("TAKE_OVER_SETTINGS"), "supermarket_customproduction_productionconceptbox")
-		endif
+		If Not productionConceptTakeOver
+			productionConceptTakeOver = New TGUICheckbox.Create(New TVec2D.Init(20, 220), New TVec2D.Init(100, 28), GetLocale("TAKE_OVER_SETTINGS"), "supermarket_customproduction_productionconceptbox")
+		EndIf
 		productionConceptTakeOver.SetFont( screenDefaultFont )
 
 		'=== PRODUCTION CONCEPT LIST ===
-		if not productionConceptList
-			productionConceptList = new TGUISelectList.Create(new TVec2D.Init(20,20), new TVec2D.Init(150,180), "supermarket_customproduction_productionconceptbox")
-		endif
+		If Not productionConceptList
+			productionConceptList = New TGUISelectList.Create(New TVec2D.Init(20,20), New TVec2D.Init(150,180), "supermarket_customproduction_productionconceptbox")
+		EndIf
 		'scroll one concept per "scroll"
 		productionConceptList.scrollItemHeightPercentage = 1.0
-		productionConceptList.SetAutosortItems(true) 'sort concepts
+		productionConceptList.SetAutosortItems(True) 'sort concepts
 
 
 		ReloadProductionConceptContent()
@@ -822,11 +821,11 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		productionCompanySelect.SetValue(GetLocale("PRODUCTION_COMPANY"))
 
 		'add some items to that list
-		For local p:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.values()
+		For Local p:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.values()
 			'base items do not have a size - so we have to give a manual one
 '			local item:TGUIDropDownItem = new TGUIDropDownItem.Create(null, null, p.name+" [Lvl: "+p.GetLevel()+"]")
 '			item.data = new TData.Add("productionCompany", p)
-			local item:TGUIProductionCompanyDropDownItem = new TGUIProductionCompanyDropDownItem.CreateSimple(p)
+			Local item:TGUIProductionCompanyDropDownItem = New TGUIProductionCompanyDropDownItem.CreateSimple(p)
 			productionCompanySelect.AddItem( item )
 		Next
 
@@ -834,20 +833,20 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		'=== CONCEPTS ===
 		productionConceptList.EmptyList()
 
-		local productionConcepts:TProductionConcept[]
-		For local productionConcept:TProductionConcept = EachIn GetProductionConceptCollection().entries.Values()
+		Local productionConcepts:TProductionConcept[]
+		For Local productionConcept:TProductionConcept = EachIn GetProductionConceptCollection().entries.Values()
 			productionConcepts :+ [productionConcept]
 		Next
 
 		'sort by series/name
-		productionConcepts.Sort(true)
+		productionConcepts.Sort(True)
 
-		For local productionConcept:TProductionConcept = EachIn productionConcepts
+		For Local productionConcept:TProductionConcept = EachIn productionConcepts
 
 			'skip produced concepts
-			if productionConcept.IsProduced() then continue
+			If productionConcept.IsProduced() Then Continue
 
-			local item:TGuiProductionConceptSelectListItem = new TGuiProductionConceptSelectListItem.Create(null, new TVec2D.Init(150,24), "concept")
+			Local item:TGuiProductionConceptSelectListItem = New TGuiProductionConceptSelectListItem.Create(Null, New TVec2D.Init(150,24), "concept")
 			'done in TGuiProductionConceptSelectListItem.New() already
 			'item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 
@@ -867,44 +866,44 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 	Method Update()
 		'gets refilled in gui-updates
-		hoveredGuiCastItem = null
-		hoveredGuiProductionConcept = null
+		hoveredGuiCastItem = Null
+		hoveredGuiProductionConcept = Null
 
 		'disable / enable elements according to state
-		if not currentProductionConcept or currentProductionConcept.IsProduceable()
-			if (not currentProductionConcept or not currentProductionConcept.productionCompany or productionFocusSlider[0].IsEnabled())
+		If Not currentProductionConcept Or currentProductionConcept.IsProduceable()
+			If (Not currentProductionConcept Or Not currentProductionConcept.productionCompany Or productionFocusSlider[0].IsEnabled())
 				'disable _all_ sliders if no production company is selected
-				For local i:int = 0 to productionFocusSlider.length -1
+				For Local i:Int = 0 To productionFocusSlider.length -1
 					productionFocusSlider[i].Disable()
 				Next
-			endif
+			EndIf
 
 			'general elements
-			if productionCompanySelect.IsEnabled()
+			If productionCompanySelect.IsEnabled()
 				productionCompanySelect.Disable()
 				castSlotList.Disable()
 				'if currentProductionConcept then print "DISABLE " + currentProductionConcept.script.GetTitle()
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'or enable (specific of) them...
-		if currentProductionConcept and not currentProductionConcept.IsProduceable()
+		If currentProductionConcept And Not currentProductionConcept.IsProduceable()
 			'sliders only with selected production company
-			if currentProductionConcept.productionCompany and not productionFocusSlider[0].IsEnabled()
-				For local i:int = 0 to productionFocusSlider.length -1
-					if currentProductionConcept.productionFocus.GetFocusAspectCount() > i
+			If currentProductionConcept.productionCompany And Not productionFocusSlider[0].IsEnabled()
+				For Local i:Int = 0 To productionFocusSlider.length -1
+					If currentProductionConcept.productionFocus.GetFocusAspectCount() > i
 						productionFocusSlider[i].Enable()
-					endif
+					EndIf
 				Next
-			endif
+			EndIf
 
 			'general elements
-			if not productionCompanySelect.IsEnabled()
+			If Not productionCompanySelect.IsEnabled()
 				productionCompanySelect.Enable()
 				castSlotList.Enable()
 				'if currentProductionConcept then print "ENABLE " + currentProductionConcept.script.GetTitle()
-			endif
-		endif
+			EndIf
+		EndIf
 
 		GuiManager.Update( TLowerString.Create("supermarket_customproduction_castbox_modal") )
 		GuiManager.Update( TLowerString.Create("supermarket_customproduction_productionbox_modal") )
@@ -913,49 +912,49 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		GuiManager.Update( TLowerString.Create("supermarket_customproduction_productionbox") )
 		GuiManager.Update( TLowerString.Create("supermarket_customproduction_castbox") )
 
-		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
+		If (MouseManager.IsClicked(2) Or MouseManager.IsLongClicked(1))
 			'leaving room now
-			If not currentProductionConcept
+			If Not currentProductionConcept
 				RemoveAllGuiElements()
 
 			'just aborting current production planning
 			Else
-				if not castSlotList.SelectCastWindowIsOpen()
-					SetCurrentProductionConcept(null)
-				endif
+				If Not castSlotList.SelectCastWindowIsOpen()
+					SetCurrentProductionConcept(Null)
+				EndIf
 
 				'abort room leaving
 				'remove right click
 				MouseManager.SetClickHandled(2)
 			EndIf
-		endif
+		EndIf
 	End Method
 
 
 	Method Render()
 		'update finishProductionConcept-button's value if needed
-		if refreshFinishProductionConcept
+		If refreshFinishProductionConcept
 			RefreshFinishProductionConceptGUI()
-		endif
+		EndIf
 
 		SetColor(255,255,255)
 
-		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
+		Local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
 
 		'where to draw
-		local outer:TRectangle = new TRectangle
+		Local outer:TRectangle = New TRectangle
 		'calculate position/size of content elements
-		local contentX:int = 0
-		local contentY:int = 0
-		local contentW:int = 0
-		local contentH:int = 0
-		local outerSizeH:int = skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
-		local outerH:int = 0 'size of the "border"
+		Local contentX:Int = 0
+		Local contentY:Int = 0
+		Local contentW:Int = 0
+		Local contentH:Int = 0
+		Local outerSizeH:Int = skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+		Local outerH:Int = 0 'size of the "border"
 
-		local titleH:int = 18, subTitleH:int = 16
-		local boxAreaH:int = 0, buttonAreaH:int = 0, bottomAreaH:int = 0, msgH:int = 0
-		local boxAreaPaddingY:int = 4, buttonAreaPaddingY:int = 4
-		local msgPaddingY:int = 4
+		Local titleH:Int = 18, subTitleH:Int = 16
+		Local boxAreaH:Int = 0, buttonAreaH:Int = 0, bottomAreaH:Int = 0, msgH:Int = 0
+		Local boxAreaPaddingY:Int = 4, buttonAreaPaddingY:Int = 4
+		Local msgPaddingY:Int = 4
 
 		msgH = skin.GetMessageSize(100, -1, "").GetY()
 
@@ -968,19 +967,19 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 		contentW = skin.GetContentW(outer.GetW())
 		contentH = skin.GetContentH(outer.GetH())
 
-		local checkboxArea:int = productionConceptTakeOver.rect.GetH() + 0*buttonAreaPaddingY
+		Local checkboxArea:Int = productionConceptTakeOver.rect.GetH() + 0*buttonAreaPaddingY
 
-		local listH:int = contentH - titleH - checkboxArea
+		Local listH:Int = contentH - titleH - checkboxArea
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(GetLocale("PRODUCTION_CONCEPTS"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, listH , "2")
 		'reposition list
-		if productionConceptList.rect.getX() <> contentX + 5
+		If productionConceptList.rect.getX() <> contentX + 5
 			productionConceptList.SetPosition(contentX + 5, contentY + 3)
 			productionConceptList.SetSize(contentW - 10, listH - 6)
-		endif
+		EndIf
 		contentY :+ listH
 
 		skin.RenderContent(contentX, contentY, contentW, contentH - (listH+titleH) , "1_bottom")
@@ -993,7 +992,7 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 
 
-		if currentProductionConcept
+		If currentProductionConcept
 			'=== CHECK AND START BOX ===
 			outer.SetXY(10, 225)
 			outer.dimension.SetXY(210,145)
@@ -1042,10 +1041,10 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 			'=== CAST / MESSAGE BOX ===
 			'calc height
-			local castAreaH:int = 215
-			local msgAreaH:int = 0
-			if not currentProductionConcept.IsCastComplete() then msgAreaH :+ msgH + msgPaddingY
-			if not currentProductionConcept.IsFocusPointsComplete() then msgAreaH :+ msgH + msgPaddingY
+			Local castAreaH:Int = 215
+			Local msgAreaH:Int = 0
+			If Not currentProductionConcept.IsCastComplete() Then msgAreaH :+ msgH + msgPaddingY
+			If Not currentProductionConcept.IsFocusPointsComplete() Then msgAreaH :+ msgH + msgPaddingY
 			outerH = outerSizeH + titleH + subTitleH + castAreaH + msgAreaH
 
 			outer.SetXY(225, 15)
@@ -1078,34 +1077,34 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 			skin.RenderContent(contentX, contentY, contentW, castAreaH, "2")
 			'reposition cast list
-			if castSlotList.rect.getX() <> contentX + 5
+			If castSlotList.rect.getX() <> contentX + 5
 				castSlotList.SetPosition(contentX +5, contentY + 3)
 				'-5 => 210 height, each slot 42px, so 5 slots fit
 				castSlotList.SetSize(contentW - 10, castAreaH - 5 )
 				castSlotList.SetSlotMinDimension(contentW - 10, 42)
-			endif
+			EndIf
 
 			contentY :+ castAreaH
 
-			if msgAreaH > 0
+			If msgAreaH > 0
 				skin.RenderContent(contentX, contentY, contentW, msgAreaH, "1_bottom")
-				if not currentProductionConcept.IsCastComplete()
+				If Not currentProductionConcept.IsCastComplete()
 					skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, GetLocale("CAST_INCOMPLETE"), "audience", "warning")
 					contentY :+ msgH + msgPaddingY
-				endif
-				if not currentProductionConcept.IsFocusPointsComplete()
-					if currentProductionConcept.productionCompany
-						if not currentProductionConcept.IsFocusPointsMinimumUsed()
+				EndIf
+				If Not currentProductionConcept.IsFocusPointsComplete()
+					If currentProductionConcept.productionCompany
+						If Not currentProductionConcept.IsFocusPointsMinimumUsed()
 							skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, GetLocale("NEED_TO_SPENT_AT_LEAST_ONE_POINT_OF_PRODUCTION_FOCUS_POINTS"), "spotsplanned", "warning")
-						else
+						Else
 							skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, GetLocale("PRODUCTION_FOCUS_POINTS_NOT_SET_COMPLETELY"), "spotsplanned", "neutral")
-						endif
-					else
+						EndIf
+					Else
 						skin.RenderMessage(contentX + 5 , contentY + 3, contentW - 10, -1, GetLocale("NO_PRODUCTION_COMPANY_SELECTED"), "spotsplanned", "warning")
-					endif
+					EndIf
 					contentY :+ msgH + msgPaddingY
-				endif
-			endif
+				EndIf
+			EndIf
 
 			skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 
@@ -1113,13 +1112,13 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 
 			'=== PRODUCTION BOX ===
-			local productionFocusSliderH:int = 21
-			local productionFocusLabelH:int = 15
-			local productionCompanyH:int = 60
-			local productionFocusH:int = titleH + subTitleH + 5 'bottom padding
-			if currentProductionConcept.productionFocus
+			Local productionFocusSliderH:Int = 21
+			Local productionFocusLabelH:Int = 15
+			Local productionCompanyH:Int = 60
+			Local productionFocusH:Int = titleH + subTitleH + 5 'bottom padding
+			If currentProductionConcept.productionFocus
 				productionFocusH :+ currentProductionConcept.productionFocus.GetFocusAspectCount() * (productionFocusSliderH + productionFocusLabelH)
-			endif
+			EndIf
 			outerH = outerSizeH + titleH + productionCompanyH + productionFocusH
 
 			outer.SetXY(580, 15)
@@ -1140,55 +1139,55 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 
 			skin.fontSemiBold.drawBlock(GetLocale("PRODUCTION_COMPANY"), contentX + 5, contentY + 3, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			'reposition dropdown
-			if productionCompanySelect.rect.getX() <> contentX + 5
+			If productionCompanySelect.rect.getX() <> contentX + 5
 				productionCompanySelect.SetPosition(contentX + 5, contentY + 20)
 				productionCompanySelect.SetSize(contentW - 10, -1)
-			endif
+			EndIf
 			contentY :+ productionCompanyH
 
 			skin.fontSemiBold.drawBlock(GetLocale("PRODUCTION_FOCUS"), contentX + 5, contentY + 3, contentW - 10, titleH - 3, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
 			contentY :+ titleH
 			'reposition sliders
-			if repositionSliders
-				local sliderOrder:int[]
-				if currentProductionConcept and currentProductionConcept.productionFocus
+			If repositionSliders
+				Local sliderOrder:Int[]
+				If currentProductionConcept And currentProductionConcept.productionFocus
 					sliderOrder = currentProductionConcept.productionFocus.GetOrderedFocusIndices()
-				else
+				Else
 					sliderOrder = [1,2,3,4,5,6]
-				endif
-				For local i:int = 0 until sliderOrder.length
-					local sliderNum:int = sliderOrder[i]
-					local slider:TGUISlider = productionFocusSlider[ sliderNum-1]
+				EndIf
+				For Local i:Int = 0 Until sliderOrder.length
+					Local sliderNum:Int = sliderOrder[i]
+					Local slider:TGUISlider = productionFocusSlider[ sliderNum-1]
 					slider.SetPosition(contentX + 5, contentY + productionFocusLabelH + i * (productionFocusLabelH + productionFocusSliderH))
 					slider.SetSize(contentW - 10)
 				Next
 				repositionSliders = False
-			endif
+			EndIf
 
-			if currentProductionConcept.productionFocus
-				local pF:TProductionFocusBase = currentProductionConcept.productionFocus
-				For local labelNum:int = EachIn pF.GetOrderedFocusIndices()
+			If currentProductionConcept.productionFocus
+				Local pF:TProductionFocusBase = currentProductionConcept.productionFocus
+				For Local labelNum:Int = EachIn pF.GetOrderedFocusIndices()
 		'		For local labelNum:int = 0 until productionFocusLabel.length
-					if not productionFocusSlider[labelNum-1].IsVisible() then continue
-					local focusIndex:int = productionFocusSlider[labelNum-1].data.GetInt("focusIndex")
-					local label:string = GetLocale(TVTProductionFocus.GetAsString(focusIndex))
+					If Not productionFocusSlider[labelNum-1].IsVisible() Then Continue
+					Local focusIndex:Int = productionFocusSlider[labelNum-1].data.GetInt("focusIndex")
+					Local label:String = GetLocale(TVTProductionFocus.GetAsString(focusIndex))
 					skin.fontNormal.drawBlock(label, contentX + 10, contentY, contentW - 15, titleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
 					contentY :+ (productionFocusLabelH + productionFocusSliderH)
 				Next
 
 				'inform about unused skill points / missing company selection
-				local color:TColor
-				if currentProductionConcept.productionCompany
-					if pF.GetFocusPointsSet() < pF.GetFocusPointsMax()
+				Local color:TColor
+				If currentProductionConcept.productionCompany
+					If pF.GetFocusPointsSet() < pF.GetFocusPointsMax()
 						color = skin.textColorWarning
-					else
+					Else
 						color = skin.textColorLabel
-					endif
-					local text:string = GetLocale("POINTSSET_OF_POINTSMAX_POINTS_SET").replace("%POINTSSET%", pF.GetFocusPointsSet()).replace("%POINTSMAX%", pF.GetFocusPointsMax())
+					EndIf
+					Local text:String = GetLocale("POINTSSET_OF_POINTSMAX_POINTS_SET").Replace("%POINTSSET%", pF.GetFocusPointsSet()).Replace("%POINTSMAX%", pF.GetFocusPointsMax())
 					skin.fontNormal.drawBlock("|i|"+text+"|/i|", contentX + 5, contentY, contentW - 10, subTitleH, ALIGN_CENTER_CENTER, color, 0,1,1.0,True, True)
-				endif
+				EndIf
 				contentY :+ subTitleH
-			endif
+			EndIf
 			skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 
 			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionconceptbox") )
@@ -1203,20 +1202,20 @@ Type TScreenHandler_SupermarketProduction extends TScreenHandler
 			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionbox_modal") )
 
 			'draw datasheet if needed
-			if hoveredGuiCastItem then hoveredGuiCastItem.DrawDatasheet(hoveredGuiCastItem.GetScreenRect().GetX() - 230, hoveredGuiCastItem.GetScreenRect().GetX() - 170 )
+			If hoveredGuiCastItem Then hoveredGuiCastItem.DrawDatasheet(hoveredGuiCastItem.GetScreenRect().GetX() - 230, hoveredGuiCastItem.GetScreenRect().GetX() - 170 )
 
-		else
+		Else
 			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionconceptbox") )
-		endif
+		EndIf
 
 		'draw script-sheet
-		if hoveredGuiProductionConcept then hoveredGuiProductionConcept.DrawSupermarketSheet()
+		If hoveredGuiProductionConcept Then hoveredGuiProductionConcept.DrawSupermarketSheet()
  	End Method
 End Type
 
 
 
-Type TGUIProductionModalWindow extends TGUIModalWindow
+Type TGUIProductionModalWindow Extends TGUIModalWindow
 	Field buttonOK:TGUIButton
 	Field buttonCancel:TGUIButton
 	Field _eventListeners:TEventListenerBase[]
@@ -1228,9 +1227,9 @@ Type TGUIProductionModalWindow extends TGUIModalWindow
 		darkenedAreaAlpha = 0.25 '0.5 is default
 
 
-		buttonOK = new TGUIButton.Create(new TVec2D.Init(10, dimension.GetY() - 44), new TVec2D.Init(136, 28), "OK", "")
+		buttonOK = New TGUIButton.Create(New TVec2D.Init(10, dimension.GetY() - 44), New TVec2D.Init(136, 28), "OK", "")
 		buttonOK.spriteName = "gfx_gui_button.datasheet"
-		buttonCancel = new TGUIButton.Create(new TVec2D.Init(dimension.GetX() - 15 - 136, dimension.GetY() - 44), new TVec2D.Init(136, 28), "Cancel", "")
+		buttonCancel = New TGUIButton.Create(New TVec2D.Init(dimension.GetX() - 15 - 136, dimension.GetY() - 44), New TVec2D.Init(136, 28), "Cancel", "")
 		buttonCancel.spriteName = "gfx_gui_button.datasheet"
 
 		AddChild(buttonOK)
@@ -1240,34 +1239,34 @@ Type TGUIProductionModalWindow extends TGUIModalWindow
 
 	Method Remove:Int()
 		EventManager.UnregisterListenersArray(_eventListeners)
-		return Super.Remove()
+		Return Super.Remove()
 	End Method
 
 
 	'override to skip animation
-	Method IsClosed:int()
-		return closeActionStarted
+	Method IsClosed:Int()
+		Return closeActionStarted
 	End Method
 
 
 	Method SetSize(w:Float = 0, h:Float = 0)
 		Super.SetSize(w, h)
-		if buttonOK then buttonOK.rect.position.SetY( rect.dimension.GetY() - 44)
-		if buttonCancel then buttonCancel.rect.position.SetY( rect.dimension.GetY() - 44)
+		If buttonOK Then buttonOK.rect.position.SetY( rect.dimension.GetY() - 44)
+		If buttonCancel Then buttonCancel.rect.position.SetY( rect.dimension.GetY() - 44)
 	End Method
 
 
 	'override to _not_ recenter
 	Method Recenter:Int(moveByX:Float = 0, moveByY:Float = 0)
-		return True
+		Return True
 	End Method
 
 
-	Method Update:int()
-		if buttonCancel.IsClicked() then Close(2)
-		if buttonOK.IsClicked() then Close(1)
+	Method Update:Int()
+		If buttonCancel.IsClicked() Then Close(2)
+		If buttonOK.IsClicked() Then Close(1)
 
-		if (MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1))
+		If (MouseManager.IsClicked(2) Or MouseManager.IsLongClicked(1))
 			Close(2)
 
 			'avoid clicks
@@ -1275,9 +1274,9 @@ Type TGUIProductionModalWindow extends TGUIModalWindow
 			MouseManager.SetClickHandled(2)
 			'also avoid long click (touch screen)
 			MouseManager.SetLongClickHandled(1)
-		endif
+		EndIf
 
-		return super.Update()
+		Return Super.Update()
 	End Method
 End Type
 
@@ -1286,15 +1285,15 @@ End Type
 
 
 
-Type TGUISelectCastWindow extends TGUIProductionModalWindow
+Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 	Field jobFilterSelect:TGUIDropDown
 	Field genderFilterSelect:TGUIDropDown
 	'only list persons with the following job?
-	Field listOnlyJobID:int = -1
-	Field listOnlyGenderID:int = -1
+	Field listOnlyJobID:Int = -1
+	Field listOnlyGenderID:Int = -1
 	'select a person for the following job (for correct fee display)
-	Field selectJobID:int = 0
-	Field selectGenderID:int = 0
+	Field selectJobID:Int = 0
+	Field selectGenderID:Int = 0
 	Field castSelectList:TGUICastSelectList
 
 
@@ -1302,50 +1301,49 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 	Method Create:TGUISelectCastWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
-		jobFilterSelect = new TGUIDropDown.Create(new TVec2D.Init(15,12), new TVec2D.Init(170,-1), "Hauptberuf", 128, "")
+		jobFilterSelect = New TGUIDropDown.Create(New TVec2D.Init(15,12), New TVec2D.Init(170,-1), "Hauptberuf", 128, "")
 		jobFilterSelect.SetZIndex( GetZIndex() + 10)
 		jobFilterSelect.list.SetZIndex( GetZIndex() + 11)
 		jobFilterSelect.SetListContentHeight(180)
 
 		'add some items to that list
-		for local i:int = 0 to TVTProgrammePersonJob.count
-			local item:TGUIDropDownItem = new TGUIDropDownItem.Create(null, null, "")
-			if i = 0
-				item.SetValue(GETLOCALE("JOB_ALL"))
-				item.data.AddNumber("jobIndex", 0)
-			else
-				item.SetValue(GETLOCALE("JOB_" + TVTProgrammePersonJob.GetAsString( TVTProgrammePersonJob.GetAtIndex(i) )))
-				item.data.AddNumber("jobIndex", i)
-			endif
+		Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(Null, Null, "")
+		item.SetValue(GETLOCALE("JOB_ALL"))
+		item.data.AddNumber("jobIndex", 0)
+		jobFilterSelect.AddItem(item)
 
+		For Local i:Int = EachIn TVTPersonJob.GetCastJobIndices()
+			Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(Null, Null, "")
+			item.SetValue(GETLOCALE("JOB_" + TVTPersonJob.GetAsString( TVTPersonJob.GetAtIndex(i) )))
+			item.data.AddNumber("jobIndex", i)
 			jobFilterSelect.AddItem(item)
 		Next
 
 
-		genderFilterSelect = new TGUIDropDown.Create(new TVec2D.Init(192,12), new TVec2D.Init(90,-1), "Alle", 128, "")
+		genderFilterSelect = New TGUIDropDown.Create(New TVec2D.Init(192,12), New TVec2D.Init(90,-1), "Alle", 128, "")
 		genderFilterSelect.SetZIndex( GetZIndex() + 10)
 		genderFilterSelect.list.SetZIndex( GetZIndex() + 11)
 		genderFilterSelect.SetListContentHeight(60)
 
 		'add some items to that list
-		for local i:int = 0 to TVTPersonGender.count
-			local item:TGUIDropDownItem = new TGUIDropDownItem.Create(null, null, "")
+		For Local i:Int = 0 To TVTPersonGender.count
+			Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(Null, Null, "")
 
-			if i = 0
+			If i = 0
 				item.SetValue(GetLocale("GENDER_ALL"))
-			else
-				if i = 1
+			Else
+				If i = 1
 					item.SetValue(GetLocale("GENDER_MEN"))
-				else
+				Else
 					item.SetValue(GetLocale("GENDER_WOMEN"))
-				endif
-			endif
+				EndIf
+			EndIf
 			item.data.AddNumber("genderIndex", i)
 			genderFilterSelect.AddItem(item)
 		Next
 
 
-		castSelectList = new TGUICastSelectList.Create(new TVec2D.Init(15,50), new TVec2D.Init(270, dimension.y - 103), "")
+		castSelectList = New TGUICastSelectList.Create(New TVec2D.Init(15,50), New TVec2D.Init(270, dimension.y - 103), "")
 
 
 		AddChild(jobFilterSelect)
@@ -1355,23 +1353,23 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 		buttonOK.SetValue(GetLocale("SELECT_PERSON"))
 		buttonCancel.SetValue(GetLocale("CANCEL"))
 
-		_eventListeners :+ [ EventManager.registerListenerMethod("GUIDropDown.onSelectEntry", self, "onCastChangeFilterDropdown", "TGUIDropDown" ) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.OnDoubleClick", self, "onDoubleClickCastListItem", "TGUICastListItem" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod("GUIDropDown.onSelectEntry", Self, "onCastChangeFilterDropdown", "TGUIDropDown" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.OnDoubleClick", Self, "onDoubleClickCastListItem", "TGUICastListItem" ) ]
 
-		Return self
+		Return Self
 	End Method
 
 
 	'override to also set zIndex of list element
 	Method SetZIndex(zindex:Int)
-		if jobFilterSelect
+		If jobFilterSelect
 			jobFilterSelect.SetZIndex( zindex + 1)
 			jobFilterSelect.list.SetZIndex( zindex + 2)
-		endif
-		if genderFilterSelect
+		EndIf
+		If genderFilterSelect
 			genderFilterSelect.SetZIndex( zindex + 1)
 			genderFilterSelect.list.SetZIndex( zindex + 2)
-		endif
+		EndIf
 
 		Super.SetZIndex(zindex)
 	End Method
@@ -1380,83 +1378,83 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 
 	'GUI->GUI
 	'close window with "OK" (shortcut to "select + OK")
-	Method onDoubleClickCastListItem:int( triggerEvent:TEventBase )
-		local item:TGUICastListItem = TGUICastListItem(triggerEvent.GetSender())
-		if item = Null then return False
+	Method onDoubleClickCastListItem:Int( triggerEvent:TEventBase )
+		Local item:TGUICastListItem = TGUICastListItem(triggerEvent.GetSender())
+		If item = Null Then Return False
 		'skip if from another list
-		if TGUIListBase.FindGUIListBaseParent(item) <> castSelectList then return False
+		If TGUIListBase.FindGUIListBaseParent(item) <> castSelectList Then Return False
 
 		Close(1)
 
-		return TRUE
+		Return True
 	End Method
 
 
 	'GUI -> GUI
 	'set cast filter according to selection
-	Method onCastChangeFilterDropdown:int(triggerEvent:TeventBase)
-		local dropdown:TGUIDropDown = TGUIDropDown(triggerEvent.GetSender())
-		if not dropdown then return False
-		if dropdown <> jobFilterSelect and dropdown <> genderFilterSelect then return False
+	Method onCastChangeFilterDropdown:Int(triggerEvent:TeventBase)
+		Local dropdown:TGUIDropDown = TGUIDropDown(triggerEvent.GetSender())
+		If Not dropdown Then Return False
+		If dropdown <> jobFilterSelect And dropdown <> genderFilterSelect Then Return False
 
-		local entry:TGUIDropDownItem = TGUIDropDownItem(dropdown.GetSelectedEntry())
-		if not entry or not entry.data then return False
+		Local entry:TGUIDropDownItem = TGUIDropDownItem(dropdown.GetSelectedEntry())
+		If Not entry Or Not entry.data Then Return False
 
 		'select*** contains what is supposed to get selected when opening
 		'the whole cast-select window
-		local jobID:int = selectJobID
-		local genderID:int = selectGenderID
+		Local jobID:Int = selectJobID
+		Local genderID:Int = selectGenderID
 
 		'override that values with the ones from the dropdowns
-		if jobFilterSelect.GetSelectedEntry()
-			jobID = TVTProgrammePersonJob.GetAtIndex( jobFilterSelect.GetSelectedEntry().data.GetInt("jobIndex") )
-		endif
-		if genderFilterSelect.GetSelectedEntry()
+		If jobFilterSelect.GetSelectedEntry()
+			jobID = TVTPersonJob.GetAtIndex( jobFilterSelect.GetSelectedEntry().data.GetInt("jobIndex") )
+		EndIf
+		If genderFilterSelect.GetSelectedEntry()
 			genderID = TVTPersonGender.GetAtIndex( genderFilterSelect.GetSelectedEntry().data.GetInt("genderIndex") )
-		endif
+		EndIf
 		LoadPersons(jobID, genderID)
 	End Method
 
 
-	Method GetSelectedPerson:TProgrammePersonBase()
-		local item:TGUICastListItem = TGUICastListItem(castSelectList.getSelectedEntry())
-		if not item or not item.person then return Null
+	Method GetSelectedPerson:TPersonBase()
+		Local item:TGUICastListItem = TGUICastListItem(castSelectList.getSelectedEntry())
+		If Not item Or Not item.person Then Return Null
 
-		return item.person
+		Return item.person
 	End Method
 
 
-	Method SetJobFilterSelectEntry:int(jobIndex:int)
+	Method SetJobFilterSelectEntry:Int(jobIndex:Int)
 		'adjust dropdown to use the correct entry
 		'skip without changes
-		local newItem:TGUIDropDownItem
-		For local i:TGUIDropDownItem = EachIn jobFilterSelect.GetEntries()
-			if not i.data or i.data.GetInt("jobIndex", -2) <> jobIndex then continue
+		Local newItem:TGUIDropDownItem
+		For Local i:TGUIDropDownItem = EachIn jobFilterSelect.GetEntries()
+			If Not i.data Or i.data.GetInt("jobIndex", -2) <> jobIndex Then Continue
 
 			newItem = i
-			exit
+			Exit
 		Next
-		if newItem = jobFilterSelect.GetSelectedEntry() then return False
+		If newItem = jobFilterSelect.GetSelectedEntry() Then Return False
 
 		jobFilterSelect.SetSelectedEntry(newItem)
-		return True
+		Return True
 	End Method
 
 
-	Method SetGenderFilterSelectEntry:int(genderIndex:int)
+	Method SetGenderFilterSelectEntry:Int(genderIndex:Int)
 		'adjust dropdown to use the correct entry
 		'skip without changes
-		local newItem:TGUIDropDownItem
-		For local i:TGUIDropDownItem = EachIn genderFilterSelect.GetEntries()
-			if not i.data or i.data.GetInt("genderIndex", -2) <> genderIndex then continue
+		Local newItem:TGUIDropDownItem
+		For Local i:TGUIDropDownItem = EachIn genderFilterSelect.GetEntries()
+			If Not i.data Or i.data.GetInt("genderIndex", -2) <> genderIndex Then Continue
 
 			newItem = i
-			exit
+			Exit
 		Next
-		if newItem = genderFilterSelect.GetSelectedEntry() then return False
+		If newItem = genderFilterSelect.GetSelectedEntry() Then Return False
 
 		genderFilterSelect.SetSelectedEntry(newItem)
-		return True
+		Return True
 	End Method
 
 
@@ -1466,12 +1464,12 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 
 
 		'adjust gui dropdown
-		local jobIndex:int = TVTProgrammePersonJob.GetIndex(listOnlyJobID)
-		if listOnlyJobID = -1 then jobIndex = -1
+		Local jobIndex:Int = TVTPersonJob.GetIndex(listOnlyJobID)
+		If listOnlyJobID = -1 Then jobIndex = -1
 		SetJobFilterSelectEntry(jobIndex)
 
-		local genderIndex:int = listOnlyGenderID
-		if listOnlyGenderID = -1 then genderIndex = 0
+		Local genderIndex:Int = listOnlyGenderID
+		If listOnlyGenderID = -1 Then genderIndex = 0
 		SetGenderFilterSelectEntry(genderIndex)
 
 
@@ -1479,77 +1477,77 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 	End Method
 
 
-	Method LoadPersons(filterToJobID:int, filterToGenderID:int = 0)
+	Method LoadPersons(filterToJobID:Int, filterToGenderID:Int = 0)
 		'skip if no change is needed
-		if castSelectList.filteredJobID = filterToJobID and castSelectList.filteredGenderID = filterToGenderID then return
+		If castSelectList.filteredJobID = filterToJobID And castSelectList.filteredGenderID = filterToGenderID Then Return
 		'print "LoadPersons: filter=" + filterToJobID
 
 		castSelectList.EmptyList()
 
-		'add persons to that list
-		local persons:TProgrammePersonBase[] = GetProgrammePersonBaseCollection().GetAllCelebritiesAsArray(True)
-		if filterToJobID > 0
-			local filteredPersons:TProgrammePersonBase[]
-			For local person:TProgrammePersonBase = EachIn persons
-				if filterToGenderID > 0 and person.gender <> filterToGenderID then continue
+		'add all castable celebrities to that list
+		Local personsList:TObjectList = GetPersonBaseCollection().GetCastableCelebritiesList()
+		Local persons:TPersonBase[]
+		If filterToJobID > 0
+			For Local person:TPersonBase = EachIn personsList
+				If filterToGenderID > 0 And person.gender <> filterToGenderID Then Continue
 
-				if person.HasJob(filterToJobID)
-					filteredPersons :+ [person]
-				endif
+				If person.HasJob(filterToJobID)
+					persons :+ [person]
+				EndIf
 			Next
-			persons = filteredPersons
-		endif
+		EndIf
 
-		'sort by name (rely on "TProgrammePersonBase.Compare()")
-		persons.Sort(true)
+		'sort by name (rely on "TPersonBase.Compare()")
+		persons.Sort(True)
 
 		'add an amateur/layman at the top (hidden behind is a random
 		'normal person)
-		local amateur:TProgrammePersonBase
+		Local amateur:TPersonBase
 		Repeat
 			'only bookable amateurs
-			amateur = GetProgrammePersonBaseCollection().GetRandomInsignificant(null, True, True, 0, filterToGenderID)
+			amateur = GetPersonBaseCollection().GetRandomInsignificant(Null, True, True, 0, filterToGenderID)
 
-			if not amateur
-				local countryCode:string = GetStationMapCollection().config.GetString("nameShort", "Unk")
+			If Not amateur
+				Local countryCode:String = GetStationMapCollection().config.GetString("nameShort", "Unk")
 				'try to use "map specific names"
-				if RandRange(0,100) < 25 or not GetPersonGenerator().HasProvider(countryCode)
+				If RandRange(0,100) < 25 Or Not GetPersonGenerator().HasProvider(countryCode)
 					countryCode = GetPersonGenerator().GetRandomCountryCode()
-				endif
+				EndIf
 
-				amateur = CreateRandomInsignificantPerson(countryCode, Max(0, filterToGenderID))
-			endif
+				amateur = GetPersonBaseCollection().CreateRandom(countryCode, Max(0, filterToGenderID))
+			EndIf
 
 			'print "check " + amateur.GetFullName() + "  " + amateur.GetAge() +"  fictional:"+amateur.fictional
 			'if not amateur.IsAlive() then print "skip: dead "+amateur.GetFullName()
 			'if not (amateur.GetAge() >= 10) then print "skip: too young "+amateur.GetFullName()
 			'if not amateur.fictional then print "skip: real "+amateur.GetFullName()
-		Until amateur.IsAlive() and amateur.fictional and amateur.bookable
+		Until amateur.IsAlive() And amateur.IsFictional() And amateur.IsBookable()
 
 		persons = [amateur] + persons
 
 		'disable list-sort
 		castSelectList.SetAutosortItems(False)
 
-		For local p:TProgrammePersonBase = EachIn persons
+		For Local p:TPersonBase = EachIn persons
 			'custom production not possible with real persons...
-			if not p.fictional then continue
+			If Not p.IsFictional() Then Continue
 			'also the person must be bookable for productions (maybe retired?)
-			if not p.bookable then continue
-			if not p.IsAlive() then continue
+			If Not p.IsBookable() Then Continue
+			If Not p.IsAlive() Then Continue
+
 			'we also want to avoid "children"
-			if TProgrammePerson(p) and p.GetAge() < 10 and p.GetAge() <> -1 then continue
+			If p.IsCelebrity() And p.GetAge() < 10 And p.GetAge() <> -1 Then Continue
 
 			'base items do not have a size - so we have to give a manual one
-			local item:TGUICastListItem = new TGUICastListItem.CreateSimple( p, selectJobID )
-			if p = amateur
-				if selectJobID > 0
-					item.displayName = GetLocale("JOB_AMATEUR_" + TVTProgrammePersonJob.GetAsString(selectJobID))
-				else
+			Local item:TGUICastListItem = New TGUICastListItem.CreateSimple( p, selectJobID )
+			If p = amateur
+				If selectJobID > 0
+					item.displayName = GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString(selectJobID))
+				Else
 					item.displayName = GetLocale("JOB_AMATEUR")
-				endif
+				EndIf
 				item.isAmateur = True
-			endif
+			EndIf
 			item.SetSize(180,40)
 			castSelectList.AddItem( item )
 		Next
@@ -1566,13 +1564,13 @@ Type TGUISelectCastWindow extends TGUIProductionModalWindow
 	Method DrawBackground()
 		Super.DrawBackground()
 
-		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
+		Local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
 
-		local outer:TRectangle = GetScreenRect().Copy() ')new TRectangle.Init(GetScreenRect().GetX(), GetScreenRect().GetY(), 200, 200)
-		local contentX:int = skin.GetContentX(outer.GetX())
-		local contentY:int = skin.GetContentY(outer.GetY())
-		local contentW:int = skin.GetContentW(outer.GetW())
-		local contentH:int = skin.GetContentH(outer.GetH())
+		Local outer:TRectangle = GetScreenRect().Copy() ')new TRectangle.Init(GetScreenRect().GetX(), GetScreenRect().GetY(), 200, 200)
+		Local contentX:Int = skin.GetContentX(outer.GetX())
+		Local contentY:Int = skin.GetContentY(outer.GetY())
+		Local contentW:Int = skin.GetContentW(outer.GetW())
+		Local contentH:Int = skin.GetContentH(outer.GetH())
 
 		skin.RenderContent(contentX, contentY, contentW, 38, "1_top")
 		skin.RenderContent(contentX, contentY+38, contentW, contentH-73, "1")
@@ -1584,7 +1582,7 @@ End Type
 
 
 
-Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
+Type TGUIProductionEditTextsModalWindow Extends TGUIProductionModalWindow
 	Field inputTitle:TGUIInput
 	Field inputDescription:TGUIInput
 	Field inputSubTitle:TGUIInput
@@ -1606,25 +1604,25 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 	Method Create:TGUIProductionEditTextsModalWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
-		labelTitle = new TGUILabel.Create(new TVec2D.Init(15,12), GetLocale("TITLE"), null, "")
-		labelDescription = new TGUILabel.Create(new TVec2D.Init(15,60), GetLocale("DESCRIPTION"), null, "")
-		labelEpisode = new TGUILabel.Create(new TVec2D.Init(15,115), GetLocale("EPISODE"), null, "")
+		labelTitle = New TGUILabel.Create(New TVec2D.Init(15,12), GetLocale("TITLE"), Null, "")
+		labelDescription = New TGUILabel.Create(New TVec2D.Init(15,60), GetLocale("DESCRIPTION"), Null, "")
+		labelEpisode = New TGUILabel.Create(New TVec2D.Init(15,115), GetLocale("EPISODE"), Null, "")
 		labelEpisode.SetFont( GetBitmapFontManager().Get("default", 13, BOLDFONT) )
-		labelSubTitle = new TGUILabel.Create(new TVec2D.Init(15,137), GetLocale("TITLE"), null, "")
-		labelSubDescription = new TGUILabel.Create(new TVec2D.Init(15,180), GetLocale("DESCRIPTION"), null, "")
+		labelSubTitle = New TGUILabel.Create(New TVec2D.Init(15,137), GetLocale("TITLE"), Null, "")
+		labelSubDescription = New TGUILabel.Create(New TVec2D.Init(15,180), GetLocale("DESCRIPTION"), Null, "")
 
-		inputTitle = new TGUIInput.Create(new TVec2D.Init(15,12+13), new TVec2D.Init(245,-1), GetLocale("TITLE"), 128, "")
-		inputDescription = new TGUIInput.Create(new TVec2D.Init(15,60+13), new TVec2D.Init(245,-1), GetLocale("DESCRIPTION"), 128, "")
-		inputSubTitle = new TGUIInput.Create(new TVec2D.Init(15,137+13), new TVec2D.Init(245,-1), GetLocale("TITLE"), 128, "")
-		inputSubDescription = new TGUIInput.Create(new TVec2D.Init(15,180+13), new TVec2D.Init(245,-1), GetLocale("DESCRIPTION"), 128, "")
+		inputTitle = New TGUIInput.Create(New TVec2D.Init(15,12+13), New TVec2D.Init(245,-1), GetLocale("TITLE"), 128, "")
+		inputDescription = New TGUIInput.Create(New TVec2D.Init(15,60+13), New TVec2D.Init(245,-1), GetLocale("DESCRIPTION"), 128, "")
+		inputSubTitle = New TGUIInput.Create(New TVec2D.Init(15,137+13), New TVec2D.Init(245,-1), GetLocale("TITLE"), 128, "")
+		inputSubDescription = New TGUIInput.Create(New TVec2D.Init(15,180+13), New TVec2D.Init(245,-1), GetLocale("DESCRIPTION"), 128, "")
 
-		clearTitle = new TGUIButton.Create(new TVec2D.Init(15+245, 12 + 13 + 2), new TVec2D.Init(25, 25), "x", "")
+		clearTitle = New TGUIButton.Create(New TVec2D.Init(15+245, 12 + 13 + 2), New TVec2D.Init(25, 25), "x", "")
 		clearTitle.spriteName = "gfx_gui_button.datasheet"
-		clearDescription = new TGUIButton.Create(new TVec2D.Init(15+245, 60 + 13 + 2), new TVec2D.Init(25, 25), "x", "")
+		clearDescription = New TGUIButton.Create(New TVec2D.Init(15+245, 60 + 13 + 2), New TVec2D.Init(25, 25), "x", "")
 		clearDescription.spriteName = "gfx_gui_button.datasheet"
-		clearSubTitle = new TGUIButton.Create(new TVec2D.Init(15+245, 137 + 13 + 2), new TVec2D.Init(25, 25), "x", "")
+		clearSubTitle = New TGUIButton.Create(New TVec2D.Init(15+245, 137 + 13 + 2), New TVec2D.Init(25, 25), "x", "")
 		clearSubTitle.spriteName = "gfx_gui_button.datasheet"
-		clearSubDescription = new TGUIButton.Create(new TVec2D.Init(15+245, 180 + 13 + 2), new TVec2D.Init(25, 26), "x", "")
+		clearSubDescription = New TGUIButton.Create(New TVec2D.Init(15+245, 180 + 13 + 2), New TVec2D.Init(25, 26), "x", "")
 		clearSubDescription.spriteName = "gfx_gui_button.datasheet"
 
 
@@ -1648,17 +1646,17 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 		buttonOK.SetValue(GetLocale("EDIT_TEXTS"))
 		buttonCancel.SetValue(GetLocale("CANCEL"))
 
-		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.onChange", self, "onChangeInputValues", "TGUIInput" ) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.onClick", self, "onClickClearInputButton", "TGUIButton") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.onChange", Self, "onChangeInputValues", "TGUIInput" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickClearInputButton", "TGUIButton") ]
 
-		Return self
+		Return Self
 	End Method
 
 
 	'override
-	Method Remove:int()
+	Method Remove:Int()
 		Super.Remove()
-		concept = null
+		concept = Null
 	End Method
 
 
@@ -1667,27 +1665,27 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 		Super.Open()
 
 		'read values
-		if concept
-			if concept.script.IsEpisode()
-				local seriesScript:TScript = concept.script.GetParentScript()
+		If concept
+			If concept.script.IsEpisode()
+				Local seriesScript:TScript = concept.script.GetParentScript()
 				inputTitle.SetValue(seriesScript.GetTitle())
 				inputDescription.SetValue(seriesScript.GetDescription())
 
 				inputSubTitle.SetValue(concept.script.GetTitle())
 				inputSubDescription.SetValue(concept.script.GetDescription())
-			else
+			Else
 				inputTitle.SetValue(concept.script.GetTitle())
 				inputDescription.SetValue(concept.script.GetDescription())
-			endif
-		endif
+			EndIf
+		EndIf
 	End Method
 
 
-	Method SetConcept:int(concept:TProductionConcept)
-		if not concept then return False
+	Method SetConcept:Int(concept:TProductionConcept)
+		If Not concept Then Return False
 
-		self.concept = concept
-		if concept.script.IsEpisode()
+		Self.concept = concept
+		If concept.script.IsEpisode()
 			inputSubDescription.Show()
 			inputSubTitle.Show()
 			clearSubTitle.Show()
@@ -1696,11 +1694,11 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 			labelSubTitle.Show()
 			labelEpisode.Show()
 
-			local seriesScript:TScript = concept.script.GetParentScript()
+			Local seriesScript:TScript = concept.script.GetParentScript()
 			labelEpisode.SetValue( GetLocale("EPISODE") +": "+(seriesScript.GetSubScriptPosition(concept.script)+1)+"/"+seriesScript.GetSubscriptCount() )
 
 			SetSize(-1,280)
-		else
+		Else
 			inputSubDescription.Hide()
 			inputSubTitle.Hide()
 			clearSubDescription.Hide()
@@ -1709,29 +1707,29 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 			labelSubTitle.Hide()
 			labelEpisode.Hide()
 			SetSize(-1,155)
-		endif
+		EndIf
 	End Method
 
 
 	Method DrawBackground()
 		Super.DrawBackground()
 
-		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
+		Local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
 
-		local outer:TRectangle = GetScreenRect().Copy()
-		local contentX:int = skin.GetContentX(outer.GetX())
-		local contentY:int = skin.GetContentY(outer.GetY())
-		local contentW:int = skin.GetContentW(outer.GetW())
-		local contentH:int = skin.GetContentH(outer.GetH())
+		Local outer:TRectangle = GetScreenRect().Copy()
+		Local contentX:Int = skin.GetContentX(outer.GetX())
+		Local contentY:Int = skin.GetContentY(outer.GetY())
+		Local contentW:Int = skin.GetContentW(outer.GetW())
+		Local contentH:Int = skin.GetContentH(outer.GetH())
 
 
-		if concept and concept.script.IsEpisode()
-			local topH:int = int((contentH - 35)/2.0) - 8
+		If concept And concept.script.IsEpisode()
+			Local topH:Int = Int((contentH - 35)/2.0) - 8
 			skin.RenderContent(contentX, contentY, contentW, topH, "1_top")
 			skin.RenderContent(contentX, contentY + topH, contentW, contentH - topH - 35, "1")
-		else
+		Else
 			skin.RenderContent(contentX, contentY, contentW, contentH - 35, "1_top")
-		endif
+		EndIf
 
 		skin.RenderContent(contentX, contentY+contentH-35, contentW, 35, "1_bottom")
 
@@ -1739,37 +1737,37 @@ Type TGUIProductionEditTextsModalWindow extends TGUIProductionModalWindow
 	End Method
 
 
-	Method onClickClearInputButton:int( triggerEvent:TEventBase )
-		local button:TGUIButton = TGUIButton( triggerEvent.GetSender() )
+	Method onClickClearInputButton:Int( triggerEvent:TEventBase )
+		Local button:TGUIButton = TGUIButton( triggerEvent.GetSender() )
 		Select button
-			case clearTitle
-				If inputTitle.GetValue() = "" and concept and concept.script
+			Case clearTitle
+				If inputTitle.GetValue() = "" And concept And concept.script
 					inputTitle.SetValue(concept.script.GetTitle())
 				Else
 					inputTitle.SetValue("")
 				EndIf
 				'TODO: setfocus
-			case clearSubTitle
+			Case clearSubTitle
 				inputSubTitle.SetValue("")
-			case clearDescription
+			Case clearDescription
 				inputDescription.SetValue("")
-			case clearSubDescription
+			Case clearSubDescription
 				inputSubDescription.SetValue("")
 		EndSelect
 	End Method
 
 
-	Method onChangeInputValues:int( triggerEvent:TEventBase )
-		local input:TGUIInput = TGUIInput( triggerEvent.GetSender() )
+	Method onChangeInputValues:Int( triggerEvent:TEventBase )
+		Local Input:TGUIInput = TGUIInput( triggerEvent.GetSender() )
 
-		Select input
-			case inputTitle
+		Select Input
+			Case inputTitle
 				'restore original title when empty?
-			case inputSubTitle
+			Case inputSubTitle
 				'restore original title when empty?
-			case inputDescription
+			Case inputDescription
 				'restore original description when empty?
-			case inputSubDescription
+			Case inputSubDescription
 				'restore original description when empty?
 		EndSelect
 	End Method
@@ -1777,31 +1775,31 @@ End Type
 
 
 
-Type TGUICastSelectList extends TGUISelectList
+Type TGUICastSelectList Extends TGUISelectList
 	'the job/gender the selection list is used for
-	Field selectJobID:int = -1
-	Field selectGenderID:int = -1
+	Field selectJobID:Int = -1
+	Field selectGenderID:Int = -1
 	'the job/gender the selection is currently filtered for
-	Field filteredJobID:int = -1
-	Field filteredGenderID:int = -1
+	Field filteredJobID:Int = -1
+	Field filteredGenderID:Int = -1
 	Field _eventListeners:TEventListenerBase[]
 
 
-    Method Create:TGUICastSelectList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
+    Method Create:TGUICastSelectList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
-		return self
+		Return Self
 	End Method
 
 
 	Method Remove:Int()
 		EventManager.UnregisterListenersArray(_eventListeners)
-		return Super.Remove()
+		Return Super.Remove()
 	End Method
 
 
-	Method GetJobID:int(entry:TGUIListItem)
-		return selectJobID
+	Method GetJobID:Int(entry:TGUIListItem)
+		Return selectJobID
 	End Method
 End Type
 
@@ -1810,133 +1808,133 @@ End Type
 
 Type TGUICastSlotList Extends TGUISlotList
 	'contains job for each slot
-	Field slotJob:TProgrammePersonJob[]
+	Field slotJob:TPersonProductionJob[]
 	Field _eventListeners:TEventListenerBase[]
 	Field selectCastWindow:TGUISelectCastWindow
 	'the currently clicked/selected slot for a cast selection
-	Field selectCastSlot:int = -1
+	Field selectCastSlot:Int = -1
 
 
-    Method Create:TGUICastSlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
+    Method Create:TGUICastSlotList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guiModalWindow.onClose", self, "onCloseSelectCastWindow", "TGUISelectCastWindow") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "guiModalWindow.onClose", Self, "onCloseSelectCastWindow", "TGUISelectCastWindow") ]
 
-		return self
+		Return Self
 	End Method
 
 
-	Method SelectCastWindowIsOpen:int()
-		if not selectCastWindow then return False
-		return not selectCastWindow.IsClosed()
+	Method SelectCastWindowIsOpen:Int()
+		If Not selectCastWindow Then Return False
+		Return Not selectCastWindow.IsClosed()
 	End Method
 
 
 	Method Remove:Int()
 		EventManager.UnregisterListenersArray(_eventListeners)
-		return Super.Remove()
+		Return Super.Remove()
 	End Method
 
 
 	'override
 	Method SetItemLimit:Int(limit:Int)
-		if not slotJob
-			slotJob = new TProgrammePersonJob[ limit ]
-		else
+		If Not slotJob
+			slotJob = New TPersonProductionJob[ limit ]
+		Else
 			slotJob = slotJob[.. limit]
-		endif
-		return Super.SetItemLimit(limit)
+		EndIf
+		Return Super.SetItemLimit(limit)
 	End Method
 
 
-	Method SetSlotJob:int(job:TProgrammePersonJob, slotIndex:int)
-		if slotIndex < 0 or slotIndex >= slotJob.length then return False
+	Method SetSlotJob:Int(job:TPersonProductionJob, slotIndex:Int)
+		If slotIndex < 0 Or slotIndex >= slotJob.length Then Return False
 
-		if not slotJob then slotJob = new TProgrammePersonJob[0]
+		If Not slotJob Then slotJob = New TPersonProductionJob[0]
 		slotJob[slotIndex] = job
 	End Method
 
 
-	Method GetSlotJob:TProgrammePersonJob(slotIndex:int)
-		if not slotJob or slotIndex < 0 or slotIndex >= slotJob.length then return null
-		return slotJob[slotIndex]
+	Method GetSlotJob:TPersonProductionJob(slotIndex:Int)
+		If Not slotJob Or slotIndex < 0 Or slotIndex >= slotJob.length Then Return Null
+		Return slotJob[slotIndex]
 	End Method
 
 
-	Method GetSlotJobID:int(slotIndex:int)
-		local j:TProgrammePersonJob = GetSlotJob(slotIndex)
+	Method GetSlotJobID:Int(slotIndex:Int)
+		Local j:TPersonProductionJob = GetSlotJob(slotIndex)
 
-		if j then return j.job
+		If j Then Return j.job
 
-		return 0
+		Return 0
 	End Method
 
 
 	'override
 	Method EmptyList:Int()
-		slotJob = new TProgrammePersonJob[0]
+		slotJob = New TPersonProductionJob[0]
 
-		return Super.EmptyList()
+		Return Super.EmptyList()
 	End Method
 
 
-	Method GetSlotCast:TProgrammePersonBase(slotIndex:int)
-		local oldItem:TGUICastListItem = TGUICastListItem(GetItemBySlot(slotIndex))
-		if not oldItem then return Null
-		return oldItem.person
+	Method GetSlotCast:TPersonBase(slotIndex:Int)
+		Local oldItem:TGUICastListItem = TGUICastListItem(GetItemBySlot(slotIndex))
+		If Not oldItem Then Return Null
+		Return oldItem.person
 	End Method
 
 
-	Method SetSlotCast(slotIndex:int, person:TProgrammePersonBase)
-		if slotIndex < 0 or GetSlotAmount() <= slotIndex then return
+	Method SetSlotCast(slotIndex:Int, person:TPersonBase)
+		If slotIndex < 0 Or GetSlotAmount() <= slotIndex Then Return
 		'skip if already done
-		if GetSlotCast(slotIndex) = person then return
+		If GetSlotCast(slotIndex) = person Then Return
 
 		'remove a potential gui list item
-		local i:TGUICastListItem = TGUICastListItem(GetItemBySlot(slotIndex))
-		if i
-			if i.person = person then return
+		Local i:TGUICastListItem = TGUICastListItem(GetItemBySlot(slotIndex))
+		If i
+			If i.person = person Then Return
 			i.remove()
 			'RemoveItem(i)
-		endif
+		EndIf
 
 
-		if person
+		If person
 			'create gui even without a valid jobID (0).
 
 			'print "SetSlotCast: AddItem " + slotIndex +"  "+person.GetFullName()
-			i = new TGUICastListItem.CreateSimple(person, GetSlotJobID(slotIndex) )
+			i = New TGUICastListItem.CreateSimple(person, GetSlotJobID(slotIndex) )
 			'hide the name of amateurs
-			if not TProgrammePerson(person) then i.isAmateur = True
+			If Not person.IsCelebrity() Then i.isAmateur = True
 			i.SetOption(GUI_OBJECT_DRAGABLE, True)
-		else
-			i = null
-		endif
+		Else
+			i = Null
+		EndIf
 
-		AddItem( i, string(slotIndex) )
+		AddItem( i, String(slotIndex) )
 	End Method
 
 
-	Method OpenSelectCastWindow(job:int, gender:int=-1)
-		if selectCastWindow then selectCastWindow.Remove()
+	Method OpenSelectCastWindow(job:Int, gender:Int=-1)
+		If selectCastWindow Then selectCastWindow.Remove()
 
 		selectCastWindow = New TGUISelectCastWindow.Create(New TVec2D.Init(250,60), New TVec2D.Init(300,270), _limitToState+"_modal")
 		selectCastWindow.SetZIndex(100000)
 		selectCastWindow.selectJobID = job
 		selectCastWindow.listOnlyJobID = job
 		selectCastWindow.listOnlyGenderID = gender
-		selectCastWindow.screenArea = new TRectangle.Init(0,0, 800, 383)
+		selectCastWindow.screenArea = New TRectangle.Init(0,0, 800, 383)
 		selectCastWindow.Open() 'loads the cast
 		GuiManager.Add(selectCastWindow)
 	End Method
 
 
-	Method GetJobID:int(entry:TGUIListItem)
-		local slotIndex:int = getSlot(entry)
-		if slotIndex = -1 then return 0
-		local job:TProgrammePersonJob = GetSlotJob(slotIndex)
-		if job then return job.job
-		return 0
+	Method GetJobID:Int(entry:TGUIListItem)
+		Local slotIndex:Int = getSlot(entry)
+		If slotIndex = -1 Then Return 0
+		Local job:TPersonProductionJob = GetSlotJob(slotIndex)
+		If job Then Return job.job
+		Return 0
 	End Method
 
 
@@ -1944,31 +1942,31 @@ Type TGUICastSlotList Extends TGUISlotList
 	'react to clicks to empty slots
 	Method onClick:Int(triggerEvent:TEventBase)
 		'only interested in left click
-		if triggerEvent.GetData().GetInt("button") <> 1 then return False
+		If triggerEvent.GetData().GetInt("button") <> 1 Then Return False
 
-		local coord:TVec2D = TVec2D(triggerEvent.GetData().Get("coord"))
-		if not coord then return False
+		Local coord:TVec2D = TVec2D(triggerEvent.GetData().Get("coord"))
+		If Not coord Then Return False
 
 		selectCastSlot = GetSlotByCoord(coord, True)
-		if selectCastSlot >= 0 and TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept
-			local jobID:int = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.cast[selectCastSlot].job
-			local genderID:int = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.cast[selectCastSlot].gender
+		If selectCastSlot >= 0 And TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept
+			Local jobID:Int = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.jobs[selectCastSlot].job
+			Local genderID:Int = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.jobs[selectCastSlot].gender
 			OpenSelectCastWindow(jobID, genderID)
-		endif
+		EndIf
 	End Method
 
 
-	Method Update:int()
+	Method Update:Int()
 		'window is "modal"
-		if selectCastWindow
+		If selectCastWindow
 '			selectCastWindow.Update()
-			if selectCastWindow.IsClosed()
+			If selectCastWindow.IsClosed()
 				GuiManager.Remove(selectCastWindow)
-				selectCastWindow = null
-			endif
-		else
+				selectCastWindow = Null
+			EndIf
+		Else
 			Super.Update()
-		endif
+		EndIf
 	End Method
 
 
@@ -1982,43 +1980,43 @@ Type TGUICastSlotList Extends TGUISlotList
 
 
 
-		if RestrictViewport()
+		If RestrictViewport()
 			SetAlpha 0.5 * GetAlpha()
 
 			Local atPoint:TVec2D = GetScreenRect().position
 
-			For local slot:int = 0 until _slots.length
+			For Local slot:Int = 0 Until _slots.length
 			'	local pos:TVec3D = GetSlotOrCoord(slot)
-				if _slots[slot] then continue
-				if slotJob.length < slot then continue
+				If _slots[slot] Then Continue
+				If slotJob.length < slot Then Continue
 
-				local coord:TVec3D = GetSlotCoord(slot)
+				Local coord:TVec3D = GetSlotCoord(slot)
 
-				local job:TProgrammePersonJob = GetSlotJob(slot)
+				Local job:TPersonProductionJob = GetSlotJob(slot)
 
-				local genderHint:string
-				if job
+				Local genderHint:String
+				If job
 	'				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
 
-					if job.gender = TVTPersonGender.MALE
+					If job.gender = TVTPersonGender.MALE
 						genderHint = " ("+GetLocale("MALE")+")"
-					elseif job.gender = TVTPersonGender.FEMALE
+					ElseIf job.gender = TVTPersonGender.FEMALE
 						genderHint = " ("+GetLocale("FEMALE")+")"
-					endif
-				endif
+					EndIf
+				EndIf
 
 	'TODO: nur zeichnen, wenn innerhalb "panel rect"
-				if MouseManager._ignoreFirstClick 'touch mode
-'					TGUICastListItem.DrawCast(atPoint.GetX() + pos.getX(), atPoint.GetY() + pos.getY(), _slotMinDimension.getX(), GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), null, 0,0,0)
-					TGUICastListItem.DrawCast(GetScreenRect().GetX() + coord.GetX(), GetScreenRect().GetY() + coord.GetY(), guiEntriesPanel.GetContentScreenRect().GetW()-2, GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), null, 0,0,0)
-				else
-					TGUICastListItem.DrawCast(GetScreenRect().GetX() + coord.GetX(), GetScreenRect().GetY() + coord.GetY(), guiEntriesPanel.GetContentScreenRect().GetW()-2, GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("CLICK_TO_SELECT_PERSON"), null, 0,0,0)
-				endif
+				If MouseManager._ignoreFirstClick 'touch mode
+'					TGUICastListItem.DrawCast(atPoint.GetX() + pos.getX(), atPoint.GetY() + pos.getY(), _slotMinDimension.getX(), GetLocale("JOB_" + TVTPersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), null, 0,0,0)
+					TGUICastListItem.DrawCast(GetScreenRect().GetX() + coord.GetX(), GetScreenRect().GetY() + coord.GetY(), guiEntriesPanel.GetContentScreenRect().GetW()-2, GetLocale("JOB_" + TVTPersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), Null, 0,0,0)
+				Else
+					TGUICastListItem.DrawCast(GetScreenRect().GetX() + coord.GetX(), GetScreenRect().GetY() + coord.GetY(), guiEntriesPanel.GetContentScreenRect().GetW()-2, GetLocale("JOB_" + TVTPersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("CLICK_TO_SELECT_PERSON"), Null, 0,0,0)
+				EndIf
 			Next
 			SetAlpha 2.0 * GetAlpha()
 
 			ResetViewPort()
-		endif
+		EndIf
 
 
 '		if selectCastWindow then selectCastWindow.Draw()
@@ -2026,33 +2024,33 @@ Type TGUICastSlotList Extends TGUISlotList
 
 
 
-	Method onCloseSelectCastWindow:int( triggerEvent:TEventBase )
-		local closeButton:int = triggerEvent.GetData().GetInt("closeButton", -1)
-		if closeButton <> 1 then return False
+	Method onCloseSelectCastWindow:Int( triggerEvent:TEventBase )
+		Local closeButton:Int = triggerEvent.GetData().GetInt("closeButton", -1)
+		If closeButton <> 1 Then Return False
 
-		local person:TProgrammePersonBase = selectCastWindow.GetSelectedPerson()
-		if person
+		Local person:TPersonBase = selectCastWindow.GetSelectedPerson()
+		If person
 			SetSlotCast(selectCastSlot, person)
-		endif
+		EndIf
 	End Method
 
 
 	'override default event handler
-	Function onDropOnTarget:int( triggerEvent:TEventBase )
+	Function onDropOnTarget:Int( triggerEvent:TEventBase )
 		'adjust cast slots...
-		if Super.onDropOnTarget( triggerEvent )
-			local item:TGUICastListItem = TGUICastListItem(triggerEvent.GetSender())
-			if not item then return False
+		If Super.onDropOnTarget( triggerEvent )
+			Local item:TGUICastListItem = TGUICastListItem(triggerEvent.GetSender())
+			If Not item Then Return False
 
-			local list:TGUICastSlotList = TGUICastSlotList(triggerEvent.GetReceiver())
-			if not list then return False
+			Local list:TGUICastSlotList = TGUICastSlotList(triggerEvent.GetReceiver())
+			If Not list Then Return False
 
-			local slotNumber:int = list.getSlot(item)
+			Local slotNumber:Int = list.getSlot(item)
 
 			list.SetSlotCast(slotNumber, item.person)
-		endif
+		EndIf
 
-		return TRUE
+		Return True
 	End Function
 End Type
 
@@ -2060,31 +2058,33 @@ End Type
 
 
 Type TGUICastListItem Extends TGUISelectListItem
-	Field person:TProgrammePersonBase
-	Field displayName:string = ""
-	Field isAmateur:int = False
+	Field person:TPersonBase
+	Field displayName:String = ""
+	Field isAmateur:Int = False
 	'the job this list item is "used for" (the dropdown-filter)
-	Field displayJobID:int = -1
-	Field lastDisplayJobID:int = -1
-	Field selectJobID:int = -1
+	Field displayJobID:Int = -1
+	Field lastDisplayJobID:Int = -1
+	Field selectJobID:Int = -1
 
-	Global yearColor:TColor = new TColor.Create(80,80,80, 0.8)
+	Global yearColor:TColor = New TColor.Create(80,80,80, 0.8)
 
 	Const paddingBottom:Int	= 5
 	Const paddingTop:Int = 0
 
 
-	Method CreateSimple:TGUICastListItem(person:TProgrammePersonBase, displayJobID:int)
+	Method CreateSimple:TGUICastListItem(person:TPersonBase, displayJobID:Int)
+		If not person Then Throw "TGUICastListItem.CreateSimple() - no person passed"
+
 		'make it "unique" enough
 		Self.Create(Null, Null, person.GetFullName())
 
-		self.displayName = person.GetFullName()
-		self.person = person
-		self.isAmateur = False
+		Self.displayName = person.GetFullName()
+		Self.person = person
+		Self.isAmateur = False
 
-		self.displayJobID = -1
-		self.selectJobID = displayJobID
-		self.lastDisplayJobID = displayJobID
+		Self.displayJobID = -1
+		Self.selectJobID = displayJobID
+		Self.lastDisplayJobID = displayJobID
 
 		'resize it
 		GetDimension()
@@ -2106,69 +2106,69 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 
 	'override
-	Method onFinishDrag:int(triggerEvent:TEventBase)
-		if Super.OnFinishDrag(triggerEvent)
+	Method onFinishDrag:Int(triggerEvent:TEventBase)
+		If Super.OnFinishDrag(triggerEvent)
 			'invalidate displayJobID
 			'print "invalidate jobID"
 			displayJobID = -1
-			return true
-		else
-			return false
-		endif
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 
 
 	'override
-	Method onFinishDrop:int(triggerEvent:TEventBase)
-		if Super.OnFinishDrop(triggerEvent)
+	Method onFinishDrop:Int(triggerEvent:TEventBase)
+		If Super.OnFinishDrop(triggerEvent)
 			'refresh displayJobID
 			displayJobID = -1
 			GetDisplayJobID()
-			return true
-		else
-			return false
-		endif
+			Return True
+		Else
+			Return False
+		EndIf
 	End Method
 
 
-	Method GetDisplayJobID:int()
+	Method GetDisplayJobID:Int()
 		'refresh displayJobID
-		if displayJobID = -1
-			local parentList:TGUIListBase = TGUIListBase.FindGUIListBaseParent(self._parent)
+		If displayJobID = -1
+			Local parentList:TGUIListBase = TGUIListBase.FindGUIListBaseParent(Self._parent)
 
 			'dragged ()items use their backup or the underlaying slot list
 			If (Self._flags & GUI_OBJECT_DRAGGED)
 				'only check items from the slot lists, not the select ones
-				if TGUICastSlotList(parentList)
-					local slotListSlot:int = TScreenHandler_SupermarketProduction.GetInstance().castSlotList.GetSlotByCoord( MouseManager.GetPosition() )
-					if slotListSlot >= 0
-						local slotJob:int = TGUICastSlotList(parentList).GetSlotJobID(slotListSlot)
-						if slotJob > 0
-							return TGUICastSlotList(parentList).GetSlotJobID(slotListSlot)
-						else
-							return lastDisplayJobID
-						endif
-					endif
-				endif
+				If TGUICastSlotList(parentList)
+					Local slotListSlot:Int = TScreenHandler_SupermarketProduction.GetInstance().castSlotList.GetSlotByCoord( MouseManager.GetPosition() )
+					If slotListSlot >= 0
+						Local slotJob:Int = TGUICastSlotList(parentList).GetSlotJobID(slotListSlot)
+						If slotJob > 0
+							Return TGUICastSlotList(parentList).GetSlotJobID(slotListSlot)
+						Else
+							Return lastDisplayJobID
+						EndIf
+					EndIf
+				EndIf
 
-				return lastDisplayJobID
-			endif
+				Return lastDisplayJobID
+			EndIf
 
 
-			if TGUICastSelectList(parentList)
+			If TGUICastSelectList(parentList)
 				'displayJobID = TGUICastSelectList(parentList).GetJobID(self)
 				displayJobID = TGUICastSelectList(parentList).filteredJobID
-			elseif TGUICastSlotList(parentList)
-				displayJobID = TGUICastSlotList(parentList).GetJobID(self)
+			ElseIf TGUICastSlotList(parentList)
+				displayJobID = TGUICastSlotList(parentList).GetJobID(Self)
 				'print "slot: displayJobID = "+displayJobID
-			else
+			Else
 				'print "unknown: displayJobID = "+displayJobID
-			endif
+			EndIf
 
-			if displayJobID = 0 then displayJobID = lastDisplayJobID
-		endif
+			If displayJobID = 0 Then displayJobID = lastDisplayJobID
+		EndIf
 
-		return displayJobID
+		Return displayJobID
 	End Method
 
 
@@ -2205,23 +2205,22 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 	'override
 	Method DrawValue()
-		local xpPercentage:float = 0.0
-		if TProgrammePerson(person) then xpPercentage = TProgrammePerson(person).GetEffectiveExperiencePercentage( GetDisplayJobID() )
-		local sympathyPercentage:float = 0.0
-		if TProgrammePerson(person) then sympathyPercentage = TProgrammePerson(person).GetChannelSympathy( GetPlayerBase().playerID )
+		if not person then Throw "TGUICastListItem.DrawValue() - no person assigned"
+		
+		Local xpPercentage:Float = person.GetEffectiveJobExperiencePercentage( GetDisplayJobID() )
+		Local sympathyPercentage:Float = person.GetChannelSympathy( GetPlayerBase().playerID )
 
-		local name:string = displayName
-		if isAmateur and not isDragged()
-			if GetDisplayJobID() > 0
-				name = GetLocale("JOB_AMATEUR_" + TVTProgrammePersonJob.GetAsString( GetDisplayJobID() ))
-			else
+		Local name:String = displayName
+		If isAmateur And Not isDragged()
+			If GetDisplayJobID() > 0 and TVTPersonJob.IsCastJob( GetDisplayJobID() )
+				name = GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString( GetDisplayJobID() ))
+			Else
 				name = GetLocale("JOB_AMATEUR")
-			endif
+			EndIf
 			displayName = name
-		endif
+		EndIf
 
-		local face:TImage
-		if TProgrammePerson(person) then face = TProgrammePerson(person).GetFigureImage()
+		Local face:TImage = TImage(person.GetPersonalityData().GetFigureImage())
 		DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, "", face, xpPercentage, sympathyPercentage, 1)
 
 		If isHovered()
@@ -2237,7 +2236,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 
 	Method DrawContent()
-		if isSelected()
+		If isSelected()
 			SetColor 245,230,220
 			Super.DrawContent()
 
@@ -2249,46 +2248,46 @@ Type TGUICastListItem Extends TGUISelectListItem
 			SetAlpha GetAlpha() * 10
 
 			SetColor 255,255,255
-		else
+		Else
 			Super.DrawContent()
-		endif
+		EndIf
 	End Method
 
 
 	Method DrawDatasheet(leftX:Float=30, rightX:Float=30)
 		Local sheetY:Float 	= 20
-		Local sheetX:Float 	= int(leftX)
+		Local sheetX:Float 	= Int(leftX)
 		Local sheetAlign:Int= 0
 		If MouseManager.x < GetGraphicsManager().GetWidth()/2
-			sheetX = GetGraphicsManager().GetWidth() - int(rightX)
+			sheetX = GetGraphicsManager().GetWidth() - Int(rightX)
 			sheetAlign = 1
 		EndIf
 
 		SetColor 0,0,0
 		SetAlpha 0.2
-		local sheetCenterX:Float = sheetX
-		if sheetAlign = 0
+		Local sheetCenterX:Float = sheetX
+		If sheetAlign = 0
 			sheetCenterX :+ 250/2 '250 is sheetWidth
-		else
+		Else
 			sheetCenterX :- 250/2 '250 is sheetWidth
-		endif
+		EndIf
 		Local tri:Float[]=[sheetCenterX,sheetY+25, sheetCenterX,sheetY+90, GetScreenRect().GetX() + GetScreenRect().GetW()/2.0, GetScreenRect().GetY() + GetScreenRect().GetH()/2.0]
 		DrawPoly(tri)
 		SetColor 255,255,255
 		SetAlpha 1.0
 
-		local jobID:int = selectJobID
-		if jobID = -1 then jobID = GetDisplayJobID()
-		if TProgrammePerson(person)
-			ShowCastSheet(person, jobID, sheetX, sheetY, sheetAlign, FALSE)
-		else
+		Local jobID:Int = selectJobID
+		If jobID = -1 Then jobID = GetDisplayJobID()
+		If person.IsCelebrity()
+			ShowCastSheet(person, jobID, sheetX, sheetY, sheetAlign, False)
+		Else
 			'hide person name etc for non-celebs
-			ShowCastSheet(person, jobID, sheetX, sheetY, sheetAlign, TRUE)
-		endif
+			ShowCastSheet(person, jobID, sheetX, sheetY, sheetAlign, True)
+		EndIf
 	End Method
 
 
-	Function DrawCast(x:Float, y:Float, w:Float, name:string, nameHint:string="", face:object=null, xp:float, sympathy:float, mood:int)
+	Function DrawCast(x:Float, y:Float, w:Float, name:String, nameHint:String="", face:Object=Null, xp:Float, sympathy:Float, mood:Int)
 		'Draw name bg
 		'Draw xp bg + front bar
 		'Draw sympathy bg + front bar
@@ -2297,17 +2296,17 @@ Type TGUICastListItem Extends TGUISelectListItem
 		'render text
 
 		'avoid rendering on subpixels (sometimes renders ninepatch borders ...)
-		x = int(x)
-		y = int(y)
+		x = Int(x)
+		y = Int(y)
 
-		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
-		local nameSprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_cast_name")
-		local iconSprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_cast_icon")
+		Local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
+		Local nameSprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_cast_name")
+		Local iconSprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_cast_icon")
 
-		local nameOffsetX:int = 34, nameOffsetY:int = 3
-		local nameTextOffsetX:int = 38
-		local barOffsetX:int = 34, barOffsetY:int = nameOffsetY + nameSprite.GetHeight()
-		local barH:int = skin.GetBarSize(100,-1, "cast_bar_xp").GetY()
+		Local nameOffsetX:Int = 34, nameOffsetY:Int = 3
+		Local nameTextOffsetX:Int = 38
+		Local barOffsetX:Int = 34, barOffsetY:Int = nameOffsetY + nameSprite.GetHeight()
+		Local barH:Int = skin.GetBarSize(100,-1, "cast_bar_xp").GetY()
 
 		'=== NAME ===
 		'face/icon-area covers 36px + shadow, place bar a bit "below"
@@ -2315,31 +2314,31 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 
 		'=== BARS ===
-		if nameHint = ""
+		If nameHint = ""
 			skin.RenderBar(x + nameOffsetX, y + barOffsetY, 200, -1, xp, -1.0, "cast_bar_xp")
 			skin.RenderBar(x + nameOffsetX, y + barOffsetY + barH, 200, -1, sympathy, -1.0, "cast_bar_sympathy")
-		endif
+		EndIf
 
 		'=== FACE / ICON ===
 		iconSprite.Draw(x, y)
 
-		'maybe "TProgrammePersonBase.GetFace()" ?
-		if TSprite(face)
+		'maybe "TPersonBase.GetFace()" ?
+		If TSprite(face)
 			TSprite(face).Draw(x+5, y+3)
-		else
-			if TImage(face)
+		Else
+			If TImage(face)
 				DrawImageArea(TImage(face), x+1, y+3, 2, 4, 34, 33)
 				'DrawImage(TProgrammePerson(person).GetFigureImage(), GetScreenRect().GetX(), GetScreenRect().GetY())
-			endif
-		endif
+			EndIf
+		EndIf
 
-		if name or nameHint
-			local border:TRectangle = nameSprite.GetNinePatchContentBorder()
+		If name Or nameHint
+			Local border:TRectangle = nameSprite.GetNinePatchContentBorder()
 
-			local oldCol:TColor = new TColor.Get()
+			Local oldCol:TColor = New TColor.Get()
 
 			SetAlpha( Max(0.6, oldCol.a) )
-			if name
+			If name
 				skin.fontSemiBold.drawBlock( ..
 					name, ..
 					x + nameTextOffsetX + border.GetLeft(), ..
@@ -2347,10 +2346,10 @@ Type TGUICastListItem Extends TGUISelectListItem
 					w - nameTextOffsetX - (border.GetRight() + border.GetLeft()),  ..
 					Max(15, nameSprite.GetHeight() - (border.GetTop() + border.GetBottom())), ..
 					ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			endif
+			EndIf
 
 			SetAlpha( Max(0.6, oldCol.a) )
-			if nameHint
+			If nameHint
 				skin.fontNormal.drawBlock( ..
 					nameHint, ..
 					x + nameTextOffsetX + border.GetLeft(), ..
@@ -2358,53 +2357,50 @@ Type TGUICastListItem Extends TGUISelectListItem
 					w - nameTextOffsetX - (border.GetRight() + border.GetLeft()),  ..
 					Max(15, nameSprite.GetHeight() - (border.GetTop() + border.GetBottom())), ..
 					ALIGN_RIGHT_CENTER, skin.textColorNeutral)
-			endif
+			EndIf
 
 			SetAlpha (oldCol.a)
-		endif
+		EndIf
 	End Function
 
 
-	Function ShowCastSheet:Int(cast:TProgrammePersonBase, jobID:int=-1, x:Float,y:Float, align:int=0, showAmateurInformation:int = False)
+	Function ShowCastSheet:Int(person:TPersonBase, jobID:Int=-1, x:Float,y:Float, align:Int=0, showAmateurInformation:Int = False)
 		'=== PREPARE VARIABLES ===
-		local sheetWidth:int = 250
-		local sheetHeight:int = 0 'calculated later
+		Local sheetWidth:Int = 250
+		Local sheetHeight:Int = 0 'calculated later
 		'move sheet to left when right-aligned
-		if align = 1 then x = x - sheetWidth
+		If align = 1 Then x = x - sheetWidth
 
-		local skin:TDatasheetSkin = GetDatasheetSkin("cast")
-		local contentW:int = skin.GetContentW(sheetWidth)
-		local contentX:int = int(x) + skin.GetContentX()
-		local contentY:int = int(y) + skin.GetContentY()
-
-		local celebrity:TProgrammePerson = TProgrammePerson(cast)
-
+		Local skin:TDatasheetSkin = GetDatasheetSkin("cast")
+		Local contentW:Int = skin.GetContentW(sheetWidth)
+		Local contentX:Int = Int(x) + skin.GetContentX()
+		Local contentY:Int = Int(y) + skin.GetContentY()
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
-		local titleH:int = 18, jobDescriptionH:int = 16, lifeDataH:int = 15, lastProductionEntryH:int = 15, lastProductionsH:int = 50
-		local splitterHorizontalH:int = 6
-		local boxH:int = 0, barH:int = 0
-		local boxAreaH:int = 0, barAreaH:int = 0, msgAreaH:int = 0
-		local boxAreaPaddingY:int = 4, barAreaPaddingY:int = 4
+		Local titleH:Int = 18, jobDescriptionH:Int = 16, lifeDataH:Int = 15, lastProductionEntryH:Int = 15, lastProductionsH:Int = 50
+		Local splitterHorizontalH:Int = 6
+		Local boxH:Int = 0, barH:Int = 0
+		Local boxAreaH:Int = 0, barAreaH:Int = 0, msgAreaH:Int = 0
+		Local boxAreaPaddingY:Int = 4, barAreaPaddingY:Int = 4
 
-		if showAmateurInformation
+		If showAmateurInformation
 			jobDescriptionH = 0
 			lifeDataH = 0
 			lastProductionsH = 0
 
 			'bereich fuer hinweis einfuehren -- dass  es sich um einen
 			'non-celeb handelt der "Erfahrung" sammelt
-		endif
+		EndIf
 
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
 		barH = skin.GetBarSize(100, -1).GetY()
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(cast.GetFullName(), contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(person.GetFullName(), contentW - 10, 100))
 
 		'bar area starts with padding, ends with padding and contains
 		'also contains 8 bars
-		if celebrity and not showAmateurInformation
+		If person.IsCelebrity() And Not showAmateurInformation
 			barAreaH = 2 * barAreaPaddingY + 7 * (barH + 2)
-		endif
+		EndIf
 
 		'box area
 		'contains 1 line of boxes + padding at the top
@@ -2418,68 +2414,72 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-			local title:string = cast.GetFullName()
-			if showAmateurInformation
+			Local title:String = person.GetFullName()
+			If showAmateurInformation
 				title = GetLocale("JOB_AMATEUR")
-			endif
+			EndIf
 
-			if titleH <= 18
+			If titleH <= 18
 				GetBitmapFont("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY -1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			else
+			Else
 				GetBitmapFont("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY +1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			endif
+			EndIf
 		contentY :+ titleH
 
 
-		if not showAmateurInformation
+		If Not showAmateurInformation
 			'=== JOB DESCRIPTION AREA ===
-			if jobDescriptionH > 0
+			If jobDescriptionH > 0
 				skin.RenderContent(contentX, contentY, contentW, jobDescriptionH, "1")
 
-				local firstJobID:int = -1
-				for local jobIndex:int = 1 to TVTProgrammePersonJob.Count
-					local jobID:int = TVTProgrammePersonJob.GetAtIndex(jobIndex)
-					if not cast.HasJob(jobID) then continue
+				Local firstJobID:Int = -1
+				For Local jobIndex:Int = 1 To TVTPersonJob.Count
+					Local jobID:Int = TVTPersonJob.GetAtIndex(jobIndex)
+					If Not person.HasJob(jobID) Then Continue
 
 					firstJobID = jobID
-					exit
-				next
+					Exit
+				Next
 
-				local genre:int = cast.GetTopGenre()
-				local genreText:string = ""
-				if genre >= 0 then genreText = GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(genre))
-				if genreText then genreText = "~q" + genreText+"~q-"
-
-				if firstJobID >= 0
-					'add genre if you know the job
-					skin.fontNormal.drawBlock(genreText + GetLocale("JOB_"+TVTProgrammePersonJob.GetAsString(firstJobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-				else
-					'use the given jobID but declare as amateur
-					if jobID > 0
-						skin.fontNormal.drawBlock(GetLocale("JOB_AMATEUR_"+TVTProgrammePersonJob.GetAsString(jobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-					else
-						skin.fontNormal.drawBlock(GetLocale("JOB_AMATEUR"), contentX + 5, contentY, contentW - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-					endif
+				Local genre:Int = 0
+				if person.GetProductionData() 
+					genre = person.GetProductionData().GetTopGenre()
 				endif
 
+				Local genreText:String = ""
+				If genre >= 0 Then genreText = GetLocale("PROGRAMME_GENRE_" + TVTProgrammeGenre.GetAsString(genre))
+				If genreText Then genreText = "~q" + genreText+"~q-"
+
+				If firstJobID >= 0
+					'add genre if you know the job
+					skin.fontNormal.drawBlock(genreText + GetLocale("JOB_"+TVTPersonJob.GetAsString(firstJobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				Else
+					'use the given jobID but declare as amateur
+					If jobID > 0
+						skin.fontNormal.drawBlock(GetLocale("JOB_AMATEUR_"+TVTPersonJob.GetAsString(jobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+					Else
+						skin.fontNormal.drawBlock(GetLocale("JOB_AMATEUR"), contentX + 5, contentY, contentW - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+					EndIf
+				EndIf
+
 				contentY :+ jobDescriptionH
-			endif
+			EndIf
 
 
 			'=== LIFE DATA AREA ===
 			skin.RenderContent(contentX, contentY, contentW, lifeDataH, "1")
 			'splitter
 			GetSpriteFromRegistry("gfx_datasheet_content_splitterV").DrawArea(contentX + 5 + 165, contentY, 2, jobDescriptionH)
-			local latinCross:string = Chr(10013) '† = &#10013 ---NOT--- &#8224; (the dagger-cross)
-			if celebrity
-				local dob:String = GetWorldTime().GetFormattedDate( GetWorldTime().GetTimeGoneFromString(celebrity.dayOfBirth), GameConfig.dateFormat)
-				if celebrity.GetAge() >= 0
-					skin.fontNormal.drawBlock(dob +" ("+celebrity.GetAge()+" "+GetLocale("ABBREVIATION_YEARS")+")", contentX + 5, contentY, 165 - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-				else
+			Local latinCross:String = Chr(10013) '† = &#10013 ---NOT--- &#8224; (the dagger-cross)
+			If person.IsCelebrity()
+				Local dob:String = GetWorldTime().GetFormattedDate( person.GetPersonalityData().GetDOB(), GameConfig.dateFormat)
+				If person.GetAge() >= 0
+					skin.fontNormal.drawBlock(dob + " (" + person.GetAge() + " " + GetLocale("ABBREVIATION_YEARS")+")", contentX + 5, contentY, 165 - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				Else
 					skin.fontNormal.drawBlock("**.**.****", contentX + 5, contentY, 165 - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-				endif
-				skin.fontNormal.drawBlock(celebrity.countryCode, contentX + 170 + 5, contentY, contentW - 170 - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			endif
+				EndIf
+				skin.fontNormal.drawBlock(person.GetCountryCode(), contentX + 170 + 5, contentY, contentW - 170 - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			EndIf
 			contentY :+ lifeDataH
 
 
@@ -2487,37 +2487,38 @@ Type TGUICastListItem Extends TGUISelectListItem
 			skin.RenderContent(contentX, contentY, contentW, lastProductionsH, "2")
 
 			contentY :+ 5
-			if celebrity
+			If person.IsCelebrity() and person.GetProductionData()
 				'last productions
-				if celebrity.GetProducedProgrammeIDs().length > 0
-					local productionIDs:Int[] = celebrity.GetProducedProgrammeIDs()
-					local i:int = 0
-					local entryNum:int = 0
-					while i < productionIDs.length and entryNum < 3
-						local production:TProgrammeData = GetProgrammeDataCollection().GetByID( productionIDs[ i] )
+				Local productionIDs:Int[] = person.GetProductionData().GetProducedProgrammeIDs()
+
+				If productionIDs and productionIDs.length > 0
+					Local i:Int = 0
+					Local entryNum:Int = 0
+					While i < productionIDs.length And entryNum < 3
+						Local production:TProgrammeData = GetProgrammeDataCollection().GetByID( productionIDs[ i] )
 						i :+ 1
-						if not production then continue
+						If Not production Then Continue
 
 '						skin.fontSemiBold.drawBlock(production.GetYear(), contentX + 5, contentY + lastProductionEntryH*entryNum, contentW, lastProductionEntryH, null, skin.textColorNeutral)
-						GetBitmapfont("default", 12, BOLDFONT).drawBlock(production.GetYear(), contentX + 5, contentY + lastProductionEntryH*entryNum + 1, contentW, lastProductionEntryH, null, yearColor)
-						if production.IsInProduction()
-							GetBitmapfont("default", 12).drawBlock(production.GetTitle() + " (In Produktion)", contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, null, skin.textColorNeutral)
-						else
+						GetBitmapfont("default", 12, BOLDFONT).drawBlock(production.GetYear(), contentX + 5, contentY + lastProductionEntryH*entryNum + 1, contentW, lastProductionEntryH, Null, yearColor)
+						If production.IsInProduction()
+							GetBitmapfont("default", 12).drawBlock(production.GetTitle() + " (In Produktion)", contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, Null, skin.textColorNeutral)
+						Else
 						'	skin.fontNormal.drawBlock(production.GetTitle(), contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, null, skin.textColorNeutral)
-							GetBitmapfont("default", 12).drawBlock(production.GetTitle(), contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, null, skin.textColorNeutral)
-						endif
+							GetBitmapfont("default", 12).drawBlock(production.GetTitle(), contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, Null, skin.textColorNeutral)
+						EndIf
 						entryNum :+1
 					Wend
-				endif
-			endif
+				EndIf
+			EndIf
 			contentY :+ lastProductionsH - 5
-		endif
+		EndIf
 
 		'=== BARS / BOXES AREA ===
 		'background for bars + boxes
-		if barAreaH + boxAreaH > 0
+		If barAreaH + boxAreaH > 0
 			skin.RenderContent(contentX, contentY, contentW, barAreaH + boxAreaH, "1_bottom")
-		endif
+		EndIf
 
 
 		'===== DRAW CHARACTERISTICS / BARS =====
@@ -2525,89 +2526,89 @@ Type TGUICastListItem Extends TGUISelectListItem
 		'      exposed until we eg. produce specific "insight"-shows ?
 		'      -> or have some "agent" to pay to get such information
 
-		if celebrity
+		If person.IsCelebrity()
 			'bars have a top-padding
 			contentY :+ barAreaPaddingY
 			'XP
-			local xpValue:Float = celebrity.GetEffectiveExperiencePercentage(jobID)
+			Local xpValue:Float = person.GetEffectiveJobExperiencePercentage(jobID)
 			skin.RenderBar(contentX + 5, contentY, 100, 12, xpValue)
-			skin.fontSemiBold.drawBlock(GetLocale("CAST_EXPERIENCE"), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
+			skin.fontSemiBold.drawBlock(GetLocale("CAST_EXPERIENCE"), contentX + 5 + 100 + 5, contentY, 125, 15, Null, skin.textColorLabel)
 			contentY :+ barH + 2
 
 
-			local genreDefinition:TMovieGenreDefinition
-			if TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept
-				local script:TScript = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script
-				if script then genreDefinition = GetMovieGenreDefinition( script.mainGenre )
-			endif
+			Local genreDefinition:TMovieGenreDefinition
+			If TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept
+				Local script:TScript = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script
+				If script Then genreDefinition = GetMovieGenreDefinition( script.mainGenre )
+			EndIf
 
-			local attributes:int[] = [TVTProgrammePersonAttribute.FAME, ..
-			                          TVTProgrammePersonAttribute.SKILL, ..
-			                          TVTProgrammePersonAttribute.POWER, ..
-			                          TVTProgrammePersonAttribute.HUMOR, ..
-			                          TVTProgrammePersonAttribute.CHARISMA, ..
-			                          TVTProgrammePersonAttribute.APPEARANCE ..
+			Local attributes:Int[] = [TVTPersonPersonality.FAME, ..
+			                          TVTPersonPersonality.SKILL, ..
+			                          TVTPersonPersonality.POWER, ..
+			                          TVTPersonPersonality.HUMOR, ..
+			                          TVTPersonPersonality.CHARISMA, ..
+			                          TVTPersonPersonality.APPEARANCE ..
 			                         ]
-			For local attributeID:int = EachIn attributes
-				local mode:int = 0
+			For Local attributeID:Int = EachIn attributes
+				Local mode:Int = 0
 
-				local attributeFit:Float = 0.0
-				local attributeGenre:Float = 0.0
-				local attributePerson:Float = 0.0
-				if genreDefinition
+				Local attributeFit:Float = 0.0
+				Local attributeGenre:Float = 0.0
+				Local attributePerson:Float = 0.0
+				If genreDefinition
 					attributeGenre = genreDefinition.GetCastAttribute(jobID, attributeID)
-					attributePerson = celebrity.GetAttribute(attributeID)
-				endif
+					attributePerson = person.GetPersonalityData().GetAttribute(attributeID)
+				EndIf
 
 				'unimportant attribute / no bonus/malus for this attribute
-				if MathHelper.AreApproximatelyEqual(attributeGenre, 0.0)
+				If MathHelper.AreApproximatelyEqual(attributeGenre, 0.0)
 					mode = 1
 				'neutral
 '				elseif MathHelper.AreApproximatelyEqual(attributePerson, 0.0)
 '					mode = 2
 				'negative
-				elseif attributeGenre < 0
+				ElseIf attributeGenre < 0
 					mode = 3
 				'positive
-				else
+				Else
 					mode = 4
-				endif
+				EndIf
 'print "ShowCastSheet: jobID="+jobID + "  attributeID=" +attributeID +"  attributeGenre="+attributeGenre +"  mode="+mode
 
 				'set "skill" neutral if not assigned "negative/positive" already
-				if mode = 1 and attributeID = TVTProgrammePersonAttribute.SKILL
+				If mode = 1 And attributeID = TVTPersonPersonality.SKILL
 					mode = 2
-				endif
+				EndIf
 
 
-				select mode
+				Select mode
 					'unused
-					case 1
-						local oldA:Float = GetAlpha()
+					Case 1
+						Local oldA:Float = GetAlpha()
 						SetAlpha oldA * 0.5
-						skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetAttribute(attributeID))
+						skin.RenderBar(contentX + 5, contentY, 100, 12, person.GetPersonalityData().GetAttribute(attributeID))
 						SetAlpha oldA * 0.4
-						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTProgrammePersonAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
+						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTPersonPersonality.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, Null, skin.textColorLabel)
 						SetAlpha oldA
 					'neutral
-					case 2
-						skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetAttribute(attributeID))
-						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTProgrammePersonAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
+					Case 2
+						skin.RenderBar(contentX + 5, contentY, 100, 12, person.GetPersonalityData().GetAttribute(attributeID))
+						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTPersonPersonality.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, Null, skin.textColorLabel)
 					'negative
-					case 3
-						skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetAttribute(attributeID))
-						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTProgrammePersonAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorBad)
+					Case 3
+						skin.RenderBar(contentX + 5, contentY, 100, 12, person.GetPersonalityData().GetAttribute(attributeID))
+						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTPersonPersonality.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, Null, skin.textColorBad)
 
 					'positive
-					case 4
-						skin.RenderBar(contentX + 5, contentY, 100, 12, celebrity.GetAttribute(attributeID))
-						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTProgrammePersonAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorGood)
+					Case 4
+						skin.RenderBar(contentX + 5, contentY, 100, 12, person.GetPersonalityData().GetAttribute(attributeID))
+						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTPersonPersonality.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, Null, skin.textColorGood)
 				End Select
 				contentY :+ barH + 2
 			Next
-		endif
+		EndIf
 	'hidden?
-	rem
+	Rem
 		'Scandalizing
 		skin.RenderBar(contentX + 5, contentY, 100, 12, cast.GetScandalizing())
 		skin.fontSemiBold.drawBlock(GetLocale("CAST_SCANDALIZING"), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
@@ -2619,20 +2620,20 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 		'=== BOXES ===
 		'boxes have a top-padding (except with messages)
-		if msgAreaH = 0 then contentY :+ boxAreaPaddingY
+		If msgAreaH = 0 Then contentY :+ boxAreaPaddingY
 
-		if celebrity
+		If person.IsCelebrity()
 			contentY :+ boxAreaPaddingY
-		endif
-		if jobID >= 0
-			skin.fontSemibold.drawBlock(GetLocale("JOB_"+TVTProgrammePersonJob.GetAsString(jobID)), contentX + 5, contentY, 94, 25, ALIGN_LEFT_CENTER, skin.textColorLabel)
-			skin.RenderBox(contentX + 5 + 94, contentY, contentW - 10 - 94 +1, -1, MathHelper.DottedValue(cast.GetBaseFee(jobID, TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.blocks)), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
-		endif
+		EndIf
+		If jobID >= 0
+			skin.fontSemibold.drawBlock(GetLocale("JOB_"+TVTPersonJob.GetAsString(jobID)), contentX + 5, contentY, 94, 25, ALIGN_LEFT_CENTER, skin.textColorLabel)
+			skin.RenderBox(contentX + 5 + 94, contentY, contentW - 10 - 94 +1, -1, MathHelper.DottedValue(person.GetJobBaseFee(jobID, TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.blocks)), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+		EndIf
 		contentY :+ boxH
 
 
 		'=== OVERLAY / BORDER ===
-		skin.RenderBorder(int(x), int(y), sheetWidth, sheetHeight)
+		skin.RenderBorder(Int(x), Int(y), sheetWidth, sheetHeight)
 	End Function
 
 End Type
@@ -2651,9 +2652,9 @@ Type TGUIProductionCompanyDropDownItem Extends TGUIDropDownItem
 
 	Method CreateSimple:TGUIProductionCompanyDropDownItem(company:TProductionCompanyBase)
 		'make it "unique" enough
-		Self.Create(Null, new TVec2D.Init(100, 30), company.name+" [Lvl: "+company.GetLevel()+"]")
+		Self.Create(Null, New TVec2D.Init(100, 30), company.name+" [Lvl: "+company.GetLevel()+"]")
 
-		data = new TData.Add("productionCompany", company)
+		data = New TData.Add("productionCompany", company)
 
 		'resize it
 		GetDimension()
@@ -2674,26 +2675,26 @@ Type TGUIProductionCompanyDropDownItem Extends TGUIDropDownItem
 
 	'override
 	Method DrawValue()
-		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
-		local company:TProductionCompanyBase = TProductionCompanyBase(data.Get("productionCompany"))
+		Local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
+		Local company:TProductionCompanyBase = TProductionCompanyBase(data.Get("productionCompany"))
 
 		'Super.DrawValue()
 		skin.fontSmallCaption.DrawBlock(company.name, GetScreenRect().GetX()+2, GetScreenRect().GetY(), GetScreenRect().GetW()-4 - 20, GetScreenRect().GetH(), ALIGN_LEFT_TOP, skin.textColorNeutral, 0,1,1.0, True, True)
 		skin.fontSmall.DrawBlock("Lvl: "+company.GetLevel(), GetScreenRect().GetX()+2, GetScreenRect().GetY(), GetScreenRect().GetW()-4, GetScreenRect().GetH(), ALIGN_RIGHT_TOP, skin.textColorNeutral)
 
 
-		local barH:int = skin.GetBarSize(100,-1, "cast_bar_xp").GetY()
-		local bottomY:int = GetScreenRect().GetY() + rect.GetH()
+		Local barH:Int = skin.GetBarSize(100,-1, "cast_bar_xp").GetY()
+		Local bottomY:Int = GetScreenRect().GetY() + rect.GetH()
 
 		skin.RenderBar(GetScreenRect().GetX() + 1, bottomY - 2*barH - paddingBottom, 80, -1, company.GetLevelExperiencePercentage(), -1, "cast_bar_xp")
 		skin.RenderBar(GetScreenRect().GetX() + 1, bottomY - 1*barH - paddingBottom, 80, -1, company.GetChannelSympathy( GetPlayerBase().playerID ), -1, "cast_bar_sympathy")
 
-		if IsHovered() and (Time.MillisecsLong() / 1500) mod 3 = 0 'every 3s for 1.5s
+		If IsHovered() And (Time.MillisecsLong() / 1500) Mod 3 = 0 'every 3s for 1.5s
 			skin.fontSmall.drawBlock("XP", GetScreenRect().GetX() + 76, bottomY - 2*barH - paddingBottom -2, 30, 2*barH+4, ALIGN_RIGHT_CENTER, xpColor)
 			skin.fontSmall.drawBlock("SYMP", GetScreenRect().GetX() + 2, bottomY - 2*barH - paddingBottom -2, GetScreenRect().GetW()-4, 2*barH+4, ALIGN_RIGHT_CENTER, sympathyColor)
-		else
-			skin.fontSmall.drawBlock(int(company.GetLevelExperiencePercentage()*100)+"%", GetScreenRect().GetX() + 76, bottomY - 2*barH - paddingBottom -2, 30, 2*barH+4, ALIGN_RIGHT_CENTER, xpColor)
-			skin.fontSmall.drawBlock(int(company.GetChannelSympathy( GetPlayerBase().playerID )*100)+"%", GetScreenRect().GetX() + 2, bottomY - 2*barH - paddingBottom -2, GetScreenRect().GetW()-4, 2*barH+4, ALIGN_RIGHT_CENTER, sympathyColor)
-		endif
+		Else
+			skin.fontSmall.drawBlock(Int(company.GetLevelExperiencePercentage()*100)+"%", GetScreenRect().GetX() + 76, bottomY - 2*barH - paddingBottom -2, 30, 2*barH+4, ALIGN_RIGHT_CENTER, xpColor)
+			skin.fontSmall.drawBlock(Int(company.GetChannelSympathy( GetPlayerBase().playerID )*100)+"%", GetScreenRect().GetX() + 2, bottomY - 2*barH - paddingBottom -2, GetScreenRect().GetW()-4, 2*barH+4, ALIGN_RIGHT_CENTER, sympathyColor)
+		EndIf
 	End Method
 End Type

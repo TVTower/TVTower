@@ -2233,17 +2233,16 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		'cast
 		local cast:string = ""
 
-		For local i:int = 1 to TVTProgrammePersonJob.count
-			local jobID:int = TVTProgrammePersonJob.GetAtIndex(i)
+		For local jobID:int = EachIn TVTPersonJob.GetCastJobs()
 			local requiredPersons:int = data.GetCastGroup(jobID).length
 			if requiredPersons <= 0 then continue
 
 			if cast <> "" then cast :+ ", "
 
 			if requiredPersons = 1
-				cast :+ "|b|"+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, True))+":|/b| "
+				cast :+ "|b|"+GetLocale("JOB_" + TVTPersonJob.GetAsString(jobID, True))+":|/b| "
 			else
-				cast :+ "|b|"+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, False))+":|/b| "
+				cast :+ "|b|"+GetLocale("JOB_" + TVTPersonJob.GetAsString(jobID, False))+":|/b| "
 			endif
 
 			cast :+ data.GetCastGroupString(jobID)

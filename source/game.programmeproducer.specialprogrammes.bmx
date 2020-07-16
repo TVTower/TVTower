@@ -37,8 +37,8 @@ endrem
 
 
 Type TProgrammeProducerWithProduction Extends TProgrammeProducerBase
-	Field castFavorites:TProgrammePersonBase[]
-	Field castFavoritesGUIDs:String[]
+	Field castFavorites:TPersonBase[]
+	Field castFavoritesIDs:Int[]
 	Field castFavoritesUsageCount:Int[]
 	Field productionsRunning:Int = 0
 
@@ -84,26 +84,26 @@ Type TProgrammeProducerWithProduction Extends TProgrammeProducerBase
 
 
 	Method ChooseCast(productionConcept:TProductionConcept, script:TScript)
-'		local castFavorites:TProgrammePersonBase[] = new TProgrammePersonBase[castFavoriteGUIDs.length]
-'		for local i:int = 0 until castFavoriteGUIDs.length
-'			castFavorites[i] = GetProgrammePersonBaseCollection().GetByGUID(castFavoritesGUIDs[i])
+'		local castFavorites:TPersonBase[] = new TPersonBase[castFavoriteIDs.length]
+'		for local i:int = 0 until castFavoriteIDs.length
+'			castFavorites[i] = GetPersonBaseCollection().GetByID(castFavoritesIDs[i])
 '		next
 
 		'choose some cast suiting to the requirements of the script
-		Local usedPersonGUIDs:String[]
-		For Local i:Int = 0 Until script.cast.length
-			Local job:TProgrammePersonJob = script.cast[i]
-			Local person:TProgrammePersonBase
+		Local usedPersonIDs:Int[]
+		For Local i:Int = 0 Until script.jobs.length
+			Local job:TPersonProductionJob = script.jobs[i]
+			Local person:TPersonBase
 			'try to reuse someone
-			If castFavoritesGUIDs.length > 0
-				person = GetProgrammePersonBaseCollection().GetRandomFromArray(castFavorites, True, True, job.job, job.gender, usedPersonGUIDs)
+			If castFavoritesIDs.length > 0
+				person = GetPersonBaseCollection().GetRandomFromArray(castFavorites, -1, True, True, job.job, job.gender, Null, usedPersonIDs)
 				'slight chance to ignore the given one?
 				'and to look for a new one
 				If RandRange(0,100) < 10 Then person = Null
 			EndIf
 			'nobody to reuse now - fetch a new amateur/beginner
 			If Not person
-				person = GetProgrammePersonBaseCollection().GetRandomInsignificant(Null, True, True, job.job, job.gender, usedPersonGUIDs)
+				person = GetPersonBaseCollection().GetRandomInsignificant(Null, True, True, job.job, job.gender, Null, usedPersonIDs)
 
 				'not enough insignificants available?
 				If Not person
@@ -112,15 +112,15 @@ Type TProgrammeProducerWithProduction Extends TProgrammeProducerBase
 					If RandRange(0,100) < 25 Or Not GetPersonGenerator().HasProvider(countryCode)
 						countryCode = GetPersonGenerator().GetRandomCountryCode()
 					EndIf
-					person = CreateRandomInsignificantPerson(countryCode, Max(0, job.gender))
+					person = GetPersonBaseCollection().CreateRandom(countryCode, Max(0, job.gender))
 				EndIf
 			EndIf
 
 			'store used cast selections so amateurs sooner become celebs
 			'with specialization
-			Local favoriteIndex:Int = StringHelper.GetArrayIndex(person.GetGUID(), castFavoritesGUIDs)
+			Local favoriteIndex:Int = MathHelper.GetIntArrayIndex(person.GetID(), castFavoritesIDs)
 			If favoriteIndex = -1
-				castFavoritesGUIDs :+ [person.GetGUID()]
+				castFavoritesIDs :+ [person.GetID()]
 				castFavorites :+ [person]
 				castFavoritesUsageCount :+ [0]
 				favoriteIndex = castFavorites.length - 1
@@ -133,14 +133,14 @@ Type TProgrammeProducerWithProduction Extends TProgrammeProducerBase
 			'remove from favorites again
 			If castFavoritesUsageCount[favoriteIndex] > 10
 				castFavorites = castFavorites[.. favoriteIndex] + castFavorites[favoriteIndex + 1 ..]
-				castFavoritesGUIDs = castFavoritesGUIDs[.. favoriteIndex] + castFavoritesGUIDs[favoriteIndex + 1 ..]
+				castFavoritesIDs = castFavoritesIDs[.. favoriteIndex] + castFavoritesIDs[favoriteIndex + 1 ..]
 				castFavoritesUsageCount = castFavoritesUsageCount[.. favoriteIndex] + castFavoritesUsageCount[favoriteIndex + 1 ..]
 			EndIf
 
 			productionConcept.SetCast(i, person)
 
-			If Not StringHelper.InArray(person.GetGUID(), usedPersonGUIDs)
-				usedPersonGUIDs :+ [person.GetGUID()]
+			If Not MathHelper.InIntArray(person.GetID(), usedPersonIDs)
+				usedPersonIDs :+ [person.GetID()]
 			EndIf
 		Next
 

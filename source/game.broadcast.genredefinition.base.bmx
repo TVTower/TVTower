@@ -61,9 +61,9 @@ Type TGenreDefinitionBase extends TGameObject
 
 	Method GetPopularity:TPopularity()
 		if not _popularity
-			_popularity = GetPopularityManager().GetByGUID(GetGUID())
+			_popularity = GetPopularityManager().GetByReferenceID( GetID() )
 			if not _popularity
-				_popularity = TGenrePopularity.Create(GetGUID(), RandRange(-10, 10), RandRange(-25, 25))
+				_popularity = TGenrePopularity.Create(GetID(), RandRange(-10, 10), RandRange(-25, 25))
 				GetPopularityManager().AddPopularity(_popularity)
 			endif
 		endif

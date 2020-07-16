@@ -446,9 +446,9 @@ Type TProduction Extends TOwnedGameObject
 
 
 		'=== 2.3 PROGRAMME CAST ===
-		For local castIndex:int = 0 until Min(productionConcept.cast.length, productionConcept.script.cast.length)
-			local p:TProgrammePersonBase = productionConcept.cast[castIndex]
-			local job:TProgrammePersonJob = productionConcept.script.cast[castIndex]
+		For local castIndex:int = 0 until Min(productionConcept.cast.length, productionConcept.script.jobs.length)
+			local p:TPersonBase = productionConcept.cast[castIndex]
+			local job:TPersonProductionJob = productionConcept.script.jobs[castIndex]
 			if not p or not job then continue
 
 
@@ -456,20 +456,18 @@ Type TProduction Extends TOwnedGameObject
 				'person is now capable of doing this job
 				p.SetJob(job.job)
 			endif
-			programmeData.AddCast(new TProgrammePersonJob.Init(p.GetGUID(), job.job))
+			programmeData.AddCast(new TPersonProductionJob.Init(p.GetID(), job.job))
 
 			if DEV_InformPerson
-				'inform person and adjust its popularity
-				if TProgrammePerson(p)
-					local popularity:TPersonPopularity = TPersonPopularity(TProgrammePerson(p).GetPopularity())
-					if popularity
-						local params:TData = new TData
-						params.AddNumber("time", GetWorldTime().GetTimeGone())
-						params.AddNumber("quality", programmeData.GetQualityRaw())
-						params.AddNumber("job", job.job)
+				'inform person and adjust its popularity (if it has some)
+				local popularity:TPersonPopularity = TPersonPopularity(p.GetPopularity())
+				if popularity
+					local params:TData = new TData
+					params.AddNumber("time", GetWorldTime().GetTimeGone())
+					params.AddNumber("quality", programmeData.GetQualityRaw())
+					params.AddNumber("job", job.job)
 
-						popularity.FinishProgrammeProduction(params)
-					endif
+					popularity.FinishProgrammeProduction(params)
 				endif
 			endif
 		Next
@@ -678,22 +676,22 @@ endrem
 
 		'=== CAST ===
 		'only list "visible" persons: HOST, ACTOR, SUPPORTINGACTOR, GUEST, REPORTER
-		local seriesCast:TProgrammePersonBase[]
-		local seriesJobs:TProgrammePersonJob[]
-		local jobFilter:int = TVTProgrammePersonJob.HOST | ..
-		                      TVTProgrammePersonJob.ACTOR | ..
-		                      TVTProgrammePersonJob.SUPPORTINGACTOR | ..
-		                      TVTProgrammePersonJob.GUEST | ..
-		                      TVTProgrammePersonJob.REPORTER
+		local seriesCast:TPersonBase[]
+		local seriesJobs:TPersonProductionJob[]
+		local jobFilter:int = TVTPersonJob.HOST | ..
+		                      TVTPersonJob.ACTOR | ..
+		                      TVTPersonJob.SUPPORTINGACTOR | ..
+		                      TVTPersonJob.GUEST | ..
+		                      TVTPersonJob.REPORTER
 		parentData.ClearCast()
 		For local subLicence:TProgrammeLicence = eachin parentLicence.subLicences
-			For local job:TProgrammePersonJob = EachIn subLicence.GetData().GetCast()
+			For local job:TPersonProductionJob = EachIn subLicence.GetData().GetCast()
 				'only add visible ones
 				if job.job & jobFilter <= 0 then continue
 				'add if that person is not listed with the same job yet
 				'(ignore multiple roles)
 				if not parentData.HasCast(job, False)
-					parentData.AddCast(new TProgrammePersonJob.Init(job.personGUID, job.job))
+					parentData.AddCast(new TPersonProductionJob.Init(job.personID, job.job))
 				endif
 			Next
 		Next

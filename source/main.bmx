@@ -1941,7 +1941,7 @@ Type TGameState
 	Field _ProductionConceptCollection:TProductionConceptCollection = Null
 	Field _ProductionCompanyBaseCollection:TProductionCompanyBaseCollection = Null
 	Field _ProgrammeRoleCollection:TProgrammeRoleCollection = Null
-	Field _ProgrammePersonBaseCollection:TProgrammePersonBaseCollection = Null
+	Field _ProgrammePersonBaseCollection:TPersonBaseCollection = Null
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
 	Field _ProgrammeLicenceCollection:TProgrammeLicenceCollection = Null
 
@@ -2025,7 +2025,7 @@ Type TGameState
 		GetProductionManager().Initialize()
 		GetProgrammeRoleCollection().Initialize()
 		GetPersonGenerator().Initialize()
-		GetProgrammePersonBaseCollection().Initialize()
+		GeTPersonBaseCollection().Initialize()
 		GetProgrammeDataCollection().Initialize()
 		GetProgrammeLicenceCollection().Initialize()
 		TAuctionProgrammeBlocks.Initialize()
@@ -2108,7 +2108,7 @@ Type TGameState
 		_Assign(_ProductionConceptCollection, TProductionConceptCollection._instance, "ProductionConceptCollection", MODE_LOAD)
 		_Assign(_ProductionCompanyBaseCollection, TProductionCompanyBaseCollection._instance, "ProductionCompanyBaseCollection", MODE_LOAD)
 		_Assign(_ProgrammeRoleCollection, TProgrammeRoleCollection._instance, "ProgrammeRoleCollection", MODE_LOAD)
-		_Assign(_ProgrammePersonBaseCollection, TProgrammePersonBaseCollection._instance, "ProgrammePersonBaseCollection", MODE_LOAD)
+		_Assign(_ProgrammePersonBaseCollection, TPersonBaseCollection._instance, "ProgrammePersonBaseCollection", MODE_LOAD)
 		_Assign(_ProgrammeDataCollection, TProgrammeDataCollection._instance, "ProgrammeDataCollection", MODE_LOAD)
 		_Assign(_ProgrammeLicenceCollection, TProgrammeLicenceCollection._instance, "ProgrammeLicenceCollection", MODE_LOAD)
 
@@ -2212,7 +2212,7 @@ Type TGameState
 		_Assign(TProductionCompanyBaseCollection._instance, _ProductionCompanyBaseCollection, "ProductionCompanyBaseCollection", MODE_SAVE)
 		_Assign(TProductionConceptCollection._instance, _ProductionConceptCollection, "ProductionConceptCollection", MODE_SAVE)
 		'database data for persons and their roles
-		_Assign(TProgrammePersonBaseCollection._instance, _ProgrammePersonBaseCollection, "ProgrammePersonBaseCollection", MODE_SAVE)
+		_Assign(TPersonBaseCollection._instance, _ProgrammePersonBaseCollection, "ProgrammePersonBaseCollection", MODE_SAVE)
 		_Assign(TProgrammeRoleCollection._instance, _ProgrammeRoleCollection, "ProgrammeRoleCollection", MODE_SAVE)
 
 		'database data for programmes
@@ -6375,9 +6375,9 @@ Function StartApp:Int()
 		Local helpText:String = GetLocale(helpTextKeyText)
 		Local helpTitle:String = GetLocale(helpTextKeyTitle)
 		If helpText = helpTextKeyText
-			Print "Kein Hilfetext gefunden fuer ~q"+helpTextKeyText+"~q"
+'			Print "Kein Hilfetext gefunden fuer ~q"+helpTextKeyText+"~q"
 		Else
-			Print "Hilfetext gefunden fuer ~q"+helpTextKeyText+"~q -> "+screen.GetName()
+'			Print "Hilfetext gefunden fuer ~q"+helpTextKeyText+"~q -> "+screen.GetName()
 			IngameHelpWindowCollection.Add( New TIngameHelpWindow.Init(GetLocale(helpTitle), GetLocale(helpText), screen.GetName()) )
 		EndIf
 	Next

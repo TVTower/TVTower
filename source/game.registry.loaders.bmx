@@ -472,12 +472,13 @@ Type TRegistryProgrammeDataModsLoader Extends TRegistryBaseLoader
 			Local castAttributes:TMap = Null
 			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 				If Not castAttributes Then castAttributes = CreateMap()
-				Local jobID:Int = TVTProgrammePersonJob.GetByString(subNodeChild.GetName().ToLower())
-				Local attributeID:Int = TVTProgrammePersonAttribute.GetByString(TXmlHelper.FindValue(subNodeChild, "attribute", ""))
+				Local jobID:Int = TVTPersonJob.GetByString(subNodeChild.GetName().ToLower())
+				'appearance, charisma,...
+				Local attributeID:Int = TVTPersonPersonality.GetByString(TXmlHelper.FindValue(subNodeChild, "attribute", ""))
 				Local value:String = TXmlHelper.FindValue(subNodeChild, "value", "0.0")
 
-				If jobID = TVTProgrammePersonJob.UNKNOWN Then Continue
-				If attributeID = TVTProgrammePersonAttribute.NONE Then Continue
+				If jobID = TVTPersonJob.UNKNOWN Then Continue
+				If attributeID = TVTPersonPersonality.NONE Then Continue
 
 				'limit values to -1.0 - +1.0
 				value = String( MathHelper.Clamp(Float(value), -1.0 , 1.0) )

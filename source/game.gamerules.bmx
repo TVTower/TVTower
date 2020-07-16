@@ -79,6 +79,8 @@ Type TGameRules {_exposeToLua}
 
 	'does the boss has to get visited daily?
 	Field dailyBossVisit:int = True
+	
+	Field onlyFictionalInCustomProduction:int = True
 
 
 	'=== ADCONTRACTS ===

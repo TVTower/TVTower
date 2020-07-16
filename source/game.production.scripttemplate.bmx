@@ -8,7 +8,8 @@ Import "common.misc.templatevariables.bmx"
 Import "game.production.script.base.bmx"
 Import "game.gameconstants.bmx" 'to access type-constants
 Import "game.world.worldtime.bmx" 'to access world time
-Import "game.programme.programmeperson.base.bmx" 'to access TProgrammePersonJob
+Import "game.person.base.bmx"
+Import "game.programme.programmerole.bmx"
 
 
 Type TScriptTemplateCollection Extends TGameObjectCollection
@@ -115,16 +116,16 @@ Type TScriptTemplate Extends TScriptBase
 
 	'contains generated final job set
 	Field finalJobsGenerated:int = False
-	Field finalJobs:TProgrammePersonJob[]
+	Field finalJobs:TPersonProductionJob[]
 
 	'contains all to fill jobs
-	Field jobs:TProgrammePersonJob[]
+	Field jobs:TPersonProductionJob[]
 	'contains jobs which could get randomly added during generation
 	'of the real script
-	Field randomJobs:TProgrammePersonJob[]
+	Field randomJobs:TPersonProductionJob[]
 	'contains jobs with randomly assigned jobs
 	'so the script knows what to reset in jobs/randomJobs after usage
-	Field randomAssignedRoles:TProgrammePersonJob[]
+	Field randomAssignedRoles:TPersonProductionJob[]
 
 	'limit the guests to specific job types
 	Field allowedGuestTypes:int	= 0
@@ -167,10 +168,10 @@ Type TScriptTemplate Extends TScriptBase
 
 		'reset previously stored randomly assigned roles
 		if randomAssignedRoles
-			for local job:TProgrammePersonJob = EachIn randomAssignedRoles
-				job.roleGUID = ""
+			for local job:TPersonProductionJob = EachIn randomAssignedRoles
+				job.roleID = 0
 			Next
-			randomAssignedRoles = new TProgrammePersonJob[0]
+			randomAssignedRoles = new TPersonProductionJob[0]
 		endif
 	End Method
 
@@ -270,7 +271,7 @@ Type TScriptTemplate Extends TScriptBase
 
 	'set a job to the specific index
 	'the index must be existing already
-	Method SetJobAtIndex:int(index:int=0, job:TProgrammePersonJob)
+	Method SetJobAtIndex:int(index:int=0, job:TPersonProductionJob)
 		if index < 0 or index > jobs.length -1 then return false
 		jobs[index] = job
 		return True
@@ -279,40 +280,40 @@ Type TScriptTemplate Extends TScriptBase
 
 	'set a job to the specific index
 	'the index must be existing already
-	Method SetRandomJobAtIndex:int(index:int=0, job:TProgrammePersonJob)
+	Method SetRandomJobAtIndex:int(index:int=0, job:TPersonProductionJob)
 		if index < 0 or index > randomJobs.length -1 then return false
 		randomJobs[index] = job
 		return True
 	End Method
 
 
-	Method AddJob:int(job:TProgrammePersonJob)
+	Method AddJob:int(job:TPersonProductionJob)
 		if HasJob(job) then return False
 		jobs :+ [job]
 		return True
 	End Method
 
 
-	Method HasJob:int(job:TProgrammePersonJob)
-		For local doneJob:TProgrammePersonJob = EachIn jobs
+	Method HasJob:int(job:TPersonProductionJob)
+		For local doneJob:TPersonProductionJob = EachIn jobs
 			if job = doneJob then return True
 		Next
 		return False
 	End Method
 
 
-	Method AddRandomJob:int(job:TProgrammePersonJob)
+	Method AddRandomJob:int(job:TPersonProductionJob)
 		if HasRandomJob(job) then return False
 		randomJobs :+ [job]
 		return True
 	End Method
 
 
-	Method HasRandomJob:int(job:TProgrammePersonJob)
-		For local doneJob:TProgrammePersonJob = EachIn randomJobs
-			if job.personGUID <> doneJob.personGUID then continue
+	Method HasRandomJob:int(job:TPersonProductionJob)
+		For local doneJob:TPersonProductionJob = EachIn randomJobs
+			if job.personID <> doneJob.personID then continue
 			if job.job <> doneJob.job then continue
-			if job.roleGUID <> doneJob.roleGUID then continue
+			if job.roleID <> doneJob.roleID then continue
 
 			return True
 		Next
@@ -321,15 +322,15 @@ Type TScriptTemplate Extends TScriptBase
 
 
 	Method ResetFinalJobs:int()
-		finalJobs = new TProgrammePersonJob[0]
+		finalJobs = new TPersonProductionJob[0]
 		finalJobsGenerated = false
 	End Method
 
 
-	Method GenerateFinalJobs:TProgrammePersonJob[]()
-		local result:TProgrammePersonJob[]
+	Method GenerateFinalJobs:TPersonProductionJob[]()
+		local result:TPersonProductionJob[]
 
-		For local job:TProgrammePersonJob = EachIn jobs
+		For local job:TPersonProductionJob = EachIn jobs
 			result :+ [job]
 		next
 		'instead of "adding random" ones (and having to care for
@@ -339,8 +340,8 @@ Type TScriptTemplate Extends TScriptBase
 		'try to avoid as much randoms as possible (weight to min)
 		'but this still allows for "up to all"
 		local randomJobsAmount:int = BiasedRandRange(0, randomJobs.length, 0.1)
-		local allRandomJobs:TProgrammePersonJob[]
-		For local job:TProgrammePersonJob = EachIn randomJobs
+		local allRandomJobs:TPersonProductionJob[]
+		For local job:TPersonProductionJob = EachIn randomJobs
 			allRandomJobs :+ [job]
 		next
 		For local i:int = 0 until randomJobsAmount
@@ -352,19 +353,19 @@ Type TScriptTemplate Extends TScriptBase
 		Next
 
 		'assign missing roles to actors
-		local actorFlag:int = TVTProgrammePersonJob.ACTOR | TVTProgrammePersonJob.SUPPORTINGACTOR
-		local usedRoleGUIDs:string[]
+		local actorFlag:int = TVTPersonJob.ACTOR | TVTPersonJob.SUPPORTINGACTOR
+		local usedRoleIDs:Int[]
 		'collect already used role guids
-		For local job:TProgrammePersonJob = Eachin result
+		For local job:TPersonProductionJob = Eachin result
 			if not(job.job & actorFlag) then continue
-			if job.roleGUID <> "" then usedRoleGUIDs :+ [job.roleGUID]
+			if job.roleID <> "" then usedRoleIDs :+ [job.roleID]
 		Next
 
 		'fill in a free guid (if possible)
-		For local job:TProgrammePersonJob = Eachin result
+		For local job:TPersonProductionJob = Eachin result
 			if job.job & actorFlag = 0 then continue
 
-			if job.roleGUID = ""
+			if job.roleID = 0
 				local filter:TProgrammeRoleFilter
 				if job.country <> "" or job.gender > 0
 					filter = new TProgrammeRoleFilter
@@ -372,7 +373,7 @@ Type TScriptTemplate Extends TScriptBase
 					if job.gender > 0 then filter.SetGender(job.gender)
 				endif
 
-				local validRoleGUID:string = ""
+				local validRoleID:Int = 0
 				local tries:int = 0
 				local role:TProgrammeRole
 				repeat
@@ -381,18 +382,18 @@ Type TScriptTemplate Extends TScriptBase
 					'nothing found for filter -> next try without a filter
 					if not role and filter then filter = null; continue
 
-					if role then validRoleGUID = role.GetGUID()
-					'reset guid again if in array
-					if tries < 50 and StringHelper.InArray(validRoleGUID, usedRoleGUIDs)
-						validRoleGUID = ""
+					if role then validRoleID = role.GetID()
+					'reset ID again if in array
+					if tries < 50 and MathHelper.InIntArray(validRoleID, usedRoleIDs)
+						validRoleID = 0
 					endif
 					tries :+ 1
-				until validRoleGUID
+				until validRoleID
 				'assign the role
-				job.roleGUID = validRoleGUID
+				job.roleID = validRoleID
 				'and assign the gender definition
 				job.gender = role.gender
-				usedRoleGUIDs :+ [validRoleGUID]
+				usedRoleIDs :+ [validRoleID]
 
 				'mark the job for having a randomly assigned role
 				randomAssignedRoles :+ [job]
@@ -407,7 +408,7 @@ Type TScriptTemplate Extends TScriptBase
 
 
 	'returns the "final" cast ... required + some random
-	Method GetJobs:TProgrammePersonJob[]()
+	Method GetJobs:TPersonProductionJob[]()
 		if not finalJobsGenerated
 			GenerateFinalJobs()
 		endif
@@ -416,23 +417,23 @@ Type TScriptTemplate Extends TScriptBase
 	End Method
 
 
-	Method GetRawJobs:TProgrammePersonJob[]()
+	Method GetRawJobs:TPersonProductionJob[]()
 		return jobs
 	End Method
 
 
-	Method GetRawRandomJobs:TProgrammePersonJob[]()
+	Method GetRawRandomJobs:TPersonProductionJob[]()
 		return randomJobs
 	End Method
 
 
-	Method GetJobAtIndex:TProgrammePersonJob(index:int=0)
+	Method GetJobAtIndex:TPersonProductionJob(index:int=0)
 		if index < 0 or index >= jobs.length then return null
 		return jobs[index]
 	End Method
 
 
-	Method GetRandomJobAtIndex:TProgrammePersonJob(index:int=0)
+	Method GetRandomJobAtIndex:TPersonProductionJob(index:int=0)
 		if index < 0 or index >= randomJobs.length then return null
 		return randomJobs[index]
 	End Method

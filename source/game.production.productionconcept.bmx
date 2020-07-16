@@ -1,7 +1,7 @@
 SuperStrict
 Import "game.production.script.bmx"
 Import "game.production.productioncompany.base.bmx"
-Import "game.programme.programmeperson.bmx"
+Import "game.person.bmx"
 
 
 Type TProductionConceptCollection Extends TGameObjectCollection
@@ -75,7 +75,7 @@ Type TProductionConcept Extends TOwnedGameObject
 	Field liveTime:Long = -1
 
 	'each assigned person (directors, actors, ...)
-	Field cast:TProgrammePersonBase[]
+	Field cast:TPersonBase[]
 
 	Field productionCompany:TProductionCompanyBase
 	Field productionFocus:TProductionFocusBase
@@ -131,7 +131,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 	Method Reset()
 		'reset cast
-		if script then cast = new TProgrammePersonBase[ script.cast.length ]
+		if script then cast = new TPersonBase[ script.jobs.length ]
 
 		ResetCache()
 
@@ -342,13 +342,13 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
-	Method GetCast:TProgrammePersonBase(castIndex:int)
+	Method GetCast:TPersonBase(castIndex:int)
 		if not cast or castIndex >= cast.length or castIndex < 0 then return Null
 		return cast[castIndex]
 	End Method
 
 
-	Method SetCast:int(castIndex:int, person:TProgrammePersonBase)
+	Method SetCast:int(castIndex:int, person:TPersonBase)
 		if not cast or castIndex >= cast.length or castIndex < 0 then return False
 		'skip if nothing to do
 		if cast[castIndex] = person then return False
@@ -366,13 +366,13 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
-	Method GetCastGroup:TProgrammePersonBase[](jobFlag:int, skipEmpty:int = True)
-		if not script then return new TProgrammePersonBase[0]
+	Method GetCastGroup:TPersonBase[](jobFlag:int, skipEmpty:int = True)
+		if not script then return new TPersonBase[0]
 
-		local res:TProgrammePersonBase[]
-		local jobs:TProgrammePersonJob[] = script.GetSpecificCast(jobFlag)
+		local res:TPersonBase[]
+		local jobs:TPersonProductionJob[] = script.GetSpecificJob(jobFlag)
 		if not skipEmpty and jobs
-			res = new TProgrammePersonBase[jobs.length]
+			res = new TPersonBase[jobs.length]
 		endif
 
 		'skip further processing with no slots for this specific job
@@ -383,7 +383,7 @@ Type TProductionConcept Extends TOwnedGameObject
 		'whether their job fits to the desired one
 		local castIndex:int = 0
 		For local i:int = 0 until cast.length
-			local job:TProgrammePersonJob = script.cast[i]
+			local job:TPersonProductionJob = script.jobs[i]
 			'flawed data?
 			if not job then continue
 			'skip different jobs
@@ -394,7 +394,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 			if not skipEmpty
 				if cast[i]
-					res[castIndex] = GetProgrammePersonBaseCollection().GetByGUID(cast[i].GetGUID())
+					res[castIndex] = GetPersonBaseCollection().GetByID( cast[i].GetID() )
 				else
 					res[castIndex] = null
 				endif
@@ -402,9 +402,7 @@ Type TProductionConcept Extends TOwnedGameObject
 				castIndex :+ 1
 			else
 				if cast[i]
-					local guid:string = cast[i].GetGUID()
-					local p:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(guid)
-					res :+ [ GetProgrammePersonBaseCollection().GetByGUID(cast[i].GetGUID()) ]
+					res :+ [ GetPersonBaseCollection().GetByID( cast[i].GetID() ) ]
 
 					castIndex :+ 1
 				endif
@@ -416,7 +414,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 	Method GetCastGroupString:string(jobFlag:int, skipEmpty:int = True, nameOfEmpty:string = "")
 		local result:string = ""
-		local group:TProgrammePersonBase[] = GetCastGroup(jobFlag, skipEmpty)
+		local group:TPersonBase[] = GetCastGroup(jobFlag, skipEmpty)
 		for local i:int = 0 to group.length-1
 			if skipEmpty and group[i] = null then continue
 
@@ -504,22 +502,20 @@ Type TProductionConcept Extends TOwnedGameObject
 
 		local castXPSum:Float, personCount:int
 		For local castIndex:int = 0 until cast.length
-			local person:TProgrammePersonBase = cast[castIndex]
+			local person:TPersonBase = cast[castIndex]
 			if not person then continue
 
-			local job:TProgrammePersonJob = script.cast[castIndex]
+			local job:TPersonProductionJob = script.jobs[castIndex]
 			if not job then continue
 
 			'castXP to improve a script depends on
 			'- work done (for the given job) and
 			'- experience gained
-			local jobsDone:int = 1.0 * person.HasJob(job.job) + 0.10 * person.GetJobsDone(0) + 0.90 * person.GetJobsDone( job.job )
+			local jobsDone:int = 1.0 * person.HasJob(job.job) + 0.10 * person.GetProductionData().GetProductionJobsDone(0) + 0.90 * person.GetProductionData().GetProductionJobsDone( job.job )
 			'euler strength: 2.5, so for done jobs: 22%, 39%, 52%, ...
 			local castXP:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
 
-			if TProgrammePerson(person)
-				castXP :* 1.0 + 0.15 * TProgrammePerson(person).GetEffectiveExperiencePercentage(job.job)
-			endif
+			castXP :* 1.0 + 0.15 * person.GetProductionData().GetEffectiveExperiencePercentage(job.job)
 
 			castXPSum :+ castXP
 			personCount :+ 1
@@ -546,10 +542,10 @@ Type TProductionConcept Extends TOwnedGameObject
 		local personCount:int = 0
 
 		For local castIndex:int = 0 until cast.length
-			local person:TProgrammePerson = TProgrammePerson(cast[castIndex])
-			if person
-				personSympathy :+ person.GetChannelSympathy(owner)
-			endif
+			local person:TPersonBase = cast[castIndex]
+			If person
+				personSympathy :+ person.GetPersonalityData().GetChannelSympathy( owner )
+			EndIf
 			personCount :+ 1
 		Next
 		if personCount > 0
@@ -596,8 +592,11 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 		For local castIndex:int = 0 until cast.length
-			local person:TProgrammePersonBase = cast[castIndex]
+			local person:TPersonBase = cast[castIndex]
 			if not person then continue
+			
+			local productionData:TPersonProductionBaseData = person.GetProductionData()
+			local personalityData:TPersonPersonalityBaseData = person.GetPersonalityData()
 
 			local personFit:Float = 0.0
 			local genreFit:Float = 0.0
@@ -613,13 +612,13 @@ Type TProductionConcept Extends TOwnedGameObject
 			'main genre - 96% reached after 10 productions
 			'euler strength: 3.0, so for done jobs: 26%, 45%, 59%, ...
 			'(it is easier to adopt for a genre than for a job itself)
-			local mainGenreFit:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * person.GetProducedGenreCount( script.GetMainGenre() )), 3)
+			local mainGenreFit:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * productionData.GetProducedGenreCount( script.GetMainGenre() )), 3)
 			'sub genre
 			if script.subGenres and script.subGenres.length > 0
 				local subGenreFit:Float = 0.0
 				For local genre:int = EachIn script.subGenres
 					'96% reached after 8 productions
-					subGenreFit :+ THelper.LogisticalInfluence_Euler(Min(1.0, 0.125 * person.GetProducedGenreCount( genre )), 3)
+					subGenreFit :+ THelper.LogisticalInfluence_Euler(Min(1.0, 0.125 * productionData.GetProducedGenreCount( genre )), 3)
 				Next
 				subGenreFit :/ script.subGenres.length
 
@@ -633,28 +632,21 @@ Type TProductionConcept Extends TOwnedGameObject
 			'increase fit for top genres (20% genre1, 15% genre2)
 			'exception: genre "MISC" ("undefined" / id=0)
 			if script.GetMainGenre() <> TVTProgrammeGenre.Undefined
-				if TProgrammePerson(person)
-					local p:TProgrammePerson = TProgrammePerson(person)
-					if p.topGenre1 = script.GetMainGenre()
-						genreFit = Min(1.0, genreFit + 0.20)
-					elseif p.topGenre2 = script.GetMainGenre()
-						genreFit = Min(1.0, genreFit + 0.15)
-					endif
+				if productionData.GetTopGenre() = script.GetMainGenre()
+					genreFit = Min(1.0, genreFit + 0.20)
 				endif
 			endif
 
 
 			'== GENRE FIT #3
 			'increase fit by up to 35% for the persons skill (versatility)
-			if TProgrammePerson(person)
-				genreFit = Min(1.0, genreFit + 0.35 * TProgrammePerson(person).skill)
-			endif
+			genreFit = Min(1.0, genreFit + 0.35 * personalityData.skill)
 
 
 
 			'=== JOB FIT ===
-			local job:TProgrammePersonJob = script.cast[castIndex]
-			local jobsDone:int = 1.0 * person.HasJob(job.job) + 0.10 * person.GetJobsDone(0) + 0.90 * person.GetJobsDone( job.job )
+			local job:TPersonProductionJob = script.jobs[castIndex]
+			local jobsDone:int = 1.0 * person.HasJob(job.job) + 0.10 * productionData.GetProductionJobsDone(0) + 0.90 * productionData.GetProductionJobsDone( job.job )
 			'euler strength: 2.5, so for done jobs: 22%, 39%, 52%, ...
 			local jobFit:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
 			'by 5% chance "switch" effect
@@ -667,22 +659,20 @@ Type TProductionConcept Extends TOwnedGameObject
 			'in this job or not
 			local attributeMod:Float = 1.0
 			local attributeCount:int = 0
-			if TProgrammePerson(person)
-				'loop through all attributes and add their weighted values
-				for local i:int = 1 to TVTProgrammePersonAttribute.count
-					local attributeID:int = TVTProgrammePersonAttribute.GetAtIndex(i)
-					local attributeGenre:Float = genreDefinition.GetCastAttribute(job.job, attributeID)
-					local attributePerson:Float = TProgrammePerson(person).GetAttribute(attributeID)
-					if MathHelper.AreApproximatelyEqual(attributePerson, 0.0) then continue
-					if MathHelper.AreApproximatelyEqual(attributeGenre, 0.0) then continue
+			'loop through all attributes and add their weighted values
+			for local i:int = 1 to TVTPersonPersonality.count
+				local attributeID:int = TVTPersonPersonality.GetAtIndex(i)
+				local attributeGenre:Float = genreDefinition.GetCastAttribute(job.job, attributeID)
+				local attributePerson:Float = personalityData.GetAttribute(attributeID)
+				if MathHelper.AreApproximatelyEqual(attributePerson, 0.0) then continue
+				if MathHelper.AreApproximatelyEqual(attributeGenre, 0.0) then continue
 
-					attributeMod :+ attributeGenre * attributePerson
-					attributeCount :+ 1
-				Next
-				'calc average
-				if attributeCount > 1
-					attributeMod :/ attributeCount
-				endif
+				attributeMod :+ attributeGenre * attributePerson
+				attributeCount :+ 1
+			Next
+			'calc average
+			if attributeCount > 1
+				attributeMod :/ attributeCount
 			endif
 
 
@@ -724,12 +714,10 @@ Type TProductionConcept Extends TOwnedGameObject
 
 			'a persons fit depends on its XP
 			'so make 25% of the fit dependend from XP
-			local xpMod:Float = 0.75
-			if TProgrammePerson(person) 
-				'to fit as a show's GUEST it depends on how "good/interesting"
-				'you are (depending on your profession)
-				xpMod :+ 0.25 * TProgrammePerson(person).GetEffectiveExperiencePercentage(job.job)
-			EndIf
+			'to fit as a show's GUEST it depends on how "good/interesting"
+			'you are (depending on your profession)
+			local xpMod:Float = 0.75 + 0.25 * productionData.GetEffectiveExperiencePercentage(job.job)
+
 			personFit :* xpMod
 
 			'increase lower fits (increases distance from "nobody" to "novice")
@@ -737,14 +725,14 @@ Type TProductionConcept Extends TOwnedGameObject
 
 
 			TLogger.Log("TProductionConcept.CalculateCastFit()", " --------------------", LOG_DEBUG)
-			TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTProgrammePersonJob.GetAsString( job.job ) + "~q]", LOG_DEBUG)
+			TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTPersonJob.GetAsString( job.job ) + "~q]", LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "     genreFit:  "+genreFit, LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "       jobFit:  "+jobFit, LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "    genderFit:  "+genderFit, LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", " attributeMod:  "+attributeMod, LOG_DEBUG)
-			if TProgrammePerson(person)
-				TLogger.Log("TProductionConcept.CalculateCastFit()", " (sympathy   :  "+TProgrammePerson(person).GetChannelSympathy(owner)+")", LOG_DEBUG)
-				TLogger.Log("TProductionConcept.CalculateCastFit()", " (xp         :  "+(TProgrammePerson(person).GetEffectiveExperiencePercentage(job.job)*100)+"%)", LOG_DEBUG)
+			if person.HasCustomPersonality()
+				TLogger.Log("TProductionConcept.CalculateCastFit()", " (sympathy   :  " + person.GetChannelSympathy(owner)+")", LOG_DEBUG)
+				TLogger.Log("TProductionConcept.CalculateCastFit()", " (xp         :  " + (person.GetProductionData().GetEffectiveExperiencePercentage(job.job)*100)+"%)", LOG_DEBUG)
 			else
 				TLogger.Log("TProductionConcept.CalculateCastFit()", " (sympathy   :  --)", LOG_DEBUG)
 				TLogger.Log("TProductionConcept.CalculateCastFit()", " (xp         :  --)", LOG_DEBUG)
@@ -776,18 +764,16 @@ Type TProductionConcept Extends TOwnedGameObject
 		local personCount:int = 0
 
 		For local castIndex:int = 0 until cast.length
-			local person:TProgrammePersonBase = cast[castIndex]
+			local person:TPersonBase = cast[castIndex]
 			if not person then continue
 
-			local jobID:int = script.cast[castIndex].job
+			local jobID:int = script.jobs[castIndex].job
 			local personFameMod:Float = 1.0
 
-			if TProgrammePerson(person)
-				personFameMod :+ 0.75 * TProgrammePerson(person).GetFame()
-				'really experienced persons benefit from it too (eg.
-				'won awards and so on)
-				personFameMod :+ 0.25 * TProgrammePerson(person).GetEffectiveExperiencePercentage(jobID)
-			endif
+			personFameMod :+ 0.75 * person.GetPersonalityData().GetFame()
+			'really experienced persons benefit from it too (eg.
+			'won awards and so on)
+			personFameMod :+ 0.25 * person.GetProductionData().GetEffectiveExperiencePercentage(jobID)
 
 			castFameModSum :+ personFameMod
 			personCount :+1
@@ -858,7 +844,7 @@ Type TProductionConcept Extends TOwnedGameObject
 		For local i:int = 0 until cast.length
 			if not cast[i] then continue
 
-			result :+ cast[i].GetBaseFee( script.cast[i].job, script.GetBlocks())
+			result :+ cast[i].GetProductionData().GetBaseFee( script.jobs[i].job, script.GetBlocks())
 		Next
 		return result
 	End Method

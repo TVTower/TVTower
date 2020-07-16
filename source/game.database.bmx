@@ -10,7 +10,7 @@ Import "game.production.scripttemplate.bmx"
 Import "game.programme.programmelicence.bmx"
 Import "game.programme.adcontract.bmx"
 Import "game.programme.newsevent.bmx"
-Import "game.programme.programmeperson.bmx"
+Import "game.person.bmx"
 Import "Dig/base.util.persongenerator.bmx"
 Import "game.gameconstants.bmx"
 
@@ -250,7 +250,7 @@ Type TDatabaseLoader
 			If nodePerson.getName() <> "person" Then Continue
 
 			'param false = load as insignificant
-			If LoadV3ProgrammePersonBaseFromNode(nodePerson, xml, False)
+			If LoadV3PersonBaseFromNode(nodePerson, xml, False)
 				personsBaseCount :+ 1
 				totalPersonsBaseCount :+ 1
 			EndIf
@@ -262,7 +262,7 @@ Type TDatabaseLoader
 			If nodePerson.getName() <> "person" Then Continue
 
 			'param true = load as celebrity
-			If LoadV3ProgrammePersonBaseFromNode(nodePerson, xml, True)
+			If LoadV3PersonBaseFromNode(nodePerson, xml, True)
 				personsCount :+ 1
 				totalPersonsCount :+ 1
 			EndIf
@@ -376,39 +376,33 @@ Type TDatabaseLoader
 
 	'=== HELPER ===
 
-	Method LoadV3ProgrammePersonBaseFromNode:TProgrammePersonBase(node:TxmlNode, xml:TXmlHelper, isCelebrity:Int=True)
+	Method LoadV3PersonBaseFromNode:TPersonBase(node:TxmlNode, xml:TXmlHelper, isCelebrity:Int=True)
 		Local GUID:String = xml.FindValue(node,"id", "")
 
 		'fetch potential meta data
-		Local mData:TData = LoadV3ProgrammePersonBaseMetaDataFromNode(GUID, node, xml, isCelebrity)
+		Local mData:TData = LoadV3PersonBaseMetaDataFromNode(GUID, node, xml, isCelebrity)
 		If mData Then metaData.Add(GUID, mData )
 
 		'skip forbidden users (DEV)
 		If Not IsAllowedUser(mData.GetString("createdBy"), "person") Then Return Null
 
 		'try to fetch an existing one
-		Local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(GUID)
+		Local person:TPersonBase = GetPersonBaseCollection().GetByGUID(GUID)
 		'if the person existed, remove it from all lists and later add
-		'it back to the one defined by "isCelebrity"
-		'this allows other database.xml's to morph a insignificant
-		'person into a celebrity
+		'it back to the one then suiting. this allows other 
+		'database.xml's to morph a insignificant person into a celebrity
 		If person
-			GetProgrammePersonBaseCollection().RemoveInsignificant(person)
-			GetProgrammePersonBaseCollection().RemoveCelebrity(person)
-
-			'convert to celebrity if required
-			If isCelebrity And Not TProgrammePerson(person)
-				person = ConvertInsignificantToCelebrity(person)
-			EndIf
-			TLogger.Log("LoadV3ProgrammePersonBaseFromNode()", "Extending programmePersonBase ~q"+person.GetFullName()+"~q. GUID="+person.GetGUID(), LOG_XML)
+			GetPersonBaseCollection().Remove(person)
+			TLogger.Log("LoadV3PersonBaseFromNode()", "Extending PersonBase ~q" + person.GetFullName() + "~q. GUID=" + person.GetGUID(), LOG_XML)
 		Else
-			If isCelebrity
-				person = New TProgrammePerson
-			Else
-				person = New TProgrammePersonBase
-			EndIf
-
+			person = New TPersonBase
 			person.GUID = GUID
+		EndIf
+
+		'convert to celebrity if required
+		If isCelebrity And Not person.IsCelebrity()
+			UpgradePersonBaseData(person)
+			person.SetFlag(TVTPersonFlag.CELEBRITY, True)
 		EndIf
 
 
@@ -432,18 +426,18 @@ Type TDatabaseLoader
 				person.firstName = GUID
 			EndIf
 
-			person.fictional = True
+			person.SetFlag(TVTPersonFlag.FICTIONAL, True)
 		EndIf
 
 		'override with given ones
 		person.firstName = data.GetString("first_name", person.firstName)
 		person.lastName = data.GetString("last_name", person.lastName)
 		person.nickName = data.GetString("nick_name", person.nickName)
-		person.fictional = data.GetBool("fictional", person.fictional)
-		person.bookable = data.GetBool("bookable", person.bookable)
+		person.SetFlag(TVTPersonFlag.FICTIONAL, data.GetBool("fictional", person.IsFictional()) )
+		person.SetFlag(TVTPersonFlag.BOOKABLE, data.GetBool("bookable", person.IsBookable()) )
+		person.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, data.GetBool("levelup", person.CanLevelUp()) )
+		person.SetJob(data.GetInt("job"))
 		person.countryCode = data.GetString("country", person.countryCode)
-		person.canLevelUp = data.GetInt("levelup", person.canLevelUp)
-		person.SetJob(data.GetInt("job", person.job))
 		person.gender = data.GetInt("gender", person.gender)
 		person.faceCode = data.GetString("face_code", person.faceCode)
 
@@ -460,10 +454,13 @@ Type TDatabaseLoader
 
 		'=== CELEBRITY SPECIFIC DATA ===
 		'only for celebrities
-		If TProgrammePerson(person)
-			'create a celebrity to avoid casting each time
-			Local celebrity:TProgrammePerson = TProgrammePerson(person)
-
+		If person.IsCelebrity()
+			local pd:TPersonPersonalityData = TPersonPersonalityData(person.GetPersonalityData())
+			If not pd 
+				person.SetPersonalityData( new TPersonPersonalityData.CopyFromBase( person.GetPersonalityData() ) )
+				pd = TPersonPersonalityData(person.GetPersonalityData())
+			EndIf
+		
 			'=== IMAGES ===
 			Local nodeImages:TxmlNode = xml.FindChild(node, "images")
 			data = New TData
@@ -471,7 +468,7 @@ Type TDatabaseLoader
 			xml.LoadValuesToData(nodeImages, data, [..
 				"face_code" ..
 			])
-			celebrity.faceCode = data.GetString("face_code", celebrity.faceCode)
+			person.faceCode = data.GetString("face_code", person.faceCode)
 
 
 			'=== DETAILS ===
@@ -482,12 +479,12 @@ Type TDatabaseLoader
 				"gender", "birthday", "deathday", "country", "fictional", ..
 				"job" ..
 			])
-			celebrity.gender = data.GetInt("gender", celebrity.gender)
-			celebrity.SetDayOfBirth( data.GetString("birthday", celebrity.dayOfBirth) )
-			celebrity.SetDayOfDeath( data.GetString("deathday", celebrity.dayOfDeath) )
-			celebrity.countryCode = data.GetString("country", celebrity.countryCode)
-			celebrity.fictional = data.GetInt("fictional", celebrity.fictional)
-			celebrity.SetJob( data.GetInt("job", celebrity.job) )
+			person.gender = data.GetInt("gender", person.gender)
+			person.countryCode = data.GetString("country", person.countryCode)
+			person.SetFlag(TVTPersonFlag.FICTIONAL, data.GetInt("fictional", person.IsFictional()) )
+			pd.SetDayOfBirth( data.GetString("birthday", pd.dayOfBirth) )
+			pd.SetDayOfDeath( data.GetString("deathday", pd.dayOfDeath) )
+			person.SetJob( data.GetInt("job") )
 
 			'=== DATA ===
 			Local nodeData:TxmlNode = xml.FindChild(node, "data")
@@ -497,34 +494,31 @@ Type TDatabaseLoader
 				"power", "humor", "charisma", "appearance", ..
 				"topgenre1", "topgenre2", "prominence"..
 			])
-			celebrity.skill = 0.01 * data.GetFloat("skill", 100*celebrity.skill)
-			celebrity.fame = 0.01 * data.GetFloat("fame", 100*celebrity.fame)
-			celebrity.scandalizing = 0.01 * data.GetFloat("scandalizing", 100*celebrity.scandalizing)
-			celebrity.priceModifier = 0.01 * data.GetFloat("price_mod", 100*celebrity.priceModifier)
+			pd.skill = 0.01 * data.GetFloat("skill", 100*pd.skill)
+			pd.fame = 0.01 * data.GetFloat("fame", 100*pd.fame)
+			pd.scandalizing = 0.01 * data.GetFloat("scandalizing", 100*pd.scandalizing)
+			pd.power = 0.01 * data.GetFloat("power", 100*pd.power)
+			pd.humor = 0.01 * data.GetFloat("humor", 100*pd.humor)
+			pd.charisma = 0.01 * data.GetFloat("charisma", 100*pd.charisma)
+			pd.appearance = 0.01 * data.GetFloat("appearance", 100*pd.appearance)
+			if TPersonProductionData(person.GetProductionData())
+				TPersonProductionData(person.GetProductionData()).topGenre = data.GetInt("topgenre", TPersonProductionData(person.GetProductionData()).topGenre)
+			EndIf
+			
 			'0 would mean: cuts price to 0
-			If celebrity.priceModifier = 0 Then celebrity.priceModifier = 1.0
-			celebrity.power = 0.01 * data.GetFloat("power", 100*celebrity.power)
-			celebrity.humor = 0.01 * data.GetFloat("humor", 100*celebrity.humor)
-			celebrity.charisma = 0.01 * data.GetFloat("charisma", 100*celebrity.charisma)
-			celebrity.appearance = 0.01 * data.GetFloat("appearance", 100*celebrity.appearance)
-			celebrity.topGenre1 = data.GetInt("topgenre1", celebrity.topGenre1)
-			celebrity.topGenre2 = data.GetInt("topgenre2", celebrity.topGenre2)
-			'TODO: prominence - manual popularity indicator?
+			If person.GetProductionData().priceModifier = 0 Then person.GetProductionData().priceModifier = 1.0
+			person.GetProductionData().priceModifier = 0.01 * data.GetFloat("price_mod", 100*person.GetProductionData().priceModifier)
 
 			'fill not given attributes with random data
-			If celebrity.fictional Then celebrity.SetRandomAttributes(True)
+			If person.IsFictional() Then pd.SetRandomAttributes(True)
 		EndIf
 
 
 		'=== ADD TO COLLECTION ===
 		'we removed the person from all lists already, now add it back
-		'to the one we wanted
-		If isCelebrity
-			GetProgrammePersonBaseCollection().AddCelebrity(person)
-		Else
-			GetProgrammePersonBaseCollection().AddInsignificant(person)
-		EndIf
-
+		'to the ones it suits
+		GetPersonBaseCollection().Add(person)
+		
 		Return person
 	End Method
 
@@ -1194,13 +1188,13 @@ Type TDatabaseLoader
 			Local memberGenerator:String = xml.FindValue(nodeMember, "generator", "")
 			Local memberGUID:String = nodeMember.GetContent().Trim()
 
-			Local member:TProgrammePersonBase
-			If memberGUID Then member = GetProgrammePersonBaseCollection().GetByGUID(memberGUID)
-			'create a simple person so jobs could get added to persons
+			Local member:TPersonBase
+			If memberGUID Then member = GetPersonBaseCollection().GetByGUID(memberGUID)
+			'create a person so jobs could get added to persons
 			'which are created after that programme
 			If Not member
-				member = New TProgrammePersonBase
-				member.fictional = True
+				member = New TPersonBase
+				member.SetFlag(TVTPersonFlag.FICTIONAL, True)
 
 				If memberGenerator
 					'generator is "countrycode1 countrycode2, gender, levelup"
@@ -1233,17 +1227,15 @@ Type TDatabaseLoader
 				'	print "generated person : " + member.firstName+" " + member.lastName +" ("+member.countryCode+")" + " GUID="+memberGUID
 				'endif
 
-				'add if we have a valid guid now
-				If memberGUID
-					member.SetGUID(memberGUID)
-					GetProgrammePersonBaseCollection().AddInsignificant(member)
-				EndIf
+				member.SetGUID(memberGUID)
+				GetPersonBaseCollection().Add(member)
 			EndIf
 
 			'member now is capable of doing this job
 			member.SetJob(memberFunction)
+
 			'add cast
-			programmeData.AddCast(New TProgrammePersonJob.Init(memberGUID, memberFunction))
+			programmeData.AddCast(New TPersonProductionJob.Init(member.GetID(), memberFunction))
 		Next
 
 
@@ -1554,9 +1546,19 @@ Type TDatabaseLoader
 			Local jobCountry:String = xml.FindValue(nodeJob, "country", "")
 			'for actor jobs this defines if a specific role is defined
 			Local jobRoleGUID:String = xml.FindValue(nodeJob, "role_guid", "")
+			Local jobRoleID:Int = 0
+			If jobRoleGUID
+				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(jobRoleGUID)
+				If Not role
+					role = New TProgrammeRole
+					role.SetGUID(GUID)
+					GetProgrammeRoleCollection().Add(role)
+				EndIf
+				jobRoleID = role.GetID()
+			EndIf
 
 			'create a job without an assigned person
-			Local job:TProgrammePersonJob = New TProgrammePersonJob.Init("", jobFunction, jobGender, jobCountry, jobRoleGUID)
+			Local job:TPersonProductionJob = New TPersonProductionJob.Init(0, jobFunction, jobGender, jobCountry, jobRoleID)
 			If jobRequired = 0
 				'check if the job has to override an existing one
 				If jobIndex >= 0 And scriptTemplate.GetRandomJobAtIndex(jobIndex)
@@ -1858,12 +1860,12 @@ Type TDatabaseLoader
 	End Method
 
 
-	Method LoadV3ProgrammePersonBaseMetaDataFromNode:TData(GUID:String, node:TxmlNode, xml:TXmlHelper, isCelebrity:Int=True)
+	Method LoadV3PersonBaseMetaDataFromNode:TData(GUID:String, node:TxmlNode, xml:TXmlHelper, isCelebrity:Int=True)
 		Local data:TData = metaData.GetData(GUID)
 		If Not data Then data = New TData
 
 		'only set creator if it is the "non overridden" one
-		If Not GetProgrammePersonBaseCollection().GetByGUID(GUID)
+		If Not GetPersonBaseCollection().GetByGUID(GUID)
 			data = LoadV3CreatorMetaDataFromNode(GUID, data, node, xml)
 		EndIf
 
@@ -1989,15 +1991,14 @@ Type TDatabaseLoader
 		'persons might have been used in productions dated earlier than
 		'their hardcoded day-of-birth
 
-		'only TProgrammePerson have a DOB, so we could skip insignificants
-		For Local person:TProgrammePerson = EachIn GetProgrammePersonBaseCollection().celebrities.Values()
+		For Local person:TPersonBase = EachIn GetPersonBaseCollection().entries.Values()
 			'ignore persons without a given date of birth
-			If person.GetDOB() <= 0 Then Continue
+			If not person.HasCustomPersonality() or person.GetPersonalityData().GetDOB() <= 0 Then Continue
 
 
 			'loop through all known productions and find earliest date
 			Local earliestProductionData:TProgrammeData
-			For Local programmeDataID:Int = EachIn person.GetProducedProgrammeIDs()
+			For Local programmeDataID:Int = EachIn person.GetProductionData().GetProducedProgrammeIDs()
 				Local programmeData:TProgrammeData = GetProgrammeDataCollection().GetByID(programmeDataID)
 				If Not programmeData
 					TLogger.Log("TDatabase.FixLoadedDate()", "No ProgrammeData found for ID ~q"+programmeDataID+"~q.", LOG_ERROR)
@@ -2013,8 +2014,8 @@ Type TDatabaseLoader
 			If Not earliestProductionData Then Continue
 
 			'person should be at least 5 years (fictional)
-			Local dobYear:Int = GetWorldTime().GetYear( person.GetDOB() )
-			Local ageOnProduction:Int = earliestProductionData.GetProductionStartTime() - person.GetDOB()
+			Local dobYear:Int = GetWorldTime().GetYear( person.GetPersonalityData().GetDOB() )
+			Local ageOnProduction:Int = earliestProductionData.GetProductionStartTime() - person.GetPersonalityData().GetDOB()
 			Local ageOnProductionYears:Int = earliestProductionData.GetYear() - dobYear
 			Local adjustAge:Int = False
 
@@ -2024,7 +2025,7 @@ Type TDatabaseLoader
 				adjustAge = True
 			ElseIf ageOnProductionYears < 5
 				'too young director or scriptwriter
-				If earliestProductionData.HasCastPerson(person.GetGUID(), TVTProgrammePersonJob.DIRECTOR | TVTProgrammePersonJob.SCRIPTWRITER)
+				If earliestProductionData.HasCastPerson(person.GetID(), TVTPersonJob.DIRECTOR | TVTPersonJob.SCRIPTWRITER)
 					TLogger.Log("TDatabase.FixLoadedData()", "Person ~q"+person.GetFullName()+"~q (GUID=~q"+person.getGUID()+"~q) is born in "+dobYear+". Impossible to have produced ~q"+earliestProductionData.GetTitle()+" in "+earliestProductionData.GetYear()+". Directors and Scriptwriters need to be at least 5 years old.", LOG_LOADING | LOG_WARNING)
 					adjustAge = True
 				EndIf
@@ -2032,9 +2033,9 @@ Type TDatabaseLoader
 
 			If adjustAge
 				'we are able to correct non-fictional ones
-				If person.fictional
-					person.dayOfBirth = (earliestProductionData.GetYear() - RandRange(5,25)) + "-" + GetWorldTime().GetMonth(person.GetDOB()) + "-" + GetWorldTime().GetDayOfYear(person.GetDOB())
-					Local dobYearNew:Int = GetWorldTime().GetYear( person.GetDOB() )
+				If person.IsFictional()
+					person.GetPersonalityData().dayOfBirth = (earliestProductionData.GetYear() - RandRange(5,25)) + "-" + GetWorldTime().GetMonth(person.GetPersonalityData().GetDOB()) + "-" + GetWorldTime().GetDayOfYear(person.GetPersonalityData().GetDOB())
+					Local dobYearNew:Int = GetWorldTime().GetYear( person.GetPersonalityData().GetDOB() )
 					TLogger.Log("TDatabase.FixLoadedData()", "Adjusted DOB of person ~q"+person.GetFullName()+"~q (GUID=~q"+person.getGUID()+"~q). Was "+dobYear+" and is now "+dobYearNew+".", LOG_LOADING | LOG_WARNING)
 				Else
 					TLogger.Log("TDatabase.FixLoadedData()", "Cannot adjust DOB of person ~q"+person.GetFullName()+"~q (GUID=~q"+person.getGUID()+"~q). Person is non-fictional, so DOB should be correct.", LOG_LOADING | LOG_WARNING)

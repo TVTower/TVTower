@@ -239,17 +239,16 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			'cast
 			local cast:string = ""
 
-			For local i:int = 1 to TVTProgrammePersonJob.count
-				local jobID:int = TVTProgrammePersonJob.GetAtIndex(i)
-				local requiredPersons:int = productionConcept.script.GetSpecificCast(jobID).length
+			For local jobID:int = EachIn TVTPersonJob.GetCastJobs()
+				local requiredPersons:int = productionConcept.script.GetSpecificJob(jobID).length
 				if requiredPersons <= 0 then continue
 
 				if cast <> "" then cast :+ ", "
 
 				if requiredPersons = 1
-					cast :+ "|b|"+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, True))+":|/b| "
+					cast :+ "|b|"+GetLocale("JOB_" + TVTPersonJob.GetAsString(jobID, True))+":|/b| "
 				else
-					cast :+ "|b|"+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, False))+":|/b| "
+					cast :+ "|b|"+GetLocale("JOB_" + TVTPersonJob.GetAsString(jobID, False))+":|/b| "
 				endif
 
 				cast :+ productionConcept.GetCastGroupString(jobID, False, GetLocale("JOB_POSITION_UNASSIGNED"))
@@ -538,17 +537,16 @@ endrem
 			'cast
 			local cast:string = ""
 
-			For local i:int = 1 to TVTProgrammePersonJob.count
-				local jobID:int = TVTProgrammePersonJob.GetAtIndex(i)
-				local requiredPersons:int = productionConcept.script.GetSpecificCast(jobID).length
+			For local jobID:Int = EachIn TVTPersonJob.GetCastJobs()
+				local requiredPersons:int = productionConcept.script.GetSpecificJob(jobID).length
 				if requiredPersons <= 0 then continue
 
 				if cast <> "" then cast :+ ", "
 
 				if requiredPersons = 1
-					cast :+ "|b|"+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, True))+":|/b| "
+					cast :+ "|b|"+GetLocale("JOB_" + TVTPersonJob.GetAsString(jobID, True))+":|/b| "
 				else
-					cast :+ "|b|"+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, False))+":|/b| "
+					cast :+ "|b|"+GetLocale("JOB_" + TVTPersonJob.GetAsString(jobID, False))+":|/b| "
 				endif
 
 				cast :+ productionConcept.GetCastGroupString(jobID, False, GetLocale("JOB_POSITION_UNASSIGNED"))

@@ -647,7 +647,11 @@ Type TGUIGameListItem Extends TGUIListItem
 	Method Update:Int()
 		Super.Update()
 
-		If isDragged() then SetAsset(assetDragged)
+		If isDragged() 
+			SetAsset(assetDragged)
+		Else
+			SetAsset(assetDefault)
+		EndIf
 	End Method
 
 
@@ -682,6 +686,15 @@ Type TGUIGameListItem Extends TGUIListItem
 			SetBlend AlphaBlend
 			SetAlpha oldAlpha
 		EndIf
+		rem
+		local c:int = ( _id mod 200 + 55 )
+		SetColor c,c,c
+		DrawRect(int(Self.GetScreenRect().GetX())             , int(Self.GetScreenRect().GetY())              , 1              , int(GetHeight()))
+		DrawRect(int(Self.GetScreenRect().GetX() + GetWidth()), int(Self.GetScreenRect().GetY())              , 1              , int(GetHeight()))
+		DrawRect(int(Self.GetScreenRect().GetX())             , int(Self.GetScreenRect().GetY())              , int(GetWidth()), 1)
+		DrawRect(int(Self.GetScreenRect().GetX())             , int(Self.GetScreenRect().GetY() + GetHeight()), int(GetWidth()), 1)
+		SetColor 255,255,255
+		endrem
 	End Method
 End Type
 

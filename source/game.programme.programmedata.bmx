@@ -7,7 +7,7 @@ SuperStrict
 Import "Dig/base.util.localization.bmx"
 Import "game.player.difficulty.bmx"
 Import "game.world.worldtime.bmx"
-Import "game.programme.programmeperson.base.bmx"
+Import "game.person.base.bmx"
 Import "game.broadcast.genredefinition.movie.bmx"
 Import "game.broadcastmaterialsource.base.bmx"
 Import "game.gameconstants.bmx"
@@ -477,7 +477,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	'array holding actor(s) and director(s) and ...
-	Field cast:TProgrammePersonJob[]
+	Field cast:TPersonProductionJob[]
 	Field country:String = "UNK"
 
 	'fine grained attractivity for target groups (splitted gender)
@@ -546,8 +546,8 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	Field trailerMods:TAudience[]
 
 
-	Field cachedActors:TProgrammePersonBase[] {nosave}
-	Field cachedDirectors:TProgrammePersonBase[] {nosave}
+	Field cachedActors:TPersonBase[] {nosave}
+	Field cachedDirectors:TPersonBase[] {nosave}
 	Field genreDefinitionCache:TMovieGenreDefinition = Null {nosave}
 
 	Field extra:TData
@@ -612,7 +612,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method ClearCast:Int()
-		cast = New TProgrammePersonJob[0]
+		cast = New TPersonProductionJob[0]
 
 		'invalidate caches
 		cachedActors = cachedActors[..0]
@@ -622,7 +622,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
-	Method AddCast:Int(job:TProgrammePersonJob)
+	Method AddCast:Int(job:TPersonProductionJob)
 		If HasCast(job) Then Return False
 
 		cast :+ [job]
@@ -634,14 +634,14 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
-	Method RemoveCast:Int(job:TProgrammePersonJob)
+	Method RemoveCast:Int(job:TPersonProductionJob)
 		If Not HasCast(job) Then Return False
 		If cast.Length = 0 Then Return False
 
-		Local newCast:TProgrammePersonJob[]
-		For Local j:TProgrammePersonJob = EachIn cast
+		Local newCast:TPersonProductionJob[]
+		For Local j:TPersonProductionJob = EachIn cast
 			'skip our job
-			If job.personGUID = j.personGUID And job.job = j.job Then Continue
+			If job.personID = j.personID And job.job = j.job Then Continue
 			'add rest
 			newCast :+ [j]
 		Next
@@ -659,11 +659,11 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		Local res:Float = 0.0
 		Local castCount:Int = 0
 
-		For Local job:TProgrammePersonJob = EachIn cast
-			Local p:TProgrammePersonBase = GetProgrammePersonBase(job.personGUID)
+		For Local job:TPersonProductionJob = EachIn cast
+			Local p:TPersonBase = GetPersonBase(job.personID)
 			If Not p Then Continue
 			res :+ p.GetPopularityValue()
-			castCount :+1
+			castCount :+ 1
 		Next
 		If castCount > 0 Then res = res / castCount
 
@@ -676,35 +676,42 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		Local res:Float = 0.0
 		Local castCount:Int = 0
 
-		For Local job:TProgrammePersonJob = EachIn cast
-			Local p:TProgrammePersonBase = GetProgrammePersonBase(job.personGUID)
+		For Local job:TPersonProductionJob = EachIn cast
+			Local p:TPersonBase = GetPersonBase(job.personID)
 			If Not p Then Continue
-			res :+ p.GetAttribute(TVTProgrammePersonAttribute.FAME)
-			castCount :+1
+			res :+ p.GetPersonalityData().GetAttribute(TVTPersonPersonality.FAME)
+			castCount :+ 1
 		Next
 		If castCount > 0 Then res = res / castCount
+
 		'return a value between 0 and 1
 		Return MathHelper.Clamp(res, 0.0, 1.0 )
 	End Method
 
 
-	Method HasCastPerson:Int(personGUID:String, job:Int = -1)
-		For Local doneJob:TProgrammePersonJob = EachIn cast
-			If job >= 0 And doneJob.job & job <= 0 Then Continue
+	Method HasCastPerson:Int(personID:Int, job:Int = -1)
+		If job >= 0
+			For Local doneJob:TPersonProductionJob = EachIn cast
+				If doneJob.job & job <= 0 Then Continue
 
-			If doneJob.personGUID = personGUID Then Return True
-		Next
+				If doneJob.personID = personID Then Return True
+			Next
+		Else
+			For Local doneJob:TPersonProductionJob = EachIn cast
+				If doneJob.personID = personID Then Return True
+			Next
+		EndIf
 		Return False
 	End Method
 
 
-	Method HasCast:Int(job:TProgrammePersonJob, checkRoleGUID:Int = True)
+	Method HasCast:Int(job:TPersonProductionJob, checkRoleID:Int = True)
 		'do not check job against jobs in the list, as only the
 		'content might be the same but the job a duplicate
-		For Local doneJob:TProgrammePersonJob = EachIn cast
-			If job.personGUID <> doneJob.personGUID Then Continue
+		For Local doneJob:TPersonProductionJob = EachIn cast
+			If job.personID <> doneJob.personID Then Continue
 			If job.job <> doneJob.job Then Continue
-			If checkRoleGUID And job.roleGUID <> doneJob.roleGUID Then Continue
+			If checkRoleID And job.roleID <> doneJob.roleID Then Continue
 
 			Return True
 		Next
@@ -712,22 +719,22 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
-	Method GetCast:TProgrammePersonJob[]()
+	Method GetCast:TPersonProductionJob[]()
 		Return cast
 	End Method
 
 
-	Method GetCastAtIndex:TProgrammePersonJob(index:Int=0)
+	Method GetCastAtIndex:TPersonProductionJob(index:Int=0)
 		If index < 0 Or index >= cast.length Then Return Null
 		Return cast[index]
 	End Method
 
 
-	Method GetCastGroup:TProgrammePersonBase[](jobFlag:Int)
-		Local res:TProgrammePersonBase[0]
-		For Local job:TProgrammePersonJob = EachIn cast
+	Method GetCastGroup:TPersonBase[](jobFlag:Int)
+		Local res:TPersonBase[0]
+		For Local job:TPersonProductionJob = EachIn cast
 			If job.job = jobFlag
-				res :+ [ GetProgrammePersonBaseCollection().GetByGUID(job.personGUID) ]
+				res :+ [ GetPersonBaseCollection().GetByID( job.personID) ]
 			EndIf
 		Next
 		Return res
@@ -736,7 +743,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 	Method GetCastGroupString:String(jobFlag:Int)
 		Local result:String = ""
-		Local group:TProgrammePersonBase[] = GetCastGroup(jobFlag)
+		Local group:TPersonBase[] = GetCastGroup(jobFlag)
 		For Local i:Int = 0 To group.length-1
 			If result <> "" Then result:+ ", "
 			result:+ group[i].GetFullName()
@@ -745,11 +752,11 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
-	Method GetActors:TProgrammePersonBase[]()
+	Method GetActors:TPersonBase[]()
 		If cachedActors.length = 0
-			For Local job:TProgrammePersonJob = EachIn cast
-				If job.job = TVTProgrammePersonJob.ACTOR
-					cachedActors :+ [ GetProgrammePersonBaseCollection().GetByGUID(job.personGUID) ]
+			For Local job:TPersonProductionJob = EachIn cast
+				If job.job = TVTPersonJob.ACTOR
+					cachedActors :+ [ GetPersonBaseCollection().GetByID( job.personID ) ]
 				EndIf
 			Next
 		EndIf
@@ -758,11 +765,11 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 	End Method
 
 
-	Method GetDirectors:TProgrammePersonBase[]()
+	Method GetDirectors:TPersonBase[]()
 		If cachedDirectors.length = 0
-			For Local job:TProgrammePersonJob = EachIn cast
-				If job.job = TVTProgrammePersonJob.DIRECTOR
-					cachedDirectors :+ [ GetProgrammePersonBaseCollection().GetByGUID(job.personGUID) ]
+			For Local job:TPersonProductionJob = EachIn cast
+				If job.job = TVTPersonJob.DIRECTOR
+					cachedDirectors :+ [ GetPersonBaseCollection().GetByID( job.personID ) ]
 				EndIf
 			Next
 		EndIf
@@ -772,7 +779,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	'1 based
-	Method GetActor:TProgrammePersonBase(number:Int=1)
+	Method GetActor:TPersonBase(number:Int=1)
 		'generate if needed
 		GetActors()
 
@@ -789,14 +796,14 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 		For Local i:Int = 0 To cachedActors.length-1
 			If result <> "" Then result:+ ", "
-			result:+ cachedActors[i].GetFullName()
+			result :+ cachedActors[i].GetFullName()
 		Next
 		Return result
 	End Method
 
 
 	'1 based
-	Method GetDirector:TProgrammePersonBase(number:Int=1)
+	Method GetDirector:TPersonBase(number:Int=1)
 		'generate if needed
 		GetDirectors()
 
@@ -813,7 +820,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 		For Local i:Int = 0 To cachedDirectors.length-1
 			If result <> "" Then result:+ ", "
-			result:+ cachedDirectors[i].GetFullName()
+			result :+ cachedDirectors[i].GetFullName()
 		Next
 		Return result
 	End Method
@@ -988,7 +995,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 			If elements.length < 3 Then Continue
 
 			If elements[0] = "person"
-				Local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID(elements[1])
+				Local person:TPersonBase = GeTPersonBaseCollection().GetByGUID(elements[1])
 				If Not person
 					result = result.Replace("%person|"+elements[1]+"|Full%", "John Doe")
 					result = result.Replace("%person|"+elements[1]+"|First%", "John")
@@ -1005,7 +1012,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 		If result.find("|") >= 0
 			If result.find("[") >= 0
-				Local job:TProgrammePersonJob
+				Local job:TPersonProductionJob
 				'check for cast
 				For Local i:Int = 0 To 5
 					job = GetCastAtIndex(i)
@@ -1015,7 +1022,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 						result = result.Replace("["+i+"|Nick]", "John")
 						result = result.Replace("["+i+"|Last]", "Doe")
 					Else
-						Local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
+						Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
 						result = result.Replace("["+i+"|Full]", person.GetFullName())
 						result = result.Replace("["+i+"|First]", person.GetFirstName())
 						result = result.Replace("["+i+"|Nick]", person.GetNickName())
@@ -1925,9 +1932,9 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		If finishedProductionForCast Then Return False
 
 		If GetCast()
-			For Local job:TProgrammePersonJob = EachIn GetCast()
-				Local person:TProgrammePersonBase = GetProgrammePersonBaseCollection().GetByGUID( job.personGUID )
-				If person Then person.FinishProduction(GetGUID(), job.job)
+			For Local job:TPersonProductionJob = EachIn GetCast()
+				Local person:TPersonBase = GetPersonBaseCollection().GetByID( job.personID )
+				If person Then person.FinishProduction( GetID(), job.job )
 			Next
 		EndIf
 

@@ -318,11 +318,11 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Field speed:Float = 0.0
 	Field potential:Float = 0.0
 
-	'cast contains various jobs but with no "person" assigned in it, so
+	'jobs contains various jobs but with no "person" assigned in it, so
 	'it is more a "job" definition (+role in the case of actors)
-	Field cast:TProgrammePersonJob[]
+	Field jobs:TPersonProductionJob[]
 
-	'See TVTProgrammePersonJob
+	'See TVTPersonJob
 	Field allowedGuestTypes:Int	= 0
 
 	Field requiredStudioSize:Int = 1
@@ -450,12 +450,12 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'- for single scripts we could use that jobs
 		'- for parental scripts we use the jobs of the children
 		If template.subScripts.length = 0
-			script.cast = template.GetJobs()
+			script.jobs = template.GetJobs()
 		Else
 			'for now use this approach
-			'and dynamically count individual cast count by using
-			'Max(script-cast-count, max-of-subscripts-cast-count)
-			script.cast = template.GetJobs()
+			'and dynamically count individual job count by using
+			'Max(script-job-count, max-of-subscripts-job-count)
+			script.jobs = template.GetJobs()
 		EndIf
 
 		script.basedOnScriptTemplateID = template.GetID()
@@ -520,7 +520,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			If placeHolders.length = 0 Then Continue
 
 			Local actorsFetched:Int = False
-			Local actors:TProgrammePersonJob[]
+			Local actors:TPersonProductionJob[]
 			Local replacement:String = ""
 			For Local placeHolder:String = EachIn placeHolders
 				Local replaced:Int = False
@@ -528,15 +528,15 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				Select placeHolder.toUpper()
 					Case "ROLENAME1", "ROLENAME2", "ROLENAME3", "ROLENAME4", "ROLENAME5", "ROLENAME6", "ROLENAME7"
 						If Not actorsFetched
-							actors = GetSpecificCast(TVTProgrammePersonJob.ACTOR | TVTProgrammePersonJob.SUPPORTINGACTOR)
+							actors = GetSpecificJob(TVTPersonJob.ACTOR | TVTPersonJob.SUPPORTINGACTOR)
 							actorsFetched = True
 						EndIf
 
 						'local actorNum:int = int(placeHolder.toUpper().Replace("%ROLENAME", "").Replace("%",""))
 						Local actorNum:Int = Int(Chr(placeHolder[8]))
 						If actorNum > 0
-							If actors.length > actorNum And actors[actorNum].roleGUID <> ""
-								Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[actorNum].roleGUID)
+							If actors.length > actorNum And actors[actorNum].roleID > 0
+								Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByID( actors[actorNum].roleID )
 								If role Then replacement = role.GetFirstName()
 							EndIf
 							'gender neutral default
@@ -551,15 +551,15 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 						EndIf
 					Case "ROLE1", "ROLE2", "ROLE3", "ROLE4", "ROLE5", "ROLE6", "ROLE7"
 						If Not actorsFetched
-							actors = GetSpecificCast(TVTProgrammePersonJob.ACTOR | TVTProgrammePersonJob.SUPPORTINGACTOR)
+							actors = GetSpecificJob(TVTPersonJob.ACTOR | TVTPersonJob.SUPPORTINGACTOR)
 							actorsFetched = True
 						EndIf
 
 						'local actorNum:int = int(placeHolder.toUpper().Replace("%ROLE", "").Replace("%",""))
 						Local actorNum:Int = Int(Chr(placeHolder[4]))
 						If actorNum > 0
-							If actors.length > actorNum And actors[actorNum].roleGUID <> ""
-								Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(actors[actorNum].roleGUID)
+							If actors.length > actorNum And actors[actorNum].roleID > 0
+								Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByID( actors[actorNum].roleID )
 								If role Then replacement = role.GetFullName()
 							EndIf
 							'gender neutral default
@@ -624,12 +624,12 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetSpecificCastCount:Int(job:Int, limitPersonGender:Int=-1, limitRoleGender:Int=-1, ignoreSubScripts:Int = False)
+	Method GetSpecificJobCount:Int(job:Int, limitPersonGender:Int=-1, limitRoleGender:Int=-1, ignoreSubScripts:Int = False)
 		Local result:Int = 0
-		For Local j:TProgrammePersonJob = EachIn cast
+		For Local j:TPersonProductionJob = EachIn jobs
 			'skip roles with wrong gender
-			If limitRoleGender >= 0 And j.roleGUID
-				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
+			If limitRoleGender >= 0 And j.roleID
+				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByID( j.roleID )
 				If role And role.gender <> limitRoleGender Then Continue
 			EndIf
 			'skip persons with wrong gender
@@ -642,7 +642,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'override with maximum found in subscripts
 		If Not ignoreSubscripts And subScripts
 			For Local subScript:TScript = EachIn subScripts
-				result = Max(result, subScript.GetSpecificCastCount(job, limitPersonGender, limitRoleGender))
+				result = Max(result, subScript.GetSpecificJobCount(job, limitPersonGender, limitRoleGender))
 			Next
 		EndIf
 
@@ -650,17 +650,17 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetCast:TProgrammePersonJob[]()
-		Return cast
+	Method GetJobs:TPersonProductionJob[]()
+		Return jobs
 	End Method
 
 
-	Method GetSpecificCast:TProgrammePersonJob[](job:Int, limitPersonGender:Int=-1, limitRoleGender:Int=-1)
-		Local result:TProgrammePersonJob[]
-		For Local j:TProgrammePersonJob = EachIn cast
+	Method GetSpecificJob:TPersonProductionJob[](job:Int, limitPersonGender:Int=-1, limitRoleGender:Int=-1)
+		Local result:TPersonProductionJob[]
+		For Local j:TPersonProductionJob = EachIn jobs
 			'skip roles with wrong gender
-			If limitRoleGender >= 0 And j.roleGUID
-				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
+			If limitRoleGender >= 0 And j.roleID
+				Local role:TProgrammeRole = GetProgrammeRoleCollection().GetByID( j.roleID )
 				If role And role.gender <> limitRoleGender Then Continue
 			EndIf
 			'skip persons with wrong gender
@@ -969,9 +969,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method RandomizeCast(template:TScriptTemplate = Null)
+	Method RandomizeJobs(template:TScriptTemplate = Null)
 		If not template
-			If basedOnScriptTemplateID Then template = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
+			If basedOnScriptTemplateID Then template = GetScriptTemplateCollection().GetByID( basedOnScriptTemplateID )
 		EndIf
 
 		If template
@@ -1028,7 +1028,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
-		Local titleH:Int = 18, subtitleH:Int = 16, genreH:Int = 16, descriptionH:Int = 70, castH:Int=50
+		Local titleH:Int = 18, subtitleH:Int = 16, genreH:Int = 16, descriptionH:Int = 70, jobsH:Int=50
 		Local splitterHorizontalH:Int = 6
 		Local boxH:Int = 0, msgH:Int = 0, barH:Int = 0
 		Local msgAreaH:Int = 0, boxAreaH:Int = 0, barAreaH:Int = 0
@@ -1060,9 +1060,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		If msgAreaH = 0 Then boxAreaH :+ boxAreaPaddingY
 
 		'total height
-		sheetHeight = titleH + genreH + descriptionH + castH + barAreaH + msgAreaH + boxAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
+		sheetHeight = titleH + genreH + descriptionH + jobsH + barAreaH + msgAreaH + boxAreaH + skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()
 		If isEpisode() Then sheetHeight :+ subtitleH
-		'there is a splitter between description and cast...
+		'there is a splitter between description and jobs...
 		sheetHeight :+ splitterHorizontalH
 
 
@@ -1120,29 +1120,28 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		contentY :+ splitterHorizontalH
 
 
-		'=== CAST AREA ===
-		skin.RenderContent(contentX, contentY, contentW, castH, "2")
+		'=== JOBS AREA ===
+		skin.RenderContent(contentX, contentY, contentW, jobsH, "2")
 
-		'cast
-		Local cast:String = ""
+		'jobs
+		Local jobsText:String = ""
 
-		For Local i:Int = 1 To TVTProgrammePersonJob.count
-			Local jobID:Int = TVTProgrammePersonJob.GetAtIndex(i)
+		For Local jobID:Int = EachIn TVTPersonJob.GetCastJobs()
 			'call with "false" to return maximum required persons within
 			'sub scripts too
-			Local requiredPersons:Int = GetSpecificCastCount(jobID,-1,-1, False)
+			Local requiredPersons:Int = GetSpecificJobCount(jobID,-1,-1, False)
 			If requiredPersons <= 0 Then Continue
 
-			If cast <> "" Then cast :+ ", "
+			If jobsText <> "" Then jobsText :+ ", "
 
-			Local requiredPersonsMale:Int = GetSpecificCastCount(jobID, TVTPersonGender.MALE)
-			Local requiredPersonsFemale:Int = GetSpecificCastCount(jobID, TVTPersonGender.FEMALE)
+			Local requiredPersonsMale:Int = GetSpecificJobCount(jobID, TVTPersonGender.MALE)
+			Local requiredPersonsFemale:Int = GetSpecificJobCount(jobID, TVTPersonGender.FEMALE)
 			requiredPersons = Max(requiredPersons, requiredPersonsMale + requiredPersonsFemale)
 
 			If requiredPersons = 1
-				cast :+ "|b|"+requiredPersons+"x|/b| "+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, True))
+				jobsText :+ "|b|"+requiredPersons+"x|/b| "+GetLocale("JOB_" + TVTPersonJob.GetAsString(jobID, True))
 			Else
-				cast :+ "|b|"+requiredPersons+"x|/b| "+GetLocale("JOB_" + TVTProgrammePersonJob.GetAsString(jobID, False))
+				jobsText :+ "|b|"+requiredPersons+"x|/b| "+GetLocale("JOB_" + TVTPersonJob.GetAsString(jobID, False))
 			EndIf
 
 
@@ -1172,15 +1171,15 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 				EndIf
 			EndIf
 			If requiredDetails <> ""
-				cast :+ " (" + requiredDetails + ")"
+				jobsText :+ " (" + requiredDetails + ")"
 			EndIf
 		Next
 
 Rem
-		local requiredDirectors:int = GetSpecificCastCount(TVTProgrammePersonJob.DIRECTOR)
-		local requiredStarRoleActorFemale:int = GetSpecificCastCount(TVTProgrammePersonJob.ACTOR, TVTPersonGender.FEMALE)
-		local requiredStarRoleActorMale:int = GetSpecificCastCount(TVTProgrammePersonJob.ACTOR, TVTPersonGender.MALE)
-		local requiredStarRoleActors:int = GetSpecificCastCount(TVTProgrammePersonJob.ACTOR)
+		local requiredDirectors:int = GetSpecificCastCount(TVTPersonJob.DIRECTOR)
+		local requiredStarRoleActorFemale:int = GetSpecificCastCount(TVTPersonJob.ACTOR, TVTPersonGender.FEMALE)
+		local requiredStarRoleActorMale:int = GetSpecificCastCount(TVTPersonJob.ACTOR, TVTPersonGender.MALE)
+		local requiredStarRoleActors:int = GetSpecificCastCount(TVTPersonJob.ACTOR)
 
 		if requiredDirectors > 0 then cast :+ "|b|"+requiredDirectors+"x|/b| "+GetLocale("MOVIE_DIRECTOR")
 		if cast <> "" then cast :+ ", "
@@ -1206,15 +1205,15 @@ Rem
 		endif
 endrem
 
-		If cast <> ""
+		If jobsText <> ""
 			'render director + cast (offset by 3 px)
 			contentY :+ 3
 
-			skin.fontNormal.drawBlock("|b|"+GetLocale("MOVIE_CAST") + ":|/b| " + cast, contentX + 5, contentY , contentW  - 10, castH, Null, skin.textColorNeutral)
+			skin.fontNormal.drawBlock("|b|"+GetLocale("MOVIE_CAST") + ":|/b| " + jobsText, contentX + 5, contentY , contentW  - 10, jobsH, Null, skin.textColorNeutral)
 
-			contentY:+ castH - 3
+			contentY:+ jobsH - 3
 		Else
-			contentY:+ castH
+			contentY:+ jobsH
 		EndIf
 
 

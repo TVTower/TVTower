@@ -555,16 +555,16 @@ Type TNewsAgency
 
 		'add triggers
 		'attention: not all persons have a popularity yet - skip them
-		For Local job:TProgrammePersonJob = EachIn licence.GetData().cast
-			If job.personGUID
-				Local person:TProgrammePerson = GetProgrammePerson(job.personGUID)
+		For Local job:TPersonProductionJob = EachIn licence.GetData().cast
+			If job.personID
+				Local person:TPersonBase = GetPersonBaseCollection().GetByID(job.personID)
 				If person And person.GetPopularity()
-					Local jobMod:Float = TVTProgrammePersonJob.GetJobImportanceMod(job.job)
+					Local jobMod:Float = TVTPersonJob.GetCastJobImportanceMod(job.job)
 					If jobMod > 0.0
-						NewsEvent.AddEffectByData(New TData.Add("trigger", "happen").Add("type", "ModifyPersonPopularity").Add("guid", job.personGUID).AddNumber("valueMin", 0.1 * jobMod).AddNumber("valueMax", 0.5 * jobMod))
+						NewsEvent.AddEffectByData(New TData.Add("trigger", "happen").Add("type", "ModifyPersonPopularity").AddNumber("id", job.personID).AddNumber("valueMin", 0.1 * jobMod).AddNumber("valueMax", 0.5 * jobMod))
 						'TODO: take broadcast audience into consideration
 						'      or maybe only use broadcastFirstTimeDone
-						NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcastDone").Add("type", "ModifyPersonPopularity").Add("guid", job.personGUID).AddNumber("valueMin", 0.01 * jobMod).AddNumber("valueMax", 0.025 * jobMod))
+						NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcastDone").Add("type", "ModifyPersonPopularity").AddNumber("id", job.personID).AddNumber("valueMin", 0.01 * jobMod).AddNumber("valueMax", 0.025 * jobMod))
 					EndIf
 				EndIf
 			EndIf
@@ -581,8 +581,8 @@ Type TNewsAgency
 
 
 	Method _ReplaceProgrammeData:TLocalizedString(text:TLocalizedString, data:TProgrammeData)
-		Local actor:TProgrammePersonBase
-		Local director:TProgrammePersonBase
+		Local actor:TPersonBase
+		Local director:TPersonBase
 		For Local i:Int = 1 To 2
 			actor = data.GetActor(i)
 			director = data.GetDirector(i)

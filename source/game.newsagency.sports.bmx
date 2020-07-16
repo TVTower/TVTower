@@ -2,7 +2,7 @@ SuperStrict
 Import "game.world.worldtime.bmx"
 Import "Dig/base.util.mersenne.bmx"
 Import "Dig/base.util.helper.bmx"
-Import "game.programme.programmeperson.base.bmx"
+Import "game.person.base.bmx"
 
 
 
@@ -2215,7 +2215,7 @@ End Type
 
 
 
-Type TNewsEventSportTeamMember Extends TProgrammePersonBase
+Type TNewsEventSportTeamMember Extends TPersonBase
 	Field teamGUID:String
 
 	Method Init:TNewsEventSportTeamMember(firstName:String, lastName:String, countryCode:String, gender:Int = 0, fictional:Int = False)
@@ -2224,7 +2224,9 @@ Type TNewsEventSportTeamMember Extends TProgrammePersonBase
 		Self.SetGUID("sportsman-"+id)
 		Self.countryCode = countryCode
 		Self.gender = gender
-		Self.fictional = fictional
+
+		Self.SetFlag(TVTPersonFlag.FICTIONAL, fictional)
+
 		Return Self
 	End Method
 
