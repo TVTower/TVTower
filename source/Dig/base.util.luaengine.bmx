@@ -299,6 +299,22 @@ Type TLuaEngine
 		TLogger.Log("TLuaEngine", "#### ERROR #######################", LOG_ERROR)
 		TLogger.Log("TLuaEngine", "Engine: " + id, LOG_ERROR)
 		Tlogger.Log("TLuaEngine", lua_tostring( getLuaState(), -1 ), LOG_ERROR)
+
+		lua_getfield(getLuaState(), LUA_GLOBALSINDEX, "debug") ' get global "debug"
+		lua_getfield(getLuaState(), -1, "traceback")           ' get "debug.traceback"
+		lua_remove (getLuaState(), -2)                         ' remove "debug" table from stack
+
+'		lua_pushvalue(getLuaState(), 1)
+'		lua_pushinteger(getLuaState(), 2)
+'		lua_call(getLuaState(), 2, 1)
+
+		local result:Int = lua_pcall(getLuaState(), 1, -1, -1) ' use "debug.traceback" as err.hdlr
+		Tlogger.Log("TLuaEngine", lua_tostring( getLuaState(), -1 ), LOG_ERROR)
+		If result <> 0 Then
+			' ERROR
+			lua_close(getLuaState())
+			End
+		End if
 	End Method
 
 

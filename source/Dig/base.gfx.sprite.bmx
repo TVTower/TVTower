@@ -40,7 +40,11 @@ EndRem
 SuperStrict
 
 Import BRL.Max2D
-Import BRL.Random
+?not bmxng
+Import Brl.Random
+?bmxng
+Import Random.Xoshiro
+?
 Import "base.util.event.bmx"
 Import "base.util.vector.bmx"
 Import "base.gfx.imagehelper.bmx"

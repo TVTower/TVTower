@@ -86,6 +86,8 @@ Type TGUIPanel Extends TGUIObject
 			guiBackground = obj
 			'set background to ignore parental padding (so it starts at 0,0)
 			guiBackground.SetOption(GUI_OBJECT_IGNORE_PARENTPADDING, True)
+			'never focus it (ignores "hover")
+			guiBackground.SetOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
 			'set background to to be on same level than parent
 			guiBackground.SetZIndex(-1)
 

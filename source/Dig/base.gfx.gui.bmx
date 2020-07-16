@@ -2020,7 +2020,6 @@ Type TGUIobject
 					EndIf
 				EndIf
 
-
 				If Not GUIManager.UpdateState_foundHoverObject And _flags & GUI_OBJECT_ENABLED
 
 					'do not create "hovered" for dragged objects
@@ -2246,46 +2245,46 @@ Type TGUIobject
 			If charCode < 0
 				?Win32
 				If KEYWRAPPER.pressedKey(186)
-					If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+					If shiftPressed Then value:+ "\DC" Else value :+ "\FC"
 					valuePosition :+ 1
 				EndIf
 				If KEYWRAPPER.pressedKey(192)
-					If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+					If shiftPressed Then value:+ "\D6" Else value :+ "\F6"
 					valuePosition :+ 1
 				EndIf
 				If KEYWRAPPER.pressedKey(222)
-					If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+					If shiftPressed Then value:+ "\C4" Else value :+ "\E4"
 					valuePosition :+ 1
 				EndIf
 				?MacOS
 				If KEYWRAPPER.pressedKey(186)
-					If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+					If shiftPressed Then value:+ "\DC" Else value :+ "\FC"
 					valuePosition :+ 1
 				EndIf
 				If KEYWRAPPER.pressedKey(192)
-					If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+					If shiftPressed Then value:+ "\D6" Else value :+ "\F6"
 					valuePosition :+ 1
 				EndIf
 				If KEYWRAPPER.pressedKey(222)
-					If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+					If shiftPressed Then value:+ "\C4" Else value :+ "\E4"
 					valuePosition :+ 1
 				EndIf
 				?Linux
 				If KEYWRAPPER.pressedKey(252)
-					If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+					If shiftPressed Then value:+ "\DC" Else value :+ "\FC"
 					valuePosition :+ 1
 				EndIf
 				If KEYWRAPPER.pressedKey(246)
-					If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+					If shiftPressed Then value:+ "\D6" Else value :+ "\F6"
 					valuePosition :+ 1
 				EndIf
 				If KEYWRAPPER.pressedKey(163)
-					If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+					If shiftPressed Then value:+ "\C4" Else value :+ "\E4"
 					valuePosition :+ 1
 				EndIf
 				?
 				If charCode = -33
-					value:+ "ß"
+					value:+ "\DF"
 					valuePosition :+ 1
 				EndIf
 			'handle normal "keys" (excluding umlauts)

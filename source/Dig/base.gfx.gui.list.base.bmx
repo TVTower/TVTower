@@ -1217,11 +1217,11 @@ Type TGUIListItem Extends TGUIobject
 			'instead of using auto-coordinates, we use the coord of the
 			'mouseposition when the "hit" started
 			'drop(new TVec2D.Init(data.getInt("x",-1), data.getInt("y",-1)))
-			drop(MouseManager.GetClickPosition(1))
+			Drop(MouseManager.GetClickPosition(1))
 		Else
 			'same for dragging
 			'drag(new TVec2D.Init(data.getInt("x",-1), data.getInt("y",-1)))
-			drag(MouseManager.GetClickPosition(1))
+			Drag(MouseManager.GetClickPosition(1))
 		EndIf
 
 		'inform others that a selectlistitem was clicked

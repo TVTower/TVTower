@@ -35,7 +35,11 @@ Rem
 EndRem
 SuperStrict
 Import Brl.Standardio
+?not bmxng
 Import Brl.xml
+?bmxng
+Import Text.xml
+?
 Import "base.util.data.bmx"
 Import "base.util.string.bmx"
 Import "base.util.localization.bmx"

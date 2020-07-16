@@ -43,7 +43,7 @@ ModuleInfo "History: Initial Release"
 
 endrem
 'Import "../libxml/libxml.bmx" 'BaH.libxml
-Import Brl.xml
+Import Text.xml
 ?Not bmxng
 'using custom to have support for const/function reflection
 Import "../reflectionExtended/reflection.bmx"

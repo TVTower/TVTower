@@ -40,39 +40,39 @@ SuperStrict
 
 Type MathHelper
 	'little helpers
-	Function _StrLeft:string(str:string, n:int)
-		If n > str.length then n = str.length
+	Function _StrLeft:String(str:String, n:Int)
+		If n > str.length Then n = str.length
 		Return str[.. n]
 	End Function
 
 
-	Function _StrRight:string(str:string, n:int)
-		If n > str.length then n = str.length
+	Function _StrRight:String(str:String, n:Int)
+		If n > str.length Then n = str.length
 		Return str[str.length-n ..]
 	End Function
 
 
-	Function _StrMid:string(str:string, pos:int, size:int = -1)
-		If pos > str.length then Return Null
+	Function _StrMid:String(str:String, pos:Int, size:Int = -1)
+		If pos > str.length Then Return Null
 		pos :- 1
-		If size < 0 then Return str[pos ..]
+		If size < 0 Then Return str[pos ..]
 		If pos < 0
 			size :+ pos
 			pos = 0
-		endif
-		If pos + size > str.length then size = str.length - pos
+		EndIf
+		If pos + size > str.length Then size = str.length - pos
 		Return str[pos .. pos + size]
 	End Function
 
 
-	global asc0:int = Asc("0")
-	global asc9:int = Asc("9")
-	global ascZ:int = Asc("A") - asc9 - 1
-	Function Int2Hex:String(i:int)
+	Global asc0:Int = Asc("0")
+	Global asc9:Int = Asc("9")
+	Global ascZ:Int = Asc("A") - asc9 - 1
+	Function Int2Hex:String(i:Int)
 		Local buf:Short[8]
-		For Local k:int = 7 To 0 Step -1
-			Local n:int = (i & 15) + asc0
-			If n > asc9 then n:+ ascZ
+		For Local k:Int = 7 To 0 Step -1
+			Local n:Int = (i & 15) + asc0
+			If n > asc9 Then n:+ ascZ
 			buf[k] = n
 			i:Shr 4
 		Next
@@ -86,21 +86,21 @@ Type MathHelper
 	End Function
 
 
-	Function SortValues(valueA:Float var, valueB:Float var)
-		if valueB < valueA
-			local tmp:int = valueB
+	Function SortValues(valueA:Float Var, valueB:Float Var)
+		If valueB < valueA
+			Local tmp:Int = valueB
 			valueB = valueA
 			valueA = tmp
-		endif
+		EndIf
 	End Function
 
 	'for "var" params we need the correct types
-	Function SortIntValues(valueA:Int var, valueB:Int var)
-		if valueB < valueA
-			local tmp:int = valueB
+	Function SortIntValues(valueA:Int Var, valueB:Int Var)
+		If valueB < valueA
+			Local tmp:Int = valueB
 			valueB = valueA
 			valueA = tmp
-		endif
+		EndIf
 	End Function
 
 	'returns a linear interpolated value between startValue and endValue
@@ -115,9 +115,9 @@ Type MathHelper
 	'this is done to avoid "shaking" between "short before end" and "end"
 	'-> percentage 0.99 vs 1.00
 	Function SteadyTween:Float(startValue:Float, endValue:Float, percentage:Float = 1.0)
-		local result:Float = startValue + (endValue - startValue) * Clamp(percentage)
-		if Abs(result - endValue) < 0.1 then return endValue
-		return result
+		Local result:Float = startValue + (endValue - startValue) * Clamp(percentage)
+		If Abs(result - endValue) < 0.1 Then Return endValue
+		Return result
 	End Function
 
 
@@ -135,38 +135,46 @@ Type MathHelper
 
 	'returns whether a value is even
 	Function IsEven:Int(value:Int)
-		Return (value mod 2) = 0
+		Return (value Mod 2) = 0
 	End Function
 
 
 	'returns whether a value is odd
 	Function IsOdd:Int(value:Int)
-		Return (value mod 2) <> 0
+		Return (value Mod 2) <> 0
 	End Function
 
 
-	Function InIntArray:int(i:int, intArray:int[])
-		if not intArray then return False
-
-		For local d:Int = EachIn intArray
-			if d = i then return True
+	Function GetIntArrayIndex:Int(number:Int, arr:Int[])
+		For Local i:Int = 0 Until arr.length
+			If arr[i] = number Then Return i
 		Next
-		return False
+		Return -1
 	End Function
 
 
-	Function RemoveIntArrayIndex:int(index:int, arr:int[] var)
-		if not arr or arr.length = 0 or index < 0 or index >= arr.length
-			return -1
-		endif
+	Function InIntArray:Int(i:Int, intArray:Int[])
+		If Not intArray Then Return False
 
-		local result:int = arr[index]
-		if arr.length = 1
-			arr = new Int[0]
-		else
+		For Local d:Int = EachIn intArray
+			If d = i Then Return True
+		Next
+		Return False
+	End Function
+
+
+	Function RemoveIntArrayIndex:Int(index:Int, arr:Int[] Var)
+		If Not arr Or arr.length = 0 Or index < 0 Or index >= arr.length
+			Return -1
+		EndIf
+
+		Local result:Int = arr[index]
+		If arr.length = 1
+			arr = New Int[0]
+		Else
 			arr = arr[0 .. index] + arr[index+1 .. arr.Length]
-		endif
-		return result
+		EndIf
+		Return result
 	End Function
 
 
@@ -184,9 +192,9 @@ Type MathHelper
 
 	'convert a double to a string
 	'double is rounded to the requested amount of digits after comma
-	Function NumberToString:string(number:Double, digitsAfterDecimalPoint:int = 2, truncateZeros:int = False)
-		local pow:int = 10
-		For local i:int = 1 until digitsAfterDecimalPoint
+	Function NumberToString:String(number:Double, digitsAfterDecimalPoint:Int = 2, truncateZeros:Int = False)
+		Local pow:Int = 10
+		For Local i:Int = 1 Until digitsAfterDecimalPoint
 			pow :* 10
 		Next
 		'slower than the loop!
@@ -194,48 +202,48 @@ Type MathHelper
 
 		'bring all decimals in front of the dot, add 0.5 to "round"
 		'divide "back" the rounded value
-		local tmp:double = (number * pow + sgn(number) * 0.5) / pow
+		Local tmp:Double = (number * pow + Sgn(number) * 0.5) / pow
 
 		'find dot - and keep "digitsAfterDecimalPoint" numbers afterwards
-		local dotPos:int = string(long(tmp)).length  '+1
-		if tmp < 0 then dotPos :+ 1
-		local s:string = string(tmp)[.. dotPos + 1 + digitsAfterDecimalPoint]
+		Local dotPos:Int = String(Long(tmp)).length  '+1
+		If tmp < 0 Then dotPos :+ 1
+		Local s:String = String(tmp)[.. dotPos + 1 + digitsAfterDecimalPoint]
 		's = _StrLeft(string(tmp), dotPos + 1 + digitsAfterDecimalPoint)
 
 		'remove 0s? 1.23000 => 1.23, 1.00 = 1
-		if truncateZeros
-			while s<>"" and _StrRight(s, 1) = "0"
+		If truncateZeros
+			While s<>"" And _StrRight(s, 1) = "0"
 				s = s[.. s.length-1]
 			Wend
 			'only "xx." left?
-			if _StrRight(s, 1) = "." then s = s[.. s.length-1]
-		endif
-		return s
+			If _StrRight(s, 1) = "." Then s = s[.. s.length-1]
+		EndIf
+		Return s
 	End Function
 
 
 	'formats a given value from "123000,12" to "123.000,12"
 	'optimized variant
-	Function DottedValue:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:int = -1)
+	Function DottedValue:String(value:Double, thousandsDelimiter:String=".", decimalDelimiter:String=",", digitsAfterDecimalPoint:Int = -1)
 		Local result:String
-		Local decimalValue:string
+		Local decimalValue:String
 
 		'only process decimals when requested
-		if digitsAfterDecimalPoint > 0
+		If digitsAfterDecimalPoint > 0
 			Local stringValues:String[] = String(Abs(value)).Split(".")
 			Local fractionalValue:String = ""
 			decimalValue = stringValues[0]
-			if stringValues.length > 1 then fractionalValue = stringValues[1]
+			If stringValues.length > 1 Then fractionalValue = stringValues[1]
 
 			'do we even have a fractionalValue <> ".000" ?
-			if Long(fractionalValue) > 0
+			If Long(fractionalValue) > 0
 				'not rounded, just truncated
 				fractionalValue = _StrLeft(fractionalValue, digitsAfterDecimalPoint)
 				result :+ decimalDelimiter + fractionalValue
-			endif
-		else
+			EndIf
+		Else
 			decimalValue = String(Abs(Long(value)))
-		endif
+		EndIf
 
 
 		For Local i:Int = decimalValue.length-1 To 0 Step -1
@@ -248,11 +256,11 @@ Type MathHelper
 		Next
 
 		'is there a "minus" in front ?
-		if value < 0
+		If value < 0
 			Return "-" + result
-		else
+		Else
 			Return result
-		endif
+		EndIf
 	End Function
 
 
@@ -272,13 +280,13 @@ Type MathHelper
 
 	'round a number using weighted non-truncate rounding.
 	Function RoundNumber:Double(number:Double, digitsAfterDecimalPoint:Byte = 2)
-		if number = 0 then return 0
+		If number = 0 Then Return 0
 		Local t:Long = 10 ^ digitsAfterDecimalPoint
 		Return RoundLong(number * t) / Double(t)
 	End Function
 
 
-	Function hex2dec:int(hexString:string)
-		return hexString.ToInt()
+	Function hex2dec:Int(hexString:String)
+		Return hexString.ToInt()
 	End Function
 End Type

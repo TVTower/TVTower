@@ -1,6 +1,11 @@
 SuperStrict
 Import brl.Map
+Import audio.soloud
 Import audio.soloudaudio
+'or sdl
+'Import audio.soloudaudiosdl
+'miniaudio
+Import audio.soloudaudiominiaudio
 
 Import "base.sfx.soundmanager.base.bmx"
 
@@ -32,7 +37,7 @@ Type TSoundManager_Soloud Extends TSoundManager
 		engineKeys = ["AUTOMATIC", "NONE"]
 		engineNames = ["Automatic", "None"]
 		engineDriverNames = ["AUTOMATIC", "NONE"]
-rem
+Rem
 		?linux
 			engineKeys :+  ["LINUX_ALSA", "LINUX_PULSE", "LINUX_OSS"]
 			engineDriverNames :+ ["LINUX_ALSA", "LINUX_PULSE", "LINUX_OSS"]
@@ -85,19 +90,19 @@ Type TDigAudioStream_Soloud Extends TDigAudioStream
 	Field channel:TChannel
 	Field sound:TSound
 	'how often to _repeat_! (0 = play once)
-	Field loopCount:int = 0
+	Field loopCount:Int = 0
 
 
 	Function Create:TDigAudioStream_Soloud(url:Object, loop:Int=False)
 		Local obj:TDigAudioStream_Soloud = New TDigAudioStream_Soloud
 		'obj.bank = LoadBank(url)
 		obj.loop = loop
-		if loop
+		If loop
 			obj.loopCount = -1
-		endif
+		EndIf
 		obj.url = "unknown"
 
-		If not TStream(url) and String(url) Then obj.url = String(url)
+		If Not TStream(url) And String(url) Then obj.url = String(url)
 
 		Return obj
 	End Function
@@ -137,17 +142,17 @@ Type TDigAudioStream_Soloud Extends TDigAudioStream
 	Method Cue:TChannel(reUseChannel:TChannel = Null)
 		If Not reUseChannel Then reUseChannel = channel
 
-		if not sound
+		If Not sound
 			If loop
 				sound = LoadSound(url, SOUND_STREAM | SOUND_LOOP)
 			Else
 				sound = LoadSound(url, SOUND_STREAM)
 			EndIf
-		endif
+		EndIf
 		channel = CueSound(sound, reUseChannel)
 		channel.SetVolume(0)
 
-		If loopCount > 0 then SetLoopedPlaytime((loopCount+1) * GetTimeTotal())
+		If loopCount > 0 Then SetLoopedPlaytime((loopCount+1) * GetTimeTotal())
 
 '		finishedPlaying = False
 
@@ -157,7 +162,7 @@ Type TDigAudioStream_Soloud Extends TDigAudioStream
 
 	Method GetChannel:TChannel()
 		If Not url Then Throw "no url to play"
-		if not channel then channel = Cue()
+		If Not channel Then channel = Cue()
 
 		SetPlaying(True)
 		channel.SetVolume(volume)
@@ -166,8 +171,8 @@ Type TDigAudioStream_Soloud Extends TDigAudioStream
 	End Method
 
 
-	Method GetURI:object()
-		return url
+	Method GetURI:Object()
+		Return url
 	End Method
 
 
@@ -201,26 +206,26 @@ Type TDigAudioStream_Soloud Extends TDigAudioStream
 	End Method
 
 
-	Method GetLoopedPlaytime:int()
-		return loopCount * GetTimeTotal()
+	Method GetLoopedPlaytime:Int()
+		Return loopCount * GetTimeTotal()
 	End Method
 
 
 	Method GetLoopedPlaytimeLeft:Int()
-		if loopCount > 0
+		If loopCount > 0
 			'  (loopCount * GetTimeTotal()) - (GetLoopsDoneCount() * GetTimeTotal() + GetTimePlayed())
 			'= (loopCount * GetTimeTotal()) - (GetLoopsDoneCount() * GetTimeTotal()) - GetTimePlayed()
 			'= GetTimeTotal() * (loopCount - GetLoopsDoneCount()) - GetTimePlayed()
 			Return GetTimeTotal() * (loopCount - GetLoopsDoneCount()) - GetTimePlayed()
 			'return GetLoopedPlaytime() - GetLoopedTimePlayed()
-		else
+		Else
 			Return GetTimeTotal() - GetTimePlayed()
-		endif
+		EndIf
 	End Method
 
 
 	Method GetLoopedTimePlayed:Int()
-		return GetLoopsDoneCount() * GetTimeTotal() + GetTimePlayed()
+		Return GetLoopsDoneCount() * GetTimeTotal() + GetTimePlayed()
 	End Method
 End Type
 
