@@ -104,6 +104,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 			VendorArea = new TGUISimpleRect.Create(vendorAreaPosition, vendorAreaDimension, "scriptagency" )
 			'vendor should accept drop - else no recognition
+			VendorArea.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
+			VendorArea.setOption(GUI_OBJECT_CLICKABLE, False)
 			VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 			VendorArea.zIndex = 0
 
