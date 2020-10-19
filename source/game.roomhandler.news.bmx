@@ -445,6 +445,9 @@ Type RoomHandler_News extends TRoomHandler
 		local room:TRoom = currentRoom
 		if not button or not room then return 0
 
+		'only react to left clicks
+		if triggerEvent.GetData().getInt("button",0) <> 1 then return false
+
 		'wrong room? go away!
 		if room.owner <> GetPlayerBaseCollection().playerID then return 0
 
