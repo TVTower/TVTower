@@ -445,6 +445,8 @@ Type RoomHandler_News extends TRoomHandler
 		local room:TRoom = currentRoom
 		if not button or not room then return 0
 
+		If MOUSEMANAGER.isClicked(2) Or MOUSEMANAGER.isLongClicked(1) then return 0
+
 		'wrong room? go away!
 		if room.owner <> GetPlayerBaseCollection().playerID then return 0
 
