@@ -1487,15 +1487,13 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		'add all castable celebrities to that list
 		Local personsList:TObjectList = GetPersonBaseCollection().GetCastableCelebritiesList()
 		Local persons:TPersonBase[]
-		If filterToJobID > 0
-			For Local person:TPersonBase = EachIn personsList
-				If filterToGenderID > 0 And person.gender <> filterToGenderID Then Continue
+		For Local person:TPersonBase = EachIn personsList
+			If filterToGenderID > 0 And person.gender <> filterToGenderID Then Continue
 
-				If person.HasJob(filterToJobID)
-					persons :+ [person]
-				EndIf
-			Next
-		EndIf
+			If filterToJobID = 0 Or person.HasJob(filterToJobID)
+				persons :+ [person]
+			EndIf
+		Next
 
 		'sort by name (rely on "TPersonBase.Compare()")
 		persons.Sort(True)
