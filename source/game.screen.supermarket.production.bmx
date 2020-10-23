@@ -253,7 +253,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 		ResetProductionConceptGUI()
-		ReloadProductionConceptContent()
+		'Reloading not necessary - it destoys selection and scroll position
+		'ReloadProductionConceptContent()
 
 		'=== TAKE OVER OLD CONCEPT VALUES ===
 		If currentProductionConcept
