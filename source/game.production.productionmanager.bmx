@@ -163,7 +163,7 @@ Type TProductionManager
 
 			'series? skip if not an episode of this serie
 			if production.productionConcept.script.GetParentScript().IsSeries()
-				if production.productionConcept.script.parentScriptID <> script.GetID() then continue
+				if productionCount > 1 and production.productionConcept.script.parentScriptID <> script.GetID() then continue
 			else
 				if production.productionConcept.script <> script then continue
 			endif
