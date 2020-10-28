@@ -175,7 +175,9 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			Return
 		EndIf
 
+		editTextsButton.Enable()
 		If currentProductionConcept.IsProduceable()
+			editTextsButton.Disable()
 			finishProductionConcept.Disable()
 			finishProductionConcept.spriteName = "gfx_gui_button.datasheet.informative"
 
@@ -715,6 +717,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		If GetInstance().currentProductionConcept.IsUnplanned() Then Return False
 
 		If GetInstance().currentProductionConcept.IsPlanned()
+			editTextsButton.disable()
 			Return GetInstance().PayCurrentProductionConceptDeposit()
 		EndIf
 
@@ -780,7 +783,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		If Not editTextsButton
 			editTextsButton = New TGUIButton.Create(New TVec2D.Init(530, 26), New TVec2D.Init(30, 28), "...", "supermarket_customproduction_newproduction")
 		EndIf
-		'editTextsButton.disable()
+		editTextsButton.disable()
 		editTextsButton.caption.SetSpriteName("gfx_datasheet_icon_pencil")
 		editTextsButton.caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_ONLY )
 		editTextsButton.spriteName = "gfx_gui_button.datasheet"
