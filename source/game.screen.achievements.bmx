@@ -463,7 +463,11 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 		local sprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_achievement_bg")
 		sprite.DrawArea(x,y,w,h)
 		local achievementSprite:TSprite
-		if 1=1 or achievement.IsCompleted( GetPlayerBaseCollection().playerID )
+
+		textLeft = GetAchievementText()
+		textRight = GetAchievementRewardText()
+
+		if achievement.IsCompleted( GetPlayerBaseCollection().playerID )
 			if achievement.spriteFinished
 				achievementSprite = GetSpriteFromRegistry( achievement.spriteFinished )
 			endif
@@ -471,18 +475,10 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 			if not achievementSprite
 				achievementSprite = GetSpriteFromRegistry( "gfx_datasheet_achievement_img_ok" )
 			endif
-
-			textLeft = GetAchievementText()
-			textRight = GetAchievementRewardText()
 		else
 			if achievement.spriteUnfinished
 				achievementSprite = GetSpriteFromRegistry( achievement.spriteUnfinished )
 			endif
-
-			'reset title / text
-			title = "? ? ? ? ? ?"
-			textLeft = ""
-			textRight = ""
 		endif
 
 		'draw background-icon (question mark)
