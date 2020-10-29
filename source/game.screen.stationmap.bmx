@@ -2736,8 +2736,13 @@ Type TScreenHandler_StationMap
 			Local reset:Int = (selectedStation Or mouseoverStation Or satelliteSelectionFrame.IsOpen() or mapInformationFrame.IsOpen())
 
 			If mapInformationFrame.IsOpen()
-				mapInformationFrame.Close()
-				reset = True
+				if mapInformationFrame.selectedSection
+					mapInformationFrame.SelectSection(Null)
+					reset = True
+				else
+					mapInformationFrame.Close()
+					reset = True
+				endif
 			EndIf
 
 			if satelliteSelectionFrame.IsOpen()
