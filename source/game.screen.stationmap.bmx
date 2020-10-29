@@ -2703,6 +2703,14 @@ Type TScreenHandler_StationMap
 		endif
 	End Function
 
+	Function Navigate:Int(key:Int, xDelta:Int, yDelta:Int)
+		If KEYMANAGER.IsDown(key)
+			MoveMouse(MouseManager.evMousePosX+xDelta, MouseManager.evMousePosY+yDelta)
+			KEYMANAGER.blockKey(key, 100)
+			Return True
+		EndIf
+		Return False
+	End Function
 
 	Function onUpdateStationMap:Int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
@@ -2778,7 +2786,14 @@ endrem
 
 		'buying stations using the mouse
 		'1. searching
+		GetCurrentPlayer().setHotKeysEnabled(True)
 		If actionMode = MODE_BUY_ANTENNA
+			GetCurrentPlayer().setHotKeysEnabled(False)
+			Navigate(KEY_UP, 0, -1)
+			Navigate(KEY_DOWN, 0, 1) 
+			Navigate(KEY_LEFT, -1, 0)
+			Navigate(KEY_RIGHT, 1, 0)
+
 			'create a temporary station if not done yet
 			If Not mouseoverStation Then mouseoverStation = GetStationMap(room.owner).GetTemporaryAntennaStation( MouseManager.GetPosition().GetIntX(), MouseManager.GetPosition().GetIntY() )
 			Local mousePos:TVec2D = New TVec2D.Init( MouseManager.x, MouseManager.y)

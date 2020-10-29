@@ -670,8 +670,9 @@ Type TApp
 		'ignore shortcuts if a gui object listens to keystrokes
 		'eg. the active chat input field
 		'also ignore if there is a modal window opened
-		If Not GUIManager.GetKeystrokeReceiver() And ..
-		   Not (App.ExitAppDialogue Or App.EscapeMenuWindow)
+		If GetCurrentPlayer() AND GetCurrentPlayer().isHotKeysEnabled() AND ..
+			Not GUIManager.GetKeystrokeReceiver() And ..
+			Not (App.ExitAppDialogue Or App.EscapeMenuWindow)
 
 			If GameRules.devConfig.GetBool(keyLS_DevKeys, False)
 				If KEYMANAGER.IsHit(KEY_MINUS) And KEYMANAGER.IsDown(KEY_RCONTROL)

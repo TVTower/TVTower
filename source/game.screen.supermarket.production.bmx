@@ -323,6 +323,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	Method OpenEditTextsWindow()
 		If editTextsWindow Then editTextsWindow.Remove()
 
+		GetCurrentPlayer().setHotKeysEnabled(False)
 		editTextsWindow = New TGUIProductionEditTextsModalWindow.Create(New TVec2D.Init(250,60), New TVec2D.Init(300,220), "supermarket_customproduction_productionbox_modal")
 		editTextsWindow.SetZIndex(100000)
 		editTextsWindow.SetConcept(GetInstance().currentProductionConcept)
@@ -354,6 +355,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 	Function onCloseEditTextsWindow:Int( triggerEvent:TEventBase )
+		GetCurrentPlayer().setHotKeysEnabled(True)
 		Local closeButton:Int = triggerEvent.GetData().GetInt("closeButton", -1)
 		If closeButton <> 1 Then Return False
 
