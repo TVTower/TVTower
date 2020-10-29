@@ -107,6 +107,9 @@ End Function
 Function GetObservedPlayerID:int()
 	Return TPlayerBaseCollection.GetInstance().GetObservedPlayerID()
 End Function
+Function GetCurrentPlayer:TPlayerBase()
+	Return GetPlayerBase(GetPlayerBaseCollection().playerID)
+End Function
 
 
 
@@ -155,6 +158,8 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Field newsabonnementsDayMax:Int[] = [-1,-1,-1,-1,-1,-1]
 	'when was the level set
 	Field newsabonnementsSetTime:Double[6]
+
+	Field hotKeysEnabled:Int = True
 
 	'distinguishing between LOCAL and REMOTE ai allows multiple players
 	'to control multiple AI without needing to share "THEIR" AI files
@@ -570,6 +575,13 @@ endrem
 		'implement in real class
 	End Method
 
+	Method IsHotKeysEnabled:Int()
+		return hotKeysEnabled
+	End Method
+
+	Method setHotKeysEnabled:Int(enabled:int)
+		hotKeysEnabled=enabled
+	End Method
 
 	'override
 	Method RemoveFromCollection:Int(collection:object = null)
