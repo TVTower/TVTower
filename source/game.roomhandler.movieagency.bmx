@@ -1180,12 +1180,11 @@ endrem
 		EndIf
 
 
-		SetAlpha 0.5
-		Local fontColor:TColor = TColor.CreateGrey(50)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, New TVec2D.Init(ALIGN_CENTER), fontColor)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, New TVec2D.Init(ALIGN_CENTER), fontColor)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, New TVec2D.Init(ALIGN_CENTER), fontColor)
-		SetAlpha 1.0
+		Local fontColor:SColor8 = new SColor8(50, 50, 50, 125)
+		Local font:TBitmapFont = GetBitmapFont("Default",12, BOLDFONT)
+		font.DrawBox(GetLocale("MOVIES"),      642,  27+1, 108,20, sALIGN_CENTER_TOP, fontColor)
+		font.DrawBox(GetLocale("SPECIAL_BIN"), 642, 125+1, 108,20, sALIGN_CENTER_TOP, fontColor)
+		font.DrawBox(GetLocale("SERIES"),      642, 223+1, 108,20, sALIGN_CENTER_TOP, fontColor)
 
 		GUIManager.Draw( LS_movieagency )
 
@@ -1208,13 +1207,13 @@ endrem
 		If CheckPlayerInRoom("movieagency")
 			'show a auction-tooltip (but not if we dragged a block)
 			If Not hoveredGuiProgrammeLicence
-				If MouseManager.IsClicked(1)
-					If THelper.MouseIn(210,220,140,60)
-						If Not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
-						AuctionToolTip.enabled = 1
-						AuctionToolTip.Hover()
-						GetGameBase().cursorstate = 1
+				If THelper.MouseIn(210,220,140,60)
+					If Not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
+					AuctionToolTip.enabled = 1
+					AuctionToolTip.Hover()
+					GetGameBase().cursorstate = 1
 
+					If MouseManager.IsClicked(1)
 						'handled left click
 						MouseManager.SetClickHandled(1)
 
@@ -1248,13 +1247,11 @@ endrem
 		If VendorEntity Then VendorEntity.Render()
 		If spriteSuitcase Then spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
-		SetAlpha 0.5
-		Local fontColor:TColor = TColor.CreateGrey(50)
+		Local fontColor:SColor8 = new SColor8(50, 50, 50, 125)
 		Local font:TBitmapFont = GetBitmapFont("Default",12, BOLDFONT)
-		font.drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, New TVec2D.Init(ALIGN_CENTER), fontColor)
-		font.drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, New TVec2D.Init(ALIGN_CENTER), fontColor)
-		font.drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, New TVec2D.Init(ALIGN_CENTER), fontColor)
-		SetAlpha 1.0
+		font.DrawBox(GetLocale("MOVIES"),      642,  27+3, 108,20, sALIGN_CENTER_TOP, fontColor)
+		font.DrawBox(GetLocale("SPECIAL_BIN"), 642, 125+3, 108,20, sALIGN_CENTER_TOP, fontColor)
+		font.DrawBox(GetLocale("SERIES"),      642, 223+3, 108,20, sALIGN_CENTER_TOP, fontColor)
 
 		GUIManager.Draw( LS_movieagency )
 		SetAlpha 0.2;SetColor 0,0,0
@@ -1264,8 +1261,9 @@ endrem
 		If spriteAuctionPanel Then spriteAuctionPanel.DrawArea(120-15,60-15,555+30,290+30)
 		If spriteAuctionPanelContent Then spriteAuctionPanelContent.DrawArea(120,60,555,290)
 
-		SetAlpha 0.5
-		font.drawBlock(GetLocale("CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID"), 140,317, 535,30, New TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(50), 2, 1, 0.20)
+		SetAlpha 0.6 + Float(Min(0.15, Max(-0.20, Sin(MilliSecs() / 6) * 0.20)))
+		'SetAlpha 0.6 + Float( 0.1 * Sin(Time.GetAppTimeGone() / 5))
+		font.DrawBox(GetLocale("CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID"), 140,320, 535,30, sALIGN_CENTER_TOP, new SColor8(50,50,50), EDrawTextEffect.Shadow, 0.25)
 		SetAlpha 1.0
 
 		TAuctionProgrammeBlocks.DrawAll()
@@ -1303,12 +1301,13 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 	Field _bidSavingsMinimum:Float = -1
 	Field _bidSavingsMaximum:Float = -1
 	Field _bidSavingsDecreaseBy:Float = -1
-
+		
 	'cached image
 	Field _imageWithText:TImage = Null {nosave}
 
 	Global List:TList = CreateList()	'list of all blocks
 	Global spriteAuctionMovie:TSprite {nosave}
+	Global textBlockDrawSettings:TDrawTextSettings = new TDrawTextSettings
 
 	'todo/idea: we could add a "started" and a "endTime"-field so
 	'           auctions do not end at midnight but individually
@@ -1325,6 +1324,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 		'sort so that slot1 comes before slot2 without having to matter about creation order
 		TAuctionProgrammeBlocks.list.sort(True, TAuctionProgrammeBlocks.sort)
+			
 		Return Self
 	End Method
 
@@ -1791,13 +1791,14 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 			If bestBidder
 				Local player:TPlayerBase = GetPlayerBase(bestBidder)
-				titleFont.drawStyled(player.name, 31,33, player.color, 2, 1, 0.25)
+				titleFont.DrawSimple(player.name, 31,30, player.color.ToScolor8(), EDrawTextEffect.Emboss, 0.4)
 			Else
-				font.drawStyled(GetLocale("AUCTION_WITHOUT_BID"), 31,33, TColor.CreateGrey(150), 0, 1, 0.25)
+				font.DrawSimple(GetLocale("AUCTION_WITHOUT_BID"), 31,30, new SColor8(150,150,150), EDrawTextEffect.Emboss, 0.4)
 			EndIf
-			titleFont.drawBlock(licence.GetTitle(), 31,5, 215,30, ALIGN_LEFT_TOP, TColor.clBlack, 1, 1, 0.50)
+			textBlockDrawSettings.data.lineHeight = 13
+			titleFont.DrawBox(licence.GetTitle(), 31,3, 215,36, sALIGN_LEFT_TOP, new SColor8(50,50,50), textBlockDrawSettings, EDrawTextEffect.Emboss, 0.4)
 
-			font.drawBlock(GetLocale("AUCTION_MAKE_BID")+": "+MathHelper.DottedValue(GetNextBid(GetPlayerBase().playerID))+CURRENCYSIGN, 31,33, 212,20, ALIGN_RIGHT_TOP, TColor.clBlack, 1)
+			font.DrawBox("|color=90,90,90|" + GetLocale("AUCTION_MAKE_BID")+":|/color| |b|"+MathHelper.DottedValue(GetNextBid(GetPlayerBase().playerID))+CURRENCYSIGN+"|/b|", 31,30, 212,-1, sALIGN_RIGHT_TOP, new SColor8(50,50,50), EDrawTextEffect.Emboss, 0.4)
 
 			'reset target for fonts
 			TBitmapFont.setRenderTarget(Null)
@@ -1829,9 +1830,9 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			GetBitmapFont("default", 12).Draw("bidSavings="+MathHelper.NumberToString(bidSavings, 4) + "  Min="+MathHelper.NumberToString(GetBidSavingsMinimum(), 4) + "  Decr="+MathHelper.NumberToString(GetBidSavingsDecreaseBy(), 4), a.getX() + 5, a.GetY() + 5)
-			GetBitmapFont("default", 12).Draw("bestBidder="+bestBidder +"  lvl="+bestBidderLevel+ "  bestBidRaw="+bestBidRaw, a.getX() + 5, a.GetY() + 5 + 12)
-			GetBitmapFont("default", 12).Draw("nextBidRaw="+GetNextBidRaw() + "  MyReachLevel("+GetPlayerBase().playerID+")="+Max(1, GetPlayerBase(GetPlayerBase().playerID).GetAudienceReachLevel()), a.getX() + 5, a.GetY() + 5 + 2*12)
+			GetBitmapFont("default", 12).DrawSimple("bidSavings="+MathHelper.NumberToString(bidSavings, 4) + "  Min="+MathHelper.NumberToString(GetBidSavingsMinimum(), 4) + "  Decr="+MathHelper.NumberToString(GetBidSavingsDecreaseBy(), 4), a.getX() + 5, a.GetY() + 5)
+			GetBitmapFont("default", 12).DrawSimple("bestBidder="+bestBidder +"  lvl="+bestBidderLevel+ "  bestBidRaw="+bestBidRaw, a.getX() + 5, a.GetY() + 5 + 12)
+			GetBitmapFont("default", 12).DrawSimple("nextBidRaw="+GetNextBidRaw() + "  MyReachLevel("+GetPlayerBase().playerID+")="+Max(1, GetPlayerBase(GetPlayerBase().playerID).GetAudienceReachLevel()), a.getX() + 5, a.GetY() + 5 + 2*12)
 		EndIf
 
     End Method
@@ -1845,30 +1846,34 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		Next
 
 		'draw sheets (must be afterwards to avoid overlapping (itemA Sheet itemB itemC) )
-		For Local obj:TAuctionProgrammeBlocks = EachIn List
-			If Not obj.GetLicence() Then Continue
+	'not yet known to this class
+	'todo: maybe add this to a global
+	'	if not TError.hasActiveError()
+			For Local obj:TAuctionProgrammeBlocks = EachIn List
+				If Not obj.GetLicence() Then Continue
 
-			If obj.GetArea().containsXY(MouseManager.x, MouseManager.y)
-				Local leftX:Int = 30, rightX:Int = 30
-				Local sheetY:Int = 20
-				Local sheetX:Int = leftX
-				Local sheetAlign:Int= 0
-				'if mouse on left side of screen - align sheet on right side
-				If MouseManager.x < GetGraphicsManager().GetWidth()/2
-					sheetX = GetGraphicsManager().GetWidth() - rightX
-					sheetAlign = 1
+				If obj.GetArea().containsXY(MouseManager.x, MouseManager.y)
+					Local leftX:Int = 30, rightX:Int = 30
+					Local sheetY:Int = 20
+					Local sheetX:Int = leftX
+					Local sheetAlign:Int= 0
+					'if mouse on left side of screen - align sheet on right side
+					If MouseManager.x < GetGraphicsManager().GetWidth()/2
+						sheetX = GetGraphicsManager().GetWidth() - rightX
+						sheetAlign = 1
+					EndIf
+
+					SetBlend LightBlend
+					SetAlpha 0.20
+					GetAuctionMovieSprite().Draw(obj.GetArea().GetX(), obj.GetArea().GetY())
+					SetAlpha 1.0
+					SetBlend AlphaBlend
+
+					obj.licence.ShowSheet(sheetX, sheetY, sheetAlign, TVTBroadcastMaterialType.PROGRAMME)
+					Exit
 				EndIf
-
-				SetBlend LightBlend
-				SetAlpha 0.20
-				GetAuctionMovieSprite().Draw(obj.GetArea().GetX(), obj.GetArea().GetY())
-				SetAlpha 1.0
-				SetBlend AlphaBlend
-
-				obj.licence.ShowSheet(sheetX, sheetY, sheetAlign, TVTBroadcastMaterialType.PROGRAMME)
-				Exit
-			EndIf
-		Next
+			Next
+	'	endif
 	End Function
 
 

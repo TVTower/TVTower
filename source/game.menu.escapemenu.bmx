@@ -34,7 +34,7 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 		If guiCaptionTextBox
 			guiCaptionTextBox.SetFont(headerFont)
 			guiCaptionTextBox.SetSize(-1,-1)
-			SetCaptionArea(New TRectangle.Init(-1, 5, -1, 25))
+			SetCaptionArea(New TRectangle.Init(-1, 6, -1, 30))
 		EndIf
 
 		Return Self
@@ -78,7 +78,7 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 
 			Case buttons[1]
 				If Not chainLoadMenu
-					chainLoadMenu = New TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,350), "SYSTEM")
+					chainLoadMenu = New TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,356), "SYSTEM")
 					chainLoadMenu._defaultValueColor = TColor.clBlack.copy()
 					chainLoadMenu.defaultCaptionColor = TColor.clWhite.copy()
 					'set self as previous one
@@ -89,7 +89,7 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 
 			Case buttons[2]
 				If Not chainSaveMenu
-					chainSaveMenu = New TGUIModalSaveSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,350), "SYSTEM")
+					chainSaveMenu = New TGUIModalSaveSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,370), "SYSTEM")
 					chainSaveMenu._defaultValueColor = TColor.clBlack.copy()
 					chainSaveMenu.defaultCaptionColor = TColor.clWhite.copy()
 					'set self as previous one
@@ -100,7 +100,7 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 
 			Case buttons[3]
 				If Not chainSettingsMenu
-					chainSettingsMenu = New TGUIModalSettingsMenu.Create(New TVec2D, New TVec2D.Init(700,490), "SYSTEM")
+					chainSettingsMenu = New TGUIModalSettingsMenu.Create(New TVec2D, New TVec2D.Init(700,500), "SYSTEM")
 					chainSettingsMenu._defaultValueColor = TColor.clBlack.copy()
 					chainSettingsMenu.defaultCaptionColor = TColor.clWhite.copy()
 					'set self as previous one
@@ -168,7 +168,7 @@ Type TGUIModalSettingsMenu Extends TGUIModalWindowChainDialogue
 		If guiCaptionTextBox
 			guiCaptionTextBox.SetFont(headerFont)
 			guiCaptionTextBox.SetSize(-1,-1)
-			SetCaptionArea(New TRectangle.Init(-1, 5, -1, 25))
+			SetCaptionArea(New TRectangle.Init(-1, 6, -1, 30))
 		EndIf
 
 		'use the gfx with content inset (and padding)
@@ -176,7 +176,7 @@ Type TGUIModalSettingsMenu Extends TGUIModalWindowChainDialogue
 
 
 
-		settingsPanel = New TGUISettingsPanel.Create(New TVec2D, New TVec2D.Init(700, 490), "SYSTEM")
+		settingsPanel = New TGUISettingsPanel.Create(New TVec2D, New TVec2D.Init(700, 500), "SYSTEM")
 		'add to canvas of this window
 		'GetGuiContent()
 		AddChild(settingsPanel)
@@ -266,7 +266,7 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 		If guiCaptionTextBox
 			guiCaptionTextBox.SetFont(headerFont)
 			guiCaptionTextBox.SetSize(-1,-1)
-			SetCaptionArea(New TRectangle.Init(-1, 5, -1, 25))
+			SetCaptionArea(New TRectangle.Init(-1, 6, -1, 30))
 		EndIf
 
 		'=== EVENTS ===
@@ -422,6 +422,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 	Field _eventListeners:TEventListenerBase[]
 
 	Global _confirmOverwriteDialogue:TGUIModalWindow
+	Global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 
 
 	Method Create:TGUIModalSaveSavegameMenu(pos:TVec2D, dimension:TVec2D, limitState:String = "")
@@ -448,7 +449,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 
 		If guiCaptionTextBox
 			guiCaptionTextBox.SetFont(headerFont)
-			SetCaptionArea(New TRectangle.Init(-1, 5, -1, 25))
+			SetCaptionArea(New TRectangle.Init(-1, 6, -1, 30))
 			guiCaptionTextBox.SetSize(-1,-1)
 		EndIf
 
@@ -517,7 +518,6 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 	End Method
 
 
-Global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 	Method Update:Int()
 		GuiManager.Update( LS_modalSaveMenu )
 
@@ -557,7 +557,7 @@ Global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
 
 		_confirmOverwriteDialogue._defaultValueColor = TColor.clBlack.copy()
 		_confirmOverwriteDialogue.defaultCaptionColor = TColor.clWhite.copy()
-		_confirmOverwriteDialogue.SetCaptionArea(New TRectangle.Init(-1,10,-1,25))
+		_confirmOverwriteDialogue.SetCaptionArea(New TRectangle.Init(-1, 6, -1, 30))
 		_confirmOverwriteDialogue.guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP )
 
 		_confirmOverwriteDialogue.SetDialogueType(2)
@@ -803,17 +803,17 @@ Type TGUISavegameListItem Extends TGUISelectListItem
 	Method DrawContent()
 		Local time:Double = GetFileInformation().GetDouble("game_timegone", 0)
 		Local gameTime:String = GetWorldTime().getFormattedTime(time)+" "+getLocale("DAY")+" "+GetWorldTime().getDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
-		Local col:TColor = TColor.Create(100,105,140)
-		Local playerCol:TColor = TColor.Create(70, 75, 110)
-		Local headCol:TColor = TColor.clWhite 'TColor.Create(150,90,0)
-		Local width:Int = GetContentScreenRect().GetW()
+		Local col:SColor8 = new SColor8(100,105,140)
+		Local playerCol:SColor8 = new SColor8(70, 75, 110)
+		Local headCol:SColor8 = new SColor8.White 'TColor.Create(150,90,0)
+		Local width:Int = GetContentScreenRect().GetW() - 4
 
-		Local leftX:Int = GetContentScreenRect().GetX()
+		Local leftX:Int = GetContentScreenRect().GetX() + 2
 
-		GetBitmapFontManager().baseFontBold.DrawBlock(GetFileInformation().GetString("fileName"), leftX, GetScreenRect().GetY() + Self.paddingTop, 0.70*width, 15, Null, headCol, TBitmapFont.STYLE_SHADOW, 1, 0.6, True)
-		GetFont().DrawBlock("|b|"+GetLocale("PLAYER")+":|/b| " + GetFileInformation().GetString("player_name", "unknown player"), leftX, GetScreenRect().GetY() + 15 + Self.paddingTop, 0.25 * width, 15, Null, playerCol, TBitmapFont.STYLE_SHADOW, 1, 0.25, True)
-		GetFont().DrawBlock("|b|"+GetLocale("GAMETIME")+":|/b| "+gameTime, leftX + 0.65 * width, GetScreenRect().GetY() + Self.paddingTop, 0.35 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.6, True)
-		GetFont().DrawBlock("|b|"+GetLocale("MONEY")+":|/b| "+MathHelper.DottedValue(GetFileInformation().GetInt("player_money", 0)), leftX + 0.60 * width, GetScreenRect().GetY() + 15 + Self.paddingTop, 0.40 * width, 15, ALIGN_RIGHT_CENTER, col, 0, 1, 0.6, True)
+		GetBitmapFontManager().baseFontBold.DrawBox(GetFileInformation().GetString("fileName"), leftX, GetScreenRect().GetY() + Self.paddingTop, 0.70*width, 20, sALIGN_LEFT_TOP, headCol, EDrawTextEffect.Shadow, 0.6)
+		GetFont().DrawBox("|b|"+GetLocale("PLAYER")+":|/b| " + GetFileInformation().GetString("player_name", "unknown player"), leftX, GetScreenRect().GetY() + 15 + Self.paddingTop, 0.25 * width, 20, sALIGN_LEFT_TOP, playerCol, EDrawTextEffect.Shadow, 0.25)
+		GetFont().DrawBox("|b|"+GetLocale("GAMETIME")+":|/b| "+gameTime, leftX + 0.65 * width, GetScreenRect().GetY() + Self.paddingTop, 0.35 * width, 20, sALIGN_RIGHT_CENTER, col)
+		GetFont().DrawBox("|b|"+GetLocale("MONEY")+":|/b| "+MathHelper.DottedValue(GetFileInformation().GetInt("player_money", 0)), leftX + 0.60 * width, GetScreenRect().GetY() + 15 + Self.paddingTop, 0.40 * width, 20, sALIGN_RIGHT_CENTER, col)
 
 		Local oldAlpha:Float = GetAlpha()
 		SetAlpha oldAlpha * 0.30

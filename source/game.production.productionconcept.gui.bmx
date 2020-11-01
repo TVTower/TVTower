@@ -173,7 +173,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
 		barH = skin.GetBarSize(100, -1).GetY()
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(title, contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 
 		'message area
 		If showMsgOrderWarning then msgAreaH :+ msgH
@@ -214,17 +214,17 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-			if titleH <= 18
-				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY -1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			else
-				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY +1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			endif
+		if titleH <= 18
+			GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY + 1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		else
+			GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		endif
 		contentY :+ titleH
 
 
 		'=== DESCRIPTION AREA ===
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
-		skin.fontNormal.drawBlock(description, contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(description, contentX + 5, contentY + 1, contentW - 10, descriptionH - 1, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings)
 		contentY :+ descriptionH
 
 
@@ -255,15 +255,10 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			Next
 
 			if cast <> ""
-				contentY :+ 3
-
 				'max width of cast word - to align their content properly
-				skin.fontNormal.drawBlock(cast, contentX + 5, contentY , contentW  - 10, castH, null, skin.textColorNeutral)
-
-				contentY:+ castH - 3
-			else
-				contentY:+ castH
+				skin.fontNormal.DrawBox(cast, contentX + 5, contentY, contentW  - 10, castH, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings)
 			endif
+			contentY:+ castH
 		endif
 
 
@@ -283,7 +278,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			contentY :+ barAreaPaddingY
 			'production potential
 			skin.RenderBar(contentX + 5, contentY, 200, 12, 1.0)
-			skin.fontSemiBold.drawBlock(GetLocale("PRODUCTION_POTENTIAL"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+			skin.fontSmallCaption.DrawSimple(GetLocale("PRODUCTION_POTENTIAL"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 			contentY :+ barH + 2
 		endif
 
@@ -294,37 +289,37 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 
 
 		If showMsgLiveInfo
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, productionconcept.GetLiveTimeText(), "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, productionconcept.GetLiveTimeText(), "runningTime", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 			If showMsgTimeSlotLimit
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", productionConcept.script.GetBroadcastTimeSlotStart()).Replace("%Y%", productionConcept.script.GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", productionConcept.script.GetBroadcastTimeSlotStart()).Replace("%Y%", productionConcept.script.GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 				contentY :+ msgH
 			EndIf
 		EndIf
 
 		If showMsgBroadcastLimit
 			if productionConcept.script.GetProductionBroadcastLimit() = 1
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			Else
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").Replace("%X%", productionConcept.script.GetProductionBroadcastLimit()), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").Replace("%X%", productionConcept.script.GetProductionBroadcastLimit()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			EndIf
 			contentY :+ msgH
 		EndIf
 
 		If showMsgOrderWarning
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("EPISODES_NOT_IN_ORDER"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("EPISODES_NOT_IN_ORDER"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 		If showMsgIncomplete
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_INCOMPLETE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_INCOMPLETE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 		If showMsgNotPlanned
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_NOT_DONE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_NOT_DONE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 		If showMsgDepositPaid
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_DEPOSIT_PAID").Replace("%MONEY%", MathHelper.DottedValue(productionConcept.GetDepositCost()) + GetLocale("CURRENCY")), "money", "neutral", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_DEPOSIT_PAID").Replace("%MONEY%", MathHelper.DottedValue(productionConcept.GetDepositCost()) + GetLocale("CURRENCY")), "money", "neutral", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 
@@ -446,10 +441,10 @@ endrem
 		local msgH:int = 0, msgAreaH:int = 0, msgAreaPaddingY:int = 4
 
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(title, contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 
 		if subTitle
-			subTitleH = Max(subTitleH, 2 + GetBitmapFontManager().Get("default", 12, BOLDFONT).getBlockHeight(subTitle, contentW - 10, 100))
+			subTitleH = Max(subTitleH, 2 + GetBitmapFontManager().Get("default", 12, BOLDFONT).GetBoxHeight(subTitle, contentW - 10, 100))
 		else
 			subTitleH = 0
 		endif
@@ -483,19 +478,19 @@ endrem
 
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH + subTitleH, "1_top")
-			if titleH <= 18
-				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY -1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			else
-				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY +1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			endif
+		if titleH <= 18
+			GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		else
+			GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		endif
 		contentY :+ titleH
 
 		'=== SUBTITLE AREA ===
 		if subTitleH
 			if subTitleH <= 18
-				GetBitmapFontManager().Get("default", 12, BOLDFONT).drawBlock(subTitle, contentX + 5, contentY -1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				GetBitmapFontManager().Get("default", 12, BOLDFONT).DrawBox(subTitle, contentX + 5, contentY -1, contentW - 10, subTitleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			else
-				GetBitmapFontManager().Get("default", 12, BOLDFONT).drawBlock(subTitle, contentX + 5, contentY +1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				GetBitmapFontManager().Get("default", 12, BOLDFONT).DrawBox(subTitle, contentX + 5, contentY +1, contentW - 10, subTitleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			endif
 			contentY :+ subTitleH
 		endif
@@ -507,13 +502,13 @@ endrem
 			local text:string = productionTypeText
 			if genreText <> productionTypeText then text :+ " / "+genreText
 
-			GetBitmapFontManager().Get("default", 12).drawBlock(text, contentX + 5, contentY -1, contentW - 10, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			GetBitmapFontManager().Get("default", 12).DrawBox(text, contentX + 5, contentY -1, contentW - 10, genreH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ genreH
 
 
 		'=== DESCRIPTION AREA ===
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
-		skin.fontNormal.drawBlock(description, contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(description, contentX + 5, contentY + 1, contentW - 10, descriptionH - 1, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings)
 		contentY :+ descriptionH
 
 		if subDescriptionH
@@ -522,7 +517,7 @@ endrem
 			contentY :+ splitterHorizontalH
 
 			skin.RenderContent(contentX, contentY, contentW, subDescriptionH, "2")
-			skin.fontNormal.drawBlock(subDescription, contentX + 5, contentY + 3, contentW - 10, subDescriptionH - 3, null, skin.textColorNeutral)
+			skin.fontNormal.DrawBox(subDescription, contentX + 5, contentY + 1, contentW - 10, subDescriptionH - 1, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings)
 			contentY :+ subDescriptionH
 		endif
 
@@ -553,15 +548,10 @@ endrem
 			Next
 
 			if cast <> ""
-				contentY :+ 3
-
 				'max width of cast word - to align their content properly
-				skin.fontNormal.drawBlock(cast, contentX + 5, contentY , contentW  - 10, castH, null, skin.textColorNeutral)
-
-				contentY:+ castH - 3
-			else
-				contentY:+ castH
+				skin.fontNormal.DrawBox(cast, contentX + 5, contentY , contentW  - 10, castH, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings)
 			endif
+			contentY:+ castH
 		endif
 
 
@@ -575,15 +565,15 @@ endrem
 			contentY :+ msgAreaPaddingY
 
 			If showMsgOrderWarning
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("EPISODES_NOT_IN_ORDER"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("EPISODES_NOT_IN_ORDER"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 				contentY :+ msgH
 			endif
 			If showMsgIncomplete
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_INCOMPLETE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_INCOMPLETE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 				contentY :+ msgH
 			endif
 			If showMsgNotPlanned
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_NOT_DONE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PRODUCTION_SETUP_NOT_DONE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 				contentY :+ msgH
 			endif
 
@@ -635,11 +625,11 @@ Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 	Field displayName:string = ""
 	Field minHeight:int = 50 '61
 
-	Global colorPlanned:TColor = TColor.Create(30,80,150)
-	Global colorGettingPlanned:TColor = TColor.Create(150,80,30)
-	Global colorProduceable:TColor = TColor.Create(80,150,30)
-	Global colorDefault:TColor = TColor.CreateGrey(50)
-	Global colorHint:TColor = TColor.CreateGrey(0, 0.6)
+	Global colorPlanned:SColor8 = new SColor8(30,80,150)
+	Global colorGettingPlanned:SColor8 = new SColor8(150,80,30)
+	Global colorProduceable:SColor8 = new SColor8(80,150,30)
+	Global colorDefault:SColor8 = new SColor8(50,50,50)
+	Global colorHint:SColor8 = new SColor8(0,0,0, int(0.6 * 255))
 
 	Global colorProduceableBG:TColor = TColor.Create(110,180,60, 0.1)
 	Global colorPlannedBG:TColor = TColor.Create(60,110,180, 0.1)
@@ -828,10 +818,11 @@ endrem
 			SetAlpha oldAlpha
 		EndIf
 
+		Local scrRect:TRectangle = GetScreenRect()
 		SetColor 150,150,150
-		DrawLine(GetScreenRect().GetX() + 10, GetScreenRect().GetY2() - paddingBottom -1, GetScreenRect().GetX2() - 20, GetScreenRect().GetY2() - paddingBottom -1)
+		DrawLine(scrRect.GetX() + 10, scrRect.GetY2() - paddingBottom -1, scrRect.GetX2() - 20, scrRect.GetY2() - paddingBottom -1)
 		SetColor 210,210,210
-		DrawLine(GetScreenRect().GetX() + 10, GetScreenRect().GetY2() - paddingBottom, GetScreenRect().GetX2() - 20, GetScreenRect().GetY2() - paddingBottom)
+		DrawLine(scrRect.GetX() + 10, scrRect.GetY2() - paddingBottom, scrRect.GetX2() - 20, scrRect.GetY2() - paddingBottom)
 	End Method
 
 
@@ -854,11 +845,11 @@ endrem
 
 		local textOffsetX:int = asset.GetWidth()*scaleAsset + 3
 		local title:string = "unknown script"
-		local titleSize:TVec2D = new TVec2D
+		local titleSize:SVec2I
 		local subtitle:string = ""
-		local subTitleSize:TVec2D = new TVec2D
-		local genreColor:TColor
-		local titleColor:TColor
+		local subTitleSize:SVec2I
+		local genreColor:SColor8
+		local titleColor:SColor8
 		local titleFont:TBitmapFont = GetBitmapFont("default",12,BOLDFONT)
 		local oldMod:float = titleFont.lineHeightModifier
 		titleFont.lineHeightModifier :* 0.9
@@ -893,29 +884,26 @@ endrem
 
 
 		if isSelected() or isHovered()
-			titleColor = titleColor.copy()
-			genreColor = genreColor.copy()
-
 			if isSelected()
-				titleColor.AdjustBrightness(+0.05)
-				genreColor.AdjustBrightness(+0.05)
+				titleColor = SColor8AdjustFactor(titleColor, 10)
+				genreColor = SColor8AdjustFactor(genreColor, 10)
 			endif
 			if isHovered()
-				titleColor.AdjustBrightness(+0.05)
-				genreColor.AdjustBrightness(+0.05)
+				titleColor = SColor8AdjustFactor(titleColor, 10)
+				genreColor = SColor8AdjustFactor(genreColor, 10)
 			endif
 		endif
 
 
 		if subTitle
-			titleFont.DrawBlock(title, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY()+2), GetScreenRect().GetW() - textOffsetX - 1, GetScreenRect().GetH()-4,,titleColor, , , , , , , titleSize)
+			titleSize = titleFont.DrawBox(title, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() - 2), GetScreenRect().GetW() - textOffsetX - 1, GetScreenRect().GetH()-4, sALIGN_LEFT_TOP, titleColor)
 			if titleSize.y > 20
-				titleFont.DrawBlock(subTitle, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() + titleSize.y + 2), GetScreenRect().GetW() - textOffsetX - 3, 14,,titleColor, , , , , , , subTitleSize)
+				subTitleSize = titleFont.DrawBox(subTitle, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() + titleSize.y - 6), GetScreenRect().GetW() - textOffsetX - 3, 14, sALIGN_LEFT_TOP, titleColor)
 			else
-				titleFont.DrawBlock(subTitle, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() + titleSize.y + 2), GetScreenRect().GetW() - textOffsetX - 3, 28,,titleColor, , , , , , , subTitleSize)
+				subTitleSize = titleFont.DrawBox(subTitle, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() + titleSize.y - 6), GetScreenRect().GetW() - textOffsetX - 3, 28, sALIGN_LEFT_TOP, titleColor)
 			endif
 		else
-			titleFont.DrawBlock(title, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY()+2), GetScreenRect().GetW() - textOffsetX - 1, GetScreenRect().GetH()-4,,titleColor, , , , , , , titleSize)
+			titleSize = titleFont.DrawBox(title, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() - 2), GetScreenRect().GetW() - textOffsetX - 1, GetScreenRect().GetH()-4, sALIGN_LEFT_TOP, titleColor)
 'print title + "  " + titleSize.ToString() + "  scrRect="+GetScreenRect().ToString()
 		endif
 
@@ -929,9 +917,9 @@ endrem
 			local text:string = productionTypeText
 			if genreText <> productionTypeText then text :+ " / "+genreText
 			if subTitle
-				GetBitmapFont("default").DrawBlock(text, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY()+2 + titleSize.y + subTitleSize.y), GetScreenRect().GetW() - textOffsetX - 3, GetScreenRect().GetH()-4,,genreColor)
+				GetBitmapFont("default").DrawBox(text, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() + titleSize.y + subTitleSize.y - 2), GetScreenRect().GetW() - textOffsetX - 3, GetScreenRect().GetH()-4, sALIGN_LEFT_TOP, genreColor)
 			else
-				GetBitmapFont("default").DrawBlock(text, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY()+2 + titleSize.y), GetScreenRect().GetW() - textOffsetX - 3, GetScreenRect().GetH()-4,,genreColor)
+				GetBitmapFont("default").DrawBox(text, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() + titleSize.y - 2), GetScreenRect().GetW() - textOffsetX - 3, GetScreenRect().GetH()-4, sALIGN_LEFT_TOP, genreColor)
 			endif
 		endif
 	End Method

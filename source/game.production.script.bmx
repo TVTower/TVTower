@@ -1037,7 +1037,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", Null, ALIGN_CENTER_CENTER).GetY()
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
 		barH = skin.GetBarSize(100, -1).GetY()
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(title, contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 
 		'message area
 		If showMsgEarnInfo Then msgAreaH :+ msgH
@@ -1070,11 +1070,11 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-			If titleH <= 18
-				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY -1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			Else
-				GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY +1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			EndIf
+		If titleH <= 18
+			GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		Else
+			GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		EndIf
 		contentY :+ titleH
 
 
@@ -1082,7 +1082,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		If isEpisode()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
 			'episode num/max + episode title
-			skin.fontNormal.drawBlock((GetParentScript().GetSubScriptPosition(Self)+1) + "/" + GetParentScript().GetSubScriptCount() + ": " + GetTitle(), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontNormal.DrawBox((GetParentScript().GetSubScriptPosition(Self)+1) + "/" + GetParentScript().GetSubScriptCount() + ": " + GetTitle(), contentX + 5, contentY, contentW - 10, genreH -1, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			contentY :+ subtitleH
 		EndIf
 
@@ -1105,13 +1105,13 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			genreString :+ " / " + GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetSubScriptCount())
 		EndIf
 
-		skin.fontNormal.drawBlock(genreString, contentX + 5, contentY, contentW - 10, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		skin.fontNormal.DrawBox(genreString, contentX + 5, contentY, contentW - 10, genreH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ genreH
 
 
 		'=== DESCRIPTION AREA ===
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
-		skin.fontNormal.drawBlock(GetDescription(), contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, Null, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(GetDescription(), contentX + 5, contentY + 1, contentW - 10, descriptionH - 1, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings)
 		contentY :+ descriptionH
 
 
@@ -1207,14 +1207,9 @@ endrem
 
 		If jobsText <> ""
 			'render director + cast (offset by 3 px)
-			contentY :+ 3
-
-			skin.fontNormal.drawBlock("|b|"+GetLocale("MOVIE_CAST") + ":|/b| " + jobsText, contentX + 5, contentY , contentW  - 10, jobsH, Null, skin.textColorNeutral)
-
-			contentY:+ jobsH - 3
-		Else
-			contentY:+ jobsH
+			skin.fontNormal.DrawBox("|b|"+GetLocale("MOVIE_CAST") + ":|/b| " + jobsText, contentX + 5, contentY , contentW  - 10, jobsH, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings)
 		EndIf
+		contentY:+ jobsH
 
 
 		'=== BARS / MESSAGES / BOXES AREA ===
@@ -1228,15 +1223,15 @@ endrem
 		contentY :+ barAreaPaddingY
 		'speed
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetSpeed())
-		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY, 75, 15, Null, skin.textColorLabel)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 2
 		'critic/review
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetReview())
-		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY, 75, 15, Null, skin.textColorLabel)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 2
 		'potential
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetPotential())
-		skin.fontSemiBold.drawBlock(GetLocale("SCRIPT_POTENTIAL"), contentX + 5 + 200 + 5, contentY, 75, 15, Null, skin.textColorLabel)
+		skin.fontSmallCaption.DrawSimple(GetLocale("SCRIPT_POTENTIAL"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 2
 
 
@@ -1245,26 +1240,26 @@ endrem
 		If msgAreaH > 0 Then contentY :+ msgAreaPaddingY
 
 		If showMsgLiveInfo
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLiveTimeText(), "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLiveTimeText(), "runningTime", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 
 			If showMsgTimeSlotLimit
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 				contentY :+ msgH
 			EndIf
 		EndIf
 
 		If showMsgBroadcastLimit
 			if GetProductionBroadcastLimit() = 1
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			Else
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").Replace("%X%", GetProductionBroadcastLimit()), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").Replace("%X%", GetProductionBroadcastLimit()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			EndIf
 			contentY :+ msgH
 		EndIf
 
 		If showMsgEarnInfo
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").Replace("%PROFIT%", "***"), "money", "good", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").Replace("%PROFIT%", "***"), "money", "good", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
@@ -1303,17 +1298,17 @@ endrem
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			skin.fontBold.drawBlock("Drehbuch: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28)
+			skin.fontBold.DrawBox("Drehbuch: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28, sALIGN_LEFT_TOP, SColor8.White)
 			contentY :+ 28
-			skin.fontNormal.draw("Tempo: "+MathHelper.NumberToString(GetSpeed(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Tempo: "+MathHelper.NumberToString(GetSpeed(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Kritik: "+MathHelper.NumberToString(GetReview(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Kritik: "+MathHelper.NumberToString(GetReview(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Potential: "+MathHelper.NumberToString(GetPotential(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Potential: "+MathHelper.NumberToString(GetPotential(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Preis: "+GetPrice(), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Preis: "+GetPrice(), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("IsProduced: "+IsProduced(), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("IsProduced: "+IsProduced(), contentX + 5, contentY)
 		EndIf
 
 		'=== OVERLAY / BORDER ===

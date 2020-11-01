@@ -9,10 +9,11 @@ Import "common.misc.datasheet.bmx"
 Type TScreenHandler_SupermarketPresents extends TScreenHandler
 	Global box:TRectangle = new TRectangle.Init(55,50,690,310)
 	Global selectedPresent:int = 0
-	Global lastSelectedPresent:int = 0
 
 	Global buyButton:TGUIButton
+	Global updateBuyButton:int = True
 	Global presentButtons:TGUIButton[10]
+	Global LS_supermarket_presents:TLowerString = TLowerString.Create("supermarket_presents")
 	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TScreenHandler_SupermarketPresents
 
@@ -85,7 +86,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 	Function onEnterScreen:int( triggerEvent:TEventBase )
 		'enforce button update
 		selectedPresent = 0
-		lastSelectedPresent = -1
+		updateBuyButton = True
 	End function
 
 
@@ -110,7 +111,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 			selectedPresent = i+1
 			exit
 		Next
-
+		updateBuyButton = True
 	End Function
 
 
@@ -123,7 +124,6 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		GetInstance().Render()
 	End Function
 
-global LS_supermarket_presents:TLowerString = TLowerString.Create("supermarket_presents")
 
 	Method Render()
 		local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
@@ -149,7 +149,7 @@ global LS_supermarket_presents:TLowerString = TLowerString.Create("supermarket_p
 	Method Update()
 		local present:TBettyPresent = TBettyPresent.GetPresent(selectedPresent -1)
 
-		if lastSelectedPresent <> selectedPresent
+		if updateBuyButton
 			if not present
 				buyButton.SetValue( GetLocale("NO_PRESENT_SELECTED") )
 				buyButton.disable()
@@ -162,14 +162,14 @@ global LS_supermarket_presents:TLowerString = TLowerString.Create("supermarket_p
 				buyButton.SetValue(GetLocale("BUY_PRESENTTITLE_FOR_PRICE").Replace("%PRESENTTITLE%", "|color=50,90,135|"+presentTitle+"|/color|").Replace("%PRICE%", presentPrice) )
 				buyButton.Enable()
 			endif
-
-			lastSelectedPresent = selectedPresent
+			
+			updateBuyButton = False
 		endif
 		if present
 			if not GetPlayerBase().GetFinance().CanAfford(present.price)
-				if buyButton.IsEnabled() then buyButton.Disable(); lastSelectedPresent = -1
+				if buyButton.IsEnabled() Then buyButton.Disable()
 			else
-				if not buyButton.IsEnabled() then buyButton.Enable(); lastSelectedPresent = -1
+				if not buyButton.IsEnabled() then buyButton.Enable()
 			endif
 		endif
 		GuiManager.Update( LS_supermarket_presents )

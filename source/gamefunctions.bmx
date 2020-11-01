@@ -11,7 +11,7 @@ Function Font_AddGradient:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TB
 	Local gradientTop:Int	= config.GetInt("gradientTop", 255)
 	Local gradientBottom:Int= config.GetInt("gradientBottom", 100)
 	Local gradientSteps:Int = font.GetMaxCharHeight()
-	Local onStep:Int		= Max(0, char.area.GetY() -2)
+	Local onStep:Int		= Max(0, char.pos.y -2)
 	Local brightness:Int	= 0
 
 	For Local y:Int = 0 To pixmap.height-1
@@ -63,7 +63,7 @@ Function Font_AddShadow:TBitmapFontChar(font:TBitmapFont, charKey:Int, char:TBit
 
 	'increase character dimension
 	char.charWidth :+ shadowSize
-	char.area.dimension.addXY(shadowSize, shadowSize)
+	char.dim = new Svec2i(char.dim.x + shadowSize, char.dim.y + shadowSize)
 
 	char.img = LoadImage(newPixmap)
 

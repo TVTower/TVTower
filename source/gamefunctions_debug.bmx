@@ -705,8 +705,8 @@ Type TDebugScreen
 
 
 		For local i:int = 0 until TVTNewsGenre.count
-			textFont.Draw(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(i)), textX, textY)
-			textFont.Draw("Next"+GetWorldTime().GetFormattedTime(GetNewsAgency().NextEventTimes[i]) +"  "+upcomingCount[i]+" upcoming.", textX + 100, textY)
+			textFont.DrawSimple(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(i)), textX, textY)
+			textFont.DrawSimple("Next"+GetWorldTime().GetFormattedTime(GetNewsAgency().NextEventTimes[i]) +"  "+upcomingCount[i]+" upcoming.", textX + 100, textY)
 			textY :+ 12
 
 			if upcomingEvents[i].length = 0
@@ -714,8 +714,8 @@ Type TDebugScreen
 				textY :+ 12
 			else
 				For local eventIndex:int = 0 until Min(3, upcomingEvents[i].length)
-					textFont.Draw(GetWorldTime().GetFormattedGameDate(upcomingEvents[i][eventIndex].happenedTime), textX, textY)
-					textFont.DrawBlock(upcomingEvents[i][eventIndex].GetTitle(), textX + 100, textY, 200, 15)
+					textFont.DrawSimple(GetWorldTime().GetFormattedGameDate(upcomingEvents[i][eventIndex].happenedTime), textX, textY)
+					textFont.DrawBox(upcomingEvents[i][eventIndex].GetTitle(), textX + 100, textY, 200, 15, sALIGN_LEFT_TOP, SColor8.White)
 					textY :+ 12
 				Next
 				'empty lines for not-set upcoming events in that genre
@@ -745,9 +745,9 @@ Type TDebugScreen
 '			if not (movieVendor.filterMoviesCheap.DoesFilter(pl) or movieVendor.filterMoviesGood.DoesFilter(pl) or movieVendor.filterSeries.DoesFilter(pl)) then continue
 			if not movieVendor.filterCrap.DoesFilter(pl) then continue
 
-			textFont.DrawBlock(pl.GetTitle(), textX + 15, textY, 110, 11)
-			textFont.Draw(pl.GetPriceForPlayer(playerID), textX + 15 + 120, textY)
-			textFont.DrawBlock(MathHelper.NumberToString(pl.GetMaxTopicality()*100,2)+"%", textX + 15 + 130, textY, 45, 11, ALIGN_RIGHT_TOP)
+			textFont.DrawBox(pl.GetTitle(), textX + 15, textY, 110, 11, sALIGN_LEFT_TOP, SColor8.White)
+			textFont.DrawSimple(pl.GetPriceForPlayer(playerID), textX + 15 + 120, textY)
+			textFont.DrawBox(MathHelper.NumberToString(pl.GetMaxTopicality()*100,2)+"%", textX + 15 + 130, textY, 45, 11, sALIGN_RIGHT_TOP, SColor8.White)
 			textY :+ 10
 		Next
 '		filterMoviesGood
@@ -852,12 +852,11 @@ Type TDebugScreen
 
 				textFont.Draw(RSet(i, 2).Replace(" ", "0"), textX, textY)
 				if licences[i]
-					textFont.DrawBlock(": " + licences[i].GetTitle(), textX + 15, textY, 110, 11)
-					textFont.Draw(MathHelper.DottedValue(licences[i].GetPriceForPlayer(playerID)), textX + 15 + 120, textY)
-					textFont.DrawBlock(licences[i].data.GetYear(), textX + 15 + 120, textY, barWidth - (15 + 120 + 5), 11, ALIGN_RIGHT_TOP)
-'					textFont.DrawBlock(licences[i].GetRelativeTopicality() * 100, textX + 15 + 120, textY, 100, 11, ALIGN_RIGHT_TOP)
+					textFont.DrawBox(": " + licences[i].GetTitle(), textX + 15, textY, 110, 11, sALIGN_LEFT_TOP, SColor8.White)
+					textFont.DrawSimple(MathHelper.DottedValue(licences[i].GetPriceForPlayer(playerID)), textX + 15 + 120, textY)
+					textFont.DrawBox(licences[i].data.GetYear(), textX + 15 + 120, textY, barWidth - (15 + 120 + 5), 11, sALIGN_RIGHT_TOP, SColor8.White)
 				else
-					textFont.Draw(": -", textX + 15, textY)
+					textFont.DrawSimple(": -", textX + 15, textY)
 				endif
 				textY :+ 10
 
@@ -971,19 +970,19 @@ endrem
 					SetBlend ALPHABLEND
 				endif
 
-				textFont.Draw(RSet(i, 2).Replace(" ", "0"), textX, textY)
+				textFont.DrawSimple(RSet(i, 2).Replace(" ", "0"), textX, textY)
 				if ads[i]
-					textFont.DrawBlock(": " + ads[i].GetTitle(), textX + 15, textY, 110, 11)
-					textFont.Draw(MathHelper.DottedValue(ads[i].GetMinAudience(playerID)), textX + 15 + 120, textY)
+					textFont.DrawBox(": " + ads[i].GetTitle(), textX + 15, textY, 110, 11, sALIGN_LEFT_TOP, SColor8.White)
+					textFont.DrawSimple(MathHelper.DottedValue(ads[i].GetMinAudience(playerID)), textX + 15 + 120, textY)
 					if ads[i].GetLimitedToTargetGroup() > 0
-						textFont.DrawBlock(ads[i].GetLimitedToTargetGroupString(), textX + 15 + 120, textY, 100, 11, ALIGN_RIGHT_TOP)
+						textFont.DrawBox(ads[i].GetLimitedToTargetGroupString(), textX + 15 + 120, textY, 100, 11, sALIGN_RIGHT_TOP, SColor8.White)
 					else
 						SetAlpha 0.5
-						textFont.DrawBlock("no limit", textX + 15 + 120, textY, 100, 11, ALIGN_RIGHT_TOP)
+						textFont.DrawBox("no limit", textX + 15 + 120, textY, 100, 11, sALIGN_RIGHT_TOP, SColor8.White)
 						SetAlpha oldAlpha
 					endif
 				else
-					textFont.Draw(": -", textX + 15, textY)
+					textFont.DrawSimple(": -", textX + 15, textY)
 				endif
 				textY :+ 10
 
@@ -1038,11 +1037,11 @@ endrem
 		SetColor 255,255,255
 		local textY:int = y + 5
 		titleFont.Draw(figure.name, x + 5, textY)
-		if not figure.CanMove() then textFont.DrawBlock("cannot move", x, textY, 150 - 3, 14, ALIGN_RIGHT_TOP)
+		if not figure.CanMove() then textFont.DrawBox("cannot move", x, textY, 150 - 3, 14, sALIGN_RIGHT_TOP, SColor8.White)
 		textY :+ 10
-		textFont.draw(roomName, x + 5, textY)
+		textFont.DrawSimple(roomName, x + 5, textY)
 		textY :+ 10
-		if targetText then textFont.draw("-> " + targetText, x + 5, textY)
+		if targetText then textFont.DrawSimple("-> " + targetText, x + 5, textY)
 		'textY :+ 10
 		'textFont.draw("usedDoor: " + usedDoorText, x + 5, textY)
 	End Method
@@ -1328,53 +1327,51 @@ Type TDebugAudienceInfos
 		Local x:Int = 200
 		Local y:Int = 25
 		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
-		GetBitmapFontManager().baseFont.drawBlock("|b|Taste |color=255,100,0|~qQ~q|/color| drücken|/b| um (Debug-)Quotenbildschirm wieder auszublenden. Spielerwechsel: TV-Kanalbuttons", 0, 360, GetGraphicsManager().GetWidth(), 25, ALIGN_CENTER_CENTER, TColor.clRed)
+		GetBitmapFontManager().baseFont.DrawBox("|b|Taste |color=255,100,0|~qQ~q|/color| drücken|/b| um (Debug-)Quotenbildschirm wieder auszublenden. Spielerwechsel: TV-Kanalbuttons", 0, 360, GetGraphicsManager().GetWidth(), 25, sALIGN_CENTER_CENTER, SColor8.Red)
 
-		font.drawBlock("Gesamt", x, y, 65, 25, ALIGN_RIGHT_TOP, TColor.clRed)
-		font.drawBlock("Kinder", x + (70*1), y, 65, 25, ALIGN_RIGHT_TOP, TColor.clWhite)
-		font.drawBlock("Jugendliche", x + (70*2), y, 65, 25, ALIGN_RIGHT_TOP, TColor.clWhite)
-		font.drawBlock("Hausfrau.", x + (70*3), y, 65, 25, ALIGN_RIGHT_TOP, TColor.clWhite)
-		font.drawBlock("Arbeitneh.", x + (70*4), y, 65, 25, ALIGN_RIGHT_TOP, TColor.clWhite)
-		font.drawBlock("Arbeitslose", x + (70*5), y, 65, 25, ALIGN_RIGHT_TOP, TColor.clWhite)
-		font.drawBlock("Manager", x + (70*6), y, 65, 25, ALIGN_RIGHT_TOP, TColor.clWhite)
-		font.drawBlock("Rentner", x + (70*7), y, 65, 25, ALIGN_RIGHT_TOP, TColor.clWhite)
+		font.DrawBox("Gesamt", x, y, 65, 25, sALIGN_RIGHT_TOP, SColor8.Red)
+		font.DrawBox("Kinder", x + (70*1), y, 65, 25, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("Jugendliche", x + (70*2), y, 65, 25, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("Hausfrau.", x + (70*3), y, 65, 25, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("Arbeitneh.", x + (70*4), y, 65, 25, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("Arbeitslose", x + (70*5), y, 65, 25, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("Manager", x + (70*6), y, 65, 25, sALIGN_RIGHT_TOP, SColor8.White)
+		font.DrawBox("Rentner", x + (70*7), y, 65, 25, sALIGN_RIGHT_TOP, SColor8.White)
 
 
-		font.Draw("Bevölkerung", 25, 50, TColor.clWhite)
+		font.DrawSimple("Bevölkerung", 25, 50, SColor8.White)
 		DrawAudience(audienceResult.WholeMarket, 200, 50)
 
 		Local percent:String = MathHelper.NumberToString(audienceResult.GetPotentialMaxAudienceQuotePercentage()*100,2) + "%"
-		font.Draw("Potentielle Zuschauer", 25, 70, TColor.clWhite)
-		font.Draw(percent, 160, 70, TColor.clWhite)
+		font.DrawSimple("Potentielle Zuschauer", 25, 70, SColor8.White)
+		font.DrawSimple(percent, 160, 70, SColor8.White)
 		DrawAudience(audienceResult.PotentialMaxAudience, 200, 70)
 
-		Local colorLight:TColor = TColor.CreateGrey(150)
+		Local colorLight:SColor8 = new SColor8(150, 150, 150)
 
-		'font.drawStyled("      davon Exklusive", 25, 90, TColor.clWhite);
-		'DrawAudience(audienceResult.ExclusiveAudienceSum, 200, 90, true);
+		'font.drawStyled("      davon Exklusive", 25, 90, TColor.clWhite)
+		'DrawAudience(audienceResult.ExclusiveAudienceSum, 200, 90, true)
 
-		'font.drawStyled("      davon gebunden (Audience Flow)", 25, 105, colorLight);
-		'DrawAudience(audienceResult.AudienceFlowSum, 200, 105, true);
+		'font.drawStyled("      davon gebunden (Audience Flow)", 25, 105, colorLight)
+		'DrawAudience(audienceResult.AudienceFlowSum, 200, 105, true)
 
-		'font.drawStyled("      davon Zapper", 25, 120, colorLight);
-		'DrawAudience(audienceResult.ChannelSurferToShare, 200, 120, true);
+		'font.drawStyled("      davon Zapper", 25, 120, colorLight)
+		'DrawAudience(audienceResult.ChannelSurferToShare, 200, 120, true)
 
 
-		font.Draw("Aktuelle Zuschauerzahl", 25, 90, TColor.clWhite);
+		font.DrawSimple("Aktuelle Zuschauerzahl", 25, 90, SColor8.White)
 		percent = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage()*100,2) + "%"
-		font.Draw(percent, 160, 90, TColor.clWhite);
-		DrawAudience(audienceResult.Audience, 200, 90);
+		font.DrawSimple(percent, 160, 90, SColor8.White)
+		DrawAudience(audienceResult.Audience, 200, 90)
 
-		'font.drawStyled("      davon Exklusive", 25, 155, colorLight);
-		'DrawAudience(audienceResult.ExclusiveAudience, 200, 155, true);
+		'font.drawStyled("      davon Exklusive", 25, 155, colorLight)
+		'DrawAudience(audienceResult.ExclusiveAudience, 200, 155, true)
 
-		'font.drawStyled("      davon gebunden (Audience Flow)", 25, 170, colorLight);
-		'DrawAudience(audienceResult.AudienceFlow, 200, 170, true);
+		'font.drawStyled("      davon gebunden (Audience Flow)", 25, 170, colorLight)
+		'DrawAudience(audienceResult.AudienceFlow, 200, 170, true)
 
-		'font.drawStyled("      davon Zapper", 25, 185, colorLight);
-		'DrawAudience(audienceResult.ChannelSurfer, 200, 185, true);
-
-
+		'font.drawStyled("      davon Zapper", 25, 185, colorLight)
+		'DrawAudience(audienceResult.ChannelSurfer, 200, 185, true)
 
 
 
@@ -1399,16 +1396,16 @@ Type TDebugAudienceInfos
 
 		Local offset:Int = 110
 
-		GetBitmapFontManager().baseFontBold.drawStyled("Sendung: " + audienceResult.GetTitle() + "     (" + genre + ") [Spieler: "+playerID+"]", 25, offset, TColor.clRed);
+		GetBitmapFontManager().baseFontBold.DrawSimple("Sendung: " + audienceResult.GetTitle() + "     (" + genre + ") [Spieler: "+playerID+"]", 25, offset, SColor8.Red)
 		offset :+ 20
 
-		font.Draw("1. Programmqualität & Aktual.", 25, offset, TColor.clWhite)
+		font.DrawSimple("1. Programmqualität & Aktual.", 25, offset, SColor8.White)
 		If attraction.Quality
 			DrawAudiencePercent(New TAudience.InitValue(attraction.Quality,  attraction.Quality), 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
-		font.Draw("2. * Zielgruppenattraktivität", 25, offset, TColor.clWhite)
+		font.DrawSimple("2. * Zielgruppenattraktivität", 25, offset, SColor8.White)
 		If attraction.targetGroupAttractivity
 			DrawAudiencePercent(attraction.targetGroupAttractivity, 200, offset, True, True)
 		Else
@@ -1416,58 +1413,58 @@ Type TDebugAudienceInfos
 		EndIf
 		offset :+ 20
 
-		font.Draw("3. * TrailerMod ("+MathHelper.NumberToString(TAudienceAttraction.MODINFLUENCE_TRAILER*100)+"%)", 25, offset, TColor.clWhite)
+		font.DrawSimple("3. * TrailerMod ("+MathHelper.NumberToString(TAudienceAttraction.MODINFLUENCE_TRAILER*100)+"%)", 25, offset, SColor8.White)
 		If attraction.TrailerMod
-			font.drawBlock(genre, 60, offset, 205, 25, ALIGN_RIGHT_TOP, colorLight )
+			font.DrawBox(genre, 60, offset, 205, 25, sALIGN_RIGHT_TOP, colorLight )
 			DrawAudiencePercent(attraction.TrailerMod.Copy().MultiplyFloat(TAudienceAttraction.MODINFLUENCE_TRAILER).AddFloat(1), 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
-		font.Draw("4. + Sonstige Mods ("+MathHelper.NumberToString(TAudienceAttraction.MODINFLUENCE_MISC*100)+"%)", 25, offset, TColor.clWhite)
+		font.DrawSimple("4. + Sonstige Mods ("+MathHelper.NumberToString(TAudienceAttraction.MODINFLUENCE_MISC*100)+"%)", 25, offset, SColor8.White)
 		If attraction.MiscMod
 			DrawAudiencePercent(attraction.MiscMod, 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
-		font.Draw("5. + CastMod ("+MathHelper.NumberToString(TAudienceAttraction.MODINFLUENCE_CAST*100)+"%)", 25, offset, TColor.clWhite)
+		font.DrawSimple("5. + CastMod ("+MathHelper.NumberToString(TAudienceAttraction.MODINFLUENCE_CAST*100)+"%)", 25, offset, SColor8.White)
 		DrawAudiencePercent(New TAudience.InitValue(attraction.CastMod,  attraction.CastMod), 200, offset, True, True)
 		offset :+ 20
 
-		font.Draw("6. * SenderimageMod", 25, offset, TColor.clWhite)
+		font.DrawSimple("6. * SenderimageMod", 25, offset, SColor8.White)
 		If attraction.PublicImageMod
 			DrawAudiencePercent(attraction.PublicImageMod.Copy().AddFloat(1.0), 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
-		font.Draw("7. + Zuschauerentwicklung (inaktiv)", 25, offset, TColor.clWhite)
+		font.DrawSimple("7. + Zuschauerentwicklung (inaktiv)", 25, offset, SColor8.White)
 	'	DrawAudiencePercent(new TAudience.InitValue(-1, attraction.QualityOverTimeEffectMod), 200, offset, true, true)
 		offset :+ 20
 
-		font.Draw("9. + Glück / Zufall", 25, offset, TColor.clWhite)
+		font.DrawSimple("9. + Glück / Zufall", 25, offset, SColor8.White)
 		If attraction.LuckMod
 			DrawAudiencePercent(attraction.LuckMod, 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
-		font.Draw("9. + Audience Flow Bonus", 25, offset, TColor.clWhite)
+		font.DrawSimple("9. + Audience Flow Bonus", 25, offset, SColor8.White)
 		If attraction.AudienceFlowBonus
 			DrawAudiencePercent(attraction.AudienceFlowBonus, 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
-		font.Draw("10. * Genreattraktivität (zeitabh.)", 25, offset, TColor.clWhite)
+		font.DrawSimple("10. * Genreattraktivität (zeitabh.)", 25, offset, SColor8.White)
 		If attraction.GetGenreAttractivity()
 			DrawAudiencePercent(attraction.GetGenreAttractivity(), 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
-		font.Draw("11. + Sequence", 25, offset, TColor.clWhite)
+		font.DrawSimple("11. + Sequence", 25, offset, SColor8.White)
 		If attraction.SequenceEffect
 			DrawAudiencePercent(attraction.SequenceEffect, 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
-		font.Draw("Finale Attraktivität (Effektiv)", 25, offset, TColor.clRed)
+		font.DrawSimple("Finale Attraktivität (Effektiv)", 25, offset, SColor8.White)
 		If attraction.FinalAttraction
 			DrawAudiencePercent(attraction.FinalAttraction, 200, offset, False, True)
 		EndIf
@@ -1530,10 +1527,10 @@ Rem
 
 		SetColor 0,0,0
 		DrawRect(520,415,250,40)
-		font.Draw("Interest: " + feedback.AudienceInterest.ToStringMinimal(), 530, 420, TColor.clRed)
-		font.Draw("Statements: count=" + feedback.FeedbackStatements.Count(), 530, 430, TColor.clRed)
+		font.DrawSimple("Interest: " + feedback.AudienceInterest.ToStringMinimal(), 530, 420, SColor8.Red)
+		font.DrawSimple("Statements: count=" + feedback.FeedbackStatements.Count(), 530, 430, SColor8.Red)
 		If currentStatement Then
-			font.Draw(currentStatement.ToString(), 530, 440, TColor.clRed);
+			font.DrawSimple(currentStatement.ToString(), 530, 440, SColor8.Red)
 		EndIf
 
 		SetColor 255,255,255
@@ -1569,19 +1566,19 @@ endrem
 		Local val:String
 		Local x2:Int = x + 70
 		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
-		Local color:TColor = TColor.clWhite
-		If gray Then color = TColor.CreateGrey(150)
+		Local color:SColor8 = SColor8.White
+		If gray Then color = new SColor8(150, 150, 150)
 
 		val = TFunctions.convertValue(audience.GetTotalSum(), 2)
 		If gray Then
-			font.drawBlock(val, x, y, 65, 25, ALIGN_RIGHT_TOP, TColor.Create(150, 80, 80))
+			font.DrawBox(val, x, y, 65, 25, sALIGN_RIGHT_TOP, new SColor8(150, 80, 80))
 		Else
-			font.drawBlock(val, x, y, 65, 25, ALIGN_RIGHT_TOP, TColor.clRed)
+			font.DrawBox(val, x, y, 65, 25, sALIGN_RIGHT_TOP, SColor8.Red)
 		End If
 
 		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
 			val = TFunctions.convertValue(audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 2)
-			font.drawBlock(val, x2 + 70*(i-1), y, 65, 25, ALIGN_RIGHT_TOP, color)
+			font.DrawBox(val, x2 + 70*(i-1), y, 65, 25, sALIGN_RIGHT_TOP, color)
 		Next
 	End Function
 
@@ -1590,21 +1587,21 @@ endrem
 		Local val:String
 		Local x2:Int = x + 70
 		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
-		Local color:TColor = TColor.clWhite
-		If gray Then color = TColor.CreateGrey(150)
+		Local color:SColor8 = SColor8.White
+		If gray Then color = new SColor8(150, 150, 150)
 
 		If Not hideAverage Then
 			val = MathHelper.NumberToString(audience.GetWeightedAverage(),2)
 			If gray Then
-				font.drawBlock(val, x, y, 65, 25, ALIGN_RIGHT_TOP, TColor.Create(150, 80, 80))
+				font.DrawBox(val, x, y, 65, 25, sALIGN_RIGHT_TOP, new SColor8(150, 80, 80))
 			Else
-				font.drawBlock(val, x, y, 65, 25, ALIGN_RIGHT_TOP, TColor.clRed)
+				font.DrawBox(val, x, y, 65, 25, sALIGN_RIGHT_TOP, SColor8.Red)
 			End If
 		End If
 
 		For Local i:Int = 1 To TVTTargetGroup.baseGroupCount
 			val = MathHelper.NumberToString(0.5 * audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)),2)
-			font.drawBlock(val, x2 + 70*(i-1), y, 65, 25, ALIGN_RIGHT_TOP, color)
+			font.DrawBox(val, x2 + 70*(i-1), y, 65, 25, sALIGN_RIGHT_TOP, color)
 		Next
 	End Function
 End Type
@@ -1785,7 +1782,7 @@ Type TDebugProgrammeCollectionInfos
 		If oldestEntryTime >= 0 And oldestEntryTime + 3000 < Time.GetTimeGone() Then RemoveOutdated()
 
 		Local collection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
-		Local secondLineCol:TColor = TColor.CreateGrey(220)
+		Local secondLineCol:SColor8 = new SColor8(220, 220,220)
 
 		Local entryPos:Int = 0
 		Local oldAlpha:Float = GetAlpha()
@@ -1825,14 +1822,14 @@ Type TDebugProgrammeCollectionInfos
 			SetColor 255,255,255
 
 			Local progString:String = l.GetTitle()
-			font.DrawBlock( progString, x+2, y+1 + entryPos*lineHeight, lineWidth - 30, lineHeight, ALIGN_LEFT_CENTER,,,,,False)
+			font.DrawBox( progString, x+2, y+1 + entryPos*lineHeight, lineWidth - 30, lineHeight, sALIGN_LEFT_CENTER, SColor8.White)
 
 			Local attString:String = ""
 '			local s:string = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetGUID()))
 			Local s:String = MathHelper.NumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
 			If s Then attString = "|color=180,180,180|A|/color|"+ s + " "
 
-			font.DrawBlock(attString, x+2, y+1 + entryPos*lineHeight, lineWidth-5, lineHeight, ALIGN_RIGHT_CENTER,,,,,False)
+			font.DrawBox(attString, x+2, y+1 + entryPos*lineHeight, lineWidth-5, lineHeight, sALIGN_RIGHT_CENTER, SColor8.White)
 
 			entryPos :+ 1
 		Next
@@ -1887,12 +1884,12 @@ Type TDebugProgrammeCollectionInfos
 
 			Local adString2b:String = "Acu: " +MathHelper.NumberToString(a.GetAcuteness()*100.0)
 			Local adString2c:String = a.GetSpotsSent() + "/" + a.GetSpotCount()
-			font.DrawBlock( adString1a, x + adLeftX + 2, y+1 + entryPos*lineHeight*2 + lineHeight*0, adLeftX - 40, lineHeight, ALIGN_LEFT_CENTER,,,,,False)
-			font.DrawBlock( adString1b, x + adLeftX + 2 + adLineWidth-60-2, y+1 + entryPos*lineHeight*2 + lineHeight*0, 60, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
+			font.DrawBox( adString1a, x + adLeftX + 2, y+1 + entryPos*lineHeight*2 + lineHeight*0, adLeftX - 40, lineHeight, sALIGN_LEFT_CENTER, SColor8.White)
+			font.DrawBox( adString1b, x + adLeftX + 2 + adLineWidth-60-2, y+1 + entryPos*lineHeight*2 + lineHeight*0, 60, lineHeight, sALIGN_RIGHT_CENTER, secondLineCol)
 
-			font.DrawBlock( adString2a, x + adLeftX + 2, y+1 + entryPos*lineHeight*2 + lineHeight*1 -1, 60, lineHeight, ALIGN_LEFT_CENTER, secondLineCol,,,,False)
-			font.DrawBlock( adString2b, x + adLeftX + 2 + 65, y+1 + entryPos*lineHeight*2 + lineHeight*1 -1, 55, lineHeight, ALIGN_CENTER_CENTER, secondLineCol)
-			font.DrawBlock( adString2c, x + adLeftX + 2 + adLineWidth-55-2, y+1 + entryPos*lineHeight*2 + lineHeight*1 -1, 55, lineHeight, ALIGN_RIGHT_CENTER, secondLineCol)
+			font.DrawBox( adString2a, x + adLeftX + 2, y+1 + entryPos*lineHeight*2 + lineHeight*1 -1, 60, lineHeight, sALIGN_LEFT_CENTER, secondLineCol)
+			font.DrawBox( adString2b, x + adLeftX + 2 + 65, y+1 + entryPos*lineHeight*2 + lineHeight*1 -1, 55, lineHeight, sALIGN_CENTER_CENTER, secondLineCol)
+			font.DrawBox( adString2c, x + adLeftX + 2 + adLineWidth-55-2, y+1 + entryPos*lineHeight*2 + lineHeight*1 -1, 55, lineHeight, sALIGN_RIGHT_CENTER, secondLineCol)
 
 			entryPos :+ 1
 		Next
@@ -2050,7 +2047,7 @@ Type TDebugProgrammePlanInfos
 
 
 		Local s:String = "|color=200,255,200|PRED|/color|/|color=200,200,255|GUESS|/color|/|color=255,220,210|REAL|/color|"
-		GetBitmapFont("default", 10).DrawBlock( s, programmeSlotX, y + -1*lineHeight, programmeSlotWidth, lineHeight, ALIGN_RIGHT_TOP)
+		GetBitmapFont("default", 10).DrawBox( s, programmeSlotX, y + -1*lineHeight, programmeSlotWidth, lineHeight, sALIGN_RIGHT_TOP, SColor8.White)
 
 
 		For Local hour:Int = 0 Until daysProgramme.length
@@ -2211,11 +2208,11 @@ Type TDebugProgrammePlanInfos
 
 			font.Draw( RSet(hour,2).Replace(" ", "0"), x + 2, y + hour*lineHeight)
 			If programme Then SetStateColor(programme)
-			font.DrawBlock( progString, programmeSlotX + 2, y + hour*lineHeight, programmeSlotWidth - 60, lineHeight, ALIGN_LEFT_TOP,,,,,False)
-			font.DrawBlock( progString2, programmeSlotX, y + hour*lineHeight, programmeSlotWidth - 2, lineHeight, ALIGN_RIGHT_TOP)
+			font.DrawBox( progString, programmeSlotX + 2, y + hour*lineHeight, programmeSlotWidth - 60, lineHeight, sALIGN_LEFT_TOP, SColor8.White)
+			font.DrawBox( progString2, programmeSlotX, y + hour*lineHeight, programmeSlotWidth - 2, lineHeight, sALIGN_RIGHT_TOP, SColor8.White)
 			If advertisement Then SetStateColor(advertisement)
-			font.DrawBlock( adString, adSlotX + 2, y + hour*lineHeight, adSlotWidth - 30, lineHeight, ALIGN_LEFT_TOP,,,,,False)
-			font.DrawBlock( adString2, adSlotX, y + hour*lineHeight, adSlotWidth - 2, lineHeight, ALIGN_RIGHT_TOP)
+			font.DrawBox( adString, adSlotX + 2, y + hour*lineHeight, adSlotWidth - 30, lineHeight, sALIGN_LEFT_TOP, SColor8.White)
+			font.DrawBox( adString2, adSlotX, y + hour*lineHeight, adSlotWidth - 2, lineHeight, sALIGN_RIGHT_TOP, SColor8.White)
 			SetColor 255,255,255
 		Next
 
@@ -2253,11 +2250,11 @@ Type TDebugProgrammePlanInfos
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			font.DrawBlock( newsSlot+1 , x + 2, newsY + newsSlot * lineHeight, clockSlotWidth-2, lineHeight, ALIGN_CENTER_TOP)
+			font.DrawBox( newsSlot+1 , x + 2, newsY + newsSlot * lineHeight, clockSlotWidth-2, lineHeight, sALIGN_CENTER_TOP, SColor8.White)
 			If news
-				font.DrawBlock(news.GetTitle(), programmeSlotX + 2, newsY + newsSlot*lineHeight, programmeSlotWidth - 4, lineHeight, ALIGN_LEFT_TOP,,,,False)
+				font.DrawBox(news.GetTitle(), programmeSlotX + 2, newsY + newsSlot*lineHeight, programmeSlotWidth - 4, lineHeight, sALIGN_LEFT_TOP, SColor8.White)
 			Else
-				font.DrawBlock("NEWS OUTAGE", programmeSlotX + 2, newsY + newsSlot*lineHeight, programmeSlotWidth - 4, lineHeight, ALIGN_LEFT_TOP, TColor.clRed)
+				font.DrawBox("NEWS OUTAGE", programmeSlotX + 2, newsY + newsSlot*lineHeight, programmeSlotWidth - 4, lineHeight, sALIGN_LEFT_TOP, SColor8.Red)
 			EndIf
 		Next
 	End Function
@@ -2336,7 +2333,7 @@ Type TDebugPlayerControls
 		EndIf
 		DrawRect(x+1,y+1,w-2,h-2)
 		SetColor 255,255,255
-		GetBitmapFont("default", 11).DrawBlock(text, x,y,w,h, ALIGN_CENTER_CENTER)
+		GetBitmapFont("default", 11).DrawBox(text, x,y,w,h, sALIGN_CENTER_CENTER, SColor8.White)
 	End Method
 
 
@@ -2397,7 +2394,7 @@ Type TDebugControlsButton
 
 		DrawRect(offsetX + x+1,offsetY + y+1,w-2,h-2)
 		SetColor 255,255,255
-		GetBitmapFont("default", 11).DrawBlock(text, offsetX + x,offsetY + y,w,h, ALIGN_CENTER_CENTER, TColor.clWhite)
+		GetBitmapFont("default", 11).DrawBox(text, offsetX + x,offsetY + y,w,h, sALIGN_CENTER_CENTER, SColor8.White)
 	End Method
 
 
@@ -2461,7 +2458,7 @@ Type TDebugModifierInfos
 		Local textY:Int = y+1
 
 		Local font:TBitmapfont = GetBitmapFont("default", 10)
-		font.Draw("Modifiers", textX, textY)
+		font.DrawSimple("Modifiers", textX, textY)
 		textY :+ 12
 
 		Local data:TData = GameConfig._modifiers
@@ -2469,8 +2466,8 @@ Type TDebugModifierInfos
 			For Local k:TLowerString = EachIn data.data.Keys()
 				If textY > 370 Then Continue
 
-				font.DrawBlock(k.ToString(), textX, textY, 210, 15, ALIGN_LEFT_TOP)
-				font.DrawBlock(MathHelper.NumberToString(data.GetFloat(k.ToString()), 3), textX, textY, 245, 15, ALIGN_RIGHT_TOP)
+				font.DrawBox(k.ToString(), textX, textY, 210, 15, sALIGN_LEFT_TOP, SColor8.White)
+				font.DrawBox(MathHelper.NumberToString(data.GetFloat(k.ToString()), 3), textX, textY, 245, 15, sALIGN_RIGHT_TOP, SColor8.White)
 				textY :+ 12
 			Next
 		EndIf

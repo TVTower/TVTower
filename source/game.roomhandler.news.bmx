@@ -8,6 +8,8 @@ Import "game.broadcastmaterial.news.bmx"
 Import "game.newsagency.bmx"
 Import "game.gameconfig.bmx"
 
+TGUINews.textBlockDrawSettings.data.lineHeight = 12
+TGUINews.textBlockDrawSettings.data.boxDimensionMode = 0
 
 'News room
 Type RoomHandler_News extends TRoomHandler
@@ -318,8 +320,8 @@ Type RoomHandler_News extends TRoomHandler
 			DrawRect(15,35, 380, 220)
 			SetAlpha 1.0
 			SetColor 255,255,255
-			GetBitmapFont("default", 12).Draw("Neue Startnews:", 20, 40)
-			GetBitmapFont("default", 12).Draw("Neue Folgenews (in Liste):", 20+130, 40)
+			GetBitmapFont("default", 12).DrawSimple("Neue Startnews:", 20, 40)
+			GetBitmapFont("default", 12).DrawSimple("Neue Folgenews (in Liste):", 20+130, 40)
 
 			local upcomingCount:int[TVTNewsGenre.count+1]
 			local upcomingEvent:TNewsEvent[TVTNewsGenre.count+1]
@@ -336,22 +338,22 @@ Type RoomHandler_News extends TRoomHandler
 			Next
 
 			For local i:int = 0 until TVTNewsGenre.count
-				GetBitmapFont("default", 10).Draw(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(i))+":  "+GetWorldTime().GetFormattedTime(GetNewsAgency().NextEventTimes[i]), 20, 60 + 24*i)
+				GetBitmapFont("default", 10).DrawSimple(GetLocale("NEWS_"+TVTNewsGenre.GetAsString(i))+":  "+GetWorldTime().GetFormattedTime(GetNewsAgency().NextEventTimes[i]), 20, 60 + 24*i)
 
 				if upcomingEvent[i]
-					GetBitmapFont("default", 10).Draw(GetWorldTime().GetFormattedDate(upcomingEvent[i].happenedTime)+" ( "+upcomingCount[i]+"x )", 20+130, 60 + 24*i)
-					GetBitmapFont("default", 10).DrawBlock(upcomingEvent[i].GetTitle(), 20+130, 60 + 24*i + 12, 200, 15)
+					GetBitmapFont("default", 10).DrawSimple(GetWorldTime().GetFormattedDate(upcomingEvent[i].happenedTime)+" ( "+upcomingCount[i]+"x )", 20+130, 60 + 24*i)
+					GetBitmapFont("default", 10).DrawBox(upcomingEvent[i].GetTitle(), 20+130, 60 + 24*i + 12, 200, 15, SColor8.Black)
 				else
-					GetBitmapFont("default", 10).Draw("-- ( "+upcomingCount[i]+"x )", 20+130, 60 + 24*i)
-					GetBitmapFont("default", 10).Draw("--", 20+130, 60 + 24*i +12)
+					GetBitmapFont("default", 10).DrawSimple("-- ( "+upcomingCount[i]+"x )", 20+130, 60 + 24*i)
+					GetBitmapFont("default", 10).DrawSimple("--", 20+130, 60 + 24*i +12)
 				endif
 			Next
 
 
 			local agency:TNewsAgency = GetNewsAgency()
-			GetBitmapFont("default", 12).Draw("Terrorlevel:", 20, 220)
-			GetBitmapFont("default", 10).Draw("a) " + MathHelper.NumberToString(100*agency.terroristAggressionLevelProgress[0],2)+"%  " + agency.terroristAggressionLevel[0]+"/"+agency.terroristAggressionLevelMax, 20, 235)
-			GetBitmapFont("default", 10).Draw("b) " + MathHelper.NumberToString(100*agency.terroristAggressionLevelProgress[1],2)+"%  " + agency.terroristAggressionLevel[1]+"/"+agency.terroristAggressionLevelMax, 20+130, 235)
+			GetBitmapFont("default", 12).DrawSimple("Terrorlevel:", 20, 220)
+			GetBitmapFont("default", 10).DrawSimple("a) " + MathHelper.NumberToString(100*agency.terroristAggressionLevelProgress[0],2)+"%  " + agency.terroristAggressionLevel[0]+"/"+agency.terroristAggressionLevelMax, 20, 235)
+			GetBitmapFont("default", 10).DrawSimple("b) " + MathHelper.NumberToString(100*agency.terroristAggressionLevelProgress[1],2)+"%  " + agency.terroristAggressionLevel[1]+"/"+agency.terroristAggressionLevelMax, 20+130, 235)
 
 		endif
 	End Function
@@ -588,7 +590,7 @@ Type RoomHandler_News extends TRoomHandler
 			'render to image
 			TBitmapFont.SetRenderTarget(newsPlannerTextImage)
 
-			GetBitmapFont("default", 18).DrawBlock(GetLocale("NEWSPLANSIGN_TO_THE_TEAM")+"~n|b|"+ GetLocale("NEWSPLANSIGN_SEND_THE_FOLLOWING_NEWS")+"|/b|", 0, 0, 300, 50, ALIGN_CENTER_CENTER, TColor.CreateGrey(100))
+			GetBitmapFont("default", 18).DrawBox(GetLocale("NEWSPLANSIGN_TO_THE_TEAM")+"~n|b|"+ GetLocale("NEWSPLANSIGN_SEND_THE_FOLLOWING_NEWS")+"|/b|", 0, 0, 300, 50, sALIGN_CENTER_CENTER, new SColor8(100, 100, 100))
 
 			'set back to screen Rendering
 			TBitmapFont.SetRenderTarget(null)
@@ -659,7 +661,7 @@ Type RoomHandler_News extends TRoomHandler
 			elseif showDeleteHintTimer < Time.GetTimeGone() and showDeleteHintTime + showDeleteHintTimer > Time.GetTimeGone()
 				local oldA:float = Getalpha()
 				SetAlpha oldA * 7
-				GetBitmapFont("default", 12, BOLDFONT).DrawBlock(GetLocale("RIGHT_CLICK_TO_DELETE"), draggedGuiNews.GetScreenRect().GetX(), draggedGuiNews.GetScreenRect().GetY2() + 3, draggedGuiNews.GetScreenRect().GetW(), 30, ALIGN_CENTER_TOP, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+				GetBitmapFont("default", 12, BOLDFONT).DrawBox(GetLocale("RIGHT_CLICK_TO_DELETE"), draggedGuiNews.GetScreenRect().GetX(), draggedGuiNews.GetScreenRect().GetY2() + 3, draggedGuiNews.GetScreenRect().GetW(), 30, sALIGN_CENTER_TOP, SColor8.White, EDrawTextEffect.Shadow, -1)
 				SetAlpha oldA
 			endif
 		else
@@ -993,6 +995,7 @@ Type TGUINews Extends TGUIGameListItem
 	Field cacheTextOverlay:TImage
 	Global sortMode:int
 	Global sortModeOrder:int = 0
+	Global textBlockDrawSettings:TDrawTextSettings = new TDrawTextSettings
 
 
 	Method New()
@@ -1082,12 +1085,12 @@ Type TGUINews Extends TGUIGameListItem
 			TBitmapFont.SetRenderTarget(cacheTextOverlay)
 
 			'default texts (title, text,...)
-			GetBitmapFontManager().basefontBold.drawBlock(news.GetTitle(), 15, 2, 330, 15, Null, TColor.CreateGrey(20))
-			GetBitmapFontManager().baseFont.drawBlock(news.GetDescription(), 15, 17, 342, 50 + 8, Null, TColor.CreateGrey(100))
+			GetBitmapFontManager().basefontBold.DrawBox(news.GetTitle(), 15, 0, 330, 18, sALIGN_LEFT_TOP, new SColor8(20, 20, 20))
+			GetBitmapFontManager().baseFont.DrawBox(news.GetDescription(), 15, 15, 342, 50 + 10, sALIGN_LEFT_TOP, new SColor8(80, 80, 80), TGUINews.textBlockDrawSettings)
 
 			Local oldAlpha:Float = GetAlpha()
 			SetAlpha 0.3*oldAlpha
-			GetBitmapFont("Default", 9).drawBlock(news.GetGenreString(), 15, 75, 120, 15, Null, TColor.clBlack)
+			GetBitmapFont("Default", 9).DrawBox(news.GetGenreString(), 15, 74, 120, 15, sALIGN_LEFT_TOP, new SColor8(80, 80, 80))
 			SetAlpha 1.0*oldAlpha
 
 			'set back to screen Rendering
@@ -1140,19 +1143,19 @@ Type TGUINews Extends TGUIGameListItem
 
 			'===== DRAW NON-CACHED TEXTS =====
 			If Not news.paid
-				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice(GetPlayerBaseCollection().playerID) + ",-", screenX + 262, screenY + 71, 90, 16, ALIGN_RIGHT_CENTER, TColor.clBlack)
+				GetBitmapFontManager().basefontBold.DrawBox(news.GetPrice(GetPlayerBaseCollection().playerID) + ",-", screenX + 262, screenY + 69, 90, 18, sALIGN_RIGHT_CENTER, SColor8.Black)
 			Else
 				SetAlpha GetAlpha()*0.75
-				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice(GetPlayerBaseCollection().playerID) + ",-", screenX + 262, screenY + 71, 90, 16, ALIGN_RIGHT_CENTER, TColor.CreateGrey(100))
+				GetBitmapFontManager().basefontBold.DrawBox(news.GetPrice(GetPlayerBaseCollection().playerID) + ",-", screenX + 262, screenY + 69, 90, 18, sALIGN_RIGHT_CENTER, new SColor8(100, 100, 100))
 				SetAlpha GetAlpha()*2.0
 			EndIf
 
 			Select GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())
-				Case 0	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TODAY")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 74, 140, 15, ALIGN_RIGHT_CENTER, TColor.clBlack )
-				'Case 1	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-				'Case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, New TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-				Case 1	GetBitmapFontManager().baseFont.drawBlock(GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 74, 140, 15, ALIGN_RIGHT_CENTER, TColor.clBlack)
-				Case 2	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 74, 140, 15, ALIGN_RIGHT_CENTER, TColor.clBlack)
+				Case 0	GetBitmapFontManager().baseFont.DrawBox(GetLocale("TODAY")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 72, 140, 16, sALIGN_RIGHT_CENTER, new SColor8(80, 80, 80) )
+				'Case 1	GetBitmapFontManager().baseFont.DrawBox("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, sALIGN_RIGHT_CENTER, SColor8.Black)
+				'Case 2	GetBitmapFontManager().baseFont.DrawBox("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 73, 140, 15, sALIGN_RIGHT_CENTER, SColor8.Black)
+				Case 1	GetBitmapFontManager().baseFont.DrawBox(GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 72, 140, 16, sALIGN_RIGHT_CENTER, new SColor8(80, 80, 80))
+				Case 2	GetBitmapFontManager().baseFont.DrawBox(GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.GetHappenedtime()), screenX + 90, screenY + 72, 140, 16, sALIGN_RIGHT_CENTER, new SColor8(80, 80, 80))
 			End Select
 
 			SetAlpha oldAlpha * 0.5
@@ -1192,19 +1195,19 @@ Type TGUINews Extends TGUIGameListItem
 			Local fontNormal:TBitmapFont = GetBitmapFont("",11)
 			Local ne:TNewsEvent = news.GetNewsEvent()
 
-			fontBold.draw("News: " + ne.GetTitle(), screenX + 5, textY)
+			fontBold.DrawSimple("News: " + ne.GetTitle(), screenX + 5, textY)
 			textY :+ 12
-			fontNormal.draw("GUID: " + ne.GetGUID(), screenX + 5, textY)
+			fontNormal.DrawSimple("GUID: " + ne.GetGUID(), screenX + 5, textY)
 			textY :+ 11
-			fontNormal.draw("Preis: " + news.GetPrice(GetPlayerBaseCollection().playerID)+"  (PreisMod: "+MathHelper.NumberToString(ne.GetModifier(TBroadcastMaterialSource.modKeyPriceLS),4)+")", screenX + 5, textY)
+			fontNormal.DrawSimple("Preis: " + news.GetPrice(GetPlayerBaseCollection().playerID)+"  (PreisMod: "+MathHelper.NumberToString(ne.GetModifier(TBroadcastMaterialSource.modKeyPriceLS),4)+")", screenX + 5, textY)
 			textY :+ 11
-			fontNormal.draw("Qualitaet: " + MathHelper.NumberToString(news.GetQuality(), 4) + " (Event:" + MathHelper.NumberToString(ne.GetQuality(),4) + ", roh=" + MathHelper.NumberToString(ne.GetQualityRaw(), 4) + ")", screenX + 5, textY)
+			fontNormal.DrawSimple("Qualitaet: " + MathHelper.NumberToString(news.GetQuality(), 4) + " (Event:" + MathHelper.NumberToString(ne.GetQuality(),4) + ", roh=" + MathHelper.NumberToString(ne.GetQualityRaw(), 4) + ")", screenX + 5, textY)
 			textY :+ 11
-			fontNormal.draw("(KI-)Attraktivitaet: "+MathHelper.NumberToString(ne.GetAttractiveness(),4), screenX + 5, textY)
-			fontNormal.draw("Aktualitaet: " + MathHelper.NumberToString(ne.GetTopicality(),3) + "/" + MathHelper.NumberToString(ne.GetMaxTopicality(),3)+" ("+MathHelper.NumberToString(100 * ne.GetTopicality()/ne.GetMaxTopicality(),1)+"%)", screenX + 5 + 190, textY)
+			fontNormal.DrawSimple("(KI-)Attraktivitaet: "+MathHelper.NumberToString(ne.GetAttractiveness(),4), screenX + 5, textY)
+			fontNormal.DrawSimple("Aktualitaet: " + MathHelper.NumberToString(ne.GetTopicality(),3) + "/" + MathHelper.NumberToString(ne.GetMaxTopicality(),3)+" ("+MathHelper.NumberToString(100 * ne.GetTopicality()/ne.GetMaxTopicality(),1)+"%)", screenX + 5 + 190, textY)
 			textY :+ 11
-			fontNormal.draw("Ausstrahlungen: " + ne.GetTimesBroadcasted(news.owner)+"x  (" + ne.GetTimesBroadcasted()+"x gesamt)", screenX + 5, textY)
-			fontNormal.draw("Alter: " + Long(GetWorldTime().GetTimeGone() - news.GetHappenedtime()) + " Sekunden  (" + (GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())) + " Tage)", screenX + 5 + 190, textY)
+			fontNormal.DrawSimple("Ausstrahlungen: " + ne.GetTimesBroadcasted(news.owner)+"x  (" + ne.GetTimesBroadcasted()+"x gesamt)", screenX + 5, textY)
+			fontNormal.DrawSimple("Alter: " + Long(GetWorldTime().GetTimeGone() - news.GetHappenedtime()) + " Sekunden  (" + (GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())) + " Tage)", screenX + 5 + 190, textY)
 			textY :+ 11
 			Rem
 			local eventCan:string = ""
@@ -1220,14 +1223,14 @@ Type TGUINews Extends TGUIGameListItem
 				eventCan :+ "nicht erneut nutzbar"
 			endif
 
-			fontNormal.draw("Ist: " + eventCan, screenX + 5, textY)
+			fontNormal.DrawSimple("Ist: " + eventCan, screenX + 5, textY)
 			textY :+ 11
 			endrem
 			local happenEffects:int = 0
 			local broadcastEffects:int = 0
 			if ne.effects.GetList("happen") then happenEffects = ne.effects.GetList("happen").Count()
 			if ne.effects.GetList("broadcast") then broadcastEffects = ne.effects.GetList("broadcast").Count()
-			fontNormal.draw("Effekte: " + happenEffects + "x onHappen, "+ broadcastEffects + "x onBroadcast    Newstyp: " + ne.newsType + "   Genre: "+news.GetGenre(), screenX + 5, textY)
+			fontNormal.DrawSimple("Effekte: " + happenEffects + "x onHappen, "+ broadcastEffects + "x onBroadcast    Newstyp: " + ne.newsType + "   Genre: "+news.GetGenre(), screenX + 5, textY)
 			textY :+ 11
 
 			SetAlpha oldAlpha

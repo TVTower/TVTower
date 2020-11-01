@@ -33,25 +33,25 @@ Type RoomHandler_Credits extends TRoomHandler
 
 		'=== CREATE ELEMENTS =====
 		local role:TCreditsRole
-		role = CreateRole("Das TVTower-Team", TColor.Create(255,255,255))
+		role = CreateRole("Das TVTower-Team", SColor8.White)
 		role.addCast("und die fleissigen Helfer")
 
-		role = CreateRole("Programmierung", TColor.Create(200,200,0))
+		role = CreateRole("Programmierung", new SColor8(200,200,0))
 		role.addCast("Ronny Otto~n(Engine, Spielmechanik)")
 		role.addCast("Manuel Vögele~n(Quotenberechnung, Sendermarkt)~n(bis 2015)")
 		role.addCast("Bruce A. Henderson~n(BlitzMax-NG + Code-Module)")
 
-		role = CreateRole("Grafik", TColor.Create(240,160,150))
+		role = CreateRole("Grafik", new SColor8(240,160,150))
 		role.addCast("Ronny Otto")
 
-		role = CreateRole("KI-Entwicklung", TColor.Create(140,240,250))
+		role = CreateRole("KI-Entwicklung", new SColor8(140,240,250))
 		role.addCast("Ronny Otto~n(KI-Verhalten, KI-Anbindung)")
 		role.addCast("Manuel Vögele~n(KI-Verhalten & -Anbindung)~n(bis 2015)")
 
-		role = CreateRole("Handbuch", TColor.Create(170,210,250))
+		role = CreateRole("Handbuch", new SColor8(170,210,250))
 		role.addCast("Själe")
 
-		role = CreateRole("Datenbank-Team", TColor.Create(210,120,250))
+		role = CreateRole("Datenbank-Team", new SColor8(210,120,250))
 		role.addCast("Martin Rackow~n(bis 2007)")
 		role.addCast("Ronny Otto") 'begin - since ever
 		role.addCast("Själe") 'begin 2013
@@ -61,7 +61,7 @@ Type RoomHandler_Credits extends TRoomHandler
 		role.addCast("DerFronck") 'begin 2017
 		role.addCast("u.a. Freiwillige")
 
-		role = CreateRole("Tester", TColor.Create(160,180,250))
+		role = CreateRole("Tester", new SColor8(160,180,250))
 		role.addCast("...und Motivationsteam")
 		'old testers (< 2007)
 		'role.addCast("Ceddy")
@@ -85,13 +85,13 @@ Type RoomHandler_Credits extends TRoomHandler
 		role.addCast("...und all die anderen Fehlermelder im Forum")
 
 
-		role = CreateRole("", TColor.clWhite)
+		role = CreateRole("", SColor8.White)
 		role.addCast("")
 
-		role = CreateRole("Besucht uns im Netz", TColor.clWhite)
-		role.addCast("http://www.tvgigant.de~noder~nhttp://www.tvtower.org")
+		role = CreateRole("Besucht uns im Netz", SColor8.White)
+		role.addCast("https://www.tvgigant.de~noder~nhttps://www.tvtower.org")
 
-		role = CreateRole("", TColor.clWhite)
+		role = CreateRole("", SColor8.White)
 		role.addCast("")
 
 
@@ -128,7 +128,7 @@ Type RoomHandler_Credits extends TRoomHandler
 
 
 	'helper to create a role and store it in the array
-	Function CreateRole:TCreditsRole(name:string, color:TColor)
+	Function CreateRole:TCreditsRole(name:string, color:SColor8)
 		roles = roles[..roles.length+1]
 		roles[roles.length-1] = new TCreditsRole.Init(name, color)
 		return roles[roles.length-1]
@@ -182,9 +182,9 @@ Type RoomHandler_Credits extends TRoomHandler
 		local fontRole:TBitmapFont = GetBitmapFont("Default",28, BOLDFONT)
 		local fontCast:TBitmapFont = GetBitmapFont("Default",20, BOLDFONT)
 		if not fadeRole then SetAlpha 1.0
-		fontRole.DrawBlock(GetRole().name.ToUpper(), 20,180, GetGraphicsManager().GetWidth() - 40, 40, new TVec2D.Init(ALIGN_CENTER), GetRole().color, 2, 1, 0.6)
+		fontRole.DrawBox(GetRole().name.ToUpper(), 20,180, GetGraphicsManager().GetWidth() - 40, 40, sALIGN_CENTER_TOP, GetRole().color, EDrawTextEffect.Shadow, 0.6)
 		SetAlpha fadeValue
-		if GetCast() then fontCast.DrawBlock(GetCast(), 150,210, GetGraphicsManager().GetWidth() - 300, 80, new TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(230), 2, 1, 0.6)
+		if GetCast() then fontCast.DrawBox(GetCast(), 150,210, GetGraphicsManager().GetWidth() - 300, 80, sALIGN_CENTER_TOP, new SColor8(230,230,30), EDrawTextEffect.Shadow, 0.6)
 
 		SetAlpha 1.0
 	End Method
@@ -226,9 +226,9 @@ End Type
 Type TCreditsRole
 	field name:string = ""
 	field cast:string[]
-	field color:TColor
+	field color:SColor8
 
-	Method Init:TCreditsRole(name:string, color:TColor)
+	Method Init:TCreditsRole(name:string, color:SColor8)
 		self.name = name
 		self.color = color
 		return self

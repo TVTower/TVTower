@@ -757,7 +757,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		'=== PRODUCTION COMPANY SELECT ===
 		If Not productionCompanySelect
 			productionCompanySelect = New TGUIDropDown.Create(New TVec2D.Init(600,200), New TVec2D.Init(150,-1), GetLocale("PRODUCTION_COMPANY"), 128, "supermarket_customproduction_productionbox")
-			productionCompanySelect.SetListContentHeight(120)
+			productionCompanySelect.SetListContentHeight(4*35)
 		EndIf
 		'entries added during ReloadProductionConceptContent()
 
@@ -830,6 +830,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			Local item:TGUIProductionCompanyDropDownItem = New TGUIProductionCompanyDropDownItem.CreateSimple(p)
 			productionCompanySelect.AddItem( item )
 		Next
+		productionCompanySelect.SetListContentHeight(4, 0)
 
 
 		'=== CONCEPTS ===
@@ -960,6 +961,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 		msgH = skin.GetMessageSize(100, -1, "").GetY()
 
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetLocale("PRODUCTION_CONCEPTS"), contentW - 10, 100))
 
 
 		'=== PRODUCTION CONCEPT LIST ===
@@ -974,7 +976,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		Local listH:Int = contentH - titleH - checkboxArea
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(GetLocale("PRODUCTION_CONCEPTS"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(GetLocale("PRODUCTION_CONCEPTS"), contentX + 5, contentY, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, listH , "2")
 		'reposition list
@@ -1009,11 +1011,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			contentY = contentY
 			skin.RenderContent(contentX, contentY, contentW, contentH - buttonAreaH, "1_top")
 			contentY :+ 3
-			skin.fontBold.drawBlock(GetLocale("MOVIE_CAST"), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
-			skin.fontNormal.drawBlock(MathHelper.DottedValue(currentProductionConcept.GetCastCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
+			skin.fontBold.DrawSimple(GetLocale("MOVIE_CAST"), contentX + 5, contentY-1, skin.textColorLabel)
+			skin.fontNormal.DrawBox(MathHelper.DottedValue(currentProductionConcept.GetCastCost()), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
 			contentY :+ subtitleH
-			skin.fontBold.drawBlock(GetLocale("PRODUCTION"), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
-			skin.fontNormal.drawBlock(MathHelper.DottedValue(currentProductionConcept.GetProductionCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
+			skin.fontBold.DrawSimple(GetLocale("PRODUCTION"), contentX + 5, contentY-1, skin.textColorLabel)
+			skin.fontNormal.DrawBox(MathHelper.DottedValue(currentProductionConcept.GetProductionCost()), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
 			contentY :+ subtitleH
 
 			SetColor 150,150,150
@@ -1021,13 +1023,17 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			SetColor 255,255,255
 
 			contentY :+ 1
-			skin.fontBold.drawBlock(GetLocale("TOTAL_COSTS"), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			skin.fontBold.drawBlock(MathHelper.DottedValue(currentProductionConcept.GetTotalCost()), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorBad, 0,1,1.0,True, True)
+			skin.fontBold.DrawSimple(GetLocale("TOTAL_COSTS"), contentX + 5, contentY-1, skin.textColorNeutral)
+			skin.fontBold.DrawBox(MathHelper.DottedValue(currentProductionConcept.GetTotalCost()), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorBad)
 			contentY :+ subtitleH
 
 			contentY :+ 10
-			skin.fontBold.drawBlock(GetLocale("DURATION"), contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			skin.fontNormal.drawBlock(currentProductionConcept.GetBaseProductionTime()+" Stunden", contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_RIGHT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontBold.DrawSimple(GetLocale("DURATION"), contentX + 5, contentY-1, skin.textColorNeutral)
+			if currentProductionConcept.GetBaseProductionTime() = 1
+				skin.fontNormal.DrawBox(currentProductionConcept.GetBaseProductionTime() + " " + GetLocale("HOUR"), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+			Else
+				skin.fontNormal.DrawBox(currentProductionConcept.GetBaseProductionTime() + " " + GetLocale("HOURS"), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+			endif
 			contentY :+ subtitleH
 
 			contentY :+ (contentH - buttonAreaH) - 4*subtitleH - 3 -1 - 10
@@ -1069,11 +1075,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 			skin.RenderContent(contentX, contentY, contentW, titleH + subTitleH, "1_top")
-			skin.fontCaption.drawBlock(title, contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontCaption.DrawBox(title, contentX + 5, contentY-1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			contentY :+ titleH
 
 			If currentProductionConcept.script.IsEpisode()
-				skin.fontSmallCaption.drawBlock(subTitle, contentX + 5, contentY-1, contentW - 10, subTitleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				skin.fontSmallCaption.DrawBox(subTitle, contentX + 5, contentY-1, contentW - 10, subTitleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			EndIf
 			contentY :+ subTitleH
 
@@ -1134,12 +1140,12 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			'reset
 			contentY = contentY
 			skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-			skin.fontCaption.drawBlock(GetLocale("PRODUCTION_DETAILS"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontCaption.DrawBox(GetLocale("PRODUCTION_DETAILS"), contentX + 5, contentY-1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			contentY :+ titleH
 
 			skin.RenderContent(contentX, contentY, contentW, productionCompanyH + productionFocusH, "1")
 
-			skin.fontSemiBold.drawBlock(GetLocale("PRODUCTION_COMPANY"), contentX + 5, contentY + 3, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontSemiBold.DrawBox(GetLocale("PRODUCTION_COMPANY"), contentX + 5, contentY + 3, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			'reposition dropdown
 			If productionCompanySelect.rect.getX() <> contentX + 5
 				productionCompanySelect.SetPosition(contentX + 5, contentY + 20)
@@ -1147,7 +1153,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			EndIf
 			contentY :+ productionCompanyH
 
-			skin.fontSemiBold.drawBlock(GetLocale("PRODUCTION_FOCUS"), contentX + 5, contentY + 3, contentW - 10, titleH - 3, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontSemiBold.DrawBox(GetLocale("PRODUCTION_FOCUS"), contentX + 5, contentY + 3, contentW - 10, titleH - 3, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			contentY :+ titleH
 			'reposition sliders
 			If repositionSliders
@@ -1173,20 +1179,18 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 					If Not productionFocusSlider[labelNum-1].IsVisible() Then Continue
 					Local focusIndex:Int = productionFocusSlider[labelNum-1].data.GetInt("focusIndex")
 					Local label:String = GetLocale(TVTProductionFocus.GetAsString(focusIndex))
-					skin.fontNormal.drawBlock(label, contentX + 10, contentY, contentW - 15, titleH, ALIGN_LEFT_CENTER, skin.textColorLabel, 0,1,1.0,True, True)
+					skin.fontNormal.DrawBox(label, contentX + 10, contentY, contentW - 15, titleH, sALIGN_LEFT_CENTER, skin.textColorLabel)
 					contentY :+ (productionFocusLabelH + productionFocusSliderH)
 				Next
 
 				'inform about unused skill points / missing company selection
-				Local color:TColor
 				If currentProductionConcept.productionCompany
-					If pF.GetFocusPointsSet() < pF.GetFocusPointsMax()
-						color = skin.textColorWarning
-					Else
-						color = skin.textColorLabel
-					EndIf
 					Local text:String = GetLocale("POINTSSET_OF_POINTSMAX_POINTS_SET").Replace("%POINTSSET%", pF.GetFocusPointsSet()).Replace("%POINTSMAX%", pF.GetFocusPointsMax())
-					skin.fontNormal.drawBlock("|i|"+text+"|/i|", contentX + 5, contentY, contentW - 10, subTitleH, ALIGN_CENTER_CENTER, color, 0,1,1.0,True, True)
+					If pF.GetFocusPointsSet() < pF.GetFocusPointsMax()
+						skin.fontNormal.DrawBox("|i|"+text+"|/i|", contentX + 5, contentY, contentW - 10, subTitleH, sALIGN_CENTER_CENTER, skin.textColorWarning)
+					Else
+						skin.fontNormal.DrawBox("|i|"+text+"|/i|", contentX + 5, contentY, contentW - 10, subTitleH, sALIGN_CENTER_CENTER, skin.textColorLabel)
+					EndIf
 				EndIf
 				contentY :+ subTitleH
 			EndIf
@@ -1606,12 +1610,12 @@ Type TGUIProductionEditTextsModalWindow Extends TGUIProductionModalWindow
 	Method Create:TGUIProductionEditTextsModalWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
-		labelTitle = New TGUILabel.Create(New TVec2D.Init(15,12), GetLocale("TITLE"), Null, "")
-		labelDescription = New TGUILabel.Create(New TVec2D.Init(15,60), GetLocale("DESCRIPTION"), Null, "")
-		labelEpisode = New TGUILabel.Create(New TVec2D.Init(15,115), GetLocale("EPISODE"), Null, "")
+		labelTitle = New TGUILabel.Create(New TVec2D.Init(15,9), GetLocale("TITLE"), "")
+		labelDescription = New TGUILabel.Create(New TVec2D.Init(15,57), GetLocale("DESCRIPTION"), "")
+		labelEpisode = New TGUILabel.Create(New TVec2D.Init(15,112), GetLocale("EPISODE"), "")
 		labelEpisode.SetFont( GetBitmapFontManager().Get("default", 13, BOLDFONT) )
-		labelSubTitle = New TGUILabel.Create(New TVec2D.Init(15,137), GetLocale("TITLE"), Null, "")
-		labelSubDescription = New TGUILabel.Create(New TVec2D.Init(15,180), GetLocale("DESCRIPTION"), Null, "")
+		labelSubTitle = New TGUILabel.Create(New TVec2D.Init(15,134), GetLocale("TITLE"), "")
+		labelSubDescription = New TGUILabel.Create(New TVec2D.Init(15,177), GetLocale("DESCRIPTION"), "")
 
 		inputTitle = New TGUIInput.Create(New TVec2D.Init(15,12+13), New TVec2D.Init(245,-1), GetLocale("TITLE"), 128, "")
 		inputDescription = New TGUIInput.Create(New TVec2D.Init(15,60+13), New TVec2D.Init(245,-1), GetLocale("DESCRIPTION"), 128, "")
@@ -1736,6 +1740,10 @@ Type TGUIProductionEditTextsModalWindow Extends TGUIProductionModalWindow
 		skin.RenderContent(contentX, contentY+contentH-35, contentW, 35, "1_bottom")
 
 		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
+
+		labelTitle.SetValueColor(SColor8.Black)
+		'GetFont().DrawBox(GetLocale("TITLE"), contentX + 5, contentY + 5, 100, 20, sALIGN_LEFT_TOP, SColor8.Black)
+'		GetFont().DrawBox("Titel", 265.000000 + 0.00000000, 72.0000000 + 0.00000000, 100, 30, sALIGN_LEFT_TOP, SColor8.Black)
 	End Method
 
 
@@ -2068,7 +2076,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 	Field lastDisplayJobID:Int = -1
 	Field selectJobID:Int = -1
 
-	Global yearColor:TColor = New TColor.Create(80,80,80, 0.8)
+	Global yearColor:SColor8 = New SColor8(80,80,80, int(0.8*255))
 
 	Const paddingBottom:Int	= 5
 	Const paddingTop:Int = 0
@@ -2335,33 +2343,32 @@ Type TGUICastListItem Extends TGUISelectListItem
 		EndIf
 
 		If name Or nameHint
-			Local border:TRectangle = nameSprite.GetNinePatchContentBorder()
+			Local border:SRect = nameSprite.GetNinePatchInformation().contentBorder
+'			Local oldAlpha:Float = GetAlpha()
 
-			Local oldCol:TColor = New TColor.Get()
-
-			SetAlpha( Max(0.6, oldCol.a) )
+'			SetAlpha( Max(0.6, oldAlpha) )
 			If name
-				skin.fontSemiBold.drawBlock( ..
+				skin.fontSmallCaption.DrawBox( ..
 					name, ..
 					x + nameTextOffsetX + border.GetLeft(), ..
-					y + nameOffsetY + border.GetTop(), .. '-1 to align it more properly
+					y + nameOffsetY + border.GetTop() - 1, .. '-1 to align it more properly
 					w - nameTextOffsetX - (border.GetRight() + border.GetLeft()),  ..
-					Max(15, nameSprite.GetHeight() - (border.GetTop() + border.GetBottom())), ..
-					ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+					Max(17, nameSprite.GetHeight() - (border.GetTop() + border.GetBottom())), ..
+					sALIGN_LEFT_CENTER, new SColor8(60,60,60), EDrawTextEffect.Emboss, 0.25)
 			EndIf
 
-			SetAlpha( Max(0.6, oldCol.a) )
+'			SetAlpha( Max(0.6, oldAlpha) )
 			If nameHint
-				skin.fontNormal.drawBlock( ..
+				skin.fontNormal.DrawBox( ..
 					nameHint, ..
 					x + nameTextOffsetX + border.GetLeft(), ..
-					y + nameOffsetY + border.GetTop() + barOffsetY - 3, .. '-1 to align it more properly
+					y + nameOffsetY + border.GetTop() + barOffsetY - 3 - 1, .. '-1 to align it more properly
 					w - nameTextOffsetX - (border.GetRight() + border.GetLeft()),  ..
-					Max(15, nameSprite.GetHeight() - (border.GetTop() + border.GetBottom())), ..
-					ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+					Max(17, nameSprite.GetHeight() - (border.GetTop() + border.GetBottom())), ..
+					sALIGN_RIGHT_CENTER, new SColor8(60,60,60))
 			EndIf
 
-			SetAlpha (oldCol.a)
+'			SetAlpha( oldAlpha )
 		EndIf
 	End Function
 
@@ -2396,7 +2403,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
 		barH = skin.GetBarSize(100, -1).GetY()
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(person.GetFullName(), contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(person.GetFullName(), contentW - 10, 100))
 
 		'bar area starts with padding, ends with padding and contains
 		'also contains 8 bars
@@ -2422,9 +2429,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 			EndIf
 
 			If titleH <= 18
-				GetBitmapFont("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY -1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			Else
-				GetBitmapFont("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY +1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			EndIf
 		contentY :+ titleH
 
@@ -2454,13 +2461,13 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 				If firstJobID >= 0
 					'add genre if you know the job
-					skin.fontNormal.drawBlock(genreText + GetLocale("JOB_"+TVTPersonJob.GetAsString(firstJobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+					skin.fontNormal.DrawBox(genreText + GetLocale("JOB_"+TVTPersonJob.GetAsString(firstJobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 				Else
 					'use the given jobID but declare as amateur
 					If jobID > 0
-						skin.fontNormal.drawBlock(GetLocale("JOB_AMATEUR_"+TVTPersonJob.GetAsString(jobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+						skin.fontNormal.DrawBox(GetLocale("JOB_AMATEUR_"+TVTPersonJob.GetAsString(jobID)), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 					Else
-						skin.fontNormal.drawBlock(GetLocale("JOB_AMATEUR"), contentX + 5, contentY, contentW - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+						skin.fontNormal.DrawBox(GetLocale("JOB_AMATEUR"), contentX + 5, contentY, contentW - 10, jobDescriptionH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 					EndIf
 				EndIf
 
@@ -2476,11 +2483,11 @@ Type TGUICastListItem Extends TGUISelectListItem
 			If person.IsCelebrity()
 				Local dob:String = GetWorldTime().GetFormattedDate( person.GetPersonalityData().GetDOB(), GameConfig.dateFormat)
 				If person.GetAge() >= 0
-					skin.fontNormal.drawBlock(dob + " (" + person.GetAge() + " " + GetLocale("ABBREVIATION_YEARS")+")", contentX + 5, contentY, 165 - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+					skin.fontNormal.DrawSimple(dob + " (" + person.GetAge() + " " + GetLocale("ABBREVIATION_YEARS")+")", contentX + 5, contentY, skin.textColorNeutral)
 				Else
-					skin.fontNormal.drawBlock("**.**.****", contentX + 5, contentY, 165 - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+					skin.fontNormal.DrawSimple("**.**.****", contentX + 5, contentY, skin.textColorNeutral)
 				EndIf
-				skin.fontNormal.drawBlock(person.GetCountryCode(), contentX + 170 + 5, contentY, contentW - 170 - 10, jobDescriptionH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				skin.fontNormal.DrawSimple(person.GetCountryCode(), contentX + 170 + 5, contentY, skin.textColorNeutral)
 			EndIf
 			contentY :+ lifeDataH
 
@@ -2501,13 +2508,12 @@ Type TGUICastListItem Extends TGUISelectListItem
 						i :+ 1
 						If Not production Then Continue
 
-'						skin.fontSemiBold.drawBlock(production.GetYear(), contentX + 5, contentY + lastProductionEntryH*entryNum, contentW, lastProductionEntryH, null, skin.textColorNeutral)
-						GetBitmapfont("default", 12, BOLDFONT).drawBlock(production.GetYear(), contentX + 5, contentY + lastProductionEntryH*entryNum + 1, contentW, lastProductionEntryH, Null, yearColor)
+						GetBitmapfont("default", 12, BOLDFONT).DrawSimple(production.GetYear(), contentX + 5, contentY + lastProductionEntryH*entryNum + 1, yearColor)
 						If production.IsInProduction()
-							GetBitmapfont("default", 12).drawBlock(production.GetTitle() + " (In Produktion)", contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, Null, skin.textColorNeutral)
+							GetBitmapfont("default", 12).DrawBox(production.GetTitle() + " ("+GetLocale("IN_PRODUCTION")+")", contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, sALIGN_LEFT_TOP, skin.textColorNeutral)
 						Else
-						'	skin.fontNormal.drawBlock(production.GetTitle(), contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, null, skin.textColorNeutral)
-							GetBitmapfont("default", 12).drawBlock(production.GetTitle(), contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, Null, skin.textColorNeutral)
+						'	skin.fontNormal.drawBlock(production.GetTitle(), contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, sALIGN_LEFT_TOP, skin.textColorNeutral)
+							GetBitmapfont("default", 12).DrawBox(production.GetTitle(), contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, sALIGN_LEFT_TOP, skin.textColorNeutral)
 						EndIf
 						entryNum :+1
 					Wend
@@ -2534,7 +2540,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 			'XP
 			Local xpValue:Float = person.GetEffectiveJobExperiencePercentage(jobID)
 			skin.RenderBar(contentX + 5, contentY, 100, 12, xpValue)
-			skin.fontSemiBold.drawBlock(GetLocale("CAST_EXPERIENCE"), contentX + 5 + 100 + 5, contentY, 125, 15, Null, skin.textColorLabel)
+			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_EXPERIENCE"), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 			contentY :+ barH + 2
 
 
@@ -2590,21 +2596,20 @@ Type TGUICastListItem Extends TGUISelectListItem
 						SetAlpha oldA * 0.5
 						skin.RenderBar(contentX + 5, contentY, 100, 12, person.GetPersonalityData().GetAttribute(attributeID))
 						SetAlpha oldA * 0.4
-						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTPersonPersonality.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, Null, skin.textColorLabel)
+						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonality.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 						SetAlpha oldA
 					'neutral
 					Case 2
 						skin.RenderBar(contentX + 5, contentY, 100, 12, person.GetPersonalityData().GetAttribute(attributeID))
-						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTPersonPersonality.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, Null, skin.textColorLabel)
+						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonality.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 					'negative
 					Case 3
 						skin.RenderBar(contentX + 5, contentY, 100, 12, person.GetPersonalityData().GetAttribute(attributeID))
-						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTPersonPersonality.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, Null, skin.textColorBad)
-
+						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonality.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 2, skin.textColorBad, EDrawTextEffect.Emboss, 0.3)
 					'positive
 					Case 4
 						skin.RenderBar(contentX + 5, contentY, 100, 12, person.GetPersonalityData().GetAttribute(attributeID))
-						skin.fontSemiBold.drawBlock(GetLocale("CAST_"+TVTPersonPersonality.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY, 125, 15, Null, skin.textColorGood)
+						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonality.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 2, skin.textColorGood, EDrawTextEffect.Emboss, 0.3)
 				End Select
 				contentY :+ barH + 2
 			Next
@@ -2613,7 +2618,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 	Rem
 		'Scandalizing
 		skin.RenderBar(contentX + 5, contentY, 100, 12, cast.GetScandalizing())
-		skin.fontSemiBold.drawBlock(GetLocale("CAST_SCANDALIZING"), contentX + 5 + 100 + 5, contentY, 125, 15, null, skin.textColorLabel)
+		skin.fontSemiBold.drawBlock(GetLocale("CAST_SCANDALIZING"), contentX + 5 + 100 + 5, contentY, 125, 15, sALIGN_LEFT_TOP, skin.textColorLabel)
 		contentY :+ barH + 2
 	endrem
 
@@ -2628,7 +2633,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 			contentY :+ boxAreaPaddingY
 		EndIf
 		If jobID >= 0
-			skin.fontSemibold.drawBlock(GetLocale("JOB_"+TVTPersonJob.GetAsString(jobID)), contentX + 5, contentY, 94, 25, ALIGN_LEFT_CENTER, skin.textColorLabel)
+			skin.fontSmallCaption.DrawBox(GetLocale("JOB_"+TVTPersonJob.GetAsString(jobID)), contentX + 5, contentY - 1, 94, 25, sALIGN_LEFT_CENTER, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 			skin.RenderBox(contentX + 5 + 94, contentY, contentW - 10 - 94 +1, -1, MathHelper.DottedValue(person.GetJobBaseFee(jobID, TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.blocks)), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 		EndIf
 		contentY :+ boxH
@@ -2648,13 +2653,13 @@ Type TGUIProductionCompanyDropDownItem Extends TGUIDropDownItem
 
 	Const paddingBottom:Int	= 6
 	Const paddingTop:Int = 0
-	Global xpColor:TColor = TColor.Create(70,85,160)
-	Global sympathyColor:TColor = TColor.Create(70,160,90)
+	Global xpColor:SColor8 = new SColor8(70,85,160)
+	Global sympathyColor:SColor8 = new SColor8(70,160,90)
 
 
 	Method CreateSimple:TGUIProductionCompanyDropDownItem(company:TProductionCompanyBase)
 		'make it "unique" enough
-		Self.Create(Null, New TVec2D.Init(100, 30), company.name+" [Lvl: "+company.GetLevel()+"]")
+		Self.Create(Null, New TVec2D.Init(100, 35), company.name+" [Lvl: "+company.GetLevel()+"]")
 
 		data = New TData.Add("productionCompany", company)
 
@@ -2673,30 +2678,41 @@ Type TGUIProductionCompanyDropDownItem Extends TGUIDropDownItem
 			Return "Unknown company [Lvl: /]"
 		EndIf
 	End Method
+	
+	
+	Method DrawContent() override
+		Super.DrawContent()
+
+		Local scrRect:TRectangle = GetScreenRect()
+		SetColor 150,150,150
+		DrawLine(scrRect.GetX() + 10, scrRect.GetY2() - paddingBottom/2 -1, scrRect.GetX2() - 20, scrRect.GetY2() - paddingBottom/2 -1)
+		SetColor 210,210,210
+		DrawLine(scrRect.GetX() + 10, scrRect.GetY2() - paddingBottom/2, scrRect.GetX2() - 20, scrRect.GetY2() - paddingBottom/2)
+	End Method
 
 
-	'override
-	Method DrawValue()
+	Method DrawValue() override
 		Local skin:TDatasheetSkin = GetDatasheetSkin("customproduction")
 		Local company:TProductionCompanyBase = TProductionCompanyBase(data.Get("productionCompany"))
+		Local scrRect:TRectangle = GetScreenRect()
 
 		'Super.DrawValue()
-		skin.fontSmallCaption.DrawBlock(company.name, GetScreenRect().GetX()+2, GetScreenRect().GetY(), GetScreenRect().GetW()-4 - 20, GetScreenRect().GetH(), ALIGN_LEFT_TOP, skin.textColorNeutral, 0,1,1.0, True, True)
-		skin.fontSmall.DrawBlock("Lvl: "+company.GetLevel(), GetScreenRect().GetX()+2, GetScreenRect().GetY(), GetScreenRect().GetW()-4, GetScreenRect().GetH(), ALIGN_RIGHT_TOP, skin.textColorNeutral)
+		local titleH:Int = skin.fontSmallCaption.DrawBox(company.name, scrRect.GetX() + 2, scrRect.GetY() - 2, scrRect.GetW()-4 - 20, scrRect.GetH(), sALIGN_LEFT_TOP, new SColor8(60,60,60)).y
+		skin.fontSmall.DrawBox("Lvl: "+company.GetLevel(), scrRect.GetX()+2, scrRect.GetY() - 2, scrRect.GetW()-4, scrRect.GetH(), sALIGN_RIGHT_TOP, new SColor8(60,60,60))
 
 
 		Local barH:Int = skin.GetBarSize(100,-1, "cast_bar_xp").GetY()
-		Local bottomY:Int = GetScreenRect().GetY() + rect.GetH()
+		Local bottomY:Int = scrRect.GetY() + titleH - 1
 
-		skin.RenderBar(GetScreenRect().GetX() + 1, bottomY - 2*barH - paddingBottom, 80, -1, company.GetLevelExperiencePercentage(), -1, "cast_bar_xp")
-		skin.RenderBar(GetScreenRect().GetX() + 1, bottomY - 1*barH - paddingBottom, 80, -1, company.GetChannelSympathy( GetPlayerBase().playerID ), -1, "cast_bar_sympathy")
+		skin.RenderBar(scrRect.GetX() + 1, bottomY + 0*barH, 80, -1, company.GetLevelExperiencePercentage(), -1, "cast_bar_xp")
+		skin.RenderBar(scrRect.GetX() + 1, bottomY + 1*barH, 80, -1, company.GetChannelSympathy( GetPlayerBase().playerID ), -1, "cast_bar_sympathy")
 
 		If IsHovered() And (Time.MillisecsLong() / 1500) Mod 3 = 0 'every 3s for 1.5s
-			skin.fontSmall.drawBlock("XP", GetScreenRect().GetX() + 76, bottomY - 2*barH - paddingBottom -2, 30, 2*barH+4, ALIGN_RIGHT_CENTER, xpColor)
-			skin.fontSmall.drawBlock("SYMP", GetScreenRect().GetX() + 2, bottomY - 2*barH - paddingBottom -2, GetScreenRect().GetW()-4, 2*barH+4, ALIGN_RIGHT_CENTER, sympathyColor)
+			skin.fontSmall.DrawBox("XP", scrRect.GetX() + 76, bottomY + 0*barH - 2, 30, 2*barH+2, sALIGN_RIGHT_CENTER, xpColor)
+			skin.fontSmall.DrawBox("SYMP", scrRect.GetX() + 2, bottomY + 0*barH -2, scrRect.GetW()-4, 2*barH+2, sALIGN_RIGHT_CENTER, sympathyColor)
 		Else
-			skin.fontSmall.drawBlock(Int(company.GetLevelExperiencePercentage()*100)+"%", GetScreenRect().GetX() + 76, bottomY - 2*barH - paddingBottom -2, 30, 2*barH+4, ALIGN_RIGHT_CENTER, xpColor)
-			skin.fontSmall.drawBlock(Int(company.GetChannelSympathy( GetPlayerBase().playerID )*100)+"%", GetScreenRect().GetX() + 2, bottomY - 2*barH - paddingBottom -2, GetScreenRect().GetW()-4, 2*barH+4, ALIGN_RIGHT_CENTER, sympathyColor)
+			skin.fontSmall.DrawBox(Int(company.GetLevelExperiencePercentage()*100)+"%", scrRect.GetX() + 76, bottomY + 0*barH - 2, 30, 2*barH+2, sALIGN_RIGHT_CENTER, xpColor)
+			skin.fontSmall.DrawBox(Int(company.GetChannelSympathy( GetPlayerBase().playerID )*100)+"%", scrRect.GetX() + 2, bottomY + 0*barH - 2, scrRect.GetW()-4, 2*barH+2, sALIGN_RIGHT_CENTER, sympathyColor)
 		EndIf
 	End Method
 End Type

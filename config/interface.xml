@@ -44,15 +44,15 @@
 				<child name="gfx_interface_button_speed3"		x="400"	y="402"	w="30"	h="23" />
 
 				<!-- target group icons -->
-				<child name="gfx_targetGroup_children"   x="252" y="386" w="15" h="15" />
-				<child name="gfx_targetGroup_teenagers"  x="267" y="386" w="15" h="15" />
-				<child name="gfx_targetGroup_housewives" x="282" y="386" w="15" h="15" />
-				<child name="gfx_targetGroup_employees"  x="297" y="386" w="15" h="15" />
-				<child name="gfx_targetGroup_unemployed" x="312" y="386" w="15" h="15" />
-				<child name="gfx_targetGroup_manager"    x="327" y="386" w="15" h="15" />
-				<child name="gfx_targetGroup_pensioners" x="342" y="386" w="15" h="15" />
-				<child name="gfx_targetGroup_men"        x="357" y="386" w="15" h="15" />
-				<child name="gfx_targetGroup_women"      x="372" y="386" w="15" h="15" />
+				<child name="gfx_targetGroup_children"   x="253" y="387" w="13" h="13" />
+				<child name="gfx_targetGroup_teenagers"  x="268" y="387" w="13" h="13" />
+				<child name="gfx_targetGroup_housewives" x="283" y="387" w="13" h="13" />
+				<child name="gfx_targetGroup_employees"  x="298" y="387" w="13" h="13" />
+				<child name="gfx_targetGroup_unemployed" x="313" y="387" w="13" h="13" />
+				<child name="gfx_targetGroup_manager"    x="328" y="387" w="13" h="13" />
+				<child name="gfx_targetGroup_pensioners" x="343" y="387" w="13" h="13" />
+				<child name="gfx_targetGroup_men"        x="358" y="387" w="13" h="13" />
+				<child name="gfx_targetGroup_women"      x="373" y="387" w="13" h="13" />
  			</children>
 		</spritepack>
 

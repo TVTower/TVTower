@@ -6,11 +6,11 @@ Import "Dig/base.gfx.bitmapfont.bmx"
 
 
 Type TDatasheetSkin
-	Field textColorGood:TColor
-	Field textColorNeutral:TColor
-	Field textColorBad:TColor
-	Field textColorWarning:TColor
-	Field textColorLabel:TColor
+	Field textColorGood:SColor8
+	Field textColorNeutral:SColor8
+	Field textColorBad:SColor8
+	Field textColorWarning:SColor8
+	Field textColorLabel:SColor8
 	Field spriteBaseKey:string = "gfx_datasheet"
 	Field fontSmall:TBitmapFont
 	Field fontNormal:TBitmapFont
@@ -22,15 +22,17 @@ Type TDatasheetSkin
 	Field defaultFont:TBitmapFont
 	Field contentPadding:TRectangle = New TRectangle
 	Global defaultSkin:TDatasheetSkin
-
+	Global drawTextEffect:TDrawTextEffect = new TDrawTextEffect
+	Global textBlockDrawSettings:TDrawTextSettings = new TDrawTextSettings
+	
 
 	Function CreateDefault:TDatasheetSkin()
 		local skin:TDatasheetSkin = New TDatasheetSkin
-		skin.textColorGood = TColor.Create(45,80,10)
-		skin.textColorNeutral = TColor.CreateGrey(25)
-		skin.textColorLabel = TColor.CreateGrey(75)
-		skin.textColorWarning = TColor.Create(80,45,10)
-		skin.textColorBad = TColor.Create(80,10,10)
+		skin.textColorGood = new SColor8(45,80,10)
+		skin.textColorNeutral = new SColor8(25,25,25)
+		skin.textColorLabel = new SColor8(75,75,75)
+		skin.textColorWarning = new SColor8(80,45,10)
+		skin.textColorBad = new SColor8(80,10,10)
 		skin.defaultFont = GetBitmapFontManager().baseFont
 
 		skin.fontNormal = GetBitmapFontManager().baseFont
@@ -41,9 +43,16 @@ Type TDatasheetSkin
 		skin.fontSmallCaption = GetBitmapFontManager().Get("default", 12, BOLDFONT)
 
 		'use content-params from sprite
-		skin.contentPadding.CopyFrom( GetSpriteFromRegistry(skin.spriteBaseKey+"_border").GetNinePatchContentBorder() )
+		skin.contentPadding.CopyFrom( GetSpriteFromRegistry(skin.spriteBaseKey+"_border").GetNinePatchInformation().contentBorder )
 		'slight overlay
 		skin.contentPadding.SetBottom( skin.contentPadding.GetBottom() - 1 )
+		
+		
+		drawTextEffect.data.mode = EDrawTextEffect.Emboss
+		drawTextEffect.data.value = 0.2
+		
+		textBlockDrawSettings.data.lineHeight = 13
+		textBlockDrawSettings.data.boxDimensionMode = 0
 
 		return skin
 	End Function
@@ -79,15 +88,15 @@ Type TDatasheetSkin
 			if fontColorType = "" then fontColorType = boxType
 			if not font then font = GetDefaultFont()
 			if not valueAlign then valueAlign = ALIGN_CENTER_CENTER
-			local border:TRectangle = boxSprite.GetNinePatchContentBorder()
+			local border:SRect = boxSprite.GetNinePatchInformation().contentBorder
 
-			font.drawBlock( ..
+			font.DrawBox( ..
 				value, ..
 				x + border.GetLeft(), ..
-				y + border.GetTop(), .. '-1 to align it more properly
+				y + border.GetTop() - 1, ..
 				w - (border.GetRight() + border.GetLeft()),  ..
-				h - (border.GetTop() + border.GetBottom()), ..
-				valueAlign, GetTextColor(fontColorType), 0,1,1.0,True, True)
+				h - (border.GetTop() + border.GetBottom() - 4), ..
+				new SVec2F(valueAlign.x, valueAlign.y), GetTextColor(fontColorType), drawTextEffect.data)
 		endif
 	End Method
 
@@ -111,15 +120,15 @@ Type TDatasheetSkin
 			if h < 0 then h = GetBoxSize(w,h, value, iconName).GetY()
 			if not font then font = GetDefaultFont()
 			if not valueAlign then valueAlign = ALIGN_LEFT_CENTER
-			local border:TRectangle = GetSpriteFromRegistry(spriteBaseKey+"_msg_"+msgType).GetNinePatchContentBorder()
+			local border:SRect = GetSpriteFromRegistry(spriteBaseKey+"_msg_"+msgType).GetNinePatchInformation().contentBorder
 
-			font.drawBlock( ..
+			font.DrawBox( ..
 				value, ..
-				x + border.GetLeft(), ..
-				y + border.GetTop(), ..
-				w - (border.GetRight() + border.GetLeft()),  ..
-				h - (border.GetTop() + border.GetBottom()), ..
-				valueAlign, GetTextColor(msgType), 0,1,1.0,True, True)
+				x + border.GetLeft() + 1, ..
+				y + border.GetTop() - 2, ..
+				w - (border.GetRight() + border.GetLeft()) - 2,  ..
+				h - (border.GetTop() + border.GetBottom() - 4), ..
+				new SVec2F(valueAlign.x, valueAlign.y), GetTextColor(msgType), drawTextEffect.data)
 		endif
 	End Method
 
@@ -149,14 +158,15 @@ Type TDatasheetSkin
 		if h = -1 then h = spriteBarUnfilled.GetHeight()
 
 		spriteBarUnfilled.DrawArea(x, y, w, h)
-		local barW:int = w - spriteBarUnfilled.GetNinePatchContentBorder().GetLeft() - spriteBarUnfilled.GetNinePatchContentBorder().GetRight()
+		local cB:SRect = spriteBarUnfilled.GetNinePatchInformation().contentBorder
+		local barW:int = w - cb.GetLeft() - cb.GetRight()
 		if secondProgress > progress
 			SetAlpha GetAlpha()*0.25
-			spriteBarFilled.DrawArea(x + spriteBarUnfilled.GetNinePatchContentBorder().GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x + spriteBarUnfilled.GetNinePatchContentBorder().GetLeft() + progress*barW, y, barW*(secondProgress-progress), h))
+			spriteBarFilled.DrawArea(x + cB.GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x + cB.GetLeft() + progress*barW, y, barW*(secondProgress-progress), h))
 			SetAlpha GetAlpha()*4.0
 		endif
 		if progress > 0
-			spriteBarFilled.DrawArea(x + spriteBarUnfilled.GetNinePatchContentBorder().GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x + spriteBarUnfilled.GetNinePatchContentBorder().GetLeft(), y, barW*progress, h))
+			spriteBarFilled.DrawArea(x + cB.GetLeft(), y, barW, h, -1, 0, new TRectangle.Init(x + cB.GetLeft(), y, barW*progress, h))
 		endif
 	End Method
 
@@ -192,7 +202,7 @@ Type TDatasheetSkin
 	End Method
 
 
-	Method GetTextColor:TColor(key:string)
+	Method GetTextColor:SColor8(key:string)
 		Select key.ToLower()
 			case "good"     return textColorGood
 			case "goodhint" return textColorNeutral 'green overemphasizes?

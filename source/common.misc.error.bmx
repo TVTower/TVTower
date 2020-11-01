@@ -41,7 +41,7 @@ Type TError
 		obj.window.guiCaptionTextBox.SetFont(headerFont)
 		obj.window._defaultValueColor = TColor.clBlack.copy()
 		obj.window.defaultCaptionColor = TColor.clWhite.copy()
-		obj.window.SetCaptionArea(New TRectangle.Init(-1,10,-1,25))
+		obj.window.SetCaptionArea(New TRectangle.Init(-1, 6, -1, 30))
 		obj.window.guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP )
 		'no buttons
 		obj.window.SetDialogueType(0)

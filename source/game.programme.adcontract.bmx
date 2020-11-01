@@ -1557,6 +1557,8 @@ price :* Max(1, minAudience/1000)
 		Local msgAreaH:Int = 0, barAreaH:Int = 0
 		Local barAreaPaddingY:Int = 4, msgAreaPaddingY:Int = 4
 
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetTitle(), contentW - 10, 100))
+
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", Null, ALIGN_CENTER_CENTER).GetY()
 		barH = skin.GetBarSize(100, -1).GetY()
 
@@ -1582,19 +1584,23 @@ price :* Max(1, minAudience/1000)
 
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		if titleH <= 18
+			GetBitmapFont("default", 13, BOLDFONT).DrawBox(GetTitle(), contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		else
+			GetBitmapFont("default", 13, BOLDFONT).DrawBox(GetTitle(), contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		endif
 		contentY :+ titleH
 
 
 		'=== GENRE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
-		skin.fontNormal.drawBlock(GetLocale("PROGRAMME_PRODUCT_INFOMERCIAL"), contentX + 5, contentY -1, contentW - 10, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		skin.fontNormal.DrawBox(GetLocale("PROGRAMME_PRODUCT_INFOMERCIAL"), contentX + 5, contentY - 1, contentW - 10, genreH, sALIGN_LEFT_TOP, skin.textColorNeutral)
 		contentY :+ genreH
 
 
 		'=== CONTENT AREA ===
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
-		skin.fontNormal.drawBlock(getLocale("AD_INFOMERCIAL"), contentX + 5, contentY + 3, contentW - 10, descriptionH, Null, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(GetLocale("AD_INFOMERCIAL"), contentX + 5, contentY + 1, contentW - 10, descriptionH, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings)
 		contentY :+ descriptionH
 
 
@@ -1608,12 +1614,12 @@ price :* Max(1, minAudience/1000)
 
 		'quality
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetRawQualityForPlayer(forPlayerID))
-		skin.fontSemiBold.drawBlock(GetLocale("AD_QUALITY"), contentX + 5 + 200 + 5, contentY, 85, 15, Null, skin.textColorLabel)
+		skin.fontSmallCaption.DrawSimple(GetLocale("AD_QUALITY"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 1
 
 		'topicality
 		skin.RenderBar(contentX + 5, contentY, 200, 12, base.GetInfomercialTopicality(), 1.0)
-		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY, 85, 15, Null, skin.textColorLabel)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 1
 
 
@@ -1625,7 +1631,7 @@ price :* Max(1, minAudience/1000)
 			'convert back cents to euros and round it
 			'value is "per 1000" - so multiply with that too
 			Local revenue:String = MathHelper.DottedValue(Int(1000 * GetPerViewerRevenueForPlayer(forPlayerID)))+CURRENCYSIGN
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").Replace("%PROFIT%", revenue), "money", "good", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").Replace("%PROFIT%", revenue), "money", "good", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
@@ -1644,15 +1650,15 @@ price :* Max(1, minAudience/1000)
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			skin.fontBold.draw("Dauerwerbesendung: "+GetTitle(), contentX + 5, contentY)
+			skin.fontBold.DrawSimple("Dauerwerbesendung: "+GetTitle(), contentX + 5, contentY)
 			contentY :+ 14
-			skin.fontNormal.draw("TKP: "+Int(1000*GetPerViewerRevenueForPlayer(forPlayerID)) +" Eur  ("+MathHelper.NumberToString(GetPerViewerRevenueForPlayer(forPlayerID),4)+" Eur/Zuschauer)", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("TKP: "+Int(1000*GetPerViewerRevenueForPlayer(forPlayerID)) +" Eur  ("+MathHelper.NumberToString(GetPerViewerRevenueForPlayer(forPlayerID),4)+" Eur/Zuschauer)", contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Aktualitaet: "+MathHelper.NumberToString(base.GetInfomercialTopicality()*100,2)+"%", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Aktualitaet: "+MathHelper.NumberToString(base.GetInfomercialTopicality()*100,2)+"%", contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Qualitaet roh: "+MathHelper.NumberToString(GetRawQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Qualitaet roh: "+MathHelper.NumberToString(GetRawQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
 			contentY :+ 12
-		skin.fontNormal.draw("Qualitaet wahrgenommen: "+MathHelper.NumberToString(GetQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
+		skin.fontNormal.DrawSimple("Qualitaet wahrgenommen: "+MathHelper.NumberToString(GetQualityForPlayer(forPlayerID)*100,2)+"%", contentX + 5, contentY)
 		EndIf
 
 
@@ -1686,6 +1692,8 @@ price :* Max(1, minAudience/1000)
 		Local boxH:Int = 0, msgH:Int = 0
 		Local msgAreaH:Int = 0, boxAreaH:Int = 0
 		Local boxAreaPaddingY:Int = 4, msgAreaPaddingY:Int = 4
+
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetTitle(), contentW - 10, 100))
 
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", Null, ALIGN_CENTER_CENTER).GetY()
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
@@ -1731,13 +1739,17 @@ price :* Max(1, minAudience/1000)
 
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		if titleH <= 18
+			GetBitmapFont("default", 13, BOLDFONT).DrawBox(GetTitle(), contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		else
+			GetBitmapFont("default", 13, BOLDFONT).DrawBox(GetTitle(), contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		endif
 		contentY :+ titleH
 
 
 		'=== CONTENT AREA ===
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
-		skin.fontNormal.drawBlock(GetDescription(), contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, Null, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(GetDescription(), contentX + 5, contentY + 1, contentW - 10, descriptionH, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings)
 		contentY :+ descriptionH
 
 
@@ -1749,31 +1761,31 @@ price :* Max(1, minAudience/1000)
 
 		'warn if special target group
 		If GetLimitedToTargetGroup() > 0
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_TARGETGROUP")+": "+GetLimitedToTargetGroupString(), "targetGroupLimited", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_TARGETGROUP")+": "+GetLimitedToTargetGroupString(), "targetGroupLimited", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 		If GetLimitedToProgrammeGenre() >= 0
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_GENRE_X").Replace("%GENRE%", GetLimitedToProgrammeGenreString()), "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_GENRE_X").Replace("%GENRE%", GetLimitedToProgrammeGenreString()), "warning", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 		If GetLimitedToProgrammeFlag() > 0
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_FLAG").Replace("%FLAG%", GetLimitedToProgrammeFlagString()), "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_PLEASE_FLAG").Replace("%FLAG%", GetLimitedToProgrammeFlagString()), "warning", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 		'only show image hint when NOT signed (after signing the image is not required anymore)
 		If imageText
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, imageText, "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, imageText, "warning", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
 		If IsCompleted()
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ADCONTRACT_FINISHED"), "ok", "good", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ADCONTRACT_FINISHED"), "ok", "good", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		ElseIf daysLeft <= 1
 			Select daysLeft
-				Case 1	skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_SEND_TILL_TOMORROW"), "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
-				Case 0	skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_SEND_TILL_MIDNIGHT"), "warning", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
-				Default skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ADCONTRACT_FAILED"), "warning", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				Case 1	skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_SEND_TILL_TOMORROW"), "warning", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				Case 0	skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("AD_SEND_TILL_MIDNIGHT"), "warning", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
+				Default skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ADCONTRACT_FAILED"), "warning", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
 			EndSelect
 			contentY :+ msgH
 		EndIf
@@ -1843,48 +1855,48 @@ price :* Max(1, minAudience/1000)
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			skin.fontBold.draw("Werbung: "+GetTitle(), contentX + 5, contentY)
+			skin.fontBold.DrawSimple("Werbung: "+GetTitle(), contentX + 5, contentY)
 			contentY :+ 14
 			If base.fixedPrice
-				skin.fontNormal.draw("Fester Profit: "+GetProfitForPlayer(forPlayerID) + "  (profitBase: "+MathHelper.NumberToString(base.profitBase,2)+")", contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Fester Profit: "+GetProfitForPlayer(forPlayerID) + "  (profitBase: "+MathHelper.NumberToString(base.profitBase,2)+")", contentX + 5, contentY)
 				contentY :+ 12
-				skin.fontNormal.draw("Feste Strafe: "+GetPenaltyForPlayer(forPlayerID) + "  (penaltyBase: "+MathHelper.NumberToString(base.penaltyBase,2)+")", contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Feste Strafe: "+GetPenaltyForPlayer(forPlayerID) + "  (penaltyBase: "+MathHelper.NumberToString(base.penaltyBase,2)+")", contentX + 5, contentY)
 				contentY :+ 12
 			Else
-				skin.fontNormal.draw("Dynamischer Profit: "+GetProfitForPlayer(forPlayerID) + "  (profitBase: "+MathHelper.NumberToString(base.profitBase,2)+")", contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Dynamischer Profit: "+GetProfitForPlayer(forPlayerID) + "  (profitBase: "+MathHelper.NumberToString(base.profitBase,2)+")", contentX + 5, contentY)
 				contentY :+ 12
-				skin.fontNormal.draw("Dynamische Strafe: "+GetPenaltyForPlayer(forPlayerID) + "  (penaltyBase: "+MathHelper.NumberToString(base.penaltyBase,2)+")", contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Dynamische Strafe: "+GetPenaltyForPlayer(forPlayerID) + "  (penaltyBase: "+MathHelper.NumberToString(base.penaltyBase,2)+")", contentX + 5, contentY)
 				contentY :+ 12
 			EndIf
-			skin.fontNormal.draw("Spots zu senden "+GetSpotsToSend()+" von "+GetSpotCount(), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Spots zu senden "+GetSpotsToSend()+" von "+GetSpotCount(), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Spots: "+GetSpotsSent()+" gesendet, "+GetSpotsPlanned()+" geplant", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Spots: "+GetSpotsSent()+" gesendet, "+GetSpotsPlanned()+" geplant", contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Zuschaueranforderung: "+GetMinAudienceForPlayer(forPlayerID) + "  ("+MathHelper.NumberToString(GetMinAudiencePercentage()*100,2)+"%)", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Zuschaueranforderung: "+GetMinAudienceForPlayer(forPlayerID) + "  ("+MathHelper.NumberToString(GetMinAudiencePercentage()*100,2)+"%)", contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("SenderImage: " + MathHelper.NumberToString(GetMinImage()*100,2)+"%" +" - " + MathHelper.NumberToString(GetMaxImage()*100,2)+"%", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("SenderImage: " + MathHelper.NumberToString(GetMinImage()*100,2)+"%" +" - " + MathHelper.NumberToString(GetMaxImage()*100,2)+"%", contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Zielgruppe: " + GetLimitedToTargetGroup() + " (" + GetLimitedToTargetGroupString() + ")", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Zielgruppe: " + GetLimitedToTargetGroup() + " (" + GetLimitedToTargetGroupString() + ")", contentX + 5, contentY)
 			contentY :+ 12
 			If GetLimitedToProgrammeGenre() >= 0
-				skin.fontNormal.draw("Genre: " + GetLimitedToProgrammeGenre() + " ("+ GetLimitedToProgrammeGenreString() + ")", contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Genre: " + GetLimitedToProgrammeGenre() + " ("+ GetLimitedToProgrammeGenreString() + ")", contentX + 5, contentY)
 			Else
-				skin.fontNormal.draw("Genre: " + GetLimitedToProgrammeGenre() + " (keine Einschraenkung)", contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Genre: " + GetLimitedToProgrammeGenre() + " (keine Einschraenkung)", contentX + 5, contentY)
 			EndIf
 			contentY :+ 12
-			skin.fontNormal.draw("Vertraege mit dieser Werbung: " + base.GetCurrentlyUsedByContractCount(), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Vertraege mit dieser Werbung: " + base.GetCurrentlyUsedByContractCount(), contentX + 5, contentY)
 			'contentY :+ 12
 			'skin.fontNormal.draw("Verfuegbarkeitszeitraum: --- noch nicht integriert ---", contentX + 5, contentY)
 			contentY :+ 12
 			If owner > 0
-				skin.fontNormal.draw("Tage bis Vertragsende: "+GetDaysLeft() + " (Sekunden: "+ GetTimeLeft()+")", contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Tage bis Vertragsende: "+GetDaysLeft() + " (Sekunden: "+ GetTimeLeft()+")", contentX + 5, contentY)
 				contentY :+ 12
-				skin.fontNormal.draw("Unterschrieben: "+owner, contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Unterschrieben: "+owner, contentX + 5, contentY)
 				contentY :+ 12
 			Else
-				skin.fontNormal.draw("Laufzeit: "+GetDaysToFinish(), contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Laufzeit: "+GetDaysToFinish(), contentX + 5, contentY)
 				contentY :+ 12
-				skin.fontNormal.draw("Unterschrieben: nicht unterschrieben (owner="+owner+")", contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Unterschrieben: nicht unterschrieben (owner="+owner+")", contentX + 5, contentY)
 				contentY :+ 12
 			EndIf
 		EndIf

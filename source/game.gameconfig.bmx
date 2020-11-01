@@ -16,9 +16,9 @@ Type TGameConfig {_exposeToLua}
 	Field devGUID:string
 	Field mouseHandlingDisabled:int = False
 
-	Global clNormal:TColor = TColor.clBlack
-	Global clPositive:TColor = TColor.Create(90, 110, 90)
-	Global clNegative:TColor = TColor.Create(110, 90, 90)
+	Global clNormal:SColor8 = SColor8.Black
+	Global clPositive:SColor8 = new SColor8(90, 110, 90)
+	Global clNegative:SColor8 = new SColor8(110, 90, 90)
 
 '	Field _values:TData
 	Field _modifiers:TData

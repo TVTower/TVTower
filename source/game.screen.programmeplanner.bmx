@@ -124,7 +124,7 @@ Type TScreenHandler_ProgrammePlanner
 				ProgrammePlannerButtons[i].caption.SetContentAlignment(ALIGN_CENTER, ALIGN_TOP)
 				ProgrammePlannerButtons[i].caption.SetFont( GetBitmapFont("Default", 10, BOLDFONT) )
 
-				ProgrammePlannerButtons[i].SetCaptionOffset(0,42)
+				ProgrammePlannerButtons[i].SetCaptionOffset(0,40)
 			Next
 		EndIf
 
@@ -1139,17 +1139,18 @@ Type TScreenHandler_ProgrammePlanner
 		GetSpriteFromRegistry("screen_programmeplanner_overlay").Draw(0,0)
 
 		'time indicator
+		Local col:SColor8
 		If planningDay = GetWorldTime().GetDay()
-			SetColor 0,100,0
+			col = new SColor8(0, 80, 0)
 		ElseIf planningDay < GetWorldTime().GetDay()
-			SetColor 100,100,0
+			col = new SColor8(90, 90, 0)
 		Else
-			SetColor 0,0,0
+			col = new SColor8(50, 50, 50)
+'			col = SColor8.Black
 		EndIf
 		Local day:Int = 1+ planningDay - GetWorldTime().GetDay(GetWorldTime().GetTimeStart())
-		GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY"),712, 7, 56, 26, ALIGN_CENTER_TOP)
-		GetBitmapFont("default", 10).drawBlock(GetWorldTime().GetFormattedDayLong(planningDay),712, 7, 56, 26, ALIGN_CENTER_BOTTOM)
-		SetColor 255,255,255
+		GetBitmapFont("default", 12, BOLDFONT).DrawBox(day+". "+GetLocale("DAY"),712, 7, 56, 26, sALIGN_CENTER_TOP, col, EDrawTextEffect.Emboss, 0.2)
+		GetBitmapFont("default", 10).DrawBox(GetWorldTime().GetFormattedDayLong(planningDay),712, 6, 56, 26, sALIGN_CENTER_BOTTOM, col)
 
 		GUIManager.Draw(LS_programmeplanner_buttons,,, GUIMANAGER_TYPES_NONDRAGGED)
 		GUIManager.Draw(LS_programmeplanner_and_programmeplanner_buttons,,, GUIMANAGER_TYPES_DRAGGED)
@@ -1209,14 +1210,14 @@ Type TScreenHandler_ProgrammePlanner
 		Local oldAlpha:Float = GetAlpha()
 		If showPlannerShortCutHintTime > 0
 			SetAlpha Min(1.0, 2.0*showPlannerShortCutHintTime/100.0)
-			GetBitmapFont("Default", 11, BOLDFONT).drawBlock(GetLocale("HINT_PROGRAMMEPLANER_SHORTCUTS"), 3, 368, 660, 15, New TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(75),2,1,0.20)
+			GetBitmapFont("Default", 11, BOLDFONT).DrawBox(GetLocale("HINT_PROGRAMMEPLANER_SHORTCUTS"), 3, 366, 660, 17, sALIGN_CENTER_TOP, new SColor8(75, 75, 75), EDrawTextEffect.Shadow, 0.20)
 		EndIf
 
 		Local pulse:Float = Sin(Time.GetAppTimeGone() / 10)
 		SetAlpha Max(0.75, -pulse) * oldAlpha
 		DrawOval(5+pulse,367+pulse,15-2*pulse,15-2*pulse)
 		SetAlpha oldAlpha
-		GetBitmapFont("Default", 20, BOLDFONT).drawStyled("?", 7, 367, TColor.Create(50,50,150),2,1,0.25)
+		GetBitmapFont("Default", 20, BOLDFONT).DrawSimple("?", 7, 363, new SColor8(50,50,150), EDrawTextEffect.Shadow, 0.25)
 	End Function
 
 
@@ -1986,26 +1987,24 @@ endrem
 		'set target for font
 		TBitmapFont.setRenderTarget(roomImg)
 
-		Local fontColor:TColor = TColor.CreateGrey(240)
+		Local fontColor:SColor8 = new SColor8(240, 240, 240, int(0.75*255))
 
-		SetAlpha 0.75
 		'only hour, not hour:00
 		For Local i:Int = 0 To 11
 			'right side
-			GetBitmapFontManager().baseFontBold.DrawBlock( (i + 12), 341, 5 + i * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
+			GetBitmapFontManager().baseFontBold.DrawBox( (i + 12), 341, 5 + i * 30, 39, 30, sALIGN_CENTER_CENTER, fontColor, EDrawTextEffect.Shadow, 0.25)
 			'left side
 			Local text:String = i
 			If i < 10 Then text = "0" + text
-			GetBitmapFontManager().baseFontBold.DrawBlock( text, 6, 5 + i * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
+			GetBitmapFontManager().baseFontBold.DrawBox( text, 6, 5 + i * 30, 39, 30, sALIGN_CENTER_CENTER, fontColor, EDrawTextEffect.Shadow, 0.25)
 		Next
-		SetAlpha 1.0
 
 
 
 		'=== DRAW HINTS FOR PRIMETIME/NIGHTTIME ===
-		Local hintColor:TColor = TColor.CreateGrey(75)
-		Local hintColorGood:TColor = TColor.Create(60,110,60)
-		Local hintColorBad:TColor = TColor.Create(110,60,60)
+		Local hintColor:SColor8 = new SColor8(75, 75, 75)
+		Local hintColorGood:SColor8 = new SColor8(60,110,60)
+		Local hintColorBad:SColor8 = new SColor8(110,60,60)
 		Local f:TBitmapFont = GetBitmapFont("default", 10)
 		Local fB:TBitmapFont = GetBitmapFont("default", 10, BOLDFONT)
 		Local oldA:Float = GetAlpha()
@@ -2013,14 +2012,14 @@ endrem
 		For Local i:Int = 0 To 23
 			If i > 0 and i <= 6
 				SetAlpha 0.8 * oldA
-				fB.DrawBlock(GetLocale("NIGHTTIME"), 48, 5 + i*30, 205 - 2*10, 15, ALIGN_LEFT_CENTER, hintColor)
+				fB.DrawBox(GetLocale("NIGHTTIME"), 48, 5 + i*30, 205 - 2*10, 15, sALIGN_LEFT_CENTER, hintColor)
 				SetAlpha 0.7 * oldA
-				f.DrawBlock(GetLocale("LOW_AUDIENCE"), 48, 5 + i*30 + 15, 205 - 2*10, 15, ALIGN_LEFT_CENTER, hintColorBad)
+				f.DrawBox(GetLocale("LOW_AUDIENCE"), 48, 5 + i*30 + 15, 205 - 2*10, 15, sALIGN_LEFT_CENTER, hintColorBad)
 			ElseIf i >= 19 And i <= 23
 				SetAlpha 0.8 * oldA
-				fB.DrawBlock(GetLocale("PRIMETIME"), 383, 5 + (i-12)*30, 205 - 2*10, 15, ALIGN_LEFT_CENTER, hintColor)
+				fB.DrawBox(GetLocale("PRIMETIME"), 383, 5 + (i-12)*30, 205 - 2*10, 15, sALIGN_LEFT_CENTER, hintColor)
 				SetAlpha 0.7 * oldA
-				f.DrawBlock(GetLocale("HIGH_AUDIENCE"), 383, 5 + (i-12)*30 + 15, 205 - 2*10, 15, ALIGN_LEFT_CENTER, hintColorGood)
+				f.DrawBox(GetLocale("HIGH_AUDIENCE"), 383, 5 + (i-12)*30 + 15, 205 - 2*10, 15, sALIGN_LEFT_CENTER, hintColorGood)
 			EndIf
 		Next
 

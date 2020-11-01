@@ -239,16 +239,16 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 		'=== CATEGORY SELECTION ===
 
-		GetBitmapFont("default", 13, BOLDFONT).DrawStyled(GetLocale("ACHIEVEMENTCATEGORY_CATEGORIES"), 40, 35, TColor.CreateGrey(140), TBitmapFont.STYLE_EMBOSS, 1, 0.5)
+		GetBitmapFont("default", 13, BOLDFONT).DrawSimple(GetLocale("ACHIEVEMENTCATEGORY_CATEGORIES"), 40, 33, new SColor8(140, 140, 140), EDrawTextEffect.Emboss, 0.5)
 
 		For local i:int = 0 to TVTAchievementCategory.count
 			local title:string = GetLocale( "ACHIEVEMENTCATEGORY_" + TVTAchievementCategory.GetAsString(TVTAchievementCategory.GetAtIndex(i)) )
 			if highlightNavigationEntry = i
-				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, 40, 65 + i*20, TColor.CreateGrey(50), TBitmapFont.STYLE_EMBOSS, 1, 0.5)
+				GetBitmapFont("default", 13, BOLDFONT).DrawSimple(Chr(183) + " " + title, 40, 63 + i*20, new SColor8(50, 50, 50), EDrawTextEffect.Emboss, 0.5)
 			elseif i = showCategoryIndex
-				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, 40, 65 + i*20, TColor.Create(90,180,220), TBitmapFont.STYLE_EMBOSS, 1, 0.5)
+				GetBitmapFont("default", 13, BOLDFONT).DrawSimple(Chr(183) + " " + title, 40, 63 + i*20, new SColor8(90, 180, 220), EDrawTextEffect.Emboss, 0.5)
 			else
-				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, 40, 65 + i*20, TColor.CreateGrey(120), TBitmapFont.STYLE_EMBOSS, 1, 0.5)
+				GetBitmapFont("default", 13, BOLDFONT).DrawSimple(Chr(183) + " " + title, 40, 63 + i*20, new SColor8(120, 120,120), EDrawTextEffect.Emboss, 0.5)
 			endif
 		Next
 
@@ -272,7 +272,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 
 		'=== ACHIEVEMENT LIST ===
-		outer.Init(200, 25, 550, 325)
+		outer.Init(200, 25, 550, 324)
 		contentX = skin.GetContentX(outer.GetX())
 		contentY = skin.GetContentY(outer.GetY())
 		contentW = skin.GetContentW(outer.GetW())
@@ -288,7 +288,7 @@ Type TScreenHandler_OfficeAchievements extends TScreenHandler
 
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(caption, contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(caption, contentX + 5, contentY, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, listH , "2")
 		'reposition list
@@ -349,18 +349,18 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 		If parentPanel Then maxWidth = parentPanel.GetContentScreenRect().GetW() '- GetScreenRect().GetW()
 
 
-		local titleOffsetX:int = 3, titleOffsetY:int = 3
-		local textOffsetX:int = 3, textOffsetY:int = 18
+		local titleOffsetX:int = 3, titleOffsetY:int = 1
+		local textOffsetX:int = 3, textOffsetY:int = 15
 		local skin:TDatasheetSkin = GetDatasheetSkin("achievement")
 		local sprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_achievement_bg")
-		local border:TRectangle = sprite.GetNinePatchContentBorder()
+		local border:SRect = sprite.GetNinePatchInformation().contentBorder
 		local halfTextWidth:int = 0.5 * (GetScreenRect().GetW() - textOffsetX - (border.GetRight() + border.GetLeft()))
 		local leftWidth:int = 1.25 * halfTextWidth
 		local rightWidth:int = 0.75 * halfTextWidth
 
 		'Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
-		local maxTextHeight:int = Max(skin.fontNormal.GetBlockHeight(GetAchievementText(), leftWidth, 2000), ..
-		                              skin.fontNormal.GetBlockHeight(GetAchievementRewardText(), rightWidth, 2000))
+		local maxTextHeight:int = Max(skin.fontNormal.GetBoxHeight(GetAchievementText(), leftWidth, 2000), ..
+		                              skin.fontNormal.GetBoxHeight(GetAchievementRewardText(), rightWidth, 2000))
 		Local maxHeight:Int = Max( sprite.GetHeight(), ..
 		                           textOffsetY + border.GetTop() + border.GetBottom() + maxTextHeight ..
 		                      )
@@ -457,8 +457,8 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 
 		local skin:TDatasheetSkin = GetDatasheetSkin("achievement")
 
-		local titleOffsetX:int = 3, titleOffsetY:int = 3
-		local textOffsetX:int = 3, textOffsetY:int = 18
+		local titleOffsetX:int = 3, titleOffsetY:int = 1
+		local textOffsetX:int = 3, textOffsetY:int = 15
 
 		local sprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_achievement_bg")
 		sprite.DrawArea(x,y,w,h)
@@ -489,18 +489,18 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 		GetSpriteFromRegistry( "gfx_datasheet_achievement_img" ).Draw(x+4,y+3)
 		if achievementSprite then achievementsprite.Draw(x+6, y+5)
 
-		local border:TRectangle = sprite.GetNinePatchContentBorder()
+		local border:SRect = sprite.GetNinePatchInformation().contentBorder
 
 		local oldCol:TColor = new TColor.Get()
 
 		SetAlpha( Max(0.6, oldCol.a) )
-		skin.fontSemiBold.drawBlock( ..
+		skin.fontSemiBold.DrawBox( ..
 			title, ..
 			x + textOffsetX + border.GetLeft(), ..
 			y + titleOffsetY + border.GetTop(), .. '-1 to align it more properly
 			w - textOffsetX - (border.GetRight() + border.GetLeft()),  ..
-			15, ..
-			ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			17, ..
+			sALIGN_LEFT_CENTER, skin.textColorNeutral)
 
 
 		if textRight <> ""
@@ -509,31 +509,31 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 			local rightWidth:int = 0.75 * halfTextWidth
 
 			SetAlpha( Max(0.6, oldCol.a) )
-			skin.fontNormal.drawBlock( ..
+			skin.fontNormal.DrawBox( ..
 				textLeft, ..
 				x + textOffsetX + border.GetLeft(), ..
 				y + textOffsetY + border.GetTop(), ..
 				leftWidth - 10,  ..
-				Max(15, GetScreenRect().GetH() - (border.GetTop() + border.GetBottom() + 15)), ..
-				ALIGN_LEFT_TOP, skin.textColorNeutral)
+				Max(17, GetScreenRect().GetH() - (border.GetTop() + border.GetBottom() + 15)), ..
+				sALIGN_LEFT_TOP, skin.textColorNeutral)
 
-			skin.fontNormal.drawBlock( ..
+			skin.fontNormal.DrawBox( ..
 				textRight, ..
 				x + textOffsetX + border.GetLeft() + leftWidth + 10, ..
 				y + textOffsetY + border.GetTop(), ..
 				rightWidth - 10,  ..
-				Max(15, GetScreenRect().GetH() - (border.GetTop() + border.GetBottom() + 15)), ..
-				ALIGN_LEFT_TOP, skin.textColorNeutral)
+				Max(17, GetScreenRect().GetH() - (border.GetTop() + border.GetBottom() + 15)), ..
+				sALIGN_LEFT_TOP, skin.textColorNeutral)
 			SetAlpha (oldCol.a)
 		else
 			SetAlpha( Max(0.6, oldCol.a) )
-			skin.fontNormal.drawBlock( ..
+			skin.fontNormal.DrawBox( ..
 				textLeft, ..
 				x + textOffsetX + border.GetLeft(), ..
 				y + textOffsetY + border.GetTop(), .. '-1 to align it more properly
 				w - textOffsetX - (border.GetRight() + border.GetLeft()),  ..
-				Max(15, sprite.GetHeight() - (border.GetTop() + border.GetBottom() + 15)), ..
-				ALIGN_LEFT_CENTER, skin.textColorNeutral)
+				Max(17, sprite.GetHeight() - (border.GetTop() + border.GetBottom() + 15)), ..
+				sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			SetAlpha (oldCol.a)
 		endif
 
@@ -557,48 +557,4 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 			Super.DrawContent()
 		endif
 	End Method
-
-rem
-	Method DrawDatasheet(leftX:Float=30, rightX:Float=30)
-		Local sheetY:Float 	= 20
-		Local sheetX:Float 	= int(leftX)
-		Local sheetAlign:Int= 0
-		If MouseManager.x < GetGraphicsManager().GetWidth()/2
-			sheetX = GetGraphicsManager().GetWidth() - int(rightX)
-			sheetAlign = 1
-		EndIf
-
-		SetColor 0,0,0
-		SetAlpha 0.2
-		local sheetCenterX:Float = sheetX
-		if sheetAlign = 0
-			sheetCenterX :+ 250/2 '250 is sheetWidth
-		else
-			sheetCenterX :- 250/2 '250 is sheetWidth
-		endif
-		Local tri:Float[]=[sheetCenterX,sheetY+25, sheetCenterX,sheetY+90, GetScreenRect().GetX() + GetScreenRect().GetW()/2.0, GetScreenRect().GetY() + GetScreenRect().GetH()/2.0]
-		DrawPoly(tri)
-		SetColor 255,255,255
-		SetAlpha 1.0
-
-		ShowAchievementSheet(achievement, sheetX, sheetY, sheetAlign, FALSE)
-	End Method
-
-
-	Function ShowAchievementSheet:Int(achievement:TAchievement, x:Float,y:Float, align:int=0, showAmateurInformation:int = False)
-		'=== PREPARE VARIABLES ===
-		local sheetWidth:int = 250
-		local sheetHeight:int = 0 'calculated later
-		'move sheet to left when right-aligned
-		if align = 1 then x = x - sheetWidth
-
-		local skin:TDatasheetSkin = GetDatasheetSkin("cast")
-		local contentW:int = skin.GetContentW(sheetWidth)
-		local contentX:int = int(x) + skin.GetContentX()
-		local contentY:int = int(y) + skin.GetContentY()
-
-		'=== OVERLAY / BORDER ===
-		skin.RenderBorder(int(x), int(y), sheetWidth, sheetHeight)
-	End Function
-endrem
 End Type

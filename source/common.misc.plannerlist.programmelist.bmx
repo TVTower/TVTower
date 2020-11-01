@@ -303,10 +303,10 @@ Type TgfxProgrammelist Extends TPlannerList
 
 
 				If licenceCount > 0
-					GetBitmapFontManager().baseFont.drawBlock(filterName + " (" +licenceCount+ ")", textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), ALIGN_LEFT_CENTER, TColor.clBlack)
+					GetBitmapFontManager().baseFont.DrawBox(filterName + " (" +licenceCount+ ")", textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), sALIGN_LEFT_CENTER, SColor8.Black)
 				Else
 					SetAlpha 0.25 * GetAlpha()
-					GetBitmapFontManager().baseFont.drawBlock(filterName, textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), ALIGN_LEFT_CENTER, TColor.clBlack)
+					GetBitmapFontManager().baseFont.DrawBox(filterName, textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), sALIGN_LEFT_CENTER, SColor8.Black)
 					SetAlpha 4 * GetAlpha()
 				EndIf
 				'advance to next line
@@ -455,7 +455,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
 				EndIf
-				font.drawBlock(licence.GetTitle(), currX + 22, currY + 3, 145,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+				font.DrawBox(licence.GetTitle(), currX + 22, currY + 3, 145,15, sALIGN_LEFT_CENTER, SColor8.Black)
 
 				oldColor.SetRGBA()
 			EndIf
@@ -515,7 +515,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				if not entriesButtonNext.IsEnabled() then SetAlpha oldAlpha
 			endif
 
-			GetBitmapFont("Default", 10).DrawBlock(entriesPage+"/" + entriesPages, currX, currY - 22, GetEntriesRect().GetW(), 20, ALIGN_CENTER_CENTER, TColor.clBlack)
+			GetBitmapFont("Default", 10).DrawBox(entriesPage+"/" + entriesPages, currX, currY - 22, GetEntriesRect().GetW(), 20, sALIGN_CENTER_CENTER, SColor8.Black)
 		endif
 
 		Rem
@@ -784,7 +784,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				Else
 					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
 				EndIf
-				font.drawBlock("(" + (i+1) + "/" + parentLicence.GetEpisodeCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 145,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+				font.DrawBox("(" + (i+1) + "/" + parentLicence.GetEpisodeCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 145,15, sALIGN_LEFT_CENTER, SColor8.Black)
 
 				oldColor.SetRGBA()
 			EndIf
@@ -834,7 +834,7 @@ Type TgfxProgrammelist Extends TPlannerList
 				subEntriesButtonNext.Draw()
 				if not subEntriesButtonNext.IsEnabled() then SetAlpha oldAlpha
 			endif
-			GetBitmapFont("Default", 10).DrawBlock(subEntriesPage+"/" + subEntriesPages, currX, currY - 22, GetSubEntriesRect().GetW(), 20, ALIGN_CENTER_CENTER, TColor.clBlack)
+			GetBitmapFont("Default", 10).DrawBox(subEntriesPage+"/" + subEntriesPages, currX, currY - 22, GetSubEntriesRect().GetW(), 20, sALIGN_CENTER_CENTER, SColor8.Black)
 		endif
 
 

@@ -2139,7 +2139,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		msgH = skin.GetMessageSize(contentW - 10, -1, "", "money", "good", null, ALIGN_CENTER_CENTER).GetY()
 		boxH = skin.GetBoxSize(89, -1, "", "spotsPlanned", "neutral").GetY()
 		barH = skin.GetBarSize(100, -1).GetY()
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(title, contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 		'increase for multiline
 '		if titleH > 18 then titleH :+ 3
 
@@ -2175,27 +2175,27 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-			if titleH <= 18
-				GetBitmapFont("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY -1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			else
-				GetBitmapFont("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY +1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
-			endif
+		if titleH <= 18
+			GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		else
+			GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		endif
 		contentY :+ titleH
 
 
 		'=== SUBTITLE AREA ===
 		if isSeries()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
-			skin.fontNormal.drawBlock(GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetEpisodeCount()), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontNormal.DrawBox(GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetEpisodeCount()), contentX + 5, contentY-1, contentW - 10, genreH +1, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			contentY :+ subtitleH
 		elseif isCollection()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
-			skin.fontNormal.drawBlock(GetLocale("COLLECTION_WITH_X_ELEMENTS").Replace("%X%", GetEpisodeCount()), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontNormal.DrawBox(GetLocale("COLLECTION_WITH_X_ELEMENTS").Replace("%X%", GetEpisodeCount()), contentX + 5, contentY-1, contentW - 10, genreH +1, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			contentY :+ subtitleH
 		elseif isEpisode() or isCollectionElement()
 			skin.RenderContent(contentX, contentY, contentW, subtitleH, "1")
 			'episode num/max + episode title
-			skin.fontNormal.drawBlock(GetEpisodeNumber() + "/" + GetParentLicence().GetEpisodeCount() + ": " + GetTitle(), contentX + 5, contentY, contentW - 10, genreH -1, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontNormal.DrawBox(GetEpisodeNumber() + "/" + GetParentLicence().GetEpisodeCount() + ": " + GetTitle(), contentX + 5, contentY-1, contentW - 10, genreH +1, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			contentY :+ subtitleH
 		endif
 
@@ -2206,20 +2206,20 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		GetSpriteFromRegistry("gfx_datasheet_content_splitterV").DrawArea(contentX + 5 + 65, contentY, 2, 16)
 		'country [+year] + genre, year for non-callin-shows
 		If data.HasFlag(TVTProgrammeDataFlag.PAID)
-			skin.fontNormal.drawBlock(data.country, contentX + 5, contentY, 65, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontNormal.DrawBox(data.country, contentX + 5, contentY-1, 65, genreH+1, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		else
-			skin.fontNormal.drawBlock(data.country + " " + data.GetYear(), contentX + 5, contentY, 65, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+			skin.fontNormal.DrawBox(data.country + " " + data.GetYear(), contentX + 5, contentY-1, 65, genreH+2, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		endif
 
 		local genreLine:String = GetGenresLine()
 
-		skin.fontNormal.drawBlock(genreLine, contentX + 5 + 65 + 2, contentY, contentW - 10 - 65 - 2, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		skin.fontNormal.DrawBox(genreLine, contentX + 5 + 65 + 2, contentY-1, contentW - 10 - 65 - 2, genreH+2, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ genreH
 
 
 		'=== DESCRIPTION AREA ===
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
-		skin.fontNormal.drawBlock(GetDescription(), contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(GetDescription(), contentX + 5, contentY + 1, contentW - 10, descriptionH - 1, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings)
 		contentY :+ descriptionH
 
 
@@ -2249,15 +2249,10 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		Next
 
 		if cast <> ""
-			contentY :+ 3
-
 			'max width of cast word - to align their content properly
-			skin.fontNormal.drawBlock(cast, contentX + 5, contentY , contentW  - 10, castH, null, skin.textColorNeutral)
-
-			contentY:+ castH - 3
-		else
-			contentY:+ castH
+			skin.fontNormal.DrawBox(cast, contentX + 5, contentY, contentW  - 10, castH, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings)
 		endif
+		contentY:+ castH
 
 		'=== BARS / MESSAGES / BOXES AREA ===
 		'background for bars + messages + boxes
@@ -2270,11 +2265,11 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		contentY :+ barAreaPaddingY
 		'speed
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetSpeed())
-		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_SPEED"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 1
 		'critic/review
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetReview())
-		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_CRITIC"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 1
 		'boxoffice/outcome
 		if data.IsTVDistribution()
@@ -2282,18 +2277,18 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			'use a different text color if tv-outcome is not calculated
 			'yet
 			if GetOutcomeTV() < 0
-				skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY, 75, 15, null, TColor.Create(180,50,50))
+				skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY - 2, new SColor8(180,50,50), EDrawTextEffect.Emboss, 0.3)
 			else
-				skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+				skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TVAUDIENCE"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 			endif
 		else
 			skin.RenderBar(contentX + 5, contentY, 200, 12, GetOutcome())
-			skin.fontSemiBold.drawBlock(GetLocale("MOVIE_BOXOFFICE"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+			skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_BOXOFFICE"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
 		endif
 		contentY :+ barH + 1
 		'topicality/maxtopicality
 		skin.RenderBar(contentX + 5, contentY, 200, 12, GetTopicality(), GetMaxTopicality())
-		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
 		contentY :+ barH + 1
 
 
@@ -2319,7 +2314,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			'programme start time
 			time :+ ", "+ GetWorldTime().GetDayHour( nextReleaseTime )+":05"
 
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_LIVESHOW")+": "+time, "runningTime", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_LIVESHOW")+": "+time, "runningTime", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
@@ -2327,19 +2322,19 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			local broadcastsLeftMin:int = GetSublicenceBroadcastLimitMin()
 			local broadcastsLeftMax:int = GetSublicenceBroadcastLimitMax()
 			if broadcastsLeftMax <= 0
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("NO_MORE_BROADCASTS_ALLOWED"), "spotsPlanned", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("NO_MORE_BROADCASTS_ALLOWED"), "spotsPlanned", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
 			elseif broadcastsLeftMin = 1 and broadcastsLeftMax = 1
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			elseif broadcastsLeftMin <> broadcastsLeftMax
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", broadcastsLeftMin+"-"+broadcastsLeftMax), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", broadcastsLeftMin+"-"+broadcastsLeftMax), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			else
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", broadcastsLeftMin), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").replace("%X%", broadcastsLeftMin), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			endif
 			contentY :+ msgH
 		endif
 
 		if showMsgBroadcastTimeSlot
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()) , "spotsPlanned", "bad", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y").Replace("%X%", GetBroadcastTimeSlotStart()).Replace("%Y%", GetBroadcastTimeSlotEnd()) , "spotsPlanned", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		endif
 
@@ -2348,17 +2343,17 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			'value is "per 1000" - so multiply with that too
 			local revenue:string = MathHelper.DottedValue(int(1000 * data.GetPerViewerRevenue()))+CURRENCYSIGN
 
-			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), "money", "good", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), "money", "good", skin.fontNormal, ALIGN_CENTER_CENTER)
 			contentY :+ msgH
 		EndIf
 
 		if showMsgPlannedWarning
 			if not isProgrammePlanned()
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("TRAILER_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("TRAILER_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			elseif not isTrailerPlanned()
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PROGRAMME_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PROGRAMME_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			else
-				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontSemiBold, ALIGN_CENTER_CENTER)
+				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			endif
 			contentY :+ msgH
 		endif
@@ -2423,48 +2418,48 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			skin.fontBold.drawBlock("Programm: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28)
+			skin.fontBold.DrawBox("Programm: "+GetTitle(), contentX + 5, contentY, contentW - 10, 28, sALIGN_LEFT_TOP, SColor8.White)
 			contentY :+ 28
-			skin.fontNormal.draw("GUID: "+GetGUID(), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("GUID: "+GetGUID(), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Letzte Stunde im Plan: "+latestPlannedEndHour, contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Letzte Stunde im Plan: "+latestPlannedEndHour, contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Letzte Trailerstunde im Plan: "+latestPlannedTrailerHour, contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Letzte Trailerstunde im Plan: "+latestPlannedTrailerHour, contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Tempo: "+MathHelper.NumberToString(data.GetSpeed(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Tempo: "+MathHelper.NumberToString(data.GetSpeed(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Kritik: "+MathHelper.NumberToString(data.GetReview(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Kritik: "+MathHelper.NumberToString(data.GetReview(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Kinokasse: "+MathHelper.NumberToString(data.GetOutcome(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Kinokasse: "+MathHelper.NumberToString(data.GetOutcome(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("TV-Kasse: "+MathHelper.NumberToString(data.GetOutcomeTV(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("TV-Kasse: "+MathHelper.NumberToString(data.GetOutcomeTV(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Preismodifikator:  Lizenz="+MathHelper.NumberToString(GetModifier(modKeyPriceLS), 4)+"  Data="+MathHelper.NumberToString(data.GetModifier(modKeyPriceLS), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Preismodifikator:  Lizenz="+MathHelper.NumberToString(GetModifier(modKeyPriceLS), 4)+"  Data="+MathHelper.NumberToString(data.GetModifier(modKeyPriceLS), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Qualitaet roh: "+MathHelper.NumberToString(GetQualityRaw(), 4)+"  (ohne Alter, Wdh.)", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Qualitaet roh: "+MathHelper.NumberToString(GetQualityRaw(), 4)+"  (ohne Alter, Wdh.)", contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Qualitaet: "+MathHelper.NumberToString(GetQuality(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Qualitaet: "+MathHelper.NumberToString(GetQuality(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Aktualitaet: "+MathHelper.NumberToString(GetTopicality(), 4)+" von " + MathHelper.NumberToString(data.GetMaxTopicality(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Aktualitaet: "+MathHelper.NumberToString(GetTopicality(), 4)+" von " + MathHelper.NumberToString(data.GetMaxTopicality(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Bloecke: "+GetBlocks(), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Bloecke: "+GetBlocks(), contentX + 5, contentY)
 			contentY :+ 12
 			if useOwner <= 0
-				skin.fontNormal.draw("Ausgestrahlt: "+GetTimesBroadcasted(0)+"x unbekannt, "+GetTimesBroadcasted()+"x alle  Limit:"+broadcastLimit, contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Ausgestrahlt: "+GetTimesBroadcasted(0)+"x unbekannt, "+GetTimesBroadcasted()+"x alle  Limit:"+broadcastLimit, contentX + 5, contentY)
 			else
-				skin.fontNormal.draw("Ausgestrahlt: "+GetTimesBroadcasted(useOwner)+"x Spieler, "+GetTimesBroadcasted()+"x alle  Limit:"+broadcastLimit, contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("Ausgestrahlt: "+GetTimesBroadcasted(useOwner)+"x Spieler, "+GetTimesBroadcasted()+"x alle  Limit:"+broadcastLimit, contentX + 5, contentY)
 			endif
 			contentY :+ 12
-			skin.fontNormal.draw("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (alle)", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Quotenrekord: "+Long(GetBroadcastStatistic().GetBestAudienceResult(useOwner, -1).audience.GetTotalSum())+" (Spieler), "+Long(GetBroadcastStatistic().GetBestAudienceResult(-1, -1).audience.GetTotalSum())+" (alle)", contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Kaufpreis: "+MathHelper.DottedValue(GetPriceForPlayer(useOwner))+" (licLvl: " + licencedAudienceReachLevel+")  Verkauf: " + MathHelper.DottedValue(GetSellPrice(useOwner)), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Kaufpreis: "+MathHelper.DottedValue(GetPriceForPlayer(useOwner))+" (licLvl: " + licencedAudienceReachLevel+")  Verkauf: " + MathHelper.DottedValue(GetSellPrice(useOwner)), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Trailer: " + data.GetTimesTrailerAiredSinceLastBroadcast(useOwner) +" (total: "+ data.GetTimesTrailerAired()+")", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Trailer: " + data.GetTimesTrailerAiredSinceLastBroadcast(useOwner) +" (total: "+ data.GetTimesTrailerAired()+")", contentX + 5, contentY)
 			if data.GetTrailerMod(useOwner, False)
 				contentY :+ 12
-				local titleDim:TVec2D = new TVec2D
-				skin.fontNormal.draw("TrailerMod:", contentX + 5, contentY, , , titleDim)
-				skin.fontNormal.drawBlock(data.GetTrailerMod(useOwner).ToStringPercentage(2), contentX + 5 + titleDim.GetX() + 5, contentY, contentW - titleDim.GetX() - 5 - 5, 60)
+				local titleDim:SVec2I
+				titleDim = skin.fontNormal.DrawSimple("TrailerMod:", contentX + 5, contentY)
+				skin.fontNormal.DrawBox(data.GetTrailerMod(useOwner).ToStringPercentage(2), contentX + 5 + titleDim.x + 5, contentY, contentW - titleDim.x - 5 - 5, 60, sALIGN_LEFT_TOP, SColor8.White)
 				'2 lines of output...
 				contentY :+ 12
 			endif
@@ -2472,7 +2467,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			if TSportsProgrammeData(data)
 				local sportsData:TSportsProgrammeData = TSportsProgrammeData(data)
 				contentY :+ 12
-				skin.fontNormal.draw("IsMatchFinished: " + sportsData.IsMatchFinished() + "   Matchtime: " + GetWorldTime().GetFormattedGameDate(sportsData.GetMatchEndTime()), contentX + 5, contentY)
+				skin.fontNormal.DrawSimple("IsMatchFinished: " + sportsData.IsMatchFinished() + "   Matchtime: " + GetWorldTime().GetFormattedGameDate(sportsData.GetMatchEndTime()), contentX + 5, contentY)
 			endif
 		endif
 
@@ -2507,6 +2502,8 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		local msgAreaH:int = 0, barAreaH:int = 0
 		local barAreaPaddingY:int = 4, msgAreaPaddingY:int = 4
 
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(GetTitle(), contentW - 10, 100))
+
 		'reactivate when adding messages
 		'msgH = skin.GetMessageSize(contentW - 10, -1, "", "targetGroupLimited", "warning", null, ALIGN_CENTER_CENTER).GetY()
 		barH = skin.GetBarSize(100, -1).GetY()
@@ -2535,19 +2532,23 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'=== TITLE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		if titleH <= 18
+			GetBitmapFont("default", 13, BOLDFONT).DrawBox(GetTitle(), contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		else
+			GetBitmapFont("default", 13, BOLDFONT).DrawBox(GetTitle(), contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
+		endif
 		contentY :+ titleH
 
 
 		'=== GENRE AREA ===
 		skin.RenderContent(contentX, contentY, contentW, genreH, "1")
-		skin.fontNormal.drawBlock(GetLocale("TRAILER"), contentX + 5, contentY -1, contentW - 10, genreH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		skin.fontNormal.DrawBox(GetLocale("TRAILER"), contentX + 5, contentY - 1, contentW - 10, genreH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ genreH
 
 
 		'=== CONTENT AREA ===
 		skin.RenderContent(contentX, contentY, contentW, descriptionH, "2")
-		skin.fontNormal.drawBlock(getLocale("MOVIE_TRAILER"), contentX + 5, contentY + 3, contentW - 10, descriptionH, null, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(GetLocale("MOVIE_TRAILER"), contentX + 5, contentY + 1, contentW - 10, descriptionH, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings)
 		contentY :+ descriptionH
 
 
@@ -2564,7 +2565,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 
 		'topicality
 		skin.RenderBar(contentX + 5, contentY, 200, 12, data.GetTrailerTopicality())
-		skin.fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY, 75, 15, null, skin.textColorLabel)
+		skin.fontSmallCaption.DrawSimple(GetLocale("MOVIE_TOPICALITY"), contentX + 5 + 200 + 5, contentY - 2, skin.textColorLabel,  EDrawTextEffect.Emboss, 0.3)
 
 
 		If TVTDebugInfos
@@ -2578,13 +2579,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			skin.fontBold.draw("Trailer: "+GetTitle(), contentX + 5, contentY)
+			skin.fontBold.DrawSimple("Trailer: "+GetTitle(), contentX + 5, contentY)
 			contentY :+ 14
-			skin.fontNormal.draw("Traileraktualitaet: "+MathHelper.NumberToString(data.GetTrailerTopicality(), 4)+" von " + MathHelper.NumberToString(data.GetMaxTrailerTopicality(), 4), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Traileraktualitaet: "+MathHelper.NumberToString(data.GetTrailerTopicality(), 4)+" von " + MathHelper.NumberToString(data.GetMaxTrailerTopicality(), 4), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Ausstrahlungen: "+data.trailerAired, contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Ausstrahlungen: "+data.trailerAired, contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Ausstrahlungen seit letzter Sendung: "+data.GetTimesTrailerAiredSinceLastBroadcast(useOwner), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Ausstrahlungen seit letzter Sendung: "+data.GetTimesTrailerAiredSinceLastBroadcast(useOwner), contentX + 5, contentY)
 		Endif
 
 		'=== OVERLAY / BORDER ===

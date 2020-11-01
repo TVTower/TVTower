@@ -3070,33 +3070,36 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		DrawRect(tooltipX,tooltipY,tooltipW,tooltipH)
 		SetColor 255,255,255
 		SetAlpha 1.0
+		
+		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
+		Local font:TBitmapFont = GetBitmapFontManager().baseFont
 
 		Local textY:Int = tooltipY+5
 		Local textX:Int = tooltipX+5
 		Local textW:Int = tooltipW-10
-		GetBitmapFontManager().baseFontBold.drawStyled( getLocale("MAP_COUNTRY_"+GetSectionName()), textX, textY, TColor.Create(255,255,0), 2)
+		fontBold.DrawSimple( getLocale("MAP_COUNTRY_"+GetSectionName()), textX, textY, new SColor8(250,200,100), EDrawTextEffect.Shadow, 0.2)
 		textY:+ textH + 5
 
-		GetBitmapFontManager().baseFont.draw(GetLocale("REACH")+": ", textX, textY)
-		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(GetReach(), 2), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
+		font.Draw(GetLocale("REACH")+": ", textX, textY)
+		fontBold.DrawBox(TFunctions.convertValue(GetReach(), 2), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 		textY:+ textH
 
 		if stationType = TVTStationType.ANTENNA
-			GetBitmapFontManager().baseFont.draw(GetLocale("INCREASE")+": ", textX, textY)
-			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(GetExclusiveReach(), 2), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
+			font.Draw(GetLocale("INCREASE")+": ", textX, textY)
+			fontBold.DrawBox(TFunctions.convertValue(GetExclusiveReach(), 2), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 			textY:+ textH
 		endif
 
 		If GetConstructionTime() > 0
-			GetBitmapFontManager().baseFont.draw(GetLocale("CONSTRUCTION_TIME")+": ", textX, textY)
-			GetBitmapFontManager().baseFontBold.drawBlock(GetConstructionTime()+"h", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
+			font.Draw(GetLocale("CONSTRUCTION_TIME")+": ", textX, textY)
+			fontBold.DrawBox(GetConstructionTime()+"h", textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 			textY:+ textH
 		EndIf
 
 
 		If cantGetSectionPermissionReason = -1
-			GetBitmapFontManager().baseFont.draw(GetLocale("CHANNEL_IMAGE")+" ("+GetLocale("STATIONMAP_SECTION_NAME")+"): ", textX, textY)
-			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(section.broadcastPermissionMinimumChannelImage,2)+" %", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.Create(255,150,150))
+			font.Draw(GetLocale("CHANNEL_IMAGE")+" ("+GetLocale("STATIONMAP_SECTION_NAME")+"): ", textX, textY)
+			fontBold.DrawBox(MathHelper.NumberToString(section.broadcastPermissionMinimumChannelImage,2)+" %", textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, new SColor8(255,150,150))
 			textY:+ textH
 		EndIf
 		If cantGetProviderPermissionReason = -1
@@ -3104,8 +3107,8 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			local provider:TStationMap_BroadcastProvider = GetProvider()
 			if provider then minImage = provider.minimumChannelImage
 
-			GetBitmapFontManager().baseFont.draw(GetLocale("CHANNEL_IMAGE")+" ("+GetLocale("PROVIDER")+"): ", textX, textY)
-			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(minImage,2)+" %", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.Create(255,150,150))
+			font.Draw(GetLocale("CHANNEL_IMAGE")+" ("+GetLocale("PROVIDER")+"): ", textX, textY)
+			fontBold.DrawBox(MathHelper.NumberToString(minImage,2)+" %", textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, new SColor8(255,150,150))
 			textY:+ textH
 		EndIf
 
@@ -3116,22 +3119,23 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			'always request the _current_ (refreshed) price
 			totalPrice = GetBuyPrice()
 		else
-			GetBitmapFontManager().baseFont.draw(GetTypeName()+": ", textX, textY)
-			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.DottedValue(GetBuyPrice()) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
+			font.Draw(GetTypeName()+": ", textX, textY)
+			fontBold.DrawBox(TFunctions.DottedValue(GetBuyPrice()) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 			textY:+ textH
-			GetBitmapFontManager().baseFont.draw(GetLocale("BROADCAST_PERMISSION")+": ", textX, textY)
-			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.DottedValue(section.GetBroadcastPermissionPrice(owner, stationType)) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
+
+			font.Draw(GetLocale("BROADCAST_PERMISSION")+": ", textX, textY)
+			fontBold.DrawBox(TFunctions.DottedValue(section.GetBroadcastPermissionPrice(owner, stationType)) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 			textY:+ textH
 
 			'always request the _current_ (refreshed) price
 			totalPrice = GetStationMap(owner).GetTotalStationBuyPrice(self)
 		endif
 
-		GetBitmapFontManager().baseFont.draw(GetLocale("PRICE")+": ", textX, textY)
+		font.Draw(GetLocale("PRICE")+": ", textX, textY)
 		if not GetPlayerFinance(owner).CanAfford(totalPrice)
-			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.DottedValue(totalPrice) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.Create(255,150,150))
+			fontBold.DrawBox(TFunctions.DottedValue(totalPrice) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, new SColor8(255,150,150))
 		else
-			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.DottedValue(totalPrice) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
+			fontBold.DrawBox(TFunctions.DottedValue(totalPrice) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 		endif
 
 	End Method
@@ -3149,9 +3153,9 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		textContent = textContent.Replace("%TIME%", readyTime)
 
 
-		Local textH:Int = GetBitmapFontManager().baseFontBold.getHeight( "Tg" )
-		Local textW:Int = GetBitmapFontManager().baseFontBold.getWidth(textCaption)
-		textW = Max(textW, GetBitmapFontManager().baseFont.getWidth(textContent))
+		Local textH:Int = GetBitmapFontManager().baseFontBold.GetMaxCharHeight(True)
+		Local textW:Int = GetBitmapFontManager().baseFontBold.GetWidth(textCaption)
+		textW = Max(textW, GetBitmapFontManager().baseFont.GetWidth(textContent))
 		Local tooltipW:Int = textW + 10
 		Local tooltipH:Int = textH * 2 + 10 + 5
 		Local tooltipX:Int = pos.x - tooltipW/2
@@ -3159,21 +3163,21 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 		'move below station if at screen top
 		If tooltipY < 20 Then tooltipY = pos.y + GetOverlayOffsetY() + 10 +10
-		tooltipX = Max(20,tooltipX)
-		tooltipX = Min(585-tooltipW,tooltipX)
+		tooltipX = Max(20, tooltipX)
+		tooltipX = Min(585 - tooltipW, tooltipX)
 
 		SetAlpha 0.5
 		SetColor 0,0,0
-		DrawRect(tooltipX,tooltipY,tooltipW,tooltipH)
+		DrawRect(tooltipX, tooltipY, tooltipW, tooltipH)
 		SetColor 255,255,255
 		SetAlpha 1.0
 
-		Local textY:Int = tooltipY+5
-		Local textX:Int = tooltipX+5
-		GetBitmapFontManager().baseFontBold.drawStyled(textCaption, textX, textY, TColor.Create(255,255,0), 2)
+		Local textY:Int = tooltipY + 5
+		Local textX:Int = tooltipX + 5
+		GetBitmapFontManager().baseFontBold.DrawSimple(textCaption, textX, textY, new SColor8(255,190,80), EDrawTextEffect.Shadow, 0.2)
 		textY:+ textH + 5
 
-		GetBitmapFontManager().baseFont.draw(textContent, textX, textY)
+		GetBitmapFontManager().baseFont.Draw(textContent, textX, textY)
 		textY:+ textH
 	End Method
 
@@ -4258,7 +4262,7 @@ Type TStationMapSection
 			blurPixmap(LockImage( highlightBorderImage ), 0.5)
 
 			highlightBorderSprite = new TSprite.InitFromImage(highlightBorderImage, "highlightBorderImage")
-			highlightBorderSprite.offset = new TRectangle.Init(9,9,0,0)
+			highlightBorderSprite.offset = new SRectI(9,9,0,0)
 		endif
 		return highlightBorderSprite
 	End Method
@@ -4459,32 +4463,33 @@ Type TStationMapSection
 		Local textY:Int = tooltipY+5
 		Local textX:Int = tooltipX+5
 		Local textW:Int = tooltipW-10
-		GetBitmapFontManager().baseFontBold.drawStyled( GetLocale("MAP_COUNTRY_"+name), textX, textY, TColor.Create(255,255,0), 2)
+		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
+		fontBold.DrawSimple( GetLocale("MAP_COUNTRY_"+name), textX, textY, new SColor8(250,200,100), EDrawTextEffect.Shadow, 0.2)
 		textY:+ textH + 5
 
 		'broadcast permission
 		GetBitmapFontManager().baseFont.draw(GetLocale("CABLE_NETWORKS")+": ", textX, textY)
 		if not providerOK
-			GetBitmapFontManager().baseFontBold.drawBlock("0", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.Create(255, 150, 150))
+			fontBold.DrawBox("0", textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, new SColor8(255, 150, 150))
 		else
-			GetBitmapFontManager().baseFontBold.drawBlock(GetLocale("OK"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
+			fontBold.DrawBox(GetLocale("OK"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 		endif
 		textY:+ textH
 
 		'broadcast permission
 		GetBitmapFontManager().baseFont.draw(GetLocale("BROADCAST_PERMISSION")+": ", textX, textY)
 		if not permissionOK
-			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(GetBroadcastPermissionPrice(channelID, stationType), 2), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
+			fontBold.DrawBox(TFunctions.convertValue(GetBroadcastPermissionPrice(channelID, stationType), 2), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 		else
-			GetBitmapFontManager().baseFontBold.drawBlock(GetLocale("OK"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
+			fontBold.DrawBox(GetLocale("OK"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 		endif
 		textY:+ textH
 
-		GetBitmapFontManager().baseFont.draw(GetLocale("CHANNEL_IMAGE")+": ", textX, textY)
+		GetBitmapFontManager().baseFont.Draw(GetLocale("CHANNEL_IMAGE")+": ", textX, textY)
 		if not imageOK
-			GetBitmapFontManager().baseFontBold.drawBlock(MathHelper.NumberToString(GetPublicImage(channelID).GetAverageImage(), 2)+"% < "+MathHelper.NumberToString(broadcastPermissionMinimumChannelImage, 2)+"%", textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.Create(255, 150, 150))
+			fontBold.DrawBox(MathHelper.NumberToString(GetPublicImage(channelID).GetAverageImage(), 2)+"% < "+MathHelper.NumberToString(broadcastPermissionMinimumChannelImage, 2)+"%", textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, new SColor8(255, 150, 150))
 		else
-			GetBitmapFontManager().baseFontBold.drawBlock(GetLocale("OK"), textX, textY-1, textW, 20, ALIGN_RIGHT_TOP, TColor.clWhite)
+			fontBold.DrawBox(GetLocale("OK"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
 		endif
 		textY:+ textH
 	End Method

@@ -672,9 +672,9 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 		Local font:TBitmapFont = GetBitmapFont("Default",10, BOLDFONT)
 		TBitmapFont.setRenderTarget(newImage)
 		if door.GetOwner() > 0
-			font.drawBlock(door.GetOwnerName(), 22, 4, 150,15, null, TColor.CreateGrey(50), 2, 1, 0.20)
+			font.DrawBox(door.GetOwnerName(), 22, 2, 150,18, sALIGN_LEFT_TOP, new SColor8(50,50,50), EDrawTextEffect.GLOW, 0.20)
 		else
-			font.drawBlock(door.GetOwnerName(), 22, 4, 150,15, null, TColor.CreateGrey(100), 2, 1, 0.20)
+			font.DrawBox(door.GetOwnerName(), 22, 2, 150,18, sALIGN_LEFT_TOP, new SColor8(100,100,100), EDrawTextEffect.GLOW, 0.20)
 		endif
 		TBitmapFont.setRenderTarget(null)
 

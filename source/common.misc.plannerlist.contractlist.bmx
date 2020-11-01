@@ -197,9 +197,9 @@ Type TgfxContractlist Extends TPlannerList
 				if contract.GetDaysLeft() <= 0 then SetColor 255,255,255
 
 				if TVTDebugInfos
-					font.drawBlock(contract.GetProfit() +CURRENCYSIGN+" @ "+ contract.GetMinAudience(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+					font.DrawBox(contract.GetProfit() +CURRENCYSIGN+" @ "+ contract.GetMinAudience(), currX + 22, currY + 3, 150,15, sALIGN_LEFT_CENTER, SColor8.Black)
 				else
-					font.drawBlock(contract.GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+					font.DrawBox(contract.GetTitle(), currX + 22, currY + 3, 150,15, sALIGN_LEFT_CENTER, SColor8.Black)
 				endif
 
 				if contract.GetLimitedToTargetGroup() > 0 or contract.GetLimitedToProgrammeGenre() > 0 or contract.GetLimitedToProgrammeFlag() > 0

@@ -4,14 +4,6 @@ Import "Dig/base.gfx.gui.tabgroup.bmx"
 Import "game.screen.base.bmx"
 
 
-Type TMyColor extends TColor
-	Function Create:TColor(r:int=0,g:int=0,b:int=0,a:float=1.0)
-		print "creating color"
-		return Super.Create(r,g,b,a)
-	End Function
-End Type
-
-
 Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 	Field roomOwner:Int = 0
 	Field tabGroup:TGUITabGroup
@@ -29,13 +21,13 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 
 	Global LS_officeStatisticsScreen:TLowerString = TLowerString.Create("officeStatisticsScreen")
 
-	Global programmeColor:TColor = TMyColor.Create(110,180,100)
-	Global newsColor:TColor = TMyColor.Create(110,100,180)
-	Global fontColor:TColor = TColor.CreateGrey(50)
-	Global lightFontColor:TColor = TColor.CreateGrey(120)
-	Global rankFontColor:TColor = TColor.CreateGrey(140)
-	Global captionColor:TColor = TColor.CreateGrey(70)
-	Global backupColor:TColor = New TColor
+	Global programmeColor:SColor8 = new SColor8(110,180,100)
+	Global newsColor:SColor8 = new SColor8(110,100,180)
+	Global fontColor:SColor8 = new SColor8(50, 50, 50)
+	Global lightFontColor:SColor8 = new SColor8(120, 120, 120)
+	Global rankFontColor:SColor8 = new SColor8(140, 140, 140)
+	Global captionColor:SColor8 = new SColor8(70, 70, 70)
+	Global backupColor:SColor8 = SColor8.Black
 	Global captionFont:TBitmapFont
 	Global textFont:TBitmapFont
 	Global boldTextFont:TBitmapFont
@@ -285,11 +277,13 @@ End Type
 Type TStatisticsSubScreen
 	Field LS_screenName:TLowerString
 
-	Global fontColor:TColor = TColor.CreateGrey(50)
-	Global lightFontColor:TColor = TColor.CreateGrey(120)
-	Global rankFontColor:TColor = TColor.CreateGrey(140)
-	Global captionColor:TColor = TColor.CreateGrey(70)
-	Global backupColor:TColor = New TColor
+	Global fontColor:SColor8 = new SColor8(50, 50, 50)
+'	Global newsColor:SColor8 = new SColor8(110,100,180)
+	Global lightFontColor:SColor8 = new SColor8(120, 120, 120)
+	Global rankFontColor:SColor8 = new SColor8(140, 140, 140)
+	Global captionColor:SColor8 = new SColor8(70, 70, 70)
+	Global backupColor:SColor8 = SColor8.Black
+
 	Global captionFont:TBitmapFont
 	Global textFont:TBitmapFont
 	Global boldTextFont:TBitmapFont
@@ -329,9 +323,11 @@ Type TStatisticsSubScreen_Audience extends TStatisticsSubScreen
 
 		dataChart.valueFormat = "convertvalue"
 
-print "Remove programme color reinitialization when fixed"
-		TScreenHandler_OfficeStatistics.programmeColor = TColor.Create(110,180,100)
-		TScreenHandler_OfficeStatistics.newsColor = TColor.Create(110,100,180)
+if TScreenHandler_OfficeStatistics.programmeColor.b <> TScreenHandler_OfficeStatistics.programmeColor.g and TScreenHandler_OfficeStatistics.programmeColor.b <> TScreenHandler_OfficeStatistics.programmeColor.r
+	print "Remove programme color reinitialization - seems to be fixed: old programmeColor=" + TScreenHandler_OfficeStatistics.programmeColor.r+", "+ TScreenHandler_OfficeStatistics.programmeColor.g+", " + TScreenHandler_OfficeStatistics.programmeColor.b
+endif
+		TScreenHandler_OfficeStatistics.programmeColor = new SColor8(110,180,100)
+		TScreenHandler_OfficeStatistics.newsColor = new SColor8(110,100,180)
 
 		'news
 		dataChart.AddDataSet(new TDataChartDataSet, TScreenHandler_OfficeStatistics.newsColor, new TVec2D.Init(-5,0))
@@ -549,14 +545,14 @@ endrem
 
 		'=== CONFIG ===
 		'to center it to table header according "font Baseline"
-		Local captionHeight:Int = 20
+		Local captionHeight:Int = 24
 		Local startY:Int
 		'statistic for today
 		Local dailyBroadcastStatistic:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(parent.showDay, True)
 
 		'fill cache
 		If Not valueBG Then valueBG = GetSpriteFromRegistry("screen_financial_balanceValue")
-		If Not valueBG2 Then valueBG2 = GetSpriteFromRegistry("screen_financial_balanceValue2filled")
+		If Not valueBG2 Then valueBG2 = GetSpriteFromRegistry("screen_financial_balanceValue2")
 		If Not captionFont Then captionFont = GetBitmapFont("Default", 14, BOLDFONT)
 		If Not textFont Then textFont = GetBitmapFont("Default", 14)
 		If Not boldTextFont Then boldTextFont = GetBitmapFont("Default", 14, BOLDFONT)
@@ -572,20 +568,19 @@ endrem
 		Local maxValue:Int = 0
 		'minimum audience
 		Local minValue:Int = 0
-		'color of labels
-		Local labelColor:TColor = TColor.CreateGrey(80)
 		Local audienceResult:TAudienceResultBase
+		
+		Local backupColorA:Float
 
 		'add 1 to "today" as we are on this day then
 		Local today:Double = GetWorldTime().MakeTime(0, parent.showDay, 0, 0)
 		Local todayText:String = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().GetYear(today)
-		'textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 50, 24, 160, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(30), 0, 1, 0.5)
-		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 290+30, 250, 160, 26, ALIGN_CENTER_CENTER, TColor.CreateGrey(30), 0, 1, 0.5)
+		textFont.DrawBox(GetLocale("GAMEDAY")+" "+todayText, 290+30, 250, 160, 24, sALIGN_CENTER_CENTER, new SColor8(30, 30, 30))
 
 
 		'=== UNAVAILABLE STATISTICS ===
 		If GetDailyBroadcastStatisticCollection().minShowDay >= parent.showDay
-			textFont.DrawBlock(GetLocale("STATISTICS_NOT_AVAILABLE"), 20 + 4, 80 + 1, 175 - 4, 19, ALIGN_LEFT_CENTER, fontColor)
+			textFont.DrawBox(GetLocale("STATISTICS_NOT_AVAILABLE"), 20 + 4, 80, 175 - 4, 20, sALIGN_LEFT_CENTER, fontColor)
 
 
 		'=== STATISTICS TABLE ===
@@ -596,10 +591,10 @@ endrem
 				If progNewsIterator = 1 Then tableX = 450
 
 				'the small added/subtracted numbers are for padding of the text
-				Local labelArea:TRectangle = New TRectangle.Init(tableX + 4, 80 + 1, 175-4, 19)
-				Local valueArea:TRectangle = New TRectangle.Init(labelArea.GetX2(), labelArea.GetY(), 155 - 5, 19)
-				Local captionArea:TRectangle = New TRectangle.Init(labelArea.GetX(), 57, 323, captionHeight)
-				Local bgArea:TRectangle = labelArea.Copy()
+				Local labelArea:TRectangle = New TRectangle.Init(tableX + 4, 81-1, 175-4, 19)
+				Local valueArea:TRectangle = New TRectangle.Init(labelArea.GetX2(), labelArea.GetY() + 2, 155 - 5, 19)
+				Local captionArea:TRectangle = New TRectangle.Init(labelArea.GetX(), 57, 322, captionHeight)
+				Local bgArea:TRectangle = New TRectangle.Init(tableX + 4, 81, 175-4, 19)
 				bgArea.SetW( valueArea.GetX2() - labelArea.GetX() + 6)
 				bgArea.position.SetXY( bgArea.GetX() - 3, bgArea.GetY() - 1 )
 
@@ -638,15 +633,15 @@ endrem
 				'row entries
 				If parent.showHour < 0 Or parent.showHour > 23 Or futureHour
 					If progNewsIterator = 1
-						captionFont.DrawBlock(GetLocale("PROGRAMME")+": "+GetLocale("AUDIENCE_RATING"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), ALIGN_CENTER_CENTER, captionColor, 1,,0.7)
+						captionFont.DrawBox(GetLocale("PROGRAMME")+": "+GetLocale("AUDIENCE_RATING"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.7)
 					Else
-						captionFont.DrawBlock(GetLocale("NEWS")+": "+GetLocale("AUDIENCE_RATING"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), ALIGN_CENTER_CENTER, captionColor, 1,,0.7)
+						captionFont.DrawBox(GetLocale("NEWS")+": "+GetLocale("AUDIENCE_RATING"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.7)
 					EndIf
 				ElseIf Not audienceResult
 					If progNewsIterator = 1
-						captionFont.DrawBlock(GetLocale("PROGRAMME")+": "+GetLocale("BROADCASTING_OUTAGE"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
+						captionFont.DrawBox(GetLocale("PROGRAMME")+": "+GetLocale("BROADCASTING_OUTAGE"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 					Else
-						captionFont.DrawBlock(GetLocale("NEWS")+": "+GetLocale("BROADCASTING_OUTAGE"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
+						captionFont.DrawBox(GetLocale("NEWS")+": "+GetLocale("BROADCASTING_OUTAGE"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 					EndIf
 				Else
 					Local title:String = audienceResult.GetTitle()
@@ -669,21 +664,21 @@ endrem
 							title = GetLocale("NEWS")+" - "+RSet(parent.showHour,2).Replace(" ","0")+":05"
 						EndIf
 					EndIf
-					captionFont.DrawBlock(title, captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
+					captionFont.DrawBox(title, captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 
-					textFont.DrawBlock(GetLocale("AUDIENCE_NUMBER")+":", labelArea.GetX(), labelArea.GetY() + 0*int(labelArea.GetH()), labelArea.GetW(), int(labelArea.GetH()), ALIGN_LEFT_CENTER, fontColor)
-					textFont.DrawBlock(GetLocale("POTENTIAL_AUDIENCE_NUMBER")+":", labelArea.GetX(), labelArea.GetY() + 1*int(labelArea.GetH()), labelArea.GetW(), int(labelArea.GetH()), ALIGN_LEFT_CENTER, fontColor)
-					textFont.DrawBlock(GetLocale("BROADCASTING_AREA")+":", labelArea.GetX(), labelArea.GetY() + 2*int(labelArea.GetH()), labelArea.GetW(), int(labelArea.GetH()), ALIGN_LEFT_CENTER, fontColor)
+					textFont.DrawBox(GetLocale("AUDIENCE_NUMBER")+":", labelArea.GetX(), labelArea.GetY() + 0*int(labelArea.GetH()), labelArea.GetW(), int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
+					textFont.DrawBox(GetLocale("POTENTIAL_AUDIENCE_NUMBER")+":", labelArea.GetX(), labelArea.GetY() + 1*int(labelArea.GetH()), labelArea.GetW(), int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
+					textFont.DrawBox(GetLocale("BROADCASTING_AREA")+":", labelArea.GetX(), labelArea.GetY() + 2*int(labelArea.GetH()), labelArea.GetW(), int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
 
-					boldTextFont.drawBlock(MathHelper.DottedValue(audienceResult.audience.GetTotalSum()), valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.drawBlock(MathHelper.NumberToString(100.0 * audienceResult.GetAudienceQuotePercentage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
-					TextFont.drawBlock("#"+audienceRanks[0], valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW(), valueArea.GetH(), ALIGN_RIGHT_CENTER, rankFontColor)
+					boldTextFont.DrawBox(MathHelper.DottedValue(audienceResult.audience.GetTotalSum()), valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetAudienceQuotePercentage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), sALIGN_RIGHT_CENTER, lightFontColor)
+					TextFont.DrawBox("#"+audienceRanks[0], valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH() -2, valueArea.GetW(), valueArea.GetH(), sALIGN_RIGHT_CENTER, rankFontColor)
 
-					boldTextFont.drawBlock(TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),0), valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.drawBlock(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
+					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),0), valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), sALIGN_RIGHT_CENTER, lightFontColor)
 
-					boldTextFont.drawBlock(TFunctions.convertValue(audienceResult.WholeMarket.GetTotalSum(),0), valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), ALIGN_RIGHT_CENTER, fontColor)
-					boldTextFont.drawBlock(MathHelper.NumberToString(100.0 * audienceResult.WholeMarket.GetTotalSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), ALIGN_RIGHT_CENTER, lightFontColor)
+					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.WholeMarket.GetTotalSum(),0), valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.WholeMarket.GetTotalSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), sALIGN_RIGHT_CENTER, lightFontColor)
 
 					'target groups
 					Local halfWidth:Int = 0.5 * (valueArea.GetX2() - labelArea.GetX())
@@ -697,13 +692,13 @@ endrem
 						If i = 8 Then drawOnLeft = 1
 
 						If drawOnLeft
-							smallTextFont.DrawBlock(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), ALIGN_LEFT_CENTER, fontColor)
-							smallBoldTextFont.DrawBlock(TFunctions.convertValue( audienceResult.audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 0 ), labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter - 20, int(labelArea.GetH()), ALIGN_RIGHT_CENTER, fontColor)
-							smallTextFont.DrawBlock("#"+audienceRanks[i], labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), ALIGN_RIGHT_CENTER, rankFontColor)
+							smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
+							smallBoldTextFont.DrawBox(TFunctions.convertValue( audienceResult.audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 0 ), labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter - 20, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
+							smallTextFont.DrawBox("#"+audienceRanks[i], labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, rankFontColor)
 						Else
-							smallTextFont.DrawBlock(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX() + halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), ALIGN_LEFT_CENTER, fontColor)
-							smallBoldTextFont.DrawBlock(TFunctions.convertValue( audienceResult.audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 0 ), labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter - 20, int(labelArea.GetH()), ALIGN_RIGHT_CENTER, fontColor)
-							smallTextFont.DrawBlock("#"+audienceRanks[i], labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), ALIGN_RIGHT_CENTER, rankFontColor)
+							smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX() + halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
+							smallBoldTextFont.DrawBox(TFunctions.convertValue( audienceResult.audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 0 ), labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter - 20, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
+							smallTextFont.DrawBox("#"+audienceRanks[i], labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, rankFontColor)
 						EndIf
 						drawOnLeft = 1 - drawOnLeft
 					Next
@@ -715,36 +710,35 @@ endrem
 
 			'=== DRAW AUDIENCE CURVE ===
 			startY = 253
-			backupColor.Get()
+			GetColor(backupColor)
+			backupColorA = GetAlpha()
 
-			captionFont.DrawBlock(GetLocale("AUDIENCE_RATINGS"), 30, startY,  740, captionHeight, ALIGN_LEFT_CENTER, captionColor, 1,, 0.5)
+			captionFont.DrawBox(GetLocale("AUDIENCE_RATINGS"), 30, startY,  740, captionHeight, sALIGN_LEFT_CENTER, captionColor, EDrawTextEffect.Emboss,  0.5)
 
-			Local dim:TVec2D
 			Local rightX:Int = 0
-			smallTextFont.DrawBlock(GetLocale("PROGRAMME"), 30 + 370, startY+1, 370, 20, ALIGN_RIGHT_CENTER, TColor.CreateGrey(50), 1, 1, 0.7, , , , dim)
+			Local dim:SVec2I
+			dim = smallTextFont.DrawBox(GetLocale("PROGRAMME"), 30 + 370, startY+1, 370, 20, sALIGN_RIGHT_CENTER, new SColor8(50, 50, 50), EDrawTextEffect.Emboss, 0.7)
 			rightX :+ dim.x + 5
 
-			SetAlpha 0.5 * backupColor.a
+			SetAlpha 0.5 * backupColorA
 			SetColor 0,0,0
 			DrawRect(30 + 740 - rightX - 15 + 1, startY+3 +1, 15-2, 14-2)
-			SetAlpha backupColor.a
-			TScreenHandler_OfficeStatistics.programmeColor.SetRGB()
+			SetAlpha backupColorA
+			SetColor(TScreenHandler_OfficeStatistics.programmeColor)
 			DrawRect(30 + 740 - rightX - 15, startY+3, 15, 14)
 			rightX :+ 15 + 20
 
-			smallTextFont.DrawBlock(GetLocale("NEWS"), 30 + 370 , startY+1, 370 - rightX, 20, ALIGN_RIGHT_CENTER, TColor.CreateGrey(50), 1, 1, 0.7, , , , dim)
+			dim = smallTextFont.DrawBox(GetLocale("NEWS"), 30 + 370 , startY+1, 370 - rightX, 20, sALIGN_RIGHT_CENTER, new SColor8(50, 50, 50), EDrawTextEffect.Emboss, 0.7)
 			rightX :+ dim.x + 5
 
-			SetAlpha 0.5 * backupColor.a
+			SetAlpha 0.5 * backupColorA
 			SetColor 0,0,0
 			DrawRect(30 + 740 - rightX - 15 + 1, startY+3 +1, 15-2, 14-2)
-			SetAlpha backupColor.a
-			SetAlpha GetAlpha()*2.0
-			TScreenHandler_OfficeStatistics.newsColor.SetRGB()
+			SetAlpha backupColorA
+			SetColor(TScreenHandler_OfficeStatistics.newsColor)
 			DrawRect(30 + 740 - rightX - 15, startY+3, 15, 14)
 
-			backupColor.SetRGB()
-
+			SetColor(backupColor)
 
 			RenderChart(parent)
 		endif
@@ -906,15 +900,15 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 
 
 	'helper
-	Function _DrawValue(value:String, change:Float, x:Int, y:Int, w:Int, h:Int, font:TBitmapFont, fontColor:TColor)
-		font.DrawBlock(value, x, y, w - 15, h, ALIGN_RIGHT_CENTER, fontColor)
+	Function _DrawValue(value:String, change:Float, x:Int, y:Int, w:Int, h:Int, font:TBitmapFont, fontColor:SColor8)
+		font.DrawBox(value, x, y, w - 15, h, sALIGN_RIGHT_CENTER, fontColor)
 
 		If Abs(change) < 0.001
-			font.DrawBlock(neutralIndicator, x + w - 15, y, 15, h, ALIGN_CENTER_CENTER, fontColor)
+			font.DrawBox(neutralIndicator, x + w - 15, y, 15, h, sALIGN_CENTER_CENTER, fontColor)
 		ElseIf change < 0
-			font.DrawBlock(negativeIndicator, x + w - 15, y, 15, h, ALIGN_CENTER_CENTER, fontColor)
+			font.DrawBox(negativeIndicator, x + w - 15, y, 15, h, sALIGN_CENTER_CENTER, fontColor)
 		Else
-			font.DrawBlock(positiveIndicator, x + w - 15, y, 15, h, ALIGN_CENTER_CENTER, fontColor)
+			font.DrawBox(positiveIndicator, x + w - 15, y, 15, h, sALIGN_CENTER_CENTER, fontColor)
 		EndIf
 	End Function
 
@@ -1026,15 +1020,14 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 
 		Local channelImageValues:TAudience = GetPublicImageCollection().GetImageValues(parent.roomOwner, 1)
 		Local oldChannelImageValues:TAudience = GetPublicImageCollection().GetImageValues(parent.roomOwner, 1, 1)
-		'captionFont.DrawBlock(GetLocale("AD_TARGETGROUP"), captionArea.GetX(), captionArea.GetY(),  captionArea.GetW(), captionArea.GetH(), ALIGN_CENTER_CENTER, captionColor, 1,,0.7)
-		smallBoldTextFont.DrawBlock(GetLocale("AD_TARGETGROUP"), tgCol1x, tgLabelArea.GetY() + 0*int(tgLabelArea.GetH()), tgCol1w, int(tgLabelArea.GetH()), ALIGN_LEFT_CENTER, fontColor)
-		smallBoldTextFont.DrawBlock(GetLocale("GENDER_MEN"), tgCol2x, tgLabelArea.GetY() + 0*int(tgLabelArea.GetH()), tgCol2w, int(tgLabelArea.GetH()), ALIGN_RIGHT_CENTER, fontColor)
-		smallBoldTextFont.DrawBlock(GetLocale("GENDER_WOMEN"), tgCol3x, tgLabelArea.GetY() + 0*int(tgLabelArea.GetH()), tgCol3w, int(tgLabelArea.GetH()), ALIGN_RIGHT_CENTER, fontColor)
-		smallBoldTextFont.DrawBlock(GetLocale("GENDER_ALL"), tgCol4x, tgLabelArea.GetY() + 0*int(tgLabelArea.GetH()), tgCol4w, int(tgLabelArea.GetH()), ALIGN_RIGHT_CENTER, fontColor)
+		smallBoldTextFont.DrawBox(GetLocale("AD_TARGETGROUP"), tgCol1x, tgLabelArea.GetY() + 0*int(tgLabelArea.GetH()), tgCol1w, int(tgLabelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
+		smallBoldTextFont.DrawBox(GetLocale("GENDER_MEN"), tgCol2x, tgLabelArea.GetY() + 0*int(tgLabelArea.GetH()), tgCol2w, int(tgLabelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
+		smallBoldTextFont.DrawBox(GetLocale("GENDER_WOMEN"), tgCol3x, tgLabelArea.GetY() + 0*int(tgLabelArea.GetH()), tgCol3w, int(tgLabelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
+		smallBoldTextFont.DrawBox(GetLocale("GENDER_ALL"), tgCol4x, tgLabelArea.GetY() + 0*int(tgLabelArea.GetH()), tgCol4w, int(tgLabelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
 
 
 		For Local i:Int = 0 To TVTTargetGroup.baseGroupCount
-			smallTextFont.DrawBlock(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), tgCol1x, tgLabelArea.GetY() + (i+1)*int(tgLabelArea.GetH()), tgCol1w, int(tgLabelArea.GetH()), ALIGN_LEFT_CENTER, fontColor)
+			smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), tgCol1x, tgLabelArea.GetY() + (i+1)*int(tgLabelArea.GetH()), tgCol1w, int(tgLabelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
 			If i = 0
 				Local change:Float
 				change = channelImageValues.GetGenderAverage(TVTPersonGender.MALE) - oldChannelImageValues.GetGenderAverage(TVTPersonGender.MALE)
@@ -1100,9 +1093,9 @@ Type TStatisticsSubScreen_ChannelImage extends TStatisticsSubScreen
 		Next
 
 
-		smallBoldTextFont.DrawBlock(GetLocale("PRESSURE_GROUPS"), pgCol1x, pgLabelArea.GetY() + 0*int(pgLabelArea.GetH()), pgCol1w + pgCol2w, int(pgLabelArea.GetH()), ALIGN_LEFT_CENTER, fontColor)
+		smallBoldTextFont.DrawBox(GetLocale("PRESSURE_GROUPS"), pgCol1x, pgLabelArea.GetY() + 0*int(pgLabelArea.GetH()), pgCol1w + pgCol2w, int(pgLabelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
 		For Local i:Int = 1 To TVTPressureGroup.count
-			smallTextFont.DrawBlock(GetLocale("PRESSURE_GROUPS_"+TVTPressureGroup.GetAsString( TVTPressureGroup.GetAtIndex(i) )), pgCol1x, pgLabelArea.GetY() + (i)*int(pgLabelArea.GetH()), pgCol1w, int(pgLabelArea.GetH()), ALIGN_LEFT_CENTER, fontColor)
+			smallTextFont.DrawBox(GetLocale("PRESSURE_GROUPS_"+TVTPressureGroup.GetAsString( TVTPressureGroup.GetAtIndex(i) )), pgCol1x, pgLabelArea.GetY() + (i)*int(pgLabelArea.GetH()), pgCol1w, int(pgLabelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
 
 			Local change:Float = GetPressureGroupCollection().GetChannelSympathy(parent.roomOwner, i, 0) - GetPressureGroupCollection().GetChannelSympathy(parent.roomOwner, i, 1)
 			_DrawValue(MathHelper.NumberToString(GetPressureGroup(i).GetChannelSympathy(parent.roomOwner), 2, False), change, pgCol4x, int(pgLabelArea.GetY() + i*int(pgLabelArea.GetH())), pgCol4w, int(pgLabelArea.GetH()), smallTextFont, fontColor)
@@ -1279,16 +1272,16 @@ Type TDataChart
 	Field dataStartX:Float = 0
 	Field dataEndX:Float = 23
 	Field dataSets:TDataChartDataSet[]
-	Field dataSetColors:TColor[]
-	Field dataSetSecondaryColors:TColor[]
+	Field dataSetColors:SColor8[]
+	Field dataSetSecondaryColors:SColor8[]
 	Field dataSetOffsets:TVec2D[]
 	Field labelFont:TBitmapFont
-	Field labelColor:TColor = TColor.CreateGrey(120)
-	Field labelColor2:TColor = TColor.CreateGrey(80)
+	Field labelColor:SColor8 = new SColor8(120, 120, 120)
+	Field labelColor2:SColor8 = new SColor8(80, 80, 80)
 
 	'Field selectedColor:TColor = TColor.Create(200,200,200)
-	Field selectedColor:TColor = TColor.Create(185,200,255)
-	Field hoveredColor:TColor = TColor.Create(95,110,255)
+	Field selectedColor:SColor8 = new SColor8(185,200,255)
+	Field hoveredColor:SColor8 = new SColor8(95,110,255)
 
 	Field leftAxisLabelEnabled:int = True
 	Field rightAxisLabelEnabled:int = True
@@ -1469,7 +1462,11 @@ Type TDataChart
 	End Method
 
 
-	Method AddDataSet:TDataChart(dataSet:TDataChartDataSet, color:TColor = null, offset:TVec2D = null)
+	Method AddDataSet:TDataChart(dataSet:TDataChartDataSet)
+		Return AddDataSet(dataSet, SColor8.Black, Null)
+	End Method
+
+	Method AddDataSet:TDataChart(dataSet:TDataChartDataSet, color:SColor8, offset:TVec2D = null)
 		dataSets :+ [dataSet]
 		dataSetColors :+ [color]
 		dataSetSecondaryColors = dataSetSecondaryColors[ .. dataSetSecondaryColors.length + 1]
@@ -1478,7 +1475,7 @@ Type TDataChart
 	End Method
 
 
-	Method SetDataSet:TDataChart(index:int, dataSet:TDataChartDataSet, color:TColor = null, offset:TVec2D = null)
+	Method SetDataSet:TDataChart(index:int, dataSet:TDataChartDataSet, color:SColor8, offset:TVec2D = null)
 		if dataSets.length <= index
 			dataSets = dataSets[ .. index]
 			dataSetColors = dataSetColors[ .. index]
@@ -1631,13 +1628,13 @@ Type TDataChart
 			if selectedSegment >= 0
 				SetAlpha 0.15
 				SetBlend ShadeBlend
-				selectedColor.SetRGB()
+				SetColor(selectedColor)
 				DrawRect(x + 1 + GetSegmentStart(selectedSegment), y+1, GetSegmentWidth(selectedSegment), h-2)
 			endif
 			if hoveredSegment >= 0
 				SetAlpha 0.15
 				SetBlend LightBlend
-				hoveredColor.SetRGB()
+				SetColor(hoveredColor)
 				DrawRect(x + 1 + GetSegmentStart(hoveredSegment), y+1, GetSegmentWidth(hoveredSegment), h-2)
 			endif
 			SetAlpha 1.0
@@ -1665,7 +1662,7 @@ Type TDataChart
 	Method RenderData()
 		GetGraphicsManager().BackupAndSetViewport( areaGraph.Copy().MoveXY(area.position.x, area.position.y) )
 
-		local shadowCol:TColor = TColor.CreateGrey(0)
+		local shadowCol:TColor = TColor.Create(0,0,0)
 		shadowCol.a = 0.3
 
 		'shadow render
@@ -1675,14 +1672,14 @@ Type TDataChart
 
 		'points render
 		For local dsIndex:int = 0 until dataSets.length
-			RenderDataSet(dsIndex)
+			RenderDataSet(dsIndex, 0, 0)
 		Next
 
 		GetGraphicsManager().RestoreViewport()
 	End Method
 
 
-	Method RenderDataSet(dsIndex:int, xOffset:int=0, yOffset:int=0, colorOverride:TColor = Null)
+	Method RenderDataSet(dsIndex:int, xOffset:int=0, yOffset:int=0, colorOverride:TColor=Null)
 		Local x:int = area.GetIntX() + areaGraph.GetIntX()
 		Local y:int = area.GetIntY() + areaGraph.GetIntY()
 		Local w:int = areaGraph.GetIntW()
@@ -1706,12 +1703,11 @@ Type TDataChart
 		endif
 
 		if not dataSetColors[dsIndex]
-			dataSetColors[dsIndex] = TColor.Create(70 + Rand(130), 70 + Rand(130), 70 + Rand(130))
+			dataSetColors[dsIndex] = new SColor8(70 + Rand(130), 70 + Rand(130), 70 + Rand(130))
 		endif
 
 		if not dataSetSecondaryColors[dsIndex]
-			dataSetSecondaryColors[dsIndex] = dataSetColors[dsIndex].Copy().AdjustBrightness(-0.25)
-			dataSetSecondaryColors[dsIndex].a :* 0.5
+			dataSetSecondaryColors[dsIndex] = new TColor(dataSetColors[dsIndex]).AdjustBrightness(-0.25).Multiply(1.0, 1.0, 1.0, 0.5).ToSColor8()
 		endif
 
 
@@ -1719,7 +1715,8 @@ Type TDataChart
 		if colorOverride
 			colorOverride.SetRGBA()
 		else
-			dataSetSecondaryColors[dsIndex].SetRGBA()
+			SetColor(dataSetSecondaryColors[dsIndex])
+			SetAlpha(dataSetSecondaryColors[dsIndex].a/255.0)
 		endif
 		dataPointX = basedataPointX
 		if dataSets[dsIndex]
@@ -1739,7 +1736,8 @@ Type TDataChart
 		if colorOverride
 			colorOverride.SetRGBA()
 		else
-			dataSetSecondaryColors[dsIndex].SetRGBA()
+			SetColor(dataSetSecondaryColors[dsIndex])
+			SetAlpha(dataSetSecondaryColors[dsIndex].a/255.0)
 		endif
 		SetAlpha 0.5 * GetAlpha()
 		SetLineWidth(2)
@@ -1769,7 +1767,8 @@ Type TDataChart
 		if colorOverride
 			colorOverride.SetRGBA()
 		else
-			dataSetColors[dsIndex].SetRGBA()
+			SetColor(dataSetColors[dsIndex])
+			SetAlpha(dataSetColors[dsIndex].a/255.0)
 		endif
 		dataPointX = basedataPointX
 		For Local i:int = xDataOffset until Min(xDataOffset + xSegmentsCount, dataSets[dsIndex].points.length)
@@ -1789,7 +1788,7 @@ Type TDataChart
 		Local x:int = area.GetIntX() + areaGraph.GetIntX()
 		Local x2:int = area.GetIntX() + areaGraph.GetIntX2()
 
-		Local col:TColor
+		Local col:SColor8
 		For Local i:Int = 0 Until xSegmentsCount
 			local dataIndex:int = i  + xDataOffset
 
@@ -1798,20 +1797,20 @@ Type TDataChart
 					col = hoveredColor
 '				elseif i = selectedSegment
 '					col = selectedColor
-				elseif labelColor2 and (i mod 2 = 0)
+				elseif (i mod 2 = 0)
 					col = labelColor2
 				else
 					col = labelColor
 				endif
 
-				labelFont.DrawBlock(xSegmentLabels[i], x + GetSegmentStart(i) + bottomAxisLabelOffset.GetIntX(), area.GetY2() - bottomXLabelH + bottomAxisLabelOffset.GetIntY(), GetSegmentWidth(i), bottomXLabelH, ALIGN_CENTER_CENTER, col)
+				labelFont.DrawBox(xSegmentLabels[i], x + GetSegmentStart(i) + bottomAxisLabelOffset.GetIntX(), area.GetY2() - bottomXLabelH + bottomAxisLabelOffset.GetIntY(), GetSegmentWidth(i), bottomXLabelH, sALIGN_CENTER_CENTER, col)
 			EndIf
-			labelFont.DrawBlock(dataIndex, x + GetSegmentStart(i) + bottomAxisLabelOffset.GetIntX(), -20 + area.GetY2() - bottomXLabelH + bottomAxisLabelOffset.GetIntY(), GetSegmentWidth(i), bottomXLabelH, ALIGN_CENTER_CENTER, col)
+			labelFont.DrawBox(dataIndex, x + GetSegmentStart(i) + bottomAxisLabelOffset.GetIntX(), -20 + area.GetY2() - bottomXLabelH + bottomAxisLabelOffset.GetIntY(), GetSegmentWidth(i), bottomXLabelH, sALIGN_CENTER_CENTER, col)
 		Next
 
 		'values
-		labelFont.DrawBlock(GetFormattedValue(valueDisplayMaximumY), int(x2 + rightAxisLabelOffset.GetIntX()), int(area.GetY() + areaGraph.GetY() + rightAxisLabelOffset.GetY()), (area.GetX2() - areaGraph.GetX2()), 20, ALIGN_LEFT_TOP, labelColor)
-		labelFont.DrawBlock(GetFormattedValue(valueDisplayMinimumY), int(x2 + rightAxisLabelOffset.GetIntX()), int(area.GetY() + areaGraph.GetY2() + rightAxisLabelOffset.GetY()), (area.GetX2() - areaGraph.GetX2()), 20, ALIGN_LEFT_TOP, labelColor)
+		labelFont.DrawBox(GetFormattedValue(valueDisplayMaximumY), int(x2 + rightAxisLabelOffset.GetIntX()), int(area.GetY() + areaGraph.GetY() + rightAxisLabelOffset.GetY()), (area.GetX2() - areaGraph.GetX2()), 20, sALIGN_LEFT_TOP, labelColor)
+		labelFont.DrawBox(GetFormattedValue(valueDisplayMinimumY), int(x2 + rightAxisLabelOffset.GetIntX()), int(area.GetY() + areaGraph.GetY2() + rightAxisLabelOffset.GetY()), (area.GetX2() - areaGraph.GetX2()), 20, sALIGN_LEFT_TOP, labelColor)
 	End Method
 
 

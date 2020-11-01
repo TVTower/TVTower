@@ -17,7 +17,7 @@ Type TScreenHandler_Financials
 	global financeHistoryUpButton:TGUIArrowButton
 	Global financeHistoryStartPos:int = 0
 	Global financeShowDay:int = 0
-	Global clTypes:TColor[6]
+	Global clTypes:SColor8[6]
 
 	Global labelBGs:TSprite[6]
 	Global balanceValueBG:TSprite
@@ -31,11 +31,11 @@ Type TScreenHandler_Financials
 		if not screen then return False
 
 		'create finance entry colors
-		clTypes[TVTPlayerFinanceEntryType.GROUP_NEWS] = TColor.Create(0, 31, 83)
-		clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME] = TColor.Create(89, 40, 0)
-		clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT] = TColor.Create(30, 30, 30)
-		clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION] = TColor.Create(44, 0, 78)
-		clTypes[TVTPlayerFinanceEntryType.GROUP_STATION] = TColor.Create(0, 75, 69)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_NEWS] = new SColor8(0, 31, 83)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME] = new SColor8(89, 40, 0)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT] = new SColor8(30, 30, 30)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION] = new SColor8(44, 0, 78)
+		clTypes[TVTPlayerFinanceEntryType.GROUP_STATION] = new SColor8(0, 75, 69)
 
 
 		'=== create gui elements if not done yet
@@ -100,7 +100,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 
 		local finance:TPlayerFinance = GetPlayerFinanceCollection().GetIgnoringStartDay(room.owner, financeShowDay)
 
-		local captionColor:TColor = TColor.CreateGrey(70)
+		local captionColor:SColor8 = new SColor8(70, 70, 70)
 		local captionFont:TBitmapFont = GetBitmapFont("Default", 14, BOLDFONT)
 		local captionHeight:int = 20 'to center it to table header according "font Baseline"
 		local textFont:TBitmapFont = GetBitmapFont("Default", 14)
@@ -108,7 +108,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		local textSmallFont:TBitmapFont = GetBitmapFont("Default", 11)
 		local textBoldFont:TBitmapFont = GetBitmapFont("Default", 14, BOLDFONT)
 
-		local clLog:TColor = TColor.CreateGrey(50)
+		local clLog:SColor8 = new SColor8(50,50,50)
 
 
 		local clOriginal:TColor = new TColor.Get()
@@ -124,7 +124,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		'bankruptcy happened today?
 '		if bankruptcyCountAtMidnight > 0
 
-			textFont.DrawBlock(GetLocale("BEFORE_XTH_PLAYER_RESTART").Replace("%X%", (bankruptcyCountAtMidnight+1)), 250 + screenOffsetX, screenOffsetY - 10, 200, 20, ALIGN_CENTER_CENTER, TColor.Create(120,80,80), 2, 1, 0.2)
+			textFont.DrawBox(GetLocale("BEFORE_XTH_PLAYER_RESTART").Replace("%X%", (bankruptcyCountAtMidnight+1)), 250 + screenOffsetX, screenOffsetY - 10, 200, 20, sALIGN_CENTER_CENTER, new SColor8(120, 80, 80), EDrawTextEffect.Shadow, 0.2)
 			'tint color
 			SetColor 255,240,240
 		endif
@@ -135,11 +135,12 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		'add 1 to "today" as we are on this day then
 		local today:Double = GetWorldTime().MakeTime(0, financeShowDay, 0, 0)
 		local todayText:string = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().GetYear(today)
-		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 30 + screenOffsetX, 15 +  screenOffsetY, 160, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(90), 2, 1, 0.2)
+'		textFont.DrawBox(GetLocale("GAMEDAY")+" "+todayText, 30 + screenOffsetX, 14 +  screenOffsetY, 160, 20, sALIGN_CENTER_CENTER, New SColor8(90,90,90), EDrawTextEffect.Shadow, 0.2)
+		GetBitmapFont("default", 12, BOLDFONT).DrawBox(GetLocale("GAMEDAY")+" "+todayText, 30 + screenOffsetX, 14 +  screenOffsetY, 160, 20, sALIGN_CENTER_CENTER, New SColor8(90,90,90), EDrawTextEffect.Emboss, 0.2)
 
 
 		'=== NEWS LOG ===
-		captionFont.DrawBlock(GetLocale("FINANCES_LAST_FINANCIAL_ACTIVITIES"), 500 + screenOffsetX, 13 + screenOffsetY,  240, captionHeight, ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
+		captionFont.DrawBox(GetLocale("FINANCES_LAST_FINANCIAL_ACTIVITIES"), 500 + screenOffsetX, 15 + screenOffsetY,  240, captionHeight, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 		local list:TList = GetPlayerFinanceHistoryList(room.owner)
 		local logSlot:int = 0
 		local logH:int = 19
@@ -161,7 +162,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 			Endif
 			'ronny: do not "abs()" the value - this helps color-blind
 			'       people to distinguish positive and negative
-			logFont.DrawBlock("|"+logCol+"|"+MathHelper.DottedValue(history.GetMoney())+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 258 - 2*5, logH, ALIGN_LEFT_CENTER, clLog)
+			logFont.DrawBox("|"+logCol+"|"+MathHelper.DottedValue(history.GetMoney())+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 40 + screenOffsetY + logSlot*logH, 258 - 2*5, logH, sALIGN_LEFT_CENTER, clLog)
 			'logFont.DrawBlock("|"+logCol+"|"+MathHelper.DottedValue(abs(history.GetMoney()))+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 258 - 2*5, logH, ALIGN_LEFT_CENTER, clLog)
 			logSlot:+1
 		Next
@@ -171,17 +172,17 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		'=== BALANCE TABLE ===
 
 		local labelX:int = 20
-		local labelStartY:int = 39 + screenOffsetY
+		local labelStartY:int = 39 + screenOffsetY -1
 		local labelH:int = 19, labelW:int = 240
 
 		local valueIncomeX:int = labelX + labelW
 		local valueExpenseX:int = valueIncomeX + 120
-		local valueStartY:int = 39 + screenOffsetY
+		local valueStartY:int = 39 + screenOffsetY + 1
 		local valueH:int = 19, valueW:int = 95
 
 		'draw balance table
-		captionFont.DrawBlock(GetLocale("FINANCES_INCOME"), 240 + screenOffsetX, 13 + screenOffsetY,  104, captionHeight, ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
-		captionFont.DrawBlock(GetLocale("FINANCES_EXPENSES"), 352 + screenOffsetX, 13 + screenOffsetY,  104, captionHeight, ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
+		captionFont.DrawBox(GetLocale("FINANCES_INCOME"), 240 + screenOffsetX, 15 + screenOffsetY,  104, captionHeight, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
+		captionFont.DrawBox(GetLocale("FINANCES_EXPENSES"), 352 + screenOffsetX, 15 + screenOffsetY,  104, captionHeight, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 
 		'draw total-area
 		local profit:int = finance.revenue_after - finance.revenue_before
@@ -190,10 +191,11 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		else
 			GetSpriteFromRegistry("screen_financial_negativeBalance").DrawArea(250 + screenOffsetX, 332 + screenOffsetY, 200, 25)
 		endif
-		captionFont.DrawBlock(MathHelper.DottedValue(profit), 250 + screenOffsetX, 332 + screenOffsetY, 200, 25, ALIGN_CENTER_CENTER, TColor.clWhite, 2, 1, 0.75)
+		captionFont.DrawBox(MathHelper.DottedValue(profit), 250 + screenOffsetX, 334 + screenOffsetY, 200, 25, sALIGN_CENTER_CENTER, SColor8.White, EDrawTextEffect.Shadow, 0.5)
 
 		'draw label backgrounds
 		local labelBGX:int = 20
+		local labelBGY:int = labelStartY + 1
 		local labelBGW:int = 240
 		local valueBGX:int = labelBGX + labelBGW + 1
 
@@ -201,90 +203,90 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 			if not labelBGs[i] then labelBGs[i] = GetSpriteFromRegistry("screen_financial_balanceLabel"+i)
 		Next
 
-		labelBGs[TVTPlayerFinanceEntryType.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 0*valueH, labelBGW, labelH)
-		labelBGs[TVTPlayerFinanceEntryType.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 1*valueH, labelBGW, labelH)
-		labelBGs[TVTPlayerFinanceEntryType.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 2*valueH, labelBGW, labelH)
-		labelBGs[TVTPlayerFinanceEntryType.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 3*valueH, labelBGW, labelH)
-		labelBGs[TVTPlayerFinanceEntryType.GROUP_NEWS].DrawArea(labelBGX, labelStartY + 4*valueH, labelBGW, labelH)
-		labelBGs[TVTPlayerFinanceEntryType.GROUP_NEWS].DrawArea(labelBGX, labelStartY + 5*valueH, labelBGW, labelH)
-		labelBGs[TVTPlayerFinanceEntryType.GROUP_STATION].DrawArea(labelBGX, labelStartY + 6*valueH, labelBGW, labelH)
-		labelBGs[TVTPlayerFinanceEntryType.GROUP_PRODUCTION].DrawArea(labelBGX, labelStartY + 7*valueH, labelBGW, labelH)
-		labelBGs[TVTPlayerFinanceEntryType.GROUP_PRODUCTION].DrawArea(labelBGX, labelStartY + 8*valueH, labelBGW, labelH)
-		labelBGs[TVTPlayerFinanceEntryType.GROUP_PRODUCTION].DrawArea(labelBGX, labelStartY + 9*valueH, labelBGW, labelH)
-		labelBGs[TVTPlayerFinanceEntryType.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 10*valueH, labelBGW, labelH)
-		labelBGs[TVTPlayerFinanceEntryType.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 11*valueH, labelBGW, labelH)
-		labelBGs[TVTPlayerFinanceEntryType.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 12*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_PROGRAMME].DrawArea(labelBGX, labelBGY + 0*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_PROGRAMME].DrawArea(labelBGX, labelBGY + 1*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_PROGRAMME].DrawArea(labelBGX, labelBGY + 2*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_PROGRAMME].DrawArea(labelBGX, labelBGY + 3*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_NEWS].DrawArea(labelBGX, labelBGY + 4*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_NEWS].DrawArea(labelBGX, labelBGY + 5*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_STATION].DrawArea(labelBGX, labelBGY + 6*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_PRODUCTION].DrawArea(labelBGX, labelBGY + 7*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_PRODUCTION].DrawArea(labelBGX, labelBGY + 8*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_PRODUCTION].DrawArea(labelBGX, labelBGY + 9*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_DEFAULT].DrawArea(labelBGX, labelBGY + 10*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_DEFAULT].DrawArea(labelBGX, labelBGY + 11*valueH, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_DEFAULT].DrawArea(labelBGX, labelBGY + 12*valueH, labelBGW, labelH)
 
-		labelBGs[TVTPlayerFinanceEntryType.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 14*valueH +4, labelBGW, labelH)
+		labelBGs[TVTPlayerFinanceEntryType.GROUP_DEFAULT].DrawArea(labelBGX, labelBGY + 14*valueH +4, labelBGW, labelH)
 
 		'draw value backgrounds
 		if not balanceValueBG then balanceValueBG = GetSpriteFromRegistry("screen_financial_balanceValue")
 		if not balanceValueBG2 then balanceValueBG2 = GetSpriteFromRegistry("screen_financial_balanceValue2")
 		for local i:int = 0 to 12
 			if i mod 2 = 0
-				balanceValueBG.DrawArea(valueBGX, labelStartY + i*valueH, balanceValueBG.GetWidth(), labelH)
+				balanceValueBG.DrawArea(valueBGX, labelBGY + i*valueH, balanceValueBG.GetWidth(), labelH)
 			else
-				balanceValueBG2.DrawArea(valueBGX, labelStartY + i*valueH, balanceValueBG.GetWidth(), labelH)
+				balanceValueBG2.DrawArea(valueBGX, labelBGY + i*valueH, balanceValueBG.GetWidth(), labelH)
 			endif
 		Next
-		balanceValueBG.DrawArea(valueBGX, labelStartY + 14*valueH + 4, balanceValueBG.GetWidth(), labelH)
+		balanceValueBG.DrawArea(valueBGX, labelBGY + 14*valueH + 4, balanceValueBG.GetWidth(), labelH)
 
 		'draw balance labels
-		textFont.DrawBlock(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES"), labelX, labelStartY + 0*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY"), labelX, labelStartY + 1*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_CALL_IN_SHOW_INCOME"), labelX, labelStartY + 2*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY"), labelX, labelStartY + 3*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_NEWS"), labelX, labelStartY + 4*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_NEWS])
-		textFont.DrawBlock(GetLocale("FINANCES_NEWSAGENCIES"), labelX, labelStartY + 5*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_NEWS])
-		textFont.DrawBlock(GetLocale("FINANCES_STATIONS"), labelX, labelStartY + 6*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_STATION])
-		textFont.DrawBlock(GetLocale("FINANCES_SCRIPTS"), labelX, labelStartY + 7*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION])
-		textFont.DrawBlock(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF"), labelX, labelStartY + 8*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION])
-		textFont.DrawBlock(GetLocale("FINANCES_STUDIO_RENT"), labelX, labelStartY + 9*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION])
-		textFont.DrawBlock(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT"), labelX, labelStartY + 10*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT])
-		textFont.DrawBlock(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED"), labelX, labelStartY + 11*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT])
-		textFont.DrawBlock(GetLocale("FINANCES_MISC"), labelX, labelStartY + 12*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT])
+		textFont.DrawBox(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES"), labelX, labelStartY + 0*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME])
+		textFont.DrawBox(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY"), labelX, labelStartY + 1*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME])
+		textFont.DrawBox(GetLocale("FINANCES_CALL_IN_SHOW_INCOME"), labelX, labelStartY + 2*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME])
+		textFont.DrawBox(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY"), labelX, labelStartY + 3*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PROGRAMME])
+		textFont.DrawBox(GetLocale("FINANCES_NEWS"), labelX, labelStartY + 4*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_NEWS])
+		textFont.DrawBox(GetLocale("FINANCES_NEWSAGENCIES"), labelX, labelStartY + 5*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_NEWS])
+		textFont.DrawBox(GetLocale("FINANCES_STATIONS"), labelX, labelStartY + 6*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_STATION])
+		textFont.DrawBox(GetLocale("FINANCES_SCRIPTS"), labelX, labelStartY + 7*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION])
+		textFont.DrawBox(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF"), labelX, labelStartY + 8*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION])
+		textFont.DrawBox(GetLocale("FINANCES_STUDIO_RENT"), labelX, labelStartY + 9*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_PRODUCTION])
+		textFont.DrawBox(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT"), labelX, labelStartY + 10*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT])
+		textFont.DrawBox(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED"), labelX, labelStartY + 11*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT])
+		textFont.DrawBox(GetLocale("FINANCES_MISC"), labelX, labelStartY + 12*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT])
 		'spacer for total
-		textBoldFont.DrawBlock(GetLocale("FINANCES_TOTAL"), labelX, labelStartY + 14*valueH+4, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT])
+		textBoldFont.DrawBox(GetLocale("FINANCES_TOTAL"), labelX, labelStartY + 14*valueH+6, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_DEFAULT])
 
 
 		'draw "grouped"-info-sign
-		GetSpriteFromRegistry("screen_financial_balanceInfo").Draw(valueBGX, labelStartY + 1 + 6*valueH)
+		GetSpriteFromRegistry("screen_financial_balanceInfo").Draw(valueBGX, labelBGY + 1 + 6*valueH)
 
 		'draw balance values: income
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.income_programmeLicences), valueIncomeX, valueStartY + 0*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, GameConfig.clPositive)
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.income_ads), valueIncomeX, valueStartY + 1*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, GameConfig.clPositive)
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.income_callerRevenue), valueIncomeX, valueStartY + 2*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, GameConfig.clPositive)
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.income_sponsorshipRevenue), valueIncomeX, valueStartY + 3*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, GameConfig.clPositive)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.income_programmeLicences), valueIncomeX, valueStartY + 0*valueH, valueW, valueH, sALIGN_RIGHT_CENTER, GameConfig.clPositive)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.income_ads), valueIncomeX, valueStartY + 1*valueH, valueW, valueH, sALIGN_RIGHT_CENTER, GameConfig.clPositive)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.income_callerRevenue), valueIncomeX, valueStartY + 2*valueH, valueW, valueH, sALIGN_RIGHT_CENTER, GameConfig.clPositive)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.income_sponsorshipRevenue), valueIncomeX, valueStartY + 3*valueH, valueW, valueH, sALIGN_RIGHT_CENTER, GameConfig.clPositive)
 		'news: generate no income
 		'newsagencies: generate no income
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.income_stations), valueIncomeX, valueStartY + 6*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, GameConfig.clPositive)
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.income_scripts), valueIncomeX, valueStartY + 7*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, GameConfig.clPositive)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.income_stations), valueIncomeX, valueStartY + 6*valueH, valueW, valueH, sALIGN_RIGHT_CENTER, GameConfig.clPositive)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.income_scripts), valueIncomeX, valueStartY + 7*valueH, valueW, valueH, sALIGN_RIGHT_CENTER, GameConfig.clPositive)
 		'actors and productionstuff: generate no income
 		'studios: generate no income
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.income_balanceInterest), valueIncomeX, valueStartY + 10*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, GameConfig.clPositive)
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.income_creditTaken), valueIncomeX, valueStartY + 11*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, GameConfig.clPositive)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.income_balanceInterest), valueIncomeX, valueStartY + 10*valueH, valueW, valueH, sALIGN_RIGHT_CENTER, GameConfig.clPositive)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.income_creditTaken), valueIncomeX, valueStartY + 11*valueH, valueW, valueH, sALIGN_RIGHT_CENTER, GameConfig.clPositive)
 		'misc contains "granted benefits"
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.income_misc + finance.income_granted_benefits), valueIncomeX, valueStartY + 12*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, GameConfig.clPositive)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.income_misc + finance.income_granted_benefits), valueIncomeX, valueStartY + 12*valueH, valueW, valueH, sALIGN_RIGHT_CENTER, GameConfig.clPositive)
 		'spacer for total
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.income_total), valueIncomeX, valueStartY + 14*valueH +4, valueW, valueH, ALIGN_RIGHT_CENTER, GameConfig.clPositive)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.income_total), valueIncomeX, valueStartY + 14*valueH +4, valueW, valueH, sALIGN_RIGHT_CENTER, GameConfig.clPositive)
 
 
 		'draw balance values: expenses
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.expense_programmeLicences), valueExpenseX, valueStartY + 0*valueH, valueW, valueH, ALIGN_LEFT_CENTER, GameConfig.clNegative)
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.expense_penalty), valueExpenseX, valueStartY + 1*valueH, valueW, valueH, ALIGN_LEFT_CENTER, GameConfig.clNegative)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.expense_programmeLicences), valueExpenseX, valueStartY + 0*valueH, valueW, valueH, sALIGN_LEFT_CENTER, GameConfig.clNegative)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.expense_penalty), valueExpenseX, valueStartY + 1*valueH, valueW, valueH, sALIGN_LEFT_CENTER, GameConfig.clNegative)
 		'no callin expenses ?
 		'no expenses for sponsorships ?
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.expense_news), valueExpenseX, valueStartY + 4*valueH, valueW, valueH, ALIGN_LEFT_CENTER, GameConfig.clNegative)
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.expense_newsAgencies), valueExpenseX, valueStartY + 5*valueH, valueW, valueH, ALIGN_LEFT_CENTER, GameConfig.clNegative)
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.expense_stationFees + finance.expense_stations), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, ALIGN_LEFT_CENTER, GameConfig.clNegative)
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.expense_scripts), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, ALIGN_LEFT_CENTER, GameConfig.clNegative)
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.expense_productionStuff), valueExpenseX, valueStartY + 8*valueH, valueW, valueH, ALIGN_LEFT_CENTER, GameConfig.clNegative)
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.expense_rent), valueExpenseX, valueStartY + 9*valueH, valueW, valueH, ALIGN_LEFT_CENTER, GameConfig.clNegative)
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.expense_drawingCreditInterest + finance.expense_creditInterest), valueExpenseX, valueStartY + 10*valueH, valueW, valueH, ALIGN_LEFT_CENTER, GameConfig.clNegative)
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.expense_creditRepayed), valueExpenseX, valueStartY + 11*valueH, valueW, valueH, ALIGN_LEFT_CENTER, GameConfig.clNegative)
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.expense_misc), valueExpenseX, valueStartY + 12*valueH, valueW, valueH, ALIGN_LEFT_CENTER, GameConfig.clNegative)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.expense_news), valueExpenseX, valueStartY + 4*valueH, valueW, valueH, sALIGN_LEFT_CENTER, GameConfig.clNegative)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.expense_newsAgencies), valueExpenseX, valueStartY + 5*valueH, valueW, valueH, sALIGN_LEFT_CENTER, GameConfig.clNegative)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.expense_stationFees + finance.expense_stations), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, sALIGN_LEFT_CENTER, GameConfig.clNegative)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.expense_scripts), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, sALIGN_LEFT_CENTER, GameConfig.clNegative)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.expense_productionStuff), valueExpenseX, valueStartY + 8*valueH, valueW, valueH, sALIGN_LEFT_CENTER, GameConfig.clNegative)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.expense_rent), valueExpenseX, valueStartY + 9*valueH, valueW, valueH, sALIGN_LEFT_CENTER, GameConfig.clNegative)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.expense_drawingCreditInterest + finance.expense_creditInterest), valueExpenseX, valueStartY + 10*valueH, valueW, valueH, sALIGN_LEFT_CENTER, GameConfig.clNegative)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.expense_creditRepayed), valueExpenseX, valueStartY + 11*valueH, valueW, valueH, sALIGN_LEFT_CENTER, GameConfig.clNegative)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.expense_misc), valueExpenseX, valueStartY + 12*valueH, valueW, valueH, sALIGN_LEFT_CENTER, GameConfig.clNegative)
 		'spacer for total
-		textBoldFont.drawBlock(MathHelper.DottedValue(finance.expense_total), valueExpenseX, valueStartY + 14*valueH +4, valueW, valueH, ALIGN_LEFT_CENTER, GameConfig.clNegative)
+		textBoldFont.DrawBox(MathHelper.DottedValue(finance.expense_total), valueExpenseX, valueStartY + 14*valueH +4, valueW, valueH, sALIGN_LEFT_CENTER, GameConfig.clNegative)
 
 
 
@@ -307,18 +309,18 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 			balanceValueBG.DrawArea(valueBGX, labelStartY + 6*valueH, balanceValueBG.GetWidth(), labelH)
 			balanceValueBG2.DrawArea(valueBGX, labelStartY + 7*valueH, balanceValueBG.GetWidth(), labelH)
 
-			textFont.DrawBlock(GetLocale("FINANCES_STATIONS_FEES"), labelX, labelStartY + 6*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_STATION])
-			textFont.DrawBlock(GetLocale("FINANCES_STATIONS_BUY_SELL"), labelX, labelStartY + 7*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_STATION])
+			textFont.DrawBox(GetLocale("FINANCES_STATIONS_FEES"), labelX, labelStartY + 6*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_STATION])
+			textFont.DrawBox(GetLocale("FINANCES_STATIONS_BUY_SELL"), labelX, labelStartY + 7*valueH, labelW, labelH, sALIGN_LEFT_CENTER, clTypes[TVTPlayerFinanceEntryType.GROUP_STATION])
 
-			textBoldFont.drawBlock(MathHelper.DottedValue(finance.expense_stationFees), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, ALIGN_LEFT_CENTER, GameConfig.clNegative)
+			textBoldFont.DrawBox(MathHelper.DottedValue(finance.expense_stationFees), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, sALIGN_LEFT_CENTER, GameConfig.clNegative)
 
-			textBoldFont.drawBlock(MathHelper.DottedValue(finance.income_stations), valueIncomeX, valueStartY + 7*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, GameConfig.clPositive)
-			textBoldFont.drawBlock(MathHelper.DottedValue(finance.expense_stations), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, ALIGN_LEFT_CENTER, GameConfig.clNegative)
+			textBoldFont.DrawBox(MathHelper.DottedValue(finance.income_stations), valueIncomeX, valueStartY + 7*valueH, valueW, valueH, sALIGN_RIGHT_CENTER, GameConfig.clPositive)
+			textBoldFont.DrawBox(MathHelper.DottedValue(finance.expense_stations), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, sALIGN_LEFT_CENTER, GameConfig.clNegative)
 		endif
 
 
 		'==== DRAW MONEY CURVE====
-		captionFont.DrawBlock(GetLocale("FINANCES_FINANCIAL_CURVES"), 500 + screenOffsetX, 207 + screenOffsetY,  260, captionHeight, ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
+		captionFont.DrawBox(GetLocale("FINANCES_FINANCIAL_CURVES"), 500 + screenOffsetX, 209 + screenOffsetY,  260, captionHeight, sALIGN_CENTER_CENTER, captionColor, EDrawTextEffect.Emboss, 0.5)
 
 		'how much days to draw
 		local showDays:int = 10
@@ -329,7 +331,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		'minimum money (may be negative)
 		Local minValue:int = 0
 		'color of labels
-		Local labelColor:TColor = TColor.CreateGrey(80)
+		Local labelColor:SColor8 = new SColor8(80, 80, 80)
 
 		'first get the maximum value so we know how to scale the rest
 		For local i:Int = GetWorldTime().GetDay()-showDays To GetWorldTime().GetDay()
@@ -365,9 +367,9 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 			local time:Double = GetWorldTime().MakeTime(0, hoveredDay, 0, 0)
 			local gameDay:string = GetWorldTime().GetDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
 			if GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money > 0
-				textSmallFont.Draw(GetLocale("GAMEDAY")+" "+gameDay+": |color=50,110,50|"+MathHelper.DottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
+				textSmallFont.DrawBox(GetLocale("GAMEDAY")+" "+gameDay+": |color=50,110,50|"+MathHelper.DottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, curveArea.GetW(), -1, sALIGN_LEFT_TOP, new SColor8(50, 50, 50))
 			Else
-				textSmallFont.Draw(GetLocale("GAMEDAY")+" "+gameDay+": |color=110,50,50|"+MathHelper.DottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
+				textSmallFont.DrawBox(GetLocale("GAMEDAY")+" "+gameDay+": |color=110,50,50|"+MathHelper.DottedValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money)+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, curveArea.GetW(), -1, sALIGN_LEFT_TOP, new SColor8(50, 50, 50))
 			Endif
 
 			local hoverX:int = curveArea.GetX() + (slot-0.5) * slotWidth
@@ -423,8 +425,8 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		SetLineWidth(1)
 
 		'coord descriptor
-		textSmallFont.drawBlock(TFunctions.convertValue(maxvalue,2,0), curveArea.GetX(), curveArea.GetY(), curveArea.GetW(), 20, new TVec2D.Init(ALIGN_RIGHT), labelColor)
-		textSmallFont.drawBlock(TFunctions.convertValue(minvalue,2,0), curveArea.GetX(), curveArea.GetY() + curveArea.GetH()-20, curveArea.GetW(), 20, new TVec2D.Init(ALIGN_RIGHT, ALIGN_BOTTOM), labelColor)
+		textSmallFont.DrawBox(TFunctions.convertValue(maxvalue,2,0), curveArea.GetX(), curveArea.GetY()-2, curveArea.GetW(), 20, sALIGN_RIGHT_TOP, labelColor)
+		textSmallFont.DrawBox(TFunctions.convertValue(minvalue,2,0), curveArea.GetX(), curveArea.GetY() + curveArea.GetH()-20, curveArea.GetW(), 20, sALIGN_RIGHT_BOTTOM, labelColor)
 
 
 		GuiManager.Draw( LS_officeFinancialScreen )

@@ -156,8 +156,11 @@ Global Init_Complete:Int = 0
 
 Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceCollection.GetInstance()
 
-Global rectangleTime:Int = MilliSecs()
-Global printDebugStats:Int = False
+Global debugCreationTime:Int = MilliSecs()
+Global printDebugStats:Int = True
+
+
+Global screenshot_debug:TImage = LoadImage("screenshot_002.png")
 
 
 '==== Initialize ====
@@ -1424,60 +1427,49 @@ endrem
 
 
 	Function RenderDevOSD()
+		Local bf:TBitmapFont = GetBitmapFontManager().baseFont
 		Local textX:Int = 5
 		Local oldCol:TColor = New TColor.Get()
 		SetAlpha oldCol.a * 0.25
 		SetColor 0,0,0
 		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
-			DrawRect(0,0, 800,13)
+			DrawRect(0,0, 800, bf.GetMaxCharHeight(true))
 		Else
-'			DrawRect(0,0, 175 + 90 + 150,13)
-			DrawRect(0,0, 175 + 90 + 50,13)
+			DrawRect(0,0, 175 + 90 + 50, bf.GetMaxCharHeight(true))
 		EndIf
 		oldCol.SetRGBA()
 
-		Local bf:TBitmapFont = GetBitmapFontManager().baseFont
-
-		bf.draw("Speed:" + Int(GetWorldTime().GetVirtualMinutesPerSecond() * 100), textX , 0)
-		textX:+75
-		bf.draw("FPS: "+GetDeltaTimer().currentFps, textX, 0)
-		textX:+50
-		bf.draw("UPS: " + Int(GetDeltaTimer().currentUps), textX,0)
-		textX:+50
-		bf.draw("GC: " + (GCMemAlloced()/1024) +" Kb", textX,0)
-'		bf.draw("GC: " + bbGCAllocCount+"/s", textX,0)
-		textX:+80
+		textX:+ Max(75, bf.DrawSimple("Speed:" + Int(GetWorldTime().GetVirtualMinutesPerSecond() * 100), textX , 0).x)
+		textX:+ Max(50, bf.DrawSimple("FPS: "+GetDeltaTimer().currentFps, textX, 0).x)
+		textX:+ Max(50, bf.DrawSimple("UPS: " + Int(GetDeltaTimer().currentUps), textX,0).x)
+		textX:+ Max(40, bf.DrawSimple("GC: " + (GCMemAlloced()/1024) +" Kb", textX,0).x)
+		textX:+ Max(40, bf.DrawSimple("  " + bbGCAllocCount+"/s", textX,0).x)
 rem
 		local soloudDriver:TSoloudAudioDriver = TSoloudAudioDriver(GetAudioDriver())
 		if soloudDriver
-			bf.draw("SOL: " + soloudDriver._soloud.getActiveVoiceCount() + "/" + soloudDriver._soloud.getMaxActiveVoiceCount() + "/" + soloudDriver._soloud.getVoiceCount() +" voices", textX,0)
+			bf.DrawSimple("SOL: " + soloudDriver._soloud.getActiveVoiceCount() + "/" + soloudDriver._soloud.getMaxActiveVoiceCount() + "/" + soloudDriver._soloud.getVoiceCount() +" voices", textX,0)
 			textX:+75
 		Else
-			bf.draw("SOL: " + TTypeID.ForObject(GetAudioDriver()).name(), textX,0)
+			bf.DrawSimple("SOL: " + TTypeID.ForObject(GetAudioDriver()).name(), textX,0)
 			textX:+75
 		endif
 endrem
 		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
-			bf.draw("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0)
-			textX:+85
+			textX:+ Max(85, bf.DrawSimple("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0).x)
 			'update time per second
-			bf.draw("UTPS: " + Int(GetDeltaTimer()._currentUpdateTimePerSecond), textX,0)
-			textX:+65
+			textX:+ Max(65, bf.DrawSimple("UTPS: " + Int(GetDeltaTimer()._currentUpdateTimePerSecond), textX,0).x)
 			'render time per second
-			bf.draw("RTPS: " + Int(GetDeltaTimer()._currentRenderTimePerSecond), textX,0)
-			textX:+65
+			textX:+ Max(65, bf.DrawSimple("RTPS: " + Int(GetDeltaTimer()._currentRenderTimePerSecond), textX,0).x)
 
 			'RON: debug purpose - see if the managed guielements list increase over time
 			If GUIManager.GetFocus()
-				bf.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"] focused: "+GUIManager.GetFocus()._id, textX,0)
+				textX:+ Max(170, bf.DrawSimple("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"] focused: "+GUIManager.GetFocus()._id, textX,0).x)
 			Else
-				bf.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"]" , textX,0)
+				textX:+ Max(170, bf.DrawSimple("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"]" , textX,0).x)
 			EndIf
-			textX:+170
 
 			If GetGame().networkgame And Network.client
-				bf.draw("Ping: "+Int(Network.client.latency)+"ms", textX,0)
-				textX:+50
+				textX:+ Max(50, bf.DrawSimple("Ping: "+Int(Network.client.latency)+"ms", textX,0).x)
 			EndIf
 		EndIf
 	End Function
@@ -1629,8 +1621,8 @@ endrem
 				SetAlpha 0.65
 				DrawRect(275,0,250,35)
 				oldCol.SetRGBA()
-				GetBitmapFont("default", 16).DrawBlock("PLAYER AI DEACTIVATED", 0, 5, GetGraphicsManager().GetWidth(), 355, ALIGN_CENTER_TOP, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
-				GetBitmapFont("default", 12).DrawBlock("(~qF11~q to reactivate AI)", 0, 20, GetGraphicsManager().GetWidth(), 355, ALIGN_CENTER_TOP, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+				GetBitmapFont("default", 16).DrawBox("PLAYER AI DEACTIVATED", 0, 5, GetGraphicsManager().GetWidth(), 355, sALIGN_CENTER_TOP, SColor8.White, EDrawTextEffect.Shadow, -1)
+				GetBitmapFont("default", 12).DrawBox("(~qF11~q to reactivate AI)", 0, 20, GetGraphicsManager().GetWidth(), 355, sALIGN_CENTER_TOP, SColor8.White, EDrawTextEffect.Shadow, -1)
 			EndIf
 
 			If GameConfig.observerMode
@@ -1641,8 +1633,8 @@ endrem
 						Exit
 					EndIf
 				Next
-				GetBitmapFont("default", 20).DrawBlock("OBSERVING PLAYER #"+playerNum, 0, 0, GetGraphicsManager().GetWidth(), 355, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
-				GetBitmapFont("default", 14).DrawBlock("(~qL-Ctrl + O~q to deactivate)", 0, 0, GetGraphicsManager().GetWidth(), 375, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+				GetBitmapFont("default", 20).DrawBox("OBSERVING PLAYER #"+playerNum, 0, 0, GetGraphicsManager().GetWidth(), 355, sALIGN_CENTER_BOTTOM, SColor8.White, EDrawTextEffect.Shadow, -1)
+				GetBitmapFont("default", 14).DrawBox("(~qL-Ctrl + O~q to deactivate)", 0, 0, GetGraphicsManager().GetWidth(), 375, sALIGN_CENTER_BOTTOM, SColor8.White, EDrawTextEffect.Shadow, -1)
 			Else
 				If Not GetPlayerCollection().IsHuman( GetPlayerCollection().playerID )
 					Local oldCol:TColor = New TColor.Get()
@@ -1651,7 +1643,7 @@ endrem
 					DrawRect(275,345,250,35)
 					oldCol.SetRGBA()
 
-					GetBitmapFont("default", 16).DrawBlock("SWITCHED TO AI PLAYER #" +GetPlayerCollection().playerID, 0, 0, GetGraphicsManager().GetWidth(), 365, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+					GetBitmapFont("default", 16).DrawBox("SWITCHED TO AI PLAYER #" +GetPlayerCollection().playerID, 0, 0, GetGraphicsManager().GetWidth(), 365, sALIGN_CENTER_BOTTOM, SColor8.White, EDrawTextEffect.Shadow, -1)
 
 					Local localHumanNum:Int = 0
 					For Local i:Int = 1 To 4
@@ -1662,9 +1654,9 @@ endrem
 					Next
 
 					If localHumanNum > 0
-						GetBitmapFont("default", 12).DrawBlock("(~q"+localHumanNum+"~q to switch back)", 0, 0, GetGraphicsManager().GetWidth(), 380, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+						GetBitmapFont("default", 12).DrawBox("(~q"+localHumanNum+"~q to switch back)", 0, 0, GetGraphicsManager().GetWidth(), 380, sALIGN_CENTER_BOTTOM, SColor8.White, EDrawTextEffect.Shadow, -1)
 					Else
-						GetBitmapFont("default", 12).DrawBlock("(all players are AI controlled)", 0, 0, GetGraphicsManager().GetWidth(), 380, ALIGN_CENTER_BOTTOM, TColor.clWhite, TBitmapFont.STYLE_SHADOW)
+						GetBitmapFont("default", 12).DrawBox("(all players are AI controlled)", 0, 0, GetGraphicsManager().GetWidth(), 380, sALIGN_CENTER_BOTTOM, SColor8.White, EDrawTextEffect.Shadow, -1)
 					EndIf
 				EndIf
 			EndIf
@@ -1680,6 +1672,13 @@ endrem
 		'draw system things at last (-> on top)
 		GUIManager.Draw(systemState)
 
+
+
+		if KeyManager.IsDown(KEY_F3)
+			SetAlpha 0.85 '0.75 + Float(0.25 * sin(Millisecs() mod 1000))
+			DrawImage(screenshot_debug, 0,0)
+			Setalpha 1.0
+		EndIf
 
 		'mnouse cursor
 		If Not spriteMouseCursor Then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
@@ -2081,8 +2080,8 @@ Type TGameState
 		EndIf
 
 		?bmxng
-		OCM.FetchDump("GAMESTATE INITIALIZE")
-		OCM.Dump()
+		'OCM.FetchDump("GAMESTATE INITIALIZE")
+		'OCM.Dump()
 		?
 	End Method
 
@@ -2435,7 +2434,7 @@ Type TSaveGame Extends TGameState
 		messageWindow.guiCaptionTextBox.SetFont(headerFont)
 		messageWindow._defaultValueColor = TColor.clBlack.copy()
 		messageWindow.defaultCaptionColor = TColor.clWhite.copy()
-		messageWindow.SetCaptionArea(New TRectangle.Init(-1,10,-1,25))
+		messageWindow.SetCaptionArea(New TRectangle.Init(-1, 6, -1, 30))
 		messageWindow.guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP )
 		'no buttons
 		messageWindow.SetDialogueType(0)
@@ -2939,7 +2938,7 @@ Type TScreen_MainMenu Extends TGameScreen
 		guiButtonsPanel	= guiButtonsWindow.AddContentBox(0,0,-1,-1)
 
 		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
-		TGUIButton.SetTypeCaptionColor( TColor.CreateGrey(75) )
+		TGUIButton.SetTypeCaptionColor( new SColor8(75, 75, 75) )
 
 		guiButtonStart		= New TGUIButton.Create(New TVec2D.Init(0, 0*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
 		guiButtonNetwork	= New TGUIButton.Create(New TVec2D.Init(0, 1*38), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
@@ -3071,16 +3070,16 @@ Type TScreen_MainMenu Extends TGameScreen
 		loadGameMenuWindow.SetCenterLimit(New TRectangle.setTLBR(30,0,0,0))
 
 		'append menu after creation of screen area, so it recenters properly
-		Local loadMenu:TGUIModalLoadSavegameMenu = New TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,350), "SYSTEM")
+		Local loadMenu:TGUIModalLoadSavegameMenu = New TGUIModalLoadSavegameMenu.Create(New TVec2D, New TVec2D.Init(520,356), "SYSTEM")
 		loadMenu._defaultValueColor = TColor.clBlack.copy()
 		loadMenu.defaultCaptionColor = TColor.clWhite.copy()
 
 		loadGameMenuWindow.SetContentElement(loadMenu)
 
 		'menu is always ingame...
-		loadGameMenuWindow.SetDarkenedArea(New TRectangle.Init(0,0,800,600))
+		loadGameMenuWindow.SetDarkenedArea(New TRectangle.Init(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight()))
 		'center to this area
-		loadGameMenuWindow.SetScreenArea(New TRectangle.Init(0,0,800,600))
+		loadGameMenuWindow.SetScreenArea(New TRectangle.Init(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight()))
 
 		loadGameMenuWindow.Open() 'to play a sound
 
@@ -3434,17 +3433,17 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		SetAlpha messageWindow.GetScreenAlpha()
 		Local messageDY:Int = 0
 		If GetGame().networkgame
-			GetBitmapFontManager().baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
+			GetBitmapFontManager().baseFont.DrawSimple(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black)
 			messageDY :+ 20
 			Local allReady:Int = True
 			For Local i:Int = 1 To 4
 				If Not GetPlayerCollection().Get(i).networkstate Then allReady = False
-				GetBitmapFontManager().baseFont.draw(GetLocale("PLAYER")+" "+i+"..."+GetPlayerCollection().Get(i).networkstate, messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
+				GetBitmapFontManager().baseFont.DrawSimple(GetLocale("PLAYER")+" "+i+"..."+GetPlayerCollection().Get(i).networkstate, messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black)
 				messageDY :+ 20
 			Next
-			If Not allReady Then GetBitmapFontManager().baseFont.draw("not ready!!", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
+			If Not allReady Then GetBitmapFontManager().baseFont.DrawSimple("not ready!!", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black)
 		Else
-			GetBitmapFontManager().baseFont.draw(GetLocale("PREPARING_START_DATA")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
+			GetBitmapFontManager().baseFont.DrawSimple(GetLocale("PREPARING_START_DATA")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black)
 		EndIf
 		SetAlpha oldAlpha
 	End Method
@@ -6421,11 +6420,10 @@ End Function
 
 ?bmxng
 Extern
- '   Global bbGCAllocCount:ULong="bbGCAllocCount"
+    Global bbGCAllocCount:ULong="bbGCAllocCount"
 End Extern
-
-
 ?
+
 Function StartTVTower(start:Int=True)
 ?bmxng
 OCM.enabled  = False
@@ -6434,7 +6432,7 @@ OCM.enabled  = False
 'OCM.AddIgnoreTypes("TCatmullRomSpline, TConstant, TField, TFreeAudioChannel, TFreeAudioSound, TFreeTypeFont, TFreeTypeGlyph")
 'OCM.AddIgnoreTypes("TGLImageFrame, TGlobal, TGraphicsContext, THook, TSDLGLContext, TSDLGraphics, TSDLWindow")
 'OCM.AddIgnoreTypes("TImageFont, TImageGlyph, TMax2DGraphics, TMethod, TMutex, TTypeId")
-OCM.StoreBaseDump()
+'OCM.StoreBaseDump()
 ?
 	Global InitialResourceLoadingDone:Int = False
 	Global AppSuspendedProcessed:Int = False
@@ -6478,6 +6476,7 @@ TProfiler.Enter("InitialLoading")
 		'If RandRange(0,20) = 20 Then GCCollect()
 	Until AppTerminate() Or TApp.ExitApp Or InitialResourceLoadingDone
 TProfiler.Leave("InitialLoading")
+GCCollect()
 
 	'=== ADJUST GUI FONTS ===
 	'set the now available default font
@@ -6495,26 +6494,30 @@ TProfiler.Leave("InitialLoading")
 	App.SetLanguage(App.config.GetString("language", "de"))
 	TLocalization.SetDefaultLanguage("en")
 
+'GCSetMode(2) 'manual
 	'c) everything loaded - normal game loop
 TProfiler.Enter("GameLoop")
 	StartApp()
 
 	Repeat
-		If MilliSecs() - rectangleTime > 1000
+		If MilliSecs() - debugCreationTime > 1000
+			local memCollected:Int = GCCollect()
+			Local myArr:int[] = new Int[10000]
 			?bmxng
-			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
-'			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations."
-'			bbGCAllocCount = 0
+'			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
+
+			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations.  GC allocated = " +GCMemAlloced() + ".  GC collected = " + memCollected
+			bbGCAllocCount = 0
 			?Not bmxng
 			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
 			?
 			rectangle_created = 0
 			vec2d_created = 0
-			rectangleTime :+ 1000
+			debugCreationTime :+ 1000
 
 			?bmxng
-'				OCM.FetchDump()
-'				OCM.Dump(null)
+				'OCM.FetchDump()
+				'OCM.Dump(null)
 			?
 		EndIf
 
@@ -6540,7 +6543,7 @@ TProfiler.Enter("EventManager")
 		EventManager.update()
 TProfiler.Leave("EventManager")
 		'If RandRange(0,20) = 20 Then GCCollect()
-	Until TApp.ExitApp
+	Until TApp.ExitApp 
 TProfiler.Leave("GameLoop")
 
 	'take care of network
@@ -6604,7 +6607,7 @@ Function DrawProfilerCallHistory(profilerCall:TProfilerCall, x:Int, y:Int, w:Int
 		Next
 
 		SetColor 255,255,255
-		GetBitmapFont("Default", 10).DrawBlock(MathHelper.NumberToString(durationMax, 4), x+2, y+2, w-4, 20, ALIGN_RIGHT_TOP)
+		GetBitmapFont("Default", 10).DrawBox(MathHelper.NumberToString(durationMax, 4), x+2, y+2, w-4, 20, sALIGN_RIGHT_TOP, SColor8.White)
 	EndIf
-	GetBitmapFont("Default", 10).DrawBlock(label, x+2, y+2, w-4, 20, ALIGN_LEFT_TOP)
+	GetBitmapFont("Default", 10).DrawBox(label, x+2, y+2, w-4, 20, sALIGN_LEFT_TOP, SColor8.White)
 End Function

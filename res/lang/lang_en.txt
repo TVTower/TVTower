@@ -906,6 +906,7 @@ DURATION = Duration
 SUBHEADING = Subheading
 PRODUCTION_DETAILS = Production details
 PRODUCTION_FOCUS = Production focus
+IN_PRODUCTION = In production
 
 DO_NOT_SHOW_AGAIN = Do not show again
 DO_NOT_SHOW_ANY_TIPS = Do not show any tips

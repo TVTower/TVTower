@@ -138,21 +138,22 @@ Type TGameToastMessage Extends TToastMessage
 
 	Method RecalculateHeight:Int()
 		Local height:Int = 0
+		Local contentWidth:Int = GetContentWidth()
 		'caption singleline
-		'height :+ GetBitmapFontManager().baseFontBold.GetMaxCharHeight()
-		height :+ GetBitmapFontManager().baseFontBold.GetBlockDimension(caption, GetContentWidth(), -1).GetY()
+		height :+ GetBitmapFontManager().baseFontBold.GetBoxDimension(caption, contentWidth, -1).y
 		'text
 		'attention: subtract some pixels from width (to avoid texts fitting
 		'because of rounding errors - but then when drawing they do not
 		'fit)
-		height :+ GetBitmapFontManager().baseFont.GetBlockDimension(text, GetContentWidth(), -1).GetY()
+		height :+ GetBitmapFontManager().baseFont.GetBoxDimension(text, contentWidth, -1).y
 		If clickText
-			height :+ GetBitmapFontManager().baseFont.GetBlockDimension(clickText, GetContentWidth(), -1).GetY()
+			height :+ GetBitmapFontManager().baseFont.GetBoxDimension(clickText, contentWidth, -1).y
 		EndIf
 		'gfx padding
 		If showBackgroundSprite And backgroundSprite
-			height :+ backgroundSprite.GetNinePatchContentBorder().GetTop()
-			height :+ backgroundSprite.GetNinePatchContentBorder().GetBottom()
+			local bgBorder:SRect = backgroundSprite.GetNinePatchInformation().contentBorder 
+			height :+ bgBorder.GetTop()
+			height :+ bgborder.GetBottom()
 		EndIf
 		'lifetime bar
 		If _lifeTime > 0 Then height :+ 5
@@ -167,7 +168,8 @@ Type TGameToastMessage Extends TToastMessage
 
 	Method GetContentWidth:Int()
 		If showBackgroundSprite And backgroundSprite
-			Return GetScreenRect().GetW() - backgroundSprite.GetNinePatchContentBorder().GetLeft() - backgroundSprite.GetNinePatchContentBorder().GetRight()
+			local bgBorder:SRect = backgroundSprite.GetNinePatchInformation().contentBorder
+			Return GetScreenRect().GetW() - bgBorder.GetLeft() - bgBorder.GetRight()
 		Else
 			Return GetScreenRect().GetW()
 		EndIf
@@ -209,18 +211,20 @@ Type TGameToastMessage Extends TToastMessage
 		Local contentX2:Int = contentX + GetScreenRect().GetW()
 		Local contentY2:Int = contentY + GetScreenRect().GetH()
 		If showBackgroundSprite And backgroundSprite
-			contentX :+ backgroundSprite.GetNinePatchContentBorder().GetLeft()
-			contentY :+ backgroundSprite.GetNinePatchContentBorder().GetTop()
-			contentX2 :- backgroundSprite.GetNinePatchContentBorder().GetRight()
-			contentY2 :- backgroundSprite.GetNinePatchContentBorder().GetBottom()
+			local bgBorder:SRect = backgroundSprite.GetNinePatchInformation().contentBorder
+			contentX :+ bgBorder.GetLeft()
+			contentY :+ bgBorder.GetTop()
+			contentX2 :- bgBorder.GetRight()
+			contentY2 :- bgBorder.GetBottom()
 		EndIf
 
 		Local captionH:Int ' = GetBitmapFontManager().baseFontBold.GetMaxCharHeight()
 		Local textH:Int ' = GetBitmapFontManager().baseFontBold.GetMaxCharHeight()
-		Local captionDim:TVec2D = New TVec2D
-		GetBitmapFontManager().baseFontBold.DrawBlock(caption, contentX, contentY, GetContentWidth(), -1, Null, TColor.clBlack, , , , , , , captionDim)
+		Local contentWidth:Int = GetContentWidth()
+		Local captionDim:SVec2I
+		captionDim = GetBitmapFontManager().baseFontBold.DrawBox(caption, contentX, contentY, contentWidth, -1, SALIGN_LEFT_TOP, SColor8.Black)
 		captionH :+ captionDim.y
-		GetBitmapFontManager().baseFont.DrawBlock(text+clickText, contentX, contentY + captionH, GetContentWidth(), -1, Null, TColor.CreateGrey(50))
+		GetBitmapFontManager().baseFont.DrawBox(text + clickText, contentX, contentY + captionH, contentWidth, -1, SALIGN_LEFT_TOP, new SColor8(50,50,50))
 
 
 		'worldtime close hint
@@ -240,7 +244,7 @@ Type TGameToastMessage Extends TToastMessage
 			EndIf
 			text = text.Replace("%TIME%", timeString)
 
-			GetBitmapFontManager().baseFontItalic.DrawBlock(text, contentX, contentY2 - GetBitmapFontManager().baseFontBold.GetMaxCharHeight(), contentX2 - contentX, -1, Null, TColor.CreateGrey(40))
+			GetBitmapFontManager().baseFontItalic.DrawBox(text, contentX, contentY2 - GetBitmapFontManager().baseFontBold.GetMaxCharHeight(), contentX2 - contentX, -1, SALIGN_LEFT_TOP, new SColor8(40,40,40))
 		EndIf
 
 		'lifetime bar

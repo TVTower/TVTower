@@ -5,6 +5,11 @@ Import "Dig/base.util.rectangle.bmx"
 Import "Dig/base.util.input.bmx"
 Import "Dig/base.util.helper.bmx"
 
+TDialogue.textBlockDrawSettings.data.lineHeight = 14
+TDialogue.textBlockDrawSettings.data.boxDimensionMode = 0
+'TDialogue.selectedAnswersDrawEffect.data.Init(EDrawTextEffect.Glow, 0.2, new SColor8(255,200,200))
+TDialogue.selectedAnswersDrawEffect.data.Init(EDrawTextEffect.Glow, 0.2, new SColor8(120,100,75))
+
 
 Type TDialogue
 	'list of TDialogueTexts
@@ -28,6 +33,8 @@ Type TDialogue
 	Field moveDialogueBalloonStart:Int = 0
 	Field moveAnswerDialogueBalloonStart:Int = 0
 	Global font:TBitmapFont
+	Global textBlockDrawSettings:TDrawTextSettings = new TDrawTextSettings
+	Global selectedAnswersDrawEffect:TDrawTextEffect = new TDrawTextEffect
 
 
 	Method SetArea:TDialogue(rect:TRectangle)
@@ -177,7 +184,7 @@ Type TDialogue
 		GetSpriteFromRegistry("dialogue."+dialogueType).DrawArea(x,y,width,height)
 		DialogSprite.Draw(dx, dy)
 
-		If DialogText Then DialogFont.drawBlock(DialogText, x + 10, y + 10, DialogWidth - 25, Height - 16, Null, TColor.clBlack)
+		If DialogText Then DialogFont.DrawBox(DialogText, x + 10, y + 10, DialogWidth - 25, Height - 16, SALIGN_LEFT_TOP, SColor8.Black)
 	End Function
 
 
@@ -244,7 +251,7 @@ Type TDialogueAnswer
 	Field _triggerFunction(data:TData)
 	Field _triggerFunctionData:TData
 	Field _highlighted:Int = 0
-	Global _defaultColor:TColor = TColor.CreateGrey(100)
+	Global _defaultColor:SColor8 = new SColor8(100, 100, 100)
 	Global _oldColor:TColor = new TColor
 	Global _boldFont:TBitmapFont = Null
 	Global _font:TBitmapFont = Null
@@ -272,7 +279,8 @@ Type TDialogueAnswer
 		'calculate sizes on base of the bold font (so it does not move
 		'answers below the highlighted one
 		if _sizeForWidth <> w and _boldFont
-			_boldFont.GetBlockDimension(Self._text, w, -1, -1, _size)
+			local s:SVec2I = _boldFont.GetBoxDimension(Self._text, w, -1)
+			_size.Init(s.x, s.y)
 			_sizeForWidth = w
 		endif
 		return _size
@@ -322,9 +330,10 @@ Type TDialogueAnswer
 			if not _textCache.HasCache()
 				'refresh _size
 				GetTextSize(int(screenRect.GetW() - _pos.x - 9))
-				_textCache.CacheDrawBlock(_boldFont, Self._text, screenRect.GetX() + _pos.x + 9, screenRect.GetY() + _pos.y -1, _size.x, -1, Null, TColor.clBlack)
+				_textCache.CacheDrawBlock(_font, Self._text, int(_size.x), -2, SALIGN_LEFT_TOP, new SColor8(200,100,0), TDialogue.selectedAnswersDrawEffect, null)
 			EndIf
-			_textCache.DrawCached(screenRect.GetX() + _pos.x + 9, screenRect.GetY() + _pos.y -1)
+
+			_textCache.DrawCached(screenRect.GetX() + _pos.x + 9, screenRect.GetY() + _pos.y -2 -2)
 		Else
 			SetAlpha 0.9
 			SetColor 100,100,100
@@ -332,9 +341,10 @@ Type TDialogueAnswer
 			if not _textCache.HasCache()
 				'refresh _size
 				GetTextSize(int(screenRect.GetW() - _pos.x - 9))
-				_textCache.CacheDrawBlock(_font, Self._text, screenRect.GetX() + _pos.x + 9, screenRect.GetY() + _pos.y -1, _size.x, -1, Null, _defaultColor)
+				_textCache.CacheDrawBlock(_font, Self._text, int(_size.x), -2, SALIGN_LEFT_TOP, _defaultColor)
 			EndIf
-			_textCache.DrawCached(screenRect.GetX() + _pos.x + 9, screenRect.GetY() + _pos.y -1)
+			'draw offset a bit so "glow" of selected stays at same position
+			_textCache.DrawCached(screenRect.GetX() + _pos.x + 9 +2, screenRect.GetY() + _pos.y -2)
 		EndIf
 
 		_oldColor.SetRGBA()
@@ -416,9 +426,9 @@ Type TDialogueTexts
 
 	Method FillTextCache(textRect:TRectangle)
 		if not _textCache then _textCache = new TBitmapFontText
-		if not _textCache.HasCache() or not textRect.EqualsXYWH(_textCache.x, _textCache.y, _textCache.w, _textCache.h)
+		if not _textCache.HasCache() or not (textRect.position.x = _textCache.textBoxDimension.x and textRect.position.y = _textCache.textBoxDimension.y)
 			If Not _font Then _font = GetBitmapFont("Default", 14)
-			_textCache.CacheDrawBlock(_font, _text, textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), Null, TColor.clBlack)
+			_textCache.CacheDrawBlock(_font, _text, textRect.GetIntW(), textRect.GetIntH(), SALIGN_LEFT_TOP, SColor8.Black, _font.defaultDrawEffect, TDialogue.textBlockDrawSettings.data)
 		endif
 	End Method
 

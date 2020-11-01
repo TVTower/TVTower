@@ -39,7 +39,8 @@ Type TGUISpriteDropDown Extends TGUIDropDown
 			Local item:TGUISpriteDropDownItem = TGUISpriteDropDownItem(selectedEntry)
 			Local sprite:TSprite = GetSpriteFromRegistry( item.data.GetString("spriteName", "default") )
 			If item And sprite.GetName() <> "defaultSprite"
-				Local displaceY:Int = -1 + 0.5 * (labelHeight - (item.GetSpriteDimension().y * scaleSprite))
+				Local itemHeight:Int = (item.GetSpriteDimension().y * scaleSprite)
+				Local displaceY:Int = 0.5 * (labelHeight - itemHeight)
 				sprite.DrawArea(position.x, position.y + displaceY, item.GetSpriteDimension().x * scaleSprite, item.GetSpriteDimension().y * scaleSprite)
 				position.addXY(item.GetSpriteDimension().x * scaleSprite + 3, 0)
 			EndIf
@@ -107,17 +108,18 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 
 
 	Method DrawValue()
-		Local valueX:Int = GetScreenRect().GetX()
+		Local valueX:Int = GetScreenRect().GetX() 
+		Local spriteX:Int
 
 		Local sprite:TSprite = GetSpriteFromRegistry( data.GetString("spriteName", "default") )
 		If sprite.GetName() <> "defaultSprite"
 			sprite.DrawArea(valueX, GetScreenRect().GetY()+1, GetSpriteDimension().x, GetSpriteDimension().y)
-			valueX :+ GetSpriteDimension().x + 3
+			spriteX = GetSpriteDimension().x + 3
 		Else
-			valueX :+ GetSpriteDimension().x + 3
+			spriteX = GetSpriteDimension().x + 3
 		EndIf
 		'draw value
-		GetFont().draw(value, valueX, Int(GetScreenRect().GetY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(value))), valueColor)
+		GetFont().DrawBox(value, valueX + spriteX, GetScreenRect().GetY(), rect.getW() - spriteX, rect.getH(), sALIGN_LEFT_CENTER, valueColor)
 	End Method
 End Type
 
@@ -209,7 +211,7 @@ Type TGUIGameWindow Extends TGUIWindowBase
 		OnChangePadding()
 
 
-		SetCaptionArea(New TRectangle.Init(20, 10, GetContentScreenRect().GetW() - 2*20, 25))
+		SetCaptionArea(New TRectangle.Init(20, 6, GetContentScreenRect().GetW() - 2*20, 30))
 		guiCaptionTextBox.SetValueAlignment( ALIGN_LEFT_TOP )
 
 		Return Self
@@ -282,7 +284,7 @@ Type TGUIGameModalWindowChainDialogue extends TGUIModalWindowChainDialogue
 
 		Super.Create(pos, dimension, limitState)
 
-		SetCaptionArea(New TRectangle.Init(-1,10,-1,25))
+		SetCaptionArea(New TRectangle.Init(-1, 6, -1, 30))
 		guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP )
 
 
@@ -312,7 +314,7 @@ Type TGUIGameModalWindow Extends TGUIModalWindow
 
 		Super.Create(pos, dimension, limitState)
 
-		SetCaptionArea(New TRectangle.Init(-1,10,-1,25))
+		SetCaptionArea(New TRectangle.Init(-1, 6, -1, 30))
 		guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP )
 
 
@@ -436,26 +438,26 @@ Type TGUIGameEntry Extends TGUISelectListItem
 	'override
 	Method DrawValue()
 		'draw text
-		Local move:TVec2D = New TVec2D.Init(0, Self.paddingTop)
+		Local move:SVec2I = new SVec2I(0, Self.paddingTop)
 		Local text:String = ""
 		Local textColor:TColor = Null
-		Local textDim:TVec2D = Null
+		Local textDim:SVec2I
 		'line: title by hostname (slotsused/slotsmax)
 'DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetDimension().x, GetDimension().y)
 		text = Self.Data.getString("gameTitle","#unknowngametitle#")
 		textColor = TColor(Self.Data.get("gameTitleColor", TColor.Create(150,80,50)) )
-		GetBitmapFontManager().baseFontBold.drawStyled(text, Self.GetScreenRect().GetX() + move.x, Self.GetScreenRect().GetY() + move.y, textColor, 2, 1,0.5, textDim)
-		move.addXY(textDim.x,1)
+		textDim = GetBitmapFontManager().baseFontBold.DrawSimple(text, GetScreenRect().GetX() + move.x, GetScreenRect().GetY() + move.y, textColor.ToScolor8(), EDrawTextEffect.Shadow, 0.5)
+		move = new SVec2I( move.x + textDim.x, move.y)
 
 		text = " by "+Self.Data.getString("hostName","#unknownhostname#")
 		textColor = TColor(Self.Data.get("hostNameColor", TColor.Create(50,50,150)) )
-		GetBitmapFontManager().baseFontBold.drawStyled(text, Self.GetScreenRect().GetX() + move.x, Self.GetScreenRect().GetY() + move.y, textColor, , , , textDim)
-		move.addXY(textDim.x,0)
+		textDim = GetBitmapFontManager().baseFontBold.DrawSimple(text, GetScreenRect().GetX() + move.x, GetScreenRect().GetY() + move.y, textColor.ToScolor8())
+		move = new SVec2I( move.x + textDim.x, 0)
 
 		text = " ("+Self.Data.getInt("slotsUsed",1)+"/"++Self.Data.getInt("slotsMax",4)+")"
 		textColor = TColor(Self.Data.get("hostNameColor", TColor.Create(0,0,0)) )
-		GetBitmapFontManager().baseFontBold.drawStyled(text, Self.GetScreenRect().GetX() + move.x, Self.GetScreenRect().GetY() + move.y, textColor, , , , textDim)
-		move.addXY(textDim.x,0)
+		textDim = GetBitmapFontManager().baseFontBold.DrawSimple(text, GetScreenRect().GetX() + move.x, GetScreenRect().GetY() + move.y, textColor.ToScolor8())
+		move = new SVec2I( move.x + textDim.x, 0)
 	End Method
 
 
@@ -818,9 +820,9 @@ Type TGameGUIAccordeonPanel extends TGUIAccordeonPanel
 				SetAlpha oldCol.a
 			endif
 			if isOpen
-				skin.fontNormal.drawBlock(openStr + " |b|" +GetHeaderValue()+"|/b|", contentX + 5, contentY, contentW - 10, headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				skin.fontNormal.DrawBox(openStr + " |b|" +GetHeaderValue()+"|/b|", contentX + 5, contentY, contentW - 10, headerHeight, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			else
-				skin.fontNormal.drawBlock(openStr + " " +GetHeaderValue(), contentX + 5, contentY, contentW - 10, headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				skin.fontNormal.DrawBox(openStr + " " +GetHeaderValue(), contentX + 5, contentY, contentW - 10, headerHeight, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			endif
 		endif
 	End Method

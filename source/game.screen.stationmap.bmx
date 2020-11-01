@@ -34,8 +34,8 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 	Field listFont:TBitmapFont
 
 	Field _eventListeners:TEventListenerBase[]
-	Global headerColor:TColor = TColor.Create(75,75,75)
-	Global subHeaderColor:TColor = TColor.Create(115,115,115)
+	Global headerColor:SColor8 = new SColor8(75,75,75)
+	Global subHeaderColor:SColor8 = new SColor8(115,115,115)
 
 
 	Method Create:TGameGUIBasicStationmapPanel(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
@@ -54,7 +54,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		renewButton.SetFont( buttonFont )
 
 		renewInfoButton = New TGUIButton.Create(New TVec2D.Init(145, 0), New TVec2D.Init(30, 28), "i", "STATIONMAP")
-		renewInfoButton.caption.color = TColor.clBlue.copy()
+		renewInfoButton.caption.color = TColor.clBlue.ToSColor8()
 		renewInfoButton.spriteName = "gfx_gui_button.datasheet"
 		renewInfoButton.SetFont( buttonFont )
 
@@ -64,7 +64,7 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		autoRenewCheckbox.SetFont( buttonFont )
 
 		cancelButton = New TGUIButton.Create(New TVec2D.Init(145, 0), New TVec2D.Init(30, 28), "X", "STATIONMAP")
-		cancelButton.caption.color = TColor.clRed.copy()
+		cancelButton.caption.color = TColor.clRed.ToSColor8()
 		cancelButton.spriteName = "gfx_gui_button.datasheet"
 		cancelButton.SetFont( buttonFont )
 
@@ -687,10 +687,10 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 
 
 			currentY :+ 2
-			skin.fontNormal.drawBlock("|b|"+headerText+"|/b|", contentX + 5, currentY, contentW - 10,  16, ALIGN_CENTER_CENTER, headerColor, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+			skin.fontSmallCaption.DrawBox(headerText, contentX + 5, currentY, contentW - 10,  18, sALIGN_CENTER_TOP, headerColor, EDrawTextEffect.Shadow, 0.2)
 			'currentY :+ skin.fontNormal._fSize
 			currentY :+ 14
-			skin.fontNormal.drawBlock(subHeaderText, contentX + 5, currentY, contentW - 10,  16, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+			skin.fontNormal.DrawBox(subHeaderText, contentX + 5, currentY, contentW - 10,  18, sALIGN_CENTER_TOP, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
 			currentY :+ 15 + 3
 
 
@@ -738,10 +738,10 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 
 			If showPermissionText And section And selectedStation
 				If Not section.HasBroadcastPermission(selectedStation.owner)
-					skin.fontNormal.drawBlock(getLocale("PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION").Replace("%X%", "|b|"+TFunctions.convertValue(section.GetBroadcastPermissionPrice(selectedStation.owner), 2, 0) + " " + GetLocale("CURRENCY")+"|/b|"), contentX + 5, currentY, contentW - 10, permissionTextH, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+					skin.fontNormal.DrawBox(getLocale("PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION").Replace("%X%", "|b|"+TFunctions.convertValue(section.GetBroadcastPermissionPrice(selectedStation.owner), 2, 0) + " " + GetLocale("CURRENCY")+"|/b|"), contentX + 5, currentY, contentW - 10, permissionTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
 				Else
 					currentY :- 1 'align it a bit better
-					skin.fontNormal.drawBlock(getLocale("BROADCAST_PERMISSION_EXISTING"), contentX + 5, currentY, contentW - 10, permissionTextH, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+					skin.fontNormal.DrawBox(getLocale("BROADCAST_PERMISSION_EXISTING"), contentX + 5, currentY, contentW - 10, permissionTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
 				EndIf
 			EndIf
 		EndIf
@@ -989,10 +989,10 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
 
 			currentY :+ 2
-			skin.fontNormal.drawBlock("|b|"+headerText+"|/b|", contentX + 5, currentY, contentW - 10,  16, ALIGN_CENTER_CENTER, headerColor, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+			skin.fontSmallCaption.DrawBox(headerText, contentX + 5, currentY, contentW - 10,  18, sALIGN_CENTER_TOP, headerColor, EDrawTextEffect.Shadow, 0.2)
 			'currentY :+ skin.fontNormal._fSize
 			currentY :+ 14
-			skin.fontNormal.drawBlock(subHeaderText, contentX + 5, currentY, contentW - 10,  16, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+			skin.fontNormal.DrawBox(subHeaderText, contentX + 5, currentY, contentW - 10,  18, sALIGN_CENTER_TOP, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
 			currentY :+ 15 + 3
 
 
@@ -1068,10 +1068,10 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 
 			If showPermissionText And section And selectedStation
 				If Not section.HasBroadcastPermission(selectedStation.owner)
-					skin.fontNormal.drawBlock(getLocale("PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION").Replace("%X%", "|b|"+TFunctions.convertValue(section.GetBroadcastPermissionPrice(selectedStation.owner), 2, 0) + " " + GetLocale("CURRENCY")+"|/b|"), contentX + 5, currentY, contentW - 10, permissionTextH, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+					skin.fontNormal.DrawBox(getLocale("PRICE_INCLUDES_X_FOR_BROADCAST_PERMISSION").Replace("%X%", "|b|"+TFunctions.convertValue(section.GetBroadcastPermissionPrice(selectedStation.owner), 2, 0) + " " + GetLocale("CURRENCY")+"|/b|"), contentX + 5, currentY, contentW - 10, permissionTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
 				Else
 					currentY :- 1 'align it a bit better
-					skin.fontNormal.drawBlock(getLocale("BROADCAST_PERMISSION_EXISTING"), contentX + 5, currentY, contentW - 10, permissionTextH, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+					skin.fontNormal.DrawBox(getLocale("BROADCAST_PERMISSION_EXISTING"), contentX + 5, currentY, contentW - 10, permissionTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
 				EndIf
 			EndIf
 		EndIf
@@ -1405,10 +1405,10 @@ endrem
 
 
 			currentY :+ 2
-			skin.fontNormal.drawBlock("|b|"+headerText+"|/b|", contentX + 5, currentY, contentW - 10,  16, ALIGN_CENTER_CENTER, headerColor, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+			skin.fontSmallCaption.DrawBox(headerText, contentX + 5, currentY, contentW - 10,  18, sALIGN_CENTER_TOP, headerColor, EDrawTextEffect.Shadow, 0.2)
 			'currentY :+ skin.fontNormal._fSize
 			currentY :+ 14
-			skin.fontNormal.drawBlock(subHeaderText, contentX + 5, currentY, contentW - 10,  16, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+			skin.fontNormal.DrawBox(subHeaderText, contentX + 5, currentY, contentW - 10,  18, sALIGN_CENTER_TOP, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
 			currentY :+ 15 + 3
 
 
@@ -1490,7 +1490,7 @@ endrem
 
 
 			If showIncludesHardwareText
-				skin.fontNormal.drawBlock(getLocale("PRICE_INCLUDES_X_FOR_HARDWARE").Replace("%X%", "|b|"+TFunctions.convertValue(123, 2, 0) + " " + GetLocale("CURRENCY")+"|/b|"), contentX + 5, currentY, contentW - 10, includesHardwareTextH, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+				skin.fontNormal.DrawBox(getLocale("PRICE_INCLUDES_X_FOR_HARDWARE").Replace("%X%", "|b|"+TFunctions.convertValue(123, 2, 0) + " " + GetLocale("CURRENCY")+"|/b|"), contentX + 5, currentY, contentW - 10, includesHardwareTextH, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.55)
 			EndIf
 		EndIf
 
@@ -1687,17 +1687,16 @@ Type TSatelliteSelectionFrame
 		Local textW:Int = item.GetScreenRect().GetW() - textOffsetX - paddingLR
 
 		Local currentColor:TColor = New TColor.Get()
-		Local entryColor:TColor
+		Local entryColor:SColor8
 		Local leftValue:string = item.GetValue()
 		local highlight:int = False
 
 		'draw with different color according status
 		If satellite.IsSubscribedChannel(GetPlayerBase().playerID)
-			entryColor = TColor.Create(80,130,50, currentColor.a)
+			entryColor = New SColor8(80,130,50, int(255 * currentColor.a))
 			highlight = True
 		ElseIf satellite.CanSubscribeChannel(GetPlayerBase().playerID) <= 0
-			entryColor = TColor.Create(130,80,50, currentColor.a)
-			entryColor.a = currentColor.a * 0.85
+			entryColor = New SColor8(130,80,50, int(255 * currentColor.a * 0.85))
 			highlight = True
 		Else
 			entryColor = item.valueColor '.copy().AdjustFactor(50)
@@ -1705,15 +1704,15 @@ Type TSatelliteSelectionFrame
 		EndIf
 
 		if highlight
-			entryColor.SetRGB()
-			SetAlpha entryColor.a * 0.5
+			SetColor(entryColor)
+			SetAlpha entryColor.a / 255.0 * 0.5
 			DrawRect(Int(item.GetScreenRect().GetX() + paddingLR), item.GetScreenRect().GetY(), sprite.GetWidth(), item.rect.getH())
 			currentColor.SetRGBA()
 		endif
 
 		'draw antenna
 		sprite.Draw(Int(item.GetScreenRect().GetX() + paddingLR), item.GetScreenRect().GetY() + 0.5*item.rect.getH(), -1, ALIGN_LEFT_CENTER)
-		item.GetFont().DrawBlock(leftValue, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), textW - 5, Int(item.GetScreenRect().GetH() - textOffsetY), ALIGN_LEFT_CENTER, entryColor, , , , False)
+		item.GetFont().DrawBox(leftValue, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), textW - 5, Int(item.GetScreenRect().GetH() - textOffsetY), sALIGN_LEFT_CENTER, entryColor)
 	End Function
 
 
@@ -1763,14 +1762,14 @@ Type TSatelliteSelectionFrame
 
 
 		Local headerText:String = GetLocale("SATELLITES")
-		Local titleColor:TColor = TColor.Create(75,75,75)
-		Local subTitleColor:TColor = TColor.Create(115,115,115)
+		Local titleColor:SColor8 = new SColor8(75,75,75)
+		Local subTitleColor:SColor8 = new SColor8(115,115,115)
 
 
 
 		'=== HEADER ===
 		skin.RenderContent(contentArea.GetIntX(), contentArea.GetIntY(), contentArea.GetIntW(), headerHeight, "1_top")
-		skin.fontNormal.drawBlock("|b|"+headerText+"|/b|", contentArea.GetX() + 5, currentY, contentArea.GetIntW() - 10,  headerHeight, ALIGN_CENTER_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+		skin.fontNormal.DrawBox("|b|"+headerText+"|/b|", contentArea.GetX() + 5, currentY, contentArea.GetIntW() - 10,  headerHeight+2, sALIGN_CENTER_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
 		currentY :+ headerHeight
 
 		'=== LIST ===
@@ -1789,9 +1788,9 @@ Type TSatelliteSelectionFrame
 
 			skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), detailsH, "1_top")
 			currentY :+ 2
-			skin.fontNormal.drawBlock("|b|"+titleText+"|/b|", contentArea.GetX() + 5, currentY, contentArea.GetIntW() - 10,  16, ALIGN_CENTER_CENTER, titleColor, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+			skin.fontSmallCaption.DrawBox(titleText, contentArea.GetX() + 5, currentY, contentArea.GetIntW() - 10,  18, sALIGN_CENTER_TOP, titleColor, EDrawTextEffect.Shadow, 0.2)
 			currentY :+ 14
-			skin.fontNormal.drawBlock(subTitleText, contentArea.GetX() + 5, currentY, contentArea.GetIntW() - 10,  16, ALIGN_CENTER_CENTER, subTitleColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+			skin.fontNormal.DrawBox(subTitleText, contentArea.GetX() + 5, currentY, contentArea.GetIntW() - 10,  18, sALIGN_CENTER_TOP, subTitleColor, EDrawTextEffect.Emboss, 0.75)
 			currentY :+ 15 + 3
 
 
@@ -1895,7 +1894,7 @@ Type TStationMapInformationFrame
 	Field sectionList:TGUISelectList
 	Field tooltips:TTooltipBase[]
 	Field _open:Int = False
-	Global subHeaderColor:TColor = TColor.Create(115,115,115)
+	Global subHeaderColor:SColor8 = New SColor8(115,115,115)
 
 	Field _eventListeners:TEventListenerBase[]
 
@@ -2041,18 +2040,15 @@ Type TStationMapInformationFrame
 		Local entryColor:TColor
 
 		'draw with different color according status
-		entryColor = item.valueColor.copy()
-		entryColor.a = currentColor.a
-
 		'draw antenna
-		entryColor.SetRGBA()
-		item.GetFont().DrawBlock(valueA, Int(item.GetScreenRect().GetX() + textOffsetX), colY, colWidthA, colHeight, ALIGN_LEFT_CENTER, item.valueColor, , , , False)
+		SetAlpha(currentColor.a)
+		item.GetFont().DrawBox(valueA, Int(item.GetScreenRect().GetX() + textOffsetX), colY, colWidthA, colHeight, sALIGN_LEFT_CENTER, item.valueColor)
 		textOffsetX :+ colWidthA
-		item.GetFont().DrawBlock(valueB, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), colWidthB, colHeight, ALIGN_LEFT_CENTER, item.valueColor)
+		item.GetFont().DrawBox(valueB, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), colWidthB, colHeight, sALIGN_LEFT_CENTER, item.valueColor)
 		textOffsetX :+ colWidthB
-		item.GetFont().DrawBlock(valueC, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), colWidthC, colHeight, ALIGN_LEFT_CENTER, item.valueColor)
+		item.GetFont().DrawBox(valueC, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), colWidthC, colHeight, sALIGN_LEFT_CENTER, item.valueColor)
 		textOffsetX :+ colWidthC
-		item.GetFont().DrawBlock(valueD, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), colWidthD, colHeight, ALIGN_RIGHT_CENTER, item.valueColor)
+		item.GetFont().DrawBox(valueD, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), colWidthD, colHeight, sALIGN_RIGHT_CENTER, item.valueColor)
 		textOffsetX :+ colWidthD
 
 		currentColor.SetRGBA()
@@ -2114,7 +2110,7 @@ Type TStationMapInformationFrame
 		Local owner:Int = GetPlayer().playerID
 		If TScreenHandler_StationMap.currentSubRoom Then owner = TScreenHandler_StationMap.currentSubRoom.owner
 
-		If Not area Then area = New TRectangle.Init(170, 5, 400, 348)
+		If Not area Then area = New TRectangle.Init(170, 5, 400, 349)
 		If Not contentArea Then contentArea = New TRectangle
 
 		Local detailsH:Int = 90 * (selectedSection<>Null)
@@ -2124,7 +2120,7 @@ Type TStationMapInformationFrame
 		contentarea.SetY( area.GetY() + skin.GetContentY() )
 		contentArea.SetH( area.GetH() - (skin.GetContentPadding().GetTop() + skin.GetContentPadding().GetBottom()) )
 
-		headerHeight = 16
+		headerHeight = 18
 		sectionListHeight = contentArea.GetH() - headerHeight - countryInformationHeight - detailsH - sectionListHeaderHeight
 
 		'resize list if needed
@@ -2137,14 +2133,14 @@ Type TStationMapInformationFrame
 
 
 		Local headerText:String = GetLocale("COUNTRYNAME_ISO3166_"+GetStationMapCollection().GetMapISO3166Code())
-		Local titleColor:TColor = TColor.Create(75,75,75)
-		Local subTitleColor:TColor = TColor.Create(115,115,115)
+		Local titleColor:SColor8 = new SColor8(75,75,75)
+		Local subTitleColor:SColor8 = new SColor8(115,115,115)
 
 
 
 		'=== HEADER ===
 		skin.RenderContent(contentArea.GetIntX(), contentArea.GetIntY(), contentArea.GetIntW(), headerHeight, "1_top")
-		skin.fontBold.drawBlock(headerText, contentArea.GetX() + 5, currentY, contentArea.GetIntW() - 10,  headerHeight, ALIGN_CENTER_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+		skin.fontBold.DrawBox(headerText, contentArea.GetX() + 5, currentY +1, contentArea.GetIntW() - 10,  headerHeight, sALIGN_CENTER_CENTER, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
 		currentY :+ headerHeight
 
 		'=== COUNTRY DETAILS ===
@@ -2158,33 +2154,34 @@ Type TStationMapInformationFrame
 		local col3:int = contentArea.GetX2() - 5 - col3W - col4W
 		local col2:int = col1 + col1W
 		local col4:int = col3 + col3W
-		local textY:int = currentY + 5
-		skin.fontNormal.drawBlock("|b|"+GetLocale("POPULATION")+":|/b|", col1, textY + 0*lineH, col1W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral)
-		skin.fontNormal.drawBlock(TFunctions.DottedValue(GetStationMapCollection().GetPopulation()), col2, textY + 0*lineH, col2W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
-		skin.fontNormal.drawBlock("|b|"+GetLocale("STATIONMAP_SECTIONS_NAME")+":|/b|", col1, textY + 1*lineH, col1W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral)
-		skin.fontNormal.drawBlock(GetStationMapCollection().sections.Count(), col2, textY + 1*lineH, col2W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+		local textY:int = currentY + 1
+		local overviewLineH:Int = 18
+		skin.fontNormal.DrawBox("|b|"+GetLocale("POPULATION")+":|/b|", col1, textY + 0*lineH, col1W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(TFunctions.DottedValue(GetStationMapCollection().GetPopulation()), col2, textY + 0*lineH, col2W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox("|b|"+GetLocale("STATIONMAP_SECTIONS_NAME")+":|/b|", col1, textY + 1*lineH, col1W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(GetStationMapCollection().sections.Count(), col2, textY + 1*lineH, col2W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 
-		skin.fontNormal.drawBlock("|b|"+GetLocale("RECEIVER_SHARE")+"|/b|", col3, textY + 0*lineH, col3W + col4W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral)
-		skin.fontNormal.drawBlock(GetLocale("ANTENNA_RECEIVERS")+":", col3, textY + 1*lineH, col3W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.4,True, True)
-		skin.fontNormal.drawBlock(MathHelper.NumberToString(GetStationMapCollection().GetAveragePopulationAntennaShare()*100, 2)+"%", col4, textY + 1*lineH, col4W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
-		skin.fontNormal.drawBlock(GetLocale("SATELLITE_RECEIVERS")+":", col3, textY + 2*lineH, col3W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.4,True, True)
-		skin.fontNormal.drawBlock(MathHelper.NumberToString(GetStationMapCollection().GetAveragePopulationSatelliteShare()*100, 2)+"%", col4, textY + 2*lineH, col4W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
-		skin.fontNormal.drawBlock(GetLocale("CABLE_NETWORK_RECEIVERS")+":", col3, textY + 3*lineH, col3W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.4,True, True)
-		skin.fontNormal.drawBlock(MathHelper.NumberToString(GetStationMapCollection().GetAveragePopulationCableShare()*100, 2)+"%", col4, textY + 3*lineH, col4W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+		skin.fontNormal.DrawBox("|b|"+GetLocale("RECEIVER_SHARE")+"|/b|", col3, textY + 0*lineH, col3W + col4W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(GetLocale("ANTENNA_RECEIVERS")+":", col3, textY + 1*lineH, col3W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
+		skin.fontNormal.DrawBox(MathHelper.NumberToString(GetStationMapCollection().GetAveragePopulationAntennaShare()*100, 2)+"%", col4, textY + 1*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(GetLocale("SATELLITE_RECEIVERS")+":", col3, textY + 2*lineH, col3W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
+		skin.fontNormal.DrawBox(MathHelper.NumberToString(GetStationMapCollection().GetAveragePopulationSatelliteShare()*100, 2)+"%", col4, textY + 2*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(GetLocale("CABLE_NETWORK_RECEIVERS")+":", col3, textY + 3*lineH, col3W,  overviewLineH, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
+		skin.fontNormal.DrawBox(MathHelper.NumberToString(GetStationMapCollection().GetAveragePopulationCableShare()*100, 2)+"%", col4, textY + 3*lineH, col4W,  overviewLineH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 
 		local statusText:string = GetLocale("AS_OF_DATEX").Replace("%DATEX%", GetWorldTime().GetFormattedGameDate(GetStationMapCollection().GetLastCensusTime()))
 		statusText :+ ". " + GetLocale("NEXT_CENSUS_AT_DATEX").Replace("%DATEX%", GetWorldTime().GetFormattedGameDate(GetStationMapCollection().GetNextCensusTime()))
-		skin.fontNormal.drawBlock("|i|"+statusText+"|/i|", contentArea.GetX() + 5, textY + 4*lineH, contentArea.GetIntW()- 10,  30, ALIGN_CENTER_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+		skin.fontNormal.DrawBox("|i|"+statusText+"|/i|", contentArea.GetX() + 5, textY + 4*lineH, contentArea.GetIntW()- 10,  30, sALIGN_CENTER_CENTER, subHeaderColor, EDrawTextEffect.Emboss, 0.75)
 		currentY :+ countryInformationHeight
 
 
 		'=== LIST ===
 		local sectionListContentW:int = sectionList.GetContentScreenRect().GetW()
 		skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), sectionListHeight + sectionListHeaderHeight, "2")
-		skin.fontNormal.drawBlock(GetLocale("STATIONMAP_SECTION_NAME"), contentArea.GetX() + 7, currentY, 0.45*sectionListContentW,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
-		skin.fontNormal.drawBlock(GetLocale("BROADCAST_PERMISSION_SHORT"), contentArea.GetX() + 7 + 5 + 0.4*sectionListContentW, currentY, 0.2*sectionListContentW,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
-		skin.fontNormal.drawBlock(GetLocale("IMAGE"), contentArea.GetX() + 6 + 0.6*sectionListContentW, currentY, 0.1*sectionListContentW,  headerHeight, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
-		skin.fontNormal.drawBlock(GetLocale("REACH"), contentArea.GetX() + 11 + 0.65*sectionListContentW, currentY, 0.25*sectionListContentW,  headerHeight, ALIGN_RIGHT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+		skin.fontNormal.DrawBox(GetLocale("STATIONMAP_SECTION_NAME"), contentArea.GetX() + 7, currentY, 0.45*sectionListContentW,  headerHeight, sALIGN_LEFT_CENTER, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
+		skin.fontNormal.DrawBox(GetLocale("BROADCAST_PERMISSION_SHORT"), contentArea.GetX() + 7 + 5 + 0.4*sectionListContentW, currentY, 0.2*sectionListContentW,  headerHeight, sALIGN_LEFT_CENTER, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
+		skin.fontNormal.DrawBox(GetLocale("IMAGE"), contentArea.GetX() + 6 + 0.6*sectionListContentW, currentY, 0.1*sectionListContentW,  headerHeight, sALIGN_LEFT_CENTER, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
+		skin.fontNormal.DrawBox(GetLocale("REACH"), contentArea.GetX() + 11 + 0.65*sectionListContentW, currentY, 0.26*sectionListContentW,  headerHeight, sALIGN_RIGHT_CENTER, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.2)
 		currentY :+ sectionListHeaderHeight
 
 '		skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), sectionListHeight, "2")
@@ -2194,6 +2191,7 @@ Type TStationMapInformationFrame
 
 		'=== SECTION DETAILS ===
 		If selectedSection
+			Local fontH:int = 16
 			'col1W :- 30
 			'col2  :- 30
 			'col2W :+ 30
@@ -2201,11 +2199,11 @@ Type TStationMapInformationFrame
 
 			skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), 17, "1_top")
 '			currentY :+ 2
-			skin.fontNormal.drawBlock("|b|"+titleText+"|/b|", contentArea.GetX() + 5, currentY, contentArea.GetIntW() - 10,  16, ALIGN_CENTER_CENTER, titleColor, TBitmapFont.STYLE_SHADOW,1,0.2,True, True)
+			skin.fontSmallCaption.DrawBox(titleText, contentArea.GetX() + 5, currentY, contentArea.GetIntW() - 10,  20, sALIGN_CENTER_TOP, titleColor, EDrawTextEffect.Shadow, 0.2)
 			currentY :+ 14 + 3
 			skin.RenderContent(contentArea.GetIntX(), currentY, contentArea.GetIntW(), detailsH - 17, "1")
 
-			textY = currentY + 2
+			textY = currentY
 
 			local pressureGroups:string 'TVTPressureGroup.GetAsString(pgID).Split(",")
 			local pressureGroupIndexes:int[] = TVTPressureGroup.GetIndexes(selectedSection.pressureGroups)
@@ -2217,8 +2215,8 @@ Type TStationMapInformationFrame
 					pressureGroups :+ GetLocale("PRESSURE_GROUPS_"+ TVTPressureGroup.GetAsString( TVTPressureGroup.GetAtIndex(pgIndex) ))
 				endif
 			Next
-			skin.fontNormal.drawBlock("|b|"+GetLocale("POPULATION")+":|/b|", col1, textY + 0*lineH, col1W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral)
-			skin.fontNormal.drawBlock(TFunctions.DottedValue(selectedSection.GetPopulation()), col2, textY + 0*lineH, col2W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+			skin.fontSmallCaption.DrawBox(GetLocale("POPULATION")+":", col1, textY + 0*lineH, col1W,  fontH, sALIGN_LEFT_TOP, skin.textColorNeutral)
+			skin.fontNormal.DrawBox(TFunctions.DottedValue(selectedSection.GetPopulation()), col2, textY + 0*lineH, col2W,  fontH, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 
 			local cableNetworkText:string
 			if GetStationMapCollection().GetCableNetworksInSectionCount(selectedSection.name, True) > 0
@@ -2234,20 +2232,20 @@ Type TStationMapInformationFrame
 				endif
 				endrem
 			endif
-			skin.fontNormal.drawBlock("|b|"+GetLocale("CABLE_NETWORK")+":|/b|", col1, textY + 1*lineH, col1W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral)
-			skin.fontNormal.drawBlock(cableNetworkText, col2, textY + 1*lineH, col2W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+			skin.fontSmallCaption.DrawBox(GetLocale("CABLE_NETWORK")+":", col1, textY + 1*lineH, col1W,  -1, sALIGN_LEFT_TOP, skin.textColorNeutral)
+			skin.fontNormal.DrawBox(cableNetworkText, col2, textY + 1*lineH, col2W,  -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 
-			skin.fontNormal.drawBlock("|b|"+GetLocale("PRESSURE_GROUPS")+":|/b| " + pressureGroups, col1, textY + 2*lineH, col1W + col2W,  3*14, ALIGN_LEFT_TOP, skin.textColorNeutral)
+			skin.fontNormal.DrawBox("|b|" + GetLocale("PRESSURE_GROUPS")+":|/b| " + pressureGroups, col1, textY + 2*lineH, col1W + col2W,  3*fontH, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings.data)
 
-			skin.fontNormal.drawBlock("|b|"+GetLocale("BROADCAST_PERMISSION")+":|/b|", col3, textY + 0*lineH, col3W+col4W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral)
-			skin.fontNormal.drawBlock(GetLocale("PRICE")+":", col3, textY + 1*lineH, col3W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.4,True, True)
-			skin.fontNormal.drawBlock(TFunctions.DottedValue(selectedSection.GetBroadcastPermissionPrice(owner))+" " + GetLocale("CURRENCY"), col4, textY + 1*lineH, col4W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
-			skin.fontNormal.drawBlock(GetLocale("CHANNEL_IMAGE")+":", col3, textY + 2*lineH, col3W,  14, ALIGN_LEFT_CENTER, skin.textColorNeutral, TBitmapFont.STYLE_SHADOW,1,0.4,True, True)
-			skin.fontNormal.drawBlock(GetLocale("MIN_VALUEX").Replace("%VALUEX%", MathHelper.NumberToString(selectedSection.broadcastPermissionMinimumChannelImage, 1, True)+"%"), col4, textY + 2*lineH, col4W,  14, ALIGN_RIGHT_CENTER, skin.textColorNeutral)
+			skin.fontSmallCaption.DrawBox(GetLocale("BROADCAST_PERMISSION")+":", col3, textY + 0*lineH, col3W+col4W, -1, sALIGN_LEFT_TOP, skin.textColorNeutral)
+			skin.fontNormal.DrawBox(GetLocale("PRICE")+":", col3, textY + 1*lineH, col3W, -1, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.4)
+			skin.fontNormal.DrawBox(TFunctions.DottedValue(selectedSection.GetBroadcastPermissionPrice(owner))+" " + GetLocale("CURRENCY"), col4, textY + 1*lineH, col4W, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+			skin.fontNormal.DrawBox(GetLocale("CHANNEL_IMAGE")+":", col3, textY + 2*lineH, col3W,  -1, sALIGN_LEFT_TOP, skin.textColorNeutral, EDrawTextEffect.Shadow, 0.4)
+			skin.fontNormal.DrawBox(GetLocale("MIN_VALUEX").Replace("%VALUEX%", MathHelper.NumberToString(selectedSection.broadcastPermissionMinimumChannelImage, 1, True)+"%"), col4, textY + 2*lineH, col4W,  -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 			if selectedSection.HasBroadcastPermission(owner)
-				skin.fontNormal.drawBlock(getLocale("BROADCAST_PERMISSION_EXISTING"), col3, textY + 3*lineH, col3W+col4W, 14, ALIGN_LEFT_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+				skin.fontNormal.DrawBox(getLocale("BROADCAST_PERMISSION_EXISTING"), col3, textY + 3*lineH, col3W+col4W, -1, sALIGN_LEFT_TOP, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
 			else
-				skin.fontNormal.drawBlock(getLocale("BROADCAST_PERMISSION_MISSING"), col3, textY + 3*lineH, col3W+col4W, 14, ALIGN_LEFT_CENTER, subHeaderColor, TBitmapFont.STYLE_EMBOSS,1,0.75,True, True)
+				skin.fontNormal.DrawBox(getLocale("BROADCAST_PERMISSION_MISSING"), col3, textY + 3*lineH, col3W+col4W, -1, sALIGN_LEFT_TOP, subHeaderColor, EDrawTextEffect.Emboss, 0.5)
 			endif
 		EndIf
 
@@ -3116,27 +3114,26 @@ endrem
 		Local rightValue:String = TFunctions.convertValue(station.GetReach(), 2, 0)
 		Local paddingLR:Int = 2
 		Local textOffsetX:Int = paddingLR + sprite.GetWidth() + 5
-		Local textOffsetY:Int = 2
-		Local textW:Int = item.GetScreenRect().GetW() - textOffsetX - paddingLR
+		Local textOffsetY:Int = 1
+		Local textW:Int = item.GetScreenRect().GetW() - textOffsetX - paddingLR - 1 '-1 looks better
 
-		Local currentColor:TColor = New TColor.Get()
-		Local entryColor:TColor
-		Local rightValueColor:TColor
+		Local currentAlpha:Float = GetAlpha()
+		Local entryColor:SColor8
+		Local rightValueColor:SColor8
 		Local leftValue:string = item.GetValue()
 
 		'draw with different color according status
 		If station.CanBroadcast()
 			'colorize antenna for "not sellable ones
 			If Not station.HasFlag(TVTStationFlag.SELLABLE)
-				entryColor = TColor.Create(130,80,50, currentColor.a)
+				entryColor = new SColor8(130,80,50, int(currentAlpha * 255))
 				rightValueColor = entryColor
 			Else
-				entryColor = item.valueColor.copy()
-				entryColor.a = currentColor.a
+				entryColor = new SColor8(item.valueColor.r, item.valueColor.g, item.valueColor.b, int(currentAlpha * 255))
 				rightValueColor = entryColor
 			EndIf
 		Else If station.IsShutdown()
-			entryColor = TColor.Create(90,90,60, currentColor.a)
+			entryColor = new SColor8(90,90,60, int(currentAlpha * 255))
 			leftValue = GetLocale("UNUSED_TRANSMITTER")
 			if TStationSatelliteUplink(station) and not TStationSatelliteUplink(station).providerGUID
 				rightValue = ""
@@ -3144,23 +3141,23 @@ endrem
 			'leftValue = "|color="+(150 + 50*Sin(Millisecs()*0.5))+",90,90|!!|/color| " + leftValue
 			rightValueColor = entryColor
 		Else
-			entryColor = item.valueColor.copy().AdjustFactor(50)
-			entryColor.a = currentColor.a * 0.5
+			entryColor = SColor8AdjustFactor(item.valueColor, 50)
+			entryColor = new SColor8(entryColor.r, entryColor.g, entryColor.b, int(255 * currentAlpha * 0.5))
 			rightValueColor = entryColor
 		EndIf
 
 		'blink a bit to emphasize a soon ending contract
 		local subTimeLeft:Long = station.GetSubscriptionTimeLeft()
 		if subTimeLeft > 0 and subTimeLeft < 1*TWorldTime.DAYLENGTH
-			entryColor = TColor.Create(130,100,50, currentColor.a - float(0.2 + 0.6 * sin(Millisecs()*0.33)))
+			entryColor = new SColor8(130,100,50, int(255 * (currentAlpha - float(0.2 + 0.6 * sin(Millisecs()*0.33)))))
 			rightValueColor = entryColor
 		endif
 
 		'draw antenna
 		sprite.Draw(Int(item.GetScreenRect().GetX() + paddingLR), item.GetScreenRect().GetY() + 0.5*item.rect.getH(), -1, ALIGN_LEFT_CENTER)
 		Local rightValueWidth:Int = item.GetFont().GetWidth(rightValue)
-		item.GetFont().DrawBlock(leftValue, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), textW - rightValueWidth - 5, Int(item.GetScreenRect().GetH() - textOffsetY), ALIGN_LEFT_CENTER, entryColor, , , , False)
-		item.GetFont().DrawBlock(rightValue, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), textW, Int(item.GetScreenRect().GetH() - textOffsetY), ALIGN_RIGHT_CENTER, rightValueColor)
+		item.GetFont().DrawBox(leftValue, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), textW - rightValueWidth - 5, Int(item.GetScreenRect().GetH() - textOffsetY), sALIGN_LEFT_CENTER, entryColor)
+		item.GetFont().DrawBox(rightValue, Int(item.GetScreenRect().GetX() + textOffsetX), Int(item.GetScreenRect().GetY() + textOffsetY), textW, Int(item.GetScreenRect().GetH() - textOffsetY), sALIGN_RIGHT_CENTER, rightValueColor)
 	End Function
 
 

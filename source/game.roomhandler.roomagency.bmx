@@ -341,7 +341,7 @@ endrem
 		local skin:TDatasheetSkin = GetDatasheetSkin("RoomAgencyBoard")
 
 		'where to draw
-		local outer:TRectangle = new TRectangle.Init(30,10, 740, 366)
+		local outer:TRectangle = new TRectangle.Init(30,10, 740, 370)
 		'calculate position/size of content elements
 		local contentX:int = 0
 		local contentY:int = 0
@@ -357,7 +357,7 @@ endrem
 		contentH = skin.GetContentH(outer.GetH())
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(GetLocale("ROOM_OVERVIEW")+": " + GetLocale("CANCEL_OR_RENT_ROOMS"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(GetLocale("ROOM_OVERVIEW")+": " + GetLocale("CANCEL_OR_RENT_ROOMS"), contentX + 5, contentY, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, contentH - titleH , "2")
 
@@ -467,7 +467,7 @@ endrem
 		local contentY:int = y + skin.GetContentY()
 
 		'== calculate special area heights
-		local titleH:int = 18, descriptionH:int = 80, ownerInfoH:int = 60
+		local titleH:int = 18, descriptionH:int = 90, ownerInfoH:int = 60
 		local splitterHorizontalH:int = 6
 		local boxH:int = 0, boxAreaH:int = 0
 		local boxAreaPaddingY:int = 4
@@ -477,7 +477,7 @@ endrem
 			ownerInfo = False
 		endif
 
-		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).getBlockHeight(title, contentW - 10, 100))
+		titleH = Max(titleH, 3 + GetBitmapFontManager().Get("default", 13, BOLDFONT).GetBoxHeight(title, contentW - 10, 100))
 
 		'== box area
 		boxH = skin.GetBoxSize(80, -1, "", "spotsPlanned", "neutral").GetY()
@@ -499,9 +499,9 @@ endrem
 		'== title area
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
 			if titleH <= 18
-				GetBitmapFont("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY -1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY +1, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			else
-				GetBitmapFont("default", 13, BOLDFONT).drawBlock(title, contentX + 5, contentY +1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+				GetBitmapFont("default", 13, BOLDFONT).DrawBox(title, contentX + 5, contentY   , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 			endif
 		contentY :+ titleH
 
@@ -556,7 +556,7 @@ endrem
 		if room.IsRentable() and room.GetOwner() <> currentPlayerID
 			t :+ GetLocale("ROOMAGENCY_SIGNING_WILL_COST_A_SINGLE_PAYMENT_OF_X").Replace("%X%", MathHelper.DottedValue( GetRoomAgency().GetCourtageForOwner(room, currentPlayerID) ) +" "+GetLocale("CURRENCY"))
 		endif
-		skin.fontNormal.drawBlock(t, contentX + 5, contentY + 3, contentW - 10, descriptionH - 3, null, skin.textColorNeutral)
+		skin.fontNormal.DrawBox(t, contentX + 5, contentY, contentW - 10, descriptionH, sALIGN_LEFT_TOP, skin.textColorNeutral, skin.textBlockDrawSettings)
 		contentY :+ descriptionH
 
 		if ownerInfo
@@ -599,8 +599,8 @@ endrem
 			local leftWidth:int  = (contentW - 10) * 0.6
 			local leftRightSplitter:int = 10
 			local rightWidth:int = (contentW - 10) - leftWidth - leftRightSplitter
-			skin.fontNormal.drawBlock("|b|"+GetLocale("ORIGINAL_TENANT")+":|/b|~n" + ownerInfo, contentX + 5, contentY + 3, leftWidth, ownerInfoH - 3, null, skin.textColorNeutral)
-			skin.fontNormal.drawBlock("|b|"+GetLocale("RERENT")+":|/b|~n" + ownerRerentInfo, contentX + 5 + leftWidth + leftRightSplitter, contentY + 3, rightWidth, ownerInfoH - 3, null, skin.textColorNeutral)
+			skin.fontNormal.DrawBox("|b|"+GetLocale("ORIGINAL_TENANT")+":|/b|~n" + ownerInfo, contentX + 5, contentY, leftWidth, ownerInfoH, sALIGN_LEFT_TOP, skin.textColorNeutral)
+			skin.fontNormal.DrawBox("|b|"+GetLocale("RERENT")+":|/b|~n" + ownerRerentInfo, contentX + 5 + leftWidth + leftRightSplitter, contentY, rightWidth, ownerInfoH, sALIGN_LEFT_TOP, skin.textColorNeutral)
 
 			rem
 Aehnlich wie bei "Cast" fuer Raeume mit Vorbesitzer anzeigen:
@@ -646,21 +646,21 @@ Vorbesitzer: XYZ
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			skin.fontBold.drawBlock("Raum: "+room.GetDescription(), contentX + 5, contentY, contentW - 10, 28)
+			skin.fontBold.DrawBox("Raum: "+room.GetDescription(), contentX + 5, contentY, contentW - 10, 28, SColor8.White)
 			contentY :+ 28
-			skin.fontNormal.draw("Name: "+room.GetName(), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Name: "+room.GetName(), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Besitzer: "+room.GetOwner(), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Besitzer: "+room.GetOwner(), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("IsRentable: "+room.IsRentable(), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("IsRentable: "+room.IsRentable(), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("IsRented: "+room.IsRented(), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("IsRented: "+room.IsRented(), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("IsUsedAsStudio: "+room.IsUsedAsStudio(), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("IsUsedAsStudio: "+room.IsUsedAsStudio(), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("RerentalTime: "+room.GetRerentalTime(), contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("RerentalTime: "+room.GetRerentalTime(), contentX + 5, contentY)
 			contentY :+ 12
-			skin.fontNormal.draw("Rerental in: "+(GetWorldTime().GetTimegone()-room.GetRerentalTime())+" s", contentX + 5, contentY)
+			skin.fontNormal.DrawSimple("Rerental in: "+(GetWorldTime().GetTimegone()-room.GetRerentalTime())+" s", contentX + 5, contentY)
 			contentY :+ 12
 		endif
 

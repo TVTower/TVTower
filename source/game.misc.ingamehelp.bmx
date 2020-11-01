@@ -181,7 +181,7 @@ Type TIngameHelpWindow
 		modalDialogue._defaultValueColor = TColor.clBlack.copy()
 		modalDialogue.defaultCaptionColor = TColor.clWhite.copy()
 
-		modalDialogue.SetCaptionArea(New TRectangle.Init(-1,10,-1,25))
+		modalDialogue.SetCaptionArea(New TRectangle.Init(-1, 6,-1, 30))
 		modalDialogue.guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP)
 
 		modalDialogue.SetDialogueType(1)
@@ -199,7 +199,7 @@ Type TIngameHelpWindow
 		guiTextArea = New TGUITextArea.Create(New TVec2D.Init(0,0), New TVec2D.Init(532,188 + 22 * (Not showHideOption)), state.ToString())
 		'guiTextArea.Move(0,0)
 		guiTextArea.SetFont( GetBitmapFont("default", 14) )
-		guiTextArea.textColor = TColor.clBlack.Copy()
+		guiTextArea.textColor = SColor8.Black
 		guiTextArea.SetWordWrap(True)
 		guiTextArea.SetValue( content )
 

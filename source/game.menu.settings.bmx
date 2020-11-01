@@ -66,60 +66,64 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Local rowWidth:Int[] = [210,210,250]
 		Local checkboxWidth:Int = 180
 		Local inputWidth:Int = 170
-		Local labelH:Int = 12
+		Local labelH:Int = 14
 		Local inputH:Int = 0
+		Local guiDistance:Int = labelH + 4
 
 		Local labelTitleGameDefaults:TGUILabel = New TGUILabel.Create(New TVec2D.Init(0, nextY), GetLocale("DEFAULTS_FOR_NEW_GAME"))
 		labelTitleGameDefaults.SetFont(GetBitmapFont("default", 14, BOLDFONT))
 		Self.AddChild(labelTitleGameDefaults)
-		nextY :+ 25
+		nextY :+ 22
 
 		Local labelPlayerName:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("PLAYERNAME")+":")
+		labelH = labelPlayerName.GetFont().GetHeight(GetLocale("PLAYERNAME"))
+		labelH :- 1 'a bit more near
 		inputPlayerName = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "", 128)
 		Self.AddChild(labelPlayerName)
 		Self.AddChild(inputPlayerName)
 		inputH = inputPlayerName.GetScreenRect().GetH()
-		nextY :+ inputH + labelH * 1.5
+		nextY :+ inputH + guiDistance
 
 		Local labelChannelName:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("CHANNELNAME")+":")
 		inputChannelName = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "", 128)
 		Self.AddChild(labelChannelName)
 		Self.AddChild(inputChannelName)
-		nextY :+ inputH + labelH * 1.5
+		nextY :+ inputH + guiDistance
 
 		Local labelStartYear:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("START_YEAR")+":")
 		inputStartYear = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(50,-1), "", 4)
 		Self.AddChild(labelStartYear)
 		Self.AddChild(inputStartYear)
-		nextY :+ inputH + labelH * 1.5
+		nextY :+ inputH + guiDistance
 
 		Local labelStationmap:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("STATIONMAP")+":")
 		inputStationmap = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "germany.xml", 128)
 		inputStationmap.disable()
 		Self.AddChild(labelStationmap)
 		Self.AddChild(inputStationmap)
-		nextY :+ inputH + labelH * 1.5
+		nextY :+ inputH + guiDistance
 
 		Local labelDatabase:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("DATABASE")+":")
 		inputDatabase = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "res/database/Default", 128)
 		inputDatabase.disable()
 		Self.AddChild(labelDatabase)
 		Self.AddChild(inputDatabase)
-		nextY :+ inputH + labelH * 1.5
+		nextY :+ inputH + guiDistance
+		
+		nextY :+ 2
 
 		checkShowIngameHelp = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth + 20,-1), GetLocale("SHOW_INTRODUCTORY_GUIDES"))
 		Self.AddChild(checkShowIngameHelp)
-		nextY :+ checkShowIngameHelp.GetScreenRect().GetH()
-
-		nextY :+ 15
-
+		nextY :+ checkShowIngameHelp.GetScreenRect().GetH() + guiDistance
+		
+		nextY :- 6
 
 
 		'SINGLEPLAYER
 		Local labelTitleSingleplayer:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SINGLEPLAYER"))
 		labelTitleSingleplayer.SetFont(GetBitmapFont("default", 14, BOLDFONT))
 		Self.AddChild(labelTitleSingleplayer)
-		nextY :+ 25
+		nextY :+ 22
 
 		Local labelInRoomSlowdown:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("GAME_SPEED_IN_ROOMS")+":")
 		inputInRoomSlowdown = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(75,-1), "", 128)
@@ -127,8 +131,9 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Self.AddChild(labelInRoomSlowdown)
 		Self.AddChild(inputInRoomSlowdown)
 		Self.AddChild(labelInRoomSlowdownPercentage)
-		nextY :+ inputH + labelH * 1.5
+		nextY :+ inputH + guiDistance
 
+		'-----
 
 		nextY = 0
 		nextX = rowWidth[0]
@@ -138,37 +143,25 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Local labelTitleSound:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_OUTPUT"))
 		labelTitleSound.SetFont(GetBitmapFont("default", 14, BOLDFONT))
 		Self.AddChild(labelTitleSound)
-		nextY :+ 25
+		nextY :+ 22
 
 		Local labelMusicVolume:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_MUSIC_VOLUME") + ":")
-		sliderMusicVolume = New TGUISlider.Create(New TVec2D.Init(nextX -2, nextY + 14), New TVec2D.Init(140,inputH -6), "10")
+		sliderMusicVolume = New TGUISlider.Create(New TVec2D.Init(nextX -2, nextY + labelH + 4), New TVec2D.Init(140,inputH -6), "10")
 		sliderMusicVolume.SetValueRange(0, 100)
 		Self.AddChild(labelMusicVolume)
 		Self.AddChild(sliderMusicVolume)
-		nextY :+ Max(inputH - 5, sliderMusicVolume.GetScreenRect().GetH())
-		nextY :+ 20
+		nextY :+ guiDistance + Max(labelH, sliderMusicVolume.GetScreenRect().GetH() + 6)
+
 
 		Local labelSFXVolume:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_SFX_VOLUME") + ":")
-		sliderSFXVolume = New TGUISlider.Create(New TVec2D.Init(nextX -2, nextY + 14), New TVec2D.Init(140,inputH -6), "10")
+		sliderSFXVolume = New TGUISlider.Create(New TVec2D.Init(nextX -2, nextY + labelH + 4), New TVec2D.Init(140,inputH -6), "10")
 		sliderSFXVolume.SetValueRange(0, 100)
 		Self.AddChild(labelSFXVolume)
 		Self.AddChild(sliderSFXVolume)
-		nextY :+ Max(inputH - 5, sliderSFXVolume.GetScreenRect().GetH())
-		nextY :+ 20
-
-
-'		checkMusic = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
-'		checkMusic.SetCaption(GetLocale("MUSIC"))
-'		self.AddChild(checkMusic)
-'		nextY :+ Max(inputH - 5, checkMusic.GetScreenRect().GetH())
-
-'		checkSfx = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
-'		checkSfx.SetCaption(GetLocale("SFX"))
-'		self.AddChild(checkSfx)
-'		nextY :+ Max(inputH, checkSfx.GetScreenRect().GetH())
+		nextY :+ guiDistance + Max(labelH, sliderMusicVolume.GetScreenRect().GetH() + 6)
 
 		Local labelSoundEngine:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_ENGINE") + ":")
-		dropdownSoundEngine = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + 14), New TVec2D.Init(inputWidth,-1), "", 128)
+		dropdownSoundEngine = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "", 128)
 		Local soundEngineValues:String[] = ["AUTOMATIC", "NONE"]
 		Local soundEngineTexts:String[] = ["Auto", "---"]
 		?Win32
@@ -195,7 +188,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Self.AddChild(labelSoundEngine)
 		Self.AddChild(dropdownSoundEngine)
 '		GuiManager.SortLists()
-		nextY :+ inputH + labelH * 1.5
+		nextY :+ inputH + guiDistance
 		nextY :+ 15
 
 
@@ -203,10 +196,10 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Local labelTitleGraphics:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("GRAPHICS"))
 		labelTitleGraphics.SetFont(GetBitmapFont("default", 14, BOLDFONT))
 		Self.AddChild(labelTitleGraphics)
-		nextY :+ 25
+		nextY :+ 22
 
 		Local labelRenderer:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("RENDERER") + ":")
-		dropdownRenderer = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(inputWidth,-1), "", 128)
+		dropdownRenderer = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "", 128)
 		'Local rendererValues:String[] = ["0", "4"]
 		'Local rendererTexts:String[] = ["OpenGL", "Buffered OpenGL"]
 		Local rendererValues:String[]
@@ -232,7 +225,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 
 		Self.AddChild(labelRenderer)
 		Self.AddChild(dropdownRenderer)
-		nextY :+ inputH + labelH * 1.5
+		nextY :+ inputH + guiDistance
 
 		checkFullscreen = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth,-1), "")
 		checkFullscreen.SetCaption(GetLocale("FULLSCREEN"))
@@ -245,14 +238,14 @@ Type TGUISettingsPanel Extends TGUIPanel
 		nextY :+ Max(inputH, checkVSync.GetScreenRect().GetH())
 
 		Local labelWindowResolution:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("WINDOW_MODE_RESOLUTION")+":")
-		inputWindowResolutionWidth = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(inputWidth/2 - 15,-1), "", 4)
-		inputWindowResolutionHeight = New TGUIInput.Create(New TVec2D.Init(nextX + inputWidth/2 + 15, nextY + 12), New TVec2D.Init(inputWidth/2 - 15,-1), "", 4)
-		Local labelWindowResolutionX:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX + inputWidth/2 - 4, nextY + 18), "x")
+		inputWindowResolutionWidth = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth/2 - 15,-1), "", 4)
+		inputWindowResolutionHeight = New TGUIInput.Create(New TVec2D.Init(nextX + inputWidth/2 + 15, nextY + labelH), New TVec2D.Init(inputWidth/2 - 15,-1), "", 4)
+		Local labelWindowResolutionX:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX + inputWidth/2 - 4, nextY + labelH + 4), "x")
 		Self.AddChild(labelWindowResolution)
 		Self.AddChild(labelWindowResolutionX)
 		Self.AddChild(inputWindowResolutionWidth)
 		Self.AddChild(inputWindowResolutionHeight)
-		nextY :+ inputH + 5 + labelH * 1.5
+		nextY :+ inputH + 5 + guiDistance
 
 
 		'MULTIPLAYER
@@ -261,20 +254,20 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Local labelTitleMultiplayer:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("MULTIPLAYER"))
 		labelTitleMultiplayer.SetFont(GetBitmapFont("default", 14, BOLDFONT))
 		Self.AddChild(labelTitleMultiplayer)
-		nextY :+ 25
+		nextY :+ 22
 
 		Local labelGameName:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("GAME_TITLE")+":")
 		inputGameName = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "", 128)
 		Self.AddChild(labelGameName)
 		Self.AddChild(inputGameName)
-		nextY :+ inputH + labelH * 1.5
+		nextY :+ inputH + guiDistance
 
 
 		Local labelOnlinePort:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("PORT_ONLINEGAME")+":")
-		inputOnlinePort = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + 12), New TVec2D.Init(50,-1), "", 4)
+		inputOnlinePort = New TGUIInput.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(50,-1), "", 4)
 		Self.AddChild(labelOnlinePort)
 		Self.AddChild(inputOnlinePort)
-		nextY :+ inputH + labelH * 1.5
+		nextY :+ inputH + guiDistance
 		nextY :+ 15
 
 		'INPUT
@@ -283,7 +276,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 		Local labelTitleInput:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("INPUT"))
 		labelTitleInput.SetFont(GetBitmapFont("default", 14, BOLDFONT))
 		Self.AddChild(labelTitleInput)
-		nextY :+ 25
+		nextY :+ 22
 
 		checkTouchInput = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth + 20,-1), GetLocale("USE_TOUCH_INPUT"))
 		Self.AddChild(checkTouchInput)
@@ -298,12 +291,12 @@ Type TGUISettingsPanel Extends TGUIPanel
 		nextY :+ labelTouchInput.GetValueDimension().y + 5
 
 		labelTouchClickRadius = New TGUILabel.Create(New TVec2D.Init(nextX + 22, nextY), GetLocale("MOVE_INSTEAD_CLICK_RADIUS")+":")
-		inputTouchClickRadius = New TGUIInput.Create(New TVec2D.Init(nextX + 22, nextY + 12), New TVec2D.Init(50,-1), "", 4)
-		labelTouchClickRadiusPixel = New TGUILabel.Create(New TVec2D.Init(nextX + 22 + 55, nextY + 18), "px")
+		inputTouchClickRadius = New TGUIInput.Create(New TVec2D.Init(nextX + 22, nextY + labelH), New TVec2D.Init(50,-1), "", 4)
+		labelTouchClickRadiusPixel = New TGUILabel.Create(New TVec2D.Init(nextX + 22 + 55, nextY + labelH + 4), "px")
 		Self.AddChild(labelTouchClickRadius)
 		Self.AddChild(inputTouchClickRadius)
 		Self.AddChild(labelTouchClickRadiusPixel)
-		nextY :+ Max(inputH, inputTouchClickRadius.GetScreenRect().GetH()) + 18
+		nextY :+ Max(inputH, inputTouchClickRadius.GetScreenRect().GetH()) + labelH + 4
 
 
 		checkLongClickMode = New TGUICheckbox.Create(New TVec2D.Init(nextX, nextY), New TVec2D.Init(checkboxWidth + 20,-1), GetLocale("LONGCLICK_MODE"))
@@ -318,8 +311,8 @@ Type TGUISettingsPanel Extends TGUIPanel
 		nextY :+ labelLongClickMode.GetValueDimension().y + 5
 
 		labelLongClickTime = New TGUILabel.Create(New TVec2D.Init(nextX + 22, nextY), GetLocale("LONGCLICK_TIME")+":")
-		inputLongClickTime = New TGUIInput.Create(New TVec2D.Init(nextX + 22, nextY + 12), New TVec2D.Init(50,-1), "", 4)
-		labelLongClickTimeMilliseconds = New TGUILabel.Create(New TVec2D.Init(nextX + 22 + 55 , nextY + 18), "ms")
+		inputLongClickTime = New TGUIInput.Create(New TVec2D.Init(nextX + 22, nextY + labelH), New TVec2D.Init(50,-1), "", 4)
+		labelLongClickTimeMilliseconds = New TGUILabel.Create(New TVec2D.Init(nextX + 22 + 55 , nextY + labelH + 4), "ms")
 		Self.AddChild(labelLongClickTime)
 		Self.AddChild(inputLongClickTime)
 		Self.AddChild(labelLongClickTimeMilliseconds)
@@ -508,17 +501,18 @@ Type TGUISettingsPanel Extends TGUIPanel
 
 	Method DrawContent()
 		Super.DrawContent()
+		local col:Scolor8 = new SColor8(50, 50, 50)
 
 		If Int(sliderSFXVolume.GetValue()) = 0
-			GetBitmapFont("default").Draw("muted", sliderSFXVolume.GetScreenRect().GetX() + 142, sliderSFXVolume.GetScreenRect().GetY() + 6, TColor.CreateGrey(50))
+			GetBitmapFont("default").DrawSimple("muted", sliderSFXVolume.GetScreenRect().GetX() + 142, sliderSFXVolume.GetScreenRect().GetY() + 6, col)
 		Else
-			GetBitmapFont("default").Draw(Int(sliderSFXVolume.GetValue())+" %", sliderSFXVolume.GetScreenRect().GetX() + 142, sliderSFXVolume.GetScreenRect().GetY() + 6, TColor.CreateGrey(50))
+			GetBitmapFont("default").DrawSimple(Int(sliderSFXVolume.GetValue())+" %", sliderSFXVolume.GetScreenRect().GetX() + 142, sliderSFXVolume.GetScreenRect().GetY() + 6, col)
 		EndIf
 
 		If Int(sliderMusicVolume.GetValue()) = 0
-			GetBitmapFont("default").Draw("muted", sliderMusicVolume.GetScreenRect().GetX() + 142, sliderMusicVolume.GetScreenRect().GetY() + 6, TColor.CreateGrey(50))
+			GetBitmapFont("default").DrawSimple("muted", sliderMusicVolume.GetScreenRect().GetX() + 142, sliderMusicVolume.GetScreenRect().GetY() + 6, col)
 		Else
-			GetBitmapFont("default").Draw(Int(sliderMusicVolume.GetValue())+" %", sliderMusicVolume.GetScreenRect().GetX() + 142, sliderMusicVolume.GetScreenRect().GetY() + 6, TColor.CreateGrey(50))
+			GetBitmapFont("default").DrawSimple(Int(sliderMusicVolume.GetValue())+" %", sliderMusicVolume.GetScreenRect().GetX() + 142, sliderMusicVolume.GetScreenRect().GetY() + 6, col)
 		EndIf
 	End Method
 
@@ -554,7 +548,7 @@ Type TSettingsWindow
 	Method Init:TSettingsWindow()
 		'LAYOUT CONFIG
 		Local windowW:Int = 700
-		Local windowH:Int = 490
+		Local windowH:Int = 500
 
 		modalDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(windowW, windowH), "SYSTEM")
 

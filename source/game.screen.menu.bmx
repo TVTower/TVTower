@@ -70,12 +70,14 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiAllPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, Int(playerBoxDimension.GetY() + 2 * panelGap))
 		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
 
-		guiGameTitleLabel = New TGUILabel.Create(New TVec2D.Init(0, 0), "", TColor.CreateGrey(90), name)
-		guiGameTitle = New TGUIinput.Create(New TVec2D.Init(0, 12), New TVec2D.Init(250, -1), "", 32, name)
-		guiStartYearLabel = New TGUILabel.Create(New TVec2D.Init(255, 0), "", TColor.CreateGrey(90), name)
-		guiStartYear = New TGUIinput.Create(New TVec2D.Init(255, 12), New TVec2D.Init(70, -1), "", 4, name)
-		guiGameSeedLabel = New TGUILabel.Create(New TVec2D.Init(330, 0), "", TColor.CreateGrey(90), name)
-		guiGameSeed = New TGUIinput.Create(New TVec2D.Init(330, 12), New TVec2D.Init(75, -1), "", 9, name)
+		local col:SColor8 = new SColor8(90, 90, 90)
+		Local labelH:Int = GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT).GetHeight("Title")
+		guiGameTitleLabel = New TGUILabel.Create(New TVec2D.Init(0, 0), "", col, name)
+		guiGameTitle = New TGUIinput.Create(New TVec2D.Init(0, labelH), New TVec2D.Init(250, -1), "", 32, name)
+		guiStartYearLabel = New TGUILabel.Create(New TVec2D.Init(255, 0), "", col, name)
+		guiStartYear = New TGUIinput.Create(New TVec2D.Init(255, labelH), New TVec2D.Init(70, -1), "", 4, name)
+		guiGameSeedLabel = New TGUILabel.Create(New TVec2D.Init(330, 0), "", col, name)
+		guiGameSeed = New TGUIinput.Create(New TVec2D.Init(330, labelH), New TVec2D.Init(75, -1), "", 9, name)
 
 		guiGameTitleLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT) )
 		guiStartYearLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT) )
@@ -124,7 +126,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiButtonsPanel = guiButtonsWindow.AddContentBox(0,0,-1,-1)
 
 		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
-		TGUIButton.SetTypeCaptionColor( TColor.CreateGrey(75) )
+		TGUIButton.SetTypeCaptionColor( new SColor8(75, 75, 75) )
 
 		guiButtonStart = New TGUIButton.Create(New TVec2D.Init(0, 0), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
 		guiButtonBack = New TGUIButton.Create(New TVec2D.Init(0, guiButtonsPanel.GetContentScreenRect().GetH() - guiButtonStart.GetScreenRect().GetH()), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
@@ -582,7 +584,7 @@ endrem
 				ElseIf GetPlayerBase(i).IsLocalHuman()
 					hint = "local player"
 				EndIf
-				GetBitMapFontManager().Get("default", 10).Draw(hint, hintX, hintY, TColor.CreateGrey(100))
+				GetBitMapFontManager().Get("default", 10).DrawSimple(hint, hintX, hintY, new SColor8(100, 100, 100))
 			EndIf
 
 			'move to next slot position
@@ -813,16 +815,21 @@ Function DrawMenuBackground(darkened:Int=False, drawLogo:Int = False)
 		'GetBitmapFont("Default",12).DrawBlock("|b|[S]|/b| Schnellspeichern - nun mit |b|[F5]|/b|~n|b|[L]|/b| Schnellspeicherstand einladen - nun mit |b|[F8]|/b|.~nDamit sollten versehentliche Spielverluste durch Einladerei minimiert werden.", 10,480, 300,50, Null,TColor.Create(75,75,75))
 
 
-		SetColor 255,255,255
-		GetBitmapFont("Default",13, BOLDFONT).DrawBlock("Wir brauchen Deine Hilfe!", 10,460, 300,20, Null,TColor.Create(75,75,140))
-		GetBitmapFont("Default",12).DrawBlock("Beteilige Dich an Diskussionen rund um alle Spielelemente in TVTower.", 10,480, 300,30, Null,TColor.Create(75,75,140))
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock("www.gamezworld.de/phpforum", 10,507, 500,20, Null,TColor.Create(75,75,180))
+		Local defaultColor:SColor8 = new SColor8(75,75,140)
+		Local linkColor:SColor8 = new SColor8(60,60,120)
+		local offsetY:int = 0
+		offsetY :+ GetBitmapFont("Default",13, BOLDFONT).DrawBox("Wir brauchen Deine Hilfe!", 10,460 + offsetY, 300, -1, sALIGN_LEFT_TOP, defaultColor).y
+		offsetY :+ GetBitmapFont("Default",12).DrawBox("Beteilige Dich an Diskussionen rund um alle Spielelemente in TVTower.", 10,460 + offsetY, 300,-1, sALIGN_LEFT_TOP, defaultColor).y
+		offsetY :+ GetBitmapFont("Default",12, BOLDFONT).DrawBox("www.gamezworld.de/phpforum", 10,460 + offsetY, 500, -1, sALIGN_LEFT_TOP, linkColor).y
 		SetAlpha 0.5 * GetAlpha()
-		GetBitmapFont("Default",11).drawBlock("(Keine Anmeldung notwendig)", 10,521, 500,20, Null,TColor.Create(60,60,150))
+		offsetY :+ GetBitmapFont("Default",11).DrawBox("(Keine Anmeldung notwendig)", 10,460 + offsetY, 500,20, sALIGN_LEFT_TOP, new SColor8(80,80,170)).y
 		SetAlpha 2.0 * GetAlpha()
 
-		GetBitmapFont("Default",12, ITALICFONT).drawBlock(versionstring, 10,565, 500,20, Null,TColor.Create(75,75,140))
-		GetBitmapFont("Default",12, ITALICFONT).drawBlock(copyrightstring+", www.TVTower.org", 10,580, 500,20, Null,TColor.Create(60,60,120))
+
+		local bottomStartY:Int = GetGraphicsManager().GetHeight() - 100 - 10
+		offsetY = 0
+		offsetY :+ GetBitmapFont("Default",12, ITALICFONT).DrawBox(copyrightstring+", www.TVTower.org", 10, bottomStartY, 500, 100, sALIGN_LEFT_BOTTOM, linkColor).y
+		offsetY :+ GetBitmapFont("Default",12, ITALICFONT).DrawBox(versionstring, 10, bottomStartY - offsetY, 500, 100, sALIGN_LEFT_BOTTOM, defaultColor).y
 	EndIf
 
 	If darkened

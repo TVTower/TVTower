@@ -131,13 +131,14 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	End Method
 
 
-	Method GetBlockRect:TRectangle(block:Int=1)
-		Local pos:TVec2D = Null
+	Method GetBlockPos:SVec2I(block:Int=1)
 		'dragged and not in DrawGhostMode
 		If isDragged() And Not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
-			pos = New TVec2D.Init(GetScreenRect().GetX(), GetScreenRect().GetY())
 			If block > 1
-				pos.addXY(0, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * (block - 1))
+				local assetH:int = GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH()
+				Return New SVec2I(int(GetScreenRect().GetX()), int(GetScreenRect().GetY() + assetH * (block - 1)))
+			Else
+				Return New SVec2I(int(GetScreenRect().GetX()), int(GetScreenRect().GetY()))
 			EndIf
 		Else
 			Local startSlot:Int = lastSlot
@@ -148,16 +149,48 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			EndIf
 
 			If list
-				pos = list.GetSlotCoord(startSlot + block-1).ToVec2D()
-				pos.addVec(list.GetScreenRect().position)
+				local posVec:TVec3D = list.GetSlotCoord(startSlot + block-1)
+				local screenPosVec:TVec2D = list.GetScreenRect().position
+				Return new SVec2I(int(posVec.x + screenPosVec.x), int(posVec.y + screenPosVec.y))
 			Else
-				pos = New TVec2D.CopyFrom(GetScreenRect().position)
-				pos.addXY(0, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * (block - 1))
+				local assetH:int = GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH()
+				local screenPosVec:TVec2D = GetScreenRect().position
+				Return new SVec2I(int(screenPosVec.x), int(screenPosVec.y + assetH * (block - 1)))
+			EndIf
+		EndIf
+	End Method
+
+
+	Method GetBlockRect:TRectangle(block:Int=1)
+		Local pos:SVec2I
+		local assetH:int = GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH()
+		'dragged and not in DrawGhostMode
+		If isDragged() And Not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
+			If block > 1
+				pos = New SVec2I(int(GetScreenRect().GetX()), int(GetScreenRect().GetY() + assetH * (block - 1)))
+			Else
+				pos = New SVec2I(int(GetScreenRect().GetX()), int(GetScreenRect().GetY()))
+			EndIf
+		Else
+			Local startSlot:Int = lastSlot
+			Local list:TGUISlotList = lastList
+			If inList
+				list = Self.inList
+				startSlot = Self.inList.GetSlot(Self)
+			EndIf
+
+			If list
+				local posVec:TVec3D = list.GetSlotCoord(startSlot + block-1)
+				local screenPosVec:TVec2D = list.GetScreenRect().position
+				pos = new SVec2I(int(posVec.x + screenPosVec.x), int(posVec.y + screenPosVec.y))
+			Else
+				local screenPosVec:TVec2D = GetScreenRect().position
+				pos = new SVec2I(int(screenPosVec.x), int(screenPosVec.y + assetH * (block - 1)))
 				'print "block: "+block+"  "+pos.GetIntX()+","+pos.GetIntY()
 			EndIf
 		EndIf
 
-		Return New TRectangle.Init(pos.x,pos.y, Self.rect.getW(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH())
+		Return New TRectangle.Init(pos.x,pos.y, Self.rect.getW(), assetH)
 	End Method
 
 
@@ -215,7 +248,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	'draws the background
 	Method DrawBlockBackground:Int(variant:String="")
 		Local titleIsVisible:Int = False
-		Local drawPos:TVec2D = New TVec2D.Init(GetScreenRect().GetX(), GetScreenRect().GetY())
+		Local drawPos:SVec2I
 		'if dragged and not in ghost mode
 		If isDragged() And Not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
 			If broadcastMaterial.state = broadcastMaterial.STATE_NORMAL Then variant = "_dragged"
@@ -243,7 +276,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 				If startSlot+i-1 < 0 Then Continue
 				If startSlot+i-1 >= 24 Then Continue
 			EndIf
-			drawPos = GetBlockRect(i).position
+			drawPos = GetBlockPos(i)
 
 			Select _blockPosition
 				Case 1	'top
@@ -286,9 +319,9 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 						titleIsVisible = True
 				Case 2	'middle
-						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos.x, drawPos.y, -1, 15, 0, 30)
-						drawPos.addXY(0,15)
-						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos.x, drawPos.y, -1, 15, 0, 30)
+						local sprite:TSprite = GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant)
+						sprite.DrawClipped(drawPos.x, drawPos.y, -1, 15, 0, 30)
+						sprite.DrawClipped(drawPos.x, drawPos.y + 15, -1, 15, 0, 30)
 				Case 3	'bottom
 						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos.x, drawpos.y, -1, 30, 0, 30)
 			End Select
@@ -468,16 +501,17 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 			textImageProgramme = TFunctions.CreateEmptyImage(textW, textH)
 			TBitmapFont.setRenderTarget(textImageProgramme)
-			TBitmapFont.pixmapOrigin.SetXY(-textX, -textY)
+'			TBitmapFont.pixmapOrigin = new SVec2i(-textX, -textY)
+			TBitmapFont.pixmapOrigin = new SVec2i(0,0)
 
 			'draw
-			titleFont.drawBlock(title, textX + 3, textY +3, textW - 5, 18, Null, titleColor, 0, True, 1.0, False)
-			useFont.draw(text, textX + 3, textY + 16, textColor)
-			useFont.draw(text2, textX + 138, textY + 16, textColor)
+			titleFont.DrawBox(title, 3, 0, textW - 5, 18, sALIGN_LEFT_TOP, titleColor.ToSColor8())
+			useFont.DrawSimple(text, 3, 13, textColor.ToSColor8())
+			useFont.DrawSimple(text2, 138, 13, textColor.ToSColor8())
 
 			SetColor 255,255,255
 
-			TBitmapFont.pixmapOrigin.SetXY(0, 0)
+'			TBitmapFont.pixmapOrigin = new SVec2i(0,0)
 			TBitmapFont.setRenderTarget(null)
 		endif
 
@@ -545,19 +579,18 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		if not textImageAd
 			textImageAd = TFunctions.CreateEmptyImage(textW, textH)
 			TBitmapFont.setRenderTarget(textImageAd)
-			TBitmapFont.pixmapOrigin.SetXY(-textX, -textY)
+			TBitmapFont.pixmapOrigin = new SVec2i(-textX, -textY)
 
 			If Not titleColor Then titleColor = TColor.Create(0,0,0)
 			If Not textColor Then textColor = TColor.Create(50,50,50)
 
-			GetBitmapFont("DefaultThin", 10, BOLDFONT).drawBlock(title, textX + 3, textY + 3, textW, 15, Null, TColor.clBlack, 0,1,1.0, False)
-			textColor.setRGB()
-			GetBitmapFont("Default", 10).drawBlock(text, textX + 3, textY + 17, textW, 15)
-			GetBitmapFont("Default", 10).drawBlock(text2,textX + 3, textY + 17, textW - 3, 15, ALIGN_RIGHT_TOP)
+			GetBitmapFont("DefaultThin", 10, BOLDFONT).DrawBox(title, textX + 3, textY + 1, textW, 15, sALIGN_LEFT_TOP, SColor8.Black)
+			GetBitmapFont("Default", 10).DrawBox(text, textX + 3, textY + 15, textW, 15, sALIGN_LEFT_TOP, textColor.ToSColor8())
+			GetBitmapFont("Default", 10).DrawBox(text2,textX + 3, textY + 15, textW - 3, 15, sALIGN_RIGHT_TOP, textColor.ToSColor8())
 
 			SetColor 255,255,255
 
-			TBitmapFont.pixmapOrigin.SetXY(0, 0)
+			TBitmapFont.pixmapOrigin = new SVec2i(0,0)
 			TBitmapFont.setRenderTarget(null)
 		endif
 

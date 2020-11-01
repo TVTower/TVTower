@@ -16,9 +16,9 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 	Field categoryCountRead:int[]
 	Field categoryCountTotal:int[]
 	Field markReadTime:Long = 0
-	Field colorCategoryHighlight:TColor = TColor.CreateGrey(20)
-	Field colorCategoryActive:TColor = TColor.Create(30,110,150)
-	Field colorCategoryDefault:TColor = TColor.CreateGrey(90)
+	Field colorCategoryHighlight:SColor8 = new SColor8(20,20,20)
+	Field colorCategoryActive:SColor8 = new SColor8(30,110,150)
+	Field colorCategoryDefault:SColor8 = new SColor8(90,90,90)
 
 	Field highlightNavigationEntry:int = -1
 
@@ -287,18 +287,18 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		contentH = listH
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(GetLocale("MESSAGECATEGORY_CATEGORIES"), contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		GetBitmapFontManager().Get("default", 13	, BOLDFONT).DrawBox(GetLocale("MESSAGECATEGORY_CATEGORIES"), contentX + 5, contentY , contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, contentH , "2")
 
 		For local i:int = 0 to TVTMessageCategory.count
 			local title:string = GetLocale( "MESSAGECATEGORY_" + TVTMessageCategory.GetAsString(TVTMessageCategory.GetAtIndex(i)) )
 			if highlightNavigationEntry = i
-				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, contentX + 5, contentY + 5 + i*20, colorCategoryHighlight, TBitmapFont.STYLE_EMBOSS, 1, 0.5)
+				GetBitmapFont("default", 13, BOLDFONT).DrawSimple(Chr(183) + " " + title, contentX + 5, contentY + 5 + i*20, colorCategoryHighlight, EDrawTextEffect.Emboss, 0.5)
 			elseif i = showCategoryIndex
-				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, contentX + 5, contentY + 5 + i*20, colorCategoryActive, TBitmapFont.STYLE_EMBOSS, 1, 0.5)
+				GetBitmapFont("default", 13, BOLDFONT).DrawSimple(Chr(183) + " " + title, contentX + 5, contentY + 5 + i*20, colorCategoryActive, EDrawTextEffect.Emboss, 0.5)
 			else
-				GetBitmapFont("default", 13, BOLDFONT).DrawStyled(Chr(183) + " " + title, contentX + 5, contentY + 5 + i*20, colorCategoryDefault, TBitmapFont.STYLE_EMBOSS, 1, 0.5)
+				GetBitmapFont("default", 13, BOLDFONT).DrawSimple(Chr(183) + " " + title, contentX + 5, contentY + 5 + i*20, colorCategoryDefault, EDrawTextEffect.Emboss, 0.5)
 			endif
 		Next
 		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
@@ -322,7 +322,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 
 		skin.RenderContent(contentX, contentY, contentW, titleH, "1_top")
-		GetBitmapFontManager().Get("default", 13	, BOLDFONT).drawBlock(caption, contentX + 5, contentY-1, contentW - 10, titleH, ALIGN_LEFT_CENTER, skin.textColorNeutral, 0,1,1.0,True, True)
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(caption, contentX + 5, contentY, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, listH , "2")
 		'reposition list
@@ -409,19 +409,18 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 
 		local sprite:TSprite = GetBackgroundSprite()
 		if sprite
-			local border:TRectangle = sprite.GetNinePatchContentBorder()
+			local border:SRect = sprite.GetNinePatchInformation().contentBorder
 			height :+ (border.GetTop() + border.GetBottom())
-
 			width :- (border.GetLeft() + border.GetRight())
 		endif
 
-		height :+ skin.fontSemiBold.GetBlockDimension(message.title, width, -1).GetY()
+		height :+ skin.fontSemiBold.GetBoxHeight(message.title, width, -1)
 		height :+ 3
 		'text
 		'attention: subtract some pixels from width (to avoid texts fitting
 		'because of rounding errors - but then when drawing they do not
 		'fit)
-		height :+ skin.fontNormal.GetBlockDimension(message.text, width - 1, -1).GetY()
+		height :+ skin.fontNormal.GetBoxHeight(message.text, width - 1, -1)
 
 		return height
 	End Method
@@ -478,41 +477,41 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 		sprite.DrawArea(x,y,w,h)
 
 
-		local border:TRectangle = sprite.GetNinePatchContentBorder()
+		local border:Srect = sprite.GetNinePatchInformation().contentBorder
 
 		'local oldCol:TColor = new TColor.Get()
 		local contentH:int = GetScreenRect().GetH() - (border.GetTop() + border.GetBottom())
 		local titleH:int = 0
 		local timeW:int = 0
-		local dim:TVec2D = new TVec2D
+		local dim:SVec2I
 
-		skin.fontNormal.drawBlock( ..
+		dim = skin.fontNormal.DrawBox( ..
 			GetLocale("DAY") + " " + (GetWorldTime().GetDaysRun(message.time)+1) + " " + GetWorldTime().GetFormattedTime(message.time), ..
 			x + (w - border.GetRight() - 100), ..
 			y + border.GetTop(), .. '-1 to align it more properly
 			100, ..
 			contentH, ..
-			ALIGN_RIGHT_TOP, skin.textColorNeutral, 0,1,1.0,True, True, , dim)
+			sALIGN_RIGHT_TOP, skin.textColorNeutral)
 		timeW = dim.x
 		timeW :+ 10
 
-		skin.fontSemiBold.drawBlock( ..
+		dim = skin.fontSemiBold.DrawBox( ..
 			title, ..
 			x + border.GetLeft(), ..
 			y + border.GetTop(), .. '-1 to align it more properly
 			w - (border.GetRight() + border.GetLeft() - timeW),  ..
 			contentH, ..
-			ALIGN_LEFT_TOP, skin.textColorNeutral, 0,1,1.0,True, True, , dim)
+			sALIGN_LEFT_TOP, skin.textColorNeutral)
 		titleH = dim.y
 		titleH :+ 3
 
-		skin.fontNormal.drawBlock( ..
+		skin.fontNormal.DrawBox( ..
 			text, ..
 			x + border.GetLeft(), ..
 			y + titleH + border.GetTop(), .. '-1 to align it more properly
 			w - (border.GetRight() + border.GetLeft()),  ..
 			contentH - titleH, ..
-			ALIGN_LEFT_TOP, skin.textColorNeutral)
+			sALIGN_LEFT_TOP, skin.textColorNeutral)
 	End Method
 
 

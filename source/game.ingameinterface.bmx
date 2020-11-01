@@ -51,15 +51,15 @@ Type TInGameInterface
 	Field spriteInterfaceButtonSettings:TSprite
 	Field _interfaceFont:TBitmapFont
 	Field _interfaceBigFont:TBitmapFont
-	Field moneyColor:TColor
-	Field audienceColor:TColor
-	Field bettyLovecolor:TColor
-	Field channelImageColor:TColor
-	Field currentDaycolor:TColor
-	Field marketShareColor:TColor
-	Field negativeProfitColor:TColor
-	Field neutralProfitColor:TColor
-	Field positiveProfitColor:TColor
+	Field moneyColor:SColor8
+	Field audienceColor:SColor8
+	Field bettyLovecolor:SColor8
+	Field channelImageColor:SColor8
+	Field currentDaycolor:SColor8
+	Field marketShareColor:SColor8
+	Field negativeProfitColor:SColor8
+	Field neutralProfitColor:SColor8
+	Field positiveProfitColor:SColor8
 	Field noiseAlpha:Float	= 0.95
 	Field noiseDisplace:Trectangle = new TRectangle
 	Field ChangeNoiseTimer:Float= 0.0
@@ -107,7 +107,7 @@ Type TInGameInterface
 			chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
 			chat.guiInput.SetMaxTextWidth(255)
 			chat.guiInput.spriteName = "gfx_interface_ingamechat_input"
-			chat.guiInput.color.AdjustRGB(30,30,30,True)
+			chat.guiInput.color = SColor8AdjustFactor(chat.guiInput.color, 30)
 			chat.guiInput.SetValueDisplacement(3,5)
 		EndIf
 
@@ -158,15 +158,15 @@ Type TInGameInterface
 		_interfaceFont = GetBitmapFont("Default", 12, BOLDFONT)
 		_interfaceBigFont = GetBitmapFont("Default", 16, BOLDFONT)
 
-		moneyColor = TColor.Create(200,230,200)
-		audienceColor = TColor.Create(200,200,230)
-		bettyLovecolor = TColor.Create(220,200,180)
-		channelImageColor = TColor.Create(200,220,180)
-		currentDaycolor = TColor.Create(180,180,180)
-		marketShareColor = TColor.Create(170,170,200)
-		negativeProfitColor = TColor.Create(200,170,170)
-		neutralProfitColor = TColor.Create(170,170,170)
-		positiveProfitColor = TColor.Create(170,200,170)
+		moneyColor = new SColor8(200,230,200)
+		audienceColor = new SColor8(200,200,230)
+		bettyLovecolor = new SColor8(220,200,180)
+		channelImageColor = new SColor8(200,220,180)
+		currentDaycolor = new SColor8(180,180,180)
+		marketShareColor = new SColor8(170,170,200)
+		negativeProfitColor = new SColor8(200,170,170)
+		neutralProfitColor = new SColor8(170,170,170)
+		positiveProfitColor = new SColor8(170,200,170)
 
 		'set space "left" when subtracting the genre image
 		'so we know how many pixels we can move that image to simulate animation
@@ -899,7 +899,7 @@ Type TInGameInterface
 
 		'=== INTERFACE TEXTS ===
 
-		_interfaceBigFont.drawBlock(GetPlayerBase().getMoneyFormatted(), 357, 412 +4, 130, 27, ALIGN_CENTER_TOP, moneyColor, 2, 1, 0.5)
+		_interfaceBigFont.DrawBox(GetPlayerBase().getMoneyFormatted(), 357, 413, 130, 32, sALIGN_CENTER_TOP, moneyColor, EDrawTextEffect.Shadow, 0.5)
 
 		Local audienceStr:String = "0"
 		Local audiencePercentageStr:String = "0"
@@ -908,7 +908,7 @@ Type TInGameInterface
 			audienceStr = TFunctions.convertValue(audienceResult.audience.GetTotalSum(), 2)
 			audiencePercentageStr = MathHelper.NumberToString(audienceResult.GetAudienceQuotePercentage() * 100, 2)
 		EndIf
-		_interfaceBigFont.drawBlock(audienceStr, 357, 447+4, 130, 27, ALIGN_CENTER_TOP, audienceColor, 2, 1, 0.5)
+		_interfaceBigFont.DrawBox(audienceStr, 357, 448, 130, 32, sALIGN_CENTER_TOP, audienceColor, EDrawTextEffect.Shadow, 0.5)
 
 
 		'=== DRAW SECONDARY INFO ===
@@ -918,18 +918,18 @@ Type TInGameInterface
 		'current days financial win/loss
 		local profit:int = GetPlayerFinance(playerID).GetCurrentProfit()
 		if profit > 0
-			_interfaceFont.drawBlock("+"+MathHelper.DottedValue(profit), 357, 412, 130, 32 - 2, ALIGN_CENTER_BOTTOM, positiveProfitColor, 2, 1, 0.5)
+			_interfaceFont.DrawBox("+"+MathHelper.DottedValue(profit), 357, 413, 130, 32, sALIGN_CENTER_BOTTOM, positiveProfitColor, EDrawTextEffect.Shadow, 0.5)
 		elseif profit = 0
-			_interfaceFont.drawBlock(0, 357, 412, 130, 32 - 2, ALIGN_CENTER_BOTTOM, neutralProfitColor, 2, 1, 0.5)
+			_interfaceFont.DrawBox(0, 357, 413, 130, 32, sALIGN_CENTER_BOTTOM, neutralProfitColor, EDrawTextEffect.Shadow, 0.5)
 		else
-			_interfaceFont.drawBlock(MathHelper.DottedValue(profit), 357, 412, 130, 32 - 2, ALIGN_CENTER_BOTTOM, negativeProfitColor, 2, 1, 0.5)
+			_interfaceFont.DrawBox(MathHelper.DottedValue(profit), 357, 413, 130, 32, sALIGN_CENTER_BOTTOM, negativeProfitColor, EDrawTextEffect.Shadow, 0.5)
 		endif
 
 		'market share
-		_interfaceFont.drawBlock(audiencePercentageStr+" %", 357, 447, 130, 32 - 2, ALIGN_CENTER_BOTTOM, marketShareColor, 2, 1, 0.5)
+		_interfaceFont.DrawBox(audiencePercentageStr+" %", 357, 448, 130, 32, sALIGN_CENTER_BOTTOM, marketShareColor, EDrawTextEffect.Shadow, 0.5)
 
 		'current day
-		_interfaceFont.drawBlock((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 357, 538, 130, 32 - 2, ALIGN_CENTER_BOTTOM, currentDayColor, 2, 1, 0.5)
+		_interfaceFont.DrawBox((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 357, 539, 130, 32, sALIGN_CENTER_BOTTOM, currentDayColor, EDrawTextEffect.Shadow, 0.5)
 
 		SetAlpha oldAlpha
 
@@ -942,7 +942,7 @@ Type TInGameInterface
 			Setcolor 255,255,255
 			SetAlpha oldAlpha
 		endif
-		_interfaceFont.drawBlock(bettyLoveText, 363, 488+1, 118, 14, ALIGN_CENTER_CENTER, bettyLoveColor, 2, 1, 0.5)
+		_interfaceFont.DrawBox(bettyLoveText, 363, 487, 118, 18, sALIGN_CENTER_CENTER, bettyLoveColor, EDrawTextEffect.Shadow, 0.5)
 
 		local channelImage:Float = Min(Max(GetPublicImageCollection().Get( playerID ).GetAverageImage()/100.0, 0.0),1.0)
 		local channelImageText:String = MathHelper.NumberToString(channelImage*100, 2)+"%"
@@ -953,13 +953,13 @@ Type TInGameInterface
 			Setcolor 255,255,255
 			SetAlpha oldAlpha
 		endif
-		_interfaceFont.drawBlock(channelImageText, 363, 516+1, 118, 14, ALIGN_CENTER_CENTER, channelImageColor, 2, 1, 0.5)
+		_interfaceFont.DrawBox(channelImageText, 363, 515, 118, 18, sALIGN_CENTER_CENTER, channelImageColor, EDrawTextEffect.Shadow, 0.5)
 
 		'DrawText(GetBetty().GetLoveSummary(),358, 535)
 
 		SetBlend ALPHABLEND
 
-		_interfaceBigFont.drawBlock(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 357, 538 + 4, 130, 27, ALIGN_CENTER_TOP, TColor.Create(220,220,220), 2, 1, 0.5)
+		_interfaceBigFont.DrawBox(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 357, 539, 130, 32, sALIGN_CENTER_TOP, new SColor8(220,220,220), EDrawTextEffect.Shadow, 0.5)
 
 
 		'=== DRAW HIGHLIGHTED CURRENT SPEED ===
@@ -1050,7 +1050,8 @@ Type TTooltipAudience Extends TTooltip
 	Field showDetailed:Int = False
 	Field forceShow:Int = False
 	Field lineHeight:Int = 0
-	Field lineIconHeight:Int = 0
+	Field iconWidth:Int = 0
+	Field iconHeight:Int = 0
 	Field originalPos:TVec2D
 
 	Function Create:TTooltipAudience(title:String = "", text:String = "unknown", x:Int=0, y:Int=0, w:Int=-1, h:Int=-1, lifetime:Int=300)
@@ -1064,11 +1065,16 @@ Type TTooltipAudience Extends TTooltip
 	'override to add lineheight
 	Method Initialize:Int(title:String="", content:String="unknown", x:Int=0, y:Int=0, w:Int=-1, h:Int=-1, lifetime:Int=300)
 		Super.Initialize(title, content, x, y, w, h, lifetime)
+		local lineTextHeight:Int = 14
 		if self.usefont
-			Self.lineHeight = Self.useFont.getMaxCharHeight()+1
+'			Self.lineHeight = Self.useFont.getMaxCharHeight()+1
+			lineTextHeight = Self.useFont.getMaxCharHeight()
 		endif
 		'text line with icon
-		Self.lineIconHeight = 1 + Max(lineHeight, GetSpriteFromRegistry("gfx_targetGroup_men").area.GetH())
+		Self.iconHeight = GetSpriteFromRegistry("gfx_targetGroup_men").area.GetH()
+		Self.iconWidth = GetSpriteFromRegistry("gfx_targetGroup_men").area.GetW()
+		'add +1 to have "spacing"
+		Self.lineHeight = max(lineTextHeight, iconHeight) + 1
 	End Method
 
 
@@ -1125,15 +1131,15 @@ Type TTooltipAudience Extends TTooltip
 		result:+ 1*lineHeight
 
 		If showDetails
-			result:+ 9*lineIconHeight
+			result:+ 9*lineHeight
 			if CheckObservedFigureInRoom("adagency") or CheckObservedFigureInRoom("office")
-				result :+ 1*lineIconHeight
+				result:+ 1*lineHeight
 			endif
 		Else
 			result:+ 1*lineHeight
 		EndIf
 
-		result:+ padding.GetTop() + padding.GetBottom()
+		result:+ contentPadding.GetTop() + contentPadding.GetBottom()
 
 		Return result
 	End Method
@@ -1142,13 +1148,13 @@ Type TTooltipAudience Extends TTooltip
 	'override default
 	Method DrawContent:Int(x:Int, y:Int, w:Int, h:Int)
 		'give text padding
-		x :+ padding.GetLeft()
-		y :+ padding.GetTop()
-		w :- (padding.GetLeft() + padding.GetRight())
-		h :- (padding.GetTop() + padding.GetBottom())
+		x :+ contentPadding.GetLeft()
+		y :+ contentPadding.GetTop()
+		w :- (contentPadding.GetLeft() + contentPadding.GetRight())
+		h :- (contentPadding.GetTop() + contentPadding.GetBottom())
 
 		If Not Self.audienceResult
-			Usefont.draw("Audience data missing", x, y)
+			Usefont.DrawSimple("Audience data missing", x, y)
 			Return False
 		EndIf
 
@@ -1156,21 +1162,23 @@ Type TTooltipAudience Extends TTooltip
 		Local lineY:Int = y
 		Local lineX:Int = x
 		Local lineText:String = ""
-		Local lineIconX:Int = lineX + GetSpriteFromRegistry("gfx_targetGroup_men").area.GetW() + 2
-		Local lineIconWidth:Int = w - GetSpriteFromRegistry("gfx_targetGroup_men").area.GetW()
-		Local lineIconDY:Int = Floor(0.5 * (lineIconHeight - lineHeight))
-		Local lineTextDY:Int = lineIconDY + 2
+		Local lineTextX:Int = lineX + iconWidth + 5
+		Local lineTextWidth:Int = w - (iconWidth + 5)
+		Local lineIconOffsetY:Int = Floor(0.5 * (lineHeight - iconHeight))
+'		Local lineTextOffsetY:Int = Floor(0.5 * (lineHeight - lineTextHeight)) 'lineIconDY + 2
+		Local col1:SColor8 = new SColor8(90,90,90)
+		Local col2:SColor8 = new SColor8(150,150,150)
 
 		'show how many people your stations cover (compared to country)
 		Local reach:Int = GetStationMap( GetPlayerBase().playerID ).GetReach()
 		Local totalReach:Int = GetStationMapCollection().population
 		lineText = GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.NumberToString(100.0 * Float(reach)/totalReach, 2) + "% "+GetLocale("OF_THE_MAP")+")"
-		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
+		Self.Usefont.DrawSimple(lineText, lineX, lineY, col1)
 		lineY :+ Self.Usefont.GetHeight(lineText)
 
 		'draw overview text
 		lineText = GetLocale("POTENTIAL_AUDIENCE") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),0) + " (" + MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%)"
-		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
+		Self.Usefont.DrawSimple(lineText, lineX, lineY, col1)
 		lineY :+ 1 * Self.Usefont.GetHeight(lineText)
 
 		rem
@@ -1188,18 +1196,18 @@ Type TTooltipAudience Extends TTooltip
 
 		if CheckObservedFigureInRoom("adagency") or CheckObservedFigureInRoom("office")
 			if forceShow
-				Self.Usefont.draw(GetLocale("HINT_PRESSING_ALT_WILL_RELEASE_TOOLTIP") , lineX, lineY, TColor.CreateGrey(150))
+				Self.Usefont.DrawSimple(GetLocale("HINT_PRESSING_ALT_WILL_RELEASE_TOOLTIP") , lineX, lineY, col2)
 			else
-				Self.Usefont.draw(GetLocale("HINT_PRESSING_ALT_WILL_FIX_TOOLTIP") , lineX, lineY, TColor.CreateGrey(150))
+				Self.Usefont.DrawSimple(GetLocale("HINT_PRESSING_ALT_WILL_FIX_TOOLTIP") , lineX, lineY, col2)
 			endif
 
 			'add 1 line more - as spacing to details
 			lineY :+ lineHeight
 		endif
 
-'print audienceResult.ToString()
+
 		If Not showDetails
-			Self.Usefont.draw(GetLocale("HINT_PRESSING_ALT_WILL_SHOW_DETAILS") , lineX, lineY, TColor.CreateGrey(150))
+			Self.Usefont.draw(GetLocale("HINT_PRESSING_ALT_WILL_SHOW_DETAILS") , lineX, lineY, col2)
 		Else
 			'add lines so we can have an easier "for loop"
 			Local lines:String[TVTTargetGroup.count]
@@ -1220,32 +1228,42 @@ Type TTooltipAudience Extends TTooltip
 				endif
 			Next
 
-			Local colorLight:TColor = TColor.CreateGrey(240)
-			Local colorDark:TColor = TColor.CreateGrey(230)
-			Local colorTextLight:TColor = colorLight.copy().AdjustFactor(-110)
-			Local colorTextDark:TColor = colorDark.copy().AdjustFactor(-140)
+			Local colorLight:SColor8 = new SColor8(240,240,240)
+			Local colorDark:SColor8 = new SColor8(230,230,230)
+			Local colorTextLight:SColor8 = SColor8AdjustFactor(colorLight, -110)
+			Local colorTextDark:SColor8 = SColor8AdjustFactor(colorDark, -140)
 
 			For Local i:Int = 1 To TVTTargetGroup.count
 				'shade the rows
-				If i Mod 2 = 0 Then colorLight.SetRGB() Else colorDark.SetRGB()
-				DrawRect(lineX, lineY, w, lineIconHeight)
+				If i Mod 2 = 0 Then SetColor(colorLight) Else SetColor(colorDark)
+				DrawRect(lineX, lineY, w, lineHeight)
+				SetColor 250,250,250
+				DrawLine(lineX, lineY, lineX + w -1, lineY)
+				SetColor 200,200,200
+				DrawLine(lineX, lineY + lineHeight -1, lineX + w -1, lineY + lineHeight -1)
 
 				'draw icon
+				if i mod 2 = 0 then SetColor 170,170,170 else SetColor 150,150,150
+				'icon is offset "in the image" already 1*1px
+				DrawRect(lineX, lineY + lineIconOffsetY - 1, iconWidth+2, iconHeight+2)
+				if i mod 2 = 0 then SetColor 130,130,130 else SetColor 100,100,100
+				DrawRect(lineX+1, lineY + lineIconOffsetY - 1 +1, iconWidth+1, iconHeight+1)
+
 				SetColor 255,255,255
 				targetGroupID = TVTTargetGroup.GetAtIndex(i)
-				GetSpriteFromRegistry("gfx_targetGroup_"+TVTTargetGroup.GetAsString(targetGroupID).toLower()).draw(lineX, lineY + lineIconDY)
+				GetSpriteFromRegistry("gfx_targetGroup_"+TVTTargetGroup.GetAsString(targetGroupID).toLower()).draw(lineX+1, lineY + lineIconOffsetY)
 				'draw text
 				If i Mod 2 = 0
-					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextLight)
-					Usefont.drawBlock(numbers[i-1], lineIconX, lineY + lineTextDY, lineIconWidth - 5 - 50, lineIconHeight, New TVec2D.Init(ALIGN_RIGHT), ColorTextLight)
-					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, New TVec2D.Init(ALIGN_RIGHT), ColorTextLight)
+					Usefont.DrawBox(lines[i-1], lineTextX, lineY,  w, lineHeight, sALIGN_LEFT_CENTER, ColorTextLight)
+					Usefont.DrawBox(numbers[i-1], lineTextX, lineY, lineTextWidth - 5 - 50, lineHeight, sALIGN_RIGHT_CENTER, ColorTextLight)
+					Usefont.DrawBox(percents[i-1]+"%", lineTextX, lineY, lineTextWidth - 5, lineHeight, sALIGN_RIGHT_CENTER, ColorTextLight)
 				Else
-					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextDark)
-					Usefont.drawBlock(numbers[i-1], lineIconX, lineY + lineTextDY, lineIconWidth - 5 - 50, lineIconHeight, New TVec2D.Init(ALIGN_RIGHT), ColorTextDark)
-					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, New TVec2D.Init(ALIGN_RIGHT), ColorTextDark)
+					Usefont.DrawBox(lines[i-1], lineTextX, lineY,  w, lineHeight, sALIGN_LEFT_CENTER, ColorTextDark)
+					Usefont.DrawBox(numbers[i-1], lineTextX, lineY, lineTextWidth - 5 - 50, lineHeight, sALIGN_RIGHT_CENTER, ColorTextDark)
+					Usefont.DrawBox(percents[i-1]+"%", lineTextX, lineY, lineTextWidth - 5, lineHeight, sALIGN_RIGHT_CENTER, ColorTextDark)
 				EndIf
 
-				lineY :+ lineIconHeight
+				lineY :+ lineHeight
 			Next
 		EndIf
 	End Method
