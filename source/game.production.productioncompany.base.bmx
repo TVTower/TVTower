@@ -163,7 +163,7 @@ Type TProductionCompanyBase Extends TGameObject
 
 
 	Method GetExperiencePercentage:Float()
-		If GetMaxXP() = 0 Then Return 1.0
+		If GetMaxXP() = 0 Then Return 0.0
 
 		Return GetExperience() / Float(GetMaxXP())
 	End Method
