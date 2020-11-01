@@ -34,6 +34,10 @@ Type TGUICheckBox Extends TGUIButton
 	End Method
 
 
+	Method Create:TGUICheckbox(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
+		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), value, State)
+	End Method
+
 	Method Create:TGUICheckbox(pos:TVec2D, dimension:TVec2D, value:String, limitState:String="")
 		'use another sprite name (assign before initing super)
 		spriteName = "gfx_gui_button.round"
@@ -92,7 +96,7 @@ Type TGUICheckBox Extends TGUIButton
 
 	Method GetCheckboxDimension:TVec2D()
 		if not checkboxDimension
-			local dim:TRectangle = GetSprite().GetNinePatchBorderDimension()
+			local dim:SRect = GetSprite().GetNinePatchInformation().borderDimension
 			checkboxDimension = new TVec2D.Init(..
 				Max(_checkboxMinDimension.x, dim.GetLeft() + dim.GetRight()), ..
 				Max(_checkboxMinDimension.y, dim.GetTop() + dim.GetBottom()) ..
@@ -127,8 +131,8 @@ Type TGUICheckBox Extends TGUIButton
 
 		if caption
 			caption.SetContentAlignment(ALIGN_LEFT, ALIGN_TOP)
-			caption.SetValueEffect(1, 0.2)
-			caption.SetValueColor(TColor.CreateGrey(120))
+			caption.SetValueEffect(3, 0.2)
+			caption.SetValueColor(TColor.CreateGrey(100))
 		endif
 	End Method
 
@@ -307,10 +311,10 @@ Type TGUICheckBox Extends TGUIButton
 		If caption and caption.IsVisible()
 			caption.SetValue(GetValue())
 
-			Local oldCol:TColor = caption.color.copy()
+			Local oldCol:SColor8 = caption.color
 			if tintEnabled
-				If isChecked() Then caption.color.AdjustFactor(-60)
-				If isHovered() Then caption.color.AdjustFactor(-30)
+				If isChecked() Then caption.color = SColor8AdjustFactor(caption.color, -60)
+				If isHovered() Then caption.color = SColor8AdjustFactor(caption.color, -30)
 			endif
 
 			caption.Draw()

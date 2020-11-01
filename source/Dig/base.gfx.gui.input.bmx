@@ -12,13 +12,13 @@ Import "base.gfx.sprite.bmx"
 
 Type TGUIinput Extends TGUIobject
     Field maxLength:Int
-    Field color:TColor = New TColor.Create(120,120,120)
-    Field editColor:TColor
+    Field color:SColor8 = New SColor8(80,80,80)
+    Field editColor:SColor8 = New SColor8(40,40,40)
     Field maxTextWidthBase:Int
     Field maxTextWidthCurrent:Int
     Field spriteName:String = "gfx_gui_input.default"
     Field textEffectAmount:Float = -1.0
-    Field textEffectType:Int = 1
+    Field textEffectType:EDrawTextEffect = EDrawTextEffect.None
     Field overlayArea:TRectangle = New TRectangle
 
 
@@ -32,12 +32,12 @@ Type TGUIinput Extends TGUIobject
     'text to display separately
     Field overlayText:String = ""
     'color for overlay text
-    Field overlayColor:TColor
+    Field overlayColor:SColor8
 	'where to position the overlay: empty=none, "left", "right"
 	Field overlayPosition:String = ""
 
 	Field placeholder:String = ""
-    Field placeholderColor:TColor
+    Field placeholderColor:SColor8
 	Field valueDisplacement:TVec2D
 	Field _textPos:TVec2D
 	Field _cursorPosition:Int = -1
@@ -46,6 +46,7 @@ Type TGUIinput Extends TGUIobject
 	Field _valueAtLastUpdate:String = ""
 	Field _valueOffset:Int = 0
 	Field _editable:Int = True
+	Field _mousePositionsCursor:Int = False
 
 	Global minDimension:TVec2D = New TVec2D.Init(40,28)
 	'default name for all inputs
@@ -54,6 +55,11 @@ Type TGUIinput Extends TGUIobject
 
 	Method GetClassName:String()
 		Return "tguiinput"
+	End Method
+
+
+	Method Create:TGUIInput(pos:SVec2I, dimension:SVec2I, value:String, maxLength:Int=128, limitState:String = "")
+		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), value, maxLength, limitState)
 	End Method
 
 
@@ -68,7 +74,6 @@ Type TGUIinput Extends TGUIobject
 		Else
 			SetMaxLength(2048)
 		EndIf
-'		SetValueColor(new TColor.Init(120,120,120))
 
 		'this element reacts to keystrokes
 		SetOption(GUI_OBJECT_CAN_RECEIVE_KEYSTROKES, True)
@@ -131,20 +136,48 @@ Type TGUIinput Extends TGUIobject
 	End Method
 
 
-	'override
-	'(this creates a backup of the old value)
-	Method _OnSetFocus:Int()
-		If Super._OnSetFocus()
-			'backup old value
-			_valueBeforeEdit = value
+	Method onClick:Int(triggerEvent:TEventBase) override
+		'only handle left clicks
+		If triggerEvent.GetData().GetInt("button") <> 1 Then Return False
+		
+		'first click activates "cursor positioning mode"
+		If not _mousePositionsCursor
+			_mousePositionsCursor = true
+			Return True
+		EndIf
+		
+		'active input fields react to mouse clicks on the input-area
+		'to move the cursor position
+		If Self = GuiManager.GetKeystrokeReceiver() and _textPos
+			'shrink screenrect to "text area"
+			Local scrRect:TRectangle = GetScreenRect()
+			Local screenX:Int = _textPos.GetX()
+			Local screenY:Int = _textPos.GetY()
+			Local screenW:Int = Self.maxTextWidthCurrent
+			Local screenH:Int = scrRect.GetH() - (_textPos.GetY() - scrRect.GetY())
 
 			'clear "getchar()"-queue and states
 			'(this avoids entering previously pressed keystrokes)
 			FlushKeys()
 
-			Return True
-		Else
-			Return False
+			If THelper.MouseIn(screenX, screenY, screenW, screenH)
+				Local valueOffsetPixels:Int = 0
+				If _valueOffset > 0 Then valueOffsetPixels = GetFont().GetWidth( value[.. _valueOffset] )
+'local old:int = _cursorPosition
+				Local valueClickedPixel:Int = MouseManager.x - screenX + valueOffsetPixels
+				Local newCursorPosition:Int = -1
+				For Local i:Int = 0 To value.length-1
+					If GetFont().GetWidth(value[.. i]) > valueClickedPixel
+						newCursorPosition = Max(0, i-1)
+						Exit
+					EndIf
+				Next
+				If newCursorPosition <> -1 Then _cursorPosition = newCursorPosition
+'print " ... Mouse "+int(MouseManager.x)+", "+int(MouseManager.y)+" is in. Position: " + old +" => " + _cursorPosition + "  valueClickedPixel="+valueClickedPixel+"  valueOffsetPixels="+valueOffsetPixels
+
+				'handled left click
+				Return True
+			EndIf
 		EndIf
 	End Method
 
@@ -163,39 +196,6 @@ Type TGUIinput Extends TGUIobject
 					KEYMANAGER.blockKey(KEY_ENTER, 200) 'to avoid auto-enter on a chat input
 					GuiManager.ResetFocus()
 					If Self = GuiManager.GetKeystrokeReceiver() Then GuiManager.SetKeystrokeReceiver(Null)
-				EndIf
-
-
-				'active input fields react to mouse clicks on the input-area
-				'to move the cursor position
-				If Self = GuiManager.GetKeystrokeReceiver()
-					If MouseManager.IsClicked(1) And _textPos
-						'shrink screenrect to "text area"
-						Local screenX:Int = _textPos.GetX()
-						Local screenY:Int = _textPos.GetY()
-						Local screenW:Int = Self.maxTextWidthCurrent
-						Local screenH:Int = GetScreenRect().GetH() - (_textPos.GetY() - GetScreenRect().GetY())
-
-
-						If THelper.MouseIn(screenX, screenY, screenW, screenH)
-							Local valueOffsetPixels:Int = 0
-							If _valueOffset > 0 Then valueOffsetPixels = GetFont().GetWidth( value[.. _valueOffset] )
-'local old:int = _cursorPosition
-							Local valueClickedPixel:Int = MouseManager.x - screenX + valueOffsetPixels
-							Local newCursorPosition:Int = -1
-							For Local i:Int = 0 To value.length-1
-								If GetFont().GetWidth(value[.. i]) > valueClickedPixel
-									newCursorPosition = Max(0, i-1)
-									Exit
-								EndIf
-							Next
-							If newCursorPosition <> -1 Then _cursorPosition = newCursorPosition
-'print " ... Mouse "+int(MouseManager.x)+", "+int(MouseManager.y)+" is in. Position: " + old +" => " + _cursorPosition + "  valueClickedPixel="+valueClickedPixel+"  valueOffsetPixels="+valueOffsetPixels
-
-							'handled left click
-							MouseManager.SetClickHandled(1)
-						EndIf
-					EndIf
 				EndIf
 
 
@@ -333,8 +333,9 @@ Type TGUIinput Extends TGUIobject
 		If overlayBGSprite
 			'calculate center of overlayBG (left and right border could have different values)
 			'-> bgBorderWidth/2
-			Local bgBorderWidth:Int = overlayBGSprite.GetNinePatchBorderDimension().GetLeft() + overlayBGSprite.GetNinePatchBorderDimension().GetRight()
-			Local bgBorderHeight:Int = overlayBGSprite.GetNinePatchBorderDimension().GetTop() + overlayBGSprite.GetNinePatchBorderDimension().GetBottom()
+			Local cb:SRect = overlayBGSprite.GetNinePatchInformation().contentBorder
+			Local bgBorderWidth:Int = cb.GetLeft() + cb.GetRight()
+			Local bgBorderHeight:Int = cb.GetTop() + cb.GetBottom()
 
 			'overlay background width is overlay + background  borders (the non content area)
 			dim.SetX(overlayArea.GetW() + bgBorderWidth)
@@ -366,16 +367,14 @@ Type TGUIinput Extends TGUIobject
 	Method DrawInputContent:Int(position:TVec2D)
 	    Local i:Int	= 0
 		Local printValue:String	= value
+		Local oldCol:SColor8
+		GetColor(oldCol)
 
 		'if we are the input receiving keystrokes, symbolize it with the
 		'blinking underscore sign "text_"
 		'else just draw it like a normal gui object
 		If _editable And Self = GuiManager.GetKeystrokeReceiver()
-			If editColor
-				editColor.SetRGB()
-			Else
-				color.copy().AdjustFactor(-80).SetRGB()
-			EndIf
+			SetColor( editColor )
 
 			If _cursorPosition = -1 Then _cursorPosition = printValue.length
 
@@ -405,7 +404,7 @@ Type TGUIinput Extends TGUIobject
 			'	leftValue = leftValue[3 ..]
 			'endif
 
-			leftValueW = Int(GetFont().getWidth(leftValue))
+			leftValueW = GetFont().GetWidth(leftValue)
 
 			'limit rightValue to fit into the left space
 			If rightValue <> ""
@@ -415,12 +414,10 @@ Type TGUIinput Extends TGUIobject
 			EndIf
 
 
-			GetFont().draw(leftValue, position.GetIntX(), position.GetIntY())
-
-			DrawCaret(Int(position.GetIntX() + leftValueW), Int(position.GetY()))
-
+			GetFont().DrawSimple(leftValue, position.GetIntX(), position.GetIntY(), editColor, EDrawTextEffect.None, textEffectAmount * 0.75)
+			DrawCaret(Int(position.GetIntX() + leftValueW), position.GetIntY())
 			'ignore cursor-offset (to avoid "letter-jiggling")
-			GetFont().draw(rightValue, position.GetIntX() + leftValueW, position.GetIntY())
+			GetFont().DrawSimple(rightValue, position.GetIntX() + leftValueW, position.GetIntY(), editColor, EDrawTextEffect.None, textEffectAmount * 0.5 )
 	    Else
 			If printValue.length = 0
 				printValue = placeholder
@@ -430,28 +427,23 @@ Type TGUIinput Extends TGUIobject
 				printValue = printValue[.. printValue.length - 1]
 			Wend
 
-			If textEffectType <> 0
-				If value.length = 0
-					GetFont().drawStyled(printValue, position.GetIntX(), position.GetIntY(), placeholderColor, textEffectType, 1, textEffectAmount)
-				Else
-					GetFont().drawStyled(printValue, position.GetIntX(), position.GetIntY(), color, textEffectType, 1, textEffectAmount)
-				EndIf
+
+			If value.length = 0
+				GetFont().DrawSimple(printValue, position.GetIntX(), position.GetIntY(), placeholderColor, textEffectType, textEffectAmount)
 			Else
-				If value.length = 0
-					GetFont().draw(printValue, position.GetIntX(), position.GetIntY(), placeholderColor)
-				Else
-					GetFont().draw(printValue, position.GetIntX(), position.GetIntY(), color)
-				EndIf
+				GetFont().DrawSimple(printValue, position.GetIntX(), position.GetIntY(), color, textEffectType, textEffectAmount)
 			EndIf
 		EndIf
 
+		SetColor(oldCol)
 	End Method
 
 
 	Method DrawCaret(x:Int, y:Int)
 		Local oldAlpha:Float = GetAlpha()
 		SetAlpha Float(Ceil(Sin(Time.GetTimeGone() / 4)) * oldAlpha)
-		DrawLine(x, y, x, y + GetFont().GetMaxCharHeight() )
+	'	DrawLine(x, y + 2, x, y + GetFont().GetMaxCharHeight() - 4 )
+		DrawLine(x, y + 3, x, y + GetFont().GetMaxCharHeightAboveBaseline() + 1 )
 		SetAlpha oldAlpha
 	End Method
 
@@ -472,7 +464,8 @@ Type TGUIinput Extends TGUIobject
 			'characters with parts below baseline.
 			'avoids "above center"-look if value does not contain such
 			'characters
-			_textPos.Init(2, (rect.GetH() - GetFont().GetMaxCharHeight(False)) /2)
+'			_textPos.Init(2, (rect.GetH() - GetFont().GetMaxCharHeightAboveBaseline()) / 2)
+			_textPos.Init(2, (rect.GetH() - GetFont().GetMaxCharHeight(True)) / 2)
 		Else
 			_textPos.copyFrom(valueDisplacement)
 		EndIf
@@ -506,7 +499,7 @@ Type TGUIinput Extends TGUIobject
 
 			sprite.DrawArea(atPointX, atPointY, widgetWidth, rect.GetH())
 			'move text according to content borders
-			_textPos.AddX(sprite.GetNinePatchContentBorder().GetLeft())
+			_textPos.AddX(sprite.GetNinePatchInformation().contentBorder.GetLeft())
 			'_textPos.SetX(Max(_textPos.GetX(), sprite.GetNinePatchContentBorder().GetLeft()))
 		EndIf
 
@@ -530,8 +523,32 @@ Type TGUIinput Extends TGUIobject
 
 
 	'override
-	Method _OnRemoveFocus:Int()
+	'(this creates a backup of the old value)
+	Method _OnSetFocus:Int() Override
+		If Super._OnSetFocus()
+			'backup old value
+			_valueBeforeEdit = value
+			
+			'start at end of "value"
+			_cursorPosition = -1
+
+			'clear "getchar()"-queue and states
+			'(this avoids entering previously pressed keystrokes)
+			FlushKeys()
+
+			Return True
+		Else
+			Return False
+		EndIf
+	End Method
+
+
+	Method _OnRemoveFocus:Int() Override
+		Super._OnRemoveFocus()
 		FinishEdit()
+
+		_mousePositionsCursor = False
+
 		Return True
 	End Method
 End Type

@@ -39,6 +39,7 @@ Import Brl.Map
 Import Brl.Threads
 ?
 Import "base.util.time.bmx"
+Import "base.util.string.bmx"
 Import "external/string_comp.bmx"
 
 Type TProfilerCall
@@ -118,10 +119,10 @@ Type TProfiler
 
 	Function GetLog:String()
 		Local result:String = ""
-		result :+ ".-----------------------------------------------------------------------------------------."+"~n"
-		result :+ "| AppProfiler |                                                                           |"+"~n"
-		result :+ "|-----------------------------------------------------------------------------------------|"+"~n"
-		result :+ "| FUNCTION                            |   CALLS |  TOTAL |    MAX   | AVERAGE | OF PARENT |"+"~n"
+		result :+ ".-------------------------------------------------------------------------------------------------."+"~n"
+		result :+ "| AppProfiler |                                                                                   |"+"~n"
+		result :+ "|-------------------------------------------------------------------------------------------------|"+"~n"
+		result :+ "| FUNCTION                            |   CALLS |     TOTAL |        MAX |    AVERAGE | OF PARENT |"+"~n"
 
 		Local totalTime:Int = 0
 		Local entryNumber:Int = 1
@@ -153,22 +154,41 @@ Type TProfiler
 					Next
 				EndIf
 			EndIf
-			Local AvgTime:String = String( Floor(Int(1000.0*(Float(c.timeTotal) / Float(c.calls)))) / 1000.0 )
 
 			Local percentageOfParent:String
+			rem
 			If c.GetParentTimeTotal() > 0
 				percentageOfParent = LSet(100 * c.timeTotal/Float(c.GetParentTimeTotal()), 4)+"%"
 			Else
 				percentageOfParent = RSet("100",4)+"%"
 			EndIf
-
+			Local AvgTime:String = String( Floor(Int(1000.0*(Float(c.timeTotal) / Float(c.calls)))) / 1000.0 )
 			result :+ "| " + LSet(funcName, 35) + " | " + RSet(c.calls, 7) + " | " + LSet(String(c.timeTotal / 1000.0), 5)+"s" + " | " + RSet(c.timeMax,6)+"ms" + " | " + LSet(AvgTime,5)+"ms"+ " |     "+percentageOfParent+" |" + "~n"
+			endrem
+
+			if c.GetParentTimeTotal() > 0
+				if c.timeTotal/Float(c.GetParentTimeTotal()) <= 1.0
+					percentageOfParent = StringHelper.printf("%3.2f", [string(100 * c.timeTotal/Float(c.GetParentTimeTotal()))])
+				else
+					percentageOfParent = "THREAD?"
+				endif
+			else
+				percentageOfParent = "100.00%"
+			endif
+
+			result :+ "| " + LSet(funcName, 35)
+			result :+ " | " + RSet(c.calls, 7)
+			result :+ " | " + RSet(StringHelper.printf("%6.2f", [string(c.timeTotal / 1000.0)]), 8)+"s"
+			result :+ " | " + RSet(StringHelper.printf("%7.1f", [string(c.timeMax)]), 8)+"ms"
+			result :+ " | " + RSet(StringHelper.printf("%5.2f", [string(float(c.timeTotal) / c.calls)]), 8)+"ms"
+			result :+ " | " + RSet(percentageOfParent, 9)+" |" + "~n"
+
 			entryNumber :+1
 		Next
 		If Not activated
-			result :+ "| Profiler deactivated                                                                    |" +"~n"
+			result :+ "| Profiler deactivated                                                                            |" +"~n"
 		EndIf
-		result :+ "'-----------------------------------------------------------------------------------------'" +"~n"
+		result :+ "'-------------------------------------------------------------------------------------------------'" +"~n"
 
 
 		Return result

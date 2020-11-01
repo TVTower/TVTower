@@ -8,17 +8,20 @@ Import "base.gfx.gui.bmx"
 Import "base.util.registry.spriteloader.bmx"
 
 
+TGUILabel._defaultDrawTextEffect = new TDrawTextEffect
+TGUILabel._defaultDrawTextEffect.data.mode = EDrawTextEffect.Emboss
+TGUILabel._defaultDrawTextEffect.data.value = -1.0 'default
 
 Type TGUILabel Extends TGUIobject
 	Field contentDisplacement:TVec2D = New TVec2D.Init(0,0)
-	Field color:TColor = TColor.Create(0,0,0)
-	Field valueEffectType:Int = 1
-	Field valueEffectSpecial:Float = 1.0
+	Field color:SColor8 = SColor8.Black
 	Field _valueDimensionCache:TVec2D = Null
 	Field spriteName:String = ""
 	Field _sprite:TSprite 'private
 	Field valueSpriteMode:Int = 0 'only text
-	Field textCache:TBitmapFontText = new TBitmapFontText
+	Field textCache:TBitmapFontText = New TBitmapFontText
+	Field _drawTextEffect:TDrawTextEffect
+
 
 	Const MODE_TEXT_ONLY:Int = 0
 	Const MODE_SPRITE_ONLY:Int = 1
@@ -34,6 +37,7 @@ Type TGUILabel Extends TGUIobject
 	Const MODE_SPRITE_BELOW_TEXT:Int = 9
 
 	Global _typeDefaultFont:TBitmapFont
+	Global _defaultDrawTextEffect:TDrawTextEffect ' = new TDrawTextEffect
 
 
 
@@ -42,19 +46,34 @@ Type TGUILabel Extends TGUIobject
 	End Method
 
 
+	Method Create:TGUILabel(pos:SVec2I, text:String, State:String="")
+		Return Create(new TVec2D.Init(pos.x, pos.y), text, self.color, State)
+	End Method
+
+
+	Method Create:TGUILabel(pos:TVec2D, text:String, State:String="")
+		Return Create(pos, text, self.color, State)
+	End Method
+
 	'will be added to general GuiManager
 	'-- use CreateSelfContained to get a unmanaged object
-	Method Create:TGUILabel(pos:TVec2D, text:String, color:TColor=Null, State:String="")
+	Method Create:TGUILabel(pos:TVec2D, text:String, color:SColor8, State:String="")
 		Super.CreateBase(pos, Null, State)
 
 		'by default labels have left aligned content
 		SetContentAlignment(ALIGN_LEFT, ALIGN_CENTER)
 
 		Self.SetValue(text)
-		If color Then Self.color = color
+		Self.color = color
 
 		GUIManager.Add(Self)
 		Return Self
+	End Method
+
+	
+	Method GetDrawTextEffect:TDrawTextEffect()
+		if not _drawTextEffect Then return _defaultDrawTextEffect
+		Return _drawTextEffect
 	End Method
 
 
@@ -63,14 +82,34 @@ Type TGUILabel Extends TGUIobject
 	End Method
 
 
+	Method SetValueColor:Int(color:SColor8)
+		self.color = color
+	End Method
+	
 	Method SetValueColor:Int(color:TColor)
-		If color Then Self.color = color.copy()
+		If color Then Self.color = color.ToSColor8()
 	End Method
 
 
 	Method SetValueEffect:Int(valueEffectType:Int, valueEffectSpecial:Float = 1.0)
-		Self.valueEffectType = valueEffectType
-		Self.valueEffectSpecial = valueEffectSpecial
+		if not _drawTextEffect Then _drawTextEffect = new TDrawTextEffect
+
+		Select valueEffectType
+			case 1	_drawTextEffect.data.mode = EDrawTextEffect.Shadow
+			case 2	_drawTextEffect.data.mode = EDrawTextEffect.Glow
+			case 3	_drawTextEffect.data.mode = EDrawTextEffect.Emboss
+			default _drawTextEffect.data.mode = EDrawTextEffect.None
+		End Select
+		
+		_drawTextEffect.data.value = valueEffectSpecial
+	End Method
+
+
+	Method SetValueEffect:Int(valueEffectType:EDrawTextEffect = EDrawTextEffect.None, valueEffectSpecial:Float = 1.0)
+		if not _drawTextEffect Then _drawTextEffect = new TDrawTextEffect
+
+		_drawTextEffect.data.mode = valueEffectType		
+		_drawTextEffect.data.value = valueEffectSpecial
 	End Method
 
 
@@ -78,7 +117,9 @@ Type TGUILabel Extends TGUIobject
 		If GetValue() <> value
 			Super.SetValue(value)
 
-			if textCache then textCache.Invalidate()
+	'_valueDimensionCache = Null
+			If textCache Then textCache.Invalidate()
+			InvalidateScreenRect()
 
 			SetAppearanceChanged(True)
 		EndIf
@@ -131,8 +172,7 @@ Type TGUILabel Extends TGUIobject
 	Function GetTypeFont:TBitmapFont()
 		Return _typeDefaultFont
 	End Function
-
-
+ 
 	Method GetValueDimension:TVec2D()
 		If Not _valueDimensionCache
 			Local availableW:Int = rect.GetW()
@@ -150,17 +190,8 @@ Type TGUILabel Extends TGUIobject
 				End Select
 			EndIf
 
-			_valueDimensionCache = New TVec2D
-			_valueDimensionCache.SetX(GetFont().getWidth(value))
-
-			'does the text fit into the maximum given width?
-			'if so, there is no need for a linebreak/more complex calc.
-			If availableW > 0 And _valueDimensionCache.x < availableW
-				_valueDimensionCache.SetY(GetFont().getHeight(value))
-			'if not, the dimensions are equal to the text block dimensions
-			Else
-				_valueDimensionCache = GetFont().GetBlockDimension(value, availableW, availableH)
-			EndIf
+			Local s:SVec2I = GetFont().GetBoxDimension(value, availableW, availableH)
+			_valueDimensionCache = New TVec2D.Init(s.x, s.y)
 
 			'add back sprite to result
 			If sprite
@@ -185,52 +216,52 @@ Type TGUILabel Extends TGUIobject
 		Local sprite:TSprite = GetSprite()
 		If Not sprite Then mode = MODE_TEXT_ONLY
 
-		Local textH:Int = GetScreenRect().GetH() - 2*contentDisplacement.GetY()
-		If GetScreenRect().GetH() < 0 Then textH = -1
+		Local scrTRect:TRectangle = GetScreenRect()
+		
+		Local textH:Int = scrTRect.GetH() - 2*contentDisplacement.GetY()
+		If scrTRect.GetH() < 0 Then textH = -1
 
-		Local textW:Int = GetScreenRect().GetW() - 2*contentDisplacement.GetX()
-
+		Local textW:Int = scrTRect.GetW() - 2*contentDisplacement.GetX()
+		
+		Local scrRect:SRect = New SRect(scrTRect.GetX(), scrTRect.GetY(), scrTRect.GetW(), scrTRect.GetH())
 
 		Select valueSpriteMode
 			Case MODE_SPRITE_LEFT_OF_TEXT
-				GetFont().drawBlock(value, GetScreenRect().GetX() + contentDisplacement.GetX() + sprite.GetWidth(), GetScreenRect().GetY() + contentDisplacement.GetY(), textW, textH, contentAlignment, color, valueEffectType, True, valueEffectSpecial, , , ,Null)
-				sprite.Draw(GetScreenRect().GetX() + contentDisplacement.GetX(), GetScreenRect().GetY() -1 + contentDisplacement.GetY() + 0.5 * textH, -1, ALIGN_LEFT_CENTER)
+				GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX() + sprite.GetWidth(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, _drawTextEffect.data)
+				sprite.Draw(int(scrRect.x + contentDisplacement.GetX()), int(scrRect.y - 1 + contentDisplacement.GetY() + 0.5 * textH), -1, ALIGN_LEFT_CENTER)
 			Case MODE_SPRITE_LEFT_OF_TEXT2
-				GetFont().drawBlock(value, GetScreenRect().GetX() + contentDisplacement.GetX(), GetScreenRect().GetY() + contentDisplacement.GetY(), textW, textH, contentAlignment, color, valueEffectType, True, valueEffectSpecial, , , , Null)
-				sprite.Draw(GetScreenRect().GetX() + contentDisplacement.GetX(), GetScreenRect().GetY() -1 + contentDisplacement.GetY() + 0.5 * textH, -1, ALIGN_LEFT_CENTER)
+				GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, _drawTextEffect.data)
+				sprite.Draw(int(scrRect.x + contentDisplacement.GetX()), int(scrRect.y - 1 + contentDisplacement.GetY() + 0.5 * textH), -1, ALIGN_LEFT_CENTER)
 			Case MODE_SPRITE_LEFT_OF_TEXT3
-				GetFont().drawBlock(value, GetScreenRect().GetX() + contentDisplacement.GetX(), GetScreenRect().GetY() + contentDisplacement.GetY(), textW, textH, contentAlignment, color, valueEffectType, True, valueEffectSpecial, , , , Null)
-				sprite.Draw(GetScreenRect().GetX() + 0.5 * (GetScreenRect().GetW() - dim.x), GetScreenRect().GetY() -1 + contentDisplacement.GetY() + 0.5 * textH, -1, ALIGN_RIGHT_CENTER)
+				GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, _drawTextEffect.data)
+				sprite.Draw(int(scrRect.x + 0.5 * (scrRect.w - dim.x)), int(scrRect.y - 1 + contentDisplacement.GetY() + 0.5 * textH), -1, ALIGN_RIGHT_CENTER)
 
 			Case MODE_SPRITE_RIGHT_OF_TEXT
-				Local mydim:TVec2D = New TVec2D
-				GetFont().drawBlock(value, GetScreenRect().GetX() + contentDisplacement.GetX(), GetScreenRect().GetY() + contentDisplacement.GetY(), textW - sprite.GetWidth(), textH, contentAlignment, color, valueEffectType, True, valueEffectSpecial, , , , mydim)
-				sprite.Draw(GetScreenRect().GetX() + contentDisplacement.GetX() + mydim.X, GetScreenRect().GetY() + contentDisplacement.GetY() + 0.5 * mydim.y)
+				Local mydim:SVec2I = GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW - sprite.GetWidth(), textH, contentAlignment, color, _drawTextEffect.data)
+				sprite.Draw(int(scrRect.x + contentDisplacement.GetX() + mydim.x), int(scrRect.y + contentDisplacement.GetY() + 0.5 * mydim.y))
 			Case MODE_SPRITE_RIGHT_OF_TEXT2
-				Local mydim:TVec2D = New TVec2D
-				GetFont().drawBlock(value, GetScreenRect().GetX() + contentDisplacement.GetX(), GetScreenRect().GetY() + contentDisplacement.GetY(), textW, textH, contentAlignment, color, valueEffectType, True, valueEffectSpecial, , , , mydim)
-				sprite.Draw(GetScreenRect().GetX() + contentDisplacement.GetX() + mydim.X, GetScreenRect().GetY() + contentDisplacement.GetY() + 0.5 * mydim.y)
+				Local mydim:SVec2I = GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, _drawTextEffect.data)
+				sprite.Draw(int(scrRect.x + contentDisplacement.GetX() + mydim.X), int(scrRect.y + contentDisplacement.GetY() + 0.5 * mydim.y))
 
 			Case MODE_SPRITE_ABOVE_TEXT
-				sprite.Draw(GetScreenRect().GetX() + 0.5 * GetScreenRect().GetW(), GetScreenRect().GetY() + contentDisplacement.GetY(), -1, ALIGN_CENTER_CENTER)
-				GetFont().drawBlock(value, GetScreenRect().GetX() + contentDisplacement.GetX() + sprite.GetWidth(), GetScreenRect().GetY() + contentDisplacement.GetY(), textW, textH + sprite.GetHeight(), contentAlignment, color, valueEffectType, True, valueEffectSpecial, , , , Null)
+				sprite.Draw(int(scrRect.x + 0.5 * scrRect.w), int(scrRect.y + contentDisplacement.GetY()), -1, ALIGN_CENTER_CENTER)
+				GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX() + sprite.GetWidth(), scrRect.y + contentDisplacement.GetY(), textW, textH + sprite.GetHeight(), contentAlignment, color, _drawTextEffect.data)
 
 			Case MODE_SPRITE_BELOW_TEXT
-				Local mydim:TVec2D = New TVec2D
-				GetFont().drawBlock(value, GetScreenRect().GetX() + contentDisplacement.GetX(), GetScreenRect().GetY() + contentDisplacement.GetY(), textW, textH, contentAlignment, color, valueEffectType, True, valueEffectSpecial, , , , mydim)
-				sprite.Draw(GetScreenRect().GetX() + 0.5 * GetScreenRect().GetW(), GetScreenRect().GetY() + contentDisplacement.GetY() + mydim.y, -1, ALIGN_CENTER_CENTER)
+				Local mydim:SVec2I = GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, _drawTextEffect.data)
+				sprite.Draw(int(scrRect.x + 0.5 * scrRect.w), int(scrRect.y + contentDisplacement.GetY() + mydim.y), -1, ALIGN_CENTER_CENTER)
 
 			Case MODE_SPRITE_ONLY
-				sprite.Draw(GetScreenRect().GetX() + 0.5 * GetScreenRect().GetW(), GetScreenRect().GetY() + 0.5 * GetScreenRect().GetH(), -1, ALIGN_CENTER_CENTER)
+				sprite.Draw(int(scrRect.x + 0.5 * scrRect.w), int(scrRect.y + 0.5 * scrRect.h), -1, ALIGN_CENTER_CENTER)
 
 			Default
 				'with alpha<>1.0 we most probably are fading, so we skip
 				'caching for now
-				if oldCol.a <> 1.0
-					GetFont().DrawBlock(value, GetScreenRect().GetX() + contentDisplacement.GetX(), GetScreenRect().GetY() + contentDisplacement.GetY(), textW, textH, contentAlignment, color, valueEffectType, True, valueEffectSpecial, , , , Null)
-				else
-					textCache.DrawBlock(GetFont(), value, GetScreenRect().GetX() + contentDisplacement.GetX(), GetScreenRect().GetY() + contentDisplacement.GetY(), textW, textH, contentAlignment, color, valueEffectType, True, valueEffectSpecial, , , , Null)
-				endif
+				If oldCol.a <> 1.0
+					GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, GetDrawTextEffect().data)
+				Else
+					textCache.DrawBlock(GetFont(), value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, GetDrawTextEffect(), null)
+				EndIf
 		End Select
 
 
@@ -245,6 +276,7 @@ Type TGUILabel Extends TGUIobject
 
 	Method onAppearanceChanged:Int()
 		_valueDimensionCache = Null
+		if textCache then textCache.Invalidate()
 
 		Return Super.onAppearanceChanged()
 	End Method

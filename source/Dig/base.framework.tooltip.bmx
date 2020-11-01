@@ -54,7 +54,9 @@ Type TTooltip Extends TEntity
 
 	'left (2) and right (4) is for all elements
 	'top (1) and bottom (3) padding for content
-	Field padding:TRectangle	= new TRectangle.Init(3,5,4,7)
+	Field contentPadding:TRectangle	= new TRectangle.Init(3,3,4,3)
+	'no left padding as the "glow" effect visually adds it already
+	Field titlePadding:TRectangle = new TRectangle.Init(3,0,4,3)
 	Field image:TImage			= Null {nosave}
 	Field dirtyImage:Int		= 1 {nosave}
 	Field tooltipImage:Int		=-1
@@ -223,7 +225,7 @@ Type TTooltip Extends TEntity
 
 	'title is singleline, so no "new line" possible
 	Method GetTitleWidth:int()
-		return Max(_minTitleWidth, GetTitleInnerWidth() + padding.GetLeft() + padding.GetRight())
+		return Max(_minTitleWidth, GetTitleInnerWidth() + titlePadding.GetLeft() + titlePadding.GetRight())
 	End Method
 
 
@@ -239,14 +241,14 @@ Type TTooltip Extends TEntity
 
 	Method GetContentWidth:Int()
 		'at least as wide as the title
-		return Max(GetTitleWidth(), GetContentInnerWidth()) + padding.GetLeft() + padding.GetRight()
+		return Max(GetTitleWidth(), GetContentInnerWidth()) + contentPadding.GetLeft() + contentPadding.GetRight()
 	End Method
 
 
 	Method GetContentInnerWidth:Int()
 		'return minimum
 		'if all fits in one line use content width, else minimum tooltip width
-		if content <> "" then return Min(ceil(UseFont.getWidth(content)), _minContentWidth - padding.GetLeft() - padding.GetRight())
+		if content <> "" then return Min(ceil(UseFont.getWidth(content)), _minContentWidth - contentPadding.GetLeft() - contentPadding.GetRight())
 
 		Return 0
 	End Method
@@ -257,8 +259,8 @@ Type TTooltip Extends TEntity
 
 		'only add a line if there is text
 		If content <> ""
-			result :+ UseFont.getBlockHeight(content, width, -1)
-			result :+ padding.GetTop() + padding.GetBottom()
+			result :+ UseFont.GetBoxHeight(content, width, -1)
+			result :+ contentPadding.GetTop() + contentPadding.GetBottom()
 		endif
 		Return result
 	End Method
@@ -296,20 +298,19 @@ Type TTooltip Extends TEntity
 		Local displaceX:Float = 0.0
 		If tooltipimage >=0 and TooltipIcons
 			TooltipIcons.Draw(x, y, tooltipimage)
-			displaceX = ToolTipIcons.framew
+			displaceX = ToolTipIcons.framew + 3
 		EndIf
+		local headerTextWidth:int = width - displaceX - titlePadding.GetLeft() - titlePadding.GetRight()
 '		SetAlpha getFadeAmount()
 		'caption
-		useFontBold.drawStyled(title, x + padding.GetLeft() + displaceX, y + (height - useFontBold.getMaxCharHeight())/2 , TColor.Create(50,50,50), 2, 1, 0.1)
+		useFontBold.DrawBox(title, x + titlePadding.GetLeft() + displaceX, y, headerTextWidth + 3, height, sALIGN_LEFT_CENTER, new SColor8(50,50,50), EDrawTextEffect.Glow, 0.15)
 '		SetAlpha 1.0
 	End Method
 
 
 	Method DrawContent:Int(x:Int, y:Int, width:Int, height:Int)
 		If content = "" then return FALSE
-		SetColor 90,90,90
-		Usefont.drawBlock(content, x + padding.GetLeft(), y + padding.GetTop(), GetContentInnerWidth(), -1)
-		SetColor 255, 255, 255
+		Usefont.DrawBox(content, x + contentPadding.GetLeft(), y + contentPadding.GetTop(), GetContentInnerWidth(), -1, new SColor8(90,90,90))
 	End Method
 
 

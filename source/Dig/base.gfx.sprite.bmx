@@ -15,7 +15,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2014 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -47,6 +47,7 @@ Import Random.Xoshiro
 ?
 Import "base.util.event.bmx"
 Import "base.util.vector.bmx"
+Import "base.util.srectangle.bmx"
 Import "base.gfx.imagehelper.bmx"
 Import "base.util.graphicsmanagerbase.bmx"
 
@@ -68,6 +69,18 @@ Global ALIGN_RIGHT_CENTER:TVec2D = New TVec2D.Init(ALIGN_RIGHT, ALIGN_CENTER)
 Global ALIGN_LEFT_BOTTOM:TVec2D = New TVec2D.Init(ALIGN_LEFT, ALIGN_BOTTOM)
 Global ALIGN_CENTER_BOTTOM:TVec2D = New TVec2D.Init(ALIGN_CENTER, ALIGN_BOTTOM)
 Global ALIGN_RIGHT_BOTTOM:TVec2D = New TVec2D.Init(ALIGN_RIGHT, ALIGN_BOTTOM)
+
+Global sALIGN_LEFT_TOP:SVec2F = New SVec2F
+Global sALIGN_CENTER_TOP:SVec2F = New SVec2F(ALIGN_CENTER, ALIGN_TOP)
+Global sALIGN_RIGHT_TOP:SVec2F = New SVec2F(ALIGN_RIGHT, ALIGN_TOP)
+
+Global sALIGN_LEFT_CENTER:SVec2F = New SVec2F(ALIGN_LEFT, ALIGN_CENTER)
+Global sALIGN_CENTER_CENTER:SVec2F = New SVec2F(ALIGN_CENTER, ALIGN_CENTER)
+Global sALIGN_RIGHT_CENTER:SVec2F = New SVec2F(ALIGN_RIGHT, ALIGN_CENTER)
+
+Global sALIGN_LEFT_BOTTOM:SVec2F = New SVec2F(ALIGN_LEFT, ALIGN_BOTTOM)
+Global sALIGN_CENTER_BOTTOM:SVec2F = New SVec2F(ALIGN_CENTER, ALIGN_BOTTOM)
+Global sALIGN_RIGHT_BOTTOM:SVec2F = New SVec2F(ALIGN_RIGHT, ALIGN_BOTTOM)
 
 
 
@@ -153,13 +166,110 @@ End Type
 
 
 
+Type TNinePatchInformation
+	'center: size of the middle parts (width, height)
+	Field centerDimension:SVec2i
+	'border: size of TopLeft,TopRight,BottomLeft,BottomRight
+	Field borderDimension:SRect
+	'content: limits for displaying content
+	Field contentBorder:SRect
+	'the scale of "non-stretchable" borders - rest will scale
+	'automatically through bigger dimensions
+	Field borderDimensionScale:Float = 1.0
+	'subtract this amount of pixels on each side for markers
+	Const MARKER_WIDTH:Int = 1
+
+
+	Method Init:Int(area:TRectangle, pixmap:TPixmap)
+		'read markers in the image to get border and content sizes
+		borderDimension = ReadMarker(pixmap, 0)
+		contentBorder = ReadMarker(pixmap, 1)
+
+		If borderDimension.GetLeft() = 0 And borderDimension.GetRight() = 0 And borderDimension.GetTop() = 0 And borderDimension.GetBottom() = 0
+			If contentBorder.GetLeft() = 0 And contentBorder.GetRight() = 0 And contentBorder.GetTop() = 0 And contentBorder.GetBottom() = 0
+				Return False
+			EndIf
+		EndIf
+
+		'center has to consider the marker_width (content dimension marker)
+		centerDimension = New SVec2i(..
+			int(area.GetW() - (2* MARKER_WIDTH + borderDimension.GetLeft() + borderDimension.GetRight())), ..
+			int(area.GetH() - (2* MARKER_WIDTH + borderDimension.GetTop() + borderDimension.GetBottom())) ..
+		)
+
+		Return True
+	End Method
+	
+
+	'read ninepatch markers out of the sprites image data
+	'mode = 0: sprite borders
+	'mode = 1: content borders
+	Method ReadMarker:SRect(pixmap:TPixmap, Mode:Int=0)
+		Local sourcepixel:Int
+		Local sourceW:Int = pixmap.width
+		Local sourceH:Int = pixmap.height
+		Local resL:Int, resT:Int, resB:Int, resR:Int
+		Local markerRow:Int=0, markerCol:Int=0, skipLines:Int=0
+
+		'do not check if there is no space for markers
+		If sourceW <= 0 Or sourceH <= 0 Then Return new SRect()
+
+		'content is defined at the last pixmap row/col
+		If Mode = 1
+			markerCol = sourceH - MARKER_WIDTH
+			markerRow = sourceW - MARKER_WIDTH
+			skipLines = 1
+		EndIf
+
+		'  °= L ====== R = °			ROW ROW ROW ROW
+		'  T               T		COL
+		'  |               |		COL
+		'  B               B		COL
+		'  °= L ====== R = °		COL
+
+		Local minVal:Int = 0, maxVal:Int = 0
+
+		'find left border: from 1 to first non-transparent pixel in row 0
+		minVal = MARKER_WIDTH
+		maxVal = sourceW - MARKER_WIDTH
+		For Local i:Int = minVal Until maxVal
+			If ARGB_Alpha(ReadPixel(pixmap, i, markerCol)) > 0 Then resL = i - minVal;Exit
+		Next
+
+		'find right border: from left border the first non opaque pixel in row 0
+		minVal = MARKER_WIDTH + resL
+		'same maxVal as left border
+		For Local i:Int = minVal Until maxVal
+			If ARGB_Alpha(ReadPixel(pixmap, i, markerCol)) = 0 Then resR = maxVal - i;Exit
+		Next
+
+
+		'find top border: from 1 to first opaque pixel in col 0
+		minVal = MARKER_WIDTH
+		maxVal = sourceH - MARKER_WIDTH
+		For Local i:Int = minVal Until maxVal
+			If ARGB_Alpha(ReadPixel(pixmap, markerRow, i)) > 0 Then resT = i - minVal;Exit
+		Next
+
+		'find bottom border: from top border the first non opaque pixel in col 0
+		minVal = MARKER_WIDTH + resT
+		'same maxVal as top border
+		For Local i:Int = minVal To maxVal
+			If ARGB_Alpha(ReadPixel(pixmap, markerRow, i)) = 0 Then resB = maxVal - i;Exit
+		Next
+
+		Return SRect.CreateTLBR(resT, resL, resB, resR)
+	End Method
+End Type
+
+
 
 Type TSprite
 	'defines how many pixels have to get offset from a given position
-	Field offset:TRectangle = New TRectangle.Init(0,0,0,0)
+	Field offset:SRectI
 	'defines at which pixels of the area the content "starts"
 	'or how many pixels from the last row/col the content "ends"
-	Field padding:TRectangle = New TRectangle.Init(0,0,0,0)
+	Field padding:SRectI
 	Field area:TRectangle = New TRectangle.Init(0,0,0,0)
 	'the id is NOT globally unique but a value to make it selectable
 	'from a TSpritePack without knowing the name
@@ -175,19 +285,8 @@ Type TSprite
 
 	Field tileMode:Int = 0
 
-	'=== NINE PATCH SECTION ===
-	Field ninePatchEnabled:Int = False
-	'center: size of the middle parts (width, height)
-	Field ninePatch_centerDimension:TVec2D
-	'border: size of TopLeft,TopRight,BottomLeft,BottomRight
-	Field ninePatch_borderDimension:TRectangle
-	'content: limits for displaying content
-	Field ninePatch_contentBorder:TRectangle
-	'the scale of "non-stretchable" borders - rest will scale
-	'automatically through bigger dimensions
-	Field ninePatch_borderDimensionScale:Float = 1.0
-	'subtract this amount of pixels on each side for markers
-	Const NINEPATCH_MARKER_WIDTH:Int = 1
+	Field ninePatch:TNinePatchInformation
+	
 	Const BORDER_NONE:Int = 0
 	Const BORDER_LEFT:Int = 1
 	Const BORDER_RIGHT:Int = 2
@@ -206,13 +305,35 @@ Type TSprite
 		Self.area = area.copy()
 		Self.id = id
 		parent = spritepack
-		If offset Then Self.offset = offset.copy()
+		If offset Then Self.offset = new SRectI(offset.GetIntX(), offset.GetIntY(), offset.GetIntW(), offset.GetIntH())
 		frameW = area.GetW()
 		frameH = area.GetH()
 		Self.frames = frames
 		If frames > 0
 			frameW = Ceil(area.GetW() / frames)
 			frameH = area.GetH()
+		EndIf
+		If spriteDimension And spriteDimension.x<>0 And spriteDimension.y<>0
+			frameW = spriteDimension.GetX()
+			frameH = spriteDimension.GetY()
+		EndIf
+
+		Return Self
+	End Method
+
+
+	Method Init:TSprite(spritepack:TSpritePack=Null, name:String, area:SRectI, offset:SRectI, frames:Int = 0, spriteDimension:TVec2D=Null, id:Int=0)
+		Self.name = name
+		Self.area = new TRectangle.Init(area.x, area.y, area.w, area.h)
+		Self.id = id
+		parent = spritepack
+		If offset Then Self.offset = offset
+		frameW = area.w
+		frameH = area.h
+		Self.frames = frames
+		If frames > 0
+			frameW = Ceil(area.w / frames)
+			frameH = area.h
 		EndIf
 		If spriteDimension And spriteDimension.x<>0 And spriteDimension.y<>0
 			frameW = spriteDimension.GetX()
@@ -246,7 +367,7 @@ Type TSprite
 		Local frameW:Int = data.GetInt("frameW", 0)
 		Local frameH:Int = data.GetInt("frameH", 0)
 		Local id:Int = data.GetInt("id", 0)
-		Local ninePatch:Int = data.GetBool("ninePatch", False)
+		Local ninePatchEnabled:Int = data.GetBool("ninePatch", False)
 		Local definedTileMode:Int = data.GetInt("tileMode", TILEMODE_UNDEFINED)
 		Local parent:TSpritePack = TSpritePack(data.Get("parent", Null))
 
@@ -283,29 +404,27 @@ Type TSprite
 		Local offsetRight:Int = data.GetInt("offsetRight", 0)
 		Local offsetTop:Int = data.GetInt("offsetTop", 0)
 		Local offsetBottom:Int = data.GetInt("offsetBottom", 0)
-		Local offset:TRectangle = Null
 		If offsetLeft <> 0 Or offsetRight <> 0 Or offsetTop <> 0 Or offsetBottom <> 0
-			offset = New TRectangle.SetTLBR(offsetTop, offsetLeft, offsetBottom, offsetRight)
+			offset = SRectI.CreateTLBR(offsetTop, offsetLeft, offsetBottom, offsetRight)
+		Else
+			offset = new SRectI()
 		EndIf
 
 		'define the area in the parental spritepack, if no dimension
 		'is defined, use the whole parental image
-		Local area:TRectangle = New TRectangle
-		area.position.SetXY(data.GetInt("x", 0), data.GetInt("y", 0))
-		area.dimension.SetXY(data.GetInt("w", parent.GetImage().width), data.GetInt("h", parent.GetImage().height))
-
+		Local area:SRectI = New SRectI( data.GetInt("x", 0), ..
+		                                data.GetInt("y", 0), ..
+		                                data.GetInt("w", parent.GetImage().width), ..
+		                                data.GetInt("h", parent.GetImage().height) ..
+		                              )
 		'intialize sprite
 		Init(parent, name, area, offset, frames, New TVec2D.Init(frameW, frameH), id)
 
 		'rotation
 		rotated = data.GetInt("rotated", 0)
 		'padding
-		SetPadding(New TRectangle.Init(..
-			data.GetInt("paddingTop"), ..
-			data.GetInt("paddingLeft"), ..
-			data.GetInt("paddingBottom"), ..
-			data.GetInt("paddingRight") ..
-		))
+		SetPadding( data.GetInt("paddingTop"), data.GetInt("paddingLeft"), ..
+		            data.GetInt("paddingBottom"), data.GetInt("paddingRight") )
 
 		'recolor/colorize?
 		If data.GetInt("r",-1) >= 0 And data.GetInt("g",-1) >= 0 And data.GetInt("b",-1) >= 0
@@ -314,7 +433,7 @@ Type TSprite
 
 
 		'enable nine patch if wanted
-		If ninePatch Then EnableNinePatch()
+		If ninePatchEnabled Then EnableNinePatch()
 
 		tileMode = definedTileMode
 
@@ -339,111 +458,37 @@ Type TSprite
 	End Method
 
 
-	Method SetPadding:Int(padding:TRectangle)
+	Method SetPadding:Int(padding:SRectI)
 		Self.padding = padding
 	End Method
 
 
-	Method IsNinePatchEnabled:Int()
-		Return ninePatchEnabled
+	Method SetPadding:Int(x:Int, y:Int, w:Int, h:Int)
+		Self.padding = new SRectI(x,y,w,h)
+	End Method
+
+
+	Method IsNinePatch:Int()
+		Return ninePatch <> Null
 	End Method
 
 
 	Method EnableNinePatch:Int()
-		'read markers in the image to get border and content sizes
-		ninePatch_borderDimension = ReadNinePatchMarker(0)
-		ninePatch_contentBorder = ReadNinePatchMarker(1)
+		if not ninePatch then ninePatch = new TNinePatchInformation()
+		
+		if not _pix Then _pix = GetPixmap()
 
-		If ninePatch_borderDimension.GetLeft() = 0 And ninePatch_borderDimension.GetRight() = 0 And ninePatch_borderDimension.GetTop() = 0 And ninePatch_borderDimension.GetBottom() = 0
-			If ninePatch_contentBorder.GetLeft() = 0 And ninePatch_contentBorder.GetRight() = 0 And ninePatch_contentBorder.GetTop() = 0 And ninePatch_contentBorder.GetBottom() = 0
-				ninePatchEnabled = False
-				Return False
-			EndIf
+		if not ninePatch.Init(area, _pix)
+			ninePatch = Null
+			Return False
+		Else
+			Return True
 		EndIf
-
-		'center has to consider the marker_width (content dimension marker)
-		ninePatch_centerDimension = New TVec2D.Init(..
-					area.GetW() - (2* NINEPATCH_MARKER_WIDTH + ninePatch_borderDimension.GetLeft() + ninePatch_borderDimension.GetRight()), ..
-					area.GetH() - (2* NINEPATCH_MARKER_WIDTH + ninePatch_borderDimension.GetTop() + ninePatch_borderDimension.GetBottom()) ..
-				  )
-
-		ninePatchEnabled = True
-
-		Return True
 	End Method
 
 
-	Method GetNinePatchBorderDimension:TRectangle()
-		If Not ninePatch_borderDimension Then ninePatch_borderDimension = New TRectangle.Init(0,0,0,0)
-		Return ninePatch_borderDimension
-	End Method
-
-
-	Method GetNinePatchContentBorder:TRectangle()
-		If Not ninePatch_contentBorder Then ninePatch_contentBorder = New TRectangle.Init(0,0,0,0)
-		Return ninePatch_contentBorder
-	End Method
-
-
-	'read ninepatch markers out of the sprites image data
-	'mode = 0: sprite borders
-	'mode = 1: content borders
-	Method ReadNinePatchMarker:TRectangle(Mode:Int=0)
-		If Not _pix Then _pix = GetPixmap()
-		Local sourcepixel:Int
-		Local sourceW:Int = _pix.width
-		Local sourceH:Int = _pix.height
-		Local result:TRectangle = New TRectangle.init(0,0,0,0)
-		Local markerRow:Int=0, markerCol:Int=0, skipLines:Int=0
-
-		'do not check if there is no space for markers
-		If sourceW <= 0 Or sourceH <= 0 Then Return result
-
-		'content is defined at the last pixmap row/col
-		If Mode = 1
-			markerCol = sourceH - NINEPATCH_MARKER_WIDTH
-			markerRow = sourceW - NINEPATCH_MARKER_WIDTH
-			skipLines = 1
-		EndIf
-
-		'  °= L ====== R = °			ROW ROW ROW ROW
-		'  T               T		COL
-		'  |               |		COL
-		'  B               B		COL
-		'  °= L ====== R = °		COL
-
-		Local minVal:Int = 0, maxVal:Int = 0
-
-		'find left border: from 1 to first non-transparent pixel in row 0
-		minVal = NINEPATCH_MARKER_WIDTH
-		maxVal = sourceW - NINEPATCH_MARKER_WIDTH
-		For Local i:Int = minVal Until maxVal
-			If ARGB_Alpha(ReadPixel(_pix, i, markerCol)) > 0 Then result.SetLeft(i - minVal);Exit
-		Next
-
-		'find right border: from left border the first non opaque pixel in row 0
-		minVal = NINEPATCH_MARKER_WIDTH + result.GetLeft()
-		'same maxVal as left border
-		For Local i:Int = minVal Until maxVal
-			If ARGB_Alpha(ReadPixel(_pix, i, markerCol)) = 0 Then result.SetRight(maxVal - i);Exit
-		Next
-
-
-		'find top border: from 1 to first opaque pixel in col 0
-		minVal = NINEPATCH_MARKER_WIDTH
-		maxVal = sourceH - NINEPATCH_MARKER_WIDTH
-		For Local i:Int = minVal Until maxVal
-			If ARGB_Alpha(ReadPixel(_pix, markerRow, i)) > 0 Then result.SetTop(i - minVal);Exit
-		Next
-
-		'find bottom border: from top border the first non opaque pixel in col 0
-		minVal = NINEPATCH_MARKER_WIDTH + result.GetTop()
-		'same maxVal as top border
-		For Local i:Int = minVal To maxVal
-			If ARGB_Alpha(ReadPixel(_pix, markerRow, i)) = 0 Then result.SetBottom(maxVal - i);Exit
-		Next
-
-		Return result
+	Method GetNinePatchInformation:TNinePatchInformation()
+		Return ninePatch
 	End Method
 
 
@@ -459,8 +504,11 @@ Type TSprite
 		If includeBorder
 			DestPixmap = LockImage(parent.GetImage(), 0, False, True).Window(Int(area.GetX()), Int(area.GetY()), Int(area.GetW()), Int(area.GetH()))
 		Else
-			Local border:TRectangle = GetNinePatchBorderDimension()
-			DestPixmap = LockImage(parent.GetImage(), 0, False, True).Window(Int(area.GetX()+ border.GetLeft()), Int(area.GetY() + border.GetTop()), Int(area.GetW() - border.GetLeft() - border.GetRight()), Int(area.GetH() - border.GetTop() - border.GetBottom()))
+			if IsNinePatch() 
+				DestPixmap = LockImage(parent.GetImage(), 0, False, True).Window(Int(area.GetX()+ ninePatch.borderDimension.GetLeft()), Int(area.GetY() + ninePatch.borderDimension.GetTop()), Int(area.GetW() - ninePatch.borderDimension.GetLeft() - ninePatch.borderDimension.GetRight()), Int(area.GetH() - ninePatch.borderDimension.GetTop() - ninePatch.borderDimension.GetBottom()))
+			else
+				DestPixmap = LockImage(parent.GetImage(), 0, False, True).Window(Int(area.GetX()), Int(area.GetY()), Int(area.GetW()), Int(area.GetH()))
+			endif
 		EndIf
 
 		UnlockImage(parent.GetImage())
@@ -520,8 +568,8 @@ Type TSprite
 
 
 	Method GetMinWidth:Int(includeOffset:Int=True)
-		If ninePatchEnabled
-			Return ninePatch_borderDimension.GetLeft() + ninePatch_borderDimension.GetRight()
+		If ninePatch
+			Return ninePatch.borderDimension.GetLeft() + ninePatch.borderDimension.GetRight()
 		Else
 			Return GetWidth(includeOffset)
 		EndIf
@@ -531,7 +579,7 @@ Type TSprite
 	Method GetWidth:Int(includeOffset:Int=True)
 		'substract 2 pixels (left and right) ?
 		Local ninePatchPixels:Int = 0
-		If ninePatchEnabled Then ninePatchPixels = 2
+		If ninePatch Then ninePatchPixels = 2
 
 		'todo: advanced calculation
 		If rotated = 90 Or rotated = -90
@@ -551,8 +599,8 @@ Type TSprite
 
 
 	Method GetMinHeight:Int(includeOffset:Int=True)
-		If ninePatchEnabled
-			Return ninePatch_borderDimension.GetTop() + ninePatch_borderDimension.GetBottom()
+		If ninePatch
+			Return ninePatch.borderDimension.GetTop() + ninePatch.borderDimension.GetBottom()
 		Else
 			Return GetHeight(includeOffset)
 		EndIf
@@ -562,7 +610,7 @@ Type TSprite
 	Method GetHeight:Int(includeOffset:Int=True)
 		'substract 2 pixles (left and right) ?
 		Local ninePatchPixels:Int = 0
-		If ninePatchEnabled Then ninePatchPixels = 2
+		If ninePatch Then ninePatchPixels = 2
 
 		'todo: advanced calculation
 		If rotated = 90 Or rotated = -90
@@ -634,6 +682,22 @@ Type TSprite
 		DrawImageOnImage(getPixmap(frame), imageOrPixmap, Int(x + offset.GetLeft()), Int(y + offset.GetTop()), modifyColor)
 	End Method
 
+	'draw the sprite onto a given image or pixmap
+	Method DrawOnImageSColor(imageOrPixmap:Object, x:Int, y:Int, frame:Int = -1, alignment:TVec2D=Null, modifyColor:SColor8, scaleX:Float=1.0, scaleY:Float=1.0)
+		If frames <= 0 Then frame = -1
+
+		If Not alignment Then alignment = ALIGN_LEFT_TOP
+		If frame >= 0
+			x :- alignment.GetX() * framew
+			y :- alignment.GetY() * frameh
+		Else
+			x :- alignment.GetX() * area.GetW()
+			y :- alignment.GetY() * area.GetH()
+		EndIf
+
+		DrawImageOnImageSColor(getPixmap(frame), imageOrPixmap, Int(x + offset.GetLeft()), Int(y + offset.GetTop()), modifyColor, 0, scaleX, scaleY)
+	End Method
+
 
 	'draw the sprite covering an area (if ninePatch is enabled, the
 	'stretching is only done on the center of the sprite)
@@ -646,43 +710,43 @@ Type TSprite
 		If width <= 0 Or height <= 0 Then Return False
 
 		'normal sprites draw their image stretched to area
-		If Not ninePatchEnabled
+		If Not ninePatch
 			DrawResized(x, y, width, height, 0,0,0,0, frame, False, Null, tileMode)
 		Else
-			Local middleW:Int = area.GetW() - ninePatch_borderDimensionScale*(ninePatch_borderDimension.GetLeft()+ninePatch_borderDimension.GetRight())
-			Local middleH:Int = area.GetH() - ninePatch_borderDimensionScale*(ninePatch_borderDimension.GetTop()+ninePatch_borderDimension.GetBottom())
+			Local middleW:Int = area.GetW() - ninePatch.borderDimensionScale*(ninePatch.borderDimension.GetLeft()+ninePatch.borderDimension.GetRight())
+			Local middleH:Int = area.GetH() - ninePatch.borderDimensionScale*(ninePatch.borderDimension.GetTop()+ninePatch.borderDimension.GetBottom())
 
 			'minimal dimension has to be same or bigger than all 4 borders + 0.1* the stretch portion
 			'if borders are disabled, ignore them in minWidth-calculation
-			width = Max(width, Max(0.2*middleW, 2) + ninePatch_borderDimensionScale*((1-(skipBorders & BORDER_LEFT)>0)*ninePatch_borderDimension.GetLeft() + (1-(skipBorders & BORDER_RIGHT)>0)*ninePatch_borderDimension.GetRight()))
-			height = Max(height, Max(0.2*middleH, 2) + ninePatch_borderDimensionScale*((1-(skipBorders & BORDER_TOP)>0)*ninePatch_borderDimension.GetTop() + (1-(skipBorders & BORDER_BOTTOM)>0)*ninePatch_borderDimension.GetBottom()))
+			width = Max(width, Max(0.2*middleW, 2) + ninePatch.borderDimensionScale*((1-(skipBorders & BORDER_LEFT)>0)*ninePatch.borderDimension.GetLeft() + (1-(skipBorders & BORDER_RIGHT)>0)*ninePatch.borderDimension.GetRight()))
+			height = Max(height, Max(0.2*middleH, 2) + ninePatch.borderDimensionScale*((1-(skipBorders & BORDER_TOP)>0)*ninePatch.borderDimension.GetTop() + (1-(skipBorders & BORDER_BOTTOM)>0)*ninePatch.borderDimension.GetBottom()))
 
 			'dimensions of the stretch-parts (the middle elements)
 			'adjusted by a potential border scale
-			Local stretchDestW:Float = width - ninePatch_borderDimensionScale*(ninePatch_borderDimension.GetLeft()+ninePatch_borderDimension.GetRight())
-			Local stretchDestH:Float = height - ninePatch_borderDimensionScale*(ninePatch_borderDimension.GetTop()+ninePatch_borderDimension.GetBottom())
+			Local stretchDestW:Float = width - ninePatch.borderDimensionScale*(ninePatch.borderDimension.GetLeft()+ninePatch.borderDimension.GetRight())
+			Local stretchDestH:Float = height - ninePatch.borderDimensionScale*(ninePatch.borderDimension.GetTop()+ninePatch.borderDimension.GetBottom())
 			'border sizes
-			Local bsLeft:Int = ninePatch_borderDimension.GetLeft()
-			Local bsTop:Int = ninePatch_borderDimension.GetTop()
-			Local bsRight:Int = ninePatch_borderDimension.GetRight()
-			Local bsBottom:Int = ninePatch_borderDimension.GetBottom()
+			Local bsLeft:Int = ninePatch.borderDimension.GetLeft()
+			Local bsTop:Int = ninePatch.borderDimension.GetTop()
+			Local bsRight:Int = ninePatch.borderDimension.GetRight()
+			Local bsBottom:Int = ninePatch.borderDimension.GetBottom()
 
 			If skipBorders <> 0
 				'disable the borders by setting their size to 0
 				If skipBorders & BORDER_LEFT > 0
-					stretchDestW :+ bsLeft * ninePatch_borderDimensionScale
+					stretchDestW :+ bsLeft * ninePatch.borderDimensionScale
 					bsLeft = 0
 				EndIf
 				If skipBorders & BORDER_RIGHT > 0
-					stretchDestW :+ bsRight * ninePatch_borderDimensionScale
+					stretchDestW :+ bsRight * ninePatch.borderDimensionScale
 					bsRight = 0
 				EndIf
 				If skipBorders & BORDER_TOP > 0
-					stretchDestH :+ bsTop * ninePatch_borderDimensionScale
+					stretchDestH :+ bsTop * ninePatch.borderDimensionScale
 					bsTop = 0
 				EndIf
 				If skipBorders & BORDER_BOTTOM > 0
-					stretchDestH :+ bsBottom * ninePatch_borderDimensionScale
+					stretchDestH :+ bsBottom * ninePatch.borderDimensionScale
 					bsBottom = 0
 				EndIf
 			EndIf
@@ -690,24 +754,24 @@ Type TSprite
 
 			'prepare render coordinates
 			Local targetX1:Int = x
-			Local targetX2:Int = targetX1 + bsLeft * ninePatch_borderDimensionScale
+			Local targetX2:Int = targetX1 + bsLeft * ninePatch.borderDimensionScale
 			Local targetX3:Int = targetX2 + stretchDestW
 			Local targetY1:Int = y
-			Local targetY2:Int = targetY1 + bsTop * ninePatch_borderDimensionScale
+			Local targetY2:Int = targetY1 + bsTop * ninePatch.borderDimensionScale
 			Local targetY3:Int = targetY2 + stretchDestH
-			Local targetW1:Int = bsLeft * ninePatch_borderDimensionScale
+			Local targetW1:Int = bsLeft * ninePatch.borderDimensionScale
 			Local targetW2:Int = stretchDestW
-			Local targetW3:Int = bsRight * ninePatch_borderDimensionScale
-			Local targetH1:Int = bsTop * ninePatch_borderDimensionScale
+			Local targetW3:Int = bsRight * ninePatch.borderDimensionScale
+			Local targetH1:Int = bsTop * ninePatch.borderDimensionScale
 			Local targetH2:Int = stretchDestH
-			Local targetH3:Int = bsBottom * ninePatch_borderDimensionScale
+			Local targetH3:Int = bsBottom * ninePatch.borderDimensionScale
 
-			Local sourceX1:Int = NINEPATCH_MARKER_WIDTH
-			Local sourceX2:Int = sourceX1 + ninePatch_borderDimension.GetLeft()
-			Local sourceX3:Int = sourceX2 + ninePatch_centerDimension.GetX()
-			Local sourceY1:Int = NINEPATCH_MARKER_WIDTH
-			Local sourceY2:Int = sourceY1 + ninePatch_borderDimension.GetTop()
-			Local sourceY3:Int = sourceY2 + ninePatch_centerDimension.GetY()
+			Local sourceX1:Int = NINEPatch.MARKER_WIDTH
+			Local sourceX2:Int = sourceX1 + ninePatch.borderDimension.GetLeft()
+			Local sourceX3:Int = sourceX2 + ninePatch.centerDimension.x
+			Local sourceY1:Int = NINEPatch.MARKER_WIDTH
+			Local sourceY2:Int = sourceY1 + ninePatch.borderDimension.GetTop()
+			Local sourceY3:Int = sourceY2 + ninePatch.centerDimension.y
 
 			Local vpx:Int, vpy:Int, vpw:Int, vph:Int
 			If clipRect
@@ -720,41 +784,41 @@ Type TSprite
 
 			'render
 			'top
-			If ninePatch_borderDimension.GetTop()
-				If ninePatch_borderDimension.GetLeft()
-					DrawResized( targetX1, targetY1, targetW1, targetH1, sourceX1, sourceY1, ninePatch_borderDimension.GetLeft(), ninePatch_borderDimension.GetTop(), frame, False, clipRect )
+			If ninePatch.borderDimension.GetTop()
+				If ninePatch.borderDimension.GetLeft()
+					DrawResized( targetX1, targetY1, targetW1, targetH1, sourceX1, sourceY1, ninePatch.borderDimension.GetLeft(), ninePatch.borderDimension.GetTop(), frame, False, clipRect )
 				EndIf
 
-				DrawResized( targetX2, targetY1, targetW2, targetH1, sourceX2, sourceY1, ninePatch_centerDimension.GetX(), ninePatch_borderDimension.GetTop(), frame, False, clipRect, tileMode )
+				DrawResized( targetX2, targetY1, targetW2, targetH1, sourceX2, sourceY1, ninePatch.centerDimension.x, ninePatch.borderDimension.GetTop(), frame, False, clipRect, tileMode )
 
-				If ninePatch_borderDimension.GetRight()
-					DrawResized( targetX3, targetY1, targetW3, targetH1, sourceX3, sourceY1, ninePatch_borderDimension.GetRight(), ninePatch_borderDimension.GetTop(), frame, False, clipRect )
+				If ninePatch.borderDimension.GetRight()
+					DrawResized( targetX3, targetY1, targetW3, targetH1, sourceX3, sourceY1, ninePatch.borderDimension.GetRight(), ninePatch.borderDimension.GetTop(), frame, False, clipRect )
 				EndIf
 			EndIf
 
 
 			'middle
-			If ninePatch_borderDimension.GetLeft()
-				DrawResized( targetX1 , targetY2, targetW1, targetH2, sourceX1, sourceY2, ninePatch_borderDimension.GetLeft(), ninePatch_centerDimension.GetY(), frame, False, clipRect, tileMode )
+			If ninePatch.borderDimension.GetLeft()
+				DrawResized( targetX1 , targetY2, targetW1, targetH2, sourceX1, sourceY2, ninePatch.borderDimension.GetLeft(), ninePatch.centerDimension.y, frame, False, clipRect, tileMode )
 			EndIf
 
-			DrawResized( targetX2, targetY2, targetW2, targetH2, sourceX2, sourceY2, ninePatch_centerDimension.GetX(), ninePatch_centerDimension.GetY(), frame, False, clipRect, tileMode )
+			DrawResized( targetX2, targetY2, targetW2, targetH2, sourceX2, sourceY2, ninePatch.centerDimension.x, ninePatch.centerDimension.y, frame, False, clipRect, tileMode )
 
-			If ninePatch_borderDimension.GetRight()
-				DrawResized( targetX3, targetY2, targetW3, targetH2, sourceX3, sourceY2, ninePatch_borderDimension.GetRight(), ninePatch_centerDimension.GetY(), frame, False, clipRect, tileMode )
+			If ninePatch.borderDimension.GetRight()
+				DrawResized( targetX3, targetY2, targetW3, targetH2, sourceX3, sourceY2, ninePatch.borderDimension.GetRight(), ninePatch.centerDimension.y, frame, False, clipRect, tileMode )
 			EndIf
 
 
 			'bottom
-			If ninePatch_borderDimension.GetBottom()
-				If ninePatch_borderDimension.GetLeft()
-					DrawResized( targetX1, targetY3, targetW1, targetH3, sourceX1, sourceY3, ninePatch_borderDimension.GetLeft(), ninePatch_borderDimension.GetBottom(), frame, False, clipRect )
+			If ninePatch.borderDimension.GetBottom()
+				If ninePatch.borderDimension.GetLeft()
+					DrawResized( targetX1, targetY3, targetW1, targetH3, sourceX1, sourceY3, ninePatch.borderDimension.GetLeft(), ninePatch.borderDimension.GetBottom(), frame, False, clipRect )
 				EndIf
 
-				DrawResized( targetX2, targetY3, targetW2, targetH3, sourceX2, sourceY3, ninePatch_centerDimension.GetX(), ninePatch_borderDimension.GetBottom(), frame, False, clipRect, tileMode)
+				DrawResized( targetX2, targetY3, targetW2, targetH3, sourceX2, sourceY3, ninePatch.centerDimension.x, ninePatch.borderDimension.GetBottom(), frame, False, clipRect, tileMode)
 
-				If ninePatch_borderDimension.GetRight()
-					DrawResized( targetX3, targetY3, targetW3, targetH3, sourceX3, sourceY3, ninePatch_borderDimension.GetRight(), ninePatch_borderDimension.GetBottom(), frame, False, clipRect )
+				If ninePatch.borderDimension.GetRight()
+					DrawResized( targetX3, targetY3, targetW3, targetH3, sourceX3, sourceY3, ninePatch.borderDimension.GetRight(), ninePatch.borderDimension.GetBottom(), frame, False, clipRect )
 				EndIf
 			EndIf
 
@@ -800,7 +864,7 @@ Type TSprite
 		If tH <= 0 Then tH = sH
 
 		'take care of offsets
-		If offset And (offset.position.x<>0 Or offset.position.y<>0 Or offset.dimension.x<>0 Or offset.dimension.y<>0)
+		If offset.x<>0 Or offset.y<>0 Or offset.w<>0 Or offset.h<>0
 			'top and left border also modify position to draw
 			'starting at the top border - so include that offset
 			If sY = 0
@@ -865,31 +929,6 @@ Type TSprite
 					EndIf
 				GetGraphicsManager().SetViewport(vpx, vpy, vpw, vph)
 			EndIf
-
-Rem
-'unfinished- calculations not free of bugs...
-			'Clip left and top
-			Local clipL:float = Max(0, clipRect.GetX() - targetCopy.GetX())
-			Local clipT:float = Max(0, clipRect.GetY() - targetCopy.GetY())
-			'Clip right and bottom
-			Local clipR:float = Max(0, targetCopy.GetX2() - clipRect.GetX2())
-			Local clipB:float = Max(0, targetCopy.GetY2() - clipRect.GetY2())
-
-			'source area has to get scaled down because of clipping...
-			Local scaleX:Float = 1.0 - (clipL + clipR) / targetCopy.GetW()
-			Local scaleY:Float = 1.0 - (clipT + clipB) / targetCopy.GetH()
-
-'			DrawImageArea(Image, x + startX + offsetX, y + startY + offsetY, startX, startY, w - startX - endX, h - startY - endY, frame)
-
-	print "clipL="+clipL+" T="+clipT+" R="+clipR+" B="+clipB+"  scaleX="+scaleX+"  scaleY="+scaleY
-	print "classic:  target="+floor(targetCopy.GetX())+", "+floor(targetCopy.GetY())+", "+ceil(targetCopy.GetW())+", "+ceil(targetCopy.GetH())+"   source="+int(area.GetX() + sourceCopy.GetX())+", "+int(area.GetY() + sourceCopy.GetY())+", "+int(sourceCopy.GetW())+", "+int(sourceCopy.GetH())
-	print "new    :  target="+floor(targetCopy.GetX() + clipL)+", "+floor(targetCopy.GetY() + clipT)+", "+ceil(targetCopy.GetW() - clipR - clipL)+", "+ceil(targetCopy.GetH() - clipB - clipT)+"  source="+int(area.GetX() + sourceCopy.GetX() + clipL*scaleX)+", "+int(area.GetY() + sourceCopy.GetY() + clipT*scaleY)+", "+int(sourceCopy.GetW()*scaleX)+", "+int(sourceCopy.GetH()*scaleY)
-
-			DrawSubImageRect(parent.GetImage(),..
-				floor(targetCopy.GetX() + clipL), floor(targetCopy.GetY() + clipT), ceil(targetCopy.GetW() - clipR - clipL), ceil(targetCopy.GetH() - clipB - clipT), ..
-				area.GetX() + sourceCopy.GetX() + clipL*(1.0-scaleX), area.GetY() + sourceCopy.GetY() + (clipT/targetcopy.GetH())*scaleY, sourceCopy.GetW()*scaleX, sourceCopy.GetH()*scaleY)
-endrem
-'			DrawSubImageRect(parent.GetImage(), Float(floor(targetCopy.GetX())), Float(floor(targetCopy.GetY())), Float(ceil(targetCopy.GetW())), Float(ceil(targetCopy.GetH())), Float(area.GetX() + sourceCopy.GetX()), Float(area.GetY() + sourceCopy.GetY()), sourceCopy.GetW(), sourceCopy.GetH())
 		Else
 			If tileMode = 0 'stretched
 				DrawSubImageRect(parent.GetImage(), Float(Floor(tX)), Float(Floor(tY)), Float(Ceil(tW)), Float(Ceil(tH)), Float(area.GetX() + sX), Float(area.GetY() + sY), sW, sH)
@@ -1050,9 +1089,9 @@ endrem
 		EndIf
 
 
-		If ninePatchEnabled
-			offsetX :- 2 * NINEPATCH_MARKER_WIDTH
-			offsetY :- 2 * NINEPATCH_MARKER_WIDTH
+		If ninePatch
+			offsetX :- 2 * ninePatch.MARKER_WIDTH
+			offsetY :- 2 * ninePatch.MARKER_WIDTH
 		EndIf
 
 
@@ -1060,16 +1099,16 @@ endrem
 			'cast handle-offsets to "int" to avoid subpixel offsets
 			'which lead to visual garbage on thin pixel lines in images
 			'(they are a little off and therefore have other alpha values)
-			If ninePatchEnabled
+			If ninePatch
 				DrawSubImageRect(parent.GetImage(),..
 							 x,..
 							 y,..
-							 area.GetW() - 2 * NINEPATCH_MARKER_WIDTH,..
-							 area.GetH() - 2 * NINEPATCH_MARKER_WIDTH,..
-							 area.GetX() + NINEPATCH_MARKER_WIDTH,..
-							 area.GetY() + NINEPATCH_MARKER_WIDTH,..
-							 area.GetW() - 2 * NINEPATCH_MARKER_WIDTH,..
-							 area.GetH() - 2 * NINEPATCH_MARKER_WIDTH,..
+							 area.GetW() - 2 * ninePatch.MARKER_WIDTH,..
+							 area.GetH() - 2 * ninePatch.MARKER_WIDTH,..
+							 area.GetX() + ninePatch.MARKER_WIDTH,..
+							 area.GetY() + ninePatch.MARKER_WIDTH,..
+							 area.GetW() - 2 * ninePatch.MARKER_WIDTH,..
+							 area.GetH() - 2 * ninePatch.MARKER_WIDTH,..
 							 offsetX,..
 							 offsetY,..
 							 0)

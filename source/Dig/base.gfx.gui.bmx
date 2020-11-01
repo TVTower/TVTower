@@ -78,7 +78,7 @@ Type TGUIManager
 	Field config:TData = New TData
 	Field List:TObjectList = New TObjectList
 	'contains dragged objects (above normal)
-	Field ListDragged:TObjectList = New TObjectlist
+	Field ListDragged:TObjectList = New TObjectList
 	'contains objects which need to get informed because of changed appearance
 	Field elementsWithChangedAppearance:TObjectList = New TObjectList
 	Field activeTooltips:TObjectList = New TObjectList
@@ -671,7 +671,7 @@ Type TGUIobject
 	Field data:TData = New TData
 	Field alpha:Float = 1.0
 	'where to attach the content within the object
-	Field contentAlignment:TVec2D = New TVec2D.Init(0.5, 0.5)
+	Field contentAlignment:SVec2F = New SVec2F(0.5, 0.5)
 	Field value:String = ""
 	Field mouseIsClicked:TVec2D	= Null 'null = not clicked
 	Field mouseIsDown:TVec2D = Null
@@ -710,6 +710,9 @@ Type TGUIobject
 	Field _customDrawOverlay:Int(obj:TGUIObject)
 
 
+	Global defaultTextCol:SColor8 = new SColor8(100,100,100)
+	Global defaultHoverTextCol:SColor8 = new SColor8(50,50,50)
+	Global defaultDisabledTextCol:SColor8 = new SColor8(150,150,150)
 	Global ghostAlpha:Float	= 0.5
 	Global _lastID:Int
 
@@ -1299,9 +1302,7 @@ Type TGUIobject
 	'set the anchor of the gui objects content
 	'valid values are 0-1.0 (percentage)
 	Method SetContentAlignment(contentLeft:Float=0.0, contentTop:Float=0.0)
-		If Not contentAlignment.EqualsXY(contentLeft, contentTop)
-			contentAlignment.Init(contentLeft, contentTop)
-		EndIf
+		contentAlignment = new SVec2F(contentLeft, contentTop)
 	End Method
 
 
@@ -1534,7 +1535,7 @@ Type TGUIobject
 	End Method
 
 
-	Method InvalidateScreenRect:TRectangle()
+	Method InvalidateScreenRect()
 		SetStatus(GUI_OBJECT_STATUS_SCREENRECT_VALID, False)
 
 		If _children
@@ -1943,8 +1944,8 @@ Type TGUIobject
 
 		Local containsMouse:Int = containsXY(mousePos.x, mousePos.y)
 
-		'=== HANDLE MOUSE OVER ===
 
+		'=== HANDLE MOUSE OVER ===
 		'if nothing of the obj is visible or the mouse is not in
 		'the visible part - reset the mouse states
 		If Not containsMouse
@@ -1999,7 +2000,7 @@ Type TGUIobject
 					'	with its listbox will handle the "losr focus" event
 					'	and after closing the underlaying widget receives the
 					'	click event
-					IF _flags & GUI_OBJECT_ENABLED and MouseManager.IsClicked(1)
+					If _flags & GUI_OBJECT_ENABLED And MouseManager.IsClicked(1)
 						If HasOption(GUI_OBJECT_CAN_GAIN_FOCUS)
 							GUImanager.SetFocus(Self)
 						EndIf
@@ -2055,6 +2056,7 @@ Type TGUIobject
 							handledClick = OnClick(clickEvent)
 							'fire onClickEvent
 							EventManager.triggerEvent(clickEvent)
+
 'TODO: add veto
 							'if not handledClick and not clickEvent.IsVeto() then handledClick = True
 
@@ -2087,7 +2089,11 @@ Type TGUIobject
 								handledClick = OnClick(clickEvent)
 								'fire onClickEvent
 								EventManager.triggerEvent(clickEvent)
-								If Not handledClick And Not clickEvent.IsVeto() Then handledClick = True
+								'doing this leads to "handled click" in these cases
+								'-> if handled
+								'-> if vetoed
+								'And not handled, if "not handled" but event vetoed
+								'If Not handledClick And Not clickEvent.IsVeto() Then handledClick = True
 
 								isClicked = True
 
@@ -2128,16 +2134,15 @@ Type TGUIobject
 	End Method
 
 
-	Global defaultTextCol:TColor = TColor.Create(100,100,100)
-	Global defaultHoverTextCol:TColor = TColor.Create(50,50,50)
-	Global defaultDisabledTextCol:TColor = TColor.Create(150,150,150)
-
 	Method DrawBaseFormText:Int(_value:String, x:Float, y:Float)
-		Local col:TColor = defaultTextCol
-		If isHovered() Then col = defaultHoverTextCol
-		If Not(_flags & GUI_OBJECT_ENABLED) Then col = defaultDisabledTextCol
+		If Not(_flags & GUI_OBJECT_ENABLED)
+'			GetFont().DrawSimple(_value,x,y, defaultDisabledTextCol, EDrawTextEffect.Shadow, 0.5)
+		ElseIf isHovered()
+'			GetFont().DrawSimple(_value,x,y, defaultHoverTextCol, EDrawTextEffect.Shadow, 0.5)
+		Else
+'			GetFont().DrawSimple(_value,x,y, defaultTextCol, EDrawTextEffect.Shadow, 0.5)
+		EndIf
 
-		GetFont().drawStyled(_value,x,y, col, 1, 1, 0.5)
 		Return True
 	End Method
 
@@ -2245,46 +2250,46 @@ Type TGUIobject
 			If charCode < 0
 				?Win32
 				If KEYWRAPPER.pressedKey(186)
-					If shiftPressed Then value:+ "\DC" Else value :+ "\FC"
+					If shiftPressed Then value:+ "Ü" Else value :+ "ü"
 					valuePosition :+ 1
 				EndIf
 				If KEYWRAPPER.pressedKey(192)
-					If shiftPressed Then value:+ "\D6" Else value :+ "\F6"
+					If shiftPressed Then value:+ "Ö" Else value :+ "ö"
 					valuePosition :+ 1
 				EndIf
 				If KEYWRAPPER.pressedKey(222)
-					If shiftPressed Then value:+ "\C4" Else value :+ "\E4"
+					If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 					valuePosition :+ 1
 				EndIf
 				?MacOS
 				If KEYWRAPPER.pressedKey(186)
-					If shiftPressed Then value:+ "\DC" Else value :+ "\FC"
+					If shiftPressed Then value:+ "Ü" Else value :+ "ü"
 					valuePosition :+ 1
 				EndIf
 				If KEYWRAPPER.pressedKey(192)
-					If shiftPressed Then value:+ "\D6" Else value :+ "\F6"
+					If shiftPressed Then value:+ "Ö" Else value :+ "ö"
 					valuePosition :+ 1
 				EndIf
 				If KEYWRAPPER.pressedKey(222)
-					If shiftPressed Then value:+ "\C4" Else value :+ "\E4"
+					If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 					valuePosition :+ 1
 				EndIf
 				?Linux
 				If KEYWRAPPER.pressedKey(252)
-					If shiftPressed Then value:+ "\DC" Else value :+ "\FC"
+					If shiftPressed Then value:+ "Ü" Else value :+ "ü"
 					valuePosition :+ 1
 				EndIf
 				If KEYWRAPPER.pressedKey(246)
-					If shiftPressed Then value:+ "\D6" Else value :+ "\F6"
+					If shiftPressed Then value:+ "Ö" Else value :+ "ö"
 					valuePosition :+ 1
 				EndIf
 				If KEYWRAPPER.pressedKey(163)
-					If shiftPressed Then value:+ "\C4" Else value :+ "\E4"
+					If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 					valuePosition :+ 1
 				EndIf
 				?
 				If charCode = -33
-					value:+ "\DF"
+					value:+ "ß"
 					valuePosition :+ 1
 				EndIf
 			'handle normal "keys" (excluding umlauts)
@@ -2397,6 +2402,7 @@ Type TGUIobject
 
 
 	Method OnChangePadding:Int()
+		InvalidateScreenRect()
 		InvalidateContentScreenRect()
 		InvalidateLayout()
 	End Method
@@ -2419,6 +2425,8 @@ Type TGUIobject
 	'but this function is called only "once"
 	Method onAppearanceChanged:Int()
 		InvalidateScreenRect()
+		'already done by InvalidateScreenRect()
+		'InvalidateContentScreenRect()
 	End Method
 
 
@@ -2550,7 +2558,7 @@ Type TGUITooltipBase Extends TTooltipBase
 	Method GetContentPadding:TRectangle()
 		If Not _effectiveContentPadding
 			Local contentPadding:TRectangle = Super.GetContentPadding()
-			Local bgSpritePadding:TRectangle = GetBGSprite().GetNinePatchContentBorder()
+			Local bgSpritePadding:SRect = GetBGSprite().GetNinePatchInformation().contentBorder
 			_effectiveContentPadding = New TRectangle
 			_effectiveContentPadding.SetLeft( Max( contentPadding.GetLeft(), bgSpritePadding.GetLeft()) )
 			_effectiveContentPadding.SetRight( Max( contentPadding.GetRight(), bgSpritePadding.GetRight()) )

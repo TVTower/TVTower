@@ -15,7 +15,7 @@ Type TGUIButton Extends TGUIobject
 	Field spriteName:String = "gfx_gui_button.default"
 	Field _sprite:TSprite 'private
 	Field caption:TGUILabel	= Null
-	Field captionArea:TRectangle = Null
+	Field captionOffset:SVec2I
 	Field autoSizeModeWidth:Int = 0
 	Field autoSizeModeHeight:Int = 0
 
@@ -23,11 +23,16 @@ Type TGUIButton Extends TGUIobject
 	Global AUTO_SIZE_MODE_TEXT:Int = 1
 	Global AUTO_SIZE_MODE_SPRITE:Int = 2
 	Global _typeDefaultFont:TBitmapFont
-	Global _typeDefaultCaptionColor:TColor
+	Global _typeDefaultCaptionColor:SColor8 = SColor8.Black
 
 
 	Method GetClassName:String()
 		Return "tguibutton"
+	End Method
+
+
+	Method Create:TGUIButton(pos:SVec2I, dimension:SVec2I, value:String, State:String = "")
+		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), value, State)
 	End Method
 
 
@@ -56,24 +61,8 @@ Type TGUIButton Extends TGUIobject
 		If Not caption Then Return False
 
 		'resize to button dimension
-		If captionArea
-			Local newX:Float = captionArea.GetX()
-			Local newY:Float = captionArea.GetY()
-			Local newDimX:Float = captionArea.GetW()
-			Local newDimY:Float = captionArea.GetH()
-			'use parent values
-			If newX = -1 Then newX = 0
-			If newY = -1 Then newY = 0
-			'take all the space left
-			If newDimX <= 0 Then newDimX = rect.GetW() - newX
-			If newDimY <= 0 Then newDimY = rect.GetH() - newY
-
-			caption.SetPosition(newX, newY)
-			caption.SetSize(newDimX, newDimY)
-		Else
-			caption.SetPosition(0, 0)
-			caption.SetSize(rect.dimension.GetX(), rect.dimension.GetY())
-		EndIf
+		caption.SetPosition(captionOffset.x, captionOffset.y)
+		caption.SetSize(rect.dimension.GetX() - captionOffset.x, rect.dimension.GetY() - captionOffset.y)
 	End Method
 
 
@@ -160,7 +149,12 @@ endrem
 	Method SetCaption:Int(text:String, color:TColor=Null)
 		If Not caption
 			'caption area starts at top left of button
-			caption = New TGUILabel.Create(Null, text, color, Null)
+			if not color
+				caption = New TGUILabel.Create(new SVec2I(0,0), text, "")
+			else
+				caption = New TGUILabel.Create(new TVec2D.Init(0,0), text, color.ToSColor8(), "")
+			endif
+			
 			caption.SetContentAlignment(ALIGN_CENTER, ALIGN_CENTER)
 			'we want the caption to use the buttons font
 			caption.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
@@ -174,26 +168,29 @@ endrem
 			caption.SetParent(Self)
 		ElseIf caption.value <> text
 			caption.SetValue(text)
+			'reposition the caption
+'			RepositionCaption()
 		EndIf
 
 		If color
-			caption.color = color
+			caption.color = color.ToSColor8()
 		ElseIf _typeDefaultCaptionColor
 			caption.color = _typeDefaultCaptionColor
 		EndIf
 	End Method
 
 
-	Method SetCaptionOffset:Int(x:Int = -1, y:Int = -1)
-		If Not captionArea Then captionArea = New TRectangle
-		captionArea.position.SetXY(x,y)
+	Method SetCaptionOffset:Int(x:Int, y:Int)
+		captionOffset = new SVec2I(x,y)
+
+		RepositionCaption()
 
 		if caption then caption.InvalidateScreenRect()
 	End Method
 
 
-	Function SetTypeCaptionColor:Int(color:TColor)
-		_typeDefaultCaptionColor = color.Copy()
+	Function SetTypeCaptionColor:Int(color:SColor8)
+		_typeDefaultCaptionColor = color
 	End Function
 
 
@@ -301,7 +298,7 @@ endrem
 	End Method
 
 
-	Method InvalidateScreenRect:TRectangle()
+	Method InvalidateScreenRect()
 		Super.InvalidateScreenRect()
 		if caption then caption.InvalidateScreenRect()
 	End Method

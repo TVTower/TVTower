@@ -35,6 +35,7 @@ Rem
 EndRem
 SuperStrict
 Import "base.util.vector.bmx"
+Import "base.util.srectangle.bmx"
 
 global rectangle_created:int = 0
 
@@ -89,11 +90,25 @@ Type TRectangle {_exposeToLua="selected"}
 
 
 	'copies all values from the given rectangle
+	Method New(rect:SRect)
+		position.Init(rect.x, rect.y)
+		dimension.Init(rect.w, rect.h)
+	End Method
+
+
+	'copies all values from the given rectangle
 	Method CopyFrom:TRectangle(rect:TRectangle)
 		If Not rect Then Return Self
 
 		position.copyFrom(rect.position)
 		dimension.copyFrom(rect.dimension)
+		Return Self
+	End Method
+
+	'copies all values from the given rectangle
+	Method CopyFrom:TRectangle(rect:SRect)
+		position.Init(rect.x, rect.y)
+		dimension.Init(rect.w, rect.h)
 		Return Self
 	End Method
 

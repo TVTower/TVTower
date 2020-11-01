@@ -6,104 +6,116 @@ Import "base.util.math.bmx"
 
 
 Type TColor
-	Field r:int			= 0
-	Field g:int			= 0
-	Field b:int			= 0
-	Field a:float		= 1.0
+	Field r:Int			= 0
+	Field g:Int			= 0
+	Field b:Int			= 0
+	Field a:Float		= 1.0
 
-	global list:TList	= CreateList()	'storage for colors (allows handle referencing)
+	Global list:TList	= CreateList()	'storage for colors (allows handle referencing)
 	'some const
-	global clBlack:TColor = TColor.CreateGrey(0)
-	global clWhite:TColor = TColor.CreateGrey(255)
-	global clRed:TColor = TColor.Create(255,0,0)
-	global clGreen:TColor = TColor.Create(0,255,0)
-	global clBlue:TColor = TColor.Create(0,0,255)
+	Global clBlack:TColor = TColor.CreateGrey(0)
+	Global clWhite:TColor = TColor.CreateGrey(255)
+	Global clRed:TColor = TColor.Create(255,0,0)
+	Global clGreen:TColor = TColor.Create(0,255,0)
+	Global clBlue:TColor = TColor.Create(0,0,255)
+	
+	
+	Method New(col:SColor8)
+		self.r = col.r
+		self.g = col.g
+		self.b = col.b
+		self.a = col.a/255.0
+	End Method
+	
 
-
-	Function Create:TColor(r:int=0,g:int=0,b:int=0,a:float=1.0)
-		return new TColor.InitRGBA(r, g, b, a)
+	Function Create:TColor(r:Int=0,g:Int=0,b:Int=0,a:Float=1.0)
+		Return New TColor.InitRGBA(r, g, b, a)
 	End Function
 
 
-	Function CreateGrey:TColor(grey:int=0,a:float=1.0)
-		return new TColor.InitRGBA(grey, grey, grey, a)
+	Function CreateGrey:TColor(grey:Int=0,a:Float=1.0)
+		Return New TColor.InitRGBA(grey, grey, grey, a)
 	End Function
 
 
-	Function CreateFromMix:TColor(colorA:TColor, colorB:TColor, mixFactor:float = 0.5)
-		return colorA.Copy().Mix(colorB, mixFactor)
+	Function CreateFromMix:TColor(colorA:TColor, colorB:TColor, mixFactor:Float = 0.5)
+		Return colorA.Copy().Mix(colorB, mixFactor)
 	End Function
 
 
-	Method InitRGBA:TColor(r:int, g:int, b:int, a:float=1.0)
-		self.r = r
-		self.g = g
-		self.b = b
-		self.a = a
+	Method InitRGBA:TColor(r:Int, g:Int, b:Int, a:Float=1.0)
+		Self.r = r
+		Self.g = g
+		Self.b = b
+		Self.a = a
 
-		return self
+		Return Self
 	End Method
 
 
-	Method ToString:string()
-		return r+", "+g+", "+b+", "+a
+	Method ToString:String()
+		Return r+", "+g+", "+b+", "+a
 	End Method
 
 
-	Method ToRGBString:string(glue:string=", ")
-		return r+glue+g+glue+b
+	Method ToRGBString:String(glue:String=", ")
+		Return r+glue+g+glue+b
 	End Method
+	
+	Method ToSColor8:SColor8()
+		Return New SColor8(r,g,b,Byte(Max(0, Min(255, a*255))))
+	End Method
+	
 
-
-	Function FromName:TColor(name:String, alpha:float=1.0)
+	Function FromName:TColor(name:String, alpha:Float=1.0)
 		Select name.ToLower()
 				Case "red"
-						Return clRed.copy().AdjustAlpha(alpha, true)
+						Return clRed.copy().AdjustAlpha(alpha, True)
 				Case "green"
-						Return clGreen.copy().AdjustAlpha(alpha, true)
+						Return clGreen.copy().AdjustAlpha(alpha, True)
 				Case "blue"
-						Return clBlue.copy().AdjustAlpha(alpha, true)
+						Return clBlue.copy().AdjustAlpha(alpha, True)
 				Case "black"
-						Return clBlack.copy().AdjustAlpha(alpha, true)
+						Return clBlack.copy().AdjustAlpha(alpha, True)
 				Case "white"
-						Return clWhite.copy().AdjustAlpha(alpha, true)
+						Return clWhite.copy().AdjustAlpha(alpha, True)
 		End Select
 		Return clWhite.copy()
 	End Function
 
 
 	Method Copy:TColor()
-		return TColor.Create(r,g,b,a)
-	end Method
+		Return TColor.Create(r,g,b,a)
+	End Method
 
 
 	Method CopyFrom:TColor(color:TColor)
-		if color
-			self.r = color.r
-			self.g = color.g
-			self.b = color.b
-			self.a = color.a
-		endif
-		return self
+		If color
+			Self.r = color.r
+			Self.g = color.g
+			Self.b = color.b
+			Self.a = color.a
+		EndIf
+		Return Self
 	End Method
 
 
 	Method AddToList:TColor()
 		'remove first and append as last color
-		list.remove(self)
-		list.AddLast(self)
+		list.remove(Self)
+		list.AddLast(Self)
 
-		return self
+		Return Self
 	End Method
 
 
 	Function getFromList:TColor(col:TColor)
-		return TColor.getFromListByRGBA(col.r,col.g,col.b,col.a)
+		Return TColor.getFromListByRGBA(col.r,col.g,col.b,col.a)
 	End Function
 
 
-	Function getFromListByRGBA:TColor(r:Int, g:Int, b:Int, a:float=1.0)
-		For local obj:TColor = EachIn TColor.List
+	Function getFromListByRGBA:TColor(r:Int, g:Int, b:Int, a:Float=1.0)
+		For Local obj:TColor = EachIn TColor.List
 			If obj.r = r And obj.g = g And obj.b = b And obj.a = a Then Return obj
 		Next
 		Return Null
@@ -112,37 +124,37 @@ Type TColor
 
 	Method GetBrightness:Float()
 		'variant "HSP"
-		return Sqr(0.299 * r^2 + 0.587 * g^2 + 0.114 * b^2)
+		Return Sqr(0.299 * r^2 + 0.587 * g^2 + 0.114 * b^2)
 		'variant "Luminance"
 		'return 0.2126 * r + 0.7152 * g + 0.0722 *b
 	End Method
 
 
 	'mixes colors, mixFactor is percentage (0-1) of otherColors influence
-	Method Mix:TColor(otherColor:TColor, mixFactor:float = 0.5)
+	Method Mix:TColor(otherColor:TColor, mixFactor:Float = 0.5)
 		'clamp mixFactor to 0-1.0
 		mixFactor = Min(1.0, Max(0.0, mixFactor))
-		self.r = Min(255, Max(0, self.r * (1.0 - mixFactor) + otherColor.r * mixFactor))
-		self.g = Min(255, Max(0, self.g * (1.0 - mixFactor) + otherColor.g * mixFactor))
-		self.b = Min(255, Max(0, self.b * (1.0 - mixFactor) + otherColor.b * mixFactor))
-		self.a = Min(1.0, Max(0, self.a * (1.0 - mixFactor) + otherColor.a * mixFactor))
-		return self
+		Self.r = Min(255, Max(0, Self.r * (1.0 - mixFactor) + otherColor.r * mixFactor))
+		Self.g = Min(255, Max(0, Self.g * (1.0 - mixFactor) + otherColor.g * mixFactor))
+		Self.b = Min(255, Max(0, Self.b * (1.0 - mixFactor) + otherColor.b * mixFactor))
+		Self.a = Min(1.0, Max(0, Self.a * (1.0 - mixFactor) + otherColor.a * mixFactor))
+		Return Self
 	End Method
 
 
-	Method AdjustRelative:TColor(percentage:float=1.0)
-		self.r = Min(255, Max(0, self.r * (1.0+percentage)))
-		self.g = Min(255, Max(0, self.g * (1.0+percentage)))
-		self.b = Min(255, Max(0, self.b * (1.0+percentage)))
-		return self
+	Method AdjustRelative:TColor(percentage:Float=1.0)
+		Self.r = Min(255, Max(0, Self.r * (1.0+percentage)))
+		Self.g = Min(255, Max(0, Self.g * (1.0+percentage)))
+		Self.b = Min(255, Max(0, Self.b * (1.0+percentage)))
+		Return Self
 	End Method
 
 
-	Method AdjustFactor:TColor(factor:int=100)
-		self.r = Min(255, Max(0, self.r + factor))
-		self.g = Min(255, Max(0, self.g + factor))
-		self.b = Min(255, Max(0, self.b + factor))
-		return self
+	Method AdjustFactor:TColor(factor:Int=100)
+		Self.r = Min(255, Max(0, Self.r + factor))
+		Self.g = Min(255, Max(0, Self.g + factor))
+		Self.b = Min(255, Max(0, Self.b + factor))
+		Return Self
 	End Method
 
 
@@ -152,99 +164,108 @@ Type TColor
 		'convert relative param to absolute param
 		percentage = 1.0 + percentage
 		'long
-		local luminance:float = sqr(0.299 * r*r + 0.587 * g*g + 0.114 * b*b)
+		Local luminance:Float = Sqr(0.299 * r*r + 0.587 * g*g + 0.114 * b*b)
 		r = Min(255, Max(0, luminance + (r - luminance) * percentage))
 		g = Min(255, Max(0, luminance + (g - luminance) * percentage))
 		b = Min(255, Max(0, luminance + (b - luminance) * percentage))
-		return self
+		Return Self
 	End Method
 
 
 	Method AdjustSaturation:TColor(percentage:Float=1.0)
-		local h:float, s:float, l:float
+		Local h:Float, s:Float, l:Float
 		ToHSL(h,s,l)
 		FromHSL(h,s * (1.0 + percentage), l)
-		return self
+		Return Self
 	End Method
 
 
 	Method AdjustBrightness:TColor(percentage:Float=1.0)
-		local h:float, s:float, l:float
+		Local h:Float, s:Float, l:Float
 		ToHSL(h,s,l)
 		FromHSL(h,s, l * (1.0 + percentage))
-		return self
+		Return Self
 	End Method
 
 
-	Method AdjustAlpha:TColor(a:float, overwrite:int=0)
-		if overwrite
-			self.a = a
-		else
-			self.a :+ a
-		endif
-		return self
+	Method AdjustAlpha:TColor(a:Float, overwrite:Int=0)
+		If overwrite
+			Self.a = a
+		Else
+			Self.a :+ a
+		EndIf
+		Return Self
 	End Method
 
 
-	Method AdjustRGB:TColor(r:int=-1,g:int=-1,b:int=-1, overwrite:int=0)
-		if overwrite
-			self.r = Min(255, Max(0, r))
-			self.g = Min(255, Max(0, g))
-			self.b = Min(255, Max(0, b))
-		else
-			self.r = Min(255, Max(0, self.r + r))
-			self.g = Min(255, Max(0, self.g + g))
-			self.b = Min(255, Max(0, self.b + b))
-		endif
-		return self
+	Method AdjustRGB:TColor(r:Int=-1,g:Int=-1,b:Int=-1, overwrite:Int=0)
+		If overwrite
+			Self.r = Min(255, Max(0, r))
+			Self.g = Min(255, Max(0, g))
+			Self.b = Min(255, Max(0, b))
+		Else
+			Self.r = Min(255, Max(0, Self.r + r))
+			Self.g = Min(255, Max(0, Self.g + g))
+			Self.b = Min(255, Max(0, Self.b + b))
+		EndIf
+		Return Self
 	End Method
 
+
+	Method Multiply:TColor(rMultiplier:Float=1.0, gMultiplier:Float=1.0, bMultiplier:Float=1.0, aMultiplier:Float=1.0)
+		self.r :* rMultiplier
+		self.g :* gMultiplier
+		self.b :* bMultiplier
+		self.a :* aMultiplier
+		Return Self
+	End Method
+	
 
 	'returns RGB difference
-	Method GetEuclideanDistance:int(otherColor:TColor)
+	Method GetEuclideanDistance:Int(otherColor:TColor)
 		'according to https://en.wikipedia.org/wiki/Color_difference
-		return sqr( (otherColor.r - r)^2 + (otherColor.g - g)^2 + (otherColor.b - b)^2 )
+		Return Sqr( (otherColor.r - r)^2 + (otherColor.g - g)^2 + (otherColor.b - b)^2 )
 	End Method
 
 
 	'returns a delta value describing the perceived distance between colors
-	Method GetCIELABDelta_ByLAB:Float(L:float, A:float, B:float)
+	Method GetCIELABDelta_ByLAB:Float(L:Float, A:Float, B:Float)
 		'default to this implementation
-		return GetCIELABDelta_CIE76_ByLAB(L, A, B)
+		Return GetCIELABDelta_CIE76_ByLAB(L, A, B)
 	End Method
 
 
 	'returns a delta value describing the perceived distance between colors
 	Method GetCIELABDelta:Float(otherColor:TColor)
 		'default to this implementation
-		return GetCIELABDelta_CIE76(otherColor)
+		Return GetCIELABDelta_CIE76(otherColor)
 	End Method
 
 
-	Method GetCIELABDelta_CIE76_ByLAB:Float(L:float, A:float, B:float)
-		local myL:float, myA:float, myB:float
+	Method GetCIELABDelta_CIE76_ByLAB:Float(L:Float, A:Float, B:Float)
+		Local myL:Float, myA:Float, myB:Float
 		ToLAB(myL,myA,myB)
 
 		'if result is ~2.3 then this is "jnd", just notable difference
-		return sqr( (L - myL)^2 + (A - myA)^2 + (B - myB)^2 )
+		Return Sqr( (L - myL)^2 + (A - myA)^2 + (B - myB)^2 )
 	End Method
 
 
 	Method GetCIELABDelta_CIE76:Float(otherColor:TColor)
-		local L:float, A:float, b:float
-		local otherL:float, otherA:float, otherB:float
+		Local L:Float, A:Float, b:Float
+		Local otherL:Float, otherA:Float, otherB:Float
 		ToLAB(L,A,B)
 		otherColor.ToLAB(otherL, otherA, otherB)
 
 		'if result is ~2.3 then this is "jnd", just notable difference
-		return sqr( (otherL - L)^2 + (otherA - A)^2 + (otherB - B)^2 )
+		Return Sqr( (otherL - L)^2 + (otherA - A)^2 + (otherB - B)^2 )
 	End Method
 
 
-	Method ToXYZ(X:Float var, Y:Float var, Z:Float var)
-		local tmpR:Float = r/255.0
-		local tmpG:Float = g/255.0
-		local tmpB:Float = b/255.0
+	Method ToXYZ(X:Float Var, Y:Float Var, Z:Float Var)
+		Local tmpR:Float = r/255.0
+		Local tmpG:Float = g/255.0
+		Local tmpB:Float = b/255.0
 
 		If tmpR > 0.04045
 			tmpR = 100 * ((tmpR + 0.055) / 1.055) ^ 2.4
@@ -268,12 +289,12 @@ Type TColor
 	End Method
 
 
-	Method ToLAB(L:float var, A:float var, B:float var)
+	Method ToLAB(L:Float Var, A:Float Var, B:Float Var)
 		'based on http://www.easyrgb.com/en/math.php
 		'-> RGB->XYZ and XYZ->L*AB
 
 		'1) convert RGB to XYZ
-		local X:Float, Y:Float, Z:Float
+		Local X:Float, Y:Float, Z:Float
 		ToXYZ(X, Y, Z)
 
 		'adjust values according "XYZ (Tristimulus) Reference values"
@@ -304,7 +325,7 @@ Type TColor
 	End Method
 
 
-	Function LAB2XYZ(L:Float, A:Float, B:Float, X:Float var, Y:Float var, Z:Float var)
+	Function LAB2XYZ(L:Float, A:Float, B:Float, X:Float Var, Y:Float Var, Z:Float Var)
 		'based on http://www.easyrgb.com/en/math.php
 
 		Y = (L + 16) / 116.0
@@ -376,15 +397,15 @@ Type TColor
 	'Formula adapted from http://en.wikipedia.org/wiki/HSL_color_space.
 	'code based on the jscript code at:
 	'https://github.com/mjackson/mjijackson.github.com/blob/master/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript.txt
-	Method ToHSL:TColor(h:float var, s:float var, l:float var)
+	Method ToHSL:TColor(h:Float Var, s:Float Var, l:Float Var)
 		'convert 0-255 to 0-1
-		Local rk:float = r / 255.0
-		local gk:float = g / 255.0
-		local bk:float = b / 255.0
+		Local rk:Float = r / 255.0
+		Local gk:Float = g / 255.0
+		Local bk:Float = b / 255.0
 
 		'calculate max/min of r,g,b
-		Local maxV:float = Max(rk, Max(gk, bk))
-		local minV:float = Min(rk, Min(gk, bk))
+		Local maxV:Float = Max(rk, Max(gk, bk))
+		Local minV:Float = Min(rk, Min(gk, bk))
 
 		l = (maxV + minV) / 2.0
 
@@ -393,78 +414,78 @@ Type TColor
 			h = 0
 			s = 0
 		Else
-			local d:float = maxV - minV
-			if l > 0.5
+			Local d:Float = maxV - minV
+			If l > 0.5
 				s = d / (2 - maxV - minV)
-			else
+			Else
 				s = d / (maxV + minV)
-			endif
+			EndIf
 
-			select maxV
-				case rK
+			Select maxV
+				Case rK
 					'according to mjijackson
 					h = (gK - bK) / d
-					if g < b then h :+ 6
+					If g < b Then h :+ 6
 
 					'according to wikipedia
 					'h = ((gK - bK) / d) mod 6
-				case gK
+				Case gK
 					h = (bK - rK) / d + 2
-				case bK
+				Case bK
 					h = (rK - gK) / d + 4
-			end select
+			End Select
 			h :/ 6.0
 		EndIf
 
-		return self
+		Return Self
 	End Method
 
 
 	'code based on the jscript code at:
 	'https://github.com/mjackson/mjijackson.github.com/blob/master/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript.txt
-	Method FromHSL:TColor(h:float, s:float, l:float)
+	Method FromHSL:TColor(h:Float, s:Float, l:Float)
 		'grayscale
-		if Abs(s) < 0.0001 'floating point problems in bmax
-			r = MathHelper.Clamp(int(l * 255), 0,255)
+		If Abs(s) < 0.0001 'floating point problems in bmax
+			r = MathHelper.Clamp(Int(l * 255), 0,255)
 			g = r
 			b = r
-			return self
-		endif
+			Return Self
+		EndIf
 
-        local q:float
-        if l < 0.5
+        Local q:Float
+        If l < 0.5
 			q = l * (1 + s)
-		else
+		Else
 			q = l + s - l * s
-		endif
+		EndIf
 
-		local p:float = 2 * l - q
+		Local p:Float = 2 * l - q
         r = Min(255, Max(0, 255 * hue2rgb(p, q, h + 1/3.0)))
         g = Min(255, Max(0, 255 * hue2rgb(p, q, h)))
         b = Min(255, Max(0, 255 * hue2rgb(p, q, h - 1/3.0)))
 
-		Function hue2rgb:Float(p:float, q:float, t:float)
-			if t < 0
+		Function hue2rgb:Float(p:Float, q:Float, t:Float)
+			If t < 0
 				t :+ 1
-			elseif t > 1
+			ElseIf t > 1
 				t :- 1
-			endif
+			EndIf
 
-			if t < 1/6.0 then return p + (q - p) * 6.0 * t
-			if t < 1/2.0 then return q
-			if t < 2/3.0 then return p + (q - p) * (2/3.0 - t) * 6.0
-			return p
+			If t < 1/6.0 Then Return p + (q - p) * 6.0 * t
+			If t < 1/2.0 Then Return q
+			If t < 2/3.0 Then Return p + (q - p) * (2/3.0 - t) * 6.0
+			Return p
 		End Function
 
-		return self
+		Return Self
 	End Method
 
 
 	'code based on Yashas work:
 	'http://www.blitzmax.com/codearcs/codearcs.php?code=2333
-	Method ToHSV:TColor(h:float var, s:float var, v:float var)
-		Local mn:float, mx:float, dif:float, ad:float, dv:float, md:float
-		If(r < g and r < b)
+	Method ToHSV:TColor(h:Float Var, s:Float Var, v:Float Var)
+		Local mn:Float, mx:Float, dif:Float, ad:Float, dv:Float, md:Float
+		If(r < g And r < b)
 			mn = r/255.0
 		ElseIf (g < b)
 			mn = g/255.0
@@ -472,7 +493,7 @@ Type TColor
 			mn = b/255.0
 		EndIf
 
-		If(r > g and r > b)
+		If(r > g And r > b)
 			mx = r/255.0
 			dif = (g - b)/255.0
 			ad = 0.0
@@ -492,12 +513,12 @@ Type TColor
 		s = md / mx
 		v = mx
 
-		return self
+		Return Self
 	End Method
 
 
-	Method FromHSV:TColor(h:float, s:float, v:float, a:float = 1.0)
-		Local hi:int, f:float, p:float, q:float, t:float
+	Method FromHSV:TColor(h:Float, s:Float, v:Float, a:Float = 1.0)
+		Local hi:Int, f:Float, p:Float, q:Float, t:Float
 		f = h / 60.0
 		hi = Int(f) Mod 6
 		f :- hi
@@ -519,15 +540,15 @@ Type TColor
 
 
 	Method IsSame:Int(otherCol:TColor)
-		if self = otherCol then Return True
-		if not otherCol then Return False
+		If Self = otherCol Then Return True
+		If Not otherCol Then Return False
 
-		Return (r = otherCol.r and g = otherCol.g and b = otherCol.b and a = otherCol.a)
+		Return (r = otherCol.r And g = otherCol.g And b = otherCol.b And a = otherCol.a)
 	End Method
 
 
-	Method IsSameRGBA:Int(r:int, g:int, b:int, a:Float)
-		Return (self.r <> r or self.g <> g or self.b <> b or self.a <> a)
+	Method IsSameRGBA:Int(r:Int, g:Int, b:Int, a:Float)
+		Return (Self.r <> r Or Self.g <> g Or Self.b <> b Or Self.a <> a)
 	End Method
 
 
@@ -535,96 +556,104 @@ Type TColor
 	'beTolerant defines if 240,240,241 is still monochrome, this
 	'is useful if you use gradients, as sometimes gradients have this
 	'differing values
-	Method isMonochrome:int(beTolerant:int=False, ignoreAlpha:int=False)
-		if beTolerant
-			If Abs(r - g)<=1 And Abs(r - b)<=1 And (a <> 0 or IgnoreAlpha) then Return r
-		else
-			If r = g And r = b And (a <> 0 or IgnoreAlpha) then Return r
-		endif
+	Method isMonochrome:Int(beTolerant:Int=False, ignoreAlpha:Int=False)
+		If beTolerant
+			If Abs(r - g)<=1 And Abs(r - b)<=1 And (a <> 0 Or IgnoreAlpha) Then Return r
+		Else
+			If r = g And r = b And (a <> 0 Or IgnoreAlpha) Then Return r
+		EndIf
 		Return -1
 	End Method
 
 
-	Method FromInt:TColor(color:int)
-		self.r = ARGB_Red(color)
-		self.g = ARGB_Green(color)
-		self.b = ARGB_Blue(color)
-		self.a = float(ARGB_Alpha(color))/255.0
-		return self
+	Method FromInt:TColor(color:Int)
+		Self.r = ARGB_Red(color)
+		Self.g = ARGB_Green(color)
+		Self.b = ARGB_Blue(color)
+		Self.a = Float(ARGB_Alpha(color))/255.0
+		Return Self
 	End Method
 
 
-	Method ToInt:int()
-		return ARGB_Color(int(ceil(self.a*255)), self.r, self.g, self.b )
+	Method ToInt:Int()
+		Return ARGB_Color(Int(Ceil(Self.a*255)), Self.r, Self.g, Self.b )
 	End Method
 
 
-	Method ToHex:string()
+	Method ToHex:String()
 		'lossy compression of alpha!
-		local h:string = ""
+		Local h:String = ""
 		h :+ MathHelper._StrRight(MathHelper.Int2Hex(r),2)
 		h :+ MathHelper._StrRight(MathHelper.Int2Hex(g),2)
 		h :+ MathHelper._StrRight(MathHelper.Int2Hex(b),2)
 		'do not append alpha if alpha is 1.0
-		if a < 1.0
-			h:+ MathHelper._StrRight(MathHelper.Int2Hex(int(ceil(a*255))),2)
-		endif
-		return h
+		If a < 1.0
+			h:+ MathHelper._StrRight(MathHelper.Int2Hex(Int(Ceil(a*255))),2)
+		EndIf
+		Return h
 	End Method
 
 
-	Method FromHex:TColor(hexColor:string)
-		local start:int = 0
-		local colIndex:int = 0
-		if hexColor.Find("#") = 0 then start :+1
-		for local i:int = start until hexColor.length step 2
-			local part:string = MathHelper._StrMid(hexColor, i+1, 2)
-			if colIndex = 0 then r = ("$"+part).ToInt()
-			if colIndex = 1 then g = ("$"+part).ToInt()
-			if colIndex = 2 then b = ("$"+part).ToInt()
-			if colIndex = 3 then a = ("$"+part).ToInt()/255.0
+	Method FromHex:TColor(hexColor:String)
+		Local start:Int = 0
+		Local colIndex:Int = 0
+		If hexColor.Find("#") = 0 Then start :+1
+		For Local i:Int = start Until hexColor.length Step 2
+			Local part:String = MathHelper._StrMid(hexColor, i+1, 2)
+			If colIndex = 0 Then r = ("$"+part).ToInt()
+			If colIndex = 1 Then g = ("$"+part).ToInt()
+			If colIndex = 2 Then b = ("$"+part).ToInt()
+			If colIndex = 3 Then a = ("$"+part).ToInt()/255.0
 			colIndex :+1
 		Next
-		return self
+		Return Self
 	End Method
 
 
 	'same as set()
 	Method setRGB:TColor()
-		SetColor(self.r, self.g, self.b)
-		return self
+		SetColor(Self.r, Self.g, Self.b)
+		Return Self
 	End Method
 
 
 	'same as set()
 	Method setCls:TColor()
-		SetClsColor(self.r, self.g, self.b)
-		return self
+		SetClsColor(Self.r, Self.g, Self.b)
+		Return Self
 	End Method
 
 
 	Method setRGBA:TColor()
-		SetColor(self.r, self.g, self.b)
-		SetAlpha(self.a)
-		return self
+		SetColor(Self.r, Self.g, Self.b)
+		SetAlpha(Self.a)
+		Return Self
 	End Method
 
 
 	Method get:TColor()
-		GetColor(self.r, self.g, self.b)
-		self.a = GetAlpha()
-		return self
+		GetColor(Self.r, Self.g, Self.b)
+		Self.a = GetAlpha()
+		Return Self
 	End Method
 
 
 	Method getFromClsColor:TColor()
-		GetClsColor(self.r, self.g, self.b)
-		self.a = GetAlpha()
-		return self
+		GetClsColor(Self.r, Self.g, Self.b)
+		Self.a = GetAlpha()
+		Return Self
 	End Method
 End Type
 
 
+
+Function SColor8AdjustFactor:SColor8(color:SColor8, factor:Int)
+	Return New SColor8(..
+		Min(255, Max(0, color.r + factor)), ..
+		Min(255, Max(0, color.g + factor)), ..
+		Min(255, Max(0, color.b + factor)) ..
+		)
+End Function
 
 
 '===== VARIOUS COLOR FUNCTIONS =====
@@ -650,17 +679,17 @@ Function ARGB_Color:Int(alpha:Int,red:Int,green:Int,blue:Int)
 	Return (Int(alpha * $1000000) + Int(red * $10000) + Int(green * $100) + Int(blue))
 EndFunction
 
-Function RGBA_Color:Int(alpha:int,red:int,green:int,blue:int)
+Function RGBA_Color:Int(alpha:Int,red:Int,green:Int,blue:Int)
 '	Return (Int(alpha * $1000000) + Int(blue * $10000) + Int(green * $100) + Int(red))
 '	is the same :
-	local argb:int = 0
-	local pointer:Byte Ptr = Varptr(argb)
+	Local argb:Int = 0
+	Local pointer:Byte Ptr = Varptr(argb)
 	pointer[0] = red
 	pointer[1] = green
 	pointer[2] = blue
 	pointer[3] = alpha
 
-	return argb
+	Return argb
 EndFunction
 
 
@@ -670,11 +699,11 @@ EndFunction
 'beTolerant defines if 240,240,241 is still monochrome, this
 'is useful if you use gradients, as sometimes gradients have this
 'differing values
-Function isMonochrome:int(argb:Int, beTolerant:int=False, ignoreAlpha:int=False)
-	if beTolerant
-		If Abs(ARGB_Red(argb) - ARGB_Green(argb))<=1 And Abs(ARGB_Red(argb) - ARGB_Blue(argb))<=1 And (ARGB_Alpha(argb) <> 0 or IgnoreAlpha) then Return ARGB_Red(argb)
-	else
-		If ARGB_Red(argb) = ARGB_Green(argb) And ARGB_Red(argb) = ARGB_Blue(argb) And (ARGB_Alpha(argb) <> 0 or IgnoreAlpha) then Return ARGB_Red(argb)
-	endif
+Function isMonochrome:Int(argb:Int, beTolerant:Int=False, ignoreAlpha:Int=False)
+	If beTolerant
+		If Abs(ARGB_Red(argb) - ARGB_Green(argb))<=1 And Abs(ARGB_Red(argb) - ARGB_Blue(argb))<=1 And (ARGB_Alpha(argb) <> 0 Or IgnoreAlpha) Then Return ARGB_Red(argb)
+	Else
+		If ARGB_Red(argb) = ARGB_Green(argb) And ARGB_Red(argb) = ARGB_Blue(argb) And (ARGB_Alpha(argb) <> 0 Or IgnoreAlpha) Then Return ARGB_Red(argb)
+	EndIf
 	Return -1
 End Function

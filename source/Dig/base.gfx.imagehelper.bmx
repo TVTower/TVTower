@@ -66,6 +66,87 @@ Const DRAWMODE_MULTIPLY:int = 1
 Const DRAWMODE_DIFFERENCE:int = 2
 
 
+Function DrawImageOnImageSColor:int(src:object, dest:object, x:Int, y:Int, modifyColor:SColor8, drawMode:int=0, scaleX:Float=1.0, scaleY:Float=1.0)
+	local source:TPixmap, destination:TPixmap
+	if TPixmap(src) then source = TPixmap(src)
+	if TImage(src) then source = LockImage(TImage(src))
+	if TPixmap(dest) then destination = TPixmap(dest)
+	if TImage(dest) then destination = LockImage(TImage(dest))
+	if not source or not destination then return FALSE
+
+	Local sourcePixel:int, destPixel:int
+	Local sourceA:float, destA:float, mixA:float
+	local weightSourceA:float=0.0, weightDestA:float= 0.0
+	Local mixR:int, mixG:int, mixB:int
+	Local modifyAlpha:Float = modifyColor.a/255.0
+	
+	if scaleX <> 1.0 or scaleY <> 1.0
+		source = ResizePixmap(source, int(source.width*scaleX), int(source.height*scaleY))
+	endif
+
+	rem
+	formula for multiplying colors
+		short: r=result, fg=added color, bg=background
+		r.A = 1 - (1 - fg.A) * (1 - bg.A);
+		r.R = fg.R * fg.A / r.A + bg.R * bg.A * (1 - fg.A) / r.A;
+		r.G = fg.G * fg.A / r.A + bg.G * bg.A * (1 - fg.A) / r.A;
+		r.B = fg.B * fg.A / r.A + bg.B * bg.A * (1 - fg.A) / r.A;
+	endrem
+
+	For Local i:Int = 0 To Source.width-1
+		For Local j:Int = 0 To Source.height-1
+			'skip if out of range
+			If x+i >= destination.width or y+j >= destination.height then continue
+			If x+i < 0 or y+j < 0 then continue
+
+			sourcePixel = ReadPixel(source, i,j)
+			'modify the source's alpha with the modifer
+			sourceA		= (ARGB_Alpha(sourcepixel) / 255.0) * modifyAlpha
+			destPixel	= ReadPixel(destination, x+i,y+j)
+			destA 		= ARGB_Alpha(destPixel) / 255.0
+
+			'if target is having no alpha yet, do not calculate
+			'things, just use the new color...
+			if destA = 0
+				if modifyColor
+					'tint
+					mixR = ARGB_Red(sourcePixel) * modifyColor.r/255.0
+					mixG = ARGB_Green(sourcePixel) * modifyColor.g/255.0
+					mixB = ARGB_Blue(sourcePixel) * modifyColor.b/255.0
+					WritePixel(destination, x+i,y+j, ARGB_Color(int(sourceA*255.0), mixR, mixG, mixB))
+				else
+					WritePixel(destination, x+i,y+j, sourcePixel)
+				endif
+			'if the current pixel of the source is invisible, do not
+			'calculate things, just skip
+			elseif sourceA <> 0
+				mixA = 1.0 - (1.0 - sourceA) * (1.0 - destA)
+				if destA > 0.0 then weightSourceA = sourceA / mixA else weightSourceA = 1.0
+				if mixA > 0.0 then weightDestA = destA * (1.0 - sourceA) / mixA else weightDestA = 0.0
+
+				'tint?
+				if modifyColor
+					'if so - modify the source's color accordingly
+					mixR = (ARGB_Red(sourcePixel) * modifyColor.r/255.0) * weightSourceA + ARGB_Red(destPixel) * weightDestA
+					mixG = (ARGB_Green(sourcePixel) * modifyColor.g/255.0) * weightSourceA + ARGB_Green(destPixel) * weightDestA
+					mixB = (ARGB_Blue(sourcePixel) * modifyColor.b/255.0) * weightSourceA + ARGB_Blue(destPixel) * weightDestA
+				else
+					mixR = ARGB_Red(sourcePixel) * weightSourceA + ARGB_Red(destPixel) * weightDestA
+					mixG = ARGB_Green(sourcePixel) * weightSourceA + ARGB_Green(destPixel) * weightDestA
+					mixB = ARGB_Blue(sourcePixel) * weightSourceA + ARGB_Blue(destPixel) * weightDestA
+				endif
+				'limit to 0-255
+				mixR = Min(255, Max(0, mixR))
+				mixG = Min(255, Max(0, mixG))
+				mixB = Min(255, Max(0, mixB))
+
+				WritePixel(destination, x+i,y+j, ARGB_Color(int(mixA*255.0), mixR, mixG, mixB))
+			endif
+		Next
+	Next
+	return TRUE
+End Function
+
 Function DrawImageOnImage:int(src:object, dest:object, x:Int, y:Int, modifyColor:TColor = null, drawMode:int=0)
 	local source:TPixmap, destination:TPixmap
 	if TPixmap(src) then source = TPixmap(src)

@@ -82,8 +82,8 @@ Type TTooltipBase
 	Field _minContentDim:TVec2D ' = new TVec2D.Init(160,0)
 	Field _maxContentDim:TVec2D
 
-	Field titleColor:TColor = TColor.Create(50,50,50)
-	Field contentColor:TColor = TColor.Create(50,50,50)
+	Field titleColor:SColor8 = new SColor8(50,50,50)
+	Field contentColor:SColor8 = new SColor8(50,50,50)
 
 	'left (2) and right (4) is for all elements
 	'top (1) and bottom (3) padding for content
@@ -104,6 +104,11 @@ Type TTooltipBase
 	Global _useFontBold:TBitmapFont
 	Global _useFont:TBitmapFont
 
+	Global titleDrawTextEffect:TDrawTextEffect
+	Global titleDrawTextSettings:TDrawTextSettings
+	Global contentDrawTextEffect:TDrawTextEffect
+	Global contentDrawTextSettings:TDrawTextSettings
+
 	Const STEP_INACTIVE:Int = 1
 	Const STEP_DWELLING:Int = 2
 	Const STEP_ACTIVE:Int = 3
@@ -121,6 +126,20 @@ Type TTooltipBase
 	Const OPTION_PARENT_OVERLAY_ALLOWED:Int = 128
 	Const OPTION_MIRRORED_RENDER_POSITION_X:Int = 256
 	Const OPTION_MIRRORED_RENDER_POSITION_Y:Int = 512
+	
+	
+	Method New()
+		If not titleDrawTextEffect
+			titleDrawTextEffect = new TDrawTextEffect
+			titleDrawTextEffect.data.mode = EDrawTextEffect.None
+			titleDrawTextEffect.data.value = 0.2
+			
+			titleDrawTextSettings = new TDrawTextSettings
+
+			contentDrawTextEffect = new TDrawTextEffect
+			contentDrawTextSettings = new TDrawTextSettings
+		EndIf
+	End Method
 
 
 
@@ -345,7 +364,8 @@ Type TTooltipBase
 				result:+ contentHeight
 '				result:+ GetContentPadding().GetTop() + GetContentPadding().GetBottom()
 			EndIf
-				result:+ GetContentPadding().GetTop() + GetContentPadding().GetBottom()
+			result:+ GetContentPadding().GetTop() + GetContentPadding().GetBottom()
+
 			Return result
 		EndIf
 	End Method
@@ -371,9 +391,9 @@ Type TTooltipBase
 		If maxWidth > 0 Then minWidth = Min(minWidth, maxWidth)
 
 		If _maxContentDim And _maxContentDim.GetX() > 0
-			Return Min(Max(minWidth, 1 + GetFont().GetBlockWidth(content, Min(maxWidth, _maxContentDim.GetX()), -1)), _maxContentDim.GetX())
+			Return Int(Min(Max(minWidth, 1 + GetFont().GetWidth(content, int(Min(maxWidth, _maxContentDim.GetX())), -1)), _maxContentDim.GetX()))
 		Else
-			Return Max(minWidth, 1 + GetFont().GetBlockWidth(content, maxWidth, -1))
+			Return Int(Max(minWidth, 1 + GetFont().GetWidth(content, maxWidth, -1)))
 		EndIf
 	End Method
 
@@ -390,9 +410,9 @@ Type TTooltipBase
 		If _contentCache And _contentCache.HasCache() Then Return Max(minContentHeight, _contentCache.cache.height)
 
 		If _maxContentDim And _maxContentDim.GetY() > 0
-			Return Min(Max(GetFont().getBlockHeight(content, GetInnerWidth(), -1), minContentHeight), _maxContentDim.GetY())
+			Return Int(Min(Max(GetFont().GetHeight(content, GetInnerWidth(), -1), minContentHeight), _maxContentDim.GetY()))
 		Else
-			Return Max(GetFont().getBlockHeight(content, GetInnerWidth(), -1), minContentHeight)
+			Return Int(Max(GetFont().GetHeight(content, GetInnerWidth(), -1), minContentHeight))
 		EndIf
 	End Method
 
@@ -496,6 +516,8 @@ Type TTooltipBase
 
 		Self._minTitleDim = minTitleDim
 		Self._minContentDim = minContentDim
+
+		If _contentCache Then _contentCache.Invalidate()
 	End Method
 
 
@@ -505,12 +527,14 @@ Type TTooltipBase
 			Return 0
 		EndIf
 
-		If _titleCache And _titleCache.HasCache() Then Return _titleCache.cache.height
-
+		If _titleCache And _titleCache.HasCache() 
+			Return _titleCache.cache.height
+'			Return _titleCache.textBoxdimension.y
+		endif
 		If _maxTitleDim And _maxTitleDim.GetIntY() > 0
-			Return Min(GetFontBold().GetBlockHeight(title, GetTitleWidth(), -1), _maxTitleDim.GetIntY())
+			Return Min(GetFontBold().GetBoxDimension(title, GetTitleWidth(), -1, titleDrawTextEffect.data, titleDrawTextSettings.data).y, _maxTitleDim.GetIntY())
 		Else
-			Return GetFontBold().GetBlockHeight(title, GetTitleWidth(), -1)
+			Return GetFontBold().GetBoxDimension(title, GetTitleWidth(), -1, titleDrawTextEffect.data, titleDrawTextSettings.data).y
 		EndIf
 	End Method
 
@@ -521,15 +545,20 @@ Type TTooltipBase
 			Return 0
 		EndIf
 
-		If _titleCache And _titleCache.HasCache() Then Return _titleCache.cache.width
+		If _titleCache And _titleCache.HasCache() 
+			Return _titleCache.cache.width
+'			Return _titleCache.textBoxdimension.x
+		EndIf
 
 		Local minTitleW:Int = 0
 		If _minTitleDim Then minTitleW = _minTitleDim.GetIntX()
 
 		If _maxTitleDim And _maxTitleDim.GetIntX() > 0
-			Return Min(Max(minTitleW, 1 + GetFontBold().GetBlockWidth(title, _maxTitleDim.GetIntX(), -1)), _maxTitleDim.GetIntX())
+			local tWidth:Int = GetFontBold().GetBoxDimension(title, _maxTitleDim.GetIntX(), -1, titleDrawTextEffect.data, titleDrawTextSettings.data).x
+			Return Min(Max(minTitleW, 1 + tWidth), _maxTitleDim.GetIntX())
 		Else
-			Return Max(minTitleW, 1 + GetFontBold().GetBlockWidth(title, -1, -1))
+			local tWidth:Int = GetFontBold().GetBoxDimension(title, -1, -1, titleDrawTextEffect.data, titleDrawTextSettings.data).x
+			Return Max(minTitleW, 1 + tWidth)
 		EndIf
 	End Method
 
@@ -600,12 +629,13 @@ Type TTooltipBase
 
 		'caption
 		If Not _titleCache Then _titleCache = New TBitmapFontText
-		If _titleCache.HasCache()
-			_titleCache.DrawCached(x,y)
-		Else
+
+'		If _titleCache.HasCache()
+'			_titleCache.DrawCached(x,y)
+'		Else
 			'GetFontBold().DrawBlock(title, x, y, w, h, ALIGN_LEFT_CENTER, titleColor, 2, 1, 0.1)
-			_titleCache.DrawBlock(GetFontBold(), title, x, y, w, h, ALIGN_LEFT_CENTER, titleColor, 2, 1, 0.1)
-		EndIf
+			_titleCache.DrawBlock(GetFontBold(), title, x, y, w, h, sALIGN_LEFT_CENTER, titleColor, titleDrawTextEffect, titleDrawTextSettings)
+'		EndIf
 
 		Return True
 	End Method
@@ -620,7 +650,7 @@ Type TTooltipBase
 			_contentCache.DrawCached(x,y)
 		Else
 			'GetFont().drawBlock(content, x, y, GetContentWidth(), -1, ALIGN_LEFT_TOP, contentColor)
-			_contentCache.DrawBlock(GetFont(), content, x, y, GetContentWidth(), -1, ALIGN_LEFT_TOP, contentColor)
+			_contentCache.DrawBlock(GetFont(), content, x, y, GetContentWidth(), -1, sALIGN_LEFT_TOP, contentColor, contentDrawTextEffect, contentDrawTextSettings)
 		EndIf
 
 		Return True

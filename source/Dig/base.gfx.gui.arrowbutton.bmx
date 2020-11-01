@@ -22,6 +22,11 @@ Type TGUIArrowButton Extends TGUISpriteButton
 	End Method
 
 
+	Method Create:TGUIArrowButton(pos:SVec2I, dimension:SVec2I, direction:String="LEFT", limitState:String = "")
+		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), direction, limitState)
+	End Method
+
+
 	Method Create:TGUIArrowButton(pos:TVec2D, dimension:TVec2D, direction:String="LEFT", limitState:String = "")
 		Super.Create(pos, dimension, spriteBaseName, limitState)
 
@@ -129,7 +134,7 @@ Type TGUISpriteButton Extends TGUIObject
 		if h <= 0 then h = rect.dimension.GetY()
 
 		'set to minimum size or bigger
-		local spriteDimension:TRectangle = _GetButtonSprite().GetNinePatchBorderDimension()
+		local spriteDimension:SRect = _GetButtonSprite().GetNinePatchInformation().borderDimension
 		w = Max(w, spriteDimension.GetLeft() + spriteDimension.GetRight())
 		h = Max(h, spriteDimension.GetTop() + spriteDimension.GetBottom())
 

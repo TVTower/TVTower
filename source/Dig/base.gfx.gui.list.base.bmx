@@ -226,6 +226,8 @@ Type TGUIListBase Extends TGUIobject
 	Method SetSize(w:Float = 0, h:Float = 0)
 		Super.SetSize(w,h)
 
+'		If guiBackground Then guiBackground.SetSize(w, h)
+
 		'let the children properly refresh their size
 		'(eg. because the scrollbars are visible now)
 		For Local entry:TGUIobject = EachIn entries
@@ -1066,10 +1068,11 @@ Type TGUIListItem Extends TGUIobject
 	'how long until hiding (initial value)
 	Field initialShowtime:Int = 0
 	'color of the displayed value
-	Field valueColor:TColor	= New TColor
+	Field valueColor:SColor8 = SColor8.Black
 	Field extra:Object
 	Field textCache:TBitmapFontText
-
+	Field _drawTextEffect:TDrawTextEffect
+	
 	Field positionNumber:Int = 0
 	Field _listItemFlags:Int = 0
 
@@ -1101,6 +1104,20 @@ Type TGUIListItem Extends TGUIobject
 		GUIManager.add(Self)
 
 		Return Self
+	End Method
+
+
+	Method SetValueEffect:Int(valueEffectType:Int, valueEffectSpecial:Float = 1.0)
+		if not _drawTextEffect Then _drawTextEffect = new TDrawTextEffect
+
+		Select valueEffectType
+			case 1	_drawTextEffect.data.mode = EDrawTextEffect.Shadow
+			case 2	_drawTextEffect.data.mode = EDrawTextEffect.Glow
+			case 3	_drawTextEffect.data.mode = EDrawTextEffect.Emboss
+			default _drawTextEffect.data.mode = EDrawTextEffect.None
+		End Select
+		
+		_drawTextEffect.data.value = valueEffectSpecial
 	End Method
 
 
@@ -1232,11 +1249,19 @@ Type TGUIListItem Extends TGUIobject
 	End Method
 
 
+	Method SetValueColor:Int(color:SColor8)
+		If self.valueColor <> color
+			if textCache Then textCache.Invalidate()
+			self.valueColor = color
+		EndIf
+	End Method
+
+
 	Method SetValueColor:Int(color:TColor=Null)
-		if color and not color.IsSame(valueColor)
+		if color and color.ToSColor8() <>  valueColor
 			if textCache then textCache.Invalidate()
 
-			valueColor = color
+			valueColor = color.ToSColor8()
 		EndIf
 	End Method
 
@@ -1338,12 +1363,17 @@ Type TGUIListItem Extends TGUIobject
 		else
 			maxWidth = rect.GetW()
 		endif
+		local scrRect:TRectangle = GetScreenRect()
+
 		if not textCache then textCache = new TBitmapFontText
-		if textCache.HasCache()
-			textCache.DrawCached(GetScreenRect().GetX() + 5, GetScreenRect().GetY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)))
-		else
-			textCache.DrawBlock(GetFont(), value + " [" + Self._id + "]", GetScreenRect().GetX() + 5, GetScreenRect().GetY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)), maxWidth-2, rect.GetH(), Null, valueColor)
-		endif
+
+		textCache.DrawBlock(GetFont(), value + " [" + Self._id + "]", scrRect.GetX() + 5, scrRect.GetY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)), maxWidth-2, int(rect.GetH()), contentAlignment, valueColor, _drawTextEffect, null)
+
+'		if textCache.HasCache()
+'			textCache.DrawCached(GetScreenRect().GetX() + 5, GetScreenRect().GetY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)))
+'		else
+'			textCache.DrawBlock(GetFont(), value + " [" + Self._id + "]", GetScreenRect().GetX() + 5, GetScreenRect().GetY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)), maxWidth-2, rect.GetH(), Null, valueColor)
+'		endif
 '		GetFont().drawBlock(value + " [" + Self._id + "]", GetScreenRect().GetX() + 5, GetScreenRect().GetY() + 2 + 0.5*(rect.getH() - GetFont().getHeight(value)), maxWidth-2, rect.GetH(), Null, valueColor)
 	End Method
 

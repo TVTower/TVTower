@@ -37,7 +37,10 @@ Type TGUIBackgroundBox Extends TGUIobject
 
 	Method GetPadding:TRectangle()
 		'if no manual padding was setup - use sprite padding
-		if not _padding then return GetSprite().GetNinePatchContentBorder()
+		If Not _padding
+			Local r:sRect = GetSprite().GetNinePatchInformation().contentBorder
+			Return New TRectangle.Init(r.x, r.y, r.w, r.h)
+		EndIf
 		Return Super.GetPadding()
 	End Method
 
@@ -45,14 +48,14 @@ Type TGUIBackgroundBox Extends TGUIobject
 	'acts as cache
 	Method GetSprite:TSprite()
 		'refresh cache if not set or wrong sprite name
-		if not sprite or sprite.GetName() <> spriteBaseName
+		If Not sprite Or sprite.GetName() <> spriteBaseName
 			sprite = GetSpriteFromRegistry(spriteBaseName)
 			'new -non default- sprite: adjust appearance
-			if sprite.GetName() <> "defaultsprite"
-				SetAppearanceChanged(TRUE)
-			endif
-		endif
-		return sprite
+			If sprite.GetName() <> "defaultsprite"
+				SetAppearanceChanged(True)
+			EndIf
+		EndIf
+		Return sprite
 	End Method
 
 
@@ -61,13 +64,13 @@ Type TGUIBackgroundBox Extends TGUIobject
 
 
 	Method DrawBackground()
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:TColor = New TColor.Get()
 		'a local spriteAlpha means widget as "parent" can have alpha 1.0
 		'while the sprite is drawn with 0.3
 		SetAlpha oldCol.a * GetScreenAlpha() * spriteAlpha
-		if spriteTintColor then spriteTintColor.SetRGB()
+		If spriteTintColor Then spriteTintColor.SetRGB()
 
-		local r:TRectangle = GetScreenRect()
+		Local r:TRectangle = GetScreenRect()
 		GetSprite().DrawArea(r.GetX(), r.GetY(), r.GetW(), r.GetH())
 
 		oldCol.SetRGBA()

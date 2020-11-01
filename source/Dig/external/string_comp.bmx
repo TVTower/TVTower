@@ -42,8 +42,9 @@ Type TLowerString
 	Method Equals:Int(other:TLowerString)
 		If Self = other Then Return True
 		If data And Not (other And other.data) Then Return False
-		
-		Return bmx_stringcomp_compare_lowerstring(data, other.data)
+
+		'if same, then function result is 0
+		Return bmx_stringcomp_compare_lowerstring(data, other.data) = 0
 	End Method
 
 

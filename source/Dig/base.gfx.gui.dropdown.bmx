@@ -50,6 +50,7 @@ Type TGUIDropDown Extends TGUIInput
 	Field selectedEntry:TGUIObject
 	Field list:TGUISelectList
 	Field listHeight:Int = 100
+	Field automaticListHeight:Int = True
 	Field additionalZIndex:Int = 0
 	Global defaultSpriteName:String = "gfx_gui_input.default"
 	Global defaultOverlaySpriteName:String = "gfx_gui_icon_arrowDown"
@@ -58,6 +59,11 @@ Type TGUIDropDown Extends TGUIInput
 
 	Method GetClassName:String()
 		Return "tguidropdown"
+	End Method
+
+
+	Method Create:TGUIDropDown(pos:SVec2I, dimension:SVec2I, value:String="", maxLength:Int=128, limitState:String = "")
+		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), value, maxLength, limitState)
 	End Method
 
 
@@ -101,6 +107,7 @@ Type TGUIDropDown Extends TGUIInput
 		'use padding from background
 		list.SetPadding(bg.GetPadding().getTop(), bg.GetPadding().getLeft(),  bg.GetPadding().getBottom(), bg.GetPadding().getRight())
 
+		list.OnResize()
 
 		'=== REGISTER EVENTS ===
 		'to close the list automatically if the object looses focus
@@ -290,12 +297,52 @@ Type TGUIDropDown Extends TGUIInput
 	Method GetEntries:TList()
 		Return list.entries
 	End Method
+	
+	
+	Method GetAutoSizeListContentHeight:Int()
+		'up to 3 items as default
+		local height:Int = 0
+		local itemCount:Int = list.entries.count()
 
+		For local i:int = 0 until 3
+			if itemCount <= i then exit
+
+			local item:TGUIObject = TGUIObject(list.entries.ValueAtIndex(i))
+			height :+ item.GetHeight()
+		Next
+		
+		return height
+	End Method
+	
 
 	'sets the height of the lists content area (ignoring padding)
 	Method SetListContentHeight:Int(height:Float)
+		'automatic mode?
+		if height < 0
+			automaticListHeight = True
+			height = GetAutoSizeListContentHeight()
+		else
+			automaticListHeight = False
+		endif
+		
 		listHeight = height + list.GetPadding().GetTop() + list.GetPadding().GetBottom()
 		list.SetSize(list.rect.GetW(), listHeight)
+	End Method
+
+
+	'sets the height of the lists content area to X times of the Nth
+	'element
+	Method SetListContentHeight:Int(itemCount:int, referenceListItemIndex:Int)
+		if not list then return False
+		if not list.entries then return False
+		
+		'keep current
+		if list.entries.count() = 0 Then return False
+		'fall back to entry 0 if requesting an invalid item
+		if list.entries.count() <= referenceListItemIndex Then referenceListItemIndex = 0
+
+		local item:TGUIObject = TGUIObject(list.entries.ValueAtIndex(referenceListItemIndex))
+		SetListcontentHeight(itemCount * item.GetHeight())
 	End Method
 
 
@@ -334,8 +381,17 @@ Type TGUIDropDown Extends TGUIInput
 
 	Method AddItem:Int(item:TGUIDropDownItem)
 		If Not list Then Return False
-
+	
 		list.AddItem(item)
+
+		if automaticListHeight
+			local autoHeight:Int = GetAutoSizeListContentHeight()
+			if autoHeight > 0
+				SetListContentHeight( autoHeight )
+				'restore
+				automaticListHeight = True
+			endif
+		endif
 	End Method
 
 
@@ -347,7 +403,7 @@ Type TGUIDropDown Extends TGUIInput
 
 	Method MoveListIntoPosition()
 		'move list to our position
-		Local listPosY:Int = GetScreenRect().GetY() + GetScreenRect().GetH()
+		Local listPosY:Int = GetScreenRect().GetY2()
 		'if list ends below screen end we might move it above the button
 		If listPosY + list.GetScreenRect().GetH() > GetGraphicsManager().GetHeight()
 			If list.GetScreenRect().GetH() < GetScreenRect().GetY()
@@ -476,7 +532,8 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 
 	Method DrawValue()
 		'use rect height as limit as screen rect height might be limited
-		GetFont().DrawBlock(value, GetScreenRect().GetX()+2, GetScreenRect().GetY(), rect.GetW()-4, rect.GetH(), ALIGN_LEFT_CENTER, valueColor)
+		local scrRect:TRectangle = GetScreenRect()
+		GetFont().DrawBox(value, scrRect.GetX()+2, scrRect.GetY(), rect.GetW()-4, rect.GetH(), sALIGN_LEFT_CENTER, valueColor)
 	End Method
 
 

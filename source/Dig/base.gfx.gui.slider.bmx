@@ -415,7 +415,7 @@ Type TGUISlider extends TGUIObject
 						if switchDirection
 							gaugeSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), filledW, GetGaugeH(), -1, TSprite.BORDER_RIGHT)
 						else
-							gaugeFilledSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), filledW - gaugeFilledSprite.GetNinePatchBorderDimension().GetRight(), GetGaugeH(), -1, TSprite.BORDER_RIGHT)
+							gaugeFilledSprite.DrawArea(position.getX() + GetGaugeOffsetX(), position.getY() + GetGaugeOffsetY(), filledW - gaugeFilledSprite.GetNinePatchInformation().contentBorder.GetRight(), GetGaugeH(), -1, TSprite.BORDER_RIGHT)
 						endif
 					endif
 

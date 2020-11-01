@@ -2,78 +2,127 @@ SuperStrict
 Import BRL.Max2d 'to debug draw the sprite atlas
 Import BRL.Map
 Import "base.util.rectangle.bmx"
+Import "base.util.srectangle.bmx"
+
+
+'TEST
+Rem
+Graphics 800, 600
+local sa:TSpriteAtlas = new TSpriteAtlas(128,128, 20)
+For local i:int = 32 until 133
+	sa.AddElement(i, 9, 17)
+Next
+Repeat
+	sa.Draw()
+	Flip 0
+until KeyHit(KEY_ESCAPE) or AppTerminate()
+print "done."
+endrem
+
+Struct SSpriteAtlasRect
+	Field id:Int 'eg. charCode
+	Field rect:SRectI
+	
+	Method New(id:Int, x:Int, y:Int, w:Int, h:Int)
+		Self.id = id
+		Self.rect = New SRectI(x,y,w,h)
+	End Method
+End Struct
+
+
+
 
 Type TSpriteAtlas
-	field elements:TMap = CreateMap()
-	field w:int, h:int
-	field packer:TSpritePacker = New TSpritePacker
+	Field elements:SSpriteAtlasRect[]
+	Field elementsIndex:Int
+	Field w:Int, h:Int
+	Field packer:TSpritePacker = New TSpritePacker
 
 
-	Function Create:TSpriteAtlas(w:int, h:int)
-		local obj:TSpriteAtlas = new TSpriteAtlas
-		obj.w = w
-		obj.h = h
-		obj.packer.setRect(0,0,w,h)
-		return obj
-	End Function
+	Method New(w:Int, h:Int, initialElementCount:Int = 50)
+		Self.w = w
+		Self.h = h
+		Self.packer.setRect(0,0,w,h)
+		
+		Self.elements = New SSpriteAtlasRect[initialElementCount]
+	End Method
 
 
-	Method AddElement(name:string, w:int, h:int)
-		Local freeArea:TSpritePacker = null
+	Method AddElement(id:Int, w:Int, h:Int)
+		'ignore elements with w=0 or h=0?
+		If w=0 Or h=0 Then Throw "TSpriteAtlas: Cannot AddElement() with zero width or height."
 
-		while freeArea = null
+		If (elementsIndex+1) >= elements.length 
+			elements = elements[.. (elementsIndex+1) * 3 / 2 + 1]
+		EndIf
+
+		Local freeArea:TSpritePacker = Null
+
+		While freeArea = Null
 			freeArea = packer.pack(w,h)
-			if not freeArea
+			If Not freeArea
 				IncreaseSize()
 				Repack()
-			endif
+			EndIf
 		Wend
-		elements.Insert(name, new TRectangle.Init(freeArea.x, freeArea.y, w, h))
+		
+		elements[elementsIndex] = New SSpriteAtlasRect(id, freeArea.x, freeArea.y, w, h)
+		elementsIndex :+ 1
 	End Method
 
 
 	Method Repack()
-		local newElements:TMap = CopyMap(elements)
-		packer = new TSpritePacker
+		'keep old elements ... and try to add them back to a new atlas
+
+		Local previousElements:SSpriteAtlasRect[] = elements
+		elements = New SSpriteAtlasRect[elements.length]
+		elementsIndex = 0
+		
+		packer = New TSpritePacker
 		packer.setRect(0, 0, w, h)
 
-		ClearMap(elements)
-
-		for local name:string = eachin newElements.Keys()
-			local rect:TRectangle = TRectangle(newElements.ValueForKey(name))
-			AddElement(name, int(rect.GetW()), int(rect.GetH()))
-		next
-	End Method
-
-
-	Method Draw(x:int=0, y:int=0)
-		setColor 255,100,100
-		DrawRect(x, y, w, h)
-		setColor 50,100,200
-		For local rect:TRectangle = eachin elements.Values()
-			DrawRect(rect.GetX()+1, rect.GetY()+1, rect.GetW()-2, rect.GetH()-2)
+		For Local atlasRect:SSpriteAtlasRect = EachIn previousElements
+			If atlasRect.id <> 0
+				AddElement(atlasRect.id, atlasRect.rect.w, atlasRect.rect.h)
+			EndIf
 		Next
 	End Method
 
 
-	Method IncreaseSize(w:int = 0, h:int = 0)
-		if w = 0 AND h = 0
-			if self.h < self.w then self.h = nextPow2(self.h) else self.w = nextPow2(self.w)
-		else
-			if w<>0 then self.w = w
-			if h<>0 then self.h = h
-		endif
-		packer.setRect(0, 0, self.w, self.h)
+	Method Draw(x:Int=0, y:Int=0)
+		SetColor 255,100,100
+		DrawRect(x, y, w, h)
+		SetColor 50,100,200
+
+		For Local i:Int = 0 Until elementsIndex
+			Local atlasRect:SSpriteAtlasRect = elements[i]
+			DrawRect(atlasRect.rect.x + 1, atlasRect.rect.y + 1, atlasRect.rect.w - 2, atlasRect.rect.h - 2)
+		Next
 	End Method
 
 
-	Function nextPow2:int(currentValue:int=0)
-		local newValue:int = 1
-		while newValue <= currentValue
+	Method IncreaseSize(w:Int = 0, h:Int = 0)
+		If w = 0 And h = 0
+			If Self.h < Self.w 
+				Self.h = nextPow2(Self.h)
+			Else
+				Self.w = nextPow2(Self.w)
+			EndIf
+		Else
+			If w <> 0 Then Self.w = w
+			If h <> 0 Then Self.h = h
+		EndIf
+		packer.SetRect(0, 0, Self.w, Self.h)
+	End Method
+
+
+	Function nextPow2:Int(currentValue:Int=0)
+		Local newValue:Int = 1
+		While newValue <= currentValue
 			newValue :* 2
-		wend
+		Wend
 		'print "nextPow2: got:"+currentValue + " new:"+newValue
-		return newValue
+		Return newValue
 	End Function
 End Type
 
@@ -107,7 +156,7 @@ Type TSpritePacker
 		 'If we are a leaf node
 		If (childNode1 = Null And childNode2 = Null)
 
-			If occupied Or width > w Or height > h then Return Null
+			If occupied Or width > w Or height > h Then Return Null
 
 			If width = w And height = h
 				occupied = True
@@ -120,7 +169,7 @@ Type TSpritePacker
 		Else
 			' Try inserting into first child
 			Local newNode:TSpritePacker = childNode1.pack(width,height)
-			If newNode <> Null then Return newNode
+			If newNode <> Null Then Return newNode
 
 			'no room, insert into second
 			Return childNode2.pack(width,height)

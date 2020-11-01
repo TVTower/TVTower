@@ -308,18 +308,18 @@ Type TGUIChatEntry Extends TGUIListItem
 	End Method
 
 
-	Method GetDimension:TVec2D()
+	Method GetDimension:TVec2D() override
 		Local startX:Int = Self.GetScreenRect().GetX()
 		Local startY:Int = Self.GetScreenRect().GetY()
-		Local move:TVec2D = New TVec2D
+		Local move:SVec2I
 		If Data.getString("senderName",Null)
 			Local senderColor:TColor = TColor(Data.get("senderColor"))
 			If Not senderColor Then senderColor = TColor.Create(0,0,0)
 
-			GetBitmapFontManager().baseFontBold.drawStyled(Data.getString("senderName")+":", startX, startY, senderColor, 2, 0, ,move)
+			move = GetBitmapFontManager().baseFontBold.DrawSimple(Data.getString("senderName")+":", startX, startY, senderColor.ToSColor8(), EDrawTextEffect.GLOW, 1.0)
 			'move the x so we get space between name and text
 			'move the y point 1 pixel as bold fonts are "higher"
-			move.SetXY( move.x + 5, 1)
+			move = new SVec2I(move.x + 5, 1)
 		EndIf
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel( GetFirstParentalObject("tguiscrollablepanel") )
@@ -337,23 +337,24 @@ Type TGUIChatEntry Extends TGUIListItem
 '		maxWidth=295
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local dimension:TVec2D = New TVec2D
-		GetBitmapFontManager().baseFont.drawBlock(GetValue(), startX + move.x, startY + move.y, maxWidth - move.X, maxHeight, Null, Null, 2, 0, , , , , dimension)
+		Local dimension:SVec2I
+		dimension = GetBitmapFontManager().baseFont.DrawBox(GetValue(), startX + move.x, startY + move.y, maxWidth - move.X, maxHeight, sALIGN_LEFT_TOP, SColor8.White, EDrawTextEffect.GLOW, 0.5)
 		'add padding
-		dimension.addXY(0, paddingBottom)
+		dimension = new SVec2I(dimension.x, dimension.y + paddingBottom)
+
 'print GetValue()+"     " + dimension.y +"   move.y="+move.Y+"   maxWidth="+maxWidth+"  move.X="+move.X
 		'set current size and refresh scroll limits of list
 		'but only if something changed (eg. first time or content changed)
-		If rect.getW() <> dimension.getX() Or rect.getH() <> dimension.getY()
+		If rect.getW() <> dimension.x Or rect.getH() <> dimension.y
 			'resize item
-			SetSize(dimension.getX(), dimension.getY())
+			SetSize(dimension.x, dimension.y)
 			'recalculate item positions and scroll limits
 			'-> without multi-line entries would be not completely visible
 			Local list:TGUIListBase = TGUIListBase( GetFirstParentalObject("tguilistbase") )
 			If list Then list.RecalculateElements()
 		EndIf
 
-		Return dimension
+		Return new TVec2D.Init(dimension.x, dimension.y)
 	End Method
 
 
@@ -376,20 +377,23 @@ Type TGUIChatEntry Extends TGUIListItem
 
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local move:TVec2D = New TVec2D.Init(0,0)
-		Local oldCol:TColor = New TColor.Get()
+		Local move:SVec2I
+		Local oldCol:SColor8, oldAlpha:Float
+		GetColor(oldCol)
+		oldAlpha = GetAlpha()
 
 		If Self.showtime <> Null Then SetAlpha oldCol.a * Float(Self.showtime - Time.GetTimeGone())/500.0
 		If Self.Data.getString("senderName",Null)
 			Local senderColor:TColor = TColor(Self.Data.get("senderColor"))
 			If Not senderColor Then senderColor = TColor.Create(0,0,0)
-			GetBitmapFontManager().baseFontBold.drawStyled(Self.Data.getString("senderName", "")+":", screenX, screenY, senderColor, 2, 1, , move)
+			move = GetBitmapFontManager().baseFontBold.DrawSimple(Self.Data.getString("senderName", "")+":", screenX, screenY, senderColor.ToScolor8(), EDrawTextEffect.Shadow, 0.5)
 			'move the x so we get space between name and text
 			'move the y point 1 pixel as bold fonts are "higher"
-			move.SetXY( move.x + 5, 1)
+			move = new SVec2I(move.x + 5, 1)
 		EndIf
-		GetBitmapFontManager().baseFont.drawBlock(GetValue(), screenX + move.x, screenY + move.y, maxWidth - move.X, maxHeight, Null, valueColor, 2, 1, 0.5)
+		GetBitmapFontManager().baseFont.DrawBox(GetValue(), screenX + move.x, screenY + move.y, maxWidth - move.X, maxHeight, sALIGN_LEFT_TOP, valueColor, EDrawTextEffect.Shadow, 0.5)
 
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldAlpha)
 	End Method
 End Type

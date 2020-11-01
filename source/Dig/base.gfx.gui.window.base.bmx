@@ -9,7 +9,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2015 Ronny Otto, digidea.de
+	Copyright (C) 2015-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -41,6 +41,11 @@ Type TGUIWindowBase Extends TGUIPanel
 	'this panel can contain additional content (buttons, panels....)
 	Field guiContent:TGUIPanel
 	Global defaultCaptionColor:TColor = null
+
+
+	Method Create:TGUIWindowBase(pos:SVec2I, dimension:SVec2I, limitState:String = "")
+		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), limitState)
+	End Method
 
 
 	Method Create:TGUIWindowBase(pos:TVec2D, dimension:TVec2D, limitState:String = "")
@@ -107,15 +112,17 @@ Type TGUIWindowBase Extends TGUIPanel
 	End Method
 
 
-
 	'override
 	Method UpdateLayout()
 		Super.UpdateLayout()
 
 		'resize content (if exists) to use all available content space
 		If guiContent
+			local contentScreenRect:TRectangle = GetContentScreenRect()
+			'content element is aligned according to padding setup, so 0,0
+			'is ok
 			guiContent.SetPosition(0,0)
-			guiContent.SetSize(GetContentScreenRect().GetW(),GetContentScreenRect().GetH())
+			guiContent.SetSize(contentScreenRect.GetW(), contentScreenRect.GetH())
 		EndIf
 
 
@@ -133,16 +140,18 @@ Type TGUIWindowBase Extends TGUIPanel
 			'calculation of undefined/automatic values
 			'vertical center the caption between 0 and the start of
 			'content but to make it visible in all cases use "max(...)".
-			Local padding:TRectangle
 			if guiBackground
-				padding = guiBackground.GetSprite().GetNinePatchContentBorder()
+				Local padding:SRect = guiBackground.GetSprite().GetNinePatchInformation().contentBorder
+				if rect.position.x = -1 then rect.position.x = padding.GetLeft()
+				if rect.position.y = -1 then rect.position.y = 0
+				if rect.dimension.x = -1 then rect.dimension.x = GetContentScreenRect().GetW()
+				if rect.dimension.y = -1 then rect.dimension.y = Max(25, padding.GetTop())
 			else
-				padding = new TRectangle.Init()
+				if rect.position.x = -1 then rect.position.x = 0
+				if rect.position.y = -1 then rect.position.y = 0
+				if rect.dimension.x = -1 then rect.dimension.x = GetContentScreenRect().GetW()
+				if rect.dimension.y = -1 then rect.dimension.y = 25
 			endif
-			if rect.position.x = -1 then rect.position.x = padding.GetLeft()
-			if rect.position.y = -1 then rect.position.y = 0
-			if rect.dimension.x = -1 then rect.dimension.x = GetContentScreenRect().GetW()
-			if rect.dimension.y = -1 then rect.dimension.y = Max(25, padding.GetTop())
 
 
 			'reposition in all cases
