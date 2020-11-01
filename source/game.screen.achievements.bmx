@@ -463,7 +463,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 		local sprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_achievement_bg")
 		sprite.DrawArea(x,y,w,h)
 		local achievementSprite:TSprite
-		if 1=1 or achievement.IsCompleted( GetPlayerBaseCollection().playerID )
+		if achievement.IsCompleted( GetPlayerBaseCollection().playerID )
 			if achievement.spriteFinished
 				achievementSprite = GetSpriteFromRegistry( achievement.spriteFinished )
 			endif

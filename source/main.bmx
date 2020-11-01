@@ -158,6 +158,7 @@ Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceColle
 
 Global debugCreationTime:Int = MilliSecs()
 Global printDebugStats:Int = True
+Global collectDebugStats:Int = False
 
 
 Global screenshot_debug:TImage = LoadImage("screenshot_002.png")
@@ -678,28 +679,30 @@ Type TApp
 			Not (App.ExitAppDialogue Or App.EscapeMenuWindow)
 
 			If GameRules.devConfig.GetBool(keyLS_DevKeys, False)
-				If KEYMANAGER.IsHit(KEY_MINUS) And KEYMANAGER.IsDown(KEY_RCONTROL)
-					Rem
-					Global gcEnabled:Int = True
-					If gcEnabled
-						 GCSuspend()
-						 gcEnabled = False
-						 Print "DISABLED GC"
-					Else
-						 GCResume()
-						 gcEnabled = True
-						 Print "ENABLED GC"
-					EndIf
-					endrem
+				if collectDebugStats
+					If KEYMANAGER.IsHit(KEY_MINUS) And KEYMANAGER.IsDown(KEY_RCONTROL)
+						Rem
+						Global gcEnabled:Int = True
+						If gcEnabled
+							 GCSuspend()
+							 gcEnabled = False
+							 Print "DISABLED GC"
+						Else
+							 GCResume()
+							 gcEnabled = True
+							 Print "ENABLED GC"
+						EndIf
+						endrem
 
-					If printDebugStats
-						printDebugStats = False
-						Print "DISABLED DEBUG STATS"
-					Else
-						printDebugStats = True
-						Print "ENABLED DEBUG STATS"
+						If printDebugStats
+							printDebugStats = False
+							Print "DISABLED DEBUG STATS"
+						Else
+							printDebugStats = True
+							Print "ENABLED DEBUG STATS"
+						EndIf
 					EndIf
-				EndIf
+				endif
 
 				'in game and not gameover
 				If GetGame().gamestate = TGame.STATE_RUNNING And Not GetGame().IsGameOver()
@@ -1442,8 +1445,9 @@ endrem
 		textX:+ Max(75, bf.DrawSimple("Speed:" + Int(GetWorldTime().GetVirtualMinutesPerSecond() * 100), textX , 0).x)
 		textX:+ Max(50, bf.DrawSimple("FPS: "+GetDeltaTimer().currentFps, textX, 0).x)
 		textX:+ Max(50, bf.DrawSimple("UPS: " + Int(GetDeltaTimer().currentUps), textX,0).x)
-		textX:+ Max(40, bf.DrawSimple("GC: " + (GCMemAlloced()/1024) +" Kb", textX,0).x)
-		textX:+ Max(40, bf.DrawSimple("  " + bbGCAllocCount+"/s", textX,0).x)
+	'ron|gc
+	'	textX:+ Max(40, bf.DrawSimple("GC: " + (GCMemAlloced()/1024) +" Kb", textX,0).x)
+	'	textX:+ Max(40, bf.DrawSimple("  " + bbGCAllocCount+"/s", textX,0).x)
 rem
 		local soloudDriver:TSoloudAudioDriver = TSoloudAudioDriver(GetAudioDriver())
 		if soloudDriver
@@ -6418,10 +6422,13 @@ Function ShowApp:Int()
 	TProfiler.Leave("ShowApp")
 End Function
 
+
+Global bbGCAllocCount:ULong = 0
 ?bmxng
-Extern
-    Global bbGCAllocCount:ULong="bbGCAllocCount"
-End Extern
+'ron|gc
+'Extern
+'    Global bbGCAllocCount:ULong="bbGCAllocCount"
+'End Extern
 ?
 
 Function StartTVTower(start:Int=True)
@@ -6494,31 +6501,36 @@ GCCollect()
 	App.SetLanguage(App.config.GetString("language", "de"))
 	TLocalization.SetDefaultLanguage("en")
 
-'GCSetMode(2) 'manual
+if collectDebugStats
+	GCSetMode(2) 'manual
+endif
+
 	'c) everything loaded - normal game loop
 TProfiler.Enter("GameLoop")
 	StartApp()
 
 	Repeat
-		If MilliSecs() - debugCreationTime > 1000
-			local memCollected:Int = GCCollect()
-			Local myArr:int[] = new Int[10000]
-			?bmxng
-'			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
+		If collectDebugStats
+			If MilliSecs() - debugCreationTime > 1000
+				local memCollected:Int = GCCollect()
+				Local myArr:int[] = new Int[10000]
+				?bmxng
+				If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
 
-			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations.  GC allocated = " +GCMemAlloced() + ".  GC collected = " + memCollected
-			bbGCAllocCount = 0
-			?Not bmxng
-			If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
-			?
-			rectangle_created = 0
-			vec2d_created = 0
-			debugCreationTime :+ 1000
+				If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations.  GC allocated = " +GCMemAlloced() + ".  GC collected = " + memCollected
+				bbGCAllocCount = 0
+				?Not bmxng
+				If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
+				?
+				rectangle_created = 0
+				vec2d_created = 0
+				debugCreationTime :+ 1000
 
-			?bmxng
-				'OCM.FetchDump()
-				'OCM.Dump(null)
-			?
+				?bmxng
+					'OCM.FetchDump()
+					'OCM.Dump(null)
+				?
+			EndIf
 		EndIf
 
 		If AppSuspended()
