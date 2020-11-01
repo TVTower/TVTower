@@ -890,7 +890,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			' 1 point = 93%
 			' 2 points = 87% ...
 			'10 points = 50%
-			local speedPointTimeMod:Float = 0.933 ^ speedPoints
+			speedPointTimeMod = 0.933 ^ speedPoints
 
 
 			'TEAM (good teams work a bit more efficient)
@@ -899,7 +899,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			' 1 point = 97%
 			' 2 points = 94% ...
 			'10 points = 75%
-			local teamPointTimeMod:Float = 0.5 + 0.5 * 0.933 ^ teamPoints
+			teamPointTimeMod = 0.5 + 0.5 * 0.933 ^ teamPoints
 
 
 			'with a good team, you can record multiple scenes simultaneously
