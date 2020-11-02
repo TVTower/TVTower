@@ -2813,7 +2813,7 @@ endrem
 			If mouseoverStation Then hoveredMapSection = GetStationMapCollection().GetSection(Int(mouseoverStation.pos.x), Int(mouseoverStation.pos.y))
 
 			'if mouse gets clicked, we store that position in a separate station
-			If MOUSEMANAGER.isClicked(1)
+			If MOUSEMANAGER.isClicked(1) OR KEYMANAGER.IsHit(KEY_SPACE)
 				'check reach and valid federal state
 				If hoveredMapSection And mouseoverStation.GetReach() > 0
 					selectedStation = GetStationMap(room.owner).GetTemporaryAntennaStation( mouseoverStation.pos.GetIntX(), mouseoverStation.pos.GetIntY() )
