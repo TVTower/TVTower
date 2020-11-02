@@ -107,7 +107,7 @@ Type TGUIDropDown Extends TGUIInput
 		'use padding from background
 		list.SetPadding(bg.GetPadding().getTop(), bg.GetPadding().getLeft(),  bg.GetPadding().getBottom(), bg.GetPadding().getRight())
 
-		list.OnResize()
+		list.OnResize(0, 0)
 
 		'=== REGISTER EVENTS ===
 		'to close the list automatically if the object looses focus

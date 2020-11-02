@@ -223,7 +223,7 @@ Type TGUIListBase Extends TGUIobject
 
 	'override resize and add minSize-support
 	'size 0, 0 is not possible (leads to autosize)
-	Method SetSize(w:Float = 0, h:Float = 0)
+	Method SetSize(w:Float = 0, h:Float = 0) override
 		Super.SetSize(w,h)
 
 '		If guiBackground Then guiBackground.SetSize(w, h)
@@ -820,11 +820,11 @@ endrem
 
 	'positive values scroll to top or left
 	Method ScrollEntries(dx:Float, dy:Float)
-		guiEntriesPanel.scrollBy(dx,dy)
-'InvalidateLayout()
+		if guiEntriesPanel Then guiEntriesPanel.scrollBy(dx,dy)
+
 		'refresh scroller values (for "progress bar" on the scroller)
-		If dx <> 0 Then guiScrollerH.SetRelativeValue( GetScrollPercentageX() )
-		If dy <> 0 Then guiScrollerV.SetRelativeValue( GetScrollPercentageY() )
+		If dx <> 0 and guiScrollerH Then guiScrollerH.SetRelativeValue( GetScrollPercentageX() )
+		If dy <> 0 and guiScrollerV Then guiScrollerV.SetRelativeValue( GetScrollPercentageY() )
 
 		InvalidateLayout()
 	End Method
@@ -1027,8 +1027,8 @@ endrem
 
 
 	'object was resized in width and/or height
-	Method OnResize()
-		Super.OnResize()
+	Method OnResize(dW:Float, dH:Float) override
+		Super.OnResize(dW, dH)
 
 		If guiBackground
 			'background covers whole area, so resize it

@@ -134,6 +134,42 @@ Type TGUISelectList Extends TGUIListBase
 	Method ScrollAndSelectItem(index:Int, alignment:Float = 0.5)
 		ScrollAndSelectItem( GetItemAtIndex(index), alignment )
 	End Method
+	
+	
+	Method EnsureEntryIsVisible(item:TGUIObject)
+		If Not item Then Return
+
+		'if bottom of entry ends after bottom of list, ensure visibility
+		'if bottom of last entry ends before bottom of list, try to scroll up a bit
+
+		'positive distance = starting later
+		'local bottomDistanceY:Int = GetScreenRect().GetY2() - (item.GetScreenRect().GetY() + item.rect.GetH())
+		local bottomDistanceY:Int = guiEntriesPanel.GetScreenRect().GetY2() - (item.GetScreenRect().GetY() + item.rect.GetH())
+		'local topDistanceY:Int = item.GetScreenRect().GetY() - guiEntriesPanel.GetScreenRect().GetY()
+
+		if bottomDistanceY < 0 
+			UpdateLimitsAndScrollerState()
+			ScrollEntries(0, bottomDistanceY)
+		'space left to bottom
+		elseif bottomDistanceY > 0 
+			local lastItem:TGUIObject = GetLastItem() 'might be selectedEntry
+			local lastItemBottomDistanceY:Int = guiEntriesPanel.GetScreenRect().GetY2() - (lastItem.GetScreenRect().GetY() + lastItem.rect.GetH())
+			if lastItemBottomDistanceY > 0
+				ScrollEntries(0, lastItemBottomDistanceY)
+			endif
+		endif
+	End Method
+
+
+	Method OnResize(dW:Float, dH:Float) override
+		Super.OnResize(dW, dH)
+
+'		InvalidateContentScreenRect()
+'		InvalidateLayout()
+		UpdateLayout()
+		
+		EnsureEntryIsVisible(GetSelectedEntry())
+	End Method
 End Type
 
 

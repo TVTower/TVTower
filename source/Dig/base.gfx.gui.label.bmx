@@ -283,8 +283,8 @@ Type TGUILabel Extends TGUIobject
 
 
 	'override
-	Method OnResize()
-		Super.OnResize()
+	Method OnResize(dW:Float, dH:Float) override
+		Super.OnResize(dW, dH)
 		_valueDimensionCache = Null
 	End Method
 End Type

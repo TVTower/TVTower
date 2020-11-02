@@ -1231,6 +1231,8 @@ Type TGUIobject
 
 	Method SetSize(w:Float = 0, h:Float = 0)
 		Local resized:Int = False
+		Local oldW:Float = rect.dimension.GetX()
+		Local oldH:Float = rect.dimension.GetY()
 
 		If w > 0 And w <> rect.dimension.x
 			rect.dimension.setX(w)
@@ -1242,7 +1244,14 @@ Type TGUIobject
 		EndIf
 
 		If resized
-			OnResize()
+			Local dW:Float = w - oldW
+			Local dH:Float = h - oldH
+			if (oldW = -1 and w <> -1) or (w = -1) Then dW = 0
+			if (oldH = -1 and h <> -1) or (h = -1) Then dH = 0
+
+			InvalidateContentScreenRect()
+			InvalidateLayout()
+			OnResize(dW, dH)
 			UpdateLayout()
 		EndIf
 	End Method
@@ -2320,7 +2329,7 @@ Type TGUIobject
 
 
 	'object was resized in width and/or height
-	Method OnResize()
+	Method OnResize(dW:Float, dH:Float)
 		InvalidateScreenRect()
 	End Method
 
