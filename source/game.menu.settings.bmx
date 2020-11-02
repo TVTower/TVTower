@@ -504,13 +504,13 @@ Type TGUISettingsPanel Extends TGUIPanel
 		local col:Scolor8 = new SColor8(50, 50, 50)
 
 		If Int(sliderSFXVolume.GetValue()) = 0
-			GetBitmapFont("default").DrawSimple("muted", sliderSFXVolume.GetScreenRect().GetX() + 142, sliderSFXVolume.GetScreenRect().GetY() + 6, col)
+			GetBitmapFont("default").DrawSimple(GetLocale("SOUND_MUTED"), sliderSFXVolume.GetScreenRect().GetX() + 142, sliderSFXVolume.GetScreenRect().GetY() + 6, col)
 		Else
 			GetBitmapFont("default").DrawSimple(Int(sliderSFXVolume.GetValue())+" %", sliderSFXVolume.GetScreenRect().GetX() + 142, sliderSFXVolume.GetScreenRect().GetY() + 6, col)
 		EndIf
 
 		If Int(sliderMusicVolume.GetValue()) = 0
-			GetBitmapFont("default").DrawSimple("muted", sliderMusicVolume.GetScreenRect().GetX() + 142, sliderMusicVolume.GetScreenRect().GetY() + 6, col)
+			GetBitmapFont("default").DrawSimple(GetLocale("SOUND_MUTED"), sliderMusicVolume.GetScreenRect().GetX() + 142, sliderMusicVolume.GetScreenRect().GetY() + 6, col)
 		Else
 			GetBitmapFont("default").DrawSimple(Int(sliderMusicVolume.GetValue())+" %", sliderMusicVolume.GetScreenRect().GetX() + 142, sliderMusicVolume.GetScreenRect().GetY() + 6, col)
 		EndIf

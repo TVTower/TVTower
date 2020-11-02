@@ -32,6 +32,7 @@ RENDERER = Renderer
 SOUND_ENGINE = Soundengine
 SOUND_MUSIC_VOLUME = Music Volume
 SOUND_SFX_VOLUME = SFX Volume
+SOUND_MUTED = Muted
 DEFAULTS_FOR_NEW_GAME= Defaults for "New Game"
 PORT_ONLINEGAME = Port for online games
 IN_ROOMS_SLOWDOWN_TIME_TO = In rooms slowdown time to
