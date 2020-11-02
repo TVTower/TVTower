@@ -125,14 +125,14 @@ Type TGUISelectList Extends TGUIListBase
 	End Method
 
 
-	Method ScrollAndSelectItem(item:TGUIObject)
-		ScrollToItem(item)
+	Method ScrollAndSelectItem(item:TGUIObject, alignment:Float = 0.5)
+		ScrollToItem(item, alignment)
 		SelectEntry(item)
 	End Method
 
 
-	Method ScrollAndSelectItem(index:Int)
-		ScrollAndSelectItem( GetItemAtIndex(index) )
+	Method ScrollAndSelectItem(index:Int, alignment:Float = 0.5)
+		ScrollAndSelectItem( GetItemAtIndex(index), alignment )
 	End Method
 End Type
 
