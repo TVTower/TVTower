@@ -63,7 +63,7 @@ Type TColor
 	End Method
 	
 	Method ToSColor8:SColor8()
-		Return New SColor8(r,g,b,Byte(Max(0, Min(255, a*255))))
+		Return New SColor8(r,g,b,Int(Max(0, Min(255, a*255))))
 	End Method
 	
 

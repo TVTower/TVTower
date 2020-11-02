@@ -629,13 +629,12 @@ Type TTooltipBase
 
 		'caption
 		If Not _titleCache Then _titleCache = New TBitmapFontText
-
-'		If _titleCache.HasCache()
-'			_titleCache.DrawCached(x,y)
-'		Else
+		If _titleCache.HasCache()
+			_titleCache.DrawCached(x,y)
+		Else
 			'GetFontBold().DrawBlock(title, x, y, w, h, ALIGN_LEFT_CENTER, titleColor, 2, 1, 0.1)
 			_titleCache.DrawBlock(GetFontBold(), title, x, y, w, h, sALIGN_LEFT_CENTER, titleColor, titleDrawTextEffect, titleDrawTextSettings)
-'		EndIf
+		EndIf
 
 		Return True
 	End Method

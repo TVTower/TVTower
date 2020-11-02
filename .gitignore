@@ -13,6 +13,7 @@
 log.*.txt
 tests/
 *savegames/
+*tools/
 source/version.txt
 TVTowerSolution.BLIdeUS.layout
 TVTower.blpo

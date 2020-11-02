@@ -45,6 +45,11 @@ Type TGUISelectList Extends TGUIListBase
 	End Method
 
 
+	Method Create:TGUISelectList(pos:SVec2I, dimension:SVec2I, limitState:String = "")
+		Return Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), limitState)
+	End Method
+
+
     Method Create:TGUISelectList(position:TVec2D = Null, dimension:TVec2D = Null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
@@ -88,14 +93,13 @@ Type TGUISelectList Extends TGUIListBase
 	End Method
 
 
-	Method SelectEntry:Int(entry:TGUIListItem)
+	Method SelectEntry:Int(entry:TGUIObject)
 		'only mark selected if we are owner of that entry
 		If Self.HasItem(entry)
 			'remove old entry
 			Self.deselectEntry()
 			Self.selectedEntry = entry
 			Self.selectedEntry.SetSelected(True)
-
 			'inform others: we successfully selected an item
 			EventManager.triggerEvent( TEventSimple.Create( "GUISelectList.onSelectEntry", New TData.Add("entry", entry) , Self ) )
 		EndIf
@@ -112,6 +116,23 @@ Type TGUISelectList Extends TGUIListBase
 
 	Method GetSelectedEntry:TGUIobject()
 		Return selectedEntry
+	End Method
+
+
+	Method ScrollToSelectedItem()
+		local item:TGUIObject = GetSelectedEntry()
+		if item Then ScrollToItem(item)
+	End Method
+
+
+	Method ScrollAndSelectItem(item:TGUIObject)
+		ScrollToItem(item)
+		SelectEntry(item)
+	End Method
+
+
+	Method ScrollAndSelectItem(index:Int)
+		ScrollAndSelectItem( GetItemAtIndex(index) )
 	End Method
 End Type
 

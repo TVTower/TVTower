@@ -259,10 +259,9 @@ Type TGUIListBase Extends TGUIobject
 	Method GetItemByCoord:TGUIobject(coord:TVec2D)
 		For Local entry:TGUIobject = EachIn entries
 			'our entries are sorted and replaced, so we could
-			'quit as soon as the
-			'entry is out of range...
-			If entry.GetScreenRect().GetY() > GetScreenRect().GetY()+GetScreenRect().GetH() Then Return Null
-			If entry.GetScreenRect().GetX() > GetScreenRect().GetX()+GetScreenRect().GetW() Then Return Null
+			'quit as soon as the entry is out of range...
+			If entry.GetScreenRect().GetY() > GetScreenRect().GetY2() Then Return Null
+			If entry.GetScreenRect().GetX() > GetScreenRect().GetX2() Then Return Null
 
 			If entry.GetScreenRect().containsXY(coord.GetX(), coord.GetY()) Then Return entry
 		Next
@@ -346,7 +345,7 @@ Type TGUIListBase Extends TGUIobject
 			If _autoSortFunction
 				entries.sort(_autoSortInAscendingOrder, _autoSortFunction)
 			Else
-				entries.sort(_autoSortInAscendingOrder)
+				entries.sort(_autoSortInAscendingOrder, SortByValue)
 			EndIf
 		EndIf
 
@@ -855,6 +854,47 @@ endrem
 		guiScrollerH.SetRelativeValue(percentage)
 		Return guiEntriesPanel.SetScrollPercentageY(percentage)
 	End Method
+	
+	
+	Method ScrollToItemIndex(index:Int, alignment:Float = 0.5)
+		local item:TGUIObject = GetItemAtIndex(index)
+		ScrollToItem(item, alignment)
+	End Method
+
+
+	'scroll to the given item
+	'@alignment defines the location of the item in the list
+	'             0.0 = top, 0.5 = center and 1.0 = bottom
+	Method ScrollToItem(item:TGUIobject, alignment:Float = 0.5)
+		if not item then return
+		if not HasItem(item) then return
+		
+		'bottom alignment means the item must still be visible, so
+		'maximum space to align along is "list height minus item height"
+		local alignmentHeight:Int = Max(0, guiEntriesPanel.GetScreenRect().GetH() - item.rect.GetH())
+		local alignmentWidth:Int = Max(0, guiEntriesPanel.GetScreenRect().GetW() - item.rect.GetW())
+
+		'- move to top
+		'- sum heights of all items until desired one
+		'- scroll down to this height (item then is "on top")
+		'  + include alignment offset (item then "where needed" )
+		ScrollToFirstItem()
+		
+		local earlierItemsHeight:Int
+		local earlierItemsWidth:Int
+		For Local obj:TGUIObject = EachIn entries
+			if obj = item then exit
+			earlierItemsHeight :+ obj.rect.GetH()
+			earlierItemsWidth :+ obj.rect.GetW()
+		Next
+
+		Select _orientation
+			Case GUI_OBJECT_ORIENTATION_VERTICAL
+				ScrollEntries(0, -(earlierItemsHeight - alignmentHeight * alignment))
+			Case GUI_OBJECT_ORIENTATION_HORIZONTAL
+				ScrollEntries(-(earlierItemsWidth - alignmentWidth * alignment), 0)
+		End Select
+	End Method
 
 
 	Method ScrollToFirstItem()
@@ -879,6 +919,14 @@ endrem
 				If guiScrollerH Then guiScrollerH.SetRelativeValue(100)
 		End Select
 	End Method
+
+
+	Function SortByValue:Int(o1:Object,o2:Object)
+		If Not TGUIObject(o1) Then Return 0
+		If Not TGUIObject(o2) Then Return 1
+		If TGUIObject(o1).GetValue() > TGUIObject(o2).GetValue() Return 1
+		Return 0
+	End Function
 
 
 	'override default update-method
