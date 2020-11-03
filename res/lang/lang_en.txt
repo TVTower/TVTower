@@ -608,6 +608,7 @@ DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PREPRODUCTION_PLANNING = To be able to start 
 DIALOGUE_STUDIO_START_PRODUCTION = Start production
 DIALOGUE_STUDIO_START_PREPRODUCTION = Start preproduction
 DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS = Start all possible productions (%X%).
+DIALOGUE_STUDIO_START_NEXT_EPISODE = Start producing next possible episode.
 DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PREPRODUCTIONS = Start all possible preproductions (%X%).
 DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST = I need another shopping list for this script.
 DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST = I need a shopping list for this script.

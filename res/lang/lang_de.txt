@@ -608,6 +608,7 @@ DIALOGUE_STUDIO_YOU_NEED_TO_FINISH_PREPRODUCTION_PLANNING = Um die Vorproduktion
 DIALOGUE_STUDIO_START_PRODUCTION = Produktion starten
 DIALOGUE_STUDIO_START_PREPRODUCTION = Vorproduktion starten
 DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS = Alle möglichen Produktionen (%X%) durchführen.
+DIALOGUE_STUDIO_START_NEXT_EPISODE = Nächste mögliche Folge produzieren.
 DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PREPRODUCTIONS = Alle möglichen Vorproduktionen (%X%) durchführen.
 DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST = Ich brauche noch eine weitere Einkaufsliste für dieses Drehbuch.
 DIALOGUE_STUDIO_ASK_FOR_A_SHOPPINGLIST = Ich brauche eine Einkaufsliste für dieses Drehbuch.

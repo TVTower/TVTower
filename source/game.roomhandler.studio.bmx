@@ -792,6 +792,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		Local roomGUID:String = TFigure(GetPlayerBase().GetFigure()).inRoom.GetGUID()
 		Local script:TScript = GetCurrentStudioScript(roomGUID)
+		'store first producible concept - it may not be the first script of a series
+		Local firstProducibleScript:TScript
 
 
 		'to calculate the amount of production concepts per script we
@@ -833,6 +835,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 					Else
 						produceableConcepts :+ String(pc.studioSlot)
 					EndIf
+					If Not firstProducibleScript Then firstProducibleScript = pc.script
 				EndIf
 			Next
 
@@ -1028,6 +1031,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 					If script.IsLive()
 						answerText = GetRandomLocale("DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PREPRODUCTIONS").Replace("%X%", produceableConcepts)
 					Else
+						texts[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_STUDIO_START_NEXT_EPISODE"), -2, Null, onClickStartProduction, New TData.Add("script", firstProducibleScript)))
 						answerText = GetRandomLocale("DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS").Replace("%X%", produceableConcepts)
 					EndIf
 				EndIf
