@@ -1016,7 +1016,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		texts[0] = TDialogueTexts.Create(text)
 
 		If script
-			If dialogueType = 0 And produceableConceptCount > 0
+			If (dialogueType = 0 or dialogueType = 1)  And produceableConceptCount > 0
 				Local answerText:String
 				If produceableConceptCount = 1
 					If script.IsLive()
