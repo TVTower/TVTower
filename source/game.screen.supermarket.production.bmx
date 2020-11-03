@@ -139,6 +139,7 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 	Function onEnterScreen:Int( triggerEvent:TEventBase )
+		GetInstance().ReloadProductionCompanySelect()
 		GetInstance().ReloadProductionConceptContent()
 	End Function
 
@@ -255,7 +256,12 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 		ResetProductionConceptGUI()
-		ReloadProductionConceptContent()
+		ReloadProductionCompanySelect()
+		'reloading concepts would also recreate the concept list
+		'ReloadProductionConceptContent()
+		'so we just ensure concept is visible
+		productionConceptList.EnsureEntryIsVisible( productionConceptList.GetSelectedEntry() )
+
 
 		'=== TAKE OVER OLD CONCEPT VALUES ===
 		If currentProductionConcept
@@ -817,10 +823,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 		ReloadProductionConceptContent()
+		ReloadProductionCompanySelect()
 	End Method
-
-
-	Method ReloadProductionConceptContent()
+	
+	
+	Method ReloadProductionCompanySelect()
 		'=== PRODUCTION COMPANY SELECT ===
 		productionCompanySelect.list.EmptyList()
 		productionCompanySelect.SetValue(GetLocale("PRODUCTION_COMPANY"))
@@ -834,9 +841,16 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			productionCompanySelect.AddItem( item )
 		Next
 		productionCompanySelect.SetListContentHeight(4, 0)
+	End Method
 
 
+	Method ReloadProductionConceptContent()
 		'=== CONCEPTS ===
+		local selectedBackup:TGuiProductionConceptSelectListItem = TGuiProductionConceptSelectListItem(productionConceptList.GetSelectedEntry())
+		local selectedProductionConcept:TProductionConcept
+		if selectedBackup then selectedProductionConcept = selectedBackup.productionConcept
+		selectedBackup = Null
+		
 		productionConceptList.EmptyList()
 
 		Local productionConcepts:TProductionConcept[]
@@ -852,11 +866,16 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			'skip produced concepts
 			If productionConcept.IsProduced() Then Continue
 
-			Local item:TGuiProductionConceptSelectListItem = New TGuiProductionConceptSelectListItem.Create(Null, New TVec2D.Init(150,24), "concept")
+			Local item:TGuiProductionConceptSelectListItem = New TGuiProductionConceptSelectListItem.Create(Null, New TVec2D.Init(150,40), "concept")
 			'done in TGuiProductionConceptSelectListItem.New() already
 			'item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 
 			item.SetProductionConcept(productionConcept)
+			
+			'mark current item as the previously selected one
+			if selectedProductionConcept = productionConcept
+				selectedBackup = item
+			endif
 
 			'base items do not have a size - so we have to give a manual one
 			productionConceptList.AddItem( item )
@@ -867,6 +886,13 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 '		productionConceptList.RecalculateElements()
 		'refresh scrolling state
 '		productionConceptList.SetSize(-1, -1)
+
+		'restore backup
+		if selectedBackup
+			'productionConceptList.SelectEntry(selectedBackup)
+			'productionConceptList.EnsureEntryIsVisible(selectedBackup)
+			productionConceptList.ScrollAndSelectItem(selectedBackup)
+		endif
 	End Method
 
 

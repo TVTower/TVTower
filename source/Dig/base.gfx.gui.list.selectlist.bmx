@@ -145,7 +145,13 @@ Type TGUISelectList Extends TGUIListBase
 		'positive distance = starting later
 		'local bottomDistanceY:Int = GetScreenRect().GetY2() - (item.GetScreenRect().GetY() + item.rect.GetH())
 		local bottomDistanceY:Int = guiEntriesPanel.GetScreenRect().GetY2() - (item.GetScreenRect().GetY() + item.rect.GetH())
-		'local topDistanceY:Int = item.GetScreenRect().GetY() - guiEntriesPanel.GetScreenRect().GetY()
+		local topDistanceY:Int = item.GetScreenRect().GetY() - guiEntriesPanel.GetScreenRect().GetY()
+
+		'first try to make top of entry visible (can be overriden by bottom then)
+		if topDistanceY < 0 
+			UpdateLimitsAndScrollerState()
+			ScrollEntries(0, -topDistanceY)
+		endif
 
 		if bottomDistanceY < 0 
 			UpdateLimitsAndScrollerState()
