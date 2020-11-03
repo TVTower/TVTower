@@ -616,6 +616,29 @@ Type TPersonBase Extends TGameObject
 	End Method
 
 
+	Method GetTotalProductionJobsDone:Int()
+		If GetProductionData()
+			Return GetProductionData().GetProductionJobsDone(0)
+		EndIf
+		Return 0
+	End Method
+
+
+	Method GetProductionJobsDone:Int(jobID:Int)
+		Return GetJobsDone(jobID)
+	End Method
+	
+	
+	Method GetJobsDone:Int(jobID:Int)
+		If TVTPersonJob.IsCastJob(jobID) And GetProductionData()
+			Return GetProductionData().GetProductionJobsDone(jobID)
+		Else
+			'TODO: Other jobs ?
+			Return 0
+		EndIf
+	End Method
+
+
 	Method GetJobBaseFee:Int(jobID:Int, blocks:Int, channel:Int=-1)
 		If TVTPersonJob.IsCastJob(jobID) And GetProductionData()
 			Return GetProductionData().GetBaseFee(jobID, blocks, channel)
@@ -1150,6 +1173,16 @@ Type TPersonProductionBaseData Extends TPersonBaseData
 
 	'price manipulation. varying price but constant "quality"
 	Field priceModifier:Float = 1.0
+
+	Global stub:TPersonProductionBaseData
+
+
+	Function GetStub:TPersonProductionBaseData()
+		If Not stub
+			stub = New TPersonProductionBaseData
+		EndIf
+		Return stub
+	End Function
 
 
 	Method New()

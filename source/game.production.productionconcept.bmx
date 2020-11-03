@@ -511,11 +511,11 @@ Type TProductionConcept Extends TOwnedGameObject
 			'castXP to improve a script depends on
 			'- work done (for the given job) and
 			'- experience gained
-			local jobsDone:int = 1.0 * person.HasJob(job.job) + 0.10 * person.GetProductionData().GetProductionJobsDone(0) + 0.90 * person.GetProductionData().GetProductionJobsDone( job.job )
+			local jobsDone:int = 1.0 * person.HasJob(job.job) + 0.10 * person.GetTotalProductionJobsDone() + 0.90 * person.GetProductionJobsDone( job.job )
 			'euler strength: 2.5, so for done jobs: 22%, 39%, 52%, ...
 			local castXP:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
 
-			castXP :* 1.0 + 0.15 * person.GetProductionData().GetEffectiveExperiencePercentage(job.job)
+			castXP :* 1.0 + 0.15 * person.GetEffectiveJobExperiencePercentage(job.job)
 
 			castXPSum :+ castXP
 			personCount :+ 1
@@ -597,6 +597,12 @@ Type TProductionConcept Extends TOwnedGameObject
 			
 			local productionData:TPersonProductionBaseData = person.GetProductionData()
 			local personalityData:TPersonPersonalityBaseData = person.GetPersonalityData()
+			'amateurs do not have any productionData until their first
+			'production finished ...
+			If not productionData
+				productionData = TPersonProductionBaseData.GetStub()
+			EndIf
+		
 
 			local personFit:Float = 0.0
 			local genreFit:Float = 0.0
@@ -646,7 +652,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 			'=== JOB FIT ===
 			local job:TPersonProductionJob = script.jobs[castIndex]
-			local jobsDone:int = 1.0 * person.HasJob(job.job) + 0.10 * productionData.GetProductionJobsDone(0) + 0.90 * productionData.GetProductionJobsDone( job.job )
+			local jobsDone:int = 1.0 * person.HasJob(job.job) + 0.10 * person.GetTotalProductionJobsDone() + 0.90 * person.GetProductionJobsDone( job.job )
 			'euler strength: 2.5, so for done jobs: 22%, 39%, 52%, ...
 			local jobFit:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
 			'by 5% chance "switch" effect
@@ -716,7 +722,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			'so make 25% of the fit dependend from XP
 			'to fit as a show's GUEST it depends on how "good/interesting"
 			'you are (depending on your profession)
-			local xpMod:Float = 0.75 + 0.25 * productionData.GetEffectiveExperiencePercentage(job.job)
+			local xpMod:Float = 0.75 + 0.25 * person.GetEffectiveJobExperiencePercentage(job.job)
 
 			personFit :* xpMod
 
@@ -732,7 +738,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			TLogger.Log("TProductionConcept.CalculateCastFit()", " attributeMod:  "+attributeMod, LOG_DEBUG)
 			if person.HasCustomPersonality()
 				TLogger.Log("TProductionConcept.CalculateCastFit()", " (sympathy   :  " + person.GetChannelSympathy(owner)+")", LOG_DEBUG)
-				TLogger.Log("TProductionConcept.CalculateCastFit()", " (xp         :  " + (person.GetProductionData().GetEffectiveExperiencePercentage(job.job)*100)+"%)", LOG_DEBUG)
+				TLogger.Log("TProductionConcept.CalculateCastFit()", " (xp         :  " + (person.GetEffectiveJobExperiencePercentage(job.job)*100)+"%)", LOG_DEBUG)
 			else
 				TLogger.Log("TProductionConcept.CalculateCastFit()", " (sympathy   :  --)", LOG_DEBUG)
 				TLogger.Log("TProductionConcept.CalculateCastFit()", " (xp         :  --)", LOG_DEBUG)
@@ -773,7 +779,7 @@ Type TProductionConcept Extends TOwnedGameObject
 			personFameMod :+ 0.75 * person.GetPersonalityData().GetFame()
 			'really experienced persons benefit from it too (eg.
 			'won awards and so on)
-			personFameMod :+ 0.25 * person.GetProductionData().GetEffectiveExperiencePercentage(jobID)
+			personFameMod :+ 0.25 * person.GetEffectiveJobExperiencePercentage(jobID)
 
 			castFameModSum :+ personFameMod
 			personCount :+1
@@ -844,7 +850,7 @@ Type TProductionConcept Extends TOwnedGameObject
 		For local i:int = 0 until cast.length
 			if not cast[i] then continue
 
-			result :+ cast[i].GetProductionData().GetBaseFee( script.jobs[i].job, script.GetBlocks())
+			result :+ cast[i].GetJobBaseFee(script.jobs[i].job, script.GetBlocks(), owner)
 		Next
 		return result
 	End Method

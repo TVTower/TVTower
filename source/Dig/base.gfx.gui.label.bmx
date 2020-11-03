@@ -227,28 +227,28 @@ Type TGUILabel Extends TGUIobject
 
 		Select valueSpriteMode
 			Case MODE_SPRITE_LEFT_OF_TEXT
-				GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX() + sprite.GetWidth(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, _drawTextEffect.data)
+				GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX() + sprite.GetWidth(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, GetDrawTextEffect().data)
 				sprite.Draw(int(scrRect.x + contentDisplacement.GetX()), int(scrRect.y - 1 + contentDisplacement.GetY() + 0.5 * textH), -1, ALIGN_LEFT_CENTER)
 			Case MODE_SPRITE_LEFT_OF_TEXT2
-				GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, _drawTextEffect.data)
+				GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, GetDrawTextEffect().data)
 				sprite.Draw(int(scrRect.x + contentDisplacement.GetX()), int(scrRect.y - 1 + contentDisplacement.GetY() + 0.5 * textH), -1, ALIGN_LEFT_CENTER)
 			Case MODE_SPRITE_LEFT_OF_TEXT3
-				GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, _drawTextEffect.data)
+				GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, GetDrawTextEffect().data)
 				sprite.Draw(int(scrRect.x + 0.5 * (scrRect.w - dim.x)), int(scrRect.y - 1 + contentDisplacement.GetY() + 0.5 * textH), -1, ALIGN_RIGHT_CENTER)
 
 			Case MODE_SPRITE_RIGHT_OF_TEXT
-				Local mydim:SVec2I = GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW - sprite.GetWidth(), textH, contentAlignment, color, _drawTextEffect.data)
+				Local mydim:SVec2I = GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW - sprite.GetWidth(), textH, contentAlignment, color, GetDrawTextEffect().data)
 				sprite.Draw(int(scrRect.x + contentDisplacement.GetX() + mydim.x), int(scrRect.y + contentDisplacement.GetY() + 0.5 * mydim.y))
 			Case MODE_SPRITE_RIGHT_OF_TEXT2
-				Local mydim:SVec2I = GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, _drawTextEffect.data)
+				Local mydim:SVec2I = GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, GetDrawTextEffect().data)
 				sprite.Draw(int(scrRect.x + contentDisplacement.GetX() + mydim.X), int(scrRect.y + contentDisplacement.GetY() + 0.5 * mydim.y))
 
 			Case MODE_SPRITE_ABOVE_TEXT
 				sprite.Draw(int(scrRect.x + 0.5 * scrRect.w), int(scrRect.y + contentDisplacement.GetY()), -1, ALIGN_CENTER_CENTER)
-				GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX() + sprite.GetWidth(), scrRect.y + contentDisplacement.GetY(), textW, textH + sprite.GetHeight(), contentAlignment, color, _drawTextEffect.data)
+				GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX() + sprite.GetWidth(), scrRect.y + contentDisplacement.GetY(), textW, textH + sprite.GetHeight(), contentAlignment, color, GetDrawTextEffect().data)
 
 			Case MODE_SPRITE_BELOW_TEXT
-				Local mydim:SVec2I = GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, _drawTextEffect.data)
+				Local mydim:SVec2I = GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, GetDrawTextEffect().data)
 				sprite.Draw(int(scrRect.x + 0.5 * scrRect.w), int(scrRect.y + contentDisplacement.GetY() + mydim.y), -1, ALIGN_CENTER_CENTER)
 
 			Case MODE_SPRITE_ONLY

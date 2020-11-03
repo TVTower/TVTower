@@ -59,7 +59,7 @@ Function onPersonBaseFinishesProduction:int(triggerEvent:TEventBase)
 
 	'jobsDone is increased _after_ finishing the production,
 	'so "jobsDone <= 2" will be true until the 3rd production is finishing
-	If p.GetProductionData().GetProductionJobsDone(0) <= 2 then return False
+	If p.GetTotalProductionJobsDone() <= 2 then return False
 
 	'remove from previous prefiltered lists
 	GetPersonBaseCollection().Remove(p)
