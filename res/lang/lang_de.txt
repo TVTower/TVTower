@@ -760,6 +760,7 @@ YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Dein altes Gebot von %MONEY% wurde zurück
 
 YOU_HAVE_WON_AN_AUCTION = Du hast eine Auktion gewonnen
 THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = Die Lizenz "%TITLE%" steht Dir nun zur Verfügung.
+TOTAL_PRODUCTION_COSTS_WERE_X = Die Gesamtkosten betrugen %TOTALCOST%.
 
 YOUR_BOSS_WANTS_TO_SEE_YOU = Dein Chef will dich sehen
 YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM = Du hast %HOURS% Stunden, um dich bei Ihm zu melden.

@@ -751,6 +751,7 @@ YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED = Your previous bid of %MONEY% was refunded.
 
 YOU_HAVE_WON_AN_AUCTION = You've won an auction
 THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL = The licence of "%TITLE%" is now at your disposal.
+TOTAL_PRODUCTION_COSTS_WERE_X = Total production costs were %TOTALCOST%.
 
 YOUR_BOSS_WANTS_TO_SEE_YOU = Your boss wants to see you
 YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM = You've got %HOURS% hours to visit him.
