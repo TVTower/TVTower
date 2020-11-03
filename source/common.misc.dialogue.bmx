@@ -5,7 +5,7 @@ Import "Dig/base.util.rectangle.bmx"
 Import "Dig/base.util.input.bmx"
 Import "Dig/base.util.helper.bmx"
 
-TDialogue.textBlockDrawSettings.data.lineHeight = 14
+TDialogue.textBlockDrawSettings.data.lineHeight = 16
 TDialogue.textBlockDrawSettings.data.boxDimensionMode = 0
 'TDialogue.selectedAnswersDrawEffect.data.Init(EDrawTextEffect.Glow, 0.2, new SColor8(255,200,200))
 TDialogue.selectedAnswersDrawEffect.data.Init(EDrawTextEffect.Glow, 0.2, new SColor8(120,100,75))
@@ -69,17 +69,23 @@ Type TDialogue
 			Local adjBalloonH:Int = Int(_balloonRect.getH())
 
 			If _balloonGrow <> 0
-				'add a min height so dialogues plus "start arrows" fit in
-				Local usedHeight:Int = Max(120, text.GetTextHeight(_balloonRect) + _contentPadding.GetY() + _contentPadding.GetH())
+				local paddingWidth:Int = _contentPadding.GetLeft() + _contentPadding.GetRight()
+				local paddingHeight:Int = _contentPadding.GetTop() + _contentPadding.GetBottom()
+				Local contentDim:SVec2I = new SVec2I(int(_balloonRect.dimension.x - paddingWidth), int(_balloonRect.dimension.y - paddingHeight))
 
-				If _balloonRect.getH() < usedHeight
+				'find out height without "limit"
+				'give dialogue a minimum height of ... 100
+				Local requiredHeight:Int = Max(100, text.GetTextHeight(new SVec2I(contentDim.x, -1)) + paddingHeight)
+
+				'need to grow?
+				If _balloonRect.getH() < requiredHeight
 					'down - nothing to do
 					'if _balloonGrow = 1 then ...
 
 					'up
-					If _balloonGrow = -1 Then _balloonRect.MoveXY(0, -(usedHeight - _balloonRect.getH()) )
+					If _balloonGrow = -1 Then _balloonRect.MoveXY(0, -(requiredHeight - _balloonRect.getH()) )
 
-					_balloonRect.dimension.y = usedHeight
+					_balloonRect.dimension.y = requiredHeight 
 				EndIf
 			EndIf
 		EndIf
@@ -89,7 +95,7 @@ Type TDialogue
 
 	Method GetContentRect:TRectangle()
 		If Not _contentRect
-			_contentRect = GetBalloonRect().copy().Grow(-_contentPadding.GetX(),-_contentPadding.GetY(),-_contentPadding.GetW(),-_contentPadding.GetH())
+			_contentRect = GetBalloonRect().copy().Grow(-_contentPadding.GetLeft(),-_contentPadding.GetTop(),-_contentPadding.GetRight(),-_contentPadding.GetBottom())
 		EndIf
 		Return _contentRect
 	End Method
@@ -418,23 +424,24 @@ Type TDialogueTexts
 	End Method
 
 
-	Method GetTextHeight:int(textRect:TRectangle)
-		FillTextCache(textRect)
+	Method GetTextHeight:int(textDim:SVec2I)
+		FillTextCache(textDim)
 		return _textCache.cache.height
 	End Method
 
 
-	Method FillTextCache(textRect:TRectangle)
+	Method FillTextCache(textDim:SVec2I)
 		if not _textCache then _textCache = new TBitmapFontText
-		if not _textCache.HasCache() or not (textRect.position.x = _textCache.textBoxDimension.x and textRect.position.y = _textCache.textBoxDimension.y)
+		if not _textCache.HasCache() or textDim.x <> _textCache.textBoxDimension.x or (textDim.y <> -1 and textDim.y <> _textCache.textBoxDimension.y)
 			If Not _font Then _font = GetBitmapFont("Default", 14)
-			_textCache.CacheDrawBlock(_font, _text, textRect.GetIntW(), textRect.GetIntH(), SALIGN_LEFT_TOP, SColor8.Black, _font.defaultDrawEffect, TDialogue.textBlockDrawSettings.data)
+
+			_textCache.CacheDrawBlock(_font, _text, textDim.x, textDim.y, SALIGN_LEFT_TOP, SColor8.Black, _font.defaultDrawEffect, TDialogue.textBlockDrawSettings.data)
 		endif
 	End Method
 
 
 	Method Draw(textRect:TRectangle, answerRect:TRectangle)
-		FillTextCache(textRect)
+		FillTextCache(new SVec2I(int(textRect.dimension.x), int(textRect.dimension.y)))
 		_textCache.DrawCached(textRect.GetX(), textRect.GetY())
 
 		For Local answer:TDialogueAnswer = EachIn _answers

@@ -513,10 +513,10 @@ Type TPlayerBoss
 
 		if text.length > 100 or text.split("~n").length > 3
 			ChefDialogue.SetArea(new TRectangle.Init(300, 15, 400, 110))
-			ChefDialogue.moveDialogueBalloonStart = 50
+			ChefDialogue.moveDialogueBalloonStart = 30
 		else
 			ChefDialogue.SetArea(new TRectangle.Init(300, 25, 400, 110))
-			ChefDialogue.moveDialogueBalloonStart = 40
+			ChefDialogue.moveDialogueBalloonStart = 30
 		endif
 		ChefDialogue.SetAnswerArea(new TRectangle.Init(400, 220, 380, 90))
 		ChefDialogue.SetGrow(1,-1)
