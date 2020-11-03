@@ -2977,6 +2977,7 @@ endrem
 					antennaPanel.UpdateLayout()
 
 					antennaPanel.SetSelectedStation(station)
+					selectAndReveal(station)
 
 					MouseManager.SetClickHandled(1)
 				endif
@@ -3018,6 +3019,15 @@ endrem
 		GUIManager.Update( LS_stationmap )
 	End Function
 
+	Function selectAndReveal:Int(station:TStationBase)
+		For Local listItem:TGUISelectListItem = EachIn antennaPanel.list.entries
+			If listItem.data.get("station") = station
+				antennaPanel.list.ScrollAndSelectItem(listItem)
+				Return True
+			EndIf
+		Next
+		Return False
+	End Function
 
 	Function OnOpenOrCloseAccordeonPanel:Int( triggerEvent:TEventBase )
 		Local accordeon:TGameGUIAccordeon = TGameGUIAccordeon(triggerEvent.GetSender())
