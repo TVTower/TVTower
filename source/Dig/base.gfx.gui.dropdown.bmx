@@ -346,6 +346,15 @@ Type TGUIDropDown Extends TGUIInput
 	End Method
 
 
+	Method SetZIndex(zIndex:Int) override
+		If Self.zIndex <> zIndex
+			list.SetZindex(zIndex +1)
+		EndIf
+		
+		Super.SetZIndex(zIndex)
+	End Method
+
+
 	Method SetOpen:Int(bool:Int)
 		open = bool
 		If open
