@@ -390,18 +390,14 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			'also assign this to the script 
 			'(means for a multi-concept-script the last custom value
 			' will be displayed in the studio/script displays)
-			If Not window.concept.script.IsEpisode()
-				window.concept.script.SetCustomTitle(title)
-			EndIf
+			window.concept.script.SetCustomTitle(title)
 		EndIf
 		If description <> window.concept.GetDescription()
 			window.concept.SetCustomDescription(description)
 			'also assign this to the script 
 			'(means for a multi-concept-script the last custom value
 			' will be displayed in the studio/script displays)
-			If Not window.concept.script.IsEpisode()
-				window.concept.script.SetCustomDescription(description)
-			EndIf
+			window.concept.script.SetCustomDescription(description)
 		EndIf
 
 		'set the title / description of the parent (series header)
