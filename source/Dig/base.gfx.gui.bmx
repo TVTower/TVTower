@@ -2164,7 +2164,14 @@ Type TGUIobject
 			valuePosition = Min(valuePosition, value.length)
 		EndIf
 
-		Local specialCommandKeys:Int[] = [KEY_BACKSPACE, KEY_DELETE, 127, KEY_HOME, KEY_END, KEY_LEFT, KEY_RIGHT, KEY_ESCAPE]
+		'codes for "Keyhit()" (or keymanager.***)
+		'old codes included 127 ... as my (Ronny) old linux box sent this
+		'on "delete" key)
+		'Local specialCommandKeys:Int[] = [KEY_BACKSPACE, KEY_DELETE, 127, KEY_HOME, KEY_END, KEY_LEFT, KEY_RIGHT, KEY_ESCAPE]
+		Local specialCommandKeys:Int[] = [KEY_BACKSPACE, KEY_DELETE, KEY_HOME, KEY_END, KEY_LEFT, KEY_RIGHT, KEY_ESCAPE]
+		'codes for "GetChar()" - might be same than scancodes
+		'8 equals KEY_BACKSPACE, 127 is "Delete" (but _not_ KEY_DELETE)
+		Local specialCommandCodes:Int[] = [8, 127]
 
 		'=== SPECIAL COMMAND KEYS ===
 		Local handledSpecialCommandKeys:Int = False
@@ -2178,8 +2185,9 @@ Type TGUIobject
 						valuePosition :- 1
 					EndIf
 
-				'on my linux box "127" is the delete-key and not KEY_DELETE (46)
-				Case KEY_DELETE, 127
+				'Ronny: on my linux OLD box "127" was the delete-key and not KEY_DELETE (46)
+				'       but now it seems to be "KEY_DELETE" (46) too
+				Case KEY_DELETE ', 127
 					If valuePosition < value.length
 						value = value[.. valuePosition] + value[valuePosition+1 ..]
 					EndIf
@@ -2228,10 +2236,11 @@ Type TGUIobject
 				Case KEY_ESCAPE
 					Return False
 			End Select
+			
 
 			handledSpecialCommandKeys = True
 		Next
-		If handledSpecialCommandKeys Then Return True
+		'If handledSpecialCommandKeys Then Return True
 
 
 
@@ -2250,68 +2259,66 @@ Type TGUIobject
 
 		'loop through all chars of the getchar-queue
 		While charCode <> 0
-			'ignore special keys
-			If MathHelper.InIntArray(charCode, specialCommandKeys)
-				charCode = Int(GetChar())
-				Continue
-			EndIf
-			'charCode is < 0 for me when umlauts are pressed
-			If charCode < 0
-				?Win32
-				If KEYWRAPPER.pressedKey(186)
-					If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-					valuePosition :+ 1
-				EndIf
-				If KEYWRAPPER.pressedKey(192)
-					If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-					valuePosition :+ 1
-				EndIf
-				If KEYWRAPPER.pressedKey(222)
-					If shiftPressed Then value:+ "Ä" Else value :+ "ä"
-					valuePosition :+ 1
-				EndIf
-				?MacOS
-				If KEYWRAPPER.pressedKey(186)
-					If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-					valuePosition :+ 1
-				EndIf
-				If KEYWRAPPER.pressedKey(192)
-					If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-					valuePosition :+ 1
-				EndIf
-				If KEYWRAPPER.pressedKey(222)
-					If shiftPressed Then value:+ "Ä" Else value :+ "ä"
-					valuePosition :+ 1
-				EndIf
-				?Linux
-				If KEYWRAPPER.pressedKey(252)
-					If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-					valuePosition :+ 1
-				EndIf
-				If KEYWRAPPER.pressedKey(246)
-					If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-					valuePosition :+ 1
-				EndIf
-				If KEYWRAPPER.pressedKey(163)
-					If shiftPressed Then value:+ "Ä" Else value :+ "ä"
-					valuePosition :+ 1
-				EndIf
-				?
-				If charCode = -33
-					value:+ "ß"
-					valuePosition :+ 1
-				EndIf
-			'handle normal "keys" (excluding umlauts)
-			ElseIf charCode > 0
-				'skip enter if whished so
-				If ignoreEnterKey And KEY_ENTER = charCode
-					'addChar = False
-				Else
-					value = value[.. valuePosition] + Chr(charCode) + value[valuePosition ..]
-					valuePosition :+ 1
-				EndIf
+			'skip chars like "KEY_BACKSPACE"
+			if not MathHelper.InIntArray(charCode, specialCommandCodes)
+				'charCode is < 0 for me when umlauts are pressed
+				If charCode < 0
+					?Win32
+					If KEYWRAPPER.pressedKey(186)
+						If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+						valuePosition :+ 1
+					EndIf
+					If KEYWRAPPER.pressedKey(192)
+						If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+						valuePosition :+ 1
+					EndIf
+					If KEYWRAPPER.pressedKey(222)
+						If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+						valuePosition :+ 1
+					EndIf
+					?MacOS
+					If KEYWRAPPER.pressedKey(186)
+						If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+						valuePosition :+ 1
+					EndIf
+					If KEYWRAPPER.pressedKey(192)
+						If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+						valuePosition :+ 1
+					EndIf
+					If KEYWRAPPER.pressedKey(222)
+						If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+						valuePosition :+ 1
+					EndIf
+					?Linux
+					If KEYWRAPPER.pressedKey(252)
+						If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+						valuePosition :+ 1
+					EndIf
+					If KEYWRAPPER.pressedKey(246)
+						If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+						valuePosition :+ 1
+					EndIf
+					If KEYWRAPPER.pressedKey(163)
+						If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+						valuePosition :+ 1
+					EndIf
+					?
+					If charCode = -33
+						value:+ "ß"
+						valuePosition :+ 1
+					EndIf
+				'handle normal "keys" (excluding umlauts)
+				ElseIf charCode > 0
+					'skip enter if whished so
+					If ignoreEnterKey And KEY_ENTER = charCode
+						'addChar = False
+					Else
+						value = value[.. valuePosition] + Chr(charCode) + value[valuePosition ..]
+						valuePosition :+ 1
+					EndIf
 
-			EndIf
+				EndIf
+			endif
 			charCode = Int(GetChar())
 		Wend
 		'special chars - recognized on Mac, but not Linux
