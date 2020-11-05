@@ -82,7 +82,9 @@ Type TFigureGenerator
 			fig.gender = int(subCodes[0])
 			fig.age = int(subCodes[1])
 			fig.skinTone = int(subCodes[2])
-			if subCodes[3].Find("#") = 0
+			'also accept codes leaving out the "number sign"
+			'if subCodes[3].Find("#") = 0
+			if int(subCodes[3]) <> -1
 				skinColor = new TColor.FromHex(subCodes[3])
 			endif
 			for local i:int = 4 to 17
@@ -169,7 +171,7 @@ Type TFigureGeneratorFigure
 		local code:string = gender+":"+age+":"+skinTone
 		local skinColor:TColor = GetSkinColor()
 		if skinColor
-			code :+ ":"+skinColor.ToHex()
+			code :+ ":#"+skinColor.ToHex()
 		else
 			code :+ ":-1"
 		endif

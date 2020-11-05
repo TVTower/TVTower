@@ -5,7 +5,8 @@ Import "../source/Dig/base.gfx.bitmapfont.bmx"
 Import "../source/Dig/base.util.deltatimer.bmx"
 Import "../source/Dig/base.util.input.bmx"
 Import "../source/Dig/base.util.figuregenerator.bmx"
-
+Import "../source/Dig/base.util.graphicsmanager.bmx"
+'Import Brl.SystemDefault
 
 
 Local gm:TGraphicsManager = TGraphicsManager.GetInstance()
