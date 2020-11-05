@@ -1211,13 +1211,13 @@ Type TGUINews Extends TGUIGameListItem
 			textY :+ 11
 			Rem
 			local eventCan:string = ""
-			if news.newsEvent.skippable
+			if news.GetNewsEvent().skippable
 				eventCan :+ "ueberspringbar)"
 			else
 				eventCan :+ "nicht ueberspringbar"
 			endif
 			if eventCan <> "" then eventCan :+ ",  "
-			if news.newsEvent.reuseable
+			if news.GetNewsEvent().reuseable
 				eventCan :+ "erneut nutzbar"
 			else
 				eventCan :+ "nicht erneut nutzbar"

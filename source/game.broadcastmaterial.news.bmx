@@ -275,6 +275,7 @@ End Type
 
 'This object stores a players news.
 Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
+	'deprecated - use GetNewsEvent() from now on
     Field newsEvent:TNewsEvent {_exposeToLua}
     Field newsEventID:Int {_exposeToLua}
     'Field newsEvent:TNewsEvent	= Null	{_exposeToLua}

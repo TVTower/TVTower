@@ -249,7 +249,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 
 	'return CURRENT newsAbonnement
 	Method GetNewsAbonnement:Int(genre:Int) {_exposeToLua}
-		If genre > 5 Then Return 0 'max 6 categories 0-5
+		If genre < 0 or genre > 5 Then Return 0 'max 6 categories 0-5
 		'for NOW culture is current affair (until there are enough news
 		'for it)
 		'if genre = TVTNewsGenre.CULTURE then genre = TVTNewsGenre.CURRENTAFFAIRS

@@ -4069,7 +4069,7 @@ Type GameEvents
 				EndIf
 
 				'announce that news
-				GetNewsAgency().announceNewsEvent(news, 0, announceNow)
+				GetNewsAgency().AnnounceNewsEventToPlayers(news, 0, announceNow)
 				GetGame().SendSystemMessage("News with GUID ~q"+newsGUID+"~q announced.")
 
 			Case "givelicence"

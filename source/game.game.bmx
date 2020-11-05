@@ -924,7 +924,8 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		For Local ne:TNewsEvent = EachIn GetNewsEventCollection().GetNewsHistory(3)
 			If GetPlayerProgrammeCollection(playerID).HasNewsEvent(ne) Then Continue
 
-			GetNewsAgency().AddNewsEventToPlayer(ne, playerID, True)
+			'True, True = send now and add even if not subscribed!
+			GetNewsAgency().AddNewsEventToPlayer(ne, playerID, True, True)
 			'avoid having that news again (same is done during add, so this
 			'step is not strictly needed here)
 			GetNewsAgency().RemoveFromDelayedListsByNewsEventID(playerID, ne.GetID())

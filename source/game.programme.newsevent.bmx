@@ -439,7 +439,9 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	'used when not -1 or no template is used
 	'type of the news event according to TVTNewsType
+	private
 	Field genre:Int = -1
+	public
 	Field quality:Float = -1
 	Field qualityRaw:Float = -1
 	Field newsType:Int = -1
@@ -515,6 +517,8 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		Self.topicality = template.topicality
 		Self.SetQualityRaw( template.GetQuality() )
 		Self.newsType = template.newsType
+		
+'		Self.genre = template.genre
 
 		Self.flags = template.flags
 
