@@ -78,7 +78,7 @@ Type TGUITextArea Extends TGUIobject
 	End Method
 
 
-	Method Remove:int()
+	Method Remove:int() override
 		super.Remove()
 
 		if guiTextPanel then guiTextPanel.Remove()
@@ -691,10 +691,6 @@ endrem
 
 		ResetViewport()
 		
-		Setcolor 255,100,0
-		SetAlpha 0.3
-
-		drawRect(_contentScreenRect.GetX(), _contentScreenRect.GetY(), _contentScreenRect.GetW(), _contentScreenRect.GetH())
 		SetAlpha 1.0
 		SetColor 255,255,255
 	End Method

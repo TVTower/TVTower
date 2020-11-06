@@ -771,7 +771,8 @@ Type TGUIobject
 		'remove children (so they might inform their children and so on)
 		If _children
 			'traverse along a copy to avoid concurrent modification
-			For Local child:TGUIObject = EachIn _children
+			'(this else leads to eg. some skipped children
+			For Local child:TGUIObject = EachIn _children.copy()
 				child.Remove()
 			Next
 			_children.Clear()
