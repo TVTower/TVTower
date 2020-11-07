@@ -8,7 +8,7 @@ Type TIngameHelpWindowCollection
 	Field showHelp:Int = True
 	Field disabledHelpGUIDs:String[]
 	Field currentIngameHelpWindow:TIngameHelpWindow {nosave}
-	Global helpWindows:TMap = CreateMap()
+	Global helpWindows:TStringMap = new TStringMap()
 	Global currentIngameHelpWindowLocked:Int = False
 
 
@@ -23,19 +23,25 @@ Type TIngameHelpWindowCollection
 	End Method
 
 
-	Method SetCurrentByHelpGUID(helpGUID:String)
-		SetCurrent(Get(helpGUID))
+	Method SetCurrentByHelpGUID:Int(helpGUID:String)
+		Return SetCurrent(Get(helpGUID))
 	End Method
 
 
-	Method SetCurrent(currentWindow:TIngameHelpWindow)
+	Method SetCurrent:Int(currentWindow:TIngameHelpWindow)
 		If currentIngameHelpWindow <> currentWindow
 			'cannot set current if locked
-			If currentIngameHelpWindowLocked Then Return
+			If currentIngameHelpWindowLocked Then Return False
 
 			If currentIngameHelpWindow Then currentIngameHelpWindow.Remove()
 		EndIf
-		currentIngameHelpWindow = currentWindow
+		
+		if currentIngameHelpWindow <> currentWindow
+			currentIngameHelpWindow = currentWindow
+			Return True
+		EndIf
+		
+		Return False
 	End Method
 
 
@@ -45,7 +51,10 @@ Type TIngameHelpWindowCollection
 
 
 	Method LockCurrent()
-		currentIngameHelpWindowLocked = True
+		'you cannot lock without a window
+		if currentIngameHelpWindow
+			currentIngameHelpWindowLocked = True
+		endif
 	End Method
 
 
@@ -53,7 +62,9 @@ Type TIngameHelpWindowCollection
 		If Not force And currentIngameHelpWindowLocked Then Return
 
 		If Not currentIngameHelpWindow Or currentIngameHelpWindow.helpGUID <> helpGUID.ToLower()
-			SetCurrentByHelpGUID(helpGUID)
+			if not SetCurrentByHelpGUID(helpGUID)
+				Return
+			EndIf
 		EndIf
 		If currentIngameHelpWindow
 			'skip creating the very same visible window again
@@ -146,6 +157,7 @@ Type TIngameHelpWindow
 
 	Field state:TLowerString
 
+
 	Method Init:TIngameHelpWindow(title:String, content:String, helpGUID:String)
 
 		area = New TRectangle.Init(100, 20, 600, 350)
@@ -176,6 +188,7 @@ Type TIngameHelpWindow
 		Local windowH:Int = 320
 
 		modalDialogue = New TGUIModalWindow.Create(New TVec2D, New TVec2D.Init(windowW, windowH), state.ToString())
+		modalDialogue.SetManaged(False)
 		modalDialogue.screenArea = area.Copy()
 
 		modalDialogue._defaultValueColor = TColor.clBlack.copy()
@@ -202,8 +215,11 @@ Type TIngameHelpWindow
 		guiTextArea.textColor = SColor8.Black
 		guiTextArea.SetWordWrap(True)
 		guiTextArea.SetValue( content )
+		
+		guiTextArea.SetManaged(False)
 
 		canvas.AddChild(guiTextArea)
+
 
 		Local checkboxWidth:Int = 0
 		If Not IngameHelpWindowCollection.IsDisabledHelpGUID(helpGUID)
@@ -211,6 +227,7 @@ Type TIngameHelpWindow
 			checkboxHideThis.SetFont( GetBitmapFont("default", 12) )
 	'		checkboxHideThis.textColor = TColor.clBlack.Copy()
 			checkboxHideThis.SetValue( GetLocale("DO_NOT_SHOW_AGAIN") )
+			checkboxHideThis.SetManaged(False)
 			canvas.AddChild(checkboxHideThis)
 
 			checkboxWidth = checkboxHideThis.GetScreenRect().GetW() + 20
@@ -222,6 +239,7 @@ Type TIngameHelpWindow
 '		checkboxHideAll.textColor = TColor.clBlack.Copy()
 		checkboxHideAll.SetValue( GetLocale("DO_NOT_SHOW_ANY_TIPS") )
 
+		checkboxHideAll.SetManaged(False)
 		canvas.AddChild(checkboxHideAll)
 		If Not showHideOption
 			If checkboxHideThis Then checkboxHideThis.Hide()
@@ -303,7 +321,8 @@ Type TIngameHelpWindow
 			If modalDialogue.IsClosed() Then active = False
 			If Not active Then Remove()
 
-			GuiManager.Update(state)
+'			GuiManager.Update(state)
+			modalDialogue.Update()
 
 			'no right clicking allowed as long as "help window" is active
 			MouseManager.SetClickHandled(2)
@@ -313,6 +332,7 @@ Type TIngameHelpWindow
 
 	Method Render:Int()
 '		print "render: "+helpGUID
-		If active Then GuiManager.Draw(state)
+		If active Then modalDialogue.Draw()
+'		If active Then GuiManager.Draw(state)
 	End Method
 End Type

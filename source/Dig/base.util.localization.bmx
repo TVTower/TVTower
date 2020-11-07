@@ -59,6 +59,19 @@ Type TLocalization
 	End Function
 
 
+	'Returns true if one of the languages contains the key
+	'nothing was found
+	Function HasString:Int(Key:String, group:String = Null)
+		if currentLanguage and currentLanguage.Has(key, group)
+			Return True
+		EndIf
+		if defaultLanguage and defaultLanguage.Has(key, group)
+			Return True
+		EndIf
+		Return False
+	End Function
+
+
 	'Returns the value for the specified key, or the given key if
 	'nothing was found
 	Function GetString:String(Key:String, group:String = Null)
@@ -429,9 +442,15 @@ Type TLocalization
 End Type
 
 
+
+'convenience helper function
+Function HasLocale:Int(key:string)
+	return TLocalization.HasString(key)
+End Function
+
 'convenience helper function
 Function GetLocale:string(key:string)
-	return TLocalization.getString(key)
+	return TLocalization.GetString(key)
 End Function
 
 

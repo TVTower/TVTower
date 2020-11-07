@@ -6376,13 +6376,11 @@ Function StartApp:Int()
 	For Local screen:TScreen = EachIn ScreenCollection.screens.Values()
 		Local helpTextKeyTitle:String = "INGAME_HELP_TITLE_"+screen.GetName()
 		Local helpTextKeyText:String = "INGAME_HELP_TEXT_"+screen.GetName()
-		Local helpText:String = GetLocale(helpTextKeyText)
-		Local helpTitle:String = GetLocale(helpTextKeyTitle)
-		If helpText = helpTextKeyText
-'			Print "Kein Hilfetext gefunden fuer ~q"+helpTextKeyText+"~q"
-		Else
+		If HasLocale(helpTextKeyText)
+			Local helpText:String = GetLocale(helpTextKeyText)
+			Local helpTitle:String = GetLocale(helpTextKeyTitle)
 '			Print "Hilfetext gefunden fuer ~q"+helpTextKeyText+"~q -> "+screen.GetName()
-			IngameHelpWindowCollection.Add( New TIngameHelpWindow.Init(GetLocale(helpTitle), GetLocale(helpText), screen.GetName()) )
+			IngameHelpWindowCollection.Add( New TIngameHelpWindow.Init(helpTitle, helpText, screen.GetName()) )
 		EndIf
 	Next
 
