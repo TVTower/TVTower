@@ -209,7 +209,7 @@ Type TIngameHelpWindow
 
 
 		Local canvas:TGUIObject = modalDialogue.GetGuiContent()
-		guiTextArea = New TGUITextArea.Create(New TVec2D.Init(0,0), New TVec2D.Init(532,188 + 22 * (Not showHideOption)), state.ToString())
+		guiTextArea = New TGUITextArea.Create(New TVec2D.Init(0,0), New TVec2D.Init(canvas.GetContentWidth(), canvas.GetContentHeight(-1) - 22 + 22 * (Not showHideOption)), state.ToString())
 		'guiTextArea.Move(0,0)
 		guiTextArea.SetFont( GetBitmapFont("default", 14) )
 		guiTextArea.textColor = SColor8.Black

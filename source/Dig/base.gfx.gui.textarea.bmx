@@ -53,6 +53,8 @@ Type TGUITextArea Extends TGUIobject
 
 		guiTextPanel = New TGUIScrollablePanel.Create(null, new TVec2D.Init(rect.GetW() - guiScrollerV.rect.getW(), rect.GetH() - guiScrollerH.rect.getH()), limitState)
 
+		AddChild(guiScrollerH)
+		AddChild(guiScrollerV)
 		AddChild(guiTextPanel) 'manage by our own
 
 
@@ -213,7 +215,6 @@ endrem
 	
 	
 	Method ResetTextCache()
-'print "reset text cache"
 		_textDimension = new SVec2I(0,0)
 		_textDimensionValid = False
 		_textCacheImageValid = False
@@ -241,10 +242,10 @@ endrem
 		if not _textParseInfo 
 			_textParseInfo = new TTextParseInfo()
 		endif
+
 		if not _textParseInfo.data.calculated
 			local maxWidth:Int = -1
-			if not drawSettings.data.wordWrap then maxWidth = guiTextPanel.GetContentScreenRect().GetW()
-
+			if drawSettings.data.wordWrap then maxWidth = guiTextPanel.GetContentWidth()
 			if not _drawTextSettings
 				_textParseInfo.data.CalculateDimensions(self.value, maxWidth, -1, GetFont(), _defaultDrawTextSettings.data)
 			else
@@ -300,7 +301,7 @@ endrem
 		local offsetX:int = guiTextPanel.scrollPosition.GetX() + _textCacheImagePreload.x
 		local offsetY:int = guiTextPanel.scrollPosition.GetY() + _textCacheImagePreload.y
 
-		GetFont().DrawBox(self.value, offsetX, offsetY, -1, -1, new SVec2f(0,0), textColor, new SVec2f(0,0), _textParseInfo, EDrawTextOption.None, drawEffect, drawSettings, -1, -1)
+		GetFont().DrawBox(self.value, offsetX, offsetY, _textParseInfo.data.GetBoxWidth(0), -1, new SVec2f(0,0), textColor, new SVec2f(0,0), _textParseInfo, EDrawTextOption.None, drawEffect, drawSettings, -1, -1)
 		
 		TBitmapFont.setRenderTarget(null)
 
@@ -690,7 +691,6 @@ endrem
 		endif
 
 		ResetViewport()
-		
 		SetAlpha 1.0
 		SetColor 255,255,255
 	End Method
