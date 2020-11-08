@@ -967,22 +967,14 @@ Type RoomHandler_Studio Extends TRoomHandler
 						EndIf
 					EndIf
 				Else
-					If producedConceptCount = 0
-						If script.IsLive()
-							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PREPRODUCTIONS_DONE").Replace("%X%", countText)
-						Else
-							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_DONE").Replace("%X%", countText)
-						EndIf
-					Else
-						Local producedCountText:String = producedConceptCount
-						If conceptCountMax > 0 Then producedCountText = producedConceptCount + "/" + conceptCountMax
-						If script.GetSubScriptCount() > 0 Then producedCountText = producedConceptCount + "/"+script.GetSubScriptCount()
+					Local producedCountText:String = producedConceptCount
+					If conceptCountMax > 0 Then producedCountText = producedConceptCount + "/" + conceptCountMax
+					If script.GetSubScriptCount() > 0 Then producedCountText = producedConceptCount + "/"+script.GetSubScriptCount()
 
-						If script.IsLive()
-							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PREPRODUCTIONS_PLANNED_AND_Y_PREPRODUCTIONS_DONE").Replace("%X%", countText).Replace("%Y%", producedCountText)
-						Else
-							text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE").Replace("%X%", countText).Replace("%Y%", producedCountText)
-						EndIf
+					If script.IsLive()
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PREPRODUCTIONS_PLANNED_AND_Y_PREPRODUCTIONS_DONE").Replace("%X%", countText).Replace("%Y%", producedCountText)
+					Else
+						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE").Replace("%X%", countText).Replace("%Y%", producedCountText)
 					EndIf
 				EndIf
 				If Not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).CanCreateProductionConcept(script)
