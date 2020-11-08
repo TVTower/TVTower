@@ -6,6 +6,11 @@ Import "game.player.base.bmx"
 Import "game.game.base.bmx" 'to change game cursor
 
 
+TGuiProductionConceptSelectListItem.textBlockDrawSettings = new TDrawTextSettings()
+TGuiProductionConceptSelectListItem.textBlockDrawSettings.data.lineHeight = 13
+TGuiProductionConceptSelectListItem.textBlockDrawSettings.data.boxDimensionMode = 0
+
+
 'a graphical representation of shopping lists in studios/supermarket
 Type TGuiProductionConceptListItem Extends TGUIGameListItem
 	Field productionConcept:TProductionConcept
@@ -635,6 +640,7 @@ Type TGuiProductionConceptSelectListItem Extends TGuiProductionConceptListItem
 	Global colorPlannedBG:TColor = TColor.Create(60,110,180, 0.1)
 	Global colorGettingPlannedBG:TColor = TColor.Create(180,110,60, 0.1)
 	Global colorSelectedBG:TColor = TColor.Create(175,165,120, 0.25)
+	Global textBlockDrawSettings:TDrawTextSettings = new TDrawTextSettings
 
 	Const scaleAsset:Float = 0.55
 	Const paddingBottom:Int	= 2
@@ -896,14 +902,14 @@ endrem
 
 
 		if subTitle
-			titleSize = titleFont.DrawBox(title, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() - 2), GetScreenRect().GetW() - textOffsetX - 1, GetScreenRect().GetH()-4, sALIGN_LEFT_TOP, titleColor)
+			titleSize = titleFont.DrawBox(title, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() - 2), GetScreenRect().GetW() - textOffsetX - 1, GetScreenRect().GetH()-4, sALIGN_LEFT_TOP, titleColor, textBlockDrawSettings)
 			if titleSize.y > 20
-				subTitleSize = titleFont.DrawBox(subTitle, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() + titleSize.y - 6), GetScreenRect().GetW() - textOffsetX - 3, 14, sALIGN_LEFT_TOP, titleColor)
+				subTitleSize = titleFont.DrawBox(subTitle, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() + titleSize.y - 3), GetScreenRect().GetW() - textOffsetX - 3, 14, sALIGN_LEFT_TOP, titleColor, textBlockDrawSettings)
 			else
-				subTitleSize = titleFont.DrawBox(subTitle, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() + titleSize.y - 6), GetScreenRect().GetW() - textOffsetX - 3, 28, sALIGN_LEFT_TOP, titleColor)
+				subTitleSize = titleFont.DrawBox(subTitle, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() + titleSize.y - 3), GetScreenRect().GetW() - textOffsetX - 3, 28, sALIGN_LEFT_TOP, titleColor, textBlockDrawSettings)
 			endif
 		else
-			titleSize = titleFont.DrawBox(title, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() - 2), GetScreenRect().GetW() - textOffsetX - 1, GetScreenRect().GetH()-4, sALIGN_LEFT_TOP, titleColor)
+			titleSize = titleFont.DrawBox(title, int(GetScreenRect().GetX()+ textOffsetX), int(GetScreenRect().GetY() - 2), GetScreenRect().GetW() - textOffsetX - 1, GetScreenRect().GetH()-4, sALIGN_LEFT_TOP, titleColor, textBlockDrawSettings)
 'print title + "  " + titleSize.ToString() + "  scrRect="+GetScreenRect().ToString()
 		endif
 

@@ -345,7 +345,9 @@ Type TGUIListBase Extends TGUIobject
 			If _autoSortFunction
 				entries.sort(_autoSortInAscendingOrder, _autoSortFunction)
 			Else
-				entries.sort(_autoSortInAscendingOrder, SortByValue)
+				entries.sort(_autoSortInAscendingOrder)
+'				entries.sort(_autoSortInAscendingOrder, SortByCompare)
+'				entries.sort(_autoSortInAscendingOrder, SortByValue)
 			EndIf
 		EndIf
 
@@ -919,6 +921,12 @@ endrem
 				If guiScrollerH Then guiScrollerH.SetRelativeValue(100)
 		End Select
 	End Method
+
+
+	Function SortByCompare:Int(o1:Object,o2:Object)
+		If Not TGUIObject(o1) Then Return 0
+		Return o1.Compare(o2)
+	End Function
 
 
 	Function SortByValue:Int(o1:Object,o2:Object)
