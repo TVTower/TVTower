@@ -990,7 +990,13 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 
 		'=== PRODUCTION CONCEPT LIST ===
-		outer.Init(10, 15, 210, 205)
+		Local availableHeight:Int = 205
+		'resize list
+		If Not currentProductionConcept And productionConceptList.entries.count() > 3
+			availableHeight = 370
+		EndIf
+
+		outer.Init(10, 15, 210, availableHeight)
 		contentX = skin.GetContentX(outer.GetX())
 		contentY = skin.GetContentY(outer.GetY())
 		contentW = skin.GetContentW(outer.GetW())
@@ -1004,10 +1010,12 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		GetBitmapFontManager().Get("default", 13, BOLDFONT).DrawBox(GetLocale("PRODUCTION_CONCEPTS"), contentX + 5, contentY, contentW - 10, titleH, sALIGN_LEFT_CENTER, skin.textColorNeutral)
 		contentY :+ titleH
 		skin.RenderContent(contentX, contentY, contentW, listH , "2")
-		'reposition list
-		If productionConceptList.rect.getX() <> contentX + 5
+		'reposition/resize list and keep scroll position
+		If productionConceptList.rect.getX() <> contentX + 5 OR productionConceptList.getHeight() <> listH - 6
+			Local scrollPosition:Float = productionConceptList.GetScrollPercentageY()
 			productionConceptList.SetPosition(contentX + 5, contentY + 3)
 			productionConceptList.SetSize(contentW - 10, listH - 6)
+			If Not currentProductionConcept Then productionConceptList.SetScrollPercentageY(scrollPosition)
 		EndIf
 		contentY :+ listH
 
@@ -1018,7 +1026,6 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		contentY :+ contentH - (listH+titleH)
 
 		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
-
 
 
 		If currentProductionConcept
