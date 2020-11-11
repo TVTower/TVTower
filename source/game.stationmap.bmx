@@ -3026,12 +3026,26 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		return True
 	End Method
 
+	Method NextReachLevelProbable:Int(owner:Int, newStationReach:Int)
+		Local stationMap:TStationMap = GetStationMap(owner)
+		Local actualCurrentReach:Int = stationMap.GetReach()
+		Local currentTime:Float = GetWorldTime().getTimeGone()
+		'add up reach of all stations about to be built
+		Local estimatedReachIncrease:Int = newStationReach
+		For local station:TStationBase = EachIn GetStationMap(owner).stations
+			If Not station.isActive And station.GetActivationTime() > currentTime
+				estimatedReachIncrease :+ station.getExclusiveReach()
+			EndIf
+		Next
+		return stationMap.GetReachLevel(actualCurrentReach) < stationMap.GetReachLevel(actualCurrentReach + estimatedReachIncrease)
+	End Method
 
 	Method DrawInfoTooltip()
 		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(GetSectionName())
 		Local showPermissionPriceText:Int
 		Local cantGetSectionPermissionReason:Int
 		Local cantGetProviderPermissionReason:Int = CanSubscribeToProvider(1)
+		Local nextReachLevelProbable:Int = NextReachLevelProbable(owner, GetExclusiveReach())
 		if section And section.NeedsBroadcastPermission(owner, stationType)
 			showPermissionPriceText = not section.HasBroadcastPermission(owner, stationType)
 			cantGetSectionPermissionReason = section.CanGetBroadcastPermission(owner)
@@ -3053,8 +3067,10 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		If showPermissionPriceText > 0
 			tooltipH :+ 2*textH
 		EndIf
+		'warn about potential reach level increase?
+		If nextReachLevelProbable Then tooltipH :+ textH
 
-		If showPermissionPriceText > 0 or cantGetSectionPermissionReason <= 0
+		If showPermissionPriceText > 0 or cantGetSectionPermissionReason <= 0 or nextReachLevelProbable
 			tooltipW :+ 40
 		EndIf
 
@@ -3136,6 +3152,13 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			fontBold.DrawBox(TFunctions.DottedValue(totalPrice) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, new SColor8(255,150,150))
 		else
 			fontBold.DrawBox(TFunctions.DottedValue(totalPrice) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
+		endif
+
+		if nextReachLevelProbable
+			textY:+ textH
+			SetColor 255,150,150
+			font.Draw(GetLocale("AUDIENCE_REACH_LEVEL_WILL_INCREASE"), textX, textY)
+			SetColor 255,255,255
 		endif
 
 	End Method

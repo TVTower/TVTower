@@ -1212,6 +1212,7 @@ NEWGAMESETTINGS_GAME_SEED = Spielnummer
 NEWGAMESETTINGS_GAME_SEED_DETAIL = Gleiche Spielnummern bewirken gleiche Spielstartbedingungen (Programmauswahl).
 
 
+AUDIENCE_REACH_LEVEL_WILL_INCREASE = Reichweitenlevel wird erhöht!
 AUDIENCE_REACH_LEVEL_INCREASED = Reichweitenlevel erhöht
 LEVEL_INCREASED_FROM_X_TO_Y = Level erhöht sich von %X% auf %Y%.
 PRICES_WILL_RISE = Die Preise für Programme und Nachrichten steigen an.
