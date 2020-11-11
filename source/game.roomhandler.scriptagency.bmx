@@ -376,6 +376,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 	Method BuyScriptFromPlayer:int(script:TScript)
 		'remove from player (lists and suitcase) - and give him money
 		if GetPlayerBaseCollection().IsPlayer(script.owner)
+			'TODO remove when implementing Dialogue for scripts
+			If script.getProductionsCount() > 0 Then Return False
 			local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(script.owner)
 			'try to remove it from the suitcase
 			if pc.RemoveScriptFromSuitcase(script)
@@ -829,6 +831,7 @@ endrem
 		'and try to add it back to the shelf
 		if senderList = GuiListSuitcase
 			if not GetInstance().BuyScriptFromPlayer(guiBlock.script)
+				'TODO hint that selling is not possible
 				triggerEvent.setVeto()
 				return FALSE
 			endif
@@ -925,7 +928,8 @@ endrem
 			'if not GetPlayerProgrammeCollection(GetPlayerCollection().playerID).HasScriptInSuitcase(draggedGuiScript.script)
 			if draggedGuiScript.script.owner <= 0
 				highlightSuitcase = True
-			else
+			'TODO remove condition when sell-rewrite-dialogue gets implemented
+			else if draggedGuiScript.script.getProductionsCount() = 0
 				highlightVendor = True
 			endif
 		endif
