@@ -296,11 +296,22 @@ Type TGUISlotList Extends TGUIListBase
 
 		If item
 			EventManager.triggerEvent(TEventSimple.Create("guiList.AddItem", New TData.Add("item", item).AddNumber("slot",slot) , Self))
+			if TGUIListItem(item)
+				TGUIListItem(item).parentListID = self._id
+				TGUIListItem(item).parentListPosition = slot
+			endif
 		ElseIf slotItem
 			EventManager.triggerEvent(TEventSimple.Create("guiList.RemoveItem", New TData.Add("item", slotItem).AddNumber("slot",slot) , Self))
+			if TGUIListItem(item) 
+				TGUIListItem(item).parentListID = -1
+				TGUIListItem(item).parentListPosition = -1
+			endif
 		EndIf
 
 		Self._slots[slot] = item
+		
+		'maybe items overlap others
+		SortChildren()
 
 		'resize item
 		If item Then item.onParentResize()
@@ -408,7 +419,7 @@ Type TGUISlotList Extends TGUIListBase
 
 			'set slot to land
 			addToSlot = Self.GetSlotByCoord(dropCoord)
-print addToSlot
+
 			'no slot was hit
 			If addToSlot < 0 Then Return False
 		EndIf

@@ -82,6 +82,8 @@ Type TGUIManager
 	'contains objects which need to get informed because of changed appearance
 	Field elementsWithChangedAppearance:TObjectList = New TObjectList
 	Field activeTooltips:TObjectList = New TObjectList
+	
+	Field _listsSorted:Int = False
 
 
 	'=== UPDATE STATE PROPERTIES ===
@@ -273,7 +275,9 @@ Type TGUIManager
 		If Not skipCheck And list.contains(obj) Then Return True
 
 		List.AddLast(obj)
-		SortLists()
+		
+		'mark unsorted/dirty
+		_listsSorted = False
 	End Method
 
 
@@ -321,8 +325,8 @@ Type TGUIManager
 
 
 		'run custom compare job
-'		return objA.compare(objB)
-		Return 0
+		Return objA.compare(objB)
+		'Return 0
 	End Function
 
 
@@ -443,6 +447,9 @@ Type TGUIManager
 
 	'sets the currently focused object
 	Method SetFocus(obj:TGUIObject)
+		'ignore if object is already focused
+		if obj = _focusedObject Then Return
+		
 		'if there was an focused object -> inform about removal of focus
 		If (obj <> _focusedObject) And _focusedObject
 			'sender = previous focused object
@@ -470,7 +477,8 @@ Type TGUIManager
 			SetKeystrokeReceiver(obj)
 		EndIf
 
-		GuiManager.SortLists()
+		GuiManager._listsSorted = False
+		'GuiManager.SortLists()
 	End Method
 
 
@@ -559,6 +567,7 @@ Type TGUIManager
 
 		'then the rest
 		If GUIMANAGER_TYPES_NONDRAGGED & updateTypes
+			if not _listsSorted Then SortLists()
 			'from top to bottom
 			For Local obj:TGUIobject = EachIn list.ReverseEnumerator()
 				'all dragged objects got already updated...
@@ -597,6 +606,7 @@ Type TGUIManager
 
 
 		If GUIMANAGER_TYPES_NONDRAGGED & drawTypes
+			if not _listsSorted Then SortLists()
 			activeTooltips.Clear()
 			For Local obj:TGUIobject = EachIn List
 				'all special objects get drawn separately
@@ -629,6 +639,8 @@ Type TGUIManager
 
 
 		If GUIMANAGER_TYPES_DRAGGED & drawTypes
+			if not _listsSorted Then SortLists()
+
 			'draw all dragged objects above normal objects...
 			'from bottom to top
 			For Local obj:TGUIobject = EachIn ListDragged.ReverseEnumerator()
@@ -681,7 +693,6 @@ Type TGUIobject
 
 	Field _tooltip:TTooltipBase = Null
 	Field _children:TObjectList = Null
-	Field _childrenReversed:TObjectList = Null
 	Field _id:Int
 	Field _padding:TRectangle = Null 'by default no padding
 	Field _flags:Int = 0
@@ -776,7 +787,6 @@ Type TGUIobject
 				child.Remove()
 			Next
 			_children.Clear()
-			_childrenReversed.Clear()
 		EndIf
 
 		'just in case we have a managed one
@@ -905,7 +915,6 @@ Type TGUIobject
 
 	Method SortChildren()
 		If _children Then _children.sort(True, TGUIManager.SortObjects)
-		If _childrenReversed Then _childrenReversed.sort(False, TGUIManager.SortObjects)
 	End Method
 
 
@@ -915,10 +924,8 @@ Type TGUIobject
 
 		child.setParent( Self )
 		If Not _children Then _children = New TObjectList
-		If Not _childrenReversed Then _childrenReversed = New TObjectList
 
 		_children.addLast(child)
-		_childrenReversed.addFirst(child)
 
 		'remove from guimanager, we take care of it
 		GUIManager.Remove(child)
@@ -926,7 +933,8 @@ Type TGUIobject
 
 		'maybe zindex changed now
 		If hasOption(GUI_OBJECT_CHILDREN_CHANGE_GUIORDER)
-			GuiManager.SortLists()
+			GuiManager._listsSorted = False
+			'GuiManager.SortLists()
 		EndIf
 
 		'inform object
@@ -938,7 +946,6 @@ Type TGUIobject
 	Method RemoveChild:Int(child:TGUIobject, giveBackToManager:Int=False)
 		If Not _children Then Return False
 		_children.Remove(child)
-		_childrenReversed.Remove(child)
 
 		'inform object
 		child.onRemoveAsChild(Self)
@@ -960,7 +967,7 @@ Type TGUIobject
 		If HasOption(GUI_OBJECT_STATIC_CHILDREN) Then Return False
 
 		'update added elements
-		For Local obj:TGUIobject = EachIn _childrenReversed
+		For Local obj:TGUIobject = EachIn _children.ReverseEnumerator()
 			obj.update()
 		Next
 	End Method
@@ -1332,7 +1339,10 @@ Type TGUIobject
 		If Self.zIndex <> zIndex
 			Self.zIndex = zindex
 
-			If hasOption(GUI_OBJECT_MANAGED) Then GUIManager.SortLists()
+			If hasOption(GUI_OBJECT_MANAGED) 
+				GuiManager._listsSorted = False
+				'GuiManager.SortLists()
+			EndIf
 
 			If _parent Then _parent.OnChildZIndexChanged()
 		EndIf
@@ -1372,7 +1382,8 @@ Type TGUIobject
 
 			'nobody said "no" to drag, so drag it
 			GuiManager.AddDragged(Self)
-			GUIManager.SortLists()
+			GuiManager._listsSorted = False
+			'GuiManager.SortLists()
 
 			'inform others - item finished dragging
 			Local ev:TEventSimple = TEventSimple.Create("guiobject.onFinishDrag", New TData.Add("coord", coord), Self)
@@ -1418,7 +1429,8 @@ Type TGUIobject
 
 			'nobody said "no" to drop, so drop it
 			GUIManager.RemoveDragged(Self)
-			GUIManager.SortLists()
+			GuiManager._listsSorted = False
+			'GuiManager.SortLists()
 
 			'inform others - item finished dropping - Receiver of "event" may now be helding the guiobject dropped on
 			Local ev:TEventSimple = TEventSimple.Create("guiobject.onFinishDrop", New TData.Add("coord", coord), Self, event.GetReceiver())
@@ -2011,7 +2023,7 @@ Type TGUIobject
 					'	and after closing the underlaying widget receives the
 					'	click event
 					If _flags & GUI_OBJECT_ENABLED And MouseManager.IsClicked(1)
-						If HasOption(GUI_OBJECT_CAN_GAIN_FOCUS)
+						If HasOption(GUI_OBJECT_CAN_GAIN_FOCUS) and not HasOption(GUI_OBJECT_STATUS_FOCUSED)
 							GUImanager.SetFocus(Self)
 						EndIf
 					EndIf

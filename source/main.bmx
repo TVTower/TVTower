@@ -832,11 +832,13 @@ Type TApp
 
 
 					If KEYMANAGER.IsHit(KEY_Y)
+						rem
 						local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("laundry", "laundry", 0)
 						GetRoomAgency().CancelRoomRental(room, GetPlayer().playerID)
 						GetRoomAgency().BeginRoomRental(room, GetPlayer().playerID)
 						room.SetUsedAsStudio(True)
 						GetGame().SendSystemMessage("[KEY_Y] Rented room '" + room.GetDescription() +"' ["+room.GetName() + "] for player '" + GetPlayer().name +"' ["+GetPlayer().playerID + "]!")
+						endrem
 
 						rem
 						local playerID:int = 2

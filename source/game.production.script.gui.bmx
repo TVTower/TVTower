@@ -138,4 +138,37 @@ Type TGUIScriptSlotList Extends TGUIGameSlotList
 		Next
 		Return False
 	End Method
+Rem
+	'override children sort
+	Method SortChildren() override
+		If _children Then _children.sort(True, SortObjectsBySlot)
+		If _childrenReversed Then _childrenReversed.sort(False, SortObjectsBySlot)
+	End Method
+	
+	
+	Function SortObjectsBySlot:Int(obj1:Object, obj2:Object)
+		local guiScript1:TGuiScript = TGuiScript(obj1)
+		local guiScript2:TGuiScript = TGuiScript(obj2)
+
+		if guiScript1 and not guiScript2 
+			return 1
+		Elseif not guiScript1 and guiScript2 
+			return -1
+		ElseIf not guiScript1 and not guiScript2
+			return 0
+		EndIf
+	
+		'when both scripts are in the same list, we sort by their slot position
+		if guiScript1.parentListID >= 0 and guiScript1.parentListID = guiScript2.parentListID
+			If guiScript1.parentListPosition > guiScript2.parentListPosition
+				Return 1
+			Elseif guiScript1.parentListPosition < guiScript2.parentListPosition 
+				Return -1
+			EndIf
+		endif
+		
+		'fall back to default sort
+		Return TGUIManager.SortObjects(obj1, obj2)
+	End Function
+End Rem
 End Type

@@ -160,7 +160,7 @@ Type TGUIPanel Extends TGUIObject
 		If HasOption(GUI_OBJECT_STATIC_CHILDREN) Then Return False
 
 		'update added elements
-		For Local obj:TGUIobject = EachIn _childrenReversed
+		For Local obj:TGUIobject = EachIn _children.ReverseEnumerator()
 			obj.update()
 		Next
 	End Method

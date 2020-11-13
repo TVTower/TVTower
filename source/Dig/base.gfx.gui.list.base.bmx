@@ -327,7 +327,7 @@ Type TGUIListBase Extends TGUIobject
 
 		'set parent of the item - so item is able to calculate position
 		guiEntriesPanel.addChild( item )
-
+		
 
 		'recalculate dimensions as the item now knows its parent
 		'so a normal AddItem-handler can work with calculated dimensions from now on
@@ -336,6 +336,7 @@ Type TGUIListBase Extends TGUIobject
 		EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", New TData.Add("item", item) , Self))
 
 		entries.addLast(item)
+		if TGUIListItem(item) then TGUIListItem(item).parentListID = self._id
 
 		'resize item
 		If item Then item.onParentResize()
@@ -361,6 +362,8 @@ Type TGUIListBase Extends TGUIobject
 	Method _RemoveItem:Int(item:TGUIobject)
 		If entries.Remove(item)
 			EventManager.triggerEvent(TEventSimple.Create("guiList.removeItem", New TData.Add("item", item) , Self))
+
+			if TGUIListItem(item) then TGUIListItem(item).parentListID = -1
 
 			'remove from panel and item gets managed by guimanager
 			guiEntriesPanel.removeChild(item)
@@ -399,6 +402,11 @@ Type TGUIListBase Extends TGUIobject
 
 
 	Method HasItem:Int(item:TGUIobject)
+		'TODO: maybe faster to just check parentListID
+		'if TGUIListItem(item)
+		'	Return TGUIListItem(item).parentListID = self._id
+		'endif
+
 		For Local otheritem:TGUIobject = EachIn entries
 			If otheritem = item Then Return True
 		Next
@@ -1129,7 +1137,8 @@ Type TGUIListItem Extends TGUIobject
 	Field textCache:TBitmapFontText
 	Field _drawTextEffect:TDrawTextEffect
 	
-	Field positionNumber:Int = 0
+	Field parentListID:Int = -1
+	Field parentListPosition:Int = -1
 	Field _listItemFlags:Int = 0
 
 
