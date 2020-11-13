@@ -1184,6 +1184,7 @@ NEWGAMESETTINGS_GAME_SEED = Game number / seed
 NEWGAMESETTINGS_GAME_SEED_DETAIL = Same game numbers lead to similar starting conditions (offers at vendors).
 
 
+AUDIENCE_REACH_LEVEL_WILL_INCREASE =  Audience Reach Level will increase!
 AUDIENCE_REACH_LEVEL_INCREASED = Audience Reach Level increased
 LEVEL_INCREASED_FROM_X_TO_Y = Level increases from %X% to %Y%.
 PRICES_WILL_RISE = Prices for programmes and news will rise.
