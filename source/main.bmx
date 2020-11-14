@@ -1302,16 +1302,12 @@ endrem
 
 				'show ingame manual
 				If KEYMANAGER.IsHit(KEY_F1) ' and not KEYMANAGER.IsDown(KEY_RSHIFT)
-					'force show manual
-					IngameHelpWindowCollection.ShowByHelpGUID("GameManual", True)
-					'avoid that this window gets replaced by another one
-					'until it is "closed"
-					IngameHelpWindowCollection.LockCurrent()
-				EndIf
-				'show screen specific ingame help
-				If KEYMANAGER.IsHit(KEY_F2)
-					'force show manual
-					IngameHelpWindowCollection.ShowByHelpGUID(ScreenCollection.GetCurrentScreen().GetName() , True)
+					Local screen:String = ScreenCollection.GetCurrentScreen().GetName()
+					If IngameHelpWindowCollection.Get(screen)
+						IngameHelpWindowCollection.ShowByHelpGUID(screen , True)
+					Else
+						IngameHelpWindowCollection.ShowByHelpGUID("GameManual", True)
+					EndIf
 					'avoid that this window gets replaced by another one
 					'until it is "closed"
 					IngameHelpWindowCollection.LockCurrent()
@@ -1495,11 +1491,12 @@ endrem
 
 		'Hilfe
 		If KEYMANAGER.IsHit(KEY_F1)
-			IngameHelpWindowCollection.ShowByHelpGUID("GameManual", True)
-			IngameHelpWindowCollection.LockCurrent()
-		EndIf
-		If KEYMANAGER.IsHit(KEY_F2)
-			IngameHelpWindowCollection.ShowByHelpGUID(ScreenCollection.GetCurrentScreen().GetName() , True)
+			Local screen:String = ScreenCollection.GetCurrentScreen().GetName()
+			If IngameHelpWindowCollection.Get(screen)
+				IngameHelpWindowCollection.ShowByHelpGUID(screen , True)
+			Else
+				IngameHelpWindowCollection.ShowByHelpGUID("GameManual", True)
+			EndIf
 			IngameHelpWindowCollection.LockCurrent()
 		EndIf
 	End Function
