@@ -6407,7 +6407,9 @@ Function ShowApp:Int()
 
 	'=== LOAD LOCALIZATION ===
 	'load all localizations
+	'from "all in one" files and folders
 	TLocalization.LoadLanguageFiles("res/lang/lang_*.txt")
+	TLocalization.LoadLanguageDirectories("res/lang")
 	'select user language (defaulting to "de")
 	TLocalization.SetCurrentLanguage(App.config.GetString("language", "de"))
 
