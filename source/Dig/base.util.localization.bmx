@@ -36,6 +36,7 @@ EndRem
 SuperStrict
 Import BRL.Retro
 Import BRL.Map
+Import "base.util.directorytree.bmx"
 
 
 Type TLocalization
@@ -333,15 +334,28 @@ Type TLocalization
 	End Function
 
 
-	Function LoadLanguageFile(file:String, languageCode:string="")
-		AddLanguage(TLocalizationLanguage.Create(file))
+	Function LoadLanguageURI(uri:String, languageCode:string="")
+		AddLanguage(TLocalizationLanguage.Create(uri, languageCode))
 	End Function
 
 
 	'Loads all resource files according to the filter (for example: myfile*.txt will load myfile_en.txt, myfile_de.txt etc.)
 	Function LoadLanguageFiles(filter:String)
 		For Local file:String = EachIn GetLanguageFiles(filter)
-			LoadLanguageFile(file)
+			LoadLanguageURI(file)
+		Next
+	End Function
+
+
+	Function LoadLanguageDirectories(baseDirectory:String)
+		'load in all files from the directory and subdirectories
+		Local dirTree:TDirectoryTree = New TDirectoryTree.SimpleInit()
+		dirTree.SetIncludeFileEndings(Null)
+		dirTree.SetExcludeFileNames(["*"])
+		dirTree.ScanDir(baseDirectory, True)
+
+		For Local directory:String = EachIn dirTree.GetDirectories()
+			LoadLanguageURI(directory)
 		Next
 	End Function
 
@@ -481,54 +495,90 @@ Type TLocalizationLanguage
 
 
 	'Opens a resource file and loads the content into memory
-	Function Create:TLocalizationLanguage(filename:String, languageCode:String = Null)
-		If languageCode = Null
-			languageCode = TLocalization.GetLanguageCodeFromFilename(filename)
-			If not languageCode Then Throw "No language was specified for loading the resource file and the language could not be detected from the filename itself.~r~nPlease specify the language or use the format ~qname_language.extension~q for the resource files."
+	Function Create:TLocalizationLanguage(uri:String, languageCode:String = Null)
+		Local lang:TLocalizationLanguage
+		
+		local filesToLoad:String[]
+		Select FileType(uri)
+			Case FILETYPE_FILE
+				filesToLoad = [uri]
+
+				If languageCode = Null
+					languageCode = TLocalization.GetLanguageCodeFromFilename(uri)
+					If not languageCode Then Throw "No language was specified for loading the resource file and the language could not be detected from the filename itself.~r~nPlease specify the language or use the format ~qname_language.extension~q for the resource files."
+				EndIf
+
+			Case FILETYPE_DIR
+				'load in all files from the directory and subdirectories
+				Local dirTree:TDirectoryTree = New TDirectoryTree.SimpleInit()
+				dirTree.SetIncludeFileEndings(["txt"])
+				'skip some special readme file?
+				'dirTree.SetExcludeFileNames(["_readme"])
+				dirTree.ScanDir(uri, True)
+
+				filesToLoad = dirTree.GetFiles()
+
+				If languageCode = Null
+					languageCode = StripAll(uri)
+				EndIf
+
+			Default
+				'no language to load
+				Print "File/Folder ~q" + uri + "~q not found."
+				Return Null
+		End Select
+
+		'extend existing?
+		if languageCode
+			lang = TLocalization.GetLanguage(languageCode)
 		EndIf
+		If not lang
+			lang = New TLocalizationLanguage
+			lang.languageCode = languageCode
+		endif
+		
+		
+		For local fileToLoad:String = EachIn filesToLoad
+			'load definitions
+			Local content:string = LoadText(fileToLoad)
+			Local line:string =""
+			Local Key:String
+			Local value:String
+			Local Pos:Int = 0
+			Local group:String = ""
 
+			For line = EachIn content.Split(chr(10))
+				'comments
+				if Left(line, 2) = "//" then continue
 
-		Local lang:TLocalizationLanguage = New TLocalizationLanguage
-		lang.languageCode = languageCode
+				'groups
+				If Left(line, 1) = "[" and Right(line, 1) = "]"
+					group = Mid(line, 2, line.length - 2).Trim()
+				EndIf
 
-		'load definitions
-		Local content:string = LoadText(filename)
-		Local line:string =""
-		Local Key:String
-		Local value:String
-		Local Pos:Int = 0
-		Local group:String = ""
+				Pos = Instr(line, "=")
+				If Pos > 0
+					Key = Left(line, Pos - 1).Trim()
+					value = Mid(line, Pos + 1).Trim()
+				EndIf
 
-		For line = EachIn content.Split(chr(10))
-			'comments
-			if Left(line, 2) = "//" then continue
+				'skip corrupt keys
+				If Key = "" then continue
 
-			'groups
-			If Left(line, 1) = "[" and Right(line, 1) = "]"
-				group = Mid(line, 2, line.length - 2).Trim()
-			EndIf
+				'unescape + new line or tab
+				value = value.replace("\\", "\").replace("\n", "~n").replace("\t", "~t")
 
-			Pos = Instr(line, "=")
-			If Pos > 0
-				Key = Left(line, Pos - 1).Trim()
-				value = Mid(line, Pos + 1).Trim()
-			EndIf
-
-			'skip corrupt keys
-			If Key = "" then continue
-
-			'unescape + new line or tab
-			value = value.replace("\\", "\").replace("\n", "~n").replace("\t", "~t")
-
-			If group <> ""
-				'insert as "groupname::key"
-				lang.map.Insert(lower(group + "::" + Key), value)
-				'insert as key if "key" was not defined before
-				If not lang.map.ValueForKey(Key) Then lang.map.Insert(lower(Key), value)
-			Else
-				lang.map.Insert(lower(Key), value)
-			EndIf
+				If group <> ""
+					'insert as "groupname::key"
+					lang.map.Insert(lower(group + "::" + Key), value)
+					'insert as key if "key" was not defined before
+					If not lang.map.ValueForKey(Key) Then lang.map.Insert(lower(Key), value)
+				Else
+					lang.map.Insert(lower(Key), value)
+				EndIf
+			Next
 		Next
+
 		Return lang
 	End Function
 

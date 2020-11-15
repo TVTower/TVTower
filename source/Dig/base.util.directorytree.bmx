@@ -264,6 +264,25 @@ Type TDirectoryTree
 
 		Return True
 	End Method
+	
+	
+	Method GetDirectories:String[](directoryName:String="", URIstartsWith:String="", URIcontains:string="", directoryContains:string="")
+		Local result:String[]
+		For Local uri:String = EachIn directories
+			uri = GetURI(uri) 'strip absolute path if necessary
+			'skip directory with wrong directory name - case sensitive
+			If directoryName <> "" And StripDir(uri) <> directoryName Then Continue
+			'skip uris not starting with given filter
+			If URIstartsWith <> "" And Not uri.StartsWith(URIstartsWith) Then Continue
+			'skip URIs not containing the searched string - case INsensitive
+			If URIcontains <> "" And uri.toLower().Find(URIcontains) = -1 Then Continue
+			'skip directories not containing the searched string - case INsensitive
+			If directoryContains <> "" And StripDir(uri).toLower().Find(directoryContains) = -1 Then Continue
+
+			result :+ [uri]
+		Next
+		Return result
+	End Method
 
 
 	'returns all found files for a given filter
