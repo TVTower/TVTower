@@ -2106,7 +2106,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 	Field lastDisplayJobID:Int = -1
 	Field selectJobID:Int = -1
 
-	Global yearColor:SColor8 = New SColor8(80,80,80, int(0.8*255))
+	Global yearColor:SColor8 = New SColor8(60,60,60, int(0.8*255))
 
 	Const paddingBottom:Int	= 5
 	Const paddingTop:Int = 0
@@ -2416,7 +2416,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 		Local contentY:Int = Int(y) + skin.GetContentY()
 
 		'=== CALCULATE SPECIAL AREA HEIGHTS ===
-		Local titleH:Int = 18, jobDescriptionH:Int = 16, lifeDataH:Int = 15, lastProductionEntryH:Int = 16, lastProductionTitleH:Int = 17, lastProductionsH:Int = 50
+		Local titleH:Int = 18, jobDescriptionH:Int = 16, lifeDataH:Int = 16, lastProductionEntryH:Int = 16, lastProductionTitleH:Int = 17, lastProductionsH:Int = 50
 		Local splitterHorizontalH:Int = 6
 		Local boxH:Int = 0, barH:Int = 0
 		Local boxAreaH:Int = 0, barAreaH:Int = 0, msgAreaH:Int = 0
@@ -2537,12 +2537,12 @@ Type TGUICastListItem Extends TGUISelectListItem
 						i :+ 1
 						If Not production Then Continue
 
-						skin.fontSmallCaption.DrawSimple(production.GetYear(), contentX + 5, contentY + lastProductionEntryH*entryNum, yearColor)
+						skin.fontNormal.DrawSimple(production.GetYear(), contentX + 5, contentY + lastProductionEntryH*entryNum, yearColor)
 						If production.IsInProduction()
-							skin.fontNormal.DrawBox(production.GetTitle() + " ("+GetLocale("IN_PRODUCTION")+")", contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionTitleH, sALIGN_LEFT_TOP, skin.textColorNeutral)
+							skin.fontNormal.DrawBox(production.GetTitle() + " ("+GetLocale("IN_PRODUCTION")+")", contentX + 5 + 25 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 25 - 5, lastProductionTitleH, sALIGN_LEFT_TOP, skin.textColorNeutral)
 						Else
 						'	skin.fontNormal.drawBlock(production.GetTitle(), contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionEntryH, sALIGN_LEFT_TOP, skin.textColorNeutral)
-							skin.fontNormal.DrawBox(production.GetTitle(), contentX + 5 + 30 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 30 - 5, lastProductionTitleH, sALIGN_LEFT_TOP, skin.textColorNeutral)
+							skin.fontNormal.DrawBox(production.GetTitle(), contentX + 5 + 25 + 5, contentY + lastProductionEntryH*entryNum , contentW  - 10 - 25 - 5, lastProductionTitleH, sALIGN_LEFT_TOP, skin.textColorNeutral)
 						EndIf
 						entryNum :+1
 					Wend
