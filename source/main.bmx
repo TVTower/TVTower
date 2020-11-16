@@ -679,6 +679,8 @@ Type TApp
 			Not (App.ExitAppDialogue Or App.EscapeMenuWindow)
 
 			If GameRules.devConfig.GetBool(keyLS_DevKeys, False)
+				'Ich würde diesen Teil gern in eine separate Funktion auslagern...
+				'Dadurch würde die update-Methode wesentlich übersichtlicher
 				if collectDebugStats
 					If KEYMANAGER.IsHit(KEY_MINUS) And KEYMANAGER.IsDown(KEY_RCONTROL)
 						Rem
@@ -1341,6 +1343,8 @@ endrem
 						TAiBase.AiRunning = True
 					EndIf
 				EndIf
+			Else
+				__NonDevHotKeys()
 			EndIf
 		EndIf
 
@@ -1429,7 +1433,76 @@ endrem
 		TProfiler.Leave(_profilerKey_Update)
 	End Function
 
+	Function __NonDevHotKeys:Int()
+		'Navigation
+		Local room:String
+		If KEYMANAGER.IsHit(KEY_A) Then room="archive"
+		If KEYMANAGER.IsHit(KEY_B) Then room="betty"
+		If KEYMANAGER.IsHit(KEY_C) Then room="boss" 'Chef
+		If KEYMANAGER.IsHit(KEY_D) Then room="scriptagency" 'Drehbuch
+		If KEYMANAGER.IsHit(KEY_F) Then room="movieagency" 'Film
+		If KEYMANAGER.IsHit(KEY_L) Then room="supermarket" 'Laden
+		If KEYMANAGER.IsHit(KEY_N) Then room="news"
+		If KEYMANAGER.IsHit(KEY_O) Then room="office"
+		If KEYMANAGER.IsHit(KEY_P) Then room="roomboard" 'Panel
+		If KEYMANAGER.IsHit(KEY_R) Then room="roomagency"
+		'Beim Studio könnte man als Erweiterung noch das erste verfügbare nehmen (aktuell kein Dreh)
+		If KEYMANAGER.IsHit(KEY_S) Then room="studio"
+		If KEYMANAGER.IsHit(KEY_W) Then room="adagency" 'Werbung
 
+		If room
+			Local targetRoom:TRoom = GetRoomCollection().GetFirstByDetails("", room, GetPlayerCollection().playerID)
+			If Not targetRoom then targetRoom = GetRoomCollection().GetFirstByDetails("", room)
+			If Not targetRoom then targetRoom = GetRoomCollection().GetFirstByDetails(room, "")
+			If targetRoom
+				Local targetDoor:TRoomDoorBase = GetRoomDoorCollection().GetMainDoorToRoom(targetRoom.id)
+				If targetDoor
+					GetPlayer().GetFigure().SendToDoor(targetDoor)
+				Endif
+			Endif
+		EndIf
+
+		'Simuliere Rechtsklick (Verlassen eines Screens/Raums, Abbruch einer Aktion, Löschen etc.)
+		'If KEYMANAGER.IsHit(KEY_Q) Then MOUSEMANAGER._AddClickEntry(2, 1, New TVec2D.Init(0, 0), 5)
+		If KEYMANAGER.IsHit(KEY_Q) Then GetPlayer().GetFigure().KickOutOfRoom()
+
+		'Schnellvorlauf
+		If KEYMANAGER.IsDown(KEY_RIGHT)
+			If Not DEV_FastForward
+				DEV_FastForward = True
+				DEV_FastForward_SpeedFactorBackup = TEntity.globalWorldSpeedFactor
+				DEV_FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
+				DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
+
+				TEntity.globalWorldSpeedFactor :+ 25
+				GetWorldTime().AdjustTimeFactor(+1000)
+				GetBuildingTime().AdjustTimeFactor(+25)
+			EndIf
+		Else
+			'stop fast forward
+			If DEV_FastForward
+				DEV_FastForward = False
+				TEntity.globalWorldSpeedFactor = DEV_FastForward_SpeedFactorBackup
+				GetWorldTime()._timeFactor = DEV_FastForward_TimeFactorBackup
+				GetBuildingTime()._timeFactor = DEV_FastForward_BuildingTimeSpeedFactorBackup
+			EndIf
+		EndIf
+
+		'Geschwindigkeitslevel
+		If KEYMANAGER.IsHit(KEY_1) Then GetGame().SetGameSpeedPreset(0)
+		If KEYMANAGER.IsHit(KEY_2) Then GetGame().SetGameSpeedPreset(1)
+		If KEYMANAGER.IsHit(KEY_3) Then GetGame().SetGameSpeedPreset(2)
+
+		'Hilfe
+		If KEYMANAGER.IsHit(KEY_F1)
+			IngameHelpWindowCollection.ShowByHelpGUID("GameManual", True)
+			IngameHelpWindowCollection.LockCurrent()
+		EndIf
+		If KEYMANAGER.IsHit(KEY_F2)
+			IngameHelpWindowCollection.ShowByHelpGUID(ScreenCollection.GetCurrentScreen().GetName() , True)
+			IngameHelpWindowCollection.LockCurrent()
+		EndIf
+	End Function
 
 	Function RenderDevOSD()
 		Local bf:TBitmapFont = GetBitmapFontManager().baseFont
