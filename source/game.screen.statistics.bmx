@@ -208,8 +208,6 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 
 
 	Method Update()
-		GetGameBase().cursorstate = 0
-
 		Select subScreenType
 			Case SUBSCREEN_AUDIENCE
 				UpdateSubScreen_Audience()

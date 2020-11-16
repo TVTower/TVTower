@@ -440,8 +440,6 @@ Type RoomHandler_Archive extends TRoomHandler
 		local room:TRoom = TRoom(triggerEvent._sender)
 		if room.owner <> GetPlayerBaseCollection().playerID then return FALSE
 
-		GetGameBase().cursorstate = 0
-
 		'open list when clicking dude
 		if not draggedGuiProgrammeLicence
 			If not programmeList.GetOpen()
@@ -451,9 +449,8 @@ Type RoomHandler_Archive extends TRoomHandler
 					openCollectionTooltip.enabled = 1
 					openCollectionTooltip.Hover()
 
-					GetGameBase().cursorstate = 1
+					GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
 					If MOUSEMANAGER.IsClicked(1)
-						GetGameBase().cursorstate = 0
 						programmeList.SetOpen(1)
 						'remove tooltip
 						openCollectionTooltip = null

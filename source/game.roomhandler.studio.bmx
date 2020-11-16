@@ -1285,8 +1285,6 @@ Type RoomHandler_Studio Extends TRoomHandler
 		EndIf
 
 
-		GetGameBase().cursorstate = 0
-
 		'delete unused and create new gui elements
 		If haveToRefreshGuiElements Then GetInstance().RefreshGUIElements()
 

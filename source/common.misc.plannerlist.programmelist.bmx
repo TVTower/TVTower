@@ -443,9 +443,6 @@ Type TgfxProgrammelist Extends TPlannerList
 				'hovered - draw hover effect if hovering
 				'we add 1 pixel to height - to hover between tapes too
 				If THelper.MouseIn(currX, currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
-					'mouse-over-hand
-					if clicksAllowed and licenceAvailable then GetGameBase().cursorstate = 1
-
 					tapeDrawType="hovered"
 				endif
 
@@ -656,6 +653,15 @@ Type TgfxProgrammelist Extends TPlannerList
 
 				'only interact if allowed
 				If clicksAllowed
+					'mouse-over-hand
+					If licence.IsAvailable() 
+						If mode = MODE_PROGRAMMEPLANNER and licence.isSingle()
+							GetGameBase().cursorstate = TGameBase.CURSOR_PICK
+						ElseIf mode = MODE_ARCHIVE
+							GetGameBase().cursorstate = TGameBase.CURSOR_PICK
+						EndIf
+					EndIf
+						
 					If MOUSEMANAGER.IsClicked(1)
 						If mode = MODE_PROGRAMMEPLANNER
 							If licence.isSingle()
@@ -773,9 +779,6 @@ Type TgfxProgrammelist Extends TPlannerList
 				If i = currentSubEntry Then tapeDrawType = "hovered"
 				'hovered? - draw hover effect, adjust shown mouse cursor
 				If THelper.MouseIn(currX, currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
-					'mouse-over-hand
-					if clicksAllowed and licenceAvailable then GetGameBase().cursorstate = 1
-
 					tapeDrawType="hovered"
 				endif
 
@@ -956,6 +959,9 @@ Type TgfxProgrammelist Extends TPlannerList
 					if licence.isAvailable()
 						'only interact if allowed
 						If clicksAllowed
+							'mark dragability
+							GetGameBase().cursorstate = TGameBase.CURSOR_PICK
+
 							If MOUSEMANAGER.IsClicked(1)
 								'create and drag new block
 								New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TProgramme.Create(licence), "programmePlanner" ).drag()

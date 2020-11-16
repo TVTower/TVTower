@@ -192,8 +192,6 @@ Type RoomHandler_Office extends TRoomHandler
 
 		roomOwner = room.owner
 
-		GetGameBase().cursorstate = 0
-
 		'emulated right click or clicked door
 		If (MouseManager.IsClicked(1) and THelper.MouseIn(25,40,150,295)) or MouseManager.IsLongClicked(1)
 			GetPlayer().GetFigure().LeaveRoom()
@@ -213,11 +211,10 @@ Type RoomHandler_Office extends TRoomHandler
 					SafeToolTip.enabled = 1
 					SafeToolTip.SetMinTitleAndContentWidth(90, 120)
 					SafeToolTip.Hover()
-					GetGameBase().cursorstate = 1
+					GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
 					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						'handled click
 						MouseManager.SetClickHandled(1)
-						GetGameBase().cursorstate = 0
 
 						ScreenCollection.GoToSubScreen("screen_office_safe")
 					endif
@@ -231,11 +228,10 @@ Type RoomHandler_Office extends TRoomHandler
 					endif
 					PlannerToolTip.enabled = 1
 					PlannerToolTip.Hover()
-					GetGameBase().cursorstate = 1
+					GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
 					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						'handled click
 						MouseManager.SetClickHandled(1)
-						GetGameBase().cursorstate = 0
 						ScreenCollection.GoToSubScreen("screen_office_programmeplanner")
 					endif
 				EndIf
@@ -248,11 +244,10 @@ Type RoomHandler_Office extends TRoomHandler
 					endif
 					MessagesToolTip.enabled = 1
 					MessagesToolTip.Hover()
-					GetGameBase().cursorstate = 1
+					GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
 					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						'handled click
 						MouseManager.SetClickHandled(1)
-						GetGameBase().cursorstate = 0
 						ScreenCollection.GoToSubScreen("screen_office_archivedmessages")
 					endif
 				EndIf
@@ -265,11 +260,10 @@ Type RoomHandler_Office extends TRoomHandler
 
 					StationsToolTip.enabled = 1
 					StationsToolTip.Hover()
-					GetGameBase().cursorstate = 1
+					GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
 					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						'handled click
 						MouseManager.SetClickHandled(1)
-						GetGameBase().cursorstate = 0
 						ScreenCollection.GoToSubScreen("screen_office_stationmap")
 					endif
 				EndIf

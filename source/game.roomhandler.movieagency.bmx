@@ -1202,16 +1202,24 @@ endrem
 		Local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		If Not room Then Return 0
 
-		GetGameBase().cursorstate = 0
-
 		If CheckPlayerInRoom("movieagency")
+			If hoveredGuiProgrammeLicence
+				if hoveredGuiProgrammeLicence.IsDragged()
+					GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
+				elseif GetPlayerBase().getFinance().canAfford(hoveredGuiProgrammeLicence.licence.getPriceForPlayer( GetPlayerBase().playerID ))
+					GetGameBase().cursorstate = TGameBase.CURSOR_PICK
+				else
+					GetGameBase().cursorstate = TGameBase.CURSOR_STOP
+				endif
+			EndIf
+
 			'show a auction-tooltip (but not if we dragged a block)
 			If Not hoveredGuiProgrammeLicence
 				If THelper.MouseIn(210,220,140,60)
 					If Not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
 					AuctionToolTip.enabled = 1
 					AuctionToolTip.Hover()
-					GetGameBase().cursorstate = 1
+					GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
 
 					If MouseManager.IsClicked(1)
 						'handled left click
@@ -1271,7 +1279,7 @@ endrem
 
 
 	Function onUpdateMovieAuction:Int( triggerEvent:TEventBase )
-		GetGameBase().cursorstate = 0
+		GetGameBase().cursorstate = TGameBase.CURSOR_DEFAULT
 
 		If CheckPlayerInRoom("movieagency")
 			TAuctionProgrammeBlocks.UpdateAll()

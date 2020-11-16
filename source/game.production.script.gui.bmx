@@ -58,13 +58,13 @@ Type TGuiScript Extends TGUIGameListItem
 		Super.Update()
 
 		'set mouse to "hover"
-		If script.owner = GetPlayerBaseCollection().playerID Or script.owner <= 0 And isHovered()
-			GetGameBase().cursorstate = 1
+		If isHovered() and (script.owner = GetPlayerBaseCollection().playerID Or script.owner <= 0)
+			GetGameBase().cursorstate = TGameBase.CURSOR_PICK
 		EndIf
 
 		'set mouse to "dragged"
 		If isDragged()
-			GetGameBase().cursorstate = 2
+			GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
 		EndIf
 	End Method
 

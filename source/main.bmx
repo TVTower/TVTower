@@ -640,6 +640,10 @@ Type TApp
 		KEYMANAGER.Update()
 		SetAutoPoll(True)
 
+
+		'set game cursor to 0
+		GetGameBase().cursorstate = TGameBase.CURSOR_DEFAULT
+
 		'fetch and cache mouse and keyboard states for this cycle
 		GUIManager.StartUpdates()
 
@@ -1346,7 +1350,6 @@ endrem
 
 
 		TError.UpdateErrors()
-		GetGameBase().cursorstate = 0
 
 		ScreenCollection.UpdateCurrent(GetDeltaTimer().GetDelta())
 
@@ -1757,21 +1760,33 @@ endrem
 		EndIf
 
 		'mnouse cursor
-		If Not spriteMouseCursor Then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
+'		If Not spriteMouseCursor Then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
 		Select GetGameBase().cursorstate
-			'open hand
-			Case 1
-				spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-8,  1)
-			'grabbing hand
-			Case 2
-				spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-16, 2)
-			'open hand blocked
-			Case 3
-				spriteMouseCursor.Draw(MouseManager.x-11, MouseManager.y-8,  3)
+			'drag indicator
+			Case TGameBase.CURSOR_PICK
+				GetSpriteFromRegistry("gfx_mousecursor_pick").Draw(MouseManager.x, MouseManager.y)
+			'dragged indicator
+			Case TGameBase.CURSOR_HOLD
+				GetSpriteFromRegistry("gfx_mousecursor_hold").Draw(MouseManager.x, MouseManager.y)
+			'drag / interaction blocked
+			Case TGameBase.CURSOR_STOP
+'				local frame:Int =  int((Millisecs() / 300) mod 4)
+'				GetSpriteFromRegistry("gfx_mousecursor_stop" + frame).Draw(MouseManager.x, MouseManager.y)
+				GetSpriteFromRegistry("gfx_mousecursor_stop0").Draw(MouseManager.x, MouseManager.y)
+
+				local oldA:Float = GetAlpha()
+				SetAlpha oldA * 0.65 + Float(Min(0.15, Max(-0.20, Sin(MilliSecs() / 6) * 0.20)))
+				GetSpriteFromRegistry("gfx_mousecursor_stop_overlay").Draw(MouseManager.x, MouseManager.y)
+				SetAlpha oldA
+			'interaction indicator
+			Case TGameBase.CURSOR_INTERACT
+				GetSpriteFromRegistry("gfx_mousecursor_interact").Draw(MouseManager.x, MouseManager.y)
 			'normal
 			Default
-				spriteMouseCursor.Draw(MouseManager.x-9,  MouseManager.y-2,  0)
+				'GetSpriteFromRegistry("gfx_mousecursor_default").Draw(MouseManager.x, MouseManager.y)
+				GetSpriteFromRegistry("gfx_mousecursor_point").Draw(MouseManager.x, MouseManager.y)
 		End Select
+'		DrawOval(MouseManager.x-2, MouseManager.y-2, 4,4)
 
 
 		'if a screenshot is generated, draw a logo in
@@ -5784,10 +5799,10 @@ Type AppEvents
 		Local obj:TGUIObject = TGUIObject(triggerEvent.GetSender())
 		If Not obj Then Return False
 
-		If obj.isDragable() And GetGameBase().cursorstate = 0
-			GetGameBase().cursorstate = 1
+		If obj.isDragable() And GetGameBase().cursorstate = TGameBase.CURSOR_DEFAULT
+			GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
 		EndIf
-		If obj.isDragged() Then GetGameBase().cursorstate = 2
+		If obj.isDragged() Then GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
 	End Function
 
 
@@ -6623,9 +6638,9 @@ TProfiler.Enter("GameLoop")
 
 		'process events not directly triggered
 		'process "onMinute" etc. -> App.OnUpdate, App.OnDraw ...
-TProfiler.Enter("EventManager")
+'TProfiler.Enter("EventManager")
 		EventManager.update()
-TProfiler.Leave("EventManager")
+'TProfiler.Leave("EventManager")
 		'If RandRange(0,20) = 20 Then GCCollect()
 	Until TApp.ExitApp 
 TProfiler.Leave("GameLoop")

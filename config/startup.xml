@@ -6,7 +6,24 @@
 		<image name="gfx_startscreen" url="res/gfx/misc/screen_menu.png" />
 		<image name="gfx_startscreen_logo" url="res/gfx/misc/logo.png" />
 		<image name="gfx_startscreen_logoSmall"	url="res/gfx/misc/logo_small.png" />
-		<image name="gfx_mousecursor" url="res/gfx/interface/cursor.png" cw="32" ch="32" f="4" />
+
+		<spritepack name="gfx_mousecursor">
+			<url>res/gfx/interface/cursor.png</url>
+			<children>
+				<child name="gfx_mousecursor_point"            x="0"    y="0"    w="48"  h="50" offsetLeft="22" offsetTop="3" />
+				<child name="gfx_mousecursor_interact"         x="0"    y="0"    w="48"  h="50" offsetLeft="22" offsetTop="3" />
+				<child name="gfx_mousecursor_pick"             x="48"   y="0"    w="48"  h="50" offsetLeft="16" offsetTop="7" />
+				<child name="gfx_mousecursor_hold"             x="96"   y="0"    w="48"  h="50" offsetLeft="16" offsetTop="17" />
+				<child name="gfx_mousecursor_stop"             x="0"    y="50"   w="48"  h="50" offsetLeft="16" offsetTop="7" />
+				<!-- if we wanted to use an animation: -->
+				<child name="gfx_mousecursor_stop0"            x="0"    y="50"   w="48"  h="50" offsetLeft="16" offsetTop="7" />
+				<child name="gfx_mousecursor_stop1"            x="48"   y="50"   w="48"  h="50" offsetLeft="16" offsetTop="7" />
+				<child name="gfx_mousecursor_stop2"            x="0"    y="50"   w="48"  h="50" offsetLeft="16" offsetTop="7" />
+				<child name="gfx_mousecursor_stop3"            x="96"   y="50"   w="48"  h="50" offsetLeft="16" offsetTop="7" />
+				<child name="gfx_mousecursor_halfpoint"        x="190"  y="50"   w="48"  h="50" offsetLeft="22" offsetTop="8" />
+				<child name="gfx_mousecursor_stop_overlay"     x="144"  y="0"    w="48"  h="50" offsetLeft="16" offsetTop="7" />
+			</children>
+		</spritepack>
 		<music name="sfx_music_title" url="res/music/Chilledoutwithabeat.ogg" playOnLoad="true" loop="true" playlists="menu" />
 		<file name="resource_gui" url="config/gui.xml" />
 	</resources>

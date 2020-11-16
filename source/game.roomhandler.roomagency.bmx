@@ -160,10 +160,8 @@ endrem
 
 			roomboardTooltip.enabled = 1
 			roomboardTooltip.Hover()
-			GetGameBase().cursorstate = 1
+			GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
 			If MOUSEMANAGER.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
-				GetGameBase().cursorstate = 0
-
 				mode = MODE_SELECTROOM
 
 				'handled left click

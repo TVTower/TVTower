@@ -469,8 +469,6 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		endif
 
 
-
-		GetGameBase().cursorstate = 0
 		GuiManager.Update( LS_officeFinancialScreen )
 	End Function
 

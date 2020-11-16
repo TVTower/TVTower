@@ -863,6 +863,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			If productionConcept.IsProduced() Then Continue
 
 			Local item:TGuiProductionConceptSelectListItem = New TGuiProductionConceptSelectListItem.Create(Null, New TVec2D.Init(150,40), "concept")
+			item.SetMode( TGuiProductionConceptSelectListItem.MODE_SUPERMARKET ) 
+
 			'done in TGuiProductionConceptSelectListItem.New() already
 			'item.SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, True)
 
@@ -895,7 +897,6 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	Method Update()
 		'gets refilled in gui-updates
 		hoveredGuiCastItem = Null
-		hoveredGuiProductionConcept = Null
 
 		'disable / enable elements according to state
 		If Not currentProductionConcept Or currentProductionConcept.IsProduceable()

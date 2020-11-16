@@ -239,7 +239,7 @@ Type TInGameInterface
 			For Local i:Int = 0 To 4
 				If THelper.MouseIn( 75 + i * 33, 171 + 383 + 16 - i*4, 33, 25)
 					'hover state
-					GetGameBase().cursorstate = 1
+					GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
 
 					If MOUSEMANAGER.IsClicked(1)
 						ShowChannel = i

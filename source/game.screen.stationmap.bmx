@@ -2660,20 +2660,16 @@ Type TScreenHandler_StationMap
 			'guiShowStations[i].tintColor = GetPlayerBase(i+1).color '.Copy().AdjustBrightness(0.25)
 		Next
 
-		GetGameBase().cursorstate = 0
 		'draw a kind of tooltip over a mouseoverStation
 		If mouseoverStation
-			GetGameBase().cursorstate = 1
 			mouseoverStation.DrawInfoTooltip()
 		else
 			'if over a section, draw special tooltip displaying reasons
 			'why we cannot build there
 			If mouseoverSection and currentSubRoom
 				if actionMode = MODE_BUY_ANTENNA
-					GetGameBase().cursorstate = 3
 					mouseoverSection.DrawChannelStatusTooltip(currentSubRoom.owner, TVTStationType.ANTENNA )
 				elseif actionMode = MODE_BUY_CABLE_NETWORK_UPLINK
-					GetGameBase().cursorstate = 3
 					mouseoverSection.DrawChannelStatusTooltip(currentSubRoom.owner, TVTStationType.CABLE_NETWORK_UPLINK )
 				endif
 			EndIf
@@ -2781,7 +2777,7 @@ Type TScreenHandler_StationMap
 rem
 		If not mouseoverStation and mouseoverSection and currentSubRoom
 			if actionMode = MODE_BUY_ANTENNA or actionMode = MODE_BUY_CABLE_NETWORK_UPLINK
-				GetGameBase().cursorstate = 3
+				GetGameBase().cursorstate = TGameBase.CURSOR_STOP
 				print "invalid"
 			endif
 		endif
@@ -2835,6 +2831,10 @@ endrem
 
 				If Not selectedMapSection Or selectedStation.GetReach() <= 0 Then selectedStation = Null
 			EndIf
+			
+			if mouseoverStation
+				GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
+			endif
 
 
 		ElseIf actionMode = MODE_BUY_CABLE_NETWORK_UPLINK
@@ -2902,6 +2902,10 @@ endrem
 
 				If Not selectedMapSection Or selectedStation.GetReach() <= 0 Then selectedStation = Null
 			EndIf
+			
+			if hoveredMapSection
+				GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
+			endif
 
 		ElseIf actionMode = MODE_BUY_SATELLITE_UPLINK
 			If satelliteSelectionFrame.selectedSatellite
@@ -3001,7 +3005,10 @@ endrem
 		if selectedStation
 			if TScreenHandler_StationMap.mapInformationFrame.IsOpen() Then TScreenHandler_StationMap.mapInformationFrame.Close()
 		endif
-
+		
+		if selectedStation
+			GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
+		endif
 
 		If mapInformationFrame.IsOpen()
 			'no interaction

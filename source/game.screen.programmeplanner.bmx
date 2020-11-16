@@ -1420,8 +1420,6 @@ endrem
 			EndIf
 		EndIf
 
-		GetGameBase().cursorstate = 0
-
 		ignoreCopyOrEpisodeShortcut  = False
 
 		'set all slots occupied or not

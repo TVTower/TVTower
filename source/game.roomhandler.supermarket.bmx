@@ -124,13 +124,8 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 
 
 	Function onClickPlanAProduction(data:TData)
-'		If MOUSEMANAGER.IsClicked(1)
-'			MOUSEMANAGER.SetClickHandled(1)
-'			GetGameBase().cursorstate = 0
-
-			ScreenCollection.GoToSubScreen("screen_supermarket_production")
-			dialogue = null
-'		endif
+		ScreenCollection.GoToSubScreen("screen_supermarket_production")
+		dialogue = null
 	End Function
 
 

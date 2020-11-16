@@ -368,7 +368,6 @@ Type RoomHandler_News extends TRoomHandler
 
 		GUIManager.Update( LS_newsroom )
 
-		GetGameBase().cursorstate = 0
 		If PlannerToolTip Then PlannerToolTip.Update()
 		If NewsGenreTooltip Then NewsGenreTooltip.Update()
 
@@ -381,11 +380,10 @@ Type RoomHandler_News extends TRoomHandler
 			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create(GetLocale("ROOM_NEWSPLANNER"), GetLocale("MANAGE_BROADCASTED_NEWS"), 180, 100, 0, 0)
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
-			GetGameBase().cursorstate = 1
+			GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
 			If MouseManager.IsClicked(1)
 				'handled left click
 				MouseManager.SetClickHandled(1)
-				GetGameBase().cursorstate = 0
 				ScreenCollection.GoToSubScreen("screen_newsstudio_newsplanner")
 			endif
 		endif
@@ -512,9 +510,6 @@ Type RoomHandler_News extends TRoomHandler
 
 		'store current room for later access (in guiobjects)
 		currentRoom = room
-
-		GetGameBase().cursorstate = 0
-
 
 		ListSortVisible = False
 		If not draggedGuiNews
@@ -1060,15 +1055,14 @@ Type TGUINews Extends TGUIGameListItem
 		Super.Update()
 
 		'set mouse to "hover"
-		'set mouse to "hover"
 		If isHovered() and (news.owner <= 0 or news.IsOwnedByPlayer( GetPlayerBaseCollection().playerID))
 			if news.IsControllable()
-				GetGameBase().cursorstate = 1
+				GetGameBase().cursorstate = TGameBase.CURSOR_PICK
 			endif
 		endif
 
 		'set mouse to "dragged"
-		If isDragged() Then GetGameBase().cursorstate = 2
+		If isDragged() Then GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
 	End Method
 
 

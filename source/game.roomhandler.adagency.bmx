@@ -1451,8 +1451,6 @@ endrem
 	Method onUpdateRoom:Int( triggerEvent:TEventBase )
 		If VendorEntity Then VendorEntity.Update()
 
-		GetGameBase().cursorstate = 0
-
 		'update refill mode if needed
 		If GameRules.adagencyRefillMode <> _setRefillMode
 			SetRefillMode(GameRules.adagencyRefillMode)
@@ -1579,13 +1577,13 @@ Type TGuiAdContract Extends TGUIGameListItem
 
 
 		'set mouse to "hover"
-		If contract.owner = GetPlayerBase().playerID Or contract.owner <= 0 And isHovered()
-			GetGameBase().cursorstate = 1
+		If isHovered() And (contract.owner = GetPlayerBase().playerID Or contract.owner <= 0)
+			GetGameBase().cursorstate = TGameBase.CURSOR_PICK
 		EndIf
 
 		'set mouse to "dragged"
 		If isDragged()
-			GetGameBase().cursorstate = 2
+			GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
 		EndIf
 	End Method
 

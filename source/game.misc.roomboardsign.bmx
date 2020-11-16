@@ -4,6 +4,7 @@ Import "common.misc.dragndrop.bmx"
 Import "game.room.base.bmx"
 Import "game.room.roomdoor.base.bmx"
 Import "game.player.base.bmx"
+Import "game.game.base.bmx"
 Import "Dig/base.gfx.bitmapfont.bmx"
 
 
@@ -366,6 +367,13 @@ Type TRoomBoardBase
 
 			sign.isHovered = (hoveredSign = sign)
 			sign.isClicked = (clickedSign = sign)
+
+			if sign.isHovered
+				GetGameBase().cursorstate = TGameBase.CURSOR_PICK
+			endif
+			if sign.dragged
+				GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
+			endif
 		Next
 		ReverseList list 'reorder: first are not dragged obj
 	End Method

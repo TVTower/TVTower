@@ -14,7 +14,10 @@ TGuiProductionConceptSelectListItem.textBlockDrawSettings.data.boxDimensionMode 
 'a graphical representation of shopping lists in studios/supermarket
 Type TGuiProductionConceptListItem Extends TGUIGameListItem
 	Field productionConcept:TProductionConcept
+	Field mode:Int = 0
 
+	Const MODE_STUDIO:Int = 0
+	Const MODE_SUPERMARKET:Int = 1
 
 	Method New()
 		SetListItemOption(GUILISTITEM_AUTOSIZE_WIDTH, False)
@@ -36,6 +39,11 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		Self.SetProductionConcept(productionConcept)
 		Return Self
 	End Method
+	
+	
+	Method SetMode(mode:int)
+		self.mode = mode
+	End Method
 
 
 	Method SetProductionConcept:TGuiProductionConceptListItem(productionConcept:TProductionConcept)
@@ -51,13 +59,17 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		Super.Update()
 
 		'set mouse to "hover"
-		If productionConcept.owner = GetPlayerBaseCollection().playerID Or productionConcept.owner <= 0 And isHovered()
-			GetGameBase().cursorstate = 1
+		If isHovered() And (productionConcept.owner = GetPlayerBaseCollection().playerID Or productionConcept.owner <= 0)
+			if mode = MODE_SUPERMARKET
+				GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
+			elseif mode = MODE_STUDIO
+				GetGameBase().cursorstate = TGameBase.CURSOR_PICK
+			endif
 		EndIf
 
 		'set mouse to "dragged"
 		If isDragged()
-			GetGameBase().cursorstate = 2
+			GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
 		EndIf
 	End Method
 

@@ -94,6 +94,8 @@ Type TError
 
 
 	Method Update:int()
+		GetGameBase().cursorstate = TGameBase.CURSOR_DEFAULT
+
 		If not window.IsClosing() and Mousemanager.IsClicked(1)
 			local rect:TRectangle = window.GetScreenRect()
 			If THelper.MouseInRect(rect)
@@ -122,7 +124,5 @@ Type TError
 
 	Method Draw()
 		window.Draw()
-
-		GetGameBase().cursorstate = 0
 	End Method
 End Type

@@ -235,13 +235,13 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 		'set mouse to "hover"
 		If isHovered() and broadcastMaterial.IsOwnedByPlayer( GetPlayerBaseCollection().playerID)
 			if not broadcastMaterial.IsControllable()
-				GetGameBase().cursorstate = 3
+				GetGameBase().cursorstate = TGameBase.CURSOR_STOP
 			else
-				GetGameBase().cursorstate = 1
+				GetGameBase().cursorstate = TGameBase.CURSOR_PICK
 			endif
 		endif
 		'set mouse to "dragged"
-		If isDragged() Then GetGameBase().cursorstate = 2
+		If isDragged() Then GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
 	End Method
 
 
