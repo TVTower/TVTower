@@ -897,6 +897,8 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 	Method Update()
 		'gets refilled in gui-updates
 		hoveredGuiCastItem = Null
+		'reset hovered concept (will be auto-reassigned by the list)
+		hoveredGuiProductionConcept = Null
 
 		'disable / enable elements according to state
 		If Not currentProductionConcept Or currentProductionConcept.IsProduceable()
