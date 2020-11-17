@@ -754,6 +754,7 @@ End Type
 Type TKeyManager
 	'status of all keys
 	Field _keyStatus:Int[256]
+	Field _downTime:Long[256]
 	Field _blockKeyTime:Long[256]
 
 	Global processedAppSuspend:Int = False
@@ -789,6 +790,15 @@ Type TKeyManager
 		Return _keyStatus[key] = KEY_STATE_UP
 	End Method
 
+	'returns how many milliseconds a key is down
+	Method GetDownTime:Long(key:Int)
+		If _downTime[key-1] > 0
+			Return Time.GetAppTimeGone() - _downTime[key-1]
+		Else
+			Return 0
+		EndIf
+	End Method
+
 
 	'refresh all key states
 	Method Update:Int()
@@ -802,13 +812,15 @@ Type TKeyManager
 		EndIf
 
 
-		Local time:Long = Time.GetAppTimeGone()
+		Local nowTime:Long = Time.GetAppTimeGone()
 		For Local i:Int = 1 To 255
 			'ignore key if it is blocked
 			'or set back to "normal" afterwards
-			If _blockKeyTime[i] > time
+			If _blockKeyTime[i] > nowTime
 				_keyStatus[i] :| KEY_STATE_BLOCKED
 			ElseIf isBlocked(i)
+				_downTime[i] = 0
+
 				_keyStatus[i] :& ~KEY_STATE_BLOCKED
 '				'meanwhile a hit can get renewed
 				If _keyStatus[i] = KEY_STATE_HIT
@@ -818,14 +830,26 @@ Type TKeyManager
 
 			'normal check
 			If _keyStatus[i] = KEY_STATE_NORMAL
-				If KeyDown(i) Then _keyStatus[i] = KEY_STATE_HIT
+				If KeyDown(i)
+					_downTime[i] = nowTime
+					_keyStatus[i] = KEY_STATE_HIT
+				EndIf
 			ElseIf _keyStatus[i] = KEY_STATE_HIT
-				If KeyDown(i) Then _keyStatus[i] = KEY_STATE_DOWN Else _keyStatus[i] = KEY_STATE_UP
+				If KeyDown(i) 
+					_keyStatus[i] = KEY_STATE_DOWN 
+				Else
+					_downTime[i] = 0
+					_keyStatus[i] = KEY_STATE_UP
+				EndIf
 			ElseIf _keyStatus[i] = KEY_STATE_DOWN
-				If Not KeyDown(i) Then _keyStatus[i] = KEY_STATE_UP
+				If Not KeyDown(i) 
+					_downTime[i] = 0
+					_keyStatus[i] = KEY_STATE_UP
+				EndIf
 			ElseIf _keyStatus[i] = KEY_STATE_UP
 				_keyStatus[i] = KEY_STATE_NORMAL
 			EndIf
+
 		Next
 	End Method
 
@@ -880,7 +904,26 @@ Type TKeyWrapper
 	End Method
 
 
-	Method pressedKey:Int(key:Int, keyState:Int=-1)
+	'returns if key is pressed (and checks time)
+	Method IsPressedKey:Int(key:Int, keyState:Int=-1)
+		If keyState = -1 Then keyState = KEYMANAGER.getStatus(key)
+		Local rule:Int = _keySet[key, 0]
+
+		If keyState = KEY_STATE_NORMAL Or keyState = KEY_STATE_UP Then Return False
+		If keyState & KEY_STATE_BLOCKED Then Return False
+
+		'Muss erlaubt und aktiv sein
+		If rule & KEYWRAP_ALLOW_HIT And keyState = KEY_STATE_HIT
+			Return IsHitKey(key, keyState)
+		ElseIf rule & KEYWRAP_ALLOW_HOLD
+			Return IsHoldKey(key, keyState)
+		EndIf
+		Return False
+	End Method
+
+
+	'returns if key is pressed (and checks time)
+	Method PressedKey:Int(key:Int, keyState:Int=-1)
 		If keyState = -1 Then keyState = KEYMANAGER.getStatus(key)
 		Local rule:Int = _keySet[key, 0]
 
@@ -892,6 +935,18 @@ Type TKeyWrapper
 			Return hitKey(key, keyState)
 		ElseIf rule & KEYWRAP_ALLOW_HOLD
 			Return holdKey(key, keyState)
+		EndIf
+		Return False
+	End Method
+
+
+	Method IsHitKey:Int(key:Int, keyState:Int=-1)
+		If keyState = -1 Then keyState = KEYMANAGER.getStatus(key)
+		If keyState <> KEY_STATE_HIT Then Return False
+
+		'Muss erlaubt und aktiv sein
+		If _keySet[key, 0] & KEYWRAP_ALLOW_HIT
+			Return True
 		EndIf
 		Return False
 	End Method
@@ -909,9 +964,10 @@ Type TKeyWrapper
 		EndIf
 		Return False
 	End Method
+	
 
-
-	Method holdKey:Int(key:Int, keyState:Int=-1)
+	'returns if a key is currently hold
+	Method IsHoldKey:Int(key:Int, keyState:Int=-1)
 		If keyState = -1 Then keyState = KEYMANAGER.getStatus(key)
 		If keyState = KEY_STATE_NORMAL Or keyState = KEY_STATE_UP Then Return False
 		If keyState & KEY_STATE_BLOCKED Then Return False
@@ -920,10 +976,19 @@ Type TKeyWrapper
 			'time which has to be gone until hold is set
 			Local holdTime:Long = _keySet[key, 3]
 			If Time.GetAppTimeGone() > holdTime
-				'refresh time until next "hold"
-				_keySet[key, 3] = Time.GetAppTimeGone() + _keySet[key, 2]
 				Return True
 			EndIf
+		EndIf
+		Return False
+	End Method
+	
+
+	'returns if a key is currently hold, and also updates hold state
+	Method holdKey:Int(key:Int, keyState:Int=-1)
+		if IsHoldKey(key, keyState)
+			'refresh time until next "hold"
+			_keySet[key, 3] = Time.GetAppTimeGone() + _keySet[key, 2]
+			Return True
 		EndIf
 		Return False
 	End Method
