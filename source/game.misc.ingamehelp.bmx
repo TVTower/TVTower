@@ -249,6 +249,9 @@ Type TIngameHelpWindow
 
 		modalDialogue.Open()
 		active = True
+		
+		'focus on the text area so we can control with "up down pageup..."
+		GuiManager.SetFocus(guiTextArea)
 
 
 		'=== EVENTS ===

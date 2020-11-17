@@ -245,6 +245,8 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 	Field savegameList:TGUISelectList
 	Field _eventListeners:TEventListenerBase[]
 	Field _onLoadSavegameFunc:Int()
+	Field doSetManualFocus:Int
+	Global LS_modalLoadMenu:TLowerString = TLowerString.Create("modalloadmenu")
 
 	Method Create:TGUIModalLoadSavegameMenu(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
@@ -278,7 +280,6 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 		Return Self
 	End Method
 
-
 	'override
 	Method Activate:Int()
 		'remove previous entries
@@ -300,6 +301,9 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 			item.SetSavegameFile(fileURI)
 			savegameList.AddItem(item)
 		Next
+		savegameList.SelectEntry( savegameList.GetFirstItem() )
+		
+		doSetManualFocus = True
 	End Method
 
 
@@ -315,9 +319,12 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 	End Method
 
 
-
-Global LS_modalLoadMenu:TLowerString = TLowerString.Create("modalloadmenu")
 	Method Update:Int()
+		If doSetManualFocus
+			doSetManualFocus = False
+			GUIManager.SetFocus(savegamelist)
+		EndIF
+	
 		GuiManager.Update( LS_modalLoadMenu )
 
 		'disable/enable load-button
