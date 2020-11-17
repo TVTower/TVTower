@@ -22,6 +22,7 @@
 				<child name="gfx_mousecursor_stop3"            x="96"   y="50"   w="48"  h="50" offsetLeft="16" offsetTop="7" />
 				<child name="gfx_mousecursor_halfpoint"        x="190"  y="50"   w="48"  h="50" offsetLeft="22" offsetTop="8" />
 				<child name="gfx_mousecursor_stop_overlay"     x="144"  y="0"    w="48"  h="50" offsetLeft="16" offsetTop="7" />
+				<child name="gfx_mousecursor"                  x="0"    y="0"    w="48"  h="50" offsetLeft="22" offsetTop="3" />
 			</children>
 		</spritepack>
 		<music name="sfx_music_title" url="res/music/Chilledoutwithabeat.ogg" playOnLoad="true" loop="true" playlists="menu" />

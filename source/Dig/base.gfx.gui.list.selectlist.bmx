@@ -136,37 +136,6 @@ Type TGUISelectList Extends TGUIListBase
 	End Method
 	
 	
-	Method EnsureEntryIsVisible(item:TGUIObject)
-		If Not item Then Return
-
-		'if bottom of entry ends after bottom of list, ensure visibility
-		'if bottom of last entry ends before bottom of list, try to scroll up a bit
-
-		'positive distance = starting later
-		'local bottomDistanceY:Int = GetScreenRect().GetY2() - (item.GetScreenRect().GetY() + item.rect.GetH())
-		local bottomDistanceY:Int = guiEntriesPanel.GetScreenRect().GetY2() - (item.GetScreenRect().GetY() + item.rect.GetH())
-		local topDistanceY:Int = item.GetScreenRect().GetY() - guiEntriesPanel.GetScreenRect().GetY()
-
-		'first try to make top of entry visible (can be overriden by bottom then)
-		if topDistanceY < 0 
-			UpdateLimitsAndScrollerState()
-			ScrollEntries(0, -topDistanceY)
-		endif
-
-		if bottomDistanceY < 0 
-			UpdateLimitsAndScrollerState()
-			ScrollEntries(0, bottomDistanceY)
-		'space left to bottom
-		elseif bottomDistanceY > 0 
-			local lastItem:TGUIObject = GetLastItem() 'might be selectedEntry
-			local lastItemBottomDistanceY:Int = guiEntriesPanel.GetScreenRect().GetY2() - (lastItem.GetScreenRect().GetY() + lastItem.rect.GetH())
-			if lastItemBottomDistanceY > 0
-				ScrollEntries(0, lastItemBottomDistanceY)
-			endif
-		endif
-	End Method
-
-
 	Method OnResize(dW:Float, dH:Float) override
 		Super.OnResize(dW, dH)
 
@@ -175,6 +144,45 @@ Type TGUISelectList Extends TGUIListBase
 		UpdateLayout()
 		
 		EnsureEntryIsVisible(GetSelectedEntry())
+	End Method
+	
+
+	Method HandleKeyboardInput() override	
+		Local oldScrollPercentageX:Float = GetScrollPercentageX()
+		Local oldScrollPercentageY:Float = GetScrollPercentageY()
+		
+		'use "IsPressedKey()" to not alter pressed-state
+		Local doDown:Int = KeyWrapper.IsPressedKey(KEY_DOWN)
+		Local doUp:Int = KeyWrapper.IsPressedKey(KEY_UP)
+
+		Super.HandleKeyboardInput()
+
+		If doDown
+			'scroll back
+			SetScrollPercentageY(oldScrollPercentageY)
+
+			local focusItem:TGUIObject = GetSelectedEntry()
+			if focusItem
+				local currentIndex:Int = GetItemIndex(focusItem)
+				focusItem = GetItemAtIndex(currentIndex + 1)				
+				if focusItem
+					SelectEntry(focusItem)
+				EndIf
+ 			endif
+			EnsureEntryIsVisible(focusItem)
+		ElseIf doUp
+			'scroll back
+			SetScrollPercentageY(oldScrollPercentageY)
+			local focusItem:TGUIObject = GetSelectedEntry()
+			if focusItem
+				local currentIndex:Int = GetItemIndex(focusItem)
+				focusItem = GetItemAtIndex(currentIndex - 1)				
+				if focusItem
+					SelectEntry(focusItem)
+				EndIf
+ 			endif
+			EnsureEntryIsVisible(focusItem)
+		EndIf
 	End Method
 End Type
 

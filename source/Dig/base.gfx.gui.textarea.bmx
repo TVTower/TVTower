@@ -596,6 +596,41 @@ endrem
 	'override default update-method
 	Method Update:Int()
 		Super.Update()
+		
+		
+		'react to some special keys
+		If IsFocused()
+			local baseLineHeight:Int = GetFont().getMaxCharHeight()
+			If KeyManager.IsDown(KEY_PAGEDOWN)
+				'by default scroll by 5 pixels
+				Local scrollSpeedMod:int = 10
+				'the longer you pressed the key button, the "speedier" we get
+				'1px per 100ms. Start speeding up after 500ms, limit to 50px per scroll
+				scrollSpeedMod :+ Min(50, Max(0, KeyManager.GetDownTime(KEY_PAGEDOWN) - 500)/100.0)
+				ScrollContent(0, -scrollSpeedMod * baseLineHeight)
+			EndIf
+			If KeyManager.IsDown(KEY_PAGEUP)
+				Local scrollSpeedMod:int = 10
+				scrollSpeedMod :+ Min(50, Max(0, KeyManager.GetDownTime(KEY_PAGEUP) - 500)/100.0)
+				ScrollContent(0, +scrollSpeedMod * baseLineHeight)
+			EndIf
+
+			If KeyManager.IsDown(KEY_HOME)
+				ScrollContentTo(0, 0.0, True)
+			ElseIf KeyManager.IsDown(KEY_END)
+				ScrollContentTo(0, 1.0, True)
+			EndIf
+
+			If KEYWrapper.PressedKey(KEY_DOWN)
+'				Local scrollSpeedMod:int = 1
+'				scrollSpeedMod :+ Min(50, Max(0, KeyManager.GetDownTime(KEY_PAGEUP) - 500)/100.0)
+				ScrollContent(0, -baseLineHeight)
+			ElseIf KEYWrapper.PressedKey(KEY_UP)
+'			ElseIf KeyManager.IsDown(KEY_END)
+				ScrollContent(0, +baseLineHeight)
+			EndIf
+		EndIf
+
 
 		'need refresh?
 		if not _IsVisibleAreaInCacheArea() then GenerateTextCache()

@@ -298,6 +298,7 @@ Type TGUIListBase Extends TGUIobject
 
 
 	Method GetItemAtIndex:TGUIObject(index:Int)
+		if index >= entries.Count() or index < 0 then Return Null
 		Return TGUIObject(entries.ValueAtIndex(index))
 	End Method
 
@@ -853,7 +854,7 @@ endrem
 	Method SetScrollPercentageX:Float(percentage:Float = 0.0)
 		InvalidateLayout()
 
-		guiScrollerH.SetRelativeValue(percentage)
+		If guiScrollerH Then guiScrollerH.SetRelativeValue(percentage)
 		Return guiEntriesPanel.SetScrollPercentageX(percentage)
 	End Method
 
@@ -861,7 +862,7 @@ endrem
 	Method SetScrollPercentageY:Float(percentage:Float = 0.0)
 		InvalidateLayout()
 
-		guiScrollerH.SetRelativeValue(percentage)
+		If guiScrollerV Then guiScrollerV.SetRelativeValue( percentage )
 		Return guiEntriesPanel.SetScrollPercentageY(percentage)
 	End Method
 	
@@ -945,9 +946,80 @@ endrem
 	End Function
 
 
+	Method EnsureEntryIsVisible(item:TGUIObject)
+		If Not item Then Return
+
+		'if bottom of entry ends after bottom of list, ensure visibility
+		'if bottom of last entry ends before bottom of list, try to scroll up a bit
+
+		'positive distance = starting later
+		'local bottomDistanceY:Int = GetScreenRect().GetY2() - (item.GetScreenRect().GetY() + item.rect.GetH())
+		local bottomDistanceY:Int = guiEntriesPanel.GetScreenRect().GetY2() - (item.GetScreenRect().GetY() + item.rect.GetH())
+		local topDistanceY:Int = item.GetScreenRect().GetY() - guiEntriesPanel.GetScreenRect().GetY()
+
+		'first try to make top of entry visible (can be overriden by bottom then)
+		if topDistanceY < 0 
+			UpdateLimitsAndScrollerState()
+			ScrollEntries(0, -topDistanceY)
+		endif
+
+		if bottomDistanceY < 0 
+			UpdateLimitsAndScrollerState()
+			ScrollEntries(0, bottomDistanceY)
+		'space left to bottom
+		elseif bottomDistanceY > 0 
+			local lastItem:TGUIObject = GetLastItem() 'might be selectedEntry
+			local lastItemBottomDistanceY:Int = guiEntriesPanel.GetScreenRect().GetY2() - (lastItem.GetScreenRect().GetY() + lastItem.rect.GetH())
+			if lastItemBottomDistanceY > 0
+				ScrollEntries(0, lastItemBottomDistanceY)
+			endif
+		endif
+	End Method
+	
+	
+	'select lists might ref
+	Method HandleKeyboardInput()
+		If KeyManager.IsDown(KEY_PAGEDOWN)
+			SetScrollPercentageY(Min(1.0, GetScrollPercentageY() + 0.05))
+		EndIf
+		If KeyManager.IsDown(KEY_PAGEUP)
+			SetScrollPercentageY(Max(0.0, GetScrollPercentageY() - 0.05))
+		EndIf
+
+		If KeyManager.IsDown(KEY_HOME)
+			local item:TGUIListItem = GetFirstItem()
+			if item Then EnsureEntryIsVisible(item)
+		ElseIf KeyManager.IsDown(KEY_END)
+			local item:TGUIListItem = GetLastItem()
+			if item Then EnsureEntryIsVisible(item)
+		EndIf
+
+		If KeyWrapper.PressedKey(KEY_DOWN)
+			Local scrollAmount:Int = 25
+			'try to scroll by X percent of an item height
+			Local item:TGUIObject = TGUIObject(self.entries.First())
+			If item Then scrollAmount = item.rect.GetH() * self.scrollItemHeightPercentage
+
+			ScrollEntries(0, -scrollAmount)
+		ElseIf KeyWrapper.PressedKey(KEY_UP)
+			Local scrollAmount:Int = 25
+			'try to scroll by X percent of an item height
+			Local item:TGUIObject = TGUIObject(self.entries.First())
+			If item Then scrollAmount = item.rect.GetH() * self.scrollItemHeightPercentage
+
+			ScrollEntries(0, +scrollAmount)
+		EndIf
+	End Method
+
+
 	'override default update-method
 	Method Update:Int()
 		Super.Update()
+
+
+		'react to some special keys
+		If IsFocused() Then HandleKeyboardInput()
+
 
 		'enable/disable buttons of scrollers if they reached the
 		'limits of the scrollable panel
