@@ -1,7 +1,8 @@
 SuperStrict
-Import "../source/Dig/base.gfx.gui.textarea.bmx"
-Import "../source/Dig/base.gfx.gui.window.modal.bmx"
-Import "../source/Dig/base.gfx.gui.checkbox.bmx"
+Import "Dig/base.gfx.gui.textarea.bmx"
+Import "Dig/base.gfx.gui.window.modal.bmx"
+Import "Dig/base.gfx.gui.checkbox.bmx"
+Import "common.misc.gamegui.bmx"
 
 
 Type TIngameHelpWindowCollection
@@ -187,7 +188,7 @@ Type TIngameHelpWindow
 		Local windowW:Int = 600
 		Local windowH:Int = 320
 
-		modalDialogue = New TGUIModalWindow.Create(New TVec2D, New TVec2D.Init(windowW, windowH), state.ToString())
+		modalDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(windowW, windowH), state.ToString())
 		modalDialogue.SetManaged(False)
 		modalDialogue.screenArea = area.Copy()
 
@@ -197,9 +198,21 @@ Type TIngameHelpWindow
 		modalDialogue.SetCaptionArea(New TRectangle.Init(-1, 6,-1, 30))
 		modalDialogue.guiCaptionTextBox.SetValueAlignment( ALIGN_CENTER_TOP)
 
-		modalDialogue.SetDialogueType(1)
-		modalDialogue.buttons[0].SetCaption(GetLocale("OK"))
-		modalDialogue.buttons[0].SetSize(180,-1)
+		if helpGUID = "gamemanual"
+			modalDialogue.SetDialogueType(1)
+			modalDialogue.buttons[0].SetCaption(GetLocale("OK"))
+			modalDialogue.buttons[0].SetSize(150,-1)
+		else
+			modalDialogue.SetDialogueType(2)
+			modalDialogue.buttons[0].SetCaption(GetLocale("OK"))
+			modalDialogue.buttons[0].SetSize(150,-1)
+			modalDialogue.buttons[1].SetCaption(GetLocale("MANUAL"))
+			modalDialogue.buttons[1].SetSize(120,-1)
+			modalDialogue.buttonCallbacks[1] = onClickCallback_ShowManual
+			'move manual button to the most left
+			modalDialogue.buttonPositionTemplate = 1
+		endif
+
 
 '		modalDialogue.SetOption(GUI_OBJECT_CLICKABLE, FALSE)
 
@@ -260,7 +273,14 @@ Type TIngameHelpWindow
 			_eventListeners :+ [ EventManager.registerListenerMethod("guiCheckBox.onSetChecked", Self, "OnSetCheckbox", checkboxHideThis) ]
 		EndIf
 	End Method
-
+	
+	
+	Function onClickCallback_ShowManual:Int(index:Int, sender:TGUIObject)
+		IngameHelpWindowCollection.currentIngameHelpWindowLocked = False
+'		IngameHelpWindowCollection.currentIngameHelpWindow.Close()
+		IngameHelpWindowCollection.ShowByHelpGUID("GameManual", True)
+	End Function
+	
 
 	Method EnableHideOption:Int(bool:Int)
 		showHideOption = bool

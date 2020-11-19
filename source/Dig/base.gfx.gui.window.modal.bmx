@@ -46,6 +46,11 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	'the area the window centers to
 	Field screenArea:TRectangle = Null
 	Field buttons:TGUIButton[]
+	Field buttonCallbacks:Int(index:Int, sender:TGUIObject)[]
+	'0 = centered, -1 = left aligned, 1 = right aligned
+	Field buttonAlignment:Int = 0
+	'templates for button positions
+	Field buttonPositionTemplate:Int = 0
 	Field autoAdjustHeight:Int = True
 	'=== CLOSING VARIABLES ===
 	'indicator if currently closing
@@ -81,6 +86,18 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	End Method
 
 
+	'override to delete children too (not really needed)
+	Method Remove:Int() override
+		Super.Remove()
+
+		'buttons are normally removed by "Super.Remove()" already
+		'as they are added as "children" and are iterated on its own 
+		For Local o:TGUIObject = EachIn buttons
+			o.Remove()
+		Next
+	End Method
+
+
 	Method Initialize:int()
 		closeActionStarted = 0
 		closeActionTime = 0
@@ -99,15 +116,20 @@ Type TGUIModalWindow Extends TGUIWindowBase
 			'a default button
 			Case 1
 				buttons = buttons[..1]
+				buttonCallbacks = buttonCallbacks[..1]
 				buttons[0] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(120, -1), GetLocale("OK"))
+				buttonCallbacks[0] = onClickCallback_Close
 				AddChild(buttons[0])
 				'set to ignore parental padding (so it starts at 0,0)
 				buttons[0].SetOption(GUI_OBJECT_IGNORE_PARENTPADDING, True)
 			'yes and no button
 			Case 2
 				buttons = buttons[..2]
+				buttonCallbacks = buttonCallbacks[..2]
 				buttons[0] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(90, -1), GetLocale("YES"))
 				buttons[1] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(90, -1), GetLocale("NO"))
+				buttonCallbacks[0] = onClickCallback_Close
+				buttonCallbacks[1] = onClickCallback_Close
 				AddChild(buttons[0])
 				AddChild(buttons[1])
 				'set to ignore parental padding (so it starts at 0,0)
@@ -116,17 +138,57 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 		End Select
 	End Method
+	
+	
+	Function onClickCallback_Close:Int(index:Int, sender:TGUIObject)
+		local window:TGUIModalWindow = TGUIModalWindow(sender)
+		if not window then return False
+
+		window.Close(index)
+	End Function
 
 
 	'size 0, 0 is not possible (leads to autosize)
 	Method SetSize(w:Float = 0, h:Float = 0)
 		Super.SetSize(w, h)
+		
 		'move button
 		If buttons.length = 1
-			buttons[0].SetPosition(rect.GetW()/2 - buttons[0].rect.GetW()/2, GetScreenRect().GetH() - 49)
+			Select buttonAlignment
+				Case -1
+					buttons[0].SetPosition(0, GetScreenRect().GetH() - 49)
+				Case 1
+					buttons[0].SetPosition(rect.GetW() - buttons[0].rect.GetW(), GetScreenRect().GetH() - 49)
+				Default
+					buttons[0].SetPosition(rect.GetW()/2 - buttons[0].rect.GetW()/2, GetScreenRect().GetH() - 49)
+			End Select
 		ElseIf buttons.length = 2
-			buttons[0].SetPosition(rect.GetW()/2 - buttons[0].rect.GetW() - 10, GetScreenRect().GetH() - 49)
-			buttons[1].SetPosition(rect.GetW()/2 + 10, GetScreenRect().GetH() - 49)
+			Select buttonAlignment
+				Case -1
+					buttons[0].SetPosition(0, GetScreenRect().GetH() - 49)
+					buttons[1].SetPosition(buttons[0].rect.GetW() + 10, GetScreenRect().GetH() - 49)
+				Case 1
+					buttons[0].SetPosition(rect.GetW() - buttons[1].rect.GetW() - 10 - buttons[0].rect.GetW(), GetScreenRect().GetH() - 49)
+					buttons[1].SetPosition(rect.GetW() - buttons[0].rect.GetW(), GetScreenRect().GetH() - 49)
+
+				Default
+					buttons[0].SetPosition(rect.GetW()/2 - buttons[0].rect.GetW() - 10, GetScreenRect().GetH() - 49)
+					buttons[1].SetPosition(rect.GetW()/2 + 10, GetScreenRect().GetH() - 49)
+			End Select
+		EndIf
+
+		'move some buttons according to a template (here: left or right)
+		'while keeping position of others intact
+		If buttonPositionTemplate = 1
+			if buttons.length > 1
+				buttons[0].SetPositionX(rect.GetW()/2 - buttons[0].rect.GetW()/2)
+				buttons[1].SetPositionX(GetContentX())
+			endif
+		ElseIf buttonPositionTemplate = 2
+			if buttons.length > 1
+				buttons[0].SetPositionX(rect.GetW()/2 - buttons[0].rect.GetW()/2)
+				buttons[1].SetPositionX(GetContentX() - buttons[1].rect.GetW())
+			endif
 		EndIf
 
 		Recenter()
@@ -207,7 +269,10 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 		For Local i:Int = 0 To Self.buttons.length - 1
 			If Self.buttons[i] <> sender Then Continue
-			Self.Close(i)
+			If Self.buttonCallbacks[i]
+				'run callback with window as param
+				Self.buttonCallbacks[i](i, self)
+			EndIf
 		Next
 	End Method
 
