@@ -344,6 +344,10 @@ Type TGUIManager
 		List.remove(obj)
 
 		RemoveDragged(obj)
+		
+		'unset focus if the item was focused (also remove keystroke 
+		'receiver etc)
+		if GetFocus() = obj Then ResetFocus()
 
 		Return True
 	End Method

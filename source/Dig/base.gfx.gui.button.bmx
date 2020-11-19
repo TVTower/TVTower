@@ -45,7 +45,17 @@ Type TGUIButton Extends TGUIobject
     	GUIManager.Add(Self)
 		Return Self
 	End Method
-
+	
+	
+	'override to delete additional widgets too
+	Method Remove:Int() override
+		Super.Remove()
+		
+		'just in case this TGUILabel was focused, the Remove()
+		'will clean this up 
+		if caption then caption.Remove()
+	End Method
+	
 
 	'override
 	Method onClick:Int(triggerEvent:TEventBase)
@@ -158,6 +168,7 @@ endrem
 			caption.SetContentAlignment(ALIGN_CENTER, ALIGN_CENTER)
 			'we want the caption to use the buttons font
 			caption.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, True)
+			caption.SetOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
 			'we want to manage it...
 			GUIManager.Remove(caption)
 

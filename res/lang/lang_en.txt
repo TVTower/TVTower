@@ -73,6 +73,7 @@ SELECT_LICENCES_FOR_SALE = Select licences for sale
 
 YES = Yes
 NO = No
+OK = OK
 MONEY = Money
 DEBT = Debt
 REACH = Reach

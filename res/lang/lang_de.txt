@@ -74,6 +74,7 @@ SELECT_LICENCES_FOR_SALE = Lizenzen zum Verkauf auswählen
 
 YES = Ja
 NO = Nein
+OK = OK
 MONEY = Geld
 DEBT = Schulden
 REACH = Reichweite

@@ -61,8 +61,8 @@ Type TGUIWindowBase Extends TGUIPanel
 	End Method
 
 
-	'override to delete children too
-	Method Remove:Int()
+	'override to delete additional widgets too
+	Method Remove:Int() override
 		Super.Remove()
 
 		if guiCaptionTextBox then guiCaptionTextBox.Remove()

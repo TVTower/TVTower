@@ -681,7 +681,6 @@ Type TApp
 		'if an element has "
 		If (GetGame().gamestate <> TGame.STATE_RUNNING or (GetCurrentPlayer() AND GetCurrentPlayer().isHotKeysEnabled())) AND ..
 			Not GUIManager.GetKeystrokeReceiver() And ..
-			Not GUIManager.GetFocus() And ..
 			Not (App.ExitAppDialogue Or App.EscapeMenuWindow)
 
 			If GameRules.devConfig.GetBool(keyLS_DevKeys, False)

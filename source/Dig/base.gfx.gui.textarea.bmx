@@ -64,6 +64,9 @@ Type TGUITextArea Extends TGUIobject
 		'the text panel cannot be focused
 		guiTextPanel.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
 
+		'this element reacts to keystrokes (cursor up/down, page up/down ...)
+		SetOption(GUI_OBJECT_CAN_RECEIVE_KEYSTROKES, True)
+
 		'register events
 		'someone uses the mouse wheel to scroll over the panel
 		AddEventListener(EventManager.registerListenerFunction( "guiobject.OnScrollwheel", onScrollWheel, guiScrollerH))

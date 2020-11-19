@@ -74,6 +74,9 @@ Type TGUIListBase Extends TGUIobject
 		setListOption(GUILIST_SCROLL_TO_BEGIN_WITHOUT_SCROLLBARS, True)
 		'by default all lists accept drop
 		setOption(GUI_OBJECT_ACCEPTS_DROP, True)
+
+		'this element reacts to keystrokes
+		SetOption(GUI_OBJECT_CAN_RECEIVE_KEYSTROKES, True)
 	End Method
 
 
