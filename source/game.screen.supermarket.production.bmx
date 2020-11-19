@@ -1329,6 +1329,7 @@ End Type
 Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 	Field jobFilterSelect:TGUIDropDown
 	Field genderFilterSelect:TGUIDropDown
+	Field sortCastButton:TGUIButton
 	'only list persons with the following job?
 	Field listOnlyJobID:Int = -1
 	Field listOnlyGenderID:Int = -1
@@ -1336,13 +1337,14 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 	Field selectJobID:Int = 0
 	Field selectGenderID:Int = 0
 	Field castSelectList:TGUICastSelectList
+	Field sortType:Int = 0
 
 
 	'override
 	Method Create:TGUISelectCastWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
-		jobFilterSelect = New TGUIDropDown.Create(New TVec2D.Init(15,12), New TVec2D.Init(170,-1), "Hauptberuf", 128, "")
+		jobFilterSelect = New TGUIDropDown.Create(New TVec2D.Init(15,12), New TVec2D.Init(130,-1), "Hauptberuf", 128, "")
 		jobFilterSelect.SetZIndex( GetZIndex() + 10)
 		jobFilterSelect.list.SetZIndex( GetZIndex() + 11)
 		jobFilterSelect.SetListContentHeight(180)
@@ -1361,7 +1363,7 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		Next
 
 
-		genderFilterSelect = New TGUIDropDown.Create(New TVec2D.Init(192,12), New TVec2D.Init(90,-1), "Alle", 128, "")
+		genderFilterSelect = New TGUIDropDown.Create(New TVec2D.Init(152,12), New TVec2D.Init(90,-1), "Alle", 128, "")
 		genderFilterSelect.SetZIndex( GetZIndex() + 10)
 		genderFilterSelect.list.SetZIndex( GetZIndex() + 11)
 		genderFilterSelect.SetListContentHeight(60)
@@ -1383,12 +1385,18 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 			genderFilterSelect.AddItem(item)
 		Next
 
+		sortCastButton = New TGUIButton.Create(New TVec2D.Init(250,12), New TVec2D.Init(30, 28), "", "")
+		sortCastButton.enable()
+		sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_az")
+		sortCastButton.caption.SetValueSpriteMode( TGUILabel.MODE_SPRITE_ONLY )
+		sortCastButton.spriteName = "gfx_gui_button.datasheet"
 
 		castSelectList = New TGUICastSelectList.Create(New TVec2D.Init(15,50), New TVec2D.Init(270, dimension.y - 103), "")
 
 
 		AddChild(jobFilterSelect)
 		AddChild(genderFilterSelect)
+		AddChild(sortCastButton)
 		AddChild(castSelectList)
 
 		buttonOK.SetValue(GetLocale("SELECT_PERSON"))
@@ -1396,6 +1404,7 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 
 		_eventListeners :+ [ EventManager.registerListenerMethod("GUIDropDown.onSelectEntry", Self, "onCastChangeFilterDropdown", "TGUIDropDown" ) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.OnDoubleClick", Self, "onDoubleClickCastListItem", "TGUICastListItem" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickSortCastButton", "TGUIButton") ]
 
 		Return Self
 	End Method
@@ -1430,6 +1439,18 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		Return True
 	End Method
 
+	Method onClickSortCastButton:Int(triggerEvent:TEventBase )
+		sortType = sortType + 1
+		If sortType > 1 Then sortType = 0
+		If sortType = 0
+			castSelectList.entries.sort(True, TGUICastSelectList.SortByName)
+		Else If SortType = 1
+			castSelectList.entries.sort(True, TGUICastSelectList.SortByXP)
+		End If
+		castSelectList.Update()
+		castSelectList.UpdateLayout()
+		Return True
+	End Method
 
 	'GUI -> GUI
 	'set cast filter according to selection
@@ -1536,9 +1557,6 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 			EndIf
 		Next
 
-		'sort by name (rely on "TPersonBase.Compare()")
-		persons.Sort(True)
-
 		'add an amateur/layman at the top (hidden behind is a random
 		'normal person)
 		Local amateur:TPersonBase
@@ -1597,6 +1615,8 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		'adjust which filter we are using
 		castSelectList.filteredJobID = filterToJobID
 		castSelectList.filteredGenderID = filterToGenderID
+		'initial sorting
+		castSelectList.entries.sort(True, TGUICastSelectList.SortByName)
 	End Method
 
 
@@ -1844,6 +1864,34 @@ Type TGUICastSelectList Extends TGUISelectList
 	Method GetJobID:Int(entry:TGUIListItem)
 		Return selectJobID
 	End Method
+
+	Function SortByName:Int(o1:Object, o2:Object)
+		Local a1:TGUICastListItem = TGUICastListItem(o1)
+		Local a2:TGUICastListItem = TGUICastListItem(o2)
+		If Not a1 or a1.isAmateur Then Return -1
+		If Not a2 or a2.isAmateur Then Return 1
+
+		If a1.person.GetLastName().ToLower() = a2.person.GetLastName().ToLower()
+			Return a1.person.GetFirstName().ToLower() > a2.person.GetFirstName().ToLower()
+		ElseIf a1.person.GetLastName().ToLower() > a2.person.GetLastName().ToLower()
+			Return 1
+		EndIf
+		Return -1
+	End Function
+
+	Function SortByXP:Int(o1:Object, o2:Object)
+		Local a1:TGUICastListItem = TGUICastListItem(o1)
+		Local a2:TGUICastListItem = TGUICastListItem(o2)
+		If Not a1 or a1.isAmateur Then Return 1
+		If Not a2 or a2.isAmateur Then Return -1
+
+		Local xp1:float=a1.person.GetEffectiveJobExperiencePercentage(a1.selectJobID)
+		Local xp2:float=a2.person.GetEffectiveJobExperiencePercentage(a2.selectJobID)
+
+		If xp1 = xp2 Then Return 0
+		Return xp1 < xp2
+
+	End Function
 End Type
 
 
