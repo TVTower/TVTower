@@ -122,7 +122,18 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 				Close()
 		End Select
 	End Method
+	
+	
+	Method Draw() override
+		'reset cursor in "draw" for now ( modal windows "update" is
+		'done before other updates - so underlaying stuff can alter
+		'the icon as long as they do it in "update()" rather than
+		'"render/draw" too)
+		GetGameBase().cursorstate = TGameBase.CURSOR_DEFAULT	
 
+		Super.Draw()
+	End Method
+	
 Rem
 	'override
 	Method OnReposition(dx:Float, dy:Float)

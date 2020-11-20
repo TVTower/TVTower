@@ -656,9 +656,9 @@ Type TgfxProgrammelist Extends TPlannerList
 					'mouse-over-hand
 					If licence.IsAvailable() 
 						If mode = MODE_PROGRAMMEPLANNER and licence.isSingle()
-							GetGameBase().cursorstate = TGameBase.CURSOR_PICK
+							GetGameBase().cursorstate = TGameBase.CURSOR_PICK_HORIZONTAL
 						ElseIf mode = MODE_ARCHIVE
-							GetGameBase().cursorstate = TGameBase.CURSOR_PICK
+							GetGameBase().cursorstate = TGameBase.CURSOR_PICK_HORIZONTAL
 						EndIf
 					EndIf
 						

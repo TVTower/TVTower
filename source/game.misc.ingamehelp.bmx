@@ -3,6 +3,7 @@ Import "Dig/base.gfx.gui.textarea.bmx"
 Import "Dig/base.gfx.gui.window.modal.bmx"
 Import "Dig/base.gfx.gui.checkbox.bmx"
 Import "common.misc.gamegui.bmx"
+Import "game.game.base.bmx"
 
 
 Type TIngameHelpWindowCollection
@@ -363,8 +364,15 @@ Type TIngameHelpWindow
 
 
 	Method Render:Int()
-'		print "render: "+helpGUID
-		If active Then modalDialogue.Draw()
-'		If active Then GuiManager.Draw(state)
+		if active
+			'reset cursor in "draw" for now ( modal windows "update" is
+			'done before other updates - so underlaying stuff can alter
+			'the icon as long as they do it in "update()" rather than
+			'"render" too)
+			GetGameBase().cursorstate = TGameBase.CURSOR_DEFAULT
+		
+			modalDialogue.Draw()
+			'GuiManager.Draw(state)
+		Endif
 	End Method
 End Type

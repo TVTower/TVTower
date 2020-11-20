@@ -3830,6 +3830,7 @@ Type GameEvents
 	Function OnEnterNewScreen:Int(triggerEvent:TEventBase)
 		Local screen:TScreen = TScreen(triggerEvent.GetSender())
 		If Not screen Then Return False
+
 		'try to show the ingame help for that screen (if there is any)
 		IngameHelpWindowCollection.ShowByHelpGUID( screen.GetName() )
 	End Function
