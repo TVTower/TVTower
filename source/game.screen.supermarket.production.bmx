@@ -1441,11 +1441,16 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 
 	Method onClickSortCastButton:Int(triggerEvent:TEventBase )
 		sortType = sortType + 1
-		If sortType > 1 Then sortType = 0
+		If sortType > 2 Then sortType = 0
 		If sortType = 0
 			castSelectList.entries.sort(True, TGUICastSelectList.SortByName)
+			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_az")
 		Else If SortType = 1
 			castSelectList.entries.sort(True, TGUICastSelectList.SortByXP)
+			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_quality")
+		Else If SortType = 2
+			castSelectList.entries.sort(True, TGUICastSelectList.SortByFee)
+			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_money")
 		End If
 		castSelectList.Update()
 		castSelectList.UpdateLayout()
@@ -1879,6 +1884,7 @@ Type TGUICastSelectList Extends TGUISelectList
 		Return -1
 	End Function
 
+
 	Function SortByXP:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
@@ -1888,9 +1894,32 @@ Type TGUICastSelectList Extends TGUISelectList
 		Local xp1:float=a1.person.GetEffectiveJobExperiencePercentage(a1.selectJobID)
 		Local xp2:float=a2.person.GetEffectiveJobExperiencePercentage(a2.selectJobID)
 
-		If xp1 = xp2 Then Return 0
+		If xp1 = xp2 Then Return SortByName(o1, o2)
 		Return xp1 < xp2
+	End Function
 
+
+	Function SortByFee:Int(o1:Object, o2:Object)
+		Local a1:TGUICastListItem = TGUICastListItem(o1)
+		Local a2:TGUICastListItem = TGUICastListItem(o2)
+		If Not a1 or a1.isAmateur Then Return 1
+		If Not a2 or a2.isAmateur Then Return -1
+
+		local playerID:Int = 0
+		local blocks:Int = 1
+		If TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept
+			playerID = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.owner
+			If TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script
+				blocks = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.blocks
+			EndIf
+		EndIf
+	
+		Local fee1:Int = a1.person.GetJobBaseFee(a1.selectJobID, blocks, playerID)
+		Local fee2:Int = a2.person.GetJobBaseFee(a2.selectJobID, blocks, playerID)
+
+		If fee1 = fee2 Then Return SortByName(o1, o2)
+		'cheap on top, expensive at bottom
+		Return fee1 > fee2
 	End Function
 End Type
 
@@ -2714,7 +2743,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 		EndIf
 		If jobID >= 0
 			skin.fontSmallCaption.DrawBox(GetLocale("JOB_"+TVTPersonJob.GetAsString(jobID)), contentX + 5, contentY - 1, 94, 25, sALIGN_LEFT_CENTER, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
-			skin.RenderBox(contentX + 5 + 94, contentY, contentW - 10 - 94 +1, -1, MathHelper.DottedValue(person.GetJobBaseFee(jobID, TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.blocks)), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+			skin.RenderBox(contentX + 5 + 94, contentY, contentW - 10 - 94 +1, -1, MathHelper.DottedValue(person.GetJobBaseFee(jobID, TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.blocks, TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.owner)), "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
 		EndIf
 		contentY :+ boxH
 
