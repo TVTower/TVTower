@@ -2193,7 +2193,7 @@ Type TGUIobject
 		'=== SPECIAL COMMAND KEYS ===
 		Local handledSpecialCommandKeys:Int = False
 		For Local key:Int = EachIn specialCommandKeys
-			If Not KEYWRAPPER.pressedKey(key) Then Continue
+			If Not KEYWRAPPER.IsPressed(key) Then Continue
 
 			Select key
 				Case KEY_BACKSPACE
@@ -2281,41 +2281,41 @@ Type TGUIobject
 				'charCode is < 0 for me when umlauts are pressed
 				If charCode < 0
 					?Win32
-					If KEYWRAPPER.pressedKey(186)
+					If KEYWRAPPER.IsPressed(186)
 						If shiftPressed Then value:+ "Ü" Else value :+ "ü"
 						valuePosition :+ 1
 					EndIf
-					If KEYWRAPPER.pressedKey(192)
+					If KEYWRAPPER.IsPressed(192)
 						If shiftPressed Then value:+ "Ö" Else value :+ "ö"
 						valuePosition :+ 1
 					EndIf
-					If KEYWRAPPER.pressedKey(222)
+					If KEYWRAPPER.IsPressed(222)
 						If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 						valuePosition :+ 1
 					EndIf
 					?MacOS
-					If KEYWRAPPER.pressedKey(186)
+					If KEYWRAPPER.IsPressed(186)
 						If shiftPressed Then value:+ "Ü" Else value :+ "ü"
 						valuePosition :+ 1
 					EndIf
-					If KEYWRAPPER.pressedKey(192)
+					If KEYWRAPPER.IsPressed(192)
 						If shiftPressed Then value:+ "Ö" Else value :+ "ö"
 						valuePosition :+ 1
 					EndIf
-					If KEYWRAPPER.pressedKey(222)
+					If KEYWRAPPER.IsPressed(222)
 						If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 						valuePosition :+ 1
 					EndIf
 					?Linux
-					If KEYWRAPPER.pressedKey(252)
+					If KEYWRAPPER.IsPressed(252)
 						If shiftPressed Then value:+ "Ü" Else value :+ "ü"
 						valuePosition :+ 1
 					EndIf
-					If KEYWRAPPER.pressedKey(246)
+					If KEYWRAPPER.IsPressed(246)
 						If shiftPressed Then value:+ "Ö" Else value :+ "ö"
 						valuePosition :+ 1
 					EndIf
-					If KEYWRAPPER.pressedKey(163)
+					If KEYWRAPPER.IsPressed(163)
 						If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 						valuePosition :+ 1
 					EndIf
@@ -2341,7 +2341,7 @@ Type TGUIobject
 		'special chars - recognized on Mac, but not Linux
 		'euro sign
 		?Linux
-		If KEYWRAPPER.pressedKey(69) And altGrPressed Then value :+ Chr(8364)
+		If KEYWRAPPER.IsPressed(69) And altGrPressed Then value :+ Chr(8364)
 		?
 		Return True
 	End Function

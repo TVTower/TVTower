@@ -152,8 +152,8 @@ Type TGUISelectList Extends TGUIListBase
 		Local oldScrollPercentageY:Float = GetScrollPercentageY()
 		
 		'use "IsPressedKey()" to not alter pressed-state
-		Local doDown:Int = KeyWrapper.IsPressedKey(KEY_DOWN)
-		Local doUp:Int = KeyWrapper.IsPressedKey(KEY_UP)
+		Local doDown:Int = KeyWrapper.IsPressed(KEY_DOWN)
+		Local doUp:Int = KeyWrapper.IsPressed(KEY_UP)
 
 		Super.HandleKeyboardInput()
 

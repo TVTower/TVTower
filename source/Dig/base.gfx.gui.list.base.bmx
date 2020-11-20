@@ -983,10 +983,18 @@ endrem
 	'select lists might ref
 	Method HandleKeyboardInput()
 		If KeyManager.IsDown(KEY_PAGEDOWN)
-			SetScrollPercentageY(Min(1.0, GetScrollPercentageY() + 0.05))
+			Local contentParent:TGUIObject = Self
+			If guiEntriesPanel Then contentParent = guiEntriesPanel
+
+			ScrollEntries(0, contentParent.GetContentScreenRect().GetH())
+'			SetScrollPercentageY(Min(1.0, GetScrollPercentageY() + 0.05))
 		EndIf
 		If KeyManager.IsDown(KEY_PAGEUP)
-			SetScrollPercentageY(Max(0.0, GetScrollPercentageY() - 0.05))
+			Local contentParent:TGUIObject = Self
+			If guiEntriesPanel Then contentParent = guiEntriesPanel
+
+			ScrollEntries(0, - contentParent.GetContentScreenRect().GetH())
+'			SetScrollPercentageY(Max(0.0, GetScrollPercentageY() - 0.05))
 		EndIf
 
 		If KeyManager.IsDown(KEY_HOME)
@@ -997,14 +1005,14 @@ endrem
 			if item Then EnsureEntryIsVisible(item)
 		EndIf
 
-		If KeyWrapper.PressedKey(KEY_DOWN)
+		If KeyWrapper.IsPressed(KEY_DOWN)
 			Local scrollAmount:Int = 25
 			'try to scroll by X percent of an item height
 			Local item:TGUIObject = TGUIObject(self.entries.First())
 			If item Then scrollAmount = item.rect.GetH() * self.scrollItemHeightPercentage
 
 			ScrollEntries(0, -scrollAmount)
-		ElseIf KeyWrapper.PressedKey(KEY_UP)
+		ElseIf KeyWrapper.IsPressed(KEY_UP)
 			Local scrollAmount:Int = 25
 			'try to scroll by X percent of an item height
 			Local item:TGUIObject = TGUIObject(self.entries.First())
