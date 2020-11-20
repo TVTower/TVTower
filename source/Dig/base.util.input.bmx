@@ -58,7 +58,7 @@ Const KEY_STATE_UP:Int				= 4 'up
 Const KEY_STATE_BLOCKED:Int			= 8
 
 For Local i:Int = 0 To 255
-	KEYWRAPPER.allowKey(i,KEYWRAP_ALLOW_BOTH,600,100)
+	KEYWRAPPER.Init(i, 600, 100)
 Next
 AddHook(EmitEventHook, TMouseManager.InputHook,Null,0)
 
@@ -851,6 +851,9 @@ Type TKeyManager
 			EndIf
 
 		Next
+		
+		'update wrapper too
+		KeyWrapper.Update()
 	End Method
 
 
@@ -886,118 +889,161 @@ Const KEYWRAP_ALLOW_HOLD:Int= 2
 Const KEYWRAP_ALLOW_BOTH:Int= 3
 
 
+
+
+
 Type TKeyWrapper
-	Rem
-		0 - --
-		1 - time to wait to get "hold" state after "hit"
-		2 - time to wait for next "hold" after "hold"
-		3 - total time till next hold
-	EndRem
-	Field _keySet:Long[256, 4]
+	Field keyHoldInformation:TKeyHoldInformation[256]
+	
+	
+	Method New()
+		For local i:int = 0 to 255
+			keyHoldInformation[i] = new TKeyHoldInformation(i, 600, 100)
+		Next
+	End Method
+	
 
-
-	Method allowKey(key:Int, rule:Int=KEYWRAP_ALLOW_BOTH, hitTime:Int=600, holdtime:Int=100)
-		_keySet[key, 0] = rule
-		If rule & KEYWRAP_ALLOW_HIT Then _keySet[key, 1] = hitTime
-
-		If rule & KEYWRAP_ALLOW_HOLD Then _keySet[key, 2] = holdTime
+	Method Init(key:Int, firstHoldTime:Int=600, holdTime:Int=100)
+		keyHoldInformation[key].Init(key, firstHoldTime, holdTime)
 	End Method
 
 
-	'returns if key is pressed (and checks time)
-	Method IsPressedKey:Int(key:Int, keyState:Int=-1)
-		If keyState = -1 Then keyState = KEYMANAGER.getStatus(key)
-		Local rule:Int = _keySet[key, 0]
-
-		If keyState = KEY_STATE_NORMAL Or keyState = KEY_STATE_UP Then Return False
-		If keyState & KEY_STATE_BLOCKED Then Return False
-
-		'Muss erlaubt und aktiv sein
-		If rule & KEYWRAP_ALLOW_HIT And keyState = KEY_STATE_HIT
-			Return IsHitKey(key, keyState)
-		ElseIf rule & KEYWRAP_ALLOW_HOLD
-			Return IsHoldKey(key, keyState)
-		EndIf
-		Return False
+	Method Update:Int()
+		For local key:int = 0 To 255
+			keyHoldInformation[key].Update( KeyManager._keyStatus[key] )
+		Next
 	End Method
 
 
-	'returns if key is pressed (and checks time)
-	Method PressedKey:Int(key:Int, keyState:Int=-1)
-		If keyState = -1 Then keyState = KEYMANAGER.getStatus(key)
-		Local rule:Int = _keySet[key, 0]
-
-		If keyState = KEY_STATE_NORMAL Or keyState = KEY_STATE_UP Then Return False
-		If keyState & KEY_STATE_BLOCKED Then Return False
-
-		'Muss erlaubt und aktiv sein
-		If rule & KEYWRAP_ALLOW_HIT And keyState = KEY_STATE_HIT
-			Return hitKey(key, keyState)
-		ElseIf rule & KEYWRAP_ALLOW_HOLD
-			Return holdKey(key, keyState)
-		EndIf
-		Return False
+	'returns if key is currently hit or "hold" (and enough holding time
+	'is gone)
+	Method IsPressed:Int(key:Int)
+		Return keyHoldInformation[key].IsPressed()
 	End Method
 
 
-	Method IsHitKey:Int(key:Int, keyState:Int=-1)
-		If keyState = -1 Then keyState = KEYMANAGER.getStatus(key)
-		If keyState <> KEY_STATE_HIT Then Return False
-
-		'Muss erlaubt und aktiv sein
-		If _keySet[key, 0] & KEYWRAP_ALLOW_HIT
-			Return True
-		EndIf
-		Return False
-	End Method
-
-
-	Method hitKey:Int(key:Int, keyState:Int=-1)
-		If keyState = -1 Then keyState = KEYMANAGER.getStatus(key)
-		If keyState <> KEY_STATE_HIT Then Return False
-
-		'Muss erlaubt und aktiv sein
-		If _keySet[key, 0] & KEYWRAP_ALLOW_HIT
-			'Zeit bis man Taste halten darf
-			_keySet[key, 3] = Time.GetAppTimeGone() + _keySet[key, 1]
-			Return True
-		EndIf
-		Return False
+	Method IsHit:Int(key:Int)
+		Return keyHoldInformation[key].IsHit()
 	End Method
 	
 
 	'returns if a key is currently hold
-	Method IsHoldKey:Int(key:Int, keyState:Int=-1)
-		If keyState = -1 Then keyState = KEYMANAGER.getStatus(key)
-		If keyState = KEY_STATE_NORMAL Or keyState = KEY_STATE_UP Then Return False
-		If keyState & KEY_STATE_BLOCKED Then Return False
-
-		If _keySet[key, 0] & KEYWRAP_ALLOW_HOLD
-			'time which has to be gone until hold is set
-			Local holdTime:Long = _keySet[key, 3]
-			If Time.GetAppTimeGone() > holdTime
-				Return True
-			EndIf
-		EndIf
-		Return False
+	Method IsHold:Int(key:Int)
+		Return keyHoldInformation[key].IsHold()
 	End Method
 	
 
-	'returns if a key is currently hold, and also updates hold state
-	Method holdKey:Int(key:Int, keyState:Int=-1)
-		if IsHoldKey(key, keyState)
-			'refresh time until next "hold"
-			_keySet[key, 3] = Time.GetAppTimeGone() + _keySet[key, 2]
-			Return True
-		EndIf
-		Return False
+	Method ResetKey(key:Int)
+		keyHoldInformation[key].Reset()
+	End Method
+End Type
+
+
+
+'Type to allow a check if a key is held for an individual hold time.
+'The default "KeyWrapper.IsPressed()" uses a defined "hold time" for a key
+'but sometimes you want to check for another time span without altering
+'it globally.
+'TODO: Replace with "struct" once NG/BCC gets fixed
+Type TKeyHoldInformation
+	Field key:Int
+	'after the initial hit a specific time is waited until the first "hold"
+	'after this, the normal "_holdTime" is used
+	Field _firstHoldTime:Int
+	Field _holdTime:Int
+	'exact app time when next "hold" happens
+	Field _nextHoldTimer:Long
+	Field _holdRepetitions:Int 
+	'hit and hold status
+	Field _holdState:Int
+	Field _hitState:Int 
+
+	
+
+	Method New(key:Int, firstHoldTime:Int=600, holdTime:Int=100)
+		Init(key, firstHoldTime, holdTime)
 	End Method
 
 
-	Method resetKey(key:Int)
-		_keySet[key, 0] = 0
-		_keySet[key, 1] = 0
-		_keySet[key, 2] = 0
-		_keySet[key, 3] = 0
+	Method Init(key:Int, firstHoldTime:Int=600, holdTime:Int=100)
+		self.key = key
+
+		self._firstHoldTime = firstHoldTime
+		self._holdTime = holdTime
+		self._nextHoldTimer = -1
+	End Method
+
+
+	Method Update:Int(keyState:Int = -1)
+		if keyState = -1 then keyState = KeyManager.GetStatus(key)
+
+		'reset HIT
+		If keyState <> KEY_STATE_HIT and _hitState
+			'print Time.GetAppTimeGone() +"  key " + key + " no longer hit."
+			_hitState = False
+		EndIf
+		
+		'reset HOLD
+		If (keyState = KEY_STATE_NORMAL or keyState = KEY_STATE_UP) and _nextHoldTimer >= 0
+			'print Time.GetAppTimeGone() +"  key " + key + " no longer hold."
+			_holdState = False
+			_nextHoldTimer = -1
+			_holdRepetitions = 0
+		EndIf
+
+		'update HOLD / wait for next
+		If _holdState and _nextHoldTimer >= 0 and Time.GetAppTimeGone() > _nextHoldTimer
+			'print Time.GetAppTimeGone() +"  key " + key + " repetition reset."
+			_holdState = False
+		EndIf
+
+
+		'set HIT
+		If keyState = KEY_STATE_HIT
+			'print Time.GetAppTimeGone() +"  key " + key + " hit."
+			_hitState = True
+			'set "first hold" start
+			_nextHoldTimer = Time.GetAppTimeGone() + _firstHoldTime
+		EndIf
+
+		'set HOLD
+		If keyState = KEY_STATE_DOWN and _nextHoldTimer >= 0 and Time.GetAppTimeGone() > _nextHoldTimer
+			'print Time.GetAppTimeGone() +"  key " + key + " is (repeated) hold."
+			_holdState = True
+			'set "next hold" start
+			_nextHoldTimer = Time.GetAppTimeGone() + _holdTime
+			'increase count of "repeated holds since key down" 
+			_holdRepetitions :+ 1
+		EndIf
+	End Method
+
+
+	'returns if key is currently hit or "hold" (and enough holding time
+	'is gone)
+	Method IsPressed:Int()
+		Return (IsHit() or IsHold())
+	End Method
+
+
+	Method IsHit:Int()
+		if KeyManager.GetStatus(key) & KEY_STATE_BLOCKED Then Return False
+
+		Return _hitState
+	End Method
+	
+
+	'returns if a key is currently hold
+	Method IsHold:Int()
+		if KeyManager.GetStatus(key) & KEY_STATE_BLOCKED Then Return False
+
+		Return _holdState
+	End Method
+	
+
+	Method Reset()
+		'_firstHoldTime = 0
+		'_holdTime = 0
+		_nextHoldTimer = -1
+		_holdRepetitions = 0
 	End Method
 End Type

@@ -637,7 +637,7 @@ Type TApp
 		MOUSEMANAGER.Update()
 		'needs modified "brl.mod/polledinput.mod" (disabling autopoll)
 		SetAutoPoll(False)
-		KEYMANAGER.Update()
+		KeyManager.Update()
 		SetAutoPoll(True)
 
 
@@ -687,7 +687,7 @@ Type TApp
 				'Ich würde diesen Teil gern in eine separate Funktion auslagern...
 				'Dadurch würde die update-Methode wesentlich übersichtlicher
 				if collectDebugStats
-					If KEYMANAGER.IsHit(KEY_MINUS) And KEYMANAGER.IsDown(KEY_RCONTROL)
+					If KeyManager.IsHit(KEY_MINUS) And KeyManager.IsDown(KEY_RCONTROL)
 						Rem
 						Global gcEnabled:Int = True
 						If gcEnabled
@@ -713,11 +713,11 @@ Type TApp
 
 				'in game and not gameover
 				If GetGame().gamestate = TGame.STATE_RUNNING And Not GetGame().IsGameOver()
-					If KEYMANAGER.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+5)
-					If KEYMANAGER.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-5)
+					If KeyManager.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+5)
+					If KeyManager.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-5)
 
-					If KEYMANAGER.IsDown(KEY_RIGHT)
-						If Not KEYMANAGER.IsDown(KEY_LCONTROL) And Not KEYMANAGER.Isdown(KEY_RCONTROL)
+					If KeyManager.IsDown(KEY_RIGHT)
+						If Not KeyManager.IsDown(KEY_LCONTROL) And Not KeyManager.Isdown(KEY_RCONTROL)
 							TEntity.globalWorldSpeedFactor :+ 0.05
 							GetWorldTime().AdjustTimeFactor(+10)
 							GetBuildingTime().AdjustTimeFactor(+0.05)
@@ -729,11 +729,11 @@ Type TApp
 								DEV_FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
 								DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
 
-								If KEYMANAGER.IsDown(KEY_RCONTROL)
+								If KeyManager.IsDown(KEY_RCONTROL)
 									TEntity.globalWorldSpeedFactor :+ 200
 									GetWorldTime().AdjustTimeFactor(+8000)
 									GetBuildingTime().AdjustTimeFactor(+200)
-								ElseIf KEYMANAGER.IsDown(KEY_LCONTROL)
+								ElseIf KeyManager.IsDown(KEY_LCONTROL)
 									TEntity.globalWorldSpeedFactor :+ 50
 									GetWorldTime().AdjustTimeFactor(+2000)
 									GetBuildingTime().AdjustTimeFactor(+50)
@@ -751,15 +751,15 @@ Type TApp
 					EndIf
 
 
-					If KEYMANAGER.IsDown(KEY_LEFT) Then
+					If KeyManager.IsDown(KEY_LEFT) Then
 						TEntity.globalWorldSpeedFactor = Max( TEntity.globalWorldSpeedFactor - 0.05, 0)
 						GetWorldTime().AdjustTimeFactor(-10)
 						GetBuildingTime().AdjustTimeFactor(-0.05)
 					EndIf
 
-					If KEYMANAGER.IsHit(KEY_F)
-						If KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT)
-							If KEYMANAGER.IsDown(KEY_RSHIFT)
+					If KeyManager.IsHit(KEY_F)
+						If KeyManager.IsDown(KEY_LSHIFT) Or KeyManager.IsDown(KEY_RSHIFT)
+							If KeyManager.IsDown(KEY_RSHIFT)
 								Local playerIDs:Int[] = [1,2,3,4]
 
 								Print "====== TOTAL FINANCE OVERVIEW ======" + "~n"
@@ -790,8 +790,8 @@ Type TApp
 					EndIf
 
 
-					If KEYMANAGER.IsHit(KEY_W)
-						If KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT)
+					If KeyManager.IsHit(KEY_W)
+						If KeyManager.IsDown(KEY_LSHIFT) Or KeyManager.IsDown(KEY_RSHIFT)
 							Local adList:TList = CreateList()
 							For Local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
 								adList.AddLast(a)
@@ -838,7 +838,7 @@ Type TApp
 					EndIf
 
 
-					If KEYMANAGER.IsHit(KEY_Y)
+					If KeyManager.IsHit(KEY_Y)
 						rem
 						local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("laundry", "laundry", 0)
 						GetRoomAgency().CancelRoomRental(room, GetPlayer().playerID)
@@ -1116,58 +1116,58 @@ Type TApp
 					EndIf
 
 
-					If KEYMANAGER.isDown(KEY_LCONTROL)
-						If KEYMANAGER.IsHit(KEY_O)
+					If KeyManager.isDown(KEY_LCONTROL)
+						If KeyManager.IsHit(KEY_O)
 							GameConfig.observerMode = 1 - GameConfig.observerMode
 
-							KEYMANAGER.ResetKey(KEY_O)
-							KEYMANAGER.BlockKey(KEY_O, 150)
+							KeyManager.ResetKey(KEY_O)
+							KeyManager.BlockKey(KEY_O, 150)
 						EndIf
 					EndIf
 
 
 					If Not GetPlayer().GetFigure().isChangingRoom()
-						If Not KEYMANAGER.IsDown(KEY_LSHIFT) And Not KEYMANAGER.IsDown(KEY_RSHIFT)
+						If Not KeyManager.IsDown(KEY_LSHIFT) And Not KeyManager.IsDown(KEY_RSHIFT)
 							If GameConfig.observerMode
-								If KEYMANAGER.IsHit(KEY_1) Then GameConfig.SetObservedObject( GetPlayer(1).GetFigure() )
-								If KEYMANAGER.IsHit(KEY_2) Then GameConfig.SetObservedObject( GetPlayer(2).GetFigure() )
-								If KEYMANAGER.IsHit(KEY_3) Then GameConfig.SetObservedObject( GetPlayer(3).GetFigure() )
-								If KEYMANAGER.IsHit(KEY_4) Then GameConfig.SetObservedObject( GetPlayer(4).GetFigure() )
+								If KeyManager.IsHit(KEY_1) Then GameConfig.SetObservedObject( GetPlayer(1).GetFigure() )
+								If KeyManager.IsHit(KEY_2) Then GameConfig.SetObservedObject( GetPlayer(2).GetFigure() )
+								If KeyManager.IsHit(KEY_3) Then GameConfig.SetObservedObject( GetPlayer(3).GetFigure() )
+								If KeyManager.IsHit(KEY_4) Then GameConfig.SetObservedObject( GetPlayer(4).GetFigure() )
 							Else
-								If KEYMANAGER.IsHit(KEY_1) Then GetGame().SetActivePlayer(1)
-								If KEYMANAGER.IsHit(KEY_2) Then GetGame().SetActivePlayer(2)
-								If KEYMANAGER.IsHit(KEY_3) Then GetGame().SetActivePlayer(3)
-								If KEYMANAGER.IsHit(KEY_4) Then GetGame().SetActivePlayer(4)
+								If KeyManager.IsHit(KEY_1) Then GetGame().SetActivePlayer(1)
+								If KeyManager.IsHit(KEY_2) Then GetGame().SetActivePlayer(2)
+								If KeyManager.IsHit(KEY_3) Then GetGame().SetActivePlayer(3)
+								If KeyManager.IsHit(KEY_4) Then GetGame().SetActivePlayer(4)
 							EndIf
-						ElseIf KEYMANAGER.IsDown(KEY_RSHIFT)
-							If KEYMANAGER.IsHit(Key_1) And GetPlayer(1).isLocalAI() Then GetPlayer(1).PlayerAI.reloadScript()
-							If KEYMANAGER.IsHit(Key_2) And GetPlayer(2).isLocalAI() Then GetPlayer(2).PlayerAI.reloadScript()
-							If KEYMANAGER.IsHit(Key_3) And GetPlayer(3).isLocalAI() Then GetPlayer(3).PlayerAI.reloadScript()
-							If KEYMANAGER.IsHit(Key_4) And GetPlayer(4).isLocalAI() Then GetPlayer(4).PlayerAI.reloadScript()
+						ElseIf KeyManager.IsDown(KEY_RSHIFT)
+							If KeyManager.IsHit(Key_1) And GetPlayer(1).isLocalAI() Then GetPlayer(1).PlayerAI.reloadScript()
+							If KeyManager.IsHit(Key_2) And GetPlayer(2).isLocalAI() Then GetPlayer(2).PlayerAI.reloadScript()
+							If KeyManager.IsHit(Key_3) And GetPlayer(3).isLocalAI() Then GetPlayer(3).PlayerAI.reloadScript()
+							If KeyManager.IsHit(Key_4) And GetPlayer(4).isLocalAI() Then GetPlayer(4).PlayerAI.reloadScript()
 						Else
-							If KEYMANAGER.IsHit(KEY_1) Then GetGame().SetPlayerBankrupt(1)
-							If KEYMANAGER.IsHit(KEY_2) Then GetGame().SetPlayerBankrupt(2)
-							If KEYMANAGER.IsHit(KEY_3) Then GetGame().SetPlayerBankrupt(3)
-							If KEYMANAGER.IsHit(KEY_4) Then GetGame().SetPlayerBankrupt(4)
+							If KeyManager.IsHit(KEY_1) Then GetGame().SetPlayerBankrupt(1)
+							If KeyManager.IsHit(KEY_2) Then GetGame().SetPlayerBankrupt(2)
+							If KeyManager.IsHit(KEY_3) Then GetGame().SetPlayerBankrupt(3)
+							If KeyManager.IsHit(KEY_4) Then GetGame().SetPlayerBankrupt(4)
 						EndIf
 
-						If KEYMANAGER.IsHit(KEY_W)
-							If Not KEYMANAGER.IsDown(KEY_LSHIFT) And Not KEYMANAGER.IsDown(KEY_RSHIFT)
+						If KeyManager.IsHit(KEY_W)
+							If Not KeyManager.IsDown(KEY_LSHIFT) And Not KeyManager.IsDown(KEY_RSHIFT)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("adagency") )
 							EndIf
 						EndIf
-						If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("archive", "", GetPlayerCollection().playerID) )
-						If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "betty") )
-						If KEYMANAGER.IsHit(KEY_F)
-							If Not KEYMANAGER.IsDown(KEY_LSHIFT) And Not KEYMANAGER.IsDown(KEY_RSHIFT)
+						If KeyManager.IsHit(KEY_A) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("archive", "", GetPlayerCollection().playerID) )
+						If KeyManager.IsHit(KEY_B) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "betty") )
+						If KeyManager.IsHit(KEY_F)
+							If Not KeyManager.IsDown(KEY_LSHIFT) And Not KeyManager.IsDown(KEY_RSHIFT)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
 							EndIf
 						EndIf
-						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "office", GetPlayerCollection().playerID))
-						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "boss", GetPlayerCollection().playerID))
-						If KEYMANAGER.isHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
+						If KeyManager.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "office", GetPlayerCollection().playerID))
+						If KeyManager.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "boss", GetPlayerCollection().playerID))
+						If KeyManager.isHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
 
-						If KEYMANAGER.Ishit(KEY_X)
+						If KeyManager.Ishit(KEY_X)
 							Print "--- ROOM LOG ---"
 							For Local entry:String = EachIn GameEvents.roomLog
 								Print entry
@@ -1180,7 +1180,7 @@ Type TApp
 						EndIf
 
 Rem
-						If KEYMANAGER.isHit(KEY_X)
+						If KeyManager.isHit(KEY_X)
 							print "Player: #" + GetPlayer().GetFigure().playerID + "   time: " + GetWorldTime().GetFormattedTime()
 							print "IsControllable: " + GetPlayer().GetFigure().IsControllable()
 							print "IsIdling: " + GetPlayer().GetFigure().IsIdling()
@@ -1192,24 +1192,24 @@ Rem
 							print "-----------------"
 						EndIf
 endrem
-						If KEYMANAGER.isHit(KEY_S)
-							If KEYMANAGER.IsDown(KEY_LCONTROL)
+						If KeyManager.isHit(KEY_S)
+							If KeyManager.IsDown(KEY_LCONTROL)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "supermarket"))
-							ElseIf KEYMANAGER.IsDown(KEY_RCONTROL) Or KEYMANAGER.IsDown(KEY_LALT)
+							ElseIf KeyManager.IsDown(KEY_RCONTROL) Or KeyManager.IsDown(KEY_LALT)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "scriptagency"))
 							Else
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", "", GetPlayerCollection().playerID))
 							EndIf
 						EndIf
-						If KEYMANAGER.IsHit(KEY_D) 'German "Drehbuchagentur"
+						If KeyManager.IsHit(KEY_D) 'German "Drehbuchagentur"
 							DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "scriptagency"))
 						EndIf
 
 						'e wie "employees" :D
-						If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "credits"))
-						If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "news", GetPlayerCollection().playerID))
-						If KEYMANAGER.IsHit(KEY_R)
-							If KEYMANAGER.IsDown(KEY_LCONTROL) Or KEYMANAGER.IsDown(KEY_RCONTROL)
+						If KeyManager.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "credits"))
+						If KeyManager.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "news", GetPlayerCollection().playerID))
+						If KeyManager.IsHit(KEY_R)
+							If KeyManager.IsDown(KEY_LCONTROL) Or KeyManager.IsDown(KEY_RCONTROL)
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomboard"))
 							Else
 								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomagency"))
@@ -1217,18 +1217,18 @@ endrem
 						EndIf
 					EndIf
 				EndIf
-				If KEYMANAGER.IsHit(KEY_5) Then GetGame().SetGameSpeed( 60*15 )  '60 virtual minutes per realtime second
-				If KEYMANAGER.IsHit(KEY_6) Then GetGame().SetGameSpeed( 120*15 ) '120 minutes per second
-				If KEYMANAGER.IsHit(KEY_7) Then GetGame().SetGameSpeed( 180*15 ) '180 minutes per second
-				If KEYMANAGER.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240*15 ) '240 minute per second
-				If KEYMANAGER.IsHit(KEY_9) Then GetGame().SetGameSpeed( 1*15 )   '1 minute per second
-				If KEYMANAGER.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
-				If KEYMANAGER.IsDown(KEY_LALT) And KEYMANAGER.IsHit(KEY_M) Then TVTDebugModifierInfos = 1 - TVTDebugModifierInfos
+				If KeyManager.IsHit(KEY_5) Then GetGame().SetGameSpeed( 60*15 )  '60 virtual minutes per realtime second
+				If KeyManager.IsHit(KEY_6) Then GetGame().SetGameSpeed( 120*15 ) '120 minutes per second
+				If KeyManager.IsHit(KEY_7) Then GetGame().SetGameSpeed( 180*15 ) '180 minutes per second
+				If KeyManager.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240*15 ) '240 minute per second
+				If KeyManager.IsHit(KEY_9) Then GetGame().SetGameSpeed( 1*15 )   '1 minute per second
+				If KeyManager.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
+				If KeyManager.IsDown(KEY_LALT) And KeyManager.IsHit(KEY_M) Then TVTDebugModifierInfos = 1 - TVTDebugModifierInfos
 
-				If KEYMANAGER.IsHit(KEY_P)
-					If KEYMANAGER.IsDown(KEY_LSHIFT)
+				If KeyManager.IsHit(KEY_P)
+					If KeyManager.IsDown(KEY_LSHIFT)
 						Print GetBroadcastOverviewString()
-					ElseIf KEYMANAGER.IsDown(KEY_RSHIFT)
+					ElseIf KeyManager.IsDown(KEY_RSHIFT)
 						Print "====== TOTAL BROADCAST OVERVIEW ======" + "~n"
 						Local result:String = ""
 						For Local day:Int = GetWorldTime().GetStartDay() To GetworldTime().GetDay()
@@ -1241,7 +1241,7 @@ endrem
 						Print result
 						Print "======================================"
 
-					ElseIf KEYMANAGER.IsDown(KEY_LCONTROL)
+					ElseIf KeyManager.IsDown(KEY_LCONTROL)
 						Print "====== TOTAL PLAYER PERFORMANCE OVERVIEW ======" + "~n"
 						Local result:String = ""
 						For Local day:Int = GetWorldTime().GetStartDay() To GetworldTime().GetDay()
@@ -1265,22 +1265,22 @@ endrem
 
 				'Save game only when in a game
 				If GetGame().gamestate = TGame.STATE_RUNNING
-					If KEYMANAGER.IsHit(KEY_F5) Then TSaveGame.Save("savegames/quicksave.xml")
+					If KeyManager.IsHit(KEY_F5) Then TSaveGame.Save("savegames/quicksave.xml")
 				EndIf
 
-				If KEYMANAGER.IsHit(KEY_F8)
+				If KeyManager.IsHit(KEY_F8)
 					TSaveGame.Load("savegames/quicksave.xml")
 				EndIf
 
-				If KEYMANAGER.IsHit(KEY_TAB)
-					If Not KEYMANAGER.IsDown(KEY_LCONTROL)
+				If KeyManager.IsHit(KEY_TAB)
+					If Not KeyManager.IsDown(KEY_LCONTROL)
 						DebugScreen.enabled = 1 - DebugScreen.enabled
 					Else
 						TVTDebugInfos = 1 - TVTDebugInfos
 					EndIf
 				EndIf
 
-				If KEYMANAGER.IsHit(KEY_K)
+				If KeyManager.IsHit(KEY_K)
 					TLogger.Log("KickAllFromRooms", "Player kicks all figures out of the rooms.", LOG_DEBUG)
 					For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
 						If fig.GetInRoom()
@@ -1293,7 +1293,7 @@ endrem
 				EndIf
 
 				'send terrorist to a random room
-				If KEYMANAGER.IsHit(KEY_T) And Not GetGame().networkGame
+				If KeyManager.IsHit(KEY_T) And Not GetGame().networkGame
 					Global whichTerrorist:Int = 1
 					whichTerrorist = 1 - whichTerrorist
 
@@ -1306,7 +1306,7 @@ endrem
 				EndIf
 
 				'show ingame manual
-				If KEYMANAGER.IsHit(KEY_F1) ' and not KEYMANAGER.IsDown(KEY_RSHIFT)
+				If KeyManager.IsHit(KEY_F1) ' and not KeyManager.IsDown(KEY_RSHIFT)
 					Local screen:String = ScreenCollection.GetCurrentScreen().GetName()
 					If IngameHelpWindowCollection.Get(screen)
 						IngameHelpWindowCollection.ShowByHelpGUID(screen , True)
@@ -1318,9 +1318,9 @@ endrem
 					IngameHelpWindowCollection.LockCurrent()
 				EndIf
 
-				If KEYMANAGER.Ishit(Key_F6) Then GetSoundManager().PlayMusicPlaylist("default")
+				If KeyManager.Ishit(Key_F6) Then GetSoundManager().PlayMusicPlaylist("default")
 
-				If KEYMANAGER.Ishit(Key_F11)
+				If KeyManager.Ishit(Key_F11)
 					If (TAiBase.AiRunning)
 						TLogger.Log("CORE", "AI deactivated", LOG_INFO | LOG_DEV )
 						TAiBase.AiRunning = False
@@ -1329,7 +1329,7 @@ endrem
 						TAiBase.AiRunning = True
 					EndIf
 				EndIf
-				If KEYMANAGER.Ishit(Key_F10)
+				If KeyManager.Ishit(Key_F10)
 					If (TAiBase.AiRunning)
 						For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
 							If GetPlayerBase().GetFigure() <> fig Then fig.moveable = False
@@ -1354,14 +1354,14 @@ endrem
 
 		ScreenCollection.UpdateCurrent(GetDeltaTimer().GetDelta())
 
-		Local openEscapeMenu:Int = openEscapeMenuViaInterface Or (Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE))
+		Local openEscapeMenu:Int = openEscapeMenuViaInterface Or (Not GuiManager.GetKeystrokeReceiver() And KeyManager.IsHit(KEY_ESCAPE))
 		'no escape menu in start screen or settingsscreen
 		If GetGame().gamestate = TGame.STATE_MAINMENU Or GetGame().gamestate = TGame.STATE_SETTINGSMENU
 			openEscapeMenu = False
 		EndIf
 
 		'force open escape menu (if eg. borked)
-		If KEYMANAGER.IsDown(KEY_LCONTROL) And KEYWRAPPER.hitKey(KEY_ESCAPE)
+		If KeyManager.IsDown(KEY_LCONTROL) And KeyManager.IsHit(KEY_ESCAPE)
 			openEscapeMenu = True
 			Print "force open escape menu. gamestate="+GetGame().gamestate +"   keystrokereceiver: " + (GuiManager.GetKeystrokeReceiver() <> Null)
 		EndIf
@@ -1390,7 +1390,7 @@ endrem
 			openEscapeMenuViaInterface = False
 		EndIf
 		'Force-quit with CTRL+C
-		If KEYMANAGER.IsDown(KEY_LCONTROL) And KEYMANAGER.IsHit(KEY_C)
+		If KeyManager.IsDown(KEY_LCONTROL) And KeyManager.IsHit(KEY_C)
 			TApp.ExitApp = True
 		EndIf
 
@@ -1404,7 +1404,7 @@ endrem
 		EndIf
 
 		'check if we need to make a screenshot
-		If KEYMANAGER.IsHit(KEY_F12) Then App.prepareScreenshot = 1
+		If KeyManager.IsHit(KEY_F12) Then App.prepareScreenshot = 1
 
 		If GetGame().networkGame Then Network.Update()
 
@@ -1436,19 +1436,19 @@ endrem
 	Function __NonDevHotKeys:Int()
 		'Navigation
 		Local room:String
-		If KEYMANAGER.IsHit(KEY_A) Then room="archive"
-		If KEYMANAGER.IsHit(KEY_B) Then room="betty"
-		If KEYMANAGER.IsHit(KEY_C) Then room="boss" 'Chef
-		If KEYMANAGER.IsHit(KEY_D) Then room="scriptagency" 'Drehbuch
-		If KEYMANAGER.IsHit(KEY_F) Then room="movieagency" 'Film
-		If KEYMANAGER.IsHit(KEY_L) Then room="supermarket" 'Laden
-		If KEYMANAGER.IsHit(KEY_N) Then room="news"
-		If KEYMANAGER.IsHit(KEY_O) Then room="office"
-		If KEYMANAGER.IsHit(KEY_P) Then room="roomboard" 'Panel
-		If KEYMANAGER.IsHit(KEY_R) Then room="roomagency"
+		If KeyManager.IsHit(KEY_A) Then room="archive"
+		If KeyManager.IsHit(KEY_B) Then room="betty"
+		If KeyManager.IsHit(KEY_C) Then room="boss" 'Chef
+		If KeyManager.IsHit(KEY_D) Then room="scriptagency" 'Drehbuch
+		If KeyManager.IsHit(KEY_F) Then room="movieagency" 'Film
+		If KeyManager.IsHit(KEY_L) Then room="supermarket" 'Laden
+		If KeyManager.IsHit(KEY_N) Then room="news"
+		If KeyManager.IsHit(KEY_O) Then room="office"
+		If KeyManager.IsHit(KEY_P) Then room="roomboard" 'Panel
+		If KeyManager.IsHit(KEY_R) Then room="roomagency"
 		'Beim Studio könnte man als Erweiterung noch das erste verfügbare nehmen (aktuell kein Dreh)
-		If KEYMANAGER.IsHit(KEY_S) Then room="studio"
-		If KEYMANAGER.IsHit(KEY_W) Then room="adagency" 'Werbung
+		If KeyManager.IsHit(KEY_S) Then room="studio"
+		If KeyManager.IsHit(KEY_W) Then room="adagency" 'Werbung
 
 		If room
 			Local targetRoom:TRoom = GetRoomCollection().GetFirstByDetails("", room, GetPlayerCollection().playerID)
@@ -1463,11 +1463,11 @@ endrem
 		EndIf
 
 		'Simuliere Rechtsklick (Verlassen eines Screens/Raums, Abbruch einer Aktion, Löschen etc.)
-		'If KEYMANAGER.IsHit(KEY_Q) Then MOUSEMANAGER._AddClickEntry(2, 1, New TVec2D.Init(0, 0), 5)
-		If KEYMANAGER.IsHit(KEY_Q) Then GetPlayer().GetFigure().KickOutOfRoom()
+		'If KeyManager.IsHit(KEY_Q) Then MOUSEMANAGER._AddClickEntry(2, 1, New TVec2D.Init(0, 0), 5)
+		If KeyManager.IsHit(KEY_Q) Then GetPlayer().GetFigure().KickOutOfRoom()
 
 		'Schnellvorlauf
-		If KEYMANAGER.IsDown(KEY_RIGHT)
+		If KeyManager.IsDown(KEY_RIGHT)
 			If Not DEV_FastForward
 				DEV_FastForward = True
 				DEV_FastForward_SpeedFactorBackup = TEntity.globalWorldSpeedFactor
@@ -1489,12 +1489,12 @@ endrem
 		EndIf
 
 		'Geschwindigkeitslevel
-		If KEYMANAGER.IsHit(KEY_1) Then GetGame().SetGameSpeedPreset(0)
-		If KEYMANAGER.IsHit(KEY_2) Then GetGame().SetGameSpeedPreset(1)
-		If KEYMANAGER.IsHit(KEY_3) Then GetGame().SetGameSpeedPreset(2)
+		If KeyManager.IsHit(KEY_1) Then GetGame().SetGameSpeedPreset(0)
+		If KeyManager.IsHit(KEY_2) Then GetGame().SetGameSpeedPreset(1)
+		If KeyManager.IsHit(KEY_3) Then GetGame().SetGameSpeedPreset(2)
 
 		'Hilfe
-		If KEYMANAGER.IsHit(KEY_F1)
+		If KeyManager.IsHit(KEY_F1)
 			Local screen:String = ScreenCollection.GetCurrentScreen().GetName()
 			If IngameHelpWindowCollection.Get(screen)
 				IngameHelpWindowCollection.ShowByHelpGUID(screen , True)
