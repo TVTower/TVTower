@@ -1206,8 +1206,8 @@ endrem
 			If hoveredGuiProgrammeLicence
 				if hoveredGuiProgrammeLicence.IsDragged()
 					GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
-				elseif GetPlayerBase().getFinance().canAfford(hoveredGuiProgrammeLicence.licence.getPriceForPlayer( GetPlayerBase().playerID ))
-					GetGameBase().cursorstate = TGameBase.CURSOR_PICK
+				elseif hoveredGuiProgrammeLicence.licence.owner = GetPlayerBase().playerID or GetPlayerBase().getFinance().canAfford(hoveredGuiProgrammeLicence.licence.getPriceForPlayer( GetPlayerBase().playerID ))
+					GetGameBase().cursorstate = TGameBase.CURSOR_PICK_VERTICAL
 				else
 					GetGameBase().cursorstate = TGameBase.CURSOR_STOP
 				endif
@@ -1887,18 +1887,19 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 
 
 	Function UpdateAll:Int()
-		'without clicks we do not need to handle things
-		If Not MOUSEMANAGER.IsClicked(1) Then Return False
-
 		For Local obj:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
 			If Not obj.GetLicence() Then Continue
 
 			If obj.bestBidder <> GetPlayerBaseCollection().playerID And obj.GetArea().containsXY(MouseManager.x, MouseManager.y)
-				obj.SetBid( GetPlayerBaseCollection().playerID )  'set the bid
+				GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
 
-				'handled left click
-				MouseManager.SetClickHandled(1)
-				Return True
+				If MouseManager.IsClicked(1)
+					obj.SetBid( GetPlayerBaseCollection().playerID )  'set the bid
+
+					'handled left click
+					MouseManager.SetClickHandled(1)
+					Return True
+				EndIf
 			EndIf
 		Next
 	End Function

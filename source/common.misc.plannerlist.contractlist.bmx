@@ -256,7 +256,7 @@ Type TgfxContractlist Extends TPlannerList
 					'store for outside use (eg. displaying a sheet)
 					hoveredAdContract = contract
 
-					GetGameBase().cursorstate = TGameBase.CURSOR_PICK
+					GetGameBase().cursorstate = TGameBase.CURSOR_PICK_HORIZONTAL
 					'only interact if allowed
 					If clicksAllowed
 						If MOUSEMANAGER.IsClicked(1)

@@ -369,7 +369,7 @@ Type TRoomBoardBase
 			sign.isClicked = (clickedSign = sign)
 
 			if sign.isHovered
-				GetGameBase().cursorstate = TGameBase.CURSOR_PICK
+				GetGameBase().cursorstate = TGameBase.CURSOR_PICK_HORIZONTAL
 			endif
 			if sign.dragged
 				GetGameBase().cursorstate = TGameBase.CURSOR_HOLD

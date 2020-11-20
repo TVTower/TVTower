@@ -960,7 +960,7 @@ Type TgfxProgrammelist Extends TPlannerList
 						'only interact if allowed
 						If clicksAllowed
 							'mark dragability
-							GetGameBase().cursorstate = TGameBase.CURSOR_PICK
+							GetGameBase().cursorstate = TGameBase.CURSOR_PICK_HORIZONTAL
 
 							If MOUSEMANAGER.IsClicked(1)
 								'create and drag new block

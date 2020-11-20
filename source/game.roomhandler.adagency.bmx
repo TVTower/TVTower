@@ -1578,7 +1578,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 
 		'set mouse to "hover"
 		If isHovered() And (contract.owner = GetPlayerBase().playerID Or contract.owner <= 0)
-			GetGameBase().cursorstate = TGameBase.CURSOR_PICK
+			GetGameBase().cursorstate = TGameBase.CURSOR_PICK_VERTICAL
 		EndIf
 
 		'set mouse to "dragged"

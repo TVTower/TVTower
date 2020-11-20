@@ -234,10 +234,21 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 		'set mouse to "hover"
 		If isHovered() and broadcastMaterial.IsOwnedByPlayer( GetPlayerBaseCollection().playerID)
-			if not broadcastMaterial.IsControllable()
-				GetGameBase().cursorstate = TGameBase.CURSOR_STOP
-			else
+			local canPick:Int = (broadcastMaterial.state = TBroadcastMaterial.STATE_NORMAL)
+			'we might be able to "pick" if we use the keyboard shortcut
+			'for copy/next episode
+			'shift: next episode
+			if not canPick then canPick = (KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT))
+			'ctrl: copy of this programme
+			if not canPick then canPick = (KEYMANAGER.IsDown(KEY_LCONTROL) Or KEYMANAGER.IsDown(KEY_RCONTROL))
+
+			'not controllable?
+			if canPick and not broadcastMaterial.IsControllable() Then canPick = False
+			
+			if canPick
 				GetGameBase().cursorstate = TGameBase.CURSOR_PICK
+			else
+				GetGameBase().cursorstate = TGameBase.CURSOR_STOP
 			endif
 		endif
 		'set mouse to "dragged"

@@ -1766,6 +1766,10 @@ endrem
 			'drag indicator
 			Case TGameBase.CURSOR_PICK
 				GetSpriteFromRegistry("gfx_mousecursor_pick").Draw(MouseManager.x, MouseManager.y)
+			Case TGameBase.CURSOR_PICK_VERTICAL
+				GetSpriteFromRegistry("gfx_mousecursor_pick_vertical").Draw(MouseManager.x, MouseManager.y)
+			Case TGameBase.CURSOR_PICK_HORIZONTAL
+				GetSpriteFromRegistry("gfx_mousecursor_pick_horizontal").Draw(MouseManager.x, MouseManager.y)
 			'dragged indicator
 			Case TGameBase.CURSOR_HOLD
 				GetSpriteFromRegistry("gfx_mousecursor_hold").Draw(MouseManager.x, MouseManager.y)
@@ -1773,7 +1777,7 @@ endrem
 			Case TGameBase.CURSOR_STOP
 '				local frame:Int =  int((Millisecs() / 300) mod 4)
 '				GetSpriteFromRegistry("gfx_mousecursor_stop" + frame).Draw(MouseManager.x, MouseManager.y)
-				GetSpriteFromRegistry("gfx_mousecursor_stop0").Draw(MouseManager.x, MouseManager.y)
+				GetSpriteFromRegistry("gfx_mousecursor_stop").Draw(MouseManager.x, MouseManager.y)
 
 				local oldA:Float = GetAlpha()
 				SetAlpha oldA * 0.65 + Float(Min(0.15, Max(-0.20, Sin(MilliSecs() / 6) * 0.20)))
@@ -1781,7 +1785,14 @@ endrem
 				SetAlpha oldA
 			'interaction indicator
 			Case TGameBase.CURSOR_INTERACT
-				GetSpriteFromRegistry("gfx_mousecursor_interact").Draw(MouseManager.x, MouseManager.y)
+				local frame:Int = int((Millisecs() * 0.005) mod 10)
+				if frame < 7
+					GetSpriteFromRegistry("gfx_mousecursor_interact0").Draw(MouseManager.x, MouseManager.y)
+				else
+					GetSpriteFromRegistry("gfx_mousecursor_interact" + (frame-7)).Draw(MouseManager.x, MouseManager.y)
+				endif
+
+				'GetSpriteFromRegistry("gfx_mousecursor_interact").Draw(MouseManager.x, MouseManager.y)
 			'normal
 			Default
 				'GetSpriteFromRegistry("gfx_mousecursor_default").Draw(MouseManager.x, MouseManager.y)

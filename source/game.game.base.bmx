@@ -78,9 +78,11 @@ Type TGameBase {_exposeToLua="selected"}
 
 	Const CURSOR_DEFAULT:Int = 0
 	Const CURSOR_PICK:Int = 1
-	Const CURSOR_HOLD:Int = 2
-	Const CURSOR_STOP:Int = 3
-	Const CURSOR_INTERACT:Int = 4
+	Const CURSOR_PICK_HORIZONTAL:Int = 2
+	Const CURSOR_PICK_VERTICAL:Int = 3
+	Const CURSOR_HOLD:Int = 4
+	Const CURSOR_STOP:Int = 5
+	Const CURSOR_INTERACT:Int = 6
 
 	'===== GAME STATES =====
 	Const STATE_RUNNING:Int			= 0
