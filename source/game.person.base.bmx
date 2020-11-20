@@ -852,7 +852,36 @@ Type TPersonBase Extends TGameObject
 
 		d.personID = Self.GetID()
 		data.Insert(key, d)
-	End Method	
+	End Method
+	
+	
+	
+
+
+	'=== SORT FUNCTIONS ===
+	Method Compare:int(other:object)
+		Return CompareByName(other)
+	End Method
+
+
+	Method CompareByName:int(other:object)
+		Local p2:TPersonBase = TPersonBase(other)
+		If Not p2 Then Return 1
+
+		if GetFullName().ToLower() = p2.GetFullName().ToLower()
+			'publishtime is NOT happened time
+			return GetID() > p2.GetID()
+		elseif GetFullName().ToLower() > p2.GetFullName().ToLower()
+			return 1
+		endif
+		return -1
+	End Method
+
+
+	Function SortByName:Int(o1:Object, o2:Object)
+		if not TPersonBase(o1) Then Return -1
+		return TPersonBase(o1).CompareByName(o2)
+	End Function
 End Type
 
 
