@@ -95,6 +95,12 @@ Type RoomHandler_News extends TRoomHandler
 					newsSortKeysTooltips[i] = new TGUITooltipBase.Initialize("", "UNKNOWN SORT MODE: " + i, new TRectangle.Init(0,0,-1,-1))
 			End Select
 			newsSortKeysTooltips[i].parentArea = new TRectangle.Init(0,0,30,30)
+			'with bigger mouse cursor we need to ensure it could be read - so move it
+			'away from the buttons
+			'newsSortKeysTooltips[i].SetOrientationPreset("BOTTOM", 10)
+			'alternatively display the tooltip to the right (or left)
+			newsSortKeysTooltips[i].SetOrientationPreset("RIGHT", 5)
+
 		Next
 
 		'=== REGISTER HANDLER ===
@@ -545,7 +551,7 @@ Type RoomHandler_News extends TRoomHandler
 			'move tooltips
 			For local i:int = 0 to newsSortKeys.length-1
 				if newsSortKeysTooltips[newsSortKeys[i]]
-					newsSortKeysTooltips[newsSortKeys[i]].parentArea.SetXYWH(contentX + 7 + i*32, sortButtonPos.GetIntY() + 7, 28,27)
+					newsSortKeysTooltips[newsSortKeys[i]].parentArea.SetXYWH(contentX + 5 + i*32, sortButtonPos.GetIntY() + 11, 28,27)
 				endif
 			Next
 		endif
@@ -634,8 +640,12 @@ Type RoomHandler_News extends TRoomHandler
 		For local i:int = 0 until availableSortKeys.length
 			if newsSortKeysTooltips[availableSortKeys[i]]
 				newsSortKeysTooltips[availableSortKeys[i]].Render()
+				
+				'overlay to check if coords are OK
+				'DrawRect(contentX + 5 + i*32, sortButtonPos.GetIntY() + 11, 28,27)
 			endif
 		Next
+
 
 		'if there are dragged ones - draw ALL after sort widget
 		If draggedGuiNews
