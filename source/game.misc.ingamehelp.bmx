@@ -344,8 +344,17 @@ Type TIngameHelpWindow
 			If modalDialogue.IsClosed() Then active = False
 			If Not active Then Remove()
 
+
 '			GuiManager.Update(state)
 			modalDialogue.Update()
+
+			if KeyManager.IsHit(KEY_ESCAPE)
+				if GuiManager.GetFocus() = guiTextArea
+					'do not allow another ESC-press for X ms
+					KeyManager.blockKey(KEY_ESCAPE, 250)
+					modalDialogue.Close()
+				EndIf
+			endif
 
 			'no right clicking allowed as long as "help window" is active
 			MouseManager.SetClickHandled(2)
