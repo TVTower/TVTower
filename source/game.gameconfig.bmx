@@ -15,6 +15,11 @@ Type TGameConfig {_exposeToLua}
 	Field dateFormat:string = "d.m.y"
 	Field devGUID:string
 	Field mouseHandlingDisabled:int = False
+	'storage for current savegame (if there is one loaded) information
+	Field savegame_initialBuildDate:String
+	Field savegame_initialVersion:String
+	Field savegame_initialSaveGameVersion:String
+	Field savegame_saveCount:Int = 0
 
 	Global clNormal:SColor8 = SColor8.Black
 	Global clPositive:SColor8 = new SColor8(90, 110, 90)

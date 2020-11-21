@@ -2438,6 +2438,10 @@ Type TSaveGame Extends TGameState
 		_gameSummary = New TData
 		_gameSummary.Add("game_version", VersionString)
 		_gameSummary.Add("game_builddate", VersionDate)
+		_gameSummary.Add("game_initial_builddate", GameConfig.savegame_initialBuildDate)
+		_gameSummary.Add("game_initial_version", GameConfig.savegame_initialVersion)
+		_gameSummary.Add("game_initial_savegameVersion", GameConfig.savegame_initialSaveGameVersion)
+		_gameSummary.AddNumber("game_saveCount", GameConfig.savegame_saveCount)
 		_gameSummary.Add("game_mode", "singleplayer")
 		_gameSummary.AddNumber("game_timeGone", GetWorldTime().GetTimeGone())
 		_gameSummary.Add("player_name", GetPlayer().name)
@@ -2750,6 +2754,7 @@ Type TSaveGame Extends TGameState
 
 
 		Local loadingStart:Int = MilliSecs()
+
 		'this creates new TGameObjects - and therefore increases ID count!
 ?bmxng
 		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename))
@@ -2781,6 +2786,21 @@ Type TSaveGame Extends TGameState
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginLoad", New TData.addString("saveName", saveName)))
 		'load savegame data into game object
 		saveGame.RestoreGameData()
+
+
+		'reset "initial" version information (maybe this old savegame 
+		'does not contain this information ... so we do not want to take
+		'over the one from the current game
+		'"Game - New Game" does set them to "null" values, so they
+		'are automatically filled when saving. 
+		'to avoid "loading old savegames and the saving them" to fill in
+		'values, we use some "special" values here.
+		If Not GameConfig.savegame_initialBuildDate 
+			GameConfig.savegame_initialBuildDate = "unknown"
+			GameConfig.savegame_initialVersion = "unknown"
+			GameConfig.savegame_initialSaveGameVersion = "-1"
+			GameConfig.savegame_saveCount = 0
+		EndIf
 
 		'tell everybody we finished loading (eg. for clearing GUI-lists)
 		'payload is saveName and saveGame-object
@@ -2815,6 +2835,8 @@ Rem
 endrem
 		EndIf
 
+print "GameConfig.savegame_initialBuildDate = " + GameConfig.savegame_initialBuildDate
+print "GameConfig.savegame_initialVersion = " + GameConfig.savegame_initialVersion
 
 		CleanUpData()
 
@@ -2855,6 +2877,13 @@ Local t:Int = MilliSecs()
 		'tell everybody we start saving
 		'payload is saveName
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginSave", New TData.addString("saveName", saveName)))
+
+		'assign "initial" version information
+		if not GameConfig.savegame_initialBuildDate then GameConfig.savegame_initialBuildDate = VersionDate
+		if not GameConfig.savegame_initialVersion then GameConfig.savegame_initialVersion = VersionString
+		if not GameConfig.savegame_initialSaveGameVersion then GameConfig.savegame_initialSaveGameVersion = TSaveGame.SAVEGAME_VERSION 
+		'raise save count for this game
+		GameConfig.savegame_saveCount :+ 1
 
 		'store game data in savegame
 		saveGame.BackupGameData()

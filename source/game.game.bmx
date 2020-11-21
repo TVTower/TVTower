@@ -205,6 +205,12 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 
 		If startNewGame
+			'=== RESET SAVEGAME INFORMATION ===
+			GameConfig.savegame_initialBuildDate = ""
+			GameConfig.savegame_initialVersion = ""
+			GameConfig.savegame_initialSaveGameVersion = ""
+			GameConfig.savegame_saveCount = 0
+
 			'=== CREATE / INIT SPORTS ("life outside")===
 			TLogger.Log("TGame", "Starting all sports (and their leagues) -1 year before now.", LOG_DEBUG)
 			GetNewsEventSportCollection().CreateAllLeagues()
