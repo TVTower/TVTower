@@ -335,7 +335,7 @@ Type TInGameInterface
 					Local audience:Int = -1
 					Local audienceStr:String = "0"
 					Local audiencePercentageStr:String = "0"
-					Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( ShowChannel )
+					Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( programmePlan.owner )
 					If audienceResult 
 						audience = audienceResult.audience.GetTotalSum()
 						If adMinAudience >= 0
