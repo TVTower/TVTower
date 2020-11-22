@@ -307,7 +307,14 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 			'skip non-existent files
 			If FileSize(fileURI) = 0 Then Continue
 			Local item:TGUISavegameListItem = New TGUISavegameListItem.Create(Null, Null, "savegame " + fileURI)
-			item.SetSavegameFile(fileURI)
+
+			'make compatible "FORCEFULLY"
+			If Keymanager.IsDown(KEY_LSHIFT)
+				item.SetSavegameFile(fileURI, True)
+			Else
+				item.SetSavegameFile(fileURI, False)
+			EndIf
+			
 			savegameList.AddItem(item)
 		Next
 		savegameList.SelectEntry( savegameList.GetFirstItem() )
@@ -336,8 +343,13 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 	
 		GuiManager.Update( LS_modalLoadMenu )
 
+		local loadableEntry:Int = True
+		local item:TGUISaveGameListItem = TGUISaveGameListItem(savegameList.getSelectedEntry())
+		if not item then loadableEntry = False
+		if item and item.fileState < 0 then loadableEntry = False
+
 		'disable/enable load-button
-		If Not TGUISaveGameListItem(savegameList.getSelectedEntry())
+		If Not loadableEntry
 			If dialogueButtons[0].isEnabled() Then dialogueButtons[0].disable()
 		Else
 			If Not dialogueButtons[0].isEnabled() Then dialogueButtons[0].enable()
@@ -372,7 +384,7 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 		Local fileName:String = selectedItem.GetFileInformation().GetString("fileURI")
 		Local fileURI:String = TSavegame.GetSavegameURI(fileName)
 
-		If FileType(fileURI) = 1
+		if selectedItem.fileState >= 0
 			'close self
 			Back()
 
@@ -384,7 +396,7 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 				TGUIModalWindowChain(_parent).Close()
 			EndIf
 
-			TSaveGame.Load(fileURI)
+			TSaveGame.Load(fileURI, True)
 
 			Return True
 		EndIf
@@ -744,6 +756,7 @@ Type TGUISavegameListItem Extends TGUISelectListItem
 	Field paddingBottom:Int = 12
 	Field paddingTop:Int = 4
 	Field fileInformation:TData = Null
+	Field fileState:Int = 0
 	Global _typeDefaultFont:TBitmapFont
 
     Method Create:TGUISavegameListItem(position:TVec2D=Null, dimension:TVec2D=Null, value:String="")
@@ -786,8 +799,20 @@ Type TGUISavegameListItem Extends TGUISelectListItem
 	End Method
 
 
-	Method SetSavegameFile(fileURI:String)
+	Method SetSavegameFile(fileURI:String, skipFileChecks:Int = False)
 		fileInformation = TSavegame.GetGameSummary(fileURI)
+
+		If skipFilechecks
+			fileState = 1
+		Else
+			fileState = TSavegame.CheckFilestate(fileURI, fileInformation, True)
+		EndIf
+
+		If fileState < 0
+			Self.Disable()
+		Else
+			Self.Enable()
+		EndIf
 	End Method
 
 
@@ -843,5 +868,29 @@ Type TGUISavegameListItem Extends TGUISelectListItem
 		SetAlpha oldAlpha * 0.30
 		DrawRect(leftX, GetScreenRect().GetY() + GetScreenRect().GetH() - 1, width, 1)
 		SetAlpha oldAlpha
+	End Method
+	
+	
+	Method DrawOverlay() override
+		Super.DrawOverlay()
+
+		if fileState < 0
+			Local width:Int = GetContentScreenRect().GetW() - 4 - 10 - 80
+			Local leftX:Int = GetContentScreenRect().GetX() + 2 + 40
+			Local oldAlpha:Float = GetAlpha()
+			SetColor 200,80,0
+			SetAlpha 0.3
+			DrawRect(leftX + 10, GetScreenRect().GetY() + 10,  width, GetScreenRect().GetH() - 20)
+			SetAlpha 1.0
+			SetColor 255,255,255
+			if fileState = -1
+				GetFont().DrawBox(GetLocale("FILE_NOT_FOUND"), leftX, GetScreenRect().GetY() + 10, width, GetScreenRect().GetH() - 20, sALIGN_CENTER_CENTER, SColor8.White, EDrawTextEffect.Shadow, 0.25)
+			elseif fileState = -2
+				GetFont().DrawBox(GetLocale("INVALID_SAVEGAME"), leftX, GetScreenRect().GetY() + 10, width, GetScreenRect().GetH() - 20, sALIGN_CENTER_CENTER, SColor8.White, EDrawTextEffect.Shadow, 0.25)
+			else
+				GetFont().DrawBox(GetLocale("INCOMPATIBLE_SAVEGAME"), leftX, GetScreenRect().GetY() + 10, width, GetScreenRect().GetH() - 20, sALIGN_CENTER_CENTER, SColor8.White, EDrawTextEffect.Shadow, 0.25)
+			endif
+			SetAlpha oldAlpha
+		endif
 	End Method
 End Type

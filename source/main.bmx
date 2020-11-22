@@ -1266,7 +1266,11 @@ endrem
 				EndIf
 
 				If KeyManager.IsHit(KEY_F8)
-					TSaveGame.Load("savegames/quicksave.xml")
+					If KeyManager.IsDown(KEY_LSHIFT)
+						TSaveGame.Load("savegames/quicksave.xml", True)
+					Else
+						TSaveGame.Load("savegames/quicksave.xml")
+					EndIf
 				EndIf
 
 				If KeyManager.IsHit(KEY_TAB)
@@ -2410,10 +2414,10 @@ Type TSaveGame Extends TGameState
 	Field _Time_timeGone:Long = 0
 	Field _Entity_globalWorldSpeedFactor:Float =  0
 	Field _Entity_globalWorldSpeedFactorMod:Float =  0
-	Const SAVEGAME_VERSION:String = "12"
-	Const MIN_SAVEGAME_VERSION:String = "11"
+	Const SAVEGAME_VERSION:int = 13
+	Const MIN_SAVEGAME_VERSION:Int = 13
 	Global messageWindow:TGUIModalWindow
-	Global messageWindowBackground:TPixmap
+	Global messageWindowBackground:TImage
 	Global messageWindowLastUpdate:Long
 	Global messageWindowUpdatesSkipped:Int = 0
 
@@ -2458,7 +2462,7 @@ Type TSaveGame Extends TGameState
 		_gameSummary.Add("player_name", GetPlayer().name)
 		_gameSummary.Add("player_channelName", GetPlayer().channelName)
 		_gameSummary.AddNumber("player_money", GetPlayer().GetMoney())
-		_gameSummary.Add("savegame_version", SAVEGAME_VERSION)
+		_gameSummary.AddNumber("savegame_version", SAVEGAME_VERSION)
 		'store last ID of all entities, to avoid duplicates
 		'store them in game summary to be able to reset before "restore"
 		'takes place
@@ -2518,20 +2522,20 @@ Type TSaveGame Extends TGameState
 		EndIf
 
 		If Not messageWindowBackground
-			messageWindowBackground = VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() )
+			messageWindowBackground = LoadImage(VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() ))
 		EndIf
 
 		SetClsColor 0,0,0
 		'use graphicsmanager's cls as it resets virtual resolution first
 		GetGraphicsManager().Cls()
-		DrawPixmap(messageWindowBackground, 0,0)
+		DrawImage(messageWindowBackground, 0,0)
 
 		If Load = 1
-			messageWindow.SetValue( GetLocale("SAVEGAME_GETS_LOADED") + "~n" + text)
+			messageWindow.SetCaptionAndValue(GetLocale("PLEASE_BE_PATIENT"), GetLocale("SAVEGAME_GETS_LOADED") + "~n" + text)
 		ElseIf Load = 0
-			messageWindow.SetValue( GetLocale("SAVEGAME_GETS_CREATED") + "~n" + text )
+			messageWindow.SetCaptionAndValue(GetLocale("PLEASE_BE_PATIENT"), GetLocale("SAVEGAME_GETS_CREATED") + "~n" + text )
 		Else
-			messageWindow.SetValue( text )
+			messageWindow.SetCaptionAndValue(GetLocale("PLEASE_BE_PATIENT"), text )
 		EndIf
 
 		messageWindow.Update()
@@ -2543,12 +2547,12 @@ Type TSaveGame Extends TGameState
 
 	Function ShowMessage:Int(Load:Int=False, text:String="", progress:Float=0.0)
 		'grab a fresh copy
-		messageWindowBackground = VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() )
+		messageWindowBackground = LoadImage(VirtualGrabPixmap(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight() ))
 
 		If messageWindow Then messageWindow.Remove()
 
 		'create a new one
-		messageWindow = New TGUIGameModalWindow.Create(Null, New TVec2D.Init(400, 100), "SYSTEM")
+		messageWindow = New TGUIGameModalWindow.Create(Null, New TVec2D.Init(400, 200), "SYSTEM")
 		messageWindow.guiCaptionTextBox.SetFont(headerFont)
 		messageWindow._defaultValueColor = TColor.clBlack.copy()
 		messageWindow.defaultCaptionColor = TColor.clWhite.copy()
@@ -2569,12 +2573,10 @@ Type TSaveGame Extends TGameState
 			messageWindow.screenArea = Null
 		EndIf
 
-		messageWindow.SetCaption( getLocale("PLEASE_BE_PATIENT") )
-
 		If Load
-			messageWindow.SetValue( getLocale("SAVEGAME_GETS_LOADED") + "~n" + text)
+			messageWindow.SetCaptionAndValue(GetLocale("PLEASE_BE_PATIENT"), getLocale("SAVEGAME_GETS_LOADED") + "~n" + text)
 		Else
-			messageWindow.SetValue( getLocale("SAVEGAME_GETS_CREATED") + "~n" + text )
+			messageWindow.SetCaptionAndValue(GetLocale("PLEASE_BE_PATIENT"), getLocale("SAVEGAME_GETS_CREATED") + "~n" + text )
 		EndIf
 
 		messageWindow.Open()
@@ -2583,6 +2585,25 @@ Type TSaveGame Extends TGameState
 		messageWindow.Draw()
 
 		Flip 0
+	End Function
+
+
+	Function CheckFileState:Int(fileURI:String, gameSummary:TData = Null, passedGameSummary:Int = False)
+		If FileType(fileURI) = 0 'not found
+			Return -1
+		EndIf
+
+		If Not gameSummary And Not passedGameSummary
+			gameSummary = GetGameSummary(fileURI)
+		EndIf
+
+		If Not gameSummary
+			Return -2
+		ElseIf gameSummary.GetInt("savegame_version") < MIN_SAVEGAME_VERSION
+			Return -3
+		Endif
+		
+		Return 1
 	End Function
 
 
@@ -2716,7 +2737,7 @@ Type TSaveGame Extends TGameState
 	End Function
 
 
-	Function Load:Int(saveName:String="savegame.xml")
+	Function Load:Int(saveName:String="savegame.xml", skipCompatibilityCheck:Int = False)
 		'stop ai of previous game if some was running
 		For Local i:Int = 1 To 4
 			If GetPlayer(i) Then GetPlayer(i).StopAI()
@@ -2724,13 +2745,24 @@ Type TSaveGame Extends TGameState
 
 		ShowMessage(True)
 
-		'=== CHECK SAVEGAME ===
-		If FileType(saveName) <> 1
-			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is missing.", LOG_SAVELOAD | LOG_ERROR)
+		Local savegameSummary:TData = GetGameSummary(savename)
+		local fileState:Int = TSaveGame.CheckFileState(saveName, savegameSummary, True)
+		if skipCompatibilityCheck and fileState = -3 then fileState = 1
 
-			UpdateMessage(2, "|b|ERROR:|/b|~nSavegame file ~q"+saveName+"~q is missing.", 0, True)
+		'=== CHECK SAVEGAME ===
+		If fileState < 0
+			if fileState = -1
+				TLogger.Log("Savegame.Load()", GetLocale("FILE_NOT_FOUND") + ": ~q"+saveName+"~q.", LOG_SAVELOAD | LOG_ERROR)
+				UpdateMessage(2, "|b|ERROR:|/b|~n" + GetLocale("FILE_NOT_FOUND") + ": ~q"+saveName+"~q.", 0, True)
+			elseif fileState = -2
+				TLogger.Log("Savegame.Load()", GetLocale("INVALID_SAVEGAME") + ": ~q"+saveName+"~q.", LOG_SAVELOAD | LOG_ERROR)
+				UpdateMessage(2, "|b|ERROR:|/b|~n" + GetLocale("INVALID_SAVEGAME") + ": ~q"+saveName+"~q.", 0, True)
+			elseif fileState = -3
+				TLogger.Log("Savegame.Load()", GetLocale("INCOMPATIBLE_SAVEGAME") + ": ~q"+saveName+"~q.", LOG_SAVELOAD | LOG_ERROR)
+				UpdateMessage(2, "|b|ERROR:|/b|~n" + GetLocale("INCOMPATIBLE_SAVEGAME") + ": ~q"+saveName+"~q.", 0, True)
+			endif
 			'wait a second
-			Delay(2000)
+			Delay(2500)
 			'close message window
 			If messageWindow Then messageWindow.Close()
 
@@ -2741,13 +2773,6 @@ Type TSaveGame Extends TGameState
 		Local persist:TPersist = New TXMLPersistenceBuilder.Build()
 		'Local persist:TPersist = New TPersist
 		persist.serializer = New TSavegameSerializer
-
-		Local savegameSummary:TData = GetGameSummary(savename)
-		'invalid savegame
-		If Not savegameSummary
-			TLogger.Log("Savegame.Load()", "Savegame file ~q"+saveName+"~q is corrupt or too old.", LOG_SAVELOAD | LOG_ERROR)
-			Return False
-		EndIf
 
 		'reset entity ID
 		'this avoids duplicate GUIDs

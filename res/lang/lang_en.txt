@@ -5,6 +5,10 @@ CHAT = Chat
 SAVE_AND_APPLY = Save and apply
 CANCEL = Cancel
 
+INCOMPATIBLE_SAVEGAME = Incompatible savegame
+INVALID_SAVEGAME = Invalid savegame
+FILE_NOT_FOUND = File not found
+
 MALE = male
 FEMALE = female
 UNDEFINED = undefined

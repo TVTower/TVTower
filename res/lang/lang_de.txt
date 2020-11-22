@@ -5,6 +5,10 @@ CHAT = Chat
 SAVE_AND_APPLY = Speichern und anwenden
 CANCEL = Abbrechen
 
+INCOMPATIBLE_SAVEGAME = Inkompatibler Speicherstand
+INVALID_SAVEGAME = Ungültiger Speicherstand
+FILE_NOT_FOUND = Datei nicht gefunden
+
 MALE = männlich
 FEMALE = weiblich
 UNDEFINED = unbestimmt
