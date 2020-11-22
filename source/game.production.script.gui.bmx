@@ -53,22 +53,6 @@ Type TGuiScript Extends TGUIGameListItem
 	End Method
 
 
-	'override default update-method
-	Method Update:Int()
-		Super.Update()
-
-		'set mouse to "hover"
-		If isHovered() and (script.owner = GetPlayerBaseCollection().playerID Or script.owner <= 0)
-			GetGameBase().cursorstate = TGameBase.CURSOR_PICK_VERTICAL
-		EndIf
-
-		'set mouse to "dragged"
-		If isDragged()
-			GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
-		EndIf
-	End Method
-
-
 	Method DrawSheet(leftX:Int=30, rightX:Int=30)
 		Local sheetY:Int 	= 20
 		Local sheetX:Int 	= leftX
@@ -99,7 +83,7 @@ Type TGuiScript Extends TGUIGameListItem
 
 
 
-	Method Draw()
+	Method Draw() override
 		SetColor 255,255,255
 		Local oldCol:TColor = New TColor.Get()
 
@@ -118,6 +102,14 @@ Type TGuiScript Extends TGUIGameListItem
 		Super.Draw()
 
 		oldCol.SetRGBA()
+
+		'set mouse to "dragged"
+		If isDragged()
+			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+		'set mouse to "hover"
+		ElseIf isDragable() and isHovered() and (script.owner = GetPlayerBaseCollection().playerID Or script.owner <= 0)
+			GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL)
+		EndIf
 	End Method
 End Type
 

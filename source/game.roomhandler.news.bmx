@@ -319,6 +319,10 @@ Type RoomHandler_News extends TRoomHandler
 		If PlannerToolTip Then PlannerToolTip.Render()
 		If NewsGenreTooltip then NewsGenreTooltip.Render()
 
+		'pinwall
+		If THelper.MouseIn(167,60,240,160)
+			GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+		EndIf
 
 		if TVTDebugInfos
 			SetColor 0,0,0
@@ -386,7 +390,7 @@ Type RoomHandler_News extends TRoomHandler
 			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create(GetLocale("ROOM_NEWSPLANNER"), GetLocale("MANAGE_BROADCASTED_NEWS"), 180, 100, 0, 0)
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
-			GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
+
 			If MouseManager.IsClicked(1)
 				'handled left click
 				MouseManager.SetClickHandled(1)
@@ -474,7 +478,7 @@ Type RoomHandler_News extends TRoomHandler
 
 		'how much levels do we have?
 		local level:int = 0
-		For local i:int = 0 until len( NewsGenreButtons )
+		For local i:int = 0 until NewsGenreButtons.length
 			if button = NewsGenreButtons[i]
 				level = GetPlayerBase(room.owner).GetNewsAbonnement( button.data.GetInt("newsGenre", i) )
 				exit
@@ -500,8 +504,17 @@ Type RoomHandler_News extends TRoomHandler
 			DrawRect( button.rect.GetX()+3+i*12 + 9, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -9, 1,5)
 			DrawRect( button.rect.GetX()+3+i*12, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -9+4, 9,1)
 		Next
+
 		SetColor 255,255,255
 		SetAlpha 1.0
+
+
+		For local i:int = 0 until NewsGenreButtons.length
+			If NewsGenreButtons[i].IsHovered()
+				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+				exit
+			EndIf
+		Next
 	End Function
 
 
@@ -1060,19 +1073,19 @@ Type TGUINews Extends TGUIGameListItem
 	End Method
 
 
-	'override default update-method
-	Method Update:Int()
-		Super.Update()
-
-		'set mouse to "hover"
-		If isHovered() and (news.owner <= 0 or news.IsOwnedByPlayer( GetPlayerBaseCollection().playerID))
-			if news.IsControllable()
-				GetGameBase().cursorstate = TGameBase.CURSOR_PICK
-			endif
-		endif
+	'override default draw-method to adjust mouse cursor
+	Method Draw() override
+		Super.Draw()
 
 		'set mouse to "dragged"
-		If isDragged() Then GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
+		If isDragged() 
+			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+		'set mouse to "hover"
+		ElseIf isHovered() and (news.owner <= 0 or news.IsOwnedByPlayer( GetPlayerBaseCollection().playerID))
+			If news.IsControllable()
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
+			EndIf
+		EndIf
 	End Method
 
 

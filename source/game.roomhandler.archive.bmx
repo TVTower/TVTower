@@ -408,7 +408,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		if room.owner <> GetPlayerBaseCollection().playerID then return FALSE
 
 		programmeList.owner = room.owner
-		programmeList.Draw()
+		programmeList.Draw(TgfxProgrammelist.MODE_ARCHIVE)
 
 		'draw suitcase - make suitcase/vendor glow if needed
 		If draggedGuiProgrammeLicence
@@ -432,6 +432,13 @@ Type RoomHandler_Archive extends TRoomHandler
 			'draw the current sheet
 			hoveredGuiProgrammeLicence.DrawSheet()
 		endif
+
+		'mark dude-area as interactive
+		If not draggedGuiProgrammeLicence And Not programmeList.GetOpen()
+			If THelper.MouseIn(605,65,160,90) Or THelper.MouseIn(525,155,240,225)
+				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+			EndIf
+		EndIf
 	End Method
 
 
@@ -449,7 +456,6 @@ Type RoomHandler_Archive extends TRoomHandler
 					openCollectionTooltip.enabled = 1
 					openCollectionTooltip.Hover()
 
-					GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
 					If MOUSEMANAGER.IsClicked(1)
 						programmeList.SetOpen(1)
 						'remove tooltip

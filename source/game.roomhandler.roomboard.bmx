@@ -83,7 +83,7 @@ Type RoomHandler_Roomboard extends TRoomHandler
 
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
-		GetRoomBoard().DrawSigns()
+		GetRoomBoard().DrawSigns(True)
 	End Method
 
 

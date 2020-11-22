@@ -365,11 +365,9 @@ Type TIngameHelpWindow
 
 	Method Render:Int()
 		if active
-			'reset cursor in "draw" for now ( modal windows "update" is
-			'done before other updates - so underlaying stuff can alter
-			'the icon as long as they do it in "update()" rather than
-			'"render" too)
-			GetGameBase().cursorstate = TGameBase.CURSOR_DEFAULT
+			'reset cursor in "draw" for now so "underlaying" element
+			'modifications are ignored
+			GetGameBase().SetCursor(TGameBase.CURSOR_DEFAULT)
 		
 			modalDialogue.Draw()
 			'GuiManager.Draw(state)

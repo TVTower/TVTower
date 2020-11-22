@@ -367,19 +367,12 @@ Type TRoomBoardBase
 
 			sign.isHovered = (hoveredSign = sign)
 			sign.isClicked = (clickedSign = sign)
-
-			if sign.isHovered
-				GetGameBase().cursorstate = TGameBase.CURSOR_PICK_HORIZONTAL
-			endif
-			if sign.dragged
-				GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
-			endif
 		Next
 		ReverseList list 'reorder: first are not dragged obj
 	End Method
 
 
-	Method DrawSigns()
+	Method DrawSigns(DraggingAllowed:int)
 		SortList List
 		'draw background sprites
 		local bgSprite:TSprite = GetSpriteFromRegistry("gfx_roomboard_sign_bg")
@@ -391,6 +384,16 @@ Type TRoomBoardBase
 			sign.Draw()
 		Next
 
+		if DraggingAllowed 'roomplan
+			For Local sign:TRoomBoardSign = EachIn List
+				if sign.dragged
+					GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+				elseif sign.isHovered
+					GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
+				endif
+			Next
+		endif
+			
 		'debug
 		rem
 		local hovered:TRoomBoardSign = GetSignByXY(MouseX(), MouseY())

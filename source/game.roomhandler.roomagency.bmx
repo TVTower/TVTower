@@ -160,7 +160,7 @@ endrem
 
 			roomboardTooltip.enabled = 1
 			roomboardTooltip.Hover()
-			GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
+
 			If MOUSEMANAGER.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 				mode = MODE_SELECTROOM
 
@@ -192,6 +192,10 @@ endrem
 		If roomboardTooltip Then roomboardTooltip.Render()
 
 		if mode = MODE_SELECTROOM
+			If THelper.MouseIn(0,0,230,325)
+				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+			EndIf
+
 			RenderRoomBoard()
 		else
 			'Dialogue

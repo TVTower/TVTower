@@ -1563,7 +1563,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 
 
 	'override default update-method
-	Method Update:Int()
+	Method Update:Int() override
 		Super.Update()
 
 		'disable dragging if not signable
@@ -1573,17 +1573,6 @@ Type TGuiAdContract Extends TGUIGameListItem
 			Else
 				SetOption(GUI_OBJECT_DRAGABLE, True)
 			EndIf
-		EndIf
-
-
-		'set mouse to "hover"
-		If isHovered() And (contract.owner = GetPlayerBase().playerID Or contract.owner <= 0)
-			GetGameBase().cursorstate = TGameBase.CURSOR_PICK_VERTICAL
-		EndIf
-
-		'set mouse to "dragged"
-		If isDragged()
-			GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
 		EndIf
 	End Method
 
@@ -1629,7 +1618,7 @@ Type TGuiAdContract Extends TGUIGameListItem
 	End Method
 
 
-	Method Draw()
+	Method Draw() override
 		SetColor 255,255,255
 		Local oldCol:TColor = New TColor.Get()
 
@@ -1655,6 +1644,15 @@ Type TGuiAdContract Extends TGUIGameListItem
 		Super.Draw()
 
 		oldCol.SetRGBA()
+
+
+		'set mouse to "hold/dragged"
+		If isDragged()
+			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+		'set mouse to "pick/drag"
+		ElseIf isDragable() and isHovered() And (contract.owner = GetPlayerBase().playerID Or contract.owner <= 0)
+			GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL)
+		EndIf
 	End Method
 End Type
 

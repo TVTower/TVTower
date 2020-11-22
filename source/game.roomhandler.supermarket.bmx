@@ -145,12 +145,12 @@ rem
 
 			'over dude
 			if THelper.IsIn(MouseManager.x, MouseManager.y, 0,0,160,300)
-				GetGameBase().cursorstate = 1
 				If MOUSEMANAGER.IsClicked(1) and not MouseManager.IsLongClicked(1)
 					MOUSEMANAGER.SetClickHandled(1)
-					GetGameBase().cursorstate = 0
 
 					GenerateDialogue()
+				Else
+					GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
 				endif
 			endif
 endrem

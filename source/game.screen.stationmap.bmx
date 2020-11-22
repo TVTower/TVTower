@@ -2636,6 +2636,11 @@ Type TScreenHandler_StationMap
 		If selectedStation Then selectedStation.Draw(True)
 
 
+		if mouseoverStation or selectedStation
+			GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+		endif
+
+
 		'draw activation tooltip for all other stations
 		'- only draw them while NOT placing a new one (to ease spot finding)
 		If actionMode <> MODE_BUY_ANTENNA And actionMode <> MODE_BUY_SATELLITE_UPLINK And actionMode <> MODE_BUY_CABLE_NETWORK_UPLINK
@@ -2777,7 +2782,7 @@ Type TScreenHandler_StationMap
 rem
 		If not mouseoverStation and mouseoverSection and currentSubRoom
 			if actionMode = MODE_BUY_ANTENNA or actionMode = MODE_BUY_CABLE_NETWORK_UPLINK
-				GetGameBase().cursorstate = TGameBase.CURSOR_STOP
+				GetGameBase().SetCursor(TGameBase.CURSOR_STOP)
 				print "invalid"
 			endif
 		endif
@@ -2831,11 +2836,6 @@ endrem
 
 				If Not selectedMapSection Or selectedStation.GetReach() <= 0 Then selectedStation = Null
 			EndIf
-			
-			if mouseoverStation
-				GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
-			endif
-
 
 		ElseIf actionMode = MODE_BUY_CABLE_NETWORK_UPLINK
 			'if the mouse has moved or nothing was created yet
@@ -2902,10 +2902,6 @@ endrem
 
 				If Not selectedMapSection Or selectedStation.GetReach() <= 0 Then selectedStation = Null
 			EndIf
-			
-			if hoveredMapSection
-				GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
-			endif
 
 		ElseIf actionMode = MODE_BUY_SATELLITE_UPLINK
 			If satelliteSelectionFrame.selectedSatellite
@@ -3006,10 +3002,6 @@ endrem
 			if TScreenHandler_StationMap.mapInformationFrame.IsOpen() Then TScreenHandler_StationMap.mapInformationFrame.Close()
 		endif
 		
-		if selectedStation
-			GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
-		endif
-
 		If mapInformationFrame.IsOpen()
 			'no interaction
 			'if actionMode <> MODE_NONE Then ResetActionMode(MODE_NONE)

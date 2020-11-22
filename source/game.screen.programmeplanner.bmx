@@ -1159,7 +1159,7 @@ Type TScreenHandler_ProgrammePlanner
 		SetColor 255,255,255
 		If PPprogrammeList.GetOpen() > 0
 			PPprogrammeList.owner = currentRoom.owner
-			PPprogrammeList.Draw()
+			PPprogrammeList.Draw(TgfxProgrammelist.MODE_PROGRAMMEPLANNER)
 			If TRoomHandler.IsPlayersRoom(currentRoom)
 				openedProgrammeListThisVisit = True
 			EndIf
@@ -1514,7 +1514,7 @@ endrem
 		EndIf
 
 		PPprogrammeList.owner = currentRoom.owner
-		PPprogrammeList.Update()
+		PPprogrammeList.Update(TgfxProgrammelist.MODE_PROGRAMMEPLANNER)
 
 		PPcontractList.owner = currentRoom.owner
 		PPcontractList.Update()

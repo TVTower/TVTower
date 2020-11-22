@@ -125,11 +125,9 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 	
 	
 	Method Draw() override
-		'reset cursor in "draw" for now ( modal windows "update" is
-		'done before other updates - so underlaying stuff can alter
-		'the icon as long as they do it in "update()" rather than
-		'"render/draw" too)
-		GetGameBase().cursorstate = TGameBase.CURSOR_DEFAULT	
+		'reset cursor in "draw" for now so "underlaying" element
+		'modifications are ignored
+		GetGameBase().SetCursor(TGameBase.CURSOR_DEFAULT)
 
 		Super.Draw()
 	End Method
@@ -578,7 +576,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 
 	Method CreateConfirmOverwriteDialogue:Int(fileURI:String)
 		If _confirmOverwriteDialogue Then Return False
-		_confirmOverwriteDialogue = New TGUIModalWindow.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
+		_confirmOverwriteDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(400,150), "SYSTEM")
 		_confirmOverwriteDialogue.guiCaptionTextBox.SetFont(headerFont)
 
 		_confirmOverwriteDialogue._defaultValueColor = TColor.clBlack.copy()

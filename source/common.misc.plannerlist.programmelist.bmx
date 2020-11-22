@@ -227,7 +227,7 @@ Type TgfxProgrammelist Extends TPlannerList
 	End Method
 
 
-	Method Draw()
+	Method Draw(mode:Int)
 		If Not enabled Then Return
 		if Not owner Then Return
 
@@ -325,12 +325,12 @@ Type TgfxProgrammelist Extends TPlannerList
 
 		'draw tapes of current genre + episodes of a selected series
 		If Self.openState >=2 And currentGenre >= 0
-			DrawTapes(currentgenre)
+			DrawTapes(currentgenre, mode)
 		EndIf
 
 		'draw episodes background
 		If Self.openState >=3
-			If currentGenre >= 0 Then DrawSubTapes(hoveredParentalLicence)
+			If currentGenre >= 0 Then DrawSubTapes(hoveredParentalLicence, mode)
 		EndIf
 
 	End Method
@@ -349,7 +349,7 @@ Type TgfxProgrammelist Extends TPlannerList
 		EndIf
 	End Method
 
-	Method DrawTapes:Int(filterIndex:Int=-1)
+	Method DrawTapes:Int(filterIndex:Int=-1, mode:Int=0)
 		'skip drawing tapes if no genreGroup is selected
 		If filterIndex < 0 Then Return False
 
@@ -458,6 +458,17 @@ Type TgfxProgrammelist Extends TPlannerList
 			EndIf
 
 
+			'adjust mouse cursor if needed
+			If THelper.MouseIn(currX, currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
+				If licence.IsAvailable() 
+					If mode = MODE_PROGRAMMEPLANNER and licence.isSingle()
+						GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
+					ElseIf mode = MODE_ARCHIVE
+						GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
+					EndIf
+				EndIf
+			Endif
+
 			'advance to next line
 			currY:+ GetEntrySize().y
 
@@ -556,7 +567,7 @@ Type TgfxProgrammelist Extends TPlannerList
 	End Method
 
 
-	Method UpdateTapes:Int(filterIndex:Int=-1, mode:Int=0)
+	Method UpdateTapes:Int(filterIndex:Int=-1, mode:Int)
 		'skip doing something without a selected filter
 		If filterIndex < 0 Then Return False
 
@@ -653,15 +664,6 @@ Type TgfxProgrammelist Extends TPlannerList
 
 				'only interact if allowed
 				If clicksAllowed
-					'mouse-over-hand
-					If licence.IsAvailable() 
-						If mode = MODE_PROGRAMMEPLANNER and licence.isSingle()
-							GetGameBase().cursorstate = TGameBase.CURSOR_PICK_HORIZONTAL
-						ElseIf mode = MODE_ARCHIVE
-							GetGameBase().cursorstate = TGameBase.CURSOR_PICK_HORIZONTAL
-						EndIf
-					EndIf
-						
 					If MOUSEMANAGER.IsClicked(1)
 						If mode = MODE_PROGRAMMEPLANNER
 							If licence.isSingle()
@@ -712,7 +714,7 @@ Type TgfxProgrammelist Extends TPlannerList
 	End Method
 
 
-	Method DrawSubTapes:Int(parentLicence:TProgrammeLicence)
+	Method DrawSubTapes:Int(parentLicence:TProgrammeLicence, mode:Int)
 		If Not parentLicence Then Return False
 
 		RecalculateMaxLicenceCount(parentLicence.GetSubLicenceSlots())
@@ -792,7 +794,17 @@ Type TgfxProgrammelist Extends TPlannerList
 				oldColor.SetRGBA()
 			EndIf
 
-
+			'adjust mouse cursor if needed
+			If THelper.MouseIn(currX, currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
+				If licence.IsAvailable() 
+					If mode = MODE_PROGRAMMEPLANNER and licence.isSingle()
+						GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
+					ElseIf mode = MODE_ARCHIVE
+						GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
+					EndIf
+				EndIf
+			Endif
+			
 			'advance to next line
 			currY:+ GetEntrySize().y
 
@@ -959,9 +971,6 @@ Type TgfxProgrammelist Extends TPlannerList
 					if licence.isAvailable()
 						'only interact if allowed
 						If clicksAllowed
-							'mark dragability
-							GetGameBase().cursorstate = TGameBase.CURSOR_PICK_HORIZONTAL
-
 							If MOUSEMANAGER.IsClicked(1)
 								'create and drag new block
 								New TGUIProgrammePlanElement.CreateWithBroadcastMaterial( New TProgramme.Create(licence), "programmePlanner" ).drag()
@@ -990,7 +999,7 @@ Type TgfxProgrammelist Extends TPlannerList
 	End Method
 
 
-	Method Update:Int(mode:Int=0)
+	Method Update:Int(mode:Int)
 		'gets repopulated automagically if hovered
 		hoveredLicence = Null
 

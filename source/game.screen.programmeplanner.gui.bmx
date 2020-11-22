@@ -204,10 +204,38 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 
 		return Super.IsClickable()
 	End Method
+	
+	
+	Method Draw() override	
+		Super.Draw()
+
+		'set mouse to "dragged"
+		If isDragged() 
+			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+		'set mouse to "hover"
+		ElseIf isHovered() and broadcastMaterial.IsOwnedByPlayer( GetPlayerBaseCollection().playerID)
+			local canPick:Int = (broadcastMaterial.state = TBroadcastMaterial.STATE_NORMAL)
+			'we might be able to "pick" if we use the keyboard shortcut
+			'for copy/next episode
+			'shift: next episode
+			if not canPick then canPick = (KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT))
+			'ctrl: copy of this programme
+			if not canPick then canPick = (KEYMANAGER.IsDown(KEY_LCONTROL) Or KEYMANAGER.IsDown(KEY_RCONTROL))
+
+			'not controllable?
+			if canPick and not broadcastMaterial.IsControllable() Then canPick = False
+			
+			if canPick
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
+			else
+				GetGameBase().SetCursor(TGameBase.CURSOR_STOP)
+			endif
+		EndIf
+	End Method
 
 
 	'override default update-method
-	Method Update:Int()
+	Method Update:Int() override
 		Super.Update()
 
 		Select broadcastMaterial.state
@@ -230,29 +258,6 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			'print "[ERROR] TGUIProgrammePlanElement.Update: broadcastMaterial not set."
 			Return False
 		EndIf
-
-
-		'set mouse to "hover"
-		If isHovered() and broadcastMaterial.IsOwnedByPlayer( GetPlayerBaseCollection().playerID)
-			local canPick:Int = (broadcastMaterial.state = TBroadcastMaterial.STATE_NORMAL)
-			'we might be able to "pick" if we use the keyboard shortcut
-			'for copy/next episode
-			'shift: next episode
-			if not canPick then canPick = (KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT))
-			'ctrl: copy of this programme
-			if not canPick then canPick = (KEYMANAGER.IsDown(KEY_LCONTROL) Or KEYMANAGER.IsDown(KEY_RCONTROL))
-
-			'not controllable?
-			if canPick and not broadcastMaterial.IsControllable() Then canPick = False
-			
-			if canPick
-				GetGameBase().cursorstate = TGameBase.CURSOR_PICK
-			else
-				GetGameBase().cursorstate = TGameBase.CURSOR_STOP
-			endif
-		endif
-		'set mouse to "dragged"
-		If isDragged() Then GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
 	End Method
 
 

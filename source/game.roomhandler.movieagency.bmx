@@ -1150,11 +1150,13 @@ endrem
 		Local highlightVendor:Int = False
 		Local highlightAuction:Int = False
 
+
 		'sometimes a draggedGuiProgrammeLicence is defined in an update
 		'but isnt dragged anymore (will get removed in the next tick)
 		'the dragged check avoids that the vendor is highlighted for
 		'1-2 render frames
 		If draggedGuiProgrammeLicence And draggedGuiProgrammeLicence.isDragged()
+			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
 			If draggedGuiProgrammeLicence.licence.owner <= 0
 				highlightSuitcase = True
 			Else
@@ -1162,6 +1164,7 @@ endrem
 			EndIf
 		Else
 			If AuctionEntity And AuctionEntity.GetScreenArea().ContainsXY(MouseManager.x, MouseManager.y)
+				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
 				highlightAuction = True
 			EndIf
 		EndIf
@@ -1189,6 +1192,14 @@ endrem
 		GUIManager.Draw( LS_movieagency )
 
 		If hoveredGuiProgrammeLicence
+			if hoveredGuiProgrammeLicence.IsDragged()
+				GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+			elseif hoveredGuiProgrammeLicence.licence.owner = GetPlayerBase().playerID or GetPlayerBase().getFinance().canAfford(hoveredGuiProgrammeLicence.licence.getPriceForPlayer( GetPlayerBase().playerID ))
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL)
+			else
+				GetGameBase().SetCursor(TGameBase.CURSOR_STOP)
+			endif
+
 			'draw the current sheet
 			hoveredGuiProgrammeLicence.DrawSheet()
 		EndIf
@@ -1203,23 +1214,12 @@ endrem
 		If Not room Then Return 0
 
 		If CheckPlayerInRoom("movieagency")
-			If hoveredGuiProgrammeLicence
-				if hoveredGuiProgrammeLicence.IsDragged()
-					GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
-				elseif hoveredGuiProgrammeLicence.licence.owner = GetPlayerBase().playerID or GetPlayerBase().getFinance().canAfford(hoveredGuiProgrammeLicence.licence.getPriceForPlayer( GetPlayerBase().playerID ))
-					GetGameBase().cursorstate = TGameBase.CURSOR_PICK_VERTICAL
-				else
-					GetGameBase().cursorstate = TGameBase.CURSOR_STOP
-				endif
-			EndIf
-
 			'show a auction-tooltip (but not if we dragged a block)
 			If Not hoveredGuiProgrammeLicence
 				If THelper.MouseIn(210,220,140,60)
 					If Not AuctionToolTip Then AuctionToolTip = TTooltip.Create(GetLocale("AUCTION"), GetLocale("MOVIES_AND_SERIES_AUCTION"), 200, 180, 0, 0)
 					AuctionToolTip.enabled = 1
 					AuctionToolTip.Hover()
-					GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
 
 					If MouseManager.IsClicked(1)
 						'handled left click
@@ -1279,8 +1279,6 @@ endrem
 
 
 	Function onUpdateMovieAuction:Int( triggerEvent:TEventBase )
-		GetGameBase().cursorstate = TGameBase.CURSOR_DEFAULT
-
 		If CheckPlayerInRoom("movieagency")
 			TAuctionProgrammeBlocks.UpdateAll()
 		EndIf
@@ -1878,6 +1876,11 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 					SetBlend AlphaBlend
 
 					obj.licence.ShowSheet(sheetX, sheetY, sheetAlign, TVTBroadcastMaterialType.PROGRAMME)
+
+					If obj.bestBidder <> GetPlayerBaseCollection().playerID
+						GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+					EndIf
+
 					Exit
 				EndIf
 			Next
@@ -1891,8 +1894,6 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			If Not obj.GetLicence() Then Continue
 
 			If obj.bestBidder <> GetPlayerBaseCollection().playerID And obj.GetArea().containsXY(MouseManager.x, MouseManager.y)
-				GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
-
 				If MouseManager.IsClicked(1)
 					obj.SetBid( GetPlayerBaseCollection().playerID )  'set the bid
 

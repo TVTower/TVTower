@@ -641,9 +641,6 @@ Type TApp
 		SetAutoPoll(True)
 
 
-		'set game cursor to 0
-		GetGameBase().cursorstate = TGameBase.CURSOR_DEFAULT
-
 		'fetch and cache mouse and keyboard states for this cycle
 		GUIManager.StartUpdates()
 
@@ -1665,6 +1662,10 @@ endrem
 		EndIf
 
 		TProfiler.Enter(_profilerKey_Draw)
+
+		'set game cursor to 0/default
+		GetGameBase().SetCursor(TGameBase.CURSOR_DEFAULT)
+
 		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
 
 
@@ -1762,7 +1763,7 @@ endrem
 
 		'mnouse cursor
 '		If Not spriteMouseCursor Then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
-		Select GetGameBase().cursorstate
+		Select GetGameBase().GetCursor()
 			'drag indicator
 			Case TGameBase.CURSOR_PICK
 				GetSpriteFromRegistry("gfx_mousecursor_pick").Draw(MouseManager.x, MouseManager.y)
@@ -1793,7 +1794,7 @@ endrem
 				endif
 
 				'GetSpriteFromRegistry("gfx_mousecursor_interact").Draw(MouseManager.x, MouseManager.y)
-			'normal
+			'normal and default
 			Default
 				'GetSpriteFromRegistry("gfx_mousecursor_default").Draw(MouseManager.x, MouseManager.y)
 				GetSpriteFromRegistry("gfx_mousecursor_point").Draw(MouseManager.x, MouseManager.y)
@@ -2949,6 +2950,15 @@ End Type
 
 
 Type TSavegameConverter
+	Function GetCurrentTypeName:TTypeID(typeName:String)
+		Select typeName.ToLower()
+			Default
+				print "TSavegameConverter.GetCurrentTypeName(): unsupported but no longer known type ~q"+typeName+"~q requested."
+				end
+		End Select
+	End Function
+	
+	
 	Method DeSerializeUnknownProperty:Object(oldType:String, newType:String, obj:Object, parentObj:Object)
 		Print "DeSerializeUnknownProperty: " + oldType + " > " + newType
 		Local convert:String = (oldType+">"+newType).ToLower()
@@ -5832,21 +5842,24 @@ Type AppEvents
 		EventManager.registerListenerFunction("guiModalWindowChain.onOpen", onGuiModalWindowCreate)
 		EventManager.registerListenerFunction("ToastMessageCollection.onAddMessage", onToastMessageCollectionAddMessage)
 		EventManager.registerListenerFunction("app.onStart", onAppStart)
-		EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverGUIObject)
+'		EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverGUIObject)
 
 	End Function
-
-
+rem
 	Function onMouseOverGUIObject:Int(triggerEvent:TEventBase)
 		Local obj:TGUIObject = TGUIObject(triggerEvent.GetSender())
 		If Not obj Then Return False
 
-		If obj.isDragable() And GetGameBase().cursorstate = TGameBase.CURSOR_DEFAULT
-			GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
+		'SetCursor() only replaces the previous cursor if none was
+		'set since begin of "game loop Update()" - use ", true" to force
+		'replacement
+		If obj.isDragged() 
+			GetGameBase().SetCursor( TGameBase.CURSOR_HOLD )
+		ElseIf obj.isDragable() 
+			GetGameBase().SetCursor( TGameBase.CURSOR_INTERACT )
 		EndIf
-		If obj.isDragged() Then GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
 	End Function
-
+endrem
 
 	Function onGuiModalWindowClose:Int(triggerEvent:TEventBase)
 		'play a sound with the default sfxchannel

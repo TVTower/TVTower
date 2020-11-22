@@ -8,6 +8,7 @@ Import "Dig/base.gfx.gui.list.selectlist.bmx"
 Import "Dig/base.gfx.gui.list.slotlist.bmx"
 Import "Dig/base.gfx.gui.accordeon.bmx"
 Import "common.misc.datasheet.bmx"
+Import "game.game.base.bmx"
 
 
 Global headerFont:TBitmapFont
@@ -325,6 +326,12 @@ Type TGUIGameModalWindow Extends TGUIModalWindow
 	Method SetCaption:Int(caption:String="")
 		Super.SetCaption(caption)
 		If guiCaptionTextBox Then guiCaptionTextBox.SetFont(headerFont)
+	End Method
+	
+	
+	Method Draw() override
+		Super.Draw()
+		GetGameBase().SetCursor(TGameBase.CURSOR_DEFAULT)
 	End Method
 End Type
 

@@ -182,6 +182,20 @@ Type RoomHandler_Office extends TRoomHandler
 			If SafeToolTip Then SafeToolTip.Render()
 
 			If MessagesToolTip Then MessagesToolTip.Render()
+
+			'safe
+			If THelper.MouseIn(165,85,70,100)
+				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+			'planner - reachable for all
+			ElseIf THelper.MouseIn(600,140,128,210)
+				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+			'archived messages
+			ElseIf THelper.MouseIn(395,210,195,65)
+				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+			'stationmap
+			ElseIf THelper.MouseIn(732,45,160,170)
+				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+			EndIf
 		EndIf
 	End Function
 
@@ -211,7 +225,7 @@ Type RoomHandler_Office extends TRoomHandler
 					SafeToolTip.enabled = 1
 					SafeToolTip.SetMinTitleAndContentWidth(90, 120)
 					SafeToolTip.Hover()
-					GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
+
 					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						'handled click
 						MouseManager.SetClickHandled(1)
@@ -228,7 +242,7 @@ Type RoomHandler_Office extends TRoomHandler
 					endif
 					PlannerToolTip.enabled = 1
 					PlannerToolTip.Hover()
-					GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
+
 					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						'handled click
 						MouseManager.SetClickHandled(1)
@@ -244,7 +258,7 @@ Type RoomHandler_Office extends TRoomHandler
 					endif
 					MessagesToolTip.enabled = 1
 					MessagesToolTip.Hover()
-					GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
+
 					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						'handled click
 						MouseManager.SetClickHandled(1)
@@ -260,7 +274,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 					StationsToolTip.enabled = 1
 					StationsToolTip.Hover()
-					GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
+
 					If MouseManager.IsClicked(1) and not GetPlayer().GetFigure().IsChangingRoom()
 						'handled click
 						MouseManager.SetClickHandled(1)

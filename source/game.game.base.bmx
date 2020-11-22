@@ -12,8 +12,6 @@ Type TGameBase {_exposeToLua="selected"}
 	Field randomSeedValue:Int = 0
 	'title of the game
 	Field title:String = "MyGame"
-	'which cursor has to be shown? 0=normal 1=dragging
-	Field cursorstate:Int = 0
 	'0 = Mainmenu, 1=Running, ...
 	Field gamestate:Int = -1
 	Field gameOver:int = False
@@ -60,6 +58,11 @@ Type TGameBase {_exposeToLua="selected"}
 	Field terrorists:TFigureBase[2]
 	Field marshals:TFigureBase[2]
 
+	'which cursor has to be shown? 0=normal 1=dragging
+	private
+	Field cursor:Int = 0 {nosave}
+
+	public
 
 	'username of the player ->set in config
 	Global userName:String = ""
@@ -103,7 +106,7 @@ Type TGameBase {_exposeToLua="selected"}
 	Method Initialize()
 		randomSeedValue = 0
 		title = "MyGame"
-		cursorstate = 0
+		SetCursor(TGameBase.CURSOR_DEFAULT)
 		gamestate = 1 'mainmenu
 		gameOver = False
 
@@ -189,7 +192,17 @@ Type TGameBase {_exposeToLua="selected"}
 	Method IsGameOver:int()
 		return gameOver = True
 	End Method
+	
+	
+	Method SetCursor(cursor:Int)
+		self.cursor = cursor
+	End Method
 
+
+	Method GetCursor:int()
+		Return cursor
+	End Method
+	
 
 	Method SetPlayerBankruptLevel:int(playerID:int, level:int, time:Long=-1)
 		if playerID < 1 then return False

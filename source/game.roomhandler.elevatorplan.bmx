@@ -51,7 +51,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
-		GetElevatorRoomBoard().DrawSigns()
+		GetElevatorRoomBoard().DrawSigns(False)
 	End Method
 
 

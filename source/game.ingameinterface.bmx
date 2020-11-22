@@ -236,20 +236,17 @@ Type TInGameInterface
 			Next
 
 			'channel selection (tvscreen on interface)
-			For Local i:Int = 0 To 4
-				If THelper.MouseIn( 75 + i * 33, 171 + 383 + 16 - i*4, 33, 25)
-					'hover state
-					GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
-
-					If MOUSEMANAGER.IsClicked(1)
+			If MOUSEMANAGER.IsClicked(1)
+				For Local i:Int = 0 To 4
+					If THelper.MouseIn( 75 + i * 33, 171 + 383 + 16 - i*4, 33, 25)
 						ShowChannel = i
 
 						'handled left click
 						MouseManager.SetClickHandled(1)
 						exit
 					EndIf
-				EndIf
-			Next
+				Next
+			EndIf
 
 
 			'reset current programme sprites
@@ -1025,6 +1022,16 @@ Type TInGameInterface
 		GetSpriteFromRegistry("gfx_interface_ingamechat_key."+lockMode).Draw(770, arrowPos)
 		'===
 
+
+		'change mouse icon when hovering the "buttons"
+		if not GetWorldTime().IsPaused()
+			For Local i:Int = 0 To 4
+				If THelper.MouseIn( 75 + i * 33, 171 + 383 + 16 - i*4, 33, 25)
+					GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+					exit
+				EndIf
+			Next
+		endif
 
 	    GUIManager.Draw(ingameState)
 

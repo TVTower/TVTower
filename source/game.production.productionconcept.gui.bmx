@@ -54,22 +54,20 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 	End Method
 
 
-	'override default update-method
-	Method Update:Int()
-		Super.Update()
-
-		'set mouse to "hover"
-		If isHovered() And (productionConcept.owner = GetPlayerBaseCollection().playerID Or productionConcept.owner <= 0)
-			if mode = MODE_SUPERMARKET
-				GetGameBase().cursorstate = TGameBase.CURSOR_INTERACT
-			elseif mode = MODE_STUDIO
-				GetGameBase().cursorstate = TGameBase.CURSOR_PICK
-			endif
-		EndIf
+	'override default draw-method
+	Method Draw() override
+		Super.Draw()
 
 		'set mouse to "dragged"
 		If isDragged()
-			GetGameBase().cursorstate = TGameBase.CURSOR_HOLD
+			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+		'set mouse to "hover"
+		ElseIf isHovered() And (productionConcept.owner = GetPlayerBaseCollection().playerID Or productionConcept.owner <= 0)
+			if mode = MODE_SUPERMARKET
+				GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+			elseif mode = MODE_STUDIO
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
+			endif
 		EndIf
 	End Method
 
