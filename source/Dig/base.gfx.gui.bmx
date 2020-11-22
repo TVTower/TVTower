@@ -476,10 +476,11 @@ Type TGUIManager
 		'if there is a focused object now - inform about gain of focus
 		If _focusedObject
 			UpdateState_foundFocusObject = _focusedObject
-
-			'try to set as potential keystroke receiver
-			SetKeystrokeReceiver(obj)
 		EndIf
+
+		'if the new focus object cannot act as keystroke receiver
+		'the current receiver is unset nonetheless
+		SetKeystrokeReceiver(_focusedObject)
 
 		GuiManager._listsSorted = False
 		'GuiManager.SortLists()
