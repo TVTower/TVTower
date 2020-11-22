@@ -438,6 +438,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 	Field savegameName:TGUIInput
 	Field savegameNameLabel:TGUILabel
 	Field _eventListeners:TEventListenerBase[]
+	Field doSetManualFocus:Int = True
 
 	Global _confirmOverwriteDialogue:TGUIModalWindow
 	Global LS_modalSaveMenu:TLowerString = TLowerString.Create("modalsavemenu")
@@ -509,6 +510,8 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 			item.SetSavegameFile(fileURI)
 			savegameList.AddItem(item)
 		Next
+
+		doSetManualFocus = True
 	End Method
 
 
@@ -537,6 +540,11 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 
 
 	Method Update:Int()
+		If doSetManualFocus
+			doSetManualFocus = False
+			GUIManager.SetFocus( savegameName )
+		EndIF
+		
 		GuiManager.Update( LS_modalSaveMenu )
 
 		'disable/enable load-button
