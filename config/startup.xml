@@ -12,8 +12,6 @@
 			<children>
 				<child name="gfx_mousecursor_point"            x="0"    y="0"    w="48"  h="50" offsetLeft="22" offsetTop="4" />
 				<child name="gfx_mousecursor_stop"             x="48"   y="0"    w="48"  h="50" offsetLeft="24" offsetTop="17" />
-				<child name="gfx_mousecursor_stop_overlay"     x="144"  y="0"    w="48"  h="50" offsetLeft="23" offsetTop="17" />
-
 				<!-- simple looped animation: stay at 0 a while, then move on to 1, 2, 3 -->
 				<child name="gfx_mousecursor_interact0"        x="0"    y="0"    w="48"  h="50" offsetLeft="22" offsetTop="4" />
 				<child name="gfx_mousecursor_interact1"        x="0"    y="50"   w="48"  h="50" offsetLeft="22" offsetTop="4" />
@@ -27,6 +25,8 @@
 				<child name="gfx_mousecursor_halfpoint"        x="48"   y="50"   w="48"  h="50" offsetLeft="22" offsetTop="8" />
 				<child name="gfx_mousecursor_hold"             x="96"   y="50"   w="48"  h="50" offsetLeft="24" offsetTop="8" />
 				<child name="gfx_mousecursor"                  x="0"    y="0"    w="48"  h="50" offsetLeft="22" offsetTop="4" />
+
+				<child name="gfx_mousecursor_extra_forbidden"  x="144"  y="0"    w="48"  h="50" offsetLeft="0" offsetTop="0" />
 			</children>
 		</spritepack>
 		<music name="sfx_music_title" url="res/music/Chilledoutwithabeat.ogg" playOnLoad="true" loop="true" playlists="menu" />

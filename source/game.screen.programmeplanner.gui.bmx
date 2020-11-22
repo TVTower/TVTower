@@ -228,7 +228,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			if canPick
 				GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
 			else
-				GetGameBase().SetCursor(TGameBase.CURSOR_STOP)
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK, TGameBase.CURSOR_EXTRA_FORBIDDEN)
 			endif
 		EndIf
 	End Method

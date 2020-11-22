@@ -61,6 +61,7 @@ Type TGameBase {_exposeToLua="selected"}
 	'which cursor has to be shown? 0=normal 1=dragging
 	private
 	Field cursor:Int = 0 {nosave}
+	Field cursorExtra:Int = 0 {nosave}
 
 	public
 
@@ -86,6 +87,9 @@ Type TGameBase {_exposeToLua="selected"}
 	Const CURSOR_HOLD:Int = 4
 	Const CURSOR_STOP:Int = 5
 	Const CURSOR_INTERACT:Int = 6
+
+	Const CURSOR_EXTRA_NONE:Int = 0
+	Const CURSOR_EXTRA_FORBIDDEN:Int = 1
 
 	'===== GAME STATES =====
 	Const STATE_RUNNING:Int			= 0
@@ -193,9 +197,15 @@ Type TGameBase {_exposeToLua="selected"}
 		return gameOver = True
 	End Method
 	
-	
-	Method SetCursor(cursor:Int)
+
+	Method SetCursorExtra(cursorOverlay:Int)
+		self.cursorExtra = cursorExtra
+	End Method
+
+
+	Method SetCursor(cursor:Int, cursorExtra:Int = 0)
 		self.cursor = cursor
+		self.cursorExtra = cursorExtra
 	End Method
 
 
@@ -203,7 +213,12 @@ Type TGameBase {_exposeToLua="selected"}
 		Return cursor
 	End Method
 	
+	
+	Method GetCursorExtra:int()
+		Return cursorExtra
+	End Method
 
+	
 	Method SetPlayerBankruptLevel:int(playerID:int, level:int, time:Long=-1)
 		if playerID < 1 then return False
 

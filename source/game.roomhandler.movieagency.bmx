@@ -1197,7 +1197,7 @@ endrem
 			elseif hoveredGuiProgrammeLicence.licence.owner = GetPlayerBase().playerID or GetPlayerBase().getFinance().canAfford(hoveredGuiProgrammeLicence.licence.getPriceForPlayer( GetPlayerBase().playerID ))
 				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL)
 			else
-				GetGameBase().SetCursor(TGameBase.CURSOR_STOP)
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL, TGameBase.CURSOR_EXTRA_FORBIDDEN)
 			endif
 
 			'draw the current sheet

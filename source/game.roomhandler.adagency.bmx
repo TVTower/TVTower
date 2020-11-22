@@ -1650,8 +1650,12 @@ Type TGuiAdContract Extends TGUIGameListItem
 		If isDragged()
 			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
 		'set mouse to "pick/drag"
-		ElseIf isDragable() and isHovered() And (contract.owner = GetPlayerBase().playerID Or contract.owner <= 0)
-			GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL)
+		ElseIf isHovered()
+			if isDragable() And (contract.owner = GetPlayerBase().playerID Or contract.owner <= 0)
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL)
+			else
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL, TGameBase.CURSOR_EXTRA_FORBIDDEN)
+			endif
 		EndIf
 	End Method
 End Type

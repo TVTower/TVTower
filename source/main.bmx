@@ -1763,42 +1763,52 @@ endrem
 
 		'mnouse cursor
 '		If Not spriteMouseCursor Then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
+		local cursorOffsetX:Int
+		local cursorOffsetY:Int
+		local cursorSprite:TSprite
+		
 		Select GetGameBase().GetCursor()
 			'drag indicator
 			Case TGameBase.CURSOR_PICK
-				GetSpriteFromRegistry("gfx_mousecursor_pick").Draw(MouseManager.x, MouseManager.y)
+				cursorSprite = GetSpriteFromRegistry("gfx_mousecursor_pick")
 			Case TGameBase.CURSOR_PICK_VERTICAL
-				GetSpriteFromRegistry("gfx_mousecursor_pick_vertical").Draw(MouseManager.x, MouseManager.y)
+				cursorSprite = GetSpriteFromRegistry("gfx_mousecursor_pick_vertical")
 			Case TGameBase.CURSOR_PICK_HORIZONTAL
-				GetSpriteFromRegistry("gfx_mousecursor_pick_horizontal").Draw(MouseManager.x, MouseManager.y)
+				cursorSprite = GetSpriteFromRegistry("gfx_mousecursor_pick_horizontal")
 			'dragged indicator
 			Case TGameBase.CURSOR_HOLD
-				GetSpriteFromRegistry("gfx_mousecursor_hold").Draw(MouseManager.x, MouseManager.y)
+				cursorSprite = GetSpriteFromRegistry("gfx_mousecursor_hold")
 			'drag / interaction blocked
 			Case TGameBase.CURSOR_STOP
-'				local frame:Int =  int((Millisecs() / 300) mod 4)
-'				GetSpriteFromRegistry("gfx_mousecursor_stop" + frame).Draw(MouseManager.x, MouseManager.y)
-				GetSpriteFromRegistry("gfx_mousecursor_stop").Draw(MouseManager.x, MouseManager.y)
-
-				local oldA:Float = GetAlpha()
-				SetAlpha oldA * 0.65 + Float(Min(0.15, Max(-0.20, Sin(MilliSecs() / 6) * 0.20)))
-				GetSpriteFromRegistry("gfx_mousecursor_stop_overlay").Draw(MouseManager.x, MouseManager.y)
-				SetAlpha oldA
+				cursorSprite = GetSpriteFromRegistry("gfx_mousecursor_stop")
 			'interaction indicator
 			Case TGameBase.CURSOR_INTERACT
 				local frame:Int = int((Millisecs() * 0.005) mod 10)
 				if frame < 7
-					GetSpriteFromRegistry("gfx_mousecursor_interact0").Draw(MouseManager.x, MouseManager.y)
+					cursorSprite = GetSpriteFromRegistry("gfx_mousecursor_interact0")
 				else
-					GetSpriteFromRegistry("gfx_mousecursor_interact" + (frame-7)).Draw(MouseManager.x, MouseManager.y)
+					cursorSprite = GetSpriteFromRegistry("gfx_mousecursor_interact" + (frame-7))
 				endif
 
-				'GetSpriteFromRegistry("gfx_mousecursor_interact").Draw(MouseManager.x, MouseManager.y)
 			'normal and default
 			Default
-				'GetSpriteFromRegistry("gfx_mousecursor_default").Draw(MouseManager.x, MouseManager.y)
-				GetSpriteFromRegistry("gfx_mousecursor_point").Draw(MouseManager.x, MouseManager.y)
+				cursorSprite = GetSpriteFromRegistry("gfx_mousecursor_point")
 		End Select
+
+		if cursorSprite
+			cursorOffsetX = cursorSprite.offset.GetLeft()
+			cursorOffsetY = cursorSprite.offset.GetTop()
+			cursorSprite.Draw(MouseManager.x, MouseManager.y)
+		endif
+
+		Select GetGameBase().GetCursorExtra()
+			Case TGameBase.CURSOR_EXTRA_FORBIDDEN
+				local oldA:Float = GetAlpha()
+				SetAlpha oldA * 0.65 + Float(Min(0.15, Max(-0.20, Sin(MilliSecs() / 6) * 0.20)))
+				GetSpriteFromRegistry("gfx_mousecursor_extra_forbidden").Draw(MouseManager.x - cursorOffsetX, MouseManager.y - cursorOffsetY)
+				SetAlpha oldA
+		End Select
+
 '		DrawOval(MouseManager.x-2, MouseManager.y-2, 4,4)
 
 

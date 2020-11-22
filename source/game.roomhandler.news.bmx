@@ -1083,7 +1083,11 @@ Type TGUINews Extends TGUIGameListItem
 		'set mouse to "hover"
 		ElseIf isHovered() and (news.owner <= 0 or news.IsOwnedByPlayer( GetPlayerBaseCollection().playerID))
 			If news.IsControllable()
-				GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
+				if news.owner = GetPlayerBase().playerID or GetPlayerBase().getFinance().canAfford(news.GetPrice( GetPlayerBase().playerID ))
+					GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
+				else
+					GetGameBase().SetCursor(TGameBase.CURSOR_PICK, TGameBase.CURSOR_EXTRA_FORBIDDEN)
+				endif
 			EndIf
 		EndIf
 	End Method
