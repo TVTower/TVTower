@@ -2027,7 +2027,7 @@ Type TGUIobject
 					'	and after closing the underlaying widget receives the
 					'	click event
 					If _flags & GUI_OBJECT_ENABLED And MouseManager.IsClicked(1)
-						If HasOption(GUI_OBJECT_CAN_GAIN_FOCUS) and not HasOption(GUI_OBJECT_STATUS_FOCUSED)
+						If HasOption(GUI_OBJECT_CAN_GAIN_FOCUS) and not HasStatus(GUI_OBJECT_STATUS_FOCUSED)
 							GUImanager.SetFocus(Self)
 						EndIf
 					EndIf
