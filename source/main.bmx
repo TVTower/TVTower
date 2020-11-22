@@ -2528,7 +2528,13 @@ Type TSaveGame Extends TGameState
 		SetClsColor 0,0,0
 		'use graphicsmanager's cls as it resets virtual resolution first
 		GetGraphicsManager().Cls()
+		
+		'before drawing the full screen (which is 100% of the "real" 
+		'window dimension) we need to disable the virtual graphics area
+		'to disable any resizing
+		GetGraphicsManager().ResetVirtualGraphicsArea()
 		DrawImage(messageWindowBackground, 0,0)
+		GetGraphicsManager().SetupVirtualGraphicsArea()
 
 		If Load = 1
 			messageWindow.SetCaptionAndValue(GetLocale("PLEASE_BE_PATIENT"), GetLocale("SAVEGAME_GETS_LOADED") + "~n" + text)
@@ -2870,9 +2876,6 @@ Rem
 			endif
 endrem
 		EndIf
-
-print "GameConfig.savegame_initialBuildDate = " + GameConfig.savegame_initialBuildDate
-print "GameConfig.savegame_initialVersion = " + GameConfig.savegame_initialVersion
 
 		CleanUpData()
 
