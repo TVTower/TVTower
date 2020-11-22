@@ -430,9 +430,8 @@ Type TgfxProgrammelist Extends TPlannerList
 				'do that afterwards because now "new" and "planned" are
 				'already handled
 
-				local licenceAvailable:int = licence.IsAvailable()
 				'mark not available licences (eg. broadcast limits exceeded or not yet released)
-				if not licenceAvailable
+				if not licence.IsAvailable()
 					setAlpha 0.5 * oldColor.a
 					SetColor 255,200,200
 				endif
@@ -460,7 +459,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 			'adjust mouse cursor if needed
 			If THelper.MouseIn(currX, currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
-				If licence.IsAvailable() 
+				If licence and licence.IsAvailable() 
 					If mode = MODE_PROGRAMMEPLANNER and licence.isSingle()
 						GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
 					ElseIf mode = MODE_ARCHIVE
@@ -769,9 +768,8 @@ Type TgfxProgrammelist Extends TPlannerList
 
 			'=== DRAW TAPE===
 			If licence
-				local licenceAvailable:int = licence.IsAvailable()
 				'mark not available licences (eg. broadcast limits exceeded or not yet released)
-				if not licenceAvailable
+				if not licence.IsAvailable()
 					setAlpha 0.5 * oldColor.a
 					SetColor 255,200,200
 				endif
@@ -796,7 +794,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 			'adjust mouse cursor if needed
 			If THelper.MouseIn(currX, currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
-				If licence.IsAvailable() 
+				If licence and licence.IsAvailable() 
 					If mode = MODE_PROGRAMMEPLANNER and licence.isSingle()
 						GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
 					ElseIf mode = MODE_ARCHIVE
