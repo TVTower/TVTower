@@ -663,23 +663,26 @@ Type TProductionConcept Extends TOwnedGameObject
 			'allows to gain bonus from having the right attributes for
 			'the desired job, regardless of whether you are experienced
 			'in this job or not
-			local attributeMod:Float = 1.0
+			local attributeMod:Float = 0
 			local attributeCount:int = 0
 			'loop through all attributes and add their weighted values
 			for local i:int = 1 to TVTPersonPersonality.count
 				local attributeID:int = TVTPersonPersonality.GetAtIndex(i)
 				local attributeGenre:Float = genreDefinition.GetCastAttribute(job.job, attributeID)
 				local attributePerson:Float = personalityData.GetAttribute(attributeID)
-				if MathHelper.AreApproximatelyEqual(attributePerson, 0.0) then continue
+				'skip if attribute is unimportant for the genre
+				'(~0 as floats could be "0.00001")
 				if MathHelper.AreApproximatelyEqual(attributeGenre, 0.0) then continue
 
-				attributeMod :+ attributeGenre * attributePerson
+ 				attributeMod :+ attributeGenre * attributePerson
 				attributeCount :+ 1
+				'print person.GetFullName() + ":  " + TVTPersonPersonality.GetAsString(attributeID) + " : personValue="+attributePerson + " genreValue="+attributeGenre
 			Next
 			'calc average
-			if attributeCount > 1
-				attributeMod :/ attributeCount
-			endif
+			if attributeCount > 1 Then attributeMod :/ attributeCount
+			'add the attribute bonus/malus
+			'we add the 1.0 afterwards to exclude it from "average calc"
+			attributeMod = 1.0 + attributeMod
 
 
 			'if the cast defines a specific gender for this position,
@@ -729,13 +732,28 @@ Type TProductionConcept Extends TOwnedGameObject
 			'increase lower fits (increases distance from "nobody" to "novice")
 			personFit = THelper.LogisticalInfluence_Euler(personFit, 2)
 
+			
+			local attributeDetail1:String
+			local attributeDetail2:String
+			for local i:int = 1 to TVTPersonPersonality.count
+				if i < 4
+					attributeDetail1 :+ TVTPersonPersonality.GetAsString(i)+ "=" + int(person.GetPersonalityData().GetAttribute(i)*100) + "%  "
+				else
+					attributeDetail2 :+ TVTPersonPersonality.GetAsString(i) + "=" + int(person.GetPersonalityData().GetAttribute(i)*100) + "%  "
+				endif
+			Next
 
 			TLogger.Log("TProductionConcept.CalculateCastFit()", " --------------------", LOG_DEBUG)
-			TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTPersonJob.GetAsString( job.job ) + "~q]", LOG_DEBUG)
+			if person.IsInsignificant()
+				TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTPersonJob.GetAsString( job.job ) + "~q, amateur]", LOG_DEBUG)
+			else
+				TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTPersonJob.GetAsString( job.job ) + "~q, professional]", LOG_DEBUG)
+			endif
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "     genreFit:  "+genreFit, LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "       jobFit:  "+jobFit, LOG_DEBUG)
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "    genderFit:  "+genderFit, LOG_DEBUG)
-			TLogger.Log("TProductionConcept.CalculateCastFit()", " attributeMod:  "+attributeMod, LOG_DEBUG)
+			TLogger.Log("TProductionConcept.CalculateCastFit()", " attributeMod:  "+attributeMod + "  " + attributeDetail1 + attributeDetail2, LOG_DEBUG)
+			
 			if person.HasCustomPersonality()
 				TLogger.Log("TProductionConcept.CalculateCastFit()", " (sympathy   :  " + person.GetChannelSympathy(owner)+")", LOG_DEBUG)
 				TLogger.Log("TProductionConcept.CalculateCastFit()", " (xp         :  " + (person.GetEffectiveJobExperiencePercentage(job.job)*100)+"%)", LOG_DEBUG)
