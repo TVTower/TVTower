@@ -310,9 +310,9 @@ Type TGUIManager
 		If objB._flags & GUI_OBJECT_DRAGGED Then Return -1
 
 		'if objA is active element - move to top
-		If objA.IsFocused() Then Return 1
+		'If objA.IsFocused() Then Return 1
 		'if objB is active element - move to top
-		If objB.IsFocused() Then Return -1
+		'If objB.IsFocused() Then Return -1
 
 		'if objA is "higher", move it to the top
 		If objA.GetZIndex() > objB.GetZIndex() Then Return 1
