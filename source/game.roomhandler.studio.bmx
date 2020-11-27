@@ -1142,9 +1142,9 @@ Type RoomHandler_Studio Extends TRoomHandler
 		If draggedGuiScript And draggedGuiScript.isDragged()
 			If draggedGuiScript.script = GetCurrentStudioScript(roomGUID)
 				highlightSuitcase = True
-			Else
-				highlightStudioManager = True
 			EndIf
+			highlightStudioManager = True
+			highlightTrashBin = True
 		EndIf
 		
 		If draggedGuiProductionConcept and draggedGuiProductionConcept.isDragged()
@@ -1246,6 +1246,9 @@ Type RoomHandler_Studio Extends TRoomHandler
 					draggedGuiProductionConcept = null
 			
 					'handled left click
+					MouseManager.SetClickHandled(1)
+				ElseIf draggedGuiScript and programmeCollection.RemoveScript(draggedGuiScript.script, FALSE)
+					draggedGuiScript = null
 					MouseManager.SetClickHandled(1)
 				EndIf
 			EndIf
