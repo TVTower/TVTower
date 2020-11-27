@@ -1423,17 +1423,23 @@ endrem
 
 
 		If hoveredGuiAdContract
+
 			'draw the current sheet
 			If hoveredGuiAdContract.IsDragged()
-				hoveredGuiAdContract.DrawSheet()
+				If MouseManager.x < GetGraphicsManager().GetWidth()/2
+					hoveredGuiAdContract.DrawSheet(GetGraphicsManager().GetWidth() - 30, 20, 1.0)
+				Else
+					hoveredGuiAdContract.DrawSheet(30, 20, 0)
+				EndIf
+
 			Else
 				'rem
 				'MODE 1: trash contracts have right aligned sheets
 				'        rest is left aligned
 				If GuiListCheap.ContainsContract(hoveredGuiAdContract.contract)
-					hoveredGuiAdContract.DrawSheet(,, 1)
+					hoveredGuiAdContract.DrawSheet(GetGraphicsManager().GetWidth() - 30, 20, 1.0)
 				Else
-					hoveredGuiAdContract.DrawSheet(,, 0)
+					hoveredGuiAdContract.DrawSheet(30, 20, 0)
 				EndIf
 				'endrem
 
@@ -1577,44 +1583,28 @@ Type TGuiAdContract Extends TGUIGameListItem
 	End Method
 
 
-	Method DrawSheet(leftX:Int=30, rightX:Int=30, forceAlign:Int = -1)
-		Local sheetY:Int = 20
-		Local sheetX:Int = leftX
-		Local sheetAlign:Int= 0
-		'if mouse on left side of screen - align sheet on right side
-		'METHOD 1
-		'instead of using the half screen width, we use another
-		'value to remove "flipping" when hovering over the desk-list
-		'if MouseManager.x < RoomHandler_AdAgency.suitcasePos.GetX()
-		'METHOD 2
-		'just use the half of a screen - ensures the data sheet does not overlap
-		'the object
-		If forceAlign <> -1
-			sheetAlign = forceAlign
-		ElseIf MouseManager.x < GameConfig.nonInterfaceRect.GetXCenter()
-			sheetAlign = 1
-		EndIf
+	Method DrawSheet(x:Int=30, y:Int=20, alignment:Float=0.5)
+		local sheetWidth:int = 330
+		local baseX:Int = int(x - alignment * sheetWidth)
 
-		If sheetAlign = 1
-			sheetX = GameConfig.nonInterfaceRect.GetX2() - rightX
-		EndIf
-
+		local oldA:Float = GetAlpha()
+		local oldCol:SColor8
+		GetColor(oldCol)
 		SetColor 0,0,0
-		SetAlpha 0.2
-		Local pointA:TVec2D = New TVec2D.Init(GetScreenRect().GetX() + 0.5 * GetScreenRect().GetW(), GetScreenRect().GetY() + 0.25 * GetScreenRect().GetH())
-		Local pointB:TVec2D = New TVec2D.Init(sheetX + (sheetAlign=0)*100 - (sheetalign=1)*100, sheetY + 75)
-		Local pointC:TVec2D = pointB.Copy().RotateAroundPoint(pointA, 5)
-		'this centers the middle of BC
-		pointB.RotateAroundPoint(pointA, -4)
-		Local tri:Float[]=[pointB.x,pointB.y, pointA.x,pointA.y, pointC.x,pointC.y]
-		DrawPoly(tri)
-		SetColor 255,255,255
-		SetAlpha 1.0
+		SetAlpha 0.2 * oldA
+		TFunctions.DrawBaseTargetRect(baseX + sheetWidth/2, ..
+		                              y + 70, ..
+		                              Self.GetScreenRect().GetX() + Self.GetScreenRect().GetW()/2.0, ..
+		                              Self.GetScreenRect().GetY() + Self.GetScreenRect().GetH()/2.0, ..
+		                              20, 3)
+'		Local pointB:TVec2D = New TVec2D.Init(sheetX + (sheetAlign=0)*100 - (sheetalign=1)*100, sheetY + 75)
+		SetColor(oldCol)
+		SetAlpha oldA
 
 		Local forPlayerID:Int = GetObservedPlayerID()
 		If Self.contract.IsSigned() Then forPlayerID = Self.contract.owner
 
-		Self.contract.ShowSheet(sheetX,sheetY, sheetAlign, TVTBroadcastMaterialType.ADVERTISEMENT, forPlayerID)
+		Self.contract.ShowSheet(x, y, alignment, TVTBroadcastMaterialType.ADVERTISEMENT, forPlayerID)
 	End Method
 
 

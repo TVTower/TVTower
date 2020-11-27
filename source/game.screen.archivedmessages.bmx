@@ -534,45 +534,40 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 	End Method
 
 
-	Method DrawDatasheet(leftX:Float=30, rightX:Float=30)
-		Local sheetY:Float 	= 20
-		Local sheetX:Float 	= int(leftX)
-		Local sheetAlign:Int= 0
-		If MouseManager.x < GetGraphicsManager().GetWidth()/2
-			sheetX = GetGraphicsManager().GetWidth() - int(rightX)
-			sheetAlign = 1
-		EndIf
+	Method DrawDatasheet(x:Int=30, y:Int=20, alignment:Float=0.5)
+		Local sheetWidth:Int = 250
+		local baseX:Int = int(x - alignment * sheetWidth)
 
+		local oldA:Float = GetAlpha()
+		local oldCol:SColor8
+		GetColor(oldCol)
 		SetColor 0,0,0
-		SetAlpha 0.2
-		local sheetCenterX:Float = sheetX
-		if sheetAlign = 0
-			sheetCenterX :+ 250/2 '250 is sheetWidth
-		else
-			sheetCenterX :- 250/2 '250 is sheetWidth
-		endif
-		Local tri:Float[]=[sheetCenterX,sheetY+25, sheetCenterX,sheetY+90, GetScreenRect().GetX() + GetScreenRect().GetW()/2.0, GetScreenRect().GetY() + GetScreenRect().GetH()/2.0]
-		DrawPoly(tri)
-		SetColor 255,255,255
-		SetAlpha 1.0
+		SetAlpha 0.2 * oldA
+		TFunctions.DrawBaseTargetRect(baseX + sheetWidth/2, ..
+		                              y + 70, ..
+		                              Self.GetScreenRect().GetX() + Self.GetScreenRect().GetW()/2.0, ..
+		                              Self.GetScreenRect().GetY() + Self.GetScreenRect().GetH()/2.0, ..
+		                              20, 3)
+		SetColor(oldCol)
+		SetAlpha oldA
 
-		ShowMessageSheet(message, sheetX, sheetY, sheetAlign)
+
+		ShowMessageSheet(message, x, y, alignment)
 	End Method
 
 
-	Function ShowMessageSheet:Int(message:TArchivedMessage, x:Float,y:Float, align:int=0)
+	Function ShowMessageSheet:Int(message:TArchivedMessage, x:Int,y:Int, alignment:Float=0.5)
 		'=== PREPARE VARIABLES ===
 		local sheetWidth:int = 250
 		local sheetHeight:int = 0 'calculated later
-		'move sheet to left when right-aligned
-		if align = 1 then x = x - sheetWidth
+		x = x - alignment * sheetWidth
 
 		local skin:TDatasheetSkin = GetDatasheetSkin("archivedmessage")
 		local contentW:int = skin.GetContentW(sheetWidth)
 		local contentX:int = int(x) + skin.GetContentX()
 		local contentY:int = int(y) + skin.GetContentY()
 		'=== OVERLAY / BORDER ===
-		skin.RenderBorder(int(x), int(y), sheetWidth, sheetHeight)
+		skin.RenderBorder(x, y, sheetWidth, sheetHeight)
 	End Function
 
 End Type

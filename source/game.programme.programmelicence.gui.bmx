@@ -138,28 +138,27 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 	End Method
 
 
-	Method DrawSheet(leftX:Int=30, rightX:Int=30)
-'		self.parentBlock.DrawSheet()
-		Local sheetY:Int = 20
-		Local sheetX:Int = leftX
-		Local sheetAlign:Int= 0
-		'if mouse on left side of screen - align sheet on right side
-		If MouseManager.x < GetGraphicsManager().GetWidth()/2
-			sheetX = GetGraphicsManager().GetWidth() - rightX
-			sheetAlign = 1
-		EndIf
+	Method DrawSheet(x:Int = 30, y:Int = 20, alignment:Float)
+		Local sheetWidth:Int = 330
+		local baseX:Int = int(x - alignment * sheetWidth)
 
+		local oldA:Float = GetAlpha()
+		local oldCol:SColor8
+		GetColor(oldCol)
 		SetColor 0,0,0
-		SetAlpha 0.2
-		Local x:Float = Self.GetScreenRect().GetX()
-		Local tri:Float[]=[Float(sheetX+20),Float(sheetY+25),Float(sheetX+20),Float(sheetY+90),Self.GetScreenRect().GetX()+Self.GetScreenRect().GetW()/2.0+3,Self.GetScreenRect().GetY()+Self.GetScreenRect().GetH()/2.0]
-		DrawPoly(tri)
-		SetColor 255,255,255
-		SetAlpha 1.0
+		SetAlpha 0.2 * oldA
+		TFunctions.DrawBaseTargetRect(baseX + sheetWidth/2, ..
+		                              y + 70, ..
+		                              Self.GetScreenRect().GetX() + Self.GetScreenRect().GetW()/2.0, ..
+		                              Self.GetScreenRect().GetY() + Self.GetScreenRect().GetH()/2.0, ..
+		                              20, 3)
+		SetColor(oldCol)
+		SetAlpha oldA
+
 
 		local forPlayerID:int = licence.owner
 		if forPlayerID <= 0 then forPlayerID = GetObservedPlayerID()
-		Self.licence.ShowSheet(sheetX,sheetY, sheetAlign, TVTBroadcastMaterialType.PROGRAMME, forPlayerID)
+		Self.licence.ShowSheet(x, y, alignment, TVTBroadcastMaterialType.PROGRAMME, forPlayerID)
 	End Method
 
 

@@ -306,7 +306,7 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 	End Method
 
 
-	Method ShowSheet:int(x:int,y:int,align:int)
+	Method ShowSheet:int(x:int, y:int, align:Float = 0.5) override
 		local minAudienceHightlightType:Int = 0
 		If (programmedDay=-1 and programmedHour=-1) or (programmedDay=GetWorldTime().GetDay() and programmedHour=GetWorldTime().GetDayHour())
 			local audienceResult:TAudienceResultBase = GetBroadcastManager().GetAudienceResult( owner )

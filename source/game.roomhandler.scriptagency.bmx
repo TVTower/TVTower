@@ -957,7 +957,7 @@ endrem
 
 		if hoveredGuiScript
 			'draw the current sheet
-			hoveredGuiScript.DrawSheet()
+			hoveredGuiScript.DrawSheet(30, 30, -2)
 		endif
 
 		if TVTDebugInfos

@@ -1243,7 +1243,13 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionbox_modal") )
 
 			'draw datasheet if needed
-			If hoveredGuiCastItem Then hoveredGuiCastItem.DrawDatasheet(hoveredGuiCastItem.GetScreenRect().GetX() - 230, hoveredGuiCastItem.GetScreenRect().GetX() - 170 )
+			If hoveredGuiCastItem 
+				If MouseManager.x < GetGraphicsManager().GetWidth()/2
+					hoveredGuiCastItem.DrawDatasheet(GetGraphicsManager().GetWidth() - 20, 20, 1.0)
+				Else
+					hoveredGuiCastItem.DrawDatasheet(20, 20, 0.0)
+				EndIf
+			EndIf
 
 		Else
 			GuiManager.Draw( TLowerString.Create("supermarket_customproduction_productionconceptbox") )
@@ -2374,35 +2380,32 @@ Type TGUICastListItem Extends TGUISelectListItem
 	End Method
 
 
-	Method DrawDatasheet(leftX:Float=30, rightX:Float=30)
-		Local sheetY:Float 	= 20
-		Local sheetX:Float 	= Int(leftX)
-		Local sheetAlign:Int= 0
-		If MouseManager.x < GetGraphicsManager().GetWidth()/2
-			sheetX = GetGraphicsManager().GetWidth() - Int(rightX)
-			sheetAlign = 1
-		EndIf
+	Method DrawDatasheet(x:Int=30, y:Int=20, alignment:Float=0.5)
+		Local sheetWidth:Int = 250
+		local baseX:Int = int(x - alignment * sheetWidth)
 
+		local oldA:Float = GetAlpha()
+		local oldCol:SColor8
+		GetColor(oldCol)
 		SetColor 0,0,0
-		SetAlpha 0.2
-		Local sheetCenterX:Float = sheetX
-		If sheetAlign = 0
-			sheetCenterX :+ 250/2 '250 is sheetWidth
-		Else
-			sheetCenterX :- 250/2 '250 is sheetWidth
-		EndIf
-		Local tri:Float[]=[sheetCenterX,sheetY+25, sheetCenterX,sheetY+90, GetScreenRect().GetX() + GetScreenRect().GetW()/2.0, GetScreenRect().GetY() + GetScreenRect().GetH()/2.0]
-		DrawPoly(tri)
-		SetColor 255,255,255
-		SetAlpha 1.0
+		SetAlpha 0.2 * oldA
+		TFunctions.DrawBaseTargetRect(baseX + sheetWidth/2, ..
+		                              y + 70, ..
+		                              Self.GetScreenRect().GetX() + Self.GetScreenRect().GetW()/2.0, ..
+		                              Self.GetScreenRect().GetY() + Self.GetScreenRect().GetH()/2.0, ..
+		                              20, 3)
+		SetColor(oldCol)
+		SetAlpha oldA
+
 
 		Local jobID:Int = selectJobID
 		If jobID = -1 Then jobID = GetDisplayJobID()
+
 		If person.IsCelebrity()
-			ShowCastSheet(person, jobID, sheetX, sheetY, sheetAlign, False)
+			ShowCastSheet(person, jobID, x, y, alignment, False)
 		Else
 			'hide person name etc for non-celebs
-			ShowCastSheet(person, jobID, sheetX, sheetY, sheetAlign, True)
+			ShowCastSheet(person, jobID, x, y, alignment, True)
 		EndIf
 	End Method
 
@@ -2483,12 +2486,11 @@ Type TGUICastListItem Extends TGUISelectListItem
 	End Function
 
 
-	Function ShowCastSheet:Int(person:TPersonBase, jobID:Int=-1, x:Float,y:Float, align:Int=0, showAmateurInformation:Int = False)
+	Function ShowCastSheet:Int(person:TPersonBase, jobID:Int=-1, x:Int, y:Int, alignment:Float=0.5, showAmateurInformation:Int = False)
 		'=== PREPARE VARIABLES ===
 		Local sheetWidth:Int = 250
 		Local sheetHeight:Int = 0 'calculated later
-		'move sheet to left when right-aligned
-		If align = 1 Then x = x - sheetWidth
+		x = x - alignment * sheetWidth
 
 		Local skin:TDatasheetSkin = GetDatasheetSkin("cast")
 		Local contentW:Int = skin.GetContentW(sheetWidth)

@@ -1183,8 +1183,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		'draw data sheets for scripts or production concepts
 '		if not studioManagerDialogue
-			If hoveredGuiScript Then hoveredGuiScript.DrawSheet()
-			If hoveredGuiProductionConcept Then hoveredGuiProductionConcept.DrawSheet()
+			If hoveredGuiScript Then hoveredGuiScript.DrawSheet(365, , 0)
+			If hoveredGuiProductionConcept Then hoveredGuiProductionConcept.DrawSheet(365, , 0)
 '		endif
 
 		If TVTDebugInfos

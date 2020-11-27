@@ -430,7 +430,11 @@ Type RoomHandler_Archive extends TRoomHandler
 		'show sheet from hovered suitcase entries
 		if hoveredGuiProgrammeLicence
 			'draw the current sheet
-			hoveredGuiProgrammeLicence.DrawSheet()
+			If MouseManager.x < GetGraphicsManager().GetWidth()/2
+				hoveredGuiProgrammeLicence.DrawSheet(GetGraphicsManager().GetWidth() - 30, 20, 1.0)
+			Else
+				hoveredGuiProgrammeLicence.DrawSheet(30, 20, 0)
+			EndIf
 		endif
 
 		'mark dude-area as interactive

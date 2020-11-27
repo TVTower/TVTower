@@ -670,14 +670,14 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 	End Method
 
 
-	Method ShowSheet:Int(x:Int,y:Int,align:Int)
+	Method ShowSheet:Int(x:Int,y:Int, align:Float=  0.5) override
 		Local extra:TData = New TData
 		extra.AddNumber("programmedDay", programmedDay)
 		extra.AddNumber("programmedHour", programmedHour)
 
 		'show sheet with stats of the broadcast owner, not the current
 		'licence owner
-		Self.licence.ShowSheet(x,y,align, Self.usedAsType, owner, extra)
+		Self.licence.ShowSheet(x, y, align, Self.usedAsType, owner, extra)
 	End Method
 
 

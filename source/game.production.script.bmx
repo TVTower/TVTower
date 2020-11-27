@@ -984,8 +984,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'=== PREPARE VARIABLES ===
 		Local sheetWidth:Int = 310
 		Local sheetHeight:Int = 0 'calculated later
-		'move sheet to left when right-aligned
-		If align = 1 Then x = x - sheetWidth
+		if align = -1 then x = x
+		if align = 0 then x = x - 0.5 * sheetWidth
+		if align = 1 then x = x - sheetWidth
 
 		Local skin:TDatasheetSkin = GetDatasheetSkin("script")
 		Local contentW:Int = skin.GetContentW(sheetWidth)
@@ -1093,8 +1094,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'avoid "Action-Undefined" and "Show-Show"
 		If scriptProductType <> TVTProgrammeProductType.UNDEFINED And scriptProductType <> TVTProgrammeProductType.SERIES
 			local sameType:int = (TVTProgrammeProductType.GetAsString(scriptProductType) = TVTProgrammeGenre.GetAsString(mainGenre))
-			if sameType and scriptProductType = TVTProgrammeProductType.SHOW and TVTProgrammeGenre.GetGroupIndex(mainGenre) = TVTProgrammeGenre.SHOW then sameType = False
-			if sameType and scriptProductType = TVTProgrammeProductType.FEATURE and TVTProgrammeGenre.GetGroupIndex(mainGenre) = TVTProgrammeGenre.FEATURE then sameType = False
+			if sameType and scriptProductType = TVTProgrammeProductType.SHOW and TVTProgrammeGenre.GetGroupKey(mainGenre) = TVTProgrammeGenre.SHOW then sameType = False
+			if sameType and scriptProductType = TVTProgrammeProductType.FEATURE and TVTProgrammeGenre.GetGroupKey(mainGenre) = TVTProgrammeGenre.FEATURE then sameType = False
 
 '				If Not(TVTProgrammeProductType.GetAsString(scriptProductType) = "feature" And TVTProgrammeGenre.GetAsString(mainGenre).Find("feature")>=0)
 			If not sameType

@@ -1201,7 +1201,11 @@ endrem
 			endif
 
 			'draw the current sheet
-			hoveredGuiProgrammeLicence.DrawSheet()
+			If MouseManager.x < GetGraphicsManager().GetWidth()/2
+				hoveredGuiProgrammeLicence.DrawSheet(GetGraphicsManager().GetWidth() - 30, 20, 1)
+			Else
+				hoveredGuiProgrammeLicence.DrawSheet(30, 20, 0)
+			EndIf
 		EndIf
 
 

@@ -1981,7 +1981,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
-	Method ShowSheet:Int(x:Int,y:Int, align:int=0, showMode:int=0, useOwner:int=-1, extraData:TData = null)
+	Method ShowSheet:Int(x:Int,y:Int, align:Float=0.5, showMode:int=0, useOwner:int=-1, extraData:TData = null)
 		if useOwner = -1 then useOwner = owner
 		'set default mode
 		if showMode = 0 then showMode = TVTBroadcastMaterialType.PROGRAMME
@@ -2006,14 +2006,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
-	Method ShowProgrammeSheet:Int(x:Int,y:Int, align:int=0, useOwner:int=-1, extraData:TData = null)
+	Method ShowProgrammeSheet:Int(x:Int,y:Int, align:Float=0.5, useOwner:int=-1, extraData:TData = null)
 		if useOwner = -1 then useOwner = owner
 
 		'=== PREPARE VARIABLES ===
 		local sheetWidth:int = 330
 		local sheetHeight:int = 0 'calculated later
-		'move sheet to left when right-aligned
-		if align = 1 then x = x - sheetWidth
+		x = x - align*sheetWidth
 
 		local skin:TDatasheetSkin = GetDatasheetSkin("programme")
 		local contentW:int = skin.GetContentW(sheetWidth)
@@ -2481,14 +2480,13 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 	End Method
 
 
-	Method ShowTrailerSheet:Int(x:Int,y:Int, align:int=0, useOwner:int = -1, extraData:TData = null)
+	Method ShowTrailerSheet:Int(x:Int,y:Int, align:Float=0.5, useOwner:int = -1, extraData:TData = null)
 		if useOwner = -1 then useOwner = owner
 
 		'=== PREPARE VARIABLES ===
 		local sheetWidth:int = 330
 		local sheetHeight:int = 0 'calculated later
-		'move sheet to left when right-aligned
-		if align = 1 then x = x - sheetWidth
+		x = x - align*sheetWidth
 
 		local skin:TDatasheetSkin = GetDatasheetSkin("trailer")
 		local contentW:int = skin.GetContentW(sheetWidth)

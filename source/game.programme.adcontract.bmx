@@ -1516,7 +1516,7 @@ price :* Max(1, minAudience/1000)
 
 
 
-	Method ShowSheet:Int(x:Int,y:Int, align:Int=0, showMode:Int=0, forPlayerID:Int=-1, minAudienceHightlightType:Int=0)
+	Method ShowSheet:Int(x:Int,y:Int, align:Float=0.5, showMode:Int=0, forPlayerID:Int=-1, minAudienceHightlightType:Int=0)
 		'set default mode
 		If showMode = 0 Then showMode = TVTBroadcastMaterialType.ADVERTISEMENT
 
@@ -1536,14 +1536,13 @@ price :* Max(1, minAudience/1000)
 	End Method
 
 
-	Method ShowInfomercialSheet:Int(x:Int,y:Int, align:Int=0, forPlayerID:Int)
+	Method ShowInfomercialSheet:Int(x:Int, y:Int, align:Float=0.5, forPlayerID:Int)
 		'=== PREPARE VARIABLES ===
 		If forPlayerID <= 0 Then forPlayerID = owner
 
 		Local sheetWidth:Int = 330
 		Local sheetHeight:Int = 0 'calculated later
-		'move sheet to left when right-aligned
-		If align = 1 Then x = x - sheetWidth
+		x = x - align*sheetWidth
 
 		Local skin:TDatasheetSkin = GetDatasheetSkin("infomercial")
 		Local contentW:Int = skin.GetContentW(sheetWidth)
@@ -1667,14 +1666,13 @@ price :* Max(1, minAudience/1000)
 	End Method
 
 
-	Method ShowAdvertisementSheet:Int(x:Int,y:Int, align:Int=0, forPlayerID:Int, minAudienceHightlightType:int = 0)
+	Method ShowAdvertisementSheet:Int(x:Int,y:Int, align:Float=0.5, forPlayerID:Int, minAudienceHightlightType:int = 0)
 		'=== PREPARE VARIABLES ===
 		If forPlayerID <= 0 Then forPlayerID = owner
 
 		Local sheetWidth:Int = 330
 		Local sheetHeight:Int = 0 'calculated later
-		'move sheet to left when right-aligned
-		If align = 1 Then x = x - sheetWidth
+		x = x - align*sheetWidth
 
 		Local skin:TDatasheetSkin = GetDatasheetSkin("advertisement")
 		Local contentW:Int = skin.GetContentW(sheetWidth)

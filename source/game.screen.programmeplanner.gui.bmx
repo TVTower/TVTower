@@ -616,34 +616,27 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	End Method
 
 
-	Method DrawSheet(leftX:Int=30, rightX:Int=30, width:Int=0)
-		Local sheetY:Int = 8
-		Local sheetX:Int = leftX
-		Local sheetAlign:Int= 0
-		If width = 0 Then width = GetGraphicsManager().GetWidth()
-		'if mouse on left side of area - align sheet on right side
-		If MouseManager.x < width/2
-			sheetX = width - rightX
-			sheetAlign = 1
-		EndIf
-
-		'by default nothing is shown
+	Method DrawSheet(x:Int=30, y:Int=30, alignment:Float=0.5)
 		'because we already have hover effects
+		'there is no need to render a arrow/shadow
 		Rem
-			SetColor 0,0,0
-			SetAlpha 0.2
-			Local x:Float = self.GetScreenRect().GetX()
-			Local tri:Float[]
-			if sheetAlign=0
-				tri = [sheetX+20,sheetY+25,sheetX+20,sheetY+90,self.GetScreenRect().GetX()+self.GetScreenRect().GetW()/2.0+3,self.GetScreenRect().GetY()+self.GetScreenRect().GetH()/2.0]
-			else
-				tri = [sheetX-20,sheetY+25,sheetX-20,sheetY+90,self.GetScreenRect().GetX()+self.GetScreenRect().GetW()/2.0+3,self.GetScreenRect().GetY()+self.GetScreenRect().GetH()/2.0]
-			endif
-			DrawPoly(tri)
-			SetColor 255,255,255
-			SetAlpha 1.0
+		Local sheetWidth:Int = 310
+		local baseX:Int = int(x - alignment * sheetWidth)
+
+		local oldA:Float = GetAlpha()
+		local oldCol:SColor8
+		GetColor(oldCol)
+		SetColor 0,0,0
+		SetAlpha 0.2 * oldA
+		TFunctions.DrawBaseTargetRect(baseX + sheetWidth/2, ..
+		                              y + 70, ..
+		                              Self.GetScreenRect().GetX() + Self.GetScreenRect().GetW()/2.0, ..
+		                              Self.GetScreenRect().GetY() + Self.GetScreenRect().GetH()/2.0, ..
+		                              20, 3)
+		SetColor(oldCol)
+		SetAlpha oldA
 		endrem
-		Self.broadcastMaterial.ShowSheet(sheetX,sheetY, sheetAlign)
+		Self.broadcastMaterial.ShowSheet(x, y, alignment)
 	End Method
 End Type
 

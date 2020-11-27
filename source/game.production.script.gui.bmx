@@ -53,30 +53,48 @@ Type TGuiScript Extends TGUIGameListItem
 	End Method
 
 
-	Method DrawSheet(leftX:Int=30, rightX:Int=30)
-		Local sheetY:Int 	= 20
-		Local sheetX:Int 	= leftX
-		Local sheetAlign:Int= 0
-		'if mouse on left side of screen - align sheet on right side
-		'METHOD 1
-		'instead of using the half screen width, we use another
-		'value to remove "flipping" when hovering over the desk-list
-		'if MouseManager.x < RoomHandler_AdAgency.suitcasePos.GetX()
-		'METHOD 2
-		'just use the half of a screen - ensures the data sheet does not overlap
-		'the object
-		If MouseManager.x < GetGraphicsManager().GetWidth()/2
-			sheetX = GetGraphicsManager().GetWidth() - rightX
-			sheetAlign = 1
-		EndIf
+	Method DrawSheet(leftX:Int=30, rightX:Int=30, sheetAlign:Int = 0)
+		Local sheetY:Int = 20
+		Local sheetX:Int = leftX
+		Local sheetWidth:Int = 310
+		Select sheetAlign
+			'align to left x
+			case -1	 sheetX = leftX
+			'use left X as center
+			case  0  sheetX = leftX
+			'align to right if required
+			case  1  sheetX = GetGraphicsManager().GetWidth() - rightX
+			'automatic - left or right
+			default
+				If MouseManager.x < GetGraphicsManager().GetWidth()/2
+					sheetX = GetGraphicsManager().GetWidth() - rightX
+					sheetAlign = 1
+				Else
+					sheetX = leftX
+					sheetAlign = -1
+				EndIf
+		EndSelect
+		
 
+		Local baseX:Float
+		Select sheetAlign
+			case 0	baseX = sheetX
+			case 1  baseX = sheetX - sheetWidth/2
+			default baseX = sheetX + sheetWidth/2 
+		End Select
+
+		local oldA:Float = GetAlpha()
+		local oldCol:SColor8
+		GetColor(oldCol)
 		SetColor 0,0,0
-		SetAlpha 0.2
-		Local x:Float = GetScreenRect().GetX()
-		Local tri:Float[]=[float(sheetX + (sheetAlign=0)*20 - (sheetAlign=1)*30),float(sheetY+25),float(sheetX + (sheetAlign=0)*20 - (sheetAlign=1)*30),float(sheetY+90),GetScreenRect().GetXCenter()+3, GetScreenRect().GetYCenter()]
-		DrawPoly(tri)
-		SetColor 255,255,255
-		SetAlpha 1.0
+		SetAlpha 0.2 * oldA
+		TFunctions.DrawBaseTargetRect(baseX, ..
+		                              sheetY + 70, ..
+		                              Self.GetScreenRect().GetX() + Self.GetScreenRect().GetW()/2.0, ..
+		                              Self.GetScreenRect().GetY() + Self.GetScreenRect().GetH()/2.0, ..
+		                              20, 3)
+		SetColor(oldCol)
+		SetAlpha oldA
 
 		Self.script.ShowSheet(sheetX, sheetY, sheetAlign)
 	End Method

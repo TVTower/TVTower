@@ -72,24 +72,57 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 	End Method
 
 
-	Method DrawSheet(leftX:Int=30, rightX:Int=30)
+	Method DrawSheet(leftX:Int=30, rightX:Int=30, sheetAlign:int = 0)
 		Local sheetY:Int = 80
-		Local sheetX:Int = GetGraphicsManager().GetWidth()/2
+		Local sheetX:Int = leftX
+		Local sheetWidth:Int = 310
+		Select sheetAlign
+			'align to left x
+			case -1	 sheetX = leftX
+			'use left X as center
+			case  0  sheetX = leftX
+			'align to right if required
+			case  1  sheetX = GetGraphicsManager().GetWidth() - rightX
+			'automatic - left or right
+			default
+				If MouseManager.x < GetGraphicsManager().GetWidth()/2
+					sheetX = GetGraphicsManager().GetWidth() - rightX
+					sheetAlign = 1
+				Else
+					sheetX = leftX
+					sheetAlign = -1
+				EndIf
+		EndSelect
+	
 		'move down if unplanned (less spaced needed on datasheet)
 		if productionConcept.IsUnplanned() then sheetY :+ 50
 		if productionConcept.script.IsLive() then sheetY :- 20
 		if productionConcept.script.HasProductionBroadcastLimit() then sheetY :- 15
 		if productionConcept.script.HasBroadcastTimeSlot() then sheetY :- 15
 
-		SetColor 0,0,0
-		SetAlpha 0.2
-		Local x:Float = Self.GetScreenRect().GetX()
-		Local tri:Float[]=[float(sheetX+20),float(sheetY+25),float(sheetX+20),float(sheetY+90),Self.GetScreenRect().GetX()+Self.GetScreenRect().GetW()/2.0+3,Self.GetScreenRect().GetY()+Self.GetScreenRect().GetH()/2.0]
-		DrawPoly(tri)
-		SetColor 255,255,255
-		SetAlpha 1.0
+		
+		Local baseX:Float
+		Select sheetAlign
+			case 0	baseX = sheetX
+			case 1  baseX = sheetX - sheetWidth/2
+			default baseX = sheetX + sheetWidth/2 
+		End Select
 
-		ShowStudioSheet(sheetX, sheetY, 0)
+		local oldA:Float = GetAlpha()
+		local oldCol:SColor8
+		GetColor(oldCol)
+		SetColor 0,0,0
+		SetAlpha 0.2 * oldA
+		TFunctions.DrawBaseTargetRect(baseX, ..
+		                              sheetY + 50, ..
+		                              Self.GetScreenRect().GetX() + Self.GetScreenRect().GetW()/2.0, ..
+		                              Self.GetScreenRect().GetY() + Self.GetScreenRect().GetH()/2.0, ..
+		                              20, 3)
+		SetColor(oldCol)
+		SetAlpha oldA
+
+		ShowStudioSheet(sheetX, sheetY, sheetAlign)
+
 	End Method
 
 
@@ -97,13 +130,18 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		Local sheetY:Int = 80
 		Local sheetX:Int = GetGraphicsManager().GetWidth()/2
 
+		local oldA:Float = GetAlpha()
+		local oldCol:SColor8
+		GetColor(oldCol)
 		SetColor 0,0,0
-		SetAlpha 0.2
-		Local x:Float = Self.GetScreenRect().GetX()
-		Local tri:Float[]=[float(sheetX+20),float(sheetY+25),float(sheetX+20),float(sheetY+90),Self.GetScreenRect().GetX()+Self.GetScreenRect().GetW()/2.0+3,Self.GetScreenRect().GetY()+Self.GetScreenRect().GetH()/2.0]
-		DrawPoly(tri)
-		SetColor 255,255,255
-		SetAlpha 1.0
+		SetAlpha 0.2 * oldA
+		TFunctions.DrawBaseTargetRect(sheetX, ..
+		                              sheetY + 50, ..
+		                              Self.GetScreenRect().GetX() + Self.GetScreenRect().GetW()/2.0, ..
+		                              Self.GetScreenRect().GetY() + Self.GetScreenRect().GetH()/2.0, ..
+		                              20, 3)
+		SetColor(oldCol)
+		SetAlpha oldA
 
 		ShowSupermarketSheet(sheetX, sheetY, 0)
 	End Method
@@ -115,9 +153,9 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		'=== PREPARE VARIABLES ===
 		local sheetWidth:int = 310
 		local sheetHeight:int = 0 'calculated later
-		if align = 1 then x = x + sheetWidth
+		if align = -1 then x = x
 		if align = 0 then x = x - 0.5 * sheetWidth
-		if align = -1 then x = x - sheetWidth
+		if align = 1 then x = x - sheetWidth
 
 		local skin:TDatasheetSkin = GetDatasheetSkin("studioProductionConcept")
 		local contentW:int = skin.GetContentW(sheetWidth)

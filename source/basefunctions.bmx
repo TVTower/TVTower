@@ -144,6 +144,38 @@ End Function
 'collection of useful functions
 Type TFunctions
 	Global roundToBeautifulEnabled:Int = True
+	
+	
+	'base/targetWidth of 0 leads to a triangle
+	Function DrawBaseTargetRect(baseX:Float, baseY:Float, targetX:Float, targetY:Float, baseWidth:Int = 0, targetWidth:Int = 0)
+		rem
+		       (base)         (base)..-B
+			A----x----B         _,x'   |
+			 \   :   /       A-'   \_  |
+			  \  :  /         '--.   \ |
+			   \ : /              '--.\|
+			    \:/                    C (target)
+			     C (target)                     
+		endrem
+
+'		Local lengthBaseTarget:Float = sqr((base.x - target.x)^2 + (base.y - target.y)^2)
+'		Local rotationBaseTarget:Float = acos((targety - baseY) / lengthBaseTarget)
+		Local rotationBaseTarget:Float = acos((targetY - baseY) / sqr((baseX - targetX)^2 + (baseY - targetY)^2))
+		if targetX < baseX then rotationBaseTarget :* -1
+
+		Local bX:Float = baseX + cos(rotationBaseTarget) * baseWidth/2
+		Local bY:Float = baseY - sin(rotationBaseTarget) * baseWidth/2
+		Local aX:Float = baseX - cos(rotationBaseTarget) * baseWidth/2
+		Local aY:Float = baseY + sin(rotationBaseTarget) * baseWidth/2
+
+		Local cX:Float = targetX + cos(rotationBaseTarget) * targetWidth/2
+		Local cY:Float = targetY - sin(rotationBaseTarget) * targetWidth/2
+		Local dX:Float = targetX - cos(rotationBaseTarget) * targetWidth/2
+		Local dY:Float = targetY + sin(rotationBaseTarget) * targetWidth/2
+		
+		DrawPoly([aX, aY, bX, bY, cX, cY, dX, dY])
+	End Function
+	
 
 	Function DrawOutlineRect:Int(x:Int, y:Int, w:Int, h:Int)
 		DrawLine(x, y, x + w, y, 0)

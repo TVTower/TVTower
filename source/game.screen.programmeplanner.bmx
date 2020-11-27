@@ -1203,7 +1203,11 @@ Type TScreenHandler_ProgrammePlanner
 		'only draw, if not over the right side button
 		If hoveredGuiProgrammePlanElement and MouseManager.x < 680
 			'draw the current sheet
-			hoveredGuiProgrammePlanElement.DrawSheet(7, 8, 680) ' +/-3 for dropshadow
+			If MouseManager.x < 340
+				hoveredGuiProgrammePlanElement.DrawSheet(673, 20, 1.0) ' +/-3 for dropshadow
+			Else
+				hoveredGuiProgrammePlanElement.DrawSheet(7, 20, 0) ' +/-3 for dropshadow
+			endif
 		EndIf
 
 

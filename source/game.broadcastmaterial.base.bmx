@@ -264,7 +264,7 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	'overrideable default-drawer
-	Method ShowSheet:int(x:int,y:int,align:int=0)
+	Method ShowSheet:int(x:int,y:int,align:Float=0.5)
 		'
 	End Method
 
