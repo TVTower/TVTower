@@ -517,7 +517,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 			'skip non-existent files
 			If FileSize(fileURI) = 0 Then Continue
 			Local item:TGUISavegameListItem = New TGUISavegameListItem.Create(Null, Null, "savegame " + fileURI)
-			item.SetSavegameFile(fileURI)
+			item.SetSavegameFile(fileURI, True)
 			savegameList.AddItem(item)
 		Next
 
