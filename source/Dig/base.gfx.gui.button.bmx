@@ -253,15 +253,9 @@ endrem
 			caption.Draw()
 		EndIf
 	End Method
-
-
-	Method DrawContent()
-		Local atPoint:TVec2D = GetScreenRect().position
-		Local oldCol:TColor = New TColor.Get()
-
-		SetColor 255, 255, 255
-		SetAlpha oldCol.a * GetScreenAlpha()
-
+	
+	
+	Method DrawButtonBackground:Int(position:TVec2D)
 		Local sprite:TSprite = GetSprite()
 		If Not IsEnabled()
 			sprite = GetSpriteFromRegistry(GetSpriteName() + ".disabled", sprite)
@@ -272,11 +266,22 @@ endrem
 		If sprite
 			'no active image available (when "mousedown" over widget)
 			If IsActive() And (sprite.name = spriteName Or sprite.name="defaultsprite")
-				sprite.DrawArea(atPoint.getX()+1, atPoint.getY()+1, rect.GetW(), rect.GetH())
+				sprite.DrawArea(position.getX()+1, position.getY()+1, rect.GetW(), rect.GetH())
 			Else
-				sprite.DrawArea(atPoint.getX(), atPoint.getY(), rect.GetW(), rect.GetH())
+				sprite.DrawArea(position.getX(), position.getY(), rect.GetW(), rect.GetH())
 			EndIf
 		EndIf
+	End Method
+
+
+	Method DrawContent()
+		Local atPoint:TVec2D = GetScreenRect().position
+		Local oldCol:TColor = New TColor.Get()
+
+		SetColor 255, 255, 255
+		SetAlpha oldCol.a * GetScreenAlpha()
+
+		DrawButtonBackground(atPoint)
 
 		'draw label/caption of button
 		DrawButtonContent(atPoint)

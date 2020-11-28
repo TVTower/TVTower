@@ -412,19 +412,15 @@
 				<child name="gfx_programmetape_stamp_attention"			x="352"	y="1"	 	w="13" h="16" offsetLeft="-145" offsetTop="-1" offsetBottom="-1" />
 
 
-				<child name="gfx_programmeplanner_btn_programme"		x="403"	y="1"	w="108"	h="54" />
-				<child name="gfx_programmeplanner_btn_ads"				x="403"	y="55"	w="108"	h="54" />
-				<child name="gfx_programmeplanner_btn_financials"		x="403"	y="109"	w="108"	h="54" />
-				<child name="gfx_programmeplanner_btn_statistics"		x="403"	y="163"	w="108"	h="54" />
-				<child name="gfx_programmeplanner_btn_unknown"			x="403"	y="217"	w="108"	h="54" />
-				<child name="gfx_programmeplanner_btn_achievements"		x="403"	y="271"	w="108"	h="54" />
-
-				<child name="gfx_programmeplanner_btn_programme.hover"    x="294"	y="328"	w="108"	h="54" />
-				<child name="gfx_programmeplanner_btn_ads.hover"          x="294"	y="382"	w="108"	h="54" />
-				<child name="gfx_programmeplanner_btn_financials.hover"   x="294"	y="436"	w="108"	h="54" />
-				<child name="gfx_programmeplanner_btn_statistics.hover"   x="403"	y="328"	w="108"	h="54" />
-				<child name="gfx_programmeplanner_btn_unknown.hover"      x="403"	y="382"	w="108"	h="54" />
-				<child name="gfx_programmeplanner_btn_achievements.hover" x="403"	y="436"	w="108"	h="54" />
+				<child name="gfx_programmeplanner_btn"              x="196"	y="309"	w="108"	h="54" />
+				<child name="gfx_programmeplanner_btn.hover"        x="196"	y="364"	w="108"	h="54" />
+				<child name="gfx_programmeplanner_btn.active"       x="196"	y="419"	w="108"	h="54" />
+				<child name="gfx_programmeplanner_btn_achievements" x="307"	y="204"	w="94"	h="35" offsetLeft="-7" offsetTop="-6" />
+				<child name="gfx_programmeplanner_btn_statistics"   x="307"	y="241"	w="94"	h="35" offsetLeft="-7" offsetTop="-6" />
+				<child name="gfx_programmeplanner_btn_unknown"      x="307"	y="278"	w="94"	h="35" offsetLeft="-7" offsetTop="-6" />
+				<child name="gfx_programmeplanner_btn_financials"   x="307"	y="315"	w="94"	h="35" offsetLeft="-7" offsetTop="-6" />
+				<child name="gfx_programmeplanner_btn_ads"          x="307"	y="352"	w="94"	h="35" offsetLeft="-7" offsetTop="-6" />
+				<child name="gfx_programmeplanner_btn_programme"    x="307"	y="389"	w="94"	h="35" offsetLeft="-7" offsetTop="-6" />
 
 				<child name="gfx_programmeplanner_clock1.default"				x="196"	y="213"	w="40"	h="30" />
 				<child name="gfx_programmeplanner_clock2.default"				x="237"	y="213"	w="40"	h="30" />

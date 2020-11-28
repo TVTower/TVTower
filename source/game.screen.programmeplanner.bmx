@@ -16,7 +16,7 @@ Type TScreenHandler_ProgrammePlanner
 	Global planningDay:Int = -1
 	Global talkToProgrammePlanner:Int = True		'set to FALSE for deleting gui objects without modifying the plan
 	Global DrawnOnProgrammePlannerBG:Int = 0
-	Global ProgrammePlannerButtons:TGUIButton[6]
+	Global ProgrammePlannerButtons:TGUIProgrammePlannerButton[6]
 	Global PPprogrammeList:TgfxProgrammelist
 	Global PPcontractList:TgfxContractlist
 	Global overlayedAdSlots:Int[24]
@@ -101,23 +101,29 @@ Type TScreenHandler_ProgrammePlanner
 			plannerPreviousDayButton.SetOption(GUI_OBJECT_ACCEPTS_DROP)
 
 
-			ProgrammePlannerButtons[0] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 0*54), Null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
-			ProgrammePlannerButtons[0].spriteName = "gfx_programmeplanner_btn_ads"
+			ProgrammePlannerButtons[0] = New TGUIProgrammePlannerButton.Create(New TVec2D.Init(686, 41 + 0*54), Null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[0].spriteName = "gfx_programmeplanner_btn"
+			ProgrammePlannerButtons[0].spriteInlayName = "gfx_programmeplanner_btn_ads"
 
-			ProgrammePlannerButtons[1] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 1*54), Null, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
-			ProgrammePlannerButtons[1].spriteName = "gfx_programmeplanner_btn_programme"
+			ProgrammePlannerButtons[1] = New TGUIProgrammePlannerButton.Create(New TVec2D.Init(686, 41 + 1*54), Null, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[1].spriteName = "gfx_programmeplanner_btn"
+			ProgrammePlannerButtons[1].spriteInlayName = "gfx_programmeplanner_btn_programme"
 
-			ProgrammePlannerButtons[2] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 2*54), Null, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
-			ProgrammePlannerButtons[2].spriteName = "gfx_programmeplanner_btn_financials"
+			ProgrammePlannerButtons[2] = New TGUIProgrammePlannerButton.Create(New TVec2D.Init(686, 41 + 2*54), Null, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[2].spriteName = "gfx_programmeplanner_btn"
+			ProgrammePlannerButtons[2].spriteInlayName = "gfx_programmeplanner_btn_financials"
 
-			ProgrammePlannerButtons[3] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 3*54), Null, GetLocale("PLANNER_STATISTICS"), "programmeplanner_buttons")
-			ProgrammePlannerButtons[3].spriteName = "gfx_programmeplanner_btn_statistics"
+			ProgrammePlannerButtons[3] = New TGUIProgrammePlannerButton.Create(New TVec2D.Init(686, 41 + 3*54), Null, GetLocale("PLANNER_STATISTICS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[3].spriteName = "gfx_programmeplanner_btn"
+			ProgrammePlannerButtons[3].spriteInlayName = "gfx_programmeplanner_btn_statistics"
 
-			ProgrammePlannerButtons[4] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 4*54), Null, GetLocale("PLANNER_ACHIEVEMENTS"), "programmeplanner_buttons")
-			ProgrammePlannerButtons[4].spriteName = "gfx_programmeplanner_btn_achievements"
+			ProgrammePlannerButtons[4] = New TGUIProgrammePlannerButton.Create(New TVec2D.Init(686, 41 + 4*54), Null, GetLocale("PLANNER_ACHIEVEMENTS"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[4].spriteName = "gfx_programmeplanner_btn"
+			ProgrammePlannerButtons[4].spriteInlayName = "gfx_programmeplanner_btn_achievements"
 
-			ProgrammePlannerButtons[5] = New TGUIButton.Create(New TVec2D.Init(686, 41 + 5*54), Null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
-			ProgrammePlannerButtons[5].spriteName = "gfx_programmeplanner_btn_unknown"
+			ProgrammePlannerButtons[5] = New TGUIProgrammePlannerButton.Create(New TVec2D.Init(686, 41 + 5*54), Null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
+			ProgrammePlannerButtons[5].spriteName = "gfx_programmeplanner_btn"
+			ProgrammePlannerButtons[5].spriteInlayName = "gfx_programmeplanner_btn_unknown"
 
 			For Local i:Int = 0 To 5
 				ProgrammePlannerButtons[i].SetAutoSizeMode(TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE)
@@ -2031,4 +2037,38 @@ endrem
 		'reset target for font
 		TBitmapFont.setRenderTarget(Null)
 	End Function
+End Type
+
+
+
+Type TGUIProgrammePlannerButton extends TGUIButton
+	Field spriteInlayName:String
+	Field spriteInlay:TSprite
+
+	Method Create:TGUIProgrammePlannerButton(pos:SVec2I, dimension:SVec2I, value:String, State:String = "") override
+		Return TGUIProgrammePlannerButton(Super.Create(new TVec2D.Init(pos.x, pos.y), new TVec2D.Init(dimension.x, dimension.y), value, State))
+	End Method
+
+
+	Method Create:TGUIProgrammePlannerButton(pos:TVec2D, dimension:TVec2D, value:String, State:String = "") override
+		Return TGUIProgrammePlannerButton(Super.Create(pos, dimension, value, State))
+	End Method
+		
+
+	Method DrawButtonBackground:Int(position:TVec2D) override
+		Super.DrawButtonBackground(position)
+		
+		If not spriteInlay and spriteInlayName
+			spriteInlay = GetSpriteFromRegistry(spriteInlayName)
+		EndIf
+		
+		If spriteInlay
+			'no custom ".active" - then just offset +1,+1
+			If IsActive() And (spriteInlay.name = spriteInlayName Or spriteInlay.name="defaultsprite")
+				spriteInlay.Draw(position.getX()+1, position.getY()+1)
+			Else
+				spriteInlay.Draw(position.getX(), position.getY())
+			EndIf
+		EndIf
+	End Method
 End Type
