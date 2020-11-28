@@ -651,7 +651,7 @@ Type TPersonBase Extends TGameObject
 	
 	Method GetJobExperiencePercentage:Float(jobID:Int)
 		If TVTPersonJob.IsCastJob(jobID) And GetProductionData()
-			Return GetProductionData().GetExperiencePercentage(jobID)
+			Return GetProductionData().GetJobExperiencePercentage(jobID)
 		Else
 			'TODO: Other getters for other jobs ? 
 			Return 0
@@ -661,7 +661,7 @@ Type TPersonBase Extends TGameObject
 
 	Method GetEffectiveJobExperiencePercentage:Float(jobID:Int)
 		If TVTPersonJob.IsCastJob(jobID) And GetProductionData()
-			Return GetProductionData().GetEffectiveExperiencePercentage(jobID)
+			Return GetProductionData().GetEffectiveJobExperiencePercentage(jobID)
 		Else
 			'TODO: Other getters for other jobs ? 
 			Return 0.0
@@ -977,16 +977,24 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 		EndIf
 
 		'base values
-		If skill = 0 Then skill = BiasedRandRange(0,100, 0.1) / 100.0
-		If power = 0 Then power = BiasedRandRange(0,100, 0.1) / 100.0
-		If humor = 0 Then humor = BiasedRandRange(0,100, 0.1) / 100.0
-		If charisma = 0 Then charisma = BiasedRandRange(0,100, 0.1) / 100.0
+		If skill = 0 Then skill = BiasedRandRange(10, 75, 0.25) / 100.0
+		If power = 0 Then power = BiasedRandRange(10, 75, 0.35) / 100.0
+		If humor = 0 Then humor = BiasedRandRange(10, 75, 0.35) / 100.0
+		If charisma = 0 Then charisma = BiasedRandRange(10, 75, 0.3) / 100.0
 		'given at birth (or by a doctor :-))
-		If appearance = 0 Then appearance = BiasedRandRange(0,100, 0.2) / 100.0
+		If appearance = 0 Then appearance = BiasedRandRange(5, 75, 0.35) / 100.0
 
 		'things which might change later on
-		If fame = 0 Then fame = BiasedRandRange(0,50, 0.1) / 100.0
-		If scandalizing = 0 Then scandalizing = BiasedRandRange(0,25, 0.2) / 100.0
+		If fame = 0 
+			fame = BiasedRandRange(0, 50, 0.2) / 100.0
+			'the beautiful tend to have more fame (poster boys and girls)
+			fame :+ appearance * 0.15
+		EndIf
+		If scandalizing = 0 
+			scandalizing = BiasedRandRange(0, 25, 0.4) / 100.0
+			'the beautiful tend to be more scandalizing (up to +10%)
+			scandalizing :+ appearance * 0.1
+		EndIf
 	End Method
 
 
@@ -1287,12 +1295,12 @@ Type TPersonProductionBaseData Extends TPersonBaseData
 	End Method
 
 
-	Method GetExperiencePercentage:Float(job:Int)
+	Method GetJobExperiencePercentage:Float(job:Int)
 		Return 0
 	End Method
 
 
-	Method GetEffectiveExperiencePercentage:Float(job:Int)
+	Method GetEffectiveJobExperiencePercentage:Float(job:Int)
 		Return 0
 	End Method
 

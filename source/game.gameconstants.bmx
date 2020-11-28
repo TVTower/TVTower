@@ -88,7 +88,7 @@ Type TVTAchievementCategory {_exposeToLua}
 
 	Function GetAtIndex:Int(index:Int = 0)
 		If index <= 0 Then Return 0
-		Return 2^(index-1)
+		Return 1 Shl (index-1)
 	End Function
 
 
@@ -188,7 +188,7 @@ Type TVTMessageCategory {_exposeToLua}
 
 	Function GetAtIndex:Int(index:Int = 0)
 		If index <= 0 Then Return 0
-		Return 2^(index-1)
+		Return 1 Shl (index-1)
 	End Function
 
 
@@ -258,7 +258,7 @@ Type TVTStationFlag {_exposeToLua}
 
 	Function GetAtIndex:Int(index:Int = 0)
 		If index <= 0 Then Return 0
-		Return 2^(index-1)
+		Return 1 Shl (index-1)
 	End Function
 
 
@@ -514,7 +514,7 @@ Type TVTBroadcastMaterialSourceFlag {_exposeToLua}
 
 	Function GetAtIndex:Int(index:Int = 0)
 		If index <= 0 Then Return 0
-		Return 2^(index-1)
+		Return 1 Shl (index-1)
 	End Function
 
 
@@ -645,7 +645,7 @@ Type TVTScriptFlag {_exposeToLua}
 
 	Function GetAtIndex:Int(index:Int = 0)
 		If index <= 0 Then Return 0
-		Return 2^(index-1)
+		Return 1 Shl (index-1)
 	End Function
 
 
@@ -713,7 +713,7 @@ Type TVTProgrammeLicenceFlag {_exposeToLua}
 
 	Function GetAtIndex:Int(index:Int = 0)
 		If index <= 0 Then Return 0
-		Return 2^(index-1)
+		Return 1 Shl (index-1)
 	End Function
 
 
@@ -1017,22 +1017,104 @@ Type TVTProgrammeGenre {_exposeToLua}
 	Const genreMaximum:Int = 401
 
 
-	Function GetAtIndex:Int(index:Int)
-		If index >= 0 And index <= 18 Then Return index
-		If index >= 100 And index <= 104 Then Return index
-		If index >= 200 And index <= 204 Then Return index
-		If index >= 300 And index <= 301 Then Return index
-		If index >= 400 And index <= 401 Then Return index
-		Return -1
+	Function GetKey:Int(index:Int)
+		Select index
+			Case 1   Return Adventure
+			Case 2   Return Action
+			Case 3   Return Animation
+			Case 4   Return Crime
+			Case 5   Return Comedy
+			Case 6   Return Documentary
+			Case 7   Return Drama
+			Case 8   Return Erotic
+			Case 9   Return Family
+			Case 10  Return Fantasy
+			Case 11  Return History
+			Case 12  Return Horror
+			Case 13  Return Monumental
+			Case 14  Return Mystery
+			Case 15  Return Romance
+			Case 16  Return SciFi
+			Case 17  Return Thriller
+			Case 18  Return Western
+			'Show-Genre 100+
+			Case 19  Return Show
+			Case 20  Return Show_Music
+			Case 21  Return Show_Politics
+			Case 22  Return Show_Talk
+			Case 23  Return Show_Game
+			'Event-Genre 200+
+			Case 24  Return Event
+			Case 25  Return Event_Politics
+			Case 26  Return Event_Music
+			Case 27  Return Event_Sport
+			Case 28  Return Event_Showbiz
+			'Feature-Genre 300+
+			Case 29  Return Feature
+			Case 30  Return Feature_YellowPress
+			'Internal-Genre 300+
+			Case 31  Return Infomercial
+			Case 32  Return NewsSpecial
+
+			Case  0  Return Undefined
+			Default  Return Undefined
+		End Select
+	End Function
+	
+	
+	'new entries MUST be added at the BOTTOM to keep numbers for
+	'old savegames intact
+	Function GetIndex:Int(key:Int)
+		Select key
+			Case Adventure				Return 1
+			Case Action					Return 2
+			Case Animation				Return 3
+			Case Crime					Return 4
+			Case Comedy					Return 5
+			Case Documentary			Return 6
+			Case Drama					Return 7
+			Case Erotic					Return 8
+			Case Family					Return 9
+			Case Fantasy				Return 10
+			Case History				Return 11
+			Case Horror					Return 12
+			Case Monumental				Return 13
+			Case Mystery				Return 14
+			Case Romance				Return 15
+			Case SciFi					Return 16
+			Case Thriller				Return 17
+			Case Western				Return 18
+			'Show-Genre 100+
+			Case Show					Return 19
+			Case Show_Music				Return 20
+			Case Show_Politics			Return 21
+			Case Show_Talk			    Return 22
+			Case Show_Game			    Return 23
+			'Event-Genre 200+
+			Case Event					Return 24
+			Case Event_Politics			Return 25
+			Case Event_Music			Return 26
+			Case Event_Sport			Return 27
+			Case Event_Showbiz          Return 28
+			'Feature-Genre 300+
+			Case Feature                Return 29
+			Case Feature_YellowPress    Return 30
+			'Internal-Genre 300+
+			Case Infomercial            Return 31
+			Case NewsSpecial            Return 32
+
+			Case Undefined				Return 0
+			Default						Return 0
+		End Select
 	End Function
 
 
-	Function GetGroupIndex:Int(index:Int)
-		If index >= 0 And index <= 18 Then Return -1
-		If index >= 100 And index <= 104 Then Return 100
-		If index >= 200 And index <= 204 Then Return 200
-		If index >= 300 And index <= 301 Then Return 300
-		If index >= 400 And index <= 401 Then Return 400
+	Function GetGroupKey:Int(key:Int)
+		If key >= 0 And key <= 18 Then Return -1
+		If key >= 100 And key <= 104 Then Return 100
+		If key >= 200 And key <= 204 Then Return 200
+		If key >= 300 And key <= 301 Then Return 300
+		If key >= 400 And key <= 401 Then Return 400
 		Return -1
 	End Function
 
@@ -1061,6 +1143,7 @@ Type TVTProgrammeGenre {_exposeToLua}
 			Case "show"                 Return SHOW
 			Case "show_music"		    Return SHOW_MUSIC
 			Case "show_politics"	    Return SHOW_POLITICS
+			Case "show_talk"	        Return SHOW_TALK
 			Case "show_game"	        Return SHOW_GAME
 			'event-genre 200+
 			Case "event"                Return EVENT
@@ -1106,6 +1189,7 @@ Type TVTProgrammeGenre {_exposeToLua}
 			Case Show_Music				Return "show_music"
 			Case Show_Politics			Return "show_politics"
 			Case Show_Talk			    Return "show_talk"
+			Case Show_Game			    Return "show_game"
 			'Event-Genre 200+
 			Case Event					Return "event"
 			Case Event_Politics			Return "event_politics"
@@ -1186,7 +1270,7 @@ Type TVTProgrammeDataFlag {_exposeToLua}
 
 	Function GetAtIndex:Int(index:Int = 0)
 		If index <= 0 Then Return 0
-		Return 2^(index-1)
+		Return 1 Shl (index-1)
 	End Function
 
 
@@ -1358,7 +1442,7 @@ Type TVTProductionConceptFlag {_exposeToLua}
 
 	Function GetAtIndex:Int(index:Int = 0)
 		If index <= 0 Then Return 0
-		Return 2^(index-1)
+		Return 1 Shl (index-1)
 	End Function
 
 
@@ -1419,7 +1503,7 @@ Type TVTNewsFlag {_exposeToLua}
 
 	Function GetAtIndex:Int(index:Int = 0)
 		If index <= 0 Then Return 0
-		Return 2^(index-1)
+		Return 1 Shl (index-1)
 	End Function
 
 
@@ -1473,7 +1557,7 @@ Type TVTTargetGroup {_exposeToLua}
 
 	Function GetAtIndex:Int(index:Int = 0)
 		If index <= 0 Then Return 0
-		Return 2^(index-1)
+		Return 1 Shl (index-1)
 	End Function
 
 
@@ -1568,7 +1652,7 @@ Type TVTPressureGroup {_exposeToLua}
 
 	Function GetAtIndex:Int(index:Int = 0)
 		If index <= 0 Then Return 0
-		Return 2^(index-1)
+		Return 1 Shl (index-1)
 	End Function
 
 
@@ -1782,7 +1866,6 @@ Type TVTPersonJob {_exposeToLua}
 	Function GetAtIndex:Int(index:Int = 0)
 		If index <= 0 Then Return 0
 		Return 1 Shl (index-1)
-		'return 2^(index-1)
 	End Function
 
 	
@@ -1791,7 +1874,6 @@ Type TVTPersonJob {_exposeToLua}
 		If index > castCount Then Return 0
 
 		Return 1 Shl (index-1)
-		'return 2^(index-1)
 	End Function
 
 

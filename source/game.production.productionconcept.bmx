@@ -655,14 +655,16 @@ Type TProductionConcept Extends TOwnedGameObject
 			local jobsDone:int = 1.0 * person.HasJob(job.job) + 0.10 * person.GetTotalProductionJobsDone() + 0.90 * person.GetProductionJobsDone( job.job )
 			'euler strength: 2.5, so for done jobs: 22%, 39%, 52%, ...
 			local jobFit:Float = THelper.LogisticalInfluence_Euler(Min(1.0, 0.1 * jobsDone), 2.5)
+			local jobFitSwitched:Int = (RandRange(0,100) < 5)
 			'by 5% chance "switch" effect
-			if RandRange(0,100) < 5 then jobFit = 1.0 - jobFit
+			if jobFitSwitched then jobFit = 1.0 - jobFit
 
 
 			'=== ATTRIBUTES - GENRE MOD ===
 			'allows to gain bonus from having the right attributes for
 			'the desired job, regardless of whether you are experienced
 			'in this job or not
+			'a final attributeMod of 1.0 means they are 
 			local attributeMod:Float = 0
 			local attributeCount:int = 0
 			'loop through all attributes and add their weighted values
@@ -670,7 +672,8 @@ Type TProductionConcept Extends TOwnedGameObject
 				local attributeID:int = TVTPersonPersonality.GetAtIndex(i)
 				local attributeGenre:Float = genreDefinition.GetCastAttribute(job.job, attributeID)
 				local attributePerson:Float = personalityData.GetAttribute(attributeID)
-				'skip if attribute is unimportant for the genre
+				'skip if attribute is not giving bonus or malus for the
+				'genre. "0" means it is "as important as others" 
 				'(~0 as floats could be "0.00001")
 				if MathHelper.AreApproximatelyEqual(attributeGenre, 0.0) then continue
 
@@ -693,13 +696,16 @@ Type TProductionConcept Extends TOwnedGameObject
 			'And even 8% benefit from being another gender (script writer
 			'was wrong then ;-))
 			local genderFit:Float = 1.0
+			local genderFitSwitched:Int = False
 			if job.gender <> 0
 				if person.gender <> job.gender
 					local luck:int = RandRange(0,100)
 					if luck <= 80 '80%
 						genderFit = RandRange(10,20)/100.0
+						genderFitSwitched = True
 					elseif luck <= 88 '8%
 						genderFit = RandRange(110,120)/100.0
+						genderFitSwitched = True
 					else
 						'no change
 					endif
@@ -735,23 +741,50 @@ Type TProductionConcept Extends TOwnedGameObject
 			
 			local attributeDetail1:String
 			local attributeDetail2:String
-			for local i:int = 1 to TVTPersonPersonality.count
-				if i < 4
-					attributeDetail1 :+ TVTPersonPersonality.GetAsString(i)+ "=" + int(person.GetPersonalityData().GetAttribute(i)*100) + "%  "
-				else
-					attributeDetail2 :+ TVTPersonPersonality.GetAsString(i) + "=" + int(person.GetPersonalityData().GetAttribute(i)*100) + "%  "
-				endif
-			Next
+			if person.IsCelebrity()
+				for local i:int = 1 to TVTPersonPersonality.count
+					if i < 4
+						attributeDetail1 :+ TVTPersonPersonality.GetAsString(i)+ "=" + int(person.GetPersonalityData().GetAttribute(i)*100) + "%  "
+					else
+						attributeDetail2 :+ TVTPersonPersonality.GetAsString(i) + "=" + int(person.GetPersonalityData().GetAttribute(i)*100) + "%  "
+					endif
+				Next
+			endif
 
 			TLogger.Log("TProductionConcept.CalculateCastFit()", " --------------------", LOG_DEBUG)
-			if person.IsInsignificant()
-				TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTPersonJob.GetAsString( job.job ) + "~q, amateur]", LOG_DEBUG)
+			local jobsText:String
+			if person._jobs = 0 
+				jobsText = "none"
 			else
-				TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTPersonJob.GetAsString( job.job ) + "~q, professional]", LOG_DEBUG)
+				For local jobID:int = EachIn TVTPersonJob.GetAll(person._jobs)
+					if jobsText then jobsText :+ ", "
+					jobsText :+ TVTPersonJob.GetAsString(jobID)
+				Next
+			EndIf
+			if person.IsInsignificant()
+				TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTPersonJob.GetAsString( job.job ) + "~q, amateur, jobs: " + jobsText + "]", LOG_DEBUG)
+			else
+				TLogger.Log("TProductionConcept.CalculateCastFit()", person.GetFullName() + " [as ~q"+ TVTPersonJob.GetAsString( job.job ) + "~q, professional, jobs: " + jobsText + "]", LOG_DEBUG)
 			endif
 			TLogger.Log("TProductionConcept.CalculateCastFit()", "     genreFit:  "+genreFit, LOG_DEBUG)
-			TLogger.Log("TProductionConcept.CalculateCastFit()", "       jobFit:  "+jobFit, LOG_DEBUG)
-			TLogger.Log("TProductionConcept.CalculateCastFit()", "    genderFit:  "+genderFit, LOG_DEBUG)
+			if jobFitSwitched
+				if jobFit < 0.5
+					TLogger.Log("TProductionConcept.CalculateCastFit()", "       jobFit:  "+jobFit + " (bad luck)", LOG_DEBUG)
+				else
+					TLogger.Log("TProductionConcept.CalculateCastFit()", "       jobFit:  "+jobFit + " (good luck)", LOG_DEBUG)
+				endif
+			else
+				TLogger.Log("TProductionConcept.CalculateCastFit()", "       jobFit:  "+jobFit, LOG_DEBUG)
+			endif
+			if genderFitSwitched
+				if genderFit < 0.5
+					TLogger.Log("TProductionConcept.CalculateCastFit()", "    genderFit:  "+genderFit + " (bad luck)", LOG_DEBUG)
+				else
+					TLogger.Log("TProductionConcept.CalculateCastFit()", "    genderFit:  "+genderFit + " (good luck)", LOG_DEBUG)
+				endif
+			else
+				TLogger.Log("TProductionConcept.CalculateCastFit()", "    genderFit:  "+genderFit, LOG_DEBUG)
+			endif
 			TLogger.Log("TProductionConcept.CalculateCastFit()", " attributeMod:  "+attributeMod + "  " + attributeDetail1 + attributeDetail2, LOG_DEBUG)
 			
 			if person.HasCustomPersonality()

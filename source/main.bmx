@@ -1544,9 +1544,9 @@ endrem
 
 			'RON: debug purpose - see if the managed guielements list increase over time
 			If GUIManager.GetFocus()
-				textX:+ Max(170, bf.DrawSimple("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"] focused: "+GUIManager.GetFocus()._id, textX,0).x)
+				textX:+ Max(170, bf.DrawSimple("GUI objects: "+ GUIManager.list.count()+" [d:"+GUIManager.GetDraggedCount()+", focusID: "+GUIManager.GetFocus()._id + " ("+TTypeID.ForObject(GUIManager.GetFocus()).name()+")", textX,0).x)
 			Else
-				textX:+ Max(170, bf.DrawSimple("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"]" , textX,0).x)
+				textX:+ Max(170, bf.DrawSimple("GUI objects: "+ GUIManager.list.count()+" [d:"+GUIManager.GetDraggedCount()+"]" , textX,0).x)
 			EndIf
 
 			If GetGame().networkgame And Network.client

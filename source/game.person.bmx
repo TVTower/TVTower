@@ -1,6 +1,7 @@
 SuperStrict
 Import "game.person.base.bmx"
 Import "game.gamerules.bmx"
+Import "game.misc.xpcontainer.bmx"
 Import "game.programme.programmedata.bmx"
 Import "game.programme.programmerole.bmx"
 Import "Dig/base.util.figuregenerator.bmx"
@@ -95,13 +96,145 @@ End Function
 
 
 
+
+Type TXPContainer_Job extends TXPContainer
+	Method GetValueIndex:Int(key:Int) 
+		Return TVTPersonJob.GetIndex(key)
+	End Method
+	
+	Method GetValueKey:Int(index:Int)
+		Return TVTPersonJob.GetAtIndex(index)
+	End Method
+
+	Method GetEffectivePercentage:Float(key:Int)
+		Local jobXP:Float = GetPercentage(key)
+		Local result:Float
+		Local otherXP:Float
+		Local otherWeightMod:Float
+		
+		'add partial XP of other "also suiting" jobs
+		'(an actor can also act as supporting actor ...)
+		Select key
+			Case TVTPersonJob.GUEST
+				'take the best job the person can do
+				otherXP  = 1.00 * GetBestPercentage()
+				otherWeightMod = 0.9
+				'print GetFullName() + " as guest. jobXP=" + jobXP + "  otherXP="+otherXP
+
+			Case TVTPersonJob.ACTOR
+				'> 1.0 (so weight mod needs to make sure to stay < 1.0 at the end)
+				otherXP  = 0.90 * GetPercentage(TVTPersonJob.SUPPORTINGACTOR)
+				otherXP :+ 0.20 * GetPercentage(TVTPersonJob.MUSICIAN)
+				otherWeightMod = 0.75
+
+			Case TVTPersonJob.SUPPORTINGACTOR
+				'> 1.0 (so weight mod needs to make sure to stay < 1.0 at the end)
+				otherXP  = 0.90 * GetPercentage(TVTPersonJob.ACTOR)
+				otherXP :+ 0.20 * GetPercentage(TVTPersonJob.MUSICIAN)
+				otherWeightMod = 0.60
+
+			Case TVTPersonJob.HOST
+				otherXP  = 0.35 * GetPercentage(TVTPersonJob.ACTOR)
+				otherXP :+ 0.20 * GetPercentage(TVTPersonJob.SUPPORTINGACTOR)
+				otherXP :+ 0.30 * GetPercentage(TVTPersonJob.MUSICIAN)
+				otherXP :+ 0.15 * GetPercentage(TVTPersonJob.REPORTER)
+				otherWeightMod = 0.4
+
+			Case TVTPersonJob.DIRECTOR
+				otherXP  = 0.50 * GetPercentage(TVTPersonJob.ACTOR)
+				otherXP :+ 0.40 * GetPercentage(TVTPersonJob.SUPPORTINGACTOR)
+				otherXP :+ 0.05 * GetPercentage(TVTPersonJob.HOST)
+				otherXP :+ 0.05 * GetPercentage(TVTPersonJob.REPORTER)
+				otherWeightMod = 0.2
+
+			Case TVTPersonJob.SCRIPTWRITER
+				otherXP  = 0.50 * GetPercentage(TVTPersonJob.DIRECTOR)
+				otherXP :+ 0.20 * GetPercentage(TVTPersonJob.ACTOR)
+				otherXP :+ 0.15 * GetPercentage(TVTPersonJob.SUPPORTINGACTOR)
+				otherXP :+ 0.10 * GetPercentage(TVTPersonJob.MUSICIAN) 'they write songs!
+				otherXP :+ 0.05 * GetPercentage(TVTPersonJob.REPORTER)
+				otherWeightMod = 0.15
+
+			Default
+				otherXP = 0
+				otherWeightMod = 0
+		End Select
+
+		Return (jobXP + otherWeightMod * (1.0 - jobXP) * otherXP)
+	End Method
+
+
+
+
+	Method GetNextGain:Int(key:Int, extra:object)
+		local programmeData:TProgrammeData = TProgrammeData(extra)
+		if not programmeData then return 0
+
+		'5 perfect movies would lead to a 100% experienced person
+		Local baseGain:Float = ((1.0/5) * MAX_XP) * programmeData.GetQualityRaw()
+		'series episodes do not get that much exp
+		If programmeData.IsEpisode() Then baseGain :* 0.5
+
+		Local xp:Int = Get(key)
+
+		'the more XP we have, the harder it gets
+		If xp <  500 Then Return 1.0 * baseGain
+		If xp < 1000 Then Return 0.8 * baseGain
+		If xp < 2500 Then Return 0.6 * baseGain
+		If xp < 5000 Then Return 0.4 * baseGain
+		Return 0.2 * baseGain
+	End Method
+End Type
+
+
+
+
+Type TXPContainer_Genre extends TXPContainer
+	Method GetValueIndex:Int(key:Int) 
+		Return TVTProgrammeGenre.GetIndex(key)
+	End Method
+	
+	Method GetValueKey:Int(index:Int)
+		Return TVTProgrammeGenre.GetKey(index)
+	End Method
+
+	'takes into consideration OTHER ids too 
+	'(eg "actor" for "supportingactor")
+	Method GetEffectivePercentage:Float(key:Int)
+		Return GetPercentage(key)
+	End Method
+
+
+	Method GetNextGain:Int(key:Int, extra:object)
+		local programmeData:TProgrammeData = TProgrammeData(extra)
+		if not programmeData then return 0
+
+		'5 perfect movies would lead to a 100% experienced person
+		Local baseGain:Float = ((1.0/5) * MAX_XP) * programmeData.GetQualityRaw()
+		'series episodes do not get that much exp
+		If programmeData.IsEpisode() Then baseGain :* 0.5
+
+		Local xp:Int = Get(key)
+
+		'the more XP we have, the harder it gets
+		If xp <  500 Then Return 1.0 * baseGain
+		If xp < 1000 Then Return 0.8 * baseGain
+		If xp < 2500 Then Return 0.6 * baseGain
+		If xp < 5000 Then Return 0.4 * baseGain
+		Return 0.2 * baseGain
+	End Method
+End Type
+
+
+
+
 Type TPersonProductionData Extends TPersonProductionBaseData
 	'at which genres this person is doing his best job
 	'if this is NOT set, it calculates a top genre based on previous
 	'productions. So you can use this to override any "dynamic" top genres
 	Field topGenre:Int = 0
-	'each job has its own xp, xp[0] is used for "general xp"
-	Field xp:Int[] = [0]
+	Field jobXP:TXPContainer_Job = new TXPContainer_Job
+	Field genreXP:TXPContainer_Genre = new TXPContainer_Genre
 
 	Field calculatedTopGenreCache:Int = 0 {nosave}
 	'array containing GUIDs of all produced programmes
@@ -110,7 +243,6 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 	Field producedProgrammeIDs:Int[] {nosave}
 	Field producedProgrammesCached:Int = False {nosave}
 
-	Const MAX_XP:Int = 10000
 	Global PersonsGainExperienceForProgrammes:Int = True
 	
 	
@@ -199,7 +331,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				If channel >= 0 Then sympathyMod = 1.0 - 0.25 * p.GetChannelSympathy(channel)
 
 				'xp: up to "120% of XP"
-				xpMod :+ 1.2 * GetEffectiveExperiencePercentage(jobID)
+				xpMod :+ 1.2 * GetEffectiveJobExperiencePercentage(jobID)
 
 				If jobID = TVTPersonJob.ACTOR
 					baseFee = 11000
@@ -226,7 +358,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				If channel >= 0 Then sympathyMod = 1.0 - 0.25 * p.GetChannelSympathy(channel)
 
 				'xp: up to "120% of XP"
-				xpMod :+ 1.2 * GetEffectiveExperiencePercentage(jobID)
+				xpMod :+ 1.2 * GetEffectiveJobExperiencePercentage(jobID)
 
 				If jobID = TVTPersonJob.DIRECTOR
 					baseFee = 13500
@@ -249,7 +381,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				If channel >= 0 Then sympathyMod = 1.0 - 0.30 * p.GetChannelSympathy(channel)
 
 				'xp: up to "120% of XP"
-				xpMod :+ 1.2 * GetEffectiveExperiencePercentage(jobID)
+				xpMod :+ 1.2 * GetEffectiveJobExperiencePercentage(jobID)
 
 				baseFee = 9000
 				dynamicFee = 24500 * attributeMod
@@ -267,7 +399,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				If channel >= 0 Then sympathyMod = 1.0 - 0.50 * p.GetChannelSympathy(channel)
 
 				'xp: up to "120% of XP"
-				xpMod :+ 1.2 * GetEffectiveExperiencePercentage(jobID)
+				xpMod :+ 1.2 * GetEffectiveJobExperiencePercentage(jobID)
 
 				baseFee = 4000
 				dynamicFee = 6500 * attributeMod
@@ -285,7 +417,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				If channel >= 0 Then sympathyMod = 1.0 - 0.5 * p.GetChannelSympathy(channel)
 
 				'xp: up to "75% of XP"
-				xpMod :+ 0.75 * GetEffectiveExperiencePercentage(jobID)
+				xpMod :+ 0.75 * GetEffectiveJobExperiencePercentage(jobID)
 
 				baseFee = 1500
 				dynamicFee = 6000 * attributeMod
@@ -304,7 +436,7 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				If channel >= 0 Then sympathyMod = 1.0 - 0.25 * p.GetChannelSympathy(channel)
 
 				'xp: up to "25% of XP"
-				xpMod :+ 0.25 * GetEffectiveExperiencePercentage(jobID)
+				xpMod :+ 0.25 * GetEffectiveJobExperiencePercentage(jobID)
 
 				baseFee = 3000
 				dynamicFee = 7000 * attributeMod
@@ -393,166 +525,6 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 		Next
 		Return earliestID
 	End Method
-	
-
-	Method SetExperience(job:Int, value:Int)
-		'limit experience
-		value = MathHelper.Clamp(value, 0, MAX_XP)
-
-		Local jobIndex:Int = TVTPersonJob.GetIndex(job)
-		If xp.length <= jobIndex Then xp = xp[ .. jobIndex + 1]
-		xp[jobIndex] = value
-
-		'recalculate total (average)
-		If job <> 0 Then SetExperience(0, GetExperience(0))
-	End Method
-
-
-	Method GetExperience:Int(job:Int)
-		Local jobIndex:Int = TVTPersonJob.GetIndex(job)
-		If xp.length <= jobIndex Then Return 0
-
-
-		'total avg requested
-		If job <= 0
-			If xp.length = 0 Then xp = xp[.. 1]
-
-			Local jobs:Int = 0
-			For Local jobXP:Int = EachIn xp
-				If jobXP > 0
-					jobs :+ 1
-					xp[0] :+ jobXP
-				EndIf
-			Next
-			If jobs > 0 Then xp[0] :/ jobs
-
-			Return xp[0]
-		EndIf
-
-		Return xp[jobIndex]
-	End Method
-
-
-	'override
-	Method GetExperiencePercentage:Float(job:Int)
-		Return GetExperience(job) / Float(MAX_XP)
-	End Method
-
-
-	'override
-	Method GetEffectiveExperiencePercentage:Float(job:Int)
-		Local jobXP:Float = GetExperiencePercentage(job)
-		Local result:Float
-		Local otherXP:Float
-		Local otherWeightMod:Float
-		
-		'add partial XP of other "also suiting" jobs
-		'(an actor can also act as supporting actor ...)
-		Select job
-			Case TVTPersonJob.GUEST
-				'take the best job the person can do
-				otherXP  = 1.00 * GetBestJobExperiencePercentage()
-				otherWeightMod = 0.9
-				'print GetFullName() + " as guest. jobXP=" + jobXP + "  otherXP="+otherXP
-
-			Case TVTPersonJob.ACTOR
-				'> 1.0 (so weight mod needs to make sure to stay < 1.0 at the end)
-				otherXP  = 0.90 * GetExperiencePercentage(TVTPersonJob.SUPPORTINGACTOR)
-				otherXP :+ 0.20 * GetExperiencePercentage(TVTPersonJob.MUSICIAN)
-				otherWeightMod = 0.75
-
-			Case TVTPersonJob.SUPPORTINGACTOR
-				'> 1.0 (so weight mod needs to make sure to stay < 1.0 at the end)
-				otherXP  = 0.90 * GetExperiencePercentage(TVTPersonJob.ACTOR)
-				otherXP :+ 0.20 * GetExperiencePercentage(TVTPersonJob.MUSICIAN)
-				otherWeightMod = 0.60
-
-			Case TVTPersonJob.HOST
-				otherXP  = 0.35 * GetExperiencePercentage(TVTPersonJob.ACTOR)
-				otherXP :+ 0.20 * GetExperiencePercentage(TVTPersonJob.SUPPORTINGACTOR)
-				otherXP :+ 0.30 * GetExperiencePercentage(TVTPersonJob.MUSICIAN)
-				otherXP :+ 0.15 * GetExperiencePercentage(TVTPersonJob.REPORTER)
-				otherWeightMod = 0.4
-
-			Case TVTPersonJob.DIRECTOR
-				otherXP  = 0.50 * GetExperiencePercentage(TVTPersonJob.ACTOR)
-				otherXP :+ 0.40 * GetExperiencePercentage(TVTPersonJob.SUPPORTINGACTOR)
-				otherXP :+ 0.05 * GetExperiencePercentage(TVTPersonJob.HOST)
-				otherXP :+ 0.05 * GetExperiencePercentage(TVTPersonJob.REPORTER)
-				otherWeightMod = 0.2
-
-			Case TVTPersonJob.SCRIPTWRITER
-				otherXP  = 0.50 * GetExperiencePercentage(TVTPersonJob.DIRECTOR)
-				otherXP :+ 0.20 * GetExperiencePercentage(TVTPersonJob.ACTOR)
-				otherXP :+ 0.15 * GetExperiencePercentage(TVTPersonJob.SUPPORTINGACTOR)
-				otherXP :+ 0.10 * GetExperiencePercentage(TVTPersonJob.MUSICIAN) 'they write songs!
-				otherXP :+ 0.05 * GetExperiencePercentage(TVTPersonJob.REPORTER)
-				otherWeightMod = 0.15
-
-			Default
-				otherXP = 0
-				otherWeightMod = 0
-		End Select
-
-		Return (jobXP + otherWeightMod * (1.0 - jobXP) * otherXP)
-	End Method
-
-
-	'returns job with best XP
-	Method GetBestJob:Int()
-		If xp.length = 0 Then Return 0
-
-		Local bestIndex:Int = -1
-		Local bestXP:Int
-		For Local jobIndex:Int = 0 Until xp.length
-			If bestIndex = -1 Or bestXP < xp[jobIndex] 
-				bestIndex = jobIndex
-				bestXP = xp[jobIndex]
-			EndIf
-		Next
-		
-		Return TVTPersonJob.GetAtIndex(bestIndex)
-	End Method
-
-
-	'returns best xp value
-	Method GetBestJobExperience:Int()
-		If xp.length = 0 Then Return 0
-
-		Local bestIndex:Int = -1
-		Local bestXP:Int
-		For Local jobIndex:Int = 0 Until xp.length
-			If bestIndex = -1 Or bestXP < xp[jobIndex] 
-				bestIndex = jobIndex
-				bestXP = xp[jobIndex]
-			EndIf
-		Next
-		
-		Return bestXP
-	End Method
-
-
-	'returns xp percentage of best job
-	Method GetBestJobExperiencePercentage:Float()
-		Return GetBestJobExperience() / Float(MAX_XP)
-	End Method
-
-
-	Method GetNextExperienceGain:Int(job:Int, programmeData:TProgrammeData)
-		'5 perfect movies would lead to a 100% experienced person
-		Local baseGain:Float = ((1.0/5) * MAX_XP) * programmeData.GetQualityRaw()
-		'series episodes do not get that much exp
-		If programmeData.IsEpisode() Then baseGain :* 0.5
-
-		Local jobXP:Int = GetExperience(job)
-
-		'the more XP we have, the harder it gets
-		If jobXP <  500 Then Return 1.0 * baseGain
-		If jobXP < 1000 Then Return 0.8 * baseGain
-		If jobXP < 2500 Then Return 0.6 * baseGain
-		If jobXP < 5000 Then Return 0.4 * baseGain
-		Return 0.2 * baseGain
-	End Method
 
 
 	Method GainExperienceForProgramme(programmeDataID:Int)
@@ -570,10 +542,20 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 			If MathHelper.InIntArray(job.job, creditedJobs) Then Continue
 
 			creditedJobs :+ [job.job]
-			SetExperience(job.job, GetExperience(job.job) + GetNextExperienceGain(job.job, programmeData))
+			'print GetPerson().GetFullName() +" gains XP as " + TVTPersonJob.GetAsString(job.job) +": " + GetJobExperience(job.job) + " + " + GetNextJobExperienceGain(job.job, programmeData)
+			SetJobExperience(job.job, GetJobExperience(job.job) + GetNextJobExperienceGain(job.job, programmeData))
+		Next
+		
+
+		'gain experience for genres
+		'print GetPerson().GetFullName() +" gains XP for genre " + TVTProgrammeGenre.GetAsString(programmeData.genre) +": " + GetGenreExperience(programmeData.genre) + " + " + GetNextGenreExperienceGain(programmeData.genre, programmeData)
+		SetGenreExperience(programmeData.genre, GetNextGenreExperienceGain(programmeData.genre, programmeData))
+		For Local subGenre:Int = EachIn programmeData.subGenres
+			'subGenres do not give the same amount of XP
+			SetGenreExperience(subGenre, int(0.5 * GetNextGenreExperienceGain(subGenre, programmeData)))
+			'print GetPerson().GetFullName() +" gains XP for subgenre " + TVTProgrammeGenre.GetAsString(subGenre) +": " + GetGenreExperience(subGenre) + " + " + GetNextGenreExperienceGain(subGenre, programmeData)
 		Next
 	End Method
-
 
 
 	'override to extend with xp gain + send out events
@@ -598,6 +580,81 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 
 		'reset cached calculations
 		calculatedTopGenreCache = -1
+	End Method
+
+
+	'GENRE XP
+	Method SetGenreExperience(genreID:Int, value:Int)
+		genreXP.Set(genreID, value)
+	End Method
+
+	Method GetGenreExperience:Int(genreID:Int)
+		Return genreXP.Get(genreID)
+	End Method
+
+	Method GetGenreExperiencePercentage:Float(genreID:Int)
+		Return genreXP.GetPercentage(genreID)
+	End Method
+
+	Method GetEffectiveGenreExperiencePercentage:Float(genreID:Int)
+		Return genreXP.GetEffectivePercentage(genreID)
+	End Method
+
+	'returns genre with best XP
+	Method GetBestGenre:Int()
+		Return genreXP.GetBestKey()
+	End Method
+
+	'returns best xp value
+	Method GetBestGenreExperience:Int()
+		Return genreXP.GetBest()
+	End Method
+
+	'returns xp percentage of best job
+	Method GetBestGenreExperiencePercentage:Float()
+		Return genreXP.GetBestPercentage()
+	End Method
+	
+	Method GetNextGenreExperienceGain:Int(genreID:Int, programmeData:TProgrammeData)
+		Return genreXP.GetNextGain(genreID, programmeData)
+	End Method
+
+
+	'CONVENIENCE GETTERS/SETTERS
+	'JOB XP
+	Method SetJobExperience(jobID:Int, value:Int)
+		jobXP.Set(jobID, value)
+	End Method
+
+	Method GetJobExperience:Int(jobID:Int)
+		Return jobXP.Get(jobID)
+	End Method
+
+	Method GetJobExperiencePercentage:Float(jobID:Int)
+		Return jobXP.GetPercentage(jobID)
+	End Method
+
+	Method GetEffectiveJobExperiencePercentage:Float(jobID:Int)
+		Return jobXP.GetEffectivePercentage(jobID)
+	End Method
+
+	'returns genre with best XP
+	Method GetBestJob:Int()
+		Return jobXP.GetBestKey()
+	End Method
+
+	'returns best xp value
+	Method GetBestJobExperience:Int()
+		Return jobXP.GetBest()
+	End Method
+
+	'returns xp percentage of best job
+	Method GetBestJobExperiencePercentage:Float()
+		Return jobXP.GetBestPercentage()
+	End Method
+	
+	Method GetNextJobExperienceGain:Int(jobID:Int, programmeData:TProgrammeData)
+		Return jobXP.GetNextGain(jobID, programmeData)
 	End Method
 End Type
 
