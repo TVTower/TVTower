@@ -2346,6 +2346,11 @@ Type TGUICastListItem Extends TGUISelectListItem
 			displayName = name
 		EndIf
 
+		'remove item from list so job info becomes visible
+		If isDragged()
+			TGUIListBase.FindGUIListBaseParent(self).removeItem(self)
+		EndIF
+
 		Local face:TImage = TImage(person.GetPersonalityData().GetFigureImage())
 		DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, "", face, xpPercentage, sympathyPercentage, 1)
 
