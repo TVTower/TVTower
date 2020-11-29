@@ -1178,7 +1178,7 @@ Type TScreenHandler_ProgrammePlanner
 
 		'draw lists sheet
 		If PPprogrammeList.GetOpen() And PPprogrammeList.hoveredLicence
-			PPprogrammeList.hoveredLicence.ShowSheet(10-3, 8)
+			PPprogrammeList.hoveredLicence.ShowSheet(7, 20, 0)
 		EndIf
 
 		'If PPcontractList.GetOpen() and
@@ -1201,7 +1201,7 @@ Type TScreenHandler_ProgrammePlanner
 				minAudienceHightlightType = -1
 			EndIf
 		
-			PPcontractList.hoveredAdContract.ShowSheet(10-3, 8, 0, 0, TVTBroadcastMaterialType.ADVERTISEMENT, minAudienceHightlightType)
+			PPcontractList.hoveredAdContract.ShowSheet(7, 20, 0, 0, TVTBroadcastMaterialType.ADVERTISEMENT, minAudienceHightlightType)
 		EndIf
 
 
