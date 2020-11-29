@@ -65,6 +65,7 @@
 
 				<!-- cast/actor-item elements -->
 				<child name="gfx_datasheet_cast_icon"                   x="90"  y="130" w="41"  h="39" ninepatch="true" />
+				<child name="gfx_datasheet_cast_icon_overlay"           x="90"  y="169" w="41"  h="39" ninepatch="true" />
 				<child name="gfx_datasheet_cast_name"                   x="131" y="130" w="28"  h="20" ninepatch="true" />
 				<child name="gfx_datasheet_cast_bar_xp_filled"          x="131" y="150" w="28"  h="8"  ninepatch="true" />
 				<child name="gfx_datasheet_cast_bar_xp_unfilled"        x="131" y="166" w="28"  h="8"  ninepatch="true" />

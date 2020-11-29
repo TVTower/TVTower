@@ -2121,8 +2121,9 @@ Type TGUICastSlotList Extends TGUISlotList
 				Local job:TPersonProductionJob = GetSlotJob(slot)
 
 				Local genderHint:String
-				If job
-	'				local role:TProgrammeRole = GetProgrammeRoleCollection().GetByGUID(j.roleGUID)
+				Local gender:Int = 0
+				If job 
+					gender = job.gender
 
 					If job.gender = TVTPersonGender.MALE
 						genderHint = " ("+GetLocale("MALE")+")"
@@ -2134,9 +2135,9 @@ Type TGUICastSlotList Extends TGUISlotList
 	'TODO: nur zeichnen, wenn innerhalb "panel rect"
 				If MouseManager._ignoreFirstClick 'touch mode
 '					TGUICastListItem.DrawCast(atPoint.GetX() + pos.getX(), atPoint.GetY() + pos.getY(), _slotMinDimension.getX(), GetLocale("JOB_" + TVTPersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), null, 0,0,0)
-					TGUICastListItem.DrawCast(GetScreenRect().GetX() + coord.GetX(), GetScreenRect().GetY() + coord.GetY(), guiEntriesPanel.GetContentScreenRect().GetW()-2, GetLocale("JOB_" + TVTPersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), Null, 0,0,0)
+					TGUICastListItem.DrawCast(GetScreenRect().GetX() + coord.GetX(), GetScreenRect().GetY() + coord.GetY(), guiEntriesPanel.GetContentScreenRect().GetW()-2, GetLocale("JOB_" + TVTPersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("TOUCH_TO_SELECT_PERSON"), Null, 0,0,0, gender, 0.35)
 				Else
-					TGUICastListItem.DrawCast(GetScreenRect().GetX() + coord.GetX(), GetScreenRect().GetY() + coord.GetY(), guiEntriesPanel.GetContentScreenRect().GetW()-2, GetLocale("JOB_" + TVTPersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("CLICK_TO_SELECT_PERSON"), Null, 0,0,0)
+					TGUICastListItem.DrawCast(GetScreenRect().GetX() + coord.GetX(), GetScreenRect().GetY() + coord.GetY(), guiEntriesPanel.GetContentScreenRect().GetW()-2, GetLocale("JOB_" + TVTPersonJob.GetAsString(GetSlotJobID(slot))) + genderHint, GetLocale("CLICK_TO_SELECT_PERSON"), Null, 0,0,0, gender, 0.35)
 				EndIf
 			Next
 			SetAlpha 2.0 * GetAlpha()
@@ -2335,7 +2336,8 @@ Type TGUICastListItem Extends TGUISelectListItem
 		
 		Local xpPercentage:Float = person.GetEffectiveJobExperiencePercentage( GetDisplayJobID() )
 		Local sympathyPercentage:Float = person.GetChannelSympathy( GetPlayerBase().playerID )
-
+		Local gender:Int = person.gender
+		Local overlayIntensity:Float = 0.35	
 		Local name:String = displayName
 		If isAmateur And Not isDragged()
 			If GetDisplayJobID() > 0 and TVTPersonJob.IsCastJob( GetDisplayJobID() )
@@ -2346,14 +2348,63 @@ Type TGUICastListItem Extends TGUISelectListItem
 			displayName = name
 		EndIf
 
+		'drawing as ghost (so part of the list?)
+		If HasOption(GUI_OBJECT_DRAWMODE_GHOST) or not IsDragged()
+			Local genderHint:String
+			Local jobID:Int = GetDisplayJobID()
+			Local parentList:TGUIListBase = TGUIListBase.FindGUIListBaseParent(Self._parent)
+			If parentList = TScreenHandler_SupermarketProduction.GetInstance().castSlotList
+				local list:TGUICastSlotList = TScreenHandler_SupermarketProduction.GetInstance().castSlotList
+				Local slot:Int = list.GetSlot(self)
+				Local job:TPersonProductionJob = list.GetSlotJob(slot) 
+				if job
+					jobID = job.job
+					If job.gender = TVTPersonGender.MALE
+						genderHint = " ("+GetLocale("MALE")+")"
+					ElseIf job.gender = TVTPersonGender.FEMALE
+						genderHint = " ("+GetLocale("FEMALE")+")"
+					EndIf
+
+					'set color to "warning" when placed to a slot of 
+					'different "gender"
+					If not IsDragged()
+						if job.gender <> 0 and job.gender <> person.gender
+							gender = -1
+						EndIf
+					'set color to "original job" indicator
+					ElseIf HasOption(GUI_OBJECT_DRAWMODE_GHOST)
+						gender = job.gender
+					EndIf
+				EndIf
+				
+				'do not add too much color when already "selected" (in slot list)
+				'except it _requires_ a gender
+				If Not job Or job.gender = 0
+					overlayIntensity = 0.15
+				ElseIf job and job.gender <> 0
+					overlayIntensity = 0.5
+				endif
+			EndIf
+			
+			If HasOption(GUI_OBJECT_DRAWMODE_GHOST)
+				name = GetLocale("JOB_" + TVTPersonJob.GetAsString(jobID))   + genderHint
+			EndIf
+		EndIf
+
 		Local face:TImage = TImage(person.GetPersonalityData().GetFigureImage())
-		DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, "", face, xpPercentage, sympathyPercentage, 1)
+		If HasOption(GUI_OBJECT_DRAWMODE_GHOST) 
+			face = Null
+			xpPercentage = 0
+			sympathyPercentage = 0
+		EndIf
+		
+		DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, "", face, xpPercentage, sympathyPercentage, 1, gender, overlayIntensity)
 
 		If isHovered()
 			SetBlend LightBlend
 			SetAlpha 0.10 * GetAlpha()
 
-			DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, "", face, xpPercentage, 0, 1)
+			DrawCast(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), name, "", face, xpPercentage, 0, 1, gender, overlayIntensity)
 
 			SetBlend AlphaBlend
 			SetAlpha 10.0 * GetAlpha()
@@ -2410,7 +2461,7 @@ Type TGUICastListItem Extends TGUISelectListItem
 	End Method
 
 
-	Function DrawCast(x:Float, y:Float, w:Float, name:String, nameHint:String="", face:Object=Null, xp:Float, sympathy:Float, mood:Int)
+	Function DrawCast(x:Float, y:Float, w:Float, name:String, nameHint:String="", face:Object=Null, xp:Float, sympathy:Float, mood:Int, gender:Int, overlayIntensity:Float = 0.3)
 		'Draw name bg
 		'Draw xp bg + front bar
 		'Draw sympathy bg + front bar
@@ -2426,9 +2477,9 @@ Type TGUICastListItem Extends TGUISelectListItem
 		Local nameSprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_cast_name")
 		Local iconSprite:TSprite = GetSpriteFromRegistry("gfx_datasheet_cast_icon")
 
-		Local nameOffsetX:Int = 34, nameOffsetY:Int = 3
+		Local nameOffsetX:Int = 35, nameOffsetY:Int = 3
 		Local nameTextOffsetX:Int = 38
-		Local barOffsetX:Int = 34, barOffsetY:Int = nameOffsetY + nameSprite.GetHeight()
+		Local barOffsetX:Int = 35, barOffsetY:Int = nameOffsetY + nameSprite.GetHeight()
 		Local barH:Int = skin.GetBarSize(100,-1, "cast_bar_xp").GetY()
 
 		'=== NAME ===
@@ -2444,6 +2495,34 @@ Type TGUICastListItem Extends TGUISelectListItem
 
 		'=== FACE / ICON ===
 		iconSprite.Draw(x, y)
+		if gender <> 0
+			Local iconSpriteOverlay:TSprite = GetSpriteFromRegistry("gfx_datasheet_cast_icon_overlay")
+			if iconSpriteOverlay
+				local oldA:Float = GetAlpha()
+				local oldCol:SColor8
+				GetColor(oldCol)
+
+				'SetBlend LightBlend
+				SetAlpha oldA * overlayIntensity
+
+				If gender = TVTPersonGender.MALE
+					SetColor 120, 120, 255
+				ElseIf gender = TVTPersonGender.FEMALE
+					SetColor 255, 120, 120
+				ElseIf gender = -1 'warning
+					SetAlpha oldA * Float(0.6 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
+					SetColor 255, 180, 50
+				EndIf
+			
+				iconSpriteOverlay.Draw(x, y)
+				
+				'SetBlend AlphaBlend
+				SetAlpha oldA
+				SetColor(oldCol)
+			EndIf
+		EndIf
+
+				
 
 		'maybe "TPersonBase.GetFace()" ?
 		If TSprite(face)
