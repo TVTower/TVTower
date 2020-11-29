@@ -1,0 +1,123 @@
+BETTY_FEELINGS                     = Bettys Gefühle für Dich
+THERE_IS_NO_LOVE_IN_THE_AIR_YET    = Derzeit liegt noch keine Liebe in der Luft ;D
+BETTY_KNOWS_WHO_YOU_ARE            = Betty weiss immerhin wer Du bist
+BETTY_SEEMS_TO_LIKE_YOU            = Betty scheint Dich zu mögen
+BETTY_SEEMS_TO_LIKE_YOU_A_BIT_MORE = Betty scheint Dich ein bisschen mehr als nur zu mögen
+BETTY_LOVES_YOU                    = Betty liebt Dich
+BETTY_REALLY_LOVES_YOU             = Betty liebt Dich wirklich
+
+DIALOGUE_BETTY_WELCOME_TEXT         = Hallo,\n\nkann ich etwas für Sie tun?
+DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT1 = Guten Tag,\n\nwas treibt Sie denn in die letzte Etage?
+DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT2 = Ja?\n\nSie sind sicherlich hier, um Informationen zum Sammy einzuholen.
+DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT1 = Hallo %PLAYERNAME%,\n\nwas treibt Dich denn heute zu mir?
+DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT2 = Na?\n\nDu willst sicher Aktuelles zum Sammy erfahren.
+DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT1 = Hi %PLAYERNAME%,\n\nschön, dass Du mal wieder vorbeischnaust. Setz Dich ruhig - warum bist Du hier?
+DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT2 = %PLAYERNAME%!?\n\nIch glaube Du Schlingel bist doch nur für neue Infos zum Sammy hier, oder?
+DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT1 = Hi %PLAYERNAME%,\n\nunser letztes Treffen war schön. Ich hoffe wir wiederholen noch einige Male.
+DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT2 = Na Du?\n\nich hol uns mal eine Tasse Tee, ich hoffe Du hast Zeit zum plaudern.
+
+DIALOGUE_BETTY_NO_AWARD_LEVEL0_TEXT1                              = Derzeit wird kein Sammy vergeben. Ich denke in ein paar Tagen geht das Rennen um den begehrten Preis wieder los.
+DIALOGUE_BETTY_NO_AWARD_LEVEL1_TEXT1                              = Derzeit wird kein Sammy vergeben. Eventuell kann ich Dir morgen schon mehr sagen.
+DIALOGUE_BETTY_AWARDINFORMATION_NO_FAVORITE_LEVEL0_TEXT1          = Der %AWARDNAME%?\n\nEs gibt noch keinen klaren Favoriten.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE_LEVEL0_TEXT1     = Der %AWARDNAME%?\n\nMomentan schaut es ganz gut für Sie aus.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE_LEVEL1_TEXT1     = Der %AWARDNAME%?\n\nMomentan schaut es ganz gut für Dich aus.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE_LEVEL0_TEXT1      = Der %AWARDNAME%?\n\nSoviel kann ich Ihnen verraten: Sie befinden sich im Mittelfeld.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE_LEVEL1_TEXT1      = Der %AWARDNAME%?\n\nSoviel kann ich Dir verraten: Du befindest Dich im Mittelfeld.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL0_TEXT1 = Der %AWARDNAME%?\n\nUm zu gewinnen, musst Du Dich noch ganz schön anstrengen.
+DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL1_TEXT1 = Der %AWARDNAME%?\n\nUm zu gewinnen, müssen Sie sich noch ganz schön anstrengen.
+
+DIALOGUE_BETTY_ASK_FOR_SAMMYINFORMATION = Wie sieht es mit dem aktuellen Sammy aus?
+DIALOGUE_BETTY_ASK_FOR_MASTERKEY        = Du könntest mir nicht zufälligerweise den Generalschlüssel ausleihen?
+DIALOGUE_BETTY_CHANGETOPIC              = Lass uns über etwas anderes reden
+DIALOGUE_BETTY_LEVEL0_CHANGETOPIC1      = Lassen Sie uns über etwas anderes reden
+DIALOGUE_BETTY_GOODBYE                  = Ähh, Tschüss
+DIALOGUE_BETTY_LEVEL0_GOODBYE           = Ähh, Auf Wiedersehen
+DIALOGUE_BETTY_LEVEL1_GOODBYE           = Bis bald
+DIALOGUE_BETTY_LEVEL2_GOODBYE           = Du, ich muss los. Bis später.
+DIALOGUE_BETTY_LEVEL3_GOODBYE           = Betty, hör mal, die Arbeit ruft. Ich muss kurz weg.
+
+NO_PRESENT_SELECTED        = Kein Geschenk ausgewählt
+BUY_PRESENTTITLE_FOR_PRICE = Kaufe %PRESENTTITLE% für %PRICE%
+BETTY_PRESENT_1            = Fußspray
+BETTY_PRESENT_2            = Abendessen für Zwei
+BETTY_PRESENT_3            = Nasen-OP
+BETTY_PRESENT_4            = individuell geschriebenes Buch
+BETTY_PRESENT_5            = Perlenkette
+BETTY_PRESENT_6            = Zwerghamsterfell
+BETTY_PRESENT_7            = Kette mit großem Blutdiamant
+BETTY_PRESENT_8            = Sportwagen
+BETTY_PRESENT_9            = Ring
+BETTY_PRESENT_10           = Jacht
+
+
+AWARDNAME_CULTURE          = Kultur-Sammy
+AWARDNAME_NEWS             = News-Sammy
+AWARDNAME_AUDIENCE         = Zuschauer-Sammy
+AWARDNAME_CUSTOMPRODUCTION = Eigenproduktions-Sammy
+AWARD_WON                  = Preis gewonnen
+YOU_WON_THE_AWARDNAME      = Du hast den %AWARDNAME% gewonnen.
+CHANNEL_IMAGE              = Senderimage
+FOR_X_HOURS                = für %X% Stunden
+FOR_X_HOUR                 = für %X% Stunde
+ATTRACTIVITY               = Attraktivität
+
+
+DIALOGUE_BOSS_MAIN_TITLE_DEFAULT1                = Was ist %PLAYERNAME% ?!
+DIALOGUE_BOSS_MAIN_TITLE_DEFAULT2                = %PLAYERNAME%, Sie schon wieder ?!
+DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY1             = Sie ... Sie wagen es?!
+DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY2             = Sind Sie noch bei Trost?
+DIALOGUE_BOSS_MAIN_TEXT_DEFAULT1                 = Haben Sie nichts besseres zu tun als meine Zeit zu verschwenden?
+DIALOGUE_BOSS_MAIN_TEXT_WON_AWARDNAME1           = Hmm, immerhin haben sie den %AWARDNAME% geholt.
+DIALOGUE_BOSS_MAIN_TEXT_WON_AWARDNAME2           = Der %AWARDNAME% ist unser! Wenigstens ein kleiner Lichtblick in Ihrem Tun.
+DIALOGUE_BOSS_MAIN_TEXT_WON_AWARDNAME3           = Wir haben den %AWARDNAME% gewonnen. Der Dank gebührt allein meiner väterlichen Fürsorge die ich Ihnen angedeihen lasse!
+DIALOGUE_BOSS_MAIN_TEXT_AWARDNAME_ENDS_TOMORROW1 = Stehen Sie hier nicht rum: morgen wird der %AWARDNAME% vergeben!
+DIALOGUE_BOSS_MAIN_TEXT_AWARDNAME_ENDS_TOMORROW2 = Bin ich die Zahnfee - auf was warten sie? Morgen wird der %AWARDNAME% vergeben!
+DIALOGUE_BOSS_MAIN_TEXT_AWARDNAME_ENDS_TODAY1    = Hopp hopp, heute wird der %AWARDNAME% vergeben!
+DIALOGUE_BOSS_MAIN_TEXT_AWARDNAME_ENDS_TODAY2    = Da sie schon mal Maulaffen feilhalten: heute wird der %AWARDNAME% vergeben!
+DIALOGUE_BOSS_MAIN_TEXT_NEW_AWARDNAME_TOMORROW1  = Ab morgen wird ein neuer Sammy vergeben. Ich will, dass wir den %AWARDNAME% holen!
+DIALOGUE_BOSS_MAIN_TEXT_NEW_AWARDNAME_TOMORROW2  = Strengen Sie sich an: ab morgen gilt es Punkte für den neuen %AWARDNAME% zu holen!
+DIALOGUE_BOSS_MAIN_TEXT_PROGRAMMEMALFUNCTION1    = Unglaublich diese Inkompetenz, Sie haben |b|%PROGRAMMEMALFUNCTION%x|/b| kein Programm gesendet.
+DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION1         = Statt |b|%NEWSMALFUNCTION%x|/b| keine Nachrichten zu senden, strahlen Sie lieber den Wetterbericht vom letzten Jahr aus!
+DIALOGUE_BOSS_MAIN_ENDING_DEFAULT1               = Ab an die Arbeit oder jemand anderes erledigt Ihren Job...!
+DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY1            = Der Goldhamster meines Sohnes könnte Ihren Job wohl besser erledigen!
+DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY2            = Noch so ein Schnitzer und Ihr Job geht an den Nächstbesten der an der Tür klopft.
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER1             = Raus hier - und bestellen Sie ihrem Boss schlechteste Grüße. Harr harr harr...
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER2             = Raus! Ich kann Sie und ihren vermaledeiten Sender nicht mehr sehen!
+
+DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER = Ja, ähm, ich störe nicht weiter!
+DIALOGUE_BOSS_WILLNOTDISTURB             = Ja, ist ja schon gut Chef ich störe nicht weiter!
+DIALOGUE_BOSS_ASKFORCREDIT               = Ich wollte wegen *ähm* einem Kredit nachfragen.
+DIALOGUE_BOSS_REPAYCREDIT                = Ich will etwas von meinem Kredit abbezahlen...
+DIALOGUE_BOSS_CREDIT_OK1                 = Schon wieder neue Kohle?\n\nNaja, Sie machen Ihren Job ja besser als andere Praktikanten.\nAllerdings sind nicht mehr als |b|%CREDIT%€|/b| drin, verstanden!?
+DIALOGUE_BOSS_CREDIT_OK2                 = Sie verprassen mein gutes Geld!\n\nIch hoffe für Sie, dass was vernünftiges bei rauskommt.\nMehr als |b|%CREDIT%€|/b| kann ich aber nicht anbieten. Einverstanden?
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT1          = Ja, den Kredit nehme ich dann wohl.
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT2          = Danke Chef, das Geld ist gut angelegt!
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF1     = Danke Boss, mir reicht die Hälfte, also |b|%VALUE%€|/b|.
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF2     = Ich bin schon mit |b|%VALUE%€|/b| zufrieden!
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT_QUARTER1  = Also |b|%VALUE%€|/b| reicht mir vollkommen.
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT_QUARTER2  = Die |b|%VALUE%€|/b| würden mir vollends langen.
+DIALOGUE_BOSS_DECLINE1                   = Ach, nein Danke Boss, hab's mir anders überlegt.
+DIALOGUE_BOSS_DECLINE2                   = Hab's mir doch anders überlegt, bis später Chef.
+DIALOGUE_BOSS_DECLINE3                   = Öhm, ich schau dann wohl später nochmal vorbei.
+DIALOGUE_BOSS_CREDIT_REPAY               = Wollen Sie nicht erstmal den alten Kredit zurückzahlen?\n\nSie schulden mir noch |b|%CREDIT%€|/b| - zahlen Sie das ersteinmal ab!\nUnd nun raus bevor ich mich vergesse!!
+DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT        = Ja, dann zahl ich halt etwas zurück.
+DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE  = Soso, wenigstens eine gute Nachricht für den heutigen Tag.\n\nWieviel wollen Sie denn zurückzahlen?
+DIALOGUE_BOSS_CREDIT_REPAY_VALUE1        = Hmm, ich könnte |b|%VALUE%€|/b| zurückzahlen.
+DIALOGUE_BOSS_CREDIT_REPAY_VALUE2        = Naja, so |b|%VALUE%€|/b| könnte ich zurückzahlen.
+DIALOGUE_BOSS_CREDIT_REPAY_ALL           = Eigentlich gleich den kompletten Kredit, also |b|%CREDIT%€|/b|.
+
+DIALOGUE_BOSS_CHANGETOPIC1  = Können wir nicht über etwas anderes reden?
+DIALOGUE_BOSS_CHANGETOPIC2  = Ähh, mal über was Anderes...
+DIALOGUE_BOSS_BACKTOWORK    = So und nun an die Arbeit %PLAYERNAME%!
+DIALOGUE_BOSS_BACKTOWORK_OK = Ok, bin ja schon weg.
+
+YOUR_BOSS_WANTS_TO_SEE_YOU                   = Dein Chef will dich sehen
+YOU_HAVE_GOT_X_HOURS_TO_VISIT_HIM            = Du hast %HOURS% Stunden, um dich bei Ihm zu melden.
+CLICK_HERE_TO_START_YOUR_VISIT_AHEAD_OF_TIME = Hier klicken um den Besuch vorzeitig zu starten.
+
+YOUR_BALANCE_IS_POSITIVE_AGAIN            = Dein Kontostand ist wieder positiv.
+YOUR_BALANCE_IS_NEGATIVE                  = Dein Kontostand ist negativ.
+YOU_ARE_NO_LONGER_IN_DANGER_TO_GET_FIRED  = Du bist nicht länger in Gefahr gekündigt zu werden.
+YOU_HAVE_X_DAYS_TO_GET_INTO_THE_BLACK     = Du hast noch %DAYS% um schwarze Zahlen zu schreiben.
+YOU_HAVE_ONLY_TODAY_TO_GET_INTO_THE_BLACK = Du hast nur noch heute um schwarze Zahlen zu schreiben.
+YOU_ARE_IN_DANGER_TO_GET_FIRED            = Du schwebst in Gefahr gekündigt zu werden!

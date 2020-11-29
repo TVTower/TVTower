@@ -1,0 +1,123 @@
+BETTY_FEELINGS                     = O sentimento de Betty por você
+THERE_IS_NO_LOVE_IN_THE_AIR_YET    = O amor ainda não está no ar... ;D
+BETTY_KNOWS_WHO_YOU_ARE            = Betty sabe quem é você
+BETTY_SEEMS_TO_LIKE_YOU            = Betty parece gostar de você
+BETTY_SEEMS_TO_LIKE_YOU_A_BIT_MORE = Betty parece gostar de você um pouco mais
+BETTY_LOVES_YOU                    = Betty ama você
+BETTY_REALLY_LOVES_YOU             = Betty realmente te ama
+
+DIALOGUE_BETTY_WELCOME_TEXT         = Olá,\n\ncomo eu posso ajudá-lo?
+DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT1 = Bom dia!\n\nO que te traz ao último andar?
+DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT2 = Pois não?\n\\nCom certeza você está aqui para buscar as últimas informações sobre o Sammy.
+DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT1 = Olá, %PLAYERNAME%,\n\no que te traz a mim hoje?
+DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT2 = Hmm?\n\nVocê certamente quer ouvir algumas notícias sobre o Sammy.
+DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT1 = Oi, %PLAYERNAME%,\n\nbom ver você novamente. Sente-se, por favor - então, por que você veio aqui?
+DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT2 = %PLAYERNAME%!?\n\nAcho que você está aqui para as notícias do  Sammy news, não é?
+DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT1 = Oi, %PLAYERNAME%,\n\nnossa última reunião foi realmente boa. Espero que nos encontremos mais vezes.
+DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT2 = Oie!\n\nVou fazer um chá para a gente - espero que você tenha um tempinho para conversarmos.
+
+#DIALOGUE_BETTY_NO_AWARD_LEVEL0_TEXT1                              = 
+#DIALOGUE_BETTY_NO_AWARD_LEVEL1_TEXT1                              = 
+#DIALOGUE_BETTY_AWARDINFORMATION_NO_FAVORITE_LEVEL0_TEXT1          = 
+#DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE_LEVEL0_TEXT1     = 
+#DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE_LEVEL1_TEXT1     = 
+#DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE_LEVEL0_TEXT1      = 
+#DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE_LEVEL1_TEXT1      = 
+#DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL0_TEXT1 = 
+#DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL1_TEXT1 = 
+
+DIALOGUE_BETTY_ASK_FOR_SAMMYINFORMATION = Como estão as coisas com o prêmio Sammy atual?
+DIALOGUE_BETTY_ASK_FOR_MASTERKEY        = Por acaso, você não poderia me emprestar a chave mestra?
+DIALOGUE_BETTY_CHANGETOPIC              = Vamos falar de outra coisa
+DIALOGUE_BETTY_LEVEL0_CHANGETOPIC1      = Espero que você não se importe se nós falarmos sobre outra coisa
+DIALOGUE_BETTY_GOODBYE                  = Hmm, até mais.
+DIALOGUE_BETTY_LEVEL0_GOODBYE           = Uhmm, adeus
+DIALOGUE_BETTY_LEVEL1_GOODBYE           = Te vejo mais tarde
+DIALOGUE_BETTY_LEVEL2_GOODBYE           = Hey, tenho que ir. Te vejo depois.
+DIALOGUE_BETTY_LEVEL3_GOODBYE           = Escute, Betty, o trabalho me chama. Preciso sair um minuto.
+
+NO_PRESENT_SELECTED        = Nenhum presente selecionado
+BUY_PRESENTTITLE_FOR_PRICE = Comprar %PRESENTTITLE%  por %PRICE%
+BETTY_PRESENT_1            = Spray de pé
+BETTY_PRESENT_2            = Jantar para dois
+BETTY_PRESENT_3            = Plástica do nariz
+BETTY_PRESENT_4            = Romance escrito personalizado
+BETTY_PRESENT_5            = Colar de pérolas
+BETTY_PRESENT_6            = Casado de hamster da China
+BETTY_PRESENT_7            = Colar de diamantes de sangue
+BETTY_PRESENT_8            = Carro esportivo
+BETTY_PRESENT_9            = Anel
+BETTY_PRESENT_10           = Iate
+
+
+#AWARDNAME_CULTURE          = 
+#AWARDNAME_NEWS             = 
+#AWARDNAME_AUDIENCE         = 
+#AWARDNAME_CUSTOMPRODUCTION = 
+#AWARD_WON                  = 
+#YOU_WON_THE_AWARDNAME      = 
+#CHANNEL_IMAGE              = 
+#FOR_X_HOURS                = 
+#FOR_X_HOUR                 = 
+#ATTRACTIVITY               = 
+
+
+DIALOGUE_BOSS_MAIN_TITLE_DEFAULT1                = O que foi, %PLAYERNAME%?
+DIALOGUE_BOSS_MAIN_TITLE_DEFAULT2                = %PLAYERNAME%, você de novo?!
+DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY1             = Você ... você se atreve a perguntar?!
+DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY2             = Você está louco?
+DIALOGUE_BOSS_MAIN_TEXT_DEFAULT1                 = Você não tem nada mais pra fazer além de torrar o meu tempo?
+#DIALOGUE_BOSS_MAIN_TEXT_WON_AWARDNAME1           = 
+#DIALOGUE_BOSS_MAIN_TEXT_WON_AWARDNAME2           = 
+#DIALOGUE_BOSS_MAIN_TEXT_WON_AWARDNAME3           = 
+#DIALOGUE_BOSS_MAIN_TEXT_AWARDNAME_ENDS_TOMORROW1 = 
+#DIALOGUE_BOSS_MAIN_TEXT_AWARDNAME_ENDS_TOMORROW2 = 
+#DIALOGUE_BOSS_MAIN_TEXT_AWARDNAME_ENDS_TODAY1    = 
+#DIALOGUE_BOSS_MAIN_TEXT_AWARDNAME_ENDS_TODAY2    = 
+#DIALOGUE_BOSS_MAIN_TEXT_NEW_AWARDNAME_TOMORROW1  = 
+#DIALOGUE_BOSS_MAIN_TEXT_NEW_AWARDNAME_TOMORROW2  = 
+DIALOGUE_BOSS_MAIN_TEXT_PROGRAMMEMALFUNCTION1    = Essa incompetência é incrível. Você teve |b|%PROGRAMMEMALFUNCTION%x|/b| problemas na programação.
+DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION1         = Ao invés de você não transmitir nenhuma notícia |b|%NEWSMALFUNCTION%x|/b| vezes, é melhor você passar a previsão do tempo do ano passado!
+DIALOGUE_BOSS_MAIN_ENDING_DEFAULT1               = Volte ao seu trabalho ou alguém vai pegar o seu emprego...!
+DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY1            = O hamster do meu filho poderia fazer seu trabalho melhor que você!
+DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY2            = Dê outro escorregão e o próximo a bater nessa porta vai pegar o seu emprego.
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER1             = Saia do meu caminho - e mande meus piores cumprimentos ao seu chefe. Ha haa haa...
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER2             = Cai fora! Eu não consigo aguentar você ou o seu canal na minha frente mais!
+
+DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER = Tudo bem, uhmmm, eu não irei mais atrapalhar você!
+DIALOGUE_BOSS_WILLNOTDISTURB             = Ah tá certo, Chefe. Eu não irei mais perturbá-lo!
+DIALOGUE_BOSS_ASKFORCREDIT               = Eu apenas *glup* queria um empréstimo.
+DIALOGUE_BOSS_REPAYCREDIT                = Eu quero pagar minha dívida...
+DIALOGUE_BOSS_CREDIT_OK1                 = De novo. Dinheiro. De nooovo?\nHmm, você é melhor no seu serviço que os outros candidatos. Mais que |b|R$%CREDIT%|/b| não é possível, entendeu?!
+DIALOGUE_BOSS_CREDIT_OK2                 = Você acaba com o meu dinheirinho!\nEspero que alguma coisa sensata venha dessa transação.\n|b|R$%CREDIT%|/b| é tudo que eu posso oferecer. Você aceita?
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT1          = Sim, eu vou pegar esse empréstimo.
+#DIALOGUE_BOSS_CREDIT_OK_ACCEPT2          = 
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF1     = Obrigado, chefe, eu só vou precisar de 50% disso, ou seja, |b|R$%CREDITHALF%|/b|.
+#DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF2     = 
+#DIALOGUE_BOSS_CREDIT_OK_ACCEPT_QUARTER1  = 
+#DIALOGUE_BOSS_CREDIT_OK_ACCEPT_QUARTER2  = 
+DIALOGUE_BOSS_DECLINE1                   = Hmm, obrigado, chefe, mas eu mudei de ideia.
+DIALOGUE_BOSS_DECLINE2                   = Mudei de ideia, até mais, chefe.
+DIALOGUE_BOSS_DECLINE3                   = Uhum, eu volto depois.
+DIALOGUE_BOSS_CREDIT_REPAY               = Você não acabou de quitar o empréstimo passado?\nE você ainda me deve |b|R$%CREDIT%|/b| - pague isso primeiro!\nCaia fora agora ou eu vou chutar o seu traseiro!!
+DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT        = Okay, eu vou quitar um pouco.
+DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE  = Não diga! Até que enfim uma notícia boa hoje.\n \nQuanto você quer pagar?
+DIALOGUE_BOSS_CREDIT_REPAY_VALUE1        = Ah certo, eu posso pagar |b|R$%VALUE%|/b|.
+DIALOGUE_BOSS_CREDIT_REPAY_VALUE2        = Uuhm, eu consigo quitar |b|R$%VALUE%|/b|.
+DIALOGUE_BOSS_CREDIT_REPAY_ALL           = Hmm, o empréstimo todo, que dá |b|R$%$CREDIT%|/b|.
+
+DIALOGUE_BOSS_CHANGETOPIC1  = A gente não pode falar de outra coisa?
+#DIALOGUE_BOSS_CHANGETOPIC2  = 
+DIALOGUE_BOSS_BACKTOWORK    = Okay, %PLAYERNAME%, agora volte ao trabalho!
+DIALOGUE_BOSS_BACKTOWORK_OK = Sim, senhor, estou indo.
+
+YOUR_BOSS_WANTS_TO_SEE_YOU                   = Seu chefe quer te ver
+YOU_HAVE_GOT_X_HOURS_TO_VISIT_HIM            = Você tem %HOURS% horas para ir vê-lo.
+CLICK_HERE_TO_START_YOUR_VISIT_AHEAD_OF_TIME = Clique aqui para começar a visita antes do tempo.
+
+YOUR_BALANCE_IS_POSITIVE_AGAIN            = Seu saldo está positivo novamente.
+YOUR_BALANCE_IS_NEGATIVE                  = Seu saldo está negativo.
+YOU_ARE_NO_LONGER_IN_DANGER_TO_GET_FIRED  = Você não está mais ameaçado de ser demitido.
+YOU_HAVE_X_DAYS_TO_GET_INTO_THE_BLACK     = Você tem %DAYS% dias para sair do vermelho.
+YOU_HAVE_ONLY_TODAY_TO_GET_INTO_THE_BLACK = Você tem até hoje para sair do vermelho.
+YOU_ARE_IN_DANGER_TO_GET_FIRED            = Você corre o risco de ser demitido!

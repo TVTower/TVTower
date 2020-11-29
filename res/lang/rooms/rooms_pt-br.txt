@@ -1,0 +1,122 @@
+ROOM_ELEVATORPLAN        = Elevador e guia de salas
+ROOM_NEWSPLANNER         = Pauta de notícias
+ROOM_FINANCES            = Finanças
+ROOM_SAFE                = Cofre
+ROOM_PROGRAMMEPLANNER    = Grade de programação
+ROOM_STATIONMAP          = Mapa de estações
+ROOM_ROOMMAP             = Mapa de salas
+ROOM_MOVIEAGENCY         = Agência de filmes
+ROOM_MOVIEAGENCY_OWNER   = J. Steward Jabble
+ROOM_ADAGENCY            = Agência de propaganda
+ROOM_ADAGENCY_OWNER      = proprietário: P.P. Purningham
+ROOM_BUREAU_OF           = Escritório de %PLAYERNAME%
+ROOM_BOSS_OF             = Chefe de %CHANNELNAME%
+ROOM_NEWSSTUDIO_OF       = Estúdio de notícias de %CHANNELNAME%
+ROOM_ARCHIVE_OF          = Arquivo de %CHANNELNAME%
+ROOM_ROOMBOARD           = Guia de salas
+ROOM_CREDITS             = Créditos / Sobre
+ROOM_BETTY               = Betty
+ROOM_SUPERMARKET         = Supermercado
+ROOM_SUPERMARKET_SUB     = Coisas pra todo mundo
+ROOM_ROOMAGENCY          = Corretor de Salas
+ROOM_ROOMAGENCY_OWNER    = H.G. Higwig
+ROOM_PEACEBROTHERS       = Irmãos-da-Paz
+ROOM_PEACEBROTHERS_SUB   = Agência Internacional da Paz
+ROOM_GUNSAGENCY          = Agência de Armas
+#ROOM_FREE_ROOM           = 
+ROOM_FREE_STUDIO         = Sala livre
+ROOM_STUDIO_OF           = Estúdio de %CHANNELNAME%
+ROOM_SCRIPT_OFFICE       = Escritório de roteiros
+ROOM_SCRIPT_OFFICE_OWNER = John S. Jibble
+ROOM_NOTOBACCO           = Sociedade Sem Tabaco
+ROOM_NOTOBACCO_OWNER     = Sociedade Americana Contra o Tabaco
+ROOM_TOBACCOLOBBY        = Lobby do Tabaco
+ROOM_TOBACCOLOBBY_OWNER  = União Americana dos Produtores de Tabaco
+ROOM_VRDUBAN             = Consulado da República Popular do Duban
+ROOM_FRDUBAN             = Embaixada da República Livre do Duban
+ROOM_PORTER              = Porteiro
+ROOM_LAUNDRY             = Lavanderia
+ROOM_BIOCONTROL          = Controle Biológico
+ROOM_PSYCHIATRIST        = Psiquiatra "Harry Dippl"
+ROOM_COMPUTERSHOP        = Loja de Computadores "SpySoft"
+ROOM_AUCTION             = Leilão
+ROOM_AUCTION_SUB         = Leilão de filmes e séries
+ROOM_SIZE                = Tamanho da sala: %SIZE%
+
+LOCKED  = Fechado
+BLOCKED = Bloqueado
+
+ACCESS_TO_THIS_ROOM_IS_ONLY_POSSIBLE_WITH_THE_RIGHT_KEY = O acesso a essa sala somente é possível com a chave correta.
+ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE           = O acesso a essa sala não é possível no momento.
+
+ROOM_IS_BLOCKED                           = Sala bloqueada!
+ROOM_IS_OCCUPIED                          = Sala ocupada!
+SHOOTING_IN_PROGRESS                      = Gravação em progresso
+SHOOTING_FINISHED                         = Gravação finalizada
+#PREPRODUCTION_IN_PROGRESS                 = 
+#PREPRODUCTION_FINISHED                    = 
+BLOCKED_UNTIL_TIME                        = Bloqueada até %TIME%
+ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = Já há alguém nessa sala.
+
+
+#ROOM_OVERVIEW               = 
+#CANCEL_OR_RENT_ROOMS        = 
+#PREVIOUS_TENANT             = 
+#ORIGINAL_TENANT             = 
+#RERENT                      = 
+#IN_XTIME_AFTER_CANCELLATION = 
+#IN_XTIME                    = 
+#CLICK_AGAIN_TO_RENT         = 
+#CLICK_AGAIN_TO_CANCEL_RENT  = 
+#CONFIRM                     = 
+
+#ROOMAGENCY_SIZE_TEXT1                              = 
+#ROOMAGENCY_SIZE_TEXT2                              = 
+#ROOMAGENCY_ROOM_X_IN_RANGE_TEXT1                   = 
+#ROOMAGENCY_ROOM_SUPERMARKET_IN_RANGE_TEXT1         = 
+#ROOMAGENCY_ROOM_SCRIPTAGENCY_IN_RANGE_TEXT1        = 
+#ROOMAGENCY_ROOM_OFFICE_IN_RANGE_TEXT1              = 
+#ROOMAGENCY_AVAILABLE_FOR_RENT_OF_X_PER_DAY         = 
+#ROOMAGENCY_SIGNING_WILL_COST_A_SINGLE_PAYMENT_OF_X = 
+
+#ROOMAGENCY_ROOM_CURRENTLY_NOT_AVAILABLE_BUT_THIS_MIGHT_CHANGE1 = 
+#ROOMAGENCY_ROOM_CURRENTLY_NOT_AVAILABLE_BUT_THIS_MIGHT_CHANGE2 = 
+
+
+DIALOGUE_SUPERMARKET_TITLE1 = E ai, cara!
+DIALOGUE_SUPERMARKET_TITLE2 = Oi, %PLAYERNAME%!
+DIALOGUE_SUPERMARKET_TITLE3 = Como vai, %PLAYERNAME% !
+DIALOGUE_SUPERMARKET_TEXT1  = O que você quer hoje?
+DIALOGUE_SUPERMARKET_TEXT2  = O que posso fazer por você hoje??
+DIALOGUE_SUPERMARKET_TEXT3  = Você consegue pegar o que precisa sozinho? Eu vou dar uma pit... tomar um ar fresco.
+DIALOGUE_SUPERMARKET_TEXT4  = Faça isso, minha cabeça ainda tá latejando ... aquela ...festa de ontem...
+
+DIALOGUE_SUPERMARKET_PLAN_A_PRODUCTION = Eu quero planejar uma produção de TV e comprar tudo o que for necessário pra isso
+DIALOGUE_SUPERMARKET_BUY_A_PRESENT     = Eu quero comprar um presente
+DIALOGUE_SUPERMARKET_GOODBYE1          = Eu tô indo nessa. Tchau tchau.
+DIALOGUE_SUPERMARKET_GOODBYE2          = Até mais. Tchau.
+DIALOGUE_SUPERMARKET_GOODBYE3          = Hora de bater perna. Até mais.
+
+
+#ARCHIVED_MESSAGES                   = 
+#READ_MESSAGES_YOU_MIGHT_HAVE_MISSED = 
+#MESSAGECATEGORY_CATEGORIES          = 
+#MESSAGECATEGORY_ALL                 = 
+#MESSAGECATEGORY_MONEY               = 
+#MESSAGECATEGORY_ACHIEVEMENTS        = 
+#MESSAGECATEGORY_AWARDS              = 
+#MESSAGECATEGORY_MISC                = 
+
+BUY_AND_SELL        = Comprar e vender
+AND_STATISTICS      = e estatísticas
+FOR_PRIVATE_AFFAIRS = para seus assuntos mais particulares
+
+
+INGAME_HELP_TEXT_SCREEN_EMPTYROOM  = Desculpe\n\nEssa sala ainda não está funcionando. Estamos trabalhando nisso!
+INGAME_HELP_TITLE_SCREEN_EMPTYROOM = SEM FUNCIONAMENTO
+
+#INGAME_HELP_TEXT_SCREEN_OFFICE_PROGRAMMEPLANNER  = 
+#INGAME_HELP_TITLE_SCREEN_OFFICE_PROGRAMMEPLANNER = 
+
+#INGAME_HELP_TEXT_SCREEN_NEWSSTUDIO_NEWSPLANNER  = 
+#INGAME_HELP_TITLE_SCREEN_NEWSSTUDIO_NEWSPLANNER = 
