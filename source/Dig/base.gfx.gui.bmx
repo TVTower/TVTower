@@ -332,6 +332,8 @@ Type TGUIManager
 
 	Method SortLists()
 		List.sort(True, SortObjects)
+		
+		_listsSorted = True
 	End Method
 
 
