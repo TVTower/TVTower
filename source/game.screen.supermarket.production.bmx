@@ -1449,13 +1449,13 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		sortType = sortType + 1
 		If sortType > 2 Then sortType = 0
 		If sortType = 0
-			castSelectList.entries.sort(True, TGUICastSelectList.SortByName)
+			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByName)
 			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_az")
 		Else If SortType = 1
-			castSelectList.entries.sort(True, TGUICastSelectList.SortByXP)
+			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByXP)
 			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_quality")
 		Else If SortType = 2
-			castSelectList.entries.sort(True, TGUICastSelectList.SortByFee)
+			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByFee)
 			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_money")
 		End If
 		castSelectList.Update()
@@ -1627,7 +1627,7 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		castSelectList.filteredJobID = filterToJobID
 		castSelectList.filteredGenderID = filterToGenderID
 		'initial sorting
-		castSelectList.entries.sort(True, TGUICastSelectList.SortByName)
+		castSelectList.entries.sort(True, TGUICastSelectList.SortCastByName)
 	End Method
 
 
@@ -1876,7 +1876,7 @@ Type TGUICastSelectList Extends TGUISelectList
 		Return selectJobID
 	End Method
 
-	Function SortByName:Int(o1:Object, o2:Object)
+	Function SortCastByName:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
 		If Not a1 or a1.isAmateur Then Return -1
@@ -1891,25 +1891,25 @@ Type TGUICastSelectList Extends TGUISelectList
 	End Function
 
 
-	Function SortByXP:Int(o1:Object, o2:Object)
+	Function SortCastByXP:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
-		If Not a1 or a1.isAmateur Then Return 1
-		If Not a2 or a2.isAmateur Then Return -1
+		If Not a1 or a1.isAmateur Then Return -1
+		If Not a2 or a2.isAmateur Then Return 1
 
 		Local xp1:float=a1.person.GetEffectiveJobExperiencePercentage(a1.selectJobID)
 		Local xp2:float=a2.person.GetEffectiveJobExperiencePercentage(a2.selectJobID)
 
-		If xp1 = xp2 Then Return SortByName(o1, o2)
+		If xp1 = xp2 Then Return SortCastByName(o1, o2)
 		Return xp1 < xp2
 	End Function
 
 
-	Function SortByFee:Int(o1:Object, o2:Object)
+	Function SortCastByFee:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
-		If Not a1 or a1.isAmateur Then Return 1
-		If Not a2 or a2.isAmateur Then Return -1
+		If Not a1 or a1.isAmateur Then Return -1
+		If Not a2 or a2.isAmateur Then Return 1
 
 		local playerID:Int = 0
 		local blocks:Int = 1
@@ -1923,7 +1923,7 @@ Type TGUICastSelectList Extends TGUISelectList
 		Local fee1:Int = a1.person.GetJobBaseFee(a1.selectJobID, blocks, playerID)
 		Local fee2:Int = a2.person.GetJobBaseFee(a2.selectJobID, blocks, playerID)
 
-		If fee1 = fee2 Then Return SortByName(o1, o2)
+		If fee1 = fee2 Then Return SortCastByName(o1, o2)
 		'cheap on top, expensive at bottom
 		Return fee1 > fee2
 	End Function
