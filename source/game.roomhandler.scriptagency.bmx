@@ -956,6 +956,14 @@ endrem
 		GUIManager.Draw( LS_scriptagency )
 
 		if hoveredGuiScript
+			if hoveredGuiScript.IsDragged()
+				GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+			elseif hoveredGuiScript.script.owner = GetPlayerBase().playerID or GetPlayerBase().GetFinance().canAfford(hoveredGuiScript.script.GetPrice())
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL)
+			else
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL, TGameBase.CURSOR_EXTRA_FORBIDDEN)
+			endif
+
 			'draw the current sheet
 			hoveredGuiScript.DrawSheet(30, 30, -2)
 		endif

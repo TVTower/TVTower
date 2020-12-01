@@ -1181,6 +1181,17 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'draw before potential tooltips
 		If roomOwner And studioManagerDialogue Then studioManagerDialogue.Draw()
 
+
+		If hoveredGuiScript
+			'set mouse to "dragged"
+			If hoveredGuiScript.isDragged()
+				GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+			'set mouse to "hover"
+			ElseIf hoveredGuiScript.isDragable() and hoveredGuiScript.isHovered() and (hoveredGuiScript.script.owner = GetPlayerBaseCollection().playerID Or hoveredGuiScript.script.owner <= 0)
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL)
+			EndIf
+		EndIf
+
 		'draw data sheets for scripts or production concepts
 '		if not studioManagerDialogue
 			If hoveredGuiScript Then hoveredGuiScript.DrawSheet(365, , 0)

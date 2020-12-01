@@ -164,7 +164,9 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 
 	Method Draw()
 		SetColor 255,255,255
-		local oldCol:TColor = new TColor.get()
+		Local oldCol:SColor8
+		Local oldA:Float = GetAlpha()
+		GetColor(oldCol)
 
 		local markFaded:int = False
 		'make faded as soon as not "dragable" for us
@@ -177,19 +179,20 @@ Type TGUIProgrammeLicence Extends TGUIGameListItem
 		endif
 
 
-		if markFaded then SetAlpha oldCol.a * 0.75
+		if markFaded then SetAlpha oldA * 0.75
 
 		Super.Draw()
 
 		if markFaded
-			SetAlpha oldCol.a * 0.75 * 0.90
+			SetAlpha oldA * 0.75 * 0.90
 		else
-			SetAlpha oldCol.a * 0.9
+			SetAlpha oldA * 0.9
 		endif
 		if licence.IsPaid() then GetSpriteFromRegistry("gfx_movie_flag_paid").Draw(GetScreenRect().GetX(), GetScreenRect().GetY() + GetScreenRect().GetH() - 14, -1, ALIGN_LEFT_BOTTOM)
 		if licence.IsXRated() then GetSpriteFromRegistry("gfx_movie_flag_xrated").Draw(GetScreenRect().GetX(), GetScreenRect().GetY() + GetScreenRect().GetH()  - 20, -1, ALIGN_LEFT_BOTTOM)
 		if licence.IsLive() then GetSpriteFromRegistry("gfx_movie_flag_live").Draw(GetScreenRect().GetX(), GetScreenRect().GetY() + GetScreenRect().GetH()  - 26, -1, ALIGN_LEFT_BOTTOM)
 
-		SetAlpha oldCol.a
+		SetColor(oldCol)
+		SetAlpha oldA
 	End Method
 End Type

@@ -53,6 +53,11 @@ Type TGuiScript Extends TGUIGameListItem
 	End Method
 
 
+	Method IsAffordable:Int()
+		Return GetPlayerBase().GetFinance().CanAfford(script.GetPrice())
+	End Method
+
+
 	Method DrawSheet(leftX:Int=30, rightX:Int=30, sheetAlign:Int = 0)
 		Local sheetY:Int = 20
 		Local sheetX:Int = leftX
@@ -102,32 +107,27 @@ Type TGuiScript Extends TGUIGameListItem
 
 
 	Method Draw() override
-		SetColor 255,255,255
-		Local oldCol:TColor = New TColor.Get()
+		Local oldCol:SColor8
+		Local oldA:Float = GetAlpha()
+		GetColor(oldCol)
 
+		local markFaded:int = False
 		'make faded as soon as not "dragable" for us
-		If Not isDragable()
-			'in our collection
-			If script.owner = GetPlayerBaseCollection().playerID
-				SetAlpha 0.80*oldCol.a
-				SetColor 200,200,200
-			Else
-				SetAlpha 0.70*oldCol.a
-				SetColor 250,200,150
-			EndIf
-		EndIf
+		If script.owner <> GetPlayerBaseCollection().playerID And (script.owner<=0 And Not IsAffordable())
+			markFaded = True
+		endif
+
+		if script.owner = GetPlayerBaseCollection().playerID and not script.IsTradeable()
+			markFaded = True
+		endif
+
+
+		if markFaded then SetAlpha oldA * 0.75
 
 		Super.Draw()
 
-		oldCol.SetRGBA()
-
-		'set mouse to "dragged"
-		If isDragged()
-			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
-		'set mouse to "hover"
-		ElseIf isDragable() and isHovered() and (script.owner = GetPlayerBaseCollection().playerID Or script.owner <= 0)
-			GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL)
-		EndIf
+		SetColor(oldCol)
+		SetAlpha oldA
 	End Method
 End Type
 
