@@ -821,6 +821,9 @@ CAST_POWER = Kraft
 CAST_HUMOR = Humor
 CAST_CHARISMA = Charisma
 CAST_APPEARANCE = Aussehen
+CAST_FEE = Gage
+CAST_JOB_EXPERIENCE = Berufserfahrung
+CAST_GENRE_EXPERIENCE = Genreerfahrung
 
 TITLE = Titel
 DESCRIPTION = Beschreibung

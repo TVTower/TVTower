@@ -1343,6 +1343,7 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 	Field selectJobID:Int = 0
 	Field selectGenderID:Int = 0
 	Field castSelectList:TGUICastSelectList
+	Field sortCastTooltip:TTooltipBase
 	Field sortType:Int = 0
 
 
@@ -1400,6 +1401,18 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		castSelectList = New TGUICastSelectList.Create(New TVec2D.Init(15,50), New TVec2D.Init(270, dimension.y - 103), "")
 
 
+		sortCastTooltip = New TGUITooltipBase.Initialize("", "", New TRectangle.Init(0,0,-1,-1))
+		sortCastTooltip.parentArea = New TRectangle
+		sortCastTooltip.SetOrientationPreset("TOP")
+		sortCastTooltip.offset = New TVec2D.Init(0,+5)
+		sortCastTooltip.SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
+		'standard icons should need a bit longer for tooltips to show up
+		sortCastTooltip.dwellTime = 50
+		sortCastTooltip.SetContent( StringHelper.UCFirst(GetLocale("NAME")) )
+		'manually set to hovered when needed
+		sortCastTooltip.SetOption(TTooltipBase.OPTION_MANUAL_HOVER_CHECK)
+
+
 		AddChild(jobFilterSelect)
 		AddChild(genderFilterSelect)
 		AddChild(sortCastButton)
@@ -1451,16 +1464,19 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		If sortType = 0
 			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByName)
 			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_az")
-			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_az")
+			sortCastTooltip.SetContent( StringHelper.UCFirst(GetLocale("NAME")) )
 		Else If SortType = 1
 			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByJobXP)
 			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_quality")
+			sortCastTooltip.SetContent( StringHelper.UCFirst(GetLocale("CAST_JOB_EXPERIENCE")) )
 		Else If SortType = 2
 			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByGenreXP)
 			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_genreXP")
+			sortCastTooltip.SetContent( StringHelper.UCFirst(GetLocale("CAST_GENRE_EXPERIENCE")) )
 		Else If SortType = 3
 			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByFee)
 			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_money")
+			sortCastTooltip.SetContent( StringHelper.UCFirst(GetLocale("CAST_FEE")) )
 		End If
 		castSelectList.Update()
 		castSelectList.UpdateLayout()
@@ -1632,6 +1648,36 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 		castSelectList.filteredGenderID = filterToGenderID
 		'initial sorting
 		castSelectList.entries.sort(True, TGUICastSelectList.SortCastByName)
+	End Method
+	
+	
+	Method Update:Int() override
+		Super.Update()
+
+		if not IsClosed() 'or better isopen()?
+			if sortCastButton.IsVisible()
+				if sortCastButton.IsHovered()
+					sortCastTooltip.SetOption(TTooltipBase.OPTION_MANUALLY_HOVERED)
+					'skip dwelling
+					sortCastTooltip.SetStep(TTooltipBase.STEP_ACTIVE)
+					sortCastTooltip.Update()
+				else
+					sortCastTooltip.SetOption(TTooltipBase.OPTION_MANUALLY_HOVERED, False)
+					sortCastTooltip.Update()
+				endif
+			endif
+		endif
+	End Method
+
+
+	Method DrawTooltips:Int() override
+		Super.DrawTooltips()
+
+		if not IsClosed()
+			sortCastTooltip.parentArea.SetXY(GetContentScreenRect().GetX() + 250, GetContentScreenRect().GetY() + 12).SetWH(30, 28)
+
+			sortCastTooltip.Render()
+		endif
 	End Method
 
 

@@ -52,6 +52,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	'templates for button positions
 	Field buttonPositionTemplate:Int = 0
 	Field autoAdjustHeight:Int = True
+	Field isOpen:Int
 	'=== CLOSING VARIABLES ===
 	'indicator if currently closing
 	Field closeActionStarted:Long = 0
@@ -220,6 +221,8 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 	Method Open:Int()
 		EventManager.triggerEvent(TEventSimple.Create("guiModalWindow.onOpen", Self))
+
+		isOpen = True
 	End Method
 
 
@@ -227,6 +230,8 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	Method Close:Int(closeButton:Int=-1)
 		'only close once :D
 		if closeActionStarted then return False
+		
+		isOpen = False
 
 		closeActionStarted = True
 		closeActionTime = Time.GetAppTimeGone()
