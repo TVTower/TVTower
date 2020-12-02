@@ -64,6 +64,10 @@ Type TgfxProgrammelist Extends TPlannerList
 	Method New()
 		sortSymbols = ["gfx_datasheet_icon_az", "gfx_datasheet_icon_runningTime", "gfx_datasheet_icon_topicality"]
 		sortKeys = [0, 1, 2]
+		sortTooltips = [ new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("NAME")), new TRectangle.Init(0,0,-1,-1)), ..
+		                 new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("MOVIE_BLOCKS")), new TRectangle.Init(0,0,-1,-1)), ..
+		                 new TGUITooltipBase.Initialize("", StringHelper.UCFirst(GetLocale("MOVIE_TOPICALITY")), new TRectangle.Init(0,0,-1,-1)) ..
+		]
 
 		RegisterEvents()
 	End Method
