@@ -91,7 +91,7 @@ Type TPlannerList extends TOwnedGameObject
 			For local i:int = 0 until sortTooltips.length
 				if not sortTooltips[i].parentArea then sortTooltips[i].parentArea = new TRectangle
 				sortTooltips[i].parentArea.Init(buttonX + i * (buttonWidth + buttonPadding), buttonY, 35, 27)
-
+				sortTooltips[i].SetOrientationPreset("left")
 				sortTooltips[i].Update()
 			Next
 		endif
