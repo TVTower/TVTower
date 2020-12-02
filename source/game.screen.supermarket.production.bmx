@@ -1447,14 +1447,18 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 
 	Method onClickSortCastButton:Int(triggerEvent:TEventBase )
 		sortType = sortType + 1
-		If sortType > 2 Then sortType = 0
+		If sortType > 3 Then sortType = 0
 		If sortType = 0
 			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByName)
 			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_az")
+			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_az")
 		Else If SortType = 1
-			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByXP)
+			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByJobXP)
 			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_quality")
 		Else If SortType = 2
+			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByGenreXP)
+			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_genreXP")
+		Else If SortType = 3
 			castSelectList.entries.sort(True, TGUICastSelectList.SortCastByFee)
 			sortCastButton.caption.SetSpriteName("gfx_datasheet_icon_money")
 		End If
@@ -1891,7 +1895,7 @@ Type TGUICastSelectList Extends TGUISelectList
 	End Function
 
 
-	Function SortCastByXP:Int(o1:Object, o2:Object)
+	Function SortCastByJobXP:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)
 		Local a2:TGUICastListItem = TGUICastListItem(o2)
 		If Not a1 or a1.isAmateur Then Return -1
@@ -1904,6 +1908,20 @@ Type TGUICastSelectList Extends TGUISelectList
 		Return xp1 < xp2
 	End Function
 
+	Function SortCastByGenreXP:Int(o1:Object, o2:Object)
+		Local a1:TGUICastListItem = TGUICastListItem(o1)
+		Local a2:TGUICastListItem = TGUICastListItem(o2)
+		If Not a1 or a1.isAmateur Then Return -1
+		If Not a2 or a2.isAmateur Then Return 1
+
+		Local genre:Int = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script.mainGenre
+
+		Local xp1:float=TPersonProductionData(a1.person.getProductionData()).GetEffectiveGenreExperiencePercentage(genre)
+		Local xp2:float=TPersonProductionData(a2.person.getProductionData()).GetEffectiveGenreExperiencePercentage(genre)
+
+		If xp1 = xp2 Then Return SortCastByName(o1, o2)
+		Return xp1 < xp2
+	End Function
 
 	Function SortCastByFee:Int(o1:Object, o2:Object)
 		Local a1:TGUICastListItem = TGUICastListItem(o1)

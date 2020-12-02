@@ -31,6 +31,8 @@
 				<child name="gfx_datasheet_icon_duration"           x="131"  y="72"   w="24"  h="23" />
 				<child name="gfx_datasheet_icon_spotsPlanned"       x="157"  y="72"   w="24"  h="23" />
 				<child name="gfx_datasheet_icon_spotsAired"         x="183"  y="72"   w="24"  h="23" />
+				<!-- genreXP currently the same as  spotsAired-->
+				<child name="gfx_datasheet_icon_genreXP"            x="183"  y="72"   w="24"  h="23" />
 				<child name="gfx_datasheet_icon_repetitions"        x="209"  y="72"   w="24"  h="23" />
 				<child name="gfx_datasheet_icon_maxAudience"        x="235"  y="72"   w="24"  h="23" />
 				<child name="gfx_datasheet_icon_audience"           x="261"  y="72"   w="24"  h="23" />
