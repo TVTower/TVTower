@@ -1,0 +1,145 @@
+PLANNER_UNKNOWN      = Bientôt
+PLANNER_PROGRAMME    = Programme
+PLANNER_ADS          = Pub
+PLANNER_FINANCES     = Finances
+PLANNER_STATISTICS   = Statistiques
+PLANNER_MESSAGES     = Messages
+#PLANNER_ACHIEVEMENTS =
+
+#PRIMETIME     = 
+#NIGHTTIME     = 
+#LOW_AUDIENCE  = 
+#HIGH_AUDIENCE = 
+
+
+MOVIE_SPEED      = Vitesse
+MOVIE_CRITIC     = Critiques
+#MOVIE_BOXOFFICE  = Box-office
+#MOVIE_TVAUDIENCE = 
+MOVIE_TOPICALITY = Actualité
+#MOVIE_BLOCKS     = blocks
+MOVIE_XRATED     = Classé X
+MOVIE_EPISODES   = episodes
+MOVIE_CAST       = Distribution
+
+#MOVIE_LIVESHOW   = 
+MOVIE_CALLINSHOW = Gain %PROFIT% par 1.000 téléspectacteurs.
+MOVIE_TRAILER    = Diffusée une bande-annonce peut accroître l'intérêt pour les diffusions à venir du programme promu .
+
+#MOVIES          = Films
+#SERIES          = Series
+#SERIES_SINGULAR = Series
+#SPECIAL_BIN     = Special bin
+AUCTION         = Enchères
+TRAILER         = Bande Annonce
+X_RATED         = Classé X
+
+MOVIES_AND_SERIES_AUCTION                = Films et Series Enchère
+CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID    = Clique sur un film ou une serie pour faire une offre.
+AUCTION_MAKE_BID                         = Offre
+AUCTION_WITHOUT_BID                      = Sans offre
+YOU_HAVE_BEEN_OUTBID                     = Vous avez été surenchéri
+SOMEONE_BID_MORE_THAN_YOU_FOR_X          = Quelqu'un enchérir plus que vous pour "%TITLE%"
+YOUR_PREVIOUS_BID_OF_X_WAS_REFUNDED      = Votre offre précédente de %MONEY% a été remboursé.
+YOU_HAVE_WON_AN_AUCTION                  = Victoire sur une enchére
+
+PROGRAMME_GENRE_UNDEFINED                  = Various
+PROGRAMME_GENRE_ADVENTURE                  = Aventure
+PROGRAMME_GENRE_ACTION                     = Action
+PROGRAMME_GENRE_ANIMATION                  = Animation
+PROGRAMME_GENRE_CRIME                      = Crime
+PROGRAMME_GENRE_COMEDY                     = Comedie
+PROGRAMME_GENRE_DOCUMENTARY                = Documentaire
+PROGRAMME_GENRE_DRAMA                      = Drame
+PROGRAMME_GENRE_EROTIC                     = Erotique
+PROGRAMME_GENRE_FAMILY                     = Famille
+PROGRAMME_GENRE_FANTASY                    = Fantaisie
+PROGRAMME_GENRE_HISTORY                    = Historique
+PROGRAMME_GENRE_HORROR                     = Horreur
+PROGRAMME_GENRE_MONUMENTAL                 = Monumental
+PROGRAMME_GENRE_MYSTERY                    = Mysterieux
+PROGRAMME_GENRE_ROMANCE                    = Romance
+PROGRAMME_GENRE_SCIFI                      = SciFi
+PROGRAMME_GENRE_THRILLER                   = Thriller
+PROGRAMME_GENRE_WESTERN                    = Western
+PROGRAMME_GENRE_DOCUMENTARIES_AND_FEATURES = Documentaires
+PROGRAMME_GENRE_SHOW_AND_EVENTS            = Shows & Events
+PROGRAMME_GENRE_SHOW                       = Show
+PROGRAMME_GENRE_SHOW_MUSIC                 = Musical Show
+PROGRAMME_GENRE_SHOW_POLITICS              = Politique Talkshow
+#PROGRAMME_GENRE_SHOW_GAME                  = 
+#PROGRAMME_GENRE_SHOW_TALK                  = 
+PROGRAMME_GENRE_EVENT                      = Event
+PROGRAMME_GENRE_EVENT_POLITICS             = Politique
+PROGRAMME_GENRE_EVENT_SPORT                = Sport
+PROGRAMME_GENRE_EVENT_SHOWBIZ              = Showbiz
+PROGRAMME_GENRE_EVENT_MUSIC                = Musique et chanson
+PROGRAMME_GENRE_FEATURE                    = Feature
+PROGRAMME_GENRE_FEATURE_YELLOWPRESS        = Presse à sensation
+
+PROGRAMME_FLAG_LIVE      = Live/Direct
+PROGRAMME_FLAG_ANIMATION = Animation
+PROGRAMME_FLAG_CULTURE   = Culture
+PROGRAMME_FLAG_CULT      = Culte
+PROGRAMME_FLAG_TRASH     = Trash
+PROGRAMME_FLAG_BMOVIE    = série B
+PROGRAMME_FLAG_XRATED    = Classé X
+PROGRAMME_FLAG_PAID      = Programation payante
+PROGRAMME_FLAG_SERIES    = Series
+PROGRAMME_FLAG_SCRIPTED  = Scripted
+
+PROGRAMMELICENCES          = Programme licences
+SELECT_LICENCES_FOR_SALE   = choisir licence à vendre
+LICENCETYPE_COLLECTION     = Collection
+SERIES_WITH_X_EPISODES     = Series avec %EPISODESCOUNT% episodes
+#COLLECTION_WITH_X_ELEMENTS =
+
+PROGRAMME_PRODUCT_UNDEFINED   = Undefined
+PROGRAMME_PRODUCT_MOVIE       = Film
+PROGRAMME_PRODUCT_SERIES      = Series
+PROGRAMME_PRODUCT_SHOW        = Show
+PROGRAMME_PRODUCT_FEATURE     = Feature
+PROGRAMME_PRODUCT_INFOMERCIAL = Reportage
+PROGRAMME_PRODUCT_EVENT       = Event
+PROGRAMME_PRODUCT_MISC        = divers
+
+#PROGRAMME_IN_PROGRAMME_PLAN             = Programme in programme plan!
+#TRAILER_IN_PROGRAMME_PLAN               = 
+#PROGRAMME_AND_TRAILER_IN_PROGRAMME_PLAN = 
+#ONLY_1_BROADCAST_POSSIBLE               = 
+#ONLY_X_BROADCASTS_POSSIBLE              = 
+#NO_MORE_BROADCASTS_ALLOWED              = 
+#BROADCAST_ONLY_ALLOWED_FROM_X_TO_Y      = 
+
+#OPENINGSHOW_TITLE       = 
+#OPENINGSHOW_DESCRIPTION = 
+
+#SPORT_PROGRAMME_TITLE                                = 
+#SPORT_PROGRAMME_ALL_X_MATCHES_OF_LEAGUEX_IN_SEASON_X = 
+#SPORT_PROGRAMME_MATCH_TIMES                          = 
+#SPORT_PROGRAMME_MATCH_DESCRIPTION1                   = 
+#SPORT_PROGRAMME_MATCH_DESCRIPTION2                   = 
+#SPORT_PROGRAMME_MATCH_DESCRIPTION3                   = 
+#SPORT_PROGRAMME_MATCH_DESCRIPTION4                   = 
+#SPORT_PROGRAMME_MATCH_DESCRIPTION5                   = 
+
+#SPORT_PROGRAMME_PLAYOFF_MATCH    = 
+#SPORT_PROGRAMME_MATCH_OF_LEAGUEX = 
+#SPORT_PLAYOFFS_LONG              = 
+#SPORT_PLAYOFFS_SHORT             = 
+
+#SPORT_AFTER_PENALTY_SHORT  = 
+#SPORT_AFTER_OVERTIME_SHORT = 
+
+#LIVE_ON_TAPE                        = 
+#ALL_MATCHES_FINISHED                = 
+#X_OF_Y_LIVE_MATCHES_ALREADY_STARTED = 
+
+
+PENALTY_OF_X_WAS_PAID                                      = Pénalité de %MONEY% a été payé.
+BROADCAST_OF_XRATED_PROGRAMME_X_NOT_ALLOWED_DURING_DAYTIME = Diffusion de film classé X "%TITLE%" non autorisés la journée
+AUTHORITIES_STOPPED_BROADCAST                              = Autorités stop la diffusion
+AUTHORITIES_CONFISCATED_LICENCE                            = Autorités confisque la licence
+PROGRAMMELICENCE_X_GOT_CONFISCATED                         = Licence de programme "%TITLE%" confisqué.
+SEEMS_AUTHORITIES_VISITED_THE_WRONG_ROOM                   = Autorités ont visité la mauvaise sale
+BETTER_WATCH_OUT_NEXT_TIME                                 = Regarde mieux la prochaine fois

@@ -1,0 +1,197 @@
+LANGUAGE_NAME_INTERNATIONAL = Francais
+LANGUAGE_NAME_LOCALE        = Francais
+
+#MENU      = 
+#OPEN_MENU = 
+
+CHAT           = Chat
+SAVE_AND_APPLY = Sauvegarder et appliquer
+CANCEL         = Annuler
+
+CONTINUE_GAME                              = Continue Game
+LOAD_GAME                                  = Load Game
+#INCOMPATIBLE_SAVEGAME                      = 
+#INVALID_SAVEGAME                           = 
+#FILE_NOT_FOUND                             = 
+SAVEGAME_GETS_LOADED                       = Sauvegarde chargée
+SAVE_GAME                                  = Save Game
+NAME_OF_SAVEGAME                           = Name of savegame
+OVERWRITE_SAVEGAME                         = Overwrite savegame?
+DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = Do you really want to overwrite savegame %SAVEGAME%?
+SAVEGAME_GETS_CREATED                      = Sauvegarde crée
+PLEASE_BE_PATIENT                          = Patienter svp
+EXIT_GAME                                  = Exit Game
+EXIT_TO_MAINMENU                           = Exit to main menu
+
+24_HOURS_GAMEDAY                                              = Journée de 24 heures
+ALLOW_TRAILERS_AND_INFOMERCIALS                               = Autoriser bande annonce /Publireportage
+ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR              = Autoriser les films avec année de production > année de jeu
+OPTION_ON                                                     = Option on
+OPTION_OFF                                                    = Option off
+AVAILABLE_GAMES                                               = Jeux disponibles
+ALREADY_OVER                                                  = Déja fini...?
+DO_YOU_REALLY_WANT_TO_QUIT                                    = Voulez vous vraiment quitter le jeu ?
+DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Voulez-vous vraiment quitter le jeu et revenir à l'Accueil ?
+
+PREPARING_START_DATA           = Preparing start data
+SYNCHRONIZING_START_CONDITIONS = Synchronizing start conditions
+STARTING_MULTIPLAYERGAME       = Starting multiplayer game
+STARTING_SINGLEPLAYERGAME      = Starting singleplayer game
+
+PLAYERNAME                  = Nom du Joeur
+CHANNELNAME                 = Nom de la chaine
+STATIONMAP                  = Carte des stations
+DATABASE                    = Base de données
+SOUND_OUTPUT                = audio
+GRAPHICS                    = Graphiques
+MUSIC                       = Musique
+SFX                         = Effets audio
+FULLSCREEN                  = plein ecran
+#VSYNC                       = 
+#LONGCLICK_MODE              = 
+#LONGCLICK_MODE_EXPLANATION  = 
+#LONGCLICK_TIME              = 
+#WINDOW_MODE_RESOLUTION      = 
+#INPUT                       = 
+#USE_TOUCH_INPUT             = 
+#USE_TOUCH_INPUT_EXPLANATION = 
+#MOVE_INSTEAD_CLICK_RADIUS   = 
+MULTIPLAYER                 = Multi joueurs
+#SINGLEPLAYER                = 
+DEFAULTS_FOR_NEW_GAME       = Nouvelle partie auto
+RENDERER                    = Rendu
+SOUND_ENGINE                = Moteur Audio
+#SOUND_MUSIC_VOLUME          = 
+#SOUND_SFX_VOLUME            = 
+#SOUND_MUTED                 = 
+PORT_ONLINEGAME             = Port jeu en Ligne
+#GAME_SPEED_IN_ROOMS         = 
+
+GAME_TITLE  = Nom de la partie
+START_YEAR  = Année de début
+#DAY_OF_YEAR = 
+
+YES        = Oui
+NO         = Non
+#OK         = 
+MONEY      = Argent
+DEBT       = Dette
+REACH      = portée
+PRICE      = Prix
+VALUE      = Valeur
+#POPULATION =
+#NAME       = 
+
+#GENDER_MEN         = 
+#GENDER_WOMEN       = 
+#GENDER_ALL         = 
+#GENDER_MEN_SHORT   = 
+#GENDER_WOMEN_SHORT = 
+
+CURRENCY     = €
+OCLOCK       =
+#DAY_SHORT    = 
+#HOUR_SHORT   = 
+#MINUTE_SHORT = 
+DAY          = jour
+DAYS         = jours
+#DATE         = 
+#HOUR         = 
+#HOURS        = 
+#MINUTE       = 
+#MINUTES      = 
+OLD          = Ancien
+#TOMORROW     = 
+TODAY        = Aujourd'hui
+YESTERDAY    = Hier
+TWO_DAYS_AGO = Il y à deux jours
+#IN_X_DAYS    = 
+#X_DAYS_AGO   = 
+
+WEEK_SHORT_MONDAY    = lu
+WEEK_SHORT_TUESDAY   = ma
+WEEK_SHORT_WEDNESDAY = me
+WEEK_SHORT_THURSDAY  = je
+WEEK_SHORT_FRIDAY    = ve
+WEEK_SHORT_SATURDAY  = sa
+WEEK_SHORT_SUNDAY    = di
+WEEK_LONG_MONDAY     = Lundi
+WEEK_LONG_TUESDAY    = Mardi
+WEEK_LONG_WEDNESDAY  = Mercredi
+WEEK_LONG_THURSDAY   = Jeudi
+WEEK_LONG_FRIDAY     = Vendredi
+WEEK_LONG_SATURDAY   = Samedi
+WEEK_LONG_SUNDAY     = Dimanche
+#SEASON_SPRING        = 
+#SEASON_SUMMER        = 
+#SEASON_AUTUMN        = 
+#SEASON_WINTER        = 
+
+
+MENU_SOLO_GAME       = Partie en Solo
+MENU_START_GAME      = Debuter Partie
+MENU_NETWORKGAME     = Partie Lan
+MENU_ONLINEGAME      = Partie en Ligne
+MENU_JOIN            = Rejoindre
+MENU_CREATE_GAME     = Creer Partie
+MENU_BACK            = Retour
+MENU_SETTINGS        = Option
+MENU_QUIT            = Quitter partie
+MENU_AVAILABLE_GAMES = Parties disponbiles
+
+#ABBREVIATION_THOUSAND = K
+#ABBREVIATION_MILLION  = M
+#ABBREVIATION_BILLION  = bn
+
+#DIFFICULTY_EASY   = 
+#DIFFICULTY_NORMAL = 
+#DIFFICULTY_HARD   = 
+#DIFFICULTY_CUSTOM = 
+
+#GAMETIME  = 
+#PLAYER    = 
+#GAME      = 
+GAME_TIME = Heure
+GAMEDAY   = Jour
+
+
+#GAMESPEED      = 
+#SET_SPEED_TO_X = 
+
+#MANUAL    = 
+#HELP      = 
+#SHOW_HELP = 
+
+#DO_NOT_SHOW_AGAIN        = 
+#DO_NOT_SHOW_ANY_TIPS     = 
+#SHOW_INTRODUCTORY_GUIDES = 
+
+ERROR_NOT_POSSIBLE                  = impossible!
+ERROR_NOT_ABLE_TO_SELL_LAST_STATION = Il est impossible de vendre (la derniere station)
+ERROR_NOT_ENOUGH_MONEY              = pas suffisament d'argent
+ERROR_NOT_ENOUGH_MONEY_TEXT         = Vous ne possédez pas assez d'argent pour terminer cette action.
+
+#NEWGAMESETTINGS_CHANNELNAME_DETAIL = 
+#NEWGAMESETTINGS_PLAYERNAME_DETAIL  = 
+#NEWGAMESETTINGS_DIFFICULTY         = 
+#NEWGAMESETTINGS_DIFFICULTY_DETAIL  = 
+#NEWGAMESETTINGS_START_YEAR_DETAIL  = 
+#NEWGAMESETTINGS_GAME_SEED          = 
+#NEWGAMESETTINGS_GAME_SEED_DETAIL   = 
+
+#MESSAGE_CLOSES_AT_TIME = 
+#MESSAGE_CLOSES_AT_DAY  = 
+
+
+HINT_PRESSING_ALT_WILL_SHOW_DETAILS    = Pressing "ALT"-key will show details.
+#HINT_PRESSING_ALT_WILL_FIX_TOOLTIP     = 
+#HINT_PRESSING_ALT_WILL_RELEASE_TOOLTIP = 
+HINT_PROGRAMMEPLANER_SHORTCUTS         = ALT: switch datasheet | CTRL+Click: copy programme | SHIFT+Click: next episode
+HINT                                   = astuce
+
+STARTHINT_TITLE1 = Programme plan
+STARTHINT_TEXT1  = The CTRL-key allows you to place a programme multiple times on your plan. While the SHIFT-key tries to place the next episode of a series.
+STARTHINT_TITLE2 = Programme plan
+STARTHINT_TEXT2  = The success of a broadcast is heavily based on the quality/rating of the programme. Also important is the air time of the programme, the popularity of the genre, the audience flow to (hopefully similar) follow up programmes and the amount of broadcasted trailers. The quality of news shows and other factors are playing an important role too.\n\nProgrammes of certain genres like comedy can be broadcasted in more often than other genres while keeping most of their topicality.
+STARTHINT_TITLE3 = Ad contracts
+STARTHINT_TEXT3  = Ad contracts have defined requirements to the minimum audience. This and of course profits/penalties are directly attached to the maximum audience a channel can reach currently.\n\nTherefore it is sometimes better to sign new contracts right before buying new stations.

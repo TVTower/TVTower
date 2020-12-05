@@ -4608,7 +4608,7 @@ Type GameEvents
 			toast.SetPriority(10)
 
 			toast.SetCaption(GetLocale("YOUR_BOSS_WANTS_TO_SEE_YOU"))
-			toast.SetText(GetLocale("YOU_HAVE_GOT_X_HOURS TO_VISIT_HIM").Replace("%HOURS%", 2))
+			toast.SetText(GetLocale("YOU_HAVE_GOT_X_HOURS_TO_VISIT_HIM").Replace("%HOURS%", 2))
 			toast.SetClickText("|i|"+GetLocale("CLICK_HERE_TO_START_YOUR_VISIT_AHEAD_OF_TIME") + "|/i|")
 			toast.SetOnCloseFunction(PlayerBoss_onClosePlayerCallMessage)
 			toast.GetData().Add("boss", boss)
@@ -6585,9 +6585,12 @@ Function ShowApp:Int()
 
 	'=== LOAD LOCALIZATION ===
 	'load all localizations
-	'from "all in one" files and folders
-	TLocalization.LoadLanguageFiles("res/lang/lang_*.txt")
-	TLocalization.LoadLanguageDirectories("res/lang")
+	Local dirTree:TDirectoryTree = New TDirectoryTree.SimpleInit()
+	dirTree.ScanDir("res/lang", True)
+	For Local directory:String = EachIn dirTree.GetDirectories()
+		TLocalization.LoadLanguageFiles(directory+"/*.txt")
+	Next
+
 	'select user language (defaulting to "de")
 	TLocalization.SetCurrentLanguage(App.config.GetString("language", "de"))
 

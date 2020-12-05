@@ -1,0 +1,197 @@
+LANGUAGE_NAME_INTERNATIONAL = English
+LANGUAGE_NAME_LOCALE        = English
+
+MENU      = Menu
+OPEN_MENU = Open Menu
+
+CHAT           = Chat
+SAVE_AND_APPLY = Save and apply
+CANCEL         = Cancel
+
+CONTINUE_GAME                              = Continue Game
+LOAD_GAME                                  = Load Game
+INCOMPATIBLE_SAVEGAME                      = Incompatible savegame
+INVALID_SAVEGAME                           = Invalid savegame
+FILE_NOT_FOUND                             = File not found
+SAVEGAME_GETS_LOADED                       = Savegame gets loaded
+SAVE_GAME                                  = Save Game
+NAME_OF_SAVEGAME                           = Name of savegame
+OVERWRITE_SAVEGAME                         = Overwrite savegame?
+DO_YOU_REALLY_WANT_TO_OVERWRITE_SAVEGAME_X = Do you really want to overwrite savegame %SAVEGAME%?
+SAVEGAME_GETS_CREATED                      = Savegame gets created
+PLEASE_BE_PATIENT                          = Please be patient
+EXIT_GAME                                  = Exit Game
+EXIT_TO_MAINMENU                           = Exit to main menu
+
+24_HOURS_GAMEDAY                                              = 24 hours gameday
+ALLOW_TRAILERS_AND_INFOMERCIALS                               = Allow trailers/infomercials
+ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR              = Allow movies with year of production > game year
+OPTION_ON                                                     = Option on
+OPTION_OFF                                                    = Option off
+AVAILABLE_GAMES                                               = Available games
+ALREADY_OVER                                                  = Already over...?
+DO_YOU_REALLY_WANT_TO_QUIT                                    = Do you really want to quit?
+DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME_AND_RETURN_TO_STARTSCREEN = Do you really want to quit the game and return to startscreen?
+
+PREPARING_START_DATA           = Preparing start data
+SYNCHRONIZING_START_CONDITIONS = Synchronizing start conditions
+STARTING_MULTIPLAYERGAME       = Starting multiplayer game
+STARTING_SINGLEPLAYERGAME      = Starting singleplayer game
+
+PLAYERNAME                  = Playername
+CHANNELNAME                 = Channelname
+STATIONMAP                  = Stationmap
+DATABASE                    = Database
+SOUND_OUTPUT                = Sound output
+GRAPHICS                    = Graphics
+MUSIC                       = Music
+SFX                         = Sound effects
+FULLSCREEN                  = Fullscreen
+VSYNC                       = VSync
+LONGCLICK_MODE              = Longclick mode
+LONGCLICK_MODE_EXPLANATION  = Emulate right-click with long-down-click of left mouse button or touch
+LONGCLICK_TIME              = Time before "Longclick"
+WINDOW_MODE_RESOLUTION      = Window mode resolution
+INPUT                       = Input
+USE_TOUCH_INPUT             = Use touch input
+USE_TOUCH_INPUT_EXPLANATION = First click places mouse cursor, the following count as clicks. Cursor-repositioning if distance between click positions is too great.
+MOVE_INSTEAD_CLICK_RADIUS   = Move instead click radius
+MULTIPLAYER                 = Multiplayer
+SINGLEPLAYER                = Singleplayer
+DEFAULTS_FOR_NEW_GAME       = Defaults for "New Game"
+RENDERER                    = Renderer
+SOUND_ENGINE                = Soundengine
+SOUND_MUSIC_VOLUME          = Music Volume
+SOUND_SFX_VOLUME            = SFX Volume
+SOUND_MUTED                 = Muted
+PORT_ONLINEGAME             = Port for online games
+GAME_SPEED_IN_ROOMS         = Game speed in rooms
+
+GAME_TITLE  = Game title
+START_YEAR  = Start year
+DAY_OF_YEAR = Day of year
+
+YES        = Yes
+NO         = No
+OK         = OK
+MONEY      = Money
+DEBT       = Debt
+REACH      = Reach
+PRICE      = Price
+VALUE      = Value
+POPULATION = Population
+NAME       = name
+
+GENDER_MEN         = Men
+GENDER_WOMEN       = Women
+GENDER_ALL         = All
+GENDER_MEN_SHORT   = M
+GENDER_WOMEN_SHORT = W
+
+CURRENCY     = €
+OCLOCK       =
+DAY_SHORT    = D
+HOUR_SHORT   = H
+MINUTE_SHORT = M
+DAY          = day
+DAYS         = days
+DATE         = date
+HOUR         = hour
+HOURS        = hours
+MINUTE       = minute
+MINUTES      = minutes
+OLD          = Old
+TOMORROW     = Tomorrow
+TODAY        = Today
+YESTERDAY    = Yesterday
+TWO_DAYS_AGO = Two days ago
+IN_X_DAYS    = In %DAYS% days
+X_DAYS_AGO   = %DAYS% days ago
+
+WEEK_SHORT_MONDAY    = mo
+WEEK_SHORT_TUESDAY   = tu
+WEEK_SHORT_WEDNESDAY = we
+WEEK_SHORT_THURSDAY  = th
+WEEK_SHORT_FRIDAY    = fr
+WEEK_SHORT_SATURDAY  = sa
+WEEK_SHORT_SUNDAY    = su
+WEEK_LONG_MONDAY     = monday
+WEEK_LONG_TUESDAY    = tuesday
+WEEK_LONG_WEDNESDAY  = wednesday
+WEEK_LONG_THURSDAY   = thursday
+WEEK_LONG_FRIDAY     = friday
+WEEK_LONG_SATURDAY   = saturday
+WEEK_LONG_SUNDAY     = sunday
+SEASON_SPRING        = spring
+SEASON_SUMMER        = summer
+SEASON_AUTUMN        = autumn
+SEASON_WINTER        = winter
+
+
+MENU_SOLO_GAME       = Solo game
+MENU_START_GAME      = Start game
+MENU_NETWORKGAME     = LAN game
+MENU_ONLINEGAME      = Online game
+MENU_JOIN            = Join
+MENU_CREATE_GAME     = Create game
+MENU_BACK            = Back
+MENU_SETTINGS        = Settings
+MENU_QUIT            = Quit game
+MENU_AVAILABLE_GAMES = Available games
+
+ABBREVIATION_THOUSAND = K
+ABBREVIATION_MILLION  = M
+ABBREVIATION_BILLION  = bn
+
+DIFFICULTY_EASY   = Easy
+DIFFICULTY_NORMAL = Normal
+DIFFICULTY_HARD   = Hard
+DIFFICULTY_CUSTOM = Custom
+
+GAMETIME  = Time
+PLAYER    = Player
+GAME      = Game
+GAME_TIME = Game time
+GAMEDAY   = Gameday
+
+
+GAMESPEED      = Game speed
+SET_SPEED_TO_X = Set speed to %SPEED%
+
+MANUAL    = Manual
+HELP      = Help
+SHOW_HELP = Show help
+
+DO_NOT_SHOW_AGAIN        = Do not show again
+DO_NOT_SHOW_ANY_TIPS     = Do not show any tips
+SHOW_INTRODUCTORY_GUIDES = Show introductory guides
+
+ERROR_NOT_POSSIBLE                  = Not possible!
+ERROR_NOT_ABLE_TO_SELL_LAST_STATION = It is not possible to sell the last station.
+ERROR_NOT_ENOUGH_MONEY              = Not enough money!
+ERROR_NOT_ENOUGH_MONEY_TEXT         = You do not have enough money to finish this action.
+
+NEWGAMESETTINGS_CHANNELNAME_DETAIL = Name of this player's TV channel
+NEWGAMESETTINGS_PLAYERNAME_DETAIL  = Name of this player
+NEWGAMESETTINGS_DIFFICULTY         = Difficulty
+NEWGAMESETTINGS_DIFFICULTY_DETAIL  = The difficulty |b|for this|/b| player
+NEWGAMESETTINGS_START_YEAR_DETAIL  = The year in which the game will start. Affects available programmes!
+NEWGAMESETTINGS_GAME_SEED          = Game number / seed
+NEWGAMESETTINGS_GAME_SEED_DETAIL   = Same game numbers lead to similar starting conditions (offers at vendors).
+
+MESSAGE_CLOSES_AT_TIME = Message closes at %TIME%
+MESSAGE_CLOSES_AT_DAY  = Message closes at %TIME%
+
+
+HINT_PRESSING_ALT_WILL_SHOW_DETAILS    = Pressing "ALT"-key will show details.
+HINT_PRESSING_ALT_WILL_FIX_TOOLTIP     = Pressing "ALT"-key will fix tooltip.
+HINT_PRESSING_ALT_WILL_RELEASE_TOOLTIP = Pressing "ALT"-key will release tooltip.
+HINT_PROGRAMMEPLANER_SHORTCUTS         = ALT: switch datasheet | CTRL+Click: copy programme | SHIFT+Click: next episode
+HINT                                   = Hint
+
+STARTHINT_TITLE1 = Programme plan
+STARTHINT_TEXT1  = The CTRL-key allows you to place a programme multiple times on your plan. While the SHIFT-key tries to place the next episode of a series.
+STARTHINT_TITLE2 = Programme plan
+STARTHINT_TEXT2  = The success of a broadcast is heavily based on the quality/rating of the programme. Also important is the air time of the programme, the popularity of the genre, the audience flow to (hopefully similar) follow up programmes and the amount of broadcasted trailers. The quality of news shows and other factors play an important role too.\n\nProgrammes of certain genres like comedy can be broadcast more often than other genres while keeping most of their topicality.
+STARTHINT_TITLE3 = Ad contracts
+STARTHINT_TEXT3  = Ad contracts have defined requirements to the minimum audience. This and of course profits/penalties are directly attached to the maximum audience a channel can reach currently.\n\nTherefore it is sometimes better to sign new contracts right before buying new stations.

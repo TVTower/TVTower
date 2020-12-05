@@ -1,0 +1,123 @@
+BETTY_FEELINGS                     = feeling avec Betty
+THERE_IS_NO_LOVE_IN_THE_AIR_YET    = c'est pas encore l'amour ;)
+#BETTY_KNOWS_WHO_YOU_ARE            = 
+#BETTY_SEEMS_TO_LIKE_YOU            = 
+#BETTY_SEEMS_TO_LIKE_YOU_A_BIT_MORE = 
+#BETTY_LOVES_YOU                    = 
+#BETTY_REALLY_LOVES_YOU             = 
+
+#DIALOGUE_BETTY_WELCOME_TEXT         = 
+#DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT1 = 
+#DIALOGUE_BETTY_WELCOME_LEVEL0_TEXT2 = 
+#DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT1 = 
+#DIALOGUE_BETTY_WELCOME_LEVEL1_TEXT2 = 
+#DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT1 = 
+#DIALOGUE_BETTY_WELCOME_LEVEL2_TEXT2 = 
+#DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT1 = 
+#DIALOGUE_BETTY_WELCOME_LEVEL3_TEXT2 = 
+
+#DIALOGUE_BETTY_NO_AWARD_LEVEL0_TEXT1                              = 
+#DIALOGUE_BETTY_NO_AWARD_LEVEL1_TEXT1                              = 
+#DIALOGUE_BETTY_AWARDINFORMATION_NO_FAVORITE_LEVEL0_TEXT1          = 
+#DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE_LEVEL0_TEXT1     = 
+#DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE_LEVEL1_TEXT1     = 
+#DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE_LEVEL0_TEXT1      = 
+#DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE_LEVEL1_TEXT1      = 
+#DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL0_TEXT1 = 
+#DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE_LEVEL1_TEXT1 = 
+
+#DIALOGUE_BETTY_ASK_FOR_SAMMYINFORMATION = 
+#DIALOGUE_BETTY_ASK_FOR_MASTERKEY        = 
+#DIALOGUE_BETTY_CHANGETOPIC              = 
+#DIALOGUE_BETTY_LEVEL0_CHANGETOPIC1      = 
+#DIALOGUE_BETTY_GOODBYE                  = 
+#DIALOGUE_BETTY_LEVEL0_GOODBYE           = 
+#DIALOGUE_BETTY_LEVEL1_GOODBYE           = 
+#DIALOGUE_BETTY_LEVEL2_GOODBYE           = 
+#DIALOGUE_BETTY_LEVEL3_GOODBYE           = 
+
+#NO_PRESENT_SELECTED        = 
+#BUY_PRESENTTITLE_FOR_PRICE = 
+#BETTY_PRESENT_1            = 
+#BETTY_PRESENT_2            = 
+#BETTY_PRESENT_3            = 
+#BETTY_PRESENT_4            = 
+#BETTY_PRESENT_5            = 
+#BETTY_PRESENT_6            = 
+#BETTY_PRESENT_7            = 
+#BETTY_PRESENT_8            = 
+#BETTY_PRESENT_9            = 
+#BETTY_PRESENT_10           = 
+
+
+#AWARDNAME_CULTURE          = 
+#AWARDNAME_NEWS             = 
+#AWARDNAME_AUDIENCE         = 
+#AWARDNAME_CUSTOMPRODUCTION = 
+#AWARD_WON                  = 
+#YOU_WON_THE_AWARDNAME      = 
+#CHANNEL_IMAGE              = 
+#FOR_X_HOURS                = 
+#FOR_X_HOUR                 = 
+#ATTRACTIVITY               = 
+
+
+DIALOGUE_BOSS_MAIN_TITLE_DEFAULT1                = Quoi de neuf %PLAYERNAME%
+DIALOGUE_BOSS_MAIN_TITLE_DEFAULT2                = %PLAYERNAME%, encore vous ?!
+DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY1             = Vous osez demander ?!
+DIALOGUE_BOSS_MAIN_TITLE_UNFRIENDLY2             = Vous êtes fou ?
+DIALOGUE_BOSS_MAIN_TEXT_DEFAULT1                 = Et mise à part me faire perdre mon temps?
+#DIALOGUE_BOSS_MAIN_TEXT_WON_AWARDNAME1           = 
+#DIALOGUE_BOSS_MAIN_TEXT_WON_AWARDNAME2           = 
+#DIALOGUE_BOSS_MAIN_TEXT_WON_AWARDNAME3           = 
+#DIALOGUE_BOSS_MAIN_TEXT_AWARDNAME_ENDS_TOMORROW1 = 
+#DIALOGUE_BOSS_MAIN_TEXT_AWARDNAME_ENDS_TOMORROW2 = 
+#DIALOGUE_BOSS_MAIN_TEXT_AWARDNAME_ENDS_TODAY1    = 
+#DIALOGUE_BOSS_MAIN_TEXT_AWARDNAME_ENDS_TODAY2    = 
+#DIALOGUE_BOSS_MAIN_TEXT_NEW_AWARDNAME_TOMORROW1  = 
+#DIALOGUE_BOSS_MAIN_TEXT_NEW_AWARDNAME_TOMORROW2  = 
+DIALOGUE_BOSS_MAIN_TEXT_PROGRAMMEMALFUNCTION1    = Votre incométence est incroyable. Vous aviez |b|%PROGRAMMEMALFUNCTION%x|/b| programme fonctionne pas.
+DIALOGUE_BOSS_MAIN_TEXT_NEWSMALFUNCTION1         = Pas de news au JT |b|%NEWSMALFUNCTION%x|/b| simplement un rapport Meteo!
+DIALOGUE_BOSS_MAIN_ENDING_DEFAULT1               = Au travail, sinon je trouve une autre personne pour le faire !
+DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY1            = Le hamster de mon fils pourrait faire votre travail mieux que vous !
+DIALOGUE_BOSS_MAIN_ENDING_UNFRIENDLY2            = Fais ton boulot ! La prochaine fois que tu viens, j'espere que tu auras du neuf.
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER1             = Hors de mon chemin - et de passer sur les pires salutations à votre patron . Ha ha ha ha..
+DIALOGUE_BOSS_MAIN_TEXT_OTHERPLAYER2             = Allez-vous en !
+
+DIALOGUE_BOSS_WILLNOTDISTURB_OTHERPLAYER = Bon, uhmmm
+DIALOGUE_BOSS_WILLNOTDISTURB             = Ok patron je ne vais pas vous deranger plus !
+DIALOGUE_BOSS_ASKFORCREDIT               = J'ai besoin hum... d'un crédit
+DIALOGUE_BOSS_REPAYCREDIT                = Je souhaite rembourser mon crédit
+DIALOGUE_BOSS_CREDIT_OK1                 = Encore de l'argent Hmm, pour le moment c'est pas mal. plus que |b|%CREDIT%€|/b| ce n'est pas possible, compris !
+DIALOGUE_BOSS_CREDIT_OK2                 = Vous gasipiller mon argent \nEn esperant que cela soit efficace \n|b|%CREDIT%€|/b| voila ce que je vous propose.
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT1          = oui je vais prendre ceci, merci !
+#DIALOGUE_BOSS_CREDIT_OK_ACCEPT2          = 
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF1     = Merci boss, j'ai juste besoin de 50%, soit |b|%CREDITHALF%€|/b|.
+#DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF2     = 
+#DIALOGUE_BOSS_CREDIT_OK_ACCEPT_QUARTER1  = 
+#DIALOGUE_BOSS_CREDIT_OK_ACCEPT_QUARTER2  = 
+DIALOGUE_BOSS_DECLINE1                   = Hmm, merci boss mais j'ai changé d'avis.
+DIALOGUE_BOSS_DECLINE2                   = J'ai changé d'avis, à bientot boss.
+DIALOGUE_BOSS_DECLINE3                   = Hmmm, Je reviendrai plus tard.
+DIALOGUE_BOSS_CREDIT_REPAY               = Tu souhaites pas rembourser ton ancien crédit \nTu dois encore |b|%CREDIT%€|/b| - rembourse moi d'abord \nEt maintenant bouge tes fesses
+DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT        = Okay, Je vais rembourser une partie
+DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE  = Au moins une bonne nouvelle aujourd'hui.\n \nCombien souhaites tu rembourser ?
+DIALOGUE_BOSS_CREDIT_REPAY_VALUE1        = Hmm, Je voudrais rembourser |b|%VALUE%€|/b|.
+DIALOGUE_BOSS_CREDIT_REPAY_VALUE2        = Uuhm, Je souhaite rembourser |b|%VALUE%€|/b|.
+DIALOGUE_BOSS_CREDIT_REPAY_ALL           = Hmm, rembourser l'ensemble du crédit|b|%CREDIT%€|/b|.
+
+DIALOGUE_BOSS_CHANGETOPIC1  = Pouvons-nous parler de quelque chose de différent ?
+#DIALOGUE_BOSS_CHANGETOPIC2  = 
+DIALOGUE_BOSS_BACKTOWORK    = OK %PLAYERNAME%, maintenant au boulot !
+DIALOGUE_BOSS_BACKTOWORK_OK = En route.
+
+YOUR_BOSS_WANTS_TO_SEE_YOU                   = Votre patron veut vous voir
+YOU_HAVE_GOT_X_HOURS_TO_VISIT_HIM            = vous avez %HOURS% heures pour lui rendre visite.
+CLICK_HERE_TO_START_YOUR_VISIT_AHEAD_OF_TIME = Click ici pour lui rendre visite maitenant.
+
+#YOUR_BALANCE_IS_POSITIVE_AGAIN            = 
+#YOUR_BALANCE_IS_NEGATIVE                  = 
+#YOU_ARE_NO_LONGER_IN_DANGER_TO_GET_FIRED  = 
+#YOU_HAVE_X_DAYS_TO_GET_INTO_THE_BLACK     = 
+#YOU_HAVE_ONLY_TODAY_TO_GET_INTO_THE_BLACK = 
+#YOU_ARE_IN_DANGER_TO_GET_FIRED            = 

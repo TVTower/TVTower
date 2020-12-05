@@ -1,0 +1,42 @@
+TARGETGROUP_ALL        = Tous
+TARGETGROUP_CHILDREN   = Enfants
+TARGETGROUP_TEENAGERS  = Ados
+TARGETGROUP_HOUSEWIVES = Menageres
+TARGETGROUP_EMPLOYEES  = Employés
+TARGETGROUP_UNEMPLOYED = Chomeurs
+TARGETGROUP_MANAGER    = Manager
+TARGETGROUP_PENSIONERS = Seniors
+TARGETGROUP_WOMEN      = Femmes
+TARGETGROUP_MEN        = Hommes
+
+#CLASSIFICATION = 
+#REMAINING_TERM = 
+#SPOTS_TO_SEND  = 
+
+#MIN_AUDIENCE          = Min. audience
+AD_QUALITY            = Qualité
+#AD_PROFIT             = Profit
+#AD_PLANNED            = 
+#AD_TOSEND             = 
+#AD_PENALTY            = 
+#AD_MIN_AUDIENCE       = Min. audience
+#AD_TARGETGROUP        = 
+#AD_SEND_TILL_TOLATE   = 
+#AD_SEND_TILL_MIDNIGHT = 
+#AD_SEND_TILL_TOMORROW = 
+AD_STILL_X_DAYS       = encore %1 jours
+
+AD_CHANNEL_IMAGE_TOO_LOW = Image de la chaine. %CHANNELIMAGE%% < %IMAGE%%.
+AD_PLEASE_GENRE_X        = SVP genre %GENRE%
+AD_PLEASE_FLAG           = SVP %FLAG%
+
+INFOMERCIAL                  = Infomercial
+AD_INFOMERCIAL               = Vous êtes payé pour diffuser des infopublicités . Vos revenu dépend de l'audimat
+AD_INFOMERCIAL_NOT_AVAILABLE = Il n'y a pas d'information pour cette annonce. TRAD A confirmer
+AD_INFOMERCIAL_PROFIT        = Revenu: % PROFIT % par 1000 personnes à regarder
+
+ADCONTRACT_FINISHED                = Pub terminé
+ADCONTRACT_FAILED                  = Pub échoué
+ADCONTRACT_X_SUCCESSFULLY_FINISHED = Pub "%TITLE%" terminé avec succès.
+PROFIT_OF_X_GOT_CREDITED           = Bénéfice de %MONEY% obtenu.
+ADCONTRACT_X_FAILED                = Publicité contrat "%TITLE%" a échoué.
