@@ -588,13 +588,14 @@ Type TGUISlider extends TGUIObject
 
 
 	Method DrawContent()
-		Local oldCol:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
 
-		SetColor 255, 255, 255
-		SetAlpha oldCol.a * GetScreenAlpha() * _gaugeAlpha
-		DrawGauge(GetScreenRect().position)
-		SetAlpha oldCol.a * GetScreenAlpha()
-		DrawHandle(GetScreenRect().position)
+		SetColor( 255, 255, 255 )
+		SetAlpha( oldColA * GetScreenAlpha() * _gaugeAlpha )
+		DrawGauge( GetScreenRect().position )
+		SetAlpha( oldColA * GetScreenAlpha() )
+		DrawHandle( GetScreenRect().position )
 
 		rem
 		?debug
@@ -605,7 +606,8 @@ Type TGUISlider extends TGUIObject
 		DrawText(GetValue()+" : " + Left(value, 6), GetScreenRect().GetX()+42, GetScreenRect().GetY()+2)
 		?
 		endrem
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldColA)
 	End Method
 
 

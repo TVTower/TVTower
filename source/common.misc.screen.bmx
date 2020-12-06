@@ -606,14 +606,17 @@ Type TScreenChangeEffect_SimpleFader extends TScreenChangeEffect
 		'skip drawing if whole thing takes less than 10 ms
 		if GetRealtimeDuration() < 10 then return False
 
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
 		local tweenProgress:float = MathHelper.Tween(_progressOld, GetProgress(), tweenValue)
 		if _direction = DIRECTION_OPEN then tweenProgress = Max(0, 1.0 - tweenProgress)
 
 		SetAlpha tweenProgress
 		_color.SetRGB()
 		DrawRect(GetArea().GetX(), GetArea().GetY(), GetArea().GetW(), GetArea().GetH())
-		oldCol.SetRGBA()
+		
+		SetColor(oldCol)
+		SetAlpha(oldA)
 	End Method
 End Type
 
@@ -648,7 +651,8 @@ Type TScreenChangeEffect_ClosingRects extends TScreenChangeEffect_SimpleFader
 		'skip drawing if whole thing takes less than 100 ms
 		if GetRealtimeDuration() < 100 then return False
 
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
 		'use a non-linear tween
 		local currentProgress:float = MathHelper.Clamp(MathHelper.Tween(_progressOld, GetProgress(), tweenValue), 0,1)
 		if _direction = DIRECTION_OPEN
@@ -670,6 +674,7 @@ Type TScreenChangeEffect_ClosingRects extends TScreenChangeEffect_SimpleFader
 		DrawRect(GetArea().GetX() + GetArea().GetW() - rectsWidth, GetArea().GetY(), rectsWidth, rectsHeight)
 		DrawRect(GetArea().GetX() + GetArea().GetW() - rectsWidth, GetArea().GetY() + GetArea().GetH() - rectsHeight, rectsWidth, rectsHeight)
 
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldA)
 	End Method
 End Type

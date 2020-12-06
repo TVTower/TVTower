@@ -23,7 +23,7 @@ Type TRoomDoorTooltip extends TTooltip
 		local room:TRoomBase = GetRoomBase(roomID)
 		if not room then return False
 
-		local oldCol:TColor = new TColor.Get()
+		local oldCol:SColor8; GetColor(oldCol)
 
 		if room.IsBlocked()
 			SetColor 255,235,215
@@ -31,8 +31,8 @@ Type TRoomDoorTooltip extends TTooltip
 			SetColor 255,255,255
 		endif
 		DrawRect(x, y, w, h)
-
-		oldCol.SetRGB()
+		
+		SetColor( oldCol )
 	End Method
 
 

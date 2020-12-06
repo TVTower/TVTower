@@ -1834,24 +1834,25 @@ Type TSatelliteSelectionFrame
 
 
 			channelX :+ 27
-			Local oldColor:TColor = New TColor.Get()
+			Local oldCol:SColor8; GetColor(oldCol)
+			Local oldColA:Float = GetAlpha()
 			For Local i:Int = 1 To 4
-				SetColor 50,50,50
-				SetAlpha oldcolor.a * 0.4
+				SetColor( 50,50,50 )
+				SetAlpha( oldColA * 0.4 )
 				DrawRect(channelX, currentY + 6, 11,11)
 				If selectedSatellite.IsSubscribedChannel(i)
 					GetPlayerBase(i).color.SetRGB()
-					SetAlpha oldColor.a
+					SetAlpha( oldColA )
 				Else
-					SetColor 255,255,255
-					SetAlpha oldColor.a *0.5
+					SetColor( 255,255,255 )
+					SetAlpha( oldColA * 0.5 )
 				EndIf
 				DrawRect(channelX+1, currentY + 7, 9,9)
 				'GetSpriteFromRegistry("gfx_gui_button.datasheet").DrawArea(channelX, currentY + 4, 14, 14)
 				channelX :+ 13
 			Next
-			oldColor.SetRGBA()
-
+			SetColor( oldCol )
+			SetAlpha( oldColA )
 		EndIf
 
 
@@ -2571,12 +2572,14 @@ Type TScreenHandler_StationMap
 
 		'gray out sections when there is no broadcast permission
 		If actionMode = MODE_BUY_ANTENNA
-			Local oldCol:TColor = New TColor.Get()
+			Local oldCol:SColor8; GetColor(oldCol)
+			Local oldColA:Float = GetAlpha()
+
 			Local foundNoPermissionSections:Int = 0
 			For Local section:TStationMapSection = EachIn GetStationMapCollection().sections
 				If Not section.HasBroadcastPermission(room.owner)
-					SetColor 225,175,50
-					SetAlpha 0.40 * oldCol.a
+					SetColor( 225,175,50 )
+					SetAlpha( 0.40 * oldColA )
 					DrawImage(section.GetDisabledOverlay(), section.rect.GetX(), section.rect.GetY())
 					'SetAlpha 0.25 * oldCol.a
 					'section.GetHighlightBorderSprite().Draw(section.rect.GetX(), section.rect.GetY())
@@ -2584,7 +2587,9 @@ Type TScreenHandler_StationMap
 					foundNoPermissionSections :+ 1
 				EndIf
 			Next
-			oldCol.setRGBA()
+			SetColor( oldCol )
+			SetAlpha( oldColA )
+
 			'draw normal ones on top - but only if needed
 			'this is done to avoid "available sections" to get hidden
 			If foundNoPermissionSections > 0

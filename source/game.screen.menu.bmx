@@ -553,27 +553,27 @@ endrem
 		'background gui items
 		GUIManager.Draw(nameState, 0, 100)
 
-		Local slotPos:TVec2D = New TVec2D.Init(guiAllPlayersPanel.GetContentScreenRect().GetX(),guiAllPlayersPanel.GetContentScreenRect().GetY())
-		Local colorRect:TRectangle = New TRectangle
+		Local slotPosX:Int = guiAllPlayersPanel.GetContentScreenRect().GetIntX()
+		Local colorRect:SRect
 		For Local i:Int = 1 To 4
-			colorRect.Init(slotPos.GetIntX()+2, Int(guiChannelNames[i-1].GetContentScreenRect().GetY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
+			colorRect = new SRect(slotPosX + 2, Int(guiChannelNames[i-1].GetContentScreenRect().GetY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 
 			'draw colors
 			For Local pc:TPlayerColor = EachIn TPlayerColor.List
 				If pc.ownerID = 0
-					colorRect.position.AddXY(colorRect.GetW(), 0)
+					colorRect = new SRect(colorRect.x + colorRect.w, colorRect.y, colorRect.w, colorRect.h)
 					pc.SetRGB()
-					DrawRect(colorRect.GetX(), colorRect.GetY(), colorRect.GetW(), colorRect.GetH())
+					DrawRect(colorRect.x, colorRect.y, colorRect.w, colorRect.h)
 				EndIf
 			Next
 
 			'draw player figure
 			SetColor 255,255,255
-			GetPlayerBase(i).GetFigure().Sprite.Draw(Int(slotPos.GetX() + playerBoxDimension.GetX()/2 - GetPlayerBase(i).GetFigure().Sprite.framew / 2), Int(colorRect.GetY() - GetPlayerBase(i).GetFigure().Sprite.area.GetH()), 8)
+			GetPlayerBase(i).GetFigure().Sprite.Draw(Int(slotPosX + playerBoxDimension.GetX()/2 - GetPlayerBase(i).GetFigure().Sprite.framew / 2), Int(colorRect.y - GetPlayerBase(i).GetFigure().Sprite.area.GetH()), 8)
 
 			If GetGameBase().networkgame
-				Local hintX:Int = Int(slotPos.GetX()) + 12
-				Local hintY:Int = Int(guiAllPlayersPanel.GetContentScreenRect().GetY())+40
+				Local hintX:Int = slotPosX + 12
+				Local hintY:Int = Int(guiAllPlayersPanel.GetContentScreenRect().GetY()) + 40
 				Local hint:String = "undefined playerType"
 				If GetPlayerBase(i).IsRemoteHuman()
 					hint = "remote player"
@@ -588,7 +588,7 @@ endrem
 			EndIf
 
 			'move to next slot position
-			slotPos.AddXY(playerSlotGap + playerBoxDimension.GetX(), 0)
+			slotPosX :+ playerSlotGap + playerBoxDimension.GetIntX()
 		Next
 
 		'overlay gui items (higher zindex)
@@ -603,8 +603,6 @@ endrem
 
 	'override default update
 	Method Update:Int(deltaTime:Float)
-
-
 		If GetGameBase().networkgame
 			If Not GetGameBase().isGameLeader()
 				guiButtonStart.disable()
@@ -720,19 +718,19 @@ endrem
 	'	local colors:TList = Assets.GetList("PlayerColors")
 
 		If MOUSEMANAGER.IsClicked(1)
-			Local slotPos:TVec2D = New TVec2D.Init(guiAllPlayersPanel.GetContentScreenRect().GetX(),guiAllPlayersPanel.GetContentScreenRect().GetY())
+			Local slotPosX:Int = guiAllPlayersPanel.GetContentScreenRect().GetIntX()
 			For Local i:Int = 0 To 3
 				If MOUSEMANAGER.IsClicked(1)
-					Local colorRect:TRectangle = New TRectangle.Init(slotPos.GetIntX() + 2, Int(guiChannelNames[i].GetContentScreenRect().GetY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
+					Local colorRect:SRect = New SRect(slotPosX + 2, Int(guiChannelNames[i].GetContentScreenRect().GetY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 
 					For Local pc:TPlayerColor = EachIn TPlayerColor.List
 						'only for unused colors
 						If pc.ownerID <> 0 Then Continue
 
-						colorRect.position.AddXY(colorRect.GetW(), 0)
+						colorRect = new SRect(colorRect.x + colorRect.w, colorRect.y, colorRect.w, colorRect.h)
 
 						'skip if outside of rect
-						If Not THelper.MouseInRect(colorRect) Then Continue
+						If Not THelper.MouseIn(colorRect.x, colorRect.y, colorRect.w, colorRect.h) Then Continue
 						'only allow mod if you control the player or if the
 						'player is AI and you are the master player
 						If GetGameBase().IsControllingPlayer(i+1)
@@ -744,7 +742,7 @@ endrem
 						EndIf
 					Next
 					'move to next slot position
-					slotPos.AddXY(playerSlotGap + playerBoxDimension.GetX(), 0)
+					slotPosX :+ playerSlotGap + playerBoxDimension.GetIntX()
 				EndIf
 			Next
 		EndIf

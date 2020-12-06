@@ -1153,9 +1153,9 @@ Type RoomHandler_Studio Extends TRoomHandler
 		EndIf
 
 		If highlightStudioManager Or highlightSuitcase or highlightTrashBin
-			Local oldCol:TColor = New TColor.Get()
-			SetBlend LightBlend
-			SetAlpha oldCol.a * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
+			Local oldColA:Float = GetAlpha()
+			SetBlend( LightBlend )
+			SetAlpha( oldColA * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5)) )
 
 			If highlightStudioManager
 				If studioManagerEntity Then studioManagerEntity.Render()
@@ -1169,8 +1169,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 				GetSpriteFromRegistry("gfx_studio_trashbin").Draw(trashBinPos.GetX(), trashBinPos.GetY())
 			EndIf
 
-			SetAlpha oldCol.a
-			SetBlend AlphaBlend
+			SetAlpha( oldColA )
+			SetBlend( AlphaBlend )
 		EndIf
 
 		Local roomOwner:Int = TRoom(triggerEvent.GetSender()).owner

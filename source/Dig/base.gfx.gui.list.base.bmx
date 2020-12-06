@@ -1061,19 +1061,23 @@ endrem
 'DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetScreenRect().GetH())
 'SetColor 255,255,255
 		Else
-			Local oldCol:TColor = New TColor.Get()
-
+			Local oldCol:SColor8; GetColor(oldCol)
+			Local oldColA:Float = GetAlpha()
+			
 			If _mouseOverArea
 				backgroundColorHovered.setRGBA()
 			Else
 				backgroundColor.setRGBA()
 			EndIf
 			If GetAlpha() > 0
-				Local rect:TRectangle = New TRectangle.Init(guiEntriesPanel.GetScreenRect().GetX(), guiEntriesPanel.GetScreenRect().GetY(), Min(rect.GetW(), guiEntriesPanel.rect.GetW()), Min(rect.GetH(), guiEntriesPanel.rect.GetH()) )
-				DrawRect(rect.GetX(), rect.GetY(), rect.GetW(), rect.GetH())
+				DrawRect(guiEntriesPanel.GetScreenRect().GetX(), ..
+				         guiEntriesPanel.GetScreenRect().GetY(), ..
+				         Min(rect.GetW(), guiEntriesPanel.rect.GetW()), ..
+				         Min(rect.GetH(), guiEntriesPanel.rect.GetH()))
 			EndIf
 
-			oldCol.SetRGBA()
+			SetColor(oldCol)
+			SetAlpha(oldColA)
 		EndIf
 	End Method
 

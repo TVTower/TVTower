@@ -111,7 +111,8 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		local clLog:SColor8 = new SColor8(50,50,50)
 
 
-		local clOriginal:TColor = new TColor.Get()
+		local clOriginal:SColor8; GetColor(clOriginal)
+		
 
 
 		'=== BANKRUPTCY HINT ===
@@ -312,15 +313,17 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 		'=== DRAW GROUP HOVERS ===
 		'"station group"
 		If drawStationExtraInfo
-			local bgcol:TColor = new TColor.Get()
+			local bgCol:SColor8; GetColor(bgCol)
+			local bgColA:Float = GetAlpha()
 			labelStartY :+ 1
-			SetAlpha bgcol.a * 0.5
-			SetColor 200,200,200
+			SetAlpha( bgColA * 0.5 )
+			SetColor( 200,200,200 )
 			TFunctions.DrawOutlineRect(labelX, labelStartY + 6*valueH, balanceEntryW +2, 2*labelH +2)
-			SetAlpha bgcol.a * 0.75
-			SetColor 100,100,100
+			SetAlpha( bgColA * 0.75 )
+			SetColor( 100,100,100 )
 			TFunctions.DrawOutlineRect(labelX-1, labelStartY + 6*valueH -1, balanceEntryW + 1, 2*labelH +1)
-			bgcol.SetRGBA()
+			SetColor( bgCol )
+			SetAlpha( bgColA )
 			labelBGs[TVTPlayerFinanceEntryType.GROUP_STATION].DrawArea(labelBGX, labelStartY + 6*valueH, labelBGW, labelH)
 			labelBGs[TVTPlayerFinanceEntryType.GROUP_STATION].DrawArea(labelBGX, labelStartY + 7*valueH, labelBGW, labelH)
 
@@ -396,12 +399,14 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 			if hoverX < curveArea.GetX() then hoverW = slotWidth / 2
 			hoverX = Max(curveArea.GetX(), hoverX)
 
-			local col:TColor = new TColor.Get()
-			SetBlend LightBlend
-			SetAlpha 0.1 * col.a
+			Local oldCol:SColor8; GetColor(oldCol)
+			Local oldColA:Float = GetAlpha()
+			SetBlend( LightBlend )
+			SetAlpha( 0.1 * oldColA )
 			DrawRect(hoverX, curveArea.GetY(), hoverW, curveArea.GetH())
-			SetBlend AlphaBlend
-			col.SetRGBA()
+			SetBlend( AlphaBlend )
+			SetColor( oldCol )
+			SetAlpha( oldColA )
 		EndIf
 
 		'draw the curves
@@ -450,7 +455,7 @@ global LS_officeFinancialScreen:TLowerString = TLowerString.Create("officeFinanc
 
 		GuiManager.Draw( LS_officeFinancialScreen )
 
-		clOriginal.SetRGB()
+		SetColor(clOriginal)
 	End Function
 
 

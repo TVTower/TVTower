@@ -514,8 +514,9 @@ Type TGUIScrollerSimple Extends TGUIScrollerBase
 
 
 	Method DrawContent()
-		local oldCol:TColor = new TColor.Get()
-		SetAlpha oldCol.a * GetScreenAlpha() * 0.20
+		local oldCol:SColor8; GetColor(oldCol)
+		local oldColA:Float = GetAlpha()
+		SetAlpha oldColA * GetScreenAlpha() * 0.20
 
 		'draw a area to click on
 		if progressRectHovered
@@ -525,7 +526,7 @@ Type TGUIScrollerSimple Extends TGUIScrollerBase
 		endif
 		DrawRect(GetScreenRect().GetX() + progressRect.GetX(), GetScreenRect().GetY() + progressRect.GetY(), progressRect.GetW(), progressRect.GetH())
 
-		SetAlpha oldCol.a * GetScreenAlpha() * 0.5
+		SetAlpha oldColA * GetScreenAlpha() * 0.5
 		Select _orientation
 			case GUI_OBJECT_ORIENTATION_HORIZONTAL
 				DrawRect(GetScreenRect().GetX() + progressRect.GetX() + GetRelativeValue() * progressRect.GetW(), GetScreenRect().GetY() + progressRect.GetY(), 3, progressRect.GetH())
@@ -533,6 +534,7 @@ Type TGUIScrollerSimple Extends TGUIScrollerBase
 				DrawRect(GetScreenRect().GetX() + progressRect.GetX(), GetScreenRect().GetY() + progressRect.GetY() + GetRelativeValue() * progressRect.GetH(), progressRect.GetW(), 3)
 		End Select
 
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldColA)
 	End Method
 End Type

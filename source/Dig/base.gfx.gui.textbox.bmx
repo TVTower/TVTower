@@ -73,14 +73,14 @@ Type TGUITextBox Extends TGUIobject
 
 
 	Method DrawContent()
-		local oldCol:TColor = new TColor.Get()
-		SetAlpha oldCol.a * GetScreenAlpha()
+		local oldColA:Float = GetAlpha()
+		SetAlpha oldColA * GetScreenAlpha()
 		
 		Local scrRect:TRectangle = GetScreenRect()
 
 		GetFont().DrawBox(value, scrRect.GetIntX(), scrRect.GetIntY(), rect.GetW(), rect.GetH(), valueAlignment, valueColor, EDrawTextEffect.Shadow, 0.25)
 
-		oldCol.SetRGBA()
+		SetAlpha(oldColA)
 	End Method
 
 

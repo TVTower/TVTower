@@ -644,7 +644,7 @@ Type TPersist
 
 					'Ronny: skip unknown fields (no longer existing in the type)
 					If Not fieldObj
-
+						'Local fieldNodeAttribute:String = fieldNode.getAttribute("type")
 						Local serializedFieldTypeID:TTypeId = TTypeId.ForName(fieldNode.getAttribute("type"))
 						If Not strictMode And serializedFieldTypeID
 							Print "[WARNING] TPersistence: field ~q"+fieldNode.getAttribute("name")+"~q is no longer available. Created WorkAround-Storage."
@@ -777,6 +777,43 @@ Type TPersist
 		End If
 	End Method
 
+
+	'ronny
+	Method DelegateRenamedTypeDetection:TTypeID(typeName:string)
+		Local objType:TTypeId = TTypeId.ForName(typeName)
+		if objType Then return objType
+
+		if not converterTypeID then Return Null
+
+		local f:TFunction  = converterTypeID.FindFunction("GetCurrentTypeName")
+		If not f Then Throw "Unknown type ~q"+typeName+"~q. Create function ~qGetCurrentTypeName:TTypeID(typeName:String)~q in type ~q" + converterTypeID.name() +"~q."
+
+  		local res:TTypeID = TTypeID( f.Invoke([object(typeName)]) )
+ 		if not res
+ 			Throw "Failed to deserialize ~q" + typeName + "~q. Function ~qGetCurrentTypeName~q does not handle that type."
+ 		endif
+ 		Return res
+ 	End Method
+ 	
+		
+	'ronny
+	Method DelegateDeserializationOfUnknownType:object(typeObj:object, typeName:string, obj:object)
+		if not converterTypeID Then Return Null
+
+ 		Local deserializeFunction:TMethod
+		deserializeFunction = converterTypeID.FindMethod("DeSerialize"+typeName)
+		if not deserializeFunction
+			Throw "unknown type: ~q"+typeName+"~q. To handle it, create function ~q"+("DeSerialize"+typeName)+"()~q."
+		endif
+
+  		local res:object = deserializeFunction.Invoke(converterTypeID, [object(typeName), obj, typeObj])
+ 		if not res
+ 			Throw "Failed to deserialize ~q" + typeName + "~q. Function ~q" + deserializeFunction.name() + "~q does not handle that type."
+ 		endif
+
+  		return res
+ 	End Method
+ 	
 
 	'ronny
 	Method DelegateDeserializationToType:object(typeObj:object, fieldName:string, sourceTypeName:string, targetTypeName:string, obj:object)
@@ -1007,7 +1044,22 @@ endrem
 					Return obj
 				End If
 
-				obj = DeserializeByType(objType, node)
+
+				'Ronny
+				'check if the current programme knows the stored data structure / type
+				if not objType
+					'try to find the new typeID (eg a type was renamed)
+					objType = DelegateRenamedTypeDetection(nodeName)
+					if objType	
+						obj = DeserializeByType(objType, node)
+					else
+						obj = DelegateDeserializationOfUnknownType(objType, nodeName, obj)
+					endif
+				else
+					obj = DeserializeByType(objType, node)
+				endif
+
+				'obj = DeserializeByType(objType, node)
 			End If
 		End If
 

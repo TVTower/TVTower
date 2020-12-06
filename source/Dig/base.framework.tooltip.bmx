@@ -315,20 +315,21 @@ Type TTooltip Extends TEntity
 
 
 	Method DrawBackground:int(x:int, y:int, w:int, h:int)
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
 
 		'bright background
 		SetColor 255,255,255
 		DrawRect(x, y, w, h)
 
-		oldCol.SetRGB()
+		SetColor(oldCol)
 	End Method
 
 
 	Method Render:Int(xOffset:Float = 0, yOffset:Float=0, alignment:TVec2D = Null)
 		If Not enabled Then Return 0
 
-		local col:TColor = TColor.Create().Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
 
 		If DirtyImage Or Not Image Or Not imgCacheEnabled
 			local boxWidth:int = GetWidth()
@@ -340,7 +341,7 @@ Type TTooltip Extends TEntity
 			Local captionHeight:Int = GetTitleHeight()
 			DrawShadow(boxWidth, boxHeight)
 
-			SetAlpha col.A * getFadeAmount()
+			SetAlpha oldA * getFadeAmount()
 			SetColor 0,0,0
 			'border
 			DrawRect(GetScreenX(), GetScreenY(), boxWidth, boxHeight)
@@ -373,13 +374,14 @@ rem
 endrem
 		Else 'not dirty
 			DrawShadow(ImageWidth(image),ImageHeight(image))
-			SetAlpha col.a * getFadeAmount()
+			SetAlpha oldA * getFadeAmount()
 			SetColor 255,255,255
 			DrawImage(image, GetScreenX(), GetScreenY())
 			SetAlpha 1.0
 		EndIf
 
-		col.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldA)
 
 		'=== DRAW CHILDREN ===
 		RenderChildren(xOffset, yOffset, alignment)

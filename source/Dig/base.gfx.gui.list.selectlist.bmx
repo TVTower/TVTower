@@ -212,24 +212,23 @@ Type TGUISelectListItem Extends TGUIListItem
 
 
 	Method DrawBackground()
-		Local oldCol:TColor = New TColor.Get()
-
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
+	
 		'available width is parentsDimension minus startingpoint
 		'Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
 		Local maxWidth:Int = GetScreenRect().GetW()
 		If isHovered()
 			SetColor 250,210,100
 			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), maxWidth, GetScreenRect().GetH())
-			SetColor 255,255,255
 		ElseIf isSelected()
-			SetAlpha GetAlpha()*0.5
 			SetColor 250,210,100
+			SetAlpha oldColA*0.5
 			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), maxWidth, GetScreenRect().GetH())
-			SetColor 255,255,255
-			SetAlpha GetAlpha()*2.0
 		EndIf
 
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldColA)
 	End Method
 
 

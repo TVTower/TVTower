@@ -935,14 +935,15 @@ endrem
 		endif
 
 		if highlightVendor or highlightSuitcase
-			local oldCol:TColor = new TColor.Get()
+			local oldColA:Float = GetAlpha()
+
 			SetBlend LightBlend
-			SetAlpha oldCol.a * Float(0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
+			SetAlpha oldColA * Float(0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
 
 			if VendorEntity and highlightVendor then VendorEntity.Render()
 			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
-			SetAlpha oldCol.a
+			SetAlpha oldColA
 			SetBlend AlphaBlend
 		endif
 
@@ -969,6 +970,9 @@ endrem
 		endif
 
 		if TVTDebugInfos
+			Local oldCol:SColor8; GetColor(oldCol)
+			Local oldColA:Float = GetAlpha()
+
 			SetColor 0,0,0
 			SetAlpha 0.6
 			DrawRect(300,215, 480, 200)
@@ -987,6 +991,9 @@ endrem
 				GetBitmapFont("default", 12).Draw(script.GetTitle(), 540, y)
 				y:+ 13
 			Next
+			
+			SetColor(oldCol)
+			SetAlpha(oldColA)
 		endif
 	End Method
 

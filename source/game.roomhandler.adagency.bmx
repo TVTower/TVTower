@@ -1609,17 +1609,17 @@ Type TGuiAdContract Extends TGUIGameListItem
 
 
 	Method Draw() override
-		SetColor 255,255,255
-		Local oldCol:TColor = New TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
 
 		'make faded as soon as not "dragable" for us
 		If Not isDragable()
 			'in our collection
 			If contract.owner = GetObservedPlayerID()
-				SetAlpha 0.80*oldCol.a
-				SetColor 200,200,200
+				SetAlpha( 0.80*oldColA )
+				SetColor( 200,200,200 )
 			Else
-				SetAlpha 0.70*oldCol.a
+				SetAlpha( 0.70*oldColA )
 '				SetColor 250,200,150
 			EndIf
 		EndIf
@@ -1627,13 +1627,14 @@ Type TGuiAdContract Extends TGUIGameListItem
 		'mark special vendor-contracts
 		If contract.owner <> GetObservedPlayerID()
 			If contract.GetDaysToFinish() <= 1
-				SetColor 255,230,215
+				SetColor( 255,230,215 )
 			EndIf
 		EndIf
 
 		Super.Draw()
 
-		oldCol.SetRGBA()
+		SetColor( oldCol )
+		SetAlpha( oldColA )
 
 
 		'set mouse to "hold/dragged"

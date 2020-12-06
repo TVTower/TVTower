@@ -168,19 +168,21 @@ Type TWeatherEffectRain extends TWeatherEffectBase
 		local decreaseAmount:int = layerPositions.length-1
 		local color:int
 
-		local oldColor:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
 		local useAlpha:Float = fadeState.GetFadeProgress()
 		if fadeState.IsFadingOff() then useAlpha = 1.0 - useAlpha
 
 		For local i:int = 0 until layerPositions.length
 			color = colorMax * 1.0 / 1.5^(layerPositions.length-1 - i)
 			SetColor(color, color, color)
-			SetAlpha Float(oldColor.a * useAlpha * alphaMax * 1.0 / 2^(layerPositions.length-1 - i))
+			SetAlpha Float(oldA * useAlpha * alphaMax * 1.0 / 2^(layerPositions.length-1 - i))
 		
 			layerSprites[i].TileDraw(area.GetX() + layerPositions[i].x - layerSprites[i].GetWidth(), int(area.GetY() + layerPositions[i].y), int(area.GetW() - (layerPositions[i].x - layerSprites[i].GetWidth())), int(area.GetH() + layerSprites[i].GetHeight()))
 		Next
 
-		oldColor.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldA)
 	End Method
 End Type
 
@@ -341,7 +343,8 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 	Method Render:int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		If not IsActive() then return False
 		
-		local oldColor:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
 		local effectAlpha:Float = fadeState.GetFadeProgress()
 		if fadeState.IsFadingOff() then effectAlpha = 1.0 - effectAlpha
 
@@ -359,7 +362,7 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 			local pos:TVec2D = TVec2D(lightning.Get("position", new TVec2D))
 			local direction:int = lightning.GetInt("direction", 0)
 
-			SetAlpha(oldColor.a * effectAlpha * GetLightningAlpha(lightning))
+			SetAlpha(oldA * effectAlpha * GetLightningAlpha(lightning))
 
 			'mirrored drawing?
 			if direction = 1
@@ -374,8 +377,9 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 				sprite.Draw(pos.x, pos.y)
 			endif
 		Next
-		
-		oldColor.SetRGBA()
+	
+		SetColor(oldCol)
+		SetAlpha(oldA)	
 	End Method
 End Type
 
@@ -508,7 +512,8 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 	Method Render:int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		If not IsActive() then return False
 		
-		local oldColor:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
 		local effectAlpha:Float = fadeState.GetFadeProgress()
 		if fadeState.IsFadingOff() then effectAlpha = 1.0 - effectAlpha
 
@@ -531,9 +536,9 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 				MathHelper.Tween(oldPosition.y, pos.getY(), GetDeltaTimer().GetTween()) ..
 			)
 			if lifetime < 0.5
-				SetAlpha(oldColor.a * effectAlpha * lifetime*2.0)
+				SetAlpha(oldA * effectAlpha * lifetime*2.0)
 			else
-				SetAlpha(oldColor.a * effectAlpha)
+				SetAlpha(oldA * effectAlpha)
 			endif
 			
 			'mirrored drawing?
@@ -550,7 +555,8 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 			endif
 		Next
 		
-		oldColor.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldA)
 	End Method
 End Type
 
@@ -683,7 +689,8 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 	Method Render:int(xOffset:Float = 0, yOffset:Float = 0, alignment:TVec2D = Null)
 		If not IsActive() then return False
 		
-		local oldColor:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
 		local effectAlpha:Float = fadeState.GetFadeProgress()
 		if fadeState.IsFadingOff() then effectAlpha = 1.0 - effectAlpha
 
@@ -697,7 +704,7 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 			'skip invisible ones
 			if entity.area.GetX() > 801 then continue
 			if entity.area.GetX() < - (entity.area.GetW()+1) then continue
-			SetAlpha effectAlpha * (oldColor.a*0.9 + 0.1*(float(cloudNumber)/(clouds.Count())) )
+			SetAlpha effectAlpha * (oldA*0.9 + 0.1*(float(cloudNumber)/(clouds.Count())) )
 			if entity.sprite
 				entity.Render()
 			else
@@ -706,7 +713,7 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 			cloudNumber :+1
 		Next
 		'restore alpha and color
-		oldColor.SetRGBA()
-
+		SetColor(oldCol)
+		SetAlpha(oldA)
 	End Method
 End Type

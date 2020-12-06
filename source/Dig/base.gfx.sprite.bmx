@@ -776,9 +776,9 @@ Type TSprite
 			Local vpx:Int, vpy:Int, vpw:Int, vph:Int
 			If clipRect
 				GetGraphicsManager().GetViewport(vpx, vpy, vpw, vph)
-				Local intersectingVP:TRectangle = clipRect.IntersectRectXYWH(vpx, vpy, vpw, vph)
-				If intersectingVP
-					GetGraphicsManager().SetViewport(Int(intersectingVP.GetX()), Int(intersectingVP.GetY()), Int(intersectingVP.GetW()), Int(intersectingVP.GetH()))
+				Local intersectingVP:SRect = clipRect.IntersectSRectXYWH(vpx, vpy, vpw, vph)
+				If intersectingVP.w > 0 and intersectingVP.h > 0
+					GetGraphicsManager().SetViewport(Int(intersectingVP.x), Int(intersectingVP.y), Int(intersectingVP.w), Int(intersectingVP.h))
 				EndIf
 			EndIf
 
@@ -902,9 +902,9 @@ Type TSprite
 			Local vpx:Int, vpy:Int, vpw:Int, vph:Int
 			GetGraphicsManager().GetViewport(vpx, vpy, vpw, vph)
 
-			Local intersectingVP:TRectangle = clipRect.IntersectRectXYWH(vpx, vpy, vpw, vph)
-			If intersectingVP
-				GetGraphicsManager().SetViewport(Int(intersectingVP.GetX()), Int(intersectingVP.GetY()), Int(intersectingVP.GetW()), Int(intersectingVP.GetH()))
+			Local intersectingVP:SRect = clipRect.IntersectSRectXYWH(vpx, vpy, vpw, vph)
+			If intersectingVP.w > 0 and intersectingVP.h > 0
+				GetGraphicsManager().SetViewport(Int(intersectingVP.x), Int(intersectingVP.y), Int(intersectingVP.w), Int(intersectingVP.h))
 					If forceTileMode = TILEMODE_UNDEFINED Then forceTileMode = tileMode
 
 					If forceTileMode = TILEMODE_UNDEFINED Or forceTileMode = TILEMODE_STRETCHED
@@ -963,21 +963,24 @@ Type TSprite
 
 
 	Method DrawInArea(x:Float, y:Float, area:TRectangle = Null, frame:Int=-1)
-		Local vpRect:TRectangle
+		Local vpx:Int, vpy:Int, vpw:Int, vph:Int
 
 		If area
-			Local vpx:Int, vpy:Int, vpw:Int, vph:Int
 			GetGraphicsManager().GetViewport(vpx, vpy, vpw, vph)
 
-			Local intersectingVP:TRectangle = area.IntersectRectXYWH(vpx, vpy, vpw, vph)
-			GetGraphicsManager().SetViewport(Int(intersectingVP.GetX()), Int(intersectingVP.GetY()), Int(intersectingVP.GetW()), Int(intersectingVP.GetH()))
+			Local intersectingVP:SRect = area.IntersectSRectXYWH(vpx, vpy, vpw, vph)
+			if intersectingVP.w < 0 or intersectingVP.h < 0
+				Return
+			EndIf
+
+			GetGraphicsManager().SetViewport(Int(intersectingVP.x), Int(intersectingVP.y), Int(intersectingVP.w), Int(intersectingVP.h))
 		EndIf
 
 		Draw(x, y)
 
 		'reset viewport if it was modified
-		If vpRect
-			GetGraphicsManager().SetViewport(Int(vpRect.GetX()), Int(vpRect.GetY()), Int(vpRect.GetW()), Int(vpRect.GetH()))
+		If area
+			GetGraphicsManager().SetViewport(vpx, vpy, vpw, vph)
 		EndIf
 	End Method
 

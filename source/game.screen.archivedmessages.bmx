@@ -479,7 +479,6 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 
 		local border:Srect = sprite.GetNinePatchInformation().contentBorder
 
-		'local oldCol:TColor = new TColor.Get()
 		local contentH:int = GetScreenRect().GetH() - (border.GetTop() + border.GetBottom())
 		local titleH:int = 0
 		local timeW:int = 0
@@ -538,18 +537,17 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 		Local sheetWidth:Int = 250
 		local baseX:Int = int(x - alignment * sheetWidth)
 
-		local oldA:Float = GetAlpha()
-		local oldCol:SColor8
-		GetColor(oldCol)
+		local oldCol:SColor8; GetColor(oldCol)
+		local oldColA:Float = GetAlpha()
 		SetColor 0,0,0
-		SetAlpha 0.2 * oldA
+		SetAlpha 0.2 * oldColA
 		TFunctions.DrawBaseTargetRect(baseX + sheetWidth/2, ..
 		                              y + 70, ..
 		                              Self.GetScreenRect().GetX() + Self.GetScreenRect().GetW()/2.0, ..
 		                              Self.GetScreenRect().GetY() + Self.GetScreenRect().GetH()/2.0, ..
 		                              20, 3)
 		SetColor(oldCol)
-		SetAlpha oldA
+		SetAlpha(oldColA)
 
 
 		ShowMessageSheet(message, x, y, alignment)

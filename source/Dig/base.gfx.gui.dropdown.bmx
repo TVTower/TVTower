@@ -495,8 +495,9 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 		If Not isHovered() And Not isSelected() Then Return
 
 
-		Local oldCol:TColor = New TColor.Get()
-		SetAlpha oldCol.a * GetScreenAlpha()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
+		SetAlpha oldColA * GetScreenAlpha()
 
 		Local upperParent:TGUIObject = TGUIListBase.FindGUIListBaseParent(Self)
 		upperParent.RestrictContentViewPort()
@@ -504,17 +505,16 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 		If isHovered()
 			SetColor 250,210,100
 			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetScreenRect().GetH())
-			SetColor 255,255,255
 		ElseIf isSelected()
-			SetAlpha GetAlpha()*0.5
+			SetAlpha oldcolA*0.5
 			SetColor 250,210,100
 			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetScreenRect().GetH())
-			SetColor 255,255,255
-			SetAlpha GetAlpha()*2.0
 		EndIf
 
 		upperParent.ResetViewPort()
-		oldCol.SetRGBA()
+
+		SetColor(oldCol)
+		SetAlpha(oldColA)
 	End Method
 
 
@@ -555,8 +555,9 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 	'override
 	Method DrawContent()
 		If GetScreenRect().GetH() = 0 Or GetScreenRect().GetW() = 0 Then Return
-		Local oldCol:TColor = New TColor.Get()
-		SetAlpha oldCol.a * GetScreenAlpha()
+
+		Local oldColA:Float = GetAlpha()
+		SetAlpha oldColA * GetScreenAlpha()
 
 		Local upperParent:TGUIObject = TGUIListBase.FindGUIListBaseParent(Self)
 		If upperParent Then upperParent.RestrictContentViewPort()
@@ -564,6 +565,7 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 		DrawValue()
 
 		If upperParent Then	upperParent.ResetViewPort()
-		oldCol.SetRGBA()
+
+		SetAlpha(oldColA)
 	End Method
 End Type

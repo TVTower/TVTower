@@ -1170,15 +1170,15 @@ endrem
 		EndIf
 
 		If highlightAuction Or highlightVendor Or highlightSuitcase
-			Local oldCol:TColor = New TColor.Get()
+			Local oldColA:Float = GetAlpha()
 			SetBlend LightBlend
-			SetAlpha oldCol.a * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
+			SetAlpha oldColA * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
 
 			If AuctionEntity And highlightAuction Then AuctionEntity.Render()
 			If VendorEntity And highlightVendor Then VendorEntity.Render()
 			If highlightSuitcase And spriteSuitcase Then spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
-			SetAlpha oldCol.a
+			SetAlpha(oldColA)
 			SetBlend AlphaBlend
 		EndIf
 

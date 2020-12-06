@@ -299,10 +299,10 @@ endrem
 
 
 	Method DrawContent()
-		Local oldCol:TColor = New TColor.Get()
-		SetAlpha( oldCol.a*0.3 )
+		Local oldColA:Float = GetAlpha()
+		SetAlpha(oldColA * 0.3)
 		GetSpriteFromRegistry("gfx_gui_slider.gauge").DrawArea(GetScreenRect().GetX(), GetScreenRect().GetY() + GetScreenRect().GetH()*0.5 - 8, GetScreenRect().GetW(), 6)
-		SetAlpha( oldCol.a )
+		SetAlpha(oldColA)
 '		Super.DrawContent()
 	End Method
 

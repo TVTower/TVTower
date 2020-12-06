@@ -101,12 +101,13 @@ Type TDebugScreen
 			textFont = GetBitmapFont("default", 10)
 		endif
 
-		Local oldCol:TColor = New TColor.get()
-
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
+	
 		SetColor 0,0,0
-		SetAlpha 0.3 * oldCol.a
+		SetAlpha(0.3 * oldColA)
 		DrawRect(0,0, sideButtonPanelWidth, 383)
-		SetAlpha oldCol.a
+		SetAlpha(oldColA)
 		DrawRect(sideButtonPanelWidth-2,0, 2, 383)
 		SetColor 255,255,255
 		For Local b:TDebugControlsButton = EachIn sideButtons
@@ -115,10 +116,11 @@ Type TDebugScreen
 
 
 		SetColor 0,0,0
-		SetAlpha 0.2 * oldCol.a
+		SetAlpha 0.2 * oldColA
 		DrawRect(sideButtonPanelWidth,0, 800 - sideButtonPanelWidth, 383)
-		SetColor 255,255,255
-		SetAlpha oldCol.a
+		SetColor(oldCol)
+		SetAlpha(oldColA)
+		
 
 		Select mode
 			Case 0	RenderMode_Overview()
@@ -324,7 +326,8 @@ Type TDebugScreen
 		Local player:TPlayer = GetPlayer(playerID)
 
 
-		Local oldCol:TColor = New TColor.get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		SetColor 0,0,0
 		DrawOutlineRect(sideButtonPanelWidth, 10, 130, 170, true, true, true, false, 0,0,0, 0.25)
 		SetColor 255,255,255
 
@@ -333,6 +336,8 @@ Type TDebugScreen
 		Else
 			titleFont.Draw("Go to room:", sideButtonPanelWidth + 5, 13)
 		EndIf
+		SetColor(oldCol)
+
 		For Local b:TDebugControlsButton = EachIn playerCommandTaskButtons
 			b.Render(sideButtonPanelWidth + 5, 25)
 		Next
@@ -997,7 +1002,7 @@ endrem
 	Method RenderFigureInformation(figure:TFigure, x:int, y:int)
 		DrawOutlineRect(x, y, 150, 70)
 
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
 
 		local usedDoorText:string = ""
 		local targetText:string = ""
@@ -1044,6 +1049,8 @@ endrem
 		if targetText then textFont.DrawSimple("-> " + targetText, x + 5, textY)
 		'textY :+ 10
 		'textFont.draw("usedDoor: " + usedDoorText, x + 5, textY)
+		
+		SetColor(oldCol)
 	End Method
 
 

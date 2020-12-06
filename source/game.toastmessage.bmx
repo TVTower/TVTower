@@ -250,7 +250,9 @@ Type TGameToastMessage Extends TToastMessage
 		'lifetime bar
 		If _lifeTime > 0
 			Local lifeTimeWidth:Int = contentX2 - contentX
-			Local oldCol:TColor = New TColor.Get()
+			Local oldCol:SColor8; GetColor(oldCol)
+			Local oldA:Float = GetAlpha()
+
 			lifeTimeWidth :* GetLifeTimeProgress()
 
 			If priority <= 2
@@ -265,7 +267,9 @@ Type TGameToastMessage Extends TToastMessage
 			EndIf
 			'+2 = a bit of padding
 			DrawRect(contentX, contentY2 - 5 + 2, lifeTimeWidth, 3)
-			oldCol.SetRGBA()
+			
+			SetColor(oldCol)
+			SetAlpha(oldA)
 		EndIf
 
 	End Method

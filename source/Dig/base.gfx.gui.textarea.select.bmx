@@ -62,28 +62,29 @@ Type TGuiTextAreaSelect Extends TGUITextArea
 
 		if selectedLine > 0 or hoveredLine > 0
 			RestrictContentViewport()
-			local oldCol:TColor = new TColor.Get()
+			Local oldCol:SColor8; GetColor(oldCol)
+			Local oldColA:Float = GetAlpha()
 
 			if selectedLine > 0
-				SetBlend LightBlend
-				SetAlpha oldCol.a * 0.25
-				SetColor 200,200,200
+				SetBlend(LightBlend)
+				SetAlpha(oldColA * 0.25)
+				SetColor(200,200,200)
 				local lineY:int = GetLineHeight() * (selectedLine-1) + guiTextPanel.scrollPosition.GetY()
 				DrawRect(GetContentScreenX(), GetContentScreenY() + lineY -1, GetContentScreenWidth(), GetLineHeight())
-				SetBlend AlphaBlend
+				SetBlend(AlphaBlend)
 			endif
 
 			if hoveredLine > 0 and hoveredLine <> selectedLine
-				SetBlend LightBlend
-				SetAlpha oldCol.a * 0.10
-				SetColor 200,200,230
+				SetBlend(LightBlend)
+				SetAlpha(oldColA * 0.10)
+				SetColor(200,200,230)
 				local lineY:int = GetLineHeight() * (hoveredLine-1) + guiTextPanel.scrollPosition.GetY()
 				DrawRect(GetContentScreenX(), GetContentScreenY() + lineY -1, GetContentScreenWidth(), GetLineHeight())
-				SetBlend AlphaBlend
+				SetBlend(AlphaBlend)
 			endif
 			
-
-			oldCol.SetRGBA()
+			SetColor(oldCol)
+			SetAlpha(oldColA)
 			ResetViewport()
 		endif
 	End Method

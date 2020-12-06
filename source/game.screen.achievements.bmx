@@ -491,9 +491,9 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 
 		local border:SRect = sprite.GetNinePatchInformation().contentBorder
 
-		local oldCol:TColor = new TColor.Get()
+		local oldColA:Float = GetAlpha()
 
-		SetAlpha( Max(0.6, oldCol.a) )
+		SetAlpha( Max(0.6, oldColA) )
 		skin.fontSemiBold.DrawBox( ..
 			title, ..
 			x + textOffsetX + border.GetLeft(), ..
@@ -508,7 +508,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 			local leftWidth:int = 1.25 * halfTextWidth
 			local rightWidth:int = 0.75 * halfTextWidth
 
-			SetAlpha( Max(0.6, oldCol.a) )
+			SetAlpha( Max(0.6, oldColA) )
 			skin.fontNormal.DrawBox( ..
 				textLeft, ..
 				x + textOffsetX + border.GetLeft(), ..
@@ -524,9 +524,9 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 				rightWidth - 10,  ..
 				Max(17, GetScreenRect().GetH() - (border.GetTop() + border.GetBottom() + 15)), ..
 				sALIGN_LEFT_TOP, skin.textColorNeutral)
-			SetAlpha (oldCol.a)
+			SetAlpha (oldColA)
 		else
-			SetAlpha( Max(0.6, oldCol.a) )
+			SetAlpha( Max(0.6, oldColA) )
 			skin.fontNormal.DrawBox( ..
 				textLeft, ..
 				x + textOffsetX + border.GetLeft(), ..
@@ -534,7 +534,7 @@ Type TGUIAchievementListItem Extends TGUISelectListItem
 				w - textOffsetX - (border.GetRight() + border.GetLeft()),  ..
 				Max(17, sprite.GetHeight() - (border.GetTop() + border.GetBottom() + 15)), ..
 				sALIGN_LEFT_CENTER, skin.textColorNeutral)
-			SetAlpha (oldCol.a)
+			SetAlpha (oldColA)
 		endif
 
 	End Method

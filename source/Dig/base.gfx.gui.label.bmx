@@ -208,8 +208,9 @@ Type TGUILabel Extends TGUIobject
 
 
 	Method DrawContent()
-		Local oldCol:TColor = New TColor.Get()
-		SetAlpha oldCol.a * GetScreenAlpha()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
+		SetAlpha oldColA * GetScreenAlpha()
 
 		Local mode:Int = valueSpriteMode
 		Local dim:TVec2D = GetValueDimension()
@@ -257,7 +258,7 @@ Type TGUILabel Extends TGUIobject
 			Default
 				'with alpha<>1.0 we most probably are fading, so we skip
 				'caching for now
-				If oldCol.a <> 1.0
+				If oldColA <> 1.0
 					GetFont().DrawBox(value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, GetDrawTextEffect().data)
 				Else
 					textCache.DrawBlock(GetFont(), value, scrRect.x + contentDisplacement.GetX(), scrRect.y + contentDisplacement.GetY(), textW, textH, contentAlignment, color, GetDrawTextEffect(), null)
@@ -265,7 +266,8 @@ Type TGUILabel Extends TGUIobject
 		End Select
 
 
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldColA)
 	End Method
 
 

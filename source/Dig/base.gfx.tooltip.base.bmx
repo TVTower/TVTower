@@ -659,18 +659,19 @@ Type TTooltipBase
 	Method _DrawBackground:Int(x:Int, y:Int, w:Int, h:Int)
 		If _customDrawBackground Then Return _customDrawBackground(Self, x, y, w, h)
 
-		Local oldCol:TColor = New TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
 
 		'=== SHADOW ===
 		SetColor 0, 0, 0
-		SetAlpha oldCol.a * 0.3
+		SetAlpha oldA * 0.3
 		DrawRect(x+2, y+2, w, h)
 
-		SetAlpha oldCol.a * 0.1
+		SetAlpha oldA * 0.1
 		DrawRect(x+1, y+1, w, h)
 
 		'=== BORDER ===
-		SetAlpha oldCol.a
+		SetAlpha oldA
 		SetColor 0,0,0
 		DrawRect(x, y, w, h)
 		SetColor 255,255,255
@@ -679,7 +680,8 @@ Type TTooltipBase
 		SetColor 255,255,255
 		DrawRect(x+1, y+1, w-2, h-2)
 
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldA)
 
 		Return True
 	End Method
@@ -706,16 +708,16 @@ Type TTooltipBase
 		Local boxHeight:Int	= GetHeight()
 		Local padding:TRectangle = GetContentPadding()
 
-		Local oldCol:TColor = New TColor.Get()
+		Local oldColA:Float = GetAlpha()
 		If IsFadingOut()
 			'fade out a bit faster ... ^3
-			SetAlpha oldCol.a * Float((1.0-GetStepProgress())^2)
+			SetAlpha oldColA * Float((1.0 - GetStepProgress())^2)
 		EndIf
 
 		_DrawBackground(boxX, boxY, boxWidth, boxHeight)
 		_DrawForeground(boxX + Int(padding.GetLeft()), boxY + Int(padding.GetTop()), boxWidth - Int(padding.GetLeft() - padding.GetRight()), boxHeight - Int(padding.GetTop() - padding.GetBottom()))
 
-		SetAlpha oldCol.a
+		SetAlpha oldColA
 
 		Return True
 	End Method

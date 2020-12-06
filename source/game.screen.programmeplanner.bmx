@@ -443,8 +443,10 @@ Type TScreenHandler_ProgrammePlanner
 
 
 	Function DrawSlotOverlays(invert:Int = False)
-		Local oldCol:TColor = New TColor.get()
-		SetAlpha oldCol.a * 0.65 + Float(Min(0.15, Max(-0.20, Sin(MilliSecs() / 6) * 0.20)))
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
+
+		SetAlpha oldColA * 0.65 + Float(Min(0.15, Max(-0.20, Sin(MilliSecs() / 6) * 0.20)))
 
 		For Local i:Int = 0 To 23
 			Local overlayedCount:Int = 0
@@ -507,7 +509,7 @@ Type TScreenHandler_ProgrammePlanner
 
 
 		Local plan:TPlayerProgrammePlan = GetPlayerProgrammePlan(currentRoom.owner)
-		SetAlpha oldCol.a * 0.30
+		SetAlpha oldColA * 0.30
 		SetColor 170,30,0
 		local d:Int = GetWorldTime().GetDay()
 		For Local i:Int = 0 To 23
@@ -526,7 +528,9 @@ Type TScreenHandler_ProgrammePlanner
 				EndIf
 			EndIf
 		Next
-		oldCol.SetRGBA()
+
+		SetColor(oldCol)
+		SetAlpha(oldColA)
 	End Function
 
 	'=== EVENTS ===

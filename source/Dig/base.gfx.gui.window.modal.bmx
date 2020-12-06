@@ -315,21 +315,23 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 
 	Method DrawBackground()
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
 		local newAlpha:Float = 1.0
 		if closeActionStarted
 			newAlpha = 1.0 - TInterpolation.Linear(0.0, 1.0, Min(closeActionDuration, Time.GetAppTimeGone() - closeActionTime), closeActionDuration)
 		endif
 		self.alpha = newAlpha
 
-		SetAlpha(oldCol.a * alpha * darkenedAreaAlpha)
+		SetAlpha(oldColA * alpha * darkenedAreaAlpha)
 		SetColor(0, 0, 0)
 		If Not DarkenedArea
 			DrawRect(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
 		Else
 			DrawRect(DarkenedArea.getX(), DarkenedArea.getY(), DarkenedArea.getW(), DarkenedArea.getH())
 		EndIf
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldColA)
 
 		'we manage drawing and updating our background
 		If guiBackground and guiBackground.IsEnabled() then guiBackground.Draw()

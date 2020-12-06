@@ -3810,7 +3810,8 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 		local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
 		if not section then return
 
-		Local oldColor:TColor = new TColor.get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
 		Local color:TColor
 		Select owner
 			Case 1,2,3,4	color = TPlayerColor.GetByOwner(owner)
@@ -3824,10 +3825,11 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 				SetAlpha 0.3
 				DrawImage(section.GetSelectedImage(), section.rect.GetX(), section.rect.GetY())
 
-				SetAlpha Float(0.2 * Sin(Time.GetAppTimeGone()/4) * oldColor.a) + 0.3
+				SetAlpha Float(0.2 * Sin(Time.GetAppTimeGone()/4) * oldA) + 0.3
 				SetBlend LightBlend
 				section.GetHighlightBorderSprite().Draw(section.rect.GetX(), section.rect.GetY())
-				oldColor.SetRGBA()
+				SetColor(oldCol)
+				SetAlpha(oldA)
 				SetBlend AlphaBlend
 			endif
 
@@ -3841,15 +3843,17 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 				SetAlpha 0.4
 				SetBlend LightBlend
 				section.GetHighlightBorderSprite().Draw(section.rect.GetX(), section.rect.GetY())
-				oldColor.SetRGBA()
+				SetColor(oldCol)
+				SetAlpha(oldA)
 				SetBlend AlphaBlend
 			endif
 		else
-			SetAlpha oldColor.a * 0.3
+			SetAlpha oldA * 0.3
 			color.SetRGB()
 			'color.Copy().Mix(TColor.clWhite, 0.75).SetRGB()
 			section.GetShapeSprite().Draw(section.rect.GetX(), section.rect.GetY())
-			oldColor.SetRGBA()
+			SetColor(oldCol)
+			SetAlpha(oldA)
 		endif
 
 	End Method
@@ -4472,16 +4476,18 @@ Type TStationMapSection
 '		If tooltipY < 10 Then tooltipY = 10
 		tooltipX = MathHelper.Clamp(tooltipX, 20, GetGraphicsManager().GetWidth() - tooltipW - 20)
 
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
 
-		SetAlpha oldCol.a * 0.5
+		SetAlpha oldA * 0.5
 		if not providerOK or not permissionOK or not imageOK
 			SetColor 75,0,0
 		else
 			SetColor 0,0,0
 		endif
 		DrawRect(tooltipX,tooltipY,tooltipW,tooltipH)
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldA)
 
 		Local textY:Int = tooltipY+5
 		Local textX:Int = tooltipX+5

@@ -64,16 +64,19 @@ Type TGUIBackgroundBox Extends TGUIobject
 
 
 	Method DrawBackground()
-		Local oldCol:TColor = New TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
+
 		'a local spriteAlpha means widget as "parent" can have alpha 1.0
 		'while the sprite is drawn with 0.3
-		SetAlpha oldCol.a * GetScreenAlpha() * spriteAlpha
+		SetAlpha oldColA * GetScreenAlpha() * spriteAlpha
 		If spriteTintColor Then spriteTintColor.SetRGB()
 
 		Local r:TRectangle = GetScreenRect()
 		GetSprite().DrawArea(r.GetX(), r.GetY(), r.GetW(), r.GetH())
 
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldColA)
 	End Method
 
 

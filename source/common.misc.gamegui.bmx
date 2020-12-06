@@ -95,16 +95,19 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 
 	'override to change color
 	Method DrawBackground()
-		Local oldCol:TColor = New TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
+
 		SetColor(125, 160, 215)
 		If IsHovered()
-			SetAlpha(oldCol.a * 0.75)
+			SetAlpha(oldA * 0.75)
 			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), rect.getH())
 		ElseIf IsSelected()
-			SetAlpha(oldCol.a * 0.5)
+			SetAlpha(oldA * 0.5)
 			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), rect.getH())
 		EndIf
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldA)
 	End Method
 
 
@@ -819,12 +822,12 @@ Type TGameGUIAccordeonPanel extends TGUIAccordeonPanel
 
 			skin.RenderContent(contentX, contentY, contentW, headerHeight, "1_top")
 			if IsHeaderHovered()
-				local oldCol:TColor = new TColor.Get()
+				Local oldA:Float = GetAlpha()
 				SetBlend LightBlend
-				SetAlpha 0.25 * oldCol.a
+				SetAlpha 0.25 * oldA
 				skin.RenderContent(contentX, contentY, contentW, headerHeight, "1_top")
 				SetBlend AlphaBlend
-				SetAlpha oldCol.a
+				SetAlpha oldA
 			endif
 			if isOpen
 				skin.fontNormal.DrawBox(openStr + " |b|" +GetHeaderValue()+"|/b|", contentX + 5, contentY, contentW - 10, headerHeight, sALIGN_LEFT_CENTER, skin.textColorNeutral)

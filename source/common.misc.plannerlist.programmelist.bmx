@@ -375,7 +375,8 @@ Type TgfxProgrammelist Extends TPlannerList
 		Local currY:Int = GetEntriesRect().GetY()
 		Local currX:Int = GetEntriesRect().GetX()
 		Local font:TBitmapFont = GetBitmapFont("Default", 10)
-		Local oldColor:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
 
 
 		'draw slots, even if empty
@@ -436,7 +437,7 @@ Type TgfxProgrammelist Extends TPlannerList
 
 				'mark not available licences (eg. broadcast limits exceeded or not yet released)
 				if not licence.IsAvailable()
-					setAlpha 0.5 * oldColor.a
+					setAlpha 0.5 * oldColA
 					SetColor 255,200,200
 				endif
 
@@ -457,7 +458,8 @@ Type TgfxProgrammelist Extends TPlannerList
 				EndIf
 				font.DrawBox(licence.GetTitle(), currX + 22, currY + 3, 145,15, sALIGN_LEFT_CENTER, SColor8.Black)
 
-				oldColor.SetRGBA()
+				SetColor(oldCol)
+				SetAlpha(oldColA)
 			EndIf
 
 
@@ -514,16 +516,15 @@ Type TgfxProgrammelist Extends TPlannerList
 			endif
 
 
-			local oldAlpha:float = GetAlpha()
 			if entriesButtonPrev
-				if not entriesButtonPrev.IsEnabled() then SetAlpha 0.5*oldAlpha
+				if not entriesButtonPrev.IsEnabled() then SetAlpha 0.5*oldColA
 				entriesButtonPrev.Draw()
-				if not entriesButtonPrev.IsEnabled() then SetAlpha oldAlpha
+				SetAlpha oldColA
 			endif
 			if entriesButtonNext
-				if not entriesButtonNext.IsEnabled() then SetAlpha 0.5*oldAlpha
+				if not entriesButtonNext.IsEnabled() then SetAlpha 0.5*oldColA
 				entriesButtonNext.Draw()
-				if not entriesButtonNext.IsEnabled() then SetAlpha oldAlpha
+				SetAlpha oldColA
 			endif
 
 			GetBitmapFont("Default", 10).DrawBox(entriesPage+"/" + entriesPages, currX, currY - 22, GetEntriesRect().GetW(), 20, sALIGN_CENTER_CENTER, SColor8.Black)
@@ -729,7 +730,8 @@ Type TgfxProgrammelist Extends TPlannerList
 		Local currY:Int = GetSubEntriesRect().GetY()
 		Local currX:Int = GetSubEntriesRect().GetX()
 		Local font:TBitmapFont = GetBitmapFont("Default", 10)
-		Local oldColor:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
 
 		local startIndex:int = (subEntriesPage-1)*maxLicencesPerPage
 		local endIndex:int = subEntriesPage*maxLicencesPerPage -1
@@ -774,7 +776,7 @@ Type TgfxProgrammelist Extends TPlannerList
 			If licence
 				'mark not available licences (eg. broadcast limits exceeded or not yet released)
 				if not licence.IsAvailable()
-					setAlpha 0.5 * oldColor.a
+					setAlpha 0.5 * oldColA
 					SetColor 255,200,200
 				endif
 
@@ -793,7 +795,8 @@ Type TgfxProgrammelist Extends TPlannerList
 				EndIf
 				font.DrawBox("(" + (i+1) + "/" + parentLicence.GetEpisodeCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 145,15, sALIGN_LEFT_CENTER, SColor8.Black)
 
-				oldColor.SetRGBA()
+				SetColor(oldCol)
+				SetAlpha(oldColA)
 			EndIf
 
 			'adjust mouse cursor if needed
@@ -840,16 +843,15 @@ Type TgfxProgrammelist Extends TPlannerList
 			endif
 
 
-			local oldAlpha:float = GetAlpha()
 			if subEntriesButtonPrev
-				if not subEntriesButtonPrev.IsEnabled() then SetAlpha 0.5*oldAlpha
+				if not subEntriesButtonPrev.IsEnabled() then SetAlpha 0.5*oldColA
 				subEntriesButtonPrev.Draw()
-				if not subEntriesButtonPrev.IsEnabled() then SetAlpha oldAlpha
+				SetAlpha oldColA
 			endif
 			if subEntriesButtonNext
-				if not subEntriesButtonNext.IsEnabled() then SetAlpha 0.5*oldAlpha
+				if not subEntriesButtonNext.IsEnabled() then SetAlpha 0.5*oldColA
 				subEntriesButtonNext.Draw()
-				if not subEntriesButtonNext.IsEnabled() then SetAlpha oldAlpha
+				SetAlpha oldColA
 			endif
 			GetBitmapFont("Default", 10).DrawBox(subEntriesPage+"/" + subEntriesPages, currX, currY - 22, GetSubEntriesRect().GetW(), 20, sALIGN_CENTER_CENTER, SColor8.Black)
 		endif

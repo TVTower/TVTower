@@ -176,10 +176,11 @@ Type TGUISpriteButton Extends TGUIObject
 	'override default draw-method
 	Method DrawContent()
 		Local atPoint:TVec2D = GetScreenRect().position
-		Local oldCol:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
 
 		SetColor 255, 255, 255
-		SetAlpha oldCol.a * GetScreenAlpha()
+		SetAlpha oldColA * GetScreenAlpha()
 
 		'draw button (background)
 		local bs:TSprite
@@ -195,7 +196,8 @@ Type TGUISpriteButton Extends TGUIObject
 		'draw arrow at center of button
 		_GetSprite().Draw(atPoint.getX() + int(rect.GetW()/2), atPoint.getY() + int(rect.GetH()/2), -1, new TVec2D.Init(0.5, 0.5))
 
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldColA)
 	End Method
 
 

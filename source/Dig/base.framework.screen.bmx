@@ -373,7 +373,8 @@ Type TScreenFader
 
 	Method Render:Int()
 		If Not active then Return False
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
 
 		If fadeOut
 			SetAlpha(GetProgress())
@@ -383,7 +384,8 @@ Type TScreenFader
 		SetColor(0, 0, 0)
 		DrawRect(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
 
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldA)
 	End Method
 End Type
 
@@ -400,7 +402,8 @@ Type TScreenFaderClosingRects extends TScreenFader
 			relativeProgress = 1 - GetProgress()
 		Endif
 
-		local col:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
 		local rectsWidth:float  = relativeProgress * (GetArea().GetW() / 2)
 		local rectsHeight:float = relativeProgress * (GetArea().GetH() / 2)
 
@@ -413,6 +416,7 @@ Type TScreenFaderClosingRects extends TScreenFader
 		DrawRect(GetArea().GetX() + GetArea().GetW() - rectsWidth, GetArea().GetY(), rectsWidth, rectsHeight)
 		DrawRect(GetArea().GetX() + GetArea().GetW() - rectsWidth, GetArea().GetY() + GetArea().GetH() - rectsHeight, rectsWidth, rectsHeight)
 
-		col.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldA)
 	End Method
 End Type

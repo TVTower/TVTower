@@ -108,21 +108,19 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			default baseX = sheetX + sheetWidth/2 
 		End Select
 
-		local oldA:Float = GetAlpha()
-		local oldCol:SColor8
-		GetColor(oldCol)
+		local oldCol:SColor8; GetColor(oldCol)
+		local oldColA:Float = GetAlpha()
 		SetColor 0,0,0
-		SetAlpha 0.2 * oldA
+		SetAlpha 0.2 * oldColA
 		TFunctions.DrawBaseTargetRect(baseX, ..
 		                              sheetY + 50, ..
 		                              Self.GetScreenRect().GetX() + Self.GetScreenRect().GetW()/2.0, ..
 		                              Self.GetScreenRect().GetY() + Self.GetScreenRect().GetH()/2.0, ..
 		                              20, 3)
-		SetColor(oldCol)
-		SetAlpha oldA
+		SetColor( oldCol )
+		SetAlpha( oldColA )
 
 		ShowStudioSheet(sheetX, sheetY, sheetAlign)
-
 	End Method
 
 
@@ -130,18 +128,17 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		Local sheetY:Int = 80
 		Local sheetX:Int = GetGraphicsManager().GetWidth()/2
 
-		local oldA:Float = GetAlpha()
-		local oldCol:SColor8
-		GetColor(oldCol)
+		local oldCol:SColor8; GetColor(oldCol)
+		local oldColA:Float = GetAlpha()
 		SetColor 0,0,0
-		SetAlpha 0.2 * oldA
+		SetAlpha 0.2 * oldColA
 		TFunctions.DrawBaseTargetRect(sheetX, ..
 		                              sheetY + 50, ..
 		                              Self.GetScreenRect().GetX() + Self.GetScreenRect().GetW()/2.0, ..
 		                              Self.GetScreenRect().GetY() + Self.GetScreenRect().GetH()/2.0, ..
 		                              20, 3)
-		SetColor(oldCol)
-		SetAlpha oldA
+		SetColor( oldCol )
+		SetAlpha( oldColA )
 
 		ShowSupermarketSheet(sheetX, sheetY, 0)
 	End Method
@@ -641,33 +638,35 @@ endrem
 
 	Method DrawContent()
 		SetColor 255,255,255
-		Local oldCol:TColor = New TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
 
 		'make faded as soon as not "dragable" for us
 		If Not isDragable()
 			'in our collection
 			If productionConcept.owner = GetPlayerBaseCollection().playerID
-				SetAlpha 0.80*oldCol.a
-				SetColor 200,200,200
+				SetAlpha( 0.80 * oldColA )
+				SetColor( 200,200,200 )
 			Else
-				SetAlpha 0.70*oldCol.a
-				SetColor 250,200,150
+				SetAlpha( 0.70*oldCol.a )
+				SetColor( 250,200,150 )
 			EndIf
 		EndIf
 
 		if productionConcept.IsProduceable()
-			SetColor 190,250,150
+			SetColor( 190,250,150 )
 		elseif productionConcept.IsPlanned()
-			SetColor 150,200,250
+			SetColor( 150,200,250 )
 		elseif productionConcept.IsGettingPlanned()
-			SetColor 250,200,150
+			SetColor( 250,200,150 )
 		else 'elseif productionConcept.IsUnplanned()
 			'default color
 		endif
 
 		Super.DrawContent()
 
-		oldCol.SetRGBA()
+		SetColor( oldCol )
+		SetAlpha( oldColA )
 	End Method
 End Type
 
@@ -810,8 +809,6 @@ endrem
 
 
 	Method DrawBackground()
-		local oldCol:TColor = new TColor.Get()
-
 		'available width is parentsDimension minus startingpoint
 		Local maxWidth:Int = rect.GetX()
 		if _parent then maxWidth = _parent.GetContentScreenRect().GetW() - rect.getX()
@@ -835,7 +832,10 @@ endrem
 
 
 		if bgColor
-			If isSelected() or isHovered()
+			Local oldCol:SColor8; GetColor(oldCol)
+			Local oldColA:Float = GetAlpha()
+
+ 			If isSelected() or isHovered()
 				bgColor = bgColor.copy()
 				If isSelected()
 					bgColor.a :+ 0.05
@@ -851,7 +851,8 @@ endrem
 
 			DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY() + paddingTop -2, GetScreenRect().GetW(), GetScreenRect().GetH() - paddingBottom -3)
 
-			oldCol.SetRGBA()
+			SetColor( oldCol )
+			SetAlpha( oldColA )
 		endif
 	End Method
 

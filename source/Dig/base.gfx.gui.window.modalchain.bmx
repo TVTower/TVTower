@@ -266,7 +266,9 @@ Type TGUIModalWindowChain Extends TGUIObject
 
 
 	Method DrawContent()
-		local oldCol:TColor = new TColor.Get()
+		local oldCol:SColor8; GetColor(oldCol)
+		local oldColA:Float = GetAlpha()
+		SetAlpha oldColA * GetScreenAlpha()
 		local newAlpha:Float = 1.0
 
 		if closeActionStarted
@@ -277,14 +279,15 @@ Type TGUIModalWindowChain Extends TGUIObject
 
 		self.alpha = newAlpha
 
-		SetAlpha(oldCol.a * alpha * 0.5)
+		SetAlpha(oldColA * alpha * 0.5)
 		SetColor(0, 0, 0)
 		If Not DarkenedArea
 			DrawRect(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
 		Else
 			DrawRect(DarkenedArea.getX(), DarkenedArea.getY(), DarkenedArea.getW(), DarkenedArea.getH())
 		EndIf
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldColA)
 
 		if activeChainElement then activeChainElement.Draw()
 	End Method

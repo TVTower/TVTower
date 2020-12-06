@@ -1509,15 +1509,17 @@ endrem
 	Function RenderDevOSD()
 		Local bf:TBitmapFont = GetBitmapFontManager().baseFont
 		Local textX:Int = 5
-		Local oldCol:TColor = New TColor.Get()
-		SetAlpha oldCol.a * 0.25
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
+		SetAlpha oldA * 0.25
 		SetColor 0,0,0
 		If GameRules.devConfig.GetBool(keyLS_DevOSD, False)
 			DrawRect(0,0, 800, bf.GetMaxCharHeight(true))
 		Else
 			DrawRect(0,0, 175 + 90 + 50, bf.GetMaxCharHeight(true))
 		EndIf
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldA)
 
 		textX:+ Max(75, bf.DrawSimple("Speed:" + Int(GetWorldTime().GetVirtualMinutesPerSecond() * 100), textX , 0).x)
 		textX:+ Max(50, bf.DrawSimple("FPS: "+GetDeltaTimer().currentFps, textX, 0).x)
@@ -1701,11 +1703,13 @@ endrem
 
 		If GetGame().gamestate = TGame.STATE_RUNNING
 			If Not TAiBase.AiRunning
-				Local oldCol:TColor = New TColor.Get()
+				Local oldCol:SColor8; GetColor(oldCol)
+				Local oldA:Float = GetAlpha()
 				SetColor 100,40,40
-				SetAlpha 0.65
+				SetAlpha 0.65 * oldA
 				DrawRect(275,0,250,35)
-				oldCol.SetRGBA()
+				SetColor(oldCol)
+				SetAlpha(oldA)
 				GetBitmapFont("default", 16).DrawBox("PLAYER AI DEACTIVATED", 0, 5, GetGraphicsManager().GetWidth(), 355, sALIGN_CENTER_TOP, SColor8.White, EDrawTextEffect.Shadow, -1)
 				GetBitmapFont("default", 12).DrawBox("(~qF11~q to reactivate AI)", 0, 20, GetGraphicsManager().GetWidth(), 355, sALIGN_CENTER_TOP, SColor8.White, EDrawTextEffect.Shadow, -1)
 			EndIf
@@ -1722,11 +1726,14 @@ endrem
 				GetBitmapFont("default", 14).DrawBox("(~qL-Ctrl + O~q to deactivate)", 0, 0, GetGraphicsManager().GetWidth(), 375, sALIGN_CENTER_BOTTOM, SColor8.White, EDrawTextEffect.Shadow, -1)
 			Else
 				If Not GetPlayerCollection().IsHuman( GetPlayerCollection().playerID )
-					Local oldCol:TColor = New TColor.Get()
+					Local oldCol:SColor8; GetColor(oldCol)
+					Local oldA:Float = GetAlpha()
 					SetColor 60,60,40
-					SetAlpha 0.65
+					SetAlpha 0.65 * oldA
 					DrawRect(275,345,250,35)
-					oldCol.SetRGBA()
+					SetColor(oldCol)
+					SetAlpha(oldA)
+
 
 					GetBitmapFont("default", 16).DrawBox("SWITCHED TO AI PLAYER #" +GetPlayerCollection().playerID, 0, 0, GetGraphicsManager().GetWidth(), 365, sALIGN_CENTER_BOTTOM, SColor8.White, EDrawTextEffect.Shadow, -1)
 
@@ -6693,20 +6700,19 @@ TProfiler.Enter("GameLoop")
 	StartApp()
 
 	Repeat
-		If collectDebugStats
+		If collectDebugStats or 1 =1
 			If MilliSecs() - debugCreationTime > 1000
 				local memCollected:Int = GCCollect()
 				Local myArr:int[] = new Int[10000]
 				?bmxng
-				If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
-
-				If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + bbGCAllocCount + " GC allocations.  GC allocated = " +GCMemAlloced() + ".  GC collected = " + memCollected
+				If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds. " + tcolor_created + " TColor. " + bbGCAllocCount + " GC allocations.  GC allocated = " +GCMemAlloced() + ".  GC collected = " + memCollected
 				bbGCAllocCount = 0
 				?Not bmxng
 				If printDebugStats Then Print "tick: " + rectangle_created +" rectangles. " + vec2d_created + " vec2ds."
 				?
 				rectangle_created = 0
 				vec2d_created = 0
+				tcolor_created = 0
 				debugCreationTime :+ 1000
 
 				?bmxng

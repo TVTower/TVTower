@@ -367,8 +367,7 @@ Type TGUIinput Extends TGUIobject
 	Method DrawInputContent:Int(position:TVec2D)
 	    Local i:Int	= 0
 		Local printValue:String	= value
-		Local oldCol:SColor8
-		GetColor(oldCol)
+		Local oldCol:SColor8; GetColor(oldCol)
 
 		'if we are the input receiving keystrokes, symbolize it with the
 		'blinking underscore sign "text_"
@@ -452,8 +451,9 @@ Type TGUIinput Extends TGUIobject
 		'to allow modification
 		Local atPointX:Int = GetScreenRect().position.x
 		Local atPointY:Int = GetScreenRect().position.y
-		Local oldCol:TColor = New TColor.Get()
-		SetAlpha oldCol.a * GetScreenAlpha()
+		'Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
+		SetAlpha oldColA * GetScreenAlpha()
 
 		Local widgetWidth:Int = rect.GetW()
 
@@ -514,7 +514,7 @@ Type TGUIinput Extends TGUIobject
 		'actually draw
 		DrawInputContent(_textPos)
 
-		oldCol.SetRGBA()
+		SetAlpha(oldColA)
 	End Method
 
 

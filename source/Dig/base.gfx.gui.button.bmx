@@ -276,17 +276,19 @@ endrem
 
 	Method DrawContent()
 		Local atPoint:TVec2D = GetScreenRect().position
-		Local oldCol:TColor = New TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
 
 		SetColor 255, 255, 255
-		SetAlpha oldCol.a * GetScreenAlpha()
+		SetAlpha oldColA * GetScreenAlpha()
 
 		DrawButtonBackground(atPoint)
 
 		'draw label/caption of button
 		DrawButtonContent(atPoint)
 
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldColA)
 	End Method
 
 

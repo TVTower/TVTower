@@ -1806,9 +1806,10 @@ Type TGUIobject
 
 		If Not IsVisible() Then Return
 
-		Local oldCol:TColor = New TColor.Get()
+		'Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
 		'tint image if object is disabled
-		If Not(_flags & GUI_OBJECT_ENABLED) Then SetAlpha 0.5 * oldCol.a
+		If Not(_flags & GUI_OBJECT_ENABLED) Then SetAlpha 0.5 * oldColA
 
 		If _customDraw
 			_customDraw(Self)
@@ -1838,7 +1839,7 @@ Type TGUIobject
 			EndIf
 		EndIf
 
-		If Not(_flags & GUI_OBJECT_ENABLED) Then SetAlpha oldCol.a
+		If Not(_flags & GUI_OBJECT_ENABLED) Then SetAlpha oldColA
 
 		'=== HANDLE TOOLTIP ===
 		If Not _customDraw

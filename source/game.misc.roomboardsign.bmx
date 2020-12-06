@@ -638,7 +638,8 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	'draw the Block inclusive text
 	'zeichnet den Block inklusive Text
 	Method Draw()
-		local oldColor:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
 		SetColor 255,255,255
 		dragable=1  'normal
 
@@ -659,21 +660,21 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 			if not IsAtOriginalPosition()
 				SetColor 255,245,230
 				imageCache.Draw(rect.GetX(),rect.GetY())
-				oldColor.SetRGB()
+				SetColor(oldCol)
 			Else
 				imageCache.Draw(rect.GetX(),rect.GetY())
 			EndIf
 
 			if isHovered
 				SetBlend LightBlend
-				SetAlpha oldColor.a * 0.20
+				SetAlpha oldColA * 0.20
 				SetColor 255, 240, 180
 				imageCache.Draw(rect.GetX(),rect.GetY())
 				SetBlend AlphaBlend
-				oldColor.SetRGB()
 			endif
 		EndIf
-		SetAlpha oldColor.a
+		SetColor( oldCol )
+		SetAlpha( oldColA )
 	End Method
 
 

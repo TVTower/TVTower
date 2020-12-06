@@ -1685,7 +1685,8 @@ Type TDataChart
 		Local maximumY:Float = GetMaximumY()
 		Local minimumY:Float = GetMinimumY()
 		Local effectiveMaximumY:Float = 1.1 * maximumY
-		Local oldCol:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
 
 		Local pixelsPerDataPointX:Float = GetPixelsPerDataPointX()
 
@@ -1776,7 +1777,8 @@ Type TDataChart
 			DrawOval(xOffset + dataPointX -2, yOffset + y + (1 - dataSets[dsIndex].points[i].y/valueDisplayMaximumY) * h -2, 5,5)
 		Next
 
-		oldCol.SetRGBA()
+		SetColor( oldCol )
+		SetAlpha( oldColA )
 	End Method
 
 

@@ -273,21 +273,22 @@ Type TGUICheckBox Extends TGUIButton
 	'override default draw-method
 	Method DrawContent()
 		Local atPoint:TVec2D = GetScreenRect().position
-		Local oldCol:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
 
 		'SetColor 255, 255, 255
 		if tintEnabled
 			if IsChecked() and checkedTintColor
-				SetAlpha oldCol.a * GetScreenAlpha() * checkedTintColor.a
+				SetAlpha( oldColA * GetScreenAlpha() * checkedTintColor.a )
 				checkedTintColor.SetRGB()
 			elseif not IsChecked() and uncheckedTintColor
-				SetAlpha oldCol.a * GetScreenAlpha() * uncheckedTintColor.a
+				SetAlpha( oldColA * GetScreenAlpha() * uncheckedTintColor.a )
 				uncheckedTintColor.SetRGB()
 			elseif tintColor
-				SetAlpha oldCol.a * GetScreenAlpha() * tintcolor.a
+				SetAlpha( oldColA * GetScreenAlpha() * tintcolor.a )
 				tintColor.SetRGB()
 			else
-				SetAlpha oldCol.a * GetScreenAlpha()
+				SetAlpha( oldColA * GetScreenAlpha() )
 			endif
 		endif
 
@@ -305,7 +306,7 @@ Type TGUICheckBox Extends TGUIButton
 		EndIf
 		If useCheckSprite Then useCheckSprite.Draw(atPoint.getX() + int(GetCheckboxDimension().x/2), atPoint.getY() + int(GetCheckboxDimension().y/2), -1, new TVec2D.Init(0.5, 0.5))
 
-		oldCol.SetRGB()
+		SetColor(oldCol)
 
 
 		If caption and caption.IsVisible()
@@ -321,6 +322,8 @@ Type TGUICheckBox Extends TGUIButton
 			'reset color
 			caption.color = oldCol
 		EndIf
-		oldCol.SetRGBA()
+
+		SetColor(oldCol)
+		SetAlpha(oldColA)
 	End Method
 End Type

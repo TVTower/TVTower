@@ -424,8 +424,10 @@ Type TWorld
 				If alpha < 0 Then Return False
 		End Select
 
-		Local oldCol:TColor = New TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldA:Float = GetAlpha()
 		alpha = Min(1.0, Max(0, alpha))
+		SetAlpha(alpha)
 
 		Local dayMinute:Int = GetWorldTime().GetDayMinute()
 		For Local i:Int = 0 Until stars.length
@@ -448,7 +450,8 @@ Type TWorld
 			EndIf
 			Plot(Int(stars[i].x) , Int(stars[i].y) )
 		Next
-		oldCol.SetRGBA()
+		SetColor(oldCol)
+		SetAlpha(oldA)
 	End Method
 
 

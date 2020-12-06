@@ -182,6 +182,17 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	'returns a new SRect describing the intersection of the
+	'rectangle and the given one
+	'attention: returns the struct even if there is no intersection
+	'           (check width and height on your own!)
+	Method IntersectSRectXYWH:SRect(x:Float, y:Float, w:Float, h:Float)
+		local ix:float = max(GetX(), x)
+		local iy:float = max(GetY(), y)
+		Return new SRect(ix, iy, min(GetX2(), x + w) - ix, min(GetY2(), y + h) - iy)
+	End Method
+
+
 	'modifies the rectangle to contain the intersection of self and the
 	'given one
 	Method Intersect:TRectangle(rectB:TRectangle)

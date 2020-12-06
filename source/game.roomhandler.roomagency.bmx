@@ -365,7 +365,8 @@ endrem
 
 		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 
-		local oldCol:TColor = new TColor.Get()
+		Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
 		For local sign:TRoomBoardSign = EachIn GetRoomBoard().list
 			local room:TRoomBase = TRoomDoor(sign.door).GetRoom()
 			if not room then continue
@@ -379,20 +380,20 @@ endrem
 
 			if room
 				if room.GetOwner() <= 0 and not room.IsRentable()
-					SetAlpha oldCol.a * 0.60
+					SetAlpha oldColA * 0.60
 				elseif room.GetOwner() = GetPlayerBase().playerID and room.IsFreehold()
-					SetAlpha oldCol.a * 0.60
+					SetAlpha oldColA * 0.60
 				endif
 			endif
 
 			'ignore never-rentable rooms
-			if room.IsFake() or room.IsFreeHold() then SetAlpha oldCol.a * 0.25
+			if room.IsFake() or room.IsFreeHold() then SetAlpha oldColA * 0.25
 
 
 			if room.IsBlocked()
 				SetColor 255,240,220
 				sign.imageCache.Draw(x,y)
-				oldCol.SetRGB()
+				SetColor(oldCol)
 			else
 				sign.imageCache.Draw(x,y)
 			endif
@@ -404,18 +405,16 @@ endrem
 				SetColor 255,210,190
 				sign.imageCache.Draw(x,y)
 				SetBlend ALPHABLEND
-				oldCol.SetRGBA()
 			endif
 			if room = hoveredRoom
 				SetBlend LIGHTBLEND
 				SetAlpha 0.10
 				sign.imageCache.Draw(x,y)
 				SetBlend ALPHABLEND
-				oldCol.SetRGBA()
 			endif
 
-
-			oldCol.SetRGBA()
+			SetColor(oldCol)
+			SetAlpha(oldColA)
 		Next
 
 		if _confirmActionTooltip

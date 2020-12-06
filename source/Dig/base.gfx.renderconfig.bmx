@@ -7,13 +7,14 @@ Import "base.util.graphicsmanagerbase.bmx"
 
 
 Type TRenderConfig
-	Field clsColor:TColor
-	Field color:TColor
+	Field clsColor:SColor8
+	Field color:SColor8
+	Field alpha:Float
 	Field blendMode:Int
-	Field scale:TVec2D
-	Field origin:TVec2D
+	Field scaleX:Float, scaleY:Float
+	Field originX:Float, originY:Float
 	Field rotation:Float
-	Field viewport:TRectangle
+	Field viewport:SRect
 
 	Global list:TList = CreateList()
 	Global _stackedViewport:TRectangle = new TRectangle
@@ -27,13 +28,14 @@ Type TRenderConfig
 		local config:TRenderConfig = TRenderConfig(list.RemoveLast())
 		if not config then return Null
 
-		config.color.SetRGBA()
-		config.clsColor.SetCls()
+		SetColor(config.color)
+		SetAlpha(config.alpha)
+		SetCLSColor(config.clsColor)
 		SetBlend(config.blendMode)
-		SetOrigin(config.origin.x, config.origin.y)
-		SetScale(config.scale.x, config.scale.y)
+		SetOrigin(config.originX, config.originY)
+		SetScale(config.scaleX, config.scaleY)
 		SetRotation(config.rotation)
-		GetGraphicsManager().setViewPort(int(config.viewport.position.x), int(config.viewport.position.y), int(config.viewport.dimension.x), int(config.viewport.dimension.y))
+		GetGraphicsManager().setViewPort(int(config.viewport.x), int(config.viewport.y), int(config.viewport.w), int(config.viewport.h))
 
 		return config
 	End Function
@@ -51,17 +53,18 @@ Type TRenderConfig
 	Function Push:TRenderConfig()
 		local config:TRenderConfig = new TRenderConfig
 
-		config.color = New TColor.Get()
-		config.clsColor = New TColor.GetFromClsColor()
+		GetColor(config.color)
+		config.alpha = GetAlpha()
+		local r:int, g:int, b:int; GetClsColor(r,g,b)
+		config.clsColor = new SColor8(r,g,b)
 		config.blendMode = GetBlend()
 		config.rotation = GetRotation()
 
-		config.origin = new TVec2D; GetOrigin(config.origin.x, config.origin.y)
-		config.scale = new TVec2D; GetScale(config.scale.x, config.scale.y)
+		GetOrigin(config.originX, config.originY)
+		GetScale(config.scaleX, config.scaleY)
 		config.rotation = GetRotation()
 		local x:int,y:int,w:int,h:int; GetGraphicsManager().GetViewPort(x, y, w, h)
-		config.viewport = new TRectangle.Init(x,y,w,h)
-
+		config.viewport = new SRect(x,y,w,h)
 
 		list.AddLast(config)
 		return config
@@ -69,19 +72,21 @@ Type TRenderConfig
 
 
 	'returns the viewport of all configurations overlayed 	(passepartout)
-	Function GetStackedViewPort:TRectangle()
-		local result:TRectangle
+	Function GetStackedViewPort:SRect()
+		local result:SRect
+		local isFirst:Int = True
 
 		For local config:TRenderConfig = EachIn list
-			'if first configuration: store it as first viewport rect
-			if not result
-				result = config.viewport.copy()
+			'if first configuration: copy as first viewport rect
+			if isFirst 
+				result = config.viewport
+				isFirst = False
 				continue
 			endif
 
 			'all other configurations intersect with the base rect (they
 			'keep decreasing the viewport)
-			result.Intersect(config.viewport)
+			result = result.IntersectRect(config.viewport)
 		Next
 
 		return result
@@ -89,12 +94,12 @@ Type TRenderConfig
 
 
 	'Sets the viewport of all configurations overlayed 	(passepartout)
-	Function SetStackedViewPort:TRectangle()
-		local result:TRectangle = GetStackedViewPort()
-		if result
-			GetGraphicsManager().SetViewPort(int(result.position.x), int(result.position.y), int(result.dimension.x), int(result.dimension.y))
-		else
+	Function SetStackedViewPort()
+		if not list or list.count() = 0
 			GetGraphicsManager().SetViewPort(0, 0, GetGraphicsManager().realWidth, GetGraphicsManager().realHeight)
-		endif
+		EndIf
+	
+		local result:SRect = GetStackedViewPort()
+		GetGraphicsManager().SetViewPort(int(result.x), int(result.y), int(result.w), int(result.h))
 	End Function
 End Type

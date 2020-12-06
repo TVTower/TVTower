@@ -4,6 +4,7 @@ Import BRL.Math
 Import BRL.LinkedList
 Import "base.util.math.bmx"
 
+global tcolor_created:int = 0
 
 Type TColor
 	Field r:Int			= 0
@@ -19,6 +20,10 @@ Type TColor
 	Global clGreen:TColor = TColor.Create(0,255,0)
 	Global clBlue:TColor = TColor.Create(0,0,255)
 	
+	Method New()
+		tcolor_created :+ 1
+	End Method
+
 	
 	Method New(col:SColor8)
 		self.r = col.r
