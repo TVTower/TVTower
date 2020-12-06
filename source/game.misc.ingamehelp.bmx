@@ -149,8 +149,8 @@ Type TIngameHelpWindow
 	Field _eventListeners:TEventListenerBase[]
 	Field active:Int = False
 	Field helpGUID:String = "" 'id of the ingame help
-	Field title:String
-	Field content:String
+	Field titleKey:String
+	Field contentKey:String
 	Field hideFlag:Int = 0 '1 = hide this, 2 = hide all
 
 	Field showHideOption:Int = True
@@ -160,13 +160,13 @@ Type TIngameHelpWindow
 	Field state:TLowerString
 
 
-	Method Init:TIngameHelpWindow(title:String, content:String, helpGUID:String)
+	Method Init:TIngameHelpWindow(titleKey:String, contentKey:String, helpGUID:String)
 
 		area = New TRectangle.Init(100, 20, 600, 350)
 
 		Self.helpGUID = helpGUID.toLower()
-		Self.content = content
-		Self.title = title
+		Self.contentKey = contentKey
+		Self.titleKey = titleKey
 		state = TLowerString.Create("INGAMEHELP_"+helpGUID)
 
 		Return Self
@@ -217,7 +217,7 @@ Type TIngameHelpWindow
 
 '		modalDialogue.SetOption(GUI_OBJECT_CLICKABLE, FALSE)
 
-		modalDialogue.SetCaptionAndValue(title, "")
+		modalDialogue.SetCaptionAndValue(GetLocale(titleKey), "")
 	'	If modalDialogue.guiCaptionTextBox Then modalDialogue.guiCaptionTextBox.SetFont(.headerFont)
 
 
@@ -228,7 +228,7 @@ Type TIngameHelpWindow
 		guiTextArea.SetFont( GetBitmapFont("default", 14) )
 		guiTextArea.textColor = SColor8.Black
 		guiTextArea.SetWordWrap(True)
-		guiTextArea.SetValue( content )
+		guiTextArea.SetValue( GetLocale(contentKey) )
 		
 		guiTextArea.SetManaged(False)
 
