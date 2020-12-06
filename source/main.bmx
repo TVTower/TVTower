@@ -6700,7 +6700,7 @@ TProfiler.Enter("GameLoop")
 	StartApp()
 
 	Repeat
-		If collectDebugStats or 1 =1
+		If collectDebugStats
 			If MilliSecs() - debugCreationTime > 1000
 				local memCollected:Int = GCCollect()
 				Local myArr:int[] = new Int[10000]
