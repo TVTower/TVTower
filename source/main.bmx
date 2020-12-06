@@ -6555,36 +6555,49 @@ Function StartApp:Int()
 	'init sound receiver
 	GetSoundManager().SetDefaultReceiver(TPlayerSoundSourcePosition.Create())
 
-	'example for ingame-help "MainMenu"
-	'IngameHelpWindowCollection.Add(new TIngameHelpWindow.Init(GetLocale("WELCOME"), "Willkommen bei TVTower", "MainMenu"))
+	InitializeHelp()
 
+	App.Start()
+	TProfiler.Leave("StartApp")
+End Function
+
+Function InitializeHelp()
+	'example for ingame-help "MainMenu"
+	'IngameHelpWindowCollection.Add(new TIngameHelpWindow.Init("WELCOME_TITLE", "WELCOME_CONTENT", "MainMenu"))
 
 	'temporary solution
 	For Local screen:TScreen = EachIn ScreenCollection.screens.Values()
 		Local helpTextKeyTitle:String = "INGAME_HELP_TITLE_"+screen.GetName()
 		Local helpTextKeyText:String = "INGAME_HELP_TEXT_"+screen.GetName()
 		If HasLocale(helpTextKeyText)
-			Local helpText:String = GetLocale(helpTextKeyText)
-			Local helpTitle:String = GetLocale(helpTextKeyTitle)
 '			Print "Hilfetext gefunden fuer ~q"+helpTextKeyText+"~q -> "+screen.GetName()
-			IngameHelpWindowCollection.Add( New TIngameHelpWindow.Init(helpTitle, helpText, screen.GetName()) )
+			Local screenHelpWindow:TIngameHelpWindow=New TIngameHelpWindow.Init(helpTextKeyTitle, helpTextKeyText, screen.GetName())
+			IngameHelpWindowCollection.Add( screenHelpWindow )
 		EndIf
 	Next
 
 
 	'generic ingame-help (available via "F1")
 	Local manualContent:String = LoadText("Spielanleitung.txt").Replace("~r~n", "~n").Replace("~r", "~n")
-	Local manualWindow:TIngameHelpWindow = New TIngameHelpWindow.Init(GetLocale("MANUAL"), manualContent, "GameManual")
+	TLocalization.GetLanguage("de").map.insert("manual_content", manualContent)
+	'fallback as long as there is no English manual
+	TLocalization.GetLanguage("en").map.insert("manual_content", manualContent)
+Rem 'prepare for game manual in several languages
+	Local files:TList=TLocalization.GetLanguageFiles("res/lang/manual*.txt");
+	For Local file:String = EachIn files
+		Local manualContent:String = LoadText(file).Replace("~r~n", "~n").Replace("~r", "~n")
+		Local languageCode:String=TLocalization.GetLanguageCodeFromFilename(file)
+		TLocalization.GetLanguage(languageCode).map.insert("manual_content", manualContent)
+	Next
+End Rem
+
+	Local manualWindow:TIngameHelpWindow = New TIngameHelpWindow.Init("MANUAL", "manual_content", "GameManual")
 	manualWindow.EnableHideOption(False)
 	IngameHelpWindowCollection.Add(manualWindow)
-
 
 	'trigger initial ingamehelp for screen "MainMenu" as it is not called
 	'for the first screen
 	IngameHelpWindowCollection.ShowByHelpGUID("MainMenu")
-
-	App.Start()
-	TProfiler.Leave("StartApp")
 End Function
 
 Function ShowApp:Int()
