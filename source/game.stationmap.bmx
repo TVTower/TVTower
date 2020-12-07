@@ -2580,7 +2580,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Field price:Int	= -1
 
-	Field providerGUID:string
+	Field providerGUID:string {_exposeToLua}
 
 	'daily costs for "running" the station
 	Field runningCosts:int = -1
