@@ -2495,17 +2495,6 @@ Type TSaveGame Extends TGameState
 	Method _Assign(objSource:Object Var, objTarget:Object Var, name:String="DATA", Mode:Int=0)
 		If objSource
 			objTarget = objSource
-
-			'uncommented log and update message as the real work is
-			'done in the serialization and not in variable=otherVariable
-			'assignments
-			If Mode = MODE_LOAD
-				'TLogger.Log("TSaveGame.RestoreGameData()", "Loaded object "+name, LOG_DEBUG | LOG_SAVELOAD)
-				'UpdateMessage(True, "Loading: " + name)
-			Else
-				'TLogger.Log("TSaveGame.BackupGameData()", "Saved object "+name, LOG_DEBUG | LOG_SAVELOAD)
-				'UpdateMessage(False, "Saving: " + name)
-			EndIf
 		Else
 			TLogger.Log("TSaveGame", "object "+name+" was NULL - ignored", LOG_DEBUG | LOG_SAVELOAD)
 		EndIf
@@ -2939,7 +2928,9 @@ Local t:Int = MilliSecs()
 'during development...(also savegame.XML should be savegame.ZIP then)
 '		TPersist.compressed = True
 
+		?debug
 		saveGame.UpdateMessage(False, "Saving: Serializing data to savegame file.")
+		?
 		TPersist.maxDepth = 4096
 		'save the savegame data as xml
 		'TPersist.format=False
@@ -2956,7 +2947,7 @@ Local t:Int = MilliSecs()
 		'tell everybody we finished saving
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnSave", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
-Print "saving took " + (MilliSecs() - t) + "ms."
+		Print "saving took " + (MilliSecs() - t) + "ms."
 		'close message window
 		If messageWindow Then messageWindow.Close()
 
