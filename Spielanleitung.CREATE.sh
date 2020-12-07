@@ -1,1 +1,0 @@
-fmt -s -w 72 -g 71 Spielanleitung.RAW.txt > Spielanleitung.txt
