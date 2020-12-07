@@ -734,13 +734,16 @@ rem
 endrem
 			endif
 			if not result and returnDefault
+				'fetch value of "default language" if possible
+				'but if it is not defined, try to use the first possible
+				'value
 				local defaultIndex:Int = GetLanguageIndex(TLocalization.defaultLanguageID)
-				if defaultIndex >= 0 and defaultIndex <= valueStrings.length
-
+				If defaultIndex < 0 Then defaultIndex = valueStrings.length -1
+				
+				if defaultIndex >= 0
 					result = valueStrings[defaultIndex]
 				endif
 			endif
-
 
 			valueCachedLanguageID = languageCodeID
 			valueCached = result
