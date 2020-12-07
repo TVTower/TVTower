@@ -420,7 +420,11 @@ Type TProductionConcept Extends TOwnedGameObject
 
 			if group[i]
 				if result <> "" then result:+ ", "
-				result:+ group[i].GetFullName()
+				if group[i].IsInsignificant()
+					result:+  GetLocale("JOB_AMATEUR_" + TVTPersonJob.GetAsString( jobFlag ) )
+				else
+					result:+ group[i].GetFullName()
+				endif
 			else
 				if nameOfEmpty and result <> "" then result:+ ", "
 				result:+ nameOfEmpty
