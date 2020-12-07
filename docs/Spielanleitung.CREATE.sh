@@ -1,0 +1,1 @@
+fmt -s -w 72 -g 71 manual_de.md > manual_de.txt
