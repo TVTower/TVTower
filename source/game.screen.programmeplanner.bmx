@@ -1205,7 +1205,7 @@ Type TScreenHandler_ProgrammePlanner
 				minAudienceHightlightType = -1
 			EndIf
 		
-			PPcontractList.hoveredAdContract.ShowSheet(7, 20, 0, 0, TVTBroadcastMaterialType.ADVERTISEMENT, minAudienceHightlightType)
+			PPcontractList.hoveredAdContract.ShowSheet(7, 20, 0, TVTBroadcastMaterialType.ADVERTISEMENT, 0, minAudienceHightlightType)
 		EndIf
 
 
