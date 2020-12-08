@@ -157,5 +157,5 @@ INGAME_HELP_TITLE_SCREEN_SUPERMARKET_PRESENTS = Presents
 INGAME_HELP_TEXT_SCREEN_SUPERMARKET_PRODUCTION  = Select the shopping list for the production you want to plan. By enabling "Copy setting" option your choices will be used for the next selected shopping list as well. This may be handy for planning several episodes of a series.\nDepending on the script you have to assemble a cast. Requirements for a role depend on the job and the genre. Maybe the filters and sort options help you to make a suitable choice.\nFinally, choose a production company and distribute priority points. Before finishing the planning you might return to the studio to ask the studio manager for his opinion. Because after finishing the planning and making the down payment, you can make no further changes.
 INGAME_HELP_TITLE_SCREEN_SUPERMARKET_PRODUCTION = Production Planning
 
-#INGAME_HELP_TEXT_SCREEN_ADAGENCY  = 
-#INGAME_HELP_TITLE_SCREEN_ADAGENCY = 
+INGAME_HELP_TEXT_SCREEN_ADAGENCY  = Here you can sign advertisement contracts. When hovering over or picking up a contract, the relevant conditions like number of blocks to broadcast, required number of viewers, target group etc. is shown. Place the contracts you want in the suitcase.\nBy leaving the room the contract becomes binding. Until then you can still return it.
+INGAME_HELP_TITLE_SCREEN_ADAGENCY = Ad Agency

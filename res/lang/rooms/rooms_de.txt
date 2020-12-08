@@ -157,5 +157,5 @@ INGAME_HELP_TITLE_SCREEN_SUPERMARKET_PRESENTS = Geschenke
 INGAME_HELP_TEXT_SCREEN_SUPERMARKET_PRODUCTION  = Wähle die Einkaufsliste für die Produktion aus, die Du planen möchtest. Durch das Setzen der Option "Einstellungen übernehmen" wird diese Planung - z.B. für weitere Folgen einer Serie - für die nächste gewählte Einkaufsliste übernommen.\nJe nach Drehbuch sind nun mehrere Rollen zu besetzen, deren Anforderungen sich nach Beruf und Genre unterscheiden. Die Filter- und Sortiermöglichkeiten helfen Dir vielleicht, eine passende Auswahl zu treffen.\nWähle nun noch eine Produktionsfirma und verteile Punkte für die Produktionsschwerpunkte. Vielleicht solltest Du vor dem Abschluss der Produktion nochmal im Studio vorbeischauen und den Studioleiter um seine Meinung bitten. Nach dem Abschluss der Produktion und erfolgter Anzahlung können nämlich keine Änderungen mehr vorgenommen werden.
 INGAME_HELP_TITLE_SCREEN_SUPERMARKET_PRODUCTION = Produktionsplanung
 
-#INGAME_HELP_TEXT_SCREEN_ADAGENCY  = 
-#INGAME_HELP_TITLE_SCREEN_ADAGENCY = 
+INGAME_HELP_TEXT_SCREEN_ADAGENCY  = Hier kannst Du Werbeverträge abschließen. Zu jedem Vertrag werden die relevanten Bedingungen wie Anzahl der zu sendenden Werbeblöcke, nötige Zuschauerzahl, Zielgruppe angezeigt. Packe die gewünschten Verträge in den Koffer.\nDer Abschluss erfolgt durch Verlassen des Raums. Vorher können die Verträge noch zurückgegeben werden.
+INGAME_HELP_TITLE_SCREEN_ADAGENCY = Agentur für Werbung
