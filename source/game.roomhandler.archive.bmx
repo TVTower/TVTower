@@ -425,7 +425,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'show sheet from hovered list entries
 		if programmeList.hoveredLicence
-			programmeList.hoveredLicence.ShowSheet(30,20)
+			programmeList.hoveredLicence.ShowSheet(30, 20, 0)
 		endif
 		'show sheet from hovered suitcase entries
 		if hoveredGuiProgrammeLicence
