@@ -38,6 +38,7 @@ Type RoomHandler_Credits extends TRoomHandler
 
 		role = CreateRole("Programmierung", new SColor8(200,200,0))
 		role.addCast("Ronny Otto~n(Engine, Spielmechanik)")
+		role.addCast("Alexander Nittka~n(Fixes, Balancing, ...)")
 		role.addCast("Manuel Vögele~n(Quotenberechnung, Sendermarkt)~n(bis 2015)")
 		role.addCast("Bruce A. Henderson~n(BlitzMax-NG + Code-Module)")
 
@@ -89,7 +90,7 @@ Type RoomHandler_Credits extends TRoomHandler
 		role.addCast("")
 
 		role = CreateRole("Besucht uns im Netz", SColor8.White)
-		role.addCast("https://www.tvgigant.de~noder~nhttps://www.tvtower.org")
+		role.addCast("https://www.tvtower.org~noder~nhttps://www.tvgigant.de")
 
 		role = CreateRole("", SColor8.White)
 		role.addCast("")
