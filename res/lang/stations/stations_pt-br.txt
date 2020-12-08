@@ -122,8 +122,8 @@ UNSELLABLE       = Impossível vender
 
 CONSTRUCTION_TIME                   = Tempo de construção
 UNDER_CONSTRUCTION                  = Em Construção
-READY_AT_TIME_X                     = Pronto às %ACTIVATIONTIME%
-READY_AT_DAY_X                      = Pronto em %ACTIVATIONTIME%
+READY_AT_TIME_X                     = Pronto às %TIME%
+READY_AT_DAY_X                      = Pronto em %TIME%
 #X_UNDER_CONSTRUCTION                = 
 NEW_STATION_WILL_BE_READY_AT_TIME_X = A nova estação ficará pronta às %TIME%.
 NEW_STATION_WILL_BE_READY_AT_DAY_X  = A nova estação ficará pronta em %TIME%.

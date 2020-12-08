@@ -2361,7 +2361,7 @@ Type TScreenHandler_StationMap
 			guiInfoButton.SetTooltip( New TGUITooltipBase.Initialize(GetLocale("SHOW_MAP_DETAILS"), GetLocale("CLICK_TO_SHOW_ADVANCED_MAP_INFORMATION"), New TRectangle.Init(0,0,-1,-1)) )
 			guiInfoButton.GetTooltip()._minContentDim = New TVec2D.Init(120,-1)
 			guiInfoButton.GetTooltip()._maxContentDim = New TVec2D.Init(150,-1)
-			guiInfoButton.GetTooltip().SetOrientationPreset("BOTTOM", 10)
+			guiInfoButton.GetTooltip().SetOrientationPreset("LEFT", 10)
 
 			For Local i:Int = 0 Until guiFilterButtons.length
 				guiFilterButtons[i] = New TGUICheckBox.Create(New TVec2D.Init(695 + i*23, 30 ), New TVec2D.Init(20, 20), String(i + 1), "STATIONMAP")
@@ -2377,7 +2377,7 @@ Type TScreenHandler_StationMap
 				guiFilterbuttons[i].SetTooltip( New TGUITooltipBase.Initialize("", GetLocale("TOGGLE_DISPLAY_OF_STATIONTYPE").Replace("%STATIONTYPE%", GetLocale(TVTStationType.GetAsString(i+1)+"S")), New TRectangle.Init(0,60,-1,-1)) )
 				guiFilterbuttons[i].GetTooltip()._minContentDim = New TVec2D.Init(80,-1)
 				guiFilterbuttons[i].GetTooltip()._maxContentDim = New TVec2D.Init(150,-1)
-				guiFilterbuttons[i].GetTooltip().SetOrientationPreset("BOTTOM", 5)
+				guiFilterbuttons[i].GetTooltip().SetOrientationPreset("LEFT", 5)
 			Next
 
 
@@ -2389,7 +2389,7 @@ Type TScreenHandler_StationMap
 				guiShowStations[i].SetTooltip( New TGUITooltipBase.Initialize("", GetLocale("TOGGLE_DISPLAY_OF_PLAYER_X").Replace("%X%", i+1), New TRectangle.Init(0,60,-1,-1)) )
 				guiShowStations[i].GetTooltip()._minContentDim = New TVec2D.Init(80,-1)
 				guiShowStations[i].GetTooltip()._maxContentDim = New TVec2D.Init(120,-1)
-				guiShowStations[i].GetTooltip().SetOrientationPreset("BOTTOM", 5)
+				guiShowStations[i].GetTooltip().SetOrientationPreset("LEFT", 5)
 			Next
 
 			satelliteSelectionFrame = New TSatelliteSelectionFrame
