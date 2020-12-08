@@ -710,7 +710,6 @@ Type RoomHandler_News extends TRoomHandler
 		haveToRefreshGuiElements = True 'RefreshGuiElements()
 
 		guiNewsListAvailable.SetScrollPercentageY(oldScrollY)
-		guiNewsListAvailable.guiScrollerV.SetRelativeValue( oldScrollY )
 	End Function
 
 

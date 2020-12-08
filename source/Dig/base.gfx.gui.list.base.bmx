@@ -854,16 +854,43 @@ endrem
 	Method SetScrollPercentageX:Float(percentage:Float = 0.0)
 		InvalidateLayout()
 
+
+		'scroller displays "0 - 100%" along his axis
+		'entries panel might be bigger than the container, to ensure
+		'that the panel is always visible, percentage must take
+		'content size and panel size into consideration
+		Local panelScrollValue:Float = (abs(guiEntriesPanel.scrollLimit.GetX()) - GetContentScreenRect().GetW() )
+		'turn negative if required (items scroll from right to left)
+		panelScrollValue :*	sgn(guiEntriesPanel.scrollLimit.GetX())
+		'avoid "bottom alignment" (if list being bigger than entries panel)
+		panelScrollValue = Min(0, panelScrollValue)
+		guiEntriesPanel.ScrollToX(panelScrollValue)
+
+
 		If guiScrollerH Then guiScrollerH.SetRelativeValue(percentage)
-		Return guiEntriesPanel.SetScrollPercentageX(percentage)
+		'Return guiEntriesPanel.SetScrollPercentageX(percentage)
+		Return guiEntriesPanel.GetScrollPercentageX()
 	End Method
 
 
 	Method SetScrollPercentageY:Float(percentage:Float = 0.0)
+		
 		InvalidateLayout()
 
+		'scroller displays "0 - 100%" along his axis
+		'entries panel might be bigger than the container, to ensure
+		'that the panel is always visible, percentage must take
+		'content size and panel size into consideration
+		Local panelScrollValue:Float = (abs(guiEntriesPanel.scrollLimit.GetY()) - GetContentScreenRect().GetH() )
+		'turn negative if required (items scroll from bottom to top)
+		panelScrollValue :*	sgn(guiEntriesPanel.scrollLimit.GetY())
+		'avoid "bottom alignment" (if list being bigger than entries panel)
+		panelScrollValue = Min(0, panelScrollValue)
+		guiEntriesPanel.ScrollToY(panelScrollValue)
+
 		If guiScrollerV Then guiScrollerV.SetRelativeValue( percentage )
-		Return guiEntriesPanel.SetScrollPercentageY(percentage)
+'		Return guiEntriesPanel.SetScrollPercentageY(percentage)
+		Return guiEntriesPanel.GetScrollPercentageY()
 	End Method
 	
 	
@@ -923,11 +950,11 @@ endrem
 	Method ScrollToLastItem()
 		Select _orientation
 			Case GUI_OBJECT_ORIENTATION_VERTICAL
-				guiEntriesPanel.SetScrollPercentageY(100)
-				If guiScrollerV Then guiScrollerV.SetRelativeValue(100)
+				guiEntriesPanel.SetScrollPercentageY(1.0)
+				If guiScrollerV Then guiScrollerV.SetRelativeValue(1.0)
 			Case GUI_OBJECT_ORIENTATION_HORIZONTAL
-				guiEntriesPanel.SetScrollPercentageX(100)
-				If guiScrollerH Then guiScrollerH.SetRelativeValue(100)
+				guiEntriesPanel.SetScrollPercentageX(1.0)
+				If guiScrollerH Then guiScrollerH.SetRelativeValue(1.0)
 		End Select
 	End Method
 
