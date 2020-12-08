@@ -1,6 +1,0 @@
-IMAGE_REACH		= Reichweite
-IMAGE_SHARETOTAL	= Marktanteil Total
-IMAGE_SHAREWITHPLAYER   = Marktanteil zu %PLAYERNAME%
-
-SHOW_PLAYERS = zeige Spieler
-PURCHASE = Einkauf
