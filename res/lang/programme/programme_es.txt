@@ -90,7 +90,11 @@ PROGRAMME_FLAG_PAID      = programación de pago
 
 PROGRAMMELICENCES          = licencias de programas
 SELECT_LICENCES_FOR_SALE   = Selecciona las licencias para la venta
-LICENCETYPE_COLLECTION     = Collection
+#LICENCETYPE_COLLECTION     = Collection
+#LICENCETYPE_SINGLE         = Single
+#LICENCETYPE_EPISODE        = Episode
+#LICENCETYPE_SERIES         = Serie
+#LICENCETYPE_FRANCHISE      = Franchise
 SERIES_WITH_X_EPISODES     = Series con %EPISODESCOUNT% episodios
 #COLLECTION_WITH_X_ELEMENTS =
 

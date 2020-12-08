@@ -91,8 +91,8 @@ DIALOGUE_SUPERMARKET_TEXT2  = What can I do for you today??
 DIALOGUE_SUPERMARKET_TEXT3  = Are you able to do a good job on your own? I am going to have a joi... I am going to get some fresh air.
 DIALOGUE_SUPERMARKET_TEXT4  = Just do it, I still have a throbbing head ... that ...party yesterday...
 
-DIALOGUE_SUPERMARKET_PLAN_A_PRODUCTION = I want to plan a TV-production and to buy everything needed for it
-DIALOGUE_SUPERMARKET_BUY_A_PRESENT     = I want to buy a present
+DIALOGUE_SUPERMARKET_PLAN_A_PRODUCTION = I want to plan a TV-production and to buy everything needed for it.
+DIALOGUE_SUPERMARKET_BUY_A_PRESENT     = I want to buy a present.
 DIALOGUE_SUPERMARKET_GOODBYE1          = I'm off then. Bye bye.
 DIALOGUE_SUPERMARKET_GOODBYE2          = See you. Bye.
 DIALOGUE_SUPERMARKET_GOODBYE3          = Making tracks now. See you.
@@ -104,7 +104,7 @@ MESSAGECATEGORY_CATEGORIES          = Categories
 MESSAGECATEGORY_ALL                 = All Categories
 MESSAGECATEGORY_MONEY               = Money / Finances
 MESSAGECATEGORY_ACHIEVEMENTS        = Achievements
-MESSAGECATEGORY_AWARDS              = Awards/Sammy
+MESSAGECATEGORY_AWARDS              = Awards / Sammy
 MESSAGECATEGORY_MISC                = Misc
 
 BUY_AND_SELL        = Buy and sell
@@ -115,8 +115,47 @@ FOR_PRIVATE_AFFAIRS = for your most private affairs
 INGAME_HELP_TEXT_SCREEN_EMPTYROOM  = Sorry\n\nThis room is still without function. We are working on it!
 INGAME_HELP_TITLE_SCREEN_EMPTYROOM = OUT OF ORDER
 
-#INGAME_HELP_TEXT_SCREEN_OFFICE_PROGRAMMEPLANNER  = 
-#INGAME_HELP_TITLE_SCREEN_OFFICE_PROGRAMMEPLANNER = 
+INGAME_HELP_TEXT_SCREEN_OFFICE_SAFE  = Saving and loading games is done via the menu. Press Esc to open it. 
+INGAME_HELP_TITLE_SCREEN_OFFICE_SAFE = Safe
 
-#INGAME_HELP_TEXT_SCREEN_NEWSSTUDIO_NEWSPLANNER  = 
-#INGAME_HELP_TITLE_SCREEN_NEWSSTUDIO_NEWSPLANNER = 
+INGAME_HELP_TEXT_SCREEN_OFFICE_PROGRAMMEPLANNER  = Here you can plan your programme and view the broadcast history. For adding a programme, click the "Programme" button on the right, choose the genre, left-click the programme to pick it up and move it to the intended slot. Another left-click drops the programme to the slot. A righ-click discards a programme that has been picked.\n\nPlacing advertisement contracts is done analogously. If you place an advertisement in a programme slot it will be broadcasted as infomercial. A programme placed in an advertisement slot turns into a trailer.\n\nValid and invalid slots for live programmes are indicated by color.\n\n|b|Shortcut hint:|/b| Pressing a Ctrl key while placing an element allows to place the same element multiple times. Pressing a Shift key instead allows to place the next episode instead.
+INGAME_HELP_TITLE_SCREEN_OFFICE_PROGRAMMEPLANNER = Programme planner
+
+INGAME_HELP_TEXT_SCREEN_OFFICE_STATIONMAP  = Here you manage the broadcasting area. You can buy and sell stations, sign or cancel contracts for cable network or satellite uplinks. The number of viewers you reach affects the prices for movies and news as well as the conditions of advertisement contracts.\nInformation about existing an station or contract will be shown when the corresponding entry is selected in the list on the right side. Available actions appear below the list. A right-click deselects or cancels an action. \nIf you want to buy a new station, choose the corresponding action and place the station on the map using the mouse or the arrow keys. Depending on the location you are informed about price and number of new viewers. With left-click or using the space key you can fix the location and then finalize the purchase on the right side.\nContracts for cable and satellite uplinks run for one year. An automatic renewal can be activated.
+INGAME_HELP_TITLE_SCREEN_OFFICE_STATIONMAP = Map of the broadcasting area.
+
+INGAME_HELP_TEXT_SCREEN_NEWSSTUDIO  = The subscribed news categories are the basis for a news broadcast. The buttons on the left allow you to choose the subscription level for several categories. A higher level causes the news items to be available sooner for broadcasting.\n\nA left-click on the bulletin board brings you to the news planner. 
+INGAME_HELP_TITLE_SCREEN_NEWSSTUDIO = News studio
+
+INGAME_HELP_TEXT_SCREEN_NEWSSTUDIO_NEWSPLANNER  = A news broadcast has three available slots, the uppermost being the most important. Available but unused news items are listed on the left. A left-click picks up a news item. Another left-click drops it in the current position while a right-click deletes it irrevocably. So if you want to broadcast a news item at a later point, drop it on the left side.\n\nBroadcasted news lose topicality (indicated by the red bar) resulting in attracting less audiance. So replace old news in time.
+INGAME_HELP_TITLE_SCREEN_NEWSSTUDIO_NEWSPLANNER = News planner
+
+INGAME_HELP_TEXT_SCREEN_ARCHIVE  = Here you can pick up movies for selling them in the movie agency. Be careful not to carry away movies planned for broadcasting.
+INGAME_HELP_TITLE_SCREEN_ARCHIVE = Archive
+
+INGAME_HELP_TEXT_SCREEN_ROOMAGENCY  = If one studio is not sufficient for your productions, you can rent further rooms here or cancel existing contracts.\nIf no free rooms are available, you'll have to do somwthing about it...
+INGAME_HELP_TITLE_SCREEN_ROOMAGENCY = Room Agency
+
+INGAME_HELP_TEXT_SCREEN_ROOMBOARD  = Visitors rely on the information from the room board before entering the elevator. Deliberate disorder is corrected once a day.
+INGAME_HELP_TITLE_SCREEN_ROOMBOARD = Roomboard
+
+INGAME_HELP_TEXT_SCREEN_SCRIPTAGENCY  = Produce your own movies, series or shows. Here you can buy the necessary scripts. You can sell unused scripts again. The script for a series you already started producing can only be disposed of in a studio's wastebasket.
+INGAME_HELP_TITLE_SCREEN_SCRIPTAGENCY = Script office
+
+INGAME_HELP_TEXT_SCREEN_STUDIO  = The production manager gives you shopping lists for a script. He will also give his opinion on the cast after you completed a list in the supermarket. You have to pick up a shopping list with a left-click and drop it on the production manager with another one to ask for his opinion.\nIf everything is fine, you can ask the production manager to start the shooting. From now on the studio is blocked until the shooting is finished.\n\nFor discarding a shopping list pick it up, deleted it with a right-click or drop it into the wastebasket.
+INGAME_HELP_TITLE_SCREEN_STUDIO = Studio
+
+INGAME_HELP_TEXT_SCREEN_MOVIEAGENCY  = Here you can purchase programmes. The shelf has three sections: regular programmes, trash, and series. You can sell a programme again. Pick it up in the archive, place it in the suitcase and drop it on the salesman.
+INGAME_HELP_TITLE_SCREEN_MOVIEAGENCY = Movie Agency
+
+INGAME_HELP_TEXT_SCREEN_MOVIEAUCTION  = Here you can bid for programmes not available in the regular sale, yet. The payment is due immediately. Auctions end at midnight - until then you could still be outbidden, in which case you are reimbursed.
+INGAME_HELP_TITLE_SCREEN_MOVIEAUCTION = Auction
+
+INGAME_HELP_TEXT_SCREEN_SUPERMARKET_PRESENTS  = Here you can buy presents if you really play the game to gain Betty's approval.
+INGAME_HELP_TITLE_SCREEN_SUPERMARKET_PRESENTS = Presents
+
+INGAME_HELP_TEXT_SCREEN_SUPERMARKET_PRODUCTION  = Select the shopping list for the production you want to plan. By enabling "Copy setting" option your choices will be used for the next selected shopping list as well. This may be handy for planning several episodes of a series.\nDepending on the script you have to assemble a cast. Requirements for a role depend on the job and the genre. Maybe the filters and sort options help you to make a suitable choice.\nFinally, choose a production company and distribute priority points. Before finishing the planning you might return to the studio to ask the studio manager for his opinion. Because after finishing the planning and making the down payment, you can make no further changes.
+INGAME_HELP_TITLE_SCREEN_SUPERMARKET_PRODUCTION = Production Planning
+
+INGAME_HELP_TEXT_SCREEN_ADAGENCY  = Here you can sign advertisement contracts. When hovering over or picking up a contract, the relevant conditions like number of blocks to broadcast, required number of viewers, target group etc. is shown. Place the contracts you want in the suitcase.\nBy leaving the room the contract becomes binding. Until then you can still return it.
+INGAME_HELP_TITLE_SCREEN_ADAGENCY = Ad Agency
