@@ -104,31 +104,39 @@ Type TGUIScrollablePanel Extends TGUIPanel
 
 	Method GetScrollPercentageX:Float()
 		if scrollLimit.GetX() = 0 then return 0
-		return Max(0, Min(100, scrollPosition.getX() / scrollLimit.GetX()))
+		return Max(0, Min(100, 100 * scrollPosition.getX() / scrollLimit.GetX())) / 100.0
 	End Method
 
 
 	Method GetScrollPercentageY:Float()
 		if scrollLimit.GetY() = 0 then return 0
-		return Max(0, Min(100, scrollPosition.getY() / scrollLimit.GetY()))
+		return Max(0, Min(100, 100 * scrollPosition.getY() / scrollLimit.GetY())) / 100.0
 	End Method
 
 
 	Method SetScrollPercentageX:Float(percentage:float = 0.0)
-		percentage = Max(0, Min(100, percentage))
+		percentage = Max(0, Min(100, percentage * 100)) / 100.0
 		scrollPosition.SetX( percentage * scrollLimit.GetX() )
 		return scrollPosition.GetX()
 	End Method
 
 
 	Method SetScrollPercentageY:Float(percentage:float = 0.0)
-		percentage = Max(0, Min(100, percentage))
+		percentage = Max(0, Min(100, percentage * 100)) / 100.0
+
 		scrollPosition.SetY( percentage * scrollLimit.GetY() )
 		return scrollPosition.GetY()
+	End Method
+	
+	
+	Method DrawOverlay() override
+		Super.DrawOverlay()
+'		DrawDebug()
 	End Method
 
 
 	Method DrawDebug()
+		SetViewport(0,0, 800, 600)
 		SetAlpha 0.3
 		SetColor 255,255,0
 		DrawRect(GetScreenRect().GetX(), GetScreenRect().GetY(), GetScreenRect().GetW(), GetScreenRect().GetH())
