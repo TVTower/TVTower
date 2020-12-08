@@ -91,6 +91,10 @@ PROGRAMME_FLAG_SCRIPTED  = Scripted
 PROGRAMMELICENCES          = Programme licences
 SELECT_LICENCES_FOR_SALE   = choisir licence à vendre
 LICENCETYPE_COLLECTION     = Collection
+LICENCETYPE_SINGLE         = Single
+LICENCETYPE_EPISODE        = Episode
+LICENCETYPE_SERIES         = Serie
+LICENCETYPE_FRANCHISE      = Franchise
 SERIES_WITH_X_EPISODES     = Series avec %EPISODESCOUNT% episodes
 #COLLECTION_WITH_X_ELEMENTS =
 
