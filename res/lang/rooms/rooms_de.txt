@@ -118,7 +118,7 @@ INGAME_HELP_TITLE_SCREEN_EMPTYROOM = AUSSER BETRIEB
 INGAME_HELP_TEXT_SCREEN_OFFICE_SAFE  = Das Speichern und Laden von Spielständen erfolgt im Menu. Es wird mit "Escape" geöffnet.
 INGAME_HELP_TITLE_SCREEN_OFFICE_SAFE = Der Safe
 
-INGAME_HELP_TEXT_SCREEN_OFFICE_PROGRAMMEPLANNER  = In diesem Bildschirm kannst Du neue Programme in den Sendeplan setzen und bisherige Ausstrahlungen nachvollziehen. Zum Hinzufügen eines Programmes, dieses einfach auf der rechten Seite per Button "Programm" auswählen und dann mit der linken Maustaste auf dem gewünschten Programmplatz fallen lassen. Mittels Rechtsklick kann ein aufgehobener Programmblock gelöscht werden.\n\nLässt Du Werbung auf einem Programmplatz fallen, so erfolgt eine Ausstrahlung als "Dauerwerbesendung". Ein Programm auf einem Werbeplatz wird hingegen zu einem Programmtrailer umgeformt.\n\nHandelt es sich bei einem Programm um ein Live-Format, so weisen farbige Markierungen darauf hin, an welcher Stelle eine Platzierung erfolgen kann.\n\n|b|Tipp für Freunde der Tastenkürzel:|/b| Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen.
+INGAME_HELP_TEXT_SCREEN_OFFICE_PROGRAMMEPLANNER  = In diesem Bildschirm kannst Du neue Programme in den Sendeplan setzen und bisherige Ausstrahlungen nachvollziehen. Zum Hinzufügen eines Programmes, dieses einfach auf der rechten Seite per Button "Programm" auswählen und dann mit der linken Maustaste auf dem gewünschten Programmplatz fallen lassen. Mittels Rechtsklick kann ein aufgehobener Programmblock gelöscht werden.\n\nLässt Du Werbung auf einem Programmplatz fallen, so erfolgt eine Ausstrahlung als "Dauerwerbesendung". Ein Programm auf einem Werbeplatz wird hingegen zu einem Programmtrailer umgeformt.\n\nHandelt es sich bei einem Programm um ein Live-Format, so weisen farbige Markierungen darauf hin, an welcher Stelle eine Platzierung erfolgen kann.\n\n|b|Tipp für Freunde der Tastenkürzel:|/b| Durch Drücken einer Strg-Taste könnt ihr ein Programm mehrfach im Planer platzieren. Eine Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen.
 INGAME_HELP_TITLE_SCREEN_OFFICE_PROGRAMMEPLANNER = Der Programmplaner
 
 #INGAME_HELP_TEXT_SCREEN_OFFICE_STATIONMAP  = 
@@ -136,25 +136,25 @@ INGAME_HELP_TITLE_SCREEN_ARCHIVE = Das Archiv
 INGAME_HELP_TEXT_SCREEN_ROOMAGENCY  = Wenn ein Studio für Deine Produktionen nicht mehr ausreicht, kannst Du hier weitere Räume mieten oder bestehende Mietvertäge wieder kündigen.\nWenn keine freien Räume zur Verfügung stehen, musst Du wohl erst dafür sorgen...
 INGAME_HELP_TITLE_SCREEN_ROOMAGENCY = Der Makler
 
-INGAME_HELP_TEXT_SCREEN_ROOMBOARD  = Bevor Besucher in den Fahrstuhl steigen, schauen hier nach, wo sich das Zimmer befindet, das sie besuchen wollen. Wenn es unerwünschter Besuch ist...
+INGAME_HELP_TEXT_SCREEN_ROOMBOARD  = Besucher verlassen sich auf die Angaben im Raumplan bevor sie den Fahrstuhl besteigen. Mutwillig herbeigeführte Unordnung wird einmal täglich korrigiert.
 INGAME_HELP_TITLE_SCREEN_ROOMBOARD = Die Hinweistafel
 
-INGAME_HELP_TEXT_SCREEN_SCRIPTAGENCY  = Produziere Deine eigenen Filme, Serien oder Shows. Hier kaufst Du dafür die Drehbücher. Ungenutzte Drehücher wirst Du auch wieder los - nicht aber Seriendrehbücher, bei denen Du mit der Verfilmung schon angefangen hast.
+INGAME_HELP_TEXT_SCREEN_SCRIPTAGENCY  = Produziere Deine eigenen Filme, Serien oder Shows. Hier kaufst Du dafür die Drehbücher. Ungenutzte Drehücher wirst Du hier auch wieder los. Drehbücher angefangener Serienproduktionen können nur noch im Papierkorb eines Studios entsorgt werden.
 INGAME_HELP_TITLE_SCREEN_SCRIPTAGENCY = Die Drehbuchagentur
 
-INGAME_HELP_TEXT_SCREEN_STUDIO  = Der Studioleiter gibt Dir für ein Drehbuch Einkaufslisten. Wenn Du sie im Supermarkt abgearbeitet hast, kannst Du Dir auch seine Meinung zur Besetzung geben lassen. Hebe die Einkaufsliste dafür mit einem Linksklick auf und lasse sie ebenso auf den Studiuleiter fallen.\nWenn alles passt, kannst Du den Studioleiter die Produktion starten lassen. Ab dann ist das Studio bis zur Fertigstellung blockiert.\n\nZum Verwerfen einer Zusammenstellung hebe die Einkaufsliste auf, lösche sie mit einem Rechtsklick oder lasse sie in den Mülleimer fallen.
+INGAME_HELP_TEXT_SCREEN_STUDIO  = Der Studioleiter gibt Dir für ein Drehbuch Einkaufslisten. Wenn Du sie im Supermarkt abgearbeitet hast, kannst Du Dir auch seine Meinung zur Besetzung geben lassen. Hebe die Einkaufsliste dafür mit einem Linksklick auf und lasse sie ebenso auf den Studioleiter fallen.\nWenn alles passt, kannst Du den Studioleiter die Produktion starten lassen. Ab dann ist das Studio bis zur Fertigstellung blockiert.\n\nZum Verwerfen einer Zusammenstellung hebe die Einkaufsliste auf, lösche sie mit einem Rechtsklick oder lasse sie in den Mülleimer fallen.
 INGAME_HELP_TITLE_SCREEN_STUDIO = Das Studio
 
 INGAME_HELP_TEXT_SCREEN_MOVIEAGENCY  = Hier kannst Du Dich mit Sendungen für die Ausstrahlung versorgen. Im Regal sind drei Fächer: normale Filme, Ramsch und Serien. Du kannst Filme auch wieder verkaufen, indem Du sie im Archiv in den Koffer packst und hier auf dem Verkäufer fallen lässt.
 INGAME_HELP_TITLE_SCREEN_MOVIEAGENCY = Die Film-Agentur
 
-INGAME_HELP_TEXT_SCREEN_MOVIEAUCTION  = Hier kannst Du auf Sendungen bieten, die es noch nicht im regulären Verkauf gibt. Die Auktionen enden um Mitternacht - bis dahin kannst Du noch überboten werden. Wenn Du eine Auktion gewinnst, wird der Kaufpreis zu diesem Zeitpunkt fällig. Dein Kontostand könnte dadurch ins Minus rutschen.
+INGAME_HELP_TEXT_SCREEN_MOVIEAUCTION  = Hier kannst Du auf Sendungen bieten, die es noch nicht im regulären Verkauf gibt. Die Zahlung ist sofort fällig. Die Auktionen enden um Mitternacht - bis dahin kannst Du noch überboten werden und erhältst in diesem Fall Dein Geld sofort zurück.
 INGAME_HELP_TITLE_SCREEN_MOVIEAUCTION = Die Auktion
 
 INGAME_HELP_TEXT_SCREEN_SUPERMARKET_PRESENTS  = Wenn es Dir in dem Spiel wirklich um Betty geht, kannst Du hier Geschenke für sie kaufen.
-INGAME_HELP_TITLE_SCREEN_SUPERMARKET_PRESENTS = Geschänke
+INGAME_HELP_TITLE_SCREEN_SUPERMARKET_PRESENTS = Geschenke
 
-INGAME_HELP_TEXT_SCREEN_SUPERMARKET_PRODUCTION  = Wähle die Einkaufsliste für die Produktion aus, die Du planen möchtest. Durch das Setzen der Option "Einstellungen übernehmen" wird diese Planung - z.B. für weitere Folgen einer Serie - für die nächste gewählte Einkaufsliste übernommen.\nJe nach Drehbuch sind nun mehrere Rollen zu besetzen, deren Anforderungen sich nach Beruf und Genre unterscheiden. Die Filter- und Sortiermöglichkeiten helfen Dir vielleicht, eine passende Auswahl zu treffen.\nWähle nun noch eine Produktionsfirma und verteile Punkte für die Produktionsschwerpunkte. Vielleicht solltest Du vor dem Abschluss der Produktion nochmal im Studio vorbeischauen und den Studioleiter um seine Meinung bitte. Nach dem Abschluss der Produktion und erfolgter Anzahlung können nämlich keine Änderungen mehr vorgenommen werden.
+INGAME_HELP_TEXT_SCREEN_SUPERMARKET_PRODUCTION  = Wähle die Einkaufsliste für die Produktion aus, die Du planen möchtest. Durch das Setzen der Option "Einstellungen übernehmen" wird diese Planung - z.B. für weitere Folgen einer Serie - für die nächste gewählte Einkaufsliste übernommen.\nJe nach Drehbuch sind nun mehrere Rollen zu besetzen, deren Anforderungen sich nach Beruf und Genre unterscheiden. Die Filter- und Sortiermöglichkeiten helfen Dir vielleicht, eine passende Auswahl zu treffen.\nWähle nun noch eine Produktionsfirma und verteile Punkte für die Produktionsschwerpunkte. Vielleicht solltest Du vor dem Abschluss der Produktion nochmal im Studio vorbeischauen und den Studioleiter um seine Meinung bitten. Nach dem Abschluss der Produktion und erfolgter Anzahlung können nämlich keine Änderungen mehr vorgenommen werden.
 INGAME_HELP_TITLE_SCREEN_SUPERMARKET_PRODUCTION = Produktionsplanung
 
 #INGAME_HELP_TEXT_SCREEN_ADAGENCY  = 

@@ -118,7 +118,7 @@ INGAME_HELP_TITLE_SCREEN_EMPTYROOM = OUT OF ORDER
 INGAME_HELP_TEXT_SCREEN_OFFICE_SAFE  = Saving and loading games is done via the menu. Press Esc to open it. 
 INGAME_HELP_TITLE_SCREEN_OFFICE_SAFE = Safe
 
-INGAME_HELP_TEXT_SCREEN_OFFICE_PROGRAMMEPLANNER  = Here you can plan your programme and view the broadcast history. For adding a programme, click the "Programme" button on the right, choose the genre, left-click the programme to pick it up and move it to the intended slot. Another left-click drops the programme to the slot. A righ-click discards a programme that has been picked.\n\nPlacing advertisement contracts is done analogously. If you place an advertisement in a programme slot it will be broadcasted as infomercial. A programme placed in an advertisement slot turns into a trailer.\n\nValid and invalid slots for live programmes are indicated by color.\n\n|b|Shortcut hint:|/b| Pressing the Ctrl key while placing an element allows to place the same element multiple times. Pressing the Shift key instead allows to place the next episode instead.
+INGAME_HELP_TEXT_SCREEN_OFFICE_PROGRAMMEPLANNER  = Here you can plan your programme and view the broadcast history. For adding a programme, click the "Programme" button on the right, choose the genre, left-click the programme to pick it up and move it to the intended slot. Another left-click drops the programme to the slot. A righ-click discards a programme that has been picked.\n\nPlacing advertisement contracts is done analogously. If you place an advertisement in a programme slot it will be broadcasted as infomercial. A programme placed in an advertisement slot turns into a trailer.\n\nValid and invalid slots for live programmes are indicated by color.\n\n|b|Shortcut hint:|/b| Pressing a Ctrl key while placing an element allows to place the same element multiple times. Pressing a Shift key instead allows to place the next episode instead.
 INGAME_HELP_TITLE_SCREEN_OFFICE_PROGRAMMEPLANNER = Programme planner
 
 #INGAME_HELP_TEXT_SCREEN_OFFICE_STATIONMAP  = 
@@ -136,19 +136,19 @@ INGAME_HELP_TITLE_SCREEN_ARCHIVE = Archive
 INGAME_HELP_TEXT_SCREEN_ROOMAGENCY  = If one studio is not sufficient for your productions, you can rent further rooms here or cancel existing contracts.\nIf no free rooms are available, you'll have to do somwthing about it...
 INGAME_HELP_TITLE_SCREEN_ROOMAGENCY = Room Agency
 
-INGAME_HELP_TEXT_SCREEN_ROOMBOARD  = Visitors check here where to go before entering the elevator. If they are not wanted...
+INGAME_HELP_TEXT_SCREEN_ROOMBOARD  = Visitors rely on the information from the room board before entering the elevator. Deliberate disorder is corrected once a day.
 INGAME_HELP_TITLE_SCREEN_ROOMBOARD = Roomboard
 
-INGAME_HELP_TEXT_SCREEN_SCRIPTAGENCY  = Produce your own movies, series or shows. Here you can buy the necessary scrips. You can sell unused scripts again, but not if you already started producing a series.
+INGAME_HELP_TEXT_SCREEN_SCRIPTAGENCY  = Produce your own movies, series or shows. Here you can buy the necessary scripts. You can sell unused scripts again. The script for a series you already started producing can only be disposed of in a studio's wastebasket.
 INGAME_HELP_TITLE_SCREEN_SCRIPTAGENCY = Script office
 
-INGAME_HELP_TEXT_SCREEN_STUDIO  = The production manager gives you shopping lists for a script. He will also give his opinion on the cast after you completed a list in the supermarket. You have to pick up a shopping list with a left-click and drop it on the production manager with another one to ask for his opinion.\nIf everything is fine, you can ask the production manager to start the shooting. From now on the studio is blocked until the shooting is finished.\n\nFor discarding a shopping list pick it up, deleted it with a right-click or drop it into the rubbish bin.
+INGAME_HELP_TEXT_SCREEN_STUDIO  = The production manager gives you shopping lists for a script. He will also give his opinion on the cast after you completed a list in the supermarket. You have to pick up a shopping list with a left-click and drop it on the production manager with another one to ask for his opinion.\nIf everything is fine, you can ask the production manager to start the shooting. From now on the studio is blocked until the shooting is finished.\n\nFor discarding a shopping list pick it up, deleted it with a right-click or drop it into the wastebasket.
 INGAME_HELP_TITLE_SCREEN_STUDIO = Studio
 
-INGAME_HELP_TEXT_SCREEN_MOVIEAGENCY  = Here you can purchase programmes. The shelf has three sections: regular programmes, trash, and series. You can sell a programma again. Pick it up in the archive, place it in the suitcase and drop it on the salesman.
+INGAME_HELP_TEXT_SCREEN_MOVIEAGENCY  = Here you can purchase programmes. The shelf has three sections: regular programmes, trash, and series. You can sell a programme again. Pick it up in the archive, place it in the suitcase and drop it on the salesman.
 INGAME_HELP_TITLE_SCREEN_MOVIEAGENCY = Movie Agency
 
-INGAME_HELP_TEXT_SCREEN_MOVIEAUCTION  = Here you can bid for programmes not available in the regular sale, yet. Auctions end at midnight - until then you could still be outbidden. If you win an auction, the payment is due immediately which may make your balance negative.
+INGAME_HELP_TEXT_SCREEN_MOVIEAUCTION  = Here you can bid for programmes not available in the regular sale, yet. The payment is due immediately. Auctions end at midnight - until then you could still be outbidden, in which case you are reimbursed.
 INGAME_HELP_TITLE_SCREEN_MOVIEAUCTION = Auction
 
 INGAME_HELP_TEXT_SCREEN_SUPERMARKET_PRESENTS  = Here you can buy presents if you really play the game to gain Betty's approval.
