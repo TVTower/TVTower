@@ -174,9 +174,11 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 
 
 		If TScreenHandler_StationMap.IsInBuyActionMode()
-			If TScreenHandler_StationMap.selectedStation And TScreenHandler_StationMap.selectedStation.GetReach() > 0
+			Local stationToBuy:TStationBase  = TScreenHandler_StationMap.selectedStation
+			If stationToBuy And stationToBuy.GetReach() > 0
 				'add the station (and buy it)
-				If GetStationMap( GetPlayerBase().playerID ).AddStation(TScreenHandler_StationMap.selectedStation, True)
+				If GetStationMap( GetPlayerBase().playerID ).AddStation(stationToBuy, True)
+					If Not stationToBuy.isAntenna() Then stationToBuy.SetFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT, True)
 					ResetActionMode(TScreenHandler_StationMap.MODE_NONE)
 				EndIf
 			EndIf
@@ -265,7 +267,6 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		If TScreenHandler_StationMap.selectedStation
 			'force stat refresh (so we can display decrease properly)!
 			TScreenHandler_StationMap.selectedStation.GetExclusiveReach(True)
-
 			autoRenewCheckbox.SetChecked( TScreenHandler_StationMap.selectedStation.HasFlag(TVTStationFlag.AUTO_RENEW_PROVIDER_CONTRACT) )
 		EndIf
 
