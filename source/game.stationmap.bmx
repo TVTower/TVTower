@@ -1225,7 +1225,7 @@ Type TStationMapCollection
 		satellite.brandName = brandName
 		satellite.name = brandName
 		if revision > 1 then satellite.name :+ " " + revision
-		satellite.quality = RandRange(95,110)
+		satellite.quality = RandRange(85,100)
 		satellite.dailyFeeMod = RandRange(90,110) / 100.0
 		satellite.setupFeeMod = RandRange(80,120) / 100.0
 		satellite.dailyFeeBase = RandRange(75,110) * 1000
