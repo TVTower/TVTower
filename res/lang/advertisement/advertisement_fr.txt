@@ -33,7 +33,7 @@ AD_PLEASE_FLAG           = SVP %FLAG%
 INFOMERCIAL                  = Infomercial
 AD_INFOMERCIAL               = Vous êtes payé pour diffuser des infopublicités . Vos revenu dépend de l'audimat
 AD_INFOMERCIAL_NOT_AVAILABLE = Il n'y a pas d'information pour cette annonce. TRAD A confirmer
-AD_INFOMERCIAL_PROFIT        = Revenu: % PROFIT % par 1000 personnes à regarder
+AD_INFOMERCIAL_PROFIT        = Revenu: %PROFIT% par 1000 personnes à regarder
 
 ADCONTRACT_FINISHED                = Pub terminé
 ADCONTRACT_FAILED                  = Pub échoué

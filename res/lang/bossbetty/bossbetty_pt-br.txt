@@ -92,7 +92,7 @@ DIALOGUE_BOSS_CREDIT_OK1                 = De novo. Dinheiro. De nooovo?\nHmm, v
 DIALOGUE_BOSS_CREDIT_OK2                 = Você acaba com o meu dinheirinho!\nEspero que alguma coisa sensata venha dessa transação.\n|b|R$%CREDIT%|/b| é tudo que eu posso oferecer. Você aceita?
 DIALOGUE_BOSS_CREDIT_OK_ACCEPT1          = Sim, eu vou pegar esse empréstimo.
 #DIALOGUE_BOSS_CREDIT_OK_ACCEPT2          = 
-DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF1     = Obrigado, chefe, eu só vou precisar de 50% disso, ou seja, |b|R$%CREDITHALF%|/b|.
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF1     = Obrigado, chefe, eu só vou precisar de 50% disso, ou seja, |b|R$%VALUE%|/b|.
 #DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF2     = 
 #DIALOGUE_BOSS_CREDIT_OK_ACCEPT_QUARTER1  = 
 #DIALOGUE_BOSS_CREDIT_OK_ACCEPT_QUARTER2  = 
@@ -104,7 +104,7 @@ DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT        = Okay, eu vou quitar um pouco.
 DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE  = Não diga! Até que enfim uma notícia boa hoje.\n \nQuanto você quer pagar?
 DIALOGUE_BOSS_CREDIT_REPAY_VALUE1        = Ah certo, eu posso pagar |b|R$%VALUE%|/b|.
 DIALOGUE_BOSS_CREDIT_REPAY_VALUE2        = Uuhm, eu consigo quitar |b|R$%VALUE%|/b|.
-DIALOGUE_BOSS_CREDIT_REPAY_ALL           = Hmm, o empréstimo todo, que dá |b|R$%$CREDIT%|/b|.
+DIALOGUE_BOSS_CREDIT_REPAY_ALL           = Hmm, o empréstimo todo, que dá |b|R$%CREDIT%|/b|.
 
 DIALOGUE_BOSS_CHANGETOPIC1  = A gente não pode falar de outra coisa?
 #DIALOGUE_BOSS_CHANGETOPIC2  = 
