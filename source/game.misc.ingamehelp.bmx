@@ -179,7 +179,7 @@ Type TIngameHelpWindow
 			If IngameHelpWindowCollection.IsDisabledHelpGUID(helpGUID) Then Return False
 
 			'reached display limit?
-			If showLimit > 0 And showLimit < shownTimes Then Return False
+			If showLimit > 0 And showLimit <= shownTimes Then Return False
 		EndIf
 		shownTimes :+ 1
 
@@ -242,6 +242,10 @@ Type TIngameHelpWindow
 	'		checkboxHideThis.textColor = TColor.clBlack.Copy()
 			checkboxHideThis.SetValue( GetLocale("DO_NOT_SHOW_AGAIN") )
 			checkboxHideThis.SetManaged(False)
+			If showHideOption And hideFlag < 1
+				checkboxHideThis.setChecked(True)
+				hideFlag=1
+			EndIf
 			canvas.AddChild(checkboxHideThis)
 
 			checkboxWidth = checkboxHideThis.GetScreenRect().GetW() + 20
