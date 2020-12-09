@@ -368,8 +368,13 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 			SetValue( GetHeaderValue() )
 		EndIf
 
-
 		For Local t:TTooltipBase = EachIn tooltips
+			'avoid tooltips reacting to mouseovers if the panel is closed
+			if not isOpen
+				t.SetOption(TTooltipBase.OPTION_MANUAL_HOVER_CHECK, True)
+			else
+				t.SetOption(TTooltipBase.OPTION_MANUAL_HOVER_CHECK, False)
+			endif
 			t.Update()
 		Next
 
@@ -703,7 +708,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 			Else
 				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, reachChange, "audienceIncrease", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER, "bad")
 			EndIf
-			tooltips[0].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
+			tooltips[0].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW-5, boxH)
 			tooltips[1].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
 
 
@@ -732,7 +737,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
 				EndIf
 			EndIf
-			tooltips[3].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW+5, boxH)
+			tooltips[3].parentArea.SetXY(contentX + 5, currentY).SetWH(halfW-5, boxH)
 			tooltips[4].parentArea.SetXY(contentX + 5 + halfW-5 +4, currentY).SetWH(halfW+5, boxH)
 
 			currentY :+ boxH
@@ -2642,7 +2647,7 @@ Type TScreenHandler_StationMap
 		If selectedStation Then selectedStation.Draw(True)
 
 
-		if mouseoverStation or selectedStation
+		if mouseoverStation ' or selectedStation
 			GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
 		endif
 
