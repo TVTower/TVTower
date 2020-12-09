@@ -92,7 +92,7 @@ DIALOGUE_BOSS_CREDIT_OK1                 = Again. Money. Agaaain?\nHmm, ok you a
 DIALOGUE_BOSS_CREDIT_OK2                 = Tú! desperdicias mi dinero!\nTengo la esperanza de que algo razonable sale de esta transacción.\n|b|%CREDIT%€|/b| is all I can offer. Do you agree?
 DIALOGUE_BOSS_CREDIT_OK_ACCEPT1          = Sí, voy a tomar ese crédito.
 #DIALOGUE_BOSS_CREDIT_OK_ACCEPT2          = 
-DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF1     = jefe gracias, yo sólo tengo el 50% de la misma, los medios |b|%CREDITHALF%€|/b|.
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF1     = jefe gracias, yo sólo tengo el 50% de la misma, los medios |b|%VALUE%€|/b|.
 #DIALOGUE_BOSS_CREDIT_OK_ACCEPT_HALF2     = 
 #DIALOGUE_BOSS_CREDIT_OK_ACCEPT_QUARTER1  = 
 #DIALOGUE_BOSS_CREDIT_OK_ACCEPT_QUARTER2  = 
@@ -103,7 +103,7 @@ DIALOGUE_BOSS_CREDIT_REPAY               = ¿No acabas de pagar el antiguo créd
 DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT        = Bueno, yo pagaré algo.
 DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE  = ¡No me digas! Por fin una buena noticia.\n \n¿Cuánto quieres pagar?
 DIALOGUE_BOSS_CREDIT_REPAY_VALUE1        = Bueno, yo podría pagar |b|%VALUE%€|/b|.
-DIALOGUE_BOSS_CREDIT_REPAY_VALUE2        = Uuhm, pude pagar |b|VALUE2|/b|.
+DIALOGUE_BOSS_CREDIT_REPAY_VALUE2        = Uuhm, pude pagar |b|%VALUE%€|/b|.
 DIALOGUE_BOSS_CREDIT_REPAY_ALL           = Hmm, todo el crédito que es |b|%CREDIT%€|/b|.
 
 DIALOGUE_BOSS_CHANGETOPIC1  = ¿Podemos hablar de algo diferente?
