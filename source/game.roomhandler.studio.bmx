@@ -849,7 +849,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 				conceptCountMax = script.GetSubScriptCount() - producedConceptCount
 			Else
 				conceptCountMax = script.CanGetProducedCount()
-				print "conceptCountMax = " + conceptCountMax  +"  productionLimit=" + script.productionLimit + "  usedInProductionsCount="+script.usedInProductionsCount
+				'print "conceptCountMax = " + conceptCountMax  +"  productionLimit=" + script.productionLimit + "  usedInProductionsCount="+script.usedInProductionsCount
 			EndIf
 		EndIf
 
@@ -1021,7 +1021,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 					EndIf
 				Else
 					If script.IsLive()
-						answerText = GetRandomLocale("DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PREPRODUCTIONS").Replace("%X%", produceableConcepts)
+						answerText = GetRandomLocale("DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PREPRODUCTIONS").Replace("%X%", produceableConceptCount)
 					Else
 						texts[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_STUDIO_START_NEXT_EPISODE"), -2, Null, onClickStartProduction, New TData.Add("script", firstProducibleScript)))
 						answerText = GetRandomLocale("DIALOGUE_STUDIO_START_ALL_X_POSSIBLE_PRODUCTIONS").Replace("%X%", produceableConcepts)
