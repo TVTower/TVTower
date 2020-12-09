@@ -59,6 +59,8 @@ Type TGUICheckBox Extends TGUIButton
 
 
 	Method SetChecked:Int(checked:Int=True, informOthers:Int=True)
+		if checked <> 0 then checked = True
+		
 		'if already same state - do nothing
 		If self.checked = checked Then Return FALSE
 
