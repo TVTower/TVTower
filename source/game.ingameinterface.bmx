@@ -568,7 +568,7 @@ Type TInGameInterface
 				MenuToolTip.Hover()
 				If MouseManager.IsClicked(1)
 					'force show manual
-					IngameHelpWindowCollection.ShowByHelpGUID("GameManual", True)
+					IngameHelpWindowCollection.openHelpWindow()
 
 					'handled left click
 					MouseManager.SetClickHandled(1)

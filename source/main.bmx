@@ -1308,15 +1308,7 @@ endrem
 
 				'show ingame manual
 				If KeyManager.IsHit(KEY_F1) ' and not KeyManager.IsDown(KEY_RSHIFT)
-					Local screen:String = ScreenCollection.GetCurrentScreen().GetName()
-					If IngameHelpWindowCollection.Get(screen)
-						IngameHelpWindowCollection.ShowByHelpGUID(screen , True)
-					Else
-						IngameHelpWindowCollection.ShowByHelpGUID("GameManual", True)
-					EndIf
-					'avoid that this window gets replaced by another one
-					'until it is "closed"
-					IngameHelpWindowCollection.LockCurrent()
+					IngameHelpWindowCollection.openHelpWindow()
 				EndIf
 
 				If KeyManager.Ishit(Key_F6) Then GetSoundManager().PlayMusicPlaylist("default")
@@ -1496,13 +1488,7 @@ endrem
 
 		'Hilfe
 		If KeyManager.IsHit(KEY_F1)
-			Local screen:String = ScreenCollection.GetCurrentScreen().GetName()
-			If IngameHelpWindowCollection.Get(screen)
-				IngameHelpWindowCollection.ShowByHelpGUID(screen , True)
-			Else
-				IngameHelpWindowCollection.ShowByHelpGUID("GameManual", True)
-			EndIf
-			IngameHelpWindowCollection.LockCurrent()
+			IngameHelpWindowCollection.openHelpWindow()
 		EndIf
 	End Function
 
@@ -6581,6 +6567,7 @@ Function InitializeHelp()
 		If HasLocale(helpTextKeyText)
 '			Print "Hilfetext gefunden fuer ~q"+helpTextKeyText+"~q -> "+screen.GetName()
 			Local screenHelpWindow:TIngameHelpWindow=New TIngameHelpWindow.Init(helpTextKeyTitle, helpTextKeyText, screen.GetName())
+			screenHelpWindow.showLimit = 1
 			IngameHelpWindowCollection.Add( screenHelpWindow )
 		EndIf
 	Next
