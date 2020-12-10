@@ -762,6 +762,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			If conceptCount > 1
 				'use title of the script to avoid reading in the custom title
 				pc.SetCustomTitle( pc.script.GetTitle() + " - #" + conceptCount)
+				pc.SetCustomDescription (pc.script.GetDescription())
 			EndIf
 		EndIf
 

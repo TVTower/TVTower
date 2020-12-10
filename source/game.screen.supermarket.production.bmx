@@ -1794,8 +1794,8 @@ Type TGUIProductionEditTextsModalWindow Extends TGUIProductionModalWindow
 				inputSubTitle.SetValue(concept.script.GetTitle())
 				inputSubDescription.SetValue(concept.script.GetDescription())
 			Else
-				inputTitle.SetValue(concept.script.GetTitle())
-				inputDescription.SetValue(concept.script.GetDescription())
+				inputTitle.SetValue(concept.GetTitle())
+				inputDescription.SetValue(concept.GetDescription())
 			EndIf
 		EndIf
 	End Method
