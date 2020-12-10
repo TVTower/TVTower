@@ -2990,8 +2990,10 @@ Type TSavegameConverter
 		Select typeName.ToLower()
 			Default
 				print "TSavegameConverter.GetCurrentTypeName(): unsupported but no longer known type ~q"+typeName+"~q requested."
-				end
+				'end
 		End Select
+		
+		Return Null
 	End Function
 	
 	
