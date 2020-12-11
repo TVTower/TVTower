@@ -3,12 +3,12 @@ Import "Dig/base.gfx.gui.textarea.bmx"
 Import "Dig/base.gfx.gui.window.modal.bmx"
 Import "Dig/base.gfx.gui.checkbox.bmx"
 Import "common.misc.gamegui.bmx"
+Import "common.misc.screen.bmx"
 Import "game.game.base.bmx"
 
 
 Type TIngameHelpWindowCollection
 	Field showHelp:Int = True
-	Field disabledHelpGUIDs:String[]
 	Field currentIngameHelpWindow:TIngameHelpWindow {nosave}
 	Global helpWindows:TStringMap = new TStringMap()
 	Global currentIngameHelpWindowLocked:Int = False
@@ -59,6 +59,18 @@ Type TIngameHelpWindowCollection
 		endif
 	End Method
 
+	Method openHelpWindow()
+		Local screen:String = ScreenCollection.GetCurrentScreen().GetName()
+		If Get(screen)
+			ShowByHelpGUID(screen , True)
+		Else
+			ShowByHelpGUID("GameManual", True)
+		EndIf
+		'avoid that this window gets replaced by another one
+		'until it is "closed"
+		LockCurrent()
+	End Method
+
 
 	Method ShowByHelpGUID(helpGUID:String, force:Int = False)
 		If Not force And currentIngameHelpWindowLocked Then Return
@@ -79,25 +91,6 @@ Type TIngameHelpWindowCollection
 		EndIf
 	End Method
 
-
-	Method IsDisabledHelpGUID:Int(helpGUID:String)
-		Return StringHelper.InArray(helpGUID, disabledHelpGUIDs, False)
-	End Method
-
-
-	Method EnableHelpGUID(helpGUID:String, bool:Int = True)
-		Local arrIndex:Int = StringHelper.GetArrayIndex(helpGUID, disabledHelpGUIDs, False)
-
-		'disable
-		If Not bool
-			If arrIndex < 0 Then disabledHelpGUIDs :+ [helpGUID]
-		'enable
-		Else
-			If arrIndex >=0 Then StringHelper.RemoveArrayIndex(arrIndex, disabledHelpGUIDs)
-		EndIf
-	End Method
-
-
 	Method Update:Int()
 		If currentIngameHelpWindow
 			Local wasClosing:Int = currentIngameHelpWindow.IsClosing()
@@ -110,15 +103,6 @@ Type TIngameHelpWindowCollection
 				EndIf
 
 				currentIngameHelpWindowLocked = False
-
-				'disable this help
-				If currentIngameHelpWindow.hideFlag = 1
-					EnableHelpGUID(currentIngameHelpWindow.helpGUID, False)
-				EndIf
-				'disable help at all
-				If currentIngameHelpWindow.hideFlag = 2
-					showHelp = False
-				EndIf
 			ElseIf currentIngameHelpWindow.IsClosed()
 				EventManager.triggerEvent(TEventSimple.Create("InGameHelp.ClosedHelpWindow", New TData.Add("window", currentIngameHelpWindow) , Self))
 
@@ -143,7 +127,6 @@ Type TIngameHelpWindow
 	Field area:TRectangle
 	Field modalDialogue:TGUIModalWindow
 	Field guiTextArea:TGUITextArea
-	Field checkboxHideThis:TGUICheckbox
 	Field checkboxHideAll:TGUICHeckbox
 
 	Field _eventListeners:TEventListenerBase[]
@@ -151,7 +134,6 @@ Type TIngameHelpWindow
 	Field helpGUID:String = "" 'id of the ingame help
 	Field titleKey:String
 	Field contentKey:String
-	Field hideFlag:Int = 0 '1 = hide this, 2 = hide all
 
 	Field showHideOption:Int = True
 	Field shownTimes:Int = 0
@@ -176,7 +158,6 @@ Type TIngameHelpWindow
 	Method Show:Int(force:Int = False)
 		If Not force
 			If Not IngameHelpWindowCollection.showHelp Then Return False
-			If IngameHelpWindowCollection.IsDisabledHelpGUID(helpGUID) Then Return False
 
 			'reached display limit?
 			If showLimit > 0 And showLimit <= shownTimes Then Return False
@@ -236,31 +217,16 @@ Type TIngameHelpWindow
 
 
 		Local checkboxWidth:Int = 0
-		If Not IngameHelpWindowCollection.IsDisabledHelpGUID(helpGUID)
-			checkboxHideThis = New TGUICheckBox.Create(New TVec2D.Init(0,190), New TVec2D.Init(-1,-1), "", state.ToString())
-			checkboxHideThis.SetFont( GetBitmapFont("default", 12) )
-	'		checkboxHideThis.textColor = TColor.clBlack.Copy()
-			checkboxHideThis.SetValue( GetLocale("DO_NOT_SHOW_AGAIN") )
-			checkboxHideThis.SetManaged(False)
-			If showHideOption And hideFlag < 1
-				checkboxHideThis.setChecked(True)
-				hideFlag=1
-			EndIf
-			canvas.AddChild(checkboxHideThis)
-
-			checkboxWidth = checkboxHideThis.GetScreenRect().GetW() + 20
-		EndIf
-
 
 		checkboxHideAll = New TGUICheckBox.Create(New TVec2D.Init(0 + checkboxWidth,190), New TVec2D.Init(-1,-1), "", state.ToString())
 		checkboxHideAll.SetFont( GetBitmapFont("default", 12) )
 '		checkboxHideAll.textColor = TColor.clBlack.Copy()
-		checkboxHideAll.SetValue( GetLocale("DO_NOT_SHOW_ANY_TIPS") )
+		checkboxHideAll.SetValue( GetLocale("DO_NOT_SHOW_ANY_TIPS"))
+		checkboxHideAll.SetChecked(Not IngameHelpWindowCollection.showHelp)
 
 		checkboxHideAll.SetManaged(False)
 		canvas.AddChild(checkboxHideAll)
 		If Not showHideOption
-			If checkboxHideThis Then checkboxHideThis.Hide()
 			checkboxHideAll.Hide()
 		EndIf
 
@@ -274,9 +240,6 @@ Type TIngameHelpWindow
 
 		'=== EVENTS ===
 		_eventListeners :+ [ EventManager.registerListenerMethod("guiCheckBox.onSetChecked", Self, "OnSetCheckbox", checkboxHideAll) ]
-		If checkboxHideThis
-			_eventListeners :+ [ EventManager.registerListenerMethod("guiCheckBox.onSetChecked", Self, "OnSetCheckbox", checkboxHideThis) ]
-		EndIf
 	End Method
 	
 	
@@ -292,7 +255,6 @@ Type TIngameHelpWindow
 
 		If guiTextArea And checkboxHideAll
 			If Not showHideOption And checkboxHideAll.IsVisible()
-				If checkboxHideThis Then checkboxHideThis.Hide()
 				checkboxHideAll.Hide()
 				guiTextArea.SetSize(-1, guiTextArea.rect.GetH() + checkboxHideAll.GetScreenRect().GetH())
 			Else
@@ -306,11 +268,10 @@ Type TIngameHelpWindow
 		Local checkBox:TGUICheckBox = TGUICheckBox(triggerEvent.GetSender())
 		If Not checkBox Then Return False
 
-		hideFlag = 0
 		If checkboxHideAll.IsChecked()
-			hideFlag = 2
-		ElseIf checkboxHideThis And checkboxHideThis.IsChecked()
-			hideFlag = 1
+			IngameHelpWindowCollection.showHelp = False
+		Else
+			IngameHelpWindowCollection.showHelp = True
 		EndIf
 	End Method
 
