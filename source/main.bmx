@@ -2986,15 +2986,31 @@ End Type
 
 
 Type TSavegameConverter
-	Function GetCurrentTypeName:TTypeID(typeName:String)
+	Method GetCurrentFieldName:Object(fieldName:String, parentTypeName:String)
+		Rem
+		'example
+		Select (string(parentTypeName)+":"+string(fieldName)).ToLower()
+			case "TIngameHelpWindowCollection:disabledHelpGUIDs".ToLower()
+				'could return new field name for it now
+				Return "disabledHelpGUIDsNEW"
+		End Select
+		EndRem
+		Return fieldName
+	End Method
+	
+	
+	Method GetCurrentTypeName:Object(typeName:String)
 		Select typeName.ToLower()
+			Rem
+			'example
+			Case "TMyClassOld".ToLower()
+				Return "TMyClassNew"
+			EndRem
 			Default
 				print "TSavegameConverter.GetCurrentTypeName(): unsupported but no longer known type ~q"+typeName+"~q requested."
-				'end
+				Return typeName
 		End Select
-		
-		Return Null
-	End Function
+	End Method
 	
 	
 	Method DeSerializeUnknownProperty:Object(oldType:String, newType:String, obj:Object, parentObj:Object)
