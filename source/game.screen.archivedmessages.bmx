@@ -11,14 +11,14 @@ Import "game.misc.archivedmessage.bmx"
 Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 	Field showCategory:int = 0
 	Field showCategoryIndex:int = 0
-	Field showMode:int = 0
+	Field showMode:int = SHOW_UNREAD
 	Field roomOwner:int = 0
 	Field categoryCountRead:int[]
 	Field categoryCountTotal:int[]
-	Field markReadTime:Long = 0
 	Field colorCategoryHighlight:SColor8 = new SColor8(20,20,20)
 	Field colorCategoryActive:SColor8 = new SColor8(30,110,150)
 	Field colorCategoryDefault:SColor8 = new SColor8(90,90,90)
+	Field showModeSelect:TGUIDropDown
 
 	Field highlightNavigationEntry:int = -1
 
@@ -61,6 +61,9 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		'also reload when messages get added or removed
 		_eventListeners :+ [ EventManager.registerListenerFunction("ArchivedMessageCollection.onAdd", onAddOrRemoveArchivedMessage) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("ArchivedMessageCollection.onRemove", onAddOrRemoveArchivedMessage) ]
+
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickMessage, "TGUIArchivedMessageListItem") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod("GUIDropDown.onSelectEntry", Self, "onChangeShowModeDropdown", "TGUIDropDown" ) ]
 
 		'to update/draw the screen
 		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )
@@ -111,8 +114,6 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		endif
 
 		GetInstance().ReloadMessages()
-
-		GetInstance().markReadTime = Time.MillisecsLong()
 	End Function
 
 
@@ -139,6 +140,36 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		return TRUE
 	End Function
 
+	Function onClickMessage:int( triggerEvent:TEventBase )
+		If GetInstance().showMode <> SHOW_ALL
+			local item:TGUIArchivedMessageListItem = TGUIArchivedMessageListItem(triggerEvent.GetSender())
+			If MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1)
+				local room:TOwnedGameObject = TOwnedGameObject( triggerEvent.GetData().get("room") )
+				If GetInstance().showMode = SHOW_UNREAD
+					item.message.SetRead(room.owner, True)
+				Else
+					item.message.SetRead(room.owner, False)
+				EndIf
+				GetInstance().messageList.removeItem(item)
+				'make sure the heading is updated
+				GetInstance().Render()
+				MouseManager.SetClickHandled(2)
+			EndIf
+		EndIf
+		return TRUE
+	End Function
+
+	Method onChangeShowModeDropdown:Int(triggerEvent:TEventBase)
+		Local list:TGUIDropDown = TGUIDropDown(triggerEvent.GetSender())
+		local item:TGUIDropDownItem = TGUIDropDownItem(list.getSelectedEntry())
+		If not item Then return FALSE
+		local mode:Int=item.data.getInt("showMode")
+		If mode <> showMode
+			showMode = mode
+			GetInstance().ReloadMessages()
+		EndIf
+		return TRUE
+	End Method
 
 	Method InitGUIElements()
 		if not messageList
@@ -182,6 +213,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 			if showCategory > 0 and message.messageCategory <> showCategory then continue
 			if showMode > 0
 				if showMode & SHOW_READ > 0 and not message.IsRead(roomOwner) then continue
+				if showMode & SHOW_UNREAD > 0 and message.IsRead(roomOwner) then continue
 			endif
 
 			messages.AddLast(message)
@@ -210,7 +242,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		hoveredGuiMessage = null
 
 		highlightNavigationEntry = -1
-		if THelper.MouseIn(50,40,100,300)
+		if THelper.MouseIn(50,40,130,300)
 			local skin:TDatasheetSkin = GetDatasheetSkin("archivedmessages")
 			local contentX:int = skin.GetContentX(50)
 			'add titleHeight + titleHeight of "padding" (right window)
@@ -218,29 +250,19 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 			'0 to ... because we include "all" (which is 0)
 			For local i:int = 0 to TVTMessageCategory.count
-				if THelper.MouseIn(contentX, contentY + i*20, 100, 20)
+				if THelper.MouseIn(contentX, contentY + i*20, 130, 20)
 					highlightNavigationEntry = i
 
 					if MouseManager.IsClicked(1)
 						showCategory = TVTMessageCategory.GetAtIndex(i)
 						showCategoryIndex = i
 						ReloadMessages()
-						'reset
-						markReadTime = Time.MillisecsLong()
 
 						'handled left click
 						MouseManager.SetClickHandled(1)
 					endif
 				endif
 			Next
-		endif
-
-		'mark displayed/drawn as read
-		if markReadTime > 0 and Time.MillisecsLong() - markReadTime > 5000
-			For local item:TGUIArchivedMessageListItem = EachIn messageList.entries
-				item.message.SetRead(roomOwner, True)
-			Next
-			markReadTime = 0
 		endif
 
 		GuiManager.Update( LS_office_archivedmessages )
@@ -275,8 +297,8 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 
 		'=== CATEGORY SELECTION ===
-		listH = (TVTMessageCategory.count+1) * 20 + 5
-		outer.Init(50, 25 + titleH, 180, 50)
+		listH = (TVTMessageCategory.count+1) * 20 + 5 + 35
+		outer.Init(40, 25 + titleH, 180, 50)
 		contentX = skin.GetContentX(outer.GetX())
 		contentY = skin.GetContentY(outer.GetY())
 		contentW = skin.GetContentW(outer.GetW())
@@ -303,7 +325,14 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		Next
 		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 
+		if not showModeSelect
+			showModeSelect = New TGUIDropDown.Create(New TVec2D.Init(outer.GetX() + 12, outer.GetH()-5 ), New TVec2D.Init(147,-1), "", 128, "office_archivedmessages")
+			showModeSelect.SetListContentHeight(60)
 
+			addShowModeItem(SHOW_UNREAD, "MESSAGES_SHOW_UNREAD")
+			addShowModeItem(SHOW_ALL, "MESSAGES_SHOW_ALL")
+			addShowModeItem(SHOW_READ, "MESSAGES_SHOW_READ")
+		endif
 
 		'=== MESSAGE LIST ===
 		outer.Init(200, 25, 550, 325)
@@ -317,7 +346,9 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		local caption:string = GetLocale("ARCHIVED_MESSAGES")
 		caption :+ " ~q" + GetLocale( "MESSAGECATEGORY_" + TVTMessageCategory.GetAsString(showCategory) ) + "~q"
 		if categoryCountRead.length > showCategoryIndex
-			caption :+ " [" + categoryCountRead[showCategoryIndex] + "/" + categoryCountTotal[showCategoryIndex] + "]"
+			Local totalCount:Int = categoryCountTotal[showCategoryIndex]
+			Local showCount:Int = messageList.entries.count()
+			caption :+ " [" + showCount + "/" + categoryCountTotal[showCategoryIndex] + "]"
 		endif
 
 
@@ -339,6 +370,14 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		'draw achievement-sheet
 		'if hoveredGuiProductionConcept then hoveredGuiProductionConcept.DrawSupermarketSheet()
  	End Method
+
+	Method addShowModeItem(mode:Int, key:String)
+		Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(Null, Null, "")
+		item.SetValue(GetLocale(key))
+		item.data.AddNumber("showMode", mode)
+		showModeSelect.AddItem(item)
+		If mode = SHOW_UNREAD Then showModeSelect.setSelectedEntry(item)
+	End Method
 End Type
 
 

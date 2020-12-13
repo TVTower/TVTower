@@ -106,6 +106,9 @@ MESSAGECATEGORY_MONEY               = Money / Finances
 MESSAGECATEGORY_ACHIEVEMENTS        = Achievements
 MESSAGECATEGORY_AWARDS              = Awards / Sammy
 MESSAGECATEGORY_MISC                = Misc
+MESSAGES_SHOW_ALL                   = all messages
+MESSAGES_SHOW_READ                  = only read
+MESSAGES_SHOW_UNREAD                = only unread
 
 BUY_AND_SELL        = Buy and sell
 AND_STATISTICS      = and statistics
@@ -117,6 +120,9 @@ INGAME_HELP_TITLE_SCREEN_EMPTYROOM = OUT OF ORDER
 
 INGAME_HELP_TEXT_SCREEN_OFFICE_SAFE  = Saving and loading games is done via the menu. Press Esc to open it. 
 INGAME_HELP_TITLE_SCREEN_OFFICE_SAFE = Safe
+
+INGAME_HELP_TEXT_SCREEN_OFFICE_ARCHIVEDMESSAGES  = Here you can read messages sent to you once more. You are shown only messages of the selected category.\nIf you chose to view only read or only unread messages, you can right-click on a message to toggle the status.
+INGAME_HELP_TITLE_SCREEN_OFFICE_ARCHIVEDMESSAGES = Archived Messages
 
 INGAME_HELP_TEXT_SCREEN_OFFICE_PROGRAMMEPLANNER  = Here you can plan your programme and view the broadcast history. For adding a programme, click the "Programme" button on the right, choose the genre, left-click the programme to pick it up and move it to the intended slot. Another left-click drops the programme to the slot. A righ-click discards a programme that has been picked.\n\nPlacing advertisement contracts is done analogously. If you place an advertisement in a programme slot it will be broadcasted as infomercial. A programme placed in an advertisement slot turns into a trailer.\n\nValid and invalid slots for live programmes are indicated by color.\n\n|b|Shortcut hint:|/b| Pressing a Ctrl key while placing an element allows to place the same element multiple times. Pressing a Shift key instead allows to place the next episode instead.
 INGAME_HELP_TITLE_SCREEN_OFFICE_PROGRAMMEPLANNER = Programme planner

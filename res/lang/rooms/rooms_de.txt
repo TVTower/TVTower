@@ -106,6 +106,9 @@ MESSAGECATEGORY_MONEY               = Geld / Finanzen
 MESSAGECATEGORY_ACHIEVEMENTS        = Erfolge
 MESSAGECATEGORY_AWARDS              = Preise / Sammy
 MESSAGECATEGORY_MISC                = Sonstiges
+MESSAGES_SHOW_ALL                   = alle Nachrichten
+MESSAGES_SHOW_READ                  = nur gelesene
+MESSAGES_SHOW_UNREAD                = nur ungelesene
 
 BUY_AND_SELL        = Kaufen und Verkaufen
 AND_STATISTICS      = und Statistiken
@@ -117,6 +120,9 @@ INGAME_HELP_TITLE_SCREEN_EMPTYROOM = AUSSER BETRIEB
 
 INGAME_HELP_TEXT_SCREEN_OFFICE_SAFE  = Das Speichern und Laden von Spielständen erfolgt im Menu. Es wird mit "Escape" geöffnet.
 INGAME_HELP_TITLE_SCREEN_OFFICE_SAFE = Der Safe
+
+INGAME_HELP_TEXT_SCREEN_OFFICE_ARCHIVEDMESSAGES  = Hier kannst Du empfangene Nachrichten noch einmal nachlesen. Es werden nur Nachrichten der ausgewählten Kategorie angezeigt.\nWenn Du Dir nur gelesene oder nur ungelesene Nachrichten anzeigen lässt, kannst Du den "gelesen"-Status mit einem Rechtsklick auf die Nachricht umschalten.
+INGAME_HELP_TITLE_SCREEN_OFFICE_ARCHIVEDMESSAGES = Archivierte Nachrichten
 
 INGAME_HELP_TEXT_SCREEN_OFFICE_PROGRAMMEPLANNER  = In diesem Bildschirm kannst Du neue Programme in den Sendeplan setzen und bisherige Ausstrahlungen nachvollziehen. Zum Hinzufügen eines Programmes, dieses einfach auf der rechten Seite per Button "Programm" auswählen und dann mit der linken Maustaste auf dem gewünschten Programmplatz fallen lassen. Mittels Rechtsklick kann ein aufgehobener Programmblock gelöscht werden.\n\nLässt Du Werbung auf einem Programmplatz fallen, so erfolgt eine Ausstrahlung als "Dauerwerbesendung". Ein Programm auf einem Werbeplatz wird hingegen zu einem Programmtrailer umgeformt.\n\nHandelt es sich bei einem Programm um ein Live-Format, so weisen farbige Markierungen darauf hin, an welcher Stelle eine Platzierung erfolgen kann.\n\n|b|Tipp für Freunde der Tastenkürzel:|/b| Durch Drücken einer Strg-Taste könnt ihr ein Programm mehrfach im Planer platzieren. Eine Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen.
 INGAME_HELP_TITLE_SCREEN_OFFICE_PROGRAMMEPLANNER = Der Programmplaner
