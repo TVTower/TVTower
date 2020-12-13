@@ -150,6 +150,7 @@ endrem
 			'maximum is at the bottom of the area, not top - so
 			'subtract height
 			yLimit = - (_textDimension.y - guiTextPanel.GetScreenRect().GetH())
+			'yLimit = - (_textDimension.y - guiScrollerV.GetScreenRect().GetH())
 		EndIf
 
 		if _textDimension.x < guiTextPanel.GetScreenRect().GetW()
@@ -162,11 +163,12 @@ endrem
 			'subtract width
 			xLimit = - (_textDimension.x - guiTextPanel.GetScreenRect().GetW())
 		EndIf
-
 		guiTextPanel.SetLimits(xLimit, yLimit)
 
-		guiScrollerH.SetValueRange(0, _textDimension.x)
-		guiScrollerV.SetValueRange(0, _textDimension.y)
+'		guiScrollerH.SetValueRange(0, _textDimension.x)
+'		guiScrollerV.SetValueRange(0, _textDimension.y)
+		guiScrollerH.SetValueRange(0, - xLimit)
+		guiScrollerV.SetValueRange(0, - yLimit)
 	End Method
 
 
@@ -245,7 +247,6 @@ endrem
 		if not _textParseInfo 
 			_textParseInfo = new TTextParseInfo()
 		endif
-
 		if not _textParseInfo.data.calculated
 			local maxWidth:Int = -1
 			if drawSettings.data.wordWrap then maxWidth = guiTextPanel.GetContentWidth()
@@ -254,6 +255,8 @@ endrem
 			else
 				_textParseInfo.data.CalculateDimensions(self.value, maxWidth, -1, GetFont(), _drawTextSettings.data)
 			endif
+'print "GenerateTextCache"
+'print "  maxWidth="+maxWidth + "  parseInfo dim="+_textParseInfo.data.GetBoxWidth(0)+", " + _textParseInfo.data.GetBoxHeight(0)
 		endif
 
 		local createNew:int = False
@@ -270,6 +273,7 @@ endrem
 			_textCacheImagePreload = new SVec2I(_textCacheImagePreload.x, 150)
 		endif
 
+		local textBoxWidth:Int
 		local texHeight:int
 		local texWidth:int
 		if guiTextPanel.GetScreenRect().GetH() < 0
@@ -278,10 +282,11 @@ endrem
 			texHeight = Min(_textParseInfo.data.GetBoxHeight(0), guiTextPanel.GetScreenRect().GetH()) + 2*_textCacheImagePreload.y
 		endif
 		if guiTextPanel.GetScreenRect().GetW() < 0
-			texWidth = _textParseInfo.data.GetBoxWidth(0) + 2*_textCacheImagePreload.x
+			textBoxWidth = _textParseInfo.data.GetBoxWidth(0)
 		else
-			texWidth = Min(_textParseInfo.data.GetBoxWidth(0), guiTextPanel.GetScreenRect().GetW()) + 2*_textCacheImagePreload.x
+			textBoxWidth = Min(_textParseInfo.data.GetBoxWidth(0), guiTextPanel.GetScreenRect().GetW())
 		endif
+		texWidth = textBoxWidth +2*_textCacheImagePreload.x
 
 		if not _textCacheImage
 			createNew = True
@@ -304,7 +309,7 @@ endrem
 		local offsetX:int = guiTextPanel.scrollPosition.GetX() + _textCacheImagePreload.x
 		local offsetY:int = guiTextPanel.scrollPosition.GetY() + _textCacheImagePreload.y
 
-		GetFont().DrawBox(self.value, offsetX, offsetY, _textParseInfo.data.GetBoxWidth(0), -1, new SVec2f(0,0), textColor, new SVec2f(0,0), _textParseInfo, EDrawTextOption.None, drawEffect, drawSettings, -1, -1)
+		GetFont().DrawBox(self.value, offsetX, offsetY, textBoxwidth, -1, new SVec2f(0,0), textColor, new SVec2f(0,0), _textParseInfo, EDrawTextOption.None, drawEffect, drawSettings, -1, -1)
 		
 		TBitmapFont.setRenderTarget(null)
 
@@ -674,16 +679,15 @@ endrem
 
 	Method DrawContent()
 rem
-
 		'orange: komplettes Widget
 '		SetColor 255, 255,0
 '		SetAlpha GetAlpha() * 0.25
 '		DrawRect(GetParent().GetScreenRect().GetX(), GetParent().GetScreenRect().GetY(), GetParent().GetScreenRect().GetW(), GetParent().GetScreenRect().GetH())
 
 		'gruen: Inhaltsbereich
-'		SetColor 0,255,0
-'		DrawRect(GetContentScreenRect().GetX(), GetContentScreenRect().GetY(), GetContentScreenRect().GetW(), GetContentScreenRect().GetH())
-'		SetAlpha GetAlpha() * 4
+		SetColor 0,255,0
+		DrawRect(GetContentScreenRect().GetX(), GetContentScreenRect().GetY(), GetContentScreenRect().GetW(), GetContentScreenRect().GetH())
+		SetAlpha GetAlpha() * 4
 
 		'blau: textbereich
 		SetColor 0,0,125
@@ -697,11 +701,12 @@ rem
 		SetColor 255,0,0
 		DrawRect(guiTextPanel.GetScreenRect().GetX(), guiTextPanel.GetScreenRect().GetY(), guiTextPanel.GetScreenRect().GetW(), guiTextPanel.GetScreenRect().GetH())
 
+		SetAlpha 1.0
 		SetColor 0,0,0
 		DrawRect(0,0,200,100)
 		SetColor 255,255,255
-		DrawText("posX: "+guiTextPanel.scrollPosition.GetX() + "  limitX: "+guiTextPanel.scrollLimit.GetX(), 10, 30)
-		DrawText("posY: "+guiTextPanel.scrollPosition.GetY() + "  limitY: "+guiTextPanel.scrollLimit.GetY(), 10, 50)
+		DrawText("posX: "+int(guiTextPanel.scrollPosition.GetX()) + "  limitX: "+int(guiTextPanel.scrollLimit.GetX()), 10, 30)
+		DrawText("posY: "+int(guiTextPanel.scrollPosition.GetY()) + "  limitY: "+int(guiTextPanel.scrollLimit.GetY()), 10, 50)
 endrem
 		RestrictContentViewport()
 		'restrict even more

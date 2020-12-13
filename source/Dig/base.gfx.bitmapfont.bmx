@@ -2236,13 +2236,6 @@ Type STextParseInfo
 		stylesColorsIndex = 0
 	End Method
 
-'ddd
-'hier weitermachen ... 
-'- text samples haben falsche width-dimension
-'- vielleicht Getboxwidth "visible" und "total" tauschen
-
-'- "lines" in zeile 3 bricht um (nur im Fall der "mit linien"-Demo), wenn
-'  die Boxgroesse geaendert wird (hoch runter)
 
 	Method GetBoxWidth:Short(boxDimensionMode:Int = 0)
 		Return _visibleBoxWidth
@@ -2358,10 +2351,21 @@ Type STextParseInfo
 			txtIndex :- 1
 			Return True
 		ElseIf totalLineCount>1
-			If (totalLineCount-2 <= lineinfo_lineBreakIndices.length And lineinfo_lineBreakIndices[totalLineCount-2] >= possibleLineBreakIndex) Or ..
-               (totalLineCount-2 - lineinfo_lineBreakIndices.length > lineinfo_lineBreakIndicesDynamic.length And lineinfo_lineBreakIndicesDynamic[totalLineCount-2 - lineinfo_lineBreakIndices.length] >= possibleLineBreakIndex)
-				txtIndex :- 1
-				Return True
+			'Local thisLineIndex:int = totalLineCount - 1
+			'Local lastLineIndex:int = thisLineIndex - 1
+			Local lastLineIndex:int = totalLineCount - 1 - 1
+			Local dynamicIndex:Int = lastLineIndex - lineinfo_lineBreakIndices.length
+
+			If dynamicIndex >= 0 
+				If lineinfo_lineBreakIndicesDynamic[dynamicIndex] >= possibleLineBreakIndex
+					txtIndex :- 1
+					Return True
+				EndIf
+			Else	
+				If lineinfo_lineBreakIndices[lastLineIndex] >= possibleLineBreakIndex
+					txtIndex :- 1
+					Return True
+				EndIf
 			EndIf
 		EndIf
 
@@ -2800,10 +2804,14 @@ Type STextParseInfo
 					automaticLineBreak = True
 
 					' adjusts "i" to the best suiting linebreak position
-					If settings.lineBreakCanCutWords
+					If settings.lineBreakCanCutWords 
 						i :- 1
 						element = HandleChar(currentFont, txt, i, textX)
 						charCode = txt[i]
+					
+					ElseIf settings.skipOptionalElementOnEOL and element.skipOnLinebreak
+						'nothing to do
+
 					ElseIf UpdateLinebreakIndex(txt, i)
 						element = HandleChar(currentFont, txt, i, textX)
 						charCode = txt[i]
@@ -2841,7 +2849,6 @@ Type STextParseInfo
 				lineWidth :+ element.width
 				textX :+ element.advWidth
 			EndIf
-
 
 
 			'move on to the next line ?
