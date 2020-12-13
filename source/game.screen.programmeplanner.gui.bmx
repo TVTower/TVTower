@@ -8,6 +8,11 @@ Import "game.game.base.bmx"
 Import "game.player.programmeplan.bmx"
 
 
+TGUIProgrammePlanElement.titleDrawSettings = new TDrawTextSettings
+'allow truncation right in the word (ad blocks have not much space...)
+TGUIProgrammePlanElement.titleDrawSettings.data.lineBreakCanCutWords = True
+
+
 'base element for list items in the programme planner
 Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	Field broadcastMaterial:TBroadcastMaterial
@@ -22,6 +27,7 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 	Field cacheStringAd:TStringBuilder {nosave}
 	Field cacheStringProgramme:TStringBuilder {nosave}
 
+	Global titleDrawSettings:TDrawTextSettings
 	Global ghostAlpha:Float = 0.8
 
 	'for hover effects
@@ -600,7 +606,8 @@ Type TGUIProgrammePlanElement Extends TGUIGameListItem
 			If Not titleColor Then titleColor = TColor.Create(0,0,0)
 			If Not textColor Then textColor = TColor.Create(50,50,50)
 
-			GetBitmapFont("DefaultThin", 10, BOLDFONT).DrawBox(title, textX + 3, textY + 1, textW, 15, sALIGN_LEFT_TOP, SColor8.Black)
+			GetBitmapFont("DefaultThin", 10, BOLDFONT).DrawBox(title, textX + 3, textY + 1, textW, 15, sALIGN_LEFT_TOP, SColor8.Black, titleDrawSettings)
+	
 			GetBitmapFont("Default", 10).DrawBox(text, textX + 3, textY + 15, textW, 15, sALIGN_LEFT_TOP, textColor.ToSColor8())
 			GetBitmapFont("Default", 10).DrawBox(text2,textX + 3, textY + 15, textW - 3, 15, sALIGN_RIGHT_TOP, textColor.ToSColor8())
 

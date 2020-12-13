@@ -1465,10 +1465,8 @@ endrem
 
 		Local localX:Float '= gfx.origin_x + gfx.handle_x * gfx.tform_ix + gfx.handle_y * gfx.tform_iy
 		Local localY:Float '= gfx.origin_y + gfx.handle_x * gfx.tform_jx + gfx.handle_y * gfx.tform_jy
-		If Not drawToPixmap 
-			localX :+ x
-			localY :+ y
-		EndIf 
+		localX :+ x
+		localY :+ y
 
 
 		textX = alignment.x * (w - parseInfo.GetLineWidth(1, settings.boxDimensionMode))
@@ -3065,7 +3063,7 @@ Type STextParseInfo
 				_visibleBoxHeight :+ currentLineLineBoxHeight
 				_visibleBoxWidth = Max(_visibleBoxWidth, lineWidth)
 
-'print "line break ... " + currentLine + "/" + totalLineCount + "   dynamicIndex="+dynamicIndex + "  index="+(currentLine-1) +"  width="+lineWidth + " maxWidth="+lineWidthMax
+				'print "line break ... " + currentLine + "/" + totalLineCount + "   dynamicIndex="+dynamicIndex + "  index="+(currentLine-1) +"  width="+lineWidth + " maxWidth="+lineWidthMax
 				
 				If i < txt.length - 1  'or add if last is a newline char?
 					currentLine :+ 1
@@ -3267,6 +3265,8 @@ Type STextParseInfo
 					
 					'done
 					Exit
+				Elseif settings.skipOptionalElementOnEOL and element.skipOnLinebreak and nextLineBreakIndex = i
+					'skip this char
 				Else
 					visibleElementCount :+ 1
 
