@@ -5012,11 +5012,10 @@ Type GameEvents
 		toast.SetMessageCategory(TVTMessageCategory.MISC)
 		If production.productionConcept.script.IsLive()
 			toast.SetCaption(GetLocale("PREPRODUCTION_FINISHED"))
-			toast.SetText(GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL").Replace("%TITLE%", "|b|"+title+"|/b|"))
 		Else
 			toast.SetCaption(GetLocale("SHOOTING_FINISHED"))
-			toast.SetText((GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL") + "~n" + GetLocale("TOTAL_PRODUCTION_COSTS_WERE_X")).Replace("%TITLE%", "|b|"+title+"|/b|").Replace("%TOTALCOST%", "|b|" + MathHelper.DottedValue(production.productionConcept.GetTotalCost()) + GetLocale("CURRENCY") + "|/b|" ))
 		EndIf
+		toast.SetText((GetLocale("THE_LICENCE_OF_X_IS_NOW_AT_YOUR_DISPOSAL") + "~n" + GetLocale("TOTAL_PRODUCTION_COSTS_WERE_X")).Replace("%TITLE%", "|b|"+title+"|/b|").Replace("%TOTALCOST%", "|b|" + MathHelper.DottedValue(production.productionConcept.GetTotalCost()) + GetLocale("CURRENCY") + "|/b|" ))
 
 		toast.GetData().AddNumber("playerID", production.owner)
 
