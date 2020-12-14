@@ -106,9 +106,10 @@ MESSAGECATEGORY_MONEY               = Money / Finances
 MESSAGECATEGORY_ACHIEVEMENTS        = Achievements
 MESSAGECATEGORY_AWARDS              = Awards / Sammy
 MESSAGECATEGORY_MISC                = Misc
-MESSAGES_SHOW_ALL                   = all messages
-MESSAGES_SHOW_READ                  = only read
-MESSAGES_SHOW_UNREAD                = only unread
+MESSAGES_SHOW_HEADING               = Show:
+MESSAGES_SHOW_ALL                   = All messages
+MESSAGES_SHOW_READ                  = Only read
+MESSAGES_SHOW_UNREAD                = Only unread
 
 BUY_AND_SELL        = Buy and sell
 AND_STATISTICS      = and statistics
