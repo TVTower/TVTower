@@ -297,7 +297,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 
 		'=== CATEGORY SELECTION ===
-		listH = (TVTMessageCategory.count+1) * 20 + 5 + 35
+		listH = (TVTMessageCategory.count+1) * 20 + 5 + 70
 		outer.Init(40, 25 + titleH, 180, 50)
 		contentX = skin.GetContentX(outer.GetX())
 		contentY = skin.GetContentY(outer.GetY())
@@ -325,6 +325,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		Next
 		skin.RenderBorder(outer.GetIntX(), outer.GetIntY(), outer.GetIntW(), outer.GetIntH())
 
+		GetBitmapFont("default", 13, BOLDFONT).DrawSimple(GetLocale("MESSAGES_SHOW_HEADING"), contentX + 12, outer.GetH()-25, colorCategoryDefault)
 		if not showModeSelect
 			showModeSelect = New TGUIDropDown.Create(New TVec2D.Init(outer.GetX() + 12, outer.GetH()-5 ), New TVec2D.Init(147,-1), "", 128, "office_archivedmessages")
 			showModeSelect.SetListContentHeight(60)

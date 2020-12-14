@@ -106,6 +106,7 @@ DIALOGUE_SUPERMARKET_GOODBYE3          = Hora de bater perna. Até mais.
 #MESSAGECATEGORY_ACHIEVEMENTS        = 
 #MESSAGECATEGORY_AWARDS              = 
 #MESSAGECATEGORY_MISC                = 
+#MESSAGES_SHOW_HEADING               = 
 #MESSAGES_SHOW_ALL                   = 
 #MESSAGES_SHOW_READ                  = 
 #MESSAGES_SHOW_UNREAD                = 
