@@ -915,6 +915,16 @@ endrem
 	End Method
 
 
+	Method GetBoxDimension:SVec2I(text:String, boxWidth:Float, boxHeight:Float, effect:TDrawTextEffect)
+		LockMutex(globalBoxParseInfoMutex)
+		globalBoxParseInfo.calculated = False
+		Local result:SVec2I = GetBoxDimension(text, boxWidth, boxHeight, globalBoxParseInfo, effect.data, defaultDrawSettings)
+		UnlockMutex(globalBoxParseInfoMutex)
+
+		Return result
+	End Method
+
+
 	Method GetBoxDimension:SVec2I(text:String, boxWidth:Float, boxHeight:Float, effect:SDrawTextEffect Var, settings:SDrawTextSettings Var)
 		LockMutex(globalBoxParseInfoMutex)
 		globalBoxParseInfo.calculated = False

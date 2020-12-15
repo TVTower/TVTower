@@ -20,6 +20,15 @@ Global CHAT_COMMAND_WHISPER:Int	= 1
 Global CHAT_COMMAND_SYSTEM:Int	= 2
 
 
+TGUIChatEntry.senderDrawTextEffect = new TDrawTextEffect
+TGUIChatEntry.senderDrawTextEffect.data.mode = EDrawTextEffect.GLOW
+TGUIChatEntry.senderDrawTextEffect.data.value = 1.0
+TGUIChatEntry.valueDrawTextEffect = new TDrawTextEffect
+TGUIChatEntry.valueDrawTextEffect.data.mode = EDrawTextEffect.GLOW
+TGUIChatEntry.valueDrawTextEffect.data.value = 0.5
+
+
+
 Type TGUIChat Extends TGUIPanel
 	Field _defaultTextColor:TColor = TColor.Create(0,0,0)
 	Field _defaultHideEntryTime:Int = Null
@@ -233,6 +242,11 @@ Type TGUIChat Extends TGUIPanel
 		'if the default is "null" then no hiding will take place
 		entry.SetShowtime( _defaultHideEntryTime )
 		AddEntry( entry )
+		
+		'now we know the actual content and resize properly
+		local dim:TVec2D = entry.GetDimension()
+		entry.SetSize(dim.GetX(), dim.GetY())
+
 	End Method
 
 
@@ -274,18 +288,24 @@ End Type
 
 
 Type TGUIChatEntry Extends TGUIListItem
-	Field paddingBottom:Int	= 5
+	'boxDimension already includes "linebox", 
+	'so additional padding is not needed for now
+	Field paddingBottom:Int	= 0
+	
+	Global senderDrawTextEffect:TDrawTextEffect
+	Global valueDrawTextEffect:TDrawTextEffect
 
 
 	Method CreateSimple:TGUIChatEntry(text:String, textColor:TColor, senderName:String, senderColor:TColor, lifetime:Int=Null)
-		Create(Null,Null, text)
+   		Super.CreateBase(Null, Null, "")
+
 		SetLifetime(lifeTime)
 		SetShowtime(lifeTime)
 		SetSender(senderName, senderColor)
 		SetValue(text)
 		SetValueColor(textColor)
 
-		GetDimension()
+		GUIManager.add(Self)
 
 		Return Self
 	End Method
@@ -300,7 +320,8 @@ Type TGUIChatEntry Extends TGUIListItem
 		SetShowtime( 1000 )
 
 		'now we know the actual content and resize properly
-		SetSize(GetDimension().GetX(), GetDimension().GetY())
+		local dim:TVec2D = GetDimension()
+		SetSize(dim.GetX(), dim.GetY())
 
 		GUIManager.add(Self)
 
@@ -309,18 +330,14 @@ Type TGUIChatEntry Extends TGUIListItem
 
 
 	Method GetDimension:TVec2D() override
-		Local startX:Int = Self.GetScreenRect().GetX()
-		Local startY:Int = Self.GetScreenRect().GetY()
 		Local move:SVec2I
-		If Data.getString("senderName",Null)
-			Local senderColor:TColor = TColor(Data.get("senderColor"))
-			If Not senderColor Then senderColor = TColor.Create(0,0,0)
-
-			move = GetBitmapFontManager().baseFontBold.DrawSimple(Data.getString("senderName")+":", startX, startY, senderColor.ToSColor8(), EDrawTextEffect.GLOW, 1.0)
+		Local senderName:String = Data.getString("senderName")
+		If senderName
+			Local width:Int = GetBitmapFontManager().baseFontBold.GetWidth(senderName + ":", senderDrawTextEffect)
 			'move the x so we get space between name and text
-			'move the y point 1 pixel as bold fonts are "higher"
-			move = new SVec2I(move.x + 5, 1)
+			move = new SVec2I(width + 5, 0)
 		EndIf
+
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel( GetFirstParentalObject("tguiscrollablepanel") )
 		Local maxWidth:Int
@@ -337,12 +354,11 @@ Type TGUIChatEntry Extends TGUIListItem
 '		maxWidth=295
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local dimension:SVec2I
-		dimension = GetBitmapFontManager().baseFont.DrawBox(GetValue(), startX + move.x, startY + move.y, maxWidth - move.X, maxHeight, sALIGN_LEFT_TOP, SColor8.White, EDrawTextEffect.GLOW, 0.5)
+		Local dimension:SVec2I = GetBitmapFontManager().baseFont.GetBoxDimension(GetValue(), maxWidth - move.X, maxHeight, valueDrawTextEffect)
 		'add padding
 		dimension = new SVec2I(dimension.x, dimension.y + paddingBottom)
 
-'print GetValue()+"     " + dimension.y +"   move.y="+move.Y+"   maxWidth="+maxWidth+"  move.X="+move.X
+		'print "  id="+_id+": " + GetValue()+"    move="+move.x + ", "+move.y + " dimension="+dimension.x+", " + dimension.y +"   maxWidth="+maxWidth+"  paddingBottom="+paddingBottom
 		'set current size and refresh scroll limits of list
 		'but only if something changed (eg. first time or content changed)
 		If rect.getW() <> dimension.x Or rect.getH() <> dimension.y
@@ -351,7 +367,9 @@ Type TGUIChatEntry Extends TGUIListItem
 			'recalculate item positions and scroll limits
 			'-> without multi-line entries would be not completely visible
 			Local list:TGUIListBase = TGUIListBase( GetFirstParentalObject("tguilistbase") )
-			If list Then list.RecalculateElements()
+
+'			If list Then list.RecalculateElements()
+			If list Then list.InvalidateLayout()
 		EndIf
 
 		Return new TVec2D.Init(dimension.x, dimension.y)
