@@ -108,7 +108,7 @@ Type TInGameInterface
 			chat.guiInput.SetMaxTextWidth(255)
 			chat.guiInput.spriteName = "gfx_interface_ingamechat_input"
 			chat.guiInput.color = SColor8AdjustFactor(chat.guiInput.color, 30)
-			chat.guiInput.SetValueDisplacement(3,5)
+			chat.guiInput.SetValueDisplacement(3,3)
 		EndIf
 
 		CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
