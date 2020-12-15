@@ -177,7 +177,11 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		endif
 
 		messageList.scrollItemHeightPercentage = 1.0
-		messageList.SetAutosortItems(False) 'already sorted achievements
+		messageList.SetAutosortItems(False)
+		'alternatively
+			'messageList.SetAutosortItems(True)
+			'use TGUIArchivedMessageListItem.Compare
+			'messageList._autoSortFunction = TGUIListBase.SortByCompare
 		messageList.SetOrientation(GUI_OBJECT_ORIENTATION_Vertical)
 
 
@@ -233,7 +237,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 
 		messageList.RecalculateElements()
 		'refresh scrolling state
-		messageList.SetSize(-1, -1)
+'		messageList.SetSize(-1, -1)
 	End Method
 
 
@@ -360,7 +364,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 		'reposition list
 		if messageList.rect.getX() <> contentX + 5
 			messageList.rect.SetXY(contentX + 5, contentY + 3)
-			messageList.SetSize(contentW - 8, listH - 6)
+			messageList.SetSize(contentW - 8, listH - 7)
 		endif
 		contentY :+ listH
 
@@ -417,6 +421,28 @@ Type TGUIArchivedMessageListItem Extends TGUISelectListItem
 		Return Self
 	End Method
 
+
+	Method Compare:Int(Other:Object)
+		if Other = self then return 0 'no change
+
+		Local otherItem:TGUIArchivedMessageListItem = TGUIArchivedMessageListItem(Other)
+		if not otherItem then return Super.Compare(other)
+		
+
+		Local result:Int = self.message.time - otherItem.message.time
+		If result = 0
+			If self.message.GetTitle() < otherItem.message.GetTitle()
+				Return -1
+			ElseIf self.message.GetTitle() < otherItem.message.GetTitle()
+				Return 1
+			Else
+				Return Super.Compare(other)
+			EndIf
+		EndIf
+		'return descending (newest on top)
+		Return -1 * result
+	End Method
+	
 'rem
 	Method getDimension:TVec2D()
 		'available width is parentsDimension minus startingpoint

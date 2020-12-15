@@ -159,29 +159,34 @@ Type TGUISelectList Extends TGUIListBase
 
 		If doDown
 			'scroll back
-			SetScrollPercentageY(oldScrollPercentageY)
+			'SetScrollPercentageY(oldScrollPercentageY)
 
-			local focusItem:TGUIObject = GetSelectedEntry()
-			if focusItem
-				local currentIndex:Int = GetItemIndex(focusItem)
+			Local focusItem:TGUIObject = GetSelectedEntry()
+			If Not focusItem
+				focusItem = GetItemAtIndex(0)
+			Else
+				Local currentIndex:Int = GetItemIndex(focusItem)
 				focusItem = GetItemAtIndex(currentIndex + 1)				
-				if focusItem
-					SelectEntry(focusItem)
-				EndIf
- 			endif
-			EnsureEntryIsVisible(focusItem)
+			EndIf
+			If focusItem
+				SelectEntry(focusItem)
+				EnsureEntryIsVisible(focusItem)
+			EndIf
 		ElseIf doUp
 			'scroll back
-			SetScrollPercentageY(oldScrollPercentageY)
-			local focusItem:TGUIObject = GetSelectedEntry()
-			if focusItem
+			'SetScrollPercentageY(oldScrollPercentageY)
+
+			Local focusItem:TGUIObject = GetSelectedEntry()
+			If Not focusItem
+				focusItem = GetItemAtIndex(0)
+			Else
 				local currentIndex:Int = GetItemIndex(focusItem)
 				focusItem = GetItemAtIndex(currentIndex - 1)				
-				if focusItem
-					SelectEntry(focusItem)
-				EndIf
- 			endif
-			EnsureEntryIsVisible(focusItem)
+			EndIf
+			If focusItem
+				SelectEntry(focusItem)
+				EnsureEntryIsVisible(focusItem)
+			EndIf
 		EndIf
 	End Method
 End Type

@@ -10,6 +10,7 @@ Import "game.gameobject.bmx"
 Type TArchivedMessageCollection Extends TGameObjectCollection
 	Global _eventListeners:TEventListenerBase[] {nosave}
 	Global _instance:TArchivedMessageCollection
+	Global limitPerPlayer:Int = 100
 
 	Method New()
 		'=== REGISTER EVENTS ===
@@ -35,8 +36,13 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 
 
 	'override
-	Method GetByGUID:TArchivedMessage(GUID:String)
+	Method GetByGUID:TArchivedMessage(GUID:String) override
 		return TArchivedMessage(Super.GetByGUID(GUID))
+	End Method
+
+
+	Method GetByID:TArchivedMessage(ID:Int) override
+		return TArchivedMessage(Super.GetByID(ID))
 	End Method
 
 
@@ -57,7 +63,7 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 
 		'keep count below 100 for each owner
 		if message
-			if GetCountByOwner(message.GetOwner()) > 110 then LimitArchive(100, message.GetOwner())
+			if GetCountByOwner(message.GetOwner()) > (limitPerPlayer + 10) then LimitArchive(limitPerPlayer, message.GetOwner())
 		endif
 
 
@@ -143,6 +149,10 @@ Function GetArchivedMessage:TArchivedMessage(GUID:string)
 	Return TArchivedMessageCollection.GetInstance().GetByGUID(GUID)
 End Function
 
+Function GetArchivedMessage:TArchivedMessage(ID:Int)
+	Return TArchivedMessageCollection.GetInstance().GetByID(ID)
+End Function
+
 
 
 
@@ -199,6 +209,13 @@ Type TArchivedMessage extends TOwnedGameObject
 	End Method
 
 
+	'=== SORT FUNCTIONS ===
+	'default sort by time
+	Method Compare:int(other:object)
+		Return SortByTime(self, other)
+	End Method
+
+	
 	Function SortByGUID:int(o1:Object, o2:Object)
 		Local a1:TArchivedMessage = TArchivedMessage(o1)
 		Local a2:TArchivedMessage = TArchivedMessage(o2)

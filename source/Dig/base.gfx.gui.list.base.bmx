@@ -1006,14 +1006,14 @@ endrem
 	
 	'select lists might ref
 	Method HandleKeyboardInput()
-		If KeyManager.IsDown(KEY_PAGEDOWN)
+		If KeyManager.IsDown(KEY_PAGEUP)
 			Local contentParent:TGUIObject = Self
 			If guiEntriesPanel Then contentParent = guiEntriesPanel
 
 			ScrollEntries(0, contentParent.GetContentScreenRect().GetH())
 '			SetScrollPercentageY(Min(1.0, GetScrollPercentageY() + 0.05))
 		EndIf
-		If KeyManager.IsDown(KEY_PAGEUP)
+		If KeyManager.IsDown(KEY_PAGEDOWN)
 			Local contentParent:TGUIObject = Self
 			If guiEntriesPanel Then contentParent = guiEntriesPanel
 
