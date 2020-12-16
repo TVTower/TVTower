@@ -182,6 +182,39 @@ Type TGUIinput Extends TGUIobject
 	End Method
 
 
+	Method PasteFromClipboard() override
+		'cannot edit at all?
+		if not _editable then Return
+		
+		Local t:String = GetOSClipboard()
+		t = t.Replace("~n", "~~n")
+
+		'only override value if clipboard contained something?
+		if t
+			If not IsFocused()
+				SetValue( t )
+			else
+				_valueChanged = True
+				if _cursorPosition = -1 or _cursorPosition = 0
+					value = t + value
+				elseif _cursorPosition = value.length
+					value = value + t
+				else
+					value = value[.. _cursorPosition] + t + value[_cursorPosition + 1 ..]
+				endif
+			EndIf
+		endif
+	End Method
+
+
+	'called when trying to "ctrl + c"
+	Method CopyToClipboard()
+		Local t:String = GetValue()
+		t = t.Replace("~~n", "~n")
+		SetOSClipboard( t )
+	End Method
+
+
 	'override default update-method
 	Method Update:Int()
 		Super.Update()
