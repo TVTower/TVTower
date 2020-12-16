@@ -147,7 +147,7 @@ Type TGUISelectList Extends TGUIListBase
 	End Method
 	
 
-	Method HandleKeyboardInput() override	
+	Method HandleKeyboardScrolling() override	
 		Local oldScrollPercentageX:Float = GetScrollPercentageX()
 		Local oldScrollPercentageY:Float = GetScrollPercentageY()
 		
@@ -155,8 +155,8 @@ Type TGUISelectList Extends TGUIListBase
 		Local doDown:Int = KeyWrapper.IsPressed(KEY_DOWN)
 		Local doUp:Int = KeyWrapper.IsPressed(KEY_UP)
 
-		Super.HandleKeyboardInput()
-
+		Super.HandleKeyboardScrolling()
+		
 		If doDown
 			'scroll back
 			'SetScrollPercentageY(oldScrollPercentageY)

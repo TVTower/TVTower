@@ -14,6 +14,7 @@ Import "base.util.localization.bmx"
 Import "base.util.registry.bmx"
 Import "base.util.event.bmx"
 Import "base.util.time.bmx"
+Import "base.util.clipboard.bmx"
 Import "base.gfx.tooltip.base.bmx"
 
 Import "base.util.registry.spriteloader.bmx"
@@ -1799,161 +1800,48 @@ Type TGUIobject
 
 		SetStatus(GUI_OBJECT_STATUS_LAYOUT_VALID, True)
 	End Method
+	
+	
+	'called when trying to "ctrl + v"
+	Method PasteFromClipboard()
+		'read via 
+		'local res:String = GetOSClipboard()
+		'alternatively app-only
+		'local data:object = GetAppClipboard()
+		'local source:object = GetAppClipboardSource()
+	End Method
+	
+	'called when trying to "ctrl + c"
+	Method CopyToClipboard()
+		'write via 
+		'SetOSClipboard("hello world")
+		'alternatively
+		'SetAppClipboard(data, source)
+	End Method
 
 
-	Method Draw()
-		_UpdateLayout()
+	Method HandleKeyboard()
+		if IsFocused() or IsHovered()
+			If (KeyManager.IsDown(KEY_LCONTROL) Or KeyManager.IsDown(KEY_RCONTROL))
+				If KeyManager.IsHit(KEY_V)
+					KeyManager.ResetKey(KEY_LCONTROL)
+					KeyManager.ResetKey(KEY_RCONTROL)
+					KeyManager.ResetKey(KEY_V)
 
-		If Not IsVisible() Then Return
-
-		'Local oldCol:SColor8; GetColor(oldCol)
-		Local oldColA:Float = GetAlpha()
-		'tint image if object is disabled
-		If Not(_flags & GUI_OBJECT_ENABLED) Then SetAlpha 0.5 * oldColA
-
-		If _customDraw
-			_customDraw(Self)
-		Else
-			If _customDrawBackground
-				_customDrawBackground(Self)
-			Else
-				DrawBackground()
+					PasteFromClipboard()
+				ElseIf KeyManager.IsHit(KEY_C)
+					KeyManager.ResetKey(KEY_LCONTROL)
+					KeyManager.ResetKey(KEY_RCONTROL)
+					KeyManager.ResetKey(KEY_C)
+					
+					CopyToClipboard()
+				EndIf
 			EndIf
-
-			If _customDrawContent
-				_customDrawContent(Self)
-			Else
-				DrawContent()
-			EndIf
-
-			If _customDrawChildren
-				_customDrawChildren(Self)
-			Else
-				DrawChildren()
-			EndIf
-
-			If _customDrawOverlay
-				_customDrawOverlay(Self)
-			Else
-				DrawOverlay()
-			EndIf
-		EndIf
-
-		If Not(_flags & GUI_OBJECT_ENABLED) Then SetAlpha oldColA
-
-		'=== HANDLE TOOLTIP ===
-		If Not _customDraw
-			DrawTooltips()
 		EndIf
 	End Method
-
-
-	'has to get implemented in each widget
-	Method DrawContent() Abstract
-
-
-	Method DrawBackground()
-		'
-	End Method
-
-
-	Method DrawOverlay()
-		'
-	End Method
-
-
-	'used when an item is eg. dragged
-	Method DrawGhost()
-		Local oldAlpha:Float = GetAlpha()
-		'by default a shaded version of the gui element is drawn at the original position
-		SetOption(GUI_OBJECT_IGNORE_POSITIONMODIFIERS, True)
-		SetOption(GUI_OBJECT_DRAWMODE_GHOST, True)
-		SetAlpha ghostAlpha * oldAlpha
-		Draw()
-		SetAlpha oldAlpha
-		SetOption(GUI_OBJECT_IGNORE_POSITIONMODIFIERS, False)
-		SetOption(GUI_OBJECT_DRAWMODE_GHOST, False)
-	End Method
-
-
-	Method DrawChildren:Int()
-		If Not _children Then Return False
-
-		'skip children if self not visible
-		If Not IsVisible() Then Return False
-
-		'draw children
-		For Local obj:TGUIobject = EachIn _children
-			'before skipping a dragged one, we try to ask it as a ghost (at old position)
-			If obj.isDragged() Then obj.drawGhost()
-			'skip dragged ones - as we set them to managed by GUIManager for that time
-			If obj.isDragged() Then Continue
-
-			'skip invisible objects
-			If Not obj.IsVisible() Then Continue
-
-			'tint image if object is disabled
-'			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 0.5*GetAlpha()
-			obj.draw()
-			'tint image if object is disabled
-'			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 2.0*GetAlpha()
-
-			'fire event
-			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", Null, obj ) )
-		Next
-	End Method
-
-
-	Method DrawTooltips:Int()
-		'skip children if self not visible
-		If Not IsVisible() Then Return False
-
-		If _children
-			'draw children
-			For Local obj:TGUIobject = EachIn _children
-				obj.DrawTooltips()
-			Next
-		EndIf
-
-		If _tooltip And Not hasOption(GUI_OBJECT_MANAGED) And Not hasOption(GUI_OBJECT_DRAGGED) And hasOption(GUI_OBJECT_TOOLTIP_MANAGED)
-			_tooltip.Render()
-		EndIf
-	End Method
-
-
-	Method Update:Int()
-		_UpdateLayout()
-		If IsDragged() Then InvalidateScreenRect()
-
-		'if appearance changed since last update tick: inform widget
-		'Attention: this is also called via GUIManager.Update()/Draw()
-		'           but we just do it here too, in case you manually update
-		'           the widget (important: this does not resolve the issue
-		'           if child elements have changed appearance too)
-		If isAppearanceChanged()
-			onAppearanceChanged()
-			SetAppearanceChanged(False)
-		EndIf
-
-
-		'skip handling disabled entries
-		'(eg. deactivated scrollbars which else would "hover" before
-		' list items on the same spot)
-		If Not IsEnabled() Then Return False
-
-		'do not handle invisible elements
-		If Not IsVisible() Then Return False
-
-
-		'to recognize clicks/hovers/actions on child elements:
-		'ask them first!
-		UpdateChildren()
-
-
-
-		If GUIManager._ignoreMouse Then Return False
-
-
+	
+	
+	Method HandleMouse()
 		'=== HANDLE MOUSE ===
 		If Not GUIManager.UpdateState_mouseButtonDown[1]
 			mouseIsDown	= Null
@@ -2151,6 +2039,162 @@ Type TGUIobject
 				EndIf
 			EndIf
 		EndIf
+	End Method
+
+
+	Method Draw()
+		_UpdateLayout()
+
+		If Not IsVisible() Then Return
+
+		'Local oldCol:SColor8; GetColor(oldCol)
+		Local oldColA:Float = GetAlpha()
+		'tint image if object is disabled
+		If Not(_flags & GUI_OBJECT_ENABLED) Then SetAlpha 0.5 * oldColA
+
+		If _customDraw
+			_customDraw(Self)
+		Else
+			If _customDrawBackground
+				_customDrawBackground(Self)
+			Else
+				DrawBackground()
+			EndIf
+
+			If _customDrawContent
+				_customDrawContent(Self)
+			Else
+				DrawContent()
+			EndIf
+
+			If _customDrawChildren
+				_customDrawChildren(Self)
+			Else
+				DrawChildren()
+			EndIf
+
+			If _customDrawOverlay
+				_customDrawOverlay(Self)
+			Else
+				DrawOverlay()
+			EndIf
+		EndIf
+
+		If Not(_flags & GUI_OBJECT_ENABLED) Then SetAlpha oldColA
+
+		'=== HANDLE TOOLTIP ===
+		If Not _customDraw
+			DrawTooltips()
+		EndIf
+	End Method
+
+
+	'has to get implemented in each widget
+	Method DrawContent() Abstract
+
+
+	Method DrawBackground()
+		'
+	End Method
+
+
+	Method DrawOverlay()
+		'
+	End Method
+
+
+	'used when an item is eg. dragged
+	Method DrawGhost()
+		Local oldAlpha:Float = GetAlpha()
+		'by default a shaded version of the gui element is drawn at the original position
+		SetOption(GUI_OBJECT_IGNORE_POSITIONMODIFIERS, True)
+		SetOption(GUI_OBJECT_DRAWMODE_GHOST, True)
+		SetAlpha ghostAlpha * oldAlpha
+		Draw()
+		SetAlpha oldAlpha
+		SetOption(GUI_OBJECT_IGNORE_POSITIONMODIFIERS, False)
+		SetOption(GUI_OBJECT_DRAWMODE_GHOST, False)
+	End Method
+
+
+	Method DrawChildren:Int()
+		If Not _children Then Return False
+
+		'skip children if self not visible
+		If Not IsVisible() Then Return False
+
+		'draw children
+		For Local obj:TGUIobject = EachIn _children
+			'before skipping a dragged one, we try to ask it as a ghost (at old position)
+			If obj.isDragged() Then obj.drawGhost()
+			'skip dragged ones - as we set them to managed by GUIManager for that time
+			If obj.isDragged() Then Continue
+
+			'skip invisible objects
+			If Not obj.IsVisible() Then Continue
+
+			'tint image if object is disabled
+'			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 0.5*GetAlpha()
+			obj.draw()
+			'tint image if object is disabled
+'			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 2.0*GetAlpha()
+
+			'fire event
+			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", Null, obj ) )
+		Next
+	End Method
+
+
+	Method DrawTooltips:Int()
+		'skip children if self not visible
+		If Not IsVisible() Then Return False
+
+		If _children
+			'draw children
+			For Local obj:TGUIobject = EachIn _children
+				obj.DrawTooltips()
+			Next
+		EndIf
+
+		If _tooltip And Not hasOption(GUI_OBJECT_MANAGED) And Not hasOption(GUI_OBJECT_DRAGGED) And hasOption(GUI_OBJECT_TOOLTIP_MANAGED)
+			_tooltip.Render()
+		EndIf
+	End Method
+
+
+	Method Update:Int()
+		_UpdateLayout()
+		If IsDragged() Then InvalidateScreenRect()
+
+		'if appearance changed since last update tick: inform widget
+		'Attention: this is also called via GUIManager.Update()/Draw()
+		'           but we just do it here too, in case you manually update
+		'           the widget (important: this does not resolve the issue
+		'           if child elements have changed appearance too)
+		If isAppearanceChanged()
+			onAppearanceChanged()
+			SetAppearanceChanged(False)
+		EndIf
+
+
+		'skip handling disabled entries
+		'(eg. deactivated scrollbars which else would "hover" before
+		' list items on the same spot)
+		If Not IsEnabled() Then Return False
+
+		'do not handle invisible elements
+		If Not IsVisible() Then Return False
+
+
+		'to recognize clicks/hovers/actions on child elements:
+		'ask them first!
+		UpdateChildren()
+
+
+
+		If not GUIManager._ignoreMouse Then HandleMouse()
+		'react to some special keys
+		HandleKeyboard()
 
 
 		'=== HANDLE TOOLTIP ===

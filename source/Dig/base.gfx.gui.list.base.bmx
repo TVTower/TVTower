@@ -1004,8 +1004,7 @@ endrem
 	End Method
 	
 	
-	'select lists might ref
-	Method HandleKeyboardInput()
+	Method HandleKeyboardScrolling()
 		If KeyWrapper.IsPressed(KEY_PAGEUP)
 			Local contentParent:TGUIObject = Self
 			If guiEntriesPanel Then contentParent = guiEntriesPanel
@@ -1045,16 +1044,22 @@ endrem
 			ScrollEntries(0, +scrollAmount)
 		EndIf
 	End Method
+	
+	
+	Method HandleKeyboard() override
+		Super.HandleKeyboard()
+		
+		'react if "activated" or no other element was focused but this
+		'is hovered
+		If IsFocused() or (not GUIManager.GetFocus() and IsHovered())
+			HandleKeyBoardScrolling()
+		EndIf
+	End Method
 
 
 	'override default update-method
 	Method Update:Int()
 		Super.Update()
-
-
-		'react to some special keys
-		If IsFocused() Then HandleKeyboardInput()
-
 
 		'enable/disable buttons of scrollers if they reached the
 		'limits of the scrollable panel
