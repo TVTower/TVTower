@@ -1382,8 +1382,8 @@ endrem
 			EndIf
 			openEscapeMenuViaInterface = False
 		EndIf
-		'Force-quit with CTRL+C
-		If KeyManager.IsDown(KEY_LCONTROL) And KeyManager.IsHit(KEY_C)
+		'Force-quit with CTRL+Q (ctrl+C is already "copy"
+		If KeyManager.IsDown(KEY_LCONTROL) And KeyManager.IsHit(KEY_Q)
 			TApp.ExitApp = True
 		EndIf
 
