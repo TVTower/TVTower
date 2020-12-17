@@ -209,7 +209,9 @@ Type TGUIinput Extends TGUIobject
 
 	'called when trying to "ctrl + c"
 	Method CopyToClipboard()
-		Local t:String = GetValue()
+		'GetCurrentValue() returns value as displayed
+		'GetValue() returns the "old value" until an edit was finished
+		Local t:String = GetCurrentValue()
 		t = t.Replace("~~n", "~n")
 		SetOSClipboard( t )
 	End Method
