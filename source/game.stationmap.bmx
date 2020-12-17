@@ -3040,6 +3040,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		return stationMap.GetReachLevel(actualCurrentReach) < stationMap.GetReachLevel(actualCurrentReach + estimatedReachIncrease)
 	End Method
 
+
 	Method DrawInfoTooltip()
 		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(GetSectionName())
 		Local showPermissionPriceText:Int

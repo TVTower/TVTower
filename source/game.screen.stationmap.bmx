@@ -2651,12 +2651,9 @@ Type TScreenHandler_StationMap
 			GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
 
 			If actionMode = MODE_BUY_CABLE_NETWORK_UPLINK
-				For Local station:TStationBase = EachIn GetStationMap(room.owner).Stations
-					If mouseoverStation.GetSectionName() = station.GetSectionName()
-						GetGameBase().SetCursor(TGameBase.CURSOR_STOP, TGameBase.CURSOR_EXTRA_FORBIDDEN)
-						Exit
-					EndIf
-				Next
+				if mouseoverStation.HasFlag(TVTStationFlag.PAID)
+					GetGameBase().SetCursor(TGameBase.CURSOR_STOP, TGameBase.CURSOR_EXTRA_FORBIDDEN)
+				EndIf
 			EndIf
 		endif
 
@@ -2866,13 +2863,25 @@ endrem
 					Local cableNetwork:TStationMap_CableNetwork = GetStationMapCollection().GetFirstCableNetworkBySectionName(mouseoverSection.name)
 					If cableNetwork And cableNetwork.IsLaunched()
 						mouseoverStationPosition = MouseManager.GetPosition().Copy()
-						mouseoverStation = GetStationMap(room.owner).GetTemporaryCableNetworkUplinkStationByCableNetwork( cableNetwork )
-						mouseoverStation.refreshData()
-						'refresh state information
-						'DO NOT TRUST: Brandenburg's center is berlin - leading
-						'              to sectionname = berlin
-						mouseOverStation.sectionName = mouseoverSection.name
-						'mouseoverStation.GetSectionName(true)
+						
+						mouseoverStation = Null
+						
+						'do we already have one?
+						For local station:TStationCableNetworkUplink = EachIn GetStationMap(room.owner).stations
+							if station.providerGUID = cableNetwork.getGUID()
+								mouseoverStation = station
+								exit
+							endif
+						Next
+						if not mouseoverstation
+							mouseoverStation = GetStationMap(room.owner).GetTemporaryCableNetworkUplinkStationByCableNetwork( cableNetwork )
+							mouseoverStation.refreshData()
+							'refresh state information
+							'DO NOT TRUST: Brandenburg's center is berlin - leading
+							'              to sectionname = berlin
+							mouseOverStation.sectionName = mouseoverSection.name
+							'mouseoverStation.GetSectionName(true)
+						endif
 					'remove cache
 					Else
 						mouseoverStation = Null
