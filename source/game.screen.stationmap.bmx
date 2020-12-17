@@ -2649,6 +2649,15 @@ Type TScreenHandler_StationMap
 
 		if mouseoverStation ' or selectedStation
 			GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
+
+			If actionMode = MODE_BUY_CABLE_NETWORK_UPLINK
+				For Local station:TStationBase = EachIn GetStationMap(room.owner).Stations
+					If mouseoverStation.GetSectionName() = station.GetSectionName()
+						GetGameBase().SetCursor(TGameBase.CURSOR_STOP, TGameBase.CURSOR_EXTRA_FORBIDDEN)
+						Exit
+					EndIf
+				Next
+			EndIf
 		endif
 
 

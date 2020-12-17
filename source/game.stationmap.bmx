@@ -2630,7 +2630,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method HasFlag:Int(flag:Int)
-		Return _flags & flag
+		Return (_flags & flag) <> 0
 	End Method
 
 
@@ -3043,18 +3043,29 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	Method DrawInfoTooltip()
 		Local section:TStationMapSection = GetStationMapCollection().GetSectionByName(GetSectionName())
 		Local showPermissionPriceText:Int
-		Local cantGetSectionPermissionReason:Int
-		Local cantGetProviderPermissionReason:Int = CanSubscribeToProvider(1)
-		Local nextReachLevelProbable:Int = NextReachLevelProbable(owner, GetExclusiveReach())
-		if section And section.NeedsBroadcastPermission(owner, stationType)
-			showPermissionPriceText = not section.HasBroadcastPermission(owner, stationType)
-			cantGetSectionPermissionReason = section.CanGetBroadcastPermission(owner)
+		Local cantGetSectionPermissionReason:Int = 1
+		Local cantGetProviderPermissionReason:Int = 1
+		Local isNextReachLevelProbable:Int = False
+		Local showPriceInformation:Int = True
+
+		if not HasFlag(TVTStationFlag.PAID)
+			cantGetProviderPermissionReason = CanSubscribeToProvider(1)
+			isNextReachLevelProbable = NextReachLevelProbable(owner, GetExclusiveReach())
+
+			if section And section.NeedsBroadcastPermission(owner, stationType)
+				showPermissionPriceText = not section.HasBroadcastPermission(owner, stationType)
+				cantGetSectionPermissionReason = section.CanGetBroadcastPermission(owner)
+			endif
 		endif
+			
 
 		Local priceSplitH:int = 8
 		Local textH:Int =  GetBitmapFontManager().baseFontBold.getHeight( "Tg" )
 		Local tooltipW:Int = 190
-		Local tooltipH:Int = textH * 3 + 10 + 5 + pricesplitH
+		Local tooltipH:Int = textH * 3 + 10 + 5
+
+		If showPriceInformation Then tooltipH :+ priceSplitH
+
 		'show build time?
 		If GetConstructionTime() > 0 then tooltipH :+ textH
 		'display increase?
@@ -3068,9 +3079,9 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			tooltipH :+ 2*textH
 		EndIf
 		'warn about potential reach level increase?
-		If nextReachLevelProbable Then tooltipH :+ textH
+		If isNextReachLevelProbable Then tooltipH :+ textH
 
-		If showPermissionPriceText > 0 or cantGetSectionPermissionReason <= 0 or nextReachLevelProbable
+		If showPermissionPriceText > 0 or cantGetSectionPermissionReason <= 0 or isNextReachLevelProbable
 			tooltipW :+ 40
 		EndIf
 
@@ -3128,33 +3139,35 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			textY:+ textH
 		EndIf
 
-		textY:+ priceSplitH
+		if showPriceInformation
+			textY:+ priceSplitH
 
-		local totalPrice:int
-		if not showPermissionPriceText
-			'always request the _current_ (refreshed) price
-			totalPrice = GetBuyPrice()
-		else
-			font.Draw(GetTypeName()+": ", textX, textY)
-			fontBold.DrawBox(TFunctions.DottedValue(GetBuyPrice()) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
-			textY:+ textH
+			local totalPrice:int
+			if not showPermissionPriceText
+				'always request the _current_ (refreshed) price
+				totalPrice = GetBuyPrice()
+			else
+				font.Draw(GetTypeName()+": ", textX, textY)
+				fontBold.DrawBox(TFunctions.DottedValue(GetBuyPrice()) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
+				textY:+ textH
 
-			font.Draw(GetLocale("BROADCAST_PERMISSION")+": ", textX, textY)
-			fontBold.DrawBox(TFunctions.DottedValue(section.GetBroadcastPermissionPrice(owner, stationType)) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
-			textY:+ textH
+				font.Draw(GetLocale("BROADCAST_PERMISSION")+": ", textX, textY)
+				fontBold.DrawBox(TFunctions.DottedValue(section.GetBroadcastPermissionPrice(owner, stationType)) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
+				textY:+ textH
 
-			'always request the _current_ (refreshed) price
-			totalPrice = GetStationMap(owner).GetTotalStationBuyPrice(self)
+				'always request the _current_ (refreshed) price
+				totalPrice = GetStationMap(owner).GetTotalStationBuyPrice(self)
+			endif
+
+			font.Draw(GetLocale("PRICE")+": ", textX, textY)
+			if not GetPlayerFinance(owner).CanAfford(totalPrice)
+				fontBold.DrawBox(TFunctions.DottedValue(totalPrice) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, new SColor8(255,150,150))
+			else
+				fontBold.DrawBox(TFunctions.DottedValue(totalPrice) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
+			endif
 		endif
 
-		font.Draw(GetLocale("PRICE")+": ", textX, textY)
-		if not GetPlayerFinance(owner).CanAfford(totalPrice)
-			fontBold.DrawBox(TFunctions.DottedValue(totalPrice) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, new SColor8(255,150,150))
-		else
-			fontBold.DrawBox(TFunctions.DottedValue(totalPrice) + " " + GetLocale("CURRENCY"), textX, textY-1, textW, 20, sALIGN_RIGHT_TOP, SColor8.White)
-		endif
-
-		if nextReachLevelProbable
+		if isNextReachLevelProbable
 			textY:+ textH
 			SetColor 255,150,150
 			font.Draw(GetLocale("AUDIENCE_REACH_LEVEL_WILL_INCREASE"), textX, textY)
