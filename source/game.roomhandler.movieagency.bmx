@@ -1194,6 +1194,8 @@ endrem
 		If hoveredGuiProgrammeLicence
 			if hoveredGuiProgrammeLicence.IsDragged()
 				GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+			elseif not hoveredGuiProgrammeLicence.licence.IsTradeable()
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL, TGameBase.CURSOR_EXTRA_FORBIDDEN)
 			elseif hoveredGuiProgrammeLicence.licence.owner = GetPlayerBase().playerID or GetPlayerBase().getFinance().canAfford(hoveredGuiProgrammeLicence.licence.getPriceForPlayer( GetPlayerBase().playerID ))
 				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL)
 			else
