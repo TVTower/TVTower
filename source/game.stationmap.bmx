@@ -3047,11 +3047,12 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		Local cantGetSectionPermissionReason:Int = 1
 		Local cantGetProviderPermissionReason:Int = 1
 		Local isNextReachLevelProbable:Int = False
-		Local showPriceInformation:Int = True
+		Local showPriceInformation:Int = False
 
 		if not HasFlag(TVTStationFlag.PAID)
 			cantGetProviderPermissionReason = CanSubscribeToProvider(1)
 			isNextReachLevelProbable = NextReachLevelProbable(owner, GetExclusiveReach())
+			showPriceInformation = True
 
 			if section And section.NeedsBroadcastPermission(owner, stationType)
 				showPermissionPriceText = not section.HasBroadcastPermission(owner, stationType)
