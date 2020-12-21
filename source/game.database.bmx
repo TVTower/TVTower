@@ -489,18 +489,27 @@ Type TDatabaseLoader
 			'=== DATA ===
 			Local nodeData:TxmlNode = xml.FindChild(node, "data")
 			data = New TData
-			xml.LoadValuesToData(nodeData, data, [..
-				"skill", "fame", "scandalizing", "price_mod", ..
-				"power", "humor", "charisma", "appearance", ..
-				"topgenre1", "topgenre2", "prominence"..
-			])
-			pd.skill = 0.01 * data.GetFloat("skill", 100*pd.skill)
-			pd.fame = 0.01 * data.GetFloat("fame", 100*pd.fame)
-			pd.scandalizing = 0.01 * data.GetFloat("scandalizing", 100*pd.scandalizing)
-			pd.power = 0.01 * data.GetFloat("power", 100*pd.power)
-			pd.humor = 0.01 * data.GetFloat("humor", 100*pd.humor)
-			pd.charisma = 0.01 * data.GetFloat("charisma", 100*pd.charisma)
-			pd.appearance = 0.01 * data.GetFloat("appearance", 100*pd.appearance)
+			local attributeKeys:String[] = new String[TVTPersonPersonalityAttribute.count * 3]
+			local attributeIndex:int = 0
+			For local i:int = 1 to TVTPersonPersonalityAttribute.count
+				local attributeID:Int = TVTPersonPersonalityAttribute.GetAtIndex(i)
+				attributeKeys[attributeIndex + 0] = TVTPersonPersonalityAttribute.GetAsString(attributeID)
+				attributeKeys[attributeIndex + 1] = attributeKeys[attributeIndex + 0] + "_min"
+				attributeKeys[attributeIndex + 2] = attributeKeys[attributeIndex + 0] + "_max"
+				attributeIndex :+ 3
+			Next
+
+			xml.LoadValuesToData(nodeData, data, attributeKeys + [ "price_mod", "topgenre1", "topgenre2", "prominence" ])
+			For local i:int = 1 to TVTPersonPersonalityAttribute.count
+				Local attributeID:Int = TVTPersonPersonalityAttribute.GetAtIndex(i)
+				'for now we only load "generic" information, not "attribute-job-genre" combinations
+				'this also generates random attributes if not done yet
+				Local attribute:TPersonPersonalityAttribute = pd.GetAttributes().GetAttribute(attributeID, -1, -1)
+				'now override accordingly
+				attribute.SetMin( 0.01 * data.GetFloat(TVTPersonPersonalityAttribute.GetAsString(attributeID)+"_min", 100 * attribute.GetMin()) )
+				attribute.SetMax( 0.01 * data.GetFloat(TVTPersonPersonalityAttribute.GetAsString(attributeID)+"_max", 100 * attribute.GetMax()) )
+				attribute.Set( 0.01 * data.GetFloat(TVTPersonPersonalityAttribute.GetAsString(attributeID), 100 * attribute.Get()) )
+			Next
 			if TPersonProductionData(person.GetProductionData())
 				TPersonProductionData(person.GetProductionData()).topGenre = data.GetInt("topgenre", TPersonProductionData(person.GetProductionData()).topGenre)
 			EndIf
@@ -510,7 +519,7 @@ Type TDatabaseLoader
 			person.GetProductionData().priceModifier = 0.01 * data.GetFloat("price_mod", 100*person.GetProductionData().priceModifier)
 
 			'fill not given attributes with random data
-			If person.IsFictional() Then pd.SetRandomAttributes(True)
+			If person.IsFictional() Then pd.InitAttributes()
 		EndIf
 
 

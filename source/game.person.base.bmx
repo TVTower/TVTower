@@ -1,5 +1,6 @@
 SuperStrict
 Import Brl.ObjectList
+Import "Dig/base.util.longmap.bmx"
 Import "Dig/external/string_comp.bmx"
 Import "Dig/base.util.string.bmx"
 Import "Dig/base.util.localization.bmx"
@@ -601,8 +602,8 @@ Type TPersonBase Extends TGameObject
 	End Method
 	
 	
-	Method GetPersonalityAttribute:Float(attributeID:Int)
-		Return GetPersonalityData().GetAttribute(attributeID)
+	Method GetPersonalityAttribute:Float(attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+		Return GetPersonalityData().GetAttributeValue(attributeID, jobID, genreID)
 	End Method
 
 
@@ -904,26 +905,334 @@ End Type
 
 
 
+
+Type TPersonPersonalityAttribute
+	Field value:Float = 0.0
+	Field minValue:Float = 0.0
+	Field maxValue:Float = 1.0
+	
+	Method New(value:Float, minValue:Float = 0.0, maxValue:Float = 1.0)
+		Initialize(value, minValue, maxValue)
+	End Method
+
+
+	Method Initialize:TPersonPersonalityAttribute(value:Float, minValue:Float, maxValue:Float)
+		self.value = value
+		self.minValue = minValue
+		self.maxValue = maxValue
+		
+		Return self
+	End Method
+	
+	
+	Method Copy:TPersonPersonalityAttribute()
+		Return New TPersonPersonalityAttribute.Initialize(value, minValue, maxValue)
+	End Method
+	
+
+	Method Reset:TPersonPersonalityAttribute()
+		value = 0
+		minValue = 0
+		maxValue = 1.0
+		Return Self
+	End Method
+
+
+	Method SetRandomMin:TPersonPersonalityAttribute(minimum:Float, maximum:Float, bias:Float=0.5)
+		self.minValue = 0.01 * BiasedRandRange(Int(100 * minimum), Int(100 * maximum), bias)
+		Return self
+	End Method
+
+
+	Method SetRandomMax:TPersonPersonalityAttribute(minimum:Float, maximum:Float, bias:Float=0.5)
+		self.maxValue = 0.01 * BiasedRandRange(Int(100 * minimum), Int(100 * maximum), bias)
+		Return self
+	End Method
+
+
+	Method SetRandom:TPersonPersonalityAttribute(bias:Float=0.5)
+		self.value = 0.01 * BiasedRandRange(Int(100 * minValue), Int(100 * maxValue), bias)
+		Return self
+	End Method
+
+
+	Method SetMin:TPersonPersonalityAttribute(minimum:Float)
+		self.minValue = minimum
+		Return self
+	End Method
+
+
+	Method SetMax:TPersonPersonalityAttribute(maximum:Float)
+		self.maxValue = maximum
+		Return self
+	End Method
+
+
+	Method GetMin:Float()
+		Return minValue
+	End Method
+
+
+	Method GetMax:Float()
+		Return maxValue
+	End Method
+	
+	
+	Method Get:Float()
+		Return value
+	End Method
+	
+	
+	Method Set:TPersonPersonalityAttribute(value:Float, ignoreLimits:Int = False)
+		if not ignoreLimits
+			self.value = Float(Min( Max(minValue, value), maxValue))
+		Else
+			self.value = value
+		EndIf
+		Return Self
+	End Method
+	
+	
+	Method Multiply:TPersonPersonalityAttribute(multiplier:Float)
+		value = Min( Max(minValue, value * multiplier), maxValue )
+		Return Self
+	End Method
+
+
+	Method Add:TPersonPersonalityAttribute(summand:Float)
+		value = Min( Max(minValue, value + summand), maxValue )
+		Return Self
+	End Method
+
+
+	Method SerializeTPersonPersonalityAttributeToString:string()
+		return value + " " + minValue + " " + maxValue
+	End Method
+
+
+	Method DeSerializeTPersonPersonalityAttributeFromString(text:String)
+		local vars:string[] = text.split(" ")
+		if vars.length > 0 then value = Float(vars[0])
+		if vars.length > 1 then minValue = Float(vars[1])
+		if vars.length > 2 then maxValue = Float(vars[2])
+	End Method
+End Type
+
+
+
+
+Type TPersonPersonalityAttributes
+	'core attributes (ignoring job, genre ...)
+	Field attributes:TPersonPersonalityAttribute[]
+	'individual attributes (for attribute-job-genre combinations)
+	Field individualAttributes:TLongMap
+
+rem
+	SKILL:
+		income +, reviews +++, bonus in some genres (drama!)
+	    directors, musicians: how good is he doing his "craftmanships"
+	POWER:
+		income +, speed +++, bonus in some genres (action)
+	HUMOR:
+		income +, speed +++, bonus in some genres (comedy)
+	CHARISMA:
+		income +, reviews ++, bonus in some genres (love, drama, comedy)
+	APPEARANCE:
+		income ++, speed +, bonus in some genres (erotic, love, action)
+	FAME:
+		income +++
+		how famous is this person?
+	SCANDALIZING:
+		of interest for shows or special events / trigger for news / 0-1.0
+endrem
+
+	
+	Method New()
+		'"basic" attributes always have to exist 
+		attributes = new TPersonPersonalityAttribute[ TVTPersonPersonalityAttribute.count ]
+		For local i:int = 0 until attributes.length
+			attributes[i] = new TPersonPersonalityAttribute(0, 0, 1.0)
+		Next
+	End Method
+	
+	
+	Method Copy:TPersonPersonalityAttributes()
+		local c:TPersonPersonalityAttributes = new TPersonPersonalityAttributes()
+		if self.attributes
+			c.attributes = new TPersonPersonalityAttribute[ self.attributes.length ]
+			For local i:int = 0 until c.attributes.length
+				c.attributes[i] = self.attributes[i].Copy()
+			Next
+		endif
+		if self.individualAttributes
+			'ensure we only create a map if not empty...
+			'so check in the loop
+			For local key:TLongKey = EachIn self.individualAttributes.Keys()
+				if not c.individualAttributes then c.individualAttributes = new TLongMap
+				
+				local p:TPersonPersonalityAttribute = TPersonPersonalityAttribute(self.individualAttributes.ValueForKey(key.value))
+				if p Then c.individualAttributes.Insert(key.value, p.Copy())
+			Next
+		endif
+	End Method
+
+
+	Method GetAttribute:TPersonPersonalityAttribute(attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+		if jobID = -1 and genreID = -1
+			Return attributes[attributeID-1]
+		else
+			if individualAttributes 
+				Local key:Long = _GetKey(attributeID, jobID, genreID)
+				Return TPersonPersonalityAttribute( individualAttributes.ValueForKey(key) )
+			EndIf
+		endif
+		Return Null
+	End Method
+
+
+	Method SetAttribute(attribute:TPersonPersonalityAttribute, attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+		if jobID = -1 and genreID = -1
+			attributes[attributeID-1] = attribute
+		else
+			if not individualAttributes then individualAttributes = new TLongMap
+			Local key:Long = _GetKey(attributeID, jobID, genreID)
+			individualAttributes.Insert(key, attribute)
+		endif
+	End Method
+
+	
+	Method GetAttributeValue:Float(attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+		local a:TPersonPersonalityAttribute = GetAttribute(attributeID, jobID, genreID)
+		If a
+			Return a.Get()
+		Else
+			Return 0
+		EndIf
+	End Method
+
+	
+	Method SetAttributeValue(value:Float, attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+		if jobID = -1 and genreID = -1
+			attributes[attributeID-1].Set(value)
+		else
+			if not individualAttributes then individualAttributes = new TLongMap
+
+			Local key:Long = _GetKey(attributeID, jobID, genreID)
+			Local attribute:TPersonPersonalityAttribute = TPersonPersonalityAttribute(individualAttributes.ValueForKey(key))
+			If not attribute 
+				attribute = new TPersonPersonalityAttribute
+				SetAttribute(attribute, attributeID, jobID, genreID)
+			EndIf
+			
+			attribute.Set(value)
+		Endif
+	End Method
+	
+	
+	Method _GetKey:Long(attributeID:Int, jobID:Int, genreID:Int)
+		'so key is now "long" - allowing for 64 bits to pack numbers
+		'- attribute:  8 bit (0-255)    -- 4bit would be enough too)
+		'- genre    : 12 bit (0-4095)   -- albeit we only use <999 for now)
+		'- job      : 32 bit            -- up to 32 job flags)
+		'- ? ... 12 bits left for other elements
+		
+		Return Long(attributeID) Shl 56 | Long(genreID) Shl 44 | Long(jobID) Shl 12
+
+		'if there were no more jobs.. we could fit them into an integer
+		'attributeID = 0-15 = 2^4 = 4 bit
+		'genreID = 0 - 4096 = 2^12= 12 bit
+		'jobID = 0 - 65335 = 2^16
+		'Return (attributeID) Shl 28 | Long(genreID) Shl 16 | Long(jobID)
+	End Method
+	
+
+	Method _UnpackKey(key:Long, attributeID:Int Var, jobID:Int Var, genreID:Int Var)
+		'$F   =  4 bit
+		'$FF  =  8 bit
+		'$FFF = 12 bit
+		'$FFFF= 16 bit ...
+		'Print "attributeID: " + ((key Shr 56) & $FF)
+		'Print "genreID:     " + ((key Shr 44) & $FFF)
+		'Print "jobID:       " + ((key Shr 12) & $FFFFFF)
+
+		attributeID = ((key Shr 56) & $FF)
+		jobID       = ((key Shr 44) & $FFF)
+		genreID     = ((key Shr 12) & $FFFFFF)
+	End Method
+
+
+	Method RandomizeAttribute(attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+		Local attribute:TPersonPersonalityAttribute = GetAttribute(attributeID, jobID, genreID)
+		If not attribute 
+			attribute = new TPersonPersonalityAttribute
+			SetAttribute(attribute, attributeID, jobID, genreID)
+		EndIf
+
+		'for now base has the same initialization values than individual
+		'attribute-job-genre combinations
+		
+		Select attributeID	
+			Case TVTPersonPersonalityAttribute.SKILL
+				attribute.SetRandomMin(0.05, 0.15).SetRandomMax(0.60, 0.85, 0.2).SetRandom(0.25)
+
+			Case TVTPersonPersonalityAttribute.POWER
+				attribute.SetRandomMin(0.05, 0.15).SetRandomMax(0.65, 0.90).SetRandom(0.35)
+				
+			Case TVTPersonPersonalityAttribute.HUMOR
+				attribute.SetRandomMin(0.05, 0.15).SetRandomMax(0.70, 0.90, 0.2).SetRandom(0.35)
+		
+			Case TVTPersonPersonalityAttribute.CHARISMA
+				attribute.SetRandomMin(0.05, 0.15).SetRandomMax(0.60, 0.90, 0.1).SetRandom(0.30)
+
+			'given at birth (or by a doctor :-))
+			Case TVTPersonPersonalityAttribute.APPEARANCE
+				attribute.SetRandomMin(0.05, 0.15).SetRandomMax(0.65, 0.90, 0.2).SetRandom(0.35)
+
+			
+			'things which might change later on
+			Case TVTPersonPersonalityAttribute.FAME
+				'set a random value between 0 and 25
+				attribute.SetRandomMin(0.00, 0.15, 0.2).SetMax(0.25).SetRandom(0.2).SetMax(0.75)
+				'the beautiful tend to have more fame (poster boys and girls)
+				attribute.Multiply(1 + 0.15 * GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE))
+
+			Case TVTPersonPersonalityAttribute.SCANDALIZING
+				'set a random value between 0 and 25
+				attribute.SetRandomMin(0,15, 0.2).SetMax(0.25).SetRandom(0.2).SetMax(0.75)
+				'the beautiful tend to be more scandalizing (up to +10%)
+				attribute.Multiply(1 + 0.10 * GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE))
+		End Select
+	End Method
+
+
+	Method RandomizeAttributes:Int(onlyEmpty:Int = False)
+		'reset attributes, so they get all refilled
+		If Not onlyEmpty
+			For local i:int = 0 until attributes.length
+				attributes[i].Reset()
+			Next
+		EndIf
+
+		'base values
+		If GetAttributeValue(TVTPersonPersonalityAttribute.SKILL) = 0 Then RandomizeAttribute(TVTPersonPersonalityAttribute.SKILL)
+		If GetAttributeValue(TVTPersonPersonalityAttribute.POWER) = 0 Then RandomizeAttribute(TVTPersonPersonalityAttribute.POWER)
+		If GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR) = 0 Then RandomizeAttribute(TVTPersonPersonalityAttribute.HUMOR)
+		If GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA) = 0 Then RandomizeAttribute(TVTPersonPersonalityAttribute.CHARISMA)
+		If GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE) = 0 Then RandomizeAttribute(TVTPersonPersonalityAttribute.APPEARANCE)
+		'stuff changed later (depends on aboves attributes)
+		If GetAttributeValue(TVTPersonPersonalityAttribute.FAME) = 0 Then RandomizeAttribute(TVTPersonPersonalityAttribute.FAME)
+		If GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING) = 0 Then RandomizeAttribute(TVTPersonPersonalityAttribute.SCANDALIZING)
+	End Method
+
+End Type
+
+
+
 Type TPersonPersonalityBaseData Extends TPersonBaseData
 	Field dayOfBirth:String	= "0000-00-00"
 	Field dayOfDeath:String	= "0000-00-00"
 	
-	'income +, reviews +++, bonus in some genres (drama!)
-	'directors, musicians: how good is he doing his "craftmanships"
-	Field skill:Float = 0.0
-	'income +, speed +++, bonus in some genres (action)
-	Field power:Float = 0.0
-	'income +, speed +++, bonus in some genres (comedy)
-	Field humor:Float = 0.0
-	'income +, reviews ++, bonus in some genres (love, drama, comedy)
-	Field charisma:Float = 0.0
-	'income ++, speed +, bonus in some genres (erotic, love, action)
-	Field appearance:Float = 0.0
-	'income +++
-	'how famous is this person?
-	Field fame:Float = 0.0
-	'of interest for shows or special events / trigger for news / 0-1.0
-	Field scandalizing:Float = 0.0
+	Field attributes:TPersonPersonalityAttributes
 
 	Field channelSympathy:Float[4]
 	
@@ -939,62 +1248,26 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 		EndIf
 		Return stub
 	End Function
-
 	
-	Method GetAttribute:Float(attributeID:Int)
-		Select attributeID
-			Case TVTPersonPersonality.SKILL
-				Return skill
-			Case TVTPersonPersonality.POWER
-				Return power
-			Case TVTPersonPersonality.HUMOR
-				Return humor
-			Case TVTPersonPersonality.CHARISMA
-				Return charisma
-			Case TVTPersonPersonality.APPEARANCE
-				Return appearance
-			Case TVTPersonPersonality.FAME
-				Return fame
-			Case TVTPersonPersonality.SCANDALIZING
-				Return scandalizing
-			Default
-				Print "PersonPersonalityBaseData: unhandled attributeID "+attributeID
-				Return 0
-		End Select
+	
+	Method InitAttributes()
+		attributes = new TPersonPersonalityAttributes
+		attributes.RandomizeAttributes()
 	End Method
 
 
-	Method SetRandomAttributes:Int(onlyEmpty:Int=False)
-		'reset attributes, so they get all refilled
-		If Not onlyEmpty
-			skill = 0
-			power = 0
-			humor = 0
-			charisma = 0
-			appearance = 0
-			fame = 0
-			scandalizing = 0
-		EndIf
+	Method GetAttributes:TPersonPersonalityAttributes(generateDefault:Int = True)
+		if not attributes and generateDefault Then InitAttributes
 
-		'base values
-		If skill = 0 Then skill = BiasedRandRange(10, 75, 0.25) / 100.0
-		If power = 0 Then power = BiasedRandRange(10, 75, 0.35) / 100.0
-		If humor = 0 Then humor = BiasedRandRange(10, 75, 0.35) / 100.0
-		If charisma = 0 Then charisma = BiasedRandRange(10, 75, 0.3) / 100.0
-		'given at birth (or by a doctor :-))
-		If appearance = 0 Then appearance = BiasedRandRange(5, 75, 0.35) / 100.0
+		Return attributes
+	End Method
 
-		'things which might change later on
-		If fame = 0 
-			fame = BiasedRandRange(0, 50, 0.2) / 100.0
-			'the beautiful tend to have more fame (poster boys and girls)
-			fame :+ appearance * 0.15
-		EndIf
-		If scandalizing = 0 
-			scandalizing = BiasedRandRange(0, 25, 0.4) / 100.0
-			'the beautiful tend to be more scandalizing (up to +10%)
-			scandalizing :+ appearance * 0.1
-		EndIf
+	
+	Method GetAttributeValue:Float(attributeID:Int, jobID:Int = -1, genreID:Int = -1, generateDefault:Int = True)
+		if not attributes and generateDefault Then InitAttributes
+		if not attributes Then Return 0
+		
+		Return attributes.GetAttributeValue(attributeID)
 	End Method
 
 
@@ -1113,7 +1386,7 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 		Return True
 	End Method
 
-
+rem
 	Method GetSkill:Float()
 		Return skill
 	End Method
@@ -1147,7 +1420,7 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 	Method GetScandalizing:Float()
 		Return scandalizing
 	End Method
-	
+endrem
 
 	Method GetCountryCode:String()
 		Return GetPerson().countryCode

@@ -63,7 +63,7 @@ Type TVTGameConstants {_exposeToLua}
 	'job (politician, musician) 
 	Field PersonJob:TVTPersonJob = New TVTPersonJob
 	'skill, charisma, ...
-	Field PersonPersonality:TVTPersonPersonality = New TVTPersonPersonality
+	Field PersonPersonalityAttribute:TVTPersonPersonalityAttribute = New TVTPersonPersonalityAttribute
 
 	Field ProductionFocus:TVTProductionFocus = New TVTProductionFocus
 
@@ -421,7 +421,7 @@ End Type
 
 
 
-Type TVTPersonPersonality {_exposeToLua}
+Type TVTPersonPersonalityAttribute {_exposeToLua}
 	Const NONE:Int = 0
 	Const SKILL:Int = 1
 	Const POWER:Int = 2

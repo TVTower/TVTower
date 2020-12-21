@@ -679,7 +679,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		For Local job:TPersonProductionJob = EachIn cast
 			Local p:TPersonBase = GetPersonBase(job.personID)
 			If Not p Then Continue
-			res :+ p.GetPersonalityData().GetAttribute(TVTPersonPersonality.FAME)
+			res :+ p.GetPersonalityData().GetAttributeValue(TVTPersonPersonalityAttribute.FAME)
 			castCount :+ 1
 		Next
 		If castCount > 0 Then res = res / castCount

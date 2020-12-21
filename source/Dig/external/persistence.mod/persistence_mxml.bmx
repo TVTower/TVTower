@@ -52,6 +52,7 @@ Import "../reflectionExtended/reflection.bmx"
 Import BRL.Reflection
 ?
 Import BRL.Map
+Import "../../base.util.longmap.bmx"
 Import BRL.Stream
 'Import brl.standardio
 
@@ -1443,6 +1444,46 @@ Type TListXMLSerializer Extends TXMLSerializer
 
 End Type
 
+Type TLongMapXMLSerializer Extends TXMLSerializer
+
+	Method TypeName:String()
+		Return "TLongMap"
+	End Method
+
+	Method Serialize(tid:TTypeId, obj:Object, node:TxmlNode)
+		Local map:TLongMap = TLongMap(obj)
+
+		If map Then
+			For Local mapNode:TLongNode = EachIn map
+				Local v:TxmlNode = node.addChild("e")
+				If mapNode.Value() Then
+					SerializeObject(mapNode.Value(), v)
+				End If
+				v.setAttribute("index", mapNode.Key())
+			Next
+		End If
+	End Method
+
+	Method Deserialize:Object(objType:TTypeId, node:TxmlNode)
+		Local map:TLongMap = TLongMap(CreateObjectInstance(objType, node))
+		If node.getChildren() Then
+			Local ver:Int = GetFileVersion()
+
+			For Local mapNode:TxmlNode = EachIn node.getChildren()
+				Local index:Long = Long(mapNode.getAttribute("index"))
+				Local obj:Object = DeserializeObject(mapNode)
+				map.Insert(index, obj)
+			Next
+		End If
+		Return map
+	End Method
+
+	Method Clone:TXMLSerializer()
+		Return New TIntMapXMLSerializer
+	End Method
+
+End Type
+
 Type TIntMapXMLSerializer Extends TXMLSerializer
 
 	Method TypeName:String()
@@ -1526,6 +1567,7 @@ Type TStringMapXMLSerializer Extends TXMLSerializer
 
 End Type
 
+TXMLPersistenceBuilder.RegisterDefault(New TLongMapXMLSerializer)
 TXMLPersistenceBuilder.RegisterDefault(New TIntMapXMLSerializer)
 TXMLPersistenceBuilder.RegisterDefault(New TStringMapXMLSerializer)
 TXMLPersistenceBuilder.RegisterDefault(New TMapXMLSerializer)

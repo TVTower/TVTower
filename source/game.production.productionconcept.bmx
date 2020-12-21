@@ -607,6 +607,9 @@ Type TProductionConcept Extends TOwnedGameObject
 				productionData = TPersonProductionBaseData.GetStub()
 			EndIf
 		
+		
+			Local genreID:Int =  script.GetMainGenre()
+			Local jobID:Int = script.jobs[castIndex].job
 
 			local personFit:Float = 0.0
 			local genreFit:Float = 0.0
@@ -650,7 +653,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 			'== GENRE FIT #3
 			'increase fit by up to 35% for the persons skill (versatility)
-			genreFit = Min(1.0, genreFit + 0.35 * personalityData.skill)
+			genreFit = Min(1.0, genreFit + 0.35 * personalityData.GetAttributeValue(TVTPersonPersonalityAttribute.SKILL, jobID, genreID))
 
 
 
@@ -672,10 +675,10 @@ Type TProductionConcept Extends TOwnedGameObject
 			local attributeMod:Float = 0
 			local attributeCount:int = 0
 			'loop through all attributes and add their weighted values
-			for local i:int = 1 to TVTPersonPersonality.count
-				local attributeID:int = TVTPersonPersonality.GetAtIndex(i)
+			for local i:int = 1 to TVTPersonPersonalityAttribute.count
+				local attributeID:int = TVTPersonPersonalityAttribute.GetAtIndex(i)
 				local attributeGenre:Float = genreDefinition.GetCastAttribute(job.job, attributeID)
-				local attributePerson:Float = personalityData.GetAttribute(attributeID)
+				local attributePerson:Float = personalityData.GetAttributeValue(attributeID, jobID, genreID)
 				'skip if attribute is not giving bonus or malus for the
 				'genre. "0" means it is "as important as others" 
 				'(~0 as floats could be "0.00001")
@@ -746,11 +749,11 @@ Type TProductionConcept Extends TOwnedGameObject
 			local attributeDetail1:String
 			local attributeDetail2:String
 			if person.IsCelebrity()
-				for local i:int = 1 to TVTPersonPersonality.count
+				for local i:int = 1 to TVTPersonPersonalityAttribute.count
 					if i < 4
-						attributeDetail1 :+ TVTPersonPersonality.GetAsString(i)+ "=" + int(person.GetPersonalityData().GetAttribute(i)*100) + "%  "
+						attributeDetail1 :+ TVTPersonPersonalityAttribute.GetAsString(i)+ "=" + int(person.GetPersonalityData().GetAttributeValue(i)*100) + "%  "
 					else
-						attributeDetail2 :+ TVTPersonPersonality.GetAsString(i) + "=" + int(person.GetPersonalityData().GetAttribute(i)*100) + "%  "
+						attributeDetail2 :+ TVTPersonPersonalityAttribute.GetAsString(i) + "=" + int(person.GetPersonalityData().GetAttributeValue(i)*100) + "%  "
 					endif
 				Next
 			endif
@@ -829,9 +832,10 @@ Type TProductionConcept Extends TOwnedGameObject
 			if not person then continue
 
 			local jobID:int = script.jobs[castIndex].job
+			local genreID:Int = script.GetMainGenre()
 			local personFameMod:Float = 1.0
 
-			personFameMod :+ 0.75 * person.GetPersonalityData().GetFame()
+			personFameMod :+ 0.75 * person.GetPersonalityData().GetAttributeValue(TVTPersonPersonalityAttribute.FAME, jobID, genreID)
 			'really experienced persons benefit from it too (eg.
 			'won awards and so on)
 			personFameMod :+ 0.25 * person.GetEffectiveJobExperiencePercentage(jobID)
