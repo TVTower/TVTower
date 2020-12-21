@@ -1161,7 +1161,9 @@ Type TApp
 							EndIf
 						EndIf
 						If KeyManager.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "office", GetPlayerCollection().playerID))
-						If KeyManager.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "boss", GetPlayerCollection().playerID))
+						If not (KeyManager.IsDown(KEY_LCONTROL) Or KeyManager.IsDown(KEY_RCONTROL))
+							If KeyManager.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "boss", GetPlayerCollection().playerID))
+						EndIf
 						If KeyManager.isHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
 
 						If KeyManager.Ishit(KEY_X)

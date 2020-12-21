@@ -2146,6 +2146,38 @@ Type TGUICastSlotList Extends TGUISlotList
 	End Method
 
 
+	'called when trying to "ctrl + v"
+	Method PasteFromClipboard:Int () override
+		local coord:TVec2D = new TVec2D.Init(MouseManager.x, MouseManager.y)
+		Local slot:Int = GetSlotByCoord(coord, True)
+		
+		Local appData:String[] = String( GetAppClipboard() ).Split(":")
+		if appData.length < 2 or appData[0] <> "person" then Return False
+
+		Local personID:Int = int(appData[1])
+		local person:TPersonBase = GetPersonBase(personID)
+
+		SetSlotCast(slot, person)
+		
+		Return True
+	End Method
+
+rem
+	'called when trying to "ctrl + v"
+	Method CopyToClipboard:Int() override
+		local coord:TVec2D = new TVec2D.Init(MouseManager.x, MouseManager.y)
+		Local slot:Int = GetSlotByCoord(coord, True)
+		Local item:TGUICastListItem = TGUICastListItem(GetItemBySlot(slot))
+
+		if item and item.person
+			SetAppClipboard("person:"+item.person.GetID(), "TGUICastListItem")
+		EndIf
+		
+		Return True
+	End Method
+endrem	
+	
+
 	Method Update:Int()
 		'window is "modal"
 		If selectCastWindow
@@ -2320,6 +2352,40 @@ Type TGUICastListItem Extends TGUISelectListItem
 			Return False
 		EndIf
 	End Method
+
+	
+	'called when trying to "ctrl + c"
+	Method CopyToClipboard:Int() override
+		'write via 
+		'SetOSClipboard("hello world")
+
+		'not sending self as source (avoid references) but at least
+		'inform "what type" was used
+		SetAppClipboard("person:"+person.GetID(), "TGUICastListItem")
+		
+		Return True
+	End Method
+
+
+	'called when trying to "ctrl + v"
+	Method PasteFromClipboard:Int() override
+		Local appData:String[] = String( GetAppClipboard() ).Split(":")
+		if appData.length < 2 or appData[0] <> "person" then Return False
+
+		'while dragged we ignore paste tries
+		If (Self._flags & GUI_OBJECT_DRAGGED) Then Return False
+		'only check items from the slot lists, not the select ones
+		If not TGUICastSlotList( TGUIListBase.FindGUIListBaseParent(Self._parent) ) Then Return False
+		
+		Local slot:Int = TScreenHandler_SupermarketProduction.GetInstance().castSlotList.GetSlot( self )
+		Local personID:Int = int(appData[1])
+		local person:TPersonBase = GetPersonBase(personID)
+
+		TScreenHandler_SupermarketProduction.GetInstance().castSlotList.SetSlotCast(slot, person)
+		
+		Return True
+	End Method
+
 
 
 	Method GetDisplayJobID:Int()

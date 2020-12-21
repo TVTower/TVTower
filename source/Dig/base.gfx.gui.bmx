@@ -1803,20 +1803,24 @@ Type TGUIobject
 	
 	
 	'called when trying to "ctrl + v"
-	Method PasteFromClipboard()
+	Method PasteFromClipboard:Int()
 		'read via 
 		'local res:String = GetOSClipboard()
 		'alternatively app-only
 		'local data:object = GetAppClipboard()
 		'local source:object = GetAppClipboardSource()
+
+		Return False
 	End Method
 	
 	'called when trying to "ctrl + c"
-	Method CopyToClipboard()
+	Method CopyToClipboard:Int()
 		'write via 
 		'SetOSClipboard("hello world")
 		'alternatively
 		'SetAppClipboard(data, source)
+		
+		Return False
 	End Method
 
 
@@ -1824,17 +1828,17 @@ Type TGUIobject
 		if IsFocused() or IsHovered()
 			If (KeyManager.IsDown(KEY_LCONTROL) Or KeyManager.IsDown(KEY_RCONTROL))
 				If KeyManager.IsHit(KEY_V)
-					KeyManager.ResetKey(KEY_LCONTROL)
-					KeyManager.ResetKey(KEY_RCONTROL)
-					KeyManager.ResetKey(KEY_V)
-
-					PasteFromClipboard()
+					If PasteFromClipboard()
+						KeyManager.ResetKey(KEY_LCONTROL)
+						KeyManager.ResetKey(KEY_RCONTROL)
+						KeyManager.BlockKeyTillRelease(KEY_V)
+					EndIf
 				ElseIf KeyManager.IsHit(KEY_C)
-					KeyManager.ResetKey(KEY_LCONTROL)
-					KeyManager.ResetKey(KEY_RCONTROL)
-					KeyManager.ResetKey(KEY_C)
-					
-					CopyToClipboard()
+					If CopyToClipboard()
+						KeyManager.ResetKey(KEY_LCONTROL)
+						KeyManager.ResetKey(KEY_RCONTROL)
+						KeyManager.BlockKeyTillRelease(KEY_C)
+					EndIf
 				EndIf
 			EndIf
 		EndIf

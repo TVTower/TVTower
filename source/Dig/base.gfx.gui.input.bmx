@@ -182,9 +182,9 @@ Type TGUIinput Extends TGUIobject
 	End Method
 
 
-	Method PasteFromClipboard() override
+	Method PasteFromClipboard:Int() override
 		'cannot edit at all?
-		if not _editable then Return
+		if not _editable then Return False
 		
 		Local t:String = GetOSClipboard()
 		t = t.Replace("~n", "~~n")
@@ -204,16 +204,20 @@ Type TGUIinput Extends TGUIobject
 				endif
 			EndIf
 		endif
+		
+		Return True
 	End Method
 
 
 	'called when trying to "ctrl + c"
-	Method CopyToClipboard()
+	Method CopyToClipboard:Int() override
 		'GetCurrentValue() returns value as displayed
 		'GetValue() returns the "old value" until an edit was finished
 		Local t:String = GetCurrentValue()
 		t = t.Replace("~~n", "~n")
 		SetOSClipboard( t )
+		
+		Return True
 	End Method
 
 

@@ -51,11 +51,12 @@ Global KEYMANAGER:TKeyManager = New TKeyManager
 Global KEYWRAPPER:TKeyWrapper = New TKeyWrapper
 
 
-Const KEY_STATE_NORMAL:Int			= 0	'nothing done
-Const KEY_STATE_HIT:Int				= 1	'once dow, now up
-Const KEY_STATE_DOWN:Int			= 2 'down
-Const KEY_STATE_UP:Int				= 4 'up
-Const KEY_STATE_BLOCKED:Int			= 8
+Const KEY_STATE_NORMAL:Int               =  0 'nothing done
+Const KEY_STATE_HIT:Int                  =  1 'once down, now up
+Const KEY_STATE_DOWN:Int                 =  2 'down
+Const KEY_STATE_UP:Int                   =  4 'up
+Const KEY_STATE_BLOCKED:Int              =  8
+Const KEY_STATE_BLOCKED_TILL_RELEASE:Int = 16 'no keyhit/keydown/... until released first
 
 For Local i:Int = 0 To 255
 	KEYWRAPPER.Init(i, 600, 100)
@@ -766,12 +767,16 @@ Type TKeyManager
 	End Method
 
 
-	'returns whether the button is currently blocked
+	'returns whether the button is currently blocked (time wise)
 	Method isBlocked:Int(key:Int)
 		'this time it is a bitmask flag (normal/hit/.. + blocked)
-		Return _keyStatus[key] & KEY_STATE_BLOCKED
+		Return (_keyStatus[key] & KEY_STATE_BLOCKED)
 	End Method
 
+	Method isBlockedTillRelease:Int(key:Int)
+		'this time it is a bitmask flag (normal/hit/.. + blocked)
+		Return (_keyStatus[key] & KEY_STATE_BLOCKED_TILL_RELEASE)
+	End Method
 
 	'returns whether the button is in hit state
 	Method isHit:Int(key:Int)
@@ -829,6 +834,9 @@ Type TKeyManager
 			EndIf
 
 			'normal check
+			If not KeyDown(i) and isBlockedTillRelease(i)
+				_keyStatus[i] = KEY_STATE_NORMAL
+			EndIf
 			If _keyStatus[i] = KEY_STATE_NORMAL
 				If KeyDown(i)
 					_downTime[i] = nowTime
@@ -849,7 +857,6 @@ Type TKeyManager
 			ElseIf _keyStatus[i] = KEY_STATE_UP
 				_keyStatus[i] = KEY_STATE_NORMAL
 			EndIf
-
 		Next
 		
 		'update wrapper too
@@ -865,7 +872,7 @@ Type TKeyManager
 
 
 	'set a key as blocked for the given time
-	Method blockKey:Int(key:Int, milliseconds:Int=0)
+	Method BlockKey:Int(key:Int, milliseconds:Int=0)
 		'time can be absolute as a key block is just for blocking a key
 		'which has not to be deterministic
 		_blockKeyTime[key] = Time.GetAppTimeGone() + milliseconds
@@ -874,8 +881,14 @@ Type TKeyManager
 	End Method
 
 
+	Method BlockKeyTillRelease:Int(key:Int)
+		'also add the block state to the  current status
+		_keyStatus[key] :| KEY_STATE_BLOCKED_TILL_RELEASE
+	End Method
+
+
 	'resets the keys status
-	Method resetKey:Int(key:Int)
+	Method ResetKey:Int(key:Int)
 		_keyStatus[key] = KEY_STATE_UP
 		Return KEY_STATE_UP
 	End Method
