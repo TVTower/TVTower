@@ -7,12 +7,15 @@ Import "game.broadcastmaterial.advertisement.bmx"
 Import "game.broadcastmaterial.news.bmx"
 Import "game.world.worldtime.bmx"
 Import "game.publicimage.bmx"
+Import "Dig/base.gfx.gui.bmx"
 
 
 
 
 Type TBetty
 	Field inLove:Int[4]
+	Field currentPresent:TBettyPresent[4]
+
 	Field presentHistory:TList[]
 	'cached values
 	Field _inLoveSum:Int
@@ -53,16 +56,44 @@ Type TBetty
 		_inLoveSum = -1
 	End Method
 
+	Method BuyPresent:int(playerID:int, present:TBettyPresent)
+		if not present then return False
+		if currentPresent[playerID-1] then return False
+		currentPresent[playerID-1] = present
+		TLogger.Log("Betty", "Player "+playerID+" bought Betty a present ~q"+present.GetName()+"~q.", LOG_DEBUG)
+		return True
+	End Method
+
+	Method SellPresent:int(playerID:int, present:TBettyPresent)
+		if not present then return False
+		if currentPresent[playerID-1] <> present then return False 
+		currentPresent[playerID-1] = null
+		TLogger.Log("Betty", "Player "+playerID+" sold a present ~q"+present.GetName()+"~q.", LOG_DEBUG)
+		return True
+	End Method
+
+	Method GetCurrentPresent:TBettyPresent(playerId:int)
+		return currentPresent[playerId-1]
+	End Method
 
 	Method GivePresent:int(playerID:int, present:TBettyPresent, time:Long = -1)
 		if not present then return False
-		'TODO: collect times betty got this present
-		'      each time decreases "effect" ...
+		if present <> getCurrentPresent(playerID) then return False
 
 		local action:TBettyPresentGivingAction = new TBettyPresentGivingAction.Init(playerID, present, time)
 		GetPresentHistory(playerID).AddLast(action)
 
-		AdjustLove(playerID, present.bettyValue)
+		'calculate effect depending on times the present was given
+		Local count:Int=GetPresentGivenCount(present)
+		Local adjustValue:Int=present.bettyValue
+		If adjustValue>0
+			adjustValue = adjustValue * 0.85^count
+		Else
+			adjustValue = adjustValue * 1.25^count
+		End If
+		AdjustLove(playerID, adjustValue)
+
+		currentPresent[playerID-1] = null
 
 		TLogger.Log("Betty", "Player "+playerID+" gave Betty a present ~q"+present.GetName()+"~q.", LOG_DEBUG)
 		return True
@@ -79,6 +110,15 @@ Type TBetty
 		return presentHistory[playerID-1]
 	End Method
 
+	Method getPresentGivenCount:int(present:TBettyPresent)
+		Local count:int=0
+		For Local list:TList = EachIn presentHistory
+			For Local p:TBettyPresentGivingAction = EachIn list
+				If present = p.present Then count:+ 1
+			Next
+		Next
+		Return count
+	End Method
 
 	Method GetLoveSummary:string()
 		local res:string
@@ -288,37 +328,37 @@ End Type
 
 
 Type TBettyPresent
+	'index for localization and sprite
+	Field index:int
 	'price for the player
 	Field price:int
 	'value for betty
 	Field bettyValue:int
-	'locale key for GetLocale(key)
-	Field localeKey:string
 
 	Global presents:TBettyPresent[10]
 
 
 	Function Initialize()
 		'feet spray
-		presents[0] = new TBettyPresent.Init("BETTY_PRESENT_1",      99, -250)
+		presents[0] = new TBettyPresent.Init(1,      99, -250)
 		'dinner
-		presents[1] = new TBettyPresent.Init("BETTY_PRESENT_2",     500,   10)
+		presents[1] = new TBettyPresent.Init(2,     500,   10)
 		'nose operation
-		presents[2] = new TBettyPresent.Init("BETTY_PRESENT_3",    1000, -500)
+		presents[2] = new TBettyPresent.Init(3,    1000, -500)
 		'custom written script / novel
-		presents[3] = new TBettyPresent.Init("BETTY_PRESENT_4",   30000,  100)
+		presents[3] = new TBettyPresent.Init(4,   30000,  100)
 		'pearl necklace
-		presents[4] = new TBettyPresent.Init("BETTY_PRESENT_5",   60000,  150)
+		presents[4] = new TBettyPresent.Init(5,   60000,  150)
 		'coat (negative!)
-		presents[5] = new TBettyPresent.Init("BETTY_PRESENT_6",   80000, -500)
+		presents[5] = new TBettyPresent.Init(6,   80000, -500)
 		'diamond necklace
-		presents[6] = new TBettyPresent.Init("BETTY_PRESENT_7",  100000, -700)
+		presents[6] = new TBettyPresent.Init(7,  100000, -700)
 		'sports car
-		presents[7] = new TBettyPresent.Init("BETTY_PRESENT_8",  250000,  350)
+		presents[7] = new TBettyPresent.Init(8,  250000,  350)
 		'ring
-		presents[8] = new TBettyPresent.Init("BETTY_PRESENT_9",  500000,  450)
+		presents[8] = new TBettyPresent.Init(9,  500000,  450)
 		'boat/yacht
-		presents[9] = new TBettyPresent.Init("BETTY_PRESENT_10",1000000,  500)
+		presents[9] = new TBettyPresent.Init(10,1000000,  500)
 	End Function
 
 
@@ -330,8 +370,8 @@ Type TBettyPresent
 	End Function
 
 
-	Method Init:TBettyPresent(localeKey:string, price:int, bettyValue:int)
-		self.localeKey = localeKey
+	Method Init:TBettyPresent(index:int, price:int, bettyValue:int)
+		self.index = index
 		self.price = price
 		self.bettyValue = bettyValue
 		return self
@@ -339,7 +379,70 @@ Type TBettyPresent
 
 
 	Method GetName:string()
-		return GetLocale(localeKey)
+		return GetLocale("BETTY_PRESENT_"+index)
+	End Method
+
+	Method GetSpriteName:string()
+		return "gfx_supermarket_present"+index
 	End Method
 End Type
 
+Type TGUIBettyPresent extends TGuiObject
+	Field present:TBettyPresent
+	Field sprite:TSprite
+
+	Method GetClassName:String()
+		return "TGUIBettyPresent"
+	End Method
+
+	Method Create:TGUIBettyPresent(x:float, y:float, present:TBettyPresent)
+		Super.CreateBase(New TVec2D.Init(x,y), New TVec2D.Init(121, 91), "")
+		self.present = present
+		self.sprite = GetSpriteFromRegistry(present.getSpriteName())
+
+		'make dragable
+		SetOption(GUI_OBJECT_DRAGABLE, True)
+
+		GUIManager.add(Self)
+
+		Return Self
+	End Method
+
+	Method UpdateLayout()
+	End Method
+
+	'Copied from TGUIGameListItem
+	Method DrawContent()
+		sprite.draw(int(Self.GetScreenRect().GetX()), int(Self.GetScreenRect().GetY()))
+		'hovered
+		If isHovered() and not isDragged()
+			Local oldAlpha:Float = GetAlpha()
+			SetAlpha 0.20*oldAlpha
+			SetBlend LightBlend
+			sprite.draw(int(Self.GetScreenRect().GetX()), int(Self.GetScreenRect().GetY()))
+			SetBlend AlphaBlend
+			SetAlpha oldAlpha
+		EndIf
+	End Method
+
+	'Copied and adapted from TGUIListItem
+	Method OnClick:Int(triggerEvent:TEventBase)
+		Super.OnClick(triggerEvent)
+
+		Local data:TData = triggerEvent.GetData()
+		If Not data Then Return False
+
+		'only react on clicks with left mouse button
+		If data.getInt("button") <> 1 Then Return False
+
+		'we handled the click
+		triggerEvent.SetAccepted(True)
+
+		If isDragged()
+			Drop(MouseManager.GetClickPosition(1))
+		Else
+			Drag(MouseManager.GetClickPosition(1))
+		EndIf
+		EventManager.triggerEvent(TEventSimple.Create("guiobject.onClick", Null, Self, triggerEvent.GetReceiver()) )
+	End Method
+End Type

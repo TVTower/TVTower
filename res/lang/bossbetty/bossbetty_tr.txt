@@ -36,8 +36,6 @@ THERE_IS_NO_LOVE_IN_THE_AIR_YET    = Henüz havada aşk kokusu yok... ;)
 #DIALOGUE_BETTY_LEVEL2_GOODBYE           = 
 #DIALOGUE_BETTY_LEVEL3_GOODBYE           = 
 
-#NO_PRESENT_SELECTED        = 
-#BUY_PRESENTTITLE_FOR_PRICE = 
 #BETTY_PRESENT_1            = 
 #BETTY_PRESENT_2            = 
 #BETTY_PRESENT_3            = 

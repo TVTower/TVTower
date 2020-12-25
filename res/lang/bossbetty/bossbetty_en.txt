@@ -36,8 +36,6 @@ DIALOGUE_BETTY_LEVEL1_GOODBYE           = See you again
 DIALOGUE_BETTY_LEVEL2_GOODBYE           = Hey, I have to go. See you later.
 DIALOGUE_BETTY_LEVEL3_GOODBYE           = Listen Betty, work is calling. Just away for a second.
 
-NO_PRESENT_SELECTED        = No present selected
-BUY_PRESENTTITLE_FOR_PRICE = Buy %PRESENTTITLE% for %PRICE%
 BETTY_PRESENT_1            = foot spray
 BETTY_PRESENT_2            = dinner for two
 BETTY_PRESENT_3            = nose operation

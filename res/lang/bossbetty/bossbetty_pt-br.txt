@@ -36,8 +36,6 @@ DIALOGUE_BETTY_LEVEL1_GOODBYE           = Te vejo mais tarde
 DIALOGUE_BETTY_LEVEL2_GOODBYE           = Hey, tenho que ir. Te vejo depois.
 DIALOGUE_BETTY_LEVEL3_GOODBYE           = Escute, Betty, o trabalho me chama. Preciso sair um minuto.
 
-NO_PRESENT_SELECTED        = Nenhum presente selecionado
-BUY_PRESENTTITLE_FOR_PRICE = Comprar %PRESENTTITLE%  por %PRICE%
 BETTY_PRESENT_1            = Spray de pé
 BETTY_PRESENT_2            = Jantar para dois
 BETTY_PRESENT_3            = Plástica do nariz
