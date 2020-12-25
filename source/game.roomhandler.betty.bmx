@@ -5,18 +5,25 @@ Import "game.betty.bmx"
 Import "game.award.base.bmx"
 Import "common.misc.dialogue.bmx"
 Import "Dig/base.gfx.gui.bmx"
+Import "common.misc.gamegui.bmx"
 
 
 
 'Betty
 Type RoomHandler_Betty extends TRoomHandler
 	Field dialogue:TDialogue
+
 	Global BettySprite:TSprite
 	Global BettyArea:TGUISimpleRect	'allows registration of drop-event
-	Global highlightBetty:Int = False
+
+	Field spriteSuitcase:TSprite {nosave}
+	Field presentInSuitcase:TGUIBettyPresent {nosave}
+	Field draggedPresent:TGUIBettyPresent {nosave}
+	Field suitcasePos:TVec2D = new TVec2D.Init(20,220) {nosave}
 
 	Global _eventListeners:TEventListenerBase[]
 	Global _instance:RoomHandler_Betty
+	Global LS_betty:TLowerString = TLowerString.Create("betty")
 
 
 	Function GetInstance:RoomHandler_Betty()
@@ -49,10 +56,14 @@ Type RoomHandler_Betty extends TRoomHandler
 		_eventListeners = new TEventListenerBase[0]
 		'handle players visiting betty
 		_eventListeners :+ [ EventManager.registerListenerFunction("player.onBeginEnterRoom", onPlayerBeginEnterRoom) ]
+		'handle present
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickPresent, "TGUIBettyPresent" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDropOnTargetAccepted", onDropPresent, "TGUIBettyPresent" ) ]
 
 
 		'(re-)localize content
 		SetLanguage()
+		spriteSuitcase = GetSpriteFromRegistry("gfx_suitcase")
 	End Method
 
 
@@ -84,6 +95,14 @@ Type RoomHandler_Betty extends TRoomHandler
 		'ResetDialogue()
 		'generate already overrides an existing dialogue
 		GenerateDialogue()
+
+		Local present:TBettyPresent=GetBetty().getCurrentPresent(GetPlayerBaseCollection().playerID)
+		If present
+			If not GetInstance().presentInSuitcase
+				GetInstance().presentInSuitcase=new TGUIBettyPresent.Create(GetInstance().suitcasePos.GetX() + 70, GetInstance().suitcasePos.GetY() + 32, present)
+				GetInstance().presentInSuitcase.setLimitToState("betty")
+			End If
+		End If
 	End Function
 
 
@@ -197,6 +216,24 @@ Type RoomHandler_Betty extends TRoomHandler
 
 		BettySprite.Draw(BettyArea.GetX(), BettyArea.GetY())
 
+		If dialogue then dialogue.Draw()
+		'TDialogue.DrawDialog("default", 440, 110, 280, 90, "StartLeftDown", 15, GetLocale("DIALOGUE_BETTY_WELCOME"), 0, GetBitmapFont("Default",14))
+
+		Local highlightBetty:int = False
+		If presentInSuitcase
+			spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY(),-1,null, 1.3)
+			If presentInSuitcase.isHovered
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
+			End If
+			If presentInSuitcase.isDragged
+				GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+				draggedPresent = presentInSuitcase
+				highlightBetty = True
+			Else
+				draggedPresent = null
+			End If
+		End If
+
 		If highlightBetty
 			Local oldCol:TColor = New TColor.Get()
 			SetBlend LightBlend
@@ -208,9 +245,7 @@ Type RoomHandler_Betty extends TRoomHandler
 			SetBlend AlphaBlend
 		EndIf
 
-
-		If dialogue then dialogue.Draw()
-		'TDialogue.DrawDialog("default", 440, 110, 280, 90, "StartLeftDown", 15, GetLocale("DIALOGUE_BETTY_WELCOME"), 0, GetBitmapFont("Default",14))
+		GUIManager.draw(LS_betty)
 	End Method
 
 
@@ -220,6 +255,8 @@ Type RoomHandler_Betty extends TRoomHandler
 		   GetPlayerBase().GetFigure().GetInRoomID() > 0
 			GenerateDialogue()
 		endif
+
+		GUIManager.update(LS_betty)
 
 		if dialogue
 			'leave the room
@@ -241,5 +278,60 @@ Type RoomHandler_Betty extends TRoomHandler
 
 			endif
 		endif
+	End Method
+
+	Method AbortScreenActions:Int()
+		If draggedPresent
+			draggedPresent.dropBackToOrigin()
+			draggedPresent = null
+		End If
+	End Method
+
+	Method onLeaveRoom:int( triggerEvent:TEventBase )
+		If presentInSuitcase
+			GuiManager.Remove(presentInSuitcase)
+		End If
+		presentInSuitcase = null
+		draggedPresent = null
+		Return True
+	End Method
+
+	Function onClickPresent:int( triggerEvent:TEventBase )
+		If Not CheckObservedFigureInRoom("betty") then Return False
+		Local presentItem:TGUIBettyPresent = TGUIBettyPresent(triggerEvent._sender)
+		If presentItem and presentItem.isDragged()
+			local button:Int=triggerEvent.GetData().getInt("button",0)
+			If button = 2
+				presentItem.dropBackToOrigin()
+				MouseManager.SetClickHandled(2)
+			Else If button = 1
+				Local pos:TVec2D=RoomHandler_Betty.GetInstance().suitcasePos
+				If THelper.MouseIn(pos.GetX(), pos.GetY(), 250, 120) And GetInstance().draggedPresent
+					presentItem.dropBackToOrigin()
+				End If
+			End If
+		End If
+		Return False
+	End Function
+
+	Function onDropPresent:int( triggerEvent:TEventBase )
+		If Not CheckObservedFigureInRoom("betty") then Return False
+		Local presentItem:TGUIBettyPresent = TGUIBettyPresent(triggerEvent._sender)
+		Local droptarget:TGUISimpleRect = TGUISimpleRect(triggerEvent._receiver)
+		If presentItem = GetInstance().draggedPresent and droptarget = BettyArea
+			GetInstance().givePresent()
+			return true
+		End If
+		Return False
+	End Function
+
+	Method givePresent()
+		If presentInSuitcase
+			Local present:TBettyPresent = presentInSuitcase.present
+			TBetty.GetInstance().GivePresent(GetPlayerBase().playerID, present)
+			presentInSuitcase.remove()
+			presentInSuitcase = null
+			draggedPresent = null
+		End If
 	End Method
 End Type

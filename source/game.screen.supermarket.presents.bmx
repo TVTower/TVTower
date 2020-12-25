@@ -7,16 +7,17 @@ Import "common.misc.datasheet.bmx"
 
 
 Type TScreenHandler_SupermarketPresents extends TScreenHandler
-	Global box:TRectangle = new TRectangle.Init(55,50,690,310)
-	Global selectedPresent:int = 0
+	Global box:TRectangle = new TRectangle.Init(117,13,679,247)
+	Global draggedPresent:TGUIBettyPresent
+	Global presentInSuitcase:TGUIBettyPresent
 
-	Global buyButton:TGUIButton
-	Global updateBuyButton:int = True
 	Global presentButtons:TGUIButton[10]
+	Global presentToolTips:TTooltipBase[10]
 	Global LS_supermarket_presents:TLowerString = TLowerString.Create("supermarket_presents")
 	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TScreenHandler_SupermarketPresents
-
+	Global spriteSuitcase:TSprite
+	Global suitcasePos:TVec2D = new TVec2D.Init(210,248)
 
 	Function GetInstance:TScreenHandler_SupermarketPresents()
 		if not _instance then _instance = new TScreenHandler_SupermarketPresents
@@ -31,26 +32,34 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		'=== CREATE ELEMENTS ===
 
 		'=== create gui elements if not done yet
-		if not buyButton
-			buyButton = new TGUIButton.Create(new TVec2D.Init(box.GetX() + 0.5*box.GetW() - 200, box.GetY2() - 40), new TVec2D.Init(400, 25), "", "supermarket_presents")
-			buyButton.spriteName = "gfx_gui_button.datasheet"
-			buybutton.SetValue( GetLocale("SELECT_PRESENT_TO_BUY") )
+
+		if not spriteSuitcase
+			spriteSuitcase = GetSpriteFromRegistry("gfx_suitcase")
 		endif
 
 		if not presentButtons[0]
 			For local i:int = 0 to 9
-				local presentX:int = 75 + (i mod 5) * (123 +8)
-				local presentY:int = 90 + (i / 5) * (91 + 25)
+				local presentX:int = box.getX() + 15 + (i mod 5) * (123 + 8)
+				local presentY:int = box.getY() + 13 + (i / 5) * (91 + 19)
+				local present:TBettyPresent = TBettyPresent.GetPresent(i)
 				presentButtons[i] = new TGUIButton.Create(new TVec2D.Init(presentX, presentY), new TVec2D.Init(123,91), "present "+(i+1), "supermarket_presents")
-				presentButtons[i].spriteName = "gfx_supermarket_present"+(i+1)
+				presentButtons[i].spriteName = present.getSpriteName()
+				presentButtons[i].data.add("present", present)
 
 '				presentButtons[i].SetAutoSizeMode(TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE)
 				presentButtons[i].caption.SetContentAlignment(ALIGN_CENTER, ALIGN_TOP)
 				presentButtons[i].caption.SetFont( GetBitmapFont("Default", 11, BOLDFONT) )
 				presentButtons[i].SetCaptionOffset(0,92)
 
-				presentButtons[i].SetValue( MathHelper.DottedValue(TBettyPresent.GetPresent(i).price) + getLocale("CURRENCY"))
+				presentTooltips[i] = New TGUITooltipBase.Initialize(present.getName(), "", New TRectangle.Init(0,0,-1,-1))
+				presentTooltips[i].parentArea = presentButtons[i].getScreenRect()
+				presentTooltips[i].SetOrientationPreset("TOP")
+				presentTooltips[i].offset = New TVec2D.Init(0,+5)
+				presentTooltips[i].SetOption(TGUITooltipBase.OPTION_PARENT_OVERLAY_ALLOWED)
+				'standard icons should need a bit longer for tooltips to show up
+				presentTooltips[i].dwellTime = 50
 
+				presentButtons[i].setToolTip(presentTooltips[i])
 			Next
 		endif
 
@@ -66,6 +75,10 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickButtons, "TGUIButton") ]
 		'reset button text when entering a screen
 		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterScreen, screen) ]
+		'remove suitcase present from GUI
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginLeave", onLeaveScreen, screen) ]
+		'listen to clicks on a draggable present
+		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickPresent, "TGUIBettyPresent") ]
 
 		'to update/draw the screen
 		_eventListeners :+ _RegisterScreenHandler( onUpdate, onDraw, screen )
@@ -77,6 +90,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 
 
 	Method AbortScreenActions:Int()
+		undoDragPresent()
 	End Method
 
 
@@ -84,36 +98,90 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 
 	'reset button text when entering the screen
 	Function onEnterScreen:int( triggerEvent:TEventBase )
-		'enforce button update
-		selectedPresent = 0
-		updateBuyButton = True
+		draggedPresent = null
+		presentInSuitcase = null
+		'update number of times a present was given
+		If presentButtons[0]
+			For local i:int = 0 to 9
+				local present:TBettyPresent = TBettyPresent.GetPresent(i)
+				presentButtons[i].SetValue( MathHelper.DottedValue(present.price) + getLocale("CURRENCY") + " ("+GetBetty().getPresentGivenCount(present)+"x)")
+			Next
+		End If
 	End function
 
+	Function onLeaveScreen:int(triggerEvent:TEventBase )
+		If presentInSuitcase
+			GuiManager.remove(presentInSuitcase)
+		End If
+		undoDragPresent()
+	End Function
 
 	Function onClickButtons:int(triggerEvent:TEventBase)
 		local button:TGUIButton = TGUIButton(triggerEvent.GetSender())
 		if not button then return False
-
-		if button = buyButton
-			'buy te present
-			if selectedPresent > 0
-				local present:TBettyPresent = TBettyPresent.GetPresent(selectedPresent-1)
-				if GetPlayerBase().GetFinance().PayMisc(present.price)
-					GetBetty().GivePresent(GetPlayerBase().playerID, present)
-				endif
-			endif
-			selectedPresent = 0
-		endif
+		'can't buy present
+		if GetInstance().presentInSuitcase or GetInstance().draggedPresent then return False
 
 		For local i:int = 0 until presentButtons.length
 			if presentButtons[i] <> button then continue
-
-			selectedPresent = i+1
+			local present:TBettyPresent=TBettyPresent(button.data.get("present"))
+			if GetPlayerBase().GetFinance().CanAfford(present.price)
+				GetInstance().draggedPresent = new TGUIBettyPresent.Create(button.getX(), button.getY(), present)
+				draggedPresent.setLimitToState("supermarket_presents")
+				GUIManager.add(GetInstance().draggedPresent)
+				GUIManager.addDragged(GetInstance().draggedPresent)
+			endIf
 			exit
 		Next
-		updateBuyButton = True
 	End Function
 
+	Function onClickPresent:int( triggerEvent:TEventBase )
+		If Not CheckObservedFigureInRoom("supermarket") then Return False
+		Local presentItem:TGUIBettyPresent = TGUIBettyPresent(triggerEvent._sender)
+		local button:Int=triggerEvent.GetData().getInt("button",0)
+		If presentItem
+			Local present:TBettyPresent=presentItem.present
+
+			If button = 2 and presentItem.isDragged()
+				undoDragPresent()
+				MouseManager.SetClickHandled(2)
+			Else If button = 1
+				Local suitcasePos:int = THelper.MouseIn(suitcasePos.GetX(), suitcasePos.GetY(), 250, 120)
+				Local returnPos:int = THelper.MouseIn(box.GetX(), box.GetY(), box.GetW(), box.getH()) ..
+					or THelper.MouseIn(25, 70, 80, 150)
+				If suitcasePos
+					If not presentInSuitcase
+						if GetPlayerBase().GetFinance().CanAfford(present.price) And GetBetty().BuyPresent(GetPlayerBase().playerID, present)
+							GetPlayerBase().GetFinance().PayMisc(present.price)
+							undoDragPresent()
+						endif
+					Else if not draggedPresent
+						draggedPresent = presentItem
+					Else
+						undoDragPresent()
+					End If
+				Else If returnPos
+					if presentInSuitcase and GetBetty().SellPresent(GetPlayerBase().playerID, present)
+						GetPlayerBase().GetFinance().SellMisc(present.price)
+						presentInSuitcase = null
+					End If
+					undoDragPresent()
+				End If
+			End If
+		End If
+		Return False
+	End Function
+
+	Function undoDragPresent()
+		If draggedPresent
+			If draggedPresent = presentInSuitcase
+				draggedPresent.dropBackToOrigin()
+			Else
+				GuiManager.remove(draggedPresent)
+			End If
+			draggedPresent = null
+		End If
+	End Function
 
 	Function onUpdate:int( triggerEvent:TEventBase )
 		GetInstance().Update()
@@ -134,44 +202,49 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		contentW = skin.GetContentW(box.GetW())
 		contentH = skin.GetContentH(box.GetH())
 
-		skin.RenderContent(contentX, contentY, contentW, 20, "1_top")
-		contentY :+ 20
-		skin.RenderContent(contentX, contentY, contentW, contentH - 20 - 30 , "2")
-		contentY :+ contentH - 20 - 30
-		skin.RenderContent(contentX, contentY, contentW, 30 , "1_bottom")
+'		skin.RenderContent(contentX, contentY, contentW, 20, "1_top")
+'		contentY :+ 20
+		skin.RenderContent(contentX, contentY, contentW, contentH , "2")
+'		contentY :+ contentH - 30
+'		skin.RenderContent(contentX, contentY, contentW, 30 , "1_bottom")
 
-		GuiManager.Draw( LS_supermarket_presents )
+		spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY(),-1,null, 1.3)
 
 		skin.RenderBorder(box.GetIntX(), box.GetIntY(), box.GetIntW(), box.GetIntH())
+
+		If draggedPresent
+			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+		Else If presentInSuitcase And presentInSuitcase.isHovered()
+			GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
+		Else
+			For local i:int = 0 until presentButtons.length
+			If presentButtons[i].isHovered()
+				local present:TBettyPresent = TBettyPresent(presentButtons[i].data.get("present"))
+				If not presentInSuitcase and GetPlayerBase().GetFinance().CanAfford(present.price)
+					GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
+				Else
+					GetGameBase().SetCursor(TGameBase.CURSOR_PICK, TGameBase.CURSOR_EXTRA_FORBIDDEN)
+				End If
+				exit
+			End If
+			Next
+		End If
+
+		GuiManager.Draw( LS_supermarket_presents )
 	End Method
 
 
 	Method Update()
-		local present:TBettyPresent = TBettyPresent.GetPresent(selectedPresent -1)
-
-		if updateBuyButton
-			if not present
-				buyButton.SetValue( GetLocale("NO_PRESENT_SELECTED") )
-				buyButton.disable()
-			else
-				local presentTitle:string = present.GetName()
-				local presentPrice:string = MathHelper.DottedValue(present.price) + GetLocale("CURRENCY")
-				if not GetPlayerBase().GetFinance().CanAfford(present.price)
-					presentPrice = "|color=255,0,0|"+presentPrice+"|/color|"
-				endif
-				buyButton.SetValue(GetLocale("BUY_PRESENTTITLE_FOR_PRICE").Replace("%PRESENTTITLE%", "|color=50,90,135|"+presentTitle+"|/color|").Replace("%PRICE%", presentPrice) )
-				buyButton.Enable()
-			endif
-			
-			updateBuyButton = False
-		endif
-		if present
-			if not GetPlayerBase().GetFinance().CanAfford(present.price)
-				if buyButton.IsEnabled() Then buyButton.Disable()
-			else
-				if not buyButton.IsEnabled() then buyButton.Enable()
-			endif
-		endif
+		Local present:TBettyPresent=GetBetty().getCurrentPresent(GetPlayerBaseCollection().playerID)
+		If present And Not presentInSuitcase
+			presentInSuitcase=new TGUIBettyPresent.Create(GetInstance().suitcasePos.GetX() + 70, GetInstance().suitcasePos.GetY() + 32, present)
+			presentInSuitcase.setLimitToState("supermarket_presents")
+		End If
+		If not present And presentInSuitcase
+			GUIManager.remove(presentInSuitcase)
+			presentInSuitcase = null
+		End If
+		
 		GuiManager.Update( LS_supermarket_presents )
 	End Method
 End Type
