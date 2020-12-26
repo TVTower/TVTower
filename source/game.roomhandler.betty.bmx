@@ -4,12 +4,17 @@ Import "game.player.base.bmx"
 Import "game.betty.bmx"
 Import "game.award.base.bmx"
 Import "common.misc.dialogue.bmx"
+Import "Dig/base.gfx.gui.bmx"
 
 
 
 'Betty
 Type RoomHandler_Betty extends TRoomHandler
 	Field dialogue:TDialogue
+	Global BettySprite:TSprite
+	Global BettyArea:TGUISimpleRect	'allows registration of drop-event
+	Global highlightBetty:Int = False
+
 	Global _eventListeners:TEventListenerBase[]
 	Global _instance:RoomHandler_Betty
 
@@ -30,7 +35,10 @@ Type RoomHandler_Betty extends TRoomHandler
 
 
 		'=== CREATE ELEMENTS =====
-		'nothing up to now
+		BettySprite = GetSpriteFromRegistry("gfx_room_betty_betty")
+		BettyArea = New TGUISimpleRect.Create(new TVec2D.Init(303,142), new TVec2D.Init(112,148), "betty" )
+		'Betty accepts presents
+		BettyArea.setOption(GUI_OBJECT_ACCEPTS_DROP, True)
 
 
 		'=== EVENTS ===
@@ -185,6 +193,21 @@ Type RoomHandler_Betty extends TRoomHandler
 			local y:float = picY + sprite.area.GetH() - 30
 			GetPlayerBase(i).Figure.Sprite.DrawClipped(x, y, -1, sprite.area.GetH()-16, 0,0, 8)
 		Next
+
+
+		BettySprite.Draw(BettyArea.GetX(), BettyArea.GetY())
+
+		If highlightBetty
+			Local oldCol:TColor = New TColor.Get()
+			SetBlend LightBlend
+			SetAlpha oldCol.a * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
+
+			BettySprite.Draw(BettyArea.GetX(), BettyArea.GetY())
+
+			SetAlpha oldCol.a
+			SetBlend AlphaBlend
+		EndIf
+
 
 		If dialogue then dialogue.Draw()
 		'TDialogue.DrawDialog("default", 440, 110, 280, 90, "StartLeftDown", 15, GetLocale("DIALOGUE_BETTY_WELCOME"), 0, GetBitmapFont("Default",14))

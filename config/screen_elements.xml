@@ -6,6 +6,7 @@
  			<url>res/gfx/betty/screen_betty_elements.png</url>
 			<children>
 				<child name="gfx_room_betty_picture1"	x="157"	y="0"	w="31"	h="41"	/>
+				<child name="gfx_room_betty_betty"	    x="0"	y="1"	w="112"	h="148"	/>
 			</children>
 		</spritepack>
 
