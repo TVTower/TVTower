@@ -6,6 +6,8 @@ Import "common.misc.gamegui.bmx"
 Import "common.misc.screen.bmx"
 Import "game.game.base.bmx"
 
+Import "game.roomhandler.base.bmx"
+Import "game.player.bmx"
 
 Type TIngameHelpWindowCollection
 	Field showHelp:Int = True
@@ -60,6 +62,12 @@ Type TIngameHelpWindowCollection
 	End Method
 
 	Method openHelpWindow()
+		Local player:TPlayer = GetPlayer()
+		If player and player.GetFigure() and player.GetFigure().inRoom
+			Local roomHandler:TRoomHandler = GetRoomHandlerCollection().GetHandler(player.GetFigure().inRoom.GetName())
+			If roomHandler Then roomHandler.AbortScreenActions()
+		End If
+
 		Local screen:String = ScreenCollection.GetCurrentScreen().GetName()
 		If Get(screen)
 			ShowByHelpGUID(screen , True)
