@@ -19,8 +19,9 @@ Type RoomHandler_Betty extends TRoomHandler
 	Field spriteSuitcase:TSprite {nosave}
 	Field presentInSuitcase:TGUIBettyPresent {nosave}
 	Field draggedPresent:TGUIBettyPresent {nosave}
-	Field suitcasePos:TVec2D = new TVec2D.Init(20,220) {nosave}
+	Global suitcaseArea:SRect = new SRect(20,220, 145, 120)
 
+	Global haveToRefreshGuiElements:Int = True
 	Global _eventListeners:TEventListenerBase[]
 	Global _instance:RoomHandler_Betty
 	Global LS_betty:TLowerString = TLowerString.Create("betty")
@@ -47,6 +48,8 @@ Type RoomHandler_Betty extends TRoomHandler
 		'Betty accepts presents
 		BettyArea.setOption(GUI_OBJECT_ACCEPTS_DROP, True)
 
+		spriteSuitcase = GetSpriteFromRegistry("gfx_suitcase_presents")
+
 
 		'=== EVENTS ===
 		'remove old listeners
@@ -55,7 +58,7 @@ Type RoomHandler_Betty extends TRoomHandler
 		'register new listeners
 		_eventListeners = new TEventListenerBase[0]
 		'handle players visiting betty
-		_eventListeners :+ [ EventManager.registerListenerFunction("player.onBeginEnterRoom", onPlayerBeginEnterRoom) ]
+'		_eventListeners :+ [ EventManager.registerListenerFunction("player.onBeginEnterRoom", onPlayerBeginEnterRoom) ]
 		'handle present
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickPresent, "TGUIBettyPresent" ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDropOnTargetAccepted", onDropPresent, "TGUIBettyPresent" ) ]
@@ -63,7 +66,6 @@ Type RoomHandler_Betty extends TRoomHandler
 
 		'(re-)localize content
 		SetLanguage()
-		spriteSuitcase = GetSpriteFromRegistry("gfx_suitcase")
 	End Method
 
 
@@ -86,24 +88,16 @@ Type RoomHandler_Betty extends TRoomHandler
 	End Method
 
 
-	'called as soon as a player enters bettys room
-	Function onPlayerBeginEnterRoom:Int(triggerEvent:TEventBase)
-		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
-		if not room or room.GetName() <> "betty" then return False
+	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase )
+		'We cannot rely on "onEnterRoom" as we could have saved
+		'in this room - so better refresh now
+		haveToRefreshGuiElements = true
+	End Method
 
-		'remove an old (maybe obsolete) dialogue
-		'ResetDialogue()
-		'generate already overrides an existing dialogue
-		GenerateDialogue()
 
-		Local present:TBettyPresent=GetBetty().getCurrentPresent(GetPlayerBaseCollection().playerID)
-		If present
-			If not GetInstance().presentInSuitcase
-				GetInstance().presentInSuitcase=new TGUIBettyPresent.Create(GetInstance().suitcasePos.GetX() + 70, GetInstance().suitcasePos.GetY() + 32, present)
-				GetInstance().presentInSuitcase.setLimitToState("betty")
-			End If
-		End If
-	End Function
+	Method onEnterRoom:Int( triggerEvent:TEventBase )
+		haveToRefreshGuiElements = true
+	End Method
 
 
 	Function ResetDialogue()
@@ -192,6 +186,20 @@ Type RoomHandler_Betty extends TRoomHandler
 	End Function
 
 
+	Method RefreshGuiElements:Int()
+		'create present visualization if required
+		If not presentInSuitcase
+			Local present:TBettyPresent=GetBetty().getCurrentPresent(GetPlayerBaseCollection().playerID)
+			If present
+				GetInstance().presentInSuitcase=new TGUIBettyPresent.Create(RoomHandler_Betty.suitcaseArea.x + 14, RoomHandler_Betty.suitcaseArea.y + 19, present)
+				GetInstance().presentInSuitcase.setLimitToState("betty")
+			End If
+		End If
+
+		haveToRefreshGuiElements = False
+	End Method
+
+
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		For Local i:Int = 1 To 4
 			local sprite:TSprite = GetSpriteFromRegistry("gfx_room_betty_picture1")
@@ -221,7 +229,7 @@ Type RoomHandler_Betty extends TRoomHandler
 
 		Local highlightBetty:int = False
 		If presentInSuitcase
-			spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY(),-1,null, 1.3)
+			spriteSuitcase.Draw(suitcaseArea.x, suitcaseArea.y)
 			If presentInSuitcase.isHovered
 				GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
 			End If
@@ -240,6 +248,7 @@ Type RoomHandler_Betty extends TRoomHandler
 			SetAlpha oldCol.a * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
 
 			BettySprite.Draw(BettyArea.GetX(), BettyArea.GetY())
+			spriteSuitcase.Draw(suitcaseArea.x, suitcaseArea.y)
 
 			SetAlpha oldCol.a
 			SetBlend AlphaBlend
@@ -255,6 +264,9 @@ Type RoomHandler_Betty extends TRoomHandler
 		   GetPlayerBase().GetFigure().GetInRoomID() > 0
 			GenerateDialogue()
 		endif
+
+		'delete unused and create new gui elements
+		If haveToRefreshGuiElements Then RefreshGUIElements()
 
 		GUIManager.update(LS_betty)
 
@@ -305,8 +317,7 @@ Type RoomHandler_Betty extends TRoomHandler
 				presentItem.dropBackToOrigin()
 				MouseManager.SetClickHandled(2)
 			Else If button = 1
-				Local pos:TVec2D=RoomHandler_Betty.GetInstance().suitcasePos
-				If THelper.MouseIn(pos.GetX(), pos.GetY(), 250, 120) And GetInstance().draggedPresent
+				If THelper.MouseInSRect(suitcaseArea) And GetInstance().draggedPresent
 					presentItem.dropBackToOrigin()
 				End If
 			End If

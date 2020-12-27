@@ -22,7 +22,6 @@ Type RoomHandler_Archive extends TRoomHandler
 	Field GuiListSuitcase:TGUIProgrammeLicenceSlotList = null
 	Field DudeArea:TGUISimpleRect	'allows registration of drop-event
 
-	Field spriteSuitcaseGlow:TSprite {nosave}
 	Field spriteSuitcase:TSprite {nosave}
 
 	'configuration
@@ -70,7 +69,6 @@ Type RoomHandler_Archive extends TRoomHandler
 
 
 		spriteSuitcase = GetSpriteFromRegistry("gfx_suitcase")
-		spriteSuitcaseGlow = GetSpriteFromRegistry("gfx_suitcase_glow")
 
 
 		'=== EVENTS ===
@@ -411,10 +409,16 @@ Type RoomHandler_Archive extends TRoomHandler
 		programmeList.Draw(TgfxProgrammelist.MODE_ARCHIVE)
 
 		'draw suitcase - make suitcase/vendor glow if needed
+		spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
 		If draggedGuiProgrammeLicence
-			spriteSuitcaseGlow.Draw(suitcasePos.GetX(), suitcasePos.GetY())
-		Else
+			Local oldColA:Float = GetAlpha()
+			SetBlend LightBlend
+			SetAlpha oldColA * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
+
 			spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
+			SetAlpha(oldColA)
+			SetBlend AlphaBlend
 		EndIf
 
 		GUIManager.Draw( LS_archive )

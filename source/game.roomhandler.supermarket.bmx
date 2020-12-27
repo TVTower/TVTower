@@ -8,6 +8,8 @@ Import "common.misc.dialogue.bmx"
 
 
 Type RoomHandler_SuperMarket extends TRoomHandler
+	Global vendorSprite:TSprite
+	Global vendorArea:TRectangle = new TRectangle.Init(0,70,120,312)
 	Global dialogue:TDialogue
 	Global _eventListeners:TEventListenerBase[]
 	Global _instance:RoomHandler_SuperMarket
@@ -33,6 +35,7 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 
 
 		'=== CREATE ELEMENTS ===
+		vendorSprite = GetSpriteFromRegistry("gfx_supermarket_vendor")
 
 
 		'=== EVENTS ===
@@ -130,6 +133,8 @@ Type RoomHandler_SuperMarket extends TRoomHandler
 
 
 	Function onDrawSupermarket:int( triggerEvent:TEventBase )
+		vendorSprite.Draw(vendorArea.GetX(), vendorArea.GetY())
+
 		If dialogue then dialogue.Draw()
 	End Function
 

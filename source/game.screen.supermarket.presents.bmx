@@ -10,6 +10,8 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 	Global box:TRectangle = new TRectangle.Init(117,13,679,247)
 	Global draggedPresent:TGUIBettyPresent
 	Global presentInSuitcase:TGUIBettyPresent
+	Global vendorSprite:TSprite
+	Global vendorArea:TRectangle = new TRectangle.Init(0,70,120,312)
 
 	Global presentButtons:TGUIButton[10]
 	Global presentToolTips:TTooltipBase[10]
@@ -17,7 +19,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TScreenHandler_SupermarketPresents
 	Global spriteSuitcase:TSprite
-	Global suitcasePos:TVec2D = new TVec2D.Init(210,248)
+	Global suitcaseArea:SRect = new SRect(210,260, 145, 120)
 
 	Function GetInstance:TScreenHandler_SupermarketPresents()
 		if not _instance then _instance = new TScreenHandler_SupermarketPresents
@@ -34,12 +36,12 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 		'=== create gui elements if not done yet
 
 		if not spriteSuitcase
-			spriteSuitcase = GetSpriteFromRegistry("gfx_suitcase")
+			spriteSuitcase = GetSpriteFromRegistry("gfx_suitcase_presents")
 		endif
 
 		if not presentButtons[0]
 			For local i:int = 0 to 9
-				local presentX:int = box.getX() + 15 + (i mod 5) * (123 + 8)
+				local presentX:int = box.getX() + 13 + (i mod 5) * (123 + 8)
 				local presentY:int = box.getY() + 13 + (i / 5) * (91 + 19)
 				local present:TBettyPresent = TBettyPresent.GetPresent(i)
 				presentButtons[i] = new TGUIButton.Create(new TVec2D.Init(presentX, presentY), new TVec2D.Init(123,91), "present "+(i+1), "supermarket_presents")
@@ -62,6 +64,8 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 				presentButtons[i].setToolTip(presentTooltips[i])
 			Next
 		endif
+
+		vendorSprite = GetSpriteFromRegistry("gfx_supermarket_vendor")
 
 
 		'=== EVENTS ===
@@ -146,9 +150,8 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 				undoDragPresent()
 				MouseManager.SetClickHandled(2)
 			Else If button = 1
-				Local suitcasePos:int = THelper.MouseIn(suitcasePos.GetX(), suitcasePos.GetY(), 250, 120)
-				Local returnPos:int = THelper.MouseIn(box.GetX(), box.GetY(), box.GetW(), box.getH()) ..
-					or THelper.MouseIn(25, 70, 80, 150)
+				Local suitcasePos:int = THelper.MouseInSRect(suitcaseArea)
+				Local returnPos:int = THelper.MouseInRect(box) or THelper.MouseInRect(vendorArea)
 				If suitcasePos
 					If not presentInSuitcase
 						if GetPlayerBase().GetFinance().CanAfford(present.price) And GetBetty().BuyPresent(GetPlayerBase().playerID, present)
@@ -167,6 +170,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 					End If
 					undoDragPresent()
 				End If
+				Return True
 			End If
 		End If
 		Return False
@@ -208,9 +212,22 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 '		contentY :+ contentH - 30
 '		skin.RenderContent(contentX, contentY, contentW, 30 , "1_bottom")
 
-		spriteSuitcase.Draw(suitcasePos.GetX(), suitcasePos.GetY(),-1,null, 1.3)
-
 		skin.RenderBorder(box.GetIntX(), box.GetIntY(), box.GetIntW(), box.GetIntH())
+
+		spriteSuitcase.Draw(suitcaseArea.x, suitcaseArea.y)
+		vendorSprite.Draw(vendorArea.GetX(), vendorArea.GetY())
+
+		if draggedPresent
+			Local oldCol:TColor = New TColor.Get()
+			SetBlend LightBlend
+			SetAlpha oldCol.a * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5))
+
+			vendorSprite.Draw(vendorArea.GetX(), vendorArea.GetY())
+			spriteSuitcase.Draw(suitcaseArea.x, suitcaseArea.y)
+
+			SetAlpha oldCol.a
+			SetBlend AlphaBlend
+		Endif
 
 		If draggedPresent
 			GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
@@ -230,6 +247,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 			Next
 		End If
 
+		
 		GuiManager.Draw( LS_supermarket_presents )
 	End Method
 
@@ -237,7 +255,7 @@ Type TScreenHandler_SupermarketPresents extends TScreenHandler
 	Method Update()
 		Local present:TBettyPresent=GetBetty().getCurrentPresent(GetPlayerBaseCollection().playerID)
 		If present And Not presentInSuitcase
-			presentInSuitcase=new TGUIBettyPresent.Create(GetInstance().suitcasePos.GetX() + 70, GetInstance().suitcasePos.GetY() + 32, present)
+			presentInSuitcase=new TGUIBettyPresent.Create(GetInstance().suitcaseArea.x + 14, GetInstance().suitcaseArea.y + 19, present)
 			presentInSuitcase.setLimitToState("supermarket_presents")
 		End If
 		If not present And presentInSuitcase

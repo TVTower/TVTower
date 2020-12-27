@@ -151,16 +151,17 @@
 		<spritepack name="gfx_screen_supermarket_pack">
  			<url>res/gfx/supermarket/screen_supermarket_elements.png</url>
 			<children>
-				<child name="gfx_supermarket_present1"  x="0"   y="0"   w="123"  h="91" />
-				<child name="gfx_supermarket_present2"  x="0"   y="91"  w="123"  h="91" />
-				<child name="gfx_supermarket_present3"  x="0"   y="182" w="123"  h="91" />
-				<child name="gfx_supermarket_present4"  x="0"   y="273" w="123"  h="91" />
-				<child name="gfx_supermarket_present5"  x="0"   y="364" w="123"  h="91" />
-				<child name="gfx_supermarket_present6"  x="123" y="0"   w="123"  h="91" />
-				<child name="gfx_supermarket_present7"  x="123" y="91"  w="123"  h="91" />
-				<child name="gfx_supermarket_present8"  x="123" y="182" w="123"  h="91" />
-				<child name="gfx_supermarket_present9"  x="123" y="273" w="123"  h="91" />
-				<child name="gfx_supermarket_present10" x="123" y="364" w="123"  h="91" />
+				<child name="gfx_supermarket_present1"  x="0"   y="0"   w="122"  h="91" />
+				<child name="gfx_supermarket_present2"  x="0"   y="91"  w="122"  h="91" />
+				<child name="gfx_supermarket_present3"  x="0"   y="182" w="122"  h="91" />
+				<child name="gfx_supermarket_present4"  x="0"   y="273" w="122"  h="91" />
+				<child name="gfx_supermarket_present5"  x="0"   y="364" w="122"  h="91" />
+				<child name="gfx_supermarket_present6"  x="123" y="0"   w="122"  h="91" />
+				<child name="gfx_supermarket_present7"  x="123" y="91"  w="122"  h="91" />
+				<child name="gfx_supermarket_present8"  x="123" y="182" w="122"  h="91" />
+				<child name="gfx_supermarket_present9"  x="123" y="273" w="122"  h="91" />
+				<child name="gfx_supermarket_present10" x="123" y="364" w="122"  h="91" />
+				<child name="gfx_supermarket_vendor"	x="250"	y="0"   w="120"  h="312" />
 			</children>
 		</spritepack>
 

@@ -282,7 +282,6 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 		spriteAuctionPanel = GetSpriteFromRegistry("gfx_gui_panel")
 		spriteAuctionPanelContent = GetSpriteFromRegistry("gfx_gui_panel.content")
 		spriteSuitcase = GetSpriteFromRegistry("gfx_suitcase")
-		'spriteSuitcaseGlow = GetSpriteFromRegistry("gfx_suitcase_glow")
 
 
 		'=== EVENTS ===

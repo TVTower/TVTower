@@ -118,9 +118,8 @@
  			<url>res/gfx/misc/suitcase.png</url>
 			<children>
 				<child name="gfx_suitcase" 			x="3"   y="0"   w="215" h="105"	/>
-				<child name="gfx_suitcase_glow"		x="3"   y="107"	w="215" h="105"	/>
 				<child name="gfx_suitcase_big" 		x="218" y="0"   w="275" h="105"	/>
-				<child name="gfx_suitcase_big_glow"	x="218" y="107"	w="275" h="105"	/>
+				<child name="gfx_suitcase_presents"	x="3"   y="110" w="145" h="120"	/>
 			</children>
 		</spritepack>
 
