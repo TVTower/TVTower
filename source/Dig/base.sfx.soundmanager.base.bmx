@@ -66,10 +66,8 @@ Type TSoundManager
 
 	Function Create:TSoundManager()
 		Local manager:TSoundManager = New TSoundManager
-print "Create:TSoundManager"
 		'initialize sound system
 		manager.InitAudioEngine()
-print "-----"
 
 		manager.defaulTSfxDynamicSettings = TSfxSettings.Create()
 
@@ -1062,6 +1060,7 @@ Type TDynamicSfxChannel Extends TSfxChannel
 			'print "-> Volume [" + CurrentSfx + "]: " + (TSoundManager.GetInstance().sfxVolume * distanceVolume) +   "    source="+TTypeID.ForObject(Source).Name() + "  receiver="+TTypeID.ForObject(Receiver).Name() + "    channel = " + _channel.ToString()
 		EndIf
 return
+rem
 		If (sourcePoint.z = 0) Then
 			'soundPanWidth describes where the maximum of left/right
 			'is reached. soundPanOffset any potential offset from center
@@ -1126,6 +1125,7 @@ return
 				EndIf
 			EndIf
 		EndIf
+endrem
 	End Method
 End Type
 

@@ -1,11 +1,9 @@
 SuperStrict
 Import brl.Map
-Import audio.soloud
-Import audio.soloudaudio
-'or sdl
-'Import audio.soloudaudiosdl
-'miniaudio
-Import audio.soloudaudiominiaudio
+'sdl
+'Import audio.AudioSDL
+'or miniaudio
+Import audio.AudioMiniAudio
 
 Import "base.sfx.soundmanager.base.bmx"
 
