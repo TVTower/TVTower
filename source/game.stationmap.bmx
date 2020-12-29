@@ -428,7 +428,7 @@ Type TStationMapCollection
 		local result:int
 
 		for local station:TStationCableNetworkUplink = EachIn stations
-			if station.sectionName = sectionName
+			if station.GetSectionName() = sectionName
 				result :+ 1
 			endif
 		next
@@ -2035,7 +2035,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		Local found:int = 0 
 		For local station:TStationBase = EachIn stations
 			if stationType >0 and station.stationType <> stationType then continue
-			if station.sectionName = sectionName 
+			if station.GetSectionName() = sectionName 
 				result[found] = station
 				found :+ 1
 				if found > result.length then result = result[.. result.length + 5]
@@ -2051,7 +2051,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 	Method GetCableNetworkUplinkStationBySectionName:TStationBase(sectionName:string)
 		For local station:TStationBase = EachIn stations
 			if station.stationType <> TVTStationType.CABLE_NETWORK_UPLINK then continue
-			if station.sectionName = sectionName then return station
+			if station.GetSectionName() = sectionName then return station
 		Next
 		return null
 	End Method
@@ -2284,7 +2284,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method CanAddStation:int(station:TStationBase)
 		'only one network per section and player allowed
-		if TStationCableNetworkUplink(station) and GetCableNetworkUplinkStationBySectionName(station.sectionName) then Return False
+		if TStationCableNetworkUplink(station) and GetCableNetworkUplinkStationBySectionName(station.GetSectionName()) then Return False
 
 		'TODO: ask if the station is ok with it (eg. satlink asks satellite first)
 		'for now:
@@ -2589,9 +2589,9 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	Field built:Double = 0
 	'time at which the station gets active (again)
 	Field activationTime:Double = -1
-	Field sectionName:String = "" {nosave}
 	Field name:string = ""
 	Field stationType:int = 0
+	Field _sectionName:String = "" {nosave}
 	'various settings (paid, fixed price, sellable, active...)
 	Field _flags:Int = 0
 
@@ -2682,12 +2682,12 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method GetSectionName:String(refresh:Int=False) {_exposeToLua}
-		If sectionName <> "" And Not refresh Then Return sectionName
+		If _sectionName <> "" And Not refresh Then Return _sectionName
 
 		Local hoveredSection:TStationMapSection = GetStationMapCollection().GetSection(Int(pos.x), Int(pos.y))
-		If hoveredSection Then sectionName = hoveredSection.name
+		If hoveredSection Then _sectionName = hoveredSection.name
 
-		Return sectionName
+		Return _sectionName
 	End Method
 
 
@@ -3018,7 +3018,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method SetSectionName:int(sectionName:string)
-		self.sectionName = sectionName
+		self._sectionName = sectionName
 	End Method
 
 
@@ -3750,7 +3750,7 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 
 	Method GetReachMax:Int(refresh:Int=False) {_exposeToLua}
 		if reachMax <= 0 or refresh
-			local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
+			local section:TStationMapSection = GetStationMapCollection().GetSectionByName(GetSectionName())
 			if section then reachMax = section.GetPopulation()
 		endif
 
@@ -3792,7 +3792,7 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 				'then no increase will happen
 				'if reach is calculated for self while already added,
 				'check if another is existing too
-				local cableNetworks:int = GetStationMap(owner).GetCableNetworkUplinksInSectionCount(sectionName)
+				local cableNetworks:int = GetStationMap(owner).GetCableNetworkUplinksInSectionCount(GetSectionName())
 				if GetStationMap(owner).HasCableNetworkUplink(self) and cableNetworks > 1
 					reachExclusiveMax = 0
 					return reachExclusiveMax
@@ -3804,7 +3804,7 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 				reachExclusiveMax = cableNetwork.GetReach()
 
 				'subtract section population for all antennas in that area
-				local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
+				local section:TStationMapSection = GetStationMapCollection().GetSectionByName(GetSectionName())
 				reachExclusiveMax :- section.GetAntennaAudienceSum( owner )
 			endif
 
@@ -3822,7 +3822,7 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 
 
 	Method DrawBackground(selected:Int=False, hovered:Int=False)
-		local section:TStationMapSection = GetStationMapCollection().GetSectionByName(sectionName)
+		local section:TStationMapSection = GetStationMapCollection().GetSectionByName(GetSectionName())
 		if not section then return
 
 		Local oldCol:SColor8; GetColor(oldCol)
@@ -4801,10 +4801,12 @@ Type TStationMapSection
 			Next
 		EndIf
 
+
 		'== LOAD CACHE ==
 		If shareCache And shareCache.contains(cacheKey)
 			result = TVec3D(shareCache.ValueForKey(cacheKey))
 		EndIf
+
 
 		'== GENERATE CACHE ==
 		If Not result

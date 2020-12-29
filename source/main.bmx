@@ -836,6 +836,35 @@ Type TApp
 
 
 					If KeyManager.IsHit(KEY_Y)
+						'print some debug for stationmap
+						rem
+						For local pID:Int = 1 to 4
+							Print "GetStationMap("+pID+", True).GetReach() = " + GetStationMap(pID, True).GetReach()		
+						Next
+						For local pID:Int = 1 to 4
+							Print "GetBroadcastManager().GetAudienceResult("+pID+").WholeMarket = " + GetBroadcastManager().GetAudienceResult( pID ).WholeMarket.ToString()
+						Next
+						
+						Print "current markets for p1:" 
+						local sum:Int = 0
+						local marketNum:int = 1
+						For Local market:TAudienceMarketCalculation = EachIn GetBroadcastManager().GetCurrentBroadcast().AudienceMarkets
+							For Local playerID:Int = EachIn market.playerIDs
+								if playerID = 1 'our player there?
+									print "  " + Rset(marketNum, 3).Replace(" ", "0")+": "+ market.maxAudience.ToString() 
+									sum :+ market.maxAudience.GetTotalSum()
+									marketNum :+ 1
+								endif
+							Next
+						Next
+						Print "  SUM: " + sum 
+						
+						Local audienceAntenna:Int = GetStationMapCollection().GetTotalAntennaReceiverShare([1], [2,3,4]).x
+						Local audienceSatellite:Int = GetStationMapCollection().GetTotalSatelliteReceiverShare([1], [2,3,4]).x
+						Local audienceCableNetwork:Int = GetStationMapCollection().GetTotalCableNetworkReceiverShare([1], [2,3,4]).x
+						print "Stationmap: antenna=" + audienceAntenna + "  satellite=" + audienceSatellite + "  cable=" + audienceCableNetwork
+						endrem
+						
 						rem
 						local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("laundry", "laundry", 0)
 						GetRoomAgency().CancelRoomRental(room, GetPlayer().playerID)
@@ -2994,6 +3023,9 @@ Type TSavegameConverter
 			Case "TMyClassOld".ToLower()
 				Return "TMyClassNew"
 			EndRem
+			
+			Case "TPersonPersonalityAttribute".ToLower()
+				Return "TRangedFloat"
 			Default
 				print "TSavegameConverter.GetCurrentTypeName(): unsupported but no longer known type ~q"+typeName+"~q requested."
 				Return typeName

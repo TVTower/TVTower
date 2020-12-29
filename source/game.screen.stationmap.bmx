@@ -128,7 +128,6 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickCancelButton", cancelButton ) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickActionButton", actionButton ) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickRenewButton", renewButton ) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickAutoRenewCheckbox", renewButton ) ]
 		_eventListeners :+ [ EventManager.registerListenerMethod( "guiCheckBox.onSetChecked", Self, "OnSetChecked_AutoRenewCheckbox", autoRenewCheckbox) ]
 		'localize the button
 		'we have to refresh the gui station list as soon as we remove or add a station
@@ -2879,7 +2878,7 @@ endrem
 							'refresh state information
 							'DO NOT TRUST: Brandenburg's center is berlin - leading
 							'              to sectionname = berlin
-							mouseOverStation.sectionName = mouseoverSection.name
+							mouseOverStation.SetSectionName( mouseoverSection.name )
 							'mouseoverStation.GetSectionName(true)
 						endif
 					'remove cache
@@ -2909,7 +2908,7 @@ endrem
 						If selectedStation
 							selectedStation.refreshData()
 							'refresh state information
-							selectedStation.sectionName = hoveredMapSection.name
+							selectedStation.SetSectionName( hoveredMapSection.name )
 							'selectedStation.GetSectionName(true)
 
 							'handled left click
