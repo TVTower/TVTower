@@ -802,7 +802,7 @@ Type TgfxProgrammelist Extends TPlannerList
 			'adjust mouse cursor if needed
 			If THelper.MouseIn(currX, currY + 1, int(GetEntrySize().GetX()), int(GetEntrySize().GetY()))
 				If licence and licence.IsAvailable() 
-					If mode = MODE_PROGRAMMEPLANNER and licence.isSingle()
+					If mode = MODE_PROGRAMMEPLANNER
 						GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
 					ElseIf mode = MODE_ARCHIVE
 						GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
