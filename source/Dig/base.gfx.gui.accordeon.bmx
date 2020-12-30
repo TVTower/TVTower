@@ -38,7 +38,7 @@ Type TGUIAccordeonPanel Extends TGUIObject
 		If isOpen = False Then Return True
 
 		isOpen = False
-'		SetAppearanceChanged(True)
+		SetAppearanceChanged(True)
 
 		'adjust parental accordeon
 		If TGUIAccordeon(_parent) Then TGUIAccordeon(_parent).onClosePanel(Self)
@@ -53,7 +53,7 @@ Type TGUIAccordeonPanel Extends TGUIObject
 		If isOpen = True Then Return True
 
 		isOpen = True
-'		SetAppearanceChanged(True)
+		SetAppearanceChanged(True)
 
 		'adjust parental accordeon
 		If TGUIAccordeon(_parent) Then TGUIAccordeon(_parent).onOpenPanel(Self)
