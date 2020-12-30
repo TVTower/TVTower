@@ -561,10 +561,10 @@ Type TNewsAgency
 				If person And person.GetPopularity()
 					Local jobMod:Float = TVTPersonJob.GetCastJobImportanceMod(job.job)
 					If jobMod > 0.0
-						NewsEvent.AddEffectByData(New TData.Add("trigger", "happen").Add("type", "ModifyPersonPopularity").AddNumber("id", job.personID).AddNumber("valueMin", 0.1 * jobMod).AddNumber("valueMax", 0.5 * jobMod))
+						NewsEvent.AddEffectByData(New TData.Add("trigger", "happen").Add("type", "ModifyPersonPopularity").AddNumber("referenceID", job.personID).AddNumber("valueMin", 0.1 * jobMod).AddNumber("valueMax", 0.5 * jobMod))
 						'TODO: take broadcast audience into consideration
 						'      or maybe only use broadcastFirstTimeDone
-						NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcastDone").Add("type", "ModifyPersonPopularity").AddNumber("id", job.personID).AddNumber("valueMin", 0.01 * jobMod).AddNumber("valueMax", 0.025 * jobMod))
+						NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcastDone").Add("type", "ModifyPersonPopularity").AddNumber("referenceID", job.personID).AddNumber("valueMin", 0.01 * jobMod).AddNumber("valueMax", 0.025 * jobMod))
 					EndIf
 				EndIf
 			EndIf

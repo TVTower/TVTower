@@ -114,6 +114,88 @@ Type THelper
 	End Function
 
 
+	'based on code of "Henri" written in the BlitzMax NG's discord channel "#code"
+	Function PackValue64:Int(pack:Long Var, value:Long, loBit:Int, hiBit:Int)
+		?debug
+			'Check that the range is valid
+			If hiBit > 64 Or loBit <= 0 Or hiBit < loBit 
+				Assert 0, "PackValue64: Invalid bit range"
+				Return False
+			EndIf
+
+			Local maxValue:Long = (1:Long Shl (hiBit - loBit + 1)) - 1
+			If value > maxValue 
+				Assert 0, "PackValue64: Value out of range: " + value + " > " + maxValue
+				Return False
+			EndIf
+		?
+
+		Local shiftPoint:Int = loBit - 1
+		 'Clear bits in range
+		pack = pack & ~ (((1:Long Shl (hiBit - shiftPoint)) - 1) Shl (shiftPoint))
+		'Add new value
+		pack = pack | (value Shl shiftPoint)
+
+		Return True
+	End Function
+
+
+	Function GetPackValue64:Long(pack:Long, loBit:Int, hiBit:Int)
+		?debug
+			'Check that the range is valid
+			If hiBit> 64 Or loBit <= 0 Or hiBit < loBit 
+				Assert 0, "GetPackValue64: Invalid bit range" 
+				Return False
+			EndIf
+		?
+
+		Local shiftPoint:Int = lobit - 1
+		Return (pack & (((1:Long Shl (hiBit - shiftPoint)) - 1) Shl (shiftPoint))) Shr shiftPoint
+	End Function
+	
+	Rem
+		'this is the "long" version of above's code - so it explains
+		'a bit better what is done exactly
+		
+	Function PackValue64B:Int(value:Long, loBit:Int, hibit:Int)
+		
+		'Check that the range is valid
+		If hibit > 64 Or lobit <= 0 Or hibit < lobit Then Assert 0, "PackValue64: Invalid bit range"; Return False
+		
+		'Check that the value fits into specified bit range
+		Local numOfBits:Int = hibit - lobit + 1
+		Local maxValue:Long = (1:Long Shl numOfBits) - 1
+		If value > maxValue Then Assert 0, "PackValue64: Value out of range"; Return False
+		
+		'Creating a clearing mask for the bit range
+		Local shiftPoint:Int = lobit - 1
+		Local mask:Long = ~ (maxValue Shl (shiftPoint))
+		
+		'Clear bits in range
+		global_value = global_value & mask
+		
+		'Add new value
+		global_value = global_value | (value Shl shiftPoint)
+		
+		Return True
+		
+	EndFunction
+
+	Function GetPackValue64B:Long(loBit:Int, hibit:Int)
+		'Creating a clearing mask for the bits outside of range
+		Local numOfBits:Int = hibit - lobit + 1
+		Local maxValue:Long = (1:Long Shl numOfBits) - 1
+		Local shiftPoint:Int = lobit - 1
+		Local mask:Long = (maxValue Shl (shiftPoint))
+		
+		Local value:Long = (global_value & mask) Shr shiftPoint
+		
+		Return value
+		
+	EndFunction
+	End Rem
+
+
 	Function ShuffleList:TList(list:TList)
 		Local objArr:Object[] = list.ToArray()
 		Local j:Int

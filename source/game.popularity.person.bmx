@@ -3,6 +3,7 @@ Import "Dig/base.util.data.bmx"
 Import "Dig/base.util.math.bmx"
 Import "game.gameconstants.bmx"
 Import "game.popularity.bmx"
+Import "game.person.base.bmx"
 
 
 Type TPersonPopularity Extends TPopularity
@@ -104,39 +105,40 @@ Type TGameModifierPopularity_ModifyPersonPopularity extends TGameModifierPopular
 
 	Method Copy:TGameModifierPopularity_ModifyPersonPopularity()
 		local clone:TGameModifierPopularity_ModifyPersonPopularity = new TGameModifierPopularity_ModifyPersonPopularity
+		
 		clone.CopyBaseFrom(self)
-		clone.popularityReferenceID = self.popularityReferenceID
-		clone.popularityReferenceGUID = self.popularityReferenceGUID
-		clone.valueMin = self.valueMin
-		clone.valueMax = self.valueMax
-		clone.modifyProbability = self.modifyProbability
+		clone.CopyFrom(self)
+
 		return clone
 	End Method
 
 
 	Method Init:TGameModifierPopularity_ModifyPersonPopularity(data:TData, extra:TData=null)
-		if not data then return null
-
-		local index:string = ""
-		if extra and extra.GetInt("childIndex") > 0 then index = extra.GetInt("childIndex")
-		popularityID = data.GetInt("id"+index, data.GetInt("id", 0))
-		popularityReferenceID = data.GetInt("personID"+index, data.GetInt("personID", 0))
-		popularityReferenceGUID = data.GetString("personGUID"+index, data.GetString("personGUID", ""))
-		if popularityID = 0 and popularityReferenceID = 0 and popularityReferenceGUID = ""
-			TLogger.Log("TGameModifierPopularity_ModifyPopularity", "Init() failed - no popularityID or referenceID/referenceGUID given.", LOG_ERROR)
-			return Null
-		endif
-
-		valueMin = data.GetFloat("valueMin"+index, 0.0)
-		valueMax = data.GetFloat("valueMax"+index, 0.0)
-		modifyProbability = data.GetInt("probability"+index, 100)
-
+		Super.Init(data, extra)
 		Return self
 	End Method
-	
-	
+
+
+	Method GetPopularity:TPopularity() override
+		Local popularity:TPopularity = Super.GetPopularity()
+		If Not popularity 
+			Local person:TPersonBase
+			If popularityReferenceID Then person = GetPerson(popularityReferenceID)
+			If Not person And popularityReferenceGUID Then person = GetPersonByGUID(popularityReferenceGUID)
+			
+			If person and person.HasCustomPersonality()
+				'the getter creates it if not done yet (so persons can
+				'exist without "popularity" until it is required)
+				popularity = person.GetPopularity()
+			EndIf
+		EndIf
+		Return popularity
+	End Method
+
+
 	Method ToString:string()
-		local name:string = data.GetString("name", "default")
+		local name:string = ""
+		if data then name = data.GetString("name", "default")
 		return "TGameModifierPopularity_ModifyPersonPopularity ("+name+")"
 	End Method
 End Type

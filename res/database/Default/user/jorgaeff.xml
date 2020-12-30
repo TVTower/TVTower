@@ -412,7 +412,7 @@
 			<effects>
 				<!-- "in 0-3 Stunden" -->
 				<effect trigger="happen" type="triggernews" time="1,0,3" news="news-jorgaeff-drops-06" />
-				<effect trigger="happen" type="modifyPersonPopularity" guid="21e88c65-0cc6-4bd1-bd14-b48b6ce25402" valueMin="0.05" valueMax="0.075" />
+				<effect trigger="happen" type="modifyPersonPopularity" referenceGUID="21e88c65-0cc6-4bd1-bd14-b48b6ce25402" valueMin="0.05" valueMax="0.075" />
 			</effects>
 		</news>
 
@@ -427,7 +427,7 @@
 			<effects>
 				<!-- "übermorgen 17-23 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,17,23" news="news-jorgaeff-drops-07" />
-				<effect trigger="happen" type="modifyPersonPopularity" guid="ronny-programmeperson-bennyjameson" valueMin="0.03" valueMax="0.07" />
+				<effect trigger="happen" type="modifyPersonPopularity" referenceGUID="ronny-programmeperson-bennyjameson" valueMin="0.03" valueMax="0.07" />
 			</effects>
 		</news>
 
@@ -442,7 +442,7 @@
 			<effects>
 				<!-- "übermorgen 10-16 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,2,2,10,16" news="news-jorgaeff-drops-08" />
-				<effect trigger="happen" type="modifyPersonPopularity" guid="ronny-programmeperson-bennyjameson" valueMin="-0.03" valueMax="-0.07" />
+				<effect trigger="happen" type="modifyPersonPopularity" referenceGUID="ronny-programmeperson-bennyjameson" valueMin="-0.03" valueMax="-0.07" />
 			</effects>
 		</news>
 
@@ -457,7 +457,7 @@
 			<effects>
 				<!-- "in 7 Tagen 0-23 Uhr" -->
 				<effect trigger="happen" type="triggernews" time="2,7,7,0,23" news="news-jorgaeff-drops-09" />
-				<effect trigger="happen" type="modifyPersonPopularity" guid="ronny-programmeperson-bennyjameson" valueMin="0.01" valueMax="0.03" />
+				<effect trigger="happen" type="modifyPersonPopularity" referenceGUID="ronny-programmeperson-bennyjameson" valueMin="0.01" valueMax="0.03" />
 			</effects>
 		</news>
 
@@ -470,7 +470,7 @@
 			</description>
 			<data genre="1" price="0.6" quality="55" fictional="True" />
 			<effects>
-				<effect trigger="happen" type="modifyPersonPopularity" guid="ronny-programmeperson-bennyjameson" valueMin="0.03" valueMax="0.07" />
+				<effect trigger="happen" type="modifyPersonPopularity" referenceGUID="ronny-programmeperson-bennyjameson" valueMin="0.03" valueMax="0.07" />
 			</effects>
 		</news>
 

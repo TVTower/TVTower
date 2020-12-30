@@ -8,7 +8,7 @@ Import "Dig/base.util.persongenerator.bmx"
 Import "basefunctions.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx"
-Import "game.popularity.person.bmx"
+Import "game.popularity.bmx"
 
 
 Type TPersonBaseCollection Extends TGameObjectCollection

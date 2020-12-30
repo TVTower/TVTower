@@ -5,6 +5,7 @@ Import "game.broadcast.audienceresult.bmx"
 Import "game.programme.programmelicence.bmx"
 Import "game.player.finance.bmx"
 Import "game.person.base.bmx"
+Import "game.popularity.person.bmx"
 Import "game.publicimage.bmx"
 'Import "game.gameevents.bmx"
 

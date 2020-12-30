@@ -316,16 +316,23 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 	Function CreateNewInstance:TGameModifierPopularity_ModifyPopularity()
 		return new TGameModifierPopularity_ModifyPopularity
 	End Function
-
-
+	
+	
+	Method CopyFrom(other:TGameModifierPopularity_ModifyPopularity)
+		popularityID = other.popularityID
+		popularityReferenceID = other.popularityReferenceID
+		valueMin = other.valueMin
+		valueMax = other.valueMax
+		modifyProbability = other.modifyProbability
+	End Method
+	
+	
 	Method Copy:TGameModifierPopularity_ModifyPopularity()
 		local clone:TGameModifierPopularity_ModifyPopularity = new TGameModifierPopularity_ModifyPopularity
+
 		clone.CopyBaseFrom(self)
-		clone.popularityID = self.popularityID
-		clone.popularityReferenceID = self.popularityReferenceID
-		clone.valueMin = self.valueMin
-		clone.valueMax = self.valueMax
-		clone.modifyProbability = self.modifyProbability
+		clone.CopyFrom(self)
+
 		return clone
 	End Method
 
@@ -339,7 +346,7 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 		popularityReferenceID = data.GetInt("referenceID"+index, data.GetInt("referenceID", 0))
 		popularityReferenceGUID = data.GetString("referenceGUID"+index, data.GetString("referenceGUID", ""))
 		if popularityID = 0 and popularityReferenceID = 0 and popularityReferenceGUID = ""
-			TLogger.Log("TGameModifierPopularity_ModifyPopularity", "Init() failed - no popularityID or referenceID/referenceGUID given.", LOG_ERROR)
+			TLogger.Log(ToString(), "Init() failed - no popularityID or referenceID/referenceGUID given.", LOG_ERROR)
 			return Null
 		endif
 
@@ -352,16 +359,13 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 
 
 	Method ToString:string()
-		local name:string = data.GetString("name", "default")
+		local name:string = ""
+		if data then name = data.GetString("name", "default")
 		return "TGameModifierPopularity_ModifyPopularity ("+name+")"
 	End Method
-
-
-	'override to trigger a specific news
-	Method RunFunc:int(params:TData)
-		'skip if probability is missed
-		if modifyProbability <> 100 and RandRange(0, 100) > modifyProbability then return False
-
+	
+	
+	Method GetPopularity:TPopularity()
 		local popularity:TPopularity
 		If popularityID > 0
 			popularity = GetPopularityManager().GetByID(popularityID)
@@ -371,8 +375,18 @@ Type TGameModifierPopularity_ModifyPopularity extends TGameModifierBase
 		ElseIf not popularity and popularityReferenceGUID
 			popularity = GetPopularityManager().GetByReferenceGUID(popularityReferenceGUID)
 		EndIf
+		Return popularity
+	End Method
+
+
+	'override to change the popularity
+	Method RunFunc:int(params:TData)
+		'skip if probability is missed
+		if modifyProbability <> 100 and RandRange(0, 100) > modifyProbability then return False
+
+		local popularity:TPopularity = GetPopularity()
 		if not popularity
-			TLogger.Log("TGameModifierPopularity_ModifyPopularity", "cannot find popularity to trigger: ID=" + popularityID + "  referenceGUID=~q" + popularityReferenceGUID + "~q   referenceID=" + popularityReferenceID, LOG_ERROR)
+			TLogger.Log(ToString(), "cannot find popularity to trigger: ID=" + popularityID + "  referenceGUID=~q" + popularityReferenceGUID + "~q   referenceID=" + popularityReferenceID, LOG_ERROR)
 			return false
 		endif
 		local changeBy:Float = RandRange(int(valueMin*1000), int(valueMax*1000))/1000.0

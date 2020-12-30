@@ -6,6 +6,7 @@ Import "game.programme.programmedata.bmx"
 Import "game.programme.programmerole.bmx"
 Import "Dig/base.util.figuregenerator.bmx"
 Import "Dig/base.util.persongenerator.bmx"
+Import "game.popularity.person.bmx"
 
 'loaded on import of the module
 'EventManager.registerListenerFunction("personbase.onStartProduction", onPersonBaseStartsProduction)
@@ -772,17 +773,30 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 
 		Return GetWorldTime().GetTimeGone() > dob
 	End Method
+	
+	
+	Method CreatePopularity:TPersonPopularity()
+		Local pop:TPersonPopularity
+		Local person:TPersonBase = GetPersonBase(personID)
+		If Not person
+			Throw "cannot create TPersonPopularity without person in person DB: personID="+personID
+		EndIf
+
+		local fame:Float = GetAttributeValue(TVTPersonPersonalityAttribute.FAME)
+
+		pop = TPersonPopularity.Create(personID, BiasedRandRange(-10, 10, fame), BiasedRandRange(-25, 25, fame))
+		pop.referenceGUID = person.GetGUID()
+
+		GetPopularityManager().AddPopularity(pop)
+		
+		Return pop
+	End Method
 
 		
-	'overide
-	Method GetPopularity:TPersonPopularity()
+	Method GetPopularity:TPersonPopularity() override
 		If Not _popularity
 			_popularity = GetPopularityManager().GetByID(personID)
-			If Not _popularity
-				local fame:Float = GetAttributeValue(TVTPersonPersonalityAttribute.FAME)
-				_popularity = TPersonPopularity.Create(personID, BiasedRandRange(-10, 10, fame), BiasedRandRange(-25, 25, fame))
-				GetPopularityManager().AddPopularity(_popularity)
-			EndIf
+			If Not _popularity Then _popularity = CreatePopularity()
 		EndIf
 		Return TPersonPopularity(_popularity)
 	End Method
