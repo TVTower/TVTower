@@ -29,9 +29,9 @@ Type TNewsEventCollection
 	Field newsEventsGUID:TMap = New TMap
 	'holding all ever added news events
 	'ID->object
-	Field allNewsEvents:TIntMap
+	Field allNewsEvents:TIntMap = New TIntMap
 	'GUID->object
-	Field allNewsEventsGUID:TMap
+	Field allNewsEventsGUID:TMap = New TMap
 
 	'holding a number of "sethappened"-newsevents (for ordering)
 	Field nextNewsNumber:Long = 0
@@ -70,8 +70,8 @@ Type TNewsEventCollection
 		newsEvents.Clear()
 		newsEventsGUID.Clear()
 
-		If allNewsEvents Then allNewsEvents.Clear()
-		If allNewsEventsGUID Then allNewsEventsGUID.Clear()
+		allNewsEvents.Clear()
+		allNewsEventsGUID.Clear()
 
 		_InvalidateCaches()
 
@@ -103,33 +103,14 @@ Type TNewsEventCollection
 	End Method
 
 
-	Method RepairAllNewsEventsMap()
-		If Not allNewsEvents Then allNewsEvents = New TIntMap
-		If Not allNewsEventsGUID Then allNewsEventsGUID = New TMap
-
-		TLogger.Log("TNewsEventCollection", "RepairAllNewsEventsMap() - allNewsEvents were not existing, old savegame? Tried to recreate from newsEvents.", LOG_DEBUG)
-		For Local n:TNewsEvent = EachIn newsEvents.Values()
-			allNewsEvents.Insert(n.GetID(), n)
-			allNewsEventsGUID.Insert(n.GetGUID(), n)
-		Next
-	End Method
-
-
 	Method Add:Int(obj:TNewsEvent)
 		'add to common maps
 		'special lists get filled when using their Getters
 		newsEventsGUID.Insert(obj.GetGUID().ToLower(), obj)
 		newsEvents.Insert(obj.GetID(), obj)
 
-		'old savegame?
-		If Not allNewsEventsGUID
-			RepairAllNewsEventsMap()
-			'no need to add, already added to newsEvents above and then
-			'during Repair to allNewsEvents too
-		Else
-			allNewsEventsGUID.Insert(obj.GetGUID().ToLower(), obj)
-			allNewsEvents.Insert(obj.GetID(), obj)
-		EndIf
+		allNewsEventsGUID.Insert(obj.GetGUID().ToLower(), obj)
+		allNewsEvents.Insert(obj.GetID(), obj)
 
 		_InvalidateCaches()
 
@@ -177,29 +158,19 @@ Type TNewsEventCollection
 	Method Remove:Int(obj:TNewsEvent)
 		RemoveActive(obj)
 
-		'old savegame?
-		If Not allNewsEventsGUID
-			RepairAllNewsEventsMap()
-			'no need to remove, done already
-		Else
-			allNewsEventsGUID.Remove(obj.GetGUID().ToLower())
-			allNewsEvents.Remove(obj.GetID())
-		EndIf
+		allNewsEventsGUID.Remove(obj.GetGUID().ToLower())
+		allNewsEvents.Remove(obj.GetID())
 
 		Return True
 	End Method
 
 
 	Method GetByID:TNewsEvent(ID:Int)
-		If Not allNewsEvents Then allNewsEvents = newsEvents.Copy()
-
 		Return TNewsEvent(allNewsEvents.ValueForKey(ID))
 	End Method
 
 
 	Method GetByGUID:TNewsEvent(GUID:String)
-		If Not allNewsEventsGUID Then RepairAllNewsEventsMap()
-
 		Return TNewsEvent(allNewsEventsGUID.ValueForKey( GUID.ToLower() ))
 	End Method
 
@@ -210,8 +181,6 @@ Type TNewsEventCollection
 		If GUID.Trim() = "" Then Return Null
 
 		GUID = GUID.ToLower()
-
-		If Not allNewsEventsGUID Then RepairAllNewsEventsMap()
 
 		'find first hit
 		Local node:TNode = allNewsEventsGUID._FirstNode()
