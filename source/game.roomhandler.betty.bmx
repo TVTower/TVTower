@@ -19,6 +19,7 @@ Type RoomHandler_Betty extends TRoomHandler
 	Field spriteSuitcase:TSprite {nosave}
 	Field presentInSuitcase:TGUIBettyPresent {nosave}
 	Field draggedPresent:TGUIBettyPresent {nosave}
+	Field kickTime:Long
 	Global suitcaseArea:SRect = new SRect(20,220, 145, 120)
 
 	Global haveToRefreshGuiElements:Int = True
@@ -97,6 +98,15 @@ Type RoomHandler_Betty extends TRoomHandler
 
 	Method onEnterRoom:Int( triggerEvent:TEventBase )
 		haveToRefreshGuiElements = true
+		'create present visualization if required
+		If not presentInSuitcase
+			Local present:TBettyPresent=GetBetty().getCurrentPresent(GetPlayerBaseCollection().playerID)
+			If present
+				GetInstance().presentInSuitcase = new TGUIBettyPresent.Create(RoomHandler_Betty.suitcaseArea.x + 14, RoomHandler_Betty.suitcaseArea.y + 19, present)
+				GetInstance().presentInSuitcase.setLimitToState("betty")
+				GetInstance().presentInSuitcase.hide()
+			End If
+		End If
 	End Method
 
 
@@ -104,65 +114,80 @@ Type RoomHandler_Betty extends TRoomHandler
 		GetInstance().dialogue = null
 	End Function
 
+	Function loveLevel:int()
+		Local bettyLove:float = GetBetty().GetInLovePercentage( GetPlayerBase().playerID )
+		If bettyLove >= 0.4
+			return 1
+		Else
+			return 0
+		End If
+	End Function
 
 	Function GenerateDialogue()
 		local bettyLove:float = GetBetty().GetInLovePercentage( GetPlayerBase().playerID )
-		local bettyLoveLevel:int = ceil(int(bettyLove*100) / 25.0)
+		local bettyLoveLevel:int = loveLevel()
 		local player:TPlayerBase = GetPlayerBase()
 
 		'each array entry is a "topic" you could talk about
 		Local dialogueTexts:TDialogueTexts[2]
+		Local text:string
+		Local present:TGUIBettyPresent = GetInstance().presentInSuitcase
 
-		local text:string
-
-		'=== WELCOME MESSAGE ===
-		text = GetRandomLocale2(["DIALOGUE_BETTY_WELCOME_LEVEL"+bettyLoveLevel+"_TEXT", "DIALOGUE_BETTY_WELCOME_TEXT"])
-		text = text.replace("%PLAYERNAME%", player.name)
-		dialogueTexts[0] = TDialogueTexts.Create(text)
-
-		'enough love to ask for the master key?
-		if not player.GetFigure().hasMasterKey and bettyLove > GameRules.bettyLoveToGetMasterKey
-			dialogueTexts[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BETTY_ASK_FOR_MASTERKEY"), -2, Null, onTakeMasterKey))
-		endif
-		dialogueTexts[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BETTY_ASK_FOR_SAMMYINFORMATION"), 1))
-		dialogueTexts[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale2(["DIALOGUE_BETTY_LEVEL"+bettyLoveLevel+"_GOODBYE", "DIALOGUE_BETTY_GOODBYE"]), -2, Null))
+		If present and present.isVisible()
+			dialogueTexts = new TDialogueTexts[1]
+			dialogueTexts[0] = TDialogueTexts.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_ANNOUNCED_LEVEL"+bettyLoveLevel+"_TEXT"))
+			dialogueTexts[0].AddAnswer(TDialogueAnswer.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_RETRACT_LEVEL"+bettyLoveLevel+"_TEXT"), 0, Null, deactivatePresent))
+		Else
+			If present and not present.isVisible() Then dialogueTexts = new TDialogueTexts[3]
 
 
+			'=== WELCOME MESSAGE ===
+			text = GetRandomLocale2(["DIALOGUE_BETTY_WELCOME_LEVEL"+bettyLoveLevel+"_TEXT", "DIALOGUE_BETTY_WELCOME_TEXT"])
+			text = text.replace("%PLAYERNAME%", player.name)
+			dialogueTexts[0] = TDialogueTexts.Create(text)
 
-		'=== SAMMY TOPIC ===
-		'only two level supported
-		local lvl:int = bettyLoveLevel > 0
-		local key:string
-		local awardName:string
-		local rank:int = 0
-		local currentAward:TAward = GetAwardCollection().GetCurrentAward()
-		if currentAward
-			awardName = GetLocale("AWARDNAME_" + TVTAwardType.GetAsString(currentAward.awardType))
-			rank = currentAward.GetCurrentRank( player.playerID )
-			local hasWinner:int = currentAward.GetCurrentWinner()<>0
-			'local awardTimeLeft:int = currentAward.GetEndTime() - GetWorldTime().GetTimeGone()
-
-			if not hasWinner
-				key = "DIALOGUE_BETTY_AWARDINFORMATION_NO_FAVORITE"
-			else
-				if rank = 1
-					key = "DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE"
-				elseif rank = currentAward.GetRanks()
-					key = "DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE"
-				else
-					key = "DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE"
-				endif
+			'enough love to ask for the master key?
+			if not player.GetFigure().hasMasterKey and bettyLove > GameRules.bettyLoveToGetMasterKey
+				dialogueTexts[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BETTY_ASK_FOR_MASTERKEY"), -2, Null, onTakeMasterKey))
 			endif
-		else
-			key = "DIALOGUE_BETTY_NO_AWARD"
-		endif
-		text = GetRandomLocale2([key+"_LEVEL"+lvl+"_TEXT", key+"_LEVEL0_TEXT"])
-		text = text.replace("%AWARDNAME%", awardName)
-		text = text.replace("%AWARDRANK%", rank)
+			dialogueTexts[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BETTY_ASK_FOR_SAMMYINFORMATION"), 1))
+			if present and not present.isVisible() Then dialogueTexts[0].AddAnswer(TDialogueAnswer.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_ANNOUNCE_LEVEL"+bettyLoveLevel+"_TEXT"), 0, Null, activatePresent))
+			dialogueTexts[0].AddAnswer(TDialogueAnswer.Create( GetRandomLocale2(["DIALOGUE_BETTY_LEVEL"+bettyLoveLevel+"_GOODBYE", "DIALOGUE_BETTY_GOODBYE"]), -2, Null))
 
-		dialogueTexts[1] = TDialogueTexts.Create(text)
-		dialogueTexts[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale2(["DIALOGUE_BETTY_LEVEL"+bettyLoveLevel+"_CHANGETOPIC", "DIALOGUE_BETTY_CHANGETOPIC"]), 0))
-		dialogueTexts[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale2(["DIALOGUE_BETTY_LEVEL"+bettyLoveLevel+"_GOODBYE", "DIALOGUE_BETTY_GOODBYE"]), -2, Null))
+
+			'=== SAMMY TOPIC ===
+			local key:string
+			local awardName:string
+			local rank:int = 0
+			local currentAward:TAward = GetAwardCollection().GetCurrentAward()
+			if currentAward
+				awardName = GetLocale("AWARDNAME_" + TVTAwardType.GetAsString(currentAward.awardType))
+				rank = currentAward.GetCurrentRank( player.playerID )
+				local hasWinner:int = currentAward.GetCurrentWinner()<>0
+				'local awardTimeLeft:int = currentAward.GetEndTime() - GetWorldTime().GetTimeGone()
+
+				if not hasWinner
+					key = "DIALOGUE_BETTY_AWARDINFORMATION_NO_FAVORITE"
+				else
+					if rank = 1
+						key = "DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_FAVORITE"
+					elseif rank = currentAward.GetRanks()
+						key = "DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_NOT_FAVORITE"
+					else
+						key = "DIALOGUE_BETTY_AWARDINFORMATION_YOU_ARE_AVERAGE"
+					endif
+				endif
+			else
+				key = "DIALOGUE_BETTY_NO_AWARD"
+			endif
+			text = GetRandomLocale2([key+"_LEVEL"+bettyLoveLevel+"_TEXT", key+"_LEVEL0_TEXT"])
+			text = text.replace("%AWARDNAME%", awardName)
+			text = text.replace("%AWARDRANK%", rank)
+
+			dialogueTexts[1] = TDialogueTexts.Create(text)
+			dialogueTexts[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale2(["DIALOGUE_BETTY_LEVEL"+bettyLoveLevel+"_CHANGETOPIC", "DIALOGUE_BETTY_CHANGETOPIC"]), 0))
+			dialogueTexts[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale2(["DIALOGUE_BETTY_LEVEL"+bettyLoveLevel+"_GOODBYE", "DIALOGUE_BETTY_GOODBYE"]), -2, Null))
+		End If
 
 
 		GetInstance().dialogue = new TDialogue
@@ -173,6 +198,15 @@ Type RoomHandler_Betty extends TRoomHandler
 		'dialogue.answerStartType = "StartDownRight"
 		'dialogue.moveAnswerDialogueBalloonStart = 100
 		GetInstance().dialogue.SetGrow(-1,-1)
+
+		Function activatePresent(data:TData)
+			GetInstance().presentInSuitcase.show()
+			ResetDialogue()
+		End Function
+		Function deactivatePresent(data:TData)
+			GetInstance().presentInSuitcase.hide()
+			ResetDialogue()
+		End Function
 	End Function
 
 
@@ -187,15 +221,6 @@ Type RoomHandler_Betty extends TRoomHandler
 
 
 	Method RefreshGuiElements:Int()
-		'create present visualization if required
-		If not presentInSuitcase
-			Local present:TBettyPresent=GetBetty().getCurrentPresent(GetPlayerBaseCollection().playerID)
-			If present
-				GetInstance().presentInSuitcase=new TGUIBettyPresent.Create(RoomHandler_Betty.suitcaseArea.x + 14, RoomHandler_Betty.suitcaseArea.y + 19, present)
-				GetInstance().presentInSuitcase.setLimitToState("betty")
-			End If
-		End If
-
 		haveToRefreshGuiElements = False
 	End Method
 
@@ -228,7 +253,7 @@ Type RoomHandler_Betty extends TRoomHandler
 		'TDialogue.DrawDialog("default", 440, 110, 280, 90, "StartLeftDown", 15, GetLocale("DIALOGUE_BETTY_WELCOME"), 0, GetBitmapFont("Default",14))
 
 		Local highlightBetty:int = False
-		If presentInSuitcase
+		If presentInSuitcase And presentInSuitcase.isVisible()
 			spriteSuitcase.Draw(suitcaseArea.x, suitcaseArea.y)
 			If presentInSuitcase.isHovered
 				GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
@@ -264,6 +289,8 @@ Type RoomHandler_Betty extends TRoomHandler
 		   GetPlayerBase().GetFigure().GetInRoomID() > 0
 			GenerateDialogue()
 		endif
+
+		If kickTime and Time.GetTimeGone() > kickTime Then GetPlayerBase().GetFigure().KickOutOfRoom()
 
 		'delete unused and create new gui elements
 		If haveToRefreshGuiElements Then RefreshGUIElements()
@@ -303,8 +330,10 @@ Type RoomHandler_Betty extends TRoomHandler
 		If presentInSuitcase
 			GuiManager.Remove(presentInSuitcase)
 		End If
+		ResetDialogue()
 		presentInSuitcase = null
 		draggedPresent = null
+		kickTime = null
 		Return True
 	End Method
 
@@ -338,11 +367,41 @@ Type RoomHandler_Betty extends TRoomHandler
 
 	Method givePresent()
 		If presentInSuitcase
+			Local bettyLoveLevel:int = loveLevel()
 			Local present:TBettyPresent = presentInSuitcase.present
 			TBetty.GetInstance().GivePresent(GetPlayerBase().playerID, present)
+			Local dialogueTexts:TDialogueTexts[1]
+
+			If present.bettyValue > 0
+				dialogueTexts[0] = TDialogueTexts.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_THANKS_LEVEL"+bettyLoveLevel+"_TEXT"))
+				dialogueTexts[0].AddAnswer(TDialogueAnswer.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_WELCOME_LEVEL"+bettyLoveLevel+"_TEXT"), 0, null, thanks))
+			Else
+				dialogueTexts[0] = TDialogueTexts.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_HOW_DARE_LEVEL"+bettyLoveLevel+"_TEXT"))
+				dialogueTexts[0].AddAnswer(TDialogueAnswer.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_WELL"), 0, null, thanks, new TData))
+				kickTime = Time.GetTimeGone() + 3000
+			End If
 			presentInSuitcase.remove()
 			presentInSuitcase = null
 			draggedPresent = null
+
+			dialogue = new TDialogue
+			dialogue.AddTexts(dialogueTexts)
+	
+			dialogue.SetArea(new TRectangle.Init(440, 80, 300, 95))
+			dialogue.SetAnswerArea(new TRectangle.Init(380, 325, 360, 50))
+			'dialogue.answerStartType = "StartDownRight"
+			'dialogue.moveAnswerDialogueBalloonStart = 100
+			dialogue.SetGrow(-1,-1)
 		End If
+
+		Function thanks(data:TData)
+			'existing data as marker for leaving
+			if data
+				GetInstance().kickTime = null
+				GetPlayerBase().GetFigure().LeaveRoom()
+			else
+				ResetDialogue()
+			end if
+		End Function
 	End Method
 End Type
