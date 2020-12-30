@@ -1497,6 +1497,9 @@ endrem
 				fastNavigateTimer.setInterval( fastNavigateInitialTimer, True )
 			EndIf
 		EndIf
+		If KEYMANAGER.isHit(KEY_HOME)
+			ChangePlanningDay(GetWorldTime().GetDay())
+		EndIf
 
 
 		Local listsOpened:Int = (PPprogrammeList.enabled Or PPcontractList.enabled)
