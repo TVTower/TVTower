@@ -2855,6 +2855,17 @@ Type TGUICastListItem Extends TGUISelectListItem
 		'      -> or have some "agent" to pay to get such information
 
 		If person.IsCelebrity()
+			Local genreDefinition:TMovieGenreDefinition
+			Local genreID:Int = -1
+			If TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept
+				Local script:TScript = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script
+				If script 
+					genreID = script.mainGenre
+					genreDefinition = GetMovieGenreDefinition( genreID )
+				EndIf
+			EndIf
+
+
 			'bars have a top-padding
 			contentY :+ barAreaPaddingY
 			'XP
@@ -2862,16 +2873,14 @@ Type TGUICastListItem Extends TGUISelectListItem
 			skin.RenderBar(contentX + 5, contentY, 100, 12, xpValue)
 			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_EXPERIENCE"), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 			contentY :+ barH + 2
+			'affinity
+			Local affinity:Float = person.GetPersonalityData().GetAffinityValue(jobID, genreID)
+			skin.RenderBar(contentX + 5, contentY, 100, 12, affinity)
+			skin.fontSmallCaption.DrawSimple(GetLocale("CAST_AFFINITY"), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
+			contentY :+ barH + 2
 
-
-			Local genreDefinition:TMovieGenreDefinition
-			If TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept
-				Local script:TScript = TScreenHandler_SupermarketProduction.GetInstance().currentProductionConcept.script
-				If script Then genreDefinition = GetMovieGenreDefinition( script.mainGenre )
-			EndIf
 
 			Local attributes:Int[] = [TVTPersonPersonalityAttribute.FAME, ..
-			                          TVTPersonPersonalityAttribute.SKILL, ..
 			                          TVTPersonPersonalityAttribute.POWER, ..
 			                          TVTPersonPersonalityAttribute.HUMOR, ..
 			                          TVTPersonPersonalityAttribute.CHARISMA, ..
@@ -2902,33 +2911,27 @@ Type TGUICastListItem Extends TGUISelectListItem
 					mode = 4
 				EndIf
 'print "ShowCastSheet: jobID="+jobID + "  attributeID=" +attributeID +"  attributeGenre="+attributeGenre +"  mode="+mode
-
-				'set "skill" neutral if not assigned "negative/positive" already
-				If mode = 1 And attributeID = TVTPersonPersonalityAttribute.SKILL
-					mode = 2
-				EndIf
-
-
+'print person.GetFullName() + "   " +  GetLocale("CAST_"+TVTPersonPersonalityAttribute.GetAsString(attributeID).ToUpper()) + "   " + person.GetPersonalityData().GetAttributes().attributes[attributeID-1].Get() + " (" +person.GetPersonalityData().GetAttributes().attributes[attributeID-1].GetMin() + " - " + person.GetPersonalityData().GetAttributes().attributes[attributeID-1].GetMax() + ")"
 				Select mode
 					'unused
 					Case 1
 						Local oldA:Float = GetAlpha()
 						SetAlpha oldA * 0.5
-						skin.RenderBar(contentX + 5, contentY, 100, 12, person.GetPersonalityData().GetAttributeValue(attributeID))
+						skin.RenderBar(contentX + 5, contentY, 100, 12, attributePerson)
 						SetAlpha oldA * 0.4
 						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonalityAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 						SetAlpha oldA
 					'neutral
 					Case 2
-						skin.RenderBar(contentX + 5, contentY, 100, 12, person.GetPersonalityData().GetAttributeValue(attributeID))
+						skin.RenderBar(contentX + 5, contentY, 100, 12, attributePerson)
 						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonalityAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 2, skin.textColorLabel, EDrawTextEffect.Emboss, 0.3)
 					'negative
 					Case 3
-						skin.RenderBar(contentX + 5, contentY, 100, 12, person.GetPersonalityData().GetAttributeValue(attributeID))
+						skin.RenderBar(contentX + 5, contentY, 100, 12, attributePerson)
 						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonalityAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 2, skin.textColorBad, EDrawTextEffect.Emboss, 0.3)
 					'positive
 					Case 4
-						skin.RenderBar(contentX + 5, contentY, 100, 12, person.GetPersonalityData().GetAttributeValue(attributeID))
+						skin.RenderBar(contentX + 5, contentY, 100, 12, attributePerson)
 						skin.fontSmallCaption.DrawSimple(GetLocale("CAST_"+TVTPersonPersonalityAttribute.GetAsString(attributeID).ToUpper()), contentX + 5 + 100 + 5, contentY - 2, skin.textColorGood, EDrawTextEffect.Emboss, 0.3)
 				End Select
 				contentY :+ barH + 2

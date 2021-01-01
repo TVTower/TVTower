@@ -2163,7 +2163,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details gender="2" fictional="1" birthday="" deathday="" country="" />
-			<data prominence="5" skill="6" fame="6" scandalizing="2" price_mod="1" power="6" humor="2" charisma="8" appearance="9" topgenre1="0" topgenre2="0" />
+			<data popularity="5" affinity="60" fame="60" scandalizing="20" price_mod="1" power="60" humor="24" charisma="78" appearance="88" topgenre="0" />
 		</person>
 		<!-- Moris Wewerkov -->
 		<person id="TheRob-TowerTV-MorisWeverkov" tmdb_id="0" imdb_id="0" creator="8751" created_by="TheRob">
@@ -2172,7 +2172,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details gender="1" fictional="1" birthday="" deathday="" country="" />
-			<data prominence="8" skill="3" fame="6" scandalizing="8" price_mod="1" power="5" humor="7" charisma="9" appearance="4" topgenre1="0" topgenre2="0" />
+			<data popularity="60" affinity="30" fame="40" scandalizing="80" price_mod="1" power="50" humor="40" charisma="90" appearance="40" topgenre="0" />
 		</person>
 	</celebritypeople>
 

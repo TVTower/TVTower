@@ -62,7 +62,7 @@
                 <function>2</function>
             </functions>
             <details gender="1"  birthday="1941" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="7" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
         <person id="SpeedMinister-celebritypeople-OttokarKahn" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
             <first_name>Ottokar</first_name>
@@ -73,7 +73,7 @@
                 <function>1,2</function>
             </functions>
             <details gender="1"  birthday="1969" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="7" affinity="20" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
         <person id="SpeedMinister-celebritypeople-CoraSchirmer" tmdb_id="0" imdb_id="" creator="8605" created_by="SpeedMinister">
             <first_name>Cora</first_name>
@@ -84,7 +84,7 @@
                 <function>2</function>
             </functions>
             <details gender="1"  birthday="1981" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="25" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
     </celebritypeople>
 

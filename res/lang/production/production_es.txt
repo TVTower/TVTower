@@ -45,7 +45,7 @@ JOB_MUSICIANS        = Músico
 
 #CAST_EXPERIENCE       = 
 #CAST_FAME             = 
-#CAST_SKILL            = 
+#CAST_AFFINITY         = 
 #CAST_POWER            = 
 #CAST_HUMOR            = 
 #CAST_CHARISMA         = 

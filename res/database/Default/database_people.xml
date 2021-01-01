@@ -8,7 +8,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="2" birthday="" deathday="" country="D" fictional="1" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="30" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="75" topgenre="0" />
 		</person>
 		<person id="cebd1a68-cf97-4b93-b3f9-ac34bda4bdcc" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 			<first_name>Henry</first_name>
@@ -23,7 +23,7 @@
 			<nick_name></nick_name>
 			<images face_code="2:2:2:#EDA657:-1:-1:1:-1:7#C808A8:6:2:-1:3:3:7:13#581410:-1:-1" />
 			<details job="2" gender="2" birthday="1961" deathday="" country="D" fictional="1" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="50" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="1cac5a80-97dc-46f6-8c34-761c4fe43db5" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 			<first_name>Gustav</first_name>
@@ -31,7 +31,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="1" birthday="1933-05-01" deathday="2015-07-03" country="D" fictional="1" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="14" affinity="30" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="3fcd8263-9bf4-4c23-9323-0e4105d75dbb" tmdb_id="0" imdb_id="nm0000719" creator="">
 			<first_name>F. Murrisch</first_name>
@@ -41,7 +41,7 @@
 			<last_name_original>Abraham</last_name_original>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="c92d6a4b-0c3e-49b4-a403-2b861d9fb675" tmdb_id="0" imdb_id="nm0000262" creator="">
 			<first_name>Nancee</first_name>
@@ -51,7 +51,7 @@
 			<last_name_original>Allen</last_name_original>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="de494c09-c094-4217-a010-5241833ef53f" tmdb_id="0" imdb_id="nm0491048" creator="">
 			<first_name>Ben</first_name>
@@ -61,7 +61,7 @@
 			<last_name_original>Laurel</last_name_original>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="825f0f99-fb8e-4761-a597-fdd27a0461c6" tmdb_id="0" imdb_id="nm0000102" creator="">
 			<first_name>Kewin</first_name>
@@ -71,7 +71,7 @@
 			<last_name_original>Bacon</last_name_original>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="81f17c33-1719-4513-ad34-ac03ac7d03a0" tmdb_id="0" imdb_id="nm0000697" creator="">
 			<first_name>Willy</first_name>
@@ -81,7 +81,7 @@
 			<last_name_original>Wilder</last_name_original>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="84958220-dab8-49eb-bb73-196b735f5af2" tmdb_id="0" imdb_id="nm0097449" creator="">
 			<first_name>Dietmar</first_name>
@@ -91,7 +91,7 @@
 			<last_name_original>Borsche</last_name_original>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="3342a0e3-66f3-4f30-922c-ebe1b0611a00" tmdb_id="0" imdb_id="nm0000107" creator="">
 			<first_name>Kim</first_name>
@@ -101,7 +101,7 @@
 			<last_name_original>Basinger</last_name_original>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="2fae00fa-0106-4734-873e-7d3a87a50a65" tmdb_id="0" imdb_id="nm0000881" creator="">
 			<first_name>Michael</first_name>
@@ -111,7 +111,7 @@
 			<last_name_original>Bay</last_name_original>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="d300cc4e-dcba-4bbf-b9d4-b111412718e1" tmdb_id="0" imdb_id="nm0000293" creator="">
 			<first_name>Jan</first_name>
@@ -121,7 +121,7 @@
 			<last_name_original>Bean</last_name_original>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="28cd4aa6-fd11-4696-9539-361017701fe2" tmdb_id="0" imdb_id="nm0000104" creator="">
 			<first_name>Antonio</first_name>
@@ -131,7 +131,7 @@
 			<last_name_original>Banderas</last_name_original>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="70c7d8ec-ff3b-4810-9422-03e0676b747c" tmdb_id="0" imdb_id="nm0000949" creator="">
 			<first_name>Cate</first_name>
@@ -141,7 +141,7 @@
 			<last_name_original>Blanchett</last_name_original>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="abcc51f0-1842-40f5-b2f7-dd1e228ea968" tmdb_id="0" imdb_id="nm0000007" creator="">
 			<first_name>Hunfrey</first_name>
@@ -160,7 +160,7 @@
 			<last_name_original>Pollak</last_name_original>
 			<images />
 			<details job="2" gender="1" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="3808793e-7162-4c1f-baa8-0ec46bebb501" tmdb_id="0" imdb_id="nm0689659" creator="">
 			<first_name>George</first_name>
@@ -170,7 +170,7 @@
 			<last_name_original>Pollock</last_name_original>
 			<images />
 			<details job="1" gender="1" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="ccf79c86-dd25-49bc-91fa-536de8e4267b" tmdb_id="0" imdb_id="nm0000591" creator="">
 			<first_name>Roman</first_name>
@@ -187,7 +187,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="136" gender="2" birthday="" deathday="" country="USA" fictional="1" />
-			<data prominence="0" skill="0" fame="5" scandalizing="0" price_mod="1" power="5" humor="35" charisma="15" appearance="50" topgenre1="6" topgenre2="300" />
+			<data popularity="20" affinity="0" fame="50" scandalizing="0" price_mod="1" power="10" humor="45" charisma="35" appearance="95" topgenre="6" />
 		</person>
 		<person id="79c081cb-755e-41b8-bd50-11f00e6b1382" tmdb_id="0" imdb_id="nm0108523" creator="">
 			<first_name>Pierre</first_name>
@@ -206,7 +206,7 @@
 			<last_name_original>Bridges</last_name_original>
 			<images />
 			<details job="2" gender="1" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="2613c827-dd89-4740-b57a-661dfb357130" tmdb_id="0" imdb_id="nm0000996" creator="">
 			<first_name>LeVar</first_name>
@@ -228,7 +228,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="d92ad3b1-e2e2-455c-8b82-2ec7731607ec" tmdb_id="0" imdb_id="nm0000115" creator="">
 			<first_name>Nicolas</first_name>
@@ -236,7 +236,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="9f342b49-1089-47bc-8d92-722fe71d96e3" tmdb_id="0" imdb_id="nm0001428" creator="">
 			<first_name>Claus</first_name>
@@ -251,7 +251,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="876760aa-c243-4e4b-a333-76d5a5aabf19" tmdb_id="0" imdb_id="nm0000008" creator="">
 			<first_name>Barlon</first_name>
@@ -266,7 +266,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="370a8d9d-ceef-4a7c-9c09-cc7e9d616311" tmdb_id="0" imdb_id="nm0001077" creator="">
 			<first_name>Ricardo</first_name>
@@ -274,7 +274,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="1df80fd1-2c56-473b-8687-19a6183b66e8" tmdb_id="" imdb_id="nm0000129" creator="8782" created_by="DerFronck">
 			<first_name>Tim</first_name>
@@ -290,7 +290,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="8a8b38b5-13e0-4abc-adad-d8739ecc2684" tmdb_id="0" imdb_id="nm0000353" creator="">
 			<first_name>Willem</first_name>
@@ -298,7 +298,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="091373c6-0ae9-40c2-b20b-b6591b23f88c" tmdb_id="0" imdb_id="nm0002033" creator="">
 			<first_name>Tyne</first_name>
@@ -320,7 +320,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="e7924d67-a4de-417d-a1f9-581fd611b534" tmdb_id="0" imdb_id="nm0000136" creator="">
 			<first_name>Jonnie</first_name>
@@ -335,7 +335,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="ab68fbad-64d8-4328-a131-9c2d0f05e210" tmdb_id="0" imdb_id="nm0000380" creator="">
 			<first_name>Robert</first_name>
@@ -343,7 +343,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="2d237ef7-55da-498c-93bc-523d89bad84b" tmdb_id="0" imdb_id="nm0751983" creator="">
 			<first_name>Maggy</first_name>
@@ -351,7 +351,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="fdc033d7-e954-4e55-848c-e6b5e7a10d21" tmdb_id="0" imdb_id="nm0000393" creator="">
 			<first_name>Petr</first_name>
@@ -367,7 +367,7 @@
             <first_name_original>River</first_name_original>
             <last_name_original>Phoenix</last_name_original>
             <details job="2" gender="1" birthday="1970-08-23" deathday="1993-10-31" country="US" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="a80152d6-43dc-4f9c-a562-a5dbf821bc1f" tmdb_id="0" imdb_id="nm0000020" creator="">
 			<first_name>Henry</first_name>
@@ -375,7 +375,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="070bd0dd-1a11-4b2b-80b7-922dae98c3ca" tmdb_id="0" imdb_id="nm0000148" creator="">
 			<first_name>Harry</first_name>
@@ -397,7 +397,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="20162654-5f3a-49d5-950f-4e9a52729768" tmdb_id="0" imdb_id="nm0258918" creator="">
 			<first_name>Heinrich</first_name>
@@ -405,7 +405,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="1b8fcb9a-5961-43b8-af1b-1ed144880908" tmdb_id="0" imdb_id="nm0000154" creator="">
 			<first_name>Meal</first_name>
@@ -420,7 +420,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="1f276c5b-2394-4a01-9ed1-d82a052dca57" tmdb_id="0" imdb_id="" creator="">
 			<first_name>Porando</first_name>
@@ -428,7 +428,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="5d267d5d-70a1-4b04-8bd5-bd32ffb87659" tmdb_id="0" imdb_id="nm0000418" creator="">
 			<first_name>Danny</first_name>
@@ -436,7 +436,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="267e028a-d087-4fff-83fd-0ade0806ab8a" tmdb_id="0" imdb_id="nm0000336" creator="">
 			<first_name>James</first_name>
@@ -444,7 +444,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="c299b440-3684-48fa-bc21-85a76ae2c253" tmdb_id="0" imdb_id="nm0001072" creator="">
 			<first_name>Joseph</first_name>
@@ -452,7 +452,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="682d65b5-9ff7-475a-8d50-a4ded9eefa9e" tmdb_id="0" imdb_id="" creator="">
 			<first_name>Samantha</first_name>
@@ -460,7 +460,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="1c6d2298-9462-4549-b09a-05a584bf9949" tmdb_id="0" imdb_id="nm0001570" creator="">
 			<first_name>Eduardo</first_name>
@@ -468,7 +468,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="b7415f23-4216-4eaf-8560-e4af68ddf3ab" tmdb_id="0" imdb_id="" creator="">
 			<first_name>Charles</first_name>
@@ -476,7 +476,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="2491d32a-9594-4ea7-9c3f-ad7d387ed316" tmdb_id="0" imdb_id="nm0001073" creator="">
 			<first_name>Courteney</first_name>
@@ -484,7 +484,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="a569701c-0a7f-4d26-bf85-3eab9813e64f" tmdb_id="0" imdb_id="nm0001074" creator="">
 			<first_name>Ronny</first_name>
@@ -492,7 +492,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="ef434053-0ef7-46fa-bff5-ad4751a34453" tmdb_id="0" imdb_id="nm0333701" creator="">
 			<first_name>David</first_name>
@@ -500,7 +500,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="336ebe49-3b96-46f4-8cd5-da6f64ff8c38" tmdb_id="0" imdb_id="" creator="">
 			<first_name>Yoshi</first_name>
@@ -508,7 +508,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="c39a70f6-b8fd-40fe-96cd-9dcb0e460e53" tmdb_id="0" imdb_id="nm0000620" creator="">
 			<first_name>Mikki</first_name>
@@ -516,7 +516,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="7e9aee03-78d2-49b2-95db-7f33982bbf2d" tmdb_id="0" imdb_id="nm0000430" creator="">
 			<first_name>Steve</first_name>
@@ -524,7 +524,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="7af27da0-4abf-482c-b8a3-00612c1e4d53" tmdb_id="0" imdb_id="nm0000432" creator="">
 			<first_name>Genie</first_name>
@@ -532,7 +532,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="bedfa8be-aaff-457d-b549-893c3a784c9b" tmdb_id="0" imdb_id="" creator="">
 			<first_name>Rudi</first_name>
@@ -540,7 +540,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="d86d607a-ec9e-42a2-a74b-26a810ab6a54" tmdb_id="0" imdb_id="nm0000168" creator="">
 			<first_name>Sammael K.</first_name>
@@ -548,7 +548,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="43280255-d8ef-469e-b3ef-8eea1b081ae6" tmdb_id="0" imdb_id="nm0357891" creator="">
 			<first_name>Guy</first_name>
@@ -556,7 +556,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="f4b5473d-8eb5-49f2-8b6a-6510b3e8ddc4" tmdb_id="0" imdb_id="nm0004989" creator="">
 			<first_name>Alyson</first_name>
@@ -585,7 +585,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="3993454a-cbc2-471e-835c-0b0a44dc8f01" tmdb_id="0" imdb_id="nm0001352" creator="">
 			<first_name>Terence</first_name>
@@ -607,7 +607,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="25bbcc47-1ec9-407d-840e-5efebdbc0dc3" tmdb_id="0" imdb_id="nm0000454" creator="">
 			<first_name>Dennis</first_name>
@@ -615,7 +615,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="6868ac17-913c-4e8c-a0b5-ee32ba6cf3e3" tmdb_id="0" imdb_id="nm0000163" creator="">
 			<first_name>Dustin</first_name>
@@ -623,7 +623,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="b99662fc-9503-436a-900c-6c63e9b91fce" tmdb_id="0" imdb_id="nm0001379" creator="">
 			<first_name>Yohan</first_name>
@@ -631,7 +631,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="5317ae08-3426-4fd3-b67e-73a453ef3f64" tmdb_id="0" imdb_id="nm0000469" creator="">
 			<first_name>James Earl</first_name>
@@ -639,7 +639,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="e039c83c-9815-45e2-9d80-424aedf5a1a1" tmdb_id="0" imdb_id="nm0000169" creator="">
 			<first_name>Timmy-Leon</first_name>
@@ -647,7 +647,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="2371f9cf-79a1-4dc4-8909-f69511853549" tmdb_id="0" imdb_id="nm0000116" creator="">
 			<first_name>Yames</first_name>
@@ -655,7 +655,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="a5191c4e-7619-4aec-98ca-dde532991fca" tmdb_id="0" imdb_id="nm0001420" creator="">
 			<first_name>DeWood</first_name>
@@ -670,7 +670,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="df97bbf8-8ff7-44fc-be36-7798dc8f8d79" tmdb_id="0" imdb_id="nm0001429" creator="">
 			<first_name>Takeshi</first_name>
@@ -678,7 +678,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="e0807a2d-e04d-4abf-9422-afa44b202438" tmdb_id="0" imdb_id="nm0000125" creator="">
 			<first_name>Jan</first_name>
@@ -693,7 +693,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="c5f64861-b665-4c12-a1be-515b23ef0af0" tmdb_id="0" imdb_id="nm0000131" creator="">
 			<first_name>Yohan</first_name>
@@ -701,7 +701,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="8c71481d-d30b-4da8-a207-82f0bb5a5fea" tmdb_id="0" imdb_id="nm0000126" creator="">
 			<first_name>Kewin</first_name>
@@ -709,7 +709,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="a6055f37-ab53-425e-9332-14e0dfabc424" tmdb_id="0" imdb_id="" creator="">
 			<first_name>Rolf</first_name>
@@ -731,7 +731,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="46732782-8b5a-4d4b-976b-fa7bbfe43ea1" tmdb_id="0" imdb_id="nm0496866" creator="">
 			<first_name>Bernard</first_name>
@@ -746,7 +746,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="690bc6cc-4c9f-4bf7-8538-5e8e556379c7" tmdb_id="0" imdb_id="nm0000489" creator="">
 			<first_name>Christof</first_name>
@@ -775,7 +775,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="75836a6f-f590-431e-a572-8eb7226beffc" tmdb_id="0" imdb_id="nm0000502" creator="">
 			<first_name>Christopher</first_name>
@@ -783,7 +783,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="8588812a-bde4-4497-ac45-0d37aca15fd0" tmdb_id="0" imdb_id="nm0000501" creator="">
 			<first_name>Rei</first_name>
@@ -791,7 +791,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="58a6e6af-01b3-4245-ae90-f00206baf89b" tmdb_id="0" imdb_id="nm0001450" creator="">
 			<first_name>Angela</first_name>
@@ -806,7 +806,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="c41d6da8-46ab-4a91-af57-814a2a24d979" tmdb_id="0" imdb_id="nm0001492" creator="">
 			<first_name>Kyle</first_name>
@@ -828,7 +828,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="836b4aa3-b5c6-4529-b30d-4501594cdf13" tmdb_id="0" imdb_id="nm0000230" creator="">
 			<first_name>Silvester</first_name>
@@ -843,7 +843,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="ea76aa3d-2541-481a-b08a-e6905da0cb30" tmdb_id="0" imdb_id="nm0002085" creator="">
 			<first_name>Gerd</first_name>
@@ -851,7 +851,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="56035d20-9b99-4225-92e0-aee2cd9b7119" tmdb_id="0" imdb_id="nm0000549" creator="">
 			<first_name>Roger</first_name>
@@ -859,7 +859,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="fdca1461-1fae-4cfc-8a3e-ab60bf1e0449" tmdb_id="0" imdb_id="nm0000194" creator="">
 			<first_name>Julianne</first_name>
@@ -867,7 +867,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="55e78fc4-4fcc-4eaa-84bd-a816d0d254e2" tmdb_id="0" imdb_id="nm0000191" creator="">
 			<first_name>Ivan</first_name>
@@ -875,7 +875,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="3f824f65-53d2-4999-94b4-1e7ce5e8b69b" tmdb_id="0" imdb_id="nm0318854" creator="">
 			<first_name>Walther</first_name>
@@ -883,7 +883,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="5b4609a9-c753-4cd2-a415-8ed5a369597a" tmdb_id="0" imdb_id="nm0574433" creator="">
 			<first_name>Frank</first_name>
@@ -891,7 +891,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="60a42fb1-2c26-44f4-9193-6c1549cdd657" tmdb_id="0" imdb_id="nm0561755" creator="">
 			<first_name>Lois</first_name>
@@ -914,7 +914,7 @@
             <first_name_original>Liam</first_name_original>
             <last_name_original>Neeson</last_name_original>
             <details job="2" gender="1" birthday="1952-06-07" deathday="" country="IE" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="61b52966-3363-4fb3-a8d1-61a5555a0961" tmdb_id="0" imdb_id="nm0000559" creator="">
 			<first_name>Lenhard</first_name>
@@ -929,7 +929,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="c3c34605-bcf7-4b82-8d91-ffbebe60d967" tmdb_id="0" imdb_id="nm0001592" creator="">
 			<first_name>Jo</first_name>
@@ -951,7 +951,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="0c7cec0b-8d48-46b8-a66b-468c272c695e" tmdb_id="0" imdb_id="nm0000200" creator="">
 			<first_name>Bill</first_name>
@@ -959,7 +959,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="cdd0e7aa-11eb-48d7-82cc-d693e2130d05" tmdb_id="0" imdb_id="nm0000583" creator="">
 			<first_name>Wolfgang</first_name>
@@ -967,7 +967,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="5fd9f85c-9265-4529-a629-d8c4a5ce8472" tmdb_id="0" imdb_id="nm0000934" creator="">
 			<first_name>Bernardo</first_name>
@@ -975,7 +975,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="0f6fe96b-c7fe-4f4e-a382-1c0b12531b0d" tmdb_id="0" imdb_id="nm0000582" creator="">
 			<first_name>Jo</first_name>
@@ -990,7 +990,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="003bbc46-ee54-43ea-bd2b-230f0feb051f" tmdb_id="0" imdb_id="" creator="">
 			<first_name>Pit</first_name>
@@ -998,7 +998,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="aa96c3b5-5a8b-481b-a426-bb5c4b059132" tmdb_id="0" imdb_id="nm0690691" creator="">
 			<first_name>Eric</first_name>
@@ -1006,7 +1006,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="d007e8f0-5b2f-4c19-86c2-a85166127935" tmdb_id="0" imdb_id="nm0000606" creator="">
 			<first_name>Jean</first_name>
@@ -1014,7 +1014,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="98e18fc8-a233-4035-bf64-fa96bbed9792" tmdb_id="0" imdb_id="nm0000609" creator="">
 			<first_name>Ving</first_name>
@@ -1022,7 +1022,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="514b8caf-e88f-4137-8a2d-43521569accf" tmdb_id="0" imdb_id="nm0001675" creator="">
 			<first_name>Robert</first_name>
@@ -1030,7 +1030,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="91af6b99-191b-41e2-8c41-f7c0498e1c18" tmdb_id="0" imdb_id="nm0000621" creator="">
 			<first_name>Gurt</first_name>
@@ -1066,7 +1066,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="1312b7b5-3215-40fd-92c8-fb0a16a2aebe" tmdb_id="0" imdb_id="nm0000093" creator="">
 			<first_name>Bred</first_name>
@@ -1081,7 +1081,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="06b81de5-9f83-4838-a979-690fa6bb2454" tmdb_id="0" imdb_id="nm0000112" creator="">
 			<first_name>Peace</first_name>
@@ -1089,7 +1089,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="1034ee00-f6ff-4db0-8800-fa3c87e9fb74" tmdb_id="0" imdb_id="nm0000217" creator="">
 			<first_name>Martin</first_name>
@@ -1097,7 +1097,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="8d8c760f-a185-40d7-8f4c-698811b0f026" tmdb_id="0" imdb_id="nm0001716" creator="">
 			<first_name>Toni</first_name>
@@ -1105,7 +1105,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="faa73ce4-5b83-44ab-93b5-1bfde3c2fcc7" tmdb_id="0" imdb_id="nm0000634" creator="">
 			<first_name>Petr</first_name>
@@ -1113,7 +1113,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="123df8d5-a8ca-40fe-bdae-89e70d5e0601" tmdb_id="0" imdb_id="nm0000631" creator="">
 			<first_name>Ridley</first_name>
@@ -1121,7 +1121,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="593b7055-d649-46f8-a63f-6bad7f015372" tmdb_id="0" imdb_id="nm0001735" creator="">
 			<first_name>Talia</first_name>
@@ -1129,7 +1129,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="903722dd-515c-4b8c-9075-6a3a01ec0d9c" tmdb_id="0" imdb_id="nm0807571" creator="">
 			<first_name>Bubba</first_name>
@@ -1137,7 +1137,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="8b798c4a-b073-4d9c-b96a-cb4439d8b569" tmdb_id="0" imdb_id="nm0001768" creator="">
 			<first_name>Rod</first_name>
@@ -1145,7 +1145,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="91671df1-2ac4-40ce-bf6e-2d73d95d01e8" tmdb_id="0" imdb_id="nm0000643" creator="">
 			<first_name>Tom</first_name>
@@ -1153,7 +1153,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="8737ba4b-9616-4e99-86ee-3299b9e347fe" tmdb_id="0" imdb_id="nm0000225" creator="">
 			<first_name>Christian</first_name>
@@ -1161,7 +1161,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="31d0bb24-e005-4c7c-b23c-929d4bcc5f5a" tmdb_id="0" imdb_id="" creator="">
 			<first_name>Alan</first_name>
@@ -1169,7 +1169,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="af527d7c-092c-47f5-a7f0-e1b3e81a8f91" tmdb_id="0" imdb_id="" creator="">
 			<first_name>Alan</first_name>
@@ -1177,7 +1177,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="66d0558c-74bc-4513-a6ae-78656e60c8ec" tmdb_id="0" imdb_id="nm0000228" creator="">
 			<first_name>Kevin</first_name>
@@ -1185,7 +1185,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="ee2e87c7-2621-48c3-b835-9bdb68b9e63a" tmdb_id="0" imdb_id="nm0001765" creator="">
 			<first_name>Harry Dean</first_name>
@@ -1193,7 +1193,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="8f489dd7-a5f3-431b-ae48-9fefcdeac40e" tmdb_id="0" imdb_id="nm0000033" creator="">
 			<first_name>Alfredo</first_name>
@@ -1215,7 +1215,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="9d39b385-f5a9-4204-b974-8dfa07c5fba6" tmdb_id="0" imdb_id="nm0000662" creator="">
 			<first_name>Keith</first_name>
@@ -1223,7 +1223,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="ee66c193-c82d-47a1-8f23-9d5988dca6f9" tmdb_id="0" imdb_id="nm0205518" creator="">
 			<first_name>Stringer</first_name>
@@ -1231,7 +1231,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="b4561de6-215e-46ab-9212-f0868c6fcb33" tmdb_id="0" imdb_id="nm0000032" creator="">
 			<first_name>Jarlden</first_name>
@@ -1239,7 +1239,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="b3e45b26-3781-44de-b56f-4809d01072f9" tmdb_id="0" imdb_id="nm0000653" creator="">
 			<first_name>Brand</first_name>
@@ -1254,7 +1254,7 @@
 			<nick_name>Bud</nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="bbc9b3fc-1aed-4986-b22d-ed4c9c94d653" tmdb_id="0" imdb_id="nm0866055" creator="">
 			<first_name>James</first_name>
@@ -1262,7 +1262,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="0909d2a6-b543-4f5b-b287-981ac6dc31f1" tmdb_id="0" imdb_id="nm0001800" creator="">
 			<first_name>Rip</first_name>
@@ -1270,7 +1270,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="9e5808d6-1736-44a5-9409-9218230a7806" tmdb_id="0" imdb_id="nm0000399" creator="">
 			<first_name>Dawid</first_name>
@@ -1278,7 +1278,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="4cfa15ed-912a-44fd-bc67-c8a434af7225" tmdb_id="0" imdb_id="nm0001149" creator="">
 			<first_name>Richard</first_name>
@@ -1286,7 +1286,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="715885d7-8739-4cde-8b94-4349dc56b2a6" tmdb_id="0" imdb_id="nm0000239" creator="">
 			<first_name>Liv</first_name>
@@ -1294,7 +1294,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="058c2105-4440-4d4f-8c62-131fb2fae01c" tmdb_id="0" imdb_id="" creator="">
 			<first_name>Heinz</first_name>
@@ -1302,7 +1302,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="a86fd32f-09b5-409a-b4cf-4a93df10be3d" tmdb_id="0" imdb_id="nm0001811" creator="">
 			<first_name>Peter</first_name>
@@ -1310,7 +1310,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="10d455be-e8e5-40eb-927b-c36e3345525d" tmdb_id="0" imdb_id="nm0000682" creator="">
 			<first_name>Paul</first_name>
@@ -1318,7 +1318,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="c184b9f6-5210-4b3b-935b-47c6f7122c1a" tmdb_id="0" imdb_id="nm0000685" creator="">
 			<first_name>Jon</first_name>
@@ -1326,7 +1326,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="30aff9fa-389f-4c2f-b581-58571857ff58" tmdb_id="0" imdb_id="nm0001812" creator="">
 			<first_name>Lie</first_name>
@@ -1334,7 +1334,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="ab39af52-afe6-4e11-8e4f-5b8c2ceb59e2" tmdb_id="0" imdb_id="nm0001884" creator="">
 			<first_name>Max</first_name>
@@ -1342,7 +1342,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="f0538156-247f-45f6-a710-39c66bd7a9f9" tmdb_id="0" imdb_id="nm0938754" creator="">
 			<first_name>Rolf</first_name>
@@ -1357,7 +1357,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="ef2632a4-e8e9-4faf-b8dc-55ba43822c9d" tmdb_id="0" imdb_id="nm0000244" creator="">
 			<first_name>Signme</first_name>
@@ -1365,7 +1365,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="817052f9-cfbd-415c-a4b4-a225011afcb1" tmdb_id="0" imdb_id="" creator="">
 			<first_name>Arnold</first_name>
@@ -1373,7 +1373,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="0" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="0" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="cd3a2e20-efe1-4a4c-9249-164b67d185f7" tmdb_id="0" imdb_id="nm0000216" creator="">
 			<first_name>Arnold</first_name>
@@ -1409,7 +1409,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="55c09b06-cbe0-4fd9-bfb8-c8ebfb5e1b4e" tmdb_id="0" imdb_id="nm0001845" creator="">
 			<first_name>Forest</first_name>
@@ -1417,7 +1417,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="f63c4cf3-a602-4f5a-84fd-caed3aaf8340" tmdb_id="0" imdb_id="nm0000704" creator="">
 			<first_name>Elijah</first_name>
@@ -1425,7 +1425,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="2" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="6946dffd-0f54-4462-8587-47a8c036857c" tmdb_id="0" imdb_id="nm0000247" creator="">
 			<first_name>John</first_name>
@@ -1433,7 +1433,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="34d2d3d0-34cc-4ff9-88e6-26d234c0e1e7" tmdb_id="0" imdb_id="nm0949350" creator="">
 			<first_name>Byrd</first_name>
@@ -1448,7 +1448,7 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="1" gender="0" birthday="" deathday="" country="" />
-			<data prominence="2" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 
         <person id="05c93694-ceb0-488c-b49a-f64169323d23" tmdb_id="" imdb_id="nm0000323" creator="8782" created_by="DerFronck">
@@ -1621,7 +1621,7 @@
             <last_name_original>Bale</last_name_original>
             <images />
             <details job="2" gender="1" birthday="1974-01-30" deathday="" country="UK" />
-            <data prominence="1" skill="0" fame="0" scandalizing="1" price_mod="1" power="2" humor="0" charisma="2" appearance="2" topgenre1="0" topgenre2="0" />
+            <data popularity="10" affinity="0" fame="0" scandalizing="10" price_mod="1" power="25" humor="0" charisma="21" appearance="21" topgenre="0" />
         </person>
         <person id="DF-Celebreties-Matt_Damon" tmdb_id="" imdb_id="nm0000354" creator="8782" created_by="DerFronck">
             <first_name>Mett</first_name>
@@ -1733,7 +1733,7 @@
 			<first_name_original>Melissa</first_name_original>
 			<last_name_original>McBride</last_name_original>
 			<details job="2" gender="2" birthday="1965-05-23" deathday="" country="US" />
-			<data prominence="1" skill="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="10" affinity="0" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 
 		<person id="DF-Celebreties-Frank_Darabont" tmdb_id="" imdb_id="nm0001104" creator="8782" created_by="DerFronck">
@@ -1754,7 +1754,7 @@
 			<first_name_original>Fritz</first_name_original>
 			<last_name_original>Lang</last_name_original>
 			<details job="1" gender="1"  birthday="1890-12-05" deathday="1976-08-02" country="D" />
-			<data prominence="5" skill="5" fame="4" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="50" affinity="50" fame="40" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-RowardRawk" tmdb_id="0" imdb_id="nm0001328" creator="8751" created_by="TheRob">
 			<!-- Howard Hawk -->
@@ -1763,7 +1763,7 @@
 			<first_name_original>Howard</first_name_original>
 			<last_name_original>Hawk</last_name_original>
 			<details job="1" gender="1"  birthday="1896-05-30" deathday="1977-12-26" country="USA" />
-			<data prominence="5" skill="5" fame="4" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="50" affinity="50" fame="40" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WalfredWederSabel" tmdb_id="0" imdb_id="nm0002154" creator="8751" created_by="TheRob">
 			<!-- Alfred Abel -->
@@ -1772,7 +1772,7 @@
 			<first_name_original>Alfred</first_name_original>
 			<last_name_original>Abel</last_name_original>
 			<details job="2" gender="1"  birthday="1879-03-12" deathday="1937-12-12" country="D" />
-			<data prominence="2" skill="3" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="30" fame="30" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-PipernetteSelm" tmdb_id="0" imdb_id="nm0375609" creator="8751" created_by="TheRob">
 			<!-- Brigitte Helm -->
@@ -1781,7 +1781,7 @@
 			<first_name_original>Brigitte</first_name_original>
 			<last_name_original>Helm</last_name_original>
 			<details job="2" gender="2"  birthday="1908-03-17" deathday="1996-06-11" country="D" />
-			<data prominence="2" skill="3" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="30" fame="30" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-MustafLustig" tmdb_id="0" imdb_id="nm0297054" creator="8751" created_by="TheRob">
 			<!-- Gustav Fröhlich -->
@@ -1790,7 +1790,7 @@
 			<first_name_original>Grustav</first_name_original>
 			<last_name_original>Fröhlich</last_name_original>
 			<details job="2" gender="1"  birthday="1902-03-21" deathday="1987-12-22" country="CH" />
-			<data prominence="2" skill="3" fame="2" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="30" fame="20" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-MustafWuendgens" tmdb_id="0" imdb_id="nm0345073" creator="8751" created_by="TheRob">
 			<!-- Gutstav Gründgens -->
@@ -1799,7 +1799,7 @@
 			<first_name_original>Gustav</first_name_original>
 			<last_name_original>Gründgens</last_name_original>
 			<details job="2" gender="1"  birthday="1899-12-22" deathday="1963-10-07" country="D" />
-			<data prominence="4" skill="5" fame="2" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="40" affinity="50" fame="20" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WeinWenk" tmdb_id="0" imdb_id="nm0770888" creator="8751" created_by="TheRob">
 			<!-- Heinz Schenk -->
@@ -1808,7 +1808,7 @@
 			<first_name_original>Heinz</first_name_original>
 			<last_name_original>Schenk</last_name_original>
 			<details job="2" gender="1"  birthday="1924-12-11" deathday="2014-05-01" country="D" />
-			<data prominence="5" skill="5" fame="3" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="50" affinity="50" fame="30" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-GaryGrunt" tmdb_id="0" imdb_id="nm0000026" creator="8751" created_by="TheRob">
 			<!-- Cary Grant, laut Liste schon existent, habe ihn aber in keiner DB gefunden -->
@@ -1817,7 +1817,7 @@
 			<first_name_original>Cary</first_name_original>
 			<last_name_original>Grant</last_name_original>
 			<details job="2" gender="1"  birthday="1904-01-18" deathday="1986-11-29" country="USA" />
-			<data prominence="5" skill="5" fame="5" scandalizing="0" price_mod="1" power="0" humor="5" charisma="5" appearance="5" topgenre1="0" topgenre2="0" />
+			<data popularity="50" affinity="50" fame="50" scandalizing="0" price_mod="1" power="0" humor="51" charisma="53" appearance="52" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-PrankWrapa" tmdb_id="0" imdb_id="nm0001008" creator="8751" created_by="TheRob">
 			<!-- Frank Capra -->
@@ -1826,7 +1826,7 @@
 			<first_name_original>Frank</first_name_original>
 			<last_name_original>Capra</last_name_original>
 			<details job="1" gender="1"  birthday="1897-05-18" deathday="1991-09-03" country="USA" />
-			<data prominence="2" skill="5" fame="2" scandalizing="0" price_mod="1" power="0" humor="1" charisma="1" appearance="2" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="50" fame="20" scandalizing="0" price_mod="1" power="0" humor="9" charisma="11" appearance="21" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-LonnaWeed" tmdb_id="0" imdb_id="nm0001656" creator="8751" created_by="TheRob">
 			<!-- Donna Reed -->
@@ -1835,7 +1835,7 @@
 			<first_name_original>Donna</first_name_original>
 			<last_name_original>Reed</last_name_original>
 			<details job="2" gender="2"  birthday="1904-01-18" deathday="1986-11-29" country="USA" />
-			<data prominence="5" skill="5" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="4" topgenre1="0" topgenre2="0" />
+			<data popularity="50" affinity="50" fame="20" scandalizing="0" price_mod="0" power="0" humor="9" charisma="11" appearance="42" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-SophieWoreen" tmdb_id="0" imdb_id="nm0000047" creator="8751" created_by="TheRob">
 			<!-- Sophia Loren -->
@@ -1844,7 +1844,7 @@
 			<first_name_original>Sophia</first_name_original>
 			<last_name_original>Loren</last_name_original>
 			<details job="2" gender="2"  birthday="1934-09-34" deathday="" country="I" />
-			<data prominence="4" skill="4" fame="4" scandalizing="0" price_mod="0" power="0" humor="1" charisma="2" appearance="4" topgenre1="0" topgenre2="0" />
+			<data popularity="40" affinity="40" fame="40" scandalizing="0" price_mod="0" power="0" humor="9" charisma="21" appearance="42" topgenre="0" />
 		</person>
  		<person id="TheRob-celebritypeople-RennIsNaid" tmdb_id="0" imdb_id="nm0000598" creator="8751" created_by="TheRob">
 			<!-- Dennis Quaid -->
@@ -1853,7 +1853,7 @@
 			<first_name_original>Dennis</first_name_original>
 			<last_name_original>Quaid</last_name_original>
 			<details job="2" gender="1"  birthday="1954-04-09" deathday="" country="USA" />
-			<data prominence="3" skill="3" fame="3" scandalizing="0" price_mod="0" power="0" humor="1" charisma="2" appearance="3" topgenre1="0" topgenre2="0" />
+			<data popularity="30" affinity="30" fame="30" scandalizing="0" price_mod="0" power="0" humor="9" charisma="21" appearance="34" topgenre="0" />
 		</person>
  		<person id="TheRob-celebritypeople-JimmyBaine" tmdb_id="0" imdb_id="nm0000078" creator="8751" created_by="TheRob">
 			<!-- John Wayne -->
@@ -1862,7 +1862,7 @@
 			<first_name_original>John</first_name_original>
 			<last_name_original>Wayne</last_name_original>
 			<details job="2" gender="1"  birthday="1907-05-26" deathday="1979-06-11" country="USA" />
-			<data prominence="6" skill="3" fame="6" scandalizing="0" price_mod="0" power="4" humor="1" charisma="4" appearance="5" topgenre1="0" topgenre2="0" />
+			<data popularity="60" affinity="30" fame="60" scandalizing="0" price_mod="0" power="42" humor="9" charisma="45" appearance="52" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-RonDort" tmdb_id="0" imdb_id="nm0000406" creator="8751" created_by="TheRob">
 			<!-- John Ford -->
@@ -1871,7 +1871,7 @@
 			<first_name_original>John</first_name_original>
 			<last_name_original>Ford</last_name_original>
 			<details job="1" gender="1"  birthday="1894-02-01" deathday="2003-06-12" country="USA" />
-			<data prominence="3" skill="5" fame="3" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="3" topgenre1="0" topgenre2="0" />
+			<data popularity="30" affinity="50" fame="30" scandalizing="0" price_mod="0" power="0" humor="9" charisma="11" appearance="34" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-RobWoolikann" tmdb_id="0" imdb_id="nm0612322" creator="8751" created_by="TheRob">
 			<!-- Robert Mulligan -->
@@ -1880,7 +1880,7 @@
 			<first_name_original>Robert</first_name_original>
 			<last_name_original>Mulligan</last_name_original>
 			<details job="1" gender="1"  birthday="1925-08-23" deathday="2008-12-20" country="USA" />
-			<data prominence="2" skill="3" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="3" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="30" fame="20" scandalizing="0" price_mod="0" power="0" humor="9" charisma="11" appearance="34" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WeckoryWeck" tmdb_id="0" imdb_id="nm0000060" creator="8751" created_by="TheRob">
 			<!-- Gregory Peck -->
@@ -1889,7 +1889,7 @@
 			<first_name_original>Gregory</first_name_original>
 			<last_name_original>Peck</last_name_original>
 			<details job="2" gender="1"  birthday="1916-04-05" deathday="1973-08-31" country="USA" />
-			<data prominence="3" skill="5" fame="4" scandalizing="0" price_mod="0" power="0" humor="1" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
+			<data popularity="30" affinity="50" fame="40" scandalizing="0" price_mod="0" power="0" humor="9" charisma="45" appearance="42" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WalterMuge" tmdb_id="0" imdb_id="nm0472545" creator="8751" created_by="TheRob">
 			<!-- Manfred Krug -->
@@ -1898,7 +1898,7 @@
 			<first_name_original>Manfred</first_name_original>
 			<last_name_original>Krug</last_name_original>
 			<details job="2" gender="1"  birthday="1937-02-08" deathday="2016-10-21" country="D" />
-			<data prominence="3" skill="4" fame="3" scandalizing="0" price_mod="0" power="0" humor="1" charisma="3" appearance="4" topgenre1="0" topgenre2="0" />
+			<data popularity="30" affinity="40" fame="30" scandalizing="0" price_mod="0" power="0" humor="9" charisma="34" appearance="42" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-AlfredNeck" tmdb_id="0" imdb_id="nm0472545" creator="8751" created_by="TheRob">
 			<!-- Walter Beck -->
@@ -1907,7 +1907,7 @@
 			<first_name_original>Walter</first_name_original>
 			<last_name_original>Beck</last_name_original>
 			<details job="1" gender="1"  birthday="1929-09-11" deathday="" country="D" />
-			<data prominence="2" skill="4" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="2" topgenre1="10" topgenre2="1" />
+			<data popularity="20" affinity="40" fame="20" scandalizing="0" price_mod="0" power="0" humor="9" charisma="11" appearance="21" topgenre="10" />
 		</person>
 		<person id="TheRob-celebritypeople-MarenLosowski" tmdb_id="0" imdb_id="nm0880110" creator="8751" created_by="TheRob">
 			<!-- Karin Ugowski -->
@@ -1916,7 +1916,7 @@
 			<first_name_original>Karin</first_name_original>
 			<last_name_original>Ugowski</last_name_original>
 			<details job="2" gender="2"  birthday="1943-07-11" deathday="" country="D" />
-			<data prominence="0" skill="3" fame="0" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="1" topgenre1="0" topgenre2="0" />
+			<data popularity="0" affinity="30" fame="0" scandalizing="0" price_mod="0" power="0" humor="9" charisma="11" appearance="11" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-ElliSallyTastarino" tmdb_id="0" imdb_id="nm0001512" creator="8751" created_by="TheRob">
 			<!-- Mary Elizabeth Mastrantonio -->
@@ -1925,7 +1925,7 @@
 			<first_name_original>Mary</first_name_original>
 			<last_name_original>Elizabeth Mastrantonio</last_name_original>
 			<details job="2" gender="2" birthday="1958-11-17" deathday="" country="USA" />
-			<data prominence="1" skill="3" fame="0" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="1" topgenre1="0" topgenre2="0" />
+			<data popularity="10" affinity="30" fame="0" scandalizing="0" price_mod="0" power="0" humor="9" charisma="11" appearance="11" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-RavenRainold" tmdb_id="0" imdb_id="nm0721817" creator="8751" created_by="TheRob">
 			<!-- Kevin Reynolds -->
@@ -1934,7 +1934,7 @@
 			<first_name_original>Kevin</first_name_original>
 			<last_name_original>Reynolds</last_name_original>
 			<details job="1" gender="1" birthday="1952-01-17" deathday="" country="USA" />
-			<data prominence="2" skill="3" fame="2" scandalizing="0" price_mod="0" power="0" humor="1" charisma="1" appearance="1" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="30" fame="20" scandalizing="0" price_mod="0" power="0" humor="9" charisma="11" appearance="11" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-RolligerStein" tmdb_id="0" imdb_id="nm0721817" creator="8751" created_by="TheRob">
 			<!-- Oliver Stone -->
@@ -1943,7 +1943,7 @@
 			<first_name_original>Oliver</first_name_original>
 			<last_name_original>Stone</last_name_original>
 			<details job="1" gender="1" birthday="1946-09-15" deathday="" country="USA" />
-			<data prominence="3" skill="5" fame="3" scandalizing="1" price_mod="0" power="2" humor="1" charisma="3" appearance="3" topgenre1="0" topgenre2="0" />
+			<data popularity="30" affinity="50" fame="30" scandalizing="10" price_mod="0" power="25" humor="9" charisma="34" appearance="34" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WuzzGeier" tmdb_id="0" imdb_id="nm0000540" creator="8751" created_by="TheRob">
 			<!-- Russ Meyer -->
@@ -1952,7 +1952,7 @@
 			<first_name_original>Russ</first_name_original>
 			<last_name_original>Meyer</last_name_original>
 			<details job="1" gender="1" birthday="1922-03-21" deathday="2004-09-18" country="USA" />
-			<data prominence="3" skill="3" fame="3" scandalizing="1" price_mod="0" power="2" humor="1" charisma="1" appearance="1" topgenre1="8" topgenre2="0" />
+			<data popularity="30" affinity="30" fame="30" scandalizing="10" price_mod="0" power="25" humor="9" charisma="11" appearance="11" topgenre="8" />
 		</person>
 		<person id="TheRob-celebritypeople-RainZog" tmdb_id="0" imdb_id="nm0911061" creator="8751" created_by="TheRob">
 			<!-- Wayne Wang -->
@@ -1961,7 +1961,7 @@
 			<first_name_original>Wayne</first_name_original>
 			<last_name_original>Wang</last_name_original>
 			<details job="1" gender="1"  birthday="1949-01-12" deathday="" country="USA" />
-			<data prominence="1" skill="5" fame="2" scandalizing="1" price_mod="0" power="2" humor="1" charisma="2" appearance="1" topgenre1="0" topgenre2="0" />
+			<data popularity="10" affinity="50" fame="20" scandalizing="10" price_mod="0" power="25" humor="9" charisma="21" appearance="11" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-LarryMoldman" tmdb_id="0" imdb_id="nm0000198" creator="8751" created_by="TheRob">
 			<!-- Gary Oldman -->
@@ -1970,7 +1970,7 @@
 			<first_name_original>Gary</first_name_original>
 			<last_name_original>Oldman</last_name_original>
 			<details job="2" gender="1"  birthday="1958-03-21" deathday="" country="UK" />
-			<data prominence="3" skill="5" fame="4" scandalizing="1" price_mod="0" power="2" humor="1" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
+			<data popularity="30" affinity="50" fame="40" scandalizing="10" price_mod="0" power="25" humor="9" charisma="45" appearance="42" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WimBlurry" tmdb_id="0" imdb_id="nm0000347" creator="8751" created_by="TheRob">
 			<!-- Tim Curry -->
@@ -1979,7 +1979,7 @@
 			<first_name_original>Tim</first_name_original>
 			<last_name_original>Curry</last_name_original>
 			<details job="2" gender="1"  birthday="1946-04-19" deathday="" country="UK" />
-			<data prominence="3" skill="4" fame="3" scandalizing="2" price_mod="0" power="0" humor="1" charisma="2" appearance="4" topgenre1="0" topgenre2="0" />
+			<data popularity="30" affinity="40" fame="30" scandalizing="25" price_mod="0" power="0" humor="9" charisma="21" appearance="42" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-WeatLove" tmdb_id="0" imdb_id="nm0001533" creator="8751" created_by="TheRob">
 			<!-- Meat Loaf -->
@@ -1988,7 +1988,7 @@
 			<first_name_original>Meat</first_name_original>
 			<last_name_original>Loaf</last_name_original>
 			<details job="1" gender="1"  birthday="1947-09-27" deathday="" country="USA" />
-			<data prominence="2" skill="4" fame="2" scandalizing="1" price_mod="0" power="0" humor="2" charisma="2" appearance="2" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="40" fame="20" scandalizing="10" price_mod="0" power="0" humor="23" charisma="21" appearance="21" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-SusanaRandom" tmdb_id="0" imdb_id="nm0000215" creator="8751" created_by="TheRob">
 			<!-- Susan Sarandon -->
@@ -1997,7 +1997,7 @@
 			<first_name_original>Susan</first_name_original>
 			<last_name_original>Sarandon</last_name_original>
 			<details job="2" gender="2"  birthday="1946-10-04" deathday="" country="USA" />
-			<data prominence="2" skill="4" fame="1" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="3" topgenre1="0" topgenre2="0" />
+			<data popularity="20" affinity="40" fame="10" scandalizing="0" price_mod="0" power="0" humor="23" charisma="45" appearance="34" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-DarleenSchluessel" tmdb_id="0" imdb_id="nm0000017" creator="8751" created_by="TheRob">
 			<!-- Marlene Dietrich -->
@@ -2006,7 +2006,7 @@
 			<first_name_original>Marlene</first_name_original>
 			<last_name_original>Dietrich</last_name_original>
 			<details job="2" gender="2"  birthday="1925-01-26" deathday="2008-09-26" country="D" />
-			<data prominence="3" skill="4" fame="4" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
+			<data popularity="30" affinity="40" fame="40" scandalizing="0" price_mod="0" power="0" humor="23" charisma="45" appearance="42" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-RaulWarumen" tmdb_id="0" imdb_id="nm0000056" creator="8751" created_by="TheRob">
 			<!-- Paul Newman -->
@@ -2015,7 +2015,7 @@
 			<first_name_original>Paul</first_name_original>
 			<last_name_original>Newman</last_name_original>
 			<details job="2" gender="1"  birthday="1901-12-27" deathday="1992-05-06" country="D" />
-			<data prominence="3" skill="4" fame="4" scandalizing="0" price_mod="0" power="0" humor="2" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
+			<data popularity="30" affinity="40" fame="40" scandalizing="0" price_mod="0" power="0" humor="23" charisma="45" appearance="42" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-NorisBarloff" tmdb_id="0" imdb_id="nm0000472" creator="8751" created_by="TheRob">
 			<!-- Boris Karloff -->
@@ -2024,7 +2024,7 @@
 			<first_name_original>Boris</first_name_original>
 			<last_name_original>Karloff</last_name_original>
 			<details job="2" gender="1"  birthday="1887-11-23" deathday="1969-02-02" country="UK" />
-			<data prominence="4" skill="4" fame="5" scandalizing="0" price_mod="0" power="2" humor="2" charisma="5" appearance="5" topgenre1="12" topgenre2="0" />
+			<data popularity="40" affinity="40" fame="50" scandalizing="0" price_mod="0" power="25" humor="23" charisma="53" appearance="52" topgenre="12" />
 		</person>
 	  	<person id="TheRob-celebritypeople-WalterRattnau" tmdb_id="0" imdb_id="nm0000527" creator="8751" created_by="TheRob">
 			<!-- Walter Matthau -->
@@ -2033,7 +2033,7 @@
 			<first_name_original>Walter</first_name_original>
 			<last_name_original>Matthau</last_name_original>
 			<details job="2" gender="1"  birthday="1920-10-01" deathday="2000-07-01" country="D" />
-			<data prominence="4" skill="4" fame="4" scandalizing="0" price_mod="0" power="2" humor="4" charisma="4" appearance="4" topgenre1="5" topgenre2="0" />
+			<data popularity="40" affinity="40" fame="40" scandalizing="0" price_mod="0" power="25" humor="42" charisma="45" appearance="42" topgenre="5" />
 		</person>
 	  	<person id="TheRob-celebritypeople-BargHable" tmdb_id="0" imdb_id="nm0000022" creator="8751" created_by="TheRob">
 			<!-- Clark Gable -->
@@ -2042,7 +2042,7 @@
 			<first_name_original>Clark</first_name_original>
 			<last_name_original>Gable</last_name_original>
 			<details job="2" gender="1"  birthday="1901-02-01" deathday="1960-11-16" country="USA" />
-			<data prominence="5" skill="4" fame="5" scandalizing="0" price_mod="0" power="4" humor="1" charisma="5" appearance="4" topgenre1="15" topgenre2="13" />
+			<data popularity="50" affinity="40" fame="50" scandalizing="0" price_mod="0" power="42" humor="9" charisma="53" appearance="42" topgenre="15" />
 		</person>
 	  	<person id="TheRob-celebritypeople-SteveNeckKing" tmdb_id="0" imdb_id="nm0000537" creator="8751" created_by="TheRob">
 			<!-- Steve McQueen -->
@@ -2051,7 +2051,7 @@
 			<first_name_original>Steve</first_name_original>
 			<last_name_original>McQueen</last_name_original>
 			<details job="2" gender="1"  birthday="1930-03-24" deathday="1980-11-07" country="USA" />
-			<data prominence="4" skill="4" fame="5" scandalizing="1" price_mod="0" power="4" humor="1" charisma="3" appearance="4" topgenre1="2" topgenre2="17" />
+			<data popularity="40" affinity="40" fame="50" scandalizing="10" price_mod="0" power="42" humor="9" charisma="34" appearance="42" topgenre="2" />
 		</person>
 		<person id="TheRob-celebritypeople-AndyCharkowski" tmdb_id="0" imdb_id="nm0001789" creator="8751" created_by="TheRob">
 			<!-- Andrei Tarkovsky -->
@@ -2060,7 +2060,7 @@
 			<first_name_original>Andrei</first_name_original>
 			<last_name_original>Tarkovsky</last_name_original>
 			<details job="2" gender="1"  birthday="1932-04-04" deathday="1986-12-29" country="UdSSR" />
-			<data prominence="2" skill="4" fame="2" scandalizing="0" price_mod="0" power="4" humor="0" charisma="3" appearance="4" topgenre1="7" topgenre2="2" />
+			<data popularity="20" affinity="40" fame="20" scandalizing="0" price_mod="0" power="42" humor="0" charisma="34" appearance="42" topgenre="7" />
 		</person>
 	 	<person id="TheRob-celebritypeople-SilvyMelbourne" tmdb_id="0" imdb_id="nm0796662" creator="8751" created_by="TheRob">
 			<!-- Sylvia Sidney -->
@@ -2069,7 +2069,7 @@
 			<first_name_original>Sylvia</first_name_original>
 			<last_name_original>Sidney</last_name_original>
 			<details job="2" gender="2"  birthday="1910-08-08" deathday="1999-07-01" country="USA" />
-			<data prominence="4" skill="5" fame="3" scandalizing="0" price_mod="0" power="4" humor="1" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
+			<data popularity="40" affinity="50" fame="30" scandalizing="0" price_mod="0" power="42" humor="9" charisma="45" appearance="42" topgenre="0" />
 		</person>
 		<person id="TheRob-celebritypeople-HenceTrace" tmdb_id="0" imdb_id="nm0000075" creator="8751" created_by="TheRob">
 			<!-- Spencer Tracy -->
@@ -2078,7 +2078,7 @@
 			<first_name_original>Spencer</first_name_original>
 			<last_name_original>Tracy</last_name_original>
 			<details job="2" gender="1"  birthday="1900-04-05" deathday="1967-06-10" country="USA" />
-			<data prominence="5" skill="5" fame="5" scandalizing="0" price_mod="0" power="4" humor="3" charisma="4" appearance="4" topgenre1="0" topgenre2="0" />
+			<data popularity="50" affinity="50" fame="50" scandalizing="0" price_mod="0" power="42" humor="29" charisma="45" appearance="42" topgenre="0" />
 		</person>
 
 
@@ -2091,7 +2091,7 @@
 			<first_name_original>Tom</first_name_original>
 			<last_name_original>Hanks</last_name_original>
 			<details job="2" gender="1" birthday="1956-07-09" deathday="" country="US" />
-			<data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<!-- Thomas Oberlies Regie und Schauspieler von Kurzfilmen (und Dr. der Mathematik) kenn ich noch aus meinem Studium -->
 		<person id="Freddy-realperson-ThomasUnterlisl" tmdb_id="0" imdb_id="nm1310885" fictional="0" creator="8667" created_by="Rumpelfreddy">
@@ -2100,7 +2100,7 @@
 			<first_name_original>Thomas</first_name_original>
 			<last_name_original>Oberlies</last_name_original>
 			<details job="1" gender="1"  birthday="1972-06-26" deathday="" country="D" />
-			<data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 		<!-- Neil Morrissey Schauspieler in Englischen Komödien und Serien und Stimme von Bob dem Baumeister-->
 		<person id="Freddy-realperson-NailNorrissey" tmdb_id="0" imdb_id="nm0607403" creator="8667" created_by="Rumpelfreddy">
@@ -2109,7 +2109,7 @@
 			<first_name_original>Neil</first_name_original>
 			<last_name_original>Morrissey</last_name_original>
 			<details job="2" gender="1"  birthday="1962-07-04" deathday="" country="UK" />
-			<data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 
 
@@ -2120,62 +2120,62 @@
 			<nick_name></nick_name>
 			<images />
 			<details job="128" gender="2" birthday="1962-01-15" deathday="" country="D" fictional="1" />
-			<data prominence="4" skill="2" fame="1" scandalizing="1" price_mod="1.1" power="2" humor="1" charisma="4" appearance="6" topgenre1="300" topgenre2="103" />
+			<data popularity="8" affinity="50" fame="40" scandalizing="10" price_mod="1.1" power="50" humor="25" charisma="60" appearance="55" topgenre="300" />
 		</person>
 		<person id="ronny-programmeperson-gertkalischke" fictional="1" creator="5578" created_by="Ronny">
 			<first_name>Gert</first_name>
 			<last_name>Kalischke</last_name>
 			<details job="3" gender="1"  birthday="1943" deathday="2014" country="NL" />
-			<data prominence="1" skill="2" fame="1" scandalizing="0" price_mod="1" power="3" humor="5" charisma="1" appearance="7" topgenre1="15" topgenre2="5" />
+			<data popularity="5" affinity="20" fame="10" scandalizing="0" price_mod="1" power="20" humor="50" charisma="35" appearance="75" topgenre="15" />
 		</person>
 		<person id="ronny-programmeperson-ellygnatzer" fictional="1" creator="5578" created_by="Ronny">
 			<first_name>Elly</first_name>
 			<last_name>Gnartzer</last_name>
 			<details job="193" gender="2"  birthday="1956" deathday="2040" country="D" />
-			<data prominence="1" skill="4" fame="4" scandalizing="4" price_mod="1" power="2" humor="2" charisma="5" appearance="7" topgenre1="101" topgenre2="103" />
+			<data popularity="8" affinity="40" fame="40" scandalizing="40" price_mod="1" power="20" humor="20" charisma="55" appearance="70" topgenre="101" />
 		</person>
 		<person id="ronny-programmeperson-achimvonklaven" fictional="1" creator="5578" created_by="Ronny">
 			<first_name>Achim</first_name>
 			<last_name>von Klaven</last_name>
 			<details job="129" gender="1"  birthday="1931-02-14" deathday="2010-09-27" country="D" />
-			<data prominence="1" skill="4" fame="2" scandalizing="2" price_mod="1" power="3" humor="0" charisma="4" appearance="2" topgenre1="300" topgenre2="103" />
+			<data popularity="10" affinity="40" fame="20" scandalizing="20" price_mod="1" power="30" humor="0" charisma="68" appearance="15" topgenre="300" />
 		</person>
 		<person id="ronny-programmeperson-holgerpelz" fictional="1" creator="5578" created_by="Ronny">
 			<first_name>Holger</first_name>
 			<last_name>Pelz</last_name>
 			<details job="129" gender="1"  birthday="1951" deathday="2033" country="D" />
-			<data prominence="0" skill="3" fame="0" scandalizing="0" price_mod="1" power="3" humor="1" charisma="2" appearance="3" topgenre1="6" topgenre2="300" />
+			<data popularity="0" affinity="30" fame="0" scandalizing="0" price_mod="1" power="30" humor="10" charisma="20" appearance="30" topgenre="6" />
 		</person>
 		<person id="ronny-programmeperson-samuelloew" fictional="1" creator="5578" created_by="Ronny">
 			<first_name>Samuel</first_name>
 			<last_name>Löw</last_name>
 			<details job="129" gender="1"  birthday="1959" deathday="2041" country="IL" />
-			<data prominence="0" skill="4" fame="0" scandalizing="0" price_mod="1" power="2" humor="2" charisma="3" appearance="3" topgenre1="6" topgenre2="300" />
+			<data popularity="0" affinity="40" fame="0" scandalizing="0" price_mod="1" power="10" humor="80" charisma="30" appearance="50" topgenre="6" />
 		</person>
 		<person id="ronny-programmeperson-thomasstone" fictional="1" creator="5578" created_by="Ronny">
 			<first_name>Thomas</first_name>
 			<last_name>Stone</last_name>
 			<details job="129" gender="1"  birthday="1929" deathday="1991" country="USA" />
-			<data prominence="1" skill="7" fame="0" scandalizing="0" price_mod="1" power="3" humor="1" charisma="4" appearance="1" topgenre1="6" topgenre2="300" />
+			<data popularity="15" affinity="70" fame="0" scandalizing="0" price_mod="1" power="70" humor="10" charisma="55" appearance="25" topgenre="6" />
 		</person>
 		<person id="ronny-programmeperson-bennyjameson" fictional="1" creator="5578" created_by="Ronny">
 			<first_name>Benny</first_name>
 			<last_name>Jameson</last_name>
 			<details job="12" gender="1"  birthday="1962" deathday="2040" country="CA" />
-			<data prominence="1" skill="4" fame="0" scandalizing="0" price_mod="1" power="2" humor="4" charisma="2" appearance="9" topgenre1="9" topgenre2="300" />
+			<data popularity="10" affinity="40" fame="0" scandalizing="0" price_mod="1" power="30" humor="48" charisma="20" appearance="90" topgenre="9" />
 		</person>
 		<person id="ronny-programmeperson-freddyjbush" fictional="1" creator="5578" created_by="Ronny">
 			<first_name>Freddy J.</first_name>
 			<last_name>Bush</last_name>
 			<details job="1" gender="1"  birthday="1942" deathday="2030" country="USA" />
-			<data prominence="1" skill="3" fame="0" scandalizing="0" price_mod="1" power="3" humor="2" charisma="2" appearance="1" topgenre1="9" topgenre2="0" />
+			<data popularity="10" affinity="70" fame="0" scandalizing="60" price_mod="1" power="40" humor="45" charisma="15" appearance="55" topgenre="9" />
 		</person>
 		<person id="ronny-programmeperson-pipelaho" tmdb_id="0" imdb_id="" creator="5578" created_by="Ronny">
 			<first_name>Pipé-Laho</first_name>
 			<last_name>Rashin</last_name>
 			<nick_name>Pipé-Laho</nick_name>
 			<details job="16" gender="2" birthday="" deathday="" country="CAN/RI" fictional="1" />
-			<data prominence="6" skill="4" fame="4" scandalizing="4" price_mod="1.1" power="1" humor="1" charisma="1" appearance="8" topgenre1="102" topgenre2="202" />
+			<data popularity="60" affinity="40" fame="40" scandalizing="40" price_mod="1.1" power="15" humor="25" charisma="30" appearance="80" topgenre="102" />
 		</person>
 	</celebritypeople>
 

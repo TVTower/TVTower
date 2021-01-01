@@ -412,6 +412,9 @@ Type TDatabaseLoader
 			"first_name", "last_name", "nick_name", "fictional", "levelup", "country", ..
 			"job", "gender", "generator", "face_code", "bookable" ..
 		])
+		
+		'country codes:
+		'https://en.wikipedia.org/wiki/List_of_ITU_letter_codes
 
 
 		Local generator:String = data.GetString("generator", "")
@@ -499,17 +502,8 @@ Type TDatabaseLoader
 				attributeIndex :+ 3
 			Next
 
-			xml.LoadValuesToData(nodeData, data, attributeKeys + [ "price_mod", "topgenre1", "topgenre2", "prominence" ])
-			For local i:int = 1 to TVTPersonPersonalityAttribute.count
-				Local attributeID:Int = TVTPersonPersonalityAttribute.GetAtIndex(i)
-				'for now we only load "generic" information, not "attribute-job-genre" combinations
-				'this also generates random attributes if not done yet
-				Local attribute:TPersonPersonalityAttribute = pd.GetAttributes().GetAttribute(attributeID, -1, -1)
-				'now override accordingly
-				attribute.SetMin( 0.01 * data.GetFloat(TVTPersonPersonalityAttribute.GetAsString(attributeID)+"_min", 100 * attribute.GetMin()) )
-				attribute.SetMax( 0.01 * data.GetFloat(TVTPersonPersonalityAttribute.GetAsString(attributeID)+"_max", 100 * attribute.GetMax()) )
-				attribute.Set( 0.01 * data.GetFloat(TVTPersonPersonalityAttribute.GetAsString(attributeID), 100 * attribute.Get()) )
-			Next
+			xml.LoadValuesToData(nodeData, data, attributeKeys + [ "price_mod", "topgenre", "affinity", "popularity", "popularity_target"])
+
 			if TPersonProductionData(person.GetProductionData())
 				TPersonProductionData(person.GetProductionData()).topGenre = data.GetInt("topgenre", TPersonProductionData(person.GetProductionData()).topGenre)
 			EndIf
@@ -518,8 +512,88 @@ Type TDatabaseLoader
 			If person.GetProductionData().priceModifier = 0 Then person.GetProductionData().priceModifier = 1.0
 			person.GetProductionData().priceModifier = 0.01 * data.GetFloat("price_mod", 100*person.GetProductionData().priceModifier)
 
+			if TPersonProductionData(person.GetProductionData())
+				TPersonProductionData(person.GetProductionData()).topGenre = data.GetInt("topgenre", TPersonProductionData(person.GetProductionData()).topGenre)
+			EndIf
+
+
+			'ATTRIBUTES
+			'create attributes:
+			'- for fictional characters
+			'- when DB entry defines stuff (do as soon as db defines an attribute
+
+			Local a:TPersonPersonalityAttributes
+			For local i:int = 1 to TVTPersonPersonalityAttribute.count
+				Local attributeID:Int = TVTPersonPersonalityAttribute.GetAtIndex(i)
+
+				Local attributeText:String = TVTPersonPersonalityAttribute.GetAsString(attributeID)
+				Local dbMinValue:Float = data.GetFloat(attributeText+"_min", -1)
+				Local dbMaxValue:Float = data.GetFloat(attributeText+"_max", -1)
+				Local dbValue:Float = data.GetFloat(attributeText, -1)
+				
+				'only fill attribute if at least a part is defined here
+				If not (dbMinValue >= 0 or dbMaxValue >= 0 or dbValue >= 0) Then Continue	
+
+				if not a
+					'generate if needed, but no randomization
+					if not pd.HasAttributes() then pd.InitAttributes(False) 
+					a = pd.GetAttributes()
+				endif
+
+				'The getters automatically generate and randomize the attribute
+				'so this is not needed for now
+				'If not a.Has(attributeID, -1, -1) Then a.Randomize(attributeID, -1, -1)
+
+				local minValue:Float = 100 * a.GetMin(attributeID, -1, -1)
+				local maxValue:Float = 100 * a.GetMax(attributeID, -1, -1)
+				local value:Float = 100 * a.Get(attributeID, -1, -1)
+
+				'override with DB definitions (except they are "0")
+				if dbMinValue >= 0 Then minValue = Max(0, dbMaxValue)
+				if dbMaxValue > 0  Then maxValue = Min(1.0, Max(minValue, dbMaxValue))
+				if dbValue >= 0 Then value = Min(Max(value, minValue), maxValue)
+
+				'assign values again
+				a.SetMin(0.01 * minValue, attributeID, -1, -1)
+				a.SetMax(0.01 * maxValue, attributeID, -1, -1)
+				a.Set(0.01 * value, attributeID, -1, -1)
+
+				'print TVTPersonPersonalityAttribute.GetAsString(attributeID) + "  variables: " + value +" ("+minValue+" - " + maxValue+")  attribute: "  +a.Get(attributeID, -1, -1) +" (" + a.GetMin(attributeID, -1, -1) +" - " + a.GetMax(attributeID, -1, -1) +")   direct: " +  a.attributes[attributeID-1].Get() +" ("+ a.attributes[attributeID-1].GetMin() + " - " + a.attributes[attributeID-1].GetMax()+")" + "   hasValue="+hasValue+" hasMinValue="+hasMinValue+" hasMaxValue="+hasMaxValue
+			Next
+			'ensure all fictional persons have attributes
+			If person.IsFictional()
+				if not pd.HasAttributes() then pd.InitAttributes(False)
+			EndIf
+
+			'HINT: disable this if attributes are to generate on first
+			'request to them (so randomized values differ each game)
+
 			'fill not given attributes with random data
-			If person.IsFictional() Then pd.InitAttributes()
+			If pd.HasAttributes()
+				For local i:int = 1 to TVTPersonPersonalityAttribute.count
+					Local attributeID:Int = TVTPersonPersonalityAttribute.GetAtIndex(i)
+					If Not pd.GetAttributes().Has(attributeID, -1, -1)
+						pd.GetAttributes().Randomize(attributeID, -1, -1)
+					EndIf
+				Next
+				pd.GetAttributes().RandomizeAffinity()
+			EndIf
+			
+			If data.Has("affinity")
+				If not pd.HasAttributes() then pd.InitAttributes(False)
+				pd.GetAttributes().SetAffinity(0.01 * data.GetFloat("affinity"), -1, -1)
+			EndIf
+
+
+			'POPULARITY
+			'create after attributes are defined - popularity might
+			'depend on them (eg "fame")
+			'create/override popularity
+			if data.GetInt("popularity", -1000) <> -1000 or data.GetInt("popularity_target", -1000) <> -1000
+				local popularityValue:Int = data.GetInt("popularity", -1000) 
+				local popularityTarget:Int = data.GetInt("popularity_target", -1000) 
+				pd.CreatePopularity(popularityValue, popularityTarget, person)
+			endif
 		EndIf
 
 

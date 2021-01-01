@@ -45,7 +45,7 @@ JOB_POSITION_UNASSIGNED = Unbesetzt
 
 CAST_EXPERIENCE       = Erfahrung
 CAST_FAME             = Bekanntheit
-CAST_SKILL            = Fertigkeit
+CAST_AFFINITY         = Affinität
 CAST_POWER            = Kraft
 CAST_HUMOR            = Humor
 CAST_CHARISMA         = Charisma

@@ -335,9 +335,8 @@
 					<audienceAttraction id="Pensioners" value="1.5" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="skill" value="0.4" />
 					<actor attribute="charisma" value="0.3" />
-					<host attribute="skill" value="0.3" />
+					<host attribute="charisma" value="0.3" />
 					<host attribute="appearance" value="0.2" />
 				</castAttributes>
 			</genre>
@@ -380,9 +379,7 @@
 					<audienceAttraction id="Pensioners" men="0" women="1" />
 				</audienceAttractions>
 				<castAttributes>
-					<actor attribute="skill" value="0.4" />
 					<actor attribute="charisma" value="0.4" />
-					<supportingactor attribute="skill" value="0.4" />
 					<supportingactor attribute="charisma" value="0.4" />
 				</castAttributes>
 				<focusPointPriorities>
@@ -428,10 +425,10 @@
 					<audienceAttraction id="Pensioners" men="-0.2" women="-2" />
 				</audienceAttractions>
 				<castAttributes>
+					<director attribute="charisma" value="0.3" />
 					<actor attribute="charisma" value="0.2" />
-					<actor attribute="appearance" value="0.6" />
+					<actor attribute="appearance" value="0.7" />
 					<supportingactor attribute="appearance" value="0.6" />
-					<supportingactor attribute="skill" value="-0.1" />
 				</castAttributes>
 				<focusPointPriorities>
 					<coulisse value="1.2" />

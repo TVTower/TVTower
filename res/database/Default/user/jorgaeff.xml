@@ -18,7 +18,7 @@
 			</effects>
 		</news>
 
-	<news id="news-jorgaeff-dumb-02" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dumb-02" type="2" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Donald Dumb provoziert Freie Republik Duban</de>
 			</title>
@@ -32,7 +32,7 @@
 			</effects>
 		</news>
 
-	<news id="news-jorgaeff-dumb-03" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dumb-03" type="2" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Donald Dumb möchte Mauer bauen</de>
 			</title>
@@ -46,7 +46,7 @@
 			</effects>
 		</news>
 
-	<news id="news-jorgaeff-dumb-04" type="2" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-dumb-04" type="2" creator="8936" created_by="jorgaeff">
 			<title>
 				<de>Donald Dumb vermisst Quietsche-Entchen</de>
 			</title>
@@ -56,7 +56,7 @@
 			<data genre="0" price="0.7" quality="55" fictional="True" />
 		</news>
 
-	<news id="news-jorgaeff-1987-0-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1987-0-01" type="0" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1987 &amp;&amp; TIME_WEEKDAY=0 &amp;&amp; TIME_HOUR=>12" />
 			<title>
 				<de>Schwerer Börsen-Crash</de>
@@ -67,7 +67,7 @@
 			<data genre="0" price="0.8" quality="80" fictional="True" flags="2" />
 		</news>
 
-	<news id="news-jorgaeff-1988-0-01" type="0" creator="8936" created_by="jorgaeff">
+		<news id="news-jorgaeff-1988-0-01" type="0" creator="8936" created_by="jorgaeff">
 			<availability script="TIME_YEAR=1988" />
 			<title>
 				<de>Deutsches Aktien-System eingeführt</de>

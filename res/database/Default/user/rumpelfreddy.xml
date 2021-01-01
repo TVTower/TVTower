@@ -3,80 +3,80 @@
     <version value="3" comment="Freddys_Krempel" />
     <insignificantpeople>
 		<!-- Schottisch -->
-		<person id="Per_custom_Freddy_21" first_name="Sophie" last_name="McAgne" nick_name="" />
-		<person id="Per_custom_Freddy_22" first_name="Olivia" last_name="Blair" nick_name="" />
-		<person id="Per_custom_Freddy_23" first_name="Emily" last_name="Campbell" nick_name="" />
-		<person id="Per_custom_Freddy_24" first_name="Isla" last_name="Drummond" nick_name="" />
-		<person id="Per_custom_Freddy_25" first_name="Lucy" last_name="Elliot" nick_name="" />
-		<person id="Per_custom_Freddy_26" first_name="Ava" last_name="Forbes" nick_name="" />
-		<person id="Per_custom_Freddy_27" first_name="Jessica" last_name="McGordon" nick_name="" />
-		<person id="Per_custom_Freddy_28" first_name="Ella" last_name="Hay" nick_name="" />
-		<person id="Per_custom_Freddy_29" first_name="Amelia" last_name="Irvine" nick_name="" />
-		<person id="Per_custom_Freddy_30" first_name="Millie" last_name="Jonstone" nick_name="" />
-		<person id="Per_custom_Freddy_31" first_name="Jack" last_name="Keith" nick_name="" />
-		<person id="Per_custom_Freddy_32" first_name="James" last_name="Lymondt" nick_name="" />
-		<person id="Per_custom_Freddy_33" first_name="Lewis" last_name="Macdonnell" nick_name="" />
-		<person id="Per_custom_Freddy_34" first_name="Oliver" last_name="Morrison" nick_name="" />
-		<person id="Per_custom_Freddy_35" first_name="Daniel" last_name="Nicolson" nick_name="" />
-		<person id="Per_custom_Freddy_36" first_name="Logan" last_name="O'Brain" nick_name="" />
-		<person id="Per_custom_Freddy_37" first_name="Alexander" last_name="Ramsay" nick_name="" />
+		<person id="Per_custom_Freddy_21" first_name="Sophie" last_name="McAgne" nick_name="" gender="2" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_22" first_name="Olivia" last_name="Blair" nick_name="" gender="2" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_23" first_name="Emily" last_name="Campbell" nick_name="" gender="2" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_24" first_name="Isla" last_name="Drummond" nick_name="" gender="2" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_25" first_name="Lucy" last_name="Elliot" nick_name="" gender="2" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_26" first_name="Ava" last_name="Forbes" nick_name="" gender="2" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_27" first_name="Jessica" last_name="McGordon" nick_name="" gender="2" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_28" first_name="Ella" last_name="Hay" nick_name="" gender="2" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_29" first_name="Amelia" last_name="Irvine" nick_name="" gender="2" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_30" first_name="Millie" last_name="Jonstone" nick_name="" gender="2" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_31" first_name="Jack" last_name="Keith" nick_name="" gender="1" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_32" first_name="James" last_name="Lymondt" nick_name="" gender="1" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_33" first_name="Lewis" last_name="Macdonnell" nick_name="" gender="1" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_34" first_name="Oliver" last_name="Morrison" nick_name="" gender="1" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_35" first_name="Daniel" last_name="Nicolson" nick_name="" gender="1" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_36" first_name="Logan" last_name="O'Brain" nick_name="" gender="1" country="SCO" fictional="1" />
+		<person id="Per_custom_Freddy_37" first_name="Alexander" last_name="Ramsay" nick_name="" gender="1" country="SCO" fictional="1" />
 		<!-- Schwedisch -->
-		<person id="Per_custom_Freddy_41" first_name="Alice" last_name="Anderson" nick_name="" />
-		<person id="Per_custom_Freddy_42" first_name="Lucas" last_name="Johansson" nick_name="" />
-		<person id="Per_custom_Freddy_43" first_name="Maja" last_name="Karlsson" nick_name="" />
-		<person id="Per_custom_Freddy_44" first_name="William" last_name="Nilsson" nick_name="" />
-		<person id="Per_custom_Freddy_45" first_name="Elsa" last_name="Eriksson" nick_name="" />
-		<person id="Per_custom_Freddy_46" first_name="Oscar" last_name="Larsson" nick_name="" />
-		<person id="Per_custom_Freddy_47" first_name="Ella" last_name="Olsson" nick_name="" />
-		<person id="Per_custom_Freddy_48" first_name="Oliver" last_name="Persson" nick_name="" />
-		<person id="Per_custom_Freddy_49" first_name="Julia" last_name="Svensson" nick_name="" />
-		<person id="Per_custom_Freddy_50" first_name="Hugo" last_name="Gustafsson" nick_name="" />
-		<person id="Per_custom_Freddy_51" first_name="Ebba" last_name="Pettersson" nick_name="" />
-		<person id="Per_custom_Freddy_52" first_name="Charlie" last_name="Jonsson" nick_name="" />
-		<person id="Per_custom_Freddy_53" first_name="Alicia" last_name="Hansson" nick_name="" />
+		<person id="Per_custom_Freddy_41" first_name="Alice" last_name="Andersson" nick_name="" gender="2" country="S" fictional="1" />
+		<person id="Per_custom_Freddy_42" first_name="Lucas" last_name="Johansson" nick_name="" gender="1" country="S" fictional="1" />
+		<person id="Per_custom_Freddy_43" first_name="Maja" last_name="Karlsson" nick_name="" gender="2" country="S" fictional="1" />
+		<person id="Per_custom_Freddy_44" first_name="William" last_name="Nilsson" nick_name="" gender="1" country="S" fictional="1" />
+		<person id="Per_custom_Freddy_45" first_name="Elsa" last_name="Eriksson" nick_name="" gender="2" country="S" fictional="1" />
+		<person id="Per_custom_Freddy_46" first_name="Oscar" last_name="Larsson" nick_name="" gender="1" country="S" fictional="1" />
+		<person id="Per_custom_Freddy_47" first_name="Ella" last_name="Olsson" nick_name="" gender="2" country="S" fictional="1" />
+		<person id="Per_custom_Freddy_48" first_name="Oliver" last_name="Persson" nick_name="" gender="1" country="S" fictional="1" />
+		<person id="Per_custom_Freddy_49" first_name="Julia" last_name="Svensson" nick_name=""  gender="2" country="S" fictional="1" />
+		<person id="Per_custom_Freddy_50" first_name="Hugo" last_name="Gustafsson" nick_name="" gender="1" country="S" fictional="1" />
+		<person id="Per_custom_Freddy_51" first_name="Ebba" last_name="Pettersson" nick_name="" gender="2" country="S" fictional="1" />
+		<person id="Per_custom_Freddy_52" first_name="Charlie" last_name="Jonsson" nick_name="" gender="1" country="S" fictional="1" />
+		<person id="Per_custom_Freddy_53" first_name="Alicia" last_name="Hansson" nick_name="" gender="2" country="S" fictional="1" />
 		<!-- Polnisch -->
-		<person id="Per_custom_Freddy_57" first_name="Lena" last_name="Nowak" nick_name="" />
-		<person id="Per_custom_Freddy_58" first_name="Jakub" last_name="Wójcik" nick_name="" />
-		<person id="Per_custom_Freddy_59" first_name="Julia" last_name="Kowalczyk" nick_name="" />
-		<person id="Per_custom_Freddy_60" first_name="Kacper" last_name="Wozniak" nick_name="" />
-		<person id="Per_custom_Freddy_61" first_name="Zusanna" last_name="Kowalska" nick_name="" />
-		<person id="Per_custom_Freddy_62" first_name="Filip" last_name="Mazur" nick_name="" />
-		<person id="Per_custom_Freddy_63" first_name="Zofia" last_name="Kaczmarek" nick_name="" />
-		<person id="Per_custom_Freddy_64" first_name="Szymon" last_name="Wisniewski" nick_name="" />
-		<person id="Per_custom_Freddy_65" first_name="Hanna" last_name="Zajac" nick_name="" />
-		<person id="Per_custom_Freddy_66" first_name="Antoni" last_name="Król" nick_name="" />
-		<person id="Per_custom_Freddy_67" first_name="Wiktoria" last_name="Wisniewska" nick_name="" />
-		<person id="Per_custom_Freddy_68" first_name="Wojciech" last_name="Wieczorek" nick_name="" />
+		<person id="Per_custom_Freddy_57" first_name="Lena" last_name="Nowak" nick_name="" gender="2" country="POL" fictional="1" />
+		<person id="Per_custom_Freddy_58" first_name="Jakub" last_name="Wójcik" nick_name="" gender="1" country="POL" fictional="1" />
+		<person id="Per_custom_Freddy_59" first_name="Julia" last_name="Kowalczyk" nick_name="" gender="2" country="POL" fictional="1" />
+		<person id="Per_custom_Freddy_60" first_name="Kacper" last_name="Wozniak" nick_name="" gender="1" country="POL" fictional="1" />
+		<person id="Per_custom_Freddy_61" first_name="Zusanna" last_name="Kowalska" nick_name="" gender="2" country="POL" fictional="1" />
+		<person id="Per_custom_Freddy_62" first_name="Filip" last_name="Mazur" nick_name="" gender="1" country="POL" fictional="1" />
+		<person id="Per_custom_Freddy_63" first_name="Zofia" last_name="Kaczmarek" nick_name="" gender="2" country="POL" fictional="1" />
+		<person id="Per_custom_Freddy_64" first_name="Szymon" last_name="Wisniewski" nick_name="" gender="1" country="POL" fictional="1" />
+		<person id="Per_custom_Freddy_65" first_name="Hanna" last_name="Zajac" nick_name="" gender="2" country="POL" fictional="1" />
+		<person id="Per_custom_Freddy_66" first_name="Antoni" last_name="Król" nick_name="" gender="1" country="POL" fictional="1" />
+		<person id="Per_custom_Freddy_67" first_name="Wiktoria" last_name="Wisniewska" nick_name="" gender="2" country="POL" fictional="1" />
+		<person id="Per_custom_Freddy_68" first_name="Wojciech" last_name="Wieczorek" nick_name="" gender="1" country="POL" fictional="1" />
 		<!-- Dänisch -->
-		<person id="Per_custom_Freddy_69" first_name="Ida" last_name="Andersen" nick_name="" />
-		<person id="Per_custom_Freddy_70" first_name="Noah" last_name="Jensen" nick_name="" />
-		<person id="Per_custom_Freddy_71" first_name="Freja" last_name="Christensen" nick_name="" />
-		<person id="Per_custom_Freddy_72" first_name="Liam" last_name="Pedersen" nick_name="" />
-		<person id="Per_custom_Freddy_73" first_name="Alma" last_name="Madesen" nick_name="" />
-		<person id="Per_custom_Freddy_74" first_name="Carl" last_name="Sorensen" nick_name="" />
-		<person id="Per_custom_Freddy_75" first_name="Karla" last_name="Hansen" nick_name="" />
-		<person id="Per_custom_Freddy_76" first_name="Frederik" last_name="Nielsen" nick_name="" />
+		<person id="Per_custom_Freddy_69" first_name="Ida" last_name="Andersen" nick_name="" gender="2" country="DK" fictional="1" />
+		<person id="Per_custom_Freddy_70" first_name="Noah" last_name="Jensen" nick_name="" gender="1" country="DK" fictional="1" />
+		<person id="Per_custom_Freddy_71" first_name="Freja" last_name="Christensen" nick_name="" gender="2" country="DK" fictional="1" />
+		<person id="Per_custom_Freddy_72" first_name="Liam" last_name="Pedersen" nick_name="" gender="1" country="DK" fictional="1" />
+		<person id="Per_custom_Freddy_73" first_name="Alma" last_name="Madesen" nick_name="" gender="2" country="DK" fictional="1" />
+		<person id="Per_custom_Freddy_74" first_name="Carl" last_name="Sorensen" nick_name="" gender="1" country="DK" fictional="1" />
+		<person id="Per_custom_Freddy_75" first_name="Karla" last_name="Hansen" nick_name="" gender="2" country="DK" fictional="1" />
+		<person id="Per_custom_Freddy_76" first_name="Frederik" last_name="Nielsen" nick_name="" gender="1" country="DK" fictional="1" />
 		<!-- Spanisch -->
-		<person id="Per_custom_Freddy_77" first_name="Lucia" last_name="Garcia" nick_name="" />
-		<person id="Per_custom_Freddy_78" first_name="Maria" last_name="Fernandez" nick_name="" />
-		<person id="Per_custom_Freddy_79" first_name="Paula" last_name="Gonzales" nick_name="" />
-		<person id="Per_custom_Freddy_80" first_name="Daniela" last_name="Rodrigues" nick_name="" />
-		<person id="Per_custom_Freddy_81" first_name="Martina" last_name="Martinez" nick_name="" />
-		<person id="Per_custom_Freddy_82" first_name="Carla" last_name="Lopez" nick_name="" />
-		<person id="Per_custom_Freddy_83" first_name="Sara" last_name="Sanchez" nick_name="" />
-		<person id="Per_custom_Freddy_84" first_name="Sofia" last_name="Fernandez Garcia" nick_name="" />
-		<person id="Per_custom_Freddy_85" first_name="Valeria" last_name="Perez" nick_name="" />
-		<person id="Per_custom_Freddy_86" first_name="Alba" last_name="Martin" nick_name="" />
-		<person id="Per_custom_Freddy_87" first_name="Hugo" last_name="Santana" nick_name="" />
-		<person id="Per_custom_Freddy_88" first_name="Pablo" last_name="Cedrez" nick_name="" />
-		<person id="Per_custom_Freddy_89" first_name="Alejandro" last_name="Moralez" nick_name="" />
-		<person id="Per_custom_Freddy_90" first_name="Alvaro" last_name="Campillo" nick_name="" />
-		<person id="Per_custom_Freddy_91" first_name="Adrian" last_name="Jaramago" nick_name="" />
-		<person id="Per_custom_Freddy_92" first_name="David" last_name="Luengo" nick_name="" />
-		<person id="Per_custom_Freddy_93" first_name="Mario" last_name="Diaz" nick_name="" />
-		<person id="Per_custom_Freddy_94" first_name="Diego" last_name="Lorca" nick_name="" />
-		<person id="Per_custom_Freddy_95" first_name="Javier" last_name="Alcarez" nick_name="" />
-		<person id="Per_custom_Freddy_96" first_name="Lucas" last_name="Alfaro" nick_name="" />
+		<person id="Per_custom_Freddy_77" first_name="Lucia" last_name="Garcia" nick_name="" gender="2" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_78" first_name="Maria" last_name="Fernandez" nick_name="" gender="2" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_79" first_name="Paula" last_name="Gonzales" nick_name="" gender="2" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_80" first_name="Daniela" last_name="Rodrigues" nick_name="" gender="2" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_81" first_name="Martina" last_name="Martinez" nick_name="" gender="2" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_82" first_name="Carla" last_name="Lopez" nick_name="" gender="2" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_83" first_name="Sara" last_name="Sanchez" nick_name="" gender="2" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_84" first_name="Sofia" last_name="Fernandez Garcia" nick_name="" gender="2" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_85" first_name="Valeria" last_name="Perez" nick_name="" gender="2" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_86" first_name="Alba" last_name="Martin" nick_name="" gender="2" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_87" first_name="Hugo" last_name="Santana" nick_name="" gender="1" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_88" first_name="Pablo" last_name="Cedrez" nick_name="" gender="1" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_89" first_name="Alejandro" last_name="Moralez" nick_name="" gender="1" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_90" first_name="Alvaro" last_name="Campillo" nick_name="" gender="1" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_91" first_name="Adrian" last_name="Jaramago" nick_name="" gender="1" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_92" first_name="David" last_name="Luengo" nick_name="" gender="1" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_93" first_name="Mario" last_name="Diaz" nick_name="" gender="1" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_94" first_name="Diego" last_name="Lorca" nick_name="" gender="1" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_95" first_name="Javier" last_name="Alcarez" nick_name="" gender="1" country="E" fictional="1" />
+		<person id="Per_custom_Freddy_96" first_name="Lucas" last_name="Alfaro" nick_name="" gender="1" country="E" fictional="1" />
 		<!-- Armenisch-->
 		<person id="Per_custom_Freddy_97" first_name="Nare" last_name="Khatchaturian" nick_name="" />
 		<person id="Per_custom_Freddy_98" first_name="Mari" last_name="Gulbenkian" nick_name="" />
@@ -709,140 +709,140 @@
             <first_name>Anna</first_name>
             <last_name>Adlerman</last_name>
             <details job="2" gender="2"  birthday="1946" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="10" affinity="45" fame="0" scandalizing="0" price_mod="1" power="45" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Rumpelfreddy-fictionalperson-HannaHobkinns" fictional="1"  creator="8667" created_by="Rumpelfreddy">
 		 <!-- Julia in der Feenwelt(1) -->
             <first_name>Hannah</first_name>
             <last_name>Hobkinns</last_name>
             <details job="1" gender="2"  birthday="1984" deathday="" country="UK" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="14" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="60" topgenre="0" />
         </person>
 		<person id="Rumpelfreddy-fictionalperson-LenaLauterberg" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!--  -->
             <first_name>Lena</first_name>
             <last_name>Lauterberg</last_name>
             <details job="2" gender="2"  birthday="1979-04-03" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="8" affinity="11" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_4" fictional="1"  creator="8667" created_by="Rumpelfreddy">
 		<!--  -->
             <first_name>Sarah</first_name>
             <last_name>van Sonderbar</last_name>
             <details job="1" gender="2"  birthday="1987" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="9" affinity="18" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_5" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!--  -->
             <first_name>Blondie</first_name>
             <last_name>Prall</last_name>
             <details job="1" gender="2"  birthday="1976" deathday="" country="AUT" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="12" affinity="11" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="55" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_6" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!-- Kroko See 6 (2) -->
             <first_name>Olga</first_name>
             <last_name>Ostburg</last_name>
             <details job="2" gender="2"  birthday="1981" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="10" affinity="7" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_7" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!--  -->
             <first_name>Gerlinde</first_name>
             <last_name>von Gluterhof</last_name>
             <details job="1" gender="2"  birthday="1961" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="15" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_8" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!-- Kroko See 6 (2)-->
             <first_name>Marie</first_name>
             <last_name>Merkl</last_name>
             <details job="2" gender="2"  birthday="1978" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_9" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!--  -->
             <first_name>Leonie</first_name>
             <last_name>Luberlippe</last_name>
             <details job="1" gender="2"  birthday="1983" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="10" affinity="25" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_10" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!--  -->
             <first_name>Zoe</first_name>
             <last_name>Zeckenbart</last_name>
             <details job="1" gender="2"  birthday="1960" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="10" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_11" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!--  -->
             <first_name>Lukas</first_name>
             <last_name>Liebsterman</last_name>
             <details job="1" gender="1"  birthday="1980" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_12" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!-- Kroko See 6 (1), 27 sind nicht genug (2), Frucht Kung Fu 3 (1)   -->
             <first_name>Tobias</first_name>
             <last_name>Täubchen</last_name>
             <details job="1" gender="1"  birthday="1962" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="15" affinity="25" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_13" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!-- Express nach Sibirien (1) -->
             <first_name>Hardtmann</first_name>
             <last_name>von Eisenhalt</last_name>
             <details job="1" gender="1"  birthday="1940" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="18" affinity="40" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_14" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!--  -->
             <first_name>Bernd</first_name>
             <last_name>Bohrman</last_name>
             <details job="1" gender="1"  birthday="1976" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="8" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_15" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!-- Express nach Sibirien (2), Frucht Kung Fu 3 (2) -->
             <first_name>David</first_name>
             <last_name>Davidson</last_name>
             <details job="2" gender="1"  birthday="1953" deathday="" country="DK" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_16" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!--  -->
             <first_name>Walter</first_name>
             <last_name>Wienerwurst</last_name>
             <details job="1" gender="1"  birthday="1982" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="7" affinity="35" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_17" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!-- Krokosee 6 (2) -->
             <first_name>Felix</first_name>
             <last_name>Feuerfranz</last_name>
             <details job="2" gender="1"  birthday="1974" deathday="" country="D"  />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="2" affinity="27" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_18" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!--  -->
             <first_name>Günter</first_name>
             <last_name>von und zu Gutberg</last_name>
             <details job="1" gender="1"  birthday="1985" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="11" affinity="20" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_19" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!--  -->
             <first_name>Johannes</first_name>
             <last_name>Jasager</last_name>
             <details job="1" gender="1"  birthday="1970" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="8" affinity="10" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
 		<person id="Per_custom_Freddy_20" fictional="1" creator="8667" created_by="Rumpelfreddy">
 		<!--  -->
             <first_name>Karl</first_name>
             <last_name>Krautrauch</last_name>
             <details job="1" gender="1"  birthday="1953" deathday="" country="D" />
-            <data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+            <data popularity="10" affinity="15" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
         </person>
     </celebritypeople>
 
