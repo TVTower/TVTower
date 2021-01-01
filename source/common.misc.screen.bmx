@@ -130,12 +130,13 @@ if currentScreen then currentName = currentScreen.GetName()
 
 print "_SetCurrentScreen ["+currentName+" -> "+screenName+"]"
 endrem
+		local oldScreen:TScreen = currentScreen
+
 		if screen <> currentScreen
 			if screen
 'print "               : begin enter [to: " + screen.name+"]"
 				screen.BeginEnter(currentScreen)
 			EndIf
-			local oldScreen:TScreen = currentScreen
 			currentScreen = screen
 			EventManager.triggerEvent( TEventSimple.Create("screen.onFinishLeave", new TData.Add("toScreen", currentScreen), oldScreen) )
 
@@ -144,6 +145,12 @@ endrem
 
 		'finished transition in all cases
 		screenTransitionActive = False
+
+		local oldScreenName:String
+		local currentScreenName:String
+		if oldScreen then oldScreenName = oldScreen.GetName()
+		if currentScreen then currentScreenName = currentScreen.GetName()
+		EventManager.triggerEvent( TEventSimple.Create("screen.onSetCurrent", new TData.Add("oldScreenName", oldScreenName).Add("currentScreenName", currentScreenName), oldScreen, currentScreen) )
 
 		return TRUE
 	End Method
