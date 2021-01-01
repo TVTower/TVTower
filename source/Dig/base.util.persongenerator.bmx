@@ -17,6 +17,7 @@ GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Denmark )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Greek )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Uganda )
 GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_Spain )
+GetPersonGenerator().AddProvider( new TPersonGeneratorCountry_France )
 
 
 
@@ -1141,5 +1142,94 @@ Type TPersonGeneratorCountry_Spain extends TPersonGeneratorCountry
 
 End Type
 
+
+
+
+'sources
+'http://www.searchforancestors.com/surnames/origin/frenchsurnames.html
+'https://en.wikipedia.org/wiki/Category:French-language_surnames
+'https://fr.wikipedia.org/wiki/Liste_de_pr%C3%A9noms_fran%C3%A7ais_et_de_la_francophonie
+'https://www.behindthename.com/top/lists/france/2010
+Type TPersonGeneratorCountry_France extends TPersonGeneratorCountry
+	Method New()
+		self.countryCode = "fr"
+		
+		self.firstNamesMale = [..
+			"Aaron", "Adam", "Adrien", "Alban", "Alex", "Alexandre", "Alexis", "Amaury", "Amine", "Anas", "Anthony", "Antoine", "Antonin", "Arthur", "Augustin", "Axel", "Ayoub", ..
+			"Baptiste", "Basile", "Bastien", "Benjamin", ..
+			"Camille", "Charles", "Christopher", "Clement", "Clément", "Corentin", ..
+			"David", "Diego", "Dorian", "Dylan", ..
+			"Edouard", "Elias", "Eliot", "Eliott", "Elouan", "Emilien", "Emmanuel", "Enzo", "Erwan", "Esteban", "Ethan", "Etienne", "Evan", "Ewen", ..
+			"Fares", "Florian", ..
+			"Gabin", "Gabriel", "Gaspard", "Guillaume", ..
+			"Hamza", "Hugo", ..
+			"Ibrahim", "Ilan", "Ilyes", "Ismael", ..
+			"Jean", "Joshua", "Jules", "Julian", "Julien", ..
+			"Kais", "Kenzo", "Kylian", ..
+			"Léandre", "Lenny", "Leny", "Leo", "Léo", "Liam", "Lilian", "Loan", "Lorenzo", "Loris", "Louis", "Louka", "Luca", "Lucas", "Lucien", "Luka", ..
+			"Mael", "Maël", "Malo", "Marius", "Martin", "Matheo", "Mathéo", "Mathias", "Mathieu", "Mathis", "Mathys", "Matis", "Matteo", "Mattéo", "Matthias", "Matthieu", "Maxence", "Maxime", "Mehdi", "Michel", "Mohamed", "Morgan", ..
+			"Nael", "Nassim", "Nathan", "Nathanael", "Nicolas", "Nino", "Noa", "Noah", "Noam", "Noe", "Noé", "Noham", "Nolan", "Nolann", "Nolhan", ..
+			"Olivier", "Oscar", ..
+			"Paul", "Pierre", ..
+			"Quentin", .. 
+			"Rafael", "Raphael", "Raphaël", "Rayan", "Rémi", "Robin", "Romain", "Ruben", "Ryan", ..
+			"Sacha", "Samuel", "Samy", "Sasha", "Simon", "Soan", "Sofiane", ..
+			"Theo", "Théo", "Thibault", "Thomas", "Tiago", "Timeo", "Timéo", "Timothe", "Titouan", "Tom", "Tristan", ..
+			"Valentin", "Victor", "Vincent", ..
+			"Wassim", "William", ..
+			"Yanis", "Yann", "Yassine", "Younes" ..
+			]
+
+
+		self.firstNamesFemale = [..
+			"Adèle", "Agathe", "Alexia", "Alice", "Alicia", "Alix", "Amandine", "Ambre", "Anaelle", "Anais", "Anaïs", "Anna", "Apolline", "Assia", "Aya", ..
+			"Beatrice", ..
+			"Camille", "Candice", "Capucine", "Celia", "Célia", "Charline", "Charlotte", "Chloe", "Chloé", "Clara", "Clarisse", "Clemence", "Clémence", "Coline", "Constance", ..
+			"Danielle", ..
+			"Elea", "Elena", "Elisa", "Elise", "Eloise", "Elsa", "Emilie", "Emma", "Emmy", "Emy", "Enola", "Eva", ..
+			"Faustine", ..
+			"Gabrielle", ..
+			"Inaya", "Ines", "Inès", ..
+			"Jade", "Jeanne", "Julia", "Julie", "Juliette", "Justine", ..
+			"Kenza", ..
+			"Lana", "Laura", "Lea", "Léa", "Léana", "Léane", "Lena", "Léna", "Leonie", "Léonie", "Lila", "Lilia", "Lilou", "Lily", "Lina", "Lisa", "Lise", "Loane", "Lola", "Lou", "Louane", "Louise", "Louna", "Lucie", "Lucile", "Luna", "Lylou", "Lyna", ..
+			"Maelle", "Maelys", "Maëlys", "Maeva", "Maissa", "Manel", "Manon", "Margaux", "Margot", "Marie", "Marine", "Marion", "Mathilde", "Maya", "Mélina", "Meline", "Mélissa", "Mila", "Morgane", "Myriam", ..
+			"Nina", "Ninon", "Noemie", ..
+			"Oceane", "Océane", "Olivia", ..
+			"Pauline", ..
+			"Romane", "Rose", ..
+			"Sara", "Sarah", "Sasha", "Sirine", "Sofia", "Stella", ..
+			"Therese", ..
+			"Valentine", "Victoire", "Victoria", ..
+			"Yasmine", ..
+			"Zelie", "Zoe", "Zoé" ..
+        	]
+
+
+		self.lastNames = [ ..
+			"Abadie", "Abreo", "Alarie", "Alibert", "Allais", "Allard", "Anouilh", "Astier", "Aubert", "Auch", ..
+			"Badeaux", "Balland", "Bain", "Barbier", "Basset", "Baudelaire", "Beaumont", "Beauvau", "Beaux", ..
+			"Cadieux", "Carbonneau", "Cartier", "Cerf", "Chagnon", "Chapelle", "Chevrolet", ..
+			"Danzas", "DeRose", "Desjardins", "De la Rue", "De Villiers", "Du Bellay", "Dupont", "Durand", ..
+			"Edouard", "Emond", "Escoffier", "Esnault", ..
+			"Farrow", "Faucher", "Fauteux", "Fontaine", "Forester", "Fortin", "Fraise", "Frossard", ..
+			"Gagneux", "Garcon", "Garnier", "Gaubert", "Gauthier", "Gay", "Gouin", "Guillaume", ..
+			"Haillet", "Hector", "Heroux", "Hetzel", "Houde", "Husson", ..
+			"Janvier", "Jauffret","Jolibois", "Joubert", "Jourdain", "Jouret", "Jullien", ..
+			"Kaplan", ..
+			"Lacau", "Laflamme", "Lane", "Lavigne", "Le Beau", "Lefevre", "Leroy", ..
+			"Marchand", "Martin", "Matthieu", "Monet", "Moreau", "Moulin", ..
+			"Olivier", "Ollier", "Ouvrard", "Ozanne", ..
+			"Page", "Pascal", "Picard", "Plantier", "Plourde", "Poullain", "Pretre", "Puel", ..
+			"Rayne", "Reason", "Remy", "Richard", "Riviere", "Robida", "Roche", ..
+			"Sartre", "Sauveterre", "Segal", "Serres", "Simon", "Soulier", ..
+			"Tasse", "Thibaut", "Toussaint", "Travers", "Tremblay", "Trottier", ..
+			"Vachon", "Vaillancourt", "Vaillant", "Valade", "Vannier", "Varne", "Varon", "Vautour", "Vaux", "Vinet", "Visage", "Voland", ..
+			"Wathelet", "Wack", "Webster", ..
+			"Yolande", "Yotte", ..
+			"Zabelle", "Zagre" ..
+			]
+	End Method
+End Type
 
 
