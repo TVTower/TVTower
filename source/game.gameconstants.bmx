@@ -62,7 +62,7 @@ Type TVTGameConstants {_exposeToLua}
 	Field PersonFlag:TVTPersonFlag = New TVTPersonFlag
 	'job (politician, musician) 
 	Field PersonJob:TVTPersonJob = New TVTPersonJob
-	'skill, charisma, ...
+	'charisma, humor, ...
 	Field PersonPersonalityAttribute:TVTPersonPersonalityAttribute = New TVTPersonPersonalityAttribute
 
 	Field ProductionFocus:TVTProductionFocus = New TVTProductionFocus
@@ -423,14 +423,13 @@ End Type
 
 Type TVTPersonPersonalityAttribute {_exposeToLua}
 	Const NONE:Int = 0
-	Const SKILL:Int = 1
-	Const POWER:Int = 2
-	Const HUMOR:Int = 3
-	Const CHARISMA:Int = 4
-	Const APPEARANCE:Int = 5
-	Const FAME:Int = 6
-	Const SCANDALIZING:Int = 7
-	Const count:Int = 7
+	Const POWER:Int = 1
+	Const HUMOR:Int = 2
+	Const CHARISMA:Int = 3
+	Const APPEARANCE:Int = 4
+	Const FAME:Int = 5
+	Const SCANDALIZING:Int = 6
+	Const count:Int = 6
 
 
 	Function GetAtIndex:Int(index:Int)
@@ -441,7 +440,6 @@ Type TVTPersonPersonalityAttribute {_exposeToLua}
 
 	Function GetAsString:String(key:Int)
 		Select key
-			Case SKILL          Return "skill"
 			Case POWER          Return "power"
 			Case HUMOR          Return "humor"
 			Case CHARISMA       Return "charisma"
@@ -456,7 +454,6 @@ Type TVTPersonPersonalityAttribute {_exposeToLua}
 
 	Function GetByString:Int(keyString:String = "")
 		Select keyString.toLower()
-			Case "skill"        Return SKILL
 			Case "power"        Return POWER
 			Case "humor"        Return HUMOR
 			Case "charisma"     Return CHARISMA

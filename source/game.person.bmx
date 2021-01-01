@@ -323,14 +323,13 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				
 				local p:TPersonPersonalityBaseData = GetPerson().GetPersonalityData()
 
-				'attributes: 0 - 6.0
+				'attributes: 0 - 4.0
 				Local attributeMod:Float
 				attributeMod :+ p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER)
 				attributeMod :+ p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
 				attributeMod :+ p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
 				attributeMod :+ p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
-				attributeMod :+ 2 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SKILL)
-				'attributes: 0 - 12.0  (alternative: "* 1-2")
+				'attributes: 0 - 8.0
 				attributeMod :* 1.0 + (0.8 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME) + 0.2 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING))
 
 				'sympathy: modify by up to 25% ...
@@ -357,12 +356,11 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 
 				'attributes: 0 - 6.0
 				Local attributeMod:Float
-				attributeMod :+ 1.75 * p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER)
-				attributeMod :+ 0.75 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
-				attributeMod :+ 1.25 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
-				attributeMod :+ 0.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
-				attributeMod :+ 1.75 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SKILL)
-				'attributes: 0 - 13.2  (alternative: "* 1-2.2")
+				attributeMod :+ 2.0 * p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER)
+				attributeMod :+ 1.0 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
+				attributeMod :+ 1.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
+				attributeMod :+ 0.75 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
+				'attributes: 0 - 11.2
 				attributeMod :* 1.0 + (1.1 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME) + 0.1 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING))
 
 				'sympathy: modify by up to 25% ...
@@ -385,12 +383,11 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 
 				Local attributeMod:Float
 				'attributes: 0 - 6.0
-				attributeMod :+ 1.25 * p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER)
-				attributeMod :+ 0.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
-				attributeMod :+ 1.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
-				attributeMod :+ 1.00 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
-				attributeMod :+ 1.75 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SKILL)
-				'attributes: 0 - 18.0  (alternative: "* 1-3")
+				attributeMod :+ 1.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER)
+				attributeMod :+ 0.75 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
+				attributeMod :+ 1.75 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
+				attributeMod :+ 1.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
+				'attributes: 0 - 14.25  (alternative: "* 1-3")
 				attributeMod :* 1.0 + (1.5 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME) + 0.5 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING))
 
 				'sympathy: modify by up to 30% ...
@@ -408,12 +405,11 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 
 				Local attributeMod:Float
 				'attributes: 0 - 6.0
-				attributeMod :+ 1.25 * p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER)
-				attributeMod :+ 0.25 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
-				attributeMod :+ 1.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
+				attributeMod :+ 1.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.POWER)
+				attributeMod :+ 0.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
+				attributeMod :+ 2.00 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
 				attributeMod :+ 0.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
-				attributeMod :+ 2.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SKILL)
-				'attributes: 0 - 9.0  (alternative: "* 1-1.5")
+				'attributes: 0 - 6.75  (alternative: "* 1-1.5")
 				attributeMod :* 1.0 + (0.4 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME) + 0.1 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING))
 
 				'sympathy: modify by up to 50% ...
@@ -431,11 +427,10 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 
 				Local attributeMod:Float
 				'attributes: 0 - 1.9
-				attributeMod :+ 0.30 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
-				attributeMod :+ 0.30 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
-				attributeMod :+ 0.30 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
-				attributeMod :+ 1.00 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SKILL)
-				'attributes: 0 - 6.65  (alternative: "* 1-3.5")
+				attributeMod :+ 0.60 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
+				attributeMod :+ 0.60 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
+				attributeMod :+ 0.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
+				'attributes: 0 - 5.95  (alternative: "* 1-3.5")
 				attributeMod :* 1.0 + (2 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME) + 0.5 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING))
 
 				'sympathy: modify by up to 50% ...
@@ -454,11 +449,10 @@ Type TPersonProductionData Extends TPersonProductionBaseData
 				'dynamic fee: 0 - 380
 				Local attributeMod:Float
 				'attributes: 0 - 2.1
-				attributeMod :+ 0.10 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
-				attributeMod :+ 0.40 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
-				attributeMod :+ 0.40 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
-				attributeMod :+ 1.20 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SKILL)
-				'attributes: 0 - 4.83  (alternative: "* 1-2.3")
+				attributeMod :+ 0.30 * p.GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR)
+				attributeMod :+ 0.50 * p.GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA)
+				attributeMod :+ 0.60 * p.GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE)
+				'attributes: 0 - 3.22  (alternative: "* 1-2.3")
 				attributeMod :* 1.0 + (1.1 * p.GetAttributeValue(TVTPersonPersonalityAttribute.FAME) + 0.2 * p.GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING))
 
 				'modify by up to 25% ...
@@ -775,16 +769,27 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 	End Method
 	
 	
-	Method CreatePopularity:TPersonPopularity()
+	Method CreatePopularity:TPersonPopularity(popularityValue:Int = -1000, popularityTarget:Int = -1000, person:TPersonBase=Null)
 		Local pop:TPersonPopularity
-		Local person:TPersonBase = GetPersonBase(personID)
 		If Not person
-			Throw "cannot create TPersonPopularity without person in person DB: personID="+personID
+			person = GetPersonBase(personID)
+
+			If Not person
+				Throw "cannot create TPersonPopularity without person in person DB: personID="+personID
+			EndIf
 		EndIf
 
+		'the more "fame" a person has, the more likely it has some
+		'popularity
 		local fame:Float = GetAttributeValue(TVTPersonPersonalityAttribute.FAME)
 
-		pop = TPersonPopularity.Create(personID, BiasedRandRange(-10, 10, fame), BiasedRandRange(-25, 25, fame))
+		if popularityValue = -1000 then popularityValue = BiasedRandRange(-10, 20, fame)
+		popularityValue = Min(Max(popularityValue, -50), 100)
+
+		if popularityTarget = -1000 then BiasedRandRange(Max(-50, popularityValue - 10), Min(100, popularityValue + 20), fame)
+		popularityTarget = Min(Max(popularityTarget, -50), 100)
+
+		pop = TPersonPopularity.Create(personID, popularityValue, popularityTarget)
 		pop.referenceGUID = person.GetGUID()
 
 		GetPopularityManager().AddPopularity(pop)

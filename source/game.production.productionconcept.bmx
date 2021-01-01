@@ -651,11 +651,6 @@ Type TProductionConcept Extends TOwnedGameObject
 			endif
 
 
-			'== GENRE FIT #3
-			'increase fit by up to 35% for the persons skill (versatility)
-			genreFit = Min(1.0, genreFit + 0.35 * personalityData.GetAttributeValue(TVTPersonPersonalityAttribute.SKILL, jobID, genreID))
-
-
 
 			'=== JOB FIT ===
 			local job:TPersonProductionJob = script.jobs[castIndex]
@@ -735,12 +730,10 @@ Type TProductionConcept Extends TOwnedGameObject
 			personFit :* attributeMod
 
 			'a persons fit depends on its XP
-			'so make 25% of the fit dependend from XP
+			'so make 40% of the fit dependend from XP
 			'to fit as a show's GUEST it depends on how "good/interesting"
 			'you are (depending on your profession)
-			local xpMod:Float = 0.75 + 0.25 * person.GetEffectiveJobExperiencePercentage(job.job)
-
-			personFit :* xpMod
+			personFit = 0.60 * personFit + 0.40 * person.GetEffectiveJobExperiencePercentage(job.job)
 
 			'increase lower fits (increases distance from "nobody" to "novice")
 			personFit = THelper.LogisticalInfluence_Euler(personFit, 2)

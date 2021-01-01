@@ -25,7 +25,7 @@
 			<first_name>Hainer</first_name>
 			<last_name>Becherflechter</last_name>
 			<details job="1" gender="1"  birthday="1948" deathday="" country="D" />
-			<data prominence="1" skill="1" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre1="0" topgenre2="0" />
+			<data popularity="15" affinity="45" fame="0" scandalizing="0" price_mod="1" power="0" humor="0" charisma="0" appearance="0" topgenre="0" />
 		</person>
 	</celebritypeople>
 

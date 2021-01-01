@@ -6,6 +6,7 @@ Import "Dig/base.util.string.bmx"
 Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.persongenerator.bmx"
 Import "basefunctions.bmx"
+Import "common.misc.rangedfloat.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx"
 Import "game.popularity.bmx"
@@ -906,131 +907,18 @@ End Type
 
 
 
-Type TPersonPersonalityAttribute
-	Field value:Float = 0.0
-	Field minValue:Float = 0.0
-	Field maxValue:Float = 1.0
-	
-	Method New(value:Float, minValue:Float = 0.0, maxValue:Float = 1.0)
-		Initialize(value, minValue, maxValue)
-	End Method
-
-
-	Method Initialize:TPersonPersonalityAttribute(value:Float, minValue:Float, maxValue:Float)
-		self.value = value
-		self.minValue = minValue
-		self.maxValue = maxValue
-		
-		Return self
-	End Method
-	
-	
-	Method Copy:TPersonPersonalityAttribute()
-		Return New TPersonPersonalityAttribute.Initialize(value, minValue, maxValue)
-	End Method
-	
-
-	Method Reset:TPersonPersonalityAttribute()
-		value = 0
-		minValue = 0
-		maxValue = 1.0
-		Return Self
-	End Method
-
-
-	Method SetRandomMin:TPersonPersonalityAttribute(minimum:Float, maximum:Float, bias:Float=0.5)
-		self.minValue = 0.01 * BiasedRandRange(Int(100 * minimum), Int(100 * maximum), bias)
-		Return self
-	End Method
-
-
-	Method SetRandomMax:TPersonPersonalityAttribute(minimum:Float, maximum:Float, bias:Float=0.5)
-		self.maxValue = 0.01 * BiasedRandRange(Int(100 * minimum), Int(100 * maximum), bias)
-		Return self
-	End Method
-
-
-	Method SetRandom:TPersonPersonalityAttribute(bias:Float=0.5)
-		self.value = 0.01 * BiasedRandRange(Int(100 * minValue), Int(100 * maxValue), bias)
-		Return self
-	End Method
-
-
-	Method SetMin:TPersonPersonalityAttribute(minimum:Float)
-		self.minValue = minimum
-		Return self
-	End Method
-
-
-	Method SetMax:TPersonPersonalityAttribute(maximum:Float)
-		self.maxValue = maximum
-		Return self
-	End Method
-
-
-	Method GetMin:Float()
-		Return minValue
-	End Method
-
-
-	Method GetMax:Float()
-		Return maxValue
-	End Method
-	
-	
-	Method Get:Float()
-		Return value
-	End Method
-	
-	
-	Method Set:TPersonPersonalityAttribute(value:Float, ignoreLimits:Int = False)
-		if not ignoreLimits
-			self.value = Float(Min( Max(minValue, value), maxValue))
-		Else
-			self.value = value
-		EndIf
-		Return Self
-	End Method
-	
-	
-	Method Multiply:TPersonPersonalityAttribute(multiplier:Float)
-		value = Min( Max(minValue, value * multiplier), maxValue )
-		Return Self
-	End Method
-
-
-	Method Add:TPersonPersonalityAttribute(summand:Float)
-		value = Min( Max(minValue, value + summand), maxValue )
-		Return Self
-	End Method
-
-
-	Method SerializeTPersonPersonalityAttributeToString:string()
-		return value + " " + minValue + " " + maxValue
-	End Method
-
-
-	Method DeSerializeTPersonPersonalityAttributeFromString(text:String)
-		local vars:string[] = text.split(" ")
-		if vars.length > 0 then value = Float(vars[0])
-		if vars.length > 1 then minValue = Float(vars[1])
-		if vars.length > 2 then maxValue = Float(vars[2])
-	End Method
-End Type
-
-
-
-
 Type TPersonPersonalityAttributes
 	'core attributes (ignoring job, genre ...)
-	Field attributes:TPersonPersonalityAttribute[]
-	'individual attributes (for attribute-job-genre combinations)
-	Field individualAttributes:TLongMap
+	Field attributes:TRangedFloat[]
+	'amount of "affinity" which can be spend for specific "job genre" combinations
+	Field affinityPool:TRangedFloat
+	'individual attributes (attribute-job-genre combinations)
+	'and individual talent/affinity/interest Values
+	Field other:TLongMap
 
 rem
-	SKILL:
-		income +, reviews +++, bonus in some genres (drama!)
-	    directors, musicians: how good is he doing his "craftmanships"
+	AFFINITY:
+		How much interest/motivation/... someone puts into a specific ob
 	POWER:
 		income +, speed +++, bonus in some genres (action)
 	HUMOR:
@@ -1048,105 +936,110 @@ endrem
 
 	
 	Method New()
-		'"basic" attributes always have to exist 
-		attributes = new TPersonPersonalityAttribute[ TVTPersonPersonalityAttribute.count ]
-		For local i:int = 0 until attributes.length
-			attributes[i] = new TPersonPersonalityAttribute(0, 0, 1.0)
-		Next
+		attributes = new TRangedFloat[ TVTPersonPersonalityAttribute.count ]
+
+		affinityPool = new TRangedFloat(0, 0, 1.0)
 	End Method
 	
 	
 	Method Copy:TPersonPersonalityAttributes()
 		local c:TPersonPersonalityAttributes = new TPersonPersonalityAttributes()
+
 		if self.attributes
-			c.attributes = new TPersonPersonalityAttribute[ self.attributes.length ]
+			c.attributes = new TRangedFloat[ self.attributes.length ]
 			For local i:int = 0 until c.attributes.length
-				c.attributes[i] = self.attributes[i].Copy()
+				If self.attributes[i]
+					c.attributes[i] = self.attributes[i].Copy()
+				Else
+					c.attributes[i] = null
+				EndIf
 			Next
-		endif
-		if self.individualAttributes
+		EndIf
+
+		If self.affinityPool
+			c.affinityPool = self.affinityPool.Copy()
+		EndIf
+
+		If self.other
 			'ensure we only create a map if not empty...
 			'so check in the loop
-			For local key:TLongKey = EachIn self.individualAttributes.Keys()
-				if not c.individualAttributes then c.individualAttributes = new TLongMap
+			For local key:TLongKey = EachIn self.other.Keys()
+				if not c.other then c.other = new TLongMap
 				
-				local p:TPersonPersonalityAttribute = TPersonPersonalityAttribute(self.individualAttributes.ValueForKey(key.value))
-				if p Then c.individualAttributes.Insert(key.value, p.Copy())
+				local p:TRangedFloat = TRangedFloat(self.other.ValueForKey(key.value))
+				if p Then c.other.Insert(key.value, p.Copy())
 			Next
-		endif
+		EndIf
 	End Method
-
-
-	Method GetAttribute:TPersonPersonalityAttribute(attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+	
+	
+private
+	Method GetAttributeObject:TRangedFloat(attributeID:Int, jobID:Int = 0, genreID:Int = 0)
 		if jobID = -1 and genreID = -1
 			Return attributes[attributeID-1]
 		else
-			if individualAttributes 
-				Local key:Long = _GetKey(attributeID, jobID, genreID)
-				Return TPersonPersonalityAttribute( individualAttributes.ValueForKey(key) )
+			if other
+				Local key:Long = _GetKey(0, attributeID, jobID, genreID)
+				Return TRangedFloat( other.ValueForKey(key) )
 			EndIf
 		endif
 		Return Null
 	End Method
 
 
-	Method SetAttribute(attribute:TPersonPersonalityAttribute, attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+	Method SetAttributeObject(attribute:TRangedFloat, attributeID:Int, jobID:Int = 0, genreID:Int = 0)
 		if jobID = -1 and genreID = -1
 			attributes[attributeID-1] = attribute
 		else
-			if not individualAttributes then individualAttributes = new TLongMap
-			Local key:Long = _GetKey(attributeID, jobID, genreID)
-			individualAttributes.Insert(key, attribute)
+			if not other then other = new TLongMap
+			Local key:Long = _GetKey(0, attributeID, jobID, genreID)
+			other.Insert(key, attribute)
 		endif
 	End Method
 
-	
-	Method GetAttributeValue:Float(attributeID:Int, jobID:Int = -1, genreID:Int = -1)
-		local a:TPersonPersonalityAttribute = GetAttribute(attributeID, jobID, genreID)
-		If a
-			Return a.Get()
-		Else
-			Return 0
-		EndIf
-	End Method
 
-	
-	Method SetAttributeValue(value:Float, attributeID:Int, jobID:Int = -1, genreID:Int = -1)
-		if jobID = -1 and genreID = -1
-			attributes[attributeID-1].Set(value)
+	Method GetAffinityObject:TRangedFloat(jobID:Int = 0, genreID:Int = 0)
+		if jobID <= 0 and genreID <= 0
+			Return affinityPool
 		else
-			if not individualAttributes then individualAttributes = new TLongMap
-
-			Local key:Long = _GetKey(attributeID, jobID, genreID)
-			Local attribute:TPersonPersonalityAttribute = TPersonPersonalityAttribute(individualAttributes.ValueForKey(key))
-			If not attribute 
-				attribute = new TPersonPersonalityAttribute
-				SetAttribute(attribute, attributeID, jobID, genreID)
+			if other 
+				Local key:Long = _GetKey(1, 0, jobID, genreID)
+				Return TRangedFloat( other.ValueForKey(key) )
 			EndIf
-			
-			attribute.Set(value)
-		Endif
+		endif
+		Return Null
 	End Method
-	
-	
-	Method _GetKey:Long(attributeID:Int, jobID:Int, genreID:Int)
+
+
+	Method SetAffinityObject(affinity:TRangedFloat, jobID:Int = 0, genreID:Int = 0)
+		if jobID <= 0 and genreID <= 0
+			self.affinityPool = affinity
+		else
+			if not other then other = new TLongMap
+			Local key:Long = _GetKey(1, 0, jobID, genreID)
+			other.Insert(key, affinity)
+		endif
+	End Method
+
+
+	Method _GetKey:Long(typeID:Int, attributeID:Int, jobID:Int, genreID:Int)
+		if typeID < 0 then typeID = 0
+		if attributeID < 0 then attributeID = 0
+		if jobID < 0 then jobID = 0
+		if genreID < 0 then genreID = 0
+
 		'so key is now "long" - allowing for 64 bits to pack numbers
+		'- type     :  4 bit (0-15)     -- 1 = affinity, 0 = attribute  
 		'- attribute:  8 bit (0-255)    -- 4bit would be enough too)
 		'- genre    : 12 bit (0-4095)   -- albeit we only use <999 for now)
 		'- job      : 32 bit            -- up to 32 job flags)
-		'- ? ... 12 bits left for other elements
+		'- ? ... 8 bits left for other elements
 		
-		Return Long(attributeID) Shl 56 | Long(genreID) Shl 44 | Long(jobID) Shl 12
-
-		'if there were no more jobs.. we could fit them into an integer
-		'attributeID = 0-15 = 2^4 = 4 bit
-		'genreID = 0 - 4096 = 2^12= 12 bit
-		'jobID = 0 - 65335 = 2^16
-		'Return (attributeID) Shl 28 | Long(genreID) Shl 16 | Long(jobID)
+		Return Long(typeID) Shl 60 | Long(attributeID) Shl 52 | Long(genreID) Shl 40 | Long(jobID) Shl 8
 	End Method
 	
 
-	Method _UnpackKey(key:Long, attributeID:Int Var, jobID:Int Var, genreID:Int Var)
+	Method _UnpackKey(key:Long, typeID:Int Var, attributeID:Int Var, jobID:Int Var, genreID:Int Var)
 		'$F   =  4 bit
 		'$FF  =  8 bit
 		'$FFF = 12 bit
@@ -1154,27 +1047,147 @@ endrem
 		'Print "attributeID: " + ((key Shr 56) & $FF)
 		'Print "genreID:     " + ((key Shr 44) & $FFF)
 		'Print "jobID:       " + ((key Shr 12) & $FFFFFF)
+		
+		typeID      = ((key Shr 60) & $F)
+		attributeID = ((key Shr 52) & $FF)
+		jobID       = ((key Shr 40) & $FFF)
+		genreID     = ((key Shr  8) & $FFFFFF)
 
-		attributeID = ((key Shr 56) & $FF)
-		jobID       = ((key Shr 44) & $FFF)
-		genreID     = ((key Shr 12) & $FFFFFF)
+		'alternative (especially if bit amount is not "4*x"):
+		'typeID = Int(THelper.GetPackValue64(key, 61, 64))
+		'attributeID = Int(THelper.GetPackValue64(key, 53, 60))
+		'genreID = Int(THelper.GetPackValue64(key, 41, 52))
+		'jobID = Int(THelper.GetPackValue64(key, 9, 40))
+	End Method
+public
+
+	'ATTRIBUTES
+
+	Method Has:Int(attributeID:Int, jobID:Int = 0, genreID:Int = 0)
+		Return GetAttributeObject(attributeID, jobID, genreID) <> Null
+	End Method
+
+	
+	Method Get:Float(attributeID:Int, jobID:Int = 0, genreID:Int = 0)
+		local a:TRangedFloat = GetAttributeObject(attributeID, jobID, genreID)
+		If not a Then a = Randomize(attributeID, jobID, genreID)
+
+		Return a.Get()
+	End Method
+	
+
+	Method GetMin:Float(attributeID:Int, jobID:Int = 0, genreID:Int = 0)
+		local a:TRangedFloat = GetAttributeObject(attributeID, jobID, genreID)
+		If not a Then a = Randomize(attributeID, jobID, genreID)
+
+		Return a.GetMin()
 	End Method
 
 
-	Method RandomizeAttribute(attributeID:Int, jobID:Int = -1, genreID:Int = -1)
-		Local attribute:TPersonPersonalityAttribute = GetAttribute(attributeID, jobID, genreID)
+	Method GetMax:Float(attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+		local a:TRangedFloat = GetAttributeObject(attributeID, jobID, genreID)
+		If not a Then a = Randomize(attributeID, jobID, genreID)
+
+		Return a.GetMax()
+	End Method
+
+	
+	Method Set(value:Float, attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+		Local attribute:TRangedFloat
+		Local createdNew:Int = False
+
+		if jobID = -1 and genreID = -1
+			attribute = attributes[attributeID-1]
+
+			If not attributes[attributeID-1] 
+				Randomize(attributeID, jobID, genreID)
+				attribute = attributes[attributeID-1]
+				createdNew = true
+			EndIf
+		else
+			if not other then other = new TLongMap
+
+			Local key:Long = _GetKey(0, attributeID, jobID, genreID)
+			attribute = TRangedFloat(other.ValueForKey(key))
+			If not attribute
+				Randomize(attributeID, jobID, genreID)
+				attribute = TRangedFloat(other.ValueForKey(key))
+				createdNew = True
+			EndIf
+		Endif
+
+	
+		'ensure limits
+		If createdNew 
+			if attribute.GetMax() < value Then attribute.SetMax(Min(1.0, value))
+			if attribute.GetMin() > value Then attribute.SetMin(Max(0, value))
+		EndIf
+
+		attribute.Set(value)
+	End Method
+
+
+	Method SetMin(minimum:Float, attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+		local a:TRangedFloat = GetAttributeObject(attributeID, jobID, genreID)
+		If a Then a.SetMin(minimum)
+	End Method
+
+
+	Method SetMax:Int(maximum:Float, attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+		local a:TRangedFloat = GetAttributeObject(attributeID, jobID, genreID)
+		If a Then a.SetMax(maximum)
+	End Method
+
+
+	Method Add(value:Float, attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+		if jobID = -1 and genreID = -1
+			'init with a random value if needed
+			if not attributes[attributeID-1] then Randomize(attributeID, jobID, genreID)
+
+			attributes[attributeID-1].Add(value)
+		else
+			if not other then other = new TLongMap
+
+			Local key:Long = _GetKey(0, attributeID, jobID, genreID)
+			Local attribute:TRangedFloat = TRangedFloat(other.ValueForKey(key))
+			'init with a random value if needed
+			If not attribute Then attribute = Randomize(attributeID, jobID, genreID)
+			
+			attribute.Add(value)
+		Endif
+	End Method
+
+
+	Method Multiply(multiplier:Float, attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+		if jobID = -1 and genreID = -1
+			'init with a random value if needed
+			if not attributes[attributeID-1] then Randomize(attributeID, jobID, genreID)
+
+			attributes[attributeID-1].Multiply(multiplier)
+		else
+			if not other then other = new TLongMap
+
+			Local key:Long = _GetKey(0, attributeID, jobID, genreID)
+			Local attribute:TRangedFloat = TRangedFloat(other.ValueForKey(key))
+			'init with a random value if needed
+			If not attribute Then attribute = Randomize(attributeID, jobID, genreID)
+			
+			attribute.Multiply(multiplier)
+		Endif
+	End Method
+	
+	
+	Method Randomize:TRangedFloat(attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+		Local attribute:TRangedFloat = GetAttributeObject(attributeID, jobID, genreID)
 		If not attribute 
-			attribute = new TPersonPersonalityAttribute
-			SetAttribute(attribute, attributeID, jobID, genreID)
+			attribute = new TRangedFloat
+			SetAttributeObject(attribute, attributeID, jobID, genreID)
 		EndIf
 
 		'for now base has the same initialization values than individual
 		'attribute-job-genre combinations
 		
 		Select attributeID	
-			Case TVTPersonPersonalityAttribute.SKILL
-				attribute.SetRandomMin(0.05, 0.15).SetRandomMax(0.60, 0.85, 0.2).SetRandom(0.25)
-
 			Case TVTPersonPersonalityAttribute.POWER
 				attribute.SetRandomMin(0.05, 0.15).SetRandomMax(0.65, 0.90).SetRandom(0.35)
 				
@@ -1194,36 +1207,176 @@ endrem
 				'set a random value between 0 and 25
 				attribute.SetRandomMin(0.00, 0.15, 0.2).SetMax(0.25).SetRandom(0.2).SetMax(0.75)
 				'the beautiful tend to have more fame (poster boys and girls)
-				attribute.Multiply(1 + 0.15 * GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE))
+				attribute.Multiply(1 + 0.15 * Get(TVTPersonPersonalityAttribute.APPEARANCE))
 
 			Case TVTPersonPersonalityAttribute.SCANDALIZING
 				'set a random value between 0 and 25
-				attribute.SetRandomMin(0,15, 0.2).SetMax(0.25).SetRandom(0.2).SetMax(0.75)
+				attribute.SetRandomMin(0.15, 0.2).SetMax(0.25).SetRandom(0.2).SetMax(0.75)
 				'the beautiful tend to be more scandalizing (up to +10%)
-				attribute.Multiply(1 + 0.10 * GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE))
+				attribute.Multiply(1 + 0.10 * Get(TVTPersonPersonalityAttribute.APPEARANCE))
 		End Select
+		
+		Return attribute
 	End Method
 
 
-	Method RandomizeAttributes:Int(onlyEmpty:Int = False)
+	'AFFINITY
+
+	Method HasAffinity:Int(jobID:Int = -1, genreID:Int = -1)
+		Return GetAffinityObject(jobID, genreID) <> Null
+	End Method
+
+
+	Method SetAffinity(value:Float, jobID:Int = 0, genreID:Int = 0)
+		local a:TRangedFloat = GetAffinityObject(jobID, genreID)
+		If Not a 
+			a = new TRangedFloat(0, 0, 1.0)
+			SetAffinityObject(a, jobID, genreID)
+		EndIf
+		a.Set(value)
+	End Method
+	
+
+	Method GetAffinity:Float(jobID:Int = 0, genreID:Int = 0)
+		'if job and genre are not set, the "generic" skill is requested
+		'but if an individual one is to return, it gets influenced
+		'by the "generic" one
+
+		If genreID = -1 and jobID = -1
+			Return affinityPool.Get()
+		EndIf
+
+		'do we have a individual value?
+		Local combinedAttribute:TRangedFloat = GetAffinityObject(jobID, genreID)
+		Local jobAttribute:TRangedFloat = GetAffinityObject(jobID, 0)
+		Local genreAttribute:TRangedFloat = GetAffinityObject(0, genreID)
+		
+		If combinedAttribute
+			'by default combined ones should only exist, if the individual
+			'ones are set - but maybe something defined only a combination
+			'(eg. some very rare talent...)
+			If jobAttribute And genreAttribute
+				'could be job/genre specific genre
+				'returns up to 1.0 as affinity
+		 		Return Min(1.0, combinedAttribute.Get() + 0.15 * jobAttribute.Get() + 0.15 * genreAttribute.Get())
+		 	Else
+				Return combinedAttribute.Get()
+			EndIf
+		Else
+			Local jobValue:Float = 0
+			Local genreValue:Float = 0
+			If jobAttribute then jobValue = jobAttribute.Get()
+			If genreAttribute then genreValue = genreAttribute.Get()
+
+			'if never done this results in 25% of the "unused" affinity
+			'(which we then later take from "unused" to "combined")
+			Return 0.25 * affinityPool.Get() + 0.15 * jobValue + 0.15 * genreValue
+		EndIf
+	End Method
+	
+	
+	Method RandomizeAffinity(jobID:Int = -1, genreID:Int = -1)
+		Local t:TRangedFloat = GetAffinityObject(jobID, genreID)
+		If not t
+			t = new TRangedFloat
+			SetAffinityObject(t, jobID, genreID)
+		EndIf
+
+		t.SetRandomMin(0.05, 0.15).SetRandomMax(0.60, 0.85, 0.2).SetRandom(0.25)
+	End Method
+
+
+
+	Method RandomizeAll:Int(onlyEmpty:Int = False)
 		'reset attributes, so they get all refilled
 		If Not onlyEmpty
 			For local i:int = 0 until attributes.length
-				attributes[i].Reset()
+				if attributes[i] then attributes[i].Reset()
 			Next
+			
+			if affinityPool then affinityPool.Reset()
 		EndIf
 
+		If not HasAffinity() Then RandomizeAffinity()
+
 		'base values
-		If GetAttributeValue(TVTPersonPersonalityAttribute.SKILL) = 0 Then RandomizeAttribute(TVTPersonPersonalityAttribute.SKILL)
-		If GetAttributeValue(TVTPersonPersonalityAttribute.POWER) = 0 Then RandomizeAttribute(TVTPersonPersonalityAttribute.POWER)
-		If GetAttributeValue(TVTPersonPersonalityAttribute.HUMOR) = 0 Then RandomizeAttribute(TVTPersonPersonalityAttribute.HUMOR)
-		If GetAttributeValue(TVTPersonPersonalityAttribute.CHARISMA) = 0 Then RandomizeAttribute(TVTPersonPersonalityAttribute.CHARISMA)
-		If GetAttributeValue(TVTPersonPersonalityAttribute.APPEARANCE) = 0 Then RandomizeAttribute(TVTPersonPersonalityAttribute.APPEARANCE)
+		If not Has(TVTPersonPersonalityAttribute.POWER) Then Randomize(TVTPersonPersonalityAttribute.POWER)
+		If not Has(TVTPersonPersonalityAttribute.HUMOR) Then Randomize(TVTPersonPersonalityAttribute.HUMOR)
+		If not Has(TVTPersonPersonalityAttribute.CHARISMA) Then Randomize(TVTPersonPersonalityAttribute.CHARISMA)
+		If not Has(TVTPersonPersonalityAttribute.APPEARANCE) Then Randomize(TVTPersonPersonalityAttribute.APPEARANCE)
 		'stuff changed later (depends on aboves attributes)
-		If GetAttributeValue(TVTPersonPersonalityAttribute.FAME) = 0 Then RandomizeAttribute(TVTPersonPersonalityAttribute.FAME)
-		If GetAttributeValue(TVTPersonPersonalityAttribute.SCANDALIZING) = 0 Then RandomizeAttribute(TVTPersonPersonalityAttribute.SCANDALIZING)
+		If not Has(TVTPersonPersonalityAttribute.FAME) Then Randomize(TVTPersonPersonalityAttribute.FAME)
+		If not Has(TVTPersonPersonalityAttribute.SCANDALIZING) Then Randomize(TVTPersonPersonalityAttribute.SCANDALIZING)
 	End Method
 
+
+	Method SerializeTPersonPersonalityAttributesToString:string()
+		local sb:TStringBuilder = new TStringBuilder()
+		For local i:int = 0 until attributes.length
+			if sb.Length() > 0 then sb.Append( "~n" )
+			sb.Append( attributes[i].SerializeTRangedFloatToString() )
+		Next
+
+		sb.Append( "|" )
+		if affinityPool
+			sb.Append( affinityPool.SerializeTRangedFloatToString() )
+		endif
+
+		sb.Append( "|" )
+		if other
+			local sb2:TStringBuilder = new TStringBuilder()
+			For local key:TLongKey = eachIn other.Keys()
+				local a:TRangedFloat = TRangedFloat( other.ValueForKey(key.value) ) 
+				if not a then continue
+				if sb2.Length() > 0 then sb2.Append("~n")
+				sb2.Append( key )
+				sb2.Append( "=" )
+				sb2.Append( a.SerializeTRangedFloatToString() )
+			Next
+			sb.Append(sb2)
+		EndIf
+
+		return sb.ToString()
+	End Method
+
+
+	Method DeSerializeTPersonPersonalityAttributesFromString(text:String)
+		Local vars:string[] = text.split("|")
+		
+		attributes = new TRangedFloat[attributes.length]
+		affinityPool = new TRangedFloat
+		other = Null
+
+		local i:int = 0
+		For local s:String = EachIn vars[0].Split("~n")
+			if not attributes[i] then attributes[i] = new TRangedFloat
+			attributes[i].DeSerializeTRangedFloatFromString(s) 
+
+			i :+ 1
+			if i >= attributes.length Then exit
+		Next
+
+		if vars.length >= 2 and vars[1]
+			affinityPool.DeSerializeTRangedFloatFromString(vars[1])
+		endif
+
+		if vars.length >= 3 and vars[2]
+			For local s:String = EachIn vars[2].Split("~n")
+				Local entryS:String[] = s.Split("=")
+				Local key:Long = Long(entryS[0])
+				Local value:String; If entryS.length > 1 Then value = entryS[1]
+				
+				if not key or not value then Continue
+				
+				if not other Then other = new TLongMap
+				Local a:TRangedFloat = new TRangedFloat
+				a.DeSerializeTRangedFloatFromString(value) 
+				
+				other.Insert(key, a)
+			Next
+		Endif
+		
+	End Method
 End Type
 
 
@@ -1250,24 +1403,37 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 	End Function
 	
 	
-	Method InitAttributes()
+	Method InitAttributes(randomize:Int = True)
 		attributes = new TPersonPersonalityAttributes
-		attributes.RandomizeAttributes()
+		if randomize then attributes.RandomizeAll()
+	End Method
+
+
+	Method HasAttributes:Int()
+		Return attributes <> Null
 	End Method
 
 
 	Method GetAttributes:TPersonPersonalityAttributes(generateDefault:Int = True)
-		if not attributes and generateDefault Then InitAttributes
+		if not attributes and generateDefault Then InitAttributes()
 
 		Return attributes
 	End Method
 
 	
 	Method GetAttributeValue:Float(attributeID:Int, jobID:Int = -1, genreID:Int = -1, generateDefault:Int = True)
-		if not attributes and generateDefault Then InitAttributes
+		if not attributes and generateDefault Then InitAttributes()
 		if not attributes Then Return 0
 		
-		Return attributes.GetAttributeValue(attributeID)
+		Return attributes.Get(attributeID, jobID, genreID)
+	End Method
+
+
+	Method GetAffinityValue:Float(jobID:Int = -1, genreID:Int = -1, generateDefault:Int = True)
+		if not attributes and generateDefault Then InitAttributes()
+		if not attributes Then Return 0
+		
+		Return attributes.GetAffinity(jobID, genreID)
 	End Method
 
 
@@ -1386,41 +1552,6 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 		Return True
 	End Method
 
-rem
-	Method GetSkill:Float()
-		Return skill
-	End Method
-
-
-	Method GetPower:Float()
-		Return power
-	End Method
-
-
-	Method GetHumor:Float()
-		Return humor
-	End Method
-
-
-	Method GetCharisma:Float()
-		Return charisma
-	End Method
-
-
-	Method GetAppearance:Float()
-		Return appearance
-	End Method
-
-
-	Method GetFame:Float()
-		Return fame
-	End Method
-
-
-	Method GetScandalizing:Float()
-		Return scandalizing
-	End Method
-endrem
 
 	Method GetCountryCode:String()
 		Return GetPerson().countryCode
