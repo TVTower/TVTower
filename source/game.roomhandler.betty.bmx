@@ -18,7 +18,6 @@ Type RoomHandler_Betty extends TRoomHandler
 
 	Field spriteSuitcase:TSprite {nosave}
 	Field presentInSuitcase:TGUIBettyPresent {nosave}
-	Field draggedPresent:TGUIBettyPresent {nosave}
 	Field kickTime:Long
 	Global suitcaseArea:SRect = new SRect(20,220, 145, 120)
 
@@ -45,10 +44,11 @@ Type RoomHandler_Betty extends TRoomHandler
 
 		'=== CREATE ELEMENTS =====
 		BettySprite = GetSpriteFromRegistry("gfx_room_betty_betty")
-		BettyArea = New TGUISimpleRect.Create(new TVec2D.Init(303,142), new TVec2D.Init(112,148), "betty" )
-		'Betty accepts presents
-		BettyArea.setOption(GUI_OBJECT_ACCEPTS_DROP, True)
-
+		if not BettyArea
+			BettyArea = New TGUISimpleRect.Create(new TVec2D.Init(303,142), new TVec2D.Init(112,148), "betty" )
+			'Betty accepts presents
+			BettyArea.setOption(GUI_OBJECT_ACCEPTS_DROP, True)
+		EndIf
 		spriteSuitcase = GetSpriteFromRegistry("gfx_suitcase_presents")
 
 
@@ -58,10 +58,10 @@ Type RoomHandler_Betty extends TRoomHandler
 
 		'register new listeners
 		_eventListeners = new TEventListenerBase[0]
-		'handle players visiting betty
-'		_eventListeners :+ [ EventManager.registerListenerFunction("player.onBeginEnterRoom", onPlayerBeginEnterRoom) ]
+		'handle the player visiting betty
+		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onSetCurrent", onPlayerSeesBettyScreen) ]
 		'handle present
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickPresent, "TGUIBettyPresent" ) ]
+		'_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickPresent, "TGUIBettyPresent" ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDropOnTargetAccepted", onDropPresent, "TGUIBettyPresent" ) ]
 
 
@@ -76,6 +76,11 @@ Type RoomHandler_Betty extends TRoomHandler
 
 		'=== remove obsolete gui elements ===
 		'
+		if presentInSuitcase
+			GUIManager.Remove(presentInSuitcase)
+			presentInSuitcase = Null
+		EndIf
+			
 
 		'=== remove all registered instance specific event listeners
 		'EventManager.unregisterListenersByLinks(_localEventListeners)
@@ -87,32 +92,38 @@ Type RoomHandler_Betty extends TRoomHandler
 		if GetInstance() <> self then self.CleanUp()
 		GetRoomHandlerCollection().SetHandler("betty", GetInstance())
 	End Method
+	
+	
+	'alternative to "onEnterRoom" - which does not trigger when loading
+	'savegames starting in this screen
+	Function onPlayerSeesBettyScreen:Int( triggerEvent:TEventBase )
+		If triggerEvent.GetData().GetString("currentScreenName") <> "screen_betty" Then Return False
 
+		'recreate "present" if required
+		haveToRefreshGuiElements = True
+		ResetDialogue()
+	End Function	
+
+	rem
+	'both done by "onPlayerSeesBettyScreen"
 
 	Method onSaveGameBeginLoad:int( triggerEvent:TEventBase )
 		'We cannot rely on "onEnterRoom" as we could have saved
 		'in this room - so better refresh now
 		haveToRefreshGuiElements = true
+		ResetDialogue()
 	End Method
-
 
 	Method onEnterRoom:Int( triggerEvent:TEventBase )
 		haveToRefreshGuiElements = true
-		'create present visualization if required
-		If not presentInSuitcase
-			Local present:TBettyPresent=GetBetty().getCurrentPresent(GetPlayerBaseCollection().playerID)
-			If present
-				GetInstance().presentInSuitcase = new TGUIBettyPresent.Create(RoomHandler_Betty.suitcaseArea.x + 14, RoomHandler_Betty.suitcaseArea.y + 19, present)
-				GetInstance().presentInSuitcase.setLimitToState("betty")
-				GetInstance().presentInSuitcase.hide()
-			End If
-		End If
+		ResetDialogue()
 	End Method
-
+	endrem
 
 	Function ResetDialogue()
 		GetInstance().dialogue = null
 	End Function
+
 
 	Function loveLevel:int()
 		Local bettyLove:float = GetBetty().GetInLovePercentage( GetPlayerBase().playerID )
@@ -122,6 +133,7 @@ Type RoomHandler_Betty extends TRoomHandler
 			return 0
 		End If
 	End Function
+
 
 	Function GenerateDialogue()
 		local bettyLove:float = GetBetty().GetInLovePercentage( GetPlayerBase().playerID )
@@ -195,6 +207,7 @@ Type RoomHandler_Betty extends TRoomHandler
 
 		GetInstance().dialogue.SetArea(new TRectangle.Init(440, 80, 300, 95))
 		GetInstance().dialogue.SetAnswerArea(new TRectangle.Init(380, 325, 360, 50))
+		'GetInstance().dialogue.moveAnswerDialogueBalloonStart = -5
 		'dialogue.answerStartType = "StartDownRight"
 		'dialogue.moveAnswerDialogueBalloonStart = 100
 		GetInstance().dialogue.SetGrow(-1,-1)
@@ -221,6 +234,18 @@ Type RoomHandler_Betty extends TRoomHandler
 
 
 	Method RefreshGuiElements:Int()
+		'create present visualization if required
+		If not presentInSuitcase
+			Local present:TBettyPresent = GetBetty().getCurrentPresent(GetPlayerBaseCollection().playerID)
+
+			presentInSuitcase = new TGUIBettyPresent.Create(suitcaseArea.x + 14, suitcaseArea.y + 19, present)
+			presentInSuitcase.setLimitToState("betty")
+			'so we get informed of clicks on the item before the widget
+			'itself does drop/drag handling
+			presentInSuitcase.beforeOnClickCallback = BeforeOnClickPresentCallback
+			presentInSuitcase.hide()
+		EndIf
+
 		haveToRefreshGuiElements = False
 	End Method
 
@@ -255,17 +280,14 @@ Type RoomHandler_Betty extends TRoomHandler
 		Local highlightBetty:int = False
 		If presentInSuitcase And presentInSuitcase.isVisible()
 			spriteSuitcase.Draw(suitcaseArea.x, suitcaseArea.y)
-			If presentInSuitcase.isHovered
+			If presentInSuitcase.isHovered()
 				GetGameBase().SetCursor(TGameBase.CURSOR_PICK)
-			End If
-			If presentInSuitcase.isDragged
+			EndIf
+			If presentInSuitcase.isDragged()
 				GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
-				draggedPresent = presentInSuitcase
 				highlightBetty = True
-			Else
-				draggedPresent = null
-			End If
-		End If
+			EndIf
+		EndIf
 
 		If highlightBetty
 			Local oldCol:TColor = New TColor.Get()
@@ -284,6 +306,10 @@ Type RoomHandler_Betty extends TRoomHandler
 
 
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
+		'delete unused and create new gui elements
+		If haveToRefreshGuiElements Then RefreshGUIElements()
+		
+		'create dialogue after gui elements exist (it checks "presentInSuitcase")
 		if not dialogue and ..
 		   not GetPlayerBase().GetFigure().isLeavingRoom() and ..
 		   GetPlayerBase().GetFigure().GetInRoomID() > 0
@@ -291,9 +317,6 @@ Type RoomHandler_Betty extends TRoomHandler
 		endif
 
 		If kickTime and Time.GetTimeGone() > kickTime Then GetPlayerBase().GetFigure().KickOutOfRoom()
-
-		'delete unused and create new gui elements
-		If haveToRefreshGuiElements Then RefreshGUIElements()
 
 		GUIManager.update(LS_betty)
 
@@ -319,51 +342,60 @@ Type RoomHandler_Betty extends TRoomHandler
 		endif
 	End Method
 
+
 	Method AbortScreenActions:Int()
-		If draggedPresent
-			draggedPresent.dropBackToOrigin()
-			draggedPresent = null
-		End If
+		If presentInSuitcase and presentInSuitcase.IsDragged()
+			presentInSuitcase.DropBackToOrigin()
+		EndIf
 	End Method
+
 
 	Method onLeaveRoom:int( triggerEvent:TEventBase )
 		If presentInSuitcase
 			GuiManager.Remove(presentInSuitcase)
-		End If
+			presentInSuitcase = null
+		EndIf
 		ResetDialogue()
-		presentInSuitcase = null
-		draggedPresent = null
 		kickTime = null
 		Return True
 	End Method
 
-	Function onClickPresent:int( triggerEvent:TEventBase )
+
+	Function BeforeOnClickPresentCallback:int( triggerEvent:TEventBase )
 		If Not CheckObservedFigureInRoom("betty") then Return False
 		Local presentItem:TGUIBettyPresent = TGUIBettyPresent(triggerEvent._sender)
-		If presentItem and presentItem.isDragged()
+		'only interested in clicks to our present
+		if not presentItem or presentItem <> GetInstance().presentInSuitcase then Return False
+
+		If presentItem.isDragged()
 			local button:Int=triggerEvent.GetData().getInt("button",0)
 			If button = 2
 				presentItem.dropBackToOrigin()
 				MouseManager.SetClickHandled(2)
-			Else If button = 1
-				If THelper.MouseInSRect(suitcaseArea) And GetInstance().draggedPresent
+				Return True
+			ElseIf button = 1
+				If THelper.MouseInSRect(suitcaseArea)
 					presentItem.dropBackToOrigin()
-				End If
-			End If
-		End If
+					Return True
+				EndIf
+			EndIf
+		EndIf
 		Return False
 	End Function
+
 
 	Function onDropPresent:int( triggerEvent:TEventBase )
 		If Not CheckObservedFigureInRoom("betty") then Return False
 		Local presentItem:TGUIBettyPresent = TGUIBettyPresent(triggerEvent._sender)
 		Local droptarget:TGUISimpleRect = TGUISimpleRect(triggerEvent._receiver)
-		If presentItem = GetInstance().draggedPresent and droptarget = BettyArea
+
+		If presentItem and presentItem = GetInstance().presentInSuitcase and droptarget = BettyArea
 			GetInstance().givePresent()
 			return true
 		End If
 		Return False
 	End Function
+
 
 	Method givePresent()
 		If presentInSuitcase
@@ -382,7 +414,6 @@ Type RoomHandler_Betty extends TRoomHandler
 			End If
 			presentInSuitcase.remove()
 			presentInSuitcase = null
-			draggedPresent = null
 
 			dialogue = new TDialogue
 			dialogue.AddTexts(dialogueTexts)

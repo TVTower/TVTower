@@ -2861,7 +2861,7 @@ Type TSaveGame Extends TGameState
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
 
-		If GetGame().GetObservedFigure() = GetPlayer().GetFigure()
+		If not GetGame().GetObservedFigure() or GetGame().GetObservedFigure() = GetPlayer().GetFigure()
 			'only set the screen if the figure is in this room ... this
 			'allows modifying the player in the savegame
 			If GetPlayer().GetFigure().inRoom

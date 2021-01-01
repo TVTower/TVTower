@@ -387,9 +387,13 @@ Type TBettyPresent
 	End Method
 End Type
 
+
+
+
 Type TGUIBettyPresent extends TGuiObject
 	Field present:TBettyPresent
 	Field sprite:TSprite
+	Field beforeOnClickCallback:Int(triggerEvent:TEventBase)
 
 	Method GetClassName:String()
 		return "TGUIBettyPresent"
@@ -397,8 +401,8 @@ Type TGUIBettyPresent extends TGuiObject
 
 	Method Create:TGUIBettyPresent(x:float, y:float, present:TBettyPresent)
 		Super.CreateBase(New TVec2D.Init(x,y), New TVec2D.Init(121, 91), "")
-		self.present = present
-		self.sprite = GetSpriteFromRegistry(present.getSpriteName())
+		
+		SetPresent(present)
 
 		'make dragable
 		SetOption(GUI_OBJECT_DRAGABLE, True)
@@ -407,6 +411,13 @@ Type TGUIBettyPresent extends TGuiObject
 
 		Return Self
 	End Method
+	
+	
+	Method SetPresent(present:TBettyPresent)
+		self.present = present
+		self.sprite = GetSpriteFromRegistry(present.getSpriteName())
+	End Method
+
 
 	Method UpdateLayout()
 	End Method
@@ -427,6 +438,9 @@ Type TGUIBettyPresent extends TGuiObject
 
 	'Copied and adapted from TGUIListItem
 	Method OnClick:Int(triggerEvent:TEventBase)
+		'if desired, run something before this click is handled
+		if beforeOnClickCallback Then beforeOnClickCallback(triggerEvent)
+
 		Super.OnClick(triggerEvent)
 
 		Local data:TData = triggerEvent.GetData()
@@ -443,6 +457,7 @@ Type TGUIBettyPresent extends TGuiObject
 		Else
 			Drag(MouseManager.GetClickPosition(1))
 		EndIf
-		EventManager.triggerEvent(TEventSimple.Create("guiobject.onClick", Null, Self, triggerEvent.GetReceiver()) )
+		'onclick is already emit
+		'EventManager.triggerEvent(TEventSimple.Create("guiobject.onClick", Null, Self, triggerEvent.GetReceiver()) )
 	End Method
 End Type
