@@ -148,6 +148,7 @@ Type RoomHandler_Betty extends TRoomHandler
 		If present and present.isVisible()
 			dialogueTexts = new TDialogueTexts[1]
 			dialogueTexts[0] = TDialogueTexts.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_ANNOUNCED_LEVEL"+bettyLoveLevel+"_TEXT"))
+			dialogueTexts[0].AddAnswer(TDialogueAnswer.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_GIVE_LEVEL"+bettyLoveLevel+"_TEXT"), 0, Null, givePresentViaDialogue))
 			dialogueTexts[0].AddAnswer(TDialogueAnswer.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_RETRACT_LEVEL"+bettyLoveLevel+"_TEXT"), 0, Null, deactivatePresent))
 		Else
 			If present and not present.isVisible() Then dialogueTexts = new TDialogueTexts[3]
@@ -215,6 +216,13 @@ Type RoomHandler_Betty extends TRoomHandler
 		Function activatePresent(data:TData)
 			GetInstance().presentInSuitcase.show()
 			ResetDialogue()
+		End Function
+		'reuse existing give present code
+		Function givePresentViaDialogue(data:TData)
+			Local event:TEventBase = new TEventBase()
+			event._sender = GetInstance().presentInSuitcase
+			event._receiver = BettyArea
+			onDropPresent(event)
 		End Function
 		Function deactivatePresent(data:TData)
 			GetInstance().presentInSuitcase.hide()
