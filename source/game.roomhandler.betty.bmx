@@ -237,13 +237,14 @@ Type RoomHandler_Betty extends TRoomHandler
 		'create present visualization if required
 		If not presentInSuitcase
 			Local present:TBettyPresent = GetBetty().getCurrentPresent(GetPlayerBaseCollection().playerID)
-
-			presentInSuitcase = new TGUIBettyPresent.Create(suitcaseArea.x + 14, suitcaseArea.y + 19, present)
-			presentInSuitcase.setLimitToState("betty")
-			'so we get informed of clicks on the item before the widget
-			'itself does drop/drag handling
-			presentInSuitcase.beforeOnClickCallback = BeforeOnClickPresentCallback
-			presentInSuitcase.hide()
+			if present 
+				presentInSuitcase = new TGUIBettyPresent.Create(suitcaseArea.x + 14, suitcaseArea.y + 19, present)
+				presentInSuitcase.setLimitToState("betty")
+				'so we get informed of clicks on the item before the widget
+				'itself does drop/drag handling
+				presentInSuitcase.beforeOnClickCallback = BeforeOnClickPresentCallback
+				presentInSuitcase.hide()
+			end if
 		EndIf
 
 		haveToRefreshGuiElements = False
