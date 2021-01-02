@@ -477,14 +477,16 @@ Type TDatabaseLoader
 			'contains custom "fictional" overriding the base one
 			xml.LoadValuesToData(nodeDetails, data, [..
 				"gender", "birthday", "deathday", "country", "fictional", ..
-				"job" ..
+				"job", "face_code" ..
 			])
 			person.gender = data.GetInt("gender", person.gender)
 			person.countryCode = data.GetString("country", person.countryCode)
-			person.SetFlag(TVTPersonFlag.FICTIONAL, data.GetInt("fictional", person.IsFictional()) )
 			pd.SetDayOfBirth( data.GetString("birthday", pd.dayOfBirth) )
 			pd.SetDayOfDeath( data.GetString("deathday", pd.dayOfDeath) )
 			person.SetJob( data.GetInt("job") )
+			'can be defined in "details" or as "<name>" tag
+			person.SetFlag(TVTPersonFlag.FICTIONAL, data.GetInt("fictional", person.IsFictional()) )
+			person.faceCode = data.GetString("face_code", person.faceCode)
 
 			'=== DATA ===
 			Local nodeData:TxmlNode = xml.FindChild(node, "data")
