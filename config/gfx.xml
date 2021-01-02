@@ -104,12 +104,16 @@
 			<type>SpritePack</type>
  			<url>res/gfx/misc/dialogue.png</url>
 			<children>
-				<child name="dialogue.default" 	x="0" 	y="0" 	w="48"  h="48" ninepatch="true" />
+				<child name="dialogue.default" 	x="0" 	y="0" 	w="48"  h="49" ninepatch="true" />
 
-				<child name="StartLeftDown" 	x="128" y="0" 	w="55" 	h="59" />
-				<child name="StartRightDown" 	x="128" y="59" 	w="55" 	h="59" />
-				<child name="StartDownRight" 	x="188" y="0" 	w="60" 	h="59" />
-				<child name="StartDownLeft" 	x="188" y="59" 	w="60" 	h="59" />
+				<child name="StartRightUp"      x="50"  y="0"   w="32"  h="32" offsetLeft="1" />
+				<child name="StartRightDown"    x="50"  y="32"  w="32"  h="32" offsetLeft="1" />
+				<child name="StartLeftUp"       x="50"  y="64"  w="32"  h="32" offsetLeft="-26" />
+				<child name="StartLeftDown"     x="50"  y="96"  w="32"  h="32" offsetLeft="-26" />
+				<child name="StartDownRight"    x="82"  y="0"   w="32"  h="32" offsetTop="2" />
+				<child name="StartDownLeft"     x="82"  y="32"  w="32"  h="32" offsetTop="2" />
+				<child name="StartUpLeft"       x="82"  y="64"  w="32"  h="32" offsetTop="26" />
+				<child name="StartUpRight"      x="82"  y="96"  w="32"  h="32" offsetTop="26" />
 
 			</children>
 		</spritepack>

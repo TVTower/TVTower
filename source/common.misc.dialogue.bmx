@@ -168,20 +168,20 @@ Type TDialogue
 		height = Max(40, height ) 'minheight
 
 		Select DialogStart
-			Case "StartLeftDown"
+			Case "StartLeftUp", "StartLeftDown"
 				dx = x - 48
 				dy = y + 15 + DialogStartMove
 				If DialogWidth = 0 Then DialogWidth = width - 15
-			Case "StartRightDown"
+			Case "StartRightUp", "StartRightDown"
 				dx = x + width - 11
 				dy = y + 15 + DialogStartMove
 				If DialogWidth = 0 Then DialogWidth = width - 15
-			Case "StartDownRight"
+			Case "StartDownRight", "StartDownLeft"
 				dx = x + 15 + DialogStartMove
 				dy = y + Height - 11
-			Case "StartDownLeft"
+			Case "StartUpRight", "StartUpLeft"
 				dx = x + 15 + DialogStartMove
-				dy = y + Height - 11
+				dy = y + 8
 		End Select
 
 		'limit text width to available width
