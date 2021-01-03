@@ -1286,7 +1286,16 @@ Type TGUIListItem Extends TGUIobject
 
 		Return Self
 	End Method
-
+	
+	
+	Method GetParentList:TGUIListBase()
+		Return TGUIListBase.FindGUIListBaseParent(self)
+	
+		'alternative:
+		'If TGUIPanel(_parent) Then Return TGUIListBase(TGUIPanel(sourceParent)._parent)
+		'Return TGUIListBase(_parent)
+	End Method
+	
 
 	Method SetValueEffect:Int(valueEffectType:Int, valueEffectSpecial:Float = 1.0)
 		if not _drawTextEffect Then _drawTextEffect = new TDrawTextEffect

@@ -266,12 +266,18 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'ignore wrong types and NON-dragged items
 		If Not guiScript Or Not guiScript.isDragged() Then Return False
 
+		'just drop it to where it came from
+		guiScript.DropBackToOrigin()
+		
+		'if deleting:
+		rem
 		'remove gui object
 		guiScript.remove()
 		guiScript = Null
 
 		'rebuild at correct spot
 		GetInstance().RefreshGuiElements()
+		endrem
 
 		'avoid clicks
 		'remove right click - to avoid leaving the room
@@ -350,45 +356,30 @@ Type RoomHandler_Studio Extends TRoomHandler
 	Function onDropScript:Int( triggerEvent:TEventBase )
 		If Not CheckPlayerInRoom("studio") Then Return False
 
-		Local guiBlock:TGUIScript = TGUIScript( triggerEvent._sender )
-		Local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
+		Local guiBlock:TGUIScript = TGUIScript(triggerEvent._sender)
+		Local receiver:TGUIObject = TGUIObject(triggerEvent._receiver)
 		If Not guiBlock Or Not receiver Then Return False
 
-		'try to get a list out of the drag-source-guiobject
-		Local source:TGuiObject = TGuiObject(triggerEvent.GetData().Get("source"))
-		Local sourceList:TGUIScriptSlotList
-		If source
-			Local sourceParent:TGUIobject = source._parent
-			If TGUIPanel(sourceParent) Then sourceParent = TGUIPanel(sourceParent)._parent
-			sourceList = TGUIScriptSlotList(sourceParent)
-		EndIf
-		'only interested in drops FROM a list
-		If Not sourceList Then Return False
-
-		'assign the dropped script as the current one
 		Local roomGUID:String = TFigure(GetPlayerBase().GetFigure()).inRoom.GetGUID()
+		Local roomOwner:Int = TFigure(GetPlayerBase().GetFigure()).inRoom.owner
 
-
-		'alternatively TGUIGameListItems contain "lastListID" which
-		'is the id of the last list they there attached too
-		'if guiBlock.lastListID = guiListSuitcase._id ... and so on
-
-		'ATTENTION: senderList (parent of the parent of guiBlock) is
-		'           only correct when NOT dropping on another list
-		'           -> so we use sourceList
 
 		'dropping to studio/studiomanager
 		'(this includes "switching" guiblocks on the studio list)
 		If receiver = guiListStudio Or receiver = studioManagerArea
 			GetInstance().SetCurrentStudioScript(guiBlock.script, roomGUID)
-		EndIf
 
-		'dropping to suitcase from studio list (important!)
-		If receiver = guiListSuitcase And sourceList = guiListStudio
-			'remove the script as the current one
-			If GetInstance().GetCurrentStudioScript(roomGUID) = guiBlock.script
+		ElseIf receiver = guiListSuitcase and GetInstance().GetCurrentStudioScript(roomGUID) = guiBlock.script
+			'only intercept if there are slots in the suitcase free
+			'else the normal "drag n drop" handles it
+			Local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(roomOwner)
+			If pc.GetSuitcaseScriptCount() < GameRules.maxScriptsInSuitcase 
 				GetInstance().RemoveCurrentStudioScript(roomGUID)
 			EndIf
+			
+		'nothing to do in the other cases (eg sorting elements in one list)
+		Else
+			Return True
 		EndIf
 
 		'remove gui block, it will get recreated if needed
@@ -461,7 +452,14 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		'remove old script if there is one
 		'-> this makes them available again
-		RemoveCurrentStudioScript(roomGUID)
+		'if this the new script is coming from the suitcase we can
+		'just move the old one back into the suitcase even if there
+		'is not enough space (the new one will make space...)
+		If GetPlayerBaseCollection().IsPlayer(script.owner) and GetPlayerProgrammeCollection(script.owner).HasScriptInSuitcase(script)
+			RemoveCurrentStudioScript(roomGUID, True)
+		Else
+			RemoveCurrentStudioScript(roomGUID, False)
+		EndIf
 
 		studioScriptsByRoom.Insert(roomGUID, script)
 
@@ -474,7 +472,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 	End Method
 
 
-	Method RemoveCurrentStudioScript:Int(roomGUID:String)
+	Method RemoveCurrentStudioScript:Int(roomGUID:String, forceSuitcase:Int = False)
 		If Not roomGUID Then Return False
 
 		Local script:TScript = GetCurrentStudioScript(roomGUID)
@@ -486,8 +484,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 			'if players suitcase has enough space for the script, add
 			'it to there, else add to archive
-			If pc.CanMoveScriptToSuitcase()
-				pc.MoveScriptFromStudioToSuitcase(script)
+			If forceSuitcase or pc.CanMoveScriptToSuitcase()
+				pc.MoveScriptFromStudioToSuitcase(script, forceSuitcase)
 			Else
 				pc.MoveScriptFromStudioToArchive(script)
 			EndIf

@@ -232,6 +232,16 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
+	Method GetSuitcaseScriptCount:Int() {_exposeToLua}
+		Return suitcaseScripts.count()
+	End Method
+
+
+	Method GetStudioScriptCount:Int() {_exposeToLua}
+		Return studioScripts.count()
+	End Method
+
+
 	Method GetProductionConceptCount:Int() {_exposeToLua}
 		Return productionConcepts.count()
 	End Method
@@ -609,12 +619,12 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	Method MoveScriptFromStudioToSuitcase:int(script:TScript)
+	Method MoveScriptFromStudioToSuitcase:int(script:TScript, force:Int = False)
 		if not studioScripts.Contains(script) then return False
 		if suitcaseScripts.contains(script) then return False
 
 		'do not add if already "full"
-		if not CanMoveScriptToSuitcase() then return False
+		if not force and not CanMoveScriptToSuitcase() then return False
 
 		suitcaseScripts.AddLast(script)
 		studioScripts.Remove(script)
@@ -665,8 +675,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	Method AddScriptToSuitcase:int(script:TScript)
-		if not CanMoveScriptToSuitcase() then return FALSE
+	Method AddScriptToSuitcase:int(script:TScript, force:Int=False)
+		if not force and not CanMoveScriptToSuitcase() then return FALSE
 
 		if not script.IsOwnedByPlayer(owner)
 			if not script.IsOwnedByVendor()
