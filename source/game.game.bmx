@@ -237,9 +237,11 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		EventManager.triggerEvent(TEventSimple.Create("Game.OnBegin", New TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().GetDay()) ))
 
 		?bmxng
-		OCM.FetchDump("GAMESTART")
-		OCM.Dump()
-		SaveText(OCM.DumpToString(), "log.objectcount.gamestart" + (gamesStarted+1)+".txt")
+		if OCM.enabled
+			OCM.FetchDump("GAMESTART")
+			OCM.Dump()
+			SaveText(OCM.DumpToString(), "log.objectcount.gamestart" + (gamesStarted+1)+".txt")
+		endif
 		?
 
 		gamesStarted :+ 1
