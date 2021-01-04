@@ -603,7 +603,7 @@ Type TPersonBase Extends TGameObject
 	End Method
 	
 	
-	Method GetPersonalityAttribute:Float(attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+	Method GetPersonalityAttribute:Float(attributeID:Int, jobID:Int = 0, genreID:Int = 0)
 		Return GetPersonalityData().GetAttributeValue(attributeID, jobID, genreID)
 	End Method
 
@@ -975,7 +975,7 @@ endrem
 	
 private
 	Method GetAttributeObject:TRangedFloat(attributeID:Int, jobID:Int = 0, genreID:Int = 0)
-		if jobID = -1 and genreID = -1
+		if jobID <= 0 and genreID <= 0
 			Return attributes[attributeID-1]
 		else
 			if other
@@ -988,7 +988,7 @@ private
 
 
 	Method SetAttributeObject(attribute:TRangedFloat, attributeID:Int, jobID:Int = 0, genreID:Int = 0)
-		if jobID = -1 and genreID = -1
+		if jobID <= 0 and genreID <= 0
 			attributes[attributeID-1] = attribute
 		else
 			if not other then other = new TLongMap
@@ -1084,7 +1084,7 @@ public
 	End Method
 
 
-	Method GetMax:Float(attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+	Method GetMax:Float(attributeID:Int, jobID:Int = 0, genreID:Int = 0)
 		local a:TRangedFloat = GetAttributeObject(attributeID, jobID, genreID)
 		If not a Then a = Randomize(attributeID, jobID, genreID)
 
@@ -1092,11 +1092,11 @@ public
 	End Method
 
 	
-	Method Set(value:Float, attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+	Method Set(value:Float, attributeID:Int, jobID:Int = 0, genreID:Int = 0)
 		Local attribute:TRangedFloat
 		Local createdNew:Int = False
 
-		if jobID = -1 and genreID = -1
+		if jobID <= 0 and genreID <= 0
 			attribute = attributes[attributeID-1]
 
 			If not attributes[attributeID-1] 
@@ -1127,20 +1127,20 @@ public
 	End Method
 
 
-	Method SetMin(minimum:Float, attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+	Method SetMin(minimum:Float, attributeID:Int, jobID:Int = 0, genreID:Int = 0)
 		local a:TRangedFloat = GetAttributeObject(attributeID, jobID, genreID)
 		If a Then a.SetMin(minimum)
 	End Method
 
 
-	Method SetMax:Int(maximum:Float, attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+	Method SetMax:Int(maximum:Float, attributeID:Int, jobID:Int = 0, genreID:Int = 0)
 		local a:TRangedFloat = GetAttributeObject(attributeID, jobID, genreID)
 		If a Then a.SetMax(maximum)
 	End Method
 
 
-	Method Add(value:Float, attributeID:Int, jobID:Int = -1, genreID:Int = -1)
-		if jobID = -1 and genreID = -1
+	Method Add(value:Float, attributeID:Int, jobID:Int = 0, genreID:Int = 0)
+		if jobID <= 0 and genreID <= 0
 			'init with a random value if needed
 			if not attributes[attributeID-1] then Randomize(attributeID, jobID, genreID)
 
@@ -1158,8 +1158,8 @@ public
 	End Method
 
 
-	Method Multiply(multiplier:Float, attributeID:Int, jobID:Int = -1, genreID:Int = -1)
-		if jobID = -1 and genreID = -1
+	Method Multiply(multiplier:Float, attributeID:Int, jobID:Int = 0, genreID:Int = 0)
+		if jobID <= 0 and genreID <= 0
 			'init with a random value if needed
 			if not attributes[attributeID-1] then Randomize(attributeID, jobID, genreID)
 
@@ -1177,7 +1177,7 @@ public
 	End Method
 	
 	
-	Method Randomize:TRangedFloat(attributeID:Int, jobID:Int = -1, genreID:Int = -1)
+	Method Randomize:TRangedFloat(attributeID:Int, jobID:Int = 0, genreID:Int = 0)
 		Local attribute:TRangedFloat = GetAttributeObject(attributeID, jobID, genreID)
 		If not attribute 
 			attribute = new TRangedFloat
@@ -1222,7 +1222,7 @@ public
 
 	'AFFINITY
 
-	Method HasAffinity:Int(jobID:Int = -1, genreID:Int = -1)
+	Method HasAffinity:Int(jobID:Int = 0, genreID:Int = 0)
 		Return GetAffinityObject(jobID, genreID) <> Null
 	End Method
 
@@ -1242,7 +1242,7 @@ public
 		'but if an individual one is to return, it gets influenced
 		'by the "generic" one
 
-		If genreID = -1 and jobID = -1
+		If genreID <= 0 and jobID <= 0
 			Return affinityPool.Get()
 		EndIf
 
@@ -1275,7 +1275,7 @@ public
 	End Method
 	
 	
-	Method RandomizeAffinity(jobID:Int = -1, genreID:Int = -1)
+	Method RandomizeAffinity(jobID:Int = 0, genreID:Int = 0)
 		Local t:TRangedFloat = GetAffinityObject(jobID, genreID)
 		If not t
 			t = new TRangedFloat
@@ -1421,7 +1421,7 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 	End Method
 
 	
-	Method GetAttributeValue:Float(attributeID:Int, jobID:Int = -1, genreID:Int = -1, generateDefault:Int = True)
+	Method GetAttributeValue:Float(attributeID:Int, jobID:Int = 0, genreID:Int = 0, generateDefault:Int = True)
 		if not attributes and generateDefault Then InitAttributes()
 		if not attributes Then Return 0
 		
@@ -1429,7 +1429,7 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 	End Method
 
 
-	Method GetAffinityValue:Float(jobID:Int = -1, genreID:Int = -1, generateDefault:Int = True)
+	Method GetAffinityValue:Float(jobID:Int = 0, genreID:Int = 0, generateDefault:Int = True)
 		if not attributes and generateDefault Then InitAttributes()
 		if not attributes Then Return 0
 		
