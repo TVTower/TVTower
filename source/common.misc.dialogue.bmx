@@ -8,7 +8,7 @@ Import "Dig/base.util.helper.bmx"
 TDialogue.textBlockDrawSettings.data.lineHeight = 16
 TDialogue.textBlockDrawSettings.data.boxDimensionMode = 0
 'TDialogue.selectedAnswersDrawEffect.data.Init(EDrawTextEffect.Glow, 0.2, new SColor8(255,200,200))
-TDialogue.selectedAnswersDrawEffect.data.Init(EDrawTextEffect.Glow, 0.2, new SColor8(120,100,75))
+TDialogue.selectedAnswersDrawEffect.data.Init(EDrawTextEffect.Glow, 0.1, new SColor8(110,90,65))
 
 
 Type TDialogue
@@ -330,13 +330,15 @@ Type TDialogueAnswer
 		if not _textCache then _textCache = new TBitmapFontText
 
 		If Self._highlighted
-			SetColor 200,100,100
+			SetColor 180,100,100
 			DrawOval(screenRect.GetX() + _pos.x, screenRect.GetY() + _pos.y +3, 6, 6)
 
+			'avoid double tinting (especially of the "glow")
+			SetColor 255,255,255
 			if not _textCache.HasCache()
 				'refresh _size
 				GetTextSize(int(screenRect.GetW() - _pos.x - 9))
-				_textCache.CacheDrawBlock(_font, Self._text, int(_size.x), -2, SALIGN_LEFT_TOP, new SColor8(200,100,0), TDialogue.selectedAnswersDrawEffect, null)
+				_textCache.CacheDrawBlock(_font, Self._text, int(_size.x), -2, SALIGN_LEFT_TOP, new SColor8(180,100,0), TDialogue.selectedAnswersDrawEffect, null)
 			EndIf
 
 			_textCache.DrawCached(screenRect.GetX() + _pos.x + 9, screenRect.GetY() + _pos.y -2 -2)
