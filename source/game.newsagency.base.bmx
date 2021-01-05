@@ -176,7 +176,9 @@ Type TNewsAgency
 		Local caughtChannelIDs:String = ""
 		Local caughtChannelIDsArray:Int[]
 		For Local i:Int = 1 To 4
-			Local playerBitmask:Int = 2^(i-1)
+			'ensure "2 ^ (i-1)" does not result in a ":double"!
+			'Local playerBitmask:Int = 2^(i-1)
+			Local playerBitmask:Int = 1 shl (i-1)
 			If bombRedirectedByPlayers & playerBitmask > 0
 				If caughtChannels <> "" Then caughtChannels :+ ", "
 				caughtChannels :+ GetPlayerBase(i).channelname

@@ -958,12 +958,6 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		'checkspecific
 		Local checkFlags:Int[] = [TVTProgrammeDataFlag.LIVE, TVTProgrammeDataFlag.PAID]
 
-		'checkall
-		'local checkFlags:int[]
-		'for local i:int = 0 to 10 '1-1024
-		'	checkFlags :+ [2^i]
-		'next
-
 		For Local i:Int = EachIn checkFlags
 			If flags & i > 0
 				If result <> "" Then result :+ delimiter
@@ -1095,7 +1089,8 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method SetPlayerIsBroadcasting(playerID:Int, enable:Int)
-		Local flag:Int = 2^(playerID-1)
+		'ensure "2 ^ (i-1)" does not result in a ":double"!
+		Local flag:Int = 1 shl (playerID-1)  ' = 2^(playerID-1)
 		If enable
 			playersBroadcasting :| flag
 		Else
@@ -1105,13 +1100,13 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method IsPlayerIsBroadcasting:Int(playerID:Int)
-		Local flag:Int = 2^(playerID-1)
+		Local flag:Int = 1 shl (playerID-1)  ' = 2^(playerID-1)
 		Return (playersBroadcasting & flag > 0)
 	End Method
 
 
 	Method SetPlayerIsLiveBroadcasting(playerID:Int, enable:Int)
-		Local flag:Int = 2^(playerID-1)
+		Local flag:Int = 1 shl (playerID-1)  ' = 2^(playerID-1)
 		If enable
 			playersLiveBroadcasting :| flag
 		Else
@@ -1121,7 +1116,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method IsPlayerIsLiveBroadcasting:Int(playerID:Int)
-		Local flag:Int = 2^(playerID-1)
+		Local flag:Int = 1 shl (playerID-1)  ' = 2^(playerID-1)
 		Return (playersBroadcasting & flag > 0)
 	End Method
 
