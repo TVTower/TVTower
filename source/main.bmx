@@ -161,9 +161,6 @@ Global printDebugStats:Int = True
 Global collectDebugStats:Int = False
 
 
-Global screenshot_debug:TImage = LoadImage("screenshot_002.png")
-
-
 '==== Initialize ====
 AppTitle = "TVTower: " + VersionString
 TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
@@ -1782,13 +1779,6 @@ endrem
 		GUIManager.Draw(systemState)
 
 
-
-		if KeyManager.IsDown(KEY_F3)
-			SetAlpha 0.85 '0.75 + Float(0.25 * sin(Millisecs() mod 1000))
-			DrawImage(screenshot_debug, 0,0)
-			Setalpha 1.0
-		EndIf
-
 		'mnouse cursor
 '		If Not spriteMouseCursor Then spriteMouseCursor = GetSpriteFromRegistry("gfx_mousecursor")
 		local cursorOffsetX:Int
@@ -3047,6 +3037,15 @@ Type TSavegameConverter
 					Next
 					Return res
 				EndIf
+			Case "TList>TObjectList".ToLower()
+				Local old:TList = TList(obj)
+				If old
+					Local res:TObjectList = New TObjectList
+					For Local o:object = EachIn old
+						res.AddLast(o)
+					Next
+					Return res
+				EndIf
 			Rem
 			Case "TIntervalTimer>TBuildingIntervalTimer".ToLower()
 				Local old:TIntervalTimer = TIntervalTimer(obj)
@@ -3617,6 +3616,9 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	Field spreadStartDataCalled:Int = False
 	'can "startGame()" get called?
 	Field canStartGame:Int = False
+	'we want to ensure the player sees the game-start information
+	'at least ONCE
+	Field renderedOneFrame:Int = False
 
 	Field stateName:TLowerString
 
@@ -3662,6 +3664,9 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 			GetBitmapFontManager().baseFont.DrawSimple(GetLocale("PREPARING_START_DATA")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, SColor8.Black)
 		EndIf
 		SetAlpha oldAlpha
+		
+		
+		renderedOneFrame = True
 	End Method
 
 
@@ -3671,6 +3676,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		spreadConfigurationCalled = False
 		spreadStartDataCalled = False
 		canStartGame = False
+		renderedOneFrame = False
 	End Method
 
 
@@ -3704,6 +3710,10 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	Method Update:Int(deltaTime:Float)
 		'update messagewindow
 		GUIManager.Update(stateName)
+		
+		'skip processing until at least one frame of this screen
+		'was also rendered/drawn
+		if not renderedOneFrame then return False
 
 
 		'=== STEPS ===
