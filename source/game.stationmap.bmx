@@ -301,7 +301,9 @@ Type TStationMapCollection
 
 	Method GetSatelliteUplinkSectionName:string()
 		if not satelliteUplinkSectionName
-			local randomSection:TStationMapSection = TStationMapSection(sections.ValueAtIndex(RandRange(0, sections.Count())))
+			If Not sections or sections.count() = 0 Then Return ""
+
+			local randomSection:TStationMapSection = TStationMapSection(sections.ValueAtIndex(RandRange(0, sections.Count()-1)))
 			if randomSection
 				satelliteUplinkSectionName = randomSection.name
 			endif
