@@ -23,7 +23,7 @@ Type TFigureGenerator
 
 	Function GetRandomPart:TFigureGeneratorPart(partType:int, gender:int=0, age:int=0)
 		if partType < 1 or partType > registeredParts.length then return Null
-		if not registeredParts[partType-1] then return Null
+		if not registeredParts[partType-1] or registeredParts[partType-1].Count() = 0 then return Null
 
 		local index:int = partType -1
 
