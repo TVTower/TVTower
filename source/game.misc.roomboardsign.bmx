@@ -9,63 +9,56 @@ Import "Dig/base.gfx.bitmapfont.bmx"
 
 
 Type TRoomBoardBase
-	Field DragAndDropList:TList = CreateList()
-	Field List:TList = CreateList()
-	Field AdditionallyDragged:Int = 0
-	Field slotMax:int = 4
-	Field floorMax:int = 13
-	Field clickedSign:TRoomBoardSign = null
-	Field hoveredSign:TRoomBoardSign = null
+	'elements are not sorted (keep "indices" intact!) 
+	Field list:TObjectList = New TObjectList
+	'list contains the signs "sorted" by dragged and not dragged
+	Field visualList:TObjectList {nosave}
+	Field visualListOrderValid:Int = False {nosave}
+	Field slotMax:Int = 4
+	Field floorMax:Int = 13
+	Field draggedSign:TRoomBoardSign = Null {nosave}
+	Field clickedSign:TRoomBoardSign = Null {nosave}
+	Field hoveredSign:TRoomBoardSign = Null {nosave}
 
 
-	Method Initialize:int()
+	Method Initialize:Int()
 		Reset()
 
 		AddBoardSigns()
 	End Method
 
 
-	Method Reset:int()
+	Method Reset:Int()
 		List.Clear()
-		AdditionallyDragged = 0
-		DragAndDropList.Clear()
-
-		hoveredSign = null
-		clickedSign = null
+		
+		hoveredSign = Null
+		clickedSign = Null
+		draggedSign = Null
 	End Method
 
 
-	Method AddBoardSigns:int()
-		For local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
+	Method AddBoardSigns:Int()
+		For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
 			'create the sign in the roomplan (if not "invisible door")
 			If door.doorType >= 0
-				local sign:TRoomBoardSign = new TRoomBoardSign.Init(door)
+				Local sign:TRoomBoardSign = New TRoomBoardSign.Init(door)
 				AddSign(sign)
-			endif
+			EndIf
 		Next
 	End Method
 
 
-	Method AddSign:int(sign:TRoomBoardSign)
+	Method AddSign:Int(sign:TRoomBoardSign)
 		List.AddLast(sign)
-		List.Sort()
-
-		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
- 		DragAndDrop.slot = List.Count() - 1
- 		DragAndDrop.pos.CopyFrom(sign.StartPos)
- 		DragAndDrop.w = sign.rect.GetW()
- 		DragAndDrop.h = sign.rect.GetH()
-
-		DragAndDropList.AddLast(DragAndDrop)
- 		DragAndDropList.Sort()
+		visualListOrderValid = False
 	End Method
 
 
-	Method ResetImageCaches:int(owner:int = -2)
+	Method ResetImageCaches:Int(owner:Int = -2)
 		For Local obj:TRoomBoardSign = EachIn list
-			if owner <> -2 and obj.GetOwner() <> owner then continue
-			obj.imageCache = null
-			obj.imageDraggedCache = null
+			If owner <> -2 And obj.GetOwner() <> owner Then Continue
+			obj.imageCache = Null
+			obj.imageDraggedCache = Null
 		Next
 	End Method
 
@@ -74,90 +67,90 @@ Type TRoomBoardBase
 		For Local obj:TRoomBoardSign = EachIn list
 			obj.ResetPosition()
 		Next
-		AdditionallyDragged = 0
+		visualListOrderValid = False
 	End Method
 
 
-	Function GetFloorY:int(signFloor:int)
-		return 41 + (13 - signFloor) * 23
+	Function GetFloorY:Int(signFloor:Int)
+		Return 41 + (13 - signFloor) * 23
 	End Function
 
 
-	Function GetFloor:int(signY:Float)
-		return 13 - ((int(signY) - 41) / 23)
+	Function GetFloor:Int(signY:Float)
+		Return 13 - ((Int(signY) - 41) / 23)
 	End Function
 
 
-	Function GetSlotX:int(signSlot:int)
-		select signSlot
-			case 1	return 26
-			case 2	return 208
-			case 3	return 417
-			case 4	return 599
-			default Throw "TRoomBoard.GetSlotX(): invalid signSlot "+signSlot
-		end select
-		return 0
+	Function GetSlotX:Int(signSlot:Int)
+		Select signSlot
+			Case 1	Return 26
+			Case 2	Return 208
+			Case 3	Return 417
+			Case 4	Return 599
+			Default Throw "TRoomBoard.GetSlotX(): invalid signSlot "+signSlot
+		End Select
+		Return 0
 	End Function
 
 
-	Function GetSlot:int(signX:Float)
-		select int(signX)
-			case 26		return 1
-			case 208	return 2
-			case 417	return 3
-			case 599	return 4
-			default Throw "TRoomBoard.GetSlot(): invalid signX "+signX
-		end select
-		return 0
+	Function GetSlot:Int(signX:Float)
+		Select Int(signX)
+			Case 26		Return 1
+			Case 208	Return 2
+			Case 417	Return 3
+			Case 599	Return 4
+			Default Throw "TRoomBoard.GetSlot(): invalid signX "+signX
+		End Select
+		Return 0
 	End Function
 
 
-	Method GetSignAtIndex:TRoomBoardSign(arrayIndex:int)
-		if arrayIndex >= list.count() Or arrayIndex < 0 then return Null
+	Method GetSignAtIndex:TRoomBoardSign(arrayIndex:Int)
+		If arrayIndex >= list.count() Or arrayIndex < 0 Then Return Null
 
-		return TRoomBoardSign(List.ValueAtIndex(arrayIndex))
+		Return TRoomBoardSign( list.ValueAtIndex(arrayIndex) )
 	End Method
 
 
-	Method GetSignById:TRoomBoardSign(id:int)
-		For local sign:TRoomBoardSign = eachin list
-			if sign.id = id
-				return sign
-			endif
+	Method GetSignById:TRoomBoardSign(id:Int)
+		For Local sign:TRoomBoardSign = EachIn list
+			If sign.id = id
+				Return sign
+			EndIf
 		Next
-		return Null
+		Return Null
 	End Method
 
 
 	'return the sign which originally was at the given position
-	Method GetSignByOriginalPosition:TRoomBoardSign(signSlot:int, signFloor:int)
-		For local sign:TRoomBoardSign = eachin list
-			if sign.door.doorSlot = signSlot and sign.door.onFloor = signFloor
-				return sign
-			endif
+	Method GetSignByOriginalPosition:TRoomBoardSign(signSlot:Int, signFloor:Int)
+		For Local sign:TRoomBoardSign = EachIn list
+			If sign.door.doorSlot = signSlot And sign.door.onFloor = signFloor
+				Return sign
+			EndIf
 		Next
-		return Null
+		Return Null
 	End Method
 
 
 	'return the sign now at the given position
-	Method GetSignByCurrentPosition:TRoomBoardSign(signSlot:int, signFloor:int)
-		For local sign:TRoomBoardSign = eachin list
-			if GetSlot(int(sign.rect.GetX())) = signSlot and GetFloor(int(sign.rect.GetY())) = signFloor
-				return sign
-			endif
+	Method GetSignByCurrentPosition:TRoomBoardSign(signSlot:Int, signFloor:Int)
+		For Local sign:TRoomBoardSign = EachIn list
+			If GetSlot(Int(sign.rect.GetX())) = signSlot And GetFloor(Int(sign.rect.GetY())) = signFloor
+				Return sign
+			EndIf
 		Next
-		return Null
+		Return Null
 	End Method
 
 
 	'return the sign now at the given pixel coordinates
-	Method GetSignByXY:TRoomBoardSign(x:int, y:int)
+	Method GetSignByXY:TRoomBoardSign(x:Int, y:Int)
 		For Local sign:TRoomBoardSign = EachIn List
 			'virtual rooms
-			If sign.rect.GetX() < 0 then continue
+			If sign.rect.GetX() < 0 Then Continue
 
-			If sign.rect.containsXY(x,y) then return sign
+			If sign.rect.containsXY(x,y) Then Return sign
 		Next
 
 		Return Null
@@ -165,15 +158,15 @@ Type TRoomBoardBase
 
 
 	'return the sign originally at the given pixel coordinates
-	Method GetSignByOriginalXY:TRoomBoardSign(x:int, y:int)
+	Method GetSignByOriginalXY:TRoomBoardSign(x:Int, y:Int)
 		For Local sign:TRoomBoardSign = EachIn List
 			'virtual rooms
-			If sign.StartPos.GetX() < 0 then continue
+			If sign.StartPos.GetX() < 0 Then Continue
 
-			local currRect:TRectangle = sign.rect.Copy()
+			Local currRect:TRectangle = sign.rect.Copy()
 			currRect.position.CopyFrom(sign.OrigPos)
 
-			If currRect.containsXY(x,y) then return sign
+			If currRect.containsXY(x,y) Then Return sign
 		Next
 
 		Return Null
@@ -181,99 +174,114 @@ Type TRoomBoardBase
 
 
 	'return the first sign leading to a specific room
-	Method GetFirstSignByRoom:TRoomBoardSign(roomID:int)
-		For local sign:TRoomBoardSign = eachin list
-			if sign.door and sign.door.roomID = roomID
-				return sign
-			endif
+	Method GetFirstSignByRoom:TRoomBoardSign(roomID:Int)
+		For Local sign:TRoomBoardSign = EachIn list
+			If sign.door And sign.door.roomID = roomID
+				Return sign
+			EndIf
 		Next
-		return Null
+		Return Null
 	End Method
 
 
 	'switches the _current_ position of two signs
 	'permanentSwitch: if true, also switches original position
 	'                 (wont reset on roomboard/plan-reset)
-	Method SwitchSigns:int(signA:TRoomBoardSign, signB:TRoomBoardSign, playerID:int = 0, permanentSwitch:int = False)
-		if not signA or not signB then return False
+	Method SwitchSigns:Int(signA:TRoomBoardSign, signB:TRoomBoardSign, playerID:Int = 0, permanentSwitch:Int = False)
+		If Not signA Or Not signB Then Return False
 
 		signA.SwitchCoords(signB)
 
-		if permanentSwitch then TVec2D.SwitchVecs(signA.OrigPos, signB.OrigPos)
+		If permanentSwitch Then TVec2D.SwitchVecs(signA.OrigPos, signB.OrigPos)
 
-		if signA then signA.MarkMoved(playerID)
-		if signB then signB.MarkMoved(playerID)
+		If signA Then signA.MarkMoved(playerID)
+		If signB Then signB.MarkMoved(playerID)
 
-		return True
+		Return True
 	End Method
 
 
-	Method SwitchSignPositions:int(slotA:int, floorA:int, slotB:int, floorB:int, playerID:int = 0, permanentSwitch:Int = False)
+	Method SwitchSignPositions:Int(slotA:Int, floorA:Int, slotB:Int, floorB:Int, playerID:Int = 0, permanentSwitch:Int = False)
 		Local signA:TRoomBoardSign = GetSignByCurrentPosition(slotA, floorA)
 		Local signB:TRoomBoardSign = GetSignByCurrentPosition(slotB, floorB)
 
-		if signA then signA.MarkMoved(playerID)
-		if signB then signB.MarkMoved(playerID)
+		If signA Then signA.MarkMoved(playerID)
+		If signB Then signB.MarkMoved(playerID)
 
-		if signA
-			local x:Int = GetSlotX(slotB)
+		If signA
+			Local x:Int = GetSlotX(slotB)
 			Local y:Int = GetFloorY(floorB)
 			signA.rect.position.SetXY(x,y)
 			signA.StartPos.SetXY(x,y)
 			signA.StartPosBackup.SetXY(x,y)
 
-			if permanentSwitch then signA.OrigPos.SetXY(x,y)
-		endif
+			If permanentSwitch Then signA.OrigPos.SetXY(x,y)
+		EndIf
 
-		if signB
-			local x:Int = GetSlotX(slotA)
+		If signB
+			Local x:Int = GetSlotX(slotA)
 			Local y:Int = GetFloorY(floorA)
 			signB.rect.position.SetXY(x,y)
 			signB.StartPos.SetXY(x,y)
 			signB.StartPosBackup.SetXY(x,y)
 
-			if permanentSwitch then signB.OrigPos.SetXY(x,y)
-		endif
+			If permanentSwitch Then signB.OrigPos.SetXY(x,y)
+		EndIf
 
 		'at least one existed
-		if signA or signB then return True
-		return False
+		If signA Or signB Then Return True
+		Return False
 	End Method
 
 
-	Method GetSignCount:int()
-		return list.Count()
+	Method GetSignCount:Int()
+		Return list.Count()
 	End Method
+	
+	
+	Method GetOrderedVisualList:TObjectList()
+		If Not visualList Or visualList.count() = 0 Then visualList = list.copy()
+
+		If Not visualListOrderValid
+			'sort dragged as last
+			visualList.Sort(True, SortByDraggedState)
+			visualListOrderValid = True
+		EndIf
+		Return visualList
+	End Method
+	
+	
+	Function SortByDraggedState:Int(o1:Object, o2:Object)
+		Local r1:TRoomBoardSign = TRoomBoardSign(o1)
+		Local r2:TRoomBoardSign = TRoomBoardSign(o2)
+		If Not r2 Then Return 1
+
+		Return (r1.dragged * 100) - (r2.dragged * 100)
+'		Return r1.Compare(r2)
+	End Function
 
 
 	Method DropBackDraggedSigns:Int()
-		local droppedSomethingBack:int = False
+		Local droppedSomethingBack:Int = False
 		For Local sign:TRoomBoardSign = EachIn List
-			If not sign.dragged then continue
+			If Not sign.dragged Then Continue
 
-			sign.SetCoords(int(sign.StartPos.x), int(sign.StartPos.y))
+			sign.SetCoords(Int(sign.StartPos.x), Int(sign.StartPos.y))
 			sign.dragged = False
 			droppedSomethingBack = True
+			visualListOrderValid = False
 		Next
 
-		return droppedSomethingBack
+		Return droppedSomethingBack
 	End Method
 
 
-	Method UpdateSigns(DraggingAllowed:int)
-		'reset additional dragged objects
-		AdditionallyDragged = 0
-		'sort blocklist
-		SortList(List)
-		'reorder: first are dragged obj then not dragged
-		ReverseList(list)
+	Method UpdateSigns(DraggingAllowed:Int)
+		hoveredSign = Null
+		clickedSign = Null
 
-		hoveredSign = null
-		clickedSign = null
-
-		For Local sign:TRoomBoardSign = EachIn List
-			If not sign then continue
-
+		For Local sign:TRoomBoardSign = EachIn GetOrderedVisualList().ReverseEnumerator()
+			If Not sign Then Continue
 			If sign.dragged
 				If sign.StartPosBackup.y = 0
 					sign.StartPosBackup.CopyFrom(sign.StartPos)
@@ -282,14 +290,15 @@ Type TRoomBoardBase
 			'block is dragable
 			If DraggingAllowed And sign.dragable
 				'if right mbutton clicked and block dragged: reset coord of block
-				If (MOUSEMANAGER.IsClicked(2) or MouseManager.IsLongClicked(1)) And sign.dragged
-					sign.SetCoords(int(sign.StartPos.x), int(sign.StartPos.y))
+				If (MOUSEMANAGER.IsClicked(2) Or MouseManager.IsLongClicked(1)) And sign.dragged
+					sign.SetCoords(Int(sign.StartPos.x), Int(sign.StartPos.y))
 					sign.dragged = False
-					clickedSign = null
+					visualListOrderValid = False
+					clickedSign = Null
 
-					if not sign.IsAtOriginalPosition()
+					If Not sign.IsAtOriginalPosition()
 						sign.MarkMoved(GetPlayerBase().playerID)
-					endif
+					EndIf
 
 					'avoid clicks
 					'remove right click - to avoid leaving the room
@@ -302,27 +311,30 @@ Type TRoomBoardBase
 							clickedSign = sign
 
 							'obj over old position - drop ?
-							If THelper.MouseIn(int(sign.StartPosBackup.x), int(sign.StartPosBackup.y), int(sign.rect.GetW()), int(sign.rect.GetH()))
+							If THelper.MouseIn(Int(sign.StartPosBackup.x), Int(sign.StartPosBackup.y), Int(sign.rect.GetW()), Int(sign.rect.GetH()))
 								sign.dragged = False
-								clickedSign = null
+								visualListOrderValid = False
+								clickedSign = Null
 							EndIf
 
 							'want to drop in origin-position
 							If sign.containsCoord(MouseManager.x, MouseManager.y)
 								sign.dragged = False
-								clickedSign = null
+								visualListOrderValid = False
+								clickedSign = Null
 
 								'handled left click
 								MouseManager.SetClickHandled(1)
 							'not dropping on origin: search for other underlaying obj
 							Else
 								For Local otherSign:TRoomBoardSign = EachIn List
-									if otherSign = sign then continue
+									If otherSign = sign Then Continue
 									If otherSign.containsCoord(MouseManager.x, MouseManager.y) And otherSign.dragged = False And otherSign.dragable
 	'									If game.networkgame Then
 	'										Network.SendMovieAgencyChange(Network.NET_SWITCH, GetPlayerCollection().playerID, OtherlocObj.Programme.id, -1, locObj.Programme)
 	'	  								End If
 										sign.SwitchBlock(otherSign)
+										visualListOrderValid = False
 
 										'handled left click
 										MouseManager.SetClickHandled(1)
@@ -331,17 +343,18 @@ Type TRoomBoardBase
 								Next
 							EndIf		'end: drop in origin or search for other obj underlaying
 
-							if not sign.dragged
-								if not sign.IsAtOriginalPosition()
+							If Not sign.dragged
+								If Not sign.IsAtOriginalPosition()
 									sign.MarkMoved(GetPlayerBase().playerID)
-								else
+								Else
 									sign.movedByPlayers = 0
 									sign.lastMoveByPlayerID = 0
-								endif
-							endif
+								EndIf
+							EndIf
 						Else			'end: an obj is dragged
 							If sign.containsCoord(MouseManager.x, MouseManager.y)
 								sign.dragged = 1
+								visualListOrderValid = False
 
 								'handled left click
 								MouseManager.SetClickHandled(1)
@@ -353,49 +366,55 @@ Type TRoomBoardBase
 
 			'if obj dragged then coords to mousecursor+displacement, else to startcoords
 			If sign.dragged = 1
-				AdditionallyDragged :+1
-				Local displacement:Int = AdditionallyDragged * 5
-				sign.setCoords(int(MouseManager.x - sign.rect.GetW()/2 - displacement), int(11+ MouseManager.y - sign.rect.GetH()/2 - displacement))
+				Local displacement:Int = 5
+				sign.SetCoords(Int(MouseManager.x - sign.rect.GetW()/2 - displacement), Int(11+ MouseManager.y - sign.rect.GetH()/2 - displacement))
 			Else
-				sign.SetCoords(int(sign.StartPos.x), int(sign.StartPos.y))
+				sign.SetCoords(Int(sign.StartPos.x), Int(sign.StartPos.y))
 			EndIf
 
 
-			If not hoveredSign and not sign.dragged and sign.containsCoord(MouseManager.x, MouseManager.y)
+			If Not hoveredSign And Not sign.dragged And sign.containsCoord(MouseManager.x, MouseManager.y)
 				hoveredSign = sign
 			EndIf
 
 			sign.isHovered = (hoveredSign = sign)
 			sign.isClicked = (clickedSign = sign)
+			
+			If sign.dragged Then draggedSign = sign
 		Next
-		ReverseList list 'reorder: first are not dragged obj
 	End Method
 
 
-	Method DrawSigns(DraggingAllowed:int)
-		SortList List
+	Method DrawSigns(DraggingAllowed:Int)
 		'draw background sprites
-		local bgSprite:TSprite = GetSpriteFromRegistry("gfx_roomboard_sign_bg")
-		For Local sign:TRoomBoardSign = EachIn List
+		Local bgSprite:TSprite = GetSpriteFromRegistry("gfx_roomboard_sign_bg")
+		For Local sign:TRoomBoardSign = EachIn GetOrderedVisualList()
 			bgSprite.Draw(sign.OrigPos.x + 20, sign.OrigPos.y + 6)
 		Next
 		'draw actual sign
-		For Local sign:TRoomBoardSign = EachIn List
+		For Local sign:TRoomBoardSign = EachIn GetOrderedVisualList()
 			sign.Draw()
 		Next
 
-		if DraggingAllowed 'roomplan
-			For Local sign:TRoomBoardSign = EachIn List
+		If DraggingAllowed 'roomplan
+			If draggedSign
+				GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
+			ElseIf hoveredSign
+				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
+			EndIf
+			Rem
+			For Local sign:TRoomBoardSign = EachIn list
 				if sign.dragged
 					GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
 				elseif sign.isHovered
 					GetGameBase().SetCursor(TGameBase.CURSOR_PICK_HORIZONTAL)
 				endif
 			Next
-		endif
+			endrem
+		EndIf
 			
 		'debug
-		rem
+		Rem
 		local hovered:TRoomBoardSign = GetSignByXY(MouseX(), MouseY())
 		local hoveredOriginal:TRoomBoardSign = GetSignByOriginalXY(MouseX(), MouseY())
 		'tint sign which is below the cursor
@@ -427,14 +446,14 @@ End Type
 
 
 
-Type TRoomBoard extends TRoomBoardBase
-	Global _eventsRegistered:Int = FALSE
+Type TRoomBoard Extends TRoomBoardBase
+	Global _eventsRegistered:Int = False
 	Global _instance:TRoomBoard
 
 
 	Function GetInstance:TRoomBoard()
-		if not _instance then _instance = new TRoomBoard
-		return _instance
+		If Not _instance Then _instance = New TRoomBoard
+		Return _instance
 	End Function
 
 
@@ -447,36 +466,34 @@ Type TRoomBoard extends TRoomBoardBase
 			EventManager.registerListenerFunction("room.onBeginRental", onChangeRoomOwner)
 			EventManager.registerListenerFunction("room.onCancelRental", onChangeRoomOwner)
 
-			_eventsRegistered = TRUE
+			_eventsRegistered = True
 		EndIf
 	End Method
 
 
-
-
 	'as soon as a language changes, remove the cached images
 	'to get them regenerated
-	Function onSetLanguage:int(triggerEvent:TEventBase)
+	Function onSetLanguage:Int(triggerEvent:TEventBase)
 		GetInstance().ResetImageCaches()
 	End Function
 
 
 	'as soon as a savegame gets loaded, we remove the cached images
-	Function onSaveGameBeginLoad:int(triggerEvent:TEventBase)
+	Function onSaveGameBeginLoad:Int(triggerEvent:TEventBase)
 		GetInstance().ResetImageCaches()
 	End Function
 
 
 	'recreate image cache if a room owner changes
-	Function onChangeRoomOwner:int(triggerEvent:TEventBase)
+	Function onChangeRoomOwner:Int(triggerEvent:TEventBase)
 		'reset caches of the affected signs
-		local roomOwner:int = triggerEvent.GetData().GetInt("owner")
+		Local roomOwner:Int = triggerEvent.GetData().GetInt("owner")
 		GetInstance().ResetImageCaches(roomOwner)
 	End Function
 End Type
 
 Function GetRoomBoard:TRoomBoard()
-	return TRoomBoard.GetInstance()
+	Return TRoomBoard.GetInstance()
 End Function
 
 
@@ -486,46 +503,46 @@ End Function
 Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 	Field door:TRoomDoorBase
 	'bitmask describing which player numbers moved the sign since reset
-	Field movedByPlayers:int = 0
+	Field movedByPlayers:Int = 0
 	'playerID of the one who moved last
-	Field lastMoveByPlayerID:int = 0
-	Field isHovered:int = False
-	Field isClicked:int = False
-	Field imageCache:TSprite = null {nosave}
-	Field imageDraggedCache:TSprite	= null {nosave}
+	Field lastMoveByPlayerID:Int = 0
+	Field isHovered:Int = False
+	Field isClicked:Int = False
+	Field imageCache:TSprite = Null {nosave}
+	Field imageDraggedCache:TSprite	= Null {nosave}
 
 
-	Global imageBaseName:string = "gfx_roomboard_sign_"
-	Global imageDraggedBaseName:string = "gfx_roomboard_sign_dragged_"
+	Global imageBaseName:String = "gfx_roomboard_sign_"
+	Global imageDraggedBaseName:String = "gfx_roomboard_sign_dragged_"
 
 
-	Method GenerateGUID:string()
-		return "roomboardsign-"+id
+	Method GenerateGUID:String()
+		Return "roomboardsign-"+id
 	End Method
 
 
 	Method Init:TRoomBoardSign(roomDoor:TRoomDoorBase)
-		if not roomDoor then return Null
+		If Not roomDoor Then Return Null
 
 		'local tmpImage:TSprite = GetSpriteFromRegistry(imageBaseName + Max(0, roomDoor.GetOwner()))
 		'this base image is already loaded on sign creation
-		local tmpImage:TSprite = GetSpriteFromRegistry("gfx_roomboard_sign_base")
+		Local tmpImage:TSprite = GetSpriteFromRegistry("gfx_roomboard_sign_base")
 		door = roomDoor
 		dragable = 1
 
 		Local y:Int = GetRoomBoard().GetFloorY(door.onFloor)
-		local x:Int = GetRoomBoard().GetSlotX(door.doorSlot)
+		Local x:Int = GetRoomBoard().GetSlotX(door.doorSlot)
 
-		OrigPos = new TVec2D.Init(x, y)
-		StartPos = new TVec2D.Init(x, y)
-		rect = new TRectangle.Init(x, y, tmpImage.area.GetW(), tmpImage.area.GetH() - 1)
+		OrigPos = New TVec2D.Init(x, y)
+		StartPos = New TVec2D.Init(x, y)
+		rect = New TRectangle.Init(x, y, tmpImage.area.GetW(), tmpImage.area.GetH() - 1)
 
-		Return self
+		Return Self
 	End Method
 
 
 	Method CopyFrom:TRoomBoardSign(other:TRoomBoardSign)
-		if not other then return self
+		If Not other Then Return Self
 
 		dragable = other.dragable
 		OrigPos = other.OrigPos.Copy()
@@ -540,55 +557,64 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 		imageCache = other.imageCache
 		imageDraggedCache = other.imageDraggedCache
 
-		return self
+		Return Self
 	End Method
 
 
 	Method Copy:TRoomBoardSign()
-		return new TRoomBoardSign.CopyFrom(self)
+		Return New TRoomBoardSign.CopyFrom(Self)
 	End Method
 
 
-	Method IsAtOriginalPosition:int() {_exposeToLua}
-		if GetSlot() <> GetOriginalSlot() then return False
-		if GetFloor() <> GetOriginalFloor() then return False
-
-		return True
+	Method Compare:Int(otherObject:Object)
+		Local s:TRoomBoardSign = TRoomBoardSign(otherObject)
+		If s
+			Return (dragged * 100)-(s.dragged * 100)
+		EndIf
+		Return Super.Compare(otherObject)
 	End Method
 
 
-	Method GetOwner:int() {_exposeToLua}
-		return door.GetOwner()
+	Method IsAtOriginalPosition:Int() {_exposeToLua}
+		If GetSlot() <> GetOriginalSlot() Then Return False
+		If GetFloor() <> GetOriginalFloor() Then Return False
+
+		Return True
 	End Method
 
 
-	Method GetOwnerName:string() {_exposeToLua}
-		return door.GetOwnerName()
+	Method GetOwner:Int() {_exposeToLua}
+		Return door.GetOwner()
 	End Method
 
 
-	Method GetSlot:int() {_exposeToLua}
-		return GetRoomBoard().GetSlot(StartPos.GetX())
+	Method GetOwnerName:String() {_exposeToLua}
+		Return door.GetOwnerName()
 	End Method
 
 
-	Method GetFloor:int() {_exposeToLua}
-		return GetRoomBoard().GetFloor(StartPos.GetY())
+	Method GetSlot:Int() {_exposeToLua}
+		Return GetRoomBoard().GetSlot(StartPos.GetX())
 	End Method
 
 
-	Method GetOriginalSlot:int() {_exposeToLua}
-		return door.doorSlot
+	Method GetFloor:Int() {_exposeToLua}
+		Return GetRoomBoard().GetFloor(StartPos.GetY())
 	End Method
 
 
-	Method GetOriginalFloor:int() {_exposeToLua}
-		return door.onFloor
+	Method GetOriginalSlot:Int() {_exposeToLua}
+		Return door.doorSlot
 	End Method
 
 
-	Method GetRoomId:int() {_exposeToLua}
-		return door.roomID
+	Method GetOriginalFloor:Int() {_exposeToLua}
+		Return door.onFloor
+	End Method
+
+
+	Method GetRoomId:Int() {_exposeToLua}
+		Return door.roomID
 	End Method
 
 
@@ -605,34 +631,25 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 		lastMoveByPlayerID = 0
 		movedByPlayers = 0
 
-		local roomBase:TRoomBase = GetRoomBase(door.roomID)
-		if roomBase
+		Local roomBase:TRoomBase = GetRoomBase(door.roomID)
+		If roomBase
 			roomBase.roomSignMovedByPlayers = movedByPlayers
 			roomBase.roomSignLastMoveByPlayerID = lastMoveByPlayerID
-		endif
+		EndIf
 	End Method
 
 
-	Method MarkMoved(playerID:int = 0)
+	Method MarkMoved(playerID:Int = 0)
 		'ensure "2 ^ (i-1)" does not result in a ":double"!
-		Local playerBitmaskValue:Int = 1 shl (playerID-1)  ' = 2^(playerID-1)
+		Local playerBitmaskValue:Int = 1 Shl (playerID-1)  ' = 2^(playerID-1)
 		movedByPlayers :| playerBitmaskValue
 		lastMoveByPlayerID = playerID
 
-		local roomBase:TRoomBase = GetRoomBase(door.roomID)
-		if roomBase
+		Local roomBase:TRoomBase = GetRoomBase(door.roomID)
+		If roomBase
 			roomBase.roomSignMovedByPlayers = movedByPlayers
 			roomBase.roomSignLastMoveByPlayerID = lastMoveByPlayerID
-		endif
-	End Method
-
-
-	Method Compare:Int(otherObject:Object)
-		Local s:TRoomBoardSign = TRoomBoardSign(otherObject)
-		If s
-			Return (dragged * 100)-(s.dragged * 100)
 		EndIf
-		return Super.Compare(otherObject)
 	End Method
 
 
@@ -645,20 +662,18 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 		dragable=1  'normal
 
 		If dragged = 1
-			If GetRoomBoard().AdditionallyDragged > 0 Then SetAlpha 1.0 - 1.0/GetRoomBoard().AdditionallyDragged * 0.25
 			'refresh cache if needed
-			If not imageDraggedCache
+			If Not imageDraggedCache
 				imageDraggedCache = GenerateCacheImage( GetSpriteFromRegistry(imageDraggedBaseName + Max(0, door.GetOwner())) )
-			Endif
+			EndIf
 			imageDraggedCache.Draw(rect.GetX(),rect.GetY())
-			If GetRoomBoard().AdditionallyDragged > 0 Then SetAlpha 1.0
 		Else
 			'refresh cache if needed
-			If not imageCache
+			If Not imageCache
 				imageCache = GenerateCacheImage( GetSpriteFromRegistry(imageBaseName + Max(0, door.GetOwner())) )
-			Endif
+			EndIf
 			'slightly tint switched signs
-			if not IsAtOriginalPosition()
+			If Not IsAtOriginalPosition()
 				SetColor 255,245,230
 				imageCache.Draw(rect.GetX(),rect.GetY())
 				SetColor(oldCol)
@@ -666,13 +681,13 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 				imageCache.Draw(rect.GetX(),rect.GetY())
 			EndIf
 
-			if isHovered
+			If isHovered
 				SetBlend LightBlend
 				SetAlpha oldColA * 0.20
 				SetColor 255, 240, 180
 				imageCache.Draw(rect.GetX(),rect.GetY())
 				SetBlend AlphaBlend
-			endif
+			EndIf
 		EndIf
 		SetColor( oldCol )
 		SetAlpha( oldColA )
@@ -681,16 +696,16 @@ Type TRoomBoardSign Extends TBlockMoveable {_exposeToLua="selected"}
 
 	'generates an image containing background + text on it
 	Method GenerateCacheImage:TSprite(background:TSprite)
-		local newImage:Timage = background.GetImageCopy()
+		Local newImage:TImage = background.GetImageCopy()
 		Local font:TBitmapFont = GetBitmapFont("Default",10, BOLDFONT)
 		TBitmapFont.setRenderTarget(newImage)
-		if door.GetOwner() > 0
-			font.DrawBox(door.GetOwnerName(), 22, 2, 150,18, sALIGN_LEFT_TOP, new SColor8(50,50,50), EDrawTextEffect.GLOW, 0.20)
-		else
-			font.DrawBox(door.GetOwnerName(), 22, 2, 150,18, sALIGN_LEFT_TOP, new SColor8(100,100,100), EDrawTextEffect.GLOW, 0.20)
-		endif
-		TBitmapFont.setRenderTarget(null)
+		If door.GetOwner() > 0
+			font.DrawBox(door.GetOwnerName(), 22, 2, 150,18, sALIGN_LEFT_TOP, New SColor8(50,50,50), EDrawTextEffect.GLOW, 0.20)
+		Else
+			font.DrawBox(door.GetOwnerName(), 22, 2, 150,18, sALIGN_LEFT_TOP, New SColor8(100,100,100), EDrawTextEffect.GLOW, 0.20)
+		EndIf
+		TBitmapFont.setRenderTarget(Null)
 
-		return new TSprite.InitFromImage(newImage, "tempCacheImage")
+		Return New TSprite.InitFromImage(newImage, "tempCacheImage")
 	End Method
 End Type

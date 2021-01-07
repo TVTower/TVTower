@@ -72,7 +72,7 @@ Type RoomHandler_Roomboard extends TRoomHandler
 		'only pay attention to players
 		if figure.playerID
 			'roomboard left without animation as soon as something dragged but leave forced
-			If GetRoomBoard().AdditionallyDragged > 0
+			If GetRoomBoard().draggedSign
 				triggerEvent.setVeto()
 				return FALSE
 			endif
