@@ -179,14 +179,16 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 		local audienceResult:TAudienceResult = TAudienceResult(audienceData)
 		Local earn:Int = audienceResult.Audience.GetTotalSum() * contract.GetPerViewerRevenue()
 		if earn > 0
-			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial ~q"+GetTitle()+"~q sent by player "+owner+", earned "+earn+CURRENCYSIGN+" with an audience of " + audienceResult.Audience.GetTotalSum(), LOG_DEBUG)
+			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial ~q"+GetTitle()+"~q sent by player "+owner+", earned "+earn+CURRENCYSIGN+" with an audience of " + audienceResult.Audience.GetTotalSum() +". CPV="+contract.GetPerViewerRevenue() , LOG_DEBUG)
 			GetPlayerFinance(owner).EarnInfomercialRevenue(earn, contract)
 		elseif earn = 0
-			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial ~q"+GetTitle()+"~q sent by player "+owner+", earned nothing with an audience of " + audienceResult.Audience.GetTotalSum(), LOG_DEBUG)
+			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial ~q"+GetTitle()+"~q sent by player "+owner+", earned nothing with an audience of " + audienceResult.Audience.GetTotalSum() +". CPV="+contract.GetPerViewerRevenue(), LOG_DEBUG)
 			'also "earn" 0 Euro - so it is listed in the financial history
 			GetPlayerFinance(owner).EarnInfomercialRevenue(earn, contract)
 		else
-			Notify "FinishBroadcastingAsProgramme: earn value is negative: "+earn+". Ad: "+GetTitle()+" (player: "+owner+")."
+			DebugStop
+			Notify "FinishBroadcastingAsProgramme: earn value is negative: "+earn+". Ad: "+GetTitle()+" (player: "+owner+"). audienceTotalSum=" + audienceResult.Audience.GetTotalSum() +"  perVieweRevenue="+contract.GetPerViewerRevenue()
+			TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "earn value is negative: "+earn+". Ad: "+GetTitle()+" (player: "+owner+"). audienceTotalSum=" + audienceResult.Audience.GetTotalSum() +"  perVieweRevenue="+contract.GetPerViewerRevenue(), LOG_DEBUG)
 		endif
 		'adjust topicality relative to possible audience
 		contract.base.CutInfomercialTopicality(GetInfomercialTopicalityCutModifier( audienceResult.GetWholeMarketAudienceQuotePercentage()))
