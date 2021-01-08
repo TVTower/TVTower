@@ -251,6 +251,11 @@ Type TIngameHelpWindow
 	End Method
 	
 	
+	Method Close:Int()
+		modalDialogue.Close()
+	End Method
+	
+	
 	Function onClickCallback_ShowManual:Int(index:Int, sender:TGUIObject)
 		IngameHelpWindowCollection.currentIngameHelpWindowLocked = False
 '		IngameHelpWindowCollection.currentIngameHelpWindow.Close()
@@ -326,12 +331,20 @@ Type TIngameHelpWindow
 				if GuiManager.GetFocus() = guiTextArea
 					'do not allow another ESC-press for X ms
 					KeyManager.blockKey(KEY_ESCAPE, 250)
-					modalDialogue.Close()
+					Close()
 				EndIf
 			endif
 
+			'block right clicks?
 			'no right clicking allowed as long as "help window" is active
-			MouseManager.SetClickHandled(2)
+			'MouseManager.SetClickHandled(2)
+
+			'or just allow "passthru" right clicks but in addition close
+			'the window
+			If MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1)
+				Close()
+				'MouseManager.SetClickHandled(2)
+			EndIf
 		EndIf
 	End Method
 
