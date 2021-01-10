@@ -157,12 +157,12 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 '			GetBroadcastInformationProvider().SetInfomercialAired(licence.owner, GetBroadcastInformationProvider().GetInfomercialAired(licence.owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
 
 			'inform others
-			EventManager.triggerEvent(TEventSimple.Create("broadcast.advertisement.FinishBroadcastingAsProgramme", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+			TriggerBaseEvent(GameEventKeys.Broadcast_Advertisement_FinishBroadcastingAsProgramme, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
 		elseif usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
 			'nothing happening - ads get paid on "beginBroadcasting"
 
 			'inform others
-			EventManager.triggerEvent(TEventSimple.Create("broadcast.advertisement.FinishBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+			TriggerBaseEvent(GameEventKeys.Broadcast_Advertisement_FinishBroadcasting, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
 
 			contract.base.SetTimesBroadcasted( contract.base.GetTimesBroadcasted(owner) + 1, owner )
 		endif

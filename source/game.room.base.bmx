@@ -9,6 +9,7 @@ Import "game.building.buildingtime.bmx"
 Import "game.gamerules.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx"
+Import "game.gameeventkeys.bmx"
 Import "game.player.difficulty.bmx"
 
 
@@ -397,8 +398,8 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		rentalChangeTime = GetWorldTime().GetTimeGone()
 		self.rent = rent
 		rentalTimes :+ 1
-
-		EventManager.triggerEvent( TEventSimple.Create("room.onBeginRental", New TData.AddString("roomGUID", GetGUID() ).AddNumber("owner", newOwner).AddNumber("oldOwner", oldOwner), self) )
+		
+		TriggerBaseEvent(GameEventKeys.Room_OnBeginRental, New TData.AddString("roomGUID", GetGUID() ).AddNumber("owner", newOwner).AddNumber("oldOwner", oldOwner), self)
 
 		return True
 	End Method
@@ -412,7 +413,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		SetRented(False)
 		rentalChangeTime = GetWorldTime().GetTimeGone()
 
-		EventManager.triggerEvent( TEventSimple.Create("room.onCancelRental", New TData.AddString("roomGUID", GetGUID() ).AddNumber("owner", owner).AddNumber("oldOwner", oldOwner), self) )
+		TriggerBaseEvent(GameEventKeys.Room_OnCancelRental, New TData.AddString("roomGUID", GetGUID() ).AddNumber("owner", owner).AddNumber("oldOwner", oldOwner), self)
 
 		return True
 	End Method
@@ -462,11 +463,11 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 		'inform others
 		if blockedState & BLOCKEDSTATE_BOMB > 0
-			EventManager.triggerEvent( TEventSimple.Create("room.onBombExplosion", New TData.AddString("roomGUID", GetGUID()).AddNumber("roomSignMovedByPlayers", roomSignMovedByPlayers).AddNumber("roomSignLastMoveByPlayerID", roomSignLastMoveByPlayerID), self) )
+			TriggerBaseEvent(GameEventKeys.Room_OnBombExplosion, New TData.AddString("roomGUID", GetGUID()).AddNumber("roomSignMovedByPlayers", roomSignMovedByPlayers).AddNumber("roomSignLastMoveByPlayerID", roomSignLastMoveByPlayerID), self)
 		elseif blockedState & BLOCKEDSTATE_MARSHAL > 0
-			EventManager.triggerEvent( TEventSimple.Create("room.onMarshalVisit", New TData.AddString("roomGUID", GetGUID()), self) )
+			TriggerBaseEvent(GameEventKeys.Room_OnMarshalVisit, New TData.AddString("roomGUID", GetGUID()), self)
 		elseif blockedState & BLOCKEDSTATE_RENOVATION > 0
-			EventManager.triggerEvent( TEventSimple.Create("room.onRenovation", New TData.AddString("roomGUID", GetGUID()), self) )
+			TriggerBaseEvent(GameEventKeys.Room_OnRenovation, New TData.AddString("roomGUID", GetGUID()), self)
 		endif
 	End Method
 
@@ -499,7 +500,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		endif
 
 		'inform others
-		EventManager.triggerEvent( TEventSimple.Create("room.onSetBlocked", New TData.AddString("roomGUID", GetGUID() ).AddString("newBlockedState", newBlockedState).AddNumber("blockTimeInSeconds", blockTimeInSeconds), Null, self) )
+		TriggerBaseEvent(GameEventKeys.Room_OnSetBlocked, New TData.AddString("roomGUID", GetGUID() ).AddString("newBlockedState", newBlockedState).AddNumber("blockTimeInSeconds", blockTimeInSeconds), Null, self)
 	End Method
 
 
@@ -671,8 +672,8 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 
 	'change the owner of this room
 	Method ChangeOwner:int(newOwner:int)
-		local event:TEventSimple = TEventSimple.Create("room.onChangeOwner", new TData.AddNumber("oldOwner", self.owner).AddNumber("newOwner", newOwner), self)
-		EventManager.triggerEvent(event)
+		local event:TEventBase = TEventBase.Create(GameEventKeys.Room_OnChangeOwner, new TData.AddNumber("oldOwner", self.owner).AddNumber("newOwner", newOwner), self)
+		event.Trigger()
 
 		if not event.IsVeto()
 			'to auto-repair old savegames:
@@ -771,9 +772,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	'draw Room
 	Method Draw:int()
 		'emit event so custom draw functions can run
-		EventManager.triggerEvent( TEventSimple.Create("room.onDraw", null, self) )
-		'emit event limited to a specific room name
-		EventManager.triggerEvent( TEventSimple.Create("room."+self.GetName()+".onDraw", null, self) )
+		TriggerBaseEvent(GameEventKeys.Room_OnDraw, null, self)
 
 		return 0
 	End Method
@@ -802,9 +801,9 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	'animated gimmicks? draw within this function.
 	Method Update:Int()
 		'emit event so custom updaters can handle
-		EventManager.triggerEvent( TEventSimple.Create("room.onUpdate", null, self) )
+		TriggerBaseEvent(GameEventKeys.Room_OnUpdate, null, self)
 		'emit event after updating
-		EventManager.triggerEvent( TEventSimple.Create("room.onUpdateDone", null, self) )
+		TriggerBaseEvent(GameEventKeys.Room_OnUpdateDone, null, self)
 
 		return 0
 	End Method
@@ -1007,7 +1006,7 @@ End Rem
 		AddEnteringEntity(entity, door, GetBuildingTime().GetMillisecondsGone() + speed)
 
 		'inform others that we start going into the room (eg. for animations)
-		EventManager.triggerEvent( TEventSimple.Create("room.onBeginEnter", null, self, entity ) )
+		TriggerBaseEvent(GameEventKeys.Room_OnBeginEnter, null, self, entity )
 	End Method
 
 
@@ -1038,7 +1037,7 @@ End Rem
 		RemoveEnteringEntity(enteringEntity)
 
 		'inform that the figure finished entering the room - eg for AI-scripts
-		EventManager.triggerEvent( TEventSimple.Create("room.onFinishEnter", new TData.Add("door", enteringDoor), self, enteringEntity ) )
+		TriggerBaseEvent(GameEventKeys.Room_OnFinishEnter, new TData.Add("door", enteringDoor), self, enteringEntity )
 	End Method
 
 
@@ -1055,7 +1054,7 @@ End Rem
 		AddLeavingEntity(entity, door, GetBuildingTime().GetMillisecondsGone() + 2*speed)
 
 		'inform others that we start going out of that room (eg. for animations)
-		EventManager.triggerEvent( TEventSimple.Create("room.onBeginLeave", null, self, entity ) )
+		TriggerBaseEvent(GameEventKeys.Room_OnBeginLeave, null, self, entity )
 	End Method
 
 
@@ -1091,7 +1090,7 @@ End Rem
 
 		RemoveLeavingEntity(leavingEntity)
 
-		EventManager.triggerEvent( TEventSimple.Create("room.onFinishLeave", new TData.Add("door", leavingDoor), self, leavingEntity ) )
+		TriggerBaseEvent(GameEventKeys.Room_OnFinishLeave, new TData.Add("door", leavingDoor), self, leavingEntity )
 	End Method
 End Type
 

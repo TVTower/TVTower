@@ -136,13 +136,13 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			'GetBroadcastInformationProvider().SetProgrammeAired(owner, GetBroadcastInformationProvider().GetTrailerAired(owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
 
 			'inform others
-			EventManager.triggerEvent(TEventSimple.Create("broadcast.programme.FinishBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_FinishBroadcasting, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
 		'sent a trailer
 		ElseIf usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
 			FinishBroadcastingAsAdvertisement(day, hour, minute, audienceData)
 
 			'inform others
-			EventManager.triggerEvent(TEventSimple.Create("broadcast.programme.FinishBroadcastingAsAdvertisement", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_FinishBroadcastingAsAdvertisement, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
 '			GetBroadcastInformationProvider().SetTrailerAired(owner, GetBroadcastInformationProvider().GetTrailerAired(owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
 		Else
 			Self.SetState(Self.STATE_OK)
@@ -182,10 +182,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			licence.GetBroadcastStatistic().SetAudienceResult(owner, currentBlockBroadcasting, audienceResult)
 
 			'inform others
-			EventManager.triggerEvent(TEventSimple.Create("broadcast.programme.BeginBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_BeginBroadcasting, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
 		ElseIf usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
 			'inform others
-			EventManager.triggerEvent(TEventSimple.Create("broadcast.programme.BeginBroadcastingAsAdvertisement", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_BeginBroadcastingAsAdvertisement, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
 		EndIf
 	End Method
 

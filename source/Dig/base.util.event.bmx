@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2014 Ronny Otto, digidea.de
+	Copyright (C) 2002-2021 Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -56,9 +56,34 @@ Import Brl.ObjectList
 
 Global EventManager:TEventManager = New TEventManager
 
-Function TriggerSimpleEvent(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
-	EventManager.triggerEvent(TEventSimple.Create(trigger, data, sender, receiver, channel))
+Function TriggerBaseEvent(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	EventManager.triggerEvent(TEventBase.Create(trigger, data, sender, receiver, channel))
 End Function
+
+Function TriggerBaseEvent(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	EventManager.triggerEvent(TEventBase.Create(eventKey, data, sender, receiver, channel))
+End Function
+
+Function TriggerBaseEvent(eventKeyID:Int, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	EventManager.triggerEvent(TEventBase.Create(eventKeyID, data, sender, receiver, channel))
+End Function
+
+Function TriggerBaseEvent(event:TEventBase)
+	EventManager.triggerEvent(event)
+End Function
+
+Function GetEventKey:TEventKey(text:String, createIfMissing:Int)
+	Return EventManager.GetEventKey(text, createIfMissing)
+End Function
+
+Function GetEventKey:TEventKey(text:TLowerString, createIfMissing:Int)
+	Return EventManager.GetEventKey(text, createIfMissing)
+End Function
+
+Function GetEventKey:TEventKey(eventKeyID:Int)
+	Return EventManager.GetEventKey(eventKeyID)
+End Function
+
 
 
 
@@ -68,8 +93,16 @@ Type TEventManager
 	'current time
 	Field _ticks:Int = -1
 	'list of eventhandlers waiting for trigger
-	Field _listeners:TMap = CreateMap()
+	'"eventkey.id -> listener"
+	Field _listeners:TIntMap = new TIntMap()
 	Field eventsProcessed:Int = 0
+	Field listenersCalled:Int = 0
+	Field eventsTriggered:Int = 0
+
+	'storing TEventKey by "id" for lookup
+	Field eventKeyIDMap:TIntMap = new TIntMap
+	'storing TEventKey by "text" (TLowerstring) for fast lookup
+	Field eventKeyTextMap:TMap = new TMap
 
 
 	'returns how many update ticks are gone since start
@@ -103,6 +136,64 @@ Type TEventManager
 	End Method
 
 
+	Method GetEventKey:TEventKey(id:Int)
+		Return TEventKey(eventKeyIDMap.ValueForKey(id))
+	End Method
+
+	Method GetEventKey:TEventKey(text:String)
+		Return TEventKey(eventKeyTextMap.ValueForKey( new TLowerString(text) ))
+	End Method
+
+	Method GetEventKey:TEventKey(text:TLowerString)
+		Return TEventKey(eventKeyTextMap.ValueForKey( text ))
+	End Method
+
+	Method GetEventKey:TEventKey(text:String, createIfMissing:Int)
+		Local key:TEventKey = GetEventKey(text)
+		If Not key and createIfMissing Then key = GenerateEventKey(text)
+		Return key
+	End Method
+
+	Method GetEventKey:TEventKey(text:TLowerString, createIfMissing:Int)
+		Local key:TEventKey = GetEventKey(text)
+		If Not key and createIfMissing Then key = GenerateEventKey(text)
+		Return key
+	End Method
+
+
+	Method GenerateEventKey:TEventKey(text:String)
+		Return GenerateEventKey( new TLowerString(text) )
+	End Method
+
+
+	Method GenerateEventKey:TEventKey(text:TLowerString)
+		'we cannot simply use a "increasing ID" as the order of the
+		'added event keys is not the same everytime
+		'Objects could store eventKeys for less GarbageCollector heavy
+		'event triggering.
+		'So instead of "id = lastID + 1" we generate the hash
+		'from the string and use it
+		
+		'a string hash _could_ collide, so we check for that too
+		
+		
+	
+		local e:TEventKey = new TEventKey
+		e.id = text.ToString().ToLower().Hash()
+		e.text = text
+		
+		local existingKey:TEventKey = TEventKey(eventKeyIDMap.ValueForKey(e.id))
+		if existingKey then Throw "GenerateEventKey(): key for ID="+e.id+" already exists. Hash collision?"
+		
+		eventKeyTextMap.Insert(e.text, e)
+		eventKeyIDMap.Insert(e.id, e)
+		
+		Return e
+	End Method
+
+
+
+
 	Method GetRegisteredListenersCount:Int()
 		Local count:Int = 0
 		For Local list:TObjectList = EachIn _listeners.Values()
@@ -116,11 +207,25 @@ Type TEventManager
 
 	'add a new listener to a trigger
 	Method RegisterListener:TEventListenerBase(trigger:String, eventListener:TEventListenerBase)
-		trigger = Lower(trigger)
-		Local listeners:TObjectList = TObjectList(_listeners.ValueForKey(trigger))
+		'true = register key if needed
+		local eventKey:TEventKey = GetEventKey(trigger, True)
+		Return RegisterListener(eventKey, eventListener)
+	End Method
+
+	'add a new listener to a trigger
+	Method RegisterListener:TEventListenerBase(eventKeyID:Int, eventListener:TEventListenerBase)
+		local eventKey:TEventKey = GetEventKey(eventKeyID)
+		If not eventKey Then Throw "Cannot RegisterListener() with unknown eventKey. ID="+eventKeyID
+
+		Return RegisterListener(eventKey, eventListener)
+	End Method
+
+
+	Method RegisterListener:TEventListenerBase(eventKey:TEventKey, eventListener:TEventListenerBase)
+		Local listeners:TObjectList = TObjectList(_listeners.ValueForKey(eventKey.id))
 		If Not listeners
 			listeners = New TObjectList
-			_listeners.Insert(trigger, listeners)
+			_listeners.Insert(eventKey.id, listeners)
 		EndIf
 
 		listeners.AddLast(eventListener)
@@ -134,25 +239,50 @@ Type TEventManager
 		Return RegisterListener( trigger, TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
 	End Method
 
+	Method RegisterListenerFunction:TEventListenerBase( eventKey:TEventKey, _function:Int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
+		Return RegisterListener( eventKey, TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
+	End Method
+
+	Method RegisterListenerFunction:TEventListenerBase( eventKeyID:Int, _function:Int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
+		Return RegisterListener( eventKeyID, TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
+	End Method
+
 
 	'register a method getting called as soon as a trigger is fired
 	Method RegisterListenerMethod:TEventListenerBase( trigger:String, objectInstance:Object, methodName:String, limitToSender:Object=Null, limitToReceiver:Object=Null )
 		Return RegisterListener( trigger, TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
 	End Method
+	Method RegisterListenerMethod:TEventListenerBase( eventKey:TEventKey, objectInstance:Object, methodName:String, limitToSender:Object=Null, limitToReceiver:Object=Null )
+		Return RegisterListener( eventKey, TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
+	End Method
+	Method RegisterListenerMethod:TEventListenerBase( eventKeyID:Int, objectInstance:Object, methodName:String, limitToSender:Object=Null, limitToReceiver:Object=Null )
+		Return RegisterListener( eventKeyID, TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
+	End Method
 
 
-	'remove an event listener from a trigger
-	Method UnregisterListener(eventListener:TEventListenerBase, trigger:String = "")
-		'remove only for trigger
-		If trigger
-			Local listeners:TObjectList = TObjectList(_listeners.ValueForKey( Lower(trigger) ))
-			If listeners Then listeners.Remove(eventListener)
-		'remove from all
-		Else
-			For Local listeners:TObjectList = EachIn _listeners.Values()
-				listeners.Remove(eventListener)
-			Next
-		EndIf
+	'remove an event listener from all trigger
+	Method UnregisterListener(eventListener:TEventListenerBase)
+		For Local listeners:TObjectList = EachIn _listeners.Values()
+			listeners.Remove(eventListener)
+		Next
+	End Method
+
+	'remove an event listener from a specific trigger
+	Method UnregisterListener(eventListener:TEventListenerBase, trigger:TLowerString)
+		Local eventKey:TEventKey = GetEventKey(trigger)
+		If not eventKey Then Return
+
+		Local listeners:TObjectList = TObjectList(_listeners.ValueForKey( eventKey.id ))
+		If listeners Then listeners.Remove(eventListener)
+	End Method
+
+	'remove an event listener from a specific trigger
+	Method UnregisterListener(eventListener:TEventListenerBase, trigger:String)
+		Local eventKey:TEventKey = GetEventKey(trigger)
+		If not eventKey Then Return
+
+		Local listeners:TObjectList = TObjectList(_listeners.ValueForKey( eventKey.id ))
+		If listeners Then listeners.Remove(eventListener)
 	End Method
 
 
@@ -188,12 +318,15 @@ Type TEventManager
 
 	'removes all listeners listening to a specific trigger
 	Method UnregisterListenersByTrigger(trigger:String, limitReceiver:Object=Null, limitSender:Object=Null)
+		Local eventKey:TEventKey = GetEventKey(trigger)
+		If not eventKey Then Return
+
 		'remove all of that trigger
 		If Not limitReceiver And Not limitSender
-			_listeners.Remove( Lower(trigger) )
+			_listeners.Remove( eventKey.id )
 		'remove all defined by limits
 		Else
-			Local triggerListeners:TObjectList = TObjectList(_listeners.ValueForKey( Lower(trigger) ))
+			Local triggerListeners:TObjectList = TObjectList(_listeners.ValueForKey( eventKey.id ))
 			For Local listener:TEventListenerBase = EachIn triggerListeners
 				'if one of both limits hits, remove that listener
 				If ObjectsAreEqual(listener._limitToSender, limitSender) Or..
@@ -203,7 +336,12 @@ Type TEventManager
 			Next
 		EndIf
 	End Method
-
+	
+	
+	Method GetListeners:TObjectList(eventKeyID:Int)
+		Return TObjectList( _listeners.ValueForKey(eventKeyID) ) 
+	End Method
+	
 
 	'add a new event to the list
 	Method RegisterEvent(event:TEventBase)
@@ -223,12 +361,17 @@ Type TEventManager
 		EndIf
 		?
 
-		Local listeners:TObjectList = TObjectList(_listeners.ValueForKey( Lower(triggeredByEvent._trigger) ))
+		?debug
+		if not triggeredByEvent.GetEventKey() then Throw "triggering event without key"
+		?
+
+		Local listeners:TObjectList = GetListeners(triggeredByEvent.GetEventKeyID())
 		If listeners
 			'use a _copy_ of the original listeners to avoid concurrent
 			'modification within the loop
 			'listeners = listeners.Copy()
 			For Local listener:TEventListenerBase = EachIn listeners
+				listenersCalled :+ 1
 				listener.onEvent(triggeredByEvent)
 				'stop triggering the event if ONE of them vetos
 				If triggeredByEvent.isVeto() Then Exit
@@ -237,6 +380,7 @@ Type TEventManager
 
 		'run individual event method
 		If Not triggeredByEvent.IsVeto()
+			eventsTriggered :+ 1
 			triggeredByEvent.onEvent()
 		EndIf
 
@@ -274,10 +418,8 @@ Type TEventManager
 
 				' is it time for this event?
 				If event.getStartTime() <= _ticks
-					' only trigger event if _trigger is set
-					If event._trigger <> ""
-						triggerEvent( event )
-					EndIf
+					triggerEvent( event )
+
 					' remove from list
 					_events.RemoveFirst()
 					' another event may start on the same tick - check again
@@ -298,19 +440,22 @@ Type TEventManager
 		Next
 		Print "Event Listeners: " + listeners
 
-		For Local s:String = EachIn EventManager._listeners.Keys()
-			For Local elb:TEventListenerBase = EachIn TObjectList(EventManager._listeners.ValueForKey(s))
+		For Local intKey:TIntKey = EachIn EventManager._listeners.Keys()
+			local eventKey:TEventKey = GetEventKey(intKey.value)
+			if not eventKey then Throw "EventManager._listeners contain obsolete eventKeys for ID="+intKey.value
+			
+			For Local elb:TEventListenerBase = EachIn TObjectList( _listeners.ValueForKey(eventKey.id) )
 				If TEventListenerRunFunction(elb)
-					Print "KEY="+s+"  :: run function"
+					Print "KEY="+eventKey.text.ToString()+"  :: run function"
 				ElseIf TEventListenerRunMethod(elb)
 					Local tyd:TTypeId = TTypeId.ForObject(TEventListenerRunMethod(elb)._objectInstance)
 					If tyd
-						Print "KEY="+s+"  :: run method. instance "+ tyd.name()
+						Print "KEY="+eventKey.text.ToString()+"  :: run method. instance "+ tyd.name()
 					Else
-						Print "KEY="+s+"  :: run method. instance UNKNOWN"
+						Print "KEY="+eventKey.text.ToString()+"  :: run method. instance UNKNOWN"
 					EndIf
 				Else
-					Print "KEY="+s+"  :: run " + TTypeId.ForObject(elb).name()
+					Print "KEY="+eventKey.text.ToString()+"  :: run " + TTypeId.ForObject(elb).name()
 				EndIf
 			Next
 		Next
@@ -348,6 +493,21 @@ Type TEventManager
 
 		Return False
 	End Function
+End Type
+
+
+
+
+'each event key consists of a fast to retrieve numeric ID
+'and a textual representation (allowing for "wildcards") 
+Type TEventKey
+	Field id:Int
+	Field text:TLowerString
+
+private
+	'avoid outside world being able to create new event keys without Generate()
+	Method New()
+	End Method
 End Type
 
 
@@ -464,37 +624,82 @@ End Type
 
 
 Type TEventBase
+private
+	Field _eventKey:TEventKey
+	Field _data:Object
+public
 	Field _startTime:Int
-	Field _trigger:String = ""
 	Field _sender:Object = Null
 	Field _receiver:Object = Null
-	Field _data:Object
 	Field _status:Int = 0
 	Field _channel:Int = 0		'no special channel
+	
+	Global stubData:TData = new TData
 
 	Const STATUS_VETO:Int = 1
 	Const STATUS_ACCEPTED:Int = 2
 
+	Function Create:TEventBase(eventKey:TEventKey, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+		Local obj:TEventBase = New TEventBase
+		obj._eventKey = eventKey
+		obj._data = data
+		obj._sender = sender
+		obj._receiver = receiver
+		obj._channel = channel
+		obj.SetStartTime( EventManager.getTicks() )
+		Return obj
+	End Function
 
-	Method getStartTime:Int()
+
+	Function Create:TEventBase(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+		Local eventKey:TEventKey = EventManager.GetEventKey(trigger, True)
+		Return Create(eventKey, data, sender, receiver, channel)
+	End Function
+
+
+	Function Create:TEventBase(eventKeyID:Int, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+		Local eventKey:TEventKey = EventManager.GetEventKey(eventKeyID)
+		if not eventKey Then Throw "No eventKey found for ID="+eventKeyID
+
+		Return Create(eventKey, data, sender, receiver, channel)
+	End Function
+
+
+	Method GetEventKeyID:Int()
+		if _eventKey Then Return _eventKey.id
+		Return 0
+	End Method
+	
+	
+	Method SetEventKey(eventKey:TEventKey)
+		_eventKey = eventKey
+	End Method
+
+
+	Method GetEventKey:TEventKey()
+		Return _eventKey
+	End Method
+
+
+	Method GetStartTime:Int()
 		Return _startTime
 	End Method
 
 
-	Method setStartTime:TEventBase(newStartTime:Int=0)
+	Method SetStartTime:TEventBase(newStartTime:Int=0)
 		_startTime = newStartTime
 		Return Self
 	End Method
 
 
-	Method delayStart:TEventBase(delayMilliseconds:Int=0)
+	Method DelayStart:TEventBase(delayMilliseconds:Int=0)
 		_startTime :+ delayMilliseconds
 
 		Return Self
 	End Method
 
 
-	Method setStatus(status:Int, enable:Int=True)
+	Method SetStatus(status:Int, enable:Int=True)
 		If enable
 			_status :| status
 		Else
@@ -503,23 +708,23 @@ Type TEventBase
 	End Method
 
 
-	Method setVeto(bool:Int=True)
-		setStatus(STATUS_VETO, bool)
+	Method SetVeto(bool:Int=True)
+		SetStatus(STATUS_VETO, bool)
 	End Method
 
 
-	Method isVeto:Int()
-		Return (_status & STATUS_VETO)
+	Method IsVeto:Int()
+		Return (_status & STATUS_VETO) > 0
 	End Method
 
 
-	Method setAccepted(bool:Int=True)
-		setStatus(STATUS_ACCEPTED, bool)
+	Method SetAccepted(bool:Int=True)
+		SetStatus(STATUS_ACCEPTED, bool)
 	End Method
 
 
-	Method isAccepted:Int()
-		Return (_status & STATUS_ACCEPTED)
+	Method IsAccepted:Int()
+		Return (_status & STATUS_ACCEPTED) > 0
 	End Method
 
 
@@ -537,19 +742,29 @@ Type TEventBase
 	End Method
 
 
+	Method HasData:Int()
+		Return TData(_data) <> null
+	End Method
+
+
 	Method GetData:TData()
 		Return TData(_data)
 	End Method
 
 
-	Method getTrigger:String()
-		Return _trigger
+	Method SetData(data:TData)
+		_data = data
+	End Method
+
+
+	Method GetEventKeyText:TLowerString()
+		Return _eventKey.text
 	End Method
 
 
 	'returns wether trigger is the same
-	Method isTrigger:Int(trigger:String)
-		Return _trigger = Lower(trigger)
+	Method IsTrigger:Int(trigger:String)
+		Return _eventKey.text.Compare(trigger) = 0
 	End Method
 
 
@@ -580,19 +795,3 @@ Type TEventBase
 	End Method
 End Type
 
-
-
-
-Type TEventSimple Extends TEventBase
-	Function Create:TEventSimple(trigger:String, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
-		If data = Null Then data = New TData
-		Local obj:TEventSimple = New TEventSimple
-		obj._trigger	= Lower(trigger)
-		obj._data	 	= data
-		obj._sender		= sender
-		obj._receiver	= receiver
-		obj._channel	= channel
-		obj.setStartTime( EventManager.getTicks() )
-		Return obj
-	End Function
-End Type

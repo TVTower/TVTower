@@ -509,6 +509,9 @@ Type TPersonBase Extends TGameObject
 	
 	Global dataKeyPersonality:String = "personality"
 	Global dataKeyProduction:String = "production"
+
+	Global eventKey_PersonBase_OnStartProduction:TEventKey = EventManager.GetEventKey("PersonBase.OnStartProduction", True)
+	Global eventKey_PersonBase_OnFinishProduction:TEventKey = EventManager.GetEventKey("PersonBase.OnFinishProduction", True)
 	
 	
 	Method New()
@@ -785,7 +788,7 @@ Type TPersonBase Extends TGameObject
 
 		'emit event so eg. news agency could react to it ("bla has a new job")
 		'-> or to set them on the "scandals" list
-		EventManager.triggerEvent(TEventSimple.Create("personbase.onStartProduction", New TData.addNumber("programmeDataID", programmeDataID), Self))
+		TriggerBaseEvent(eventKey_PersonBase_OnStartProduction, New TData.addNumber("programmeDataID", programmeDataID), Self)
 	End Method
 
 
@@ -795,7 +798,7 @@ Type TPersonBase Extends TGameObject
 		EndIf
 
 		'emit event so eg. news agency could react to it ("bla goes on holiday")
-		EventManager.triggerEvent(TEventSimple.Create("personbase.onFinishProduction", New TData.addNumber("programmeDataID", programmeDataID), Self))
+		TriggerBaseEvent(eventKey_PersonBase_OnFinishProduction, New TData.addNumber("programmeDataID", programmeDataID), Self)
 	End Method
 	
 

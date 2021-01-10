@@ -107,7 +107,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		if not player then return False
 
 		'=== REACH TARGET EVENT ===
-		EventManager.triggerEvent( TEventSimple.Create("player.onReachTarget", null, player) )
+		TriggerBaseEvent(GameEventKeys.Player_OnReachTarget, null, player)
 
 		'inform player AI
 		If player.isLocalAI()
@@ -127,7 +127,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		local room:TRoomBase = GetRoomBaseCollection().Get(roomDoor.roomID)
 		if not room then return False
 
-		EventManager.triggerEvent( TEventSimple.Create("player.onReachRoom", null, player, room) )
+		TriggerBaseEvent(GameEventKeys.Player_OnReachRoom, null, player, room)
 
 		'inform player AI
 		If player.isLocalAI()
@@ -145,7 +145,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
 
-		EventManager.triggerEvent( TEventSimple.Create("player.onLeaveRoom", null, player, room) )
+		TriggerBaseEvent(GameEventKeys.Player_OnLeaveRoom, null, player, room)
 
 		'inform player AI
 		If player.isLocalAI()
@@ -216,7 +216,7 @@ Type TPlayerCollection extends TPlayerBaseCollection
 			endif
 		endif
 
-		EventManager.triggerEvent( TEventSimple.Create("player.onBeginEnterRoom", null, player, room) )
+		TriggerBaseEvent(GameEventKeys.Player_OnBeginEnterRoom, null, player, room)
 
 		'inform player AI
 '		If room and player.isLocalAI() then player.PlayerAI.CallOnBeginEnterRoom(room.id, TLuaFunctionsBase.RESULT_OK)
@@ -237,7 +237,8 @@ Type TPlayerCollection extends TPlayerBaseCollection
 		local door:object = triggerEvent.GetData().Get("door")
 		local room:TRoom = TRoom(triggerEvent.GetData().Get("room"))
 		if not room then return False
-		EventManager.triggerEvent( TEventSimple.Create("player.onEnterRoom", new TData.Add("door", door), player, room) )
+		
+		TriggerBaseEvent(GameEventKeys.Player_OnEnterRoom, new TData.Add("door", door), player, room)
 
 	 	'inform player AI that figure entered a room
 '	 	If player.isLocalAI() Then player.PlayerAI.CallOnEnterRoom(room.id)
@@ -485,7 +486,7 @@ endrem
 
 	Method SetNewsAbonnement:int(genre:Int, level:Int, sendToNetwork:Int = True) {_exposeToLua}
 		If super.SetNewsAbonnement(genre, level, sendToNetwork)
-			EventManager.triggerEvent( TEventSimple.Create("player.SetNewsAbonnement", new TData.AddNumber("genre", genre).AddNumber("level", level).AddNumber("sendToNetwork", sendToNetwork), self) )
+			TriggerBaseEvent(GameEventKeys.Player_SetNewsAbonnement, new TData.AddNumber("genre", genre).AddNumber("level", level).AddNumber("sendToNetwork", sendToNetwork), self)
 
 			return True
 		EndIf

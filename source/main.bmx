@@ -142,7 +142,7 @@ Include "game.menu.escapemenu.bmx"
 
 '===== Globals =====
 VersionDate = LoadText("incbin::source/version.txt").Trim()
-VersionString = "v0.6.2-dev Build ~q" + VersionDate+"~q"
+VersionString = "v0.7.0 Build ~q" + VersionDate+"~q"
 CopyrightString = "by Ronny Otto & Team"
 
 Global APP_NAME:String = "TVTower"
@@ -158,7 +158,7 @@ Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceColle
 
 Global debugCreationTime:Int = MilliSecs()
 Global printDebugStats:Int = True
-Global collectDebugStats:Int = False
+Global collectDebugStats:Int = True
 
 
 '==== Initialize ====
@@ -562,7 +562,7 @@ Type TApp
 		config.Add("language", languageCode)
 
 		'inform others - so eg. buttons can re-localize
-		EventManager.triggerEvent(TEventSimple.Create("Language.onSetLanguage", New TData.Add("languageCode", languageCode), Self))
+		TriggerBaseEvent(GameEventKeys.App_OnSetLanguage, New TData.Add("languageCode", languageCode), Self)
 		Return True
 	End Method
 
@@ -571,9 +571,9 @@ Type TApp
 		AppEvents.Init()
 
 		'systemupdate is called from within "update" (lower priority updates)
-		EventManager.registerListenerFunction("App.onLowPriorityUpdate", AppEvents.onLowPriorityUpdate )
+		EventManager.registerListenerFunction(GameEventKeys.App_OnLowPriorityUpdate, AppEvents.onLowPriorityUpdate )
 		'so we could create special fonts and other things
-		EventManager.triggerEvent( TEventSimple.Create("App.onStart") )
+		TriggerBaseEvent(GameEventKeys.App_OnStart)
 
 		'from now on we are no longer interested in loaded elements
 		'as we are no longer in the loading screen (-> silent loading)
@@ -622,7 +622,7 @@ Type TApp
 		TProfiler.Enter(_profilerKey_Update)
 		'every 3rd update do a low priority update
 		If GetDeltaTimer().timesUpdated Mod 3 = 0
-			EventManager.triggerEvent( TEventSimple.Create("App.onLowPriorityUpdate",Null) )
+			TriggerBaseEvent(GameEventKeys.App_OnLowPriorityUpdate)
 		EndIf
 
 		TProfiler.Enter(_profilerKey_RessourceLoader)
@@ -1539,8 +1539,11 @@ endrem
 		textX:+ Max(50, bf.DrawSimple("FPS: "+GetDeltaTimer().currentFps, textX, 0).x)
 		textX:+ Max(50, bf.DrawSimple("UPS: " + Int(GetDeltaTimer().currentUps), textX,0).x)
 	'ron|gc
-	'	textX:+ Max(40, bf.DrawSimple("GC: " + (GCMemAlloced()/1024) +" Kb", textX,0).x)
-	'	textX:+ Max(40, bf.DrawSimple("  " + bbGCAllocCount+"/s", textX,0).x)
+		textX:+ Max(40, bf.DrawSimple("GC: " + (GCMemAlloced()/1024) +" Kb", textX,0).x)
+		textX:+ Max(40, bf.DrawSimple("  " + bbGCAllocCount+"/s", textX,0).x)
+
+		'textX:+ Max(120, bf.DrawSimple("ev: " + EventManager.eventsTriggered + "listeners: " + EventManager.listenersCalled, textX,0).x)
+
 rem
 		local soloudDriver:TSoloudAudioDriver = TSoloudAudioDriver(GetAudioDriver())
 		if soloudDriver
@@ -2828,7 +2831,7 @@ Type TSaveGame Extends TGameState
 		'=== LOAD SAVED GAME ===
 		'tell everybody we start loading (eg. for unregistering objects before)
 		'payload is saveName
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginLoad", New TData.addString("saveName", saveName)))
+		TriggerBaseEvent(GameEventKeys.SaveGame_OnBeginLoad, New TData.addString("saveName", saveName))
 		'load savegame data into game object
 		saveGame.RestoreGameData()
 
@@ -2849,7 +2852,7 @@ Type TSaveGame Extends TGameState
 
 		'tell everybody we finished loading (eg. for clearing GUI-lists)
 		'payload is saveName and saveGame-object
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
+		TriggerBaseEvent(GameEventKeys.SaveGame_OnLoad, New TData.addString("saveName", saveName).add("saveGame", saveGame))
 
 		If not GetGame().GetObservedFigure() or GetGame().GetObservedFigure() = GetPlayer().GetFigure()
 			'only set the screen if the figure is in this room ... this
@@ -2918,7 +2921,7 @@ Local t:Int = MilliSecs()
 		Local saveGame:TSaveGame = New TSaveGame
 		'tell everybody we start saving
 		'payload is saveName
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginSave", New TData.addString("saveName", saveName)))
+		TriggerBaseEvent(GameEventKeys.SaveGame_OnBeginSave, New TData.addString("saveName", saveName))
 
 		'assign "initial" version information
 		if not GameConfig.savegame_initialBuildDate then GameConfig.savegame_initialBuildDate = VersionDate
@@ -2953,7 +2956,7 @@ Local t:Int = MilliSecs()
 
 		'tell everybody we finished saving
 		'payload is saveName and saveGame-object
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnSave", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
+		TriggerBaseEvent(GameEventKeys.SaveGame_OnSave, New TData.addString("saveName", saveName).add("saveGame", saveGame))
 		Print "saving took " + (MilliSecs() - t) + "ms."
 		'close message window
 		If messageWindow Then messageWindow.Close()
@@ -3842,7 +3845,7 @@ Type GameEvents
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnMinute", PlayersOnMinute) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnDay", PlayersOnDay) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnBegin", PlayersOnBeginGame) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("Time.OnSecond", Time_OnSecond) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnRealTimeSecond", PlayersOnRealTimeSecond) ]
 
 		_eventListeners :+ [ EventManager.registerListenerFunction("Game.SetPlayerBankruptBegin", PlayerOnSetBankrupt) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", PlayerFinanceOnChangeMoney) ]
@@ -4447,7 +4450,7 @@ Type GameEvents
 	End Function
 
 
-	Function Time_OnSecond:Int(triggerEvent:TEventBase)
+	Function PlayersOnRealTimeSecond:Int(triggerEvent:TEventBase)
 		'only AI handling: only gameleader interested
 		If Not GetGame().isGameLeader() Then Return False
 
@@ -5595,14 +5598,14 @@ Type GameEvents
 					Local confiscateProgramme:Int = RandRange(0,100) < 25
 
 					If confiscateProgramme
-						EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStartConfiscateProgramme", New TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player))
+						TriggerBaseEvent(GameEventKeys.PublicAuthorities_OnStartConfiscateProgramme, New TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player)
 
 						'Send out first marshal - Mr. Czwink or Mr. Czwank
 						TFigureMarshal(GetGame().marshals[randRange(0,1)]).AddConfiscationJob(currentProgramme.licence.GetGUID())
 					EndIf
 
 					'emit event (eg.for ingame toastmessages)
-					EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStopXRatedBroadcast",Null , currentProgramme, player))
+					TriggerBaseEvent(GameEventKeys.PublicAuthorities_OnStopXRatedBroadcast, Null, currentProgramme, player)
 				Next
 			EndIf
 		EndIf
@@ -5618,30 +5621,30 @@ Type GameEvents
 			'send out an event for "block types" to begin/finish now
 			'this enables to run things before manipulation like
 			'topicality decrease takes place
-			Local evKey:String = ""
+			Local evKey:TEventKey
 			Local evData:TData
 			Select minute
 				Case 0
-					evKey = "broadcasting.BeforeStartAllNewsShowBroadcasts"
+					evKey = GameEventKeys.Broadcasting_BeforeStartAllNewsShowBroadcasts
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.NEWSSHOW) )
 				Case 4
-					evKey = "broadcasting.BeforeFinishAllNewsShowBroadcasts"
+					evKey = GameEventKeys.Broadcasting_BeforeFinishAllNewsShowBroadcasts
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.NEWSSHOW) )
 				Case 5
-					evKey = "broadcasting.BeforeStartAllProgrammeBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_BeforeStartAllProgrammeBlockBroadcasts
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) )
 				Case 54
-					evKey = "broadcasting.BeforeFinishAllProgrammeBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_BeforeFinishAllProgrammeBlockBroadcasts
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) )
 				Case 55
-					evKey = "broadcasting.BeforeStartAllAdBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_BeforeStartAllAdBlockBroadcasts
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.ADVERTISEMENT) )
 				Case 59
-					evKey = "broadcasting.BeforeFinishAllAdBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_BeforeFinishAllAdBlockBroadcasts
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.ADVERTISEMENT) )
 			End Select
 			If evKey And evData
-				EventManager.triggerEvent(TEventSimple.Create(evKey, evData))
+				TriggerBaseEvent(evKey, evData)
 			EndIf
 
 
@@ -5663,23 +5666,23 @@ Type GameEvents
 			Next
 
 
-			evKey = ""
+			evKey = Null
 			Select minute
 				Case 0
-					evKey = "broadcasting.AfterStartAllNewsShowBroadcasts"
+					evKey = GameEventKeys.Broadcasting_AfterStartAllNewsShowBroadcasts
 				Case 4
-					evKey = "broadcasting.AfterFinishAllNewsShowBroadcasts"
+					evKey = GameEventKeys.Broadcasting_AfterFinishAllNewsShowBroadcasts
 				Case 5
-					evKey = "broadcasting.AfterStartAllProgrammeBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_AfterStartAllProgrammeBlockBroadcasts
 				Case 54
-					evKey = "broadcasting.AfterFinishAllProgrammeBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_AfterFinishAllProgrammeBlockBroadcasts
 				Case 55
-					evKey = "broadcasting.AfterStartAllAdBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_AfterStartAllAdBlockBroadcasts
 				Case 59
-					evKey = "broadcasting.AfterFinishAllAdBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_AfterFinishAllAdBlockBroadcasts
 			End Select
 			If evKey And evData
-				EventManager.triggerEvent(TEventSimple.Create(evKey, evData))
+				TriggerBaseEvent(evKey, evData)
 			EndIf
 		EndIf
 
@@ -6677,12 +6680,12 @@ Function ShowApp:Int()
 End Function
 
 
-Global bbGCAllocCount:ULong = 0
+'Global bbGCAllocCount:ULong = 0
 ?bmxng
 'ron|gc
-'Extern
-'    Global bbGCAllocCount:ULong="bbGCAllocCount"
-'End Extern
+Extern
+    Global bbGCAllocCount:ULong="bbGCAllocCount"
+End Extern
 ?
 
 Function StartTVTower(start:Int=True)

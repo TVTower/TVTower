@@ -558,7 +558,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 					listAll.Remove(contract)
 
 					'emit event
-					EventManager.triggerEvent(TEventSimple.Create("adagency.removeAdContract", New TData.add("adcontract", contract), Self))
+					TriggerBaseEvent(GameEventKeys.Adagency_RemoveAdContract, New TData.add("adcontract", contract), Self)
 
 					foundContract = True
 				EndIf
@@ -595,7 +595,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 				lists[j][i] = contract
 				listAll.Addlast(contract)
 				'emit event
-				EventManager.triggerEvent(TEventSimple.Create("adagency.addAdContract", New TData.add("adcontract", contract), Self))
+				TriggerBaseEvent(GameEventKeys.Adagency_AddAdContract, New TData.add("adcontract", contract), Self)
 
 				Return True
 			Next
@@ -1054,7 +1054,7 @@ endrem
 					lists[j][i] = contract
 
 					'emit event
-					EventManager.triggerEvent(TEventSimple.Create("adagency.addAdContract", New TData.add("adcontract", contract), Self))
+					TriggerBaseEvent(GameEventKeys.Adagency_AddAdContract, New TData.add("adcontract", contract), Self)
 				EndIf
 			Next
 		Next
@@ -1212,7 +1212,7 @@ endrem
 					lists[j][i] = contract
 
 					'emit event
-					EventManager.triggerEvent(TEventSimple.Create("adagency.addAdContract", New TData.add("adcontract", contract), Self))
+					TriggerBaseEvent(GameEventKeys.Adagency_AddAdContract, New TData.add("adcontract", contract), Self)
 				EndIf
 			Next
 		Next

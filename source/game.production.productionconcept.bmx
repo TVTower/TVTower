@@ -195,7 +195,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 		ResetCache()
 
-		EventManager.triggerEvent( TEventSimple.Create("ProductionConcept.SetScript", new TData.Add("script", script), Self ) )
+		TriggerBaseEvent(GameEventKeys.ProductionConcept_SetScript, new TData.Add("script", script), Self )
 	End Method
 
 
@@ -221,7 +221,7 @@ Type TProductionConcept Extends TOwnedGameObject
 
 		ResetCache()
 
-		EventManager.triggerEvent( TEventSimple.Create("ProductionConcept.SetProductionCompany", new TData.Add("productionCompany", productionCompany), Self ) )
+		TriggerBaseEvent(GameEventKeys.ProductionConcept_SetProductionCompany, new TData.Add("productionCompany", productionCompany), Self )
 	End Method
 
 
@@ -360,7 +360,7 @@ Type TProductionConcept Extends TOwnedGameObject
 		castSympathy = 1.0
 		castSympathyCached = False
 
-		EventManager.triggerEvent( TEventSimple.Create("ProductionConcept.SetCast", new TData.AddNumber("castIndex", castIndex).Add("person", person), Self ) )
+		TriggerBaseEvent(GameEventKeys.ProductionConcept_SetCast, new TData.AddNumber("castIndex", castIndex).Add("person", person), Self )
 
 		return True
 	End Method
@@ -866,7 +866,7 @@ Type TProductionConcept Extends TOwnedGameObject
 		'maybe some limitation corrected the value
 		value = productionFocus.GetFocus(focusIndex)
 
-		EventManager.triggerEvent( TEventSimple.Create("ProductionConcept.SetProductionFocus", new TData.AddNumber("focusIndex", focusIndex).AddNumber("value", value), Self ) )
+		TriggerBaseEvent(GameEventKeys.ProductionConcept_SetProductionFocus, new TData.AddNumber("focusIndex", focusIndex).AddNumber("value", value), Self )
 
 		return True
 	End Method
@@ -1147,7 +1147,7 @@ Type TProductionFocusBase
 		endif
 
 		'emit event with corrected value (via GetFocus())
-		EventManager.triggerEvent( TEventSimple.Create("ProductionFocus.SetFocus", new TData.AddNumber("focusIndex", index).AddNumber("value", GetFocus(index)), Self ) )
+		TriggerBaseEvent(GameEventKeys.ProductionFocus_SetFocus, new TData.AddNumber("focusIndex", index).AddNumber("value", GetFocus(index)), Self )
 		return True
 	End Method
 

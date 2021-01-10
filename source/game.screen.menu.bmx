@@ -70,7 +70,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiAllPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, Int(playerBoxDimension.GetY() + 2 * panelGap))
 		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
 
-		local col:SColor8 = new SColor8(90, 90, 90)
+		Local col:SColor8 = New SColor8(90, 90, 90)
 		Local labelH:Int = GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT).GetHeight("Title")
 		guiGameTitleLabel = New TGUILabel.Create(New TVec2D.Init(0, 0), "", col, name)
 		guiGameTitle = New TGUIinput.Create(New TVec2D.Init(0, labelH), New TVec2D.Init(250, -1), "", 32, name)
@@ -126,7 +126,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiButtonsPanel = guiButtonsWindow.AddContentBox(0,0,-1,-1)
 
 		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
-		TGUIButton.SetTypeCaptionColor( new SColor8(75, 75, 75) )
+		TGUIButton.SetTypeCaptionColor( New SColor8(75, 75, 75) )
 
 		guiButtonStart = New TGUIButton.Create(New TVec2D.Init(0, 0), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
 		guiButtonBack = New TGUIButton.Create(New TVec2D.Init(0, guiButtonsPanel.GetContentScreenRect().GetH() - guiButtonStart.GetScreenRect().GetH()), New TVec2D.Init(guiButtonsPanel.GetContentScreenRect().GetW(), -1), "", name)
@@ -455,14 +455,13 @@ Type TScreen_GameSettings Extends TGameScreen
 
 	Method onChangeGameSettingsInputs(triggerEvent:TEventBase)
 		Local sender:TGUIObject = TGUIObject(triggerEvent.GetSender())
-		Local value:String = triggerEvent.GetData().getString("value")
 
 		'name or channel changed?
 		For Local i:Int = 0 To 3
 			If Not GetPlayerBase(i+1) Then Continue
 
-			If sender = guiPlayerNames[i] Then GetPlayerBase(i+1).Name = value
-			If sender = guiChannelNames[i] Then GetPlayerBase(i+1).channelName = value
+			If sender = guiPlayerNames[i] Then GetPlayerBase(i+1).Name = sender.GetValue()
+			If sender = guiChannelNames[i] Then GetPlayerBase(i+1).channelName = sender.GetValue()
 
 			If sender = guiDifficulty[i]
 				Local item:TGUIDropDownItem = TGUIDropDownItem(guiDifficulty[i].GetSelectedEntry())
@@ -474,8 +473,8 @@ Type TScreen_GameSettings Extends TGameScreen
 
 
 		If sender = guiGameSeed
-			Local valueNumeric:String = String(StringHelper.NumericFromString(value))
-			If value <> valueNumeric Then sender.SetValue(valueNumeric)
+			Local valueNumeric:String = String(StringHelper.NumericFromString( sender.GetValue() ))
+			If sender.GetValue() <> valueNumeric Then sender.SetValue(valueNumeric)
 			GetGameBase().SetRandomizerBase( Int(valueNumeric)  )
 		EndIf
 
@@ -556,12 +555,12 @@ endrem
 		Local slotPosX:Int = guiAllPlayersPanel.GetContentScreenRect().GetIntX()
 		Local colorRect:SRect
 		For Local i:Int = 1 To 4
-			colorRect = new SRect(slotPosX + 2, Int(guiChannelNames[i-1].GetContentScreenRect().GetY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
+			colorRect = New SRect(slotPosX + 2, Int(guiChannelNames[i-1].GetContentScreenRect().GetY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 
 			'draw colors
 			For Local pc:TPlayerColor = EachIn TPlayerColor.List
 				If pc.ownerID = 0
-					colorRect = new SRect(colorRect.x + colorRect.w, colorRect.y, colorRect.w, colorRect.h)
+					colorRect = New SRect(colorRect.x + colorRect.w, colorRect.y, colorRect.w, colorRect.h)
 					pc.SetRGB()
 					DrawRect(colorRect.x, colorRect.y, colorRect.w, colorRect.h)
 				EndIf
@@ -584,7 +583,7 @@ endrem
 				ElseIf GetPlayerBase(i).IsLocalHuman()
 					hint = "local player"
 				EndIf
-				GetBitMapFontManager().Get("default", 10).DrawSimple(hint, hintX, hintY, new SColor8(100, 100, 100))
+				GetBitMapFontManager().Get("default", 10).DrawSimple(hint, hintX, hintY, New SColor8(100, 100, 100))
 			EndIf
 
 			'move to next slot position
@@ -727,7 +726,7 @@ endrem
 						'only for unused colors
 						If pc.ownerID <> 0 Then Continue
 
-						colorRect = new SRect(colorRect.x + colorRect.w, colorRect.y, colorRect.w, colorRect.h)
+						colorRect = New SRect(colorRect.x + colorRect.w, colorRect.y, colorRect.w, colorRect.h)
 
 						'skip if outside of rect
 						If Not THelper.MouseIn(colorRect.x, colorRect.y, colorRect.w, colorRect.h) Then Continue
@@ -809,22 +808,22 @@ Function DrawMenuBackground(darkened:Int=False, drawLogo:Int = False)
 
 	If GetGameBase().IsGameState(TGameBase.STATE_MAINMENU)
 		SetColor 255,255,255
-		'GetBitmapFont("Default",13, BOLDFONT).DrawBlock("ACHTUNG neue Tastenkürzel:", 10,460, 300,20, Null,TColor.Create(140,75,75))
+		'GetBitmapFont("Default",13, BOLDFONT).DrawBlock("ACHTUNG neue TastenkÃ¼rzel:", 10,460, 300,20, Null,TColor.Create(140,75,75))
 		'GetBitmapFont("Default",12).DrawBlock("|b|[S]|/b| Schnellspeichern - nun mit |b|[F5]|/b|~n|b|[L]|/b| Schnellspeicherstand einladen - nun mit |b|[F8]|/b|.~nDamit sollten versehentliche Spielverluste durch Einladerei minimiert werden.", 10,480, 300,50, Null,TColor.Create(75,75,75))
 
 
-		Local defaultColor:SColor8 = new SColor8(75,75,140)
-		Local linkColor:SColor8 = new SColor8(60,60,120)
-		local offsetY:int = 0
+		Local defaultColor:SColor8 = New SColor8(75,75,140)
+		Local linkColor:SColor8 = New SColor8(60,60,120)
+		Local offsetY:Int = 0
 		offsetY :+ GetBitmapFont("Default",13, BOLDFONT).DrawBox("Wir brauchen Deine Hilfe!", 10,460 + offsetY, 300, -1, sALIGN_LEFT_TOP, defaultColor).y
 		offsetY :+ GetBitmapFont("Default",12).DrawBox("Beteilige Dich an Diskussionen rund um alle Spielelemente in TVTower.", 10,460 + offsetY, 300,-1, sALIGN_LEFT_TOP, defaultColor).y
 		offsetY :+ GetBitmapFont("Default",12, BOLDFONT).DrawBox("www.gamezworld.de/phpforum", 10,460 + offsetY, 500, -1, sALIGN_LEFT_TOP, linkColor).y
 		SetAlpha 0.5 * GetAlpha()
-		offsetY :+ GetBitmapFont("Default",11).DrawBox("(Keine Anmeldung notwendig)", 10,460 + offsetY, 500,20, sALIGN_LEFT_TOP, new SColor8(80,80,170)).y
+		offsetY :+ GetBitmapFont("Default",11).DrawBox("(Keine Anmeldung notwendig)", 10,460 + offsetY, 500,20, sALIGN_LEFT_TOP, New SColor8(80,80,170)).y
 		SetAlpha 2.0 * GetAlpha()
 
 
-		local bottomStartY:Int = GetGraphicsManager().GetHeight() - 100 - 10
+		Local bottomStartY:Int = GetGraphicsManager().GetHeight() - 100 - 10
 		offsetY = 0
 		offsetY :+ GetBitmapFont("Default",12, ITALICFONT).DrawBox(copyrightstring+", www.TVTower.org", 10, bottomStartY, 500, 100, sALIGN_LEFT_BOTTOM, linkColor).y
 		offsetY :+ GetBitmapFont("Default",12, ITALICFONT).DrawBox(versionstring, 10, bottomStartY - offsetY, 500, 100, sALIGN_LEFT_BOTTOM, defaultColor).y

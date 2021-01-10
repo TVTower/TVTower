@@ -90,7 +90,7 @@ Type TProgrammeLicenceCollection
 		licences.Insert(licence.GetID(), licence)
 		_GetLicencesGUID().Insert(licence.GetGUID(), licence)
 
-		EventManager.triggerEvent( TEventSimple.Create("ProgrammeLicenceCollection.onAddLicence", null, self, licence) )
+		TriggerBaseEvent(GameEventKeys.ProgrammeLicenceCollection_OnAddLicence, null, self, licence)
 		return True
 	End Method
 
@@ -734,7 +734,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 		Next
 
 		'inform others about a now unused licence
-		EventManager.triggerEvent( TEventSimple.Create("ProgrammeLicence.onGiveBackToLicencePool", null, self))
+		TriggerBaseEvent(GameEventKeys.ProgrammeLicence_OnGiveBackToLicencePool, null, self)
 
 		return True
 	End Method
@@ -833,7 +833,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 			maxTopicalityOnOwnerchange = GetMaxTopicality()
 
 			'inform others about the new owner of the licence
-			EventManager.triggerEvent( TEventSimple.Create("ProgrammeLicence.onSetOwner", new TData.AddNumber("newOwner", owner).AddNumber("oldOwner", self.owner), self))
+			TriggerBaseEvent(GameEventKeys.ProgrammeLicence_onSetOwner, new TData.AddNumber("newOwner", owner).AddNumber("oldOwner", self.owner), self)
 		endif
 
 		self.owner = owner

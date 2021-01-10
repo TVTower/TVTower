@@ -56,7 +56,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 	'override to inform contained news too
 	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		'inform others
-		EventManager.triggerEvent(TEventSimple.Create("broadcast.newsshow.BeforeBeginBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+		TriggerBaseEvent(GameEventKeys.Broadcast_Newsshow_BeforeBeginBroadcasting, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
 
 		Super.BeginBroadcasting(day, hour, minute, audienceData)
 
@@ -65,13 +65,13 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		Next
 
 		'inform others
-		EventManager.triggerEvent(TEventSimple.Create("broadcast.newsshow.BeginBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+		TriggerBaseEvent(GameEventKeys.Broadcast_Newsshow_BeginBroadcasting, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
 	End Method
 
 
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceData:object)
 		'inform others _before_ newsentries get adjusted!
-		EventManager.triggerEvent(TEventSimple.Create("broadcast.newsshow.BeforeFinishBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+		TriggerBaseEvent(GameEventKeys.Broadcast_Newsshow_BeforeFinishBroadcasting, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
 
 		Super.FinishBroadcasting(day, hour, minute, audienceData)
 
@@ -108,7 +108,7 @@ endif
 		Next
 
 		'inform others
-		EventManager.triggerEvent(TEventSimple.Create("broadcast.newsshow.FinishBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+		TriggerBaseEvent(GameEventKeys.Broadcast_Newsshow_FinishBroadcasting, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
 	End Method
 
 

@@ -101,7 +101,7 @@ Type TGUISelectList Extends TGUIListBase
 			Self.selectedEntry = entry
 			Self.selectedEntry.SetSelected(True)
 			'inform others: we successfully selected an item
-			EventManager.triggerEvent( TEventSimple.Create( "GUISelectList.onSelectEntry", New TData.Add("entry", entry) , Self ) )
+			TriggerBaseEvent(GUIEventKeys.GUISelectList_OnSelectEntry, New TData.Add("entry", entry) , Self )
 		EndIf
 	End Method
 

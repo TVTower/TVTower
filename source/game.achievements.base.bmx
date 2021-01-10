@@ -273,6 +273,9 @@ Type TAchievement Extends TAchievementBaseType
 	'cache
 	Field _rewards:TAchievementReward[] {nosave}
 	Field _tasks:TAchievementTask[] {nosave}
+	
+	Global eventKey_Achievement_OnComplete:TEventKey = EventManager.GetEventKey("Achievement.OnComplete", True)
+	Global eventKey_Achievement_OnFail:TEventKey = EventManager.GetEventKey("Achievement.OnFail", True)
 
 	Const FLAG_CANFAIL:int = 1
 	Const FLAG_EXCLUSIVEWINNER:int = 2
@@ -524,14 +527,14 @@ Type TAchievement Extends TAchievementBaseType
 
 
 	Method OnComplete:int(playerID:int, time:Long=0)
-		EventManager.triggerEvent(TEventSimple.Create("Achievement.OnComplete", New TData.addNumber("playerID", playerID).addNumber("time", time), Self))
+		TriggerBaseEvent(eventKey_Achievement_OnComplete, New TData.addNumber("playerID", playerID).addNumber("time", time), Self)
 '		print "  Achievement.OnComplete: "+playerID
 	End Method
 
 
 	'called if a one-time-chance-achievement fails
 	Method OnFail:int(playerID:int, time:Long=0)
-		EventManager.triggerEvent(TEventSimple.Create("Achievement.OnFail", New TData.addNumber("playerID", playerID).addNumber("time", time), Self))
+		TriggerBaseEvent(eventKey_Achievement_OnFail, New TData.addNumber("playerID", playerID).addNumber("time", time), Self)
 '		print "  Achievement.OnFail: "+playerID
 	End Method
 
@@ -677,6 +680,8 @@ Type TAchievementTask Extends TAchievementBaseType
 	Field timeLimit:Long = -1
 	Field eventListeners:TEventListenerBase[] {nosave}
 
+	Global eventKey_AchievementTask_OnComplete:TEventKey = EventManager.GetEventKey("AchievementTask.OnComplete", True)
+	Global eventKey_AchievementTask_OnFail:TEventKey = EventManager.GetEventKey("AchievementTask.OnFail", True)
 
 	'DO NOT DO THIS as this also would register listeners for the "creator"
 	'instances
@@ -785,14 +790,14 @@ Type TAchievementTask Extends TAchievementBaseType
 
 
 	Method OnComplete:int(playerID:int, time:Long)
-		EventManager.triggerEvent(TEventSimple.Create("AchievementTask.OnComplete", New TData.addNumber("playerID", playerID).addNumber("time", time), Self))
-		print " Task.OnComplete ("+GetGUID()+"): "+playerID
+		TriggerBaseEvent(eventKey_AchievementTask_OnComplete, New TData.addNumber("playerID", playerID).addNumber("time", time), Self)
+		'print " Task.OnComplete ("+GetGUID()+"): "+playerID
 	End Method
 
 
 	Method OnFail:int(playerID:int, time:Long)
-		EventManager.triggerEvent(TEventSimple.Create("AchievementTask.OnFail", New TData.addNumber("playerID", playerID).addNumber("time", time), Self))
-		print " Task.OnFail ("+GetGUID()+"): "+playerID
+		TriggerBaseEvent(eventKey_AchievementTask_OnFail, New TData.addNumber("playerID", playerID).addNumber("time", time), Self)
+		'print " Task.OnFail ("+GetGUID()+"): "+playerID
 	End Method
 
 
@@ -825,6 +830,9 @@ Type TAchievementReward Extends TAchievementBaseType
 
 	'players can only get this reward once in a game
 	Const FLAG_ONETIMEREWARD:int = 1
+	
+	Global eventKey_AchievementReward_OnBeginGiveToPlayer:TEventKey = EventManager.GetEventKey("AchievementReward.OnBeginGiveToPlayer", True)
+	Global eventKey_AchievementReward_OnGiveToPlayer:TEventKey = EventManager.GetEventKey("AchievementReward.OnGiveToPlayer", True)
 
 
 	Function CreateNewInstance:TAchievementReward()
@@ -852,12 +860,12 @@ Type TAchievementReward Extends TAchievementBaseType
 
 		rewardGiven[playerID-1] = time
 
-		EventManager.triggerEvent(TEventSimple.Create("AchievementReward.OnBeginGiveToPlayer", New TData.addNumber("playerID", playerID), Self))
+		TriggerBaseEvent(eventKey_AchievementReward_OnBeginGiveToPlayer, New TData.addNumber("playerID", playerID), Self)
 
 		if gameModifier then gameModifier.Run( GetGameModifierParams(playerID) )
 		CustomGiveToPlayer(playerID)
 
-		EventManager.triggerEvent(TEventSimple.Create("AchievementReward.OnGiveToPlayer", New TData.addNumber("playerID", playerID), Self))
+		TriggerBaseEvent(eventKey_AchievementReward_OnGiveToPlayer, New TData.addNumber("playerID", playerID), Self)
 
 		return True
 	End Method

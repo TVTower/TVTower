@@ -493,7 +493,7 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 		_eventListeners :+ [ EventManager.registerListenerMethod( "guiModalWindow.onClose", Self, "onConfirmOverwrite" ) ]
 
 		'localize texts
-		_eventListeners :+ [ EventManager.registerListenerMethod( "Language.onSetLanguage", Self, "onSetLanguage" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod( "App.onSetLanguage", Self, "onSetLanguage" ) ]
 
 		'(re-)localize
 		SetLanguage()

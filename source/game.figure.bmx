@@ -574,7 +574,7 @@ Type TFigure extends TFigureBase
 	 	inRoom = room
 
 		'inform others that room is changed
-		EventManager.triggerEvent( TEventSimple.Create("figure.SetInRoom", null, self, inroom) )
+		TriggerBaseEvent(GameEventKeys.Figure_SetInRoom, null, self, inroom)
 	End Method
 
 
@@ -600,7 +600,7 @@ Type TFigure extends TFigureBase
 		endif
 
 		'maybe someone is interested in this information
-		EventManager.triggerEvent( TEventSimple.Create("room.kickFigure", new TData.Add("figure", self).Add("door", door), GetInRoom() ) )
+		TriggerBaseEvent(GameEventKeys.Room_KickFigure, new TData.Add("figure", self).Add("door", door), GetInRoom())
 
 		LeaveRoom(True)
 		Return True
@@ -635,7 +635,7 @@ Type TFigure extends TFigureBase
 		'=== INFORM OTHERS ===
 		'inform that figure now begins entering the room
 		'(eg. for players informing the ai)
-		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
+		TriggerBaseEvent(GameEventKeys.Figure_OnEnterRoom, new TData.Add("room", room).Add("door", door) , self, room)
 
 		'Debug
 		'print "--------------------------------------------"
@@ -682,8 +682,8 @@ Type TFigure extends TFigureBase
 		endif
 
 		'ask if somebody is against going into the room
-		local event:TEventSimple = TEventSimple.Create("figure.onTryEnterRoom", new TData.Add("door", door) , self, room )
-		EventManager.triggerEvent(event)
+		local event:TEventBase = TEventBase.Create(GameEventKeys.Figure_OnTryEnterRoom, new TData.Add("door", door) , self, room )
+		event.Trigger()
 		'stop entering
 		if event.IsVeto() then return False
 
@@ -736,7 +736,7 @@ Type TFigure extends TFigureBase
 		'=== INFORM OTHERS ===
 		'inform that figure now begins entering the room
 		'(eg. for players informing the ai)
-		EventManager.triggerEvent(TEventSimple.Create("figure.onBeginEnterRoom", null, self, room))
+		TriggerBaseEvent(GameEventKeys.Figure_OnBeginEnterRoom, null, self, room)
 
 		return True
 	End Method
@@ -789,7 +789,7 @@ Type TFigure extends TFigureBase
 		local hasT:int = GetTarget() <> null
 		'inform that figure now entered the room
 		'(eg. for players informing the ai)
-		EventManager.triggerEvent( TEventSimple.Create("figure.onFinishEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
+		TriggerBaseEvent(GameEventKeys.Figure_OnFinishEnterRoom, new TData.Add("room", room).Add("door", door) , self, room)
 
 		return True
 	End Method
@@ -799,7 +799,7 @@ Type TFigure extends TFigureBase
 		'=== INFORM OTHERS ===
 		'inform that figure failed to enter the room
 		'(eg. for players informing the ai)
-		EventManager.triggerEvent( TEventSimple.Create("figure.onFailEnterRoom", new TData.AddString("reason", reason).Add("door", door), self, room))
+		TriggerBaseEvent(GameEventKeys.Figure_OnFailEnterRoom, new TData.AddString("reason", reason).Add("door", door), self, room)
 
 		'Debug
 		'print self.name+" FAILED ENTERING " + room.GetName() +" ["+room.id+"]"
@@ -843,7 +843,7 @@ Type TFigure extends TFigureBase
 		'=== INFORM OTHERS ===
 		'inform that figure now begins leaving the room
 		'(eg. for players informing the ai)
-		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", null, self, inRoom ) )
+		TriggerBaseEvent(GameEventKeys.Figure_OnLeaveRoom, null, self, inRoom )
 
 
 		local target:object = GetTargetObject()
@@ -873,7 +873,7 @@ Type TFigure extends TFigureBase
 		'inform that a figure forcefully leaves a room (so GUI or so can
 		'get cleared)
 		if forceLeave
-			EventManager.triggerEvent(TEventSimple.Create("figure.onForcefullyLeaveRoom", new TData.Add("door", usedDoor) , self, inroom))
+			TriggerBaseEvent(GameEventKeys.Figure_OnForcefullyLeaveRoom, new TData.Add("door", usedDoor) , self, inroom)
 		endif
 
 		BeginLeaveRoom()
@@ -884,7 +884,7 @@ Type TFigure extends TFigureBase
 
 	Method TryLeaveRoom:int(forceLeave:int = False)
 		'inform others but ignore the result if figure is forced to leave
-		local event:TEventSimple = TEventSimple.Create("figure.onTryLeaveRoom", new TData.Add("door", usedDoor) , self, inroom )
+		local event:TEventBase = TEventBase.Create(GameEventKeys.Figure_OnTryLeaveRoom, new TData.Add("door", usedDoor) , self, inroom )
 		EventManager.triggerEvent(event)
 		'stop leaving
 		if not forceLeave and event.IsVeto() then return False
@@ -917,7 +917,7 @@ Type TFigure extends TFigureBase
 		'=== INFORM OTHERS ===
 		'inform that figure now leaves the room
 		'(eg. for players informing the ai)
-		EventManager.triggerEvent(TEventSimple.Create("figure.onBeginLeaveRoom", null, self, inroom))
+		TriggerBaseEvent(GameEventKeys.Figure_OnBeginLeaveRoom, null, self, inroom)
 
 		return True
 	End Method
@@ -948,7 +948,7 @@ Type TFigure extends TFigureBase
 		'=== INFORM OTHERS ===
 		'inform that figure now leaves the room
 		'(eg. for players informing the ai)
-		EventManager.triggerEvent( TEventSimple.Create("figure.onFinishLeaveRoom", null, self, inRoomBackup ) )
+		TriggerBaseEvent(GameEventKeys.Figure_OnFinishLeaveRoom, null, self, inRoomBackup )
 	End Method
 
 
@@ -1167,7 +1167,7 @@ Type TFigure extends TFigureBase
 		endif
 
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", new TData.AddNumber("x", x).AddNumber("y", y).AddNumber("forceChange", forceChange), self, null ) )
+		TriggerBaseEvent(GameEventKeys.Figure_OnChangeTarget, new TData.AddNumber("x", x).AddNumber("y", y).AddNumber("forceChange", forceChange), self, null )
 
 		return TRUE
 	End Method
@@ -1265,7 +1265,7 @@ Type TFigure extends TFigureBase
 
 		'maybe someone is interested in this information
 		If SyncTimer.isExpired()
-			EventManager.triggerEvent( TEventSimple.Create("figure.onSyncTimer", self) )
+			TriggerBaseEvent(GameEventKeys.Figure_OnSyncTimer, Null, self)
 			SyncTimer.Reset()
 		EndIf
 

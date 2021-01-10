@@ -115,7 +115,7 @@ Type TElevatorRoomBoard extends TRoomBoardBase
 		if not _eventListeners or _eventListeners.length = 0
 			'invalidate caches of signs - so they get redone
 			_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnLoad", onSavegameLoad) ]
-			_eventListeners :+ [ EventManager.registerListenerFunction("Language.onSetLanguage", onSetLanguage) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction("App.onSetLanguage", onSetLanguage) ]
 
 			'figure enters screen - reset the guilists, limit listening to the 4 rooms
 			Local screen:TScreen = ScreenCollection.GetScreen("screen_elevatorplan")

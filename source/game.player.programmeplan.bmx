@@ -767,7 +767,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		_daysPlanned = -1
 
 		'emit an event
-		If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.addObject", New TData.add("object", obj).add("removedObjects", removedObjects).addNumber("slotType", slotType).addNumber("day", day).addNumber("hour", hour), Self))
+		If fireEvents 
+			TriggerBaseEvent(GameEventKeys.ProgrammePlan_AddObject, New TData.add("object", obj).add("removedObjects", removedObjects).addNumber("slotType", slotType).addNumber("day", day).addNumber("hour", hour), Self)
+		EndIf
 
 		Return True
 	End Method
@@ -841,7 +843,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			_daysPlanned = -1
 
 			'inform others
-			If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.removeObject", New TData.add("object", obj).addNumber("slotType", slotType).addNumber("day", programmedDay).addNumber("hour", programmedHour), Self))
+			If fireEvents
+				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveObject, New TData.add("object", obj).addNumber("slotType", slotType).addNumber("day", programmedDay).addNumber("hour", programmedHour), Self)
+			Endif
 		else
 			if slotType = TVTBroadcastMaterialType.ADVERTISEMENT
 				TLogger.Log("PlayerProgrammePlan.RemoveObject()", "Plan #"+owner+" SKIPPED removal of object ~q"+obj.GetTitle()+"~q (owner="+obj.owner+") from ADVERTISEMENTS - not programmed.", LOG_DEBUG)
@@ -901,7 +905,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Next
 
 		If foundAnInstance
-			If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.removeObjectInstances", New TData.add("object", obj).addNumber("slotType", slotType).addNumber("removeCurrentRunning", removeCurrentRunning), Self))
+			If fireEvents 
+				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveObjectInstances, New TData.add("object", obj).addNumber("slotType", slotType).addNumber("removeCurrentRunning", removeCurrentRunning), Self)
+			Endif
 			Return True
 		Else
 			Return False
@@ -1574,7 +1580,9 @@ endrem
 
 
 		'emit an event so eg. network can recognize the change
-		If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.SetNews", New TData.Add("news",newsObject).AddNumber("slot", slot), self))
+		If fireEvents 
+			TriggerBaseEvent(GameEventKeys.ProgrammePlan_SetNews, New TData.Add("news",newsObject).AddNumber("slot", slot), self)
+		EndIf
 
 		Return True
     End Method
@@ -1622,7 +1630,9 @@ endrem
 			'empty the slot
 			news[newsSlot] = Null
 
-			If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("programmeplan.RemoveNews", New TData.Add("news", deletedNews).AddNumber("slot", newsSlot), self))
+			If fireEvents 
+				TriggerBaseEvent(GameEventKeys.ProgrammePlan_RemoveNews, New TData.Add("news", deletedNews).AddNumber("slot", newsSlot), self)
+			Endif
 			Return True
 		EndIf
 		Return False
@@ -1791,7 +1801,6 @@ endrem
 		'=== BEGIN OF NEWSSHOW ===
 		If minute = 0
 			obj = GetNewsShow(day, hour)
-			local eventKey:String = "broadcasting.common.BeginBroadcasting"
 
 			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 			If obj
@@ -1804,12 +1813,11 @@ endrem
 			GetDailyBroadcastStatistic( day, true ).SetNewsBroadcastResult(obj, owner, hour, audienceResult)
 
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			TriggerBaseEvent(GameEventKeys.Broadcast_common_BeginBroadcasting, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
 
 		'=== END OF NEWSSHOW ===
 		ElseIf minute = 4
 			obj = GetNewsShow(day, hour)
-			local eventKey:String = "broadcasting.common.FinishBroadcasting"
 
 			If obj
 				Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
@@ -1818,35 +1826,34 @@ endrem
 				obj.FinishBroadcasting(day, hour, minute, audienceResult)
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			TriggerBaseEvent(GameEventKeys.Broadcast_common_FinishBroadcasting, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
 
 		'=== BEGIN OF PROGRAMME ===
 		ElseIf minute = 5
 			obj = GetProgramme(day, hour)
-			local eventKey:String = "broadcasting.common.BeginBroadcasting"
+			local eventKey:TEventKey = GameEventKeys.Broadcast_common_BeginBroadcasting
 
 			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 			If obj
 				'inform the object what happens (start or continuation)
 				If 1 = GetProgrammeBlock(day, hour)
 					obj.BeginBroadcasting(day, hour, minute, audienceResult)
-					'eventKey = "broadcasting.begin"
 				Else
 					obj.ContinueBroadcasting(day, hour, minute, audienceResult)
-					eventKey = "broadcasting.common.ContinueBroadcasting"
+					eventKey = GameEventKeys.Broadcast_common_ContinueBroadcasting
 				EndIf
 			EndIf
 			'store audience/broadcast for daily stats (also for outage!)
 			GetDailyBroadcastStatistic( day, true ).SetBroadcastResult(obj, owner, hour, audienceResult)
 
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
 
 		'=== END/BREAK OF PROGRAMME ===
 		'call-in shows/quiz - generate income
 		ElseIf minute = 54
 			obj = GetProgramme(day, hour)
-			local eventKey:String = "broadcast.common.FinishBroadcasting"
+			local eventKey:TEventKey = GameEventKeys.Broadcast_common_FinishBroadcasting
 
 			'inform object that it gets broadcasted
 			If obj
@@ -1875,22 +1882,22 @@ endrem
 								RemoveProgrammeInstancesByLicence(licence, False)
 
 								'inform others
-								EventManager.triggerEvent(TEventSimple.Create("programmelicence.ExceedingBroadcastLimit", null, licence))
+								TriggerBaseEvent(GameEventKeys.ProgrammeLicence_ExceedingBroadcastLimit, null, licence)
 							endif
 						EndIf
 					EndIf
 				Else
 					obj.BreakBroadcasting(day, hour, minute, audienceResult)
-					eventKey = "broadcast.common.BreakBroadcasting"
+					eventKey = GameEventKeys.Broadcast_common_BreakBroadcasting
 				EndIf
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
 
 		'=== BEGIN OF COMMERCIAL BREAK ===
 		ElseIf minute = 55
 			obj = GetAdvertisement(day, hour)
-			local eventKey:String = "broadcasting.common.BeginBroadcasting"
+			local eventKey:TEventKey = GameEventKeys.Broadcast_common_BeginBroadcasting
 
 			Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 
@@ -1939,20 +1946,20 @@ endrem
 					'eventKey = "broadcasting.begin"
 				Else
 					obj.ContinueBroadcasting(day, hour, minute, audienceResult)
-					eventKey = "broadcasting.common.ContinueBroadcasting"
+					eventKey = GameEventKeys.Broadcast_common_ContinueBroadcasting
 				EndIf
 			EndIf
 			'store audience/broadcast for daily stats (also for outage!)
 			GetDailyBroadcastStatistic( day, true ).SetAdBroadcastResult(obj, owner, hour, audienceResult)
 
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
 
 		'=== END OF COMMERCIAL BREAK ===
 		'ads end - so trailers can set their "ok"
 		ElseIf minute = 59
 			obj = GetAdvertisement(day, hour)
-			local eventKey:String = "broadcast.common.FinishBroadcasting"
+			local eventKey:TEventKey = GameEventKeys.Broadcast_common_FinishBroadcasting
 
 			'inform  object that it gets broadcasted
 			If obj
@@ -1962,11 +1969,11 @@ endrem
 					'eventKey = "broadcasting.finish"
 				Else
 					obj.BreakBroadcasting(day, hour, minute, audienceResult)
-					eventKey = "broadcast.common.BreakBroadcasting"
+					eventKey = GameEventKeys.Broadcast_common_BreakBroadcasting
 				EndIf
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			TriggerBaseEvent(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TVTBroadcastMaterialType.ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self)
 		EndIf
 	End Method
 End Type
@@ -2067,17 +2074,17 @@ Type TProgrammePlanInformationProvider extends TProgrammePlanInformationProvider
 		local data:TData = triggerEvent.GetData()
 		local time:long = GetWorldTime().Maketime(0, data.GetInt("day"), data.GetInt("hour"), data.GetInt("minute"), 0)
 
-		Select triggerEvent._trigger
-			Case "broadcast.programme.FinishBroadcastingAsAdvertisement".ToLower()
+		Select triggerEvent.GetEventKey()
+			Case GameEventKeys.Broadcast_Programme_FinishBroadcastingAsAdvertisement
 				GetInstance().SetTrailerAired(broadcast.owner, GetInstance().GetTrailerAired(broadcast.owner) + 1, time)
-			Case "broadcast.advertisement.FinishBroadcastingAsProgramme".ToLower()
+			Case GameEventKeys.Broadcast_Advertisement_FinishBroadcastingAsProgramme
 				GetInstance().SetInfomercialsAired(broadcast.owner, GetInstance().GetInfomercialsAired(broadcast.owner) + 1, time)
 				GetInstance().RefreshAudienceData(broadcast.owner, time, data.Get("audienceData"))
-			Case "broadcast.programme.FinishBroadcasting".ToLower()
+			Case GameEventKeys.Broadcast_Programme_FinishBroadcasting
 				GetInstance().RefreshProgrammeData(broadcast.owner, time)
 				GetInstance().RefreshAudienceData(broadcast.owner, time, data.Get("audienceData"))
 			Default
-				print "onFinishBroadcasting: unhandled trigger - "+ triggerEvent._trigger
+				print "onFinishBroadcasting: unhandled trigger - "+ triggerEvent.GetEventKey().text.ToString()
 		End Select
 	End Function
 

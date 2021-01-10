@@ -354,7 +354,7 @@ endrem
 
 
 		'refresh charts when a new broadcast begins (newsshow, movie...)
-		_eventListeners :+ [EventManager.registerListenerMethod("broadcasting.common.BeginBroadcasting", Self, "OnBeginBroadcasting")]
+		_eventListeners :+ [EventManager.registerListenerMethod("broadcast.common.BeginBroadcasting", Self, "OnBeginBroadcasting")]
 		'refresh charts when audience changes through station buy/sell
 		_eventListeners :+ [EventManager.registerListenerMethod("StationMap.onRecalculateAudienceSum", Self, "OnRecalculateAudienceSum")]
 'RONNY

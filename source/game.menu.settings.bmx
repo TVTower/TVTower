@@ -442,7 +442,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 
 
 
-	Method onCheckCheckboxes:Int(event:TEventSimple)
+	Method onCheckCheckboxes:Int(event:TEventBase)
 		Local checkBox:TGUICheckbox = TGUICheckbox(event.GetSender())
 		If Not checkBox Then Return False
 

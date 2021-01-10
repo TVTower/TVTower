@@ -43,7 +43,7 @@ Type TGUIAccordeonPanel Extends TGUIObject
 		'adjust parental accordeon
 		If TGUIAccordeon(_parent) Then TGUIAccordeon(_parent).onClosePanel(Self)
 
-		EventManager.triggerEvent( TEventSimple.Create("guiaccordeonpanel.OnClose", Null, Self) )
+		TriggerBaseEvent(GUIEventKeys.GUIAccordeonPanel_OnClose, Null, Self)
 
 		Return True
 	End Method
@@ -58,7 +58,7 @@ Type TGUIAccordeonPanel Extends TGUIObject
 		'adjust parental accordeon
 		If TGUIAccordeon(_parent) Then TGUIAccordeon(_parent).onOpenPanel(Self)
 
-		EventManager.triggerEvent( TEventSimple.Create("guiaccordeonpanel.OnOpen", Null, Self) )
+		TriggerBaseEvent(GUIEventKeys.GUIAccordeonPanel_OnOpen, Null, Self)
 
 		Return True
 	End Method
@@ -210,7 +210,7 @@ Type TGUIAccordeon Extends TGUIObject
 
 		InvalidateLayout()
 
-		EventManager.triggerEvent( TEventSimple.Create("guiaccordeon.OnOpenPanel", New TData.Add("panel", panel), Self) )
+		TriggerBaseEvent(GUIEventKeys.GUIAccordeon_OnOpenPanel, New TData.Add("panel", panel), Self)
 
 		Return True
 	End Method
@@ -225,7 +225,7 @@ Type TGUIAccordeon Extends TGUIObject
 
 		InvalidateLayout()
 
-		EventManager.triggerEvent( TEventSimple.Create("guiaccordeon.OnClosePanel", New TData.Add("panel", panel), Self) )
+		TriggerBaseEvent(GUIEventKeys.GUIAccordeon_OnClosePanel, New TData.Add("panel", panel), Self)
 
 		Return True
 	End Method

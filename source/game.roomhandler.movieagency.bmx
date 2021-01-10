@@ -1555,7 +1555,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 		bidSavings = 0.75
 
 		'emit event
-		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.Refill", New TData.Add("licence", licence).AddNumber("slot", slot), Self))
+		TriggerBaseEvent(GameEventKeys.ProgrammeLicenceAuction_Refill, New TData.Add("licence", licence).AddNumber("slot", slot), Self)
 	End Method
 
 
@@ -1598,7 +1598,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 				evData.AddNumber("bestBidderLevel", bestBidderLevel)
 				evData.AddNumber("bestBidRaw", bestBidRaw)
 				evData.AddNumber("bestBid", bestBid)
-				EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onWin", evData, Self))
+				TriggerBaseEvent(GameEventKeys.ProgrammeLicenceAuction_OnWin, evData, Self)
 			EndIf
 		End If
 
@@ -1636,7 +1636,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			evData.AddNumber("bestBidRaw", bestBidRaw)
 			evData.AddNumber("bestBid", bestBid)
 			evData.AddNumber("bidSavings", bidSavings)
-			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onEndAuction", evData, Self))
+			TriggerBaseEvent(GameEventKeys.ProgrammeLicenceAuction_OnEndAuction, evData, Self)
 
 			Refill()
 			Return True
@@ -1713,7 +1713,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 				evData.AddNumber("bestBidderLevel", audienceReachLevel)
 				evData.AddNumber("bestBid", thisBid)
 				evData.AddNumber("bestBidRaw", thisBidRaw)
-				EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.onGetOutbid", evData, Self))
+				TriggerBaseEvent(GameEventKeys.ProgrammeLicenceAuction_OnGetOutbid, evData, Self)
 			EndIf
 			'set new bid values
 			bestBidder = playerID
@@ -1732,7 +1732,7 @@ Type TAuctionProgrammeBlocks Extends TGameObject {_exposeToLua="selected"}
 			evData.AddNumber("bestBidderLevel", bestBidderLevel)
 			evData.AddNumber("bestBid", bestBid)
 			evData.AddNumber("bestBidRaw", bestBidRaw)
-			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.setBid", evData, Self))
+			TriggerBaseEvent(GameEventKeys.ProgrammeLicenceAuction_SetBid, evData, Self)
 
 			Return bestBid
 		EndIf

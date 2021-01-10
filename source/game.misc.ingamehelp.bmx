@@ -94,7 +94,7 @@ Type TIngameHelpWindowCollection
 				If currentIngameHelpWindow.active Then Return
 			EndIf
 			If currentIngameHelpWindow.Show(force)
-				EventManager.triggerEvent(TEventSimple.Create("InGameHelp.ShowHelpWindow", New TData.Add("window", currentIngameHelpWindow) , Self))
+				TriggerBaseEvent(GameEventKeys.InGameHelp_ShowHelpWindow, New TData.Add("window", currentIngameHelpWindow) , Self)
 			EndIf
 		EndIf
 	End Method
@@ -107,12 +107,12 @@ Type TIngameHelpWindowCollection
 
 			If currentIngameHelpWindow.IsClosing()
 				If Not wasClosing
-					EventManager.triggerEvent(TEventSimple.Create("InGameHelp.CloseHelpWindow", New TData.Add("window", currentIngameHelpWindow) , Self))
+					TriggerBaseEvent(GameEventKeys.InGameHelp_CloseHelpWindow, New TData.Add("window", currentIngameHelpWindow) , Self)
 				EndIf
 
 				currentIngameHelpWindowLocked = False
 			ElseIf currentIngameHelpWindow.IsClosed()
-				EventManager.triggerEvent(TEventSimple.Create("InGameHelp.ClosedHelpWindow", New TData.Add("window", currentIngameHelpWindow) , Self))
+				TriggerBaseEvent(GameEventKeys.InGameHelp_ClosedHelpWindow, New TData.Add("window", currentIngameHelpWindow) , Self)
 
 				currentIngameHelpWindow = Null
 			EndIf

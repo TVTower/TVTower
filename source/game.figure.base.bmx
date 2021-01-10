@@ -216,6 +216,11 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Global greetEvery:int = 8000
 	Global _initDone:int = FALSE
 
+	Global eventKey_Figure_OnSetHasMasterkey:TEventKey = EventManager.GetEventKey("Figure.OnSetHasMasterkey", True)
+	Global eventKey_Figure_OnChangeTarget:TEventKey = EventManager.GetEventKey("Figure.OnChangeTarget", True)
+	Global eventKey_Figure_OnBeginReachTarget:TEventKey = EventManager.GetEventKey("Figure.OnBeginReachTarget", True)
+	Global eventKey_Figure_OnReachTarget:TEventKey = EventManager.GetEventKey("Figure.OnReachTarget", True)
+	Global eventKey_Figure_OnEnterTarget:TEventKey = EventManager.GetEventKey("Figure.OnEnterTarget", True)
 
 	Const ACTION_IDLE:int = 0
 	Const ACTION_WALK:int = 1
@@ -468,7 +473,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		hasMasterKey = bool
 
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onSetHasMasterkey", null, self ) )
+		TriggerBaseEvent(eventKey_Figure_OnSetHasMasterkey, null, self )
 
 		TLogger.Log("TFigureBase.SetHasMasterKey()", "Figure ~q"+name+"~q received the building's master key.", LOG_DEBUG)
 	End Method
@@ -486,7 +491,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		reachedTemporaryTarget = False
 
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", null, self ) )
+		TriggerBaseEvent(eventKey_Figure_OnChangeTarget, null, self )
 
 		return True
 	End Method
@@ -544,7 +549,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		if GetTarget() then GetTarget().Reach(self)
 
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onBeginReachTarget", null, self, GetTarget() ) )
+		TriggerBaseEvent(eventKey_Figure_OnBeginReachTarget, null, self, GetTarget() )
 
 		'run custom onReachTarget method - eg to wait until entering a door
 		'or just remove the current target
@@ -564,7 +569,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		FinishCurrentTarget()
 
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", null, self, targetBackup ) )
+		TriggerBaseEvent(eventKey_Figure_OnReachTarget, null, self, targetBackup )
 
 		if removeOnReachTarget then alive = False
 	End Method
@@ -587,7 +592,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	Method EnterTarget:int()
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterTarget", null, self, GetTargetObject() ) )
+		TriggerBaseEvent(eventKey_Figure_OnEnterTarget, null, self, GetTargetObject() )
 		return True
 	End Method
 

@@ -252,6 +252,9 @@ Type TPlayerFinance {_exposeToLua="selected"}
 	Global creditInterestRate:float      = 0.05 '5% a day
 	Global balanceInterestRate:float     = 0.01 '1% a day
 	Global drawingCreditRate:float       = 0.03 '3% a day  - rate for having a negative balance
+	
+	Global eventKey_PlayerFinance_OnChangeMoney:TEventKey = EventManager.GetEventKey("PlayerFinance.onChangeMoney", True)
+	Global eventKey_PlayerFinance_OnTransactionFailed:TEventKey = EventManager.GetEventKey("PlayerFinance.OnTransactionFailed", True)
 
 	Method Create:TPlayerFinance(playerID:int)
 		Reset()
@@ -361,13 +364,13 @@ Type TPlayerFinance {_exposeToLua="selected"}
 		revenue_after	:+ value
 		
 		'emit event to inform others
-		EventManager.triggerEvent( TEventSimple.Create("PlayerFinance.onChangeMoney", new TData.AddNumber("value", value).AddNumber("playerID", playerID).AddNumber("reason", reason).Add("reference", reference), self) )
+		TriggerBaseEvent(eventKey_PlayerFinance_OnChangeMoney, new TData.AddNumber("value", value).AddNumber("playerID", playerID).AddNumber("reason", reason).Add("reference", reference), self) 
 	End Method
 
 
 	Method TransactionFailed:int(value:Long, reason:int, reference:TNamedGameObject=null)
 		'emit event to inform others
-		EventManager.triggerEvent( TEventSimple.Create("PlayerFinance.onTransactionFailed", new TData.AddNumber("value", value).AddNumber("playerID", playerID), self) )
+		TriggerBaseEvent(eventKey_PlayerFinance_OnTransactionFailed, new TData.AddNumber("value", value).AddNumber("playerID", playerID), self)
 		return False
 	End Method
 

@@ -1,7 +1,7 @@
 SuperStrict
 Import "game.production.productioncompany.base.bmx"
 Import "game.programme.programmedata.bmx"
-
+Import "game.gameeventkeys.bmx"
 
 
 Type TProductionCompany extends TProductionCompanyBase
@@ -26,7 +26,7 @@ Type TProductionCompany extends TProductionCompanyBase
 
 	'override
 	Method OnChangeLevel:Int(oldLevel:Int, newLevel:Int)
-		EventManager.triggerEvent( TEventSimple.Create("ProductionCompany.OnChangeLevel", new TData.AddNumber("oldLevel", oldLevel).AddNumber("newLevel", newLevel), Self ) )
+		TriggerBaseEvent(GameEventKeys.ProductionCompany_OnChangeLevel, new TData.AddNumber("oldLevel", oldLevel).AddNumber("newLevel", newLevel), Self )
 
 		Return True
 	End Method
@@ -34,7 +34,7 @@ Type TProductionCompany extends TProductionCompanyBase
 
 	'override
 	Method OnChangeXP:Int(oldXP:Int, newXP:Int)
-		EventManager.triggerEvent( TEventSimple.Create("ProductionCompany.OnChangeXP", new TData.AddNumber("oldXP", oldXP).AddNumber("newXP", newXP), Self ) )
+		TriggerBaseEvent(GameEventKeys.ProductionCompany_OnChangeXP, new TData.AddNumber("oldXP", oldXP).AddNumber("newXP", newXP), Self )
 
 		Return True
 	End Method

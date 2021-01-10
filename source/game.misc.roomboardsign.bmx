@@ -462,7 +462,7 @@ Type TRoomBoard Extends TRoomBoardBase
 		If Not _eventsRegistered
 			'handle savegame loading (remove old gui elements)
 			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
-			EventManager.registerListenerFunction("Language.onSetLanguage", onSetLanguage)
+			EventManager.registerListenerFunction("App.onSetLanguage", onSetLanguage)
 			EventManager.registerListenerFunction("room.onBeginRental", onChangeRoomOwner)
 			EventManager.registerListenerFunction("room.onCancelRental", onChangeRoomOwner)
 

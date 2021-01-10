@@ -237,12 +237,14 @@ Type TAward extends TGameObject
 	Field scoringMode:int = 1
 	Field winningPlayerID:int = -1
 
+
+	Global eventKey_Award_OnFinish:TEventKey = EventManager.GetEventKey("Award.OnFinish", True)
+
 	'adding/subtracting scores does not change other scores
 	Const SCORINGMODE_ABSOLUTE:int = 1
 	'adding/subtracting scores changes values for other players
 	Const SCORINGMODE_AFFECT_OTHERS:int = 2
 
-	
 
 	Method New()
 		awardType = TVTAwardType.UNDEFINED
@@ -299,7 +301,7 @@ Type TAward extends TGameObject
 
 		'store winner
 		winningPlayerID = GetCurrentWinner()
-		EventManager.triggerEvent(TEventSimple.Create("Award.OnFinish", New TData.addNumber("winningPlayerID", winningPlayerID), Self))
+		TriggerBaseEvent(eventKey_Award_OnFinish, New TData.addNumber("winningPlayerID", winningPlayerID), Self)
 
 		if winningPlayerID > 0
 			local modifier:TGameModifierBase

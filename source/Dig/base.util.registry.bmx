@@ -117,7 +117,7 @@ Type TRegistry
 	End Method
 
 
-	Method Get:Object(key:Object, defaultObject:Object=Null, defaultType:Object=null)
+	Method Get:Object(key:Object, defaultObject:Object=Null, defaultType:Object=Null)
 		Local ls:TLowerString = TLowerString(key)
 		If Not ls Then ls = TLowerString.Create(String(key))
 
@@ -186,6 +186,8 @@ Type TRegistryLoader
 	'map-key is TYPENAME in uppercase
 	Global resourceLoaders:TMap = CreateMap()
 	Global _defaultsCreated:Int = False
+	Global eventKey_onLoadResourceFromXML:TEventKey = EventManager.GetEventKey("RegistryLoader.onLoadResourceFromXML", True)
+	Global eventKey_onLoadXmlFromFinished:TEventKey = EventManager.GetEventKey("RegistryLoader.onLoadXmlFromFinished", True)
 
 
 	Method New()
@@ -269,7 +271,7 @@ Type TRegistryLoader
 		EndIf
 
 
-		EventManager.triggerEvent( TEventSimple.Create("RegistryLoader.onLoadXmlFromFinished", New TData.AddString("uri", file) ) )
+		TriggerBaseEvent(eventKey_onLoadXmlFromFinished, New TData.AddString("uri", file) )
 		Return True
 	End Method
 
@@ -332,7 +334,7 @@ Type TRegistryLoader
 		'sender: self (the loader)
 		'target: resourceName in uppercases ("SPRITE") -> so listeners can filter on it
 		'print "RegistryLoader.onLoadResourceFromXML: self + "+ resourceName.ToUpper()
-		EventManager.triggerEvent( TEventSimple.Create("RegistryLoader.onLoadResourceFromXML", New TData.AddString("resourceName", resourceName).Add("xmlNode", node), Self, resourceName.ToUpper()))
+		TriggerBaseEvent(eventKey_onLoadResourceFromXML, New TData.AddString("resourceName", resourceName).Add("xmlNode", node), Self, resourceName.ToUpper())
 	End Method
 
 
@@ -545,6 +547,8 @@ Type TRegistryUnloadedResource
 	Field loadAttempts:Int = 0 	'times engine tried to load this resource
 
 	Global LastID:Int = 0
+	Global eventKey_onBeginLoadresource:TEventKey = GetEventKey("RegistryLoader.onBeginLoadResource", True)
+	Global eventKey_onLoadresource:TEventKey = GetEventKey("RegistryLoader.onLoadResource", True)
 
 
 	Method New()
@@ -562,7 +566,7 @@ Type TRegistryUnloadedResource
 
 
 	Method Load:Int()
-		EventManager.triggerEvent(TEventSimple.Create("RegistryLoader.onBeginLoadResource", New TData.AddString("name", name).AddString("resourceName", resourceName)))
+		TriggerBaseEvent(eventKey_onBeginLoadresource, New TData.AddString("name", name).AddString("resourceName", resourceName))
 
 		'try to find a loader for the objects resource type
 		Local loader:TRegistryBaseLoader = TRegistryLoader.GetResourceLoader(resourceName)
@@ -571,7 +575,7 @@ Type TRegistryUnloadedResource
 		'try to load an object with the given config and resourceType-name
 		If loader.LoadFromConfig(config, resourceName)
 			'inform others: we loaded something
-			EventManager.triggerEvent(TEventSimple.Create("RegistryLoader.onLoadResource", New TData.AddString("name", name).AddString("resourceName", resourceName)))
+			TriggerBaseEvent(eventKey_onLoadResource, New TData.AddString("name", name).AddString("resourceName", resourceName))
 			Return True
 		Else
 			Return False
@@ -609,7 +613,7 @@ Type TRegistryBaseLoader
 	Field id:Int = 0
 	Global LastID:Int = 0
 
-	Global keyNameLS:TLowerString = new TLowerString.Create("name")
+	Global keyNameLS:TLowerString = New TLowerString.Create("name")
 
 
 	Method New()

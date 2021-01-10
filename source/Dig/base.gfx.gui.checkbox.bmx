@@ -66,8 +66,10 @@ Type TGUICheckBox Extends TGUIButton
 
 		self.checked = checked
 
-		If informOthers then EventManager.triggerEvent(TEventSimple.Create("guiCheckBox.onSetChecked", new TData.AddNumber("checked", checked), Self ) )
-
+		If informOthers 
+			TriggerBaseEvent(GUIEventKeys.GuiCheckbox_OnSetChecked, new TData.AddNumber("checked", checked), Self )
+		EndIf
+		
 		return True
 	End Method
 

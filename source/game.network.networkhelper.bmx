@@ -8,6 +8,7 @@ Import "game.player.bmx"
 Import "game.roomhandler.movieagency.bmx"
 Import "game.roomagency.bmx"
 Import "game.screen.menu.bmx"
+Import "game.gameeventkeys.bmx"
 
 'handles network events
 
@@ -156,7 +157,7 @@ Function InfoChannelEventHandler(networkObject:TNetworkObject)
 		evData.AddString("hostName", networkObject.getString(5))
 		evData.AddString("gameTitle", networkObject.getString(6))
 
-		EventManager.triggerEvent(TEventSimple.Create( "network.infoChannel.onReceiveAnnounceGame", evData, null))
+		TriggerBaseEvent(GameEventKeys.Network_InfoChannel_OnReceiveAnnounceGame, evData, null)
 	endif
 End Function
 
@@ -319,8 +320,8 @@ Type TNetworkHelper extends TNetworkHelperBase
 		'do not allow events from players for other players objects
 		if owner <> GetPlayerCollection().playerID and not GetGameBase().isGameLeader() then return FALSE
 
-		select triggerEvent.getTrigger()
-			case "programmecollection.removeprogrammelicence"
+		select triggerEvent.GetEventKey()
+			case GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence
 					local Licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().get("programmeLicence"))
 					local sell:int = triggerEvent.GetData().getInt("sell",FALSE)
 					if sell
@@ -328,7 +329,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 					else
 						GetNetworkHelper().SendProgrammeCollectionProgrammeLicenceChange(owner, Licence.GetGUID(), NET_DELETE)
 					endif
-			case "programmecollection.addprogrammelicence"
+			case GameEventKeys.ProgrammeCollection_AddProgrammeLicence
 					local Licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().get("programmeLicence"))
 					local buy:int = triggerEvent.GetData().getInt("buy",FALSE)
 					if buy
@@ -337,17 +338,17 @@ Type TNetworkHelper extends TNetworkHelperBase
 						GetNetworkHelper().SendProgrammeCollectionProgrammeLicenceChange(owner, Licence.GetGUID(), NET_ADD)
 					endif
 
-			case "programmecollection.addprogrammelicencetosuitcase"
+			case GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase
 					local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().get("programmeLicence"))
 					GetNetworkHelper().SendProgrammeCollectionProgrammeLicenceChange(owner, licence.GetGUID(), NET_TOSUITCASE)
-			case "programmecollection.removeprogrammelicencefromsuitcase"
+			case GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase
 					local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().get("programmeLicence"))
 					GetNetworkHelper().SendProgrammeCollectionProgrammeLicenceChange(owner, licence.GetGUID(), NET_FROMSUITCASE)
 
-			case "programmecollection.removeadcontract"
+			case GameEventKeys.ProgrammeCollection_RemoveAdContract
 					local contract:TAdContract = TAdContract(triggerEvent.GetData().get("adcontract"))
 					GetNetworkHelper().SendProgrammeCollectionContractChange(owner, contract.GetGUID(), NET_DELETE)
-			case "programmecollection.addadcontract"
+			case GameEventKeys.ProgrammeCollection_AddAdContract
 					local contract:TAdContract = TAdContract(triggerEvent.GetData().get("adcontract"))
 					GetNetworkHelper().SendProgrammeCollectionContractChange(owner, contract.GetGUID(), NET_ADD)
 		end select
@@ -367,8 +368,8 @@ Type TNetworkHelper extends TNetworkHelperBase
 	
 
 	Function onChangeMovieAgency:int( triggerEvent:TEventBase )
-		Select triggerEvent.getTrigger()
-			case "programmelicenceauction.setbid"
+		Select triggerEvent.GetEventKey()
+			case GameEventKeys.ProgrammeLicenceAuction_SetBid
 				local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().get("licence"))
 				local playerID:int = triggerEvent.GetData().getInt("bestBidder", -1)
 				GetNetworkHelper().SendMovieAgencyChange(NET_BID, playerID, -1, -1, licence.GetGUID())
@@ -945,7 +946,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 
 		'emit an event, we received a chat message
 		'- add a "remoteSource=1" so others may recognize it
-		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", new TData.AddNumber("senderID", senderID).AddNumber("channels", sendToChannels).AddString("text",chatMessage).AddNumber("remoteSource",1) , null ) )
+		TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, new TData.AddNumber("senderID", senderID).AddNumber("channels", sendToChannels).AddString("text",chatMessage).AddNumber("remoteSource",1) , null )
 	End Method
 
 

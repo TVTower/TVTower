@@ -45,7 +45,7 @@ End Type
 
 
 'register to the onLoad-Event for "Screens"
-EventManager.registerListenerFunction("RegistryLoader.onLoadResourceFromXML", onLoadScreens,Null, "SCREENS")
+EventManager.registerListenerFunction("RegistryLoader.onLoadResourceFromXML", onLoadScreens, Null, "SCREENS")
 Function onLoadScreens:Int( triggerEvent:TEventBase )
 	Local screensNode:TxmlNode = TxmlNode(triggerEvent.GetData().Get("xmlNode"))
 	Local registryLoader:TRegistryLoader = TRegistryLoader(triggerEvent.GetSender())
@@ -88,7 +88,7 @@ Type TGameScreen Extends TScreen
 		'_enterScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_OPEN)
 		'_leaveScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_CLOSE)
 
-		EventManager.registerListenerMethod("Language.onSetLanguage", Self, "onSetLanguage")
+		EventManager.registerListenerMethod("App.onSetLanguage", Self, "onSetLanguage")
 		Return Self
 	End Method
 

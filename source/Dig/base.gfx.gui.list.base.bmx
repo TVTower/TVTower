@@ -334,7 +334,7 @@ Type TGUIListBase Extends TGUIobject
 		'so a normal AddItem-handler can work with calculated dimensions from now on
 		'Local dimension:TVec2D = item.getDimension()
 
-		EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", New TData.Add("item", item) , Self))
+		TriggerBaseEvent(GUIEventKeys.GUIList_AddItem, New TData.Add("item", item) , Self)
 
 		entries.addLast(item)
 		if TGUIListItem(item) then TGUIListItem(item).parentListID = self._id
@@ -353,7 +353,7 @@ Type TGUIListBase Extends TGUIobject
 			EndIf
 		EndIf
 
-		EventManager.triggerEvent(TEventSimple.Create("guiList.addedItem", New TData.Add("item", item) , Self))
+		TriggerBaseEvent(GUIEventKeys.GUIList_AddedItem, New TData.Add("item", item) , Self)
 
 		Return True
 	End Method
@@ -362,14 +362,14 @@ Type TGUIListBase Extends TGUIobject
 	'base handling of remove item
 	Method _RemoveItem:Int(item:TGUIobject)
 		If entries.Remove(item)
-			EventManager.triggerEvent(TEventSimple.Create("guiList.removeItem", New TData.Add("item", item) , Self))
+			TriggerBaseEvent(GUIEventKeys.GUIList_RemoveItem, New TData.Add("item", item) , Self)
 
 			if TGUIListItem(item) then TGUIListItem(item).parentListID = -1
 
 			'remove from panel and item gets managed by guimanager
 			guiEntriesPanel.removeChild(item)
 
-			EventManager.triggerEvent(TEventSimple.Create("guiList.removedItem", New TData.Add("item", item) , Self))
+			TriggerBaseEvent(GUIEventKeys.GUIList_RemovedItem, New TData.Add("item", item) , Self)
 
 			Return True
 		Else
@@ -707,7 +707,7 @@ Type TGUIListBase Extends TGUIobject
 			'removing and adding the item
 			If fromList.HandleDropBack(triggerEvent)
 				'inform others about that dropback
-				EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropBack", Null , item, toList))
+				TriggerBaseEvent(GUIEventKeys.GUIObject_OnDropBack, Null , item, toList)
 				Return True
 			EndIf
 			'no drop back?
@@ -767,7 +767,7 @@ endrem
 			If list.entries.Count() > 0 Then item = TGUIObject(list.entries.First())
 			If item Then scrollAmount = item.rect.GetH() * list.scrollItemHeightPercentage
 
-			EventManager.triggerEvent(TEventSimple.Create("guiobject.onScrollPositionChanged", New TData.AddString("direction", direction).AddNumber("scrollAmount", scrollAmount), list))
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, New TData.AddString("direction", direction).AddNumber("scrollAmount", scrollAmount), list)
 		EndIf
 		'set to accepted so that nobody else receives the event
 		triggerEvent.SetAccepted(True)
@@ -1435,7 +1435,7 @@ Type TGUIListItem Extends TGUIobject
 		'this makes the "listitem-clicked"-event filterable even
 		'if the itemclass gets extended (compared to the general approach
 		'of "guiobject.onclick")
-		EventManager.triggerEvent(TEventSimple.Create("GUIListItem.onClick", Null, Self, triggerEvent.GetReceiver()) )
+		TriggerBaseEvent(GUIEventKeys.GUIListItem_OnClick, Null, Self, triggerEvent.GetReceiver())
 	End Method
 
 

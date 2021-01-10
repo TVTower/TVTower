@@ -26,13 +26,17 @@ Type TLowerString
 
 	Field orig:String
 	Field data:Byte Ptr {nosave}
+	
+
+	Method New(s:String)
+		orig = s
+		data = bmx_stringcomp_init(s)
+	End Method
 
 	Function Create:TLowerString(s:String)
-		Local this:TLowerString = New TLowerString
-		this.orig = s
-		this.data = bmx_stringcomp_init(s)
-		Return this
+		Return New TLowerString(s)
 	End Function
+
 
 	Method EqualsLower:Int(txt:String)
 		Return bmx_stringcomp_equals_lower(data, txt)

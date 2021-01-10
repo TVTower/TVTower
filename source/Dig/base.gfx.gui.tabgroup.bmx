@@ -44,7 +44,9 @@ Type TGUIToggleButton Extends TGUIButton
 
 		Self.toggled = toggled
 
-		If informOthers Then EventManager.triggerEvent(TEventSimple.Create("guiToggleButton.onSetToggled", New TData.AddNumber("toggled", toggled), Self ) )
+		If informOthers 
+			TriggerBaseEvent(GUIEventKeys.GUIToggleButton_OnSetToggled, New TData.AddNumber("toggled", toggled), Self )
+		EndIf
 
 		Return True
 	End Method
@@ -256,7 +258,7 @@ Type TGUITabGroup Extends TGUIObject
 			GetToggledButtonIndex()
 		EndIf
 
-		EventManager.triggerEvent(TEventSimple.Create("guiTabGroup.onSetToggledButton", New TData.AddNumber("index", i), Self ) )
+		TriggerBaseEvent(GUIEventKeys.GUITabGroup_OnSetToggledButton, New TData.AddNumber("index", i), Self )
 	End Method
 
 
@@ -293,7 +295,7 @@ endrem
 
 
 	Method Update:Int()
-'		If informOthers then EventManager.triggerEvent(TEventSimple.Create("guiCheckBox.onSetChecked", new TData.AddNumber("checked", checked), Self ) )
+'		If informOthers then TriggerBaseEvent(GUIEventKeys.GUICheckBox_OnSetChecked, new TData.AddNumber("checked", checked), Self )
 		Return Super.Update()
 	End Method
 
