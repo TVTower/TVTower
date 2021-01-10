@@ -339,11 +339,10 @@ Type TIngameHelpWindow
 			'no right clicking allowed as long as "help window" is active
 			'MouseManager.SetClickHandled(2)
 
-			'or just allow "passthru" right clicks but in addition close
-			'the window
+			'close the help, do not propagate right-click
 			If MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1)
 				Close()
-				'MouseManager.SetClickHandled(2)
+				MouseManager.SetClickHandled(2)
 			EndIf
 		EndIf
 	End Method
