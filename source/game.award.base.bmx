@@ -17,31 +17,31 @@ Type TAwardCollection Extends TGameObjectCollection
 	Field lastAwardWinner:Int = 0
 	Field lastAwardType:Int = 0
 
-	Global awardCreatorFunctions:TMap = new TMap
-	Global awardCreatorFunctionCount:int = 0
+	Global awardCreatorFunctions:TMap = New TMap
+	Global awardCreatorFunctionCount:Int = 0
 	Global _instance:TAwardCollection
 
 
 	Method New()
 		'create the basic award creator ("UNDEFINED")
-		if awardCreatorFunctionCount = 0
-			print "Creating ~qundefined~q-award!"
+		If awardCreatorFunctionCount = 0
+			Print "Creating ~qundefined~q-award!"
 			AddAwardCreatorFunction("undefined", TAward.CreateAward )
-		endif
+		EndIf
 	End Method
 	
 	
 	'override
 	Function GetInstance:TAwardCollection()
-		if not _instance then _instance = new TAwardCollection
-		return _instance
+		If Not _instance Then _instance = New TAwardCollection
+		Return _instance
 	End Function
 
 
 	Method Initialize:TAwardCollection()
 		Super.Initialize()
 
-		return self
+		Return Self
 	End Method
 
 
@@ -50,8 +50,8 @@ Type TAwardCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method CreateAward:TAward(awardType:int)
-		return RunAwardCreatorFunction( TVTAwardType.GetAsString(awardType) )
+	Method CreateAward:TAward(awardType:Int)
+		Return RunAwardCreatorFunction( TVTAwardType.GetAsString(awardType) )
 	End Method
 
 
@@ -64,7 +64,7 @@ Type TAwardCollection Extends TGameObjectCollection
 
 
 	Method GetCurrentAward:TAward()
-		return Self.currentAward
+		Return Self.currentAward
 	End Method
 
 
@@ -79,22 +79,22 @@ Type TAwardCollection Extends TGameObjectCollection
 
 
 	Method GetNextAward:TAward()
-		if not upcomingAwards then return Null
+		If Not upcomingAwards Then Return Null
 		
-		return TAward(upcomingAwards.First())
+		Return TAward(upcomingAwards.First())
 	End Method
 
 
 	Method GetNextAwardTime:Long()
-		return nextAwardTime
+		Return nextAwardTime
 	End Method
 
 
 	Method UpdateAwards()
 		'=== CREATE INITIAL AWARD ===
-		If GetWorldTime().GetDaysRun() = 0 and not GetNextAward()
+		If GetWorldTime().GetDaysRun() = 0 And Not GetNextAward()
 			'avoid AwardCustomProduction as first award in a game
-			local awardType:int = 0
+			Local awardType:Int = 0
 			Repeat
 				awardType = RandRange(1, TVTAwardType.count)
 			Until awardType <> TVTAwardType.CUSTOMPRODUCTION
@@ -102,36 +102,36 @@ Type TAwardCollection Extends TGameObjectCollection
 
 			'set to start next day
 			nextAwardTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay()+1, 0, 0)
-			local award:TAward = CreateAward(awardType)
+			Local award:TAward = CreateAward(awardType)
 			award.SetStartTime( nextAwardTime )
 			award.SetEndTime( award.CalculateEndTime(nextAwardTime) )
 			AddUpcoming( award )
 			TLogger.Log("TAwardCollection.UpdateAwards()", "Set initial ~qnext~q award: type="+TVTAwardType.GetAsString(award.awardType)+" ["+award.awardType+"] "+"  timeframe="+GetWorldTime().GetFormattedGameDate(award.GetStartTime()) +"  -  " + GetWorldTime().GetFormattedGameDate(award.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate(), LOG_DEBUG)
-		endif
+		EndIf
 		
 
 		'=== FINISH CURRENT AWARD ===
-		If currentAward and currentAward.GetEndTime() < GetWorldTime().GetTimeGone()
+		If currentAward And currentAward.GetEndTime() < GetWorldTime().GetTimeGone()
 			'announce the winner and set time for next start
-			if currentAward
+			If currentAward
 				TLogger.Log("TAwardCollection.UpdateAwards()", "Finish current award award: type="+TVTAwardType.GetAsString(currentAward.awardType)+" ["+currentAward.awardType+"] "+"  timeframe="+GetWorldTime().GetFormattedGameDate(currentAward.GetStartTime()) +"  -  " + GetWorldTime().GetFormattedGameDate(currentAward.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate(), LOG_DEBUG)
 				currentAward.Finish()
-				currentAward = null
-			endif
+				currentAward = Null
+			EndIf
 		EndIf
 
 
 		'=== CREATE NEW AWARD ===
-		If not currentAward and GetNextAwardTime() <= GetWorldTime().GetTimeGone()
-			local nextAward:TAward = GetNextAward()
+		If Not currentAward And GetNextAwardTime() <= GetWorldTime().GetTimeGone()
+			Local nextAward:TAward = GetNextAward()
 
 			'create or fetch next award
-			if nextAward
+			If nextAward
 				RemoveUpcoming(nextAward)
-			else
-				local awardType:int = RandRange(1, TVTAwardType.count)
+			Else
+				Local awardType:Int = RandRange(1, TVTAwardType.count)
 				nextAward = CreateAward(awardType)
-			endif
+			EndIf
 
 			'adjust next award config
 			nextAward.SetStartTime( nextAwardTime )
@@ -139,16 +139,16 @@ Type TAwardCollection Extends TGameObjectCollection
 
 			'set current award
 			SetCurrentAward(nextAward)
-			nextAward = null
+			nextAward = Null
 
 
 			'pre-create the next award if needed
-			if not GetNextAward()
-				local awardType:int = RandRange(1, TVTAwardType.count)
+			If Not GetNextAward()
+				Local awardType:Int = RandRange(1, TVTAwardType.count)
 				nextAward = CreateAward(awardType)
 
 				AddUpcoming( nextAward )
-			endif
+			EndIf
 
 			'calculate next award time
 
@@ -157,47 +157,47 @@ Type TAwardCollection Extends TGameObjectCollection
 
 			'set time to the next 0:00 coming _after the waiting
 			'time is gone (or use that midnight if exactly 0:00)
-			local nextTimeExact:Long = currentAward.GetEndTime() + timeBetweenAwards
-			if GetWorldTime().GetDayHour(nextTimeExact) = 0 and GetWorldTime().GetDayMinute(nextTimeExact) = 0
+			Local nextTimeExact:Long = currentAward.GetEndTime() + timeBetweenAwards
+			If GetWorldTime().GetDayHour(nextTimeExact) = 0 And GetWorldTime().GetDayMinute(nextTimeExact) = 0
 				nextAwardTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(nextTimeExact), 0, 0)
-			else
+			Else
 				nextAwardTime = GetWorldTime().MakeTime(0, GetWorldTime().GetDay(nextTimeExact)+1, 0, 0)
-			endif
-			if nextAward
+			EndIf
+			If nextAward
 				nextAward.SetStartTime( nextAwardTime )
-			endif
+			EndIf
 
 
 			TLogger.Log("TAwardCollection.UpdateAwards()", "Set current award: type="+TVTAwardType.GetAsString(currentAward.awardType)+" ["+currentAward.awardType+"] "+"  timeframe="+GetWorldTime().GetFormattedGameDate(currentAward.GetStartTime()) +"  -  " + GetWorldTime().GetFormattedGameDate(currentAward.GetEndTime()) +"  now="+GetWorldTime().GetFormattedGameDate(), LOG_DEBUG)
-			if nextAward
+			If nextAward
 				TLogger.Log("TAwardCollection.UpdateAwards()", "Set next award: type="+TVTAwardType.GetAsString(nextAward.awardType)+" ["+nextAward.awardType+"] "+"  timeframe="+GetWorldTime().GetFormattedGameDate(nextAward.GetStartTime()) +"  -  " + GetWorldTime().GetFormattedGameDate(nextAward.GetEndTime()), LOG_DEBUG)
-			endif
+			EndIf
 		EndIf
 	End Method
 
 
-	Function AddAwardCreatorFunction(awardKey:string, func:TAward())
+	Function AddAwardCreatorFunction(awardKey:String, func:TAward())
 		awardKey = awardKey.ToLower()
 
-		if not awardCreatorFunctions.Contains(awardKey)
+		If Not awardCreatorFunctions.Contains(awardKey)
 			awardCreatorFunctionCount :+ 1
-		endif
-		local wrapper:TAwardCreatorFunctionWrapper = TAwardCreatorFunctionWrapper.Create(func)
+		EndIf
+		Local wrapper:TAwardCreatorFunctionWrapper = TAwardCreatorFunctionWrapper.Create(func)
 		awardCreatorFunctions.Insert(awardKey.ToLower(), wrapper)
 	End Function
 
 
-	Function HasAwardCreatorFunction:int(awardKey:string)
-		return awardCreatorFunctions.Contains(awardKey.ToLower())
+	Function HasAwardCreatorFunction:Int(awardKey:String)
+		Return awardCreatorFunctions.Contains(awardKey.ToLower())
 	End Function
 
 
-	Function RunAwardCreatorFunction:TAward(awardKey:string)
-		local wrapper:TAwardCreatorFunctionWrapper = TAwardCreatorFunctionWrapper(awardCreatorFunctions.ValueForKey(awardKey.ToLower()))
-		if wrapper and wrapper.func then return wrapper.func()
+	Function RunAwardCreatorFunction:TAward(awardKey:String)
+		Local wrapper:TAwardCreatorFunctionWrapper = TAwardCreatorFunctionWrapper(awardCreatorFunctions.ValueForKey(awardKey.ToLower()))
+		If wrapper And wrapper.func Then Return wrapper.func()
 
-		print "RunAwardCreatorFunction: unknown awardKey ~q"+awardKey+"~q. Cannot create award instance."
-		return null
+		Print "RunAwardCreatorFunction: unknown awardKey ~q"+awardKey+"~q. Cannot create award instance."
+		Return Null
 	End Function
 End Type
 
@@ -214,36 +214,36 @@ Type TAwardCreatorFunctionWrapper
 	Field func:TAward()
 
 	Function Create:TAwardCreatorFunctionWrapper(func:TAward())
-		local obj:TAwardCreatorFunctionWrapper = new TAwardCreatorFunctionWrapper
+		Local obj:TAwardCreatorFunctionWrapper = New TAwardCreatorFunctionWrapper
 		obj.func = func
-		return obj
+		Return obj
 	End Function
 End Type
 
 
 
 
-Type TAward extends TGameObject
+Type TAward Extends TGameObject
 	Field scores:Int[4]
 	Field awardType:Int = 0
 	Field startTime:Long = -1
 	Field endTime:Long = -1
 	Field duration:Int = -1
 	'basic prices all awards offer
-	Field priceMoney:int = 50000
+	Field priceMoney:Int = 50000
 	Field priceImage:Float = 2.5
 
-	Field _scoreSum:int = -1 {nosave}
-	Field scoringMode:int = 1
-	Field winningPlayerID:int = -1
+	Field _scoreSum:Int = -1 {nosave}
+	Field scoringMode:Int = 1
+	Field winningPlayerID:Int = -1
 
 
 	Global eventKey_Award_OnFinish:TEventKey = EventManager.GetEventKey("Award.OnFinish", True)
 
 	'adding/subtracting scores does not change other scores
-	Const SCORINGMODE_ABSOLUTE:int = 1
+	Const SCORINGMODE_ABSOLUTE:Int = 1
 	'adding/subtracting scores changes values for other players
-	Const SCORINGMODE_AFFECT_OTHERS:int = 2
+	Const SCORINGMODE_AFFECT_OTHERS:Int = 2
 
 
 	Method New()
@@ -252,43 +252,43 @@ Type TAward extends TGameObject
 
 
 	Function CreateAward:TAward()
-		return new TAward
+		Return New TAward
 	End Function
 
 
-	Method GenerateGUID:string()
-		return "award-"+id
+	Method GenerateGUID:String()
+		Return "award-"+id
 	End Method
 
 
-	Method GetTitle:string()
-		return GetLocale("AWARDNAME_"+TVTAwardType.GetAsString(awardType))
+	Method GetTitle:String()
+		Return GetLocale("AWARDNAME_"+TVTAwardType.GetAsString(awardType))
 	End Method
 
 
-	Method GetText:string()
-		return ""
+	Method GetText:String()
+		Return ""
 	End Method
 
 
-	Method GetRewardText:string()
-		local result:string =""
-		if priceImage <> 0
-			if priceImage > 0 then result :+ chr(9654) + " " +GetLocale("CHANNEL_IMAGE")+": |color=0,125,0|+" + MathHelper.NumberToString(priceImage, 2)+"%|/color|"
-			if priceImage < 0 then result :+ chr(9654) + " " +GetLocale("CHANNEL_IMAGE")+": |color=125,0,0|" + MathHelper.NumberToString(priceImage, 2)+"%|/color|"
-		endif
+	Method GetRewardText:String()
+		Local result:String =""
+		If priceImage <> 0
+			If priceImage > 0 Then result :+ Chr(9654) + " " +GetLocale("CHANNEL_IMAGE")+": |color=0,125,0|+" + MathHelper.NumberToString(priceImage, 2)+"%|/color|"
+			If priceImage < 0 Then result :+ Chr(9654) + " " +GetLocale("CHANNEL_IMAGE")+": |color=125,0,0|" + MathHelper.NumberToString(priceImage, 2)+"%|/color|"
+		EndIf
 
-		if priceMoney <> 0
-			if result <> "" then result :+ "~n"
-			if priceMoney > 0 then result :+ chr(9654) + " " +GetLocale("MONEY")+": |color=0,125,0|+" + MathHelper.DottedValue(priceMoney)+getLocale("CURRENCY")+"|/color|"
-			if priceMoney < 0 then result :+ chr(9654) + " " +GetLocale("MONEY")+": |color=125,0,0|" + MathHelper.DottedValue(priceMoney)+getLocale("CURRENCY")+"|/color|"
-		endif
-		return result
+		If priceMoney <> 0
+			If result <> "" Then result :+ "~n"
+			If priceMoney > 0 Then result :+ Chr(9654) + " " +GetLocale("MONEY")+": |color=0,125,0|+" + MathHelper.DottedValue(priceMoney)+getLocale("CURRENCY")+"|/color|"
+			If priceMoney < 0 Then result :+ Chr(9654) + " " +GetLocale("MONEY")+": |color=125,0,0|" + MathHelper.DottedValue(priceMoney)+getLocale("CURRENCY")+"|/color|"
+		EndIf
+		Return result
 	End Method
 
 
 	Method Reset()
-		scores = new Int[4]
+		scores = New Int[4]
 		startTime = -1
 		endTime = -1
 
@@ -296,29 +296,29 @@ Type TAward extends TGameObject
 	End Method
 
 
-	Method Finish:int()
-		print "finish award"
+	Method Finish:Int()
+		Print "finish award"
 
 		'store winner
 		winningPlayerID = GetCurrentWinner()
 		TriggerBaseEvent(eventKey_Award_OnFinish, New TData.addNumber("winningPlayerID", winningPlayerID), Self)
 
-		if winningPlayerID > 0
-			local modifier:TGameModifierBase
+		If winningPlayerID > 0
+			Local modifier:TGameModifierBase
 			'increase image
-			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelPublicImage", new TData.AddNumber("value", priceImage))
-			if modifier then modifier.Run(new TData.AddNumber("playerID", winningPlayerID) )
+			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelPublicImage", New TData.AddNumber("value", priceImage))
+			If modifier Then modifier.Run(New TData.AddNumber("playerID", winningPlayerID) )
 
 			'increase money
-			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelMoney", new TData.AddNumber("value", priceMoney))
-			if modifier then modifier.Run(new TData.AddNumber("playerID", winningPlayerID) )
+			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelMoney", New TData.AddNumber("value", priceMoney))
+			If modifier Then modifier.Run(New TData.AddNumber("playerID", winningPlayerID) )
 
 			'alternatively:
 			'GetPublicImage(winnerID).Modify(0.5)
 			'GetPlayerFinance(winnerID).EarnGrantedBenefits( priceMoney )
-		endif
+		EndIf
 	
-		return True
+		Return True
 	End Method
 
 
@@ -338,14 +338,14 @@ Type TAward extends TGameObject
 
 
 	Method CalculateEndTime:Long(nowTime:Long = -1)
-		local wt:TWorldTime = GetWorldTime()
-		local durationHours:int = wt.GetHour(GetDuration())
+		Local wt:TWorldTime = GetWorldTime()
+		Local durationHours:Int = wt.GetHour(GetDuration())
 
 		'round now to full hour
-		local now:Long = GetWorldTime().MakeTime( 0, 0, wt.GetHour(nowTime) + (wt.GetDayMinute(nowTime)>0), 0, 0)
+		Local now:Long = GetWorldTime().MakeTime( 0, 0, wt.GetHour(nowTime) + (wt.GetDayMinute(nowTime)>0), 0, 0)
 
 		'end time is minute before next full hour
-		return GetWorldtime().ModifyTime(now, 0, 0, Max(0, durationHours-1), 59)
+		Return GetWorldtime().ModifyTime(now, 0, 0, Max(0, durationHours-1), 59)
 	End Method
 
 
@@ -354,28 +354,28 @@ Type TAward extends TGameObject
 	End Method
 
 
-	Method GetDuration:int()
-		if duration = -1
+	Method GetDuration:Int()
+		If duration = -1
 			'1 day
 			duration = GetWorldTime().MakeTime(0, 1, 0, 0) 
-		endif
-		return duration
+		EndIf
+		Return duration
 	End Method
 
 
-	Method ResetScore(playerID:int)
-		scores[playerID] = 0
+	Method ResetScore(playerID:Int)
+		scores[playerID-1] = 0
 
 		_scoreSum = -1
 	End Method
 
 	
-	Method GetScoreSummary:string()
-		local res:string
-		for local i:int = 1 to 4
+	Method GetScoreSummary:String()
+		Local res:String
+		For Local i:Int = 1 To 4
 			res :+ RSet(GetScore(i),3)+" ("+RSet(MathHelper.NumberToString(GetScoreShare(i)*100,2)+"%",7)+")~t"
 		Next
-		return res
+		Return res
 	End Method
 
 
@@ -395,33 +395,33 @@ Type TAward extends TGameObject
 
 
 	Method GetScoreSum:Int()
-		if _scoreSum = -1
+		If _scoreSum = -1
 			_scoreSum = 0
-			For local s:int = EachIn Self.scores
+			For Local s:Int = EachIn Self.scores
 				_scoreSum :+ s
 			Next
-		endif
+		EndIf
 
-		return _scoreSum
+		Return _scoreSum
 	End Method
 
 
 	Method AdjustScore(PlayerID:Int, amount:Int)
 		'you cannot subtract more than what is there
-		if amount < 0 then amount = - Min(abs(amount), abs(Self.scores[PlayerID-1]))
+		If amount < 0 Then amount = - Min(Abs(amount), Abs(Self.scores[PlayerID-1]))
 
 		Self.scores[PlayerID-1] = Max(0, Self.scores[PlayerID-1] + amount)
 		'print "AdjustScore("+PlayerID+", "+amount+")"
 
-		if scoringMode = SCORINGMODE_AFFECT_OTHERS
+		If scoringMode = SCORINGMODE_AFFECT_OTHERS And Self.scores.length > 1
 			'if score of a player _increases_ score of others will decrease
 			'if score _decreases_, it increases score of others!
-			local change:int = (0.5 * amount) / (Self.scores.length-1)
-			For Local i:Int = 1 to Self.scores.length
-				if i = PlayerID then continue
+			Local change:Int = (0.5 * amount) / (Self.scores.length-1)
+			For Local i:Int = 1 To Self.scores.length
+				If i = PlayerID Then Continue
 				Self.scores[i-1] = Max(0, Self.scores[i-1] - change)
 			Next
-		endif
+		EndIf
 		
 
 		'reset cache
@@ -430,17 +430,17 @@ Type TAward extends TGameObject
 
 
 	Method GetAwardTypeString:String()
-		return TVTAwardType.GetAsString(awardType)
+		Return TVTAwardType.GetAsString(awardType)
 	End Method
 
 
 	Method GetStartTime:Long()
-		return startTime
+		Return startTime
 	End Method
 
 
 	Method GetEndTime:Long()
-		return endTime
+		Return endTime
 	End Method
 	
 
@@ -449,14 +449,14 @@ Type TAward extends TGameObject
 	End Method
 
 
-	Method GetCurrentRank:Int(playerID:int)
-		if playerID < 1 or playerID > self.scores.length then return 0
+	Method GetCurrentRank:Int(playerID:Int)
+		If playerID < 1 Or playerID > Self.scores.length Then Return 0
 
-		local rank:int = 1
-		local myScore:int = self.scores[playerID-1]
+		Local rank:Int = 1
+		Local myScore:Int = Self.scores[playerID-1]
 		For Local i:Int = 1 To scores.length
-			if i = playerID then continue
-			if Self.scores[i-1] > myScore
+			If i = playerID Then Continue
+			If Self.scores[i-1] > myScore
 				rank :+ 1
 			EndIf
 		Next
@@ -464,8 +464,8 @@ Type TAward extends TGameObject
 	End Method
 
 
-	Method GetRanks:int()
-		return self.scores.length
+	Method GetRanks:Int()
+		Return Self.scores.length
 	End Method
 	
 
