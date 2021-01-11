@@ -808,9 +808,6 @@ Function DrawMenuBackground(darkened:Int=False, drawLogo:Int = False)
 
 	If GetGameBase().IsGameState(TGameBase.STATE_MAINMENU)
 		SetColor 255,255,255
-		'GetBitmapFont("Default",13, BOLDFONT).DrawBlock("ACHTUNG neue Tastenkürzel:", 10,460, 300,20, Null,TColor.Create(140,75,75))
-		'GetBitmapFont("Default",12).DrawBlock("|b|[S]|/b| Schnellspeichern - nun mit |b|[F5]|/b|~n|b|[L]|/b| Schnellspeicherstand einladen - nun mit |b|[F8]|/b|.~nDamit sollten versehentliche Spielverluste durch Einladerei minimiert werden.", 10,480, 300,50, Null,TColor.Create(75,75,75))
-
 
 		Local defaultColor:SColor8 = New SColor8(75,75,140)
 		Local linkColor:SColor8 = New SColor8(60,60,120)
