@@ -23,7 +23,10 @@ Type TGameModifierManager
 	Field modifiers:TList = New TList
 	'functions cannot get serialized, so they need to be created in
 	'advance - and cross all old and coming instances
-	Global functions:TMap = CreateMap() {nosave}
+	Global functions:TStringMap = new TStringMap {nosave}
+	Global createFunctions:TStringMap = new TStringMap {nosave}
+	Global runFunctions:TStringMap = new TStringMap {nosave}
+	Global undoFunctions:TStringMap = new TStringMap {nosave}
 	Global _instance:TGameModifierManager
 
 
@@ -70,12 +73,12 @@ Type TGameModifierManager
 
 	'register an effect by passing the name + creator function
 	Function RegisterCreateFunction(modifierName:String, func:TGameModifierBase())
-		functions.Insert("create_"+modifierName.ToLower(), New TGameModifierCreatorFunctionWrapper.Init(func))
+		createFunctions.Insert(modifierName.ToLower(), New TGameModifierCreatorFunctionWrapper.Init(func))
 	End Function
 
 
 	Function Create:TGameModifierBase(modifierName:String)
-		Local wrapper:TGameModifierCreatorFunctionWrapper = TGameModifierCreatorFunctionWrapper(functions.ValueForKey("create_"+modifierName.Tolower() ))
+		Local wrapper:TGameModifierCreatorFunctionWrapper = TGameModifierCreatorFunctionWrapper(createFunctions.ValueForKey(modifierName.Tolower() ))
 		If wrapper
 			Return wrapper.func()
 		EndIf
@@ -84,7 +87,7 @@ Type TGameModifierManager
 
 
 	Function CreateAndInit:TGameModifierBase(modifierName:String, params:TData, extra:TData=Null)
-		Local wrapper:TGameModifierCreatorFunctionWrapper = TGameModifierCreatorFunctionWrapper(functions.ValueForKey("create_"+modifierName.Tolower() ))
+		Local wrapper:TGameModifierCreatorFunctionWrapper = TGameModifierCreatorFunctionWrapper(createFunctions.ValueForKey(modifierName.Tolower() ))
 		If wrapper
 			Return wrapper.func().Init(params, extra)
 		EndIf
@@ -101,12 +104,12 @@ Type TGameModifierManager
 
 
 	Function RegisterRunFunction(key:String, func:Int(source:TGameModifierBase, params:TData))
-		functions.Insert("run_"+key.ToLower(), New TGameModifierFunctionWrapper.Init(func))
+		runFunctions.Insert(key.ToLower(), New TGameModifierFunctionWrapper.Init(func))
 	End Function
 
 
 	Function RegisterUndoFunction(key:String, func:Int(source:TGameModifierBase, params:TData))
-		functions.Insert("undo_"+key.ToLower(), New TGameModifierFunctionWrapper.Init(func))
+		undoFunctions.Insert(key.ToLower(), New TGameModifierFunctionWrapper.Init(func))
 	End Function
 
 
@@ -116,12 +119,12 @@ Type TGameModifierManager
 
 
 	Function GetRunFunction:TGameModifierFunctionWrapper(key:String)
-		Return TGameModifierFunctionWrapper(functions.ValueForKey("run_"+key.ToLower()))
+		Return TGameModifierFunctionWrapper(runFunctions.ValueForKey(key.ToLower()))
 	End Function
 
 
 	Function GetUndoFunction:TGameModifierFunctionWrapper(key:String)
-		Return TGameModifierFunctionWrapper(functions.ValueForKey("undo_"+key.ToLower()))
+		Return TGameModifierFunctionWrapper(undoFunctions.ValueForKey(key.ToLower()))
 	End Function
 
 
@@ -133,14 +136,14 @@ Type TGameModifierManager
 
 
 	Function RunRunFunction:Int(key:String, source:TGameModifierBase, params:TData)
-		Local wrapper:TGameModifierFunctionWrapper = TGameModifierFunctionWrapper(functions.ValueForKey("run_"+key.ToLower()))
+		Local wrapper:TGameModifierFunctionWrapper = TGameModifierFunctionWrapper(runFunctions.ValueForKey(key.ToLower()))
 		If wrapper Then Return wrapper.func(source, params)
 		Return False
 	End Function
 
 
 	Function RunUndoFunction:Int(key:String, source:TGameModifierBase, params:TData)
-		Local wrapper:TGameModifierFunctionWrapper = TGameModifierFunctionWrapper(functions.ValueForKey("undo_"+key.ToLower()))
+		Local wrapper:TGameModifierFunctionWrapper = TGameModifierFunctionWrapper(undoFunctions.ValueForKey(key.ToLower()))
 		If wrapper Then Return wrapper.func(source, params)
 		Return False
 	End Function
