@@ -259,11 +259,14 @@ Type TStationMapCollection
 
 		local result:Float
 		For local section:TStationMapSection = EachIn sections
+			result :+ section.GetPopulationAntennaShareRatio()
+			rem
 			if section.populationAntennaShare < 0
 				result :+ GetCurrentPopulationAntennaShare()
 			else
 				result :+ section.populationAntennaShare
 			endif
+			endrem
 		Next
 		return result / sections.Count()
 	End Method
@@ -4257,6 +4260,7 @@ Type TStationMapSection
 	Field antennaShareMap:TMap = Null {nosave}
 	'Field antennaShareMapImage:TImage {nosave}
 	Field shareCache:TMap = new TMap {nosave}
+	Field calculationMutex:TMutex = CreateMutex() {nosave}
 
 
 	Method New()
@@ -4564,6 +4568,10 @@ Type TStationMapSection
 
 
 	Method CalculatePopulation:int()
+		If not TryLockMutex(calculationMutex)
+			Notify "CalculatePopulation: concurrent access found!"
+			LockMutex(calculationMutex)
+		EndIf
 
 		populationMap = New Int[populationImage.width, populationImage.height]
 
@@ -4583,6 +4591,9 @@ Type TStationMapSection
 				population :+ populationMap[x, y]
 			Next
 		Next
+		
+		UnlockMutex(calculationMutex)
+		
 		return population
 	End Method
 
@@ -4594,6 +4605,12 @@ Type TStationMapSection
 
 
 	Method _FillAntennaShareMap:Int(stationMap:TStationMap, stations:TList)
+		If not TryLockMutex(calculationMutex)
+			Notify "_FillAntennaShareMap: concurrent access found!"
+			LockMutex(calculationMutex)
+		EndIf
+		
+		
 		'define locals outside of that for loops...
 		Local posX:Int		= 0
 		Local posY:Int		= 0
@@ -4608,10 +4625,11 @@ Type TStationMapSection
 		if stationmap.cheatedMaxReach
 			'insert the players bitmask-number into the field
 			'and if there is already one ... add the number
+			Local shapeSprite:TSprite = GetShapeSprite()
 			For posX = 0 To populationImage.height-1
 				For posY = 0 To populationImage.width-1
 					'left the topographic borders ?
-					If not GetShapeSprite().PixelIsOpaque(posX, posY) > 0 then continue
+					If not shapeSprite.PixelIsOpaque(posX, posY) > 0 then continue
 
 					mapKey = posX+","+posY
 					mapValue = New TVec3D.Init(posX,posY, getMaskIndex(stationmap.owner) )
@@ -4641,20 +4659,22 @@ Type TStationMapSection
 
 				posX = 0
 				posY = 0
+				Local shapeSprite:TSprite = GetShapeSprite()
 				For posX = circleRect.getX() To circleRect.getW()
 					For posY = circleRect.getY() To circleRect.getH()
 						'left the circle?
 						If Self.calculateDistance( posX - stationX, posY - stationY ) > antennaStationRadius Then Continue
 						'left the topographic borders ?
-						If not GetShapeSprite().PixelIsOpaque(posX, posY) > 0 then continue
+						If not shapeSprite.PixelIsOpaque(posX, posY) > 0 then continue
 
 
 						'insert the players bitmask-number into the field
 						'and if there is already one ... add the number
 						mapKey = posX+","+posY
 						mapValue = New TVec3D.Init(posX,posY, getMaskIndex(station.owner) )
-						If antennaShareMap.Contains(mapKey)
-							mapValue.z = Int(mapValue.z) | Int(TVec3D(antennaShareMap.ValueForKey(mapKey)).z)
+						Local shareMapValue:TVec3D = TVec3D(antennaShareMap.ValueForKey(mapKey))
+						If shareMapValue
+							mapValue.z = Int(mapValue.z) | Int(shareMapValue.z)
 						EndIf
 						antennaShareMap.Insert(mapKey, mapValue)
 
@@ -4663,6 +4683,8 @@ Type TStationMapSection
 				Next
 			Next
 		endif
+		
+		UnlockMutex(calculationMutex)
 	End Method
 
 
@@ -4943,6 +4965,7 @@ Type TStationMapSection
 		Local someoneUsesPoint:Int = False
 		Local allUsePoint:Int = False
 		For Local mapValue:TVec3D = EachIn shareMap.Values()
+			Local mapFlag:int = int(mapValue.z + 0.5)
 			someoneUsesPoint = False
 			allUsePoint = False
 
@@ -4951,24 +4974,24 @@ Type TStationMapSection
 				Rem
 				local someoneUnwantedUsesPoint:int	= FALSE
 				for local i:int = 0 to withoutChannelFlags.length-1
-					if int(mapValue.z) & withoutChannelFlags[i]
+					if int(mapValue.z + 0.5) & withoutChannelFlags[i]
 						someoneUnwantedUsesPoint = true
 						exit
 					endif
 				Next
 				if someoneUnwantedUsesPoint then continue
 				endrem
-			If Int(mapValue.z) & withoutFlag Then Continue
+			If mapFlag & withoutFlag Then Continue
 
 			'as we have multiple flags stored in AllFlag, we have to
 			'compare the result to see if all of them hit,
 			'if only one of it hits, we just check for <>0
-			If (Int(mapValue.z) & allFlag) = allFlag
+			If (mapFlag & allFlag) = allFlag
 				allUsePoint = True
 				someoneUsesPoint = True
 			Else
 				For Local i:Int = 0 To channelFlags.length-1
-					If Int(mapValue.z) & channelFlags[i] Then someoneUsesPoint = True;Exit
+					If mapFlag & channelFlags[i] Then someoneUsesPoint = True;Exit
 				Next
 			EndIf
 			'someone has a station there
@@ -5132,7 +5155,7 @@ endrem
 		Next
 
 		For Local point:TVec3D = EachIn points.Values()
-			If ARGB_Red(Int(point.z)) = 0 And ARGB_Blue(Int(point.z)) = 255
+			If ARGB_Red(Int(point.z)) = 0 And ARGB_Blue(Int(point.z + 0.5)) = 255
 				result :+ populationmap[point.x, point.y]
 			EndIf
 		Next
