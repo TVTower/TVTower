@@ -494,7 +494,11 @@ Type TBroadcast
 	'streiten oder wie viel Zuschauer Spieler 3 alleine bedient
 	Method AscertainPlayerMarkets()
 		'remove all old markets
-		AudienceMarkets = CreateList()
+		if AudienceMarkets
+			AudienceMarkets.Clear()
+		else
+			AudienceMarkets = CreateList()
+		Endif
 
 		AddMarket([1]) '1
 		AddMarket([2]) '2
@@ -1190,7 +1194,7 @@ Type TAudienceMarketCalculation
 
 		For Local i:Int = 0 Until playerIDs.length
 			'maybe a player just went bankrupt, so create a malfunction for him
-			If Not audienceAttractions[i] Then SetPlayersProgrammeAttraction(i, TBroadcast.CalculateMalfunction(Null))
+			If Not audienceAttractions[i] Then SetPlayersProgrammeAttraction(playerIDs[i], TBroadcast.CalculateMalfunction(Null))
 			Local attraction:TAudienceAttraction = audienceAttractions[i]
 
 			'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
