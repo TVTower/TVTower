@@ -238,7 +238,6 @@ Type TAward Extends TGameObject
 	Field scoringMode:Int = 1
 	Field winningPlayerID:Int = -1
 
-
 	'adding/subtracting scores does not change other scores
 	Const SCORINGMODE_ABSOLUTE:Int = 1
 	'adding/subtracting scores changes values for other players
