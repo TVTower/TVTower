@@ -179,43 +179,44 @@ Type TNetworkHelper extends TNetworkHelperBase
 	Method RegisterEventListeners:int()
 		if registeredEvents then return FALSE
 
-		EventManager.registerListenerFunction("programmeplan.SetNews", onPlanSetNews)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_SetNews, onPlanSetNews)
 		'someone adds a chatline
-		EventManager.registerListenerFunction("chat.onAddEntry", OnChatAddEntry)
+		EventManager.registerListenerFunction(GameEventKeys.Chat_OnAddEntry, OnChatAddEntry)
 		'changes to the player's stationmap
-		EventManager.registerListenerFunction("stationmap.removeStation", onChangeStationmap)
-		EventManager.registerListenerFunction("stationmap.addStation", onChangeStationmap)
+		EventManager.registerListenerFunction(GameEventKeys.StationMap_RemoveStation, onChangeStationmap)
+		EventManager.registerListenerFunction(GameEventKeys.StationMap_AddStation, onChangeStationmap)
 
 		'changes to rooms (eg. owner changes)
-		EventManager.registerListenerFunction("RoomAgency.rentRoom", onChangeRoomAgency)
+		EventManager.registerListenerFunction(GameEventKeys.Room_OnBeginRental, onChangeRoomOwner)
+		EventManager.registerListenerFunction(GameEventKeys.Room_OnCancelRental, onChangeRoomOwner)
 
 		'news subscription
-		EventManager.registerListenerFunction("player.SetNewsAbonnement", onPlayerSetNewsAbonnement)
+		EventManager.registerListenerFunction(GameEventKeys.Player_SetNewsAbonnement, onPlayerSetNewsAbonnement)
 
 		'changes to the player's programmecollection
-		EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", onChangeProgrammeCollection)
-		EventManager.registerListenerFunction("programmecollection.addProgrammeLicence", onChangeProgrammeCollection)
-		EventManager.registerListenerFunction("programmecollection.removeAdContract", onChangeProgrammeCollection)
-		EventManager.registerListenerFunction("programmecollection.addAdContract",	onChangeProgrammeCollection)
-		EventManager.registerListenerFunction("programmecollection.removeProgrammeLicenceFromSuitcase", onChangeProgrammeCollection)
-		EventManager.registerListenerFunction("programmecollection.addProgrammeLicenceToSuitcase", onChangeProgrammeCollection)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence, onChangeProgrammeCollection)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicence, onChangeProgrammeCollection)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveAdContract, onChangeProgrammeCollection)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddAdContract,	onChangeProgrammeCollection)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase, onChangeProgrammeCollection)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase, onChangeProgrammeCollection)
 
 		'listen to events to refresh figure position 
-		EventManager.registerListenerFunction("figure.onSyncTimer", onFigurePositionChanged)
-		EventManager.registerListenerFunction("figure.onReachTarget", onFigurePositionChanged)
-		EventManager.registerListenerFunction("figure.onSetInRoom", onFigurePositionChanged)
+		EventManager.registerListenerFunction(GameEventKeys.Figure_OnSyncTimer, onFigurePositionChanged)
+		EventManager.registerListenerFunction(GameEventKeys.Figure_OnReachTarget, onFigurePositionChanged)
+		EventManager.registerListenerFunction(GameEventKeys.Figure_SetInRoom, onFigurePositionChanged)
 		'as soon as a figure changes its target (add it to the "route")
-		EventManager.registerListenerFunction("figure.onChangeTarget", onFigureChangeTarget)
-		EventManager.registerListenerFunction("figure.onSetHasMasterKey", onFigureSetHasMasterkey)
+		EventManager.registerListenerFunction(GameEventKeys.Figure_OnChangeTarget, onFigureChangeTarget)
+		EventManager.registerListenerFunction(GameEventKeys.Figure_OnSetHasMasterKey, onFigureSetHasMasterkey)
 
 		'changes in movieagency
-		EventManager.registerListenerFunction("ProgrammeLicenceAuction.setBid", onChangeMovieAgency)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammeLicenceAuction_SetBid, onChangeMovieAgency)
 
 		registeredEvents = true
 	End Method
 
 
-	Function onChangeRoomAgency:int( triggerEvent:TEventBase )
+	Function onChangeRoomOwner:int( triggerEvent:TEventBase )
 		if not listenToEvents then return False
 
 		'only react if game leader / server
@@ -226,11 +227,11 @@ Type TNetworkHelper extends TNetworkHelperBase
 		if not room then return False
 
 		local action:int = -1
-		if triggerEvent.isTrigger("RoomAgency.rentRoom") then action = NET_BUY
-		if triggerEvent.isTrigger("RoomAgency.cancelRoom") then action = NET_SELL
+		if triggerEvent.GetEventKey() = GameEventKeys.Room_OnBeginRental then action = NET_BUY
+		if triggerEvent.GetEventKey() = GameEventKeys.Room_OnCancelRental then action = NET_SELL
 		if action = -1 then return FALSE
 
-		local owner:int = triggerEvent.GetData().GetInt("newOwner", 0)
+		local owner:int = triggerEvent.GetData().GetInt("owner", 0)
 		GetNetworkHelper().SendRoomAgencyChange(room.GetGUID(), action, owner)
 	End Function
 	
@@ -266,8 +267,8 @@ Type TNetworkHelper extends TNetworkHelperBase
 		if station.owner <> GetPlayerCollection().playerID and not GetGameBase().isGameLeader() then return FALSE
 
 		local action:int = -1
-		if triggerEvent.isTrigger("stationmap.addStation") then action = NET_ADD
-		if triggerEvent.isTrigger("stationmap.removeStation") then action = NET_DELETE
+		if triggerEvent.GetEventKey() = GameEventKeys.StationMap_AddStation then action = NET_ADD
+		if triggerEvent.GetEventKey() = GameEventKeys.StationMap_RemoveStation then action = NET_DELETE
 		if action = -1 then return FALSE
 
 		GetNetworkHelper().SendStationmapChange(station.owner, station.GetGUID())

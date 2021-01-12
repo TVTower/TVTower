@@ -245,22 +245,22 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'===== REGISTER EVENTS =====
 		'register changes to GameSettingsStartYear-guiInput
-		EventManager.registerListenerMethod("guiobject.onChange", Self, "onChangeGameSettingsInputs", guiStartYear)
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", guiStartYear)
 		'and to game seed
-		EventManager.registerListenerMethod("guiobject.onChange", Self, "onChangeGameSettingsInputs", guiGameSeed)
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", guiGameSeed)
 		'register checkbox changes
-		EventManager.registerListenerMethod("guiCheckBox.onSetChecked", Self, "onCheckCheckboxes", "TGUICheckbox")
+		EventManager.registerListenerMethod(GUIEventKeys.GUICheckbox_OnSetChecked, Self, "onCheckCheckboxes", "TGUICheckbox")
 
 		'register changes to player or channel name
 		For Local i:Int = 0 To 3
-			EventManager.registerListenerMethod("guiobject.onChange", Self, "onChangeGameSettingsInputs", guiPlayerNames[i])
-			EventManager.registerListenerMethod("guiobject.onChange", Self, "onChangeGameSettingsInputs", guiChannelNames[i])
-			EventManager.registerListenerMethod("GUIDropDown.onSelectEntry", Self, "onChangeGameSettingsInputs", guiDifficulty[i])
+			EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", guiPlayerNames[i])
+			EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnChange, Self, "onChangeGameSettingsInputs", guiChannelNames[i])
+			EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onChangeGameSettingsInputs", guiDifficulty[i])
 		Next
 
 		'handle clicks on the gui objects
-		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickButtons", "TGUIButton")
-		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickArrows", "TGUIArrowButton")
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickButtons", "TGUIButton")
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickArrows", "TGUIArrowButton")
 
 		Return Self
 	End Method

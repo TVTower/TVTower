@@ -1,15 +1,44 @@
 SuperStrict
 Import "Dig/base.util.event.bmx"
 
-Global GameEventKeys:TGameEventKeys = new TGameEventKeys
+Global GameEventKeys:TGameEventKeys = New TGameEventKeys
 
 Type TGameEventKeys
+	'common.misc.screen.bmx"
+	Field Screen_onTryEnter:TEventKey = GetEventKey("screen.onTryEnter", True)
+	Field Screen_onBeginEnter:TEventKey = GetEventKey("screen.onBeginEnter", True)
+	Field Screen_onFinishEnter:TEventKey = GetEventKey("screen.onFinishEnter", True)
+	Field Screen_onLeave:TEventKey = GetEventKey("screen.onLeave", True)
+	Field Screen_onTryLeave:TEventKey = GetEventKey("screen.onTryLeave", True)
+	Field Screen_onBeginLeave:TEventKey = GetEventKey("screen.onBeginLeave", True)
+	Field Screen_onFinishLeave:TEventKey = GetEventKey("screen.onFinishLeave", True)
+	Field Screen_OnSetCurrent:TEventKey = GetEventKey("screen.onSetCurrent", True)
+	Field Screen_OnUpdate:TEventKey = GetEventKey("screen.onUpdate", True)
+	Field Screen_OnDraw:TEventKey = GetEventKey("screen.onDraw", True)
+
+	'game.achievements.base.bmx
+	Field Achievement_OnComplete:TEventKey = GetEventKey("Achievement.OnComplete", True)
+	Field Achievement_OnFail:TEventKey = GetEventKey("Achievement.OnFail", True)
+	Field AchievementTask_OnComplete:TEventKey = GetEventKey("AchievementTask.OnComplete", True)
+	Field AchievementTask_OnFail:TEventKey = GetEventKey("AchievementTask.OnFail", True)
+	Field AchievementReward_OnBeginGiveToPlayer:TEventKey = GetEventKey("AchievementReward.OnBeginGiveToPlayer", True)
+	Field AchievementReward_OnGiveToPlayer:TEventKey = GetEventKey("AchievementReward.OnGiveToPlayer", True)
+	
 
 	'game.ai.bmx
 	'this is the same as in GUIEventKeys!
 	Field Chat_OnAddEntry:TEventKey = GetEventKey("Chat.onAddEntry", True)	
 
+	'game.archivedmessages.bmx
+	Field ArchivedMessageCollection_onAdd:TEventKey = GetEventKey("ArchivedMessageCollection.onAdd", True)
+	Field ArchivedMessageCollection_onRemove:TEventKey = GetEventKey("ArchivedMessageCollection.onRemove", True)
+
+	'game.award.base.bmx
+	Field Award_OnFinish:TEventKey = GetEventKey("Award.OnFinish", True)
+
 	'game.broadcastmaterial.advertisement.bmx
+	Field Broadcast_Advertisement_BeginBroadcasting:TEventKey = GetEventKey("broadcast.advertisement.BeginBroadcasting", True)
+	Field Broadcast_Advertisement_BeginBroadcastingAsProgramme:TEventKey = GetEventKey("broadcast.advertisement.BeginBroadcastingAsProgramme", True)
 	Field Broadcast_Advertisement_FinishBroadcastingAsProgramme:TEventKey = GetEventKey("broadcast.advertisement.FinishBroadcastingAsProgramme", True)
 	Field Broadcast_Advertisement_FinishBroadcasting:TEventKey = GetEventKey("broadcast.advertisement.FinishBroadcasting", True)
 	'game.broadcastmaterial.news.bmx
@@ -38,6 +67,28 @@ Type TGameEventKeys
 	Field Game_PreparePlayer:TEventKey = GetEventKey("Game.PreparePlayer", True)
 	Field Game_OnSetActivePlayer:TEventKey = GetEventKey("Game.onSetActivePlayer", True)
 
+
+	'game.figure.base.bmx:
+	Global Figure_OnSetHasMasterkey:TEventKey = EventManager.GetEventKey("Figure.OnSetHasMasterkey", True)
+	Global Figure_OnChangeTarget:TEventKey = EventManager.GetEventKey("Figure.OnChangeTarget", True)
+	Global Figure_OnBeginReachTarget:TEventKey = EventManager.GetEventKey("Figure.OnBeginReachTarget", True)
+	Global Figure_OnReachTarget:TEventKey = EventManager.GetEventKey("Figure.OnReachTarget", True)
+	Global Figure_OnEnterTarget:TEventKey = EventManager.GetEventKey("Figure.OnEnterTarget", True)
+
+	'game.figure.bmx
+	Field Figure_SetInRoom:TEventKey = GetEventKey("Figure.SetInRoom", True)
+	Field Room_KickFigure:TEventKey = GetEventKey("Room.KickFigure", True)
+	Field Figure_OnEnterRoom:TEventKey = GetEventKey("Figure.onEnterRoom", True)
+	Field Figure_OnTryEnterRoom:TEventKey = GetEventKey("Figure.onTryEnterRoom", True)
+	Field Figure_OnBeginEnterRoom:TEventKey = GetEventKey("Figure.onBeginEnterRoom", True)
+	Field Figure_OnFinishEnterRoom:TEventKey = GetEventKey("Figure.onFinishEnterRoom", True)
+	Field Figure_OnFailEnterRoom:TEventKey = GetEventKey("Figure.onFailEnterRoom", True)
+	Field Figure_OnTryLeaveRoom:TEventKey = GetEventKey("Figure.onTryLeaveRoom", True)
+	Field Figure_OnBeginLeaveRoom:TEventKey = GetEventKey("Figure.onBeginLeaveRoom", True)
+	Field Figure_OnFinishLeaveRoom:TEventKey = GetEventKey("Figure.onFinishLeaveRoom", True)
+	Field Figure_OnSyncTimer:TEventKey = GetEventKey("Figure.onSyncTimer", True)
+	Field Figure_OnLeaveRoom:TEventKey = GetEventKey("Figure.onLeaveRoom", True)
+	Field Figure_OnForcefullyLeaveRoom:TEventKey = GetEventKey("Figure.onForcefullyLeaveRoom", True)
 
 	'game.figure.customfigures.bmx:
 	Field PublicAuthorities_OnConfiscateProgrammeLicence:TEventKey = GetEventKey("PublicAuthorities.onConfiscateProgrammeLicence", True)
@@ -89,6 +140,11 @@ Type TGameEventKeys
 	Field SportLeague_StartSeasonPart:TEventKey = GetEventKey("SportLeague.StartSeasonPart", True)
 	Field SportLeague_FinishSeasonPart:TEventKey = GetEventKey("SportLeague.FinishSeasonPart", True)
 	Field SportLeague_RunMatch:TEventKey = GetEventKey("SportLeague.RunMatch", True)
+	
+	
+	'game.person.base.bmx
+	Field PersonBase_OnStartProduction:TEventKey = GetEventKey("PersonBase.OnStartProduction", True)
+	Field PersonBase_OnFinishProduction:TEventKey = GetEventKey("PersonBase.OnFinishProduction", True)
 	
 	
 	'game.player.bmx
@@ -144,6 +200,10 @@ Type TGameEventKeys
 	Field PlayerBoss_onPlayerTakesCredit:TEventKey = GetEventKey("playerboss.onPlayerTakesCredit", True)
 	Field PlayerBoss_onPlayerEnterBossRoom:TEventKey = GetEventKey("playerboss.onPlayerEnterBossRoom", True)
 
+	'game.player.finance.bmx
+	Global PlayerFinance_OnChangeMoney:TEventKey = GetEventKey("PlayerFinance.onChangeMoney", True)
+	Global PlayerFinance_OnTransactionFailed:TEventKey = GetEventKey("PlayerFinance.OnTransactionFailed", True)
+
 	'game.programme.programmelicence.bmx
 	Field ProgrammeLicenceCollection_OnAddLicence:TEventKey = GetEventKey("ProgrammeLicenceCollection.onAddLicence", True)
 	Field ProgrammeLicence_OnGiveBackToLicencePool:TEventKey = GetEventKey("ProgrammeLicence.onGiveBackToLicencePool", True)
@@ -191,23 +251,6 @@ Type TGameEventKeys
 	Field ProductionConcept_SetCast:TEventKey = GetEventKey("ProductionConcept.SetCast", True)
 	Field ProductionConcept_SetProductionFocus:TEventKey = GetEventKey("ProductionConcept.SetProductionFocus", True)
 	Field ProductionFocus_SetFocus:TEventKey = GetEventKey("ProductionFocus.SetFocus", True)
-
-	'game.figure.bmx
-	Field Figure_SetInRoom:TEventKey = GetEventKey("Figure.SetInRoom", True)
-	Field Room_KickFigure:TEventKey = GetEventKey("Room.KickFigure", True)
-	Field Figure_OnEnterRoom:TEventKey = GetEventKey("Figure.onEnterRoom", True)
-	Field Figure_OnTryEnterRoom:TEventKey = GetEventKey("Figure.onTryEnterRoom", True)
-	Field Figure_OnBeginEnterRoom:TEventKey = GetEventKey("Figure.onBeginEnterRoom", True)
-	Field Figure_OnFinishEnterRoom:TEventKey = GetEventKey("Figure.onFinishEnterRoom", True)
-	Field Figure_OnFailEnterRoom:TEventKey = GetEventKey("Figure.onFailEnterRoom", True)
-	Field Figure_OnTryLeaveRoom:TEventKey = GetEventKey("Figure.onTryLeaveRoom", True)
-	Field Figure_OnBeginLeaveRoom:TEventKey = GetEventKey("Figure.onBeginLeaveRoom", True)
-	Field Figure_OnFinishLeaveRoom:TEventKey = GetEventKey("Figure.onFinishLeaveRoom", True)
-	Field Figure_OnChangeTarget:TEventKey = GetEventKey("Figure.onChangeTarget", True)
-	Field Figure_OnSyncTimer:TEventKey = GetEventKey("Figure.onSyncTimer", True)
-	Field Figure_OnLeaveRoom:TEventKey = GetEventKey("Figure.onLeaveRoom", True)
-	Field Figure_OnForcefullyLeaveRoom:TEventKey = GetEventKey("Figure.onForcefullyLeaveRoom", True)
-
 
 	'game.roomhandler.adagency.bmx
 	Field AdAgency_AddAdContract:TEventKey = GetEventKey("AdAgency.addAdContract", True)

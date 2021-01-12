@@ -172,30 +172,30 @@ Type RoomHandler_News extends TRoomHandler
 		'=== register event listeners
 		'we are interested in the genre buttons
 		for local i:int = 0 until NewsGenreButtons.length
-			_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onMouseOver", onHoverNewsGenreButtons, NewsGenreButtons[i] ) ]
-			_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDraw", onDrawNewsGenreButtons, NewsGenreButtons[i] ) ]
-			_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onClick", onClickNewsGenreButtons, NewsGenreButtons[i] ) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onHoverNewsGenreButtons, NewsGenreButtons[i]) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDraw, onDrawNewsGenreButtons, NewsGenreButtons[i]) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickNewsGenreButtons, NewsGenreButtons[i]) ]
 		Next
 
 
 		'if the player visually manages the blocks, we need to handle the events
 		'so we can inform the programmeplan about changes...
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDropOnTargetAccepted", onDropNews, "TGUINews" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropNews, "TGUINews") ]
 		'this lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickNews, "TGUINews") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickNews, "TGUINews") ]
 
 		'we want to get informed if the news situation changes for a user
-		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.SetNews", onChangeNews ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.RemoveNews", onChangeNews ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addNews", onChangeNews ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeNews", onChangeNews ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_SetNews, onChangeNews) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_RemoveNews, onChangeNews) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddNews, onChangeNews) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveNews, onChangeNews) ]
 		'we want to know if we hover a specific block
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverNews, "TGUINews" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverNews, "TGUINews") ]
 
 		'figure enters screen - reset the guilists, limit listening to the 4 rooms
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterNewsPlannerScreen, plannerScreen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterNewsPlannerScreen, plannerScreen) ]
 		'also we want to interrupt leaving a room with dragged items
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnTryLeave", onTryLeaveNewsPlannerScreen, plannerScreen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnTryLeave, onTryLeaveNewsPlannerScreen, plannerScreen) ]
 
 		_eventListeners :+ _RegisterScreenHandler( onUpdateNews, onDrawNews, studioScreen )
 		_eventListeners :+ _RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, plannerScreen )

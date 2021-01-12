@@ -64,18 +64,14 @@ Type TgfxContractlist Extends TPlannerList
 		if not registeredEvents
 			'handle changes to the programme collections (add/removal
 			'of contracts)
-			_registeredListeners :+ [ EventManager.registerListenerFunction("programmecollection.addAdContract", OnChangeProgrammeCollection) ]
-			_registeredListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeAdContract", OnChangeProgrammeCollection) ]
-
-			'handle broadcasts of advertisements with our contracts
-			_registeredListeners :+ [ EventManager.registerListenerFunction("broadcast.advertisement.BeginBroadcasting", OnBroadcastAdvertisement) ]
-			_registeredListeners :+ [ EventManager.registerListenerFunction("broadcast.advertisement.BeginBroadcastingAsProgramme", OnBroadcastAdvertisement) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddAdContract, OnChangeProgrammeCollection) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveAdContract, OnChangeProgrammeCollection) ]
 
 			'handle changes to the contracts to avoid outdated information
-			_registeredListeners :+ [ EventManager.registerListenerFunction("adContract.onSetSpotsSent", OnChangeContractData) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.AdContract_OnSetSpotsSent, OnChangeContractData) ]
 
 			'handle savegame loading (reset cache)
-			_registeredListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnLoad", OnLoadSaveGame) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, OnLoadSaveGame) ]
 
 			registeredEvents = True
 		endif
@@ -327,15 +323,6 @@ Type TgfxContractlist Extends TPlannerList
 	Function OnChangeContractData:int( triggerEvent:TEventBase )
 		local adContract:TAdContract = TAdContract(triggerEvent.GetSender())
 		if not adContract or adContract.owner <> _contractsOwner then return False
-
-		'invalidate contracts list
-		_contracts = null
-	End Function
-
-
-	Function OnBroadcastAdvertisement:int( triggerEvent:TEventBase )
-		local advertisement:TAdvertisement = TAdvertisement(triggerEvent.GetSender())
-		if not advertisement or advertisement.owner <> _contractsOwner then return False
 
 		'invalidate contracts list
 		_contracts = null

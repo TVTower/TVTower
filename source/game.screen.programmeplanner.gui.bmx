@@ -693,20 +693,20 @@ Type TGUIProgrammePlanSlotList Extends TGUISlotList
 
 		'===== REGISTER EVENTS =====
 		'nobody was against dropping the item - so transform according to the lists type
-		EventManager.registerListenerMethod("guiobject.onFinishDrop", Self, "onFinishDropProgrammePlanElement", "TGUIProgrammePlanElement", Self)
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnFinishDrop, Self, "onFinishDropProgrammePlanElement", "TGUIProgrammePlanElement", Self)
 
 		'nobody was against dragging the item - so transform according to the items base type
 		'attention: "drag" does not have a "receiver"-list like a drop has..
 		'so we would have to check vs slot-elements here
 		'that is why we just use a global listener... for all programmeslotlists (prog and ad)
 		If Not registeredGlobalListeners
-			EventManager.registerListenerFunction("guiobject.onFinishDrag", onFinishDragProgrammePlanElement, "TGUIProgrammePlanElement")
+			EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrag, onFinishDragProgrammePlanElement, "TGUIProgrammePlanElement")
 
 			rem
 			'refresh visual style
-			EventManager.registerListenerFunction("guiobject.onFinishDrop", onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
-			EventManager.registerListenerFunction("guiobject.onFinishDrag", onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
-			EventManager.registerListenerFunction("guiobject.onDropBack", onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
+			EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
+			EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrag, onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
+			EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropBack, onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
 			endrem
 
 			registeredGlobalListeners = True

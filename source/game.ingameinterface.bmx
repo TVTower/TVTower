@@ -182,9 +182,9 @@ Type TInGameInterface
 
 
 		'show chat if an chat entry was added
-		EventManager.registerListenerFunction( "chat.onAddEntry", onIngameChatAddEntry )
+		EventManager.registerListenerFunction(GameEventKeys.Chat_onAddEntry, onIngameChatAddEntry )
 		'invalidate audience tooltip's "audienceresult" on recalculation
-		EventManager.registerListenerFunction( "StationMap.onRecalculateAudienceSum", onStationMapRecalculateAudienceSum )
+		EventManager.registerListenerFunction(GameEventKeys.StationMap_OnRecalculateAudienceSum, onStationMapRecalculateAudienceSum )
 
 		Return self
 	End Method

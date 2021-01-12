@@ -128,7 +128,7 @@ Type TGUIManager
 
 
 		'is something dropping on a gui element?
-		_eventListeners :+ [EventManager.registerListenerFunction("guiobject.onDrop", TGUIManager.onDrop)]
+		_eventListeners :+ [EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDrop, TGUIManager.onDrop)]
 
 		'gui specific settings
 		config.AddNumber("panelGap",10)

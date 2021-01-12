@@ -27,7 +27,7 @@ Type TProgrammeProducerCollection Extends TGameObjectCollection
 
 
 			'inform producers about no longer used or sold programmes
-			_eventListeners :+ [ EventManager.registerListenerFunction("ProgrammeLicence.onGiveBackToLicencePool", onGiveBackLicenceToPool) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeLicence_OnGiveBackToLicencePool, onGiveBackLicenceToPool) ]
 
 
 			_eventsRegistered = True

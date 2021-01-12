@@ -93,18 +93,18 @@ Type TgfxProgrammelist Extends TPlannerList
 		if not registeredEvents
 			'handle changes to the programme collections (add/removal
 			'of contracts)
-			_registeredListeners :+ [ EventManager.registerListenerFunction("programmecollection.addProgrammeLicence", OnChangeProgrammeCollection) ]
-			_registeredListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", OnChangeProgrammeCollection) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicence, OnChangeProgrammeCollection) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence, OnChangeProgrammeCollection) ]
 			'also clear cache if licences get moved from/to suitcase
-			_registeredListeners :+ [ EventManager.registerListenerFunction("programmecollection.addProgrammeLicenceToSuitcase", OnChangeProgrammeCollection) ]
-			_registeredListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeProgrammeLicenceFromSuitcase", OnChangeProgrammeCollection) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase, OnChangeProgrammeCollection) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase, OnChangeProgrammeCollection) ]
 
 			'handle broadcasts of the programme
-			_registeredListeners :+ [ EventManager.registerListenerFunction("broadcast.programme.BeginBroadcasting", OnBroadcastProgramme) ]
-			_registeredListeners :+ [ EventManager.registerListenerFunction("broadcast.programme.BeginBroadcastingAsAdvertisement", OnBroadcastProgramme) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Broadcast_Programme_BeginBroadcasting, OnBroadcastProgramme) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Broadcast_Programme_BeginBroadcastingAsAdvertisement, OnBroadcastProgramme) ]
 
 			'handle savegame loading (reset cache)
-			_registeredListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnLoad", OnLoadSaveGame) ]
+			_registeredListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, OnLoadSaveGame) ]
 
 			registeredEvents = True
 		endif

@@ -238,6 +238,13 @@ Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selecte
 			contract.SetSpotsSent(contract.spotsSent + 1)
 			'TLogger.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent SUCCESSFUL spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-GetWorldTime().GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
 		EndIf
+
+		'inform others
+		If usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
+			TriggerBaseEvent(GameEventKeys.Broadcast_Advertisement_BeginBroadcasting, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
+		ElseIf usedAsType = TVTBroadcastMaterialType.PROGRAMME
+			TriggerBaseEvent(GameEventKeys.Broadcast_Advertisement_BeginBroadcastingAsProgramme, New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self)
+		EndIf
 		return TRUE
 	End Method
 

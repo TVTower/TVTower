@@ -291,22 +291,22 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 
 		'=== register event listeners
 		'drop ... so sell/buy the thing
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammeLicence, "TGUIProgrammeLicence" ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDropOnTarget", onDropProgrammeLicence, "TGUIProgrammeLicence") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDropOnTarget, onTryDropProgrammeLicence, "TGUIProgrammeLicence" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTarget, onDropProgrammeLicence, "TGUIProgrammeLicence") ]
 		'is dragging even allowed? - eg. intercept if not enough money
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDrag", onDragProgrammeLicence, "TGUIProgrammeLicence") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDrag, onDragProgrammeLicence, "TGUIProgrammeLicence") ]
 		'we want to know if we hover a specific block - to show a datasheet
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.OnMouseOver", onMouseOverProgrammeLicence, "TGUIProgrammeLicence") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProgrammeLicence, "TGUIProgrammeLicence") ]
 		'drop on vendor - sell things
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDropOnTarget", onDropProgrammeLicenceOnVendor, "TGUIProgrammeLicence") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_onDropOnTarget, onDropProgrammeLicenceOnVendor, "TGUIProgrammeLicence") ]
 
 		'reset auction block caches
-		_eventListeners :+ [ EventManager.registerListenerFunction("game.onSetActivePlayer", onResetAuctionBlockCache) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("station.onSetActive", onResetAuctionBlockCache) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("station.onSetInActive", onResetAuctionBlockCache) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnSetActivePlayer, onResetAuctionBlockCache) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnSetActive, onResetAuctionBlockCache) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnSetInActive, onResetAuctionBlockCache) ]
 
 		'fill/update offerPlan-lists
-		_eventListeners :+ [ EventManager.registerListenerFunction("ProgrammeLicence.onSetOwner", onSetProgrammeLicenceOwner) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeLicence_OnSetOwner, onSetProgrammeLicenceOwner) ]
 
 
 		_eventListeners :+ _RegisterScreenHandler( onUpdateMovieAgency, onDrawMovieAgency, ScreenCollection.GetScreen("screen_movieagency"))

@@ -747,7 +747,10 @@ public
 	End Method
 
 
-	Method GetData:TData()
+	Method GetData:TData(returnStubIfMissing:Int = True)
+		If returnStubIfMissing and not TData(_data)
+			Return stubData
+		EndIf
 		Return TData(_data)
 	End Method
 

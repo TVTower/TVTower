@@ -118,22 +118,22 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		'=== register event listeners
 		'to react on changes in the programmeCollection (eg. custom script finished)
-		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.removeScript", onRemoveScriptFromProgrammeCollection ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.removeScript", onChangeProgrammeCollection ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.moveScript", onChangeProgrammeCollection ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.removeProductionConcept", onChangeProgrammeCollection ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.addProductionConcept", onChangeProgrammeCollection ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveScript, onRemoveScriptFromProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveScript, onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_MoveScript, onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProductionConcept, onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProductionConcept, onChangeProgrammeCollection) ]
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to studio manager or suitcase
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScript, "TGuiScript" ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropProductionConcept, "TGuiProductionConceptListItem" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropScript, "TGuiScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_onDropOnTargetAccepted, onDropProductionConcept, "TGuiProductionConceptListItem") ]
 		'we want to know if we hover a specific block - to show a datasheet
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverScript, "TGuiScript" ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverProductionConcept, "TGuiProductionConceptListItem" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverScript, "TGuiScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProductionConcept, "TGuiProductionConceptListItem") ]
 		'this lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickScript, "TGuiScript") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickProductionConcept, "TGuiProductionConceptListItem") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickScript, "TGuiScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickProductionConcept, "TGuiProductionConceptListItem")]
 
 		'(re-)localize content
 		SetLanguage()

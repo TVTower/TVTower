@@ -122,12 +122,12 @@ Type TBuilding Extends TBuildingBase
 
 		'=== register event listeners
 		'handle savegame loading (assign sprites)
-		_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onSaveGameLoad) ]
 		'react on clicks to hotspots (elevator, softdrink machine)
-		_eventListeners :+ [ EventManager.registerListenerFunction("hotspot.onClick", onClickHotspot) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(THotSpot.eventKey_Hotspot_OnClick, onClickHotspot) ]
 		'we want to get information about figures entering their desired target
 		'(this can be "room", "hotspot" ... )
-		_eventListeners :+ [ EventManager.registerListenerFunction( "figure.onEnterTarget", onEnterTarget) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnEnterTarget, onEnterTarget) ]
 	End Method
 
 

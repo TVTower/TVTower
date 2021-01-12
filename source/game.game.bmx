@@ -97,14 +97,14 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		_eventListeners = New TEventListenerBase[0]
 
 		'=== register event listeners
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnStart", onStart) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, onStart) ]
 		'handle begin of savegameloading (prepare first game if needed)
-		_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnBeginLoad, onSaveGameBeginLoad) ]
 		'handle savegame loading (assign sprites)
-		_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("SaveGame.OnBeginSave", onSaveGameBeginSave) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onSaveGameLoad) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnBeginSave, onSaveGameBeginSave) ]
 		'handle finance change (reset bankrupt level if positive balance)
-		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", onPlayerChangeMoney) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PlayerFinance_OnChangeMoney, onPlayerChangeMoney) ]
 	End Method
 
 

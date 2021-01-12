@@ -88,16 +88,16 @@ Type TStationMapCollection
 	Method New()
 		If Not _initDone
 			'handle savegame loading (reload the map configuration)
-			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
+			EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onSaveGameLoad)
 			'handle <stationmapdata>-area in loaded xml files
-			EventManager.registerListenerFunction("RegistryLoader.onLoadResourceFromXML", onLoadStationMapData, Null, "STATIONMAPDATA" )
+			EventManager.registerListenerFunction(TRegistryLoader.eventKey_OnLoadResourceFromXML, onLoadStationMapData, Null, "STATIONMAPDATA")
 			'handle activation of stations
-			EventManager.registerListenerFunction("station.onSetActive", onSetStationActiveState)
-			EventManager.registerListenerFunction("station.onSetInactive", onSetStationActiveState)
+			EventManager.registerListenerFunction(GameEventKeys.Station_OnSetActive, onSetStationActiveState)
+			EventManager.registerListenerFunction(GameEventKeys.Station_OnSetInactive, onSetStationActiveState)
 			'handle activation of broadcast providers
-			EventManager.registerListenerFunction("broadcastprovider.onLaunch", onSetBroadcastProviderActiveState)
-			EventManager.registerListenerFunction("broadcastprovider.onSetActive", onSetBroadcastProviderActiveState)
-			EventManager.registerListenerFunction("broadcastprovider.onSetInactive", onSetBroadcastProviderActiveState)
+			EventManager.registerListenerFunction(GameEventKeys.BroadcastProvider_OnLaunch, onSetBroadcastProviderActiveState)
+			EventManager.registerListenerFunction(GameEventKeys.BroadcastProvider_OnSetActive, onSetBroadcastProviderActiveState)
+			EventManager.registerListenerFunction(GameEventKeys.BroadcastProvider_OnSetInactive, onSetBroadcastProviderActiveState)
 
 			_initdone = True
 		EndIf

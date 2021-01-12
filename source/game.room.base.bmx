@@ -25,9 +25,9 @@ Type TRoomBaseCollection
 	Method New()
 		if not _eventsRegistered
 			'handle savegame loading (clear room occupants)
-			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
+			EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnBeginLoad, onSaveGameBeginLoad)
 			'repair old savegames to set new flags
-			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
+			EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onSaveGameLoad)
 			_eventsRegistered = TRUE
 		Endif
 	End Method
@@ -1060,7 +1060,7 @@ End Rem
 
 	Method FinishLeave:int(leavingEntity:TEntity)
 		if not leavingEntity
-			TLogger.Log("TRoomBase.FinishEnter", "Called without an entity leaving", LOG_ERROR)
+			TLogger.Log("TRoomBase.FinishLeave", "Called without an entity leaving", LOG_ERROR)
 			return False
 		endif
 

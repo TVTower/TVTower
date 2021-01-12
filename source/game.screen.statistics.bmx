@@ -92,11 +92,11 @@ Type TScreenHandler_OfficeStatistics Extends TScreenHandler
 
 		'=== register event listeners
 		'listen to clicks on the four buttons
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickButtons, "TGUIArrowButton") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickButtons, "TGUIArrowButton") ]
 		'listen to tab group selections
-		_eventListeners :+ [ EventManager.registerListenerMethod("guiTabGroup.onSetToggledButton", Self, "onToggleSubScreenTabGroupButton", tabGroup) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUITabGroup_OnSetToggledButton, Self, "onToggleSubScreenTabGroupButton", tabGroup) ]
 		'reset show day when entering a screen
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterScreen, screen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterScreen, screen) ]
 
 
 		'to update/draw the screen
@@ -354,9 +354,9 @@ endrem
 
 
 		'refresh charts when a new broadcast begins (newsshow, movie...)
-		_eventListeners :+ [EventManager.registerListenerMethod("broadcast.common.BeginBroadcasting", Self, "OnBeginBroadcasting")]
+		_eventListeners :+ [EventManager.registerListenerMethod(GameEventKeys.Broadcast_Common_BeginBroadcasting, Self, "OnBeginBroadcasting")]
 		'refresh charts when audience changes through station buy/sell
-		_eventListeners :+ [EventManager.registerListenerMethod("StationMap.onRecalculateAudienceSum", Self, "OnRecalculateAudienceSum")]
+		_eventListeners :+ [EventManager.registerListenerMethod(GameEventKeys.StationMap_OnRecalculateAudienceSum, Self, "OnRecalculateAudienceSum")]
 'RONNY
 'hier weitermachen:
 '- chartpunkte nach "aktueller stunde" sind mit "0" drin, statt "null"

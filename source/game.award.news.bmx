@@ -25,7 +25,7 @@ Type TAwardNews extends TAward
 		'news(event)-quality is adjusted (aired amount increases,
 		'topicality decreases) right on finishing - so we listen to just
 		'before
-		_eventListeners :+ [ EventManager.registerListenerFunction( "broadcasting.BeforeFinishAllNewsShowBroadcasts", onBeforeFinishAllNewsShowBroadcasts) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Broadcasting_BeforeFinishAllNewsShowBroadcasts, onBeforeFinishAllNewsShowBroadcasts) ]
 	End Method
 
 

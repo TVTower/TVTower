@@ -10,6 +10,7 @@ Import "common.misc.rangedfloat.bmx"
 Import "game.gameobject.bmx"
 Import "game.gameconstants.bmx"
 Import "game.popularity.bmx"
+Import "game.gameeventkeys.bmx"
 
 
 Type TPersonBaseCollection Extends TGameObjectCollection
@@ -510,9 +511,6 @@ Type TPersonBase Extends TGameObject
 	Global dataKeyPersonality:String = "personality"
 	Global dataKeyProduction:String = "production"
 
-	Global eventKey_PersonBase_OnStartProduction:TEventKey = EventManager.GetEventKey("PersonBase.OnStartProduction", True)
-	Global eventKey_PersonBase_OnFinishProduction:TEventKey = EventManager.GetEventKey("PersonBase.OnFinishProduction", True)
-	
 	
 	Method New()
 		'by default they can level up
@@ -788,7 +786,7 @@ Type TPersonBase Extends TGameObject
 
 		'emit event so eg. news agency could react to it ("bla has a new job")
 		'-> or to set them on the "scandals" list
-		TriggerBaseEvent(eventKey_PersonBase_OnStartProduction, New TData.addNumber("programmeDataID", programmeDataID), Self)
+		TriggerBaseEvent(GameEventKeys.PersonBase_OnStartProduction, New TData.addNumber("programmeDataID", programmeDataID), Self)
 	End Method
 
 
@@ -798,7 +796,7 @@ Type TPersonBase Extends TGameObject
 		EndIf
 
 		'emit event so eg. news agency could react to it ("bla goes on holiday")
-		TriggerBaseEvent(eventKey_PersonBase_OnFinishProduction, New TData.addNumber("programmeDataID", programmeDataID), Self)
+		TriggerBaseEvent(GameEventKeys.PersonBase_OnFinishProduction, New TData.addNumber("programmeDataID", programmeDataID), Self)
 	End Method
 	
 

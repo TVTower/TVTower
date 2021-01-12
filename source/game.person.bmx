@@ -9,8 +9,8 @@ Import "Dig/base.util.persongenerator.bmx"
 Import "game.popularity.person.bmx"
 
 'loaded on import of the module
-'EventManager.registerListenerFunction("personbase.onStartProduction", onPersonBaseStartsProduction)
-EventManager.registerListenerFunction("personbase.onFinishProduction", onPersonBaseFinishesProduction)
+'EventManager.registerListenerFunction(GameEventKeys.PersonBase_OnStartProduction, onPersonBaseStartsProduction)
+EventManager.registerListenerFunction(GameEventKeys.PersonBase_OnFinishProduction, onPersonBaseFinishesProduction)
 
 
 rem

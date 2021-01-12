@@ -222,7 +222,7 @@ Type TProgrammeProducerMorningShows Extends TProgrammeProducerWithProduction
 		_eventListeners = New TEventListenerBase[0]
 
 		'react to "finished" special programmes
-		'_eventListeners :+ [ EventManager.registerListenerFunction("ProgrammeLicence.onGiveBackToLicencePool", onGiveBackLicenceToPool) ]
+		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeLicence_OnGiveBackToLicencePool, onGiveBackLicenceToPool) ]
 	End Method
 
 	'override

@@ -2,6 +2,7 @@ SuperStrict
 Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.event.bmx"
 Import "game.gameobject.bmx"
+Import "game.gameeventkeys.bmx"
 'Import "game.toastmessage.bmx"
 
 
@@ -11,8 +12,6 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 	Global _eventListeners:TEventListenerBase[] {nosave}
 	Global _instance:TArchivedMessageCollection
 	Global limitPerPlayer:Int = 100
-	Global eventKey_ArchivedMessageCollection_onAdd:TEventKey = EventManager.GetEventKey("ArchivedMessageCollection.onAdd", True)
-	Global eventKey_ArchivedMessageCollection_onRemove:TEventKey = EventManager.GetEventKey("ArchivedMessageCollection.onRemove", True)
 
 	Method New()
 		'=== REGISTER EVENTS ===
@@ -70,14 +69,14 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 
 
 		local result:int = Super.Add(obj)
-		TriggerBaseEvent(eventKey_ArchivedMessageCollection_onAdd, null, Self, obj)
+		TriggerBaseEvent(GameEventKeys.ArchivedMessageCollection_OnAdd, null, Self, obj)
 		return result
 	End Method
 
 
 	Method Remove:int(obj:TGameObject)
 		local result:int = Super.Remove(obj)
-		TriggerBaseEvent(eventKey_ArchivedMessageCollection_onRemove, null, Self, obj)
+		TriggerBaseEvent(GameEventKeys.ArchivedMessageCollection_OnRemove, null, Self, obj)
 		return result
 	End Method
 

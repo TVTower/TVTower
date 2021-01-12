@@ -761,10 +761,10 @@ Type TDigNetwork
 	' // Networking Constants
 	Field ChatSpamTime:Int = 0
 	
-	Global eventKey_network_onReceiveAnnounceGame:TEventKey = EventManager.GetEventKey("network.onReceiveAnnounceGame", True)
-	Global eventKey_network_onCreateServer:TEventKey = EventManager.GetEventKey("network.onCreateServer", True)
-	Global eventKey_network_onStopServer:TEventKey = EventManager.GetEventKey("network.onStopServer", True)
-	Global eventKey_network_onConnectToServer:TEventKey = EventManager.GetEventKey("network.onConnectToServer", True)
+	Global eventKey_OnReceiveAnnounceGame:TEventKey = EventManager.GetEventKey("network.onReceiveAnnounceGame", True)
+	Global eventKey_OnCreateServer:TEventKey = EventManager.GetEventKey("network.onCreateServer", True)
+	Global eventKey_OnStopServer:TEventKey = EventManager.GetEventKey("network.onStopServer", True)
+	Global eventKey_OnConnectToServer:TEventKey = EventManager.GetEventKey("network.onConnectToServer", True)
 
 
 	Method New()
@@ -821,7 +821,7 @@ Type TDigNetwork
 					evData.AddString("hostName", obj.getString(5))
 					evData.AddString("gameTitle", obj.getString(6))
 
-					TEventBase.Create(eventKey_network_onReceiveAnnounceGame, evData).trigger()
+					TEventBase.Create(eventKey_onReceiveAnnounceGame, evData).trigger()
 
 					'print "...announce from: "+ GetDottedIP(obj.getInt(3))
 				endif
@@ -841,12 +841,12 @@ Type TDigNetwork
 		if server
 			self.isServer = true
 			self.server.callback = self.callbackServer
-			TEventBase.Create(eventKey_network_onCreateServer, new TData.AddNumber("successful", true)).trigger()
+			TEventBase.Create(eventKey_onCreateServer, new TData.AddNumber("successful", true)).trigger()
 
 			TLogger.Log("Network.StartServer()", "created server : "+GetDottedIP(GetMyIP())+":"+server.port, LOG_DEBUG | LOG_NETWORK)
 			return true
 		else
-			TEventBase.Create(eventKey_network_onCreateServer, new TData.AddNumber("successful", false)).trigger()
+			TEventBase.Create(eventKey_onCreateServer, new TData.AddNumber("successful", false)).trigger()
 
 			return false
 		endif
@@ -860,7 +860,7 @@ Type TDigNetwork
 		self.server = null
 		self.client = null
 
-		TEventBase.Create(eventKey_network_onStopServer, null).trigger()
+		TEventBase.Create(eventKey_onStopServer, null).trigger()
 	End Method
 
 
@@ -892,7 +892,7 @@ Type TDigNetwork
 		self.client.callback = self.callbackClient
 		self.isConnected = client.Connect(ip, port)
 
-		TEventBase.Create(eventKey_network_onConnectToServer, new TData.AddNumber("successful", isConnected)).trigger()
+		TEventBase.Create(eventKey_onConnectToServer, new TData.AddNumber("successful", isConnected)).trigger()
 
 		TLogger.Log("Network.ConnectToServer()", "connect to "+GetDottedIP(ip)+":"+port, LOG_DEBUG | LOG_NETWORK)
 		return self.isConnected

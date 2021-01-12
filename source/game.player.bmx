@@ -43,11 +43,11 @@ Type TPlayerCollection extends TPlayerBaseCollection
 
 		'register new listeners
 		_eventListeners = new TEventListenerBase[0]
-		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onFailEnterRoom", OnFigureFailEnterRoom) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onBeginEnterRoom", OnFigureBeginEnterRoom) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onFinishEnterRoom", OnFigureFinishEnterRoom) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onFinishLeaveRoom", OnFigureFinishLeaveRoom) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onReachTarget", OnFigureReachTarget) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnFailEnterRoom, OnFigureFailEnterRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnBeginEnterRoom, OnFigureBeginEnterRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnFinishEnterRoom, OnFigureFinishEnterRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnFinishLeaveRoom, OnFigureFinishLeaveRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnReachTarget, OnFigureReachTarget) ]
 
 		return result
 	End Method

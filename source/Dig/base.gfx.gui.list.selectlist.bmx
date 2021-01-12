@@ -11,7 +11,7 @@ Rem
 	====================================================================
 	LICENCE
 
-	Copyright (C) 2002-2019 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -72,7 +72,7 @@ Type TGUISelectList Extends TGUIListBase
 	'overrideable
 	Method RegisterListeners:Int()
 		'we want to know about clicks
-		AddEventListener(EventManager.registerListenerMethod("GUIListItem.onClick",	Self, "onClickOnEntry"))
+		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIListItem_OnClick,	Self, "onClickOnEntry"))
 	End Method
 
 

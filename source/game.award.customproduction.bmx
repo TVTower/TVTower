@@ -27,7 +27,7 @@ Type TAwardCustomProduction extends TAward
 		_eventListeners = new TEventListenerBase[0]
 
 		'listen to finished productions
-		_eventListeners :+ [ EventManager.registerListenerFunction( "production.finalize", onProductionFinalize) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Production_Finalize, onProductionFinalize) ]
 	End Method
 
 

@@ -13,7 +13,7 @@ Type TAchievementTask_FulfillAchievements extends TAchievementTask
 
 	Method New()
 'print "register fulfill listeners"
-		eventListeners :+ [EventManager.registerListenerMethod( "Achievement.OnComplete", self, "OnCompleteAchievement" ) ]
+		eventListeners :+ [EventManager.registerListenerMethod(GameEventKeys.Achievement_OnComplete, self, "OnCompleteAchievement" )]
 	End Method
 
 

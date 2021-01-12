@@ -34,9 +34,9 @@ Type TAwardAudience extends TAward
 		_eventListeners = new TEventListenerBase[0]
 
 		'scan news shows for culture news
-		_eventListeners :+ [ EventManager.registerListenerFunction( "broadcasting.BeforeFinishAllNewsShowBroadcasts", onBeforeFinishAllNewsShowBroadcasts) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Broadcasting_BeforeFinishAllNewsShowBroadcasts, onBeforeFinishAllNewsShowBroadcasts) ]
 		'scan programmes for culture-flag
-		_eventListeners :+ [ EventManager.registerListenerFunction( "broadcasting.BeforeFinishAllProgrammeBlockBroadcasts", onBeforeFinishAllProgrammeBlockBroadcasts) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Broadcasting_BeforeFinishAllProgrammeBlockBroadcasts, onBeforeFinishAllProgrammeBlockBroadcasts) ]
 	End Method
 
 

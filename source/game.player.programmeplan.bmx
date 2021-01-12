@@ -26,7 +26,7 @@ Type TPlayerProgrammePlanCollection
 
 	Method New()
 		If Not _eventsRegistered
-			EventManager.registerListenerFunction("Game.OnDay", onGameDay)
+			EventManager.registerListenerFunction(GameEventKeys.Game_OnDay, onGameDay)
 			_eventsRegistered = True
 		EndIf
 	End Method
@@ -2006,10 +2006,10 @@ Type TProgrammePlanInformationProvider extends TProgrammePlanInformationProvider
 
 	Method New()
 		if not _registeredEvents
-			EventManager.registerListenerFunction("broadcast.programme.FinishBroadcastingAsAdvertisement", onFinishBroadcasting)
-			EventManager.registerListenerFunction("broadcast.programme.FinishBroadcasting", onFinishBroadcasting)
-			EventManager.registerListenerFunction("broadcast.advertisement.FinishBroadcastingAsProgramme", onFinishBroadcasting)
-			'EventManager.registerListenerFunction("broadcast.advertisement.FinishBroadcasting", onFinishBroadcasting)
+			EventManager.registerListenerFunction(GameEventKeys.Broadcast_Programme_FinishBroadcastingAsAdvertisement, onFinishBroadcasting)
+			EventManager.registerListenerFunction(GameEventKeys.Broadcast_Programme_FinishBroadcasting, onFinishBroadcasting)
+			EventManager.registerListenerFunction(GameEventKeys.Broadcast_Advertisement_FinishBroadcastingAsProgramme, onFinishBroadcasting)
+			'EventManager.registerListenerFunction(GameEventKeys.Broadcast_Advertisement_FinishBroadcasting, onFinishBroadcasting)
 			_registeredEvents = True
 		endif
 	End Method

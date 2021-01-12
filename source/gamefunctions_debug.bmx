@@ -1632,16 +1632,16 @@ Type TDebugProgrammeCollectionInfos
 		EventManager.UnregisterListenersArray(_eventListeners)
 		_eventListeners = new TEventListenerBase[0]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeAdContract", onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addAdContract", onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addUnsignedAdContractToSuitcase", onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeUnsignedAdContractFromSuitcase", onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addProgrammeLicenceToSuitcase", onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeProgrammeLicenceFromSuitcase", onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("programmecollection.addProgrammeLicence", onChangeProgrammeCollection) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnStart", onGameStart) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.PreparePlayer", onPreparePlayer) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveAdContract, onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddAdContract, onChangeProgrammeCollection) ]
+		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddUnsignedAdContractToSuitcase, onChangeProgrammeCollection) ]
+		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveUnsignedAdContractFromSuitcase, onChangeProgrammeCollection) ]
+		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase, onChangeProgrammeCollection) ]
+		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase, onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence, onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicence, onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, onGameStart) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_PreparePlayer, onPreparePlayer) ]
 	End Method
 
 
@@ -1665,29 +1665,30 @@ Type TDebugProgrammeCollectionInfos
 
 
 		Local map:TMap = Null
-		If triggerEvent.IsTrigger("programmecollection.removeAdContract")
-			map = removedAdContracts
-			'remove on outdated
-			'availableAdContracts.Remove(broadcastSource.GetGUID())
-		ElseIf triggerEvent.IsTrigger("programmecollection.addAdContract")
-			map = addedAdContracts
-			availableAdContracts.Insert(broadcastSource.GetGUID(), broadcastSource)
-'		elseif triggerEvent.IsTrigger("programmecollection.addUnsignedAdContractToSuitcase")
-'			map = addedAdContracts
-'		elseif triggerEvent.IsTrigger("programmecollection.removeUnsignedAdContractFromSuitcase")
-'			map = addedAdContracts
-'		elseif triggerEvent.IsTrigger("programmecollection.addProgrammeLicenceToSuitcase")
-'			map = addedAdContracts
-'		elseif triggerEvent.IsTrigger("programmecollection.removeProgrammeLicenceFromSuitcase")
-'			map = addedAdContracts
-		ElseIf triggerEvent.IsTrigger("programmecollection.removeProgrammeLicence")
-			map = removedProgrammeLicences
-			'remove on outdated
-			'availableProgrammeLicences.Remove(broadcastSource.GetGUID())
-		ElseIf triggerEvent.IsTrigger("programmecollection.addProgrammeLicence")
-			map = addedProgrammeLicences
-			availableProgrammeLicences.Insert(broadcastSource.GetGUID(), broadcastSource)
-		EndIf
+		Select triggerEvent.GetEventKey()
+			Case GameEventKeys.ProgrammeCollection_RemoveAdContract
+				map = removedAdContracts
+				'remove on outdated
+				'availableAdContracts.Remove(broadcastSource.GetGUID())
+			Case GameEventKeys.ProgrammeCollection_AddAdContract
+				map = addedAdContracts
+				availableAdContracts.Insert(broadcastSource.GetGUID(), broadcastSource)
+	'		Case GameEventKeys.ProgrammeCollection_AddUnsignedAdContractToSuitcase
+	'			map = addedAdContracts
+	'		Case GameEventKeys.ProgrammeCollection_RemoveUnsignedAdContractFromSuitcase
+	'			map = addedAdContracts
+	'		Case GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase
+	'			map = addedAdContracts
+	'		Case GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase
+	'			map = addedAdContracts
+			Case GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence
+				map = removedProgrammeLicences
+				'remove on outdated
+				'availableProgrammeLicences.Remove(broadcastSource.GetGUID())
+			Case GameEventKeys.ProgrammeCollection_AddProgrammeLicence
+				map = addedProgrammeLicences
+				availableProgrammeLicences.Insert(broadcastSource.GetGUID(), broadcastSource)
+		End Select
 		If Not map Then Return False
 
 		map.Insert(broadcastSource.GetGUID(), String(Time.GetTimeGone()) )
@@ -1927,11 +1928,8 @@ Type TDebugProgrammePlanInfos
 		EventManager.UnregisterListenersArray(_eventListeners)
 		_eventListeners = new TEventListenerBase[0]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.addObject", onChangeProgrammePlan) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.SetNews", onChangeNewsShow) ]
-'		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.RemoveNews", onChangeNewsShow) ]
-'		_eventListeners :+ [ EventManager.registerListenerFunction("programmeplan.removeObject", onChangeProgrammePlan) ]
-
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_AddObject, onChangeProgrammePlan) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_SetNews, onChangeNewsShow) ]
 	End Method
 
 

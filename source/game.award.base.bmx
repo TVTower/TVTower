@@ -7,6 +7,7 @@ Import "game.world.worldtime.bmx"
 Import "game.gameconstants.bmx"
 Import "game.gameobject.bmx"
 Import "game.modifier.base.bmx"
+Import "game.gameeventkeys.bmx"
 
 
 Type TAwardCollection Extends TGameObjectCollection
@@ -238,8 +239,6 @@ Type TAward Extends TGameObject
 	Field winningPlayerID:Int = -1
 
 
-	Global eventKey_Award_OnFinish:TEventKey = EventManager.GetEventKey("Award.OnFinish", True)
-
 	'adding/subtracting scores does not change other scores
 	Const SCORINGMODE_ABSOLUTE:Int = 1
 	'adding/subtracting scores changes values for other players
@@ -301,7 +300,7 @@ Type TAward Extends TGameObject
 
 		'store winner
 		winningPlayerID = GetCurrentWinner()
-		TriggerBaseEvent(eventKey_Award_OnFinish, New TData.addNumber("winningPlayerID", winningPlayerID), Self)
+		TriggerBaseEvent(GameEventKeys.Award_OnFinish, New TData.addNumber("winningPlayerID", winningPlayerID), Self)
 
 		If winningPlayerID > 0
 			Local modifier:TGameModifierBase

@@ -111,14 +111,14 @@ Type TGUIDropDown Extends TGUIInput
 
 		'=== REGISTER EVENTS ===
 		'to close the list automatically if the object looses focus
-		AddEventListener(EventManager.registerListenerMethod("guiobject.onRemoveFocus", Self, "onRemoveFocus", Self))
+		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnRemoveFocus, Self, "onRemoveFocus", Self))
 		'listen to clicks to dropdown-items
-		AddEventListener(EventManager.registerListenerMethod("GUIDropDownItem.onClick",	Self.list, "onClickOnEntry"))
+		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIDropDownItem_OnClick,	Self.list, "onClickOnEntry"))
 		'someone uses the mouse wheel to scroll over the panel
-		AddEventListener(EventManager.registerListenerFunction("guiobject.OnScrollwheel", onScrollWheel, Self))
+		AddEventListener(EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnScrollwheel, onScrollWheel, Self))
 
 		'to register if an item was selected
-		AddEventListener(EventManager.registerListenerMethod("guiselectlist.onSelectEntry", Self, "onSelectEntry", Self.list))
+		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUISelectList_OnSelectEntry, Self, "onSelectEntry", Self.list))
 
 		Return Self
 	End Method

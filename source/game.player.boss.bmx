@@ -43,24 +43,24 @@ Type TPlayerBossCollection
 
 		'register new listeners
 		_eventListeners = new TEventListenerBase[0]
-		_eventListeners :+ [ EventManager.registerListenerFunction("broadcast.common.FinishBroadcasting", onFinishBroadcasting) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Broadcast_Common_FinishBroadcasting, onFinishBroadcasting) ]
 		'instead of updating the boss way to often, we update bosses
 		'once a ingame minute
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnMinute", onGameMinute) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnMinute, onGameMinute) ]
 		'react to our player starting (or restarting...)
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnStartPlayer", onPlayerStarts) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStartPlayer, onPlayerStarts) ]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction("AdContract.onFinish", onFinishOrFailAdContract) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("AdContract.onFail", onFinishOrFailAdContract) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.AdContract_OnFinish, onFinishOrFailAdContract) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.AdContract_OnFail, onFinishOrFailAdContract) ]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction("player.onBeginEnterRoom", onPlayerBeginEnterRoom) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("player.onLeaveRoom", onPlayerLeaveRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Player_OnBeginEnterRoom, onPlayerBeginEnterRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Player_OnLeaveRoom, onPlayerLeaveRoom) ]
 
 		'register dialogue handlers
 		_eventListeners :+ [ EventManager.registerListenerFunction(TPlayerBoss.eventKey_Dialogue_onTakeBossCredit, onDialogueTakeCredit) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(TPlayerBoss.eventKey_Dialogue_onRepayBossCredit, onDialogueRepayCredit) ]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction("Award.OnFinish", onFinishAward) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Award_OnFinish, onFinishAward) ]
 	End Method
 
 
@@ -115,9 +115,9 @@ Type TPlayerBossCollection
 		local boss:TPlayerBoss = GetPlayerBoss(contract.owner)
 		if not boss then return False
 
-		if triggerEvent.isTrigger("AdContract.onFinish")
+		If triggerEvent.GetEventKey() = GameEventKeys.AdContract_OnFinish
 			boss.onFinishAdContract(contract)
-		elseif triggerEvent.isTrigger("AdContract.onFail")
+		elseif triggerEvent.GetEventKey() = GameEventKeys.AdContract_OnFail
 			boss.onFailAdContract(contract)
 		endif
 	End Function

@@ -59,10 +59,10 @@ Type RoomHandler_Betty extends TRoomHandler
 		'register new listeners
 		_eventListeners = new TEventListenerBase[0]
 		'handle the player visiting betty
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onSetCurrent", onPlayerSeesBettyScreen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnSetCurrent, onPlayerSeesBettyScreen) ]
 		'handle present
-		'_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickPresent, "TGUIBettyPresent" ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onDropOnTargetAccepted", onDropPresent, "TGUIBettyPresent" ) ]
+		'_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickPresent, "TGUIBettyPresent") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropPresent, "TGUIBettyPresent") ]
 
 
 		'(re-)localize content

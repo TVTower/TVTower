@@ -3,6 +3,7 @@ Import "basefunctions.bmx"
 Import "Dig/base.util.event.bmx"
 Import "Dig/base.util.color.bmx"
 Import "Dig/base.util.interpolation.bmx"
+Import "game.gameeventkeys.bmx"
 
 
 
@@ -19,16 +20,6 @@ Type TScreenCollection
 	Global instance:TScreenCollection
 	Global _screenDimension:TVec2D = new TVec2D.Init(0,0)
 	Global useChangeEffects:int = TRUE
-	Global eventKey_screen_onTryEnter:TEventKey = GetEventKey("screen.onTryEnter", True)
-	Global eventKey_screen_onBeginEnter:TEventKey = GetEventKey("screen.onBeginEnter", True)
-	Global eventKey_screen_onFinishEnter:TEventKey = GetEventKey("screen.onFinishEnter", True)
-	Global eventKey_screen_onLeave:TEventKey = GetEventKey("screen.onLeave", True)
-	Global eventKey_screen_onTryLeave:TEventKey = GetEventKey("screen.onTryLeave", True)
-	Global eventKey_screen_onBeginLeave:TEventKey = GetEventKey("screen.onBeginLeave", True)
-	Global eventKey_screen_onFinishLeave:TEventKey = GetEventKey("screen.onFinishLeave", True)
-	Global eventKey_screen_onSetCurrent:TEventKey = GetEventKey("screen.onSetCurrent", True)
-	Global eventKey_screen_onUpdate:TEventKey = GetEventKey("screen.onUpdate", True)
-	Global eventKey_screen_onDraw:TEventKey = GetEventKey("screen.onDraw", True)
 	
 	Function Create:TScreenCollection(baseScreen:TScreen)
 		local obj:TScreenCollection = new TScreenCollection
@@ -90,7 +81,7 @@ Type TScreenCollection
 		if currentScreen = screen then return TRUE
 
 		'trigger event so others can attach
-		TriggerBaseEvent(eventKey_screen_onLeave, new TData.Add("toScreen", screen), currentScreen)
+		TriggerBaseEvent(GameEventKeys.Screen_OnLeave, new TData.Add("toScreen", screen), currentScreen)
 
 		'if on a screen, try to leave first
 		if currentScreen and not currentScreen.TryLeave(screen)
@@ -100,7 +91,7 @@ Type TScreenCollection
 
 		'if entering a screen, try to enter
 		if screen
-			local event:TEventBase = TEventBase.Create(eventKey_screen_onTryEnter, new TData.Add("fromScreen", currentScreen), screen)
+			local event:TEventBase = TEventBase.Create(GameEventKeys.Screen_OnTryEnter, new TData.Add("fromScreen", currentScreen), screen)
 			event.Trigger()
 			if event.IsVeto()
 				print "screen.onTryEnter forbidden"
@@ -108,7 +99,7 @@ Type TScreenCollection
 			endif
 		endif
 
-		TriggerBaseEvent(eventKey_screen_onBeginLeave, new TData.Add("toScreen", screen), currentScreen)
+		TriggerBaseEvent(GameEventKeys.Screen_OnBeginLeave, new TData.Add("toScreen", screen), currentScreen)
 
 
 		'instead of assigning currentScreen directly we use a setter
@@ -147,7 +138,7 @@ endrem
 				screen.BeginEnter(currentScreen)
 			EndIf
 			currentScreen = screen
-			TriggerBaseEvent(eventKey_screen_onFinishLeave, new TData.Add("toScreen", currentScreen), oldScreen)
+			TriggerBaseEvent(GameEventKeys.Screen_OnFinishLeave, new TData.Add("toScreen", currentScreen), oldScreen)
 
 			'if not currentScreen then currentScreen = baseScreen
 		endif
@@ -159,7 +150,7 @@ endrem
 		local currentScreenName:String
 		if oldScreen then oldScreenName = oldScreen.GetName()
 		if currentScreen then currentScreenName = currentScreen.GetName()
-		TriggerBaseEvent(eventKey_screen_onSetCurrent, new TData.Add("oldScreenName", oldScreenName).Add("currentScreenName", currentScreenName), oldScreen, currentScreen)
+		TriggerBaseEvent(GameEventKeys.Screen_OnSetCurrent, new TData.Add("oldScreenName", oldScreenName).Add("currentScreenName", currentScreenName), oldScreen, currentScreen)
 
 		return TRUE
 	End Method
@@ -214,7 +205,7 @@ endrem
 
 		GetCurrentScreen().draw(tweenValue)
 		'trigger event so others can attach
-		TriggerBaseEvent(eventKey_screen_onDraw, null, GetCurrentScreen())
+		TriggerBaseEvent(GameEventKeys.Screen_OnDraw, null, GetCurrentScreen())
 
 		if useChangeEffects
 			'handle screen change effects (LEAVE) for current screen
@@ -271,7 +262,7 @@ endrem
 		GetCurrentScreen().update(deltaTime)
 
 		'trigger event so others can attach
-		TriggerBaseEvent(eventKey_screen_onUpdate, null, GetCurrentScreen())
+		TriggerBaseEvent(GameEventKeys.Screen_OnUpdate, null, GetCurrentScreen())
 	End Method
 
 
@@ -419,7 +410,7 @@ Type TScreen
 	Method BeginEnter:int(fromScreen:TScreen=null)
 		state = TScreen.STATE_ENTERING
 
-		TriggerBaseEvent(TScreenCollection.eventKey_screen_onBeginEnter, new TData.Add("fromScreen", fromScreen), self)
+		TriggerBaseEvent(GameEventKeys.Screen_OnBeginEnter, new TData.Add("fromScreen", fromScreen), self)
 
 		Start()
 		if _enterScreenEffect then _enterScreenEffect.Reset()
@@ -430,7 +421,7 @@ Type TScreen
 	Method FinishEnter:int()
 		state = TScreen.STATE_NONE
 
-		TriggerBaseEvent(TScreenCollection.eventKey_screen_onFinishEnter, null, self)
+		TriggerBaseEvent(GameEventKeys.Screen_OnFinishEnter, null, self)
 	End Method
 
 
@@ -447,7 +438,7 @@ Type TScreen
 
 
 	Method TryLeave:int(toScreen:TScreen=null)
-		local event:TEventBase = TEventBase.Create(TScreenCollection.eventKey_screen_onTryLeave, new TData.Add("toScreen", toScreen), self)
+		local event:TEventBase = TEventBase.Create(GameEventKeys.Screen_OnTryLeave, new TData.Add("toScreen", toScreen), self)
 		event.Trigger()
 		if event.isVeto() then return False
 		return True
