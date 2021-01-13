@@ -1240,16 +1240,25 @@ Type RoomHandler_Studio Extends TRoomHandler
 			If MouseManager.IsClicked(1) and THelper.MouseIn( trashBinPos.GetIntX(), trashBinPos.GetIntY(), 76, 59)
 				Local roomOwner:Int = TRoom(triggerEvent.GetSender()).owner
 				Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(roomOwner)
-
-				'Destroy, not just remove (would keep it in the concept collection)
-				If programmeCollection and programmeCollection.DestroyProductionConcept(draggedGuiProductionConcept.productionConcept)
-					draggedGuiProductionConcept = null
-			
-					'handled left click
-					MouseManager.SetClickHandled(1)
-				ElseIf draggedGuiScript and programmeCollection.RemoveScript(draggedGuiScript.script, FALSE)
-					draggedGuiScript = null
-					MouseManager.SetClickHandled(1)
+				If programmeCollection
+					Local handledC:Int = False
+					'do not do a "if ... elseif" as we could even delete
+					'both (if for whatever reason we have both dragged
+					'simultaneously 
+					'Destroy, not just remove (would keep it in the concept collection)
+					If draggedGuiProductionConcept and programmeCollection.DestroyProductionConcept(draggedGuiProductionConcept.productionConcept)
+						draggedGuiProductionConcept = null
+				
+						handledC = True
+					EndIf
+					
+					If draggedGuiScript and programmeCollection.RemoveScript(draggedGuiScript.script, FALSE)
+						draggedGuiScript = null
+						
+						handledC = True
+					EndIf
+					
+					if handledC Then MouseManager.SetClickHandled(1)
 				EndIf
 			EndIf
 		EndIf
