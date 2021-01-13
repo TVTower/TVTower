@@ -137,7 +137,7 @@ Type TGUIChat Extends TGUIPanel
 		Local sendToChannels:Int = guiChat.getChannelsFromText(guiInput.value)
 		'- step B) is emitting the event "for all"
 		'  (the listeners have to handle if they want or ignore the line
-		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", New TData.AddNumber("senderID", guiChat.GetSenderID()).AddNumber("channels", sendToChannels).AddString("text",guiInput.value) , guiChat ) )
+		TriggerBaseEvent(GUIEventKeys.Chat_onAddEntry, New TData.AddNumber("senderID", guiChat.GetSenderID()).AddNumber("channels", sendToChannels).AddString("text",guiInput.value) , guiChat )
 
 		'avoid getting the enter-key registered multiple times
 		'which leads to "flickering"

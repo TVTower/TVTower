@@ -38,8 +38,8 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 			EventManager.UnregisterListenersArray(_eventListeners)
 			_eventListeners = new TEventListenerBase[0]
 
-			_eventListeners :+ [ EventManager.registerListenerFunction("SportLeague.StartSeason", onSportLeagueStartSeason) ]
-			'_eventListeners :+ [ EventManager.registerListenerFunction("Sport.StartPlayoffs", onSportLeagueStartSeason) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SportLeague_StartSeason, onSportLeagueStartSeason) ]
+			'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Sport.StartPlayoffs, onSportLeagueStartSeason) ]
 
 			_eventsRegistered = True
 		EndIf
@@ -165,11 +165,6 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 				matchNumber :+ 1
 			EndIf
 		Next
-
-		'print "Sportlizenz: " + programmeLicence.GetGUID()
-		'Notify("Sportlizenz: " + programmeLicence.GetGUID())
-'		TriggerSimpleEvent("dev.addToastMessage", new TData.Add("caption", "Sport League TV-Licence").Add("text", "Created " + programmeLicence.GetTitle() + "  /  "  + programmeLicence.GetGUID()), null, self)
-'		print "Sport League TV-Licence: Created " + programmeLicence.GetTitle() + "  /  "  + programmeLicence.GetGUID()
 
 		Return programmeLicence
 	End Method

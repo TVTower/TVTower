@@ -142,7 +142,7 @@ Include "game.menu.escapemenu.bmx"
 
 '===== Globals =====
 VersionDate = LoadText("incbin::source/version.txt").Trim()
-VersionString = "v0.6.2-dev Build ~q" + VersionDate+"~q"
+VersionString = "v0.7.0 Build ~q" + VersionDate+"~q"
 CopyrightString = "by Ronny Otto & Team"
 
 Global APP_NAME:String = "TVTower"
@@ -237,14 +237,14 @@ Type TApp
 			'register to:
 			'- quit confirmation dialogue
 			'- handle saving/applying of settings
-			EventManager.registerListenerFunction( "guiModalWindow.onClose", onCloseModalDialogue )
-			EventManager.registerListenerFunction( "guiModalWindowChain.onClose", onCloseEscapeMenu )
-			EventManager.registerListenerFunction( "RegistryLoader.onLoadXmlFromFinished",	TApp.onLoadXmlFromFinished )
-			obj.OnLoadMusicListener = EventManager.registerListenerFunction( "RegistryLoader.onLoadResource",	TApp.onLoadMusicResource )
+			EventManager.registerListenerFunction(GUIEventKeys.GUIModalWindow_OnClose, onCloseModalDialogue )
+			EventManager.registerListenerFunction(GUIEventKeys.GUIModalWindowChain_OnClose, onCloseEscapeMenu )
+			EventManager.registerListenerFunction(TRegistryLoader.eventKey_OnLoadXmlFromFinished, TApp.onLoadXmlFromFinished )
+			obj.OnLoadMusicListener = EventManager.registerListenerFunction(TRegistryLoader.eventKey_OnLoadResource, TApp.onLoadMusicResource )
 
 			?debug
-			EventManager.registerListenerFunction( "RegistryLoader.onLoadResource", TApp.onLoadResource )
-			EventManager.registerListenerFunction( "RegistryLoader.onBeginLoadResource", TApp.onBeginLoadResource )
+			EventManager.registerListenerFunction(TRegistryLoader.eventKey_OnLoadResource, TApp.onLoadResource )
+			EventManager.registerListenerFunction(TRegistryLoader.eventKey_OnBeginLoadResource, TApp.onBeginLoadResource )
 			?
 
 			obj.LoadSettings()
@@ -562,7 +562,7 @@ Type TApp
 		config.Add("language", languageCode)
 
 		'inform others - so eg. buttons can re-localize
-		EventManager.triggerEvent(TEventSimple.Create("Language.onSetLanguage", New TData.Add("languageCode", languageCode), Self))
+		TriggerBaseEvent(GameEventKeys.App_OnSetLanguage, New TData.Add("languageCode", languageCode), Self)
 		Return True
 	End Method
 
@@ -571,9 +571,9 @@ Type TApp
 		AppEvents.Init()
 
 		'systemupdate is called from within "update" (lower priority updates)
-		EventManager.registerListenerFunction("App.onLowPriorityUpdate", AppEvents.onLowPriorityUpdate )
+		EventManager.registerListenerFunction(GameEventKeys.App_OnLowPriorityUpdate, AppEvents.onLowPriorityUpdate )
 		'so we could create special fonts and other things
-		EventManager.triggerEvent( TEventSimple.Create("App.onStart") )
+		TriggerBaseEvent(GameEventKeys.App_OnStart)
 
 		'from now on we are no longer interested in loaded elements
 		'as we are no longer in the loading screen (-> silent loading)
@@ -622,7 +622,7 @@ Type TApp
 		TProfiler.Enter(_profilerKey_Update)
 		'every 3rd update do a low priority update
 		If GetDeltaTimer().timesUpdated Mod 3 = 0
-			EventManager.triggerEvent( TEventSimple.Create("App.onLowPriorityUpdate",Null) )
+			TriggerBaseEvent(GameEventKeys.App_OnLowPriorityUpdate)
 		EndIf
 
 		TProfiler.Enter(_profilerKey_RessourceLoader)
@@ -1191,19 +1191,6 @@ Type TApp
 							If KeyManager.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "boss", GetPlayerCollection().playerID))
 						EndIf
 						If KeyManager.isHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
-
-						If KeyManager.Ishit(KEY_X)
-							Print "--- ROOM LOG ---"
-							For Local entry:String = EachIn GameEvents.roomLog
-								Print entry
-							Next
-							Print "-- ROOM COUNT --"
-							For Local key:String = EachIn GameEvents.roomCount.Keys()
-								Print key+" : " + String(GameEvents.roomCount.ValueForKey(key))
-							Next
-							Print "----------------"
-						EndIf
-
 Rem
 						If KeyManager.isHit(KEY_X)
 							print "Player: #" + GetPlayer().GetFigure().playerID + "   time: " + GetWorldTime().GetFormattedTime()
@@ -1539,8 +1526,11 @@ endrem
 		textX:+ Max(50, bf.DrawSimple("FPS: "+GetDeltaTimer().currentFps, textX, 0).x)
 		textX:+ Max(50, bf.DrawSimple("UPS: " + Int(GetDeltaTimer().currentUps), textX,0).x)
 	'ron|gc
-	'	textX:+ Max(40, bf.DrawSimple("GC: " + (GCMemAlloced()/1024) +" Kb", textX,0).x)
-	'	textX:+ Max(40, bf.DrawSimple("  " + bbGCAllocCount+"/s", textX,0).x)
+		textX:+ Max(40, bf.DrawSimple("GC: " + (GCMemAlloced()/1024) +" Kb", textX,0).x)
+		textX:+ Max(40, bf.DrawSimple("  " + bbGCAllocCount+"/s", textX,0).x)
+
+		'textX:+ Max(120, bf.DrawSimple("ev: " + EventManager.eventsTriggered + "listeners: " + EventManager.listenersCalled, textX,0).x)
+
 rem
 		local soloudDriver:TSoloudAudioDriver = TSoloudAudioDriver(GetAudioDriver())
 		if soloudDriver
@@ -2828,7 +2818,7 @@ Type TSaveGame Extends TGameState
 		'=== LOAD SAVED GAME ===
 		'tell everybody we start loading (eg. for unregistering objects before)
 		'payload is saveName
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginLoad", New TData.addString("saveName", saveName)))
+		TriggerBaseEvent(GameEventKeys.SaveGame_OnBeginLoad, New TData.addString("saveName", saveName))
 		'load savegame data into game object
 		saveGame.RestoreGameData()
 
@@ -2849,7 +2839,7 @@ Type TSaveGame Extends TGameState
 
 		'tell everybody we finished loading (eg. for clearing GUI-lists)
 		'payload is saveName and saveGame-object
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
+		TriggerBaseEvent(GameEventKeys.SaveGame_OnLoad, New TData.addString("saveName", saveName).add("saveGame", saveGame))
 
 		If not GetGame().GetObservedFigure() or GetGame().GetObservedFigure() = GetPlayer().GetFigure()
 			'only set the screen if the figure is in this room ... this
@@ -2918,7 +2908,7 @@ Local t:Int = MilliSecs()
 		Local saveGame:TSaveGame = New TSaveGame
 		'tell everybody we start saving
 		'payload is saveName
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginSave", New TData.addString("saveName", saveName)))
+		TriggerBaseEvent(GameEventKeys.SaveGame_OnBeginSave, New TData.addString("saveName", saveName))
 
 		'assign "initial" version information
 		if not GameConfig.savegame_initialBuildDate then GameConfig.savegame_initialBuildDate = VersionDate
@@ -2953,7 +2943,7 @@ Local t:Int = MilliSecs()
 
 		'tell everybody we finished saving
 		'payload is saveName and saveGame-object
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnSave", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
+		TriggerBaseEvent(GameEventKeys.SaveGame_OnSave, New TData.addString("saveName", saveName).add("saveGame", saveGame))
 		Print "saving took " + (MilliSecs() - t) + "ms."
 		'close message window
 		If messageWindow Then messageWindow.Close()
@@ -3197,13 +3187,13 @@ Type TScreen_MainMenu Extends TGameScreen
 			GuiManager.SortLists()
 			'we want to have max 4 items visible at once
 			guiLanguageDropDown.SetListContentHeight(itemHeight * Min(languageCount,4))
-			EventManager.registerListenerMethod("GUIDropDown.onSelectEntry", Self, "onSelectLanguageEntry", guiLanguageDropDown)
+			EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onSelectLanguageEntry", guiLanguageDropDown)
 		EndIf
 
 		'fill captions with the localized values
 		SetLanguage()
 
-		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickButtons")
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickButtons")
 
 		Return Self
 	End Method
@@ -3412,11 +3402,11 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		SetLanguage()
 
 		'register clicks on TGUIGameEntry-objects -> game list
-		EventManager.registerListenerMethod("guiobject.onDoubleClick", Self, "onDoubleClickGameListEntry", "TGUIGameEntry")
-		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickButtons", "TGUIButton")
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnDoubleClick, Self, "onDoubleClickGameListEntry", "TGUIGameEntry")
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickButtons", "TGUIButton")
 
 		'register to network game announcements
-		EventManager.registerListenerMethod("network.onReceiveAnnounceGame", Self, "onReceiveAnnounceGame")
+		EventManager.registerListenerMethod(TDigNetwork.eventKey_OnReceiveAnnounceGame, Self, "onReceiveAnnounceGame")
 
 		Return Self
 	End Method
@@ -3815,86 +3805,81 @@ Type GameEvents
 
 	Function RegisterEventListeners:Int()
 		'react on right clicks during a rooms update (leave room)
-		_eventListeners :+ [ EventManager.registerListenerFunction("room.onUpdateDone", RoomOnUpdate) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnUpdateDone, RoomOnUpdate) ]
 
 		'forcefully set current screen (eg. after loading a "currently
 		'leaving a screen" savegame, or with a faulty timing between
 		'doors and screen-transition-animation)
-		_eventListeners :+ [ EventManager.registerListenerFunction("figure.SetInRoom", onFigureSetInRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_SetInRoom, onFigureSetInRoom) ]
 
 		'refresh ingame help
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.OnFinishEnter", OnEnterNewScreen) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnFinishEnter, OnEnterNewScreen) ]
 
 		'pause on modal windows
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiModalWindow.onOpen", OnOpenModalWindow) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiModalWindow.onClose", OnCloseModalWindow) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIModalWindow_OnOpen, OnOpenModalWindow) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIModalWindow_OnClose, OnCloseModalWindow) ]
 		'pause on ingame help
-		_eventListeners :+ [ EventManager.registerListenerFunction("InGameHelp.ShowHelpWindow", OnOpenIngameHelp) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("InGameHelp.CloseHelpWindow", OnCloseIngameHelp) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.InGameHelp_ShowHelpWindow, OnOpenIngameHelp) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.InGameHelp_CloseHelpWindow, OnCloseIngameHelp) ]
 
 		'=== REGISTER TIME EVENTS ===
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnDay", OnDay) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnHour", OnHour) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnMinute", OnMinute) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnDay, OnDay) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnHour, OnHour) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnMinute, OnMinute) ]
 
 		'=== REGISTER PLAYER EVENTS ===
 		'events get ignored by non-gameleaders
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnMinute", PlayersOnMinute) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnDay", PlayersOnDay) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnBegin", PlayersOnBeginGame) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("Time.OnSecond", Time_OnSecond) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnMinute, PlayersOnMinute) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnDay, PlayersOnDay) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnBegin, PlayersOnBeginGame) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnRealTimeSecond, PlayersOnRealTimeSecond) ]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.SetPlayerBankruptBegin", PlayerOnSetBankrupt) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", PlayerFinanceOnChangeMoney) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerFinance.onTransactionFailed", PlayerFinanceOnTransactionFailed) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerBoss.onCallPlayer", PlayerBoss_OnCallPlayer) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerBoss.onCallPlayerForced", PlayerBoss_OnCallPlayerForced) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerBoss.onPlayerEnterBossRoom", PlayerBoss_OnPlayerEnterBossRoom) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerBoss.onPlayerTakesCredit", PlayerBoss_OnTakeOrRepayCredit) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("PlayerBoss.onPlayerRepaysCredit", PlayerBoss_OnTakeOrRepayCredit) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_SetPlayerBankruptBegin, PlayerOnSetBankrupt) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PlayerFinance_OnChangeMoney, PlayerFinanceOnChangeMoney) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PlayerFinance_OnTransactionFailed, PlayerFinanceOnTransactionFailed) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PlayerBoss_OnCallPlayer, PlayerBoss_OnCallPlayer) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PlayerBoss_OnCallPlayerForced, PlayerBoss_OnCallPlayerForced) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PlayerBoss_OnPlayerEnterBossRoom, PlayerBoss_OnPlayerEnterBossRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PlayerBoss_OnPlayerTakesCredit, PlayerBoss_OnTakeOrRepayCredit) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PlayerBoss_OnPlayerRepaysCredit, PlayerBoss_OnTakeOrRepayCredit) ]
 
 		'=== PUBLIC AUTHORITIES ===
 		'-> create ingame notifications
-		_eventListeners :+ [ EventManager.registerListenerFunction("publicAuthorities.onStopXRatedBroadcast", publicAuthorities_onStopXRatedBroadcast) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("publicAuthorities.onConfiscateProgrammeLicence", publicAuthorities_onConfiscateProgrammeLicence) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("Achievement.OnComplete", Achievement_OnComplete) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("Award.OnFinish", Award_OnFinish) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PublicAuthorities_OnStopXRatedBroadcast, publicAuthorities_onStopXRatedBroadcast) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.PublicAuthorities_OnConfiscateProgrammeLicence, publicAuthorities_onConfiscateProgrammeLicence) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Achievement_OnComplete, Achievement_OnComplete) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Award_OnFinish, Award_OnFinish) ]
 
 		'visually inform that selling the last station is impossible
-		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.onTrySellLastStation", StationMap_OnTrySellLastStation) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_OnTrySellLastStation, StationMap_OnTrySellLastStation) ]
 		'trigger audience recomputation when a station is trashed/sold
-		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.removeStation", StationMap_OnRemoveStation) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_RemoveStation, StationMap_OnRemoveStation) ]
 		'show ingame toastmessage if station is under construction
-		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.addStation", StationMap_OnAddStation) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_AddStation, StationMap_OnAddStation) ]
 		'show ingame toastmessage if your audience reach level changes
-		_eventListeners :+ [ EventManager.registerListenerFunction("StationMap.onChangeReachLevel", StationMap_OnChangeReachLevel) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_OnChangeReachLevel, StationMap_OnChangeReachLevel) ]
 		'show ingame toastmessage if station is under construction
-		_eventListeners :+ [ EventManager.registerListenerFunction("Station.onContractEndsSoon", Station_OnContractEndsSoon) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnContractEndsSoon, Station_OnContractEndsSoon) ]
 		'show ingame toastmessage if bankruptcy could happen
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.SetPlayerBankruptLevel", Game_OnSetPlayerBankruptLevel) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_SetPlayerBankruptLevel, Game_OnSetPlayerBankruptLevel) ]
 
 		'listen to failed or successful ending adcontracts to send out
 		'ingame toastmessages
-		_eventListeners :+ [ EventManager.registerListenerFunction("AdContract.onFinish", AdContract_OnFinish) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("AdContract.onFail", AdContract_OnFail) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("ProgrammeLicenceAuction.onGetOutbid", ProgrammeLicenceAuction_OnGetOutbid) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("ProgrammeLicenceAuction.onWin", ProgrammeLicenceAuction_OnWin) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.AdContract_OnFinish, AdContract_OnFinish) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.AdContract_OnFail, AdContract_OnFail) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeLicenceAuction_OnGetOutbid, ProgrammeLicenceAuction_OnGetOutbid) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeLicenceAuction_OnWin, ProgrammeLicenceAuction_OnWin) ]
 
 		'listen to custom programme events to send out toastmessages
-		_eventListeners :+ [ EventManager.registerListenerFunction("production.finalize", Production_OnFinalize) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Production_Finalize, Production_OnFinalize) ]
 
 		'reset room signs when a bomb explosion in a room happened
-		_eventListeners :+ [ EventManager.registerListenerFunction("room.onBombExplosion", Room_OnBombExplosion) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnBombExplosion, Room_OnBombExplosion) ]
 
 		'we want to handle "/dev bla"-commands via chat
-		_eventListeners :+ [ EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntry ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Chat_OnAddEntry, onChatAddEntry ) ]
 		'relay incoming chat messages to the AI
-		_eventListeners :+ [ EventManager.registerListenerFunction("chat.onAddEntry", onChatAddEntryForAI ) ]
-
-		'dev
-		_eventListeners :+ [ EventManager.registerListenerFunction("player.onEnterRoom", onPlayerEntersRoom ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("dev.addToastMessage", DevAddToastMessage ) ]
-
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Chat_OnAddEntry, onChatAddEntryForAI ) ]
 	End Function
 
 
@@ -3956,21 +3941,6 @@ Type GameEvents
 
 		'try to show the ingame help for that screen (if there is any)
 		IngameHelpWindowCollection.ShowByHelpGUID( screen.GetName() )
-	End Function
-
-
-	Global roomLog:TList = CreateList()
-	Global roomCount:TMap = CreateMap()
-	Function onPlayerEntersRoom:Int(triggerEvent:TEventBase)
-		Local room:TRoom = TRoom(triggerEvent.GetReceiver())
-		Local player:TPlayer = TPlayer(triggerEvent.GetSender())
-
-		roomLog.AddLast("Player #"+player.playerID+"  enters " + room.GetName()+ "  [" + GetWorldTime().GetFormattedGameDate()+"]")
-
-		Local key:String = player.playerID+"|"+room.GetName()
-		Local count:Int = Int(String(roomCount.ValueForKey(key))) + 1
-		roomCount.insert(key, String(count))
-
 	End Function
 
 
@@ -4447,7 +4417,7 @@ Type GameEvents
 	End Function
 
 
-	Function Time_OnSecond:Int(triggerEvent:TEventBase)
+	Function PlayersOnRealTimeSecond:Int(triggerEvent:TEventBase)
 		'only AI handling: only gameleader interested
 		If Not GetGame().isGameLeader() Then Return False
 
@@ -4710,7 +4680,7 @@ Type GameEvents
 		toast.SetLifeTime(3)
 		toast.SetMessageCategory(TVTMessageCategory.MONEY)
 
-		If triggerEvent.IsTrigger("PlayerBoss.onPlayerTakesCredit")
+		If triggerEvent.GetEventKey() = GameEventKeys.PlayerBoss_OnPlayerTakesCredit
 			toast.SetMessageType(2) 'positive
 			toast.SetCaption(StringHelper.UCFirst(GetLocale("CREDIT_TAKEN")))
 			toast.SetText(StringHelper.UCFirst(GetLocale("ACCOUNT_BALANCE"))+": |b||color=0,125,0|+ "+ MathHelper.DottedValue(value) + " " + getLocale("CURRENCY") + "|/color||/b|")
@@ -5595,14 +5565,14 @@ Type GameEvents
 					Local confiscateProgramme:Int = RandRange(0,100) < 25
 
 					If confiscateProgramme
-						EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStartConfiscateProgramme", New TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player))
+						TriggerBaseEvent(GameEventKeys.PublicAuthorities_OnStartConfiscateProgramme, New TData.AddString("broadcastMaterialGUID", currentProgramme.GetGUID()).AddNumber("owner", player.playerID), currentProgramme, player)
 
 						'Send out first marshal - Mr. Czwink or Mr. Czwank
 						TFigureMarshal(GetGame().marshals[randRange(0,1)]).AddConfiscationJob(currentProgramme.licence.GetGUID())
 					EndIf
 
 					'emit event (eg.for ingame toastmessages)
-					EventManager.triggerEvent(TEventSimple.Create("publicAuthorities.onStopXRatedBroadcast",Null , currentProgramme, player))
+					TriggerBaseEvent(GameEventKeys.PublicAuthorities_OnStopXRatedBroadcast, Null, currentProgramme, player)
 				Next
 			EndIf
 		EndIf
@@ -5618,30 +5588,30 @@ Type GameEvents
 			'send out an event for "block types" to begin/finish now
 			'this enables to run things before manipulation like
 			'topicality decrease takes place
-			Local evKey:String = ""
+			Local evKey:TEventKey
 			Local evData:TData
 			Select minute
 				Case 0
-					evKey = "broadcasting.BeforeStartAllNewsShowBroadcasts"
+					evKey = GameEventKeys.Broadcasting_BeforeStartAllNewsShowBroadcasts
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.NEWSSHOW) )
 				Case 4
-					evKey = "broadcasting.BeforeFinishAllNewsShowBroadcasts"
+					evKey = GameEventKeys.Broadcasting_BeforeFinishAllNewsShowBroadcasts
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.NEWSSHOW) )
 				Case 5
-					evKey = "broadcasting.BeforeStartAllProgrammeBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_BeforeStartAllProgrammeBlockBroadcasts
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) )
 				Case 54
-					evKey = "broadcasting.BeforeFinishAllProgrammeBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_BeforeFinishAllProgrammeBlockBroadcasts
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.PROGRAMME) )
 				Case 55
-					evKey = "broadcasting.BeforeStartAllAdBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_BeforeStartAllAdBlockBroadcasts
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.ADVERTISEMENT) )
 				Case 59
-					evKey = "broadcasting.BeforeFinishAllAdBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_BeforeFinishAllAdBlockBroadcasts
 					evData = New TData.Add("broadcasts", GetBroadcastManager().GetCurrentBroadcastMaterial(TVTBroadcastMaterialType.ADVERTISEMENT) )
 			End Select
 			If evKey And evData
-				EventManager.triggerEvent(TEventSimple.Create(evKey, evData))
+				TriggerBaseEvent(evKey, evData)
 			EndIf
 
 
@@ -5663,23 +5633,23 @@ Type GameEvents
 			Next
 
 
-			evKey = ""
+			evKey = Null
 			Select minute
 				Case 0
-					evKey = "broadcasting.AfterStartAllNewsShowBroadcasts"
+					evKey = GameEventKeys.Broadcasting_AfterStartAllNewsShowBroadcasts
 				Case 4
-					evKey = "broadcasting.AfterFinishAllNewsShowBroadcasts"
+					evKey = GameEventKeys.Broadcasting_AfterFinishAllNewsShowBroadcasts
 				Case 5
-					evKey = "broadcasting.AfterStartAllProgrammeBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_AfterStartAllProgrammeBlockBroadcasts
 				Case 54
-					evKey = "broadcasting.AfterFinishAllProgrammeBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_AfterFinishAllProgrammeBlockBroadcasts
 				Case 55
-					evKey = "broadcasting.AfterStartAllAdBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_AfterStartAllAdBlockBroadcasts
 				Case 59
-					evKey = "broadcasting.AfterFinishAllAdBlockBroadcasts"
+					evKey = GameEventKeys.Broadcasting_AfterFinishAllAdBlockBroadcasts
 			End Select
 			If evKey And evData
-				EventManager.triggerEvent(TEventSimple.Create(evKey, evData))
+				TriggerBaseEvent(evKey, evData)
 			EndIf
 		EndIf
 

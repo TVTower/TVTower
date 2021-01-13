@@ -55,8 +55,8 @@ Type RoomHandler_RoomAgency extends TRoomHandler
 
 		'react to changes (eg. cancel a buy/sell-selection if the selected
 		'room changes owner)
-		_eventListeners :+ [ EventManager.registerListenerFunction("room.onBeginRental", onBeginOrCancelRoomRental) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("room.onCancelRental", onBeginOrCancelRoomRental) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnBeginRental, onBeginOrCancelRoomRental) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnCancelRental, onBeginOrCancelRoomRental) ]
 
 		'local screen:TScreen = ScreenCollection.GetScreen("screen_roomagency")
 		'_eventListeners :+ _RegisterScreenHandler( onUpdateRoomAgency, onDrawRoomAgency, screen )

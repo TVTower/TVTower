@@ -28,7 +28,7 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 				buttons[i] = New TGUIButton.Create(New TVec2D.Init(0, buttonsY + i*40), New TVec2D.Init(canvas.GetContentScreenRect().GetW(), -1), GetLocale(buttonsText[i]), "")
 			EndIf
 			AddChild(buttons[i])
-			AddEventListener( EventManager.RegisterListenerMethod("guiobject.onClick", Self, "onButtonClick", buttons[i]) )
+			AddEventListener( EventManager.RegisterListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onButtonClick", buttons[i]) )
 		Next
 
 		If guiCaptionTextBox
@@ -193,7 +193,7 @@ Type TGUIModalSettingsMenu Extends TGUIModalWindowChainDialogue
 
 		'=== EVENTS ===
 		'listen to clicks on "load savegame"
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guibutton.onclick", Self, "onApplySettings", dialogueButtons[0]) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIButton_Onclick, Self, "onApplySettings", dialogueButtons[0]) ]
 
 		Return Self
 	End Method
@@ -283,8 +283,8 @@ Type TGUIModalLoadSavegameMenu Extends TGUIModalWindowChainDialogue
 		'=== EVENTS ===
 		'listen to clicks on "load savegame"
 		'_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onclick", onClickLoadSavegame, dialogueButtons[0]) ]
-		_eventListeners :+ [ EventManager.RegisterListenerMethod( "guibutton.onclick", Self, "onClickLoadSavegame") ]
-		_eventListeners :+ [ EventManager.RegisterListenerMethod( "SaveGame.OnLoad", Self, "onLoadSavegame") ]
+		_eventListeners :+ [ EventManager.RegisterListenerMethod(GUIEventKeys.GUIButton_OnClick, Self, "onClickLoadSavegame") ]
+		_eventListeners :+ [ EventManager.RegisterListenerMethod(GameEventKeys.SaveGame_OnLoad, Self, "onLoadSavegame") ]
 
 		Return Self
 	End Method
@@ -484,16 +484,16 @@ Type TGUIModalSaveSavegameMenu Extends TGUIModalWindowChainDialogue
 
 		'=== EVENTS ===
 		'listen to clicks on "save savegame"
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guibutton.onclick", Self, "onClickSaveSavegame") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIButton_OnClick, Self, "onClickSaveSavegame") ]
 		'listen to clicks on the list
-		_eventListeners :+ [ EventManager.registerListenerMethod( "GUISelectList.onSelectEntry", Self, "onClickOnSavegameEntry") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUISelectList_OnSelectEntry, Self, "onClickOnSavegameEntry") ]
 		'select entry according input content
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guiinput.onChangeValue", Self, "onChangeSavegameNameInputValue") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIInput_OnChangeValue, Self, "onChangeSavegameNameInputValue") ]
 		'register to quit confirmation dialogue
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guiModalWindow.onClose", Self, "onConfirmOverwrite" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIModalWindow_OnClose, Self, "onConfirmOverwrite" ) ]
 
 		'localize texts
-		_eventListeners :+ [ EventManager.registerListenerMethod( "Language.onSetLanguage", Self, "onSetLanguage" ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.App_OnSetLanguage, Self, "onSetLanguage" ) ]
 
 		'(re-)localize
 		SetLanguage()

@@ -62,7 +62,7 @@ Type TGUIButton Extends TGUIobject
 		Super.onClick(triggerEvent)
 		'send a more specialized event
 		If Not triggerEvent.isVeto()
-			EventManager.triggerEvent( TEventSimple.Create("guibutton.OnClick", triggerEvent._data, Self) )
+			TriggerBaseEvent(GUIEventKeys.GUIButton_OnClick, triggerEvent.GetData(), Self)
 		EndIf
 	End Method
 

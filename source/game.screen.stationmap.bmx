@@ -8,6 +8,7 @@ Import "game.stationmap.bmx"
 Import "game.player.bmx"
 Import "game.room.base.bmx"
 Import "game.roomhandler.base.bmx"
+Import "game.gameeventkeys.bmx"
 
 
 
@@ -125,15 +126,15 @@ Type TGameGUIBasicStationmapPanel Extends TGameGUIAccordeonPanel
 		_eventListeners = new TEventListenerBase[0]
 
 		'=== register event listeners
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickCancelButton", cancelButton ) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickActionButton", actionButton ) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guiobject.onClick", Self, "OnClickRenewButton", renewButton ) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "guiCheckBox.onSetChecked", Self, "OnSetChecked_AutoRenewCheckbox", autoRenewCheckbox) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "OnClickCancelButton", cancelButton) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "OnClickActionButton", actionButton) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "OnClickRenewButton", renewButton) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUICheckbox_OnSetChecked, Self, "OnSetChecked_AutoRenewCheckbox", autoRenewCheckbox) ]
 		'localize the button
 		'we have to refresh the gui station list as soon as we remove or add a station
-'		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.removeStation", OnChangeStationMapStation ) ]
-'		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.addStation", OnChangeStationMapStation ) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "GUISelectList.onSelectEntry", Self, "OnSelectEntryList", list ) ]
+'		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_RemoveStation, OnChangeStationMapStation) ]
+'		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_AddStation, OnChangeStationMapStation) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUISelectList_onSelectEntry, Self, "OnSelectEntryList", list) ]
 
 		'(re-)localize content
 		SetLanguage()
@@ -549,8 +550,8 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 		'=== register custom event listeners
 		'localize the button
 		'we have to refresh the gui station list as soon as we remove or add a station
-'		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.removeStation", OnChangeStationMapStation ) ]
-'		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.addStation", OnChangeStationMapStation ) ]
+'		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_RemoveStation, OnChangeStationMapStation) ]
+'		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_AddStation, OnChangeStationMapStation) ]
 
 		Return Self
 	End Method
@@ -773,8 +774,8 @@ Type TGameGUICableNetworkPanel Extends TGameGUIBasicStationmapPanel
 		'=== register custom event listeners
 		'localize the button
 		'we have to refresh the gui station list as soon as we remove or add a station
-'		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.removeStation", OnChangeStationMapStation ) ]
-'		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.addStation", OnChangeStationMapStation ) ]
+'		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_RemoveStation, OnChangeStationMapStation) ]
+'		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_AddStation, OnChangeStationMapStation) ]
 
 		Return Self
 	End Method
@@ -1101,8 +1102,8 @@ Type TGameGUISatellitePanel Extends TGameGUIBasicStationmapPanel
 		'=== register custom event listeners
 		'localize the button
 		'we have to refresh the gui station list as soon as we remove or add a station
-		'_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.removeStation", OnChangeStationMapStation ) ]
-		'_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.addStation", OnChangeStationMapStation ) ]
+		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_RemoveStation, OnChangeStationMapStation) ]
+		'_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_AddStation, OnChangeStationMapStation) ]
 
 		Return Self
 	End Method
@@ -1559,10 +1560,10 @@ Type TSatelliteSelectionFrame
 
 		'=== register event listeners
 		'we have to refresh the gui station list as soon as we remove or add a station
-		_eventListeners :+ [ EventManager.registerListenerMethod( "stationmapcollection.removeSatellite", Self, "OnChangeSatellites" ) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "stationmapcollection.addSatellite", Self, "OnChangeSatellites" ) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "stationmapcollection.launchSatellite", Self, "OnChangeSatellites" ) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "GUISelectList.onSelectEntry", Self, "OnSelectEntryList", satelliteList ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.StationMapCollection_RemoveSatellite, Self, "OnChangeSatellites") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.StationMapCollection_AddSatellite, Self, "OnChangeSatellites") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.StationMapCollection_LaunchSatellite, Self, "OnChangeSatellites") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUISelectList_OnSelectEntry, Self, "OnSelectEntryList", satelliteList) ]
 
 '		return self
 	End Method
@@ -1936,8 +1937,8 @@ Type TStationMapInformationFrame
 
 		'=== register event listeners
 		'we have to refresh the gui station list as soon as we remove or add a station
-		_eventListeners :+ [ EventManager.registerListenerMethod( "stationmapcollection.addSection", Self, "OnChangeSections" ) ]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "GUISelectList.onSelectEntry", Self, "OnSelectEntryList", sectionList ) ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GameEventKeys.StationMapCollection_AddSection, Self, "OnChangeSections") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUISelectList_OnSelectEntry, Self, "OnSelectEntryList", sectionList) ]
 
 '		return self
 	End Method
@@ -2418,29 +2419,29 @@ Type TScreenHandler_StationMap
 
 		'=== register event listeners
 		'unset "selected station" when other panels get opened
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiaccordeon.onOpenPanel", OnOpenOrCloseAccordeonPanel, guiAccordeon ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiaccordeon.onClosePanel", OnOpenOrCloseAccordeonPanel, guiAccordeon ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIAccordeon_OnOpenPanel, OnOpenOrCloseAccordeonPanel, guiAccordeon) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIAccordeon_OnClosePanel, OnOpenOrCloseAccordeonPanel, guiAccordeon) ]
 
 		'we have to refresh the gui station list as soon as we remove or add a station
-		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.removeStation", OnChangeStationMapStation ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "stationmap.addStation", OnChangeStationMapStation ) ]
-'		_eventListeners :+ [ EventManager.registerListenerFunction( "station.SetActive", OnChangeStation ) ]
-'		_eventListeners :+ [ EventManager.registerListenerFunction( "station.SetInactive", OnChangeStation ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "station.onShutDown", OnChangeStation ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "station.onResume", OnChangeStation ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_RemoveStation, OnChangeStationMapStation) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.StationMap_AddStation, OnChangeStationMapStation) ]
+'		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_SetActive, OnChangeStation) ]
+'		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_SetInactive, OnChangeStation) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnShutDown, OnChangeStation) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Station_OnResume, OnChangeStation) ]
 
 		'player enters station map screen - set checkboxes according to station map config
-		_eventListeners :+ [ EventManager.registerListenerFunction("screen.onBeginEnter", onEnterStationMapScreen, screen ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Screen_OnBeginEnter, onEnterStationMapScreen, screen) ]
 
 		'register checkbox changes
 		For Local i:Int = 0 Until guiShowStations.length
-			_eventListeners :+ [ EventManager.registerListenerFunction("guiCheckBox.onSetChecked", OnSetChecked_StationMapFilters, guiShowStations[i]) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUICheckbox_OnSetChecked, OnSetChecked_StationMapFilters, guiShowStations[i]) ]
 		Next
 		For Local i:Int = 0 Until guiFilterButtons.length
-			_eventListeners :+ [ EventManager.registerListenerFunction("guiCheckBox.onSetChecked", OnSetChecked_StationMapFilters, guiFilterButtons[i]) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUICheckbox_OnSetChecked, OnSetChecked_StationMapFilters, guiFilterButtons[i]) ]
 		Next
 
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onClick", OnClickInfoButton, guiInfoButton ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, OnClickInfoButton, guiInfoButton) ]
 
 		'to update/draw the screen
 		_eventListeners :+ TRoomHandler._RegisterScreenHandler( onUpdateStationMap, onDrawStationMap, screen )
@@ -3062,7 +3063,7 @@ endrem
 
 		Local panel:TGameGUIAccordeonPanel = TGameGUIAccordeonPanel(triggerEvent.GetData().Get("panel"))
 
-		If triggerEvent.IsTrigger("guiaccordeon.onClosePanel".ToLower())
+		If triggerEvent.GetEventKey() = GUIEventKeys.GUIAccordeon_OnClosePanel
 			if mapInformationFrame.IsOpen()
 				mapInformationFrame.Close()
 			endif
@@ -3077,7 +3078,7 @@ endrem
 		If Not currentSubRoom Then Return False
 
 		if TScreenHandler_StationMap.selectedStation
-			if triggerEvent.IsTrigger("StationMap.removeStation")
+			if triggerEvent.GetEventKey() = GameEventKeys.StationMap_RemoveStation
 				'reset action mode (so also "selection") if the
 				'station just got removed/sold
 				if TScreenHandler_StationMap.selectedStation = TStationBase(triggerEvent.GetData().Get("station"))

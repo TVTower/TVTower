@@ -121,22 +121,22 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 		'=== register event listeners
 		'to react on changes in the programmeCollection (eg. custom script finished)
-		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.addScript", onChangeProgrammeCollection ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.removeScript", onChangeProgrammeCollection ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.moveScript", onChangeProgrammeCollection ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddScript, onChangeProgrammeCollection ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveScript, onChangeProgrammeCollection ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_MoveScript, onChangeProgrammeCollection ) ]
 
 		'check if dropping is possible (affordable price for a script dragged when dropping on a one)
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropScript, "TGuiScript" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDropOnTarget, onTryDropScript, "TGuiScript") ]
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to vendor or suitcase
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropScript, "TGuiScript" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTarget, onDropScript, "TGuiScript") ]
 		'drop on vendor - sell things
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropScriptOnVendor, "TGuiScript" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropScriptOnVendor, "TGuiScript") ]
 		'we want to know if we hover a specific block - to show a datasheet
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverScript, "TGuiScript" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverScript, "TGuiScript" ) ]
 		'this lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickScript, "TGuiScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickScript, "TGuiScript") ]
 
 		'(re-)localize content
 		SetLanguage()
@@ -715,12 +715,12 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 rem
 		'only refresh if the vendor did not get the script
-		if triggerEvent.IsTrigger("programmecollection.removeScript")
+		if triggerEvent.GetEventKey() = GameEventKeys.ProgrammeCollection_RemoveScript
 			if not GetInstance().HasScript(TScript(triggerEvent.GetData().Get("script")))
 				GetInstance().RefreshGuiElements()
 			endif
 		'only refresh if the vendor did not get the script
-		elseif triggerEvent.IsTrigger("programmecollection.moveScript")
+		elseif triggerEvent.GetEventKey() = GameEventKeys.ProgrammeCollection_MoveScript
 			if not GetInstance().HasScript(TScript(triggerEvent.GetData().Get("script")))
 				GetInstance().RefreshGuiElements()
 			endif

@@ -215,16 +215,50 @@ Type TData
 	End Method
 
 
+	Method AddNumber:TData(key:Object, data:Double)
+		Local dd:TDoubleData = New TDoubleData
+		dd.value = data
+		Add( key, dd )
+		Return Self
+rem
+
+		If Double(Long(data)) = data 
+			Return AddLong(key, Long(data))
+		EndIf
+
+		Return AddDouble(key, data)
+endrem
+	End Method
+
+
 	Method AddString:TData(key:Object, data:String)
 		Add( key, data )
 		Return Self
 	End Method
 
 
-	Method AddNumber:TData(key:Object, data:Double)
+	Method AddFloat:TData(key:Object, data:Float)
+		Return AddDouble(key, data)
+	End Method
+
+
+	Method AddDouble:TData(key:Object, data:Double)
 		Local dd:TDoubleData = New TDoubleData
 		dd.value = data
 		Add( key, dd )
+		Return Self
+	End Method
+
+
+	Method AddInt:TData(key:Object, data:int)
+		Return AddLong(key, data)
+	End Method
+
+
+	Method AddLong:TData(key:Object, data:Long)
+		Local ld:TLongData = New TLongData
+		ld.value = data
+		Add( key, ld )
 		Return Self
 	End Method
 
@@ -266,44 +300,6 @@ Type TData
 		If Not ls Then ls = TLowerString.Create(String(key))
 
 		Return data.Contains(ls)
-	End Method
-
-
-	Method GetOLD:Object(k:Object, defaultValue:Object=Null)
-		'only react if the "::" is in the middle of something
-
-		Local ls:TLowerString = TLowerString(k)
-		If ls Then
-			Local key:TLowerString = ls
-			Local pos:Int = key.Find("::")
-
-			If pos > 0
-				Local group:String = Left(key.orig,pos)
-				Local groupData:TData = TData(Get(group))
-				If groupData
-					Return groupData.Get(Right(key.orig, pos+1), defaultValue)
-				EndIf
-			EndIf
-		Else
-			Local key:String = String(k)
-			Local pos:Int = key.Find("::")
-
-			If pos > 0
-				Local group:String = Left(key,pos)
-				Local groupData:TData = TData(Get(group))
-				If groupData
-					Return groupData.Get(Right(key, pos+1), defaultValue)
-				EndIf
-			EndIf
-		End If
-		If String(k) Then
-			k = TLowerString.Create(String(k))
-		End If
-		Local result:Object = data.ValueForKey(k)
-		If result Then
-			Return result
-		End If
-		Return defaultValue
 	End Method
 
 
@@ -361,6 +357,11 @@ Type TData
 			Local dd:TDoubleData = TDoubleData(result)
 			If dd Then
 				Return dd.value
+			Else
+				Local ld:TLongData = TLongData(result)
+				If ld Then
+					Return ld.value
+				EndIf
 			End If
 			Return Double( String( result ) )
 		End If
@@ -371,9 +372,14 @@ Type TData
 	Method GetLong:Long(key:Object, defaultValue:Long = 0)
 		Local result:Object = Get(key)
 		If result Then
-			Local dd:TDoubleData = TDoubleData(result)
-			If dd Then
-				Return Long(dd.value)
+			Local ld:TLongData = TLongData(result)
+			If ld Then
+				Return ld.value
+			Else
+				Local dd:TDoubleData = TDoubleData(result)
+				If dd Then
+					Return Long(dd.value)
+				EndIf
 			End If
 			Return Long( String( result ) )
 		End If
@@ -387,6 +393,10 @@ Type TData
 			Local dd:TDoubleData = TDoubleData(result)
 			If dd Then
 				Return Float(dd.value)
+				Local ld:TLongData = TLongData(result)
+				If ld Then
+					Return ld.value
+				EndIf
 			End If
 			Return Float( String( result ) )
 		End If
@@ -397,10 +407,15 @@ Type TData
 	Method GetInt:Int(key:Object, defaultValue:Int = Null)
 		Local result:Object = Get(key)
 		If result Then
-			Local dd:TDoubleData = TDoubleData(result)
-			If dd Then
-				Return Int(dd.value)
-			End If
+			Local ld:TLongData = TLongData(result)
+			If ld Then
+				Return Int(ld.value)
+			Else
+				Local dd:TDoubleData = TDoubleData(result)
+				If dd Then
+					Return Int(dd.value)
+				End If
+			EndIf
 			Return Int( String( result ) )
 		End If
 		Return defaultValue
@@ -430,6 +445,26 @@ Type TDoubleData
 
 	Method DeSerializeTDoubleDataFromString(text:String)
 		value = Double(text)
+	End Method
+End Type
+
+
+
+Type TLongData
+	Field value:Long
+
+	Method ToString:String()
+		Return String(value)
+	End Method
+
+
+	Method SerializeTLongDataToString:String()
+		Return String(value)
+	End Method
+
+
+	Method DeSerializeTLongDataFromString(text:String)
+		value = Long(text)
 	End Method
 End Type
 

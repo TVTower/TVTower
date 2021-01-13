@@ -34,8 +34,8 @@ Type TScreenHandler
 	Function _RegisterScreenHandler:TEventListenerBase[](updateFunc:int(triggerEvent:TEventBase), drawFunc:int(triggerEvent:TEventBase), screen:TScreen)
 		local listeners:TEventListenerBase[]
 		if screen
-			listeners :+ [ EventManager.registerListenerFunction( "room.onScreenUpdate", updateFunc, screen ) ]
-			listeners :+ [ EventManager.registerListenerFunction( "room.onScreenDraw", drawFunc, screen ) ]
+			listeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnScreenUpdate, updateFunc, screen ) ]
+			listeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnScreenDraw, drawFunc, screen ) ]
 		endif
 		return listeners
 	End Function
@@ -45,7 +45,7 @@ End Type
 
 
 'register to the onLoad-Event for "Screens"
-EventManager.registerListenerFunction("RegistryLoader.onLoadResourceFromXML", onLoadScreens,Null, "SCREENS")
+EventManager.registerListenerFunction(TRegistryLoader.eventKey_onLoadResourceFromXML, onLoadScreens, Null, "SCREENS")
 Function onLoadScreens:Int( triggerEvent:TEventBase )
 	Local screensNode:TxmlNode = TxmlNode(triggerEvent.GetData().Get("xmlNode"))
 	Local registryLoader:TRegistryLoader = TRegistryLoader(triggerEvent.GetSender())
@@ -88,7 +88,7 @@ Type TGameScreen Extends TScreen
 		'_enterScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_OPEN)
 		'_leaveScreenEffect = New TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_CLOSE)
 
-		EventManager.registerListenerMethod("Language.onSetLanguage", Self, "onSetLanguage")
+		EventManager.registerListenerMethod(GameEventKeys.App_OnSetLanguage, Self, "onSetLanguage")
 		Return Self
 	End Method
 
@@ -375,8 +375,8 @@ Type TInGameScreen_World Extends TInGameScreen
 		_eventListeners = new TEventListenerBase[0]
 
 		'=== add new event listeners
-		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onBeginLeaveRoom", onBeginLeaveRoom, "TFigure" ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("figure.onFinishLeaveRoom", onFinishLeaveRoom, "TFigure" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnBeginLeaveRoom, onBeginLeaveRoom, "TFigure") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Figure_OnFinishLeaveRoom, onFinishLeaveRoom, "TFigure") ]
 	End Method
 
 
@@ -484,8 +484,8 @@ Type TInGameScreen_Room Extends TInGameScreen
 		_eventListeners = new TEventListenerBase[0]
 
 		'=== add new event listeners
-		_eventListeners :+ [ EventManager.registerListenerFunction("room.onBeginEnter", OnRoomBeginEnter) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("room.onEnter", OnRoomEnter) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnBeginEnter, OnRoomBeginEnter) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnFinishEnter, OnRoomFinishEnter) ]
 	End Method
 
 
@@ -541,7 +541,7 @@ Type TInGameScreen_Room Extends TInGameScreen
 	End Method
 
 
-	Function OnRoomEnter:Int(triggerEvent:TEventBase)
+	Function OnRoomFinishEnter:Int(triggerEvent:TEventBase)
 		Local room:TRoomBase = TRoomBase(triggerEvent.GetSender())
 		If Not room Then Return False
 

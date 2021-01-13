@@ -14,6 +14,7 @@ Type THotspot Extends TRenderableEntity
 	Field hovered:Int = False
 	Field enterable:Int = False
 
+	Global eventKey_Hotspot_OnClick:TEventKey = EventManager.GetEventKey("Hotspot.OnClick", True)
 
 	Method Create:THotSpot(name:String, x:Int,y:Int,w:Int,h:Int)
 		area = New TRectangle.Init(x,y,w,h)
@@ -67,7 +68,7 @@ endrem
 		If GetScreenArea().containsXY(MouseManager.x, MouseManager.y)
 			hovered = True
 			If MOUSEMANAGER.isClicked(1)
-				EventManager.triggerEvent( TEventSimple.Create("hotspot.onClick", New TData , Self ) )
+				TriggerBaseEvent(eventKey_Hotspot_OnClick, Null, Self)
 				'done by the hotspots if there are some
 				'MouseManager.SetClickHandled(1)
 			EndIf

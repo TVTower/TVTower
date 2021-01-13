@@ -16,6 +16,7 @@ Import "base.util.event.bmx"
 Import "base.util.time.bmx"
 Import "base.util.clipboard.bmx"
 Import "base.gfx.tooltip.base.bmx"
+Import "base.gfx.gui.eventkeys.bmx"
 
 Import "base.util.registry.spriteloader.bmx"
 
@@ -106,7 +107,7 @@ Type TGUIManager
 
 	Global _instance:TGUIManager
 	Global _eventListeners:TEventListenerBase[]
-
+	
 
 
 	Method New()
@@ -127,7 +128,7 @@ Type TGUIManager
 
 
 		'is something dropping on a gui element?
-		_eventListeners :+ [EventManager.registerListenerFunction("guiobject.onDrop", TGUIManager.onDrop)]
+		_eventListeners :+ [EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDrop, TGUIManager.onDrop)]
 
 		'gui specific settings
 		config.AddNumber("panelGap",10)
@@ -232,23 +233,23 @@ Type TGUIManager
 		'we found an object accepting the drop
 
 		'ask if something does not want that drop to happen
-		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDropOnTarget", New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget)
-		EventManager.triggerEvent( event )
+		Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnTryDropOnTarget, New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget)
+		event.Trigger()
 		'if there is no problem ...just start dropping
 		If Not event.isVeto()
-			event = TEventSimple.Create("guiobject.onDropOnTarget", New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget)
-			EventManager.triggerEvent( event )
+			event = TEventBase.Create(GUIEventKeys.GUIObject_OnDropOnTarget, New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget)
+			event.Trigger()
 		EndIf
 
 		'if there is a veto happening (dropTarget does not want the item)
 		'also veto the onDropOnTarget-event
 		If event.isVeto()
 			triggerEvent.setVeto()
-			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetDeclined", New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget ))
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnDropOnTargetDeclined, New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget )
 			Return False
 		Else
 			'inform others: we successfully dropped the object to a target#
-			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetAccepted", New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget ))
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget )
 
 			'also add this drop target as receiver of the original-drop-event
 			triggerEvent._receiver = dropTarget
@@ -461,7 +462,7 @@ Type TGUIManager
 		If (obj <> _focusedObject) And _focusedObject
 			'sender = previous focused object
 			'receiver = newly focused object
-			EventManager.triggerEvent(TEventSimple.Create("guiobject.onRemoveFocus", Null , _focusedObject, obj))
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnRemoveFocus, Null , _focusedObject, obj)
 			_focusedObject._SetFocused(False)
 		EndIf
 
@@ -469,7 +470,7 @@ Type TGUIManager
 		'sender = newly focused object
 		'receiver = previous focused object
 		If obj
-			EventManager.triggerEvent(TEventSimple.Create("guiobject.onSetFocus", Null , obj, _focusedObject))
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnSetFocus, Null , obj, _focusedObject)
 			obj._SetFocused(True)
 		EndIf
 
@@ -569,7 +570,7 @@ Type TGUIManager
 
 				obj.Update()
 				'fire event
-				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onUpdate", Null, obj ) )
+				TriggerBaseEvent(GUIEventKeys.GUIObject_OnUpdate, Null, obj )
 			Next
 		EndIf
 
@@ -595,7 +596,7 @@ Type TGUIManager
 					obj._tooltip.Update()
 				EndIf
 				'fire event
-				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onUpdate", Null, obj ) )
+				TriggerBaseEvent(GUIEventKeys.GUIObject_OnUpdate, Null, obj )
 			Next
 		EndIf
 	End Method
@@ -636,7 +637,7 @@ Type TGUIManager
 				EndIf
 
 				'fire event
-				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", Null, obj ) )
+				TriggerBaseEvent(GUIEventKeys.GUIObject_OnDraw, Null, obj )
 			Next
 
 			'TODO: sort by lastActive state?
@@ -662,7 +663,7 @@ Type TGUIManager
 				obj.Draw()
 
 				'fire event
-				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", Null, obj ) )
+				TriggerBaseEvent(GUIEventKeys.GUIObject_OnDraw, Null, obj )
 			Next
 		EndIf
 	End Method
@@ -1378,14 +1379,14 @@ Type TGUIobject
 
 		data.Add("dragPosition", New TVec2D.Init( GetScreenRect().GetX(), GetScreenRect().GetY() ))
 
-		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrag", New TData.Add("coord", coord), Self)
-		EventManager.triggerEvent( event )
+		Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnTryDrag, New TData.Add("coord", coord), Self)
+		event.Trigger()
 
 		'if there is no problem ...just start dropping
 		If Not event.isVeto()
 			'trigger an event immediately - if the event has a veto afterwards, do not drag!
-			Local event:TEventSimple = TEventSimple.Create( "guiobject.onDrag", New TData.Add("coord", coord), Self )
-			EventManager.triggerEvent( event )
+			Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnDrag, New TData.Add("coord", coord), Self )
+			event.Trigger()
 			If event.isVeto() Then Return False
 
 			'nobody said "no" to drag, so drag it
@@ -1394,9 +1395,9 @@ Type TGUIobject
 			'GuiManager.SortLists()
 
 			'inform others - item finished dragging
-			Local ev:TEventSimple = TEventSimple.Create("guiobject.onFinishDrag", New TData.Add("coord", coord), Self)
-			EventManager.triggerEvent(ev)
-			Self.onFinishDrag(ev)
+			event = TEventBase.Create(GUIEventKeys.GUIObject_OnFinishDrag, New TData.Add("coord", coord), Self)
+			event.Trigger()
+			Self.onFinishDrag(event)
 
 			Return True
 		Else
@@ -1419,19 +1420,19 @@ Type TGUIobject
 		If Not isDragged() Then Return False
 		If coord And coord.getX()=-1 Then coord = New TVec2D.Init(MouseManager.x, MouseManager.y)
 
-		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrop", New TData.Add("coord", coord), Self)
-		EventManager.triggerEvent( event )
+		Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnTryDrop, New TData.Add("coord", coord), Self)
+		event.Trigger()
 		'if there is no problem ...just start dropping
 		If Not event.isVeto()
 			'fire an event - if the event has a veto afterwards, do not drop!
 			'exception is, if the action is forced
-			Local event:TEventSimple = TEventSimple.Create("guiobject.onDrop", New TData.Add("coord", coord), Self)
-			EventManager.triggerEvent( event )
+			event = TEventBase.Create(GUIEventKeys.GUIObject_OnDrop, New TData.Add("coord", coord), Self)
+			event.Trigger()
 
 			If Not force And event.isVeto()
 				'inform others - item failed dropping, GetReceiver might
 				'contain the item it should have been dropped to
-				EventManager.triggerEvent(TEventSimple.Create("guiobject.onDropFailed", New TData.Add("coord", coord), Self, event.GetReceiver()))
+				TriggerBaseEvent(GUIEventKeys.GUIObject_OnDropFailed, New TData.Add("coord", coord), Self, event.GetReceiver())
 				Return False
 			EndIf
 
@@ -1441,9 +1442,9 @@ Type TGUIobject
 			'GuiManager.SortLists()
 
 			'inform others - item finished dropping - Receiver of "event" may now be helding the guiobject dropped on
-			Local ev:TEventSimple = TEventSimple.Create("guiobject.onFinishDrop", New TData.Add("coord", coord), Self, event.GetReceiver())
-			EventManager.triggerEvent(ev)
-			Self.onFinishDrop(ev)
+			event = TEventBase.Create(GUIEventKeys.GUIObject_OnFinishDrop, New TData.Add("coord", coord), Self, event.GetReceiver())
+			event.Trigger()
+			Self.onFinishDrop(event)
 
 			Return True
 		Else
@@ -1888,8 +1889,8 @@ Type TGUIobject
 		Else
 			'inform others about a scroll with the mousewheel
 			If GUIManager.UpdateState_mouseScrollwheelMovement <> 0
-				Local event:TEventSimple = TEventSimple.Create("guiobject.OnScrollwheel", New TData.AddNumber("value", GUIManager.UpdateState_mouseScrollwheelMovement).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-				EventManager.triggerEvent(event)
+				Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnScrollwheel, New TData.AddNumber("value", GUIManager.UpdateState_mouseScrollwheelMovement).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+				event.Trigger()
 				'a listener handles the scroll - so remove it for others
 				If event.isAccepted()
 					GUIManager.UpdateState_mouseScrollwheelMovement = 0
@@ -1949,20 +1950,20 @@ Type TGUIobject
 					If Not isDragged()
 						'create event: onmouseenter
 						If Not isHovered()
-							EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", Null, Self ) )
+							TriggerBaseEvent(GUIEventKeys.GUIObject_OnMouseEnter, Null, Self )
 							SetHovered(True)
 						EndIf
 						GUIManager.UpdateState_foundHoverObject = Self
 					EndIf
 					'create event: onmouseover
-					Local mouseOverEvent:TEventSimple = TEventSimple.Create("guiobject.OnMouseOver", New TData.Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self )
+					Local mouseOverEvent:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseOver, New TData.Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self )
 					OnMouseOver(mouseOverEvent)
-					EventManager.triggerEvent(mouseOverEvent)
+					mouseOverEvent.Trigger()
 
 					'somone decided to say the button is pressed above the object
 					If MouseIsDown
 						SetActive(True)
-						EventManager.triggerEvent( TEventSimple.Create("guiobject.OnMouseDown", New TData.AddNumber("button", 1), Self ) )
+						TriggerBaseEvent(GUIEventKeys.GUIObject_OnMouseDown, New TData.AddNumber("button", 1), Self )
 					Else
 						SetHovered(True)
 					EndIf
@@ -1972,12 +1973,12 @@ Type TGUIobject
 						'we do use a "cached hit state" so we can reset it if
 						'we found a one handling it
 						If (MouseManager.IsClicked(2) Or MouseManager.IsLongClicked(1)) And Not GUIManager.UpdateState_foundClickedObject[2]
-							Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnClick", New TData.AddNumber("button",2).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+							Local clickEvent:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnClick, New TData.AddNumber("button",2).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 							Local handledClick:Int
 
 							handledClick = OnClick(clickEvent)
 							'fire onClickEvent
-							EventManager.triggerEvent(clickEvent)
+							clickEvent.Trigger()
 
 'TODO: add veto
 							'if not handledClick and not clickEvent.IsVeto() then handledClick = True
@@ -2004,13 +2005,13 @@ Type TGUIobject
 							Local isClicked:Int = False
 
 							If MouseManager.IsClicked(1)
-								Local clickEvent:TEvenTsimple = TEventSimple.Create("guiobject.OnClick", New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+								Local clickEvent:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnClick, New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 								Local handledClick:Int
 
 								'let the object handle the click
 								handledClick = OnClick(clickEvent)
 								'fire onClickEvent
-								EventManager.triggerEvent(clickEvent)
+								clickEvent.Trigger()
 								'doing this leads to "handled click" in these cases
 								'-> if handled
 								'-> if vetoed
@@ -2031,7 +2032,7 @@ Type TGUIobject
 
 
 							If MouseManager.IsDoubleClicked(1)
-								Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnDoubleClick", New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+								Local clickEvent:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnDoubleClick, New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 								'let the object handle the click
 								OnDoubleClick(clickEvent)
 
@@ -2144,7 +2145,7 @@ Type TGUIobject
 '			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 2.0*GetAlpha()
 
 			'fire event
-			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", Null, obj ) )
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnDraw, Null, obj )
 		Next
 	End Method
 
@@ -2516,12 +2517,12 @@ Type TGUIobject
 
 
 	Method onSelect:Int()
-		EventManager.triggerEvent( TEventSimple.Create( "GUIObject.onSelect", Null, Self ) )
+		TriggerBaseEvent(GUIEventKeys.GUIObject_OnSelect, Null, Self )
 	End Method
 
 
 	Method onDeselect:Int()
-		EventManager.triggerEvent( TEventSimple.Create( "GUIObject.onDeselect", Null, Self ) )
+		TriggerBaseEvent(GUIEventKeys.GUIObject_OnDeselect, Null, Self )
 	End Method
 
 

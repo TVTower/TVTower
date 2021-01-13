@@ -49,6 +49,10 @@ Type TToastMessageCollection extends TRenderableEntity
 	Field spawnPoints:TMap = CreateMap()
 	Global _instance:TToastMessageCollection
 	Global _eventsRegistered:Int
+	Global eventKey_ToastMessageCollection_onAddMessage:TEventKey = EventManager.GetEventKey("ToastMessageCollection.onAddMessage", True)
+	Global eventKey_ToastMessage_onClose:TEventKey = EventManager.GetEventKey("ToastMessage.onClose", True)
+	Global eventKey_ToastMessage_onOpen:TEventKey = EventManager.GetEventKey("ToastMessage.onOpen", True)
+	Global eventKey_ToastMessage_onClick:TEventKey = EventManager.GetEventKey("ToastMessage.onClick", True)
 
 
 	Method New()
@@ -68,7 +72,7 @@ Type TToastMessageCollection extends TRenderableEntity
 		if _eventsRegistered then return False
 
 		'remove closed messages
-		EventManager.registerListenerFunction("toastmessage.onClose", onCloseToastMessage)
+		EventManager.registerListenerFunction(eventKey_ToastMessage_onClose, onCloseToastMessage)
 
 		_eventsRegistered = True
 		return True
@@ -130,7 +134,7 @@ Type TToastMessageCollection extends TRenderableEntity
 		spawnPoint.AddMessage(message)
 
 		'send out event - eg for sounds
-		EventManager.triggerEvent(TEventSimple.Create("ToastMessageCollection.onAddMessage", new TData.Add("spawnPoint", spawnPoint), null, message ))
+		TriggerBaseEvent(eventKey_ToastMessageCollection_onAddMessage, new TData.Add("spawnPoint", spawnPoint), null, message )
 
 		return True
 	End Method
@@ -147,7 +151,7 @@ Type TToastMessageCollection extends TRenderableEntity
 		spawnPoint.AddMessageFirst(message)
 
 		'send out event - eg for sounds
-		EventManager.triggerEvent(TEventSimple.Create("ToastMessageCollection.onAddMessage", new TData.Add("spawnPoint", spawnPoint), null, message ))
+		TriggerBaseEvent(eventKey_ToastMessageCollection_onAddMessage, new TData.Add("spawnPoint", spawnPoint), null, message )
 
 		return True
 	End Method
@@ -464,7 +468,7 @@ Type TToastMessage extends TEntity
 		SetStatus(TOASTMESSAGE_OPENING_OR_CLOSING, False)
 
 		'fire event so others can handle it (eg. remove from list)
-		EventManager.triggerEvent(TEventSimple.Create("toastmessage.onClose", null, Self))
+		TriggerBaseEvent(TToastMessageCollection.eventKey_ToastMessage_onClose, null, Self)
 		if _onCloseFunction then _onCloseFunction(self)
 	End Method
 
@@ -475,7 +479,7 @@ Type TToastMessage extends TEntity
 		SetStatus(TOASTMESSAGE_OPENING_OR_CLOSING, False)
 
 		'fire event so others can handle it
-		EventManager.triggerEvent(TEventSimple.Create("toastmessage.onOpen", null, Self))
+		TriggerBaseEvent(TToastMessageCollection.eventKey_ToastMessage_onOpen, null, Self)
 	End Method
 
 
@@ -523,7 +527,7 @@ Type TToastMessage extends TEntity
 				Close()
 
 				'fire event (eg. to play sound)
-				EventManager.triggerEvent(TEventSimple.Create("toastmessage.onClick", new TData.AddNumber("mouseButton", 1), Self))
+				TriggerBaseEvent(TToastMessageCollection.eventKey_ToastMessage_onClick, new TData.AddNumber("mouseButton", 1), Self)
 
 				'handled single click
 				MouseManager.SetClickHandled(1)

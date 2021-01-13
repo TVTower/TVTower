@@ -693,20 +693,20 @@ Type TGUIProgrammePlanSlotList Extends TGUISlotList
 
 		'===== REGISTER EVENTS =====
 		'nobody was against dropping the item - so transform according to the lists type
-		EventManager.registerListenerMethod("guiobject.onFinishDrop", Self, "onFinishDropProgrammePlanElement", "TGUIProgrammePlanElement", Self)
+		EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnFinishDrop, Self, "onFinishDropProgrammePlanElement", "TGUIProgrammePlanElement", Self)
 
 		'nobody was against dragging the item - so transform according to the items base type
 		'attention: "drag" does not have a "receiver"-list like a drop has..
 		'so we would have to check vs slot-elements here
 		'that is why we just use a global listener... for all programmeslotlists (prog and ad)
 		If Not registeredGlobalListeners
-			EventManager.registerListenerFunction("guiobject.onFinishDrag", onFinishDragProgrammePlanElement, "TGUIProgrammePlanElement")
+			EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrag, onFinishDragProgrammePlanElement, "TGUIProgrammePlanElement")
 
 			rem
 			'refresh visual style
-			EventManager.registerListenerFunction("guiobject.onFinishDrop", onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
-			EventManager.registerListenerFunction("guiobject.onFinishDrag", onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
-			EventManager.registerListenerFunction("guiobject.onDropBack", onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
+			EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrop, onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
+			EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnFinishDrag, onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
+			EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropBack, onFinishProgrammePlanMovement, "TGUIProgrammePlanElement")
 			endrem
 
 			registeredGlobalListeners = True
@@ -932,8 +932,8 @@ endrem
 				If Not dragItem.isDragable() Then Return False
 
 				'ask others if they want to intercept that exchange
-				Local event:TEventSimple = TEventSimple.Create( "guiSlotList.onBeginReplaceSlotItem", New TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot), Self)
-				EventManager.triggerEvent(event)
+				Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUISlotList_OnBeginReplaceSlotItem, New TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot), Self)
+				event.Trigger()
 
 				If Not event.isVeto()
 					'remove the other one from the panel
@@ -944,7 +944,7 @@ endrem
 					'unset the occupied slot
 					_SetSlot(i, Null)
 
-					EventManager.triggerEvent(TEventSimple.Create( "guiSlotList.onReplaceSlotItem", New TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot) , Self))
+					TriggerBaseEvent(GUIEventKeys.GUISlotList_OnReplaceSlotItem, New TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot) , Self)
 				EndIf
 				'skip slots occupied by this item
 				i:+ (dragItem.broadcastMaterial.GetBlocks(isType)-1)
@@ -1005,7 +1005,7 @@ endrem
 		EndIf
 
 		'ask if an add to this slot is ok
-		Local event:TEventSimple =  TEventSimple.Create("guiList.TryAddItem", New TData.Add("item", item).AddNumber("slot",addToSlot) , Self)
+		Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIList_TryAddItem, New TData.Add("item", item).AddNumber("slot",addToSlot) , Self)
 		EventManager.triggerEvent(event)
 		If event.isVeto() Then Return False
 

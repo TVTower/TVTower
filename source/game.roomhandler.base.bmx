@@ -57,7 +57,7 @@ Type TRoomHandlerCollection
 		_eventListeners :+ [ EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onHandleFigureInRoom ) ]
 		_eventListeners :+ [ EventManager.registerListenerFunction( "figure.onForcefullyLeaveRoom", onHandleFigureInRoom ) ]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction( "Language.onSetLanguage", onSetLanguage ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( "App.onSetLanguage", onSetLanguage ) ]
 		'== handle savegame loading ==
 		'informing _old_ instances of the various roomhandlers
 		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnBeginLoad", onSaveGameBeginLoad ) ]
@@ -133,16 +133,15 @@ Type TRoomHandlerCollection
 	'=== EVENTS FOR INDIVIDUAL HANDLERS ===
 	Function onHandleFigureInRoom:int( triggerEvent:TEventBase )
 		local room:TRoomBase = TRoomBase( triggerEvent.GetReceiver())
-		if not room then print "onHandleFigureInRoom: room stored elsewhere: "+triggerEvent._trigger.toLower()
 		if not room then return 0
 
 		currentHandler = GetInstance().GetHandler(room.GetName())
 		if not currentHandler then return False
 
-		Select triggerEvent._trigger.toLower()
-			case "figure.ontryleaveroom"
+		Select triggerEvent.GetEventKey()
+			case GameEventKeys.Figure_OnTryLeaveRoom
 				currentHandler.onTryLeaveRoom( triggerEvent )
-			case "figure.onforcefullyleaveroom"
+			case GameEventKeys.Figure_OnForcefullyLeaveRoom
 				currentHandler.onForcefullyLeaveRoom( triggerEvent )
 		End Select
 	End Function
@@ -150,14 +149,13 @@ Type TRoomHandlerCollection
 
 	Function onHandleRoom:int( triggerEvent:TEventBase )
 		local room:TRoomBase = TRoomBase( triggerEvent.GetSender())
-		if not room then print "onHandleRoom: room stored elsewhere: "+triggerEvent._trigger.toLower()
 		if not room then return 0
 
 		currentHandler = GetInstance().GetHandler(room.GetName())
 		if not currentHandler then return False
 
-		Select triggerEvent._trigger.toLower()
-			case "room.onupdate"
+		Select triggerEvent.GetEventKey()
+			case GameEventKeys.Room_OnUpdate
 				if KeyManager.IsHit(KEY_ESCAPE)
 					if currentHandler.AbortScreenActions()
 						KeyManager.ResetKey(KEY_ESCAPE)
@@ -165,11 +163,11 @@ Type TRoomHandlerCollection
 					endif
 				endif
 				currentHandler.onUpdateRoom( triggerEvent )
-			case "room.ondraw"
+			case GameEventKeys.Room_OnDraw
 				currentHandler.onDrawRoom( triggerEvent )
-			case "room.onbeginenter"
+			case GameEventKeys.Room_OnBeginEnter
 				currentHandler.onEnterRoom( triggerEvent )
-			case "room.onfinishleave"
+			case GameEventKeys.Room_OnFinishLeave
 				currentHandler.onLeaveRoom( triggerEvent )
 		End Select
 	End Function

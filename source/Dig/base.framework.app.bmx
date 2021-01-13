@@ -14,7 +14,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -46,6 +46,12 @@ Type TApp
 	Field exitApp:int = FALSE
 	Field debugLevel:int = 0
 	Global _instance:TApp
+	
+	Global eventKey_App_OnSystemUpdate:TEventKey = GetEventKey("App.onSystemUpdate", True)
+	Global eventKey_App_OnUpdate:TEventKey = GetEventKey("App.onUpdate", True)
+	Global eventKey_App_OnDraw:TEventKey = GetEventKey("App.onDraw", True)
+	Global eventKey_App_OnStart:TEventKey = GetEventKey("App.onStart", True)
+	Global eventKey_App_OnLowPriorityUpdate:TEventKey = GetEventKey("App.OnLowPriorityUpdate", True)
 
 
 	Method New()
@@ -82,7 +88,7 @@ Type TApp
 '		KeyManager.Update()
 
 		'emit event to do update
-		EventManager.triggerEvent(TEventSimple.Create("App.onSystemUpdate"))
+		TriggerBaseEvent(eventKey_App_OnSystemUpdate)
 
 		'Run the real update function - which might got overridden
 		GetInstance().SystemUpdate()
@@ -100,7 +106,7 @@ Type TApp
 		__UpdateInput()
 
 		'emit event to do update
-		EventManager.triggerEvent(TEventSimple.Create("App.onUpdate"))
+		TriggerBaseEvent(eventKey_App_OnUpdate)
 
 
 		'Run the real update function - which might got overridden
@@ -110,7 +116,7 @@ Type TApp
 
 	Function __Render:Int()
 		'emit event to render
-		EventManager.triggerEvent(TEventSimple.Create("App.onDraw"))
+		TriggerBaseEvent(eventKey_App_OnDraw)
 
 		'Run the real render function - which might got overridden
 		GetInstance().Render()

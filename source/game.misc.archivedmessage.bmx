@@ -2,6 +2,7 @@ SuperStrict
 Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.event.bmx"
 Import "game.gameobject.bmx"
+Import "game.gameeventkeys.bmx"
 'Import "game.toastmessage.bmx"
 
 
@@ -68,14 +69,14 @@ Type TArchivedMessageCollection Extends TGameObjectCollection
 
 
 		local result:int = Super.Add(obj)
-		EventManager.triggerEvent(TEventSimple.Create("ArchivedMessageCollection.onAdd", null, Self, obj))
+		TriggerBaseEvent(GameEventKeys.ArchivedMessageCollection_OnAdd, null, Self, obj)
 		return result
 	End Method
 
 
 	Method Remove:int(obj:TGameObject)
 		local result:int = Super.Remove(obj)
-		EventManager.triggerEvent(TEventSimple.Create("ArchivedMessageCollection.onRemove", null, Self, obj))
+		TriggerBaseEvent(GameEventKeys.ArchivedMessageCollection_OnRemove, null, Self, obj)
 		return result
 	End Method
 

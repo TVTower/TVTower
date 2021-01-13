@@ -326,7 +326,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			GetAdContractCollection().Remove(contract)
 
 			'emit an event so eg. network can recognize the change
-			if fireEvents then EventManager.triggerEvent( TEventSimple.Create( "programmecollection.removeAdContract", new TData.add("adcontract", contract), self ) )
+			If fireEvents 
+				TriggerBaseEvent(GameEventKeys.ProgrammeCollection_RemoveAdContract, new TData.add("adcontract", contract), self )
+			EndIf
 		endif
 	End Method
 
@@ -341,7 +343,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			suitcaseAdContracts.Remove(contract)
 
 			'emit an event so eg. network can recognize the change
-			If fireEvents then EventManager.triggerEvent( TEventSimple.Create( "programmecollection.addAdContract", new TData.add("adcontract", contract), self ) )
+			If fireEvents 
+				TriggerBaseEvent(GameEventKeys.ProgrammeCollection_AddAdContract, new TData.add("adcontract", contract), self )
+			EndIf
 			return TRUE
 		else
 			return FALSE
@@ -381,7 +385,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		suitcaseAdContracts.AddLast(contract)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmecollection.addUnsignedAdContractToSuitcase", new TData.add("adcontract", contract), self))
+		if fireEvents 
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_AddUnsignedAdContractToSuitcase, new TData.add("adcontract", contract), self)
+		EndIf
 
 		return TRUE
 	End Method
@@ -392,7 +398,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		suitcaseAdContracts.Remove(contract)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmecollection.removeUnsignedAdContractFromSuitcase", new TData.add("adcontract", contract), self))
+		if fireEvents 
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_RemoveUnsignedAdContractFromSuitcase, new TData.add("adcontract", contract), self)
+		EndIf
 		return TRUE
 	End Method
 
@@ -446,7 +454,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		suitcaseProgrammeLicences.AddLast(programmeLicence)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmecollection.addProgrammeLicenceToSuitcase", new TData.add("programmeLicence", programmeLicence), self))
+		if fireEvents 
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase, new TData.add("programmeLicence", programmeLicence), self)
+		EndIf
 
 		return TRUE
 	End Method
@@ -464,7 +474,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			'just remove, without adding
 			suitcaseProgrammeLicences.Remove(licence)
 			'emit an event so eg. network can recognize the change
-			if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmecollection.removeProgrammeLicenceFromSuitcase", new TData.add("programmeLicence", licence), self))
+			if fireEvents 
+				TriggerBaseEvent(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase, new TData.add("programmeLicence", licence), self)
+			EndIf
 
 			TLogger.Log("RemoveProgrammeLicenceFromSuitcase", "Removed an sublicence from suitcase", LOG_DEBUG)
 			return FALSE
@@ -474,7 +486,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			suitcaseProgrammeLicences.Remove(licence)
 
 			'emit an event so eg. network can recognize the change
-			if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmecollection.removeProgrammeLicenceFromSuitcase", new TData.add("programmeLicence", licence), self))
+			if fireEvents 
+				TriggerBaseEvent(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase, new TData.add("programmeLicence", licence), self)
+			Endif
 
 			return True
 		else
@@ -518,7 +532,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmecollection.removeProgrammeLicence", new TData.add("programmeLicence", licence).addNumber("sell", sell), self))
+		if fireEvents 	
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence, new TData.add("programmeLicence", licence).AddInt("sell", sell), self)
+		EndIf
 
 		return True
 	End Method
@@ -557,7 +573,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		justAddedProgrammeLicences.AddLast(licence)
 
-		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmecollection.addProgrammeLicence", new TData.add("programmeLicence", licence).addNumber("buy", buy), self))
+		if fireEvents 
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_AddProgrammeLicence, new TData.add("programmeLicence", licence).AddInt("buy", buy), self)
+		EndIf
 		return TRUE
 	End Method
 
@@ -594,8 +612,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents
-			EventManager.triggerEvent(TEventSimple.Create("programmecollection.MoveScriptFromArchiveToSuitcase", new TData.add("script", script), self))
-			EventManager.triggerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_MoveScriptFromArchiveToSuitcase, new TData.add("script", script), self)
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_MoveScript, new TData.add("script", script), self)
 		endif
 
 		return TRUE
@@ -611,8 +629,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents
-			EventManager.triggerEvent(TEventSimple.Create("programmecollection.MoveScriptFromSuitcaseToArchive", new TData.add("script", script), self))
-			EventManager.triggerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_MoveScriptFromSuitcaseToArchive, new TData.add("script", script), self)
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_MoveScript, new TData.add("script", script), self)
 		endif
 
 		return TRUE
@@ -631,8 +649,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents
-			EventManager.triggerEvent(TEventSimple.Create("programmecollection.MoveScriptFromStudioToSuitcase", new TData.add("script", script), self))
-			EventManager.triggerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_MoveScriptFromStudioToSuitcase, new TData.add("script", script), self)
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_MoveScript, new TData.add("script", script), self)
 		endif
 		return TRUE
 	End Method
@@ -647,8 +665,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents
-			EventManager.triggerEvent(TEventSimple.Create("programmecollection.MoveScriptFromSuitcaseToStudio", new TData.add("script", script), self))
-			EventManager.triggerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_MoveScriptFromSuitcaseToStudio, new TData.add("script", script), self)
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_MoveScript, new TData.add("script", script), self)
 		endif
 		return TRUE
 	End Method
@@ -663,8 +681,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents
-			EventManager.triggerEvent(TEventSimple.Create("programmecollection.MoveScriptFromStudioToArchive", new TData.add("script", script), self))
-			EventManager.triggerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_MoveScriptFromStudioToArchive, new TData.add("script", script), self)
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_MoveScript, new TData.add("script", script), self)
 		endif
 		return TRUE
 	End Method
@@ -694,8 +712,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents
-			EventManager.triggerEvent(TEventSimple.Create("programmecollection.addScriptToSuitcase", new TData.add("script", script), self))
-			EventManager.triggerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_AddScriptToSuitcase, new TData.add("script", script), self)
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_MoveScript, new TData.add("script", script), self)
 		endif
 
 		return TRUE
@@ -716,8 +734,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents
-			EventManager.triggerEvent(TEventSimple.Create("programmecollection.removeScriptFromSuitcase", new TData.add("script", script), self))
-			EventManager.triggerEvent(TEventSimple.Create("programmecollection.moveScript", new TData.add("script", script), self))
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_RemoveScriptFromSuitcase, new TData.add("script", script), self)
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_MoveScript, new TData.add("script", script), self)
 		endif
 
 		return TRUE
@@ -749,7 +767,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmecollection.removeScript", new TData.add("script", script).addNumber("sell", sell), self))
+		if fireEvents 
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_RemoveScript, new TData.Add("script", script).AddInt("sell", sell), self)
+		EndIf
 	End Method
 
 
@@ -768,7 +788,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 		scripts.AddLast(script)
 
-		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmecollection.addScript", new TData.add("script", script).addNumber("buy", buy), self))
+		if fireEvents 
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_AddScript, new TData.Add("script", script).AddInt("buy", buy), self)
+		EndIf
 		return TRUE
 	End Method
 
@@ -784,7 +806,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if not script then return Null
 		if not CanCreateProductionConcept(script)
 			'emit event to inform others (eg. for ingame warning)
-			EventManager.triggerEvent( TEventSimple.Create("programmecollection.onCreateProductionConceptFailed", new TData.AddNumber("productionConceptCount", GetProductionConceptCollection().GetProductionConceptsByScript(script).length).AddNumber("playerID", owner)) )
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_OnCreateProductionConceptFailed, new TData.AddInt("productionConceptCount", GetProductionConceptCollection().GetProductionConceptsByScript(script).length).AddInt("playerID", owner))
 
 			return Null
 		endif
@@ -809,7 +831,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		GetProductionConceptCollection().Add(productionConcept)
 		productionConcepts.AddLast(productionConcept)
 
-		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmecollection.addProductionConcept", new TData.add("productionConcept", productionConcept), self))
+		if fireEvents 
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_AddProductionConcept, new TData.add("productionConcept", productionConcept), self)
+		EndIf
 		return TRUE
 	End Method
 
@@ -822,7 +846,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if not GetProductionConceptCollection().Remove(productionConcept) then return False
 
 		'emit event to inform others
-		if fireEvents then EventManager.triggerEvent( TEventSimple.Create("programmecollection.destroyProductionConcept", new TData.Add("productionConcept", productionConcept), self))
+		if fireEvents 
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_DestroyProductionConcept, new TData.Add("productionConcept", productionConcept), self)
+		EndIf
 
 		return True
 	End Method
@@ -835,7 +861,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if not productionConcepts.remove(productionConcept) then Return False
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmecollection.removeProductionConcept", new TData.add("productionConcept", productionConcept), self))
+		if fireEvents
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_RemoveProductionConcept, new TData.add("productionConcept", productionConcept), self)
+		EndIf
 
 		return True
 	End Method
@@ -1272,7 +1300,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		newsObject.owner = owner
 		news.AddLast(newsObject)
 
-		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmecollection.addNews", new TData.Add("news", newsObject), self))
+		if fireEvents 
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_AddNews, new TData.Add("news", newsObject), self)
+		EndIf
 
 		return TRUE
 	End Method
@@ -1285,7 +1315,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			newsObject.Remove()
 
 			'emit an event so eg. network can recognize the change
-			if fireEvents then EventManager.triggerEvent( TEventSimple.Create( "programmecollection.removeNews", new TData.Add("news", newsObject), self ) )
+			if fireEvents 
+				TriggerBaseEvent(GameEventKeys.ProgrammeCollection_RemoveNews, new TData.Add("news", newsObject), self )
+			EndIf
 			return TRUE
 		endif
 		return FALSE

@@ -184,7 +184,7 @@ Type TGUISlider extends TGUIObject
 		'only adjust when different
 		if value <> string(newValueD)
 			value = newValueD
-			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onChangeValue", null, self ) )
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnChangeValue, null, self )
 		endif
 	End Method
 
@@ -227,7 +227,7 @@ Type TGUISlider extends TGUIObject
 				SetRelativeValue( Max(0.0, scale * Min(1.0, (mousePos.y) / GetGaugeH())) )
 		End Select
 
-		EventManager.triggerEvent( TEventSimple.Create( "guislider.setValueByMouse", null, self ) )
+		TriggerBaseEvent(GUIEventKeys.GUISlider_SetValueByMouse,null, self )
 	End Method
 
 

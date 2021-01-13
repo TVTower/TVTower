@@ -8,6 +8,7 @@ Import "game.player.bmx"
 Import "game.roomhandler.movieagency.bmx"
 Import "game.roomagency.bmx"
 Import "game.screen.menu.bmx"
+Import "game.gameeventkeys.bmx"
 
 'handles network events
 
@@ -149,14 +150,14 @@ Function InfoChannelEventHandler(networkObject:TNetworkObject)
 '	print "infochannel: got event: "+networkObject.evType
 	if networkObject.evType = NET_ANNOUNCEGAME
 		local evData:TData = new TData
-		evData.AddNumber("slotsUsed", networkObject.getInt(1))
-		evData.AddNumber("slotsMax", networkObject.getInt(2))
-		evData.AddNumber("hostIP", networkObject.getInt(3)) 		'could differ from senderIP
-		evData.AddNumber("hostPort", networkObject.getInt(4)) 		'differs from senderPort (info channel)
+		evData.AddInt("slotsUsed", networkObject.getInt(1))
+		evData.AddInt("slotsMax", networkObject.getInt(2))
+		evData.AddInt("hostIP", networkObject.getInt(3)) 		'could differ from senderIP
+		evData.AddInt("hostPort", networkObject.getInt(4)) 		'differs from senderPort (info channel)
 		evData.AddString("hostName", networkObject.getString(5))
 		evData.AddString("gameTitle", networkObject.getString(6))
 
-		EventManager.triggerEvent(TEventSimple.Create( "network.infoChannel.onReceiveAnnounceGame", evData, null))
+		TriggerBaseEvent(GameEventKeys.Network_InfoChannel_OnReceiveAnnounceGame, evData, null)
 	endif
 End Function
 
@@ -178,43 +179,44 @@ Type TNetworkHelper extends TNetworkHelperBase
 	Method RegisterEventListeners:int()
 		if registeredEvents then return FALSE
 
-		EventManager.registerListenerFunction("programmeplan.SetNews", onPlanSetNews)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammePlan_SetNews, onPlanSetNews)
 		'someone adds a chatline
-		EventManager.registerListenerFunction("chat.onAddEntry", OnChatAddEntry)
+		EventManager.registerListenerFunction(GameEventKeys.Chat_OnAddEntry, OnChatAddEntry)
 		'changes to the player's stationmap
-		EventManager.registerListenerFunction("stationmap.removeStation", onChangeStationmap)
-		EventManager.registerListenerFunction("stationmap.addStation", onChangeStationmap)
+		EventManager.registerListenerFunction(GameEventKeys.StationMap_RemoveStation, onChangeStationmap)
+		EventManager.registerListenerFunction(GameEventKeys.StationMap_AddStation, onChangeStationmap)
 
 		'changes to rooms (eg. owner changes)
-		EventManager.registerListenerFunction("RoomAgency.rentRoom", onChangeRoomAgency)
+		EventManager.registerListenerFunction(GameEventKeys.Room_OnBeginRental, onChangeRoomOwner)
+		EventManager.registerListenerFunction(GameEventKeys.Room_OnCancelRental, onChangeRoomOwner)
 
 		'news subscription
-		EventManager.registerListenerFunction("player.SetNewsAbonnement", onPlayerSetNewsAbonnement)
+		EventManager.registerListenerFunction(GameEventKeys.Player_SetNewsAbonnement, onPlayerSetNewsAbonnement)
 
 		'changes to the player's programmecollection
-		EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", onChangeProgrammeCollection)
-		EventManager.registerListenerFunction("programmecollection.addProgrammeLicence", onChangeProgrammeCollection)
-		EventManager.registerListenerFunction("programmecollection.removeAdContract", onChangeProgrammeCollection)
-		EventManager.registerListenerFunction("programmecollection.addAdContract",	onChangeProgrammeCollection)
-		EventManager.registerListenerFunction("programmecollection.removeProgrammeLicenceFromSuitcase", onChangeProgrammeCollection)
-		EventManager.registerListenerFunction("programmecollection.addProgrammeLicenceToSuitcase", onChangeProgrammeCollection)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence, onChangeProgrammeCollection)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicence, onChangeProgrammeCollection)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveAdContract, onChangeProgrammeCollection)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddAdContract,	onChangeProgrammeCollection)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase, onChangeProgrammeCollection)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase, onChangeProgrammeCollection)
 
 		'listen to events to refresh figure position 
-		EventManager.registerListenerFunction("figure.onSyncTimer", onFigurePositionChanged)
-		EventManager.registerListenerFunction("figure.onReachTarget", onFigurePositionChanged)
-		EventManager.registerListenerFunction("figure.onSetInRoom", onFigurePositionChanged)
+		EventManager.registerListenerFunction(GameEventKeys.Figure_OnSyncTimer, onFigurePositionChanged)
+		EventManager.registerListenerFunction(GameEventKeys.Figure_OnReachTarget, onFigurePositionChanged)
+		EventManager.registerListenerFunction(GameEventKeys.Figure_SetInRoom, onFigurePositionChanged)
 		'as soon as a figure changes its target (add it to the "route")
-		EventManager.registerListenerFunction("figure.onChangeTarget", onFigureChangeTarget)
-		EventManager.registerListenerFunction("figure.onSetHasMasterKey", onFigureSetHasMasterkey)
+		EventManager.registerListenerFunction(GameEventKeys.Figure_OnChangeTarget, onFigureChangeTarget)
+		EventManager.registerListenerFunction(GameEventKeys.Figure_OnSetHasMasterKey, onFigureSetHasMasterkey)
 
 		'changes in movieagency
-		EventManager.registerListenerFunction("ProgrammeLicenceAuction.setBid", onChangeMovieAgency)
+		EventManager.registerListenerFunction(GameEventKeys.ProgrammeLicenceAuction_SetBid, onChangeMovieAgency)
 
 		registeredEvents = true
 	End Method
 
 
-	Function onChangeRoomAgency:int( triggerEvent:TEventBase )
+	Function onChangeRoomOwner:int( triggerEvent:TEventBase )
 		if not listenToEvents then return False
 
 		'only react if game leader / server
@@ -225,11 +227,11 @@ Type TNetworkHelper extends TNetworkHelperBase
 		if not room then return False
 
 		local action:int = -1
-		if triggerEvent.isTrigger("RoomAgency.rentRoom") then action = NET_BUY
-		if triggerEvent.isTrigger("RoomAgency.cancelRoom") then action = NET_SELL
+		if triggerEvent.GetEventKey() = GameEventKeys.Room_OnBeginRental then action = NET_BUY
+		if triggerEvent.GetEventKey() = GameEventKeys.Room_OnCancelRental then action = NET_SELL
 		if action = -1 then return FALSE
 
-		local owner:int = triggerEvent.GetData().GetInt("newOwner", 0)
+		local owner:int = triggerEvent.GetData().GetInt("owner", 0)
 		GetNetworkHelper().SendRoomAgencyChange(room.GetGUID(), action, owner)
 	End Function
 	
@@ -265,8 +267,8 @@ Type TNetworkHelper extends TNetworkHelperBase
 		if station.owner <> GetPlayerCollection().playerID and not GetGameBase().isGameLeader() then return FALSE
 
 		local action:int = -1
-		if triggerEvent.isTrigger("stationmap.addStation") then action = NET_ADD
-		if triggerEvent.isTrigger("stationmap.removeStation") then action = NET_DELETE
+		if triggerEvent.GetEventKey() = GameEventKeys.StationMap_AddStation then action = NET_ADD
+		if triggerEvent.GetEventKey() = GameEventKeys.StationMap_RemoveStation then action = NET_DELETE
 		if action = -1 then return FALSE
 
 		GetNetworkHelper().SendStationmapChange(station.owner, station.GetGUID())
@@ -319,8 +321,8 @@ Type TNetworkHelper extends TNetworkHelperBase
 		'do not allow events from players for other players objects
 		if owner <> GetPlayerCollection().playerID and not GetGameBase().isGameLeader() then return FALSE
 
-		select triggerEvent.getTrigger()
-			case "programmecollection.removeprogrammelicence"
+		select triggerEvent.GetEventKey()
+			case GameEventKeys.ProgrammeCollection_RemoveProgrammeLicence
 					local Licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().get("programmeLicence"))
 					local sell:int = triggerEvent.GetData().getInt("sell",FALSE)
 					if sell
@@ -328,7 +330,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 					else
 						GetNetworkHelper().SendProgrammeCollectionProgrammeLicenceChange(owner, Licence.GetGUID(), NET_DELETE)
 					endif
-			case "programmecollection.addprogrammelicence"
+			case GameEventKeys.ProgrammeCollection_AddProgrammeLicence
 					local Licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().get("programmeLicence"))
 					local buy:int = triggerEvent.GetData().getInt("buy",FALSE)
 					if buy
@@ -337,17 +339,17 @@ Type TNetworkHelper extends TNetworkHelperBase
 						GetNetworkHelper().SendProgrammeCollectionProgrammeLicenceChange(owner, Licence.GetGUID(), NET_ADD)
 					endif
 
-			case "programmecollection.addprogrammelicencetosuitcase"
+			case GameEventKeys.ProgrammeCollection_AddProgrammeLicenceToSuitcase
 					local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().get("programmeLicence"))
 					GetNetworkHelper().SendProgrammeCollectionProgrammeLicenceChange(owner, licence.GetGUID(), NET_TOSUITCASE)
-			case "programmecollection.removeprogrammelicencefromsuitcase"
+			case GameEventKeys.ProgrammeCollection_RemoveProgrammeLicenceFromSuitcase
 					local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().get("programmeLicence"))
 					GetNetworkHelper().SendProgrammeCollectionProgrammeLicenceChange(owner, licence.GetGUID(), NET_FROMSUITCASE)
 
-			case "programmecollection.removeadcontract"
+			case GameEventKeys.ProgrammeCollection_RemoveAdContract
 					local contract:TAdContract = TAdContract(triggerEvent.GetData().get("adcontract"))
 					GetNetworkHelper().SendProgrammeCollectionContractChange(owner, contract.GetGUID(), NET_DELETE)
-			case "programmecollection.addadcontract"
+			case GameEventKeys.ProgrammeCollection_AddAdContract
 					local contract:TAdContract = TAdContract(triggerEvent.GetData().get("adcontract"))
 					GetNetworkHelper().SendProgrammeCollectionContractChange(owner, contract.GetGUID(), NET_ADD)
 		end select
@@ -367,8 +369,8 @@ Type TNetworkHelper extends TNetworkHelperBase
 	
 
 	Function onChangeMovieAgency:int( triggerEvent:TEventBase )
-		Select triggerEvent.getTrigger()
-			case "programmelicenceauction.setbid"
+		Select triggerEvent.GetEventKey()
+			case GameEventKeys.ProgrammeLicenceAuction_SetBid
 				local licence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().get("licence"))
 				local playerID:int = triggerEvent.GetData().getInt("bestBidder", -1)
 				GetNetworkHelper().SendMovieAgencyChange(NET_BID, playerID, -1, -1, licence.GetGUID())
@@ -945,7 +947,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 
 		'emit an event, we received a chat message
 		'- add a "remoteSource=1" so others may recognize it
-		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", new TData.AddNumber("senderID", senderID).AddNumber("channels", sendToChannels).AddString("text",chatMessage).AddNumber("remoteSource",1) , null ) )
+		TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, new TData.AddInt("senderID", senderID).AddInt("channels", sendToChannels).AddString("text",chatMessage).AddInt("remoteSource",1) , null )
 	End Method
 
 

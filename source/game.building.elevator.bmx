@@ -163,7 +163,7 @@ Type TElevator Extends TEntity
 
 		If Not _initDone
 			'handle savegame loading (assign sprites)
-			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
+			EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onSaveGameLoad)
 			_initDone = True
 		EndIf
 

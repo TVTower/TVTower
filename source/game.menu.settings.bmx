@@ -45,7 +45,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 
 
 	Method New()
-		_eventListeners :+ [ EventManager.registerListenerMethod("guiCheckBox.onSetChecked", Self, "onCheckCheckboxes", "TGUICheckbox") ]
+		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUICheckbox_OnSetChecked, Self, "onCheckCheckboxes", "TGUICheckbox") ]
 	End Method
 
 
@@ -442,7 +442,7 @@ Type TGUISettingsPanel Extends TGUIPanel
 
 
 
-	Method onCheckCheckboxes:Int(event:TEventSimple)
+	Method onCheckCheckboxes:Int(event:TEventBase)
 		Local checkBox:TGUICheckbox = TGUICheckbox(event.GetSender())
 		If Not checkBox Then Return False
 

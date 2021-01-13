@@ -32,9 +32,9 @@ Type TAwardCulture extends TAward
 		_eventListeners = new TEventListenerBase[0]
 
 		'scan news shows for culture news
-		_eventListeners :+ [ EventManager.registerListenerFunction( "broadcasting.BeforeFinishAllNewsShowBroadcasts", onBeforeFinishAllNewsShowBroadcasts) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Broadcasting_BeforeFinishAllNewsShowBroadcasts, onBeforeFinishAllNewsShowBroadcasts) ]
 		'scan programmes for culture-flag
-		_eventListeners :+ [ EventManager.registerListenerFunction( "broadcasting.BeforeFinishAllProgrammeBlockBroadcasts", onBeforeFinishAllProgrammeBlockBroadcasts) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Broadcasting_BeforeFinishAllProgrammeBlockBroadcasts, onBeforeFinishAllProgrammeBlockBroadcasts) ]
 	End Method
 
 
@@ -73,7 +73,7 @@ Type TAwardCulture extends TAward
 			local mConfig:TData = new TData
 			mConfig.AddString("name", "CultureBoost.Programme")
 			mConfig.AddString("modifierKey", "Attractivity.ProgrammeDataFlag.player"+winningPlayerID+"."+TVTProgrammeDataFlag.CULTURE)
-			mConfig.AddNumber("value", 0.1)
+			mConfig.AddFloat("value", 0.1)
 			mConfig.AddBool("relative", True)
 
 			'activate for 1 day
@@ -91,7 +91,7 @@ Type TAwardCulture extends TAward
 			mConfig = new TData
 			mConfig.AddString("name", "CultureBoost.News")
 			mConfig.AddString("modifierKey", "Attractivity.NewsGenre.player"+winningPlayerID+"."+TVTNewsGenre.CULTURE)
-			mConfig.AddNumber("value", 0.1)
+			mConfig.AddFloat("value", 0.1)
 			mConfig.AddBool("relative", True)
 
 			'simple reuse time condition of programmes (shared condition)

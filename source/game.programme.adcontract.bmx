@@ -859,7 +859,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		spotsSent = value
 		'emit an event so eg. ContractList-caches can get recreated
-		EventManager.triggerEvent(TEventSimple.Create("adContract.onSetSpotsSent", Null, Self))
+		TriggerBaseEvent(GameEventKeys.AdContract_OnSetSpotsSent, Null, Self)
 
 		Return True
 	End Method
@@ -1071,7 +1071,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'call this to set the contract failed (and pay a penalty)
 	Method Fail:Int(time:Double=0)
 		'send out event for potential listeners (eg. ingame notification)
-		EventManager.triggerEvent(TEventSimple.Create("adContract.onFail", New TData.addNumber("time", time), Self))
+		TriggerBaseEvent(GameEventKeys.AdContract_OnFail, New TData.AddDouble("time", time), Self)
 
 		'pay penalty
 		GetPlayerFinance(owner, GetWorldTime().GetDay(time)).PayPenalty(GetPenalty(), Self)
@@ -1090,7 +1090,7 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 		'if state = STATE_OK then Throw "Double Finish !!"
 		If Not state = STATE_OK
 			'send out event for potential listeners (eg. ingame notification)
-			EventManager.triggerEvent(TEventSimple.Create("adContract.onFinish", New TData.addNumber("time", time), Self))
+			TriggerBaseEvent(GameEventKeys.AdContract_OnFinish, New TData.AddDouble("time", time), Self)
 
 			'give money
 			GetPlayerFinance(owner, GetWorldTime().GetDay(time)).EarnAdProfit(GetProfit(), Self)
@@ -1911,7 +1911,7 @@ price :* Max(1, minAudience/1000)
 	Method doFinishBroadcast(playerID:Int = -1, broadcastType:Int = 0)
 		'=== EFFECTS ===
 		'trigger broadcastEffects
-		Local effectParams:TData = New TData.Add("source", Self).AddNumber("playerID", playerID)
+		Local effectParams:TData = New TData.Add("source", Self).AddInt("playerID", playerID)
 
 		'send as advertisement
 		If broadcastType = TVTBroadcastMaterialType.ADVERTISEMENT
@@ -1947,7 +1947,7 @@ price :* Max(1, minAudience/1000)
 	'"all players" (depends on implementation)
 	Method doBeginBroadcast(playerID:Int = -1, broadcastType:Int = 0)
 		'trigger broadcastEffects
-		Local effectParams:TData = New TData.Add("contract", Self).AddNumber("playerID", playerID)
+		Local effectParams:TData = New TData.Add("contract", Self).AddInt("playerID", playerID)
 
 		'send as advertisement?
 		If broadcastType = TVTBroadcastMaterialType.ADVERTISEMENT

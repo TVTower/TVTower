@@ -111,14 +111,14 @@ Type TGUIDropDown Extends TGUIInput
 
 		'=== REGISTER EVENTS ===
 		'to close the list automatically if the object looses focus
-		AddEventListener(EventManager.registerListenerMethod("guiobject.onRemoveFocus", Self, "onRemoveFocus", Self))
+		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnRemoveFocus, Self, "onRemoveFocus", Self))
 		'listen to clicks to dropdown-items
-		AddEventListener(EventManager.registerListenerMethod("GUIDropDownItem.onClick",	Self.list, "onClickOnEntry"))
+		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIDropDownItem_OnClick,	Self.list, "onClickOnEntry"))
 		'someone uses the mouse wheel to scroll over the panel
-		AddEventListener(EventManager.registerListenerFunction("guiobject.OnScrollwheel", onScrollWheel, Self))
+		AddEventListener(EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnScrollwheel, onScrollWheel, Self))
 
 		'to register if an item was selected
-		AddEventListener(EventManager.registerListenerMethod("guiselectlist.onSelectEntry", Self, "onSelectEntry", Self.list))
+		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUISelectList_OnSelectEntry, Self, "onSelectEntry", Self.list))
 
 		Return Self
 	End Method
@@ -163,7 +163,7 @@ Type TGUIDropDown Extends TGUIInput
 		If receiver And list.HasItem(receiver)
 			'emit an emulated click event so that the list item
 			'can handle the click accordingly (eg inform GUI Manager)
-			receiver.OnClick( TEventSimple.Create("emulatedClick", New TData.AddNumber("button", 1), Self, triggerEvent.GetReceiver()) )
+			receiver.OnClick( TEventBase.Create(GUIEventKeys.DummyEvent, New TData.AddNumber("button", 1), Self, triggerEvent.GetReceiver()) )
 			SetSelectedEntry(receiver)
 
 			'handled mouse button click to avoid clicks below
@@ -262,7 +262,7 @@ Type TGUIDropDown Extends TGUIInput
 		
 		RefreshValue()
 
-		EventManager.triggerEvent( TEventSimple.Create("GUIDropDown.onSelectEntry", Null, Self, item) )
+		TriggerBaseEvent(GUIEventKeys.GUIDropDown_onSelectEntry, Null, Self, item)
 	End Method
 
 
@@ -529,7 +529,7 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 			'this makes the "dropdownitem-clicked"-event filterable even
 			'if the itemclass gets extended (compared to the general approach
 			'of "guiobject.onclick")
-			EventManager.triggerEvent(TEventSimple.Create("GUIDropDownItem.onClick", New TData.AddNumber("button", button), Self, triggerEvent.GetReceiver()) )
+			TriggerBaseEvent(GUIEventKeys.GUIDropDownItem_onClick, New TData.AddNumber("button", button), Self, triggerEvent.GetReceiver())
 
 			'we handled it
 			Return True

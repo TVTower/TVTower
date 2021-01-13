@@ -79,10 +79,10 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 
 		'we want to know if one clicks on a windows buttons
-		AddEventListener(EventManager.registerListenerMethod("guiobject.onClick", Self, "onButtonClick"))
+		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onButtonClick"))
 
 		'fire event so others know that the window is created
-		EventManager.triggerEvent(TEventSimple.Create("guiModalWindow.onCreate", Self))
+		TriggerBaseEvent(GUIEventKeys.GUIModalWindow_OnCreate, Self)
 		Return Self
 	End Method
 
@@ -220,7 +220,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 
 	Method Open:Int()
-		EventManager.triggerEvent(TEventSimple.Create("guiModalWindow.onOpen", Self))
+		TriggerBaseEvent(GUIEventKeys.GUIModalWindow_OnOpen, Self)
 
 		isOpen = True
 	End Method
@@ -239,7 +239,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 		'fire event so others know that the window is closed
 		'and what button was used
-		EventManager.triggerEvent(TEventSimple.Create("guiModalWindow.onClose", new TData.AddNumber("closeButton", closeButton) , Self))
+		TriggerBaseEvent(GUIEventKeys.GUIModalWindow_OnClose, new TData.AddNumber("closeButton", closeButton) , Self)
 	End Method
 
 

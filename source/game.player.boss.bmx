@@ -43,24 +43,24 @@ Type TPlayerBossCollection
 
 		'register new listeners
 		_eventListeners = new TEventListenerBase[0]
-		_eventListeners :+ [ EventManager.registerListenerFunction("broadcast.common.FinishBroadcasting", onFinishBroadcasting) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Broadcast_Common_FinishBroadcasting, onFinishBroadcasting) ]
 		'instead of updating the boss way to often, we update bosses
 		'once a ingame minute
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnMinute", onGameMinute) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnMinute, onGameMinute) ]
 		'react to our player starting (or restarting...)
-		_eventListeners :+ [ EventManager.registerListenerFunction("Game.OnStartPlayer", onPlayerStarts) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnStartPlayer, onPlayerStarts) ]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction("AdContract.onFinish", onFinishOrFailAdContract) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("AdContract.onFail", onFinishOrFailAdContract) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.AdContract_OnFinish, onFinishOrFailAdContract) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.AdContract_OnFail, onFinishOrFailAdContract) ]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction("player.onBeginEnterRoom", onPlayerBeginEnterRoom) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("player.onLeaveRoom", onPlayerLeaveRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Player_OnBeginEnterRoom, onPlayerBeginEnterRoom) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Player_OnLeaveRoom, onPlayerLeaveRoom) ]
 
 		'register dialogue handlers
-		_eventListeners :+ [ EventManager.registerListenerFunction("dialogue.onTakeBossCredit", onDialogueTakeCredit) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction("dialogue.onRepayBossCredit", onDialogueRepayCredit) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(TPlayerBoss.eventKey_Dialogue_onTakeBossCredit, onDialogueTakeCredit) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(TPlayerBoss.eventKey_Dialogue_onRepayBossCredit, onDialogueRepayCredit) ]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction("Award.OnFinish", onFinishAward) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Award_OnFinish, onFinishAward) ]
 	End Method
 
 
@@ -115,9 +115,9 @@ Type TPlayerBossCollection
 		local boss:TPlayerBoss = GetPlayerBoss(contract.owner)
 		if not boss then return False
 
-		if triggerEvent.isTrigger("AdContract.onFinish")
+		If triggerEvent.GetEventKey() = GameEventKeys.AdContract_OnFinish
 			boss.onFinishAdContract(contract)
-		elseif triggerEvent.isTrigger("AdContract.onFail")
+		elseif triggerEvent.GetEventKey() = GameEventKeys.AdContract_OnFail
 			boss.onFailAdContract(contract)
 		endif
 	End Function
@@ -248,6 +248,10 @@ Type TPlayerBoss
 	Field registeredWonAward:int = 0
 	Field registeredWonAwardType:int = 0
 	Field playerID:int = -1
+	
+	Global eventKey_Dialogue_onTakeBossCredit:TEventKey = GetEventKey("dialogue.onTakeBossCredit", True)
+	Global eventKey_Dialogue_onRepayBossCredit:TEventKey = GetEventKey("dialogue.onRepayBossCredit", True)
+
 
 	Const MOODADJUSTMENT_BROADCAST_POS1:Float             = 0.075
 	Const MOODADJUSTMENT_BROADCAST_POS2:Float             = 0.04
@@ -460,9 +464,9 @@ Type TPlayerBoss
 			'creditMax - credit taken
 			If GetPlayerBase().GetCreditAvailable() > 0
 				local possibleCreditValue:int = GetCreditAvailable()
-				local acceptEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCreditAvailable()))
-				local acceptHalfEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", 0.5 * GetPlayerBase().GetCreditAvailable()))
-				local acceptQuarterEvent:TEventSimple = TEventSimple.Create("dialogue.onTakeBossCredit", new TData.AddNumber("value", 0.25 * GetPlayerBase().GetCreditAvailable()))
+				local acceptEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onTakeBossCredit, new TData.AddNumber("value", GetPlayerBase().GetCreditAvailable()))
+				local acceptHalfEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onTakeBossCredit, new TData.AddNumber("value", 0.5 * GetPlayerBase().GetCreditAvailable()))
+				local acceptQuarterEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onTakeBossCredit, new TData.AddNumber("value", 0.25 * GetPlayerBase().GetCreditAvailable()))
 				ChefDialogues[1] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%CREDIT%", MathHelper.DottedValue(GetPlayerBase().GetCreditAvailable())))
 				ChefDialogues[1].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT").replace("%CREDIT%",MathHelper.DottedValue(0.5 * GetPlayerBase().GetCreditAvailable())), 2, acceptEvent))
 				'avoid micro credits
@@ -488,12 +492,12 @@ Type TPlayerBoss
 			ChefDialogues[3] = TDialogueTexts.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE") )
 			For local creditValue:int = EachIn [2500000, 1000000, 500000, 250000, 100000]
 				If credit >= creditValue And GetPlayerBase().GetMoney() >= creditValue
-					local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", creditValue))
+					local payBackEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onRepayBossCredit, new TData.AddNumber("value", creditValue))
 					ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_VALUE").replace("%VALUE%", MathHelper.DottedValue(creditValue)), 0, payBackEvent))
 				EndIf
 			Next
 			If GetPlayerBase().GetCredit() < GetPlayerBase().GetMoney()
-				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", GetPlayerBase().GetCredit()))
+				local payBackEvent:TEventBase = TEventBase.Create(eventKey_Dialogue_onRepayBossCredit, new TData.AddNumber("value", GetPlayerBase().GetCredit()))
 				ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%CREDIT%", GetPlayerBase().GetCredit()), 0, payBackEvent))
 			EndIf
 			ChefDialogues[3].AddAnswer(TDialogueAnswer.Create( GetRandomLocale("DIALOGUE_BOSS_DECLINE"), -2))
@@ -543,7 +547,7 @@ Type TPlayerBoss
 		awaitingPlayerAccepted = False
 
 		'send out event that the boss wants to see his player
-		EventManager.triggerEvent(TEventSimple.Create("playerboss.onCallPlayer", new TData.AddNumber("latestTime", awaitingPlayerVisitTillTime), Self, GetPlayerBaseCollection().Get(playerID)))
+		TriggerBaseEvent(GameEventKeys.Playerboss_OnCallPlayer, new TData.AddNumber("latestTime", awaitingPlayerVisitTillTime), Self, GetPlayerBaseCollection().Get(playerID))
 	End Method
 
 
@@ -557,7 +561,7 @@ Type TPlayerBoss
 
 		'send out event that the boss wants to see his player immediately
 		'latestTime = -1 so event knows "now"
-		EventManager.triggerEvent(TEventSimple.Create("playerboss.onCallPlayerForced", new TData.AddNumber("latestTime", -1), Self, GetPlayerBaseCollection().Get(playerID)))
+		TriggerBaseEvent(GameEventKeys.PlayerBoss_OnCallPlayerForced, new TData.AddNumber("latestTime", -1), Self, GetPlayerBaseCollection().Get(playerID))
 	End Method
 
 
@@ -581,7 +585,7 @@ Type TPlayerBoss
 			result = True
 		endif
 
-		EventManager.triggerEvent(TEventSimple.Create("playerboss.onPlayerRepaysCredit", new TData.AddNumber("value", value).AddNumber("success", result), Self))
+		TriggerBaseEvent(GameEventKeys.PlayerBoss_OnPlayerRepaysCredit, new TData.AddNumber("value", value).AddNumber("success", result), Self)
 		return result
 	End Method
 
@@ -598,7 +602,7 @@ Type TPlayerBoss
 			result = True
 		endif
 
-		EventManager.triggerEvent(TEventSimple.Create("playerboss.onPlayerTakesCredit", new TData.AddNumber("value", value).AddNumber("success", result), Self))
+		TriggerBaseEvent(GameEventKeys.PlayerBoss_OnPlayerTakesCredit, new TData.AddNumber("value", value).AddNumber("success", result), Self)
 		return result
 	End Method
 
@@ -721,7 +725,7 @@ Type TPlayerBoss
 		GenerateDialogues(player.playerID)
 
 		'send out event that the player enters the bosses room
-		EventManager.triggerEvent(TEventSimple.Create("playerboss.onPlayerEnterBossRoom", null, self, player))
+		TriggerBaseEvent(GameEventKeys.Playerboss_OnPlayerEnterBossRoom, null, self, player)
 	End Method
 
 

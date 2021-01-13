@@ -9,6 +9,7 @@ Import "basefunctions.bmx" 'dottedValue
 Import "game.production.scripttemplate.bmx"
 Import "game.broadcast.genredefinition.movie.bmx"
 Import "game.gamescriptexpression.base.bmx"
+Import "game.gameeventkeys.bmx"
 'to access datasheet-functions
 Import "common.misc.datasheet.bmx"
 
@@ -949,7 +950,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		Next
 
 		'inform others about a now unused licence
-		EventManager.triggerEvent( TEventSimple.Create("Script.onGiveBackToScriptPool", Null, Self))
+		TriggerBaseEvent(GameEventKeys.Script_OnGiveBackToScriptPool, Null, Self)
 
 		Return True
 	End Method

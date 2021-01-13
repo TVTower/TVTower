@@ -606,7 +606,7 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	Method SendToChat:Int(ChatText:String)
 		'emit an event, we received a chat message
 		Local sendToChannels:Int = TGUIChat.GetChannelsFromText(ChatText)
-		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", New TData.AddNumber("senderID", Self.ME).AddNumber("channels", sendToChannels).AddString("text",ChatText) ) )
+		TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, New TData.AddNumber("senderID", Self.ME).AddNumber("channels", sendToChannels).AddString("text",ChatText) )
 
 		Return 1
 	EndMethod

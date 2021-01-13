@@ -33,7 +33,7 @@ Type TRoomAgency
 		_eventListeners = new TEventListenerBase[0]
 
 		'react to bombs, marshals, ...
-		_eventListeners :+ [ EventManager.registerListenerFunction("room.onBombExplosion", onRoomBombExplosion) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_onBombExplosion, onRoomBombExplosion) ]
 
 	End Method
 

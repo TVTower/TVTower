@@ -179,18 +179,18 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 
 		'=== register event listeners
 		'to react on changes in the programmeCollection (eg. contract finished)
-		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.addAdContract", onChangeProgrammeCollection ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "programmecollection.removeAdContract", onChangeProgrammeCollection ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_AddAdContract, onChangeProgrammeCollection) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_RemoveAdContract, onChangeProgrammeCollection) ]
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to vendor or suitcase
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropContract, "TGuiAdContract" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropContract, "TGuiAdContract" ) ]
 		'drop on vendor - sell things
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropContractOnVendor, "TGuiAdContract" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropContractOnVendor, "TGuiAdContract" ) ]
 		'we want to know if we hover a specific block - to show a datasheet
-		_eventListeners :+ [ EventManager.registerListenerFunction( "guiobject.OnMouseOver", onMouseOverContract, "TGuiAdContract" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverContract, "TGuiAdContract" ) ]
 		'this lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction("guiobject.onClick", onClickContract, "TGuiAdContract") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickContract, "TGuiAdContract") ]
 
 		'(re-)localize content
 		SetLanguage()
@@ -558,7 +558,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 					listAll.Remove(contract)
 
 					'emit event
-					EventManager.triggerEvent(TEventSimple.Create("adagency.removeAdContract", New TData.add("adcontract", contract), Self))
+					TriggerBaseEvent(GameEventKeys.Adagency_RemoveAdContract, New TData.add("adcontract", contract), Self)
 
 					foundContract = True
 				EndIf
@@ -595,7 +595,7 @@ Type RoomHandler_AdAgency Extends TRoomHandler
 				lists[j][i] = contract
 				listAll.Addlast(contract)
 				'emit event
-				EventManager.triggerEvent(TEventSimple.Create("adagency.addAdContract", New TData.add("adcontract", contract), Self))
+				TriggerBaseEvent(GameEventKeys.Adagency_AddAdContract, New TData.add("adcontract", contract), Self)
 
 				Return True
 			Next
@@ -1054,7 +1054,7 @@ endrem
 					lists[j][i] = contract
 
 					'emit event
-					EventManager.triggerEvent(TEventSimple.Create("adagency.addAdContract", New TData.add("adcontract", contract), Self))
+					TriggerBaseEvent(GameEventKeys.Adagency_AddAdContract, New TData.add("adcontract", contract), Self)
 				EndIf
 			Next
 		Next
@@ -1212,7 +1212,7 @@ endrem
 					lists[j][i] = contract
 
 					'emit event
-					EventManager.triggerEvent(TEventSimple.Create("adagency.addAdContract", New TData.add("adcontract", contract), Self))
+					TriggerBaseEvent(GameEventKeys.Adagency_AddAdContract, New TData.add("adcontract", contract), Self)
 				EndIf
 			Next
 		Next

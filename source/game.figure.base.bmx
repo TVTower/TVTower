@@ -4,6 +4,7 @@ Import "Dig/base.util.registry.spriteloader.bmx"
 
 'figures move according the building time, not the world time
 Import "game.building.buildingtime.bmx"
+Import "game.gameeventkeys.bmx"
 
 
 Type TFigureBaseCollection extends TEntityCollection
@@ -19,9 +20,9 @@ Type TFigureBaseCollection extends TEntityCollection
 	Method New()
 		if not _eventsRegistered
 			'handle savegame loading (assign sprites)
-			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
+			EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onSaveGameLoad)
 			'handle begin of a game (fix borked savegame information)
-			EventManager.registerListenerFunction("Game.OnStart", onGameStart)
+			EventManager.registerListenerFunction(GameEventKeys.Game_OnStart, onGameStart)
 
 			_eventsRegistered = TRUE
 		Endif
@@ -215,7 +216,6 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	'how long to wait intil I greet the same person again
 	Global greetEvery:int = 8000
 	Global _initDone:int = FALSE
-
 
 	Const ACTION_IDLE:int = 0
 	Const ACTION_WALK:int = 1
@@ -468,7 +468,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		hasMasterKey = bool
 
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onSetHasMasterkey", null, self ) )
+		TriggerBaseEvent(GameEventKeys.Figure_OnSetHasMasterkey, null, self )
 
 		TLogger.Log("TFigureBase.SetHasMasterKey()", "Figure ~q"+name+"~q received the building's master key.", LOG_DEBUG)
 	End Method
@@ -486,7 +486,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		reachedTemporaryTarget = False
 
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", null, self ) )
+		TriggerBaseEvent(GameEventKeys.Figure_OnChangeTarget, null, self )
 
 		return True
 	End Method
@@ -544,7 +544,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		if GetTarget() then GetTarget().Reach(self)
 
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onBeginReachTarget", null, self, GetTarget() ) )
+		TriggerBaseEvent(GameEventKeys.Figure_OnBeginReachTarget, null, self, GetTarget() )
 
 		'run custom onReachTarget method - eg to wait until entering a door
 		'or just remove the current target
@@ -564,7 +564,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		FinishCurrentTarget()
 
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", null, self, targetBackup ) )
+		TriggerBaseEvent(GameEventKeys.Figure_OnReachTarget, null, self, targetBackup )
 
 		if removeOnReachTarget then alive = False
 	End Method
@@ -587,7 +587,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	Method EnterTarget:int()
 		'emit an event
-		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterTarget", null, self, GetTargetObject() ) )
+		TriggerBaseEvent(GameEventKeys.Figure_OnEnterTarget, null, self, GetTargetObject() )
 		return True
 	End Method
 

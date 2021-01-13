@@ -20,7 +20,7 @@ Import "game.publicimage.bmx"
 Import "game.pressuregroup.bmx"
 Import "basefunctions.bmx"
 Import "common.misc.numericpairinterpolator.bmx"
-
+Import "game.gameeventkeys.bmx"
 
 
 
@@ -88,16 +88,16 @@ Type TStationMapCollection
 	Method New()
 		If Not _initDone
 			'handle savegame loading (reload the map configuration)
-			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
+			EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onSaveGameLoad)
 			'handle <stationmapdata>-area in loaded xml files
-			EventManager.registerListenerFunction("RegistryLoader.onLoadResourceFromXML", onLoadStationMapData, Null, "STATIONMAPDATA" )
+			EventManager.registerListenerFunction(TRegistryLoader.eventKey_OnLoadResourceFromXML, onLoadStationMapData, Null, "STATIONMAPDATA")
 			'handle activation of stations
-			EventManager.registerListenerFunction("station.onSetActive", onSetStationActiveState)
-			EventManager.registerListenerFunction("station.onSetInactive", onSetStationActiveState)
+			EventManager.registerListenerFunction(GameEventKeys.Station_OnSetActive, onSetStationActiveState)
+			EventManager.registerListenerFunction(GameEventKeys.Station_OnSetInactive, onSetStationActiveState)
 			'handle activation of broadcast providers
-			EventManager.registerListenerFunction("broadcastprovider.onLaunch", onSetBroadcastProviderActiveState)
-			EventManager.registerListenerFunction("broadcastprovider.onSetActive", onSetBroadcastProviderActiveState)
-			EventManager.registerListenerFunction("broadcastprovider.onSetInactive", onSetBroadcastProviderActiveState)
+			EventManager.registerListenerFunction(GameEventKeys.BroadcastProvider_OnLaunch, onSetBroadcastProviderActiveState)
+			EventManager.registerListenerFunction(GameEventKeys.BroadcastProvider_OnSetActive, onSetBroadcastProviderActiveState)
+			EventManager.registerListenerFunction(GameEventKeys.BroadcastProvider_OnSetInactive, onSetBroadcastProviderActiveState)
 
 			_initdone = True
 		EndIf
@@ -861,7 +861,7 @@ Type TStationMapCollection
 					TXmlHelper.LoadAllValuesToData(sectionConfigNode, sectionConfig)
 				endif
 				'override config if pressureGroups are defined already
-				if pressureGroups >= 0 then sectionConfig.AddNumber("pressureGroups", pressureGroups)
+				if pressureGroups >= 0 then sectionConfig.AddInt("pressureGroups", pressureGroups)
 
 				'add state section if data is ok
 				If name<>"" And sprite<>""
@@ -1259,7 +1259,7 @@ Type TStationMapCollection
 			UpdateSatelliteSharesAndQuality()
 
 			'inform others
-			EventManager.triggerEvent( TEventSimple.Create( "StationMapCollection.addSatellite", New TData.Add("satellite", satellite), Self ) )
+			TriggerBaseEvent(GameEventKeys.StationMapCollection_AddSatellite, New TData.Add("satellite", satellite), Self )
 			return True
 		endif
 
@@ -1273,7 +1273,7 @@ Type TStationMapCollection
 			UpdateSatelliteSharesAndQuality()
 
 			'inform others
-			EventManager.triggerEvent( TEventSimple.Create( "StationMapCollection.removeSatellite", New TData.Add("satellite", satellite), Self ) )
+			TriggerBaseEvent(GameEventKeys.StationMapCollection_RemoveSatellite, New TData.Add("satellite", satellite), Self )
 			return True
 		endif
 
@@ -1282,7 +1282,7 @@ Type TStationMapCollection
 
 
 	Method OnLaunchSatellite:int(satellite:TStationMap_Satellite)
-		EventManager.triggerEvent( TEventSimple.Create( "StationMapCollection.launchSatellite", New TData.Add("satellite", satellite), Self ) )
+		TriggerBaseEvent(GameEventKeys.StationMapCollection_LaunchSatellite, New TData.Add("satellite", satellite), Self )
 
 		'recalculate shared audience percentage between satellites
 		UpdateSatelliteSharesAndQuality()
@@ -1290,7 +1290,7 @@ Type TStationMapCollection
 
 
 	Method OnLetDieSatellite:int(satellite:TStationMap_Satellite)
-		EventManager.triggerEvent( TEventSimple.Create( "StationMapCollection.letDieSatellite", New TData.Add("satellite", satellite), Self ) )
+		TriggerBaseEvent(GameEventKeys.StationMapCollection_LetDieSatellite, New TData.Add("satellite", satellite), Self )
 
 		TLogger.Log("TStationMapCollection", "Let die satellite ~q"+satellite.name+"~q", LOG_DEBUG)
 
@@ -1479,7 +1479,7 @@ Type TStationMapCollection
 			UpdateCableNetworkSharesAndQuality()
 
 			'inform others
-			EventManager.triggerEvent( TEventSimple.Create( "StationMapCollection.addCableNetwork", New TData.Add("cableNetwork", cableNetwork), Self ) )
+			TriggerBaseEvent(GameEventKeys.StationMapCollection_AddCableNetwork, New TData.Add("cableNetwork", cableNetwork), Self )
 			return True
 		endif
 
@@ -1493,7 +1493,7 @@ Type TStationMapCollection
 			UpdateCableNetworkSharesAndQuality()
 
 			'inform others
-			EventManager.triggerEvent( TEventSimple.Create( "StationMapCollection.removeCableNetwork", New TData.Add("cableNetwork", cableNetwork), Self ) )
+			TriggerBaseEvent(GameEventKeys.StationMapCollection_RemoveCableNetwork, New TData.Add("cableNetwork", cableNetwork), Self )
 			return True
 		endif
 
@@ -1756,7 +1756,7 @@ endrem
 	Method AddSection(section:TStationMapSection)
 		If sections.addLast(section)
 			'inform others
-			EventManager.triggerEvent( TEventSimple.Create( "StationMapCollection.addSection", New TData.Add("section", section), Self ) )
+			TriggerBaseEvent(GameEventKeys.StationMapCollection_AddSection, New TData.Add("section", section), Self )
 		EndIf
 	End Method
 
@@ -2187,7 +2187,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		next
 
 		if GetReachLevel(reach) <> oldReachLevel
-			EventManager.triggerEvent( TEventSimple.Create( "StationMap.onChangeReachLevel", New TData.addNumber("reachLevel", GetReachLevel(reach)).AddNumber("oldReachLevel", oldReachLevel), Self ) )
+			TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.addInt("reachLevel", GetReachLevel(reach)).AddInt("oldReachLevel", oldReachLevel), Self )
 		endif
 
 		return True
@@ -2220,10 +2220,10 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		reachInvalid = False
 
 		'inform others
-		EventManager.triggerEvent( TEventSimple.Create( "StationMap.onRecalculateAudienceSum", New TData.addNumber("reach", reach).AddNumber("reachBefore", reachBefore).AddNumber("playerID", owner), Self ) )
+		TriggerBaseEvent(GameEventKeys.StationMap_OnRecalculateAudienceSum, New TData.AddInt("reach", reach).AddInt("reachBefore", reachBefore).AddInt("playerID", owner), Self )
 
 		if GetReachLevel(reach) <> oldReachLevel
-			EventManager.triggerEvent( TEventSimple.Create( "StationMap.onChangeReachLevel", New TData.addNumber("reachLevel", GetReachLevel(reach)).AddNumber("oldReachLevel", oldReachLevel), Self ) )
+			TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.AddInt("reachLevel", GetReachLevel(reach)).AddInt("oldReachLevel", oldReachLevel), Self )
 		endif
 
 
@@ -2403,7 +2403,9 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		station.OnAddToMap()
 
 		'emit an event so eg. network can recognize the change
-		If fireEvents Then EventManager.triggerEvent( TEventSimple.Create( "stationmap.addStation", New TData.add("station", station), Self ) )
+		If fireEvents 
+			TriggerBaseEvent(GameEventKeys.Stationmap_AddStation, New TData.add("station", station), Self )
+		EndIf
 
 		Return True
 	End Method
@@ -2418,7 +2420,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 
 			'check if we try to sell our last station...
 			If stations.count() = 1
-				EventManager.triggerEvent(TEventSimple.Create("StationMap.onTrySellLastStation", Null, Self))
+				TriggerBaseEvent(GameEventKeys.StationMap_OnTrySellLastStation, Null, Self)
 				Return False
 			EndIf
 		EndIf
@@ -2457,7 +2459,9 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		'-> handled in main.bmx with a listener to "stationmap.removeStation"
 
 		'emit an event so eg. network can recognize the change
-		If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("StationMap.removeStation", New TData.add("station", station), Self))
+		If fireEvents 
+			TriggerBaseEvent(GameEventKeys.StationMap_RemoveStation, New TData.add("station", station), Self)
+		EndIf
 
 		Return True
     End Method
@@ -2809,7 +2813,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		SetFlag(TVTStationFlag.ACTIVE, True)
 
 		'inform others (eg. to recalculate audience)
-		EventManager.triggerEvent(TEventSimple.Create("station.onSetActive", Null, Self))
+		TriggerBaseEvent(GameEventKeys.Station_OnSetActive, Null, Self)
 
 		return True
 	End Method
@@ -2821,7 +2825,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		SetFlag(TVTStationFlag.ACTIVE, False)
 
 		'inform others (eg. to recalculate audience)
-		EventManager.triggerEvent(TEventSimple.Create("station.onSetInactive", Null, Self))
+		TriggerBaseEvent(GameEventKeys.Station_OnSetInactive, Null, Self)
 	End Method
 
 
@@ -2831,7 +2835,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		SetFlag(TVTStationFlag.SHUTDOWN, True)
 
 		'inform others (eg. to refresh list content)
-		EventManager.triggerEvent(TEventSimple.Create("station.onShutdown", Null, Self))
+		TriggerBaseEvent(GameEventKeys.Station_OnShutdown, Null, Self)
 
 		return True
 	End Method
@@ -2843,7 +2847,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 		SetFlag(TVTStationFlag.SHUTDOWN, False)
 
 		'inform others (eg. to refresh list content)
-		EventManager.triggerEvent(TEventSimple.Create("station.onResume", Null, Self))
+		TriggerBaseEvent(GameEventKeys.Station_OnResume, Null, Self)
 
 		return True
 	End Method
@@ -3008,7 +3012,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 				If GetSubscriptionTimeLeft() <= TWorldTime.DAYLENGTH
 					SetFlag(TVTStationFlag.WARNED_OF_ENDING_CONTRACT, True)
 					'inform others
-					EventManager.triggerEvent( TEventSimple.Create( "Station.onContractEndsSoon", null, Self ) )
+					TriggerBaseEvent(GameEventKeys.Station_OnContractEndsSoon, null, Self )
 				EndIf
 			EndIf
 		EndIf
@@ -5441,7 +5445,7 @@ Type TStationMap_BroadcastProvider extends TEntityBase {_exposeToLua="selected"}
 		launched = True
 
 		'inform others
-		EventManager.triggerEvent(TEventSimple.Create("broadcastprovider.onLaunch", Null, Self))
+		TriggerBaseEvent(GameEventKeys.BroadcastProvider_OnLaunch, Null, Self)
 
 		return True
 	End Method
@@ -5451,7 +5455,7 @@ Type TStationMap_BroadcastProvider extends TEntityBase {_exposeToLua="selected"}
 		If IsActive() Then Return False
 
 		'inform others (eg. to recalculate audience)
-		EventManager.triggerEvent(TEventSimple.Create("broadcastprovider.onSetActive", Null, Self))
+		TriggerBaseEvent(GameEventKeys.BroadcastProvider_OnSetActive, Null, Self)
 	End Method
 
 
@@ -5459,7 +5463,7 @@ Type TStationMap_BroadcastProvider extends TEntityBase {_exposeToLua="selected"}
 		If Not IsActive() Then Return False
 
 		'inform others (eg. to recalculate audience)
-		EventManager.triggerEvent(TEventSimple.Create("broadcastprovider.onSetInactive", Null, Self))
+		TriggerBaseEvent(GameEventKeys.BroadcastProvider_OnSetInactive, Null, Self)
 	End Method
 
 
@@ -5706,7 +5710,7 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider {_exposeToLua="
 				if nextTechUpgradeTime > 0
 					quality :+ nextTechUpgradeValue
 					'inform others (eg. for news)
-					EventManager.triggerEvent( TEventSimple.Create( "Satellite.onUpgradeTech", New TData.AddNumber("quality", quality).AddNumber("oldQuality", quality - nextTechUpgradeValue), Self ) )
+					TriggerBaseEvent(GameEventKeys.Satellite_OnUpgradeTech, New TData.AddInt("quality", quality).Addint("oldQuality", quality - nextTechUpgradeValue), Self )
 					'print "satellite " + name +" upgraded technology " + (quality - nextTechUpgradeValue) +" -> " + quality
 				endif
 
@@ -5722,7 +5726,7 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider {_exposeToLua="
 					'avoid reducing very small values for ever and ever
  					if minimumChannelImage <= 0.1 then minimumChannelImage = 0
 					'inform others (eg. for news)
-					EventManager.triggerEvent( TEventSimple.Create( "Satellite.onReduceMinimumChannelImage", New TData.AddNumber("minimumChannelImage", minimumChannelImage).AddNumber("oldMinimumChannelImage", oldMinimumChannelImage), Self ) )
+					TriggerBaseEvent(GameEventKeys.Satellite_OnReduceMinimumChannelImage, New TData.AddFloat("minimumChannelImage", minimumChannelImage).AddFloat("oldMinimumChannelImage", oldMinimumChannelImage), Self )
 				endif
 
 				nextImageReductionTime = GetWorldTime().ModifyTime(-1, 0, 0, int(RandRange(20,30)))

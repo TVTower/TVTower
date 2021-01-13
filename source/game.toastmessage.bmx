@@ -81,7 +81,7 @@ Type TGameToastMessage Extends TToastMessage
 	End Method
 
 
-	Method onReceiveCloseEvent(triggerEvent:TEventSimple)
+	Method onReceiveCloseEvent(triggerEvent:TEventBase)
 		Close()
 	End Method
 

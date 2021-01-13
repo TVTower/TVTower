@@ -31,9 +31,9 @@ Type TBetty
 		_eventListeners = new TEventListenerBase[0]
 
 		'scan news shows for culture news
-		_eventListeners :+ [ EventManager.registerListenerFunction( "broadcasting.BeforeFinishAllNewsShowBroadcasts", onBeforeFinishAllNewsShowBroadcasts) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Broadcasting_BeforeFinishAllNewsShowBroadcasts, onBeforeFinishAllNewsShowBroadcasts) ]
 		'scan programmes for culture-flag
-		_eventListeners :+ [ EventManager.registerListenerFunction( "broadcasting.BeforeFinishAllProgrammeBlockBroadcasts", onBeforeFinishAllProgrammeBlockBroadcasts) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Broadcasting_BeforeFinishAllProgrammeBlockBroadcasts, onBeforeFinishAllProgrammeBlockBroadcasts) ]
 	End Method
 
 
@@ -458,6 +458,6 @@ Type TGUIBettyPresent extends TGuiObject
 			Drag(MouseManager.GetClickPosition(1))
 		EndIf
 		'onclick is already emit
-		'EventManager.triggerEvent(TEventSimple.Create("guiobject.onClick", Null, Self, triggerEvent.GetReceiver()) )
+		'TriggerBaseEvent(GUIEventKeys.GUIObject_OnClick, Null, Self, triggerEvent.GetReceiver())
 	End Method
 End Type

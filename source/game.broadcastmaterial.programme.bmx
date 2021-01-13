@@ -136,13 +136,13 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			'GetBroadcastInformationProvider().SetProgrammeAired(owner, GetBroadcastInformationProvider().GetTrailerAired(owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
 
 			'inform others
-			EventManager.triggerEvent(TEventSimple.Create("broadcast.programme.FinishBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_FinishBroadcasting, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
 		'sent a trailer
 		ElseIf usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
 			FinishBroadcastingAsAdvertisement(day, hour, minute, audienceData)
 
 			'inform others
-			EventManager.triggerEvent(TEventSimple.Create("broadcast.programme.FinishBroadcastingAsAdvertisement", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_FinishBroadcastingAsAdvertisement, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
 '			GetBroadcastInformationProvider().SetTrailerAired(owner, GetBroadcastInformationProvider().GetTrailerAired(owner) + 1, GetWorldTime.MakeTime(0,day,hour,minute) )
 		Else
 			Self.SetState(Self.STATE_OK)
@@ -182,10 +182,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 			licence.GetBroadcastStatistic().SetAudienceResult(owner, currentBlockBroadcasting, audienceResult)
 
 			'inform others
-			EventManager.triggerEvent(TEventSimple.Create("broadcast.programme.BeginBroadcasting", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_BeginBroadcasting, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
 		ElseIf usedAsType = TVTBroadcastMaterialType.ADVERTISEMENT
 			'inform others
-			EventManager.triggerEvent(TEventSimple.Create("broadcast.programme.BeginBroadcastingAsAdvertisement", New TData.addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute).add("audienceData", audienceData), Self))
+			TriggerBaseEvent(GameEventKeys.Broadcast_Programme_BeginBroadcastingAsAdvertisement, New TData.AddInt("day", day).AddInt("hour", hour).AddInt("minute", minute).Add("audienceData", audienceData), Self)
 		EndIf
 	End Method
 
@@ -260,10 +260,10 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'=== ADJUST TRENDS / POPULARITY ===
 		Local popularity:TGenrePopularity = data.GetGenreDefinition().GetPopularity()
 		Local popData:TData = New TData
-		popData.AddNumber("attractionQuality", audienceResult.AudienceAttraction.Quality)
-		popData.AddNumber("audienceSum", audienceResult.Audience.GetTotalSum())
-		popData.AddNumber("audienceWholeMarketQuote", audienceResult.GetWholeMarketAudienceQuotePercentage())
-		popData.AddNumber("broadcastTopAudience", GetBroadcastManager().GetCurrentBroadcast().GetTopAudience())
+		popData.AddFloat("attractionQuality", audienceResult.AudienceAttraction.Quality)
+		popData.AddFloat("audienceSum", audienceResult.Audience.GetTotalSum())
+		popData.AddFloat("audienceWholeMarketQuote", audienceResult.GetWholeMarketAudienceQuotePercentage())
+		popData.AddFloat("broadcastTopAudience", GetBroadcastManager().GetCurrentBroadcast().GetTopAudience())
 
 		popularity.FinishBroadcastingProgramme(popData, GetBlocks())
 
@@ -673,8 +673,8 @@ Print "game.broadcastmaterial.programme.bmx:  adjust pressure groups!"
 
 	Method ShowSheet:Int(x:Int,y:Int, align:Float=  0.5) override
 		Local extra:TData = New TData
-		extra.AddNumber("programmedDay", programmedDay)
-		extra.AddNumber("programmedHour", programmedHour)
+		extra.AddInt("programmedDay", programmedDay)
+		extra.AddInt("programmedHour", programmedHour)
 
 		'show sheet with stats of the broadcast owner, not the current
 		'licence owner
