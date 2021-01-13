@@ -1863,21 +1863,47 @@ Type TGUIProductionEditTextsModalWindow Extends TGUIProductionModalWindow
 
 	Method onClickClearInputButton:Int( triggerEvent:TEventBase )
 		Local button:TGUIButton = TGUIButton( triggerEvent.GetSender() )
-		Select button
-			Case clearTitle
-				If inputTitle.GetValue() = "" And concept And concept.script
-					inputTitle.SetValue(concept.script.GetTitle())
-				Else
-					inputTitle.SetValue("")
-				EndIf
-				'TODO: setfocus
-			Case clearSubTitle
-				inputSubTitle.SetValue("")
-			Case clearDescription
-				inputDescription.SetValue("")
-			Case clearSubDescription
-				inputSubDescription.SetValue("")
-		EndSelect
+		If concept And concept.script
+			Local isEpisode:int = concept.script.HasParentScript()
+			Select button
+				Case clearTitle
+					If inputTitle.GetValue() = ""
+						If isEpisode
+							inputTitle.SetValue(concept.script.getParentScript().GetTitle())
+						Else
+							inputTitle.SetValue(concept.script.GetTitle())
+						EndIf
+					Else
+						inputTitle.SetValue("")
+					EndIf
+					GuiManager.setFocus(inputTitle)
+				Case clearSubTitle
+					If inputSubTitle.GetValue() = "" And isEpisode
+						inputSubTitle.SetValue(concept.script.GetTitle())
+					Else
+						inputSubTitle.SetValue("")
+					EndIf
+					GuiManager.setFocus(inputSubTitle)
+				Case clearDescription
+					If inputDescription.GetValue() = ""
+						If isEpisode
+							inputDescription.SetValue(concept.script.getParentScript().GetDescription())
+						Else
+							inputDescription.SetValue(concept.script.GetDescription())
+						EndIf
+					Else
+						inputDescription.SetValue("")
+					EndIf
+					GuiManager.setFocus(inputDescription)
+				Case clearSubDescription
+					If inputSubDescription.GetValue() = "" And isEpisode
+						inputSubDescription.SetValue(concept.script.GetDescription())
+					Else
+						inputSubDescription.SetValue("")
+					EndIf
+					GuiManager.setFocus(inputSubDescription)
+			EndSelect
+		EndIf
 	End Method
 
 
