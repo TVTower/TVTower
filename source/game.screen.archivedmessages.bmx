@@ -141,14 +141,18 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 	End Function
 
 	Function onClickMessage:int( triggerEvent:TEventBase )
+		local item:TGUIArchivedMessageListItem = TGUIArchivedMessageListItem(triggerEvent.GetSender())
+		if not item or not item.message then Return False
+
 		If GetInstance().showMode <> SHOW_ALL
-			local item:TGUIArchivedMessageListItem = TGUIArchivedMessageListItem(triggerEvent.GetSender())
 			If MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1)
-				local room:TOwnedGameObject = TOwnedGameObject( triggerEvent.GetData().get("room") )
+				Local roomOwner:Int = item.message.owner
+				if roomOwner <= 0 then roomOwner = GetInstance().roomOwner
+
 				If GetInstance().showMode = SHOW_UNREAD
-					item.message.SetRead(room.owner, True)
+					item.message.SetRead(roomOwner, True)
 				Else
-					item.message.SetRead(room.owner, False)
+					item.message.SetRead(roomOwner, False)
 				EndIf
 				GetInstance().messageList.removeItem(item)
 				'make sure the heading is updated
