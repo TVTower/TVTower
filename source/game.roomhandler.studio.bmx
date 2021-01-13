@@ -427,19 +427,9 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		'handle interactivity for room owners
 		If IsRoomOwner(figure, TRoom(triggerEvent.GetReceiver()))
-			'if the manager dialogue is open - just close the dialogue and
-			'veto against leaving the room
+			'if the manager dialogue is open - just close the dialogue
 			If studioManagerDialogue
 				studioManagerDialogue = Null
-
-				triggerEvent.SetVeto()
-				Return False
-			EndIf
-
-			'do not allow leaving as long as we have a dragged block
-			If draggedGuiProductionConcept Or draggedGuiScript
-				triggerEvent.setVeto()
-				Return False
 			EndIf
 		EndIf
 
