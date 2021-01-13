@@ -207,7 +207,7 @@ Type TNewsAgency
 		Local data:TData = New TData
 		data.AddString("trigger", "happen")
 		data.AddString("type", "TriggerNews")
-		data.AddNumber("probability", 100)
+		data.AddFloat("probability", 100)
 		'time = in 3-7 hrs
 		data.AddString("time", "1,3,7")
 
@@ -245,9 +245,9 @@ Type TNewsAgency
 				'decrease image for all caught channels
 				data.AddString("trigger", "broadcastFirstTime")
 				data.AddString("type", "ModifyChannelPublicImage")
-				data.AddNumber("value", -3)
-				data.AddNumber("valueIsRelative", True)
-				data.AddNumber("playerID", pID)
+				data.AddInt("value", -3)
+				data.AddBool("valueIsRelative", True)
+				data.AddInt("playerID", pID)
 				data.AddString("log", "decrease image for all caught channels")
 				NewsChainEvent1.AddEffectByData(data)
 			Next
@@ -256,10 +256,10 @@ Type TNewsAgency
 			data = New TData
 			data.AddString("trigger", "broadcastFirstTime")
 			data.AddString("type", "ModifyChannelPublicImage")
-			data.AddNumber("value", 5)
-			data.AddNumber("valueIsRelative", True)
+			data.AddInt("value", 5)
+			data.AddBool("valueIsRelative", True)
 			'use playerID of broadcasting player
-			data.AddNumber("playerID", 0)
+			data.AddInt("playerID", 0)
 			data.Add("conditions", New TData.AddString("broadcaster_notInPlayerIDs", caughtChannelIDs))
 			data.AddString("log", "increase image for a broadcasting channel not being caught")
 
@@ -270,10 +270,10 @@ Type TNewsAgency
 			data = New TData
 			data.AddString("trigger", "broadcastFirstTime")
 			data.AddString("type", "ModifyChannelPublicImage")
-			data.AddNumber("value", 2)
-			data.AddNumber("valueIsRelative", True)
+			data.AddInt("value", 2)
+			data.AddBool("valueIsRelative", True)
 			'use playerID of broadcasting player
-			data.AddNumber("playerID", 0)
+			data.AddInt("playerID", 0)
 			data.AddString("log", "increase for broadcasting channel")
 			data.Add("conditions", New TData.AddString("broadcaster_inPlayerIDs", caughtChannelIDs))
 			NewsChainEvent1.AddEffectByData(data)
@@ -470,7 +470,7 @@ Type TNewsAgency
 			Local effect:TGameModifierBase = New TGameModifierBase
 
 			effect.GetData().Add("figure", GetGameBase().terrorists[terroristGroup])
-			effect.GetData().AddNumber("group", terroristGroup)
+			effect.GetData().AddInt("group", terroristGroup)
 			'send figure to the intented target (it then looks for the position
 			'using the "roomboard" - so switched signes are taken into
 			'consideration there)
@@ -563,17 +563,17 @@ Type TNewsAgency
 				If person And person.GetPopularity()
 					Local jobMod:Float = TVTPersonJob.GetCastJobImportanceMod(job.job)
 					If jobMod > 0.0
-						NewsEvent.AddEffectByData(New TData.Add("trigger", "happen").Add("type", "ModifyPersonPopularity").AddNumber("referenceID", job.personID).AddNumber("valueMin", 0.1 * jobMod).AddNumber("valueMax", 0.5 * jobMod))
+						NewsEvent.AddEffectByData(New TData.Add("trigger", "happen").Add("type", "ModifyPersonPopularity").AddInt("referenceID", job.personID).AddFloat("valueMin", 0.1 * jobMod).AddFloat("valueMax", 0.5 * jobMod))
 						'TODO: take broadcast audience into consideration
 						'      or maybe only use broadcastFirstTimeDone
-						NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcastDone").Add("type", "ModifyPersonPopularity").AddNumber("referenceID", job.personID).AddNumber("valueMin", 0.01 * jobMod).AddNumber("valueMax", 0.025 * jobMod))
+						NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcastDone").Add("type", "ModifyPersonPopularity").AddInt("referenceID", job.personID).AddFloat("valueMin", 0.01 * jobMod).AddFloat("valueMax", 0.025 * jobMod))
 					EndIf
 				EndIf
 			EndIf
 		Next
 		'modify genre
-		NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcastFirstTime").Add("type", "ModifyMovieGenrePopularity").AddNumber("genre", licence.GetData().GetGenre()).AddNumber("valueMin", 0.025).AddNumber("valueMax", 0.04))
-		NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcast").Add("type", "ModifyMovieGenrePopularity").AddNumber("genre", licence.GetData().GetGenre()).AddNumber("valueMin", 0.005).AddNumber("valueMax", 0.01))
+		NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcastFirstTime").Add("type", "ModifyMovieGenrePopularity").AddInt("genre", licence.GetData().GetGenre()).AddFloat("valueMin", 0.025).AddFloat("valueMax", 0.04))
+		NewsEvent.AddEffectByData(New TData.Add("trigger", "broadcast").Add("type", "ModifyMovieGenrePopularity").AddInt("genre", licence.GetData().GetGenre()).AddFloat("valueMin", 0.005).AddFloat("valueMax", 0.01))
 
 
 		GetNewsEventCollection().AddOneTimeEvent(NewsEvent)

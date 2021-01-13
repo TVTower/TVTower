@@ -861,7 +861,7 @@ Type TStationMapCollection
 					TXmlHelper.LoadAllValuesToData(sectionConfigNode, sectionConfig)
 				endif
 				'override config if pressureGroups are defined already
-				if pressureGroups >= 0 then sectionConfig.AddNumber("pressureGroups", pressureGroups)
+				if pressureGroups >= 0 then sectionConfig.AddInt("pressureGroups", pressureGroups)
 
 				'add state section if data is ok
 				If name<>"" And sprite<>""
@@ -2187,7 +2187,7 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		next
 
 		if GetReachLevel(reach) <> oldReachLevel
-			TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.addNumber("reachLevel", GetReachLevel(reach)).AddNumber("oldReachLevel", oldReachLevel), Self )
+			TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.addInt("reachLevel", GetReachLevel(reach)).AddInt("oldReachLevel", oldReachLevel), Self )
 		endif
 
 		return True
@@ -2220,10 +2220,10 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		reachInvalid = False
 
 		'inform others
-		TriggerBaseEvent(GameEventKeys.StationMap_OnRecalculateAudienceSum, New TData.addNumber("reach", reach).AddNumber("reachBefore", reachBefore).AddNumber("playerID", owner), Self )
+		TriggerBaseEvent(GameEventKeys.StationMap_OnRecalculateAudienceSum, New TData.AddInt("reach", reach).AddInt("reachBefore", reachBefore).AddInt("playerID", owner), Self )
 
 		if GetReachLevel(reach) <> oldReachLevel
-			TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.addNumber("reachLevel", GetReachLevel(reach)).AddNumber("oldReachLevel", oldReachLevel), Self )
+			TriggerBaseEvent(GameEventKeys.StationMap_OnChangeReachLevel, New TData.AddInt("reachLevel", GetReachLevel(reach)).AddInt("oldReachLevel", oldReachLevel), Self )
 		endif
 
 
@@ -5710,7 +5710,7 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider {_exposeToLua="
 				if nextTechUpgradeTime > 0
 					quality :+ nextTechUpgradeValue
 					'inform others (eg. for news)
-					TriggerBaseEvent(GameEventKeys.Satellite_OnUpgradeTech, New TData.AddNumber("quality", quality).AddNumber("oldQuality", quality - nextTechUpgradeValue), Self )
+					TriggerBaseEvent(GameEventKeys.Satellite_OnUpgradeTech, New TData.AddInt("quality", quality).Addint("oldQuality", quality - nextTechUpgradeValue), Self )
 					'print "satellite " + name +" upgraded technology " + (quality - nextTechUpgradeValue) +" -> " + quality
 				endif
 
@@ -5726,7 +5726,7 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider {_exposeToLua="
 					'avoid reducing very small values for ever and ever
  					if minimumChannelImage <= 0.1 then minimumChannelImage = 0
 					'inform others (eg. for news)
-					TriggerBaseEvent(GameEventKeys.Satellite_OnReduceMinimumChannelImage, New TData.AddNumber("minimumChannelImage", minimumChannelImage).AddNumber("oldMinimumChannelImage", oldMinimumChannelImage), Self )
+					TriggerBaseEvent(GameEventKeys.Satellite_OnReduceMinimumChannelImage, New TData.AddFloat("minimumChannelImage", minimumChannelImage).AddFloat("oldMinimumChannelImage", oldMinimumChannelImage), Self )
 				endif
 
 				nextImageReductionTime = GetWorldTime().ModifyTime(-1, 0, 0, int(RandRange(20,30)))

@@ -150,10 +150,10 @@ Function InfoChannelEventHandler(networkObject:TNetworkObject)
 '	print "infochannel: got event: "+networkObject.evType
 	if networkObject.evType = NET_ANNOUNCEGAME
 		local evData:TData = new TData
-		evData.AddNumber("slotsUsed", networkObject.getInt(1))
-		evData.AddNumber("slotsMax", networkObject.getInt(2))
-		evData.AddNumber("hostIP", networkObject.getInt(3)) 		'could differ from senderIP
-		evData.AddNumber("hostPort", networkObject.getInt(4)) 		'differs from senderPort (info channel)
+		evData.AddInt("slotsUsed", networkObject.getInt(1))
+		evData.AddInt("slotsMax", networkObject.getInt(2))
+		evData.AddInt("hostIP", networkObject.getInt(3)) 		'could differ from senderIP
+		evData.AddInt("hostPort", networkObject.getInt(4)) 		'differs from senderPort (info channel)
 		evData.AddString("hostName", networkObject.getString(5))
 		evData.AddString("gameTitle", networkObject.getString(6))
 
@@ -947,7 +947,7 @@ Type TNetworkHelper extends TNetworkHelperBase
 
 		'emit an event, we received a chat message
 		'- add a "remoteSource=1" so others may recognize it
-		TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, new TData.AddNumber("senderID", senderID).AddNumber("channels", sendToChannels).AddString("text",chatMessage).AddNumber("remoteSource",1) , null )
+		TriggerBaseEvent(GameEventKeys.Chat_OnAddEntry, new TData.AddInt("senderID", senderID).AddInt("channels", sendToChannels).AddString("text",chatMessage).AddInt("remoteSource",1) , null )
 	End Method
 
 

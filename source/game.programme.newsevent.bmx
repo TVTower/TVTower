@@ -656,7 +656,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 			'If keywords.Find("movie") >= 0 Then DebugStop
 
 			'trigger happenEffects
-			Local effectParams:TData = New TData.AddNumber("newsEventID", Self.GetID())
+			Local effectParams:TData = New TData.AddInt("newsEventID", Self.GetID())
 			effects.Update("happen", effectParams)
 		EndIf
 	End Method
@@ -668,7 +668,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'"all players" (depends on implementation)
 	Method doBeginBroadcast(playerID:Int = -1, broadcastType:Int = 0)
 		'trigger broadcastEffects
-		Local effectParams:TData = New TData.AddNumber("newsEventID", Self.GetID()).AddNumber("playerID", playerID)
+		Local effectParams:TData = New TData.AddInt("newsEventID", Self.GetID()).AddInt("playerID", playerID)
 
 		'if nobody broadcasted till now (times are adjusted on
 		'finishBroadcast while this is called on beginBroadcast)
@@ -686,7 +686,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'override
 	Method doFinishBroadcast(playerID:Int = -1, broadcastType:Int = 0)
 		'trigger broadcastEffects
-		Local effectParams:TData = New TData.AddNumber("newsEventID", Self.GetID()).AddNumber("playerID", playerID)
+		Local effectParams:TData = New TData.AddInt("newsEventID", Self.GetID()).AddInt("playerID", playerID)
 
 		'if nobody broadcasted till now (times are adjusted on
 		'finishBroadcast while this is called on beginBroadcast)

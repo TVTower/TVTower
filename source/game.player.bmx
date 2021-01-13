@@ -486,7 +486,7 @@ endrem
 
 	Method SetNewsAbonnement:int(genre:Int, level:Int, sendToNetwork:Int = True) {_exposeToLua}
 		If super.SetNewsAbonnement(genre, level, sendToNetwork)
-			TriggerBaseEvent(GameEventKeys.Player_SetNewsAbonnement, new TData.AddNumber("genre", genre).AddNumber("level", level).AddNumber("sendToNetwork", sendToNetwork), self)
+			TriggerBaseEvent(GameEventKeys.Player_SetNewsAbonnement, new TData.AddInt("genre", genre).addInt("level", level).AddInt("sendToNetwork", sendToNetwork), self)
 
 			return True
 		EndIf

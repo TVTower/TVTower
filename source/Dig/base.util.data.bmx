@@ -360,7 +360,7 @@ endrem
 			Else
 				Local ld:TLongData = TLongData(result)
 				If ld Then
-					Return Long(ld.value)
+					Return ld.value
 				EndIf
 			End If
 			Return Double( String( result ) )

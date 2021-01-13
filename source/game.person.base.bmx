@@ -786,7 +786,7 @@ Type TPersonBase Extends TGameObject
 
 		'emit event so eg. news agency could react to it ("bla has a new job")
 		'-> or to set them on the "scandals" list
-		TriggerBaseEvent(GameEventKeys.PersonBase_OnStartProduction, New TData.addNumber("programmeDataID", programmeDataID), Self)
+		TriggerBaseEvent(GameEventKeys.PersonBase_OnStartProduction, New TData.AddInt("programmeDataID", programmeDataID), Self)
 	End Method
 
 
@@ -796,7 +796,7 @@ Type TPersonBase Extends TGameObject
 		EndIf
 
 		'emit event so eg. news agency could react to it ("bla goes on holiday")
-		TriggerBaseEvent(GameEventKeys.PersonBase_OnFinishProduction, New TData.addNumber("programmeDataID", programmeDataID), Self)
+		TriggerBaseEvent(GameEventKeys.PersonBase_OnFinishProduction, New TData.AddInt("programmeDataID", programmeDataID), Self)
 	End Method
 	
 

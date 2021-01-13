@@ -299,17 +299,17 @@ Type TAward Extends TGameObject
 
 		'store winner
 		winningPlayerID = GetCurrentWinner()
-		TriggerBaseEvent(GameEventKeys.Award_OnFinish, New TData.addNumber("winningPlayerID", winningPlayerID), Self)
+		TriggerBaseEvent(GameEventKeys.Award_OnFinish, New TData.AddInt("winningPlayerID", winningPlayerID), Self)
 
 		If winningPlayerID > 0
 			Local modifier:TGameModifierBase
 			'increase image
-			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelPublicImage", New TData.AddNumber("value", priceImage))
-			If modifier Then modifier.Run(New TData.AddNumber("playerID", winningPlayerID) )
+			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelPublicImage", New TData.AddDouble("value", priceImage))
+			If modifier Then modifier.Run(New TData.AddInt("playerID", winningPlayerID) )
 
 			'increase money
-			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelMoney", New TData.AddNumber("value", priceMoney))
-			If modifier Then modifier.Run(New TData.AddNumber("playerID", winningPlayerID) )
+			modifier = GetGameModifierManager().CreateAndInit("ModifyChannelMoney", New TData.AddInt("value", priceMoney))
+			If modifier Then modifier.Run(New TData.AddInt("playerID", winningPlayerID) )
 
 			'alternatively:
 			'GetPublicImage(winnerID).Modify(0.5)
