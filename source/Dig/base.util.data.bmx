@@ -216,11 +216,18 @@ Type TData
 
 
 	Method AddNumber:TData(key:Object, data:Double)
+		Local dd:TDoubleData = New TDoubleData
+		dd.value = data
+		Add( key, dd )
+		Return Self
+rem
+
 		If Double(Long(data)) = data 
 			Return AddLong(key, Long(data))
 		EndIf
 
 		Return AddDouble(key, data)
+endrem
 	End Method
 
 
