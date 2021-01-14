@@ -1221,7 +1221,7 @@ Type TGUINews Extends TGUIGameListItem
 			fontNormal.DrawSimple("Aktualitaet: " + MathHelper.NumberToString(ne.GetTopicality(),3) + "/" + MathHelper.NumberToString(ne.GetMaxTopicality(),3)+" ("+MathHelper.NumberToString(100 * ne.GetTopicality()/ne.GetMaxTopicality(),1)+"%)", screenX + 5 + 190, textY)
 			textY :+ 11
 			fontNormal.DrawSimple("Ausstrahlungen: " + ne.GetTimesBroadcasted(news.owner)+"x  (" + ne.GetTimesBroadcasted()+"x gesamt)", screenX + 5, textY)
-			fontNormal.DrawSimple("Alter: " + Long(GetWorldTime().GetTimeGone() - news.GetHappenedtime()) + " Sekunden  (" + (GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())) + " Tage)", screenX + 5 + 190, textY)
+			fontNormal.DrawSimple("Alter: " + Long((GetWorldTime().GetTimeGone() - news.GetHappenedTime())/1000) + " Sekunden  (" + (GetWorldTime().GetDay() - GetWorldTime().GetDay(news.GetHappenedtime())) + " Tage)", screenX + 5 + 190, textY)
 			textY :+ 11
 			Rem
 			local eventCan:string = ""

@@ -1582,12 +1582,12 @@ Type TNewsEventSportMatch Extends TGameObject
 	'custom sports might also do: "time,teamIndex,score,memberIndex|..."
 	Field scores:String
 	Field scoresArray:String[] {nosave}
-	Field duration:Int = 90*60 'in seconds
+	Field duration:Int = 90 * TWorldTime.MINUTELENGTH 'in milliseconds
 	'when the match takes place
 	Field matchTime:Long
 	'when a potential break takes place
-	Field breakTimes:Int[] = [45*60]
-	Field breakDuration:Int = 15*60
+	Field breakTimes:Int[] = [45 * TWorldTime.MINUTELENGTH]
+	Field breakDuration:Int = 15 * TWorldTime.MINUTELENGTH
 
 	Field sportName:String
 
@@ -1610,7 +1610,7 @@ Type TNewsEventSportMatch Extends TGameObject
 
 
 	Method AdjustDurationAndBreakTimes()
-		Local overtime:Int = 60 * BiasedRandRange(0,8, 0.3)
+		Local overtime:Int = BiasedRandRange(0,8, 0.3) * TWorldTime.MINUTELENGTH
 		duration :+ overtime
 
 		If breakTimes.length > 0
@@ -1648,7 +1648,7 @@ Type TNewsEventSportMatch Extends TGameObject
 
 			For Local point:Int = 0 Until points[teamIndex]
 				'store time as "000123" so it string-sorts correctly
-				scoresArray[ scoresArrayIndex ] = RSet(RandRange(0, duration),6).Replace(" ", "0") + "," + teamIndex + ",1"
+				scoresArray[ scoresArrayIndex ] = RSet(RandRange(0, duration/1000),6).Replace(" ", "0") + "," + teamIndex + ",1"
 				scoresArrayIndex :+ 1
 			Next
 		Next
@@ -1949,7 +1949,7 @@ Type TNewsEventSportMatch Extends TGameObject
 			result = result.Replace("%FINALSCORE%", GetFinalScoreText())
 		EndIf
 
-		result = result.Replace("%PLAYTIMEMINUTES%", Int(duration / 60) )
+		result = result.Replace("%PLAYTIMEMINUTES%", Int(duration / TWorldTime.MINUTELENGTH) )
 
 		result = result.Trim().Replace("  ", " ") 'remove space if no team article...
 

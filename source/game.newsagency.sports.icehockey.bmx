@@ -303,9 +303,9 @@ Type TNewsEventSportMatch_IceHockey extends TNewsEventSportMatch
 
 
 	Method New()
-		duration = 60*20
-		breakTimes = [1*20*60, 2*20*60]
-		breakDuration = 15*60
+		duration = 60 * TWorldTime.MINUTELENGTH
+		breakTimes = [1 * 20 * TWorldTime.MINUTELENGTH, 2 * 20 * TWorldTime.MINUTELENGTH]
+		breakDuration = 15 * TWorldTime.MINUTELENGTH
 
 		sportName = "ICEHOCKEY"
 	End Method
