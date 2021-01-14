@@ -228,7 +228,7 @@ Type TFigure extends TFigureBase
 		local targetObject:object = GetTargetObject()
 		'start waiting in front of the target
 		If TRoomDoorBase(targetObject) or THotspot(targetObject)
-			WaitEnterTimer = GetBuildingTime().GetMillisecondsGone() + WaitEnterLeavingTime
+			WaitEnterTimer = GetBuildingTime().GetTimeGone() + WaitEnterLeavingTime
 		Else
 			Super.customReachTargetStep1()
 		EndIf
@@ -443,18 +443,18 @@ Type TFigure extends TFigureBase
 			'if the greeting type differs
 			'- or enough time has gone for another greet
 			'- or another figure gets greeted
-			if greetType <> lastGreetType or GetBuildingTime().GetMillisecondsGone() - lastGreetTime > greetEvery or lastGreetFigureID <> figure.id
+			if greetType <> lastGreetType or GetBuildingTime().GetTimeGone() - lastGreetTime > greetEvery or lastGreetFigureID <> figure.id
 				lastGreetType = greetType
 				lastGreetFigureID = figure.id
 
-				lastGreetTime = GetBuildingTime().GetMillisecondsGone()
+				lastGreetTime = GetBuildingTime().GetTimeGone()
 			endif
 
 			'show greet for a maximum time of "showGreetTime"
-			if GetBuildingTime().GetMillisecondsGone() - lastGreetTime < greetTime
-				local scale:float = TInterpolation.BackOut(0.0, 1.0, Min(greetTime, GetBuildingTime().GetMillisecondsGone() - lastGreetTime), greetTime)
+			if GetBuildingTime().GetTimeGone() - lastGreetTime < greetTime
+				local scale:float = TInterpolation.BackOut(0.0, 1.0, Min(greetTime, GetBuildingTime().GetTimeGone() - lastGreetTime), greetTime)
 				local oldAlpha:float = GetAlpha()
-				SetAlpha Float(TInterpolation.RegularOut(0.5, 1.0, Min(0.5*greetTime, GetBuildingTime().GetMillisecondsGone() - lastGreetTime), 0.5*greetTime))
+				SetAlpha Float(TInterpolation.RegularOut(0.5, 1.0, Min(0.5*greetTime, GetBuildingTime().GetTimeGone() - lastGreetTime), 0.5*greetTime))
 				'subtract half width from position - figure is drawn centered
 				'figure right of me
 				If Figure.area.GetX() > area.GetX()
@@ -693,8 +693,8 @@ Type TFigure extends TFigureBase
 
 	Method BeginEnterRoom:int(door:TRoomDoorBase, room:TRoomBase)
 		'set time of start
-		changingRoomBuildingTimeStart = GetBuildingTime().GetMillisecondsGone()
-		changingRoomBuildingTimeEnd = GetBuildingTime().GetMillisecondsGone() + changingRoomTime
+		changingRoomBuildingTimeStart = GetBuildingTime().GetTimeGone()
+		changingRoomBuildingTimeEnd = GetBuildingTime().GetTimeGone() + changingRoomTime
 		changingRoomRealTimeStart = Time.GetTimeGone()
 		changingRoomRealTimeEnd = Time.GetTimeGone() + changingRoomTime
 		'inform what the figure does now
@@ -895,8 +895,8 @@ Type TFigure extends TFigureBase
 
 	Method BeginLeaveRoom:int()
 		'set time of start
-		changingRoomBuildingTimeStart = GetBuildingTime().GetMillisecondsGone()
-		changingRoomBuildingTimeEnd = GetBuildingTime().GetMillisecondsGone() + changingRoomTime
+		changingRoomBuildingTimeStart = GetBuildingTime().GetTimeGone()
+		changingRoomBuildingTimeEnd = GetBuildingTime().GetTimeGone() + changingRoomTime
 		changingRoomRealTimeStart = Time.GetTimeGone()
 		changingRoomRealTimeEnd = Time.GetTimeGone() + changingRoomTime
 
@@ -941,7 +941,7 @@ Type TFigure extends TFigureBase
 		currentAction = ACTION_IDLE
 
 		'activate timer to wait a bit after leaving a room
-		WaitLeavingTimer = GetBuildingTime().GetMillisecondsGone() + WaitEnterLeavingTime
+		WaitLeavingTimer = GetBuildingTime().GetTimeGone() + WaitEnterLeavingTime
 
 		inRoomBackup.FinishLeave(self)
 
@@ -1204,7 +1204,7 @@ Type TFigure extends TFigureBase
 
 	Method FixBrokenEnterLeavingStates()
 		if currentAction = ACTION_ENTERING and not inRoom
-			if WaitEnterTimer > 0 and WaitEnterTimer + 5000 < GetBuildingTime().GetMillisecondsGone()
+			if WaitEnterTimer > 0 and WaitEnterTimer + 5000 < GetBuildingTime().GetTimeGone()
 				print "FIX: figure ~q"+name+"~q forcefully enter room again."
 
 				currentReachTargetStep = 0
@@ -1223,7 +1223,7 @@ Type TFigure extends TFigureBase
 
 	Method Update:int()
 		if IsChangingRoom()
-			if GetBuildingTime().GetMillisecondsGone() > changingRoomBuildingTimeEnd or ..
+			if GetBuildingTime().GetTimeGone() > changingRoomBuildingTimeEnd or ..
 			   Time.GetTimeGone() > changingRoomRealTimeEnd
 				if currentAction = ACTION_ENTERING
 					FinishEnterRoom()
@@ -1283,7 +1283,7 @@ Type TFigure extends TFigureBase
 		if isChangingRoom() and fadeOnChangingRoom
 			'either use the building time or the real world time
 			'this allows to fade out also with building time = 0
-			local smallestTime:Long = GetBuildingTime().GetMillisecondsGone() - changingRoomBuildingTimeStart
+			local smallestTime:Long = GetBuildingTime().GetTimeGone() - changingRoomBuildingTimeStart
 			smallestTime = Min(smallestTime, Time.GetTimeGone() - changingRoomRealTimeStart)
 			local alpha:float = Min(1.0, smallestTime / (float(changingRoomTime) / 2.0))
 			'to building -> fade in

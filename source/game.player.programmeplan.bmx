@@ -181,7 +181,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Print "=== AD/PROGRAMME PLAN PLAYER " + owner + " ==="
 		For Local i:Int = 0 To Max(programmes.length - 1, advertisements.length - 1)
 			Local currentHour:Int = GetHourFromArrayIndex(i) 'hours since start
-			Local time:Double = GetWorldTime().MakeTime(0, 0, currentHour, 0)
+			Local time:Long = GetWorldTime().MakeTime(0, 0, currentHour, 0)
 			Local adString:String = ""
 			Local progString:String = ""
 
@@ -408,7 +408,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'removes slot lock info from past days (to keep things small sized)
 	Method RemoveObsoleteSlotLocks:int()
-		local time:Double = GetWorldTime().GetDay()*24 ' + 0 hours, start at midnight)
+		local time:Long = GetWorldTime().GetDay()*24 ' + 0 hours, start at midnight)
 
 		For local k:TIntKey = EachIn slotLocks.Keys()
 			if k.value < time

@@ -11,11 +11,11 @@ Import "game.newsagency.sports.bmx"
 'at the moment only a base object
 Type TNewsAgency
 	'when to announce a new newsevent
-'	Field NextEventTime:Double = -1
+'	Field NextEventTime:Long = -1
 	'check for a new news every x-y minutes
 '	Field NextEventTimeInterval:int[] = [90, 140]
 
-	Field NextEventTimes:Double[]
+	Field NextEventTimes:Long[]
 	'check for a new news every x-y minutes
 	Field NextEventTimeIntervals:Int[][]
 
@@ -27,7 +27,7 @@ Type TNewsAgency
 	'=== TERRORIST HANDLING ===
 	'both parties (VR and FR) have their own array entry
 	'when to update aggression the next time
-	Field terroristUpdateTime:Double[] = [Double(0),Double(0)]
+	Field terroristUpdateTime:Long[] = [0:Long, 0:long]
 	'update terrorists aggression every x-y minutes
 	Field terroristUpdateTimeInterval:Int[] = [80, 100]
 	'level of terrorists aggression (each level = new news)
@@ -50,7 +50,7 @@ Type TNewsAgency
 
 
 	Method New()
-		NextEventTimes = New Double[ TVTNewsGenre.count ]
+		NextEventTimes = New Long[ TVTNewsGenre.count ]
 		NextEventTimeIntervals = NextEventTimeIntervals[.. TVTNewsGenre.count]
 		For Local i:Int = 0 Until TVTNewsGenre.count
 			NextEventTimeIntervals[i] = [180, 300]
@@ -68,7 +68,7 @@ Type TNewsAgency
 		InitializeNextEventTimeIntervals()
 
 
-		terroristUpdateTime = [Double(0),Double(0)]
+		terroristUpdateTime = [0:Long, 0:Long]
 		terroristUpdateTimeInterval = [80, 100]
 		terroristAggressionLevel = [0, -1]
 		terroristAggressionLevelMax = 4
@@ -345,7 +345,7 @@ Type TNewsAgency
 
 	Method UpdateTerrorist:Int(terroristNumber:Int, mainAggressor:Int)
 		'set next update time (between min-max interval)
-		terroristUpdateTime[terroristNumber] = GetWorldTime().GetTimeGone() + 60*randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
+		terroristUpdateTime[terroristNumber] = GetWorldTime().GetTimeGone() + TWorldTime.MINUTELENGTH * randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
 
 
 		'adjust level progress
@@ -416,7 +416,7 @@ Type TNewsAgency
 			'reset to level 0
 			terroristAggressionLevel[terroristGroup] = 0
 			'8 * normal random "interval"
-			terroristUpdateTime[terroristGroup] :+ 8 * 60*randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
+			terroristUpdateTime[terroristGroup] :+ 8 * TWorldTime.MINUTELENGTH * randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
 		EndIf
 		Return True
 	End Method
@@ -909,7 +909,7 @@ Type TNewsAgency
 	End Method
 
 
-	Method AnnounceNewsEventToPlayers:Int(newsEvent:TNewsEvent, happenedTime:Double=0, sendNow:Int=False, ignoreSubscriptions:Int=False)
+	Method AnnounceNewsEventToPlayers:Int(newsEvent:TNewsEvent, happenedTime:Long=0, sendNow:Int=False, ignoreSubscriptions:Int=False)
 		If happenedTime = 0 Then happenedTime = newsEvent.happenedTime
 		newsEvent.doHappen(happenedTime)
 
@@ -1048,11 +1048,11 @@ Type TNewsAgency
 
 
 		'adjust time until next news
-		NextEventTimes[genre] = GetWorldTime().GetTimeGone() + 60 * (randRange(NextEventTimeIntervals[genre][0], NextEventTimeIntervals[genre][1]) + addMinutes)
+		NextEventTimes[genre] = GetWorldTime().GetTimeGone() + TWorldTime.MINUTELENGTH * (randRange(NextEventTimeIntervals[genre][0], NextEventTimeIntervals[genre][1]) + addMinutes)
 
 		'25% chance to have an even longer time (up to 2x)
 		If RandRange(0,100) < 25
-			NextEventTimes[genre] :+ randRange(NextEventTimeIntervals[genre][0], NextEventTimeIntervals[genre][1])
+			NextEventTimes[genre] :+ TWorldTime.MINUTELENGTH * randRange(NextEventTimeIntervals[genre][0], NextEventTimeIntervals[genre][1])
 			TLogger.Log("NewsAgency", "Reset NextEventTime for genre "+genre+" to "+ GetWorldTime().GetFormattedDate(NextEventTimes[genre])+" ("+Long(NextEventTimes[genre])+"). DOUBLE TIME.", LOG_DEBUG)
 		Else
 			TLogger.Log("NewsAgency", "Reset NextEventTime for genre "+genre+" to "+ GetWorldTime().GetFormattedDate(NextEventTimes[genre])+" ("+Long(NextEventTimes[genre])+")", LOG_DEBUG)

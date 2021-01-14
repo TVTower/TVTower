@@ -464,7 +464,7 @@ End Type
 'Berechnung einige Zeit aufbewahren kann.
 Type TBroadcast
 	'time of the Broadcast (since start of the game)
-	Field Time:Double = -1
+	Field Time:Long = -1
 	Field BroadcastType:Int
 	'Wie sahen die Märkte zu dieser Zeit aus?
 	Field AudienceMarkets:TList = CreateList()
@@ -779,7 +779,7 @@ Type TBroadcast
 
 	'returns how many percent of the target group are possibly watching
 	'TV at the given hour
-	Function GetPotentialAudiencePercentage_TimeMod:TAudience(time:Double = -1)
+	Function GetPotentialAudiencePercentage_TimeMod:TAudience(time:Long = -1)
 		If time < 0 Then time = GetWorldTime().GetTimeGone()
 
 		Local result:TAudience
@@ -829,13 +829,13 @@ Type TBroadcast
 
 	'returns how many percent of the people watch TV depending on the
 	'world weather (rain = better audience)
-	Function GetPotentialAudiencePercentage_WeatherMod:TAudience(time:Double = -1)
+	Function GetPotentialAudiencePercentage_WeatherMod:TAudience(time:Long = -1)
 		Local weatherMod:Float = GameConfig.GetModifier(modKeyStationMap_Audience_WeatherModLS)
 		Return New TAudience.InitValue(weatherMod, weatherMod)
 	End Function
 
 
-	Function GetPotentialAudienceModifier:TAudience(time:Double = -1)
+	Function GetPotentialAudienceModifier:TAudience(time:Long = -1)
 		Local modifier:TAudience = New TAudience.InitValue(1, 1)
 
 		'modify according to current hour
@@ -1177,7 +1177,7 @@ Type TAudienceMarketCalculation
 	End Method
 
 
-	Method ComputeAudience(time:Double = -1)
+	Method ComputeAudience(time:Long = -1)
 		If time <= 0 Then time = GetWorldTime().GetTimeGone()
 
 		'Die Zapper, um die noch gekämpft werden kann.
@@ -1231,7 +1231,7 @@ Type TAudienceMarketCalculation
 
 
 	'returns amount of people zapping through the programmes
-	Method GetPotentialChannelSurfer:TAudience(time:Double)
+	Method GetPotentialChannelSurfer:TAudience(time:Long)
 		'reduce the maximum audience to the available audience at that
 		'time
 		Local potentialChannelSurfer:TAudience

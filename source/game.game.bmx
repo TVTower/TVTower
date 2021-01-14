@@ -2081,40 +2081,41 @@ endrem
 
 		'==== HANDLE IN GAME TIME ====
 		'less than a ingame minute gone? nothing to do YET
-		If worldTime.GetTimeGone() - lastTimeMinuteGone < 60.0 Then Return
+		If worldTime.GetTimeGone() - lastTimeMinuteGone < TWorldTime.MINUTELENGTH Then Return
 
 		'==== HANDLE GONE/SKIPPED MINUTES ====
 		'if speed is to high - minutes might get skipped,
 		'handle this case so nothing gets lost.
 		'missedMinutes is >1 in all cases (else this part isn't run)
-		Local missedSeconds:Float = (worldTime.GetTimeGone() - lastTimeMinuteGone)
-		Local missedMinutes:Float = missedSeconds/60.0
-		Local daysMissed:Int = Floor(missedMinutes / (24*60))
+		Local missedMilliseconds:Int = (worldTime.GetTimeGone() - lastTimeMinuteGone)
+		Local missedSeconds:Int = missedMilliseconds / 1000
+		Local missedMinutes:Int = missedMilliseconds / TWorldTime.MINUTELENGTH
+		Local daysMissed:Int = missedMilliseconds / TWorldTime.DAYLENGTH
 
 		'adjust the game time so GetWorldTime().GetDayHour()/Minute/...
 		'return the correct value for each loop cycle. So Functions can
 		'rely on that functions to get the time they request.
 		'as everything can get calculated using "timeGone", no further
 		'adjustments have to take place
-		worldTime._timeGone:- missedSeconds
+		worldTime._timeGone :- missedMilliseconds
 
 		For Local i:Int = 1 To missedMinutes
 			'add back another gone minute each loop
-			worldTime._timeGone :+ 60
+			worldTime._timeGone :+ TWorldTime.MINUTELENGTH
 
 			'day
 			If worldTime.GetDayHour() = 0 And worldTime.GetDayMinute() = 0
 				'year
 				If worldTime.GetDayOfYear() = 1
-					TriggerBaseEvent(GameEventKeys.Game_OnYear, New TData.AddDouble("time", worldTime.GetTimeGone()))
+					TriggerBaseEvent(GameEventKeys.Game_OnYear, New TData.AddLong("time", worldTime.GetTimeGone()))
 				EndIf
 
-				TriggerBaseEvent(GameEventKeys.Game_OnDay, New TData.AddDouble("time", worldTime.GetTimeGone()))
+				TriggerBaseEvent(GameEventKeys.Game_OnDay, New TData.AddLong("time", worldTime.GetTimeGone()))
 			EndIf
 
 			'hour
 			If worldTime.GetDayMinute() = 0
-				TriggerBaseEvent(GameEventKeys.Game_OnHour, New TData.AddDouble("time", worldTime.GetTimeGone()))
+				TriggerBaseEvent(GameEventKeys.Game_OnHour, New TData.AddLong("time", worldTime.GetTimeGone()))
 
 				'reset availableNewsEventList - maybe this hour made some
 				'more news available
@@ -2122,11 +2123,13 @@ endrem
 			EndIf
 
 			'minute
-			TriggerBaseEvent(GameEventKeys.Game_OnMinute, New TData.AddDouble("time", worldTime.GetTimeGone()))
+			TriggerBaseEvent(GameEventKeys.Game_OnMinute, New TData.AddLong("time", worldTime.GetTimeGone()))
 		Next
 
 		'reset time of last minute so next update can calculate missed minutes
 		lastTimeMinuteGone = worldTime.GetTimeGone()
+		'add back remainder (what did not fit into a single minute..)
+		worldTime._timeGone :+ (missedMilliseconds - missedMinutes * TWorldTime.MINUTELENGTH)
 	End Method
 End Type
 

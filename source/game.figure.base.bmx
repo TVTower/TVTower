@@ -247,11 +247,11 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		if sprite and sprite.name then sprite = GetSpriteFromRegistry(sprite.name)
 
 		'repair timers based on old "GetTime()"
-		if WaitEnterTimer - GetBuildingTime().GetMillisecondsGone() > WaitEnterLeavingTime
-			WaitEnterTimer = GetBuildingTime().GetMillisecondsGone() + WaitEnterLeavingTime
+		if WaitEnterTimer - GetBuildingTime().GetTimeGone() > WaitEnterLeavingTime
+			WaitEnterTimer = GetBuildingTime().GetTimeGone() + WaitEnterLeavingTime
 		endif
-		if WaitLeavingTimer - GetBuildingTime().GetMillisecondsGone() > WaitEnterLeavingTime
-			WaitLeavingTimer = GetBuildingTime().GetMillisecondsGone() + WaitEnterLeavingTime
+		if WaitLeavingTimer - GetBuildingTime().GetTimeGone() > WaitEnterLeavingTime
+			WaitLeavingTimer = GetBuildingTime().GetTimeGone() + WaitEnterLeavingTime
 		endif
 	End Method
 
@@ -606,12 +606,12 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Method IsWaitingToEnter:Int()
-		Return WaitEnterTimer > GetBuildingTime().GetMillisecondsGone()
+		Return WaitEnterTimer > GetBuildingTime().GetTimeGone()
 	End Method
 
 
 	Method IsWaitingToLeave:Int()
-		Return WaitLeavingTimer > GetBuildingTime().GetMillisecondsGone()
+		Return WaitLeavingTimer > GetBuildingTime().GetTimeGone()
 	End Method
 
 

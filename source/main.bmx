@@ -2460,13 +2460,13 @@ Type TSaveGame Extends TGameState
 		_gameSummary.Add("game_initial_builddate", GameConfig.savegame_initialBuildDate)
 		_gameSummary.Add("game_initial_version", GameConfig.savegame_initialVersion)
 		_gameSummary.Add("game_initial_savegameVersion", GameConfig.savegame_initialSaveGameVersion)
-		_gameSummary.AddNumber("game_saveCount", GameConfig.savegame_saveCount)
+		_gameSummary.AddInt("game_saveCount", GameConfig.savegame_saveCount)
 		_gameSummary.Add("game_mode", "singleplayer")
-		_gameSummary.AddNumber("game_timeGone", GetWorldTime().GetTimeGone())
+		_gameSummary.AddLong("game_timeGone", GetWorldTime().GetTimeGone())
 		_gameSummary.Add("player_name", GetPlayer().name)
 		_gameSummary.Add("player_channelName", GetPlayer().channelName)
-		_gameSummary.AddNumber("player_money", GetPlayer().GetMoney())
-		_gameSummary.AddNumber("savegame_version", SAVEGAME_VERSION)
+		_gameSummary.AddLong("player_money", GetPlayer().GetMoney())
+		_gameSummary.AddInt("savegame_version", SAVEGAME_VERSION)
 		'store last ID of all entities, to avoid duplicates
 		'store them in game summary to be able to reset before "restore"
 		'takes place
@@ -2475,8 +2475,8 @@ Type TSaveGame Extends TGameState
 		'- load in game 1 (having game objects with ID 1 - 1000)
 		'- new entities would again get ID 1 - 1000
 		'  -> duplicates
-		_gameSummary.AddNumber("entitybase_lastID", TEntityBase.lastID)
-		_gameSummary.AddNumber("gameobject_lastID", TGameObject.LastID)
+		_gameSummary.AddInt("entitybase_lastID", TEntityBase.lastID)
+		_gameSummary.AddInt("gameobject_lastID", TGameObject.LastID)
 
 		Super.BackupGameData()
 

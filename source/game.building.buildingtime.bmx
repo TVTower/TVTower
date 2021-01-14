@@ -13,7 +13,7 @@ Type TBuildingTime extends TWorldTimeBase {_exposeToLua="selected"}
 	End Function
 
 	'override
-	Method Init:TBuildingTime(timeGone:Double = 0.0)
+	Method Init:TBuildingTime(timeGone:Long = 0)
 		Super.Init(timeGone)
 
 		return self

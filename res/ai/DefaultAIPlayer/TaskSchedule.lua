@@ -1306,7 +1306,8 @@ function JobAnalyzeEnvironment:Tick()
 						local licenceReq = BuySingleProgrammeLicenceRequisition()
 						licenceReq.minPrice = 0
 						licenceReq.maxPrice = licenceBudget
-						licenceReq.lifeTime = WorldTime.GetTimeGone() + 12 * 3600 --8 hours from now
+						--12 hours from now (time is in milliseconds!)
+						licenceReq.lifeTime = WorldTime.GetTimeGone() + 12 * 3600 * 1000
 						requisition:AddLicenceReq(licenceReq)
 
 						budget = budget - licenceBudget

@@ -168,13 +168,13 @@ Type TRoomBaseCollection
 		For Local room:TRoomBase = EachIn GetInstance().list
 			'someone entering / leaving the room?
 			For local action:TEnterLeaveAction = EachIn room.enteringStack
-				if action.finishTime <= GetBuildingTime().GetMillisecondsGone() or GetBuildingTime().GetTimeFactor() < 0.25
+				if action.finishTime <= GetBuildingTime().GetTimeGone() or GetBuildingTime().GetTimeFactor() < 0.25
 					room.FinishEnter(action.entity)
 				endif
 			Next
 			For local action:TEnterLeaveAction = EachIn room.leavingStack
 				'if time is running slow, finish without waiting
-				if action.finishTime <= GetBuildingTime().GetMillisecondsGone() or GetBuildingTime().GetTimeFactor() < 0.25
+				if action.finishTime <= GetBuildingTime().GetTimeGone() or GetBuildingTime().GetTimeFactor() < 0.25
 					room.FinishLeave(action.entity)
 				endif
 			Next
@@ -254,13 +254,13 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	'does something block that room (eg. previous bomb attack)
 	Field blockedState:Int = BLOCKEDSTATE_NONE
 	'time until this seconds in the game are gone
-	Field blockedUntil:Double = 0
+	Field blockedUntil:Long = 0
 	Field blockedUntilShownInTooltip:int = False
 	Field blockedText:string = ""
 	'if > 0 : time a bomb was placed
-	Field bombPlacedTime:Double = -1
+	Field bombPlacedTime:Long = -1
 	'if > 0 : a bomb explosion will be drawn
-	Field bombExplosionTime:Double = -1
+	Field bombExplosionTime:Long = -1
 	'bitmask (1/2/4/8) describing which players switched the signs of
 	'the room - and therefore redirected eg. a bomb to the wrong room
 	Field roomSignMovedByPlayers:int = 0
@@ -1003,7 +1003,7 @@ End Rem
 
 		addOccupant(entity)
 
-		AddEnteringEntity(entity, door, GetBuildingTime().GetMillisecondsGone() + speed)
+		AddEnteringEntity(entity, door, GetBuildingTime().GetTimeGone() + speed)
 
 		'inform others that we start going into the room (eg. for animations)
 		TriggerBaseEvent(GameEventKeys.Room_OnBeginEnter, null, self, entity )
@@ -1051,7 +1051,7 @@ End Rem
 		'figure isn't in that room - so just leave
 		if not isOccupant(entity) then return TRUE
 
-		AddLeavingEntity(entity, door, GetBuildingTime().GetMillisecondsGone() + 2*speed)
+		AddLeavingEntity(entity, door, GetBuildingTime().GetTimeGone() + 2*speed)
 
 		'inform others that we start going out of that room (eg. for animations)
 		TriggerBaseEvent(GameEventKeys.Room_OnBeginLeave, null, self, entity )

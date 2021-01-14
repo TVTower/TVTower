@@ -398,14 +398,14 @@ Type TNetworkHelper extends TNetworkHelperBase
 		'ping in ms -> latency/2 -> 0.5*latency/16ms = "1,3 updates bis ping ankommt"
 		'pro Update: zeiterhoehung von "GetGameBase().speed/10.0"
 		'-> bereinigung: "0.5*latency/16" * "GetGameBase().speed/10.0"
-		local correction:Double = 0.5 * Network.client.latency / GetDeltaTimer().GetDelta() * GetWorldTime()._timeFactor/10.0
+		local correction:Long = 0.5 * Network.client.latency / GetDeltaTimer().GetDelta() * GetWorldTime()._timeFactor/10.0
 		'we want it in s not in ms
 		correction :/ 1000.0
 		'print obj.getFloat(3) + "  + "+correction
 
 		GetWorldTime()._timeFactor = obj.getDouble(2)
 		GetWorldTime()._paused = obj.getInt(3)
-		GetWorldTime().SetTimeGone(obj.getDouble(5) + correction)
+		GetWorldTime().SetTimeGone(Long(obj.getDouble(5) + correction))
 	End Method
 
 'checked

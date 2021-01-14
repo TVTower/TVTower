@@ -79,9 +79,9 @@ Function onStartSeasonPart:Int(event:TEventBase)
 	Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
 
 
-	Local time:Double = event.GetData().GetDouble("time")
+	Local time:Long = event.GetData().Getlong("time")
 
-	if GetWorldTime().getDay(time) < GetWorldTime().GetStartDay() then return False
+	if GetWorldTime().GetDay(time) < GetWorldTime().GetStartDay() then return False
 
 	print "onStartSeasonPart: "+league.GetCurrentSeason().part+"/"+league.GetCurrentSeason().partMax+"  "+league.name
 End Function
@@ -90,7 +90,7 @@ Function onFinishSeasonPart:Int(event:TEventBase)
 	Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
 
 
-	Local time:Double = event.GetData().GetDouble("time")
+	Local time:Long = event.GetData().Getlong("time")
 
 	if GetWorldTime().getDay(time) < GetWorldTime().GetStartDay() then return False
 
@@ -278,7 +278,7 @@ End Type
 Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 	'=== WEATHER HANDLING ===
 	'time of last weather event/news
-	Field weatherUpdateTime:Double = 0
+	Field weatherUpdateTime:Long = 0
 	'announce new weather every x-y minutes
 	Field weatherUpdateTimeInterval:int[] = [270, 300]
 	Field weatherType:int = 0

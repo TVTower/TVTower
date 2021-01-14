@@ -596,7 +596,7 @@ Type TIngameScreenChangeEffect_SimpleFader extends TScreenChangeEffect_SimpleFad
 
 
 	Method GetCurrentTime:Long()
-		GetBuildingTime().GetMillisecondsGone()
+		GetBuildingTime().GetTimeGone()
 	End Method
 
 
@@ -624,7 +624,7 @@ Type TIngameScreenChangeEffect_ClosingRects extends TScreenChangeEffect_ClosingR
 
 
 	Method GetCurrentTime:Long()
-		return GetBuildingTime().GetMillisecondsGone()
+		return GetBuildingTime().GetTimeGone()
 	End Method
 
 

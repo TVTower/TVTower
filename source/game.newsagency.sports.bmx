@@ -217,7 +217,7 @@ Type TNewsEventSport Extends TGameObject
 
 		playoffsState = 1
 
-		TriggerBaseEvent(GameEventKeys.Sport_StartPlayoffs, New TData.AddDouble("time", GetWorldTime().GetTimeGone()), Self)
+		TriggerBaseEvent(GameEventKeys.Sport_StartPlayoffs, New TData.AddLong("time", GetWorldTime().GetTimeGone()), Self)
 	End Method
 
 
@@ -293,7 +293,7 @@ Type TNewsEventSport Extends TGameObject
 
 		playoffsState = 2
 
-		TriggerBaseEvent(GameEventKeys.Sport_FinishPlayoffs, New TData.AddDouble("time", GetWorldTime().GetTimeGone()), Self)
+		TriggerBaseEvent(GameEventKeys.Sport_FinishPlayoffs, New TData.AddLong("time", GetWorldTime().GetTimeGone()), Self)
 	End Method
 
 
@@ -366,7 +366,7 @@ Type TNewsEventSport Extends TGameObject
 			?
 		Next
 
-		TriggerBaseEvent(GameEventKeys.Sport_StartSeason, New TData.AddDouble("time", time), Self)
+		TriggerBaseEvent(GameEventKeys.Sport_StartSeason, New TData.AddLong("time", time), Self)
 	End Method
 
 

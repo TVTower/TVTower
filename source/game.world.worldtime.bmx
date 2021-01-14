@@ -6,8 +6,8 @@ Import "game.world.worldtime.base.bmx"
 
 'rem
 Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
-	'time (seconds) used when starting
-	Field _timeStart:Double = 0.0
+	'time (milliseconds) used when starting
+	Field _timeStart:Long = 0
 	'how many days does each season have? (year = 4 * value)
 	Field _daysPerSeason:int = 3
 	'how many days does a week have?
@@ -21,8 +21,10 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 	Global _instance:TWorldTime
 
-	Const DAYLENGTH:int      = 86400
-	Const HOURLENGTH:int     = 3600
+	Const DAYLENGTH:int      = 86400 * 1000
+	Const HOURLENGTH:int     = 3600 * 1000
+	Const MINUTELENGTH:int   = 60 * 1000
+	Const SECONDLENGTH:int   = 1000
 	Const DAYPHASE_DAWN:int	 = 0
 	Const DAYPHASE_DAY:int	 = 1
 	Const DAYPHASE_DUSK:int	 = 2
@@ -44,7 +46,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method Init:TWorldTime(timeGone:Double = 0.0)
+	Method Init:TWorldTime(timeGone:Long = 0)
 		SetTimeGone(timeGone)
 
 		return self
@@ -54,7 +56,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	Method Initialize:int()
 		Super.Initialize()
 
-		_timeStart = 0:double
+		_timeStart = 0
 		_daysPerSeason = 3
 		_daysPerWeek = 7
 		currentPhase = 0
@@ -64,7 +66,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 	'create a time in seconds
 	'attention: there are only GetDaysPerYear() days per year, not 365!
-	Method MakeTime:Double(year:Int, day:Int, hour:Long, minute:Long, second:Long = 0) {_exposeToLua}
+	Method MakeTime:Long(year:Int, day:Int, hour:Long, minute:Long, second:Long = 0, milliseconds:Long = 0) {_exposeToLua}
 		'old:
 		'year=1, day=1, hour=0, minute=1 should result in "1*yearInSeconds+1*60"
 		'as it is 1 minute after end of last year - new years eve ;D
@@ -73,19 +75,19 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 		'new:
 		'year=1, day=1, hour=0, minute=1 should result in "1*yearInSeconds+1*dayInSeconds+1*60"
-		Return ((double(day + year*GetDaysPerYear())*24 + hour)*60 + minute)*60 + second
+		Return (((Long(day + Long(year)*GetDaysPerYear()) * 24 + hour) * 60 + minute) * 60 + second) * SECONDLENGTH + milliseconds
 	End Method
 
 
 	'create a time in seconds
 	'attention: month and day use real world values (12m and 365d)
-	Method MakeRealTime:Double(year:int, month:int, day:int, hour:int, minute:int, second:int = 0) {_exposeToLua}
-		Return ((double((30*month + day)*GetDaysPerYear()/360.0 + year*GetDaysPerYear())*24 + hour)*60 + minute)*60 + second
+	Method MakeRealTime:Long(year:int, month:int, day:int, hour:Long, minute:Long, second:Long = 0, millisecond:Long = 0) {_exposeToLua}
+		Return (((((Long(30 * month + day) * GetDaysPerYear()) / 360 + year * GetDaysPerYear()) * 24 + hour) * 60 + minute) * 60 + second) * SECONDLENGTH + millisecond
 	End Method
 
 
-	Method AddTimeGone:int(year:int, day:int, hour:Double, minute:Double, second:Double)
-		local add:Double = second + 60*(minute + 60*(hour + 24*(day + year*GetDaysPerYear())))
+	Method AddTimeGone:int(year:int, day:int, hour:Long, minute:Long, second:Long, milliseconds:Long = 0)
+		local add:Long = milliseconds + SECONDLENGTH * (second + 60 * (minute + 60 * (hour + 24 * Long(day + year * GetDaysPerYear()))))
 
 		_timeGone :+ add
 		'also set last update
@@ -93,9 +95,9 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method ModifyTime:Long(time:Long = -1, year:int=0, day:int=0, hour:Long=0, minute:Long=0, second:Long=0)
+	Method ModifyTime:Long(time:Long = -1, year:int=0, day:int=0, hour:Long=0, minute:Long=0, second:Long=0, millisecond:Long = 0)
 		if time = -1 then time = GetTimeGone()
-		return time + Long(MakeTime(year, day, hour, minute, second))
+		return time + MakeTime(year, day, hour, minute, second, millisecond)
 	End Method
 
 
@@ -104,38 +106,47 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		local dateTime:string[] = str.split(" ")
 		local dateParts:string[] = dateTime[0].split("-")
 
-		local years:int = 0
-		local months:int = 0
-		local days:Float = 0
-		local hours:int = 0
-		local minutes:int = 0
-		local seconds:int = 0
-
-
+		local years:Int = 0
+		local months:Int = 0
+		local days:Int = 0
+		local hours:Int = 0
+		local minutes:Int = 0
+		local seconds:Int = 0
+		local milliseconds:Int = 0
+		
 		if dateParts.length > 0 then years = int(dateParts[0])
 		'subtract 1 as we _add_ time so "january" should be 0 instead
 		'of 1 ...
-		if dateParts.length > 1 then days = int(dateParts[1]) - 1
+		if dateParts.length > 1 then months = int(dateParts[1]) - 1
 		'scale down the days as there are x days/year,
-		if dateParts.length > 2 then days :+ int(dateParts[2]) * (GetDaysPerYear()/365.0)
+		if dateParts.length > 2 then days = int(dateParts[2])
 
 		if dateTime.length > 1
 			local timeParts:string[] = dateTime[1].split(":")
 			if timeParts.length > 0 then hours = int(timeParts[0])
 			if timeParts.length > 1 then minutes = int(timeParts[1])
 			if timeParts.length > 2 then seconds = int(timeParts[2])
+			if timeParts.length > 3 then milliseconds = int(timeParts[3])
 		endif
-		'give remainders of a rounded day value
-		local addHours:Float = 24.0 * (days - floor(days))
-		local addMinutes:Float = 60.0 * (addHours - floor(addHours))
 
-		'add remainder to hours/minutes
-		days = floor(days)
-		hours :+ floor(addHours)
-		minutes :+ floor(addMinutes)
+		'convert "fractional values" (months per year etc) into "seconds"
+		'sum them up and let the maketime() function handle it
 
+		'use "long()" to ensure the calculation results in a long not int
+		Local millisecondsTotal:Long = 0
+		millisecondsTotal :+ Long(years) * GetDaysPerYear() * DAYLENGTH
+		'months: divide by 12 as last to minimize lost remainder 
+		millisecondsTotal :+ (Long(months) * GetDaysPerYear() * DAYLENGTH) / 12
+		millisecondsTotal :+ Long(days) * DAYLENGTH
+		millisecondsTotal :+ hours * HOURLENGTH
+		millisecondsTotal :+ minutes * MINUTELENGTH
+		millisecondsTotal :+ seconds * SECONDLENGTH
+		millisecondsTotal :+ milliseconds
 
-		return GetWorldTime().MakeTime(years, int(days), hours, minutes, seconds)
+		'alternative (remove years from secondsTotal calculation)
+		'GetWorldTime().MakeTime(years, 0, 0, 0, 0, milliseconds)
+
+		Return millisecondsTotal
 	End Method
 
 
@@ -144,7 +155,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		if hour = -1
 			_dawnTime = -1
 		else
-			_dawnTime = hour * 3600
+			_dawnTime = hour * HOURLENGTH
 		endif
 	End Method
 
@@ -163,31 +174,31 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetTimeStart(timeStart:Double)
+	Method SetTimeStart(timeStart:Long)
 		_timeStart = timeStart
 	End Method
 
 
-	Method GetTimeStart:Double() {_exposeToLua}
+	Method GetTimeStart:Long() {_exposeToLua}
 		Return _timeStart
 	End Method
 
 
-	Method GetTimeGoneAsMinute:Double(sinceStart:Int=False) {_exposeToLua}
-		Local useTime:Double = _timeGone
+	Method GetTimeGoneAsMinute:Long(sinceStart:Int = False) {_exposeToLua}
+		Local useTime:Long = _timeGone
 		If sinceStart Then useTime = (_timeGone - _timeStart)
-		Return Int(Floor(useTime / 60))
+		Return useTime / MINUTELENGTH
 	End Method
 
 
-	Method GetYearLength:int() {_exposeToLua}
+	Method GetYearLength:Long() {_exposeToLua}
 		return DAYLENGTH * GetDaysPerYear()
 	End Method
 
 
 	'get the amount of days the worldTime completed till now
 	'returns completed days
-	Method GetDaysRun:Int(useTime:Double= -1.0) {_exposeToLua}
+	Method GetDaysRun:Int(useTime:Long = -1) {_exposeToLua}
 		return GetDay(useTime) - GetStartDay()
 	End Method
 
@@ -204,45 +215,45 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetDayTime:Float(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetDayTime:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
 		return useTime mod DAYLENGTH
 	End Method
 
 
 	'Calculated hour of the days clock (xx:00:00)
-	Method GetDayHour:int(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetDayHour:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
-		return int((floor((usetime / DAYLENGTH) * 24)) mod 24)
+		return ((useTime * 24) / DAYLENGTH) mod 24
 	End Method
 
 
 	'Calculated minute of the days clock (00:xx:00)
-	Method GetDayMinute:int(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetDayMinute:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
-		return int((floor(useTime / 60)) mod 60)
+		return (useTime / MINUTELENGTH) mod 60
 	End Method
 
 
 	'Calculated second of the days clock (00:00:xx)
-	Method GetDaySecond:int(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetDaySecond:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
-		return int(useTime mod 60)
+		return int(useTime / SECONDLENGTH mod 60)
 	End Method
 
 
-	Method GetDayProgress:Float(useTime:Double = -1.0) {_exposeToLua}
-		return GetDayTime(useTime) / DAYLENGTH
+	Method GetDayProgress:Float(useTime:Long = -1) {_exposeToLua}
+		return Float(GetDayTime(useTime)) / DAYLENGTH
 	End Method
 
 
 	'1-4, Spring  Summer  Autumn  Winter
-	Method GetSeason:int(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetSeason:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
 		'would lead to "month 1-3 = spring"
 		'return ceil(useTime / GetYearLength() * 4) mod 4
@@ -258,7 +269,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetSeasonName:string(useTime:Double = -1.0) {_exposeToLua}
+	Method GetSeasonName:String(useTime:Long = -1) {_exposeToLua}
 		Select GetSeason(useTime)
 			Case 1  return "SPRING"
 			Case 2  return "SUMMER"
@@ -271,73 +282,81 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 	'attention: LUA uses a default param of "0"
 	'-> so for this and other functions we have to use "<=0" instead of "<0"
-	Method GetHour:int(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetHour:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
-		return floor(useTime / HOURLENGTH)
+		return useTime / HOURLENGTH
 	End Method
 
 
 	'attention: LUA uses a default param of "0"
 	'-> so for this and other functions we have to use "<=0" instead of "<0"
-	Method GetDay:int(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetDay:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
-		return floor(useTime / DAYLENGTH)
+		return useTime / DAYLENGTH
 	End Method
 
 
 	'attention: LUA uses a default param of "0"
 	'-> so for this and other functions we have to use "<=0" instead of "<0"
-	Method GetOnDay:int(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
-
-		return floor(useTime / DAYLENGTH) + 1
+	Method GetOnDay:Int(useTime:Long = -1) {_exposeToLua}
+		Return GetDay(useTime) + 1
 	End Method
 
 
-	Method GetMonth:int(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetMonth:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
-		return floor(useTime / GetYearLength() * 12) mod 12 +1
+		return (useTime * 12 / GetYearLength()) mod 12 + 1
 	End Method
 
 
-	Method GetYear:int(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetYear:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
-		return floor(useTime / GetYearLength())
+		return useTime / GetYearLength()
 	End Method
 
 
-	Method GetYearProgress:Float(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetYearProgress:Float(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
-		return (useTime / GetYearLength()) mod floor(useTime)
+		return Float(Double(useTime mod GetYearLength()) / GetYearLength())
 	End Method
 
 
 	'returns the hour which is in 60 minutes (23:30 -> 0)
 	Method GetNextHour:Int() {_exposeToLua}
-		Return (GetDayHour()+1 mod 24)
+		Return (GetDayHour() + 1) mod 24
 	End Method
 
 
-	Method GetNextMidnight:Long(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetNextMidnight:Long(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
 		Return (useTime + DAYLENGTH) - (useTime mod DAYLENGTH)
 	End Method
 
 
-	Method GetWeekday:Int(useTime:Double = -1.0) {_exposeToLua}
-		Return Max(0, GetDay(useTime)) Mod _daysPerWeek
+	Method GetWeekday:Int(useTime:Long = -1) {_exposeToLua}
+		Local d:Int = GetDay(useTime)
+		if d < 0
+			Return ((d Mod _daysPerWeek) + _daysPerWeek) Mod _daysPerWeek
+		Else
+			Return d Mod _daysPerWeek
+		EndIf
 	End Method
 
 
 	Method GetWeekdayByDay:Int(_day:Int = -1) {_exposeToLua}
 		If _day < 0 Then _day = GetOnDay()
-		Return Max(0,_day) Mod _daysPerWeek
+		'maybe OnDay is still negative...
+		if _day < 0
+			Return ((_day Mod _daysPerWeek) + _daysPerWeek) Mod _daysPerWeek
+		Else
+			Return _day Mod _daysPerWeek
+		EndIf
 	End Method
 
 
@@ -357,16 +376,18 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 
 	'returns the current day in a month (30 days/month)
-	Method GetDayOfMonth:int(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetDayOfMonth:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
-		'local month:int = ceil(GetYearProgress(useTime)*12)
 		'day = 1-30
-		return floor(GetYearProgress(usetime)*360) mod 30 +1
+		'return floor(GetYearProgress(usetime)*360) mod 30 +1
+
+		'add + 1 so time "0" would return day 1 of the first month in year 0
+		return (((useTime mod GetYearLength())*360) / GetYearLength()) mod 30 + 1
 	End Method
 
 
-	Method GetDayOfYear:Int(_time:Double = 0) {_exposeToLua}
+	Method GetDayOfYear:Int(_time:Long = -1) {_exposeToLua}
 		Return (GetDay(_time) - GetYear(_time) * GetDaysPerYear()) + 1
 	End Method
 
@@ -402,34 +423,34 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	'returns day of the week including gameday
 	Method GetFormattedDay:String(_day:Int = -1) {_exposeToLua}
 		if _day = -1 then _day = GetDaysRun()
-		Return _day+"."+GetLocale("DAY")+" ("+ GetLocale("WEEK_SHORT_"+GetDayName(GetWeekdayByDay(_day)))+ ")"
+		Return _day + "." + GetLocale("DAY") + " (" + GetLocale("WEEK_SHORT_" + GetDayName(GetWeekdayByDay(_day))) + ")"
 	End Method
 
 
 	Method GetFormattedDayLong:String(_day:Int = -1) {_exposeToLua}
-		Return GetLocale("WEEK_LONG_"+GetDayName(GetWeekdayByDay(_day)))
+		Return GetLocale("WEEK_LONG_" + GetDayName(GetWeekdayByDay(_day)))
 	End Method
 
 
 	'Summary: returns formatted value of actual worldtime
-	Method GetFormattedTime:String(time:Double = -1, format:string="h:i") {_exposeToLua}
+	Method GetFormattedTime:String(time:Long = -1, format:string="h:i") {_exposeToLua}
 		Local strHours:String = GetDayHour(time)
 		Local strMinutes:String = GetDayMinute(time)
 		Local strSeconds:String = GetDaySecond(time)
 
-		If Int(strHours) < 10 Then strHours = "0"+strHours
-		If Int(strMinutes) < 10 Then strMinutes = "0"+strMinutes
-		If Int(strSeconds) < 10 Then strSeconds = "0"+strSeconds
+		If Int(strHours) < 10 Then strHours = "0" + strHours
+		If Int(strMinutes) < 10 Then strMinutes = "0" + strMinutes
+		If Int(strSeconds) < 10 Then strSeconds = "0" + strSeconds
 		Return format.replace("h", strHours).replace("i", strMinutes).replace("s", strSeconds)
 	End Method
 
 
-	Method GetFormattedGameDate:String(time:Double = -1, format:string="g/h:i (d.m.y)") {_exposeToLua}
+	Method GetFormattedGameDate:String(time:Long = -1, format:string="g/h:i (d.m.y)") {_exposeToLua}
 		return GetFormattedDate(time, format)
 	End Method
 
 
-	Method GetFormattedDate:String(time:Double = -1, format:string="h:i d.m.y") {_exposeToLua}
+	Method GetFormattedDate:String(time:Long = -1, format:string="h:i d.m.y") {_exposeToLua}
 		Local strYear:String = GetYear(time)
 		Local strMonth:String = GetMonth(time)
 		Local strDay:String = GetDayOfMonth(time)
@@ -443,134 +464,132 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetFormattedTimeDifference:String(timeA:Double = -1, timeB:Double, format:string="d h i") {_exposeToLua}
+	Method GetFormattedTimeDifference:String(timeA:Long = -1, timeB:Long, format:string="d h i") {_exposeToLua}
 		if timeA = -1 then timeA = GetTimeGone()
 		return GetFormattedDuration(timeB - timeA, format)
 	End Method
 
 
-	Method GetFormattedDuration:String(duration:Double, format:string="d h i") {_exposeToLua}
-		local days:int = duration / TWorldTime.DAYLENGTH
-		local hours:int = (duration - days*TWorldTime.DAYLENGTH) / TWorldTime.HOURLENGTH
-		local minutes:int = (duration - days*TWorldTime.DAYLENGTH - hours*TWorldTime.HOURLENGTH) / 60
+	Method GetFormattedDuration:String(duration:Long, format:string="d h i") {_exposeToLua}
+		local days:Int = duration / TWorldTime.DAYLENGTH
+		local hours:Int = (duration - days * TWorldTime.DAYLENGTH) / TWorldTime.HOURLENGTH
+		local minutes:Int = (duration - days * TWorldTime.DAYLENGTH - hours * TWorldTime.HOURLENGTH) / MINUTELENGTH
 
 		return format.replace("d", days + GetLocale("DAY_SHORT")).replace("h", hours + GetLocale("HOUR_SHORT")).replace("i", minutes + GetLocale("MINUTE_SHORT"))
 	End Method
 
+
 	'returns sunrise that day - in seconds
-	Method GetSunrise:int(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetSunrise:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
 		local month:int = GetMonth(useTime)
-		local dayOfMonth:int = GetDayOfMonth(useTime)
 		'stretch/shrink the days to our "days per year"
 		'resulting day:
 		'ex.: 20 daysPerYear -> 19 daysPerDay -> day30 = "day 2"
 		'ex.: 12 daysPerYear -> 30 daysPerDay -> day30 = "day 1"
-		dayOfMonth = floor(dayOfMonth / (360 / GetDaysPerYear()))
+		local dayOfMonth:int = (GetDayOfMonth(useTime) * GetDaysPerYear()) / 360
 
-		return 60 * (350 + 90.0 * cos( 180.0/PI * ((month-1)*30.5 + dayOfMonth +8)/58.1 ))
+		return MINUTELENGTH * (350 + 90.0 * cos( 180.0/PI * ((month-1) * 30.5 + dayOfMonth + 8) / 58.1 ))
 	End Method
 
 
 	'returns sunset that day - in seconds
-	Method GetSunset:int(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetSunset:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
 		local month:int = GetMonth(useTime)
-		'for details: see GetSunRise
-		local dayOfMonth:int = floor(GetDayOfMonth(useTime) / (360 / GetDaysPerYear()))
+		'for details: see GetSunrise
+		local dayOfMonth:int = (GetDayOfMonth(useTime) * GetDaysPerYear()) / 360
 
-		return 60* (1075 + 90.0 * sin( 180.0/PI * ((month-1)*30.5 + dayOfMonth -83)/58.1 ))
+		return MINUTELENGTH * (1075 + 90.0 * sin( 180.0/PI * ((month-1) * 30.5 + dayOfMonth - 83) / 58.1 ))
 	End Method
 
 
 	'returns seconds of daylight that day
-	Method GetDayLightLength:Float(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetDayLightLength:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
-		return GetSunset(useTime) - GetSunrise(useTime)
-
-		'return 0.35 * WorldTime.DAYLENGTH
+		Return GetSunset(useTime) - GetSunrise(useTime)
 	End Method
 
 
-	Method GetDawnDuration:Float(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetDawnDuration:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
-		return 0.15 * DAYLENGTH
+		'Return 0.15 * DAYLENGTH
+		Return DAYLENGTH / 100 * 15
 	End Method
 
 
-	Method GetDayDuration:Float(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetDayDuration:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
-		return GetDayLightLength(useTime)
-'		return 0.35 * WorldTime.DAYLENGTH
+		Return GetDayLightLength(useTime)
 	End Method
 
 
-	Method GetDuskDuration:Float(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetDuskDuration:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
-		return 0.15 * DAYLENGTH
+		'return 0.15 * DAYLENGTH
+		Return DAYLENGTH / 100 * 15
 	End Method
 
 
-	Method GetNightDuration:Float(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetNightDuration:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
 		'0.7 = rest of the day without dusk/dawn
-		return 0.7 * DAYLENGTH - GetDayLightLength()
-		'return 0.35 * DAYLENGTH
+		'Return 0.7 * DAYLENGTH - GetDayLightLength()
+		Return (DAYLENGTH / 10 * 7) - GetDayLightLength()
 	End Method
 
 
-	Method GetDawnPhaseBegin:Float(useTime:Double = -1.0) {_exposeToLua}
+	Method GetDawnPhaseBegin:Int(useTime:Long = -1) {_exposeToLua}
 		if _dawnTime > 0 then return _dawnTime
 		'have to end with sunrise
 		return GetSunrise(useTime) - GetDawnDuration(useTime)
-		'return 5*3600 'dawnTime
 	End Method
 
 
-	Method GetDayPhaseBegin:Float(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetDayPhaseBegin:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
 		return GetDawnPhaseBegin(useTime) + GetDawnDuration(useTime)
 	End Method
 
 
-	Method GetDuskPhaseBegin:Float(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetDuskPhaseBegin:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
 		return GetDayPhaseBegin(useTime) + GetDayDuration(useTime)
 	End Method
 
 
-	Method GetNightPhaseBegin:Float(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetNightPhaseBegin:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
 		return GetDuskPhaseBegin(useTime) + GetDuskDuration(useTime)
 	End Method
 
 
-	Method IsNight:int(useTime:Double = -1.0) {_exposeToLua}
+	Method IsNight:Int(useTime:Long = -1) {_exposeToLua}
 		return GetDayPhase(useTime) = DAYPHASE_NIGHT
 	End Method
 
 
-	Method IsDawn:int(useTime:Double = -1.0) {_exposeToLua}
+	Method IsDawn:Int(useTime:Long = -1) {_exposeToLua}
 		return GetDayPhase(useTime) = DAYPHASE_DAWN
 	End Method
 
 
-	Method IsDay:int(useTime:Double = -1.0) {_exposeToLua}
+	Method IsDay:Int(useTime:Long = -1) {_exposeToLua}
 		return GetDayPhase(useTime) = DAYPHASE_DAY
 	End Method
 
 
-	Method IsDusk:int(useTime:Double = -1.0) {_exposeToLua}
+	Method IsDusk:Int(useTime:Long = -1) {_exposeToLua}
 		return GetDayPhase(useTime) = DAYPHASE_DUSK
 	End Method
 
@@ -601,10 +620,11 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 
 	'returns the phase of the given time's day
 	'value is calculated dynamically, no cache is used!
-	Method GetDayPhase:int(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) <= 0 then useTime = _timeGone
+	Method GetDayPhase:Int(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
+
 		'cache the current dayTime to avoid multiple calculations
-		local dayTime:double = GetDayTime(useTime)
+		local dayTime:Int = GetDayTime(useTime)
 
 		if dayTime >= GetDawnPhaseBegin(useTime) and dayTime < GetDayPhaseBegin(useTime)
 			return DAYPHASE_DAWN
@@ -620,7 +640,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetDayPhaseText:string(useTime:Double = -1.0) {_exposeToLua}
+	Method GetDayPhaseText:string(useTime:Long = -1) {_exposeToLua}
 		Select GetDayPhase(useTime)
 			case DAYPHASE_DAWN  return "DAWN"
 			case DAYPHASE_DUSK  return "DUSK"
@@ -631,18 +651,18 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetDayPhaseProgress:Float(useTime:Double = -1.0) {_exposeToLua}
-		if Long(useTime) = -1.0 then useTime = _timeGone
+	Method GetDayPhaseProgress:Float(useTime:Long = -1) {_exposeToLua}
+		if useTime <= 0 then useTime = _timeGone
 
 		Select GetDayPhase(useTime)
 			case DAYPHASE_NIGHT
-				return (GetDayTime(useTime) - GetNightPhaseBegin(useTime)) / GetNightDuration(useTime)
+				return (GetDayTime(useTime) - GetNightPhaseBegin(useTime)) / Float(GetNightDuration(useTime))
 			case DAYPHASE_DAWN
-				return (GetDayTime(useTime) - GetDawnPhaseBegin(useTime)) / GetDawnDuration(useTime)
+				return (GetDayTime(useTime) - GetDawnPhaseBegin(useTime)) / Float(GetDawnDuration(useTime))
 			case DAYPHASE_DAY
-				return (GetDayTime(useTime) - GetDayPhaseBegin(useTime)) / GetDayDuration(useTime)
+				return (GetDayTime(useTime) - GetDayPhaseBegin(useTime)) / Float(GetDayDuration(useTime))
 			case DAYPHASE_DUSK
-				return (GetDayTime(useTime) - GetDuskPhaseBegin(useTime)) / GetDuskDuration(useTime)
+				return (GetDayTime(useTime) - GetDuskPhaseBegin(useTime)) / Float(GetDuskDuration(useTime))
 		End Select
 		return 0
 	End Method
@@ -668,11 +688,11 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		endif
 
 		if atHourMax = -1
-			result :+ atHourMin * TWorldTime.HOURLENGTH
+			result :+ atHourMin * HOURLENGTH
 		else
 			'convert into minutes:
 			'for 7-9 this is 7:00, 7:01 ... 8:59, 9:00
-			result :+ RandRange(atHourMin*60, atHourMax*60) * 60
+			result :+ RandRange(atHourMin*60, atHourMax*60) * MINUTELENGTH
 		endif
 
 		return result
@@ -688,11 +708,11 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 		local result:Long = MakeTime(0, GetDay(nowTime) + daysTillWeekday, 0, 0)
 
 		if atHourMax = -1
-			result :+ atHourMin * TWorldTime.HOURLENGTH
+			result :+ atHourMin * HOURLENGTH
 		else
 			'convert into minutes:
 			'for 7-9 this is 7:00, 7:01 ... 8:59, 9:00
-			result :+ RandRange(atHourMin*60, atHourMax*60) * 60
+			result :+ RandRange(atHourMin*60, atHourMax*60) * MINUTELENGTH
 		endif
 
 		return result

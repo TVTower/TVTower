@@ -157,7 +157,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 	'maximum abonnementlevel for this day
 	Field newsabonnementsDayMax:Int[] = [-1,-1,-1,-1,-1,-1]
 	'when was the level set
-	Field newsabonnementsSetTime:Double[6]
+	Field newsabonnementsSetTime:Long[6]
 
 	Field hotKeysEnabled:Int = True
 

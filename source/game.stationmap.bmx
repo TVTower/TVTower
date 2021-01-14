@@ -2595,9 +2595,9 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	Field runningCosts:int = -1
 	Field owner:Int = 0
 	'time at which the station was bought
-	Field built:Double = 0
+	Field built:Long = 0
 	'time at which the station gets active (again)
-	Field activationTime:Double = -1
+	Field activationTime:Long = -1
 	Field name:string = ""
 	Field stationType:int = 0
 	Field _sectionName:String = "" {nosave}
@@ -2664,7 +2664,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetActivationTime:Double()
+	Method GetActivationTime:Long()
 		Return activationTime
 	End Method
 

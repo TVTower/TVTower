@@ -26,7 +26,7 @@ Type TGameToastMessage Extends TToastMessage
 	Field showBackgroundSprite:Int = True
 	'an array containing registered event listeners
 	Field _registeredEventListener:TEventListenerBase[]
-	Field _closeAtWorldTime:Double = -1
+	Field _closeAtWorldTime:Long = -1
 	Field _closeAtWorldTimeText:String = "closing at %TIME%"
 	Global spriteNameLS_MessageType_Info:TLowerString = New TLowerString.Create("gfx_toastmessage.info")
 	Global spriteNameLS_MessageType_Attention:TLowerString = New TLowerString.Create("gfx_toastmessage.attention")
@@ -123,7 +123,7 @@ Type TGameToastMessage Extends TToastMessage
 	End Method
 
 
-	Method SetCloseAtWorldTime:Int(worldTime:Double = -1)
+	Method SetCloseAtWorldTime:Int(worldTime:Long = -1)
 		_closeAtWorldTime = worldTime
 		If _closeAtWorldTime > 0 And _closeAtWorldTimeText <> ""
 			RecalculateHeight()

@@ -309,7 +309,7 @@ Type TNewsEventCollection
 	End Method
 
 
-	Method setNewsHappened(news:TNewsEvent, time:Double = 0)
+	Method setNewsHappened(news:TNewsEvent, time:Long = 0)
 		'nothing set - use "now"
 		If time = 0 Then time = GetWorldTime().GetTimeGone()
 
@@ -644,7 +644,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	'ATTENTION:
 	'to emit an artificial news, use GetNewsAgency().announceNewsEvent()
-	Method doHappen(time:Double = 0)
+	Method doHappen(time:Long = 0)
 		'set happened time, add to collection list...
 		GetNewsEventCollection().setNewsHappened(Self, time)
 
