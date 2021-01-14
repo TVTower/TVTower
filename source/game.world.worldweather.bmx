@@ -173,7 +173,7 @@ Type TWorldWeather
 		local weatherTime:Long = baseWeather._time
 
 		For local i:int = upcomingWeather.Count() until limit
-			if weatherTime >= 0 then weatherTime :+ weatherInterval
+			if weatherTime >= 0 then weatherTime :+ weatherInterval * TWorldTime.SECONDLENGTH
 			'create a new one based on the baseWeather
 			baseWeather = TWorldWeatherEntry.Create(baseWeather, weatherTime)
 
@@ -205,7 +205,7 @@ Type TWorldWeather
 
 		'adjust time for next weather update
 		lastUpdateTime = nextUpdateTime
-		nextUpdateTime = GetWorldTime().GetTimeGone() + weatherInterval
+		nextUpdateTime = GetWorldTime().GetTimeGone() + weatherInterval * TWorldTime.SECONDLENGTH
 	End Method
 
 

@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2014 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -39,7 +39,7 @@ Import "base.util.time.bmx"
 Import "base.util.interpolation.bmx"
 
 Type TFadingState
-	Field fadeStart:int
+	Field fadeStart:Long
 	Field fadeDuration:int
 	Field state:int = False
 	Field targetState:int = -1
