@@ -9,7 +9,7 @@
 
 struct longmap_node {
 	struct avl_root link;
-	long key;
+	BBLONG key;
 	BBOBJECT value;
 };
 
@@ -34,7 +34,7 @@ int bmx_map_longmap_isempty(struct avl_root ** root) {
 	return *root == 0;
 }
 
-void bmx_map_longmap_insert( long key, BBObject *value, struct avl_root ** root ) {
+void bmx_map_longmap_insert( BBLONG key, BBObject *value, struct avl_root ** root ) {
 	struct longmap_node * node = (struct longmap_node *)GC_malloc_uncollectable(sizeof(struct longmap_node));
 	node->key = key;
 	node->value = value;
@@ -49,7 +49,7 @@ void bmx_map_longmap_insert( long key, BBObject *value, struct avl_root ** root 
 	}
 }
 
-int bmx_map_longmap_contains(long key, struct avl_root ** root) {
+int bmx_map_longmap_contains(BBLONG key, struct avl_root ** root) {
 	struct longmap_node node;
 	node.key = key;
 	
@@ -61,7 +61,7 @@ int bmx_map_longmap_contains(long key, struct avl_root ** root) {
 	}
 }
 
-BBObject * bmx_map_longmap_valueforkey(long key, struct avl_root ** root) {
+BBObject * bmx_map_longmap_valueforkey(BBLONG key, struct avl_root ** root) {
 	struct longmap_node node;
 	node.key = key;
 	
@@ -74,7 +74,7 @@ BBObject * bmx_map_longmap_valueforkey(long key, struct avl_root ** root) {
 	return &bbNullObject;
 }
 
-int bmx_map_longmap_remove(long key, struct avl_root ** root) {
+int bmx_map_longmap_remove(BBLONG key, struct avl_root ** root) {
 	struct longmap_node node;
 	node.key = key;
 	
@@ -97,7 +97,7 @@ struct longmap_node * bmx_map_longmap_firstnode(struct avl_root * root) {
 	return tree_min(root);
 }
 
-long bmx_map_longmap_key(struct longmap_node * node) {
+BBLONG bmx_map_longmap_key(struct longmap_node * node) {
 	return node->key;
 }
 
