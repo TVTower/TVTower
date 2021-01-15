@@ -764,10 +764,16 @@ Type TLuaEngine
 						args[i] = String.FromInt(int(lua_tointeger(getLuaState(), i + 1)))
 					?
 				Case LongTypeId
+?not ptr64
+Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-builds!"
+?
 					args[i] = String.FromLong(Long(lua_tonumber(getLuaState(), i + 1)))
 				Case FloatTypeId
 					args[i] = String.FromFloat(Float(lua_tonumber(getLuaState(), i + 1)))
 				Case DoubleTypeId
+?not ptr64
+Notify "Reflection with ~qlong~q-parameters is bugged. Do not use it in 32bit-builds!"
+?
 					args[i] = String.FromDouble(lua_tonumber(getLuaState(), i + 1))
 				Case StringTypeId
 					args[i] = lua_tostring(getLuaState(), i + 1)
