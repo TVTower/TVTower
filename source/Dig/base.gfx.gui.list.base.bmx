@@ -1051,8 +1051,10 @@ endrem
 		
 		'react if "activated" or no other element was focused but this
 		'is hovered
-		If IsFocused() or (not GUIManager.GetFocus() and IsHovered())
-			HandleKeyBoardScrolling()
+		If HasListOption(GUILIST_SCROLLING_ENABLED)
+			If IsFocused() or (not GUIManager.GetFocus() and IsHovered())
+				HandleKeyBoardScrolling()
+			EndIf
 		EndIf
 	End Method
 
