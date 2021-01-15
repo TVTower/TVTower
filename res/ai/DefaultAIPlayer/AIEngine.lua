@@ -573,7 +573,7 @@ function AITask:RecalcPriority()
 	--  10 minutes or less being 20%
 	--  40 minutes or more being 80%
 	if self.TargetRoom > 0 then
-		local blockedMinutes = TVT.GetRoomBlockedTime(self.TargetRoom) / 60
+		local blockedMinutes = WorldTime.TimeToMinutes( TVT.GetRoomBlockedTime(self.TargetRoom) )
 		--debugMsg("PRIO: Target room ".. self.TargetRoom ..". blockedMinutes " .. blockedMinutes))
 		if blockedMinutes >= 1 then
 			--debugMsg("PRIO: Target room is blocked too long, reducing priority. " .. math.max(0.2, 1.0 - 0.02*blockedMinutes))

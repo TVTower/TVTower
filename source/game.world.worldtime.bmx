@@ -668,6 +668,26 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method TimeToMinutes:Long(time:Long) {_exposeToLua}
+		Return time / MINUTELENGTH
+	End Method
+
+	Method TimeToSeconds:Long(time:Long) {_exposeToLua}
+		Return time / SECONDLENGTH
+	End Method
+
+	Method TimeToHours:Long(time:Long) {_exposeToLua}
+		Return time / HOURLENGTH
+	End Method
+
+	Method TimeToDays:Long(time:Long) {_exposeToLua}
+		Return time / DAYLENGTH
+	End Method
+
+	Method TimeToYears:Long(time:Long) {_exposeToLua}
+		Return time / (DAYLENGTH * GetDaysPerYear())
+	End Method
+
 
 	Method CalcTime_HoursFromNow:Long(nowTime:Long=-1, hoursMin:int, hoursMax:int = -1)
 		if nowTime = -1 then nowTime = GetTimeGone()
