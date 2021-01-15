@@ -472,7 +472,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetBlocked:int(blockTimeInSeconds:int = 0, newBlockedState:int = 0, addToExistingBlockTime:int = True)
+	Method SetBlocked:int(blockTimeInMilliseconds:Long = 0, newBlockedState:int = 0, addToExistingBlockTime:int = True)
 		blockedState :| newBlockedState
 
 		'show the time until end of blocking
@@ -484,13 +484,13 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		endif
 
 		if addToExistingBlockTime and blockedUntil > GetWorldTime().GetTimeGone()
-			blockedUntil :+ blockTimeInSeconds
+			blockedUntil :+ blockTimeInMilliseconds
 		else
-			blockedUntil = GetWorldTime().GetTimeGone() + blockTimeInSeconds
+			blockedUntil = GetWorldTime().GetTimeGone() + blockTimeInMilliseconds
 		endif
 
 		'remove blockage without effects!
-		if blockTimeInSeconds = 0
+		if blockTimeInMilliseconds = 0
 			blockedState = BLOCKEDSTATE_NONE
 			blockedUntilShownInTooltip = False
 		endif
@@ -500,7 +500,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		endif
 
 		'inform others
-		TriggerBaseEvent(GameEventKeys.Room_OnSetBlocked, New TData.AddString("roomGUID", GetGUID() ).AddString("newBlockedState", newBlockedState).AddNumber("blockTimeInSeconds", blockTimeInSeconds), Null, self)
+		TriggerBaseEvent(GameEventKeys.Room_OnSetBlocked, New TData.AddString("roomGUID", GetGUID() ).AddString("newBlockedState", newBlockedState).AddLong("blockTimeInMilliseconds", blockTimeInMilliseconds), Null, self)
 	End Method
 
 

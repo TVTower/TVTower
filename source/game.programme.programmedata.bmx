@@ -1265,7 +1265,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method GetCinemaReleaseTime:Long()
-		Return releaseTime - Max(1, Floor(0.5 * GetWorldTime().GetDaysPerYear())) * TWorldTime.DAYLENGTH
+		Return releaseTime - Max(1, GetWorldTime().GetDaysPerYear()/2) * TWorldTime.DAYLENGTH
 	End Method
 
 

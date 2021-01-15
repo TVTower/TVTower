@@ -201,7 +201,7 @@ Type TProduction Extends TOwnedGameObject
 
 	Method Start:TProduction()
 		startDate = GetWorldTime().GetTimeGone()
-		endDate = startDate + productionConcept.GetBaseProductionTime() * 3600
+		endDate = startDate + productionConcept.GetBaseProductionTime()
 		TLogger.Log("TProduction.Start", "Starting production ~q"+productionConcept.GetTitle()+"~q. Production: "+ GetWorldTime().GetFormattedDate(startDate) + "  -  " + GetWorldTime().GetFormattedDate(endDate), LOG_DEBUG)
 
 		status = 1
@@ -267,12 +267,12 @@ Type TProduction Extends TOwnedGameObject
 		'=== 3. BLOCK STUDIO ===
 		'set studio blocked
 		if studioRoomGUID and GetRoomBaseByGUID(studioRoomGUID)
-			'time in seconds
-			local productionTime:int = (endDate - startDate)
+			'time in milliseconds
+			local productionTime:Long = (endDate - startDate)
 			if productionTime > 0
 				'also add 5 minutes to avoid people coming into the studio
 				'in the break between two productions
-				productionTime :+ 300
+				productionTime :+ 300 * TWorldTime.SECONDLENGTH
 
 				productionTime :* GetProductionTimeMod()
 

@@ -1277,7 +1277,7 @@ endrem
 		skin.RenderBox(contentX + 5, contentY, 50, -1, GetBlocks(), "duration", "neutral", skin.fontBold)
 		if IsLive()
 			'(pre-)production time
-			skin.RenderBox(contentX + 5 + 60, contentY, 65, -1, "~~ " + (productionTime/60) + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 60, contentY, 65, -1, "~~ " + (productionTime/TWorldTime.SECONDLENGTH) + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
 		EndIf
 		'price
 		If canAfford
