@@ -287,7 +287,7 @@ Type TPlayerBase {_exposeToLua="selected"}
 			EndIf
 
 			'more than 30 mins gone since last "abonnement set"
-			if GetWorldTime().GetTimeGone() - newsabonnementsSetTime[genre] > 30*60
+			if GetWorldTime().GetTimeGone() - newsabonnementsSetTime[genre] > 30 * TWorldTime.MINUTELENGTH
 				'only set maximum if the new level is higher than the
 				'current days maxmimum.
 				if newsabonnementsDayMax[genre] < abonnementLevel
@@ -383,7 +383,7 @@ rem
 			EndIf
 
 			'more than 30 mins gone since last "reachLevel set"
-			if GetWorldTime().GetTimeGone() - audienceReachLevelSetTime > 30*60
+			if GetWorldTime().GetTimeGone() - audienceReachLevelSetTime > 30 * TWorldTime.MINUTELENGTH
 				'only set maximum if the new level is higher than the
 				'current days maxmimum.
 				if audienceReachLevelDayMax < currentLevel

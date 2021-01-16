@@ -317,7 +317,7 @@ Type TScriptBase Extends TNamedGameObject
 		'next day
 		local nowDay:int = GetWorldTime().GetDay( releaseTime )
 		'move to next day if live show is in less than 2 hours
-		if GetWorldTime().GetTimeGone() - releaseTime < 2*3600
+		if GetWorldTime().GetTimeGone() - releaseTime < 2 * TWorldTime.HOURLENGTH
 			releaseTime = GetWorldTime().MakeTime(0, nowDay +1, self.liveTime, 5, 0)
 		else
 			releaseTime = GetWorldTime().MakeTime(0, nowDay, self.liveTime, 5, 0)

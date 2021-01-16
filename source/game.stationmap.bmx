@@ -2660,7 +2660,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 	'returns the age in minutes
 	Method GetAgeInMinutes:Int()
-		Return (GetWorldTime().GetTimeGone() - Self.built) / 60
+		Return (GetWorldTime().GetTimeGone() - Self.built) / TWorldTime.MINUTELENGTH
 	End Method
 
 

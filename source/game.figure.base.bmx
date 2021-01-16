@@ -202,7 +202,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Field moveable:int = TRUE
 	Field greetOthers:int = TRUE
 	'when was the last greet to another figure?
-	Field lastGreetTime:Double = 0
+	Field lastGreetTime:Long = 0
 	'what was the last type of greet?
 	Field lastGreetType:int = -1
 	Field lastGreetFigureID:int = -1

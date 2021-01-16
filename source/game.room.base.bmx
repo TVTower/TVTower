@@ -427,31 +427,31 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		if blockedState & BLOCKEDSTATE_BOMB > 0
 			'"placerholder rooms" (might get rent later)
 			if owner = 0 and IsUsableAsStudio()
-				time = 60 * 60 * 4
+				time = 240 * TWorldTime.MINUTELENGTH
 			'rooms like movie agency
 			elseIf owner = 0
-				time = 60 * 60 * 1.5
+				time = 90 * TWorldTime.MINUTELENGTH
 			'player rooms
 			elseIf owner > 0
-				time = 60 * 60 * 1 '0.5
+				time = 60 * TWorldTime.MINUTELENGTH
 			endif
 
 		'=== MARSHAL ===
 		elseif blockedState & BLOCKEDSTATE_MARSHAL > 0
 			'just blocks player rooms
 			If owner > 0
-				time = 60 * 15 * randRange(1,4)
+				time = randRange(1,4) * 15 * TWorldTime.MINUTELENGTH
 			endif
 
 		'=== RENOVATION ===
 		elseif blockedState & BLOCKEDSTATE_RENOVATION > 0
 			if owner = 0 and IsUsableAsStudio()
 				'ATTENTION: "randRange" to get the same in multiplayer games
-				time = 60 * 60 * randRange(3,6)
+				time = randRange(3,6) * 60 * TWorldTime.MINUTELENGTH
 			elseIf owner = 0
-				time = 60 * 30 * randRange(1,3)
+				time = randRange(1,3) * 30 * TWorldTime.MINUTELENGTH
 			elseIf owner > 0
-				time = 60 * 10 * randRange(1,2)
+				time = randRange(1,2) * 10 * TWorldTime.MINUTELENGTH
 			endif
 		endif
 

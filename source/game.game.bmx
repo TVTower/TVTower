@@ -1200,13 +1200,13 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'create 3 random news happened some time before today ...
 		'Limit to CurrentAffairs as this is the starting abonnement of
 		'all players
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(0,60) - 3600*1, True, False, False)
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(60,120) - 3600*1, True, False, False)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - (60 + RandRange(0,60)) * TWorldTime.MINUTELENGTH, True, False, False)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - (60 + RandRange(60,100)) * TWorldTime.MINUTELENGTH, True, False, False)
 		'this is added to the "left side" (> 2,5h)
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(31,60) - 3600*2, True, False, False)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - (120 + RandRange(31,60)) * TWorldTime.MINUTELENGTH, True, False, False)
 		'create a random for each news
 		'for local i:int = 0 until TVTNewsGenre.count
-		'	GetNewsAgency().AnnounceNewNewsEvent(i, - 2 * 60 * RandRange(31,60), True, False, False)
+		'	GetNewsAgency().AnnounceNewNewsEvent(i, - (120 + RandRange(31,60)) * TWorldTime.MINUTELENGTH, True, False, False)
 		'Next
 
 		'create 3 starting news with random genre (for starting news show)
@@ -1216,7 +1216,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			If newsEvent
 				'time must be lower than for the "current affairs" news
 				'so they are recognizeable as the latest ones
-				Local adjustMinutes:Int = - 60 * RandRange(0, 60)
+				Local adjustMinutes:Int = - RandRange(0, 60) * TWorldTime.MINUTELENGTH
 				newsEvent.doHappen( GetWorldTime().GetTimeGone() + adjustMinutes )
 			EndIf
 		Next
@@ -1225,7 +1225,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'adjust next ticker times to something right after game start
 		'(or a bit before)
 		For Local i:Int = 0 Until TVTNewsGenre.count
-			GetNewsAgency().SetNextEventTime(i, Long(GetWorldTime().GetTimeGone() + RandRange(5, 90)*60))
+			GetNewsAgency().SetNextEventTime(i, Long(GetWorldTime().GetTimeGone() + RandRange(5, 90) * TWorldTime.MINUTELENGTH))
 		Next
 
 

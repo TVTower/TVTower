@@ -541,7 +541,7 @@ Type TPlayerBoss
 	Method CallPlayer:Int()
 		'give the player 2 hrs or reuse old time (eg. savegame)
 		if awaitingPlayerVisitTillTime = 0
-			awaitingPlayerVisitTillTime = GetWorldTime().GetTimeGone() + 7200
+			awaitingPlayerVisitTillTime = GetWorldTime().GetTimeGone() + 2 * TWorldTime.HOURLENGTH
 		endif
 		awaitingPlayerCalled = True
 		awaitingPlayerAccepted = False

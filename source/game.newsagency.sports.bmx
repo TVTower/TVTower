@@ -148,7 +148,7 @@ Type TNewsEventSport Extends TGameObject
 		If IsSeasonFinished() And playoffsState = 0
 			CreatePlayoffSeasons()
 			'delay by at least 1 day
-			AssignPlayoffTimes( Long(GetWorldTime().GetTimeGone() + GetWorldTime().DAYLENGTH))
+			AssignPlayoffTimes(GetWorldTime().GetTimeGone() + GetWorldTime().DAYLENGTH)
 
 			StartPlayoffs()
 
@@ -212,7 +212,7 @@ Type TNewsEventSport Extends TGameObject
 
 	Method StartPlayoffs()
 		For Local season:TNewsEventSportSeason = EachIn playoffSeasons
-			season.Start( Long(GetWorldTime().GetTimeGone()) )
+			season.Start( GetWorldTime().GetTimeGone() )
 		Next
 
 		playoffsState = 1
@@ -223,7 +223,7 @@ Type TNewsEventSport Extends TGameObject
 
 	Method FinishPlayoffs()
 		For Local season:TNewsEventSportSeason = EachIn playoffSeasons
-			season.Finish( Long(GetWorldTime().GetTimeGone()) )
+			season.Finish( GetWorldTime().GetTimeGone() )
 		Next
 
 		Local leagueWinners:TNewsEventSportTeam[leagues.length]
@@ -1289,7 +1289,7 @@ Type TNewsEventSportLeague Extends TGameObject
 		If Not GetCurrentSeason() Then Return False
 		If GetCurrentSeason().upcomingMatches.Count() = 0 Then Return False
 
-		If time = 0 Then time = Long(GetWorldTime().GetTimeGone())
+		If time = 0 Then time = GetWorldTime().GetTimeGone()
 
 		'starting a new group?
 Rem
@@ -1365,7 +1365,7 @@ endrem
 	Method StartSeason:Int(time:Long = 0)
 		seasonJustBegun = True
 
-		If time = 0 Then time = Long(GetWorldTime().GetTimeGone())
+		If time = 0 Then time = GetWorldTime().GetTimeGone()
 
 		'archive old season
 		If currentSeason Then pastSeasons :+ [currentSeason.data]

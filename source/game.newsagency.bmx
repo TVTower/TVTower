@@ -330,7 +330,7 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 		'   (after ~5 hours the next forecast gets created)
 		local forecastHours:int = 6
 		'if we want to have a forecast till next update
-		'local forecastHours:int = ceil((weatherUpdateTime - GetWorldTime().GetTimeGone()) / 3600.0)
+		'local forecastHours:int = ceil((weatherUpdateTime - GetWorldTime().GetTimeGone()) / TWorldTime.HOURLENGTH)
 
 		'quality and price are nearly the same everytime
 		Local quality:Float = 0.01 * randRange(50,60)

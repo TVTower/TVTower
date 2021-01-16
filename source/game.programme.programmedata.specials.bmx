@@ -313,7 +313,7 @@ endrem
 		result = result.Replace("%LEAGUENAMESHORT%", league.nameShort)
 
 		If result.Find("%MATCHCOUNT%") >= 0
-			result = result.Replace("%MATCHCOUNT%", league.GetUpcomingMatches(Long(GetWorldTime().GetTimeGone()), -1).length)
+			result = result.Replace("%MATCHCOUNT%", league.GetUpcomingMatches(GetWorldTime().GetTimeGone(), -1).length)
 		EndIf
 
 		If result.Find("%MATCHTIMES%") >= 0

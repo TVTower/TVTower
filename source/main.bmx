@@ -4584,7 +4584,7 @@ Type GameEvents
 
 
 	Function PlayerBoss_OnCallPlayerForced:Int(triggerEvent:TEventBase)
-		Local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", Long(GetWorldTime().GetTimeGone() + 2*3600))
+		Local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", Long(GetWorldTime().GetTimeGone() + 2 * TWorldTime.HOURLENGTH))
 		Local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
 		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
@@ -4612,7 +4612,7 @@ Type GameEvents
 
 
 	Function PlayerBoss_OnCallPlayer:Int(triggerEvent:TEventBase)
-		Local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", Long(GetWorldTime().GetTimeGone() + 2*3600))
+		Local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", Long(GetWorldTime().GetTimeGone() + 2 * TWorldTime.HOURLENGTH))
 		Local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
 		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 

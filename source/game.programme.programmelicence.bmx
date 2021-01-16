@@ -2095,7 +2095,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 				'not programmed = freshly created or dragged, so it is
 				'live, if the live-time is not passed yet
 				if programmedDay = -1 or programmedHour = -1
-					if GetWorldTime().GetTimeGone() < data.GetReleaseTime() + 5*60 ' xx:05
+					if GetWorldTime().GetTimeGone() < data.GetReleaseTime() + 5 * TWorldTime.MINUTELENGTH ' xx:05
 						showMsgLiveInfo = true
 					endif
 				'if programmed, check if this the time of the live broadcast
@@ -2108,7 +2108,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 				endif
 			elseif IsLive()
 				'it is only live until it happens
-				if GetWorldTime().GetTimeGone() < data.releaseTime + 5*60 ' xx:05
+				if GetWorldTime().GetTimeGone() < data.releaseTime + 5 * TWorldTime.MINUTELENGTH ' xx:05
 					showMsgLiveInfo = True
 				endif
 			endif
@@ -2117,7 +2117,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 				if IsLive()
 					local nextT:Long = GetNextReleaseTime()
 					local nowT:Long = GetWorldTime().GetTimeGone()
-					if GetWorldTime().GetTimeGone() < GetNextReleaseTime() + 5*60
+					if GetWorldTime().GetTimeGone() < GetNextReleaseTime() + 5 * TWorldTime.MINUTELENGTH
 						showMsgLiveInfo = True
 					endif
 				endif
