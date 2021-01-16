@@ -1064,10 +1064,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 			contentY :+ 10
 			skin.fontBold.DrawSimple(GetLocale("DURATION"), contentX + 5, contentY-1, skin.textColorNeutral)
-			if currentProductionConcept.GetBaseProductionTime() = 1
-				skin.fontNormal.DrawBox(currentProductionConcept.GetBaseProductionTime() + " " + GetLocale("HOUR"), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+			local productionTimeHours:Int = currentProductionConcept.GetBaseProductionTime() / TWorldTime.HOURLENGTH
+			if productionTimeHours = 1
+				skin.fontNormal.DrawBox(productionTimeHours + " " + GetLocale("HOUR"), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 			Else
-				skin.fontNormal.DrawBox(currentProductionConcept.GetBaseProductionTime() + " " + GetLocale("HOURS"), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
+				skin.fontNormal.DrawBox(productionTimeHours + " " + GetLocale("HOURS"), contentX + 5, contentY-1, contentW - 10, -1, sALIGN_RIGHT_TOP, skin.textColorNeutral)
 			endif
 			contentY :+ subtitleH
 
