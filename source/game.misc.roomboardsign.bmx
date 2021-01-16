@@ -279,6 +279,7 @@ Type TRoomBoardBase
 	Method UpdateSigns(DraggingAllowed:Int)
 		hoveredSign = Null
 		clickedSign = Null
+		draggedSign = Null
 
 		For Local sign:TRoomBoardSign = EachIn GetOrderedVisualList().ReverseEnumerator()
 			If Not sign Then Continue
