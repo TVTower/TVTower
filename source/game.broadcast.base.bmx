@@ -499,22 +499,25 @@ Type TBroadcast
 		else
 			AudienceMarkets = CreateList()
 		Endif
+		
+		
+		AddMarket(new SChannelMask().Set(1) ) '1
+		AddMarket(new SChannelMask().Set(2) ) '2
+		AddMarket(new SChannelMask().Set(3) ) '3
+		AddMarket(new SChannelMask().Set(4) ) '4
+		AddMarket(new SChannelMask().Set(1).Set(2) ) '1 & 2
+		AddMarket(new SChannelMask().Set(1).Set(3) ) '1 & 3
+		AddMarket(new SChannelMask().Set(1).Set(4) ) '1 & 4
+		AddMarket(new SChannelMask().Set(2).Set(3) ) '2 & 3
+		AddMarket(new SChannelMask().Set(2).Set(4) ) '2 & 4
+		AddMarket(new SChannelMask().Set(3).Set(4) ) '3 & 4
 
-		AddMarket([1]) '1
-		AddMarket([2]) '2
-		AddMarket([3]) '3
-		AddMarket([4]) '4
-		AddMarket([1, 2]) '1 & 2
-		AddMarket([1, 3]) '1 & 3
-		AddMarket([1, 4]) '1 & 4
-		AddMarket([2, 3]) '2 & 3
-		AddMarket([2, 4]) '2 & 4
-		AddMarket([3, 4]) '3 & 4
-		AddMarket([1, 2, 3]) '1 & 2 & 3
-		AddMarket([1, 2, 4]) '1 & 2 & 4
-		AddMarket([1, 3, 4]) '1 & 3 & 4
-		AddMarket([2, 3, 4]) '2 & 3 & 4
-		AddMarket([1, 2, 3, 4])	'1 & 2 & 3 & 4
+		AddMarket(new SChannelMask().Set(1).Set(2).Set(3) ) '1 & 2 & 3
+		AddMarket(new SChannelMask().Set(1).Set(2).Set(4) ) '1 & 2 & 4
+		AddMarket(new SChannelMask().Set(1).Set(3).Set(4) ) '1 & 3 & 4
+		AddMarket(new SChannelMask().Set(2).Set(3).Set(4) ) '2 & 3 & 4
+
+		AddMarket(new SChannelMask().Set(1).Set(2).Set(3).Set(4) ) '2 & 3 & 4
 	End Method
 
 
@@ -574,19 +577,11 @@ Type TBroadcast
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 			'reassign attractions
 			For Local i:Int = 1 To 4
-				market.SetPlayersProgrammeAttraction(i, Attractions[i-1])
+				market.SetProgrammeAttraction(i, Attractions[i-1])
 			Next
 			market.ComputeAudience(Time)
 			AssimilateResultsForPlayer(playerId, market)
 		Next
-	End Method
-
-
-	Method GetMarketById:TAudienceMarketCalculation(id:String)
-		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
-			If market.GetId() = id Then Return market
-		Next
-		Return Null
 	End Method
 
 
@@ -617,14 +612,16 @@ Type TBroadcast
 	'===== Hilfsmethoden =====
 
 	Method AssimilateResults(market:TAudienceMarketCalculation)
-		For Local playerID:Int = EachIn market.playerIDs
+		For Local playerID:Int = 1 to 4
+			If not market.HasChannel(playerID) Then continue
+			
 			AssimilateResultsForPlayer(playerID, market)
 		Next
 	End Method
 
 
 	Method AssimilateResultsForPlayer(playerId:Int, market:TAudienceMarketCalculation)
-		Local result:TAudienceResult = market.GetAudienceResultOfPlayer(playerId)
+		Local result:TAudienceResult = market.GetAudienceResultOfChannel(playerId)
 		If result Then GetAudienceResult(playerId).AddResult(result)
 	End Method
 
@@ -681,39 +678,36 @@ Type TBroadcast
 		EndIf
 
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
-			If market.GetPlayerIndex(playerID) >= 0
-				market.SetPlayersProgrammeAttraction(playerID, Attractions[playerID-1])
+			If market.HasChannel(playerID)
+				market.SetProgrammeAttraction(playerID, Attractions[playerID-1])
 			EndIf
 		Next
 	End Method
 
 
-	Method AddMarket(playerIDs:Int[])
-		'create array of players not existing in "playerIDs"
-		Local withoutPlayerIDs:Int[]
-		For Local i:Int = 1 To 4
-			If MathHelper.InIntArray(i, playerIDs) Then Continue
-			withoutPlayerIDs :+ [i]
-		Next
+	Method AddMarket(includeChannelMask:SChannelMask)
+		'each of our markets is "exclusive" - so every non "included"
+		'channel is to "exclude"
+		'if the mask only contains channel 1, it is a market without
+		'any other channel sharing antenna spots, satellites, cable networks...
 
+		Local excludeChannelMask:SChannelMask = includeChannelMask.Negated()
+		
 		'receipient share = portion of the population share eg. using an antenna
-		Local audienceAntenna:Int = GetStationMapCollection().GetTotalAntennaReceiverShare(playerIDs, withoutPlayerIDs).x
-		Local audienceSatellite:Int = GetStationMapCollection().GetTotalSatelliteReceiverShare(playerIDs, withoutPlayerIDs).x
-		Local audienceCableNetwork:Int = GetStationMapCollection().GetTotalCableNetworkReceiverShare(playerIDs, withoutPlayerIDs).x
+		Local audienceAntenna:Int = GetStationMapCollection().GetTotalAntennaReceiverShare(includeChannelMask, excludeChannelMask).total
+		Local audienceSatellite:Int = GetStationMapCollection().GetTotalSatelliteReceiverShare(includeChannelMask, excludeChannelMask).total
+		Local audienceCableNetwork:Int = GetStationMapCollection().GetTotalCableNetworkReceiverShare(includeChannelMask, excludeChannelMask).total
 
 '		Local audience:Int = GetStationMapCollection().GetTotalShareAudience(playerIDs, withoutPlayerIDs)
 '		If audience > 0
 		If audienceAntenna > 0 Or audienceSatellite > 0 Or audienceCableNetwork > 0
 			Local audience:Int = audienceAntenna + audienceSatellite + audienceCableNetwork
 
-			Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
+			Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation(includeChannelMask)
 			market.maxAudience = New TAudience.InitWithBreakdown(audience)
 			market.shareAntenna = audienceAntenna / Float(audience)
 			market.shareSatellite = audienceSatellite / Float(audience)
 			market.shareCableNetwork = audienceCableNetwork / Float(audience)
-			For Local playerID:Int = EachIn playerIDs
-				market.AddPlayer(playerID)
-			Next
 
 			AudienceMarkets.AddLast(market)
 			'print "AddMarket:  players="+StringHelper.JoinIntArray(",",playerIDs) +"  without="+StringHelper.JoinIntArray(",",withoutPlayerIDs)+"  audience="+audience+"  (maxAudience="+int(market.maxAudience.GetTotalSum())+"  antenna="+audienceAntenna+"  satellite="+audienceSatellite+"  cablenetwork="+audienceCableNetwork+")"
@@ -1110,11 +1104,11 @@ End Type
 
 'Diese Klasse repräsentiert einen Markt um den 1 bis 4 Spieler konkurrieren.
 Type TAudienceMarketCalculation
-	'participating playerIDs
-	Field playerIDs:Int[]
+	'participating playerID/channelIDs
+	Field channelMaskValue:Int
 	'attractivity of a broadcasts for each target group
 	'for each active player there needs to be an entry
-	Field audienceAttractions:TAudienceAttraction[]
+	Field audienceAttractions:TAudienceAttraction[4]
 	'population of this market
 	Field maxAudience:TAudience
 	'how the audience is shared between the reception types
@@ -1123,57 +1117,57 @@ Type TAudienceMarketCalculation
 	Field shareSatellite:Float = 0.0
 
 	'results of the calculation
-	Field audienceResults:TAudienceResult[]
+	Field audienceResults:TAudienceResult[4]
 	Field _id:String = "" {nosave}
 
-	'===== Öffentliche Methoden =====
 
-	Method GetId:String()
-		If playerIDs.length > 0 And _id = ""
-			For Local playerID:Int = EachIn playerIDs
-				_id :+ playerID
-			Next
-		EndIf
-		Return _id
+	Method New(channelMask:SChannelMask)
+		self.channelMaskValue = channelMask.value
+		Local channelCount:Int = channelMask.GetEnabledCount()
+		if audienceAttractions.length < channelCount
+			audienceAttractions = audienceAttractions[ .. channelCount]
+			audienceResults = audienceResults[ .. channelCount]
+		endif
+	End Method
+
+
+	Method AddChannel(channelID:Int)
+		local mask:SChannelMask = new SChannelMask(channelMaskValue).Set(channelID)
+		Local channelCount:Int = mask.GetEnabledCount()
+
+		channelMaskValue = mask.value
+		if audienceAttractions.length < channelCount
+			audienceAttractions = audienceAttractions[ .. channelCount]
+			audienceResults = audienceResults[ .. channelCount]
+		endif
+	End Method
+	
+	
+	Method HasChannel:Int(channelID:Int)
+		Return new SChannelMask(channelMaskValue).Has(channelID)
 	End Method
 
 
 	Method ToString:String()
 		Local result:String
-		For Local playerID:Int = EachIn playerIDs
+		For Local playerID:Int = 1 to 4
 			result :+ playerID+" "
 		Next
 		Return "TAudienceMarketCalculation: players=["+result.Trim()+"], population: m="+maxAudience.GetGenderSum(TVTPersonGender.MALE)+" w="+maxAudience.GetGenderSum(TVTPersonGender.FEMALE)
 	End Method
 
 
-	Method AddPlayer(playerID:Int)
-		playerIDs :+ [playerID]
-		audienceAttractions = audienceAttractions[ .. playerIDs.length]
-		audienceResults = audienceResults[ .. playerIDs.length]
-	End Method
-
-
-	Method GetPlayerIndex:Int(playerID:Int)
-		For Local i:Int = 0 Until playerIDs.length
-			If playerIDs[i] = playerID Then Return i
-		Next
-		Return -1
-	End Method
-
-
-	Method SetPlayersProgrammeAttraction(playerID:Int, audienceAttraction:TAudienceAttraction)
-		Local i:Int = GetPlayerIndex(playerID)
-		If i >= 0
-			audienceAttractions[i] = audienceAttraction
+	Method SetProgrammeAttraction(channelID:Int, audienceAttraction:TAudienceAttraction)
+		if new SChannelMask(channelMaskValue).Has(channelID) and audienceAttractions.length >= channelID
+			audienceAttractions[channelID - 1] = audienceAttraction
 		EndIf
 	End Method
 
 
-	Method GetAudienceResultOfPlayer:TAudienceResult(playerID:Int)
-		Local i:Int = GetPlayerIndex(playerID)
-		If i < 0 Then Return Null
-		Return AudienceResults[i]
+	Method GetAudienceResultOfChannel:TAudienceResult(channelID:Int)
+		If new SChannelMask(channelMaskValue).Has(channelID) and AudienceResults.length >= channelID
+			Return AudienceResults[channelID - 1]
+		EndIf
 	End Method
 
 
@@ -1191,11 +1185,16 @@ Type TAudienceMarketCalculation
 		'print "ComputeAudience:   time=" + GetWorldTime().GetFormattedGameDate(time)
 		'Print "  maxAudience: " + MaxAudience.ToString()
 		'Print "  ChannelSurferToShare: " + ChannelSurferToShare.ToString()
+		
+		Local channelMask:SChannelMask = new SChannelMask(channelMaskValue)
 
-		For Local i:Int = 0 Until playerIDs.length
+		For Local channelID:Int = 1 To 4
+			'skip inactive channels
+			If Not channelMask.Has(channelID) then Continue
+			
 			'maybe a player just went bankrupt, so create a malfunction for him
-			If Not audienceAttractions[i] Then SetPlayersProgrammeAttraction(playerIDs[i], TBroadcast.CalculateMalfunction(Null))
-			Local attraction:TAudienceAttraction = audienceAttractions[i]
+			If Not audienceAttractions[channelID - 1] Then SetProgrammeAttraction(channelID, TBroadcast.CalculateMalfunction(Null))
+			Local attraction:TAudienceAttraction = audienceAttractions[channelID - 1]
 
 			'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
 			Local effectiveAttraction:TAudience = attraction.Copy().Multiply(competitionAttractionModifier)
@@ -1207,7 +1206,7 @@ Type TAudienceMarketCalculation
 
 
 			Local audienceResult:TAudienceResult = New TAudienceResult
-			audienceResult.PlayerId = playerIDs[i]
+			audienceResult.PlayerId = channelID
 			audienceResult.Time = Time
 
 			audienceResult.WholeMarket = MaxAudience
@@ -1219,9 +1218,9 @@ Type TAudienceMarketCalculation
 			audienceResult.AudienceAttraction = attraction
 			audienceResult.competitionAttractionModifier = competitionAttractionModifier
 
-			audienceResults[i] = audienceResult
+			audienceResults[channelID -1] = audienceResult
 
-			'print "Player " + (i+1)
+			'print "Player/Channel " + channelID
 			'Print "  Attraction:      " + audienceResult.AudienceAttraction.ToString()
 			'Print "  Eff. Attraction: " + effectiveAttraction.ToString()
 			'Print "  Audience:        " + audienceResult.Audience.ToString()
@@ -1247,11 +1246,14 @@ Type TAudienceMarketCalculation
 
 
 		'calculate audience flow
+		local channelMask:SChannelMask = new SChannelMask(channelMaskValue)
 		Local audienceFlowSum:TAudience = New TAudience
+		Local attractionCount:Float
 		For Local attractionTemp:TAudienceAttraction = EachIn audienceAttractions
 			audienceFlowSum.Add(attractionTemp.AudienceFlowBonus)
+			attractionCount :+ 1
 		Next
-		audienceFlowSum.DivideFloat(Float(playerIDs.length))
+		audienceFlowSum.DivideFloat(attractionCount)
 
 		potentialChannelSurfer.Add(audienceFlowSum.MultiplyFloat(0.25))
 
