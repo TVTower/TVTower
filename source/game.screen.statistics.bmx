@@ -672,10 +672,10 @@ endrem
 					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetAudienceQuotePercentage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), sALIGN_RIGHT_CENTER, lightFontColor)
 					TextFont.DrawBox("#"+audienceRanks[0], valueArea.GetX(), valueArea.GetY() + 0*valueArea.GetH() -2, valueArea.GetW(), valueArea.GetH(), sALIGN_RIGHT_CENTER, rankFontColor)
 
-					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(),0), valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetTotalSum(), 2, 0), valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), sALIGN_RIGHT_CENTER, fontColor)
 					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.GetPotentialMaxAudienceQuotePercentage(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 1*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), sALIGN_RIGHT_CENTER, lightFontColor)
 
-					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.WholeMarket.GetTotalSum(),0), valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), sALIGN_RIGHT_CENTER, fontColor)
+					boldTextFont.DrawBox(TFunctions.convertValue(audienceResult.WholeMarket.GetTotalSum(),2, 0), valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW() - 80, valueArea.GetH(), sALIGN_RIGHT_CENTER, fontColor)
 					boldTextFont.DrawBox(MathHelper.NumberToString(100.0 * audienceResult.WholeMarket.GetTotalSum() / GetStationMapCollection().GetPopulation(), 2) + "%", valueArea.GetX(), valueArea.GetY() + 2*valueArea.GetH(), valueArea.GetW()-20, valueArea.GetH(), sALIGN_RIGHT_CENTER, lightFontColor)
 
 					'target groups
@@ -691,11 +691,11 @@ endrem
 
 						If drawOnLeft
 							smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
-							smallBoldTextFont.DrawBox(TFunctions.convertValue( audienceResult.audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 0 ), labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter - 20, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
+							smallBoldTextFont.DrawBox(TFunctions.convertValue( audienceResult.audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 2, 0 ), labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter - 20, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
 							smallTextFont.DrawBox("#"+audienceRanks[i], labelArea.GetX(), labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, rankFontColor)
 						Else
 							smallTextFont.DrawBox(GetLocale("TARGETGROUP_"+TVTTargetGroup.GetAsString( TVTTargetGroup.GetAtIndex(i) )), labelArea.GetX() + halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_LEFT_CENTER, fontColor)
-							smallBoldTextFont.DrawBox(TFunctions.convertValue( audienceResult.audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 0 ), labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter - 20, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
+							smallBoldTextFont.DrawBox(TFunctions.convertValue( audienceResult.audience.GetTotalValue(TVTTargetGroup.GetAtIndex(i)), 2, 0 ), labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter - 20, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, fontColor)
 							smallTextFont.DrawBox("#"+audienceRanks[i], labelArea.GetX() +  halfWidth + splitter, labelArea.GetY() + row*int(labelArea.GetH()), halfWidth - splitter, int(labelArea.GetH()), sALIGN_RIGHT_CENTER, rankFontColor)
 						EndIf
 						drawOnLeft = 1 - drawOnLeft
