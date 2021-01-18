@@ -1675,6 +1675,7 @@ endrem
 
 		'set game cursor to 0/default
 		GetGameBase().SetCursor(TGameBase.CURSOR_DEFAULT)
+		GetGameBase().SetCursorAlpha(1.0)
 
 		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
 
@@ -1806,7 +1807,10 @@ endrem
 		if cursorSprite
 			cursorOffsetX = cursorSprite.offset.GetLeft()
 			cursorOffsetY = cursorSprite.offset.GetTop()
+			Local oldA:Float = GetAlpha()
+			SetAlpha(oldA * GetGameBase().GetCursorAlpha())
 			cursorSprite.Draw(MouseManager.x, MouseManager.y)
+			SetAlpha(oldA)
 		endif
 
 		Select GetGameBase().GetCursorExtra()
