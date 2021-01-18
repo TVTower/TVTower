@@ -123,7 +123,8 @@
 			<children>
 				<child name="gfx_suitcase" 			x="3"   y="0"   w="215" h="105"	/>
 				<child name="gfx_suitcase_big" 		x="218" y="0"   w="275" h="105"	/>
-				<child name="gfx_suitcase_presents"	x="3"   y="110" w="145" h="120"	/>
+				<child name="gfx_suitcase_presents"	x="3"   y="110" w="147" h="120"	/>
+				<child name="gfx_suitcase_scripts"	x="153" y="110" w="180" h="92"	/>
 			</children>
 		</spritepack>
 
