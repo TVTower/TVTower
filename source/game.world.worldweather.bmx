@@ -316,7 +316,7 @@ Type TWorldWeatherEntry
 		'to make it an "increasing" or "decreasing" tendence we use the
 		'distance to half a dayLightLength (summer 18/2=9 hours)
 		'7:00 = "2/9"   0:00 = "-4/9"   15:00 = "8/9"
-		local halfDayLightLength:int = 9 '0.5 * GetWorldTime().GetDayLightLength(_time)/3600
+		local halfDayLightLength:int = 9 '0.5 * GetWorldTime().GetDayLightLength(_time)/TWorldTime.HOURLENGTH
 		local heatInfluence:Float = (halfDayLightLength - abs(GetDayHour() - maxTempHour)) / float(halfDayLightLength)
 
 		'day times (warming period)

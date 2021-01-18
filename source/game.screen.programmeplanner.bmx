@@ -1352,7 +1352,7 @@ Type TScreenHandler_ProgrammePlanner
 							If GetWorldTime().GetDay(blockTime) = planningDay
 								hourSlots :+ [ GetWorldTime().GetDayHour(blockTime) ]
 							EndIf
-							blockTime :+ 3600
+							blockTime :+ 1 * TWorldTime.HOURLENGTH
 						Next
 						'keep the possible "free"
 						'DisableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME)
@@ -1362,7 +1362,7 @@ Type TScreenHandler_ProgrammePlanner
 
 						'mark all future ad-slots allowed
 						hourSlots = new Int[0]
-						Local start:Int = GetWorldTime().GetDayHour(programme.data.releaseTime + programme.GetBlocks()*3600)
+						Local start:Int = GetWorldTime().GetDayHour(programme.data.releaseTime + programme.GetBlocks() * TWorldTime.HOURLENGTH)
 						if start <= 23
 							For Local i:Int = start To 23
 								hourSlots :+ [i]
@@ -1374,7 +1374,7 @@ Type TScreenHandler_ProgrammePlanner
 					Else
 						'mark all forbidden slots
 						Local startDay:Int = GetWorldtime().GetDay(blockTime)
-						Local endDay:Int = GetWorldTime().GetDay(blockTime + programme.GetBlocks() * 3600)
+						Local endDay:Int = GetWorldTime().GetDay(blockTime + programme.GetBlocks() * TWorldTime.HOURLENGTH)
 
 						'future day - mark ALL blocks of today
 						if startDay > planningDay and endDay > planningDay
@@ -1405,7 +1405,7 @@ Type TScreenHandler_ProgrammePlanner
 										hourSlots :+ [ GetWorldTime().GetDayHour(blockTime) ]
 									EndIf
 								endIf
-								blockTime :+ 3600
+								blockTime :+ 1 * TWorldTime.HOURLENGTH
 							Next
 							EnableSlotOverlays(hourSlots, TVTBroadcastMaterialType.PROGRAMME, 1)
 rem

@@ -739,7 +739,6 @@ Type TNewsAgency
 
 				'remove old news which are NOT subscribed on "latest
 				'possible subscription-delay-time"
-				'3600 - to also allow a bit "older" ones - like start news
 				If news.GetPublishTime() + maxSubscriptionDelay + 1 * TWorldTime.HOURLENGTH <  GetWorldTime().GetTimeGone()
 					'mark the news for removal
 					toRemove :+ [news]

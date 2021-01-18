@@ -677,7 +677,7 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 			entity.velocity.SetX(Float(TInterpolation.Linear(..
 				cloud.GetFloat(LSVelocityX),..
 				cloud.GetFloat(LSVelocityStrengthX) * windStrength,..
-				Float(Min(1800, timeSinceLastUpdate)), 1800)..
+				Double(Min(30 * TWorldTime.MINUTELENGTH, timeSinceLastUpdate)), 30 * TWorldTime.MINUTELENGTH)..
 			))
 			'do not use the global worldSpeed
 			entity.worldSpeedFactor = GetWorldTime().GetTimeFactor() * 0.01

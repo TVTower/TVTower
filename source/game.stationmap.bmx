@@ -2937,7 +2937,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 			If constructionTime <  0 Then constructionTime = 0
 
 			'next hour (+construction hours) at xx:00
-			If GetWorldTime().GetDayMinute(built + constructionTime*3600) >= 5
+			If GetWorldTime().GetDayMinute(built + constructionTime * TWorldTime.HOURLENGTH) >= 5
 				SetActivationTime( GetWorldTime().MakeTime(0, 0, GetWorldTime().GetHour(built) + constructionTime + 1, 0))
 			'this hour (+construction hours) at xx:05
 			Else

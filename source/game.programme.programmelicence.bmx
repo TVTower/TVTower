@@ -1237,7 +1237,7 @@ Type TProgrammeLicence Extends TBroadcastMaterialSource {_exposeToLua="selected"
 						'check if earliest release time is later
 						if GetWorldTime().GetDay( data.GetReleaseTime() ) > day then return False
 						'check if latest release time is earlier
-						if GetWorldTime().GetDay( data.GetReleaseTime() + slotCount*3600 ) < day then return False
+						if GetWorldTime().GetDay( data.GetReleaseTime() + slotCount * TWorldTime.HOURLENGTH ) < day then return False
 
 					endif
 				'all times after the live event are allowed too

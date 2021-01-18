@@ -1587,6 +1587,7 @@ Type TNewsEventSportMatch Extends TGameObject
 	Field matchTime:Long
 	'when a potential break takes place
 	Field breakTimes:Int[] = [45 * TWorldTime.MINUTELENGTH]
+	'length of each of the breaks
 	Field breakDuration:Int = 15 * TWorldTime.MINUTELENGTH
 
 	Field sportName:String
@@ -1693,8 +1694,10 @@ Type TNewsEventSportMatch Extends TGameObject
 
 	Method GetTotalBreakTime:Int()
 		Local res:Int
+		
+		'sum up the breaks
 		For Local i:Int = 0 Until breakTimes.length
-			res :+ breakTimes[i]
+			res :+ breakDuration 'breakTimes[i]
 		Next
 		Return res
 	End Method
