@@ -28,7 +28,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 
 	'configuration
 	Global suitcasePos:TVec2D = new TVec2D.Init(320,270)
-	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(19,32)
+	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(16,22)
 	Global scriptsPerLine:int = 1
 	Global scriptsNormalAmount:int = 4
 	Global scriptsNormal2Amount:int	= 1
@@ -918,7 +918,7 @@ endrem
 
 	Method onDrawRoom:int( triggerEvent:TEventBase )
 		if VendorEntity Then VendorEntity.Render()
-		GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		GetSpriteFromRegistry("gfx_suitcase_scripts").Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		'make suitcase/vendor highlighted if needed
 		local highlightSuitcase:int = False
@@ -941,7 +941,7 @@ endrem
 			SetAlpha oldColA * Float(0.4 + 0.2 * sin(Time.GetAppTimeGone() / 5))
 
 			if VendorEntity and highlightVendor then VendorEntity.Render()
-			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+			if highlightSuitcase then GetSpriteFromRegistry("gfx_suitcase_scripts").Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 			SetAlpha oldColA
 			SetBlend AlphaBlend
