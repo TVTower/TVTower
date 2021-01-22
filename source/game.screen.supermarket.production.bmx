@@ -1421,7 +1421,6 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 
 		buttonOK.SetValue(GetLocale("SELECT_PERSON"))
 		buttonCancel.SetValue(GetLocale("CANCEL"))
-
 		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIDropDown_OnSelectEntry, Self, "onCastChangeFilterDropdown", "TGUIDropDown") ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnDoubleClick, Self, "onDoubleClickCastListItem", "TGUICastListItem") ]
 		_eventListeners :+ [ EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onClickSortCastButton", "TGUIButton") ]

@@ -21,11 +21,13 @@ Type TGuiTextAreaSelect Extends TGUITextArea
 
 
 	Method onMouseOver:int(triggerEvent:TEventBase)
-		local coord:TVec2D = TVec2D(triggerEvent.GetData().Get("coord"))
-		if not coord then return False
+		local coordX:Int = triggerEvent.GetData().GetInt("x")
+		local coordY:Int = triggerEvent.GetData().GetInt("y")
 
-		local localCoord:TVec2D = new TVec2D.Init( coord.x - GetContentScreenX(), coord.y - GetContentScreenY())
-		hoveredLine = 1 + int((localCoord.y + Abs(guiTextPanel.scrollPosition.GetY())) / GetLineHeight())
+		'make local
+		coordX = coordX - GetContentScreenX()
+		coordY = coordY - GetContentScreenY()
+		hoveredLine = 1 + int((coordX + Abs(guiTextPanel.scrollPosition.GetY())) / GetLineHeight())
 		hoveredLine = MathHelper.Clamp(hoveredLine, 0, GetValueLines().length -1)
 	End Method
 

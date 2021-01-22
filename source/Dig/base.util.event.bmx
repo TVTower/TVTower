@@ -489,7 +489,10 @@ Type TEventManager
 		EndIf
 
 		'got a valid classname and checked object is same type or does extend from that type
-		If typeId And TTypeId.ForObject(checkedObject).ExtendsType(typeId) Then Return True
+		If typeId
+			'if TTypeId.ForObject(checkedObject) = typeId Then Return True
+			if TTypeId.ForObject(checkedObject).ExtendsType(typeId) Then Return True
+		EndIf
 
 		Return False
 	End Function

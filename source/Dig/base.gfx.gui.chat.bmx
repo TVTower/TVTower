@@ -39,7 +39,6 @@ Type TGUIChat Extends TGUIPanel
 	'is the input is inside the chatbox or absolute
 	Field guiInputPositionRelative:Int = 0
 	Field guiInputHistory:TList	= CreateList()
-	Field keepInputActive:Int = True
 
 	'time when again allowed to send
 	Global antiSpamTimer:Long = 0

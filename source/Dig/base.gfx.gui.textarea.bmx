@@ -65,7 +65,7 @@ Type TGUITextArea Extends TGUIobject
 		guiTextPanel.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
 
 		'this element reacts to keystrokes (cursor up/down, page up/down ...)
-		SetOption(GUI_OBJECT_CAN_RECEIVE_KEYSTROKES, True)
+		SetOption(GUI_OBJECT_CAN_RECEIVE_KEYBOARDINPUT, True)
 
 		'register events
 		'someone uses the mouse wheel to scroll over the panel
@@ -462,7 +462,7 @@ endrem
 		If data.GetString("direction") = "right" Then guiTextArea.ScrollContent(-scrollAmount, 0)
 		'maybe data was given in percents - so something like a
 		'"scrollTo"-value
-		If data.getString("changeType") = "percentage"
+		If data.getInt("isRelative") = True
 			local percentage:Float = data.GetFloat("percentage", 0)
 
 			if guiSender = guiTextArea.guiScrollerH

@@ -71,7 +71,9 @@ Type TGUIDropDown Extends TGUIInput
 		'setup base widget (input)
 		Super.Create(position, dimension, value, maxLength, limitState)
 		'but this element does not react to keystrokes
-		SetOption(GUI_OBJECT_CAN_RECEIVE_KEYSTROKES, False)
+		SetOption(GUI_OBJECT_CAN_RECEIVE_KEYBOARDINPUT, False)
+		'stay activated if clicked into
+		SetOption(GUI_OBJECT_STAY_ACTIVE_AFTER_MOUSECLICK, True)
 
 		'=== STYLE BUTTON ===
 		'use another sprite than the default button
@@ -111,11 +113,9 @@ Type TGUIDropDown Extends TGUIInput
 
 		'=== REGISTER EVENTS ===
 		'to close the list automatically if the object looses focus
-		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnRemoveFocus, Self, "onRemoveFocus", Self))
+'		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnRemoveFocus, Self, "onRemoveFocus", Self))
 		'listen to clicks to dropdown-items
 		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIDropDownItem_OnClick,	Self.list, "onClickOnEntry"))
-		'someone uses the mouse wheel to scroll over the panel
-		AddEventListener(EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnScrollwheel, onScrollWheel, Self))
 
 		'to register if an item was selected
 		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUISelectList_OnSelectEntry, Self, "onSelectEntry", Self.list))
@@ -144,62 +144,19 @@ Type TGUIDropDown Extends TGUIInput
 	End Method
 
 
-	'check if the drop down has to close
-	Method onRemoveFocus:Int(triggerEvent:TEventBase)
-		'skip indeep checks if already closed
-		If Not IsOpen() Then Return False
-
-		Local sender:TGuiObject = TGUIObject(triggerEvent.GetSender())
-		Local receiver:TGuiObject = TGUIObject(triggerEvent.GetReceiver())
-		If Not sender Then Return False
-
-		Rem
-		'if the receiver is an entry of the list - close and "click"
-		if self.list.HasItem(receiver)
-			SetOpen(False)
-		endif
-		EndRem
-		'close on click on a list item
-		If receiver And list.HasItem(receiver)
-			'emit an emulated click event so that the list item
-			'can handle the click accordingly (eg inform GUI Manager)
-			receiver.OnClick( TEventBase.Create(GUIEventKeys.DummyEvent, New TData.AddNumber("button", 1), Self, triggerEvent.GetReceiver()) )
-			SetSelectedEntry(receiver)
-
-			'handled mouse button click to avoid clicks below
-			GUIManager.UpdateState_foundClickedObject[1] = receiver
-			MouseManager.SetClickHandled(1)
-			MouseManager.ResetClicked(1)
-			SetOpen(False)
-		EndIf
-
-
-		'skip when loosing focus to self->list or list->self
-		If receiver
-			Local senderBelongsToWidget:Int = False
-			Local receiverBelongsToWidget:Int = False
-
-			If sender = Self
-				senderBelongsToWidget = True
-			ElseIf sender.HasParent(Self.list)
-				senderBelongsToWidget = True
+	'close drop down if still open
+	Method _SetActive:Int(bool:Int, oldOrNewActive:TGUIObject = Null) override
+		if not bool
+			'check if new activated object is one of our children
+			'- stay open if one of them is the new active one
+			If oldOrNewActive and GetEntries().Contains( oldOrNewActive )
+				'stay open
+			Else
+				SetOpen(False)
 			EndIf
-
-			If senderBelongsToWidget And receiver
-				If receiver = Self
-					receiverBelongsToWidget = True
-				ElseIf receiver.HasParent(Self.list)
-					receiverBelongsToWidget = True
-				EndIf
-			EndIf
-
-			'keep the widgets list "open" if new focus is now at a sub element
-			'of the widget
-			If senderBelongsToWidget And receiverBelongsToWidget Then Return False
 		EndIf
-
-
-		SetOpen(False)
+		
+		Return super._SetActive(bool, oldOrNewActive)
 	End Method
 
 
@@ -230,22 +187,23 @@ Type TGUIDropDown Extends TGUIInput
 
 
 	'handle mousewheel right on the drop down "input" (not the list)
-	Function onScrollWheel:Int( triggerEvent:TEventBase )
-		Local dropdown:TGUIDropDown = TGUIDropDown(triggerEvent.GetSender())
+	Method onMouseScrollWheel:Int( triggerEvent:TEventBase ) override
 		Local value:Int = triggerEvent.GetData().getInt("value",0)
-		If Not dropdown Or value=0 Then Return False
+		If value=0 Then Return False
 
 		Local newEntryPos:Int = -1
 		If value >= 1
-			newEntryPos = Min(dropdown.list.entries.count()-1, dropdown.GetEntryPos(dropdown.GetSelectedEntry()) + 1)
+			newEntryPos = Min(list.entries.count()-1, GetEntryPos( GetSelectedEntry()) + 1 )
 		Else
-			newEntryPos = Max(0, dropdown.GetEntryPos(dropdown.GetSelectedEntry()) - 1)
+			newEntryPos = Max(0, GetEntryPos( GetSelectedEntry()) - 1 )
 		EndIf
-		dropdown.SetSelectedEntryByPos( newEntryPos )
+		SetSelectedEntryByPos( newEntryPos )
 
 		'set to accepted so that nobody else receives the event
 		triggerEvent.SetAccepted(True)
-	End Function
+		
+		Return True
+	End Method
 	
 	
 	Method RefreshValue()
@@ -470,6 +428,11 @@ End Type
 'using "TGUISelectListItem" provides ability to easily
 'add them to the list contained in TGUIDropDown
 Type TGUIDropDownItem Extends TGUISelectListItem
+	Method New()
+		'avoid that drop downs items get "active" (only dropdown parent
+		'should be able to get "active"!)
+		SetOption(GUI_OBJECT_CAN_GAIN_ACTIVE, False)
+	End Method
 
 
 	Method GetClassName:String()

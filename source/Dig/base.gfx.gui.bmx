@@ -26,36 +26,43 @@ Import "base.gfx.renderconfig.bmx"
 
 
 '===== GUI CONSTANTS =====
-Const GUI_OBJECT_DRAGGED:Int					= 2^0
-Const GUI_OBJECT_VISIBLE:Int					= 2^1
-Const GUI_OBJECT_ENABLED:Int					= 2^2
-Const GUI_OBJECT_CLICKABLE:Int					= 2^3
-Const GUI_OBJECT_DRAGABLE:Int					= 2^4
-Const GUI_OBJECT_MANAGED:Int					= 2^5
-Const GUI_OBJECT_POSITIONABSOLUTE:Int			= 2^6
-Const GUI_OBJECT_IGNORE_POSITIONMODIFIERS:Int	= 2^7
-Const GUI_OBJECT_IGNORE_PARENTPADDING:Int		= 2^8
-Const GUI_OBJECT_IGNORE_PARENTLIMITS:Int		= 2^9
-Const GUI_OBJECT_ACCEPTS_DROP:Int				= 2^10
-Const GUI_OBJECT_CAN_RECEIVE_KEYSTROKES:Int		= 2^11
-Const GUI_OBJECT_CAN_GAIN_FOCUS:Int				= 2^12
-Const GUI_OBJECT_DRAWMODE_GHOST:Int				= 2^13
+Const GUI_OBJECT_DRAGGED:Int                    = 2^0
+Const GUI_OBJECT_VISIBLE:Int                    = 2^1
+Const GUI_OBJECT_ENABLED:Int                    = 2^2
+Const GUI_OBJECT_CLICKABLE:Int                  = 2^3
+Const GUI_OBJECT_DRAGABLE:Int                   = 2^4
+Const GUI_OBJECT_MANAGED:Int                    = 2^5
+Const GUI_OBJECT_POSITIONABSOLUTE:Int           = 2^6
+Const GUI_OBJECT_IGNORE_POSITIONMODIFIERS:Int   = 2^7
+Const GUI_OBJECT_IGNORE_PARENTPADDING:Int       = 2^8
+Const GUI_OBJECT_IGNORE_PARENTLIMITS:Int        = 2^9
+Const GUI_OBJECT_ACCEPTS_DROP:Int               = 2^10
+Const GUI_OBJECT_CAN_RECEIVE_KEYBOARDINPUT:Int  = 2^11
+Const GUI_OBJECT_CAN_RECEIVE_MOUSEINPUT:Int     = 2^12
+Const GUI_OBJECT_CAN_GAIN_FOCUS:Int             = 2^13
+Const GUI_OBJECT_CAN_GAIN_ACTIVE:Int            = 2^14
+Const GUI_OBJECT_DRAWMODE_GHOST:Int             = 2^15
 'defines what GetFont() tries to get at first: parents or types font
-Const GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE:Int	= 2^14
+Const GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE:Int = 2^16
 'defines if changes to children change gui order (zindex on "panels")
-Const GUI_OBJECT_CHILDREN_CHANGE_GUIORDER:Int	= 2^15
+Const GUI_OBJECT_CHILDREN_CHANGE_GUIORDER:Int	= 2^17
 'defines whether children are updated automatically or not
-Const GUI_OBJECT_STATIC_CHILDREN:Int            = 2^16
+Const GUI_OBJECT_STATIC_CHILDREN:Int            = 2^18
 'does the gui object manage assigned tooltips?
-Const GUI_OBJECT_TOOLTIP_MANAGED:Int            = 2^17
+Const GUI_OBJECT_TOOLTIP_MANAGED:Int            = 2^19
+'dropdowns, guiinputs ... do not loose active state after clicking, buttons do.
+Const GUI_OBJECT_STAY_ACTIVE_AFTER_MOUSECLICK:Int               = 2^20
+'enabling this allows to move the mouse outside while still pressing the button
+'and so eg to scroll without having to hit the scroller area once one did.
+Const GUI_OBJECT_KEEP_ACTIVE_ON_OUTSIDE_CONTINUED_MOUSEDOWN:Int = 2^21
 
 '===== GUI STATUS CONSTANTS =====
-Const GUI_OBJECT_STATUS_HOVERED:Int	= 2^0
+Const GUI_OBJECT_STATUS_HOVERED:Int	= 2^0			'mouse over
 Const GUI_OBJECT_STATUS_SELECTED:Int = 2^1
 Const GUI_OBJECT_STATUS_APPEARANCE_CHANGED:Int	= 2^2
 Const GUI_OBJECT_STATUS_CONTENT_CHANGED:Int	= 2^3
-Const GUI_OBJECT_STATUS_ACTIVE:Int = 2^4
-Const GUI_OBJECT_STATUS_FOCUSED:Int = 2^5
+Const GUI_OBJECT_STATUS_ACTIVE:Int = 2^4			'eg. accepting input (keyboard)
+Const GUI_OBJECT_STATUS_FOCUSED:Int = 2^5			'activated
 Const GUI_OBJECT_STATUS_SCREENRECT_VALID:Int = 2^6
 Const GUI_OBJECT_STATUS_CONTENTSCREENRECT_VALID:Int = 2^7
 Const GUI_OBJECT_STATUS_LAYOUT_VALID:Int = 2^8
@@ -85,6 +92,11 @@ Type TGUIManager
 	Field elementsWithChangedAppearance:TObjectList = New TObjectList
 	Field activeTooltips:TObjectList = New TObjectList
 	
+	'the widget set focused when a mouse button was held down
+	'this only resets once the mouse button is released
+	'use this to keep track of the "initially hit widget"
+	Field initialMouseHitObject:TGUIObject[]
+	
 	Field _listsSorted:Int = False
 
 
@@ -92,18 +104,24 @@ Type TGUIManager
 
 	Field UpdateState_mouseButtonDown:Int[]
 	Field UpdateState_mouseScrollwheelMovement:Int = 0
-	Field UpdateState_foundClickedObject:TGUIObject[]
-	Field UpdateState_foundHoverObject:TGUIObject = Null
-	Field UpdateState_foundFocusObject:TGUIObject = Null
+	Field UpdateState_foundClickedObject:TGUIObject = Null
+	Field UpdateState_foundHoveredObject:TGUIObject = Null
+	Field UpdateState_foundFocusedObject:TGUIObject = Null
+	Field UpdateState_foundActiveObject:TGUIObject = Null
+
+	Field UpdateState_foundInputReceiverObject:TGUIObject = Null
 
 
 	'=== PRIVATE PROPERTIES ===
 
 	Field _defaultfont:TBitmapFont
 	Field _ignoreMouse:Int = False
-	'is there an object listening to keystrokes?
-	Field _keystrokeReceivingObject:TGUIObject = Null
+	Field _activeObject:TGUIObject
 	Field _focusedObject:TGUIObject
+	'is there an object listening to keystrokes?
+	Field _keyboardInputReceiver:TGUIObject = Null
+	'is there an object receiving mouse interaction?
+	Field _mouseInputReceiver:TGUIObject = Null
 
 	Global _instance:TGUIManager
 	Global _eventListeners:TEventListenerBase[]
@@ -133,9 +151,8 @@ Type TGUIManager
 		'gui specific settings
 		config.AddNumber("panelGap",10)
 
-
+		initialMouseHitObject = New TGUIObject[ MouseManager.GetButtonCount() +1]
 		UpdateState_mouseButtonDown = New Int[ MouseManager.GetButtonCount() +1]
-		UpdateState_foundClickedObject = New TGUIObject[ MouseManager.GetButtonCount() +1]
 
 		Return Self
 	End Method
@@ -438,20 +455,79 @@ Type TGUIManager
 	End Method
 
 
-	Method GetKeystrokeReceiver:TGUIobject()
-		Return _keystrokeReceivingObject
+	Method GetKeyboardInputReceiver:TGUIobject()
+		Return _keyboardInputReceiver
 	End Method
 
 
-	Method SetKeystrokeReceiver:Int(obj:TGUIObject)
-		If obj And obj.hasOption(GUI_OBJECT_CAN_RECEIVE_KEYSTROKES)
-			_keystrokeReceivingObject = obj
+	Method SetKeyboardInputReceiver:Int(obj:TGUIObject)
+		If obj And obj.hasOption(GUI_OBJECT_CAN_RECEIVE_KEYBOARDINPUT)
+			_keyboardInputReceiver = obj
 		Else
 			'just reset the old one
-			_keystrokeReceivingObject = Null
+			_keyboardInputReceiver = Null
 		EndIf
 	End Method
 
+
+	Method GetMouseInputReceiver:TGUIobject()
+		Return _mouseInputReceiver
+	End Method
+
+
+	Method SetMouseInputReceiver:Int(obj:TGUIObject)
+		If obj And obj.hasOption(GUI_OBJECT_CAN_RECEIVE_MOUSEINPUT)
+			_mouseInputReceiver = obj
+		Else
+			'just reset the old one
+			_mouseInputReceiver = Null
+		EndIf
+	End Method
+
+
+	'sets the currently active object
+	Method SetActive(obj:TGUIObject)
+		'ignore if object is already focused
+		if obj = _activeObject Then Return
+		
+		'if there was an active object -> inform about loss of active state
+		If (obj <> _activeObject) And _activeObject
+			'sender = previous focused object
+			'receiver = newly focused object
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnRemoveActive, Null , _activeObject, obj)
+			_activeObject._SetActive(False, obj)
+		EndIf
+
+		'inform about a new object getting activated
+		'sender = newly activated object
+		'receiver = previous activate object
+		If obj
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnSetActive, Null , obj, _activeObject)
+			obj._SetActive(True, _activeObject)
+		EndIf
+
+		'set new active object
+		_activeObject = obj
+
+		'if there is a active object now - inform about gain of the state
+'		If _activeObject
+			UpdateState_foundActiveObject = _activeObject
+'		EndIf
+
+		'if the new active object cannot act as input receiver
+		'the current receivers are unset nonetheless
+		SetKeyboardInputReceiver(_activeObject)
+		SetMouseInputReceiver(_activeObject)
+
+		GuiManager._listsSorted = False
+		'GuiManager.SortLists()
+	End Method
+
+
+	Method GetActive:TGUIObject()
+		Return _activeObject
+	End Method
+	
 
 	'sets the currently focused object
 	Method SetFocus(obj:TGUIObject)
@@ -479,12 +555,12 @@ Type TGUIManager
 
 		'if there is a focused object now - inform about gain of focus
 		If _focusedObject
-			UpdateState_foundFocusObject = _focusedObject
+			UpdateState_foundFocusedObject = _focusedObject
 		EndIf
 
 		'if the new focus object cannot act as keystroke receiver
 		'the current receiver is unset nonetheless
-		SetKeystrokeReceiver(_focusedObject)
+		SetKeyboardInputReceiver(_focusedObject)
 
 		GuiManager._listsSorted = False
 		'GuiManager.SortLists()
@@ -501,7 +577,8 @@ Type TGUIManager
 		SetFocus(Null)
 
 		'also remove potential keystroke receivers
-		SetKeystrokeReceiver(Null)
+		SetKeyboardInputReceiver(Null)
+		SetMouseInputReceiver(Null)
 	End Method
 
 
@@ -511,9 +588,15 @@ Type TGUIManager
 		UpdateState_mouseScrollwheelMovement = MouseManager.GetScrollwheelMovement()
 		UpdateState_mouseButtonDown = MouseManager.GetAllIsDown()
 
-		UpdateState_foundFocusObject = Null
-		UpdateState_foundClickedObject = New TGUIObject[ MouseManager.GetButtonCount() + 1]
-		UpdateState_foundHoverObject = Null
+		For local i:int = 1 To UpdateState_mouseButtonDown.length
+			If not UpdateState_mouseButtonDown[i] Then GUIManager.initialMouseHitObject[i] = Null
+		Next
+
+		UpdateState_foundClickedObject = null
+		UpdateState_foundFocusedObject = Null
+		UpdateState_foundHoveredObject = Null
+		UpdateState_foundActiveObject = Null
+		UpdateState_foundInputReceiverObject = Null
 	End Method
 
 
@@ -522,10 +605,15 @@ Type TGUIManager
 		'if we had a click this cycle and an gui element is focused,
 		'remove focus from it
 		If MouseManager.isClicked(1)
-			If Not UpdateState_foundFocusObject And GUIManager.GetFocus()
+			If Not UpdateState_foundFocusedObject And GUIManager.GetFocus()
+print "reset focus"
 				GUIManager.ResetFocus()
 				'GUIManager.setFocus(Null)
 			EndIf
+'			If Not UpdateState_foundClickedObject And GUIManager.GetFocus()
+'				GUIManager.ResetFocus()
+				'GUIManager.setFocus(Null)
+'			EndIf
 		EndIf
 
 		'ignoreMouse can be useful for objects which know, that nothing
@@ -695,7 +783,6 @@ Type TGUIobject
 	Field contentAlignment:SVec2F = New SVec2F(0.5, 0.5)
 	Field value:String = ""
 	Field mouseIsClicked:TVec2D	= Null 'null = not clicked
-	Field mouseIsDown:TVec2D = Null
 	'displacement of object when dragged (null = centered)
 	Field handle:TVec2D	= Null
 
@@ -746,6 +833,8 @@ Type TGUIobject
 		SetOption(GUI_OBJECT_ENABLED, True)
 		SetOption(GUI_OBJECT_CLICKABLE, True)
 		SetOption(GUI_OBJECT_CAN_GAIN_FOCUS, True)
+		SetOption(GUI_OBJECT_CAN_GAIN_ACTIVE, True)
+		SetOption(GUI_OBJECT_CAN_RECEIVE_MOUSEINPUT, True)
 		SetOption(GUI_OBJECT_CHILDREN_CHANGE_GUIORDER, True)
 	End Method
 
@@ -1072,7 +1161,7 @@ Type TGUIobject
 	End Method
 
 
-	Method SetActive:Int(bool:Int)
+	Method _SetActive:Int(bool:Int, oldOrNewActive:TGUIObject = Null)
 		If (_status & GUI_OBJECT_STATUS_ACTIVE) <> bool
 			SetStatus(GUI_OBJECT_STATUS_ACTIVE, bool)
 
@@ -1229,7 +1318,7 @@ Type TGUIobject
 			mouseIsClicked = Null
 			'no longer hovered or active
 			If IsHovered() Then SetHovered(False)
-			If IsActive() Then SetActive(False)
+			If IsActive() Then GUIManager.SetActive(Null)
 			'remove focus
 			If IsFocused() Then GUIManager.ResetFocus()
 		EndIf
@@ -1847,201 +1936,216 @@ Type TGUIobject
 	
 	
 	Method HandleMouse()
-		'=== HANDLE MOUSE ===
-		If Not GUIManager.UpdateState_mouseButtonDown[1]
-			mouseIsDown	= Null
-			'remove hover/active state
-'			SetHovered(False)
-			SetActive(False)
-		EndIf
+		'1. check if another item is currently receiving (exclusive) mouse input
+		'   -> skip further processing if so
+		'2. check if mouse-over takes place, mark if found
+		'3. Skip further checks if widget is not clickable
+		'4. check if widget becomes mouse input receiver
+		'5. handle mouse input (if receiver)
+		
+		
 
-		'mouse position could have changed since a begin of a "click"
-		'-> eg when clicking + moving the cursor very fast
-		'   in that case the mouse position should be the one of the
-		'   moment the "click" begun
-		Local mousePos:TVec2D
-		If MouseManager.IsClicked(1)
-			mousePos = MouseManager.GetClickPosition(1)
-		EndIf
-		If Not mousePos Then mousePos = MouseManager.currentPos
-
-		Local containsMouse:Int = containsXY(mousePos.x, mousePos.y)
+		' skip if disabled
+		If not _flags & GUI_OBJECT_ENABLED Then Return
+		' skip if other item is receiving input already 
+		' Ronny: enabling this requires a "deactivation click" means
+		'        having a widget active and clicking on another one
+		'        does not activate the new one but deactivates the first
+		'        one first - you need to click again to activate
+		'If GUIManager.GetMouseInputReceiver() and GUIManager.GetMouseInputReceiver() <> self then Return
+	'	If GUIManager.UpdateState_foundInputReceiverObject and GUIManager.UpdateState_foundInputReceiverObject <> self Then Return
 
 
-		'=== HANDLE MOUSE OVER ===
-		'if nothing of the obj is visible or the mouse is not in
-		'the visible part - reset the mouse states
-		If Not containsMouse
+		Local containsMouse:Int = self.ContainsXY(MouseManager.x, MouseManager.y)
 
-			'avoid fast mouse movement to get interpreted incorrect
-			'-> only "unhover" undragged elements
-			If Not isDragged()
-				'reset clicked position as soon as leaving the widget
-				mouseIsClicked = Null
-				SetHovered(False)
-				SetActive(False)
+		
+		'allow to stay "active/hovered..." if mousedown over an item and
+		'then moving outside of the widget area without mouse button release
+		'(eg scrollers)
+
+		if GUIManager.UpdateState_mouseButtonDown[1] 
+			if GUIManager.GetActive() = self 
+				if HasOption(GUI_OBJECT_KEEP_ACTIVE_ON_OUTSIDE_CONTINUED_MOUSEDOWN)
+					containsMouse = True
+				endif
+			endif
+		ElseIf GUIManager.GetActive() = self and not HasOption(GUI_OBJECT_STAY_ACTIVE_AFTER_MOUSECLICK)
+			if not containsMouse 	
+				GUIManager.SetActive(Null)
+			Endif
+		Endif
+
+
+		'no longer mouse over?
+		If not containsMouse and IsHovered()
+'print "on mouse leave :" + _id + ": " + GetValue()
+			Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseLeave, New TData.AddInt("x", MouseManager.x).AddInt("y", MouseManager.y), Self )
+			OnMouseLeave(ev)
+			ev.Trigger()
+
+
+			SetHovered(False)
+			
+			'update indicator
+			If GUIManager.UpdateState_foundHoveredObject = self
+				GUIManager.UpdateState_foundHoveredObject = Null
 			EndIf
-			'mouseclick somewhere - should deactivate active object
-			'no need to use the cached mouseButtonDown[] as we want the
-			'general information about a click
-'			If MOUSEMANAGER.isHit(1) And hasFocus() Then GUIManager.setFocus(Null)
-		'mouse over object
-		Else
-			'inform others about a scroll with the mousewheel
-			If GUIManager.UpdateState_mouseScrollwheelMovement <> 0
-				Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnScrollwheel, New TData.AddNumber("value", GUIManager.UpdateState_mouseScrollwheelMovement).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-				event.Trigger()
-				'a listener handles the scroll - so remove it for others
-				If event.isAccepted()
-					GUIManager.UpdateState_mouseScrollwheelMovement = 0
-				EndIf
-			EndIf
 		EndIf
 
 
-		'=== HANDLE MOUSE CLICKS / POSITION ===
-		'skip objects the mouse is not over (except it is already dragged).
-		'ATTENTION: this differs to self.isHovered() (which is set later on)
-		If Not containsMouse And Not isDragged()
-			'do not return - we need to check tooltips later on
-			'Return False
-		Else
+		' skip mouse enter/over and mouse click checks if another item is 
+		' hovered already in this update tick/cycle 
+		If GUIManager.UpdateState_foundHoveredObject and GUIManager.UpdateState_foundHoveredObject <> self Then Return
 
-			'handle mouse clicks / button releases / hover state
-			'only do something if
-			'a) there is NO dragged object
-			'b) we handle the dragged object
-			'-> only react to dragged obj or all if none is dragged
 
-			If Not GUIManager.GetDraggedCount() Or isDragged()
+		'mouse enter/over?
+		If containsMouse
+			'mark indicator so next widget does not hover too
+			GUIManager.UpdateState_foundHoveredObject = self
 
-				If IsClickable()
-					'activate objects - or skip if if one gets active
-					'as soon as someone clicks on a object it is getting focused
-					'	do this "on click" instead of "on mouse down"
-					'	as else a drop down widget which covers another widget
-					'	with its listbox will handle the "losr focus" event
-					'	and after closing the underlaying widget receives the
-					'	click event
-					If _flags & GUI_OBJECT_ENABLED And MouseManager.IsClicked(1)
-						If HasOption(GUI_OBJECT_CAN_GAIN_FOCUS) and not HasStatus(GUI_OBJECT_STATUS_FOCUSED)
-							GUImanager.SetFocus(Self)
-						EndIf
-					EndIf
+			'create event: onmouseenter
+			If Not isHovered()
+'print "on mouse enter :" + _id + ": " + GetValue()
+				Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseEnter, New TData.AddInt("x", MouseManager.x).AddInt("y", MouseManager.y), Self )
+				OnMouseEnter(ev)
+				ev.Trigger()
 
-					If GUIManager.UpdateState_mouseButtonDown[1] And _flags & GUI_OBJECT_ENABLED
-						'create a new "event"
-						If Not MouseIsDown
-							'store a copy (might be the currentPos instance of MouseManager)
-							MouseIsDown = mousePos.Copy()
-						EndIf
+				SetHovered(True)
+			EndIf
 
-						'we found a gui element which can accept clicks
-						'dont check further guiobjects for mousedown
-						'as this also removes "down" state
-						GUIManager.UpdateState_mouseButtonDown[1] = False
-						'MOUSEMANAGER.ResetKey(1)
-					EndIf
+			'create event: onmouseover
+			Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseOver, New TData.AddInt("x", MouseManager.x).AddInt("y", MouseManager.y), Self )
+			OnMouseOver(ev)
+			ev.Trigger()
+		EndIf
+		
+
+		' skip mouse interaction if not clickable -> non click
+		If not IsClickable() Then Return
+
+
+		'handle "mousedown"
+		If containsMouse and IsActive()
+			For local i:int = 1 to GUIManager.UpdateState_mouseButtonDown.length - 1
+				If GUIManager.UpdateState_mouseButtonDown[i]
+					Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseDown, New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+					OnMouseDown(ev)
+					ev.Trigger()
+				EndIf
+			Next
+		EndIf
+		
+		
+
+		' check if element becomes or looses "active" (mousedown)
+		If GUIManager.UpdateState_mouseButtonDown[1]
+			'gain active (and focus)?
+			If containsMouse
+				'a widget which gets activated _requires_ to be focused
+				'too - so ensure that.
+
+				' gain focus if not done yet
+				If HasOption(GUI_OBJECT_CAN_GAIN_FOCUS) and not HasStatus(GUI_OBJECT_STATUS_FOCUSED)
+					'focuses object and emits event!
+					GUIManager.SetFocus(Self)
 				EndIf
 
-				If Not GUIManager.UpdateState_foundHoverObject And _flags & GUI_OBJECT_ENABLED
+				If HasOption(GUI_OBJECT_CAN_GAIN_ACTIVE) and GUIManager.GetActive() <> self
+'print "set active " + GetClassName()
+					GUIManager.SetActive(self)
+				EndIf
 
-					'do not create "hovered" for dragged objects
-					If Not isDragged()
-						'create event: onmouseenter
-						If Not isHovered()
-							TriggerBaseEvent(GUIEventKeys.GUIObject_OnMouseEnter, Null, Self )
-							SetHovered(True)
-						EndIf
-						GUIManager.UpdateState_foundHoverObject = Self
+
+				'avoid others reacting to mouse down this cycle
+				GUIManager.UpdateState_mouseButtonDown[1] = False
+			'loose active (can happen even if widget has flag to not gain active)?
+			ElseIf IsActive() 'no need to check guimanager.GetActive() 
+				GUIManager.SetActive(Null)
+
+				'avoid others reacting to mouse down this cycle
+				GUIManager.UpdateState_mouseButtonDown[1] = False
+			EndIf
+		EndIf
+		
+		
+
+		' check clicked
+		For local button:int = 1 To GUIManager.UpdateState_mouseButtonDown.length
+			If MouseManager.IsClicked(button)
+				'only handle click if the "button release" happens
+				'over the widget (so not "down" over button but "up" 
+				'somewhere else)
+				Local clickPos:TVec2D = MouseManager.GetClickposition(button)
+				if ContainsXY(int(clickPos.x), int(clickPos.y))
+	'print "IS CLICKED    " + _id + "   " + GetClassName()
+					Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnClick, New TData.AddNumber("button", button).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+					'let the object handle the click
+					Local handledClick:Int = OnClick(ev)
+					'fire onClickEvent
+					ev.Trigger()
+
+					'doing this leads to "handled click" in these cases
+					'-> if handled
+					'-> if vetoed
+					'And not handled, if "not handled" but event vetoed
+					'If Not handledClick And Not ev.IsVeto() Then handledClick = True
+
+					'store click position
+					'print "TODO: Remove mouseisclicked - interessierte koennen clickevent nutzen"
+					mouseIsClicked = clickPos
+
+					'handled that click
+					If handledClick
+						MOUSEMANAGER.SetClickHandled(button)
 					EndIf
-					'create event: onmouseover
-					Local mouseOverEvent:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseOver, New TData.Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self )
-					OnMouseOver(mouseOverEvent)
-					mouseOverEvent.Trigger()
-
-					'somone decided to say the button is pressed above the object
-					If MouseIsDown
-						SetActive(True)
-						TriggerBaseEvent(GUIEventKeys.GUIObject_OnMouseDown, New TData.AddNumber("button", 1), Self )
-					Else
-						SetHovered(True)
+					
+					
+					'special threatment for left click
+					If button = 1
+						GUIManager.UpdateState_foundClickedObject = Self
+						
+						If not HasOption(GUI_OBJECT_STAY_ACTIVE_AFTER_MOUSECLICK)
+							If GUIManager.GetActive() = self 
+								GUIManager.SetActive(Null)
+							EndIf
+						EndIf
 					EndIf
-
-					If IsClickable()
-						'inform others about a right guiobject click
-						'we do use a "cached hit state" so we can reset it if
-						'we found a one handling it
-						If (MouseManager.IsClicked(2) Or MouseManager.IsLongClicked(1)) And Not GUIManager.UpdateState_foundClickedObject[2]
-							Local clickEvent:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnClick, New TData.AddNumber("button",2).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-							Local handledClick:Int
-
-							handledClick = OnClick(clickEvent)
-							'fire onClickEvent
-							clickEvent.Trigger()
-
-'TODO: add veto
-							'if not handledClick and not clickEvent.IsVeto() then handledClick = True
-
-							'maybe change to "isAccepted" - but then each gui object
-							'have to modify the event IF they accepted the click
-
-							'reset Button
-							If handledClick
-								If MouseManager.IsLongClicked(1)
-									MouseManager.SetLongClickHandled(1)
-								Else
-									MouseManager.SetClickHandled(2)
-								EndIf
-							EndIf
-
-							'found clicked even if not handled?
-							GUIManager.UpdateState_foundClickedObject[2] = Self
-						EndIf
+				Endif
+			EndIf
 
 
-						'IsClicked does include waiting time
-						If Not GUIManager.UpdateState_foundClickedObject[1]
-							Local isClicked:Int = False
+			If MouseManager.IsDoubleClicked(button)
+				'only handle click if the "button release" happens
+				'over the widget (so not "down" over button but "up" 
+				'somewhere else)
+				Local clickPos:TVec2D = MouseManager.GetClickposition(button)
+				If ContainsXY(int(clickPos.x), int(clickPos.y))
+					Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnDoubleClick, New TData.AddNumber("button", button).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+					'let the object handle the click
+					Local handledClick:int = OnDoubleClick(ev)
 
-							If MouseManager.IsClicked(1)
-								Local clickEvent:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnClick, New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-								Local handledClick:Int
+					ev.Trigger()
 
-								'let the object handle the click
-								handledClick = OnClick(clickEvent)
-								'fire onClickEvent
-								clickEvent.Trigger()
-								'doing this leads to "handled click" in these cases
-								'-> if handled
-								'-> if vetoed
-								'And not handled, if "not handled" but event vetoed
-								'If Not handledClick And Not clickEvent.IsVeto() Then handledClick = True
-
-								isClicked = True
-
-								mouseIsClicked = MouseManager.GetClickposition(1)
-
-								'handled that click
-								If handledClick
-									MOUSEMANAGER.SetClickHandled(1)
-								EndIf
-
-								GUIManager.UpdateState_foundClickedObject[1] = Self
-							EndIf
-
-
-							If MouseManager.IsDoubleClicked(1)
-								Local clickEvent:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnDoubleClick, New TData.AddNumber("button",1).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
-								'let the object handle the click
-								OnDoubleClick(clickEvent)
-
-								'handled that click
-								MouseManager.SetDoubleClickHandled(1)
-							EndIf
-						EndIf
+					If handledClick
+						MouseManager.SetDoubleClickHandled(button)
 					EndIf
 				EndIf
+			EndIf
+		Next
+		
+		
+		'handle scrollwheel
+		'inform others about a scroll with the mousewheel
+		'If IsFocused() And GUIManager.UpdateState_mouseScrollwheelMovement <> 0
+		If IsHovered() And GUIManager.UpdateState_mouseScrollwheelMovement <> 0
+'print "on scrollwheel :" + _id + ": " + GetValue()
+			Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseScrollwheel, New TData.AddNumber("value", GUIManager.UpdateState_mouseScrollwheelMovement).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
+			OnMouseScrollwheel(ev)
+			ev.Trigger()
+
+			'a listener handles the scroll - so remove it for others
+			If ev.isAccepted()
+				GUIManager.UpdateState_mouseScrollwheelMovement = 0
 			EndIf
 		EndIf
 	End Method
@@ -2051,6 +2155,16 @@ Type TGUIobject
 		_UpdateLayout()
 
 		If Not IsVisible() Then Return
+rem
+		'active state check
+		If IsActive() and (GUIManager.GetMouseInputReceiver() <> self and GUIManager.GetKeyboardInputReceiver() <> self)
+			SetActive(False)
+		EndIf
+		'hover state check
+		If IsHovered() and not ContainsXY(MouseManager.x, MouseManager.y)
+			SetHovered(False)
+		EndIf
+endrem
 
 		'Local oldCol:SColor8; GetColor(oldCol)
 		Local oldColA:Float = GetAlpha()
@@ -2181,7 +2295,6 @@ Type TGUIobject
 			SetAppearanceChanged(False)
 		EndIf
 
-
 		'skip handling disabled entries
 		'(eg. deactivated scrollbars which else would "hover" before
 		' list items on the same spot)
@@ -2196,7 +2309,6 @@ Type TGUIobject
 		UpdateChildren()
 
 
-
 		If not GUIManager._ignoreMouse Then HandleMouse()
 		'react to some special keys
 		HandleKeyboard()
@@ -2209,6 +2321,17 @@ Type TGUIobject
 			'change position if required
 
 			_tooltip.Update()
+		EndIf
+
+
+
+		'=== REFRESH INDICATORS ===
+		'guimanager resets updatestate values each "StartUpdates()"
+		'to ensure only actively used widgets (this cycle) can be hovered,
+		'activated, ...
+
+		If GUIManager.GetFocus() = self or IsActive()
+			GUIManager.UpdateState_foundFocusedObject = self
 		EndIf
 	End Method
 
@@ -2446,13 +2569,6 @@ Type TGUIobject
 	End Method
 
 
-	'default mouseover handler for all gui objects
-	'by default they do nothing
-	Method onMouseOver:Int(triggerEvent:TEventBase)
-		Return False
-	End Method
-
-
 	'default single click handler for all gui objects
 	'by default they do nothing
 	'singleClick: waited long enough to see if there comes another mouse click
@@ -2473,6 +2589,42 @@ Type TGUIobject
 	'by default they do nothing
 	'click: no wait: mouse button was down and is now up again
 	Method onClick:Int(triggerEvent:TEventBase)
+		Return False
+	End Method
+
+
+	'default mouse enter handler
+	Method onMouseEnter:Int(triggerEvent:TEventBase)
+		Return False
+	End Method
+
+
+	'default mouse leave handler
+	Method onMouseLeave:Int(triggerEvent:TEventBase)
+		Return False
+	End Method
+
+
+	'default mouse over handler
+	Method onMouseOver:Int(triggerEvent:TEventBase)
+		Return False
+	End Method
+
+
+	'default mouse down handler
+	Method onMouseDown:Int(triggerEvent:TEventBase)
+		Return False
+	End Method
+
+
+	'default mouse up handler
+	Method onMouseUp:Int(triggerEvent:TEventBase)
+		Return False
+	End Method
+
+
+	'default mouse scrollwheel handler
+	Method onMouseScrollwheel:Int(triggerEvent:TEventBase)
 		Return False
 	End Method
 

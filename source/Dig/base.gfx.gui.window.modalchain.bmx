@@ -242,7 +242,7 @@ Type TGUIModalWindowChain Extends TGUIObject
 		'so call Super.Update as it calls UpdateChildren already
 		Super.Update()
 
-		if Not GuiManager.GetKeystrokeReceiver() and KeyManager.IsHit(KEY_ESCAPE)
+		if Not GuiManager.GetKeyboardInputReceiver() and KeyManager.IsHit(KEY_ESCAPE)
 			'do not allow another ESC-press for X ms
 			if activeChainElement and activeChainElement.previousChainElement
 				KeyManager.blockKey(KEY_ESCAPE, 350)

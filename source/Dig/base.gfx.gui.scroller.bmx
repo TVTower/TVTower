@@ -45,6 +45,10 @@ Type TGUIScrollerBase extends TGUIobject
 
 		'the scroller itself ignores focus too
 		self.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
+		'allow to keep mouse button pressed and leave the area while still
+		'scrolling
+		self.setOption(GUI_OBJECT_KEEP_ACTIVE_ON_OUTSIDE_CONTINUED_MOUSEDOWN, True)
+
 
 		'style myself - aligns buttons
 		onAppearanceChanged()
@@ -186,6 +190,28 @@ Type TGUIScrollerBase extends TGUIobject
 	End Method
 
 
+	Method onMouseScrollWheel:Int( triggerEvent:TEventBase ) override
+		Local value:Int = triggerEvent.GetData().getInt("value",0)
+		If value = 0 Then Return False
+		'emit event that the scroller position has changed
+		Local direction:String = ""
+		Select _orientation
+			Case GUI_OBJECT_ORIENTATION_VERTICAL
+				If value < 0 Then direction = "up"
+				If value > 0 Then direction = "down"
+			Case GUI_OBJECT_ORIENTATION_HORIZONTAL
+				If value < 0 Then direction = "left"
+				If value > 0 Then direction = "right"
+		End Select
+		If direction <> ""
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, New TData.AddString("direction", direction).AddInt("scrollAmount", 15), self)
+		EndIf
+
+		'set to accepted so that nobody else receives the event
+		triggerEvent.SetAccepted(True)
+	End Method
+
+
 	'handle clicks on the up/down-buttons and inform others about changes
 	Function onButtonClick:Int( triggerEvent:TEventBase )
 		'only handle left/primary key clicks
@@ -199,7 +225,7 @@ Type TGUIScrollerBase extends TGUIobject
 
 		'emit event that the scroller position has changed
 		If sender = guiScroller.guiButtonMinus or sender = guiScroller.guiButtonPlus
-			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.AddString("direction", sender.direction.ToLower()).AddNumber("scrollAmount", 15), guiScroller )
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.AddString("direction", sender.direction.ToLower()).AddInt("scrollAmount", 15), guiScroller )
 		EndIf
 
 		'handled the click
@@ -307,6 +333,7 @@ Type TGUIScroller Extends TGUIScrollerBase
 		scrollHandle.SetDirection(TGUISlider.DIRECTION_DOWN)
 		scrollHandle._showFilledGauge = False
 		scrollHandle._gaugeAlpha = 0.5
+		scrollHandle.SetOption(GUI_OBJECT_KEEP_ACTIVE_ON_OUTSIDE_CONTINUED_MOUSEDOWN)
 
 		'manage (update/draw) the handle on our own
 		AddChild(scrollHandle)
@@ -350,7 +377,7 @@ Type TGUIScroller Extends TGUIScrollerBase
 		if MouseManager.IsDown(1) then guiScroller.begunAMouseDown = true
 
 		'inform others (equally to up/down-buttonclicks)
-		TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.AddString("changeType", "percentage").AddNumber("percentage", sender.GetRelativeValue()).Add("sendingSlider", sender), guiScroller )
+		TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.AddInt("isRelative", True).AddFloat("percentage", sender.GetRelativeValue()).Add("sendingSlider", sender), guiScroller )
 	End Function
 
 
@@ -430,6 +457,7 @@ Type TGUIScrollerSimple Extends TGUIScrollerBase
 
 	Method Create:TGUIScrollerSimple(parent:TGUIobject)
 		Super.Create(parent)
+
 		return self
 	End Method
 
@@ -500,7 +528,7 @@ Type TGUIScrollerSimple Extends TGUIScrollerBase
 					'scroll to the percentage
 					SetRelativeValue(progress)
 					'inform others
-					TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.AddString("changeType", "percentage").AddNumber("percentage", GetRelativeValue()), self )
+					TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.Addint("isRelative", True).AddFloat("percentage", GetRelativeValue()), self )
 
 					'reset clicked state and button state
 					mouseIsClicked = Null
