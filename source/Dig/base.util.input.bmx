@@ -16,7 +16,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2019 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -41,6 +41,7 @@ ENDREM
 SuperStrict
 Import brl.System
 Import brl.PolledInput
+Import Brl.vector
 Import "base.util.vector.bmx"
 Import "base.util.time.bmx"
 Import "base.util.virtualgraphics.bmx"
@@ -120,6 +121,7 @@ Type TMouseManager
 	Field _down:Int[] = [0,0,0,0,0]
 	'time since when the button was pressed last
 	Field _downTime:Long[] = [0:Long,0:Long,0:Long,0:Long,0:Long]
+	Field _downStartPos:SVec2I[] = new SVec2I[5]
 	'can clicks/hits get read?
 	'special info read is possible (IsDown(), IsNormal())
 	Field _enabled:Int[] = [True, True, True, True, True]
@@ -454,6 +456,15 @@ Type TMouseManager
 	End Method
 
 
+	Method GetDownStartPosition:SVec2I(button:Int)
+		if _down[button-1]
+			Return _downStartPos[button-1]
+		else
+			Return new SVec2I(-1,-1)
+		Endif
+	End Method
+
+
 	Method GetPosition:TVec2D()
 		Return currentPos
 	End Method
@@ -620,9 +631,10 @@ Type TMouseManager
 		If evMouseDown[buttonIndex] And Not _down[buttonIndex]
 			If Not _enabled[buttonIndex] Then Return False
 
-			'Print Time.GetTimeGone() + "  normal => down"
+			'Print Time.GetTimeGone() + "  normal => down   x="+x + " y="+y
 			_down[buttonIndex] = True
 			_downTime[buttonIndex] = Time.GetAppTimeGone()
+			_downStartPos[buttonIndex] = new SVec2I(x, y)
 		EndIf
 
 

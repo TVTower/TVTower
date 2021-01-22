@@ -76,7 +76,9 @@ Type TGUIinput Extends TGUIobject
 		EndIf
 
 		'this element reacts to keystrokes
-		SetOption(GUI_OBJECT_CAN_RECEIVE_KEYSTROKES, True)
+		SetOption(GUI_OBJECT_CAN_RECEIVE_KEYBOARDINPUT, True)
+		'stay activated if clicked into
+		SetOption(GUI_OBJECT_STAY_ACTIVE_AFTER_MOUSECLICK, True)
 
 
 		GUIMAnager.Add(Self)
@@ -148,7 +150,7 @@ Type TGUIinput Extends TGUIobject
 		
 		'active input fields react to mouse clicks on the input-area
 		'to move the cursor position
-		If Self = GuiManager.GetKeystrokeReceiver() and _textPos
+		If Self = GuiManager.GetKeyboardInputReceiver() and _textPos
 			'shrink screenrect to "text area"
 			Local scrRect:TRectangle = GetScreenRect()
 			Local screenX:Int = _textPos.GetX()
@@ -234,14 +236,14 @@ Type TGUIinput Extends TGUIobject
 				If KEYMANAGER.isHit(KEY_ENTER) And IsFocused()
 					KEYMANAGER.blockKey(KEY_ENTER, 200) 'to avoid auto-enter on a chat input
 					GuiManager.ResetFocus()
-					If Self = GuiManager.GetKeystrokeReceiver() Then GuiManager.SetKeystrokeReceiver(Null)
+					If Self = GuiManager.GetKeyboardInputReceiver() Then GuiManager.SetKeyboardInputReceiver(Null)
 				EndIf
 
 
 
 				'as soon as an input field is marked as active input
 				'all key strokes could change the input
-				If Self = GuiManager.GetKeystrokeReceiver()
+				If Self = GuiManager.GetKeyboardInputReceiver()
 					If _cursorPosition = -1 Then _cursorPosition = value.length
 
 					'ignore enter keys => TRUE
@@ -251,7 +253,7 @@ Type TGUIinput Extends TGUIobject
 						'do not allow another ESC-press for 150ms
 						KeyManager.blockKey(KEY_ESCAPE, 150)
 
-						If Self = GuiManager.GetKeystrokeReceiver() Then GuiManager.SetKeystrokeReceiver(Null)
+						GuiManager.SetKeyboardInputReceiver(Null)
 						GuiManager.ResetFocus()
 					Else
 						_valueChanged = (_valueBeforeEdit <> value)
@@ -267,12 +269,12 @@ Type TGUIinput Extends TGUIobject
 
 			'if input is not the active input (enter key or clicked on another input)
 			'and the value changed, inform others with an event
-			If Self <> GuiManager.GetKeystrokeReceiver() And _valueChanged
+			If Self <> GuiManager.GetKeyboardInputReceiver() And _valueChanged
 				FinishEdit()
 			EndIf
 		EndIf
 		'set to "active" look
-		If _editable And Self = GuiManager.GetKeystrokeReceiver() Then SetActive(True)
+		If _editable And Self = GuiManager.GetKeyboardInputReceiver() Then _SetActive(True)
 
 		'limit input length
         If value.length > maxlength
@@ -411,7 +413,7 @@ Type TGUIinput Extends TGUIobject
 		'if we are the input receiving keystrokes, symbolize it with the
 		'blinking underscore sign "text_"
 		'else just draw it like a normal gui object
-		If _editable And Self = GuiManager.GetKeystrokeReceiver()
+		If _editable And Self = GuiManager.GetKeyboardInputReceiver()
 			SetColor( editColor )
 
 			If _cursorPosition = -1 Then _cursorPosition = printValue.length

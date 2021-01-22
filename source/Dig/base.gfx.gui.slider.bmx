@@ -327,19 +327,53 @@ Type TGUISlider extends TGUIObject
 		'only if left button was used
 		if triggerEvent.GetData().GetInt("button",0) <> 1 then return False
 
-		'only if not already handling the same situation with mouseDown
-		if not MouseIsDown Then SetValueByMouse
+		SetValueByMouse()
 
 		return Super.onClick(triggerEvent)
 	End Method
 
 
+	Method onMouseDown:Int(triggerEvent:TEventBase)
+		'only if left button was used
+		if triggerEvent.GetData().GetInt("button",0) <> 1 then return False
+
+		SetValueByMouse()
+
+		return Super.onMouseDown(triggerEvent)
+	End Method
+
+
+	'handle mousewheel right on the drop down "input" (not the list)
+	Method onMouseScrollWheel:Int( triggerEvent:TEventBase ) override
+		Local value:Int = triggerEvent.GetData().getInt("value",0)
+		If value = 0 Then Return False
+
+		If steps > 0
+			if value > 0 
+				SetValue( GetCurrentStep() + 1 )
+			Elseif value < 0
+				SetValue( GetCurrentStep() - 1 )
+			EndIf
+		Else
+			Local myStep:Double
+			if valueType = VALUETYPE_INTEGER
+				myStep = value 'the faster you scroll, the more it adds
+			Else
+				myStep = (maxValue - minValue) * 0.01 * value
+			EndIf
+			SetValue( GetCurrentValue() + myStep)
+		EndIf
+
+		'set to accepted so that nobody else receives the event
+		triggerEvent.SetAccepted(True)
+		
+		Return True
+	End Method
+	
+
 	'override to update caption
 	Method Update:int()
 		Super.Update()
-
-		'adjust value
-		if MouseIsDown and IsFocused() Then SetValueByMouse()
 
 		'process long clicks to avoid odd "right click behaviour"
 		if IsFocused() and MouseManager.IsLongClicked(1)
@@ -538,7 +572,7 @@ Type TGUISlider extends TGUIObject
 	'draw foreground element
 	Method DrawHandle(position:TVec2D)
 		local state:string = ""
-		if MouseIsDown then state = ".active"
+		If IsActive() then state = ".active"
 
 		Local sprite:TSprite = GetHandleSprite()
 		if state <> "" then sprite = GetSpriteFromRegistry(GetHandleSpriteName() + state, sprite)

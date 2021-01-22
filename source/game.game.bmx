@@ -1735,7 +1735,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 
 		'remove focus of gui objects
 		GuiManager.ResetFocus()
-		GuiManager.SetKeystrokeReceiver(Null)
+		GuiManager.SetKeyboardInputReceiver(Null)
 
 
 		'reset mouse clicks

@@ -674,7 +674,7 @@ Type TApp
 		'also ignore if there is a modal window opened
 		'if an element has "
 		If (GetGame().gamestate <> TGame.STATE_RUNNING or (GetCurrentPlayer() AND GetCurrentPlayer().isHotKeysEnabled())) AND ..
-			Not GUIManager.GetKeystrokeReceiver() And ..
+			Not GUIManager.GetKeyboardInputReceiver() And ..
 			Not (App.ExitAppDialogue Or App.EscapeMenuWindow)
 
 			If GameRules.devConfig.GetBool(keyLS_DevKeys, False)
@@ -1362,7 +1362,7 @@ endrem
 
 		ScreenCollection.UpdateCurrent(GetDeltaTimer().GetDelta())
 
-		Local openEscapeMenu:Int = openEscapeMenuViaInterface Or (Not GuiManager.GetKeystrokeReceiver() And KeyManager.IsHit(KEY_ESCAPE))
+		Local openEscapeMenu:Int = openEscapeMenuViaInterface Or (Not GuiManager.GetKeyboardInputReceiver() And KeyManager.IsHit(KEY_ESCAPE))
 		'no escape menu in start screen or settingsscreen
 		If GetGame().gamestate = TGame.STATE_MAINMENU Or GetGame().gamestate = TGame.STATE_SETTINGSMENU
 			openEscapeMenu = False
@@ -1371,7 +1371,7 @@ endrem
 		'force open escape menu (if eg. borked)
 		If KeyManager.IsDown(KEY_LCONTROL) And KeyManager.IsHit(KEY_ESCAPE)
 			openEscapeMenu = True
-			Print "force open escape menu. gamestate="+GetGame().gamestate +"   keystrokereceiver: " + (GuiManager.GetKeystrokeReceiver() <> Null)
+			Print "force open escape menu. gamestate="+GetGame().gamestate +"   GetKeyboardInputReceiver: " + (GuiManager.GetKeyboardInputReceiver() <> Null)
 		EndIf
 
 		If openEscapeMenu

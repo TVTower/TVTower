@@ -44,7 +44,7 @@ Type TGUIModalMainMenu Extends TGUIModalWindowChainElement
 	Method Activate:Int()
 		'reset gui states
 		For Local i:Int = 0 Until buttons.length
-			buttons[i].SetActive(False)
+			if buttons[i].IsActive() Then GUIManager.SetActive(Null)
 			buttons[i].SetHovered(False)
 		Next
 	End Method
