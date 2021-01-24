@@ -236,8 +236,13 @@ Type TGUIinput Extends TGUIobject
 				If KEYMANAGER.isHit(KEY_ENTER) And IsFocused()
 					KEYMANAGER.blockKey(KEY_ENTER, 200) 'to avoid auto-enter on a chat input
 					GuiManager.ResetFocus()
-					If Self = GuiManager.GetKeyboardInputReceiver() Then GuiManager.SetKeyboardInputReceiver(Null)
+					If Self = GuiManager.GetKeyboardInputReceiver()
+						GuiManager.SetKeyboardInputReceiver(Null)
+					EndIf
+					'remove internal "active" state 
+					_SetActive(False)
 				EndIf
+				If GuiManager.GetActive() = self Then GuiManager.SetActive(Null)
 
 
 
@@ -254,7 +259,10 @@ Type TGUIinput Extends TGUIobject
 						KeyManager.blockKey(KEY_ESCAPE, 150)
 
 						GuiManager.SetKeyboardInputReceiver(Null)
-						GuiManager.ResetFocus()
+						If Self = GuiManager.GetKeyboardInputReceiver()
+							GuiManager.SetKeyboardInputReceiver(Null)
+						EndIf
+						_SetActive(False)
 					Else
 						_valueChanged = (_valueBeforeEdit <> value)
 					EndIf
@@ -274,7 +282,9 @@ Type TGUIinput Extends TGUIobject
 			EndIf
 		EndIf
 		'set to "active" look
-		If _editable And Self = GuiManager.GetKeyboardInputReceiver() Then _SetActive(True)
+		If _editable and not IsActive() And Self = GuiManager.GetKeyboardInputReceiver() 
+			_SetActive(True)
+		endif
 
 		'limit input length
         If value.length > maxlength
