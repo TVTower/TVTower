@@ -242,7 +242,7 @@ Type TGUIinput Extends TGUIobject
 					'remove internal "active" state 
 					_SetActive(False)
 				EndIf
-				If GuiManager.GetActive() = self Then GuiManager.SetActive(Null)
+'				If GuiManager.GetActive() = self Then GuiManager.SetActive(Null)
 
 
 
