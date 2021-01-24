@@ -1732,9 +1732,9 @@ Type TGUIProductionEditTextsModalWindow Extends TGUIProductionModalWindow
 		labelSubDescription = New TGUILabel.Create(New TVec2D.Init(15,177), GetLocale("DESCRIPTION"), "")
 
 		inputTitle = New TGUIInput.Create(New TVec2D.Init(15,12+13), New TVec2D.Init(245,-1), GetLocale("TITLE"), 128, "")
-		inputDescription = New TGUIInput.Create(New TVec2D.Init(15,60+13), New TVec2D.Init(245,-1), GetLocale("DESCRIPTION"), 128, "")
+		inputDescription = New TGUIInput.Create(New TVec2D.Init(15,60+13), New TVec2D.Init(245,-1), GetLocale("DESCRIPTION"), 512, "")
 		inputSubTitle = New TGUIInput.Create(New TVec2D.Init(15,137+13), New TVec2D.Init(245,-1), GetLocale("TITLE"), 128, "")
-		inputSubDescription = New TGUIInput.Create(New TVec2D.Init(15,180+13), New TVec2D.Init(245,-1), GetLocale("DESCRIPTION"), 128, "")
+		inputSubDescription = New TGUIInput.Create(New TVec2D.Init(15,180+13), New TVec2D.Init(245,-1), GetLocale("DESCRIPTION"), 512, "")
 
 		clearTitle = New TGUIButton.Create(New TVec2D.Init(15+245, 12 + 13 + 2), New TVec2D.Init(25, 25), "x", "")
 		clearTitle.spriteName = "gfx_gui_button.datasheet"
