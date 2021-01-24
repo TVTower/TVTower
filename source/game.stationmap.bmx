@@ -1820,6 +1820,8 @@ Type TStationMap extends TOwnedGameObject {_exposeToLua="selected"}
 		sectionBroadcastPermissions = new TMap
 		showStations = [1,1,1,1]
 		showStationTypes = [1,1,1]
+		cheatedMaxReach = False
+		stationsAdded = new Int[4]
 	End Method
 
 
