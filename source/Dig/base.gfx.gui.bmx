@@ -588,7 +588,7 @@ Type TGUIManager
 		UpdateState_mouseScrollwheelMovement = MouseManager.GetScrollwheelMovement()
 		UpdateState_mouseButtonDown = MouseManager.GetAllIsDown()
 
-		For local i:int = 1 To UpdateState_mouseButtonDown.length
+		For local i:int = 1 To UpdateState_mouseButtonDown.length -1
 			If not UpdateState_mouseButtonDown[i] Then GUIManager.initialMouseHitObject[i] = Null
 		Next
 
