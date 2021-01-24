@@ -37,6 +37,10 @@ Type TScriptCollection Extends TGameObjectCollection
 
 	Method Initialize:TScriptCollection()
 		Super.Initialize()
+		
+		_InvalidateCaches()
+		if protectedTitles then protectedTitles.Clear()
+		
 		Return Self
 	End Method
 
