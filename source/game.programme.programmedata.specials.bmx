@@ -82,19 +82,12 @@ Type TSportsHeaderProgrammeData Extends TSportsProgrammeData {_exposeToLua}
 			If matchesFinishTime = -1 And league
 				Local b:Int = blocks
 				Local lastMatch:TNewsEventSportMatch = league.GetLastMatch()
-				If lastMatch Then b = Max(blocks, Int(Ceil(lastMatch.duration/3600.0)))
+				If lastMatch Then b = Max(blocks, Int(Ceil(lastMatch.duration/ Double(TWorldTime.HOURLENGTH))))
 
 				matchesFinishTime = league.GetLastMatchEndTime()
 				'no longer than the blocks define ?
-				matchesFinishTime = Min(league.GetLastMatchEndTime(), league.GetLastMatchTime() + b*3600)
-'				matchesFinishTime = Min(league.GetLastMatchEndTime(), league.GetLastMatchTime() + blocks*3600)
+				matchesFinishTime = Min(league.GetLastMatchEndTime(), league.GetLastMatchTime() + b * TWorldTime.HOURLENGTH)
 		'		print league.GetLastMatchEndTime() +"     " + league.GetLastMatchTime()
-			EndIf
-
-			'old savegames: Remove in 2020
-			If matchesFinishTime < 0 Or Not league
-				matchesFinished = True
-				Return True
 			EndIf
 
 			If matchesFinishTime < GetWorldTime().GetTimeGone()
@@ -313,7 +306,7 @@ endrem
 		result = result.Replace("%LEAGUENAMESHORT%", league.nameShort)
 
 		If result.Find("%MATCHCOUNT%") >= 0
-			result = result.Replace("%MATCHCOUNT%", league.GetUpcomingMatches(Long(GetWorldTime().GetTimeGone()), -1).length)
+			result = result.Replace("%MATCHCOUNT%", league.GetUpcomingMatches(GetWorldTime().GetTimeGone(), -1).length)
 		EndIf
 
 		If result.Find("%MATCHTIMES%") >= 0

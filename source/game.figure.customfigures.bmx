@@ -319,7 +319,7 @@ Type TFigureDeliveryBoy Extends TFigure
 
 		if reason = "blocked"
 			'stop waiting if the room is blocked for too long
-			if room.blockedUntil - GetWorldTime().GetTimeGone() > 600
+			if room.blockedUntil - GetWorldTime().GetTimeGone() > 600 * TWorldTime.SECONDLENGTH
 				TLogger.Log("TFigureDeliveryBoy", "Delivery failed: room blocked for longer than 600s. " + Self.name+" is returning back home.", LOG_DEBUG | LOG_AI, True)
 				deliveryDone = True
 				SendToOffscreen()

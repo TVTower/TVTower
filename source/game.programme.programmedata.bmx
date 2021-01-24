@@ -378,7 +378,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	'so: unreleased -> production (->cinema) -> released
 	Method UpdateUnreleased:Int()
 		Local unreleased:TList = GetUnreleasedProgrammeDataList()
-		Local now:Double = GetWorldTime().GetTimeGone()
+		Local now:Long = GetWorldTime().GetTimeGone()
 		For Local pd:TProgrammeData = EachIn unreleased
 			pd.Update()
 			'data is sorted by production start, so as soon as the
@@ -425,7 +425,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	'call this after a game start to set all "old programmes" to be
 	'finished
 	Method UpdateAll:Int()
-		Local now:Double = GetWorldTime().GetTimeGone()
+		Local now:Long = GetWorldTime().GetTimeGone()
 		For Local pd:TProgrammeData = EachIn entries.Values()
 			pd.Update()
 		Next
@@ -1144,7 +1144,8 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		If Not IsLive() Then Return False
 
 		If HasFixedLiveTime()
-			If GetWorldTime().GetTimeGone() >= Double(GetWorldTime().GetHour(releaseTime))*3600 + blocks*3600 - 5*60
+			'finished live air?
+			If GetWorldTime().GetTimeGone() >= GetWorldTime().GetHour(releaseTime) * TWorldTime.HOURLENGTH  + (blocks*60 - 5) * TWorldTime.MINUTELENGTH
 				If GetTimesBroadcasted() <= 1
 					onFinishProductionForCast()
 				EndIf
@@ -1162,7 +1163,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 		'programmes begin at xx:05 - but their live events will end xx:55
 		'releaseTime is not guaranteed to be "xx:00" so, we use GetHours()
 		If HasFixedLiveTime()
-			If GetWorldTime().GetTimeGone() >= Double(GetWorldTime().GetHour(releaseTime))*3600 + blocks*3600 - 5*60
+			If GetWorldTime().GetTimeGone() >= GetWorldTime().GetHour(releaseTime) * TWorldTime.HOURLENGTH + (blocks*60 - 5) * TWorldTime.MINUTELENGTH
 				SetFlag(TVTProgrammeDataFlag.LIVE, False)
 				SetFlag(TVTProgrammeDataFlag.LIVEONTAPE, True)
 				Return True
@@ -1265,7 +1266,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method GetCinemaReleaseTime:Long()
-		Return releaseTime - Max(1, Floor(0.5 * GetWorldTime().GetDaysPerYear())) * TWorldTime.DAYLENGTH
+		Return releaseTime - Max(1, GetWorldTime().GetDaysPerYear()/2) * TWorldTime.DAYLENGTH
 	End Method
 
 

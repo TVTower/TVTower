@@ -2100,7 +2100,7 @@ Type TDatabaseLoader
 
 			'person should be at least 5 years (fictional)
 			Local dobYear:Int = GetWorldTime().GetYear( person.GetPersonalityData().GetDOB() )
-			Local ageOnProduction:Int = earliestProductionData.GetProductionStartTime() - person.GetPersonalityData().GetDOB()
+			Local ageOnProduction:Long = earliestProductionData.GetProductionStartTime() - person.GetPersonalityData().GetDOB()
 			Local ageOnProductionYears:Int = earliestProductionData.GetYear() - dobYear
 			Local adjustAge:Int = False
 

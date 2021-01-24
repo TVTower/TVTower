@@ -3,11 +3,11 @@ Import "Dig/base.util.deltatimer.bmx"
 Import "Dig/base.util.mersenne.bmx"
 
 Type TWorldTimeBase
-	'time (seconds) gone at all 
-	Field _timeGone:Double
-	'time (seconds) of the last update
+	'time (milliseconds) gone at all 
+	Field _timeGone:Long
+	'time (milliseconds) of the last update
 	'(enables calculation of missed time between two updates)
-	Field _timeGoneLastUpdate:Double = -1.0
+	Field _timeGoneLastUpdate:Long = -1
 	'Speed of the world in "virtual seconds per real-time second"
 	'1.0 = realtime - a virtual day would take 86400 real-time seconds
 	'3600.0 = a virtual day takes 24 real-time seconds
@@ -18,7 +18,7 @@ Type TWorldTimeBase
 	Field _paused:Int = False
 
 
-	Method Init:TWorldTimeBase(timeGone:Double = 0.0)
+	Method Init:TWorldTimeBase(timeGone:Long = 0)
 		SetTimeGone(timeGone)
 
 		return self
@@ -26,8 +26,8 @@ Type TWorldTimeBase
 
 
 	Method Initialize:int()
-		_timeGone = 0:double
-		_timeGoneLastUpdate = -1:double
+		_timeGone = 0:Long
+		_timeGoneLastUpdate = -1:Long
 		_timeFactor = 60.0
 		_paused = False
 	End Method
@@ -93,26 +93,26 @@ Type TWorldTimeBase
 	End Method
 
 
-	Method SetTimeGone(timeGone:Double)
+	Method SetTimeGone(timeGone:Long)
 		_timeGone = timeGone
 		'also set last update
 		_timeGoneLastUpdate = timeGone
 	End Method
 
 
-	Method GetTimeGone:Double() {_exposeToLua}
+	Method GetTimeGone:Long() {_exposeToLua}
 		Return _timeGone
 	End Method
 
 
-	Method GetMillisecondsGone:Long() {_exposeToLua}
-		Return _timeGone * 1000
+	Method GetSecondsGone:Long() {_exposeToLua}
+		Return _timeGone/1000
 	End Method
 
 
 	Method Update:int()
 		'Update the time (includes pausing)
-		_timeGone :+ GetDeltaTimer().GetDelta() * GetTimeFactor()
+		_timeGone :+ int(1000 * GetDeltaTimer().GetDelta() * GetTimeFactor())
 
 		'backup last update time
 		_timeGoneLastUpdate = _timeGone
@@ -174,31 +174,31 @@ Type TWorldTimeBaseIntervalTimer
 	'returns TRUE if interval is gone (ignores action time)
 	'action time could be eg. "show text for actiontime-seconds EVERY interval-seconds"
 	Method doAction:int()
-		local timeLeft:Double = GetTime().GetMillisecondsGone() - (timer + GetInterval() )
+		local timeLeft:Long = GetTime().GetTimeGone() - (timer + GetInterval() )
 		return ( timeLeft > 0 AND timeLeft < actionTime )
 	End Method
 
 
 	'returns TRUE if interval and duration is gone (ignores duration)
 	Method isExpired:int()
-		return ( timer + GetInterval() + actionTime <= GetTime().GetMillisecondsGone() )
+		return ( timer + GetInterval() + actionTime <= GetTime().GetTimeGone() )
 	End Method
 
 
 	Method getTimeGoneInPercents:float()
 		local restTime:int = Max(0, getTimeUntilExpire())
 		if restTime = 0 then return 1.0
-		return 1.0 - (restTime / float(GetInterval()))
+		return 1.0 - (restTime / Float(GetInterval()))
 	End Method
 
 
 	Method getTimeUntilExpire:Long()
-		return timer + GetInterval() + actionTime - GetTime().GetMillisecondsGone()
+		return timer + GetInterval() + actionTime - GetTime().GetTimeGone()
 	End Method
 
 
 	Method reachedHalftime:int()
-		return ( timer + 0.5*(GetInterval() + actionTime) <= GetTime().GetMillisecondsGone() )
+		return ( timer + (GetInterval() + actionTime) <= GetTime().GetTimeGone()/2 )
 	End Method
 
 
@@ -210,6 +210,6 @@ Type TWorldTimeBaseIntervalTimer
 	Method reset()
 		intervalToUse = interval + RandRange(randomnessMin, randomnessMax)
 
-		timer = GetTime().GetMillisecondsGone()
+		timer = GetTime().GetTimeGone()
 	End Method
 End Type

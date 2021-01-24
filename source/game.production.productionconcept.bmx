@@ -924,8 +924,8 @@ Type TProductionConcept Extends TOwnedGameObject
 	End Method
 
 
-	Method GetBaseProductionTime:int()
-		local base:int = 9 * 60
+	Method GetBaseProductionTime:Long()
+		local base:Long = 9 * TWorldTime.HOURLENGTH
 
 		local typeTimeMod:Float = 1.0
 		local speedPointTimeMod:Float = 1.0
@@ -976,9 +976,9 @@ Type TProductionConcept Extends TOwnedGameObject
 			if focusPoints > 0
 				For local i:int = 0 until focusPoints
 					if script.IsFictional()
-						base :+ (15 + i*7)
+						base :+ (15 + i*7) * TWorldTime.MINUTELENGTH
 					else
-						base :+ (10 + i*5)
+						base :+ (10 + i*5) * TWorldTime.MINUTELENGTH
 					endif
 				Next
 			endif
@@ -992,16 +992,17 @@ Type TProductionConcept Extends TOwnedGameObject
 			base :* speedPointTimeMod
 			base :* teamPointTimeMod
 			base :* script.productionTimeMod
-			return int(base/60)
+			'round to hours
+			return TWorldTime.HOURLENGTH * (base / TWorldTime.HOURLENGTH)
 		else
 			base :* typeTimeMod
 			base :* speedPointTimeMod
 			base :* teamPointTimeMod
 			base :* script.productionTimeMod
 
-			base = Max(base, ceil(script.GetBlocks()*blockMinimumMod)*60)
-			'round minutes to hours
-			return int(Max(1, base/60))
+			base = Max(base, ceil(script.GetBlocks()*blockMinimumMod) * TWorldTime.HOURLENGTH)
+			'round to hours
+			return TWorldTime.HOURLENGTH * (Max(1, base / TWorldTime.HOURLENGTH))
 		endif
 
 	End Method

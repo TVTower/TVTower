@@ -79,9 +79,9 @@ Function onStartSeasonPart:Int(event:TEventBase)
 	Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
 
 
-	Local time:Double = event.GetData().GetDouble("time")
+	Local time:Long = event.GetData().Getlong("time")
 
-	if GetWorldTime().getDay(time) < GetWorldTime().GetStartDay() then return False
+	if GetWorldTime().GetDay(time) < GetWorldTime().GetStartDay() then return False
 
 	print "onStartSeasonPart: "+league.GetCurrentSeason().part+"/"+league.GetCurrentSeason().partMax+"  "+league.name
 End Function
@@ -90,7 +90,7 @@ Function onFinishSeasonPart:Int(event:TEventBase)
 	Local league:TNewsEventSportLeague = TNewsEventSportLeague(event.GetSender())
 
 
-	Local time:Double = event.GetData().GetDouble("time")
+	Local time:Long = event.GetData().Getlong("time")
 
 	if GetWorldTime().getDay(time) < GetWorldTime().GetStartDay() then return False
 
@@ -243,9 +243,9 @@ Type TNewsAgencyNewsProvider_Sport extends TNewsAgencyNewsProvider
 		NewsEvent.SetModifier(TNewsEvent.modKeyTopicality_AgeLS, 3.0)
 		NewsEvent.AddKeyword("SPORT")
 		'let the game finish first (duration + 15 Min break)
-		NewsEvent.happenedTime = GetWorldTime().GetTimeGone() + match.duration + 60 * 15
+		NewsEvent.happenedTime = GetWorldTime().GetTimeGone() + (match.duration + 15 * TWorldTime.MINUTELENGTH)
 
-		NewsEvent.eventDuration = 6*3600 'only for 8 hours
+		NewsEvent.eventDuration = 6 * TWorldTime.HOURLENGTH 'only for 6 hours
 		NewsEvent.SetFlag(TVTNewsFlag.UNIQUE_EVENT, True) 'one time event
 		'
 		if league._leaguesIndex = 0 '1. BL
@@ -278,7 +278,7 @@ End Type
 Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 	'=== WEATHER HANDLING ===
 	'time of last weather event/news
-	Field weatherUpdateTime:Double = 0
+	Field weatherUpdateTime:Long = 0
 	'announce new weather every x-y minutes
 	Field weatherUpdateTimeInterval:int[] = [270, 300]
 	Field weatherType:int = 0
@@ -301,11 +301,11 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 
 	Method Update:int()
 		If weatherUpdateTime < GetWorldTime().GetTimeGone()
-			weatherUpdateTime = GetWorldTime().GetTimeGone() + 60 * randRange(weatherUpdateTimeInterval[0], weatherUpdateTimeInterval[1])
+			weatherUpdateTime = GetWorldTime().GetTimeGone() + randRange(weatherUpdateTimeInterval[0], weatherUpdateTimeInterval[1]) * TWorldTime.MINUTELENGTH
 			'limit weather forecasts to get created between xx:10-xx:40
 			'to avoid forecasts created just before the news show
 			If GetWorldTime().GetDayMinute(weatherUpdateTime) > 40
-				local newTime:Long = GetWorldTime().MakeTime(0, GetWorldtime().GetDay(weatherUpdateTime), GetWorldtime().GetDayHour(weatherUpdateTime), RandRange(10, 40), 0)
+				local newTime:Long = GetWorldTime().MakeTime(0, GetWorldtime().GetDay(weatherUpdateTime), GetWorldtime().GetDayHour(weatherUpdateTime), RandRange(10, 40), 0, 0)
 				weatherUpdateTime = newTime
 			EndIf
 
@@ -330,7 +330,7 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 		'   (after ~5 hours the next forecast gets created)
 		local forecastHours:int = 6
 		'if we want to have a forecast till next update
-		'local forecastHours:int = ceil((weatherUpdateTime - GetWorldTime().GetTimeGone()) / 3600.0)
+		'local forecastHours:int = ceil((weatherUpdateTime - GetWorldTime().GetTimeGone()) / TWorldTime.HOURLENGTH)
 
 		'quality and price are nearly the same everytime
 		Local quality:Float = 0.01 * randRange(50,60)
@@ -338,7 +338,7 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 		'append 1 hour to both: forecast is done eg. at 7:30 - so it
 		'cannot be a weatherforecast for 7-10 but for 8-11
 		local beginHour:int = (GetWorldTime().GetDayHour()+1) mod 24
-		local endHour:int = (GetWorldTime().GetDayHour(GetWorldTime().GetTimeGone() + forecastHours * 3600)+1) mod 24
+		local endHour:int = (GetWorldTime().GetDayHour(GetWorldTime().GetTimeGone() + forecastHours * TWorldTime.HOURLENGTH)+1) mod 24
 		Local description:string = ""
 		local title:string = GetLocale("WEATHER_FORECAST_FOR_X_TILL_Y").replace("%BEGINHOUR%", beginHour).replace("%ENDHOUR%", endHour)
 		local weather:TWorldWeatherEntry
@@ -511,7 +511,7 @@ Type TNewsAgencyNewsProvider_Weather extends TNewsAgencyNewsProvider
 		'maybe just connect weather and potential audience directly
 		'instead of using the newsevents
 
-		NewsEvent.eventDuration = 8*3600 'only for 8 hours
+		NewsEvent.eventDuration = 8 * TWorldTime.HOURLENGTH 'only for 8 hours
 		NewsEvent.SetFlag(TVTNewsFlag.SEND_IMMEDIATELY, True)
 		'one time event
 		NewsEvent.SetFlag(TVTNewsFlag.UNIQUE_EVENT, True)

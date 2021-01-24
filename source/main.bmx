@@ -1675,6 +1675,7 @@ endrem
 
 		'set game cursor to 0/default
 		GetGameBase().SetCursor(TGameBase.CURSOR_DEFAULT)
+		GetGameBase().SetCursorAlpha(1.0)
 
 		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
 
@@ -1806,7 +1807,10 @@ endrem
 		if cursorSprite
 			cursorOffsetX = cursorSprite.offset.GetLeft()
 			cursorOffsetY = cursorSprite.offset.GetTop()
+			Local oldA:Float = GetAlpha()
+			SetAlpha(oldA * GetGameBase().GetCursorAlpha())
 			cursorSprite.Draw(MouseManager.x, MouseManager.y)
+			SetAlpha(oldA)
 		endif
 
 		Select GetGameBase().GetCursorExtra()
@@ -2460,13 +2464,13 @@ Type TSaveGame Extends TGameState
 		_gameSummary.Add("game_initial_builddate", GameConfig.savegame_initialBuildDate)
 		_gameSummary.Add("game_initial_version", GameConfig.savegame_initialVersion)
 		_gameSummary.Add("game_initial_savegameVersion", GameConfig.savegame_initialSaveGameVersion)
-		_gameSummary.AddNumber("game_saveCount", GameConfig.savegame_saveCount)
+		_gameSummary.AddInt("game_saveCount", GameConfig.savegame_saveCount)
 		_gameSummary.Add("game_mode", "singleplayer")
-		_gameSummary.AddNumber("game_timeGone", GetWorldTime().GetTimeGone())
+		_gameSummary.AddLong("game_timeGone", GetWorldTime().GetTimeGone())
 		_gameSummary.Add("player_name", GetPlayer().name)
 		_gameSummary.Add("player_channelName", GetPlayer().channelName)
-		_gameSummary.AddNumber("player_money", GetPlayer().GetMoney())
-		_gameSummary.AddNumber("savegame_version", SAVEGAME_VERSION)
+		_gameSummary.AddLong("player_money", GetPlayer().GetMoney())
+		_gameSummary.AddInt("savegame_version", SAVEGAME_VERSION)
 		'store last ID of all entities, to avoid duplicates
 		'store them in game summary to be able to reset before "restore"
 		'takes place
@@ -2475,8 +2479,8 @@ Type TSaveGame Extends TGameState
 		'- load in game 1 (having game objects with ID 1 - 1000)
 		'- new entities would again get ID 1 - 1000
 		'  -> duplicates
-		_gameSummary.AddNumber("entitybase_lastID", TEntityBase.lastID)
-		_gameSummary.AddNumber("gameobject_lastID", TGameObject.LastID)
+		_gameSummary.AddInt("entitybase_lastID", TEntityBase.lastID)
+		_gameSummary.AddInt("gameobject_lastID", TGameObject.LastID)
 
 		Super.BackupGameData()
 
@@ -4584,7 +4588,7 @@ Type GameEvents
 
 
 	Function PlayerBoss_OnCallPlayerForced:Int(triggerEvent:TEventBase)
-		Local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", Long(GetWorldTime().GetTimeGone() + 2*3600))
+		Local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", Long(GetWorldTime().GetTimeGone() + 2 * TWorldTime.HOURLENGTH))
 		Local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
 		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 
@@ -4612,7 +4616,7 @@ Type GameEvents
 
 
 	Function PlayerBoss_OnCallPlayer:Int(triggerEvent:TEventBase)
-		Local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", Long(GetWorldTime().GetTimeGone() + 2*3600))
+		Local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", Long(GetWorldTime().GetTimeGone() + 2 * TWorldTime.HOURLENGTH))
 		Local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
 		Local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
 

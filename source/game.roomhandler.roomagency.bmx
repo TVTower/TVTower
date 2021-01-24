@@ -573,8 +573,8 @@ endrem
 			else
 				ownerRerentInfo = GetLocale("IN_XTIME")
 			endif
-			local hours:int = rerentalTime / 3600
-			local minutes:int = (rerentalTime - hours*3600) / 60
+			local hours:int = rerentalTime / TWorldTime.HOURLENGTH
+			local minutes:int = (rerentalTime - hours*TWorldTime.HOURLENGTH) / TWorldTime.MINUTELENGTH
 			local timeString:string = RSet(hours,2).Replace(" ","0")+":"+RSet(minutes,2).Replace(" ","0")
 			if hours > 1
 				timeString = timeString + " " + GetLocale("HOURS")

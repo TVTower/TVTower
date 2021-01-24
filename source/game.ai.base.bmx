@@ -369,7 +369,7 @@ rem
 	Method CallOnChat(fromID:int=0, text:String = "", chatType:int = 0, channels:int = 0) abstract
 	Method CallOnProgrammeLicenceAuctionGetOutbid(licence:object, bid:int, bidderID:int) abstract
 	Method CallOnProgrammeLicenceAuctionWin(licence:object, bid:int) abstract
-	Method CallOnBossCalls(latestWorldTime:Double=0) abstract
+	Method CallOnBossCalls(latestWorldTime:Long=0) abstract
 	Method CallOnBossCallsForced() abstract
 	Method CallOnPublicAuthoritiesStopXRatedBroadcast() abstract
 	Method CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedLicence:object, targetLicence:object) abstract

@@ -156,7 +156,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 
 		'fuer jetzt: alle noch kommenden Spiele "verlizenzen"
 		Local matchNumber:Int = 0
-		For Local match:TNewsEventSportMatch = EachIn league.GetUpcomingMatches(Long(GetWorldTime().GetTimeGone()), -1)
+		For Local match:TNewsEventSportMatch = EachIn league.GetUpcomingMatches(GetWorldTime().GetTimeGone(), -1)
 			Local matchLicence:TProgrammeLicence = GetInstance().CreateMatchProgrammelicence(match, programmeLicence)
 			'add to collections
 
@@ -218,7 +218,10 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 
 		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK")
 		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
-		programmeData.blocks = Ceil(match.duration/3600.0)
+		'as much blocks as it needs to fit the match into it (90min -> 2 blocks)
+		programmeData.blocks = Int( Ceil(match.duration / Double(TWorldTime.HOURLENGTH)) )
+		'alternative code
+		'programmeData.blocks = (match.duration + 0.5 * TWorldTime.HOURLENGTH) / TWorldTime.HOURLENGTH
 
 		programmeData.SetFlag(TVTProgrammeDataFlag.LIVE, True)
 
@@ -244,7 +247,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		'also they loose a bit when no longer live
 		programmeData.SetModifier("topicality::notLive", 0.25)
 
-		programmeData.releaseTime = match.matchTime '- 2*24*3600 - 24*3600
+		programmeData.releaseTime = match.matchTime '- 2*24*TWorldTime.HOURLENGTH - 24*TWorldTime.HOURLENGTH
 
 		'remove after broadcasting 3 times
 		programmeLicence.setLicenceFlag(TVTProgrammeLicenceFlag.REMOVE_ON_REACHING_BROADCASTLIMIT, True)

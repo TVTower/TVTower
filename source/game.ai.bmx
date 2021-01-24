@@ -248,7 +248,7 @@ rem
 	End Method
 
 
-	Method CallOnBossCalls(latestWorldTime:Double=0)
+	Method CallOnBossCalls(latestWorldTime:Long=0)
 		If Not AiRunning Then Return
 
 		Local args:Object[1]

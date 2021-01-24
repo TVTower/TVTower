@@ -283,7 +283,7 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
     Field publishDelay:Int = 0
     'store the event happenedTime here, so the event could get used
     'multiple times without changing the news
-    Field happenedTime:Double = -1
+    Field happenedTime:Long = -1
     'modificators to this news (stored here: is individual for each player)
     'absolute: value just gets added
     'relative: fraction of base price (eg. 0.3 -> 30%)
@@ -333,7 +333,7 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetHappenedTime:Double()
+	Method GetHappenedTime:Long()
 		If happenedTime = - 1 Then happenedTime = GetNewsEvent().happenedTime
 		return happenedTime
 	End Method
@@ -450,7 +450,7 @@ endrem
     End Method
 
 
-    Method GetPublishTime:Double() {_exposeToLua}
+    Method GetPublishTime:Long() {_exposeToLua}
 		return GetHappenedTime() + publishdelay
     End Method
 

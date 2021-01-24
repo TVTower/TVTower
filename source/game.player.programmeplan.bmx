@@ -181,7 +181,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Print "=== AD/PROGRAMME PLAN PLAYER " + owner + " ==="
 		For Local i:Int = 0 To Max(programmes.length - 1, advertisements.length - 1)
 			Local currentHour:Int = GetHourFromArrayIndex(i) 'hours since start
-			Local time:Double = GetWorldTime().MakeTime(0, 0, currentHour, 0)
+			Local time:Long = GetWorldTime().MakeTime(0, 0, currentHour, 0)
 			Local adString:String = ""
 			Local progString:String = ""
 
@@ -203,7 +203,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			If adString <> "" Or progString <> ""
 				If progString = "" Then progString = "SENDEAUSFALL"
 				If adString = "" Then adString = " -> WERBEAUSFALL"
-				Print "[" + GetArrayIndex(int(time / 3600)) + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + progString + adString
+				Print "[" + GetArrayIndex(int(time / TWorldTime.HOURLENGTH)) + "] " + GetWorldTime().GetYear(time) + " " + GetWorldTime().GetDayOfYear(time) + ".Tag " + GetWorldTime().GetDayHour(time) + ":00 : " + progString + adString
 			EndIf
 		Next
 		Print "=== ----------------------- ==="
@@ -408,7 +408,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'removes slot lock info from past days (to keep things small sized)
 	Method RemoveObsoleteSlotLocks:int()
-		local time:Double = GetWorldTime().GetDay()*24 ' + 0 hours, start at midnight)
+		local time:Long = GetWorldTime().GetDay()*24 ' + 0 hours, start at midnight)
 
 		For local k:TIntKey = EachIn slotLocks.Keys()
 			if k.value < time

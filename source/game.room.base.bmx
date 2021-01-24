@@ -168,13 +168,13 @@ Type TRoomBaseCollection
 		For Local room:TRoomBase = EachIn GetInstance().list
 			'someone entering / leaving the room?
 			For local action:TEnterLeaveAction = EachIn room.enteringStack
-				if action.finishTime <= GetBuildingTime().GetMillisecondsGone() or GetBuildingTime().GetTimeFactor() < 0.25
+				if action.finishTime <= GetBuildingTime().GetTimeGone() or GetBuildingTime().GetTimeFactor() < 0.25
 					room.FinishEnter(action.entity)
 				endif
 			Next
 			For local action:TEnterLeaveAction = EachIn room.leavingStack
 				'if time is running slow, finish without waiting
-				if action.finishTime <= GetBuildingTime().GetMillisecondsGone() or GetBuildingTime().GetTimeFactor() < 0.25
+				if action.finishTime <= GetBuildingTime().GetTimeGone() or GetBuildingTime().GetTimeFactor() < 0.25
 					room.FinishLeave(action.entity)
 				endif
 			Next
@@ -254,13 +254,13 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	'does something block that room (eg. previous bomb attack)
 	Field blockedState:Int = BLOCKEDSTATE_NONE
 	'time until this seconds in the game are gone
-	Field blockedUntil:Double = 0
+	Field blockedUntil:Long = 0
 	Field blockedUntilShownInTooltip:int = False
 	Field blockedText:string = ""
 	'if > 0 : time a bomb was placed
-	Field bombPlacedTime:Double = -1
+	Field bombPlacedTime:Long = -1
 	'if > 0 : a bomb explosion will be drawn
-	Field bombExplosionTime:Double = -1
+	Field bombExplosionTime:Long = -1
 	'bitmask (1/2/4/8) describing which players switched the signs of
 	'the room - and therefore redirected eg. a bomb to the wrong room
 	Field roomSignMovedByPlayers:int = 0
@@ -427,31 +427,31 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		if blockedState & BLOCKEDSTATE_BOMB > 0
 			'"placerholder rooms" (might get rent later)
 			if owner = 0 and IsUsableAsStudio()
-				time = 60 * 60 * 4
+				time = 240 * TWorldTime.MINUTELENGTH
 			'rooms like movie agency
 			elseIf owner = 0
-				time = 60 * 60 * 1.5
+				time = 90 * TWorldTime.MINUTELENGTH
 			'player rooms
 			elseIf owner > 0
-				time = 60 * 60 * 1 '0.5
+				time = 60 * TWorldTime.MINUTELENGTH
 			endif
 
 		'=== MARSHAL ===
 		elseif blockedState & BLOCKEDSTATE_MARSHAL > 0
 			'just blocks player rooms
 			If owner > 0
-				time = 60 * 15 * randRange(1,4)
+				time = randRange(1,4) * 15 * TWorldTime.MINUTELENGTH
 			endif
 
 		'=== RENOVATION ===
 		elseif blockedState & BLOCKEDSTATE_RENOVATION > 0
 			if owner = 0 and IsUsableAsStudio()
 				'ATTENTION: "randRange" to get the same in multiplayer games
-				time = 60 * 60 * randRange(3,6)
+				time = randRange(3,6) * 60 * TWorldTime.MINUTELENGTH
 			elseIf owner = 0
-				time = 60 * 30 * randRange(1,3)
+				time = randRange(1,3) * 30 * TWorldTime.MINUTELENGTH
 			elseIf owner > 0
-				time = 60 * 10 * randRange(1,2)
+				time = randRange(1,2) * 10 * TWorldTime.MINUTELENGTH
 			endif
 		endif
 
@@ -472,7 +472,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetBlocked:int(blockTimeInSeconds:int = 0, newBlockedState:int = 0, addToExistingBlockTime:int = True)
+	Method SetBlocked:int(blockTimeInMilliseconds:Long = 0, newBlockedState:int = 0, addToExistingBlockTime:int = True)
 		blockedState :| newBlockedState
 
 		'show the time until end of blocking
@@ -484,13 +484,13 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		endif
 
 		if addToExistingBlockTime and blockedUntil > GetWorldTime().GetTimeGone()
-			blockedUntil :+ blockTimeInSeconds
+			blockedUntil :+ blockTimeInMilliseconds
 		else
-			blockedUntil = GetWorldTime().GetTimeGone() + blockTimeInSeconds
+			blockedUntil = GetWorldTime().GetTimeGone() + blockTimeInMilliseconds
 		endif
 
 		'remove blockage without effects!
-		if blockTimeInSeconds = 0
+		if blockTimeInMilliseconds = 0
 			blockedState = BLOCKEDSTATE_NONE
 			blockedUntilShownInTooltip = False
 		endif
@@ -500,7 +500,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 		endif
 
 		'inform others
-		TriggerBaseEvent(GameEventKeys.Room_OnSetBlocked, New TData.AddString("roomGUID", GetGUID() ).AddString("newBlockedState", newBlockedState).AddNumber("blockTimeInSeconds", blockTimeInSeconds), Null, self)
+		TriggerBaseEvent(GameEventKeys.Room_OnSetBlocked, New TData.AddString("roomGUID", GetGUID() ).AddString("newBlockedState", newBlockedState).AddLong("blockTimeInMilliseconds", blockTimeInMilliseconds), Null, self)
 	End Method
 
 
@@ -1003,7 +1003,7 @@ End Rem
 
 		addOccupant(entity)
 
-		AddEnteringEntity(entity, door, GetBuildingTime().GetMillisecondsGone() + speed)
+		AddEnteringEntity(entity, door, GetBuildingTime().GetTimeGone() + speed)
 
 		'inform others that we start going into the room (eg. for animations)
 		TriggerBaseEvent(GameEventKeys.Room_OnBeginEnter, null, self, entity )
@@ -1051,7 +1051,7 @@ End Rem
 		'figure isn't in that room - so just leave
 		if not isOccupant(entity) then return TRUE
 
-		AddLeavingEntity(entity, door, GetBuildingTime().GetMillisecondsGone() + 2*speed)
+		AddLeavingEntity(entity, door, GetBuildingTime().GetTimeGone() + 2*speed)
 
 		'inform others that we start going out of that room (eg. for animations)
 		TriggerBaseEvent(GameEventKeys.Room_OnBeginLeave, null, self, entity )

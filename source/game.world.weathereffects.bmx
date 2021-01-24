@@ -191,9 +191,10 @@ End Type
 
 Type TWeatherEffectLightning extends TWeatherEffectBase
 	Field lightnings:TList = CreateList()
+	'time in milliseconds
 	Field lightningLifetimeMin:int = 150
 	Field lightningLifetimeMax:int = 210
-	Field nextLightningTime:Double = 0
+	Field nextLightningTime:Long = 0
 	Field nextLightningIntervalMin:int = 3500
 	Field nextLightningIntervalMax:int = 7500
 	Field spritesSide:TSprite[]
@@ -260,11 +261,11 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 	
 
 	Method AddLightning:int()
-		'lifetime in seconds
-		local lifetime:float = rand(lightningLifetimeMin,lightningLifetimeMax) / 1000.0
+		'lifetime in milliseconds
+		local lifetime:Int = rand(lightningLifetimeMin, lightningLifetimeMax)
 		local lightning:TData = new TData
-		lightning.AddNumber("lifetime", lifetime)
-		lightning.AddNumber("lifetimeBase", lifetime)
+		lightning.AddInt("lifetime", lifetime)
+		lightning.AddInt("lifetimeBase", lifetime)
 
 		'comfing-from-side lightning
 		if spritesSide and spritesSide.length > 0 and Rand(0,10) < 3
@@ -293,13 +294,13 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 	Method Update:int()
 		If not IsActive() then return False
 
-		local lifetime:Float
+		local lifetime:Int
 		local removed:TData[]
 		For local lightning:TData = EachIn lightnings
-			lifetime = lightning.GetFloat("lifetime", 0) - GetDeltaTimer().GetDelta()
+			lifeTime = lightning.GetInt("lifetime", 0) - int(1000 * GetDeltaTimer().GetDelta())
 			if lifetime < 0 then removed :+ [lightning]
 
-			lightning.AddNumber("lifetime", lifetime) 			
+			lightning.AddInt("lifetime", lifetime) 			
 		Next
 
 		For local d:TData = Eachin removed
@@ -312,8 +313,8 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 
 
 	Method GetLightningAlpha:Float(lightning:TData)
-		local lifetime:Float = 1000 * lightning.GetFloat("lifetime", 0)
-		local lifetimeBase:Float = 1000 * lightning.GetFloat("lifetimeBase", 0)
+		local lifetime:Int = lightning.GetInt("lifetime", 0)
+		local lifetimeBase:Float = lightning.GetInt("lifetimeBase", 0)
 
 		if lifetimeBase - lifetime <= 20
 			return (lifetimeBase - lifetime)/20.0
@@ -388,13 +389,13 @@ End Type
 
 Type TWeatherEffectSnow extends TWeatherEffectBase
 	Field flakes:TList = CreateList()
-	Field flakeLifetimeMin:int = 2800
-	Field flakeLifetimeMax:int = 4000
-	Field nextFlakeTime:Double = 0
-	Field nextFlakeIntervalMin:int = 75
-	Field nextFlakeIntervalMax:int = 140
-	Field nextFlakeEmitAmountMin:int = 1
-	Field nextFlakeEmitAmountMax:int = 4
+	Field flakeLifetimeMin:int = 2200
+	Field flakeLifetimeMax:int = 3800
+	Field nextFlakeTime:Long = 0
+	Field nextFlakeIntervalMin:int = 150
+	Field nextFlakeIntervalMax:int = 450
+	Field nextFlakeEmitAmountMin:int = 3
+	Field nextFlakeEmitAmountMax:int = 6
 	Field flakesMax:int = 75
 
 
@@ -411,6 +412,7 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 		For local i:int = 0 until startFlakes
 			AddFlake()
 		Next
+		nextFlakeTime = Time.GetTimeGone() + rand(nextFlakeIntervalMin, nextFlakeIntervalMax)
 		
 		return self
 	End Method
@@ -435,16 +437,16 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 		if flakes.Count() >= flakesMax then return False
 
 		'lifetime in seconds
-		local lifetime:float = rand(flakeLifetimeMin,flakeLifetimeMax) / 1000.0
+		local lifetime:Int = rand(flakeLifetimeMin,flakeLifetimeMax)
 		local spriteNumber:int = rand(0, Max(0,sprites.length-1))
 		local spriteHeight:int = 30
 		if sprites[spriteNumber] then spriteHeight = sprites[spriteNumber].GetHeight()
 		
 		local flake:TData = new TData
-		flake.AddNumber("lifetime", lifetime)
-		flake.AddNumber("lifetimeBase", lifetime)
-		flake.AddNumber("spriteNumber", spriteNumber)
-		flake.AddNumber("direction", rand(0,1))
+		flake.AddInt("lifetime", lifetime)
+		flake.AddInt("lifetimeBase", lifetime)
+		flake.AddInt("spriteNumber", spriteNumber)
+		flake.Addint("direction", rand(0,1))
 
 		local pos:TVec2D = new TVec2D.Init(rand(int(area.GetX()), int(area.GetX2())), area.GetY() - rand(0, -60) - spriteHeight )
 		flake.Add("position", pos)
@@ -452,37 +454,43 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 		flake.Add("velocity", new TVec2D.Init(rand(-10,10)/10.0, rand(75, 90) ))
 		
 		flakes.AddLast(flake)
-
-		nextFlakeTime = Time.GetTimeGone() + rand(nextFlakeIntervalMin, nextFlakeIntervalMax)
 	End Method
 
 
 	Method Update:int()
 		If not IsActive() then return False
 
-		local lifetime:Float
+		local lifetime:Int
 		local pos:TVec2D
 		local vel:TVec2D
 		local removed:TData[]
 
 		For local flake:TData = EachIn flakes
-			lifetime = flake.GetFloat("lifetime", 0) - GetDeltaTimer().GetDelta()
-			if lifetime < 0 then removed :+ [flake];continue
+			lifetime = flake.GetInt("lifetime", 0) - int(1000 * GetDeltaTimer().GetDelta())
+			if lifetime < 0 
+				removed :+ [flake]
+				continue
+			endif
 			
-			vel = TVec2D(flake.Get("velocity", new TVec2D))
-			pos = TVec2D(flake.Get("position", new TVec2D))
+			vel = TVec2D(flake.Get("velocity"))
+			pos = TVec2D(flake.Get("position"))
+			if not vel then vel = new TVec2D
+			if not pos then pos = new TVec2D
 			flake.Add("oldPosition", pos.copy())	
 			pos.x :+ GetDeltaTimer().GetDelta() * vel.x
 			pos.y :+ GetDeltaTimer().GetDelta() * vel.y
 
 			'adjust position
-			pos.AddXY(Float(sin(pos.y * 0.75)*1.25), 0.0)
+			pos.AddXY(Float(sin(pos.y * 0.75)*1.05), 0.0)
 
 			'below ground
-			if pos.y > area.GetY2() then flakes.Remove(flake)
+			if pos.y > area.GetY2() 
+				removed :+ [flake]
+				continue
+			endif
 
 			flake.Add("position", pos) 			
-			flake.AddNumber("lifetime", lifetime) 			
+			flake.AddInt("lifetime", lifetime) 			
 		Next
 
 		For local d:TData = Eachin removed
@@ -491,10 +499,10 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 
 		'add a new flake if time is near
 		if nextFlakeTime < Time.GetTimeGone()
-			local emitAmount:int = rand(nextFlakeEmitAmountMin, nextFlakeEmitAmountMax)
-			For local i:int = 0 until emitAmount
+			For local i:int = 0 until rand(nextFlakeEmitAmountMin, nextFlakeEmitAmountMax)
 				AddFlake()
 			Next
+			nextFlakeTime = Time.GetTimeGone() + rand(nextFlakeIntervalMin, nextFlakeIntervalMax)
 		endif
 	End Method
 
@@ -519,24 +527,31 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 
 		'=== DRAW LIGHTNINGS ===
 		local direction:int
-		local lifetime:Float
+		local lifetime:Int
+		local lifetimeBase:Int
 		local pos:TVec2D
 		local sprite:TSprite
 		For local flake:TData = eachin flakes
 			sprite = sprites[flake.GetInt("spriteNumber", 0)]
 			if not sprite then continue
 			
-			pos = TVec2D(flake.Get("position", new TVec2D))
-			local oldPosition:TVec2D = TVec2D(flake.Get("oldPosition", new TVec2D))
+			pos = TVec2D(flake.Get("position"))
+			local oldPosition:TVec2D = TVec2D(flake.Get("oldPosition"))
+			if not oldPosition then oldPosition = new TVec2D
+			if not pos then pos = new TVec2D
+
 			direction = flake.GetInt("direction", 0)
-			lifetime = flake.GetFloat("lifetime", 1.0)
+			lifetime = flake.GetInt("lifetime", 1)
+			lifetimeBase = flake.GetInt("lifetimeBase", 1)
+			lifetimeBase = flake.GetInt("lifetimeBase", 1)
 
 			local tweenPos:TVec2D = new TVec2D.Init(..
 				MathHelper.Tween(oldPosition.x, pos.getX(), GetDeltaTimer().GetTween()), ..
 				MathHelper.Tween(oldPosition.y, pos.getY(), GetDeltaTimer().GetTween()) ..
 			)
-			if lifetime < 0.5
-				SetAlpha(oldA * effectAlpha * lifetime*2.0)
+			'fade out but after 50% of lifetime is gone
+			if lifetime/Float(lifeTimeBase) < 0.5
+				SetAlpha(oldA * effectAlpha * 2.0 * lifetime/Float(lifeTimeBase))
 			else
 				SetAlpha(oldA * effectAlpha)
 			endif
@@ -662,7 +677,7 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 			entity.velocity.SetX(Float(TInterpolation.Linear(..
 				cloud.GetFloat(LSVelocityX),..
 				cloud.GetFloat(LSVelocityStrengthX) * windStrength,..
-				Float(Min(1800, timeSinceLastUpdate)), 1800)..
+				Double(Min(30 * TWorldTime.MINUTELENGTH, timeSinceLastUpdate)), 30 * TWorldTime.MINUTELENGTH)..
 			))
 			'do not use the global worldSpeed
 			entity.worldSpeedFactor = GetWorldTime().GetTimeFactor() * 0.01

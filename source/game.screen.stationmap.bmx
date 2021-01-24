@@ -2650,6 +2650,10 @@ Type TScreenHandler_StationMap
 		if mouseoverStation ' or selectedStation
 			GetGameBase().SetCursor(TGameBase.CURSOR_INTERACT)
 
+			If actionMode = MODE_BUY_ANTENNA
+				GetGameBase().SetCursorAlpha(0.4)
+			EndIf
+
 			If actionMode = MODE_BUY_CABLE_NETWORK_UPLINK
 				if mouseoverStation.HasFlag(TVTStationFlag.PAID)
 					GetGameBase().SetCursor(TGameBase.CURSOR_STOP, TGameBase.CURSOR_EXTRA_FORBIDDEN)

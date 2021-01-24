@@ -1200,13 +1200,13 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'create 3 random news happened some time before today ...
 		'Limit to CurrentAffairs as this is the starting abonnement of
 		'all players
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(0,60) - 3600*1, True, False, False)
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(60,120) - 3600*1, True, False, False)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - (60 + RandRange(0,60)) * TWorldTime.MINUTELENGTH, True, False, False)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - (60 + RandRange(60,100)) * TWorldTime.MINUTELENGTH, True, False, False)
 		'this is added to the "left side" (> 2,5h)
-		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - 60 * RandRange(31,60) - 3600*2, True, False, False)
+		GetNewsAgency().AnnounceNewNewsEvent(TVTNewsGenre.CURRENTAFFAIRS, - (120 + RandRange(31,60)) * TWorldTime.MINUTELENGTH, True, False, False)
 		'create a random for each news
 		'for local i:int = 0 until TVTNewsGenre.count
-		'	GetNewsAgency().AnnounceNewNewsEvent(i, - 2 * 60 * RandRange(31,60), True, False, False)
+		'	GetNewsAgency().AnnounceNewNewsEvent(i, - (120 + RandRange(31,60)) * TWorldTime.MINUTELENGTH, True, False, False)
 		'Next
 
 		'create 3 starting news with random genre (for starting news show)
@@ -1216,7 +1216,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			If newsEvent
 				'time must be lower than for the "current affairs" news
 				'so they are recognizeable as the latest ones
-				Local adjustMinutes:Int = - 60 * RandRange(0, 60)
+				Local adjustMinutes:Int = - RandRange(0, 60) * TWorldTime.MINUTELENGTH
 				newsEvent.doHappen( GetWorldTime().GetTimeGone() + adjustMinutes )
 			EndIf
 		Next
@@ -1225,7 +1225,7 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'adjust next ticker times to something right after game start
 		'(or a bit before)
 		For Local i:Int = 0 Until TVTNewsGenre.count
-			GetNewsAgency().SetNextEventTime(i, Long(GetWorldTime().GetTimeGone() + RandRange(5, 90)*60))
+			GetNewsAgency().SetNextEventTime(i, Long(GetWorldTime().GetTimeGone() + RandRange(5, 90) * TWorldTime.MINUTELENGTH))
 		Next
 
 
@@ -2081,40 +2081,41 @@ endrem
 
 		'==== HANDLE IN GAME TIME ====
 		'less than a ingame minute gone? nothing to do YET
-		If worldTime.GetTimeGone() - lastTimeMinuteGone < 60.0 Then Return
+		If worldTime.GetTimeGone() - lastTimeMinuteGone < TWorldTime.MINUTELENGTH Then Return
 
 		'==== HANDLE GONE/SKIPPED MINUTES ====
 		'if speed is to high - minutes might get skipped,
 		'handle this case so nothing gets lost.
 		'missedMinutes is >1 in all cases (else this part isn't run)
-		Local missedSeconds:Float = (worldTime.GetTimeGone() - lastTimeMinuteGone)
-		Local missedMinutes:Float = missedSeconds/60.0
-		Local daysMissed:Int = Floor(missedMinutes / (24*60))
+		Local missedMilliseconds:Int = (worldTime.GetTimeGone() - lastTimeMinuteGone)
+		Local missedSeconds:Int = missedMilliseconds / 1000
+		Local missedMinutes:Int = missedMilliseconds / TWorldTime.MINUTELENGTH
+		Local daysMissed:Int = missedMilliseconds / TWorldTime.DAYLENGTH
 
 		'adjust the game time so GetWorldTime().GetDayHour()/Minute/...
 		'return the correct value for each loop cycle. So Functions can
 		'rely on that functions to get the time they request.
 		'as everything can get calculated using "timeGone", no further
 		'adjustments have to take place
-		worldTime._timeGone:- missedSeconds
+		worldTime._timeGone :- missedMilliseconds
 
 		For Local i:Int = 1 To missedMinutes
 			'add back another gone minute each loop
-			worldTime._timeGone :+ 60
+			worldTime._timeGone :+ TWorldTime.MINUTELENGTH
 
 			'day
 			If worldTime.GetDayHour() = 0 And worldTime.GetDayMinute() = 0
 				'year
 				If worldTime.GetDayOfYear() = 1
-					TriggerBaseEvent(GameEventKeys.Game_OnYear, New TData.AddDouble("time", worldTime.GetTimeGone()))
+					TriggerBaseEvent(GameEventKeys.Game_OnYear, New TData.AddLong("time", worldTime.GetTimeGone()))
 				EndIf
 
-				TriggerBaseEvent(GameEventKeys.Game_OnDay, New TData.AddDouble("time", worldTime.GetTimeGone()))
+				TriggerBaseEvent(GameEventKeys.Game_OnDay, New TData.AddLong("time", worldTime.GetTimeGone()))
 			EndIf
 
 			'hour
 			If worldTime.GetDayMinute() = 0
-				TriggerBaseEvent(GameEventKeys.Game_OnHour, New TData.AddDouble("time", worldTime.GetTimeGone()))
+				TriggerBaseEvent(GameEventKeys.Game_OnHour, New TData.AddLong("time", worldTime.GetTimeGone()))
 
 				'reset availableNewsEventList - maybe this hour made some
 				'more news available
@@ -2122,11 +2123,13 @@ endrem
 			EndIf
 
 			'minute
-			TriggerBaseEvent(GameEventKeys.Game_OnMinute, New TData.AddDouble("time", worldTime.GetTimeGone()))
+			TriggerBaseEvent(GameEventKeys.Game_OnMinute, New TData.AddLong("time", worldTime.GetTimeGone()))
 		Next
 
 		'reset time of last minute so next update can calculate missed minutes
 		lastTimeMinuteGone = worldTime.GetTimeGone()
+		'add back remainder (what did not fit into a single minute..)
+		worldTime._timeGone :+ (missedMilliseconds - missedMinutes * TWorldTime.MINUTELENGTH)
 	End Method
 End Type
 

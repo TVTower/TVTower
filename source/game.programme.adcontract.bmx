@@ -1069,9 +1069,9 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 	'call this to set the contract failed (and pay a penalty)
-	Method Fail:Int(time:Double=0)
+	Method Fail:Int(time:Long=0)
 		'send out event for potential listeners (eg. ingame notification)
-		TriggerBaseEvent(GameEventKeys.AdContract_OnFail, New TData.AddDouble("time", time), Self)
+		TriggerBaseEvent(GameEventKeys.AdContract_OnFail, New TData.AddLong("time", time), Self)
 
 		'pay penalty
 		GetPlayerFinance(owner, GetWorldTime().GetDay(time)).PayPenalty(GetPenalty(), Self)
@@ -1086,11 +1086,11 @@ Type TAdContract Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 
 	'call this to set the contract successful and finished (and earn profit)
-	Method Finish:Int(time:Double=0)
+	Method Finish:Int(time:Long=0)
 		'if state = STATE_OK then Throw "Double Finish !!"
 		If Not state = STATE_OK
 			'send out event for potential listeners (eg. ingame notification)
-			TriggerBaseEvent(GameEventKeys.AdContract_OnFinish, New TData.AddDouble("time", time), Self)
+			TriggerBaseEvent(GameEventKeys.AdContract_OnFinish, New TData.AddLong("time", time), Self)
 
 			'give money
 			GetPlayerFinance(owner, GetWorldTime().GetDay(time)).EarnAdProfit(GetProfit(), Self)

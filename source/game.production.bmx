@@ -64,9 +64,9 @@ Type TProduction Extends TOwnedGameObject
 	'0 = waiting, 1 = running, 2 = finished, 3 = aborted/paused
 	Field status:Int = 0
 	'start of shooting
-	Field startDate:Double
+	Field startDate:Long
 	'end of shooting
-	Field endDate:Double
+	Field endDate:Long
 
 	Field scriptGenreFit:Float = -1.0
 	Field productionCompanyQuality:Float = 0.0
@@ -201,13 +201,14 @@ Type TProduction Extends TOwnedGameObject
 
 	Method Start:TProduction()
 		startDate = GetWorldTime().GetTimeGone()
-		endDate = startDate + productionConcept.GetBaseProductionTime() * 3600
+		endDate = startDate + productionConcept.GetBaseProductionTime()
 		TLogger.Log("TProduction.Start", "Starting production ~q"+productionConcept.GetTitle()+"~q. Production: "+ GetWorldTime().GetFormattedDate(startDate) + "  -  " + GetWorldTime().GetFormattedDate(endDate), LOG_DEBUG)
 
 		status = 1
 
 		'calculate costs
 		productionConcept.CalculateCosts()
+		TLogger.Log("TProduction.Start", "Costs calculated", LOG_DEBUG)
 
 
 		'=== 1. CALCULATE BASE PRODUCTION VALUES ===
@@ -217,15 +218,22 @@ Type TProduction Extends TOwnedGameObject
 		'=== 1.1.1 GENRE ===
 		'Compare genre definition with script values (expected vs real)
 		scriptGenreFit = productionConcept.CalculateScriptGenreFit(True)
+		TLogger.Log("TProduction.Start", "CalculateScriptGenreFit done", LOG_DEBUG)
 
 		'=== 1.1.2 CAST ===
 		'Calculate how the selected cast fits to their assigned jobs
 		castFit = productionConcept.CalculateCastFit(True)
+		TLogger.Log("TProduction.Start", "CalculateCastFit done", LOG_DEBUG)
 		castComplexity = productionConcept.CalculateCastComplexity(True)
+		TLogger.Log("TProduction.Start", "CalculateCastComplexity done", LOG_DEBUG)
 
 		'=== 1.1.3 PRODUCTIONCOMPANY ===
 		'Calculate how the selected company does its job at all
+		if not productionConcept.productionCompany
+			TLogger.Log("TProduction.Start", "productionConcept.productionCompany NULL !!!!!", LOG_DEBUG)
+		endif
 		productionCompanyQuality = productionConcept.productionCompany.GetQuality()
+		TLogger.Log("TProduction.Start", "productionConcept.productionCompany.GetQuality() done", LOG_DEBUG)
 
 
 		'=== 1.2 INDIVIDUAL IMPROVEMENTS ===
@@ -234,10 +242,13 @@ Type TProduction Extends TOwnedGameObject
 		'improve cast job by "sympathy" (they like your channel, so they
 		'do a slightly better job)
 		castSympathyMod = 1.0 + productionConcept.CalculateCastSympathy(True)
+		TLogger.Log("TProduction.Start", "CalculateCastSympathy done", LOG_DEBUG)
 
 		'=== 1.2.2 MODIFY PRODUCTION VALUE ===
 		effectiveFocusPoints = productionConcept.CalculateEffectiveFocusPoints(True)
+		TLogger.Log("TProduction.Start", "CalculateEffectiveFocusPoints done", LOG_DEBUG)
 		effectiveFocusPointsMod = 1.0 + productionConcept.GetEffectiveFocusPointsRatio(True)
+		TLogger.Log("TProduction.Start", "GetEffectiveFocusPointsRatio done", LOG_DEBUG)
 
 		TLogger.Log("TProduction.Start()", "scriptGenreFit:           " + scriptGenreFit, LOG_DEBUG)
 		TLogger.Log("TProduction.Start()", "castFit:                  " + castFit, LOG_DEBUG)
@@ -256,12 +267,12 @@ Type TProduction Extends TOwnedGameObject
 		'=== 3. BLOCK STUDIO ===
 		'set studio blocked
 		if studioRoomGUID and GetRoomBaseByGUID(studioRoomGUID)
-			'time in seconds
-			local productionTime:int = (endDate - startDate)
+			'time in milliseconds
+			local productionTime:Long = (endDate - startDate)
 			if productionTime > 0
 				'also add 5 minutes to avoid people coming into the studio
 				'in the break between two productions
-				productionTime :+ 300
+				productionTime :+ 300 * TWorldTime.SECONDLENGTH
 
 				productionTime :* GetProductionTimeMod()
 

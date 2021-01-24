@@ -976,12 +976,17 @@ endrem
 	
 private
 	Method GetAttributeObject:TRangedFloat(attributeID:Int, jobID:Int = 0, genreID:Int = 0)
+		If attributeID < 0 or attributeID > attributes.length 
+			TLogger.Log("TPersonPersonalityAttributes.GetAttributeObject()", "Attribute not in range: attributeID="+attributeID+" attributes.length="+attributes.length, LOG_DEBUG)
+			Throw "GetAttributeObject(): Attribute not in range: attributeID="+attributeID+" attributes.length="+attributes.length
+		EndIf
+
 		if jobID <= 0 and genreID <= 0
 			Return attributes[attributeID-1]
 		else
 			if other
 				Local key:Long = _GetKey(0, attributeID, jobID, genreID)
-				Return TRangedFloat( other.ValueForKey(key) )
+				Return TRangedFloat(other.ValueForKey(key))
 			EndIf
 		endif
 		Return Null
@@ -989,6 +994,11 @@ private
 
 
 	Method SetAttributeObject(attribute:TRangedFloat, attributeID:Int, jobID:Int = 0, genreID:Int = 0)
+		If attributeID < 0 or attributeID > attributes.length 
+			TLogger.Log("TPersonPersonalityAttributes.SetAttributeObject()", "Attribute not in range: attributeID="+attributeID+" attributes.length="+attributes.length, LOG_DEBUG)
+			Throw "SetAttributeObject(): Attribute not in range: attributeID="+attributeID+" attributes.length="+attributes.length
+		EndIf
+
 		if jobID <= 0 and genreID <= 0
 			attributes[attributeID-1] = attribute
 		else
@@ -1072,6 +1082,11 @@ public
 	Method Get:Float(attributeID:Int, jobID:Int = 0, genreID:Int = 0)
 		local a:TRangedFloat = GetAttributeObject(attributeID, jobID, genreID)
 		If not a Then a = Randomize(attributeID, jobID, genreID)
+
+		if not a
+			TLogger.Log("TPersonPersonalityAttributes.Get()", "randomize() = NULL ?!?!", LOG_DEBUG)
+			Throw "TPersonPersonalityAttributes.Get(): randomize() = NULL ?!?!"
+		endif
 
 		Return a.Get()
 	End Method

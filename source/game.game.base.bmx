@@ -32,7 +32,7 @@ Type TGameBase {_exposeToLua="selected"}
 	'the last moment a realtime second was gone
 	Field lastTimeRealTimeSecondGone:Int = 0
 	'last moment a WorlTime-"minute" was gone (for missed minutes)
-	Field lastTimeMinuteGone:Double = 0
+	Field lastTimeMinuteGone:Long = 0
 
 	'minutes till movie agency gets refilled again
 	Field refillMovieAgencyTime:Int = 180
@@ -62,6 +62,7 @@ Type TGameBase {_exposeToLua="selected"}
 	private
 	Field cursor:Int = 0 {nosave}
 	Field cursorExtra:Int = 0 {nosave}
+	Field cursorAlpha:Float = 1.0 {nosave}
 
 	public
 
@@ -87,9 +88,11 @@ Type TGameBase {_exposeToLua="selected"}
 	Const CURSOR_HOLD:Int = 4
 	Const CURSOR_STOP:Int = 5
 	Const CURSOR_INTERACT:Int = 6
+	Const CURSOR_NONE:Int = 7
 
 	Const CURSOR_EXTRA_NONE:Int = 0
 	Const CURSOR_EXTRA_FORBIDDEN:Int = 1
+	Const CURSOR_EXTRA_SEMITRANSPARENT:Int = 2
 
 	'===== GAME STATES =====
 	Const STATE_RUNNING:Int			= 0
@@ -196,7 +199,12 @@ Type TGameBase {_exposeToLua="selected"}
 	Method IsGameOver:int()
 		return gameOver = True
 	End Method
-	
+
+
+	Method SetCursorAlpha(alpha:Float)
+		self.cursorAlpha = alpha
+	End Method
+
 
 	Method SetCursorExtra(cursorOverlay:Int)
 		self.cursorExtra = cursorExtra
@@ -216,6 +224,11 @@ Type TGameBase {_exposeToLua="selected"}
 	
 	Method GetCursorExtra:int()
 		Return cursorExtra
+	End Method
+
+
+	Method GetCursorAlpha:Float()
+		Return cursorAlpha
 	End Method
 
 	

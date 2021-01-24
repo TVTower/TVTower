@@ -12,8 +12,8 @@ Type TWorldWeather
 	'eg. every 3600 seconds (every hour)
 	Field weatherInterval:int = 3600
 	'timer values
-	Field nextUpdateTime:Double = -1
-	Field lastUpdateTime:Double = -1
+	Field nextUpdateTime:Long = -1
+	Field lastUpdateTime:Long = -1
 
 
 	'=== PRESSURE THRESHOLDS ===
@@ -63,7 +63,7 @@ Type TWorldWeather
 	End Method
 
 
-	Method GetTimeSinceUpdate:Double()
+	Method GetTimeSinceUpdate:Long()
 		if lastUpdateTime = -1 then return 0
 		return GetWorldTime().GetTimeGone() - lastUpdateTime
 	End Method
@@ -170,10 +170,10 @@ Type TWorldWeather
 		local baseWeather:TWorldWeatherEntry = TWorldWeatherEntry(upcomingWeather.Last())
 		if not baseWeather then baseWeather = GetCurrentWeather()
 
-		local weatherTime:Double = baseWeather._time
+		local weatherTime:Long = baseWeather._time
 
 		For local i:int = upcomingWeather.Count() until limit
-			if weatherTime >= 0 then weatherTime :+ weatherInterval
+			if weatherTime >= 0 then weatherTime :+ weatherInterval * TWorldTime.SECONDLENGTH
 			'create a new one based on the baseWeather
 			baseWeather = TWorldWeatherEntry.Create(baseWeather, weatherTime)
 
@@ -205,7 +205,7 @@ Type TWorldWeather
 
 		'adjust time for next weather update
 		lastUpdateTime = nextUpdateTime
-		nextUpdateTime = GetWorldTime().GetTimeGone() + weatherInterval
+		nextUpdateTime = GetWorldTime().GetTimeGone() + weatherInterval * TWorldTime.SECONDLENGTH
 	End Method
 
 
@@ -253,11 +253,11 @@ Type TWorldWeatherEntry
 	Field _pressure:Float
 	Field _temperature:Float
     Field _windVelocity:Float
-    Field _time:Double = -1.0
+    Field _time:Long = -1
 	Field _config:TWorldWeatherConfiguration
 
 
-	Method Init:TWorldWeatherEntry(pressure:Float, temperature:Float, windVelocity:Float, time:Double = -1, configuration:TWorldWeatherConfiguration)
+	Method Init:TWorldWeatherEntry(pressure:Float, temperature:Float, windVelocity:Float, time:Long = -1, configuration:TWorldWeatherConfiguration)
 		SetPressure(pressure)
 		SetTemperature(temperature)
         SetWindVelocity(windVelocity)
@@ -268,7 +268,7 @@ Type TWorldWeatherEntry
 	End Method
 
 
-	Function Create:TWorldWeatherEntry(previousWeather:TWorldWeatherEntry = null, time:Double = -1)
+	Function Create:TWorldWeatherEntry(previousWeather:TWorldWeatherEntry = null, time:Long = -1)
 		'create a new weather with the values from the previous weather
 		local newWeather:TWorldWeatherEntry = new TWorldWeatherEntry
 		if previousWeather
@@ -311,12 +311,12 @@ Type TWorldWeatherEntry
 		'=== UPDATE TEMPERATURE ===
 		local temperatureChange:float = 0.0
 		'high noon + 1 the max temperature will be reached (max increase)
-		local maxTempHour:int = GetWorldTime().GetDayHour(GetWorldTime().GetSunrise(_time) + 1.0*GetWorldTime().GetDayLightLength(_time) )
+		local maxTempHour:int = GetWorldTime().GetDayHour(GetWorldTime().GetSunrise(_time) + GetWorldTime().GetDayLightLength(_time) )
 'print maxTempHour+"  " + (GetWorldTime().GetDayLightLength(_time)/60)+"min"
 		'to make it an "increasing" or "decreasing" tendence we use the
 		'distance to half a dayLightLength (summer 18/2=9 hours)
 		'7:00 = "2/9"   0:00 = "-4/9"   15:00 = "8/9"
-		local halfDayLightLength:int = 9 '0.5 * GetWorldTime().GetDayLightLength(_time)/3600
+		local halfDayLightLength:int = 9 '0.5 * GetWorldTime().GetDayLightLength(_time)/TWorldTime.HOURLENGTH
 		local heatInfluence:Float = (halfDayLightLength - abs(GetDayHour() - maxTempHour)) / float(halfDayLightLength)
 
 		'day times (warming period)
@@ -361,7 +361,7 @@ Type TWorldWeatherEntry
 	End Method
 
 
-	Method GetTime:Double()
+	Method GetTime:Long()
 		return _time
 	End Method
 

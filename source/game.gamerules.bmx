@@ -62,7 +62,7 @@ Type TGameRules {_exposeToLua}
 
 	'how many time an original room owner waits until he re-rents a room
 	'which got free again (no longer used as additional studio)
-	Field roomReRentTime:int = 12*3600
+	Field roomReRentTime:Long = 12 * 3600*1000 '12 * TWorldTime.HOURLENGTH
 
 	'if disabled, player is allowed to place a live programme
 	'also at later times (eg. 2 hours later)

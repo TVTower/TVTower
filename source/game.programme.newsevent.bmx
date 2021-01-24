@@ -309,7 +309,7 @@ Type TNewsEventCollection
 	End Method
 
 
-	Method setNewsHappened(news:TNewsEvent, time:Double = 0)
+	Method setNewsHappened(news:TNewsEvent, time:Long = 0)
 		'nothing set - use "now"
 		If time = 0 Then time = GetWorldTime().GetTimeGone()
 
@@ -401,7 +401,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 	'number of the news since begin of game (for potential ordering)
 	Field newsNumber:Long = 0
 	'time when a news gets invalid (eg. thunderstorm warning)
-	Field eventDuration:Int = -1
+	Field eventDuration:Long = -1
 
 	'fine grained attractivity for target groups (splitted gender)
 	Field targetGroupAttractivityMod:TAudience = Null
@@ -590,7 +590,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 		'the older the less ppl want to watch - 1hr = 0.98%, 2hr = 0.96%...
 		'means: after ~50 hrs, the topicality is 0
-		Local ageHours:Int = Floor( Float(GetWorldTime().GetTimeGone() - Self.happenedTime)/3600.0 )
+		Local ageHours:Int = (GetWorldTime().GetTimeGone() - Self.happenedTime) / TWorldTime.HOURLENGTH
 		Local ageInfluence:Float = 1.0 - 0.01 * Max(0, 100 - 2 * Max(0, ageHours) )
 		ageInfluence :* GetModifier(modKeyTopicality_AgeLS)
 		'the lower the quality of an newsevent, the higher the age influences
@@ -644,7 +644,7 @@ Type TNewsEvent Extends TBroadcastMaterialSource {_exposeToLua="selected"}
 
 	'ATTENTION:
 	'to emit an artificial news, use GetNewsAgency().announceNewsEvent()
-	Method doHappen(time:Double = 0)
+	Method doHappen(time:Long = 0)
 		'set happened time, add to collection list...
 		GetNewsEventCollection().setNewsHappened(Self, time)
 

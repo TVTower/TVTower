@@ -749,7 +749,7 @@ endrem
 
 		If GetGameBase().networkgame = 1
 			'sync if the player got modified
-			If modifiedPlayers Or Time.GetTimeGone() >= PlayerDetailsTimer + 2000
+			If modifiedPlayers Or Time.GetTimeGone() >= PlayerDetailsTimer + 2 * 2000
 				GetNetworkHelper().SendPlayerDetails()
 				PlayerDetailsTimer = MilliSecs()
 				modifiedPlayers = False
