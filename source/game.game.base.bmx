@@ -32,7 +32,7 @@ Type TGameBase {_exposeToLua="selected"}
 	'the last moment a realtime second was gone
 	Field lastTimeRealTimeSecondGone:Int = 0
 	'last moment a WorlTime-"minute" was gone (for missed minutes)
-	Field lastTimeMinuteGone:Double = 0
+	Field lastTimeMinuteGone:Long = 0
 
 	'minutes till movie agency gets refilled again
 	Field refillMovieAgencyTime:Int = 180

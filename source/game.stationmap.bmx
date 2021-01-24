@@ -181,7 +181,7 @@ Type TStationMapCollection
 	End Method
 
 
-	Method GetPopulationAntennaShare:Double(time:Double = -1)
+	Method GetPopulationAntennaShare:Double(time:Long = -1)
 		if not populationAntennaShareData then LoadPopulationShareData()
 
 		if time = -1 then time = GetWorldTime().GetTimeGone()
@@ -190,7 +190,7 @@ Type TStationMapCollection
 	End Method
 
 
-	Method GetPopulationCableShare:Double(time:Double = -1)
+	Method GetPopulationCableShare:Double(time:Long = -1)
 		if not populationCableShareData then LoadPopulationShareData()
 
 		if time = -1 then time = GetWorldTime().GetTimeGone()
@@ -199,7 +199,7 @@ Type TStationMapCollection
 	End Method
 
 
-	Method GetPopulationSatelliteShare:Double(time:Double = -1)
+	Method GetPopulationSatelliteShare:Double(time:Long = -1)
 		if not populationSatelliteShareData then LoadPopulationShareData()
 
 		if time = -1 then time = GetWorldTime().GetTimeGone()
@@ -2764,7 +2764,7 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'set time a station begins to work (broadcast)
-	Method SetActivationTime:Int(activationTime:Double = -1)
+	Method SetActivationTime:Int(activationTime:Long = -1)
 		If activationTime < 0 Then activationTime = GetWorldTime().GetTimeGone()
 		Self.activationTime = activationTime
 
@@ -3011,11 +3011,11 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 	Method NextReachLevelProbable:Int(owner:Int, newStationReach:Int)
 		Local stationMap:TStationMap = GetStationMap(owner)
 		Local actualCurrentReach:Int = stationMap.GetReach()
-		Local currentTime:Float = GetWorldTime().getTimeGone()
+		Local currTime:Long = GetWorldTime().GetTimeGone()
 		'add up reach of all stations about to be built
 		Local estimatedReachIncrease:Int = newStationReach
 		For local station:TStationBase = EachIn GetStationMap(owner).stations
-			If Not station.isActive And station.GetActivationTime() > currentTime
+			If Not station.isActive And station.GetActivationTime() > currTime
 				estimatedReachIncrease :+ station.getExclusiveReach()
 			EndIf
 		Next

@@ -378,7 +378,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	'so: unreleased -> production (->cinema) -> released
 	Method UpdateUnreleased:Int()
 		Local unreleased:TList = GetUnreleasedProgrammeDataList()
-		Local now:Double = GetWorldTime().GetTimeGone()
+		Local now:Long = GetWorldTime().GetTimeGone()
 		For Local pd:TProgrammeData = EachIn unreleased
 			pd.Update()
 			'data is sorted by production start, so as soon as the
@@ -425,7 +425,7 @@ Type TProgrammeDataCollection Extends TGameObjectCollection
 	'call this after a game start to set all "old programmes" to be
 	'finished
 	Method UpdateAll:Int()
-		Local now:Double = GetWorldTime().GetTimeGone()
+		Local now:Long = GetWorldTime().GetTimeGone()
 		For Local pd:TProgrammeData = EachIn entries.Values()
 			pd.Update()
 		Next

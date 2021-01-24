@@ -58,10 +58,10 @@ Type TPlayerFinanceHistoryEntry
 	'the specific object (eg. movie)
 	Field obj:object
 	Field money:Long = 0
-	Field worldTime:Double = 0
+	Field worldTime:Long = 0
 
 
-	Method Init:TPlayerFinanceHistoryEntry(typeID:int, money:Long, obj:object=null, worldTime:Double = -1)
+	Method Init:TPlayerFinanceHistoryEntry(typeID:int, money:Long, obj:object=null, worldTime:Long = -1)
 		if worldTime = -1 then worldTime = GetWorldTime().GetTimeGone()
 		self.typeID = typeID
 		self.obj = obj
