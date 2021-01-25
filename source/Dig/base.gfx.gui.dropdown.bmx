@@ -149,7 +149,7 @@ Type TGUIDropDown Extends TGUIInput
 		if not bool
 			'check if new activated object is one of our children
 			'- stay open if one of them is the new active one
-			If oldOrNewActive and GetEntries().Contains( oldOrNewActive )
+			If oldOrNewActive and (GetEntries().Contains(oldOrNewActive) or oldOrNewActive.HasParent(self) or oldOrNewActive.HasParent(self.list)) 
 				'stay open
 			Else
 				SetOpen(False)

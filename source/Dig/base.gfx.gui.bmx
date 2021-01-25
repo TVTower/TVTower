@@ -606,7 +606,6 @@ Type TGUIManager
 		'remove focus from it
 		If MouseManager.isClicked(1)
 			If Not UpdateState_foundFocusedObject And GUIManager.GetFocus()
-print "reset focus"
 				GUIManager.ResetFocus()
 				'GUIManager.setFocus(Null)
 			EndIf
@@ -984,10 +983,22 @@ Type TGUIobject
 
 
 	'traverse through object's parents to find the given one
-	Method HasParent:Int(parent:TGUIObject)
-		If Not _parent Then Return False
+	Method HasParent:Int(parent:TGUIObject, depth:Int = 0)
+		If Not _parent
+			'object itself cannot be the parent
+			'except requested "parent" is null
+			If depth = 0
+				if parent
+					Return False
+				else
+					Return True
+				EndIf
+			Else
+				Return self = parent
+			EndIf
+		EndIf
 		If _parent = parent Then Return True
-		Return _parent.HasParent(parent)
+		Return _parent.HasParent(parent, depth + 1)
 	End Method
 
 
@@ -2138,7 +2149,7 @@ Type TGUIobject
 		'inform others about a scroll with the mousewheel
 		'If IsFocused() And GUIManager.UpdateState_mouseScrollwheelMovement <> 0
 		If IsHovered() And GUIManager.UpdateState_mouseScrollwheelMovement <> 0
-'print "on scrollwheel :" + _id + ": " + GetValue()
+'print "on scrollwheel :" + _id + " ["+GetClassName()+"] "' + GetValue()
 			Local ev:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnMouseScrollwheel, New TData.AddNumber("value", GUIManager.UpdateState_mouseScrollwheelMovement).Add("coord", New TVec2D.Init(MouseManager.x, MouseManager.y)), Self)
 			OnMouseScrollwheel(ev)
 			ev.Trigger()
