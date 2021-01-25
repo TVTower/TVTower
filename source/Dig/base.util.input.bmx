@@ -100,6 +100,9 @@ Type TMouseManager
 	field lastDoubleClick:TMouseManagerClick[5]
 	field lastLongClick:TMouseManagerClick[5]
 
+	field skipLongClicks:Int[] = [0,0,0,0,0]
+	field skipClicks:Int[] = [0,0,0,0,0]
+
 	'store up to 20 click information of all click types and all buttons
 	'so clicks between "updates" can still be processed one after another
 	'each information contains: position, click type and time of the click
@@ -254,6 +257,16 @@ Type TMouseManager
 	'return amount of managed buttons
 	Method GetButtonCount:Int()
 		Return _down.length 'ignore 0
+	End Method
+	
+	
+	Method SkipNextLongClick:Int(button:Int, amount:Int = 1)
+		skipLongClicks[button-1] = amount
+	End Method
+
+
+	Method SkipNextClick:Int(button:Int, amount:Int = 1)
+		skipClicks[button-1] = amount
 	End Method
 
 
@@ -685,28 +698,35 @@ Type TMouseManager
 
 				' check for a long click
 				If _longClickModeEnabled And _downTime[buttonIndex] + longClickMinTime < t
-					_AddClickEntry(button, CLICKTYPE_LONGCLICK, currentPosVec.Copy(), t)
+					if skipLongClicks[buttonIndex] > 0
+						skipLongClicks[buttonIndex] :- 1
+					else
+						_AddClickEntry(button, CLICKTYPE_LONGCLICK, currentPosVec.Copy(), t)
 
-					'emulating right click?
-					If _longClickLeadsToRightClick And button = 1
-						_AddClickEntry(2, CLICKTYPE_CLICK, currentPosVec.Copy(), t)
-						_downTime[2] = _downTime[1]
-					EndIf
+						'emulating right click?
+						If _longClickLeadsToRightClick And button = 1
+							_AddClickEntry(2, CLICKTYPE_CLICK, currentPosVec.Copy(), t)
+							_downTime[2] = _downTime[1]
+						EndIf
+					endif
 
 					'Print Time.GetTimeGone() + "      click => long clicked    downTime="+_downTime[button] +"  longClickMinTime="+longClickMinTime +"   button="+button
 
 				' normal click + double clicks
 				Else
 					'Print Time.GetTimeGone() + "    down => up => click   GetClicks( " + button + ")=" + GetClicks(button) + " _clicksInDoubleClickTimeCount["+buttonIndex+"]="+_clicksInDoubleClickTimeCount[buttonIndex]
+					if skipClicks[buttonIndex] > 0
+						skipClicks[buttonIndex] :- 1
+					else
+						_AddClickEntry(button, CLICKTYPE_CLICK, currentPosVec.Copy(), t)
 
-					_AddClickEntry(button, CLICKTYPE_CLICK, currentPosVec.Copy(), t)
+						'double clicks (additionally to normal clicks!)
+						If _clicksInDoubleClickTimeCount[buttonIndex] >= 2
+							_AddClickEntry(button, CLICKTYPE_DOUBLECLICK, currentPosVec.Copy(), t)
 
-					'double clicks (additionally to normal clicks!)
-					If _clicksInDoubleClickTimeCount[buttonIndex] >= 2
-						_AddClickEntry(button, CLICKTYPE_DOUBLECLICK, currentPosVec.Copy(), t)
-
-						_clicksInDoubleClickTimeCount[buttonIndex] :- 2
-					EndIf
+							_clicksInDoubleClickTimeCount[buttonIndex] :- 2
+						EndIf
+					endif
 				EndIf
 			EndIf
 
