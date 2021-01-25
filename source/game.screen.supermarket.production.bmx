@@ -1653,6 +1653,21 @@ Type TGUISelectCastWindow Extends TGUIProductionModalWindow
 	
 	Method Update:Int() override
 		Super.Update()
+		
+		'for now this always focuses the select list - so keyboard
+		'scrolling will work.
+		'exception is if one of the dropdowns is open (they might as
+		'well want keyboard scrolling...)
+		if jobFilterSelect.IsOpen() or genderFilterSelect.IsOpen()
+			'by default the dropdowns should decide if they want keyboard
+			'control or not
+			
+			'use this to enforce focus loss
+			'If GUIManager.GetFocus() = castSelectList then GUIManager.SetFocus( null )
+		Else
+			GUIManager.SetFocus( castSelectList )
+		EndIf
+
 
 		if not IsClosed() 'or better isopen()?
 			if sortCastButton.IsVisible()
