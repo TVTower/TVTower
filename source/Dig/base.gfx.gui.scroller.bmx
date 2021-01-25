@@ -20,6 +20,7 @@ Type TGUIScrollerBase extends TGUIobject
 	Field minValue:Double = 0
 	Field maxValue:Double = 100
 	Field begunAMouseDown:int = False
+	Field mouseScrollAmount:Int = 5
 	Field currentValue:Double
 	Field _orientation:int = GUI_OBJECT_ORIENTATION_VERTICAL
 
@@ -76,6 +77,11 @@ Type TGUIScrollerBase extends TGUIobject
 		Super.Remove()
 		if guiButtonMinus then guiButtonMinus.Remove()
 		if guiButtonPlus then guiButtonPlus.Remove()
+	End Method
+	
+	
+	Method SetMouseScrollAmount(amount:Int)
+		mouseScrollAmount = amount
 	End Method
 
 
@@ -204,7 +210,7 @@ Type TGUIScrollerBase extends TGUIobject
 				If value > 0 Then direction = "right"
 		End Select
 		If direction <> ""
-			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, New TData.AddString("direction", direction).AddInt("scrollAmount", 15), self)
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, New TData.AddString("direction", direction).AddInt("scrollAmount", mouseScrollAmount), self)
 		EndIf
 
 		'set to accepted so that nobody else receives the event
@@ -225,7 +231,7 @@ Type TGUIScrollerBase extends TGUIobject
 
 		'emit event that the scroller position has changed
 		If sender = guiScroller.guiButtonMinus or sender = guiScroller.guiButtonPlus
-			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.AddString("direction", sender.direction.ToLower()).AddInt("scrollAmount", 15), guiScroller )
+			TriggerBaseEvent(GUIEventKeys.GUIObject_OnScrollPositionChanged, new TData.AddString("direction", sender.direction.ToLower()).AddInt("scrollAmount", 15), guiScroller)
 		EndIf
 
 		'handled the click
@@ -334,19 +340,27 @@ Type TGUIScroller Extends TGUIScrollerBase
 		scrollHandle._showFilledGauge = False
 		scrollHandle._gaugeAlpha = 0.5
 		scrollHandle.SetOption(GUI_OBJECT_KEEP_ACTIVE_ON_OUTSIDE_CONTINUED_MOUSEDOWN)
+		scrollHandle.mouseScrollWheelStepSize = mouseScrollAmount
 
 		'manage (update/draw) the handle on our own
 		AddChild(scrollHandle)
 
 		'listen to interaction with scrollHandle elements (dragging it)
+		'or mouse scrolling over its "progress area"
 		'attention: do not listen to "guiobject.onchangevalue" as this is
 		'           also triggered by "onScrollPositionChanged" (circlular
 		'           triggers)
-		AddEventListener(EventManager.registerListenerFunction( "guislider.setValueByMouse", onScrollHandleChange, scrollHandle ))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUISlider_SetValueByMouse, onScrollHandleChange, scrollHandle ))
 		'listen to changes via scroller buttons
-		AddEventListener(EventManager.registerListenerFunction( "guiobject.onScrollPositionChanged", onScrollPositionChanged, self))
+		AddEventListener(EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnScrollPositionChanged, onScrollPositionChanged, self))
 
 		return self
+	End Method
+
+
+	Method SetMouseScrollAmount(amount:Int) override
+		Super.SetMouseScrollAmount(amount)
+		if scrollHandle then scrollHandle.mouseScrollWheelStepSize = mouseScrollAmount
 	End Method
 
 
