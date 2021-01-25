@@ -293,15 +293,15 @@ Type TGUIScrollerBase extends TGUIobject
 		Super.Update()
 
 		if begunAMouseDown
+			'skip next long click
+			MouseManager.SkipNextLongClick(1) 
 			MouseManager.ResetClicked(1)
 			if not MouseManager.IsDown(1)
 				begunAMouseDown = False
-				MouseManager.ResetLongClicked(1)
-			else
-				'(do it in an "update" so it also handles "mousedown"
-				'avoid long left-mousebutton clicks
-				MouseManager.ResetLongClicked(1)
+				'disable a potentially still active "to skip"
+				MouseManager.SkipNextLongClick(1, 0) 
 			endif
+			MouseManager.ResetLongClicked(1)
 		endif
 	End Method
 
