@@ -500,7 +500,6 @@ Type TBroadcast
 			AudienceMarkets = CreateList()
 		Endif
 		
-		
 		AddMarket(new SChannelMask().Set(1) ) '1
 		AddMarket(new SChannelMask().Set(2) ) '2
 		AddMarket(new SChannelMask().Set(3) ) '3
@@ -694,9 +693,9 @@ Type TBroadcast
 		Local excludeChannelMask:SChannelMask = includeChannelMask.Negated()
 		
 		'receipient share = portion of the population share eg. using an antenna
-		Local audienceAntenna:Int = GetStationMapCollection().GetTotalAntennaReceiverShare(includeChannelMask, excludeChannelMask).total
-		Local audienceSatellite:Int = GetStationMapCollection().GetTotalSatelliteReceiverShare(includeChannelMask, excludeChannelMask).total
-		Local audienceCableNetwork:Int = GetStationMapCollection().GetTotalCableNetworkReceiverShare(includeChannelMask, excludeChannelMask).total
+		Local audienceAntenna:Int = GetStationMapCollection().GetTotalAntennaReceiverShare(includeChannelMask, excludeChannelMask).shared
+		Local audienceSatellite:Int = GetStationMapCollection().GetTotalSatelliteReceiverShare(includeChannelMask, excludeChannelMask).shared
+		Local audienceCableNetwork:Int = GetStationMapCollection().GetTotalCableNetworkReceiverShare(includeChannelMask, excludeChannelMask).shared
 
 '		Local audience:Int = GetStationMapCollection().GetTotalShareAudience(playerIDs, withoutPlayerIDs)
 '		If audience > 0
@@ -710,7 +709,22 @@ Type TBroadcast
 			market.shareCableNetwork = audienceCableNetwork / Float(audience)
 
 			AudienceMarkets.AddLast(market)
-			'print "AddMarket:  players="+StringHelper.JoinIntArray(",",playerIDs) +"  without="+StringHelper.JoinIntArray(",",withoutPlayerIDs)+"  audience="+audience+"  (maxAudience="+int(market.maxAudience.GetTotalSum())+"  antenna="+audienceAntenna+"  satellite="+audienceSatellite+"  cablenetwork="+audienceCableNetwork+")"
+			
+			rem
+			local withPID:String
+			local withoutPID:String
+			for local i:int = 1 to 4
+				if includeChannelMask.Has(i) 
+					if withPID then withPID :+ ","
+					withPID :+ i
+				EndIf
+				if excludeChannelMask.Has(i) 
+					if withoutPID then withoutPID :+ ","
+					withoutPID :+ i
+				EndIf
+			Next
+			print "AddMarket:  with players="+withPID +"  without="+withoutPID+"  audience="+audience+"  (maxAudience="+int(market.maxAudience.GetTotalSum())+"  antenna="+audienceAntenna+"  satellite="+audienceSatellite+"  cablenetwork="+audienceCableNetwork+")"
+			endrem
 		End If
 	End Method
 

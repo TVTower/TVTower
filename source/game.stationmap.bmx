@@ -451,7 +451,13 @@ Type TStationMapCollection
 
 
 	Method GetTotalShareAudience:Int(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		Return GetTotalShare(includeChannelMask, excludeChannelMask).total
+		'return ".total" if you want to know what the "total amount" is
+		'(so the sum of different people all "include channels" reach together)
+		
+		'return ".shared" if you want to know the population the 
+		'"include channels" share between each other (exclusive to the 
+		'excluded channels)
+		Return GetTotalShare(includeChannelMask, excludeChannelMask).shared
 	End Method
 
 
@@ -4671,7 +4677,7 @@ Type TStationMapSection
 
 	'returns the shared amount of audience between channels
 	Method GetShareAudience:Int(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
-		Return GetReceiverShare(includeChannelMask, excludeChannelMask).total
+		Return GetReceiverShare(includeChannelMask, excludeChannelMask).shared
 	End Method
 
 
@@ -4873,7 +4879,7 @@ Type TStationMapSection
 	'    (but includeChannelMask would still have "3" and "4" unset, 
 	'    this is why an "excludeChannelMask" is needed 
 	'Ex. include=(1)   and exclude=(0    ) to get total reach for player 1
-	'Ex. include=(1)   and exclude=(2+4+8) to getexclusive reach for player 1
+	'Ex. include=(1)   and exclude=(2+4+8) to get exclusive reach for player 1
 	'Ex. include=(1+2) and exclude=(0    ) to get reach player 1 and 2 have together
 	Method GetAntennaPopulationShare:TStationMapPopulationShare(includeChannelMask:SChannelMask, excludeChannelMask:SChannelMask)
 		If includeChannelMask.value = 0 Then Return New TStationMapPopulationShare
