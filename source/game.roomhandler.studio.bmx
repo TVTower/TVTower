@@ -1166,6 +1166,12 @@ Type RoomHandler_Studio Extends TRoomHandler
 		Local roomOwner:Int = TRoom(triggerEvent.GetSender()).owner
 		If Not GetPlayerBaseCollection().IsPlayer(roomOwner) Then roomOwner = 0
 
+		'draw data sheets for scripts or production concepts
+'		if not studioManagerDialogue
+			If hoveredGuiScript Then hoveredGuiScript.DrawSheet(365, , 0)
+			If hoveredGuiProductionConcept Then hoveredGuiProductionConcept.DrawSheet(365, , 0)
+'		endif
+
 		GUIManager.Draw( LS_studio )
 
 		'draw before potential tooltips
@@ -1181,12 +1187,6 @@ Type RoomHandler_Studio Extends TRoomHandler
 				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL)
 			EndIf
 		EndIf
-
-		'draw data sheets for scripts or production concepts
-'		if not studioManagerDialogue
-			If hoveredGuiScript Then hoveredGuiScript.DrawSheet(365, , 0)
-			If hoveredGuiProductionConcept Then hoveredGuiProductionConcept.DrawSheet(365, , 0)
-'		endif
 
 		If TVTDebugInfos
 			DrawDebug(TRoom(triggerEvent.GetSender()))
