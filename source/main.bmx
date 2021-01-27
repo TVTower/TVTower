@@ -3915,12 +3915,24 @@ Type GameEvents
 
 
 	Function OnOpenModalWindow:Int(triggerEvent:TEventBase)
-		App.SetPausedBy(TApp.PAUSED_BY_MODALWINDOW)
+		'we either skip elements NOT to pause or we do the opposite
+		'If TGUIProductionModalWindow(triggerEvent.GetSender()) Then Return False
+		'print "  sender=" + TTypeID.ForObject( triggerEvent.GetSender() ).name()
+
+		If TIngameHelpModalWindow(triggerEvent.GetSender())
+			App.SetPausedBy(TApp.PAUSED_BY_MODALWINDOW)
+		EndIf
 	End Function
 
 
 	Function OnCloseModalWindow:Int(triggerEvent:TEventBase)
-		App.SetPausedBy(TApp.PAUSED_BY_MODALWINDOW, False)
+		'we either skip elements NOT to pause or we do the opposite
+		'If TGUIProductionModalWindow(triggerEvent.GetSender()) Then Return False
+		
+
+		If TIngameHelpModalWindow(triggerEvent.GetSender())
+			App.SetPausedBy(TApp.PAUSED_BY_MODALWINDOW, False)
+		EndIf
 	End Function
 
 

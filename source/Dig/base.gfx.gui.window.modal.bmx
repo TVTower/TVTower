@@ -82,7 +82,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		AddEventListener(EventManager.registerListenerMethod(GUIEventKeys.GUIObject_OnClick, Self, "onButtonClick"))
 
 		'fire event so others know that the window is created
-		TriggerBaseEvent(GUIEventKeys.GUIModalWindow_OnCreate, Self)
+		TriggerBaseEvent(GUIEventKeys.GUIModalWindow_OnCreate, Null, Self)
 		Return Self
 	End Method
 
@@ -220,7 +220,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 
 	Method Open:Int()
-		TriggerBaseEvent(GUIEventKeys.GUIModalWindow_OnOpen, Self)
+		TriggerBaseEvent(GUIEventKeys.GUIModalWindow_OnOpen, Null, Self)
 
 		isOpen = True
 	End Method

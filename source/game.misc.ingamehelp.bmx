@@ -131,6 +131,13 @@ Global IngameHelpWindowCollection:TIngameHelpWindowCollection = New TIngameHelpW
 
 
 
+'easier to identify ingame help windows this way 
+Type TIngameHelpModalWindow Extends TGUIGameModalWindow
+End Type
+
+
+
+
 Type TIngameHelpWindow
 	Field area:TRectangle
 	Field modalDialogue:TGUIModalWindow
@@ -178,7 +185,7 @@ Type TIngameHelpWindow
 		Local windowW:Int = 600
 		Local windowH:Int = 320
 
-		modalDialogue = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(windowW, windowH), state.ToString())
+		modalDialogue = New TIngameHelpModalWindow.Create(New TVec2D, New TVec2D.Init(windowW, windowH), state.ToString())
 		modalDialogue.SetManaged(False)
 		modalDialogue.screenArea = area.Copy()
 
