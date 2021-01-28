@@ -1166,6 +1166,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 		Local roomOwner:Int = TRoom(triggerEvent.GetSender()).owner
 		If Not GetPlayerBaseCollection().IsPlayer(roomOwner) Then roomOwner = 0
 
+		GUIManager.Draw( LS_studio, -1000, -1000, GUIMANAGER_TYPES_NONDRAGGED )
+
 		'draw before potential tooltips (and before datasheets)
 		If roomOwner And studioManagerDialogue Then studioManagerDialogue.Draw()
 
@@ -1175,7 +1177,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			If hoveredGuiProductionConcept Then hoveredGuiProductionConcept.DrawSheet(365, , 0)
 '		endif
 
-		GUIManager.Draw( LS_studio )
+		GUIManager.Draw( LS_studio, -1000, -1000, GUIMANAGER_TYPES_DRAGGED )
 
 
 
