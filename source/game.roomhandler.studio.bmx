@@ -74,6 +74,9 @@ Type RoomHandler_Studio Extends TRoomHandler
 			Local spriteProductionConcept:TSprite = GetSpriteFromRegistry("gfx_studio_productionconcept_0")
 			Local spriteSuitcase:TSprite = GetSpriteFromRegistry("gfx_scripts_0_dragged")
 			guiListStudio = New TGUIScriptSlotList.Create(New TVec2D.Init(710, 290), New TVec2D.Init(17, 52), "studio")
+			'set to autofill so that "failed suitcase drops" can safely
+			'be dropped back into the studio slot
+			guiListStudio.SetAutofillSlots(True)
 			guiListStudio.SetEntriesBlockDisplacement( 23, 10)
 			guiListStudio.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			guiListStudio.SetItemLimit( studioScriptLimit )
@@ -128,6 +131,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to studio manager or suitcase
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropScript, "TGuiScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUISlotList_OnReplaceSlotItem, onReplaceGUIScripts, "TGUIScriptSlotList") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_onDropOnTargetAccepted, onDropProductionConcept, "TGuiProductionConceptListItem") ]
 		'we want to know if we hover a specific block - to show a datasheet
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverScript, "TGuiScript") ]
@@ -354,6 +358,33 @@ Type RoomHandler_Studio Extends TRoomHandler
 	End Function
 
 
+	Function onReplaceGUIScripts:Int( triggerEvent:TEventBase )
+		'only interested in drops on the suitcase ?
+		Local list:TGUIObject = TGUIObject(triggerEvent.GetSender())
+		Local oldItem:TGUIScript = TGUIScript(triggerEvent.GetData().Get("target"))
+		Local newItem:TGUIScript = TGUIScript(triggerEvent.GetData().Get("source"))
+		if not list or not newItem or not oldItem then Return False
+
+		Local roomGUID:String = TFigure(GetPlayerBase().GetFigure()).inRoom.GetGUID()
+		Local roomOwner:Int = TFigure(GetPlayerBase().GetFigure()).inRoom.owner
+
+		'suitcase? check if new one came from studio ("is current")
+		If list = guiListSuitcase and GetInstance().GetCurrentStudioScript(roomGUID) = newItem.script
+			'print "dropped current on suitcase, set old as current"
+			Local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(roomOwner)
+			GetInstance().SetCurrentStudioScript(oldItem.script, roomGUID)
+
+			newItem.InitAssets(newItem.getAssetName(-1, True), newItem.getAssetName(-1, True))
+		ElseIf list = guiListStudio and GetInstance().GetCurrentStudioScript(roomGUID) <> newItem.script
+			'print "dropped new on suitcase"
+			GetInstance().SetCurrentStudioScript(newItem.script, roomGUID)
+
+			newItem.InitAssets(newItem.getAssetName(-1, False), newItem.getAssetName(-1, True))
+		EndIf
+	End Function
+
+
+
 	Function onDropScript:Int( triggerEvent:TEventBase )
 		If Not CheckPlayerInRoom("studio") Then Return False
 
@@ -362,38 +393,32 @@ Type RoomHandler_Studio Extends TRoomHandler
 		If Not guiBlock Or Not receiver Then Return False
 
 		Local roomGUID:String = TFigure(GetPlayerBase().GetFigure()).inRoom.GetGUID()
-		Local roomOwner:Int = TFigure(GetPlayerBase().GetFigure()).inRoom.owner
 
-
-		'dropping to studio/studiomanager
-		'(this includes "switching" guiblocks on the studio list)
 		If receiver = guiListStudio Or receiver = studioManagerArea
-			GetInstance().SetCurrentStudioScript(guiBlock.script, roomGUID)
+			if GetInstance().GetCurrentStudioScript(roomGUID) <> guiBlock.script 
+				'print "   suitcase -> studio [is new]"
+				GetInstance().SetCurrentStudioScript(guiBlock.script, roomGUID)
 
-		ElseIf receiver = guiListSuitcase and GetInstance().GetCurrentStudioScript(roomGUID) = guiBlock.script
-			'only intercept if there are slots in the suitcase free
-			'else the normal "drag n drop" handles it
-			Local pc:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(roomOwner)
-			If pc.GetSuitcaseScriptCount() < GameRules.maxScriptsInSuitcase 
-				GetInstance().RemoveCurrentStudioScript(roomGUID)
+				guiBlock.InitAssets(guiBlock.getAssetName(-1, False), guiBlock.getAssetName(-1, True))
+				'remove an old dialogue, it might be different now
+				studioManagerDialogue = Null
 			EndIf
-			
-		'nothing to do in the other cases (eg sorting elements in one list)
-		Else
-			Return True
+		ElseIf receiver = guiListSuitcase and GetInstance().GetCurrentStudioScript(roomGUID) = guiBlock.script
+			if GetInstance().GetCurrentStudioScript(roomGUID) = guiBlock.script 
+				'print "   studio -> suitcase  [is current]"
+				GetInstance().RemoveCurrentStudioScript(roomGUID)
+
+				guiBlock.InitAssets(guiBlock.getAssetName(-1, True), guiBlock.getAssetName(-1, True))
+				'remove an old dialogue, it might be different now
+				studioManagerDialogue = Null
+			EndIf
 		EndIf
 
-		'remove gui block, it will get recreated if needed
-		'(and it then will have the correct assets assigned)
-		guiBlock.remove()
-		guiBlock = Null
-		GetInstance().RefreshGuiElements()
-
-		'remove an old dialogue, it might be different now
-		studioManagerDialogue = Null
 
 		Return True
 	End Function
+
+
 
 
 	Function onDropProductionConcept:Int( triggerEvent:TEventBase )

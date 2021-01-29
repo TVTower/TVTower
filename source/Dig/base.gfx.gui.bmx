@@ -251,20 +251,26 @@ Type TGUIManager
 
 		'ask if something does not want that drop to happen
 		Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnTryDropOnTarget, New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget)
-		event.Trigger()
+		If dropTarget Then dropTarget.OnTryDropOnTarget(event)
+		'if element itself did not veto, ask others: 
+		If not event.IsVeto() then event.Trigger()
+
 		'if there is no problem ...just start dropping
 		If Not event.isVeto()
 			event = TEventBase.Create(GUIEventKeys.GUIObject_OnDropOnTarget, New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget)
+			If dropTarget Then dropTarget.OnDropOnTarget(event)
 			event.Trigger()
 		EndIf
 
 		'if there is a veto happening (dropTarget does not want the item)
 		'also veto the onDropOnTarget-event
 		If event.isVeto()
+print "  ondrop declined"
 			triggerEvent.setVeto()
 			TriggerBaseEvent(GUIEventKeys.GUIObject_OnDropOnTargetDeclined, New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget )
 			Return False
 		Else
+print "  ondrop accepted"
 			'inform others: we successfully dropped the object to a target#
 			TriggerBaseEvent(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget )
 
@@ -2577,6 +2583,16 @@ endrem
 		Else
 			Return False
 		EndIf
+	End Method
+
+
+	Method OnTryDropOnTarget:Int(triggerEvent:TEventBase)
+		Return True
+	End Method
+
+
+	Method OnDropOnTarget:Int(triggerEvent:TEventBase)
+		Return True
 	End Method
 
 

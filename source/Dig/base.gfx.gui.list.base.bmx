@@ -243,7 +243,7 @@ Type TGUIListBase Extends TGUIobject
 		If _dropOnTargetListener Then EventManager.unregisterListener(_dropOnTargetListener)
 
 		'is something dropping - check if it is this list
-		_dropOnTargetListener = EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropOnTarget, accept, Self)
+		_dropOnTargetListener = EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnDropOnTarget, onDropOnTargetList, accept, Self)
 	End Method
 
 
@@ -671,7 +671,7 @@ Type TGUIListBase Extends TGUIobject
 
 
 	'override default
-	Method onDrop:Int(triggerEvent:TEventBase)
+	Method onDrop:Int(triggerEvent:TEventBase) override
 		'we could check for dragged element here
 		triggerEvent.setAccepted(True)
 		Return True
@@ -686,10 +686,9 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 
-	Function onDropOnTarget:Int( triggerEvent:TEventBase )
+	Function onDropOnTargetList:Int( triggerEvent:TEventBase )
 		Local item:TGUIListItem = TGUIListItem(triggerEvent.GetSender())
 		If item = Null Then Return False
-
 		'ATTENTION:
 		'Item is still in dragged state!
 		'Keep this in mind when sorting the items

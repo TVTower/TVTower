@@ -2300,7 +2300,7 @@ endrem
 
 
 	'override default event handler
-	Function onDropOnTarget:Int( triggerEvent:TEventBase )
+	Method onDropOnTarget:Int( triggerEvent:TEventBase ) override
 		'adjust cast slots...
 		If Super.onDropOnTarget( triggerEvent )
 			Local item:TGUICastListItem = TGUICastListItem(triggerEvent.GetSender())
@@ -2315,7 +2315,7 @@ endrem
 		EndIf
 
 		Return True
-	End Function
+	End Method
 End Type
 
 

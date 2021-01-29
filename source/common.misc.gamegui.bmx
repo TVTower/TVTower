@@ -538,7 +538,7 @@ Type TGUIGameSlotList Extends TGUISlotList
 
 
 	'override default event handler
-	Function onDropOnTarget:int( triggerEvent:TEventBase )
+	Method OnDropOnTarget:int( triggerEvent:TEventBase )
 		local item:TGUIListItem = TGUIListItem(triggerEvent.GetSender())
 		if item = Null then return FALSE
 
@@ -547,31 +547,26 @@ Type TGUIGameSlotList Extends TGUISlotList
 		'Keep this in mind when sorting the items
 
 		'only handle if coming from another list ?
-		local parent:TGUIobject = item._parent
-		if TGUIPanel(parent) then parent = TGUIPanel(parent)._parent
-		local fromList:TGUIListBase = TGUIListBase(parent)
+		Local fromList:TGUIListBase = FindGUIListBaseParent(item._parent)
 		if not fromList then return FALSE
-
-		local toList:TGUIListBase = TGUIListBase(triggerEvent.GetReceiver())
-		if not toList then return FALSE
 
 		local data:TData = triggerEvent.getData()
 		if not data then return FALSE
 
 		'move item if possible
-		fromList.removeItem(item)
+		local removedItem:Int = fromList.removeItem(item)
 		'try to add the item, if not able, readd
-		if not toList.addItem(item, data)
-			if fromList.addItem(item) then return TRUE
+		if not self.addItem(item, data) 
+			If fromList.addItem(item) then return TRUE
 
 			'not able to add to "toList" but also not to "fromList"
 			'so set veto and keep the item dragged
 			triggerEvent.setVeto()
+			Return False
 		endif
 
-
 		return TRUE
-	End Function
+	End Method
 End Type
 
 

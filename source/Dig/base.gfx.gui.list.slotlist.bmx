@@ -102,7 +102,7 @@ Type TGUISlotList Extends TGUIListBase
 	Method GetUnusedSlotAmount:Int()
 		Local amount:Int = 0
 		For Local i:Int = 0 To _slots.length-1
-			If _slots[i] Then amount:+1
+			If not _slots[i] Then amount:+1
 		Next
 		Return amount
 	End Method
@@ -394,6 +394,23 @@ Type TGUISlotList Extends TGUIListBase
 	End Method
 
 
+	Method OnTryDropOnTarget:Int(triggerEvent:TEventBase) override
+		'only allow dropping of "new" items if there is a free slot
+		'or if there is something which could be dragged instead
+		if not HasItem(TGUIObject(triggerEvent.GetSender())) and GetUnusedSlotAmount() <= 0
+			Local dropCoord:TVec2D = TVec2D(triggerEvent.GetData().get("coord"))
+			If dropCoord
+				local addToSlot:Int = Self.GetSlotByCoord(dropCoord)
+				If addToSlot >= 0 Then Return True
+			EndIf
+			triggerEvent.SetVeto(True)
+			Return False
+		Else
+			Return True
+		EndIf
+	End Method
+
+
 	'overrideable AddItem-Handler
 	Method AddItem:Int(item:TGUIobject, extra:Object=Null)
 		Local addToSlot:Int = -1
@@ -407,6 +424,11 @@ Type TGUISlotList Extends TGUIListBase
 		If Self._autofillSlots Then addToSlot = Self.getFreeSlot()
 		'auto slot requested
 		If extraIsRawSlot And addToSlot = -1 Then addToSlot = Self.getFreeSlot()
+		
+		If not extraIsRawSlot and not Self._autofillSlots and addToSlot = -1
+			print "WARNING: TGUISlotList.AddItem() to non autofillslot-list without passing a valid slot as param!"
+			TLogger.Log("TGUISlotList.AddItem()", "Trying to add to non autofillslot-list without passing a valid slot as param!", LOG_ERROR)
+		EndIf
 
 		'no free slot or none given? find out on which slot we are dropping
 		'if possible, drag the other one and drop the new
