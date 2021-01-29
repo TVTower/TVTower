@@ -131,6 +131,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to vendor or suitcase
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTarget, onDropScript, "TGuiScript") ]
+		'stop dragging vendor elements if suitcase is full
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, OnTryDragScript, "TGuiScript") ]
 		'drop on vendor - sell things
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropScriptOnVendor, "TGuiScript") ]
 		'we want to know if we hover a specific block - to show a datasheet
@@ -854,6 +856,31 @@ endrem
 
 	'in this stage, the item is already added to the new gui list
 	'we now just add or remove it to the player or vendor's list
+	Function OnTryDragScript:int( triggerEvent:TEventBase )
+		'do not allow any interaction for "other/observed" players
+		if not CheckPlayerInRoom("scriptagency") 
+			triggerEvent.SetVeto(True)
+			Return FALSE
+		EndIf
+
+		local guiScript:TGUIScript = TGUIScript(triggerEvent._sender)
+		if not guiScript or not guiScript.script Then Return False
+
+
+		'forbid dragging if there is no space left in the suitcase
+		if guiScript.script.owner = TOwnedGameObject.OWNER_VENDOR
+			If Not GetPlayerProgrammeCollection(GetPlayerBase().playerID).CanMoveScriptToSuitcase()
+				triggerEvent.SetVeto(True)
+				Return FALSE
+			EndIf
+		EndIf
+
+		Return True
+	End Function
+	
+
+	'in this stage, the item is already added to the new gui list
+	'we now just add or remove it to the player or vendor's list
 	Function onDropScript:int( triggerEvent:TEventBase )
 		if not CheckPlayerInRoom("scriptagency") then return FALSE
 
@@ -959,7 +986,7 @@ endrem
 		if hoveredGuiScript
 			if hoveredGuiScript.IsDragged()
 				GetGameBase().SetCursor(TGameBase.CURSOR_HOLD)
-			elseif hoveredGuiScript.script.owner = GetPlayerBase().playerID or GetPlayerBase().GetFinance().canAfford(hoveredGuiScript.script.GetPrice())
+			elseif hoveredGuiScript.script.owner = GetPlayerBase().playerID or (GetPlayerBase().GetFinance().canAfford(hoveredGuiScript.script.GetPrice()) and GetPlayerProgrammeCollection(GetPlayerBase().playerID).CanMoveScriptToSuitcase())
 				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL)
 			else
 				GetGameBase().SetCursor(TGameBase.CURSOR_PICK_VERTICAL, TGameBase.CURSOR_EXTRA_FORBIDDEN)

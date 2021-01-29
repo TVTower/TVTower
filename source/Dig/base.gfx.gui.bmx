@@ -265,12 +265,12 @@ Type TGUIManager
 		'if there is a veto happening (dropTarget does not want the item)
 		'also veto the onDropOnTarget-event
 		If event.isVeto()
-print "  ondrop declined"
+			'print "  ondrop declined"
 			triggerEvent.setVeto()
 			TriggerBaseEvent(GUIEventKeys.GUIObject_OnDropOnTargetDeclined, New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget )
 			Return False
 		Else
-print "  ondrop accepted"
+			'print "  ondrop accepted"
 			'inform others: we successfully dropped the object to a target#
 			TriggerBaseEvent(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget )
 
