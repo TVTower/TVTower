@@ -855,7 +855,7 @@ Type RoomHandler_News extends TRoomHandler
 
 		hoveredGuiNews = item
 		'only handle dragged for the real player
-		if CheckPlayerInRoom("news")
+		if CheckPlayerObservedAndInRoom("news")
 			if item.isDragged() then draggedGuiNews = item
 		endif
 
@@ -866,7 +866,7 @@ Type RoomHandler_News extends TRoomHandler
 	'in case of right mouse button click we want to remove the
 	'block from the player's programmePlan
 	Function onClickNews:int(triggerEvent:TEventBase)
-		if not CheckObservedFigureInRoom("news") then return FALSE
+		if not CheckPlayerObservedAndInRoom("news") then return FALSE
 
 		'only react if the click came from the right mouse button
 		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE

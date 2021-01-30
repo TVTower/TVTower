@@ -736,7 +736,8 @@ endrem
 	'in case of right mouse button click a dragged script is
 	'placed at its original spot again
 	Function onClickScript:int(triggerEvent:TEventBase)
-		if not CheckPlayerInRoom("scriptagency") then return FALSE
+		'only allow interaction if we observe our player and are there
+		if not CheckPlayerObservedAndInRoom("scriptagency") then return FALSE
 
 		'only react if the click came from the right mouse button
 		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
@@ -767,7 +768,8 @@ endrem
 
 		hoveredGuiScript = item
 		'only handle dragged for the real player
-		if CheckPlayerInRoom("scriptagency")
+		'only allow interaction if we observe our player and are there
+		if CheckPlayerObservedAndInRoom("scriptagency")
 			if item.isDragged() then draggedGuiScript = item
 		endif
 
@@ -778,7 +780,8 @@ endrem
 	'- check if dropping on suitcase and affordable
 	'- check if dropping on an item in the shelf (not allowed for now)
 	Function onTryDropScript:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("scriptagency") then return FALSE
+		'only allow interaction if we observe our player and are there
+		if not CheckPlayerObservedAndInRoom("scriptagency") then return FALSE
 
 		local guiScript:TGUIScript = TGUIScript(triggerEvent._sender)
 		local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
@@ -818,7 +821,8 @@ endrem
 
 	'handle cover block drops on the vendor ... only sell if from the player
 	Function onDropScriptOnVendor:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("scriptagency") then return FALSE
+		'only allow interaction if we observe our player and are there
+		if not CheckPlayerObservedAndInRoom("scriptagency") then return FALSE
 
 		local guiBlock:TGUIScript = TGUIScript( triggerEvent._sender )
 		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
@@ -857,10 +861,8 @@ endrem
 	'in this stage, the item is already added to the new gui list
 	'we now just add or remove it to the player or vendor's list
 	Function OnTryDragScript:int( triggerEvent:TEventBase )
-		'ignore interaction in other rooms and interactions of observed
-		'players
-		if not CheckPlayerInRoom("scriptagency") then Return False
-		If not CheckObservedFigureInRoom("scriptagency") then Return False
+		'only allow interaction if we observe our player and are there
+		if not CheckPlayerObservedAndInRoom("scriptagency") then return FALSE
 
 		local guiScript:TGUIScript = TGUIScript(triggerEvent._sender)
 		if not guiScript or not guiScript.script Then Return False
@@ -888,7 +890,8 @@ endrem
 	'in this stage, the item is already added to the new gui list
 	'we now just add or remove it to the player or vendor's list
 	Function onDropScript:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("scriptagency") then return FALSE
+		'only allow interaction if we observe our player and are there
+		if not CheckPlayerObservedAndInRoom("scriptagency") then return FALSE
 
 		local guiScript:TGUIScript = TGUIScript(triggerEvent._sender)
 		local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
@@ -1034,7 +1037,7 @@ endrem
 	Method onUpdateRoom:int( triggerEvent:TEventBase )
 		if VendorEntity Then VendorEntity.Update()
 
-		if CheckPlayerInRoom("scriptagency")
+		if CheckObservedFigureInRoom("scriptagency")
 			'delete unused and create new gui elements
 			if haveToRefreshGuiElements then GetInstance().RefreshGUIElements()
 

@@ -240,7 +240,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			GetInstance().RemoveCurrentStudioScript(roomGUID)
 
 			'refresh gui if player is in room
-			If CheckPlayerInRoom("studio")
+			If CheckObservedFigureInRoom("studio")
 				haveToRefreshGuiElements = True
 			EndIf
 		EndIf
@@ -250,7 +250,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 	'if players are in a studio during changes in their programme
 	'collection, react to it...
 	Function onChangeProgrammeCollection:Int( triggerEvent:TEventBase )
-		If Not CheckPlayerInRoom("studio") Then Return False
+		If Not CheckObservedFigureInRoom("studio") Then Return False
 
 		'instead of directly refreshing, we just set the dirty-indicator
 		'to true (so it only refreshes once per tick, even with
@@ -262,7 +262,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 	'in case of right mouse button click a dragged script is
 	'placed at its original spot again
 	Function onClickScript:Int(triggerEvent:TEventBase)
-		If Not CheckPlayerInRoom("studio") Then Return False
+		If Not CheckPlayerObservedAndInRoom("studio") Then Return False
 
 		'only react if the click came from the right mouse button
 		If triggerEvent.GetData().getInt("button",0) <> 2 Then Return True
@@ -293,7 +293,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 	'in case of right mouse button click a dragged production concept is
 	'removed
 	Function onClickProductionConcept:Int(triggerEvent:TEventBase)
-		If Not CheckPlayerInRoom("studio") Then Return False
+		If Not CheckPlayerObservedAndInRoom("studio") Then Return False
 
 		'only react if the click came from the right mouse button
 		If triggerEvent.GetData().getInt("button",0) <> 2 Then Return True
@@ -321,7 +321,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 
 	Function onMouseOverScript:Int( triggerEvent:TEventBase )
-		If Not CheckPlayerInRoom("studio") Then Return False
+		If Not CheckObservedFigureInRoom("studio") Then Return False
 
 		Local item:TGUIScript = TGUIScript(triggerEvent.GetSender())
 		If item = Null Then Return False
@@ -339,7 +339,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 
 	Function onMouseOverProductionConcept:Int( triggerEvent:TEventBase )
-		If Not CheckPlayerInRoom("studio") Then Return False
+		If Not CheckObservedFigureInRoom("studio") Then Return False
 
 		Local item:TGuiProductionConceptListItem = TGuiProductionConceptListItem(triggerEvent.GetSender())
 		If item = Null Then Return False
@@ -386,7 +386,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 
 	Function onDropScript:Int( triggerEvent:TEventBase )
-		If Not CheckPlayerInRoom("studio") Then Return False
+		If Not CheckPlayerObservedAndInRoom("studio") Then Return False
 
 		Local guiBlock:TGUIScript = TGUIScript(triggerEvent._sender)
 		Local receiver:TGUIObject = TGUIObject(triggerEvent._receiver)
@@ -422,7 +422,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 
 	Function onDropProductionConcept:Int( triggerEvent:TEventBase )
-		If Not CheckPlayerInRoom("studio") Then Return False
+		If Not CheckPlayerObservedAndInRoom("studio") Then Return False
 
 		Local guiBlock:TGuiProductionConceptListItem = TGuiProductionConceptListItem( triggerEvent._sender )
 		Local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)

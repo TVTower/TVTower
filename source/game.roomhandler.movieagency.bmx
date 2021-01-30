@@ -258,6 +258,12 @@ Type RoomHandler_MovieAgency Extends TRoomHandler
 			GuiListSeries.SetItemLimit(listSeries.length)
 			GuiListSuitcase.SetItemLimit(GameRules.maxProgrammeLicencesInSuitcase)
 
+			GuiListMoviesGood.SetAutofillSlots(True)
+			GuiListMoviesCheap.SetAutofillSlots(True)
+			GuiListSeries.SetAutofillSlots(True)
+			GuiListSuitcase.SetAutofillSlots(True)
+
+
 			GuiListMoviesGood.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
 			GuiListMoviesCheap.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
 			GuiListSeries.SetSlotMinDimension(videoCase.area.GetW(), videoCase.area.GetH())
@@ -980,7 +986,7 @@ endrem
 		hoveredGuiProgrammeLicence = item
 
 		'only handle dragged for the real player
-		If CheckPlayerInRoom("movieagency")
+		If CheckPlayerObservedAndInRoom("movieagency")
 			If item.isDragged() Then draggedGuiProgrammeLicence = item
 		EndIf
 
@@ -990,7 +996,7 @@ endrem
 
 	'check if we are allowed to drag that licence
 	Function onDragProgrammeLicence:Int( triggerEvent:TEventBase )
-		If Not CheckPlayerInRoom("movieagency") Then Return False
+		If Not CheckPlayerObservedAndInRoom("movieagency") Then Return False
 
 		Local item:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent.GetSender())
 		If item = Null Then Return False
@@ -1029,7 +1035,7 @@ endrem
 	'- check if dropping own licence on the shelf (not possible for now)
 	'(OLD: - check if dropping on an item which is not affordable)
 	Function onTryDropProgrammeLicence:Int( triggerEvent:TEventBase )
-		If Not CheckPlayerInRoom("movieagency") Then Return False
+		If Not CheckPlayerObservedAndInRoom("movieagency") Then Return False
 
 		Local guiLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
 		Local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
@@ -1072,7 +1078,7 @@ endrem
 
 	'dropping takes place - sell/buy licences or veto if not possible
 	Function onDropProgrammeLicence:Int( triggerEvent:TEventBase )
-		If Not CheckPlayerInRoom("movieagency") Then Return False
+		If Not CheckPlayerObservedAndInRoom("movieagency") Then Return False
 
 		Local guiLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
 		Local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
@@ -1108,7 +1114,7 @@ endrem
 
 	'handle cover block drops on the vendor ... only sell if from the player
 	Function onDropProgrammeLicenceOnVendor:Int(triggerEvent:TEventBase)
-		If Not CheckPlayerInRoom("movieagency") Then Return False
+		If Not CheckPlayerObservedAndInRoom("movieagency") Then Return False
 
 		Local guiLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
 		Local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
@@ -1218,7 +1224,7 @@ endrem
 		Local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		If Not room Then Return 0
 
-		If CheckPlayerInRoom("movieagency")
+		If CheckObservedFigureInRoom("movieagency")
 			'show a auction-tooltip (but not if we dragged a block)
 			If Not hoveredGuiProgrammeLicence
 				If THelper.MouseIn(210,220,140,60)
@@ -1284,7 +1290,7 @@ endrem
 
 
 	Function onUpdateMovieAuction:Int( triggerEvent:TEventBase )
-		If CheckPlayerInRoom("movieagency")
+		If CheckPlayerObservedAndInRoom("movieagency")
 			TAuctionProgrammeBlocks.UpdateAll()
 		EndIf
 

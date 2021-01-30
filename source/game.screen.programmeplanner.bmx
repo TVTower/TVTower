@@ -633,7 +633,8 @@ Type TScreenHandler_ProgrammePlanner
 
 
 	Function onChangeProgrammeCollection:Int( triggerEvent:TEventBase )
-		If Not TRoomHandler.CheckPlayerInRoom("office") Then Return False
+		'only refresh if we see it
+		if Not TRoomHandler.CheckObservedFigureInRoom("office") then return FALSE
 		'only adjust GUI if we are displaying that screen (eg. AI skips that)
 		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
 
@@ -659,7 +660,8 @@ Type TScreenHandler_ProgrammePlanner
 	'if players are in the office during changes
 	'to their programme plan, react to...
 	Function onChangeProgrammePlan:Int( triggerEvent:TEventBase )
-		If Not TRoomHandler.CheckPlayerInRoom("office") Then Return False
+		'only refresh if we see it
+		if Not TRoomHandler.CheckObservedFigureInRoom("office") then return FALSE
 		'only adjust GUI if we are displaying that screen (eg. AI skips that)
 		If not IsMyScreen( ScreenCollection.GetCurrentScreen() ) Then Return False
 
@@ -1709,7 +1711,7 @@ endrem
 		GuiListAdvertisements.planDay = planningDay
 
 		'only do the gui stuff with the player being in the office
-		If TRoomHandler.CheckPlayerInRoom("office")
+		If TRoomHandler.CheckPlayerObservedAndInRoom("office")
 			'only adjust GUI if we are displaying that screen (eg. AI skips that)
 			If IsMyScreen( ScreenCollection.GetCurrentScreen() )
 				'FALSE: without removing dragged

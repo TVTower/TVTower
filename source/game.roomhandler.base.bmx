@@ -242,9 +242,14 @@ Type TRoomHandler
 	End Method
 
 
-	'returns wheather we observe a player and the player is in the given
-	'room
-	Function CheckPlayerInRoom:int(roomName:string, allowChangingRoom:int = true)
+	'Returns wheather we observe our player figure and if it is in the
+	'given room(name)
+	'Observing an other figure automatically leads to "false" so you
+	'cannot have your player's figure in (their) office and the observed
+	'one in (their) office and get the wrong result returned from here.
+	'To identify whether a player figure is really in a room, use
+	'CheckPlayerFigureInRoom())
+	Function CheckPlayerObservedAndInRoom:int(roomName:string, allowChangingRoom:int = true)
 		local figure:TFigure = TFigure(GetPlayerBase().GetFigure())
 		'if we observe another figure, return false as this check returns
 		'wheather the player is the observed one and in a room
@@ -259,6 +264,21 @@ Type TRoomHandler
 	End Function
 
 
+	'Returns if the player's figure is in a room (regardless of what
+	'the player currently observes)
+	Function CheckPlayerFigureInRoom:int(roomName:string, allowChangingRoom:int = true)
+		local figure:TFigure = TFigure(GetPlayerBase().GetFigure())
+		if not figure then return False
+
+		'check if we are in the correct room
+		If not allowChangingRoom and figure.isChangingRoom() Then Return False
+		If not figure.inRoom Then Return False
+		if figure.inRoom.GetName() <> roomName then return FALSE
+		return TRUE
+	End Function
+
+
+	'Returns if the observed (or player if none) figure is in the room 
 	Function CheckObservedFigureInRoom:int(roomName:string, allowChangingRoom:int = true)
 		local figure:TFigure = TFigure(GameConfig.GetObservedObject())
 		'when not observing someone, fall back to the players figure
