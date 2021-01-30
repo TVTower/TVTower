@@ -857,11 +857,10 @@ endrem
 	'in this stage, the item is already added to the new gui list
 	'we now just add or remove it to the player or vendor's list
 	Function OnTryDragScript:int( triggerEvent:TEventBase )
-		'do not allow any interaction for "other/observed" players
-		if not CheckPlayerInRoom("scriptagency") 
-			triggerEvent.SetVeto(True)
-			Return FALSE
-		EndIf
+		'ignore interaction in other rooms and interactions of observed
+		'players
+		if not CheckPlayerInRoom("scriptagency") then Return False
+		If not CheckObservedFigureInRoom("scriptagency") then Return False
 
 		local guiScript:TGUIScript = TGUIScript(triggerEvent._sender)
 		if not guiScript or not guiScript.script Then Return False
@@ -874,7 +873,14 @@ endrem
 				Return FALSE
 			EndIf
 		EndIf
-
+		
+		'forbid dragging if you cannot afford to buy
+		If guiScript.script.owner = TOwnedGameObject.OWNER_VENDOR
+			If Not GetPlayerBase().GetFinance().canAfford(guiScript.script.GetPrice())
+				triggerEvent.SetVeto(True)
+				Return FALSE
+			EndIf
+		EndIf
 		Return True
 	End Function
 	
