@@ -1505,6 +1505,11 @@ Type TGUIobject
 			event.Trigger()
 			Self.onFinishDrag(event)
 
+			'avoid that the object flickers shortly on position 0,0
+			'if it was freshly created -> this way it appears right
+			'at the "mouse"
+			InvalidateScreenRect()
+
 			Return True
 		Else
 			Return False
