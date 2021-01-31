@@ -94,7 +94,7 @@ Type TPersonGenerator
 
 	Method GetRandomCountryCode:string()
 		local countries:string[] = GetCountryCodes()
-		if countries.length then return ""
+		if countries.length = 0 then return ""
 		return countries[ RandRange(0, countries.length) ]
 	End Method
 
@@ -130,7 +130,7 @@ Type TPersonGenerator
 
 
 	Method GetCountryCodes:string[]()
-		if not _countryCodes
+		if not _countryCodes or _countryCodes.length = 0
 			_countryCodes = new string[0]
 			For local code:string = EachIn providers.Keys()
 				_countryCodes :+ [code]

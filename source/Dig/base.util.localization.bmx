@@ -284,7 +284,7 @@ Type TLocalization
 
 
 	Function GetLanguageCode:String(languageID:Int)
-		if languages.length < languageID then return ""
+		if languages.length < languageID or languageID < 0 then return ""
 		return languages[languageID].languageCode
 	End Function
 
