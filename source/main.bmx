@@ -85,7 +85,6 @@ Import "game.building.bmx"
 Import "game.ingameinterface.bmx"
 Import "game.newsagency.bmx"
 Import "game.roomagency.bmx"
-Import "game.programmeproducer.bmx"
 
 'Import "game.roomhandler.base.bmx"
 Import "game.roomhandler.adagency.bmx"
@@ -5694,6 +5693,13 @@ Type GameEvents
 		'(do that AFTER setting the broadcasts and calculating the
 		' audience as some achievements check audience of a broadcast)
 		GetAchievementCollection().Update(now)
+		
+		
+		'=== UPDATE PROGRAMME PRODUCERS ===
+		If minute Mod 15 = 0 'every 15 minutes
+			GetProgrammeProducerCollection().UpdateAll()
+		EndIf
+
 
 		Return True
 	End Function
@@ -6642,12 +6648,7 @@ Function ShowApp:Int()
 
 	'=== LOAD LOCALIZATION ===
 	'load all localizations
-	Local dirTree:TDirectoryTree = New TDirectoryTree.SimpleInit()
-	dirTree.ScanDir("res/lang", True)
-	For Local directory:String = EachIn dirTree.GetDirectories()
-		TLocalization.LoadLanguageFiles(directory+"/*.txt")
-	Next
-
+	TLocalization.LoadLanguages("res/lang")
 	'select user language (defaulting to "de")
 	TLocalization.SetCurrentLanguage(App.config.GetString("language", "de"))
 

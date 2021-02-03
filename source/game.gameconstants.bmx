@@ -1856,6 +1856,10 @@ Type TVTPersonJob {_exposeToLua}
 
 	Global CAST_IDs:Int[] = [1,2,4,8,16,32,64,128]
 	Global CAST_INDICES:Int[] = [1,2,3,4,5,6,7,8]
+	Global CAST_MASK:Int = 1+2+4+8+16+32+64+128
+	Global VISIBLECAST_IDs:Int[] = [2,8,16,32,64,128]
+	Global VISIBLECAST_INDICES:Int[] = [2,4,5,6,7,8]
+	Global VISIBLECAST_MASK:Int = 2+8+16+32+64+128
 	Const castCount:Int = 8			'-> 8 production / cast jobs
 	Const count:Int = 13			'-> 13 total jobs
 

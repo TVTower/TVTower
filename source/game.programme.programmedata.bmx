@@ -1829,7 +1829,7 @@ Type TProgrammeData Extends TBroadcastMaterialSource {_exposeToLua}
 
 
 	Method isCustomProduction:Int() {_exposeToLua}
-		Return producedByPlayerID <> 0
+		Return producedByPlayerID > 0
 	End Method
 
 

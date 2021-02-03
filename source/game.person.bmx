@@ -759,8 +759,17 @@ Type TPersonPersonalityData Extends TPersonPersonalityBaseData
 		Return GetWorldTime().GetTimeGoneFromString(dayOfDeath)
 	End Method
 
+	
+	Method IsDead:Int() override
+		Local dod:Long = GetDOD()
+		'no dob was given
+		If dod = 0 Then Return Super.IsDead()
 
-	Method IsBorn:Int()
+		Return GetWorldTime().GetTimeGone() < dod
+	End MEthod
+
+
+	Method IsBorn:Int() override
 		Local dob:Long = GetDOB()
 		'no dob was given
 		If dob = 0 Then Return Super.IsBorn()

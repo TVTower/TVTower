@@ -9,7 +9,7 @@ Import "game.programme.programmelicence.bmx"
 Import "game.stationmap.bmx"
 
 'register self to producer collection
-GetProgrammeProducerCollection().Add( TProgrammeProducerSport.GetInstance() )
+'GetProgrammeProducerCollection().Add( TProgrammeProducerSport.GetInstance() )
 
 
 
@@ -18,7 +18,20 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 	Global _eventsRegistered:Int= False
 	Global _eventListeners:TEventListenerBase[]
 	Global _instance:TProgrammeProducerSport
+	
+	
+	Method New()
+		'our sport producers produce locally :)
+		countryCode = GetStationMapCollection().config.GetString("nameShort", "Unk").ToUpper()
+		'this would be useful if persons need to be generated with the
+		'person generator, or a host is required
+		'countryCode = GetStationMapCollection().GetMapISO3166Code().ToUpper()
+	End Method
 
+
+	Method Remove() override
+		'remove instance specific event listeners...
+	End Method
 
 	'override
 	Method GenerateGUID:String()
@@ -95,6 +108,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		programmeLicence.owner = TOwnedGameObject.OWNER_NOBODY
 		programmeLicence.extra = New TData
 		programmeLicence.extra.AddString("producerName", _producerName)
+		programmeLicence.extra.AddString("producerID", id)
 
 		programmeLicence.licenceType = TVTProgrammeLicenceType.COLLECTION
 		programmeData.dataType = TVTProgrammeDataType.COLLECTION
@@ -135,7 +149,7 @@ Type TProgrammeProducerSport Extends TProgrammeProducerBase
 		programmeData.descriptionProcessed = Null
 		programmeData.productType = TVTProgrammeProductType.EVENT 'or MISC?
 
-		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK")
+		programmeData.country = GetStationMapCollection().config.GetString("nameShort", "UNK").ToUpper()
 		programmeData.distributionChannel = TVTProgrammeDistributionChannel.TV
 		programmeData.blocks = 1 'overridden in the individual matches
 

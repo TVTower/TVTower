@@ -39,7 +39,7 @@ Type TScriptCollection Extends TGameObjectCollection
 		Super.Initialize()
 		
 		_InvalidateCaches()
-		if protectedTitles then protectedTitles.Clear()
+		If protectedTitles Then protectedTitles.Clear()
 		
 		Return Self
 	End Method
@@ -179,12 +179,12 @@ Type TScriptCollection Extends TGameObjectCollection
 			Local lsTitle:TLocalizedString = TLocalizedString(title)
 			For Local langID:Int = EachIn lsTitle.GetLanguageIDs()
 				Local parts:String[] = String(protectedTitles.ValueForKey(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower())).split("::")
-				if parts.length = 2 then Return Int(parts[1])
+				If parts.length = 2 Then Return Int(parts[1])
 				Return Int(parts[0])
 			Next
 		ElseIf String(title) <> ""
 			Local parts:String[] = String((protectedTitles.ValueForKey("custom::" + String(title).ToLower()))).split("::")
-			if parts.length = 2 then Return Int(parts[1])
+			If parts.length = 2 Then Return Int(parts[1])
 			Return Int(parts[0])
 		EndIf
 	End Method
@@ -194,7 +194,9 @@ Type TScriptCollection Extends TGameObjectCollection
 		If TLocalizedString(title)
 			Local lsTitle:TLocalizedString = TLocalizedString(title)
 			For Local langID:Int = EachIn lsTitle.GetLanguageIDs()
-				If protectedTitles.Contains(TLocalization.GetLanguageCode(langID) + "::" + lsTitle.Get(langID).ToLower())
+				Local key:String = TLocalization.GetLanguageCode(langID) 
+				key :+ "::" + lsTitle.Get(langID).ToLower()
+				If protectedTitles.Contains(key)
 					Return True
 				EndIf
 			Next
@@ -312,8 +314,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	
 	'custom titles/descriptions allow to adjust a series title
 	'or description (what a production concept cannot do)
-	Field customTitle:string = ""
-	Field customDescription:string = ""
+	Field customTitle:String = ""
+	Field customDescription:String = ""
 	
 	Field newsTopicGUID:String = ""
 	Field newsGenre:Int
@@ -477,25 +479,25 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 
 	'override
-	Method GetTitle:string()
+	Method GetTitle:String()
 		If customTitle Then Return customTitle
-		Return super.GetTitle()
+		Return Super.GetTitle()
 	End Method
 
 
 	'override
-	Method GetDescription:string()
+	Method GetDescription:String()
 		If customDescription Then Return customDescription
-		Return super.GetDescription()
+		Return Super.GetDescription()
 	End Method
 
 
-	Method SetCustomTitle(value:string)
+	Method SetCustomTitle(value:String)
 		customTitle = value
 	End Method
 
 
-	Method SetCustomDescription(value:string)
+	Method SetCustomDescription(value:String)
 		customDescription = value
 	End Method
 	
@@ -927,7 +929,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 
 		'refill production limits - or disable tradeability
-		If GetProductionLimit() > 0 or IsExceedingProductionLimit()
+		If GetProductionLimit() > 0 Or IsExceedingProductionLimit()
 			If HasScriptFlag(TVTScriptFlag.POOL_REFILLS_PRODUCTIONLIMITS)
 				SetProductionLimit( GetProductionLimitMax() )
 			Else
@@ -961,7 +963,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 
 	Method RandomizeBaseAttributes(template:TScriptTemplate = Null)
-		If not template
+		If Not template
 			If basedOnScriptTemplateID Then template = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
 		EndIf
 
@@ -975,7 +977,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 
 	Method RandomizeJobs(template:TScriptTemplate = Null)
-		If not template
+		If Not template
 			If basedOnScriptTemplateID Then template = GetScriptTemplateCollection().GetByID( basedOnScriptTemplateID )
 		EndIf
 
@@ -989,9 +991,9 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'=== PREPARE VARIABLES ===
 		Local sheetWidth:Int = 310
 		Local sheetHeight:Int = 0 'calculated later
-		if align = -1 then x = x
-		if align = 0 then x = x - 0.5 * sheetWidth
-		if align = 1 then x = x - sheetWidth
+		If align = -1 Then x = x
+		If align = 0 Then x = x - 0.5 * sheetWidth
+		If align = 1 Then x = x - sheetWidth
 
 		Local skin:TDatasheetSkin = GetDatasheetSkin("script")
 		Local contentW:Int = skin.GetContentW(sheetWidth)
@@ -1098,12 +1100,12 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		Local genreString:String = GetMainGenreString()
 		'avoid "Action-Undefined" and "Show-Show"
 		If scriptProductType <> TVTProgrammeProductType.UNDEFINED And scriptProductType <> TVTProgrammeProductType.SERIES
-			local sameType:int = (TVTProgrammeProductType.GetAsString(scriptProductType) = TVTProgrammeGenre.GetAsString(mainGenre))
-			if sameType and scriptProductType = TVTProgrammeProductType.SHOW and TVTProgrammeGenre.GetGroupKey(mainGenre) = TVTProgrammeGenre.SHOW then sameType = False
-			if sameType and scriptProductType = TVTProgrammeProductType.FEATURE and TVTProgrammeGenre.GetGroupKey(mainGenre) = TVTProgrammeGenre.FEATURE then sameType = False
+			Local sameType:Int = (TVTProgrammeProductType.GetAsString(scriptProductType) = TVTProgrammeGenre.GetAsString(mainGenre))
+			If sameType And scriptProductType = TVTProgrammeProductType.SHOW And TVTProgrammeGenre.GetGroupKey(mainGenre) = TVTProgrammeGenre.SHOW Then sameType = False
+			If sameType And scriptProductType = TVTProgrammeProductType.FEATURE And TVTProgrammeGenre.GetGroupKey(mainGenre) = TVTProgrammeGenre.FEATURE Then sameType = False
 
 '				If Not(TVTProgrammeProductType.GetAsString(scriptProductType) = "feature" And TVTProgrammeGenre.GetAsString(mainGenre).Find("feature")>=0)
-			If not sameType
+			If Not sameType
 				genreString :+ " / " +GetProductionTypeString()
 			EndIf
 		EndIf
@@ -1256,7 +1258,7 @@ endrem
 		EndIf
 
 		If showMsgBroadcastLimit
-			if GetProductionBroadcastLimit() = 1
+			If GetProductionBroadcastLimit() = 1
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("ONLY_1_BROADCAST_POSSIBLE"), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
 			Else
 				skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, getLocale("ONLY_X_BROADCASTS_POSSIBLE").Replace("%X%", GetProductionBroadcastLimit()), "spotsPlanned", "warning", skin.fontNormal, ALIGN_CENTER_CENTER)
@@ -1279,7 +1281,7 @@ endrem
 		contentY :+ boxAreaPaddingY
 		'blocks
 		skin.RenderBox(contentX + 5, contentY, 50, -1, GetBlocks(), "duration", "neutral", skin.fontBold)
-		if IsLive()
+		If IsLive()
 			'(pre-)production time
 			skin.RenderBox(contentX + 5 + 60, contentY, 65, -1, "~~ " + (productionTime/TWorldTime.SECONDLENGTH) + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
 		EndIf

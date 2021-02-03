@@ -337,6 +337,15 @@ Type TLocalization
 	Function LoadLanguageURI(uri:String, languageCode:string="")
 		AddLanguage(TLocalizationLanguage.Create(uri, languageCode))
 	End Function
+	
+	
+	Function LoadLanguages(baseDirectory:String)
+		Local dirTree:TDirectoryTree = New TDirectoryTree.SimpleInit()
+		dirTree.ScanDir(baseDirectory, True)
+		For Local directory:String = EachIn dirTree.GetDirectories()
+			TLocalization.LoadLanguageFiles(directory+"/*.txt")
+		Next
+	End Function
 
 
 	'Loads all resource files according to the filter (for example: myfile*.txt will load myfile_en.txt, myfile_de.txt etc.)

@@ -9,6 +9,9 @@ Import "game.screen.base.bmx"
 Import "game.database.bmx"
 Import "game.misc.archivedmessage.bmx"
 Import "game.roomhandler.elevatorplan.bmx"
+Import "game.programmeproducer.bmx"
+Import "game.programmeproducer.sport.bmx"
+Import "game.programmeproducer.specialprogrammes.bmx"
 Import "game.ai.bmx"
 Import "basefunctions_network.bmx"
 Import "game.network.networkhelper.bmx"
@@ -1249,6 +1252,12 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 		'=== CREATE TIMED NEWSEVENTS ===
 		'Creates all newsevents with fixed times in the future
 		GetNewsAgency().CreateTimedNewsEvents()
+		
+		
+		'=== CREATE PROGRAMME PRODUCERS ===
+		'Creates various programme producers (sport live programme,
+		'custom produced movies and series ...)
+		GenerateStartProgrammeProducers()
 
 
 		'=== SETUP INTERFACE ===
@@ -1401,6 +1410,24 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			StartTipWindow.Open()
 		EndIf
 	End Function
+	
+	
+	Method GenerateStartProgrammeProducers:Int()
+		'if there is only ONE producer for special stuff - add this way
+		GetProgrammeProducerCollection().Add( TProgrammeProducerSport.GetInstance() )
+		TLogger.Log("PrepareNewGame()", "Generated sport programme producer.", LOG_DEBUG)
+		'GetProgrammeProducerCollection().Add( TProgrammeProducerMorningShows.GetInstance() )
+
+		'movie/series producers exist with different characteristics/budgets
+		For local i:int = 0 to 3
+			Local p:TProgrammeProducer = new TProgrammeProducer
+			p.countryCode = GetProgrammeProducerCollection().GenerateRandomCountryCode()
+			p.name = GetProgrammeProducerCollection().GenerateRandomName()
+			p.RandomizeCharacteristics()
+			GetProgrammeProducerCollection().Add( p )
+			TLogger.Log("PrepareNewGame()", "Generated programme producer ~q"+p.name+"~q from ~q"+p.countryCode+"~q with budget of " + p.budget + " and an experience of " + p.experience +"/100. First production at " + GetWorldTime().GetFormattedGameDate(p.nextProductionTime)+".", LOG_DEBUG)
+		Next
+	End Method
 
 
 	Method GenerateStartAdContracts:Int()

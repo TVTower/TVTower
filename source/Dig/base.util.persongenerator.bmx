@@ -95,7 +95,7 @@ Type TPersonGenerator
 	Method GetRandomCountryCode:string()
 		local countries:string[] = GetCountryCodes()
 		if countries.length = 0 then return ""
-		return countries[ RandRange(0, countries.length) ]
+		return countries[ RandRange(0, countries.length-1) ]
 	End Method
 
 
@@ -152,6 +152,7 @@ Type TPersonGenerator
 
 	Method AddProvider:TPersonGenerator(country:TPersonGeneratorCountry)
 		if country then providers.Insert(country.countryCode.ToLower(), country)
+		if country and country.countryCode2 then providers.Insert(country.countryCode2.ToLower(), country)
 		_countryCodes = Null
 		return self
 	End Method
@@ -198,6 +199,7 @@ End Type
 'template for all countries
 Type TPersonGeneratorCountry
 	Field countryCode:string = "default"
+	Field countryCode2:string = ""
 	Field lastNames:string[] = ["Mustermann"]
 	Field firstNamesFemale:string[] = ["Erika"]
 	Field firstNamesMale:string[] = ["Max"]
@@ -360,6 +362,7 @@ End Type
 Type TPersonGeneratorCountry_Germany extends TPersonGeneratorCountry
 	Method New()
 		self.countryCode = "de"
+		self.countryCode2 = "d"
 		
 		self.firstNamesMale = [..
 			"Abbas", "Abdul", "Abdullah", "Abraham", "Abram", "Achim", "Ada", "Adalbert", "Adam", "Adelbert", "Adem", "Adolf", "Adrian", "Ahmad", "Ahmed", "Ahmet", "Alan", "Alban", "Albert", "Alberto", "Albin", "Albrecht", "Aldo", "Aleksandar", "Aleksander", "Aleksandr", "Aleksej", "Alessandro", "Alex", "Alexander", "Alexandre", "Alexandros", "Alexei", "Alexej", "Alf", "Alfons", "Alfonso", "Alfred", "Alfredo", "Ali", "Alois", "Aloys", "Alwin", "Amir", "Anastasios", "Anatol", "Anatoli", "Anatolij", "Andre", "Andreas", "Andree", "Andrei", "Andrej", "Andres", "Andrew", "Andrey", "Andrzej", "André", "Andy", "Angelo", "Anselm", "Ansgar", "Ante", "Anthony", "Anto", "Anton", "Antonino", "Antonio", "Antonios", "Antonius", "Apostolos", "Aribert", "Arif", "Armin", "Arnd", "Arndt", "Arne", "Arnfried", "Arnim", "Arno", "Arnold", "Arnulf", "Arthur", "Artur", "Athanasios", "Attila", "August", "Augustin", "Axel", "Aziz",..

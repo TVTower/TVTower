@@ -424,7 +424,7 @@ Type TDatabaseLoader
 			If p
 				person.firstName = p.firstName
 				person.lastName = p.lastName
-				person.countryCode = p.countryCode
+				person.countryCode = p.countryCode.ToUpper()
 			Else
 				person.firstName = GUID
 			EndIf
@@ -440,7 +440,7 @@ Type TDatabaseLoader
 		person.SetFlag(TVTPersonFlag.BOOKABLE, data.GetBool("bookable", person.IsBookable()) )
 		person.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, data.GetBool("levelup", person.CanLevelUp()) )
 		person.SetJob(data.GetInt("job"))
-		person.countryCode = data.GetString("country", person.countryCode)
+		person.countryCode = data.GetString("country", person.countryCode).ToUpper()
 		person.gender = data.GetInt("gender", person.gender)
 		person.faceCode = data.GetString("face_code", person.faceCode)
 
@@ -483,7 +483,7 @@ Type TDatabaseLoader
 				"job", "face_code" ..
 			])
 			person.gender = data.GetInt("gender", person.gender)
-			person.countryCode = data.GetString("country", person.countryCode)
+			person.countryCode = data.GetString("country", person.countryCode).ToUpper()
 			pd.SetDayOfBirth( data.GetString("birthday", pd.dayOfBirth) )
 			pd.SetDayOfDeath( data.GetString("deathday", pd.dayOfDeath) )
 			person.SetJob( data.GetInt("job") )
@@ -1292,7 +1292,7 @@ Type TDatabaseLoader
 						GetPersonGenerator().ProtectDataset(p)
 						member.firstName = p.firstName
 						member.lastName = p.lastName
-						member.countryCode = p.countryCode
+						member.countryCode = p.countryCode.ToUpper()
 					EndIf
 				EndIf
 
@@ -1799,7 +1799,7 @@ Type TDatabaseLoader
 			TXmlHelper.FindValue(node, "first_name", role.firstname), ..
 			TXmlHelper.FindValue(node, "last_name", role.lastname), ..
 			TXmlHelper.FindValue(node, "title", role.title), ..
-			TXmlHelper.FindValue(node, "country", role.countryCode), ..
+			TXmlHelper.FindValue(node, "country", role.countryCode).ToUpper(), ..
 			TXmlHelper.FindValueInt(node, "gender", role.gender), ..
 			TXmlHelper.FindValueInt(node, "fictional", role.fictional) ..
 		)

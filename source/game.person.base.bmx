@@ -77,7 +77,7 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 
 		person.firstName = pg.firstName
 		person.lastName = pg.lastName
-		person.countryCode = pg.countryCode
+		person.countryCode = pg.countryCode.ToUpper()
 		person.SetFlag(TVTPersonFlag.FICTIONAL, True)
 		person.SetFlag(TVTPersonFlag.BOOKABLE, True)
 		person.SetFlag(TVTPersonFlag.CAN_LEVEL_UP, True)
@@ -172,27 +172,30 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	
 
 	'returns False for persons _NOT_ having the desired properties.
-	Function _PersonMeetsRequirements:Int(p:TPersonBase, insignificant:Int = -1, celebrity:Int = -1, castable:Int = -1, gender:Int = -1)
+	Function _PersonMeetsRequirements:Int(p:TPersonBase, insignificant:Int = -1, celebrity:Int = -1, castable:Int = -1, gender:Int = -1, alive:Int = -1, countryCode:String = "")
 		If insignificant <> -1 And insignificant <> p.IsInsignificant() Then Return False
 		If celebrity <> -1 And celebrity <> p.IsCelebrity() Then Return False
 		If castable <> -1 And castable <> p.IsCastable() Then Return False
 
 		If gender <> -1 And p.gender <> gender Then Return False
+		If alive <> -1 and p.IsAlive() <> alive Then Return False
+
+		If countryCode <> "" and p.countryCode <> countryCode Then Return False
 
 		Return True
 	End Function
 
 	
-	Function _FilterList:TPersonBase[](list:TObjectList, filterIndex:Int= -1, onlyFictional:Int = False, onlyBookable:Int = False, productionJob:Int = 0, gender:Int = -1, forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+	Function _FilterList:TPersonBase[](list:TObjectList, filterIndex:Int= -1, onlyFictional:Int = False, onlyBookable:Int = False, productionJob:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
 		If Not list Then Return Null
 
 		Local result:TPersonBase[] = New TPersonBase[10]
 		Local found:Int = 0
 		Local insignificant:Int=-1, celebrity:Int=-1, castable:Int=-1
 		_FillPersonMeetsRequirementsVariables(filterIndex, insignificant, celebrity, castable)
-
+		
 		For Local p:TPersonBase = EachIn list
-			If Not _PersonMeetsRequirements(p, insignificant, celebrity, castable, gender) Then Continue
+			If Not _PersonMeetsRequirements(p, insignificant, celebrity, castable, gender, alive, countryCode) Then Continue
 			If onlyFictional And Not p.IsFictional() Then Continue
 			If onlyBookable And Not p.IsBookable() Then Continue
 			If productionJob > 0 And Not p.HasJob(productionJob) Then Continue
@@ -209,7 +212,7 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	End Function
 	
 	
-	Function _FilterMap:TPersonBase[](map:TIntMap, filterIndex:Int = -1, onlyFictional:Int = False, onlyBookable:Int = False, productionJob:Int = 0, gender:Int = -1, forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+	Function _FilterMap:TPersonBase[](map:TIntMap, filterIndex:Int = -1, onlyFictional:Int = False, onlyBookable:Int = False, productionJob:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
 		If Not map Then Return Null
 
 		Local result:TPersonBase[] = New TPersonBase[10]
@@ -218,7 +221,7 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 		_FillPersonMeetsRequirementsVariables(filterIndex, insignificant, celebrity, castable)
 
 		For Local p:TPersonBase = EachIn map.Values()
-			If Not _PersonMeetsRequirements(p, insignificant, celebrity, castable, gender) Then Continue
+			If Not _PersonMeetsRequirements(p, insignificant, celebrity, castable, gender, alive, countryCode) Then Continue
 			If onlyFictional And Not p.IsFictional() Then Continue
 			If onlyBookable And Not p.IsBookable() Then Continue
 			If productionJob > 0 And Not p.HasJob(productionJob) Then Continue
@@ -235,7 +238,7 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	End Function
 
 
-	Function _FilterArray:TPersonBase[](array:TPersonBase[], filterIndex:Int = -1, onlyFictional:Int = False, onlyBookable:Int = False, productionJob:Int = 0, gender:Int = -1, forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+	Function _FilterArray:TPersonBase[](array:TPersonBase[], filterIndex:Int = -1, onlyFictional:Int = False, onlyBookable:Int = False, productionJob:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
 		If Not array Or array.length = 0 Then Return Null
 
 		Local result:TPersonBase[] = New TPersonBase[Min(10, array.length)]
@@ -244,7 +247,7 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 		_FillPersonMeetsRequirementsVariables(filterIndex, insignificant, celebrity, castable)
 
 		For Local p:TPersonBase = EachIn array
-			If Not _PersonMeetsRequirements(p, insignificant, celebrity, castable, gender) Then Continue
+			If Not _PersonMeetsRequirements(p, insignificant, celebrity, castable, gender, alive, countryCode) Then Continue
 			If onlyFictional And Not p.IsFictional() Then Continue
 			If onlyBookable And Not p.IsBookable() Then Continue
 			If productionJob > 0 And Not p.HasJob(productionJob) Then Continue
@@ -326,22 +329,22 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	'=== Random retrievers ===
 	'retrieve a person by filterIndex, list or map + additional filters
 	
-	Method GetRandomByFilter:TPersonBase(filterIndex:Int, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+	Method GetRandomByFilter:TPersonBase(filterIndex:Int, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
 		Local list:TObjectList = GetFilteredList(filterIndex)
 		If Not list Then Return Null
 		
-		Return GetRandomFromList(list, filterIndex, onlyFictional, onlyBookable, job, gender, forbiddenGUIDs, forbiddenIDs)
+		Return GetRandomFromList(list, filterIndex, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 	End Method 
 
 	
-	Method GetRandomFromList:TPersonBase(list:TObjectList, filterIndex:Int = -1, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+	Method GetRandomFromList:TPersonBase(list:TObjectList, filterIndex:Int = -1, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
 		If Not list Then Return Null
 		
 		'unfiltered - use raw list to save additional computation/memory ?
-		If filterIndex = -1 And Not onlyFictional And Not onlyBookable And job = 0 And gender = -1 And (Not forbiddenGUIDs Or forbiddenGUIDs.length = 0) And (Not forbiddenIDs Or forbiddenIDs.length = 0)
+		If filterIndex = -1 And Not onlyFictional And Not onlyBookable And job = 0 And gender = -1 And alive = -1 And countryCode = "" And (Not forbiddenGUIDs Or forbiddenGUIDs.length = 0) And (Not forbiddenIDs Or forbiddenIDs.length = 0)
 			Return TPersonBase(list.ValueAtIndex( RandRange(0, list.Count()-1) ))
 		Else
-			Local effectiveArray:TPersonBase[] = _FilterList(list, filterIndex, onlyFictional, onlyBookable, job, gender, forbiddenGUIDs, forbiddenIDs)
+			Local effectiveArray:TPersonBase[] = _FilterList(list, filterIndex, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 			If effectiveArray.length = 0 Then Return Null
 
 			'RandRange - so it is the same over network
@@ -350,14 +353,14 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	End Method 
 	
 
-	Method GetRandomFromArray:TPersonBase(array:TPersonBase[], filterIndex:Int = -1, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+	Method GetRandomFromArray:TPersonBase(array:TPersonBase[], filterIndex:Int = -1, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
 		If Not array Or array.length = 0 Then Return Null
 
 		'unfiltered - use raw list to save additional computation/memory ?
-		If filterIndex =-1 And Not onlyFictional And Not onlyBookable And job = 0 And gender = -1 And (Not forbiddenGUIDs Or forbiddenGUIDs.length = 0) And (Not forbiddenIDs Or forbiddenIDs.length = 0)
+		If filterIndex =-1 And Not onlyFictional And Not onlyBookable And job = 0 And gender = -1 And alive = -1 And countryCode = "" And (Not forbiddenGUIDs Or forbiddenGUIDs.length = 0) And (Not forbiddenIDs Or forbiddenIDs.length = 0)
 			Return array[ RandRange(0, array.length-1) ]
 		Else
-			Local effectiveArray:TPersonBase[] = _FilterArray(array, filterIndex, onlyFictional, onlyBookable, job, gender, forbiddenGUIDs, forbiddenIDs)
+			Local effectiveArray:TPersonBase[] = _FilterArray(array, filterIndex, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 			If effectiveArray.length = 0 Then Return Null
 
 			'RandRange - so it is the same over network
@@ -366,45 +369,45 @@ Type TPersonBaseCollection Extends TGameObjectCollection
 	End Method
 	
 	
-	Method GetRandomFromArrayOrFilter:TPersonBase(array:TPersonBase[] = Null, filterIndex:Int=-1, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+	Method GetRandomFromArrayOrFilter:TPersonBase(array:TPersonBase[] = Null, filterIndex:Int=-1, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
 		If Not array
-			Return GetRandomByFilter(filterIndex, onlyFictional, onlyBookable, job, gender, forbiddenGUIDs, forbiddenIDs)
+			Return GetRandomByFilter(filterIndex, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 		ElseIf array.length = 0
 			Return Null
 		Else
-			Return GetRandomFromArray(array, filterIndex, onlyFictional, onlyBookable, job, gender, forbiddenGUIDs, forbiddenIDs)
+			Return GetRandomFromArray(array, filterIndex, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 		EndIf
 	End Method
 	
 
 	'useful to fetch a random "amateur" (aka "layman")
-	Method GetRandomInsignificant:TPersonBase(array:TPersonBase[] = Null, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
-		Return GetRandomFromArrayOrFilter(array, FILTER_INSIGNIFICANT, onlyFictional, onlyBookable, job, gender, forbiddenGUIDs, forbiddenIDs)
+	Method GetRandomInsignificant:TPersonBase(array:TPersonBase[] = Null, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Return GetRandomFromArrayOrFilter(array, FILTER_INSIGNIFICANT, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 	End Method
 
 
-	Method GetRandomCelebrity:TPersonBase(array:TPersonBase[] = Null, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
-		Return GetRandomFromArrayOrFilter(array, FILTER_CELEBRITY, onlyFictional, onlyBookable, job, gender, forbiddenGUIDs, forbiddenIDs)
+	Method GetRandomCelebrity:TPersonBase(array:TPersonBase[] = Null, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Return GetRandomFromArrayOrFilter(array, FILTER_CELEBRITY, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 	End Method
 
 	
-	Method GetRandomCastable:TPersonBase(array:TPersonBase[] = Null, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
-		Return GetRandomFromArrayOrFilter(array, FILTER_CASTABLE, onlyFictional, onlyBookable, job, gender, forbiddenGUIDs, forbiddenIDs)
+	Method GetRandomCastable:TPersonBase(array:TPersonBase[] = Null, onlyFictional:Int = False, onlyBookable:Int = False, job:Int = 0, gender:Int = -1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Return GetRandomFromArrayOrFilter(array, FILTER_CASTABLE, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 	End Method
 
 
-	Method GetFilteredInsignificantsArray:TPersonBase[](onlyFictional:Int = False, onlyBookable:Int = False, job:Int=0, gender:Int=-1, forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
-		Return _FilterList( GetFilteredList(FILTER_INSIGNIFICANT), -1, onlyFictional, onlyBookable, job, gender, forbiddenGUIDs, forbiddenIDs)
+	Method GetFilteredInsignificantsArray:TPersonBase[](onlyFictional:Int = False, onlyBookable:Int = False, job:Int=0, gender:Int=-1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Return _FilterList( GetFilteredList(FILTER_INSIGNIFICANT), -1, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 	End Method
 
 
-	Method GetFilteredCelebritiesArray:TPersonBase[](onlyFictional:Int = False, onlyBookable:Int = False, job:Int=0, gender:Int=-1, forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
-		Return _FilterList( GetFilteredList(FILTER_CELEBRITY), -1, onlyFictional, onlyBookable, job, gender, forbiddenGUIDs, forbiddenIDs)
+	Method GetFilteredCelebritiesArray:TPersonBase[](onlyFictional:Int = False, onlyBookable:Int = False, job:Int=0, gender:Int=-1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Return _FilterList( GetFilteredList(FILTER_CELEBRITY), -1, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 	End Method
 
 
-	Method GetFilteredCastablesArray:TPersonBase[](onlyFictional:Int = False, onlyBookable:Int = False, job:Int=0, gender:Int=-1, forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
-		Return _FilterList( GetFilteredList(FILTER_CASTABLE), -1, onlyFictional, onlyBookable, job, gender, forbiddenGUIDs, forbiddenIDs)
+	Method GetFilteredCastablesArray:TPersonBase[](onlyFictional:Int = False, onlyBookable:Int = False, job:Int=0, gender:Int=-1, alive:Int = -1, countryCode:String="", forbiddenGUIDs:String[] = Null, forbiddenIDs:Int[] = Null)
+		Return _FilterList( GetFilteredList(FILTER_CASTABLE), -1, onlyFictional, onlyBookable, job, gender, alive, countryCode.ToUpper(), forbiddenGUIDs, forbiddenIDs)
 	End Method
 
 
@@ -567,7 +570,12 @@ Type TPersonBase Extends TGameObject
 
 
 	Method IsAlive:Int()
-		Return True
+		Return IsBorn() and not IsDead()
+	End Method
+
+
+	Method IsDead:Int()
+		Return False
 	End Method
 
 
@@ -1550,7 +1558,7 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 
 
 	Method IsAlive:Int()
-		Return IsBorn()
+		Return IsBorn() and not IsDead()
 	End Method
 
 
@@ -1565,6 +1573,11 @@ Type TPersonPersonalityBaseData Extends TPersonBaseData
 
 
 	Method IsBorn:Int()
+		Return True
+	End Method
+
+
+	Method IsDead:Int()
 		Return True
 	End Method
 

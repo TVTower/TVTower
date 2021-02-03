@@ -30,6 +30,19 @@ Type TProductionCompanyBaseCollection Extends TGameObjectCollection
 	Method GetRandom:TProductionCompanyBase()
 		Return TProductionCompanyBase( Super.GetRandom() )
 	End Method
+	
+	
+	Method GetAmateurs:TProductionCompanyBase()
+		'no need to cache (else we would also need to take care
+		'of companies being replaced by bankruptcy or so)
+		'also it is just a bunch of companies - so iteration over them
+		'is done rather quick
+		For Local p:TProductionCompanyBase = EachIn entries.Values()
+			if p.GetMaxLevel() = 1 Then Return p
+		Next
+		Throw "TProductionCompanyBaseCollection.GetAmateurs(): no company with max level 1 found."
+	End Method
+		
 End Type
 
 

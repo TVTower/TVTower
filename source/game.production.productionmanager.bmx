@@ -171,7 +171,7 @@ Type TProductionManager
 			production.Start()
 			If production.productionConcept.script.IsLive()
 				production.productionConcept.SetLiveTime( production.productionConcept.GetPlannedLiveTime() )
-				print "Starte Preproduktion: Livezeit = " + production.productionConcept.GetLiveTimeText()
+				'print "Starte Preproduktion: Livezeit = " + production.productionConcept.GetLiveTimeText()
 			EndIf
 
 			'start the FIRST production only!
