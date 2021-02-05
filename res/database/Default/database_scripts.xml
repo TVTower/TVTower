@@ -277,6 +277,137 @@
 			<speed min="25" max="65" slope="50" />
 		</scripttemplate>
 
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-horrormovie1">
+			<title>
+				<de>%TITLE%</de>
+			</title>
+			<description>
+				<de>%DESCRIPTION%</de>
+			</description>
+			<variables>
+				<title>
+					<de>%BUILDING% der %COUNT%%MONSTER%|%COUNT% %MONSTER% %TERROR%|Blut-%BUILDING% %TERROR%</de>
+					<en>%BUILDING% of the %COUNT%%MONSTER%|%COUNT% %MONSTER% %TERROR%|The Blood %BUILDING%|The Blood %BUILDING% %TERROR%</en>
+				</title>
+				<building>
+					<de>Schloss|Landsitz|Hotel|Gasthaus|Gasthof|Forsthaus|Dorf|Leuchtturm</de>
+					<en>Castle|Country House|Hotel|Inn|Forest House|Village|Lighthouse</en>
+				</building>
+				<count>
+					<de>|||3 |4 |5 |8 |10 |1000 </de>
+				</count>
+				<terror>
+					<de>des Horrors|des Terrors|der Angst|der Panik|des Übels</de>
+					<en>of Horror|of Terror|of Fear|of Panic|of Disgust</en>
+				</terror>
+				<monster>
+					<de>Vampire|Zombies|Untoten|Hexen|Werwölfe|Kobolde|Spinnen|Schlangen|Mumien</de>
+					<en>Vampires|Zombies|Undead|Witches|Werewolves|Kobolds|Spiders|Snakes|Mummies</en>
+				</monster>
+				<description>
+					<de>Ein %BUILDING%%ENVIRONMENT% %WHAT% %MONSTER% %MONSTERWHAT%</de>
+					<en>A %BUILDING%%ENVIRONMENT% %WHAT% %MONSTER% %MONSTERWHAT%</en>
+				</description>
+				<environment>
+					<de> und seine Umgebung|, erbaut auf einem alten Friedhof|, verlassen und verfallen</de>
+					<en> and its surroundings|, built on an old cemetery|, abandoned and dilapidated</en>
+				</environment>
+				<what>
+					<de>sind Schauplatz blutiger Vermisstenfälle.|werden von Kreaturen heimgesucht.</de>
+					<en>are the scene of bloody missing persons cases.|are haunted by creatures.</en>
+				</what>
+				<monsterwhat>
+					<de>sind das Übel.|greifen jeden an.|beherrschen die Gegend.</de>
+					<en>are the evil.|attack everyone.|dominate the area.</en>
+				</monsterwhat>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" />
+				<job index="2" function="6" required="0" />
+				<job index="3" function="6" required="0" />
+			</jobs>
+
+			<!-- optional: xrated | cult -->
+			<data optional_flags="72" />
+			<genres maingenre="12" subgenres="14"/>
+			<blocks min="2" max="3" slope="20" />
+			<price min="9500" max="30000" slope="50" />
+			<potential min="20" max="80" slope="45" />
+			<outcome min="30" max="75" slope="40" />
+			<review min="35" max="60" slope="40" />
+			<speed min="45" max="95" slope="50" />
+		</scripttemplate>
+
+		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-dramamovie1">
+			<title>
+				<de>%TITLE%</de>
+				<en>%TITLE%</en>
+			</title>
+			<description>
+				<de>%NAME% %DESCRIPTIONACTION%. Seine %ENVIRONMENT% %EVIRONMENTACTION%.%FEELING%</de>
+				<en>%NAME% %DESCRIPTIONACTION%. His %ENVIRONMENT% %ENVIRONMENTACTION%.%FEELING%</en>
+			</description>
+
+			<variables>
+				<title>
+					<!-- twice ... to select it more often -->
+					<de>%NAME% %TITLEACTION%|%NAME% %TITLEACTION%|%NAME%|%QUESTION%|%DISEASE% und ich|Ich bin %NAME%</de>
+					<en>%NAME% %TITLEACTION%|%NAME% %TITLEACTION%|%NAME%|%QUESTION%|%DISEASE% and me|I am %NAME%|I'm %NAME%</en>
+				</title>
+				<name>
+					<de>%PERSONGENERATOR_FIRSTNAME(de,1)%|%PERSONGENERATOR_FIRSTNAME(aut,1)%</de>
+					<en>%PERSONGENERATOR_FIRSTNAME(us,1)%|%PERSONGENERATOR_FIRSTNAME(uk,1)%</en>
+				</name>
+				<titleaction>
+					<de>und die %DISEASE%|vs. %DISEASE%|kontra %DISEASE%|besingt %DISEASE%</de>
+					<en>and the %DISEASE%|vs. %DISEASE%|contra %DISEASE%|sings about %DISEASE%</en>
+				</titleaction>
+				<descriptionaction>
+					<de>leidet seit dem Kindesalter an %DISEASE%|bestreitet sein Leben mit %DISEASE%|leidet unter %DISEASE%|kann nur singend seine %DISEASE% bekämpfen</de>
+					<en>suffers from %DISEASE% since childhood|makes his living with %DISEASE%|suffers from %DISEASE%|can only fight his %DISEASE% singing</en>
+				</descriptionaction>
+				<disease>
+					<de>Halluzinationen|Klaustrophobie|Agoraphobie|Coulrophobie|Akrophobie|Aviophobie|Arachnophobie|Dentophobie|Emetophobie</de>
+					<en>Hallucinations|Claustrophobia|Agoraphobia|Coulrophobia|Acrophobia|Aviophobia|Arachnophobia|Dentophobia|Emetophobia</en>
+				</disease>
+				<question>
+					<de>Ist ja nur %DISEASE%|Na klar, %DISEASE%|%DISEASE% - na und?</de>
+					<en>It's just %DISEASE%|Yeah, %DISEASE%|%DISEASE% - so what?</en>
+				</question>
+				<environment>
+					<de>Familie|Freunde|Nachbarn</de>
+					<en>Relatives|Friends|Neighbours</en>
+				</environment>
+				<environmentaction>
+					<de>unterstützen ihn|helfen ihm|lassen nichts unversucht|stehen ihm bei</de>
+					<en>support him|help him|leave no stone unturned|assist him</en>
+				</environmentaction>
+				<feeling>
+					<de>~nGefühle hautnah!|~nGefühlskino!|||~nDa fühlt jeder mit!|~nEndlich mal ohne Klischees erzählt!</de>
+					<en>~nFeelings up close!|||~nFeeling cinema!||~nEveryone feels it!||~nFinally told without clichés!</en>
+				</feeling>
+			</variables>
+
+			<jobs>
+				<job index="0" function="1" required="1" />
+				<job index="1" function="2" required="1" gender="1" />
+				<job index="2" function="6" required="0" gender="2" />
+				<job index="3" function="6" required="0" />
+			</jobs>
+
+			<!-- mandatory: xrated  |  optional: cult -->
+			<data optional_flags="8" />
+			<genres maingenre="7" subgenres="9"/>
+			<blocks min="2" max="3" slope="20" />
+			<price min="7500" max="25000" slope="40" />
+			<potential min="30" max="85" slope="45" />
+			<outcome min="20" max="65" slope="40" />
+			<review min="15" max="80" slope="40" />
+			<speed min="25" max="65" slope="50" />
+		</scripttemplate>
+		
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-show1">
 			<title>
@@ -560,31 +691,31 @@
 		<programmerole guid="script-roles-swe-002" first_name="Alva" last_name="Lindberg" title="Prof." gender="1" country="SWE" />
 		<programmerole guid="script-roles-swe-003" first_name="Filip" last_name="Jönsson" title="" gender="1" country="SWE" />
 
-		<programmerole guid="script-roles-eng-001" first_name="Molly" last_name="Winfield" title="" gender="2" country="ENG" />
-		<programmerole guid="script-roles-eng-002" first_name="Callum" last_name="Winston" title="" gender="1" country="ENG" />
-		<programmerole guid="script-roles-eng-003" first_name="Abigail" last_name="Wyler" title="" gender="2" country="ENG" />
+		<programmerole guid="script-roles-eng-001" first_name="Molly" last_name="Winfield" title="" gender="2" country="UK" />
+		<programmerole guid="script-roles-eng-002" first_name="Callum" last_name="Winston" title="" gender="1" country="UK" />
+		<programmerole guid="script-roles-eng-003" first_name="Abigail" last_name="Wyler" title="" gender="2" country="UK" />
 
-		<programmerole id="script-roles-ger-001" first_name="Vincent" last_name="Graf" gender="1" country="GER" />
-		<programmerole id="script-roles-ger-002" first_name="Emelie" last_name="Schulte" gender="2" country="GER" />
-		<programmerole id="script-roles-ger-003" first_name="Adrian" last_name="Dietrich" gender="1" country="GER" />
-		<programmerole id="script-roles-ger-004" first_name="Jana" last_name="Ziegler" gender="2" country="GER" />
-		<programmerole id="script-roles-ger-005" first_name="Jonathan" last_name="Kuhn" gender="1" country="GER" />
-		<programmerole id="script-roles-ger-006" first_name="Viktoria" last_name="Kühn" gender="2" country="GER" />
-		<programmerole id="script-roles-ger-007" first_name="Theo" last_name="Engel" gender="1" country="GER" />
-		<programmerole id="script-roles-ger-008" first_name="Josefine" last_name="Horn" gender="2" country="GER" />
-		<programmerole id="script-roles-ger-009" first_name="Niko" last_name="Bergmann" gender="1" country="GER" />
-		<programmerole id="script-roles-ger-010" first_name="Finja" last_name="Thomas" gender="2" country="GER" />
-		<programmerole id="script-roles-ger-011" first_name="Till" last_name="Voigt" gender="1" country="GER" />
-		<programmerole id="script-roles-ger-012" first_name="Isabel" last_name="Sauer" gender="2" country="GER" />
-		<programmerole id="script-roles-ger-013" first_name="Benjamin" last_name="Arnold" gender="1" country="GER" />
-		<programmerole id="script-roles-ger-014" first_name="Helena" last_name="Wolff" gender="2" country="GER" />
-		<programmerole id="script-roles-ger-015" first_name="Florian" last_name="Pfeiffer" gender="1" country="GER" />
-		<programmerole id="script-roles-ger-016" first_name="Isabella" last_name="Hansen" gender="2" country="GER" />
-		<programmerole id="script-roles-ger-017" first_name="Marlon" last_name="Huber" gender="1" country="GER" />
-		<programmerole id="script-roles-ger-018" first_name="Elisa" last_name="Petersen" gender="2" country="GER" />
-		<programmerole id="script-roles-ger-019" first_name="Bernd" last_name="Orlowski" gender="1" country="GER" />
-		<programmerole id="script-roles-ger-020" first_name="Manfred" last_name="Schimanski" gender="1" country="GER" />
-		<programmerole id="script-roles-ger-021" first_name="Klaus" last_name="Rudzinski" gender="1" country="GER" />
+		<programmerole id="script-roles-ger-001" first_name="Vincent" last_name="Graf" gender="1" country="D" />
+		<programmerole id="script-roles-ger-002" first_name="Emelie" last_name="Schulte" gender="2" country="D" />
+		<programmerole id="script-roles-ger-003" first_name="Adrian" last_name="Dietrich" gender="1" country="D" />
+		<programmerole id="script-roles-ger-004" first_name="Jana" last_name="Ziegler" gender="2" country="D" />
+		<programmerole id="script-roles-ger-005" first_name="Jonathan" last_name="Kuhn" gender="1" country="D" />
+		<programmerole id="script-roles-ger-006" first_name="Viktoria" last_name="Kühn" gender="2" country="D" />
+		<programmerole id="script-roles-ger-007" first_name="Theo" last_name="Engel" gender="1" country="D" />
+		<programmerole id="script-roles-ger-008" first_name="Josefine" last_name="Horn" gender="2" country="D" />
+		<programmerole id="script-roles-ger-009" first_name="Niko" last_name="Bergmann" gender="1" country="D" />
+		<programmerole id="script-roles-ger-010" first_name="Finja" last_name="Thomas" gender="2" country="D" />
+		<programmerole id="script-roles-ger-011" first_name="Till" last_name="Voigt" gender="1" country="D" />
+		<programmerole id="script-roles-ger-012" first_name="Isabel" last_name="Sauer" gender="2" country="D" />
+		<programmerole id="script-roles-ger-013" first_name="Benjamin" last_name="Arnold" gender="1" country="D" />
+		<programmerole id="script-roles-ger-014" first_name="Helena" last_name="Wolff" gender="2" country="D" />
+		<programmerole id="script-roles-ger-015" first_name="Florian" last_name="Pfeiffer" gender="1" country="D" />
+		<programmerole id="script-roles-ger-016" first_name="Isabella" last_name="Hansen" gender="2" country="D" />
+		<programmerole id="script-roles-ger-017" first_name="Marlon" last_name="Huber" gender="1" country="D" />
+		<programmerole id="script-roles-ger-018" first_name="Elisa" last_name="Petersen" gender="2" country="D" />
+		<programmerole id="script-roles-ger-019" first_name="Bernd" last_name="Orlowski" gender="1" country="D" />
+		<programmerole id="script-roles-ger-020" first_name="Manfred" last_name="Schimanski" gender="1" country="D" />
+		<programmerole id="script-roles-ger-021" first_name="Klaus" last_name="Rudzinski" gender="1" country="D" />
 
 
 	</programmeroles>

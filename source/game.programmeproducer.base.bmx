@@ -73,7 +73,29 @@ Type TProgrammeProducerCollection Extends TGameObjectCollection
 	
 		Return name
 	End Method
+
+
+	'tries to find a good suiting country code to be used with the person
+	'generator
+	Method GetBestFitPersonGeneratorCountryCode:String(countryCode:String)
+		If GetPersonGenerator().HasProvider(countryCode) Then return countryCode
+
+		Select countryCode.ToUpper()
+			case "SCO"        return "UK"
+			case "E"          return "UK"
+			case "IRL"        return "UK"
+			case "NOR"        return "DK"
+			case "SWE", "SE"  return "DK"
+			case "SUI"        return "AUT"
+			case "BRA"        return "ES"
+			case "POR"        return "ES"
+			case "MEX"        return "ES"
+			case "D"          return "DE"
+		End Select
 	
+		Return ""
+	End Method
+
 	
 	Method UpdateAll()
 		For local p:TProgrammeProducerBase = EachIn entries.Values()

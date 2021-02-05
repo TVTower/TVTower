@@ -1255,7 +1255,7 @@ Type TVTProgrammeDataFlag {_exposeToLua}
 	Const SERIES:Int = 256
 	'Scripted-Shows/Series/Reportages ... Trash-TV!
 	Const SCRIPTED:Int = 512
-	'Scripted-Shows/Series/Reportages ... Trash-TV!
+	'Produced by players or programme production companies
 	Const CUSTOMPRODUCTION:Int = 1024
 	'these programmes are hidden from the planner selection
 	Const INVISIBLE:Int = 2048

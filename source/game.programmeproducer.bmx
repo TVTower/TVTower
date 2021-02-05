@@ -194,6 +194,8 @@ Type TProgrammeProducer Extends TProgrammeProducerBase
 			Else
 				jobCountry = job.country
 			EndIf
+			'find best suiting country code
+			if jobCountry then jobCountry = GetProgrammeProducerCollection().GetBestFitPersonGeneratorCountryCode(jobCountry)
 
 			'try to reuse someone
 			If castFavoritesIDs.length > 0
