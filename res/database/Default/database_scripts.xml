@@ -309,12 +309,12 @@
 					<en>A %BUILDING%%ENVIRONMENT% %WHAT% %MONSTER% %MONSTERWHAT%</en>
 				</description>
 				<environment>
-					<de> und seine Umgebung|, erbaut auf einem alten Friedhof|, verlassen und verfallen</de>
+					<de>, mit einem Fluch belegt,|, erbaut auf einem alten Friedhof,|, verlassen und verfallen,</de>
 					<en> and its surroundings|, built on an old cemetery|, abandoned and dilapidated</en>
 				</environment>
 				<what>
-					<de>sind Schauplatz blutiger Vermisstenfälle.|werden von Kreaturen heimgesucht.</de>
-					<en>are the scene of bloody missing persons cases.|are haunted by creatures.</en>
+					<de>ist Schauplatz blutiger Vermisstenfälle.|wird von Kreaturen heimgesucht.</de>
+					<en>is the scene of bloody missing persons cases.|is haunted by creatures.</en>
 				</what>
 				<monsterwhat>
 					<de>sind das Übel.|greifen jeden an.|beherrschen die Gegend.</de>
