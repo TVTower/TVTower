@@ -29,7 +29,7 @@ end
 
 function TaskArchive:GetNextJobInTargetRoom()
 	--nur einmal am Tag verkaufen, ausser im Notfall
-	if self.latestSaleOnDay >= WorldTime.GetDay() and not self.emergencySale
+	if self.latestSaleOnDay >= TVT.GetDay() and not self.emergencySale
 	then
 		debugMsg(timetostring().." archive Task, been here done that")
 	elseif (self.SellMoviesJob.Status ~= JOB_STATUS_DONE) then
@@ -92,7 +92,7 @@ function JobSellMovies:Tick()
 	debugMsg("archive: Sell movies job started")
 	--ins archiv wenn nach mitternacht (oben)
 
-	self.Task.latestSaleOnDay = WorldTime.GetDay()
+	self.Task.latestSaleOnDay = TVT.GetDay()
 
 
 	--fetch licences
@@ -169,6 +169,6 @@ end
 
 function timetostring()
 	local t = ""
-	t = "Day: "..WorldTime.GetDay()..", "..WorldTime.GetDayHour().." : "..WorldTime.GetDayMinute()
+	t = "Day: "..TVT.GetDay()..", "..TVT.GetDayHour().." : "..TVT.GetDayMinute()
 	return t
 end

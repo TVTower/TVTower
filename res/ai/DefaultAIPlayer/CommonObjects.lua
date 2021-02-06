@@ -201,7 +201,7 @@ function SpotSlotRequisition:CheckActuality()
 	end
 
 	-- spot slot requisitions get outdated 2 hours after their "planned" time
-	if (self.Day >= WorldTime.GetDay() or ( self.Day == WorldTime.GetDay() and self.Hour + 2 > WorldTime.GetDayHour())) then
+	if (self.Day >= TVT.GetDay() or ( self.Day == TVT.GetDay() and self.Hour + 2 > TVT.GetDayHour())) then
 		return true
 	else
 		self:Complete()
@@ -327,7 +327,7 @@ end
 function BuySingleProgrammeLicenceRequisition:CheckActuality()
 	if (self.Done) then return false end
 	-- requisitions get outdated after their lifetime ends
-	if (self.lifeTime < 0 or self.lifeTime >= WorldTime.GetTimeGone()) then
+	if (self.lifeTime < 0 or self.lifeTime >= tonumber(TVT.GetTimeGoneInSeconds())) then
 		return true
 	else
 		self:Complete()

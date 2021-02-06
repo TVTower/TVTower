@@ -312,7 +312,7 @@ Type TWorldWeatherEntry
 		local temperatureChange:float = 0.0
 		'high noon + 1 the max temperature will be reached (max increase)
 		local maxTempHour:int = GetWorldTime().GetDayHour(GetWorldTime().GetSunrise(_time) + GetWorldTime().GetDayLightLength(_time) )
-'print maxTempHour+"  " + (GetWorldTime().GetDayLightLength(_time)/60)+"min"
+'print maxTempHour+"  " + (GetWorldTime().GetDayLightLength(_time)/TWorldTime.MINUTELENGTH)+"min"
 		'to make it an "increasing" or "decreasing" tendence we use the
 		'distance to half a dayLightLength (summer 18/2=9 hours)
 		'7:00 = "2/9"   0:00 = "-4/9"   15:00 = "8/9"

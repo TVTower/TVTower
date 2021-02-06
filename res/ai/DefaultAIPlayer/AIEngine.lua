@@ -70,7 +70,7 @@ end
 
 
 function AIPlayer:initialize()
-	math.randomseed(TVT.GetMillisecs())
+	math.randomseed(tonumber(TVT.GetMillisecsString()))
 
 	self:initializePlayer()
 
@@ -462,7 +462,7 @@ function AITask:StartNextJob()
 	else
 		self.Status = TASK_STATUS_RUN
 		self.StartTaskWorldTicks = self:getWorldTicks()
-		self.StartTask = WorldTime.GetTimeGoneAsMinute()
+		self.StartTask = TVT.GetTimeGoneInMinutes()
 
 		local oldJob = self.CurrentJob
 		if oldJob ~= nil then
@@ -549,12 +549,12 @@ end
 
 
 function AITask:RecalcPriority()
-	if (self.LastDone == 0) then self.LastDone = WorldTime.GetTimeGoneAsMinute() end
+	if (self.LastDone == 0) then self.LastDone = TVT.GetTimeGoneInMinutes() end
 	if (self.LastDoneWorldTicks == 0) then self.LastDoneWorldTicks = self:getWorldTicks() end
 
 	local player = _G["globalPlayer"]
 	local Ran1 = math.random(75, 125) / 100
-	local TimeDiff = math.round(WorldTime.GetTimeGoneAsMinute() - self.LastDone)
+	local TimeDiff = math.round(TVT.GetTimeGoneInMinutes() - self.LastDone)
 	local TicksDiff = math.round(self:getWorldTicks() - self.LastDoneWorldTicks)
 	local requisitionPriority = player:GetRequisitionPriority(self.Id)
 
@@ -573,7 +573,7 @@ function AITask:RecalcPriority()
 	--  10 minutes or less being 20%
 	--  40 minutes or more being 80%
 	if self.TargetRoom > 0 then
-		local blockedMinutes = WorldTime.TimeToMinutes( TVT.GetRoomBlockedTime(self.TargetRoom) )
+		local blockedMinutes = TVT.TimeToMinutes( TVT.GetRoomBlockedTimeString(self.TargetRoom) )
 		--debugMsg("PRIO: Target room ".. self.TargetRoom ..". blockedMinutes " .. blockedMinutes))
 		if blockedMinutes >= 1 then
 			--debugMsg("PRIO: Target room is blocked too long, reducing priority. " .. math.max(0.2, 1.0 - 0.02*blockedMinutes))
@@ -610,7 +610,7 @@ function AITask:SetDone()
 	local player = _G["globalPlayer"]
 	self.Status = TASK_STATUS_DONE
 	self.SituationPriority = 0
-	self.LastDone = WorldTime.GetTimeGoneAsMinute()
+	self.LastDone = TVT.GetTimeGoneInMinutes()
 	self.LastDoneWorldTicks = self:getWorldTicks()
 
 	-- reset back
@@ -721,8 +721,8 @@ function AIJob:Start(pParams)
 
 	self.jobStartTime = os.clock()
 	self.StartParams = pParams
-	self.StartJob = WorldTime.GetTimeGoneAsMinute()
-	self.LastCheck = WorldTime.GetTimeGoneAsMinute()
+	self.StartJob = TVT.GetTimeGoneInMinutes()
+	self.LastCheck = TVT.GetTimeGoneInMinutes()
 	self.StartJobWorldTicks = 0
 	self.LastCheckWorldTicks = 0
 	self.TicksTotalTime = 0
@@ -761,11 +761,11 @@ end
 
 
 function AIJob:ReDoCheck(minutesWait, ticksWait)
-	if ((self.LastCheckWorldTicks + ticksWait) < self:getWorldTicks() or (self.LastCheck + minutesWait) < WorldTime.GetTimeGoneAsMinute()) then
-		--debugMsg("ReDoCheck: (time: " .. self.LastCheck .. " + " .. minutesWait .. " < " .. WorldTime.GetTimeGoneAsMinute() .."    ticks: " ..self.LastCheckWorldTicks .. " + " .. ticksWait .." < " .. self:getWorldTicks())
+	if ((self.LastCheckWorldTicks + ticksWait) < self:getWorldTicks() or (self.LastCheck + minutesWait) < TVT.GetTimeGoneInMinutes()) then
+		--debugMsg("ReDoCheck: (time: " .. self.LastCheck .. " + " .. minutesWait .. " < " .. TVT.GetTimeGoneInMinutes() .."    ticks: " ..self.LastCheckWorldTicks .. " + " .. ticksWait .." < " .. self:getWorldTicks())
 		self.Status = JOB_STATUS_REDO
 		self.LastCheckWorldTicks = self:getWorldTicks()
-		self.LastCheck = WorldTime.GetTimeGoneAsMinute()
+		self.LastCheck = TVT.GetTimeGoneInMinutes()
 		self:Prepare(self.StartParams)
 	end
 end
@@ -846,7 +846,7 @@ end
 --override
 function AIIdleJob:Start(pParams)
 	if (self.IdleTime ~= 0) then
-		self.IdleTill = WorldTime.GetTimeGoneAsMinute() + self.IdleTime
+		self.IdleTill = TVT.GetTimeGoneInMinutes() + self.IdleTime
 		--debugMsg("Set self.IdleTill = " .. self.IdleTill)
 	end
 	if (self.IdleTicks ~= 0) then
@@ -873,7 +873,7 @@ function AIIdleJob:Tick()
 	local finishedIdling = false
 	if (self.IdleTill == -1) and (self.IdleTillWorldTicks == -1) then
 		finishedIdling = true
-	elseif (self.IdleTill ~= -1) and ((self.IdleTill - WorldTime.GetTimeGoneAsMinute()) <= 0) then
+	elseif (self.IdleTill ~= -1) and ((self.IdleTill - TVT.GetTimeGoneInMinutes()) <= 0) then
 		finishedIdling = true
 	elseif (self.IdleTillWorldTicks ~= -1) and ((self.IdleTillWorldTicks - self:getWorldTicks()) <= 0) then
 		finishedIdling = true
@@ -918,10 +918,10 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 	local resultId = tonumber(result)
 	if (resultId == TVT.RESULT_INUSE) then
 		if (self.IsWaiting) then
-			-- debugMsg( TVT.ME .. " BeginEnterRoom: Room still in use. Will continue to wait...a bit. Waiting time: " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute().."  ticks=" .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
+			-- debugMsg( TVT.ME .. " BeginEnterRoom: Room still in use. Will continue to wait...a bit. Waiting time: " .. self.WaitTill .. "/" .. TVT.GetTimeGoneInMinutes().."  ticks=" .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
 		elseif (self:ShouldIWait()) then
 			self.IsWaiting = true
-			self.WaitSince = WorldTime.GetTimeGoneAsMinute()
+			self.WaitSince = TVT.GetTimeGoneInMinutes()
 			self.WaitSinceWorldTicks = self:getWorldTicks()
 			self.WaitTill = self.WaitSince + 3 + (self.Task.CurrentPriority / 6)
 			self.WaitTillWorldTicks = self.WaitSinceWorldTicks + 3 + (self.Task.CurrentPriority / 6)
@@ -931,19 +931,19 @@ function AIJobGoToRoom:OnBeginEnterRoom(roomId, result)
 			if ((self.WaitTillWorldTicks - self.WaitSinceWorldTicks) > 20) then
 				self.WaitTillWorldTicks = self.WaitSinceWorldTicks + 20
 			end
-			debugMsg("BeginEnterRoom: Room occupied! Will wait a bit. Waiting time: " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute().."  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
+			debugMsg("BeginEnterRoom: Room occupied! Will wait a bit. Waiting time: " .. self.WaitTill .. "/" .. TVT.GetTimeGoneInMinutes().."  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ")")
 		else
 			debugMsg("BeginEnterRoom: Room occupied! Won't wait this time.")
 			self.Status = JOB_STATUS_CANCEL
 			self.Task:SetCancel()
 		end
 	elseif(resultId == TVT.RESULT_NOTALLOWED) then
-		local blockedTime = TVT.GetRoomBlockedTime(roomId)
+		local blockedMinutes = TVT.TimeToMinutes( TVT.GetRoomBlockedTimeString(roomId) )
 		--if blocked shorter than 10 minutes, we will wait
-		if blockedTime == -1 or blockedTime <= 60*10 then
-			debugMsg("BeginEnterRoom: Room blocked short enough! ... waiting a bit." .. blockedTime)
+		if TVT.IsRoomBlocked(roomId) == 1 and blockedMinutes <= 10 then
+			debugMsg("BeginEnterRoom: Room blocked short enough! ... waiting a bit. Blocked for " .. blockedMinutes .. " minute(s).")
 		else
-			debugMsg("BeginEnterRoom: Room blocked! Waiting time too long: " .. math.floor(blockedTime/60).. " minute(s).")
+			debugMsg("BeginEnterRoom: Room enter forbidden or room blocked and waiting time too long: " .. blockedMinutes .. " minute(s).")
 			self.Status = JOB_STATUS_CANCEL
 			self.Task:SetCancel()
 		end
@@ -1015,26 +1015,24 @@ function AIJobGoToRoom:Tick()
 			--debugMsg("Room is unused now")
 			self.IsWaiting = false
 			TVT.DoGoToRoom(self.TargetRoom)
-		elseif ((self.WaitTill - WorldTime.GetTimeGoneAsMinute()) <= 0 or (self.WaitTillWorldTicks - self:getWorldTicks()) <= 0) then
+		elseif ((self.WaitTill - TVT.GetTimeGoneInMinutes()) <= 0 or (self.WaitTillWorldTicks - self:getWorldTicks()) <= 0) then
 			debugMsg("Room is still used. I do not want to wait anylonger.")
 			self.IsWaiting = false
 			self.Status = JOB_STATUS_CANCEL
 		else
-			--debugMsg("Waiting to enter the room. Waiting till time: " .. self.WaitTill .. "/" .. WorldTime.GetTimeGoneAsMinute() .. "  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ".")
+			--debugMsg("Waiting to enter the room. Waiting till time: " .. self.WaitTill .. "/" .. TVT.GetTimeGoneInMinutes() .. "  /  ticks: " .. self.WaitTillWorldTicks .. "/" .. self:getWorldTicks() .. ".")
 		end
 	-- while walking / going by elevator
 	elseif (self.Status ~= JOB_STATUS_DONE) then
 		-- check if room is blocked - if so, abort task
-		if (self.TargetRoom >= 0) then
-			local blockedTime = TVT.GetRoomBlockedTime(self.TargetRoom)
-			if blockedTime >= 0 then
-				if blockedTime <=  60*10 then
-					debugMsg("Target room is blocked but soon reopening.")
-				else
-					debugMsg("Target room is blocked ... cancelling task.")
-					self.Status = JOB_STATUS_CANCEL
-					self.Task:SetCancel()
-				end
+		if (self.TargetRoom >= 0) and TVT.IsRoomBlocked(self.TargetRoom) == 1 then
+			local blockedMinutes = TVT.TimeToMinutes( TVT.GetRoomBlockedTimeString(self.TargetRoom) )
+			if blockedMinutes <=  10 then
+				debugMsg("Target room is blocked but soon reopening.")
+			else
+				debugMsg("Target room is blocked ... cancelling task.")
+				self.Status = JOB_STATUS_CANCEL
+				self.Task:SetCancel()
 			end
 		end
 

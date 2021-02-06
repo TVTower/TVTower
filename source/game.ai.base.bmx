@@ -362,30 +362,6 @@ endrem
 	Method CallOnLoad() abstract
 	Method CallOnSave() abstract
 	Method CallOnInit() abstract
-
-rem
-	Method CallOnRealtimeSecond(millisecondsGone:Int=0) abstract
-	Method CallOnMinute(minute:Int=0) abstract
-	Method CallOnChat(fromID:int=0, text:String = "", chatType:int = 0, channels:int = 0) abstract
-	Method CallOnProgrammeLicenceAuctionGetOutbid(licence:object, bid:int, bidderID:int) abstract
-	Method CallOnProgrammeLicenceAuctionWin(licence:object, bid:int) abstract
-	Method CallOnBossCalls(latestWorldTime:Long=0) abstract
-	Method CallOnBossCallsForced() abstract
-	Method CallOnPublicAuthoritiesStopXRatedBroadcast() abstract
-	Method CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedLicence:object, targetLicence:object) abstract
-	Method CallOnAchievementCompleted(achievement:object) abstract
-	Method CallOnWonAward(award:object) abstract
-	Method CallOnLeaveRoom(roomId:int) abstract
-	Method CallOnReachTarget(target:object) abstract
-	Method CallOnReachRoom(roomId:Int) abstract
-	Method CallOnBeginEnterRoom(roomId:int, result:int) abstract
-	Method CallOnEnterRoom(roomId:int) abstract
-	Method CallOnDayBegins() abstract
-	Method CallOnGameBegins() abstract
-	Method CallOnMoneyChanged(value:int, reason:int, reference:object) abstract
-	Method CallOnMalfunction() abstract
-	Method CallOnPlayerGoesBankrupt(playerID:int) abstract
-endrem
 End Type
 
 

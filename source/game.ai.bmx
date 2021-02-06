@@ -187,222 +187,6 @@ Type TAi Extends TAiBase
 
 		CallLuaFunction("OnInit", Null)
 	End Method
-
-
-rem
-	Method CallOnRealtimeSecond(millisecondsGone:Int=0)
-		If Not AiRunning Then Return
-
-		Local args:Object[1]
-		args[0] = String(millisecondsGone)
-
-		CallLuaFunction("OnRealTimeSecond", args)
-	End Method
-
-
-	Method CallOnMinute(minute:Int=0)
-		If Not AiRunning Then Return
-
-		Local args:Object[1]
-		args[0] = String(minute)
-
-		CallLuaFunction("OnMinute", args)
-	End Method
-
-
-	'use this if one talks in the chat
-	'channelType defines if "public" or "private" chat
-	Method CallOnChat(fromID:Int=0, text:String = "", chatType:Int = 0, channels:Int = 0)
-		If Not AiRunning Then Return
-
-		Local args:Object[4]
-		args[0] = text
-		args[1] = String(fromID)
-		args[2] = String(chatType)
-		args[3] = String(channels)
-
-		CallLuaFunction("OnChat", args)
-	End Method
-
-
-	Method CallOnProgrammeLicenceAuctionGetOutbid(licence:Object, bid:Int, bidderID:Int)
-		If Not AiRunning Then Return
-
-		Local args:Object[3]
-		args[0] = TProgrammeLicence(licence)
-		args[1] = String(bid)
-		args[2] = String(bidderID)
-
-		CallLuaFunction("OnProgrammeLicenceAuctionGetOutbid", args)
-	End Method
-
-
-	Method CallOnProgrammeLicenceAuctionWin(licence:Object, bid:Int)
-		If Not AiRunning Then Return
-
-		Local args:Object[2]
-		args[0] = TProgrammeLicence(licence)
-		args[1] = String(bid)
-
-		CallLuaFunction("OnProgrammeLicenceAuctionWin", args)
-	End Method
-
-
-	Method CallOnBossCalls(latestWorldTime:Long=0)
-		If Not AiRunning Then Return
-
-		Local args:Object[1]
-		args[0] = String(latestWorldTime)
-
-		CallLuaFunction("OnBossCalls", args)
-	End Method
-
-
-	Method CallOnBossCallsForced()
-		If Not AiRunning Then Return
-
-		CallLuaFunction("OnBossCallsForced", Null)
-	End Method
-
-
-	Method CallOnPublicAuthoritiesStopXRatedBroadcast()
-		If Not AiRunning Then Return
-
-		CallLuaFunction("OnPublicAuthoritiesStopXRatedBroadcast", Null)
-	End Method
-
-
-	Method CallOnPublicAuthoritiesConfiscateProgrammeLicence(confiscatedLicence:Object, targetLicence:Object)
-		If Not AiRunning Then Return
-
-		Local args:Object[2]
-		args[0] = TProgrammeLicence(confiscatedLicence)
-		args[1] = TProgrammeLicence(targetLicence)
-
-		CallLuaFunction("OnPublicAuthoritiesConfiscateProgrammeLicence", args)
-	End Method
-
-
-	Method CallOnAchievementCompleted(achievement:Object)
-		If Not AiRunning Then Return
-
-		Local args:Object[1]
-		args[0] = TAchievement(achievement)
-
-		CallLuaFunction("OnAchievementCompleted", args)
-	End Method
-
-
-	Method CallOnWonAward(award:Object)
-		If Not AiRunning Then Return
-
-		Local args:Object[1]
-		args[0] = TAward(award)
-
-		CallLuaFunction("OnWonAward", args)
-	End Method
-
-
-	Method CallOnLeaveRoom(roomId:Int)
-		If Not AiRunning Then Return
-
-		Local args:Object[1]
-		args[0] = String(roomId)
-
-		CallLuaFunction("OnLeaveRoom", args)
-	End Method
-
-
-	Method CallOnReachRoom(roomId:Int)
-		If Not AiRunning Then Return
-
-		Local args:Object[1]
-		args[0] = String(roomId)
-
-		CallLuaFunction("OnReachRoom", args)
-	End Method
-
-
-	Method CallOnBeginEnterRoom(roomId:Int, result:Int)
-		If Not AiRunning Then Return
-
-		Local args:Object[2]
-		args[0] = String(roomId)
-		args[1] = String(result)
-
-		CallLuaFunction("OnBeginEnterRoom", args)
-	End Method
-
-
-	Method CallOnEnterRoom(roomId:Int)
-		If Not AiRunning Then Return
-
-		Local args:Object[1]
-		args[0] = String(roomId)
-
-		CallLuaFunction("OnEnterRoom", args)
-	End Method
-
-
-	Method CallOnReachTarget(target:Object)
-		If Not AiRunning Then Return
-
-		Local targetText:String = "unknown"
-		If TRoomDoor(target) Then targetText = TRoomDoor(target).roomId
-		If TVec2D(target) Then targetText = "Building (x="+TVec2D(target).GetIntX()+" floor="+ GetBuildingBase().GetFloor( TVec2D(target).GetIntY() )+")"
-
-		Local args:Object[2]
-		args[0] = target
-		args[1] = targetText
-
-		CallLuaFunction("OnReachTarget", args)
-	End Method
-
-
-	Method CallOnDayBegins()
-		If Not AiRunning Then Return
-
-		CallLuaFunction("OnDayBegins", Null)
-	End Method
-
-
-	Method CallOnGameBegins()
-		If Not AiRunning Then Return
-
-		CallLuaFunction("OnGameBegins", Null)
-	End Method
-
-
-	Method CallOnMoneyChanged(value:Int, reason:Int, reference:Object)
-		If Not AiRunning Then Return
-
-		Local args:Object[3]
-		args[0] = String(value)
-		args[1] = String(reason)
-		args[2] = TNamedGameObject(reference)
-
-		CallLuaFunction("OnMoneyChanged", args)
-	End Method
-
-
-	Method CallOnMalfunction()
-		If Not AiRunning Then Return
-
-		CallLuaFunction("OnMalfunction", Null)
-	End Method
-
-
-	Method CallOnPlayerGoesBankrupt(playerID:Int)
-		'ignore whether it runs or not - so they can reset their
-		'stats regardless of inactive or not
-		'if not AiRunning then return
-
-		Local args:Object[1]
-		args[0] = String(playerID)
-
-		CallLuaFunction("OnPlayerGoesBankrupt", args)
-	End Method
-endrem
 End Type
 
 
@@ -682,14 +466,93 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 
 
 	'returns how many time is gone since game/app start
-	Method getTimeGone:Int()
-		Return Time.GetTimeGone()
+	'we return texts as FOR NOW 32bit builds fail to pass LONG via
+	'reflection.mod
+	Method GetAppTimeGoneString:String()
+		Return String(Time.GetTimeGone())
 	End Method
 
 
-	Method GetMillisecs:Long()
-		Return Time.MilliSecsLong()
+	'we return texts as FOR NOW 32bit builds fail to pass LONG via
+	'reflection.mod
+	Method GetMillisecsString:String()
+		Return String(Time.MilliSecsLong())
 	End Method
+
+
+	'we return texts as FOR NOW 32bit builds fail to pass LONG via
+	'reflection.mod
+	Method GetTimeGoneString:String()	
+		Return GetWorldTime().GetTimeGone()
+	End Method
+
+	
+	Method GetTimeGoneInSeconds:Int()	
+		Return GetWorldTime().GetTimeGone() / TWorldTime.SECONDLENGTH
+	End Method
+
+
+	Method GetTimeGoneInMinutes:Int()	
+		Return GetWorldTime().GetTimeGone() / TWorldTime.MINUTELENGTH
+	End Method
+
+
+	Method GetDaysRun:Int()	
+		Return GetWorldTime().GetDaysRun()
+	End Method
+
+
+	Method GetDay:Int()	
+		Return GetWorldTime().GetDay()
+	End Method
+
+
+	Method GetDayHour:Int()	
+		Return GetWorldTime().GetDayHour()
+	End Method
+
+
+	Method GetDayMinute:Int()	
+		Return GetWorldTime().GetDayMinute()
+	End Method
+
+
+	Method GetStartDay:Int()	
+		Return GetWorldTime().GetStartDay()
+	End Method
+
+
+	Method GetFormattedTime:String(format:String)	
+		Return GetWorldTime().GetFormattedTime(format)
+	End Method
+
+
+	
+	Method TimeToSeconds:Int(time:String)
+		Return Long(time) / TWorldTime.SECONDLENGTH
+	End Method
+
+
+	Method TimeToMinutes:Int(time:String)
+		Return Long(time) / TWorldTime.MINUTELENGTH
+	End Method
+
+
+	Method TimeToHours:Int(time:String)
+		Return Long(time) / TWorldTime.HOURLENGTH
+	End Method
+
+
+	Method TimeToDays:Int(time:String)
+		Return Long(time) / TWorldTime.DAYLENGTH
+	End Method
+
+
+	Method TimeToYears:Int(time:String)
+		Return Long(time) / (GetWorldTime().DAYLENGTH * GetWorldTime().GetDaysPerYear())
+	End Method
+
+
 
 
 	Method addToLog:Int(text:String)
@@ -792,10 +655,19 @@ Type TLuaFunctions Extends TLuaFunctionsBase {_exposeToLua}
 	End Method
 
 
-	Method GetRoomBlockedTime:Long(roomID:Int)
+	'we return texts as FOR NOW 32bit builds fail to pass LONG via
+	'reflection.mod
+	Method GetRoomBlockedTimeString:String(roomID:Int)
 		Local room:TRoomBase = GetRoomBase(roomID)
 		If Not room Then Return -1
 		Return room.GetBlockedTime()
+	End Method
+
+
+	Method IsRoomBlocked:Int(roomID:Int)
+		Local room:TRoomBase = GetRoomBase(roomID)
+		If Not room Then Return -1
+		Return room.IsBlocked()
 	End Method
 
 
@@ -1766,7 +1638,9 @@ endrem
 	End Method
 
 
-	Method bo_GetCurrentAwardStartTime:Long()
+	'we return texts as FOR NOW 32bit builds fail to pass LONG via
+	'reflection.mod
+	Method bo_GetCurrentAwardStartTimeString:String()
 		If Not _PlayerInRoom("boss") Then Return Self.RESULT_WRONGROOM
 
 		Local award:TAward = GetAwardCollection().GetCurrentAward()
@@ -1776,7 +1650,9 @@ endrem
 	End Method
 
 
-	Method bo_GetCurrentAwardEndTime:Long()
+	'we return texts as FOR NOW 32bit builds fail to pass LONG via
+	'reflection.mod
+	Method bo_GetCurrentAwardEndTimeString:String()
 		If Not _PlayerInRoom("boss") Then Return Self.RESULT_WRONGROOM
 
 		Local award:TAward = GetAwardCollection().GetCurrentAward()
@@ -1796,7 +1672,9 @@ endrem
 	End Method
 
 
-	Method bo_GetNextAwardStartTime:Long()
+	'we return texts as FOR NOW 32bit builds fail to pass LONG via
+	'reflection.mod
+	Method bo_GetNextAwardStartTimeString:String()
 		If Not _PlayerInRoom("boss") Then Return Self.RESULT_WRONGROOM
 
 		Local award:TAward = GetAwardCollection().GetNextAward()
@@ -1806,7 +1684,9 @@ endrem
 	End Method
 
 
-	Method bo_GetNextAwardEndTime:Long()
+	'we return texts as FOR NOW 32bit builds fail to pass LONG via
+	'reflection.mod
+	Method bo_GetNextAwardEndTimeString:String()
 		If Not _PlayerInRoom("boss") Then Return Self.RESULT_WRONGROOM
 
 		Local award:TAward = GetAwardCollection().GetNextAward()

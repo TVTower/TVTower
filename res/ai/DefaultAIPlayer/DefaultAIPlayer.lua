@@ -450,19 +450,19 @@ function BusinessStats:OnDayBegins()
 end
 
 function BusinessStats:ReadStats()
-	if self.lastStatsReadMinute ~= WorldTime.GetDayMinute() then
+	if self.lastStatsReadMinute ~= TVT.GetDayMinute() then
 		-- read in new audience stats
-		if WorldTime.GetDayMinute() == 0 then
+		if TVT.GetDayMinute() == 0 then
 			local currentBroadcast = TVT.GetCurrentNewsShow()
 			local currentAudience = TVT.GetCurrentNewsAudience().GetTotalSum()
 			local currentAttraction = TVT.GetCurrentNewsAudienceAttraction()
-			self.BroadcastStatistics:AddBroadcast(WorldTime.GetDay(), WorldTime.GetDayHour(), TVT.Constants.BroadcastMaterialType.NEWSSHOW, currentAttraction, currentAudience)
+			self.BroadcastStatistics:AddBroadcast(TVT.GetDay(), TVT.GetDayHour(), TVT.Constants.BroadcastMaterialType.NEWSSHOW, currentAttraction, currentAudience)
 		end
-		if WorldTime.GetDayMinute() == 5 then
+		if TVT.GetDayMinute() == 5 then
 			local currentBroadcast = TVT.GetCurrentProgramme()
 			local currentAudience = TVT.GetCurrentProgrammeAudience().GetTotalSum()
 			local currentAttraction = TVT.GetCurrentProgrammeAudienceAttraction()
-			self.BroadcastStatistics:AddBroadcast(WorldTime.GetDay(), WorldTime.GetDayHour(), TVT.Constants.BroadcastMaterialType.PROGRAMME, currentAttraction, currentAudience)
+			self.BroadcastStatistics:AddBroadcast(TVT.GetDay(), TVT.GetDayHour(), TVT.Constants.BroadcastMaterialType.PROGRAMME, currentAttraction, currentAudience)
 
 
 			self.Audience:AddValue(currentAudience)
@@ -470,7 +470,7 @@ function BusinessStats:ReadStats()
 
 
 			-- add current broadcast qualities to statistics
-			local hour = WorldTime.GetDayHour()
+			local hour = TVT.GetDayHour()
 			local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
 			if task ~= nil then
 				for playerID=1, 4 do
@@ -481,7 +481,7 @@ function BusinessStats:ReadStats()
 			end
 		end
 
-		self.lastStatsReadMinute = WorldTime.GetDayMinute()
+		self.lastStatsReadMinute = TVT.GetDayMinute()
 	end
 end
 
@@ -560,8 +560,8 @@ end
 
 -- ##### EVENTS #####
 
-function OnBossCalls(latestWorldTime)
-	infoMsg("Boss calls me! " .. latestWorldTime)
+function OnBossCalls(latestTimeString)
+	infoMsg("Boss calls me! " .. latestTimeString)
 end
 
 function OnBossCallsForced()
@@ -718,17 +718,12 @@ function OnEnterRoom(roomId)
 			debugMsg("Visiting my boss", true)
 
 			getAIPlayer().currentAwardType = TVT.bo_GetCurrentAwardType()
-			getAIPlayer().currentAwardStartTime = TVT.bo_GetCurrentAwardStartTime()
-			getAIPlayer().currentAwardEndTime = TVT.bo_GetCurrentAwardEndTime()
+			getAIPlayer().currentAwardStartTime = tonumber(TVT.bo_GetCurrentAwardStartTimeString())
+			getAIPlayer().currentAwardEndTime = tonumber(TVT.bo_GetCurrentAwardEndTimeString())
 
 			getAIPlayer().nextAwardType = TVT.bo_GetNextAwardType()
-			getAIPlayer().nextAwardStartTime = TVT.bo_GetNextAwardStartTime()
-			getAIPlayer().nextAwardEndTime = TVT.bo_GetNextAwardEndTime()
-
-			--debugMsg("current Award type: " .. getAIPlayer().currentAwardType)
-			--debugMsg("current Award end: " .. getAIPlayer().currentAwardEndTime)
-			--debugMsg("next Award type: " .. getAIPlayer().nextAwardType)
-			--debugMsg("next Award end: " .. getAIPlayer().nextAwardEndTime)
+			getAIPlayer().nextAwardStartTime = tonumber(TVT.bo_GetNextAwardStartTimeString())
+			getAIPlayer().nextAwardEndTime = tonumber(TVT.bo_GetNextAwardEndTimeString())
 		end
 	end
 end
@@ -826,7 +821,7 @@ end
 
 
 function OnTick(timeGone, ticksGone)
-	--debugMsg("OnTick  time:" .. timeGone .." ticks:" .. ticksGone .. " gameMinute:" .. WorldTime.GetDayMinute())
+	--debugMsg("OnTick  time:" .. timeGone .." ticks:" .. ticksGone .. " gameMinute:" .. TVT.GetDayMinute())
 	getAIPlayer().WorldTicks = tonumber(ticksGone)
 
 
@@ -864,9 +859,9 @@ function OnMinute(number)
 						-- contract MORE than just the unsatisfying one)
 						-- -> FixAdvertisement takes care of that
 						if (TVT.GetAdContractCount() > 1) or (TVT.GetProgrammeLicenceCount() > 0)  then
-							task:FixAdvertisement(WorldTime.GetDay(), WorldTime.GetDayHour())
+							task:FixAdvertisement(TVT.GetDay(), TVT.GetDayHour())
 						else
-							debugMsg("ProgrammeBegin: FixAdvertisement " .. WorldTime.GetDay() .. "/" .. WorldTime.GetDayHour() .. ":55 - NOT POSSIBLE, not enough adcontracts (>1) or licences.")
+							debugMsg("ProgrammeBegin: FixAdvertisement " .. TVT.GetDay() .. "/" .. TVT.GetDayHour() .. ":55 - NOT POSSIBLE, not enough adcontracts (>1) or licences.")
 						end
 					end
 				end
@@ -875,7 +870,7 @@ function OnMinute(number)
 				-- we can only fix if we have licences for programmes
 				-- or adcontracts for infomercials
 				-- -> FixImminentAdOutage takes care of that
-				task:FixImminentAdOutage(WorldTime.GetDay(), WorldTime.GetDayHour())
+				task:FixImminentAdOutage(TVT.GetDay(), TVT.GetDayHour())
 			end
 		end
 	end
@@ -883,7 +878,7 @@ function OnMinute(number)
 	-- check next 2 hours if there will be an imminent outage
 	if (number == 6) then
 		local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
-		local fixedDay, fixedHour = FixDayAndHour(WorldTime.GetDay(), WorldTime.GetDayHour() + 1)
+		local fixedDay, fixedHour = FixDayAndHour(TVT.GetDay(), TVT.GetDayHour() + 1)
 
 		for i=0,1 do
 			local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour + i)

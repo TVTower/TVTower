@@ -528,13 +528,13 @@ Type TInGameInterface
 			endif
 
 			If THelper.MouseIn(309,538,178,32)
-				CurrentTimeToolTip.SetTitle(getLocale("GAME_TIME")+": " + GetWorldTime().getFormattedTime())
+				CurrentTimeToolTip.SetTitle(getLocale("GAME_TIME")+": " + GetWorldTime().GetFormattedTime())
 				local content:string = ""
 				content :+ "|b|"+GetLocale("GAMEDAY")+":|/b| "+(GetWorldTime().GetDaysRun()+1) + " (" + GetLocale("WEEK_LONG_"+GetWorldTime().GetDayName(GetWorldTime().GetWeekday())) + ")"
 				content :+ "~n"
 				content :+ "|b|"+GetLocale("DAY_OF_YEAR")+":|/b| "+GetWorldTime().getDayOfYear()+"/"+GetWorldTime().GetDaysPerYear()
 				content :+ "~n"
-				content :+ "|b|"+GetLocale("DATE")+":|/b| "+GetWorldTime().GetFormattedDate(-1, GameConfig.dateFormat)+" ("+GetLocale("SEASON_"+GetWorldTime().GetSeasonName())+")"
+				content :+ "|b|"+GetLocale("DATE")+":|/b| "+GetWorldTime().GetFormattedDate(GameConfig.dateFormat)+" ("+GetLocale("SEASON_"+GetWorldTime().GetSeasonName())+")"
 				CurrentTimeToolTip.SetContent(content)
 				CurrentTimeToolTip.enabled = 1
 				CurrentTimeToolTip.Hover()

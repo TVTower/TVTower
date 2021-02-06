@@ -21,8 +21,8 @@ function OnCreate()
 	TVT.PrintOut("Sample AI file loaded for player #" .. TVT.ME)
 end
 
-function OnBossCalls(latestWorldTime)
-	TVT.PrintOut("Boss calls me! " .. latestWorldTime)
+function OnBossCalls(latestTimeString)
+	TVT.PrintOut("Boss calls me! " .. latestTimeString)
 end
 
 
@@ -42,7 +42,7 @@ end
 
 
 function OnDayBegins()
-	TVT.PrintOut("ohhh, a new day begins " .. WorldTime.GetFormattedTime("H:i"))
+	TVT.PrintOut("ohhh, a new day begins " .. TVT.GetFormattedTime("H:i"))
 	TVT.SendToChat("Guten Morgen, ich schau mal beim Chef vorbei!")
 	-- does not work that way - not controllable at the very first
 	-- start, so this only works for days > 1

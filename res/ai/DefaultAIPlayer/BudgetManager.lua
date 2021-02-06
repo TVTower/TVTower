@@ -70,7 +70,7 @@ end
 
 -- Method is run at the begin of each day
 function BudgetManager:CalculateNewDayBudget()
-	debugMsg("=== Budget day " .. WorldTime.GetDaysRun() .. " ===")
+	debugMsg("=== Budget day " .. TVT.GetDaysRun() .. " ===")
 	debugMsg(string.left("Account balance:", 20, true) .. string.right(MY.GetMoney(), 10, true))
 
 	-- postpone empirical budget values one day backwards (new one incoming)
