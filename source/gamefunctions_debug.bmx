@@ -720,7 +720,7 @@ Type TDebugScreen
 			else
 				For local eventIndex:int = 0 until Min(3, upcomingEvents[i].length)
 					textFont.DrawSimple(GetWorldTime().GetFormattedGameDate(upcomingEvents[i][eventIndex].happenedTime), textX, textY)
-					textFont.DrawBox(upcomingEvents[i][eventIndex].GetTitle(), textX + 100, textY, 200, 15, sALIGN_LEFT_TOP, SColor8.White)
+					textFont.DrawBox(upcomingEvents[i][eventIndex].GetTitle(), textX + 100, textY, 200, 17, sALIGN_LEFT_TOP, SColor8.White)
 					textY :+ 12
 				Next
 				'empty lines for not-set upcoming events in that genre
@@ -750,9 +750,9 @@ Type TDebugScreen
 '			if not (movieVendor.filterMoviesCheap.DoesFilter(pl) or movieVendor.filterMoviesGood.DoesFilter(pl) or movieVendor.filterSeries.DoesFilter(pl)) then continue
 			if not movieVendor.filterCrap.DoesFilter(pl) then continue
 
-			textFont.DrawBox(pl.GetTitle(), textX + 15, textY, 110, 11, sALIGN_LEFT_TOP, SColor8.White)
-			textFont.DrawSimple(pl.GetPriceForPlayer(playerID), textX + 15 + 120, textY)
-			textFont.DrawBox(MathHelper.NumberToString(pl.GetMaxTopicality()*100,2)+"%", textX + 15 + 130, textY, 45, 11, sALIGN_RIGHT_TOP, SColor8.White)
+			textFont.DrawBox(pl.GetTitle(), textX + 15, textY - 1, 110, 15, sALIGN_LEFT_TOP, SColor8.White)
+			textFont.DrawSimple(pl.GetPriceForPlayer(playerID), textX + 15 + 120, textY - 1)
+			textFont.DrawBox(MathHelper.NumberToString(pl.GetMaxTopicality()*100,2)+"%", textX + 15 + 130, textY - 1, 45, 15, sALIGN_RIGHT_TOP, SColor8.White)
 			textY :+ 10
 		Next
 '		filterMoviesGood
@@ -857,11 +857,11 @@ Type TDebugScreen
 
 				textFont.Draw(RSet(i, 2).Replace(" ", "0"), textX, textY)
 				if licences[i]
-					textFont.DrawBox(": " + licences[i].GetTitle(), textX + 15, textY, 110, 11, sALIGN_LEFT_TOP, SColor8.White)
-					textFont.DrawSimple(MathHelper.DottedValue(licences[i].GetPriceForPlayer(playerID)), textX + 15 + 120, textY)
-					textFont.DrawBox(licences[i].data.GetYear(), textX + 15 + 120, textY, barWidth - (15 + 120 + 5), 11, sALIGN_RIGHT_TOP, SColor8.White)
+					textFont.DrawBox(": " + licences[i].GetTitle(), textX + 15, textY - 1, 110, 15, sALIGN_LEFT_TOP, SColor8.White)
+					textFont.DrawSimple(MathHelper.DottedValue(licences[i].GetPriceForPlayer(playerID)), textX + 15 + 120, textY - 1)
+					textFont.DrawBox(licences[i].data.GetYear(), textX + 15 + 120, textY - 1, barWidth - (15 + 120 + 5), 15, sALIGN_RIGHT_TOP, SColor8.White)
 				else
-					textFont.DrawSimple(": -", textX + 15, textY)
+					textFont.DrawSimple(": -", textX + 15, textY - 1)
 				endif
 				textY :+ 10
 
@@ -940,9 +940,9 @@ endrem
 		Local textY:Int = y + 5
 		local adAgency:RoomHandler_AdAgency = RoomHandler_AdAgency.GetInstance()
 
-		titleFont.draw("AdAgency", textX, textY)
+		titleFont.draw("AdAgency", textX, textY - 1)
 		textY :+ 12
-		textFont.Draw("Refilled on figure visit.", textX, textY)
+		textFont.Draw("Refilled on figure visit.", textX, textY - 1)
 		textY :+ 10
 		textY :+ 5
 
@@ -953,7 +953,7 @@ endrem
 		For local listNumber:int = 0 until adLists.length
 			local ads:TAdContract[] = adLists[listNumber]
 
-			textFontBold.Draw(adListTitle[listNumber] + ":", textX, textY)
+			textFontBold.Draw(adListTitle[listNumber] + ":", textX, textY - 1)
 			textY :+ 10
 			For local i:int = 0 until ads.length
 				If entryPos Mod 2 = 0
@@ -975,19 +975,19 @@ endrem
 					SetBlend ALPHABLEND
 				endif
 
-				textFont.DrawSimple(RSet(i, 2).Replace(" ", "0"), textX, textY)
+				textFont.DrawSimple(RSet(i, 2).Replace(" ", "0"), textX, textY - 1)
 				if ads[i]
-					textFont.DrawBox(": " + ads[i].GetTitle(), textX + 15, textY, 110, 11, sALIGN_LEFT_TOP, SColor8.White)
-					textFont.DrawSimple(MathHelper.DottedValue(ads[i].GetMinAudience(playerID)), textX + 15 + 120, textY)
+					textFont.DrawBox(": " + ads[i].GetTitle(), textX + 15, textY - 1, 110, 15, sALIGN_LEFT_TOP, SColor8.White)
+					textFont.DrawSimple(MathHelper.DottedValue(ads[i].GetMinAudience(playerID)), textX + 15 + 120, textY - 1)
 					if ads[i].GetLimitedToTargetGroup() > 0
-						textFont.DrawBox(ads[i].GetLimitedToTargetGroupString(), textX + 15 + 120, textY, 100, 11, sALIGN_RIGHT_TOP, SColor8.White)
+						textFont.DrawBox(ads[i].GetLimitedToTargetGroupString(), textX + 15 + 120, textY - 1, 100, 15, sALIGN_RIGHT_TOP, SColor8.White)
 					else
 						SetAlpha 0.5
-						textFont.DrawBox("no limit", textX + 15 + 120, textY, 100, 11, sALIGN_RIGHT_TOP, SColor8.White)
+						textFont.DrawBox("no limit", textX + 15 + 120, textY - 1, 100, 15, sALIGN_RIGHT_TOP, SColor8.White)
 						SetAlpha oldAlpha
 					endif
 				else
-					textFont.DrawSimple(": -", textX + 15, textY)
+					textFont.DrawSimple(": -", textX + 15, textY - 1)
 				endif
 				textY :+ 10
 
@@ -1040,7 +1040,7 @@ endrem
 
 
 		SetColor 255,255,255
-		local textY:int = y + 5
+		local textY:int = y + 5 - 1
 		titleFont.Draw(figure.name, x + 5, textY)
 		if not figure.CanMove() then textFont.DrawBox("cannot move", x, textY, 150 - 3, 14, sALIGN_RIGHT_TOP, SColor8.White)
 		textY :+ 10
@@ -1062,9 +1062,9 @@ endrem
 		DrawOutlineRect(x,y,w,h)
 		Local textY:Int = y + 5
 
-		titleFont.draw("Boss #"  + boss.playerID, x + 5, textY)
+		titleFont.draw("Boss #"  + boss.playerID, x + 5, textY - 1)
 		textY :+ 12
-		textFont.draw("Mood: " + MathHelper.NumberToString(boss.GetMood(), 2), x + 5, textY)
+		textFont.draw("Mood: " + MathHelper.NumberToString(boss.GetMood(), 2), x + 5, textY - 1)
 		SetColor 150,150,150
 		DrawRect(x + 70, textY, 70, 10 )
 		SetColor 0,0,0
@@ -1087,7 +1087,7 @@ endrem
 			SetColor 255,255,255
 
 			Local textX:Int = x + 3
-			Local textY:Int = y + 3
+			Local textY:Int = y + 3 - 1
 
 			Local assignmentType:Int = player.aiData.GetInt("currentTaskAssignmentType", 0)
 			If assignmentType = 1
@@ -1129,7 +1129,7 @@ endrem
 			SetColor 255,255,255
 
 			Local textX:Int = x + 3
-			Local textY:Int = y + 3
+			Local textY:Int = y + 3 - 1
 
 			For local aievent:TAIEvent = EachIn player.playerAI.eventQueue
 				textFont.Draw("event:   " + aievent.ID, textX, textY)
@@ -1167,9 +1167,9 @@ endrem
 				roomName = "AtElevator"
 			EndIf
 			If fig.isControllable()
-				textFont.draw((i + 1) + ": "+roomName + change , x + 5, y + 20 + i * 10)
+				textFont.draw((i + 1) + ": "+roomName + change , x + 5, y + 20 + i * 10 - 1)
 			Else
-				textFont.draw((i + 1) + ": "+roomName + change +" (forced)" , x + 5, y + 20 + i * 10)
+				textFont.draw((i + 1) + ": "+roomName + change +" (forced)" , x + 5, y + 20 + i * 10 - 1)
 			EndIf
 		Next
 	End Method
@@ -1180,7 +1180,7 @@ endrem
 
 		titleFont.draw("Elevator routes:", x + 5, y + 5)
 		Local routepos:Int = 0
-		Local startY:Int = y + 20
+		Local startY:Int = y + 20 - 1
 		Local callType:String = ""
 
 		'Local directionString:String = "up"
@@ -1219,7 +1219,7 @@ endrem
 			SetColor 255,255,255
 
 			Local textX:Int = x + 3
-			Local textY:Int = y + 3
+			Local textY:Int = y + 3 - 1
 
 			textFont.Draw("Investment Savings: " + MathHelper.DottedValue(player.aiData.GetInt("budget_investmentsavings")), textX, textY)
 			textY :+ 10
@@ -1781,6 +1781,8 @@ Type TDebugProgrammeCollectionInfos
 
 		If playerID <= 0 Then playerID = GetPlayerBase().playerID
 		Local lineHeight:Int = 12
+		Local lineTextDY:Int = -3
+		Local lineTextHeight:Int = 15
 		Local lineWidth:Int = 160
 		Local adLineWidth:Int = 145
 		Local adLeftX:Int = 165
@@ -1830,14 +1832,14 @@ Type TDebugProgrammeCollectionInfos
 			SetColor 255,255,255
 
 			Local progString:String = l.GetTitle()
-			font.DrawBox( progString, x+2, y+1 + entryPos*lineHeight, lineWidth - 30, lineHeight, sALIGN_LEFT_CENTER, SColor8.White)
+			font.DrawBox( progString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth - 30, lineTextHeight, sALIGN_LEFT_CENTER, SColor8.White)
 
 			Local attString:String = ""
 '			local s:string = string(GetPlayer(playerID).aiData.Get("licenceAudienceValue_" + l.GetGUID()))
 			Local s:String = MathHelper.NumberToString(l.GetProgrammeTopicality() * l.GetQuality(), 4)
 			If s Then attString = "|color=180,180,180|A|/color|"+ s + " "
 
-			font.DrawBox(attString, x+2, y+1 + entryPos*lineHeight, lineWidth-5, lineHeight, sALIGN_RIGHT_CENTER, SColor8.White)
+			font.DrawBox(attString, x+2, y+1 + entryPos*lineHeight + lineTextDY, lineWidth-5, lineTextHeight, sALIGN_RIGHT_CENTER, SColor8.White)
 
 			entryPos :+ 1
 		Next
@@ -1892,12 +1894,12 @@ Type TDebugProgrammeCollectionInfos
 
 			Local adString2b:String = "Acu: " +MathHelper.NumberToString(a.GetAcuteness()*100.0)
 			Local adString2c:String = a.GetSpotsSent() + "/" + a.GetSpotCount()
-			font.DrawBox( adString1a, x + adLeftX + 2, y+1 + entryPos*lineHeight*2 + lineHeight*0, adLeftX - 40, lineHeight, sALIGN_LEFT_CENTER, SColor8.White)
-			font.DrawBox( adString1b, x + adLeftX + 2 + adLineWidth-60-2, y+1 + entryPos*lineHeight*2 + lineHeight*0, 60, lineHeight, sALIGN_RIGHT_CENTER, secondLineCol)
+			font.DrawBox( adString1a, x + adLeftX + 2, y+1 + entryPos*lineHeight*2 + lineHeight*0 + lineTextDY, adLeftX - 40, lineTextHeight, sALIGN_LEFT_CENTER, SColor8.White)
+			font.DrawBox( adString1b, x + adLeftX + 2 + adLineWidth-60-2, y+1 + entryPos*lineHeight*2 + lineHeight*0 + lineTextDY, 60, lineTextHeight, sALIGN_RIGHT_CENTER, secondLineCol)
 
-			font.DrawBox( adString2a, x + adLeftX + 2, y+1 + entryPos*lineHeight*2 + lineHeight*1 -1, 60, lineHeight, sALIGN_LEFT_CENTER, secondLineCol)
-			font.DrawBox( adString2b, x + adLeftX + 2 + 65, y+1 + entryPos*lineHeight*2 + lineHeight*1 -1, 55, lineHeight, sALIGN_CENTER_CENTER, secondLineCol)
-			font.DrawBox( adString2c, x + adLeftX + 2 + adLineWidth-55-2, y+1 + entryPos*lineHeight*2 + lineHeight*1 -1, 55, lineHeight, sALIGN_RIGHT_CENTER, secondLineCol)
+			font.DrawBox( adString2a, x + adLeftX + 2, y+1 + entryPos*lineHeight*2 + lineHeight*1 + lineTextDY, 60, lineTextHeight, sALIGN_LEFT_CENTER, secondLineCol)
+			font.DrawBox( adString2b, x + adLeftX + 2 + 65, y+1 + entryPos*lineHeight*2 + lineHeight*1 + lineTextDY, 55, lineTextHeight, sALIGN_CENTER_CENTER, secondLineCol)
+			font.DrawBox( adString2c, x + adLeftX + 2 + adLineWidth-55-2, y+1 + entryPos*lineHeight*2 + lineHeight*1 + lineTextDY, 55, lineTextHeight, sALIGN_RIGHT_CENTER, secondLineCol)
 
 			entryPos :+ 1
 		Next
@@ -2028,6 +2030,8 @@ Type TDebugProgrammePlanInfos
 		Local daysProgramme:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetProgrammeSlotsInTimeSpan(currDay, 0, currDay, 23)
 		Local daysAdvertisements:TBroadcastMaterial[] = GetPlayerProgrammePlan( playerID ).GetAdvertisementSlotsInTimeSpan(currDay, 0, currDay, 23)
 		Local lineHeight:Int = 12
+		Local lineTextHeight:Int = 15
+		Local lineTextDY:Int = -1
 		Local programmeSlotX:Int = x + clockSlotWidth + slotPadding
 		Local adSlotX:Int = programmeSlotX + programmeSlotWidth + slotPadding
 
@@ -2052,7 +2056,7 @@ Type TDebugProgrammePlanInfos
 
 
 		Local s:String = "|color=200,255,200|PRED|/color|/|color=200,200,255|GUESS|/color|/|color=255,220,210|REAL|/color|"
-		GetBitmapFont("default", 10).DrawBox( s, programmeSlotX, y + -1*lineHeight, programmeSlotWidth, lineHeight, sALIGN_RIGHT_TOP, SColor8.White)
+		GetBitmapFont("default", 10).DrawBox( s, programmeSlotX, y + -1*lineHeight + lineTextDY, programmeSlotWidth, lineTextHeight, sALIGN_RIGHT_TOP, SColor8.White)
 
 
 		For Local hour:Int = 0 Until daysProgramme.length
@@ -2211,13 +2215,13 @@ Type TDebugProgrammePlanInfos
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			font.Draw( RSet(hour,2).Replace(" ", "0"), x + 2, y + hour*lineHeight)
+			font.Draw( RSet(hour,2).Replace(" ", "0"), x + 2, y + hour*lineHeight + lineTextDY)
 			If programme Then SetStateColor(programme)
-			font.DrawBox( progString, programmeSlotX + 2, y + hour*lineHeight, programmeSlotWidth - 60, lineHeight, sALIGN_LEFT_TOP, SColor8.White)
-			font.DrawBox( progString2, programmeSlotX, y + hour*lineHeight, programmeSlotWidth - 2, lineHeight, sALIGN_RIGHT_TOP, SColor8.White)
+			font.DrawBox( progString, programmeSlotX + 2, y + hour*lineHeight + lineTextDY, programmeSlotWidth - 60, lineTextHeight, sALIGN_LEFT_TOP, SColor8.White)
+			font.DrawBox( progString2, programmeSlotX, y + hour*lineHeight + lineTextDY, programmeSlotWidth - 2, lineTextHeight, sALIGN_RIGHT_TOP, SColor8.White)
 			If advertisement Then SetStateColor(advertisement)
-			font.DrawBox( adString, adSlotX + 2, y + hour*lineHeight, adSlotWidth - 30, lineHeight, sALIGN_LEFT_TOP, SColor8.White)
-			font.DrawBox( adString2, adSlotX, y + hour*lineHeight, adSlotWidth - 2, lineHeight, sALIGN_RIGHT_TOP, SColor8.White)
+			font.DrawBox( adString, adSlotX + 2, y + hour*lineHeight + lineTextDY, adSlotWidth - 30, lineTextHeight, sALIGN_LEFT_TOP, SColor8.White)
+			font.DrawBox( adString2, adSlotX, y + hour*lineHeight + lineTextDY, adSlotWidth - 2, lineTextHeight, sALIGN_RIGHT_TOP, SColor8.White)
 			SetColor 255,255,255
 		Next
 
@@ -2255,11 +2259,11 @@ Type TDebugProgrammePlanInfos
 			SetColor 255,255,255
 			SetAlpha oldAlpha
 
-			font.DrawBox( newsSlot+1 , x + 2, newsY + newsSlot * lineHeight, clockSlotWidth-2, lineHeight, sALIGN_CENTER_TOP, SColor8.White)
+			font.DrawBox( newsSlot+1 , x + 2, newsY + newsSlot * lineHeight + lineTextDY, clockSlotWidth-2, lineTextHeight, sALIGN_CENTER_TOP, SColor8.White)
 			If news
-				font.DrawBox(news.GetTitle(), programmeSlotX + 2, newsY + newsSlot*lineHeight, programmeSlotWidth - 4, lineHeight, sALIGN_LEFT_TOP, SColor8.White)
+				font.DrawBox(news.GetTitle(), programmeSlotX + 2, newsY + newsSlot*lineHeight + lineTextDY, programmeSlotWidth - 4, lineTextHeight, sALIGN_LEFT_TOP, SColor8.White)
 			Else
-				font.DrawBox("NEWS OUTAGE", programmeSlotX + 2, newsY + newsSlot*lineHeight, programmeSlotWidth - 4, lineHeight, sALIGN_LEFT_TOP, SColor8.Red)
+				font.DrawBox("NEWS OUTAGE", programmeSlotX + 2, newsY + newsSlot*lineHeight + lineTextDY, programmeSlotWidth - 4, lineTextHeight, sALIGN_LEFT_TOP, SColor8.Red)
 			EndIf
 		Next
 	End Function
