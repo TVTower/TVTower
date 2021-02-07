@@ -399,15 +399,33 @@ Type TGUISlotList Extends TGUIListBase
 		'or if there is something which could be dragged instead
 		if not HasItem(TGUIObject(triggerEvent.GetSender())) and GetUnusedSlotAmount() <= 0
 			Local dropCoord:TVec2D = TVec2D(triggerEvent.GetData().get("coord"))
-			If dropCoord
-				local addToSlot:Int = Self.GetSlotByCoord(dropCoord)
-				If addToSlot >= 0 Then Return True
-			EndIf
+			If CanDropOnCoord(dropCoord) Then Return True
+			
 			triggerEvent.SetVeto(True)
 			Return False
 		Else
 			Return True
 		EndIf
+	End Method
+	
+	
+	Method CanDropOnCoord:Int(dropCoord:TVec2D)
+		If dropCoord
+			local addToSlot:Int = Self.GetSlotByCoord(dropCoord)
+			If addToSlot >= 0 and CanDropOnSlot(addToSlot)
+				Return True
+			EndIf
+		EndIf
+		Return False
+	End Method
+
+
+	Method CanDropOnSlot:Int(slot:Int)
+		local item:TGUIObject = GetItemBySlot(slot)
+		if not item or item.IsDragable()
+			Return True
+		EndIf
+		Return False
 	End Method
 
 

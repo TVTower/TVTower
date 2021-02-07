@@ -978,7 +978,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	End Method
 
 
-	Method ShowSheet:Int(x:Int,y:Int, align:Int=0)
+	Method ShowSheet:Int(x:Int,y:Int, align:Int=0, studioSize:Int=-1)
 		'=== PREPARE VARIABLES ===
 		Local sheetWidth:Int = 310
 		Local sheetHeight:Int = 0 'calculated later
@@ -995,11 +995,13 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		Local showMsgLiveInfo:Int = False
 		Local showMsgBroadcastLimit:Int = False
 		Local showMsgTimeSlotLimit:Int = False
+		'Local showMsgStudioTooSmall:Int = False
 
 		If IsPaid() Then showMsgEarnInfo = True
 		If IsLive() Then showMsgLiveInfo = True
 		If HasProductionBroadcastLimit() Then showMsgBroadcastLimit= True
 		If HasBroadcastTimeSlot() Then showMsgTimeSlotLimit = True
+		'If studioSize > 0 and studioSize < self.requiredStudioSize then showMsgStudioTooSmall = True
 
 
 		Local title:String
@@ -1044,7 +1046,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		If showMsgBroadcastLimit Then msgAreaH :+ msgH
 		'suits into the live-block
 'If showMsgTimeSlotLimit and not showMsgLiveInfo Then msgAreaH :+ msgH
-		If showMsgTimeSlotLimit  Then msgAreaH :+ msgH
+		If showMsgTimeSlotLimit Then msgAreaH :+ msgH
+		'If showMsgStudioTooSmall Then msgAreaH :+ msgH
 		'if there are messages, add padding of messages
 		If msgAreaH > 0 Then msgAreaH :+ 2* msgAreaPaddingY
 
@@ -1262,6 +1265,12 @@ endrem
 			contentY :+ msgH
 		EndIf
 
+		rem
+		If showMsgStudioTooSmall
+			skin.RenderMessage(contentX+5, contentY, contentW - 9, -1, GetLocale("STUDIO_TOO_SMALL") + ". " + GetLocale("REQUIRED_SIZE_X").Replace("%X%", requiredStudioSize), "roomsize", "bad", skin.fontNormal, ALIGN_CENTER_CENTER)
+			contentY :+ msgH
+		EndIf
+		endrem
 		'if there is a message then add padding to the bottom
 		If msgAreaH > 0 Then contentY :+ msgAreaPaddingY
 
@@ -1273,7 +1282,13 @@ endrem
 		'blocks
 		skin.RenderBox(contentX + 5, contentY, 50, -1, GetBlocks(), "duration", "neutral", skin.fontBold)
 		'room size
-		skin.RenderBox(contentX + 5 + 1*60, contentY, 50, -1, requiredStudioSize, "roomsize", "neutral", skin.fontBold)
+		If studioSize > 0 and studioSize < requiredStudioSize
+			skin.RenderBox(contentX + 5 + 1*60, contentY, 50, -1, requiredStudioSize, "roomsize", "bad", skin.fontBold)
+		Elseif studioSize > 0 and studioSize >= requiredStudioSize
+			skin.RenderBox(contentX + 5 + 1*60, contentY, 50, -1, requiredStudioSize, "roomsize", "good", skin.fontBold)
+		Else
+			skin.RenderBox(contentX + 5 + 1*60, contentY, 50, -1, requiredStudioSize, "roomsize", "neutral", skin.fontBold)
+		Endif
 		If IsLive()
 			'(pre-)production time
 			if productionTime = 0

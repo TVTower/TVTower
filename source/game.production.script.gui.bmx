@@ -9,7 +9,6 @@ Import "game.game.base.bmx" 'to change game cursor
 'a graphical representation of scripts at the script-agency ...
 Type TGuiScript Extends TGUIGameListItem
 	Field script:TScript
-	Field studioMode:Int = 0
 
 
 	Method New()
@@ -46,8 +45,6 @@ Type TGuiScript Extends TGUIGameListItem
 		If genre < 0 And script Then genre = script.GetMainGenre()
 		Local result:String = "gfx_scripts_" + genre Mod 3 'only 3 sprites possible
 		If dragged Then result = result + "_dragged"
-
-		If studioMode And Not dragged Then result = "gfx_scripts_0_studiodesk"
 
 		Return result
 	End Method
@@ -101,9 +98,25 @@ Type TGuiScript Extends TGUIGameListItem
 		SetColor(oldCol)
 		SetAlpha oldA
 
-		Self.script.ShowSheet(sheetX, sheetY, sheetAlign)
+		Self.script.ShowSheet(sheetX, sheetY, sheetAlign, GetStudioRoomSize())
 	End Method
-
+	
+	
+	Method GetStudioRoomSize:Int()
+		Return -1
+	End Method
+	
+	
+	Method IsDragable:Int() override
+		If script.owner <> GetPlayerBaseCollection().playerID And (script.owner<=0 And Not IsAffordable())
+			Return False
+		EndIf
+		If script.owner = GetPlayerBaseCollection().playerID and not script.IsTradeable()
+			Return False
+		EndIf
+		
+		Return Super.IsDragable()
+	End Method
 
 
 	Method Draw() override
@@ -111,16 +124,8 @@ Type TGuiScript Extends TGUIGameListItem
 		Local oldA:Float = GetAlpha()
 		GetColor(oldCol)
 
-		local markFaded:int = False
 		'make faded as soon as not "dragable" for us
-		If script.owner <> GetPlayerBaseCollection().playerID And (script.owner<=0 And Not IsAffordable())
-			markFaded = True
-		endif
-
-		if script.owner = GetPlayerBaseCollection().playerID and not script.IsTradeable()
-			markFaded = True
-		endif
-
+		local markFaded:int = not IsDragable()
 
 		if markFaded then SetAlpha oldA * 0.75
 
