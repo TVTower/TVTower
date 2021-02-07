@@ -286,8 +286,8 @@
 			</description>
 			<variables>
 				<title>
-					<de>%BUILDING% der %COUNT%%MONSTER%|%COUNT% %MONSTER% %TERROR%|Blut-%BUILDING% %TERROR%</de>
-					<en>%BUILDING% of the %COUNT%%MONSTER%|%COUNT% %MONSTER% %TERROR%|The Blood %BUILDING%|The Blood %BUILDING% %TERROR%</en>
+					<de>%BUILDING% der %COUNT%%MONSTER%|%COUNT%%MONSTER% %TERROR%|Blut-%BUILDING% %TERROR%|Kult der %MONSTER%|Verfluchte %MONSTER%|Blutrünstige %MONSTER%|%MONSTER% im Blutrausch|%MONSTER% der Nacht|%MONSTER%: Sie kriegen Dich|Nacht der %MONSTER%</de>
+					<en>%BUILDING% of the %COUNT%%MONSTER%|%COUNT%%MONSTER% %TERROR%|The Blood %BUILDING% %TERROR%|Cult of the %MONSTER%|Cursed %MONSTER%|Bloodthirsty %MONSTER%|%MONSTER% in a Bloodlust|%MONSTER% of the Night|%MONSTER%: They'll Get You|Night of the %MONSTER%</en>
 				</title>
 				<building>
 					<de>Schloss|Landsitz|Hotel|Gasthaus|Gasthof|Forsthaus|Dorf|Leuchtturm</de>
@@ -325,8 +325,9 @@
 			<jobs>
 				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" />
-				<job index="2" function="6" required="0" />
+				<job index="2" function="2" required="0" />
 				<job index="3" function="6" required="0" />
+				<job index="4" function="6" required="0" />
 			</jobs>
 
 			<!-- optional: xrated | cult -->
@@ -346,7 +347,7 @@
 				<en>%TITLE%</en>
 			</title>
 			<description>
-				<de>%NAME% %DESCRIPTIONACTION%. Seine %ENVIRONMENT% %EVIRONMENTACTION%.%FEELING%</de>
+				<de>%NAME% %DESCRIPTIONACTION%. Seine %ENVIRONMENT% %ENVIRONMENTACTION%.%FEELING%</de>
 				<en>%NAME% %DESCRIPTIONACTION%. His %ENVIRONMENT% %ENVIRONMENTACTION%.%FEELING%</en>
 			</description>
 
