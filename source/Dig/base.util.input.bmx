@@ -113,6 +113,8 @@ Type TMouseManager
 
 	Field _changedClicksUpdateCycle:Int
 	Field _updateCycle:Int
+	
+	Field _lastMovementTime:Long
 
 	'previous position at the screen when a button was clicked, doubleclicked
 	'or longclicke the last time
@@ -432,6 +434,11 @@ Type TMouseManager
 	End Method
 
 
+	Method GetLastMovedTime:Long()
+		Return _lastMovementTime
+	End Method
+
+
 	Method GetMovedDistanceSinceClick:Int(button:Int, clickType:Int = -1)
 		If clickType = -1 Then clickType = CLICKTYPE_CLICK
 		
@@ -623,6 +630,12 @@ Type TMouseManager
 		y = TVirtualGfx.getInstance().VMouseY()
 		currentPos.x = x
 		currentPos.y = y
+
+
+		'MOVEMENT TIME
+		If HasMoved() 
+			_lastMovementTime = Time.GetTimeGone()
+		EndIf
 
 
 		For Local i:Int = 0 Until GetButtonCount()

@@ -38,6 +38,7 @@ Import "base.gfx.gui.list.base.bmx"
 
 Type TGUISelectList Extends TGUIListBase
 	Field selectedEntry:TGUIobject = Null
+	Field selectionChangedTime:Long
 
 
 	Method GetClassName:String()
@@ -100,6 +101,7 @@ Type TGUISelectList Extends TGUIListBase
 			Self.deselectEntry()
 			Self.selectedEntry = entry
 			Self.selectedEntry.SetSelected(True)
+			Self.selectionChangedTime = Time.GetTimeGone()
 			'inform others: we successfully selected an item
 			TriggerBaseEvent(GUIEventKeys.GUISelectList_OnSelectEntry, New TData.Add("entry", entry) , Self )
 		EndIf
@@ -110,6 +112,7 @@ Type TGUISelectList Extends TGUIListBase
 		If TGUIListItem(selectedEntry)
 			TGUIListItem(selectedEntry).SetSelected(False)
 			selectedEntry = Null
+			selectionChangedTime = Time.GetTimeGone()
 		EndIf
 	End Method
 

@@ -1245,6 +1245,14 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 
 			'draw datasheet if needed
 			If hoveredGuiCastItem 
+				'check if the selection is more current (show this instead)
+				if castSlotList and castSlotList.SelectCastWindowIsOpen()
+					if castSlotList.selectCastWindow and castSlotList.selectCastWindow.castSelectList.selectionChangedTime > MouseManager.GetLastMovedTime()
+						local selectedEntry:TGUICastListItem = TGUICastListItem(castSlotList.selectCastWindow.castSelectList.GetSelectedEntry())
+						if selectedEntry then hoveredGUICastItem = selectedEntry
+					endif
+				endif
+				
 				If MouseManager.x < GetGraphicsManager().GetWidth()/2
 					hoveredGuiCastItem.DrawDatasheet(GetGraphicsManager().GetWidth() - 20, 20, 1.0)
 				Else
