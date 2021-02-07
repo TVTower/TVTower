@@ -706,8 +706,10 @@ Type TApp
 
 				'in game and not gameover
 				If GetGame().gamestate = TGame.STATE_RUNNING And Not GetGame().IsGameOver()
-					If KeyManager.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+5)
-					If KeyManager.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-5)
+					If not TGUIListBase(GUIManager.GetFocus()) or not TGUIListBase(GUIManager.GetFocus()).IsHandlingKeyBoardScrolling() 
+						If KeyManager.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+5)
+						If KeyManager.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-5)
+					EndIf
 
 					If KeyManager.IsDown(KEY_RIGHT)
 						If Not KeyManager.IsDown(KEY_LCONTROL) And Not KeyManager.Isdown(KEY_RCONTROL)

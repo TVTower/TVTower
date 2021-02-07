@@ -1082,16 +1082,23 @@ endrem
 	
 	Method HandleKeyboard() override
 		Super.HandleKeyboard()
-		
+
+		If IsHandlingKeyBoardScrolling()
+			HandleKeyBoardScrolling()
+		EndIf
+	End Method
+	
+	
+	Method IsHandlingKeyBoardScrolling:Int()
 		'react if "activated" or no other element was focused but this
 		'is hovered
 		If HasListOption(GUILIST_SCROLLING_ENABLED)
 			If IsFocused() or (not GUIManager.GetFocus() and IsHovered())
-				HandleKeyBoardScrolling()
+				Return True
 			EndIf
 		EndIf
+		Return False
 	End Method
-
 
 	'override default update-method
 	Method Update:Int()
