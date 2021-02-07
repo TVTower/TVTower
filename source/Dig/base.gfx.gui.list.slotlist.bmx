@@ -425,11 +425,6 @@ Type TGUISlotList Extends TGUIListBase
 		'auto slot requested
 		If extraIsRawSlot And addToSlot = -1 Then addToSlot = Self.getFreeSlot()
 		
-		If not extraIsRawSlot and not Self._autofillSlots and addToSlot = -1
-			print "WARNING: TGUISlotList.AddItem() to non autofillslot-list without passing a valid slot as param!"
-			TLogger.Log("TGUISlotList.AddItem()", "Trying to add to non autofillslot-list without passing a valid slot as param!", LOG_ERROR)
-		EndIf
-
 		'no free slot or none given? find out on which slot we are dropping
 		'if possible, drag the other one and drop the new
 		If addToSlot < 0
@@ -442,8 +437,14 @@ Type TGUISlotList Extends TGUIListBase
 			'set slot to land
 			addToSlot = Self.GetSlotByCoord(dropCoord)
 
-			'no slot was hit
-			If addToSlot < 0 Then Return False
+		EndIf
+		'no slot was hit
+		If addToSlot < 0 
+			If not extraIsRawSlot and not Self._autofillSlots
+				print "WARNING: TGUISlotList.AddItem() to non autofillslot-list without passing a valid slot as param!"
+				TLogger.Log("TGUISlotList.AddItem()", "Trying to add to non autofillslot-list without passing a valid slot as param!", LOG_ERROR)
+			EndIf
+			Return False
 		EndIf
 
 		'ask if an add to this slot is ok
