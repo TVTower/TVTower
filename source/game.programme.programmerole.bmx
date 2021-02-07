@@ -1,6 +1,7 @@
 SuperStrict
 Import Brl.LinkedList
 Import "game.gameobject.bmx"
+Import "Dig/base.util.persongenerator.bmx"
 
 Type TProgrammeRoleCollection Extends TGameObjectCollection
 	Global _instance:TProgrammeRoleCollection
@@ -53,6 +54,24 @@ Type TProgrammeRoleCollection Extends TGameObjectCollection
 		Return GetRandomOfArray(roles)
 	End Method	
 	
+	
+	Method CreateRandomRole:TProgrammeRole(countryCode:String, gender:Int)
+		Local pg:TPersonGeneratorEntry = GetPersonGenerator().GetUniqueDataset(countryCode, gender)
+		If Not pg Then Return Null
+
+		Local pr:TProgrammeRole = New TProgrammeRole
+		pr.firstName = pg.firstName
+		pr.lastName = pg.lastName
+		pr.gender = pg.gender
+		pr.countryCode = pg.countryCode.ToUpper()
+		pr.fictional = True
+
+		'avoid others of same name
+		GetPersonGenerator().ProtectDataset(pg)
+		Add(pr)
+		
+		Return pr
+	End Method
 End Type
 
 '===== CONVENIENCE ACCESSOR =====

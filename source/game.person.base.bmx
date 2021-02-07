@@ -1803,6 +1803,11 @@ Type TPersonProductionJob
 
 		Return Self
 	End Method
+	
+	
+	Method Copy:TPersonProductionJob()
+		Return New TPersonProductionJob.Init(personID, job, gender, country, roleID)
+	End Method
 
 
 	Method SerializeTPersonProductionJobToString:String()

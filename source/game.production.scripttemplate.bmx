@@ -114,18 +114,11 @@ Type TScriptTemplate Extends TScriptBase
 
 	Field templateVariables:TScriptTemplateVariables = null
 
-	'contains generated final job set
-	Field finalJobsGenerated:int = False
-	Field finalJobs:TPersonProductionJob[]
-
 	'contains all to fill jobs
 	Field jobs:TPersonProductionJob[]
 	'contains jobs which could get randomly added during generation
 	'of the real script
 	Field randomJobs:TPersonProductionJob[]
-	'contains jobs with randomly assigned jobs
-	'so the script knows what to reset in jobs/randomJobs after usage
-	Field randomAssignedRoles:TPersonProductionJob[]
 
 	'limit the guests to specific job types
 	Field allowedGuestTypes:int	= 0
@@ -165,14 +158,6 @@ Type TScriptTemplate Extends TScriptBase
 	'reuse it)
 	Method Reset:int()
 		if templateVariables then templateVariables.Reset()
-
-		'reset previously stored randomly assigned roles
-		if randomAssignedRoles
-			for local job:TPersonProductionJob = EachIn randomAssignedRoles
-				job.roleID = 0
-			Next
-			randomAssignedRoles = new TPersonProductionJob[0]
-		endif
 	End Method
 
 
@@ -311,6 +296,14 @@ Type TScriptTemplate Extends TScriptBase
 
 	Method HasRandomJob:int(job:TPersonProductionJob)
 		For local doneJob:TPersonProductionJob = EachIn randomJobs
+			if doneJob = job then Return True
+		Next
+		Return False
+	End Method
+
+
+	Method HasSimilarRandomJob:int(job:TPersonProductionJob)
+		For local doneJob:TPersonProductionJob = EachIn randomJobs
 			if job.personID <> doneJob.personID then continue
 			if job.job <> doneJob.job then continue
 			if job.roleID <> doneJob.roleID then continue
@@ -321,36 +314,43 @@ Type TScriptTemplate Extends TScriptBase
 	End Method
 
 
-	Method ResetFinalJobs:int()
-		finalJobs = new TPersonProductionJob[0]
-		finalJobsGenerated = false
-	End Method
-
-
-	Method GenerateFinalJobs:TPersonProductionJob[]()
-		local result:TPersonProductionJob[]
-
-		For local job:TPersonProductionJob = EachIn jobs
-			result :+ [job]
-		next
-		'instead of "adding random" ones (and having to care for
-		'"already added?") we add all of them to an array and remove
-		'random ones....this avoids using too much "random" numbers
+	'creates a NEW set of job instances!
+	Method GetFinalJobs:TPersonProductionJob[]()
+		local result:TPersonProductionJob[] = jobs[ .. ] 'copy jobs into result
 
 		'try to avoid as much randoms as possible (weight to min)
 		'but this still allows for "up to all"
-		local randomJobsAmount:int = BiasedRandRange(0, randomJobs.length, 0.1)
-		local allRandomJobs:TPersonProductionJob[]
-		For local job:TPersonProductionJob = EachIn randomJobs
-			allRandomJobs :+ [job]
-		next
-		For local i:int = 0 until randomJobsAmount
-			local jobIndex:int = RandRange(0, allRandomJobs.length-1)
-			'add job
-			result :+ [allRandomJobs[jobIndex]]
-			'remove selected cast from random ones
-			allRandomJobs = allRandomJobs[..jobIndex] + allRandomJobs[jobIndex+1..]
+		local randomJobsAmount:int = BiasedRandRange(0, randomJobs.length, 0.15)
+		If randomJobsAmount = 0
+			'nothing to do
+		ElseIf randomJobsAmount = 1
+			result :+ [randomJobs[RandRange(0, randomJobs.length-1)]]
+		Else
+			'shuffle all potentially available jobs and take the first
+			'x elements
+			local shuffledRandomJobs:TPersonProductionJob[] = randomJobs[ .. ] 'copy
+			Local shuffleIndex:Int
+			Local shuffleTmp:TPersonProductionJob
+			For Local i:Int = shuffledRandomJobs.length-1 To 0 Step -1
+				shuffleIndex = RandRange(0, shuffledRandomJobs.length-1)
+				shuffleTmp = shuffledRandomJobs[i]
+				shuffledRandomJobs[i] = shuffledRandomJobs[shuffleIndex]
+				shuffledRandomJobs[shuffleIndex] = shuffleTmp
+			Next
+			
+			For local i:int = 0 until randomJobsAmount
+				'add job
+				result :+ [shuffledRandomJobs[i]]
+			Next
+		EndIf
+		
+		
+		'convert instances to new copies (to avoid modification of the
+		'template jobs)
+		For local i:int = 0 until result.length
+			result[i] = result[i].Copy()
 		Next
+
 
 		'assign missing roles to actors
 		local actorFlag:int = TVTPersonJob.ACTOR | TVTPersonJob.SUPPORTINGACTOR
@@ -361,7 +361,7 @@ Type TScriptTemplate Extends TScriptBase
 			if job.roleID <> "" then usedRoleIDs :+ [job.roleID]
 		Next
 
-		'fill in a free guid (if possible)
+		'fill in a free role (if required)
 		For local job:TPersonProductionJob = Eachin result
 			if job.job & actorFlag = 0 then continue
 
@@ -373,47 +373,34 @@ Type TScriptTemplate Extends TScriptBase
 					if job.gender > 0 then filter.SetGender(job.gender)
 				endif
 
-				local validRoleID:Int = 0
-				local tries:int = 0
 				local role:TProgrammeRole
-				repeat
-					role = GetProgrammeRoleCollection().GetRandomByFilter(filter)
+				'20% to reuse an existing role (saves space and RAM)
+				if RandRange(0,100) < 20
+					local tries:int = 0
+					repeat
+						role = GetProgrammeRoleCollection().GetRandomByFilter(filter)
+						'already used?
+						if role and MathHelper.InIntArray(role.GetID(), usedRoleIDs)
+							role = Null
+						endif
+						tries :+ 1
+					Until role or tries > 10
+					'if role Then print "reuse role: " + role.firstName +" " + role.lastName + "  gender="+role.gender+"  country="+role.countryCode + "  jobCountry="+job.country +"  jobGender="+job.gender
+				endif
 
-					'nothing found for filter -> next try without a filter
-					if not role and filter then filter = null; continue
+				If not role
+					role = GetProgrammeRoleCollection().CreateRandomRole(job.country, job.gender)
+				EndIf
 
-					if role then validRoleID = role.GetID()
-					'reset ID again if in array
-					if tries < 50 and MathHelper.InIntArray(validRoleID, usedRoleIDs)
-						validRoleID = 0
-					endif
-					tries :+ 1
-				until validRoleID
 				'assign the role
-				job.roleID = validRoleID
+				job.roleID = role.GetID()
 				'and assign the gender definition
 				job.gender = role.gender
-				usedRoleIDs :+ [validRoleID]
-
-				'mark the job for having a randomly assigned role
-				randomAssignedRoles :+ [job]
+				usedRoleIDs :+ [role.GetID()]
 			endif
 		Next
 
-		finalJobs = result
-		finalJobsGenerated = True
-
-		return finalJobs
-	End Method
-
-
-	'returns the "final" cast ... required + some random
-	Method GetJobs:TPersonProductionJob[]()
-		if not finalJobsGenerated
-			GenerateFinalJobs()
-		endif
-
-		return finalJobs
+		return result
 	End Method
 
 

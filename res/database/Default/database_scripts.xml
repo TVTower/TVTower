@@ -326,8 +326,8 @@
 				<job index="0" function="1" required="1" />
 				<job index="1" function="2" required="1" />
 				<job index="2" function="2" required="0" />
-				<job index="3" function="6" required="0" />
-				<job index="4" function="6" required="0" />
+				<job index="3" function="32" required="0" />
+				<job index="4" function="32" required="0" />
 			</jobs>
 
 			<!-- optional: xrated | cult -->

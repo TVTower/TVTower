@@ -99,6 +99,27 @@ Type TPersonGenerator
 	End Method
 
 
+	'tries to find a good suiting country code to be used with the person
+	'generator
+	Method GetBestFitCountryCode:String(countryCode:String)
+		If HasProvider(countryCode) Then return countryCode
+
+		Select countryCode.ToUpper()
+			case "SCO"        If HasProvider("UK") return "UK" else return ""
+			case "E"          If HasProvider("UK") return "UK" else return ""
+			case "IRL"        If HasProvider("UK") return "UK" else return ""
+			case "NOR"        If HasProvider("DK") return "DK" else return ""
+			case "SWE", "SE"  If HasProvider("DK") return "DK" else return ""
+			case "SUI"        If HasProvider("AUT") return "AUT" else return ""
+			case "BRA"        If HasProvider("ES") return "ES" else return ""
+			case "POR"        If HasProvider("ES") return "ES" else return ""
+			case "MEX"        If HasProvider("ES") return "ES" else return ""
+			case "D"          If HasProvider("DE") return "DE" else return ""
+		End Select
+		
+		Return ""
+	End Method
+
 	Function GetGenderFromString:int(str:string)
 		Select str.Trim()
 			case "m", "1"
@@ -165,13 +186,20 @@ Type TPersonGenerator
 
 	Method GetProvider:TPersonGeneratorCountry(countryCode:string)
 		countryCode = countryCode.ToLower()
-		if providers.contains(countryCode) 
-			return TPersonGeneratorCountry(providers.ValueForKey(countryCode))
-		elseif countryCode <> fallbackCountryCode
-			return GetProvider(fallbackCountryCode)
-		else
-			return baseProvider
-		endif
+		
+		Local pgc:TPersonGeneratorCountry = TPersonGeneratorCountry(providers.ValueForKey(countryCode))
+		If Not pgc
+			countryCode = GetBestFitCountryCode(countryCode).ToLower()
+			pgc = TPersonGeneratorCountry(providers.ValueForKey(countryCode))
+			
+			If Not pgc And countryCode <> fallbackCountryCode
+				pgc = TPersonGeneratorCountry(providers.ValueForKey(fallbackCountryCode.ToLower()))
+			EndIf
+			
+			If Not pgc Then pgc = baseProvider
+		EndIf
+		
+		Return pgc
 	End Method
 
 End Type

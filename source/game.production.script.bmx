@@ -457,12 +457,12 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'- for single scripts we could use that jobs
 		'- for parental scripts we use the jobs of the children
 		If template.subScripts.length = 0
-			script.jobs = template.GetJobs()
+			script.jobs = template.GetFinalJobs()
 		Else
 			'for now use this approach
 			'and dynamically count individual job count by using
 			'Max(script-job-count, max-of-subscripts-job-count)
-			script.jobs = template.GetJobs()
+			script.jobs = template.GetFinalJobs()
 		EndIf
 
 		script.basedOnScriptTemplateID = template.GetID()
@@ -972,17 +972,6 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 			review = template.GetReview()
 			speed = template.GetSpeed()
 			potential = template.GetPotential()
-		EndIf
-	End Method
-
-
-	Method RandomizeJobs(template:TScriptTemplate = Null)
-		If Not template
-			If basedOnScriptTemplateID Then template = GetScriptTemplateCollection().GetByID( basedOnScriptTemplateID )
-		EndIf
-
-		If template
-			template.GetJobs()
 		EndIf
 	End Method
 
