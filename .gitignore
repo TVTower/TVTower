@@ -12,6 +12,7 @@
 *.bmx/
 log.*.txt
 tests/
+*logfiles/
 *savegames/
 *tools/
 source/version.txt

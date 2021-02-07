@@ -12,7 +12,7 @@ Rem
 
 	LICENCE: zlib/libpng
 
-	Copyright (C) 2002-2015 Ronny Otto, digidea.de
+	Copyright (C) 2002-now Ronny Otto, digidea.de
 
 	This software is provided 'as-is', without any express or
 	implied warranty. In no event will the authors be held liable
@@ -45,6 +45,11 @@ Import Sdl.sdl
 Import "base.util.string.bmx"
 
 'create a basic log file
+'but ensure directory exists
+Const LOG_DIRECTORY:String = "logfiles"
+If FileType(LOG_DIRECTORY) <> FILETYPE_DIR
+	If not CreateDir(LOG_DIRECTORY) then Throw "Cannot create log directory: ~q" + LOG_DEBUG + "~q."
+EndIf
 Global AppLog:TLogFile = TLogFile.Create("App Log v1.0", "log.app.txt")
 Global AppErrorLog:TLogFile = TLogFile.Create("App Log v1.0", "log.app.error.txt")
 
@@ -221,6 +226,9 @@ Type TLogFile
 	Function Create:TLogFile(title:String, filename:String, immediateWrite:Int = True, keepFileOpen:Int = True)
 		Local obj:TLogFile = New TLogFile
 		obj.title = title
+		if LOG_DIRECTORY 
+			filename = LOG_DIRECTORY + "/" + filename
+		EndIf
 		?android
 			'prefix with the path to the internal storage
 			filename = AndroidGetInternalStoragePath()+"/"+filename
