@@ -435,6 +435,8 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		script.scriptLicenceType = template.scriptLicenceType
 		script.scriptProductType = template.scriptProductType
+		
+		script.requiredStudioSize = template.GetStudioSize()
 
 		script.mainGenre = template.mainGenre
 		'add genres
@@ -1270,9 +1272,15 @@ endrem
 		contentY :+ boxAreaPaddingY
 		'blocks
 		skin.RenderBox(contentX + 5, contentY, 50, -1, GetBlocks(), "duration", "neutral", skin.fontBold)
+		'room size
+		skin.RenderBox(contentX + 5 + 1*60, contentY, 50, -1, requiredStudioSize, "roomsize", "neutral", skin.fontBold)
 		If IsLive()
 			'(pre-)production time
-			skin.RenderBox(contentX + 5 + 60, contentY, 65, -1, "~~ " + (productionTime/TWorldTime.SECONDLENGTH) + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
+			if productionTime = 0
+				skin.RenderBox(contentX + 5 + 2*60, contentY, 65, -1, "0" + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
+			else
+				skin.RenderBox(contentX + 5 + 2*60, contentY, 65, -1, "~~" + (productionTime/TWorldTime.HOURLENGTH) + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
+			endif
 		EndIf
 		'price
 		If canAfford

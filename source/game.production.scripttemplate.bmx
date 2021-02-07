@@ -123,7 +123,9 @@ Type TScriptTemplate Extends TScriptBase
 	'limit the guests to specific job types
 	Field allowedGuestTypes:int	= 0
 
-	Field studioSizeMin:Int, studioSizeMax:int, studioSizeSlope:Float
+	Field studioSizeMin:Int=1
+	Field studioSizeMax:int=1
+	Field studioSizeSlope:Float=0.5
 
 	Field requireAudience:Int = 0
 	Field coulisseType1:Int	= -1

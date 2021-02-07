@@ -267,7 +267,8 @@
 			</jobs>
 
 			<!-- mandatory: xrated  |  optional: bmovie, trash -->
-			<data flags="64" optional_flags="48" />
+			<data flags="64" optional_flags="48"/>
+			<studio_size min="1" max="2" slope="20" /> 
 			<genres maingenre="8" subgenres="15"/>
 			<blocks min="2" max="3" slope="20" />
 			<price min="15000" max="25000" slope="40" />

@@ -1615,6 +1615,19 @@ Type TDatabaseLoader
 			)
 		EndIf
 
+		'=== DATA: STUDIO SIZE ===
+		nodeData = xml.FindChild(node, "studio_size")
+		data = xml.LoadValuesToData(nodeData, New TData, ["min", "max", "slope", "value"])
+		If data.GetInt("value", -1) >= 0
+			Local value:Int = data.GetInt("value", scriptTemplate.studioSizeMin)
+			scriptTemplate.SetStudioSizeRange(value, value, 0.5)
+		Else
+			scriptTemplate.SetStudioSizeRange( ..
+				data.GetInt("min", scriptTemplate.studioSizeMin), ..
+				data.GetInt("max", scriptTemplate.studioSizeMin), ..
+				0.01 * data.GetInt("slope", Int(100 * scriptTemplate.studioSizeSlope)) ..
+			)
+		EndIf
 
 		'=== DATA: JOBS ===
 		nodeData = xml.FindChild(node, "jobs")
@@ -1694,7 +1707,7 @@ Type TDatabaseLoader
 		nodeData = xml.FindChild(node, "data")
 		data = New TData
 		xml.LoadValuesToData(nodeData, data, [..
-			"scriptflags", "flags", "flags_optional", "keywords", ..
+			"scriptflags", "flags", "flags_optional", "keywords", "studio_size", ..
 			"production_broadcast_flags", "production_licence_flags", "production_broadcast_limit", ..
 			"live_date", "live_time", ..
 			"broadcast_time_slot_start", "broadcast_time_slot_end", ..
@@ -1708,6 +1721,12 @@ Type TDatabaseLoader
 		scriptTemplate.liveTime = data.GetInt("live_time", scriptTemplate.liveTime)
 		scriptTemplate.broadcastTimeSlotStart = data.GetInt("broadcast_time_slot_start", scriptTemplate.broadcastTimeSlotStart)
 		scriptTemplate.broadcastTimeSlotEnd = data.GetInt("broadcast_time_slot_end", scriptTemplate.broadcastTimeSlotEnd)
+		
+		If data.Has("studio_size")
+			scriptTemplate.studioSizeMin = data.GetInt("studio_size")
+			scriptTemplate.studioSizeMax = data.GetInt("studio_size")
+			scriptTemplate.studioSizeSlope = 0.5
+		Endif
 
 		scriptTemplate.keywords = data.GetString("keywords", scriptTemplate.keywords).Trim()
 
