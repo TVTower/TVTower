@@ -8,7 +8,7 @@ Import "common.misc.screen.bmx"
 
 
 Type TRoomHandlerCollection
-	Field handlers:TMap = CreateMap()
+	Field handlers:TStringMap = new TStringMap
 	'instead of a temporary variable
 	Global currentHandler:TRoomHandler
 
@@ -50,19 +50,19 @@ Type TRoomHandlerCollection
 
 
 		'=== register event listeners
-		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onUpdate", onHandleRoom ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onDraw", onHandleRoom ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onBeginEnter", onHandleRoom ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "room.onFinishLeave", onHandleRoom ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onHandleFigureInRoom ) ]
-		_eventListeners :+ [ EventManager.registerListenerFunction( "figure.onForcefullyLeaveRoom", onHandleFigureInRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Room_OnUpdate, onHandleRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Room_OnDraw, onHandleRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Room_OnBeginEnter, onHandleRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Room_OnFinishLeave, onHandleRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Figure_OnTryLeaveRoom, onHandleFigureInRoom ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.Figure_OnForcefullyLeaveRoom, onHandleFigureInRoom ) ]
 
-		_eventListeners :+ [ EventManager.registerListenerFunction( "App.onSetLanguage", onSetLanguage ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.App_OnSetLanguage, onSetLanguage ) ]
 		'== handle savegame loading ==
 		'informing _old_ instances of the various roomhandlers
-		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnBeginLoad", onSaveGameBeginLoad ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.SaveGame_OnBeginLoad, onSaveGameBeginLoad ) ]
 		'informing _new_ instances of the various roomhandlers
-		_eventListeners :+ [ EventManager.registerListenerFunction( "SaveGame.OnLoad", onSaveGameLoad ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction( GameEventKeys.SaveGame_OnLoad, onSaveGameLoad ) ]
 	End Method
 
 
@@ -228,13 +228,12 @@ Type TRoomHandler
 
 
 	Function GetObservedFigure:TFigureBase()
-		local figure:TFigureBase = TFigureBase(GetPlayerBase().GetFigure())
 		'if we observe another figure, return this one
-		if TFigureBase(GameConfig.GetObservedObject())
-			return TFigureBase(GameConfig.GetObservedObject())
-		else
-			return TFigureBase(GetPlayerBase().GetFigure())
-		endif
+		If TFigureBase(GameConfig.GetObservedObject())
+			Return TFigureBase(GameConfig.GetObservedObject())
+		EndIf
+		'else return current player figure
+		Return GetPlayerBase().GetFigure()
 	End Function
 
 
