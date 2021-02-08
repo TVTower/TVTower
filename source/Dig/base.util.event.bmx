@@ -50,6 +50,7 @@ Import Brl.threads
 Import "base.util.logger.bmx"
 Import "base.util.data.bmx"
 Import "base.util.time.bmx"
+Import "base.util.longmap.bmx"
 Import Brl.ObjectList
 
 
@@ -64,7 +65,7 @@ Function TriggerBaseEvent(eventKey:TEventKey, data:Object=Null, sender:Object=Nu
 	EventManager.triggerEvent(TEventBase.Create(eventKey, data, sender, receiver, channel))
 End Function
 
-Function TriggerBaseEvent(eventKeyID:Int, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+Function TriggerBaseEvent(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
 	EventManager.triggerEvent(TEventBase.Create(eventKeyID, data, sender, receiver, channel))
 End Function
 
@@ -80,7 +81,7 @@ Function GetEventKey:TEventKey(text:TLowerString, createIfMissing:Int)
 	Return EventManager.GetEventKey(text, createIfMissing)
 End Function
 
-Function GetEventKey:TEventKey(eventKeyID:Int)
+Function GetEventKey:TEventKey(eventKeyID:Long)
 	Return EventManager.GetEventKey(eventKeyID)
 End Function
 
@@ -94,13 +95,13 @@ Type TEventManager
 	Field _ticks:Int = -1
 	'list of eventhandlers waiting for trigger
 	'"eventkey.id -> listener"
-	Field _listeners:TIntMap = new TIntMap()
+	Field _listeners:TLongMap = new TLongMap
 	Field eventsProcessed:Int = 0
 	Field listenersCalled:Int = 0
 	Field eventsTriggered:Int = 0
 
 	'storing TEventKey by "id" for lookup
-	Field eventKeyIDMap:TIntMap = new TIntMap
+	Field eventKeyIDMap:TLongMap = new TLongMap
 	'storing TEventKey by "text" (TLowerstring) for fast lookup
 	Field eventKeyTextMap:TMap = new TMap
 
@@ -136,7 +137,7 @@ Type TEventManager
 	End Method
 
 
-	Method GetEventKey:TEventKey(id:Int)
+	Method GetEventKey:TEventKey(id:Long)
 		Return TEventKey(eventKeyIDMap.ValueForKey(id))
 	End Method
 
@@ -213,7 +214,7 @@ Type TEventManager
 	End Method
 
 	'add a new listener to a trigger
-	Method RegisterListener:TEventListenerBase(eventKeyID:Int, eventListener:TEventListenerBase)
+	Method RegisterListener:TEventListenerBase(eventKeyID:Long, eventListener:TEventListenerBase)
 		local eventKey:TEventKey = GetEventKey(eventKeyID)
 		If not eventKey Then Throw "Cannot RegisterListener() with unknown eventKey. ID="+eventKeyID
 
@@ -243,7 +244,7 @@ Type TEventManager
 		Return RegisterListener( eventKey, TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
 	End Method
 
-	Method RegisterListenerFunction:TEventListenerBase( eventKeyID:Int, _function:Int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
+	Method RegisterListenerFunction:TEventListenerBase( eventKeyID:Long, _function:Int(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )
 		Return RegisterListener( eventKeyID, TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
 	End Method
 
@@ -255,7 +256,7 @@ Type TEventManager
 	Method RegisterListenerMethod:TEventListenerBase( eventKey:TEventKey, objectInstance:Object, methodName:String, limitToSender:Object=Null, limitToReceiver:Object=Null )
 		Return RegisterListener( eventKey, TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
 	End Method
-	Method RegisterListenerMethod:TEventListenerBase( eventKeyID:Int, objectInstance:Object, methodName:String, limitToSender:Object=Null, limitToReceiver:Object=Null )
+	Method RegisterListenerMethod:TEventListenerBase( eventKeyID:Long, objectInstance:Object, methodName:String, limitToSender:Object=Null, limitToReceiver:Object=Null )
 		Return RegisterListener( eventKeyID, TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
 	End Method
 
@@ -338,7 +339,7 @@ Type TEventManager
 	End Method
 	
 	
-	Method GetListeners:TObjectList(eventKeyID:Int)
+	Method GetListeners:TObjectList(eventKeyID:Long)
 		Return TObjectList( _listeners.ValueForKey(eventKeyID) ) 
 	End Method
 	
@@ -504,7 +505,7 @@ End Type
 'each event key consists of a fast to retrieve numeric ID
 'and a textual representation (allowing for "wildcards") 
 Type TEventKey
-	Field id:Int
+	Field id:Long
 	Field text:TLowerString
 
 private
@@ -660,7 +661,7 @@ public
 	End Function
 
 
-	Function Create:TEventBase(eventKeyID:Int, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
+	Function Create:TEventBase(eventKeyID:Long, data:Object=Null, sender:Object=Null, receiver:Object=Null, channel:Int=0)
 		Local eventKey:TEventKey = EventManager.GetEventKey(eventKeyID)
 		if not eventKey Then Throw "No eventKey found for ID="+eventKeyID
 
@@ -668,7 +669,7 @@ public
 	End Function
 
 
-	Method GetEventKeyID:Int()
+	Method GetEventKeyID:Long()
 		if _eventKey Then Return _eventKey.id
 		Return 0
 	End Method
