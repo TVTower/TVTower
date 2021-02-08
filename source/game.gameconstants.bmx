@@ -634,8 +634,6 @@ Type TVTScriptFlag {_exposeToLua}
 	Const POOL_RANDOMIZES_ATTRIBUTES:Int = 16
 	'when given to pool/vendor, the licence will not be buyable again
 	Const POOL_REMOVES_TRADEABILITY:Int = 32
-	'flag indicating if a production limit is set
-	Const HAS_PRODUCTION_LIMIT:Int = 64
 
 	Const count:Int = 6
 
@@ -654,7 +652,6 @@ Type TVTScriptFlag {_exposeToLua}
 			Case   8	Return 4
 			Case  16	Return 5
 			Case  32	Return 6
-			Case  64	Return 7
 		End Select
 		Return 0
 	End Function
@@ -670,7 +667,6 @@ Type TVTScriptFlag {_exposeToLua}
 			Case POOL_REFILLS_PRODUCTIONLIMITS        Return "pool_refills_productionlimits"
 			Case POOL_RANDOMIZES_ATTRIBUTES           Return "pool_randomizes_attributes"
 			Case POOL_REMOVES_TRADEABILITY            Return "pool_removes_tradeability"
-			Case HAS_PRODUCTION_LIMIT                 Return "has_production_limit"
 
 			Default
 				'loop through all entries and add them if contained

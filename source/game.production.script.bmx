@@ -917,37 +917,38 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 	Method GiveBackToScriptPool:Int()
 		SetOwner( TOwnedGameObject.OWNER_NOBODY )
 
+		'refill production limits if possible
+		If HasProductionLimit() and HasScriptFlag(TVTScriptFlag.POOL_REFILLS_PRODUCTIONLIMITS)
+			SetProductionLimit( GetProductionLimitMax() )
+		endIf
+
+
 		'remove tradeability?
 		'(eg. for "exclusively written for player X scripts")
 		If HasScriptFlag(TVTScriptFlag.POOL_REMOVES_TRADEABILITY)
+print "POOL_REMOVES_TRADEABILITY"
 			SetScriptFlag(TVTScriptFlag.TRADEABLE, False)
-		EndIf
-
-
 		'remove tradeability for partially produced series
-		If GetSubScriptCount() > 0 And GetProductionsCount() > 0
+		ElseIf GetSubScriptCount() > 0 And GetProductionsCount() > 0
+print "PARTIALLY PRODUCED"
 			SetScriptFlag(TVTScriptFlag.TRADEABLE, False)
-		EndIf
-
-
-		'refill production limits - or disable tradeability
-		If GetProductionLimit() > 0 Or IsExceedingProductionLimit()
-			If HasScriptFlag(TVTScriptFlag.POOL_REFILLS_PRODUCTIONLIMITS)
-				SetProductionLimit( GetProductionLimitMax() )
-			Else
-				SetScriptFlag(TVTProgrammeLicenceFlag.TRADEABLE, False)
-			EndIf
+		'if still no longer produceable (eg exceeding production limits)
+		ElseIf not CanGetProduced()
+print "EXCEEDING PRODUCTION LIMIT"
+			SetScriptFlag(TVTScriptFlag.TRADEABLE, False)
 		EndIf
 
 
 		'randomize attributes?
-		If HasScriptFlag(TVTScriptFlag.POOL_RANDOMIZES_ATTRIBUTES)
-			Local template:TScriptTemplate
-			If basedOnScriptTemplateID Then template = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
-			If template
-				RandomizeBaseAttributes(template)
-				blocks = template.GetBlocks()
-				price = template.GetPrice()
+		If HasScriptFlag(TVTScriptFlag.TRADEABLE)
+			If HasScriptFlag(TVTScriptFlag.POOL_RANDOMIZES_ATTRIBUTES)
+				Local template:TScriptTemplate
+				If basedOnScriptTemplateID Then template = GetScriptTemplateCollection().GetByID(basedOnScriptTemplateID)
+				If template
+					RandomizeBaseAttributes(template)
+					blocks = template.GetBlocks()
+					price = template.GetPrice()
+				EndIf
 			EndIf
 		EndIf
 
@@ -999,7 +1000,7 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 
 		If IsPaid() Then showMsgEarnInfo = True
 		If IsLive() Then showMsgLiveInfo = True
-		If HasProductionBroadcastLimit() Then showMsgBroadcastLimit= True
+		If GetProductionBroadcastLimit() > 0 Then showMsgBroadcastLimit= True
 		If HasBroadcastTimeSlot() Then showMsgTimeSlotLimit = True
 		'If studioSize > 0 and studioSize < self.requiredStudioSize then showMsgStudioTooSmall = True
 
@@ -1329,6 +1330,12 @@ endrem
 			skin.fontNormal.DrawSimple("Preis: "+GetPrice(), contentX + 5, contentY)
 			contentY :+ 12
 			skin.fontNormal.DrawSimple("IsProduced: "+IsProduced(), contentX + 5, contentY)
+			contentY :+ 12
+			skin.fontNormal.DrawSimple("IsTradeable: "+IsTradeable(), contentX + 5, contentY)
+			contentY :+ 12
+			skin.fontNormal.DrawSimple("scriptFlags: "+scriptFlags, contentX + 5, contentY)
+			contentY :+ 12
+			skin.fontNormal.DrawSimple("owner: "+owner, contentX + 5, contentY)
 		EndIf
 
 		'=== OVERLAY / BORDER ===

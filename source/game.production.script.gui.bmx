@@ -111,7 +111,8 @@ Type TGuiScript Extends TGUIGameListItem
 		If script.owner <> GetPlayerBaseCollection().playerID And (script.owner<=0 And Not IsAffordable())
 			Return False
 		EndIf
-		If script.owner = GetPlayerBaseCollection().playerID and not script.IsTradeable()
+		'If script.owner = GetPlayerBaseCollection().playerID and not script.IsTradeable()
+		If not script.IsTradeable()
 			Return False
 		EndIf
 		

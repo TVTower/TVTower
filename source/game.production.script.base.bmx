@@ -135,8 +135,6 @@ Type TScriptBase Extends TNamedGameObject
 
 
 	Method SetProductionLimit:Int(productionLimit:Int = -1)
-		SetScriptFlag(TVTScriptFlag.HAS_PRODUCTION_LIMIT, productionLimit > 0)
-
 		Self.productionLimitMax = productionLimit
 		Self.productionLimit = productionLimit
 	End Method
@@ -153,12 +151,14 @@ Type TScriptBase Extends TNamedGameObject
 
 
 	Method HasProductionLimit:Int() {_exposeToLua}
-		Return HasScriptFlag(TVTScriptFlag.HAS_PRODUCTION_LIMIT)
+		Return Self.productionLimit > 0
 	End Method
 
 
+	'this differs to "CanGetProduced()" as the latter one might include
+	'other "reasons" for not being able to produce it anymore
 	Method IsExceedingProductionLimit:Int() {_exposeToLua}
-		Return GetProductionLimit() <= 0 And HasProductionLimit()
+		Return CanGetProducedCount() <= 0
 	End Method
 
 
@@ -177,26 +177,14 @@ Type TScriptBase Extends TNamedGameObject
 
 
 	Method SetProductionBroadcastLimit:int(productionBroadcastLimit:Int = -1)
-		SetProductionBroadcastFlag(TVTBroadcastMaterialSourceFlag.HAS_BROADCAST_LIMIT, productionBroadcastLimit > 0)
-
 		Self.productionBroadcastLimit = productionBroadcastLimit
 
 		return self.productionBroadcastLimit
 	End Method
 
 
-	Method HasProductionBroadcastLimit:int() {_exposeToLua}
-		return HasProductionBroadcastFlag(TVTBroadcastMaterialSourceFlag.HAS_BROADCAST_LIMIT)
-	End Method
-
-
 	Method GetProductionBroadcastLimit:int() {_exposeToLua}
 		return self.productionBroadcastLimit
-	End Method
-
-
-	Method IsExceedingProductionBroadcastLimit:Int() {_exposeToLua}
-		Return GetProductionBroadcastLimit() <= 0 And HasProductionBroadcastLimit()
 	End Method
 
 
@@ -391,7 +379,7 @@ Type TScriptBase Extends TNamedGameObject
 
 	'returns whether a new production could be done with this script
 	'or if a limit is already reached
-	Method CanGetProduced:int()
+	Method CanGetProduced:int() {_exposeToLua}
 		Return CanGetProducedCount() > 0
 	End Method
 

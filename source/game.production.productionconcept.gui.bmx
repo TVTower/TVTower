@@ -97,7 +97,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		'move down if unplanned (less spaced needed on datasheet)
 		if productionConcept.IsUnplanned() then sheetY :+ 50
 		if productionConcept.script.IsLive() then sheetY :- 20
-		if productionConcept.script.HasProductionBroadcastLimit() then sheetY :- 15
+		if productionConcept.script.GetProductionBroadcastLimit() > 0 then sheetY :- 15
 		if productionConcept.script.HasBroadcastTimeSlot() then sheetY :- 15
 
 		
@@ -188,7 +188,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 		Local showMsgTimeSlotLimit:Int = False
 
 		If productionConcept.script.IsLive() Then showMsgLiveInfo = True
-		If productionConcept.script.HasProductionBroadcastLimit() Then showMsgBroadcastLimit= True
+		If productionConcept.script.GetProductionBroadcastLimit() > 0 Then showMsgBroadcastLimit= True
 		If productionConcept.script.HasBroadcastTimeSlot() Then showMsgTimeSlotLimit = True
 
 
