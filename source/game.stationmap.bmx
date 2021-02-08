@@ -4551,10 +4551,10 @@ Type TStationMapSection
 
 
 	Method CalculatePopulation:int()
-		If not TryLockMutex(calculationMutex)
-			Notify "CalculatePopulation: concurrent access found!"
+'		If not TryLockMutex(calculationMutex)
+'			Notify "CalculatePopulation: concurrent access found!"
 			LockMutex(calculationMutex)
-		EndIf
+'		EndIf
 
 		populationMap = New Int[populationImage.width, populationImage.height]
 
@@ -4588,10 +4588,10 @@ Type TStationMapSection
 
 
 	Method _FillAntennaShareMap:Int(stationMap:TStationMap, stations:TList)
-		If not TryLockMutex(calculationMutex)
-			Notify "_FillAntennaShareMap: concurrent access found!"
+'		If not TryLockMutex(calculationMutex)
+'			Notify "_FillAntennaShareMap: concurrent access found!"
 			LockMutex(calculationMutex)
-		EndIf
+'		EndIf
 		
 		
 		'define locals outside of that for loops...
