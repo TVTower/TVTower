@@ -1,6 +1,5 @@
 
 Global debugAudienceInfos:TDebugAudienceInfos = New TDebugAudienceInfos
-Global debugModifierInfos:TDebugModifierInfos = New TDebugModifierInfos
 Global debugProgrammePlanInfos :TDebugProgrammePlanInfos = New TDebugProgrammePlanInfos
 Global debugProgrammeCollectionInfos :TDebugProgrammeCollectionInfos = New TDebugProgrammeCollectionInfos
 Global debugPlayerControls :TDebugPlayerControls = New TDebugPlayerControls
@@ -14,11 +13,17 @@ Type TDebugScreen
 	Field sideButtons:TDebugControlsButton[]
 	Field playerCommandTaskButtons:TDebugControlsButton[]
 	Field playerCommandAIButtons:TDebugControlsButton[]
+	Field buttonsPlayerFinancials:TDebugControlsButton[]
 	Field buttonsAdAgency:TDebugControlsButton[]
 	Field buttonsMovieVendor:TDebugControlsButton[]
 	Field buttonsNewsAgency:TDebugControlsButton[]
 	Field buttonsRoomAgency:TDebugControlsButton[]
+	Field buttonsScriptAgency:TDebugControlsButton[]
+	Field buttonsPolitics:TDebugControlsButton[]
+	Field buttonsMisc:TDebugControlsButton[]
+	Field buttonsModifiers:TDebugControlsButton[]
 	Field sideButtonPanelWidth:Int = 130
+	Field scriptAgencyOfferHightlight:TScript
 	Field adAgencyOfferHightlight:TAdContract
 	Field movieVendorOfferHightlight:TProgrammeLicence
 	Global titleFont:TBitmapFont
@@ -29,16 +34,20 @@ Type TDebugScreen
 		Local button:TDebugControlsButton
 
 
-		Local texts:String[] = ["Overview", "Player Commands", "Player Financials", "Player Broadcasts", "Ad Agency", "Movie Vendor", "News Agency", "Script Vendor", "Room Agency"]
+		Local texts:String[] = ["Overview", "Player Commands", "Player Financials", "Player Broadcasts", "-", "Ad Agency", "Movie Vendor", "News Agency", "Script Agency", "Room Agency", "-", "Politics Sim", "Modifiers", "Misc"]
+		Local mode:int = 0
 		For Local i:Int = 0 Until texts.length
+			if texts[i] = "-" then continue 'spacer
 			button = New TDebugControlsButton
 			button.w = 118
 			button.h = 15
 			button.x = 5
 			button.y = 10 + i * (button.h + 3)
-			button.dataInt = i
+			button.dataInt = mode
 			button.text = texts[i]
 			button._onClickHandler = OnButtonClickHandler
+			
+			mode :+ 1
 
 			sideButtons :+ [button]
 		Next
@@ -50,7 +59,11 @@ Type TDebugScreen
 		InitMode_AdAgency()
 		InitMode_MovieVendor()
 		InitMode_NewsAgency()
+		InitMode_ScriptAgency()
 		InitMode_RoomAgency()
+		InitMode_Politics()
+		InitMode_Modifiers()
+		InitMode_Misc()
 	End Method
 
 
@@ -80,7 +93,6 @@ Type TDebugScreen
 			EndIf
 		Next
 
-
 		Select mode
 			Case 0	UpdateMode_Overview()
 			Case 1	UpdateMode_PlayerCommands()
@@ -89,7 +101,11 @@ Type TDebugScreen
 			Case 4	UpdateMode_AdAgency()
 			Case 5	UpdateMode_MovieVendor()
 			Case 6	UpdateMode_NewsAgency()
-			Case 7	UpdateMode_RoomAgency()
+			Case 7	UpdateMode_ScriptAgency()
+			Case 8	UpdateMode_RoomAgency()
+			Case 9	UpdateMode_Politics()
+			Case 10	UpdateMode_Modifiers()
+			Case 11	UpdateMode_Misc()
 		End Select
 	End Method
 
@@ -121,7 +137,6 @@ Type TDebugScreen
 		SetColor(oldCol)
 		SetAlpha(oldColA)
 		
-
 		Select mode
 			Case 0	RenderMode_Overview()
 			Case 1	RenderMode_PlayerCommands()
@@ -130,7 +145,11 @@ Type TDebugScreen
 			Case 4	RenderMode_AdAgency()
 			Case 5	RenderMode_MovieVendor()
 			Case 6	RenderMode_NewsAgency()
-			Case 7	RenderMode_RoomAgency()
+			Case 7	RenderMode_ScriptAgency()
+			Case 8	RenderMode_RoomAgency()
+			Case 9	RenderMode_Politics()
+			Case 10	RenderMode_Modifiers()
+			Case 11	RenderMode_Misc()
 		End Select
 	End Method
 
@@ -181,22 +200,60 @@ Type TDebugScreen
 
 	'=== PLAYER FINANCIALS ===
 	Method InitMode_PlayerFinancials()
+		Local texts:String[] = ["Set Player 1 Bankrupt", "Set Player 2 Bankrupt", "Set Player 3 Bankrupt", "Set Player 4 Bankrupt"]
+		Local button:TDebugControlsButton
+		For Local i:Int = 0 Until texts.length
+			button = New TDebugControlsButton
+			button.w = 130
+			button.h = 15
+			button.x = sideButtonPanelWidth + 10
+			button.y = 10 + i * (button.h + 3)
+			button.dataInt = i
+			button.text = texts[i]
+			button._onClickHandler = OnButtonClickHandler_PlayerFinancials
+
+			buttonsPlayerFinancials :+ [button]
+		Next
 	End Method
+
+
+	Function OnButtonClickHandler_PlayerFinancials(sender:TDebugControlsButton)
+		Select sender.dataInt
+			case 0
+				GetGame().SetPlayerBankrupt(1)
+			case 1
+				GetGame().SetPlayerBankrupt(2)
+			case 2
+				GetGame().SetPlayerBankrupt(3)
+			case 3
+				GetGame().SetPlayerBankrupt(4)
+		End Select
+
+		'handled
+		sender.clicked = False
+		sender.selected = False
+	End Function
 
 
 	Method UpdateMode_PlayerFinancials()
 		Local playerID:Int = GetShownPlayerID()
 
-		debugFinancialInfos.Update(-1, 800 - 200, 20)
+		For Local b:TDebugControlsButton = EachIn buttonsPlayerFinancials
+			b.Update()
+		Next
 	End Method
 
 
 	Method RenderMode_PlayerFinancials()
 		Local playerID:Int = GetShownPlayerID()
 
-		debugFinancialInfos.Draw(-1, 800 - 200, 20)
+		For Local b:TDebugControlsButton = EachIn buttonsPlayerFinancials
+			b.Render()
+		Next
 
-		RenderPlayerBudgets(playerID, 800 - 250, 150)
+		debugFinancialInfos.Draw(-1, 400, 20)
+
+		RenderPlayerBudgets(playerID, 400, 150)
 	End Method
 
 
@@ -221,7 +278,7 @@ Type TDebugScreen
 
 
 		IDs   = [0,           1]
-		texts = ["Enable AI", "Switch Roomsigns"]
+		texts = ["Enable AI", "Reload AI"]
 		For Local i:Int = 0 Until texts.length
 			button = New TDebugControlsButton
 			button.w = 120
@@ -304,6 +361,8 @@ Type TDebugScreen
 						DebugScreen.playerCommandAIButtons[0].text = "Enable AI"
 					endif
 				endif
+			Case 1 
+				If GetPlayer(playerID).isLocalAI() Then GetPlayer(playerID).PlayerAI.reloadScript()
 		End Select
 	End Function
 
@@ -551,7 +610,7 @@ Type TDebugScreen
 	'=== NEWS AGENCY ===
 
 	Method InitMode_NewsAgency()
-		Local texts:String[] = ["Announce News", "Reset Terror Levels"]
+		Local texts:String[] = ["Announce News"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
 			button = New TDebugControlsButton
@@ -571,9 +630,7 @@ Type TDebugScreen
 	Function OnButtonClickHandler_NewsAgency(sender:TDebugControlsButton)
 		Select sender.dataInt
 			case 0
-				RoomHandler_MovieAgency.GetInstance().ReFillBlocks()
-			case 1
-				RoomHandler_MovieAgency.GetInstance().ReFillBlocks(True, 1.0)
+				'
 		End Select
 
 		'handled
@@ -607,7 +664,68 @@ Type TDebugScreen
 '			newsAgencyNewsHighlight.ShowSheet(sideButtonPanelWidth + 5 + 250, 13, 0	, playerID)
 '		endif
 	End Method
+	
+	
+	'=== Script AGENCY ===
 
+	Method InitMode_ScriptAgency()
+		Local texts:String[] = ["Refill Offers", "Replace Offers"]
+		Local button:TDebugControlsButton
+		For Local i:Int = 0 Until texts.length
+			button = New TDebugControlsButton
+			button.w = 130
+			button.h = 15
+			button.x = sideButtonPanelWidth + 10 + 260
+			button.y = 10 + i * (button.h + 3)
+			button.dataInt = i
+			button.text = texts[i]
+			button._onClickHandler = OnButtonClickHandler_ScriptAgency
+
+			buttonsScriptAgency :+ [button]
+		Next
+	End Method
+
+
+	Function OnButtonClickHandler_ScriptAgency(sender:TDebugControlsButton)
+		Select sender.dataInt
+			case 0
+				RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
+			case 1
+				RoomHandler_ScriptAgency.GetInstance().ReFillBlocks(True, 1.0)
+		End Select
+
+		'handled
+		sender.clicked = False
+		sender.selected = False
+	End Function
+
+
+	Method UpdateMode_ScriptAgency()
+		Local playerID:Int = GetShownPlayerID()
+		
+		UpdateScriptAgencyOffers(playerID, sideButtonPanelWidth + 5, 13 + 45 + 5)
+
+		For Local b:TDebugControlsButton = EachIn buttonsScriptAgency
+			b.Update()
+		Next
+	End Method
+
+
+	Method RenderMode_ScriptAgency()
+		Local playerID:Int = GetShownPlayerID()
+		
+		RenderScriptAgencyInformation(playerID, sideButtonPanelWidth + 5, 13, , 45)
+		RenderScriptAgencyOffers(playerID, sideButtonPanelWidth + 5, 13 + 45 + 5)
+
+		For Local b:TDebugControlsButton = EachIn buttonsScriptAgency
+			b.Render()
+		Next
+
+
+		if scriptAgencyOfferHightlight
+			scriptAgencyOfferHightlight.ShowSheet(sideButtonPanelWidth + 5 + 450, 13, 0, -1)
+		endif
+	End Method
 
 
 
@@ -664,7 +782,414 @@ Type TDebugScreen
 	End Method
 
 
+	'=== Politics screen ===
+
+	Method InitMode_Politics()
+		Local texts:String[] = ["Send Terrorist", "Reset Terror Levels"]
+		Local button:TDebugControlsButton
+		For Local i:Int = 0 Until texts.length
+			button = New TDebugControlsButton
+			button.w = 150
+			button.h = 15
+			button.x = sideButtonPanelWidth + 10
+			button.y = 10 + i * (button.h + 3)
+			button.dataInt = i
+			button.text = texts[i]
+			button._onClickHandler = OnButtonClickHandler_Politics
+
+			buttonsPolitics :+ [button]
+		Next
+	End Method
+
+
+	Function OnButtonClickHandler_Politics(sender:TDebugControlsButton)
+		Select sender.dataInt
+			case 0
+				'send terrorist to a random room
+				If Not GetGame().networkGame
+					Global whichTerrorist:Int = 1
+					whichTerrorist = 1 - whichTerrorist
+
+					Local targetRoom:TRoom
+					Repeat
+						targetRoom = GetRoomCollection().GetRandom()
+					Until targetRoom.GetName() <> "building"
+					'Print TFigureTerrorist(GetGame().terrorists[whichTerrorist]).name +" - deliver to : "+targetRoom.GetName() + " [id="+targetRoom.id+", owner="+targetRoom.owner+"]"
+					TFigureTerrorist(GetGame().terrorists[whichTerrorist]).SetDeliverToRoom( targetRoom )
+				EndIf
+				
+'
+			case 1
+'					if GetRoomAgency().CancelRoomRental(useRoom, GetPlayerBase().playerID)
+'				GetRoomAgency().BeginRoomRental(useRoom, GetPlayerBase().playerID)
+		End Select
+
+		'handled
+		sender.clicked = False
+		sender.selected = False
+	End Function
+
+
+	Method UpdateMode_Politics()
+		Local playerID:Int = GetShownPlayerID()
+
+		For Local b:TDebugControlsButton = EachIn buttonsPolitics
+			b.Update()
+		Next
+	End Method
+
+
+	Method RenderMode_Politics()
+		Local playerID:Int = GetShownPlayerID()
+
+		For Local b:TDebugControlsButton = EachIn buttonsPolitics
+			b.Render()
+		Next
+	End Method
+	
+	
+	'=== MODIFIERS screen ===
+
+	Method InitMode_Modifiers()
+		rem
+		 none for now
+		Local texts:String[] = ["Nothing"]
+		Local button:TDebugControlsButton
+		For Local i:Int = 0 Until texts.length
+			button = New TDebugControlsButton
+			button.w = 180
+			button.h = 15
+			button.x = sideButtonPanelWidth + 10
+			button.y = 10 + i * (button.h + 3)
+			button.dataInt = i
+			button.text = texts[i]
+			button._onClickHandler = OnButtonClickHandler_Modifiers
+
+			buttonsModifiers :+ [button]
+		Next
+		endrem
+	End Method
+
+
+	Function OnButtonClickHandler_Modifiers(sender:TDebugControlsButton)
+		Select sender.dataInt
+			case 0
+				'nothing
+		End Select
+
+		'handled
+		sender.clicked = False
+		sender.selected = False
+	End Function
+
+
+	Method UpdateMode_Modifiers()
+		Local playerID:Int = GetShownPlayerID()
+
+		For Local b:TDebugControlsButton = EachIn buttonsModifiers
+			b.Update()
+		Next
+	End Method
+
+
+	Method RenderMode_Modifiers()
+		Local playerID:Int = GetShownPlayerID()
+
+		For Local b:TDebugControlsButton = EachIn buttonsModifiers
+			b.Render()
+		Next
+		
+		RenderGameModifierList(playerID, sideButtonPanelWidth + 5, 13)
+	End Method
+	
+
+	'=== MISC screen ===
+
+	Method InitMode_Misc()
+		Local texts:String[] = ["Print Ad Stats", "Print Players Today Finance Overview", "Print All Players Finance Overview", "Print Players Today Broadcast Stats", "Print Total Broadcast Stats", "Print Performance Stats"]
+		Local button:TDebugControlsButton
+		For Local i:Int = 0 Until texts.length
+			button = New TDebugControlsButton
+			button.w = 180
+			button.h = 15
+			button.x = sideButtonPanelWidth + 10
+			button.y = 10 + i * (button.h + 3)
+			button.dataInt = i
+			button.text = texts[i]
+			button._onClickHandler = OnButtonClickHandler_Misc
+
+			buttonsMisc :+ [button]
+		Next
+	End Method
+
+
+	Function OnButtonClickHandler_Misc(sender:TDebugControlsButton)
+		Select sender.dataInt
+			case 0
+				Local adList:TList = CreateList()
+				For Local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+					adList.AddLast(a)
+				Next
+				adList.Sort(True, TAdContractBase.SortByName)
+
+
+				Print "==== AD CONTRACT OVERVIEW ===="
+				Print ".---------------------------------.------------------.---------.----------.----------.-------.-------."
+				Print "| Name                            | Audience       % |  Image  |  Profit  |  Penalty | Spots | Avail |"
+				Print "|---------------------------------+------------------+---------+----------+----------|-------|-------|"
+
+				'For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
+				For Local a:TAdContractBase = EachIn adList
+					Local ad:TAdContract = New TAdContract
+					'do NOT call ad.Create() as it adds to the adcollection
+					ad.base = a
+					Local title:String = LSet(a.GetTitle(), 30)
+					Local audience:String = LSet( RSet(ad.GetMinAudience(), 7), 8)+"  "+RSet( MathHelper.NumberToString(100 * a.minAudienceBase,2)+"%", 6)
+					Local image:String =  RSet(MathHelper.NumberToString(ad.GetMinImage()*100, 2)+"%", 7)
+					Local profit:String =  RSet(ad.GetProfit(), 8)
+					Local penalty:String =  RSet(ad.GetPenalty(), 8)
+					Local spots:String = RSet(ad.GetSpotCount(), 5)
+					Local availability:String = ""
+					Local targetGroup:String = ""
+					If ad.GetLimitedToTargetGroup() > 0
+						targetGroup = "* "+ getLocale("AD_TARGETGROUP")+": "+ad.GetLimitedToTargetGroupString()
+						title :+ "*"
+					Else
+						title :+ " "
+					EndIf
+					If ad.base.IsAvailable()
+						availability = RSet("Yes", 5)
+					Else
+						availability = RSet("No", 5)
+					EndIf
+
+					Print "| "+title + " | " + audience + " | " + image + " | " + profit + " | " + penalty + " | " + spots+" | " + availability +" |" + targetgroup
+
+				Next
+				Print "'---------------------------------'------------------'---------'----------'----------'-------'-------'"
+'
+			case 1
+				'single overview - only today
+				Local text:String[] = GetPlayerFinanceOverviewText(GetPlayer().playerID, GetWorldTime().GetOnDay() -1 )
+				For Local s:String = EachIn text
+					Print s
+				Next
+
+			case 2
+				Local playerIDs:Int[] = [1,2,3,4]
+
+				Print "====== TOTAL FINANCE OVERVIEW ======" + "~n"
+				Local result:String = ""
+				For Local day:Int = GetWorldTime().GetStartDay() To GetworldTime().GetDay()
+					For Local playerID:Int = EachIn playerIDs
+						For Local s:String = EachIn GetPlayerFinanceOverviewText(playerID, day)
+							result :+ s+"~n"
+						Next
+					Next
+					result :+ "~n~n"
+				Next
+
+				Local logFile:TStream = WriteStream("utf8::" + "logfiles/log.financeoverview.txt")
+				logFile.WriteString(result)
+				logFile.close()
+				Print result
+				Print "===================================="
+
+			case 3
+				Print GetBroadcastOverviewString()
+
+			case 4
+				Print "====== TOTAL BROADCAST OVERVIEW ======" + "~n"
+				Local result:String = ""
+				For Local day:Int = GetWorldTime().GetStartDay() To GetworldTime().GetDay()
+					result :+ GetBroadcastOverviewString(day)
+				Next
+
+				Local logFile:TStream = WriteStream("utf8::" + "logfiles/log.broadcastoverview.txt")
+				logFile.WriteString(result)
+				logFile.close()
+				Print result
+				Print "======================================"
+
+			case 5
+				Print "====== TOTAL PLAYER PERFORMANCE OVERVIEW ======" + "~n"
+				Local result:String = ""
+				For Local day:Int = GetWorldTime().GetStartDay() To GetworldTime().GetDay()
+					Local text:String[] = GetPlayerPerformanceOverviewText(day)
+					For Local s:String = EachIn text
+						result :+ s + "~n"
+					Next
+				Next
+
+				Local logFile:TStream = WriteStream("utf8::" + "logfiles/log.playerperformanceoverview.txt")
+				logFile.WriteString(result)
+				logFile.close()
+
+				Print result
+				Print "==============================================="
+				
+			case 6
+				GetPlayer().GetProgrammePlan().printOverview()
+		End Select
+
+		'handled
+		sender.clicked = False
+		sender.selected = False
+	End Function
+
+
+	Method UpdateMode_Misc()
+		Local playerID:Int = GetShownPlayerID()
+
+		For Local b:TDebugControlsButton = EachIn buttonsMisc
+			b.Update()
+		Next
+	End Method
+
+
+	Method RenderMode_Misc()
+		Local playerID:Int = GetShownPlayerID()
+
+		For Local b:TDebugControlsButton = EachIn buttonsMisc
+			b.Render()
+		Next
+	End Method
+
+
+
+
 	'=== BLOCKS ===
+	Method RenderGameModifierList(playerID:int, x:int, y:int, w:int = 300, h:int = 300)
+		DrawOutlineRect(x, y, w, h)
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+
+		titleFont.DrawSimple("Game Modifiers: ", textX, textY)
+
+		textY :+ 12 
+
+		Local data:TData = GameConfig._modifiers
+		If data
+			For Local k:TLowerString = EachIn data.data.Keys()
+				If textY + 12 > y + h Then Continue
+
+				textFont.DrawBox(k.ToString(), textX, textY, w - 10 - 40, 15, sALIGN_LEFT_TOP, SColor8.White)
+				textFont.DrawBox(MathHelper.NumberToString(data.GetFloat(k.ToString()), 3), textX, textY, w - 10, 15, sALIGN_RIGHT_TOP, SColor8.White)
+				textY :+ 12
+			Next
+		EndIf
+	End Method
+
+
+	Method RenderScriptAgencyInformation(playerID:int, x:int, y:int, w:int = 200, h:int = 30)
+		DrawOutlineRect(x, y, w, h)
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+
+		textFont.DrawSimple("Offer refill: " + GetGameBase().refillScriptAgencyTime +"min", x, y)
+	End Method
+
+
+	Method UpdateScriptAgencyOffers(playerID:int, x:int, y:int, w:int = 400, h:int = 150)
+		scriptAgencyOfferHightlight = null
+
+
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+
+		textY :+ 15
+		if not scriptAgencyOfferHightlight
+			For local script:TScript = EachIn GetScriptCollection().GetUsedScriptList()
+				if THelper.MouseIn(textX, textY, 200, 13)
+					scriptAgencyOfferHightlight = script
+					exit
+				EndIf
+				textY:+ 13
+			Next
+		endif
+
+		textY = y + 5
+		textX :+ 200
+		textY :+ 15
+		if not scriptAgencyOfferHightlight
+			For local script:TScript = EachIn GetScriptCollection().GetAvailableScriptList()
+				if THelper.MouseIn(textX, textY, 200, 13)
+					scriptAgencyOfferHightlight = script
+					exit
+				EndIf
+				textY:+ 13
+			Next
+		endif
+
+	End Method
+
+
+	Method RenderScriptAgencyOffers(playerID:int, x:int, y:int, w:int = 400, h:int = 150)
+		DrawOutlineRect(x, y, w, h)
+		Local textX:Int = x + 5
+		Local textY:Int = y + 5
+		Local entryNum:Int = 0
+		Local oldAlpha:Float = GetAlpha()
+		Local barWidth:int = 180
+
+		titleFont.DrawSimple("Offered:", textX, textY)
+		textY :+ 12
+		For local script:TScript = EachIn GetScriptCollection().GetUsedScriptList()
+			If entryNum Mod 2 = 0
+				SetColor 0,0,0
+			Else
+				SetColor 60,60,60
+			EndIf
+			SetAlpha 0.75 * oldAlpha
+			DrawRect(textX, textY, barWidth, 12)
+
+			SetColor 255,255,255
+			SetAlpha oldAlpha
+
+			if script = scriptAgencyOfferHightlight
+				SetAlpha 0.25 * oldAlpha
+				SetBlend LIGHTBLEND
+				DrawRect(textX, textY, barWidth, 12)
+				SetAlpha oldAlpha
+				SetBlend ALPHABLEND
+			endif
+
+			textFont.DrawSimple(script.GetTitle(), textX, textY - 2)
+			textY:+ 13
+			entryNum :+ 1
+		Next
+		
+		textY = y + 5
+		textX :+ 200
+		textFont.DrawSimple("Available:", textX, textY)
+		textY :+ 15
+		entryNum = 0
+		For local script:TScript = EachIn GetScriptCollection().GetAvailableScriptList()
+			If entryNum Mod 2 = 0
+				SetColor 0,0,0
+			Else
+				SetColor 60,60,60
+			EndIf
+			SetAlpha 0.75 * oldAlpha
+			DrawRect(textX, textY, barWidth, 12)
+
+			SetColor 255,255,255
+			SetAlpha oldAlpha
+
+			if script = scriptAgencyOfferHightlight
+				SetAlpha 0.25 * oldAlpha
+				SetBlend LIGHTBLEND
+				DrawRect(textX, textY, barWidth, 12)
+				SetAlpha oldAlpha
+				SetBlend ALPHABLEND
+			endif
+
+			textFont.DrawSimple(script.GetTitle(), textX, textY - 2)
+			textY:+ 13
+			entryNum :+ 1
+		Next
+	End Method
+
 
 	Method RenderNewsAgencyInformation(playerID:int, x:int, y:int, w:int = 180, h:int = 150)
 		DrawOutlineRect(x, y, w, h)
@@ -1213,9 +1738,9 @@ endrem
 			Local boxWidth:Int = labelWidth + padding + colWidth*3 + 2 '2 is border*2
 
 			SetColor 40,40,40
-			DrawRect(x, y, boxWidth, 135)
+			DrawRect(x, y, boxWidth, 140)
 			SetColor 50,50,40
-			DrawRect(x+1, y+1, boxWidth-2, 135)
+			DrawRect(x+1, y+1, boxWidth-2, 140)
 			SetColor 255,255,255
 
 			Local textX:Int = x + 3
@@ -2432,7 +2957,7 @@ Type TDebugFinancialInfos
 		EndIf
 
 		SetColor 0,0,0
-		DrawRect(x, y, 123, 30)
+		DrawRect(x, y, 123, 35)
 
 		SetColor 255,255,255
 
@@ -2448,37 +2973,5 @@ Type TDebugFinancialInfos
 		font.Draw("~tLic:~t~t|color=120,255,120|"+MathHelper.DottedValue(finance.income_programmeLicences)+"|/color| / |color=255,120,120|"+MathHelper.DottedValue(finance.expense_programmeLicences), textX, textY)
 		textY :+ 9
 		font.Draw("~tAd:~t~t|color=120,255,120|"+MathHelper.DottedValue(finance.income_ads)+"|/color| / |color=255,120,120|"+MathHelper.DottedValue(finance.expense_penalty), textX, textY)
-	End Method
-End Type
-
-
-
-Type TDebugModifierInfos
-	Method Update(x:Int, y:Int)
-	End Method
-
-	Method Draw(x:Int=0, y:Int=0)
-		SetColor 0,0,0
-		DrawRect(x, y, 250, 380)
-
-		SetColor 255,255,255
-
-		Local textX:Int = x+1
-		Local textY:Int = y+1
-
-		Local font:TBitmapfont = GetBitmapFont("default", 10)
-		font.DrawSimple("Modifiers", textX, textY)
-		textY :+ 12
-
-		Local data:TData = GameConfig._modifiers
-		If data
-			For Local k:TLowerString = EachIn data.data.Keys()
-				If textY > 370 Then Continue
-
-				font.DrawBox(k.ToString(), textX, textY, 210, 15, sALIGN_LEFT_TOP, SColor8.White)
-				font.DrawBox(MathHelper.NumberToString(data.GetFloat(k.ToString()), 3), textX, textY, 245, 15, sALIGN_RIGHT_TOP, SColor8.White)
-				textY :+ 12
-			Next
-		EndIf
 	End Method
 End Type

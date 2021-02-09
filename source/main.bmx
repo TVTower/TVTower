@@ -752,86 +752,6 @@ Type TApp
 						GetBuildingTime().AdjustTimeFactor(-0.05)
 					EndIf
 
-					If KeyManager.IsHit(KEY_F)
-						If KeyManager.IsDown(KEY_LSHIFT) Or KeyManager.IsDown(KEY_RSHIFT)
-							If KeyManager.IsDown(KEY_RSHIFT)
-								Local playerIDs:Int[] = [1,2,3,4]
-
-								Print "====== TOTAL FINANCE OVERVIEW ======" + "~n"
-								Local result:String = ""
-								For Local day:Int = GetWorldTime().GetStartDay() To GetworldTime().GetDay()
-									For Local playerID:Int = EachIn playerIDs
-										For Local s:String = EachIn GetPlayerFinanceOverviewText(playerID, day)
-											result :+ s+"~n"
-										Next
-									Next
-									result :+ "~n~n"
-								Next
-
-								Local logFile:TStream = WriteStream("utf8::" + "log.financeoverview.txt")
-								logFile.WriteString(result)
-								logFile.close()
-								Print result
-								Print "===================================="
-							Else
-								'single overview - only today
-
-								Local text:String[] = GetPlayerFinanceOverviewText(GetPlayer().playerID, GetWorldTime().GetOnDay() -1 )
-								For Local s:String = EachIn text
-									Print s
-								Next
-							EndIf
-						EndIf
-					EndIf
-
-
-					If KeyManager.IsHit(KEY_W)
-						If KeyManager.IsDown(KEY_LSHIFT) Or KeyManager.IsDown(KEY_RSHIFT)
-							Local adList:TList = CreateList()
-							For Local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
-								adList.AddLast(a)
-							Next
-							adList.Sort(True, TAdContractBase.SortByName)
-
-
-
-							Print "==== AD CONTRACT OVERVIEW ===="
-							Print ".---------------------------------.------------------.---------.----------.----------.-------.-------."
-							Print "| Name                            | Audience       % |  Image  |  Profit  |  Penalty | Spots | Avail |"
-							Print "|---------------------------------+------------------+---------+----------+----------|-------|-------|"
-
-							'For local a:TAdContractBase = EachIn GetAdContractBaseCollection().entries.Values()
-							For Local a:TAdContractBase = EachIn adList
-								Local ad:TAdContract = New TAdContract
-								'do NOT call ad.Create() as it adds to the adcollection
-								ad.base = a
-								Local title:String = LSet(a.GetTitle(), 30)
-								Local audience:String = LSet( RSet(ad.GetMinAudience(), 7), 8)+"  "+RSet( MathHelper.NumberToString(100 * a.minAudienceBase,2)+"%", 6)
-								Local image:String =  RSet(MathHelper.NumberToString(ad.GetMinImage()*100, 2)+"%", 7)
-								Local profit:String =  RSet(ad.GetProfit(), 8)
-								Local penalty:String =  RSet(ad.GetPenalty(), 8)
-								Local spots:String = RSet(ad.GetSpotCount(), 5)
-								Local availability:String = ""
-								Local targetGroup:String = ""
-								If ad.GetLimitedToTargetGroup() > 0
-									targetGroup = "* "+ getLocale("AD_TARGETGROUP")+": "+ad.GetLimitedToTargetGroupString()
-									title :+ "*"
-								Else
-									title :+ " "
-								EndIf
-								If ad.base.IsAvailable()
-									availability = RSet("Yes", 5)
-								Else
-									availability = RSet("No", 5)
-								EndIf
-
-								Print "| "+title + " | " + audience + " | " + image + " | " + profit + " | " + penalty + " | " + spots+" | " + availability +" |" + targetgroup
-
-							Next
-							Print "'---------------------------------'------------------'---------'----------'----------'-------'-------'"
-						EndIf
-					EndIf
-
 
 					If KeyManager.IsHit(KEY_Y)
 						'print some debug for stationmap
@@ -921,11 +841,11 @@ Type TApp
 						Local dailyBroadcastStatistic:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day, True)
 						local r:TAudienceResult = TAudienceResult(dailyBroadcastStatistic.GetAudienceResult(1, dayHour))
 						if r then print r.ToString()
-						endrem
 
 						Local addLicences:String[]
 						Local addContracts:String[]
 						Local addNewsEventTemplates:String[]
+						endrem
 
 						'addNewsEventTemplates :+ ["ronny-news-drucktaste-02b"]
 						'addLicences :+ ["TheRob-Mon-TvTower-EinmonumentalerVersuch"]
@@ -1151,29 +1071,18 @@ Type TApp
 
 
 					If Not GetPlayer().GetFigure().isChangingRoom()
-						If Not KeyManager.IsDown(KEY_LSHIFT) And Not KeyManager.IsDown(KEY_RSHIFT)
-							If GameConfig.observerMode
-								If KeyManager.IsHit(KEY_1) Then GameConfig.SetObservedObject( GetPlayer(1).GetFigure() )
-								If KeyManager.IsHit(KEY_2) Then GameConfig.SetObservedObject( GetPlayer(2).GetFigure() )
-								If KeyManager.IsHit(KEY_3) Then GameConfig.SetObservedObject( GetPlayer(3).GetFigure() )
-								If KeyManager.IsHit(KEY_4) Then GameConfig.SetObservedObject( GetPlayer(4).GetFigure() )
-							Else
-								If KeyManager.IsHit(KEY_1) Then GetGame().SetActivePlayer(1)
-								If KeyManager.IsHit(KEY_2) Then GetGame().SetActivePlayer(2)
-								If KeyManager.IsHit(KEY_3) Then GetGame().SetActivePlayer(3)
-								If KeyManager.IsHit(KEY_4) Then GetGame().SetActivePlayer(4)
-							EndIf
-						ElseIf KeyManager.IsDown(KEY_RSHIFT)
-							If KeyManager.IsHit(Key_1) And GetPlayer(1).isLocalAI() Then GetPlayer(1).PlayerAI.reloadScript()
-							If KeyManager.IsHit(Key_2) And GetPlayer(2).isLocalAI() Then GetPlayer(2).PlayerAI.reloadScript()
-							If KeyManager.IsHit(Key_3) And GetPlayer(3).isLocalAI() Then GetPlayer(3).PlayerAI.reloadScript()
-							If KeyManager.IsHit(Key_4) And GetPlayer(4).isLocalAI() Then GetPlayer(4).PlayerAI.reloadScript()
+						If GameConfig.observerMode
+							If KeyManager.IsHit(KEY_1) Then GameConfig.SetObservedObject( GetPlayer(1).GetFigure() )
+							If KeyManager.IsHit(KEY_2) Then GameConfig.SetObservedObject( GetPlayer(2).GetFigure() )
+							If KeyManager.IsHit(KEY_3) Then GameConfig.SetObservedObject( GetPlayer(3).GetFigure() )
+							If KeyManager.IsHit(KEY_4) Then GameConfig.SetObservedObject( GetPlayer(4).GetFigure() )
 						Else
-							If KeyManager.IsHit(KEY_1) Then GetGame().SetPlayerBankrupt(1)
-							If KeyManager.IsHit(KEY_2) Then GetGame().SetPlayerBankrupt(2)
-							If KeyManager.IsHit(KEY_3) Then GetGame().SetPlayerBankrupt(3)
-							If KeyManager.IsHit(KEY_4) Then GetGame().SetPlayerBankrupt(4)
+							If KeyManager.IsHit(KEY_1) Then GetGame().SetActivePlayer(1)
+							If KeyManager.IsHit(KEY_2) Then GetGame().SetActivePlayer(2)
+							If KeyManager.IsHit(KEY_3) Then GetGame().SetActivePlayer(3)
+							If KeyManager.IsHit(KEY_4) Then GetGame().SetActivePlayer(4)
 						EndIf
+
 
 						If KeyManager.IsHit(KEY_W)
 							If Not KeyManager.IsDown(KEY_LSHIFT) And Not KeyManager.IsDown(KEY_RSHIFT)
@@ -1236,45 +1145,6 @@ endrem
 				If KeyManager.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240*15 ) '240 minute per second
 				If KeyManager.IsHit(KEY_9) Then GetGame().SetGameSpeed( 1*15 )   '1 minute per second
 				If KeyManager.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
-				If KeyManager.IsDown(KEY_LALT) And KeyManager.IsHit(KEY_M) Then TVTDebugModifierInfos = 1 - TVTDebugModifierInfos
-
-				If KeyManager.IsHit(KEY_P)
-					If KeyManager.IsDown(KEY_LSHIFT)
-						Print GetBroadcastOverviewString()
-					ElseIf KeyManager.IsDown(KEY_RSHIFT)
-						Print "====== TOTAL BROADCAST OVERVIEW ======" + "~n"
-						Local result:String = ""
-						For Local day:Int = GetWorldTime().GetStartDay() To GetworldTime().GetDay()
-							result :+ GetBroadcastOverviewString(day)
-						Next
-
-						Local logFile:TStream = WriteStream("utf8::" + "log.broadcastoverview.txt")
-						logFile.WriteString(result)
-						logFile.close()
-						Print result
-						Print "======================================"
-
-					ElseIf KeyManager.IsDown(KEY_LCONTROL)
-						Print "====== TOTAL PLAYER PERFORMANCE OVERVIEW ======" + "~n"
-						Local result:String = ""
-						For Local day:Int = GetWorldTime().GetStartDay() To GetworldTime().GetDay()
-							Local text:String[] = GetPlayerPerformanceOverviewText(day)
-							For Local s:String = EachIn text
-								result :+ s + "~n"
-							Next
-						Next
-
-						Local logFile:TStream = WriteStream("utf8::" + "log.playerperformanceoverview.txt")
-						logFile.WriteString(result)
-						logFile.close()
-
-						Print result
-						Print "==============================================="
-
-					Else
-						GetPlayer().GetProgrammePlan().printOverview()
-					EndIf
-				EndIf
 
 				'Save game only when in a game
 				If GetGame().gamestate = TGame.STATE_RUNNING
@@ -1307,19 +1177,6 @@ endrem
 							Print "fig: "+fig.name+" not in room."
 						EndIf
 					Next
-				EndIf
-
-				'send terrorist to a random room
-				If KeyManager.IsHit(KEY_T) And Not GetGame().networkGame
-					Global whichTerrorist:Int = 1
-					whichTerrorist = 1 - whichTerrorist
-
-					Local targetRoom:TRoom
-					Repeat
-						targetRoom = GetRoomCollection().GetRandom()
-					Until targetRoom.GetName() <> "building"
-					Print TFigureTerrorist(GetGame().terrorists[whichTerrorist]).name +" - deliver to : "+targetRoom.GetName() + " [id="+targetRoom.id+", owner="+targetRoom.owner+"]"
-					TFigureTerrorist(GetGame().terrorists[whichTerrorist]).SetDeliverToRoom( targetRoom )
 				EndIf
 
 				'show ingame manual
@@ -1569,19 +1426,6 @@ endrem
 
 		If GetGame().gamestate <> TGame.STATE_RUNNING Then Return
 
-		If TVTDebugProgrammePlan
-			Local playerID:Int = GetPlayerBaseCollection().GetObservedPlayerID()
-			If GetInGameInterface().ShowChannel > 0
-				playerID = GetInGameInterface().ShowChannel
-			EndIf
-			If playerID <= 0 Then playerID = GetPlayerBase().playerID
-
-			debugProgrammePlanInfos.Update(playerID, 15, 15)
-			debugProgrammeCollectionInfos.Update(playerID, 415, 15)
-			debugPlayerControls.Update(playerID, 15, 365)
-		EndIf
-
-
 		If DebugScreen.enabled
 			GameConfig.mouseHandlingDisabled = True
 			DebugScreen.Update()
@@ -1601,63 +1445,6 @@ endrem
 
 		ElseIf TVTDebugQuoteInfos
 			debugAudienceInfos.Draw()
-		ElseIf TVTDebugModifierInfos
-			debugModifierInfos.Draw()
-
-		ElseIf TVTDebugProgrammePlan
-			Local playerID:Int = GetPlayerBaseCollection().GetObservedPlayerID()
-			If GetInGameInterface().ShowChannel > 0
-				playerID = GetInGameInterface().ShowChannel
-			EndIf
-			If playerID <= 0 Then playerID = GetPlayerBase().playerID
-
-			debugProgrammePlanInfos.Draw(playerID, 15, 15)
-			debugProgrammeCollectionInfos.Draw(playerID, 415, 15)
-			debugPlayerControls.Draw(playerID, 15, 365)
-
-			Local player:TPlayer = GetPlayer(playerID)
-			Local font:TBitmapFont = GetBitmapFont("default", 10)
-			Local fontB:TBitmapFont = GetBitmapFont("default", 10, BOLDFONT)
-			If player.playerAI
-				SetColor 40,40,40
-				DrawRect(605, 240, 185, 135)
-				SetColor 50,50,40
-				DrawRect(606, 241, 183, 23)
-				SetColor 255,255,255
-
-				Local textX:Int = 605 + 3
-				Local textY:Int = 240 + 3
-
-				Local assignmentType:Int = player.aiData.GetInt("currentTaskAssignmentType", 0)
-				If assignmentType = 1
-					font.Draw("Task: [F] " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
-				ElseIf assignmentType = 2
-					font.Draw("Task: [R]" + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
-				Else
-					font.Draw("Task: " + player.aiData.GetString("currentTask") + " ["+player.aiData.GetString("currentTaskStatus")+"]", textX, textY)
-				EndIf
-				textY :+ 10
-				font.Draw("Job:   " + player.aiData.GetString("currentTaskJob") + " ["+player.aiData.GetString("currentTaskJobStatus")+"]", textX, textY)
-				textY :+ 13
-
-				fontB.Draw("Task List: ", textX, textY)
-				fontB.Draw("Prio ", textX + 90 + 22*0, textY)
-				fontB.Draw("Bas", textX + 90 + 22*1, textY)
-				fontB.Draw("Sit", textX + 90 + 22*2, textY)
-				fontB.Draw("Req", textX + 90 + 22*3, textY)
-				textY :+ 10 + 2
-
-				For Local taskNumber:Int = 1 To player.aiData.GetInt("tasklist_count", 1)
-					font.Draw(player.aiData.GetString("tasklist_name"+taskNumber).Replace("Task", ""), textX, textY)
-					font.Draw(player.aiData.GetInt("tasklist_priority"+taskNumber), textX + 90 + 22*0, textY)
-					font.Draw(player.aiData.GetInt("tasklist_basepriority"+taskNumber), textX + 90 + 22*1, textY)
-					font.Draw(player.aiData.GetInt("tasklist_situationpriority"+taskNumber), textX + 90 + 22*2, textY)
-					font.Draw(player.aiData.GetInt("tasklist_requisitionpriority"+taskNumber), textX + 90 + 22*3, textY)
-					textY :+ 10
-				Next
-			EndIf
-
-'				debugProgrammePlanInfos.Draw((playerID + 1) mod 4, 415, 15)
 		EndIf
 	End Function
 
@@ -4069,15 +3856,6 @@ Type GameEvents
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
 				DebugScreen.Dev_MaxAudience(player.playerID)
 
-			Case "debug"
-				Local what:String = payload
-				Select what.Trim().ToLower()
-					Case "programmeplan"
-						TVTDebugProgrammePlan = True
-						TVTDebugQuoteInfos = False
-						TVTDebugModifierInfos = False
-				End Select
-
 			Case "commandai"
 				If Not player Then Return GetGame().SendSystemMessage(PLAYER_NOT_FOUND)
 				If Not player.IsLocalAI()
@@ -4413,7 +4191,6 @@ Type GameEvents
 			GetGame().SendSystemMessage("|b|rentroom|/b| [roomGUID or roomID]")
 			GetGame().SendSystemMessage("|b|setmasterkey|/b| [player#]")
 			GetGame().SendSystemMessage("|b|maxaudience|/b|")
-			GetGame().SendSystemMessage("|b|debug|/b| [programmeplan, ...]")
 			GetGame().SendSystemMessage("|b|commandai|/b| [cmd] [params]")
 			GetGame().SendSystemMessage("|b|playerai|/b| [player#] [on=1, off=0]")
 			GetGame().SendSystemMessage("|b|loaddb|/b| (dbname)")
