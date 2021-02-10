@@ -328,20 +328,16 @@ Sonstiges
 ---------
 * 1-4: Spieler wechseln (mit Observermodus nur Spieler beobachten)
 * Strg Links + O: Observermodus an/aus
-* Shift Rechts + 1-4: KI-Skript des Spielers neuladen
-* Shift Links + 1-4: Spieler bankrott setzen
 * G: Geister-Modus (frei mit Maus durch Hochhaus scrollen) an/aus
-* Shift Links + P: Ausstrahlungsuebersicht fuer heute (in Konsole)
-* Shift Rechts + P: Ausstrahlungsuebersicht alle Tage (in Konsole und Datei „log.broadcastoverview.txt“)
-* Strg Links + P: Leistungsuebersicht/Performanz aller Tage (in Konsole und Datei „log.playerperformanceoverview.txt“)
-* P: Programmplanuebersicht (in Konsole)
 
-* TAB: Debug-Infos ein-/ausblenden
-* Strg Links + TAB: Programmplan-Debug-Ansicht an/aus
+* TAB: Dev-/Debugpanel ein-/ausblenden
+* Strg Links + TAB: Raumspezifische-Debug-Ansicht an/aus
+* Q: Quoten-Debugbildschirm an/aus
 * K: ALLE Figuren werden aus den Raeumen gekickt
 * T: Terroristen losschicken
 
-* F1: Spielanleitung oder wenn verfügbar Raum-/Bildschirmspezifischen Hilfe anzeigen
+* F1: Spielanleitung oder wenn verfügbar Raum-/Bildschirmspezifischen
+Hilfe anzeigen
 * F6: Musik spielen
 * F10: Alle Fremdfiguren de-/aktivieren (Bewegungen)
 * F11: KI an/aus
@@ -349,11 +345,3 @@ Sonstiges
 * M: Musik/Soundausgabe an/aus
 * Shift+M: Soundeffekte an/aus
 * Strg+M: Musik an/aus
-
-Debugausgaben
---------------
-* Alt Links + M: Debugmodifieransicht an/aus
-* Q: Quoten-Debugbildschirm an/aus
-* Shift Rechts + F: Finanzuebersicht aller Tage (auch nach „log.financeoverview.txt“)
-* Shift Links + F: Finanzuebersicht aktueller Tag
-* Shift + W: Uebersicht Werbevertraege in DB
