@@ -106,9 +106,11 @@
 				</funny>
 				<namewoman>
 					<de>%PERSONGENERATOR_NAME(unk,2)%</de>
+					<en>%PERSONGENERATOR_NAME(unk,2)%</en>
 				</namewoman>
 				<nameman>
 					<de>%PERSONGENERATOR_LASTNAME(unk,1)%</de>
+					<en>%PERSONGENERATOR_LASTNAME(unk,1)%</en>
 				</nameman>
 			</variables>
 
@@ -134,8 +136,8 @@
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-fightagainst01">
 			<title>
-				<!-- international title for all incarnations - so "de" is enough -->
 				<de>%ADJECTIVE% %OBJECT%</de>
+				<en>%ADJECTIVE% %OBJECT%</en>
 			</title>
 			<description>
 				<de>%JOB% %ROLENAME1% %ACTION% %ENEMY%. Sie wollen %VICTIM% %ACTION2%.</de>
@@ -143,6 +145,7 @@
 			</description>
 
 			<variables>
+				<!-- international title for all incarnations - so "de" is enough -->
 				<object>
 					<de>Cannons|Guns|Ropes|Knifes|Jaws|Dynamite|Bones</de>
 				</object>
@@ -193,8 +196,8 @@
 
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-subtilehumor01">
 			<title>
-				<!-- international title for all incarnations - so "de" is enough -->
 				<de>%NUMBER% %OBJECT% %ACTION%</de>
+				<en>%NUMBER% %OBJECT% %ACTION%</en>
 			</title>
 			<description>
 				<de>Subtiles Drama trifft Holzhammerhumor. Alleiniger Star ist Nummer 1 der %NUMBER% %OBJECT%.</de>
@@ -281,9 +284,11 @@
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-ron-horrormovie1">
 			<title>
 				<de>%TITLE%</de>
+				<en>%TITLE%</en>
 			</title>
 			<description>
 				<de>%DESCRIPTION%</de>
+				<en>%DESCRIPTION%</en>
 			</description>
 			<variables>
 				<title>
@@ -292,7 +297,7 @@
 				</title>
 				<building>
 					<de>Schloss|Landsitz|Hotel|Gasthaus|Gasthof|Forsthaus|Dorf|Leuchtturm</de>
-					<en>Castle|Country House|Hotel|Inn|Forest House|Village|Lighthouse</en>
+					<en>Castle|Country House|Hotel|Inn|Tavern|Forest House|Village|Lighthouse</en>
 				</building>
 				<count>
 					<de>|||3 |4 |5 |8 |10 |1000 </de>
@@ -463,8 +468,8 @@
 		<!-- === SERIES === -->
 		<scripttemplate product="2" licence_type="3" guid="scripttemplate-random-ron-averagedayseries01">
 			<title>
-				<!-- international title for all incarnations - so "de" is enough -->
 				<de>%ATTRIBUTE% %OBJECT%</de>
+				<en>%ATTRIBUTE% %OBJECT%</en>
 			</title>
 			<description>
 				<de>Serie über %OBJECT% und ihren Alltag. %JOKES%</de>
