@@ -1920,6 +1920,10 @@ Type TGameState
 		'on that time (eg. TBuildingIntervalTimer) and they would else
 		'init with wrong times
 		GetWorldTime().Initialize()
+		'adjust time settings accordings to DEV.xml
+		GetWorldTime()._daysPerSeason = Min(1000, Max(1, GameRules.devConfig.GetInt("DEV_WORLD_DAYS_PER_SEASON", GetWorldTime()._daysPerSeason)))
+
+
 		GetBuildingTime().Initialize()
 		GetRoomDoorBaseCollection().Initialize()
 		GetRoomBaseCollection().Initialize()

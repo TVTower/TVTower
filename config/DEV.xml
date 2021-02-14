@@ -6,6 +6,10 @@
 			<DEV_OSD value="FALSE" />
 			<DEV_LOG value="TRUE" />
 
+			<!-- 
+			<DEV_WORLD_DAYS_PER_SEASON value="3" comment="value*4 = days per year" />
+			-->
+
 			<!--
 			<DEV_STATION_CONSTRUCTION_TIME value="0" />
 			<DEV_STATION_INCREASE_DAILY_MAINTENANCE_COSTS value="false" />

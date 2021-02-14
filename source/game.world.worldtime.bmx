@@ -187,12 +187,12 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	Method GetTimeGoneAsMinute:Long(sinceStart:Int = False) {_exposeToLua}
 		Local useTime:Long = _timeGone
 		If sinceStart Then useTime = (_timeGone - _timeStart)
-		Return useTime / MINUTELENGTH
+		Return useTime / Long(MINUTELENGTH)
 	End Method
 
 
 	Method GetYearLength:Long() {_exposeToLua}
-		return DAYLENGTH * GetDaysPerYear()
+		return Long(DAYLENGTH) * GetDaysPerYear()
 	End Method
 
 
