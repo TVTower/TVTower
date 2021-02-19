@@ -107,19 +107,6 @@ Type TGuiScript Extends TGUIGameListItem
 	End Method
 	
 	
-	Method IsDragable:Int() override
-		If script.owner <> GetPlayerBaseCollection().playerID And (script.owner<=0 And Not IsAffordable())
-			Return False
-		EndIf
-		'If script.owner = GetPlayerBaseCollection().playerID and not script.IsTradeable()
-		If not script.IsTradeable()
-			Return False
-		EndIf
-		
-		Return Super.IsDragable()
-	End Method
-
-
 	Method Draw() override
 		Local oldCol:SColor8
 		Local oldA:Float = GetAlpha()

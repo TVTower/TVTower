@@ -6,8 +6,8 @@ Import "Dig/base.util.registry.spriteentityloader.bmx"
 
 'Script agency
 Type RoomHandler_ScriptAgency extends TRoomHandler
-	Global hoveredGuiScript:TGuiScript = null
-	Global draggedGuiScript:TGuiScript = null
+	Global hoveredGuiScript:TGUIScriptAgencyScript = null
+	Global draggedGuiScript:TGUIScriptAgencyScript = null
 
 	Global VendorEntity:TSpriteEntity
 	'allows registration of drop-event
@@ -69,7 +69,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 				GuiListNormal[i].SetItemLimit( scriptsNormalAmount / GuiListNormal.length  )
 				GuiListNormal[i].SetSize(sprite.area.GetW() * (scriptsNormalAmount / GuiListNormal.length), sprite.area.GetH() )
 				GuiListNormal[i].SetSlotMinDimension(sprite.area.GetW(), sprite.area.GetH())
-				GuiListNormal[i].SetAcceptDrop("TGuiScript")
+				GuiListNormal[i].SetAcceptDrop("TGUIScriptAgencyScript")
 				GuiListNormal[i].setZindex(i)
 			Next
 
@@ -93,8 +93,8 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 			GuiListNormal2.SetEntryDisplacement( -scriptsNormal2Amount * GuiListNormal[0]._slotMinDimension.x, 5)
 			GuiListSuitcase.SetEntryDisplacement( 0, 0 )
 
-			GuiListNormal2.SetAcceptDrop("TGuiScript")
-			GuiListSuitcase.SetAcceptDrop("TGuiScript")
+			GuiListNormal2.SetAcceptDrop("TGUIScriptAgencyScript")
+			GuiListSuitcase.SetAcceptDrop("TGUIScriptAgencyScript")
 
 			'default vendor dimension
 			local vendorAreaDimension:TVec2D = new TVec2D.Init(200,300)
@@ -126,19 +126,19 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.ProgrammeCollection_MoveScript, onChangeProgrammeCollection ) ]
 
 		'check if dropping is possible (affordable price for a script dragged when dropping on a one)
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDropOnTarget, onTryDropScript, "TGuiScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDropOnTarget, onTryDropScript, "TGUIScriptAgencyScript") ]
 		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
 		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to vendor or suitcase
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTarget, onDropScript, "TGuiScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTarget, onDropScript, "TGUIScriptAgencyScript") ]
 		'stop dragging vendor elements if suitcase is full
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, OnTryDragScript, "TGuiScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnTryDrag, OnTryDragScript, "TGUIScriptAgencyScript") ]
 		'drop on vendor - sell things
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropScriptOnVendor, "TGuiScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropScriptOnVendor, "TGUIScriptAgencyScript") ]
 		'we want to know if we hover a specific block - to show a datasheet
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverScript, "TGuiScript" ) ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverScript, "TGUIScriptAgencyScript" ) ]
 		'this lists want to delete the item if a right mouse click happens...
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickScript, "TGuiScript") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickScript, "TGUIScriptAgencyScript") ]
 
 		'(re-)localize content
 		SetLanguage()
@@ -468,7 +468,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		Next
 		GuiListNormal2.EmptyList()
 		GuiListSuitcase.EmptyList()
-		For local guiScript:TGUIScript = eachin GuiManager.listDragged.Copy()
+		For local guiScript:TGUIScriptAgencyScript = eachin GuiManager.listDragged.Copy()
 			guiScript.remove()
 			guiScript = null
 		Next
@@ -485,7 +485,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		'===== REMOVE UNUSED =====
 		'remove gui elements with contracts the player does not have any longer
 		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(GetPlayerBase().playerID)
-		For local guiScript:TGUIScript = eachin GuiListSuitcase._slots
+		For local guiScript:TGUIScriptAgencyScript = eachin GuiListSuitcase._slots
 			'if the player has this script in suitcase or list, skip deletion
 			if programmeCollection.HasScript(guiScript.script) then continue
 			if programmeCollection.HasScriptInSuitcase(guiScript.script) then continue
@@ -499,7 +499,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		'create missing gui elements for the players suitcase scripts
 		For local script:TScript = eachin programmeCollection.suitcaseScripts
 			if guiListSuitcase.ContainsScript(script) then continue
-			local block:TGUIScript = new TGUIScript.CreateWithScript(script)
+			local block:TGUIScriptAgencyScript = new TGUIScriptAgencyScript.CreateWithScript(script)
 			'change look
 			block.InitAssets(block.getAssetName(-1, TRUE), block.getAssetName(-1, TRUE))
 
@@ -514,14 +514,14 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		'===== REMOVE UNUSED =====
 		'remove gui elements with contracts the vendor does not have any longer
 		For local i:int = 0 to GuiListNormal.length-1
-			For local guiScript:TGUIScript = eachin GuiListNormal[i]._slots
+			For local guiScript:TGUIScriptAgencyScript = eachin GuiListNormal[i]._slots
 				if not HasScript(guiScript.script)
 					guiScript.remove()
 					guiScript = null
 				endif
 			Next
 		Next
-		For local guiScript:TGUIScript = eachin GuiListNormal2._slots
+		For local guiScript:TGUIScriptAgencyScript = eachin GuiListNormal2._slots
 			if not HasScript(guiScript.script)
 				guiScript.remove()
 				guiScript = null
@@ -583,7 +583,7 @@ Type RoomHandler_ScriptAgency extends TRoomHandler
 		'try to fill in one of the normalList-Parts
 		For local i:int = 0 until lists.length
 			if lists[i].getFreeSlot() < 0 then continue
-			local block:TGUIScript = new TGUIScript.CreateWithScript(script)
+			local block:TGUIScriptAgencyScript = new TGUIScriptAgencyScript.CreateWithScript(script)
 			'change look
 			block.InitAssets(block.getAssetName(-1, FALSE), block.getAssetName(-1, TRUE))
 
@@ -742,7 +742,7 @@ endrem
 		'only react if the click came from the right mouse button
 		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
 
-		local guiScript:TGUIScript= TGUIScript(triggerEvent._sender)
+		local guiScript:TGUIScriptAgencyScript = TGUIScriptAgencyScript(triggerEvent._sender)
 		'ignore wrong types and NON-dragged items
 		if not guiScript or not guiScript.isDragged() then return FALSE
 
@@ -763,7 +763,7 @@ endrem
 	Function onMouseOverScript:int( triggerEvent:TEventBase )
 		if not CheckObservedFigureInRoom("scriptagency") then return FALSE
 
-		local item:TGUIScript = TGUIScript(triggerEvent.GetSender())
+		local item:TGUIScriptAgencyScript = TGUIScriptAgencyScript(triggerEvent.GetSender())
 		if item = Null then return FALSE
 
 		hoveredGuiScript = item
@@ -783,7 +783,7 @@ endrem
 		'only allow interaction if we observe our player and are there
 		if not CheckPlayerObservedAndInRoom("scriptagency") then return FALSE
 
-		local guiScript:TGUIScript = TGUIScript(triggerEvent._sender)
+		local guiScript:TGUIScriptAgencyScript = TGUIScriptAgencyScript(triggerEvent._sender)
 		local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
 		if not guiScript or not receiverList then return FALSE
 
@@ -801,9 +801,9 @@ endrem
 			default
 				'check if something is underlaying and whether it is
 				'a different script
-				local underlayingItem:TGUIScript = null
+				local underlayingItem:TGUIScriptAgencyScript = null
 				local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D.Init(-1,-1)))
-				if coord then underlayingItem = TGUIScript(receiverList.GetItemByCoord(coord))
+				if coord then underlayingItem = TGUIScriptAgencyScript(receiverList.GetItemByCoord(coord))
 
 				'allow drop on own place
 				if underlayingItem = guiScript then return TRUE
@@ -824,7 +824,7 @@ endrem
 		'only allow interaction if we observe our player and are there
 		if not CheckPlayerObservedAndInRoom("scriptagency") then return FALSE
 
-		local guiBlock:TGUIScript = TGUIScript( triggerEvent._sender )
+		local guiBlock:TGUIScriptAgencyScript = TGUIScriptAgencyScript( triggerEvent._sender )
 		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
 		if not guiBlock or not receiver or receiver <> VendorArea then return FALSE
 
@@ -864,7 +864,7 @@ endrem
 		'only allow interaction if we observe our player and are there
 		if not CheckPlayerObservedAndInRoom("scriptagency") then return FALSE
 
-		local guiScript:TGUIScript = TGUIScript(triggerEvent._sender)
+		local guiScript:TGUIScriptAgencyScript = TGUIScriptAgencyScript(triggerEvent._sender)
 		if not guiScript or not guiScript.script Then Return False
 
 
@@ -893,7 +893,7 @@ endrem
 		'only allow interaction if we observe our player and are there
 		if not CheckPlayerObservedAndInRoom("scriptagency") then return FALSE
 
-		local guiScript:TGUIScript = TGUIScript(triggerEvent._sender)
+		local guiScript:TGUIScriptAgencyScript = TGUIScriptAgencyScript(triggerEvent._sender)
 		local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
 		if not guiScript or not receiverList then return FALSE
 
@@ -1052,3 +1052,29 @@ endrem
 	End Method
 End Type
 
+
+
+
+Type TGUIScriptAgencyScript Extends TGUIScript
+    Method Create:TGUIScriptAgencyScript(pos:TVec2D=Null, dimension:TVec2D=Null, value:String="") override
+		Return TGUIScriptAgencyScript( Super.Create(pos, dimension, value) )
+	End Method
+
+
+	Method CreateWithScript:TGUIScriptAgencyScript(script:TScript) override
+		Return TGUIScriptAgencyScript( Super.CreateWithScript(script) )
+	End Method
+	
+
+	Method IsDragable:Int() override
+		If script.owner <> GetPlayerBaseCollection().playerID And (script.owner<=0 And Not IsAffordable())
+			Return False
+		EndIf
+
+		If not script.IsTradeable()
+			Return False
+		EndIf	
+			
+		Return Super.IsDragable()
+	End Method
+End Type
