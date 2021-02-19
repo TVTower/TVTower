@@ -1159,6 +1159,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'make suitcase/vendor highlighted if needed
 		Local highlightSuitcase:Int = False
 		Local highlightStudioManager:Int = False
+		Local highlightDesk:Int = False
 		Local highlightTrashBin:Int = False
 
 		If draggedGuiScript And draggedGuiScript.isDragged()
@@ -1166,6 +1167,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 				highlightSuitcase = True
 			EndIf
 			highlightStudioManager = True
+			highlightDesk = True
 			highlightTrashBin = True
 		EndIf
 		
@@ -1174,13 +1176,15 @@ Type RoomHandler_Studio Extends TRoomHandler
 			highlightStudioManager = True
 		EndIf
 
-		If highlightStudioManager Or highlightSuitcase or highlightTrashBin
+		If highlightStudioManager Or highlightSuitcase or highlightTrashBin or highlightDesk
 			Local oldColA:Float = GetAlpha()
 			SetBlend( LightBlend )
 			SetAlpha( oldColA * Float(0.4 + 0.2 * Sin(Time.GetAppTimeGone() / 5)) )
 
 			If highlightStudioManager
 				If studioManagerEntity Then studioManagerEntity.Render()
+			EndIf
+			If highlightDesk
 				GetSpriteFromRegistry("gfx_studio_deskhint").Draw(710, 325)
 			EndIf
 			If highlightSuitcase 
