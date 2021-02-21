@@ -676,542 +676,32 @@ Type TApp
 			Not GUIManager.GetKeyboardInputReceiver() And ..
 			Not (App.ExitAppDialogue Or App.EscapeMenuWindow)
 
+			'hotkeys specific for "Dev" or "Not Dev"
 			If GameRules.devConfig.GetBool(keyLS_DevKeys, False)
-				'Ich würde diesen Teil gern in eine separate Funktion auslagern...
-				'Dadurch würde die update-Methode wesentlich übersichtlicher
-				if collectDebugStats
-					If KeyManager.IsHit(KEY_MINUS) And KeyManager.IsDown(KEY_RCONTROL)
-						Rem
-						Global gcEnabled:Int = True
-						If gcEnabled
-							 GCSuspend()
-							 gcEnabled = False
-							 Print "DISABLED GC"
-						Else
-							 GCResume()
-							 gcEnabled = True
-							 Print "ENABLED GC"
-						EndIf
-						endrem
-
-						If printDebugStats
-							printDebugStats = False
-							Print "DISABLED DEBUG STATS"
-						Else
-							printDebugStats = True
-							Print "ENABLED DEBUG STATS"
-						EndIf
-					EndIf
-				endif
-
-				'in game and not gameover
-				If GetGame().gamestate = TGame.STATE_RUNNING And Not GetGame().IsGameOver()
-					If not TGUIListBase(GUIManager.GetFocus()) or not TGUIListBase(GUIManager.GetFocus()).IsHandlingKeyBoardScrolling() 
-						If KeyManager.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+5)
-						If KeyManager.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-5)
-					EndIf
-
-					If KeyManager.IsDown(KEY_RIGHT)
-						If Not KeyManager.IsDown(KEY_LCONTROL) And Not KeyManager.Isdown(KEY_RCONTROL)
-							TEntity.globalWorldSpeedFactor :+ 0.05
-							GetWorldTime().AdjustTimeFactor(+10)
-							GetBuildingTime().AdjustTimeFactor(+0.05)
-						Else
-							'fast forward
-							If Not DEV_FastForward
-								DEV_FastForward = True
-								DEV_FastForward_SpeedFactorBackup = TEntity.globalWorldSpeedFactor
-								DEV_FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
-								DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
-
-								If KeyManager.IsDown(KEY_RCONTROL)
-									TEntity.globalWorldSpeedFactor :+ 200
-									GetWorldTime().AdjustTimeFactor(+8000)
-									GetBuildingTime().AdjustTimeFactor(+200)
-								ElseIf KeyManager.IsDown(KEY_LCONTROL)
-									TEntity.globalWorldSpeedFactor :+ 50
-									GetWorldTime().AdjustTimeFactor(+2000)
-									GetBuildingTime().AdjustTimeFactor(+50)
-								EndIf
-							EndIf
-						EndIf
-					Else
-						'stop fast forward
-						If DEV_FastForward
-							DEV_FastForward = False
-							TEntity.globalWorldSpeedFactor = DEV_FastForward_SpeedFactorBackup
-							GetWorldTime()._timeFactor = DEV_FastForward_TimeFactorBackup
-							GetBuildingTime()._timeFactor = DEV_FastForward_BuildingTimeSpeedFactorBackup
-						EndIf
-					EndIf
-
-
-					If KeyManager.IsDown(KEY_LEFT) Then
-						TEntity.globalWorldSpeedFactor = Max( TEntity.globalWorldSpeedFactor - 0.05, 0)
-						GetWorldTime().AdjustTimeFactor(-10)
-						GetBuildingTime().AdjustTimeFactor(-0.05)
-					EndIf
-
-
-					If KeyManager.IsHit(KEY_Y)
-						'print some debug for stationmap
-						rem
-						For local pID:Int = 1 to 4
-							Print "GetStationMap("+pID+", True).GetReach() = " + GetStationMap(pID, True).GetReach()		
-						Next
-						For local pID:Int = 1 to 4
-							Print "GetBroadcastManager().GetAudienceResult("+pID+").WholeMarket = " + GetBroadcastManager().GetAudienceResult( pID ).WholeMarket.ToString()
-						Next
-						
-						Print "current markets for p1:" 
-						local sum:Int = 0
-						local marketNum:int = 1
-						For Local market:TAudienceMarketCalculation = EachIn GetBroadcastManager().GetCurrentBroadcast().AudienceMarkets
-							For Local playerID:Int = EachIn market.playerIDs
-								if playerID = 1 'our player there?
-									print "  " + Rset(marketNum, 3).Replace(" ", "0")+": "+ market.maxAudience.ToString() 
-									sum :+ market.maxAudience.GetTotalSum()
-									marketNum :+ 1
-								endif
-							Next
-						Next
-						Print "  SUM: " + sum 
-						
-						Local audienceAntenna:Int = GetStationMapCollection().GetTotalAntennaReceiverShare([1], [2,3,4]).x
-						Local audienceSatellite:Int = GetStationMapCollection().GetTotalSatelliteReceiverShare([1], [2,3,4]).x
-						Local audienceCableNetwork:Int = GetStationMapCollection().GetTotalCableNetworkReceiverShare([1], [2,3,4]).x
-						print "Stationmap: antenna=" + audienceAntenna + "  satellite=" + audienceSatellite + "  cable=" + audienceCableNetwork
-						endrem
-						
-						rem
-						local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("laundry", "laundry", 0)
-						GetRoomAgency().CancelRoomRental(room, GetPlayer().playerID)
-						GetRoomAgency().BeginRoomRental(room, GetPlayer().playerID)
-						room.SetUsedAsStudio(True)
-						GetGame().SendSystemMessage("[KEY_Y] Rented room '" + room.GetDescription() +"' ["+room.GetName() + "] for player '" + GetPlayer().name +"' ["+GetPlayer().playerID + "]!")
-						endrem
-
-						rem
-						local playerID:int = 2
-						local chatCMD:String = "CMD_forcetask StationMap 10000"
-	
-						GetPlayer(playerID).GetFinance().CheatMoney(100000000)
-						'move player to room
-						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", "", playerID), GetPlayer(playerID).GetFigure() )
-						'assign task
-						'GetPlayer(playerID).PlayerAI.CallLuaFunction("OnForceNextTask", null)
-						'GetPlayerBase(2).PlayerAI.CallOnChat(1, "CMD_forcetask " + taskName +" 1000", CHAT_COMMAND_WHISPER)
-						GetPlayer(playerID).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).AddInt(playerID).AddString(chatCMD).AddInt(CHAT_COMMAND_WHISPER))
-						print "AI - force station map task"
-						endrem
-
-
-						'print TFunctions.ConvertCompareValue(1009000, 1008800, 2) + ": " + TFunctions.ConvertValue(1009000, 2) + "  -  " + TFunctions.ConvertValue(1008800, 2)
-						'print TFunctions.ConvertCompareValue(1010100, 1009400, 2) + ": " + TFunctions.ConvertValue(1010100, 2) + "  -  " + TFunctions.ConvertValue(1009400, 2)
-					Rem
-						local pcIndex:Int = 0
-						For local pc:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.values()
-							if pcIndex = 1 'for first only
-								local oldLevel:int = pc.GetLevel()
-								pc.SetExperience( pc.GetExperience() + 500 )
-								if oldLevel <> pc.GetLevel()
-									print "Increased XP of production company ~q" + pc.name +"~q by 500. Levelup: " + oldLevel + " -> " + pc.GetLevel()
-								else
-									print "Increased XP of production company ~q" + pc.name +"~q by 500."
-								endif
-								exit
-							endif
-							pcIndex :+ 1
-						Next
-					End Rem
-					
-					Rem
-						Local reach:Int = GetStationMap( 1 ).GetReach()
-						print "reach: " + reach +"  audienceReach=" + GetBroadcastmanager().GetAudienceResult(1).WholeMarket.GetTotalSum()
-						reach = GetStationMap( 1 ).GetReach()
-					endrem
-
-						Rem
-						print "GetBroadcastManager: "
-						print GetBroadcastManager().GetAudienceResult(1).ToString()
-						print "Daily: "
-						debugstop
-						local dayHour:int = GetWorldTime().GetDayHour()
-						local day:int = GetWorldTime().GetDay()
-						Local dailyBroadcastStatistic:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day, True)
-						local r:TAudienceResult = TAudienceResult(dailyBroadcastStatistic.GetAudienceResult(1, dayHour))
-						if r then print r.ToString()
-
-						Local addLicences:String[]
-						Local addContracts:String[]
-						Local addNewsEventTemplates:String[]
-						endrem
-
-						'addNewsEventTemplates :+ ["ronny-news-drucktaste-02b"]
-						'addLicences :+ ["TheRob-Mon-TvTower-EinmonumentalerVersuch"]
-						'addContracts :+ ["ronny-ad-allhits-02"]
-
-						Rem
-						for local i:int = 0 to 9
-							print "i) unused: " + GetNewsEventTemplateCollection().GetUnusedAvailableInitialTemplateList(TVTNewsGenre.CULTURE).Count()
-							local newsEvent:TNewsEvent = GetNewsEventCollection().CreateRandomAvailable(TVTNewsGenre.CULTURE)
-							if newsEvent
-								GetNewsEventCollection().add(newsEvent)
-								GetNewsAgency().announceNewsEvent(newsEvent, 0, False)
-								print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"~q  at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
-							endif
-						next
-						endrem
-
-						Rem
-						For Local l:String = EachIn addNewsEventTemplates
-							Local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(l)
-							If template
-								Local newsEvent:TNewsEvent = New TNewsEvent.InitFromTemplate(template)
-								GetNewsEventCollection().Add(newsEvent)
-								GetNewsAgency().announceNewsEvent(newsEvent, 0, False)
-								Print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"] at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
-							EndIf
-						Next
-
-						For Local l:String = EachIn addContracts
-							Local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID(l)
-							If adContractBase
-								'forcefully add to the collection (skips requirements checks)
-								GetPlayerProgrammeCollection(1).AddAdContract(New TAdContract.Create(adContractBase), True)
-							EndIf
-						Next
-
-						For Local l:String = EachIn addLicences
-							Local p:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(l)
-							If Not p
-								Print "DEV: programme licence ~q"+l+"~q not found."
-								Continue
-							EndIf
-
-							If p.owner <> GetPlayer().playerID
-								p.SetOwner(0)
-								RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(p, 1)
-								Print "added movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
-							Else
-								Print "already had movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
-							EndIf
-						Next
-						EndRem
-
-
-						Rem
-						if GetAwardCollection().currentAward
-							TLogger.Log("DEV", "Awards: finish current award.", LOG_DEV)
-							GetAwardCollection().currentAward.AdjustScore(1, 1000)
-							GetAwardCollection().currentAward.SetEndTime( Long(GetWorldTime().GetTimeGone()-1) )
-							GetAwardCollection().UpdateAwards()
-						else
-							TLogger.Log("DEV", "Awards: force start of next award.", LOG_DEV)
-							GetAwardCollection().nextAwardTime = Long(GetWorldTime().GetTimeGone())
-							GetAwardCollection().UpdateAwards()
-						endif
-						endrem
-
-						Rem
-						local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("", "laundry")
-						if room
-							print "renting room: " + room.GetName()
-							GetRoomAgency().CancelRoomRental(room, GetPlayerBase().playerID)
-							GetRoomAgency().BeginRoomRental(room, GetPlayerBase().playerID)
-							room.SetUsedAsStudio(True)
-						else
-							print "room not found"
-						endif
-						endrem
-
-
-						Rem
-						local fCheap:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap
-						local fGood:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesGood
-						local fAuction:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction
-						local total:int = 0
-						local foundCheap:int = 0
-						local foundGood:int = 0
-						local foundAuction:int = 0
-						local foundSkipped:int = 0
-						local skippedFilterCount:int = 0
-						For local p:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences.Values()
-							if p.IsEpisode() then continue
-							if not p.IsReleased() then continue
-							if p.IsSeries() then continue
-
-							skippedFilterCount = 0
-
-							total :+1
-							if fCheap.DoesFilter(p)
-								'print p.GetTitle()
-								foundCheap :+ 1
-							else
-								skippedFilterCount :+ 1
-							endif
-
-							if fGood.DoesFilter(p)
-								'print p.GetTitle()
-								foundGood :+ 1
-							else
-								skippedFilterCount :+ 1
-							endif
-
-							if fAuction.DoesFilter(p)
-								'print p.GetTitle()
-								foundAuction :+ 1
-							else
-								skippedFilterCount :+ 1
-							endif
-
-							if skippedFilterCount = 3
-								print "unavailable: "+ p.GetTitle()+"  [year="+p.data.GetYear()+"  price="+p.GetPrice(GetPlayerBase().playerID)+"  topicality="+p.GetTopicality()+"/"+p.GetMaxTopicality()+"  quality="+p.GetQuality()+"]"
-								foundSkipped :+ 1
-							endif
-						Next
-						print "found cheap:"+foundCheap+", good:"+foundGood+", auction:"+foundAuction+", skipped:"+foundSkipped+" movies/series for 1985. Total="+total
-						endrem
-
-'						print "DEV: Set Player 2 bankrupt"
-'						GetGame().SetPlayerBankrupt(2)
-
-						'GetWorld().Weather.SetPressure(-14)
-						'GetWorld().Weather.SetTemperature(-10)
-
-						'send marshal to confiscate the licence
-						Rem
-						local licence:TProgrammeLicence = GetPlayer().GetProgrammeCollection().GetRandomProgrammeLicence()
-						if licence
-							TFigureMarshal(GetGame().marshals[rand(0,1)]).AddConfiscationJob( licence.GetGUID() )
-						else
-							print "no random licence to confiscate"
-						endif
-						endrem
-
-						'buy script
-						Rem
-						Local s:TScript = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
-						If Not s
-							RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
-							s = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
-						EndIf
-
-						If s
-							RoomHandler_ScriptAgency.GetInstance().SellScriptToPlayer(s, GetPlayer().playerID)
-							RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
-							Print "added script: "+s.GetTitle()
-						EndIf
-						endrem
-
-						Rem
-						RoomHandler_MovieAgency.GetInstance().RefillBlocks(true, 0.9)
-						endrem
-
-						Rem
-						'Programme bei mehreren Spielern
-						'duplicateCount = 0
-						for local playerA:int = 1 to 4
-							for local playerB:int = 1 to 4
-								if playerA = playerB then continue 'skip same
-
-
-								For local lA:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerA).programmeLicences
-									For local lB:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerB).programmeLicences
-
-										if lA = lB
-											print "found playercollection ("+playerA+" vs " + playerB+") duplicate: "+lA.GetTitle()
-											duplicateCount :+ 1
-											continue
-										endif
-
-										if lA.GetGUID() = lB.GetGUID()
-											print "found playercollection ("+playerA+" vs " + playerB+")  GUID duplicate: "+lA.GetTitle()
-											duplicateCount :+ 1
-											continue
-										endif
-
-										if lA.GetTitle() = lB.GetTitle() and lA.data.year = lB.data.year
-											print "found playercollection ("+playerA+" vs " + playerB+")  TITLE duplicate: "+lA.GetTitle()
-											duplicateCount :+ 1
-											continue
-										endif
-									Next
-								Next
-							Next
-						Next
-
-
-						'check possession
-						For local playerID:int = 1 to 4
-							For local l:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerID).programmeLicences
-								if l.owner <> playerID then print "found playerCollection OWNER bug: "+l.GetTitle()
-							Next
-						Next
-						endrem
-
-						Rem
-						local news:TNewsEvent = GetNewsEventCollection().GetByGUID("ronny-news-sandsturm-01")
-						GetNewsAgency().announceNewsEvent(news, 0, False)
-						print "happen: "+ news.GetTitle() + "  at: "+GetWorldTime().GetformattedTime(news.happenedTime)
-						endrem
-
-'						PrintCurrentTranslationState("en")
-					EndIf
-
-
-					If KeyManager.isDown(KEY_LCONTROL)
-						If KeyManager.IsHit(KEY_O)
-							GameConfig.observerMode = 1 - GameConfig.observerMode
-
-							KeyManager.ResetKey(KEY_O)
-							KeyManager.BlockKey(KEY_O, 150)
-						EndIf
-					EndIf
-
-
-					If Not GetPlayer().GetFigure().isChangingRoom()
-						If GameConfig.observerMode
-							If KeyManager.IsHit(KEY_1) Then GameConfig.SetObservedObject( GetPlayer(1).GetFigure() )
-							If KeyManager.IsHit(KEY_2) Then GameConfig.SetObservedObject( GetPlayer(2).GetFigure() )
-							If KeyManager.IsHit(KEY_3) Then GameConfig.SetObservedObject( GetPlayer(3).GetFigure() )
-							If KeyManager.IsHit(KEY_4) Then GameConfig.SetObservedObject( GetPlayer(4).GetFigure() )
-						Else
-							If KeyManager.IsHit(KEY_1) Then GetGame().SetActivePlayer(1)
-							If KeyManager.IsHit(KEY_2) Then GetGame().SetActivePlayer(2)
-							If KeyManager.IsHit(KEY_3) Then GetGame().SetActivePlayer(3)
-							If KeyManager.IsHit(KEY_4) Then GetGame().SetActivePlayer(4)
-						EndIf
-
-
-						If KeyManager.IsHit(KEY_W)
-							If Not KeyManager.IsDown(KEY_LSHIFT) And Not KeyManager.IsDown(KEY_RSHIFT)
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("adagency") )
-							EndIf
-						EndIf
-						If KeyManager.IsHit(KEY_A) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("archive", "", GetPlayerCollection().playerID) )
-						If KeyManager.IsHit(KEY_B) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "betty") )
-						If KeyManager.IsHit(KEY_F)
-							If Not KeyManager.IsDown(KEY_LSHIFT) And Not KeyManager.IsDown(KEY_RSHIFT)
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
-							EndIf
-						EndIf
-						If KeyManager.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "office", GetPlayerCollection().playerID))
-						If not (KeyManager.IsDown(KEY_LCONTROL) Or KeyManager.IsDown(KEY_RCONTROL))
-							If KeyManager.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "boss", GetPlayerCollection().playerID))
-						EndIf
-						If KeyManager.isHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
-Rem
-						If KeyManager.isHit(KEY_X)
-							print "Player: #" + GetPlayer().GetFigure().playerID + "   time: " + GetWorldTime().GetFormattedTime()
-							print "IsControllable: " + GetPlayer().GetFigure().IsControllable()
-							print "IsIdling: " + GetPlayer().GetFigure().IsIdling()
-							print "IsChangingRoom: " + GetPlayer().GetFigure().IsChangingRoom()
-							print "IsAtElevator: " + GetPlayer().GetFigure().IsAtElevator()
-							print "IsInElevator: " + GetPlayer().GetFigure().IsInElevator()
-							print "IsInBuilding: " + GetPlayer().GetFigure().IsInBuilding()
-							print "currentReachStep: " + GetPlayer().GetFigure().currentReachTargetStep
-							print "-----------------"
-						EndIf
-endrem
-						If KeyManager.isHit(KEY_S)
-							If KeyManager.IsDown(KEY_LCONTROL)
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "supermarket"))
-							ElseIf KeyManager.IsDown(KEY_RCONTROL) Or KeyManager.IsDown(KEY_LALT)
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "scriptagency"))
-							Else
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", "", GetPlayerCollection().playerID))
-							EndIf
-						EndIf
-						If KeyManager.IsHit(KEY_D) 'German "Drehbuchagentur"
-							DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "scriptagency"))
-						EndIf
-
-						'e wie "employees" :D
-						If KeyManager.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "credits"))
-						If KeyManager.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "news", GetPlayerCollection().playerID))
-						If KeyManager.IsHit(KEY_R)
-							If KeyManager.IsDown(KEY_LCONTROL) Or KeyManager.IsDown(KEY_RCONTROL)
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomboard"))
-							Else
-								DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomagency"))
-							EndIf
-						EndIf
-					EndIf
-				EndIf
-				If KeyManager.IsHit(KEY_5) Then GetGame().SetGameSpeed( 60*15 )  '60 virtual minutes per realtime second
-				If KeyManager.IsHit(KEY_6) Then GetGame().SetGameSpeed( 120*15 ) '120 minutes per second
-				If KeyManager.IsHit(KEY_7) Then GetGame().SetGameSpeed( 180*15 ) '180 minutes per second
-				If KeyManager.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240*15 ) '240 minute per second
-				If KeyManager.IsHit(KEY_9) Then GetGame().SetGameSpeed( 1*15 )   '1 minute per second
-				If KeyManager.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
-
-				'Save game only when in a game
-				If GetGame().gamestate = TGame.STATE_RUNNING
-					If KeyManager.IsHit(KEY_F5) Then TSaveGame.Save("savegames/quicksave.xml")
-				EndIf
-
-				If KeyManager.IsHit(KEY_F8)
-					If KeyManager.IsDown(KEY_LSHIFT)
-						TSaveGame.Load("savegames/quicksave.xml", True)
-					Else
-						TSaveGame.Load("savegames/quicksave.xml")
-					EndIf
-				EndIf
-
-				If KeyManager.IsHit(KEY_TAB)
-					If Not KeyManager.IsDown(KEY_LCONTROL)
-						DebugScreen.enabled = 1 - DebugScreen.enabled
-					Else
-						TVTDebugInfos = 1 - TVTDebugInfos
-					EndIf
-				EndIf
-
-				If KeyManager.IsHit(KEY_K)
-					TLogger.Log("KickAllFromRooms", "Player kicks all figures out of the rooms.", LOG_DEBUG)
-					For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
-						If fig.GetInRoom()
-							fig.KickOutOfRoom()
-							'fig.KickOutOfRoom(GetPlayer().GetFigure())
-						Else
-							Print "fig: "+fig.name+" not in room."
-						EndIf
-					Next
-				EndIf
-
-				'show ingame manual
-				If KeyManager.IsHit(KEY_F1) ' and not KeyManager.IsDown(KEY_RSHIFT)
-					IngameHelpWindowCollection.openHelpWindow()
-				EndIf
-
-				If KeyManager.Ishit(Key_F6) Then GetSoundManager().PlayMusicPlaylist("default")
-
-				If KeyManager.Ishit(Key_F11)
-					If (TAiBase.AiRunning)
-						TLogger.Log("CORE", "AI deactivated", LOG_INFO | LOG_DEV )
-						TAiBase.AiRunning = False
-					Else
-						TLogger.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
-						TAiBase.AiRunning = True
-					EndIf
-				EndIf
-				If KeyManager.Ishit(Key_F10)
-					If (TAiBase.AiRunning)
-						For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
-							If GetPlayerBase().GetFigure() <> fig Then fig.moveable = False
-						Next
-						TLogger.Log("CORE", "AI Figures deactivated", LOG_INFO | LOG_DEV )
-						TAiBase.AiRunning = False
-					Else
-						For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
-							If GetPlayerBase().GetFigure() <> fig Then fig.moveable = True
-						Next
-						TLogger.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
-						TAiBase.AiRunning = True
-					EndIf
-				EndIf
+				__DevHotKeys()
 			Else
 				__NonDevHotKeys()
+			EndIf
+
+
+			'hotkeys which should exist for dev and non-dev
+			'Save game only when in a game
+			If GetGame().gamestate = TGame.STATE_RUNNING
+				If KeyManager.IsHit(KEY_F5) Then TSaveGame.Save("savegames/quicksave.xml")
+			EndIf
+
+			If KeyManager.IsHit(KEY_F8)
+				'shift + F8 ignores potential compatibility issues
+				If KeyManager.IsDown(KEY_LSHIFT)
+					TSaveGame.Load("savegames/quicksave.xml", True)
+				Else
+					TSaveGame.Load("savegames/quicksave.xml")
+				EndIf
+			EndIf
+
+			'show ingame manual
+			If KeyManager.IsHit(KEY_F1) ' and not KeyManager.IsDown(KEY_RSHIFT)
+				IngameHelpWindowCollection.openHelpWindow()
 			EndIf
 		EndIf
 
@@ -1298,6 +788,525 @@ endrem
 
 		TProfiler.Leave(_profilerKey_Update)
 	End Function
+	
+	
+	Function __DevHotKeys:Int()
+		if collectDebugStats
+			If KeyManager.IsHit(KEY_MINUS) And KeyManager.IsDown(KEY_RCONTROL)
+				Rem
+				Global gcEnabled:Int = True
+				If gcEnabled
+					 GCSuspend()
+					 gcEnabled = False
+					 Print "DISABLED GC"
+				Else
+					 GCResume()
+					 gcEnabled = True
+					 Print "ENABLED GC"
+				EndIf
+				endrem
+
+				If printDebugStats
+					printDebugStats = False
+					Print "DISABLED DEBUG STATS"
+				Else
+					printDebugStats = True
+					Print "ENABLED DEBUG STATS"
+				EndIf
+			EndIf
+		endif
+
+		'in game and not gameover
+		If GetGame().gamestate = TGame.STATE_RUNNING And Not GetGame().IsGameOver()
+			If not TGUIListBase(GUIManager.GetFocus()) or not TGUIListBase(GUIManager.GetFocus()).IsHandlingKeyBoardScrolling() 
+				If KeyManager.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+5)
+				If KeyManager.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-5)
+			EndIf
+
+			If KeyManager.IsDown(KEY_RIGHT)
+				If Not KeyManager.IsDown(KEY_LCONTROL) And Not KeyManager.Isdown(KEY_RCONTROL)
+					TEntity.globalWorldSpeedFactor :+ 0.05
+					GetWorldTime().AdjustTimeFactor(+10)
+					GetBuildingTime().AdjustTimeFactor(+0.05)
+				Else
+					'fast forward
+					If Not DEV_FastForward
+						DEV_FastForward = True
+						DEV_FastForward_SpeedFactorBackup = TEntity.globalWorldSpeedFactor
+						DEV_FastForward_TimeFactorBackup = GetWorldTime()._timeFactor
+						DEV_FastForward_BuildingTimeSpeedFactorBackup = GetBuildingTime()._timeFactor
+
+						If KeyManager.IsDown(KEY_RCONTROL)
+							TEntity.globalWorldSpeedFactor :+ 200
+							GetWorldTime().AdjustTimeFactor(+8000)
+							GetBuildingTime().AdjustTimeFactor(+200)
+						ElseIf KeyManager.IsDown(KEY_LCONTROL)
+							TEntity.globalWorldSpeedFactor :+ 50
+							GetWorldTime().AdjustTimeFactor(+2000)
+							GetBuildingTime().AdjustTimeFactor(+50)
+						EndIf
+					EndIf
+				EndIf
+			Else
+				'stop fast forward
+				If DEV_FastForward
+					DEV_FastForward = False
+					TEntity.globalWorldSpeedFactor = DEV_FastForward_SpeedFactorBackup
+					GetWorldTime()._timeFactor = DEV_FastForward_TimeFactorBackup
+					GetBuildingTime()._timeFactor = DEV_FastForward_BuildingTimeSpeedFactorBackup
+				EndIf
+			EndIf
+
+
+			If KeyManager.IsDown(KEY_LEFT) Then
+				TEntity.globalWorldSpeedFactor = Max( TEntity.globalWorldSpeedFactor - 0.05, 0)
+				GetWorldTime().AdjustTimeFactor(-10)
+				GetBuildingTime().AdjustTimeFactor(-0.05)
+			EndIf
+
+
+			If KeyManager.IsHit(KEY_Y)
+				'print some debug for stationmap
+				rem
+				For local pID:Int = 1 to 4
+					Print "GetStationMap("+pID+", True).GetReach() = " + GetStationMap(pID, True).GetReach()		
+				Next
+				For local pID:Int = 1 to 4
+					Print "GetBroadcastManager().GetAudienceResult("+pID+").WholeMarket = " + GetBroadcastManager().GetAudienceResult( pID ).WholeMarket.ToString()
+				Next
+				
+				Print "current markets for p1:" 
+				local sum:Int = 0
+				local marketNum:int = 1
+				For Local market:TAudienceMarketCalculation = EachIn GetBroadcastManager().GetCurrentBroadcast().AudienceMarkets
+					For Local playerID:Int = EachIn market.playerIDs
+						if playerID = 1 'our player there?
+							print "  " + Rset(marketNum, 3).Replace(" ", "0")+": "+ market.maxAudience.ToString() 
+							sum :+ market.maxAudience.GetTotalSum()
+							marketNum :+ 1
+						endif
+					Next
+				Next
+				Print "  SUM: " + sum 
+				
+				Local audienceAntenna:Int = GetStationMapCollection().GetTotalAntennaReceiverShare([1], [2,3,4]).x
+				Local audienceSatellite:Int = GetStationMapCollection().GetTotalSatelliteReceiverShare([1], [2,3,4]).x
+				Local audienceCableNetwork:Int = GetStationMapCollection().GetTotalCableNetworkReceiverShare([1], [2,3,4]).x
+				print "Stationmap: antenna=" + audienceAntenna + "  satellite=" + audienceSatellite + "  cable=" + audienceCableNetwork
+				endrem
+				
+				rem
+				local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("laundry", "laundry", 0)
+				GetRoomAgency().CancelRoomRental(room, GetPlayer().playerID)
+				GetRoomAgency().BeginRoomRental(room, GetPlayer().playerID)
+				room.SetUsedAsStudio(True)
+				GetGame().SendSystemMessage("[KEY_Y] Rented room '" + room.GetDescription() +"' ["+room.GetName() + "] for player '" + GetPlayer().name +"' ["+GetPlayer().playerID + "]!")
+				endrem
+
+				rem
+				local playerID:int = 2
+				local chatCMD:String = "CMD_forcetask StationMap 10000"
+
+				GetPlayer(playerID).GetFinance().CheatMoney(100000000)
+				'move player to room
+				DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", "", playerID), GetPlayer(playerID).GetFigure() )
+				'assign task
+				'GetPlayer(playerID).PlayerAI.CallLuaFunction("OnForceNextTask", null)
+				'GetPlayerBase(2).PlayerAI.CallOnChat(1, "CMD_forcetask " + taskName +" 1000", CHAT_COMMAND_WHISPER)
+				GetPlayer(playerID).PlayerAI.AddEventObj( New TAIEvent.SetID(TAIEvent.OnChat).AddInt(playerID).AddString(chatCMD).AddInt(CHAT_COMMAND_WHISPER))
+				print "AI - force station map task"
+				endrem
+
+
+				'print TFunctions.ConvertCompareValue(1009000, 1008800, 2) + ": " + TFunctions.ConvertValue(1009000, 2) + "  -  " + TFunctions.ConvertValue(1008800, 2)
+				'print TFunctions.ConvertCompareValue(1010100, 1009400, 2) + ": " + TFunctions.ConvertValue(1010100, 2) + "  -  " + TFunctions.ConvertValue(1009400, 2)
+			Rem
+				local pcIndex:Int = 0
+				For local pc:TProductionCompanyBase = EachIn GetProductionCompanyBaseCollection().entries.values()
+					if pcIndex = 1 'for first only
+						local oldLevel:int = pc.GetLevel()
+						pc.SetExperience( pc.GetExperience() + 500 )
+						if oldLevel <> pc.GetLevel()
+							print "Increased XP of production company ~q" + pc.name +"~q by 500. Levelup: " + oldLevel + " -> " + pc.GetLevel()
+						else
+							print "Increased XP of production company ~q" + pc.name +"~q by 500."
+						endif
+						exit
+					endif
+					pcIndex :+ 1
+				Next
+			End Rem
+			
+			Rem
+				Local reach:Int = GetStationMap( 1 ).GetReach()
+				print "reach: " + reach +"  audienceReach=" + GetBroadcastmanager().GetAudienceResult(1).WholeMarket.GetTotalSum()
+				reach = GetStationMap( 1 ).GetReach()
+			endrem
+
+				Rem
+				print "GetBroadcastManager: "
+				print GetBroadcastManager().GetAudienceResult(1).ToString()
+				print "Daily: "
+				debugstop
+				local dayHour:int = GetWorldTime().GetDayHour()
+				local day:int = GetWorldTime().GetDay()
+				Local dailyBroadcastStatistic:TDailyBroadcastStatistic = GetDailyBroadcastStatistic(day, True)
+				local r:TAudienceResult = TAudienceResult(dailyBroadcastStatistic.GetAudienceResult(1, dayHour))
+				if r then print r.ToString()
+
+				Local addLicences:String[]
+				Local addContracts:String[]
+				Local addNewsEventTemplates:String[]
+				endrem
+
+				'addNewsEventTemplates :+ ["ronny-news-drucktaste-02b"]
+				'addLicences :+ ["TheRob-Mon-TvTower-EinmonumentalerVersuch"]
+				'addContracts :+ ["ronny-ad-allhits-02"]
+
+				Rem
+				for local i:int = 0 to 9
+					print "i) unused: " + GetNewsEventTemplateCollection().GetUnusedAvailableInitialTemplateList(TVTNewsGenre.CULTURE).Count()
+					local newsEvent:TNewsEvent = GetNewsEventCollection().CreateRandomAvailable(TVTNewsGenre.CULTURE)
+					if newsEvent
+						GetNewsEventCollection().add(newsEvent)
+						GetNewsAgency().announceNewsEvent(newsEvent, 0, False)
+						print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"~q  at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
+					endif
+				next
+				endrem
+
+				Rem
+				For Local l:String = EachIn addNewsEventTemplates
+					Local template:TNewsEventTemplate = GetNewsEventTemplateCollection().GetByGUID(l)
+					If template
+						Local newsEvent:TNewsEvent = New TNewsEvent.InitFromTemplate(template)
+						GetNewsEventCollection().Add(newsEvent)
+						GetNewsAgency().announceNewsEvent(newsEvent, 0, False)
+						Print "happen: ~q"+ newsEvent.GetTitle() + "~q ["+newsEvent.GetGUID()+"] at: "+GetWorldTime().GetformattedTime(newsEvent.happenedTime)
+					EndIf
+				Next
+
+				For Local l:String = EachIn addContracts
+					Local adContractBase:TAdContractBase = GetAdContractBaseCollection().GetByGUID(l)
+					If adContractBase
+						'forcefully add to the collection (skips requirements checks)
+						GetPlayerProgrammeCollection(1).AddAdContract(New TAdContract.Create(adContractBase), True)
+					EndIf
+				Next
+
+				For Local l:String = EachIn addLicences
+					Local p:TProgrammeLicence = GetProgrammeLicenceCollection().GetByGUID(l)
+					If Not p
+						Print "DEV: programme licence ~q"+l+"~q not found."
+						Continue
+					EndIf
+
+					If p.owner <> GetPlayer().playerID
+						p.SetOwner(0)
+						RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(p, 1)
+						Print "added movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
+					Else
+						Print "already had movie: "+p.GetTitle()+" ["+p.GetGUID()+"]"
+					EndIf
+				Next
+				EndRem
+
+
+				Rem
+				if GetAwardCollection().currentAward
+					TLogger.Log("DEV", "Awards: finish current award.", LOG_DEV)
+					GetAwardCollection().currentAward.AdjustScore(1, 1000)
+					GetAwardCollection().currentAward.SetEndTime( Long(GetWorldTime().GetTimeGone()-1) )
+					GetAwardCollection().UpdateAwards()
+				else
+					TLogger.Log("DEV", "Awards: force start of next award.", LOG_DEV)
+					GetAwardCollection().nextAwardTime = Long(GetWorldTime().GetTimeGone())
+					GetAwardCollection().UpdateAwards()
+				endif
+				endrem
+
+				Rem
+				local room:TRoomBase = GetRoomBaseCollection().GetFirstByDetails("", "laundry")
+				if room
+					print "renting room: " + room.GetName()
+					GetRoomAgency().CancelRoomRental(room, GetPlayerBase().playerID)
+					GetRoomAgency().BeginRoomRental(room, GetPlayerBase().playerID)
+					room.SetUsedAsStudio(True)
+				else
+					print "room not found"
+				endif
+				endrem
+
+
+				Rem
+				local fCheap:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesCheap
+				local fGood:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterMoviesGood
+				local fAuction:TProgrammeLicenceFilter = RoomHandler_MovieAgency.GetInstance().filterAuction
+				local total:int = 0
+				local foundCheap:int = 0
+				local foundGood:int = 0
+				local foundAuction:int = 0
+				local foundSkipped:int = 0
+				local skippedFilterCount:int = 0
+				For local p:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().licences.Values()
+					if p.IsEpisode() then continue
+					if not p.IsReleased() then continue
+					if p.IsSeries() then continue
+
+					skippedFilterCount = 0
+
+					total :+1
+					if fCheap.DoesFilter(p)
+						'print p.GetTitle()
+						foundCheap :+ 1
+					else
+						skippedFilterCount :+ 1
+					endif
+
+					if fGood.DoesFilter(p)
+						'print p.GetTitle()
+						foundGood :+ 1
+					else
+						skippedFilterCount :+ 1
+					endif
+
+					if fAuction.DoesFilter(p)
+						'print p.GetTitle()
+						foundAuction :+ 1
+					else
+						skippedFilterCount :+ 1
+					endif
+
+					if skippedFilterCount = 3
+						print "unavailable: "+ p.GetTitle()+"  [year="+p.data.GetYear()+"  price="+p.GetPrice(GetPlayerBase().playerID)+"  topicality="+p.GetTopicality()+"/"+p.GetMaxTopicality()+"  quality="+p.GetQuality()+"]"
+						foundSkipped :+ 1
+					endif
+				Next
+				print "found cheap:"+foundCheap+", good:"+foundGood+", auction:"+foundAuction+", skipped:"+foundSkipped+" movies/series for 1985. Total="+total
+				endrem
+
+'						print "DEV: Set Player 2 bankrupt"
+'						GetGame().SetPlayerBankrupt(2)
+
+				'GetWorld().Weather.SetPressure(-14)
+				'GetWorld().Weather.SetTemperature(-10)
+
+				'send marshal to confiscate the licence
+				Rem
+				local licence:TProgrammeLicence = GetPlayer().GetProgrammeCollection().GetRandomProgrammeLicence()
+				if licence
+					TFigureMarshal(GetGame().marshals[rand(0,1)]).AddConfiscationJob( licence.GetGUID() )
+				else
+					print "no random licence to confiscate"
+				endif
+				endrem
+
+				'buy script
+				Rem
+				Local s:TScript = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
+				If Not s
+					RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
+					s = RoomHandler_ScriptAgency.GetInstance().GetScriptByPosition(0)
+				EndIf
+
+				If s
+					RoomHandler_ScriptAgency.GetInstance().SellScriptToPlayer(s, GetPlayer().playerID)
+					RoomHandler_ScriptAgency.GetInstance().ReFillBlocks()
+					Print "added script: "+s.GetTitle()
+				EndIf
+				endrem
+
+				Rem
+				RoomHandler_MovieAgency.GetInstance().RefillBlocks(true, 0.9)
+				endrem
+
+				Rem
+				'Programme bei mehreren Spielern
+				'duplicateCount = 0
+				for local playerA:int = 1 to 4
+					for local playerB:int = 1 to 4
+						if playerA = playerB then continue 'skip same
+
+
+						For local lA:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerA).programmeLicences
+							For local lB:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerB).programmeLicences
+
+								if lA = lB
+									print "found playercollection ("+playerA+" vs " + playerB+") duplicate: "+lA.GetTitle()
+									duplicateCount :+ 1
+									continue
+								endif
+
+								if lA.GetGUID() = lB.GetGUID()
+									print "found playercollection ("+playerA+" vs " + playerB+")  GUID duplicate: "+lA.GetTitle()
+									duplicateCount :+ 1
+									continue
+								endif
+
+								if lA.GetTitle() = lB.GetTitle() and lA.data.year = lB.data.year
+									print "found playercollection ("+playerA+" vs " + playerB+")  TITLE duplicate: "+lA.GetTitle()
+									duplicateCount :+ 1
+									continue
+								endif
+							Next
+						Next
+					Next
+				Next
+
+
+				'check possession
+				For local playerID:int = 1 to 4
+					For local l:TProgrammeLicence = EachIn GetPlayerProgrammeCollection(playerID).programmeLicences
+						if l.owner <> playerID then print "found playerCollection OWNER bug: "+l.GetTitle()
+					Next
+				Next
+				endrem
+
+				Rem
+				local news:TNewsEvent = GetNewsEventCollection().GetByGUID("ronny-news-sandsturm-01")
+				GetNewsAgency().announceNewsEvent(news, 0, False)
+				print "happen: "+ news.GetTitle() + "  at: "+GetWorldTime().GetformattedTime(news.happenedTime)
+				endrem
+
+'						PrintCurrentTranslationState("en")
+			EndIf
+
+
+			If KeyManager.isDown(KEY_LCONTROL)
+				If KeyManager.IsHit(KEY_O)
+					GameConfig.observerMode = 1 - GameConfig.observerMode
+
+					KeyManager.ResetKey(KEY_O)
+					KeyManager.BlockKey(KEY_O, 150)
+				EndIf
+			EndIf
+
+
+			If Not GetPlayer().GetFigure().isChangingRoom()
+				If GameConfig.observerMode
+					If KeyManager.IsHit(KEY_1) Then GameConfig.SetObservedObject( GetPlayer(1).GetFigure() )
+					If KeyManager.IsHit(KEY_2) Then GameConfig.SetObservedObject( GetPlayer(2).GetFigure() )
+					If KeyManager.IsHit(KEY_3) Then GameConfig.SetObservedObject( GetPlayer(3).GetFigure() )
+					If KeyManager.IsHit(KEY_4) Then GameConfig.SetObservedObject( GetPlayer(4).GetFigure() )
+				Else
+					If KeyManager.IsHit(KEY_1) Then GetGame().SetActivePlayer(1)
+					If KeyManager.IsHit(KEY_2) Then GetGame().SetActivePlayer(2)
+					If KeyManager.IsHit(KEY_3) Then GetGame().SetActivePlayer(3)
+					If KeyManager.IsHit(KEY_4) Then GetGame().SetActivePlayer(4)
+				EndIf
+
+
+				If KeyManager.IsHit(KEY_W)
+					If Not KeyManager.IsDown(KEY_LSHIFT) And Not KeyManager.IsDown(KEY_RSHIFT)
+						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("adagency") )
+					EndIf
+				EndIf
+				If KeyManager.IsHit(KEY_A) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("archive", "", GetPlayerCollection().playerID) )
+				If KeyManager.IsHit(KEY_B) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "betty") )
+				If KeyManager.IsHit(KEY_F)
+					If Not KeyManager.IsDown(KEY_LSHIFT) And Not KeyManager.IsDown(KEY_RSHIFT)
+						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
+					EndIf
+				EndIf
+				If KeyManager.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "office", GetPlayerCollection().playerID))
+				If not (KeyManager.IsDown(KEY_LCONTROL) Or KeyManager.IsDown(KEY_RCONTROL))
+					If KeyManager.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "boss", GetPlayerCollection().playerID))
+				EndIf
+				If KeyManager.isHit(KEY_G) Then TVTGhostBuildingScrollMode = 1 - TVTGhostBuildingScrollMode
+Rem
+				If KeyManager.isHit(KEY_X)
+					print "Player: #" + GetPlayer().GetFigure().playerID + "   time: " + GetWorldTime().GetFormattedTime()
+					print "IsControllable: " + GetPlayer().GetFigure().IsControllable()
+					print "IsIdling: " + GetPlayer().GetFigure().IsIdling()
+					print "IsChangingRoom: " + GetPlayer().GetFigure().IsChangingRoom()
+					print "IsAtElevator: " + GetPlayer().GetFigure().IsAtElevator()
+					print "IsInElevator: " + GetPlayer().GetFigure().IsInElevator()
+					print "IsInBuilding: " + GetPlayer().GetFigure().IsInBuilding()
+					print "currentReachStep: " + GetPlayer().GetFigure().currentReachTargetStep
+					print "-----------------"
+				EndIf
+endrem
+				If KeyManager.isHit(KEY_S)
+					If KeyManager.IsDown(KEY_LCONTROL)
+						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "supermarket"))
+					ElseIf KeyManager.IsDown(KEY_RCONTROL) Or KeyManager.IsDown(KEY_LALT)
+						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "scriptagency"))
+					Else
+						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("studio", "", GetPlayerCollection().playerID))
+					EndIf
+				EndIf
+				If KeyManager.IsHit(KEY_D) 'German "Drehbuchagentur"
+					DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "scriptagency"))
+				EndIf
+
+				'e wie "employees" :D
+				If KeyManager.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "credits"))
+				If KeyManager.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "news", GetPlayerCollection().playerID))
+				If KeyManager.IsHit(KEY_R)
+					If KeyManager.IsDown(KEY_LCONTROL) Or KeyManager.IsDown(KEY_RCONTROL)
+						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomboard"))
+					Else
+						DEV_switchRoom(GetRoomCollection().GetFirstByDetails("", "roomagency"))
+					EndIf
+				EndIf
+			EndIf
+		EndIf
+		If KeyManager.IsHit(KEY_5) Then GetGame().SetGameSpeed( 60*15 )  '60 virtual minutes per realtime second
+		If KeyManager.IsHit(KEY_6) Then GetGame().SetGameSpeed( 120*15 ) '120 minutes per second
+		If KeyManager.IsHit(KEY_7) Then GetGame().SetGameSpeed( 180*15 ) '180 minutes per second
+		If KeyManager.IsHit(KEY_8) Then GetGame().SetGameSpeed( 240*15 ) '240 minute per second
+		If KeyManager.IsHit(KEY_9) Then GetGame().SetGameSpeed( 1*15 )   '1 minute per second
+		If KeyManager.IsHit(KEY_Q) Then TVTDebugQuoteInfos = 1 - TVTDebugQuoteInfos
+
+		If KeyManager.IsHit(KEY_TAB)
+			If Not KeyManager.IsDown(KEY_LCONTROL)
+				DebugScreen.enabled = 1 - DebugScreen.enabled
+			Else
+				TVTDebugInfos = 1 - TVTDebugInfos
+			EndIf
+		EndIf
+
+		If KeyManager.IsHit(KEY_K)
+			TLogger.Log("KickAllFromRooms", "Player kicks all figures out of the rooms.", LOG_DEBUG)
+			For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
+				If fig.GetInRoom()
+					fig.KickOutOfRoom()
+					'fig.KickOutOfRoom(GetPlayer().GetFigure())
+				Else
+					Print "fig: "+fig.name+" not in room."
+				EndIf
+			Next
+		EndIf
+
+
+		If KeyManager.Ishit(Key_F6) Then GetSoundManager().PlayMusicPlaylist("default")
+
+		If KeyManager.Ishit(Key_F11)
+			If (TAiBase.AiRunning)
+				TLogger.Log("CORE", "AI deactivated", LOG_INFO | LOG_DEV )
+				TAiBase.AiRunning = False
+			Else
+				TLogger.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
+				TAiBase.AiRunning = True
+			EndIf
+		EndIf
+		If KeyManager.Ishit(Key_F10)
+			If (TAiBase.AiRunning)
+				For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
+					If GetPlayerBase().GetFigure() <> fig Then fig.moveable = False
+				Next
+				TLogger.Log("CORE", "AI Figures deactivated", LOG_INFO | LOG_DEV )
+				TAiBase.AiRunning = False
+			Else
+				For Local fig:TFigure = EachIn GetFigureCollection().entries.Values()
+					If GetPlayerBase().GetFigure() <> fig Then fig.moveable = True
+				Next
+				TLogger.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
+				TAiBase.AiRunning = True
+			EndIf
+		EndIf
+	End Function
+	
 
 	Function __NonDevHotKeys:Int()
 		'Navigation

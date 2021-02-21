@@ -812,6 +812,23 @@ endrem
 		Next
 		return -1
 	End Method
+	
+	
+	Method GetLanguageCodes:String[]()
+		Local codes:String[] = new String[valueLangIDs.length]
+		Local langCount:Int
+		For local i:int = EachIn valueLangIDs
+			local code:String = TLocalization.GetLanguageCode(i)
+			if code
+				codes[langCount] = code
+				langCount :+ 1
+			endif
+		Next
+		if langCount <> codes.length Then codes = codes[.. langCount]
+		Return codes
+	End Method
+	
+
 
 
 	Method GetLanguageIDs:Int[]()
