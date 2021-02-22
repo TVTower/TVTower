@@ -637,6 +637,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			Else
 				minConceptLimit = Min(GameRules.maxProductionConceptsPerScript, studioScript.CanGetProducedCount())
 			EndIf
+
 			guiListDeskProductionConcepts.SetItemLimit( minConceptLimit )
 		Else
 			guiListDeskProductionConcepts.SetItemLimit( 0 )
@@ -708,8 +709,16 @@ Type RoomHandler_Studio Extends TRoomHandler
 					'information"
 					If draggedProductionConcepts.contains(pc) Then block.Drag()
 				Else
-					TLogger.Log("Studio.RefreshGuiElements", "productionconcept exists but does not fit in guiListDeskProductionConcepts - concept removed.", LOG_ERROR)
-					programmeCollection.RemoveProductionConcept(pc)
+					'we also pay back potentially paid deposits
+					If pc.IsDepositPaid()
+						GetPlayerFinance(pc.owner).SellMisc(pc.GetDepositCost())
+						TLogger.Log("Studio.RefreshGuiElements", "productionconcept exists but does not fit in guiListDeskProductionConcepts - concept removed and deposit refunded.", LOG_ERROR)
+					Else
+						TLogger.Log("Studio.RefreshGuiElements", "productionconcept exists but does not fit in guiListDeskProductionConcepts - concept removed.", LOG_ERROR)
+					EndIf
+					'remove from player's collection and also from global
+					'conception list
+					programmeCollection.DestroyProductionConcept(pc)
 				EndIf
 			Next
 		EndIf
@@ -817,7 +826,11 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'programmecollection
 		Local productionConcepts:TProductionConcept[]
 		Local conceptCount:Int = 0
+		'how many productions were conceptioned with the script?
+		'for series this equals to "episodes of this 'season' produced"
 		Local producedConceptCount:Int = 0
+		'how many concepts could be created based on the script
+		'(for series this means "not yet concepted/produced episodes")
 		Local conceptCountMax:Int = 0
 		Local produceableConceptCount:Int = 0
 		Local produceableConcepts:String = ""
@@ -863,6 +876,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			'series?
 			If script.GetSubScriptCount() > 0
 				conceptCountMax = script.GetSubScriptCount() - producedConceptCount
+				'print "conceptCountMax = " + conceptCountMax  +"  script.GetSubScriptCount()=" + script.GetSubScriptCount() + "  producedConceptCount="+producedConceptCount
 			Else
 				conceptCountMax = script.CanGetProducedCount()
 				'print "conceptCountMax = " + conceptCountMax  +"  productionLimit=" + script.productionLimit + "  usedInProductionsCount="+script.usedInProductionsCount
