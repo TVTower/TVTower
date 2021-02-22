@@ -379,11 +379,16 @@ Type TScriptBase Extends TNamedGameObject
 
 	'returns whether a new production could be done with this script
 	'or if a limit is already reached
+	'For series this only returns true if ALL episodes can be produced
+	'at least once!
 	Method CanGetProduced:int() {_exposeToLua}
 		Return CanGetProducedCount() > 0
 	End Method
 
 
+	'returns how often a script can be produced.
+	'For series it returns how often ALL episodes can at least be
+	'produced (so minimum value of all episodes)
 	Method CanGetProducedCount:int()
 		local res:int = GetProductionLimit() - usedInProductionsCount
 
@@ -403,7 +408,7 @@ Type TScriptBase Extends TNamedGameObject
 	'returns amount of productions done with this script
 	'
 	'For series it returns the amount of episodes of a current "series
-	'production" (like a in a "season")
+	'production" (like a "season"). So 2 of 5 produced will return 2
 	Method GetProductionsCount:int()
 		if GetSubScriptCount() > 0
 			local res:int = 0

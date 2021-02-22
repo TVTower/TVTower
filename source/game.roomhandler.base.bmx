@@ -229,11 +229,14 @@ Type TRoomHandler
 
 	Function GetObservedFigure:TFigureBase()
 		'if we observe another figure, return this one
-		If TFigureBase(GameConfig.GetObservedObject())
+		If GameConfig and TFigureBase(GameConfig.GetObservedObject())
 			Return TFigureBase(GameConfig.GetObservedObject())
 		EndIf
 		'else return current player figure
-		Return GetPlayerBase().GetFigure()
+		If GetPlayerBase()
+			Return GetPlayerBase().GetFigure()
+		EndIf
+		Return Null
 	End Function
 
 

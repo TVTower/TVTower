@@ -849,8 +849,21 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 		
 		productionConceptList.EmptyList()
 
+
+		'might be null on game load / screen initialization
+		Local fig:TFigureBase = TRoomHandler.GetObservedFigure()
+		If Not fig Then Return
+
+		'only valid players can have concept lists
+		Local observedPlayerID:Int = fig.playerID
+		If observedPlayerID <= 0 Then Return
+
+		
+		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(observedPlayerID)
+		If not programmeCollection Then Return
+		
 		Local productionConcepts:TProductionConcept[]
-		For Local productionConcept:TProductionConcept = EachIn GetProductionConceptCollection().entries.Values()
+		For Local productionConcept:TProductionConcept = EachIn programmeCollection.GetProductionConcepts()
 			productionConcepts :+ [productionConcept]
 		Next
 
@@ -878,17 +891,11 @@ Type TScreenHandler_SupermarketProduction Extends TScreenHandler
 			'base items do not have a size - so we have to give a manual one
 			productionConceptList.AddItem( item )
 		Next
-'		productionConceptList.entries.sort(true)
 
 		productionConceptList.InvalidateLayout()
-'		productionConceptList.RecalculateElements()
-		'refresh scrolling state
-'		productionConceptList.SetSize(-1, -1)
 
 		'restore backup
 		if selectedBackup
-			'productionConceptList.SelectEntry(selectedBackup)
-			'productionConceptList.EnsureEntryIsVisible(selectedBackup)
 			productionConceptList.ScrollAndSelectItem(selectedBackup)
 		endif
 	End Method
