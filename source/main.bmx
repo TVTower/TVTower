@@ -3847,6 +3847,17 @@ Type GameEvents
 		Local PLAYER_NOT_FOUND:String = "[DEV] player not found."
 
 		Select command.Trim().toLower()
+			Case "devkeys"
+				Local on:Int = Int(payload) = 1
+				
+				If on And Not GameRules.devConfig.GetBool(TApp.keyLS_DevKeys, False)
+					GameRules.devConfig.AddBool(TApp.keyLS_DevKeys, True)
+					GetGame().SendSystemMessage("[DEV] Enabled dev keys.")
+				ElseIf Not on And GameRules.devConfig.GetBool(TApp.keyLS_DevKeys, False)
+					GameRules.devConfig.AddBool(TApp.keyLS_DevKeys, False)
+					GetGame().SendSystemMessage("[DEV] Disabled dev keys.")
+				EndIf
+				
 			Case "loaddb"
 				Local dbName:String = payload.Trim()
 				If dbName

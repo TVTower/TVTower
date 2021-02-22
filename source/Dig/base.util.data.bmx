@@ -263,7 +263,7 @@ endrem
 	End Method
 
 
-	Method AddBoolString:TData(key:String, data:String)
+	Method AddBoolString:TData(key:Object, data:String)
 		Select data.toLower()
 			Case "1", "true", "yes"
 				Add( key, "TRUE")
@@ -274,7 +274,7 @@ endrem
 	End Method
 
 
-	Method AddBool:TData(key:String, bool:Int)
+	Method AddBool:TData(key:Object, bool:Int)
 		If bool
 			Add( key, "TRUE")
 		Else
