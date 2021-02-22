@@ -797,8 +797,13 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	'=== PRODUCTION CONCEPTS  ===
 	Method CanCreateProductionConcept:Int(script:TScript) {_exposeToLua}
+		If not script then Return False
+
+		local produceableElements:Int = script.GetCanGetProducedElementsCount()
+		if produceableElements = 0 Then Return False
+		
 		'do not allow more concepts than the rules say!
-		return GetProductionConceptCollection().GetProductionConceptsByScript(script).length  < GameRules.maxProductionConceptsPerScript
+		Return GetProductionConceptCollection().GetProductionConceptCountByScript(script, True) < GameRules.maxProductionConceptsPerScript
 	End Method
 
 
@@ -806,7 +811,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if not script then return Null
 		if not CanCreateProductionConcept(script)
 			'emit event to inform others (eg. for ingame warning)
-			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_OnCreateProductionConceptFailed, new TData.AddInt("productionConceptCount", GetProductionConceptCollection().GetProductionConceptsByScript(script).length).AddInt("playerID", owner))
+			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_OnCreateProductionConceptFailed, new TData.AddInt("productionConceptCount", GetProductionConceptCollection().GetProductionConceptCountByScript(script)).AddInt("playerID", owner))
 
 			return Null
 		endif
@@ -840,10 +845,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	'remove from PlayerProgrammeCollection _AND_ "ProductionConceptCollection"
 	Method DestroyProductionConcept:Int(productionConcept:TProductionConcept)
-		'failed to remove from programme collection ?
-		if not RemoveProductionConcept(productionConcept) then return False
-		'failed to remove from production concept collection ?
-		if not GetProductionConceptCollection().Remove(productionConcept) then return False
+		Local removed:Int
+		removed = RemoveProductionConcept(productionConcept)
+		removed = removed OR GetProductionConceptCollection().Remove(productionConcept)
+		
+		If not removed then return False
 
 		'emit event to inform others
 		if fireEvents 
@@ -1097,6 +1103,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method HasScript:int(script:TScript) {_exposeToLua}
 		return scripts.contains(script)
+	End Method
+
+
+	Method HasProductionConcept:int(productionConcept:TProductionConcept) {_exposeToLua}
+		return productionConcepts.contains(productionConcept)
 	End Method
 
 

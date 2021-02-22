@@ -405,6 +405,19 @@ Type TScriptBase Extends TNamedGameObject
 	End Method
 
 
+	'returns how many elements can be produced
+	'for movies this results in 1 (or 0)
+	'for series it returns the amount of not yet produced episodes
+	Method GetCanGetProducedElementsCount:Int()
+		If GetSubScriptCount() > 0
+			Return GetSubScriptCount() - GetProductionsCount()
+		Else
+			'1 or 0
+			Return (CanGetProducedCount() > 0)
+		EndIf
+	End Method
+
+
 	'returns amount of productions done with this script
 	'
 	'For series it returns the amount of episodes of a current "series

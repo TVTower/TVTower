@@ -19,7 +19,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 	Global studioManagerDialogue:TDialogue
 	Global studioScriptLimit:Int = 1
 
-	Global deskGuiListPos:TVec2D = New TVec2D.Init(350,335)
+	Global deskGuiListPos:TVec2D = New TVec2D.Init(330,335)
 	Global suitcasePos:TVec2D = New TVec2D.Init(520,70)
 	Global trashBinPos:TVec2D = New TVec2D.Init(148,327)
 	Global suitcaseGuiListDisplace:TVec2D = New TVec2D.Init(16,22)
@@ -92,7 +92,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			guiListSuitcase.SetEntryDisplacement( 0, 0 )
 			guiListSuitcase.SetAcceptDrop("TGUIStudioScript")
 
-			guiListDeskProductionConcepts = New TGUIProductionConceptSlotList.Create(New TVec2D.Init(deskGuiListPos.GetX(), deskGuiListPos.GetY()), New TVec2D.Init(250,80), "studio")
+			guiListDeskProductionConcepts = New TGUIProductionConceptSlotList.Create(New TVec2D.Init(deskGuiListPos.GetX(), deskGuiListPos.GetY()), New TVec2D.Init(290,80), "studio")
 			'make the list items sortable by the player
 			guiListDeskProductionConcepts.SetAutofillSlots(False)
 			guiListDeskProductionConcepts.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
@@ -683,6 +683,27 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 		'studio desk - only if a studio script was set
 		If studioScript
+			'repair borked up savegames
+			if studioScript.GetSubScriptCount() > 0
+				For Local subScript:TScript = EachIn studioScript.subScripts
+					For Local pc:TProductionConcept = EachIn GetProductionConceptCollection().GetProductionConceptsByScript(subScript)
+						if programmeCollection.HasProductionConcept(pc) Then continue
+						
+						'we also pay back potentially paid deposits
+						If pc.IsDepositPaid()
+							GetPlayerFinance(pc.owner).SellMisc(pc.GetDepositCost())
+							TLogger.Log("Studio.RefreshGuiElements", "productionconcept exists but does not fit in guiListDeskProductionConcepts - concept removed and deposit refunded.", LOG_ERROR)
+						Else
+							TLogger.Log("Studio.RefreshGuiElements", "productionconcept exists but does not fit in guiListDeskProductionConcepts - concept removed.", LOG_ERROR)
+						EndIf
+						'remove from player's collection and also from global
+						'conception list
+						programmeCollection.DestroyProductionConcept(pc)
+					Next
+				Next
+			endif
+
+		
 			'try to fill in our list
 			For Local pc:TProductionConcept = EachIn programmeCollection.GetProductionConcepts()
 				'skip produced ones
@@ -718,6 +739,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 					EndIf
 					'remove from player's collection and also from global
 					'conception list
+					programmeCollection.DestroyProductionConcept(pc)
+
 					programmeCollection.DestroyProductionConcept(pc)
 				EndIf
 			Next
@@ -767,7 +790,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 				If subScript.CanGetProduced()
 					If subScript.IsSeries() Then Continue
 					'already concept created?
-					If GetProductionConceptCollection().GetProductionConceptsByScript(subScript).length > 0 Then Continue
+					If GetProductionConceptCollection().GetProductionConceptCountByScript(subScript) > 0 Then Continue
 
 					useScript = subScript
 					Exit
@@ -782,7 +805,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'if this not the first concept of a non-series script then append a number
 		'to distinguish them
 		If script.GetEpisodes() = 0 and not pc.HasCustomTitle()
-			Local conceptCount:int = GetProductionConceptCollection().GetProductionConceptsByScript( script ).length
+			Local conceptCount:int = GetProductionConceptCollection().GetProductionConceptCountByScript(script)
 			If conceptCount > 1
 				'use title of the script to avoid reading in the custom title
 				pc.SetCustomTitle( pc.script.GetTitle() + " - #" + conceptCount)
@@ -840,13 +863,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 			'=== PRODUCED CONCEPT COUNT ===
 			producedConceptCount = script.GetProductionsCount()
 
-
 			'=== COLLECT PRODUCEABLE CONCEPTS ===
-			If script.GetSubScriptCount() > 0
-				productionConcepts = GetProductionConceptCollection().GetProductionConceptsByScripts(script.subScripts)
-			Else
-				productionConcepts = GetProductionConceptCollection().GetProductionConceptsByScript(script)
-			EndIf
+			productionConcepts = GetProductionConceptCollection().GetProductionConceptsByScript(script, True)
 
 			'sort by slots or guid
 			Local list:TList = New TList.FromArray(productionConcepts)
@@ -1007,6 +1025,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 						text :+ GetRandomLocale("DIALOGUE_STUDIO_CURRENTPRODUCTION_INFORMATION_X_PRODUCTIONS_PLANNED_AND_Y_PRODUCTIONS_DONE").Replace("%X%", countText).Replace("%Y%", producedCountText)
 					EndIf
 				EndIf
+
 				If Not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).CanCreateProductionConcept(script)
 					text :+"~n~n"
 					text :+ GetRandomLocale("DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED")
@@ -1060,16 +1079,8 @@ Type RoomHandler_Studio Extends TRoomHandler
 				texts[0].AddAnswer(TDialogueAnswer.Create( answerText, -2, Null, onClickStartProduction, New TData.Add("script", script)))
 			EndIf
 
-			'limit concepts: shows have none, programmes 1 and series
-			'are limited by their episodes
-			Local conceptMax:Int
-			If script.GetSubScriptCount() > 0
-				conceptMax = script.GetSubScriptCount() - script.GetProductionsCount()
-			Else
-				conceptMax = script.CanGetProducedCount()
-			EndIf
 
-			If conceptCount < conceptCountMax
+			If GetPlayerProgrammeCollection( GetPlayerBase().playerID ).CanCreateProductionConcept(script)
 				Local answerText:String
 				If conceptCount > 0
 					answerText = GetRandomLocale("DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST")
@@ -1085,9 +1096,10 @@ Type RoomHandler_Studio Extends TRoomHandler
 		studioManagerDialogue = New TDialogue
 		studioManagerDialogue.AddTexts(texts)
 
-		studioManagerDialogue.SetArea(New TRectangle.Init(150, 40, 400, 120))
-		studioManagerDialogue.SetAnswerArea(New TRectangle.Init(200, 180, 320, 45))
-		studioManagerDialogue.moveAnswerDialogueBalloonStart = 240
+		studioManagerDialogue.SetArea(New TRectangle.Init(115, 30, 440, 120))
+		studioManagerDialogue.SetAnswerArea(New TRectangle.Init(200, 225, 355, 45))
+		studioManagerDialogue.moveDialogueBalloonStart = 30
+		studioManagerDialogue.moveAnswerDialogueBalloonStart = 230
 		studioManagerDialogue.answerStartType = "StartDownRight"
 		studioManagerDialogue.SetGrow(1,1)
 

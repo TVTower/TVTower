@@ -926,15 +926,15 @@ Type TScript Extends TScriptBase {_exposeToLua="selected"}
 		'remove tradeability?
 		'(eg. for "exclusively written for player X scripts")
 		If HasScriptFlag(TVTScriptFlag.POOL_REMOVES_TRADEABILITY)
-print "POOL_REMOVES_TRADEABILITY"
+'print "POOL_REMOVES_TRADEABILITY"
 			SetScriptFlag(TVTScriptFlag.TRADEABLE, False)
 		'remove tradeability for partially produced series
 		ElseIf GetSubScriptCount() > 0 And GetProductionsCount() > 0
-print "PARTIALLY PRODUCED"
+'print "PARTIALLY PRODUCED"
 			SetScriptFlag(TVTScriptFlag.TRADEABLE, False)
 		'if still no longer produceable (eg exceeding production limits)
 		ElseIf not CanGetProduced()
-print "EXCEEDING PRODUCTION LIMIT"
+'print "EXCEEDING PRODUCTION LIMIT"
 			SetScriptFlag(TVTScriptFlag.TRADEABLE, False)
 		EndIf
 

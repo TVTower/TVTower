@@ -34,19 +34,47 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 	End Method
 
 
-	Method GetProductionConceptsByScript:TProductionConcept[](script:TScriptBase)
-		local result:TProductionConcept[]
+	Method GetProductionConceptCountByScript:Int(script:TScriptBase, includeSubscripts:Int = False)
+		local result:Int = 0
 		For local pc:TProductionConcept = EachIn self
-			if pc.script = script then result :+ [pc]
+			if pc.script = script then result :+ 1
+		Next
+		If includeSubscripts And script.GetSubScriptCount() > 0
+			For local subscript:TScriptBase = EachIn script.subScripts
+				result :+ GetProductionConceptCountByScript(subscript, includeSubscripts)
+			Next
+		EndIf
+		return result
+	End Method
+
+
+	Method GetProductionConceptCountByScripts:Int(scripts:TScriptBase[], includeSubscripts:Int = False)
+		local result:Int
+		For local script:TScriptBase = EachIn scripts
+			result :+ GetProductionConceptCountByScript(script, includeSubscripts)
 		Next
 		return result
 	End Method
 
 
-	Method GetProductionConceptsByScripts:TProductionConcept[](scripts:TScriptBase[])
+	Method GetProductionConceptsByScript:TProductionConcept[](script:TScriptBase, includeSubscripts:Int = False)
+		local result:TProductionConcept[]
+		For local pc:TProductionConcept = EachIn self
+			if pc.script = script then result :+ [pc]
+		Next
+		If includeSubscripts and script.GetSubScriptCount() > 0
+			For local subscript:TScriptBase = EachIn script.subScripts
+				result :+ GetProductionConceptsByScript(subscript, includeSubscripts)
+			Next
+		EndIf
+		return result
+	End Method
+
+
+	Method GetProductionConceptsByScripts:TProductionConcept[](scripts:TScriptBase[], includeSubscripts:Int = False)
 		local result:TProductionConcept[]
 		For local script:TScriptBase = EachIn scripts
-			result :+ GetProductionConceptsByScript(script)
+			result :+ GetProductionConceptsByScript(script, includeSubscripts)
 		Next
 		return result
 	End Method
