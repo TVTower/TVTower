@@ -1080,7 +1080,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 			EndIf
 
 
-			If GetPlayerProgrammeCollection( GetPlayerBase().playerID ).CanCreateProductionConcept(script)
+			If GetPlayerProgrammeCollection( GetPlayerBase().playerID ).CanCreateProductionConcept(script) AND conceptCountMax > conceptCount
 				Local answerText:String
 				If conceptCount > 0
 					answerText = GetRandomLocale("DIALOGUE_STUDIO_ASK_FOR_ANOTHER_SHOPPINGLIST")
