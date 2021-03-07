@@ -2685,11 +2685,13 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	Method GetSellPrice:Int() {_exposeToLua}
-		'price is multiplied by an age factor of 0.75-0.95
-		Local factor:Float = Max(0.75, 0.95 - Float(GetAge())/1.0)
-		If owner Then Return Int(GetPrice() * factor / 10000) * 10000
+		'price decreasing with age
+		'TODO negative price in red
+		Local offer:Int = Int((0.8 - 0.1 * GetAge()) * GetPrice())
+		'waste removal costs
+		Local minPrice:Int = -GetPrice()/2
 
-		Return Int( GetPrice() * factor / 10000) * 10000
+		return Max(offer, minPrice)
 	End Method
 
 
