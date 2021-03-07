@@ -3681,14 +3681,9 @@ Type TStationCableNetworkUplink extends TStationBase {_exposeToLua="selected"}
 
 		local expense:int
 		'pay the provider for cancelingearlier
-		expense = (1.0 - GetSubscriptionProgress())^2 * (GetRunningCosts() - maintenanceCosts)
-
-		local income:int
-		'hardware could be sold
-		Local factor:Float = Max(0.75, 0.95 - Float(GetAge())/1.0)
-		income = hardwareCosts * factor
-
-		return income - expense
+		expense = (1.0 - GetSubscriptionProgress())^2 *3* GetRunningCosts()
+		
+		return -expense
 	End Method
 
 
@@ -4082,14 +4077,9 @@ Type TStationSatelliteUplink extends TStationBase {_exposeToLua="selected"}
 
 		local expense:int
 		'pay the provider for cancelingearlier
-		expense = (1.0 - GetSubscriptionProgress())^2 * (GetRunningCosts() - maintenanceCosts)
+		expense = (1.0 - GetSubscriptionProgress())^2 *3* GetRunningCosts()
 
-		local income:int
-		'hardware could be sold
-		Local factor:Float = Max(0.75, 0.95 - Float(GetAge())/1.0)
-		income = hardwareCosts * factor
-
-		return income - expense
+		return -expense
 	End Method
 
 
