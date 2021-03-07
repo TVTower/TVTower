@@ -1043,13 +1043,11 @@ Type TProductionConcept Extends TOwnedGameObject
 		'if there is something defined (eg for live preproductions)
 		'then use this. Return in hours not minutes!
 		if script.productionTime > 0
-			base = script.productionTime
+			base = script.productionTime * TWorldTime.MINUTELENGTH
 
 			base :* speedPointTimeMod
 			base :* teamPointTimeMod
 			base :* script.productionTimeMod
-			'round to hours
-			return TWorldTime.HOURLENGTH * (base / TWorldTime.HOURLENGTH)
 		else
 			base :* typeTimeMod
 			base :* speedPointTimeMod
@@ -1057,10 +1055,8 @@ Type TProductionConcept Extends TOwnedGameObject
 			base :* script.productionTimeMod
 
 			base = Max(base, ceil(script.GetBlocks()*blockMinimumMod) * TWorldTime.HOURLENGTH)
-			'round to hours
-			return TWorldTime.HOURLENGTH * (Max(1, base / TWorldTime.HOURLENGTH))
 		endif
-
+		return TWorldTime.MINUTELENGTH * (base / TWorldTime.MINUTELENGTH)
 	End Method
 
 
