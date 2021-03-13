@@ -52,7 +52,6 @@ Type TGUIListBase Extends TGUIobject
 	Field entriesLimit:Int = -1
 	'private mouseover-field (ignoring covering child elements)
 	Field _mouseOverArea:Int = False
-	Field _dropOnTargetListener:TEventListenerBase = Null
 	'displace each entry by (z-value is stepping)...
 	Field _entryDisplacement:TVec3D	= New TVec3D.Init(0, 0, 1)
 	'displace the entriesblock by x,y...
@@ -235,15 +234,6 @@ Type TGUIListBase Extends TGUIobject
 		For Local entry:TGUIobject = EachIn entries
 			entry.onParentResize()
 		Next
-	End Method
-
-
-	Method SetAcceptDrop:Int(accept:Object)
-		'if we registered already - remove the old one
-		If _dropOnTargetListener Then EventManager.unregisterListener(_dropOnTargetListener)
-
-		'is something dropping - check if it is this list
-		_dropOnTargetListener = EventManager.registerListenerFunction( GUIEventKeys.GUIObject_OnDropOnTarget, onDropOnTargetList, accept, Self)
 	End Method
 
 
@@ -686,7 +676,17 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 
-	Function onDropOnTargetList:Int( triggerEvent:TEventBase )
+	Method onTryDropOnTarget:Int( triggerEvent:TEventBase ) override
+		If not AcceptsDropObject(triggerEvent.GetSender())
+			triggerEvent.SetVeto()
+			Return False
+		endif
+		
+		Return Super.onTryDropOnTarget(triggerEvent)
+	End Method
+
+
+	Method onDropOnTarget:Int( triggerEvent:TEventBase ) override
 		Local item:TGUIListItem = TGUIListItem(triggerEvent.GetSender())
 		If item = Null Then Return False
 		'ATTENTION:
@@ -697,18 +697,18 @@ Type TGUIListBase Extends TGUIobject
 		Local fromList:TGUIListBase = FindGUIListBaseParent(item._parent)
 		'if not fromList then return FALSE
 
-		Local toList:TGUIListBase = TGUIListBase(triggerEvent.GetReceiver())
-		If Not toList Then Return False
+'		Local toList:TGUIListBase = TGUIListBase(triggerEvent.GetReceiver())
+'		If Not toList Then Return False
 
 		Local data:TData = triggerEvent.getData()
 		If Not data Then Return False
 
-		If fromList = toList
+		If fromList = self
 			'if the handler took care of everything, we skip
 			'removing and adding the item
 			If fromList.HandleDropBack(triggerEvent)
 				'inform others about that dropback
-				TriggerBaseEvent(GUIEventKeys.GUIObject_OnDropBack, Null , item, toList)
+				TriggerBaseEvent(GUIEventKeys.GUIObject_OnDropBack, Null , item, self)
 				Return True
 			EndIf
 			'no drop back?
@@ -718,7 +718,7 @@ Type TGUIListBase Extends TGUIobject
 		'move item if possible
 		If fromList Then fromList.removeItem(item)
 		'try to add the item, if not able, readd
-		If Not toList.addItem(item, data)
+		If Not addItem(item, data)
 			If fromList And fromList.addItem(item) Then Return True
 
 			'not able to add to "toList" but also not to "fromList"
@@ -727,23 +727,8 @@ Type TGUIListBase Extends TGUIobject
 			Return False
 		EndIf
 
-
-'method B
-Rem
-		'-> this does not work as an "removal" might start things
-		'   the "add" needs to know
-		'also a list might only be able to add the object if that
-		'got removed before (multi slots, or some other behaviour)
-
-		'try to add the item, if able, remove from prior one
-		local doMove:int = True
-		If toList.addItem(item, data) and fromList
-			if not fromList.removeItem(item) then triggerEvent.setVeto()
-		endif
-endrem
-
 		Return True
-	End Function
+	End Method
 
 
 	'redirect panel scrolling to parental list

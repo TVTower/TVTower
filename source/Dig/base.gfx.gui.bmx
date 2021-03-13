@@ -248,6 +248,12 @@ Type TGUIManager
 		EndIf
 
 		'we found an object accepting the drop
+		
+		'target does not want this item
+		If dropTarget and not dropTarget.AcceptsDropObject(guiObject)
+			triggerEvent.setVeto()
+			Return False
+		EndIf
 
 		'ask if something does not want that drop to happen
 		Local event:TEventBase = TEventBase.Create(GUIEventKeys.GUIObject_OnTryDropOnTarget, New TData.Add("coord", coord).Add("source", source) , guiobject, dropTarget)
@@ -813,6 +819,8 @@ Type TGUIobject
 	'Field _lastDrawTick:int = 0
 	'Field _lastUpdateTick:int = 0
 
+	Field _acceptedDropFilter:object = Null
+
 	'=== HOOKS ===
 	'allow custom functions to get hooked in
 	Field _customDraw:Int(obj:TGUIObject)
@@ -1307,6 +1315,26 @@ Type TGUIobject
 		If _parent And Not _parent.IsEnabled() Then Return False
 
 		Return (_flags & GUI_OBJECT_ENABLED) <> 0
+	End Method
+
+
+	Method AcceptsDropObject:Int(droppedObject:object)
+		if _acceptedDropFilter
+			if not TEventManager.ObjectsAreEqual(droppedObject, _acceptedDropFilter)
+				Return False
+			endif
+		endif
+		Return True
+	End Method
+
+
+	Method SetAcceptDrop:Int(accept:Object)
+		Local tID:TTypeID = TTypeID.ForName(string(accept))
+		if tID
+			_acceptedDropFilter = tID
+		else
+			_acceptedDropFilter = accept
+		endif
 	End Method
 
 
