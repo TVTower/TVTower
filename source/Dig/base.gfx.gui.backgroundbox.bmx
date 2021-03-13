@@ -38,8 +38,11 @@ Type TGUIBackgroundBox Extends TGUIobject
 	Method GetPadding:TRectangle()
 		'if no manual padding was setup - use sprite padding
 		If Not _padding
-			Local r:sRect = GetSprite().GetNinePatchInformation().contentBorder
-			Return New TRectangle.Init(r.x, r.y, r.w, r.h)
+			Local s:TSprite = GetSprite()
+			if s and s.IsNinePatch()
+				Local r:sRect = GetSprite().GetNinePatchInformation().contentBorder
+				Return New TRectangle.Init(r.x, r.y, r.w, r.h)
+			endif
 		EndIf
 		Return Super.GetPadding()
 	End Method

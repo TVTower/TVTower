@@ -274,6 +274,13 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	Method GrowTLBR:TRectangle(top:Float, left:Float, bottom:Float, right:Float)
+		position.AddXY(-top, -left)
+		dimension.AddXY(left + right, top + bottom)
+		Return Self
+	End Method
+
+
 	Method Scale:TRectangle(sx:Float, sy:Float)
 		Local centerX:Float = 0.5 * GetW()
 		Local centerY:Float = 0.5 * GetH()

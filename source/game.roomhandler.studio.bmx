@@ -1102,7 +1102,6 @@ Type RoomHandler_Studio Extends TRoomHandler
 		studioManagerDialogue.moveAnswerDialogueBalloonStart = 230
 		studioManagerDialogue.answerStartType = "StartDownRight"
 		studioManagerDialogue.SetGrow(1,1)
-
 	End Method
 
 
