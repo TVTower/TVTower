@@ -645,6 +645,7 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 		'=== BOXES ===
 		If TScreenHandler_StationMap.actionMode <> TScreenHandler_StationMap.MODE_NONE
 			Local price:String = "", reach:String = "", reachChange:String = "", runningCost:String =""
+			Local sellingHasCost:Int = False
 			Local headerText:String
 			Local subHeaderText:String
 			Local canAfford:Int = True
@@ -659,7 +660,12 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 						subHeaderText = GetWorldTime().GetFormattedGameDate(selectedStation.built)
 						reach = TFunctions.convertValue(selectedStation.GetReach(), 2)
 						reachChange = MathHelper.DottedValue( -1 * selectedStation.GetExclusiveReach() )
-						price = TFunctions.convertValue(selectedStation.GetSellPrice(), 2, 0)
+						Local sellPrice:Int = selectedStation.GetSellPrice()
+						If sellPrice < 0
+							SellingHasCost=True
+							sellPrice=-sellPrice
+						EndIf
+						price = TFunctions.convertValue(sellPrice, 2, 0)
 						If selectedStation.HasFlag(TVTStationFlag.NO_RUNNING_COSTS)
 							runningCost = "-/-"
 						Else
@@ -727,7 +733,11 @@ Type TGameGUIAntennaPanel Extends TGameGUIBasicStationmapPanel
 			currentY :+ boxH
 			skin.RenderBox(contentX + 5, currentY, halfW-5, -1, runningCost, "moneyRepetitions", "neutral", skin.fontNormal, ALIGN_RIGHT_CENTER)
 			If TScreenHandler_StationMap.actionMode = GetSellActionMode()
-				skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+				If sellingHasCost
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER,"bad")
+				Else
+					skin.RenderBox(contentX + 5 + halfW-5 + 4, currentY, halfW+5, -1, price, "money", "neutral", skin.fontBold, ALIGN_RIGHT_CENTER)
+				EndIf
 			Else
 				'fetch financial state of room owner (not player - so take care
 				'if the player is allowed to do this)
