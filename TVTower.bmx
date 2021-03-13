@@ -33,5 +33,9 @@ rem
 endrem
 ?
 
+?Linux
+CreateDesktopFile()
+?
+
 'Start Game
 StartTVTower()

@@ -141,7 +141,7 @@ Include "game.menu.escapemenu.bmx"
 
 '===== Globals =====
 VersionDate = LoadText("incbin::source/version.txt").Trim()
-VersionString = "v0.7.0 Build ~q" + VersionDate+"~q"
+VersionString = "v0.7.0"
 CopyrightString = "by Ronny Otto & Team"
 
 Global APP_NAME:String = "TVTower"
@@ -161,8 +161,8 @@ Global collectDebugStats:Int = False
 
 
 '==== Initialize ====
-AppTitle = "TVTower: " + VersionString
-TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString+".", LOG_INFO )
+AppTitle = "TVTower: " + VersionString + " Build ~q" + VersionDate+"~q"
+TLogger.Log("CORE", "Starting "+APP_NAME+", "+VersionString + " Build ~q" + VersionDate+"~q.", LOG_INFO )
 
 '===== SETUP LOGGER FILTER =====
 TLogger.setLogMode(LOG_ALL )
@@ -6473,6 +6473,25 @@ Global bbGCAllocCount:ULong = 0
 'Extern
 '    Global bbGCAllocCount:ULong="bbGCAllocCount"
 'End Extern
+?
+
+
+?linux
+Function CreateDesktopFile()
+	Local cwd:String = CurrentDir()
+	local file:TStream = WriteStream("TVTower.desktop")
+	if file
+		file.WriteLine("[Desktop Entry]")
+		file.WriteLine("Name=TVTower " + VersionString) 
+		file.WriteLine("Exec="+cwd+"/TVTower_Linux64") 
+		file.WriteLine("Icon="+cwd+"/tvtower.png") 
+		file.WriteLine("Type=Application") 
+		file.WriteLine("Categories=Games;")
+		file.Close()
+		file = Null
+		TLogger.Log("CreateDesktopFile()", "Created new TVTower.desktop file.", LOG_DEBUG)
+	endif
+End Function
 ?
 
 Function StartTVTower(start:Int=True)
