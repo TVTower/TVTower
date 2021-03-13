@@ -2686,7 +2686,6 @@ Type TStationBase Extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Method GetSellPrice:Int() {_exposeToLua}
 		'price decreasing with age
-		'TODO negative price in red
 		Local offer:Int = Int((0.8 - 0.1 * GetAge()) * GetPrice())
 		'waste removal costs
 		Local minPrice:Int = -GetPrice()/2
