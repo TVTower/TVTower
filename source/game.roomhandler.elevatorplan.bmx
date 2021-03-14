@@ -83,9 +83,11 @@ Type TElevatorRoomBoard extends TRoomBoardBase
 	End Function
 
 
-	Method AddBoardSigns:int()
-		'instead of adding new signs for each door, we copy the signs of the
-		'current room  plan
+	Method AddBoardSigns:int() override
+		'just adding NEW board signs would remove the information of
+		'switched positions
+		'so better COPY each sign of the original room plan
+
 		rem
 		For local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().List
 			'create the sign in the roomplan (if not "invisible door")
@@ -116,6 +118,8 @@ Type TElevatorRoomBoard extends TRoomBoardBase
 			'invalidate caches of signs - so they get redone
 			_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.SaveGame_OnLoad, onSavegameLoad) ]
 			_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.App_OnSetLanguage, onSetLanguage) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnBeginRental, onChangeRoomOwner) ]
+			_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Room_OnCancelRental, onChangeRoomOwner) ]
 
 			'figure enters screen - reset the guilists, limit listening to the 4 rooms
 			Local screen:TScreen = ScreenCollection.GetScreen("screen_elevatorplan")
@@ -136,6 +140,14 @@ Type TElevatorRoomBoard extends TRoomBoardBase
 
 	Function onSetLanguage:Int(triggerEvent:TEventBase)
 		GetInstance().ResetImageCaches()
+	End Function
+
+
+	'recreate image cache if a room owner changes
+	Function onChangeRoomOwner:Int(triggerEvent:TEventBase)
+		'reset caches of the affected signs
+		Local roomOwner:Int = triggerEvent.GetData().GetInt("owner")
+		GetInstance().ResetImageCaches(roomOwner)
 	End Function
 End Type
 

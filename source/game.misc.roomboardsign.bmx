@@ -30,6 +30,7 @@ Type TRoomBoardBase
 
 	Method Reset:Int()
 		List.Clear()
+		visualList = Null
 		
 		hoveredSign = Null
 		clickedSign = Null
