@@ -282,7 +282,7 @@ Type TProductionConcept Extends TOwnedGameObject
 				earliestBroadcastTime = Max(script.lastLivetime, GetWorldTime().GetTimeGone())
 
 				If not IsProduced() and script.productionTime > 0
-					earliestBroadcastTime :+ script.productionTime
+					earliestBroadcastTime :+ script.productionTime * script.productionTimeMod
 				EndIf
 			EndIf
 		EndIf
@@ -1041,15 +1041,14 @@ Type TProductionConcept Extends TOwnedGameObject
 		endif
 
 		'if there is something defined (eg for live preproductions)
-		'then use this. Return in hours not minutes!
+		'then use this. 
+		'Result is rounded to "minutes"!
 		if script.productionTime > 0
 			base = script.productionTime
 
 			base :* speedPointTimeMod
 			base :* teamPointTimeMod
 			base :* script.productionTimeMod
-			'round to hours
-			return TWorldTime.HOURLENGTH * (base / TWorldTime.HOURLENGTH)
 		else
 			base :* typeTimeMod
 			base :* speedPointTimeMod
@@ -1057,10 +1056,9 @@ Type TProductionConcept Extends TOwnedGameObject
 			base :* script.productionTimeMod
 
 			base = Max(base, ceil(script.GetBlocks()*blockMinimumMod) * TWorldTime.HOURLENGTH)
-			'round to hours
-			return TWorldTime.HOURLENGTH * (Max(1, base / TWorldTime.HOURLENGTH))
 		endif
-
+		'round to minutes (TWorldTime.MINUTELENGTH and base are LONG)
+		return TWorldTime.MINUTELENGTH * (base / TWorldTime.MINUTELENGTH)
 	End Method
 
 

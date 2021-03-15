@@ -221,7 +221,7 @@ Type TScriptTemplate Extends TScriptBase
 
 	Method GetProductionTime:Int()
 		If productionTimeMin >= 0 And productionTimeMax >= 0
-			return 0.001 * BiasedRandRange(int(1000*productionTimeMin), int(1000*productionTimeMax), productionTimeSlope)
+			return BiasedRandRange(productionTimeMin, productionTimeMax, productionTimeSlope)
 		Endif
 
 		Return productionTime

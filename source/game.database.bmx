@@ -1737,9 +1737,12 @@ Type TDatabaseLoader
 		scriptTemplate.productionLicenceFlags = data.GetInt("production_licence_flags", scriptTemplate.productionLicenceFlags)
 		scriptTemplate.SetProductionBroadcastLimit( data.GetInt("production_broadcast_limit", scriptTemplate.GetProductionBroadcastLimit()) )
 
-		scriptTemplate.productionTime = data.GetInt("production_time", scriptTemplate.productionTime)
-		scriptTemplate.productionTimeMin = data.GetInt("production_time_min", scriptTemplate.productionTimeMin)
-		scriptTemplate.productionTimeMax = data.GetInt("production_time_max", scriptTemplate.productionTimeMax)
+		scriptTemplate.productionTime =  TWorldTime.MINUTELENGTH * data.GetInt("production_time", scriptTemplate.productionTime / TWorldTime.MINUTELENGTH)
+		'we cannot simply place the min/max as default as "-1 / TWorldTime.MINUTELENGTH" results in 0 ...
+		local pTMin:Int = data.GetInt("production_time_min", -1)
+		local pTMax:Int = data.GetInt("production_time_max", -1)
+		if pTMin >= 0 Then scriptTemplate.productionTimeMin = TWorldTime.MINUTELENGTH * pTMin
+		if pTMax >= 0 Then scriptTemplate.productionTimeMax = TWorldTime.MINUTELENGTH * pTMax
 		scriptTemplate.productionTimeSlope = 0.01 * data.GetFloat("production_time_slope", 100 * scriptTemplate.productionTimeSlope)
 
 		scriptTemplate.productionTimeMod = 0.01 * data.GetFloat("production_time_mod", 100*scriptTemplate.productionTimeMod)

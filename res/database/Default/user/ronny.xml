@@ -863,7 +863,7 @@ Illustrious guests and music by [3|Nick].</en>
 			<outcome min="30" max="45" slope="40" />
 			<review min="40" max="60" slope="40" />
 			<speed min="45" max="70" slope="50" />
-			<!-- live on next work day 20:00 -->
+			<!-- live on next work day 20:00, production time is in minutes! -->
 			<data flags="1" live_date="8,1,20,20" production_time="120" />
 		</scripttemplate>
 

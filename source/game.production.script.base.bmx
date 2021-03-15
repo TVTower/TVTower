@@ -346,7 +346,7 @@ Type TScriptBase Extends TNamedGameObject
 	Method GetLiveTimeText:String(nowTime:Long = -1)
 		if nowTime = -1 then nowTime = GetWorldTime().GetTimeGone()
 		Local earliestProductionFinishTime:Long = nowTime
-		If productionTime >= 0 Then earliestProductionFinishTime :+ productionTime
+		If productionTime >= 0 Then earliestProductionFinishTime :+ productionTime * productionTimeMod
 
 		Local plannedLiveTime:Long = GetLiveTime( earliestProductionFinishTime )
 		Local plannedLiveTimeStr:String = GetWorldTime().GetFormattedDate( plannedLiveTime )
