@@ -101,6 +101,93 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	End Method
 
 
+	'returns:
+	'mode 0: "1h5m"
+	'mode 1: "1 Hour 5 Minutes"
+	'mode 2: "01:05"
+	'mode 3: "65m" "119m"   125min="~2h"  155min="~2.5h" 175min="~3h"
+	Function GetHourMinutesLeft:String(time:Long, displayMode:Int = 0)
+		Local hours:Long = time / HOURLENGTH
+		Local minutes:Int = (time - (hours * HOURLENGTH)) / MINUTELENGTH
+
+		Select displayMode
+			'mode 1: "1 Hour 5 Minutes"
+			case 1
+				if hours = 0 and minutes < 60
+					If minutes = 1
+						Return minutes + " " + GetLocale("MINUTE")
+					Else
+						Return minutes + " " + GetLocale("MINUTES")
+					EndIf
+				else
+					if minutes = 0
+						If hours = 1
+							Return "1 " + GetLocale("HOUR")
+						Else
+							Return hours + " " + GetLocale("HOURS")
+						EndIf
+					else
+						'do it the long way to avoid string creations
+						If hours = 1 and minutes = 1
+							Return "1 " + GetLocale("HOUR") + " 1 " + GetLocale("MINUTE")
+						ElseIf hours = 1
+							Return "1 " + GetLocale("HOUR") + " " + minutes + " " + GetLocale("MINUTES")
+						ElseIf minutes = 1
+							Return hours + " " + GetLocale("HOURS") + " 1 " + GetLocale("MINUTE")
+						Else
+							Return hours + " " + GetLocale("HOURS") + " " + minutes + " " + GetLocale("MINUTES")
+						endIf
+					endif
+				endif
+
+			'mode 2: "01:05"
+			case 2
+				If minutes < 10
+					If hours < 10
+						Return "0" + hours + ":0" + minutes
+					Else
+						Return hours + ":0" + minutes
+					EndIf
+				Else
+					If hours < 10
+						Return "0" + hours + ":" + minutes
+					Else
+						Return hours + ":" + minutes
+					EndIf
+				EndIf
+				
+			case 3
+				If hours <= 1 and minutes < 60
+					Return (hours*60 + minutes) + GetLocale("MINUTE_SHORT")
+				Else
+					if minutes = 0
+						Return hours + GetLocale("HOUR_SHORT")
+					ElseIf minutes = 30
+						Return hours + ".5" + GetLocale("HOUR_SHORT")
+					ElseIf minutes < 15
+						Return "~~" + hours + GetLocale("HOUR_SHORT")
+					ElseIf minutes < 45
+						Return "~~" + hours + ".5" + GetLocale("HOUR_SHORT")
+					Else
+						Return "~~" + (hours+1) + GetLocale("HOUR_SHORT")
+					EndIf
+				endIf
+			default
+				if minutes < 60
+					Return minutes + GetLocale("MINUTE_SHORT")
+				else
+					Local hours:Long = time / HOURLENGTH
+					Local minutes:Int = (time - (hours * HOURLENGTH)) / MINUTELENGTH
+					if minutes = 0
+						Return hours + GetLocale("HOUR_SHORT")
+					else
+						Return hours + GetLocale("HOUR_SHORT") + minutes + GetLocale("MINUTE_SHORT")
+					endif
+				endif
+		End Select
+	End Function 
+
+
 	Method GetTimeGoneFromString:Long(str:string)
 		'accepts format "y-m-d h:i"
 		local dateTime:string[] = str.split(" ")
