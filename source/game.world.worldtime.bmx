@@ -106,6 +106,7 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 	'mode 1: "1 Hour 5 Minutes"
 	'mode 2: "01:05"
 	'mode 3: "65m" "119m"   125min="~2h"  155min="~2.5h" 175min="~3h"
+	'mode 4: "65m" "119m"   125min="2h"   155min="2.5h"  175min="3h"
 	Function GetHourMinutesLeft:String(time:Long, displayMode:Int = 0)
 		Local hours:Long = time / HOURLENGTH
 		Local minutes:Int = (time - (hours * HOURLENGTH)) / MINUTELENGTH
@@ -170,6 +171,18 @@ Type TWorldTime Extends TWorldTimeBase {_exposeToLua="selected"}
 						Return "~~" + hours + ".5" + GetLocale("HOUR_SHORT")
 					Else
 						Return "~~" + (hours+1) + GetLocale("HOUR_SHORT")
+					EndIf
+				endIf
+			case 4
+				If hours <= 1 and minutes < 60
+					Return (hours*60 + minutes) + GetLocale("MINUTE_SHORT")
+				Else
+					if minutes < 15
+						Return hours + GetLocale("HOUR_SHORT")
+					ElseIf minutes >= 15 and minutes < 45
+						Return hours + ".5" + GetLocale("HOUR_SHORT")
+					Else
+						Return (hours+1) + GetLocale("HOUR_SHORT")
 					EndIf
 				endIf
 			default

@@ -389,7 +389,7 @@ Type TGuiProductionConceptListItem Extends TGUIGameListItem
 			skin.RenderBox(contentX + 5, contentY, 50, -1, productionconcept.script.GetBlocks(), "duration", "neutral", skin.fontBold)
 			'production time
 			'skin.RenderBox(contentX + 5 + 60, contentY, 65, -1, (productionconcept.GetBaseProductionTime()/TWorldTime.HOURLENGTH) + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
-			skin.RenderBox(contentX + 5 + 60, contentY, 65, -1, TWorldtime.GetHourMinutesLeft(productionconcept.GetBaseProductionTime()), "runningTime", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 60, contentY, 72, -1, TWorldtime.GetHourMinutesLeft(productionconcept.GetBaseProductionTime(), 4), "runningTime", "neutral", skin.fontBold)
 
 			'price
 			if canAfford

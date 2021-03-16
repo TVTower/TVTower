@@ -1284,21 +1284,21 @@ endrem
 		skin.RenderBox(contentX + 5, contentY, 50, -1, GetBlocks(), "duration", "neutral", skin.fontBold)
 		'room size
 		If studioSize > 0 and studioSize < requiredStudioSize
-			skin.RenderBox(contentX + 5 + 1*60, contentY, 50, -1, requiredStudioSize, "roomsize", "bad", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 1*59, contentY, 45, -1, requiredStudioSize, "roomsize", "bad", skin.fontBold)
 		Elseif studioSize > 0 and studioSize >= requiredStudioSize
-			skin.RenderBox(contentX + 5 + 1*60, contentY, 50, -1, requiredStudioSize, "roomsize", "good", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 1*59, contentY, 45, -1, requiredStudioSize, "roomsize", "good", skin.fontBold)
 		Else
-			skin.RenderBox(contentX + 5 + 1*60, contentY, 50, -1, requiredStudioSize, "roomsize", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 1*59, contentY, 45, -1, requiredStudioSize, "roomsize", "neutral", skin.fontBold)
 		Endif
 		If IsLive()
 			local effectiveProductionTime:Long = productionTime * productionTimeMod
 			'(pre-)production time
 '			if productionTime = 0
-'				skin.RenderBox(contentX + 5 + 2*60, contentY, 65, -1, "0" + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
+'				skin.RenderBox(contentX + 5 + 2*59, contentY, 65, -1, "0" + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
 '			else
-'				skin.RenderBox(contentX + 5 + 2*60, contentY, 65, -1, "~~" + (productionTime/TWorldTime.HOURLENGTH) + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
+'				skin.RenderBox(contentX + 5 + 2*59, contentY, 65, -1, "~~" + (productionTime/TWorldTime.HOURLENGTH) + GetLocale("HOUR_SHORT"), "runningTime", "neutral", skin.fontBold)
 '			endif
-			skin.RenderBox(contentX + 5 + 2*60, contentY, 65, -1, TWorldtime.GetHourMinutesLeft(effectiveProductionTime), "runningTime", "neutral", skin.fontBold)
+			skin.RenderBox(contentX + 5 + 2*59 - 5, contentY, 72, -1, TWorldtime.GetHourMinutesLeft(effectiveProductionTime*2 - TWorldTime.MINUTELENGTH, 4), "runningTime", "neutral", skin.fontBold)
 		EndIf
 		'price
 		If canAfford
