@@ -1541,24 +1541,6 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 			GetInstance().SetPlayerBankruptLevel(player.playerID, GetInstance().GetPlayerBankruptLevel(player.playerID))
 		Next
 
-		're-rent "free rooms" (of old savegames, so might get removed
-		'later on)
-'		GetRoomAgency().UpdateEmptyRooms()
-		For Local r:TRoomBase = EachIn GetRoomBaseCollection().list
-			'ignore non-rentable rooms
-			If Not r.IsRentable() Then Continue
-			If r.IsRented() Then Continue
-			If r.IsFreehold() Then Continue
-
-			'never rented before (old savegames)
-			If r.rentalTimes = 0 And r.rent = 0 And r.rentalChangeTime = 0
-				'let original owner rent it
-				r.BeginRental(r.GetOwner(), r.GetRent())
-				'TLogger.Log("TGame", "Savegame loaded - re-rented room ~q"+r.GetName()+"~q.", LOG_DEBUG | LOG_SAVELOAD)
-			EndIf
-		Next
-		
-
 		'SAVEGAMEREPAIR (TVTower v0.7)
 		'older savegames might contain orphaned production concepts
 		Local removedOrphans:Int = RemoveOrphanedProductionConcepts()
