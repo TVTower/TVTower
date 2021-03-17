@@ -846,10 +846,10 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	'remove from PlayerProgrammeCollection _AND_ "ProductionConceptCollection"
 	Method DestroyProductionConcept:Int(productionConcept:TProductionConcept)
 		Local removed:Int
-		removed = RemoveProductionConcept(productionConcept)
-		removed = removed OR GetProductionConceptCollection().Remove(productionConcept)
-		
-		If not removed then return False
+		removed :+ RemoveProductionConcept(productionConcept)
+		removed :+ GetProductionConceptCollection().Remove(productionConcept)
+		'print "removed concept: "+removed +"   productionConcept="+productionConcept.GetTitle()
+		If removed = 0 then return False
 
 		'emit event to inform others
 		if fireEvents 

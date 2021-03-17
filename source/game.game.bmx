@@ -1557,7 +1557,42 @@ Type TGame Extends TGameBase {_exposeToLua="selected"}
 				'TLogger.Log("TGame", "Savegame loaded - re-rented room ~q"+r.GetName()+"~q.", LOG_DEBUG | LOG_SAVELOAD)
 			EndIf
 		Next
+		
 
+		'SAVEGAMEREPAIR (TVTower v0.7)
+		'older savegames might contain orphaned production concepts
+		Local removedOrphans:Int = RemoveOrphanedProductionConcepts()
+		if removedOrphans > 0
+			TLogger.Log("Game.OnSaveGameLoad", "Removed " + removedOrphans + " orphaned productionconcept elements.", LOG_DEBUG)
+		endif
+	End Function
+
+
+	Function RemoveOrphanedProductionConcepts:Int()
+		'broken savegames might contain productionConcepts which are no
+		'longer stored in the player's collections, but are still unproduced
+		'and in the concept collection
+		'-> remove these orphans
+		Local orphans:TProductionConcept[]
+		For local pc:TProductionConcept = EachIn GetProductionConceptCollection().entries.Values()
+			'keep produced concepts for later lookups
+			if pc.IsProduced() continue
+			
+			local isOrphan:Int = True
+			For local obj:TPlayerProgrammeCollection = eachin GetPlayerProgrammeCollectionCollection().plans
+				if obj.HasProductionConcept(pc)
+					isOrphan = False
+					exit
+				endif
+			Next
+			if isOrphan then orphans :+ [pc]
+		Next
+		
+
+		For local pc:TProductionConcept = EachIn orphans
+			GetProductionConceptCollection().Remove(pc)
+		Next
+		Return orphans.length
 	End Function
 
 
