@@ -995,7 +995,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 					EndIf
 				EndIf
 
-				If Not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).CanCreateProductionConcept(script)
+				If Not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).CanCreateProductionConcept(script) AND conceptCountMax > GameRules.maxProductionConceptsPerScript
 					text :+"~n~n"
 					text :+ GetRandomLocale("DIALOGUE_STUDIO_SHOPPING_LIST_LIMIT_REACHED")
 				EndIf
