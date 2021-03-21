@@ -153,6 +153,12 @@ Type TDebugScreen
 		End Select
 	End Method
 
+	Method RenderActionButtons(buttons:TDebugControlsButton[])
+		DrawOutlineRect(sideButtonPanelWidth + 510, 13, 160, 150)
+		For Local i:Int = 0 Until buttons.length
+			buttons[i].Render()
+		Next
+	End Method
 
 
 	'=== OVERVIEW ===
@@ -203,13 +209,7 @@ Type TDebugScreen
 		Local texts:String[] = ["Set Player 1 Bankrupt", "Set Player 2 Bankrupt", "Set Player 3 Bankrupt", "Set Player 4 Bankrupt"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
-			button = New TDebugControlsButton
-			button.w = 130
-			button.h = 15
-			button.x = sideButtonPanelWidth + 10
-			button.y = 10 + i * (button.h + 3)
-			button.dataInt = i
-			button.text = texts[i]
+			button = CreateActionButton(i, texts[i])
 			button._onClickHandler = OnButtonClickHandler_PlayerFinancials
 
 			buttonsPlayerFinancials :+ [button]
@@ -247,13 +247,11 @@ Type TDebugScreen
 	Method RenderMode_PlayerFinancials()
 		Local playerID:Int = GetShownPlayerID()
 
-		For Local b:TDebugControlsButton = EachIn buttonsPlayerFinancials
-			b.Render()
-		Next
+		RenderActionButtons(buttonsPlayerFinancials)
 
-		debugFinancialInfos.Draw(-1, 400, 20)
+		debugFinancialInfos.Draw(-1, sideButtonPanelWidth + 5, 20)
 
-		RenderPlayerBudgets(playerID, 400, 150)
+		RenderPlayerBudgets(playerID, sideButtonPanelWidth + 5, 150)
 	End Method
 
 
@@ -398,7 +396,7 @@ Type TDebugScreen
 		SetColor(oldCol)
 
 		For Local b:TDebugControlsButton = EachIn playerCommandTaskButtons
-			b.Render(sideButtonPanelWidth + 5, 25)
+			b.Render(sideButtonPanelWidth + 5, 30)
 		Next
 
 		For Local b:TDebugControlsButton = EachIn playerCommandAIButtons
@@ -433,7 +431,16 @@ Type TDebugScreen
 		debugProgrammeCollectionInfos.Draw(playerID, sideButtonPanelWidth + 5 + 350, 13)
 	End Method
 
-
+	Method CreateActionButton:TDebugControlsButton(index:int, text:String)
+		Local button:TDebugControlsButton = New TDebugControlsButton
+		button.h = 15
+		button.w = 150
+		button.x = sideButtonPanelWidth + 510 + 5
+		button.y = 25 + index * (button.h + 3)
+		button.dataInt = index
+		button.text = text
+		return button
+	End Method
 
 	'=== AD AGENCY ===
 
@@ -441,24 +448,10 @@ Type TDebugScreen
 		Local texts:String[] = ["Refill Offers", "Replace Offers", "Change Mode"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
-			button = New TDebugControlsButton
-			button.w = 130
-			button.h = 15
-			button.x = sideButtonPanelWidth + 10 + 260
-			button.y = 10 + i * (button.h + 3)
-			button.dataInt = i
-			button.text = texts[i]
+			button = CreateActionButton(i, texts[i])
 			button._onClickHandler = OnButtonClickHandler_AdAgency
-
 			buttonsAdAgency :+ [button]
 		Next
-
-'		buttonsAdAgency[0].w = 70
-'		buttonsAdAgency[0].x = sideButtonPanelWidth + 10 + 150
-'		buttonsAdAgency[0].y = 15
-		buttonsAdAgency[0].y = 15
-		buttonsAdAgency[1].y = 35
-		buttonsAdAgency[2].y = 55
 
 		UpdateAdAgencyModeButton()
 	End Method
@@ -516,9 +509,7 @@ Type TDebugScreen
 		RenderAdAgencyOffers(playerID, sideButtonPanelWidth + 5, 13, 250, 230)
 		RenderAdAgencyInformation(playerID, sideButtonPanelWidth + 5 + 250 + 5, 13)
 
-		For Local b:TDebugControlsButton = EachIn buttonsAdAgency
-			b.Render()
-		Next
+		RenderActionButtons(buttonsAdAgency)
 
 		if adAgencyOfferHightlight
 			adAgencyOfferHightlight.ShowSheet(sideButtonPanelWidth + 5 + 250, 13, 0, TVTBroadcastMaterialType.ADVERTISEMENT, playerID)
@@ -534,24 +525,12 @@ Type TDebugScreen
 		Local texts:String[] = ["Refill Offers", "Replace Offers", "End Auctions"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
-			button = New TDebugControlsButton
-			button.w = 130
-			button.h = 15
-			button.x = sideButtonPanelWidth + 10 + 260
-			button.y = 10 + i * (button.h + 3)
-			button.dataInt = i
-			button.text = texts[i]
+			button = CreateActionButton(i, texts[i])
 			button._onClickHandler = OnButtonClickHandler_MovieVendor
 
 			buttonsMovieVendor :+ [button]
 		Next
 
-'		buttonsAdAgency[0].w = 70
-'		buttonsAdAgency[0].x = sideButtonPanelWidth + 10 + 150
-'		buttonsAdAgency[0].y = 15
-		buttonsMovieVendor[0].y = 15
-		buttonsMovieVendor[1].y = 35
-		buttonsMovieVendor[2].y = 55
 	End Method
 
 
@@ -589,15 +568,12 @@ Type TDebugScreen
 	Method RenderMode_MovieVendor()
 		Local playerID:Int = GetShownPlayerID()
 
-		RenderMovieVendorOffers(playerID, sideButtonPanelWidth + 5, 13, 410, 280)
-		RenderMovieVendorInformation(playerID, sideButtonPanelWidth + 5 + 250 + 250 + 5, 13)
+		RenderMovieVendorOffers(playerID, sideButtonPanelWidth + 5, 13, 430, 330)
+'		RenderMovieVendorInformation(playerID, sideButtonPanelWidth + 5 + 250 + 250 + 5, 13)
 
 		RenderMovieVendorNoLongerAvailable(playerID, sideButtonPanelWidth + 5 + 250 + 5 + 250, 13 + 150)
 
-
-		For Local b:TDebugControlsButton = EachIn buttonsMovieVendor
-			b.Render()
-		Next
+		RenderActionButtons(buttonsMovieVendor)
 
 		if movieVendorOfferHightlight
 			movieVendorOfferHightlight.ShowSheet(sideButtonPanelWidth + 5 + 250, 13, 0, TVTBroadcastMaterialType.PROGRAMME, playerID)
@@ -613,13 +589,7 @@ Type TDebugScreen
 		Local texts:String[] = ["Announce News"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
-			button = New TDebugControlsButton
-			button.w = 130
-			button.h = 15
-			button.x = sideButtonPanelWidth + 10 + 260
-			button.y = 10 + i * (button.h + 3)
-			button.dataInt = i
-			button.text = texts[i]
+			button = CreateActionButton(i, texts[i])
 			button._onClickHandler = OnButtonClickHandler_NewsAgency
 
 			buttonsNewsAgency :+ [button]
@@ -656,6 +626,7 @@ Type TDebugScreen
 		RenderNewsAgencyQueue(playerID, sideButtonPanelWidth + 5, 13, 410, 340)
 		RenderNewsAgencyInformation(playerID, sideButtonPanelWidth + 5 + 250 + 250 + 5, 13)
 
+		RenderActionButtons(buttonsNewsAgency)
 		For Local b:TDebugControlsButton = EachIn buttonsNewsAgency
 			b.Render()
 		Next
@@ -672,13 +643,7 @@ Type TDebugScreen
 		Local texts:String[] = ["Refill Offers", "Replace Offers"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
-			button = New TDebugControlsButton
-			button.w = 130
-			button.h = 15
-			button.x = sideButtonPanelWidth + 10 + 260
-			button.y = 10 + i * (button.h + 3)
-			button.dataInt = i
-			button.text = texts[i]
+			button = CreateActionButton(i, texts[i])
 			button._onClickHandler = OnButtonClickHandler_ScriptAgency
 
 			buttonsScriptAgency :+ [button]
@@ -717,10 +682,7 @@ Type TDebugScreen
 		RenderScriptAgencyInformation(playerID, sideButtonPanelWidth + 5, 13, , 45)
 		RenderScriptAgencyOffers(playerID, sideButtonPanelWidth + 5, 13 + 45 + 5)
 
-		For Local b:TDebugControlsButton = EachIn buttonsScriptAgency
-			b.Render()
-		Next
-
+		RenderActionButtons(buttonsScriptAgency)
 
 		if scriptAgencyOfferHightlight
 			scriptAgencyOfferHightlight.ShowSheet(sideButtonPanelWidth + 5 + 450, 13, 0, -1)
@@ -735,13 +697,7 @@ Type TDebugScreen
 		Local texts:String[] = ["Re-Rent", "Kick Renter"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
-			button = New TDebugControlsButton
-			button.w = 130
-			button.h = 15
-			button.x = sideButtonPanelWidth + 10 + 260
-			button.y = 10 + i * (button.h + 3)
-			button.dataInt = i
-			button.text = texts[i]
+			button = CreateActionButton(i, texts[i])
 			button._onClickHandler = OnButtonClickHandler_RoomAgency
 
 			buttonsRoomAgency :+ [button]
@@ -776,9 +732,7 @@ Type TDebugScreen
 	Method RenderMode_RoomAgency()
 		Local playerID:Int = GetShownPlayerID()
 
-		For Local b:TDebugControlsButton = EachIn buttonsRoomAgency
-			b.Render()
-		Next
+		RenderActionButtons(buttonsRoomAgency)
 	End Method
 
 
@@ -788,13 +742,7 @@ Type TDebugScreen
 		Local texts:String[] = ["Send Terrorist", "Reset Terror Levels"]
 		Local button:TDebugControlsButton
 		For Local i:Int = 0 Until texts.length
-			button = New TDebugControlsButton
-			button.w = 150
-			button.h = 15
-			button.x = sideButtonPanelWidth + 10
-			button.y = 10 + i * (button.h + 3)
-			button.dataInt = i
-			button.text = texts[i]
+			button = CreateActionButton(i, texts[i])
 			button._onClickHandler = OnButtonClickHandler_Politics
 
 			buttonsPolitics :+ [button]
@@ -842,9 +790,7 @@ Type TDebugScreen
 	Method RenderMode_Politics()
 		Local playerID:Int = GetShownPlayerID()
 
-		For Local b:TDebugControlsButton = EachIn buttonsPolitics
-			b.Render()
-		Next
+		RenderActionButtons(buttonsPolitics)
 	End Method
 	
 	
@@ -895,10 +841,8 @@ Type TDebugScreen
 	Method RenderMode_Modifiers()
 		Local playerID:Int = GetShownPlayerID()
 
-		For Local b:TDebugControlsButton = EachIn buttonsModifiers
-			b.Render()
-		Next
-		
+		RenderActionButtons(buttonsModifiers)
+
 		RenderGameModifierList(playerID, sideButtonPanelWidth + 5, 13)
 	End Method
 	
@@ -1100,6 +1044,7 @@ Type TDebugScreen
 		textY :+ 15
 		if not scriptAgencyOfferHightlight
 			For local script:TScript = EachIn GetScriptCollection().GetUsedScriptList()
+				if not script.isOwnedByVendor() continue
 				if THelper.MouseIn(textX, textY, 200, 13)
 					scriptAgencyOfferHightlight = script
 					exit
@@ -1108,8 +1053,8 @@ Type TDebugScreen
 			Next
 		endif
 
-		textY = y + 5
-		textX :+ 200
+'		textY = y + 5
+'		textX :+ 200
 		textY :+ 15
 		if not scriptAgencyOfferHightlight
 			For local script:TScript = EachIn GetScriptCollection().GetAvailableScriptList()
@@ -1125,46 +1070,45 @@ Type TDebugScreen
 
 
 	Method RenderScriptAgencyOffers(playerID:int, x:int, y:int, w:int = 400, h:int = 150)
-		DrawOutlineRect(x, y, w, h)
+		DrawOutlineRect(x, y, w, h + 120)
 		Local textX:Int = x + 5
 		Local textY:Int = y + 5
 		Local entryNum:Int = 0
 		Local oldAlpha:Float = GetAlpha()
 		Local barWidth:int = 180
 
-		titleFont.DrawSimple("Offered:", textX, textY)
-		textY :+ 12
+		textFontBold.Draw("Offered:", textX, textY)
+		textY :+ 14
 		For local script:TScript = EachIn GetScriptCollection().GetUsedScriptList()
-			If entryNum Mod 2 = 0
-				SetColor 0,0,0
-			Else
-				SetColor 60,60,60
-			EndIf
-			SetAlpha 0.75 * oldAlpha
-			DrawRect(textX, textY, barWidth, 12)
+			If Not script.isOwnedByVendor() Then continue
+			RenderScript(script, entryNum, textX, textY, barWidth, oldAlpha, scriptAgencyOfferHightlight)
+			textY:+ 13
+			entryNum :+ 1
+		Next
 
-			SetColor 255,255,255
-			SetAlpha oldAlpha
+		textY:+ 5
+		textFontBold.Draw("Available:", textX, textY)
+		textY :+ 15
+		entryNum = 0
+		For local script:TScript = EachIn GetScriptCollection().GetAvailableScriptList()
+			RenderScript(script, entryNum, textX, textY, barWidth, oldAlpha, scriptAgencyOfferHightlight)
+			textY:+ 13
+			entryNum :+ 1
+		Next
 
-			if script = scriptAgencyOfferHightlight
-				SetAlpha 0.25 * oldAlpha
-				SetBlend LIGHTBLEND
-				DrawRect(textX, textY, barWidth, 12)
-				SetAlpha oldAlpha
-				SetBlend ALPHABLEND
-			endif
-
-			textFont.DrawSimple(script.GetTitle(), textX, textY - 2)
+		textY = y + 5
+		textX :+ 200
+		textFontBold.Draw("Player owned:", textX, textY)
+		textY :+ 15
+		entryNum = 0
+		For local script:TScript = EachIn GetScriptCollection().GetUsedScriptList()
+			If Not script.IsOwnedByPlayer(GetShownPlayerID()) continue
+			RenderScript(script, entryNum, textX, textY, barWidth, oldAlpha, scriptAgencyOfferHightlight)
 			textY:+ 13
 			entryNum :+ 1
 		Next
 		
-		textY = y + 5
-		textX :+ 200
-		textFont.DrawSimple("Available:", textX, textY)
-		textY :+ 15
-		entryNum = 0
-		For local script:TScript = EachIn GetScriptCollection().GetAvailableScriptList()
+		Function RenderScript(script:TScript, entryNum:Int, textX:Int, textY:Int, barWidth:Int, oldAlpha:Float, scriptAgencyOfferHightlight:Tscript)
 			If entryNum Mod 2 = 0
 				SetColor 0,0,0
 			Else
@@ -1185,14 +1129,12 @@ Type TDebugScreen
 			endif
 
 			textFont.DrawSimple(script.GetTitle(), textX, textY - 2)
-			textY:+ 13
-			entryNum :+ 1
-		Next
+		End Function
 	End Method
 
 
 	Method RenderNewsAgencyInformation(playerID:int, x:int, y:int, w:int = 180, h:int = 150)
-		DrawOutlineRect(x, y, w, h)
+'		DrawOutlineRect(x, y, w, h)
 	End Method
 
 
@@ -1285,7 +1227,7 @@ Type TDebugScreen
 
 
 	Method RenderMovieVendorInformation(playerID:int, x:int, y:int, w:int = 180, h:int = 150)
-		DrawOutlineRect(x, y, w, h)
+'		DrawOutlineRect(x, y, w, h)
 	End Method
 
 
@@ -1400,7 +1342,7 @@ Type TDebugScreen
 
 
 	Method RenderAdAgencyInformation(playerID:int, x:int, y:int, w:int = 200, h:int = 150)
-		DrawOutlineRect(x, y, w, h)
+'		DrawOutlineRect(x, y, w, h)
 rem
 		Local captionFont:TBitMapFont
 			SetColor 0,0,0
@@ -1849,7 +1791,7 @@ Type TDebugAudienceInfos
 		DrawRect(0,0,800,385)
 		SetColor 255, 255, 255
 
-		'GetBitmapFontManager().baseFont.Draw("Bevölkerung", 25, startY)
+		'GetBitmapFontManager().baseFont.Draw("BevÃ¶lkerung", 25, startY)
 
 		Local playerID:Int = TIngameInterface.GetInstance().ShowChannel
 		If playerID <= 0 Then playerID = GetPlayerBaseCollection().playerID
@@ -1859,7 +1801,7 @@ Type TDebugAudienceInfos
 		Local x:Int = 200
 		Local y:Int = 25
 		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
-		GetBitmapFontManager().baseFont.DrawBox("|b|Taste |color=255,100,0|~qQ~q|/color| drücken|/b| um (Debug-)Quotenbildschirm wieder auszublenden. Spielerwechsel: TV-Kanalbuttons", 0, 360, GetGraphicsManager().GetWidth(), 25, sALIGN_CENTER_CENTER, SColor8.Red)
+		GetBitmapFontManager().baseFont.DrawBox("|b|Taste |color=255,100,0|~qQ~q|/color| drÃ¼cken|/b| um (Debug-)Quotenbildschirm wieder auszublenden. Spielerwechsel: TV-Kanalbuttons", 0, 360, GetGraphicsManager().GetWidth(), 25, sALIGN_CENTER_CENTER, SColor8.Red)
 
 		font.DrawBox("Gesamt", x, y, 65, 25, sALIGN_RIGHT_TOP, SColor8.Red)
 		font.DrawBox("Kinder", x + (70*1), y, 65, 25, sALIGN_RIGHT_TOP, SColor8.White)
@@ -1871,7 +1813,7 @@ Type TDebugAudienceInfos
 		font.DrawBox("Rentner", x + (70*7), y, 65, 25, sALIGN_RIGHT_TOP, SColor8.White)
 
 
-		font.DrawSimple("Bevölkerung", 25, 50, SColor8.White)
+		font.DrawSimple("BevÃ¶lkerung", 25, 50, SColor8.White)
 		DrawAudience(audienceResult.WholeMarket, 200, 50)
 
 		Local percent:String = MathHelper.NumberToString(audienceResult.GetPotentialMaxAudienceQuotePercentage()*100,2) + "%"
@@ -1931,13 +1873,13 @@ Type TDebugAudienceInfos
 		GetBitmapFontManager().baseFontBold.DrawSimple("Sendung: " + audienceResult.GetTitle() + "     (" + genre + ") [Spieler: "+playerID+"]", 25, offset, SColor8.Red)
 		offset :+ 20
 
-		font.DrawSimple("1. Programmqualität & Aktual.", 25, offset, SColor8.White)
+		font.DrawSimple("1. ProgrammqualitÃ¤t & Aktual.", 25, offset, SColor8.White)
 		If attraction.Quality
 			DrawAudiencePercent(New TAudience.InitValue(attraction.Quality,  attraction.Quality), 200, offset, True, True)
 		EndIf
 		offset :+ 20
 
-		font.DrawSimple("2. * Zielgruppenattraktivität", 25, offset, SColor8.White)
+		font.DrawSimple("2. * ZielgruppenattraktivitÃ¤t", 25, offset, SColor8.White)
 		If attraction.targetGroupAttractivity
 			DrawAudiencePercent(attraction.targetGroupAttractivity, 200, offset, True, True)
 		Else
@@ -1972,7 +1914,7 @@ Type TDebugAudienceInfos
 	'	DrawAudiencePercent(new TAudience.InitValue(-1, attraction.QualityOverTimeEffectMod), 200, offset, true, true)
 		offset :+ 20
 
-		font.DrawSimple("9. + Glück / Zufall", 25, offset, SColor8.White)
+		font.DrawSimple("9. + GlÃ¼ck / Zufall", 25, offset, SColor8.White)
 		If attraction.LuckMod
 			DrawAudiencePercent(attraction.LuckMod, 200, offset, True, True)
 		EndIf
@@ -1984,7 +1926,7 @@ Type TDebugAudienceInfos
 		EndIf
 		offset :+ 20
 
-		font.DrawSimple("10. * Genreattraktivität (zeitabh.)", 25, offset, SColor8.White)
+		font.DrawSimple("10. * GenreattraktivitÃ¤t (zeitabh.)", 25, offset, SColor8.White)
 		If attraction.GetGenreAttractivity()
 			DrawAudiencePercent(attraction.GetGenreAttractivity(), 200, offset, True, True)
 		EndIf
@@ -1996,12 +1938,12 @@ Type TDebugAudienceInfos
 		EndIf
 		offset :+ 20
 
-		font.DrawSimple("Finale Attraktivität (Effektiv)", 25, offset, SColor8.White)
+		font.DrawSimple("Finale AttraktivitÃ¤t (Effektiv)", 25, offset, SColor8.White)
 		If attraction.FinalAttraction
 			DrawAudiencePercent(attraction.FinalAttraction, 200, offset, False, True)
 		EndIf
 Rem
-		font.Draw("Basis-Attraktivität", 25, offset+230, TColor.clRed)
+		font.Draw("Basis-AttraktivitÃ¤t", 25, offset+230, TColor.clRed)
 		'DrawAudiencePercent(attraction, 200, offset+260)
 		If attraction.BaseAttraction Then
 			'font.drawBlock(genre, 60, offset+150, 205, 25, ALIGN_RIGHT_TOP, colorLight )
@@ -2021,7 +1963,7 @@ Rem
 		endrem
 
 		Rem
-		font.Draw("Block-Attraktivität", 25, offset+290, TColor.clRed)
+		font.Draw("Block-AttraktivitÃ¤t", 25, offset+290, TColor.clRed)
 		'DrawAudiencePercent(attraction, 200, offset+260)
 		If attraction.BlockAttraction Then
 			'font.drawBlock(genre, 60, offset+150, 205, 25, ALIGN_RIGHT_TOP, colorLight )
@@ -2032,7 +1974,7 @@ Rem
 
 
 		Rem
-		font.Draw("Ausstrahlungs-Attraktivität", 25, offset+270, TColor.clRed)
+		font.Draw("Ausstrahlungs-AttraktivitÃ¤t", 25, offset+270, TColor.clRed)
 		'DrawAudiencePercent(attraction, 200, offset+260)
 		If attraction.BroadcastAttraction Then
 			'font.drawBlock(genre, 60, offset+150, 205, 25, ALIGN_RIGHT_TOP, colorLight )
@@ -2075,7 +2017,7 @@ Rem
 		font.Draw(genreTimeMod, 160, offset+240, TColor.clWhite)
 		font.drawBlock(genreTimeQuality, 200, offset+240, 65, 25, ALIGN_RIGHT_TOP, TColor.clRed)
 
-		'Nur vorübergehend
+		'Nur vorÃ¼bergehend
 		font.Draw("Trailer-Mod", 25, offset+250, TColor.clWhite)
 		Local trailerMod:String = MathHelper.NumberToString(attraction.TrailerMod  * 100,2) + "%"
 		Local trailerQuality:String = MathHelper.NumberToString(attraction.TrailerQuality * 100,2) + "%"
@@ -2088,7 +2030,7 @@ Rem
 		font.Draw("100%", 160, offset+295, TColor.clWhite);
 		DrawAudiencePercent(attraction, 200, offset+295);
 
-		font.Draw("Effektive Attraktivität", 25, offset+325, TColor.clWhite);
+		font.Draw("Effektive AttraktivitÃ¤t", 25, offset+325, TColor.clWhite);
 		DrawAudiencePercent(attraction, 200, offset+325)
 endrem
 	End Method
