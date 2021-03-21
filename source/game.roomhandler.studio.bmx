@@ -138,7 +138,6 @@ Type RoomHandler_Studio Extends TRoomHandler
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnMouseOver, onMouseOverProductionConcept, "TGuiProductionConceptListItem") ]
 		'this lists want to delete the item if a right mouse click happens...
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickScript, "TGUIStudioScript") ]
-		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickProductionConcept, "TGuiProductionConceptListItem")]
 
 		'(re-)localize content
 		SetLanguage()
@@ -283,36 +282,6 @@ Type RoomHandler_Studio Extends TRoomHandler
 		'rebuild at correct spot
 		GetInstance().RefreshGuiElements()
 		endrem
-
-		'avoid clicks
-		'remove right click - to avoid leaving the room
-		MouseManager.SetClickHandled(2)
-	End Function
-
-
-	'in case of right mouse button click a dragged production concept is
-	'removed
-	Function onClickProductionConcept:Int(triggerEvent:TEventBase)
-		If Not CheckPlayerObservedAndInRoom("studio") Then Return False
-
-		'only react if the click came from the right mouse button
-		If triggerEvent.GetData().getInt("button",0) <> 2 Then Return True
-
-		Local guiItem:TGuiProductionConceptListItem= TGuiProductionConceptListItem(triggerEvent._sender)
-		'ignore wrong types and NON-dragged items
-		If Not guiItem Or Not guiItem.isDragged() Then Return False
-
-
-'		if not GetPlayerProgrammeCollection( GetPlayerBase().playerID ).DestroyProductionConcept(guiItem.productionConcept)
-'			TLogger.log("Studio.onClickProductionConcept", "Not able to destroy production concept: "+guiItem.productionConcept.GetGUID()+"  " +guiItem.productionConcept.GetTitle(), LOG_ERROR)
-'		endif
-
-		'remove gui object
-		guiItem.remove()
-		guiItem = Null
-
-		'rebuild elements (also resets hovered/dragged)
-		GetInstance().RefreshGuiElements()
 
 		'avoid clicks
 		'remove right click - to avoid leaving the room
@@ -1321,7 +1290,7 @@ Type RoomHandler_Studio Extends TRoomHandler
 					'Destroy, not just remove (would keep it in the concept collection)
 					If draggedGuiProductionConcept and programmeCollection.DestroyProductionConcept(draggedGuiProductionConcept.productionConcept)
 						draggedGuiProductionConcept = null
-				
+
 						handledC = True
 					EndIf
 					
@@ -1353,7 +1322,9 @@ Type RoomHandler_Studio Extends TRoomHandler
 
 			'Destroy, not just remove (would keep it in the concept collection)
 			If programmeCollection and programmeCollection.DestroyProductionConcept(draggedGuiProductionConcept.productionConcept)
+				draggedGuiProductionConcept.Remove()
 				draggedGuiProductionConcept = null
+				haveToRefreshGuiElements = True
 			
 				'remove right click - to avoid leaving the room
 				MouseManager.SetClickHandled(2)

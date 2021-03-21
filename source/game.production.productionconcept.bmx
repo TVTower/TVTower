@@ -78,6 +78,34 @@ Type TProductionConceptCollection Extends TGameObjectCollection
 		Next
 		return result
 	End Method
+
+
+	Method CanCreateProductionConcept:Int(script:TScript) {_exposeToLua}
+		If not script then Return False
+
+		'does the script define a specific limit?
+		local produceableElements:Int = script.GetCanGetProducedElementsCount()
+		if produceableElements = 0 Then Return False
+		
+		Local currentConceptCount:Int = GetProductionConceptCountByScript(script, True)
+	
+		'do not allow more concepts than the rules say!
+		If currentConceptCount >= GameRules.maxProductionConceptsPerScript Then Return False
+		'do not allow more concepts than produceable with the script
+		If currentConceptCount >= GetProductionConceptMax(script) Then Return False
+	
+		Return True
+	End Method
+
+
+	Method GetProductionConceptMax:Int(script:TScript) {_exposeToLua}
+		'series?
+		If script.GetSubScriptCount() > 0
+			Return script.GetSubScriptCount() - script.GetProductionsCount()
+		Else
+			Return script.CanGetProducedCount()
+		endIf
+	End Method
 End Type
 
 

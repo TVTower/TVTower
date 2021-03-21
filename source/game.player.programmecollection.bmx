@@ -797,13 +797,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	'=== PRODUCTION CONCEPTS  ===
 	Method CanCreateProductionConcept:Int(script:TScript) {_exposeToLua}
-		If not script then Return False
-
-		local produceableElements:Int = script.GetCanGetProducedElementsCount()
-		if produceableElements = 0 Then Return False
-		
-		'do not allow more concepts than the rules say!
-		Return GetProductionConceptCollection().GetProductionConceptCountByScript(script, True) < GameRules.maxProductionConceptsPerScript
+		Return GetProductionConceptCollection().CanCreateProductionConcept(script)
 	End Method
 
 
