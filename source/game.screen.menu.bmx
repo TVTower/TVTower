@@ -194,6 +194,10 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiPlayerPanels[i].AddChild(guiDifficulty[i])
 			guiPlayerPanels[i].AddChild(guiFigureArrows[i*2 + 0])
 			guiPlayerPanels[i].AddChild(guiFigureArrows[i*2 + 1])
+			
+			'ensure buttons are drawn on top
+			guiFigureSelectArrows[i*2 + 0].SetZIndex(guiPlayerPanels[i].GetZIndex() + 1)
+			guiFigureSelectArrows[i*2 + 1].SetZIndex(guiPlayerPanels[i].GetZIndex() + 1)
 
 
 			guiPlayerNames[i].SetTooltip( CreateBasicTooltip("PLAYERNAME", "NEWGAMESETTINGS_PLAYERNAME_DETAIL"), True, False )
