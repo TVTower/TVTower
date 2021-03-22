@@ -870,6 +870,14 @@ Type TGUIobject
 	End Method
 
 
+	'default compare (sort) just uses _id to have widgets
+	'created after an other one, to be render on top of it
+	Method Compare:Int( other:Object )
+		If not TGUIObject(other) then Return 1
+		Return _id - TGUIObject(other)._id
+	End Method
+	
+
 	Method SetManaged(bool:Int)
 		If bool
 			If Not _flags & GUI_OBJECT_MANAGED Then GUIManager.add(Self)
