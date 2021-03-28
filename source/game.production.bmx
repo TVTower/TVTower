@@ -501,17 +501,18 @@ Type TProduction Extends TOwnedGameObject
 		Next
 
 
-		Local addLicence:TProgrammeLicence = programmeLicence
+		'for collections and episodes this is the "header", for single
+		'elements this is "self"
+		Local parentLicence:TProgrammeLicence = programmeLicence
 		If programmeLicence.IsEpisode()
 			'set episode according to script-episode-index
 			programmeLicence.episodeNumber = productionConcept.script.GetParentScript().GetSubScriptPosition(productionConcept.script) + 1
 
-			Local parentLicence:TProgrammeLicence = CreateParentalLicence(programmeLicence, TVTProgrammeLicenceType.SERIES)
+			parentLicence = CreateParentalLicence(programmeLicence, TVTProgrammeLicenceType.SERIES)
 			'add the episode
 			If parentLicence
 				'add licence at the position of the defined episode no.
 				parentLicence.AddSubLicence(programmeLicence, programmeLicence.episodeNumber - 1)
-				addLicence = parentLicence
 
 				'fill that licence with episode specific data
 				'(averages, cast, country of production)
@@ -531,8 +532,8 @@ Type TProduction Extends TOwnedGameObject
 		If owner
 			'ignore current level (else you can start production and
 			'increase reach until production finish)
-			addLicence.SetLicencedAudienceReachLevel(1)
-			addLicence.SetOwner(owner)
+			parentLicence.SetLicencedAudienceReachLevel(1)
+			parentLicence.SetOwner(owner)
 		EndIf
 
 		'update programme data so it informs cast, releases to cinema etc
@@ -542,9 +543,9 @@ Rem
 print "produziert: " + programmeLicence.GetTitle() + "  (Preis: "+programmeLicence.GetPrice(1)+")"
 if programmeLicence.IsEpisode()
 	print "Serie besteht nun aus den Folgen:"
-	For local epIndex:int = 0 until addLicence.subLicences.length
-		if addLicence.subLicences[epIndex]
-			print "- subLicences["+epIndex+"] = " + addLicence.subLicences[epIndex].episodeNumber+" | " + addLicence.subLicences[epIndex].GetTitle()
+	For local epIndex:int = 0 until parentLicence.subLicences.length
+		if parentLicence.subLicences[epIndex]
+			print "- subLicences["+epIndex+"] = " + parentLicence.subLicences[epIndex].episodeNumber+" | " + parentLicence.subLicences[epIndex].GetTitle()
 		else
 			print "- subLicences["+epIndex+"] = /"
 		endif
@@ -578,12 +579,14 @@ endrem
 		EndIf
 
 		'=== 4. ADD TO PLAYER ===
-		'add licence (or its header-licence)
+		'add licence (and its header-licence)
 
 		If owner And GetPlayerProgrammeCollection(owner)
-			GetPlayerProgrammeCollection(owner).AddProgrammeLicence(addLicence, False)
-			'done by AddProgrammeLicence already - if successful
-			'GetPlayerProgrammeCollection(owner)._programmeLicences = null 'cache
+			if parentLicence <> programmeLicence
+				'only adds if not already added
+				GetPlayerProgrammeCollection(owner).AddProgrammeLicence(parentLicence, False)
+			endif
+			GetPlayerProgrammeCollection(owner).AddProgrammeLicence(programmeLicence, False)
 		EndIf
 
 

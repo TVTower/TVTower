@@ -196,14 +196,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		Reset()
 
 		_eventListeners = new TEventListenerBase[0]
-		_eventListeners :+ [ EventManager.registerListenerMethod( "programmeproduction.onFinish", self, "onFinishProgrammeProduction" ) ]
-	End Method
-
-
-	'invalidate cache (new episodes added to series)
-	Method onFinishProgrammeProduction:int( triggerEvent:TEventBase )
-		'invalidate
-		_programmeLicences = null
+		'no needed events for now
+		'_eventListeners :+ [ EventManager.registerListenerMethod( "this.event", self, "the callback" ) ]
 	End Method
 
 
@@ -465,6 +459,42 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method ClearJustAddedProgrammeLicences:Int()
 		justAddedProgrammeLicences.Clear()
 	End Method
+	
+	
+	Method AddJustAddedProgrammeLicence:Int(licence:TProgrammeLicence)
+		If licence.GetSubLicenceCount() = 0 
+			If justAddedProgrammeLicences.contains(licence) Then Return False 
+			justAddedProgrammeLicences.AddLast(licence)
+			Return True
+		Else
+			local addedNew:Int = False
+			If not justAddedProgrammeLicences.contains(licence)
+				justAddedProgrammeLicences.AddLast(licence)
+				addedNew = True
+			EndIf
+			'check for new episodes/elements
+			For local subL:TProgrammeLicence = EachIn licence.subLicences
+				if AddJustAddedProgrammeLicence(subL) Then addedNew = True
+			Next
+			Return addedNew
+		EndIf
+	End Method
+
+
+	Method RemoveJustAddedProgrammeLicence:Int(licence:TProgrammeLicence)
+		If licence.GetSubLicenceCount() = 0 
+			Return justAddedProgrammeLicences.Remove(licence)
+		Else
+			local removedSomething:Int = False
+			removedSomething = justAddedProgrammeLicences.Remove(licence)
+
+			'check for removed episodes/elements
+			For local subL:TProgrammeLicence = EachIn licence.subLicences
+				if RemoveJustAddedProgrammeLicence(subL) Then removedSomething = True
+			Next
+			Return removedSomething
+		EndIf
+	End Method
 
 
 	Method RemoveProgrammeLicenceFromSuitcase:int(licence:TProgrammeLicence)
@@ -519,8 +549,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		seriesLicences.remove(licence)
 		'remove from suitcase too!
 		suitcaseProgrammeLicences.remove(licence)
-		'remove from justAddedProgrammeLicences too!
-		justAddedProgrammeLicences.Remove(licence)
+		'remove from justAddedProgrammeLicences (including sub licences)!
+		RemoveJustAddedProgrammeLicence(licence)
 
 		'invalidate
 		_programmeLicences = null
@@ -542,14 +572,14 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method AddProgrammeLicence:Int(licence:TProgrammeLicence, buy:int=FALSE)
 		If not licence then return FALSE
-		'do not allow adding of episodes / collection-elements
-		'(should get added via header)
-		If licence.parentLicenceGUID
-			TLogger.Log("AddProgrammeLicence", "Cannot add licence ~q"+licence.GetTitle()+"~q ["+licence.GetGUID()+"] to programme collection. Licence has parentLicenceGUID set.", LOG_ERROR | LOG_DEBUG)
-			return False
-		endif
+		
+		'repeat process for every (maybe newly added sub licence)
+		For local subLicence:TProgrammeLicence = EachIn licence.subLicences
+			AddProgrammeLicence(subLicence, buy)
+		Next
 
 		'already added (to archive, not suitcase)
+		'works for (series/collection) headers, single elements and episodes 
 		if HasProgrammeLicence(licence) then return False
 
 		'if owner differs, check if we have to buy or got that gifted
@@ -562,16 +592,21 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			endif
 		endif
 
-		'Print "RON: PlayerCollection.AddProgrammeLicence: buy="+buy+" title="+Licence.GetTitle()
-
-		If licence.isSingle() Then singleLicences.AddLast(licence)
-		if licence.isSeries() then seriesLicences.AddLast(licence)
-		if licence.isCollection() then collectionLicences.AddLast(licence)
+		'episodes/collection elements should get added via their header
+		If not licence.parentLicenceGUID
+			If licence.isSingle() Then singleLicences.AddLast(licence)
+			if licence.isSeries() then seriesLicences.AddLast(licence)
+			if licence.isCollection() then collectionLicences.AddLast(licence)
+		endif
 
 		'invalidate
 		_programmeLicences = null
+		'or skip invalidating and just add to the cache
+		'this should work as long as "HasProgrammeLicence()" is run above
+		'and as long as sublicences are handled
+		'_programmeLicences.AddLast(licence)
 
-		justAddedProgrammeLicences.AddLast(licence)
+		AddJustAddedProgrammeLicence(licence)
 
 		if fireEvents 
 			TriggerBaseEvent(GameEventKeys.ProgrammeCollection_AddProgrammeLicence, new TData.add("programmeLicence", licence).AddInt("buy", buy), self)
