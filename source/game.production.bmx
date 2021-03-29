@@ -202,9 +202,23 @@ Type TProduction Extends TOwnedGameObject
 	End Method
 
 
-	Method Start:TProduction()
+	Method Start:TProduction(reduceProductionTimeFactor:Int = 0)
+		'when producing several episodes in a row setting up and cleaning
+		'the studio can be done faster; the factor is expected to be 0, 1 or 2
+		Local productionTime:Long = productionConcept.GetBaseProductionTime()
+		If productionTime > 24 * TWorldTime.HOURLENGTH
+			reduceProductionTimeFactor :* 3
+		Else If productionTime > 12 * TWorldTime.HOURLENGTH
+			reduceProductionTimeFactor :* 2
+		Else If productionTime < 2 * TWorldTime.HOURLENGTH
+			reduceProductionTimeFactor = 0
+		Else If productionTime < 3 * TWorldTime.HOURLENGTH
+			reduceProductionTimeFactor = Min(1, reduceProductionTimeFactor)
+		End if
+		productionTime :- reduceProductionTimeFactor * TWorldTime.HOURLENGTH
+
 		startDate = GetWorldTime().GetTimeGone()
-		endDate = startDate + productionConcept.GetBaseProductionTime()
+		endDate = startDate + productionTime
 		TLogger.Log("TProduction.Start", "Starting production ~q"+productionConcept.GetTitle()+"~q. Production: "+ GetWorldTime().GetFormattedDate(startDate) + "  -  " + GetWorldTime().GetFormattedDate(endDate), LOG_DEBUG)
 
 		status = 1

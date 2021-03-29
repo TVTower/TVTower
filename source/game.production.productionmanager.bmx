@@ -284,7 +284,9 @@ Type TProductionManager
 				exit
 			Next
 			if nextProduction
-				nextProduction.Start()
+				Local reduceProductionTimeFactor:Int = 2
+				If productionsToProduce.count = 1 Then reduceProductionTimeFactor = 1
+				nextProduction.Start(reduceProductionTimeFactor)
 				startedProductions :+ 1
 			endif
 		Next
