@@ -725,6 +725,8 @@ Type TgfxProgrammelist Extends TPlannerList
 
 		SetSubEntriesPages( int(ceil(parentLicence.GetSubLicenceSlots() / Float(maxLicencesPerPage))) )
 
+		Local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(owner)
+
 		Local hoveredLicence:TProgrammeLicence = Null
 		Local currSprite:TSprite
 		Local currY:Int = GetSubEntriesRect().GetY()
@@ -758,6 +760,16 @@ Type TgfxProgrammelist Extends TPlannerList
 					tapeDrawType = "planned"
 				EndIf
 			EndIf
+
+
+			'switch background to "new" if the licence is a just-added-one
+			For Local newLicence:TProgrammeLicence = EachIn programmeCollection.justAddedProgrammeLicences
+				If licence = newLicence
+					entryDrawType = "new"
+					tapeDrawType = "new"
+					Exit
+				EndIf
+			Next
 
 
 			'=== BACKGROUND ===

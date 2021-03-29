@@ -465,6 +465,18 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		If licence.GetSubLicenceCount() = 0 
 			If justAddedProgrammeLicences.contains(licence) Then Return False 
 			justAddedProgrammeLicences.AddLast(licence)
+			
+			'also mark parent (eg. series header) as being "new"
+			if licence.parentLicenceGUID
+				local parentLicence:TProgrammeLicence = licence.GetParentLicence()
+				if parentLicence <> licence
+					justAddedProgrammeLicences.AddLast(parentLicence)
+					'do not call THIS ... as it would mark all other
+					'existing episodes as "new" too
+					'AddJustAddedProgrammeLicence(parentLicence)
+				endif
+			endif
+
 			Return True
 		Else
 			local addedNew:Int = False
