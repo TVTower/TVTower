@@ -99,7 +99,7 @@ DIALOGUE_SUPERMARKET_GOODBYE3          = Ich mach mich mal auf die Socken. Bis s
 
 
 ARCHIVED_MESSAGES                   = Archivierte Nachrichten
-READ_MESSAGES_YOU_MIGHT_HAVE_MISSED = Lese Nachrichten die Du vielleicht verpasst hast.
+READ_MESSAGES_YOU_MIGHT_HAVE_MISSED = Lies Nachrichten die Du vielleicht verpasst hast.
 MESSAGECATEGORY_CATEGORIES          = Kategorien
 MESSAGECATEGORY_ALL                 = Alle Kategorien
 MESSAGECATEGORY_MONEY               = Geld / Finanzen
