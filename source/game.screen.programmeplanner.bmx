@@ -623,11 +623,6 @@ Type TScreenHandler_ProgrammePlanner
 			Return False
 		EndIf
 
-
-		If openedProgrammeListThisVisit And TRoomHandler.IsPlayersRoom(currentRoom)
-			GetPlayerProgrammeCollection(currentRoom.owner).ClearJustAddedProgrammeLicences()
-		EndIf
-
 		Return True
 	End Function
 
@@ -689,6 +684,9 @@ Type TScreenHandler_ProgrammePlanner
 
 		Local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
 		If Not item Then Return False
+
+		Local draggedProgramme:TProgramme=TProgramme(item.broadcastMaterial)
+		If draggedProgramme Then GetPlayerProgrammeCollection(currentRoom.owner).RemoveJustAddedProgrammeLicence(draggedProgramme.licence)
 
 		'check if we somehow dragged a dayChange element
 		'if so : remove it from the list and let the GuiManager manage it
