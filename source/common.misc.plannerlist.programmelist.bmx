@@ -394,20 +394,16 @@ Type TgfxProgrammelist Extends TPlannerList
 			Local tapeDrawType:String = "default"
 			If licence
 				'== BACKGROUND ==
-				'planned is more important than new - both only happen
-				'on startprogrammes
-				If licence.IsProgrammePlanned()
+				'planned is more important than new, except for series parents
+				If licence.GetSubLicenceCount() > 0 And programmeCollection.JustAddedLicencesContains(licence)
+					entryDrawType = "new"
+					tapeDrawType = "new"
+				Else If licence.IsProgrammePlanned()
 					entryDrawType = "planned"
 					tapeDrawType = "planned"
-				Else
-					'switch background to "new" if the licence is a just-added-one
-					For Local newLicence:TProgrammeLicence = EachIn programmeCollection.justAddedProgrammeLicences
-						If licence = newLicence
-							entryDrawType = "new"
-							tapeDrawType = "new"
-							Exit
-						EndIf
-					Next
+				Else If programmeCollection.JustAddedLicencesContains(licence)
+					entryDrawType = "new"
+					tapeDrawType = "new"
 				EndIf
 			EndIf
 
