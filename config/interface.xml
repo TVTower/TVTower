@@ -113,7 +113,7 @@
 				<child name="gfx_interface_tv_programme_news"                 x="128" y="576" w="110" h="85" />
 				<child name="gfx_interface_tv_programme_infomercialoverlay"   x="256" y="576" w="110" h="85" />
 				<child name="gfx_interface_tv_programme_traileroverlay"       x="384" y="576" w="110" h="85" />
-				<child name="gfx_interface_tv_programme_ads_none"             x="0"   y="672" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_ads_none"             x="128" y="672" w="110" h="85" /><!--x=0 old ad outage-->
 				<child name="gfx_interface_tv_programme_none"                 x="128" y="672" w="110" h="85" />
 				<!-- reusing other sprites for now -->
 				<child name="gfx_interface_tv_programme_genre_event"          x="384" y="384" w="110" h="85" />
@@ -122,6 +122,9 @@
 				<child name="gfx_interface_tv_programme_genre_show_politics"  x="256" y="384" w="110" h="85" />
 				<child name="gfx_interface_tv_programme_genre_show_game"      x="0"   y="384" w="110" h="85" />
 				<child name="gfx_interface_tv_programme_genre_feature_yellowpress"   x="384" y="480" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_show_talk"      x="256" y="384" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_infomercial"    x="0"   y="576" w="110" h="85" />
+				<child name="gfx_interface_tv_programme_genre_newsspecial"    x="128" y="576" w="110" h="85" />
 			</children>
 		</spritepack>
 	</resources>
