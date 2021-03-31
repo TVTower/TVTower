@@ -459,17 +459,23 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method ClearJustAddedProgrammeLicences:Int()
 		justAddedProgrammeLicences.Clear()
 	End Method
-	
+
+	Method JustAddedLicencesContains:Int(licence:TProgrammeLicence)
+		For local l:TProgrammeLicence = EachIn justAddedProgrammeLicences
+			IF l.GUID = licence.GUID Then return True
+		Next
+		Return False
+	End Method
 	
 	Method AddJustAddedProgrammeLicence:Int(licence:TProgrammeLicence)
 		If licence.GetSubLicenceCount() = 0 
-			If justAddedProgrammeLicences.contains(licence) Then Return False 
+			If JustAddedLicencesContains(licence) Then Return False
 			justAddedProgrammeLicences.AddLast(licence)
 			
 			'also mark parent (eg. series header) as being "new"
 			if licence.parentLicenceGUID
 				local parentLicence:TProgrammeLicence = licence.GetParentLicence()
-				if parentLicence <> licence
+				if parentLicence <> licence and not JustAddedLicencesContains(parentLicence)
 					justAddedProgrammeLicences.AddLast(parentLicence)
 					'do not call THIS ... as it would mark all other
 					'existing episodes as "new" too
@@ -480,7 +486,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			Return True
 		Else
 			local addedNew:Int = False
-			If not justAddedProgrammeLicences.contains(licence)
+			If not JustAddedLicencesContains(licence)
 				justAddedProgrammeLicences.AddLast(licence)
 				addedNew = True
 			EndIf
@@ -494,18 +500,22 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 
 	Method RemoveJustAddedProgrammeLicence:Int(licence:TProgrammeLicence)
-		If licence.GetSubLicenceCount() = 0 
-			Return justAddedProgrammeLicences.Remove(licence)
+		local removedSomething:Int = justAddedProgrammeLicences.Remove(licence)
+		If licence.GetSubLicenceCount() = 0
+			If removedSomething And licence.parentLicenceGUID
+				Local removeParent:Int = True
+				For local subL:TProgrammeLicence = EachIn justAddedProgrammeLicences
+					If licence.parentLicenceGUID = subL.parentLicenceGUID Then removeParent = False
+				Next
+				If removeParent Then RemoveJustAddedProgrammeLicence(licence.GetParentLicence())
+			EndIf
 		Else
-			local removedSomething:Int = False
-			removedSomething = justAddedProgrammeLicences.Remove(licence)
-
 			'check for removed episodes/elements
 			For local subL:TProgrammeLicence = EachIn licence.subLicences
 				if RemoveJustAddedProgrammeLicence(subL) Then removedSomething = True
 			Next
-			Return removedSomething
 		EndIf
+		Return removedSomething
 	End Method
 
 
