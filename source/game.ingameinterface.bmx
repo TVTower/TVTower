@@ -264,7 +264,7 @@ Type TInGameInterface
 							CurrentProgrammeText = GetLocale("ADVERTISMENT") + ": " + obj.GetTitle()
 						Else
 							If(TProgramme(obj))
-								CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_" + TProgramme(obj).data.GetGenre(), "gfx_interface_tv_programme_none")
+								CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_genre_" + TVTProgrammeGenre.GetAsString(TProgramme(obj).data.GetGenre()), "gfx_interface_tv_programme_none")
 							EndIf
 							CurrentProgrammeOverlay = spriteProgrammeTrailerOverlay
 							CurrentProgrammeToolTip.TitleBGtype = 1
