@@ -77,26 +77,58 @@ Type TBetty
 	End Method
 
 	Method GivePresent:int(playerID:int, present:TBettyPresent, time:Long = -1)
-		if not present then return False
-		if present <> getCurrentPresent(playerID) then return False
+		if not present then return TBettyPresent.IGNORE
+		if present <> getCurrentPresent(playerID) then return TBettyPresent.IGNORE
 
-		local action:TBettyPresentGivingAction = new TBettyPresentGivingAction.Init(playerID, present, time)
-		GetPresentHistory(playerID).AddLast(action)
+		Local acceptResult:int=getAcceptResult(playerID, present, time)
+		If acceptResult = TBettyPresent.ACCEPT
+			local action:TBettyPresentGivingAction = new TBettyPresentGivingAction.Init(playerID, present, time)
 
-		'calculate effect depending on times the present was given
-		Local count:Int=GetPresentGivenCount(present)
-		Local adjustValue:Int=present.bettyValue
-		If adjustValue>0
-			adjustValue = adjustValue * 0.85^count
-		Else
-			adjustValue = adjustValue * 1.25^count
+			Local count:Int=getRelevantPresentCount(playerID, present)
+			Local adjustValue:Int=present.bettyValue
+			adjustValue = adjustValue * present.factor^count
+
+			AdjustLove(playerID, adjustValue)
+			GetPresentHistory(playerID).AddLast(action)
+			currentPresent[playerID-1] = null
+	
+			TLogger.Log("Betty", "Player "+playerID+" gave Betty a present ~q"+present.GetName()+"~q.", LOG_DEBUG)
 		End If
-		AdjustLove(playerID, adjustValue)
+		return acceptResult
 
-		currentPresent[playerID-1] = null
+		Function getAcceptResult:int(playerID:int, present:TBettyPresent, time:Long = -1)
+			'reject yacht with the same text for now
+			If present.index = TBettyPresent.PRESENT_YACHT And GetBetty().GetInLove(playerID) < LOVE_MAXIMUM Then return TBettyPresent.REJECT_ONE_PER_DAY
+			If present.index <> TBettyPresent.PRESENT_DINNER And present.index <> TBettyPresent.PRESENT_BOOK Then Return TBettyPresent.ACCEPT
 
-		TLogger.Log("Betty", "Player "+playerID+" gave Betty a present ~q"+present.GetName()+"~q.", LOG_DEBUG)
-		return True
+			'current special handling for dinner and script
+			If time= -1 Then time = GetWorldTime().GetTimeGone()
+			Local today:int = GetWorldTime().GetDaysRun(time)
+			For Local list:TList = EachIn GetBetty().presentHistory
+				For Local p:TBettyPresentGivingAction = EachIn list
+					If present = p.present And today = GetWorldTime().GetDaysRun(p.time)
+						'if dinner was given today - reject
+						If present.index = TBettyPresent.PRESENT_DINNER then return TBettyPresent.REJECT_ONE_PER_DAY
+						'if book was given by the same player - reject
+						If present.index = TBettyPresent.PRESENT_BOOK And p.playerId = playerID return TBettyPresent.REJECT_ONE_PER_DAY
+					End If
+				Next
+			Next
+			return TBettyPresent.ACCEPT
+		End Function
+
+		'for presents (in particular dinner) with increasing value count
+		'only the players history counts and negative presents reset the counter
+		Function getRelevantPresentCount:int(playerID:int, present:TBettyPresent)
+			If present.bettyValue < 0 OR present.factor < 1 then Return GetBetty().GetPresentGivenCount(present)
+			Local count:Int = 0
+			Local hist:TList = GetBetty().getPresentHistory(playerID)
+			For Local p:TBettyPresentGivingAction = EachIn hist.reversed()
+				If p.present.bettyValue < 0 Then return count
+				If present = p.present Then count:+ 1
+			Next
+			return count
+		End Function
 	End Method
 
 
@@ -334,31 +366,43 @@ Type TBettyPresent
 	Field price:int
 	'value for betty
 	Field bettyValue:int
+	'factor for value adjustment of repeated presents
+	Field factor:float
+
+	'index constants for referencing particular presents
+	Const PRESENT_DINNER:int = 2
+	Const PRESENT_BOOK:int   = 4
+	Const PRESENT_YACHT:int  = 10
+
+	'constants indicating the result of the present action
+	Const ACCEPT:int=0
+	Const IGNORE:int=1
+	Const REJECT_ONE_PER_DAY:int=2
 
 	Global presents:TBettyPresent[10]
 
 
 	Function Initialize()
 		'feet spray
-		presents[0] = new TBettyPresent.Init(1,      99, -250)
+		presents[0] = new TBettyPresent.Init(1,                  99, -250, 1.5)
 		'dinner
-		presents[1] = new TBettyPresent.Init(2,     500,   10)
+		presents[1] = new TBettyPresent.Init(PRESENT_DINNER,    500,   10, 1.1)
 		'nose operation
-		presents[2] = new TBettyPresent.Init(3,    1000, -500)
+		presents[2] = new TBettyPresent.Init(3,                1000, -500, 1.5)
 		'custom written script / novel
-		presents[3] = new TBettyPresent.Init(4,   30000,  100)
+		presents[3] = new TBettyPresent.Init(PRESENT_BOOK,    30000,  100, 0.95)
 		'pearl necklace
-		presents[4] = new TBettyPresent.Init(5,   60000,  150)
+		presents[4] = new TBettyPresent.Init(5,               60000,  150, 0.80)
 		'coat (negative!)
-		presents[5] = new TBettyPresent.Init(6,   80000, -500)
+		presents[5] = new TBettyPresent.Init(6,               80000, -500, 1.5)
 		'diamond necklace
-		presents[6] = new TBettyPresent.Init(7,  100000, -700)
+		presents[6] = new TBettyPresent.Init(7,              100000, -700, 1.5)
 		'sports car
-		presents[7] = new TBettyPresent.Init(8,  250000,  350)
+		presents[7] = new TBettyPresent.Init(8,              250000,  350, 0.4)
 		'ring
-		presents[8] = new TBettyPresent.Init(9,  500000,  450)
+		presents[8] = new TBettyPresent.Init(9,              500000,  450, 0.6)
 		'boat/yacht
-		presents[9] = new TBettyPresent.Init(10,1000000,  500)
+		presents[9] = new TBettyPresent.Init(PRESENT_YACHT, 1000000,    0, 1)
 	End Function
 
 
@@ -370,10 +414,11 @@ Type TBettyPresent
 	End Function
 
 
-	Method Init:TBettyPresent(index:int, price:int, bettyValue:int)
+	Method Init:TBettyPresent(index:int, price:int, bettyValue:int, factor:float)
 		self.index = index
 		self.price = price
 		self.bettyValue = bettyValue
+		self.factor = factor
 		return self
 	End Method
 
