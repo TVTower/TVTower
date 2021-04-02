@@ -1,4 +1,4 @@
-﻿﻿SuperStrict
+SuperStrict
 Import "Dig/base.util.time.bmx" 'interval timer
 Import "game.roomhandler.base.bmx"
 
