@@ -99,6 +99,8 @@ Type TRoomDoorTooltip extends TTooltip
 				endif
 
 				newContent :+ GetLocale("BLOCKED_UNTIL_TIME").Replace("%TIME%", endTime)
+			else if room.blockedState & TRoomBase.BLOCKEDSTATE_NO_OFFICE_HOUR > 0
+				newContent :+ GetLocale("BLOCKED_NO_OFFICE_HOUR")
 			else
 				'add blocked message
 				newContent :+ GetLocale("ROOM_IS_BLOCKED")

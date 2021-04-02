@@ -56,6 +56,7 @@ SHOOTING_FINISHED                         = Shooting finished
 PREPRODUCTION_IN_PROGRESS                 = Preproduction in progress
 PREPRODUCTION_FINISHED                    = Preproduction finished
 BLOCKED_UNTIL_TIME                        = Blocked until %TIME%
+BLOCKED_NO_OFFICE_HOUR                    = out of office hours
 ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = There is already someone in this room.
 
 

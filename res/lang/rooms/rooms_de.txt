@@ -56,6 +56,7 @@ SHOOTING_FINISHED                         = Dreharbeiten beendet
 PREPRODUCTION_IN_PROGRESS                 = Vorproduktion im Gange
 PREPRODUCTION_FINISHED                    = Vorproduktion beendet
 BLOCKED_UNTIL_TIME                        = Blockiert bis %TIME%
+BLOCKED_NO_OFFICE_HOUR                    = außerhalb der Bürozeit
 ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = Da ist schon jemand in diesem Raum.
 
 
