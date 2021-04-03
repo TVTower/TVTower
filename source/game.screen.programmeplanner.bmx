@@ -1204,12 +1204,37 @@ Type TScreenHandler_ProgrammePlanner
 			PPcontractList.Draw()
 		EndIf
 
+rem
 		'draw lists sheet
+		local hoveredLicence:TProgrammeLicence
 		If PPprogrammeList.GetOpen() And PPprogrammeList.hoveredLicence
-			PPprogrammeList.hoveredLicence.ShowSheet(7, 20, 0)
+			hoveredLicence = PPprogrammeList.hoveredLicence
+		EndIf
+		
+Ronny:
+repairs old approach if above condition ("getopen()") is required
+It seems as if it was done to correct a different bug which I cannot
+see now (and also not in the commit history)
+		'avoid flickering by rendering the list of a freshly created
+		'programme element (if "draw()" is called before "update()")
+		if not hoveredlicence and not draggedGuiProgrammePlanElement and GuiManager.ListDragged.Count() > 0
+			For Local draggedElement:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged
+				if TProgramme(draggedElement.broadcastMaterial)
+					hoveredLicence = TProgramme(draggedElement.broadcastMaterial).licence
+					exit
+				endif
+			Next
 		EndIf
 
-		'If PPcontractList.GetOpen() and
+		if hoveredlicence
+			hoveredlicence.ShowSheet(7, 20, 0)
+		endif
+endrem
+		If PPprogrammeList.hoveredLicence
+			PPprogrammeList.hoveredLicence.ShowSheet(7, 20, 0)
+		EndIf
+		
+
 		If PPcontractList.hoveredAdContract
 			local minAudienceHightlightType:Int = 0
 			local audienceResult:TAudienceResultBase = GetBroadcastManager().GetAudienceResult( currentRoom.owner )
@@ -1885,8 +1910,8 @@ endrem
 			'DRAGGED
 			'check if we find it in the GuiManagers list of dragged items
 			Local foundInDragged:Int = False
-			For Local draggedGuiProgrammePlanElement:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged
-				If draggedGuiProgrammePlanElement.broadcastMaterial = obj
+			For Local draggedElement:TGUIProgrammePlanElement = EachIn GuiManager.ListDragged
+				If draggedElement.broadcastMaterial = obj
 					foundInDragged = True
 					Continue
 				EndIf
