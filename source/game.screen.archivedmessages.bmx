@@ -1,4 +1,4 @@
-﻿SuperStrict
+SuperStrict
 Import "Dig/base.gfx.gui.list.base.bmx"
 Import "Dig/base.gfx.gui.list.selectlist.bmx"
 
@@ -148,6 +148,7 @@ Type TScreenHandler_OfficeArchivedMessages extends TScreenHandler
 			If MouseManager.IsClicked(2) or MouseManager.IsLongClicked(1)
 				Local roomOwner:Int = item.message.owner
 				if roomOwner <= 0 then roomOwner = GetInstance().roomOwner
+				if roomOwner <> GetPlayerBase().playerID Then Return False
 
 				If GetInstance().showMode = SHOW_UNREAD
 					item.message.SetRead(roomOwner, True)
