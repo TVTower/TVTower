@@ -56,6 +56,7 @@ SHOOTING_FINISHED                         = Dreharbeiten beendet
 PREPRODUCTION_IN_PROGRESS                 = Vorproduktion im Gange
 PREPRODUCTION_FINISHED                    = Vorproduktion beendet
 BLOCKED_UNTIL_TIME                        = Blockiert bis %TIME%
+BLOCKED_NO_OFFICE_HOUR                    = außerhalb der Bürozeit
 ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = Da ist schon jemand in diesem Raum.
 
 
@@ -99,7 +100,7 @@ DIALOGUE_SUPERMARKET_GOODBYE3          = Ich mach mich mal auf die Socken. Bis s
 
 
 ARCHIVED_MESSAGES                   = Archivierte Nachrichten
-READ_MESSAGES_YOU_MIGHT_HAVE_MISSED = Lese Nachrichten die Du vielleicht verpasst hast.
+READ_MESSAGES_YOU_MIGHT_HAVE_MISSED = Lies Nachrichten die Du vielleicht verpasst hast.
 MESSAGECATEGORY_CATEGORIES          = Kategorien
 MESSAGECATEGORY_ALL                 = Alle Kategorien
 MESSAGECATEGORY_MONEY               = Geld / Finanzen

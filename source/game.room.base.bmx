@@ -306,6 +306,7 @@ Type TRoomBase extends TOwnedGameObject {_exposeToLua="selected"}
 	Const BLOCKEDSTATE_MARSHAL:int       =  4 'eg. archive when not enough money
 	Const BLOCKEDSTATE_SHOOTING:int      =  8 'studios: when in production
 	Const BLOCKEDSTATE_PREPRODUCTION:int = 16 'studios: when doing preproduction for live stuff
+	Const BLOCKEDSTATE_NO_OFFICE_HOUR:int= 32
 
 
 	'init a room base with basic variables

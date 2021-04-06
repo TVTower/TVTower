@@ -6486,7 +6486,7 @@ Function CreateDesktopFile()
 		file.WriteLine("Exec="+cwd+"/TVTower_Linux64") 
 		file.WriteLine("Icon="+cwd+"/tvtower.png") 
 		file.WriteLine("Type=Application") 
-		file.WriteLine("Categories=Games;")
+		file.WriteLine("Categories=Game;")
 		file.Close()
 		file = Null
 		TLogger.Log("CreateDesktopFile()", "Created new TVTower.desktop file.", LOG_DEBUG)

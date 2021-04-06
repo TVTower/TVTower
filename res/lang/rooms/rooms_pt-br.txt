@@ -56,6 +56,7 @@ SHOOTING_FINISHED                         = Gravação finalizada
 #PREPRODUCTION_IN_PROGRESS                 = 
 #PREPRODUCTION_FINISHED                    = 
 BLOCKED_UNTIL_TIME                        = Bloqueada até %TIME%
+#BLOCKED_NO_OFFICE_HOUR                    = 
 ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = Já há alguém nessa sala.
 
 

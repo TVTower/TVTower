@@ -63,6 +63,7 @@ Type RoomHandler_Betty extends TRoomHandler
 		'handle present
 		'_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnClick, onClickPresent, "TGUIBettyPresent") ]
 		_eventListeners :+ [ EventManager.registerListenerFunction(GUIEventKeys.GUIObject_OnDropOnTargetAccepted, onDropPresent, "TGUIBettyPresent") ]
+		_eventListeners :+ [ EventManager.registerListenerFunction(GameEventKeys.Game_OnHour, CheckOfficeHour) ]
 
 
 		'(re-)localize content
@@ -92,8 +93,17 @@ Type RoomHandler_Betty extends TRoomHandler
 		if GetInstance() <> self then self.CleanUp()
 		GetRoomHandlerCollection().SetHandler("betty", GetInstance())
 	End Method
-	
-	
+
+
+	Function CheckOfficeHour:Int(triggerEvent:TEventBase)
+		Local time:Long = triggerEvent.GetData().GetLong("time",-1)
+		Local hour:Int = GetWorldTime().GetDayHour(time)
+		Local bettyRoom:TRoom=GetRoomCollection().GetFirstByDetails("", "betty")
+		If bettyRoom and (hour < 9 or hour > 16)
+			bettyRoom.setBlocked(TWorldTime.HOURLENGTH, TROOM.BLOCKEDSTATE_NO_OFFICE_HOUR, false)
+		EndIf
+	End Function
+
 	'alternative to "onEnterRoom" - which does not trigger when loading
 	'savegames starting in this screen
 	Function onPlayerSeesBettyScreen:Int( triggerEvent:TEventBase )
@@ -410,20 +420,24 @@ Type RoomHandler_Betty extends TRoomHandler
 		If presentInSuitcase
 			Local bettyLoveLevel:int = loveLevel()
 			Local present:TBettyPresent = presentInSuitcase.present
-			TBetty.GetInstance().GivePresent(GetPlayerBase().playerID, present)
 			Local dialogueTexts:TDialogueTexts[1]
-
-			If present.bettyValue > 0
-				dialogueTexts[0] = TDialogueTexts.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_THANKS_LEVEL"+bettyLoveLevel+"_TEXT"))
-				dialogueTexts[0].AddAnswer(TDialogueAnswer.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_WELCOME_LEVEL"+bettyLoveLevel+"_TEXT"), 0, null, thanks))
-			Else
-				dialogueTexts[0] = TDialogueTexts.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_HOW_DARE_LEVEL"+bettyLoveLevel+"_TEXT"))
-				dialogueTexts[0].AddAnswer(TDialogueAnswer.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_WELL"), 0, null, thanks, new TData))
-				kickTime = Time.GetTimeGone() + 3000
+			Local result:int = TBetty.GetInstance().GivePresent(GetPlayerBase().playerID, present)
+			If result = TBettyPresent.ACCEPT
+				If present.bettyValue >= 0
+					dialogueTexts[0] = TDialogueTexts.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_THANKS_LEVEL"+bettyLoveLevel+"_TEXT"))
+					dialogueTexts[0].AddAnswer(TDialogueAnswer.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_WELCOME_LEVEL"+bettyLoveLevel+"_TEXT"), 0, null, thanks))
+				Else
+					dialogueTexts[0] = TDialogueTexts.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_HOW_DARE_LEVEL"+bettyLoveLevel+"_TEXT"))
+					dialogueTexts[0].AddAnswer(TDialogueAnswer.Create(GetRandomLocale("DIALOGUE_BETTY_PRESENT_WELL"), 0, null, thanks, new TData))
+					kickTime = Time.GetTimeGone() + 3000
+				End If
+				presentInSuitcase.remove()
+				presentInSuitcase = null
+	
+			Else If result =  TBettyPresent.REJECT_ONE_PER_DAY
+				dialogueTexts[0] = TDialogueTexts.Create(GetLocale("DIALOGUE_BETTY_PRESENT_REJECT_TODAY"))
+				dialogueTexts[0].AddAnswer(TDialogueAnswer.Create(GetLocale("OK"), 0, null, thanks))
 			End If
-			presentInSuitcase.remove()
-			presentInSuitcase = null
-
 			dialogue = new TDialogue
 			dialogue.AddTexts(dialogueTexts)
 	
@@ -440,6 +454,7 @@ Type RoomHandler_Betty extends TRoomHandler
 				GetInstance().kickTime = null
 				GetPlayerBase().GetFigure().LeaveRoom()
 			else
+				If(GetInstance().presentInSuitcase) Then GetInstance().presentInSuitcase.hide()
 				ResetDialogue()
 			end if
 		End Function

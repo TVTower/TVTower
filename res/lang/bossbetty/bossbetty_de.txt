@@ -40,6 +40,7 @@ DIALOGUE_BETTY_PRESENT_GIVE_LEVEL1_TEXT2      = Mach' mal die Augen zu.
 DIALOGUE_BETTY_PRESENT_RETRACT_LEVEL0_TEXT1   = Ich hab's mir anders überlegt.
 DIALOGUE_BETTY_PRESENT_RETRACT_LEVEL1_TEXT1   = Entschuldigung, was habe ich gerade gesagt?
 DIALOGUE_BETTY_PRESENT_RETRACT_LEVEL1_TEXT2   = Tut mir leid, da hab' ich mich wohl vertan.
+DIALOGUE_BETTY_PRESENT_REJECT_TODAY           = Dieses Geschenk kann ich heute nicht annehmen.
 DIALOGUE_BETTY_PRESENT_THANKS_LEVEL0_TEXT1    = Ich danke Ihnen.
 DIALOGUE_BETTY_PRESENT_THANKS_LEVEL0_TEXT2    = Das ist aber nett von Ihnen.
 DIALOGUE_BETTY_PRESENT_THANKS_LEVEL1_TEXT1    = Oh, vielen Dank.

@@ -56,6 +56,7 @@ ROOM_IS_OCCUPIED                          = Habitación ocupada!
 #PREPRODUCTION_IN_PROGRESS                 = 
 #PREPRODUCTION_FINISHED                    = 
 #BLOCKED_UNTIL_TIME                        = 
+#BLOCKED_NO_OFFICE_HOUR                    = 
 ROOM_THERE_IS_ALREADY_SOMEONE_IN_THE_ROOM = Ya hay alguien dentro.
 
 
