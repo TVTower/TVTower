@@ -26,7 +26,10 @@ Older releases (including up to 0.3.2) only contain `TVTower/TVTower_noPulseAudi
 Users of Ubuntu 64Bit wanting to run the 32bit variants might install all dependencies via `sudo apt-get install libxxf86vm1:i386 libfreetype6:i386 libasound2:i386 libpulse0:i386 libgl1-mesa-glx:i386 libasound2-data:i386 libasound2-plugins:i386`.
 
 Users of ArchLinux (or Manjaro Linux) in 64 bit might have problems running TVTower (32 bit). If you run these distros in a VM or with an Intel GPU the graphics context is bugged and leads to an segfault. This does _not_ happen with "NG"-builds of TVTower (issue still under research).
-  
+
+The start script creates a `.desktop` file that can be copied to `~/.local/share/applications`.
+This makes TVTower available in the Games-Menu.
+
 ##### Windows/Mac
 No additional packages required to run.
 
