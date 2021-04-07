@@ -231,11 +231,14 @@ Starke Kostüme, insgesamt aber leider schwaches Remake</de>
 			<data country="USA" year="1992" distribution="1" maingenre="2" subgenre="" flags="0" blocks="2" price_mod="0.97" />
 			<ratings critics="29" speed="65" outcome="60" />
 		</programme>
-		<programme id="82833c29-2958-4715-8363-6a9af3455284" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="82833c29-2958-4715-8363-6a9af3455284" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0057380" rt_id="0" creator="">
 			<title>
 				<de>Alte Schmetterfaust</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Old Shatterhand</de>
+			</title_original>
 			<description>
 				<de>Alte Schmetterfaust hilft seinem Blutsbruder Rinnetooth und dessen Apatschen, Verbrechen aufzuklären, die von Weißen und Komantschen gemeinschaftlich begangen werden. Er setzt sich für den Frieden ein.</de>
 				<en></en>
