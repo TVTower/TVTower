@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
 	<version value="3" comment="jorgaeffs Nachrichten" />
 	<allnews>
@@ -84,7 +84,7 @@
 				<de>APD mit historischem Wahlergebnis</de>
 			</title>
 			<description>
-				<de>Bei der Landtagswahl in Nordrhein-Westfalen erzielt die Arbeiterpartei Deutschland (APD) unter Ministerpräsident Hannes Reif mit 52,1 % der Stimmen das beste Wahlergebnis ihrer Geschichte in diesem Bundesland.</de>
+				<de>Bei der Landtagswahl in Nordrhein-Westfalen erzielt die Arbeiterpartei Deutschland (APD) unter Ministerpräsident Hannes Reif mit 52,1% der Stimmen das beste Wahlergebnis ihrer Geschichte in diesem Bundesland.</de>
 			</description>
 			<data genre="0" price="0.6" quality="60" fictional="False" flags="2" />
 			<effects>
@@ -2151,7 +2151,7 @@
 			<data genre="4" price="1" quality="100" fictional="False" flags="2" />
 			<effects>
 				<!-- "morgen 4-11 Uhr" -->
-				<effect trigger="happen" type="triggernews" time="2,1,1,4,11" news="news-jorgaeff-1986-0-UdSSR-02c" />
+				<effect trigger="happen" type="triggernews" time="2,1,1,4,11" news="news-jorgaeff-1986-4-UdSSR-02c" />
 			</effects>
 		</news>
 
@@ -2165,7 +2165,7 @@
 			<data genre="4" price="1.05" quality="95" fictional="False" flags="2" />
 			<effects>
 				<!-- "morgen 13-19 Uhr" -->
-				<effect trigger="happen" type="triggernews" time="2,1,1,13,19" news="news-jorgaeff-1986-0-UdSSR-02d" />
+				<effect trigger="happen" type="triggernews" time="2,1,1,13,19" news="news-jorgaeff-1986-4-UdSSR-02d" />
 			</effects>
 				<!-- Menschen bleiben zu Hause und sehen mehr fern / Interesse an Nachrichten(-sendungen) steigt -->
 		</news>
@@ -2180,7 +2180,7 @@
 			<data genre="4" price="0.85" quality="85" fictional="False" flags="2" />
 			<effects>
 				<!-- "in 2 Tagen 16-20 Uhr" -->
-				<effect trigger="happen" type="triggernews" time="2,2,2,16,20" news="news-jorgaeff-1986-0-UdSSR-02e" />
+				<effect trigger="happen" type="triggernews" time="2,2,2,16,20" news="news-jorgaeff-1986-4-UdSSR-02e" />
 			</effects>
 		</news>
 

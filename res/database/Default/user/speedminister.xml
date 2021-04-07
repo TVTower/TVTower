@@ -541,10 +541,10 @@
                 <de>Ausflüge ins Tierreich</de>
                 <en>Excursions into the animal kingdom</en>
             </title>
-            <real_title>
+            <title_original>
                 <de>Expeditionen ins Tierreich</de>
                 <en>Expeditions into the animal kingdom</en>
-            </real_title>
+            </title_original>
             <!-- Alle folgenden Beschreibungen sind fiktiv, d.h. ohne Vorlage erstellt. -->
             <description>
                 <de>Mit versteckter Kamera wird das Verhalten wilder Tiere möglichst unverfälscht eingefangen.</de>
