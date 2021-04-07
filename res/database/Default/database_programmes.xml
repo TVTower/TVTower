@@ -258,6 +258,9 @@ Starke Kostüme, insgesamt aber leider schwaches Remake</de>
 				<de>Am sechsten Tag erschuf...</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>The 6th Day</de>
+			</title_original>
 			<description>
 				<de>Adam Gibson ist geschockt: Als er abends nach Hause kommt, hat ein Klon seinen Platz in der Familie eingenommen. Aber Gibson wehrt sich...</de>
 				<en></en>
@@ -277,6 +280,9 @@ Starke Kostüme, insgesamt aber leider schwaches Remake</de>
 				<de>Amerikanische Nazis</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>American History X</de>
+			</title_original>
 			<description>
 				<de>Harter Film über Rassenunterschiede und -rivalitäten mit überzeugendem Ende</de>
 				<en></en>
@@ -315,6 +321,9 @@ Raffinierter phantastischer Film.</de>
 				<de>Aschenputtel</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Aschenputtel</de>
+			</title_original>
 			<description>
 				<de>Mouseworks Version von Aschenputtel - durchaus gelungen.</de>
 				<en></en>
@@ -331,6 +340,9 @@ Raffinierter phantastischer Film.</de>
 				<de>Asian Queen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>African Queen</de>
+			</title_original>
 			<description>
 				<de>Ein Mann und eine Frau machen auf der alten Asian Queen die Gewässer unsicher.
 Klassiker mit [1|Full].</de>
@@ -353,6 +365,9 @@ Klassiker mit [1|Full].</de>
 				<de>[1|Last] &amp; [2|Last] - Auf hohem Meere</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Abenteuer auf hoher See</de>
+			</title_original>
 			<description>
 				<de>[1|Last] und [2|Last] geraten unfreiwillig an den gefährlichen Schwerverbrecher Nick Grainger, doch es gelingt ihnen, diesen unschädlich zu machen.</de>
 				<en></en>
@@ -372,6 +387,10 @@ Klassiker mit [1|Full].</de>
 				<de>[1|Last] &amp; [2|Last] - Kinder der Wüste</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Hilfe, wir sind ertrunken</de>
+				<en>Sons of the Desert</en>
+			</title_original>
 			<description>
 				<de>Mr. [1|Last] und Mr. [2|Last] wollen zum Treffen ihres Clubs "Die Wüstensöhne" nach Chicago. Um ihre Frauen zu überzeugen, muß sich [1|Last] krank stellen. Aber letztlich fliegen die beiden auf.</de>
 				<en></en>
@@ -392,6 +411,9 @@ Klassiker mit [1|Full].</de>
 				<de>Bambey</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Bambi</de>
+			</title_original>
 			<description>
 				<de>Die rührende Geschichte vom kleinen Bambey, der seine Rehmutter verliert, mit seinen Freunden Klopfklopf und Blumli heranwächst und sich im Wald profiliert.</de>
 				<en></en>
@@ -427,6 +449,10 @@ Klassiker mit [1|Full].</de>
 				<de>Being [3|Full]</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Being John Malkovich</de>
+				<en>Being John Malkovich</en>
+			</title_original>
 			<description>
 				<de>Ein Angesteller findet in seinem Büro einen Geheimgang, der direkt in das Hirn von [3|Full] führt.
 Absolut abgedrehte Komödie und fulminantes Debüt von [0|Full].</de>
@@ -447,6 +473,10 @@ Absolut abgedrehte Komödie und fulminantes Debüt von [0|Full].</de>
 				<de>Betty - a Woman</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Pretty Woman</de>
+				<en>Pretty Woman</en>
+			</title_original>
 			<description>
 				<de>[1|Full] bringt als Geschäftsmann mit Callgirl [2|Full] Abwechslung in sein Leben.
 Eine Liebe gegen jede Vernunft und Verhaltensregel, dafür umso romantischer - die Lovestory schlechthin.</de>
@@ -484,6 +514,9 @@ Eine Liebe gegen jede Vernunft und Verhaltensregel, dafür umso romantischer - d
 				<de>Bleib ja am Hörer!</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Nicht auflegen!</de>
+			</title_original>
 			<description>
 				<de>Ein Mann ist in einer Telefonzelle gefangen. Die Stimme am anderen Ende der Leitung versichert ihm den tödlichen Schuß, sollte er sich entscheiden, aufzuhängen...
 Hochspannung auf originelle Weise</de>
