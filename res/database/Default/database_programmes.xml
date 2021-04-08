@@ -4073,6 +4073,9 @@ Gilt als Krönung der Trilogie</de>
 				<de>Mord am Nil</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Tod auf dem Nil</de>
+			</title_original>
 			<description>
 				<de>Auf einer Reise den Nil hinunter geschieht ein Mord nach dem anderen. Hercule Poirnoir macht sich daran, den Fall zu lösen.
 Gut besetzter Krimi nach Agatha Kissme</de>
@@ -4095,6 +4098,9 @@ Gut besetzter Krimi nach Agatha Kissme</de>
 				<de>Mozart</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Amadeus</de>
+			</title_original>
 			<description>
 				<de>Das Leben des Wolfgang Amadeus Mozart, erzählt aus der Sicht Antonio Salieris.
 Grandiose Oper von [0|Full]</de>
@@ -4117,6 +4123,9 @@ Grandiose Oper von [0|Full]</de>
 				<de>Mr. Galaxie</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>TodMister Universum</de>
+			</title_original>
 			<description>
 				<de>[1|Last] läßt in diesem Frühwerk seiner Karriere ausgiebig die Muskeln spielen.
 Viel Muckis, wenig Grips</de>
@@ -4138,6 +4147,9 @@ Viel Muckis, wenig Grips</de>
 				<de>Muddy Harry</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Dirty Harry</de>
+			</title_original>
 			<description>
 				<de>Insp. Harry Calahan jagt einen Heckenschützen und Erpresser.
 Dank rauher Methoden und seiner .44 Magnum wurde Muddy Harry zum Publikumsliebling</de>
@@ -4158,6 +4170,9 @@ Dank rauher Methoden und seiner .44 Magnum wurde Muddy Harry zum Publikumsliebli
 				<de>Muddy Harry 2 - Katamaran</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Dirty Harry II - Callahan</de>
+			</title_original>
 			<description>
 				<de>Calahan befaßt sich mit Verbrechern, die der Justiz entronnen sind. Seine Spur führt bald auf eine Grupper junger Polizisten, die Harry nacheifern und das Gesetz in die eigenen Hände nehmen.</de>
 				<en></en>
@@ -4175,6 +4190,9 @@ Dank rauher Methoden und seiner .44 Magnum wurde Muddy Harry zum Publikumsliebli
 				<de>Muddy Harry 3 - Ohne Erbarmen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Dirty Harry III - Der Unerbittliche</de>
+			</title_original>
 			<description>
 				<de>Harry Calahan, seiner rüden Vorgehensweise wegen aus der Mordkommission entlassen, wird in den aktiven Dienst zurückbeordert, um in San Francisco einen schmutzigen Fall zu lösen.</de>
 				<en></en>
@@ -4195,6 +4213,9 @@ Dank rauher Methoden und seiner .44 Magnum wurde Muddy Harry zum Publikumsliebli
 				<de>Muddy Harry 4 - Muddy Harry will be back</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Dirty Harry kommt zurück</de>
+			</title_original>
 			<description>
 				<de>Wieder wird Inspector Calahan suspendiert. In einem kleinen Ort an der Küste sieht er sich jedoch bald mit einer Mordserie konfrontiert, die seine Aufmerksamkeit verlangt.</de>
 				<en></en>
@@ -4212,6 +4233,9 @@ Dank rauher Methoden und seiner .44 Magnum wurde Muddy Harry zum Publikumsliebli
 				<de>Muddy Harry 5 - Endkampf</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Das Todesspiel</de>
+			</title_original>
 			<description>
 				<de>Ein psychisch gestörter Horrorfilmer legt eine Liste an, auf der die Namen von Todeskandidaten stehen. Er nimmt Wetten an, wer das nächste Opfer sein wird. Auch Harry Calahan steht auf dieser Liste...</de>
 				<en></en>
@@ -4231,6 +4255,9 @@ Dank rauher Methoden und seiner .44 Magnum wurde Muddy Harry zum Publikumsliebli
 				<de>Netter Gott trifft Halunke</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Der Gauner und der liebe Gott</de>
+			</title_original>
 			<description>
 				<de>Ein zu unrecht Verurteilter sucht als Pfarrer verkleidet in einer kleinen Gemeinde Unterschlupf.
 Köstlicher Spaß mit [1|Full]</de>
@@ -4252,6 +4279,10 @@ Köstlicher Spaß mit [1|Full]</de>
 				<de>Obermotz der Löwen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Der König der Löwen</de>
+				<en>The Lion KIng</en>
+			</title_original>
 			<description>
 				<de>Der rechtmäßige Löwenkönig muß seinen Platz im ewigen Kreis des Lebens finden.
 Mouseworks oscarprämiertes Meisterwerk</de>
