@@ -1789,6 +1789,9 @@ Anrührender Film, geplant als TV-Serie - es blieb beim Piloten.</de>
 				<de>Die Sicht zum Hinterhof</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Das Fenster zum Hof</de>
+			</title_original>
 			<description>
 				<de>Vom Fenster aus beobachtet ein Mann den Hinterhof seines Hauses. Dabei kommt er einem Mord auf die Schliche.
 [1|Full] in seiner Paraderolle</de>
@@ -1811,6 +1814,9 @@ Anrührender Film, geplant als TV-Serie - es blieb beim Piloten.</de>
 				<de>Die Streichholzhammerbowle</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Die Feuerzangenbowle</de>
+			</title_original>
 			<description>
 				<de>Schriftsteller Johannes Pfeiffer versucht spät, das nachzuholen, was er als Schüler verpasst hat: Auf einer richtigen Schule den Lehrern Streiche zu spielen.
 Keine leichte Aufgabe für [1|Full]</de>
@@ -1832,6 +1838,9 @@ Keine leichte Aufgabe für [1|Full]</de>
 				<de>Die Streichholzhammerbowle</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Die Feuerzangenbowle</de>
+			</title_original>
 			<description>
 				<de>Die Geschichte um den Schüler Pfeiffer, der die Schulzeit auskostet.
 Bestechender Klassiker mit [1|Full]</de>
@@ -1854,6 +1863,9 @@ Bestechender Klassiker mit [1|Full]</de>
 				<de>Die Wohnung</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Das Appartement</de>
+			</title_original>
 			<description>
 				<de>Auf- und Abstieg in Beruf und Privatleben eines Büroangestellten.
 Exzellente Besetzung und Regie</de>
@@ -1876,6 +1888,10 @@ Exzellente Besetzung und Regie</de>
 				<de>Die Zugspanner</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Trainspotting - Neue Helden</de>
+				<en>Trainspotting</en>
+			</title_original>
 			<description>
 				<de>Rasanter Filmtrip über eine Clique von Junkies und Kleinkriminellen aus den schäbigen Mietskasernen von Edinburgh, die den großen Coup plant</de>
 				<en></en>
@@ -1897,6 +1913,9 @@ Exzellente Besetzung und Regie</de>
 				<de>Diesseits von Namibia</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Jenseits von Afrika</de>
+			</title_original>
 			<description>
 				<de>Gefühlsbetonte Liebesgeschichte um ein Ehepaar, das nach Afrika geht, um dort eine Plantage aufzubauen.</de>
 				<en></en>
@@ -1916,6 +1935,9 @@ Exzellente Besetzung und Regie</de>
 				<de>Doktor Schiefwagen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Doktor Schiwago</de>
+			</title_original>
 			<description>
 				<de>[0|Full] setzte Boris Pastilnackens Roman mit ästethischen Bildern episch breit in Szene - Liebesmelodramklassiker</de>
 				<en></en>
@@ -1937,6 +1959,9 @@ Exzellente Besetzung und Regie</de>
 				<de>Dr. Merkwürdig...</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Dr. Seltsam oder: Wie ich lernte, die Bombe zu lieben</de>
+			</title_original>
 			<description>
 				<de>...Oder: Wie ich lernte, die Bombe zu mögen.
 Schwarzer Humor, gute Musik und [1|Full] in drei verschiedenen Rollen.</de>
@@ -1959,6 +1984,9 @@ Schwarzer Humor, gute Musik und [1|Full] in drei verschiedenen Rollen.</de>
 				<de>Drei Kerle im Eis</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Drei Männer im Schnee</de>
+			</title_original>
 			<description>
 				<de>Ein Millionär gibt sich als armer Mann aus.
 Hochkarätige Komödie von 1955</de>
@@ -1979,6 +2007,9 @@ Hochkarätige Komödie von 1955</de>
 				<de>Drei Kerle in einem Ruderboot</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Drei Mann in einem Boot</de>
+			</title_original>
 			<description>
 				<de>Drei Männer wollen ungestörten Urlaub auf dem Rhein machen.
 Das Trio [1|Last], [2|Last], [3|Last] sorgt für den riesigen Spaß des Films</de>
