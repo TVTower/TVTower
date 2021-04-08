@@ -2030,6 +2030,9 @@ Das Trio [1|Last], [2|Last], [3|Last] sorgt für den riesigen Spaß des Films</d
 				<de>Durch die Augen des Killers</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Mit den Augen eines Mörders</de>
+			</title_original>
 			<description>
 				<de>In der Wohnung einer jungen Frau geschehen seltsame Dinge.
 
@@ -2054,6 +2057,10 @@ Schockierender Thriller mit [1|Full]
 				<de>Durchs wilde Tadschikistan</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Durchs wilde Kurdistan</de>
+				<en>Wild Kurdistan</en>
+			</title_original>
 			<description>
 				<de>Kara Ben Nemsi versucht mit Hadschi Halef Omar,  einen unschuldigen Gefangenen zu befreien.
 Spannendes Abenteuer nach Karl Meier</de>
@@ -2070,11 +2077,15 @@ Spannendes Abenteuer nach Karl Meier</de>
 			<data country="D" year="1965" distribution="1" maingenre="2" subgenre="" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="56" speed="70" outcome="51" />
 		</programme>
-		<programme id="5d7e43a1-5e60-41ac-9fd8-365798d3c86a" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="5d7e43a1-5e60-41ac-9fd8-365798d3c86a" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0104257" rt_id="0" creator="">
 			<title>
 				<de>Ehre in Frage gestellt</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Eine Frage der Ehre</de>
+				<en>A Few Good Men</en>
+			</title_original>
 			<description>
 				<de>Zwei US-Marines werden des Mordes an einem Kameraden angeklagt. Doch der Befehl für die tödlich endende Abreibung kam von oben.
 Packender und bis in die Nebenrollen gut besetzter Militärthriller</de>
@@ -2113,6 +2124,9 @@ Packender und bis in die Nebenrollen gut besetzter Militärthriller</de>
 				<de>Ein Toter zum Nachtisch</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Eine Leiche zum Dessert</de>
+			</title_original>
 			<description>
 				<de>Fünf der berühmtesten Detektive werden zu einem Dinner mit Mörderspiel eingeladen.
 Urkomisches Gagfeuerwerk</de>
@@ -2136,6 +2150,9 @@ Urkomisches Gagfeuerwerk</de>
 				<de>Eine nimmerendende Erzählung</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Die unendliche Geschichte</de>
+			</title_original>
 			<description>
 				<de>Der kleine Bastian vertieft sich in ein Buch und landet in der Handlung.
 Liebevoll erzählt, nettes Kostüm für den Glücksdrachen Fuchur</de>
@@ -2156,6 +2173,9 @@ Liebevoll erzählt, nettes Kostüm für den Glücksdrachen Fuchur</de>
 				<de>Elitekampf</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Battle Royale</de>
+			</title_original>
 			<description>
 				<de>Eine Schulklasse wird gezwungen, an einem martialischen Spiel teilzunehmen, bei dem nur einer gewinnen soll. Derjenige hat alle seine Mitspieler zu töten.
 Ultrabrutal, doch nicht allzu weit hergeholt</de>
@@ -2178,6 +2198,9 @@ Ultrabrutal, doch nicht allzu weit hergeholt</de>
 				<de>Extraterrestrial - Das schreckliche Wesen aus dem All</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Alien - Das unheimliche Wesen aus einer fremden Welt</de>
+			</title_original>
 			<description>
 				<de>Offizierin Eileen Replay flieht vor einem außerirdischen Monster, dass ein Crew-Mitglied nach dem anderen tötet.
 			Visuell beeindruckender Science-Fiction-Horror von [0|Full].</de>
@@ -2198,6 +2221,9 @@ Ultrabrutal, doch nicht allzu weit hergeholt</de>
 				<de>Extraterrestrial - Die Reinkarnation</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Alien - Die Wiedergeburt</de>
+			</title_original>
 			<description>
 				<de>Eileen Replay darf einfach nicht in Frieden ruhen: Jetzt wird sie auch noch geklont!</de>
 				<en></en>
@@ -2216,6 +2242,9 @@ Ultrabrutal, doch nicht allzu weit hergeholt</de>
 				<de>Extraterrestrial - Sie sind zurück</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Aliens - Die Rückkehr</de>
+			</title_original>
 			<description>
 				<de>Eileen Replay erwacht aus dem Kälteschlaf. Da ihr niemand ihre Geschichte abnimmt, muss sie sich erneut in den Kampf stürzen.</de>
 				<en></en>
@@ -2235,6 +2264,9 @@ Ultrabrutal, doch nicht allzu weit hergeholt</de>
 				<de>Extraterrestrial 3</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Alien 3</de>
+			</title_original>
 			<description>
 				<de>Alien-Battle auf einem Gefängnisplaneten. Eileen Replay mit geschorenem Haupt.</de>
 				<en></en>
