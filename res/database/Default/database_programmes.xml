@@ -8448,6 +8448,10 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<de>Zug nach Peking</de>
 				<en>Train to Beijing</en>
 			</title>
+			<title_original>
+				<de>Shanghai-Express</de>
+				<en>Shanghai Express</en>
+			</title_original>
 			<description>
 				<de>Lilly erlebt eine abenteuerliche Zugfahrt von Shanghai nach Peking und trifft auf Regierungssoldaten und Rebellen.</de>
 				<en>Lilly is aon an adventures trainride from Shanghai to Beijing and meets goverment soldiers and rebels.</en>
@@ -8809,7 +8813,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 				<en>Well Paps</en>
 			</title>
 			<title_original>
-				<de>Aber Vati</de>
+				<de>Aber Vati!</de>
 				<en>But Dad</en>
 			</title_original>
 			<description>
@@ -9210,6 +9214,10 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 				<de>Fuchs unter Füchsen</de>
 				<en>Fox under foxes</en>
 			</title>
+			<title_original>
+				<de>Wolf unter Wölfen</de>
+				<en></en>
+			</title_original>
 			<description>
 				<de>Monumentale Verfilmung des Romans Fuchs unter Füchsen in vier Teilen mit [1|Full].</de>
 				<en>An epic movie based on the novell fox under foxes in four parts with [1|Full].</en>
@@ -9374,6 +9382,10 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 				<de>Das Verborgene</de>
 				<en>The hidden</en>
 			</title>
+			<title_original>
+				<de>The Veil</de>
+				<en>The Veil</en>
+			</title_original>
 			<description>
 				<de>Nach seinen Frankenstein-Erfolgen präsentierte [1|Full] gruselige Fälle.</de>
 				<en>After his success as the Frankenstein monster [1|Full] presented creepy moments.</en>
@@ -9594,7 +9606,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 				<en>Hogans Hunt</en>
 			</title>
 			<title_original>
-				<de>Logans Run</de>
+				<de>Flucht ins 23. Jahrhundert</de>
 				<en>Logans Run</en>
 			</title_original>
 			<description>
@@ -9739,7 +9751,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="77" speed="29" outcome="72" />
 		</programme>
 
-		<programme id="TheRob-mov-hist-AndyKopekjow" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="TheRob-mov-hist-AndyKopekjow" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0060107" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Andrej Rubljow, Hostorie, Sub Drama -->
 				<de>Andy Kopekjow</de>
@@ -9747,7 +9759,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			</title>
 			<title_original>
 				<de>Andrej Rubljow</de>
-				<en>Andrej Rubljow</en>
+				<en>Andrey Rublev</en>
 			</title_original>
 			<description>
 				<de>Das Leben des Ikonenmalers Kopekjow vor dem Hintergrund von Tartareneinfällen, religiösen Sektentum und die Unterdrückung durch die Obrigkeit. Vor allem die eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbehörde.</de>
@@ -9764,14 +9776,14 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="81" speed="22" outcome="63" />
 		</programme>
 
-		<programme id="TheRob-mov-dram-StraßenwalzenpilotundGeiger" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="TheRob-mov-dram-StraßenwalzenpilotundGeiger" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0053987" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Die Straßenwalze und die Geige, drama -->
 				<de>Straßenwalzenpilot und Geiger</de>
 				<en>The road roller pilot and the violinist</en>
 			</title>
 			<title_original>
-				<de>Die Straßenwalze und die Geige</de>
+				<de>Geige und Straßenwalze</de>
 				<en>The road roller and the violine</en>
 			</title_original>
 			<description>
@@ -10748,7 +10760,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<en>Goldfever in San Fransisco</en>
 			</title>
 			<title_original>
-				<de>San Francisco im Goldfieber</de>
+				<de>Küste der Gesetzlosen</de>
 				<en>Barbary Coast</en>
 			</title_original>
 			<description>
@@ -11014,7 +11026,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="93" speed="29" outcome="76" />
 		</programme>
 
-		<programme id="TheRob-a4d6-dram-LeopoldLoeb" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0045251" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-a4d6-dram-LeopoldLoeb" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0052700" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Der Zwang zum Bösen -->
 				<de>Der Fall Leopold Loeb</de>
