@@ -5851,6 +5851,9 @@ Spannende Story, rückwärts erzählt</de>
 				<de>Unschuldig gejagt</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Auf der Flucht</de>
+			</title_original>
 			<description>
 				<de>Dr. Richard Kimble ist angesehener Chirurg in Chicago. Eines Tages wird seine Frau ermordet. Kimble gerät unter Tatverdacht. Er flüchtet, um den wahren Mörder finden.
 Nach der erfolgreichen Serie</de>
@@ -5867,11 +5870,15 @@ Nach der erfolgreichen Serie</de>
 			<data country="USA" year="1993" distribution="1" maingenre="2" subgenre="" flags="0" blocks="3" price_mod="0.90" />
 			<ratings critics="65" speed="70" outcome="61" />
 		</programme>
-		<programme id="7bbd28e8-00ef-4a3d-bf5a-418badcd1048" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="7bbd28e8-00ef-4a3d-bf5a-418badcd1048" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0259711" rt_id="0" creator="">
 			<title>
 				<de>Vanillinhimmel</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Vanilla Sky</de>
+				<en>Vanilla Sky</en>
+			</title_original>
 			<description>
 				<de>Das Leben des erfolgreichen Geschäftsmannes David Aames wandelt sich jäh, als er in einen Autounfall verwickelt und sein Gesicht entstellt wird.
 Kühler Thriller mit Schockwirkung</de>
@@ -5893,6 +5900,10 @@ Kühler Thriller mit Schockwirkung</de>
 				<de>Veit's Club</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Fight Club</de>
+				<en>Fight Club</en>
+			</title_original>
 			<description>
 				<de>Ein geheimer Bund wird gegründet, in dem das gegenseitige Schlagen im Vordergrund steht.
 Aufwühlender Film von [0|Full]</de>
@@ -5913,6 +5924,9 @@ Aufwühlender Film von [0|Full]</de>
 				<de>Verfolgt, gejagt und atemlos</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Auf der Jagd</de>
+			</title_original>
 			<description>
 				<de>Mark Sheridan steht unter Mordverdacht. Mit einem Flugzeug wird er nach New York gebracht. Der Jet muß notlanden, Sheridan kann fliehen. Doch U.S. Marshal Gerard begibt sich auf die Jagd...</de>
 				<en></en>
@@ -5933,6 +5947,9 @@ Aufwühlender Film von [0|Full]</de>
 				<de>Verschwundene Helden</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Verlorene Helden</de>
+			</title_original>
 			<description>
 				<de>Als er einem Kameraden das Leben rettet, wird Tony Kaiser schwer verwundet. Er bleibt blind.
 
@@ -5955,6 +5972,9 @@ Bewegender Film mit [1|Full] in seiner ersten Filmhauptrolle</de>
 				<de>Versprechen sind zu halten</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Versprochen ist versprochen</de>
+			</title_original>
 			<description>
 				<de>[1|Last] als Vater, der das Verhältnis zu seinem Sohn aufpolieren will. Er macht sich auf die zermürbende Suche nach einem der beliebten Turbo-Man-Spielzeuge.</de>
 				<en></en>
@@ -5974,6 +5994,9 @@ Bewegender Film mit [1|Full] in seiner ersten Filmhauptrolle</de>
 				<de>Vertikal - Aus dem Reich von Oben</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Vertigo - Aus dem Reich der Toten</de>
+			</title_original>
 			<description>
 				<de>Verstörendes Meisterwerk, untermalt mit der musikalischen Handschrift Steward Shermans.
 
@@ -5997,6 +6020,10 @@ Von den Kritikern lange Zeit verkannt</de>
 				<de>Vertrauliches L.A.</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>L.A. Confidential</de>
+				<en>L.A. Confidential</en>
+			</title_original>
 			<description>
 				<de>Drei Cops machen sich aus unterschiedlichen Gründen auf die Suche nach dem Verantwortlichen für ein Massaker in einem Lokal.</de>
 				<en></en>
@@ -6036,6 +6063,10 @@ Von den Kritikern lange Zeit verkannt</de>
 				<de>Vogel am Boden</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Black Hawk Down</de>
+				<en>Black Hawk Down</en>
+			</title_original>
 			<description>
 				<de>Ein Elitekommando der US Army soll 1993 in Somalia zwei Rebellenführer festsetzen. Die Mission artet aus, endet in schrecklichen Häuserkämpfen und mit vielen Verlusten.</de>
 				<en></en>
@@ -6073,6 +6104,9 @@ Von den Kritikern lange Zeit verkannt</de>
 				<de>Wenn Papa mit dem Kinde</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Wenn der Vater mit dem Sohne</de>
+			</title_original>
 			<description>
 				<de>Clown Teddy Lemke kümmert sich um seinen Sohn Ulli. Er läßt sich überreden, zusammen mit Ulli eine Clowns-Nummer aufzuführen. Doch dann kündigt sich Ullis Mutter mit ihrem neuen Mann an...</de>
 				<en></en>
