@@ -11126,7 +11126,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="51" speed="71" outcome="66" />
 		</programme>
 
-		<programme id="TheRob-a4d6-adv-DerGeisterseemann" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0064397" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-a4d6-adv-DerGeisterseemann" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0064307" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- The Extraordinary Seaman -->
 				<de>Der Geisterseemann</de>
@@ -11667,7 +11667,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="63" speed="66" outcome="64" />
 		</programme>
 
-		<programme id="TheRob-a4d6-act-BreaktheChain" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0068638" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-a4d6-act-BreaktheChain" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0057115" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Gesprengte Kette -->
 				<de>Break the Chain</de>
