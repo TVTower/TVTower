@@ -5660,11 +5660,13 @@ Type TStationMap_Satellite extends TStationMap_BroadcastProvider {_exposeToLua="
 
 	'override
 	Method GetDefaultSubscribedChannelDuration:Int()
-		if deathTime <= 0 then return Super.GetDefaultSubscribedChannelDuration()
+		local defaultDuration:int = Super.GetDefaultSubscribedChannelDuration()
+		if deathTime <= 0 then return defaultDuration
 		'days are rounded down, so they always are lower than the real life time
 		local daysToDeath:int = (deathTime - GetWorldTime().GetTimeGone()) / TWorldTime.DAYLENGTH
-
-		return Min(Super.GetDefaultSubscribedChannelDuration(), daysToDeath * TWorldTime.DAYLENGTH)
+		local durationToDeath:int = daysToDeath * TWorldTime.DAYLENGTH
+		if durationToDeath < 0 then durationToDeath = defaultDuration
+		return Min(defaultDuration, durationToDeath)
 	End Method
 
 
