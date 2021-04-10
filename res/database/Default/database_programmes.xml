@@ -1831,7 +1831,7 @@ Keine leichte Aufgabe für [1|Full]</de>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="D" year="1970" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="1" />
-			<ratings critics="89" speed="65" outcome="65" />
+			<ratings critics="32" speed="51" outcome="28" />
 		</programme>
 		<programme id="c714764b-adf6-423d-9d6e-c8c8aa92aa0e" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0036818" rt_id="0" creator="">
 			<title>
@@ -4124,7 +4124,7 @@ Grandiose Oper von [0|Full]</de>
 				<en></en>
 			</title>
 			<title_original>
-				<de>TodMister Universum</de>
+				<de>Mister Universum</de>
 			</title_original>
 			<description>
 				<de>[1|Last] läßt in diesem Frühwerk seiner Karriere ausgiebig die Muskeln spielen.
@@ -5801,7 +5801,7 @@ Mit der unvergleichlichen Musik Ennio MurrIchOchnes</de>
 				<en></en>
 			</title>
 			<title_original>
-				<de>UhrwerkOrgange</de>
+				<de>Uhrwerk Organge</de>
 				<en>Clockwork Orange</en>
 			</title_original>
 			<description>
