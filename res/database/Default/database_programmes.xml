@@ -7,6 +7,10 @@
 				<de>...sie waren sich der Konsequenzen nicht bewusst</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>...denn sie wissen nicht, was sie tun</de>
+				<en>Rebel Without a Cause</en>
+			</title_original>
 			<description>
 				<de>[1|Full] in seiner Paraderolle.</de>
 				<en></en>
@@ -26,6 +30,10 @@
 				<de>11 Donkeys</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>12 Monkeys</de>
+				<en>Twelve Monkeys</en>
+			</title_original>
 			<description>
 				<de>[1|Full] als potentieller Weltretter, der in die Vergangenheit geschickt wird, um die Apokalypse aufzuhalten.</de>
 				<en></en>
@@ -45,6 +53,9 @@
 				<de>1899 (Achtzehnhundertneunundneunzig)</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>1900</de>
+			</title_original>
 			<description>
 				<de>Die Geschichte zweier Freunde, erzählt in gewaltigen Bildern, ausgeführt von großen Schauspielern, getragen von der Musik des Altmeisters MurrIchOchne</de>
 				<en></en>
@@ -65,6 +76,9 @@
 				<de>2002: Bredouille im All</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>2001: Odyssee im Weltraum</de>
+			</title_original>
 			<description>
 				<de>Die Expedition ins All als metaphorische Reise in die Seele der Menschheit.
 Ein symphonischer Science-Fiction-Trip</de>
@@ -87,6 +101,9 @@ Ein symphonischer Science-Fiction-Trip</de>
 				<de>27 Tage verpasst</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>28 Tage später</de>
+			</title_original>
 			<description>
 				<de>Ein Virus hat scheinbar ganz London entvölkert. Jim, der aus dem Koma erwacht ist, sieht sich in der leeren Großstadt lediglich Infizierten gegenüber, die Jagd auf ihn machen.</de>
 				<en></en>
@@ -108,6 +125,9 @@ Ein symphonischer Science-Fiction-Trip</de>
 				<de>59 1/2 Tage</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>9 1/2 Wochen</de>
+			</title_original>
 			<description>
 				<de>[1|Full] treibt mit [2|Full] seine Spiele.</de>
 				<en></en>
@@ -126,6 +146,9 @@ Ein symphonischer Science-Fiction-Trip</de>
 				<de>59 1/2 Tage in Paris</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>9 1/2 Wochen in Paris</de>
+			</title_original>
 			<description>
 				<de>[1|Full] mimt erneut den geheimnisvollen Verführer.
 Aber diesmal schauen ihm erheblich weniger Voyeure dabei zu.</de>
@@ -145,6 +168,9 @@ Aber diesmal schauen ihm erheblich weniger Voyeure dabei zu.</de>
 				<de>A.K. - Das kleine Arschlochkind</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Kleines Arschloch</de>
+			</title_original>
 			<description>
 				<de>Ein kleiner Bengel belästigt seine Umwelt mit allerhand Geschmacklosigkeiten.
 Bescheidene Witzverkettungen nach den Comics von Waldi Meirs</de>
@@ -162,6 +188,9 @@ Bescheidene Witzverkettungen nach den Comics von Waldi Meirs</de>
 				<de>Affenerde</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Planet der Affen</de>
+			</title_original>
 			<description>
 				<de>Im Jahr 2029 landet Astronaut Leo Davidson auf einem Planeten, auf dem Affen die Herrschaft übernommen haben und die Menschen unterdrücken.
 Starke Kostüme, insgesamt aber leider schwaches Remake</de>
@@ -183,6 +212,9 @@ Starke Kostüme, insgesamt aber leider schwaches Remake</de>
 				<de>Alarmstufe: Seeehr Dringend!</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Alarmstufe: Rot</de>
+			</title_original>
 			<description>
 				<de>Terroristen kapern ein US-amerikanisches Kriegsschiff, um die an Bord befindlichen Tomahawk-Marschflugkörper zu entwenden.</de>
 				<en></en>
@@ -199,11 +231,14 @@ Starke Kostüme, insgesamt aber leider schwaches Remake</de>
 			<data country="USA" year="1992" distribution="1" maingenre="2" subgenre="" flags="0" blocks="2" price_mod="0.97" />
 			<ratings critics="29" speed="65" outcome="60" />
 		</programme>
-		<programme id="82833c29-2958-4715-8363-6a9af3455284" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="82833c29-2958-4715-8363-6a9af3455284" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0057380" rt_id="0" creator="">
 			<title>
 				<de>Alte Schmetterfaust</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Old Shatterhand</de>
+			</title_original>
 			<description>
 				<de>Alte Schmetterfaust hilft seinem Blutsbruder Rinnetooth und dessen Apatschen, Verbrechen aufzuklären, die von Weißen und Komantschen gemeinschaftlich begangen werden. Er setzt sich für den Frieden ein.</de>
 				<en></en>
@@ -223,6 +258,9 @@ Starke Kostüme, insgesamt aber leider schwaches Remake</de>
 				<de>Am sechsten Tag erschuf...</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>The 6th Day</de>
+			</title_original>
 			<description>
 				<de>Adam Gibson ist geschockt: Als er abends nach Hause kommt, hat ein Klon seinen Platz in der Familie eingenommen. Aber Gibson wehrt sich...</de>
 				<en></en>
@@ -242,6 +280,9 @@ Starke Kostüme, insgesamt aber leider schwaches Remake</de>
 				<de>Amerikanische Nazis</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>American History X</de>
+			</title_original>
 			<description>
 				<de>Harter Film über Rassenunterschiede und -rivalitäten mit überzeugendem Ende</de>
 				<en></en>
@@ -280,6 +321,9 @@ Raffinierter phantastischer Film.</de>
 				<de>Aschenputtel</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Aschenputtel</de>
+			</title_original>
 			<description>
 				<de>Mouseworks Version von Aschenputtel - durchaus gelungen.</de>
 				<en></en>
@@ -296,6 +340,9 @@ Raffinierter phantastischer Film.</de>
 				<de>Asian Queen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>African Queen</de>
+			</title_original>
 			<description>
 				<de>Ein Mann und eine Frau machen auf der alten Asian Queen die Gewässer unsicher.
 Klassiker mit [1|Full].</de>
@@ -318,6 +365,9 @@ Klassiker mit [1|Full].</de>
 				<de>[1|Last] &amp; [2|Last] - Auf hohem Meere</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Abenteuer auf hoher See</de>
+			</title_original>
 			<description>
 				<de>[1|Last] und [2|Last] geraten unfreiwillig an den gefährlichen Schwerverbrecher Nick Grainger, doch es gelingt ihnen, diesen unschädlich zu machen.</de>
 				<en></en>
@@ -337,6 +387,10 @@ Klassiker mit [1|Full].</de>
 				<de>[1|Last] &amp; [2|Last] - Kinder der Wüste</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Hilfe, wir sind ertrunken</de>
+				<en>Sons of the Desert</en>
+			</title_original>
 			<description>
 				<de>Mr. [1|Last] und Mr. [2|Last] wollen zum Treffen ihres Clubs "Die Wüstensöhne" nach Chicago. Um ihre Frauen zu überzeugen, muß sich [1|Last] krank stellen. Aber letztlich fliegen die beiden auf.</de>
 				<en></en>
@@ -357,6 +411,9 @@ Klassiker mit [1|Full].</de>
 				<de>Bambey</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Bambi</de>
+			</title_original>
 			<description>
 				<de>Die rührende Geschichte vom kleinen Bambey, der seine Rehmutter verliert, mit seinen Freunden Klopfklopf und Blumli heranwächst und sich im Wald profiliert.</de>
 				<en></en>
@@ -392,6 +449,10 @@ Klassiker mit [1|Full].</de>
 				<de>Being [3|Full]</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Being John Malkovich</de>
+				<en>Being John Malkovich</en>
+			</title_original>
 			<description>
 				<de>Ein Angesteller findet in seinem Büro einen Geheimgang, der direkt in das Hirn von [3|Full] führt.
 Absolut abgedrehte Komödie und fulminantes Debüt von [0|Full].</de>
@@ -412,6 +473,10 @@ Absolut abgedrehte Komödie und fulminantes Debüt von [0|Full].</de>
 				<de>Betty - a Woman</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Pretty Woman</de>
+				<en>Pretty Woman</en>
+			</title_original>
 			<description>
 				<de>[1|Full] bringt als Geschäftsmann mit Callgirl [2|Full] Abwechslung in sein Leben.
 Eine Liebe gegen jede Vernunft und Verhaltensregel, dafür umso romantischer - die Lovestory schlechthin.</de>
@@ -449,6 +514,9 @@ Eine Liebe gegen jede Vernunft und Verhaltensregel, dafür umso romantischer - d
 				<de>Bleib ja am Hörer!</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Nicht auflegen!</de>
+			</title_original>
 			<description>
 				<de>Ein Mann ist in einer Telefonzelle gefangen. Die Stimme am anderen Ende der Leitung versichert ihm den tödlichen Schuß, sollte er sich entscheiden, aufzuhängen...
 Hochspannung auf originelle Weise</de>
@@ -470,6 +538,10 @@ Hochspannung auf originelle Weise</de>
 				<de>Boogie-Woogie-Träume</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Boogie Nights</de>
+				<en>Boogie Nights</en>
+			</title_original>
 			<description>
 				<de>Eddie Adams, ein junger Tellerwäscher in einem Nachtlokal, bekommt die Gelegenheit, als Schauspieler Karriere zu machen. Doch das Angebot beschränkt sich auf schmutzige Filme...</de>
 				<en></en>
@@ -491,6 +563,9 @@ Hochspannung auf originelle Weise</de>
 				<de>Brenzliges Business</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Heiße Geschäfte</de>
+			</title_original>
 			<description>
 				<de>Komödie mit [1|Full] in einer Nebenrolle</de>
 				<en></en>
@@ -511,6 +586,10 @@ Hochspannung auf originelle Weise</de>
 				<de>Brunch bei Stephanie</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Frühstück bei Tiffany</de>
+				<en>Breakfast at Tiffany's</en>
+			</title_original>
 			<description>
 				<de>Abgehobene Liebesgeschichte mit [1|Full]</de>
 				<en></en>
@@ -532,6 +611,10 @@ Hochspannung auf originelle Weise</de>
 				<de>Canadian Chick</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>American Beauty</de>
+				<en>American Beauty</en>
+			</title_original>
 			<description>
 				<de>[0|Last] durchleuchtet die amerikanische Vorstadt-Idylle am Beispiel einer auseinandergelebten Familie.
 Großartig besetzt mit [1|Full]</de>
@@ -554,6 +637,10 @@ Großartig besetzt mit [1|Full]</de>
 				<de>Canadian Fry</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>American Pie: Wie ein Heisser Apfelkuchen</de>
+				<en>American Pie</en>
+			</title_original>
 			<description>
 				<de>Erster Teil der High-School-Trilogie.
 Größtenteils geschmacklose, aber urkomische Witze.</de>
@@ -576,6 +663,10 @@ Größtenteils geschmacklose, aber urkomische Witze.</de>
 				<de>Canadian Fry - Wedding Party</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>American Pie: Jetzt wird geheiratet</de>
+				<en>American Wedding</en>
+			</title_original>
 			<description>
 				<de>Spätestens nach dem zweiten Teil war die Grube um Canadian Fry ausgehoben, der Stoff erschöpft.
 Deutlich weniger erfolgreich als die Vorgänger</de>
@@ -597,6 +688,10 @@ Deutlich weniger erfolgreich als die Vorgänger</de>
 				<de>Canadian Fry 2</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>American Pie 2</de>
+				<en>American Pie 2</en>
+			</title_original>
 			<description>
 				<de>Gleiche Themen und gleiche Scherze neu aufgegossen.
 Trotzdem komisch</de>
@@ -618,6 +713,10 @@ Trotzdem komisch</de>
 				<de>Catch - Kühe und Rubine</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Snatch: Schweine und Diamanten</de>
+				<en>Snatch</en>
+			</title_original>
 			<description>
 				<de>Krimikomödie über Diamantenraub und Boxkampf.
 Auf der ganzen Linie durchgeknallter Streifen</de>
@@ -639,6 +738,10 @@ Auf der ganzen Linie durchgeknallter Streifen</de>
 				<de>Computerkrieg</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>War Games: Kriegsspiele</de>
+				<en>WarGames</en>
+			</title_original>
 			<description>
 				<de>Computerfreak David provoziert von seinem Rechner aus unbeabsichtigt einen nuklearen Krieg. Nun hat er die Verantwortung, den bevorstehenden Dritten Weltkrieg zu verhindern...</de>
 				<en></en>
@@ -660,6 +763,10 @@ Auf der ganzen Linie durchgeknallter Streifen</de>
 				<de>Coole Typen - Really Bad Boys</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Bad Boys - Harte Jungs</de>
+				<en>Bad Boys</en>
+			</title_original>
 			<description>
 				<de>Action mit viel Effekten, Gewalt und Sprüchen nach bekannten Schema: Zwei Polizisten bilden ein ungleiches und doch harmonierendes Team.</de>
 				<en></en>
@@ -680,6 +787,10 @@ Auf der ganzen Linie durchgeknallter Streifen</de>
 				<de>Coole Typen II</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Bad Boys II</de>
+				<en>Bad Boys II</en>
+			</title_original>
 			<description>
 				<de>Die Drogenfahnder Marcus Burnett und Mike Lowrey sollen einem Drogenbaron das Handwerk legen.
 Primitiv</de>
@@ -700,6 +811,9 @@ Primitiv</de>
 				<de>Da war mal in Amerika</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Es war einmal in Amerika</de>
+			</title_original>
 			<description>
 				<de>Zeitloses Epos über eine Gruppe von Straßenkindern, die zu professionellen Kriminellen heranwachsen.
 Eingängiges musikalisches Thema von Ennio MurrIchOchne.
@@ -723,6 +837,9 @@ Freigabe von FSK 18 auf FSK 16 heruntergestuft</de>
 				<de>Das Geflügel</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Die Vögel</de>
+			</title_original>
 			<description>
 				<de>Eine Kleinstadt wird von einer Unzahl an Vögeln überfallen.
 Einer der späteren [0|Last]s</de>
@@ -745,6 +862,10 @@ Einer der späteren [0|Last]s</de>
 				<de>Das Männerbaby</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Junior</de>
+				<en>Junior</en>
+			</title_original>
 			<description>
 				<de>Zwei Wissenschaftler, denen die finanziellen Mittel gestrichen werden, starten einen Selbstversuch. Als Folge wird einer von ihnen schwanger...
 Übertrieben albern</de>
@@ -765,6 +886,9 @@ Einer der späteren [0|Last]s</de>
 				<de>Das Plumbium-Rätsel</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Das Mercury Puzzle</de>
+			</title_original>
 			<description>
 				<de>[1|Full] muß einen kleinen Jungen schützen, weil dieser in der Lage ist, einen brisanten Nachrichtencode zu lesen.</de>
 				<en></en>
@@ -783,6 +907,10 @@ Einer der späteren [0|Last]s</de>
 				<de>Das Tier in mir</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Basic Instinct</de>
+				<en>Basic Instinct</en>
+			</title_original>
 			<description>
 				<de>Det. Nick Curran soll einen Mord aufklären. Als er sich allerdings in die Hauptverdächtige verliebt, kommen ihm Zweifel an ihrer Schuld...
 Zerreißender Erotik-Thriller von [0|Full]</de>
@@ -803,6 +931,9 @@ Zerreißender Erotik-Thriller von [0|Full]</de>
 				<de>Dem Alcatraz entkommen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Flucht von Alcatraz</de>
+			</title_original>
 			<description>
 				<de>Die aufsehenerregende Flucht von der berühmten Gefängnisinsel Alcatraz.
 Nach einer wahren Begebenheit</de>
@@ -823,6 +954,9 @@ Nach einer wahren Begebenheit</de>
 				<de>Deodorant - Des Mörders Erzählung</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Das Parfum - Die Geschichte eines Mörders</de>
+			</title_original>
 			<description>
 				<de>Schließlich hat die Summe gestimmt, Patrick Zuckersüß genehmigte eine Verfilmung seines Bestsellers. [0|Full] versuchte, die Geruchswelt auf die Leinwand zu projizieren, Bernhard Buchsbaum produzierte.</de>
 				<en></en>
@@ -844,6 +978,9 @@ Nach einer wahren Begebenheit</de>
 				<de>Der Albinohai</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Der weiße Hai</de>
+			</title_original>
 			<description>
 				<de>[0|Last] souveränes Spiel mit dem Schrecken und dem Einsatz von Spezialeffekten zur möglichst realistischen Präsentation des menschenfressenden Monsters führten zu einem Millionen-Dollar-Umsatz</de>
 				<en></en>
@@ -863,6 +1000,9 @@ Nach einer wahren Begebenheit</de>
 				<de>Der befragte Vampir</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Interview mit einem Vampir</de>
+			</title_original>
 			<description>
 				<de>Die Lebensgeschichte eines Vampirs, der seines Vampirdaseins längst überdrüssig geworden ist.</de>
 				<en></en>
@@ -884,6 +1024,9 @@ Nach einer wahren Begebenheit</de>
 				<de>Der Dritte im Bunde</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Der dritte Mann</de>
+			</title_original>
 			<description>
 				<de>Schriftsteller Holly Martins reist auf Einladung seines Freundes Harry Lime nach Wien. Doch als er eintrifft, erfährt er von Harrys Tod.
 Einzigartig durch die Walzermusik und das Nachkriegswien</de>
@@ -906,6 +1049,9 @@ Einzigartig durch die Walzermusik und das Nachkriegswien</de>
 				<de>Der Extraterrestrische</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>E.T. - Der Außerirdische</de>
+			</title_original>
 			<description>
 				<de>[0|Last]s Saga von dem auf Erden zurückgelassenen Außerirdischen, der in einem kleinen Jungen in Los Angeles einen wahren Freund findet.</de>
 				<en></en>
@@ -926,6 +1072,9 @@ Einzigartig durch die Walzermusik und das Nachkriegswien</de>
 				<de>Der Gasthof im Spechtswald</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Das Wirtshaus im Spessart</de>
+			</title_original>
 			<description>
 				<de>Räubergeschichte mit schönem Gesang</de>
 				<en></en>
@@ -947,6 +1096,9 @@ Einzigartig durch die Walzermusik und das Nachkriegswien</de>
 				<de>Der Geister-Austreiber</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Der Exorzist</de>
+			</title_original>
 			<description>
 				<de>Ein junges Mädchen ist "besessen". Ein Geistlicher soll sie von der dunklen Macht befreien.
 Horror vom Feinsten</de>
@@ -969,6 +1121,10 @@ Horror vom Feinsten</de>
 				<de>Der Große Glubowski</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>The Big Lebowski</de>
+				<en>The Big Lebowski</en>
+			</title_original>
 			<description>
 				<de>Lachnummer zum Weinen ohne Handlung mit albernen Figuren und dummem Geschwätz</de>
 				<en></en>
@@ -1002,6 +1158,10 @@ Horror vom Feinsten</de>
 				<de>Der herbe Erdtrabant</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Bitter Moon</de>
+				<en>Bitter Moon</en>
+			</title_original>
 			<description>
 				<de>Die Geschichte einer bedingungslosen Amour fou: In Paris verguckt sich der erfolglose Schriftsteller Oscar in die bezaubernde Tänzerin Mimi. Doch aus Liebe wird bald Überdruß.</de>
 				<en></en>
@@ -1022,6 +1182,9 @@ Horror vom Feinsten</de>
 				<de>Der Kahn</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Das Boot</de>
+			</title_original>
 			<description>
 				<de>[0|Last]s Klassiker um die U-96 im Zweiten Weltkrieg 1941</de>
 				<en></en>
@@ -1041,6 +1204,10 @@ Horror vom Feinsten</de>
 				<de>Der kleine Buddhist</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Little Buddha</de>
+				<en>Little Buddha</en>
+			</title_original>
 			<description>
 				<de>Ein amerikanischer Junge wird von buddhistischen Mönchen für die Reinkarnation eines Lama Dorje gehalten.
 [0|Last] erzählt wieder einmal eine lange Geschichte aus dem Bereich Kultur</de>
@@ -1061,6 +1228,10 @@ Horror vom Feinsten</de>
 				<de>Der letzte Kinoheld</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Last Action Hero</de>
+				<en>Last Action Hero</en>
+			</title_original>
 			<description>
 				<de>Der junge Filmfan Danny gelangt mittels einer magischen Kinokarte zu seinem Leinwandhelden Jack Slater. Umgekehrt entkommt ein Bösewicht aus dem Film in die Realität...</de>
 				<en></en>
@@ -1080,6 +1251,10 @@ Horror vom Feinsten</de>
 				<de>Der letzte Scout - Nicht Sterben</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Last Boy Scout - Das Ziel ist Überleben</de>
+				<en>The Last Boy Scout</en>
+			</title_original>
 			<description>
 				<de>[1|Full] in einem lockeren Streifen mit schnellen Sprüchen, rasanter Action und einer guten Portion Humor</de>
 				<en></en>
@@ -1101,6 +1276,10 @@ Horror vom Feinsten</de>
 				<de>Der letzte Tai-Chi-Kämpfer</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Last Samurai</de>
+				<en>The Last Samurai</en>
+			</title_original>
 			<description>
 				<de>Ein amerikanischer Soldat lernt die Kultur der Samurai kennen und etabliert sich alsbald als großer Krieger.
 Berührende, einigermaßen glaubwürdige Geschichte und eingängige Musik von Hans Raum</de>
@@ -1124,6 +1303,9 @@ Berührende, einigermaßen glaubwürdige Geschichte und eingängige Musik von Ha
 				<de>Der mit den Wölfen schunkelt</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Der mit dem Wolf tanzt</de>
+			</title_original>
 			<description>
 				<de>Ein amerikanischer Soldat freundet sich mit einem Indianerstamm an.
 Sehenswertes Regie-Debüt von [0|Full]</de>
@@ -1146,6 +1328,9 @@ Sehenswertes Regie-Debüt von [0|Full]</de>
 				<de>Der Spiegelmord</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Mord im Spiegel</de>
+			</title_original>
 			<description>
 				<de>Krimi nach Agatha Kissme mit Miss Moebble, die allerdings von [2|Full] verkörpert wird.
 Namhafte Schauspieler, aber das Konzept kann nicht überzeugen.</de>
@@ -1168,6 +1353,9 @@ Namhafte Schauspieler, aber das Konzept kann nicht überzeugen.</de>
 				<de>Der Taxifahrer</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Taxi Driver</de>
+			</title_original>
 			<description>
 				<de>Schmutz, Brutalität und Unmenschlichkeit geben einem Taxifahrer Veranlassung zur Gewalt, er will sich gegen den Dreck wehren.
 Nachvollziehbar und verstörend, grandios inszeniert von [0|Full].</de>
@@ -1190,6 +1378,9 @@ Nachvollziehbar und verstörend, grandios inszeniert von [0|Full].</de>
 				<de>Der Top-Staatsfeind</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Der Staatsfeind Nr. 1</de>
+			</title_original>
 			<description>
 				<de>Durch Zufall und ohne davon zu wissen gelangt Anwalt Robert Clayton Dean in den Besitz einer hochbrisanten Videokassette, die einen hohen Beamten mit einem Mord in Verbindung bringt.</de>
 				<en></en>
@@ -1210,6 +1401,10 @@ Nachvollziehbar und verstörend, grandios inszeniert von [0|Full].</de>
 				<de>Der übernatürliche Sinn</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>The Sixth Sense</de>
+				<en>The Sixth Sense</en>
+			</title_original>
 			<description>
 				<de>Kinderpsychologe Malcolm Crowe kümmert sich um einen Jungen, der den sechsten Sinn hat. Er sieht tote Menschen...</de>
 				<en></en>
@@ -1228,6 +1423,10 @@ Nachvollziehbar und verstörend, grandios inszeniert von [0|Full].</de>
 				<de>Der Vampirjäger</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Blade</de>
+				<en>Blade</en>
+			</title_original>
 			<description>
 				<de>Vampirjäger Slate rettet die Erde mithilfe seiner außergewöhnlichen Stärken vor den blutdurstigen Vampiren.
 Blutiges Spektakel für Genre-Fans und Schwachköpfe</de>
@@ -1248,6 +1447,10 @@ Blutiges Spektakel für Genre-Fans und Schwachköpfe</de>
 				<de>Der Vampirjäger 2</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Blade II</de>
+				<en>Blade II</en>
+			</title_original>
 			<description>
 				<de>Eine virenverseuchte Rasse greift gleichsam Menschen wie Vampire an. Der Vampirjäger Slate soll sich mit den Vampiren verbünden, um den gemeinsamen Feind auszurotten.
 Erfolgreiche Forsetzung des Schreckens</de>
@@ -1268,6 +1471,9 @@ Erfolgreiche Forsetzung des Schreckens</de>
 				<de>Der Wachmann von Korpenigg</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Der Hauptmann von Köpenick</de>
+			</title_original>
 			<description>
 				<de>[1|Full] als entlassener Berliner Häftling, der, weil ihm für die Zukunft Steine in den Weg gelegt sind, eine Uniform ersteht und das Rathaus von Korpenigg bezieht.</de>
 				<en></en>
@@ -1289,6 +1495,9 @@ Erfolgreiche Forsetzung des Schreckens</de>
 				<de>Der Wut-Psychiater</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Die Wutprobe</de>
+			</title_original>
 			<description>
 				<de>Anti-Agressions-Therapeut Dr. Rydell (Großartig: [1|Full]) nimmt den zurückhaltenden jungen Dave Buznik unter seine Fittiche.</de>
 				<en></en>
@@ -1309,6 +1518,10 @@ Erfolgreiche Forsetzung des Schreckens</de>
 				<de>Determinator</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Terminator</de>
+				<en>The Terminator</en>
+			</title_original>
 			<description>
 				<de>[1|Full] möchte als Determinator die zukünftige Mutter eines zukünftigen Widerstandskämpfers terminieren.
 
@@ -1330,6 +1543,9 @@ Erfolgreiche Forsetzung des Schreckens</de>
 				<de>Die Adretten vom Junker Bill</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Die Kadetten von Bunker Hill</de>
+			</title_original>
 			<description>
 				<de>Als die renommierte Elite-Militärakademie Bunker Hill geschlossen und abgerissen werden soll, proben die jungen Rekruten den bewaffneten Aufstand. Bald darauf eskaliert die Lage...</de>
 				<en></en>
@@ -1351,6 +1567,9 @@ Erfolgreiche Forsetzung des Schreckens</de>
 				<de>Die Aktiengesellschaft</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Die Firma</de>
+			</title_original>
 			<description>
 				<de>Ein frisch promovierter Anwalt wird von einer renommierten Anwaltsfirma angeworben. Daß die Arbeit dort auch ihre Schattenseiten hat, merkt er, als hintereinander zwei Angestellte ums Leben kommen.</de>
 				<en></en>
@@ -1371,6 +1590,9 @@ Erfolgreiche Forsetzung des Schreckens</de>
 				<de>Die Brücke beim Kai</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Die Brücke am Kwai</de>
+			</title_original>
 			<description>
 				<de>Während des Zweiten Weltkrieges sollen britische Kriegsgefangene für die Japaner eine Eisenbahnbrücke über einen Fluss bauen.
 Klassiker von [0|Full]</de>
@@ -1410,6 +1632,9 @@ Klassiker von [0|Full]</de>
 				<de>Die Dschungelgeschichte</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Das Dschungelbuch</de>
+			</title_original>
 			<description>
 				<de>Die Geschichte um ein Menschenkind, das im Dschungel zu leben lernt.
 Walt Mouseworks Meisterwerk</de>
@@ -1427,6 +1652,10 @@ Walt Mouseworks Meisterwerk</de>
 				<de>Die Elvis-Bande in Las Vegas</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Crime is King</de>
+				<en>3000 Miles to Graceland</en>
+			</title_original>
 			<description>
 				<de>Während der Elvis-Woche in Las Vegas rauben fünf Männer als Elvis verkleidet ein Casino aus.
 Bunte Action mit [1|Full]</de>
@@ -1449,6 +1678,9 @@ Bunte Action mit [1|Full]</de>
 				<de>Die Fahreinheit 401</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Fahrenheit 451</de>
+			</title_original>
 			<description>
 				<de>Eisige Zukunftsvision: Geistige Weiterbildung ist verboten, Bücher werden verbrannt. Als ein Feuerwehrmann versucht, Bücher zu verstecken, wird er von seiner Frau denunziert...</de>
 				<en></en>
@@ -1483,6 +1715,9 @@ Bunte Action mit [1|Full]</de>
 				<de>Die Helfer: Feuersbrunst in Manhattan</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Die Retter - Feuerhölle in Manhattan</de>
+			</title_original>
 			<description>
 				<de>Als Feuerwehrmann muß [1|Full] einen Weg finden, die Attentate auf sich und seine Kollegen zu stoppen.
 Anrührender Film, geplant als TV-Serie - es blieb beim Piloten.</de>
@@ -1505,6 +1740,10 @@ Anrührender Film, geplant als TV-Serie - es blieb beim Piloten.</de>
 				<de>Die Raubstewardess</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Jackie Brown</de>
+				<en>Jackie Brown</en>
+			</title_original>
 			<description>
 				<de>Stewardess Jackie bessert ihre Finanzen als Kurier für einen Waffenhändler auf. Als sie dabei erwischt wird, steht sie vor einer schwierigen Entscheidung...</de>
 				<en></en>
@@ -1526,6 +1765,10 @@ Anrührender Film, geplant als TV-Serie - es blieb beim Piloten.</de>
 				<de>Die schläfrige Kehle</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Sleepy Hollow</de>
+				<en>Sleepy Hollow</en>
+			</title_original>
 			<description>
 				<de>Eine mysteriöse Geschichte geht im Ort um: Ein Geisterreiter soll mindestens drei Menschen enthauptet haben. Ein Experte aus New York soll Licht in das Dunkel bringen...</de>
 				<en></en>
@@ -1546,6 +1789,9 @@ Anrührender Film, geplant als TV-Serie - es blieb beim Piloten.</de>
 				<de>Die Sicht zum Hinterhof</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Das Fenster zum Hof</de>
+			</title_original>
 			<description>
 				<de>Vom Fenster aus beobachtet ein Mann den Hinterhof seines Hauses. Dabei kommt er einem Mord auf die Schliche.
 [1|Full] in seiner Paraderolle</de>
@@ -1568,6 +1814,9 @@ Anrührender Film, geplant als TV-Serie - es blieb beim Piloten.</de>
 				<de>Die Streichholzhammerbowle</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Die Feuerzangenbowle</de>
+			</title_original>
 			<description>
 				<de>Schriftsteller Johannes Pfeiffer versucht spät, das nachzuholen, was er als Schüler verpasst hat: Auf einer richtigen Schule den Lehrern Streiche zu spielen.
 Keine leichte Aufgabe für [1|Full]</de>
@@ -1581,14 +1830,17 @@ Keine leichte Aufgabe für [1|Full]</de>
 				<member index="4" function="2">f02b3975-641c-4dea-943d-02478c2d4408</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
-			<data country="D" year="1944" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="1" />
-			<ratings critics="89" speed="65" outcome="65" />
+			<data country="D" year="1970" distribution="1" maingenre="5" subgenre="" flags="0" blocks="2" price_mod="1" />
+			<ratings critics="32" speed="51" outcome="28" />
 		</programme>
 		<programme id="c714764b-adf6-423d-9d6e-c8c8aa92aa0e" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0036818" rt_id="0" creator="">
 			<title>
 				<de>Die Streichholzhammerbowle</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Die Feuerzangenbowle</de>
+			</title_original>
 			<description>
 				<de>Die Geschichte um den Schüler Pfeiffer, der die Schulzeit auskostet.
 Bestechender Klassiker mit [1|Full]</de>
@@ -1611,6 +1863,9 @@ Bestechender Klassiker mit [1|Full]</de>
 				<de>Die Wohnung</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Das Appartement</de>
+			</title_original>
 			<description>
 				<de>Auf- und Abstieg in Beruf und Privatleben eines Büroangestellten.
 Exzellente Besetzung und Regie</de>
@@ -1633,6 +1888,10 @@ Exzellente Besetzung und Regie</de>
 				<de>Die Zugspanner</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Trainspotting - Neue Helden</de>
+				<en>Trainspotting</en>
+			</title_original>
 			<description>
 				<de>Rasanter Filmtrip über eine Clique von Junkies und Kleinkriminellen aus den schäbigen Mietskasernen von Edinburgh, die den großen Coup plant</de>
 				<en></en>
@@ -1654,6 +1913,9 @@ Exzellente Besetzung und Regie</de>
 				<de>Diesseits von Namibia</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Jenseits von Afrika</de>
+			</title_original>
 			<description>
 				<de>Gefühlsbetonte Liebesgeschichte um ein Ehepaar, das nach Afrika geht, um dort eine Plantage aufzubauen.</de>
 				<en></en>
@@ -1673,6 +1935,9 @@ Exzellente Besetzung und Regie</de>
 				<de>Doktor Schiefwagen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Doktor Schiwago</de>
+			</title_original>
 			<description>
 				<de>[0|Full] setzte Boris Pastilnackens Roman mit ästethischen Bildern episch breit in Szene - Liebesmelodramklassiker</de>
 				<en></en>
@@ -1694,6 +1959,9 @@ Exzellente Besetzung und Regie</de>
 				<de>Dr. Merkwürdig...</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Dr. Seltsam oder: Wie ich lernte, die Bombe zu lieben</de>
+			</title_original>
 			<description>
 				<de>...Oder: Wie ich lernte, die Bombe zu mögen.
 Schwarzer Humor, gute Musik und [1|Full] in drei verschiedenen Rollen.</de>
@@ -1716,6 +1984,9 @@ Schwarzer Humor, gute Musik und [1|Full] in drei verschiedenen Rollen.</de>
 				<de>Drei Kerle im Eis</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Drei Männer im Schnee</de>
+			</title_original>
 			<description>
 				<de>Ein Millionär gibt sich als armer Mann aus.
 Hochkarätige Komödie von 1955</de>
@@ -1736,6 +2007,9 @@ Hochkarätige Komödie von 1955</de>
 				<de>Drei Kerle in einem Ruderboot</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Drei Mann in einem Boot</de>
+			</title_original>
 			<description>
 				<de>Drei Männer wollen ungestörten Urlaub auf dem Rhein machen.
 Das Trio [1|Last], [2|Last], [3|Last] sorgt für den riesigen Spaß des Films</de>
@@ -1756,6 +2030,9 @@ Das Trio [1|Last], [2|Last], [3|Last] sorgt für den riesigen Spaß des Films</d
 				<de>Durch die Augen des Killers</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Mit den Augen eines Mörders</de>
+			</title_original>
 			<description>
 				<de>In der Wohnung einer jungen Frau geschehen seltsame Dinge.
 
@@ -1780,6 +2057,10 @@ Schockierender Thriller mit [1|Full]
 				<de>Durchs wilde Tadschikistan</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Durchs wilde Kurdistan</de>
+				<en>Wild Kurdistan</en>
+			</title_original>
 			<description>
 				<de>Kara Ben Nemsi versucht mit Hadschi Halef Omar,  einen unschuldigen Gefangenen zu befreien.
 Spannendes Abenteuer nach Karl Meier</de>
@@ -1796,11 +2077,15 @@ Spannendes Abenteuer nach Karl Meier</de>
 			<data country="D" year="1965" distribution="1" maingenre="2" subgenre="" flags="0" blocks="2" price_mod="0.90" />
 			<ratings critics="56" speed="70" outcome="51" />
 		</programme>
-		<programme id="5d7e43a1-5e60-41ac-9fd8-365798d3c86a" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="5d7e43a1-5e60-41ac-9fd8-365798d3c86a" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0104257" rt_id="0" creator="">
 			<title>
 				<de>Ehre in Frage gestellt</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Eine Frage der Ehre</de>
+				<en>A Few Good Men</en>
+			</title_original>
 			<description>
 				<de>Zwei US-Marines werden des Mordes an einem Kameraden angeklagt. Doch der Befehl für die tödlich endende Abreibung kam von oben.
 Packender und bis in die Nebenrollen gut besetzter Militärthriller</de>
@@ -1839,6 +2124,9 @@ Packender und bis in die Nebenrollen gut besetzter Militärthriller</de>
 				<de>Ein Toter zum Nachtisch</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Eine Leiche zum Dessert</de>
+			</title_original>
 			<description>
 				<de>Fünf der berühmtesten Detektive werden zu einem Dinner mit Mörderspiel eingeladen.
 Urkomisches Gagfeuerwerk</de>
@@ -1862,6 +2150,9 @@ Urkomisches Gagfeuerwerk</de>
 				<de>Eine nimmerendende Erzählung</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Die unendliche Geschichte</de>
+			</title_original>
 			<description>
 				<de>Der kleine Bastian vertieft sich in ein Buch und landet in der Handlung.
 Liebevoll erzählt, nettes Kostüm für den Glücksdrachen Fuchur</de>
@@ -1882,6 +2173,9 @@ Liebevoll erzählt, nettes Kostüm für den Glücksdrachen Fuchur</de>
 				<de>Elitekampf</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Battle Royale</de>
+			</title_original>
 			<description>
 				<de>Eine Schulklasse wird gezwungen, an einem martialischen Spiel teilzunehmen, bei dem nur einer gewinnen soll. Derjenige hat alle seine Mitspieler zu töten.
 Ultrabrutal, doch nicht allzu weit hergeholt</de>
@@ -1904,6 +2198,9 @@ Ultrabrutal, doch nicht allzu weit hergeholt</de>
 				<de>Extraterrestrial - Das schreckliche Wesen aus dem All</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Alien - Das unheimliche Wesen aus einer fremden Welt</de>
+			</title_original>
 			<description>
 				<de>Offizierin Eileen Replay flieht vor einem außerirdischen Monster, dass ein Crew-Mitglied nach dem anderen tötet.
 			Visuell beeindruckender Science-Fiction-Horror von [0|Full].</de>
@@ -1924,6 +2221,9 @@ Ultrabrutal, doch nicht allzu weit hergeholt</de>
 				<de>Extraterrestrial - Die Reinkarnation</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Alien - Die Wiedergeburt</de>
+			</title_original>
 			<description>
 				<de>Eileen Replay darf einfach nicht in Frieden ruhen: Jetzt wird sie auch noch geklont!</de>
 				<en></en>
@@ -1942,6 +2242,9 @@ Ultrabrutal, doch nicht allzu weit hergeholt</de>
 				<de>Extraterrestrial - Sie sind zurück</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Aliens - Die Rückkehr</de>
+			</title_original>
 			<description>
 				<de>Eileen Replay erwacht aus dem Kälteschlaf. Da ihr niemand ihre Geschichte abnimmt, muss sie sich erneut in den Kampf stürzen.</de>
 				<en></en>
@@ -1961,6 +2264,9 @@ Ultrabrutal, doch nicht allzu weit hergeholt</de>
 				<de>Extraterrestrial 3</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Alien 3</de>
+			</title_original>
 			<description>
 				<de>Alien-Battle auf einem Gefängnisplaneten. Eileen Replay mit geschorenem Haupt.</de>
 				<en></en>
@@ -1979,6 +2285,10 @@ Ultrabrutal, doch nicht allzu weit hergeholt</de>
 				<de>Extraterrestrials gegen Jäger</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Alien vs. Predator</de>
+				<en>Alien vs. Predator</en>
+			</title_original>
 			<description>
 				<de>In der Antarktis raufen sich Extraterrestrials und Jäger-Aliens.
 Aus einem solchen Zusammentreffen hätte man wohl mehr machen können.</de>
@@ -1999,6 +2309,9 @@ Aus einem solchen Zusammentreffen hätte man wohl mehr machen können.</de>
 				<de>Far Track - Der Film</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Star Trek: Der Film</de>
+			</title_original>
 			<description>
 				<de>Eine tödliche Energiewolke bedroht die Erde. Kirk bekommt das Kommando über die Enterprise zurück und dringt ins Innere der Wolke vor.</de>
 				<en></en>
@@ -2018,6 +2331,9 @@ Aus einem solchen Zusammentreffen hätte man wohl mehr machen können.</de>
 				<de>Far Track II - Das Korn des Hahns</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Star Trek II: Der Zorn des Khan</de>
+			</title_original>
 			<description>
 				<de>Kirks Erzfeind Khan will Rache und bringt das streng geheime Genesis-Projekt in seine Gewalt. Der Materieumwandler kann in den falschen Händen zu einer furchtbaren Waffe werden.</de>
 				<en></en>
@@ -2037,6 +2353,9 @@ Aus einem solchen Zusammentreffen hätte man wohl mehr machen können.</de>
 				<de>Far Track III - Die Suche nach Mr. Scook</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Star Trek III: Auf der Suche nach Mr. Spock</de>
+			</title_original>
 			<description>
 				<de>Entgegen seinen Befehlen bricht Admiral Kirk zum Planeten Genesis auf, um Scooks Leichnam zu suchen. Da wird die Enterprise von Klingonen angegriffen und zerstört.</de>
 				<en></en>
@@ -2056,6 +2375,9 @@ Aus einem solchen Zusammentreffen hätte man wohl mehr machen können.</de>
 				<de>Far Track IV - Zurück ins Präsens</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Star Trek IV: Zurück in die Gegenwart</de>
+			</title_original>
 			<description>
 				<de>Eine riesige Sonde bedroht die Erde. Scook identifiziert die Signale der Sonde als Buckelwalgesänge. Die Wale sind aber längst ausgestorben.</de>
 				<en></en>
@@ -2075,6 +2397,10 @@ Aus einem solchen Zusammentreffen hätte man wohl mehr machen können.</de>
 				<de>Far Track VIII - Das erste Treffen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Star Trek: Der erste Kontakt</de>
+				<en>Star Trek: First Contact</en>
+			</title_original>
 			<description>
 				<de>Durch eine Zeitreise in die Vergangenheit wollen die Borg die Erfindung des Warp-Antriebs verhindern. Doch die Enterprise folgt ihnen ins Jahr 2063 und nimmt den Kampf auf.</de>
 				<en></en>
@@ -2096,6 +2422,9 @@ Aus einem solchen Zusammentreffen hätte man wohl mehr machen können.</de>
 				<de>Far Track V - Der Rand des Weltalls</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Star Trek V: Am Rande des Unviversums</de>
+			</title_original>
 			<description>
 				<de>Scooks Halbbruder Sybock gelingt es, die Enterprise in seine Gewalt zu bringen. Er läßt Kurs auf das galaktische Zentrum nehmen. Dort soll sich der legendäre Planet Sha Ka Ree befinden.</de>
 				<en></en>
@@ -2115,6 +2444,9 @@ Aus einem solchen Zusammentreffen hätte man wohl mehr machen können.</de>
 				<de>Far Track VI - Unbekanntes Territorium</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Star Trek VI: Das unentdeckte Land</de>
+			</title_original>
 			<description>
 				<de>Der klingonische Kanzler will mit der Föderation Frieden schließen. Er fällt einem Attentat zum Opfer. Kirk und McCoy werden als Täter verurteilt.</de>
 				<en></en>
@@ -2134,6 +2466,9 @@ Aus einem solchen Zusammentreffen hätte man wohl mehr machen können.</de>
 				<de>Far Track VII - Generationsmeeting</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Star Trek: Treffen der Generationen</de>
+			</title_original>
 			<description>
 				<de>Besessen davon, in das Energiefeld Nexus zu gelangen, um dort ewiges Leben und vollkommenes Glück zu finden, will Wissenschaftler Soran ein ganzes Sonnensystem mit Millionen von Menschen zerstören.</de>
 				<en></en>
@@ -2155,6 +2490,10 @@ Aus einem solchen Zusammentreffen hätte man wohl mehr machen können.</de>
 				<de>Far Track X - Nimmersatt</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Star Trek: Nemesis</de>
+				<en>Star Trek: Nemesis</en>
+			</title_original>
 			<description>
 				<de>Captain Jean-Luc Picard und die Crew der Enterprise befinden sich auf einer diplomatischen Mission, um mit den Romulanern Frieden zu schließen.</de>
 				<en></en>
@@ -2193,6 +2532,9 @@ Aus einem solchen Zusammentreffen hätte man wohl mehr machen können.</de>
 				<de>Fatal Damage - Zeit der Rache</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Collateral Damage - Zeit der Vergeltung</de>
+			</title_original>
 			<description>
 				<de>Feuerwehrmann Gordy Brewer verliert bei einem Terroranschlag Frau und Kind. Es ist von einem Kollateralschaden die Rede.</de>
 				<en></en>
@@ -2214,6 +2556,9 @@ Aus einem solchen Zusammentreffen hätte man wohl mehr machen können.</de>
 				<de>Ferris nimmt sich Ferien</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Ferris macht blau</de>
+			</title_original>
 			<description>
 				<de>Sonnyboy Ferris hat mal wieder keine Lust auf Schule. Er fährt lieber mit Freunden umher und macht einen drauf.</de>
 				<en></en>
@@ -2235,6 +2580,9 @@ Aus einem solchen Zusammentreffen hätte man wohl mehr machen können.</de>
 				<de>Flamenco &amp; Buck</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Tango und Cash</de>
+			</title_original>
 			<description>
 				<de>Die völlig unterschiedlichen Polizisten Flamenco und Buck aus L.A. geraten in eine Falle und haben keine andere Wahl, als zusammenzuarbeiten.
 
@@ -2256,6 +2604,10 @@ Rasante Action mit Starbesetzung</de>
 				<de>Flederflügel</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Batman</de>
+				<en>Batman</en>
+			</title_original>
 			<description>
 				<de>Flederflügel [1|Full] gegen Joker [2|Full]
 Die finstere Fledermaus als Pionier der Realverfilmungswelle</de>
@@ -2276,6 +2628,9 @@ Die finstere Fledermaus als Pionier der Realverfilmungswelle</de>
 				<de>Fleischers Wahn</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Fletchers Visionen</de>
+			</title_original>
 			<description>
 				<de>Die Verschwörungstheorien eines New Yorker Taxifahrers</de>
 				<en></en>
@@ -2295,6 +2650,9 @@ Die finstere Fledermaus als Pionier der Realverfilmungswelle</de>
 				<de>Flop Wummen - Sie fürchten keine Schwiegermutter</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Top Gun - Sie fürchten weder Tod noch Teufel</de>
+			</title_original>
 			<description>
 				<de>Maverick möchte der beste Pilot der Navy werden. Bei einem fünfwöchigen Top-Gun-Lehrgang bekommt er die Gelegenheit dazu.
 
@@ -2319,6 +2677,9 @@ Mit „Flop Wummen“ gelang [1|Full] der internationale Durchbruch.</de>
 				<de>Fluch der Südsee</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Fluch der Karibik</de>
+			</title_original>
 			<description>
 				<de>Alberne Geschichte ohne richtige Handlung und handfeste Effekte - trotzdem ein großer Kinoerfolg.</de>
 				<en></en>
@@ -2340,6 +2701,10 @@ Mit „Flop Wummen“ gelang [1|Full] der internationale Durchbruch.</de>
 				<de>Fremde Erinnerung - Agent ohne Wissen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Total Recall - Die totale Erinnerung</de>
+				<en>Total Recall</en>
+			</title_original>
 			<description>
 				<de>Douglas Quaid führt ein glückliches Leben mit seiner Frau. Als er sich auf eine verlockende Werbung hin bei der Firma Recall einen künstlichen Marsurlaub kauft, bekommt er lebensgefährliche Probleme.</de>
 				<en></en>
@@ -2360,6 +2725,10 @@ Mit „Flop Wummen“ gelang [1|Full] der internationale Durchbruch.</de>
 				<de>From Lust Spilling Lawn</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>From Dusk Till Dawn</de>
+				<en>From Dusk Till Dawn</en>
+			</title_original>
 			<description>
 				<de>Die Flucht der berüchtigten Gecko-Brüder über die Grenze nach Mexiko.
 Erste Hälfte: Roadmovie-Action
@@ -2382,6 +2751,10 @@ Zweite Hälfte: Splatter</de>
 				<de>Frostbeulen-Zeit</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Ice Age</de>
+				<en>Ice Age</en>
+			</title_original>
 			<description>
 				<de>Eine Eiszeit kündigt sich an und eine Gruppe von Tieren möchte ein gefundenes Kind zu seinem Stamm zurückbringen.
 Erfrischender Spaß</de>
@@ -2399,6 +2772,9 @@ Erfrischender Spaß</de>
 				<de>Für ein paar Euros zuviel</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Für ein paar Dollar mehr</de>
+			</title_original>
 			<description>
 				<de>[0|Last]-Western um zwei Kopfgeldjäger mit dem gleichen Ziel.
 Musik: Ennio MurrIchOchne</de>
@@ -2420,6 +2796,10 @@ Musik: Ennio MurrIchOchne</de>
 				<de>Gleaming</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Shining</de>
+				<en>Shining</en>
+			</title_original>
 			<description>
 				<de>[0|Last]s Umsetzung von Kings Bestseller.
 
@@ -2441,6 +2821,9 @@ Schaurige Atmosphäre, packende Bilder und [1|Full] in Höchstform</de>
 				<de>GreatFellows - Drei Mafia-Jahrzehnte</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>GoodFellas - Drei Jahrzehnte in der Mafia</de>
+			</title_original>
 			<description>
 				<de>Die Geschichte eines Menschen, der schon in seiner Kindheit den Traum des Mafiosi-Daseins in sich trägt und alsbald verwirklicht.
 Hervorragend inszenierter Gangster-Film</de>
@@ -2463,6 +2846,9 @@ Hervorragend inszenierter Gangster-Film</de>
 				<de>Hack the Fog - Wenn die Pfote mit dem Köter wedelt</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Wag the Dog - Wenn der Schwanz mit dem Hund wedelt</de>
+			</title_original>
 			<description>
 				<de>[1|Full] muß für [2|Full] einen Krieg inszenieren, um die Wiederwahl des Präsidenten zu gewährleisten.</de>
 				<en></en>
@@ -2484,6 +2870,10 @@ Hervorragend inszenierter Gangster-Film</de>
 				<de>Halb-Fiction</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Pulp Fiction</de>
+				<en>Pulp Fiction</en>
+			</title_original>
 			<description>
 				<de>[0|Last] verknüpft in seinem Kultfilm aus den 90ern drei Handlungsstränge in bizarrer Weise miteinander.</de>
 				<en></en>
@@ -2505,6 +2895,9 @@ Hervorragend inszenierter Gangster-Film</de>
 				<de>Halbgott</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Hero</de>
+			</title_original>
 			<description>
 				<de>König Qin will seinen Anspruch auf die Herrschaft über ganz China gegen seine Konkurrenten durchsetzen und Kaiser werden. Allerdings existieren seit Jahren Pläne, ihn zu ermorden...</de>
 				<en></en>
@@ -2525,6 +2918,10 @@ Hervorragend inszenierter Gangster-Film</de>
 				<de>Hannie's Ball</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Hannibal</de>
+				<en>Hannibal</en>
+			</title_original>
 			<description>
 				<de>Dr. Lecter wird von Leuten eines seiner ehemaligen Patienten entführt. Starling setzt alles daran, Lecter ausfindig zu machen.
 Judy Foerster wollte den Part der Clarice Starling nicht erneut übernehmen</de>
@@ -2545,6 +2942,10 @@ Judy Foerster wollte den Part der Clarice Starling nicht erneut übernehmen</de>
 				<de>Hawk Air</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Con Air</de>
+				<en>Con Air</en>
+			</title_original>
 			<description>
 				<de>Ex-Ranger Cameron Poe tötet in Notwehr. Als er nach Jahren aus dem Gefängnis entlassen werden soll, kapern seine Mitgefangenen das Flugzeug, mit dem er nach Hause überführt werden sollte.</de>
 				<en></en>
@@ -2566,6 +2967,10 @@ Judy Foerster wollte den Part der Clarice Starling nicht erneut übernehmen</de>
 				<de>Hells Kitchen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Sleepers</de>
+				<en>Sleepers</en>
+			</title_original>
 			<description>
 				<de>Vier Freunde aus Hells Kitchen landen als Kinder in der Jugendstrafanstalt. Dort werden sie schwer mißhandelt...
 Emotionsgeladen und überwältigend</de>
@@ -2587,6 +2992,10 @@ Emotionsgeladen und überwältigend</de>
 				<de>Holland-DriveIn - Straße der Dunkelheit</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Mulholland Drive</de>
+				<en>Mulholland Drive</en>
+			</title_original>
 			<description>
 				<de>Surrealer, düsterer Thriller, der [0|Full], der nicht von seinem Stil abweicht, eine Oscar-Nominierung für die beste Regie einbrachte</de>
 				<en></en>
@@ -2608,6 +3017,10 @@ Emotionsgeladen und überwältigend</de>
 				<de>Im Tunnel begraben</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Daylight</de>
+				<en>Daylight</en>
+			</title_original>
 			<description>
 				<de>Eine Explosion schneidet den Menschen in einem Verkehrstunnel den Weg ab. Kit Latura, ehemals Katastrophenschutz, macht sich daran, die Menschen zu evakuieren.</de>
 				<en></en>
@@ -2627,6 +3040,9 @@ Emotionsgeladen und überwältigend</de>
 				<de>In Asien essen sie Katzen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>In China essen sie Hunde</de>
+			</title_original>
 			<description>
 				<de>Die dänische Antwort auf Halb-Fiction: Ein Überfall auf einen Geldtransporter mit viel Leichen, Blut und schwarzem Humor</de>
 				<en></en>
@@ -2648,6 +3064,9 @@ Emotionsgeladen und überwältigend</de>
 				<de>Indianer James und der Krempel des Todes</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Indiana Jones und der Tempel des Todes</de>
+			</title_original>
 			<description>
 				<de>Indy macht in einem Tempel grausame Entdeckungen.
 Abenteuer-Action in bewährter Manier</de>
@@ -2667,6 +3086,9 @@ Abenteuer-Action in bewährter Manier</de>
 				<de>Indianer James und die letzten Kreuzritter</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Indiana Jones und der letzte Kreuzzug</de>
+			</title_original>
 			<description>
 				<de>Auch der dritte Teil glänzt mit Effekten, Kostümen und rasanter Action.
 Die Indianer-James-Reihe stellt (zumindest filmisch) einen Höhepunkt der 80er dar.
@@ -2690,6 +3112,9 @@ Stupide: die Deutschenverunglimpfungsversuche</de>
 				<de>Indianer James: Der verschollene Schatz</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Jäger des verlorenen Schatzes</de>
+			</title_original>
 			<description>
 				<de>Indianer James begibt sich auf Schatzsuche.
 Ein Millionenpublikum begleitet ihn noch heute dabei</de>
@@ -2711,6 +3136,9 @@ Ein Millionenpublikum begleitet ihn noch heute dabei</de>
 				<de>Irgendwo, ganz weit weg</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>In einem fernen Land</de>
+			</title_original>
 			<description>
 				<de>Der Traum von Freiheit in den USA endet für ein junges Paar aus Irland jäh, als sie Boston, ihre Wahlheimat, verlassen müssen.
 Durchschnittliche Fernsehkost, der ein ausgeklügeltes Drehbuch fehlt</de>
@@ -2732,6 +3160,10 @@ Durchschnittliche Fernsehkost, der ein ausgeklügeltes Drehbuch fehlt</de>
 				<de>Jäger aus dem All</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Predator</de>
+				<en>Predator</en>
+			</title_original>
 			<description>
 				<de>Ein Elitetrupp soll im südamerikanischen Dschungel Geiseln aus der Hand von Guerilleros befreien. Doch dort hat sich die Einheit noch dazu gegen einen ganz anderen Feind zur Wehr zu setzen...</de>
 				<en></en>
@@ -2752,6 +3184,10 @@ Durchschnittliche Fernsehkost, der ein ausgeklügeltes Drehbuch fehlt</de>
 				<de>Jäger aus dem All 2</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Predator 2</de>
+				<en>Predator 2</en>
+			</title_original>
 			<description>
 				<de>In L.A. hat sich ein Jäger aus dem All breitgemacht. Man überlegt, wie man ihm am besten den Garaus machen könnte.
 Weniger erfolgreiche Fortsetzung des Action-Hits</de>
@@ -2774,6 +3210,10 @@ Weniger erfolgreiche Fortsetzung des Action-Hits</de>
 				<de>Judah Judah Ben Hur</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Ben Hur</de>
+				<en>Ben-Hur</en>
+			</title_original>
 			<description>
 				<de>Die Lebensgeschichte des Judah Judah Ben Hur.
 Monumentaler Meilenstein</de>
@@ -2812,6 +3252,9 @@ Monumentaler Meilenstein</de>
 				<de>Kalter Krieg im tiefen Ozean</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Jagd auf Roter Oktober</de>
+			</title_original>
 			<description>
 				<de>Ein russisches Atom-U-Boot fährt auf die Küste der USA zu. Angst breitet sich aus, denn die Ziele des Captains sind ungewiß.</de>
 				<en></en>
@@ -2849,6 +3292,9 @@ Monumentaler Meilenstein</de>
 				<de>Kentin - Allein in Big Apple</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Kevin - Allein in New York</de>
+			</title_original>
 			<description>
 				<de>Die McCaulleysters verreisen wieder zu Weihnachten, diesmal nimmt Kentin den falschen Flieger: Er landet in New York und trifft auf alte Bekannte...
 Ein neuer Aufguß - sicherlich, aber immer noch klasse</de>
@@ -2869,6 +3315,9 @@ Ein neuer Aufguß - sicherlich, aber immer noch klasse</de>
 				<de>Kentin - Im Haus ohne Eltern</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Kevin - Allein zu Haus</de>
+			</title_original>
 			<description>
 				<de>Der kleine Kentin wird vergessen, als seine Familie in den Weihnachtsurlaub aufbricht. Als zwei Einbrecher Kentins Haus plündern wollen, ist er vorbereitet.
 Origineller Spaß</de>
@@ -2889,6 +3338,9 @@ Origineller Spaß</de>
 				<de>Kindermädchen mit Stoppeln</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Mrs. Doubtfire: Das stachelige Kindermädchen</de>
+			</title_original>
 			<description>
 				<de>Von seiner Frau verlassen, beschließt Synchronsprecher Daniel, sich als Hausfrau bei seiner Familie einzuquartieren.
 Unterhaltsamer Familienspaß</de>
@@ -2909,6 +3361,9 @@ Unterhaltsamer Familienspaß</de>
 				<de>Klasterix - Die Hinkelsteinmission</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Asterix - Operation Hinkelstein</de>
+			</title_original>
 			<description>
 				<de>"Der Kampf der Häuptlinge" und "Der Seher" wurden in einen Topf geschmissen, trotzdem kann sich die Hinkelsteinmission sehen lassen.</de>
 				<en></en>
@@ -2925,6 +3380,9 @@ Unterhaltsamer Familienspaß</de>
 				<de>Klasterix - Sieg über den Cäsaren</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Asterix - Sieg über Cäsar</de>
+			</title_original>
 			<description>
 				<de>Klasterix und Knobelix machen sich auf die Suche nach Falbala und Tragicomix, die von den Römern gefangengenommen wurden.
 Frei nach Flaszini und Oberzo</de>
@@ -2942,6 +3400,9 @@ Frei nach Flaszini und Oberzo</de>
 				<de>Klasterix auf dem neuen Kontinent</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Asterix in Amerika</de>
+			</title_original>
 			<description>
 				<de>Julius Cäsar will Mirakelfix über das Ende der Welt katapultieren lassen. Als Klasterix und Knobelix die Verfolgung aufnehmen, merken sie jedoch, daß Mirakelfix keineswegs vom Erdboden verschluckt ist...</de>
 				<en></en>
@@ -2958,6 +3419,9 @@ Frei nach Flaszini und Oberzo</de>
 				<de>Klasterix der Gallier</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Asterix der Gallier</de>
+			</title_original>
 			<description>
 				<de>Klasterix und Knobelix müssen Mirakelfix, den Druiden, aus der Gewalt der Römer befreien.
 Verfilmung des Comics von Flaszini und Oberzo</de>
@@ -2975,6 +3439,9 @@ Verfilmung des Comics von Flaszini und Oberzo</de>
 				<de>Klasterix triumphiert in Rom</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Asterix erobert Rom</de>
+			</title_original>
 			<description>
 				<de>Cäsar stellt den Galliern 12 Aufgaben. Sollten sie diese bewältigen, wird er sich geschlagen geben. Klasterix und Knobelix werden auserwählt, die schwierigen Prüfungen zu bestehen.</de>
 				<en></en>
@@ -2991,6 +3458,9 @@ Verfilmung des Comics von Flaszini und Oberzo</de>
 				<de>Klasterix und Kleopatra</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Asterix und Kleopatra</de>
+			</title_original>
 			<description>
 				<de>Klasterix und Knobelix helfen dabei, daß Kleopatra eine Wette mit Julius Cäsar gewinnt.
 Regie-Debüt für [0|Full]</de>
@@ -3008,6 +3478,9 @@ Regie-Debüt für [0|Full]</de>
 				<de>Klasterix und die Nordmänner</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Asterix und die Wikinger</de>
+			</title_original>
 			<description>
 				<de>35 Jahre nach der Comicvorlage "Klasterix und die Normannen" erschien dieser Animationsfilm, der sich wenigstens bemüht, die gewohnte Optik der Zeichentrickfiguren zu bewahren.
 Ging im WM-Jahr unter</de>
@@ -3042,6 +3515,9 @@ Ging im WM-Jahr unter</de>
 				<de>Knappe Luft</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Außer Atem</de>
+			</title_original>
 			<description>
 				<de>Eine ungewöhnliche Liebesgeschichte und ein Polizistenmord.
 Ein außerordentlicher Kunstfilm und ein Juwel in jeder Filmsammlung</de>
@@ -3061,6 +3537,9 @@ Ein außerordentlicher Kunstfilm und ein Juwel in jeder Filmsammlung</de>
 				<de>Krachtenjagd in Amsterdam</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Verfluchtes Amsterdam</de>
+			</title_original>
 			<description>
 				<de>Mordluft weht in den Grachten von Amsterdam.
 Atmosphärisch dichter Thriller aus Holland</de>
@@ -3082,6 +3561,9 @@ Atmosphärisch dichter Thriller aus Holland</de>
 				<de>Kreisch wenn Du es schaffst</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Schrei, wenn du kannst</de>
+			</title_original>
 			<description>
 				<de>Packender Thriller um ein verstricktes Verbrechen mit [1|Full]</de>
 				<en></en>
@@ -3103,6 +3585,10 @@ Atmosphärisch dichter Thriller aus Holland</de>
 				<de>Kroko-Skip - Ein Krokodil zum Knutschen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Crocodile Dundee - Ein Krokodil zum Küssen</de>
+				<en>Crocodile Dundee</en>
+			</title_original>
 			<description>
 				<de>Den rauhen Australier Skip verschlägt es aus dem Outback in die Großstadt New York.
 Kinohit 1986</de>
@@ -3122,6 +3608,10 @@ Kinohit 1986</de>
 				<de>Kryptons Superheld</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Superman</de>
+				<en>Superman</en>
+			</title_original>
 			<description>
 				<de>Ein außerirdischer Junge, von seinem Vater auf die Erde geschickt, entwickelt übernatürliche Kräfte.</de>
 				<en></en>
@@ -3175,6 +3665,9 @@ Kinohit 1986</de>
 				<de>Kurz nach Mitternacht auf der Reeperbahn</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Auf der Reeperbahn nachts um halb eins</de>
+			</title_original>
 			<description>
 				<de>Kurz nach Mitternacht auf der Reeperbahn,
 ob du'n Mädel hast oder nur gedacht,
@@ -3198,6 +3691,9 @@ auf der Reeperbahn nachts um kurz nach Mitternacht.</de>
 				<de>Kurz vor Fünf 'gen Paddington</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>16 Uhr 50 ab Paddington</de>
+			</title_original>
 			<description>
 				<de>Miss Moebble beobachtet in einem vorbeifahrenden Zug einen Mord. Da ihr die Polizei nicht glauben möchte, verfolgt sie den unbekannten Mörder auf eigene Faust.
 Nach dem Roman von Agatha Kissme.</de>
@@ -3252,6 +3748,9 @@ Nach dem Roman von Agatha Kissme.</de>
 				<de>MacGeifer - Jäger des Atlantisschatzes</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>MacGyver - Jagd nach dem Schatz von Atlantis</de>
+			</title_original>
 			<description>
 				<de>MacGeifer macht sich mit seinem alten Professor auf die Suche nach dem sagenumwobenen Schatz von Atlantis.
 Nach dem Ende der Serie drehte R. D. Handerson noch zwei TV-Filme als Angus MacGeifer</de>
@@ -3270,6 +3769,9 @@ Nach dem Ende der Serie drehte R. D. Handerson noch zwei TV-Filme als Angus MacG
 				<de>MacGeifer - Sackgasse Hölle</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>MacGyver - Endstation Hölle</de>
+			</title_original>
 			<description>
 				<de>MacGeifer reist zur Geburtstagsfeier eines alten Freundes. Als dieser bei einem Anschlag ums Leben kommt, nimmt MacGeifer die Verfolgung der Verbrecher auf, die ihn geradewegs in den Untergrund führt...</de>
 				<en></en>
@@ -3287,6 +3789,10 @@ Nach dem Ende der Serie drehte R. D. Handerson noch zwei TV-Filme als Angus MacG
 				<de>Majoranreport</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Minority Report</de>
+				<en>Minority Report</en>
+			</title_original>
 			<description>
 				<de>Im Jahre 2054 wird mittels einer Methode, Verbechen zu erkennen, bevor sie begangen wurden, die Kriminalitätsrate drastisch gesenkt. Doch das System arbeitet nicht einwandfrei...</de>
 				<en></en>
@@ -3326,6 +3832,10 @@ Nach dem Ende der Serie drehte R. D. Handerson noch zwei TV-Filme als Angus MacG
 				<de>Mambo</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Rambo</de>
+				<en>First Blood</en>
+			</title_original>
 			<description>
 				<de>Vietnam-Veteran John Mambo wird ungewollt in einen Kleinkrieg mit der Polizei verwickelt.
 
@@ -3347,6 +3857,9 @@ Gut gemachte Action am laufenden Band</de>
 				<de>Matratzenwispern</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Bettgeflüster</de>
+			</title_original>
 			<description>
 				<de>Der hemmungslose Junggeselle Brad Allen und die sensiblere Jan Morrow müssen sich einen Telephonanaschluß teilen. Als sich die beiden persönlich kennenlernen, läuft alles anders als über den Hörer...</de>
 				<en></en>
@@ -3365,6 +3878,9 @@ Gut gemachte Action am laufenden Band</de>
 				<de>Meal Gibtsschons Maya</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Apocalypto</de>
+			</title_original>
 			<description>
 				<de>Kurz vor Niedergang ihrer Kultur bekriegen sich die Stämme der Maya gegenseitig.
 Schockierende Bilder, was bei [0|Full] allerdings kaum mehr verwundert.</de>
@@ -3385,6 +3901,9 @@ Schockierende Bilder, was bei [0|Full] allerdings kaum mehr verwundert.</de>
 				<de>Meilenweit 'gen Westen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>700 Meilen westwärts</de>
+			</title_original>
 			<description>
 				<de>Anfang des 20. Jahrhunderts veranstaltet eine Zeitung ein Pferderennen über 700 Meilen. Viele Teilnehmer bleiben schon bald auf der Strecke.</de>
 				<en></en>
@@ -3405,6 +3924,9 @@ Schockierende Bilder, was bei [0|Full] allerdings kaum mehr verwundert.</de>
 				<de>Meister Der Dinge: Die Kumpels</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Der Herr der Ringe: Die Gefährten</de>
+			</title_original>
 			<description>
 				<de>Ein geheimnisvoller Ring soll aus dem Auenland an den Ort gebracht werden, an dem er zerstört werden kann, sodaß die Mächte des Bösen keine Macht mehr an ihm haben können.</de>
 				<en></en>
@@ -3427,6 +3949,9 @@ Schockierende Bilder, was bei [0|Full] allerdings kaum mehr verwundert.</de>
 				<de>Meister Der Dinge: Die Rückkehr des Oberhauptes</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Der Herr der Ringe: Die Rückkehr des Königs</de>
+			</title_original>
 			<description>
 				<de>Nach dem 3. Teil der Fantasy-Saga sind Trollkinds Vorlagen von Mittelerde ausgeschöpft.
 Gilt als Krönung der Trilogie</de>
@@ -3450,6 +3975,9 @@ Gilt als Krönung der Trilogie</de>
 				<de>Meister Der Dinge: Die Zwei Dinger</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Der Herr der Ringe: Die zwei Türme</de>
+			</title_original>
 			<description>
 				<de>Weiterhin versucht man mit gemeinsamen Kräften, den Ring durch viele Gefahren hindurchzubringen, um ihn endlich zerstören zu können...</de>
 				<en></en>
@@ -3472,6 +4000,9 @@ Gilt als Krönung der Trilogie</de>
 				<de>Millenium Day - Die letzte Nacht vorm Chaos</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>End of Days - Nacht ohne Morgen</de>
+			</title_original>
 			<description>
 				<de>Dämonische Story, die von der Unruhe vor "dem Millennium" profitieren wollte, [1|Last] auf seiner Karriereleiter jedoch nicht weiter nach oben katapultieren konnte</de>
 				<en></en>
@@ -3492,6 +4023,10 @@ Gilt als Krönung der Trilogie</de>
 				<de>Mission: Vertrackt</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Mission: Impossible</de>
+				<en>Mission: Impossible</en>
+			</title_original>
 			<description>
 				<de>Ein Team von Spezialagenten muß bei einem Auftrag hohe Verluste hinnehmen. Bald wird klar, daß es einen Maulwurf gibt. Ethan Hunt - als Überlebender - wird verdächtigt und muß fliehen...</de>
 				<en></en>
@@ -3513,6 +4048,10 @@ Gilt als Krönung der Trilogie</de>
 				<de>Mission: Vertrackt 2</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Mission: Impossible II</de>
+				<en>Mission: Impossible II</en>
+			</title_original>
 			<description>
 				<de>IMF-Agent Ethan Hunt ist wieder im Einsatz.
 [0|Full]s actiongeladene Fortsetzung gibt nicht die erzählerische Dichte des Vorgängers her</de>
@@ -3534,6 +4073,9 @@ Gilt als Krönung der Trilogie</de>
 				<de>Mord am Nil</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Tod auf dem Nil</de>
+			</title_original>
 			<description>
 				<de>Auf einer Reise den Nil hinunter geschieht ein Mord nach dem anderen. Hercule Poirnoir macht sich daran, den Fall zu lösen.
 Gut besetzter Krimi nach Agatha Kissme</de>
@@ -3556,6 +4098,9 @@ Gut besetzter Krimi nach Agatha Kissme</de>
 				<de>Mozart</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Amadeus</de>
+			</title_original>
 			<description>
 				<de>Das Leben des Wolfgang Amadeus Mozart, erzählt aus der Sicht Antonio Salieris.
 Grandiose Oper von [0|Full]</de>
@@ -3578,6 +4123,9 @@ Grandiose Oper von [0|Full]</de>
 				<de>Mr. Galaxie</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Mister Universum</de>
+			</title_original>
 			<description>
 				<de>[1|Last] läßt in diesem Frühwerk seiner Karriere ausgiebig die Muskeln spielen.
 Viel Muckis, wenig Grips</de>
@@ -3599,6 +4147,9 @@ Viel Muckis, wenig Grips</de>
 				<de>Muddy Harry</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Dirty Harry</de>
+			</title_original>
 			<description>
 				<de>Insp. Harry Calahan jagt einen Heckenschützen und Erpresser.
 Dank rauher Methoden und seiner .44 Magnum wurde Muddy Harry zum Publikumsliebling</de>
@@ -3619,6 +4170,9 @@ Dank rauher Methoden und seiner .44 Magnum wurde Muddy Harry zum Publikumsliebli
 				<de>Muddy Harry 2 - Katamaran</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Dirty Harry II - Callahan</de>
+			</title_original>
 			<description>
 				<de>Calahan befaßt sich mit Verbrechern, die der Justiz entronnen sind. Seine Spur führt bald auf eine Grupper junger Polizisten, die Harry nacheifern und das Gesetz in die eigenen Hände nehmen.</de>
 				<en></en>
@@ -3636,6 +4190,9 @@ Dank rauher Methoden und seiner .44 Magnum wurde Muddy Harry zum Publikumsliebli
 				<de>Muddy Harry 3 - Ohne Erbarmen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Dirty Harry III - Der Unerbittliche</de>
+			</title_original>
 			<description>
 				<de>Harry Calahan, seiner rüden Vorgehensweise wegen aus der Mordkommission entlassen, wird in den aktiven Dienst zurückbeordert, um in San Francisco einen schmutzigen Fall zu lösen.</de>
 				<en></en>
@@ -3656,6 +4213,9 @@ Dank rauher Methoden und seiner .44 Magnum wurde Muddy Harry zum Publikumsliebli
 				<de>Muddy Harry 4 - Muddy Harry will be back</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Dirty Harry kommt zurück</de>
+			</title_original>
 			<description>
 				<de>Wieder wird Inspector Calahan suspendiert. In einem kleinen Ort an der Küste sieht er sich jedoch bald mit einer Mordserie konfrontiert, die seine Aufmerksamkeit verlangt.</de>
 				<en></en>
@@ -3673,6 +4233,9 @@ Dank rauher Methoden und seiner .44 Magnum wurde Muddy Harry zum Publikumsliebli
 				<de>Muddy Harry 5 - Endkampf</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Das Todesspiel</de>
+			</title_original>
 			<description>
 				<de>Ein psychisch gestörter Horrorfilmer legt eine Liste an, auf der die Namen von Todeskandidaten stehen. Er nimmt Wetten an, wer das nächste Opfer sein wird. Auch Harry Calahan steht auf dieser Liste...</de>
 				<en></en>
@@ -3692,6 +4255,9 @@ Dank rauher Methoden und seiner .44 Magnum wurde Muddy Harry zum Publikumsliebli
 				<de>Netter Gott trifft Halunke</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Der Gauner und der liebe Gott</de>
+			</title_original>
 			<description>
 				<de>Ein zu unrecht Verurteilter sucht als Pfarrer verkleidet in einer kleinen Gemeinde Unterschlupf.
 Köstlicher Spaß mit [1|Full]</de>
@@ -3713,6 +4279,10 @@ Köstlicher Spaß mit [1|Full]</de>
 				<de>Obermotz der Löwen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Der König der Löwen</de>
+				<en>The Lion KIng</en>
+			</title_original>
 			<description>
 				<de>Der rechtmäßige Löwenkönig muß seinen Platz im ewigen Kreis des Lebens finden.
 Mouseworks oscarprämiertes Meisterwerk</de>
@@ -3730,6 +4300,9 @@ Mouseworks oscarprämiertes Meisterwerk</de>
 				<de>Osthexen-Projekt</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Blair Witch Project</de>
+			</title_original>
 			<description>
 				<de>Ausgeklügelte Werbekampagnen, besonders via Internet, verhalfen diesem Amateur-Film zu erstaunlichem Erfolg. Spannung allerdings kommt nicht auf. Das Video ist ein Reinfall.</de>
 				<en></en>
@@ -3751,6 +4324,9 @@ Mouseworks oscarprämiertes Meisterwerk</de>
 				<de>Packnulia</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Magnolia</de>
+			</title_original>
 			<description>
 				<de>Ein Einblick in das Leben verschiedener Menschen.
 Oscar-Nominierung für [1|Last] (Bester Nebendarsteller)</de>
@@ -3773,6 +4349,9 @@ Oscar-Nominierung für [1|Last] (Bester Nebendarsteller)</de>
 				<de>Panic Spiders</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Arachnophobia</de>
+			</title_original>
 			<description>
 				<de>Eine hochgiftige Spinne aus den Tropen paart sich in einer kalifornischen Kleinstadt mit einem einheimischen Tier. Die ersten Todesfälle lassen nicht lange auf sich warten...</de>
 				<en></en>
@@ -3792,6 +4371,9 @@ Oscar-Nominierung für [1|Last] (Bester Nebendarsteller)</de>
 				<de>Papa dagegen umso mehr</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Vater sein dagegen sehr</de>
+			</title_original>
 			<description>
 				<de>Der Schriftsteller Lutz Ventura lebt in einem Turm. Als seine verwitwete Schwester stirbt, nimmt er deren Kinder mitsamt Hund bei sich auf.</de>
 				<en></en>
@@ -3813,6 +4395,9 @@ Oscar-Nominierung für [1|Last] (Bester Nebendarsteller)</de>
 				<de>Persönlichkeit</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Identität - Identity</de>
+			</title_original>
 			<description>
 				<de>Undurchsichtiger Psychopath-Thriller. Im Mittelpunkt eine Mordserie, die die Anwesenden zu beenden suchen.</de>
 				<en></en>
@@ -3834,6 +4419,9 @@ Oscar-Nominierung für [1|Last] (Bester Nebendarsteller)</de>
 				<de>Pink Silk</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Blue Velvet: Verbotene Blicke</de>
+			</title_original>
 			<description>
 				<de>[0|Last] skizziert eine Kleinstadt, deren unschuldige Fassade täuscht.
 Abgrundtief düster, beängstigend und atemberaubend - Kultfilm der 80er</de>
@@ -3856,6 +4444,9 @@ Abgrundtief düster, beängstigend und atemberaubend - Kultfilm der 80er</de>
 				<de>Polizeikadetten ...zu dumm für andere Jobs</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Police Academy - Dümmer als die Polizei erlaubt</de>
+			</title_original>
 			<description>
 				<de>Der Titel sagt alles.</de>
 				<en></en>
@@ -3876,6 +4467,9 @@ Abgrundtief düster, beängstigend und atemberaubend - Kultfilm der 80er</de>
 				<de>Polizeikadetten 2 - Jetzt geht's los</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Police Academy 2 - Jetzt geht's erst richtig los</de>
+			</title_original>
 			<description>
 				<de>Zweiter Einsatz für die chaotische Truppe</de>
 				<en></en>
@@ -3896,6 +4490,9 @@ Abgrundtief düster, beängstigend und atemberaubend - Kultfilm der 80er</de>
 				<de>Polizeikadetten 3 - Ohne Bremse</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Police Academy 3 - ...und keiner kann sie bremsen</de>
+			</title_original>
 			<description>
 				<de>Die beiden staatlichen Polizeiakademien sollen geschlossen werden. Die Kadetten beider Akademien treten in einem Wettkampf gegeneinander an.</de>
 				<en></en>
@@ -3916,6 +4513,9 @@ Abgrundtief düster, beängstigend und atemberaubend - Kultfilm der 80er</de>
 				<de>Polizeikadetten 4 - nun geht's rund</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Police Academy 4 - Und jetzt geht's rund</de>
+			</title_original>
 			<description>
 				<de>Die Sergeants Mahoney, Hightower &amp; Co wieder im Einsatz</de>
 				<en></en>
@@ -3936,6 +4536,9 @@ Abgrundtief düster, beängstigend und atemberaubend - Kultfilm der 80er</de>
 				<de>Polizeikadetten 5 - Mission: Miami Beach</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Police Academy 5 - Auftrag Miami Beach</de>
+			</title_original>
 			<description>
 				<de>Wie in jedem Jahr ein neuer Teil, doch Achtung: Diesmal ist[1|Full] als Ersatz für[1|Full] dabei!</de>
 				<en></en>
@@ -3957,6 +4560,9 @@ Abgrundtief düster, beängstigend und atemberaubend - Kultfilm der 80er</de>
 				<de>Polizeikadetten 6 - Keine Gegenwehr</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Police Academy 6 - Widerstand zwecklos</de>
+			</title_original>
 			<description>
 				<de>Mittlerweile dürften sogar die Hartgesottenen das Konzept der Reihe verstanden haben</de>
 				<en></en>
@@ -3977,6 +4583,9 @@ Abgrundtief düster, beängstigend und atemberaubend - Kultfilm der 80er</de>
 				<de>Polizeikadetten 7 - Der Moskauauftrag</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Police Academy 7 - Mission in Moskau</de>
+			</title_original>
 			<description>
 				<de>Nach vier Jahren Pause hat man die alte Goldgrube "Polizeikadetten" noch einmal ausgekratzt. Ob man inzwischen von einem Abschluß sprechen kann? Man kann nie wissen.</de>
 				<en></en>
@@ -3998,6 +4607,10 @@ Abgrundtief düster, beängstigend und atemberaubend - Kultfilm der 80er</de>
 				<de>Pressed to Chill</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Dressed to Kill</de>
+				<en>Dressed to Kill</en>
+			</title_original>
 			<description>
 				<de>Verstörende Geschichte um einen bestialischen  Mord.
 [0|Full]s Kult-Schocker</de>
@@ -4020,6 +4633,10 @@ Abgrundtief düster, beängstigend und atemberaubend - Kultfilm der 80er</de>
 				<de>Psychopathpath</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Psycho</de>
+				<en>Psycho</en>
+			</title_original>
 			<description>
 				<de>Oft kopiert und nie erreicht: Die Duschszene in Bates Motel.
 
@@ -4043,6 +4660,9 @@ Klassiker von [0|Full]</de>
 				<de>Pünktlich zum Mittag</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Zwölf Uhr mittags</de>
+			</title_original>
 			<description>
 				<de>Der Western, reduziert auf sein Hauptmotiv, das Duell.
 Fast in zeitdeckendem Erzähltempo beschreibt Zinnemanns Klassiker das Schicksal eines frisch verheirateten Sheriffs. Showdown: Zwölf Uhr mittags.</de>
@@ -4064,6 +4684,9 @@ Fast in zeitdeckendem Erzähltempo beschreibt Zinnemanns Klassiker das Schicksal
 				<de>Radiergummikopf</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Eraserhead</de>
+			</title_original>
 			<description>
 				<de>[0|Full] landete mit Radiergummikopf seinen ersten großen Hit, seine Vorliebe für das Absurde beweist er hier nur zu deutlich.</de>
 				<en></en>
@@ -4084,6 +4707,9 @@ Fast in zeitdeckendem Erzähltempo beschreibt Zinnemanns Klassiker das Schicksal
 				<de>Railgun</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Eraser</de>
+			</title_original>
 			<description>
 				<de>John Kruger arbeitet als U.S. Marshal im Zeugenschutzprogramm. Er hat es mit hochmodernen, und -zerstörerischen Waffen zu tun, und ein Komplott erschwert seine harte Aufgabe zusätzlich.</de>
 				<en></en>
@@ -4104,6 +4730,9 @@ Fast in zeitdeckendem Erzähltempo beschreibt Zinnemanns Klassiker das Schicksal
 				<de>Raumschiffkadetten</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Starship Troopers</de>
+			</title_original>
 			<description>
 				<de>Eine brutale Schlacht Soldaten gegen Rieseninsekten.
 [0|Last]s "gewaltiger" Science-Fiction-Knaller</de>
@@ -4126,6 +4755,9 @@ Fast in zeitdeckendem Erzähltempo beschreibt Zinnemanns Klassiker das Schicksal
 				<de>Raumschiff Galaktikus</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Kampfstern Galactica</de>
+			</title_original>
 			<description>
 				<de>Das Raumschiff Galaktikus macht sich, der Zerstörung entkommen, mit einem Konvoi aus Transportschiffen auf den Weg zur Erde, wo die letzten Menschen vermutet werden.</de>
 				<en></en>
@@ -4163,6 +4795,9 @@ Fast in zeitdeckendem Erzähltempo beschreibt Zinnemanns Klassiker das Schicksal
 				<de>Renn um Dein Leben - mit Todesgarantie</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Running Man</de>
+			</title_original>
 			<description>
 				<de>In der Zukunft wird Ben Richards zu Unrecht verurteilt. Er hat als Todeskandidat in der sadistischen TV-Show "Renn um Dein Leben" aufzutreten. Trotz knallharter Gegner und Fallen schlägt er sich wacker.</de>
 				<en></en>
@@ -4182,6 +4817,9 @@ Fast in zeitdeckendem Erzähltempo beschreibt Zinnemanns Klassiker das Schicksal
 				<de>Reservoir Cocks - Wilde Hühner</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Reservoir Dogs: Wilde Hunde</de>
+			</title_original>
 			<description>
 				<de>Ein Juwelendiebstahl geht schief. Die dafür angeheuerten Verbrecher diskutieren über die Lage und verfallen in Mißtrauen...</de>
 				<en></en>
@@ -4203,6 +4841,9 @@ Fast in zeitdeckendem Erzähltempo beschreibt Zinnemanns Klassiker das Schicksal
 				<de>Rhythmus des Tanzes</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Flashdance</de>
+			</title_original>
 			<description>
 				<de>Alex arbeitet tagsüber als Schweißerin und tanzt nachts in einem Club. Ihr großer Traum ist es, professionelle Ballettänzerin zu werden.
 Oscar für den Titelsong "Rhythmus des Tanzes... What a Feeling"</de>
@@ -4221,6 +4862,9 @@ Oscar für den Titelsong "Rhythmus des Tanzes... What a Feeling"</de>
 				<de>Richter der Zukunft</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Judge Dredd</de>
+			</title_original>
 			<description>
 				<de>Auf der Erde der Zukunft liegt die Staatsgewalt in den Händen der sog. Judges. Eines Tages stellt sich Richter der Zukunft einer heranrollenden Gefahr, die tief in seiner Vergangenheit wurzelt...</de>
 				<en></en>
@@ -4242,6 +4886,9 @@ Oscar für den Titelsong "Rhythmus des Tanzes... What a Feeling"</de>
 				<de>Rickie Reich</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Richie Rich</de>
+			</title_original>
 			<description>
 				<de>Rickie hat einen steinreichen Vater, doch es fällt ihm schwer, Freunde zu gewinnen.
 Nett</de>
@@ -4260,6 +4907,10 @@ Nett</de>
 				<de>Ricky</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Rocky</de>
+				<en>Rocky</en>
+			</title_original>
 			<description>
 				<de>Ricky Baldyboa schlägt sich als Boxer durchs Leben. Unerwartet bekommt er die Chance, um den WM-Titel zu boxen.
 
@@ -4282,6 +4933,10 @@ Nett</de>
 				<de>Ricky II</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Rocky II</de>
+				<en>Rocky II</en>
+			</title_original>
 			<description>
 				<de>Weltmeister Apollo Creed gibt Ricky einen Revanchekampf. Dieser sollte den Weltmeister diesmal auf die Bretter schicken, um nicht wieder in die Bedeutungslosigkeit abzurutschen.</de>
 				<en></en>
@@ -4303,6 +4958,10 @@ Nett</de>
 				<de>Ricky III - Das Ohr des Geparden</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Rocky III - Das Auge des Tigers</de>
+				<en>Rocky III</en>
+			</title_original>
 			<description>
 				<de>Ricky kann seinen Titel erfolgreich verteidigen, bis ihn der Herausforderer Clubber Lang k.o. schlägt. Doch Ricky gibt sich nicht geschlagen...</de>
 				<en></en>
@@ -4324,6 +4983,9 @@ Nett</de>
 				<de>Ricky IV - Der Milleniumsfight</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Rocky IV - Der Kampf des Jahrhunderts</de>
+			</title_original>
 			<description>
 				<de>Ricky muß gegen das Boxtier Ivan Drago aus Rußland antreten. Der harte Kampf steht ihm in Moskau bevor.</de>
 				<en></en>
@@ -4345,6 +5007,10 @@ Nett</de>
 				<de>Ricky V</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Rocky V</de>
+				<en>Rocky V</en>
+			</title_original>
 			<description>
 				<de>Mit Ricky Baldyboas Karriere geht es abwärts. Er erklärt seinen Rücktritt. Noch dazu gerät er in arge Finanzprobleme. Als Trainer versucht er, neue Erfolge zu verzeichnen.</de>
 				<en></en>
@@ -4365,6 +5031,10 @@ Nett</de>
 				<de>Robota Cup</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>RoboCop</de>
+				<en>RoboCop</en>
+			</title_original>
 			<description>
 				<de>Ein im Kampf schwer verwundeter Polizist wird zu einem Kampfroboter verarbeitet. Er soll der moderne Vorzeigepolizist werden.
 
@@ -4389,6 +5059,10 @@ Knallharter Sci-Fi-Actioner von [0|Full]</de>
 				<de>Robota Cup 2</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>RoboCop 2</de>
+				<en>RoboCop 2</en>
+			</title_original>
 			<description>
 				<de>Robota Cup soll durch ein verbessertes Modell ersetzt werden. Doch er hat immer noch Pflichten auf den Straßen Detroits zu erledigen.
 Gute Action, aber mehr auch nicht</de>
@@ -4412,6 +5086,10 @@ Gute Action, aber mehr auch nicht</de>
 				<de>Robota Cup 3</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>RoboCop 3</de>
+				<en>RoboCop 3</en>
+			</title_original>
 			<description>
 				<de>Robota Cup muß zusammen mit einer Untergrundbewegung gefährliche Widersacher ausschalten...
 3. Robota Cup, leider ohne [1|Full] und ohne Klasse</de>
@@ -4435,6 +5113,9 @@ Gute Action, aber mehr auch nicht</de>
 				<de>Rubinroter Waran</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Roter Drache</de>
+			</title_original>
 			<description>
 				<de>Noch vor "Schweigende Hammel": Bei seinen Ermittlungen gegen einen Massenmörder muß Will Graham auf den Rat Lecters zurückgreifen.
 [1|Last] zum dritten Mal in der Rolle seines Lebens.</de>
@@ -4455,6 +5136,9 @@ Gute Action, aber mehr auch nicht</de>
 				<de>Rückkehr in die Zukunft</de>
 				<en>Return to the Future</en>
 			</title>
+			<title_original>
+				<de>Zurück in die Zukunft</de>
+			</title_original>
 			<description>
 				<de>Doc Brown hat eine bedeutende Erfindung gemacht: eine Zeitmaschine. Teenager Marty McFly reist damit in die 50er Jahre zurück...
 Kult aus den 80ern</de>
@@ -4476,6 +5160,9 @@ Kult aus den 80ern</de>
 				<de>Rückkehr in die Zukunft 2</de>
 				<en>Return to the Future 2</en>
 			</title>
+			<title_original>
+				<de>Zurück in die Zukunft II</de>
+			</title_original>
 			<description>
 				<de>Marty und Doc Brown setzen die Zeitmaschine wieder ein, um die Vergangenheit zu bereinigen. Doch sie bewegen sich auf dünnem Eis.</de>
 				<en></en>
@@ -4496,6 +5183,9 @@ Kult aus den 80ern</de>
 				<de>Rückkehr in die Zukunft 3</de>
 				<en>Return to the Future 3</en>
 			</title>
+			<title_original>
+				<de>Zurück in die Zukunft III</de>
+			</title_original>
 			<description>
 				<de>Marty McFly verschlägt es in den Wilden Westen. Um Doc Brown vor dem Tod zu bewahren, will er ihn mitnehmen:
 Rückkehr in die Zukunft</de>
@@ -4517,6 +5207,9 @@ Rückkehr in die Zukunft</de>
 				<de>Ruhestätte der Plüschtiere</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Friedhof der Kuscheltiere</de>
+			</title_original>
 			<description>
 				<de>Ein Mann begräbt seinen Sohn auf einem Tierfriedhof. Dieser kehrt als Untoter zurück und wütet schrecklich.
 Kult-Horror nach dem Roman von Stephen King</de>
@@ -4539,6 +5232,9 @@ Kult-Horror nach dem Roman von Stephen King</de>
 				<de>Schweigende Hammel</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Das Schweigen der Lämmer</de>
+			</title_original>
 			<description>
 				<de>Die junge Clarice Starling versucht, den Massenmörder Buffalo Bill zu fassen. Dabei ist Starling auf die Hilfe des inhaftierten Hannibal Lecter angewiesen.
 Genauso grausam wie genial</de>
@@ -4558,6 +5254,9 @@ Genauso grausam wie genial</de>
 				<de>Sechs und Eins Todsünden</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Sieben</de>
+			</title_original>
 			<description>
 				<de>Ein Mörder sucht sich seine Opfer nach den sieben Todsünden aus. [1|Full] als Polizist muss ihn aufhalten, merkt aber zu spät, daß aus dem Jäger schnell der Gejagte werden kann.</de>
 				<en></en>
@@ -4579,6 +5278,10 @@ Genauso grausam wie genial</de>
 				<de>Sie Sietzen Kain</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Citizen Kane</de>
+				<en>Citizen Kane</en>
+			</title_original>
 			<description>
 				<de>Medienmogul Charles Foster Kain stirbt und hinterläßt der Nachwelt ein Rätsel um sein letztes Wort: Rosebud.
 Gilt bei vielen Kritikern als bester Film aller Zeiten</de>
@@ -4598,6 +5301,10 @@ Gilt bei vielen Kritikern als bester Film aller Zeiten</de>
 				<de>Solo-Abendessen oder der 90. Jahrestag</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Der 90. Geburtstag oder Dinner for One</de>
+				<en>Dinner for One</en>
+			</title_original>
 			<description>
 				<de>Miss Sophie hat sich zu ihrem 90. Geburtstag vier alte Freunde eingeladen. Da diese jedoch längst verstorben sind, muß Butler James sie vertreten.
 Silvester-Spaß</de>
@@ -4618,6 +5325,9 @@ Silvester-Spaß</de>
 				<de>Sonderrechtszustand</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Ausnahmezustand</de>
+			</title_original>
 			<description>
 				<de>Islamisten versetzen New York mit Bombenattentaten in Panik. Der Sonderrechtszustand wird ausgerufen, das Militär übernimmt die Stadt.</de>
 				<en></en>
@@ -4636,6 +5346,10 @@ Silvester-Spaß</de>
 				<de>Spartakus</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Spartacus</de>
+				<en>Spartacus</en>
+			</title_original>
 			<description>
 				<de>Die Geschichte des Gladiatoren Spartakus, der in Rom einen großen Aufstand anzettelt.
 Große Bilder, [0|Last] konnte jedoch nicht nach seinen Vorstellungen arbeiten</de>
@@ -4658,6 +5372,10 @@ Große Bilder, [0|Last] konnte jedoch nicht nach seinen Vorstellungen arbeiten</
 				<de>Spiel um Leben und Tod</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>The Game- Das Geschenk seines Lebens</de>
+				<en>The Game</en>
+			</title_original>
 			<description>
 				<de>Ein erfolgreicher Geschäftsmann wird in ein aberwitziges Spiel um Leben und Tod verwickelt.
 Ein typischer [0|Last]</de>
@@ -4680,6 +5398,10 @@ Ein typischer [0|Last]</de>
 				<de>Stadt der Sünden</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Sin City</de>
+				<en>Sin City</en>
+			</title_original>
 			<description>
 				<de>[0|Full]' Verfilmung der Hank-Fuller-Comics ist brutal und voll von tiefschwarzem Humor.</de>
 				<en></en>
@@ -4701,6 +5423,10 @@ Ein typischer [0|Last]</de>
 				<de>Sterngaed</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Stargate</de>
+				<en>Stargate</en>
+			</title_original>
 			<description>
 				<de>Durch ein Tor gelangt eine Gruppe amerikanischer Pioniere auf einen entfernten Planeten.
 
@@ -4725,6 +5451,9 @@ Aufwendiges Actionspektakel von Regisseur [0|Full]</de>
 				<de>Stürmische Rose</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Wilde Orchidee</de>
+			</title_original>
 			<description>
 				<de>Abgründige Liebesgeschichte mit Macho [1|Full]</de>
 				<en></en>
@@ -4809,6 +5538,10 @@ Aufwendiges Actionspektakel von Regisseur [0|Full]</de>
 				<de>Tödliche Wummen - Zwei murrende Profis</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Lethal Weapon - Zwei stahlharte Profis</de>
+				<en>Lethal Weapon</en>
+			</title_original>
 			<description>
 				<de>Die Polizisten Murtaugh ([2|Last]) und Riggs ([1|Last]) bilden ein ungleiches Team. Doch die erfolgreiche Arbeit bringt auch privaten Kontakt mit sich.
 Kultige Action-Komödie voller Spannung und Spaß</de>
@@ -4828,6 +5561,10 @@ Kultige Action-Komödie voller Spannung und Spaß</de>
 				<de>Tödliche Wummen 2 - Knackpunkt Los Angeles</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Lethal Weapon 2 - Brennpunkt L.A.</de>
+				<en>Lethal Weapon 2</en>
+			</title_original>
 			<description>
 				<de>Riggs und Murtaugh sollen Buchmacher Leo ([2|Full]) bis zu seiner Gerichtsaussage beschützen. Doch Leo weiß mehr, als er zugeben möchte...
 Tödliche Wummen 2 steht Teil 1 in nichts nach</de>
@@ -4848,6 +5585,10 @@ Tödliche Wummen 2 steht Teil 1 in nichts nach</de>
 				<de>Tödliche Wummen 4 - Zwei Bullen klären die Sache</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Lethal Weapon 4 - Zwei Profis räumen auf</de>
+				<en>Lethal Weapon 4</en>
+			</title_original>
 			<description>
 				<de>Riggs und Murtaugh entdecken bei einer nächtlichen Angeltour ein Schiff mit illegalen Einwanderern. Sie nehmen die Fährte auf.
 Auch das vierte Tödliche-Wummen-Abenteuer ist ein wahres Schmuckstück</de>
@@ -4870,6 +5611,10 @@ Auch das vierte Tödliche-Wummen-Abenteuer ist ein wahres Schmuckstück</de>
 				<de>Tödlicher Einschlag</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Deep Impact</de>
+				<en>Deep Impact</en>
+			</title_original>
 			<description>
 				<de>Ein Komet rast auf die Erde zu. Die Versuche, den Kometen aus seiner Bahn zu bringen, schlagen fehl.</de>
 				<en></en>
@@ -4889,6 +5634,9 @@ Auch das vierte Tödliche-Wummen-Abenteuer ist ein wahres Schmuckstück</de>
 				<de>Tote kleistern seinen Pfad</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Leichen pflastern seinen Weg</de>
+			</title_original>
 			<description>
 				<de>Kampf zwischen Ordnungshütern und Kopfgeldjägern.
 Klassiker von [0|Full]</de>
@@ -4911,6 +5659,9 @@ Klassiker von [0|Full]</de>
 				<de>Totenmesse für einen Traum</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Requiem for a Dream</de>
+			</title_original>
 			<description>
 				<de>Totenmesse für einen Traum ist mit seinen Schocktechniken und seinem Sounddesign ein erbarmungsloser Angriff auf die Sinne.
 Ohne Frage einer der effektivsten Filme über die Erfahrung der Drogensucht</de>
@@ -4932,6 +5683,10 @@ Ohne Frage einer der effektivsten Filme über die Erfahrung der Drogensucht</de>
 				<de>True Spy - Die Frau des Spiones</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>True Lies - Wahre Lügen</de>
+				<en>True Lies</en>
+			</title_original>
 			<description>
 				<de>Geheimagent Harry Tasker lebt ein Doppelleben. Seine Frau Helen ahnt nichts von seinem gefährlichen Job.
 Spritziger Actioner mit dem Erfolgsduo [0|Last] / [1|Last]</de>
@@ -4953,6 +5708,10 @@ Spritziger Actioner mit dem Erfolgsduo [0|Last] / [1|Last]</de>
 				<de>Tschancou</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Django</de>
+				<en>Django</en>
+			</title_original>
 			<description>
 				<de>Ein Fremder kommt in eine Kleinstadt. Er zieht einen Sarg hinter sich her...
 [0|Last]-Western mit viel Gewalt; Mitbegründer des Italo-Westerns</de>
@@ -4993,6 +5752,9 @@ Spritziger Actioner mit dem Erfolgsduo [0|Last] / [1|Last]</de>
 				<de>Tüdel mir den Song vom Brot</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Spiel mir das Lied vom Tod</de>
+			</title_original>
 			<description>
 				<de>[0|Last]s letzter Western vereint seine Gedanken vom Tod des Wilden Westens.
 Tüdel mir den Song vom Brot.
@@ -5015,6 +5777,10 @@ Mit der unvergleichlichen Musik Ennio MurrIchOchnes</de>
 				<de>U.I. - Unberechenbare Intelligenz</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>A.I.: Künstliche Intelligenz</de>
+				<en>Artificial Intelligence</en>
+			</title_original>
 			<description>
 				<de>Als Ersatz für ihren schwer kranken Sohn adoptiert das Ehepaar Swinton einen Roboter, der einem Menschen erstaunlich nahe kommt.
 [0|Last]s Hommage an Laurel Kubus</de>
@@ -5034,6 +5800,10 @@ Mit der unvergleichlichen Musik Ennio MurrIchOchnes</de>
 				<de>Uhrmaschinerie Gelb</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Uhrwerk Organge</de>
+				<en>Clockwork Orange</en>
+			</title_original>
 			<description>
 				<de>Die Horrorshow des jungen Alex mit seinen drei Droogs.
 
@@ -5057,6 +5827,10 @@ Die ultimative Filmfarce von [0|Full]</de>
 				<de>Uno Momento</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Memento</de>
+				<en>Memento</en>
+			</title_original>
 			<description>
 				<de>Ein Mann, der sein Kurzzeitgedächtnis verloren hat, begibt sich auf die Suche nach dem Mörder seiner Frau.
 Spannende Story, rückwärts erzählt</de>
@@ -5077,6 +5851,9 @@ Spannende Story, rückwärts erzählt</de>
 				<de>Unschuldig gejagt</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Auf der Flucht</de>
+			</title_original>
 			<description>
 				<de>Dr. Richard Kimble ist angesehener Chirurg in Chicago. Eines Tages wird seine Frau ermordet. Kimble gerät unter Tatverdacht. Er flüchtet, um den wahren Mörder finden.
 Nach der erfolgreichen Serie</de>
@@ -5093,11 +5870,15 @@ Nach der erfolgreichen Serie</de>
 			<data country="USA" year="1993" distribution="1" maingenre="2" subgenre="" flags="0" blocks="3" price_mod="0.90" />
 			<ratings critics="65" speed="70" outcome="61" />
 		</programme>
-		<programme id="7bbd28e8-00ef-4a3d-bf5a-418badcd1048" product="1" licence_type="1" tmdb_id="0" imdb_id="" rt_id="0" creator="">
+		<programme id="7bbd28e8-00ef-4a3d-bf5a-418badcd1048" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0259711" rt_id="0" creator="">
 			<title>
 				<de>Vanillinhimmel</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Vanilla Sky</de>
+				<en>Vanilla Sky</en>
+			</title_original>
 			<description>
 				<de>Das Leben des erfolgreichen Geschäftsmannes David Aames wandelt sich jäh, als er in einen Autounfall verwickelt und sein Gesicht entstellt wird.
 Kühler Thriller mit Schockwirkung</de>
@@ -5119,6 +5900,10 @@ Kühler Thriller mit Schockwirkung</de>
 				<de>Veit's Club</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Fight Club</de>
+				<en>Fight Club</en>
+			</title_original>
 			<description>
 				<de>Ein geheimer Bund wird gegründet, in dem das gegenseitige Schlagen im Vordergrund steht.
 Aufwühlender Film von [0|Full]</de>
@@ -5139,6 +5924,9 @@ Aufwühlender Film von [0|Full]</de>
 				<de>Verfolgt, gejagt und atemlos</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Auf der Jagd</de>
+			</title_original>
 			<description>
 				<de>Mark Sheridan steht unter Mordverdacht. Mit einem Flugzeug wird er nach New York gebracht. Der Jet muß notlanden, Sheridan kann fliehen. Doch U.S. Marshal Gerard begibt sich auf die Jagd...</de>
 				<en></en>
@@ -5159,6 +5947,9 @@ Aufwühlender Film von [0|Full]</de>
 				<de>Verschwundene Helden</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Verlorene Helden</de>
+			</title_original>
 			<description>
 				<de>Als er einem Kameraden das Leben rettet, wird Tony Kaiser schwer verwundet. Er bleibt blind.
 
@@ -5181,6 +5972,9 @@ Bewegender Film mit [1|Full] in seiner ersten Filmhauptrolle</de>
 				<de>Versprechen sind zu halten</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Versprochen ist versprochen</de>
+			</title_original>
 			<description>
 				<de>[1|Last] als Vater, der das Verhältnis zu seinem Sohn aufpolieren will. Er macht sich auf die zermürbende Suche nach einem der beliebten Turbo-Man-Spielzeuge.</de>
 				<en></en>
@@ -5200,6 +5994,9 @@ Bewegender Film mit [1|Full] in seiner ersten Filmhauptrolle</de>
 				<de>Vertikal - Aus dem Reich von Oben</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Vertigo - Aus dem Reich der Toten</de>
+			</title_original>
 			<description>
 				<de>Verstörendes Meisterwerk, untermalt mit der musikalischen Handschrift Steward Shermans.
 
@@ -5223,6 +6020,10 @@ Von den Kritikern lange Zeit verkannt</de>
 				<de>Vertrauliches L.A.</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>L.A. Confidential</de>
+				<en>L.A. Confidential</en>
+			</title_original>
 			<description>
 				<de>Drei Cops machen sich aus unterschiedlichen Gründen auf die Suche nach dem Verantwortlichen für ein Massaker in einem Lokal.</de>
 				<en></en>
@@ -5262,6 +6063,10 @@ Von den Kritikern lange Zeit verkannt</de>
 				<de>Vogel am Boden</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Black Hawk Down</de>
+				<en>Black Hawk Down</en>
+			</title_original>
 			<description>
 				<de>Ein Elitekommando der US Army soll 1993 in Somalia zwei Rebellenführer festsetzen. Die Mission artet aus, endet in schrecklichen Häuserkämpfen und mit vielen Verlusten.</de>
 				<en></en>
@@ -5299,6 +6104,9 @@ Von den Kritikern lange Zeit verkannt</de>
 				<de>Wenn Papa mit dem Kinde</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Wenn der Vater mit dem Sohne</de>
+			</title_original>
 			<description>
 				<de>Clown Teddy Lemke kümmert sich um seinen Sohn Ulli. Er läßt sich überreden, zusammen mit Ulli eine Clowns-Nummer aufzuführen. Doch dann kündigt sich Ullis Mutter mit ihrem neuen Mann an...</de>
 				<en></en>
@@ -5317,6 +6125,10 @@ Von den Kritikern lange Zeit verkannt</de>
 				<de>Wer als Letzter noch steht</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Last Man Standing</de>
+				<en>Last Man Standing</en>
+			</title_original>
 			<description>
 				<de>An der mexikanisch-texanischen Grenze in den 20er Jahren: Ein Fremder spielt zwei Banden gegeneinander aus, indem er bei beiden als Söldner anheuert.
 Neo-Western mit [1|Full]</de>
@@ -5356,6 +6168,10 @@ Spannende Unterhaltung und knifflige Fragen.</de>
 				<de>Wo ist Neymo?</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Findet Nemo</de>
+				<en>Finding Nemo</en>
+			</title_original>
 			<description>
 				<de>Die Reise des Clownfisches Neymo wird zur Hetzjagd für seinen Vater, der ihn sucht und heimführen möchte.
 Erstaunlich erfolgreich, wahrscheinlich weil Pionier des Animationsfilms</de>
@@ -5373,6 +6189,10 @@ Erstaunlich erfolgreich, wahrscheinlich weil Pionier des Animationsfilms</de>
 				<de>World Crisis - the end is neigh!</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Armageddon - Das jüngste Gericht</de>
+				<en>Armageddon</en>
+			</title_original>
 			<description>
 				<de>Das Ende der Menschheit scheint bedrohlich nahe zu sein, denn ein riesiger Asteroid rast auf die Erde zu.</de>
 				<en></en>
@@ -5394,6 +6214,10 @@ Erstaunlich erfolgreich, wahrscheinlich weil Pionier des Animationsfilms</de>
 				<de>Wra Diabulo</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Dick und Doof - Hände hoch - oder nicht</de>
+				<en>The Devil's Brother</en>
+			</title_original>
 			<description>
 				<de>[1|First] und [2|First] werden gezwungen, die Leibgarde des berüchtigten Räubers Wra Diabulo zu spielen.
 Vielleicht der beste [1|Last] &amp; [2|Last] nach der gleichnamigen Oper von Auber</de>
@@ -5416,6 +6240,9 @@ Vielleicht der beste [1|Last] &amp; [2|Last] nach der gleichnamigen Oper von Aub
 				<de>Yams Pond 005 - Bronzedaumen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>James Bond 007 - Goldfinger</de>
+			</title_original>
 			<description>
 				<de>Pond muß Mr. Bronzedaumen davon abbringen, sich die Bronzereserven von Fort Knox unter den Nagel zu reißen. Doch Bronzedaumens Wächter Oddjob ist mit dem Hut hinter ihm her.
 Gilt allgemein als bester Pond</de>
@@ -5438,6 +6265,9 @@ Gilt allgemein als bester Pond</de>
 				<de>Yams Pond 005 - Der Kerl mit der Silberknarre</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>James Bond 007 - Der Mann mit dem goldenen Colt</de>
+			</title_original>
 			<description>
 				<de>007 gerät an den professionellen Killer Scaramanga, der mit seinem goldenen Colt sein Ziel nie verfehlt.
 Sehr gelungener Yams Pond</de>
@@ -5460,6 +6290,9 @@ Sehr gelungener Yams Pond</de>
 				<de>Yams Pond 005 - Eiskugel</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>James Bond 007 - Feuerball</de>
+			</title_original>
 			<description>
 				<de>Ein Verbrecherboss bringt ein Flugzeug mit zwei Atombomben an Bord in seine Gewalt. Um nicht auf dessen wahnwitzige Forderungen eingehen zu müssen, schickt die britische Regierung ihre 00-Agenten aus.</de>
 				<en></en>
@@ -5481,6 +6314,9 @@ Sehr gelungener Yams Pond</de>
 				<de>Yams Pond 005 - Entscheidung über Leben und Tod</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>James Bond 007 - Leben und Sterben lassen</de>
+			</title_original>
 			<description>
 				<de>Pond soll den Tod dreier britischer Agenten aufklären. Dabei sieht er sich mit der Schwarzen Kunst konfrontiert.
 [1|Last] zum ersten Mal in der Rolle des britischen Agenten</de>
@@ -5503,6 +6339,9 @@ Sehr gelungener Yams Pond</de>
 				<de>Yams Pond 005 - Keiner lebt zweimal</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>James Bond 007 - Man lebt nur zweimal</de>
+			</title_original>
 			<description>
 				<de>Ein internationales Verbrechersyndikat entführt russische und amerikanische Raumkapseln und versucht, damit einen 3. Weltkrieg zu provozieren. Yams Pond hat den Auftrag, den Plan zu vereiteln...</de>
 				<en></en>
@@ -5524,6 +6363,9 @@ Sehr gelungener Yams Pond</de>
 				<de>Yams Pond 005 - Moskauer Liebesbotschaft</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>James Bond 007 - Liebesgrüße aus Moskau</de>
+			</title_original>
 			<description>
 				<de>Eine Verbrecherorganisation versucht, einen Krieg zwischen Ost und West zu provozieren, Yams Pond, dieses zu verhindern.
 Im zweiten Pond wurde die wiederkehrende Figur des Q eingeführt</de>
@@ -5546,6 +6388,9 @@ Im zweiten Pond wurde die wiederkehrende Figur des Q eingeführt</de>
 				<de>Yams Pond 005 - Rubinfieber</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>James Bond 007 - Diamantenfieber</de>
+			</title_original>
 			<description>
 				<de>Auf der Spur eines Diamantenschmugglerrings muß Yams Pond von London nach Las Vegas. Um den Verantwortlichen zu finden, muß er sich zuerst mit einem Killerduo befassen, das Jagd auf ihn macht.</de>
 				<en></en>
@@ -5567,6 +6412,9 @@ Im zweiten Pond wurde die wiederkehrende Figur des Q eingeführt</de>
 				<de>Yams Pond 005 - Zu Diensten der Queen</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>James Bond 007 - Im Geheimdienst Ihrer Majestät</de>
+			</title_original>
 			<description>
 				<de>Der skrupellose Verbrecher Blofeld möchte die Erde bakteriell verseuchen. Eine Bedrohung, die 007 in die Alpen verschlägt.
 Zum ersten und zum letzten Mal verkörperte[1|Full] Yams Pond 005</de>
@@ -5589,6 +6437,9 @@ Zum ersten und zum letzten Mal verkörperte[1|Full] Yams Pond 005</de>
 				<de>Yams Pond 005 jagt Dr. Yeah</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>James Bond 007 jagt Dr. No</de>
+			</title_original>
 			<description>
 				<de>Der britische Geheimagent Yams Pond wird auf den machtgierigen Dr. Yeah angesetzt.
 Jan Fleme schuf mit seinem Yams Pond eine Legende</de>
@@ -5611,6 +6462,9 @@ Jan Fleme schuf mit seinem Yams Pond eine Legende</de>
 				<de>Zerstörungswut</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Demolition Man</de>
+			</title_original>
 			<description>
 				<de>Gangster Phoenix wird in den Kälteschlaf vesetzt. Auch der draufgängerische Cop Spartan wird eingefroren. Im Jahr 2032 kommt Phoenix wieder frei.</de>
 				<en></en>
@@ -5630,6 +6484,9 @@ Jan Fleme schuf mit seinem Yams Pond eine Legende</de>
 				<de>Zu unbekannter Zeit in Mexiko</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Irgendwann in Mexico</de>
+			</title_original>
 			<description>
 				<de>El Mariachi begleicht offene Rechnungen: irgendwo, zu unbekannter Zeit in Mexiko.
 El-Mariachi-Fans wurden von [0|Last] gänzlich enttäuscht</de>
@@ -5652,6 +6509,10 @@ El-Mariachi-Fans wurden von [0|Last] gänzlich enttäuscht</de>
 				<de>Zufluchtsstätte</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Panic Room</de>
+				<en>Panic Room</en>
+			</title_original>
 			<description>
 				<de>Eine Frau muß sich mit ihrer Tochter in einem Schutzraum in Sicherheit bringen, um Einbrecher abzuschütteln.
 Originelle Idee, gut und spannend ausgeführt</de>
@@ -5674,6 +6535,9 @@ Originelle Idee, gut und spannend ausgeführt</de>
 				<de>Zwei heldenhafte Gauner</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Zwei glorreiche Halunken</de>
+			</title_original>
 			<description>
 				<de>Drei Gauner auf der Jagd nach einer Geldkassette
 - Spaghetti-Western von [0|Full]
@@ -5698,6 +6562,9 @@ Originelle Idee, gut und spannend ausgeführt</de>
 				<de>Zwei wie Teer und Gänsefedern</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Zwei wie Pech und Schwefel</de>
+			</title_original>
 			<description>
 				<de>Ben und Kid gewinnen bei einem Autorennen und müssen sich den Hauptpreis teilen: einen roten Strandbuggy.
 Herrliche Hau-Drauf-Action mit [1|Full] und [2|Full], cooler Soundtrack</de>
@@ -5719,6 +6586,9 @@ Herrliche Hau-Drauf-Action mit [1|Full] und [2|Full], cooler Soundtrack</de>
 				<de>Zynissimo von Bercherack</de>
 				<en></en>
 			</title>
+			<title_original>
+				<de>Cyrano von Bergerac</de>
+			</title_original>
 			<description>
 				<de>Erzählung von einem gebildeten Hauptmann, der wegen seiner großen Nase seine Gefühle nicht offen bekennt.
 Tragische Liebesgeschichte</de>
@@ -7231,6 +8101,10 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<de>Die Locken Horror Show</de>
 				<en>The curly horror show</en>
 			</title>
+			<title_original>
+				<de>Rocky Horror Picture Show</de>
+				<en>The Rocky Horror Picture Show</en>
+			</title_original>
 			<description>
 				<de>Kultmusical. Ein Paar bleibt mit seinem Wagen liegen und sucht in einem Schloß Hilfe. </de>
 				<en></en>
@@ -7252,6 +8126,9 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<de>Die Blaue aus dem Himmel</de>
 				<en>The blue girl from heaven</en>
 			</title>
+			<title_original>
+				<de>Der blaue Engel</de>
+			</title_original>
 			<description>
 				<de>[1|Full] wurde in diesem Film mit ihrer Rolle als Nachtclubsängerin unsterblich.</de>
 				<en>[1|Full] got famous through here role as a nightclub singer in this movie.</en>
@@ -7298,7 +8175,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>Blau Bembelsche - Best of a hessian music show</en>
 			</title>
 			<title_original>
-				<de>Blauer Bock</de>
+				<de>Der blaue Bock aus Idstein</de>
 			</title_original>
 			<description>
 				<de>Ei Bembel, ei Bembel. Bei Aeppelwoi und Handkäs wird musiziert, dass die Zwiebeln sich biegen. Die Granden der Musik geben sich die Hand. 30 Jahre Show und nur das Beste davon zusammen in einer Show. Das Herz lacht. Beim jungen Publikum weint das Auge.</de>
@@ -7420,7 +8297,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>A Village Chases L.</en>
 			</title>
 			<title_original>
-				<de>M. Eine Stadt sucht einen Mörder</de>
+				<de>M: Eine Stadt sucht einen Mörder</de>
 				<en>M</en>
 			</title_original>
 			<description>
@@ -7571,6 +8448,10 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<de>Zug nach Peking</de>
 				<en>Train to Beijing</en>
 			</title>
+			<title_original>
+				<de>Shanghai-Express</de>
+				<en>Shanghai Express</en>
+			</title_original>
 			<description>
 				<de>Lilly erlebt eine abenteuerliche Zugfahrt von Shanghai nach Peking und trifft auf Regierungssoldaten und Rebellen.</de>
 				<en>Lilly is aon an adventures trainride from Shanghai to Beijing and meets goverment soldiers and rebels.</en>
@@ -7689,8 +8570,8 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 				<en>Planet Roin - Louder Space</en>
 			</title>
 			<title_original>
-				<de>Planet Nine - From Outer Space</de>
-				<en>Planet Nine - From Outer Space</en>
+				<de>Plan 9 aus dem Weltall</de>
+				<en>Plan 9 from Outer Space</en>
 			</title_original>
 			<description>
 				<de>Wurde zum schlechtesten Film aller Zeiten gewählt. Heute eine beliebte Ratesendung: Wer findet alle Fehler</de>
@@ -7932,7 +8813,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 				<en>Well Paps</en>
 			</title>
 			<title_original>
-				<de>Aber Vati</de>
+				<de>Aber Vati!</de>
 				<en>But Dad</en>
 			</title_original>
 			<description>
@@ -8333,6 +9214,10 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 				<de>Fuchs unter Füchsen</de>
 				<en>Fox under foxes</en>
 			</title>
+			<title_original>
+				<de>Wolf unter Wölfen</de>
+				<en></en>
+			</title_original>
 			<description>
 				<de>Monumentale Verfilmung des Romans Fuchs unter Füchsen in vier Teilen mit [1|Full].</de>
 				<en>An epic movie based on the novell fox under foxes in four parts with [1|Full].</en>
@@ -8497,6 +9382,10 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 				<de>Das Verborgene</de>
 				<en>The hidden</en>
 			</title>
+			<title_original>
+				<de>The Veil</de>
+				<en>The Veil</en>
+			</title_original>
 			<description>
 				<de>Nach seinen Frankenstein-Erfolgen präsentierte [1|Full] gruselige Fälle.</de>
 				<en>After his success as the Frankenstein monster [1|Full] presented creepy moments.</en>
@@ -8717,7 +9606,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 				<en>Hogans Hunt</en>
 			</title>
 			<title_original>
-				<de>Logans Run</de>
+				<de>Flucht ins 23. Jahrhundert</de>
 				<en>Logans Run</en>
 			</title_original>
 			<description>
@@ -8862,7 +9751,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="77" speed="29" outcome="72" />
 		</programme>
 
-		<programme id="TheRob-mov-hist-AndyKopekjow" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="TheRob-mov-hist-AndyKopekjow" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0060107" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Andrej Rubljow, Hostorie, Sub Drama -->
 				<de>Andy Kopekjow</de>
@@ -8870,7 +9759,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			</title>
 			<title_original>
 				<de>Andrej Rubljow</de>
-				<en>Andrej Rubljow</en>
+				<en>Andrey Rublev</en>
 			</title_original>
 			<description>
 				<de>Das Leben des Ikonenmalers Kopekjow vor dem Hintergrund von Tartareneinfällen, religiösen Sektentum und die Unterdrückung durch die Obrigkeit. Vor allem die eindringlich gezeigten Grausamkeiten führten zu einer Zensur durch die Filmbehörde.</de>
@@ -8887,14 +9776,14 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="81" speed="22" outcome="63" />
 		</programme>
 
-		<programme id="TheRob-mov-dram-StraßenwalzenpilotundGeiger" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="TheRob-mov-dram-StraßenwalzenpilotundGeiger" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0053987" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
 			<title>
 				<!-- Die Straßenwalze und die Geige, drama -->
 				<de>Straßenwalzenpilot und Geiger</de>
 				<en>The road roller pilot and the violinist</en>
 			</title>
 			<title_original>
-				<de>Die Straßenwalze und die Geige</de>
+				<de>Geige und Straßenwalze</de>
 				<en>The road roller and the violine</en>
 			</title_original>
 			<description>
@@ -9871,7 +10760,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 				<en>Goldfever in San Fransisco</en>
 			</title>
 			<title_original>
-				<de>San Francisco im Goldfieber</de>
+				<de>Küste der Gesetzlosen</de>
 				<en>Barbary Coast</en>
 			</title_original>
 			<description>
@@ -10137,7 +11026,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="93" speed="29" outcome="76" />
 		</programme>
 
-		<programme id="TheRob-a4d6-dram-LeopoldLoeb" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0045251" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-a4d6-dram-LeopoldLoeb" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0052700" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Der Zwang zum Bösen -->
 				<de>Der Fall Leopold Loeb</de>
@@ -10237,7 +11126,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="51" speed="71" outcome="66" />
 		</programme>
 
-		<programme id="TheRob-a4d6-adv-DerGeisterseemann" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0064397" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-a4d6-adv-DerGeisterseemann" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0064307" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- The Extraordinary Seaman -->
 				<de>Der Geisterseemann</de>
@@ -10778,7 +11667,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="63" speed="66" outcome="64" />
 		</programme>
 
-		<programme id="TheRob-a4d6-act-BreaktheChain" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0068638" rt_id="0" creator="8751" created_by="TheRob">
+		<programme id="TheRob-a4d6-act-BreaktheChain" product="1" fictional="0" licence_type="1" tmdb_id="0" imdb_id="tt0057115" rt_id="0" creator="8751" created_by="TheRob">
 			<title>
 				<!-- Gesprengte Kette -->
 				<de>Break the Chain</de>
