@@ -114,7 +114,7 @@ All means are right for them.</en>
 	</scripttemplates>
 
 	<allnews>
-		<news id="news-stockexchange-generic" type="0" creator="" created_by="Kieferer">
+		<news id="news-stockexchange-generic" type="0" thread_id="news-stockexchange-thread" creator="" created_by="Kieferer">
 			<title>
 				<de>Börsennachrichten für Tag %WORLDTIME:GAMEDAY%</de>
 				<en>Stock Exchange News for day %WORLDTIME:GAMEDAY%</en>

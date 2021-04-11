@@ -16,7 +16,7 @@
 				<en>The Russian gas giant is offering its help in solving the European currency crisis. Also other countries under discussion.</en>
 			</description>
 			<data genre="0" price="1.0" quality="49" />
-			<conditions year_range_from="2010" year_range_to="-1" />
+			<availability year_range_from="2010" year_range_to="-1" />
 		</news>
 		<news id="Sjaele-news-Urknall" type="0" creator="7430" created_by="Sjaele">
 			<title>
@@ -40,7 +40,7 @@
 				<en>The Finance Minister proposes an EU-wide e-mail postage of one cent per e-mail.</en>
 			</description>
 			<data genre="0" price="0.7" quality="39" />
-			<conditions year_range_from="1998" year_range_to="-1" />
+			<availability year_range_from="1998" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Update-Automaten" type="0" creator="7430" created_by="Sjaele">
@@ -53,7 +53,7 @@
 				<en>Several discounters want to set up vending machines at the beginning of the holiday where computer users can download their updates.</en>
 			</description>
 			<data genre="3" price="1.0" quality="29" />
-			<conditions year_range_from="1995" year_range_to="-1" />
+			<availability year_range_from="1995" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Internet-neu" type="0" creator="7430" created_by="Sjaele">
@@ -66,7 +66,7 @@
 				<en>A worldwide internet reboot will take place in the night from Thursday to Friday of this week in order to delete pirated copies.</en>
 			</description>
 			<data genre="3" price="1.0" quality="56" />
-			<conditions year_range_from="2000" year_range_to="-1" />
+			<availability year_range_from="2000" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Trickbetrüger" type="0" creator="7430" created_by="Sjaele">
@@ -80,7 +80,7 @@
 				<en>More and more high-quality WLAN cables were allegedly sold in Chemnitz city centre. However, a police spokesman warns that these are overpriced.</en>
 			</description>
 			<data genre="3" price="0.7" quality="29" />
-			<conditions year_range_from="1998" year_range_to="-1" />
+			<availability year_range_from="1998" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Saurierknochen" type="0" creator="7430" created_by="Sjaele">
@@ -93,7 +93,7 @@
 				<en>Gelatine from dinosaur bones has been used in several types of jelly babies. There was no danger to health.</en>
 			</description>
 			<data genre="3" price="1.0" quality="19" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Einweg-Telefon" type="0" creator="7430" created_by="Sjaele">
@@ -106,7 +106,7 @@
 				<en>The tap-proof telephone is no longer a dream of the future. North Korean scientists presented the world's first at the high-tech trade fair.</en>
 			</description>
 			<data genre="3" price="1.0" quality="25" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Drohnen-Honig" type="0" creator="7430" created_by="Sjaele">
@@ -119,7 +119,7 @@
 				<en>In response to bee deaths, the Ministry of the Environment has instructed all beekeepers to also use their drones to collect honey.</en>
 			</description>
 			<data genre="3" price="0.7" quality="35" />
-			<conditions year_range_from="2000" year_range_to="-1" />
+			<availability year_range_from="2000" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Wohnungsnot" type="0" creator="7430" created_by="Sjaele">
@@ -132,7 +132,7 @@
 				<en>Vermieterbund is pleased: The demolition subsidies in the East have finally created a situation that makes outrageous rent increases possible.</en>
 			</description>
 			<data genre="0" price="1.0" quality="35" />
-			<conditions year_range_from="1990" year_range_to="-1" />
+			<availability year_range_from="1990" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Neuntöter" type="0" creator="7430" created_by="Sjaele">
@@ -146,7 +146,6 @@
 				<en>TThe Environmental Alliance has now announced that the red-backed shrike is this year's Bird of the Year.</en>
 			</description>
 			<data genre="3" price="0.5" quality="29" />
-			<conditions year_range_from="1985" year_range_to="1985" />
 			<availability year_range_from="1985" year_range_to="1985" />
 		</news>
 
@@ -160,7 +159,6 @@
 				<en>Boring family life is to be encouraged by underemployed level designers via family-scripting. 50 workplaces planned.</en>
 			</description>
 			<data genre="0" price="1.0" quality="35" />
-			<conditions year_range_from="-1" year_range_to="-1" />
 			<availability year_range_from="" year_range_to="" />
 		</news>
 
@@ -174,7 +172,7 @@
 				<en>Walther F. from Chemnitz learned from the TV show "Das Superkindermädchen" that his wife left him two years ago and took the children with her.</en>
 			</description>
 			<data genre="1" price="1.0" quality="23" />
-			<conditions year_range_from="1990" year_range_to="-1" />
+			<availability year_range_from="1990" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Kindergarten-Trophy" type="0" creator="7430" created_by="Sjaele">
@@ -187,7 +185,7 @@
 				<en>32-year-old Melanie L. and her daughter Anna (3) have won the 12th "Kindergarten Trophy" in Karl-Marx-Stadt.</en>
 			</description>
 			<data genre="2" price="1.0" quality="22" />
-			<conditions year_range_from="-1" year_range_to="1989" />
+			<availability year_range_from="-1" year_range_to="1989" />
 		</news>
 		<news id="Sjaele-news-Kindergarten-Trophy_Chemnitz" type="0" creator="7430" created_by="Sjaele">
 			<title>
@@ -199,7 +197,7 @@
 				<en>32-year-old Melanie L. and her daughter Anna (3) have won the 12th "Kindergarten Trophy" in Chemnitz.</en>
 			</description>
 			<data genre="2" price="1.0" quality="22" />
-			<conditions year_range_from="1990" year_range_to="-1" />
+			<availability year_range_from="1990" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Witze-Rundweg" type="0" creator="7430" created_by="Sjaele">
@@ -213,7 +211,7 @@
 				<en>The small Saxon town of Calau between Spreewald and Lower Lusatia has opened a "Jokes round walk" in honour of the corny jokes.</en>
 			</description>
 			<data genre="5" price="1.0" quality="25" />
-			<conditions year_range_from="2011" year_range_to="2011" />
+			<availability year_range_from="2011" year_range_to="2011" />
 		</news>
 
 		<news id="Sjaele-news-Biertrinkende" type="0" creator="7430" created_by="Sjaele">
@@ -227,7 +225,7 @@
 				<en>"Every Saxon drinks around 150 litres a year," says the Saxon Brewers' Association. Three out of four beers brewed in Saxony are also drunk in Saxony.</en>
 			</description>
 			<data genre="4" price="1.0" quality="35" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Volksmusik-Show" type="0" creator="7430" created_by="Sjaele">
@@ -241,7 +239,7 @@
 				<en>After the withdrawal of the "Happy Musicians", Bard Heiner called on the folk music friends to retain a "folk music euro" from the radio fees.</en>
 			</description>
 			<data genre="5" price="1.0" quality="15" />
-			<conditions year_range_from="2007" year_range_to="2007" />
+			<availability year_range_from="2007" year_range_to="2007" />
 		</news>
 
 		<news id="Sjaele-news-Umweltminister" type="0" creator="7430" created_by="Sjaele">
@@ -254,7 +252,7 @@
 				<en>The Minister of the Environment becomes Managing Director of the Federation of Industry. He resigns from his seat in Parliament. "I have a lot to make up for."</en>
 			</description>
 			<data genre="0" price="1.0" quality="43" />
-			<conditions year_range_from="-1" year_range_to="-1" />
+			<availability year_range_from="-1" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Tattris-Eins" type="0" creator="7430" created_by="Sjaele">
@@ -881,7 +879,7 @@
 
 			</description>
 			<data genre="5" price="0.7" quality="31" />
-			<conditions year_range_from="-1" year_range_to="1989" />
+			<availability year_range_from="-1" year_range_to="1989" />
 		</news>
 
 		<news id="Sjaele-news-Kaffee-Ausstellung-beendet_Chemnitz" type="0" creator="7430" created_by="Sjaele">
@@ -894,7 +892,7 @@
 
 			</description>
 			<data genre="5" price="0.7" quality="31" />
-			<conditions year_range_from="1990" year_range_to="-1" />
+			<availability year_range_from="1990" year_range_to="-1" />
 		</news>
 
 		<news id="Sjaele-news-Winzer-Klimawandel" type="0" creator="7430" created_by="Sjaele">
