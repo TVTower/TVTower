@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
 	<version value="3" comment="Ronnys Programme" />
 	<insignificantpeople>
@@ -838,7 +838,7 @@ Illustrious guests and music by [3|Nick].</en>
 		</news>
 	</allnews>
 
-﻿	<scripttemplates>
+	<scripttemplates>
 		<!-- product="3" => "Show" -->
 		<scripttemplate product="3" licence_type="1" guid="scripttemplate-ron-musiksterneamabend">
 			<title>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
 	<version value="3" comment="script data" />
 	<!--
@@ -79,7 +79,7 @@
 				<en>%NAMEWOMAN% is %JOB1% and %ACTION% %NAMEMAN%, %JOB2%. %FUNNY% comedy.</en>
 			</description>
 
-			<variables>
+		<variables>
 				<food>
 					<de>Kinder|Liebe|Joghurt|Herzhaftes|Erdbeermarmelade|Cornflakes|Honig</de>
 					<en>Children|Love|Joghurt|Hearty|Strawberry marmelade|Cornflakes|Honey</en>
@@ -123,7 +123,6 @@
 				<job index="3" function="32" required="0" role_guid="script-roles-ron-001" />
 				<job index="4" function="32" required="0" />
 			</jobs>
-
 			<genres maingenre="15" subgenres="5" />
 			<blocks min="2" max="3" slope="30" />
 			<price min="12000" max="17000" slope="60" />

@@ -1161,7 +1161,7 @@
 						<en>Count Ruccola meets asparagus</en>
 					</title>
 					<description>
-						<de>Graf Ruccola endeckt den Spargel und jetzt riecht es beim ""um die Ecke gehen" auf einmal komisch. Warum ist das so? Und beißt Graf Ruccola noch einmal zu, oder lässt er den Spargel lieber links liegen?</de>
+						<de>Graf Ruccola endeckt den Spargel und jetzt riecht es beim "um die Ecke gehen" auf einmal komisch. Warum ist das so? Und beißt Graf Ruccola noch einmal zu, oder lässt er den Spargel lieber links liegen?</de>
 						<en>Count Ruccola discovers the asparagus and now it suddenly smells funny while "going around the corner". Why is that so? And does Count Ruccola bite again, or would he rather not eat asparagus?</en>
 					</description>
 					<ratings critics="57" speed="35" />
@@ -2409,8 +2409,8 @@
 			<variables>
 				<city>
 					<de>Frankfurt|Berlin|Bonn|Hamburg|München|Chemnitz|Bremen|Stuttgart|Leipzig|Dresden|Magdeburg|Wiesbaden|Kassel|Darmstadt|Köln|Ulm|Kiel|Stralsund|Rostock|Braunschweig|Wien|Salzburg|Basel|Jena|Tegernsee|Freiburg|Wuppertal|Trier|Wernigerode|Flensburg|Zürich|Bern|Helgoland</de>
-				</city>
 					<en>Frankfurt|Berlin|Bonn|Hamburg|Munich|Chemnitz|Bremen|Stuttgart|Leipzig|Dresden|Magdeburg|Wiesbaden|Kassel|Darmstadt|Cologne|Ulm|Kiel|Stralsund|Rostock|Braunschweig|Wien|Salzburg|Basel|Jena|Tegernsee|Freiburg|Wuppertal|Trier|Wernigerode|Flensburg|Zurich|Bern|Helgoland</en>
+				</city>
 				<name>
 					<de>Bibi und Hanni|Nani und Tina|Helga und Irmtraud|Nicole und Birgit|Alexandra und Christelle|Beate und Sieglinde|Katharina und Isabelle|Bettina und Christina|Frau Müller und Frau Meier|Frau Schmidt und Frau Biedermann|Frau Faust und Frau Goethe|Tante ERna und Tante Emma</de>
 					<en>Bibi and Hanni|Nani and Tina|Helga and Irmtraud|Nicole and Birgit|Alexandra and Christelle|Beate and Sieglinde|Katharina and Isabelle|Bettina and Christina|Mrs. Smith and Mrs. Brown|Mrs. Schmidt and Mrs. Biedermann|Mrs. Faust and Mrs. Goethe|Aunt Erna and Aunt Emma</en>
@@ -2862,7 +2862,7 @@
 			</jobs>
 			<data flags="8" optional_flags="66" />
 			<groups target_groups="68" />
-			<genres maingenre="13" subgenre="15" />
+			<genres maingenre="13" subgenres="15" />
 			<blocks min="3" max="5" slope="45" />
 			<price min="67000" max="99500" slope="90" />
 			<potential min="71" max="100" slope="50" />

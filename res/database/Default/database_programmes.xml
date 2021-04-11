@@ -7623,7 +7623,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 					</title>
 					<description>
 						<de>Peggy kommt vom Lande und alle Fragen drehen sich um die dicksten Kartoffeln der Bäuerin.</de>
-						<en></en>cr
+						<en></en>
 					</description>
 					<ratings critics="1" speed="13" />
 				</programme>
@@ -7819,7 +7819,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 			<staff>
 				<member index="0" function="1">TheRob-TowerTV-Borgmevens</member>
 				<member index="1" function="2">af6a5525-6858-42b2-b313-6ca3e26d3b90</member>
-				<member index="2" function="2">TheRob-TowerTV-RicardoNurton</member>>
+				<member index="2" function="2">TheRob-TowerTV-RicardoNurton</member>
 			</staff>
 			<groups target_groups="0" pro_pressure_groups="0" contra_pressure_groups="0" />
 			<data country="USA" year="1963" distribution="1" maingenre="13" subgenre="7" flags="0" blocks="4" price_mod="1.00" />
@@ -7964,7 +7964,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</de>
 				<en>Arsenic and Old Lace</en>
 			</title_original>
 			<description>
-				<de>Frisch verheiratet besuchen Mortey und seine Angetraute Morteys Tanten. Konnte er ahnen, das sie echte Leichen im Keller haben. Ein „Evergreen des schwarzen Humors" mit herrlicher Mimik von [1|Full]. </de>
+				<de>Frisch verheiratet besuchen Mortey und seine Angetraute Morteys Tanten. Konnte er ahnen, das sie echte Leichen im Keller haben. Ein „Evergreen des schwarzen Humors“ mit herrlicher Mimik von [1|Full]. </de>
 				<en>Just Married, Mortey and his wife visit his aunts. He realizes that they are have enough skeletons rattling around in one's closet to fill a cemetery. An Evergreen of black humour. Unforgettable mimic of [1|Full].</en>
 			</description>
 			<staff>
@@ -8806,7 +8806,7 @@ Die legendäre Verfilmung des deutschen Literaturklassikers mit [1|Full] und [2|
 			<ratings critics="26" speed="49" outcome="38" />
 		</programme>
 
-		<programme id="therob-programme-famser-AlsoPapa" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0070964" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="therob-programme-famser-AlsoPapa" product="2" licence_type="3" tmdb_id="0" imdb_id="tt0070964" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 			<title>
 				<!-- Aber Vati von Gast2 umgesetzt. Familie und Kult -->
 				<de>Also Papa</de>
@@ -8831,7 +8831,7 @@ Dreh- und Angelpunkt sind die Versuche, Vati Neu zu verheiraten.</de>
 			<data country="DDR" year="1979" distribution="2" maingenre="9" subgenre="5" flags="8" blocks="2" price_mod="1.00" />
 			<ratings critics="77" speed="35" outcome="40" />
 			<children>
-				<programme id="therob-programme-famser-AlsoPapa-ep101" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep101" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Vati will nicht heiraten</de>
 						<en>Dad does not want to marry</en>
@@ -8844,7 +8844,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					<data country="DDR" year="1974" price_mod="1.00" />
 					<ratings critics="79" speed="36" />
 				</programme>
-				<programme id="therob-programme-famser-AlsoPapa-ep102" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep102" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Vati will heiraten</de>
 						<en>Dad wants to marry</en>
@@ -8856,7 +8856,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					<data country="DDR" year="1974" />
 					<ratings critics="77" speed="36" />
 				</programme>
-				<programme id="therob-programme-famser-AlsoPapa-ep103" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep103" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Vati hat geheiratet</de>
 						<en>Dad has married</en>
@@ -8868,7 +8868,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					<data country="DDR" year="1974" />
 					<ratings critics="77" speed="38" />
 				</programme>
-				<programme id="therob-programme-famser-AlsoPapa-ep104" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-famser-AlsoPapa-ep104" product="2" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>5 Jahre danach</de>
 						<en>5 years later</en>
@@ -8882,7 +8882,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			</children>
 		</programme>
 
-		<programme id="therob-programme-KaltkabelindieZukunft" product="2" fictional="1" licence_type="3" tmdb_id="tv_62451" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="therob-programme-KaltkabelindieZukunft" product="2" fictional="1" licence_type="3" tmdb_id="tv_62451" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 			<title>
 				<!-- Kinderserie, Heißer Draht ins Jenseits, keine IMDB ID, von Gast2 -->
 				<de>Kaltkabel in die Zukunft</de>
@@ -8903,7 +8903,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<data country="HUN" year="1969" distribution="2" maingenre="3" subgenre="" flags="0" blocks="1" price_mod="1.00" />
 			<ratings critics="27" speed="36" outcome="0" />
 			<children>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep201" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep201" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>3D voll echt</de>
 						<en>3D completely real</en>
@@ -8914,7 +8914,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="28" speed="35" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep202" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep202" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Fischersatz</de>
 						<en>Fish substitute</en>
@@ -8925,7 +8925,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="26" speed="37" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep203" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep203" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Sauschnell zur Fete</de>
 						<en>Very fast to the party</en>
@@ -8936,7 +8936,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="27" speed="36" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep204" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep204" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Wettermacher</de>
 						<en>The weather generator</en>
@@ -8947,7 +8947,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="27" speed="39" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep205" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep205" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Hilfe, Androiden</de>
 						<en></en>
@@ -8958,7 +8958,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="30" speed="33" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep206" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep206" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Planetenurlaub</de>
 						<en>Hollidays on an other planet</en>
@@ -8969,7 +8969,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="25" speed="38" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep207" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep207" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Doof und glücklich</de>
 						<en>Stupid but happy</en>
@@ -8980,7 +8980,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="27" speed="36" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep208" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep208" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Zeitreise</de>
 						<en>Timemachine</en>
@@ -8991,7 +8991,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="26" speed="35" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep209" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep209" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Der Manipulator</de>
 						<en>The manipulator</en>
@@ -9002,7 +9002,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="28" speed="34" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep210" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep210" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Treibhauslegende</de>
 						<en>Green house legend</en>
@@ -9013,7 +9013,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="21" speed="42" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep211" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep211" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Die Tarnkappenpille</de>
 						<en>The invisibility pill</en>
@@ -9024,7 +9024,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="26" speed="34" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep212" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep212" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Rhythmus der Kuh</de>
 						<en>The cow rythm</en>
@@ -9035,7 +9035,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 					</description>
 					<ratings critics="28" speed="30" />
 				</programme>
-				<programme id="therob-programme-KaltkabelindieZukunft-ep213" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+				<programme id="therob-programme-KaltkabelindieZukunft-ep213" product="2" fictional="1" licence_type="2" tmdb_id="0" imdb_id="" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 					<title>
 						<de>Das Traumhaus</de>
 						<en>The perfect house</en>
@@ -9725,7 +9725,7 @@ Ermattet von den ständigen Streichen der Zwillinge empfiehlt auch seine aushelf
 			<ratings critics="69" speed="61" outcome="96" />
 		</programme>
 
-		<programme id="TheRob-mov-drama-KleinIwan" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="TheRob-mov-drama-KleinIwan" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0056111" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 			<title>
 				<!-- Iwans Kindheit, Drama sub Action -->
 				<de>Klein Iwan</de>
@@ -9751,7 +9751,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="77" speed="29" outcome="72" />
 		</programme>
 
-		<programme id="TheRob-mov-hist-AndyKopekjow" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0060107" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="TheRob-mov-hist-AndyKopekjow" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0060107" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 			<title>
 				<!-- Andrej Rubljow, Hostorie, Sub Drama -->
 				<de>Andy Kopekjow</de>
@@ -9776,7 +9776,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="81" speed="22" outcome="63" />
 		</programme>
 
-		<programme id="TheRob-mov-dram-StraßenwalzenpilotundGeiger" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0053987" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="TheRob-mov-dram-StraßenwalzenpilotundGeiger" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0053987" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 			<title>
 				<!-- Die Straßenwalze und die Geige, drama -->
 				<de>Straßenwalzenpilot und Geiger</de>
@@ -9800,7 +9800,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="93" speed="26" outcome="22" />
 		</programme>
 
-		<programme id="TheRob-mov-scifi-Soljaris" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0069293" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="TheRob-mov-scifi-Soljaris" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0069293" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 			<title>
 				<!-- Solaris, scifi sub mystery -->
 				<de>Soljaris</de>
@@ -9825,7 +9825,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="84" speed="36" outcome="83" />
 		</programme>
 
-		<programme id="TheRob-mov-drama-Serkalo" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0072443" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="TheRob-mov-drama-Serkalo" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0072443" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 			<title>
 				<!-- Der Spiegel, Drama -->
 				<de>Serkalo</de>
@@ -9850,7 +9850,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="73" speed="36" outcome="43" />
 		</programme>
 
-		<programme id="TheRob-mov-drama-PicknickamWegesrand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0079944" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="TheRob-mov-drama-PicknickamWegesrand" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0079944" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 			<title>
 				<!-- Stalker, SciFi sub drama -->
 				<de>Picknick am Wegesrand</de>
@@ -9875,7 +9875,7 @@ Traumszenen und Stimmungen verzerren die Handlung. </de>
 			<ratings critics="82" speed="56" outcome="81" />
 		</programme>
 
-		<programme id="TheRob-mov-drama-DertoteBaum" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091670" rt_id="0" creator="8751/7430" creatorcreated_by="Sjaele/TheRob">
+		<programme id="TheRob-mov-drama-DertoteBaum" product="1" licence_type="1" tmdb_id="0" imdb_id="tt0091670" rt_id="0" creator="8751/7430" created_by="Sjaele/TheRob">
 			<title>
 				<!-- Opfer, drama -->
 				<de>Der tote Baum</de>

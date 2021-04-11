@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
 	<version value="3" />
 	<allads>
@@ -313,7 +313,7 @@ In Berlin Tempelhof and Steglitz</en>
 				<en>Tingling hop gold. For the critical days of the month you should always have Pop'Beer in your fridge.</en>
 			</description>
 			<conditions min_audience="1.56" min_image="4" target_group="256" pro_pressure_groups="0" contra_pressure_groups="0"/>
-			<data quality="15" repetitions="3" duration="3" profit="976" penalty="1550" finfomercial_profit="97" ix_infomercial_profit="1"/>
+			<data quality="15" repetitions="3" duration="3" profit="976" penalty="1550" infomercial_profit="97" fix_infomercial_profit="1"/>
 		</ad>
 		<ad id="589d51a5-52ab-463f-90f9-ddf48abef355">
 			<title>

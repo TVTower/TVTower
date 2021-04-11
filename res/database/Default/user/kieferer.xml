@@ -1,7 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
 	<version value="3" comment="Kieferers Daten" />
-﻿	<scripttemplates>
+	<scripttemplates>
 		<scripttemplate product="1" licence_type="1" guid="scripttemplate-random-kieferer-mysteriousisland">
 			<title>
 				<de>Mysteriöse Insel</de>
@@ -168,14 +168,14 @@ All means are right for them.</en>
 				<resources1A>
 					<de>Gold legte gestern nachbörslich stark zu.|Öl-Preise erholen sich wegen stärker Nachfrage.|Öl-Preise profitieren von gesenkter Fördermenge.|Der Wolfram-Bedarf der Industrie ist stark gestiegen.</de>
 				</resources1A>
--
+
 				<resources2>
 					<de>Rohstöffe heute unverändert. %RESOURCES2A%</de>
 				</resources2>
 				<resources2A>
 					<de>Gold liegt bei geringen Umsätzen auf Vortagsniveau.|Öl-Preise zeigen sich unbeeindruckt von OPIG-Plänen.|Weizen und Kaffee nach lustlosem Handel minimal im Plus.|Palladium in einer intakten Seitwärtsbewegung.</de>
 				</resources2A>
--
+
 				<resources3>
 					<de>Rohstoffe geben spürbar nach. %RESOURCES3A%|Sinkflug für Rohstoffe. %RESOURCES3A%</de>
 				</resources3>
@@ -190,14 +190,14 @@ All means are right for them.</en>
 				<currency1A>
 					<de>%WORLDTIME:GERMANCURRENCY% gewinnt.|%WORLDTIME:GERMANCURRENCY% schwächelt.|%WORLDTIME:GERMANCURRENCY% profitiert von guten Konjunkturdaten.|%WORLDTIME:GERMANCURRENCY% profitiert von einem Rückgang der Staatsverschuldung.|%WORLDTIME:GERMANCURRENCY% gewinnt stark, türkische Lira im Sturzflug.</de>
 				</currency1A>
--
+
 				<currency2>
 					<de>Dollar unverändert, %CURRENCY2A%|Dollar hält sich, %CURRENCY2A%</de>
 				</currency2>
 				<currency2A>
 					<de>%WORLDTIME:GERMANCURRENCY% legt leicht zu, Schweizer Franken weiterhin stark.|Inflation sorgt für einen kaum veränderten %WORLDTIME:GERMANCURRENCY%.|%WORLDTIME:GERMANCURRENCY% gibt in breiter Front nach.|Sorge um britisches Pfund.</de>
 				</currency2A>
--
+
 				<currency3>
 					<de>Dollar steigt, %CURRENCY3A%|Dollar im Aufwind, %CURRENCY3A%</de>
 				</currency3>
